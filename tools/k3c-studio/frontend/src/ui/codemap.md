@@ -2,16 +2,16 @@
 
 ## Responsibility
 
-Oberflächen-Bausteine nur des Asset-Studios; die gemeinsamen Radix-Bausteine liegen in `tools/webkit` (`@webkit/parts`).
+Oberflächen-Bausteine nur des Asset-Studios nach Atomic Design (`molecules/`, `organisms/`, `templates/`). Atome und alles Generische liegen in `tools/webkit` (`@webkit/atoms` …); `tests/atomicDesign.test.ts` prüft die Ebenen.
 
 ## Design
 
-- `Splitter.tsx`: ziehbare Teilung zweier Bereiche, Anteil 20–80 % gemerkt über `../lib/prefs` (`loadText`, `savePref`); reine Helfer `splitShare`, `clampSplit`, `parseSplit`. Gleiche Logik wie `tasks/TaskBars.tsx` in k3c-dev.
+- Derzeit leer: der frühere `Splitter.tsx` ist nach `@webkit/atoms` (`Splitter`) und `@webkit/lib/split` (`useSplit`, `splitShare`, `clampSplit`, `parseSplit`) gewandert.
 
 ## Flow
 
-1. Seite rendert `Splitter` mit Schlüssel und Vorgabe → gemerkter Anteil → Ziehen setzt und merkt den neuen Anteil.
+1. Ein Baustein, den nur das Studio braucht, kommt in die passende Ebene; er importiert nur nach unten, aus `api/`, `lib/` und webkit.
 
 ## Integration
 
-- Konsumenten: `assets/AssetsPage.tsx`, `assets/SlotDetail.tsx`.
+- Konsumenten wären die Feature-Ordner (`assets/`, `world/` …); nie umgekehrt.

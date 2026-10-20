@@ -1,7 +1,6 @@
-import { Button, Flex, Text } from '@radix-ui/themes';
+import { ActionButton, Button, Flex, Text } from '@webkit/atoms';
 import { useState } from 'react';
 import type { AssetChoice, AssetSlot } from '../api';
-import { ActionButton } from '@webkit/parts';
 import { playChoice, stopAll } from './audio';
 import { playStatus } from './playback';
 

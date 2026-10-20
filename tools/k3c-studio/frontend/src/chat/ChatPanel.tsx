@@ -1,5 +1,5 @@
 import { AssistantRuntimeProvider, ComposerPrimitive, ThreadPrimitive, useLocalRuntime, type ThreadMessage } from '@assistant-ui/react';
-import { Button } from '@radix-ui/themes';
+import { Button } from '@webkit/atoms';
 import { useEffect, useMemo, useState } from 'react';
 import { backend } from '../api';
 import { createChatAdapter } from './chatAdapter';

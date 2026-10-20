@@ -1,3 +1,4 @@
+import { SelectField } from '@webkit/atoms';
 import type { PlanState } from './usePlan';
 
 /** Eintrag ohne Chunk-Anzahl: die Länge kommt aus lengthUnits des Bioms (kein Eintrag in chunkCounts). */
@@ -8,11 +9,10 @@ export const BIOME_LENGTH = 'Biom-Länge';
  *  erscheint als eigener Eintrag, damit die Prüfung sie am Entwurf meldet. */
 export function SizePicker({ plan }: { plan: PlanState }) {
   const unknown = plan.count !== 0 && !plan.sizes.some((s) => s.chunkCount === plan.count);
-  return (
-    <select className="wd-select" aria-label="Inselgröße" title="Chunk-Anzahl der Stufe" value={plan.count} onChange={(e) => plan.setSize(Number(e.target.value))}>
-      <option value={0}>{BIOME_LENGTH}</option>
-      {plan.sizes.map((s) => <option key={s.chunkCount} value={s.chunkCount}>{`${s.name} · ${s.chunkCount}`}</option>)}
-      {unknown && <option value={plan.count}>{`${plan.count} (keine Inselgröße)`}</option>}
-    </select>
-  );
+  const options = [
+    { value: '0', label: BIOME_LENGTH },
+    ...plan.sizes.map((s) => ({ value: String(s.chunkCount), label: `${s.name} · ${s.chunkCount}` })),
+    ...(unknown ? [{ value: String(plan.count), label: `${plan.count} (keine Inselgröße)` }] : []),
+  ];
+  return <SelectField aria-label="Inselgröße" title="Chunk-Anzahl der Stufe" value={String(plan.count)} options={options} onChange={(v) => plan.setSize(Number(v))} />;
 }

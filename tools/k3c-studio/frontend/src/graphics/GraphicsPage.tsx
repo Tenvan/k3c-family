@@ -1,4 +1,4 @@
-import { Tabs } from '@radix-ui/themes';
+import { Tabs } from '@webkit/organisms';
 import { useState } from 'react';
 import { AssetsPage } from '../assets/AssetsPage';
 import { loadPref, savePref } from '../lib/prefs';

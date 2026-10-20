@@ -1,9 +1,9 @@
-import { Button, Text } from '@radix-ui/themes';
+import { Button, Text } from '@webkit/atoms';
 import { CROSSFADE_SECONDS } from '@game/audio/crossfade';
 import { candidatesFromSlots, fileFor, groupCandidates, keyAction, moveSelection, stepVolume, type Action, type Candidate, type Group } from '@game/tools/soundtestLogic';
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
 import { useAssets } from '../assets/useAssets';
-import { NoticeCard } from '@webkit/parts';
+import { NoticeCard } from '@webkit/molecules';
 import { core, stopAll } from './audio';
 
 // Reiter „Hörprobe“ der Seite Sound (B-459/AC-06, Inhalt von soundtest.html ohne Pad-Steuerung): ganze Dateien der
@@ -96,11 +96,12 @@ function Groups({ groups, h }: { groups: readonly Group[]; h: ReturnType<typeof 
         const idx = i++;
         const off = h.failed.has(c.datei);
         return (
-          <button key={`${c.datei}:${idx}`} type="button" className={`hp-item${idx === h.selected ? ' hp-sel' : ''}${h.playing === c ? ' hp-on' : ''}${off ? ' hp-off' : ''}`}
+          <Button key={`${c.datei}:${idx}`} variant={idx === h.selected ? 'soft' : 'ghost'} color={idx === h.selected ? undefined : 'gray'} highContrast={idx !== h.selected}
+            className={`hp-item${idx === h.selected ? ' hp-sel' : ''}${h.playing === c ? ' hp-on' : ''}${off ? ' hp-off' : ''}`}
             onFocus={() => h.setSelected(idx)} onClick={() => { h.setSelected(idx); void h.play(idx, false); }}>
             <span>{off ? `${c.name} – lädt nicht` : c.name}</span>
             <span className="sz-dim">{c.quelle} · {c.lizenz}</span>
-          </button>
+          </Button>
         );
       })}
     </section>

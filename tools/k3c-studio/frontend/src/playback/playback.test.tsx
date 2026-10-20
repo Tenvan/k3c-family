@@ -6,6 +6,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { DEFAULT_CONTROL, gap, type Control } from './figure';
 import { FigureStage } from './FigureStage';
 import type { FigureItem } from './figureView';
+import { optionTexts } from '../../../../webkit/testing/options';
+import { pickOption, selectedText } from '../../../../webkit/testing/select';
 import { GapBadge, PlaybackControls } from './PlaybackControls';
 
 // B-463 (WZ10.1) im DOM: Steuerung, Lücken-Marke und die Bühne mit einer Attrappe statt Phaser.
@@ -65,10 +67,9 @@ describe('Steuerung (B-463/AC-01)', () => {
 
   it('Tempo 0,5×, 1× und 2×', async () => {
     const h = await mount(<Controlled />);
-    const select = h.querySelector<HTMLSelectElement>('[aria-label="Tempo"]')!;
-    expect([...select.options].map((o) => o.textContent)).toEqual(['0.5×', '1×', '2×']);
-    await act(async () => { select.value = '2'; select.dispatchEvent(new Event('change', { bubbles: true })); });
-    expect(select.value).toBe('2');
+    expect(await optionTexts(h, 'Tempo')).toEqual(['0.5×', '1×', '2×']);
+    await pickOption(h, 'Tempo', '2×');
+    expect(selectedText(h, 'Tempo')).toBe('2×');
   });
 });
 

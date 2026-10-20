@@ -11,7 +11,7 @@ Gemeinsame Oberflächen-Bausteine aller Wails-Frontends (k3c-dev, Asset-Studio, 
 - `molecules/` (`@webkit/molecules`): Radix Card, Callout, DataList, Gruppen, Popover; `NoticeCard` (Callout), `CheckField`, `SwitchField`.
 - `organisms/` (`@webkit/organisms`): Radix Dialog, AlertDialog, DropdownMenu, ContextMenu, Tabs, TabNav, Table; `AppHeader` (Titel, Reiter, rechte Leiste).
 - `templates/` (`@webkit/templates`): Radix Theme, ThemePanel; `AppFrame` (Theme, Kopfzeile, optionale Reiter, Seite, `aside`, `overlay`, `fixed`).
-- `testing/select.ts`: Test-Helfer `pickOption`, `selectedText`, `selectTrigger` für Radix Select in happy-dom.
+- `testing/select.ts`: Test-Helfer `pickOption`, `selectedText`, `selectTrigger` für Radix Select in happy-dom; `testing/options.ts`: `shownOptions`, `optionTexts`, `pickWhere` (offene Liste lesen, Eintrag nach Bedingung wählen).
 - `theme.css`: Farb-Namen auf Radix-Variablen (hell/dunkel), ANSI-Farben, Rahmen (`wk-shell`, `wk-header`, `wk-page`), Status-Punkt, Hinweis, Splitter.
 
 ## Flow

@@ -6,6 +6,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import { mockWorldLevel } from '../api/mockWorld';
 import { WorldPage } from './WorldPage';
+import { pickWhere } from '../../../../webkit/testing/options';
+import { pickOption } from '../../../../webkit/testing/select';
 
 // Beim Ändern eines geplanten Chunks springen beide Vorschauen auf ihn (B-485, WZ17.5; Wunsch von Ralf), wie der Klick-Sprung.
 // Bühne 600 × 400 px samt Rahmen, Streifen 1000 px (happy-dom misst sonst 0); Mock-Level: Chunks 30 Units, Hub = Abschnitt 5.
@@ -134,9 +136,7 @@ describe('Beim Ändern eines Chunks zentrieren (B-485, WZ17.5)', () => {
   it('eine andere Inselgröße springt nicht zum Chunk (das neue Level beginnt beim Hub)', async () => {
     const h = await mount();
     await plannedAway(h);
-    const size = h.querySelector<HTMLSelectElement>('[aria-label="Inselgröße"]')!;
-    Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value')!.set!.call(size, '24');
-    await act(async () => size.dispatchEvent(new Event('change', { bubbles: true })));
+    await pickOption(h, 'Inselgröße', 'klein · 24');
     expect(liveCenter()).toBeCloseTo(mid(8));
     await settle();
     expect(liveCenter()).toBeCloseTo(mid(12)); // Mock mit 24 Abschnitten: Hub = Abschnitt 12
@@ -156,9 +156,7 @@ describe('Ein neues Level beginnt weiter beim Hub (WZ17.5)', () => {
   it('andere Stufe zentriert den Hub', async () => {
     const h = await mount();
     await act(async () => chunk(h, 8).click());
-    const stage = h.querySelector<HTMLSelectElement>('[aria-label="Stufe"]')!;
-    Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value')!.set!.call(stage, '1');
-    await act(async () => stage.dispatchEvent(new Event('change', { bubbles: true })));
+    await pickWhere(h, 'Stufe', (t) => t.startsWith('Stufe 2 '));
     await settle();
     expect(liveCenter()).toBeCloseTo(mid(5));
   });

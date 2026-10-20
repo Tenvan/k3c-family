@@ -1,8 +1,8 @@
-import { SegmentedControl, Select, Text } from '@radix-ui/themes';
+import { SegmentedControl, Select, Text } from '@webkit/atoms';
 import { useEffect, useState } from 'react';
 import { useAssets } from '../assets/useAssets';
 import { loadPref, savePref } from '../lib/prefs';
-import { NoticeCard } from '@webkit/parts';
+import { NoticeCard } from '@webkit/molecules';
 import { BuildingStrip } from './BuildingStrip';
 import { Backgrounds } from './Backgrounds';
 import { FigurenCards, ImageCard } from './SlotCards';

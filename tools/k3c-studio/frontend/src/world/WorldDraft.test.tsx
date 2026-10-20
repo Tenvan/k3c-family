@@ -5,6 +5,8 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import { WorldPage } from './WorldPage';
+import { optionTexts } from '../../../../webkit/testing/options';
+import { pickOption, selectedText } from '../../../../webkit/testing/select';
 
 // WZ18.6 (B-488/AC-05) im DOM mit dem Mock-Backend: Welt-Entwurf mit Welt-Kopf und Inseln, sofortige Prüfung mit Fehler
 // am Feld, Speichern nur Gültiges mit REG-Hinweis, Stale lässt den Entwurf stehen. Jeder Test arbeitet in einer eigenen,
@@ -23,7 +25,7 @@ const button = (h: HTMLElement, label: string) =>
   [...h.querySelectorAll('button')].find((b) => b.textContent === label || b.getAttribute('aria-label') === label)! as HTMLButtonElement;
 const field = (h: HTMLElement, label: string) => h.querySelector<HTMLInputElement>(`[aria-label="${label}"]`)!;
 const fieldError = (h: HTMLElement, island: number, name: string) => h.querySelector(`.wd-error[data-island="${island}"][data-field="${name}"]`);
-const islandOptions = (h: HTMLElement) => [...h.querySelector<HTMLSelectElement>('select[aria-label="Insel"]')!.options].map((o) => o.textContent);
+const islandOptions = (h: HTMLElement) => optionTexts(h, 'Insel');
 
 async function type(el: HTMLInputElement, value: string) {
   Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(el, value);
@@ -61,9 +63,8 @@ describe('Welt-Entwurf (B-488/AC-05)', () => {
     expect(button(h, 'Welt +').disabled).toBe(true); // Welt wechseln und anlegen nur ohne offenen Entwurf
     await click(button(h, 'Welt speichern'));
     expect(h.querySelector('.wd-notice')!.textContent).toContain('REG-Änderung');
-    const select = h.querySelector<HTMLSelectElement>('select[aria-label="Welt"]')!;
-    expect(select.value).toBe('probe');
-    expect(select.selectedOptions[0]!.textContent).toBe('Nordmeer');
+    expect((await backend.planWorlds()).active).toBe('probe');
+    expect(selectedText(h, 'Welt')).toBe('Nordmeer');
     expect(button(h, 'Welt speichern').disabled).toBe(true);
   });
 
@@ -79,7 +80,7 @@ describe('Welt-Entwurf (B-488/AC-05)', () => {
     await click(button(h, 'Insel 3 entfernen'));
     await settle();
     await click(button(h, 'Welt speichern'));
-    expect(islandOptions(h)).toEqual(['Eisinsel', 'Insel 1']);
+    expect(await islandOptions(h)).toEqual(['Eisinsel', 'Insel 1']);
   });
 
   it('nach dem Speichern einer neuen id lässt sich weiter ändern und speichern; offene Planung sperrt das Speichern', async () => {
@@ -94,7 +95,7 @@ describe('Welt-Entwurf (B-488/AC-05)', () => {
     await click(button(h, 'Verwerfen'));
     await settle();
     await click(button(h, 'Welt speichern'));
-    expect(islandOptions(h)).toEqual(['Eis']);
+    expect(await islandOptions(h)).toEqual(['Eis']);
   });
 
   it('setzt Stufen und Skalierung einer Insel', async () => {
@@ -106,16 +107,14 @@ describe('Welt-Entwurf (B-488/AC-05)', () => {
     const view = await backend.planLoad();
     expect(view.islands[0]!.depths).toEqual([0, 1, 3, 4]);
     expect(view.islands[0]!.depthScaling.hp).toBe(2.5);
-    expect([...h.querySelector<HTMLSelectElement>('select[aria-label="Stufe"]')!.options]).toHaveLength(4);
+    expect(await optionTexts(h, 'Stufe')).toHaveLength(4);
   });
 });
 
 describe('Planung und Chunk-Anzahl in der gewählten Welt (Editor aus WZ8/WZ17)', () => {
   it('speichert Chunk und Inselgröße der Stufe in die Welt „Probe“, nicht in die Standard-Welt', async () => {
     const h = await mount();
-    const size = h.querySelector<HTMLSelectElement>('[aria-label="Inselgröße"]')!;
-    Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value')!.set!.call(size, '24');
-    await act(async () => size.dispatchEvent(new Event('change', { bubbles: true })));
+    await pickOption(h, 'Inselgröße', 'klein · 24');
     await click(button(h, 'Chunk hinzufügen'));
     await settle();
     await click(button(h, 'Speichern'));

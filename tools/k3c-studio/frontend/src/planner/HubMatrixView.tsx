@@ -1,3 +1,4 @@
+import { Button } from '@webkit/atoms';
 import type { HubCell, HubMatrix, HubRow } from '../api';
 import { depthText, levelColumns, offsetText, rowExtra, rowLabel } from './plannerLogic';
 
@@ -40,7 +41,7 @@ export function HubMatrixView({ matrix, hubLevel, onHubLevel, selected, onSelect
             <th scope="col">Herkunft</th>
             {columns.map((n) => (
               <th key={n} scope="col" className={n === hubLevel ? 'pl-chosen' : undefined}>
-                <button type="button" className="pl-level" aria-pressed={n === hubLevel} onClick={() => onHubLevel(n)}>Hub-Stufe {n}</button>
+                <Button size="1" variant={n === hubLevel ? 'soft' : 'ghost'} className="pl-level" aria-pressed={n === hubLevel} onClick={() => onHubLevel(n)}>Hub-Stufe {n}</Button>
               </th>
             ))}
           </tr>
@@ -49,10 +50,10 @@ export function HubMatrixView({ matrix, hubLevel, onHubLevel, selected, onSelect
           {matrix.rows.map((row, i) => (
             <tr key={`${row.key}#${i}`} data-key={row.key} className={rowId(row) === selected ? 'pl-selected' : undefined}>
               <th scope="row">
-                <button type="button" className="pl-row" aria-pressed={rowId(row) === selected} onClick={() => onSelect?.(rowId(row))}>
+                <Button variant="ghost" color="gray" highContrast className="pl-row" aria-pressed={rowId(row) === selected} onClick={() => onSelect?.(rowId(row))}>
                   {rowLabel(row)}
                   {rowExtra(row) && <span className="pl-extra">{rowExtra(row)}</span>}
-                </button>
+                </Button>
               </th>
               <td className="pl-source"><code>{row.source}</code></td>
               {row.cells.map((cell, j) => <Cell key={j} row={row} cell={cell} level={j + 1} chosen={j + 1 === hubLevel} />)}

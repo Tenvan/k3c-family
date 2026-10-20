@@ -1,4 +1,4 @@
-import { Button, SegmentedControl, Text } from '@radix-ui/themes';
+import { Badge, Button, SegmentedControl, Text } from '@webkit/atoms';
 import { GRAFIK_PACKS, type GrafikPack } from '@game/tools/grafikPacks';
 import { textOf } from '@game/tools/texts';
 import { useEffect, useState, type CSSProperties } from 'react';
@@ -53,7 +53,7 @@ function Pack({ pack, images }: { pack: GrafikPack; images: ImageEntry[] }) {
       <p className="sz-dim">
         {pack.artist} · {pack.license} · <Button size="1" variant="ghost" onClick={() => backend.openUrl(pack.source)}>Quelle</Button>
       </p>
-      <div className="pk-chips">{pack.covers.map((c) => <span key={c}>{c}</span>)}</div>
+      <div className="pk-chips">{pack.covers.map((c) => <Badge key={c} variant="outline" color="gray" radius="full">{c}</Badge>)}</div>
       <p className="pk-note">{pack.note}</p>
       {pack.licenseNote && <p className="as-warn">{pack.licenseNote}</p>}
       {groups.map((g) => (

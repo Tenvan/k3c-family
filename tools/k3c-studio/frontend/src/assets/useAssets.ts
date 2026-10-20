@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { backend, isStale, STALE, type AssetChoice, type AssetsView } from '../api';
-import { errorText } from '@webkit/errors';
+import { errorText } from '@webkit/lib/errors';
 import { applySaved } from './assets';
 
 /** Slot-Register einer Seite: lädt frisch, lädt bei `assets:changed` neu (nur `view` wird ersetzt, Auswahl, Filter und

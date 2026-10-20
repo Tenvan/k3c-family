@@ -1,4 +1,4 @@
-import { Text } from '@radix-ui/themes';
+import { Text } from '@webkit/atoms';
 import { useMemo } from 'react';
 import { GapBadge } from '../playback/PlaybackControls';
 import { skillRows } from './actions';

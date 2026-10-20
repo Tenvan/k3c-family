@@ -1,12 +1,14 @@
-import { Text } from '@radix-ui/themes';
 import { useState } from 'react';
 import type { HubRow } from '../api';
-import { ActionButton } from '@webkit/parts';
+import { ActionButton, SelectField, Text, TextField, plainOptions, type SelectOption } from '@webkit/atoms';
+import { CheckField } from '@webkit/molecules';
 import { rowLabel } from './plannerLogic';
 import {
   addSite, integerOf, numberOf, REMOVE_HINT, removeSite, setGateHubLevel, setMerchant, setSiteField, setWallUnit, siteOf,
   type HubJson, type SiteList,
 } from './plannerEdit';
+
+const LIST_OPTIONS: SelectOption<SiteList>[] = [{ value: 'sites', label: 'sites (je Hub)' }, { value: 'islandSites', label: 'islandSites (je Insel)' }];
 
 type Edit = (change: (h: HubJson) => HubJson) => void;
 
@@ -30,7 +32,7 @@ function NumberField({ label, value, onValue, integer = false }: FieldProps) {
   return (
     <label className="pl-field">
       <span>{label}</span>
-      <input type="number" step={integer ? 1 : 'any'} aria-label={label} value={text} onChange={(e) => {
+      <TextField.Root type="number" step={integer ? 1 : 'any'} aria-label={label} value={text} onChange={(e) => {
         setText(e.target.value);
         const n = parse(e.target.value);
         if (n !== null) onValue(n);
@@ -50,10 +52,8 @@ function SiteFields({ hub, row, edit, onRemoved }: { hub: HubJson; row: HubRow; 
       <NumberField label="Hub-Stufe (hubLevel)" value={site.hubLevel ?? 1} onValue={set('hubLevel')} integer />
       <NumberField label="Platz (offsetUnits)" value={site.offsetUnits} onValue={set('offsetUnits')} />
       <NumberField label="ab Tiefe (fromDepth)" value={site.fromDepth ?? 0} onValue={set('fromDepth')} integer />
-      <label className="pl-field">
-        <span>nur mit tieferer Stufe (needsDeeper)</span>
-        <input type="checkbox" aria-label="needsDeeper" checked={site.needsDeeper === true} onChange={(e) => set('needsDeeper')(e.target.checked)} />
-      </label>
+      <CheckField className="pl-field" label="nur mit tieferer Stufe (needsDeeper)" aria-label="needsDeeper" checked={site.needsDeeper === true}
+        onCheckedChange={(c) => set('needsDeeper')(c === true)} />
       <div className="pl-remove">
         <ActionButton onClick={() => { edit((h) => removeSite(h, list, row.index)); onRemoved(); }}>Platz entfernen</ActionButton>
         <Text size="1" color="orange">{REMOVE_HINT}</Text>
@@ -103,16 +103,11 @@ export function AddSite({ kinds, levels, edit }: { kinds: string[]; levels: numb
     <section className="pl-add" aria-label="Platz hinzufügen">
       <label className="pl-field">
         <span>Art</span>
-        <select aria-label="Art" value={kind} onChange={(e) => setKind(e.target.value)}>
-          {kinds.map((k) => <option key={k} value={k}>{k}</option>)}
-        </select>
+        <SelectField aria-label="Art" value={kind} options={plainOptions(kinds)} onChange={setKind} />
       </label>
       <label className="pl-field">
         <span>Liste</span>
-        <select aria-label="Liste" value={list} onChange={(e) => setList(e.target.value as SiteList)}>
-          <option value="sites">sites (je Hub)</option>
-          <option value="islandSites">islandSites (je Insel)</option>
-        </select>
+        <SelectField aria-label="Liste" value={list} options={LIST_OPTIONS} onChange={setList} />
       </label>
       <NumberField label="neuer Platz (offsetUnits)" value={offset} onValue={setOffset} />
       <NumberField label="neue Hub-Stufe (hubLevel)" value={level} onValue={setLevel} integer />

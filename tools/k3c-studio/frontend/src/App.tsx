@@ -1,5 +1,7 @@
-import { Tabs, Theme } from '@radix-ui/themes';
 import { useState } from 'react';
+import { StatusBadge } from '@webkit/atoms';
+import { Tabs } from '@webkit/organisms';
+import { AppFrame } from '@webkit/templates';
 import { backend } from './api';
 import { ChatPanel, ChatToggle } from './chat/ChatPanel';
 import { GraphicsPage } from './graphics/GraphicsPage';
@@ -9,7 +11,6 @@ import { MonarchPage } from './monarch/MonarchPage';
 import { PlannerPage } from './planner/PlannerPage';
 import { SoundPage } from './sound/SoundPage';
 import { WorldPage } from './world/WorldPage';
-import { StatusBadge } from '@webkit/parts';
 
 export const PAGES = ['grafik', 'sound', 'welt', 'planer', 'monarch', 'gegner'] as const;
 export type Page = (typeof PAGES)[number];
@@ -20,38 +21,24 @@ const LABELS: Record<Page, string> = { grafik: 'Grafik', sound: 'Sound', welt: '
  *  Verlassen der Seite Sound stoppt deshalb alle Busse. Der Chat (B-488) steht rechts neben jeder Seite. */
 export function App({ initial }: { initial?: Page }) {
   const [page, setPage] = useState<Page>(() => initial ?? loadPref('app.page', PAGES, 'grafik'));
-  const choose = (value: string) => {
-    const next = PAGES.find((p) => p === value) ?? 'grafik';
+  const choose = (next: Page) => {
     setPage(next);
     savePref('app.page', next);
   };
+  const right = (
+    <>
+      {backend.mock && <StatusBadge tone="warn">Mock</StatusBadge>}
+      <ChatToggle />
+    </>
+  );
   return (
-    <Theme appearance="dark">
-      <Tabs.Root value={page} onValueChange={choose} className="shell">
-        <header className="header">
-          <span className="header-title">Asset-Studio</span>
-          <Tabs.List>
-            {PAGES.map((p) => (
-              <Tabs.Trigger key={p} value={p}>
-                {LABELS[p]}
-              </Tabs.Trigger>
-            ))}
-          </Tabs.List>
-          {backend.mock && <StatusBadge tone="warn">Mock</StatusBadge>}
-          <ChatToggle />
-        </header>
-        <div className="body">
-          <main className="page">
-            <Tabs.Content value="grafik"><GraphicsPage /></Tabs.Content>
-            <Tabs.Content value="sound"><SoundPage /></Tabs.Content>
-            <Tabs.Content value="welt"><WorldPage /></Tabs.Content>
-            <Tabs.Content value="planer"><PlannerPage /></Tabs.Content>
-            <Tabs.Content value="monarch"><MonarchPage /></Tabs.Content>
-            <Tabs.Content value="gegner"><EnemiesPage /></Tabs.Content>
-          </main>
-          <ChatPanel />
-        </div>
-      </Tabs.Root>
-    </Theme>
+    <AppFrame title="Asset-Studio" appearance="dark" tabs={{ pages: PAGES, labels: LABELS, value: page, onChange: choose }} right={right} aside={<ChatPanel />} fixed>
+      <Tabs.Content value="grafik"><GraphicsPage /></Tabs.Content>
+      <Tabs.Content value="sound"><SoundPage /></Tabs.Content>
+      <Tabs.Content value="welt"><WorldPage /></Tabs.Content>
+      <Tabs.Content value="planer"><PlannerPage /></Tabs.Content>
+      <Tabs.Content value="monarch"><MonarchPage /></Tabs.Content>
+      <Tabs.Content value="gegner"><EnemiesPage /></Tabs.Content>
+    </AppFrame>
   );
 }

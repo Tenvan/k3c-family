@@ -5,6 +5,8 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import { WorldPage } from './WorldPage';
+import { optionTexts, pickWhere } from '../../../../webkit/testing/options';
+import { selectedText } from '../../../../webkit/testing/select';
 
 // B-485/AC-04 (WZ17.5) im DOM: Inselgröße je Stufe im Editor mit dem Mock-Backend (ohne Wails).
 vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} refresh() {} setLook() {} setPosition() {} destroy() {} } }));
@@ -27,13 +29,11 @@ async function mount(): Promise<HTMLElement> {
 }
 
 const button = (h: HTMLElement, label: string) => [...h.querySelectorAll('button')].find((b) => b.textContent === label || b.getAttribute('aria-label') === label)!;
-const size = (h: HTMLElement) => h.querySelector<HTMLSelectElement>('[aria-label="Inselgröße"]')!;
-
-async function choose(h: HTMLElement, value: string) {
-  const el = size(h);
-  Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value')!.set!.call(el, value);
-  await act(async () => el.dispatchEvent(new Event('change', { bubbles: true })));
-}
+/** Inselgröße als Anzahl: „Biom-Länge“ = 0, sonst die Zahl hinter dem Namen */
+const sizeOf = (h: HTMLElement) => { const t = selectedText(h, 'Inselgröße'); return t === 'Biom-Länge' ? '0' : t.split(' · ').at(-1)!; };
+/** Inselgröße per Anzahl wählen (0 = Biom-Länge) */
+const pickSize = (h: HTMLElement, count: string) => pickWhere(h, 'Inselgröße', (t) => (count === '0' ? t === 'Biom-Länge' : t.endsWith(` · ${count}`)));
+const choose = pickSize;
 
 async function typeIn(el: HTMLInputElement, value: string) {
   Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(el, value);
@@ -54,10 +54,10 @@ afterEach(() => {
 describe('Inselgröße je Stufe (B-485/AC-04)', () => {
   it('bietet „Biom-Länge“ und die sechs Inselgrößen mit deutschem Namen und Anzahl, vorgewählt ist die Biom-Länge', async () => {
     const h = await mount();
-    expect([...size(h).options].map((o) => o.textContent)).toEqual([
+    expect(await optionTexts(h, 'Inselgröße')).toEqual([
       'Biom-Länge', 'sehr klein · 16', 'klein · 24', 'mittel · 40', 'groß · 64', 'sehr groß · 100', 'mega groß · 160',
     ]);
-    expect(size(h).value).toBe('0');
+    expect(sizeOf(h)).toBe('0');
   });
 
   it('„klein“ setzt die Anzahl 24: Chunk- und Live-Vorschau fragen mit derselben Quelle, der Streifen hat 24 Chunks', async () => {
@@ -108,7 +108,7 @@ describe('Inselgröße speichern und verwerfen (B-485/AC-04)', () => {
     expect(h.querySelector('.wd-notice')!.textContent).toContain('REG-Änderung');
     expect(button(h, 'Speichern').disabled).toBe(true);
     expect((await backend.planLoad()).islands[0].chunkCounts).toEqual({ '0': 24 });
-    expect(size(h).value).toBe('24');
+    expect(sizeOf(h)).toBe('24');
     await choose(h, '0');
     await settle();
     await act(async () => button(h, 'Speichern').click());
@@ -121,7 +121,7 @@ describe('Inselgröße speichern und verwerfen (B-485/AC-04)', () => {
     await choose(h, '160');
     expect(button(h, 'Verwerfen').disabled).toBe(false);
     await act(async () => button(h, 'Verwerfen').click());
-    expect(size(h).value).toBe('0');
+    expect(sizeOf(h)).toBe('0');
     expect(button(h, 'Speichern').disabled).toBe(true);
   });
 });

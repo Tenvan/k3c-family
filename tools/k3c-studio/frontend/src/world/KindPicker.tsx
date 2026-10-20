@@ -1,4 +1,5 @@
 import { useState, type KeyboardEvent } from 'react';
+import { TextField } from '@webkit/atoms';
 import { iconOf, nameOf, rankOptions, resolveKind } from './kindIcons';
 
 /** Durchsuchbare Auswahlliste für Chunk-Art und Objekt (B-485/AC-01): ein Feld mit Emoji davor und einer großen Liste
@@ -40,7 +41,7 @@ export function KindPicker({ label, value, options, onChange }: {
   return (
     <span className="wd-pick">
       <span className="wd-pick-icon" aria-hidden="true">{iconOf(value)}</span>
-      <input className="wd-kind" role="combobox" aria-label={label} aria-expanded={open} autoComplete="off" data-value={value}
+      <TextField.Root className="wd-kind" role="combobox" aria-label={label} aria-expanded={open} autoComplete="off" data-value={value}
         value={open ? text : nameOf(value)} onFocus={(e) => { show(); e.target.select(); }} onClick={show} onBlur={() => setOpen(false)}
         onKeyDown={onKey} onChange={(e) => type(e.target.value)} />
       {open && (

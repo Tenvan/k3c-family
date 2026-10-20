@@ -1,4 +1,4 @@
-import { Button, Text } from '@radix-ui/themes';
+import { Button, SelectField, Text } from '@webkit/atoms';
 import { useCallback, useEffect, useState } from 'react';
 import { backend } from '../api';
 import type { GameServer } from '../api/types';
@@ -68,12 +68,10 @@ export function GameLauncher({ seed, biome }: { seed: string; biome: string }) {
       <Button variant="soft" disabled={busy || reasonFull !== null} title={reasonFull ?? 'Legt voll-<seed> mit allen Stufen und Gebäuden an (überschreibt ihn); auf dem Spielserver nur im Dev-Mode'} onClick={() => void open('full')}>
         Voll ausgebaut öffnen
       </Button>
-      <select className="wd-select wd-base" aria-label="Spiel läuft auf" value={target} onChange={(e) => choose(e.target.value)}>
-        <option value={ENGINE}>Interne Engine des Studios ({ENGINE_BASE})</option>
-        {servers.map((s) => (
-          <option key={s.base} value={s.base} disabled={!s.reachable}>{serverLabel(s)}</option>
-        ))}
-      </select>
+      <SelectField className="wd-base" aria-label="Spiel läuft auf" value={target} onChange={choose} options={[
+        { value: ENGINE, label: `Interne Engine des Studios (${ENGINE_BASE})` },
+        ...servers.map((s) => ({ value: s.base, label: serverLabel(s), disabled: !s.reachable })),
+      ]} />
       <Button variant="ghost" disabled={busy} title="Spielserver erneut prüfen" onClick={() => void search()}>
         Neu suchen
       </Button>

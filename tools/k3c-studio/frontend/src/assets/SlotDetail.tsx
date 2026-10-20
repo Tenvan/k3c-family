@@ -1,7 +1,8 @@
-import { Heading, Text } from '@radix-ui/themes';
+import { Button, Heading, IconButton, Splitter, Text } from '@webkit/atoms';
+import { useSplit } from '@webkit/lib/split';
 import { useState, type CSSProperties } from 'react';
 import type { AssetChoice, AssetSlot } from '../api';
-import { Splitter, useSplit } from '../ui/Splitter';
+import * as prefs from '../lib/prefs';
 import { SoundProbe } from '../sound/SoundProbe';
 import { addChoice, move, removeChoice, withCut } from './assets';
 import { CatalogPicker } from './CatalogPicker';
@@ -22,7 +23,7 @@ interface Props {
 export function SlotDetail({ slot, onSave, onReload, used }: Props) {
   const [active, setActive] = useState(0);
   const choice = slot.wahl[active];
-  const [split, setSplit, resetSplit] = useSplit(`${slot.art}.scene`, 40);
+  const [split, setSplit, resetSplit] = useSplit(prefs, `${slot.art}.scene`, 40);
   const save = (wahl: AssetChoice[]) => onSave(slot.id, wahl);
   const scene = slot.art === 'grafik';
   return (
@@ -41,7 +42,7 @@ export function SlotDetail({ slot, onSave, onReload, used }: Props) {
       <CatalogPicker art={slot.art} used={used} onAdd={(datei) => save(addChoice(slot.wahl, datei))} />
       <ResearchPanel slot={slot} onImported={onReload} />
     </div>
-    {scene && <Splitter horizontal className="pl-split-h" value={split} onChange={setSplit} onReset={resetSplit} />}
+    {scene && <Splitter horizontal value={split} onChange={setSplit} onReset={resetSplit} />}
     {scene && <div className="as-scene-pane"><MiniScene wahl={slot.wahl} active={active} /></div>}
     </div>
   );
@@ -67,12 +68,12 @@ function ChoiceList({ slot, active, onActive, onMove, onRemove }: ListProps) {
           onDrop={(e) => { e.preventDefault(); if (drag !== null) onMove(drag, i); setDrag(null); }}
           onDragEnd={() => setDrag(null)}>
           <span className="as-grip" aria-hidden>⠿</span>
-          <button type="button" className="as-choice-main" onClick={() => onActive(i)} aria-label={`Präferenz ${i + 1} wählen`}>
+          <Button variant="ghost" color="gray" highContrast className="as-choice-main" onClick={() => onActive(i)} aria-label={`Präferenz ${i + 1} wählen`}>
             <b>{i + 1}.</b> {c.datei}{c.sprite ? `#${c.sprite}` : ''}{c.sheet ? ` · Sheet ${c.sheet}` : ''}
             {c.ausschnitt && <span className="as-dim"> · Ausschnitt {c.ausschnitt.x},{c.ausschnitt.y},{c.ausschnitt.w},{c.ausschnitt.h}</span>}
-          </button>
-          <button type="button" className="as-icon" onClick={() => i > 0 && onMove(i, i - 1)} disabled={i === 0} aria-label="nach oben">↑</button>
-          <button type="button" className="as-icon" onClick={() => onRemove(i)} aria-label="entfernen">✕</button>
+          </Button>
+          <IconButton size="1" variant="ghost" color="gray" onClick={() => i > 0 && onMove(i, i - 1)} disabled={i === 0} aria-label="nach oben">↑</IconButton>
+          <IconButton size="1" variant="ghost" color="gray" onClick={() => onRemove(i)} aria-label="entfernen">✕</IconButton>
         </li>
       ))}
     </ol>

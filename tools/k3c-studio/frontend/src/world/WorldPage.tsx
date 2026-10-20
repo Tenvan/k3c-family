@@ -78,13 +78,17 @@ export function WorldPage() {
   );
 }
 
-/** Pfeile scrollen, + und − zoomen, M verkleinert und maximiert (nicht, solange im Eingabefeld getippt wird). */
+/** Bedienelemente, die ihre Tasten selbst brauchen: Eingabefelder, Auswahllisten (auch offen), Regler */
+const OWN_KEYS = 'input, textarea, [role="combobox"], [role="listbox"], [role="slider"], [role="checkbox"]';
+
+/** Pfeile scrollen, + und − zoomen, M verkleinert und maximiert (nicht, solange im Eingabefeld getippt, eine Auswahl
+ *  bedient oder ein Regler geschoben wird). */
 function useKeys(panBy: (px: number) => void, zoomBy: (factor: number) => void, toggle: () => void) {
   const keys = useRef({ panBy, zoomBy, toggle });
   keys.current = { panBy, zoomBy, toggle };
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.ctrlKey || e.metaKey || e.altKey) return;
+      if ((e.target instanceof Element && e.target.closest(OWN_KEYS)) || e.ctrlKey || e.metaKey || e.altKey) return;
       const k = keys.current;
       if (e.key === 'ArrowLeft') k.panBy(-KEY_STEP);
       else if (e.key === 'ArrowRight') k.panBy(KEY_STEP);

@@ -1,4 +1,4 @@
-import { Text } from '@radix-ui/themes';
+import { SelectField, Text, plainOptions, type SelectOption } from '@webkit/atoms';
 import { useEffect, useMemo, useState } from 'react';
 import { backend, type AssetSlot } from '../api';
 import { DEFAULT_CONTROL, type Anim, type Control } from '../playback/figure';
@@ -55,26 +55,23 @@ function useMonarch() {
 
 type Monarch = ReturnType<typeof useMonarch>;
 
+const NO_ACTION: SelectOption<ActionId | ''> = { value: '', label: 'Keine (Bewegung)' };
+const ACTION_OPTIONS: SelectOption<ActionId | ''>[] = [NO_ACTION, ...ACTIONS.map((a) => ({ value: a.id, label: a.label }))];
+const MOVE_OPTIONS: SelectOption<MoveId>[] = MOVES.map((o) => ({ value: o.id, label: o.label }));
+
+/** Einträge der Grafik-Auswahl aus den Slots: Wert ist der Index der Präferenz. */
+const sheetOptions = (options: SlotOption[]): SelectOption<string>[] =>
+  options.map((o) => ({ value: String(o.index), label: `Präferenz ${o.index + 1}: ${o.sheet}` }));
+
 function Bar({ m, gap }: { m: Monarch; gap: FigureInfo['gap'] | undefined }) {
   return (
     <div className="wd-bar">
-      <select className="wd-select" aria-label="Reittier" value={m.mount} onChange={(e) => m.setMount(e.target.value)}>
-        {MOUNT_KEYS.map((k) => <option key={k} value={k}>{k}</option>)}
-      </select>
-      <select className="wd-select" aria-label="Aktion" value={m.actionId} onChange={(e) => m.setActionId(e.target.value as ActionId | '')}>
-        <option value="">Keine (Bewegung)</option>
-        {ACTIONS.map((a) => <option key={a.id} value={a.id}>{a.label}</option>)}
-      </select>
-      <select className="wd-select" aria-label="Bewegung" disabled={m.actionId !== ''} value={m.move} onChange={(e) => m.setMove(e.target.value as MoveId)}>
-        {MOVES.map((o) => <option key={o.id} value={o.id}>{o.label}</option>)}
-      </select>
-      <select className="wd-select" aria-label="Animation" disabled={m.actionId !== ''} value={m.anim} onChange={(e) => m.setAnim(e.target.value as Anim)}>
-        {MONARCH_ANIMS.map((a) => <option key={a} value={a}>{a}</option>)}
-      </select>
+      <SelectField aria-label="Reittier" value={m.mount} options={plainOptions(MOUNT_KEYS)} onChange={m.setMount} />
+      <SelectField aria-label="Aktion" value={m.actionId} options={ACTION_OPTIONS} onChange={m.setActionId} />
+      <SelectField aria-label="Bewegung" disabled={m.actionId !== ''} value={m.move} options={MOVE_OPTIONS} onChange={m.setMove} />
+      <SelectField aria-label="Animation" disabled={m.actionId !== ''} value={m.anim} options={plainOptions(MONARCH_ANIMS)} onChange={m.setAnim} />
       {m.mountOptions.length > 0 && (
-        <select className="wd-select" aria-label="Grafik Reittier" value={m.mountChoice?.index ?? 0} onChange={(e) => m.pickMount(Number(e.target.value))}>
-          {m.mountOptions.map((o) => <option key={o.index} value={o.index}>{`Präferenz ${o.index + 1}: ${o.sheet}`}</option>)}
-        </select>
+        <SelectField aria-label="Grafik Reittier" value={String(m.mountChoice?.index ?? 0)} options={sheetOptions(m.mountOptions)} onChange={(v) => m.pickMount(Number(v))} />
       )}
       {m.mountChoice?.gap && <GapBadge gap={m.mountChoice.gap} />}
       <GapBadge gap={gap} />
@@ -91,9 +88,8 @@ function Colors({ m }: { m: Monarch }) {
           <span className="wd-badge" style={{ background: p.badge }} title={`Kennfarbe ${p.badge}`} />
           <Text size="2">Spieler {p.index + 1}: {m.riders[p.index]?.sheet ?? p.spec.sheet}{p.spec.tint ? ` · tint ${p.spec.tint}` : ''}</Text>
           {m.riderOptions[p.index]!.length > 0 && (
-            <select className="wd-select" aria-label={`Grafik Monarch ${p.index + 1}`} value={m.riders[p.index]?.index ?? 0} onChange={(e) => m.pickRider(p.index, Number(e.target.value))}>
-              {m.riderOptions[p.index]!.map((o) => <option key={o.index} value={o.index}>{`Präferenz ${o.index + 1}: ${o.sheet}`}</option>)}
-            </select>
+            <SelectField aria-label={`Grafik Monarch ${p.index + 1}`} value={String(m.riders[p.index]?.index ?? 0)} options={sheetOptions(m.riderOptions[p.index]!)}
+              onChange={(v) => m.pickRider(p.index, Number(v))} />
           )}
           {m.riders[p.index]?.gap && <GapBadge gap={m.riders[p.index]!.gap} />}
         </li>
