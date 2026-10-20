@@ -12,6 +12,7 @@ import (
 	"strconv"
 
 	"k3c/engine/level"
+	"k3c/engine/store"
 )
 
 // Schreiben der Planung in die Welt-Datei (WZ8.5, B-461/AC-12): format-stabil (nur der Wert von `plannedChunks` der
@@ -207,7 +208,7 @@ func writeAtomic(path string, data []byte) error {
 		_ = os.Remove(tmp.Name())
 		return fmt.Errorf("schreiben: %v %v", werr, cerr)
 	}
-	if err := os.Rename(tmp.Name(), path); err != nil {
+	if err := store.Rename(tmp.Name(), path); err != nil {
 		_ = os.Remove(tmp.Name())
 		return err
 	}
