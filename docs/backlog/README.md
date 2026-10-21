@@ -146,7 +146,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-483](B-483-worktree-eintraege-nur-lesend.md) | DEV | Problem | niedrig | offen | – | Planungsseite: Einträge nur im Worktree sind nur lesbar (Detail, Menüs, Rang) |
 | [B-484](B-484-worktree-neuer-sprint-leer.md) | DEV | Problem | niedrig | offen | – | Worktree-Vergleich: Sessions und Projekt eines neuen Sprints fehlen in den Pills |
 | [B-487](B-487-plan-editor-load-check-ablehnung.md) | DEV | Problem | niedrig | offen | – | Chunk-Editor: abgelehnte Aufrufe von planLoad und planCheck bleiben stumm |
-| [B-488](B-488-welten-inseln-editor-prompt.md) | DEV | Idee | mittel | eingeplant | WZ18 | Welten und Inseln im Asset-Studio anlegen und bearbeiten, Welt per Prompt füllen |
 | [B-489](B-489-spielstand-chunk-anzahl.md) | SIM | Problem | mittel | offen | – | Spielstände laden Chunk-Anzahl und Planung aus den aktuellen Daten |
 | [B-490](B-490-sim-chunk-anzahl-nachtraege.md) | SIM | Schuld | niedrig | offen | – | Sim: Chunk-Anzahl mit Kandidaten-hub.json und gemeinsame Prüfung der Inselgröße |
 | [B-491](B-491-welten-editor-kleinigkeiten.md) | DEV | Schuld | niedrig | offen | – | Welten Editor: kleine Nachträge zu Schieber, Klick-Sprung und Planungsliste |
@@ -164,13 +163,14 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-505](B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | offen | – | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |
 | [B-502](B-502-monarch-seite-ansicht-wuensche.md) | DEV | Idee | mittel | offen | – | Monarch-Seite: einheitliches Sheet, Zoom, zweispaltige Ansicht |
 | [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | offen | – | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
-| [B-507](B-507-server-und-studio-trennen-dateiwatch.md) | DEV | Schuld | hoch | eingeplant | TS1 | Spielserver und Asset-Studio sind getrennt, der Server beobachtet die Dateien des Studios |
 | [B-508](B-508-raeume-nach-neustart-wieder-offen.md) | SRV | Idee | mittel | offen | – | Offene Räume sind nach einem Neustart des Servers wieder offen, Geräte kehren ohne Umweg über die Raumliste zurück |
 | [B-509](B-509-grafik-sound-aus-public-live.md) | SRV | Idee | mittel | offen | – | Im Studio geänderte Grafiken und Sounds erreichen die Clients ohne neuen Build |
 | [B-510](B-510-k3c-dev-kein-doppelter-neustart.md) | DEV | Schuld | niedrig | offen | – | k3c-dev startet den Spielserver bei Änderungen in data/ nicht mehr selbst neu, der Server macht das allein |
 | [B-511](B-511-studio-schreibt-atomar.md) | DEV | Schuld | niedrig | offen | – | Das Studio schreibt jede Datei in data/ und public/ atomar, der Server sieht nie eine halbe Datei |
 | [B-512](B-512-k3c-dev-uebernommener-server-neue-pid.md) | DEV | Problem | niedrig | offen | – | k3c-dev beendet einen übernommenen Spielserver auch nach dessen Selbst-Neustart (neue PID am Port, Supervisor-Prozess) |
 | [B-514](B-514-chat-entwurf-planung-nachbesserung.md) | DEV | Problem | niedrig | offen | – | Chat-Entwurf: Planung bei gleicher Insel-id schützen, CLI-Prozessbaum, Test-Riegel |
+| [B-515](B-515-studio-chat-anmeldung-umgebung.md) | DEV | Problem | mittel | offen | – | Studio-Chat übernimmt die Umgebung einer Claude-Sitzung und zeigt Anmeldefehler doppelt |
+| [B-516](B-516-studio-chat-promptgeruest-als-instruktion.md) | DEV | Idee | mittel | offen | – | Prompt-Grundgerüst des Studio-Chats ist eine feste Instruktion im Code statt Text im Eingabefeld |
 
 ## Archiv
 
@@ -474,3 +474,5 @@ Zeile in diesen Abschnitt.
 | [B-436](archiv/B-436-plan-create-entwurf-zeilen.md) | DEV | Problem | niedrig | erledigt | WZ12 | plan_create scheitert an Platzhalter-Zeilen „– (Entwurf)“ in der Session-Tabelle |
 | [B-467](archiv/B-467-worktree-pill-am-eintrag.md) | DEV | Idee | mittel | erledigt | WZ12 | Worktree-Änderungen stehen als Pill am Projekt, Sprint oder an der Session statt als Leiste oben |
 | [B-513](archiv/B-513-welten-editor-spiel-adresse-waehlbar.md) | DEV | Idee | mittel | erledigt | – | Im Welten-Editor lässt sich die Spiel-Adresse wählen: interne Engine oder Server |
+| [B-488](archiv/B-488-welten-inseln-editor-prompt.md) | DEV | Idee | mittel | erledigt | WZ18 | Welten und Inseln im Asset-Studio anlegen und bearbeiten, Welt per Prompt füllen |
+| [B-507](archiv/B-507-server-und-studio-trennen-dateiwatch.md) | DEV | Schuld | hoch | erledigt | TS1 | Spielserver und Asset-Studio sind getrennt, der Server beobachtet die Dateien des Studios |

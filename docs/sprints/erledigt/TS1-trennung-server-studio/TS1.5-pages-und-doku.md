@@ -36,8 +36,8 @@ Neuer Seiteninhalt der Präsentation; Code von Server und Studio; Spec-Freigaben
 
 ## Fertig, wenn
 
-- [ ] AC-05: Workflow ohne Node und Build, Bilder in `site/`, `pagesSite.test.ts` grün.
-- [ ] AC-06: Entscheidung, `CLAUDE.md`, `codemap.md`, Verweise und WZ19.2-Text angepasst; `task test -- planning` grün.
+- [x] AC-05: Workflow ohne Node und Build, Bilder in `site/`, `pagesSite.test.ts` grün.
+- [x] AC-06: Entscheidung, `CLAUDE.md`, `codemap.md`, Verweise und WZ19.2-Text angepasst; `task test -- planning` grün.
 
 ## Prüfen
 

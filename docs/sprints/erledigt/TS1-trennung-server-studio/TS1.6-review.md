@@ -35,8 +35,8 @@ Neue Funktionen; Umsetzung im selben Lauf wie die Sessions TS1.1 bis TS1.5; Abna
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-06 mit Nachweis im Ergebnis; `task check:all` grün.
-- [ ] Befunde behoben oder als Ticket; Abnahme in der Sprint-README ausgefüllt.
+- [x] AC-01 bis AC-06 mit Nachweis im Ergebnis; `task check:all` grün.
+- [x] Befunde behoben oder als Ticket; Abnahme in der Sprint-README ausgefüllt.
 
 ## Prüfen
 

@@ -1,6 +1,6 @@
 # TS1.7 · Abnahme: Studio-Änderung erscheint im laufenden Server
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** Mensch
 - **Domäne:** DEV
@@ -34,8 +34,8 @@ Code ändern oder Befunde beheben (→ Ticket); urteilen oder abhaken anstelle v
 
 ## Fertig, wenn
 
-- [ ] AC-07: 🧑 hat die Punkte am PC geprüft (Datum und Quelle im Ergebnis).
-- [ ] Befunde sind Tickets oder bewusst verworfen; TS1 `erledigt`.
+- [x] AC-07: 🧑 hat die Punkte am PC geprüft (Datum und Quelle im Ergebnis).
+- [x] Befunde sind Tickets oder bewusst verworfen; TS1 `erledigt`.
 
 ## Prüfen
 
@@ -46,4 +46,7 @@ Nur Plan-Test; die Abnahme selbst macht 🧑.
 
 ## Ergebnis
 
-Zwischenstand 2026-10-20 (Chat): Claude hat vorbereitet (Spielserver auf `develop` neu gestartet, Port 8080). 🧑 hat den Welten-Editor ausprobiert; Befund/Wunsch: Spiel-Adresse (interne Engine oder Server) im Welten-Editor wählbar → B-513. Urteile je Punkt 1–4 von 🧑 stehen noch aus.
+Zwischenstand 2026-10-20 (Chat): Claude hat vorbereitet (Spielserver auf `develop` neu gestartet, Port 8080). 🧑 hat den Welten-Editor ausprobiert; Befund/Wunsch: Spiel-Adresse (interne Engine oder Server) im Welten-Editor wählbar → B-513.
+
+- **AC-07 abgenommen:** 2026-10-20, 🧑 am PC, Quelle Chat („TS1.7 kannst du auch als abgenommen abhaken“). Die Punkte 1–4 hat 🧑 gesammelt abgenommen, ein Urteil je Punkt gibt es nicht.
+- Befunde: B-513 (Spiel-Adresse im Welten-Editor), keine weiteren.

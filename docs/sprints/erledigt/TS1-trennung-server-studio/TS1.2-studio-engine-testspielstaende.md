@@ -36,8 +36,8 @@ Spec `B-507 › Anforderungen`. Heute nutzt das Studio für Vorschau und „Im S
 
 ## Fertig, wenn
 
-- [ ] AC-02: Go-Test: Vorschau und Spielstart ohne Spielserver; Spielstände nur im Testordner.
-- [ ] `task check:go` und `task check:studio` grün.
+- [x] AC-02: Go-Test: Vorschau und Spielstart ohne Spielserver; Spielstände nur im Testordner.
+- [x] `task check:go` und `task check:studio` grün.
 
 ## Prüfen
 

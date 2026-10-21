@@ -1,6 +1,6 @@
 # WZ19 · DEV · Chat im Studio mit Claude Code CLI und Welt per Prompt füllen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -55,7 +55,7 @@ Aus `B-488`, Sprint 2:
 
 ## Offene Fragen
 
-Entschieden: `B-488 › Offene Fragen` (alle). Freigegeben von 🧑 am 2026-10-19 (Chat, Revision 1) mit dem Auftrag, den Sprint autonom umzusetzen; die neue Abhängigkeit assistant-ui ist damit freigegeben (Lizenz, Größe und React-Version belegt WZ19.2 trotzdem). Aktiviert wird WZ19, sobald WZ18 erledigt ist (Branch `sprint/wz19`). Offen für die Umsetzung: genauer Aufruf der CLI (`claude -p` mit Ausgabeformat) und Zuschnitt des Prompt-Textes, beides in WZ19.1 und WZ19.3 zu klären.
+Entschieden: `B-488 › Offene Fragen` (alle). Freigegeben von 🧑 am 2026-10-19 (Chat, Revision 1) mit dem Auftrag, den Sprint autonom umzusetzen; die neue Abhängigkeit assistant-ui ist damit freigegeben (Lizenz, Größe und React-Version belegt WZ19.2 trotzdem). Offen für die Umsetzung: genauer Aufruf der CLI (`claude -p` mit Ausgabeformat) und Zuschnitt des Prompt-Textes, beides in WZ19.1 und WZ19.3 zu klären.
 
 **Studio getrennt vom Server (2026-10-20, TS1, B-507):** Das Studio ist nur noch ein eigenes Fenster, keine Seite des Spielservers; Backend und Chat aus WZ19.1 liegen in `tools/k3c-studio/backend` (früher `engine/studio`), `task build` baut kein Studio mehr (Prüfung über `task check:studio`). Siehe `docs/decisions/004-studio-getrennt-datei-watch.md`. Neu offen für 🧑: Chat global rechts in allen Studio-Seiten, Provider nur über CLI und ACP (Notiz in WZ19.2, Frage in `B-488 › Offene Fragen`).
 
@@ -67,7 +67,7 @@ Entschieden: `B-488 › Offene Fragen` (alle). Freigegeben von 🧑 am 2026-10-1
 | WZ19.2 | `WZ19.2-chat-im-studio.md` | Umsetzung | autonom | fertig |
 | WZ19.3 | `WZ19.3-prompt-grundgeruest.md` | Umsetzung | autonom | fertig |
 | WZ19.4 | `WZ19.4-review.md` | Review | autonom | fertig |
-| WZ19.5 | `WZ19.5-abnahme.md` | Review | Mensch | offen |
+| WZ19.5 | `WZ19.5-abnahme.md` | Review | Mensch | fertig |
 
 - WZ19.1 (DEV) Go: Anbindung der Claude Code CLI als RPC-Methode des Studios (früher Wails-Binding) mit Test-Ersatz, Zeitlimit, Abbruch, `.chats` mit Löschung nach einer Woche (AC-01, AC-02).
 - WZ19.2 (DEV) Abhängigkeit assistant-ui belegen (Lizenz, Größe, React-Version; Freigabe durch 🧑 am 2026-10-19), dann Chat rechts im Studio auf allen Seiten (AC-03).
@@ -77,6 +77,7 @@ Entschieden: `B-488 › Offene Fragen` (alle). Freigegeben von 🧑 am 2026-10-1
 
 ## Abnahme
 
-- 2026-10-20 Review WZ19.4: AC-01, AC-02, AC-03 und AC-05 geprüft (Nachweise in WZ19.1–WZ19.3 und WZ19.4 › Ergebnis), `task check:all` und `task check:go` grün; AC-04 offen (WZ19.5, Abnahme 🧑 am PC).
+- 2026-10-20 Review WZ19.4: AC-01, AC-02, AC-03 und AC-05 geprüft (Nachweise in WZ19.1–WZ19.3 und WZ19.4 › Ergebnis), `task check:all` und `task check:go` grün.
 - Getrennter Reviewer: keine schweren Befunde, Sicherheit der CLI-Anbindung bestätigt; neues Ticket B-514 (Nachbesserungen, nicht schwer).
+- 2026-10-20 Abnahme WZ19.5: AC-04 abgenommen von 🧑 am PC (Quelle Chat), per Chat gefüllte Welt als Entwurf; neue Tickets B-515 (Anmeldefehler doppelt, geerbte Umgebung) und B-516 (Prompt-Grundgerüst als Instruktion im Code).
 - Version: v0.22.0 vorgeschlagen (Minor: neues Chat- und Prompt-Werkzeug im Asset-Studio; nach TS1 v0.21.0, letzter Tag v0.20.0), gesetzt erst nach Bestätigung durch 🧑.
