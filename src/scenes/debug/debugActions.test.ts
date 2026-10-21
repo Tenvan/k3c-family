@@ -30,6 +30,7 @@ describe('devMessage (B-179/AC-01)', () => {
       { t: 'dev', action: 'buildAll', level: 3 },
       { t: 'dev', action: 'buildAll', level: 4 },
       { t: 'dev', action: 'buildAll', level: 5 },
+      { t: 'dev', action: 'castleFall', slot: 1 },
       { t: 'dev', action: 'timescale', factor: 1 },
       { t: 'dev', action: 'timescale', factor: 2 },
       { t: 'dev', action: 'timescale', factor: 4 },
@@ -45,7 +46,7 @@ describe('devMessage (B-179/AC-01)', () => {
       'Gold 10', 'Gold 50', 'Gold 100',
       'Holz 50', 'Stein 50', 'Kupfer 50', 'Eisen 50', 'Kristall 50',
       'Max +100', 'Alle Ressourcen füllen', 'Baukosten 1',
-      'Alles ausbauen: Stufe 1', 'Alles ausbauen: Stufe 2', 'Alles ausbauen: Stufe 3', 'Alles ausbauen: Stufe 4', 'Alles ausbauen: Stufe 5',
+      'Alles ausbauen: Stufe 1', 'Alles ausbauen: Stufe 2', 'Alles ausbauen: Stufe 3', 'Alles ausbauen: Stufe 4', 'Alles ausbauen: Stufe 5', 'Burgfall',
       'Zeit 1×', 'Zeit 2×', 'Zeit 4×', 'Zeit 8×',
       'Zeitraffer → 1× bei Tageszeitwechsel', 'Nächste Tageszeit',
     ]);

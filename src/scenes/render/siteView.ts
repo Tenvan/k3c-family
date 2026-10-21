@@ -4,6 +4,8 @@ import { currentLanguage, nameOf, t } from '../../core/texts';
 import { BUILDINGS, TROOPS } from '../../model/data';
 import type { Site, World } from '../../model/types';
 import { BUILDING_TEXTURES, hubTexture, siteTexture, textureScale } from './buildingSprites';
+import { damageStage, showRubble } from './damageRules';
+import { damageTint, drawDamage, drawRubble } from './damageView';
 import { fontStyle } from './fontRules';
 import { gateStage } from './gateRules';
 import { drawSiteStatus, siteStatus, statusKey } from './siteStatusView';
@@ -110,7 +112,7 @@ export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: Wor
   const data = BUILDINGS[s.kind];
   const wait = siteStatus(s, world.danger);
   const stage = s.kind === 'gate' ? gateStage(s, world.sites, world.hubX) : (s.level ?? 1);
-  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, data.cost), currentLanguage(), statusKey(wait), stage].join('|'); // stage: Mauer/Turm je Stufe (GEB3), Tor je Mauerlinie (GEB4)
+  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, data.cost), currentLanguage(), statusKey(wait), stage, s.ruin === true].join('|'); // stage: Mauer/Turm je Stufe (GEB3), Tor je Mauerlinie (GEB4)
   if (v.getData('key') === key) return;
   v.setData('key', key);
 
@@ -122,8 +124,11 @@ export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: Wor
   const picture = showPicture(scene, v, s, stage);
   const h = picture ?? size;
 
+  const image = v.getAt(0) as Phaser.GameObjects.Image;
+  image.setTint(damageTint(damageStage(s))); // Schaden tönt das Sprite (WZ14.6), unbeschädigt ungetönt
   if (s.state === 'built') {
     if (picture === null) drawBuiltPlaceholder(g, s, w, h);
+    drawDamageOverlay(g, s, picture === null ? w : image.displayWidth, h, picture === null);
     drawBuiltSigns(g, label, s, world, h, near);
     if (wait && label.text === '') drawSiteStatus(g, label, wait, siteName(s.kind), -h - 20); // laufender Ausbau
     return;
@@ -146,6 +151,12 @@ function drawBuiltSigns(g: Phaser.GameObjects.Graphics, label: Phaser.GameObject
   for (let i = 0; i < s.bows; i++) g.lineStyle(4, 0xffd166).beginPath().arc(-40 + i * 30, -60, 14, -Math.PI / 2, Math.PI / 2).strokePath();
   const price = TROOPS.archer.cost ?? {};
   if (near && s.bows < (BUILDINGS.workshop.bowRack ?? 0)) drawPrice(g, label, world, -h - 20, price.gold ?? 0, s.bowPaidGold, t('site.bow'), price);
+}
+
+/** Risse über dem Gebäude, an Ruinen Trümmer am Fuß (WZ14.6); `shape`: Platzhalter-Form statt Bild der Breite `w` */
+function drawDamageOverlay(g: Phaser.GameObjects.Graphics, s: Site, w: number, h: number, shape: boolean): void {
+  drawDamage(g, damageStage(s), shape ? w : w * 0.6, h, shape);
+  if (showRubble(s)) drawRubble(g, w);
 }
 
 /** Platzhalter-Form eines gebauten Gebäudes ohne Grafik */

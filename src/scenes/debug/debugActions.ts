@@ -45,6 +45,7 @@ export const DEV_ACTIONS: readonly DevAction[] = [
   { group: 'vorrat', label: 'Alle Ressourcen füllen', key: 'fillall' },
   { group: 'vorrat', label: 'Baukosten 1', key: 'buildcost1', toggle: 'cheapBuild' },
   ...UPGRADE_LEVELS.map((n): DevAction => ({ group: 'ausbau', label: `Alles ausbauen: Stufe ${n}`, key: `upgrade:${n}` })),
+  { group: 'ausbau', label: 'Burgfall', key: 'castlefall' },
   ...FACTORS.map((f): DevAction => ({ group: 'zeit', label: `Zeit ${f}×`, key: `timescale:${f}` })),
   { group: 'zeit', label: 'Zeitraffer → 1× bei Tageszeitwechsel', key: 'autoslow', toggle: 'timescaleAuto' },
   { group: 'zeit', label: 'Nächste Tageszeit', key: 'nextphase' },
@@ -54,7 +55,7 @@ export const DEV_ACTIONS: readonly DevAction[] = [
 export const actionLabel = (a: DevAction, toggles: DevToggles): string => (a.toggle ? `${a.label}: ${toggles[a.toggle] ? 'an' : 'aus'}` : a.label);
 
 /**
- * Nachricht `dev` für eine Auswahl der Liste, den lokalen Slot (gold, material) und den Zustand der Umschalter
+ * Nachricht `dev` für eine Auswahl der Liste, den lokalen Slot (gold, material, castlefall) und den Zustand der Umschalter
  * (die Nachricht setzt den umgekehrten Wert); unbekannte Auswahl → `null`.
  */
 export function devMessage(key: string, slot: number, toggles: DevToggles = NO_TOGGLES): DevMessage | null {
@@ -79,6 +80,8 @@ export function devMessage(key: string, slot: number, toggles: DevToggles = NO_T
       return { t: 'dev', action: 'timescaleAuto', on: !toggles.timescaleAuto };
     case 'nextphase':
       return { t: 'dev', action: 'nextPhase' };
+    case 'castlefall':
+      return { t: 'dev', action: 'castleFall', slot };
   }
   return null;
 }
