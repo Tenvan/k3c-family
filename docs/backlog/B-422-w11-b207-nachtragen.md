@@ -4,8 +4,8 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** W11
 - **Projekt:** WRT
 - **Erstellt:** 2026-10-14
 - **Spec:** Entwurf

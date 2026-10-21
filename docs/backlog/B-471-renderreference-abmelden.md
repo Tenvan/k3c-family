@@ -4,8 +4,8 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ23
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-17
 - **Spec:** Entwurf

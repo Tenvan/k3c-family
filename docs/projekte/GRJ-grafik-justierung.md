@@ -14,6 +14,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
+| GRJ1 | Alte Biom-Hintergründe mit Lizenz im Archiv | geplant |
 
 ## Nicht-Ziele
 
