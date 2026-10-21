@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** SK2
 - **Projekt:** SKL
 - **Erstellt:** 2026-10-19
 - **Spec:** Entwurf
