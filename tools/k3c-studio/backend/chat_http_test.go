@@ -228,6 +228,41 @@ func TestChatEinstellungen(t *testing.T) {
 	}
 }
 
+// B-516: Ein Welt-Auftrag schickt das Grundgerüst als Instruktions-Datei mit; stdin und Verlauf enthalten nur den Wunsch,
+// die Datei ist danach weg. Ein freier Chat startet ohne Instruktion.
+func TestChatWeltAuftragSchicktGeruestMit(t *testing.T) {
+	cli, argsFile := fakeCLI(t, "echo", 10*time.Second)
+	app := chatApp(t, t.TempDir(), cli)
+	h := app.Handler(false)
+	rec, _ := call(t, h, "POST", Prefix+"chat", `{"chat":"welt","text":"Erstelle eine Welt Nordsee","task":"welt"}`, "127.0.0.1:5000", true)
+	if end, _ := chatDoneOf(t, rec.Body.String()); end.Status != chatDone {
+		t.Fatalf("Ende: %+v", end)
+	}
+	args, _ := fakeRecord(t, argsFile)
+	i := slices.Index(args, chatSystemFlag)
+	if i < 0 || i+1 >= len(args) || !slices.Equal(args[:i], chatArgs(chatOptions{})) {
+		t.Fatalf("Argumente ohne %s am Ende: %v", chatSystemFlag, args)
+	}
+	stdin, system := fakeInput(t, argsFile)
+	if system != worldInstruction() || strings.Contains(system, "MEINE WÜNSCHE") {
+		t.Errorf("Instruktion ist nicht das Grundgerüst: %.80q", system)
+	}
+	if stdin != "Erstelle eine Welt Nordsee" {
+		t.Errorf("stdin %.80q, erwartet nur den Wunsch", stdin)
+	}
+	if _, err := os.Stat(args[i+1]); !os.IsNotExist(err) {
+		t.Errorf("Instruktions-Datei bleibt liegen: %v", err)
+	}
+	if log, err := app.chat.store.load("welt"); err != nil || strings.Contains(log.Messages[0].Text, "## Format") {
+		t.Errorf("Verlauf mit Grundgerüst: %v", err)
+	}
+	rec, _ = call(t, h, "POST", Prefix+"chat", `{"chat":"frei","text":"Hallo"}`, "127.0.0.1:5000", true)
+	chatDoneOf(t, rec.Body.String())
+	if args, _ = fakeRecord(t, argsFile); slices.Contains(args, chatSystemFlag) {
+		t.Errorf("freier Chat mit Instruktion: %v", args)
+	}
+}
+
 func TestChatEinstellungenUngueltig(t *testing.T) {
 	cli, argsFile := fakeCLI(t, "echo", 10*time.Second)
 	h := chatApp(t, t.TempDir(), cli).Handler(false)
@@ -239,6 +274,7 @@ func TestChatEinstellungenUngueltig(t *testing.T) {
 		`{"text":"a","effort":"high extra"}`:    "unbekannte Denkstufe",
 		`{"text":"a","model":"Opus"}`:           "unbekanntes Modell",
 		`{"text":"a","provider":"claude-cli "}`: "unbekannter Provider",
+		`{"text":"a","task":"bild"}`:            "unbekannte Auftragsart",
 	} {
 		rec, a := call(t, h, "POST", Prefix+"chat", body, "127.0.0.1:5000", true)
 		if rec.Code != http.StatusBadRequest || !strings.Contains(a.Error, want) {

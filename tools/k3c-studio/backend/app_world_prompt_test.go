@@ -6,12 +6,11 @@ import (
 	"testing"
 )
 
-// WZ19.3 (B-488/AC-08): Prompt-Grundgerüst aus den Daten und Prüfung der Antwort des Modells. Kein echter Modellaufruf;
+// WZ19.3 (B-488/AC-08), WZ21.2 (B-516): Grundgerüst aus den Daten und Prüfung der Antwort des Modells. Kein echter Modellaufruf;
 // geschrieben wird nichts (Kopien in t.TempDir()).
 
 func TestPromptEnthaeltDieDaten(t *testing.T) {
-	a, _ := worldApp(t)
-	p := a.PlanWorldPrompt()
+	p := worldInstruction()
 	for _, want := range []string{
 		`"depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 }`, // Beispiel aus der Standard-Welt
 		"Tiefe 0: Oberwelt (Wald)", "Tiefe 4:", // alle Tiefen mit Biom
@@ -25,14 +24,13 @@ func TestPromptEnthaeltDieDaten(t *testing.T) {
 			t.Errorf("Prompt ohne %q", want)
 		}
 	}
-	if !strings.HasSuffix(p, "MEINE WÜNSCHE:\n") {
-		t.Errorf("Prompt endet nicht mit MEINE WÜNSCHE:, Ende: %q", p[len(p)-40:])
+	if strings.Contains(p, "MEINE WÜNSCHE") { // Instruktion, kein Text zum Ergänzen (B-516)
+		t.Errorf("Instruktion mit MEINE WÜNSCHE:, Ende: %q", p[len(p)-40:])
 	}
 }
 
 func TestPromptNurTiefe4HatEndboss(t *testing.T) {
-	a, _ := worldApp(t)
-	p := a.PlanWorldPrompt()
+	p := worldInstruction()
 	if strings.Count(p, "hier darf eine Insel enden") != 1 {
 		t.Errorf("genau eine Tiefe darf enden:\n%s", p)
 	}

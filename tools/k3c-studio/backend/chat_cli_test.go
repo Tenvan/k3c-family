@@ -104,6 +104,15 @@ func TestChatNichtAngemeldet(t *testing.T) {
 	}
 }
 
+// B-516: Kennt die CLI die Instruktions-Datei nicht, endet die Antwort als Fehler mit Update-Hinweis, nie ohne Gerüst.
+func TestChatAlteCLIOhneInstruktion(t *testing.T) {
+	cli, _ := fakeCLI(t, "oldcli", 10*time.Second)
+	out := cli.run(context.Background(), "Erstelle eine Welt Nordsee", chatOptions{instruction: "Gerüst"}, func(string) {})
+	if out.Status != chatFailed || !strings.Contains(out.Error, chatSystemFlag) || !strings.Contains(out.Error, "aktualisieren") {
+		t.Errorf("alte CLI: %+v", out)
+	}
+}
+
 // Lange Meldungen werden nach Zeichen gekürzt, nie mitten in einem Umlaut.
 func TestChatMeldungGekuerzt(t *testing.T) {
 	msg := explainCLI(strings.Repeat("ä", 400), nil)

@@ -56,7 +56,6 @@ function applyDraft(w: MockWorld, d: WorldDraft): MockWorld {
 /** Entwurfs-Teil des Mock-Plans: prüfen und speichern auf dem Stand (`stand`), danach `bump` (neuer Stand). */
 export function mockWorldDraft(active: () => string, world: () => MockWorld, replace: (w: MockWorld) => void, stand: () => string, bump: () => void): Omit<WorldDraftApi, 'planWorldCopy'> {
   return {
-    planWorldPrompt: async () => MOCK_PROMPT,
     planWorldAnswer: async (text) => mockAnswer(active(), text),
     planWorldCheck: async (d) => mockCheckWorld(active(), d),
     planWorldSave: async (d, at): Promise<PlanSaved> => {
@@ -69,9 +68,6 @@ export function mockWorldDraft(active: () => string, world: () => MockWorld, rep
     },
   };
 }
-
-/** Prompt-Grundgerüst im Mock (Go erzeugt es aus den Daten, tools/k3c-studio/backend/app_world_prompt.go). */
-export const MOCK_PROMPT = 'Du entwirfst eine Welt für das Spiel „Family Three Crowns“ als Welt-Datei im JSON-Format.\n\n## Format\n\n(Mock)\n\nMEINE WÜNSCHE:\n';
 
 /** JSON aus der Antwort lösen: Code-Block oder vom ersten „{“ bis zum letzten „}“. */
 function answerJSON(text: string): string | null {

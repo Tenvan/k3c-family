@@ -1,8 +1,7 @@
 import { BIOMES } from '@game/model/biome';
 import { Button, Text, TextField } from '@webkit/atoms';
 import { CheckField } from '@webkit/molecules';
-import { backend, type DraftField, type DraftScaling } from '../api';
-import { fillChat } from '../chat/chatBridge';
+import type { DraftField, DraftScaling } from '../api';
 import type { WorldDraftState } from './useWorldDraft';
 import { addIsland, moveIsland, removeIsland, toggleDepth, updateIsland } from './worldDraft';
 
@@ -70,11 +69,6 @@ function IslandRow({ world, i }: { world: WorldDraftState; i: number }) {
   );
 }
 
-/** Prompt-Grundgerüst in den Chat legen (WZ19.3); ohne Chat steht die Meldung am Entwurf. */
-async function fillPrompt(world: WorldDraftState) {
-  if (!fillChat(await backend.planWorldPrompt())) world.report('Kein Chat zum Füllen da');
-}
-
 /** Welt-Entwurf im Welten Editor (WZ18.6, B-488/AC-05): Name und Notizen der Welt, Inseln anlegen, umordnen, entfernen
  *  und bearbeiten. Jede Änderung wird sofort geprüft (Fehler am Feld, Vorschau der Datei); Speichern nur gültig, auf dem
  *  Stand der geladenen Datei (Stale: der Entwurf bleibt), danach der REG-Hinweis. */
@@ -87,7 +81,6 @@ export function WorldDraftEditor({ world }: { world: WorldDraftState }) {
         <Text size="2" weight="bold">Welt-Entwurf</Text>
         <span className="wd-grow" />
         <Button variant="soft" title="Neue Insel als Kopie der letzten (Tiefen, Skalierung), ohne Planung" onClick={() => world.edit(addIsland(draft))}>Insel +</Button>
-        <Button variant="soft" title="Legt einen Prompt aus den Daten in den Chat; du ergänzt deine Wünsche und sendest" onClick={() => void fillPrompt(world)}>Prompt-Grundgerüst</Button>
         <Button disabled={!dirty || !check.ok || world.lock !== undefined} title={world.lock} onClick={() => void world.save()}>Welt speichern</Button>
         <Button variant="outline" disabled={!dirty} onClick={world.discard}>Entwurf verwerfen</Button>
       </div>

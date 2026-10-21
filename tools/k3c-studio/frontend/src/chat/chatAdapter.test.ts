@@ -1,6 +1,6 @@
 import type { ChatModelRunResult } from '@assistant-ui/react';
 import { describe, expect, it } from 'vitest';
-import { ChatGoneError, type ChatChoiceValues, type ChatEvent, type ChatStream } from '../api/chatTypes';
+import { ChatGoneError, type ChatChoiceValues, type ChatEvent, type ChatSendOptions, type ChatStream, type ChatTask } from '../api/chatTypes';
 import { parseChatBlock } from '../api/chatHttp';
 import { answerText, createChatAdapter } from './chatAdapter';
 
@@ -98,6 +98,20 @@ describe('Chat-Adapter: Auswahl, geladener Chat, Fehlertext (B-515)', () => {
     now = choice('', 'haiku', '');
     await collect(adapter, 'zwei');
     expect(seen).toEqual([choice('claude-cli', 'opus', 'high'), choice('', 'haiku', '')]);
+  });
+
+  it('schickt die Auftragsart nur mit, solange sie gesetzt ist (B-516)', async () => {
+    const seen: ChatSendOptions[] = [];
+    const stream: ChatStream = async function* (_chat, _text, options) {
+      seen.push(options);
+      yield { kind: 'done', status: 'fertig' };
+    };
+    let task: ChatTask | undefined = 'welt';
+    const adapter = createChatAdapter(stream, { options: () => choice('', 'opus', ''), task: () => task });
+    await collect(adapter, 'Erstelle eine Welt Nordsee');
+    task = undefined;
+    await collect(adapter, 'Hallo');
+    expect(seen).toEqual([{ ...choice('', 'opus', ''), task: 'welt' }, choice('', 'opus', '')]);
   });
 
   it('setzt einen geladenen Chat fort und meldet Kennung und Ende', async () => {

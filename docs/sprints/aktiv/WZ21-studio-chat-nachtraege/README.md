@@ -1,14 +1,14 @@
 # WZ21 · DEV · Studio-Chat: eigene Umgebung, Grundgerüst als Instruktion, Entwurf geschützt
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-516, B-514
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 376bf508
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-21, Ralf im Chat (Revision 1 samt B-516, B-514)
 
 ## Ausgangslage
 
@@ -24,7 +24,7 @@ Der Studio-Chat schickt das Grundgerüst selbst mit, und Abbruch, Mock und Weltw
 
 ## Anforderungen
 
-B-516, B-514 › Ausgangslage und Ziel (Specs noch Entwurf, Anforderungen beim Bereitmachen ausformulieren). B-515 ist mit PR #406 erledigt und gehört nicht mehr dazu.
+B-516 › Anforderungen (Gerüst als System-Instruktion über `--append-system-prompt-file`, Auftragsart in der Chat-Anfrage, Knopf entfällt) und B-514 › Anforderungen (Prozessbaum, Test-Riegel, SVG-Frage, Mock-`from`, Weltwechsel). B-515 ist mit PR #406 erledigt und gehört nicht mehr dazu.
 
 ## Nicht-Ziele
 
@@ -32,7 +32,7 @@ Neue Chat-Funktionen (Werkzeuge der CLI, weitere Aufträge außer Welten); Chat 
 
 ## Regeln und Einschränkungen
 
-Domäne DEV; Oberfläche nach Atomic Design (`tools/webkit`, `docs/arbeitsweise.md` › Oberflächen der Wails-Programme). Keine neue Abhängigkeit. CLI-Flags (`--append-system-prompt`) gegen die installierte CLI-Version prüfen. Datei ≤ 400 Zeilen, Funktion ≤ 60.
+Domäne DEV; Oberfläche nach Atomic Design (`tools/webkit`, `docs/arbeitsweise.md` › Oberflächen der Wails-Programme). Keine neue Abhängigkeit. CLI-Flag geprüft: `claude` 2.1.304 kennt `--append-system-prompt` und `--append-system-prompt-file` (2026-10-21). Die Sicherheits-Argumente von `chatArgs` bleiben. Datei ≤ 400 Zeilen, Funktion ≤ 60. Keine Abhängigkeit von anderen Sprints.
 
 ## Beispiele
 
@@ -45,21 +45,26 @@ Abbruch während der Antwort → der ganze Prozessbaum endet. CLI-Version kennt 
 ## Akzeptanzkriterien
 
 - **AC-01** entfällt: B-515 ist mit PR #406 erledigt (geerbte Umgebung und doppelter Anmeldefehler behoben). Vorher: Der Chat startet die CLI ohne die Sitzungs-Variablen der startenden Claude-Sitzung; ein Anmeldefehler erscheint genau einmal (B-515).
-- **AC-02** Das Grundgerüst ist eine feste Instruktion im Code und geht bei Welt-Aufträgen automatisch mit; das Eingabefeld enthält nur den Wunsch (B-516).
-- **AC-03** Die offenen Punkte 2 bis 4 aus B-514 sowie die Nachträge aus B-514 › Notizen (Mock `mockWorldDraft.ts` setzt `from`, Chat-Entwurf beim Weltwechsel) sind behoben oder begründet verworfen, je Punkt mit Test oder Begründung (B-514; Punkt 1 ist mit PR #400 erledigt).
+- **AC-02** Das Grundgerüst ist eine feste Instruktion im Code und geht bei Welt-Aufträgen automatisch mit; das Eingabefeld enthält nur den Wunsch, der Knopf „Prompt-Grundgerüst“ entfällt (B-516/AC-01 bis AC-03; AC-04 ist die Abnahme durch 🧑).
+- **AC-03** Die offenen Punkte 2 bis 4 aus B-514 sowie die Nachträge (Mock `mockWorldDraft.ts` setzt `from`, Chat-Entwurf beim Weltwechsel) sind behoben oder begründet verworfen, je Punkt mit Test oder Begründung (B-514/AC-01 bis AC-05; Punkt 1 ist mit PR #400 erledigt).
 
 ## Offene Fragen
 
-🧑: Bleibt der Knopf „Prompt-Grundgerüst“ zum Ansehen erhalten?
+keine. Geklärt (🧑, 2026-10-21): Der Knopf „Prompt-Grundgerüst“ entfällt.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ21.2 | `WZ21.2-geruest-als-instruktion.md` | Umsetzung | autonom | fertig |
+| WZ21.3 | `WZ21.3-restpunkte-b514.md` | Umsetzung | autonom | offen |
+| WZ21.4 | `WZ21.4-review.md` | Review | autonom | offen |
+| WZ21.1 | `WZ21.1-eigene-umgebung.md` | Umsetzung | autonom | verworfen |
 
 - WZ21.1 entfällt (eigene Umgebung und Anmeldefehler, B-515 mit PR #406 erledigt).
 - WZ21.2 (DEV) Grundgerüst als feste Instruktion (AC-02).
-- WZ21.3 (DEV) Restpunkte B-514: Prozessbaum, Test-Riegel, Mock, Weltwechsel (AC-03).
-- WZ21.4 (DEV) Review (Code-Sprint): alle Kriterien prüfen.
+- WZ21.3 (DEV) Restpunkte B-514: Prozessbaum, Test-Riegel, SVG-Frage, Mock, Weltwechsel (AC-03); nach WZ21.2, beide ändern `chat_cli.go`.
+- WZ21.4 (DEV) Review (Code-Sprint): alle Kriterien prüfen; danach Abnahme B-516/AC-04 durch 🧑.
 
 ## Abnahme
 

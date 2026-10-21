@@ -8,7 +8,7 @@ import { ChatPanel } from '../chat/ChatPanel';
 import { setChatOpen } from '../chat/chatBridge';
 import { WorldPage } from './WorldPage';
 
-// WZ19.3 (B-488/AC-08) im DOM mit dem Mock-Backend: „Prompt-Grundgerüst“ füllt das Eingabefeld des Chats; eine Antwort wird
+// WZ19.3 (B-488/AC-08), WZ21.2 (B-516) im DOM mit dem Mock-Backend: Nachrichten sind Welt-Aufträge; eine Antwort wird
 // mit „Als Entwurf laden“ geprüft und als Entwurf geladen, Fehler stehen am Entwurf, gespeichert wird nichts.
 vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} refresh() {} setLook() {} setPosition() {} destroy() {} } }));
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -61,11 +61,12 @@ afterEach(() => {
 });
 
 describe('Welt per Prompt füllen (WZ19.3/AC-08)', () => {
-  it('legt das Prompt-Grundgerüst ins Eingabefeld des Chats, ohne zu senden', async () => {
-    await act(async () => button(host!, 'Prompt-Grundgerüst').click());
-    await flush();
-    expect(chatInput(host!).value.endsWith('MEINE WÜNSCHE:\n')).toBe(true);
-    expect(host!.querySelector('.chat-msg')).toBeNull();
+  it('macht Nachrichten im Welten Editor zu Welt-Aufträgen, ohne Knopf und ohne Gerüst im Eingabefeld (B-516)', async () => {
+    expect(button(host!, 'Prompt-Grundgerüst')).toBeUndefined();
+    expect(host!.querySelector('.chat-task')?.textContent).toContain('Welt-Auftrag');
+    const stream = vi.spyOn(backend, 'chatStream');
+    await ask(host!, 'Erstelle eine Welt Nordsee');
+    expect(stream.mock.calls.at(-1)?.slice(1, 3)).toEqual(['Erstelle eine Welt Nordsee', expect.objectContaining({ task: 'welt' })]);
   });
 
   it('lädt eine gültige Antwort als Entwurf und speichert nichts', async () => {

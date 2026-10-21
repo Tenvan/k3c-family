@@ -33,6 +33,9 @@ type chatOptions struct {
 	Provider string
 	Model    string // Alias der CLI (--model)
 	Effort   string // Denkstufe (--effort)
+	// instruction ist die System-Instruktion des Auftrags (Welt-Auftrag: Grundgerüst, B-516); geht als Datei an die
+	// CLI (--append-system-prompt-file), nicht in den Verlauf. Leer = freier Chat.
+	instruction string
 }
 
 func inChoices(list []ChatChoice, id string) bool {

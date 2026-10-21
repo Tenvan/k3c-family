@@ -94,7 +94,6 @@ export function httpBackend(): Backend {
     planWorldCopy: (name: string) => rpc<WorldsView>('PlanWorldCopy', name),
     planWorldCheck: (draft: WorldDraft) => rpc<WorldCheckView>('PlanWorldCheck', draft),
     planWorldSave: (draft: WorldDraft, stand: string) => rpc<PlanSaved>('PlanWorldSave', draft, stand),
-    planWorldPrompt: () => rpc<string>('PlanWorldPrompt'),
     planWorldAnswer: (text: string) => rpc<WorldAnswerView>('PlanWorldAnswer', text),
     planChunkObjects: (seed: string, src: WorldSource, slot: number) => rpc<PlanObjectsView>('PlanChunkObjects', seed, src, slot),
     hubPlan: () => rpc<HubPlanView>('HubPlan'),

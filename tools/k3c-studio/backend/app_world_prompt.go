@@ -11,11 +11,10 @@ import (
 	"k3c/engine/sim"
 )
 
-// Prompt-Grundgerüst für den Chat (B-488, WZ19.3): Der Text entsteht aus denselben Daten wie die Prüfung des Ladens
-// (Biome, Inselgrößen, Standard-Welt, Bosse über eine Probe mit sim.ParseWorld) und endet mit „MEINE WÜNSCHE:“, den
-// 🧑 im Chat ergänzt. Die Antwort prüft PlanWorldAnswer.
-
-const promptWishes = "MEINE WÜNSCHE:"
+// Grundgerüst für Welt-Aufträge im Chat (B-488, WZ19.3; als feste Instruktion B-516, WZ21.2): Der Text entsteht aus
+// denselben Daten wie die Prüfung des Ladens (Biome, Inselgrößen, Standard-Welt, Bosse über eine Probe mit
+// sim.ParseWorld) und geht als System-Instruktion an die CLI; 🧑 schreibt im Chat nur den Wunsch. Die Antwort prüft
+// PlanWorldAnswer.
 
 // promptBiome ist ein Biom für den Prompt: die Tiefe, ihr Name und die Arten, die ein geplanter Chunk dort haben darf.
 type promptBiome struct {
@@ -26,8 +25,8 @@ type promptBiome struct {
 	endBossHere  bool
 }
 
-// PlanWorldPrompt liefert das Prompt-Grundgerüst (Binding); es schreibt nichts.
-func (a *App) PlanWorldPrompt() string {
+// worldInstruction liefert das Grundgerüst; es schreibt nichts.
+func worldInstruction() string {
 	var b strings.Builder
 	b.WriteString("Du entwirfst eine Welt für das Spiel „Family Three Crowns“ als Welt-Datei im JSON-Format. ")
 	b.WriteString("Antworte nur mit der Datei als JSON (gern in einem Code-Block), ohne weiteren Text und ohne Kommentare.\n\n")
@@ -59,8 +58,7 @@ func (a *App) PlanWorldPrompt() string {
 	b.WriteString("\n## Prüfregeln\n\n")
 	b.WriteString("Die Antwort wird streng wie beim Laden einer Welt geprüft: gültiges JSON, keine unbekannten Felder, alle Pflichtfelder, ")
 	b.WriteString("bekannte Tiefen, Boss-Regel oben, Faktoren > 0, Chunk-Anzahlen nur aus der Tabelle, geplante Chunks nur mit Arten ihres Bioms. ")
-	b.WriteString("Bei einem Fehler wird der Grund mit Insel und Tiefe genannt; nichts wird repariert oder gespeichert.\n\n")
-	b.WriteString(promptWishes + "\n")
+	b.WriteString("Bei einem Fehler wird der Grund mit Insel und Tiefe genannt; nichts wird repariert oder gespeichert.\n")
 	return b.String()
 }
 
