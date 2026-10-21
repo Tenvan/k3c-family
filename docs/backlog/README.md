@@ -133,7 +133,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | eingeplant | GEB11 | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
 | [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
 | [B-465](B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | offen | – | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
-| [B-468](B-468-geplante-chunks-ruinen-gegnerlager.md) | REG | Idee | mittel | eingeplant | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager |
 | [B-469](B-469-gegner-seite-boss-effekte-nach-k5.md) | DEV | Idee | niedrig | eingeplant | WZ23 | Die Gegner-Seite zeigt Warnkreis, Boss-Leiste, Phasen und Event-Banner aus K5.1 |
 | [B-470](B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | eingeplant | W12 | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
 | [B-471](B-471-renderreference-abmelden.md) | DEV | Schuld | niedrig | eingeplant | WZ23 | renderReference beendet seine Animationsschleife, wenn die Karten verschwinden |
@@ -483,3 +482,4 @@ Zeile in diesen Abschnitt.
 | [B-507](archiv/B-507-server-und-studio-trennen-dateiwatch.md) | DEV | Schuld | hoch | erledigt | TS1 | Spielserver und Asset-Studio sind getrennt, der Server beobachtet die Dateien des Studios |
 | [B-515](archiv/B-515-studio-chat-anmeldung-umgebung.md) | DEV | Problem | mittel | erledigt | – | Studio-Chat übernimmt die Umgebung einer Claude-Sitzung und zeigt Anmeldefehler doppelt |
 | [B-518](archiv/B-518-agentic-tempo.md) | INF | Problem | hoch | erledigt | – | Agentische Sessions laufen schneller: weniger Reviews und Prüfläufe, mehr parallel |
+| [B-468](archiv/B-468-geplante-chunks-ruinen-gegnerlager.md) | REG | Idee | mittel | erledigt | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager |

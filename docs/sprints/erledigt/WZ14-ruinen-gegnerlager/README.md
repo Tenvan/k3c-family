@@ -1,6 +1,6 @@
 # WZ14 · REG, SIM, SRV, CLI, DEV · Geplante Chunks tragen Ruinen und Gegnerlager
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** REG, SIM, SRV, CLI, DEV
 - **Reife:** bereit
@@ -72,7 +72,7 @@ Entschieden im Regel-Workshop WZ14.1 (2026-10-21, Ralf im Chat) samt Nachtrag na
 | WZ14.6 | `WZ14.6-ruine-zeichnen.md` | Umsetzung | autonom | fertig |
 | WZ14.7 | `WZ14.7-editor-ruine.md` | Umsetzung | autonom | fertig |
 | WZ14.8 | `WZ14.8-review.md` | Review | autonom | fertig |
-| WZ14.9 | `WZ14.9-abnahme.md` | Review | Mensch | in Arbeit |
+| WZ14.9 | `WZ14.9-abnahme.md` | Review | Mensch | fertig |
 
 - WZ14.1 (REG) Workshop mit 🧑: Beschlüsse, Regeltext § 8, Glossar (AC-01).
 - WZ14.2 (SIM) `data/ruins.json`, Feld `buildings` lesen und prüfen, Golden und Benchmark (AC-01, AC-02, AC-04).
