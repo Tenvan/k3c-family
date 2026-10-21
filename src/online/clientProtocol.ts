@@ -101,4 +101,5 @@ export type DevMessage =
   | { t: 'dev'; action: 'cheapBuild'; on: boolean }
   | { t: 'dev'; action: 'buildAll'; level: number }
   | { t: 'dev'; action: 'timescaleAuto'; on: boolean }
-  | { t: 'dev'; action: 'nextPhase' };
+  | { t: 'dev'; action: 'nextPhase' }
+  | { t: 'dev'; action: 'castleFall'; slot: number };
