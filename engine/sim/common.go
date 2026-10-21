@@ -170,10 +170,10 @@ func damagePlayer(w *World, p *Player, damage float64, cause string) {
 	}
 }
 
-// destroySite: Der Bauplatz ist wieder leer und muss neu bezahlt werden.
+// destroySite: Der Bauplatz ist wieder leer und muss neu bezahlt werden; eine Ruine bleibt Ruine (building_ruin.go).
 func destroySite(w *World, s *Site) {
 	wasBuilt := s.State == "built"
-	*s = Site{ID: s.ID, Kind: s.Kind, X: s.X, State: "unpaid", MaxHP: buildings[s.Kind].HP}
+	*s = Site{ID: s.ID, Kind: s.Kind, X: s.X, State: "unpaid", MaxHP: buildings[s.Kind].HP, Ruin: isRuin(w, s.Kind, s.X)}
 	for _, t := range w.Troops {
 		if t.TowerID != nil && *t.TowerID == s.ID {
 			t.TowerID = nil

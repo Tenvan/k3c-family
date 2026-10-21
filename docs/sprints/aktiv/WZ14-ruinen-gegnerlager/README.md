@@ -66,7 +66,7 @@ Entschieden im Regel-Workshop WZ14.1 (2026-10-21, Ralf im Chat) samt Nachtrag na
 |---|---|---|---|---|
 | WZ14.1 | `WZ14.1-workshop-regeln.md` | Workshop | Mensch | fertig |
 | WZ14.2 | `WZ14.2-werte-format-pruefung.md` | Umsetzung | autonom | fertig |
-| WZ14.3 | `WZ14.3-ruine-als-platz.md` | Umsetzung | autonom | offen |
+| WZ14.3 | `WZ14.3-ruine-als-platz.md` | Umsetzung | autonom | fertig |
 | WZ14.4 | `WZ14.4-vorposten-dev-burgfall.md` | Umsetzung | autonom | offen |
 | WZ14.5 | `WZ14.5-protokoll-vorschau-ruine.md` | Umsetzung | autonom | offen |
 | WZ14.6 | `WZ14.6-ruine-zeichnen.md` | Umsetzung | autonom | offen |

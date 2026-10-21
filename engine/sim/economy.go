@@ -93,6 +93,7 @@ func nearest[T any](items []*T, pos func(*T) float64, x, r float64, ok func(*T) 
 func findPayTarget(w *World, p *Player) *payTarget {
 	r := economy.PayRangeUnits
 	s := nearest(w.Sites, func(s *Site) float64 { return s.X }, p.X, r, func(s *Site) bool { return sitePayable(w, s) })
+	s = lineBeforeRuin(w, s, p.X) // Linien-Platz vor Ruine (building_ruin.go)
 	if h := w.hubSite; h != nil && math.Abs(h.X-p.X) <= r && sitePayable(w, h) && (s == nil || math.Abs(h.X-p.X) < math.Abs(s.X-p.X)) {
 		s = h
 	}
