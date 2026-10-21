@@ -1,9 +1,8 @@
-import { Checkbox, Text, TextField } from '@radix-ui/themes';
+import { ActionButton, Checkbox, StatusBadge, Text, TextField } from '@webkit/atoms';
 import { useEffect, useState } from 'react';
 import { backend, type AssetKind, type CatalogAsset } from '../api';
-import { errorText } from '@webkit/errors';
-import { useDebounced } from '@webkit/useDebounced';
-import { ActionButton, StatusBadge } from '@webkit/parts';
+import { errorText } from '@webkit/lib/errors';
+import { useDebounced } from '@webkit/lib/useDebounced';
 
 const LIMIT = 60;
 

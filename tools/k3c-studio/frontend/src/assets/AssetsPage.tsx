@@ -1,9 +1,9 @@
-import { Button, SegmentedControl, Select, Text, TextField } from '@radix-ui/themes';
+import { Button, SegmentedControl, Select, Splitter, Text, TextField, type Tone } from '@webkit/atoms';
 import { useMemo, useState, type CSSProperties } from 'react';
 import type { AssetKind, AssetSlot, AssetStatus } from '../api';
-import { loadText, savePref } from '../lib/prefs';
-import { NoticeCard, type Tone } from '@webkit/parts';
-import { Splitter, useSplit } from '../ui/Splitter';
+import * as prefs from '../lib/prefs';
+import { NoticeCard } from '@webkit/molecules';
+import { useSplit } from '@webkit/lib/split';
 import { CATEGORIES, countStatus, filterSlots, selectionOf, typen, typOf } from './assets';
 import { SlotDetail } from './SlotDetail';
 import { useAssets } from './useAssets';
@@ -21,8 +21,8 @@ export function AssetsPage({ art }: { art: AssetKind }) {
   const [typ, setTyp] = useState('');
   const [status, setStatus] = useState<'' | AssetStatus>('');
   const [query, setQuery] = useState('');
-  const [selected, setSelected] = useState(() => loadText(`${art}.selected`, ''));
-  const [split, setSplit, resetSplit] = useSplit(`${art}.split`, SPLIT_DEFAULT);
+  const [selected, setSelected] = useState(() => prefs.loadText(`${art}.selected`, ''));
+  const [split, setSplit, resetSplit] = useSplit(prefs, `${art}.split`, SPLIT_DEFAULT);
   const slots = useMemo(() => data.view?.slots ?? [], [data.view]);
   const typList = useMemo(() => typen(slots.filter((s) => s.art === art && (!kategorie || s.kategorie === kategorie))), [slots, art, kategorie]);
   const aktivTyp = typList.includes(typ) ? typ : ''; // Typ, der nach einem Reload fehlt, filtert nicht unsichtbar weiter
@@ -34,7 +34,7 @@ export function AssetsPage({ art }: { art: AssetKind }) {
   const { slot, missing } = selectionOf(slots, art, selected);
   const pick = (id: string) => {
     setSelected(id);
-    savePref(`${art}.selected`, id);
+    prefs.savePref(`${art}.selected`, id);
   };
   return (
     <div className="as-page">
@@ -54,7 +54,7 @@ export function AssetsPage({ art }: { art: AssetKind }) {
       {data.error && <p className="svc-error">{data.error}</p>}
       <div className="as-body" style={{ '--as-split': `${split}%` } as CSSProperties}>
         <SlotList slots={visible} selected={slot?.id ?? ''} onSelect={pick} />
-        <Splitter className="pl-split-v" value={split} onChange={setSplit} onReset={resetSplit} />
+        <Splitter className="as-split" value={split} onChange={setSplit} onReset={resetSplit} />
         <section className="as-detail">
           {slot ? <SlotDetail key={slot.id} slot={slot} used={used} onSave={data.save} onReload={() => void data.reload()} /> : <NoSlot art={art} missing={missing ? selected : ''} />}
         </section>
@@ -99,13 +99,13 @@ function SlotList({ slots, selected, onSelect }: { slots: AssetSlot[]; selected:
   return (
     <div className="as-list" role="listbox" aria-label="Asset-Slots">
       {slots.map((s) => (
-        <button key={s.id} type="button" role="option" aria-selected={s.id === selected} className={`as-row${s.id === selected ? ' as-row-on' : ''}`}
+        <Button key={s.id} variant={s.id === selected ? 'soft' : 'ghost'} color={s.id === selected ? undefined : 'gray'} highContrast={s.id !== selected} role="option" aria-selected={s.id === selected} className="as-row"
           title={`${s.beschreibung}
 ${s.wahl[0]?.datei ?? '–'}${s.wahl.length > 1 ? ` (+${s.wahl.length - 1})` : ''}`} onClick={() => onSelect(s.id)}>
           <span className={`as-dot as-dot-${STATUS_TONE[s.status]}`} role="img" aria-label={STATUS_LABEL[s.status]} />
           <span className="as-row-id">{s.id}</span>
           <span className="as-row-desc">{typOf(s)}{s.wahl.length > 1 ? ` · ${s.wahl.length} Präf.` : ''}</span>
-        </button>
+        </Button>
       ))}
     </div>
   );

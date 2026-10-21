@@ -1,10 +1,10 @@
-import { Button, Flex, SegmentedControl, Text } from '@radix-ui/themes';
 import { useEffect, useState } from 'react';
 import { backend, type PlanDoc } from '../api';
-import { errorText } from '@webkit/errors';
+import { Button, Flex, SegmentedControl, Text } from '@webkit/atoms';
+import { errorText } from '@webkit/lib/errors';
+import { NoticeCard } from '@webkit/molecules';
 import { loadText, savePref } from '../lib/prefs';
-import { MarkdownView } from '../ui/MarkdownView';
-import { NoticeCard } from '@webkit/parts';
+import { MarkdownView } from '../ui/molecules/MarkdownView';
 import { SprintsBacklog } from './SprintsBacklog';
 
 const LABEL: Record<PlanDoc, string> = { plan: 'Plan', fragen: 'Fragenkatalog', glossar: 'Glossar' };

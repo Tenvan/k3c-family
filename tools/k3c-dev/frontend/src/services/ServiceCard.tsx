@@ -1,8 +1,8 @@
-import { AlertDialog, Button, Flex } from '@radix-ui/themes';
 import { useState } from 'react';
 import { backend, type ServiceStatus } from '../api';
-import { errorText } from '@webkit/errors';
-import { StatusBadge } from '@webkit/parts';
+import { Button, Flex, Link, LinkButton, StatusBadge, Strong } from '@webkit/atoms';
+import { errorText } from '@webkit/lib/errors';
+import { AlertDialog } from '@webkit/organisms';
 import { RoleTags } from '../logs/RoleTags';
 import { badgeFor, buttonsFor, metricsOf, type Command } from './tables';
 
@@ -56,7 +56,7 @@ export function ServiceCard({ s, selected, onSelect }: Props) {
     <div className={selected ? 'svc-card svc-card-on' : 'svc-card'} onClick={onSelect}>
       <div className="svc-head">
         <div>
-          <button className="svc-name" onClick={onSelect} aria-current={selected}>{s.name}</button>
+          <LinkButton size="4" color="gray" underline="none" onClick={onSelect} aria-current={selected}><Strong>{s.name}</Strong></LinkButton>
           <div className="svc-port">Port {s.port}</div>
         </div>
         <StatusBadge tone={badge.tone}>{badge.label}</StatusBadge>
@@ -82,9 +82,9 @@ function HealthUrl({ url }: { url: string }) {
   if (!url.startsWith('http')) return <code className="svc-health" title={url}>{url}</code>;
   return (
     <code className="svc-health" title={url}>
-      <a className="svc-link" href={url} onClick={(e) => { e.preventDefault(); e.stopPropagation(); backend.openUrl(url); }}>
+      <Link href={url} color="gray" underline="always" onClick={(e) => { e.preventDefault(); e.stopPropagation(); backend.openUrl(url); }}>
         {url}
-      </a>
+      </Link>
     </code>
   );
 }

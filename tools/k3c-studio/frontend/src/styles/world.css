@@ -5,9 +5,7 @@
 .wd-chunks { display: flex; flex-direction: column; gap: 8px; }
 .wd-viewbar { display: flex; flex-direction: column; gap: 4px; }
 .wd-jumps { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-left: 8px; }
-.wd-viewbar input[type='range'] { accent-color: var(--accent-9, #6e56cf); }
 .wd-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.wd-seed { width: 12rem; }
 .wd-grow { flex: 1; }
 .wd-note { margin: 0; color: var(--dim); font-size: 13px; }
 .wd-viewport { overflow: hidden; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); }
@@ -34,17 +32,17 @@
 .wd-buildings { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 6px 10px; list-style: none; margin: 0; padding: 0; }
 .wd-group { border: 1px solid var(--card-line); border-radius: 8px; padding: 4px 8px; background: var(--card); }
 .wd-group-head { display: flex; align-items: center; gap: 6px; }
-.wd-group-name { all: unset; cursor: pointer; font-size: 13px; padding: 2px 4px; border-radius: 4px; }
-.wd-group-name:focus-visible { outline: 2px solid var(--accent-8); }
+.wd-group-name { margin: 0; }
 .wd-group[data-state='none'] .wd-group-name { opacity: 0.55; }
 .wd-group-items { display: flex; flex-wrap: wrap; gap: 2px 10px; list-style: none; margin: 4px 0 2px; padding: 4px 0 0; border-top: 1px solid var(--card-line); max-width: 24rem; }
 .wd-launch .wd-base { width: 24rem; max-width: 100%; }
-.wd-bar input[type='range'] { width: 8rem; }
-.wd-select { height: 2rem; padding: 0 0.5rem; border-radius: 6px; border: 1px solid var(--card-line); background: var(--card); color: var(--text); }
+/* Breiten der Felder und Regler (Radix TextField, Slider) in den Leisten */
+.wd-zoom, .wd-progress { width: 8rem; }
+.wd-field { display: inline-flex; align-items: center; gap: 6px; }
 
 /* Abspiel-Bausteine (B-463, WZ10.1) */
 .wd-playback { align-items: center; }
-.wd-gap { display: inline-block; padding: 0 6px; border: 1px solid var(--amber-8); border-radius: 4px; color: var(--amber-11); font-size: 0.75rem; }
+.wd-gap { white-space: normal; } /* Radix Badge; lange Gründe brechen um */
 
 /* Monarch-Seite (B-463, WZ10.2) */
 .wd-colors { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
@@ -140,9 +138,6 @@
 .wd-tree .wd-group-items { flex-direction: column; max-width: none; }
 .wd-structure, .wd-structure ul { list-style: none; margin: 0; padding: 0; }
 .wd-structure ul { margin-left: 1.2rem; }
-.wd-node { all: unset; cursor: pointer; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
-.wd-node:disabled { cursor: default; opacity: 0.55; }
-.wd-node:focus-visible { outline: 2px solid var(--accent-8); }
-.wd-structure li[data-selected='true'] > .wd-node { background: var(--accent-a4, rgb(60 100 255 / 25%)); }
+.wd-node { margin: 0; justify-content: flex-start; }
 .wd-controls-host:empty { display: none; }
 @media (max-width: 900px) { .wd-columns { grid-template-columns: 1fr; } }

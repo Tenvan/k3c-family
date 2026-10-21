@@ -59,12 +59,13 @@ tasks:
   # --- Einrichten ---------------------------------------------------------------------------------------------------
 
   install:
-    desc: Abhängigkeiten holen (Client, Frontends von k3c-dev und Asset-Studio)
+    desc: Abhängigkeiten holen (Client, Frontends von k3c-dev, Asset-Studio und Starter)
     cmds:
       - mkdir -p .work/tmp
       - npm ci
       - npm ci --prefix tools/k3c-dev/frontend
       - npm ci --prefix tools/k3c-studio/frontend
+      - npm ci --prefix tools/k3c-starter/frontend
 
   # --- Client (Phaser, Vite) ----------------------------------------------------------------------------------------
 
@@ -158,7 +159,7 @@ tasks:
       - task: k3c-studio:lint
 
   check:starter:
-    desc: Windows-Starter prüfen (go test, golangci-lint; B-041)
+    desc: Windows-Starter prüfen (Frontend-Vitest, go test, golangci-lint; B-041)
     cmds:
       - task: k3c-starter:test
       - task: k3c-starter:lint

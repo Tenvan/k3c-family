@@ -258,7 +258,27 @@ Niedrige Komplexität ist in **jeder** Session Pflicht, nicht erst im Review.
   (`world.go`, `types.go`, `data.go`, `common.go` …) haben keine. `src/scenes` hält nur Szenen und ihre Logik, der Rest
   liegt in `render/`, `hud/`, `hints/`, `effects/`, `debug/`. Ab etwa 30 Dateien bekommt ein Ordner Gruppen.
 - Tests liegen neben dem Code; `tests/` nur für Regeln über das ganze Repo (TypeScript), Go-Regeln in
-  `engine/internal/rules`. Gemeinsame Oberflächen-Bausteine von k3c-dev und Asset-Studio liegen in `tools/webkit`.
+  `engine/internal/rules`. Gemeinsame Oberflächen-Bausteine der Wails-Programme liegen in `tools/webkit` (nächster Abschnitt).
+
+### Oberflächen der Wails-Programme (Atomic Design)
+
+Gilt verbindlich für jedes Wails-Programm mit Oberfläche (`tools/*/frontend`: k3c-dev, Asset-Studio, Starter) und jedes neue.
+Die Oberfläche ist React mit **Radix Themes**, aufgebaut nach Atomic Design; die gemeinsamen Ebenen liegen in `tools/webkit`:
+
+| Ebene | Ort | Inhalt |
+|---|---|---|
+| lib | `tools/webkit/lib/` | ohne Oberfläche: Fehlertext, gemerkte Einstellungen, Debounce, Splitter-Rechnung |
+| Atome | `tools/webkit/atoms/` (`@webkit/atoms`) | Radix-Grund-Atome (Layout, Text, Controls) und eigene wie `ActionButton`, `SelectField`, `StatusBadge`, `Splitter` |
+| Moleküle | `tools/webkit/molecules/` (`@webkit/molecules`) | kleine Gruppen: `Card`, `Callout`, `NoticeCard`, `CheckField`, `SwitchField` |
+| Organismen | `tools/webkit/organisms/` (`@webkit/organisms`) | Bereiche: `Dialog`, `DropdownMenu`, `Tabs`, `Table`, `AppHeader` |
+| Templates | `tools/webkit/templates/` (`@webkit/templates`) | Rahmen: `Theme`, `AppFrame` (Kopfzeile, Reiter, Seite) |
+| Seiten | Feature-Ordner der App (`src/<feature>/`) | setzen alles zusammen |
+
+- **Importe nur nach unten:** lib ← Atome ← Moleküle ← Organismen ← Templates ← Seiten; `tools/webkit` importiert nichts aus einer App.
+- **Radix nur über webkit:** App-Code importiert Radix Themes nie direkt, sondern über `@webkit/<ebene>` (außer `@radix-ui/themes/styles.css` in `main.tsx`; Tests ausgenommen).
+- **Keine rohen Controls:** `<button>`, `<select>`, `<input>`, `<textarea>` stehen nur in `tools/webkit/atoms`. Eigenes CSS für Controls gibt es nicht, Aussehen kommt aus Radix-Props und `tools/webkit/theme.css`; App-CSS regelt nur das Layout.
+- **App-eigene Teile** in `src/ui/{molecules,organisms,templates}` (Atome nur in webkit), sonst im Feature-Ordner. Was zwei Programme brauchen, wandert nach webkit.
+- Geprüft von `tests/atomicDesign.test.ts` (Ebenen, Importrichtung, Radix-Importe, rohe Controls); webkit-Tests laufen im Vitest von k3c-dev.
 
 ## Golden aktualisieren
 

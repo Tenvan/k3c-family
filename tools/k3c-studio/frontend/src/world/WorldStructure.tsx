@@ -1,5 +1,5 @@
 import { BIOMES } from '@game/model/biome';
-import { Button, Text } from '@radix-ui/themes';
+import { Button, SelectField, Text, TextField } from '@webkit/atoms';
 import { useState } from 'react';
 import { GameLauncher } from './GameLauncher';
 import { SizePicker } from './SizePicker';
@@ -18,7 +18,7 @@ function AddWorld({ plan, lock }: { plan: PlanState; lock?: string }) {
   const add = (copy: boolean) => { void (copy ? plan.copyWorld(newName) : plan.addWorld(newName)); setNewName(''); };
   return (
     <>
-      <input className="wd-seed" aria-label="Name der neuen Welt" placeholder="Name der neuen Welt" value={newName} onChange={(e) => setNewName(e.target.value)} />
+      <TextField.Root className="wd-seed" aria-label="Name der neuen Welt" placeholder="Name der neuen Welt" value={newName} onChange={(e) => setNewName(e.target.value)} />
       <Button variant="soft" disabled={off} title={lock ?? 'Neue Welt mit einer Insel anlegen (eigene JSON-Datei unter data/worlds/)'} onClick={() => add(false)}>Welt +</Button>
       <Button variant="soft" disabled={off} title={lock ?? 'Kopie der gewählten Welt mit allen Inseln, Planung und Inselgrößen'} onClick={() => add(true)}>Kopie</Button>
     </>
@@ -39,9 +39,8 @@ function WorldBar({ plan, draftOpen }: { plan: PlanState; draftOpen: boolean }) 
   return (
     <div className="wd-bar">
       <Text size="2" weight="bold">Welt</Text>
-      <select className="wd-select" aria-label="Welt" value={worlds?.active ?? ''} disabled={dirty || !worlds} title={lock} onChange={(e) => void plan.selectWorld(e.target.value)}>
-        {worlds?.worlds.map((w) => <option key={w.id} value={w.id}>{w.name}</option>)}
-      </select>
+      <SelectField aria-label="Welt" value={worlds?.active ?? ''} disabled={dirty || !worlds} title={lock} onChange={(v) => void plan.selectWorld(v)}
+        options={(worlds?.worlds ?? []).map((w) => ({ value: w.id, label: w.name }))} />
       <AddWorld plan={plan} lock={lock} />
       <Button variant="outline" color="red" disabled={dirty || isStandard} title={lock ?? (isStandard ? 'Die Standard-Welt bleibt' : 'Gewählte Welt löschen (ihre Datei)')} onClick={remove}>Welt −</Button>
     </div>
@@ -58,12 +57,10 @@ function IslandBar({ plan }: { plan: PlanState }) {
     <>
       {island && (
         <div className="wd-bar">
-          <select className="wd-select" aria-label="Insel" value={island.id} disabled={dirty} title={lock} onChange={(e) => plan.selectIsland(e.target.value)}>
-            {islands.map((i) => <option key={i.id} value={i.id}>{i.name}</option>)}
-          </select>
-          <select className="wd-select" aria-label="Stufe" value={stage} disabled={dirty} title={lock} onChange={(e) => plan.selectStage(Number(e.target.value))}>
-            {island.depths.map((d, i) => <option key={d} value={i}>{`Stufe ${i + 1} · ${biomeName(island.biomes[i] ?? '')}`}</option>)}
-          </select>
+          <SelectField aria-label="Insel" value={island.id} disabled={dirty} title={lock} onChange={plan.selectIsland}
+            options={islands.map((i) => ({ value: i.id, label: i.name }))} />
+          <SelectField aria-label="Stufe" value={String(stage)} disabled={dirty} title={lock} onChange={(v) => plan.selectStage(Number(v))}
+            options={island.depths.map((_, i) => ({ value: String(i), label: `Stufe ${i + 1} · ${biomeName(island.biomes[i] ?? '')}` }))} />
           <SizePicker plan={plan} />
         </div>
       )}
@@ -79,19 +76,19 @@ function StructureTree({ plan }: { plan: PlanState }) {
     <ul className="wd-structure" aria-label="Inseln und Stufen">
       {(view?.islands ?? []).map((i) => (
         <li key={i.id} data-selected={i.id === island?.id}>
-          <button type="button" className="wd-node" disabled={dirty && i.id !== island?.id} onClick={() => plan.selectIsland(i.id)}>
+          <Button variant={i.id === island?.id ? 'soft' : 'ghost'} color="gray" highContrast className="wd-node" disabled={dirty && i.id !== island?.id} onClick={() => plan.selectIsland(i.id)}>
             🏝️ {i.name} <Text size="1" color="gray">{i.depths.length} Stufen</Text>
-          </button>
+          </Button>
           <ul>
             {i.depths.map((d, s) => {
               const count = i.chunkCounts[String(d)];
               const planned = i.planned[String(d)]?.length ?? 0;
               return (
                 <li key={d} data-selected={i.id === island?.id && s === stage}>
-                  <button type="button" className="wd-node" disabled={dirty && !(i.id === island?.id && s === stage)} onClick={() => pick(i.id, s)}>
+                  <Button variant={i.id === island?.id && s === stage ? 'soft' : 'ghost'} color="gray" highContrast className="wd-node" disabled={dirty && !(i.id === island?.id && s === stage)} onClick={() => pick(i.id, s)}>
                     Stufe {s + 1} · {biomeName(i.biomes[s] ?? '')}{' '}
                     <Text size="1" color="gray">{count ? `${count} Abschnitte` : 'Biom-Länge'}{planned > 0 ? ` · ${planned} geplant` : ''}</Text>
-                  </button>
+                  </Button>
                 </li>
               );
             })}

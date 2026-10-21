@@ -1,6 +1,6 @@
-import { Tabs } from '@radix-ui/themes';
 import { useState } from 'react';
 import type { Source } from '../api';
+import { Tabs } from '@webkit/organisms';
 import { loadPref, savePref } from '../lib/prefs';
 import { ConsoleView } from './ConsoleView';
 import { ErrorsTab } from './ErrorsTab';

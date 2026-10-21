@@ -1,9 +1,9 @@
-import { SegmentedControl } from '@radix-ui/themes';
 import { useState, type CSSProperties } from 'react';
 import type { McpUsage } from '../api';
-import { loadPref, savePref } from '../lib/prefs';
+import { SegmentedControl, Splitter } from '@webkit/atoms';
+import { useSplit } from '@webkit/lib/split';
+import { loadPref, prefsStore, savePref } from '../lib/prefs';
 import { useNow } from '../lib/useNow';
-import { Splitter, useSplit } from '../tasks/TaskBars';
 import { rangeScope } from './rangeScope';
 import { RANGES, RANGE_SPEC, type Range } from './series';
 import { Kpi } from './ServerCards';
@@ -20,7 +20,7 @@ const isRange = (c: Choice): c is Range => (RANGES as readonly string[]).include
 export function StatsView({ usage }: { usage: McpUsage }) {
   const [choice, setChoice] = useState<Choice>(() => loadPref('mcp.statScope', CHOICES, 'session'));
   const now = useNow(30_000);
-  const [split, setSplit, resetSplit] = useSplit('mcp.split.stats', 70);
+  const [split, setSplit, resetSplit] = useSplit(prefsStore, 'mcp.split.stats', 70);
   const names = usage.allTime.tools.map((t) => t.name);
   const scope = isRange(choice) ? rangeScope(usage.minutes, names, choice, now) : usage[choice];
   return (
@@ -44,7 +44,7 @@ export function StatsView({ usage }: { usage: McpUsage }) {
       {isRange(choice) ? <StatsTable scope={scope} /> : (
         <div className="mcp-stats-body" style={{ '--mcp-table': `${split}%` } as CSSProperties}>
           <StatsTable scope={scope} />
-          <Splitter className="pl-split-v" value={split} onChange={setSplit} onReset={resetSplit} />
+          <Splitter className="mcp-split" value={split} onChange={setSplit} onReset={resetSplit} />
           <StatsSide scope={scope} now={now} />
         </div>
       )}

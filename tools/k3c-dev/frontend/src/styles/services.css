@@ -41,17 +41,6 @@
   align-items: flex-start;
 }
 
-.svc-name {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--text);
-  font: inherit;
-  font-size: 17px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
 .svc-desc {
   margin: 0;
   font-size: 13px;
@@ -69,12 +58,6 @@
   font-size: 12px;
   color: var(--dim);
   overflow-wrap: anywhere;
-}
-
-.svc-link {
-  color: inherit;
-  text-decoration: underline;
-  cursor: pointer;
 }
 
 .svc-metrics,

@@ -47,11 +47,12 @@ jobs:
             package-lock.json
             tools/k3c-dev/frontend/package-lock.json
             tools/k3c-studio/frontend/package-lock.json
+            tools/k3c-starter/frontend/package-lock.json
       - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
       - uses: go-task/setup-task@v1
-      # Wie lokal: Client und Frontends von k3c-dev und Asset-Studio, deren Komponententests (React, Radix) laufen in task test mit.
+      # Wie lokal: Client und Frontends von k3c-dev, Asset-Studio und Starter, deren Komponententests (React, Radix) laufen in task test mit.
       - run: task install
       - run: task lint
       - run: task typecheck
@@ -241,10 +242,11 @@ jobs:
           version: v2.14
           working-directory: tools/k3c-studio
 
-  # Windows-Starter (B-041, BT1.2): statische Oberfläche in web/ (kein Frontend-Build), Go-Tests, Lint, Wails-Build.
+  # Windows-Starter (B-041, BT1.2): Frontend (React auf Radix Themes; Typecheck, Build nach tools/k3c-starter/frontend/dist, Vitest),
+  # Go-Tests, Lint, Wails-Build. Windows wie k3c-dev: das Modul bindet Wails ein.
   k3c-starter:
     if: github.event_name != 'pull_request'
-    name: Windows-Starter · Tests · Lint · Wails (Windows)
+    name: Windows-Starter · Frontend · Tests · Lint · Wails (Windows)
     runs-on: windows-latest
     timeout-minutes: 15
     defaults:
@@ -256,6 +258,25 @@ jobs:
         with:
           go-version-file: tools/k3c-starter/go.mod
           cache-dependency-path: tools/k3c-starter/go.sum
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            tools/k3c-starter/frontend/package-lock.json
+      - uses: go-task/setup-task@v1
+      - run: npm ci
+        working-directory: .
+      # go:embed braucht frontend/dist, deshalb zuerst das Frontend (mit Typecheck); vitest kommt aus dem Hauptprojekt,
+      # die Konfiguration (Alias @webkit) aus tools/k3c-starter/frontend/vitest.config.ts.
+      - run: npm ci
+        working-directory: tools/k3c-starter/frontend
+      # Task aus der Wurzel: im Ordner tools/k3c-starter gälte dessen Taskfile ohne Namensraum.
+      - run: task k3c-starter:frontend
+        working-directory: .
+      - run: npx vitest run --config vitest.config.ts
+        working-directory: tools/k3c-starter/frontend
       - run: go test ./...
       - uses: golangci/golangci-lint-action@v9
         with:

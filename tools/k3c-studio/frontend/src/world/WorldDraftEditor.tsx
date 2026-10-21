@@ -1,5 +1,6 @@
 import { BIOMES } from '@game/model/biome';
-import { Button, Text } from '@radix-ui/themes';
+import { Button, Text, TextField } from '@webkit/atoms';
+import { CheckField } from '@webkit/molecules';
 import { backend, type DraftField, type DraftScaling } from '../api';
 import { fillChat } from '../chat/chatBridge';
 import type { WorldDraftState } from './useWorldDraft';
@@ -20,8 +21,8 @@ function WorldHead({ world }: { world: WorldDraftState }) {
   return (
     <>
       <div className="wd-bar">
-        <input className="wd-seed" aria-label="Name der Welt" placeholder="Name der Welt" value={d.name} onChange={(e) => world.edit({ ...d, name: e.target.value })} />
-        <input className="wd-seed" aria-label="Notizen der Welt" placeholder="Notizen" value={d.notes} onChange={(e) => world.edit({ ...d, notes: e.target.value })} />
+        <TextField.Root className="wd-seed" aria-label="Name der Welt" placeholder="Name der Welt" value={d.name} onChange={(e) => world.edit({ ...d, name: e.target.value })} />
+        <TextField.Root className="wd-seed" aria-label="Notizen der Welt" placeholder="Notizen" value={d.notes} onChange={(e) => world.edit({ ...d, notes: e.target.value })} />
       </div>
       <FieldError world={world} island={-1} field="name" />
       <FieldError world={world} island={-1} field="islands" />
@@ -39,8 +40,8 @@ function IslandRow({ world, i }: { world: WorldDraftState; i: number }) {
   return (
     <li className="wd-island" data-island={i}>
       <div className="wd-bar">
-        <input className="wd-seed" aria-label={`Name Insel ${n}`} value={isl.name} onChange={(e) => set({ name: e.target.value })} />
-        <input className="wd-kind" aria-label={`ID Insel ${n}`} title="Insel-ID (a–z, 0–9, -); Spielstände verweisen darauf" value={isl.id} onChange={(e) => set({ id: e.target.value })} />
+        <TextField.Root className="wd-seed" aria-label={`Name Insel ${n}`} value={isl.name} onChange={(e) => set({ name: e.target.value })} />
+        <TextField.Root className="wd-kind" aria-label={`ID Insel ${n}`} title="Insel-ID (a–z, 0–9, -); Spielstände verweisen darauf" value={isl.id} onChange={(e) => set({ id: e.target.value })} />
         <Button variant="soft" aria-label={`Insel ${n} hoch`} disabled={i === 0} onClick={() => world.edit(moveIsland(d, i, -1))}>↑</Button>
         <Button variant="soft" aria-label={`Insel ${n} runter`} disabled={i === d.islands.length - 1} onClick={() => world.edit(moveIsland(d, i, 1))}>↓</Button>
         <Button variant="outline" color="red" aria-label={`Insel ${n} entfernen`} disabled={d.islands.length < 2} onClick={() => world.edit(removeIsland(d, i))}>×</Button>
@@ -49,20 +50,19 @@ function IslandRow({ world, i }: { world: WorldDraftState; i: number }) {
       <FieldError world={world} island={i} field="id" />
       <div className="wd-bar" role="group" aria-label={`Stufen Insel ${n}`}>
         {BIOMES.map((b) => (
-          <label key={b.depth}>
-            <input type="checkbox" aria-label={`Insel ${n} Tiefe ${b.depth}`} checked={isl.depths.includes(b.depth)} onChange={() => set({ depths: toggleDepth(isl.depths, b.depth) })} /> {b.name}
-          </label>
+          <CheckField key={b.depth} label={b.name} aria-label={`Insel ${n} Tiefe ${b.depth}`} checked={isl.depths.includes(b.depth)}
+            onCheckedChange={() => set({ depths: toggleDepth(isl.depths, b.depth) })} />
         ))}
       </div>
       <FieldError world={world} island={i} field="depths" />
       <FieldError world={world} island={i} field="plan" />
       <div className="wd-bar" role="group" aria-label={`Skalierung Insel ${n}`}>
         {FACTORS.map((f) => (
-          <label key={f.key}>
-            {f.label}{' '}
-            <input className="wd-slot" type="number" step="0.05" aria-label={`Insel ${n} ${f.label}`} value={isl.depthScaling[f.key]}
+          <Text as="label" size="2" key={f.key} className="wd-field">
+            {f.label}
+            <TextField.Root className="wd-slot" type="number" step="0.05" aria-label={`Insel ${n} ${f.label}`} value={isl.depthScaling[f.key]}
               onChange={(e) => { const v = Number(e.target.value); if (!Number.isNaN(v)) set({ depthScaling: { ...isl.depthScaling, [f.key]: v } }); }} />
-          </label>
+          </Text>
         ))}
       </div>
       <FieldError world={world} island={i} field="depthScaling" />

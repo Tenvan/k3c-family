@@ -2,12 +2,13 @@
 
 ## Responsibility
 
-Kleine, seitenunabhängige Hilfsfunktionen und React-Hooks von k3c-dev: deutsche Formatierung, gemerkte Einstellungen (Präfix) und Zeit-Hook. Fehlertext und Debounce kommen aus `tools/webkit` (`@webkit/errors`, `@webkit/useDebounced`).
+Kleine, seitenunabhängige Hilfsfunktionen und React-Hooks von k3c-dev: deutsche Formatierung, gemerkte Einstellungen (Präfix), Markdown-Parser und Zeit-Hook. Fehlertext, Debounce und Splitter-Rechnung kommen aus `tools/webkit` (`@webkit/lib/errors`, `@webkit/lib/useDebounced`, `@webkit/lib/split`).
 
 ## Design
 
 - Pure Utilities: `format.ts` (`formatNumber`, `formatPercent`, `formatBytes`, `formatUptime`, `formatDuration`, `formatTime`, de-DE, deckungsgleich mit den Go-Formatern in `internal/mcpsrv`).
-- Persistenz: `prefs.ts` bindet `createPrefs('k3c-dev.')` aus `@webkit/prefs` (`loadPref`, `loadText`, `savePref`, `loadJSON`, `saveJSON`, `isStringList`; Favoriten, Eingeklapptes, Splitter). Freitext-Filter werden nicht gemerkt.
+- Persistenz: `prefs.ts` bindet `createPrefs('k3c-dev.')` aus `@webkit/lib/prefs` (`loadPref`, `loadText`, `savePref`, `loadJSON`, `saveJSON`, `isStringList`; Favoriten, Eingeklapptes) und `prefsStore` (`{ loadText, savePref }` für `useSplit`). Freitext-Filter werden nicht gemerkt.
+- `markdown.ts` (+ Test): Markdown-Teilmenge -> Block-/Inline-Baum (`parseMarkdown`, `parseInline`), gezeichnet von `ui/molecules/MarkdownView`; lag früher in `mcp/`.
 - Hooks: `useNow.ts` (Intervall-Timestamp).
 
 ## Flow
@@ -19,5 +20,5 @@ Kleine, seitenunabhängige Hilfsfunktionen und React-Hooks von k3c-dev: deutsche
 
 ## Integration
 
-- Konsumenten: `App.tsx`, `logs/`, `mcp/`, `planning/`, `services/`, `tasks/`.
+- Konsumenten: `App.tsx`, `logs/`, `mcp/`, `planning/`, `services/`, `tasks/`, `ui/`.
 - Abhängigkeiten: `react`, Browser-APIs (`localStorage`, `Intl`), `tools/webkit`; keine Importe aus anderen `src/`-Ordnern.

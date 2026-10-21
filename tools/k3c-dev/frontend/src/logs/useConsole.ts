@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { backend, type ConsoleLine } from '../api';
-import { errorText } from '@webkit/errors';
+import { errorText } from '@webkit/lib/errors';
 import { mergeLines } from './lines';
 
 export interface ConsoleState {

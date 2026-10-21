@@ -1,5 +1,5 @@
-import { Checkbox } from '@radix-ui/themes';
 import { backend, type GitHubSprint, type PlanSession, type PlanSprint } from '../api';
+import { Checkbox, LinkButton } from '@webkit/atoms';
 import { FoldButton, headClick, useFold } from './fold';
 import { ModePill, Pill, sessionTone, specTone, stateTone } from './Pill';
 import { ghBadges, isNext } from './planning';
@@ -102,9 +102,9 @@ function GitHubRow({ pr }: { pr: GitHubSprint }) {
   const [first, ...rest] = ghBadges(pr);
   return (
     <div className="pl-gh">
-      <button type="button" className="pl-link" title={`${pr.title} – auf GitHub öffnen`} onClick={() => backend.openUrl(pr.url)}>
+      <LinkButton underline="none" title={`${pr.title} – auf GitHub öffnen`} onClick={() => backend.openUrl(pr.url)}>
         <Pill tone={first.tone}>{first.label}</Pill>
-      </button>
+      </LinkButton>
       {rest.map((b) => <Pill key={b.label} tone={b.tone}>{b.label}</Pill>)}
     </div>
   );

@@ -25,12 +25,6 @@
 .pl-ellipsis { min-width: 0; max-width: 40ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pl-push { margin-left: auto; }
 
-/* Splitter: 8 px Griff mit dezenter Linie, beim Zeigen Akzentfläche (wie components/Splitter.css in erp-qs). */
-.pl-split-v, .pl-split-h { flex: 0 0 8px; border-radius: 999px; touch-action: none; transition: background 120ms ease-out; }
-.pl-split-v { margin: 0 -2px; cursor: col-resize; background: linear-gradient(to right, transparent 3px, var(--gray-a5) 3px 5px, transparent 5px); }
-.pl-split-h { margin: -2px 0; cursor: row-resize; background: linear-gradient(to bottom, transparent 3px, var(--gray-a5) 3px 5px, transparent 5px); }
-.pl-split-v:hover, .pl-split-h:hover { background: var(--accent-a8); }
-
 /* GitHub-Leiste und Filterleiste: drei Bereiche nach Wirkung, darunter die Chips; alles bricht um. */
 .pl-ghbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 .pl-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); padding: var(--space-2) var(--space-3);
@@ -41,23 +35,13 @@
 .pl-tb-count { margin-left: auto; padding-left: var(--space-3); color: var(--gray-11); font-variant-numeric: tabular-nums; }
 .pl-tb-chips { display: flex; flex: 1 1 100%; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); min-width: 0; }
 .pl-tb-hits { margin-left: auto; color: var(--gray-11); font-size: var(--font-size-1); }
-.pl-fchip { display: inline-flex; align-items: center; gap: var(--space-1); max-width: 100%; padding: 0 var(--space-1) 0 var(--space-2);
-  border: 1px solid var(--accent-a7); border-radius: 999px; background: var(--accent-a3); color: var(--accent-12); font-size: var(--font-size-1); font-weight: 500; }
-.pl-fchip-group { color: var(--accent-11); font-weight: 400; }
+.pl-fchip { max-width: 100%; }
+.pl-fchip-group { font-weight: 400; }
 
-/* Pill: runde Marke mit Farbpunkt; Schrift gray-12, die Farbe tragen Punkt und Rand. */
-.pl-pill { display: inline-flex; flex: none; align-items: center; gap: 5px; padding: 1px 9px; border: 1px solid var(--pill-line, var(--gray-a6));
-  border-radius: 999px; color: var(--gray-12); font-size: var(--font-size-1); line-height: 1.6; white-space: nowrap; }
-.pl-pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--pill-dot, var(--gray-9)); }
-.pl-pill.is-ok { --pill-dot: var(--green-9); --pill-line: var(--green-a6); }
-.pl-pill.is-info { --pill-dot: var(--blue-9); --pill-line: var(--blue-a6); }
-.pl-pill.is-warn { --pill-dot: var(--amber-9); --pill-line: var(--amber-a7); }
-.pl-pill.is-error { --pill-dot: var(--red-9); --pill-line: var(--red-a6); }
-.pl-pill.is-violet { --pill-dot: var(--violet-9); --pill-line: var(--violet-a6); }
+/* Pill (Radix Badge mit Punkt): steht nie umgebrochen. */
+.pl-pill { flex: none; white-space: nowrap; }
 .pl-pills { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 6px; flex: 0 1 auto; min-width: 0; max-width: 100%;
   padding-right: var(--space-1); }
-.pl-link { all: unset; cursor: pointer; border-radius: 999px; }
-.pl-link:focus-visible { outline: 2px solid var(--accent-8); }
 
 /* Ebenen der Projekt-Spalte: Projekt = getönte Fläche mit Akzentkante, Sprint = ruhiges Panel, Session = Zeile. */
 .pl-card { flex: none; border: 1px solid var(--gray-a5); border-radius: var(--radius-4); background: var(--color-panel-solid); }
@@ -78,19 +62,11 @@
 .pl-next { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: var(--font-size-1); }
 .pl-project-foot { overflow: hidden; color: var(--gray-11); font-size: var(--font-size-1); text-overflow: ellipsis; white-space: nowrap; }
 .pl-area-head { align-items: center; }
-.pl-abn-row { all: unset; cursor: pointer; font-size: var(--font-size-1); border-radius: 4px; padding: 1px 4px; }
-.pl-abn-row:hover { background: var(--gray-a3); }
+.pl-abn-row { margin: 0; justify-content: flex-start; }
 .pl-folded-list { display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-2); }
-.pl-fold { flex: none; width: 20px; height: 20px; padding: 0; border: 0; border-radius: 4px; background: transparent; color: var(--gray-11);
-  font-size: 13px; line-height: 1; cursor: pointer; }
-.pl-fold:hover { background: var(--gray-a4); color: var(--gray-12); }
+.pl-fold { flex: none; margin: 0; }
 .pl-chips { display: flex; flex-wrap: wrap; gap: 4px; }
-.pl-chip { padding: 2px 8px; border: 1px solid var(--gray-a6); border-radius: 4px; background: var(--color-panel-solid); color: var(--gray-12);
-  font: 600 11px var(--code-font-family); cursor: pointer; }
-.pl-chip:hover { border-color: var(--accent-8); }
-.pl-chip.is-aktiv { border-color: var(--accent-9); color: var(--accent-11); }
-.pl-chip.is-blockiert { border-color: var(--amber-9); color: var(--amber-11); }
-.pl-chip.is-erledigt { border-color: var(--green-a7); color: var(--green-11); }
+.pl-chip { font-family: var(--code-font-family); }
 .pl-bar { display: flex; flex: none; height: 4px; overflow: hidden; border-radius: 2px; background: var(--gray-a4); }
 .pl-bar.is-thin { height: 3px; }
 .pl-bar .is-done { background: var(--green-9); }
@@ -127,11 +103,6 @@
 .pl-picked { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 4px 6px; border-radius: var(--radius-2); background: var(--accent-a3); }
 .pl-deps { font-size: 12px; color: var(--dim); white-space: nowrap; }
 .pl-deps.is-tickets { white-space: normal; }
-.pl-dep, .pl-textlink { all: unset; cursor: pointer; color: var(--accent-11); }
-.pl-dep:hover, .pl-textlink:hover { text-decoration: underline; }
-.pl-dep:focus-visible, .pl-textlink:focus-visible { outline: 2px solid var(--accent-8); }
-.pl-textlink { font-size: var(--font-size-1); }
-.pl-deps.is-tickets .pl-dep { padding: 0 5px; border: 1px solid var(--gray-a6); border-radius: 4px; font: 600 11px var(--code-font-family); white-space: nowrap; }
 
 /* Rechte Spalte: Backlog über Detail; mit Detail teilen beide die Höhe im gemerkten Verhältnis (--pl-detail, 20 … 80). */
 .pl-side-backlog, .pl-side-detail { display: flex; flex: 1 1 0; flex-direction: column; min-height: 0; }
@@ -142,7 +113,6 @@
 .pl-bl-bar .rt-SelectTrigger { max-width: 100%; }
 .pl-bl-list { container: pl-backlog / inline-size; flex: 1 1 auto; min-height: 0; overflow-y: auto; }
 .pl-bl-domain-head { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2) 6px 4px 0; }
-.pl-bl-domain-name { all: unset; cursor: pointer; font-size: var(--font-size-3); font-weight: 700; }
 .pl-bl-list ul { margin: 0 0 0 var(--space-6); padding: 0 0 0 var(--space-2); border-left: 1px solid var(--gray-a7); list-style: none; }
 .pl-bl-ticket { display: grid; grid-template-columns: 18px auto minmax(8rem, max-content) minmax(14rem, 1fr) auto; gap: 8px; align-items: center;
   padding: 4px 6px; border: 1px solid transparent; border-radius: var(--radius-2); cursor: pointer; }
@@ -167,8 +137,6 @@
 .pl-facts li + li { margin-top: 2px; }
 .pl-detail-list { display: flex; flex-direction: column; gap: 6px; margin: var(--space-2) 0 0; padding: 0; list-style: none; font-size: var(--font-size-2); }
 .pl-detail-list li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: start; }
-.pl-detail-link { all: unset; cursor: pointer; color: var(--gray-12); }
-.pl-detail-link:hover { color: var(--accent-11); text-decoration: underline; }
 .pl-md { line-height: 1.5; font-size: 13px; }
 .pl-md h3, .pl-md h4, .pl-md h5 { margin: 1em 0 0.3em; font-size: 14px; color: var(--title); }
 

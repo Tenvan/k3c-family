@@ -1,8 +1,10 @@
-import { Callout, Dialog, Flex, IconButton, Progress, Text, TextField } from '@radix-ui/themes';
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode, type RefObject } from 'react';
 import { backend } from '../api';
-import { errorText } from '@webkit/errors';
-import { MarkdownView } from '../ui/MarkdownView';
+import { Button, Flex, IconButton, Progress, Text, TextField } from '@webkit/atoms';
+import { errorText } from '@webkit/lib/errors';
+import { Callout } from '@webkit/molecules';
+import { Dialog } from '@webkit/organisms';
+import { MarkdownView } from '../ui/molecules/MarkdownView';
 import { CopyPrompt } from './PromptParts';
 import { parseDoc, type ReaderSection } from './readerDoc';
 
@@ -206,8 +208,8 @@ function ReaderToc({ toc, active, jump }: { toc: ReaderSection[]; active: string
     <nav aria-label="Inhalt" className="pl-reader-toc">
       <Text as="div" size="1" color="gray" weight="medium" className="pl-reader-toc-label">Inhalt</Text>
       {toc.map((s) => (
-        <button key={s.id} type="button" className={s.id === active ? 'is-active' : undefined}
-          aria-current={s.id === active ? 'location' : undefined} onClick={() => jump(s.id)}>{s.title}</button>
+        <Button key={s.id} size="2" variant={s.id === active ? 'soft' : 'ghost'} color={s.id === active ? undefined : 'gray'} className="pl-reader-toc-item"
+          aria-current={s.id === active ? 'location' : undefined} onClick={() => jump(s.id)}>{s.title}</Button>
       ))}
     </nav>
   );

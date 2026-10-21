@@ -1,6 +1,6 @@
 // Reine Logik der Ansicht „Sprints & Backlog“: Filter, Gruppierung, nächste Session. Kein React, damit Vitest sie prüft.
 import type { GitHubSprint, PlanProject, PlanSession, PlanSprint, PlanTicket, PlanningData } from '../api';
-import type { Tone } from '@webkit/parts';
+import type { Tone } from '@webkit/atoms';
 
 /** Filter und Auswahl; überleben das Neuladen nach `planning:changed` und werden gemerkt (lib/prefs). */
 export interface PlanFilter {

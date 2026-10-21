@@ -7,6 +7,8 @@ import { backend } from '../api';
 import { mockWorldLevel } from '../api/mockWorld';
 import { WorldPage } from './WorldPage';
 import { DEFAULT_SCALE, MAX_SCALE, scaleOfPercent } from './viewState';
+import { pickWhere } from '../../../../webkit/testing/options';
+import { pickOption } from '../../../../webkit/testing/select';
 
 // Die Phaser-Bühne braucht ein Canvas; ihr Zusammenspiel prüft LivePreview.test.tsx mit einer Attrappe.
 const views: { left: number; scale: number }[] = [];
@@ -54,10 +56,17 @@ const altWheel = (send: (e: WheelEvent) => void, deltaY: number) => {
 const stripScale = (h: HTMLElement) => stripWidth(h) / Number(h.querySelector('.wd-note')!.textContent!.match(/(\d+) Units/)![1]);
 const chunkCenter = (h: HTMLElement) => h.querySelector<HTMLElement>('.wd-viewport')!.scrollLeft / stripScale(h) + 1000 / stripScale(h) / 2;
 const liveCenter = () => views.at(-1)!.left + 1000 / views.at(-1)!.scale / 2;
-const setInput = (el: HTMLInputElement, value: string) => act(async () => {
-  Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(el, value);
-  el.dispatchEvent(new Event('input', { bubbles: true }));
-});
+/** Zoom-Regler (Radix Slider, Schritt 0,5) per Tastatur auf `target`: Bild auf/ab = fünf, Pfeile = ein halber Punkt */
+async function zoomTo(h: HTMLElement, target: number) {
+  const thumb = h.querySelector<HTMLElement>('[aria-label="Zoom"] [role="slider"]')!;
+  let now = Number(thumb.getAttribute('aria-valuenow'));
+  for (let step = 0; now !== target; step++, now = Number(thumb.getAttribute('aria-valuenow'))) {
+    if (step > 200) throw new Error(`Zoom ${target} nicht erreicht (steht auf ${now})`);
+    const far = Math.abs(target - now) >= 5;
+    const key = target > now ? (far ? 'PageUp' : 'ArrowRight') : (far ? 'PageDown' : 'ArrowLeft');
+    await act(async () => thumb.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true })));
+  }
+}
 
 afterEach(() => {
   views.length = 0;
@@ -119,11 +128,10 @@ describe('Seite Welt-Betrachter: gemeinsame Ansicht (B-477/AC-01 bis AC-03)', ()
   it('der Zoom-Regler und die festen Stufen setzen den Maßstab für beide (B-477/AC-03)', async () => {
     const h = await mount();
     const units = mockWorldLevel('k3c', { biome: 'forest' }).widthUnits;
-    await setInput(h.querySelector<HTMLInputElement>('input[aria-label="Zoom"]')!, '20');
+    await zoomTo(h, 20);
     expect(stripWidth(h)).toBe(units * 20);
     expect(views.at(-1)!.scale).toBe(20);
-    const select = h.querySelector<HTMLSelectElement>('select[aria-label="Zoomstufe"]')!;
-    await act(async () => { select.value = '50'; select.dispatchEvent(new Event('change', { bubbles: true })); });
+    await pickOption(h, 'Zoomstufe', '50 %');
     expect(stripWidth(h)).toBe(units * scaleOfPercent(50));
     expect(views.at(-1)!.scale).toBe(scaleOfPercent(50));
   });
@@ -282,8 +290,7 @@ describe('Seite Welt-Betrachter: getrennter Zoom, gemeinsame Mitte (B-485/AC-05)
     altWheel((e) => h.querySelector('.wd-viewport')!.dispatchEvent(e), 100);
     const [chunk, live] = [stripScale(h), views.at(-1)!.scale];
     expect(chunk).not.toBe(live);
-    const stufe = h.querySelector<HTMLSelectElement>('select[aria-label="Stufe"]')!;
-    await act(async () => { stufe.value = '2'; stufe.dispatchEvent(new Event('change', { bubbles: true })); });
+    await pickWhere(h, 'Stufe', (t) => t.startsWith('Stufe 3 '));
     await flush();
     expect(h.querySelector('[role="status"]')!.textContent).not.toContain('forest');
     expect(stripScale(h)).toBeCloseTo(chunk);

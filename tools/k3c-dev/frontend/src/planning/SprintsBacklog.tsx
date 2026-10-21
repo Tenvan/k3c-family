@@ -1,10 +1,10 @@
-import { Text } from '@radix-ui/themes';
 import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { backend, type PlanningData, type PlanSprint } from '../api';
-import { errorText } from '@webkit/errors';
-import { loadText, savePref } from '../lib/prefs';
-import { Splitter, useSplit } from '../tasks/TaskBars';
-import { NoticeCard } from '@webkit/parts';
+import { LinkButton, Splitter, Text } from '@webkit/atoms';
+import { errorText } from '@webkit/lib/errors';
+import { useSplit } from '@webkit/lib/split';
+import { NoticeCard } from '@webkit/molecules';
+import { loadText, prefsStore, savePref } from '../lib/prefs';
 import { BacklogView, useTarget } from './Backlog';
 import { PlanDetail } from './Detail';
 import { foldAll, unfold } from './fold';
@@ -33,8 +33,8 @@ export function SprintsBacklog() {
   const [filter, setFilterState] = useState<PlanFilter>(() => parseFilter(loadText(PREF, '{}')));
   const [gh, reloadGh] = useGitHub();
   const [checked, setChecked] = useState<ReadonlySet<string>>(new Set()); // markierte Sessions (Nr.)
-  const [cols, setCols, resetCols] = useSplit('planning.split.cols', 50);
-  const [rows, setRows, resetRows] = useSplit('planning.split', SPLIT_DEFAULT);
+  const [cols, setCols, resetCols] = useSplit(prefsStore, 'planning.split.cols', 50);
+  const [rows, setRows, resetRows] = useSplit(prefsStore, 'planning.split', SPLIT_DEFAULT);
   const [, goal, choose] = useTarget((data?.sprints ?? []).filter((s) => s.status !== 'erledigt').map((s) => s.id));
   const setFilter = (f: PlanFilter) => {
     setFilterState(f);
@@ -91,7 +91,7 @@ export function SprintsBacklog() {
 function WorktreeNotice({ error, reload }: { error: string; reload: () => void }) {
   return (
     <Text size="1" color="gray" role="status">
-      Worktree-Pills nicht verfügbar: {error} <button type="button" className="pl-textlink" onClick={reload}>erneut prüfen</button>
+      Worktree-Pills nicht verfügbar: {error} <LinkButton size="1" onClick={reload}>erneut prüfen</LinkButton>
     </Text>
   );
 }
@@ -103,7 +103,7 @@ function PickedBar({ picked, data, onClear }: { picked: ReturnType<typeof openSe
     <div className="pl-picked">
       <Text size="1" weight="medium">{picked.length} Session{picked.length > 1 ? 's' : ''} markiert</Text>
       <CopyPrompt prompt={promptSessions(picked, data.projects)} what={`${picked.length} markierte Sessions`} />
-      <button type="button" className="pl-textlink" onClick={onClear}>Auswahl aufheben</button>
+      <LinkButton size="1" onClick={onClear}>Auswahl aufheben</LinkButton>
     </div>
   );
 }
@@ -161,8 +161,8 @@ function ColumnHead({ data, all, shown }: { data: PlanningData; all: PlanSprint[
         Sprints {shown.length} von {all.length} · {all.filter((s) => s.status === 'erledigt').length} erledigt
       </Text>
       <span className="pl-foldall">
-        <button type="button" className="pl-textlink" onClick={() => foldAll(ids, true)}>alle einklappen</button>
-        <button type="button" className="pl-textlink" onClick={() => foldAll(ids, false)}>alle aufklappen</button>
+        <LinkButton size="1" onClick={() => foldAll(ids, true)}>alle einklappen</LinkButton>
+        <LinkButton size="1" onClick={() => foldAll(ids, false)}>alle aufklappen</LinkButton>
       </span>
     </div>
   );

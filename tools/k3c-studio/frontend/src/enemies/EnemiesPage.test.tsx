@@ -7,6 +7,8 @@ import { backend } from '../api';
 import type { AssetSlot } from '../api';
 import type { FigureItem } from '../playback/figureView';
 import { BIOMES } from '@game/model/biome';
+import { optionTexts } from '../../../../webkit/testing/options';
+import { pickOption, selectedText } from '../../../../webkit/testing/select';
 import { EnemiesPage } from './EnemiesPage';
 
 // B-464 (WZ11.1) im DOM: Gegner-Seite mit einer Attrappe statt Phaser; die Bühne bekommt, was die Seite wählt.
@@ -35,9 +37,9 @@ async function mount(): Promise<HTMLElement> {
   return host;
 }
 
-const field = (h: HTMLElement, label: string) => h.querySelector<HTMLSelectElement>(`[aria-label="${label}"]`)!;
-async function choose(el: HTMLSelectElement, value: string) {
-  await act(async () => { el.value = value; el.dispatchEvent(new Event('change', { bubbles: true })); });
+/** Eintrag mit diesem Text in der Auswahl wählen */
+async function choose(h: HTMLElement, label: string, text: string) {
+  await pickOption(h, label, text);
   await flush();
 }
 
@@ -47,19 +49,18 @@ afterEach(() => { vi.restoreAllMocks(); act(() => root?.unmount()); host?.remove
 describe('Gegner-Seite (B-464/AC-01 bis AC-06, AC-13)', () => {
   it('zeigt die Gruppen je Biom nach Tiefe und als erste den Wald mit den Gegnern von Portal und Nacht', async () => {
     const h = await mount();
-    const group = field(h, 'Gruppe');
-    expect([...group.options].map((o) => o.textContent)).toEqual([...BIOMES].sort((a, b) => a.depth - b.depth).map((b) => b.name).concat('ohne Biom', 'Bosse (je Tiefe)'));
+    expect(await optionTexts(h, 'Gruppe')).toEqual([...BIOMES].sort((a, b) => a.depth - b.depth).map((b) => b.name).concat('ohne Biom', 'Bosse (je Tiefe)'));
     expect(lastItems().map((i) => i.id)).toEqual(['enemy-greed', 'enemy-goblin', 'enemy-goblinArcher', 'enemy-wolf']);
     expect([...h.querySelectorAll('.wd-card')].map((c) => (c as HTMLElement).dataset.enemy)).toEqual(['greed', 'goblin', 'goblinArcher', 'wolf']);
   });
 
   it('Gruppe „ohne Biom“ zeigt alphaWolf; Animation, Getroffen und Sterben gehen an die Bühne', async () => {
     const h = await mount();
-    await choose(field(h, 'Gruppe'), 'none');
+    await choose(h, 'Gruppe', 'ohne Biom');
     expect(lastItems().some((i) => i.id === 'enemy-alphaWolf')).toBe(true);
-    await choose(field(h, 'Animation'), 'attack');
+    await choose(h, 'Animation', 'attack');
     expect(lastItems().every((i) => i.anim === 'attack')).toBe(true);
-    await choose(field(h, 'Aktion'), 'kill');
+    await choose(h, 'Aktion', 'Sterben');
     expect(lastItems()[0]!.effect).toEqual({ kind: 'kill' });
     expect(h.querySelector('.wd-bar')!.textContent).toContain('Sterbe-Animation');
   });
@@ -84,16 +85,15 @@ describe('Gegner-Seite (B-464/AC-01 bis AC-06, AC-13)', () => {
     vi.spyOn(backend, 'assetsList').mockResolvedValue({ slots, error: '', preview: '/', stand: 's' });
     const set = vi.spyOn(backend, 'assetsSet');
     const h = await mount();
-    const pick = field(h, 'Grafik greed');
-    expect(pick.value).toBe('0');
-    await choose(pick, '1');
+    expect(selectedText(h, 'Grafik greed')).toBe('Präferenz 1: goblin');
+    await choose(h, 'Grafik greed', 'Präferenz 2: hell-hound');
     expect(lastItems()[0]!.spec.sheet).toBe('hell-hound');
     expect(set).not.toHaveBeenCalled();
   });
 
   it('Gruppe „Bosse“: 6 Bosse mit Lücken der Anzeigen, Rückfall-Grafik und Fähigkeit', async () => {
     const h = await mount();
-    await choose(field(h, 'Gruppe'), 'bosse');
+    await choose(h, 'Gruppe', 'Bosse (je Tiefe)');
     expect(lastItems().map((i) => i.id)).toEqual(['goblinLeader', 'trollKing', 'ratQueen', 'lavaGolem', 'shardTitan', 'crystalHeartWarden'].map((id) => `enemy-${id}`));
     const goblin = h.querySelector('[data-enemy="goblinLeader"]')!;
     expect(goblin.textContent).toContain('Boss-Leiste');
@@ -110,10 +110,10 @@ describe('Gegner-Seite (B-464/AC-01 bis AC-06, AC-13)', () => {
 describe('Gegner-Seite: Zusatzfelder (B-464/AC-06)', () => {
   it('Zusatzfelder stehen an der Karte (Höhlentroll: aoe, Rattenschwarm: swarmSize) mit Lücke', async () => {
     const h = await mount();
-    await choose(field(h, 'Gruppe'), 'cave');
+    await choose(h, 'Gruppe', BIOMES.find((b) => b.id === 'cave')!.name);
     expect(h.querySelector('[data-enemy="caveTroll"] [data-extra="aoe"]')!.textContent).toContain('Radius 3');
     expect(h.querySelector('[data-enemy="caveTroll"] [data-extra="aoe"] .wd-gap')).not.toBeNull();
-    await choose(field(h, 'Gruppe'), 'mine');
+    await choose(h, 'Gruppe', BIOMES.find((b) => b.id === 'mine')!.name);
     expect(h.querySelector('[data-extra="swarmSize"]')).not.toBeNull();
   });
 });

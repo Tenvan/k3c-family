@@ -97,7 +97,10 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   wie k3c-dev mit gemerkter Größe und Position. Das Studio schreibt `data/**` und `public/`, der Server liest sie nur.
   `tools/assetkit` – gemeinsame Asset-Logik von k3c-dev und Studio (eigenes Go-Modul, per `replace` eingebunden). `tools/k3c-starter` – Windows-Starter für den Server (Wails-Fenster
   startet `bin/k3c-server`, zeigt Status und Adresse, EXE `bin/k3c-starter.exe`, `task k3c-starter:build`, B-041).
-  `tools/webkit` – gemeinsame Oberflächen-Bausteine der Frontends von k3c-dev und Studio (`@webkit/…`).
+  `tools/webkit` – gemeinsame Oberflächen-Bausteine aller Wails-Frontends (k3c-dev, Studio, Starter) als **Atomic Design** auf
+  Radix Themes: `lib/`, `atoms/`, `molecules/`, `organisms/`, `templates/` (`@webkit/<ebene>`); Seiten sind die Feature-Ordner der App.
+  Verbindlich für jedes Wails-Programm: Radix nur über `@webkit`, rohe Controls nur in `atoms/`, Importe nur nach unten
+  (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme, geprüft von `tests/atomicDesign.test.ts`).
   CLIs: `tools/atlas`, `tools/buildings` (`task gen:gebaeude`), `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`). `tools/watch` – `k3c-watch`, der Watcher der Tasks `k3c-server:dev` und `k3c-starter:dev`.
 - `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.
 - `src/online/` – Client des Go-Servers (`clientConnection.ts`, Version in `clientProtocol.ts`): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.

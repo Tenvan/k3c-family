@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { backend, type McpCall, type McpOverview, type McpUsage } from '../api';
-import { errorText } from '@webkit/errors';
+import { errorText } from '@webkit/lib/errors';
 
 // Daten der MCP-Seite (B-065): Übersicht, Aufruf-Log und Statistik. Kein Abfrage-Intervall: nach mcp:start und
 // mcp:call wird neu geladen, gebündelt, damit eine Flut von Aufrufen die Oberfläche nicht zudeckt.

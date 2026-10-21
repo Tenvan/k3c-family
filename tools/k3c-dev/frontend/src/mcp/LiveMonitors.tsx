@@ -1,6 +1,6 @@
-import { Flex, SegmentedControl } from '@radix-ui/themes';
 import { useState } from 'react';
 import type { ToolStats, UsageBucket } from '../api';
+import { Flex, SegmentedControl } from '@webkit/atoms';
 import { loadPref, savePref } from '../lib/prefs';
 import { useNow } from '../lib/useNow';
 import { LineChart } from './LineChart';

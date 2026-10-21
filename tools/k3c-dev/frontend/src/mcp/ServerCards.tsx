@@ -1,10 +1,9 @@
-import { Flex } from '@radix-ui/themes';
 import { useState } from 'react';
 import { backend, type McpOverview } from '../api';
-import { errorText } from '@webkit/errors';
+import { errorText } from '@webkit/lib/errors';
 import { formatNumber } from '../lib/format';
 import { useNow } from '../lib/useNow';
-import { ActionButton, StatusBadge, Tip } from '@webkit/parts';
+import { ActionButton, Flex, StatusBadge, Tip } from '@webkit/atoms';
 import { InstructionsDialog } from './InstructionsDialog';
 import { durationText, uptimeText, weightedAvg } from './overview';
 
