@@ -112,17 +112,34 @@ func diffData(base, wt Data) []Change {
 		func(old, p Project) []Change {
 			return append(changed("Projekt", p.ID, "Status", old.Status, p.Status), changed("Projekt", p.ID, "Rang", old.Rang, p.Rang)...)
 		})
-	cs = append(cs, diffByID("Sprint", base.Sprints, wt.Sprints, func(s Sprint) (string, string) { return s.ID, s.Title },
+	cs = append(cs, withNewSessions(diffByID("Sprint", base.Sprints, wt.Sprints, func(s Sprint) (string, string) { return s.ID, s.Title },
 		func(old, s Sprint) []Change {
 			out := append(changed("Sprint", s.ID, "Status", old.Status, s.Status), changed("Sprint", s.ID, "Projekt", old.Project, s.Project)...)
 			return append(out, diffSessions(old, s)...)
-		})...)
+		}), wt.Sprints)...)
 	cs = append(cs, diffByID("Ticket", base.Tickets, wt.Tickets, func(t Ticket) (string, string) { return t.Nr, t.Title },
 		func(old, t Ticket) []Change {
 			out := append(changed("Ticket", t.Nr, "Status", old.Status, t.Status), changed("Ticket", t.Nr, "Prio", old.Prio, t.Prio)...)
 			return append(out, changed("Ticket", t.Nr, "Sprint", old.Sprint, t.Sprint)...)
 		})...)
 	return withPlacement(cs, wt)
+}
+
+// withNewSessions hängt hinter jeden neuen Sprint seine Sessions als neu an (B-484); die Wurzel kennt keine davon.
+func withNewSessions(cs []Change, sprints []Sprint) []Change {
+	out := make([]Change, 0, len(cs))
+	for _, c := range cs {
+		out = append(out, c)
+		if c.Kind != "neu" {
+			continue
+		}
+		for _, s := range sprints {
+			if s.ID == c.ID {
+				out = append(out, diffSessions(Sprint{}, s)...)
+			}
+		}
+	}
+	return out
 }
 
 // withPlacement trägt bei neuen Sprints und Tickets Projekt (und Sprint des Tickets) ein, wie der Worktree sie führt.

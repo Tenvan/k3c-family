@@ -317,6 +317,8 @@ export interface PlanSession {
   env?: string;
   /** Feld „Domäne“ der Session-Datei: REG, SIM, SRV, CLI, PLAT, INF oder DEV. */
   domain?: string;
+  /** Branch des Worktrees, wenn der Eintrag nur dort existiert (nur lesend, B-483). */
+  wt?: string;
 }
 
 /** Aktiver, geplanter oder erledigter Sprint (Go: planning.Sprint); worktree = Branch eines Worktrees, der daran arbeitet. */
@@ -336,6 +338,8 @@ export interface PlanSprint {
   worktrees?: string[];
   /** Feld „Projekt“: Kürzel oder `–`. */
   project?: string;
+  /** Branch des Worktrees, wenn der Eintrag nur dort existiert (nur lesend, B-483). */
+  wt?: string;
 }
 
 /** Ticket aus docs/backlog (Go: planning.Ticket). */
@@ -352,6 +356,8 @@ export interface PlanTicket {
   spec: string;
   /** Feld „Projekt“: Kürzel oder `–`. */
   project?: string;
+  /** Branch des Worktrees, wenn der Eintrag nur dort existiert (nur lesend, B-483). */
+  wt?: string;
 }
 
 /** Projekt aus docs/projekte (Go: planning.Project); rang ist eine Zahl ab 1 oder `–` (ruht, erledigt, ABN). */
@@ -362,6 +368,8 @@ export interface PlanProject {
   rang: string;
   /** Sprint-IDs in Abarbeitungs-Reihenfolge (Tabelle des Projekts). */
   sprints: string[];
+  /** Branch des Worktrees, wenn der Eintrag nur dort existiert (nur lesend, B-483). */
+  wt?: string;
 }
 
 /** Daten der Ansicht „Sprints & Backlog“ (Go: planning.Data, dieselben wie plan_list); done zählt die erledigten Sprints. */

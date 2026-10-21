@@ -50,7 +50,7 @@ export function ProjectCard({ view, count, error, onMove, data, sel, onPick, ren
         <span className="pl-project-meta">
           Sprints {view.done}/{view.total}{chips.length < view.total ? ` · ${chips.length} sichtbar` : ''}
         </span>
-        {count !== undefined && <RankButtons view={view} count={count} onMove={onMove} />}
+        {count !== undefined && !p.wt && <RankButtons view={view} count={count} onMove={onMove} />}
         <span className="pl-pills">
           <WtPills item="Projekt" id={p.id} />
           <StatePill view={view} />
