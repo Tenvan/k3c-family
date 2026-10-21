@@ -34,7 +34,7 @@ Eine Abweichung lässt `npm test` scheitern.
 Entwürfe löschen laufen über die MCP-Tools `plan_list`, `plan_get`, `plan_create`, `plan_set`, `plan_section`,
 `plan_delete`; sie ziehen Index, Session-Tabelle, Fahrplan und Ordner selbst nach. Handarbeit an diesen Dateien ist nur
 der Rückfall, wenn k3c-dev nicht läuft; dann gelten die Regeln dieses Abschnitts wörtlich.
-**Glossar ist verbindlich.** [`glossar.md`](glossar.md) legt die Begriffe fest und wird vor jeder Session gelesen. Ein neuer
+**Glossar ist verbindlich.** [`glossar.md`](glossar.md) legt die Begriffe fest und wird beim Schreiben von Specs und Texten gelesen. Ein neuer
 Begriff kommt beim Planen zuerst ins Glossar, dann in Ticket, Sprint oder Regel. Reviews achten auf Begriffs-Treue: Abweichungen gleicht der Review-Commit an (kein schwerer Befund).
 
 ## Spec-Driven Development (SDD)
@@ -85,12 +85,14 @@ Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten 
    `Agent: autonom` und erledigten Abhängigkeiten. Gibt es dort keine, kommt das Projekt mit dem nächsten Rang. Die **Domäne** der Session darf nicht gesperrt sein:
    Steht auf einem anderen Sprint-Branch (`git ls-remote --heads origin 'sprint/*'`) eine Session derselben Domäne auf
    `in Arbeit`, die nächste passende Session nehmen. Gibt es keine: **nichts tun** und das melden.
+   **Kurzweg:** `plan_next` (k3c-dev) trifft diese Auswahl aus den lokalen Dateien und liefert Session, Kriterien und
+   „Parallel möglich“; die Sperre über `origin` (`ls-remote`) prüft der Agent selbst.
 2. Sprint-Branch auschecken (fehlt er: von `origin/develop` anlegen, die erste Session setzt `Start-Commit`).
    Session-Datei vollständig lesen, `Status: in Arbeit` setzen, committen und sofort `git push -u origin sprint/<präfix>`
    (beansprucht die Session; scheitert der Push, hat ein anderer Lauf sie: neu holen und bei 1. beginnen).
 3. Nur die **Erlaubten Dateien** ändern. Die **Schritte** der Reihe nach ausführen, **Nicht-Ziele** einhalten.
-4. Alles unter **Fertig, wenn** abhaken, die Befehle unter **Prüfen** müssen grün sein. Maßstab sind die Kriterien
-   der Session in der Sprint-README (SDD), nicht eine eigene Auslegung.
+4. Alles unter **Fertig, wenn** abhaken, die Befehle unter **Prüfen** müssen grün sein (Prüfstufen: „Tempo im Lauf“).
+   Maßstab sind die Kriterien der Session in der Sprint-README (SDD), nicht eine eigene Auslegung.
 5. **Ergebnis** mit Nachweis je Kriterium ausfüllen, `Status: fertig` setzen, auch in der Session-Tabelle der Sprint-README. Neue Ideen oder
    Probleme als Ticket anlegen (Vorlage!) und in `backlog/README.md` eintragen. Gemeinsame Planungsdateien
    (`backlog/README.md`, `sprints/README.md`) erst am Ende ändern. Ein Commit mit Session im Titel
@@ -107,6 +109,30 @@ bisherigen Stand auf den Sprint-Branch pushen und einen **Entwurfs-PR** des Spri
 
 Eine Session pro Lauf. Eine Review-Session nie im selben Lauf wie eine Umsetzung. Sessions mit `Agent: Mensch`
 (Xbox-Test, Workshop, Spieleabend) nimmt ein Agent nicht; er darf sie nur vorbereiten, wenn die Datei das verlangt.
+
+### Tempo im Lauf (B-518)
+
+Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und Freigaben. Deshalb:
+
+- **Prüfstufen:** Während der Arbeit nur gezielte Tests (`go test ./engine/sim/ -run TestX`, `check_run go:test` oder
+  `task:test` mit `pattern`). Vor dem Commit **genau einmal** `task check:diff`: Es wählt Client, Go, k3c-dev, Studio und
+  Starter nach dem Diff zu `origin/develop`. Den vollen Satz (`task check`, `task check:go`, `task check:race`) fährt nur
+  die Review-Session, `task check:all` nur der Release. Ein roter Lauf wird behoben und einmal wiederholt, nicht
+  mehrfach „zur Sicherheit“.
+- **Review in der Umsetzung:** nur bei Domäne SIM oder SRV, bei Protokoll- oder Spielstand-Änderungen, bei Code mit
+  Shell-Aufrufen, Pfaden oder Eingaben von außen oder ab etwa 150 geänderten Code-Zeilen. Ein Reviewer (Sonnet; Opus nur bei Protokoll, Spielstand oder Nebenläufigkeit), Maßstab wie in
+  der Review-Session (nur schwere Befunde). Er startet im Hintergrund **parallel** zu `task check:diff`. Ein Fix unter
+  etwa 30 Zeilen bekommt kein zweites Review. Doku-, Planungs- und reine Werte-Sessions haben kein eigenes Review.
+- **Parallel statt nacheinander:** Unabhängige Teile einer Session laufen als parallele Agenten in getrennten Dateien
+  (z. B. Kontext erheben ∥ Tests schreiben ∥ Umsetzung). Sessions verschiedener Domänen ohne gegenseitige Abhängigkeit
+  dürfen parallel laufen (`plan_next` › „Parallel möglich“): `offline` im eigenen Worktree, `live` im Checkout.
+- **Kein Polling:** Lange Läufe im Hintergrund mit Benachrichtigung (`run_in_background`); `check_run` mit Lauf-ID
+  und `sim_test status` nur einmal nach der erwarteten Dauer abfragen. Keine `sleep`-Schleifen; Messreihen höchstens drei Läufe;
+  `sim_test` immer mit Dauer und Abbruchkriterium.
+- **Planung in wenigen Aufrufen:** mehrere Abschnitte mit `plan_sections`. Das Ergebnis nennt je Kriterium höchstens
+  zwei Zeilen; Einzelheiten stehen im Commit und im Code.
+- **Lesen nach Bedarf:** Session und Kriterien liefert `plan_next`; das Glossar beim Schreiben von Specs und Texten,
+  `codemap.md` nur für unbekannte Bereiche.
 
 ## Domänen
 
@@ -204,7 +230,7 @@ Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchsta
 Leicht und billig: Die Automatik prüft die Komplexität, das Review sucht nur **schwere Fehler**. Ein günstiges
 Modell (z. B. Sonnet) reicht.
 
-1. `task check` und `task check:go` → grün. Damit gelten die Grenzen aus dem Komplexitäts-Budget als geprüft.
+1. `task check`, `task check:go` und `task check:race` → grün. Damit gelten die Grenzen aus dem Komplexitäts-Budget als geprüft.
 2. `git fetch && git diff origin/develop...origin/sprint/<präfix>` lesen (alles, was der Sprint ändert, in **allen**
    Domänen seiner Sessions), **nur den Diff**, nicht jede Datei vollständig.
 3. Nur diese Befunde zählen:

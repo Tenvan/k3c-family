@@ -129,18 +129,46 @@ tasks:
   # --- Prüfen: ein Name je Projekt, `check` ist der Client -----------------------------------------------------------
 
   check:
-    desc: Lint, Typecheck, Tests des Clients (vor jedem Abschluss)
-    cmds:
-      - task: lint
-      - task: typecheck
-      - task: test
+    desc: Lint, Typecheck, Tests des Clients parallel (vor jedem Abschluss)
+    deps: [lint, typecheck, test]
 
   check:go:
-    desc: Go-Tests, Race-Detector (falls möglich) und golangci-lint
+    desc: Go-Tests und golangci-lint (nacheinander wegen Wanduhr-Tests, B-284; Race-Detector getrennt in check:race, B-518)
     cmds:
       - task: go:test
-      - task: go:race
       - task: go:lint
+
+  check:race:
+    desc: Go-Race-Detector für engine/ (langsam; nur Review-Session, check:all und CI, B-518)
+    cmds:
+      - task: go:race
+
+  check:diff:
+    desc: Nur die Prüfungen, die der Diff zu origin/develop braucht (samt ungespeicherter Änderungen; vor jedem Commit, B-518)
+    cmds:
+      - cmd: |
+          # Nur sh und git: check_run startet task ohne Git-Bash-PATH (kein sort, awk, grep).
+          base=$(git merge-base origin/develop HEAD)
+          g=; d=; s=; p=
+          for f in $(git diff --name-only "$base"; git ls-files --others --exclude-standard); do
+            case "$f" in
+              engine/*|data/*|go.mod|go.sum) g=1; d=1; s=1; p=1 ;;
+              cmd/*|testdata/*|.golangci*|tools/atlas/*|tools/buildings/*|tools/cleanup/*|tools/ruletable/*|Taskfile.yml|.github/*) g=1 ;;
+              tools/webkit/*) d=1; s=1; p=1 ;;
+              tools/assetkit/*) d=1; s=1 ;;
+              tools/k3c-dev/*) d=1 ;;
+              tools/k3c-studio/*) s=1 ;;
+              tools/k3c-starter/*) p=1 ;;
+            esac
+          done
+          # check (19 s) immer: Repo-Regeln scannen auch Go, Protokoll-Testdaten und Wails-Frontends.
+          run="check"
+          [ -z "$g" ] || run="$run check:go"
+          [ -z "$d" ] || run="$run check:dev"
+          [ -z "$s" ] || run="$run check:studio"
+          [ -z "$p" ] || run="$run check:starter"
+          echo "🚦 check:diff → $run"
+          for t in $run; do task "$t" || exit 1; done
 
   check:dev:
     desc: k3c-dev prüfen (Frontend mit Vitest, go test, golangci-lint)
@@ -168,6 +196,7 @@ tasks:
       - task: check
       - task: build
       - task: check:go
+      - task: check:race
       - task: check:dev
       - task: check:studio
       - task: check:starter

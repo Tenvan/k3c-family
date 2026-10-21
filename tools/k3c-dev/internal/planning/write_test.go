@@ -82,6 +82,13 @@ func TestTicketAnlegenAendernArchivieren(t *testing.T) {
 	if text := doc(t, root, "backlog/B-002-neu.md"); !strings.Contains(text, "## Ausgangslage\n\nHeute fehlt es.\n\n### Detail\n\nmehr\n\n## Ziel") {
 		t.Fatalf("Abschnitt:\n%s", text)
 	}
+	out = must(t)(Sections(root, "B-002", map[string]string{"Ziel": "Es geht.", "Ausgangslage": "Neu."}))
+	if !strings.HasPrefix(out, "B-002 · Ausgangslage, Ziel ersetzt") {
+		t.Fatalf("Sections: %q", out)
+	}
+	if text := doc(t, root, "backlog/B-002-neu.md"); !strings.Contains(text, "## Ausgangslage\n\nNeu.\n\n## Ziel\n\nEs geht.\n\n## ") {
+		t.Fatalf("Abschnitte:\n%s", text)
+	}
 	must(t)(Set(root, "B-002", map[string]string{"Status": "erledigt"}))
 	if _, err := os.Stat(docsPath(root, "backlog/archiv/B-002-neu.md")); err != nil {
 		t.Fatal("nicht archiviert:", err)
@@ -171,6 +178,11 @@ func TestUngueltigeEingabeAendertNichts(t *testing.T) {
 		"Wert mit |":            func() error { _, err := Set(root, "X3", map[string]string{"Tickets": "B-001 | x"}); return err },
 		"Überschrift im Text":   func() error { _, err := Section(root, "X3", "Ziel", "## Neu"); return err },
 		"unbekannter Abschnitt": func() error { _, err := Section(root, "X3", "Pfad", "x"); return err },
+		"Sections mit unbekanntem": func() error {
+			_, err := Sections(root, "X3", map[string]string{"Ziel": "neu", "Pfad": "x"})
+			return err
+		},
+		"Sections leer":         func() error { _, err := Sections(root, "X3", nil); return err },
 		"freigegeben ohne Text": func() error { _, err := Set(root, "X3", map[string]string{"Spec": "freigegeben"}); return err },
 		"Ticket ohne Pflicht":   func() error { _, err := Create(root, NewDoc{Kind: "ticket", Slug: "a", Title: "x"}); return err },
 		"Sprint doppelt": func() error {

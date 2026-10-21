@@ -214,15 +214,26 @@ func followSprint(c *changeSet, r ref, text string) error {
 
 // Section ersetzt den Inhalt des Abschnitts `## <name>`; der Abschnitt muss in der Vorlage stehen.
 func Section(root, id, name, body string) (string, error) {
+	return Sections(root, id, map[string]string{name: body})
+}
+
+// Sections ersetzt mehrere Abschnitte `## <name>` in einem Schreibvorgang (B-518). Erst werden alle Texte und Namen
+// geprüft; ein unbekannter Abschnitt lässt die Datei unverändert.
+func Sections(root, id string, bodies map[string]string) (string, error) {
+	if len(bodies) == 0 {
+		return "", fmt.Errorf("keine Abschnitte angegeben")
+	}
 	writeMu.Lock()
 	defer writeMu.Unlock()
 	r, err := resolve(root, id)
 	if err != nil {
 		return "", err
 	}
-	for _, l := range splitLines(body) {
-		if strings.HasPrefix(l, "# ") || strings.HasPrefix(l, "## ") {
-			return "", fmt.Errorf("der Text darf keine Überschrift `#`/`##` enthalten (Unterüberschriften ab `###`)")
+	for _, body := range bodies {
+		for _, l := range splitLines(body) {
+			if strings.HasPrefix(l, "# ") || strings.HasPrefix(l, "## ") {
+				return "", fmt.Errorf("der Text darf keine Überschrift `#`/`##` enthalten (Unterüberschriften ab `###`)")
+			}
 		}
 	}
 	c := newChangeSet(root)
@@ -231,10 +242,48 @@ func Section(root, id, name, body string) (string, error) {
 		return "", err
 	}
 	lines := splitLines(text)
-	start := slices.Index(lines, "## "+name)
-	if start < 0 {
-		return "", fmt.Errorf("den Abschnitt %q gibt es in %s nicht", name, r.id)
+	names, err := sectionNames(lines, r.id, bodies)
+	if err != nil {
+		return "", err
 	}
+	for _, name := range names {
+		lines = replaceSection(lines, name, bodies[name])
+	}
+	c.write(r.rel, strings.TrimRight(joinLines(lines), "\n")+"\n")
+	return r.id + " · " + strings.Join(names, ", ") + " ersetzt: docs/" + r.rel, c.apply()
+}
+
+// sectionNames prüft, dass es jeden Abschnitt gibt, und liefert die Namen in der Reihenfolge der Datei.
+func sectionNames(lines []string, id string, bodies map[string]string) ([]string, error) {
+	names := make([]string, 0, len(bodies))
+	var missing []string
+	for name := range bodies {
+		if slices.Contains(lines, "## "+name) {
+			names = append(names, name)
+		} else {
+			missing = append(missing, fmt.Sprintf("%q", name))
+		}
+	}
+	if len(missing) > 0 {
+		sort.Strings(missing)
+		var have []string
+		for _, l := range lines {
+			if h, ok := strings.CutPrefix(l, "## "); ok {
+				have = append(have, h)
+			}
+		}
+		return nil, fmt.Errorf("unbekannter Abschnitt %s in %s, nichts geändert (vorhanden: %s)",
+			strings.Join(missing, ", "), id, strings.Join(have, ", "))
+	}
+	sort.Slice(names, func(i, j int) bool {
+		return slices.Index(lines, "## "+names[i]) < slices.Index(lines, "## "+names[j])
+	})
+	return names, nil
+}
+
+// replaceSection ersetzt den Inhalt unter `## <name>` bis zur nächsten `## `-Überschrift.
+func replaceSection(lines []string, name, body string) []string {
+	start := slices.Index(lines, "## "+name)
 	end := start + 1
 	for end < len(lines) && !strings.HasPrefix(lines[end], "## ") {
 		end++
@@ -243,7 +292,5 @@ func Section(root, id, name, body string) (string, error) {
 	if end < len(lines) {
 		repl = append(repl, "")
 	}
-	lines = append(lines[:start], append(repl, lines[end:]...)...)
-	c.write(r.rel, strings.TrimRight(joinLines(lines), "\n")+"\n")
-	return r.id + " · " + name + " ersetzt: docs/" + r.rel, c.apply()
+	return append(lines[:start], append(repl, lines[end:]...)...)
 }

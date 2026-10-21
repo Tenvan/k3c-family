@@ -5,8 +5,13 @@
       "Bash(git worktree unlock *)",
       "Bash(git worktree prune)",
       "Bash(git branch -D *)",
-      "Bash(git push origin --delete *)"
+      "Bash(git push origin --delete *)",
+      "Bash(task check*)",
+      "mcp__k3c-dev"
     ]
+  },
+  "enabledPlugins": {
+    "security-guidance@claude-plugins-official": false
   },
   "enabledMcpjsonServers": [
     "k3c-dev"

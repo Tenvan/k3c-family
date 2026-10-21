@@ -24,6 +24,11 @@ type planSectionIn struct {
 	Text    string `json:"text" jsonschema:"neuer Inhalt (Markdown, Unterüberschriften ab ###)"`
 }
 
+type planSectionsIn struct {
+	ID       string            `json:"id" jsonschema:"Ticket B-123, Sprint M8, Session M8.1 oder Projekt GRA"`
+	Sections map[string]string `json:"sections" jsonschema:"Abschnitt der Vorlage ohne ## → neuer Inhalt (Markdown, Unterüberschriften ab ###), z. B. {\"Ziel\": \"…\", \"Kontext\": \"…\"}"`
+}
+
 type ghStatusIn struct {
 	Force bool `json:"force,omitempty" jsonschema:"Zwischenspeicher (60 s) umgehen"`
 }
@@ -38,28 +43,13 @@ type planCreateIn struct {
 
 // registerPlanning sind die Planungs-Tools (B-210): lesen und schreiben docs/sprints und docs/backlog.
 func registerPlanning(s *Server) {
+	registerPlanRead(s)
 	closed, destructive, yes := false, false, true
 	write := &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed}
 	add(s, &mcp.Tool{
-		Name: "plan_list",
-		Description: "Sprints mit Sessions und Tickets als je eine Zeile, filterbar nach kind, status, domain, sprint, projekt; " +
-			"archive mit erledigten Tickets. Sprints mit Projekt nach Rang und Platz im Projekt, ohne Projekt dahinter. " +
-			"kind projekt: Projekte nach Rang mit Sprints und Fortschritt. " +
-			"Nutze es bei: Überblick über Sprints, Sessions und Tickets. Statt: docs/sprints und docs/backlog durchsuchen.",
-		Annotations: readOnly(),
-	}, func(ctx context.Context, in planning.Filter) (string, error) {
-		return planning.List(s.ws(ctx).root, in)
-	})
-	add(s, &mcp.Tool{
-		Name: "plan_get",
-		Description: "Ein Ticket, eine Sprint-README, eine Session oder ein Projekt als Markdown, mit Pfad in der ersten Zeile. " +
-			"Nutze es bei: eine Planungsdatei lesen. Statt: Datei suchen und lesen.",
-		Annotations: readOnly(),
-	}, func(ctx context.Context, in planIDIn) (string, error) { return planning.Get(s.ws(ctx).root, in.ID) })
-	add(s, &mcp.Tool{
 		Name: "plan_create",
 		Description: "Legt Ticket (nächste Nummer, Index), Sprint (in geplant/, Fahrplan), Session (Session-Tabelle) oder " +
-			"Projekt (docs/projekte, Übersicht, Rang = letzter + 1) als Kopie der Vorlage an. Inhalte danach mit plan_section füllen. " +
+			"Projekt (docs/projekte, Übersicht, Rang = letzter + 1) als Kopie der Vorlage an. Inhalte danach mit plan_sections füllen. " +
 			"Nutze es bei: neues Ticket, neuer Sprint, neue Session, neues Projekt. Statt: Vorlage von Hand kopieren.",
 		Annotations: write,
 	}, func(ctx context.Context, in planCreateIn) (string, error) {
@@ -85,6 +75,15 @@ func registerPlanning(s *Server) {
 		return planning.Section(s.ws(ctx).root, in.ID, in.Section, in.Text)
 	})
 	add(s, &mcp.Tool{
+		Name: "plan_sections",
+		Description: "Ersetzt mehrere Abschnitte (## Name) eines Tickets, Sprints, einer Session oder eines Projekts in einem Aufruf; " +
+			"erst werden alle Abschnitte geprüft, ein unbekannter bricht ab, ohne etwas zu schreiben. " +
+			"Nutze es bei: Spec oder Session mit mehreren Abschnitten füllen. Statt: plan_section je Abschnitt.",
+		Annotations: write,
+	}, func(ctx context.Context, in planSectionsIn) (string, error) {
+		return planning.Sections(s.ws(ctx).root, in.ID, in.Sections)
+	})
+	add(s, &mcp.Tool{
 		Name: "plan_delete",
 		Description: "Löscht einen Sprint-Entwurf in geplant/, eine Session darin oder ein Projekt ohne Sprints und Tickets. " +
 			"Tickets nie: plan_set Status verworfen. " +
@@ -92,6 +91,38 @@ func registerPlanning(s *Server) {
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &yes, OpenWorldHint: &closed},
 	}, func(ctx context.Context, in planIDIn) (string, error) { return planning.Delete(s.ws(ctx).root, in.ID) })
 	registerGitHub(s)
+}
+
+// registerPlanRead sind die lesenden Planungs-Tools: Überblick, ein Dokument, nächste Session (B-518).
+func registerPlanRead(s *Server) {
+	add(s, &mcp.Tool{
+		Name: "plan_list",
+		Description: "Sprints mit Sessions und Tickets als je eine Zeile, filterbar nach kind, status, domain, sprint, projekt; " +
+			"archive mit erledigten Tickets. Sprints mit Projekt nach Rang und Platz im Projekt, ohne Projekt dahinter. " +
+			"kind projekt: Projekte nach Rang mit Sprints und Fortschritt. " +
+			"Nutze es bei: Überblick über Sprints, Sessions und Tickets. Statt: docs/sprints und docs/backlog durchsuchen.",
+		Annotations: readOnly(),
+	}, func(ctx context.Context, in planning.Filter) (string, error) {
+		return planning.List(s.ws(ctx).root, in)
+	})
+	add(s, &mcp.Tool{
+		Name: "plan_get",
+		Description: "Ein Ticket, eine Sprint-README, eine Session oder ein Projekt als Markdown, mit Pfad in der ersten Zeile. " +
+			"Nutze es bei: eine Planungsdatei lesen. Statt: Datei suchen und lesen.",
+		Annotations: readOnly(),
+	}, func(ctx context.Context, in planIDIn) (string, error) { return planning.Get(s.ws(ctx).root, in.ID) })
+	add(s, &mcp.Tool{
+		Name: "plan_next",
+		Description: "Nächste Session nach docs/arbeitsweise.md › Autonomer Ablauf, Schritt 1, aus den lokalen Dateien: aktive Projekte " +
+			"nach Rang, ihre aktiven Sprints in Tabellen-Reihenfolge, erste Session offen und autonom mit erledigten Abhängigkeiten " +
+			"und freier Domäne; domain grenzt ein. Antwort: Kopf (ID, Pfad, Sprint, Domäne, Umgebung, Branch, Kriterien), " +
+			"Session-Datei, ihre Kriterien aus der Sprint-README und parallel mögliche Sessions anderer Domänen; sonst der Grund je " +
+			"Projekt. Die Sperre über origin prüft der Agent selbst. " +
+			"Nutze es bei: Start einer autonomen Session. Statt: Projekte, Sprint-READMEs und Session-Dateien einzeln lesen.",
+		Annotations: readOnly(),
+	}, func(ctx context.Context, in planning.NextFilter) (string, error) {
+		return planning.Next(s.ws(ctx).root, in)
+	})
 }
 
 // registerGitHub ist gh_status: Stand von PR und CI je Sprint (B-212).

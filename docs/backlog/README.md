@@ -171,6 +171,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-514](B-514-chat-entwurf-planung-nachbesserung.md) | DEV | Problem | niedrig | eingeplant | WZ21 | Chat-Entwurf: Planung bei gleicher Insel-id schützen, CLI-Prozessbaum, Test-Riegel |
 | [B-516](B-516-studio-chat-promptgeruest-als-instruktion.md) | DEV | Idee | mittel | eingeplant | WZ21 | Prompt-Grundgerüst des Studio-Chats ist eine feste Instruktion im Code statt Text im Eingabefeld |
 | [B-517](B-517-geplante-chunks-gegnerlager.md) | REG | Idee | mittel | offen | – | Geplante Chunks tragen Gegnerlager mit stationärer Wache |
+| [B-519](B-519-plan-next-origin.md) | DEV | Problem | mittel | offen | – | plan_next berücksichtigt den Stand der Sprint-Branches auf origin |
 
 ## Archiv
 
@@ -477,3 +478,4 @@ Zeile in diesen Abschnitt.
 | [B-488](archiv/B-488-welten-inseln-editor-prompt.md) | DEV | Idee | mittel | erledigt | WZ18 | Welten und Inseln im Asset-Studio anlegen und bearbeiten, Welt per Prompt füllen |
 | [B-507](archiv/B-507-server-und-studio-trennen-dateiwatch.md) | DEV | Schuld | hoch | erledigt | TS1 | Spielserver und Asset-Studio sind getrennt, der Server beobachtet die Dateien des Studios |
 | [B-515](archiv/B-515-studio-chat-anmeldung-umgebung.md) | DEV | Problem | mittel | erledigt | – | Studio-Chat übernimmt die Umgebung einer Claude-Sitzung und zeigt Anmeldefehler doppelt |
+| [B-518](archiv/B-518-agentic-tempo.md) | INF | Problem | hoch | erledigt | – | Agentische Sessions laufen schneller: weniger Reviews und Prüfläufe, mehr parallel |
