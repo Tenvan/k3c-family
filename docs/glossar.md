@@ -79,7 +79,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Gebäude-Planer | Seite im Asset-Studio, die je Hub-Stufe die freigeschalteten Gebäude mit Platz (`offsetUnits`), Tiefe (`fromDepth`) und Bedingungen zeigt und gültig nach `data/hub.json` zurückschreibt. | B-462 |
 | Gebäude-Vorlage (`vorlage`) | Strukturierte Motiv-Definition eines Gebäudes in seiner Daten-JSON (`public/grafik/gebaeude/<id>.json`): Motiv, Teile von links nach rechts, Materialien, Stimmung, `fein`-Details. Sie hält die Absicht neben den Koordinaten fest, damit eine spätere Session das Gebäude annähernd gleich neu erzeugen oder ändern kann. Nicht verwechseln mit Spec (SDD) oder den Planungs-Vorlagen in `docs/vorlagen/`. | B-441, `standards/gebaeude-grafik.md` § 5 |
 | Gegner-Seite | Seite im Asset-Studio neben Grafik, Sound und Monarch: alle Gegnertypen nach Biom und die Bosse je Tiefe mit den Animationen des Spiels; Lücken sind markiert. | B-464 |
-| Gegnerlager (geplant) | Fest platziertes Lager von Gegnern in einem geplanten Chunk; Teil 2 der Chunk-Planung, noch nicht umgesetzt. | B-468 |
+| Gegnerlager (geplant) | Fest platziertes Lager in einem geplanten Chunk: Gegner aus dem Biom stehen als Wache, greifen in Reichweite an, kehren zurück; besiegbar, ohne Respawn, ohne Wirkung auf Wellen. Beschluss WZ14.1, noch nicht umgesetzt. | B-517 |
 | geplanter Chunk | Chunk, dessen Art und Inhalt je Insel und Tiefe in der Welt-Datei (`data/worlds/<id>.json`, `plannedChunks`) festgelegt sind: Chunk-Art fest, Inhalt aus Chunk-Seed oder festen Objekten. Alle anderen Chunks bleiben zufällig. | `rules/geplante-chunks.md`, B-461 |
 | Getrennter Monarch (`Player.Free`) | Monarch, dessen Gerät die Verbindung verloren hat: 60 s reserviert (`waiting`), danach frei (`free`); unverwundbar, ausgeblendet, nicht wiederbelebbar. | `rules/bedienung.md` § 3, Q04, Q33 |
 | Gold | Währung je Spieler (Start 100, höchstens 100, morgens +5); bezahlt Bauten, Rekrutierung, Markierung. Gehört dem Spieler, ist kein Material. | `rules/wirtschaft.md` § 1 |
@@ -170,7 +170,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | `revive` | Ereignis: Monarch steht nach der Wartezeit an der Burg wieder (Respawn). | `protocol.md` › Ereignisse, Q62 |
 | `revived` | Ereignis (geplant, B-120/W4.1, Protokoll mit W5): Monarch wurde von einem Mitspieler wiederbelebt. | Q62, B-120 |
 | RTT (Ping) | Umlaufzeit eines WebSocket-Pings vom Server zum Gerät und zurück, vom Server einmal je Sekunde gemessen (Messreihe je Gerät). Nicht die Latenz (die misst der Client über `ack`). | B-281, `engine/net/ping.go` |
-| Ruine (geplant) | Vorgebautes Gebäude in einem geplanten Chunk; Teil 2 der Chunk-Planung, noch nicht umgesetzt. | B-468 |
+| Ruine | Gebautes, stark beschädigtes Nutzgebäude (25 % HP) an fester Lage eines geplanten Chunks, höchstens eine je Chunk; wirkt wie ein gebautes Gebäude seiner Art, ist Hub-neutral, wird von Bauern repariert und kehrt nach dem Burgfall zurück. Umsetzung WZ14. | `rules/geplante-chunks.md` § 8, B-468 |
 | Rüstkammer | Gebäude der Hub-Stufe 4: Rüstungsstufen für alle Kämpfer. | `rules/materialien-gebaeude.md` § 3.2 |
 | Rüstungsstufe | Upgrade in der Rüstkammer, 2 Stufen (ab Hub-Stufe 4 und 5): +20 % bzw. +40 % Basis-HP für alle Kämpfer, sofort, ohne Vollheilung. | `rules/buerger.md` § 2, Q37 |
 | Schlag | Einfacher Nahkampfangriff des Monarchen (X bzw. E): 10 Schaden, Reichweite 1,5 Units, Abklingzeit 0,7 s. | `rules/monarch.md` § 1 |
