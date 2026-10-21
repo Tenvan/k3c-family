@@ -1,6 +1,6 @@
 # WZ20 · DEV · k3c-dev: Planungstest für Entwürfe, Worktree-Einträge vollständig und lesend, sim_test im Worktree
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -59,10 +59,9 @@ keine. Entschieden von 🧑 (2026-10-21): `sim_test` mit Worktree baut die Binar
 |---|---|---|---|---|
 | WZ20.1 | `WZ20.1-planungstest-entwuerfe-wt-sprints.md` | Umsetzung | autonom | fertig |
 | WZ20.2 | `WZ20.2-wt-eintraege-nur-lesend.md` | Umsetzung | autonom | fertig |
-| WZ20.3 | `WZ20.3-sim-test-checkout.md` | Umsetzung | autonom | offen |
-| WZ20.4 | `WZ20.4-review.md` | Review | autonom | offen |
+| WZ20.3 | `WZ20.3-sim-test-checkout.md` | Umsetzung | autonom | fertig |
+| WZ20.4 | `WZ20.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-21: AC-01 bis AC-04 nachgewiesen (WZ20.1–WZ20.4), `check:diff` und `check:go` grün; keine Befunde, keine neuen Tickets.

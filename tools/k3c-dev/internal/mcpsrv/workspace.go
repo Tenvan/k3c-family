@@ -54,6 +54,14 @@ func (w workspace) label() string {
 	return "Worktree " + w.name + " (" + w.root + ")"
 }
 
+// short nennt den Checkout kurz: „Repo-Wurzel“ oder den Worktree-Namen.
+func (w workspace) short() string {
+	if w.name == "" {
+		return "Repo-Wurzel"
+	}
+	return w.name
+}
+
 type wsKey struct{}
 
 // ws ist der Checkout des laufenden Aufrufs; ohne Zuordnung die Repo-Wurzel.

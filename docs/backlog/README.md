@@ -119,12 +119,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-419](B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | eingeplant | GD1 | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
 | [B-420](B-420-importe-grafikpacks.md) | DEV | Schuld | mittel | eingeplant | GR9 | Mit k3c-dev importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht |
 | [B-422](B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | eingeplant | W11 | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
-| [B-423](B-423-sim-test-im-worktree.md) | DEV | Problem | mittel | eingeplant | WZ20 | sim_test rechnet immer mit dem Code der Repo-Wurzel, nicht mit dem Worktree der Session |
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | eingeplant | SV2 | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Kleine Befunde aus dem Review von SV1 sind erledigt |
 | [B-435](B-435-gebaeude-grafik-per-prompt.md) | DEV | Idee | mittel | eingeplant | GEB1 | Gebäude und Strukturen entstehen im Asset-Manager aus Beschreibung und Prompt |
 | [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | eingeplant | GEB6 | Werkstatt und Bäume aus tools/buildings erscheinen im Spiel |
-| [B-440](B-440-dev-test-entwurfs-sprints-ohne-sessions.md) | DEV | Problem | mittel | eingeplant | WZ20 | k3c-dev-Planungstest lehnt Entwurfs-Sprints ohne Sessions ab |
 | [B-453](B-453-alte-biom-hintergruende-aufbewahren.md) | CLI | Idee | mittel | eingeplant | GRJ1 | Alte Biom-Hintergründe (Packs) als Grafik aufbewahren |
 | [B-454](B-454-baeume-hoeher-dichter-hoehle-wurzeln.md) | DEV | Problem | hoch | eingeplant | GEB10 | Bäume höher und dichter, Höhle mit eigener Unterwelt-Flora (Wurzeln) |
 | [B-455](B-455-truhe-geschlossen.md) | DEV | Idee | mittel | eingeplant | GEB10 | Truhe gibt es auch geschlossen |
@@ -142,8 +140,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-476](B-476-preload-sprites-beliebige-reittiere.md) | CLI | Schuld | niedrig | eingeplant | WZ23 | preloadSprites und createSpriteAnims laden beliebige Reittiere statt nur das Standard-Reittier |
 | [B-475](B-475-frage-geplante-ereignisse-zaehlung.md) | REG | Frage | niedrig | eingeplant | WZ24 | Frage: Wie zählen feste Ereignis-Objekte in geplanten Chunks, und gilt für „kein Platz mehr“ das Minimum oder das Maximum? |
 | [B-479](B-479-hub-pruefung-geplante-chunks.md) | SIM | Schuld | niedrig | eingeplant | WZ24 | Prüfung der Kandidaten-hub.json: geplante Chunks nach WZ8 mitprüfen |
-| [B-483](B-483-worktree-eintraege-nur-lesend.md) | DEV | Problem | niedrig | eingeplant | WZ20 | Planungsseite: Einträge nur im Worktree sind nur lesbar (Detail, Menüs, Rang) |
-| [B-484](B-484-worktree-neuer-sprint-leer.md) | DEV | Problem | niedrig | eingeplant | WZ20 | Worktree-Vergleich: Sessions und Projekt eines neuen Sprints fehlen in den Pills |
 | [B-487](B-487-plan-editor-load-check-ablehnung.md) | DEV | Problem | niedrig | eingeplant | WZ22 | Chunk-Editor: abgelehnte Aufrufe von planLoad und planCheck bleiben stumm |
 | [B-489](B-489-spielstand-chunk-anzahl.md) | SIM | Problem | mittel | eingeplant | WZ24 | Spielstände laden Chunk-Anzahl und Planung aus den aktuellen Daten |
 | [B-490](B-490-sim-chunk-anzahl-nachtraege.md) | SIM | Schuld | niedrig | eingeplant | WZ24 | Sim: Chunk-Anzahl mit Kandidaten-hub.json und gemeinsame Prüfung der Inselgröße |
@@ -483,3 +479,7 @@ Zeile in diesen Abschnitt.
 | [B-515](archiv/B-515-studio-chat-anmeldung-umgebung.md) | DEV | Problem | mittel | erledigt | – | Studio-Chat übernimmt die Umgebung einer Claude-Sitzung und zeigt Anmeldefehler doppelt |
 | [B-518](archiv/B-518-agentic-tempo.md) | INF | Problem | hoch | erledigt | – | Agentische Sessions laufen schneller: weniger Reviews und Prüfläufe, mehr parallel |
 | [B-468](archiv/B-468-geplante-chunks-ruinen-gegnerlager.md) | REG | Idee | mittel | erledigt | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager |
+| [B-423](archiv/B-423-sim-test-im-worktree.md) | DEV | Problem | mittel | erledigt | WZ20 | sim_test rechnet immer mit dem Code der Repo-Wurzel, nicht mit dem Worktree der Session |
+| [B-440](archiv/B-440-dev-test-entwurfs-sprints-ohne-sessions.md) | DEV | Problem | mittel | erledigt | WZ20 | k3c-dev-Planungstest lehnt Entwurfs-Sprints ohne Sessions ab |
+| [B-483](archiv/B-483-worktree-eintraege-nur-lesend.md) | DEV | Problem | niedrig | erledigt | WZ20 | Planungsseite: Einträge nur im Worktree sind nur lesbar (Detail, Menüs, Rang) |
+| [B-484](archiv/B-484-worktree-neuer-sprint-leer.md) | DEV | Problem | niedrig | erledigt | WZ20 | Worktree-Vergleich: Sessions und Projekt eines neuen Sprints fehlen in den Pills |

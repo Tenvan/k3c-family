@@ -3,6 +3,7 @@ package mcpsrv
 import (
 	"context"
 	"errors"
+	"os"
 	"sync"
 	"time"
 
@@ -22,6 +23,7 @@ type runSpec struct {
 	args    []string
 	timeout time.Duration
 	out     func(stream, text string)
+	env     []string // zusätzlich zur Umgebung der Workbench, NAME=Wert
 }
 
 type runResult struct {
@@ -93,6 +95,9 @@ func runProcess(ctx context.Context, spec runSpec) runResult {
 	defer cancel()
 	cmd := proc.Command(ctx, spec.args)
 	cmd.Dir = spec.dir
+	if len(spec.env) > 0 {
+		cmd.Env = append(os.Environ(), spec.env...)
+	}
 	stdout := console.NewLineWriter(func(text string) { spec.out("stdout", text) })
 	stderr := console.NewLineWriter(func(text string) { spec.out("stderr", text) })
 	cmd.Stdout, cmd.Stderr = stdout, stderr
