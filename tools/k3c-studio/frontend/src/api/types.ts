@@ -99,12 +99,20 @@ export interface PlannedObject {
   at: number;
 }
 
-/** Geplanter Chunk (Go: level.PlannedChunk): Platz relativ zum Hub (−n links, +n rechts, nie 0), Art, Chunk-Seed, Objekte. */
+/** Ruine eines geplanten Chunks (Go: level.PlannedBuilding, WZ14.7); at zählt in Units ab Chunk-Anfang. */
+export interface PlannedBuilding {
+  kind: string;
+  at: number;
+}
+
+/** Geplanter Chunk (Go: level.PlannedChunk): Platz relativ zum Hub (−n links, +n rechts, nie 0), Art, Chunk-Seed, Objekte,
+ *  höchstens eine Ruine (buildings). */
 export interface PlannedChunk {
   slot: number;
   kind: string;
   seed?: string;
   objects?: PlannedObject[];
+  buildings?: PlannedBuilding[];
 }
 
 /** Quelle des Levels als Wert (Go: WorldSource): ein Biom oder eine Insel mit Stufe (Index in ihren Tiefen). planned ist
@@ -142,6 +150,8 @@ export interface PlanView {
   notes: string;
   islands: PlanIsland[];
   sizes: IslandSize[];
+  /** Arten, die als Ruine geplant werden dürfen (data/ruins.json › kinds); fehlt bei älterem Backend */
+  ruinKinds?: string[];
   stand: string;
   error: string;
 }

@@ -24,7 +24,9 @@ export function slotHints(draft: readonly PlannedChunk[], check: PlanCheckView):
   return draft.map((c): SlotHint => {
     if (!check.ok && check.slot === c.slot) return { slot: c.slot, kind: 'error', label: `Fehler: ${check.error}` };
     const seed = c.seed ? `Chunk-Seed „${c.seed}“` : 'ohne Chunk-Seed';
-    return { slot: c.slot, kind: 'planned', label: `Geplant: ${nameOf(c.kind)} · ${seed} · ${plural(c.objects?.length ?? 0)}` };
+    const ruin = c.buildings?.[0];
+    const ruinText = ruin ? ` · Ruine: ${nameOf(ruin.kind)} bei ${ruin.at}` : '';
+    return { slot: c.slot, kind: 'planned', label: `Geplant: ${nameOf(c.kind)} · ${seed} · ${plural(c.objects?.length ?? 0)}${ruinText}` };
   });
 }
 
