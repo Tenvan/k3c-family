@@ -71,7 +71,7 @@ Entschieden im Regel-Workshop WZ14.1 (2026-10-21, Ralf im Chat) samt Nachtrag na
 | WZ14.5 | `WZ14.5-protokoll-vorschau-ruine.md` | Umsetzung | autonom | fertig |
 | WZ14.6 | `WZ14.6-ruine-zeichnen.md` | Umsetzung | autonom | fertig |
 | WZ14.7 | `WZ14.7-editor-ruine.md` | Umsetzung | autonom | fertig |
-| WZ14.8 | `WZ14.8-review.md` | Review | autonom | offen |
+| WZ14.8 | `WZ14.8-review.md` | Review | autonom | in Arbeit |
 | WZ14.9 | `WZ14.9-abnahme.md` | Review | Mensch | offen |
 
 - WZ14.1 (REG) Workshop mit 🧑: Beschlüsse, Regeltext § 8, Glossar (AC-01).
