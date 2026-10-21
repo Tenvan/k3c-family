@@ -6,9 +6,9 @@
 - **Reife:** Entwurf
 - **Tickets:** B-468
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-21, Ralf im Chat (Revision 2)
 
 ## Ausgangslage
 
