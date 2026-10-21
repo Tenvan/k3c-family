@@ -1,14 +1,14 @@
 # WZ21 · DEV · Studio-Chat: eigene Umgebung, Grundgerüst als Instruktion, Entwurf geschützt
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-516, B-514
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 376bf508
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-21, Ralf im Chat (Revision 1 samt B-516, B-514)
 
 ## Ausgangslage
 
@@ -56,7 +56,7 @@ keine. Geklärt (🧑, 2026-10-21): Der Knopf „Prompt-Grundgerüst“ entfäll
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ21.2 | `WZ21.2-geruest-als-instruktion.md` | Umsetzung | autonom | offen |
+| WZ21.2 | `WZ21.2-geruest-als-instruktion.md` | Umsetzung | autonom | in Arbeit |
 | WZ21.3 | `WZ21.3-restpunkte-b514.md` | Umsetzung | autonom | offen |
 | WZ21.4 | `WZ21.4-review.md` | Review | autonom | offen |
 | WZ21.1 | `WZ21.1-eigene-umgebung.md` | Umsetzung | autonom | verworfen |
