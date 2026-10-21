@@ -1,14 +1,14 @@
 # WZ20 · DEV · k3c-dev: Planungstest für Entwürfe, Worktree-Einträge vollständig und lesend, sim_test im Worktree
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-440, B-484, B-483, B-423
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 376bf508
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-21, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
@@ -24,7 +24,7 @@ Agenten in Worktree-Sessions und 🧑 auf der Planungsseite; Umsetzung durch Age
 
 ## Anforderungen
 
-B-440, B-484, B-483, B-423 › Anforderungen (Specs noch Entwurf; Ziele stehen in den Tickets).
+B-440, B-484, B-483, B-423 › Anforderungen; für B-440 und B-423 gelten Ziel und Akzeptanzkriterium dieser README.
 
 ## Nicht-Ziele
 
@@ -51,16 +51,16 @@ Unbekannter oder mehrdeutiger `checkout` bei `sim_test` → Ablehnung mit Liste 
 
 ## Offene Fragen
 
-🧑: Baut `sim_test` mit Worktree die Binaries im Worktree neu (Zeit, Firewall-Abfrage bei neuer EXE) oder startet es den Lauf mit `K3C_DATA_DIR` des Worktrees und dem Code der Wurzel?
+keine. Entschieden von 🧑 (2026-10-21): `sim_test` mit Worktree baut die Binaries im Worktree (fester EXE-Pfad je Worktree, Proben nur auf Loopback) und rechnet mit dessen `data/`.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- WZ20.1 (DEV) Planungstest für Entwürfe, Worktree-Vergleich mit Sessions und Projekt neuer Sprints (AC-01, AC-02).
-- WZ20.2 (DEV) Planungsseite: Worktree-Einträge nur lesend (AC-03).
-- WZ20.3 (DEV) `sim_test` mit `checkout` (AC-04).
-- WZ20.4 (DEV) Review (Code-Sprint): alle Kriterien prüfen.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ20.1 | `WZ20.1-planungstest-entwuerfe-wt-sprints.md` | Umsetzung | autonom | in Arbeit |
+| WZ20.2 | `WZ20.2-wt-eintraege-nur-lesend.md` | Umsetzung | autonom | offen |
+| WZ20.3 | `WZ20.3-sim-test-checkout.md` | Umsetzung | autonom | offen |
+| WZ20.4 | `WZ20.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
 

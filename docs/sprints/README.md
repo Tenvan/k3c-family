@@ -10,6 +10,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | WZ14 | REG, SIM, SRV, CLI, DEV | WZG | Geplante Chunks tragen Ruinen und Gegnerlager | – | `aktiv/WZ14-ruinen-gegnerlager/` |
+| WZ20 | DEV | WZG | k3c-dev: Planungstest für Entwürfe, Worktree-Einträge vollständig und lesend, sim_test im Worktree | – | `aktiv/WZ20-planung-worktree-simtest/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO2 | CLI | SND | SFX-Katalog und Einbau | – | `aktiv/SO2-sfx-katalog/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
@@ -23,7 +24,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WZ20 | DEV | WZG | k3c-dev: Planungstest für Entwürfe, Worktree-Einträge vollständig und lesend, sim_test im Worktree | – | Entwurf | `geplant/WZ20-planung-worktree-simtest/` |
 | WZ21 | DEV | WZG | Studio-Chat: eigene Umgebung, Grundgerüst als Instruktion, Entwurf geschützt | – | Entwurf | `geplant/WZ21-studio-chat-nachtraege/` |
 | WZ23 | CLI | WZG | Studio-Vorschauen: Reittiere aus dem Spielcode, Monarch-Seite, Boss-Anzeigen, Gebäude-Planer abgenommen | – | Entwurf | `geplant/WZ23-studio-vorschauen-nachtraege/` |
 | WZ24 | REG | WZG | Geplante Chunks in Simulation und Spielstand: Regeln geklärt, Planung im Stand, eine Prüfung der Inselgröße | – | Entwurf | `geplant/WZ24-chunk-planung-sim-spielstand/` |
