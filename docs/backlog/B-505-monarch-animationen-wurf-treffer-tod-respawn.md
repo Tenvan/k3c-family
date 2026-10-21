@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** GR9
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-19
 - **Spec:** Entwurf

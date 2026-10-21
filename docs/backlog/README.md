@@ -116,61 +116,61 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-412](B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | eingeplant | W11 | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | eingeplant | BD4 | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
 | [B-418](B-418-spielstand-kommentare-veraltet.md) | SIM | Problem | niedrig | offen | – | Kommentare in island_save_v3.go und island_save_v5.go nennen nach W7.2 veraltete Versionen |
-| [B-419](B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | offen | – | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
-| [B-420](B-420-importe-grafikpacks.md) | DEV | Schuld | mittel | offen | – | Mit k3c-dev importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht |
-| [B-422](B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | offen | – | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
-| [B-423](B-423-sim-test-im-worktree.md) | DEV | Problem | mittel | offen | – | sim_test rechnet immer mit dem Code der Repo-Wurzel, nicht mit dem Worktree der Session |
-| [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | offen | – | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
-| [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | offen | – | Kleine Befunde aus dem Review von SV1 sind erledigt |
+| [B-419](B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | eingeplant | GD1 | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
+| [B-420](B-420-importe-grafikpacks.md) | DEV | Schuld | mittel | eingeplant | GR9 | Mit k3c-dev importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht |
+| [B-422](B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | eingeplant | W11 | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
+| [B-423](B-423-sim-test-im-worktree.md) | DEV | Problem | mittel | eingeplant | WZ20 | sim_test rechnet immer mit dem Code der Repo-Wurzel, nicht mit dem Worktree der Session |
+| [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | eingeplant | SV2 | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
+| [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Kleine Befunde aus dem Review von SV1 sind erledigt |
 | [B-435](B-435-gebaeude-grafik-per-prompt.md) | DEV | Idee | mittel | eingeplant | GEB1 | Gebäude und Strukturen entstehen im Asset-Manager aus Beschreibung und Prompt |
 | [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | eingeplant | GEB6 | Werkstatt und Bäume aus tools/buildings erscheinen im Spiel |
-| [B-440](B-440-dev-test-entwurfs-sprints-ohne-sessions.md) | DEV | Problem | mittel | offen | – | k3c-dev-Planungstest lehnt Entwurfs-Sprints ohne Sessions ab |
-| [B-453](B-453-alte-biom-hintergruende-aufbewahren.md) | CLI | Idee | mittel | offen | – | Alte Biom-Hintergründe (Packs) als Grafik aufbewahren |
-| [B-454](B-454-baeume-hoeher-dichter-hoehle-wurzeln.md) | DEV | Problem | hoch | offen | – | Bäume höher und dichter, Höhle mit eigener Unterwelt-Flora (Wurzeln) |
-| [B-455](B-455-truhe-geschlossen.md) | DEV | Idee | mittel | offen | – | Truhe gibt es auch geschlossen |
-| [B-456](B-456-fahne-spielerfarbe-wimpel.md) | CLI | Idee | mittel | offen | – | Markierungsfahne als Wimpel in Spielerfarbe |
-| [B-457](B-457-geb6-abnahme-splitscreen-ausgang-geschmack.md) | CLI | Frage | mittel | offen | – | GEB6: Split-Screen, Ausgang-Beschriftung und Geschmacksfragen später prüfen |
-| [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | offen | – | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
+| [B-440](B-440-dev-test-entwurfs-sprints-ohne-sessions.md) | DEV | Problem | mittel | eingeplant | WZ20 | k3c-dev-Planungstest lehnt Entwurfs-Sprints ohne Sessions ab |
+| [B-453](B-453-alte-biom-hintergruende-aufbewahren.md) | CLI | Idee | mittel | eingeplant | GRJ1 | Alte Biom-Hintergründe (Packs) als Grafik aufbewahren |
+| [B-454](B-454-baeume-hoeher-dichter-hoehle-wurzeln.md) | DEV | Problem | hoch | eingeplant | GEB10 | Bäume höher und dichter, Höhle mit eigener Unterwelt-Flora (Wurzeln) |
+| [B-455](B-455-truhe-geschlossen.md) | DEV | Idee | mittel | eingeplant | GEB10 | Truhe gibt es auch geschlossen |
+| [B-456](B-456-fahne-spielerfarbe-wimpel.md) | CLI | Idee | mittel | eingeplant | GEB10 | Markierungsfahne als Wimpel in Spielerfarbe |
+| [B-457](B-457-geb6-abnahme-splitscreen-ausgang-geschmack.md) | CLI | Frage | mittel | eingeplant | GEB10 | GEB6: Split-Screen, Ausgang-Beschriftung und Geschmacksfragen später prüfen |
+| [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | eingeplant | GEB11 | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
 | [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
 | [B-465](B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | offen | – | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
 | [B-468](B-468-geplante-chunks-ruinen-gegnerlager.md) | REG | Idee | mittel | offen | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager |
-| [B-469](B-469-gegner-seite-boss-effekte-nach-k5.md) | DEV | Idee | niedrig | offen | – | Die Gegner-Seite zeigt Warnkreis, Boss-Leiste, Phasen und Event-Banner aus K5.1 |
-| [B-470](B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | offen | – | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
-| [B-471](B-471-renderreference-abmelden.md) | DEV | Schuld | niedrig | offen | – | renderReference beendet seine Animationsschleife, wenn die Karten verschwinden |
-| [B-472](B-472-nacht-dunkler-fackeln-lagerfeuer-licht.md) | CLI | Idee | niedrig | offen | – | Nacht und Morgengrauen sind dunkler, Fackeln und Lagerfeuer machen Licht |
+| [B-469](B-469-gegner-seite-boss-effekte-nach-k5.md) | DEV | Idee | niedrig | eingeplant | WZ23 | Die Gegner-Seite zeigt Warnkreis, Boss-Leiste, Phasen und Event-Banner aus K5.1 |
+| [B-470](B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | eingeplant | W12 | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
+| [B-471](B-471-renderreference-abmelden.md) | DEV | Schuld | niedrig | eingeplant | WZ23 | renderReference beendet seine Animationsschleife, wenn die Karten verschwinden |
+| [B-472](B-472-nacht-dunkler-fackeln-lagerfeuer-licht.md) | CLI | Idee | niedrig | eingeplant | W13 | Nacht und Morgengrauen sind dunkler, Fackeln und Lagerfeuer machen Licht |
 | [B-473](B-473-ci-rot-k3c-dev-planning-worktree-tests.md) | DEV | Problem | hoch | offen | – | CI auf develop rot: k3c-dev internal/planning Worktree-Tests scheitern auf dem Windows-Runner |
 | [B-474](B-474-testdownloadhit-norton-tls.md) | DEV | Problem | mittel | offen | – | TestDownloadHit scheitert lokal am TLS-Zertifikat (Norton), check:all rot |
-| [B-476](B-476-preload-sprites-beliebige-reittiere.md) | CLI | Schuld | niedrig | offen | – | preloadSprites und createSpriteAnims laden beliebige Reittiere statt nur das Standard-Reittier |
-| [B-475](B-475-frage-geplante-ereignisse-zaehlung.md) | REG | Frage | niedrig | offen | – | Frage: Wie zählen feste Ereignis-Objekte in geplanten Chunks, und gilt für „kein Platz mehr“ das Minimum oder das Maximum? |
-| [B-479](B-479-hub-pruefung-geplante-chunks.md) | SIM | Schuld | niedrig | offen | – | Prüfung der Kandidaten-hub.json: geplante Chunks nach WZ8 mitprüfen |
-| [B-483](B-483-worktree-eintraege-nur-lesend.md) | DEV | Problem | niedrig | offen | – | Planungsseite: Einträge nur im Worktree sind nur lesbar (Detail, Menüs, Rang) |
-| [B-484](B-484-worktree-neuer-sprint-leer.md) | DEV | Problem | niedrig | offen | – | Worktree-Vergleich: Sessions und Projekt eines neuen Sprints fehlen in den Pills |
-| [B-487](B-487-plan-editor-load-check-ablehnung.md) | DEV | Problem | niedrig | offen | – | Chunk-Editor: abgelehnte Aufrufe von planLoad und planCheck bleiben stumm |
-| [B-489](B-489-spielstand-chunk-anzahl.md) | SIM | Problem | mittel | offen | – | Spielstände laden Chunk-Anzahl und Planung aus den aktuellen Daten |
-| [B-490](B-490-sim-chunk-anzahl-nachtraege.md) | SIM | Schuld | niedrig | offen | – | Sim: Chunk-Anzahl mit Kandidaten-hub.json und gemeinsame Prüfung der Inselgröße |
-| [B-491](B-491-welten-editor-kleinigkeiten.md) | DEV | Schuld | niedrig | offen | – | Welten Editor: kleine Nachträge zu Schieber, Klick-Sprung und Planungsliste |
-| [B-492](B-492-sfx-luecken-weitere-ereignisse.md) | CLI | Idee | mittel | offen | – | Weitere Ereignisse bekommen eigene Sound-Slots und Sounds |
-| [B-493](B-493-credits-seite-audio.md) | PLAT | Idee | hoch | offen | – | Die Credits-Seite zeigt auch die Sounds unter public/audio |
-| [B-494](B-494-sound-atlas-werkzeug.md) | INF | Idee | niedrig | offen | – | Ein Werkzeug packt die gewählten Sounds in einen Sound-Atlas |
-| [B-495](B-495-respec-in-aktionsliste.md) | SRV | Schuld | niedrig | offen | – | Die Aktionsliste nennt respec, wenn CanRespec erlaubt |
+| [B-476](B-476-preload-sprites-beliebige-reittiere.md) | CLI | Schuld | niedrig | eingeplant | WZ23 | preloadSprites und createSpriteAnims laden beliebige Reittiere statt nur das Standard-Reittier |
+| [B-475](B-475-frage-geplante-ereignisse-zaehlung.md) | REG | Frage | niedrig | eingeplant | WZ24 | Frage: Wie zählen feste Ereignis-Objekte in geplanten Chunks, und gilt für „kein Platz mehr“ das Minimum oder das Maximum? |
+| [B-479](B-479-hub-pruefung-geplante-chunks.md) | SIM | Schuld | niedrig | eingeplant | WZ24 | Prüfung der Kandidaten-hub.json: geplante Chunks nach WZ8 mitprüfen |
+| [B-483](B-483-worktree-eintraege-nur-lesend.md) | DEV | Problem | niedrig | eingeplant | WZ20 | Planungsseite: Einträge nur im Worktree sind nur lesbar (Detail, Menüs, Rang) |
+| [B-484](B-484-worktree-neuer-sprint-leer.md) | DEV | Problem | niedrig | eingeplant | WZ20 | Worktree-Vergleich: Sessions und Projekt eines neuen Sprints fehlen in den Pills |
+| [B-487](B-487-plan-editor-load-check-ablehnung.md) | DEV | Problem | niedrig | eingeplant | WZ22 | Chunk-Editor: abgelehnte Aufrufe von planLoad und planCheck bleiben stumm |
+| [B-489](B-489-spielstand-chunk-anzahl.md) | SIM | Problem | mittel | eingeplant | WZ24 | Spielstände laden Chunk-Anzahl und Planung aus den aktuellen Daten |
+| [B-490](B-490-sim-chunk-anzahl-nachtraege.md) | SIM | Schuld | niedrig | eingeplant | WZ24 | Sim: Chunk-Anzahl mit Kandidaten-hub.json und gemeinsame Prüfung der Inselgröße |
+| [B-491](B-491-welten-editor-kleinigkeiten.md) | DEV | Schuld | niedrig | eingeplant | WZ22 | Welten Editor: kleine Nachträge zu Schieber, Klick-Sprung und Planungsliste |
+| [B-492](B-492-sfx-luecken-weitere-ereignisse.md) | CLI | Idee | mittel | eingeplant | SO6 | Weitere Ereignisse bekommen eigene Sound-Slots und Sounds |
+| [B-493](B-493-credits-seite-audio.md) | PLAT | Idee | hoch | eingeplant | SO6 | Die Credits-Seite zeigt auch die Sounds unter public/audio |
+| [B-494](B-494-sound-atlas-werkzeug.md) | INF | Idee | niedrig | eingeplant | SO6 | Ein Werkzeug packt die gewählten Sounds in einen Sound-Atlas |
+| [B-495](B-495-respec-in-aktionsliste.md) | SRV | Schuld | niedrig | eingeplant | RM1 | Die Aktionsliste nennt respec, wenn CanRespec erlaubt |
 | [B-496](B-496-studio-fensterposition-merken.md) | DEV | Idee | mittel | offen | – | Das Asset-Studio merkt sich Fensterposition und Größe und stellt sie sicher wieder her |
-| [B-497](B-497-grosse-inseln-last-und-umwandlung.md) | SIM | Frage | niedrig | offen | – | Große Inseln: Last im Spiel messen, Umwandlung in allen Biomen testen, PlanSave gegen Parallelität |
-| [B-499](B-499-studio-spiel-oeffnen-welt-zweimal.md) | DEV | Problem | niedrig | offen | – | Studio „Im Spiel öffnen“ in eigener Welt scheitert beim zweiten Mal mit demselben Seed |
-| [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | offen | – | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
-| [B-501](B-501-planer-vorschau-fixiert-markiert.md) | DEV | Idee | mittel | offen | – | Gebäude-Planer: Live-Vorschau unten fest, gewähltes Gebäude markiert |
-| [B-503](B-503-monarch-skill-darstellung.md) | CLI | Idee | niedrig | offen | – | Die 24 Monarch-Skills haben eine Darstellung im Spiel |
-| [B-504](B-504-preset-skills-backstab-smokebomb.md) | REG | Problem | niedrig | offen | – | Die Skills backstab und smokeBomb des Presets Dieb stehen in data/monarch.json |
-| [B-505](B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | offen | – | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |
-| [B-502](B-502-monarch-seite-ansicht-wuensche.md) | DEV | Idee | mittel | offen | – | Monarch-Seite: einheitliches Sheet, Zoom, zweispaltige Ansicht |
-| [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | offen | – | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
-| [B-508](B-508-raeume-nach-neustart-wieder-offen.md) | SRV | Idee | mittel | offen | – | Offene Räume sind nach einem Neustart des Servers wieder offen, Geräte kehren ohne Umweg über die Raumliste zurück |
-| [B-509](B-509-grafik-sound-aus-public-live.md) | SRV | Idee | mittel | offen | – | Im Studio geänderte Grafiken und Sounds erreichen die Clients ohne neuen Build |
-| [B-510](B-510-k3c-dev-kein-doppelter-neustart.md) | DEV | Schuld | niedrig | offen | – | k3c-dev startet den Spielserver bei Änderungen in data/ nicht mehr selbst neu, der Server macht das allein |
-| [B-511](B-511-studio-schreibt-atomar.md) | DEV | Schuld | niedrig | offen | – | Das Studio schreibt jede Datei in data/ und public/ atomar, der Server sieht nie eine halbe Datei |
-| [B-512](B-512-k3c-dev-uebernommener-server-neue-pid.md) | DEV | Problem | niedrig | offen | – | k3c-dev beendet einen übernommenen Spielserver auch nach dessen Selbst-Neustart (neue PID am Port, Supervisor-Prozess) |
-| [B-514](B-514-chat-entwurf-planung-nachbesserung.md) | DEV | Problem | niedrig | offen | – | Chat-Entwurf: Planung bei gleicher Insel-id schützen, CLI-Prozessbaum, Test-Riegel |
-| [B-515](B-515-studio-chat-anmeldung-umgebung.md) | DEV | Problem | mittel | offen | – | Studio-Chat übernimmt die Umgebung einer Claude-Sitzung und zeigt Anmeldefehler doppelt |
-| [B-516](B-516-studio-chat-promptgeruest-als-instruktion.md) | DEV | Idee | mittel | offen | – | Prompt-Grundgerüst des Studio-Chats ist eine feste Instruktion im Code statt Text im Eingabefeld |
+| [B-497](B-497-grosse-inseln-last-und-umwandlung.md) | SIM | Frage | niedrig | eingeplant | WZ24 | Große Inseln: Last im Spiel messen, Umwandlung in allen Biomen testen, PlanSave gegen Parallelität |
+| [B-499](B-499-studio-spiel-oeffnen-welt-zweimal.md) | DEV | Problem | niedrig | eingeplant | WZ22 | Studio „Im Spiel öffnen“ in eigener Welt scheitert beim zweiten Mal mit demselben Seed |
+| [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
+| [B-501](B-501-planer-vorschau-fixiert-markiert.md) | DEV | Idee | mittel | eingeplant | WZ23 | Gebäude-Planer: Live-Vorschau unten fest, gewähltes Gebäude markiert |
+| [B-503](B-503-monarch-skill-darstellung.md) | CLI | Idee | niedrig | eingeplant | SK2 | Die 24 Monarch-Skills haben eine Darstellung im Spiel |
+| [B-504](B-504-preset-skills-backstab-smokebomb.md) | REG | Problem | niedrig | eingeplant | SK2 | Die Skills backstab und smokeBomb des Presets Dieb stehen in data/monarch.json |
+| [B-505](B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | eingeplant | GR9 | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |
+| [B-502](B-502-monarch-seite-ansicht-wuensche.md) | DEV | Idee | mittel | eingeplant | WZ23 | Monarch-Seite: einheitliches Sheet, Zoom, zweispaltige Ansicht |
+| [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | eingeplant | BD5 | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
+| [B-508](B-508-raeume-nach-neustart-wieder-offen.md) | SRV | Idee | mittel | eingeplant | WZ25 | Offene Räume sind nach einem Neustart des Servers wieder offen, Geräte kehren ohne Umweg über die Raumliste zurück |
+| [B-509](B-509-grafik-sound-aus-public-live.md) | SRV | Idee | mittel | eingeplant | WZ25 | Im Studio geänderte Grafiken und Sounds erreichen die Clients ohne neuen Build |
+| [B-510](B-510-k3c-dev-kein-doppelter-neustart.md) | DEV | Schuld | niedrig | eingeplant | WZ25 | k3c-dev startet den Spielserver bei Änderungen in data/ nicht mehr selbst neu, der Server macht das allein |
+| [B-511](B-511-studio-schreibt-atomar.md) | DEV | Schuld | niedrig | eingeplant | WZ25 | Das Studio schreibt jede Datei in data/ und public/ atomar, der Server sieht nie eine halbe Datei |
+| [B-512](B-512-k3c-dev-uebernommener-server-neue-pid.md) | DEV | Problem | niedrig | eingeplant | WZ25 | k3c-dev beendet einen übernommenen Spielserver auch nach dessen Selbst-Neustart (neue PID am Port, Supervisor-Prozess) |
+| [B-514](B-514-chat-entwurf-planung-nachbesserung.md) | DEV | Problem | niedrig | eingeplant | WZ21 | Chat-Entwurf: Planung bei gleicher Insel-id schützen, CLI-Prozessbaum, Test-Riegel |
+| [B-515](B-515-studio-chat-anmeldung-umgebung.md) | DEV | Problem | mittel | eingeplant | WZ21 | Studio-Chat übernimmt die Umgebung einer Claude-Sitzung und zeigt Anmeldefehler doppelt |
+| [B-516](B-516-studio-chat-promptgeruest-als-instruktion.md) | DEV | Idee | mittel | eingeplant | WZ21 | Prompt-Grundgerüst des Studio-Chats ist eine feste Instruktion im Code statt Text im Eingabefeld |
 
 ## Archiv
 

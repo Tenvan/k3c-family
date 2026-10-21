@@ -4,7 +4,7 @@
 - **Projekt:** SKL
 - **Domäne:** SRV
 - **Reife:** Entwurf
-- **Tickets:** B-285
+- **Tickets:** B-285, B-495
 - **Start-Commit:** –
 - **Spec:** Entwurf
 - **Revision:** 2
@@ -24,7 +24,7 @@ Spielende am TV (Xbox) und am PC; Agent baut Server und Protokoll.
 
 ## Anforderungen
 
-B-285 › Anforderungen. (B-214 ist seit PJ3 ohne Sprint im Projekt BED.)
+B-285 › Anforderungen; B-495 › Anforderungen (ergänzt 2026-10-21 beim Einplanen: Aktionsliste nennt `respec` nach `sim.CanRespec`). (B-214 ist seit PJ3 ohne Sprint im Projekt BED.)
 
 ## Nicht-Ziele
 
@@ -46,6 +46,7 @@ Pause im gemischten Raum → nur Schutz des Monarchen, kein Anhalten.
 
 - **AC-01** entfällt, B-214 an BED (PJ3, 2026-10-08). Vorher: Der Server pausiert den Raum im Couch-Raum und schützt den stehenden Monarchen online (B-214/AC-01, B-214/AC-02).
 - **AC-02** Der Server nennt je Spieler die lernbaren Skills (B-285/AC-01, B-285/AC-02).
+- **AC-03** Die Aktionsliste nennt `respec` genau dann, wenn `sim.CanRespec` es erlaubt (B-495/AC-01, B-495/AC-02).
 
 ## Offene Fragen
 
@@ -58,6 +59,7 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 - RM1.1 entfällt (Pause im Couch-Raum, B-214 an BED, PJ3).
 - RM1.2 Lernbare Skills je Spieler im Protokoll (AC-02).
 - RM1.3 Review (Code-Sprint): alle Kriterien prüfen.
+- RM1.4 Aktionsliste nennt `respec` (AC-03). Beim Bereitmachen vor das Review ordnen.
 
 ## Abnahme
 

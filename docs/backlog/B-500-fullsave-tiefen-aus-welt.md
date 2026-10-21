@@ -4,9 +4,9 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
-- **Projekt:** WZG
+- **Status:** eingeplant
+- **Sprint:** SV2
+- **Projekt:** WRT
 - **Erstellt:** 2026-10-19
 - **Spec:** Entwurf
 - **Revision:** 1

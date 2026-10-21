@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** W13
 - **Projekt:** WRT
 - **Erstellt:** 2026-10-17
 - **Spec:** Entwurf
