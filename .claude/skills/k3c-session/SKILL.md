@@ -36,8 +36,9 @@ Sprint-Branch auschecken (fehlt er: von `origin/develop`), `plan_set {Status: in
 
 ## 4. Prüfen und Review (einmal, parallel)
 
-1. `check_run task:check:diff` (Lauf über 45 s → Lauf-ID: einmal nach der erwarteten Dauer mit `run=<ID>` abfragen,
-   keine Schleife). Ohne k3c-dev: `task check:diff` per Bash mit `run_in_background`.
+1. `check_run task:check:diff` wartet bis zum Ende und liefert das Ergebnis (B-520); über 2 min macht Claude Code den
+   Aufruf selbst zum Hintergrund-Task. Kommt doch „läuft noch“ mit Lauf-ID, `check_run {run}` einmal aufrufen (wartet
+   weiter), keine Schleife. Ohne k3c-dev: `task check:diff` per Bash mit `run_in_background`.
 2. **Gleichzeitig** im Hintergrund ein Reviewer, aber nur bei Domäne SIM oder SRV, Protokoll- oder Spielstand-Änderung,
    Shell-, Pfad- oder Eingabe-Code oder ab etwa 150 geänderten Code-Zeilen. Auftrag: nur schwere Befunde (falsches Verhalten, Datenverlust,
    Sicherheit, Determinismus, 2 Spieler, CLAUDE.md-Regeln, Kriterium ohne Nachweis).

@@ -32,7 +32,8 @@ func register(s *Server) {
 			"Dauer und nur den Fehlerzeilen. task:check:diff prüft nur, was der Diff zu origin/develop braucht (vor jedem Commit); " +
 			"task:check:race ist der langsame Race-Detector (Review, CI). " +
 			"Ersetzt task check, task test und go test in der Shell. Volle Ausgabe: console_tail check:<ziel>. " +
-			"Läufe über ca. 45 s antworten mit einer Lauf-ID; run=<ID> liefert das Ergebnis. " +
+			"Wartet bis zum Ende des Laufs und meldet dabei Fortschritt (ohne progressToken höchstens 4 min, dann Lauf-ID; " +
+			"run=<ID> wartet weiter auf diesen Lauf). Nie in Schleifen nachfragen. " +
 			"Nutze es bei: jeder Prüfung vor einem Abschluss. Statt: task check, task test, go test oder golangci-lint in der Shell; volle Ausgabe über console_tail check:<ziel>.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
 	}, s.checkRun)
@@ -245,8 +246,8 @@ func add[In any](s *Server, t *mcp.Tool, h func(context.Context, In) (string, er
 		sort.Strings(s.params[t.Name])
 	}
 	s.stats.register(t.Name, t.Description)
-	mcp.AddTool(s.mcp, t, func(ctx context.Context, _ *mcp.CallToolRequest, in In) (*mcp.CallToolResult, any, error) {
-		text, err := h(ctx, in)
+	mcp.AddTool(s.mcp, t, func(ctx context.Context, req *mcp.CallToolRequest, in In) (*mcp.CallToolResult, any, error) {
+		text, err := h(withProgress(ctx, req), in)
 		if err != nil {
 			return nil, nil, err
 		}

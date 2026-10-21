@@ -24,7 +24,7 @@ func TestCheckRunLangerLaufLiefertLaufID(t *testing.T) {
 	ctx := context.Background()
 	text, err := s.checkRun(ctx, checkIn{Target: "task:check:go"})
 	m := reRunID.FindStringSubmatch(text)
-	if err != nil || m == nil || !strings.Contains(text, "läuft im Hintergrund") {
+	if err != nil || m == nil || !strings.Contains(text, "läuft noch") {
 		t.Fatalf("erste Antwort: %q, %v", text, err)
 	}
 	id := m[1]
