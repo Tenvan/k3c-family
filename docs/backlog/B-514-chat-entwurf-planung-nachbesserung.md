@@ -22,39 +22,50 @@ Befunde des Reviews WZ19.4 (nicht schwer, daher Ticket):
 
 ## Ziel
 
-Die vier Punkte sind behoben oder begründet verworfen.
+Die offenen Punkte 2 bis 4 und die beiden Nachträge aus den Notizen sind behoben oder begründet verworfen (Punkt 1 ist mit PR #400 erledigt). Ein Abbruch lässt keinen CLI-Prozess zurück, Tests können nie das echte Modell starten, der Mock verhält sich wie Go, ein Chat-Entwurf gehört nie zu einer fremden Welt.
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+🧑 im Asset-Studio; Umsetzung durch Agent in DEV (`tools/k3c-studio/`).
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- **Punkt 2 Prozessbaum:** Abbruch, Zeitlimit und Ende des Servers beenden die CLI samt Nachfahren. Unter Windows über ein Job-Objekt mit `KILL_ON_JOB_CLOSE` (Muster: `engine/devrun/proc_windows.go`, `tools/k3c-dev/internal/proc/proc_windows.go`), sonst über die Prozessgruppe; eigene Dateien `chat_proc_windows.go`/`chat_proc_other.go` im Backend des Studios.
+- **Punkt 3 Test-Riegel:** `TestMain` (`chat_fake_test.go`) sperrt den Start des echten Programms strukturell, z. B. über eine Paket-Variable, die `defaultCLI` auf ein nicht vorhandenes Programm lenkt, oder einen Prüfer in `run`; ein Test belegt, dass `defaultCLI().run` im Test nie `claude` startet.
+- **Punkt 4 SVG/Herkunft:** prüfen und begründen. Stand der Sichtung (2026-10-21): Der Import nimmt nur `.png` und Audio (`tools/assetkit/import.go` › `importExt`), `public/` enthält kein SVG. Ein Test, der den Import einer `.svg` ablehnt, hält das fest; dann verworfen mit Begründung.
+- **Nachtrag Mock:** `mockAnswer` (`frontend/src/api/mockWorldDraft.ts`) setzt `from` für Inseln, deren id schon in der aktiven Welt steht, wie `draftOfAnswer` in Go.
+- **Nachtrag Weltwechsel:** Ein ungespeicherter Entwurf, auch aus dem Chat, gehört zur Welt, in der er entstand. Beim Wechsel der Welt wird er verworfen oder vorher nachgefragt (`frontend/src/world/useWorldDraft.ts`); nie erscheint er an der neuen Welt.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+`writeAtomic` mit Wiederholung bei `Access is denied` (gehört zu B-187); neue Chat-Funktionen; Zusammenlegen der drei Job-Objekt-Umsetzungen (`engine/devrun`, `tools/k3c-dev/internal/proc`, `tools/k3c-starter`) in ein gemeinsames Paket.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Domäne DEV; `engine/` importiert nichts aus `tools/`, das Studio-Backend darf `engine` nutzen, aber `engine/devrun` exportiert die Job-Funktionen nicht, daher eigene kleine Umsetzung. Keine neue Abhängigkeit (`golang.org/x/sys` ist nur indirekt da, also `syscall` wie in `devrun`). Datei ≤ 400 Zeilen, Funktion ≤ 60.
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+- Abbruch während der Antwort, die CLI hat einen Enkel gestartet → nach dem Ende von `run` lebt keiner der beiden.
+- Ein Test ruft versehentlich `defaultCLI()` → Fehler „CLI nicht gefunden“, nie ein Modell-Aufruf.
+- Welt „nordsee“ mit Chat-Entwurf offen, Wechsel auf „standard“ → „standard“ zeigt ihren gespeicherten Stand.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+- Job-Objekt lässt sich nicht anlegen → Abbruch wie bisher über den direkten Prozess, Warnung im Log mit ❌.
+- Weltwechsel, während eine Chat-Antwort läuft → „Als Entwurf laden“ lädt in die dann aktive Welt, aber kein alter Entwurf wandert mit.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert: Test, Befehl, Datei oder Beobachtung am TV mit erwartetem Ergebnis.
+- **AC-01** Go-Test (Windows) mit dem Test-Ersatz im Modus, der einen Enkel startet: Nach Abbruch lebt kein Prozess des Baums mehr.
+- **AC-02** Go-Test: Im Testlauf startet `defaultCLI().run` nie das echte `claude` (Riegel in `TestMain`).
+- **AC-03** Punkt 4 begründet verworfen oder behoben, mit Test „Import lehnt `.svg` ab“.
+- **AC-04** Vitest: `mockAnswer` setzt `from` für bestehende Insel-ids wie Go.
+- **AC-05** Vitest: Ein offener Entwurf erscheint nach Weltwechsel nicht an der neuen Welt.
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine.
 
 ## Notizen
 

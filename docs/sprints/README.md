@@ -24,7 +24,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
 | WZ20 | DEV | WZG | k3c-dev: Planungstest für Entwürfe, Worktree-Einträge vollständig und lesend, sim_test im Worktree | – | Entwurf | `geplant/WZ20-planung-worktree-simtest/` |
-| WZ21 | DEV | WZG | Studio-Chat: eigene Umgebung, Grundgerüst als Instruktion, Entwurf geschützt | – | Entwurf | `geplant/WZ21-studio-chat-nachtraege/` |
+| WZ21 | DEV | WZG | Studio-Chat: eigene Umgebung, Grundgerüst als Instruktion, Entwurf geschützt | – | bereit | `geplant/WZ21-studio-chat-nachtraege/` |
 | WZ23 | CLI | WZG | Studio-Vorschauen: Reittiere aus dem Spielcode, Monarch-Seite, Boss-Anzeigen, Gebäude-Planer abgenommen | – | Entwurf | `geplant/WZ23-studio-vorschauen-nachtraege/` |
 | WZ24 | REG | WZG | Geplante Chunks in Simulation und Spielstand: Regeln geklärt, Planung im Stand, eine Prüfung der Inselgröße | – | Entwurf | `geplant/WZ24-chunk-planung-sim-spielstand/` |
 | WZ25 | SRV | WZG | Nachträge zum Server-Neustart: Räume bleiben offen, Assets ohne Build, Werkzeuge passen dazu | – | Entwurf | `geplant/WZ25-server-neustart-nachtraege/` |
