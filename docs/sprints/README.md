@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| WZ14 | REG, SIM, SRV, CLI, DEV | WZG | Geplante Chunks tragen Ruinen und Gegnerlager | – | `aktiv/WZ14-ruinen-gegnerlager/` |
 | WZ20 | DEV | WZG | k3c-dev: Planungstest für Entwürfe, Worktree-Einträge vollständig und lesend, sim_test im Worktree | – | `aktiv/WZ20-planung-worktree-simtest/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO2 | CLI | SND | SFX-Katalog und Einbau | – | `aktiv/SO2-sfx-katalog/` |
@@ -215,3 +214,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ18 | Welten im Spiel: Welt-Dateien, Welt-Wahl im Raum und Welten-Editor | `erledigt/WZ18-welten-im-spiel/` |
 | WZ19 | Chat im Studio mit Claude Code CLI und Welt per Prompt füllen | `erledigt/WZ19-chat-und-prompt/` |
 | TS1 | Spielserver und Asset-Studio trennen, Server beobachtet Dateien | `erledigt/TS1-trennung-server-studio/` |
+| WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager | `erledigt/WZ14-ruinen-gegnerlager/` |
