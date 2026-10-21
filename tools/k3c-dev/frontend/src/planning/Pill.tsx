@@ -1,18 +1,19 @@
-import { IconButton } from '@radix-ui/themes';
 import type { ReactNode } from 'react';
-import type { Tone } from '@webkit/parts';
+import { Badge, IconButton, TONE_COLOR, type Tone } from '@webkit/atoms';
 
 // Runde Statusmarke mit Farbpunkt wie in der erp-qs-Workbench (Workbench-Spec › Status-Marken): grün fertig, blau in
-// Arbeit, amber Freigabe/Warnung, rot Fehler, violett Worktree, grau offen. Töne wie @webkit/parts, dazu violett.
+// Arbeit, amber Freigabe/Warnung, rot Fehler, violett Worktree, grau offen. Töne wie @webkit/atoms (TONE_COLOR), dazu violett.
 
 export type PillTone = Tone | 'violet';
 
+const PILL_COLOR = { ...TONE_COLOR, violet: 'violet' } as const;
+
 export function Pill({ tone, children, title }: { tone: PillTone; children: ReactNode; title?: string }) {
   return (
-    <span className={`pl-pill is-${tone}`} title={title}>
-      <i aria-hidden />
+    <Badge color={PILL_COLOR[tone]} variant="surface" radius="full" size="1" highContrast className="pl-pill" data-tone={tone} title={title}>
+      <span className="wk-status-dot" aria-hidden />
       {children}
-    </span>
+    </Badge>
   );
 }
 
@@ -39,12 +40,12 @@ export function ModePill({ agent = '', env = '' }: { agent?: string; env?: strin
 export function RemovableChip({ group, label, onRemove }: { group: string; label: string; onRemove: () => void }) {
   const what = `${group}: ${label}`;
   return (
-    <span className="pl-fchip">
+    <Badge variant="soft" radius="full" size="1" className="pl-fchip">
       <span className="pl-fchip-group">{group}</span>
       {label}
       <IconButton aria-label={`${what} entfernen`} color="gray" onClick={onRemove} radius="full" size="1" title={`${what} entfernen`} variant="ghost">
         ×
       </IconButton>
-    </span>
+    </Badge>
   );
 }

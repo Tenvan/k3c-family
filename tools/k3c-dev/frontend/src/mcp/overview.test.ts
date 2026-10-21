@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { ToolStats } from '../api';
-import { parseInline, parseMarkdown } from './markdown';
+import { parseInline, parseMarkdown } from '../lib/markdown';
 import { durationText, share, uptimeText, weightedAvg } from './overview';
 
 const tool = (name: string, calls: number, avgMs = 0, errors = 0): ToolStats => ({

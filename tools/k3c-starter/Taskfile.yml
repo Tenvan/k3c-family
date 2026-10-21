@@ -1,6 +1,8 @@
 # Namespace `k3c-starter`: der Windows-Starter für den Server (Wails-Fenster startet bin/k3c-server, B-041).
-# Die Oberfläche (web/) steckt in der EXE; `dev` baut sie bei jeder Änderung an Go-Code oder web/ neu und startet sie neu (k3c-watch).
-# Beobachtet werden nur .go und .html: `wails build` schreibt go.mod und frontend/wailsjs neu und löste sonst sich selbst aus.
+# Die Oberfläche (React auf Radix Themes, frontend/) steckt gebaut in der EXE (go:embed frontend/dist); `dev` baut sie bei jeder
+# Änderung an Go-Code, Oberfläche oder tools/webkit neu und startet die EXE neu (k3c-watch). Beobachtet werden .go, .html, .ts, .tsx und .css,
+# nicht frontend/dist und frontend/wailsjs (`wails build` schreibt sie neu und löste sonst sich selbst aus), node_modules
+# überspringt k3c-watch selbst. Die Oberfläche allein im Browser gegen den Mock: `npm --prefix tools/k3c-starter/frontend run dev` (Port 5194).
 version: '3'
 
 vars:
@@ -11,22 +13,44 @@ tasks:
     desc: "Starter bei jeder Änderung an tools/k3c-starter neu bauen und starten (k3c-watch); startet bin/k3c-server, der muss gebaut sein (task k3c-server:build)"
     deps: [':watch:build']
     cmds:
-      - ./bin/k3c-watch{{exeExt}} --name starter --paths tools/k3c-starter --ext .go,.html --grace 1s --build "task k3c-starter:exe" -- bin/k3c-starter{{exeExt}}
+      - ./bin/k3c-watch{{exeExt}} --name starter --paths tools/k3c-starter,tools/webkit --ext .go,.html,.ts,.tsx,.css --ignore tools/k3c-starter/frontend/dist,tools/k3c-starter/frontend/wailsjs --grace 1s --build "task k3c-starter:exe" -- bin/k3c-starter{{exeExt}}
 
   default:
     desc: Kurzform von k3c-starter:dev
     cmds:
       - task: dev
 
+  frontend:
+    desc: Oberfläche des Starters bauen (go:embed braucht frontend/dist; nur bei geänderten Quellen)
+    dir: '{{.STARTER}}/frontend'
+    cmds:
+      - npx tsc --noEmit
+      - npx vite build
+    sources:
+      - src/**/*
+      - index.html
+      - package.json
+      - vite.config.ts
+      - tsconfig.json
+      - paths.ts
+      - ../../webkit/**/*
+    generates:
+      - dist/**/*
+
   exe:
     desc: Nur die EXE bin/k3c-starter bauen (Wails; nur bei geänderten Quellen, `--force` erzwingt; laufenden Starter vorher schließen, sonst scheitert die Kopie)
-    deps: [':tmp']
+    deps: [':tmp', frontend]
     preconditions:
       - sh: command -v wails
         msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
     sources:
       - tools/k3c-starter/*.go
-      - tools/k3c-starter/web/**/*
+      - tools/k3c-starter/frontend/src/**/*
+      - tools/k3c-starter/frontend/index.html
+      - tools/k3c-starter/frontend/package.json
+      - tools/k3c-starter/frontend/vite.config.ts
+      - tools/k3c-starter/frontend/paths.ts
+      - tools/webkit/**/*
       - tools/k3c-starter/go.mod
       - tools/k3c-starter/go.sum
       - tools/k3c-starter/wails.json
@@ -48,13 +72,14 @@ tasks:
       - task: exe
 
   test:
-    desc: Windows-Starter testen (go test; B-041)
-    deps: [':tmp']
+    desc: Windows-Starter testen (Frontend mit Vitest, go test; B-041)
+    deps: [':tmp', frontend]
     cmds:
+      - cd {{.STARTER}}/frontend && npx vitest run --config vitest.config.ts
       - cd {{.STARTER}} && go test ./...
 
   lint:
     desc: golangci-lint für den Windows-Starter
-    deps: [':tmp']
+    deps: [':tmp', frontend]
     cmds:
       - cd {{.STARTER}} && golangci-lint run

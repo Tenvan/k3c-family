@@ -1,4 +1,4 @@
-import { Button, Text } from '@radix-ui/themes';
+import { Button, Text } from '@webkit/atoms';
 import { useRef, useState } from 'react';
 import { CONVERT_HINT, convertChunk, convertLock, inSync, seedObjects } from './convert';
 import { slotLabel } from './plan';

@@ -116,14 +116,15 @@ func joinRoom(c *client, code string, slots ...int) {
 	c.send(map[string]any{"t": "join", "room": code, "slots": slots})
 }
 
-// entered liest joined, level und snap (AC-06) und liefert joined.
+// entered liest joined, level und snap (AC-06) und liefert joined. Eine Raumliste darf dazwischen eintreffen: Der Server
+// schickt sie an Geräte ohne Raum, und ein Wechsel anderer Geräte kann sie noch vor dem Beitritt einreihen.
 func (c *client) entered() map[string]any {
 	c.t.Helper()
-	j := c.expect("joined")
-	if l := c.expect("level"); l["depth"] != float64(0) || l["layout"] == nil {
+	j := c.expect("joined", "rooms")
+	if l := c.expect("level", "rooms"); l["depth"] != float64(0) || l["layout"] == nil {
 		c.t.Fatalf("level: %v", l)
 	}
-	if s := c.expect("snap"); s["s"].(map[string]any)["depth"] != float64(0) {
+	if s := c.expect("snap", "rooms"); s["s"].(map[string]any)["depth"] != float64(0) {
 		c.t.Fatalf("snap: %v", s)
 	}
 	return j
@@ -367,9 +368,9 @@ func TestAckJeVerbindung(t *testing.T) {
 	_ = x.ws.CloseNow()
 	x2 := hello(t, srv, "xbox")
 	joinRoom(x2, "KRNZ", 0)
-	x2.expect("joined", "rooms") // die Raumliste kann vor joined eintreffen (Drop der alten Verbindung)
-	x2.expect("level")
-	if s := x2.expect("snap"); s["ack"] != float64(0) {
+	x2.expect("joined", "rooms") // die Raumliste (Drop der alten Verbindung) kann vor und nach joined eintreffen
+	x2.expect("level", "rooms")
+	if s := x2.expect("snap", "rooms"); s["ack"] != float64(0) {
 		t.Fatalf("ack nach Wiederverbinden: %v", s["ack"])
 	}
 }

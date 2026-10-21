@@ -22,5 +22,5 @@ Reiter Dienste: Übersicht und Steuerung der vom Werkzeug verwalteten Dienste (V
 ## Integration
 
 - Konsument: `App.tsx` (Tab `dienste`).
-- Abhängigkeiten: `api` (`ServiceStatus`, `ServicesView`, `LevelCounts`), `logs/` (Quellenleiste, Panel, `RoleTags`), `lib/`, `@webkit/parts`, `@radix-ui/themes`.
+- Abhängigkeiten: `api` (`ServiceStatus`, `ServicesView`, `LevelCounts`), `logs/` (Quellenleiste, Panel, `RoleTags`), `lib/`, `@webkit/atoms` (`Button`, `LinkButton`, `Link`, `StatusBadge` …), `@webkit/organisms` (`AlertDialog`), `@webkit/lib/errors`.
 - Go-Seite: `Services`, `ServiceStart`, `ServiceStop`, `ServiceRestart`, `ServicesStartAll`, `ServicesStopAll`, `ServiceLogLevels`, `ServicesReload`; Event `service:state`.

@@ -1,4 +1,6 @@
-import { Theme } from '@radix-ui/themes';
+import { Theme } from '@webkit/templates';
+import { optionTexts, shownOptions } from '../../../../webkit/testing/options';
+import { pickValue, selectedText, selectedValue } from '../../../../webkit/testing/select';
 import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { ChatPanel, ChatToggle } from './ChatPanel';
@@ -16,7 +18,7 @@ export async function mount(): Promise<HTMLElement> {
   document.body.append(host);
   root = createRoot(host);
   await act(async () => root!.render(<Theme><ChatToggle /><ChatPanel /></Theme>));
-  await waitFor(() => (select(host!, 'Modell')?.options.length ?? 0) > 1); // Optionen vom Mock sind da
+  await waitFor(async () => (await values(host!, 'Modell')).length > 1); // Optionen vom Mock sind da
   return host;
 }
 
@@ -33,22 +35,25 @@ export async function type(el: HTMLTextAreaElement, value: string) {
   await act(async () => { el.dispatchEvent(new Event('input', { bubbles: true })); });
 }
 
-/** Wählt in einer Auswahl den Eintrag mit dem Wert `value`. */
-export async function choose(el: HTMLSelectElement, value: string) {
-  Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value')!.set!.call(el, value);
-  await act(async () => { el.dispatchEvent(new Event('change', { bubbles: true })); });
-}
+/** Wählt in der Auswahl `label` den Eintrag mit dem Wert `value` (SelectField, Radix Select). */
+export const choose = (h: HTMLElement, label: string, value: string) => pickValue(h, label, value);
+/** Gewählter Wert der Auswahl `label`. */
+export const value = (h: HTMLElement, label: string) => selectedValue(h, label);
+/** Angezeigter Text der Auswahl `label` (leer, wenn kein Eintrag zum Wert passt). */
+export const shown = (h: HTMLElement, label: string) => selectedText(h, label);
+/** Werte bzw. Texte aller Einträge der Auswahl `label`, in Anzeige-Reihenfolge (öffnet und schließt die Liste). */
+export const values = async (h: HTMLElement, label: string) => (await shownOptions(h, label)).map((o) => o.value);
+export const labels = (h: HTMLElement, label: string) => optionTexts(h, label);
 
 export const input = (h: HTMLElement) => h.querySelector<HTMLTextAreaElement>('textarea')!;
 export const button = (h: HTMLElement, name: string) => [...h.querySelectorAll('button')].find((b) => b.textContent === name)!;
 export const panel = (h: HTMLElement) => h.querySelector<HTMLElement>('[data-testid="chat-panel"]')!;
-export const select = (h: HTMLElement, label: string) => h.querySelector<HTMLSelectElement>(`select[aria-label="${label}"]`)!;
 export const messages = (h: HTMLElement) => [...h.querySelectorAll('.chat-msg')].map((m) => m.querySelector('.chat-text')?.textContent?.trim() ?? '');
 
 /** Wartet, bis `cond` gilt: kurze Schritte unter act statt fester Zeiten, Fehler nach `ms` (Tests dürfen nicht von der Rechnerlast abhängen). */
-export async function waitFor(cond: () => boolean, ms = 3000) {
+export async function waitFor(cond: () => boolean | Promise<boolean>, ms = 3000) {
   const end = Date.now() + ms;
-  while (!cond()) {
+  while (!(await cond())) {
     if (Date.now() > end) throw new Error('waitFor: Bedingung nicht erreicht');
     await flush(5);
   }
@@ -69,6 +74,6 @@ export async function send(h: HTMLElement, text: string, settle = false) {
 
 /** Wählt in der Chat-Auswahl `id` und wartet, bis der Verlauf mit `first` beginnt (der geladene Chat ist da). */
 export async function openChat(h: HTMLElement, id: string, first: string) {
-  await choose(select(h, 'Gespeicherte Chats'), id);
+  await choose(h, 'Gespeicherte Chats', id);
   await waitFor(() => messages(h)[0] === first);
 }

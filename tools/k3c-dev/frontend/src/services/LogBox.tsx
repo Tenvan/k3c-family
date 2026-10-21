@@ -1,9 +1,8 @@
-import { Flex } from '@radix-ui/themes';
 import { useCallback, useEffect, useState } from 'react';
 import { backend, type LevelCounts } from '../api';
-import { errorText } from '@webkit/errors';
+import { errorText } from '@webkit/lib/errors';
 import { formatNumber } from '../lib/format';
-import { ActionButton } from '@webkit/parts';
+import { ActionButton, Flex } from '@webkit/atoms';
 import { levelShares } from './tables';
 
 /** Kasten `LOG · LETZTE 60 MINUTEN` einer Karte (nur für Dienste mit Log). */

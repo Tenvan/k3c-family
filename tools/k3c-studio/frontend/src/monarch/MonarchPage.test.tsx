@@ -6,6 +6,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import type { AssetSlot } from '../api';
 import type { FigureItem } from '../playback/figureView';
+import { optionTexts } from '../../../../webkit/testing/options';
+import { pickOption, selectTrigger, selectedText } from '../../../../webkit/testing/select';
 import { MonarchPage } from './MonarchPage';
 
 // B-463 (WZ10.2) im DOM: Monarch-Seite mit einer Attrappe statt Phaser; die Bühne bekommt, was die Seite wählt.
@@ -34,9 +36,10 @@ async function mount(node: React.ReactNode = <MonarchPage />): Promise<HTMLEleme
   return host;
 }
 
-const field = (h: HTMLElement, label: string) => h.querySelector<HTMLSelectElement>(`[aria-label="${label}"]`)!;
-async function choose(el: HTMLSelectElement, value: string) {
-  await act(async () => { el.value = value; el.dispatchEvent(new Event('change', { bubbles: true })); });
+const field = (h: HTMLElement, label: string) => selectTrigger(h, label) as HTMLButtonElement;
+/** Eintrag mit diesem Text in der Auswahl wählen */
+async function choose(h: HTMLElement, label: string, text: string) {
+  await pickOption(h, label, text);
   await flush();
 }
 
@@ -57,33 +60,30 @@ describe('Monarch-Seite (B-463/AC-01, AC-03, AC-04, AC-10)', () => {
 
   it('Reittier wechseln: alle 13 stehen zur Wahl, die Bühne bekommt das gewählte', async () => {
     const h = await mount();
-    const select = field(h, 'Reittier');
-    expect(select.options).toHaveLength(13);
-    await choose(select, 'unicorn');
+    expect(await optionTexts(h, 'Reittier')).toHaveLength(13);
+    await choose(h, 'Reittier', 'unicorn');
     expect(lastItems().every((i) => i.mount?.key === 'unicorn')).toBe(true);
   });
 
   it('Bewegung: nur Stehen, Laufen und Sprinten beritten, nichts zu Fuß; Sprinten ist schneller als Laufen', async () => {
     const h = await mount();
-    const move = field(h, 'Bewegung');
-    expect([...move.options].map((o) => o.textContent)).toEqual(['Stehen', 'Laufen (beritten)', 'Sprinten (beritten)']);
-    await choose(move, 'walk');
+    expect(await optionTexts(h, 'Bewegung')).toEqual(['Stehen', 'Laufen (beritten)', 'Sprinten (beritten)']);
+    await choose(h, 'Bewegung', 'Laufen (beritten)');
     const walk = lastItems()[0]!.mount!.speed;
-    await choose(move, 'sprint');
+    await choose(h, 'Bewegung', 'Sprinten (beritten)');
     expect(lastItems()[0]!.mount!.speed).toBeGreaterThan(walk);
     expect(h.querySelector('.wd-monarch > .wd-bar .wd-gap')).toBeNull(); // keine Lücke für Laufen oder Sprinten
   });
 
   it('Animation einzeln wählbar: idle, run, attack; Steuerung (Schleife, Einzelbild, Tempo) geht an die Bühne', async () => {
     const h = await mount();
-    const anim = field(h, 'Animation');
-    expect([...anim.options].map((o) => o.value)).toEqual(['idle', 'run', 'attack']);
-    await choose(anim, 'attack');
+    expect(await optionTexts(h, 'Animation')).toEqual(['idle', 'run', 'attack']);
+    await choose(h, 'Animation', 'attack');
     expect(lastItems().every((i) => i.anim === 'attack')).toBe(true);
     await act(async () => [...h.querySelectorAll('button')].find((b) => b.getAttribute('aria-label') === 'Bild vor')!.click());
     await flush();
     expect(calls.controls.at(-1)).toMatchObject({ frame: 1 });
-    await choose(field(h, 'Tempo'), '2');
+    await choose(h, 'Tempo', '2×');
     expect(calls.controls.at(-1)).toMatchObject({ tempo: 2 });
   });
 });
@@ -91,32 +91,32 @@ describe('Monarch-Seite (B-463/AC-01, AC-03, AC-04, AC-10)', () => {
 describe('Aktionen und Skills (B-463/AC-05 bis AC-09)', () => {
   it('Schlagen: attack mit dem Effekt swing, beritten; die Bewegung ist währenddessen gesperrt', async () => {
     const h = await mount();
-    await choose(field(h, 'Aktion'), 'swing');
+    await choose(h, 'Aktion', 'Schlagen');
     expect(lastItems().every((i) => i.anim === 'attack' && i.effect?.kind === 'swing' && i.mount?.key === 'horse')).toBe(true);
     expect(field(h, 'Bewegung').disabled).toBe(true);
     expect(field(h, 'Animation').disabled).toBe(true);
-    await choose(field(h, 'Aktion'), '');
+    await choose(h, 'Aktion', 'Keine (Bewegung)');
     expect(field(h, 'Bewegung').disabled).toBe(false);
     expect(lastItems().every((i) => i.effect === undefined)).toBe(true);
   });
 
   it('Münze geben zeigt die Münze des Spiels und die Lücke des fehlenden Wurfs; Münze aufheben hat keine Lücke', async () => {
     const h = await mount();
-    await choose(field(h, 'Aktion'), 'coinGive');
+    await choose(h, 'Aktion', 'Münze geben');
     expect(lastItems()[0]).toMatchObject({ effect: { kind: 'coinGive' }, prop: 'coin' });
     expect(h.querySelector('.wd-monarch > .wd-bar')!.textContent).toContain('Wurf-Animation');
-    await choose(field(h, 'Aktion'), 'coinPickup');
+    await choose(h, 'Aktion', 'Münze aufheben');
     expect(lastItems()[0]).toMatchObject({ effect: { kind: 'coin' }, prop: 'coin' });
     expect(h.querySelector('.wd-monarch > .wd-bar .wd-gap')).toBeNull();
   });
 
   it('Getroffen, Tod und Respawn: Effekte und Deckkraft des Spiels, Lücken markiert', async () => {
     const h = await mount();
-    await choose(field(h, 'Aktion'), 'down');
+    await choose(h, 'Aktion', 'Tod');
     expect(lastItems()[0]).toMatchObject({ effect: { kind: 'down' }, alpha: 0.25 });
-    await choose(field(h, 'Aktion'), 'respawn');
+    await choose(h, 'Aktion', 'Respawn');
     expect(lastItems()[0]).toMatchObject({ fade: { from: 0.25, to: 1 } });
-    await choose(field(h, 'Aktion'), 'hit');
+    await choose(h, 'Aktion', 'Getroffen');
     expect(lastItems()[0]).toMatchObject({ effect: { kind: 'hit' } });
     expect(h.querySelector('.wd-monarch > .wd-bar')!.textContent).toContain('Treffer-Animation');
   });
@@ -142,12 +142,11 @@ describe('Grafik-Auswahl (B-463/AC-12)', () => {
     vi.spyOn(backend, 'assetsList').mockResolvedValue({ slots, error: '', preview: '/', stand: 's' });
     const set = vi.spyOn(backend, 'assetsSet');
     const h = await mount();
-    const rider = field(h, 'Grafik Monarch 2');
-    expect(rider.value).toBe('0');
+    expect(selectedText(h, 'Grafik Monarch 2')).toBe('Präferenz 1: medieval-king-2');
     expect(lastItems()[1]!.spec.sheet).toBe('medieval-king-2');
-    await choose(rider, '1');
+    await choose(h, 'Grafik Monarch 2', 'Präferenz 2: medieval-king');
     expect(lastItems()[1]!.spec.sheet).toBe('medieval-king');
-    await choose(field(h, 'Grafik Reittier'), '1');
+    await choose(h, 'Grafik Reittier', 'Präferenz 2: white-horse');
     expect(lastItems()[0]!.mount!.sheet).toBe('white-horse');
     expect(set).not.toHaveBeenCalled();
   });
@@ -155,7 +154,7 @@ describe('Grafik-Auswahl (B-463/AC-12)', () => {
   it('ein Sheet ohne Eintrag in data/sprites.json ist eine Lücke, die Vorschau zeigt die Spiel-Figur', async () => {
     vi.spyOn(backend, 'assetsList').mockResolvedValue({ slots, error: '', preview: '/', stand: 's' });
     const h = await mount();
-    await choose(field(h, 'Grafik Monarch 2'), '2');
+    await choose(h, 'Grafik Monarch 2', 'Präferenz 3: gibtsnicht');
     expect(h.querySelector('.wd-colors li[data-index="1"] .wd-gap')!.textContent).toContain('gibtsnicht');
     expect(lastItems()[1]!.spec.sheet).toBe('medieval-king-2');
   });

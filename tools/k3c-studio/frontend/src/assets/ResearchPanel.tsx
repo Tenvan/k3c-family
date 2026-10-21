@@ -1,8 +1,7 @@
-import { Button, Flex, Text, TextField } from '@radix-ui/themes';
+import { ActionButton, Button, Flex, StatusBadge, Text, TextField, type Tone } from '@webkit/atoms';
 import { useEffect, useState } from 'react';
 import { backend, type AssetHit, type AssetSlot, type LicenseStatus } from '../api';
-import { errorText } from '@webkit/errors';
-import { ActionButton, StatusBadge, type Tone } from '@webkit/parts';
+import { errorText } from '@webkit/lib/errors';
 
 const STATUS_TONE: Record<LicenseStatus, Tone> = { erkannt: 'ok', pruefen: 'warn', ausgeschlossen: 'error', bestaetigt: 'ok' };
 const STATUS_LABEL: Record<LicenseStatus, string> = {

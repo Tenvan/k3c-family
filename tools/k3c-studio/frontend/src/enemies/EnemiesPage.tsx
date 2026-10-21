@@ -1,4 +1,5 @@
-import { Checkbox, Text } from '@radix-ui/themes';
+import { SelectField, Text, plainOptions, type SelectOption } from '@webkit/atoms';
+import { CheckField } from '@webkit/molecules';
 import { useEffect, useMemo, useState } from 'react';
 import { backend, type AssetSlot } from '../api';
 import { DEFAULT_CONTROL, resolveAnim, type Anim, type Control } from '../playback/figure';
@@ -11,6 +12,8 @@ import { ENEMY_ACTIONS, ENEMY_ANIMS, cardOf, enemyItems, groups, type EnemyActio
 
 /** Gruppe der Bosse: je Tiefe einer (5 Minibosse und der Endboss), Daten aus `data/bosses.json` */
 const BOSS_GROUP_ID = 'bosse';
+
+const ACTION_OPTIONS: SelectOption<EnemyActionId | ''>[] = [{ value: '', label: 'Keine' }, ...ENEMY_ACTIONS.map((a) => ({ value: a.id, label: a.label }))];
 
 /** Slot-Register des Studios (nur lesen): Zuordnungen der Slots je Gegner-ID als Vorschau-Auswahl */
 function useSlots(): AssetSlot[] {
@@ -44,9 +47,8 @@ function CardRow({ card, slots, pick, onPick, gap }: { card: EnemyCard; slots: A
       {card.gaps.map((g) => <GapBadge key={g.reason} gap={g} />)}
       <GapBadge gap={gap} />
       {options.length > 0 && (
-        <select className="wd-select" aria-label={`Grafik ${card.id}`} value={pick} onChange={(e) => onPick(Number(e.target.value))}>
-          {options.map((o) => <option key={o.index} value={o.index}>{`Präferenz ${o.index + 1}: ${o.sheet}`}</option>)}
-        </select>
+        <SelectField aria-label={`Grafik ${card.id}`} value={String(pick)} onChange={(v) => onPick(Number(v))}
+          options={options.map((o) => ({ value: String(o.index), label: `Präferenz ${o.index + 1}: ${o.sheet}` }))} />
       )}
     </li>
   );
@@ -81,17 +83,10 @@ export function EnemiesPage() {
   return (
     <div className="wd-page wd-gegner">
       <div className="wd-bar">
-        <select className="wd-select" aria-label="Gruppe" value={group.id} onChange={(e) => setGroupId(e.target.value)}>
-          {all.map((g) => <option key={g.id} value={g.id}>{g.title}</option>)}
-        </select>
-        <select className="wd-select" aria-label="Animation" value={anim} onChange={(e) => setAnim(e.target.value as Anim)}>
-          {ENEMY_ANIMS.map((a) => <option key={a} value={a}>{a}</option>)}
-        </select>
-        <select className="wd-select" aria-label="Aktion" value={actionId} onChange={(e) => setActionId(e.target.value as EnemyActionId | '')}>
-          <option value="">Keine</option>
-          {ENEMY_ACTIONS.map((a) => <option key={a.id} value={a.id}>{a.label}</option>)}
-        </select>
-        <Text as="label" size="2"><Checkbox checked={withMonarch} onCheckedChange={(c) => setWithMonarch(c === true)} aria-label="Monarch-Vergleich" /> Monarch-Vergleich</Text>
+        <SelectField aria-label="Gruppe" value={group.id} options={all.map((g) => ({ value: g.id, label: g.title }))} onChange={setGroupId} />
+        <SelectField aria-label="Animation" value={anim} options={plainOptions(ENEMY_ANIMS)} onChange={setAnim} />
+        <SelectField aria-label="Aktion" value={actionId} options={ACTION_OPTIONS} onChange={setActionId} />
+        <CheckField label="Monarch-Vergleich" checked={withMonarch} onCheckedChange={(c) => setWithMonarch(c === true)} aria-label="Monarch-Vergleich" />
         {action?.gaps.map((g) => <GapBadge key={g.reason} gap={g} />)}
       </div>
       <PlaybackControls control={control} onChange={setControl} frames={infos[offset]?.frames ?? 1} />

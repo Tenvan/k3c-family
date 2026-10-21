@@ -1,10 +1,10 @@
-import { Button, SegmentedControl, Text } from '@radix-ui/themes';
+import { ActionButton, Button, SegmentedControl, Text } from '@webkit/atoms';
 import { CREDITS } from '@game/tools/credits';
 import { useState } from 'react';
 import { useAssets } from '../assets/useAssets';
 import { licenseFlag, resolveSlot, SCENES, slotsOf, type Query, type Resolved, type SceneId } from '../graphics/scenesLogic';
 import { loadPref, savePref } from '../lib/prefs';
-import { ActionButton, NoticeCard } from '@webkit/parts';
+import { NoticeCard } from '@webkit/molecules';
 import { playChoice, stopAll } from './audio';
 import { playStatus } from './playback';
 

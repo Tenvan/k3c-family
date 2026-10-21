@@ -1,4 +1,4 @@
-import { Button } from '@radix-ui/themes';
+import { Button } from '@webkit/atoms';
 import { setChatOpen, useChatOpen } from './chatBridge';
 import { ChatControls } from './ChatControls';
 import { ChatSplitter, useChatWidth } from './ChatSplitter';

@@ -1,4 +1,4 @@
-import { Button } from '@radix-ui/themes';
+import { Button, SelectField, type SelectOption } from '@webkit/atoms';
 import type { ChatChoice, ChatChoiceValues, ChatSummary } from '../api/chatTypes';
 import { chatLabel } from './chatConvert';
 import { choiceList, type ChatChoices } from './useChatChoices';
@@ -13,11 +13,19 @@ function Choice({ label, value, list, onChange }: { label: string; value: string
   return (
     <label className="chat-choice">
       <span>{label}</span>
-      <select className="chat-select" aria-label={label} value={value} onChange={(e) => onChange(e.target.value)}>
-        {list.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}
-      </select>
+      <SelectField className="chat-select" size="1" aria-label={label} value={value} options={list.map((c) => ({ value: c.id, label: c.label }))} onChange={onChange} />
     </label>
   );
+}
+
+/** Einträge der Chat-Auswahl: „Neuer Chat“ (leer), der noch nicht gelistete aktuelle Chat, dann die gespeicherten. */
+function chatOptions(chats: readonly ChatSummary[], chat: string): SelectOption<string>[] {
+  const listed = chats.some((c) => c.id === chat);
+  return [
+    { value: '', label: 'Neuer Chat' },
+    ...(chat && !listed ? [{ value: chat, label: 'Aktueller Chat' }] : []),
+    ...chats.map((c) => ({ value: c.id, label: chatLabel(c) })),
+  ];
 }
 
 export interface ChatControlsProps {
@@ -38,7 +46,6 @@ export interface ChatControlsProps {
 
 /** Kopf des Chats: Neuer Chat, Auswahl gespeicherter Chats, Löschen und die Wahl von Anbieter, Modell und Denkstufe. */
 export function ChatControls({ chats, chat, choices, running, error, onNew, onSelect, onDelete, onHide }: ChatControlsProps) {
-  const listed = chats.some((c) => c.id === chat);
   return (
     <div className="chat-head">
       <div className="chat-head-row">
@@ -47,11 +54,8 @@ export function ChatControls({ chats, chat, choices, running, error, onNew, onSe
         <Button size="1" variant="soft" color="red" disabled={!chat || running} onClick={onDelete}>Chat löschen</Button>
         <Button size="1" variant="ghost" onClick={onHide}>Ausblenden</Button>
       </div>
-      <select className="chat-select chat-pick" aria-label="Gespeicherte Chats" value={chat} onChange={(e) => (e.target.value ? onSelect(e.target.value) : onNew())}>
-        <option value="">Neuer Chat</option>
-        {chat && !listed && <option value={chat}>Aktueller Chat</option>}
-        {chats.map((c) => <option key={c.id} value={c.id}>{chatLabel(c)}</option>)}
-      </select>
+      <SelectField className="chat-select" size="1" aria-label="Gespeicherte Chats" value={chat} options={chatOptions(chats, chat)}
+        onChange={(v) => (v ? onSelect(v) : onNew())} />
       <div className="chat-head-row chat-choices">
         {CHOICES.map(({ field, label }) => (
           <Choice key={field} label={label} value={choices.values[field]} list={choiceList(choices.view, field)} onChange={(v) => choices.set(field, v)} />

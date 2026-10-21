@@ -17,4 +17,4 @@ Wiederverwendbare Abspiel-Bausteine für Figuren-Seiten (Monarch, Gegner; B-463,
 
 ## Integration
 - Konsumenten: `../monarch/`, `../enemies/`.
-- Abhängigkeiten: `../stage/PreviewStage`, `@game/scenes/*`, `@game/core/constants`, `@data/sprites.json`, Radix Themes.
+- Abhängigkeiten: `../stage/PreviewStage`, `@game/scenes/*`, `@game/core/constants`, `@data/sprites.json`, `@webkit/atoms` (Radix Themes: `Button`, `SelectField`, `Badge` für `GapBadge`).

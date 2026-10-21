@@ -21,5 +21,5 @@ Logs-Bereich der Dienste-Seite: Quellenleiste sowie je Quelle Konsole (Live-Puff
 ## Integration
 
 - Konsumenten: `services/ServicesPage.tsx` (Quellenleiste, Panel), `services/ServiceCard.tsx` (`RoleTags`), `tasks/TasksPage.tsx` (`ConsoleView name="task:<name>"`).
-- Abhängigkeiten: `api` (`backend`, Typen), `lib/` (`format`, `prefs`), `@webkit/errors`, `@webkit/useDebounced`, `@webkit/parts` (`NoticeCard`, `StatusBadge`, `Tone`), `@radix-ui/themes`.
+- Abhängigkeiten: `api` (`backend`, Typen), `lib/` (`format`, `prefs`), `@webkit/lib/errors`, `@webkit/lib/useDebounced`, `@webkit/atoms` (`StatusBadge`, `SelectField`, `CardButton` für die Quellen, `Tone`), `@webkit/molecules` (`NoticeCard`), `@webkit/organisms` (`Tabs`).
 - Go-Seite: Wails-Methoden `Sources`, `ConsoleTail`, `LogsQuery`, `LogsErrors`; Events `console:line`, `source:state`.

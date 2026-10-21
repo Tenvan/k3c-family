@@ -1,4 +1,4 @@
-import { Button } from '@radix-ui/themes';
+import { Button, SelectField, Slider } from '@webkit/atoms';
 import { RangeSlider, type Span } from './RangeSlider';
 import { MAX_SCALE, MIN_SCALE, ZOOM_PERCENTS, scaleOfPercent, type JumpPoint, type Views } from './viewState';
 
@@ -19,12 +19,10 @@ export function ViewBar({ views, spans, widthUnits, range, jumps, onScale, onZoo
     <div className="wd-viewbar">
       <div className="wd-bar">
         <Button variant="soft" aria-label="Herauszoomen" onClick={() => onZoom(1 / ZOOM_STEP)}>−</Button>
-        <input type="range" aria-label="Zoom" min={MIN_SCALE} max={MAX_SCALE} step={0.5} value={scale} onChange={(e) => onScale(Number(e.target.value))} />
+        <Slider className="wd-zoom" aria-label="Zoom" min={MIN_SCALE} max={MAX_SCALE} step={0.5} value={[scale]} onValueChange={([v]) => v !== undefined && onScale(v)} />
         <Button variant="soft" aria-label="Hineinzoomen" onClick={() => onZoom(ZOOM_STEP)}>+</Button>
-        <select className="wd-select" aria-label="Zoomstufe" value={fixed ? percentOf(scale) : ''} onChange={(e) => onScale(scaleOfPercent(Number(e.target.value)))}>
-          {!fixed && <option value="">{percentOf(scale)} %</option>}
-          {ZOOM_PERCENTS.map((p) => <option key={p} value={p}>{p} %</option>)}
-        </select>
+        <SelectField aria-label="Zoomstufe" value={fixed ? String(percentOf(scale)) : ''} onChange={(v) => v !== '' && onScale(scaleOfPercent(Number(v)))}
+          options={[...(fixed ? [] : [{ value: '', label: `${percentOf(scale)} %` }]), ...ZOOM_PERCENTS.map((p) => ({ value: String(p), label: `${p} %` }))]} />
         {views.live !== scale && <span className="wd-zoom-live" aria-label="Zoom Live-Vorschau">Live {percentOf(views.live)} %</span>}
         <span className="wd-jumps" role="group" aria-label="Sprungpunkte">
           {jumps.map((j) => (

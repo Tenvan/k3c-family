@@ -1,7 +1,7 @@
-import { Checkbox, Select, Text } from '@radix-ui/themes';
 import { useState } from 'react';
 import { backend, type PlanTicket, type PlanningData } from '../api';
-import { errorText } from '@webkit/errors';
+import { Checkbox, LinkButton, SelectField, Strong, Text } from '@webkit/atoms';
+import { errorText } from '@webkit/lib/errors';
 import { loadText, savePref } from '../lib/prefs';
 import { FoldButton, useFold } from './fold';
 import { Pill, prioTone, type PillTone } from './Pill';
@@ -61,19 +61,14 @@ export function BacklogView({ data, tickets, sel, onPick, target, goal, choose }
         <Text size="1" color="gray">{tickets.length} von {data.tickets.length} offenen Tickets</Text>
         <span className="pl-spacer" />
         <Text size="1">Ziel:</Text>
-        <Select.Root size="1" value={goal} onValueChange={choose}>
-          <Select.Trigger aria-label="Ziel der Backlog-Prompts" />
-          <Select.Content>
-            {ids.map((id) => <Select.Item key={id} value={id}>{id}</Select.Item>)}
-            <Select.Item value={NEW_SPRINT}>Neuer Sprint</Select.Item>
-          </Select.Content>
-        </Select.Root>
+        <SelectField size="1" aria-label="Ziel der Backlog-Prompts" value={goal} onChange={choose}
+          options={[...ids.map((id) => ({ value: id, label: id })), { value: NEW_SPRINT, label: 'Neuer Sprint' }]} />
       </div>
       {picked.length > 0 && (
         <div className="pl-picked">
           <Text size="1" weight="medium">{picked.length} markiert</Text>
           <CopyPrompt prompt={backlogPrompt(picked, target)} what={`${picked.length} markierte Tickets`} />
-          <button type="button" className="pl-textlink" onClick={() => setChecked(new Set())}>Auswahl aufheben</button>
+          <LinkButton size="1" onClick={() => setChecked(new Set())}>Auswahl aufheben</LinkButton>
         </div>
       )}
       <div className="pl-bl-list">
@@ -98,7 +93,7 @@ function DomainSection({ dom, tickets, checked, onCheck, row }:
         <FoldButton folded={folded} onToggle={toggle} what={`Domäne ${dom}`} />
         <Checkbox aria-label={`Alle sichtbaren Tickets in ${dom} markieren`} checked={n === nrs.length ? true : n > 0 ? 'indeterminate' : false}
           onCheckedChange={(on) => onCheck(nrs, on === true)} />
-        <button type="button" className="pl-bl-domain-name" onClick={toggle}>{dom} ({tickets.length})</button>
+        <LinkButton size="3" color="gray" underline="none" onClick={toggle}><Strong>{dom} ({tickets.length})</Strong></LinkButton>
       </div>
       {!folded && (
         <ul>

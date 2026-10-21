@@ -1,5 +1,5 @@
 import type { ToolStats } from '../api';
-import { Tip } from '@webkit/parts';
+import { Tip } from '@webkit/atoms';
 import { share, sortByCalls, toolLine } from './overview';
 
 /**

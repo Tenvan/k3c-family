@@ -1,4 +1,4 @@
-import { Text } from '@radix-ui/themes';
+import { Text } from '@webkit/atoms';
 import { useEffect, useRef, useState } from 'react';
 import type { AssetChoice } from '../api';
 import { fileUrl, GAME_SCALE, sceneLayout, SCENE, UNIT_PX } from './assets';

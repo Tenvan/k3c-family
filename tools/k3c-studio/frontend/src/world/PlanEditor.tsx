@@ -1,5 +1,5 @@
 import { BIOMES } from '@game/model/biome';
-import { Button, Text } from '@radix-ui/themes';
+import { Button, Text, TextField } from '@webkit/atoms';
 import { useState } from 'react';
 import { ConvertButton } from './ConvertButton';
 import { KindPicker } from './KindPicker';
@@ -7,8 +7,8 @@ import { CHUNK_KINDS, OBJECT_KINDS, addChunk, addObject, moveObject, removeChunk
 import type { PlanState } from './usePlan';
 
 const defaultKind = (biome = ''): string => Object.keys(BIOMES.find((b) => b.id === biome)?.chunkWeights ?? {})[0] ?? 'forest';
-/** Klick auf ein Bedienelement im Eintrag (Feld, Knopf, Liste): kein Sprung */
-const isControl = (target: EventTarget) => target instanceof Element && target.closest('input, button, select, textarea, [role="listbox"]') !== null;
+/** Klick auf ein Bedienelement im Eintrag (Feld samt Rahmen, Knopf, Liste): kein Sprung */
+const isControl = (target: EventTarget) => target instanceof Element && target.closest('input, button, textarea, .rt-TextFieldRoot, [role="listbox"]') !== null;
 const number = (value: string, fallback: number) => (value === '' || Number.isNaN(Number(value)) ? fallback : Number(value));
 
 /** Editor für geplante Chunks im Welt-Betrachter (B-461/AC-09, rechte Spalte als Baum): Chunks am Platz anlegen, Art,
@@ -26,7 +26,7 @@ export function PlanEditor({ plan, seed, onSlot }: { plan: PlanState; seed: stri
   return (
     <section className="wd-plan" aria-label="Planung">
       <div className="wd-bar">
-        <input className="wd-slot" type="number" aria-label="Neuer Platz" value={slot} onChange={(e) => setSlot(number(e.target.value, slot))} />
+        <TextField.Root className="wd-slot" type="number" aria-label="Neuer Platz" value={slot} onChange={(e) => setSlot(number(e.target.value, slot))} />
         <Button variant="soft" onClick={() => change(addChunk(draft, slot, defaultKind(island.biomes[stage])), slot)}>Chunk hinzufügen</Button>
         <span className="wd-grow" />
         <Button disabled={!dirty || !check.ok} onClick={() => void plan.save()}>Speichern</Button>
@@ -40,9 +40,9 @@ export function PlanEditor({ plan, seed, onSlot }: { plan: PlanState; seed: stri
         {draft.map((c, i) => (
           <li key={i} className="wd-planned" data-slot={c.slot} onClick={(e) => { if (!isControl(e.target)) onSlot?.(c.slot); }}>
             <div className="wd-bar">
-              <input className="wd-slot" type="number" aria-label={`Platz ${slotLabel(c.slot)}`} value={c.slot} onChange={(e) => { const to = number(e.target.value, c.slot); change(updateChunk(draft, i, { slot: to }), to); }} />
+              <TextField.Root className="wd-slot" type="number" aria-label={`Platz ${slotLabel(c.slot)}`} value={c.slot} onChange={(e) => { const to = number(e.target.value, c.slot); change(updateChunk(draft, i, { slot: to }), to); }} />
               <KindPicker label={`Art Platz ${slotLabel(c.slot)}`} value={c.kind} options={CHUNK_KINDS} onChange={(kind) => change(updateChunk(draft, i, { kind }), c.slot)} />
-              <input className="wd-seed" aria-label={`Chunk-Seed Platz ${slotLabel(c.slot)}`} placeholder="Chunk-Seed" value={c.seed ?? ''} onChange={(e) => change(updateChunk(draft, i, { seed: e.target.value }), c.slot)} />
+              <TextField.Root className="wd-seed" aria-label={`Chunk-Seed Platz ${slotLabel(c.slot)}`} placeholder="Chunk-Seed" value={c.seed ?? ''} onChange={(e) => change(updateChunk(draft, i, { seed: e.target.value }), c.slot)} />
               <Button variant="soft" onClick={() => change(addObject(draft, i, { kind: OBJECT_KINDS[0] ?? 'tree', at: 10 }), c.slot)}>Objekt</Button>
               <ConvertButton plan={plan} seed={seed} index={i} onDone={onSlot} />
               <Button variant="outline" color="red" aria-label={`Chunk Platz ${slotLabel(c.slot)} löschen`} onClick={() => plan.edit(removeChunk(draft, i))}>Löschen</Button>
@@ -51,7 +51,7 @@ export function PlanEditor({ plan, seed, onSlot }: { plan: PlanState; seed: stri
               <div key={j} className="wd-object">
                 <KindPicker label={`Objekt ${j + 1} Platz ${slotLabel(c.slot)}`} value={o.kind} options={OBJECT_KINDS}
                   onChange={(kind) => change(draft.map((x, k) => (k === i ? { ...x, objects: (x.objects ?? []).map((y, m) => (m === j ? { ...y, kind } : y)) } : x)), c.slot)} />
-                <input className="wd-slot" type="number" aria-label={`Lage Objekt ${j + 1} Platz ${slotLabel(c.slot)}`} value={o.at} onChange={(e) => change(moveObject(draft, i, j, number(e.target.value, o.at)), c.slot)} />
+                <TextField.Root className="wd-slot" type="number" aria-label={`Lage Objekt ${j + 1} Platz ${slotLabel(c.slot)}`} value={o.at} onChange={(e) => change(moveObject(draft, i, j, number(e.target.value, o.at)), c.slot)} />
                 <Button variant="outline" color="red" aria-label={`Objekt ${j + 1} Platz ${slotLabel(c.slot)} löschen`} onClick={() => change(removeObject(draft, i, j), c.slot)}>×</Button>
               </div>
             ))}

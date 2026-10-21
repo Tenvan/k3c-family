@@ -1,8 +1,9 @@
-import { Button, Dialog, Flex } from '@radix-ui/themes';
 import { useState } from 'react';
 import { backend } from '../api';
-import { errorText } from '@webkit/errors';
-import { MarkdownView } from '../ui/MarkdownView';
+import { Button, Flex } from '@webkit/atoms';
+import { Dialog } from '@webkit/organisms';
+import { errorText } from '@webkit/lib/errors';
+import { MarkdownView } from '../ui/molecules/MarkdownView';
 
 /** Knopf `Systemprompt` mit Dialog (MCP-instructions): der Text, den jeder Client beim Verbinden bekommt, als React-Elemente. */
 export function InstructionsDialog() {

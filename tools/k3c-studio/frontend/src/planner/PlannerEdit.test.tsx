@@ -5,6 +5,7 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend, type HubSaveResult } from '../api';
 import { mockHubCheck, mockHubPlan, mockHubSave } from '../api/mockHub';
+import { pickOption } from '../../../../webkit/testing/select';
 import { PlannerPage } from './PlannerPage';
 
 // WZ9.3 (B-462/AC-02, AC-05, AC-06) im DOM: Bearbeiten als Kandidat, Prüfung und Speichern über das Backend (Mock).
@@ -64,7 +65,7 @@ describe('Gebäude-Planer: Bearbeiten (B-462 › Bearbeitbar)', () => {
     await select(h, 'barracks@24');
     await type(field(h, 'Platz (offsetUnits)'), '26');
     await type(field(h, 'ab Tiefe (fromDepth)'), '1');
-    await click(field(h, 'needsDeeper'));
+    await click(h.querySelector<HTMLElement>('[role="checkbox"][aria-label="needsDeeper"]')!);
     expect(lastCandidate(check).sites[6]).toEqual({ kind: 'barracks', offsetUnits: 26, hubLevel: 2, fromDepth: 1, needsDeeper: true });
   });
 
@@ -93,9 +94,7 @@ describe('Gebäude-Planer: Bearbeiten (B-462 › Bearbeitbar)', () => {
     expect(lastCandidate(check).sites.map((s: { kind: string }) => s.kind)).not.toContain('healer');
     expect(mockHubPlan().kinds).toContain('healer');
     await type(field(h, 'neuer Platz (offsetUnits)'), '-41');
-    const kind = h.querySelector<HTMLSelectElement>('select[aria-label="Art"]')!;
-    Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value')!.set!.call(kind, 'healer');
-    await act(async () => kind.dispatchEvent(new Event('change', { bubbles: true })));
+    await pickOption(h, 'Art', 'healer');
     await click(button(h, 'Platz hinzufügen'));
     expect(lastCandidate(check).sites.at(-1)).toEqual({ kind: 'healer', offsetUnits: -41, hubLevel: 7 });
   });

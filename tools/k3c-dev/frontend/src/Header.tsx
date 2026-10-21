@@ -1,12 +1,12 @@
-import { Flex, Switch, Tabs, Text } from '@radix-ui/themes';
 import type { McpState } from './api';
 import { StudioLink } from './StudioLink';
-import { StatusBadge, Tip } from '@webkit/parts';
+import { StatusBadge, Tip } from '@webkit/atoms';
+import { SwitchField } from '@webkit/molecules';
 
 export const PAGES = ['dienste', 'tasks', 'planung', 'mcp'] as const;
 export type Page = (typeof PAGES)[number];
 
-const LABELS: Record<Page, string> = { dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', mcp: 'MCP' };
+export const LABELS: Record<Page, string> = { dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', mcp: 'MCP' };
 
 interface Props {
   mcp: McpState | null;
@@ -15,34 +15,20 @@ interface Props {
   onDark: (dark: boolean) => void;
 }
 
-/** Kopfzeile (B-064 › Kopfzeile). Liegt in Tabs.Root von App, damit die Reiter die Seiten umschalten. */
-export function Header({ mcp, mock, dark, onDark }: Props) {
+/** Rechte Seite der Kopfzeile (B-064 › Kopfzeile): Studio-Verweis, MCP-Badge, Mock-Badge, Dark-Schalter. Titel und
+ *  Reiter setzt AppFrame in App. */
+export function HeaderRight({ mcp, mock, dark, onDark }: Props) {
   return (
-    <header className="header">
-      <span className="header-title">K3C Workbench</span>
-      <Tabs.List className="header-tabs">
-        {PAGES.map((p) => (
-          <Tabs.Trigger key={p} value={p}>
-            {LABELS[p]}
-          </Tabs.Trigger>
-        ))}
-      </Tabs.List>
-      <div className="header-right">
-        <StudioLink />
-        <McpBadge mcp={mcp} />
-        {mock && (
-          <Tip content="Keine Wails-Laufzeit: erfundene Daten">
-            <StatusBadge tone="warn">Mock</StatusBadge>
-          </Tip>
-        )}
-        <Text as="label" size="2">
-          <Flex gap="2" align="center">
-            <Switch checked={dark} onCheckedChange={onDark} />
-            Dark
-          </Flex>
-        </Text>
-      </div>
-    </header>
+    <>
+      <StudioLink />
+      <McpBadge mcp={mcp} />
+      {mock && (
+        <Tip content="Keine Wails-Laufzeit: erfundene Daten">
+          <StatusBadge tone="warn">Mock</StatusBadge>
+        </Tip>
+      )}
+      <SwitchField label="Dark" checked={dark} onCheckedChange={onDark} />
+    </>
   );
 }
 

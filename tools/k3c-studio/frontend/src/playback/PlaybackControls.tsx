@@ -1,5 +1,7 @@
-import { Button, Text } from '@radix-ui/themes';
+import { Badge, Button, SelectField, Text } from '@webkit/atoms';
 import { TEMPO_STEPS, resume, setTempo, stepFrame, toggleLoop, type Control, type Gap } from './figure';
+
+const TEMPO_OPTIONS = TEMPO_STEPS.map((t) => ({ value: String(t), label: `${t}×` }));
 
 /** Steuerung der Wiedergabe (B-463/AC-01): Schleife an/aus, Einzelbild vor und zurück, Tempo 0,5×, 1×, 2×. `frames` ist
  *  die Bildzahl der gespielten Animation, `current` das Bild, bei dem sie steht (für den ersten Einzelschritt). */
@@ -11,9 +13,7 @@ export function PlaybackControls({ control, onChange, frames, current = 0 }: { c
       <Button variant="soft" aria-label="Bild zurück" onClick={() => onChange(stepFrame(control, frames, -1, current))}>◀︎</Button>
       <Button variant="soft" aria-label="Bild vor" onClick={() => onChange(stepFrame(control, frames, 1, current))}>▶︎</Button>
       <Button variant="soft" disabled={!stopped} onClick={() => onChange(resume(control))}>Weiter</Button>
-      <select className="wd-select" aria-label="Tempo" value={control.tempo} onChange={(e) => onChange(setTempo(control, Number(e.target.value)))}>
-        {TEMPO_STEPS.map((t) => <option key={t} value={t}>{`${t}×`}</option>)}
-      </select>
+      <SelectField aria-label="Tempo" value={String(control.tempo)} options={TEMPO_OPTIONS} onChange={(v) => onChange(setTempo(control, Number(v)))} />
       {stopped && <Text size="1" color="gray">Bild {(control.frame ?? 0) + 1} von {frames}</Text>}
     </div>
   );
@@ -22,5 +22,5 @@ export function PlaybackControls({ control, onChange, frames, current = 0 }: { c
 /** Marke „Lücke“ mit dem Grund (B-463): zeigt an, dass das Spiel diese Darstellung nicht hat. Ohne Lücke nichts. */
 export function GapBadge({ gap }: { gap: Gap | null | undefined }) {
   if (!gap) return null;
-  return <span className="wd-gap" data-kind={gap.kind} title={gap.reason}>Lücke: {gap.reason.replace(/^Lücke:\s*/, '')}</span>;
+  return <Badge color="amber" variant="outline" className="wd-gap" data-kind={gap.kind} title={gap.reason}>Lücke: {gap.reason.replace(/^Lücke:\s*/, '')}</Badge>;
 }

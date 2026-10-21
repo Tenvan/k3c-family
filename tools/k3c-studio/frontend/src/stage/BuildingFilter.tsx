@@ -1,4 +1,5 @@
-import { Checkbox, Text } from '@radix-ui/themes';
+import { Button, Checkbox, SelectField, Text } from '@webkit/atoms';
+import { CheckField } from '@webkit/molecules';
 import { useState } from 'react';
 import buildings from '@data/buildings.json';
 import type { SiteLook } from '../api';
@@ -8,6 +9,11 @@ import { buildingGroups, type BuildingToggle } from './stageLogic';
 const levelCount = (kind: string): number => (buildings as Record<string, { levels?: unknown[] }>)[kind]?.levels?.length ?? 0;
 
 const HP_STEPS = [100, 75, 50, 25, 10] as const;
+const STATE_OPTIONS = [
+  { value: '0', label: 'Zustand Auto' },
+  ...HP_STEPS.map((p) => ({ value: String(p), label: `${p} % Trefferpunkte` })),
+  { value: 'unbuilt', label: 'Nicht gebaut' },
+];
 
 /** Zustand eines Platzes für die Vorschau: Baustufe (Auto = wie die Hub-Stufe sie ausbaut), Trefferpunkte (Zerstörungsstufe)
  *  oder nicht gebaut. */
@@ -17,17 +23,11 @@ function SiteLookControls({ site, look, onLook }: { site: BuildingToggle; look: 
   return (
     <span className="wd-look">
       {levels > 0 && (
-        <select className="wd-select" aria-label={`Baustufe ${site.key}`} value={look.level ?? 0} disabled={look.unbuilt} onChange={(e) => onLook({ ...look, level: Number(e.target.value) || undefined })}>
-          <option value={0}>Stufe Auto</option>
-          {Array.from({ length: levels }, (_, i) => <option key={i} value={i + 1}>{`Stufe ${i + 1}`}</option>)}
-        </select>
+        <SelectField aria-label={`Baustufe ${site.key}`} value={String(look.level ?? 0)} disabled={look.unbuilt} onChange={(v) => onLook({ ...look, level: Number(v) || undefined })}
+          options={[{ value: '0', label: 'Stufe Auto' }, ...Array.from({ length: levels }, (_, i) => ({ value: String(i + 1), label: `Stufe ${i + 1}` }))]} />
       )}
-      <select className="wd-select" aria-label={`Zustand ${site.key}`} value={state}
-        onChange={(e) => { const v = e.target.value; onLook(v === 'unbuilt' ? { unbuilt: true } : { level: look.level, hpPercent: Number(v) || undefined }); }}>
-        <option value={0}>Zustand Auto</option>
-        {HP_STEPS.map((p) => <option key={p} value={p}>{`${p} % Trefferpunkte`}</option>)}
-        <option value="unbuilt">Nicht gebaut</option>
-      </select>
+      <SelectField aria-label={`Zustand ${site.key}`} value={state} options={STATE_OPTIONS}
+        onChange={(v) => onLook(v === 'unbuilt' ? { unbuilt: true } : { level: look.level, hpPercent: Number(v) || undefined })} />
     </span>
   );
 }
@@ -48,17 +48,15 @@ export function BuildingFilter({ toggles, off, onSet, looks, onLook }: {
           <div className="wd-group-head">
             <Checkbox checked={g.state === 'all' ? true : g.state === 'none' ? false : 'indeterminate'} aria-label={`${g.label} alle`}
               onCheckedChange={() => onSet(g.items.map((t) => t.key), g.state !== 'all')} />
-            <button type="button" className="wd-group-name" aria-expanded={open.has(g.kind)} onClick={() => flip(g.kind)}>
+            <Button size="1" variant="ghost" color="gray" highContrast className="wd-group-name" aria-expanded={open.has(g.kind)} onClick={() => flip(g.kind)}>
               <span aria-hidden>{open.has(g.kind) ? '▾' : '▸'}</span> {g.label} <Text size="1" color="gray">{g.on}/{g.items.length}</Text>
-            </button>
+            </Button>
           </div>
           {open.has(g.kind) && (
             <ul className="wd-group-items">
               {g.items.map((b) => (
                 <li key={b.key}>
-                  <Text as="label" size="1">
-                    <Checkbox checked={!off.has(b.key)} onCheckedChange={(c) => onSet([b.key], c === true)} aria-label={b.key} /> {b.x}
-                  </Text>
+                  <CheckField size="1" label={b.x} checked={!off.has(b.key)} onCheckedChange={(c) => onSet([b.key], c === true)} aria-label={b.key} />
                   {onLook && !off.has(b.key) && <SiteLookControls site={b} look={looks?.[b.key] ?? {}} onLook={(look) => onLook(b.key, look)} />}
                 </li>
               ))}

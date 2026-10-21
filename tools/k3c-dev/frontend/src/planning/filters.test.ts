@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mockPlanningData } from '../api/mockPlanning';
 import { EMPTY_FILTER, QUICK, SPLIT_DEFAULT, filterProjects, filterSprints, filterTickets, isNext, parseFilter, projectState } from './planning';
-import { parseSplit } from '../tasks/TaskBars';
+import { parseSplit } from '@webkit/lib/split';
 
 const d = mockPlanningData();
 const ids = (xs: { id: string }[]) => xs.map((x) => x.id);

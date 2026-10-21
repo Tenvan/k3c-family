@@ -5,10 +5,10 @@ Seite Welten Editor (B-460/B-461/B-477/B-485): Welten, Inseln und Stufen wählen
 
 ## Design
 Seite und Ansicht
-- `WorldPage.tsx`: Wurzel; Chunk-Streifen oben, Live-Vorschau (`../stage/LivePreview`) mit Chunk-Band, darunter zwei Spalten (`WorldStructure` links, `PlanEditor` + Gebäude-Baum rechts); Tasten Pfeile, +/−, M (kompakt/maximiert); neues Level zentriert auf den Hub, Entwurf-Reload behält die Mitte.
+- `WorldPage.tsx`: Wurzel; Chunk-Streifen oben, Live-Vorschau (`../stage/LivePreview`) mit Chunk-Band, darunter zwei Spalten (`WorldStructure` links, `PlanEditor` + Gebäude-Baum rechts); Tasten Pfeile, +/−, M (kompakt/maximiert; nicht in Feldern, Auswahllisten und Reglern, `OWN_KEYS`); neues Level zentriert auf den Hub, Entwurf-Reload behält die Mitte.
 - `viewState.ts`: reine Funktionen der Ansicht: `Views` (gemeinsame Mitte, Zoom je Vorschau), `paneView`, `zoomPanes`, `panViews`, `centerViews`, `clampLeft`, `centerRange`, `wheelAction` (Strg zoomt beide, Alt eine, Umschalt scrollt), `jumpPoints` (Anfang, Mitte, Ende, Hub, Tor, Portale, Ausgang).
 - `viewHooks.ts`: `useBox` misst Streifen und Bühne (ResizeObserver), `useViews` hält `Views` und liefert Pan, Zoom, `setCenter`, `onWheel`.
-- `ViewBar.tsx`: Zoomknöpfe, Regler, Zoomstufen, Sprungpunkte und Positions-Schieber.
+- `ViewBar.tsx`: Zoomknöpfe, Regler (Radix `Slider`), Zoomstufen (`SelectField`), Sprungpunkte und Positions-Schieber.
 - `RangeSlider.tsx`: Bereichs-Schieber (Ziehen, Klick, Pfeile, Pos1/Ende), zweiter Griff für den Bereich der Live-Vorschau; `thumbBox`, `Span`.
 
 Vorschauen
@@ -29,7 +29,7 @@ Planung
 - `planSave.ts`: Speichern mit Stand (`planSave`), `Notice` (`hint`, `error`, `stale`), Sicht nach dem Speichern.
 - `useWorlds.ts`: Liste und Wahl der Welten (`planWorlds`, `planWorldSelect`, `planWorldAdd`, `planWorldCopy`, `planWorldRemove`, `refreshWorlds`).
 - `PlanEditor.tsx`: Liste geplanter Chunks mit Platz, Art, Chunk-Seed, festen Objekten; Speichern, Verwerfen, Neu laden; Prüffehler am Platz; meldet den Platz an `onSlot`.
-- `KindPicker.tsx`: durchsuchbare Auswahlliste (Combobox) für Chunk- und Objekt-Art mit Emoji.
+- `KindPicker.tsx`: durchsuchbare Auswahlliste (Combobox auf `TextField.Root`) für Chunk- und Objekt-Art mit Emoji.
 - `SizePicker.tsx`: Inselgröße der Stufe (Biom-Länge oder Eintrag aus `data/island-sizes.json`).
 - `convert.ts`: reine Logik und ein Aufruf (`planChunkObjects`): Seed-Chunk in feste Objekte umwandeln (`convertLock`, `inSync`, `convertChunk`, `seedObjects`).
 - `ConvertButton.tsx`: Knopf „In feste Objekte umwandeln“ je geplantem Chunk, gesperrt mit Grund, verwirft veraltete Ergebnisse.

@@ -2,7 +2,8 @@ import { Theme } from '@radix-ui/themes';
 import type { ReactElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
-import { clampSplit, Splitter, splitShare } from '../tasks/TaskBars';
+import { Splitter } from '@webkit/atoms';
+import { clampSplit, splitShare } from '@webkit/lib/split';
 
 vi.mock('../api', () => ({ backend: {} }));
 
@@ -14,13 +15,13 @@ describe('Splitter der Planungsseite (B-400)', () => {
     expect(html).toContain('role="separator"');
     expect(html).toContain('aria-orientation="horizontal"');
     expect(html).toContain('aria-valuenow="35"');
-    expect(html).toContain('class="pl-split"');
+    expect(html).toContain('class="wk-split wk-split-h pl-split"');
   });
 
   it('AC-01: der Balken der Tasks-Seite bleibt senkrecht', () => {
-    const html = render(<Splitter value={40} onChange={() => {}} onReset={() => {}} />);
+    const html = render(<Splitter className="tk-split" value={40} onChange={() => {}} onReset={() => {}} />);
     expect(html).toContain('aria-orientation="vertical"');
-    expect(html).toContain('class="tk-split"');
+    expect(html).toContain('class="wk-split wk-split-v tk-split"');
   });
 
   it('AC-06: senkrecht misst den Anteil von der linken Kante, waagerecht von unten', () => {

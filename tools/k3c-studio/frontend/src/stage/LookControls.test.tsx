@@ -4,6 +4,8 @@ import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
+import { optionTexts } from '../../../../webkit/testing/options';
+import { pickOption } from '../../../../webkit/testing/select';
 import { LivePreview } from './LivePreview';
 
 // B-460/AC-05 im DOM: Tageszeit mit vier Einträgen und Fortschritt gehen als Sim-Phase an die Vorschau, die Helligkeit
@@ -34,13 +36,14 @@ async function mount(biome = 'forest'): Promise<HTMLElement> {
   return host;
 }
 
-const slider = (h: HTMLElement) => h.querySelector<HTMLInputElement>('input[type="range"]')!;
+const slider = (h: HTMLElement) => h.querySelector<HTMLElement>('[aria-label="Fortschritt"] [role="slider"]')!;
 const layers = (h: HTMLElement) => [...h.querySelectorAll<HTMLElement>('.wd-bar button[role="checkbox"]')];
 const lastLook = () => looks.at(-1)!;
 
-async function setProgress(h: HTMLElement, value: string) {
-  Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(slider(h), value);
-  await act(async () => slider(h).dispatchEvent(new Event('input', { bubbles: true })));
+/** Fortschritt per Tastatur am Radix-Schieber: Bild auf = zehn Schritte zu 0,01 */
+async function setProgress(h: HTMLElement, value: number) {
+  const pages = Math.round(value * 10);
+  for (let i = 0; i < pages; i++) await act(async () => slider(h).dispatchEvent(new KeyboardEvent('keydown', { key: 'PageUp', bubbles: true })));
   await act(async () => { await new Promise((r) => setTimeout(r, 200)); });
   await flush();
 }
@@ -52,10 +55,8 @@ afterEach(() => {
   host?.remove();
 });
 
-async function chooseTime(h: HTMLElement, id: string) {
-  const select = h.querySelector<HTMLSelectElement>('select[aria-label="Tageszeit"]')!;
-  Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value')!.set!.call(select, id);
-  await act(async () => select.dispatchEvent(new Event('change', { bubbles: true })));
+async function chooseTime(h: HTMLElement, label: string) {
+  await pickOption(h, 'Tageszeit', label);
   await flush();
 }
 
@@ -63,8 +64,7 @@ describe('Tageszeit in der Live-Vorschau (B-460/AC-05)', () => {
   it('vier Einträge Tag, Dämmerung, Nacht, Morgengrauen; Start mit Tag, Fortschritt 0, voller Helligkeit', async () => {
     const spy = vi.spyOn(backend, 'worldPreview');
     const h = await mount();
-    const labels = [...h.querySelectorAll<HTMLOptionElement>('select[aria-label="Tageszeit"] option')].map((o) => o.textContent);
-    expect(labels).toEqual(['Tag', 'Dämmerung', 'Nacht', 'Morgengrauen']);
+    expect(await optionTexts(h, 'Tageszeit')).toEqual(['Tag', 'Dämmerung', 'Nacht', 'Morgengrauen']);
     expect(spy).toHaveBeenCalledWith(expect.objectContaining({ phase: 'day', progress: 0 }));
     expect(lastLook().brightness).toBe(1);
   });
@@ -72,8 +72,8 @@ describe('Tageszeit in der Live-Vorschau (B-460/AC-05)', () => {
   it('Dämmerung mit Fortschritt 0,5: Phase dusk, Helligkeit nach daylight() (1 − p)', async () => {
     const spy = vi.spyOn(backend, 'worldPreview');
     const h = await mount();
-    await chooseTime(h, 'dusk');
-    await setProgress(h, '0.5');
+    await chooseTime(h, 'Dämmerung');
+    await setProgress(h, 0.5);
     expect(spy).toHaveBeenLastCalledWith(expect.objectContaining({ phase: 'dusk', progress: 0.5 }));
     expect(lastLook().brightness).toBeCloseTo(0.45 + 0.55 * 0.5, 10);
   });
@@ -81,7 +81,7 @@ describe('Tageszeit in der Live-Vorschau (B-460/AC-05)', () => {
   it('Nacht: tiefste Helligkeit', async () => {
     const spy = vi.spyOn(backend, 'worldPreview');
     const h = await mount();
-    await chooseTime(h, 'night');
+    await chooseTime(h, 'Nacht');
     expect(spy).toHaveBeenLastCalledWith(expect.objectContaining({ phase: 'night', progress: 0 }));
     expect(lastLook().brightness).toBeCloseTo(0.45, 10);
   });
@@ -89,8 +89,8 @@ describe('Tageszeit in der Live-Vorschau (B-460/AC-05)', () => {
   it('Morgengrauen: Sim-Phase night mit 0,9 + 0,1·p (p = 0,5 → 0,95), Helligkeit nach daylight() gleich p', async () => {
     const spy = vi.spyOn(backend, 'worldPreview');
     const h = await mount();
-    await chooseTime(h, 'dawn');
-    await setProgress(h, '0.5');
+    await chooseTime(h, 'Morgengrauen');
+    await setProgress(h, 0.5);
     const args = spy.mock.calls.at(-1)![0];
     expect(args.phase).toBe('night');
     expect(args.progress).toBeCloseTo(0.95, 10);

@@ -1,6 +1,7 @@
-import { DropdownMenu, IconButton } from '@radix-ui/themes';
 import { Fragment, useState, type ReactNode } from 'react';
 import { backend } from '../api';
+import { Code, IconButton, LinkButton } from '@webkit/atoms';
+import { DropdownMenu } from '@webkit/organisms';
 
 const stop = { onClick: (e: { stopPropagation(): void }) => e.stopPropagation(), onKeyDown: (e: { stopPropagation(): void }) => e.stopPropagation() };
 
@@ -61,8 +62,9 @@ export function DepLinks({ ids, title, onPick, lead = '←' }: { ids?: string[];
       {ids.map((id, i) => (
         <Fragment key={id}>
           {i > 0 && ', '}
-          <button type="button" className="pl-dep" title={`Zu ${id} springen`} {...stop}
-            onClick={(e) => { e.stopPropagation(); onPick(id); }}>{id}</button>
+          <LinkButton size="1" title={`Zu ${id} springen`} {...stop} onClick={(e) => { e.stopPropagation(); onPick(id); }}>
+            {lead ? id : <Code size="1" variant="outline">{id}</Code>}
+          </LinkButton>
         </Fragment>
       ))}
     </span>
@@ -76,7 +78,7 @@ export function FieldMenu({ value, options, label, onPick, children }:
     <span {...stop}>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-          <button type="button" className="pl-link" title={`${label} ändern`} aria-label={`${label}: ${value || '–'} ändern`}>{children}</button>
+          <LinkButton underline="none" title={`${label} ändern`} aria-label={`${label}: ${value || '–'} ändern`}>{children}</LinkButton>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content size="1">
           <DropdownMenu.Label>{label}</DropdownMenu.Label>

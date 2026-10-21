@@ -1,7 +1,7 @@
-import { IconButton, Text } from '@radix-ui/themes';
 import type { ReactNode } from 'react';
 import type { PlanningData, PlanProject, PlanSprint, PlanTicket } from '../api';
-import { MarkdownView } from '../ui/MarkdownView';
+import { IconButton, LinkButton, Text } from '@webkit/atoms';
+import { MarkdownView } from '../ui/molecules/MarkdownView';
 import { ENVS, envTone, setField } from './Backlog';
 import { ModePill, Pill, prioTone, sessionTone, specTone, stateTone, type PillTone } from './Pill';
 import { findSession } from './planning';
@@ -56,7 +56,7 @@ function Facts({ items }: { items: [string, ReactNode][] }) {
   );
 }
 
-const link = (id: string, onSelect: (id: string) => void) => <button type="button" className="pl-textlink" onClick={() => onSelect(id)}>{id}</button>;
+const link = (id: string, onSelect: (id: string) => void) => <LinkButton size="1" onClick={() => onSelect(id)}>{id}</LinkButton>;
 
 /** Feld als Marke, die ein Menü der erlaubten Werte öffnet. */
 const field = (id: string, label: string, value: string, options: string[], tone: PillTone) => (
@@ -99,7 +99,7 @@ function SprintDetail({ s, onSelect, head }: Ctx & { s: PlanSprint }) {
         {s.sessions.map((x) => (
           <li key={x.nr}>
             <Pill tone={sessionTone(x.status)}>{x.status}</Pill>
-            <button type="button" className="pl-detail-link" onClick={() => onSelect(x.nr)}>{x.nr} {x.titel || x.typ}</button>
+            <LinkButton onClick={() => onSelect(x.nr)}>{x.nr} {x.titel || x.typ}</LinkButton>
           </li>
         ))}
       </ul>
@@ -121,7 +121,7 @@ function ProjectDetail({ p, data, onSelect, head }: Ctx & { p: PlanProject }) {
         {sprints.map((s) => (
           <li key={s.id}>
             <Pill tone={stateTone(s.status)}>{s.status}</Pill>
-            <button type="button" className="pl-detail-link" onClick={() => onSelect(s.id)}>{s.id} {s.title} · {sessionProgress(s).join('/')}</button>
+            <LinkButton onClick={() => onSelect(s.id)}>{s.id} {s.title} · {sessionProgress(s).join('/')}</LinkButton>
           </li>
         ))}
       </ul>

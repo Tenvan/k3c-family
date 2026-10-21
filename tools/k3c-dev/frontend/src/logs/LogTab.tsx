@@ -1,18 +1,19 @@
-import { Button, Flex, Select, TextField } from '@radix-ui/themes';
 import { useLayoutEffect, useRef, useState } from 'react';
 import type { LogEntry } from '../api';
 import { formatTime } from '../lib/format';
-import { useDebounced } from '@webkit/useDebounced';
-import { NoticeCard, StatusBadge } from '@webkit/parts';
+import { useDebounced } from '@webkit/lib/useDebounced';
+import { Button, Flex, SelectField, StatusBadge, TextField } from '@webkit/atoms';
+import { NoticeCard } from '@webkit/molecules';
 import { budgetNote, entryKeys, footer, LEVEL_FILTERS, levelTone, LIMITS, oldestFirst, prettyData } from './logview';
 import { useLogQuery } from './useLogQuery';
 
 const BOTTOM_PX = 24;
-const ALL = 'ALLE'; // Radix Select erlaubt keinen leeren Wert
+const LEVEL_OPTIONS = LEVEL_FILTERS.map((l) => ({ value: l, label: l ? `ab ${l}` : 'Alle' }));
+const LIMIT_OPTIONS = LIMITS.map((l) => ({ value: String(l), label: String(l) }));
 
 /** Reiter `Log` (B-064): Filterleiste, Tabelle älteste oben, läuft mit, solange unten. */
 export function LogTab({ name }: { name: string }) {
-  const [minLevel, setMinLevel] = useState('');
+  const [minLevel, setMinLevel] = useState<(typeof LEVEL_FILTERS)[number]>('');
   const [ns, setNs] = useState('');
   const [pattern, setPattern] = useState('');
   const [limit, setLimit] = useState<number>(LIMITS[0]);
@@ -36,23 +37,11 @@ export function LogTab({ name }: { name: string }) {
   return (
     <section className="logtab">
       <Flex className="logtab-filters" gap="2" align="center" wrap="wrap">
-        <Select.Root value={minLevel || ALL} onValueChange={(v) => setMinLevel(v === ALL ? '' : v)}>
-          <Select.Trigger aria-label="Mindest-Level" />
-          <Select.Content>
-            {LEVEL_FILTERS.map((l) => (
-              <Select.Item key={l || ALL} value={l || ALL}>{l ? `ab ${l}` : 'Alle'}</Select.Item>
-            ))}
-          </Select.Content>
-        </Select.Root>
+        <SelectField aria-label="Mindest-Level" value={minLevel} onChange={setMinLevel} options={LEVEL_OPTIONS} />
         <TextField.Root placeholder="Namespace" value={ns} onChange={(e) => setNs(e.target.value)} />
         <TextField.Root className="logtab-search" placeholder="Suche (regulärer Ausdruck auf msg)" value={pattern}
           onChange={(e) => setPattern(e.target.value)} color={error ? 'red' : undefined} />
-        <Select.Root value={String(limit)} onValueChange={(v) => setLimit(Number(v))}>
-          <Select.Trigger aria-label="Limit" />
-          <Select.Content>
-            {LIMITS.map((l) => <Select.Item key={l} value={String(l)}>{l}</Select.Item>)}
-          </Select.Content>
-        </Select.Root>
+        <SelectField aria-label="Limit" value={String(limit)} onChange={(v) => setLimit(Number(v))} options={LIMIT_OPTIONS} />
         <Button variant="soft" onClick={() => void reload()}>Aktualisieren</Button>
       </Flex>
       {error && <p className="svc-error">{error}</p>}

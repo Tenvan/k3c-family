@@ -1,8 +1,8 @@
-import { Button, Flex } from '@radix-ui/themes';
 import { memo, useLayoutEffect, useRef, useState } from 'react';
 import type { ConsoleLine } from '../api';
+import { Button, Flex } from '@webkit/atoms';
+import { NoticeCard } from '@webkit/molecules';
 import { formatNumber } from '../lib/format';
-import { NoticeCard } from '@webkit/parts';
 import { parseAnsi } from './ansi';
 import { markOf, visibleLines } from './lines';
 import { useConsole } from './useConsole';

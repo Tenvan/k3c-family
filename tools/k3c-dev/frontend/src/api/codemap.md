@@ -20,6 +20,6 @@ Backend-Vertrag der Oberfläche (Port/Adapter): typisiert alle Aufrufe und Ereig
 
 ## Integration
 
-- Konsumenten: alle Ordner unter `src/` (`logs/`, `mcp/`, `planning/`, `services/`, `tasks/`, `ui/Notices.tsx`, `App.tsx`, `StudioLink.tsx`) über `import { backend } from '../api'`.
+- Konsumenten: alle Ordner unter `src/` (`logs/`, `mcp/`, `planning/`, `services/`, `tasks/`, `ui/organisms/Notices.tsx`, `App.tsx`, `StudioLink.tsx`) über `import { backend } from '../api'`.
 - Gegenstück: Go-App `tools/k3c-dev/app.go` und die `app_*.go`-Dateien (Wails-Bindings `window.go.main.App`, `window.runtime`).
 - Mock-Betrieb: `npx vite` im Frontend (Port 5191) ohne Wails.

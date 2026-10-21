@@ -1,9 +1,10 @@
-import { Checkbox, Select, Text } from '@radix-ui/themes';
+import { Checkbox, SelectField, Slider, Text } from '@webkit/atoms';
+import { CheckField } from '@webkit/molecules';
 import { createPortal } from 'react-dom';
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type RefObject } from 'react';
 import type { World } from '@game/model/types';
 import { backend, type SiteLook, type WorldPreviewView } from '../api';
-import { useDebounced } from '@webkit/useDebounced';
+import { useDebounced } from '@webkit/lib/useDebounced';
 import type { Look, Marks, PreviewStage, StagePosition } from './PreviewStage';
 import { stagePx } from './hudBar';
 import { BuildingFilter } from './BuildingFilter';
@@ -13,6 +14,7 @@ import { MAX_PROGRESS, TIMES_OF_DAY, brightnessOf, simTime, type TimeOfDayId } f
 const NONE: ReadonlySet<string> = new Set();
 type Looks = Readonly<Record<string, SiteLook>>;
 const NO_LOOKS: Looks = {};
+const TIME_OPTIONS = TIMES_OF_DAY.map((t) => ({ value: t.id, label: t.label }));
 
 interface Answer { key: string; off: string; view: WorldPreviewView }
 
@@ -115,19 +117,15 @@ function LookControls({ biome, timeId, setTimeId, progress, setProgress, hidden,
   return (
     <>
       <Text size="2">Tageszeit</Text>
-      <select className="wd-select" aria-label="Tageszeit" value={timeId} onChange={(e) => setTimeId(e.target.value as TimeOfDayId)}>
-        {TIMES_OF_DAY.map((t) => <option key={t.id} value={t.id}>{t.label}</option>)}
-      </select>
-      <input type="range" aria-label="Fortschritt" min={0} max={MAX_PROGRESS} step={0.01} value={progress} onChange={(e) => setProgress(Number(e.target.value))} />
+      <SelectField aria-label="Tageszeit" value={timeId} options={TIME_OPTIONS} onChange={setTimeId} />
+      <Slider className="wd-progress" aria-label="Fortschritt" min={0} max={MAX_PROGRESS} step={0.01} value={[progress]} onValueChange={([v]) => v !== undefined && setProgress(v)} />
       {layers.length === 0 && (
         <Text as="label" size="1" color="gray">
           <Checkbox disabled checked={false} aria-label="Hintergrund-Schichten" /> keine Hintergrund-Schichten in diesem Biom
         </Text>
       )}
       {layers.map((l) => (
-        <Text as="label" size="1" key={l.key} title={`Scroll-Faktor ${l.scroll}`}>
-          <Checkbox checked={!hidden.has(l.key)} onCheckedChange={(c) => toggleLayer(l.key, c === true)} aria-label={l.key} /> {l.label}
-        </Text>
+        <CheckField size="1" key={l.key} title={`Scroll-Faktor ${l.scroll}`} label={l.label} checked={!hidden.has(l.key)} onCheckedChange={(c) => toggleLayer(l.key, c === true)} aria-label={l.key} />
       ))}
     </>
   );
@@ -198,10 +196,7 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
   const controls = (
     <div className="wd-bar">
       <Text size="2">Hub-Stufe</Text>
-      <Select.Root value={String(hubLevel)} onValueChange={(v) => setHubLevel(Number(v))}>
-        <Select.Trigger aria-label="Hub-Stufe" />
-        <Select.Content>{choices.map((n) => <Select.Item key={n} value={String(n)}>{n}</Select.Item>)}</Select.Content>
-      </Select.Root>
+      <SelectField aria-label="Hub-Stufe" value={String(hubLevel)} options={choices.map((n) => ({ value: String(n), label: String(n) }))} onChange={(v) => setHubLevel(Number(v))} />
       <LookControls biome={biome} timeId={timeId} setTimeId={setTimeId} progress={progress} setProgress={setProgress} hidden={hidden} toggleLayer={toggleLayer} />
       {note && <Text size="2" color="red" role="status">{note}</Text>}
     </div>

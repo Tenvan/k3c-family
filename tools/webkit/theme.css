@@ -46,3 +46,39 @@ body,
 html { scrollbar-width: thin; scrollbar-color: rgb(128 128 128 / 0.45) transparent; }
 .radix-themes { scrollbar-width: thin; scrollbar-color: var(--gray-a7) transparent; }
 .radix-themes :hover { scrollbar-color: var(--gray-a9) transparent; }
+
+/* Rahmen (templates/AppFrame, organisms/AppHeader): Kopfzeile klebt oben; `fixed` hält das Fenster fest, dann
+   scrollt nur die Seite. */
+.wk-shell { min-height: 100vh; display: flex; flex-direction: column; }
+.wk-shell-fixed { height: 100vh; min-height: 0; }
+.wk-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--card-line);
+  background: var(--card);
+  backdrop-filter: blur(6px);
+}
+.wk-header-title { color: var(--title); letter-spacing: 0.04em; white-space: nowrap; }
+.wk-header-tabs { flex: 1; }
+.wk-header-right { white-space: nowrap; }
+.wk-body { flex: 1; min-height: 0; display: flex; }
+.wk-page { flex: 1; min-width: 0; padding: 20px; }
+.wk-shell-fixed .wk-page { overflow: auto; padding: 12px 20px 20px; }
+
+/* atoms/StatusBadge: Punkt in der Farbe des Tons (Badge setzt die Akzentfarbe). */
+.wk-status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-9); flex: none; }
+
+/* atoms/Splitter: schmale Linie, beim Überfahren in der Akzentfarbe. */
+.wk-split { flex: 0 0 8px; border-radius: 999px; touch-action: none; transition: background 120ms ease-out; }
+.wk-split-v { margin: 0 -2px; cursor: col-resize; background: linear-gradient(to right, transparent 3px, var(--gray-a5) 3px 5px, transparent 5px); }
+.wk-split-h { margin: -2px 0; cursor: row-resize; background: linear-gradient(to bottom, transparent 3px, var(--gray-a5) 3px 5px, transparent 5px); }
+.wk-split:hover, .wk-split:active { background: var(--accent-a8); }
+
+/* molecules/NoticeCard */
+.wk-notice { max-width: 720px; }
+.wk-notice-title { display: block; margin-bottom: 4px; }

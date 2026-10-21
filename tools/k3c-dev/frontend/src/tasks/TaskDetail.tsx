@@ -1,10 +1,10 @@
-import { Flex, Heading, Text, TextField } from '@radix-ui/themes';
 import { useState } from 'react';
 import { backend, type TaskInfo, type TaskRun } from '../api';
-import { errorText } from '@webkit/errors';
+import { errorText } from '@webkit/lib/errors';
 import { formatDuration } from '../lib/format';
 import { ConsoleView } from '../logs/ConsoleView';
-import { ActionButton, NoticeCard, StatusBadge } from '@webkit/parts';
+import { ActionButton, Flex, Heading, StatusBadge, Text, TextField } from '@webkit/atoms';
+import { NoticeCard } from '@webkit/molecules';
 import { describeRun, describeState, splitArgs } from './tasks';
 
 /** Ausgabe des gewählten Tasks: Kopf mit Zustand, Argumentfeld (Enter startet), Start/Stopp, Konsole, letzte Läufe. */

@@ -1,0 +1,19 @@
+/* Seite des Starters (server/): nur Layout, die Controls kommen aus Radix. */
+
+/* Der Status kann lang sein (Fehlertext aus Go): umbrechen statt abschneiden. */
+.srv-status .wk-status { height: auto; padding-block: 6px; white-space: normal; text-align: left; align-items: flex-start; }
+.srv-status .wk-status-dot { margin-top: 0.4em; }
+
+.srv-log {
+  margin: 0;
+  padding: 10px;
+  min-height: 3em;
+  max-height: 190px;
+  overflow: auto;
+  border-radius: var(--radius-3);
+  background: var(--console-bg);
+  color: var(--dim);
+  font: 12px/1.4 Consolas, monospace;
+  white-space: pre-wrap;
+  word-break: break-all;
+}

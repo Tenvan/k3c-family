@@ -5,12 +5,12 @@ Chat rechts im Asset-Studio (B-488, WZ19.2): assistant-ui mit der Claude Code CL
 
 ## Design
 - `ChatPanel.tsx`: `ChatPanel` hält Sitzung (`key`, Chat-Kennung, geladene Nachrichten), Liste gespeicherter Chats und Wahl; bleibt auch ausgeblendet eingehängt; `ChatToggle` für die Kopfzeile.
-- `ChatControls.tsx`: Kopf mit „Neuer Chat“, Auswahl gespeicherter Chats, „Chat löschen“ und den Auswahlen Anbieter/Modell/Denkstufe. `useChatChoices.ts`: Werte aus `backend.chatOptions()`, Wahl gemerkt (`chat.provider|model|effort`).
+- `ChatControls.tsx`: Kopf mit „Neuer Chat“, Auswahl gespeicherter Chats, „Chat löschen“ und den Auswahlen Anbieter/Modell/Denkstufe, alle als `SelectField` und `Button` aus `@webkit/atoms` (leerer Wert = Neuer Chat bzw. Standard). `useChatChoices.ts`: Werte aus `backend.chatOptions()`, Wahl gemerkt (`chat.provider|model|effort`).
 - `ChatThread.tsx`: Verlauf, Hinweiszeile, Eingabe (`useLocalRuntime` mit `initialMessages`); ein anderer Chat hängt ihn mit neuem `key` neu ein. `chatConvert.ts`: gespeicherte Nachrichten → Nachrichten der Oberfläche, Sortierung, Beschriftung.
-- `ChatSplitter.tsx`: Trennlinie Seite | Chat (Zeiger, Pfeiltasten, Doppelklick), Breite in px gemerkt (`chat.width`, 280 px … 60 % des Fensters).
+- `ChatSplitter.tsx`: App-eigene Trennlinie Seite | Chat (Zeiger, Pfeiltasten, Doppelklick), Breite in px gemerkt (`chat.width`, 280 px … 60 % des Fensters).
 - `chatAdapter.ts`: `createChatAdapter(stream, hooks)` macht aus dem Antwort-Strom eine fortlaufende Antwort; `done` setzt den Ausgang (complete, cancelled, error), der Chat des Servers bleibt erhalten, die Wahl geht je Nachricht mit; bei Fehler entfällt der doppelte Text der CLI (`answerText`, B-515).
 - `chatBridge.ts`: Zustand außerhalb der Oberfläche: `useChatOpen`/`setChatOpen` (gemerkt unter `k3c-studio.chat.state`), `fillChat(text)` legt einen Text ins Eingabefeld und blendet den Chat ein (für den Prompt-Knopf, WZ19.3).
-- Tests: `chatAdapter.test.ts`, `chatConvert.test.ts`, `ChatPanel.test.tsx`, `ChatSession.test.tsx`, `ChatSplitter.test.tsx` (happy-dom gegen den Mock, Hilfen in `chatTestKit.tsx`).
+- Tests: `chatAdapter.test.ts`, `chatConvert.test.ts`, `ChatPanel.test.tsx`, `ChatSession.test.tsx`, `ChatSplitter.test.tsx` (happy-dom gegen den Mock, Hilfen in `chatTestKit.tsx`; Auswahlen per Wert über `tools/webkit/testing`: `choose`, `value`, `values`, `labels`).
 
 ## Flow
 Eingabe → assistant-ui → Adapter → `backend.chatStream` (mit Chat, Text, Anbieter, Modell, Denkstufe) → `POST /api/studio/chat` (Go `backend/chat_http.go`) → Stücke zurück in die Antwort.

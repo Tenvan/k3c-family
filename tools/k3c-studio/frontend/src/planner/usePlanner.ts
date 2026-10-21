@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { backend, type HubPlanView, type HubRulesView, type HubSaveResult } from '../api';
-import { errorText } from '@webkit/errors';
+import { errorText } from '@webkit/lib/errors';
 import { candidateText, parseHub, type HubJson } from './plannerEdit';
 
 /** Lädt data/hub.json (Planer-Stand mit Stand der Dateien); jede Ladung ersetzt die vorige und verwirft die Änderungen,

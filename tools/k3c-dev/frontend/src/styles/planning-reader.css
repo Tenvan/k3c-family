@@ -14,10 +14,8 @@
 .pl-reader-body:has(> .pl-reader-scroll:only-child) { grid-template-columns: minmax(0, 1fr); }
 .pl-reader-toc { overflow-y: auto; padding: var(--space-4) var(--space-3); border-right: 1px solid var(--gray-a4); background: var(--gray-a2); }
 .pl-reader-toc-label { padding: 0 var(--space-2) var(--space-2); text-transform: uppercase; letter-spacing: 0.04em; }
-.pl-reader-toc button { display: block; width: 100%; text-align: left; padding: var(--space-1) var(--space-2); border: 0; border-left: 2px solid transparent;
-  border-radius: 0 var(--radius-2) var(--radius-2) 0; background: none; color: var(--gray-11); font: inherit; font-size: var(--font-size-2); cursor: pointer; }
-.pl-reader-toc button:hover { background: var(--gray-a3); color: var(--gray-12); }
-.pl-reader-toc button.is-active { border-left-color: var(--accent-9); background: var(--accent-a3); color: var(--accent-12); font-weight: 500; }
+/* Einträge sind Radix-Knöpfe (ghost, aktiv soft); hier nur die Lage als volle Zeile. */
+.pl-reader-toc-item { display: flex; box-sizing: border-box; width: 100%; height: auto; min-height: var(--space-6); margin: 0; justify-content: flex-start; text-align: left; white-space: normal; }
 .pl-reader-scroll { overflow-y: auto; min-width: 0; }
 .pl-reader-scroll:focus { outline: none; }
 

@@ -1,6 +1,6 @@
 package main
 
-// App ist die Bindung ans Fenster: State, Start und Stop rufen die Seite web/index.html über window.go.main.App auf.
+// App ist die Bindung ans Fenster: State, Start und Stop rufen die Oberfläche (frontend/src/api/wails.ts) über window.go.main.App auf.
 type App struct {
 	sup *supervisor
 	// err ist die Meldung, wenn Server-EXE oder dist/ fehlen: Das Fenster öffnet trotzdem und nennt den Grund.

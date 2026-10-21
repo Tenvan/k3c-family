@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { IconButton } from '@webkit/atoms';
 import { loadText, savePref } from '../lib/prefs';
 
 // Eingeklappte Projekte und Sprints der Planungsseite (B-364), gemerkt in den Prefs. Ein Ereignis hält alle Karten
@@ -61,9 +62,9 @@ export const foldAll = (ids: string[], fold: boolean) => write(fold ? new Set(id
 /** Pfeil vor dem Kartenkopf. */
 export function FoldButton({ folded, onToggle, what }: { folded: boolean; onToggle: () => void; what: string }) {
   return (
-    <button type="button" className="pl-fold" aria-expanded={!folded} aria-label={`${what} ${folded ? 'aufklappen' : 'einklappen'}`}
+    <IconButton size="1" variant="ghost" color="gray" className="pl-fold" aria-expanded={!folded} aria-label={`${what} ${folded ? 'aufklappen' : 'einklappen'}`}
       onClick={(e) => { e.stopPropagation(); onToggle(); }}>
       {folded ? '▸' : '▾'}
-    </button>
+    </IconButton>
   );
 }
