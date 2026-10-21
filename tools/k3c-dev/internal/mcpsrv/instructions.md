@@ -98,8 +98,9 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 - `task:check:diff` prüft nur, was der Diff zu `origin/develop` braucht (vor jedem Commit); `task:check:race` ist der
   langsame Race-Detector für `engine/` (Review-Session, CI).
 - Die Antwort ist bei grünem Lauf eine Zeile, sonst Kopfzeile und nur die Fehlerzeilen.
-- Dauert ein Lauf länger als ca. 45 s, antwortet `check_run` mit „läuft im Hintergrund“ und einer Lauf-ID; der Lauf
-  läuft weiter, auch wenn der Client abbricht. `check_run {run: "<ID>"}` liefert Exit-Code und Fehlerzeilen (oder „läuft noch“).
+- `check_run` wartet bis zum Ende des Laufs und sendet alle 20 s Fortschritt (B-520); ein Aufruf liefert das Ergebnis.
+  Nie in Schleifen nachfragen. Nur ohne progressToken antwortet es nach 4 min mit „läuft noch“ und einer Lauf-ID;
+  `check_run {run: "<ID>"}` wartet dann weiter. Der Lauf läuft auch weiter, wenn der Client abbricht.
 - Mehr Kontext zu einem Lauf: `console_tail` mit `check:<ziel>`. Läufe verschiedener Worktrees sperren sich nicht.
 
 ### Spieldaten

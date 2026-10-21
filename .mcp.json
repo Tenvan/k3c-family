@@ -3,6 +3,7 @@
     "k3c-dev": {
       "type": "http",
       "url": "http://127.0.0.1:${K3C_DEV_PORT:-5180}/mcp",
+      "timeout": 900000,
       "headersHelper": "node -p \"JSON.stringify({'X-K3C-Root': process.cwd()})\""
     }
   }

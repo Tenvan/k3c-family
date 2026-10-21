@@ -13,7 +13,7 @@ import (
 type checkIn struct {
 	Target  string `json:"target,omitempty" jsonschema:"Ziel aus dem Katalog: task:check, task:test, task:typecheck, task:lint, task:build, task:check:go, task:check:diff, task:check:race, go:test, go:lint, dev:test"`
 	Pattern string `json:"pattern,omitempty" jsonschema:"optionales Testmuster, nur bei task:test, go:test und dev:test"`
-	Run     string `json:"run,omitempty" jsonschema:"Lauf-ID aus der Antwort läuft im Hintergrund: liefert das Ergebnis dieses Laufs statt einen neuen zu starten"`
+	Run     string `json:"run,omitempty" jsonschema:"Lauf-ID aus einer Antwort „läuft noch“: wartet weiter auf diesen Lauf und liefert sein Ergebnis, statt einen neuen zu starten"`
 }
 
 // runSpec ist ein Prozesslauf; out bekommt jede Zeile mit ihrem Strom.

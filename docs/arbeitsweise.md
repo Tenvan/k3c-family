@@ -126,8 +126,8 @@ Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und
 - **Parallel statt nacheinander:** Unabhängige Teile einer Session laufen als parallele Agenten in getrennten Dateien
   (z. B. Kontext erheben ∥ Tests schreiben ∥ Umsetzung). Sessions verschiedener Domänen ohne gegenseitige Abhängigkeit
   dürfen parallel laufen (`plan_next` › „Parallel möglich“): `offline` im eigenen Worktree, `live` im Checkout.
-- **Kein Polling:** Lange Läufe im Hintergrund mit Benachrichtigung (`run_in_background`); `check_run` mit Lauf-ID
-  und `sim_test status` nur einmal nach der erwarteten Dauer abfragen. Keine `sleep`-Schleifen; Messreihen höchstens drei Läufe;
+- **Kein Polling:** `check_run` wartet selbst bis zum Ende des Laufs (B-520); Shell-Läufe im Hintergrund mit
+  Benachrichtigung (`run_in_background`); `sim_test status` nur einmal nach der erwarteten Dauer abfragen. Keine `sleep`-Schleifen; Messreihen höchstens drei Läufe;
   `sim_test` immer mit Dauer und Abbruchkriterium.
 - **Planung in wenigen Aufrufen:** mehrere Abschnitte mit `plan_sections`. Das Ergebnis nennt je Kriterium höchstens
   zwei Zeilen; Einzelheiten stehen im Commit und im Code.
