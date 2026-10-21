@@ -169,7 +169,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-511](B-511-studio-schreibt-atomar.md) | DEV | Schuld | niedrig | offen | – | Das Studio schreibt jede Datei in data/ und public/ atomar, der Server sieht nie eine halbe Datei |
 | [B-512](B-512-k3c-dev-uebernommener-server-neue-pid.md) | DEV | Problem | niedrig | offen | – | k3c-dev beendet einen übernommenen Spielserver auch nach dessen Selbst-Neustart (neue PID am Port, Supervisor-Prozess) |
 | [B-514](B-514-chat-entwurf-planung-nachbesserung.md) | DEV | Problem | niedrig | offen | – | Chat-Entwurf: Planung bei gleicher Insel-id schützen, CLI-Prozessbaum, Test-Riegel |
-| [B-515](B-515-studio-chat-anmeldung-umgebung.md) | DEV | Problem | mittel | offen | – | Studio-Chat übernimmt die Umgebung einer Claude-Sitzung und zeigt Anmeldefehler doppelt |
 | [B-516](B-516-studio-chat-promptgeruest-als-instruktion.md) | DEV | Idee | mittel | offen | – | Prompt-Grundgerüst des Studio-Chats ist eine feste Instruktion im Code statt Text im Eingabefeld |
 
 ## Archiv
@@ -476,3 +475,4 @@ Zeile in diesen Abschnitt.
 | [B-513](archiv/B-513-welten-editor-spiel-adresse-waehlbar.md) | DEV | Idee | mittel | erledigt | – | Im Welten-Editor lässt sich die Spiel-Adresse wählen: interne Engine oder Server |
 | [B-488](archiv/B-488-welten-inseln-editor-prompt.md) | DEV | Idee | mittel | erledigt | WZ18 | Welten und Inseln im Asset-Studio anlegen und bearbeiten, Welt per Prompt füllen |
 | [B-507](archiv/B-507-server-und-studio-trennen-dateiwatch.md) | DEV | Schuld | hoch | erledigt | TS1 | Spielserver und Asset-Studio sind getrennt, der Server beobachtet die Dateien des Studios |
+| [B-515](archiv/B-515-studio-chat-anmeldung-umgebung.md) | DEV | Problem | mittel | erledigt | – | Studio-Chat übernimmt die Umgebung einer Claude-Sitzung und zeigt Anmeldefehler doppelt |
