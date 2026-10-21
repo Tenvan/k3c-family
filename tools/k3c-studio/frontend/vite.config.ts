@@ -16,12 +16,16 @@ export default defineConfig(({ command }) => ({
   appType: 'mpa',
   base: './',
   plugins: [react(), waitForBackend(API)], // /api wartet, bis das Backend bereit ist (auch beim Neustart)
+  // „Im Spiel öffnen“ mit der Engine des Studios: Das Spiel liefert nur das Backend aus, nicht Vite (GameLauncher.tsx).
+  define: { 'import.meta.env.VITE_STUDIO_API': JSON.stringify(command === 'serve' ? API : '') },
   resolve: { alias: ALIAS, dedupe: DEDUPE },
   publicDir: command === 'serve' ? PUBLIC : false,
   build: { outDir: DIST, emptyOutDir: true },
   server: {
     port: Number(process.env.K3C_STUDIO_UI_PORT ?? 5192), // k3c-dev verschiebt ihn je Worktree (services.json › portEnv)
     strictPort: true,
+    // IPv4 ausdrücklich: „localhost“ bindet unter Windows nur ::1, die Health-Prüfung von k3c-dev fragt 127.0.0.1.
+    host: '127.0.0.1',
     // Kein CORS: sonst beantwortet Vite Preflights fremder lokaler Seiten und reicht deren Anfragen an das Backend weiter.
     cors: false,
     fs: { allow: [REPO] },

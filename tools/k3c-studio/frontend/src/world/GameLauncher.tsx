@@ -7,9 +7,9 @@ import { openGameReason } from './levelView';
 
 const TARGET_KEY = 'world.gameTarget';
 const ENGINE = 'engine';
-// Die interne Engine des Studios (B-507/AC-02) läuft auf seinem eigenen Server: dessen Adresse. Der Mock im Test und im
-// Studio-Vite kennt keinen und nimmt den Vite-Dev-Server von `task dev`.
-const ENGINE_BASE = backend.mock ? 'http://127.0.0.1:5183' : window.location.origin;
+// Die interne Engine des Studios (B-507/AC-02) läuft auf seinem eigenen Server: dessen Adresse (unter Vite das Backend,
+// vite.config.ts setzt VITE_STUDIO_API). Der Mock im Test und im Studio-Vite kennt keinen und nimmt den Vite-Dev-Server von `task dev`.
+const ENGINE_BASE = backend.mock ? 'http://127.0.0.1:5183' : import.meta.env.VITE_STUDIO_API || window.location.origin;
 
 /** Text eines Spielservers in der Liste: Adresse, Heimnetz-Adresse (nur Anzeige), Zustand. */
 function serverLabel(s: GameServer): string {

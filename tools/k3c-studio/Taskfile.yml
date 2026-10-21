@@ -4,7 +4,7 @@
 # Entwicklung ohne Fenster-Neubau (Client/Server): `dev` startet zwei Prozesse. `dev:server` ist das Studio mit -dev
 # (engine/devrun): baut es bei jeder Go-Änderung (tools/k3c-studio, tools/assetkit, tools/ruletable, engine/; nicht data/)
 # neu und führt es als `-headless` aus (Backend auf 127.0.0.1:K3C_STUDIO_PORT, im dev 8192). `dev:ui` ist Vite (Port 5192,
-# Hot Reload, leitet /api an das Backend weiter). Die Oberfläche im Browser: http://localhost:5192/ (`?mock=1` = erfundene Daten).
+# Hot Reload, leitet /api an das Backend weiter). Die Oberfläche im Browser: http://127.0.0.1:5192/ (`?mock=1` = erfundene Daten).
 # `window` ist das echte Fenster (`wails dev`, Backend 8091, Seiten aus frontend/dist ohne Hot Reload): zum Prüfen des Fensters.
 # Supervisor und Kind baut `go build` (Konsole), nicht `wails build`, damit das Kind sauber per CTRL_BREAK endet.
 version: '3'
@@ -17,7 +17,7 @@ vars:
 
 tasks:
   dev:
-    desc: "Client/Server-Entwicklung: Studio ohne Fenster (dev:server, Neubau bei Go-Änderungen) und Oberfläche mit Hot Reload (dev:ui, http://localhost:5192/)"
+    desc: "Client/Server-Entwicklung: Studio ohne Fenster (dev:server, Neubau bei Go-Änderungen) und Oberfläche mit Hot Reload (dev:ui, http://127.0.0.1:5192/)"
     deps: [dev:server, dev:ui]
 
   dev:server:
