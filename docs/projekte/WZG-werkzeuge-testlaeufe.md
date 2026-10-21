@@ -34,12 +34,12 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ11 | Gegner- und Boss-Vorschau im Asset-Studio, Figuren-Seiten entfernen | erledigt |
 | WZ12 | Planungs-Werkzeug: Platzhalter-Zeilen und Worktree-Pills | erledigt |
 | WZ13 | Glossar und Regeln: Verweis für das Morgengrauen auf B-470 | erledigt |
-| WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager | aktiv |
+| WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager | erledigt |
 | WZ17 | Chunk-Editor komfortabel: Inselgrößen, getrennter Zoom, Seed-Chunk umwandeln | erledigt |
 | WZ18 | Welten im Spiel: Welt-Dateien, Welt-Wahl im Raum und Welten-Editor | erledigt |
 | WZ19 | Chat im Studio mit Claude Code CLI und Welt per Prompt füllen | erledigt |
 | TS1 | Spielserver und Asset-Studio trennen, Server beobachtet Dateien | erledigt |
-| WZ20 | k3c-dev: Planungstest für Entwürfe, Worktree-Einträge vollständig und lesend, sim_test im Worktree | geplant |
+| WZ20 | k3c-dev: Planungstest für Entwürfe, Worktree-Einträge vollständig und lesend, sim_test im Worktree | aktiv |
 | WZ21 | Studio-Chat: eigene Umgebung, Grundgerüst als Instruktion, Entwurf geschützt | aktiv |
 | WZ22 | Studio-Editoren: Fehler sichtbar, Im Spiel öffnen wiederholbar | geplant |
 | WZ23 | Studio-Vorschauen: Reittiere aus dem Spielcode, Monarch-Seite, Boss-Anzeigen, Gebäude-Planer abgenommen | geplant |

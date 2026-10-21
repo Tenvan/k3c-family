@@ -116,6 +116,23 @@ interface RowProps {
   onPick: (nr: string) => void;
 }
 
+/** Prio, Projekt und Umgebung als Menüs; nur für Wurzel-Tickets, Worktree-Tickets sind nur lesend (B-483). */
+function TicketMenus({ t, data }: { t: PlanTicket; data: PlanningData }) {
+  return (
+    <>
+      <FieldMenu label="Prio" value={t.prio} options={PRIOS} onPick={(v) => void setField(t.nr, 'Prio', v)}>
+        <Pill tone={prioTone(t.prio)}>{t.prio || '?'}</Pill>
+      </FieldMenu>
+      <FieldMenu label="Projekt" value={t.project ?? '–'} options={projectOptions(data)} onPick={(v) => void setField(t.nr, 'Projekt', v)}>
+        <Pill tone="neutral">{t.project || '–'}</Pill>
+      </FieldMenu>
+      <FieldMenu label="Umgebung" value={t.env} options={ENVS} onPick={(v) => void setField(t.nr, 'Umgebung', v)}>
+        <Pill tone={envTone(t.env)}>{t.env || '?'}</Pill>
+      </FieldMenu>
+    </>
+  );
+}
+
 /** Ticket-Zeile: Auswahl, Nr., Titel, Prio/Projekt/Umgebung zum Ändern, Status und Prompt; Klick zeigt das Detail. */
 function TicketRow({ t, data, sel, linked, checked, onCheck, target, goal, onPick }: RowProps) {
   const cls = ['pl-bl-ticket', sel === t.nr && 'is-sel', linked.has(t.nr) && 'is-linked'].filter(Boolean).join(' ');
@@ -128,15 +145,7 @@ function TicketRow({ t, data, sel, linked, checked, onCheck, target, goal, onPic
       <span className="pl-bl-title">{t.title}</span>
       <span className="pl-pills">
         <WtPills item="Ticket" id={t.nr} />
-        <FieldMenu label="Prio" value={t.prio} options={PRIOS} onPick={(v) => void setField(t.nr, 'Prio', v)}>
-          <Pill tone={prioTone(t.prio)}>{t.prio || '?'}</Pill>
-        </FieldMenu>
-        <FieldMenu label="Projekt" value={t.project ?? '–'} options={projectOptions(data)} onPick={(v) => void setField(t.nr, 'Projekt', v)}>
-          <Pill tone="neutral">{t.project || '–'}</Pill>
-        </FieldMenu>
-        <FieldMenu label="Umgebung" value={t.env} options={ENVS} onPick={(v) => void setField(t.nr, 'Umgebung', v)}>
-          <Pill tone={envTone(t.env)}>{t.env || '?'}</Pill>
-        </FieldMenu>
+        {t.wt ? <Pill tone="neutral">{t.project || '–'}</Pill> : <TicketMenus t={t} data={data} />}
         <Pill tone={planned ? 'info' : 'neutral'}>{planned ? `eingeplant · ${t.sprint}` : t.status}</Pill>
       </span>
       <CopyPrompt prompt={backlogPrompt([t], target)} what={target.kind === 'new' ? `${t.nr} zu neuem Sprint` : `${t.nr} in ${goal}`} />

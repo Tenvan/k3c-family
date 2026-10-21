@@ -69,6 +69,9 @@ func TestLoad(t *testing.T) {
 	}
 }
 
+// sessionsOptional: Altlasten (erledigt) haben keine Session-Tabelle, Entwürfe dürfen Sessions noch weglassen (B-440).
+func sessionsOptional(s Sprint) bool { return s.Status == "erledigt" || s.Reife == "Entwurf" }
+
 // TestRepo liest die echten Docs des Repos: das Format der Vorlagen darf nicht still aus dem Parser fallen.
 func TestRepo(t *testing.T) {
 	root := filepath.Join("..", "..", "..", "..")
@@ -80,7 +83,7 @@ func TestRepo(t *testing.T) {
 		t.Fatalf("%v %d %d", err, len(d.Sprints), len(d.Tickets))
 	}
 	for _, s := range d.Sprints {
-		if s.Title == "" || len(s.Sessions) == 0 && s.Status != "erledigt" { // Altlasten ohne Session-Tabelle
+		if s.Title == "" || !sessionsOptional(s) && len(s.Sessions) == 0 {
 			t.Errorf("Sprint %s ohne Titel oder Sessions: %+v", s.ID, s)
 		}
 	}

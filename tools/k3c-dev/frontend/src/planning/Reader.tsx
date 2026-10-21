@@ -19,6 +19,8 @@ interface Props {
   title: string;
   prompt: string;
   pill: ReactNode;
+  /** Branch, wenn der Eintrag nur in diesem Worktree existiert: kein Volltext aus der Wurzel, nur ein Hinweis (B-483). */
+  wt?: string;
 }
 
 type Load = { state: 'loading' } | { state: 'ok'; text: string; at: Date } | { state: 'error'; message: string };
@@ -126,8 +128,9 @@ function useSearch(content: RefObject<HTMLElement | null>, box: RefObject<HTMLDi
 }
 
 /** Titel im Detailkopf mit Lese-Symbol; beide öffnen den Lesemodus. */
-export function Reader({ id, title, prompt, pill }: Props) {
+export function Reader({ id, title, prompt, pill, wt }: Props) {
   const [open, setOpen] = useState(false);
+  if (wt) return <><span className="pl-reader-title">{title}</span><Text size="1" color="gray">nur im Worktree {wt}</Text></>;
   return (
     <>
       <span className="pl-reader-title" role="button" tabIndex={0} title="Doppelklick, Enter oder Leertaste: Volltext lesen"
