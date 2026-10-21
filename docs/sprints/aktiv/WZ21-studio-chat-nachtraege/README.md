@@ -56,7 +56,7 @@ keine. Geklärt (🧑, 2026-10-21): Der Knopf „Prompt-Grundgerüst“ entfäll
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ21.2 | `WZ21.2-geruest-als-instruktion.md` | Umsetzung | autonom | in Arbeit |
+| WZ21.2 | `WZ21.2-geruest-als-instruktion.md` | Umsetzung | autonom | fertig |
 | WZ21.3 | `WZ21.3-restpunkte-b514.md` | Umsetzung | autonom | offen |
 | WZ21.4 | `WZ21.4-review.md` | Review | autonom | offen |
 | WZ21.1 | `WZ21.1-eigene-umgebung.md` | Umsetzung | autonom | verworfen |

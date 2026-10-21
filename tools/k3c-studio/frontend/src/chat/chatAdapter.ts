@@ -1,5 +1,5 @@
 import type { ChatModelAdapter, ChatModelRunResult } from '@assistant-ui/react';
-import { ChatGoneError, type ChatChoiceValues, type ChatStatus, type ChatStream } from '../api/chatTypes';
+import { ChatGoneError, type ChatChoiceValues, type ChatSendOptions, type ChatStatus, type ChatStream, type ChatTask } from '../api/chatTypes';
 
 /** Text der letzten Nachricht von 🧑 (die CLI kennt den Verlauf nur über den Chat des Servers). */
 function lastUserText(messages: readonly { role: string; content: readonly { type: string; text?: string }[] }[]): string {
@@ -37,6 +37,8 @@ export interface ChatAdapterHooks {
   chat?: string;
   /** aktuelle Wahl von Anbieter, Modell und Denkstufe, bei jeder Nachricht neu gelesen */
   options?: () => ChatChoiceValues;
+  /** Auftragsart der Nachricht (B-516), bei jeder Nachricht neu gelesen; undefined = freier Chat */
+  task?: () => ChatTask | undefined;
   /** z. B. „Verlauf nicht gespeichert“ */
   onNotice?: (notice: string) => void;
   /** der Server hat dem Chat eine Kennung gegeben (neuer Chat); leer, wenn der Chat nicht mehr existiert */
@@ -46,6 +48,12 @@ export interface ChatAdapterHooks {
 }
 
 const NO_CHOICE: ChatChoiceValues = { provider: '', model: '', effort: '' };
+
+function sendOptions(hooks: ChatAdapterHooks): ChatSendOptions {
+  const choice = hooks.options?.() ?? NO_CHOICE;
+  const task = hooks.task?.();
+  return task ? { ...choice, task } : choice;
+}
 
 /** Bindet den Antwort-Strom des Studios an assistant-ui: Stücke wachsen zu einer Antwort, `done` setzt den Ausgang
  *  (fertig, abgebrochen, Fehler), `onNotice` meldet z. B. „Verlauf nicht gespeichert“. Der Chat des Servers
@@ -59,7 +67,7 @@ export function createChatAdapter(stream: ChatStream, hooks: ChatAdapterHooks = 
       let ended = false;
       notice('');
       try {
-        for await (const ev of stream(chat, lastUserText(messages), hooks.options?.() ?? NO_CHOICE, abortSignal)) {
+        for await (const ev of stream(chat, lastUserText(messages), sendOptions(hooks), abortSignal)) {
           if (ev.kind === 'start') {
             chat = ev.chat;
             hooks.onChat?.(chat);

@@ -23,6 +23,7 @@ import (
 const (
 	chatLoopbackMsg = "Der Chat ist nur auf dem Rechner des Servers erreichbar"
 	chatBusyMsg     = "Für diesen Chat läuft noch eine Antwort"
+	chatTaskWorld   = "welt" // Auftragsart: das Grundgerüst geht als Instruktion mit (B-516)
 )
 
 // chatHistoryMax begrenzt die Nachrichten des Verlaufs, die mit in den Prompt gehen (die CLI kennt keinen Verlauf).
@@ -122,10 +123,15 @@ type chatRequest struct {
 	Provider string `json:"provider"` // leer = Standard; erlaubt laut chat_options.go
 	Model    string `json:"model"`
 	Effort   string `json:"effort"`
+	Task     string `json:"task"` // leer = freier Chat, chatTaskWorld = Welt-Auftrag
 }
 
 func (r chatRequest) options() chatOptions {
-	return chatOptions{Provider: r.Provider, Model: r.Model, Effort: r.Effort}
+	o := chatOptions{Provider: r.Provider, Model: r.Model, Effort: r.Effort}
+	if r.Task == chatTaskWorld {
+		o.instruction = worldInstruction()
+	}
+	return o
 }
 
 func readChatRequest(r *http.Request) (chatRequest, error) {
@@ -138,6 +144,9 @@ func readChatRequest(r *http.Request) (chatRequest, error) {
 	}
 	if req.Chat != "" && !chatIDPattern.MatchString(req.Chat) {
 		return req, errors.New("ungültige Chat-id (nur Kleinbuchstaben, Ziffern, Bindestrich)")
+	}
+	if req.Task != "" && req.Task != chatTaskWorld {
+		return req, fmt.Errorf("unbekannte Auftragsart %q (erlaubt: leer oder %q)", req.Task, chatTaskWorld)
 	}
 	return req, req.options().validate()
 }

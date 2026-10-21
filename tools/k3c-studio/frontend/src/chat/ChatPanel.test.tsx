@@ -1,11 +1,12 @@
 // @vitest-environment happy-dom
 import { act } from 'react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { fillChat, setChatOpen } from './chatBridge';
-import { answered, button, flush, input, mount, panel, send, unmount, waitFor } from './chatTestKit';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { backend } from '../api';
+import { registerDraftLoader, setChatOpen } from './chatBridge';
+import { answered, button, input, mount, panel, send, unmount, waitFor } from './chatTestKit';
 
-// WZ19.2 / AC-03 (Chat): auf jeder Seite da, ein- und ausblendbar, Antwort fortlaufend, Abbruch, Fehlermeldung,
-// Eingabefeld von außen füllbar. Die Oberfläche läuft gegen den Mock (api/mockChat.ts).
+// WZ19.2 / AC-03 (Chat): auf jeder Seite da, ein- und ausblendbar, Antwort fortlaufend, Abbruch, Fehlermeldung;
+// Welt-Auftrag mit Welten Editor (B-516). Die Oberfläche läuft gegen den Mock (api/mockChat.ts).
 
 beforeEach(() => { localStorage.clear(); setChatOpen(true); });
 afterEach(unmount);
@@ -54,13 +55,21 @@ describe('Chat rechts im Studio (WZ19.2/AC-03)', () => {
     expect(h.querySelector('.chat-msg[data-role="assistant"] .chat-note')?.textContent).toContain('Claude Code CLI nicht gefunden');
   });
 
-  it('lässt das Eingabefeld von außen füllen und blendet den Chat dafür ein', async () => {
+  it('schickt Welt-Aufträge, solange der Welten Editor einen Entwurfs-Lader angemeldet hat (B-516)', async () => {
+    const stream = vi.spyOn(backend, 'chatStream');
     const h = await mount();
-    setChatOpen(false);
-    await flush();
-    await act(async () => { expect(fillChat('Prompt-Grundgerüst …')).toBe(true); });
-    expect(input(h).value).toBe('Prompt-Grundgerüst …');
-    expect(panel(h).hidden).toBe(false);
-    expect(h.querySelector('.chat-msg')).toBeNull(); // gefüllt, nicht gesendet
+    const hint = () => h.querySelector('.chat-task');
+    expect(hint()).toBeNull();
+    let off = () => {};
+    await act(async () => { off = registerDraftLoader(async () => {}); });
+    expect(hint()?.textContent).toContain('Welt-Auftrag');
+    expect(input(h).placeholder).toContain('Erstelle eine Welt Nordsee');
+    await send(h, 'Erstelle eine Welt Nordsee', true);
+    expect(stream.mock.calls.at(-1)?.[2].task).toBe('welt');
+    await act(async () => off());
+    expect(hint()).toBeNull();
+    await send(h, 'Hallo', true);
+    expect(stream.mock.calls.at(-1)?.[2].task).toBeUndefined();
+    stream.mockRestore();
   });
 });

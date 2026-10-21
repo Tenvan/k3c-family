@@ -57,8 +57,6 @@ export interface WorldDraftApi {
   planWorldSave(draft: WorldDraft, stand: string): Promise<PlanSaved>;
   /** Kopie der gewählten Welt mit neuem Namen anlegen (wird gewählt) */
   planWorldCopy(name: string): Promise<WorldsView>;
-  /** Prompt-Grundgerüst aus den Daten für den Chat (WZ19.3), endet mit „MEINE WÜNSCHE:“ */
-  planWorldPrompt(): Promise<string>;
   /** Antwort des Modells prüfen und als Entwurf liefern; schreibt nichts */
   planWorldAnswer(text: string): Promise<WorldAnswerView>;
 }

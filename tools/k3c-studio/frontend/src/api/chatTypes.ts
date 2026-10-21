@@ -19,8 +19,14 @@ export interface ChatChoiceValues {
   effort: string;
 }
 
+/** Auftragsart einer Nachricht: `welt` schickt das Grundgerüst als Instruktion mit (B-516); fehlt sie, ist es ein freier Chat. */
+export type ChatTask = 'welt';
+
+/** Wahl und Auftragsart einer Nachricht. */
+export type ChatSendOptions = ChatChoiceValues & { task?: ChatTask };
+
 /** Schickt `text` an den Chat `chat` (leer = neuer Chat) mit der Wahl `options` und liefert die Ereignisse der Antwort; `signal` bricht ab. */
-export type ChatStream = (chat: string, text: string, options: ChatChoiceValues, signal: AbortSignal) => AsyncGenerator<ChatEvent, void>;
+export type ChatStream = (chat: string, text: string, options: ChatSendOptions, signal: AbortSignal) => AsyncGenerator<ChatEvent, void>;
 
 /** Eintrag der Liste gespeicherter Chats (Go: ChatList); `updated` als Zeitstempel (RFC 3339). */
 export interface ChatSummary {

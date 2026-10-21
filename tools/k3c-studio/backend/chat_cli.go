@@ -23,6 +23,9 @@ const (
 	chatProgram = "claude"        // über exec.LookPath gefunden (unter Windows auch claude.exe oder claude.cmd)
 	chatTimeout = 3 * time.Minute // Zeitlimit einer Antwort
 	chatWorkDir = "k3c-studio-chat"
+	// chatSystemFlag hängt die Instruktion eines Auftrags aus einer Datei an (belegt mit claude --help 2.1.304); als
+	// Datei, weil Windows die Kommandozeile auf 32 KiB begrenzt.
+	chatSystemFlag = "--append-system-prompt-file"
 )
 
 // Zustand einer Antwort.
@@ -98,11 +101,20 @@ func (c chatCLI) run(ctx context.Context, prompt string, opts chatOptions, emit 
 	if err := os.MkdirAll(c.workDir, 0o755); err != nil {
 		return chatOutcome{Status: chatFailed, Error: "Arbeitsordner des Chats fehlt: " + err.Error()}
 	}
+	args := chatArgs(opts)
+	if opts.instruction != "" {
+		file, err := c.instructionFile(opts.instruction)
+		if err != nil {
+			return chatOutcome{Status: chatFailed, Error: "Grundgerüst nicht geschrieben: " + err.Error()}
+		}
+		defer func() { _ = os.Remove(file) }()
+		args = append(args, chatSystemFlag, file)
+	}
 	runCtx, cancel := context.WithTimeout(ctx, c.timeout)
 	defer cancel()
 	stream := &chatStream{emit: emit}
 	var stderr limitedBuffer
-	cmd := exec.CommandContext(runCtx, path, chatArgs(opts)...)
+	cmd := exec.CommandContext(runCtx, path, args...)
 	cmd.Dir = c.workDir
 	cmd.Env = append(chatEnviron(os.Environ()), c.env...)
 	cmd.Stdin = strings.NewReader(prompt)
@@ -118,6 +130,21 @@ func (c chatCLI) run(ctx context.Context, prompt string, opts chatOptions, emit 
 	out := c.outcome(ctx, runCtx, stream, werr, stderr.String())
 	c.logOutcome(out, time.Since(start))
 	return out
+}
+
+// instructionFile schreibt die Instruktion in eine eigene Datei neben dem Arbeitsordner (der bleibt leer); der Name ist je
+// Lauf eindeutig, weil mehrere Chats zugleich antworten dürfen. Der Aufrufer löscht sie.
+func (c chatCLI) instructionFile(text string) (string, error) {
+	f, err := os.CreateTemp(filepath.Dir(c.workDir), "k3c-chat-instruktion-*.md")
+	if err != nil {
+		return "", err
+	}
+	_, werr := f.WriteString(text)
+	if err := errors.Join(werr, f.Close()); err != nil {
+		_ = os.Remove(f.Name())
+		return "", err
+	}
+	return f.Name(), nil
 }
 
 func (c chatCLI) logger() *slog.Logger {
@@ -171,6 +198,9 @@ func explainCLI(text string, werr error) string {
 		first = string(r[:300]) + " …"
 	}
 	low := strings.ToLower(text)
+	if strings.Contains(low, "unknown option") && strings.Contains(low, chatSystemFlag) {
+		return "Diese Claude-Code-Version kennt " + chatSystemFlag + " nicht, bitte Claude Code aktualisieren („claude update“)"
+	}
 	for _, hint := range []string{"login", "log in", "logged in", "authenticat", "api key", "oauth"} {
 		if strings.Contains(low, hint) {
 			return "Claude Code ist nicht angemeldet: im Terminal einmal „claude“ starten und anmelden (" + first + ")"

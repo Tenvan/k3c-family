@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { backend } from '../api';
 import type { ChatChoiceValues } from '../api/chatTypes';
 import { createChatAdapter } from './chatAdapter';
-import { loadDraft, registerChatFill, useCanLoadDraft } from './chatBridge';
+import { chatTask, loadDraft, useCanLoadDraft } from './chatBridge';
 
 const WHO = { user: 'Ich', assistant: 'Claude', system: 'System' } as const;
 
@@ -57,13 +57,13 @@ export interface ChatThreadProps {
  *  den Verlauf mit neuem `key` neu ein (laufende Antworten werden dabei abgebrochen). */
 export function ChatThread({ chat, initial, current, onChat, onEnd, onRunning }: ChatThreadProps) {
   const [notice, setNotice] = useState('');
+  const world = useCanLoadDraft(); // Welten Editor offen: Nachrichten sind Welt-Aufträge (B-516)
   // einmal je Einhängen: Chat, Auswahl und Rückrufe ändern sich für diesen Verlauf nicht
   const [adapter] = useState(() => createChatAdapter(
     (c, text, options, signal) => backend.chatStream(c, text, options, signal),
-    { chat, options: current, onNotice: setNotice, onChat, onEnd },
+    { chat, options: current, task: chatTask, onNotice: setNotice, onChat, onEnd },
   ));
   const runtime = useLocalRuntime(adapter, { initialMessages: initial });
-  useEffect(() => registerChatFill((text) => runtime.thread.composer.setText(text)), [runtime]);
   useEffect(() => () => runtime.thread.cancelRun(), [runtime]);
   return (
     <AssistantRuntimeProvider runtime={runtime}>
@@ -74,8 +74,9 @@ export function ChatThread({ chat, initial, current, onChat, onEnd, onRunning }:
           <ThreadPrimitive.Messages>{({ message }) => <Message message={message} />}</ThreadPrimitive.Messages>
         </ThreadPrimitive.Viewport>
         {notice && <div className="chat-note" role="status">{notice}</div>}
+        {world && <div className="chat-note chat-task">Welt-Auftrag: Das Grundgerüst für Welten geht mit, schreib nur deinen Wunsch.</div>}
         <ComposerPrimitive.Root className="chat-composer">
-          <ComposerPrimitive.Input className="chat-input" placeholder="Nachricht an Claude" rows={3} />
+          <ComposerPrimitive.Input className="chat-input" placeholder={world ? 'Wunsch, z. B. „Erstelle eine Welt Nordsee“' : 'Nachricht an Claude'} rows={3} />
           <ThreadPrimitive.If running={false}>
             <ComposerPrimitive.Send asChild><Button size="1">Senden</Button></ComposerPrimitive.Send>
           </ThreadPrimitive.If>
