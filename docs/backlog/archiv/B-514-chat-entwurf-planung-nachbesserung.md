@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ21
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-20

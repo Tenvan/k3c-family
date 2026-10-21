@@ -163,7 +163,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-510](B-510-k3c-dev-kein-doppelter-neustart.md) | DEV | Schuld | niedrig | eingeplant | WZ25 | k3c-dev startet den Spielserver bei Änderungen in data/ nicht mehr selbst neu, der Server macht das allein |
 | [B-511](B-511-studio-schreibt-atomar.md) | DEV | Schuld | niedrig | eingeplant | WZ25 | Das Studio schreibt jede Datei in data/ und public/ atomar, der Server sieht nie eine halbe Datei |
 | [B-512](B-512-k3c-dev-uebernommener-server-neue-pid.md) | DEV | Problem | niedrig | eingeplant | WZ25 | k3c-dev beendet einen übernommenen Spielserver auch nach dessen Selbst-Neustart (neue PID am Port, Supervisor-Prozess) |
-| [B-514](B-514-chat-entwurf-planung-nachbesserung.md) | DEV | Problem | niedrig | eingeplant | WZ21 | Chat-Entwurf: Planung bei gleicher Insel-id schützen, CLI-Prozessbaum, Test-Riegel |
 | [B-516](B-516-studio-chat-promptgeruest-als-instruktion.md) | DEV | Idee | mittel | eingeplant | WZ21 | Prompt-Grundgerüst des Studio-Chats ist eine feste Instruktion im Code statt Text im Eingabefeld |
 | [B-517](B-517-geplante-chunks-gegnerlager.md) | REG | Idee | mittel | offen | – | Geplante Chunks tragen Gegnerlager mit stationärer Wache |
 | [B-519](B-519-plan-next-origin.md) | DEV | Problem | mittel | offen | – | plan_next berücksichtigt den Stand der Sprint-Branches auf origin |
@@ -483,3 +482,4 @@ Zeile in diesen Abschnitt.
 | [B-440](archiv/B-440-dev-test-entwurfs-sprints-ohne-sessions.md) | DEV | Problem | mittel | erledigt | WZ20 | k3c-dev-Planungstest lehnt Entwurfs-Sprints ohne Sessions ab |
 | [B-483](archiv/B-483-worktree-eintraege-nur-lesend.md) | DEV | Problem | niedrig | erledigt | WZ20 | Planungsseite: Einträge nur im Worktree sind nur lesbar (Detail, Menüs, Rang) |
 | [B-484](archiv/B-484-worktree-neuer-sprint-leer.md) | DEV | Problem | niedrig | erledigt | WZ20 | Worktree-Vergleich: Sessions und Projekt eines neuen Sprints fehlen in den Pills |
+| [B-514](archiv/B-514-chat-entwurf-planung-nachbesserung.md) | DEV | Problem | niedrig | erledigt | WZ21 | Chat-Entwurf: Planung bei gleicher Insel-id schützen, CLI-Prozessbaum, Test-Riegel |
