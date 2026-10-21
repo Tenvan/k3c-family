@@ -21,11 +21,14 @@ tasks:
       - task: build
       - ./{{.EXE}}
 
+  # Der Dev-Lauf baut und startet dieselbe EXE bin/k3c-server wie `build`/`run` (Firewall-Freigabe, B-085); der Supervisor
+  # bin/k3c-server-devhost lauscht selbst nicht. Deshalb laufen `k3c-server:dev` und `task start`/`k3c-server:run` nicht gleichzeitig.
   dev:
-    desc: Go-Server bei jeder Änderung an cmd/ oder engine/ neu bauen und starten (k3c-watch; data/ und public/ beobachtet der Server selbst und startet sich dafür über seinen Supervisor neu); ein Build-Fehler lässt die laufende Version stehen
-    deps: [':watch:build']
+    desc: Go-Server als Dev-Lauf (`k3c-server -dev`, engine/devrun) - baut bin/k3c-server bei jeder Änderung an Go-Code in cmd/k3c-server, engine/ oder data/ neu und startet ihn neu; data/ und public/ beobachtet der Server selbst (Neustart ohne Neubau); ein Build-Fehler lässt die laufende Version stehen; nicht gleichzeitig mit `task start`
+    deps: [':tmp']
     cmds:
-      - ./bin/k3c-watch{{exeExt}} --name server --paths cmd/k3c-server,engine,go.mod,go.sum --build "task k3c-server:build" -- {{.EXE}}
+      - go build -o bin/k3c-server-devhost{{exeExt}} ./cmd/k3c-server
+      - ./bin/k3c-server-devhost{{exeExt}} -dev
 
   default:
     desc: Kurzform von k3c-server:dev

@@ -15,6 +15,7 @@ Schichten von innen nach außen:
 | [`store/`](store/codemap.md) | File-Repository für Spielstände (`saves/`) und Berichte (`reports/`) |
 | [`net/`](net/codemap.md) | HTTP/WebSocket-Adapter (Protokoll v7) auf `room`, Build-Auslieferung, Diagnose |
 | [`conlog/`](conlog/codemap.md) | farbiger `slog.Handler` mit Emoji-Topics |
+| `devrun/` | Dev-Supervisor der Tasks `<app>:dev`: baut die App als Kind (`go build`), startet sie bei Go-Änderungen neu, tauscht die EXE über `.new`, Job-Objekt gegen verwaiste Kinder, `Listen` mit Wiederholung bei belegtem Port |
 | `watch/` | Datei-Watch (B-507): beobachtet `data/` und `public/` durch Abfragen, entprellt; der Server startet danach neu. Das Studio-Backend liegt in `tools/k3c-studio/backend` (Entscheidung 004) |
 
 ## Flow

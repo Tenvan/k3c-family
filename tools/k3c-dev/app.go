@@ -54,7 +54,9 @@ type Info struct {
 type App struct {
 	root   string
 	port   int
-	emit   func(ctx context.Context, name string, data ...any) // Test-Naht; Produktion: runtime.EventsEmit
+	emit   func(ctx context.Context, name string, data ...any) // Test-Naht; Produktion: emitAll (Wails und bus)
+	window bool                                                // läuft im Wails-Fenster (nicht -headless/-dev)
+	bus    *eventBus                                           // Ereignisse für die HTTP-Oberfläche (uiapi_events.go)
 	usage  string                                              // Datei der Nutzungsstatistik (Test-Naht)
 	launch func(exe, dir string) error                         // startet ein Programm losgelöst (Test-Naht; Produktion: exec.Command.Start)
 	// ready schließt startup: Wails ruft OnStartup in einer eigenen Goroutine, Bindings können davor kommen.
@@ -79,8 +81,10 @@ type App struct {
 }
 
 func newApp(root string, port int) *App {
-	return &App{root: root, port: port, emit: runtime.EventsEmit, usage: configPath("mcp-usage.json"),
+	a := &App{root: root, port: port, usage: configPath("mcp-usage.json"), bus: newEventBus(),
 		ready: make(chan struct{}), gh: github.New(root)}
+	a.emit = a.emitAll
+	return a
 }
 
 // wait blockiert, bis startup fertig ist; danach sind alle Felder gesetzt und werden nicht mehr geschrieben.

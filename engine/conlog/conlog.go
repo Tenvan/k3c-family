@@ -34,6 +34,7 @@ const (
 var Topics = map[string]string{
 	"main": "🚀", "http": "📡", "ws": "🔌", "room": "🏰", "client": "🌐", "save": "💾", "store": "📦",
 	"report": "📊", "diag": "🩺", "svc": "🔧", "check": "🧪", "tasks": "📋", "mcp": "🤖", "usage": "📈", "watch": "👀",
+	"dev": "🐛",
 }
 
 // Color sagt, ob die Konsole Farben bekommt: aus, sobald NO_COLOR gesetzt ist (https://no-color.org).

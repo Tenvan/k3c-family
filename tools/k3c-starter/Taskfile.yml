@@ -1,8 +1,10 @@
 # Namespace `k3c-starter`: der Windows-Starter für den Server (Wails-Fenster startet bin/k3c-server, B-041).
-# Die Oberfläche (React auf Radix Themes, frontend/) steckt gebaut in der EXE (go:embed frontend/dist); `dev` baut sie bei jeder
-# Änderung an Go-Code, Oberfläche oder tools/webkit neu und startet die EXE neu (k3c-watch). Beobachtet werden .go, .html, .ts, .tsx und .css,
-# nicht frontend/dist und frontend/wailsjs (`wails build` schreibt sie neu und löste sonst sich selbst aus), node_modules
-# überspringt k3c-watch selbst. Die Oberfläche allein im Browser gegen den Mock: `npm --prefix tools/k3c-starter/frontend run dev` (Port 5194).
+# Die Oberfläche (React auf Radix Themes, frontend/) steckt gebaut in der EXE (go:embed frontend/dist).
+# Entwicklung ohne Fenster-Neubau (Client/Server): `dev` startet zwei Prozesse. `dev:server` ist der Starter mit -dev
+# (engine/devrun): baut ihn bei jeder Go-Änderung neu und führt ihn als `-headless` aus (Server starten, Starter-API auf
+# 127.0.0.1:K3C_STARTER_API_PORT, Standard 8194, api.go). `dev:ui` ist Vite (Port 5194, Hot Reload, leitet /api an die
+# Starter-API weiter). Die Oberfläche im Browser: http://localhost:5194/ (`?mock=1` zeigt erfundene Daten).
+# `window` ist das echte Wails-Fenster (`wails dev`) und belegt denselben Vite-Port wie `dev:ui`, beides nicht zusammen.
 version: '3'
 
 vars:
@@ -10,10 +12,43 @@ vars:
 
 tasks:
   dev:
-    desc: "Starter bei jeder Änderung an tools/k3c-starter neu bauen und starten (k3c-watch); startet bin/k3c-server, der muss gebaut sein (task k3c-server:build)"
-    deps: [':watch:build']
+    desc: "Client/Server-Entwicklung: Starter ohne Fenster (dev:server, Neubau bei Go-Änderungen) und Oberfläche mit Hot Reload (dev:ui); startet bin/k3c-server, der muss gebaut sein (task k3c-server:build)"
+    deps: [dev:server, dev:ui]
+
+  dev:server:
+    desc: "Starter als -headless unter devrun: bei jeder Go-Änderung in tools/k3c-starter neu bauen und starten, Starter-API auf Port 8194 (K3C_STARTER_API_PORT)"
+    deps: [':tmp', dist]
     cmds:
-      - ./bin/k3c-watch{{exeExt}} --name starter --paths tools/k3c-starter,tools/webkit --ext .go,.html,.ts,.tsx,.css --ignore tools/k3c-starter/frontend/dist,tools/k3c-starter/frontend/wailsjs --grace 1s --build "task k3c-starter:exe" -- bin/k3c-starter{{exeExt}}
+      # je API-Port eine eigene Supervisor-EXE (und Kind-EXE, dev.go): parallele Dev-Läufe stören sich nicht
+      - cd {{.STARTER}} && go build -o build/bin/k3c-starter-dev-{{.K3C_STARTER_API_PORT | default "8194"}}{{exeExt}} .
+      - '{{.STARTER}}/build/bin/k3c-starter-dev-{{.K3C_STARTER_API_PORT | default "8194"}}{{exeExt}} -dev'
+
+  dist:
+    internal: true
+    desc: Stellt nur sicher, dass frontend/dist für go:embed existiert (Platzhalter; die Oberfläche liefert im Entwicklungsmodus Vite, kein Bauen nötig)
+    dir: '{{.STARTER}}/frontend'
+    status:
+      - test -f dist/index.html
+    cmds:
+      - mkdir -p dist
+      - echo '<!doctype html><title>K3C Server</title>' > dist/index.html
+      - touch dist/.placeholder
+
+  dev:ui:
+    desc: "Oberfläche des Starters mit Hot Reload (Vite, Port 5194); /api geht an die Starter-API (K3C_STARTER_API, Standard http://127.0.0.1:8194)"
+    dir: '{{.STARTER}}/frontend'
+    cmds:
+      - npx vite
+
+  window:
+    desc: "Echtes Wails-Fenster im Entwicklungsmodus (wails dev, Neubau bei Go-Änderungen); nicht zusammen mit dev:ui (derselbe Vite-Port)"
+    deps: [':tmp']
+    dir: '{{.STARTER}}'
+    preconditions:
+      - sh: command -v wails
+        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    cmds:
+      - wails dev
 
   default:
     desc: Kurzform von k3c-starter:dev
@@ -26,6 +61,8 @@ tasks:
     cmds:
       - npx tsc --noEmit
       - npx vite build
+    status:
+      - test ! -f dist/.placeholder # Platzhalter aus dist: immer echt bauen, nie in die EXE
     sources:
       - src/**/*
       - index.html

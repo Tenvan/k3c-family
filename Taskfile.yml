@@ -6,19 +6,18 @@
 # (die Workbench gruppiert nach dem Namensraum vor dem Doppelpunkt):
 #
 #   go           engine/Taskfile.yml            go test, Lint, Race, Abdeckung, Golden-Dateien
-#   k3c-server   cmd/k3c-server/Taskfile.yml    Spielserver: build, run, dev (Watcher)
+#   k3c-server   cmd/k3c-server/Taskfile.yml    Spielserver: build, run, dev (devrun, -dev)
 #   k3c-load     cmd/k3c-load/Taskfile.yml      Lasttest
 #   k3c-tui      cmd/k3c-tui/Taskfile.yml       Diagnose-Oberfläche
-#   k3c-dev      tools/k3c-dev/Taskfile.yml     Workbench: dev (wails dev), build, frontend, test, lint
-#   k3c-studio   tools/k3c-studio/Taskfile.yml  Asset-Studio: dev (wails dev), build, frontend, test, lint
-#   k3c-starter  tools/k3c-starter/Taskfile.yml Windows-Starter: dev (Watcher), build, test, lint
+#   k3c-dev      tools/k3c-dev/Taskfile.yml     Workbench: dev (Client/Server), window (wails dev), build, frontend, test, lint
+#   k3c-studio   tools/k3c-studio/Taskfile.yml  Asset-Studio: dev (Client/Server), window (wails dev), build, frontend, test, lint
+#   k3c-starter  tools/k3c-starter/Taskfile.yml Windows-Starter: dev (Client/Server), window (wails dev), build, test, lint
 #   balance      tools/k3c-dev/internal/balance/Taskfile.yml  Balancing-Tester
 #   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
-#   watch        tools/watch/Taskfile.yml       k3c-watch, der Watcher der Tasks `<projekt>:dev`
 #
-# Jedes EXE-Projekt kennt dieselben Verben: `build` (EXE bauen), `run` (bauen und starten), `dev` (bei jeder Änderung
-# neu bauen und starten, ohne das Terminal zu verlassen). Der Name des Projekts allein (`task k3c-dev`) startet `dev`.
+# Jedes EXE-Projekt kennt dieselben Verben: `build` (EXE bauen), `run` (bauen und starten), `dev` (Backend mit `-dev` baut und startet sich
+# bei jeder Go-Änderung selbst neu, engine/devrun; Wails-Apps zeigen die Oberfläche über Vite im Browser). Der Name des Projekts allein (`task k3c-dev`) startet `dev`.
 version: '3'
 
 # Go-Build-Temp (go-build, Test-EXEs) und Wails-Bindings-EXE liegen fest im Projekt statt in %TEMP%:
@@ -39,7 +38,6 @@ includes:
   balance: tools/k3c-dev/internal/balance/Taskfile.yml
   gen: tools/Taskfile.yml
   ops: scripts/Taskfile.yml
-  watch: tools/watch/Taskfile.yml
 
 tasks:
   # Legt das feste Temp-Verzeichnis an (GOTMPDIR muss existieren, auch in der CI und in frischen Klonen ohne `task install`).

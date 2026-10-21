@@ -5,6 +5,7 @@ package main
 import (
 	"context"
 	"embed"
+	"flag"
 	"fmt"
 	"io/fs"
 	"os"
@@ -31,6 +32,12 @@ func main() {
 }
 
 func run() error {
+	headless := flag.Bool("headless", false, "ohne Fenster: Server starten und die Starter-API auf Loopback anbieten (K3C_STARTER_API_PORT, Standard 8194)")
+	dev := flag.Bool("dev", false, "Entwicklungsmodus aus der Repo-Wurzel: Starter bei Go-Änderungen neu bauen und mit -headless starten")
+	flag.Parse()
+	if *dev {
+		return runDev()
+	}
 	assets, err := fs.Sub(ui, "frontend/dist")
 	if err != nil {
 		return err
@@ -39,6 +46,9 @@ func run() error {
 	exe, _ := os.Executable()
 	lay, layErr := findLayout(wd, filepath.Dir(exe))
 	app := newApp(lay, layErr)
+	if *headless {
+		return runHeadless(app)
+	}
 	return wails.Run(&options.App{
 		Title: "K3C Server", Width: 640, Height: 560, MinWidth: 480, MinHeight: 420,
 		BackgroundColour:   &options.RGBA{R: 0x0b, G: 0x10, B: 0x26, A: 0xff},

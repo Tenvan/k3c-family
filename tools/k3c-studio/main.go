@@ -8,6 +8,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
+	"flag"
 	"fmt"
 	"log/slog"
 	"net"
@@ -49,20 +50,25 @@ type app struct {
 }
 
 func main() {
-	if err := run(); err != nil {
+	headless := flag.Bool("headless", false, "ohne Fenster: nur Backend und Engine auf Loopback (K3C_STUDIO_PORT), bis Strg+C")
+	dev := flag.Bool("dev", false, "Entwicklung: baut das Studio bei jeder Go-Änderung neu und startet es als -headless (engine/devrun)")
+	flag.Parse()
+	if err := run(*headless, *dev); err != nil {
 		fmt.Fprintln(os.Stderr, "k3c-studio:", err)
-		showError("K3C Asset-Studio", err.Error()) // die EXE hat unter Windows keine Konsole
+		if !*headless && !*dev {
+			showError("K3C Asset-Studio", err.Error()) // das Fenster hat unter Windows keine Konsole
+		}
 		os.Exit(1)
 	}
 }
 
-func run() error {
+func run(headless, dev bool) error {
 	root, err := findRoot()
 	if err != nil {
 		return err
 	}
-	if err := checkBuilt(root); err != nil {
-		return err
+	if dev {
+		return runDev(root)
 	}
 	port := os.Getenv("K3C_STUDIO_PORT")
 	if port == "" {
@@ -71,27 +77,27 @@ func run() error {
 	if n, err := strconv.Atoi(port); err != nil || n < 1 || n > 65535 {
 		return fmt.Errorf("K3C_STUDIO_PORT %q ist kein Port", port)
 	}
+	if headless {
+		return runHeadless(root, port) // die Seiten liefert Vite, frontend/dist ist nicht nötig
+	}
+	if err := checkBuilt(root); err != nil {
+		return err
+	}
 	ln, err := listen(port)
 	if err != nil {
 		return err
 	}
-	a := &app{root: root, ln: ln, url: windowURL(ln.Addr().String(), os.Getenv), ready: make(chan struct{}),
+	a := &app{root: root, ln: ln, url: windowURL(ln.Addr().String()), ready: make(chan struct{}),
 		log: slog.New(conlog.New(os.Stderr, slog.LevelInfo, conlog.Color()))}
-	if _, got, _ := net.SplitHostPort(ln.Addr().String()); got != port && os.Getenv("frontenddevserverurl") != "" {
-		_ = ln.Close() // unter wails dev zeigt der Vite-Proxy (K3C_STUDIO_API) fest auf diesen Port
-		return fmt.Errorf("der Port %s ist belegt; unter wails dev muss er frei sein (K3C_STUDIO_PORT ändert ihn, auch für den Proxy)", port)
-	} else if got != port {
+	if _, got, _ := net.SplitHostPort(ln.Addr().String()); got != port {
 		a.log.Warn("🚫 Port belegt, anderer Port gewählt (die Fenster-Einstellungen gelten je Adresse)", "ns", "main", "wunsch", port, "port", got)
 	}
 	return wails.Run(a.options())
 }
 
-// windowURL ist die Adresse, die das Fenster zeigt: die gebaute Oberfläche der EXE, unter `wails dev` (task k3c-studio:dev)
-// stattdessen der Vite-Server mit Hot Reload. Er reicht /api an diese EXE weiter (K3C_STUDIO_API), die Seiten kommen von ihm.
-func windowURL(addr string, getenv func(string) string) string {
-	if dev := getenv("frontenddevserverurl"); dev != "" {
-		return dev
-	}
+// windowURL ist die Adresse, die das Fenster zeigt: die gebaute Oberfläche der EXE. Entwickelt wird ohne Fenster
+// (`task k3c-studio:dev`: -dev und Vite im Browser); `task k3c-studio:window` zeigt unter `wails dev` dieselbe Adresse.
+func windowURL(addr string) string {
 	return "http://" + addr + studioPage
 }
 

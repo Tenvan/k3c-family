@@ -1,7 +1,7 @@
 # tools/k3c-studio/
 
 ## Responsibility
-Eigenständiges Fenster (Wails, `main.go`, `window.go`): startet das Backend `backend/` und die Oberfläche `frontend/dist` auf Loopback (Port 8091, `K3C_STUDIO_PORT`), zeigt sie im Fenster und merkt Größe und Position wie k3c-dev (`%AppData%\k3c\k3c-studio.json`). Bauen: `task k3c-studio:build` → `bin/k3c-studio.exe`.
+Eigenständiges Fenster (Wails, `main.go`, `window.go`): startet das Backend `backend/` und die Oberfläche `frontend/dist` auf Loopback (Port 8091, `K3C_STUDIO_PORT`), zeigt sie im Fenster und merkt Größe und Position wie k3c-dev (`%AppData%\k3c\k3c-studio.json`). Bauen: `task k3c-studio:build` → `bin/k3c-studio.exe`. Ohne Fenster: `-headless` (Backend und Engine auf `K3C_STUDIO_PORT`, `dev.go`); `-dev` baut es bei jeder Go-Änderung als Kind neu (`build/bin/k3c-studio-devchild-<Port>.exe`, `engine/devrun`, `task k3c-studio:dev` mit Vite 5192 im Browser, Backend 8192; das Fenster unter `wails dev`: `task k3c-studio:window`).
 
 Frontend des Asset-Studios (B-459): React-Oberfläche in `frontend/`, Build nach `frontend/dist/` (`task k3c-studio:frontend`), nur vom Fenster unter `/studio/` ausgeliefert; der Spielserver hat keine Studio-Seite und keine Kachel mehr (Entscheidung 004, B-507). Das **Backend** (RPC, Register, Planung) liegt in [`backend/`](backend/codemap.md) (Paket `backend`, bis TS1.1 `engine/studio`).
 
@@ -26,5 +26,5 @@ Frontend des Asset-Studios (B-459): React-Oberfläche in `frontend/`, Build nach
 
 ## Integration
 - Backend: `backend/` (eingehängt von `server.go`; der Spielserver bindet es seit TS1.1 nicht mehr ein); Asset-Logik in `tools/assetkit`; die MCP-Tools `assets_*` bleiben in k3c-dev (dessen Knopf „Asset-Studio öffnen“ öffnet `/studio/index.html` im Browser).
-- Tasks: `task k3c-studio:frontend` (Build), `task check:studio` (Studio-Vitest, Go-Tests und Lint von assetkit und diesem Modul samt Backend). `npm run dev` im Frontend-Ordner (Port 5192) leitet `/api` an den Server des Studios (8091). `server.go` liefert neben der Studio-API die Spiel-API der eingebundenen Engine (`/api/…`, `/ws`, B-507/AC-02), Vorschau-Spiele laufen ohne Spielserver. Das Vitest der Wurzel nimmt `tools/k3c-studio/**` aus.
+- Tasks: `task k3c-studio:frontend` (Build), `task check:studio` (Studio-Vitest, Go-Tests und Lint von assetkit und diesem Modul samt Backend). `task k3c-studio:dev` (Vite 5192) leitet `/api` an das Backend des Studios (8192, `K3C_STUDIO_API`). `server.go` liefert neben der Studio-API die Spiel-API der eingebundenen Engine (`/api/…`, `/ws`, B-507/AC-02), Vorschau-Spiele laufen ohne Spielserver. Das Vitest der Wurzel nimmt `tools/k3c-studio/**` aus.
 - Daten (über das Backend): `data/assets.json`, `data/assets-recherche.json`, `public/**`.

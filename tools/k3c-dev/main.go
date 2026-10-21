@@ -5,6 +5,7 @@ package main
 import (
 	"context"
 	"embed"
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -36,7 +37,12 @@ func main() {
 	}
 }
 
+// run startet das Fenster; -headless nur MCP-Server und Oberflächen-API (Oberfläche im Browser), -dev dasselbe als
+// neu startender Kindprozess bei Go-Änderungen (headless.go).
 func run() error {
+	headless := flag.Bool("headless", false, "ohne Fenster: MCP-Server und Oberflächen-API ("+envUIPort+")")
+	dev := flag.Bool("dev", false, "wie -headless, neu gebaut und gestartet bei jeder Go-Änderung")
+	flag.Parse()
 	wd, err := os.Getwd()
 	if err != nil {
 		return err
@@ -49,7 +55,15 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	return wails.Run(windowOptions(newApp(root, port)))
+	switch {
+	case *dev:
+		return runDev(root)
+	case *headless:
+		return runHeadless(root, port)
+	}
+	app := newApp(root, port)
+	app.window = true
+	return wails.Run(windowOptions(app))
 }
 
 // windowOptions beschreibt das Fenster: gemerkte Größe, verdeckter Start, bis die gemerkte Position gesetzt ist.

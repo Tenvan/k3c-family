@@ -60,9 +60,14 @@ func newSupervisor(lay layout) *supervisor {
 }
 
 // findLayout sucht dist/index.html im Arbeitsordner, im Ordner der EXE und darüber (bin/k3c-starter.exe im Repo);
-// die Server-EXE liegt neben dem Starter oder in <Wurzel>/bin.
+// die Server-EXE liegt neben dem Starter oder in <Wurzel>/bin. K3C_ROOT (Entwicklungsmodus: der Kindprozess läuft in
+// tools/k3c-starter und baut unter build/bin) nennt die Wurzel ausdrücklich und gilt zuerst.
 func findLayout(wd, exeDir string) (layout, error) {
-	for _, root := range []string{wd, exeDir, filepath.Dir(exeDir)} {
+	roots := []string{wd, exeDir, filepath.Dir(exeDir)}
+	if r := os.Getenv("K3C_ROOT"); r != "" {
+		roots = append([]string{r}, roots...)
+	}
+	for _, root := range roots {
 		if root == "" || !fileExists(filepath.Join(root, "dist", "index.html")) {
 			continue
 		}

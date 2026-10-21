@@ -1,19 +1,47 @@
 # Namespace `k3c-studio`: das Asset-Studio als eigenes Fenster (Wails, ohne Spielserver; B-459).
 # Die Oberfläche (frontend/) liegt nach `frontend` unter frontend/dist und wird von der EXE zur Laufzeit von der Platte
 # geliefert, steckt also nicht in der EXE: eine Änderung an der Oberfläche braucht keinen Neubau der EXE.
-# `dev` ist der Watcher: `wails dev` startet Vite mit Hot Reload und baut das Fenster bei Go-Änderungen neu.
+# Entwicklung ohne Fenster-Neubau (Client/Server): `dev` startet zwei Prozesse. `dev:server` ist das Studio mit -dev
+# (engine/devrun): baut es bei jeder Go-Änderung (tools/k3c-studio, tools/assetkit, tools/ruletable, engine/; nicht data/)
+# neu und führt es als `-headless` aus (Backend auf 127.0.0.1:K3C_STUDIO_PORT, im dev 8192). `dev:ui` ist Vite (Port 5192,
+# Hot Reload, leitet /api an das Backend weiter). Die Oberfläche im Browser: http://127.0.0.1:5192/ (`?mock=1` = erfundene Daten).
+# `window` ist das echte Fenster (`wails dev`, Backend 8091, Seiten aus frontend/dist ohne Hot Reload): zum Prüfen des Fensters.
+# Supervisor und Kind baut `go build` (Konsole), nicht `wails build`, damit das Kind sauber per CTRL_BREAK endet.
 version: '3'
 
 vars:
   STUDIO: '{{.ROOT_DIR}}/tools/k3c-studio'
+  # Backend-Port im dev: K3C_STUDIO_PORT, sonst Vite-Port + 3000 (8192); k3c-dev verschiebt K3C_STUDIO_UI_PORT je Worktree,
+  # damit landet ein Worktree-Studio nie auf dem Backend der Wurzel.
+  DEV_PORT: '{{.K3C_STUDIO_PORT | default (add 3000 (.K3C_STUDIO_UI_PORT | default "5192" | atoi))}}'
 
 tasks:
   dev:
-    desc: "Asset-Studio im Entwicklungsmodus (wails dev): Hot Reload der Oberfläche, Neubau bei Go-Änderungen (tools/k3c-studio, engine/, data/, tools/assetkit, tools/ruletable)"
+    desc: "Client/Server-Entwicklung: Studio ohne Fenster (dev:server, Neubau bei Go-Änderungen) und Oberfläche mit Hot Reload (dev:ui, http://127.0.0.1:5192/)"
+    deps: [dev:server, dev:ui]
+
+  dev:server:
+    desc: "Studio als -headless unter devrun: bei jeder Go-Änderung neu bauen und starten, Backend auf Port 8192 (K3C_STUDIO_PORT)"
+    deps: [':tmp']
+    env:
+      K3C_STUDIO_PORT: '{{.DEV_PORT}}'
+    cmds:
+      # je Port eine eigene Supervisor-EXE (und Kind-EXE, dev.go): parallele Dev-Läufe stören sich nicht
+      - cd {{.STUDIO}} && go build -o build/bin/k3c-studio-dev-{{.DEV_PORT}}{{exeExt}} .
+      - '{{.STUDIO}}/build/bin/k3c-studio-dev-{{.DEV_PORT}}{{exeExt}} -dev'
+
+  dev:ui:
+    desc: "Oberfläche des Studios mit Hot Reload (Vite, Port 5192); /api geht an das Backend (K3C_STUDIO_API, im dev http://127.0.0.1:8192)"
+    dir: '{{.STUDIO}}/frontend'
+    env:
+      K3C_STUDIO_API: 'http://127.0.0.1:{{.DEV_PORT}}'
+    cmds:
+      - npx vite
+
+  window:
+    desc: "Echtes Fenster prüfen (wails dev, Backend 8091, Seiten aus frontend/dist ohne Hot Reload; Oberfläche entwickeln mit dev)"
     deps: [':tmp', frontend]
     dir: '{{.STUDIO}}'
-    env:
-      K3C_STUDIO_API: 'http://127.0.0.1:{{.K3C_STUDIO_PORT | default "8091"}}'
     preconditions:
       - sh: command -v wails
         msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'

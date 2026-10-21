@@ -7,8 +7,5 @@
   },
   "info": {
     "productName": "K3C Asset-Studio"
-  },
-  "frontend:dev:watcher": "npx vite",
-  "frontend:dev:serverUrl": "auto",
-  "reloaddirs": "../../engine,../../data,../assetkit,../ruletable"
+  }
 }
