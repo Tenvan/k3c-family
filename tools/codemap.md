@@ -15,13 +15,12 @@ Entwickler-Werkzeuge außerhalb des Spiels (Build-Time-CLIs, Desktop-Tools, Clau
 | [`cockpit/`](cockpit/codemap.md) | Claude-Code-Plugin `tenvan-cc` mit Band, Panels und Chat-Skins |
 | [`buildings/`](buildings/codemap.md) | CLI (`task gen:gebaeude`): Gebäude-JSON → PNGs (Dichten 16/32/64/128) |
 | [`ruletable/`](ruletable/codemap.md) | CLI (`task gen:rules`): Block Hub-Stufe → Gebäude in der Regeldoku |
-| [`watch/`](watch/codemap.md) | CLI `k3c-watch`: baut bei Quelländerung neu und tauscht die laufende EXE (`task k3c-server:dev`, `task k3c-starter:dev`) |
 | [`webkit/`](webkit/codemap.md) | Gemeinsame Oberflächen-Bausteine von k3c-dev und Asset-Studio (`@webkit/…`: Fehlertext, Prefs, Debounce, Radix-Bausteine, Theme) |
 
 ## Flow
 1. `task gen:atlas` (Dependency von `dev` und `build`) baut und startet `tools/atlas`.
-2. `task k3c-dev` startet das Dev-Tool im Watch-Modus (`wails dev`), `task k3c-dev:build` baut die EXE; `task k3c-starter:build` baut `bin/k3c-starter`, `task k3c-starter:dev` hält ihn unter `k3c-watch` aktuell.
+2. `task k3c-dev` startet das Dev-Tool als Client/Server (Backend `-dev` über `engine/devrun`, Oberfläche unter Vite; Fenster: `k3c-dev:window`), `task k3c-dev:build` baut die EXE; `task k3c-starter:build` baut `bin/k3c-starter`, `task k3c-starter:dev` startet ihn als Client/Server (Backend `-dev`, Vite 5194).
 3. `task k3c-studio:frontend` baut das Asset-Studio-Frontend nach `tools/k3c-studio/frontend/dist/`; nur das Fenster `k3c-studio` liefert es aus (`task build` baut kein Studio, B-507).
 
 ## Integration
-- Eigene Go-Module für k3c-dev, k3c-starter und `assetkit` (k3c-dev und das Root-Modul binden `assetkit` per `replace` ein, kein `go.work`); `tools/atlas`, `tools/buildings`, `tools/ruletable`, `tools/cleanup` und `tools/watch` gehören zum Root-Modul.
+- Eigene Go-Module für k3c-dev, k3c-starter und `assetkit` (k3c-dev und das Root-Modul binden `assetkit` per `replace` ein, kein `go.work`); `tools/atlas`, `tools/buildings`, `tools/ruletable` und `tools/cleanup` gehören zum Root-Modul.

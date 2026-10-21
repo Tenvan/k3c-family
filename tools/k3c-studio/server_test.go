@@ -195,17 +195,7 @@ func TestWindowStateRoundTrip(t *testing.T) {
 }
 
 func TestWindowURL(t *testing.T) {
-	none := func(string) string { return "" }
-	if got := windowURL("127.0.0.1:8091", none); got != "http://127.0.0.1:8091/studio/" {
-		t.Errorf("ohne wails dev: %q", got)
-	}
-	dev := func(k string) string {
-		if k == "frontenddevserverurl" {
-			return "http://localhost:5192/"
-		}
-		return ""
-	}
-	if got := windowURL("127.0.0.1:8091", dev); got != "http://localhost:5192/" {
-		t.Errorf("unter wails dev: %q", got)
+	if got := windowURL("127.0.0.1:8091"); got != "http://127.0.0.1:8091/studio/" {
+		t.Errorf("Adresse des Fensters: %q", got)
 	}
 }

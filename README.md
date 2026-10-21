@@ -142,7 +142,7 @@ task k3c-dev:build
 ```
 
 baut `tools/k3c-dev/build/bin/k3c-dev.exe` (starten per Doppelklick, die EXE muss im Repo liegen). Zum Entwickeln
-mit Neuladen: `task k3c-dev` (`wails dev`). Die Oberfläche allein läuft im Browser gegen erfundene Daten:
+mit Neuladen: `task k3c-dev` (Backend mit `-dev`, Oberfläche unter http://localhost:5191; das Fenster mit `wails dev`: `task k3c-dev:window`). Die Oberfläche allein läuft im Browser gegen erfundene Daten:
 `npm --prefix tools/k3c-dev/frontend run dev` (Port 5191).
 
 Er lauscht nur an `http://127.0.0.1:5180/mcp` (anderer Port: `K3C_DEV_PORT`). Claude Code verbindet sich über die

@@ -42,23 +42,26 @@ task build         # Typecheck + Produktions-Build nach dist/
 task pages         # GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build)
 task serve         # Build + Go-Server (Port 8080, bin/k3c-server)
 task start         # Go-Server ohne Web-Build (task dev leitet /api und /ws an ihn weiter)
-task k3c-dev       # Workbench als Fenster im Watch-Modus (wails dev); EXE: task k3c-dev:build
-task k3c-studio    # Asset-Studio als Fenster im Watch-Modus (wails dev); EXE: task k3c-studio:build
+task k3c-dev       # Workbench als Client/Server-Dev (Backend -dev + Vite 5191 im Browser); Fenster: k3c-dev:window, EXE: k3c-dev:build
+task k3c-studio    # Asset-Studio als Client/Server-Dev (Backend -dev + Vite 5192 im Browser); Fenster: k3c-studio:window, EXE: k3c-studio:build
 task check:studio  # Asset-Studio: Frontend-Vitest, go test + golangci-lint für tools/assetkit und tools/k3c-studio
 ```
 
 **Taskfile-Gruppen:** `Taskfile.yml` hält nur die Kernbefehle (Workspace) und die Prüf-Aggregate `check:*`; jedes Projekt hat sein
 Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `go` (engine/), `k3c-server`,
 `k3c-load`, `k3c-tui` (cmd/), `k3c-dev`, `k3c-studio`, `k3c-starter` (tools/), `balance`, `gen` (Generatoren: `gen:atlas`,
-`gen:gebaeude`, `gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`), `watch`. Neue Aufgaben kommen in das Taskfile ihres Projekts, nicht
+`gen:gebaeude`, `gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`). Neue Aufgaben kommen in das Taskfile ihres Projekts, nicht
 in die Wurzel.
 
-**Watcher statt Neubau:** Jedes EXE-Projekt kennt `build` (EXE bauen), `run` (bauen und starten) und `dev` (bei jeder Änderung neu).
-Der Projektname allein (`task k3c-dev`) startet `dev`. Wails-Fenster (`k3c-dev`, `k3c-studio`) nutzen `wails dev`: Oberfläche mit
-Hot Reload ohne Neustart, Neubau und Neustart des Fensters nur bei Go-Änderungen (auch in `engine/`, `data/`, `tools/assetkit`, `tools/ruletable`).
-Server und Starter (`k3c-server:dev` nur für Go-Code, `data/` und `public/` beobachtet der Server selbst; `k3c-starter:dev`) laufen unter `k3c-watch` (`tools/watch`, `bin/k3c-watch`): Build bei Änderung,
-Tausch gegen die laufende EXE am festen Pfad, bei Build-Fehler läuft die alte Version weiter. Wails-Builds (`k3c-dev:build`,
-`k3c-studio:build`, `k3c-starter:exe`) und die Frontends laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` erzwingt.
+**Dev ohne Neubau-Fenster:** Jedes EXE-Projekt kennt `build` (EXE bauen), `run` (bauen und starten) und `dev`.
+Der Projektname allein (`task k3c-dev`) startet `dev`. `dev` ist Client/Server: Das Backend läuft mit `-dev` als kleiner Supervisor
+(`engine/devrun`), baut sich als Kind (`-headless`, ohne Fenster) und startet es bei jeder Go-Änderung neu; bei Build-Fehler läuft
+die alte Version weiter, ein Job-Objekt beendet verwaiste Kinder. Die Oberflächen der Wails-Apps (`k3c-dev` 5191, `k3c-studio` 5192,
+`k3c-starter` 5194) laufen dabei unter Vite mit Hot Reload im Browser und leiten `/api` an das Kind weiter. `<app>:window` startet
+das echte Fenster mit `wails dev`. Der Server (`k3c-server:dev`) baut als Kind `bin/k3c-server` (freigegebener Pfad), `data/` und
+`public/` beobachtet er weiter selbst (Exit 75 = Neustart). Supervisor und Kinder werden mit `go build` (Konsole) gebaut, nie per
+`wails build`, damit sie sauber per CTRL_BREAK beenden. Wails-Builds (`k3c-dev:build`, `k3c-studio:build`, `k3c-starter:exe`) und die
+Frontends laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` erzwingt.
 Die Oberfläche des Studios steckt nicht in der EXE (liegt unter `tools/k3c-studio/frontend/dist/`), eine Änderung daran braucht keinen EXE-Neubau.
 
 Der Go-Server beobachtet `data/` und `public/` immer (auch produktiv, `engine/watch`, Entscheidung 004): Nach einer
@@ -101,7 +104,7 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   Radix Themes: `lib/`, `atoms/`, `molecules/`, `organisms/`, `templates/` (`@webkit/<ebene>`); Seiten sind die Feature-Ordner der App.
   Verbindlich für jedes Wails-Programm: Radix nur über `@webkit`, rohe Controls nur in `atoms/`, Importe nur nach unten
   (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme, geprüft von `tests/atomicDesign.test.ts`).
-  CLIs: `tools/atlas`, `tools/buildings` (`task gen:gebaeude`), `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`). `tools/watch` – `k3c-watch`, der Watcher der Tasks `k3c-server:dev` und `k3c-starter:dev`.
+  CLIs: `tools/atlas`, `tools/buildings` (`task gen:gebaeude`), `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
 - `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.
 - `src/online/` – Client des Go-Servers (`clientConnection.ts`, Version in `clientProtocol.ts`): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
 - `src/input/` – `PlayerInput`-Abstraktion (Tastatur, Gamepad, Touch-Overlay `touchInput.ts`, per `?touch=1` erzwingbar). Spiel-Code fragt Aktionen ab, nie konkrete Tasten.

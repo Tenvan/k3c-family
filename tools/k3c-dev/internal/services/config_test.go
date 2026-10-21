@@ -18,7 +18,7 @@ func writeConfig(t *testing.T, content string) string {
 
 func TestLoadServicesJSONImModul(t *testing.T) {
 	list, err := Load("../../services.json")
-	if err != nil || len(list) != 2 || list[0].Name != "Vite" || list[1].Name != "Spielserver" {
+	if err != nil || len(list) != 3 || list[0].Name != "Vite" || list[1].Name != "Spielserver" {
 		t.Fatalf("services.json: %+v, %v", list, err)
 	}
 	if !strings.Contains(strings.Join(list[0].Command, " "), "--strictPort") || !list[0].AutoRestart || list[1].PortEnv != "K3C_HTTP_PORT" {
@@ -76,5 +76,17 @@ func TestShiftVerschiebtPortsUndGibtSieAllenMit(t *testing.T) {
 	}
 	if got[0].Env["X"] != "1" || list[0].Port != 5173 || len(list[0].Env) != 1 {
 		t.Errorf("eigene Env verloren oder Original geändert: %v / %+v", got[0].Env, list[0])
+	}
+}
+
+// Das Asset-Studio startet sich im Dev-Betrieb selbst neu (engine/devrun): kein Watch, Vite-Port je Worktree verschoben.
+func TestLoadServicesJSONAssetStudio(t *testing.T) {
+	list, err := Load("../../services.json")
+	if err != nil || len(list) < 3 {
+		t.Fatalf("services.json: %v", err)
+	}
+	st := list[2]
+	if st.Name != "Asset-Studio" || strings.Join(st.Command, " ") != "task k3c-studio:dev" || st.PortEnv != "K3C_STUDIO_UI_PORT" || st.Watch != nil {
+		t.Errorf("Asset-Studio: %+v", st)
 	}
 }

@@ -2,7 +2,10 @@ module k3c/tools/k3c-starter
 
 go 1.27.0
 
-require github.com/wailsapp/wails/v2 v2.16.0
+require (
+	github.com/wailsapp/wails/v2 v2.16.0
+	k3c v0.0.0
+)
 
 require (
 	git.sr.ht/~jackmordaunt/go-toast/v2 v2.0.3 // indirect
@@ -31,6 +34,9 @@ require (
 	github.com/wailsapp/mimetype v1.4.1 // indirect
 	golang.org/x/crypto v0.53.0 // indirect
 	golang.org/x/net v0.56.0 // indirect
-	golang.org/x/sys v0.46.0 // indirect
+	golang.org/x/sys v0.47.0 // indirect
 	golang.org/x/text v0.39.0 // indirect
 )
+
+// -dev nutzt engine/devrun des Hauptmoduls (Dev-Lauf: Neubau und Neustart bei Go-Änderungen), wie k3c-dev.
+replace k3c => ../..

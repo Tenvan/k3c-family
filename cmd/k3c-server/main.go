@@ -6,7 +6,7 @@
 // (schützt /api/status; leer = Diagnose aus), K3C_LOG_LEVEL (Konsole: debug, info, warn, error; Standard info; die JSON-Dateien schreiben immer ab debug),
 // K3C_LOG_DIR (JSON-Log nach <Ordner>/k3c-server.jsonl, Browser-Meldungen nach k3c-client.jsonl; Standard: ein vorhandener
 // Ordner logs/, sonst nur Text auf stderr), K3C_DEV (Dev-Mode: leer oder 1 = an, 0 = aus; Grad dev wählbar und Standard). `k3c-server -health` fragt /api/health des laufenden Servers ab
-// (Docker-HEALTHCHECK, das Image hat kein curl). Der Prozess startet sich selbst als Kind und startet es neu, sobald
+// (Docker-HEALTHCHECK, das Image hat kein curl); `k3c-server -dev` ist der Dev-Lauf mit Neubau bei Go-Änderungen (dev.go). Der Prozess startet sich selbst als Kind und startet es neu, sobald
 // sich beobachtete Dateien ändern (supervise.go, restart.go, B-507).
 package main
 
@@ -87,12 +87,15 @@ func loadConfig() config {
 func main() {
 	health := flag.Bool("health", false, "fragt /api/health des laufenden Servers ab (Exit 0 = gesund)")
 	check := flag.Bool("check-data", false, "prüft Daten (K3C_DATA_DIR) und Welten wie beim Start (Exit 0 = gültig)")
+	dev := flag.Bool("dev", false, "Dev-Lauf: baut den Server bei jeder Änderung an Go-Code neu und startet ihn neu (dev.go)")
 	flag.Parse()
 	switch {
 	case *health:
 		os.Exit(checkHealth(loadConfig().httpPort))
 	case *check:
 		os.Exit(checkData(loadConfig(), os.Stderr))
+	case *dev:
+		os.Exit(runDev())
 	case os.Getenv(childEnv) == "": // Supervisor
 		dir, log := dataDir(), consoleLogger()
 		sigs := make(chan os.Signal, 2) // für die ganze Laufzeit: kein Signal beendet den Supervisor vor dem Kind
@@ -194,13 +197,13 @@ func newRooms(cfg config, log *slog.Logger, saves *store.Saves, reports *store.R
 func listen(cfg config, handler http.Handler, log *slog.Logger) ([]*http.Server, <-chan error) {
 	servers := []*http.Server{newServer(":"+cfg.httpPort, handler)}
 	errs := make(chan error, 2)
-	go func() { errs <- servers[0].ListenAndServe() }()
+	go func() { errs <- serve(servers[0], "", "") }()
 	logAddresses(log, "http", cfg.httpPort)
 	key, cert := filepath.Join(cfg.certs, "key.pem"), filepath.Join(cfg.certs, "cert.pem")
 	if exists(key) && exists(cert) {
 		tls := newServer(":"+cfg.httpsPort, handler)
 		servers = append(servers, tls)
-		go func() { errs <- tls.ListenAndServeTLS(cert, key) }()
+		go func() { errs <- serve(tls, cert, key) }()
 		logAddresses(log, "https", cfg.httpsPort)
 	} else {
 		log.Info("🔒 kein HTTPS: " + key + " und " + cert + " fehlen (nur nötig, falls die Xbox HTTPS verlangt)")
@@ -217,6 +220,18 @@ func waitConns(conns *sync.WaitGroup, limit time.Duration) {
 	case <-done:
 	case <-time.After(limit):
 	}
+}
+
+// serve bindet s.Addr (listenTCP) und bedient ihn; mit cert und key per HTTPS.
+func serve(s *http.Server, cert, key string) error {
+	ln, err := listenTCP(s.Addr)
+	if err != nil {
+		return err
+	}
+	if cert != "" {
+		return s.ServeTLS(ln, cert, key)
+	}
+	return s.Serve(ln)
 }
 
 func newServer(addr string, h http.Handler) *http.Server {

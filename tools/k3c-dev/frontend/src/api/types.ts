@@ -1,5 +1,5 @@
 // Backend-Vertrag der Oberfläche (B-064 › Backend-Vertrag). Go-Seite: tools/k3c-dev/app.go.
-// Wails-Laufzeit → wails.ts, ohne sie → mock.ts; welche gilt, entscheidet index.ts.
+// Wails-Laufzeit → wails.ts, ohne sie → http.ts (k3c-dev -headless/-dev), im Test und mit ?mock=1 → mock.ts; welche gilt, entscheidet index.ts.
 
 /** Zustand des MCP-Servers (Go: MCPState). */
 export interface McpState {

@@ -1,14 +1,56 @@
 # Namespace `k3c-dev`: die Workbench (Wails-Fenster, MCP-Server, React-Oberfläche in frontend/).
-# `dev` ist der Watcher: `wails dev` startet Vite mit Hot Reload (Oberfläche ohne Neustart) und baut das Fenster bei jeder
-# Go-Änderung neu (in tools/k3c-dev und, laut wails.json `reloaddirs`, in engine/, data/ und tools/assetkit).
+# `dev` ist der Client-Server-Betrieb: `k3c-dev -dev` baut `-headless` als Kind (MCP-Server und Oberflächen-API ohne
+# Fenster) und startet es bei jeder Go-Änderung in tools/k3c-dev, tools/assetkit und engine/ neu (engine/devrun); Vite
+# zeigt die Oberfläche mit Hot Reload im Browser (http://localhost:5191) und leitet /api an das Kind weiter.
+# Der MCP-Port im dev ist DEV_MCP_PORT (5190), damit die laufende Workbench (5180) unberührt bleibt.
+# `window` ist der alte Weg im Fenster (`wails dev`).
 version: '3'
 
 vars:
   DEV: '{{.ROOT_DIR}}/tools/k3c-dev'
+  DEV_MCP_PORT: '5190'
+  DEV_UI_API_PORT: '8191'
 
 tasks:
   dev:
-    desc: "Workbench als Fenster im Entwicklungsmodus (wails dev): Hot Reload der Oberfläche, Neubau bei Go-Änderungen"
+    desc: "Workbench im Client-Server-Betrieb: Backend neu bei Go-Änderungen, Oberfläche mit Hot Reload unter http://localhost:5191"
+    deps: [dev:server, dev:ui]
+
+  dev:server:
+    desc: "Backend ohne Fenster (k3c-dev -dev): MCP auf DEV_MCP_PORT, Oberflächen-API auf DEV_UI_API_PORT, Neustart bei Go-Änderungen"
+    deps: [':tmp', dist]
+    dir: '{{.DEV}}'
+    env:
+      K3C_DEV_PORT: '{{.DEV_MCP_PORT}}'
+      K3C_DEV_UI_API_PORT: '{{.DEV_UI_API_PORT}}'
+    # Bewusst `go build` (Konsolen-Subsystem), nie `wails build` (-H windowsgui): devrun beendet das Kind sauber per
+    # CTRL_BREAK über die Konsole, aus einer GUI-EXE scheitert das und das Kind würde hart beendet. Das Kind baut devrun
+    # ebenso mit `go build`.
+    cmds:
+      - go build -o build/bin/k3c-dev-dev{{exeExt}} .
+      - build/bin/k3c-dev-dev{{exeExt}} -dev
+
+  dist:
+    internal: true
+    desc: Stellt nur sicher, dass frontend/dist für go:embed existiert (Platzhalter; im dev liefert Vite die Oberfläche, Typfehler blockieren das Backend nicht)
+    dir: '{{.DEV}}/frontend'
+    status:
+      - test -f dist/index.html
+    cmds:
+      - mkdir -p dist
+      - echo '<!doctype html><title>K3C Workbench</title>' > dist/index.html
+      - touch dist/.placeholder
+
+  dev:ui:
+    desc: Oberfläche mit Vite gegen das Backend von dev:server (Proxy /api)
+    dir: '{{.DEV}}/frontend'
+    env:
+      K3C_DEV_API: 'http://127.0.0.1:{{.DEV_UI_API_PORT}}'
+    cmds:
+      - npx vite
+
+  window:
+    desc: "Workbench als Fenster im Entwicklungsmodus (wails dev): Hot Reload der Oberfläche, Neubau bei Go-Änderungen in tools/k3c-dev"
     deps: [':tmp']
     dir: '{{.DEV}}'
     preconditions:
@@ -28,6 +70,8 @@ tasks:
     cmds:
       - npx tsc --noEmit
       - npx vite build
+    status:
+      - test ! -f dist/.placeholder # Platzhalter aus dist: immer echt bauen, nie in die EXE
     sources:
       - src/**/*
       - index.html

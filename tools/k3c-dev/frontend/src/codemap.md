@@ -11,7 +11,7 @@ React-Single-Page-App von k3c-dev: Shell mit vier Reitern (Dienste & Logs, Tasks
 - `Header.tsx`: `PAGES = dienste|tasks|planung|mcp`, `LABELS` und `HeaderRight` (rechte Leiste von AppFrame: `StudioLink`, MCP-Badge, `Mock`-Badge, Dark-Schalter `SwitchField`).
 - `StudioLink.tsx`: Knopf „Asset-Studio öffnen“ -> `backend.studioOpen()` (startet die EXE `bin/k3c-studio`); zeigt den Hinweis aus Go (z. B. „bin/k3c-studio fehlt“) als Badge, bis der nächste Versuch gelingt.
 - Unterordner (je mit eigener codemap):
-  - `api/` – Backend-Vertrag (`types.ts`), Wails-Adapter und Mock.
+  - `api/` – Backend-Vertrag (`types.ts`), Wails-, HTTP-Adapter und Mock.
   - `lib/` – Formatierung, Prefs (Präfix `k3c-dev.`, `prefsStore` für `useSplit`), Markdown-Parser, `useNow`; Gemeinsames in `tools/webkit` (`@webkit/…`).
   - `ui/` – `molecules/MarkdownView`, `organisms/Notices`; Radix und die Atome (`StatusBadge`, `ActionButton`, `Splitter` …) nur über `@webkit/atoms|molecules|organisms|templates`.
   - `services/`, `tasks/`, `planning/`, `mcp/` – je eine Seite; `logs/` – Logs-Bereich der Dienste-Seite, Konsole auch von `tasks/` genutzt.
@@ -20,7 +20,7 @@ React-Single-Page-App von k3c-dev: Shell mit vier Reitern (Dienste & Logs, Tasks
 
 ## Flow
 
-1. `main.tsx` -> `App`; `backend` (aus `api/index.ts`) wird beim Import gewählt: Wails oder Mock.
+1. `main.tsx` -> `App`; `backend` (aus `api/index.ts`) wird beim Import gewählt: Wails, HTTP (`k3c-dev -dev`) oder Mock (Test, `?mock=1`).
 2. `App` abonniert `mcp:state`, lädt `backend.info()` und reicht Zustand an `HeaderRight`.
 3. Reiterwechsel (`AppFrame` › `tabs.onChange`) speichert die Seite; die jeweilige Seite lädt ihre Daten selbst über `backend` und Events.
 4. Ein Agent-Hinweis (`ui:notify`) erscheint unabhängig vom Reiter als Toast.
@@ -28,5 +28,5 @@ React-Single-Page-App von k3c-dev: Shell mit vier Reitern (Dienste & Logs, Tasks
 ## Integration
 
 - Abhängigkeiten: `react`, `react-dom`, `tools/webkit` (Radix Themes nur darüber, `main.tsx` lädt `@radix-ui/themes/styles.css`); Backend ausschließlich über `api/`.
-- Laufzeit: Wails-Fenster (Go-App `tools/k3c-dev/app.go`, Bindings u. a. `app_studio.go`) oder Browser mit Mock (`npx vite`).
+- Laufzeit: Wails-Fenster (Go-App `tools/k3c-dev/app.go`, Bindings u. a. `app_studio.go`) oder Browser über `task k3c-dev:dev` (HTTP zu `k3c-dev -dev`), mit `?mock=1` gegen den Mock.
 - Tests: eigenes Vitest (`../vitest.config.ts`, `task check:dev`), z. B. `StudioLink.test.tsx`.
