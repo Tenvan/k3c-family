@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -193,5 +194,146 @@ func TestChatEndetMitServer(t *testing.T) {
 		}
 	case <-time.After(10 * time.Second):
 		t.Fatal("Antwort lief nach dem Ende des Servers weiter")
+	}
+}
+
+// Modell, Denkstufe und Anbieter gehen an die CLI und bleiben im Verlauf und in der Liste; Unbekanntes ist 400.
+func TestChatEinstellungen(t *testing.T) {
+	cli, argsFile := fakeCLI(t, "echo", 10*time.Second)
+	app := chatApp(t, t.TempDir(), cli)
+	h := app.Handler(false)
+	body := `{"chat":"wahl","text":"Hallo","provider":"claude-cli","model":"sonnet","effort":"high"}`
+	rec, _ := call(t, h, "POST", Prefix+"chat", body, "127.0.0.1:5000", true)
+	if end, _ := chatDoneOf(t, rec.Body.String()); end.Status != chatDone {
+		t.Fatalf("Ende: %+v", end)
+	}
+	args, _ := fakeRecord(t, argsFile)
+	if !slices.Equal(args, chatArgs(chatOptions{Model: "sonnet", Effort: "high"})) {
+		t.Errorf("Argumente %v", args)
+	}
+	_, a := call(t, h, "POST", Prefix+"rpc/ChatList", `[]`, "127.0.0.1:5000", true)
+	var list []ChatSummary
+	if err := json.Unmarshal(a.Result, &list); err != nil || len(list) != 1 ||
+		list[0].Provider != "claude-cli" || list[0].Model != "sonnet" || list[0].Effort != "high" {
+		t.Fatalf("Liste %s %v", a.Result, err)
+	}
+	// ohne Angaben: Standard, gespeichert als leer
+	rec, _ = call(t, h, "POST", Prefix+"chat", `{"chat":"wahl","text":"Nochmal"}`, "127.0.0.1:5000", true)
+	chatDoneOf(t, rec.Body.String())
+	if log, err := app.chat.store.load("wahl"); err != nil || log.Provider != "" || log.Model != "" || log.Effort != "" {
+		t.Errorf("Einstellungen nach Standard: %+v %v", log, err)
+	}
+	if args, _ = fakeRecord(t, argsFile); slices.Contains(args, "--model") || slices.Contains(args, "--effort") {
+		t.Errorf("Standard ohne Argumente: %v", args)
+	}
+}
+
+func TestChatEinstellungenUngueltig(t *testing.T) {
+	cli, argsFile := fakeCLI(t, "echo", 10*time.Second)
+	h := chatApp(t, t.TempDir(), cli).Handler(false)
+	for body, want := range map[string]string{
+		`{"text":"a","provider":"openai"}`:      "unbekannter Provider",
+		`{"text":"a","model":"gpt-5"}`:          "unbekanntes Modell",
+		`{"text":"a","model":"--help"}`:         "unbekanntes Modell",
+		`{"text":"a","effort":"ultra"}`:         "unbekannte Denkstufe",
+		`{"text":"a","effort":"high extra"}`:    "unbekannte Denkstufe",
+		`{"text":"a","model":"Opus"}`:           "unbekanntes Modell",
+		`{"text":"a","provider":"claude-cli "}`: "unbekannter Provider",
+	} {
+		rec, a := call(t, h, "POST", Prefix+"chat", body, "127.0.0.1:5000", true)
+		if rec.Code != http.StatusBadRequest || !strings.Contains(a.Error, want) {
+			t.Errorf("%s: %d %q", body, rec.Code, a.Error)
+		}
+	}
+	if _, err := os.Stat(argsFile); !os.IsNotExist(err) {
+		t.Error("CLI wurde mit ungültiger Wahl gestartet")
+	}
+}
+
+func TestChatOptionsListe(t *testing.T) {
+	cli, _ := fakeCLI(t, "echo", time.Second)
+	h := chatApp(t, t.TempDir(), cli).Handler(false)
+	_, a := call(t, h, "POST", Prefix+"rpc/ChatOptions", `[]`, "127.0.0.1:5000", true)
+	var v ChatOptionsView
+	if err := json.Unmarshal(a.Result, &v); err != nil {
+		t.Fatalf("%s %v", a.Result, err)
+	}
+	ids := func(l []ChatChoice) string {
+		var s []string
+		for _, c := range l {
+			s = append(s, c.ID+"="+c.Label)
+		}
+		return strings.Join(s, ",")
+	}
+	if got := ids(v.Providers); got != "=Standard,claude-cli=Claude Code CLI" {
+		t.Errorf("Provider: %s", got)
+	}
+	if got := ids(v.Models); got != "=Standard,fable=Fable,opus=Opus,sonnet=Sonnet,haiku=Haiku" {
+		t.Errorf("Modelle: %s", got)
+	}
+	if got := ids(v.Efforts); got != "=Standard,low=Niedrig,medium=Mittel,high=Hoch,xhigh=Sehr hoch,max=Maximum" {
+		t.Errorf("Denkstufen: %s", got)
+	}
+}
+
+func TestChatDelete(t *testing.T) {
+	cli, _ := fakeCLI(t, "hang", time.Minute)
+	app := chatApp(t, t.TempDir(), cli)
+	h := app.Handler(false)
+	if err := app.chat.store.save(ChatLog{ID: "alt", Messages: []ChatMessage{{Role: chatUser, Text: "x"}}}); err != nil {
+		t.Fatal(err)
+	}
+	rpc := func(id string) (int, string) {
+		rec, a := call(t, h, "POST", Prefix+"rpc/ChatDelete", `["`+id+`"]`, "127.0.0.1:5000", true)
+		return rec.Code, a.Error
+	}
+	if code, e := rpc("alt"); code != http.StatusOK || e != "" {
+		t.Fatalf("Löschen: %d %q", code, e)
+	}
+	if _, err := os.Stat(filepath.Join(app.chat.store.dir, "alt.json")); !os.IsNotExist(err) {
+		t.Error("Datei blieb liegen")
+	}
+	if code, e := rpc("alt"); code != http.StatusUnprocessableEntity || !strings.Contains(e, "kein Chat mit der id alt") {
+		t.Errorf("unbekannte id: %d %q", code, e)
+	}
+	// eine Nachricht an den gelöschten Chat legt ihn nicht neu an
+	if rec, _ := call(t, h, "POST", Prefix+"chat", `{"chat":"alt","text":"Spät"}`, "127.0.0.1:5000", true); rec.Code != http.StatusGone {
+		t.Errorf("Nachricht an gelöschten Chat: %d", rec.Code)
+	}
+	if _, err := os.Stat(filepath.Join(app.chat.store.dir, "alt.json")); !os.IsNotExist(err) {
+		t.Error("gelöschter Chat wurde neu angelegt")
+	}
+	if code, e := rpc("../x"); code != http.StatusUnprocessableEntity || !strings.Contains(e, "ungültige Chat-id") {
+		t.Errorf("Pfad als id: %d %q", code, e)
+	}
+	deleteWhileRunning(t, app, h, rpc)
+	if code, e := rpc("laeuft"); code != http.StatusOK || e != "" {
+		t.Errorf("nach der Antwort: %d %q", code, e)
+	}
+}
+
+// deleteWhileRunning lässt eine Antwort laufen: Löschen wird abgelehnt, danach (nach dem Abbruch) ist es möglich.
+func deleteWhileRunning(t *testing.T, app *App, h http.Handler, rpc func(string) (int, string)) {
+	t.Helper()
+	done := make(chan string) // die Goroutine meldet nur über den Kanal, geprüft wird im Test
+	go func() {
+		rec, _ := call(t, h, "POST", Prefix+"chat", `{"chat":"laeuft","text":"Hallo"}`, "127.0.0.1:5000", true)
+		done <- rec.Body.String()
+	}()
+	deadline := time.Now().Add(10 * time.Second)
+	for !app.chat.isRunning("laeuft") && time.Now().Before(deadline) {
+		time.Sleep(10 * time.Millisecond)
+	}
+	if code, e := rpc("laeuft"); code != http.StatusUnprocessableEntity || !strings.Contains(e, "läuft noch eine Antwort") {
+		t.Errorf("während der Antwort: %d %q", code, e)
+	}
+	app.chat.cancel("laeuft")
+	select {
+	case body := <-done:
+		if end, _ := chatDoneOf(t, body); end.Status != chatAborted {
+			t.Errorf("Ende: %+v", end)
+		}
+	case <-time.After(10 * time.Second):
+		t.Fatal("Antwort lief nach dem Abbruch weiter")
 	}
 }

@@ -1,69 +1,31 @@
-import { AssistantRuntimeProvider, ComposerPrimitive, ThreadPrimitive, useLocalRuntime, type ThreadMessage } from '@assistant-ui/react';
 import { Button } from '@webkit/atoms';
-import { useEffect, useMemo, useState } from 'react';
-import { backend } from '../api';
-import { createChatAdapter } from './chatAdapter';
-import { loadDraft, registerChatFill, setChatOpen, useCanLoadDraft, useChatOpen } from './chatBridge';
-
-const WHO = { user: 'Ich', assistant: 'Claude', system: 'System' } as const;
-
-function messageText(m: ThreadMessage): string {
-  return m.content.map((p) => (p.type === 'text' ? p.text : '')).join('');
-}
-
-/** Ausgang einer Antwort für die Anzeige: abgebrochen und Fehler stehen an der Antwort (WZ19, Fehlerfälle). */
-function endNote(m: ThreadMessage): string {
-  if (m.role !== 'assistant' || m.status.type !== 'incomplete') return '';
-  if (m.status.reason === 'cancelled') return 'Abgebrochen';
-  return `Fehler: ${String(m.status.error ?? 'Unbekannter Fehler')}`;
-}
-
-function Message({ message }: { message: ThreadMessage }) {
-  const note = endNote(message);
-  const canLoad = useCanLoadDraft() && message.role === 'assistant' && message.status.type === 'complete';
-  return (
-    <div className="chat-msg" data-role={message.role} data-status={message.role === 'assistant' ? message.status.type : undefined}>
-      <div className="chat-who">{WHO[message.role]}</div>
-      <div className="chat-text">{messageText(message)}</div>
-      {note && <div className="chat-note" role="status">{note}</div>}
-      {canLoad && <Button size="1" variant="soft" onClick={() => void loadDraft(messageText(message))}>Als Entwurf laden</Button>}
-    </div>
-  );
-}
+import { setChatOpen, useChatOpen } from './chatBridge';
+import { ChatControls } from './ChatControls';
+import { ChatSplitter, useChatWidth } from './ChatSplitter';
+import { ChatThread } from './ChatThread';
+import { useChatChoices } from './useChatChoices';
+import { useChatSession } from './useChatSession';
 
 /** Der Chat rechts im Studio (B-488, WZ19.2): assistant-ui mit der Claude Code CLI als Modell, auf allen Seiten da,
- *  ein- und ausblendbar. Bleibt auch ausgeblendet eingehängt, damit Verlauf und Entwurf stehen bleiben. */
+ *  ein- und ausblendbar, durch eine Trennlinie in der Breite einstellbar. Kopf: Neuer Chat, gespeicherte Chats,
+ *  Anbieter/Modell/Denkstufe. Bleibt auch ausgeblendet eingehängt, damit Verlauf und Entwurf stehen bleiben. */
 export function ChatPanel() {
   const open = useChatOpen();
-  const [notice, setNotice] = useState('');
-  const adapter = useMemo(() => createChatAdapter((chat, text, signal) => backend.chatStream(chat, text, signal), setNotice), []);
-  const runtime = useLocalRuntime(adapter);
-  useEffect(() => registerChatFill((text) => runtime.thread.composer.setText(text)), [runtime]);
+  const [width, setWidth, resetWidth] = useChatWidth();
+  const choices = useChatChoices();
+  const { chats, session, setSession, error, running, setRunning, refresh, onNew, onSelect, onDelete } = useChatSession(choices);
+
+  const key = session.key;
   return (
-    <aside className="chat" data-testid="chat-panel" hidden={!open} aria-label="Chat">
-      <AssistantRuntimeProvider runtime={runtime}>
-        <ThreadPrimitive.Root className="chat-thread">
-          <div className="chat-head">
-            <span>Chat</span>
-            <Button size="1" variant="ghost" onClick={() => setChatOpen(false)}>Ausblenden</Button>
-          </div>
-          <ThreadPrimitive.Viewport className="chat-viewport">
-            <ThreadPrimitive.Empty><p className="chat-empty">Schreibe eine Nachricht an Claude.</p></ThreadPrimitive.Empty>
-            <ThreadPrimitive.Messages>{({ message }) => <Message message={message} />}</ThreadPrimitive.Messages>
-          </ThreadPrimitive.Viewport>
-          {notice && <div className="chat-note" role="status">{notice}</div>}
-          <ComposerPrimitive.Root className="chat-composer">
-            <ComposerPrimitive.Input className="chat-input" placeholder="Nachricht an Claude" rows={3} />
-            <ThreadPrimitive.If running={false}>
-              <ComposerPrimitive.Send asChild><Button size="1">Senden</Button></ComposerPrimitive.Send>
-            </ThreadPrimitive.If>
-            <ThreadPrimitive.If running>
-              <ComposerPrimitive.Cancel asChild><Button size="1" color="red">Abbrechen</Button></ComposerPrimitive.Cancel>
-            </ThreadPrimitive.If>
-          </ComposerPrimitive.Root>
-        </ThreadPrimitive.Root>
-      </AssistantRuntimeProvider>
-    </aside>
+    <>
+      {open && <ChatSplitter width={width} onChange={setWidth} onReset={resetWidth} />}
+      <aside className="chat" data-testid="chat-panel" hidden={!open} aria-label="Chat" style={{ flexBasis: width }}>
+        <ChatControls chats={chats} chat={session.chat} choices={choices} running={running} error={error}
+          onNew={onNew} onSelect={onSelect} onDelete={onDelete} onHide={() => setChatOpen(false)} />
+        <ChatThread key={key} chat={session.chat} initial={session.messages} current={choices.current} onEnd={refresh} onRunning={setRunning}
+          onChat={(id) => setSession((s) => (s.key === key ? { ...s, chat: id } : s))} />
+      </aside>
+    </>
   );
 }
 

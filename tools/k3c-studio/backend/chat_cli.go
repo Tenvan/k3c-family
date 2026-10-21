@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -31,14 +32,38 @@ const (
 	chatFailed  = "fehler"
 )
 
-// chatArgs ist der Aufruf (belegt mit claude --help, Version 2.1.296): -p nicht-interaktiv mit dem Prompt über stdin,
+// chatArgs ist der Aufruf (belegt mit claude --help, Version 2.1.304; --model: Alias fable, opus, sonnet, haiku; --effort: low, medium, high,
+// xhigh, max): -p nicht-interaktiv mit dem Prompt über stdin,
 // stream-json mit Teil-Nachrichten für die fortlaufende Antwort (--verbose verlangt die CLI dazu), --tools "" ohne
 // Werkzeuge, dontAsk und keine Rückfragen (alles nicht Erlaubte wird abgelehnt), keine MCP-Server, --safe-mode ohne
-// CLAUDE.md, Hooks, Plugins und Skills, kein gespeicherter Verlauf der CLI.
-func chatArgs() []string {
-	return []string{"-p", "--output-format", "stream-json", "--verbose", "--include-partial-messages",
+// CLAUDE.md, Hooks, Plugins und Skills, kein gespeicherter Verlauf der CLI. Modell und Denkstufe kommen nur dazu,
+// wenn gewählt (--model, --effort); die Sicherheits-Argumente bleiben gleich.
+func chatArgs(o chatOptions) []string {
+	return append([]string{"-p", "--output-format", "stream-json", "--verbose", "--include-partial-messages",
 		"--tools", "", "--permission-mode", "dontAsk", "--permission-prompts", "none",
-		"--strict-mcp-config", "--safe-mode", "--no-session-persistence"}
+		"--strict-mcp-config", "--safe-mode", "--no-session-persistence"}, o.args()...)
+}
+
+// chatKeepEnv sind Einstellungen von 🧑 mit dem Präfix CLAUDE_CODE_, die an die CLI durchgehen (Anmeldung, Anbieter,
+// Pfad der Git Bash, Ausgabegrenze); sie gehören nicht zu einer äußeren Sitzung.
+var chatKeepEnv = []string{"CLAUDE_CODE_GIT_BASH_PATH", "CLAUDE_CODE_USE_BEDROCK", "CLAUDE_CODE_USE_VERTEX",
+	"CLAUDE_CODE_USE_FOUNDRY", "CLAUDE_CODE_MAX_OUTPUT_TOKENS", "CLAUDE_CODE_OAUTH_TOKEN"}
+
+// chatEnviron ist die Umgebung der CLI ohne geerbte Einstellungen einer äußeren Claude-Code-Sitzung (CLAUDE_CODE_*
+// außer chatKeepEnv, CLAUDECODE, ANTHROPIC_BASE_URL): sonst fragt die CLI nicht mit der Anmeldung von 🧑, sondern mit
+// der der Sitzung (B-515).
+func chatEnviron(env []string) []string {
+	out := make([]string, 0, len(env))
+	for _, kv := range env {
+		name, _, _ := strings.Cut(kv, "=")
+		name = strings.ToUpper(name) // Windows unterscheidet die Schreibweise nicht
+		if (strings.HasPrefix(name, "CLAUDE_CODE_") && !slices.Contains(chatKeepEnv, name)) || name == "CLAUDECODE" ||
+			name == "ANTHROPIC_BASE_URL" {
+			continue
+		}
+		out = append(out, kv)
+	}
+	return out
 }
 
 // chatCLI startet die CLI; die Felder sind die Naht für den Test-Ersatz.
@@ -61,8 +86,8 @@ type chatOutcome struct {
 	Error  string
 }
 
-// run sendet prompt an die CLI und meldet jedes Stück der Antwort an emit. Fehler enden als Outcome, nie als Panik.
-func (c chatCLI) run(ctx context.Context, prompt string, emit func(string)) chatOutcome {
+// run sendet prompt mit der Wahl opts an die CLI und meldet jedes Stück der Antwort an emit. Fehler enden als Outcome, nie als Panik.
+func (c chatCLI) run(ctx context.Context, prompt string, opts chatOptions, emit func(string)) chatOutcome {
 	log := c.logger()
 	path, err := exec.LookPath(c.program)
 	if err != nil {
@@ -77,16 +102,17 @@ func (c chatCLI) run(ctx context.Context, prompt string, emit func(string)) chat
 	defer cancel()
 	stream := &chatStream{emit: emit}
 	var stderr limitedBuffer
-	cmd := exec.CommandContext(runCtx, path, chatArgs()...)
+	cmd := exec.CommandContext(runCtx, path, chatArgs(opts)...)
 	cmd.Dir = c.workDir
-	cmd.Env = append(os.Environ(), c.env...)
+	cmd.Env = append(chatEnviron(os.Environ()), c.env...)
 	cmd.Stdin = strings.NewReader(prompt)
 	lines := &lineWriter{line: stream.handle}
 	cmd.Stdout = lines
 	cmd.Stderr = &stderr
 	cmd.WaitDelay = 2 * time.Second // hält ein Enkelprozess die Ausgabe offen, endet Wait trotzdem
 	start := time.Now()
-	log.Info("🚀 Chat: Claude Code gestartet", "ns", "main", "zeichen", len(prompt))
+	log.Info("🚀 Chat: Claude Code gestartet", "ns", "main", "zeichen", len(prompt), "modell", opts.Model,
+		"denkstufe", opts.Effort)
 	werr := cmd.Run()
 	lines.flush()
 	out := c.outcome(ctx, runCtx, stream, werr, stderr.String())

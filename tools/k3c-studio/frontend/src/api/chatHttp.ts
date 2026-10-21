@@ -1,4 +1,4 @@
-import type { ChatEvent, ChatStatus, ChatStream } from './chatTypes';
+import { ChatGoneError, type ChatEvent, type ChatStatus, type ChatStream } from './chatTypes';
 
 const URL = '/api/studio/chat';
 const HEADERS = { 'Content-Type': 'application/json', 'X-K3C-Studio': '1' };
@@ -25,8 +25,9 @@ async function refusal(res: Response): Promise<string> {
 }
 
 /** POST mit Antwort als Strom; das Schließen der Verbindung (signal) bricht die CLI auf dem Server ab. */
-export const chatStreamHttp: ChatStream = async function* (chat, text, signal) {
-  const res = await fetch(URL, { method: 'POST', headers: HEADERS, body: JSON.stringify({ chat, text }), signal });
+export const chatStreamHttp: ChatStream = async function* (chat, text, options, signal) {
+  const res = await fetch(URL, { method: 'POST', headers: HEADERS, body: JSON.stringify({ chat, text, ...options }), signal });
+  if (res.status === 410) throw new ChatGoneError(await refusal(res));
   if (!res.ok || !res.body) throw new Error(await refusal(res));
   const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
   let rest = '';

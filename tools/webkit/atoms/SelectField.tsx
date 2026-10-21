@@ -21,7 +21,8 @@ interface Props<T extends string> extends TriggerProps {
 // Ohne solchen Eintrag bleibt "" leer, dann zeigt der Auslöser seinen `placeholder`.
 const EMPTY = '\u0000leer';
 
-/** Auswahlliste aus Einträgen (Radix Select) statt `<select>`; `aria-label`, `placeholder` und `className` gehen an den Auslöser. */
+/** Auswahlliste aus Einträgen (Radix Select) statt `<select>`; `aria-label`, `placeholder` und `className` gehen an den Auslöser.
+ *  Auslöser und Einträge tragen ihren Wert als `data-value` (Tests wählen danach, testing/select.ts). */
 export function SelectField<T extends string>({ value, options, onChange, disabled, size = '2', ...trigger }: Props<T>) {
   const hasEmpty = options.some((o) => o.value === '');
   const toRadix = (v: string) => (v === '' && hasEmpty ? EMPTY : v);
@@ -31,10 +32,10 @@ export function SelectField<T extends string>({ value, options, onChange, disabl
   };
   return (
     <Select.Root value={toRadix(value)} onValueChange={pick} disabled={disabled} size={size}>
-      <Select.Trigger {...trigger} />
+      <Select.Trigger data-value={value} {...trigger} />
       <Select.Content position="popper">
         {options.map((o) => (
-          <Select.Item key={o.value} value={toRadix(o.value)} disabled={o.disabled}>
+          <Select.Item key={o.value} value={toRadix(o.value)} disabled={o.disabled} data-value={o.value}>
             {o.label}
           </Select.Item>
         ))}

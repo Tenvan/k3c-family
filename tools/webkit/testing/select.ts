@@ -22,3 +22,16 @@ export async function pickOption(root: ParentNode, label: string, text: string):
 
 /** Angezeigter Wert der Auswahl (Text des gewählten Eintrags). */
 export const selectedText = (root: ParentNode, label: string): string => selectTrigger(root, label).textContent ?? '';
+
+/** Wert der Auswahl (`data-value` am Auslöser von atoms/SelectField). */
+export const selectedValue = (root: ParentNode, label: string): string => selectTrigger(root, label).dataset.value ?? '';
+
+/** Öffnet die Auswahl und klickt den Eintrag mit diesem Wert (`data-value` am Eintrag, atoms/SelectField). */
+export async function pickValue(root: ParentNode, label: string, value: string): Promise<void> {
+  const trigger = selectTrigger(root, label);
+  await act(async () => trigger.click());
+  const items = [...document.querySelectorAll<HTMLElement>('[role="option"]')];
+  const item = items.find((o) => o.dataset.value === value);
+  if (!item) throw new Error(`Wert „${value}“ fehlt in „${label}“ (da: ${items.map((o) => o.dataset.value).join(', ')})`);
+  await act(async () => item.click());
+}

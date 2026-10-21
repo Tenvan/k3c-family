@@ -38,9 +38,13 @@ type ChatMessage struct {
 	Time   time.Time `json:"time"`
 }
 
-// ChatLog ist ein Chat mit allen Nachrichten (Datei .chats/<id>.json).
+// ChatLog ist ein Chat mit allen Nachrichten (Datei .chats/<id>.json); Provider, Model und Effort sind die zuletzt
+// gewählten Einstellungen (leer = Standard der CLI).
 type ChatLog struct {
 	ID       string        `json:"id"`
+	Provider string        `json:"provider,omitempty"`
+	Model    string        `json:"model,omitempty"`
+	Effort   string        `json:"effort,omitempty"`
 	Created  time.Time     `json:"created"`
 	Updated  time.Time     `json:"updated"`
 	Messages []ChatMessage `json:"messages"`
@@ -48,10 +52,13 @@ type ChatLog struct {
 
 // ChatSummary ist ein Eintrag der Chat-Liste; Title ist der Anfang der ersten Nachricht.
 type ChatSummary struct {
-	ID      string    `json:"id"`
-	Title   string    `json:"title"`
-	Updated time.Time `json:"updated"`
-	Count   int       `json:"count"`
+	ID       string    `json:"id"`
+	Title    string    `json:"title"`
+	Updated  time.Time `json:"updated"`
+	Count    int       `json:"count"`
+	Provider string    `json:"provider,omitempty"`
+	Model    string    `json:"model,omitempty"`
+	Effort   string    `json:"effort,omitempty"`
 }
 
 // chatStore liest und schreibt den Verlauf; now ist die Uhr (Test-Naht).
@@ -142,6 +149,15 @@ func (s chatStore) load(id string) (ChatLog, error) {
 	return c, nil
 }
 
+// remove löscht den Chat id; fehlt er, kommt os.ErrNotExist.
+func (s chatStore) remove(id string) error {
+	p, err := s.path(id)
+	if err != nil {
+		return err
+	}
+	return os.Remove(p)
+}
+
 // list nennt die Chats, der jüngste zuerst; unlesbare Dateien fehlen in der Liste.
 func (s chatStore) list() ([]ChatSummary, error) {
 	entries, err := os.ReadDir(s.dir)
@@ -158,7 +174,8 @@ func (s chatStore) list() ([]ChatSummary, error) {
 		if !ok || e.IsDir() || lerr != nil {
 			continue
 		}
-		out = append(out, ChatSummary{ID: c.ID, Title: chatTitle(c), Updated: c.Updated, Count: len(c.Messages)})
+		out = append(out, ChatSummary{ID: c.ID, Title: chatTitle(c), Updated: c.Updated, Count: len(c.Messages),
+			Provider: c.Provider, Model: c.Model, Effort: c.Effort})
 	}
 	sort.Slice(out, func(i, j int) bool { return out[i].Updated.After(out[j].Updated) })
 	return out, nil

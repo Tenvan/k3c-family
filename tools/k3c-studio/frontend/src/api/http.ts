@@ -1,4 +1,5 @@
 import { chatStreamHttp } from './chatHttp';
+import type { ChatDetail, ChatOptionsView, ChatSummary } from './chatTypes';
 import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, GameServersView, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
 import type { WorldAnswerView, WorldCheckView, WorldDraft } from './worldTypes';
 
@@ -102,6 +103,10 @@ export function httpBackend(): Backend {
     hubSave: (candidate: string, stand: HubStand) => rpc<HubSaveResult>('HubSave', candidate, stand),
     openUrl: (url: string) => void window.open(url, '_blank', 'noopener'),
     chatStream: chatStreamHttp,
+    chatList: () => rpc<ChatSummary[]>('ChatList'),
+    chatGet: (id: string) => rpc<ChatDetail>('ChatGet', id),
+    chatDelete: (id: string) => rpc<void>('ChatDelete', id),
+    chatOptions: () => rpc<ChatOptionsView>('ChatOptions'),
     on: subscribe,
   };
 }

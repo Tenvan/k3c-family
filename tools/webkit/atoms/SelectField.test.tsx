@@ -3,7 +3,7 @@ import { Theme } from '@radix-ui/themes';
 import { act, useState } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, describe, expect, it } from 'vitest';
-import { pickOption, selectedText } from '../testing/select';
+import { pickOption, pickValue, selectedText, selectedValue } from '../testing/select';
 import { SelectField } from './SelectField';
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -52,5 +52,18 @@ describe('SelectField', () => {
     expect(selectedText(h, 'Aktion')).toBe('Bogen');
     await pickOption(h, 'Aktion', 'Keine');
     expect(seen).toEqual(['bow', '']);
+  });
+
+  it('trägt den Wert als data-value: wählen und lesen per Wert, auch den leeren', async () => {
+    seen.length = 0;
+    const h = await mount();
+    expect(selectedValue(h, 'Aktion')).toBe('');
+    await pickValue(h, 'Aktion', 'hit');
+    expect(selectedValue(h, 'Aktion')).toBe('hit');
+    expect(selectedText(h, 'Aktion')).toBe('Schlag');
+    await pickValue(h, 'Aktion', '');
+    expect(selectedValue(h, 'Aktion')).toBe('');
+    expect(seen).toEqual(['hit', '']);
+    await expect(pickValue(h, 'Aktion', 'gibt-es-nicht')).rejects.toThrow('Wert „gibt-es-nicht“ fehlt in „Aktion“');
   });
 });

@@ -7,6 +7,8 @@ import { pickOption, selectTrigger } from './select';
 /** Eintrag einer Auswahl, wie ihn die Liste zeigt. */
 export interface ShownOption {
   text: string;
+  /** Wert des Eintrags (`data-value`, atoms/SelectField). */
+  value: string;
   disabled: boolean;
 }
 
@@ -16,6 +18,7 @@ export async function shownOptions(root: ParentNode, label: string): Promise<Sho
   await act(async () => trigger.click());
   const shown = [...document.querySelectorAll<HTMLElement>('[role="option"]')].map((o) => ({
     text: o.textContent ?? '',
+    value: o.dataset.value ?? '',
     disabled: o.hasAttribute('data-disabled'),
   }));
   const content = document.querySelector<HTMLElement>('[role="listbox"]');
