@@ -9,13 +9,9 @@ import (
 	"time"
 )
 
-// B-372: check_run wartet höchstens checkWait auf den Lauf. Dauert er länger, läuft er im Hintergrund weiter und die
-// Antwort nennt eine Lauf-ID; check_run {run: <ID>} liefert Exit-Code und Fehlerzeilen. Der Lauf hängt nicht am
-// Aufruf des Clients: bricht dieser ab (Timeout), läuft der Lauf zu Ende.
-const (
-	defaultCheckWait = 45 * time.Second
-	maxJobs          = 20 // so viele Läufe bleiben über ihre ID abfragbar
-)
+// B-372: Der Lauf hängt nicht am Aufruf des Clients: bricht dieser ab (Timeout), läuft der Lauf zu Ende und bleibt
+// über seine Lauf-ID abfragbar. Wie lange check_run wartet, regelt awaitJob (check_wait.go, B-520).
+const maxJobs = 20 // so viele Läufe bleiben über ihre ID abfragbar
 
 type checkJob struct {
 	id     string
@@ -100,7 +96,7 @@ func (c *checkRuns) job(id string) *checkJob {
 // Konsolenpuffer check:<ziel>.
 func (s *Server) checkRun(ctx context.Context, in checkIn) (string, error) {
 	if in.Run != "" {
-		return s.checkJobResult(in.Run)
+		return s.checkJobResult(ctx, in.Run)
 	}
 	t, err := findTarget(in.Target)
 	if err != nil {
@@ -120,15 +116,7 @@ func (s *Server) checkRun(ctx context.Context, in checkIn) (string, error) {
 	s.notifyCheck(CheckState{Name: key, Running: true, At: time.Now()})
 	job := s.checks.newJob(t, key)
 	go s.runCheck(context.WithoutCancel(ctx), job, filepath.Join(ws.root, t.dir), args)
-	select {
-	case <-job.done:
-		return job.answer()
-	case <-time.After(s.checkWait):
-		return fmt.Sprintf("%s läuft im Hintergrund seit %s · Lauf-ID %s · Ergebnis mit check_run {run: %q}, Ausgabe mit console_tail check:%s",
-			t.name, formatMs(float64(time.Since(job.start).Milliseconds())), job.id, job.id, t.name), nil
-	case <-ctx.Done():
-		return "", ctx.Err()
-	}
+	return s.awaitJob(ctx, job)
 }
 
 // runCheck führt den Lauf aus und meldet Ende, Ergebnis und Freigabe der Sperre, auch nach einer Panik.
@@ -154,16 +142,11 @@ func (s *Server) runCheck(ctx context.Context, j *checkJob, dir string, args []s
 		}})
 }
 
-// checkJobResult ist die Antwort auf check_run {run}: Ergebnis des Laufs oder „läuft noch“.
-func (s *Server) checkJobResult(id string) (string, error) {
+// checkJobResult ist die Antwort auf check_run {run}: wartet wie der Start des Laufs auf sein Ende (awaitJob).
+func (s *Server) checkJobResult(ctx context.Context, id string) (string, error) {
 	j := s.checks.job(id)
 	if j == nil {
 		return "", fmt.Errorf("unbekannte Lauf-ID %q (gemerkt werden die letzten %d Läufe seit dem Start von k3c-dev)", id, maxJobs)
 	}
-	select {
-	case <-j.done:
-		return j.answer()
-	default:
-		return fmt.Sprintf("%s läuft noch seit %s · Lauf-ID %s", j.t.name, formatMs(float64(time.Since(j.start).Milliseconds())), j.id), nil
-	}
+	return s.awaitJob(ctx, j)
 }

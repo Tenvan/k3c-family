@@ -75,12 +75,13 @@ type Server struct {
 	sims    simRuns      // Testläufe von sim_test (simtest.go)
 	feeds   *botfeed.Hub // Bot-Feeds der Läufe mit Clients (simtest_clients.go), Route /bot/
 	// findBrowser und launch starten die Clients von sim_test; Test-Naht.
-	findBrowser func() (string, error)
-	launch      func(ctx context.Context, exe, profile, url string) (stop func(), err error)
-	run         func(context.Context, runSpec) runResult // Test-Naht für check_run
-	checkWait   time.Duration                            // wie lange check_run auf einen Lauf wartet (check_job.go)
-	wt          worktrees                                // Dienste der Worktrees (worktree_services.go)
-	portBusy    func(int) bool                           // Test-Naht für die Vergabe der Worktree-Ports
+	findBrowser   func() (string, error)
+	launch        func(ctx context.Context, exe, profile, url string) (stop func(), err error)
+	run           func(context.Context, runSpec) runResult // Test-Naht für check_run
+	checkWait     time.Duration                            // wie lange check_run ohne progressToken wartet (check_wait.go)
+	progressEvery time.Duration                            // Abstand der Fortschritts-Meldungen von check_run
+	wt            worktrees                                // Dienste der Worktrees (worktree_services.go)
+	portBusy      func(int) bool                           // Test-Naht für die Vergabe der Worktree-Ports
 
 	mu   sync.Mutex
 	http *http.Server
@@ -104,7 +105,8 @@ func ResolvePort(raw string) (int, error) {
 func New(cfg Config) *Server {
 	s := &Server{cfg: cfg, stats: newStats(time.Now), params: map[string][]string{},
 		console: cfg.Console, log: cfg.Log, checks: newCheckRuns(), run: runProcess, checkWait: defaultCheckWait,
-		wt: worktrees{all: map[string]*worktreeServices{}}, portBusy: portBusy,
+		progressEvery: defaultProgressEvery,
+		wt:            worktrees{all: map[string]*worktreeServices{}}, portBusy: portBusy,
 		feeds: botfeed.NewHub(), findBrowser: browser.Find, launch: launchBrowser}
 	if s.console == nil {
 		s.console = console.New(console.DefaultCapacity, nil)
