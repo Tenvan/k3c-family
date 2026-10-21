@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import type { PlanningData, WorktreeDiff } from '../api';
 import { BacklogView } from './Backlog';
+import { groupProjects } from './projects';
 import { SessionRow, SprintCard } from './SprintCard';
 import { indexChanges, marksFor, pillLabel, pillTitle, withWorktreeEntries } from './wtPills';
 import { WtContext, WtPills } from './WorktreePills';
@@ -125,5 +126,37 @@ describe('neue Einträge unter ihrem Projekt', () => {
     expect(out.projects?.[0]?.sprints).toEqual(['WZ20']);
     expect(out.sprints[0]?.project).toBe('WZG');
     expect(out.tickets[0]).toMatchObject({ project: 'WZG', sprint: 'WZ20' });
+  });
+
+  // B-484 (WZ20.1): neuer Sprint vollständig, Eingabe unverändert
+  const sprintWithSessions = (project: string): WorktreeDiff[] => [{ branch: 'b', path: 'p', changes: [
+    { kind: 'neu', item: 'Sprint', id: 'X1', text: 'Neu', project },
+    { kind: 'neu', item: 'Session', id: 'X1.1', text: 'Eins' },
+    { kind: 'neu', item: 'Session', id: 'X1.2', text: 'Zwei' },
+  ] }];
+
+  it('neuer Sprint bekommt seine Sessions und steht im Projekt, die Wurzel-Daten bleiben gleich', () => {
+    const data: PlanningData = { projects: [{ id: 'WZG', title: 'Werkzeuge', status: 'aktiv', rang: '1', sprints: ['WZ1'] }], sprints: [], tickets: [], done: 0 };
+    const before = JSON.stringify(data);
+    const out = withWorktreeEntries(data, sprintWithSessions('WZG'));
+    expect(out.sprints[0]?.sessions.map((s) => s.nr)).toEqual(['X1.1', 'X1.2']);
+    expect(out.projects?.[0]?.sprints).toEqual(['WZ1', 'X1']);
+    expect(JSON.stringify(data)).toBe(before);
+  });
+
+  it('neues Projekt mit neuem Sprint: Sprint in der Projektkarte, kein loser Sprint', () => {
+    const data: PlanningData = { projects: [], sprints: [], tickets: [], done: 0 };
+    const diffs = sprintWithSessions('NEU');
+    diffs[0]?.changes.unshift({ kind: 'neu', item: 'Projekt', id: 'NEU', text: 'Neues Projekt' });
+    const groups = groupProjects(withWorktreeEntries(data, diffs));
+    expect(groups.active.map((v) => [v.project.id, v.sprints.map((s) => s.id)])).toEqual([['NEU', ['X1']]]);
+    expect(groups.without.sprints).toEqual([]);
+  });
+
+  it('neuer Sprint mit unbekanntem Projekt erscheint als loser Sprint', () => {
+    const data: PlanningData = { projects: [], sprints: [], tickets: [], done: 0 };
+    const out = withWorktreeEntries(data, sprintWithSessions('GIBTSNICHT'));
+    expect(out.sprints[0]?.project).toBe('–');
+    expect(groupProjects(out).without.sprints.map((s) => s.id)).toEqual(['X1']);
   });
 });

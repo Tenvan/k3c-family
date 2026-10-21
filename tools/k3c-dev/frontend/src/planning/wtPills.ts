@@ -54,8 +54,9 @@ const ADD: Record<WorktreeChange['item'], Add> = {
     if (d.projects && !d.projects.some((p) => p.id === c.id)) d.projects.push({ id: c.id, title: c.text, status: 'aktiv', rang: '–', sprints: [] });
   },
   Sprint: (d, c) => {
-    if (!d.sprints.some((s) => s.id === c.id)) d.sprints.push({ id: c.id, title: c.text, domain: '', status: 'geplant', reife: '', spec: '', tickets: [], sessions: [], project: c.project || '–' });
+    // Unbekanntes Projekt → loser Sprint, sonst blendet `groupProjects` ihn aus (B-484)
     const owner = d.projects?.find((p) => p.id === c.project);
+    if (!d.sprints.some((s) => s.id === c.id)) d.sprints.push({ id: c.id, title: c.text, domain: '', status: 'geplant', reife: '', spec: '', tickets: [], sessions: [], project: owner ? owner.id : '–' });
     if (owner && !owner.sprints.includes(c.id)) d.projects = d.projects?.map((p) => (p === owner ? { ...p, sprints: [...p.sprints, c.id] } : p));
   },
   Ticket: (d, c) => {

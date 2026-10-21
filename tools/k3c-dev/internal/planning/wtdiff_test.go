@@ -189,3 +189,17 @@ func TestDiffDataNeueEintraegeTragenProjektUndSprint(t *testing.T) {
 		t.Errorf("diffData: got %v, want %v", got, want)
 	}
 }
+
+// B-484: Ein Sprint nur im Worktree bringt seine Sessions als neu mit, direkt hinter dem Sprint.
+func TestDiffDataNeuerSprintMitSessions(t *testing.T) {
+	wt := Data{Sprints: []Sprint{{ID: "X1", Title: "Neu", Project: "WZG", Sessions: []Session{{Nr: "X1.1", Titel: "Eins"}, {Nr: "X1.2", Titel: "Zwei"}}}}}
+	got := diffData(Data{}, wt)
+	want := []Change{
+		{Kind: "neu", Item: "Sprint", ID: "X1", Text: "Neu", Project: "WZG"},
+		{Kind: "neu", Item: "Session", ID: "X1.1", Text: "Eins"},
+		{Kind: "neu", Item: "Session", ID: "X1.2", Text: "Zwei"},
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("diffData: got %v, want %v", got, want)
+	}
+}
