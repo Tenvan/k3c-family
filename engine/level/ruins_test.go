@@ -56,6 +56,8 @@ func TestRuineGueltig(t *testing.T) {
 		"Farm mit Plantage":   {withRuin(p(3, "forest"), "farm", 3)},
 		"neben festem Objekt": {withRuin(p(3, "clearing", obj("tree", 10)), "barracks", 14)},
 		"mit Chunk-Seed":      {withRuin(PlannedChunk{Slot: -3, Kind: "clearing", Seed: "lichtung"}, "storage", 25)},
+		"an einer Mauerlinie": {withRuin(p(2, "forest"), "tavern", 25)},  // innerhalb der Mauern, kein Abstand zu Bauplätzen
+		"links am Tor":        {withRuin(p(-1, "forest"), "healer", 10)}, // 90 Units vom Hub, im Tor-Bereich von Linie 3
 	}
 	for name, plan := range cases {
 		if err := ValidatePlan(forest, plan, DefaultWallLines()); err != nil {
@@ -82,7 +84,7 @@ func TestRuineLehntAb(t *testing.T) {
 		"Plantage passt nicht": {forest, []PlannedChunk{withRuin(p(3, "forest"), "farm", 2)}, "Chunk-Grenze"},
 		"Portal im Nachbar":    {forest, []PlannedChunk{p(3, "portal", obj("portal", 50)), withRuin(p(4, "forest"), "smithy", 2)}, "portal auf Platz +3"},
 		"Camp im Nachbar":      {forest, []PlannedChunk{withRuin(p(-3, "forest"), "smithy", 2), p(-4, "recruitCamp", obj("recruitCamp", 50))}, "recruitCamp auf Platz -4"},
-		"am Farm-Weltplatz":    {forest, []PlannedChunk{withRuin(p(1, "forest"), "smithy", 2)}, "Bauplatz"},
+		"am Farm-Weltplatz":    {forest, []PlannedChunk{withRuin(p(1, "forest"), "smithy", 2)}, "Farm-Weltplatz"},
 		"am festen Objekt":     {forest, []PlannedChunk{withRuin(p(3, "clearing", obj("tree", 10)), "smithy", 12)}, "tree"},
 		"an der Truhe":         {forest, []PlannedChunk{withRuin(p(3, "chest"), "smithy", 23)}, "chest"},
 		"am Portal":            {forest, []PlannedChunk{withRuin(p(4, "portal", obj("portal", 25)), "smithy", 27)}, "portal"},

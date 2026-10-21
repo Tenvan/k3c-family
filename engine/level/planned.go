@@ -156,7 +156,7 @@ func ValidatePlanFor(b Biome, plan []PlannedChunk, lines WallLines, count int) e
 		if err != nil {
 			return fmt.Errorf("auf Platz %+d: %w", c.Slot, err)
 		}
-		ruins, err := checkBuildings(c, g, lines, items)
+		ruins, err := checkBuildings(c, g, items)
 		if err != nil {
 			return fmt.Errorf("auf Platz %+d: %w", c.Slot, err)
 		}

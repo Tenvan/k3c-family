@@ -10,7 +10,8 @@ import (
 // geplanten Chunks. Dieses Paket prüft Art und Lage und gibt die Ruinen je Stufe weiter (Layout.Ruins); als Platz in
 // der Sim entstehen sie in engine/sim. Werte aus data/ruins.json.
 
-// ruinGapUnits ist der Mindestabstand einer Ruine zu Bauplätzen, Farm-Weltplatz, Adern, Portalen und festen Objekten.
+// ruinGapUnits ist der Mindestabstand einer Ruine zum Farm-Weltplatz, zu Adern, Portalen und festen Objekten. Zu den
+// Bauplätzen der Mauerlinien gilt keiner: Ruinen dürfen überall liegen, die Lage wählt die Planung (§ 8).
 const ruinGapUnits = 4
 
 // hubOnlyKinds gehören dem Hub (Burg, Linien, Stufenwechsel) und sind nie Ruinen.
@@ -90,7 +91,7 @@ func RuinHP(kind string) float64 {
 
 // checkBuildings prüft die Ruine eines Chunks (höchstens eine) gegen die Lage-Regeln aus § 8. near sind die festen
 // Objekte des Chunks. Das Ergebnis geht in die Prüfung von kind@x ein.
-func checkBuildings(c PlannedChunk, g geometry, lines WallLines, near []placed) ([]placed, error) {
+func checkBuildings(c PlannedChunk, g geometry, near []placed) ([]placed, error) {
 	if len(c.Buildings) == 0 {
 		return nil, nil
 	}
@@ -102,13 +103,13 @@ func checkBuildings(c PlannedChunk, g geometry, lines WallLines, near []placed) 
 		return nil, fmt.Errorf("%q ist als Ruine nicht erlaubt (erlaubt: %v)", b.Kind, ruinRules.Kinds)
 	}
 	p := placed{kind: b.Kind, slot: c.Slot, at: b.At, dist: g.dist(c.Slot, b.At), fixed: true}
-	if err := checkRuinPlace(p, g, lines, near); err != nil {
+	if err := checkRuinPlace(p, g, near); err != nil {
 		return nil, err
 	}
 	return []placed{p}, nil
 }
 
-func checkRuinPlace(p placed, g geometry, lines WallLines, near []placed) error {
+func checkRuinPlace(p placed, g geometry, near []placed) error {
 	edge := float64(edgeGapUnits)
 	if pl := ruinBuildings[p.kind].Plantation; pl != nil {
 		edge = math.Max(edge, pl.StripUnits)
@@ -116,9 +117,9 @@ func checkRuinPlace(p placed, g geometry, lines WallLines, near []placed) error 
 	if p.at < edge || p.at > g.cw-edge {
 		return fmt.Errorf("die Ruine %s bei %v: mindestens %v Units Abstand zur Chunk-Grenze (%v…%v)", p.kind, p.at, edge, edge, g.cw-edge)
 	}
-	for _, site := range lines.sites() {
+	for _, site := range farmOffsets {
 		if math.Abs(p.dist-site) < ruinGapUnits {
-			return fmt.Errorf("die Ruine %s %v Units vom Hub, weniger als %d Units von einem Bauplatz (%v)", p.kind, p.dist, ruinGapUnits, site)
+			return fmt.Errorf("die Ruine %s %v Units vom Hub, weniger als %d Units vom Farm-Weltplatz (%v)", p.kind, p.dist, ruinGapUnits, site)
 		}
 	}
 	for _, o := range near {
