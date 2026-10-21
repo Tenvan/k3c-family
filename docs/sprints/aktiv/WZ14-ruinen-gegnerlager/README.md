@@ -1,11 +1,11 @@
 # WZ14 · REG, SIM, SRV, CLI, DEV · Geplante Chunks tragen Ruinen und Gegnerlager
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** REG, SIM, SRV, CLI, DEV
 - **Reife:** bereit
 - **Tickets:** B-468
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 37327754
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-10-21, Ralf im Chat (Revision 2)
@@ -65,7 +65,7 @@ Entschieden im Regel-Workshop WZ14.1 (2026-10-21, Ralf im Chat) samt Nachtrag na
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ14.1 | `WZ14.1-workshop-regeln.md` | Workshop | Mensch | fertig |
-| WZ14.2 | `WZ14.2-werte-format-pruefung.md` | Umsetzung | autonom | offen |
+| WZ14.2 | `WZ14.2-werte-format-pruefung.md` | Umsetzung | autonom | in Arbeit |
 | WZ14.3 | `WZ14.3-ruine-als-platz.md` | Umsetzung | autonom | offen |
 | WZ14.4 | `WZ14.4-vorposten-dev-burgfall.md` | Umsetzung | autonom | offen |
 | WZ14.5 | `WZ14.5-protokoll-vorschau-ruine.md` | Umsetzung | autonom | offen |
