@@ -106,9 +106,10 @@ func stepPeasant(w *World, t *Troop, dt float64) {
 	}
 }
 
-// leaveOnDanger: Sammeln, Reparatur und Ausbau bleiben bei Gefahr liegen.
+// leaveOnDanger: Sammeln, Reparatur, Ausbau und jeder Auftrag an einem Vorposten (building_outpost.go) bleiben bei
+// Gefahr liegen.
 func leaveOnDanger(w *World, j *Job) bool {
-	return j != nil && (j.Type == "gather" || j.Type == "repair" || upgradeJob(w, j))
+	return j != nil && (j.Type == "gather" || j.Type == "repair" || upgradeJob(w, j) || outpostJob(w, j))
 }
 
 func build(w *World, t *Troop, dt float64) {
@@ -225,12 +226,12 @@ func siteJob(w *World, t *Troop) *Job {
 	return repairJob(w, t)
 }
 
-// buildJob: nächster wartender Bauplatz ohne Bauer, Ausbauten nur ohne Gefahr; nil, wenn es keinen gibt.
+// buildJob: nächster wartender Bauplatz ohne Bauer, Ausbauten und Vorposten nur ohne Gefahr; nil, wenn es keinen gibt.
 func buildJob(w *World, t *Troop) *Job {
 	var site *Site
 	danger := isDangerous(w)
 	eachSite(w, func(s *Site) {
-		waiting := s.State == "waitingWorker" || (s.Upgrade == "waitingWorker" && !danger)
+		waiting := (s.State == "waitingWorker" || (s.Upgrade == "waitingWorker" && !danger)) && !(danger && outpost(w, s.X))
 		if waiting && !isWorker(w, s.WorkerID) && (site == nil || math.Abs(s.X-t.X) < math.Abs(site.X-t.X)) {
 			site = s
 		}

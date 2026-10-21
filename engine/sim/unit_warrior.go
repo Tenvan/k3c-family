@@ -109,8 +109,9 @@ func weaponToFetch(w *World, t *Troop) *Job {
 	if full {
 		return nil
 	}
+	danger := isDangerous(w)
 	for _, s := range w.Sites {
-		if s.Kind != "workshop" || s.State != "built" {
+		if s.Kind != "workshop" || s.State != "built" || (danger && outpost(w, s.X)) { // Vorposten nur ohne Gefahr
 			continue
 		}
 		if fetching(w, t, "fetchBow", s.ID) < s.Bows {
