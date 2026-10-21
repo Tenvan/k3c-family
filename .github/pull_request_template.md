@@ -21,7 +21,7 @@ Sessions (ein Commit je Session):
 - [ ] Je Session nur ihre „Erlaubten Dateien“ geändert
 - [ ] `task test` und `task typecheck` grün (gesamt: `task check`)
 - [ ] Mit mehreren Spielern geprüft (falls Spiel betroffen)
-- [ ] `task check` (und `task check:go`) grün, damit ist das Komplexitäts-Budget geprüft
+- [ ] `task check`, `task check:go` und `task check:race` grün (Review-Session), damit ist das Komplexitäts-Budget geprüft
 - [ ] Session-Dateien: `Status` und `Ergebnis` ausgefüllt, Sprint-Tabelle angepasst; neue Tickets nach Vorlage + Index
 
 ## Am TV prüfen

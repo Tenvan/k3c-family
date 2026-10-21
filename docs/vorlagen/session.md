@@ -41,9 +41,11 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 ## Prüfen
 
 ```bash
-task check
+task check:diff
 ```
 
+Einmal vor dem Commit; während der Arbeit nur gezielte Tests (`docs/arbeitsweise.md` › Tempo im Lauf).
+Review-Session statt dessen: `task check`, `task check:go`, `task check:race` (nacheinander).
 Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑 sie für diesen Lauf freigegeben hat.
 
 ## Ergebnis

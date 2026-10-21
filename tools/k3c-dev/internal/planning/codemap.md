@@ -8,7 +8,8 @@ Liest und schreibt die Planung des Repos (`docs/`: Tickets, Sprints, Sessions, R
 
 - Domänenmodell `planning.go`: `Ticket`, `Sprint`, `Session`, `Data`; Parser `ParseSprint`/`ParseTicket`, `Load`, `Doc`, `Available`.
 - Transaktionales Schreiben `store.go`: `changeSet` sammelt Writes (`read`/`write`/`apply`), `writeAtomic` erhält CRLF; `resolve`/`ref` löst IDs auf Pfade auf; `States` = geplant, aktiv, erledigt.
-- Schreib-API: `Create` (`create.go`, aus `docs/vorlagen/*.md`, `NewDoc`), `Set`/`Section` (`edit.go`, Feldprüfung gegen Vorlage via `checkValue`), `Delete`, `Get`, `List` mit `Filter` (`list.go`).
+- Schreib-API: `Create` (`create.go`, aus `docs/vorlagen/*.md`, `NewDoc`), `Set`/`Section`/`Sections` (`edit.go`, Feldprüfung gegen Vorlage via `checkValue`; `Sections` prüft alle Abschnitte, dann ein Schreibvorgang), `Delete`, `Get`, `List` mit `Filter` (`list.go`).
+- Nächste Session `next.go` (B-518): `Next` mit `NextFilter` wählt nach arbeitsweise.md › Autonomer Ablauf, Schritt 1 (aktive Projekte nach Rang → aktive Sprints der Projekt-Tabelle → offen, autonom, Abhängigkeiten aus Sessions und Tickets erledigt, Domäne nicht durch eine Session `in Arbeit` gesperrt) und liefert Session-Datei, Kriterien der Sprint-README und parallel mögliche Sessions anderer Domänen.
 - Konsistenz `tables.go`: Markdown-Tabellen (`mdTable`, `placeRow`, `removeRow`) für `syncIndex` (Backlog-README), `syncRoadmap`, `syncSessionRow`.
 - Reihenfolge `priority.go`: `rank` liest je Session `Umgebung`, `Domäne` und `Abhängig von` (`sessionMeta`) und leitet daraus `Sprint.Deps` ab; `Order` sortiert generisch topologisch nach Abhängigkeit, dann `sprintOrder` (Projekt-Rang und Platz in der Sprint-Tabelle, Sprints ohne Projekt dahinter; eine Voraussetzung erbt den Platz ihrer Abnehmer, Zyklus wird gebrochen); `sprintOf`. Sprints haben keine Prio (DV1).
 - Projekte `projects.go` (B-357): `Project`, `ParseProject`, `loadProjects` (`Data.Projects`), `createProject`, `setProject` (Status, Rang, Sprints), `rerank`/`rankOrder` (Ränge der aktiven Projekte lückenlos, `ABN` ohne Rang), `deleteProject`, `checkProjectRef` (Feld `Projekt` an Sprint und Ticket). `projects_tables.go`: `syncOverview` (`docs/projekte/README.md` aus den Projekt-Dateien), `reorderSprints`, `syncProjectSprint` (Sprint-Tabelle des Projekts folgt `Projekt` und Status des Sprints).
@@ -27,5 +28,5 @@ Liest und schreibt die Planung des Repos (`docs/`: Tickets, Sprints, Sessions, R
 
 ## Integration
 
-- Konsumenten: MCP-Tools `plan_list`, `plan_get`, `plan_create`, `plan_set`, `plan_section`, `plan_delete` (`internal/mcpsrv/tools_planning.go`); Wails-Bindings `PlanningData`, `PlanningDocs`, `PlanningDoc`, `PlanningSet` (`app_planning.go`), `app.go`.
+- Konsumenten: MCP-Tools `plan_list`, `plan_get`, `plan_next`, `plan_create`, `plan_set`, `plan_section`, `plan_sections`, `plan_delete` (`internal/mcpsrv/tools_planning.go`); Wails-Bindings `PlanningData`, `PlanningDocs`, `PlanningDoc`, `PlanningSet` (`app_planning.go`), `app.go`.
 - Abhängigkeiten: `git` über `os/exec` (`runGit`, `gitOut`) und `internal/proc`, Dateisystem unter `docs/`; Vorlagen `docs/vorlagen/*.md` (geprüft von `tests/planning.test.ts`).

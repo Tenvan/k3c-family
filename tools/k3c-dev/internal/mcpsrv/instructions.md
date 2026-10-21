@@ -21,7 +21,7 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
   Session kommt (Header `X-K3C-Root` aus `.mcp.json`): Prüfläufe, Planung, Logs, Berichte, Spielstände
   und Dienste nur dort. `workbench_status` nennt den Checkout in der Zeile `Checkout:`.
 - **Im Worktree immer `checkout` setzen** (B-388): Schreibende Tools (`plan_create`, `plan_set`, `plan_section`,
-  `plan_delete`, `assets_set`, `assets_research`, `assets_hit_add`, `assets_hit_drop`, `assets_import`, `svc_*`, `task_start`, `task_stop`) und `check_run` nehmen das Argument `checkout` mit dem Ordnernamen
+  `plan_sections`, `plan_delete`, `assets_set`, `assets_research`, `assets_hit_add`, `assets_hit_drop`, `assets_import`, `svc_*`, `task_start`, `task_stop`) und `check_run` nehmen das Argument `checkout` mit dem Ordnernamen
   oder dem absoluten Pfad des eigenen Checkouts (`git rev-parse --show-toplevel`). Es gilt vor dem Header; der Header
   allein genügt nicht, die Desktop-App meldet aus Worktrees die Repo-Wurzel (B-341). Ein unbekannter oder mehrdeutiger
   Wert wird abgelehnt, die Meldung nennt die Worktrees. `task_*` mit einem Worktree lehnt ab (dort `check_run`).
@@ -39,8 +39,15 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
   halten Vorlage, Nummer, Index, Session-Tabelle, Fahrplan und Ablage (`archiv/`, `geplant/` → `aktiv/` → `erledigt/`) gleich.
 - `plan_list {kind?, status?, domain?, sprint?, archive?}` für den Überblick, `plan_get {id}` für ein Dokument
   (`B-210`, `M8`, `M8.1`).
+- `plan_next {domain?}` zu Beginn einer autonomen Session: die nächste Session nach `docs/arbeitsweise.md` › Autonomer
+  Ablauf, Schritt 1 (Rang, aktive Sprints, offen und autonom, Abhängigkeiten erledigt, Domäne frei), mit Pfad, Branch
+  `sprint/<präfix>`, Session-Datei, ihren Kriterien aus der Sprint-README und den parallel möglichen Sessions anderer
+  Domänen; sonst „Keine Session frei“ mit Grund je Projekt. Liest nur die lokalen Dateien: die Sperre über `origin`
+  (`git ls-remote --heads origin 'sprint/*'`) prüft der Agent selbst.
 - `plan_create {kind, slug, title, id?, fields}`: Ticket (Felder `Domäne`, `Typ`, `Prio`), Sprint (`id`, `Domäne`) oder
-  Session (`id` wie `M8.5`) als Kopie der Vorlage; danach die Abschnitte mit `plan_section {id, section, text}` füllen.
+  Session (`id` wie `M8.5`) als Kopie der Vorlage; danach die Abschnitte mit `plan_sections {id, sections}` füllen
+  (`sections`: Abschnitt → Text). Mehrere Abschnitte immer mit `plan_sections`; ein unbekannter Abschnitt bricht ab,
+  ohne etwas zu schreiben. Einen einzelnen Abschnitt ersetzt auch `plan_section {id, section, text}`.
 - `plan_set {id, fields}` setzt Kopf-Felder, z. B. `{"Status": "fertig"}`; Ticket `erledigt`/`verworfen` wandert ins
   Archiv, Sprint-`Status` verschiebt den Ordner. `Spec: freigegeben` nur mit `Freigabe` (Datum, Quelle) und nur nach
   Zustimmung von 🧑.
@@ -86,7 +93,10 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 
 - `check_run` statt `task check`, `task test`, `task typecheck`, `task lint`, `task build`, `task check:go`, `go test`
   oder `golangci-lint` in der Shell. Ziele: `task:check`, `task:test`, `task:typecheck`, `task:lint`, `task:build`,
-  `task:check:go`, `go:test`, `go:lint`, `dev:test`. Ein Testmuster (`pattern`) geht bei `task:test`, `go:test` und `dev:test`.
+  `task:check:go`, `task:check:diff`, `task:check:race`, `go:test`, `go:lint`, `dev:test`. Ein Testmuster (`pattern`) geht
+  bei `task:test`, `go:test` und `dev:test`.
+- `task:check:diff` prüft nur, was der Diff zu `origin/develop` braucht (vor jedem Commit); `task:check:race` ist der
+  langsame Race-Detector für `engine/` (Review-Session, CI).
 - Die Antwort ist bei grünem Lauf eine Zeile, sonst Kopfzeile und nur die Fehlerzeilen.
 - Dauert ein Lauf länger als ca. 45 s, antwortet `check_run` mit „läuft im Hintergrund“ und einer Lauf-ID; der Lauf
   läuft weiter, auch wenn der Client abbricht. `check_run {run: "<ID>"}` liefert Exit-Code und Fehlerzeilen (oder „läuft noch“).

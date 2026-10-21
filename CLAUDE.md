@@ -5,17 +5,19 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 
 - Design & Regeln: `docs/game-design.md` (nur bei Bedarf lesen)
 - Aktueller Stand & nächste Schritte: `docs/roadmap.md`
-- **Arbeitsweise:** `docs/arbeitsweise.md` (Domänen, autonomer Ablauf, Review, Komplexitäts-Budget) – vor jeder Session lesen.
-- **Glossar:** `docs/glossar.md` – verbindliche Begriffe; vor jeder Session lesen, neue Begriffe dort zuerst eintragen.
+- **Arbeitsweise:** `docs/arbeitsweise.md` (Domänen, autonomer Ablauf, Review, Komplexitäts-Budget). Für eine Session
+  genügt der Skill `k3c-session` mit `plan_next`; die ganze Datei nur beim Planen oder bei Regelfragen lesen.
+- **Glossar:** `docs/glossar.md` – verbindliche Begriffe; beim Schreiben von Specs und Texten lesen, neue Begriffe dort zuerst eintragen.
 - **Branches:** Entwickelt wird auf `develop`, PRs zielen auf `develop`; **ein PR je Sprint** (Branch `sprint/<präfix>`, ein Commit je Session). `main` ist geschützt, nur Releases (Fast-Forward durch den Nutzer).
-- **Projekte und Sprints:** `docs/projekte/README.md` und `docs/sprints/aktiv/` lesen und die nächste offene Session nehmen, nach **Projekt-Rang**
-  (aktives Projekt mit kleinstem Rang → seine aktiven Sprints). `docs/sprints/geplant/` nur beim
+- **Projekte und Sprints:** Die nächste offene Session nach **Projekt-Rang** liefert `plan_next` (k3c-dev); ohne k3c-dev
+  `docs/projekte/README.md` und `docs/sprints/aktiv/` lesen. `docs/sprints/geplant/` nur beim
   Planen lesen, `docs/sprints/erledigt/` nur auf Nachfrage. Übersicht: `docs/sprints/README.md`.
 - **Tickets:** `docs/backlog/` (Index `README.md`, ein Ticket pro Datei). Neue Ideen/Probleme sofort als Ticket anlegen,
   nicht nebenbei umsetzen. Erledigte/verworfene liegen in `docs/backlog/archiv/` (nur auf Nachfrage lesen).
 - **Vorlagen sind Pflicht:** Tickets, Sprints und Sessions nur als Kopie von `docs/vorlagen/*.md`; `tests/planning.test.ts` prüft das.
 - **Planung nur über MCP:** Tickets, Sprints und Sessions anlegen und ändern ausschließlich mit `plan_create`, `plan_set`,
-  `plan_section`, `plan_delete` (lesen: `plan_list`, `plan_get`) von k3c-dev; von Hand nur, wenn k3c-dev nicht läuft.
+  `plan_sections` (mehrere Abschnitte in einem Aufruf), `plan_section`, `plan_delete` (lesen: `plan_list`, `plan_get`,
+  `plan_next`) von k3c-dev; von Hand nur, wenn k3c-dev nicht läuft.
 - **SDD:** Ticket und Sprint-README sind die Spec (Kriterien `AC-01` …), Sessions erfüllen genannte Kriterien.
   Freigabe (`Spec: freigegeben`) und manuelle Abnahmen nur durch den Nutzer. Details: `docs/arbeitsweise.md` › SDD.
 - **Spielstruktur (003):** Ein Raum hat einen Spielstand mit n Inseln, jede Insel n Stufen; Stufen sind pro Spieler frei begehbar und laufen alle weiter. Im Go-Code rechnet ein Raum eine Insel mit mehreren Stufen im selben Takt, Einzelwechsel je Spieler und einem Material-Vorrat je Insel (`engine/sim/island*.go`, SP12–SP14); noch offen: mehrere Inseln und Inselwechsel (B-103). Regeln: `docs/rules/stufen.md`.
@@ -33,8 +35,10 @@ task               # alle Aufgaben anzeigen (Go Task, Taskfile.yml; einziger Ein
 task install       # Abhängigkeiten holen
 task dev           # Dev-Server (auch im LAN erreichbar, Port 5183)
 task test          # Vitest (Level-Generator, reine Logik); Filter: task test -- planning
-task check         # Lint + Typecheck + Tests (vor jedem Abschluss)
+task check:diff    # nur die Prüfungen, die der Diff zu origin/develop braucht (einmal vor jedem Commit)
+task check         # Lint + Typecheck + Tests des Clients, parallel
 task check:go      # go test + golangci-lint (Rechner mit Go)
+task check:race    # Go-Race-Detector (langsam; Review-Session, check:all, CI)
 task check:dev     # k3c-dev: Frontend, go test, golangci-lint
 task check:all     # alles inklusive Build
 task go:golden     # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
@@ -79,7 +83,8 @@ offline, online, headless oder mit Clients) startet und läuft **nur über `sim_
 nie über `task balance`, `task k3c-load` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-dev nicht läuft.
 
 **Tasks und Ausführungen laufen ausschließlich über `task`** (Neues in `Taskfile.yml`, nicht in `package.json`).
-Vor jedem Abschluss: `task check` muss grün sein.
+Vor jedem Commit: `task check:diff` (bzw. `check_run task:check:diff`) einmal grün; währenddessen nur gezielte Tests
+(`docs/arbeitsweise.md` › Tempo im Lauf).
 Die CI (`.github/workflows/ci.yml`) prüft zusätzlich Build + Server-Smoke-Test. `tests/projectRules.test.ts`
 prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, Vollbild, kein `Math.random()`).
 
@@ -145,9 +150,11 @@ Nur so bleibt Vollbild auf der Xbox über Seitenwechsel erhalten. Für **jede** 
   Codepunkt (kein U+FE0F). Das Thema setzt die Konsole selbst aus `ns` (`engine/conlog` › `Topics`); ein neuer `ns` bekommt dort sein Emoji.
 - Klein bleiben: kein Framework-Overhead. Prozess steht nur in `docs/arbeitsweise.md`, keine weiteren Prozess-Dokumente.
   Ein Sprint bleibt in seiner Domäne; Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Lieber spielbarer Code.
-- **Code-Review vor jedem Commit:** Vor jedem Commit MUSS ein Code-Review der geänderten Dateien laufen (`/code-review`
-  bzw. Reviewer-Agent, getrennt vom Schreiben); schwere Befunde werden vor dem Commit behoben. Gilt zusätzlich zur
-  Sprint-Review-Session (`docs/arbeitsweise.md`), nicht an ihrer Stelle.
+- **Code-Review vor dem Commit nur bei Risiko:** Ein Reviewer-Agent (getrennt vom Schreiben, Sonnet) läuft vor dem Commit
+  bei Domäne SIM oder SRV, bei Protokoll- oder Spielstand-Änderungen, bei Shell-, Pfad- oder Eingabe-Code oder ab etwa
+  150 geänderten Code-Zeilen, im
+  Hintergrund parallel zu `task check:diff`; schwere Befunde werden vor dem Commit behoben, ein Fix unter etwa 30 Zeilen
+  ohne zweites Review. Die Sprint-Review-Session bleibt Pflicht (`docs/arbeitsweise.md` › Tempo im Lauf).
 - **Kein automatischer Worktree-Wechsel:** Nicht von sich aus in einen Worktree wechseln (`change_directory`, `EnterWorktree`,
   Lesen/Schreiben unter `.claude/worktrees/`). Nur auf ausdrückliche Anweisung von 🧑. Sonst im aktuellen Checkout bleiben;
   Inhalte anderer Branches nur lesend per `git show <branch>:<pfad>`.
@@ -166,9 +173,6 @@ Nur so bleibt Vollbild auf der Xbox über Seitenwechsel erhalten. Für **jede** 
 
 A full codemap is available at `codemap.md` in the project root.
 
-Before working on any task, read `codemap.md` to understand:
-- Project architecture and entry points
-- Directory responsibilities and design patterns
-- Data flow and integration points between modules
-
-For deep work on a specific folder, also read that folder's `codemap.md`.
+Read `codemap.md` only when working in an area you do not know yet (architecture, entry points, data flow);
+for deep work on a specific folder, read that folder's `codemap.md`. A session whose files are named in its
+session file does not need it.
