@@ -4,8 +4,8 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** GEB10
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-17
 - **Spec:** Entwurf

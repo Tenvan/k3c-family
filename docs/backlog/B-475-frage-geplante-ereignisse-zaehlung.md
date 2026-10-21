@@ -4,8 +4,8 @@
 - **Typ:** Frage
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ24
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-17
 - **Spec:** Entwurf

@@ -4,9 +4,9 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
-- **Projekt:** GEB
+- **Status:** eingeplant
+- **Sprint:** WZ20
+- **Projekt:** WZG
 - **Erstellt:** 2026-10-16
 - **Spec:** Entwurf
 - **Revision:** 1

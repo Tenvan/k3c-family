@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** GD1
 - **Projekt:** TST
 - **Erstellt:** 2026-10-13
 - **Spec:** Entwurf

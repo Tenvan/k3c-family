@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** GEB11
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-17
 - **Spec:** Entwurf
