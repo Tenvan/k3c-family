@@ -23,12 +23,15 @@ tasks:
     env:
       K3C_DEV_PORT: '{{.DEV_MCP_PORT}}'
       K3C_DEV_UI_API_PORT: '{{.DEV_UI_API_PORT}}'
+      # k3c-dev bettet data/*.json und frontend/dist ein, die devrun nicht beobachtet: immer erst bauen
+      K3C_DEV_REBUILD: '1'
     # Bewusst `go build` (Konsolen-Subsystem), nie `wails build` (-H windowsgui): devrun beendet das Kind sauber per
     # CTRL_BREAK über die Konsole, aus einer GUI-EXE scheitert das und das Kind würde hart beendet. Das Kind baut devrun
     # ebenso mit `go build`.
     cmds:
-      - go build -o build/bin/k3c-dev-dev{{exeExt}} .
-      - build/bin/k3c-dev-dev{{exeExt}} -dev
+      # je UI-Port eine eigene Supervisor-EXE (und Kind-EXE, headless.go): parallele Dev-Läufe stören sich nicht
+      - go build -o build/bin/k3c-dev-dev-{{.DEV_UI_API_PORT}}{{exeExt}} .
+      - build/bin/k3c-dev-dev-{{.DEV_UI_API_PORT}}{{exeExt}} -dev
 
   dist:
     internal: true

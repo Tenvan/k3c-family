@@ -26,8 +26,9 @@ tasks:
     env:
       K3C_STUDIO_PORT: '{{.DEV_PORT}}'
     cmds:
-      - cd {{.STUDIO}} && go build -o build/bin/k3c-studio-dev{{exeExt}} .
-      - '{{.STUDIO}}/build/bin/k3c-studio-dev{{exeExt}} -dev'
+      # je Port eine eigene Supervisor-EXE (und Kind-EXE, dev.go): parallele Dev-Läufe stören sich nicht
+      - cd {{.STUDIO}} && go build -o build/bin/k3c-studio-dev-{{.DEV_PORT}}{{exeExt}} .
+      - '{{.STUDIO}}/build/bin/k3c-studio-dev-{{.DEV_PORT}}{{exeExt}} -dev'
 
   dev:ui:
     desc: "Oberfläche des Studios mit Hot Reload (Vite, Port 5192); /api geht an das Backend (K3C_STUDIO_API, im dev http://127.0.0.1:8192)"

@@ -62,6 +62,23 @@ func watched(name string, exts []string) bool {
 	return !strings.HasSuffix(name, "_test.go") && slices.Contains(exts, strings.ToLower(filepath.Ext(name)))
 }
 
+// fresh sagt, ob die EXE exe neuer ist als jede beobachtete Datei in snap: Dann spart der Start den ersten Build
+// (`task <app>:dev` hat sie meist gerade gebaut). Änderungen außerhalb der beobachteten Pfade (andere Module, Go-Version)
+// sieht fresh nicht; die nächste Änderung baut ohnehin neu.
+func fresh(exe string, snap map[string]fileSig) bool {
+	info, err := os.Stat(exe)
+	if err != nil || len(snap) == 0 {
+		return false
+	}
+	built := info.ModTime().UnixNano()
+	for _, sig := range snap {
+		if sig.mod >= built {
+			return false
+		}
+	}
+	return true
+}
+
 // changed nennt eine Datei, die neu, geändert oder weg ist (die erste in Namensreihenfolge); "" heißt: nichts hat sich
 // geändert.
 func changed(before, after map[string]fileSig) string {

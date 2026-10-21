@@ -31,7 +31,7 @@ const (
 	uiListenWait = 10 * time.Second
 	// uiStopTimeout begrenzt das Warten auf offene Anfragen beim Beenden.
 	uiStopTimeout = 2 * time.Second
-	devChild      = "build/bin/k3c-dev-devchild" // + .exe unter Windows (runDev)
+	devChild      = "build/bin/k3c-dev-devchild-" // + UI-Port (+ .exe unter Windows, runDev): je Lauf eine eigene EXE
 	// devMCPPort gilt im -dev ohne K3C_DEV_PORT: nie der Port der laufenden Workbench (mcpsrv.DefaultPort).
 	devMCPPort = "5190"
 	// devGrace lässt dem Kind Zeit für shutdown (Tasks und eigene Dienste stoppen), bevor devrun hart beendet.
@@ -105,7 +105,11 @@ func runDev(root string) error {
 	if v, ok := os.LookupEnv(envUIPort); ok {
 		env = append(env, envUIPort+"="+v)
 	}
-	child := devChild
+	uiPort := os.Getenv(envUIPort)
+	if uiPort == "" {
+		uiPort = strconv.Itoa(defaultUIPort)
+	}
+	child := devChild + uiPort
 	if runtime.GOOS == "windows" {
 		child += ".exe"
 	}

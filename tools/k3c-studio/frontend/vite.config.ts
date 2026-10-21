@@ -1,6 +1,10 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { ALIAS, DEDUPE, DIST, PUBLIC, REPO } from './paths.ts';
+import { waitForBackend } from '../../webkit/lib/devProxy.ts';
+
+// Standard: das Backend von `task k3c-studio:dev` (Port 8192); `dev:ui` setzt K3C_STUDIO_API ausdrücklich.
+const API = process.env.K3C_STUDIO_API ?? 'http://127.0.0.1:8192';
 
 // Frontend des Asset-Studios (B-459): `vite build` schreibt nach tools/k3c-studio/frontend/dist/, das Fenster k3c-studio
 // liefert es unter /studio/ aus (B-507, nicht mehr der Spielserver); `base: './'` hält die Adressen relativ.
@@ -11,7 +15,7 @@ import { ALIAS, DEDUPE, DIST, PUBLIC, REPO } from './paths.ts';
 export default defineConfig(({ command }) => ({
   appType: 'mpa',
   base: './',
-  plugins: [react()],
+  plugins: [react(), waitForBackend(API)], // /api wartet, bis das Backend bereit ist (auch beim Neustart)
   resolve: { alias: ALIAS, dedupe: DEDUPE },
   publicDir: command === 'serve' ? PUBLIC : false,
   build: { outDir: DIST, emptyOutDir: true },
@@ -21,7 +25,6 @@ export default defineConfig(({ command }) => ({
     // Kein CORS: sonst beantwortet Vite Preflights fremder lokaler Seiten und reicht deren Anfragen an das Backend weiter.
     cors: false,
     fs: { allow: [REPO] },
-    // Standard: das Backend von `task k3c-studio:dev` (Port 8192); `dev:ui` und `window` setzen K3C_STUDIO_API ausdrücklich.
-    proxy: { '/api': { target: process.env.K3C_STUDIO_API ?? 'http://127.0.0.1:8192', changeOrigin: false } },
+    proxy: { '/api': { target: API, changeOrigin: false } },
   },
 }));

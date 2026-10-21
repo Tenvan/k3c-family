@@ -6,7 +6,7 @@ Gemeinsame Oberflächen-Bausteine aller Wails-Frontends (k3c-dev, Asset-Studio, 
 
 ## Design
 
-- `lib/` (ohne Oberfläche): `errors.ts` (`errorText`), `prefs.ts` (`createPrefs(prefix)` mit `loadPref`, `loadText`, `savePref`, `loadJSON`, `saveJSON`, `isStringList`; jede App bindet ihr Präfix in `src/lib/prefs.ts`), `useDebounced.ts`, `split.ts` (`splitShare`, `clampSplit`, `parseSplit`, `useSplit(store, key, dflt)`).
+- `lib/` (ohne Oberfläche): `errors.ts` (`errorText`), `prefs.ts` (`createPrefs(prefix)` mit `loadPref`, `loadText`, `savePref`, `loadJSON`, `saveJSON`, `isStringList`; jede App bindet ihr Präfix in `src/lib/prefs.ts`), `useDebounced.ts`, `split.ts` (`splitShare`, `clampSplit`, `parseSplit`, `useSplit(store, key, dflt)`), `devProxy.ts` (Vite-Plugin `waitForBackend`: hält `/api` im Dev-Server zurück, bis das Backend lauscht; nur für `vite.config.ts`, Node, mit Node-Typen per Referenz).
 - `atoms/` (`@webkit/atoms`): Re-Export der Radix-Grund-Atome (Layout, Text, Controls) und eigene Atome `ActionButton` (Ladezustand), `CardButton` (Karte als Knopf), `LinkButton` (Knopf als Link), `SelectField` (Radix Select aus Einträgen, leerer Wert erlaubt, Wert als `data-value` an Auslöser und Einträgen), `StatusBadge` (Badge mit Punkt), `Splitter`, `Tip`, `Tone`/`TONE_COLOR`. Nur hier stehen rohe HTML-Controls.
 - `molecules/` (`@webkit/molecules`): Radix Card, Callout, DataList, Gruppen, Popover; `NoticeCard` (Callout), `CheckField`, `SwitchField`.
 - `organisms/` (`@webkit/organisms`): Radix Dialog, AlertDialog, DropdownMenu, ContextMenu, Tabs, TabNav, Table; `AppHeader` (Titel, Reiter, rechte Leiste).

@@ -49,7 +49,8 @@ func runDev(root string) error {
 	if _, err := os.Stat(filepath.Join(dir, "go.mod")); err != nil {
 		return errors.New("-dev gehört in die Repo-Wurzel (tools/k3c-studio/go.mod nicht gefunden)")
 	}
-	child := filepath.Join(dir, "build", "bin", "k3c-studio-devchild")
+	// je Backend-Port eine eigene Kind-EXE: zwei Dev-Läufe (Wurzel, Worktree, Test) ersetzen sich nicht gegenseitig die EXE
+	child := filepath.Join(dir, "build", "bin", "k3c-studio-devchild-"+envOr("K3C_STUDIO_PORT", "8192"))
 	if runtime.GOOS == "windows" {
 		child += ".exe"
 	}
@@ -65,4 +66,12 @@ func runDev(root string) error {
 		Grace:   devGrace,
 		Log:     slog.New(conlog.New(os.Stderr, slog.LevelInfo, conlog.Color())),
 	})
+}
+
+// envOr liefert die Umgebungsvariable name oder dflt.
+func envOr(name, dflt string) string {
+	if v := os.Getenv(name); v != "" {
+		return v
+	}
+	return dflt
 }

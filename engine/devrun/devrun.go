@@ -37,12 +37,16 @@ func takeChildEnv() bool {
 	return v
 }
 
+// EnvRebuild erzwingt den ersten Build, auch wenn das Kind neuer als alle beobachteten Quellen ist (fresh). Nötig, wenn
+// das Kind von Dateien außerhalb von Watch abhängt, z. B. go:embed auf JSON oder frontend/dist.
+const EnvRebuild = "K3C_DEV_REBUILD"
+
 // Config beschreibt einen Dev-Lauf.
 type Config struct {
 	Name    string   // für Logs, z. B. "studio"
 	Dir     string   // Arbeitsordner für go build (Modul-Wurzel der App); dessen go.mod und go.sum werden immer beobachtet
 	Package string   // Paket für go build, z. B. "." oder "./cmd/k3c-server"
-	Child   string   // fester Pfad der Kind-EXE, z. B. bin/k3c-studio-dev.exe (absolut oder relativ zu Dir)
+	Child   string   // fester Pfad der Kind-EXE, z. B. build/bin/k3c-studio-devchild-8192.exe (absolut oder relativ zu Dir)
 	Args    []string // Argumente des Kindes; das Kind läuft im Arbeitsverzeichnis des Aufrufers
 	Env     []string // zusätzliche Umgebung des Kindes (K3C_DEV_CHILD=1 setzt Run selbst)
 	// Watch sind Ordner (rekursiv, relativ zu Dir oder absolut), deren Go-Quellen beobachtet werden (*.go ohne _test.go,
@@ -134,7 +138,12 @@ func (r *runner) run(ctx context.Context) error {
 	defer r.shutdown()
 	r.log.Info("🚀 Dev-Lauf startet", "paket", r.c.Package, "kind", r.child)
 	base := snapshot(r.watch, r.exts)
-	r.rebuild(ctx)
+	if os.Getenv(EnvRebuild) == "" && fresh(r.child, base) {
+		r.log.Info("⏩ Kind ist neuer als alle Quellen, kein erster Build (Neubau erzwingen: " + EnvRebuild + "=1 oder EXE löschen)")
+		r.start()
+	} else {
+		r.rebuild(ctx)
+	}
 	tick := time.NewTicker(pollEvery)
 	defer tick.Stop()
 	for {

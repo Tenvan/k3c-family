@@ -1,7 +1,7 @@
 # tools/k3c-studio/
 
 ## Responsibility
-Eigenständiges Fenster (Wails, `main.go`, `window.go`): startet das Backend `backend/` und die Oberfläche `frontend/dist` auf Loopback (Port 8091, `K3C_STUDIO_PORT`), zeigt sie im Fenster und merkt Größe und Position wie k3c-dev (`%AppData%\k3c\k3c-studio.json`). Bauen: `task k3c-studio:build` → `bin/k3c-studio.exe`. Ohne Fenster: `-headless` (Backend und Engine auf `K3C_STUDIO_PORT`, `dev.go`); `-dev` baut es bei jeder Go-Änderung als Kind neu (`engine/devrun`, `task k3c-studio:dev` mit Vite 5192 im Browser, Backend 8192; das Fenster unter `wails dev`: `task k3c-studio:window`).
+Eigenständiges Fenster (Wails, `main.go`, `window.go`): startet das Backend `backend/` und die Oberfläche `frontend/dist` auf Loopback (Port 8091, `K3C_STUDIO_PORT`), zeigt sie im Fenster und merkt Größe und Position wie k3c-dev (`%AppData%\k3c\k3c-studio.json`). Bauen: `task k3c-studio:build` → `bin/k3c-studio.exe`. Ohne Fenster: `-headless` (Backend und Engine auf `K3C_STUDIO_PORT`, `dev.go`); `-dev` baut es bei jeder Go-Änderung als Kind neu (`build/bin/k3c-studio-devchild-<Port>.exe`, `engine/devrun`, `task k3c-studio:dev` mit Vite 5192 im Browser, Backend 8192; das Fenster unter `wails dev`: `task k3c-studio:window`).
 
 Frontend des Asset-Studios (B-459): React-Oberfläche in `frontend/`, Build nach `frontend/dist/` (`task k3c-studio:frontend`), nur vom Fenster unter `/studio/` ausgeliefert; der Spielserver hat keine Studio-Seite und keine Kachel mehr (Entscheidung 004, B-507). Das **Backend** (RPC, Register, Planung) liegt in [`backend/`](backend/codemap.md) (Paket `backend`, bis TS1.1 `engine/studio`).
 

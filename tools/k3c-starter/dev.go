@@ -28,7 +28,12 @@ func runDev() error {
 	if _, err := os.Stat(filepath.Join(dir, "go.mod")); err != nil {
 		return fmt.Errorf("-dev gehört in die Repo-Wurzel (tools/k3c-starter/go.mod nicht gefunden in %s)", root)
 	}
-	child := filepath.Join(dir, "build", "bin", "k3c-starter-devchild")
+	port := os.Getenv("K3C_STARTER_API_PORT")
+	if port == "" {
+		port = "8194"
+	}
+	// je API-Port eine eigene Kind-EXE: parallele Dev-Läufe ersetzen sich nicht gegenseitig die EXE
+	child := filepath.Join(dir, "build", "bin", "k3c-starter-devchild-"+port)
 	if runtime.GOOS == "windows" {
 		child += ".exe"
 	}
@@ -41,7 +46,7 @@ func runDev() error {
 		Child:   child,
 		Args:    []string{"-headless"},
 		Env:     []string{"K3C_ROOT=" + root},
-		Watch:   []string{"."},
+		Watch:   []string{".", "../../engine/devrun"}, // der Starter bindet engine/devrun über replace ein
 		Grace:   devGrace,
 		Log:     slog.Default(),
 	})

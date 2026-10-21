@@ -19,8 +19,9 @@ tasks:
     desc: "Starter als -headless unter devrun: bei jeder Go-Änderung in tools/k3c-starter neu bauen und starten, Starter-API auf Port 8194 (K3C_STARTER_API_PORT)"
     deps: [':tmp', dist]
     cmds:
-      - cd {{.STARTER}} && go build -o build/bin/k3c-starter-dev{{exeExt}} .
-      - '{{.STARTER}}/build/bin/k3c-starter-dev{{exeExt}} -dev'
+      # je API-Port eine eigene Supervisor-EXE (und Kind-EXE, dev.go): parallele Dev-Läufe stören sich nicht
+      - cd {{.STARTER}} && go build -o build/bin/k3c-starter-dev-{{.K3C_STARTER_API_PORT | default "8194"}}{{exeExt}} .
+      - '{{.STARTER}}/build/bin/k3c-starter-dev-{{.K3C_STARTER_API_PORT | default "8194"}}{{exeExt}} -dev'
 
   dist:
     internal: true

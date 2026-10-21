@@ -312,3 +312,30 @@ func waitUntil(t *testing.T, what string, cond func() bool) {
 		time.Sleep(50 * time.Millisecond)
 	}
 }
+
+func TestFreshNurWennDieEXENeuerIst(t *testing.T) {
+	dir := t.TempDir()
+	src, exe := filepath.Join(dir, "a.go"), filepath.Join(dir, "app.exe")
+	write(t, src, "package main")
+	if fresh(exe, snapshot([]string{dir}, []string{".go"})) {
+		t.Error("ohne EXE ist nichts aktuell")
+	}
+	write(t, exe, "x")
+	past := time.Now().Add(-time.Hour)
+	if err := os.Chtimes(src, past, past); err != nil {
+		t.Fatal(err)
+	}
+	if !fresh(exe, snapshot([]string{dir}, []string{".go"})) {
+		t.Error("EXE neuer als die Quelle muss als aktuell gelten")
+	}
+	future := time.Now().Add(time.Hour)
+	if err := os.Chtimes(src, future, future); err != nil {
+		t.Fatal(err)
+	}
+	if fresh(exe, snapshot([]string{dir}, []string{".go"})) {
+		t.Error("eine neuere Quelle verlangt einen Build")
+	}
+	if fresh(exe, nil) {
+		t.Error("ohne beobachtete Dateien wird gebaut")
+	}
+}
