@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** eingeplant
-- **Sprint:** WZ21
+- **Status:** erledigt
+- **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-20
 - **Spec:** Entwurf
@@ -59,4 +59,6 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-2026-10-20: Nach `claude auth logout` und `claude auth login` von Ralf lief der Chat ohne Neustart des Studios. Ursache war also die abgelaufene Anmeldung der eigenständigen CLI; die geerbte Umgebung (Punkt 1) war hier nicht schuld, bleibt aber als Risiko beim Start aus einer Claude-Sitzung (ungeprüft). Punkt 2 (doppelte Anzeige) bleibt offen.
+2026-10-20: Nach `claude auth logout` und `claude auth login` von Ralf lief der Chat ohne Neustart des Studios. Ursache war die abgelaufene Anmeldung der eigenständigen CLI.
+
+Behoben mit PR Tenvan/k3c-family#406 (Chat-Controls, ohne Sprint): Punkt 1 – `chatEnviron` (`tools/k3c-studio/backend/chat_cli.go`) entfernt geerbte `CLAUDE_CODE_*`, `CLAUDECODE` und `ANTHROPIC_BASE_URL` und behält Nutzer-Einstellungen aus `chatKeepEnv` (Git-Bash-Pfad, Bedrock/Vertex/Foundry, `MAX_OUTPUT_TOKENS`, `OAUTH_TOKEN`); ein selbst gesetzter Proxy über `ANTHROPIC_BASE_URL` fällt damit bewusst weg. Punkt 2 – `answerText` (`chatAdapter.ts`) zeigt den Fehler nur einmal.
