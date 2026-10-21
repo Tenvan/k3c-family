@@ -46,25 +46,25 @@ export function pillTitle(marks: readonly WtMark[]): string {
 
 const sprintOf = (nr: string) => nr.split('.')[0] ?? '';
 
-type Add = (data: Draft, c: WorktreeChange) => void;
+type Add = (data: Draft, c: WorktreeChange, wt: string) => void;
 interface Draft { sprints: PlanSprint[]; tickets: PlanTicket[]; projects?: PlanProject[] }
 
 const ADD: Record<WorktreeChange['item'], Add> = {
-  Projekt: (d, c) => {
-    if (d.projects && !d.projects.some((p) => p.id === c.id)) d.projects.push({ id: c.id, title: c.text, status: 'aktiv', rang: '–', sprints: [] });
+  Projekt: (d, c, wt) => {
+    if (d.projects && !d.projects.some((p) => p.id === c.id)) d.projects.push({ id: c.id, title: c.text, status: 'aktiv', rang: '–', sprints: [], wt });
   },
-  Sprint: (d, c) => {
+  Sprint: (d, c, wt) => {
     // Unbekanntes Projekt → loser Sprint, sonst blendet `groupProjects` ihn aus (B-484)
     const owner = d.projects?.find((p) => p.id === c.project);
-    if (!d.sprints.some((s) => s.id === c.id)) d.sprints.push({ id: c.id, title: c.text, domain: '', status: 'geplant', reife: '', spec: '', tickets: [], sessions: [], project: owner ? owner.id : '–' });
+    if (!d.sprints.some((s) => s.id === c.id)) d.sprints.push({ id: c.id, title: c.text, domain: '', status: 'geplant', reife: '', spec: '', tickets: [], sessions: [], project: owner ? owner.id : '–', wt });
     if (owner && !owner.sprints.includes(c.id)) d.projects = d.projects?.map((p) => (p === owner ? { ...p, sprints: [...p.sprints, c.id] } : p));
   },
-  Ticket: (d, c) => {
-    if (!d.tickets.some((x) => x.nr === c.id)) d.tickets.push({ nr: c.id, title: c.text, domain: '', typ: '', prio: '', env: '', status: 'offen', sprint: c.sprint || '', spec: '', project: c.project || '–' });
+  Ticket: (d, c, wt) => {
+    if (!d.tickets.some((x) => x.nr === c.id)) d.tickets.push({ nr: c.id, title: c.text, domain: '', typ: '', prio: '', env: '', status: 'offen', sprint: c.sprint || '', spec: '', project: c.project || '–', wt });
   },
-  Session: (d, c) => {
+  Session: (d, c, wt) => {
     const sp = d.sprints.find((s) => s.id === sprintOf(c.id));
-    if (sp && !sp.sessions.some((x) => x.nr === c.id)) sp.sessions.push({ nr: c.id, typ: '', agent: '', status: 'entwurf', titel: c.text });
+    if (sp && !sp.sessions.some((x) => x.nr === c.id)) sp.sessions.push({ nr: c.id, typ: '', agent: '', status: 'entwurf', titel: c.text, wt });
   },
 };
 const ORDER: WorktreeChange['item'][] = ['Projekt', 'Sprint', 'Ticket', 'Session']; // Sprint vor seinen Sessions
@@ -72,13 +72,14 @@ const ORDER: WorktreeChange['item'][] = ['Projekt', 'Sprint', 'Ticket', 'Session
 /**
  * Ergänzt die Daten der Wurzel um Einträge, die nur in einem Worktree existieren (Änderung `neu`): Ticket in der
  * Ticket-Liste, Session unter ihrem Sprint, Sprint und Projekt in ihren Listen (B-467/AC-04). Sie tragen die Pill „neu“
- * über den Index; die Wurzel-Daten bleiben unverändert.
+ * über den Index und `wt` mit dem Branch (nur lesend, B-483; bei mehreren Worktrees der erste); die Wurzel-Daten bleiben
+ * unverändert.
  */
 export function withWorktreeEntries(data: PlanningData, diffs: readonly WorktreeDiff[]): PlanningData {
-  const news = diffs.filter((d) => !d.error).flatMap((d) => d.changes.filter((c) => c.kind === 'neu'));
+  const news = diffs.filter((d) => !d.error).flatMap((d) => d.changes.filter((c) => c.kind === 'neu').map((c) => ({ c, wt: d.branch || d.path })));
   if (news.length === 0) return data;
   const draft: Draft = { sprints: data.sprints.map((s) => ({ ...s, sessions: [...s.sessions] })), tickets: [...data.tickets] };
   if (data.projects) draft.projects = [...data.projects];
-  for (const item of ORDER) news.filter((c) => c.item === item).forEach((c) => ADD[item](draft, c));
+  for (const item of ORDER) news.filter(({ c }) => c.item === item).forEach(({ c, wt }) => ADD[item](draft, c, wt));
   return { ...data, sprints: draft.sprints, tickets: draft.tickets, ...(draft.projects ? { projects: draft.projects } : {}) };
 }

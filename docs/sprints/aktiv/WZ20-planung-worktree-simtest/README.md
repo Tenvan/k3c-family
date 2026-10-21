@@ -58,7 +58,7 @@ keine. Entschieden von 🧑 (2026-10-21): `sim_test` mit Worktree baut die Binar
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ20.1 | `WZ20.1-planungstest-entwuerfe-wt-sprints.md` | Umsetzung | autonom | fertig |
-| WZ20.2 | `WZ20.2-wt-eintraege-nur-lesend.md` | Umsetzung | autonom | offen |
+| WZ20.2 | `WZ20.2-wt-eintraege-nur-lesend.md` | Umsetzung | autonom | fertig |
 | WZ20.3 | `WZ20.3-sim-test-checkout.md` | Umsetzung | autonom | offen |
 | WZ20.4 | `WZ20.4-review.md` | Review | autonom | offen |
 
