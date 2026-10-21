@@ -173,6 +173,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-517](B-517-geplante-chunks-gegnerlager.md) | REG | Idee | mittel | offen | – | Geplante Chunks tragen Gegnerlager mit stationärer Wache |
 | [B-519](B-519-plan-next-origin.md) | DEV | Problem | mittel | offen | – | plan_next berücksichtigt den Stand der Sprint-Branches auf origin |
 | [B-520](B-520-check-run-blockiert.md) | DEV | Problem | hoch | offen | – | check_run wartet bis zum Ende des Laufs und meldet Fortschritt statt Lauf-ID zum Nachfragen |
+| [B-521](B-521-types-ts-aufteilen.md) | CLI | Schuld | niedrig | offen | – | src/model/types.ts liegt über der Dateigrenze von 400 Zeilen |
+| [B-522](B-522-ressourcen-auf-ruine.md) | SIM | Problem | mittel | offen | – | Zufalls-Ressourcen eines geplanten Chunks können auf seiner Ruine liegen |
+| [B-523](B-523-ruine-kollision-hub-platz.md) | SIM | Schuld | niedrig | offen | – | Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt |
 
 ## Archiv
 

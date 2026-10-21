@@ -71,7 +71,7 @@ Entschieden im Regel-Workshop WZ14.1 (2026-10-21, Ralf im Chat) samt Nachtrag na
 | WZ14.5 | `WZ14.5-protokoll-vorschau-ruine.md` | Umsetzung | autonom | fertig |
 | WZ14.6 | `WZ14.6-ruine-zeichnen.md` | Umsetzung | autonom | fertig |
 | WZ14.7 | `WZ14.7-editor-ruine.md` | Umsetzung | autonom | fertig |
-| WZ14.8 | `WZ14.8-review.md` | Review | autonom | in Arbeit |
+| WZ14.8 | `WZ14.8-review.md` | Review | autonom | fertig |
 | WZ14.9 | `WZ14.9-abnahme.md` | Review | Mensch | offen |
 
 - WZ14.1 (REG) Workshop mit 🧑: Beschlüsse, Regeltext § 8, Glossar (AC-01).
@@ -88,5 +88,7 @@ Budget: 9 Sessions inklusive Workshop, Review und Abnahme liegt über den üblic
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-21, Review WZ14.8 (Claude, getrennter Reviewer Opus): AC-01–AC-05 belegt (Ergebnisse WZ14.1–WZ14.7), Golden unverändert, keine Planung mit Ruine in `data/worlds/`, Protokoll 7, `PreviewChunkObjects` unverändert.
+Behoben: S1 – Vorschau-Ausbau und „alles bauen“ setzten bei Ruinen MaxHP = HP (keine Schäden sichtbar, Reparatur gedeckelt); L2 – „nicht gebaut“ in der Vorschau verlor die Kennung `ruin` (Test `building_ruin_preview_test.go`).
+Neue Tickets: B-521 (types.ts über 400 Zeilen), B-522 (Zufalls-Ressourcen auf der Ruine), B-523 (Ruine auf Hub-Platz-Lage).
+`task check:all`, `task check:go`, `task check:studio` grün. Versionsvorschlag: v0.21.0. Offen: Abnahme durch 🧑 (WZ14.9, AC-07).

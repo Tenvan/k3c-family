@@ -167,10 +167,11 @@ func devBuildSite(w *World, s *Site, level int) {
 		s.Level = min(level, len(levels))
 		hp = levels[s.Level-1].HP
 	}
+	cur := hp
 	if s.State == "built" && s.HP < hp {
-		hp = s.HP // beschädigt bleibt beschädigt, aber nie über der neuen Stufe
+		cur = s.HP // beschädigt (auch eine Ruine) bleibt beschädigt, MaxHP ist die der Stufe
 	}
-	s.State, s.BuildProgress, s.HP, s.MaxHP, s.WorkerID = "built", 1, hp, hp, nil
+	s.State, s.BuildProgress, s.HP, s.MaxHP, s.WorkerID = "built", 1, cur, hp, nil
 	s.Upgrade, s.UpgradePaid = "", 0
 }
 

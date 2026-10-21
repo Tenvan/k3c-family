@@ -92,7 +92,7 @@ type SiteLook struct {
 // gebauten Platz werden ignoriert; eine Stufe außerhalb der Stufen der Art ist ein Fehler.
 func PreviewSetSite(s *Site, look SiteLook) error {
 	if look.Unbuilt {
-		*s = Site{ID: s.ID, Kind: s.Kind, X: s.X, State: "unpaid", MaxHP: buildings[s.Kind].HP}
+		*s = Site{ID: s.ID, Kind: s.Kind, X: s.X, State: "unpaid", MaxHP: buildings[s.Kind].HP, Ruin: s.Ruin} // eine Ruine behält ihre Kennung wie bei destroySite
 		return nil
 	}
 	if s.State != "built" {
