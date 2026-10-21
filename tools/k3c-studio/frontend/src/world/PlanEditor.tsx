@@ -3,7 +3,8 @@ import { Button, Text, TextField } from '@webkit/atoms';
 import { useState } from 'react';
 import { ConvertButton } from './ConvertButton';
 import { KindPicker } from './KindPicker';
-import { CHUNK_KINDS, OBJECT_KINDS, addChunk, addObject, moveObject, removeChunk, removeObject, slotLabel, updateChunk } from './plan';
+import { RuinField } from './RuinField';
+import { CHUNK_KINDS, OBJECT_KINDS, addChunk, addObject, moveObject, removeChunk, removeObject, setRuin, slotLabel, updateChunk } from './plan';
 import type { PlanState } from './usePlan';
 
 const defaultKind = (biome = ''): string => Object.keys(BIOMES.find((b) => b.id === biome)?.chunkWeights ?? {})[0] ?? 'forest';
@@ -12,7 +13,7 @@ const isControl = (target: EventTarget) => target instanceof Element && target.c
 const number = (value: string, fallback: number) => (value === '' || Number.isNaN(Number(value)) ? fallback : Number(value));
 
 /** Editor für geplante Chunks im Welt-Betrachter (B-461/AC-09, rechte Spalte als Baum): Chunks am Platz anlegen, Art,
- *  Chunk-Seed und feste Objekte bearbeiten (Insel, Stufe und Inselgröße wählt `WorldStructure`) und einen Seed-Chunk mit dem Seed `seed` des
+ *  Chunk-Seed, feste Objekte und die Ruine (WZ14.7) bearbeiten (Insel, Stufe und Inselgröße wählt `WorldStructure`) und einen Seed-Chunk mit dem Seed `seed` des
  *  Levels in feste Objekte umwandeln (B-485/AC-04, AC-06); ein Klick auf einen Eintrag (nicht auf ein Feld) und jede Änderung eines Chunks (nicht sein Löschen) melden seinen
  *  Platz an `onSlot`, bei neuem Platz den neuen (die Vorschauen zentrieren ihn, WZ17.5); Art und Objekt in der durchsuchbaren Liste mit Emoji (B-485/AC-01). Prüffehler stehen am Platz (AC-06); Speichern nur, wenn der Entwurf gültig ist. */
 export function PlanEditor({ plan, seed, onSlot }: { plan: PlanState; seed: string; onSlot?: (slot: number) => void }) {
@@ -55,6 +56,7 @@ export function PlanEditor({ plan, seed, onSlot }: { plan: PlanState; seed: stri
                 <Button variant="outline" color="red" aria-label={`Objekt ${j + 1} Platz ${slotLabel(c.slot)} löschen`} onClick={() => change(removeObject(draft, i, j), c.slot)}>×</Button>
               </div>
             ))}
+            <RuinField chunk={c} kinds={plan.view?.ruinKinds ?? []} onChange={(ruin) => change(setRuin(draft, i, ruin), c.slot)} />
             {!check.ok && check.slot === c.slot && <Text as="p" size="1" color="red" role="alert" className="wd-error" data-slot={c.slot}>{check.error}</Text>}
           </li>
         ))}

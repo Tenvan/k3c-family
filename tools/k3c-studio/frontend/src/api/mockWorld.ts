@@ -1,5 +1,6 @@
 import fixture from './previewFixture.json';
 import { hubLevelChoices } from '../stage/stageLogic';
+import type { Site } from '@game/model/types';
 import type { GameServersView, OpenGameResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource } from './types';
 
 // Erfundenes Level für den Mock (Browser, Tests): immer gleich zu gleichem Seed, 1 Abschnitt = 30 Units. Der Seed
@@ -33,12 +34,23 @@ function levelsOf(candidate: string | undefined): number | null {
   }
 }
 
+/** Ruinen des Entwurfs als Plätze der Vorschau-Welt (WZ14.7): Lage aus dem Platz im Mock-Level (Abschnitte wie
+ *  `mockWorldLevel`, 30 Units, Hub ± n), gebaut mit einem Viertel der HP und Kennung `ruin` wie im Server. Ohne Prüfung:
+ *  die macht das Backend. */
+function mockRuinSites(source: WorldSource): Site[] {
+  const hub = kindsOf(source.chunkCount).indexOf('hub');
+  return (source.planned ?? []).flatMap((c, n) => (c.buildings ?? []).map((b): Site => {
+    const x = (hub + c.slot) * 30 + b.at;
+    return { id: 9000 + n, kind: b.kind as Site['kind'], x, state: 'built', paidGold: 0, buildProgress: 1, hp: 50, maxHp: 200, workerId: null, bows: 0, bowPaidGold: 0, ruin: true };
+  }));
+}
+
 // Vorschau-Welt für den Mock: ein von der Vorschau-Funktion des Servers erzeugter Zustand (Seed k3c, Wald, Hub-Stufe 5,
 // ohne Bürger und Gegner). Hub-Stufe, Tageszeit und Gebäude-Auswahl wirken hier nur auf die Felder, nicht auf den Ausbau.
 export function mockWorldPreview(args: WorldPreviewArgs): WorldPreviewView {
   if (args.seed === 'fehler') return { level: fixture.level as never, state: null, error: 'Seed braucht 1 bis 64 Zeichen' };
   const state = structuredClone(fixture.state) as unknown as NonNullable<WorldPreviewView['state']>;
-  state.sites = state.sites.filter((s) => args.buildings[`${s.kind}@${s.x}`] !== false);
+  state.sites = [...state.sites, ...mockRuinSites(args.source)].filter((s) => args.buildings[`${s.kind}@${s.x}`] !== false);
   const top = levelsOf(args.hubCandidate);
   if (top === null) return { level: fixture.level as never, state: null, error: 'vorschau: Kandidaten-hub.json nicht lesbar' };
   state.hubLevel = args.hubLevel > 0 ? Math.min(args.hubLevel, top) : top;

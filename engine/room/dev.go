@@ -7,7 +7,8 @@ import (
 )
 
 // DevAction ist eine Dev-Aktion eines Geräts (Nachricht dev, B-178): gold und material brauchen slot und amount,
-// material zusätzlich resource, timescale braucht factor, pause braucht paused (B-231); wave braucht slot, phase braucht
+// material zusätzlich resource, timescale braucht factor, pause braucht paused (B-231); wave und castleFall (Stufenverlust
+// in der Stufe des Monarchen, WZ14.5) brauchen slot, phase braucht
 // phase (day, dusk, night) (B-232); grade braucht grade (Name aus data/difficulty.json, gilt ab der nächsten Welle, B-080).
 // maxStock (+100 je Aufruf), fillStock und nextPhase brauchen nichts; cheapBuild und timescaleAuto brauchen on, buildAll
 // braucht level (1 bis 5).
@@ -79,10 +80,14 @@ func (r *Room) devApply(who string, a DevAction, player func(int) (int, bool)) e
 		var more []any
 		more, ok = r.devStock(a, player)
 		attrs = append(attrs, more...)
-	case "wave":
+	case "wave", "castleFall":
 		var idx int
 		if idx, ok = devIndex(a, player); ok {
-			ok = sim.DevStartWave(r.isl, idx)
+			if a.Action == "wave" {
+				ok = sim.DevStartWave(r.isl, idx)
+			} else {
+				ok = sim.DevCastleFall(r.isl, idx)
+			}
 			attrs = append(attrs, "slot", *a.Slot)
 		}
 	case "phase":

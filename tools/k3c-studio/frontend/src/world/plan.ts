@@ -1,4 +1,4 @@
-import type { PlanIsland, PlannedChunk, PlannedObject } from '../api';
+import type { PlanIsland, PlannedBuilding, PlannedChunk, PlannedObject } from '../api';
 
 // Reine Logik des Editors für geplante Chunks (B-461, WZ8.5): der Entwurf ist eine Liste geplanter Chunks einer Tiefe;
 // jede Änderung liefert eine neue Liste. Kein DOM, kein Backend.
@@ -37,13 +37,22 @@ export const moveObject = (draft: Draft, index: number, at: number, to: number):
   withObjects(draft, index, (o) => o.map((x, i) => (i === at ? { ...x, at: to } : x)));
 export const removeObject = (draft: Draft, index: number, at: number): PlannedChunk[] => withObjects(draft, index, (o) => o.filter((_, i) => i !== at));
 
-/** Form zum Prüfen und Speichern: leerer Seed und leere Objektliste fehlen, die Reihenfolge der Felder ist fest. */
+/** Setzt die Ruine des Chunks (höchstens eine, WZ14.7) oder entfernt sie (null); ob Art und Lage gelten, prüft das Backend. */
+export const setRuin = (draft: Draft, index: number, ruin: PlannedBuilding | null): PlannedChunk[] =>
+  draft.map((c, i) => (i === index ? { ...c, buildings: ruin ? [ruin] : [] } : c));
+
+/** Die Ruine des Chunks oder undefined */
+export const ruinOf = (c: PlannedChunk): PlannedBuilding | undefined => c.buildings?.[0];
+
+/** Form zum Prüfen und Speichern: leerer Seed, leere Objekt- und Ruinenliste fehlen, die Reihenfolge der Felder ist fest
+ *  (wie Go: slot, kind, seed, objects, buildings). */
 export function normalized(draft: Draft): PlannedChunk[] {
   return draft.map((c) => ({
     slot: c.slot,
     kind: c.kind,
     ...(c.seed ? { seed: c.seed } : {}),
     ...(c.objects && c.objects.length > 0 ? { objects: c.objects.map((o) => ({ kind: o.kind, at: o.at })) } : {}),
+    ...(c.buildings && c.buildings.length > 0 ? { buildings: c.buildings.map((b) => ({ kind: b.kind, at: b.at })) } : {}),
   }));
 }
 

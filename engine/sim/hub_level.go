@@ -28,9 +28,12 @@ func eachSite(w *World, f func(*Site)) {
 	}
 }
 
-// siteHubLevel ist die Hub-Stufe, ab der ein Hub-Platz bezahlbar ist (data/hub.json › sites, islandSites); 1 für
-// Plätze ohne Eintrag (Mauerlinien regelt lineOpen).
+// siteHubLevel ist die Hub-Stufe, ab der ein Hub-Platz bezahlbar ist (data/hub.json › sites, islandSites); für eine
+// Ruine die Hub-Stufe ihrer Art (building_ruin.go), 1 für andere Plätze ohne Eintrag (Mauerlinien regelt lineOpen).
 func siteHubLevel(w *World, s *Site) int {
+	if s.Ruin {
+		return kindHubLevel(w, s.Kind)
+	}
 	h := hubOf(w)
 	for _, list := range [][]HubSite{h.Sites, h.IslandSites} {
 		for _, h := range list {

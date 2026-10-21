@@ -67,6 +67,7 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 	for _, s := range worldSiteSpecs(w) {
 		w.Sites = append(w.Sites, emptySite(w, s.kind, s.x))
 	}
+	addRuinSites(w)
 	for i := range hub.StartTroops.Peasant {
 		t := spawnVagrant(w, hubX, hubX+2+float64(i))
 		t.Kind, t.HP, t.MaxHP = "peasant", troops["peasant"].HP, troops["peasant"].HP
@@ -112,7 +113,7 @@ func placeEntities(w *World) {
 }
 
 func emptySite(w *World, kind string, x float64) *Site {
-	return &Site{ID: w.newID(), Kind: kind, X: x, State: "unpaid", MaxHP: buildings[kind].HP}
+	return &Site{ID: w.newID(), Kind: kind, X: x, State: "unpaid", MaxHP: buildings[kind].HP, Ruin: isRuin(w, kind, x)}
 }
 
 // AddPlayer stellt einen neuen Monarchen an die Burg (Couch-Koop).
@@ -184,12 +185,17 @@ func castleFallen(w *World) {
 	w.Enemies, w.SpawnQueue, w.Projectiles = []*Enemy{}, []QueuedSpawn{}, []*Projectile{}
 }
 
-// castleLosses: Stufenverlust. Bauplätze der Stufe leer, Vorrat und Gold ihrer Spieler −50 %, Truppen außer Landstreichern weg.
+// castleLosses: Stufenverlust. Bauplätze der Stufe leer (Ruinen zurück in den Ausgangszustand, auch zerstörte),
+// Vorrat und Gold ihrer Spieler −50 %, Truppen außer Landstreichern weg.
 func castleLosses(w *World) {
 	w.hubSite = newHubSite(w) // ein laufender Hub-Ausbau ist verloren, die Hub-Stufe bleibt
 	for _, s := range w.Sites {
 		id := s.ID
-		*s = *emptySite(w, s.Kind, s.X) // verbraucht wie in TS eine ID je Bauplatz
+		if isRuin(w, s.Kind, s.X) {
+			*s = *ruinSite(w, s.Kind, s.X)
+		} else {
+			*s = *emptySite(w, s.Kind, s.X) // verbraucht wie in TS eine ID je Bauplatz
+		}
 		s.ID = id
 	}
 	halveStock(w.Stock)

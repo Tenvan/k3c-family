@@ -133,7 +133,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | eingeplant | GEB11 | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
 | [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
 | [B-465](B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | offen | – | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
-| [B-468](B-468-geplante-chunks-ruinen-gegnerlager.md) | REG | Idee | mittel | offen | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager |
+| [B-468](B-468-geplante-chunks-ruinen-gegnerlager.md) | REG | Idee | mittel | eingeplant | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager |
 | [B-469](B-469-gegner-seite-boss-effekte-nach-k5.md) | DEV | Idee | niedrig | eingeplant | WZ23 | Die Gegner-Seite zeigt Warnkreis, Boss-Leiste, Phasen und Event-Banner aus K5.1 |
 | [B-470](B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | eingeplant | W12 | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
 | [B-471](B-471-renderreference-abmelden.md) | DEV | Schuld | niedrig | eingeplant | WZ23 | renderReference beendet seine Animationsschleife, wenn die Karten verschwinden |
@@ -173,6 +173,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-517](B-517-geplante-chunks-gegnerlager.md) | REG | Idee | mittel | offen | – | Geplante Chunks tragen Gegnerlager mit stationärer Wache |
 | [B-519](B-519-plan-next-origin.md) | DEV | Problem | mittel | offen | – | plan_next berücksichtigt den Stand der Sprint-Branches auf origin |
 | [B-520](B-520-check-run-blockiert.md) | DEV | Problem | hoch | offen | – | check_run wartet bis zum Ende des Laufs und meldet Fortschritt statt Lauf-ID zum Nachfragen |
+| [B-521](B-521-types-ts-aufteilen.md) | CLI | Schuld | niedrig | offen | – | src/model/types.ts liegt über der Dateigrenze von 400 Zeilen |
+| [B-522](B-522-ressourcen-auf-ruine.md) | SIM | Problem | mittel | offen | – | Zufalls-Ressourcen eines geplanten Chunks können auf seiner Ruine liegen |
+| [B-523](B-523-ruine-kollision-hub-platz.md) | SIM | Schuld | niedrig | offen | – | Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt |
 
 ## Archiv
 

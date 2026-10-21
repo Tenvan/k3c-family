@@ -135,6 +135,9 @@ type Site struct {
 	Level       int     `json:"level,omitempty"`
 	Upgrade     string  `json:"upgrade,omitempty"`
 	UpgradePaid int     `json:"upgradePaid,omitempty"`
+	// Ruin: Der Platz ist eine Ruine der Planung (building_ruin.go). Dauerhafte Herkunft, immer aus dem Level per
+	// kind@x abgeleitet (isRuin), damit emptySite und destroySite sie neu setzen; nicht im Spielstand.
+	Ruin        bool    `json:"ruin,omitempty"`
 	plots       []plot  // Plantage einer gebauten Farm (building_plantation.go), ohne JSON
 	spellIn     float64 // Zaubertum: Sekunden bis zum nächsten Schuss (building_spell_tower.go), ohne JSON
 }

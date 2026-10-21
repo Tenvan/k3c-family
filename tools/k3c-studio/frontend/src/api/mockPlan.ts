@@ -3,7 +3,8 @@ import { mockWorlds, newWorld, type MockIsland, type MockWorld } from './mockWor
 import type { Backend, IslandSize, PlanCheckView, PlanIsland, PlannedChunk, PlanObjectsView, PlanSaved, PlanView, WorldSource } from './types';
 
 // Geplante Chunks im Mock (Browser, Tests): Welten mit Inseln (Tiefen 0–4) im Speicher. Die Prüfung kennt nur ein paar
-// Fehler: Platz 0, Platz jenseits der Länge (±7, mit Chunk-Anzahl n: ±(n/2 − 2)), die Art „volcano“ und eine Anzahl,
+// Fehler: Platz 0, Platz jenseits der Länge (±7, mit Chunk-Anzahl n: ±(n/2 − 2)), die Art „volcano“, eine Ruine fremder Art
+// oder mehr als eine Ruine und eine Anzahl,
 // die keine Inselgröße ist (Go prüft alles, siehe level.ValidatePlanFor).
 
 const BIOMES = ['forest', 'cave', 'mine', 'ironhold', 'crystal'];
@@ -12,6 +13,8 @@ export const MOCK_SIZES: IslandSize[] = [
   { name: 'sehr klein', chunkCount: 16 }, { name: 'klein', chunkCount: 24 }, { name: 'mittel', chunkCount: 40 },
   { name: 'groß', chunkCount: 64 }, { name: 'sehr groß', chunkCount: 100 }, { name: 'mega groß', chunkCount: 160 },
 ];
+/** Ruinen-Arten wie data/ruins.json › kinds */
+export const MOCK_RUIN_KINDS = ['workshop', 'storage', 'farm', 'barracks', 'tavern', 'healer', 'smithy', 'armory'];
 const sign = (n: number) => (n > 0 ? `+${n}` : String(n));
 
 export function mockCheckPlan(chunks: PlannedChunk[], count = 0): PlanCheckView {
@@ -23,6 +26,9 @@ export function mockCheckPlan(chunks: PlannedChunk[], count = 0): PlanCheckView 
     if (c.slot === 0) return { ok: false, slot: 0, error: 'auf Platz 0: es gibt keinen Platz 0 (Hub)' };
     if (Math.abs(c.slot) > reach) return { ok: false, slot: c.slot, error: `auf Platz ${sign(c.slot)}: jenseits der Länge (höchstens ±${reach})` };
     if (c.kind === 'volcano') return { ok: false, slot: c.slot, error: `auf Platz ${sign(c.slot)}: unbekannte Chunk-Art "volcano"` };
+    const ruin = c.buildings?.[0];
+    if (ruin && !MOCK_RUIN_KINDS.includes(ruin.kind)) return { ok: false, slot: c.slot, error: `auf Platz ${sign(c.slot)}: "${ruin.kind}" darf keine Ruine sein` };
+    if ((c.buildings?.length ?? 0) > 1) return { ok: false, slot: c.slot, error: `auf Platz ${sign(c.slot)}: höchstens eine Ruine je Chunk` };
   }
   return { ok: true, slot: 0, error: '' };
 }
@@ -51,7 +57,7 @@ export function mockPlan(): PlanPart & { touch: () => void; active: () => string
   let version = 1;
   const cur = () => worlds[active]!;
   const stand = () => `mock-${version}`;
-  const view = (): PlanView => ({ name: cur().name, notes: cur().notes, islands: cur().islands.map(islandView), sizes: MOCK_SIZES, stand: stand(), error: '' });
+  const view = (): PlanView => ({ name: cur().name, notes: cur().notes, islands: cur().islands.map(islandView), sizes: MOCK_SIZES, ruinKinds: MOCK_RUIN_KINDS, stand: stand(), error: '' });
   const islandOf = (id?: string) => cur().islands.find((i) => i.id === id) ?? cur().islands[0]!;
   const plannedOf = (source: WorldSource) => source.planned ?? islandOf(source.island).planned[String(islandOf(source.island).depths[source.stage ?? 0])] ?? [];
   const refused = (error: string, stale = false): PlanSaved => ({ stand: '', hint: '', error, stale });

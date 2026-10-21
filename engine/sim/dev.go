@@ -43,6 +43,18 @@ func DevStartWave(isl *Island, index int) bool {
 	return true
 }
 
+// DevCastleFall löst in der Stufe des Spielers index den Stufenverlust aus (castleLosses: Plätze leer, Ruinen zurück
+// in den Ausgangszustand, Vorrat und Gold −50 %, Truppen außer Landstreichern weg), unabhängig vom Niederlage-Modus.
+// false: kein Spieler.
+func DevCastleFall(isl *Island, index int) bool {
+	stage := isl.StageOf(index)
+	if stage < 0 {
+		return false
+	}
+	castleLosses(isl.Stages[stage])
+	return true
+}
+
 // DevSetPhase lässt die Zeit aller Stufen vorwärts zum Beginn der nächsten Phase (day, dusk, night) springen (B-232).
 // Der Zyklus steht danach kurz vor dem Wechsel, damit der nächste Schritt ihn samt Ereignissen (Welle, Morgen-Einkommen)
 // wie sonst auslöst, auch wenn die Stufe schon in dieser Phase war. false: unbekannte Phase.
@@ -155,10 +167,11 @@ func devBuildSite(w *World, s *Site, level int) {
 		s.Level = min(level, len(levels))
 		hp = levels[s.Level-1].HP
 	}
+	cur := hp
 	if s.State == "built" && s.HP < hp {
-		hp = s.HP // beschädigt bleibt beschädigt, aber nie über der neuen Stufe
+		cur = s.HP // beschädigt (auch eine Ruine) bleibt beschädigt, MaxHP ist die der Stufe
 	}
-	s.State, s.BuildProgress, s.HP, s.MaxHP, s.WorkerID = "built", 1, hp, hp, nil
+	s.State, s.BuildProgress, s.HP, s.MaxHP, s.WorkerID = "built", 1, cur, hp, nil
 	s.Upgrade, s.UpgradePaid = "", 0
 }
 

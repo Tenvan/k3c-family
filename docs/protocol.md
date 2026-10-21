@@ -289,7 +289,7 @@ das zählt als Abbruch.
 | `learn` | Gerät → Server | Skill lernen, im Raum | `slot` (vom Gerät), `skill` Skill-ID aus `data/monarch.json › skills` | `c2s-learn.json` |
 | `respec` | Gerät → Server | Skill-Verteilung zurücksetzen, im Raum | `slot` (vom Gerät) | `c2s-respec.json` |
 | `leave` | Gerät → Server | Raum bewusst verlassen | – | `c2s-leave.json` |
-| `dev` | Gerät → Server | nur im Dev-Mode (siehe *Dev-Aktionen*), im Raum | `action` und je Aktion: `gold` `slot`, `amount`; `material` `slot`, `resource`, `amount`; `timescale` `factor`; `pause` `paused` | `c2s-dev-gold.json`, `c2s-dev-material.json`, `c2s-dev-timescale.json`, `c2s-dev-pause.json` |
+| `dev` | Gerät → Server | nur im Dev-Mode (siehe *Dev-Aktionen*), im Raum | `action` und je Aktion: `gold` `slot`, `amount`; `material` `slot`, `resource`, `amount`; `timescale` `factor`; `pause` `paused`; `castleFall` `slot` | `c2s-dev-gold.json`, `c2s-dev-material.json`, `c2s-dev-timescale.json`, `c2s-dev-pause.json`, `c2s-dev-castlefall.json` |
 | `error` | Server → Gerät | Fehlerfall, siehe Codes | `code`, `message` (deutsch, für die Anzeige) | `s2c-error.json`, `s2c-error-forbidden.json` |
 
 Die Beispiele stammen aus dem Ablauf *2 Controller an der Xbox + 1 Handy*; `level`, `snap` und `delta` sind aus der
@@ -389,6 +389,11 @@ vom Server je Stufe abgelesen; die übrigen aus der Welt):
 `sites[].upgrade` (`waitingMaterial`, `waitingWorker`; fehlt ohne Ausbau oder solange Gold offen) mit `upgradePaid` und
 `level` (fehlt = 1) für den Ausbau von Mauer und Turm, `hubUpgrade.state` für den Hub. `waitingWorker` heißt bei
 `danger` „Gefahr“, sonst „kein Bauer“; den Text bildet der Client.
+
+**Ruinen (WZ14, B-468):** `sites[].ruin` ist `true` an einer Ruine der Planung (`docs/rules/geplante-chunks.md` § 8),
+auch nach Zerstörung und Wiederaufbau; sonst fehlt das Feld (additiv, Protokoll bleibt 7). Eine Ruine ist ein Platz wie
+jeder andere (`state`, `hp`, `maxHp`, Ausbau); die Vorschau des Studios liefert sie mit. Geprüft von
+`TestRuineInSnapUndDelta` und `TestRuineInDerVorschau` (`engine/net/ruin_test.go`).
 
 **Berufe:** `troops[].profession` (`miner`, `builder`, `craftsman`; fehlt = keiner) und `troops[].workSite` (Site-ID
 des Arbeitsplatzes, fehlt = keiner). Berufswahl, Tausch und Hub-Ausbau als Eingabe stehen in W5.2.
@@ -613,6 +618,7 @@ Weitere Dev-Aktionen (nur Dev-Mode, wirken auf die Insel des Raums, nichts davon
 | `buildAll` | `level` 1 bis 5 | alle Stufen: Hub-Stufe, Mauern/Türme bis Linie `level` gebaut und auf Stufe `level`, freie Plätze bis `level` gebaut (Tore nicht) |
 | `timescaleAuto` | `on` | Zeitraffer endet (1x) beim nächsten Tageszeitwechsel, einmalig; `on:false` nimmt es zurück |
 | `nextPhase` | | springt zum Beginn der nächsten Tageszeit (day → dusk → night → day) |
+| `castleFall` | `slot` | Stufenverlust in der Stufe des Monarchen wie beim Burgfall mit Niederlage-Modus `stage` (Plätze leer, Ruinen in den Ausgangszustand, Vorrat und Gold −50 %, Truppen außer Landstreichern weg), unabhängig vom Niederlage-Modus des Raums; Beispiel `c2s-dev-castlefall.json` |
 
 Die Diagnose (`GET /api/dev?room=`, Summary) trägt dazu `devCheapBuild`, `devStockBonus`, `devPurseBonus` (gleicher Wert) und `devTimescaleAuto`; das
 Lager-Maximum steht im Zustand wie sonst in `economy.stockMax`.

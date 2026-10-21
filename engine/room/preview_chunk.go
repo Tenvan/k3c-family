@@ -2,6 +2,7 @@ package room
 
 import (
 	"fmt"
+	"sort"
 
 	"k3c/engine/level"
 )
@@ -36,6 +37,32 @@ func PreviewChunkObjects(o PreviewOptions, slot int) ([]level.PlannedObject, err
 			out = append(out, level.PlannedObject{Kind: e.Kind, At: e.X - c.StartUnits})
 		}
 	}
+	return out, nil
+}
+
+// PreviewChunkRuins liefert die Ruinen des Chunks auf Platz slot im Vorschau-Level der Optionen (WZ14.5, B-468,
+// geplante-chunks.md § 8): Art und Lage `at` in Units ab Chunk-Anfang, sortiert nach Lage, im Format von
+// plannedChunks.buildings. Ohne Planung oder ohne Ruinen dort leer; Fehler wie PreviewChunkObjects. Kein Paketzustand.
+func PreviewChunkRuins(o PreviewOptions, slot int) ([]level.PlannedBuilding, error) {
+	if slot == 0 {
+		return nil, fmt.Errorf("vorschau: es gibt keinen Platz 0 (Hub)")
+	}
+	w, err := BuildPreview(o)
+	if err != nil {
+		return nil, err
+	}
+	c, err := chunkAt(w.Level, slot)
+	if err != nil {
+		return nil, err
+	}
+	end := c.StartUnits + w.Level.ChunkWidthUnits
+	out := []level.PlannedBuilding{}
+	for _, r := range w.Level.Ruins {
+		if r.X >= c.StartUnits && r.X < end {
+			out = append(out, level.PlannedBuilding{Kind: r.Kind, At: r.X - c.StartUnits}) // exakt wie bei den Objekten
+		}
+	}
+	sort.SliceStable(out, func(i, j int) bool { return out[i].At < out[j].At })
 	return out, nil
 }
 

@@ -134,6 +134,8 @@ export interface Site {
   upgrade?: 'waitingMaterial' | 'waitingWorker';
   /** Bezahltes Gold des laufenden Ausbaus; fehlt = 0. */
   upgradePaid?: number;
+  /** Ruine der Planung (docs/rules/geplante-chunks.md § 8); fehlt = keine Ruine. */
+  ruin?: boolean;
 }
 
 /** Ausbau auf die nächste Hub-Stufe (docs/protocol.md › Wirtschaft), vom Server berechnet. */

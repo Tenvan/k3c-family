@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** eingeplant
 - **Sprint:** WZ14
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-17
@@ -80,7 +80,7 @@ Beim Laden abgelehnt mit Insel, Tiefe, Platz und Grund (fail closed wie B-461):
 
 - Gebäudeart, die es nicht gibt oder die als Ruine nicht erlaubt ist (z. B. `castle`, `wall`, `stairsUp`).
 - Mehr als eine Ruine im Chunk.
-- Lage außerhalb des Chunks oder näher als 2 Units am Rand; näher als 4 Units an einem Bauplatz der Mauerlinien, dem Farm-Weltplatz, einer Ader, einem Portal oder einem festen Objekt; Farm-Ruine, deren Plantage (±3 Units) nicht in den Chunk passt.
+- Lage außerhalb des Chunks oder näher als 2 Units am Rand; näher als 4 Units am Farm-Weltplatz, an einer Ader, einem Portal oder einem festen Objekt; Farm-Ruine, deren Plantage (±3 Units) nicht in den Chunk passt. Zu den Bauplätzen der Mauerlinien gilt kein Abstand, Ruinen liegen überall (Nachtrag 🧑 2026-10-21).
 - Gleicher Schlüssel `kind@x` wie ein anderer Platz derselben Stufe.
 - Eintrag im Feld `enemies` → weiterhin „noch nicht unterstützt (B-517)“.
 - `data/ruins.json` ungültig (Anteil nicht in (0, 1], unbekannte Art, Hub-Gebäude) → Laden der Daten scheitert.
@@ -115,7 +115,11 @@ Nachtrag nach dem Spec-Review (2026-10-21, Ralf im Chat):
 5. **Lage:** Ruinen auch außerhalb der Mauern als Vorposten; neue Regel: jenseits des äußersten Tors reparieren und bauen Bauern nur ohne Gefahr.
 6. **Wiederaufbau:** eine zerstörte Ruine ist erst ab der Hub-Stufe ihrer Art bezahlbar.
 7. **Dev-Befehl „Burgfall“** für die Abnahme: ja.
-8. **Vorschläge von Claude bestätigt:** Abstände (2 Units Rand, 4 Units zu Bauplätzen, Farm-Weltplatz, Adern, Portalen, festen Objekten), Kennung `ruin` als dauerhafte Herkunft, Darstellung über HP-Anteil plus Trümmer ohne neue Sprites, Lager-Ruine erhöht die Kapazität.
+8. **Vorschläge von Claude bestätigt:** Abstände (2 Units Rand, 4 Units zu Bauplätzen, Farm-Weltplatz, Adern, Portalen, festen Objekten), Kennung `ruin` als dauerhafte Herkunft, Darstellung über HP-Anteil plus Trümmer ohne neue Sprites, Lager-Ruine erhöht die Kapazität. (Abstand zu Linien-Bauplätzen später gestrichen, siehe 9.)
+
+Nachtrag nach WZ14.2 (2026-10-21, Ralf im Chat):
+
+9. **Lage überall:** „Ruinen können überall sein, das hängt von der Verwendung ab.“ Kein Abstand mehr zu den Bauplätzen der Mauerlinien (sonst blieb innerhalb der Mauern kein Platz); überdecken sich Ruine und Linien-Bauplatz beim Bezahlen, hat der Linien-Platz Vorrang (WZ14.3).
 
 ## Notizen
 

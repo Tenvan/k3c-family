@@ -37,8 +37,10 @@ type PlanView struct {
 	Notes   string           `json:"notes"` // Notizen der Welt
 	Islands []PlanIsland     `json:"islands"`
 	Sizes   []sim.IslandSize `json:"sizes"` // Inselgrößen zur Auswahl im Editor (data/island-sizes.json)
-	Stand   string           `json:"stand"`
-	Error   string           `json:"error"`
+	// RuinKinds sind die Arten, die als Ruine geplant werden dürfen (data/ruins.json › kinds, WZ14.7); geprüft wird im Go-Generator.
+	RuinKinds []string `json:"ruinKinds"`
+	Stand     string   `json:"stand"`
+	Error     string   `json:"error"`
 }
 
 // PlanCheckView ist das Ergebnis der Prüfung eines Entwurfs: Slot nennt den Platz des Fehlers (0 = ohne Platz).
@@ -79,7 +81,7 @@ func (a *App) readIslands() ([]byte, error) {
 
 // PlanLoad liest die Welt-Datei der gewählten Welt frisch (Binding).
 func (a *App) PlanLoad() PlanView {
-	view := PlanView{Islands: []PlanIsland{}, Sizes: sim.IslandSizes()}
+	view := PlanView{Islands: []PlanIsland{}, Sizes: sim.IslandSizes(), RuinKinds: level.DefaultRuinRules().Kinds}
 	raw, err := a.readIslands()
 	if err != nil {
 		view.Error = err.Error()
