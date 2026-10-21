@@ -39,6 +39,8 @@ type Layout struct {
 	Entities        []Entity `json:"entities"`
 	// Lines sind die Mauerlinien je Seite (links, dann rechts, je von innen); ohne JSON-Ausgabe bis B-208.
 	Lines []WallLine `json:"-"`
+	// Ruins sind die Ruinen der geplanten Chunks (§ 8, B-468); Plätze der Sim, nicht Teil der level-Nachricht.
+	Ruins []Ruin `json:"-"`
 }
 
 // eventKinds in fester Reihenfolge wie `EVENT_KINDS` in TS.
@@ -114,6 +116,7 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 	return Layout{
 		Seed: seed, BiomeID: b.ID, WidthUnits: float64(len(chunks)) * g.cw, ChunkWidthUnits: g.cw,
 		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: lines.generate(b.ID, seed, g.hub),
+		Ruins: g.ruinsOf(chunks),
 	}, nil
 }
 

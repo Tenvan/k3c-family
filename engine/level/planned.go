@@ -26,14 +26,15 @@ type PlannedObject struct {
 }
 
 // PlannedChunk ist ein geplanter Chunk. Slot zählt relativ zu den Hub-Chunks (−n links, +n rechts, nie 0).
-// Buildings und Enemies sind für Teil 2 (B-468) im Format reserviert und werden noch abgelehnt.
+// Buildings trägt höchstens eine Ruine (§ 8, B-468); Enemies ist für die Gegnerlager (B-517) im Format reserviert und
+// wird noch abgelehnt.
 type PlannedChunk struct {
-	Slot      int             `json:"slot"`
-	Kind      string          `json:"kind"`
-	Seed      string          `json:"seed,omitempty"`
-	Objects   []PlannedObject `json:"objects,omitempty"`
-	Buildings json.RawMessage `json:"buildings,omitempty"`
-	Enemies   json.RawMessage `json:"enemies,omitempty"`
+	Slot      int               `json:"slot"`
+	Kind      string            `json:"kind"`
+	Seed      string            `json:"seed,omitempty"`
+	Objects   []PlannedObject   `json:"objects,omitempty"`
+	Buildings []PlannedBuilding `json:"buildings,omitempty"`
+	Enemies   json.RawMessage   `json:"enemies,omitempty"`
 }
 
 // UnmarshalJSON liest streng: ein unbekanntes Feld (z. B. ein Tippfehler wie `object`) ist ein Fehler (fail closed).
@@ -145,7 +146,7 @@ func ValidatePlanFor(b Biome, plan []PlannedChunk, lines WallLines, count int) e
 	}
 	g := geometryOf(b, count)
 	seen, spots := make(map[int]bool, len(plan)), make(map[spotKey]bool, len(plan))
-	all := make([]placed, 0, len(plan))
+	var all, allRuins []placed
 	for _, c := range plan {
 		if err := checkChunk(c, b, g, seen); err != nil {
 			return fmt.Errorf("auf Platz %+d: %w", c.Slot, err)
@@ -155,16 +156,33 @@ func ValidatePlanFor(b Biome, plan []PlannedChunk, lines WallLines, count int) e
 		if err != nil {
 			return fmt.Errorf("auf Platz %+d: %w", c.Slot, err)
 		}
-		for _, it := range items {
+		ruins, err := checkBuildings(c, g, lines, items)
+		if err != nil {
+			return fmt.Errorf("auf Platz %+d: %w", c.Slot, err)
+		}
+		if err := markSpots(spots, items, ruins); err != nil {
+			return fmt.Errorf("auf Platz %+d: %w", c.Slot, err)
+		}
+		all, allRuins = append(all, items...), append(allRuins, ruins...)
+	}
+	if err := checkRuinsAcross(allRuins, all); err != nil {
+		return err
+	}
+	return checkTotals(b, g, plan, all)
+}
+
+// markSpots trägt Objekte und Ruinen eines Chunks in spots ein; kind@x muss je Stufe eindeutig sein.
+func markSpots(spots map[spotKey]bool, lists ...[]placed) error {
+	for _, list := range lists {
+		for _, it := range list {
 			key := it.key()
 			if spots[key] {
-				return fmt.Errorf("auf Platz %+d: %s@%v doppelt (kind@x muss je Stufe eindeutig sein)", c.Slot, key.kind, key.x)
+				return fmt.Errorf("%s@%v doppelt (kind@x muss je Stufe eindeutig sein)", key.kind, key.x)
 			}
 			spots[key] = true
 		}
-		all = append(all, items...)
 	}
-	return checkTotals(b, g, plan, all)
+	return nil
 }
 
 func checkChunk(c PlannedChunk, b Biome, g geometry, seen map[int]bool) error {
@@ -179,8 +197,8 @@ func checkChunk(c PlannedChunk, b Biome, g geometry, seen map[int]bool) error {
 		return fmt.Errorf("doppelt geplant")
 	case !hasChunkKind(b, c.Kind):
 		return fmt.Errorf("unbekannte Chunk-Art %q", c.Kind)
-	case notEmpty(c.Buildings), notEmpty(c.Enemies):
-		return fmt.Errorf("planbar sind nur Art, Seed und Objekte; Gebäude und Gegner sind noch nicht unterstützt (Teil 2, B-468)")
+	case notEmpty(c.Enemies):
+		return fmt.Errorf("planbar sind Art, Seed, Objekte und eine Ruine; Gegnerlager sind noch nicht unterstützt (B-517)")
 	}
 	return nil
 }

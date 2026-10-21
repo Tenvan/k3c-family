@@ -1,0 +1,10 @@
+{
+  "notes": "Test-Planung mit Ruinen (WZ14, B-468, docs/rules/geplante-chunks.md § 8): Lager, Schmiede und Kaserne als Vorposten außerhalb des äußersten Tors (innerhalb der Mauern lässt die Streuung der Linien bei 4 Units Abstand keinen Platz frei). Keine echte Planung und kein Golden-Fall (der speist sich aus forest.json); data/worlds/standard.json bleibt leer.",
+  "biome": "forest",
+  "seeds": ["ruine-1", "ruine-2", "Käse🧀"],
+  "planned": [
+    { "slot": 2, "kind": "forest", "buildings": [ { "kind": "storage", "at": 40 } ] },
+    { "slot": 3, "kind": "clearing", "objects": [ { "kind": "tree", "at": 10 } ], "buildings": [ { "kind": "smithy", "at": 30 } ] },
+    { "slot": -4, "kind": "clearing", "seed": "vorposten", "buildings": [ { "kind": "barracks", "at": 25 } ] }
+  ]
+}
