@@ -22,7 +22,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WZ14 | REG | WZG | Geplante Chunks tragen Ruinen und Gegnerlager | – | Entwurf | `geplant/WZ14-ruinen-gegnerlager/` |
+| WZ14 | REG, SIM, SRV, CLI, DEV | WZG | Geplante Chunks tragen Ruinen und Gegnerlager | – | bereit | `geplant/WZ14-ruinen-gegnerlager/` |
 | WZ20 | DEV | WZG | k3c-dev: Planungstest für Entwürfe, Worktree-Einträge vollständig und lesend, sim_test im Worktree | – | Entwurf | `geplant/WZ20-planung-worktree-simtest/` |
 | WZ21 | DEV | WZG | Studio-Chat: eigene Umgebung, Grundgerüst als Instruktion, Entwurf geschützt | – | Entwurf | `geplant/WZ21-studio-chat-nachtraege/` |
 | WZ23 | CLI | WZG | Studio-Vorschauen: Reittiere aus dem Spielcode, Monarch-Seite, Boss-Anzeigen, Gebäude-Planer abgenommen | – | Entwurf | `geplant/WZ23-studio-vorschauen-nachtraege/` |

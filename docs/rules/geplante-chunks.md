@@ -1,7 +1,7 @@
 # Regelwerk: Geplante Chunks
 
 Beschlossen von 🧑 im Workshop WZ8.1 am 2026-10-17 (Chat): Die Annahmen aus B-461 gelten unverändert. Grundlage: B-461, Sprint WZ8; Stufen und Level: [`stufen.md`](stufen.md); Welt-Datei, in der die Planung steht: [`welten.md`](welten.md) (WZ18.1).
-Je Regel: **Regel · Begründung · Daten**. Teil 1 (diese Datei) kennt feste Objekte und den Seed je Chunk; Ruinen und Gegnerlager folgen in B-468.
+Je Regel: **Regel · Begründung · Daten**. Teil 1 kennt feste Objekte und den Seed je Chunk; Teil 2 (§ 8, B-468, Workshop WZ14.1) die Ruinen; Gegnerlager folgen in B-517.
 
 ## 1. Ort und Platz
 
@@ -51,7 +51,7 @@ Beispiel (Reihenfolge der Schlüssel: `slot`, `kind`, `seed`, `objects`; Teil-2-
 |---|---|---|
 | Eine Planung wird **beim Laden** geprüft, unabhängig vom Seed, gegen die kürzeste mögliche Länge des Bioms und jede Streuung der Linien. Ist sie dort gültig, scheitert kein Seed zur Laufzeit. Die Mauerlinien sind ein Parameter (Standard: eingebettete Daten). Fehler nennen Insel, Tiefe, Platz und Grund; das Laden der Welt scheitert wie bei jeder ungültigen Welt-Datei ([`welten.md`](welten.md) § 3). | Fail closed. | `engine/level/`, `engine/sim/island_data.go` |
 | Abgelehnt werden: Platz `0` oder Hub; `exit`/`edge`; Platz jenseits der kürzesten Länge; doppelter Platz oder doppeltes `kind@x`; Tiefe nicht in `depths`; unbekannte Chunk-Art oder Objekt-Art im Biom; Verstöße gegen die Lage-Regeln; mehr feste Portale, Truhen, Camps oder Adern als das Biom zählt; zu wenig freie Plätze für übrige Portale, Mindestzahl der Ereignisse oder Adern. Der Wald hat keine Adern. | Jeder Fall ein Test (WZ8.2). | – |
-| Felder für **Teil 2** (Gebäude, Gegner) sind im Format reserviert, der Generator lehnt sie mit „noch nicht unterstützt“ ab (B-468). | Platz im Format, ohne Verhalten. | – |
+| Das Feld `buildings` trägt Ruinen (§ 8). Das Feld `enemies` (Gegnerlager) ist im Format reserviert, der Generator lehnt es mit „noch nicht unterstützt“ ab (B-517). | Platz im Format, ohne Verhalten. | – |
 
 ## 6. Schreiben
 
@@ -70,3 +70,22 @@ Beschlossen von 🧑 im Workshop WZ17.1 am 2026-10-18 (Chat, B-485 Revision 2).
 | Die Planung wird gegen die eingestellte Anzahl geprüft: Ein geplanter Platz jenseits der Anzahl wird abgelehnt (Fehler nennt Insel, Tiefe, Platz). Die Prüfung rechnet mit der eingestellten Anzahl statt mit der kürzesten Länge des Bioms. Biom-Summen (Portale, Ereignisse, Adern, Skill-Punkte) gelten unverändert. Kann der Generator eine Größe in einem Biom nicht erzeugen, meldet er den Fehler (Editor: Fehler am Entwurf, Speichern gesperrt); einen Nachweis über viele Seeds und alle Biome gibt es nicht, wie viele Chunks sinnvoll sind, ermittelt später ein eigenes Projekt (Beschluss 🧑, 2026-10-18). | Fail closed; der Editor legt an, was anlegbar ist. | `engine/level/` |
 | Der Editor bietet nur die Größen der Tabelle an (kein Freitext). Chunk- und Live-Vorschau zeigen die eingestellte Länge für ungespeicherte Entwürfe aus derselben Quelle. Eine gespeicherte Chunk-Anzahl ist wie eine gespeicherte Planung eine REG-Änderung durch 🧑 (Hinweis nach dem Speichern, Golden nur gewollt). | Gleiche Schreibregel wie § 6. | `data/worlds/<id>.json` |
 | Die **Umwandlung** eines Seed-Chunks in feste Objekte übernimmt dessen Inhalt aus dem Vorschau-Level des Servers (Art und Lage der Objekte); Chunk- und Live-Vorschau zeigen danach dasselbe wie vorher. | Kein neuer Generator-Code; fest heißt fest (§ 2). | – |
+
+## 8. Ruinen (Teil 2)
+
+Beschlossen von 🧑 im Workshop WZ14.1 am 2026-10-21 (Chat, Vorschläge von Claude angenommen; Nachtrag nach dem Spec-Review am selben Tag: Vorposten, Wiederaufbau, Lage, Kennung). Grundlage: B-468, Sprint WZ14.
+
+| Regel | Begründung | Daten |
+|---|---|---|
+| Eine **Ruine** ist ein gebautes, stark beschädigtes **Nutzgebäude** an fester Lage eines geplanten Chunks. Erlaubte Arten: `workshop`, `storage`, `farm`, `barracks`, `tavern`, `healer`, `smithy`, `armory`. Burg, Mauer, Turm, Tor und Treppen sind keine Ruinen. | Sondergegenden mit Geschichte; Burg, Linien und Stufenwechsel gehören dem Hub. | `data/ruins.json` (WZ14.2) |
+| Ein geplanter Chunk trägt **höchstens eine** Ruine: `buildings: [ { "kind": "smithy", "at": 6 } ]` (Reihenfolge der Schlüssel `slot`, `kind`, `seed`, `objects`, `buildings`). `at` zählt wie bei Objekten in Units ab Chunk-Anfang. | Klein und lesbar; ein Gebäude je Chunk reicht für eine Sondergegend. | `plannedChunks` |
+| Die Ruine startet **gebaut mit 25 %** der HP ihrer Art (aufgerundet) und wirkt ab Spielbeginn wie ein gebautes Gebäude dieser Art (z. B. Kaserne → Truppenlimit, Lager → Kapazität des Vorrats, nicht der Bestand). | Vorsprung für die Spielenden, den sie verteidigen und reparieren. | `data/ruins.json` (Anteil), `data/buildings.json` (HP) |
+| Die Ruine ist **Hub-neutral**: Sie zählt nicht für die Hub-Stufe und nicht für die Freischaltung der Mauerlinien. | Die Hub-Stufe bleibt ein bezahlter Ausbau der Burg (B-462). | – |
+| Die Kennung **Ruine** ist eine dauerhafte Herkunft des Platzes: Sie bleibt nach Reparatur, Zerstörung und Wiederaufbau. | Burgfall und Darstellung brauchen sie unabhängig vom Zustand. | – |
+| **Reparatur** wie bei jedem beschädigten Gebäude: Bauern reparieren kostenlos zwischen den Wellen ([`materialien-gebaeude.md`](materialien-gebaeude.md)). Gegner greifen Ruinen an wie jedes Gebäude. | Keine neue Mechanik, kein neuer Zustand. | – |
+| **Vorposten:** Jenseits des äußersten Tors (Lage laut Layout der Stufe, nicht die äußerste gebaute Mauer) reparieren und bauen Bauern nur **ohne Gefahr**, und Bürger holen dort keine Waffen (Bogen, Schwert) bei Gefahr (gleiche Bedingung wie für das Verlassen der Arbeit bei Gefahr); bei Gefahr kehren sie hinter die Mauern zurück. Die Regel gilt für jeden Platz außerhalb der Mauern, nicht nur für Ruinen. | Ruinen außerhalb der Mauern sind gewollte Vorposten; Bauern sollen dafür nicht nachts hinauslaufen. | – |
+| **Wiederaufbau:** Zerstören Gegner die Ruine, ist der Platz leer und bezahlbar, aber erst ab der **Hub-Stufe ihrer Art** (wie der Hub-Platz derselben Art). | Eine Ruine verschafft einen Vorsprung, hebelt aber den Ausbaupfad nicht aus. | `data/hub.json` |
+| **Burgfall** (`castleLosses`): Ein Ruinen-Platz kehrt in den geplanten Ausgangszustand zurück (wieder Ruine mit 25 % HP), auch wenn er vorher zerstört war, statt leer zu werden. | Die Planung bleibt die Wahrheit; die Sondergegend geht nie verloren. | – |
+| **Lage:** ≥ 2 Units zur Chunk-Grenze; ≥ 4 Units zu jedem Bauplatz der Mauerlinien (inklusive Streuung), zum Farm-Weltplatz, zu jeder Ader, jedem Portal und jedem festen Objekt des Chunks; eine Farm-Ruine braucht zusätzlich Platz für ihre Plantage (±3 Units) innerhalb des Chunks; `kind@x` je Stufe eindeutig. Ruinen dürfen innerhalb und außerhalb der Mauern liegen. | Gebäude und Zahlziele überdecken sich nicht; der Spielstand ordnet Plätze über `kind@x` zu. | `data/hub.json` |
+| **Spielstand und Protokoll:** Die Ruine ist ein gewöhnlicher Platz (`SiteSave`, `kind@x`), keine neue Spielstand-Version. Das Protokoll bleibt Version 7; `sites[]` trägt additiv die Kennung `ruin`. Ein Spielstand mit einer Ruine, die die Planung nicht mehr kennt, verliert den Platz (keine Migration). | Kleinster Eingriff in die Verträge. | `docs/protocol.md` |
+| **Prüfung beim Laden** wie § 5: abgelehnt werden unbekannte oder nicht erlaubte Art, mehr als eine Ruine, Verstöße gegen die Lage-Regeln und doppeltes `kind@x`; Fehler nennen Insel, Tiefe, Platz und Grund. | Fail closed. | `engine/level/` |

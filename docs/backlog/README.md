@@ -171,6 +171,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-514](B-514-chat-entwurf-planung-nachbesserung.md) | DEV | Problem | niedrig | eingeplant | WZ21 | Chat-Entwurf: Planung bei gleicher Insel-id schützen, CLI-Prozessbaum, Test-Riegel |
 | [B-515](B-515-studio-chat-anmeldung-umgebung.md) | DEV | Problem | mittel | eingeplant | WZ21 | Studio-Chat übernimmt die Umgebung einer Claude-Sitzung und zeigt Anmeldefehler doppelt |
 | [B-516](B-516-studio-chat-promptgeruest-als-instruktion.md) | DEV | Idee | mittel | eingeplant | WZ21 | Prompt-Grundgerüst des Studio-Chats ist eine feste Instruktion im Code statt Text im Eingabefeld |
+| [B-517](B-517-geplante-chunks-gegnerlager.md) | REG | Idee | mittel | offen | – | Geplante Chunks tragen Gegnerlager mit stationärer Wache |
 
 ## Archiv
 

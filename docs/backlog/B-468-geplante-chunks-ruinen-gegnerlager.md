@@ -8,9 +8,9 @@
 - **Sprint:** WZ14
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-17
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-21, Ralf im Chat (Revision 2)
 
 ## Ausgangslage
 
@@ -25,78 +25,97 @@ Das Format aus B-461 reserviert dafür nur Felder, die der Generator mit „noch
 
 ## Ziel
 
-Ein geplanter Chunk kann zusätzlich eine **Ruine** (vorgebautes, ggf. beschädigtes Gebäude an fester Lage) und ein **Gegnerlager** (feste Gegner an fester Lage) tragen. Beides lässt sich im Editor des Welt-Betrachters (B-461) setzen, wird beim Laden geprüft, erscheint in Chunk- und Live-Vorschau und verhält sich im Spiel nach neuen Regeln. Nutzen: handgeplante Sondergegenden mit Geschichte und Gefahr, nicht nur Ressourcen und Truhen.
+Ein geplanter Chunk kann eine **Ruine** tragen: ein gebautes, stark beschädigtes Nutzgebäude an fester Lage. Sie lässt sich im Editor des Studios setzen, wird beim Laden geprüft, erscheint in Chunk- und Live-Vorschau und im Spiel, wirkt wie ein gebautes Gebäude ihrer Art und kehrt nach einem Burgfall in ihren geplanten Zustand zurück. Nutzen: handgeplante Sondergegenden mit Geschichte, die den Spielenden einen Vorsprung geben, den sie verteidigen und reparieren. (Gegnerlager: B-517.)
 
 ## Beteiligte und Zielgruppen
 
-- 🧑 Ralf: entscheidet die Regeln für Ruinen und Gegnerlager (Workshop), plant im Editor, nimmt ab und gibt die Spec frei.
-- Spielende (Couch-Koop, 2+ Spieler): treffen auf Ruinen und Gegnerlager an bekannter Stelle der Insel.
-- Agenten: setzen Regeltext (REG), Sim und Format (SIM), Vorschau-Snapshot (SRV), Grafik (CLI) und Editor (DEV) um; ein getrennter Reviewer prüft.
+- 🧑 Ralf: hat die Regeln beschlossen (WZ14.1), plant im Editor, nimmt ab und gibt die Spec frei.
+- Spielende (Couch-Koop, 2+ Spieler): treffen auf Ruinen an bekannter Stelle der Insel und verteidigen sie als Vorposten.
+- Agenten: setzen Format, Prüfung und Sim (SIM), Protokoll und Vorschau (SRV), Grafik (CLI) und Editor (DEV) um; ein getrennter Reviewer prüft.
 
 ## Anforderungen
 
-Grob, bis WZ8 erledigt und der Regel-Workshop gelaufen ist; die Spec wird dann vervollständigt.
+Beschlossen im Regel-Workshop WZ14.1 (2026-10-21, Ralf im Chat) samt Nachtrag nach dem Spec-Review desselben Tages; Regeltext: `docs/rules/geplante-chunks.md` § 8. B-468 umfasst ab Revision 2 nur noch die **Ruinen**; die Gegnerlager stehen in B-517 (eigener Folge-Sprint).
 
-- **Ruine (REG):** Regeltext, welche Gebäude als Ruine erlaubt sind, Zustand und HP, ob sie dem Hub der Stufe gehört, ob sie für Hub-Stufe und Linien-Freischaltung zählt, Reparatur (Kosten, Zahlziel), Verhalten beim Burgfall (`castleLosses`), Abstand zu Bauplätzen und Zahlzielen.
-- **Ruine (SIM/SRV):** neue Bauplätze neben `worldSiteSpecs`; Spielstand über `SiteSave`/`kind@x`, ggf. neue Spielstand-Version; Snapshot im Format von `level` und `snap` (Protokoll-Wechsel nur, wenn unvermeidbar, dann eigene Entscheidung).
-- **Gegnerlager (REG):** neue Wellenquelle neben den Portalen (`rules/gegner.md` § 3), Verhältnis zu Aggressionspool und Nacht-Welle, Skalierung je Tiefe, besiegbar oder dauerhaft, Respawn.
-- **Gegnerlager (SIM):** Spawn- und Kampf-Logik in `engine/sim`, deterministisch über eigene Ströme, mit 2 Spielern.
-- **Format:** Die in B-461 reservierten Felder des geplanten Chunks werden gelesen, geprüft (Lage, Abstände, Biom-Summen, Zahl der Gegner) und mit Insel, Tiefe, Platz und Grund abgelehnt, wenn ungültig.
-- **CLI:** Grafik für Ruine und Gegnerlager. **DEV:** Editor und Vorschau erweitern (Option „geplante Chunks“ der Vorschau-Funktion trägt die neuen Felder).
-- Deterministisch, 2+ Spieler, Leistung wie B-461 (Benchmark der Level-Erzeugung ≤ +10 %).
+- **Ruine:** gebautes, stark beschädigtes **Nutzgebäude** an fester Lage eines geplanten Chunks; Arten `workshop`, `storage`, `farm`, `barracks`, `tavern`, `healer`, `smithy`, `armory`; Start-HP 25 % (aufgerundet); Arten und Anteil in `data/ruins.json`; höchstens **eine** je Chunk.
+- **Wirkung:** wirkt ab Spielbeginn wie ein gebautes Gebäude ihrer Art (Kaserne → Truppenlimit, Lager → Kapazität des Vorrats); **Hub-neutral**; die Kennung `ruin` ist dauerhafte Herkunft des Platzes.
+- **Reparatur und Vorposten:** Bauern reparieren kostenlos zwischen den Wellen; jenseits des äußersten Tors (Lage laut Layout der Stufe) reparieren und bauen sie nur ohne Gefahr, und Bürger holen dort bei Gefahr keine Waffen (neue Regel für alle Plätze außerhalb der Mauern). Gegner greifen Ruinen an wie jedes Gebäude.
+- **Wiederaufbau:** eine zerstörte Ruine ist leer und erst ab der Hub-Stufe ihrer Art bezahlbar.
+- **Burgfall:** `castleLosses` setzt Ruinen-Plätze auf den geplanten Ausgangszustand zurück (auch nach Zerstörung).
+- **Format:** Feld `buildings` des geplanten Chunks lesen und prüfen (Art, Anzahl, Lage-Regeln § 8, `kind@x`); `enemies` bleibt reserviert (B-517). `engine/level` liest `data/ruins.json` selbst; die Signaturen von `ValidatePlanFor` und `PreviewChunkObjects` bleiben (das Studio nutzt sie), Neues kommt als neue Funktion.
+- **Spielstand und Protokoll:** keine neue Spielstand-Version, Protokoll 7, Feld `ruin` additiv an `sites[]`.
+- **Dev-Befehl „Burgfall“** in Sim und Protokoll, als Debug-Knopf im Spiel, damit 🧑 die Rückkehr der Ruine bei der Abnahme sieht.
+- **CLI:** Ruinen unterscheidbar durch Schadens-Darstellung nach HP-Anteil plus Trümmer, keine neuen Sprites je Art. **DEV:** Editor und Vorschau des Studios setzen, zeigen und entfernen die Ruine.
+- Deterministisch, 2+ Spieler, Benchmark der Level-Erzeugung ≤ +10 %.
 
 ## Nicht-Ziele
 
+- Gegnerlager (B-517, Folge-Sprint); das Feld `enemies` bleibt reserviert und abgelehnt.
 - Alles, was B-461 liefert (Format, Chunk-Seed, feste Objekte, Generator, Prüfung, Editor, Schreibregeln); B-468 baut darauf auf.
-- Neue Gegner-Arten, Bosse und Balancing der Wellen (eigene Tickets); echte Planungen mit Ruinen oder Gegnerlagern einchecken (REG-Entscheidung von 🧑 nach dem Sprint).
+- Neue Sprites je Gebäudeart für Ruinen, neue Gebäudearten, Reparatur gegen Bezahlung, neuer Site-Zustand.
+- Echte Planungen mit Ruinen einchecken (REG-Entscheidung von 🧑 nach dem Sprint).
 - Mehrere Inseln und Inselwechsel (B-103); Freischaltung je Hub-Stufe (B-462).
 - Migration bestehender Spielstände (keine Rücksicht auf alte Spielstände, Beschluss 🧑 bis auf Widerruf).
 
 ## Regeln und Einschränkungen
 
-- **Abhängigkeit:** WZ8 (B-461) ist erledigt (Format, Generator, Editor, Vorschau-Option); Folge-Sprint im Projekt WZG nach WZ8.
-- **Domänen nacheinander, je Session eine:** REG (Regeltext, Glossar „Ruine“, „Gegnerlager“) → SIM (Format lesen, Prüfung, Sim-Logik) → SRV (Vorschau-Snapshot, Spielstand) → CLI (Grafik) → DEV (Editor). Geschätzt 7–9 Sessions, also ein eigener Sprint, eher zwei (Ruinen, Gegnerlager).
-- **Regeln aus B-461 gelten:** Zufall nur über `engine/rng` mit eigenem Strom je geplantem Chunk, Haupt-Strom ohne Planung unverändert, Golden ohne Planung byte-gleich, Test-Planung unter `testdata/`, Werkzeug schreibt REG-Daten nur atomar, format-stabil und mit Stand-Prüfung samt REG-Hinweis; Sprints liefern keine echten Planungen und keine Golden-Änderung aus.
-- **Verträge:** Spielstand speichert Plätze über `kind@x` (`SiteSave`); eine neue Spielstand-Version nur mit eigener Entscheidung, keine Rücksicht auf alte Spielstände. Protokoll Version 3 bleibt, solange es geht.
+- **Abhängigkeit:** WZ8 (B-461) ist erledigt (Format, Generator, Editor, Vorschau-Option).
+- **Domänen nacheinander, je Session eine:** SIM (Werte, Format, Prüfung) → SIM (Ruine als Platz) → SIM (Vorposten-Schutz, Dev-Burgfall) → SRV (Protokoll, Vorschau) → CLI (Grafik) → DEV (Editor), dazu Review und Abnahme; 9 Sessions inklusive Workshop.
+- **Regeln aus B-461 gelten:** Zufall nur über `engine/rng` mit eigenem Strom je geplantem Chunk, Haupt-Strom ohne Planung unverändert, Golden ohne Planung byte-gleich, Test-Planung unter `testdata/` mit eigener Fixture (nicht `testdata/planned/forest.json`, die speist `level-planned.json`), Werkzeug schreibt REG-Daten nur atomar, format-stabil und mit Stand-Prüfung samt REG-Hinweis; der Sprint liefert keine echte Planung und keine Golden-Änderung aus.
+- **Verträge:** Spielstand über `kind@x` (`SiteSave`) ohne neue Version; Protokoll Version 7 bleibt, nur additive Felder (`docs/protocol.md`, `testdata/protocol`). Öffentliche Funktionen von `engine/level` und `engine/room`, die das Studio nutzt, behalten ihre Signatur; Sessions, die sie berühren, fahren auch `task check:studio`.
 - **Schichten und Budget:** `engine/level` importiert nichts aus `engine/sim`, `engine/room`, `engine/net`; Datei ≤ 400, Funktion ≤ 60 Zeilen; Logging mit Emoji (`CLAUDE.md`).
 - **Mit 2 Spielern gleichzeitig** muss jede Mechanik funktionieren; Gamepad-Taste B bleibt unbelegt.
 
 ## Beispiele
 
-Grob, Werte und Regeln legt der Workshop fest:
-
-- Wald, Platz +4 mit einer Ruine „Schmiede“ → an fester Lage steht eine beschädigte Schmiede; ein Spieler repariert sie gegen Zahlung am Zahlziel, danach verhält sie sich wie die Hub-Schmiede (Regel offen, Offene Fragen).
-- Höhle, Platz −3 mit einem Gegnerlager → feste Gegner stehen dort; sie greifen an, sobald ein Spieler in Reichweite kommt (Regel offen); mit 2 Spielern gilt dasselbe Verhalten.
-- Ein Chunk ohne Ruine und Gegnerlager → verhält sich genau wie in B-461.
+- Wald, Platz +4 mit Ruine `smithy` bei `at: 6` → dort steht eine Schmiede mit 63 von 250 HP (25 %, aufgerundet); sie wirkt sofort als Schmiede; tagsüber ohne Gegner reparieren Bauern sie auf 250 HP.
+- Nachts greifen Gegner die Schmiede auf Platz +4 an; die Bauern bleiben hinter den Mauern (Vorposten-Regel); fällt die Schmiede, ist der Platz leer und erst ab Hub-Stufe 3 (Stufe der Schmiede) wieder bezahlbar.
+- Höhle, Platz −3 mit Ruine `barracks` → das Truppenlimit steigt ab Spielbeginn wie bei einer gebauten Kaserne; die Hub-Stufe bleibt unverändert.
+- Die Burg fällt → alle Hub-Plätze werden leer wie heute; die zerstörte Schmiede auf Platz +4 steht wieder als Ruine mit 63 HP.
+- Ein Chunk ohne Ruine → verhält sich genau wie in B-461; Golden-Daten byte-gleich.
 
 ## Ausnahme- und Fehlerfälle
 
-Grob; die Spec ergänzt sie nach dem Workshop:
+Beim Laden abgelehnt mit Insel, Tiefe, Platz und Grund (fail closed wie B-461):
 
-- Ruine oder Gegnerlager an ungültiger Lage (Chunk-Grenze, Bauplatz oder Zahlziel zu nah, Portal-Mindestabstand) → beim Laden abgelehnt mit Insel, Tiefe, Platz und Grund (wie B-461).
-- Ruine einer Gebäudeart, die es nicht gibt, oder Gegner-Art, die das Biom nicht kennt → abgelehnt.
-- Burg fällt (`castleLosses`) → Verhalten der Ruinen laut Regel (offen).
-- Spielstand mit Ruine, die danach aus der Planung verschwindet → keine Migration, der Platz geht verloren (Beschluss: keine Rücksicht auf alte Spielstände).
+- Gebäudeart, die es nicht gibt oder die als Ruine nicht erlaubt ist (z. B. `castle`, `wall`, `stairsUp`).
+- Mehr als eine Ruine im Chunk.
+- Lage außerhalb des Chunks oder näher als 2 Units am Rand; näher als 4 Units an einem Bauplatz der Mauerlinien, dem Farm-Weltplatz, einer Ader, einem Portal oder einem festen Objekt; Farm-Ruine, deren Plantage (±3 Units) nicht in den Chunk passt.
+- Gleicher Schlüssel `kind@x` wie ein anderer Platz derselben Stufe.
+- Eintrag im Feld `enemies` → weiterhin „noch nicht unterstützt (B-517)“.
+- `data/ruins.json` ungültig (Anteil nicht in (0, 1], unbekannte Art, Hub-Gebäude) → Laden der Daten scheitert.
+
+Im Spiel:
+
+- Spielstand mit einer Ruine, die die Planung nicht mehr kennt → der Platz wird verworfen (vorhandene Regel „Bauplatz gibt es in dieser Version nicht mehr“), keine Migration.
+- Spielstand ohne Eintrag für einen Ruinen-Platz → die Ruine steht im geplanten Ausgangszustand.
+- Gefahr in der Nähe eines Vorpostens → Bauern brechen Reparatur oder Bau ab und kehren hinter die Mauern zurück.
 
 ## Akzeptanzkriterien
 
-Grob, Nummern und Nachweise werden mit der Spec vervollständigt.
-
-- **AC-01** Ein REG-Beschluss von 🧑 (Workshop) legt die Regeln für Ruinen und Gegnerlager fest; Regeltext in `docs/rules/`, Glossar-Einträge „Ruine“ und „Gegnerlager“ (aus WZ8.1) ausgearbeitet, vor der ersten SIM-Session.
-- **AC-02** Der Generator liest die reservierten Felder des geplanten Chunks, prüft sie unabhängig vom Seed (Lage, Abstände, Summen) und lehnt Ungültiges mit Insel, Tiefe, Platz und Grund ab; je Fall ein Go-Test.
-- **AC-03** Ruinen und Gegnerlager verhalten sich in der Sim nach den neuen Regeln, auch mit 2 Spielern (Go-Test mit `CreateIsland`).
-- **AC-04** Ohne Ruine und Gegnerlager bleiben alle Golden-Daten und der Benchmark (≤ +10 %) unverändert.
-- **AC-05** Vorschau-Funktion, Grafik und Editor zeigen und bearbeiten Ruinen und Gegnerlager; Vorschau und Editor halten die Schreibregeln aus B-461 ein.
-- **AC-06** 🧑 nimmt eine Sondergegend mit Ruine und Gegnerlager in Vorschau (und, falls als Planung eingecheckt, im Spiel) ab.
+- **AC-01** Regeltext für Ruinen (`docs/rules/geplante-chunks.md` § 8) und Glossar-Eintrag „Ruine“ beschreiben die Beschlüsse aus WZ14.1; erlaubte Arten und HP-Anteil stehen in `data/ruins.json` und werden beim Laden geprüft (Go-Test je Fehlerfall: Anteil außerhalb, unbekannte Art, Hub-Gebäude); Glossar „Gegnerlager“ verweist auf B-517.
+- **AC-02** Der Generator liest das Feld `buildings` des geplanten Chunks, prüft es unabhängig vom Seed und lehnt jeden Fall aus „Ausnahme- und Fehlerfälle“ mit Insel, Tiefe, Platz und Grund ab; je Fall ein Go-Test; `enemies` bleibt abgelehnt; die Signaturen der vom Studio genutzten Funktionen bleiben.
+- **AC-03** In der Sim steht die Ruine gebaut mit 25 % HP, wirkt wie ein gebautes Gebäude ihrer Art, ist Hub-neutral, trägt die Kennung `ruin` dauerhaft, wird von Bauern repariert (jenseits des äußersten Tors nur ohne Gefahr, dort auch kein Waffen-Holen bei Gefahr), kann zerstört werden, ist danach erst ab der Hub-Stufe ihrer Art bezahlbar und kehrt nach `castleLosses` in den Ausgangszustand zurück (auch nach Zerstörung); eine Dev-Funktion „Burgfall“ löst `castleLosses` aus; Go-Tests mit 2 Spielern (`CreateIsland`); Spielstand speichert und lädt sie ohne neue Version.
+- **AC-04** Ohne Ruine bleiben alle Golden-Daten byte-gleich und der Benchmark der Level-Erzeugung ≤ +10 %.
+- **AC-05** Snapshot (`sites[].ruin`) und Vorschau-Funktion tragen die Ruine (Protokoll 7, `docs/protocol.md`, `testdata/protocol`, `src/model/types.ts`), der Dev-Befehl „Burgfall“ ist über das Protokoll und als Debug-Knopf im Spiel erreichbar; der Client zeichnet Ruinen unterscheidbar von gebauten Gebäuden; der Editor des Studios setzt, zeigt und entfernt sie und hält die Schreibregeln aus B-461 ein (Tests je Schicht).
+- **AC-06** Das Review weist jedes Kriterium nach; `task check:all`, `task check:go` und `task check:studio` grün; keine echte Planung mit Ruine eingecheckt.
+- **AC-07** 🧑 nimmt eine Sondergegend mit Ruine am PC ab: Editor, Chunk- und Live-Vorschau, „Im Spiel öffnen“ (Ruine wirkt, wird repariert) und Rückkehr nach dem Debug-Knopf „Burgfall“.
 
 ## Offene Fragen
 
-Entscheidet 🧑 im Regel-Workshop (nach WZ8):
+Entschieden im Regel-Workshop (WZ14.1, 2026-10-21, Ralf im Chat, Vorschläge von Claude angenommen):
 
-1. **Ruine:** welche Gebäude, Zustand und HP, gehört sie dem Hub der Stufe, zählt sie für Hub-Stufe und Linien-Freischaltung, Reparatur (Kosten, Zahlziel), Verhalten beim Burgfall, Abstand zu Bauplätzen und Zahlzielen?
-2. **Gegnerlager:** neue Wellenquelle neben den Portalen, Verhältnis zu Aggressionspool und Nacht-Welle, Skalierung je Tiefe, besiegbar oder dauerhaft, Respawn?
-3. **Spielstand:** neue Spielstand-Version für Ruinen nötig (Annahme: ja, `SiteSave` reicht eventuell nicht)? Protokoll-Wechsel nötig?
-4. **Sprint-Zuschnitt:** ein Sprint (7–9 Sessions) oder zwei (Ruinen, Gegnerlager)?
+1. **Ruine:** gebautes, stark beschädigtes Nutzgebäude (25 % HP), Nutzgebäude-Arten (siehe Anforderungen), höchstens eine je Chunk, Hub-neutral, aber funktional; Reparatur kostenlos durch Bauern; Burgfall → zurück zur Ruine.
+2. **Gegnerlager:** stationäre Wache, besiegbar, kein Respawn, keine Wirkung auf Wellen → ausgelagert nach B-517.
+3. **Spielstand/Protokoll:** keine neue Spielstand-Version, Protokoll 7 bleibt (additive Kennung).
+4. **Zuschnitt:** zwei Sprints – WZ14 Ruinen, Gegnerlager als Folge-Sprint (B-517).
+
+Nachtrag nach dem Spec-Review (2026-10-21, Ralf im Chat):
+
+5. **Lage:** Ruinen auch außerhalb der Mauern als Vorposten; neue Regel: jenseits des äußersten Tors reparieren und bauen Bauern nur ohne Gefahr.
+6. **Wiederaufbau:** eine zerstörte Ruine ist erst ab der Hub-Stufe ihrer Art bezahlbar.
+7. **Dev-Befehl „Burgfall“** für die Abnahme: ja.
+8. **Vorschläge von Claude bestätigt:** Abstände (2 Units Rand, 4 Units zu Bauplätzen, Farm-Weltplatz, Adern, Portalen, festen Objekten), Kennung `ruin` als dauerhafte Herkunft, Darstellung über HP-Anteil plus Trümmer ohne neue Sprites, Lager-Ruine erhöht die Kapazität.
 
 ## Notizen
 
