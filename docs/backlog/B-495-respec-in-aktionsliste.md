@@ -8,9 +8,9 @@
 - **Sprint:** RM1
 - **Projekt:** SKL
 - **Erstellt:** 2026-10-18
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-22, Revision 1
 
 ## Ausgangslage
 

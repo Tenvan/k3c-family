@@ -378,7 +378,10 @@ Felder je Spieler in `players[]` von `snap` und `delta`:
 
 `actions` nennt nur, was der Spieler **an seinem Ort** jetzt tun kann, in fester Reihenfolge: `{ "action": "attack" }`
 (lebt, Schlag bereit), `{ "action": "skill", "slot": n, "skill": id }` je belegtem, bereitem Slot (lebt; `slot` wie
-`input.p[].skill`), `{ "action": "learn" }` (`points` > 0). `respec` ist als Eintrag vorgesehen, fehlt aber, bis die
+`input.p[].skill`), `{ "action": "learn", "skills": [id, …] }` mit den Skills, die der Spieler jetzt lernen darf
+(Punkte frei, nicht gelernt, Tier-Gating; nach ID sortiert, von `sim.LearnableSkills` berechnet; fehlt, wenn keiner
+lernbar ist; B-285). Ein älterer Server sendet `learn` ohne `skills` bei `points` > 0, der Client behandelt dann jeden
+ungelernten Skill als lernbar. `respec` ist als Eintrag vorgesehen, fehlt aber, bis die
 Sim eine Prüfung ohne Seiteneffekt bietet (B-270); die Nachricht `respec` wirkt trotzdem. Die Liste nennt keine Taste,
 die Belegung gehört dem Client. Berufe, Tausch, Grabstein und Wiederbeleben kommen später (W5, B-120).
 

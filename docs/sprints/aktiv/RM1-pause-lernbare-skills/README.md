@@ -1,14 +1,14 @@
 # RM1 · SRV · Raum-Pause im Couch-Raum und lernbare Skills vom Server
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** SKL
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-285, B-495
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 17fc90d1
+- **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-22, Revision 2
 
 ## Ausgangslage
 
@@ -50,16 +50,18 @@ Pause im gemischten Raum → nur Schutz des Monarchen, kein Anhalten.
 
 ## Offene Fragen
 
-keine
+keine. Entschieden (autonom, Claude, 2026-10-22): Die lernbaren Skills stehen als Feld `skills` im Eintrag `{ "action": "learn", "skills": [...] }` der Aktionsliste (B-285, Offene Frage); kein eigenes Feld, keine neue Protokoll-Version (Feld ist zusätzlich, ein älterer Server sendet `learn` ohne `skills`, der Client fällt dann auf das pauschale Lernen zurück). Bestätigung durch 🧑: Frage-Ticket im Sprint KR5.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| RM1.2 | `RM1.2-lernbare-skills-protokoll.md` | Umsetzung | autonom | fertig |
+| RM1.4 | `RM1.4-respec-in-aktionsliste.md` | Umsetzung | autonom | offen |
+| RM1.3 | `RM1.3-review.md` | Review | autonom | offen |
+| RM1.1 | `RM1.1-pause-couch-raum.md` | Umsetzung | autonom | verworfen |
 
-- RM1.1 entfällt (Pause im Couch-Raum, B-214 an BED, PJ3).
-- RM1.2 Lernbare Skills je Spieler im Protokoll (AC-02).
-- RM1.3 Review (Code-Sprint): alle Kriterien prüfen.
-- RM1.4 Aktionsliste nennt `respec` (AC-03). Beim Bereitmachen vor das Review ordnen.
+RM1.1 entfällt (Pause im Couch-Raum, B-214 an BED, PJ3).
 
 ## Abnahme
 

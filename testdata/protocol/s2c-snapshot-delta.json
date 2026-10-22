@@ -40,7 +40,14 @@
           "points": 1,
           "actions": [
             {
-              "action": "learn"
+              "action": "learn",
+              "skills": [
+                "fireball",
+                "groupHeal",
+                "heal",
+                "iceWall",
+                "shieldBash"
+              ]
             }
           ]
         },
@@ -64,7 +71,15 @@
               "action": "attack"
             },
             {
-              "action": "learn"
+              "action": "learn",
+              "skills": [
+                "fireball",
+                "groupHeal",
+                "heal",
+                "iceWall",
+                "shieldBash",
+                "taunt"
+              ]
             }
           ]
         },

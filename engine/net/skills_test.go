@@ -138,6 +138,9 @@ func TestSkillsAktionsliste(t *testing.T) {
 	if got := actionsOf(w, p); len(got) != 2 || got[0]["action"] != "skill" || got[1]["action"] != "learn" {
 		t.Fatalf("Schlag abklingend, Punkt frei: %v", got)
 	}
+	if skills, _ := actionsOf(w, p)[1]["skills"].([]string); !slices.Equal(skills, sim.LearnableSkills(w, p)) || len(skills) == 0 {
+		t.Fatalf("learn ohne lernbare Skills (B-285): %v", skills)
+	}
 	p.RespawnIn = 4
 	if got := actionsOf(w, p); len(got) != 1 || got[0]["action"] != "learn" {
 		t.Fatalf("tot: %v", got)

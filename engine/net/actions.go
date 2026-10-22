@@ -3,7 +3,7 @@ package net
 import "k3c/engine/sim"
 
 // Aktionsliste je Spieler (docs/protocol.md › Skills und Aktionen, B-123): nur der Ort des Spielers, feste
-// Reihenfolge attack, skill nach Slot, learn. respec fehlt, bis die Sim eine Prüfung ohne Seiteneffekt hat (B-270).
+// Reihenfolge attack, skill nach Slot, learn mit den lernbaren Skills (B-285).
 
 // addActions ergänzt je Spieler im Zustand `points` (verfügbare Punkte) und `actions`; players ist s["players"] aus
 // stateOf in der Reihenfolge von w.Players.
@@ -28,8 +28,8 @@ func actionsOf(w *sim.World, p *sim.Player) []map[string]any {
 			}
 		}
 	}
-	if sim.AvailablePoints(w, p) > 0 {
-		out = append(out, map[string]any{"action": "learn"})
+	if skills := sim.LearnableSkills(w, p); len(skills) > 0 {
+		out = append(out, map[string]any{"action": "learn", "skills": skills})
 	}
 	return out
 }

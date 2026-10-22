@@ -81,10 +81,10 @@ describe('Protokoll v4: Skills und Aktionen', () => {
     const p0 = snap?.state.players[0];
     expect(p0?.skills).toEqual(['taunt']);
     expect(p0?.points).toBe(1);
-    expect(p0?.actions).toEqual([{ action: 'skill', slot: 1, skill: 'taunt' }, { action: 'learn' }]);
+    expect(p0?.actions).toEqual([{ action: 'skill', slot: 1, skill: 'taunt' }, { action: 'learn', skills: ['fireball', 'groupHeal', 'heal', 'iceWall', 'shieldBash'] }]);
     expect(snap?.state.players[1]?.skills).toBeUndefined(); // fehlt = keine
     expect(delta?.state.players[0]?.cooldowns).toEqual([8]);
-    expect(delta?.state.players[0]?.actions).toEqual([{ action: 'learn' }]);
+    expect(delta?.state.players[0]?.actions).toEqual([{ action: 'learn', skills: ['fireball', 'groupHeal', 'heal', 'iceWall', 'shieldBash'] }]);
   });
 
   it('c2s-input.json ist eine gültige ClientMessage mit attack und skill', () => {

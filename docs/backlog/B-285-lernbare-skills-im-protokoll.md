@@ -8,9 +8,9 @@
 - **Sprint:** RM1
 - **Projekt:** SKL
 - **Erstellt:** 2026-10-05
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-22, Revision 1
 
 ## Ausgangslage
 
@@ -53,7 +53,7 @@ Keine Punkte → keine lernbaren Skills; Feld fehlt (älterer Server) → wie he
 
 ## Offene Fragen
 
-Form des Felds (in `actions` oder eigenes Feld): beim Planen, 🧑 gibt frei.
+keine. Form entschieden (autonom, Claude, 2026-10-22): Feld `skills` im Eintrag `learn` der Aktionsliste; Bestätigung durch 🧑 über KR5.
 
 ## Notizen
 

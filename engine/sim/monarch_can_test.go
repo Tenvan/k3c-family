@@ -93,3 +93,22 @@ func TestCanRespecWieRespecOhneSeiteneffekt(t *testing.T) {
 		})
 	}
 }
+
+// LearnableSkills: 1 Punkt, nichts gelernt → nur Tier 1, also taunt ja, ironWall (Tier 3) nein; ohne Punkt leer (B-285/AC-01).
+func TestLearnableSkillsTierGating(t *testing.T) {
+	w := quietWorld(t)
+	p := AddPlayer(w)
+	if got := LearnableSkills(w, p); len(got) != 0 {
+		t.Fatalf("ohne Punkt: %v", got)
+	}
+	addPoolPoints(w, 1)
+	got := LearnableSkills(w, p)
+	if !slices.Contains(got, "taunt") || slices.Contains(got, "ironWall") || !slices.IsSorted(got) {
+		t.Fatalf("1 Punkt: %v", got)
+	}
+	for _, id := range got {
+		if s, _ := skillByID(id); s.Tier != 1 {
+			t.Fatalf("%s ist Tier %d", id, s.Tier)
+		}
+	}
+}

@@ -56,7 +56,8 @@ export interface Player {
 export type PlayerAction =
   | { action: 'attack' }
   | { action: 'skill'; slot: number; skill: string }
-  | { action: 'learn' }
+  /** `skills`: jetzt lernbare Skill-IDs (B-285); fehlt bei älteren Servern, dann gilt jeder ungelernte Skill. */
+  | { action: 'learn'; skills?: string[] }
   | { action: 'respec' };
 
 export interface Coin {

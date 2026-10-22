@@ -34,13 +34,24 @@ export const skillName = (id: string): string => nameOf('skill', id, id.replace(
 
 const has = (p: Player, action: string) => p.actions.some((a) => a.action === action);
 
-/** Menüeinträge: alle Skills nach Linie und Tier, gelernte markiert, lernbar nur mit `learn` in `actions`; dazu Respec */
+/** Lernbar: die vom Server genannten Skills (`learn.skills`); ohne Feld (älterer Server) jeder ungelernte bei freien Punkten */
+function learnableOf(p: Player, learned: Set<string>): (id: string) => boolean {
+  const entry = p.actions.find((a) => a.action === 'learn');
+  if (!entry || p.points <= 0) return () => false;
+  if (entry.skills) {
+    const named = new Set(entry.skills);
+    return (id) => named.has(id);
+  }
+  return (id) => !learned.has(id);
+}
+
+/** Menüeinträge: alle Skills nach Linie und Tier, gelernte markiert, lernbar nur laut `learn` in `actions`; dazu Respec */
 export function menuEntries(p: Player): MenuEntry[] {
   const learned = new Set(p.skills ?? []);
-  const canLearn = has(p, 'learn') && p.points > 0;
+  const learnable = learnableOf(p, learned);
   const lines = Object.keys(MONARCH.lines);
   const entries = Object.entries(SKILLS)
-    .map(([id, s]) => ({ id, line: s.line, tier: s.tier, passive: s.kind === 'passive', learned: learned.has(id), learnable: canLearn && !learned.has(id) }))
+    .map(([id, s]) => ({ id, line: s.line, tier: s.tier, passive: s.kind === 'passive', learned: learned.has(id), learnable: learnable(id) }))
     .sort((a, b) => lines.indexOf(a.line) - lines.indexOf(b.line) || a.tier - b.tier);
   if (has(p, 'respec')) entries.push({ id: 'respec', line: '', tier: 0, passive: false, learned: false, learnable: true });
   return entries;

@@ -34,6 +34,13 @@ describe('menuEntries', () => {
     expect(entries.some((e) => e.id === 'respec')).toBe(false);
   });
 
+  it('lernbar nur, was der Server in learn.skills nennt (B-285/AC-02)', () => {
+    const p = player(0, { points: 2, actions: [{ action: 'learn', skills: ['shieldBash', 'fireball'] }], skills: ['taunt'] });
+    const learnable = menuEntries(p).filter((e) => e.learnable).map((e) => e.id);
+    expect(learnable.sort()).toEqual(['fireball', 'shieldBash']);
+    expect(menuEntries(player(0, { points: 0, actions: [{ action: 'learn', skills: ['fireball'] }] })).some((e) => e.learnable)).toBe(false);
+  });
+
   it('Respec nur, wenn der Server es anbietet (letzter Eintrag)', () => {
     const entries = menuEntries(player(0, { actions: [{ action: 'respec' }] }));
     expect(entries.at(-1)).toMatchObject({ id: 'respec', learnable: true });
