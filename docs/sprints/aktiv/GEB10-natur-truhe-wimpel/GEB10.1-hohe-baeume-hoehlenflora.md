@@ -1,6 +1,6 @@
 # GEB10.1 · Bäume höher und dichter, Höhlen-Flora als JSON und PNG
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -36,17 +36,17 @@ Spiel-Zuordnung und Löschen der alten Höhle-Look-PNGs (GEB10.3); mehr Bäume j
 
 ## Schritte
 
-1. Vorlagen der neun Bäume neu schreiben (Maß, Teile), Bausteine neu zeichnen, `stufen` (Höhle-Look) entfernen.
+1. Vorlagen der neun Bäume neu schreiben (Maß, Teile), Bausteine neu zeichnen; der Höhle-Look (`stufen`) bleibt bis GEB10.3 stehen, weil `task gen:gebaeude` alle PNGs neu schreibt und das Spiel bis dahin `<baum>-<form>-<look>-32.png` lädt.
 2. `wurzel`, `wurzel-2`, `wurzel-3` (2–3 × 15 Kacheln, Klasse `flora`) und `hoehlenbusch` (1 × 1) mit Vorlage anlegen; Materialien aus § 3.
-3. `task gen:gebaeude` zweimal, PNGs ansehen (64 px).
+3. `task gen:gebaeude` zweimal, PNGs ansehen (Kontaktbild).
 4. Vorschau: Baum-Schritt 1 Kachel, Breite der Bäume beachten, Reihe „Look Höhle“ durch „Höhlen-Flora“ ersetzen; Vitest anpassen.
-5. Regeldatei § 1, § 4, § 5 „Bäume“, § 6 nachziehen.
+5. Regeldatei § 1, § 4, § 5 „Bäume“ nachziehen (§ 6 mit dem Entfernen des Höhle-Looks in GEB10.3).
 
 ## Fertig, wenn
 
-- [ ] AC-01: neun Bäume 11,25 Kacheln hoch, ohne `stufen`; vier Flora-JSONs mit PNG 16/32/64/128 im `index.json`; zweiter `task gen:gebaeude` byte-gleich.
-- [ ] AC-01: Vorschau-Reihe mit Schritt 1 Kachel und Flora-Reihe, Vitest grün (`bunx vitest run src/graphics/scenesLogic.test.ts`).
-- [ ] Regeldatei nachgezogen; `task check:diff` grün (oder gezielte Prüfungen, falls nur das Zeitlimit greift).
+- [x] AC-01: neun Bäume 11,25 Kacheln hoch (`birke-3` 9,5); vier Flora-JSONs mit PNG 16/32/64/128 im `index.json`; zweiter `task gen:gebaeude --force` byte-gleich.
+- [x] AC-01: Vorschau-Reihe mit Schritt 1 Kachel und Flora-Reihe, Vitest grün (`bunx vitest run src/graphics/scenesLogic.test.ts`).
+- [x] Regeldatei nachgezogen; `task check:diff` grün (oder gezielte Prüfungen, falls nur das Zeitlimit greift).
 
 ## Prüfen
 
@@ -60,4 +60,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- **AC-01 umgesetzt (Grafik und Vorschau), geprüft:** neun Bäume neu gezeichnet, 2–4 × 11,25 Kacheln (`birke-3` 4 × 9,5), Vorlagen neu; `wurzel`, `wurzel-2`, `wurzel-3` (2–3 × 15, Klasse `flora`) und `hoehlenbusch` (1 × 1) neu. `task gen:gebaeude --force` zweimal: 52 Gebäude, md5 aller PNGs gleich; Kontaktbild gesichtet (Scratchpad-Zeichenhilfe, nicht im Repo).
+- Vorschau: `BAUM_ABSTAND` 1, Reihe „Höhlen-Flora“ statt „Look Höhle“, Breite der Reihe aus `kacheln.b`; Studio-Vitest 24/24, `tsc --noEmit` grün.
+- Regeldatei § 1, § 4, § 5 nachgezogen. **Abweichung:** Höhle-Look der Bäume (`stufen`) bleibt bis GEB10.3 (sonst fehlen dem Spiel die geladenen PNGs). Spiel-Zuordnung folgt in GEB10.3; manuell geprüft hat niemand (GEB10.5).

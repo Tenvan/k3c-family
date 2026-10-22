@@ -79,9 +79,16 @@ describe('Asset-Vorschau: Baum-Reihe (GEB1/AC-05)', () => {
     expect(baumReihe(index, 4).map((b) => b.id)).toEqual(['birke', 'pappel', 'tanne', 'birke']);
   });
 
-  it('Nachbarn überlappen sich (Abstand kleiner als 1 Kachel Breite)', () => {
+  it('Nachbarn überlappen sich (Schritt 1 Kachel, schmalster Baum 2 Kacheln breit, GEB10)', () => {
     const reihe = baumReihe(index);
-    for (let i = 1; i < reihe.length; i++) expect(reihe[i]!.x - reihe[i - 1]!.x).toBeLessThan(1);
+    for (let i = 1; i < reihe.length; i++) expect(reihe[i]!.x - reihe[i - 1]!.x).toBe(1);
+  });
+
+  it('Höhlen-Flora als eigene Reihe (GEB10): nur Klasse flora', () => {
+    const flora = (id: string) => ({ id, klasse: 'flora', kacheln: { b: 2, h: 15 }, dateien: {} });
+    const idx = [...index, flora('hoehlenbusch'), flora('wurzel')];
+    expect(baumReihe(idx, undefined, 1, 'flora').map((b) => b.id)).toEqual(['hoehlenbusch', 'wurzel']);
+    expect(baumReihe(idx).map((b) => b.id)).toEqual(['birke', 'pappel', 'tanne']);
   });
 
   it('ohne Bäume keine Reihe', () => {

@@ -106,15 +106,15 @@
     "id": "birke-2",
     "klasse": "baum",
     "kacheln": {
-      "b": 1,
-      "h": 2.25
+      "b": 3,
+      "h": 11.25
     },
     "vorlage": {
-      "motiv": "Birke mit hängenden Zweigen, 1 Kachel breit, Form 2 der Birke",
+      "motiv": "Birke mit hängenden Zweigen, 3 × 11,25 Kacheln, Form 2 der Birke",
       "teile": [
         "Weißer Stamm mittig bis zum Boden mit dunklen Querstrichen",
-        "Runde Krone in der oberen Hälfte",
-        "Vom unteren Kronenrand hängen schmale Zweige herab",
+        "Runde Krone im oberen Drittel",
+        "Vom unteren Kronenrand hängen sechs lange, schmale Zweige herab",
         "Lichtkante links oben"
       ],
       "materialien": [
@@ -122,7 +122,7 @@
         "Birkenrinde"
       ],
       "stimmung": "weich, melancholisch",
-      "fein": "Querstriche auf der Rinde, Lichtpunkte"
+      "fein": "Querstriche auf der Rinde"
     },
     "dateien": {
       "128": "grafik/gebaeude/birke-2-1-128.png",
@@ -157,22 +157,22 @@
     "id": "birke-3",
     "klasse": "baum",
     "kacheln": {
-      "b": 1,
-      "h": 2.25
+      "b": 4,
+      "h": 9.5
     },
     "vorlage": {
-      "motiv": "Niedrige, breite Birke mit tief ansetzender Krone, 1 Kachel breit, Form 3 der Birke",
+      "motiv": "Niedrigere, breite Birke, 4 × 9,5 Kacheln, Form 3 der Birke",
       "teile": [
-        "Weißer Stamm mittig, kurz",
-        "Breite, flache Krone knapp über dem Stamm, ragt bis an beide Kachelränder",
-        "Lichtkante links oben, Schatten unten rechts"
+        "Weißer Stamm mittig mit dunklen Querstrichen",
+        "Breite Krone aus acht Laubballen, fast vier Kacheln breit",
+        "Licht oben links, Schatten unten rechts"
       ],
       "materialien": [
         "Laub (Pappel, Birke)",
         "Birkenrinde"
       ],
-      "stimmung": "gedrungen, behäbig",
-      "fein": "Querstriche auf der Rinde, Lichtpunkte"
+      "stimmung": "ausladend, sonnig",
+      "fein": "Querstriche auf der Rinde"
     },
     "dateien": {
       "128": "grafik/gebaeude/birke-3-1-128.png",
@@ -207,21 +207,21 @@
     "id": "birke",
     "klasse": "baum",
     "kacheln": {
-      "b": 1,
-      "h": 2.25
+      "b": 3,
+      "h": 11.25
     },
     "vorlage": {
-      "motiv": "Birke mit weißem Stamm und lockerer runder Krone, 1 Kachel breit, als Teil einer überlappenden Baumreihe",
+      "motiv": "Hohe Birke, 3 × 11,25 Kacheln, Krone aus runden Laubballen",
       "teile": [
-        "Runde, lockere Krone in der oberen Hälfte mit einzelnen dunklen Blättern",
-        "Lichtkante links oben an der Krone",
-        "Weißer Stamm mittig bis zum Boden mit dunklen Querstrichen"
+        "Weißer Stamm mittig vom Boden bis in die Krone, rechts grauer Schatten, dunkle Querstriche",
+        "Krone aus sechs runden Laubballen in der oberen Hälfte",
+        "Licht oben links, Schatten unten rechts an jedem Ballen"
       ],
       "materialien": [
         "Laub (Pappel, Birke)",
         "Birkenrinde"
       ],
-      "stimmung": "licht und leicht",
+      "stimmung": "hell, freundlich",
       "fein": "Querstriche auf der Rinde"
     },
     "dateien": {
@@ -987,6 +987,35 @@
     ]
   },
   {
+    "id": "hoehlenbusch",
+    "klasse": "flora",
+    "kacheln": {
+      "b": 1,
+      "h": 1
+    },
+    "vorlage": {
+      "motiv": "Höhlenbusch aus dunklen Farnwedeln mit zwei Leuchtpilzen, 1 × 1 Kachel",
+      "teile": [
+        "Vier aufrechte Farnwedel in kühlem Grün, unten ein dichter Ballen",
+        "Zwei Leuchtpilze davor, blaue Hüte mit hellem Rand",
+        "Licht links an den Wedeln, Schatten rechts und am Boden"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Kristall",
+        "Birkenrinde"
+      ],
+      "stimmung": "kühl, leuchtend, unterirdisch",
+      "fein": "Glanzpunkte auf den Pilzhüten"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hoehlenbusch-128.png",
+      "16": "grafik/gebaeude/hoehlenbusch-16.png",
+      "32": "grafik/gebaeude/hoehlenbusch-32.png",
+      "64": "grafik/gebaeude/hoehlenbusch-64.png"
+    }
+  },
+  {
     "id": "kaserne",
     "kacheln": {
       "b": 6,
@@ -1142,22 +1171,22 @@
     "id": "pappel-2",
     "klasse": "baum",
     "kacheln": {
-      "b": 1,
-      "h": 2.25
+      "b": 2,
+      "h": 11.25
     },
     "vorlage": {
-      "motiv": "Schmale Pappel mit drei getrennten Laubballen und sichtbarem Stamm dazwischen, Form 2 der Pappel",
+      "motiv": "Schmale Pappel mit Lücken, 2 × 11,25 Kacheln, Form 2 der Pappel",
       "teile": [
-        "Dünner Stamm über die ganze Höhe, unten kräftiger",
-        "Drei Laubballen übereinander, leicht versetzt, mit Lücken",
-        "Lichtflecken links, Schatten rechts"
+        "Sehr schmale Laubsäule mit unruhigem Rand",
+        "Zwei Lücken in der Krone, durch die der Stamm scheint",
+        "Stamm durchgehend, unten sichtbar"
       ],
       "materialien": [
         "Laub (Pappel, Birke)",
         "Pfosten, Balken"
       ],
-      "stimmung": "luftig, windbewegt",
-      "fein": "Lichtflecken auf dem Laub"
+      "stimmung": "licht, windig",
+      "fein": "keine"
     },
     "dateien": {
       "128": "grafik/gebaeude/pappel-2-1-128.png",
@@ -1192,23 +1221,22 @@
     "id": "pappel-3",
     "klasse": "baum",
     "kacheln": {
-      "b": 1,
-      "h": 2.25
+      "b": 3,
+      "h": 11.25
     },
     "vorlage": {
-      "motiv": "Pappel mit Zwiegabel: der Stamm teilt sich auf halber Höhe in zwei Äste mit je einer schmalen Krone, Form 3 der Pappel",
+      "motiv": "Pappel mit Zwiegabel, 3 × 11,25 Kacheln, Form 3 der Pappel",
       "teile": [
-        "Kräftiger Stamm unten mittig",
-        "Gabelung auf halber Höhe, zwei Äste nach links oben und rechts oben",
-        "Zwei schmale Kronen nebeneinander, rechte etwas höher",
-        "Lichtflecken links, Schatten rechts"
+        "Stamm teilt sich bei etwa 3,5 Kacheln Höhe in zwei schräge Äste",
+        "Zwei schmale Laubsäulen nebeneinander, die rechte etwas tiefer",
+        "Lichtkante links, Schatten rechts"
       ],
       "materialien": [
         "Laub (Pappel, Birke)",
         "Pfosten, Balken"
       ],
-      "stimmung": "gespalten, kraftvoll",
-      "fein": "Lichtflecken auf dem Laub"
+      "stimmung": "verwachsen, eigenwillig",
+      "fein": "keine"
     },
     "dateien": {
       "128": "grafik/gebaeude/pappel-3-1-128.png",
@@ -1243,20 +1271,21 @@
     "id": "pappel",
     "klasse": "baum",
     "kacheln": {
-      "b": 1,
-      "h": 2.25
+      "b": 2,
+      "h": 11.25
     },
     "vorlage": {
-      "motiv": "Hohe schmale Pappel, 1 Kachel breit, als Teil einer überlappenden Baumreihe",
+      "motiv": "Hohe Pappel, 2 × 11,25 Kacheln, säulenförmig",
       "teile": [
-        "Spindelförmige Krone fast über die ganze Höhe, oben und unten spitz zulaufend",
-        "Lichtflecken links, Schatten rechts",
-        "Schmaler Stamm unten mittig"
+        "Schmale, hohe Laubsäule von oben bis knapp zwei Kacheln über dem Boden",
+        "Lichtkante links in der oberen Hälfte, Schatten rechts, Blattbüschel als Kerben",
+        "Stamm mittig, unten sichtbar"
       ],
       "materialien": [
-        "Laub (Pappel, Birke)"
+        "Laub (Pappel, Birke)",
+        "Pfosten, Balken"
       ],
-      "stimmung": "helles, frisches Grün",
+      "stimmung": "sommerlich, aufrecht",
       "fein": "keine"
     },
     "dateien": {
@@ -1427,23 +1456,22 @@
     "id": "tanne-2",
     "klasse": "baum",
     "kacheln": {
-      "b": 1,
-      "h": 2.25
+      "b": 4,
+      "h": 11.25
     },
     "vorlage": {
-      "motiv": "Breite Tanne mit tief hängenden unteren Ästen, 1 Kachel breit, Form 2 der Tanne",
+      "motiv": "Breite Tanne mit tiefen Ästen, 4 × 11,25 Kacheln, Form 2 der Tanne",
       "teile": [
-        "Spitze oben, darunter vier Stufen, die nach unten breiter werden",
-        "Unterste Stufe reicht über die ganze Kachelbreite und hängt tief herab",
-        "Lichtkante links, Schattenkante rechts und unter jeder Stufe",
-        "Kurzer Stamm unten mittig"
+        "Zehn Stufen, die unteren fast vier Kacheln breit und bis knapp über den Boden",
+        "Lichtkante links, Schatten rechts und unter jeder Stufe",
+        "Stamm kaum sichtbar, nur der Fuß"
       ],
       "materialien": [
         "Nadeln (Tanne)",
         "Pfosten, Balken"
       ],
-      "stimmung": "dichter, schwerer Nadelwald",
-      "fein": "Lichtpunkte auf den Nadeln"
+      "stimmung": "mächtig, alt",
+      "fein": "Lichtpunkte in den Stufen"
     },
     "dateien": {
       "128": "grafik/gebaeude/tanne-2-1-128.png",
@@ -1478,23 +1506,22 @@
     "id": "tanne-3",
     "klasse": "baum",
     "kacheln": {
-      "b": 1,
-      "h": 2.25
+      "b": 2,
+      "h": 11.25
     },
     "vorlage": {
-      "motiv": "Schlanke Tanne mit schief abgeknickter Spitze, 1 Kachel breit, Form 3 der Tanne",
+      "motiv": "Schlanke Tanne mit schiefer Spitze, 2 × 11,25 Kacheln, Form 3 der Tanne",
       "teile": [
-        "Abgeknickte Spitze, nach rechts geneigt",
-        "Fünf schmale Stufen, nach unten breiter, nie ganz kachelbreit",
-        "Lichtkante links, Schattenkante rechts",
-        "Kurzer Stamm unten mittig"
+        "Acht schmale Stufen, die oberen nach rechts versetzt (schiefe Spitze)",
+        "Lichtkante links, Schatten rechts",
+        "Stamm unten zwei Kacheln hoch sichtbar"
       ],
       "materialien": [
         "Nadeln (Tanne)",
         "Pfosten, Balken"
       ],
-      "stimmung": "windschief, karg",
-      "fein": "Lichtpunkte auf den Nadeln"
+      "stimmung": "windschief, jung",
+      "fein": "Lichtpunkte in den Stufen"
     },
     "dateien": {
       "128": "grafik/gebaeude/tanne-3-1-128.png",
@@ -1529,21 +1556,22 @@
     "id": "tanne",
     "klasse": "baum",
     "kacheln": {
-      "b": 1,
-      "h": 2.25
+      "b": 3,
+      "h": 11.25
     },
     "vorlage": {
-      "motiv": "Schmale Tanne, 1 Kachel breit, als Teil einer überlappenden Baumreihe",
+      "motiv": "Hohe Tanne, 3 × 11,25 Kacheln, Teil einer dichten Baumreihe",
       "teile": [
-        "Kegelförmige Krone in Stufen, oben spitz, unten fast kachelbreit",
-        "Lichtkante links an jeder Stufe, Schattenkante rechts",
-        "Kurzer Stamm unten mittig, kaum sichtbar"
+        "Kegelförmige Krone aus neun Stufen von der Spitze bis knapp über den Boden, unten fast drei Kacheln breit",
+        "Lichtkante links an jeder Stufe, Schatten rechts und unter jeder Stufe",
+        "Gerader Stamm mittig, unten kurz sichtbar, Stammfuß verbreitert"
       ],
       "materialien": [
-        "Nadeln (Tanne)"
+        "Nadeln (Tanne)",
+        "Pfosten, Balken"
       ],
-      "stimmung": "dunkler Nadelwald, kühl",
-      "fein": "keine"
+      "stimmung": "dunkler, hoher Nadelwald, kühl",
+      "fein": "Lichtpunkte in den Stufen"
     },
     "dateien": {
       "128": "grafik/gebaeude/tanne-128.png",
@@ -1878,6 +1906,90 @@
       "16": "grafik/gebaeude/werkstatt-16.png",
       "32": "grafik/gebaeude/werkstatt-32.png",
       "64": "grafik/gebaeude/werkstatt-64.png"
+    }
+  },
+  {
+    "id": "wurzel-2",
+    "klasse": "flora",
+    "kacheln": {
+      "b": 3,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Wurzelvorhang aus fünf dünnen Strängen, 3 × 15 Kacheln, Form 2 der Wurzel",
+      "teile": [
+        "Fünf Wurzeln hängen von der Decke, drei enden frei in verschiedener Höhe",
+        "Zwei reichen bis in den Boden und bilden dort kleine Füße",
+        "Licht links, Schatten rechts an den dicken Strängen"
+      ],
+      "materialien": [
+        "Erde (Wurzeln, Hügelrand) = Pfosten, Balken",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "dunkel, verhangen",
+      "fein": "keine"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/wurzel-2-128.png",
+      "16": "grafik/gebaeude/wurzel-2-16.png",
+      "32": "grafik/gebaeude/wurzel-2-32.png",
+      "64": "grafik/gebaeude/wurzel-2-64.png"
+    }
+  },
+  {
+    "id": "wurzel-3",
+    "klasse": "flora",
+    "kacheln": {
+      "b": 3,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Zwei verdrehte Wurzeln mit großem Wurzelteller, 3 × 15 Kacheln, Form 3 der Wurzel",
+      "teile": [
+        "Zwei dicke Stränge kreuzen sich mehrmals auf dem Weg von der Decke zum Boden",
+        "Eine Seitenwurzel rechts endet frei",
+        "Breiter Wurzelteller am Boden über fast drei Kacheln"
+      ],
+      "materialien": [
+        "Erde (Wurzeln, Hügelrand) = Pfosten, Balken",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "knorrig, mächtig",
+      "fein": "keine"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/wurzel-3-128.png",
+      "16": "grafik/gebaeude/wurzel-3-16.png",
+      "32": "grafik/gebaeude/wurzel-3-32.png",
+      "64": "grafik/gebaeude/wurzel-3-64.png"
+    }
+  },
+  {
+    "id": "wurzel",
+    "klasse": "flora",
+    "kacheln": {
+      "b": 2,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Dicke Wurzel, die von der Höhlendecke über die Wand bis in den Boden wächst, 2 × 15 Kacheln",
+      "teile": [
+        "Ein dicker Wurzelstrang von der oberen Bildkante (Decke) bis zum Boden, leicht geschlängelt, oben dicker",
+        "Drei dünne Seitenwurzeln, die frei enden",
+        "Wurzelfuß am Boden breitet sich nach beiden Seiten aus"
+      ],
+      "materialien": [
+        "Erde (Wurzeln, Hügelrand) = Pfosten, Balken",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "unterirdisch, alt, erdig",
+      "fein": "keine"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/wurzel-128.png",
+      "16": "grafik/gebaeude/wurzel-16.png",
+      "32": "grafik/gebaeude/wurzel-32.png",
+      "64": "grafik/gebaeude/wurzel-64.png"
     }
   }
 ]
