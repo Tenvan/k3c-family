@@ -169,6 +169,14 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-543](B-543-entscheidung-truhe-ohne-serverzustand.md) | CLI | Frage | hoch | eingeplant | KR2 | Entscheidung D6: Geschlossene Truhe ohne Serverzustand |
 | [B-544](B-544-entscheidung-geb9-defaults.md) | DEV | Frage | hoch | eingeplant | KR2 | Entscheidung D7: Hub-Gebäude folgen der Hub-Stufe (Defaults aus GEB9) |
 | [B-545](B-545-entscheidung-geruest-bei-gefahr.md) | CLI | Frage | hoch | eingeplant | KR2 | Entscheidung D8: Baugerüst nur ohne Gefahr |
+| [B-546](B-546-entscheidung-gegner-figuren.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G1: Die sechs neuen Gegner behalten die GR8-Figuren, die GR7.3-Kandidaten werden nicht importiert |
+| [B-547](B-547-entscheidung-skalierung-krumm.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G2: Krumme Skalierungsfaktoren bleiben bis zur TV-Beobachtung GR7.4 |
+| [B-548](B-548-entscheidung-stil-bibel.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G3: Der Entwurf der Stil-Bibel (DB32, 16 px, Outline, Licht oben links) gilt |
+| [B-549](B-549-entscheidung-umschalten-db32.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G4: Das Spiel lädt weiter die Quellgrafik, nicht public/grafik-db32/ |
+| [B-550](B-550-entscheidung-db32-doppelung.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G5: Die DB32-Palette bleibt doppelt in pipeline und buildings |
+| [B-551](B-551-entscheidung-kandidaten-kein-pack.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G6: public/grafik/kandidaten/ ist kein Grafik-Pack |
+| [B-552](B-552-entscheidung-monarch-animationen.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G7: Monarch-Animationen bleiben aus vorhandenen Frames abgeleitet |
+| [B-553](B-553-entscheidung-specs-gr8-gr9-gr10.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G8: Die autonom freigegebenen Specs GR8, GR9 und GR10 gelten |
 
 ## Archiv
 

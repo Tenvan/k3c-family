@@ -58,4 +58,6 @@ Die Wahl der Figuren ist eine manuelle Entscheidung von 🧑.
 
 ## Ergebnis
 
-**Vorbereitet (2026-10-12), Session bleibt `offen`:** Schritt 1 und 2 erledigt. Referenzseite `docs/funde/gr7-figuren-funde.html` mit bis zu drei Kandidaten je Lücke (`lavaSlime`, `ironBeetle`, `fireSpirit`, `crystalSpider`, `shardling`, `crystalGuardian`) und Auswahlfeld; `boss` ausgelassen (B-130). Lizenzen und Eignung stammen aus Suchergebnissen und sind **ungeprüft**; einige Links sind OpenGameArt-Suchlinks. Für `ironBeetle` gibt es nur zwei Kandidaten (kein CC0-Treffer), `fireSpirit` nur Effekte. Offen: Wahl durch 🧑 (Schritt 3), Einbau (Schritt 4), `task check` (Schritt 5).
+**Vorbereitet (2026-10-12), Session bleibt `offen`:** Schritt 1 und 2 erledigt. Referenzseite `docs/funde/gr7-figuren-funde.html` mit bis zu drei Kandidaten je Lücke (`lavaSlime`, `ironBeetle`, `fireSpirit`, `crystalSpider`, `shardling`, `crystalGuardian`) und Auswahlfeld; `boss` ausgelassen (B-130). Lizenzen und Eignung stammen aus Suchergebnissen und sind **ungeprüft**; einige Links sind OpenGameArt-Suchlinks. Für `ironBeetle` gibt es nur zwei Kandidaten (kein CC0-Treffer), `fireSpirit` nur Effekte.
+
+**Vorentschieden (2026-10-22, autonom, Claude):** Default „kein Treffer“ je Lücke, die GR8-Figuren (B-329) bleiben, kein Fremd-Import (Lizenzen ungeprüft). Frage an 🧑: B-546 (KR3). Offen: Wahl durch 🧑 (Schritt 3); bei Bestätigung setzt Claude die Session auf `fertig`.

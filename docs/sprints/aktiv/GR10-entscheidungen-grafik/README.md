@@ -1,14 +1,14 @@
 # GR10 · CLI · Autonome Grafik-Entscheidungen prüfen (GR8, GR9)
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GRA
 - **Domäne:** CLI
-- **Reife:** Entwurf
-- **Tickets:** –
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Reife:** bereit
+- **Tickets:** B-546, B-547, B-548, B-549, B-550, B-551, B-552, B-553
+- **Start-Commit:** 25466242
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-22, Revision 1
 
 ## Ausgangslage
 
@@ -54,12 +54,12 @@ Manuelle Abnahmen bleiben bei 🧑 (`docs/arbeitsweise.md` › SDD). Erst nach G
 
 ## Akzeptanzkriterien
 
-- **AC-01** Zu jeder der acht Entscheidungen steht im Ergebnis von GR10.1 „bestätigt“ oder „geändert (Ticket)“.
-- **AC-02** B-329, B-331, B-420, B-505 haben Status und Folgetickets passend zu den Entscheidungen.
+- **AC-01** Zu jeder der acht Entscheidungen (B-546 bis B-553) steht im Ergebnis von GR10.1 „bestätigt“ oder „geändert (Ticket)“.
+- **AC-02** B-329, B-331, B-505 und B-193, B-251 haben Status und Folgetickets passend zu den Entscheidungen (B-420 ist erledigt).
 
 ## Offene Fragen
 
-Alle in Anforderungen gelistet; keine weiteren.
+Keine blockierenden. Jede Entscheidung liegt mit Default als Frage-Ticket in KR3 (autonom vorentschieden, Claude, 2026-10-22): 1 → B-546 (zugleich GR7.3: „kein Treffer“, GR8-Figuren bleiben), 2 → B-547 (GR7.4), 3 → B-548, 4 → B-549, 5 → B-550, 6 → B-551, 7 → B-552 (GR9.5), 8 → B-553. Bis zu Ralfs Antwort gelten die Defaults; GR10.1 und KR3.1 sind dieselbe Durchsicht.
 
 ## Sessions
 
