@@ -8,6 +8,8 @@ Skalierung ×2 bis ×3, Nachbearbeitung nur Skalieren und Palette.
   `sprites/<ordner>` = Figur unter `public/sprites/` (Credits `public/sprites/CREDITS.md`), Zuordnung über `data/sprites.json`.
 - **Stil bei Figuren:** Frame-Größe, Figurhöhe in Frame-Pixeln und Skalierung aus `data/sprites.json`
   (`scale` des Sheets, mal `scale` der Figur, falls gesetzt).
+- **Hub-Gebäude (GEB9):** Werkstatt, Farm, Kaserne, Lager, Taverne, Schmiede, Heilplatz und Rüstkammer wechseln mit der Hub-Stufe; das Register
+  führt je Gebäude die Slots `<id>:1` bis `<id>:5` (z. B. `workshop:3`), der Slot ohne Stufe zeigt die Grundform (Stufe 1).
 - **Lücken** sind fett und nennen das Ticket für die Suche (B-162, GR2). `src/tools/zuordnung.test.ts` prüft Vollständigkeit,
   Credits und Lücken-Tickets.
 
@@ -19,14 +21,14 @@ Skalierung ×2 bis ×3, Nachbearbeitung nur Skalieren und Palette.
 | `wall` | `data/buildings.json` | `grafik/gebaeude` | `mauer-<n>-32.png` (1 × 5 Kacheln, Stufen 1–5 in `mauer.json`) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB3; Stufen siehe zuordnung-welt.md | eigen | zugeordnet |
 | `tower` | `data/buildings.json` | `grafik/gebaeude` | `turm-<n>-32.png` (3 × 8 Kacheln, Stufen 1–5 in `turm.json`) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB3; Stufen siehe zuordnung-welt.md | eigen | zugeordnet |
 | `gate` | `data/buildings.json` | `grafik/gebaeude` | `tor-<n>-32.png` (2 × 4 Kacheln, Stufen 1–5 in `tor.json`) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB4; Stufe = Stufe der gebauten Mauer seiner Linie, sonst 1 | eigen | zugeordnet |
-| `workshop` | `data/buildings.json` | `grafik/gebaeude` | `werkstatt-32.png` | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB1/GEB2 | eigen | zugeordnet |
-| `tavern` | `data/buildings.json` | `grafik/gebaeude` | `taverne-32.png` | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB2 | eigen | zugeordnet |
-| `healer` | `data/buildings.json` | `grafik/gebaeude` | `heilplatz-32.png` | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB2 | eigen | zugeordnet |
-| `smithy` | `data/buildings.json` | `grafik/gebaeude` | `schmiede-32.png` | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB2 | eigen | zugeordnet |
-| `armory` | `data/buildings.json` | `grafik/gebaeude` | `ruestkammer-32.png` | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB2 | eigen | zugeordnet |
-| `storage` | `data/buildings.json` | `grafik/gebaeude` | `lager-32.png` (6 × 4 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5 | eigen | zugeordnet |
-| `farm` | `data/buildings.json` | `grafik/gebaeude` | `farm-32.png` (4 × 3 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5 | eigen | zugeordnet |
-| `barracks` | `data/buildings.json` | `grafik/gebaeude` | `kaserne-32.png` (6 × 4 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5 | eigen | zugeordnet |
+| `workshop` | `data/buildings.json` | `grafik/gebaeude` | `werkstatt-<n>-32.png` (n = Hub-Stufe 1–5) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB1/GEB2, GEB9 | eigen | zugeordnet |
+| `tavern` | `data/buildings.json` | `grafik/gebaeude` | `taverne-<n>-32.png` (n = Hub-Stufe 1–5) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB2, GEB9 | eigen | zugeordnet |
+| `healer` | `data/buildings.json` | `grafik/gebaeude` | `heilplatz-<n>-32.png` (n = Hub-Stufe 1–5) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB2, GEB9 | eigen | zugeordnet |
+| `smithy` | `data/buildings.json` | `grafik/gebaeude` | `schmiede-<n>-32.png` (n = Hub-Stufe 1–5) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB2, GEB9 | eigen | zugeordnet |
+| `armory` | `data/buildings.json` | `grafik/gebaeude` | `ruestkammer-<n>-32.png` (n = Hub-Stufe 1–5) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB2, GEB9 | eigen | zugeordnet |
+| `storage` | `data/buildings.json` | `grafik/gebaeude` | `lager-<n>-32.png` (n = Hub-Stufe 1–5) (6 × 4 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5, GEB9 | eigen | zugeordnet |
+| `farm` | `data/buildings.json` | `grafik/gebaeude` | `farm-<n>-32.png` (n = Hub-Stufe 1–5) (4 × 3 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5, GEB9 | eigen | zugeordnet |
+| `barracks` | `data/buildings.json` | `grafik/gebaeude` | `kaserne-<n>-32.png` (n = Hub-Stufe 1–5) (6 × 4 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5, GEB9 | eigen | zugeordnet |
 | `stairsUp` | `data/buildings.json` | `grafik/gebaeude` | `treppe-hoch-32.png` (4 × 4 Kacheln, ein Bild) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5 | eigen | zugeordnet |
 | `stairsDown` | `data/buildings.json` | `grafik/gebaeude` | `treppe-runter-32.png` (4 × 3 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5 | eigen | zugeordnet |
 
@@ -45,12 +47,12 @@ Skalierung ×2 bis ×3, Nachbearbeitung nur Skalieren und Palette.
 | `zombie` | `data/enemies.json` | `sprites/cemetery-skeleton-clothed` | `idle/run/attack.png`, Frame 34×46 | Figur 40 px, Gothicvania, ×2,5 | CC0 1.0 | zugeordnet |
 | `ratSwarm` | `data/enemies.json` | `sprites/mushroom` | `idle/run/attack.png`, Frame 150×150, Tönung `#b08968` | Figur 37 px, LuizMelo, ×1,4 (2 × 0,7); Vermerk: Skalierung nicht ganzzahlig bzw. außerhalb ×2–×3, B-251 | CC0 1.0 | zugeordnet |
 | `mineGhost` | `data/enemies.json` | `sprites/ghost` | `idle/run/attack.png`, Frame 48×54, Deckkraft 0,85 | Figur 42 px, Gothicvania, ×2,5 | CC0 1.0 | zugeordnet |
-| `lavaSlime` | `data/enemies.json` | `sprites/mushroom` | `idle/run/attack.png`, Frame 150×150, Tönung `#e63946` | Figur 37 px, LuizMelo, ×2; Vermerk: Platzhalter (B-326), echte Figur B-329 | CC0 1.0 | zugeordnet |
-| `ironBeetle` | `data/enemies.json` | `sprites/hell-hound` | `idle/run/attack.png`, Frame 50×44, Tönung `#8f8f8f` | Figur 24 px, Gothicvania, ×3; Vermerk: Platzhalter (B-326), echte Figur B-329 | CC0 1.0 | zugeordnet |
-| `fireSpirit` | `data/enemies.json` | `sprites/ghost` | `idle/run/attack.png`, Frame 48×54, Tönung `#f4a261` | Figur 42 px, Gothicvania, ×2,5; Vermerk: Platzhalter (B-326), echte Figur B-329 | CC0 1.0 | zugeordnet |
-| `crystalSpider` | `data/enemies.json` | `sprites/hell-hound` | `idle/run/attack.png`, Frame 50×44, Tönung `#4ea8de` | Figur 24 px, Gothicvania, ×3; Vermerk: Platzhalter (B-326), echte Figur B-329 | CC0 1.0 | zugeordnet |
-| `shardling` | `data/enemies.json` | `sprites/mushroom` | `idle/run/attack.png`, Frame 150×150, Tönung `#a9def9` | Figur 37 px, LuizMelo, ×2; Vermerk: Platzhalter (B-326), echte Figur B-329 | CC0 1.0 | zugeordnet |
-| `crystalGuardian` | `data/enemies.json` | `sprites/hell-gato` | `idle/run/attack.png`, Frame 87×37, Tönung `#4361ee` | Figur 35 px, Gothicvania, ×3,25; Vermerk: Platzhalter (B-326), echte Figur B-329; Skalierung nicht ganzzahlig bzw. außerhalb ×2–×3, B-251 | CC0 1.0 | zugeordnet |
+| `lavaSlime` | `data/enemies.json` | `sprites/fire-worm` | `idle/run/attack.png`, Frame 74×56, Tönung `#ff9248` | Figur 41 px, LuizMelo, ×1,75; Vermerk: Skalierung nicht ganzzahlig, B-251 | CC0 1.0 | zugeordnet |
+| `ironBeetle` | `data/enemies.json` | `sprites/iron-beetle` | `idle/run/attack.png`, Frame 32×24 | Figur 17 px, eigene Arbeit (`tools/spritegen`), ×4 | CC0 1.0 | zugeordnet |
+| `fireSpirit` | `data/enemies.json` | `sprites/cemetery-ghost` | `idle/attack.png`, Frame 37×60, Tönung `#f4a261` | Figur 46 px, Gothicvania, ×2 | CC0 1.0 | zugeordnet |
+| `crystalSpider` | `data/enemies.json` | `sprites/crystal-spider` | `idle/run/attack.png`, Frame 32×24 | Figur 20 px, eigene Arbeit (`tools/spritegen`), ×3 | CC0 1.0 | zugeordnet |
+| `shardling` | `data/enemies.json` | `sprites/flying-eye` | `idle/attack.png`, Frame 150×150, Tönung `#a9def9`, schwebt 40 px | Figur 33 px, LuizMelo, ×2 | CC0 1.0 | zugeordnet |
+| `crystalGuardian` | `data/enemies.json` | `sprites/skeleton` | `idle/run/attack.png`, Frame 150×150, Tönung `#4361ee` | Figur 51 px, LuizMelo, ×2,5 (2 × 1,25); Vermerk: Skalierung nicht ganzzahlig, B-251 | CC0 1.0 | zugeordnet |
 
 ## Truppen
 

@@ -1,0 +1,61 @@
+{
+  "id": "truhe-geschlossen",
+  "klasse": "beute",
+  "vorlage": {
+    "motiv": "Geschlossene Beute-Truhe mit gewölbtem Deckel, 1 × 1 Kachel, Gegenstück zur offenen Truhe",
+    "teile": [
+      "Gewölbter Holzdeckel oben, Lichtkante links, Schatten rechts und an der Unterkante",
+      "Zwei Eisenbänder laufen über Deckel und Truhenkörper",
+      "Truhenkörper wie bei der offenen Truhe mit Schloss in der Mitte"
+    ],
+    "materialien": [
+      "Holz (Wand, Tresen, Gestell)",
+      "Eisen (Rüstung, Band)"
+    ],
+    "stimmung": "verschlossen, verlockend",
+    "fein": "Maserung, Glanzpunkt am Deckel, Schlüsselloch"
+  },
+  "kacheln": { "b": 1, "h": 1 },
+  "bausteine": [
+    {"art":"holz","rechteck":[0.21875,0.25,0.5625,0.0625],"farbe":"twine"},
+    {"art":"holz","rechteck":[0.09375,0.3125,0.8125,0.25],"farbe":"rope"},
+    {"art":"holz","rechteck":[0.09375,0.3125,0.0625,0.25],"farbe":"twine"},
+    {"art":"holz","rechteck":[0.15625,0.25,0.0625,0.0625],"farbe":"rope"},
+    {"art":"holz","rechteck":[0.78125,0.25,0.0625,0.0625],"farbe":"oiled-cedar"},
+    {"art":"holz","rechteck":[0.84375,0.3125,0.0625,0.25],"farbe":"oiled-cedar"},
+    {"art":"holz","rechteck":[0.09375,0.5,0.8125,0.0625],"farbe":"oiled-cedar"},
+    {"art":"eisen","rechteck":[0.21875,0.25,0.0625,0.3125],"farbe":"light-steel"},
+    {"art":"eisen","rechteck":[0.28125,0.25,0.0625,0.25],"farbe":"heather"},
+    {"art":"eisen","rechteck":[0.65625,0.25,0.0625,0.3125],"farbe":"light-steel"},
+    {"art":"eisen","rechteck":[0.71875,0.25,0.0625,0.25],"farbe":"heather"},
+    {"art":"eisen","rechteck":[0.4375,0.5,0.125,0.0625],"farbe":"heather"},
+    {"art":"holz","rechteck":[0.09375,0.5625,0.125,0.0625],"farbe":"twine"},
+    {"art":"eisen","rechteck":[0.21875,0.5625,0.0625,0.4375],"farbe":"light-steel"},
+    {"art":"eisen","rechteck":[0.28125,0.5625,0.0625,0.375],"farbe":"heather"},
+    {"art":"holz","rechteck":[0.34375,0.5625,0.3125,0.0625],"farbe":"twine"},
+    {"art":"eisen","rechteck":[0.65625,0.5625,0.0625,0.4375],"farbe":"light-steel"},
+    {"art":"eisen","rechteck":[0.71875,0.5625,0.0625,0.375],"farbe":"heather"},
+    {"art":"holz","rechteck":[0.78125,0.5625,0.125,0.0625],"farbe":"twine"},
+    {"art":"holz","rechteck":[0.09375,0.625,0.0625,0.3125],"farbe":"twine"},
+    {"art":"holz","rechteck":[0.15625,0.625,0.0625,0.3125],"farbe":"rope"},
+    {"art":"holz","rechteck":[0.34375,0.625,0.09375,0.1875],"farbe":"rope"},
+    {"art":"eisen","rechteck":[0.4375,0.625,0.125,0.0625],"farbe":"light-steel"},
+    {"art":"holz","rechteck":[0.5625,0.625,0.09375,0.1875],"farbe":"rope"},
+    {"art":"holz","rechteck":[0.78125,0.625,0.0625,0.3125],"farbe":"rope"},
+    {"art":"holz","rechteck":[0.84375,0.625,0.0625,0.3125],"farbe":"oiled-cedar"},
+    {"art":"eisen","rechteck":[0.4375,0.6875,0.0625,0.125],"farbe":"light-steel"},
+    {"art":"eisen","rechteck":[0.5,0.6875,0.0625,0.125],"farbe":"dim-gray"},
+    {"art":"holz","rechteck":[0.34375,0.8125,0.3125,0.125],"farbe":"rope"},
+    {"art":"holz","rechteck":[0.09375,0.9375,0.125,0.0625],"farbe":"oiled-cedar"},
+    {"art":"eisen","rechteck":[0.28125,0.9375,0.0625,0.0625],"farbe":"dim-gray"},
+    {"art":"holz","rechteck":[0.34375,0.9375,0.3125,0.0625],"farbe":"oiled-cedar"},
+    {"art":"eisen","rechteck":[0.71875,0.9375,0.0625,0.0625],"farbe":"dim-gray"},
+    {"art":"holz","rechteck":[0.78125,0.9375,0.125,0.0625],"farbe":"oiled-cedar"},
+    {"art":"schloss","rechteck":[0.46875,0.71875,0.03125,0.0625],"farbe":"black","fein":true},
+    {"art":"maserung","rechteck":[0.78125,0.78125,0.09375,0.03125],"farbe":"oiled-cedar","fein":true},
+    {"art":"maserung","rechteck":[0.34375,0.8125,0.09375,0.03125],"farbe":"oiled-cedar","fein":true},
+    {"art":"maserung","rechteck":[0.53125,0.8125,0.09375,0.03125],"farbe":"oiled-cedar","fein":true},
+    {"art":"maserung","rechteck":[0.40625,0.375,0.15625,0.03125],"farbe":"oiled-cedar","fein":true},
+    {"art":"glanz","rechteck":[0.15625,0.34375,0.03125,0.03125],"farbe":"pancho","fein":true}
+  ]
+}

@@ -277,6 +277,25 @@ describe('Spielstand wählen (LB1.1, B-037/AC-04)', () => {
     expect(flow.step({ status: 'lobby', errorCode: 'save_not_found' })).toBeNull();
   });
 
+  it('Spielstand-Eintrag mit dem Namen params.save: save_not_found liefert keinen Neuversuch, „Spielen“ und Autostart schon (B-382/AC-01)', () => {
+    const notFound = { status: 'lobby' as Status, errorCode: 'save_not_found' };
+    const flow = new LobbyFlow(params());
+    expect(flow.choose({ kind: 'save', save: save('familie', '2026-10-01T10:00:00Z') })).toMatchObject({ save: 'familie', fresh: false });
+    expect(flow.step(notFound)).toBeNull();
+    flow.choose({ kind: 'play' });
+    expect(flow.step(notFound)).toMatchObject({ t: 'create', save: 'familie', fresh: true });
+    expect(flow.step(notFound)).toBeNull();
+    const auto = new LobbyFlow(params({ autostart: true }));
+    auto.step(lobby);
+    expect(auto.step(notFound)).toMatchObject({ t: 'create', fresh: true });
+    expect(auto.step(notFound)).toBeNull();
+  });
+
+  it('ungültiges savedAt sortiert hinter die gültigen, übrige nach Datum (B-382/AC-02)', () => {
+    const entries = lobbyEntries([], 'lobby', [save('x', 'x'), save('alt', '2026-10-01T10:00:00Z'), save('neu', '2026-10-03T10:00:00Z'), save('leer', '')]);
+    expect(entries.flatMap((e) => (e.kind === 'save' ? [e.save.name] : []))).toEqual(['neu', 'alt', 'x', 'leer']);
+  });
+
   it('Beschriftung mit Name, Tag und Stufe', () => {
     expect(entryLabel({ kind: 'save', save: save('burg', '2026-10-01T10:00:00Z', 3) }, 'familie')).toBe('Spielstand burg  ·  Tag 3  ·  Stufe 0, 1');
     expect(entryLabel({ kind: 'save', save: { name: 'alt', savedAt: '', depths: [] } }, 'familie')).toBe('Spielstand alt  ·  Tag –  ·  Stufe –');

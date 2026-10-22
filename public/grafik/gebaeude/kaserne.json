@@ -1228,5 +1228,48 @@
    ],
    "farbe": "oiled-cedar"
   }
- ]
+ ],
+  "stufen": [
+    {
+      "stufe": 2,
+      "aenderung": "Stein: Mauerwerk bleibt grauer Stein, neues Eisenband über dem Sockel",
+      "farben": {},
+      "zusaetze": [
+        { "art": "sockelband", "rechteck": [0.25,3.5,0.9375,0.125], "farbe": "heather" },
+        { "art": "sockelband", "rechteck": [0.25,3.5,0.9375,0.03125], "farbe": "light-steel", "fein": true },
+        { "art": "sockelband", "rechteck": [3.3125,3.5,0.9375,0.125], "farbe": "heather" },
+        { "art": "sockelband", "rechteck": [3.3125,3.5,0.9375,0.03125], "farbe": "light-steel", "fein": true }
+      ]
+    },
+    {
+      "stufe": 3,
+      "aenderung": "Kupfer: Wand, Sockel und Zinnen aus Kupferplatten, Wimpel an den Zinnen",
+      "farben": {"wand/dim-gray": "tahiti-gold", "schatten/valhalla": "rope", "licht/smokey-ash": "twine", "fuge/valhalla": "rope", "sockel/valhalla": "rope", "sockel/dim-gray": "tahiti-gold", "zinne/dim-gray": "tahiti-gold", "zinne/smokey-ash": "twine", "scharte/black": "oiled-cedar"},
+      "zusaetze": [
+        { "art": "mast", "rechteck": [4.125,0.4375,0.0625,0.5625], "farbe": "rope" },
+        { "art": "wimpel", "rechteck": [4.1875,0.4375,0.4375,0.1875], "farbe": "tahiti-gold" },
+        { "art": "wimpel", "rechteck": [4.1875,0.4375,0.4375,0.0625], "farbe": "twine" }
+      ]
+    },
+    {
+      "stufe": 4,
+      "aenderung": "Eisen: Wand, Sockel und Zinnen aus Stahlplatten, Wimpel an den Zinnen",
+      "farben": {"wand/dim-gray": "heather", "schatten/valhalla": "dim-gray", "licht/smokey-ash": "light-steel", "fuge/valhalla": "dim-gray", "sockel/valhalla": "dim-gray", "sockel/dim-gray": "heather", "zinne/dim-gray": "heather", "zinne/smokey-ash": "light-steel", "scharte/black": "valhalla"},
+      "zusaetze": [
+        { "art": "mast", "rechteck": [4.125,0.4375,0.0625,0.5625], "farbe": "dim-gray" },
+        { "art": "wimpel", "rechteck": [4.1875,0.4375,0.4375,0.1875], "farbe": "heather" },
+        { "art": "wimpel", "rechteck": [4.1875,0.4375,0.4375,0.0625], "farbe": "light-steel" }
+      ]
+    },
+    {
+      "stufe": 5,
+      "aenderung": "Kristall: Wand, Sockel und Zinnen aus blauem Kristall, leuchtender Wimpel an den Zinnen",
+      "farben": {"wand/dim-gray": "royal-blue", "schatten/valhalla": "deep-koamaru", "licht/smokey-ash": "cornflower", "fuge/valhalla": "deep-koamaru", "sockel/valhalla": "deep-koamaru", "sockel/dim-gray": "royal-blue", "zinne/dim-gray": "royal-blue", "zinne/smokey-ash": "cornflower", "scharte/black": "viking"},
+      "zusaetze": [
+        { "art": "mast", "rechteck": [4.125,0.4375,0.0625,0.5625], "farbe": "deep-koamaru" },
+        { "art": "wimpel", "rechteck": [4.1875,0.4375,0.4375,0.1875], "farbe": "royal-blue" },
+        { "art": "wimpel", "rechteck": [4.1875,0.4375,0.4375,0.0625], "farbe": "cornflower" }
+      ]
+    }
+  ]
 }

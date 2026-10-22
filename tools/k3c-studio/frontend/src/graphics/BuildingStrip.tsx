@@ -17,7 +17,7 @@ export function BuildingStrip({ index }: { index: readonly GebaeudeEintrag[] }) 
     <div className="sz-strip sz-top">
       {baumReihe(index).length > 0 && <BaumFigur index={index} d={32} />}
       {baumReihe(index).length > 0 && <BaumFigur index={index} d={16} />}
-      {baumReihe(index, undefined, 2).length > 0 && <BaumFigur index={index} d={32} stufe={2} />}
+      {baumReihe(index, undefined, 1, 'flora').length > 0 && <BaumFigur index={index} d={32} klasse="flora" />}
       {gebaeudeKarten(index).map((k) => {
         const e = byId.get(k.id)!;
         const n = kachelAnzahl(e);
@@ -52,15 +52,16 @@ function Vorlage({ e }: { e: GebaeudeEintrag }) {
   );
 }
 
-/** Überlappende Baum-Reihe in Dichte d, auf 32 px je Kachel skaliert (GEB1/AC-05); Stufe 2 = Look Höhle (GEB6.1). */
-function BaumFigur({ index, d, stufe = 1 }: { index: readonly GebaeudeEintrag[]; d: number; stufe?: number }) {
-  const reihe = baumReihe(index, undefined, stufe);
+/** Überlappende Baum-Reihe in Dichte d, auf 32 px je Kachel skaliert (GEB1/AC-05); `klasse` `flora` = Höhlen-Flora (GEB10). */
+function BaumFigur({ index, d, stufe = 1, klasse = 'baum' }: { index: readonly GebaeudeEintrag[]; d: number; stufe?: number; klasse?: string }) {
+  const reihe = baumReihe(index, undefined, stufe, klasse);
   const byId = new Map(index.map((e) => [e.id, e]));
   const boden = bodenOf(index);
   const draw = async (c: HTMLCanvasElement) => {
     const hoehe = Math.max(...reihe.map((b) => byId.get(b.id)!.kacheln.h));
     const imgs = await Promise.all(reihe.map((b) => ladeBild(baumDatei(byId.get(b.id)!, stufe, d)!)));
-    const g = pixelContext(c, (reihe.at(-1)!.x + 1) * UNIT, hoehe * UNIT);
+    const breite = Math.max(...reihe.map((b) => b.x + byId.get(b.id)!.kacheln.b));
+    const g = pixelContext(c, breite * UNIT, hoehe * UNIT);
     imgs.forEach((img, i) => {
       const e = byId.get(reihe[i]!.id)!;
       g?.drawImage(img, reihe[i]!.x * UNIT, (hoehe - e.kacheln.h) * UNIT, e.kacheln.b * UNIT, e.kacheln.h * UNIT);
@@ -69,8 +70,8 @@ function BaumFigur({ index, d, stufe = 1 }: { index: readonly GebaeudeEintrag[];
   };
   return (
     <figure className="sz-fig">
-      <Pixel draw={draw} drawKey={`baum:${d}:${stufe}:${reihe.map((b) => b.id).join(',')}`} />
-      <figcaption>{reihe.map((b) => b.id).join(', ')} · {stufe === 2 ? 'Look Höhle · ' : ''}{d} px ×{UNIT / d}</figcaption>
+      <Pixel draw={draw} drawKey={`${klasse}:${d}:${stufe}:${reihe.map((b) => b.id).join(',')}`} />
+      <figcaption>{reihe.map((b) => b.id).join(', ')} · {klasse === 'flora' ? 'Höhlen-Flora · ' : ''}{d} px ×{UNIT / d}</figcaption>
     </figure>
   );
 }

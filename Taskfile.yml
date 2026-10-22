@@ -13,7 +13,7 @@
 #   k3c-studio   tools/k3c-studio/Taskfile.yml  Asset-Studio: dev (Client/Server), window (wails dev), build, frontend, test, lint
 #   k3c-starter  tools/k3c-starter/Taskfile.yml Windows-Starter: dev (Client/Server), window (wails dev), build, test, lint
 #   balance      tools/k3c-workbench/internal/balance/Taskfile.yml  Balancing-Tester
-#   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Regeltabelle
+#   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Grafik-Pipeline, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
 #
 # Gruppen dieses Taskfiles (in dieser Reihenfolge): Einrichten (install) · Client (dev, lint, typecheck, test) · Bauen und Ausliefern
@@ -170,7 +170,7 @@ tasks:
           for f in $(git diff --name-only "$base"; git ls-files --others --exclude-standard); do
             case "$f" in
               engine/*|data/*|go.mod|go.sum) g=1; d=1; s=1; p=1 ;;
-              cmd/*|testdata/*|.golangci*|tools/atlas/*|tools/buildings/*|tools/cleanup/*|tools/ruletable/*|Taskfile.yml|.github/*) g=1 ;;
+              cmd/*|testdata/*|.golangci*|tools/atlas/*|tools/buildings/*|tools/pipeline/*|tools/cleanup/*|tools/ruletable/*|Taskfile.yml|.github/*) g=1 ;;
               tools/webkit/*) d=1; s=1; p=1 ;;
               tools/assetkit/*) d=1; s=1 ;;
               tools/k3c-workbench/*) d=1 ;;

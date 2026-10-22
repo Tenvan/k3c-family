@@ -108,6 +108,14 @@ export const de = {
   'dm.level': 'Stufe {n}',
   'dm.levelLabel': 'Ausbau-Stufe',
 
+  // Grafik-Pipeline (pipeline.html, B-331)
+  'pipeline.pageTitle': 'K3C Grafik-Pipeline',
+  'pipeline.title': 'Grafik-Pipeline: vorher und nachher',
+  'pipeline.sub':
+    'Links die Quelle aus public/grafik, rechts das Ergebnis aus public/grafik-db32 (DB32, 16 px, hartes Alpha). Beide in derselben Weltgröße (×2) auf gemeinsamem Boden. Regeln: docs/assets/stil-bibel.md.',
+  'pipeline.before': 'vorher',
+  'pipeline.after': 'nachher',
+
   // Grafik-Seite (grafiken.html) und Credits (lizenzen.html)
   'grafik.pageTitle': 'K3C Alle Grafiken',
   'grafik.title': 'Alle Grafiken',
@@ -153,6 +161,8 @@ export const de = {
   'tile.gamepad.desc': 'Controller, B-Taste, Vollbild, Vibration, FPS · Bericht an den PC',
   'tile.grafiken.title': 'Alle Grafiken',
   'tile.grafiken.desc': 'Gewählte CC0-Packs für Gebäude, Ressourcen und Hintergründe · mit Urheber, Lizenz und Quelle',
+  'tile.pipeline.title': 'Grafik-Pipeline',
+  'tile.pipeline.desc': 'Vorher und nachher: Grafiken aus task gen:pipeline in DB32 und 16 px · auf gemeinsamem Boden',
   'tile.sound.title': 'Hörprobe',
   'tile.sound.desc': 'Kandidaten für Musik und Effekte anhören · nach Zustand und Ereignis, mit Quelle und Lizenz',
   'tile.dm.title': 'Dungeon Master',

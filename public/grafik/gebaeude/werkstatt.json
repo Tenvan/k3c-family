@@ -121,5 +121,42 @@
     {"art":"werkzeug","rechteck":[5.3125,3.25,0.0625,0.4375],"farbe":"rope","fein":true},
     {"art":"werkzeug","rechteck":[5.375,3.6875,0.0625,0.09375],"farbe":"oiled-cedar","fein":true},
     {"art":"werkzeug","rechteck":[5.4375,3.15625,0.03125,0.625],"farbe":"light-steel","fein":true}
+  ],
+  "stufen": [
+    {
+      "stufe": 2,
+      "aenderung": "Stein: Wand, Pfosten und Balken aus grauem Stein, Tresen, Gestell und Tuchdach bleiben",
+      "farben": {"wand/rope": "dim-gray", "fuge/oiled-cedar": "valhalla", "schatten/oiled-cedar": "valhalla", "pfosten/oiled-cedar": "valhalla", "pfosten/rope": "dim-gray", "balken/oiled-cedar": "valhalla", "balken/rope": "dim-gray"}
+    },
+    {
+      "stufe": 3,
+      "aenderung": "Kupfer: Wand, Pfosten und Balken aus Kupferplatten, Wimpel am rechten Pfosten",
+      "farben": {"wand/rope": "tahiti-gold", "fuge/oiled-cedar": "rope", "schatten/oiled-cedar": "rope", "pfosten/oiled-cedar": "rope", "pfosten/rope": "tahiti-gold", "balken/oiled-cedar": "rope", "balken/rope": "tahiti-gold"},
+      "zusaetze": [
+        { "art": "mast", "rechteck": [4.0625,0,0.0625,0.5], "farbe": "rope" },
+        { "art": "wimpel", "rechteck": [4.125,0.0625,0.4375,0.1875], "farbe": "tahiti-gold" },
+        { "art": "wimpel", "rechteck": [4.125,0.0625,0.4375,0.0625], "farbe": "twine" }
+      ]
+    },
+    {
+      "stufe": 4,
+      "aenderung": "Eisen: Wand, Pfosten und Balken aus Stahlplatten, Wimpel am rechten Pfosten",
+      "farben": {"wand/rope": "heather", "fuge/oiled-cedar": "dim-gray", "schatten/oiled-cedar": "dim-gray", "pfosten/oiled-cedar": "dim-gray", "pfosten/rope": "heather", "balken/oiled-cedar": "dim-gray", "balken/rope": "heather"},
+      "zusaetze": [
+        { "art": "mast", "rechteck": [4.0625,0,0.0625,0.5], "farbe": "dim-gray" },
+        { "art": "wimpel", "rechteck": [4.125,0.0625,0.4375,0.1875], "farbe": "heather" },
+        { "art": "wimpel", "rechteck": [4.125,0.0625,0.4375,0.0625], "farbe": "light-steel" }
+      ]
+    },
+    {
+      "stufe": 5,
+      "aenderung": "Kristall: Wand, Pfosten und Balken aus blauem Kristall, leuchtender Wimpel am rechten Pfosten",
+      "farben": {"wand/rope": "royal-blue", "fuge/oiled-cedar": "deep-koamaru", "schatten/oiled-cedar": "deep-koamaru", "pfosten/oiled-cedar": "deep-koamaru", "pfosten/rope": "royal-blue", "balken/oiled-cedar": "deep-koamaru", "balken/rope": "royal-blue"},
+      "zusaetze": [
+        { "art": "mast", "rechteck": [4.0625,0,0.0625,0.5], "farbe": "deep-koamaru" },
+        { "art": "wimpel", "rechteck": [4.125,0.0625,0.4375,0.1875], "farbe": "royal-blue" },
+        { "art": "wimpel", "rechteck": [4.125,0.0625,0.4375,0.0625], "farbe": "cornflower" }
+      ]
+    }
   ]
 }

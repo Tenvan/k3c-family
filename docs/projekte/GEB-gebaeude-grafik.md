@@ -22,9 +22,10 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | GEB5 | Lager, Farm mit Plantage, Kaserne, Treppen | erledigt |
 | GEB6 | Natur und Objekte: Bäume, Fels, Erz, Adern, Truhe, Portal, Rekrutierungslager | erledigt |
 | GEB7 | Hintergründe je Biom | erledigt |
-| GEB9 | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | geplant |
-| GEB10 | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | geplant |
-| GEB11 | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | geplant |
+| GEB9 | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | aktiv |
+| GEB10 | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | aktiv |
+| GEB11 | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | aktiv |
+| GEB12 | Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte) | geplant |
 
 ## Nicht-Ziele
 

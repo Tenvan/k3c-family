@@ -12,7 +12,8 @@ import type { GameEvent, World } from '../model/types';
 import { computeLayout, viewZoom, WORLD_TOP, type Cell } from './layout';
 import type { LobbySceneData } from './LobbyScene';
 import { leavesGame } from './lobbyLogic';
-import { LEAVE_KEY, MenuPress, REMOVE_PLAYER_KEY, idleCommands } from './optionsLogic';
+import { LEAVE_KEY, MenuPress, REMOVE_PLAYER_KEY, idleCommands, type OptionsSceneData } from './optionsLogic';
+import { findOpener, removeTargets, type OpenSignal } from './menuOpener';
 import { LocalSlots, pageBots } from './localSlots';
 import type { RadarCell } from './hud/radarView';
 import { daylight } from './render/viewRules';
@@ -85,7 +86,7 @@ export class GameScene extends Phaser.Scene {
   private cells: Cell[] = [];
   private layoutKey = '';
   private partnerMonarch: number | null = null;
-  private menuPress = new MenuPress();
+  private padMenus = new Map<GamepadInput, MenuPress>();
   /** Skill-Menüs der lokalen Spieler (S3.2); die HudScene zeichnet sie */
   skillMenus = new SkillMenus();
 
@@ -125,7 +126,7 @@ export class GameScene extends Phaser.Scene {
     this.cur = null;
     this.layoutKey = '';
     this.partnerMonarch = null;
-    this.menuPress = new MenuPress();
+    this.padMenus = new Map();
     this.skillMenus = new SkillMenus();
     this.lastDevice = wantsTouchControls() ? 'touch' : 'keyboard';
   }
@@ -162,12 +163,17 @@ export class GameScene extends Phaser.Scene {
 
     if (this.registry.get(LEAVE_KEY) === true) return this.leaveRoom(); // „Spiel verlassen“ im Menü (B-293)
     const seated = client.you.map((s) => s.slot);
-    if (this.registry.get(REMOVE_PLAYER_KEY) === true) {
-      this.registry.set(REMOVE_PLAYER_KEY, false); // „Spieler abmelden“ im Menü (B-411): ein Platz bleibt immer
-      this.slots.removeLast(seated, client);
+    const removing = this.registry.get(REMOVE_PLAYER_KEY);
+    if (typeof removing === 'number') {
+      this.registry.set(REMOVE_PLAYER_KEY, null); // „Spieler abmelden“ im Menü (B-411): genau der gewählte Slot
+      if (this.slots.removeAt(removing, seated, client) === 'leave') return this.leaveRoom(); // letzter lokaler Spieler: wie „Spiel verlassen“
     }
     if (this.scene.isActive('options')) return this.paused(seated); // Optionen offen: Monarchen stehen, nur zeichnen
-    if (this.wantsOptions()) this.scene.launch('options');
+    const opener = this.optionsOpener();
+    if (opener) {
+      const targets = removeTargets(opener.input, this.slots.bound, this.keyboards, seated);
+      this.scene.launch('options', { targets } satisfies OptionsSceneData);
+    }
     const devFocus = this.registry.get(DEV_FOCUS_KEY) === true; // Cheat-Dialog offen (B-179, B-317): Controller und Tastatur bedienen ihn
     this.slots.join(devFocus ? [] : inputs, seated, client, performance.now());
     const player = (slot: number) => this.world_?.players.find((q) => q.index === client.you.find((s) => s.slot === slot)?.monarch);
@@ -188,9 +194,18 @@ export class GameScene extends Phaser.Scene {
   }
 
   /** Esc, Touch-Schaltfläche oder Menu kurz (Pad, beim Loslassen; View + Menu bleibt „zurück zur Landingpage“) */
-  private wantsOptions(): boolean {
-    const menuShort = this.menuPress.update(this.pads.some((p) => p.held('pause')), this.pads.some((p) => p.viewHeld()), performance.now());
-    return this.keyboards[0].justPressed('pause') || (this.touch !== undefined && pauseButton().take()) || menuShort;
+  private optionsOpener(): { input: PlayerInput } | null {
+    const now = performance.now();
+    const signals: OpenSignal<PlayerInput>[] = [
+      { input: this.keyboards[0], opens: this.keyboards[0].justPressed('pause') },
+      ...(this.touch ? [{ input: this.touch, opens: pauseButton().take() }] : []),
+      ...this.pads.map((p) => {
+        let press = this.padMenus.get(p);
+        if (!press) this.padMenus.set(p, (press = new MenuPress())); // je Pad, damit der Öffner bekannt ist
+        return { input: p, opens: press.update(p.held('pause'), p.viewHeld(), now) };
+      }),
+    ];
+    return findOpener(signals);
   }
 
   /** Slots, deren Spieler noch auf seinen Beitritt wartet (Taste drücken) */
@@ -281,6 +296,7 @@ export class GameScene extends Phaser.Scene {
   private spawnEffects(events: readonly GameEvent[]): void {
     const view = this.level ? this.stages.get(this.level.depth) : undefined;
     if (!view) return;
+    view.renderer.noteEvents(events); // Wimpel-Farbe: wer markiert (GEB10)
     const settings = loadSettings(); // je Frame gelesen: eine Änderung in den Optionen wirkt ohne Neuladen
     const playerX = (i: number): number | undefined => this.cur?.state.players.find((p) => p.index === i)?.x;
     const now = performance.now();
