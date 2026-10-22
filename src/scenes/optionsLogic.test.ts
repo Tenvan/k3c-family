@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { DEFAULT_SETTINGS, type Settings } from '../core/settings';
 import { setLanguage } from '../core/texts';
-import { MenuPress, OPTION_IDS, OPTION_PAD_KEYS, applyOption, idleCommands, moveOption, optionLabel, tapDir, tapOption } from './optionsLogic';
+import { MenuPress, OPTION_IDS, OPTION_PAD_KEYS, applyOption, idleCommands, moveOption, optionEnabled, optionLabel, removeLabel, stepChoice, tapDir, tapOption } from './optionsLogic';
 
 const base: Settings = { ...DEFAULT_SETTINGS };
 
@@ -85,6 +85,18 @@ describe('Werte', () => {
     }
     expect(optionLabel(base, 'removePlayer')).toBe('Spieler abmelden');
     for (const x of [100, 960, 1800]) expect(tapOption('removePlayer', x, 1920)).toBe('confirm');
+  });
+
+  it('„Spieler abmelden“ ist ohne Ziel ausgegraut, mit zwei Zielen wählbar (B-411/AC-03, AC-04)', () => {
+    expect(optionEnabled('removePlayer', [])).toBe(false);
+    expect(optionEnabled('removePlayer', [1])).toBe(true);
+    expect(OPTION_IDS.filter((i) => i !== 'removePlayer').every((i) => optionEnabled(i, []))).toBe(true);
+    expect(removeLabel(base, [1], 0)).toBe('Spieler abmelden');
+    expect(removeLabel(base, [0, 1], 1)).toBe('Spieler abmelden  ◀ Spieler 2 ▶');
+    expect(stepChoice(0, 'right', 2)).toBe(1);
+    expect(stepChoice(1, 'right', 2)).toBe(1);
+    expect(stepChoice(1, 'left', 2)).toBe(0);
+    expect(stepChoice(1, 'confirm', 2)).toBe(1);
   });
 
   describe('„Spiel verlassen“ auf Englisch (B-293/AC-01)', () => {

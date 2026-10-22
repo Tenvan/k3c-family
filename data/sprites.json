@@ -1,5 +1,5 @@
 {
-  "_comment": "Sprites: LuizMelo (CC0, unsere Seite) und Gothicvania von ansimuz (CC0, Gegner), Bilder in public/sprites/<sheet>/<anim>.png. origin = Fußpunkt im Frame, height = Figurhöhe in Frame-Pixeln, scale = Vergrößerung. label/side = Name und Seite (ours/enemy) für die Referenzseiten. Pro Figur: tint = Einfärbung, scale = zusätzlicher Faktor, y = Pixel über dem Boden. mounts = Reittiere: saddle = Sattelpunkt pro Frame (Frame-Pixel, Blick nach rechts), dort sitzt der Reiter mit der Hüfte; riderWaist = Schnitt durch die Figur (Anteil der Höhe von oben). Platzhalter (B-326, echte Figuren B-329): lavaSlime, ironBeetle, fireSpirit, crystalSpider, shardling, crystalGuardian nutzen vorhandene Sheets mit Tönung.",
+  "_comment": "Sprites: LuizMelo (CC0, unsere Seite) und Gothicvania von ansimuz (CC0, Gegner), Bilder in public/sprites/<sheet>/<anim>.png. origin = Fußpunkt im Frame, height = Figurhöhe in Frame-Pixeln, scale = Vergrößerung. label/side = Name und Seite (ours/enemy) für die Referenzseiten. Pro Figur: tint = Einfärbung, scale = zusätzlicher Faktor, y = Pixel über dem Boden. mounts = Reittiere: saddle = Sattelpunkt pro Frame (Frame-Pixel, Blick nach rechts), dort sitzt der Reiter mit der Hüfte; riderWaist = Schnitt durch die Figur (Anteil der Höhe von oben). Eigene Figuren (B-329): lavaSlime=fire-worm, fireSpirit=cemetery-ghost, shardling=flying-eye, crystalGuardian=skeleton (je getönt), ironBeetle und crystalSpider aus tools/spritegen.",
   "sheets": {
     "medieval-king": {
       "label": "König",
@@ -22,6 +22,22 @@
         "attack": {
           "frames": 6,
           "fps": 14
+        },
+        "give": {
+          "frames": 4,
+          "fps": 12
+        },
+        "hit": {
+          "frames": 3,
+          "fps": 14
+        },
+        "death": {
+          "frames": 5,
+          "fps": 10
+        },
+        "respawn": {
+          "frames": 5,
+          "fps": 10
         }
       },
       "pack": "Medieval King Pack",
@@ -48,6 +64,22 @@
         "attack": {
           "frames": 4,
           "fps": 14
+        },
+        "give": {
+          "frames": 3,
+          "fps": 12
+        },
+        "hit": {
+          "frames": 3,
+          "fps": 14
+        },
+        "death": {
+          "frames": 5,
+          "fps": 10
+        },
+        "respawn": {
+          "frames": 5,
+          "fps": 10
         }
       },
       "pack": "Medieval King Pack 2",
@@ -282,6 +314,58 @@
       },
       "pack": "Gothicvania Patreon’s Collection (Hell Hound)",
       "source": "https://opengameart.org/content/gothicvania-patreons-collection"
+    },
+    "iron-beetle": {
+      "label": "Eisenkäfer",
+      "side": "enemy",
+      "frameWidth": 32,
+      "frameHeight": 24,
+      "originX": 0.5,
+      "originY": 0.96,
+      "height": 17,
+      "scale": 4,
+      "anims": {
+        "idle": {
+          "frames": 4,
+          "fps": 8
+        },
+        "run": {
+          "frames": 6,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 6,
+          "fps": 12
+        }
+      },
+      "pack": "Eigene Arbeit (tools/spritegen)",
+      "source": "tools/spritegen"
+    },
+    "crystal-spider": {
+      "label": "Kristallspinne",
+      "side": "enemy",
+      "frameWidth": 32,
+      "frameHeight": 24,
+      "originX": 0.5,
+      "originY": 0.96,
+      "height": 20,
+      "scale": 3,
+      "anims": {
+        "idle": {
+          "frames": 4,
+          "fps": 8
+        },
+        "run": {
+          "frames": 6,
+          "fps": 12
+        },
+        "attack": {
+          "frames": 6,
+          "fps": 12
+        }
+      },
+      "pack": "Eigene Arbeit (tools/spritegen)",
+      "source": "tools/spritegen"
     },
     "cemetery-skeleton": {
       "label": "Friedhofs-Skelett",
@@ -1115,28 +1199,28 @@
       "alpha": 0.85
     },
     "lavaSlime": {
-      "sheet": "mushroom",
-      "tint": "#e63946"
+      "sheet": "fire-worm",
+      "tint": "#ff9248"
     },
     "ironBeetle": {
-      "sheet": "hell-hound",
-      "tint": "#8f8f8f"
+      "sheet": "iron-beetle"
     },
     "fireSpirit": {
-      "sheet": "ghost",
+      "sheet": "cemetery-ghost",
       "tint": "#f4a261"
     },
     "crystalSpider": {
-      "sheet": "hell-hound",
-      "tint": "#4ea8de"
+      "sheet": "crystal-spider"
     },
     "shardling": {
-      "sheet": "mushroom",
-      "tint": "#a9def9"
+      "sheet": "flying-eye",
+      "tint": "#a9def9",
+      "y": 40
     },
     "crystalGuardian": {
-      "sheet": "hell-gato",
-      "tint": "#4361ee"
+      "sheet": "skeleton",
+      "tint": "#4361ee",
+      "scale": 1.25
     }
   },
   "mounts": {

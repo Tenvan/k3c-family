@@ -88,21 +88,40 @@ describe('LocalSlots', () => {
     expect(slots.lose(new Pad(), [0], client)).toBe('none');
   });
 
-  it('removeLast meldet den höchsten belegten Slot ab, nie den letzten Platz (B-411)', () => {
+  it('removeAt meldet genau den Slot ab, nicht den höchsten (B-411/AC-01)', () => {
     const { calls, client } = host();
     const slots = new LocalSlots<Pad>();
     const [a, b, c] = [new Pad(), new Pad(), new Pad()];
     slots.join([press(a)], [0], client, 0);
     slots.join([a, press(b)], [0], client, 1);
     slots.join([a, b, press(c)], [0, 1], client, 2);
-    expect(slots.removeLast([0, 1, 2], client)).toBe(2);
-    expect(slots.bound).toEqual([a, b, null, null]);
-    expect(calls.at(-1)).toBe('remove2');
-    expect(slots.removeLast([1, 0], client)).toBe(1);
-    expect(slots.bound[1]).toBeNull();
-    expect(slots.removeLast([0], client)).toBeNull();
-    expect(slots.bound[0]).toBe(a);
-    expect(calls.filter((x) => x.startsWith('remove'))).toEqual(['remove2', 'remove1']);
+    expect(slots.removeAt(1, [0, 1, 2], client)).toBe('removed');
+    expect(slots.bound).toEqual([a, null, c, null]);
+    expect(calls.filter((x) => x.startsWith('remove'))).toEqual(['remove1']);
+    expect(slots.slotOf(c)).toBe(2);
+    expect(slots.slotOf(b)).toBe(-1);
+  });
+
+  it('removeAt des letzten Spielers meldet leave statt removeSlot (B-411/AC-02)', () => {
+    const { calls, client } = host();
+    const slots = new LocalSlots<Pad>();
+    const a = new Pad();
+    slots.join([press(a)], [0], client, 0);
+    expect(slots.removeAt(0, [0], client)).toBe('leave');
+    expect(calls.filter((x) => x.startsWith('remove'))).toEqual([]);
+    expect(slots.bound[0]).toBeNull();
+  });
+
+  it('removeAt ohne Eingabe oder ohne Platz ist wirkungslos', () => {
+    const { calls, client } = host();
+    const slots = new LocalSlots<Pad>();
+    const [a, b] = [new Pad(), new Pad()];
+    slots.join([press(a)], [0], client, 0);
+    slots.join([a, press(b)], [0], client, 1);
+    expect(slots.removeAt(3, [0, 1], client)).toBe('none');
+    slots.removeAt(1, [0, 1], client);
+    expect(slots.removeAt(1, [0, 1], client)).toBe('none'); // Eingabe schon frei (z. B. Controller getrennt)
+    expect(calls.filter((x) => x.startsWith('remove'))).toEqual(['remove1']);
   });
 
   it('Mock-Slots fangen keine Bestätigung ab und senden „keine Bewegung“', () => {
