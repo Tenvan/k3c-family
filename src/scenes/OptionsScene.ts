@@ -16,6 +16,7 @@ import {
   removeLabel,
   stepChoice,
   tapOption,
+  worldLine,
   type OptionDir,
   type OptionId,
   type OptionsSceneData,
@@ -67,6 +68,8 @@ export class OptionsScene extends Phaser.Scene {
   /** Slots, die „Spieler abmelden“ treffen kann (leer = ausgegraut), und der gewählte davon (B-411) */
   private targets: number[] = [];
   private choice = 0;
+  /** Welt des Raums (BD5.2) */
+  private world: string | undefined;
 
   constructor() {
     super('options');
@@ -74,6 +77,7 @@ export class OptionsScene extends Phaser.Scene {
 
   init(data?: Partial<OptionsSceneData>): void {
     this.targets = data?.targets ?? [];
+    this.world = data?.world;
     this.choice = 0;
   }
 
@@ -88,6 +92,7 @@ export class OptionsScene extends Phaser.Scene {
     this.keys = this.input.keyboard!.addKeys({ up: K.UP, down: K.DOWN, w: K.W, s: K.S, left: K.LEFT, right: K.RIGHT, enter: K.ENTER, space: K.SPACE, esc: K.ESC }) as OptionsScene['keys'];
     this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.8).setOrigin(0);
     this.title = this.add.text(GAME_WIDTH / 2, 130, '', { ...STYLE, fontSize: '64px', strokeThickness: 10 }).setOrigin(0.5);
+    this.add.text(GAME_WIDTH / 2, 186, worldLine(this.world), { ...STYLE, fontSize: '28px', strokeThickness: 4 }).setOrigin(0.5);
     this.hint = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 60, '', { ...STYLE, fontSize: '28px', strokeThickness: 4 }).setOrigin(0.5);
     this.rows = OPTION_IDS.map((_, i) => this.add.text(GAME_WIDTH / 2, TOP + i * ROW_H, '', { ...STYLE, fontSize: `${FONT_PX}px` }).setOrigin(0.5));
     // Touch über das Fenster, wie in der Lobby; das Touch-Overlay ist ausgeblendet, solange die Szene offen ist.

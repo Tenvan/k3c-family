@@ -149,15 +149,17 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-521](B-521-types-ts-aufteilen.md) | CLI | Schuld | niedrig | offen | – | src/model/types.ts liegt über der Dateigrenze von 400 Zeilen |
 | [B-522](B-522-ressourcen-auf-ruine.md) | SIM | Problem | mittel | offen | – | Zufalls-Ressourcen eines geplanten Chunks können auf seiner Ruine liegen |
 | [B-523](B-523-ruine-kollision-hub-platz.md) | SIM | Schuld | niedrig | offen | – | Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt |
-| [B-528](B-528-entscheidung-pause-regeldetails.md) | SRV | Frage | mittel | offen | – | Entscheidung: Regeldetails der Raum-Pause (Couch-Raum, Schutz, Frist) |
-| [B-529](B-529-entscheidung-pause-protokoll.md) | SRV | Frage | mittel | offen | – | Entscheidung: Protokoll v8 für pause/resume ohne Rückmeldung im Zustand |
-| [B-530](B-530-wartender-monarch-verwundbar.md) | SIM | Problem | mittel | offen | – | Wartende Monarchen nach Verbindungsverlust sind in der Simulation nicht unverwundbar |
-| [B-524](B-524-skillheld-tod-zuruecksetzen.md) | SIM | Problem | niedrig | offen | – | skillHeld beim Tod zurücksetzen, damit der erste Druck nach dem Respawn castFailed meldet |
-| [B-531](B-531-wald-dichter-hoehle-bueesche.md) | REG | Idee | mittel | offen | – | Wald hat mehr Bäume je Abschnitt, Höhle bekommt Deko-Büsche |
-| [B-532](B-532-snapshot-markiert-von.md) | SIM | Idee | niedrig | offen | – | Snapshot nennt, wer einen Knoten markiert hat |
 | [B-525](B-525-entscheidung-goldtopf.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Wortlaut und Symbol des Goldtopfs in der Spielerkarte |
 | [B-526](B-526-entscheidung-hintergrund-hoehe.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Hintergrund-Höhe je Biom gegen WORLD_TOP |
 | [B-527](B-527-entscheidung-abmelden-tastatur.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Abmelden mit zwei Tastatur-Spielern und Ziel per Auswahl |
+| [B-528](B-528-entscheidung-pause-regeldetails.md) | SRV | Frage | mittel | offen | – | Entscheidung: Regeldetails der Raum-Pause (Couch-Raum, Schutz, Frist) |
+| [B-529](B-529-entscheidung-pause-protokoll.md) | SRV | Frage | mittel | offen | – | Entscheidung: Protokoll v8 für pause/resume ohne Rückmeldung im Zustand |
+| [B-530](B-530-wartender-monarch-verwundbar.md) | SIM | Problem | mittel | offen | – | Wartende Monarchen nach Verbindungsverlust sind in der Simulation nicht unverwundbar |
+| [B-533](B-533-entscheidung-spielstand-loeschen.md) | SRV | Frage | mittel | offen | – | Entscheidung: Spielstand löschen per HTTP ohne Token, Stand bleibt als Sicherung |
+| [B-534](B-534-entscheidung-spielmenue-lobby.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Spielmenü ist die Lobby, neuer Spielstand ohne Welt-Auswahl |
+| [B-524](B-524-skillheld-tod-zuruecksetzen.md) | SIM | Problem | niedrig | offen | – | skillHeld beim Tod zurücksetzen, damit der erste Druck nach dem Respawn castFailed meldet |
+| [B-531](B-531-wald-dichter-hoehle-bueesche.md) | REG | Idee | mittel | offen | – | Wald hat mehr Bäume je Abschnitt, Höhle bekommt Deko-Büsche |
+| [B-532](B-532-snapshot-markiert-von.md) | SIM | Idee | niedrig | offen | – | Snapshot nennt, wer einen Knoten markiert hat |
 
 ## Archiv
 

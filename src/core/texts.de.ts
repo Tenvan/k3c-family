@@ -19,12 +19,21 @@ export const de = {
 
   // Lobby
   'lobby.title': 'Family Three Crowns',
-  'lobby.hint': 'Pfeile/Stick wählen · A / Enter / Tippen bestätigen',
+  'lobby.hint': 'Pfeile/Stick wählen · A / Enter / Tippen bestätigen · X / Entf Spielstand löschen',
+  'lobby.world': 'Welt: {world}',
+  'lobby.new': 'Neuer Spielstand  ({name})',
+  'lobby.deleteAsk': 'Spielstand {name} löschen? Er bleibt als Sicherung erhalten.',
+  'lobby.deleteNo': 'Abbrechen',
+  'lobby.deleteYes': 'Löschen',
+  'lobby.deleted': 'Spielstand {name} gelöscht',
+  'lobby.deleteInUse': 'Spielstand {name} ist in einem Raum offen und bleibt',
+  'lobby.deleteMissing': 'Spielstand {name} gibt es nicht mehr',
+  'lobby.deleteFailed': 'Spielstand {name}: Löschen fehlgeschlagen',
   'lobby.play': 'Spielen  ({save})',
   'lobby.retry': 'Erneut versuchen',
   'lobby.reload': 'Seite neu laden',
   'lobby.room': '{code}  {name}  ·  Stufe {depth}  ·  {taken}/4 Plätze  ·  {state}',
-  'lobby.save': 'Spielstand {name}  ·  Tag {day}  ·  Stufe {depths}',
+  'lobby.save': 'Spielstand {name}  ·  Welt {world}  ·  Tag {day}  ·  Stufe {depths}',
   'lobby.running': 'läuft',
   'lobby.paused': 'pausiert',
 
@@ -137,6 +146,7 @@ export const de = {
 
   // Optionen und Pause
   'opt.title': 'Optionen',
+  'opt.world': 'Welt: {world}',
   'opt.music': 'Musik',
   'opt.sfx': 'Effekte',
   'opt.ambient': 'Umgebung',

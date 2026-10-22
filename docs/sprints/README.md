@@ -10,6 +10,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | `aktiv/BD4-hud-leiste-austreten/` |
+| BD5 | SRV, CLI | BED | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | – | `aktiv/BD5-spielmenue-welt-spielstaende/` |
 | GEB9 | DEV, CLI | GEB | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | – | `aktiv/GEB9-hub-ausbaustufen/` |
 | GEB10 | DEV, CLI | GEB | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | – | `aktiv/GEB10-natur-truhe-wimpel/` |
 | GEB11 | REG, SIM, DEV, CLI | GEB | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | – | `aktiv/GEB11-hub-waechst-kleinteilig/` |
@@ -27,7 +28,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| BD5 | SRV | BED | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | – | Entwurf | `geplant/BD5-spielmenue-welt-spielstaende/` |
 | BD6 | REG | BED | Autonome Entscheidungen zu BED prüfen und festschreiben | – | Entwurf | `geplant/BD6-entscheidungen-bed/` |
 | GEB12 | REG | GEB | Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte) | – | Entwurf | `geplant/GEB12-entscheidungen-geb9-11/` |
 | SV2 | SRV | WRT | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | – | Entwurf | `geplant/SV2-voll-ausbau-regelkonform/` |

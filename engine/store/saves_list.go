@@ -16,6 +16,7 @@ type SaveInfo struct {
 	Version int    `json:"version,omitempty"`
 	Day     int    `json:"day,omitempty"`
 	Phase   string `json:"phase,omitempty"`
+	World   string `json:"world,omitempty"` // Welt-ID (Stand ab Version 8); fehlt = standard (B-506)
 	Depths  []int  `json:"depths,omitempty"` // Tiefen der Spieler, sortiert, jede einmal
 	Error   string `json:"error,omitempty"`
 }
@@ -49,6 +50,7 @@ func saveInfo(name, path string) SaveInfo {
 	var extra struct {
 		Day     int    `json:"day"`
 		Phase   string `json:"phase"`
+		World   string `json:"world"`
 		Players []struct {
 			Depth *int `json:"depth"`
 		} `json:"players"`
@@ -56,7 +58,7 @@ func saveInfo(name, path string) SaveInfo {
 	if json.Unmarshal(data, &extra) != nil {
 		return bad
 	}
-	info := SaveInfo{Name: name, SavedAt: h.savedAt, Version: int(h.version), Day: extra.Day, Phase: extra.Phase}
+	info := SaveInfo{Name: name, SavedAt: h.savedAt, Version: int(h.version), Day: extra.Day, Phase: extra.Phase, World: extra.World}
 	for _, p := range extra.Players {
 		if p.Depth != nil {
 			info.Depths = append(info.Depths, *p.Depth)

@@ -172,7 +172,7 @@ export class GameScene extends Phaser.Scene {
     const opener = this.optionsOpener();
     if (opener) {
       const targets = removeTargets(opener.input, this.slots.bound, this.keyboards, seated);
-      this.scene.launch('options', { targets } satisfies OptionsSceneData);
+      this.scene.launch('options', { targets, world: client.roomWorld } satisfies OptionsSceneData);
     }
     const devFocus = this.registry.get(DEV_FOCUS_KEY) === true; // Cheat-Dialog offen (B-179, B-317): Controller und Tastatur bedienen ihn
     this.slots.join(devFocus ? [] : inputs, seated, client, performance.now());
