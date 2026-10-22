@@ -276,6 +276,10 @@ type World struct {
 	HubX       float64 `json:"hubX"`
 	// HubLevel ist die Hub-Stufe (Start 1, Ausbau an der Burg: hub_level.go); ohne JSON-Ausgabe (B-208).
 	HubLevel int `json:"-"`
+	// planned und chunkCount sind die Erzeugungs-Parameter dieser Stufe (Options.Planned, Options.ChunkCount); der Spielstand
+	// schreibt sie mit, damit das Laden die Stufe so baut, wie sie gebaut wurde (B-489).
+	planned    []level.PlannedChunk
+	chunkCount int
 	// ArmorLevel ist die Rüstungsstufe der Kämpfer dieses Hubs (0 = keine, Rüstkammer: building_upgrades.go).
 	ArmorLevel int `json:"armorLevel,omitempty"`
 	// hubSite ist der Zahlplatz für den Hub-Ausbau an der Burg (nicht in Sites, hub_level.go).

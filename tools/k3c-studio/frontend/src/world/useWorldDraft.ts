@@ -26,12 +26,16 @@ export function useWorldDraft(plan: PlanState) {
   const [check, setCheck] = useState<WorldCheckView>(OK);
   const [notice, setNotice] = useState<Notice>(null);
   const prev = useRef(saved);
+  const active = plan.worlds?.active;
   const dirty = draft !== null && !sameDraft(draft, saved);
 
   useEffect(() => {
     setDraft((d) => (d === null || sameDraft(d, prev.current) ? null : d));
     prev.current = saved;
   }, [saved]);
+
+  // Ein Entwurf gehört zu seiner Welt: beim Wechsel der Welt wandert er nicht mit (B-514)
+  useEffect(() => { setDraft(null); setNotice(null); }, [active]);
 
   useEffect(() => {
     if (!draft || !dirty) { setCheck(OK); return; }

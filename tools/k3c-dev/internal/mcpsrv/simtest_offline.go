@@ -12,6 +12,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"k3c/data"
 )
 
 // Modus offline (B-348/AC-02): Balancing-Tester im Checkout bauen (bin/k3c-balance, fester Pfad, kein go run) und mit
@@ -50,7 +52,8 @@ func (s *Server) runOffline(ctx context.Context, run *simRun, spec simSpec) {
 	}{
 		{"bauen", runSpec{dir: filepath.Join(run.root, "tools", "k3c-dev"), timeout: buildTimeout,
 			args: []string{"go", "build", "-o", filepath.Join("..", "..", exe), "./internal/balance/cmd"}}},
-		{"rechnen", runSpec{dir: run.root, timeout: offlineTimeout, args: offlineArgs(exe, dir, spec.seeds)}},
+		{"rechnen", runSpec{dir: run.root, timeout: offlineTimeout, args: offlineArgs(exe, dir, spec.seeds),
+			env: []string{data.DirEnv + "=" + filepath.Join(run.root, "data")}}},
 	}
 	var mu sync.Mutex // stdout und stderr schreiben nebenläufig
 	var tail []string

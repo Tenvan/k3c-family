@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"strings"
 	"testing"
 	"time"
@@ -15,12 +16,14 @@ import (
 const (
 	fakeMode = "K3C_CHAT_FAKE"      // echo, hang, login, oldcli
 	fakeArgs = "K3C_CHAT_FAKE_ARGS" // Datei: Argumente und Arbeitsordner, wie der Prozess sie bekam
+	fakePids = "K3C_CHAT_FAKE_PIDS" // Datei: PIDs von Kind und Enkel (Modus tree)
 )
 
 func TestMain(m *testing.M) {
 	if mode := os.Getenv(fakeMode); mode != "" {
 		os.Exit(fakeClaude(mode))
 	}
+	chatProgram = "k3c-claude-im-test-gesperrt" // Riegel: defaultCLI() findet nie das echte claude (B-514)
 	os.Exit(m.Run())
 }
 
@@ -47,6 +50,14 @@ func fakeClaude(mode string) int {
 		fakeLine(map[string]any{"type": "assistant", "message": map[string]any{
 			"content": []map[string]string{{"type": "text", "text": text}}}})
 		fakeLine(map[string]any{"type": "result", "subtype": "success", "is_error": false, "result": text})
+	case "tree": // startet einen Enkel, meldet beide PIDs und hängt
+		grand := exec.Command(os.Args[0])
+		grand.Env = append(os.Environ(), fakeMode+"=hang")
+		if err := grand.Start(); err != nil {
+			return 1
+		}
+		_ = os.WriteFile(os.Getenv(fakePids), []byte(fmt.Sprintf("%d %d", os.Getpid(), grand.Process.Pid)), 0o644)
+		time.Sleep(time.Minute)
 	case "hang":
 		fakeDelta("Ich denke ")
 		time.Sleep(time.Minute)

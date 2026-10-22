@@ -32,16 +32,28 @@ function useTap(el: HTMLElement | null, onTap: (x: number, y: number) => void) {
     if (!el) return;
     let down: { x: number; y: number } | null = null;
     const onDown = (e: PointerEvent) => { down = e.button === 0 ? { x: e.clientX, y: e.clientY } : null; };
+    // jede Bewegung über TAP_PX macht aus dem Tippen ein Ziehen, auch wenn der Zeiger zurückkehrt (B-491/2)
+    const onMove = (e: PointerEvent) => {
+      if (down && (Math.abs(e.clientX - down.x) >= TAP_PX || Math.abs(e.clientY - down.y) >= TAP_PX)) down = null;
+    };
+    const onCancel = () => { down = null; }; // abgebrochene Geste (Touch, Fensterwechsel) ist kein Klick (B-491/1)
     const onUp = (e: PointerEvent) => {
-      if (down && Math.abs(e.clientX - down.x) < TAP_PX && Math.abs(e.clientY - down.y) < TAP_PX) {
+      if (down) {
         const r = el.getBoundingClientRect();
         latest.current(e.clientX - r.left - el.clientLeft, e.clientY - r.top - el.clientTop);
       }
       down = null;
     };
     el.addEventListener('pointerdown', onDown);
+    el.addEventListener('pointermove', onMove);
     el.addEventListener('pointerup', onUp);
-    return () => { el.removeEventListener('pointerdown', onDown); el.removeEventListener('pointerup', onUp); };
+    el.addEventListener('pointercancel', onCancel);
+    return () => {
+      el.removeEventListener('pointerdown', onDown);
+      el.removeEventListener('pointermove', onMove);
+      el.removeEventListener('pointerup', onUp);
+      el.removeEventListener('pointercancel', onCancel);
+    };
   }, [el]);
 }
 

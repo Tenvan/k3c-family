@@ -59,14 +59,16 @@ export function mockWorldPreview(args: WorldPreviewArgs): WorldPreviewView {
 }
 
 /** „Im Spiel öffnen“ im Mock: öffnet nichts, prüft wie Go nur den Seed und meldet die Adresse (ohne Wails kein Browser-Start);
- *  eine andere als die Standard-Welt startet frisch mit ihrer id (WZ18.6). */
+ *  eine andere als die Standard-Welt hat den Stand `<welt>-<seed>` (WZ18.6, B-499). */
 export function mockOpenGame(base: string, seed: string, biome: string, mode: 'new' | 'full', world = 'standard'): OpenGameResult {
   if (mode === 'new' && biome !== 'forest') return { url: '', save: '', error: 'Start nur für den Wald (Tiefe 0)' };
   if (mode === 'full' && world !== 'standard') return { url: '', save: '', error: 'Voll ausgebaut gibt es nur für die Standard-Welt' };
   const max = mode === 'full' ? 27 : 32;
   if (!new RegExp(`^[a-z0-9-]{1,${max}}$`).test(seed)) return { url: '', save: '', error: `Seed muss aus Kleinbuchstaben, Ziffern und - bestehen (höchstens ${max} Zeichen)` };
-  const save = mode === 'full' ? `voll-${seed}` : seed;
-  const query = world === 'standard' ? `autostart=1&save=${save}` : `autostart=1&fresh=1&save=${save}&world=${world}`;
+  if (mode === 'new' && world !== 'standard' && `${world}-${seed}`.length > 32) return { url: '', save: '', error: 'Welt-ID und Seed ergeben zusammen höchstens 31 Zeichen (Spielstand `<welt>-<seed>`)' };
+  // wie Go (B-499): eine eigene Welt hat den Stand `<welt>-<seed>`, ohne `fresh` (die Lobby lädt ihn oder legt ihn an)
+  const save = mode === 'full' ? `voll-${seed}` : world === 'standard' ? seed : `${world}-${seed}`;
+  const query = world === 'standard' ? `autostart=1&save=${save}` : `autostart=1&save=${save}&seed=${seed}&world=${world}`;
   return { url: `${base}/#${encodeURIComponent(`game.html?${query}`)}`, save, error: '' };
 }
 

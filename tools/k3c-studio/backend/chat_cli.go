@@ -19,8 +19,11 @@ import (
 // Anbindung der Claude Code CLI für den Chat des Studios (B-488, WZ19.1): ein Prozess je Nachricht, ohne Shell, ohne
 // Werkzeuge und Schreibrechte, in einem festen leeren Ordner außerhalb des Checkouts; die Antwort kommt fortlaufend.
 
+// chatProgram wird über exec.LookPath gefunden (unter Windows auch claude.exe oder claude.cmd); Variable, damit der
+// Test-Riegel in TestMain sie sperren kann (B-514): kein Test startet das echte claude.
+var chatProgram = "claude"
+
 const (
-	chatProgram = "claude"        // über exec.LookPath gefunden (unter Windows auch claude.exe oder claude.cmd)
 	chatTimeout = 3 * time.Minute // Zeitlimit einer Antwort
 	chatWorkDir = "k3c-studio-chat"
 	// chatSystemFlag hängt die Instruktion eines Auftrags aus einer Datei an (belegt mit claude --help 2.1.304); als
@@ -125,11 +128,35 @@ func (c chatCLI) run(ctx context.Context, prompt string, opts chatOptions, emit 
 	start := time.Now()
 	log.Info("🚀 Chat: Claude Code gestartet", "ns", "main", "zeichen", len(prompt), "modell", opts.Model,
 		"denkstufe", opts.Effort)
-	werr := cmd.Run()
+	werr := c.runTree(cmd, log)
 	lines.flush()
 	out := c.outcome(ctx, runCtx, stream, werr, stderr.String())
 	c.logOutcome(out, time.Since(start))
 	return out
+}
+
+// runTree startet den Prozess und wartet; ein Abbruch (Kontext oder Zeitlimit) beendet den ganzen Prozessbaum (B-514).
+func (c chatCLI) runTree(cmd *exec.Cmd, log *slog.Logger) error {
+	prepareTree(cmd)
+	var mu sync.Mutex
+	var job chatTree
+	cmd.Cancel = func() error {
+		mu.Lock()
+		defer mu.Unlock()
+		return killTree(cmd, job)
+	}
+	if err := cmd.Start(); err != nil {
+		return err
+	}
+	mu.Lock()
+	var berr error
+	job, berr = bindTree(cmd)
+	mu.Unlock()
+	if berr != nil {
+		log.Warn("❌ Chat: Prozessbaum nicht gebunden, ein Abbruch trifft nur die CLI", "ns", "main", "fehler", berr)
+	}
+	defer closeTree(job)
+	return cmd.Wait()
 }
 
 // instructionFile schreibt die Instruktion in eine eigene Datei neben dem Arbeitsordner (der bleibt leer); der Name ist je

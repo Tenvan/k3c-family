@@ -62,8 +62,8 @@ func TestSiteDataHubJSONGueltig(t *testing.T) {
 	for _, f := range r.Findings {
 		t.Errorf("data/hub.json: %s", f)
 	}
-	if !slices.Contains(r.Notes, NotePlannedChunksUnchecked) {
-		t.Errorf("Hinweis %q fehlt: %q", NotePlannedChunksUnchecked, r.Notes)
+	if len(r.Notes) != 0 {
+		t.Errorf("Hinweise %q, erwartet keine (die geplanten Chunks werden mitgeprüft, B-479)", r.Notes)
 	}
 }
 

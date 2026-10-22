@@ -57,8 +57,10 @@ func loadIslandSizes(fsys fs.FS, dst *[]IslandSize) error {
 // IslandSizes liefert eine Kopie der Inselgrößen in der Reihenfolge der Daten (für Editor und Vorschau).
 func IslandSizes() []IslandSize { return slices.Clone(islandSizes) }
 
-// checkChunkCount lehnt eine Chunk-Anzahl ab, die keine Inselgröße ist; der Fehler nennt die gültigen Werte.
-func checkChunkCount(n int) error {
+// CheckChunkCount lehnt eine Chunk-Anzahl ab, die keine Inselgröße ist; der Fehler nennt die gültigen Werte. Die eine
+// Prüfung für Welt-Dateien, Inselbau, Vorschau (engine/room) und Studio (B-490); 0 (Länge des Bioms) ist keine Inselgröße,
+// die Aufrufer lassen 0 vorher durch.
+func CheckChunkCount(n int) error {
 	valid := make([]string, len(islandSizes))
 	for i, s := range islandSizes {
 		if s.ChunkCount == n {
@@ -77,7 +79,7 @@ func checkChunkCounts(d IslandDef) error {
 		if err != nil || strconv.Itoa(depth) != key || !slices.Contains(d.Depths, depth) {
 			return fmt.Errorf("chunkCounts: Tiefe %q ist keine Tiefe der Insel", key)
 		}
-		if err := checkChunkCount(d.ChunkCounts[key]); err != nil {
+		if err := CheckChunkCount(d.ChunkCounts[key]); err != nil {
 			return fmt.Errorf("chunkCounts Tiefe %d: %w", depth, err)
 		}
 	}

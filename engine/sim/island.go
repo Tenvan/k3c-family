@@ -61,8 +61,9 @@ type Island struct {
 }
 
 // CreateOptions sind die Parameter der Erzeugung einer Insel (B-461, B-462). Sie gelten nur für die Erzeugung und werden
-// NICHT gespeichert (gespeichert wird nur die Welt-ID, welten.md § 5); getrennt von IslandOptions (Grad, Ziel, Niederlage).
-// Laden eines Spielstands und Inselwechsel nutzen die Welt der Insel und die Planung der Insel darin.
+// nicht als Ganzes gespeichert; der Spielstand hält je Stufe nur die verwendete Planung und Chunk-Anzahl (HubSave, B-489) und
+// die Welt-ID (welten.md § 5); getrennt von IslandOptions (Grad, Ziel, Niederlage). Das Laden baut die Stufen mit dem
+// Gespeicherten (savedCreateOptions), ein Inselwechsel nutzt die Planung der neuen Insel.
 type CreateOptions struct {
 	// Planned sind die geplanten Chunks je Tiefe (docs/rules/geplante-chunks.md). nil = die Planung der ersten Insel
 	// der Welt (ohne Welt: Standard-Welt, data/worlds/standard.json); eine leere Map schaltet die Planung ab.
@@ -120,7 +121,7 @@ func CreateIsland(seed string, depths []int, cycleSpeed float64, opts CreateOpti
 func CreateIslandIn(world WorldDef, seed string, depths []int, cycleSpeed float64, opts CreateOptions) (*Island, error) {
 	h := &hub
 	if opts.Candidate != nil {
-		if r := ValidateHubData(opts.Candidate); len(r.Findings) > 0 {
+		if r := ValidateHubDataIn(opts.Candidate, world); len(r.Findings) > 0 {
 			return nil, fmt.Errorf("insel: Kandidaten-hub.json abgelehnt: %s", r.Findings[0])
 		}
 		h = cloneHub(opts.Candidate) // geprüft wird die Kopie, die die Welt behält: spätere Änderungen des Aufrufers wirken nicht
@@ -152,7 +153,7 @@ func createIsland(seed string, depths []int, cycleSpeed, startTime float64, opts
 		}
 		count := opts.countFor(d, first)
 		if count != 0 {
-			if err := checkChunkCount(count); err != nil {
+			if err := CheckChunkCount(count); err != nil {
 				return nil, fmt.Errorf("insel: Stufe mit Tiefe %d: %w", d, err)
 			}
 		}

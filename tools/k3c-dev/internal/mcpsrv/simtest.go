@@ -23,6 +23,7 @@ const (
 // simRun ist ein Testlauf. Felder nach dem Start nur unter simRuns.mu ändern (setPhase, finish).
 type simRun struct {
 	id, root, desc string
+	where          string // Checkout für Status und Liste: „Repo-Wurzel“ oder der Worktree-Name
 	started, ended time.Time
 	state          string   // läuft, fertig, abgebrochen, fehler
 	phase          string   // Schritt des Runners, z. B. „bauen“, „rechnen“
@@ -105,10 +106,11 @@ func registerSimTest(s *Server) {
 
 // simTest ist das Tool sim_test.
 func (s *Server) simTest(ctx context.Context, in simTestIn) (string, error) {
-	root := s.ws(ctx).root
+	ws := s.ws(ctx)
+	root := ws.root
 	switch in.Action {
 	case "start":
-		return s.simStart(ctx, root, in)
+		return s.simStart(ctx, ws, in)
 	case "status":
 		return s.simStatus(root, in.ID)
 	case "stop":
@@ -119,7 +121,8 @@ func (s *Server) simTest(ctx context.Context, in simTestIn) (string, error) {
 	return "", fmt.Errorf("action %q unbekannt: start, status, stop oder list", in.Action)
 }
 
-func (s *Server) simStart(ctx context.Context, root string, in simTestIn) (string, error) {
+func (s *Server) simStart(ctx context.Context, ws workspace, in simTestIn) (string, error) {
+	root := ws.root
 	spec, err := in.spec()
 	if err != nil {
 		return "", err
@@ -135,7 +138,7 @@ func (s *Server) simStart(ctx context.Context, root string, in simTestIn) (strin
 	}
 	s.sims.next++
 	runCtx, cancel := context.WithCancel(context.Background()) // nicht der Kontext des Aufrufs: der Lauf überlebt ihn
-	run := &simRun{id: fmt.Sprintf("run-%d", s.sims.next), root: root, desc: spec.label(), started: time.Now(),
+	run := &simRun{id: fmt.Sprintf("run-%d", s.sims.next), root: root, where: ws.short(), desc: spec.label(), started: time.Now(),
 		state: "läuft", phase: "start", cancel: cancel}
 	s.sims.runs = append(s.sims.runs, run)
 	s.sims.mu.Unlock()
@@ -203,6 +206,7 @@ func (r *simRun) head(now time.Time) string {
 	}
 	icon := map[string]string{"läuft": "▶", "fertig": "✅", "abgebrochen": "■", "fehler": "❌"}[r.state]
 	line := fmt.Sprintf("%s %s · %s · %s · %s", icon, r.id, r.desc, r.state, end.Sub(r.started).Round(time.Second))
+	line += " · " + r.where
 	if r.state == "läuft" {
 		line += " · " + r.phase
 	}

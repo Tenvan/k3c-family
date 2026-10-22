@@ -3,7 +3,7 @@ import { makeSprite, spriteTop } from '@game/scenes/render/sprites';
 import spritesJson from '@data/sprites.json';
 import {
   ANIMS, DEFAULT_CONTROL, MOUNTS, SHEETS, TEMPO_STEPS, animInfo, effectiveFps, figureTop, inAtlas, mountPoseOf, resolveAnim, resume,
-  setTempo, sheetFiles, stepFrame, toggleLoop, unitTicks, unitsToPx,
+  setTempo, stepFrame, toggleLoop, unitTicks, unitsToPx,
 } from './figure';
 
 // Phaser selbst braucht Canvas; `sprites.ts` benutzt es nur für Farben und Filter, `makeSprite` rechnet reine Daten.
@@ -78,17 +78,9 @@ describe('Steuerung (B-463/AC-01)', () => {
 });
 
 describe('Bilder laden (B-463)', () => {
-  it('Sheets mit Rolle liegen im Atlas, Reittiere als Einzel-PNG nach dem Muster von preloadSprites', () => {
+  it('Sheets mit Rolle liegen im Atlas, Reittiere nicht (sie lädt das Spiel auf Anforderung, B-476)', () => {
     expect(inAtlas(DATA.players[0]!.sheet)).toBe(true);
-    const mount = Object.values(MOUNTS)[0]!;
-    const files = sheetFiles(mount.sheet);
-    expect(files.length).toBeGreaterThan(0);
-    for (const f of files) {
-      expect(f.url).toBe(`sprites/${mount.sheet}/${f.anim}.png`);
-      expect(f.key).toBe(`${mount.sheet}-${f.anim}`);
-      expect(f.frameWidth).toBe(SHEETS[mount.sheet]!.frameWidth);
-    }
-    expect(sheetFiles('gibtsnicht')).toEqual([]);
+    expect(inAtlas(Object.values(MOUNTS)[0]!.sheet)).toBe(false);
   });
 });
 
