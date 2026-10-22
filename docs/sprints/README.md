@@ -26,6 +26,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
 | BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | Entwurf | `geplant/BD4-hud-leiste-austreten/` |
 | BD5 | SRV | BED | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | – | Entwurf | `geplant/BD5-spielmenue-welt-spielstaende/` |
+| BD6 | REG | BED | Autonome Entscheidungen zu BED prüfen und festschreiben | – | Entwurf | `geplant/BD6-entscheidungen-bed/` |
 | GEB9 | DEV | GEB | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | – | Entwurf | `geplant/GEB9-hub-ausbaustufen/` |
 | GEB10 | DEV | GEB | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | – | Entwurf | `geplant/GEB10-natur-truhe-wimpel/` |
 | GEB11 | REG | GEB | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | – | Entwurf | `geplant/GEB11-hub-waechst-kleinteilig/` |

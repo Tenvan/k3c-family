@@ -28,6 +28,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | BD3 | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | geplant |
 | BD4 | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | geplant |
 | BD5 | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | geplant |
+| BD6 | Autonome Entscheidungen zu BED prüfen und festschreiben | geplant |
 
 ## Nicht-Ziele
 
