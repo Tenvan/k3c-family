@@ -119,6 +119,7 @@ func (a *app) options() *options.App {
 		AssetServer:      &assetserver.Options{Handler: a.redirect()},
 		OnStartup:        a.startup,
 		OnDomReady: func(ctx context.Context) {
+			go setWindowIcon() // Dev-Läufe haben die Icon-Ressource der EXE nicht
 			if placed && onScreen(win) {
 				placeWindow(ctx, win.X, win.Y)
 			}
