@@ -1,14 +1,14 @@
 import type { ObjectSprite, WorldFile } from './worldSprites';
 
 /**
- * Natur und Objekte aus `tools/buildings` (GEB6): Bäume, Busch, Fels, Erzbrocken, Adern, Truhe, Portal, Ausgang und
- * Rekrutierungslager, alle 32 px je Kachel (Maßstab 1). Reine Auswahl ohne Phaser und ohne Zufall: Baumform aus der
- * Position, Look aus dem Biom (Regeldatei `docs/standards/gebaeude-grafik.md` § 6: Stufe = Look).
+ * Natur und Objekte aus `tools/buildings` (GEB6, GEB10): Bäume, Höhlen-Flora, Busch, Fels, Erzbrocken, Adern, Truhe,
+ * Portal, Ausgang und Rekrutierungslager, alle 32 px je Kachel (Maßstab 1). Reine Auswahl ohne Phaser und ohne Zufall:
+ * Form aus der Position, Look aus dem Biom (Regeldatei `docs/standards/gebaeude-grafik.md` § 5, § 6).
  */
 
 const ARTEN = ['tanne', 'pappel', 'birke'] as const;
-/** Bäume stehen nur im Wald und in der Höhle: höchster Look 2 */
-const BAUM_MAX_LOOK = 2;
+/** Höhlen-Flora statt Bäumen außerhalb des Walds (GEB10): drei Wurzel-Formen */
+const WURZELN = ['wurzel', 'wurzel-2', 'wurzel-3'] as const;
 /** Adern in der Reihenfolge ihrer Stufen (Stufe = Material, nicht Biom) */
 const ADERN = ['stone', 'copper', 'iron', 'crystal'] as const;
 
@@ -16,7 +16,10 @@ const datei = (name: string) => `gebaeude/${name}-32.png`;
 
 /** Textur-Schlüssel → Datei unter `public/grafik/` (LoadScene lädt genau diese, `WORLD_TEXTURES` nimmt sie auf) */
 export const NATURE_TEXTURES: Record<string, string> = {
-  ...Object.fromEntries(ARTEN.flatMap((art) => [[`grafik:tree-${art}-1`, datei(art)], ...[2, 3].flatMap((f) => [1, 2].map((look) => [`grafik:tree-${art}-${f}-${look}`, datei(`${art}-${f}-${look}`)]))])),
+  ...Object.fromEntries(ARTEN.flatMap((art) => [1, 2, 3].map((f) => [`grafik:tree-${art}-${f}`, datei(f === 1 ? art : `${art}-${f}`)]))),
+  ...Object.fromEntries(WURZELN.map((id) => [`grafik:${id}`, datei(id)])),
+  'grafik:hoehlenbusch': datei('hoehlenbusch'),
+  'grafik:truhe-geschlossen': datei('truhe-geschlossen'),
   ...Object.fromEntries([1, 2, 3].map((look) => [`grafik:felsen-${look}`, datei(`felsen-${look}`)])),
   ...Object.fromEntries(ADERN.map((_, i) => [`grafik:ader-${i + 1}`, datei(`ader-${i + 1}`)])),
   'grafik:erzbrocken': datei('erzbrocken'),
@@ -50,16 +53,13 @@ function mix(x: number): number {
 }
 
 /**
- * Baum an Position `x` (Units) im Biom: Art und Form (1–3) aus der Position, Look aus dem Biom. Form 1 hat nur den
- * Wald-Look, daher zeigt die Höhle nur die Formen 2 und 3.
+ * Baum-Knoten an Position `x` (Units) im Biom: im Wald Art und Form (1–3) aus der Position, außerhalb des Walds
+ * (Höhle; Mine und andere zeigen wie bisher den Höhle-Look) eine der drei Wurzel-Formen statt eines Baums (GEB10).
  */
 export function treeTexture(x: number, biomeId: string | undefined): string {
-  const look = Math.min(natureLook(biomeId), BAUM_MAX_LOOK);
-  const formen = look === 1 ? [1, 2, 3] : [2, 3];
-  const wahl = mix(x) % (ARTEN.length * formen.length);
-  const art = ARTEN[wahl % ARTEN.length]!;
-  const form = formen[Math.floor(wahl / ARTEN.length)]!;
-  return form === 1 ? `grafik:tree-${art}-1` : `grafik:tree-${art}-${form}-${look}`;
+  if (natureLook(biomeId) !== 1) return `grafik:${WURZELN[mix(x) % WURZELN.length]!}`;
+  const wahl = mix(x) % (ARTEN.length * 3);
+  return `grafik:tree-${ARTEN[wahl % ARTEN.length]!}-${Math.floor(wahl / ARTEN.length) + 1}`;
 }
 
 const still = (key: string): ObjectSprite => ({ key, frame: 0, frames: 1, zoom: 1 });
@@ -69,7 +69,7 @@ export function nodeSprite(kind: string, x: number, biomeId: string | undefined)
   if (kind === 'tree') return still(treeTexture(x, biomeId));
   if (kind === 'rock') return still(`grafik:felsen-${natureLook(biomeId)}`);
   if (kind === 'copperOre') return still('grafik:erzbrocken');
-  if (kind === 'bush') return still('grafik:busch');
+  if (kind === 'bush') return still(natureLook(biomeId) === 1 ? 'grafik:busch' : 'grafik:hoehlenbusch');
   const slot = veinSlot(kind);
   return slot ? still(`grafik:ader-${ADERN.indexOf(slot.slice(5) as (typeof ADERN)[number]) + 1}`) : null;
 }

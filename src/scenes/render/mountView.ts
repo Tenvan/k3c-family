@@ -3,7 +3,7 @@ import { clientLog } from '../../core/clientLog';
 import { MONARCH } from '../../model/data';
 import type { Player } from '../../model/types';
 import { type MountContext, type MountPose, mountPose } from './mountPose';
-import { MOUNTS, PLAYER_SPRITES, RIDER_WAIST, SHEETS, face, makeSprite, playAnim } from './sprites';
+import { type AnimName, MOUNTS, PLAYER_SPRITES, RIDER_WAIST, SHEETS, face, makeSprite, playAnim } from './sprites';
 
 /**
  * Monarch auf dem Standard-Reittier (B-173, S7.2): Container aus Reittier- und Reiter-Sprite. Liest nur Snapshot-Felder
@@ -40,7 +40,8 @@ export function createRider(scene: Phaser.Scene, p: Player, mountKey: string = M
   return view;
 }
 
-export function updateRider(view: Phaser.GameObjects.Container, p: Player): void {
+/** `anim`/`restart`: Animation des Reiters (Monarch-Auswahl, GR9.3); Einmal-Animationen wie der Schlag laufen zu Ende. */
+export function updateRider(view: Phaser.GameObjects.Container, p: Player, anim: AnimName = 'idle', restart = false): void {
   const ctx = view.getData('ctx') as MountContext;
   const mount = view.getAt(0) as Phaser.GameObjects.Sprite;
   const rider = view.getAt(1) as Phaser.GameObjects.Sprite;
@@ -52,7 +53,7 @@ export function updateRider(view: Phaser.GameObjects.Container, p: Player): void
   // Sattelpunkt hängt am Frame, der nach dem Wechsel der Animation gilt
   const pose = mountPose(p, Number(mount.frame.name), ctx) ?? first;
   styleMount(mount, pose, p.facing);
-  styleRider(rider, pose);
+  styleRider(rider, pose, anim, restart);
 }
 
 function styleMount(mount: Phaser.GameObjects.Sprite, pose: MountPose, facing: number): void {
@@ -61,9 +62,9 @@ function styleMount(mount: Phaser.GameObjects.Sprite, pose: MountPose, facing: n
   if (pose.tint) mount.setTint(Phaser.Display.Color.HexStringToColor(pose.tint).color);
 }
 
-function styleRider(rider: Phaser.GameObjects.Sprite, pose: MountPose): void {
+function styleRider(rider: Phaser.GameObjects.Sprite, pose: MountPose, anim: AnimName, restart: boolean): void {
   const r = pose.rider;
-  playAnim(rider, 'idle');
+  playAnim(rider, anim === 'run' ? 'idle' : anim, restart);
   rider.setFlipX(pose.flip).setOrigin(r.originX, r.originY).setScale(r.scale).setPosition(r.x, r.y);
   rider.setCrop(0, 0, rider.frame.width, r.cropHeight);
 }

@@ -8,9 +8,9 @@
 - **Sprint:** GEB10
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-17
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-22 (mit Sprint GEB10)
 
 ## Ausgangslage
 

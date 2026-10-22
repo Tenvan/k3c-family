@@ -54,6 +54,7 @@ type Player struct {
 	LastStandFor float64 `json:"lastStandFor,omitempty"`
 	// ReviveProgress: Sekunden, die ein Mitspieler diesen Gefallenen schon wiederbelebt (monarch_revive.go, B-120).
 	ReviveProgress float64 `json:"reviveProgress,omitempty"`
+	skillHeld      int     // Skill-Slot (1 bis 4) des Vor-Ticks, 0 = keiner: castFailed nur bei neuem Druck (B-378), ohne JSON
 	reviving       bool    // belebt in diesem Tick jemanden wieder (lässt keine Münze fallen), ohne JSON
 	hit            bool    // seit dem letzten stepRevive wirksam getroffen, ohne JSON
 }

@@ -24,10 +24,11 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | AZ1 | Tasten von Spieler 2 an der Tastatur, Pause-Anzeige | erledigt |
 | GL1 | Landingpage in der gewählten Sprache | erledigt |
 | BD1 | Kamera, Beitritts-Hinweis, Overlay-Taste und HUD-Nachträge | erledigt |
-| BD2 | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | aktiv |
+| BD2 | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | erledigt |
 | BD3 | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | erledigt |
 | BD4 | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | aktiv |
 | BD5 | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | aktiv |
+| BD6 | Autonome Entscheidungen zu BED prüfen und festschreiben | geplant |
 
 ## Nicht-Ziele
 

@@ -86,6 +86,12 @@ export type LobbyEntry =
 /** Höchstens so viele Spielstände unter den Räumen (LB1, Offene Fragen) */
 export const MAX_SAVES = 6;
 
+/** Zeitpunkt des Spielstands; ungültige Zeitstempel zählen als ältester Stand (B-382) */
+function savedTime(s: SaveInfo): number {
+  const ms = Date.parse(s.savedAt);
+  return Number.isNaN(ms) ? -Infinity : ms;
+}
+
 /**
  * „Spielen“ steht oben, darunter „Neuer Spielstand“ (BD5.2), die Räume des Servers, dann die neuesten Spielstände, die noch nicht als Raum offen sind
  * (der Raumname ist der Name des Spielstands). Ohne Verbindung (B-083) gibt es keine wirkungslosen Einträge:
@@ -98,7 +104,7 @@ export function lobbyEntries(rooms: readonly RoomInfo[], status: Status = 'lobby
   const open = new Set(rooms.map((r) => r.name));
   const newest = saves
     .filter((s) => !open.has(s.name))
-    .sort((a, b) => Date.parse(b.savedAt) - Date.parse(a.savedAt))
+    .sort((a, b) => savedTime(b) - savedTime(a))
     .slice(0, MAX_SAVES);
   return [
     { kind: 'play' },
@@ -151,6 +157,8 @@ export function leavesGame(status: Status): boolean {
 export class LobbyFlow {
   private started = false;
   private retried = false;
+  /** Herkunft des gemerkten Befehls: „Spielen“/Autostart dürfen einmal neu anlegen, ein gewählter Spielstand nie */
+  private retryable = false;
   private last: LobbyCommand | null = null;
 
   constructor(private readonly params: StartParams) {}
@@ -161,11 +169,12 @@ export class LobbyFlow {
     const slots = this.slots();
     if (!this.started && (this.params.room || this.params.autostart)) {
       this.started = true;
+      this.retryable = true;
       return this.remember(this.params.room ? { t: 'join', room: this.params.room, slots } : this.create(this.params.fresh));
     }
-    // nur für „Spielen“: ein gewählter Spielstand existiert, er wird nie leer neu angelegt
+    // nur für „Spielen“/Autostart: ein gewählter Spielstand existiert, er wird nie leer neu angelegt
     const last = this.last;
-    if (c.errorCode === 'save_not_found' && last?.t === 'create' && !last.fresh && last.save === this.params.save && !this.retried) {
+    if (c.errorCode === 'save_not_found' && this.retryable && last?.t === 'create' && !last.fresh && !this.retried) {
       this.retried = true;
       return this.remember(this.create(true));
     }
@@ -178,6 +187,7 @@ export class LobbyFlow {
    */
   choose(e: LobbyEntry): LobbyCommand | null {
     this.retried = false;
+    this.retryable = e.kind === 'play';
     if (e.kind === 'play') return this.remember(this.create(this.params.fresh));
     if (e.kind === 'new') return this.remember(this.create(true, e.name));
     if (e.kind === 'save') return this.remember(this.create(false, e.save.name));

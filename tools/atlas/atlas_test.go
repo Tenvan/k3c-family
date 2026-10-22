@@ -102,3 +102,20 @@ func TestKleineGrenzeErzwingtZweiAtlanten(t *testing.T) {
 		t.Fatal("Frame größer als die Grenze muss einen Fehler liefern")
 	}
 }
+
+func TestMonarchAnimationenImAtlas(t *testing.T) {
+	root := fixture(t)
+	raw := `{"sheets": {"hero": {"frameWidth": 8, "frameHeight": 8, "anims": {"idle": {"frames": 3}, "death": {"frames": 2}}}},
+	  "players": [{"sheet": "hero"}], "troops": {}, "enemies": {}}`
+	must(t, os.WriteFile(filepath.Join(root, "data", "sprites.json"), []byte(raw), 0o644))
+	strip(t, filepath.Join(root, "public", "sprites", "hero", "death.png"), 2)
+	frames, err := loadFrames(root)
+	must(t, err)
+	names := map[string]bool{}
+	for _, f := range frames {
+		names[f.Name] = true
+	}
+	if !names["hero-death/0"] || !names["hero-death/1"] {
+		t.Fatalf("Frames %v, erwartet hero-death/0 und hero-death/1", names)
+	}
+}

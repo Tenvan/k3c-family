@@ -42,6 +42,26 @@ Jeder Hub (jede Stufe einer Insel) hat eine **Ausbaustufe 1 bis 5**. Stufe n sch
 
 Begründung: Fortschritt über Tiefe und Material, kein reines Goldsparen. Daten: neu `data/hub.json` › `levels` (SIM legt an).
 
+### 2.1 Sichtbares Wachstum der Burg (GEB11)
+
+Festgelegt autonom von Claude am 2026-10-22 (B-458, Annahme bis 🧑 widerspricht). **Nur Darstellung:** Hub-Stufen,
+Kosten, Bauzeiten und Freischaltungen bleiben wie oben; der Client wählt den Look allein aus `hubLevel` und `hubUpgrade`
+des Snapshots (`docs/protocol.md` › Wirtschaft). Wie in Kingdom Two Crowns beginnt jeder Hub als Lagerfeuer.
+
+| Look | Hub-Stufe | Ausbau auf die nächste Stufe |
+|---|---|---|
+| Lagerfeuer mit Grill | 1 | noch kein Gold bezahlt |
+| Zelt am Feuer | 1 | Gold bezahlt, weniger als die Hälfte |
+| Holzhütte am Feuer | 1 | mindestens die Hälfte des Golds, Gold noch offen |
+| Holzburg | 1 | Gold voll (wartet auf Material oder Bauer) |
+| Stein-, Kupfer-, Eisen-, Kristallburg | 2–5 | beliebig |
+| + Baugerüst vor dem Look | 1–4 | Material abgebucht, ein Bauer baut |
+
+- Fehlt `hubUpgrade` (letzte Stufe oder älterer Server), zeigt der Hub die Burg seiner Stufe; fehlt die Grafik eines Looks, gilt
+  die Burg der Hub-Stufe.
+- Die Burg bleibt in jedem Look Zahlziel und Hub-Kern (HP, Niederlage, Radius `castleRadiusUnits`) wie in § 3.2.
+- Eine echte feinere Stufenfolge im Server (Unterstufen mit eigener Freischaltung) ist offen: Vorlage in GEB11 › Offene Fragen.
+
 ## 3. Gebäude je Hub-Stufe
 
 **Alles wird an festen Bauplätzen gebaut**, wie im Vorbild Kingdom Two Crowns (Q43, 2026-10-04). Kein Platz bewegt sich; jeder Platz trägt ein Gebäude und wird am selben Ort auf die nächste Stufe ausgebaut. Es gibt **kein Bau-Menü**, die Taste Y bleibt frei (Q34/Q06, 2026-10-04). Umsetzung: B-206 (Sprint W0).

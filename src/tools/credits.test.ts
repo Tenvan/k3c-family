@@ -77,4 +77,14 @@ describe('Credits (B-165)', () => {
       { root: 'grafik', folders: ['kandidaten/coin.png'], title: 'Coin', author: 'A', license: 'CC0 1.0', source: 'https://q' },
     ]);
   });
+
+  it('ein Import unter kandidaten/ erscheint in der Lizenzliste mit Urheber, Lizenz und Quelle (B-420)', () => {
+    const imported = [
+      '| Ordner | Pack | Urheber | Lizenz | Quelle | Status |',
+      '|---|---|---|---|---|---|',
+      '| kandidaten/coin.png | Coin | Erika Muster | CC0 1.0 | https://example.org/coin | Lizenz prüfen |',
+    ].join('\n');
+    const html = renderCredits(parseCredits(imported, 'grafik'));
+    for (const part of ['Coin', 'Erika Muster', 'CC0 1.0', 'example.org/coin']) expect(html, part).toContain(part);
+  });
 });
