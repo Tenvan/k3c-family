@@ -91,12 +91,18 @@ func TestVorschauAufeinanderfolgendeAufrufeMitVerschiedenerAnzahl(t *testing.T) 
 	}
 }
 
-// sim.CreateWorldWith nimmt noch keine Chunk-Anzahl: mit Kandidat wird sie abgelehnt statt still übergangen.
-func TestVorschauChunkAnzahlMitKandidatAbgelehnt(t *testing.T) {
+// B-490/AC-03: Die Chunk-Anzahl gilt auch mit Kandidaten-hub.json; eine Zahl, die keine Inselgröße ist, wird mit
+// derselben Meldung abgelehnt (sim.CheckChunkCount).
+func TestVorschauChunkAnzahlMitKandidat(t *testing.T) {
 	o := countOpts(24)
 	o.HubCandidate = embeddedHub(t)
-	if _, err := BuildPreview(o); err == nil || !strings.Contains(err.Error(), "Kandidat") {
-		t.Errorf("Fehler %v, erwartet die Ablehnung der Anzahl mit Kandidat", err)
+	w := mustPreview(t, o)
+	if len(w.Level.Chunks) != 24 {
+		t.Errorf("Anzahl 24 mit Kandidat: %d Chunks", len(w.Level.Chunks))
+	}
+	o.ChunkCount = 18
+	if _, err := BuildPreview(o); err == nil || !strings.Contains(err.Error(), "keine Inselgröße") || !strings.Contains(err.Error(), "gültig: 16, 24") {
+		t.Errorf("Fehler %v, erwartet die Ablehnung einer Zahl, die keine Inselgröße ist", err)
 	}
 	o.ChunkCount = 0
 	mustPreview(t, o)

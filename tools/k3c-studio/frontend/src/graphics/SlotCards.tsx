@@ -38,8 +38,8 @@ export function ImageCard({ r }: { r: Resolved }) {
 }
 
 /** Figuren im selben Maßstab wie im Spiel (renderReference, Karten aus data/sprites.json). */
-// renderReference startet je Aufruf eine eigene requestAnimationFrame-Schleife ohne Abmeldung; alte Schleifen laufen auf
-// abgehängten Canvases weiter, zeichnen aber nichts (isVisible). Abmeldung in spriteReference.ts: B-471.
+// renderReference startet je Aufruf eine eigene requestAnimationFrame-Schleife; die Abmeldung beendet sie beim Neuzeichnen
+// und Abbau der Szene (B-471).
 export function FigurenCards({ title, items }: { title: string; items: Resolved[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const cards: Card[] = items.flatMap((r) => (r.choice?.sheet ? [figureCard(r.slot, { ...r.choice, sheet: r.choice.sheet })] : []));
@@ -48,7 +48,8 @@ export function FigurenCards({ title, items }: { title: string; items: Resolved[
     const root = ref.current;
     if (!root) return;
     root.replaceChildren();
-    if (cards.length > 0) renderReference(root, [{ title, cards }], true);
+    const stop = cards.length > 0 ? renderReference(root, [{ title, cards }], true) : undefined;
+    return stop;
     // cards ändern sich mit jedem Rendern; maßgeblich ist key
   }, [key, title]);
   return <div ref={ref} className="sz-figuren" />;

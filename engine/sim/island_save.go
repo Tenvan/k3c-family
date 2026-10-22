@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"slices"
 	"sort"
+
+	"k3c/engine/level"
 )
 
 // Spielstand der Insel (Version 8, B-100, S1.4, S2.2, K2.3b, K3.2a, W7.2, WZ18.3). Die Campaign schreibt weiter Version 1 (save.go); der Raum benutzt bis zur
@@ -197,7 +199,7 @@ func FromIslandSaveIn(s IslandSave, cycleSpeed float64, world WorldDef) (*Island
 		depths[i] = h.Depth
 	}
 	def := world.Islands[number]
-	isl, err := createIsland(s.Seed, depths, cycleSpeed, s.Time, def.CreateOptions(), world)
+	isl, err := createIsland(s.Seed, depths, cycleSpeed, s.Time, savedCreateOptions(s), world)
 	if err != nil {
 		return nil, err
 	}
@@ -220,6 +222,21 @@ func FromIslandSaveIn(s IslandSave, cycleSpeed float64, world WorldDef) (*Island
 		sort.SliceStable(w.Players, func(i, j int) bool { return w.Players[i].Index < w.Players[j].Index })
 	}
 	return isl, nil
+}
+
+// savedCreateOptions sind die Erzeugungs-Parameter aus dem Stand: je Stufe die Planung und Chunk-Anzahl, mit denen sie
+// gebaut wurde (B-489). Spätere Änderungen von data/worlds/*.json betreffen nur neu erzeugte Stufen.
+func savedCreateOptions(s IslandSave) CreateOptions {
+	planned, counts := map[int][]level.PlannedChunk{}, map[int]int{}
+	for _, h := range s.Stages {
+		if len(h.Planned) > 0 {
+			planned[h.Depth] = h.Planned
+		}
+		if h.ChunkCount > 0 {
+			counts[h.Depth] = h.ChunkCount
+		}
+	}
+	return CreateOptions{Planned: planned, ChunkCounts: counts}
 }
 
 func hasHub(hubs []HubSave, depth int) bool {

@@ -114,3 +114,41 @@ func TestChunkInhaltLehntUngueltigenPlatzAb(t *testing.T) {
 		t.Errorf("ungültige Optionen: Fehler %v, erwartet den Fehler der Vorschau", err)
 	}
 }
+
+// WZ24.3 (B-497/AC-05): Die Umwandlung eines Seed-Chunks in feste Objekte ergibt in jedem Biom (Tiefe 0 bis 4), mit jeder
+// Art des Bioms und auf mehreren Plätzen beider Seiten dasselbe Level, auch mit Adern und Biom-Summen.
+func TestUmwandlungInAllenBiomenUndStufen(t *testing.T) {
+	for _, id := range []string{"forest", "cave", "mine", "ironhold", "crystal"} {
+		b, err := level.LoadBiome(id)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, entry := range b.ChunkWeights {
+			kind := entry.Key
+			if kind == "hub" || kind == "exit" || kind == "edge" {
+				continue
+			}
+			for _, slot := range []int{-3, -1, 1, 3} {
+				base := PreviewOptions{Seed: "umwandlung", Source: PreviewSource{Biome: id}}
+				before := base
+				before.Planned = []level.PlannedChunk{{Slot: slot, Kind: kind, Seed: "inhalt"}}
+				objs, err := PreviewChunkObjects(before, slot)
+				if err != nil {
+					t.Errorf("%s/%s/%+d: Inhalt: %v", id, kind, slot, err)
+					continue
+				}
+				after := base
+				after.Planned = []level.PlannedChunk{{Slot: slot, Kind: kind, Objects: objs}}
+				w1, err1 := BuildPreview(before)
+				w2, err2 := BuildPreview(after)
+				if err1 != nil || err2 != nil {
+					t.Errorf("%s/%s/%+d: Vorschau %v / %v", id, kind, slot, err1, err2)
+					continue
+				}
+				if jsonOf(t, w1.Level) != jsonOf(t, w2.Level) {
+					t.Errorf("%s/%s/%+d: nach der Umwandlung ein anderes Level", id, kind, slot)
+				}
+			}
+		}
+	}
+}

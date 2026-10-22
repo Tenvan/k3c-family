@@ -137,7 +137,7 @@ func TestHubPlanBefundeUndFehler(t *testing.T) {
 	if !slices.ContainsFunc(v.Findings, func(f HubFindingView) bool { return f.Rule == sim.RuleRequired }) {
 		t.Errorf("Befund %s fehlt: %v", sim.RuleRequired, v.Findings)
 	}
-	if !slices.Contains(v.Notes, sim.NotePlannedChunksUnchecked) {
-		t.Errorf("Hinweis fehlt: %v", v.Notes)
+	if len(v.Notes) != 0 {
+		t.Errorf("Hinweise %v, erwartet keine (geplante Chunks werden mitgeprüft, B-479)", v.Notes)
 	}
 }

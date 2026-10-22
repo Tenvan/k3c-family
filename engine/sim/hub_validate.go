@@ -41,9 +41,9 @@ const (
 	RuleStairs    = "treppe"  // Treppe näher als stairsGapUnits an einem Zahlziel derselben Tiefe
 )
 
-// NotePlannedChunksUnchecked: Die Planung geplanter Chunks (B-461, WZ8) gibt es im Code noch nicht, die Prüfung
-// kann sie deshalb nicht gegen die Kandidaten-Linien prüfen.
-const NotePlannedChunksUnchecked = "geplante Chunks nicht geprüft"
+// RulePlanned: Eine geplante Chunk-Planung der Welt (Welt-Datei › plannedChunks) wäre mit den Linien des Kandidaten
+// ungültig (B-479); der Befund nennt Insel, Tiefe, Platz und Grund.
+const RulePlanned = "geplante-chunks"
 
 // maxJitteredLines begrenzt die Lagen der Abstands-Prüfung (2^n Streuungen je Seite und Tiefe).
 const maxJitteredLines = 16
@@ -73,14 +73,17 @@ func ParseHub(raw []byte) (*HubData, error) {
 func ValidateHub(raw []byte) HubReport {
 	h, err := ParseHub(raw)
 	if err != nil {
-		return HubReport{Findings: []HubFinding{{RuleJSON, "hub.json", err.Error()}}, Notes: []string{NotePlannedChunksUnchecked}}
+		return HubReport{Findings: []HubFinding{{RuleJSON, "hub.json", err.Error()}}}
 	}
 	return ValidateHubData(h)
 }
 
 // ValidateHubData prüft einen Kandidaten mit allen Platz-Regeln; h wird nicht verändert. Die Abstands-Regeln laufen
 // nur bei stimmigen Mauerlinien, weil sie deren Lage voraussetzen.
-func ValidateHubData(h *HubData) HubReport {
+func ValidateHubData(h *HubData) HubReport { return ValidateHubDataIn(h, StandardWorld()) }
+
+// ValidateHubDataIn wie ValidateHubData, die geplanten Chunks werden aber in der Welt world geprüft (B-479).
+func ValidateHubDataIn(h *HubData, world WorldDef) HubReport {
 	var out []HubFinding
 	out = append(out, checkHubLevels(h)...)
 	out = append(out, checkSiteKinds(h)...)
@@ -89,7 +92,23 @@ func ValidateHubData(h *HubData) HubReport {
 	if len(lines) == 0 {
 		out = append(out, checkGaps(h)...)
 	}
-	return HubReport{Findings: out, Notes: []string{NotePlannedChunksUnchecked}}
+	if len(lines) == 0 {
+		out = append(out, validatePlanned(world, h)...)
+	}
+	return HubReport{Findings: out}
+}
+
+// validatePlanned prüft die geplanten Chunks aller Inseln der Welt gegen die Mauerlinien des Kandidaten (B-479): Eine
+// Änderung der Linien, die eine Planung ungültig macht, würde das Laden der Welt scheitern lassen und wird abgelehnt.
+func validatePlanned(world WorldDef, h *HubData) []HubFinding {
+	var out []HubFinding
+	lines := levelLines(h.WallLines)
+	for _, d := range world.Islands {
+		if err := checkPlannedChunks(d, lines); err != nil {
+			out = append(out, HubFinding{RulePlanned, "Insel " + d.ID, err.Error()})
+		}
+	}
+	return out
 }
 
 // allSites: Hub- und Insel-Plätze in Dateireihenfolge, als neue Liste.
