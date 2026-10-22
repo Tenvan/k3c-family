@@ -10,6 +10,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | BD2 | SIM, SRV, CLI | BED | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | – | `aktiv/BD2-rueckmeldung-lobby-nachtraege/` |
+| GEB10 | DEV, CLI | GEB | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | – | `aktiv/GEB10-natur-truhe-wimpel/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO2 | CLI | SND | SFX-Katalog und Einbau | – | `aktiv/SO2-sfx-katalog/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
@@ -27,7 +28,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | Entwurf | `geplant/BD4-hud-leiste-austreten/` |
 | BD5 | SRV | BED | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | – | Entwurf | `geplant/BD5-spielmenue-welt-spielstaende/` |
 | GEB9 | DEV | GEB | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | – | Entwurf | `geplant/GEB9-hub-ausbaustufen/` |
-| GEB10 | DEV | GEB | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | – | Entwurf | `geplant/GEB10-natur-truhe-wimpel/` |
 | GEB11 | REG | GEB | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | – | Entwurf | `geplant/GEB11-hub-waechst-kleinteilig/` |
 | SV2 | SRV | WRT | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | – | Entwurf | `geplant/SV2-voll-ausbau-regelkonform/` |
 | W13 | CLI | WRT | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | – | Entwurf | `geplant/W13-morgengrauen-licht-client/` |
