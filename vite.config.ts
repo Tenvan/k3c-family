@@ -32,7 +32,7 @@ export default defineConfig({
     __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
   },
   // /api und /ws gehören dem Go-Server (task start, Port 8080); läuft er nicht, meldet Vite den Proxy-Fehler im Terminal.
-  // k3c-dev setzt beide Ports je Worktree (K3C_VITE_PORT, K3C_HTTP_PORT), damit Worktrees nebeneinander laufen.
+  // k3c-workbench setzt beide Ports je Worktree (K3C_VITE_PORT, K3C_HTTP_PORT), damit Worktrees nebeneinander laufen.
   server: {
     host: true,
     port: Number(process.env.K3C_VITE_PORT ?? 5183),
@@ -46,9 +46,9 @@ export default defineConfig({
   },
   preview: { host: true, port: 4173 },
   // .claude/worktrees enthält komplette Checkouts anderer Branches; deren Tests gehören nicht zu diesem Lauf.
-  // tools/k3c-studio, tools/k3c-dev/frontend und tools/k3c-starter/frontend prüfen ihr eigenes Vitest (Aliase @game/@data/@webkit,
-  // task check:studio, check:dev, check:starter); die Tests von tools/webkit laufen im Vitest von k3c-dev.
-  test: { exclude: [...configDefaults.exclude, '.claude/**', 'tools/cockpit/**', 'tools/k3c-studio/**', 'tools/k3c-dev/frontend/**', 'tools/k3c-starter/frontend/**', 'tools/webkit/**'] },
+  // tools/k3c-studio, tools/k3c-workbench/frontend und tools/k3c-starter/frontend prüfen ihr eigenes Vitest (Aliase @game/@data/@webkit,
+  // task check:studio, check:dev, check:starter); die Tests von tools/webkit laufen im Vitest von k3c-workbench.
+  test: { exclude: [...configDefaults.exclude, '.claude/**', 'tools/cockpit/**', 'tools/k3c-studio/**', 'tools/k3c-workbench/frontend/**', 'tools/k3c-starter/frontend/**', 'tools/webkit/**'] },
   build: {
     target: 'es2022',
     chunkSizeWarningLimit: 2000,

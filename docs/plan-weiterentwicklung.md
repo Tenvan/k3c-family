@@ -7,7 +7,7 @@
 
 ## 1. Ausgangslage (belegt)
 
-- **Fertig:** Insel/Stufen-Kern (SP12), Optionen/Grade/Material/Lager in Go (SP13), Raum auf Insel + Protokoll v3 (SP14), Regelwerk R1–R4 beschlossen (`docs/rules/*.md`), Go-Server, Diagnose-TUI, k3c-dev, Logging (heute ausgebaut).
+- **Fertig:** Insel/Stufen-Kern (SP12), Optionen/Grade/Material/Lager in Go (SP13), Raum auf Insel + Protokoll v3 (SP14), Regelwerk R1–R4 beschlossen (`docs/rules/*.md`), Go-Server, Diagnose-TUI, k3c-workbench, Logging (heute ausgebaut).
 - **Offen, Sim/Regeln:** Hub-Ausbau B-112, Plantage/Adern B-114, Stufenbreite B-115, Gebäude B-116, Monarch-Schlag/Pool B-118, Skills B-119, Wiederbeleben B-120, Berufe/Händler B-121, Elite/Limit B-122, Traits B-128, Gegner B-129, Bosse B-130, Events B-131, Siegvarianten B-102, Inseln B-103.
 - **Offen, Protokoll/Client:** B-123 Protokoll Skills, B-124 Skill-Menü, B-125 Aktionen-Overlay, B-126 Bürger-UI, B-117/B-132 Anzeigen, B-105 Anlegen-Dialog, B-106 Kamera je Stufe, B-107 Debug-Panel.
 - **Grafik:** Figuren vorhanden (`public/sprites/*`, 38 Packs, `data/sprites.json`), Pack-Grafiken für Gebäude/Ressourcen/Hintergründe liegen unter `public/grafik/*` (G1), sind aber nicht zugeordnet; Renderer zeichnet Bauplätze noch als Formen (`src/scenes/render/worldRenderer.ts`). Reittiere ohne Mechanik.
@@ -74,7 +74,7 @@ Ziel: Die Familie kann **eine Insel-Stufe mit Schlag, Skills und Ton** spielen u
 ### Schiene B – Balancing und Simulator (läuft quer, SIM)
 | Sprint | Inhalt |
 |---|---|
-| **BAL1** | B-099 Kern: Szenario-Matrix (feste Seeds × 1–4 Spieler × Bot-Profil × Tiefe), Bots nur über `PlayerCommand`, Kennzahlen-Report als JSON; `sim_run`/k3c-dev-Tool dafür |
+| **BAL1** | B-099 Kern: Szenario-Matrix (feste Seeds × 1–4 Spieler × Bot-Profil × Tiefe), Bots nur über `PlayerCommand`, Kennzahlen-Report als JSON; `sim_run`/k3c-workbench-Tool dafür |
 | **BAL2** | Zielkorridore aus F1 als Prüfung (Pass/Fail pro Kennzahl), CI-Task `task balance` (nicht Pflicht-Gate, aber Bericht), Regressions-Vergleich „Wertänderung → welche Ziele kippen“ |
 | **BAL3** | Bot-Profile erweitern (Wirtschaft zuerst, Mauern zuerst, Koop 2/4 Spieler, Kind-Bot mit Fehlern), Sensitivitäts-Läufe, Schwierigkeitsgrad-Kurven (Grade aus SP13) |
 | **BAL4** | Spielmetrik aus echten Abenden (P1/B1/B2) mit Simulatorwerten abgleichen → Werte nachziehen |
@@ -126,7 +126,7 @@ Regel: Jeder Sprint der Phasen 2–3, der Werte ändert, nennt die betroffenen K
 | 20 | Nur Deutsch? Texte hart kodiert – bewusst festhalten | Entscheidung in F1 |
 | 21 | Speicherpunkte: nur bei Tagesanbruch gespeichert, Kinder brechen mitten in der Nacht ab | S5 |
 | 22 | Dev-Reste (B-098, B-080, B-107) vor Release | Release-Checkliste |
-| 23 | Zusätzlich: Playtest-Gesundheit der Entwicklungsschleife – k3c-dev-Logging jetzt vorhanden; ein **Replay-/Repro-Format** (Seed + Eingaben als Datei) für Bug- und Balancing-Reproduktion fehlt | BAL1 (Bots liefern Eingabe-Aufzeichnung), Wiedergabe-Tool in k3c-dev |
+| 23 | Zusätzlich: Playtest-Gesundheit der Entwicklungsschleife – k3c-workbench-Logging jetzt vorhanden; ein **Replay-/Repro-Format** (Seed + Eingaben als Datei) für Bug- und Balancing-Reproduktion fehlt | BAL1 (Bots liefern Eingabe-Aufzeichnung), Wiedergabe-Tool in k3c-workbench |
 
 ## 5. Entscheidungen, die 🧑 treffen muss (blockieren je einen Sprint)
 

@@ -267,7 +267,7 @@ test('resetLeft: Minuten, Stunden, Tage; abgelaufen 0m', () => {
 test('Verzeichniswächter: Haupt-Repo eines Worktrees zählt als innen; Anzeige in Windows-Schreibweise', () => {
   const wt = 'C:\\WORKSPACE\\k3c\\.claude\\worktrees\\sprint-geb6-plan-9824bd'
   const home = 'C:\\Users\\r'
-  expect(isForeignDir('/c/WORKSPACE/k3c/tools/k3c-dev', wt, home)).toBe(false)
+  expect(isForeignDir('/c/WORKSPACE/k3c/tools/k3c-workbench', wt, home)).toBe(false)
   expect(isForeignDir('C:/WORKSPACE/k3c/.claude/worktrees/other', wt, home)).toBe(false)
   expect(isForeignDir('/c/WORKSPACE/ErpApi', wt, home)).toBe(true)
   expect(nativeDir('/c/WORKSPACE/ErpApi/src/../x', wt)).toBe('C:\\WORKSPACE\\ErpApi\\x')

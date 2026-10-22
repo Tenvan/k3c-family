@@ -14,11 +14,12 @@ import { EnemiesPage } from './EnemiesPage';
 // B-464 (WZ11.1) im DOM: Gegner-Seite mit einer Attrappe statt Phaser; die Bühne bekommt, was die Seite wählt.
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
-const calls = vi.hoisted(() => ({ shown: [] as unknown[], controls: [] as unknown[] }));
+const calls = vi.hoisted(() => ({ shown: [] as unknown[], controls: [] as unknown[], kampf: [] as unknown[] }));
 vi.mock('../stage/PreviewStage', () => ({
   PreviewStage: class {
     async showFigures(items: unknown) { calls.shown.push(items); return (items as unknown[]).map(() => ({ gap: null, frames: 4 })); }
     setControl(c: unknown) { calls.controls.push(c); }
+    setKampf(w: unknown) { calls.kampf.push(w); }
     destroy() {}
   },
 }));
@@ -91,19 +92,43 @@ describe('Gegner-Seite (B-464/AC-01 bis AC-06, AC-13)', () => {
     expect(set).not.toHaveBeenCalled();
   });
 
-  it('Gruppe „Bosse“: 6 Bosse mit Lücken der Anzeigen, Rückfall-Grafik und Fähigkeit', async () => {
+  it('Gruppe „Bosse“: 6 Bosse mit Rückfall-Grafik und Fähigkeit; nur das Event-Banner bleibt Lücke (B-469)', async () => {
     const h = await mount();
     await choose(h, 'Gruppe', 'Bosse (je Tiefe)');
     expect(lastItems().map((i) => i.id)).toEqual(['goblinLeader', 'trollKing', 'ratQueen', 'lavaGolem', 'shardTitan', 'crystalHeartWarden'].map((id) => `enemy-${id}`));
     const goblin = h.querySelector('[data-enemy="goblinLeader"]')!;
-    expect(goblin.textContent).toContain('Boss-Leiste');
     expect(goblin.textContent).toContain('Event-Banner');
-    expect(goblin.textContent).not.toContain('Warnkreis');
+    for (const what of ['Boss-Leiste', 'Warnkreis', 'Phasen-Text']) expect(goblin.textContent).not.toContain(what);
     expect(goblin.textContent).toContain('keine eigene Boss-Grafik');
     const warden = h.querySelector('[data-enemy="crystalHeartWarden"]')!;
-    for (const what of ['Warnkreis', 'Boss-Leiste', 'Phasen-Text', 'Event-Banner']) expect(warden.textContent).toContain(what);
     expect(warden.textContent).toContain('Endboss');
-    expect(h.querySelectorAll('.wd-boss .wd-gap')).toHaveLength(15);
+    expect(warden.textContent).toContain('Event-Banner');
+    expect(h.querySelectorAll('.wd-boss .wd-gap')).toHaveLength(6);
+  });
+
+});
+
+describe('Boss-Anzeigen des Spiels (B-469)', () => {
+  it('Boss-Anzeigen des Spiels (B-469): Beispielzustand geht an die Bühne, Phase und HP wählbar, nur in der Gruppe der Bosse', async () => {
+    const h = await mount();
+    expect(calls.kampf.at(-1)).toBeNull(); // andere Gruppe: keine Boss-Anzeige
+    await choose(h, 'Gruppe', 'Bosse (je Tiefe)');
+    const world = () => calls.kampf.at(-1) as { enemies: { kind: string; hp: number; maxHp: number; phase?: number; warn?: { r: number } }[] };
+    expect(world().enemies[0]).toMatchObject({ kind: 'goblinLeader', hp: 1000, maxHp: 1000 });
+    expect(world().enemies[0]!.warn).toBeUndefined(); // kein Flächenschlag
+    await choose(h, 'Boss-Anzeige', 'trollKing');
+    expect(world().enemies[0]!.warn).toMatchObject({ r: 3 }); // Flächenschlag: Warnkreis mit dem Radius der Daten
+    await choose(h, 'Boss-Anzeige', 'crystalHeartWarden');
+    expect(world().enemies[0]).toMatchObject({ phase: 1 });
+    expect(world().enemies[0]!.warn).toBeUndefined(); // Phase 1 ruft nur Spinnen
+    await choose(h, 'Phase', 'Phase 2');
+    expect(world().enemies[0]).toMatchObject({ phase: 2, hp: 550 });
+    expect(world().enemies[0]!.warn).toMatchObject({ r: 5 });
+    expect(h.querySelector('[aria-label="Phasen-Schwelle"]')!.textContent).toContain('unter 60 % HP');
+    await choose(h, 'Phase', 'Phase 3');
+    expect(world().enemies[0]!.warn).toMatchObject({ r: 5 }); // Phase 3 erbt den Flächenschlag
+    await choose(h, 'Gruppe', BIOMES[0]!.name);
+    expect(calls.kampf.at(-1)).toBeNull();
   });
 });
 

@@ -1,0 +1,136 @@
+package mcpsrv
+
+import (
+	"context"
+	"fmt"
+	"strings"
+	"time"
+
+	"github.com/modelcontextprotocol/go-sdk/mcp"
+
+	"k3c/tools/k3c-workbench/internal/usage"
+)
+
+// panicText steht im Ergebnis, wenn ein Handler in Panik gerät; der Server läuft weiter.
+const panicText = "Tool-Aufruf durch Panik abgebrochen"
+
+// observe ist die eine Middleware für alle Tool-Aufrufe: Zähler und Aufruf-Log, Panik als Fehler und der
+// Parameter-Hinweis bei unbekannten Feldern. Andere Methoden laufen unverändert durch.
+func (s *Server) observe(next mcp.MethodHandler) mcp.MethodHandler {
+	return func(ctx context.Context, method string, req mcp.Request) (res mcp.Result, err error) {
+		call, ok := req.(*mcp.CallToolRequest)
+		if !ok || method != "tools/call" {
+			return next(ctx, method, req)
+		}
+		// Jeder Aufruf arbeitet im Checkout seines Clients (Repo-Wurzel oder Worktree), nie in einem fremden;
+		// das Argument checkout gilt vor dem Header (B-388).
+		ws, wsErr := s.resolveWorkspace(call)
+		header := headerRoot(call) != ""
+		arg := ""
+		if takesCheckout(call.Params.Name) {
+			var err error
+			if arg, call.Params.Arguments, err = splitCheckout(call.Params.Arguments); err != nil {
+				wsErr = err
+			} else if arg != "" {
+				ws, wsErr = s.resolveCheckout(arg)
+			}
+		}
+		ctx = context.WithValue(ctx, wsKey{}, ws)
+		id := s.stats.begin(call.Params.Name, string(call.Params.Arguments))
+		s.log.Debug("📨 "+call.Params.Name+": start", "ns", "mcp", "tool", call.Params.Name, "args", clipArgs(call.Params.Arguments))
+		defer func() {
+			if p := recover(); p != nil {
+				res, err = textResult(fmt.Sprintf("%s: %v", panicText, p), true), nil
+			}
+			s.finish(call, id, outcomeOf(res, err), ws, header, arg != "")
+		}()
+		if wsErr != nil {
+			res = textResult(wsErr.Error(), true)
+			return res, nil
+		}
+		res, err = next(ctx, method, req)
+		s.addParamHint(call.Params.Name, res)
+		addCheckout(call.Params.Name, res, ws)
+		return res, err
+	}
+}
+
+// finish schließt einen Aufruf ab: Zähler und Aufruf-Log, eigenes Log bei Fehlern, Nutzungsstatistik mit den rohen
+// Argumenten (das Aufruf-Log kürzt sie, gekürztes JSON ließe sich nicht mehr normieren). header und checkout im Log
+// zeigen je Aufruf, ob X-K3C-Root ankam und welcher Checkout galt (B-275), checkout_arg, ob das Argument checkout
+// ihn bestimmt hat (B-388).
+func (s *Server) finish(call *mcp.CallToolRequest, id int64, o outcome, ws workspace, header, arg bool) {
+	c, found := s.stats.end(id, o)
+	attrs := []any{"ns", "mcp", "tool", call.Params.Name, "ms", c.DurationMs, "ok", o.ok, "header", header,
+		"checkout_arg", arg, "checkout", ws.label()}
+	if !o.ok {
+		// Tool und Fehler in der Meldung, damit logs_errors gleichartige Fehler je Tool gruppiert.
+		s.log.Warn("❌ "+call.Params.Name+": "+clip(o.err), attrs...)
+	} else {
+		s.log.Info("✅ "+call.Params.Name+": ok", attrs...)
+	}
+	// Nur Tools aus dem Katalog: erfundene Namen eines Clients ließen Statistik und Datei sonst ohne Grenze wachsen.
+	if _, known := s.params[c.Tool]; found && known && s.cfg.Usage != nil {
+		s.cfg.Usage.Record(usage.Event{At: time.Now(), Tool: c.Tool, Args: string(call.Params.Arguments),
+			DurationMs: c.DurationMs, OK: c.OK, Error: o.err})
+	}
+}
+
+// argsRunes begrenzt die Argumente im Log.
+const argsRunes = 200
+
+// clipArgs kürzt rohe Tool-Argumente für das Log.
+func clipArgs(raw []byte) string {
+	r := []rune(string(raw))
+	if len(r) <= argsRunes {
+		return string(r)
+	}
+	return string(r[:argsRunes-1]) + "…"
+}
+
+// outcomeOf liest Erfolg, Fehlertext und erste Antwortzeile aus einem Ergebnis.
+func outcomeOf(res mcp.Result, err error) outcome {
+	if err != nil {
+		return outcome{err: err.Error()}
+	}
+	r, ok := res.(*mcp.CallToolResult)
+	if !ok || r == nil {
+		return outcome{ok: true}
+	}
+	text := resultText(r)
+	first, _, _ := strings.Cut(text, "\n")
+	if r.IsError {
+		return outcome{err: text, summary: first}
+	}
+	return outcome{ok: true, summary: first}
+}
+
+// resultText hängt die Text-Inhalte eines Ergebnisses aneinander.
+func resultText(r *mcp.CallToolResult) string {
+	var parts []string
+	for _, c := range r.Content {
+		if t, ok := c.(*mcp.TextContent); ok {
+			parts = append(parts, t.Text)
+		}
+	}
+	return strings.Join(parts, "\n")
+}
+
+func textResult(text string, isError bool) *mcp.CallToolResult {
+	return &mcp.CallToolResult{Content: []mcp.Content{&mcp.TextContent{Text: text}}, IsError: isError}
+}
+
+// clip kürzt auf textRunes Zeichen.
+func clip(s string) string {
+	r := []rune(s)
+	if len(r) <= textRunes {
+		return s
+	}
+	return string(r[:textRunes-1]) + "…"
+}
+
+// ref ist ein kurzer, im Ring eindeutiger Name je Aufruf: Multiplikation mit einer ungeraden Zahl ist modulo 2^28
+// umkehrbar, zwei IDs unter 2^28 bekommen also nie denselben Namen.
+func ref(id int64) string {
+	return fmt.Sprintf("%07x", (uint64(id)*2654435761)&0xfffffff)
+}

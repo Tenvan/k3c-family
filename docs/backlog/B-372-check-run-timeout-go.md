@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-`check_run` mit `go:test` und `task:check:go` endet im MCP-Aufruf mit „The operation timed out.“ (2026-10-08 PJ3.4, 2026-10-09 K2.4), obwohl `task check:go` in der Shell grün durchläuft (`k3c-load` ~21 s, `engine/net` ~21 s, dazu Lint). Agenten müssen dann auf die Shell ausweichen. Zusätzlich lehnen laufende k3c-dev-Instanzen die Domäne `DEV` aus DV1 noch ab (alter Build), und `console_tail` hat andere Parameter als in den Server-Anweisungen beschrieben. Außerdem (2026-10-09): `plan_set` an Sprints verlangt noch das Feld `Prio` (seit B-361 entfernt, „unbekanntes Feld“), und `plan_create` lehnt Session-IDs mit Buchstaben wie `K3.2a` ab (K2 nutzt sie seit K2.1a).
+`check_run` mit `go:test` und `task:check:go` endet im MCP-Aufruf mit „The operation timed out.“ (2026-10-08 PJ3.4, 2026-10-09 K2.4), obwohl `task check:go` in der Shell grün durchläuft (`k3c-load` ~21 s, `engine/net` ~21 s, dazu Lint). Agenten müssen dann auf die Shell ausweichen. Zusätzlich lehnen laufende k3c-workbench-Instanzen die Domäne `DEV` aus DV1 noch ab (alter Build), und `console_tail` hat andere Parameter als in den Server-Anweisungen beschrieben. Außerdem (2026-10-09): `plan_set` an Sprints verlangt noch das Feld `Prio` (seit B-361 entfernt, „unbekanntes Feld“), und `plan_create` lehnt Session-IDs mit Buchstaben wie `K3.2a` ab (K2 nutzt sie seit K2.1a).
 
 ## Ziel
 
@@ -30,7 +30,7 @@ Agenten in Review- und Umsetzungs-Sessions.
 - Die Server-Anweisungen nennen die aktuellen Parameter von `console_tail`.
 - `plan_set` an Sprints verlangt kein Feld `Prio` mehr (seit B-361 entfernt).
 - `plan_create` akzeptiert Session-IDs mit Buchstaben wie `K3.2a`.
-- Ob der Timeout aus MCP-Client oder k3c-dev kommt, misst WZ2.4 und trägt es unter Notizen ein; der Hintergrundlauf gilt unabhängig davon.
+- Ob der Timeout aus MCP-Client oder k3c-workbench kommt, misst WZ2.4 und trägt es unter Notizen ein; der Hintergrundlauf gilt unabhängig davon.
 
 ## Nicht-Ziele
 
@@ -38,7 +38,7 @@ Go-Tests selbst beschleunigen.
 
 ## Regeln und Einschränkungen
 
-Nur `tools/k3c-dev/`.
+Nur `tools/k3c-workbench/`.
 
 ## Beispiele
 
@@ -57,7 +57,7 @@ Hängt ein Lauf wirklich, bricht er nach einer festen Frist mit klarer Meldung a
 
 ## Offene Fragen
 
-–  (Lösungsweg entschieden von 🧑 am 2026-10-11: Hintergrundlauf mit Lauf-ID. Die Herkunft des Timeouts, MCP-Client oder k3c-dev, ist ungeprüft und wird in WZ2.4 gemessen; sie ändert den Lösungsweg nicht.)
+–  (Lösungsweg entschieden von 🧑 am 2026-10-11: Hintergrundlauf mit Lauf-ID. Die Herkunft des Timeouts, MCP-Client oder k3c-workbench, ist ungeprüft und wird in WZ2.4 gemessen; sie ändert den Lösungsweg nicht.)
 
 ## Notizen
 
@@ -65,4 +65,4 @@ Aus K2.4 (2026-10-09).
 
 WZ2.4 (2026-10-11): Umgesetzt ist der Hintergrundlauf (`check_run` antwortet nach ca. 45 s mit einer Lauf-ID, `check_run {run}` liefert das Ergebnis; der Lauf hängt nicht mehr am Aufruf des Clients), Doku von `console_tail` per Test gesichert, Session-IDs mit Buchstaben, `plan_set` an Sprints ohne `Prio` (schon durch `TestSprintOhnePrioUndEinschiebbar` belegt).
 
-Herkunft des Timeouts **ungeprüft**: Die Live-Messung (`check_run task:check:go` über MCP) scheiterte an einer abgelaufenen MCP-Sitzung, weil k3c-dev beim Bauen neu startete. Belegt ist nur, dass die Fristen von k3c-dev selbst bei 5 min (`testTimeout`) und 10 min (`defaultTimeout`) liegen, ein Abbruch nach ca. 60 s also vermutlich aus dem Client kommt. Der Hintergrundlauf wirkt in beiden Fällen.
+Herkunft des Timeouts **ungeprüft**: Die Live-Messung (`check_run task:check:go` über MCP) scheiterte an einer abgelaufenen MCP-Sitzung, weil k3c-workbench beim Bauen neu startete. Belegt ist nur, dass die Fristen von k3c-workbench selbst bei 5 min (`testTimeout`) und 10 min (`defaultTimeout`) liegen, ein Abbruch nach ca. 60 s also vermutlich aus dem Client kommt. Der Hintergrundlauf wirkt in beiden Fällen.

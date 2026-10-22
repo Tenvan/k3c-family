@@ -9,15 +9,19 @@
 #   k3c-server   cmd/k3c-server/Taskfile.yml    Spielserver: build, run, dev (devrun, -dev)
 #   k3c-load     cmd/k3c-load/Taskfile.yml      Lasttest
 #   k3c-tui      cmd/k3c-tui/Taskfile.yml       Diagnose-Oberfläche
-#   k3c-dev      tools/k3c-dev/Taskfile.yml     Workbench: dev (Client/Server), window (wails dev), build, frontend, test, lint
+#   k3c-workbench      tools/k3c-workbench/Taskfile.yml     Workbench: dev (Client/Server), window (wails dev), build, frontend, test, lint
 #   k3c-studio   tools/k3c-studio/Taskfile.yml  Asset-Studio: dev (Client/Server), window (wails dev), build, frontend, test, lint
 #   k3c-starter  tools/k3c-starter/Taskfile.yml Windows-Starter: dev (Client/Server), window (wails dev), build, test, lint
-#   balance      tools/k3c-dev/internal/balance/Taskfile.yml  Balancing-Tester
+#   balance      tools/k3c-workbench/internal/balance/Taskfile.yml  Balancing-Tester
 #   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
 #
+# Gruppen dieses Taskfiles (in dieser Reihenfolge): Einrichten (install) · Client (dev, lint, typecheck, test) · Bauen und Ausliefern
+# (build, buildall, pages) · Spielserver (start, serve) · Prüfen (check, check:go, check:race, check:diff, check:dev, check:studio,
+# check:starter, check:all).
+#
 # Jedes EXE-Projekt kennt dieselben Verben: `build` (EXE bauen), `run` (bauen und starten), `dev` (Backend mit `-dev` baut und startet sich
-# bei jeder Go-Änderung selbst neu, engine/devrun; Wails-Apps zeigen die Oberfläche über Vite im Browser). Der Name des Projekts allein (`task k3c-dev`) startet `dev`.
+# bei jeder Go-Änderung selbst neu, engine/devrun; Wails-Apps zeigen die Oberfläche über Vite im Browser). Der Name des Projekts allein (`task k3c-workbench`) startet `dev`.
 version: '3'
 
 # Go-Build-Temp (go-build, Test-EXEs) und Wails-Bindings-EXE liegen fest im Projekt statt in %TEMP%:
@@ -32,10 +36,10 @@ includes:
   k3c-server: cmd/k3c-server/Taskfile.yml
   k3c-load: cmd/k3c-load/Taskfile.yml
   k3c-tui: cmd/k3c-tui/Taskfile.yml
-  k3c-dev: tools/k3c-dev/Taskfile.yml
+  k3c-workbench: tools/k3c-workbench/Taskfile.yml
   k3c-studio: tools/k3c-studio/Taskfile.yml
   k3c-starter: tools/k3c-starter/Taskfile.yml
-  balance: tools/k3c-dev/internal/balance/Taskfile.yml
+  balance: tools/k3c-workbench/internal/balance/Taskfile.yml
   gen: tools/Taskfile.yml
   ops: scripts/Taskfile.yml
 
@@ -57,15 +61,15 @@ tasks:
   # --- Einrichten ---------------------------------------------------------------------------------------------------
 
   install:
-    desc: Abhängigkeiten holen (Client, Frontends von k3c-dev, Asset-Studio und Starter)
+    desc: Abhängigkeiten holen (Client, Frontends von k3c-workbench, Asset-Studio und Starter)
     cmds:
       - mkdir -p .work/tmp
       - npm ci
-      - npm ci --prefix tools/k3c-dev/frontend
+      - npm ci --prefix tools/k3c-workbench/frontend
       - npm ci --prefix tools/k3c-studio/frontend
       - npm ci --prefix tools/k3c-starter/frontend
 
-  # --- Client (Phaser, Vite) ----------------------------------------------------------------------------------------
+  # --- Client (Phaser, Vite): entwickeln und prüfen -----------------------------------------------------------------
 
   dev:
     desc: Dev-Server (LAN, Port 5183); /api und /ws gehen an den Go-Server (Port 8080, `task start`)
@@ -99,12 +103,25 @@ tasks:
     cmds:
       - npx vitest
 
+  # --- Bauen und Ausliefern -----------------------------------------------------------------------------------------
+  # `build` ist der Web-Build (dist/), `buildall` baut dazu alle EXE nach bin/, `pages` die statische Präsentationsseite.
+
   build:
     desc: Atlas, Typecheck und Produktions-Build nach dist/
     deps: [gen:atlas]
     cmds:
       - npx tsc --noEmit
       - npx vite build
+
+  buildall:
+    desc: Alle EXE bauen und nach bin/ legen (Spielserver, Lasttest, TUI, Workbench, Asset-Studio, Starter samt Web-Build dist/); laufende EXE vorher schließen, sonst scheitert die Kopie
+    cmds:
+      - task: k3c-workbench:build
+      - task: k3c-studio:build
+      - task: k3c-server:build
+      - task: k3c-load:build
+      - task: k3c-tui:build
+      - task: k3c-starter:build
 
   pages:
     desc: GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build, B-507; danach z. B. `npx vite preview --outDir _site`)
@@ -156,7 +173,7 @@ tasks:
               cmd/*|testdata/*|.golangci*|tools/atlas/*|tools/buildings/*|tools/cleanup/*|tools/ruletable/*|Taskfile.yml|.github/*) g=1 ;;
               tools/webkit/*) d=1; s=1; p=1 ;;
               tools/assetkit/*) d=1; s=1 ;;
-              tools/k3c-dev/*) d=1 ;;
+              tools/k3c-workbench/*) d=1 ;;
               tools/k3c-studio/*) s=1 ;;
               tools/k3c-starter/*) p=1 ;;
             esac
@@ -171,11 +188,11 @@ tasks:
           for t in $run; do task "$t" || exit 1; done
 
   check:dev:
-    desc: k3c-dev prüfen (Frontend mit Vitest, go test, golangci-lint)
+    desc: k3c-workbench prüfen (Frontend mit Vitest, go test, golangci-lint)
     cmds:
-      - task: k3c-dev:frontend
-      - task: k3c-dev:test
-      - task: k3c-dev:lint
+      - task: k3c-workbench:frontend
+      - task: k3c-workbench:test
+      - task: k3c-workbench:lint
 
   check:studio:
     desc: Asset-Studio prüfen (Frontend-Vitest; go test und golangci-lint für die Asset-Logik und das Modul tools/k3c-studio samt Backend; B-459, B-507)
@@ -191,7 +208,7 @@ tasks:
       - task: k3c-starter:lint
 
   check:all:
-    desc: Alles prüfen (Client, Go, k3c-dev, Asset-Studio, Starter, Build)
+    desc: Alles prüfen (Client, Go, k3c-workbench, Asset-Studio, Starter, Build)
     cmds:
       - task: check
       - task: build

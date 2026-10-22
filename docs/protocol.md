@@ -244,8 +244,12 @@ den neuen Stand. Ist er ungültig, läuft der Server mit dem alten Stand weiter 
 1. `error` mit Code `restarting` an jedes verbundene Gerät, in der Raumliste wie im Raum; Raum und Verbindung bleiben.
    Der Client zeigt den Hinweis im Spiel und behält ihn bis zum nächsten `welcome`.
 2. Nach 3 s fährt der Server herunter wie bei einem Signal: Alle Räume speichern, `room_closed`, die Verbindung schließt.
-3. Der neue Prozess lädt die Daten von der Platte. Das Gerät verbindet sich neu (siehe *Wiederverbinden*) und landet in
-   der Raumliste; der Spielstand ist gespeichert und lässt sich über *Raum erstellen* wieder öffnen.
+3. Vor dem Herunterfahren merkt sich der Server die offenen Räume (Code und Spielstand, ohne Test-Räume) in
+   `restart-rooms.state` im Spielstand-Ordner; der neue Prozess lädt die Daten von der Platte und öffnet diese Räume
+   mit demselben Code wieder (ohne Gerät, Frist `EmptyFor` ab dem Öffnen), die Datei wird gelöscht (WZ25.1, B-508).
+   Das Gerät behält seinen Raum, verbindet sich neu (siehe *Wiederverbinden*) und tritt dem Raum mit `join` und
+   demselben Code bei, ohne Raumliste. Gibt es den Raum nicht mehr (Spielstand fehlt, Absturz), antwortet der Server mit
+   `room_not_found` und das Gerät landet in der Raumliste; der Spielstand lässt sich über *Raum erstellen* öffnen.
 
 ## Nachrichten
 

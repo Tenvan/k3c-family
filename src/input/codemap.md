@@ -23,5 +23,5 @@ Adapter-Schicht zwischen Geräten (Tastatur, Gamepad, Touch) und Spiel-Code: jed
 ## Integration
 
 - Konsumenten: `src/scenes/GameScene.ts` (`playerInput`, `touchInput`), `src/scenes/localSlots.ts` (`botInputs`), `src/scenes/hints/glyphs.ts` (`KEYBOARD_2`); Belegung und Anzeigetexte auch für Aktionen-Overlay und Hinweise über `slotBindings.ts`.
-- Abhängigkeiten: Phaser (`Phaser.Input.Gamepad.Gamepad`, `KeyboardPlugin`), Gamepad API, WebSocket (Bot-Feed der Workbench, `tools/k3c-dev/internal/botfeed`), `src/core/fullscreen.ts`, `src/core/texts.ts`, `src/core/clientLog.ts`.
+- Abhängigkeiten: Phaser (`Phaser.Input.Gamepad.Gamepad`, `KeyboardPlugin`), Gamepad API, WebSocket (Bot-Feed der Workbench, `tools/k3c-workbench/internal/botfeed`), `src/core/fullscreen.ts`, `src/core/texts.ts`, `src/core/clientLog.ts`.
 - Reservierte Kombination View + Menu (zurück zur Landingpage) wird nicht hier, sondern in `src/core/shell.ts` behandelt.

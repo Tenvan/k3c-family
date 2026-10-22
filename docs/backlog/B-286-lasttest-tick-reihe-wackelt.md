@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-`cmd/k3c-load/load_test.go` › `TestTickReiheJeRaum` schlug am 2026-10-05 im Gesamtlauf `task check:all` einmal fehl („test-load-reihe-0: 61 Ticks, Code "GMFS", 1 Fehler“). Einzeln lief der Test dreimal grün, der zweite Gesamtlauf auch. Nebenher liefen Vite, Spielserver und k3c-dev; vermutet wird ein Zeitproblem unter Last (ungeprüft).
+`cmd/k3c-load/load_test.go` › `TestTickReiheJeRaum` schlug am 2026-10-05 im Gesamtlauf `task check:all` einmal fehl („test-load-reihe-0: 61 Ticks, Code "GMFS", 1 Fehler“). Einzeln lief der Test dreimal grün, der zweite Gesamtlauf auch. Nebenher liefen Vite, Spielserver und k3c-workbench; vermutet wird ein Zeitproblem unter Last (ungeprüft).
 
 ## Ziel
 

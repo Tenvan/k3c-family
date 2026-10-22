@@ -64,7 +64,7 @@ keine (Entscheidungen 🧑 2026-10-18: neues Protokollfeld `seed` (B-095), Entsc
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - BT1.1 Start mit Seed und Tiefe per URL, Nachweis B-048 (AC-03, AC-04).
-- BT1.2 Wails-Starter für Windows (AC-02); Vorbild sind die Wails-Fenster von k3c-dev und Asset-Studio.
+- BT1.2 Wails-Starter für Windows (AC-02); Vorbild sind die Wails-Fenster von k3c-workbench und Asset-Studio.
 - BT1.3 Review (Code-Sprint): alle Kriterien prüfen.
 
 ## Abnahme

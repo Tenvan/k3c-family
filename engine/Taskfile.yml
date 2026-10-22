@@ -1,4 +1,4 @@
-# Namespace `go`: Tests und Lint des Go-Moduls an der Wurzel (cmd/, engine/, tools/ ohne die eigenen Module k3c-dev,
+# Namespace `go`: Tests und Lint des Go-Moduls an der Wurzel (cmd/, engine/, tools/ ohne die eigenen Module k3c-workbench,
 # k3c-studio, k3c-starter und assetkit). Die Aufgaben laufen im Repo-Wurzelordner. Gesamtprüfung: `task check:go`.
 version: '3'
 

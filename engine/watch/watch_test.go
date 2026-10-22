@@ -169,3 +169,20 @@ func TestAenderungZwischenLadenUndGrundstand(t *testing.T) {
 		t.Fatalf("nach der Frist: %v", got)
 	}
 }
+
+// B-511: Temp-Dateien des atomaren Schreibens sind keine Änderung; erst die fertige Datei zählt.
+func TestTempDateienSindKeineAenderung(t *testing.T) {
+	w, _, public := newWatcher(t)
+	t0 := time.Unix(5000, 0)
+	_ = w.Poll(t0)
+	write(t, public, "audio/.import-123", "halb", t0)
+	if got := w.Poll(t0.Add(quiet + time.Second)); got != nil {
+		t.Fatalf("Temp-Datei löste einen Vorgang aus: %v", got)
+	}
+	write(t, public, "audio/klang.ogg", "fertig", t0)
+	_ = w.Poll(t0.Add(2 * (quiet + time.Second))) // erkennt die Datei, die Entprellfrist läuft
+	got := w.Poll(t0.Add(4 * (quiet + time.Second)))
+	if !slices.Equal(got, []string{"public/audio/klang.ogg"}) {
+		t.Errorf("fertige Datei: %v", got)
+	}
+}

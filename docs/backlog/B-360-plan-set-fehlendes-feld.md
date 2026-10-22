@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-`setField` in `tools/k3c-dev/internal/planning/edit.go` ersetzt nur vorhandene Feldzeilen. Fehlt das Feld in einer Datei (z. B. eine ältere Datei ohne `Projekt`), meldet `plan_set` Erfolg und ändert nichts. Aufgefallen in PJ2.1 an einer Test-Datei; die echten Dateien tragen seit PJ1.2 alle Felder.
+`setField` in `tools/k3c-workbench/internal/planning/edit.go` ersetzt nur vorhandene Feldzeilen. Fehlt das Feld in einer Datei (z. B. eine ältere Datei ohne `Projekt`), meldet `plan_set` Erfolg und ändert nichts. Aufgefallen in PJ2.1 an einer Test-Datei; die echten Dateien tragen seit PJ1.2 alle Felder.
 
 ## Ziel
 
@@ -35,7 +35,7 @@ Dateien migrieren (PJ1.2 erledigt).
 
 ## Regeln und Einschränkungen
 
-Domäne SRV (`tools/k3c-dev/`), Komplexitäts-Budget.
+Domäne SRV (`tools/k3c-workbench/`), Komplexitäts-Budget.
 
 ## Beispiele
 

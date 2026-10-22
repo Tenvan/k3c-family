@@ -1,6 +1,6 @@
 # Sound-Katalog
 
-Katalog Ereignis → Sound → Quelle → Lizenz (B-167, SO2). Die Zuordnung steht im Slot-Register `data/assets.json` (Reihenfolge = Präferenz, der erste Sound ist aktiv), Urheber und Lizenz in `public/audio/README.md` › Importe (k3c-dev). Stand 2026-10-18, Auswahl durch 🧑 im Asset-Studio. Lizenz-Bestätigung in k3c-dev durch 🧑 steht aus. Einbau ins Spiel: SO2.3.
+Katalog Ereignis → Sound → Quelle → Lizenz (B-167, SO2). Die Zuordnung steht im Slot-Register `data/assets.json` (Reihenfolge = Präferenz, der erste Sound ist aktiv), Urheber und Lizenz in `public/audio/README.md` › Importe (k3c-workbench). Stand 2026-10-18, Auswahl durch 🧑 im Asset-Studio. Lizenz-Bestätigung in k3c-workbench durch 🧑 steht aus. Einbau ins Spiel: SO2.3.
 
 ## Effekte
 

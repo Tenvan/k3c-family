@@ -178,7 +178,7 @@ Anlass: Beim Anlegen des Glossars fielen Widersprüche zwischen Regelwerk, Spiel
 
 Ohne Frage aus Fakten korrigiert (redaktionell): Startvorrat 100 Holz (B-177) statt „leerer Vorrat“, fünf Materialien statt drei, Farm = Plantage statt „+5 Holz je Tagesanbruch“, Respawn heute 5 s und Ziel 15 s mit B-120/W4.1, `CLAUDE.md` › Struktur „Protokoll v3“, Q27 „Lage an Linie 1 (±48), baubar ab Hub-Stufe 2“.
 
-**Folgen für die Planung:** Die Regeln (`stufen.md`, `monarch.md`, `wirtschaft.md`, `materialien-gebaeude.md`, `buerger.md`), `game-design.md` und das Glossar sind angepasst. Offen ist die Planungsarbeit über k3c-dev: neues Ticket **B-213** (SIM, Tageszyklus mit Morgengrauen); Anpassungen in **B-120** (`revived`, Respawn 15 s), **B-122** (`troopLost` nur Kämpfer), **W4.1** (`revived` statt `revive` beim Wiederbeleben) und **W4.3a** (`troopLost` nur Kämpfer); redaktionelle Korrektur der „Offenen Fragen“ in BAL3, BAL4, GR2, SO2, SO4, S3, S6, S5, BR1, BR2 und P1 auf „geklärt durch Qnn (Datum)“. Wirklich offen bleiben dort: BAL4 Toleranz je Kennzahl, W5 Abgrenzung der Berufe-Felder zu B-123, P1 Termin und Teilnehmer.
+**Folgen für die Planung:** Die Regeln (`stufen.md`, `monarch.md`, `wirtschaft.md`, `materialien-gebaeude.md`, `buerger.md`), `game-design.md` und das Glossar sind angepasst. Offen ist die Planungsarbeit über k3c-workbench: neues Ticket **B-213** (SIM, Tageszyklus mit Morgengrauen); Anpassungen in **B-120** (`revived`, Respawn 15 s), **B-122** (`troopLost` nur Kämpfer), **W4.1** (`revived` statt `revive` beim Wiederbeleben) und **W4.3a** (`troopLost` nur Kämpfer); redaktionelle Korrektur der „Offenen Fragen“ in BAL3, BAL4, GR2, SO2, SO4, S3, S6, S5, BR1, BR2 und P1 auf „geklärt durch Qnn (Datum)“. Wirklich offen bleiben dort: BAL4 Toleranz je Kennzahl, W5 Abgrenzung der Berufe-Felder zu B-123, P1 Termin und Teilnehmer.
 
 ## Beschlüsse vom 2026-10-04, vierte Runde (🧑 im Chat)
 
@@ -193,7 +193,7 @@ Anlass: Ziel des Heiler-Skills Resurrection und was mit Bürgern geschieht, dere
 
 **Nicht jetzt:** Extra-Münzen als Schutz (im Vorbild verlieren Figuren zuerst zusätzliche Münzen) kommen später als Idee-Ticket.
 
-**Folgen für die Planung** (über k3c-dev, nicht in diesem Commit):
+**Folgen für die Planung** (über k3c-workbench, nicht in diesem Commit):
 - **B-122** und **W4.3a**/**W4.3b**/**W4.4**: `troopLost` durch `disarmed` ersetzen (AC-05 aus Q40/Q41 neu fassen), Verlust-Kaskade statt Entfernen bei HP ≤ 0, Elite-Waffe fällt mit Stufe; `W4/README.md` und `W3.2` nennen `troopLost` ebenfalls.
 - **B-014** (Krieger, Elite): Rückstufung zum Bauern, Schwert und Elite-Schwert am Boden.
 - **B-121** und **W4.2** (Berufe, Werkstatt): Berufe verlieren ihre Ausrüstung; Aufheben vom Boden als Abholauftrag wie am Waffenregal.
@@ -252,7 +252,7 @@ Fragen: Welche Liste ist Pflicht für den Spieleabend-Build? Wie viel Bandbreite
 🤖 Empfehlung: kontextuelle Hinweise mit Controller-Glyphen (B-149), geführte erste Nacht optional, Grad „leicht“ aus `data/difficulty.json` ohne Niederlage.
 
 **Q12 · Spielmetrik** (B-150). Was wird je Sitzung erfasst? Vorschlag: Tod durch was, Nächte überlebt, Zeit bis zum ersten Bau, Gold je Tag, Verbindungsabbrüche. Daten bleiben im Heimnetz (`reports/`), keine Namen, nur Geräte-Kürzel.
-🤖 Empfehlung: Vorschlag übernehmen, JSON je Sitzung, Auswertung über k3c-dev.
+🤖 Empfehlung: Vorschlag übernehmen, JSON je Sitzung, Auswertung über k3c-workbench.
 
 **Q24 · Spieleabend 1** (B-151, P1). Termin, Teilnehmer, Dauer („ein Tag und eine Nacht“), Fragebogen. Kindgerecht: Daumen hoch/runter je Frage, ein Satz offenes Feedback.
 🤖 Empfehlung: Fragebogen mit 8 Fragen (Spaß, Verständlichkeit, zu schwer/leicht, Lieblingsmoment, Ärgernis, Ton, Lesbarkeit, nochmal spielen?).

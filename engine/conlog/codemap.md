@@ -20,5 +20,5 @@ Infrastructure/Adapter: `slog.Handler` für lesbare, farbige Konsolenzeilen. Wir
 ## Integration
 
 - Abhängigkeiten: nur Stdlib (`log/slog`).
-- Konsumenten: `cmd/k3c-server`, `tools/k3c-dev/internal/applog`.
-- k3c-dev liest Level-Wörter (`markOf`, `outLevel`) aus den Zeilen.
+- Konsumenten: `cmd/k3c-server`, `tools/k3c-workbench/internal/applog`.
+- k3c-workbench liest Level-Wörter (`markOf`, `outLevel`) aus den Zeilen.

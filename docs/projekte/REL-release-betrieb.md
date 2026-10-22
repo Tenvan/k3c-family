@@ -28,7 +28,7 @@ Entwickler-Werkzeuge, Asset-Studio und Workbench (WZG); Testläufe, Lasttest und
 ## Notizen
 
 Stand 2026-10-18 (Abgleich mit `develop`):
-- CI läuft auf `develop` grün in allen Jobs (Typecheck/Tests/Build, Go, Go arm64, Docker mit Smoke-Test, k3c-dev, Asset-Studio); PRs prüfen nur Merge-Konflikte, Tests laufen nach dem Merge. Damit ist B-053 (CI-Nachweis SP01) überholt.
+- CI läuft auf `develop` grün in allen Jobs (Typecheck/Tests/Build, Go, Go arm64, Docker mit Smoke-Test, k3c-workbench, Asset-Studio); PRs prüfen nur Merge-Konflikte, Tests laufen nach dem Merge. Damit ist B-053 (CI-Nachweis SP01) überholt.
 - `K3C_DEV=0` setzen weder `Dockerfile` noch `compose.yaml` (B-273 offen); eine Test-Abdeckung für `engine/` zeigt die CI nicht (B-019 offen).
 - BT1: B-040 (Server-Suche, QR) ist verworfen, die Session dafür entfällt; Start per URL mit Seed (B-095) ist nicht gebaut (`lobbyLogic.ts` kennt kein `seed`).
 - `site/` enthält nur `index.html`, keine Spielbilder (PG1 offen); Bilder können aus der Live-Vorschau des Asset-Studios (Welt-Betrachter) oder dem Browser-Pane stammen.

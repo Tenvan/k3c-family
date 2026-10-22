@@ -49,7 +49,7 @@ type Research struct {
 }
 
 const researchComment = "Recherche-Treffer je Asset-Slot (B-298, M10.4): Vorschläge mit Link, Quelle, Urheber, Lizenz und Vorschau. " +
-	"Schreibt k3c-dev (Recherche, MCP assets_hit_add); ein Treffer bleibt, bis 🧑 ihn verwirft. lizenzStatus: erkannt, pruefen, ausgeschlossen (Q70), bestaetigt (🧑)."
+	"Schreibt k3c-workbench (Recherche, MCP assets_hit_add); ein Treffer bleibt, bis 🧑 ihn verwirft. lizenzStatus: erkannt, pruefen, ausgeschlossen (Q70), bestaetigt (🧑)."
 
 // LoadResearch liest die Treffer; fehlt die Datei, ist sie leer. Ungültiges JSON ist ein Fehler (nie überschreiben).
 func LoadResearch(root string) (*Research, error) {

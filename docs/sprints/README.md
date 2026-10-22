@@ -9,8 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| WZ21 | DEV | WZG | Studio-Chat: eigene Umgebung, Grundgerüst als Instruktion, Entwurf geschützt | – | `aktiv/WZ21-studio-chat-nachtraege/` |
-| WZ23 | CLI, DEV | WZG | Studio-Vorschauen: Reittiere aus dem Spielcode, Monarch-Seite, Boss-Anzeigen, Gebäude-Planer abgenommen | – | `aktiv/WZ23-studio-vorschauen-nachtraege/` |
 | BD2 | SIM, SRV, CLI | BED | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | – | `aktiv/BD2-rueckmeldung-lobby-nachtraege/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | SO2 | CLI | SND | SFX-Katalog und Einbau | – | `aktiv/SO2-sfx-katalog/` |
@@ -25,7 +23,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WZ25 | SRV | WZG | Nachträge zum Server-Neustart: Räume bleiben offen, Assets ohne Build, Werkzeuge passen dazu | – | Entwurf | `geplant/WZ25-server-neustart-nachtraege/` |
 | BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
 | BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | Entwurf | `geplant/BD4-hud-leiste-austreten/` |
 | BD5 | SRV | BED | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | – | Entwurf | `geplant/BD5-spielmenue-welt-spielstaende/` |
@@ -78,12 +75,12 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | L3 | Race-Detector für die nebenläufigen Go-Pakete (B-077) | `erledigt/L3-race/` |
 | T1 | Testseite mit Szenarien und Mock-Spielern (B-081) | `erledigt/T1-testseite/` |
 | SP02 | Protokoll v2 & Raummodell, Entscheidung 002 | `erledigt/SP02-protokoll/` |
-| M1 | k3c-dev I: MCP-Kern über HTTP | `erledigt/M1-dev-mcp/` |
-| M2 | k3c-dev II: Nutzungsstatistik, Berichte, Spielstände | `erledigt/M2-dev-statistik/` |
-| M3 | k3c-dev III: Dienste führen, `svc_*`-Tools | `erledigt/M3-dev-dienste/` |
-| M4 | k3c-dev IV: Oberfläche (Wails) mit Dienste- und Logs-Seite | `erledigt/M4-dev-oberflaeche/` |
+| M1 | k3c-workbench I: MCP-Kern über HTTP | `erledigt/M1-dev-mcp/` |
+| M2 | k3c-workbench II: Nutzungsstatistik, Berichte, Spielstände | `erledigt/M2-dev-statistik/` |
+| M3 | k3c-workbench III: Dienste führen, `svc_*`-Tools | `erledigt/M3-dev-dienste/` |
+| M4 | k3c-workbench IV: Oberfläche (Wails) mit Dienste- und Logs-Seite | `erledigt/M4-dev-oberflaeche/` |
 | SP03 | Go-Server Basis: Auslieferung, Spielstände mit Sicherungen, Status, Docker | `erledigt/SP03-go-server/` |
-| M5 | k3c-dev V: MCP-Seite mit Monitoren und Statistik | `erledigt/M5-dev-mcp-seite/` |
+| M5 | k3c-workbench V: MCP-Seite mit Monitoren und Statistik | `erledigt/M5-dev-mcp-seite/` |
 | SP04 | Golden-Tests, RNG und Level-Generator in Go | `erledigt/SP04-golden-level/` |
 | SP05 | Port I: Welt, Zyklus, Truppen, Wirtschaft in Go | `erledigt/SP05-port-welt/` |
 | SP06 | Port II: Gegner, Wellen, Reisen, Kampagne, Spielstand in Go | `erledigt/SP06-port-einheiten/` |
@@ -91,10 +88,10 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SP08 | Browser als reiner Client (Protokoll v2, Lobby, lokale Spieler, Layout 1–4) | `erledigt/SP08-client/` |
 | SP10 | Diagnose-TUI (Bubble Tea): `k3c-tui` zeigt Räume live, Aktionen, Log (B-002) | `erledigt/SP10-tui/` |
 | D1 | Diagnose-Schnittstelle des Servers: JSON-Log, Speicher, Geräte, Log, Aktionen (B-066, B-088) | `erledigt/D1-diagnose-server/` |
-| M6 | k3c-dev VI: MCP-Tools für Räume und Simulation (B-047) | `erledigt/M6-dev-raeume/` |
+| M6 | k3c-workbench VI: MCP-Tools für Räume und Simulation (B-047) | `erledigt/M6-dev-raeume/` |
 | SP09 | Aufräumen: TS-Sim und Node-Server gelöscht, Release `v0.2.0` | `erledigt/SP09-aufraeumen/` |
 | G1 | Referenzseite für die gewählten Grafik-Packs, Auswahl auf den Referenzseiten (B-087) | `erledigt/G1-grafiken/` |
-| I1 | Ein Weg für alle Befehle: `task`, `package.json` ohne Skripte, CI und k3c-dev rufen `task` (B-073, B-070, B-072, B-051) | `erledigt/I1-ein-weg/` |
+| I1 | Ein Weg für alle Befehle: `task`, `package.json` ohne Skripte, CI und k3c-workbench rufen `task` (B-073, B-070, B-072, B-051) | `erledigt/I1-ein-weg/` |
 | U1 | Radar-Leiste im HUD (B-090) | `erledigt/U1-radar/` |
 | U2 | Level-Abfrage per HTTP: GET /api/level (B-091) | `erledigt/U2-level-abfrage/` |
 | U3 | Level-Betrachter: Seite mit Einstieg von der Testseite (B-092; ersetzt durch den Welt-Betrachter im Studio, B-460) | `erledigt/U3-level-betrachter/` |
@@ -106,7 +103,7 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SP12 | Insel-Kern: mehrere Stufen ticken, Einzelwechsel, Vorrat je Insel, Spielstand Version 2 (B-100) | `erledigt/SP12-insel-kern/` |
 | SP13 | Raum-Optionen, Grade, fünf Materialien, Lager-Maximum und Tragen in der Insel (B-101, B-113) | `erledigt/SP13-optionen-material/` |
 | SP14 | Raum rechnet die Insel, Protokoll Version 3, Raum-Optionen mit Dev-Modus (B-133, B-104) | `erledigt/SP14-raum-auf-insel/` |
-| M7 | k3c-dev VII: Seiten Tasks, Planung und Git (B-171) | `erledigt/M7-dev-seiten/` |
+| M7 | k3c-workbench VII: Seiten Tasks, Planung und Git (B-171) | `erledigt/M7-dev-seiten/` |
 | F0 | Parallele Sprints je Domäne, Sessions per Branch beanspruchen (B-174) | `erledigt/F0-sprint-regel/` |
 | SP11 | Raspberry Pi: Image in ghcr, `docker compose pull`, Betrieb am Pi (B-035; Lastmessung nach LT1) | `erledigt/SP11-raspberry-pi/` |
 | H1 | Holz-Startvorrat: neue Insel startet mit 100 Holz (B-177) | `erledigt/H1-holz-startvorrat/` |
@@ -118,8 +115,8 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | F4 | Feedback-Ereignisse im Protokoll, Rotation und Backup, Restore mit Token (B-140, B-142, B-143; Restore-Probe am Pi offen) | `erledigt/F4-feedback-events-protokoll-pi/` |
 | F5 | Doku-Drift, Version in Landing-Fußzeile und Landing-Kacheln zur Lobby (B-141, B-079) | `erledigt/F5-doku-version/` |
 | GR6 | Credits-Seite aus den CREDITS-Dateien mit Vollständigkeits-Test (B-165) | `erledigt/GR6-credits-seite/` |
-| M8 | k3c-dev VIII: Planung über MCP, React-Planungsseite, GitHub-Status (einschiebbar) | `erledigt/M8-dev-planung-mcp/` |
-| BAL1 | Balancing-Tester: Kern und Replay: Bots, Kennzahlen-Report und Replay-Datei in k3c-dev (B-099 teils, B-159; einschiebbar) | `erledigt/BAL1-balancing-tester-kern/` |
+| M8 | k3c-workbench VIII: Planung über MCP, React-Planungsseite, GitHub-Status (einschiebbar) | `erledigt/M8-dev-planung-mcp/` |
+| BAL1 | Balancing-Tester: Kern und Replay: Bots, Kennzahlen-Report und Replay-Datei in k3c-workbench (B-099 teils, B-159; einschiebbar) | `erledigt/BAL1-balancing-tester-kern/` |
 | BAL2 | Zielkorridor-Prüfung und `task balance`: Pass/Fail je Kennzahl für 100 feste Seeds, Vergleich mit Baseline, CI-Bericht (B-157; einschiebbar) | `erledigt/BAL2-zielkorridor-pruefung/` |
 | BAL3 | Bot-Profile, Sensitivität und Grad-Kurven: vier neue Profile, Sensitivitäts-Lauf (±10/±25 %) und Kurven je Grad im Balancing-Tester (B-158; einschiebbar) | `erledigt/BAL3-bot-profile-sensitivitaet/` |
 | S1 | Monarch: Schlag, Fund-Pool, Skills von Tank, Zauberer und Heiler, Standard-Reittier, Spielstand v3 (B-118, B-119, B-022, B-152) | `erledigt/S1-monarch-schlag-skills/` |
@@ -148,11 +145,11 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GR3 | Grafik im Renderer: Gebäude, Ressourcen, Portale, Truhen, Münzen und Parallax je Biom als Sprites mit Platzhalter-Rückfall (B-010; Sicht am TV offen) | `erledigt/GR3-grafik-renderer/` |
 | GR4 | Atlas und Lade-Szene (B-163, B-029; Messung an der Xbox offen, GR4.3) | `erledigt/GR4-atlas-ladeszene/` |
 | GR5 | Juice: Treffer, Screenshake, Münzen (B-164; Abnahme am TV offen) | `erledigt/GR5-juice/` |
-| M9 | k3c-dev in Worktrees und Markdown-Ansicht: Checkout in Antworten, Vite-Watcher, nummerierte Listen (B-275, B-213; Ursache des fehlenden Headers: B-341) | `erledigt/M9-dev-worktrees/` |
+| M9 | k3c-workbench in Worktrees und Markdown-Ansicht: Checkout in Antworten, Vite-Watcher, nummerierte Listen (B-275, B-213; Ursache des fehlenden Headers: B-341) | `erledigt/M9-dev-worktrees/` |
 | TR1 | Testläufe über `sim_test` in der Workbench: offline/online, headless/1–4 Clients (B-348; Browser-Nachweis nach TR2.1) | `erledigt/TR1-testlaeufe-workbench/` |
 | TR2 | Bot-Eingabe im Client: `BotInput` und `?botfeed` in `src/input/` (B-349; Einbindung ins Spiel: B-353, TR3) | `erledigt/TR2-bot-eingabe-client/` |
 | PJ1 | Projekte, Rang und Domäne je Session in Regeln, Vorlagen und Planungstest | `erledigt/PJ1-projekte-regeln/` |
-| PJ2 | k3c-dev plant mit Projekten: plan-Tools und Planungsseite | `erledigt/PJ2-projekte-k3c-dev/` |
+| PJ2 | k3c-workbench plant mit Projekten: plan-Tools und Planungsseite | `erledigt/PJ2-projekte-k3c-dev/` |
 | TR3 | Bot-Eingabe im Spiel einbinden (B-353; einschiebbar) | `erledigt/TR3-bot-eingabe-spiel/` |
 | M11 | MCP-Seite: alle Tools mit Aufruf-Statistik, Zeitfilter der Statistik (B-350; einschiebbar) | `erledigt/M11-mcp-seite-tools/` |
 | DBG3 | Dungeon-Master-Seite `/dm` mit Dev-API, Welle und Tageszeit (B-232; Abnahme am Handy offen) | `erledigt/DBG3-dungeon-master-seite/` |
@@ -164,10 +161,10 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SO3 | Hörprobenseite `soundtest.html` | `erledigt/SO3-hoerprobenseite/` |
 | PJ3 | Planung in Projekte umziehen und aufräumen | `erledigt/PJ3-planung-umziehen/` |
 | PL2 | Werkzeug-Seiten in der gewählten Sprache | `erledigt/PL2-texte-werkzeug-seiten/` |
-| DV1 | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | `erledigt/DV1-domaene-dev-werkzeug/` |
+| DV1 | Domäne DEV für k3c-workbench, Sprint ohne Prio und Einschiebbar | `erledigt/DV1-domaene-dev-werkzeug/` |
 | K2 | Bosse, Siegvarianten und Inselwechsel | `erledigt/K2-bosse-siege-inseln/` |
 | K3 | Events Vollmond, Blutmond und Händler-Überfall | `erledigt/K3-events/` |
-| WT1 | Worktree-Sessions richten k3c-dev-Tools per Argument auf ihren Checkout | `erledigt/WT1-checkout-argument/` |
+| WT1 | Worktree-Sessions richten k3c-workbench-Tools per Argument auf ihren Checkout | `erledigt/WT1-checkout-argument/` |
 | K4 | Protokoll für Bosse, Events und Inselwechsel (Protokoll v6; AC-05 offen → B-386) | `erledigt/K4-protokoll-kampf/` |
 | LB1 | Lobby zeigt Räume und startet Spiele | `erledigt/LB1-lobby/` |
 | U5 | Debug-Overlay und Cheat-Dialog bedienbar | `erledigt/U5-debug-overlay-bedienbar/` |
@@ -181,7 +178,7 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ3 | Review-Nachträge zu WZ2: Filter-Zählung, Splitter-Test, Kleinigkeiten | `erledigt/WZ3-review-nachtraege/` |
 | W7 | Ausrüstung ohne Unverwundbarkeit, Spielstand vollständig | `erledigt/W7-ausruestung-spielstand/` |
 | WZ4 | Splitter-Test in DOM-Umgebung | `erledigt/WZ4-lint-splitter-test/` |
-| M10 | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-dev | `erledigt/M10-ressourcen-manager/` |
+| M10 | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-workbench | `erledigt/M10-ressourcen-manager/` |
 | W8 | Bauplätze mit Grund und alle Rohstoffe im Client | `erledigt/W8-bauplaetze-rohstoffe-client/` |
 | SV1 | Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume | `erledigt/SV1-raeume-stufen-testspielstand/` |
 | BD1 | Kamera, Beitritts-Hinweis, Overlay-Taste und HUD-Nachträge | `erledigt/BD1-hud-overlay-nachtraege/` |
@@ -212,6 +209,9 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ19 | Chat im Studio mit Claude Code CLI und Welt per Prompt füllen | `erledigt/WZ19-chat-und-prompt/` |
 | TS1 | Spielserver und Asset-Studio trennen, Server beobachtet Dateien | `erledigt/TS1-trennung-server-studio/` |
 | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager | `erledigt/WZ14-ruinen-gegnerlager/` |
-| WZ20 | k3c-dev: Planungstest für Entwürfe, Worktree-Einträge vollständig und lesend, sim_test im Worktree | `erledigt/WZ20-planung-worktree-simtest/` |
+| WZ20 | k3c-workbench: Planungstest für Entwürfe, Worktree-Einträge vollständig und lesend, sim_test im Worktree | `erledigt/WZ20-planung-worktree-simtest/` |
 | WZ22 | Studio-Editoren: Fehler sichtbar, Im Spiel öffnen wiederholbar | `erledigt/WZ22-studio-editoren-nachtraege/` |
 | WZ24 | Geplante Chunks in Simulation und Spielstand: Regeln geklärt, Planung im Stand, eine Prüfung der Inselgröße | `erledigt/WZ24-chunk-planung-sim-spielstand/` |
+| WZ25 | Nachträge zum Server-Neustart: Räume bleiben offen, Assets ohne Build, Werkzeuge passen dazu | `erledigt/WZ25-server-neustart-nachtraege/` |
+| WZ21 | Studio-Chat: eigene Umgebung, Grundgerüst als Instruktion, Entwurf geschützt | `erledigt/WZ21-studio-chat-nachtraege/` |
+| WZ23 | Studio-Vorschauen: Reittiere aus dem Spielcode, Monarch-Seite, Boss-Anzeigen, Gebäude-Planer abgenommen | `erledigt/WZ23-studio-vorschauen-nachtraege/` |

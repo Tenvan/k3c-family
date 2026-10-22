@@ -40,7 +40,7 @@ require (
 	golang.org/x/text v0.39.0 // indirect
 )
 
-// Asset-Logik, gemeinsam mit der Workbench tools/k3c-dev (B-459).
+// Asset-Logik, gemeinsam mit der Workbench tools/k3c-workbench (B-459).
 replace k3c/tools/assetkit => ../assetkit
 
 // Level-Erzeugung und Daten des Spiels für den Welt-Betrachter (B-460), nur lesend.

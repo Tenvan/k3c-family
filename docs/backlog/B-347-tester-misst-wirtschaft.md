@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-BR1.1 (2026-10-07) konnte nur 3 der 10 Wirtschafts-Korridore messen. Der Bot `saver` baut nur die Mauern: kein Turm, keine Farm, kein Hub-Ausbau, keine Rekrutierung. Das Gold steht ab Tag 2 in 99 % der Läufe am Maximum. Messgrößen fehlen für Turm gebaut, Hub-Stufe, Kämpfer je Hub zu Tagesbeginn sowie Gold und Holz bei `dawn` (heute nur zur Dämmerung). Code: `tools/k3c-dev/internal/balance/` (`bots.go`, `metrics.go`), Ziele in `data/balance-targets.json`.
+BR1.1 (2026-10-07) konnte nur 3 der 10 Wirtschafts-Korridore messen. Der Bot `saver` baut nur die Mauern: kein Turm, keine Farm, kein Hub-Ausbau, keine Rekrutierung. Das Gold steht ab Tag 2 in 99 % der Läufe am Maximum. Messgrößen fehlen für Turm gebaut, Hub-Stufe, Kämpfer je Hub zu Tagesbeginn sowie Gold und Holz bei `dawn` (heute nur zur Dämmerung). Code: `tools/k3c-workbench/internal/balance/` (`bots.go`, `metrics.go`), Ziele in `data/balance-targets.json`.
 
 ## Ziel
 

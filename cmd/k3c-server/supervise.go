@@ -12,7 +12,7 @@ import (
 )
 
 // Selbst-Neustart (B-507): k3c-server startet sich selbst als Kindprozess (K3C_CHILD=1) und wartet. Endet das Kind mit
-// restartCode, startet er es neu; die PID des Supervisors bleibt, Starter, k3c-dev, Docker und task serve merken nichts.
+// restartCode, startet er es neu; die PID des Supervisors bleibt, Starter, k3c-workbench, Docker und task serve merken nichts.
 // Das Kind liest data/ von der Platte (K3C_DATA_DIR wird vor dem Start gesetzt, die Pakete laden beim Start); stürzt
 // es damit kurz nach dem Start ab, startet der Supervisor einmal mit dem eingebetteten Stand.
 

@@ -53,7 +53,7 @@ Auswahl durch 🧑 am 2026-10-18 im Reiter „Slots“ des Asset-Studios (Chat: 
 
 Vorbereitung durch den Agenten (2026-10-18):
 
-- **Kandidaten** im Slot-Register `data/assets.json`, Dateien unter `public/audio/kandidaten/`, Credits in `public/audio/README.md` › Importe (k3c-dev). Alle CC0, Lizenz „erkannt“; die Bestätigung in k3c-dev durch 🧑 steht aus.
+- **Kandidaten** im Slot-Register `data/assets.json`, Dateien unter `public/audio/kandidaten/`, Credits in `public/audio/README.md` › Importe (k3c-workbench). Alle CC0, Lizenz „erkannt“; die Bestätigung in k3c-workbench durch 🧑 steht aus.
 - **SFX (Kenney, CC0):** je drei Kandidaten für `sfx:kill`, `arrow`, `strike`, `build`, `death`, `revive`, `skill`, `portal`, `coin`, `hit`, `warn`.
 - **Musik (OpenGameArt, CC0):** `music:tag` 3, `abend` 1, `nacht` 2, `kampf` 3, `tiefe` 1, `boss` 2, `lobby` 2, `ende` 1 (nur Sieg). Zum Hören neu auf Ogg Vorbis 96 kbit/s kodiert.
 - **Lücken:** keine Niederlage-Musik; `abend`, `tiefe`, `ende` nur ein Kandidat. `assets_research` fand ohne freesound-Token nichts, alle Funde stammen von Hand aus Kenney-Packs und OpenGameArt-Seiten.

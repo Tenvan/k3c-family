@@ -15,5 +15,6 @@ describe('Zoom der Monarch-Ansicht', () => {
     expect(wheelZoom(1, { altKey: true, deltaY: 100 })).toBe(0.8);
     expect(wheelZoom(1, { altKey: false, deltaY: -100 })).toBeNull();
     expect(wheelZoom(1, { altKey: true, deltaY: 0 })).toBeNull();
+    expect(wheelZoom(1, { altKey: true, deltaY: 0, deltaX: -100 })).toBe(1.25); // seitliches Rad mit Alt
   });
 });

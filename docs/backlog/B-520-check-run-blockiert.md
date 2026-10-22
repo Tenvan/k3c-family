@@ -26,7 +26,7 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-- `.mcp.json`: `timeout` 900000 ms für k3c-dev (hebt die 60-s-Frist je Aufruf).
+- `.mcp.json`: `timeout` 900000 ms für k3c-workbench (hebt die 60-s-Frist je Aufruf).
 - `check_run` wartet bis zum Ende und sendet bei progressToken alle 20 s `notifications/progress` (Aktivität gegen die Leerlauf-Frist von 5 min).
 - Ohne progressToken wartet es höchstens 4 min, dann Lauf-ID; `check_run {run}` wartet genauso statt sofort zu antworten.
 - Anleitung, Tool-Beschreibung, `docs/arbeitsweise.md` und Skill `k3c-session` nennen das Verhalten.
@@ -56,7 +56,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-Ob Claude Code ein progressToken sendet und ob die Desktop-App die 60-s-Frist trotz `timeout` hält, ist ungeprüft; k3c-dev loggt je Aufruf `⏳ check_run wartet auf Lauf` mit `progress` (true/false).
+Ob Claude Code ein progressToken sendet und ob die Desktop-App die 60-s-Frist trotz `timeout` hält, ist ungeprüft; k3c-workbench loggt je Aufruf `⏳ check_run wartet auf Lauf` mit `progress` (true/false).
 
 ## Notizen
 

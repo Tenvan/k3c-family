@@ -20,7 +20,7 @@ Messwerte zum Split-Screen mit zwei Spielern liegen vor (FPS, Frame-Zeit, Snapsh
 - Kameras: `src/scenes/GameScene.ts` › `layoutCameras()` baut eine Kamera je Feld (`computeLayout` in `src/scenes/layout.ts`, Stufe je Feld aus `src/scenes/cellStages.ts`), `showOnly()` in `src/scenes/render/stageView.ts` blendet Layer je Kamera ein. Jede Kamera bekommt in `addNightFx()` einen ColorMatrix-Filter (WebGL); vermutet: Der Filter rendert jede Kamera über einen eigenen Framebuffer und kostet auf der Xbox doppelt.
 - Weitere Kandidaten (alle vermutet): `startFollow` mit Lerp je Kamera, Zeichnen in `src/scenes/render/worldRenderer.ts` je Snapshot, Snapshot-Takt oder Puffer (`src/online/clientTimeline.ts`, `src/online/clientInterpolation.ts`).
 - Das Debug-Overlay (`src/scenes/debug/debugOverlay.ts`, Ansicht `debugOverlayView.ts`) zeigt schon FPS, Snapshot-Hz (Soll), „letzter Snapshot … ms“, Puffer und Latenz. Eine Frame-Zeit fehlt; falls nötig, als reine Funktion in `debugOverlay.ts` mit Test ergänzen.
-- Browser-Pane: `window.game`, Frames bei verdecktem Pane manuell takten (`CLAUDE.md` › Im Browser-Pane testen), zweiter Spieler über einen gemockten Controller. Dienste über `svc_start` (k3c-dev), sonst `task dev`.
+- Browser-Pane: `window.game`, Frames bei verdecktem Pane manuell takten (`CLAUDE.md` › Im Browser-Pane testen), zweiter Spieler über einen gemockten Controller. Dienste über `svc_start` (k3c-workbench), sonst `task dev`.
 - Fallstrick: `src/scenes/GameScene.ts` hat schon 403 Zeilen; dort nichts hinzufügen, Neues in eigene Dateien.
 - Die offene Frage aus B-194 (Szenario, `game.html`) blockiert nicht (Beschluss 🧑 2026-10-06); gemessen wird `game.html` mit zwei lokalen Spielern und, falls abweichend, `testing.html`.
 

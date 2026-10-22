@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Die Credits-Seite `lizenzen.html` liest über `src/tools/credits.ts` nur `public/grafik/CREDITS.md` und `public/sprites/CREDITS.md`. Die Sounds unter `public/audio/` haben ihre Credits in `public/audio/README.md` › Importe (k3c-dev, Dateiliste in `tools/assetkit/catalog.go`); sie erscheinen nicht auf der Seite, und kein Test prüft ihre Vollständigkeit dort.
+Die Credits-Seite `lizenzen.html` liest über `src/tools/credits.ts` nur `public/grafik/CREDITS.md` und `public/sprites/CREDITS.md`. Die Sounds unter `public/audio/` haben ihre Credits in `public/audio/README.md` › Importe (k3c-workbench, Dateiliste in `tools/assetkit/catalog.go`); sie erscheinen nicht auf der Seite, und kein Test prüft ihre Vollständigkeit dort.
 
 ## Ziel
 
@@ -22,7 +22,7 @@ Die Credits-Seite nennt auch die Sounds, CC-BY-Stücke mit Urheber, Titel, Lizen
 
 ## Beteiligte und Zielgruppen
 
-Spieler und Entwickler lesen `lizenzen.html`; der Agent baut es; 🧑 bestätigt die Lizenzen in k3c-dev.
+Spieler und Entwickler lesen `lizenzen.html`; der Agent baut es; 🧑 bestätigt die Lizenzen in k3c-workbench.
 
 ## Anforderungen
 
@@ -32,7 +32,7 @@ Spieler und Entwickler lesen `lizenzen.html`; der Agent baut es; 🧑 bestätigt
 
 ## Nicht-Ziele
 
-Sound-Auswahl und Katalog (SO2), Lizenz-Bestätigung (🧑 in k3c-dev).
+Sound-Auswahl und Katalog (SO2), Lizenz-Bestätigung (🧑 in k3c-workbench).
 
 ## Regeln und Einschränkungen
 
@@ -53,7 +53,7 @@ Tabellenzeile ohne Urheber oder Lizenz → Test scheitert mit dem Ordnernamen; D
 
 ## Offene Fragen
 
-- Soll die Credit-Datei der Sounds weiter `public/audio/README.md` sein (so schreibt k3c-dev sie, `tools/assetkit/catalog.go`) oder eine eigene `CREDITS.md` (so nennt es SO2.2)? Entscheidet 🧑; bis dahin gilt README.md.
+- Soll die Credit-Datei der Sounds weiter `public/audio/README.md` sein (so schreibt k3c-workbench sie, `tools/assetkit/catalog.go`) oder eine eigene `CREDITS.md` (so nennt es SO2.2)? Entscheidet 🧑; bis dahin gilt README.md.
 
 ## Notizen
 

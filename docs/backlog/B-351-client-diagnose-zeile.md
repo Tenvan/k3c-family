@@ -35,7 +35,7 @@ Performance-Modus mit Bericht und Einbrüchen (B-334), neue Anzeige.
 
 ## Regeln und Einschränkungen
 
-Domäne CLI. Lesender Teil steht in `tools/k3c-dev/internal/mcpsrv/simtest_clientlog.go` (Format: `ctx` als JSON mit `fps`, `latencyMs`, optional `bufferMs`). Die Drosselung von `clientLog` (gleiche Meldung binnen `REPEAT_MS` wird nur gezählt, der Schlüssel enthält `ctx` nicht) darf die Zeile nicht schlucken.
+Domäne CLI. Lesender Teil steht in `tools/k3c-workbench/internal/mcpsrv/simtest_clientlog.go` (Format: `ctx` als JSON mit `fps`, `latencyMs`, optional `bufferMs`). Die Drosselung von `clientLog` (gleiche Meldung binnen `REPEAT_MS` wird nur gezählt, der Schlüssel enthält `ctx` nicht) darf die Zeile nicht schlucken.
 
 ## Beispiele
 

@@ -21,7 +21,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 ## Nicht-Ziele
 
-Das Entwickler-Werkzeug selbst (k3c-dev, Planung, Werkzeug-Seiten) gehört zu WZG; Messwerte und Ruckeln beheben zu LST; Balancing-Inhalte zu BAL.
+Das Entwickler-Werkzeug selbst (k3c-workbench, Planung, Werkzeug-Seiten) gehört zu WZG; Messwerte und Ruckeln beheben zu LST; Balancing-Inhalte zu BAL.
 
 ## Notizen
 

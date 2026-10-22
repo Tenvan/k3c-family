@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-`sim.UseData` (`engine/sim/data.go`) lädt buildings, troops, economy, hub, monarch, enemies und waves neu, nicht aber `difficulty.json`, `biomes/*.json` und den Skill-Katalog. Ein `--vary` auf diese Dateien im Balancing-Tester (`tools/k3c-dev/internal/balance/vary.go`) läuft still ohne Wirkung.
+`sim.UseData` (`engine/sim/data.go`) lädt buildings, troops, economy, hub, monarch, enemies und waves neu, nicht aber `difficulty.json`, `biomes/*.json` und den Skill-Katalog. Ein `--vary` auf diese Dateien im Balancing-Tester (`tools/k3c-workbench/internal/balance/vary.go`) läuft still ohne Wirkung.
 
 ## Ziel
 

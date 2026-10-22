@@ -20,7 +20,7 @@ Alle Wirtschafts-Korridore aus `zielkorridore.md` › BR1 sind messbar, und der 
 
 ## Beteiligte und Zielgruppen
 
-REG (BR1.3, BR2, RG1) nutzt die Berichte; ein Agent baut in `tools/k3c-dev/internal/balance/`; 🧑 gibt die Spec frei.
+REG (BR1.3, BR2, RG1) nutzt die Berichte; ein Agent baut in `tools/k3c-workbench/internal/balance/`; 🧑 gibt die Spec frei.
 
 ## Anforderungen
 

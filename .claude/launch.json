@@ -5,7 +5,7 @@
     { "name": "spielserver", "url": "http://localhost:8080" },
     { "name": "prod-build", "runtimeExecutable": "task", "runtimeArgs": ["serve"], "port": 8080 },
     { "name": "pages", "runtimeExecutable": "npx", "runtimeArgs": ["vite", "preview", "--outDir", "_site", "--port", "4174", "--strictPort"], "port": 4174 },
-    { "name": "k3c-dev-ui", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "tools/k3c-dev/frontend", "run", "dev"], "port": 5191 },
+    { "name": "k3c-workbench-ui", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "tools/k3c-workbench/frontend", "run", "dev"], "port": 5191 },
     { "name": "k3c-studio-ui", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "tools/k3c-studio/frontend", "run", "dev", "--", "--port", "5196", "--strictPort"], "port": 5196, "env": { "K3C_STUDIO_API": "http://127.0.0.1:8096" } },
     { "name": "k3c-starter-ui", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "tools/k3c-starter/frontend", "run", "dev"], "port": 5194 }
   ]

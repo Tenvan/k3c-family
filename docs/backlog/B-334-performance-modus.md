@@ -22,7 +22,7 @@ Leistungsprüfungen laufen ohne Ablesen: Ein Performance-Modus sammelt die Werte
 
 ## Beteiligte und Zielgruppen
 
-🧑 als Tester am PC, TV und Xbox; Agenten, die Berichte über k3c-dev (`reports_list`, `report_read`) auswerten.
+🧑 als Tester am PC, TV und Xbox; Agenten, die Berichte über k3c-workbench (`reports_list`, `report_read`) auswerten.
 
 ## Anforderungen
 

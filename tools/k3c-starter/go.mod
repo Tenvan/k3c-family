@@ -38,5 +38,5 @@ require (
 	golang.org/x/text v0.39.0 // indirect
 )
 
-// -dev nutzt engine/devrun des Hauptmoduls (Dev-Lauf: Neubau und Neustart bei Go-Änderungen), wie k3c-dev.
+// -dev nutzt engine/devrun des Hauptmoduls (Dev-Lauf: Neubau und Neustart bei Go-Änderungen), wie k3c-workbench.
 replace k3c => ../..

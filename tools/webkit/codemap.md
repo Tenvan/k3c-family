@@ -2,7 +2,7 @@
 
 ## Responsibility
 
-Gemeinsame Oberflächen-Bausteine aller Wails-Frontends (k3c-dev, Asset-Studio, Starter) als Atomic Design auf Radix Themes (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme). Reiner Quellordner ohne eigenes Paket und ohne eigene Abhängigkeiten.
+Gemeinsame Oberflächen-Bausteine aller Wails-Frontends (k3c-workbench, Asset-Studio, Starter) als Atomic Design auf Radix Themes (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme). Reiner Quellordner ohne eigenes Paket und ohne eigene Abhängigkeiten.
 
 ## Design
 
@@ -22,5 +22,5 @@ Gemeinsame Oberflächen-Bausteine aller Wails-Frontends (k3c-dev, Asset-Studio, 
 
 ## Integration
 
-- Konsumenten: `tools/k3c-dev/frontend/src/**`, `tools/k3c-studio/frontend/src/**`, `tools/k3c-starter/frontend/src/**`; geprüft von deren Typecheck (`include` mit `../../webkit`), Vitest (webkit-Tests laufen im Vitest von k3c-dev, `task check:dev`) und `tests/atomicDesign.test.ts` (Ebenen, Importrichtung, Radix nur über webkit, rohe Controls nur in Atomen).
+- Konsumenten: `tools/k3c-workbench/frontend/src/**`, `tools/k3c-studio/frontend/src/**`, `tools/k3c-starter/frontend/src/**`; geprüft von deren Typecheck (`include` mit `../../webkit`), Vitest (webkit-Tests laufen im Vitest von k3c-workbench, `task check:dev`) und `tests/atomicDesign.test.ts` (Ebenen, Importrichtung, Radix nur über webkit, rohe Controls nur in Atomen).
 - Abhängigkeiten: `react`, `@radix-ui/themes` (aus dem Frontend), Browser-`localStorage`.

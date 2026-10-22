@@ -13,4 +13,4 @@ Eine Seite liest ihren Zustand beim Start mit `loadPref(...)` und schreibt Ände
 
 ## Integration
 - Konsumenten: `../App.tsx`, `../assets/`, `../graphics/`, `../sound/`, `../world/` (`GameLauncher`); `assets/` gibt `loadText`/`savePref` als Ablage an `useSplit` (`@webkit/lib/split`).
-- Abhängigkeiten: `@webkit/lib/prefs` (`tools/webkit/lib/prefs.ts`, geteilt mit k3c-dev, das sein eigenes Präfix `k3c-dev.` bindet) und Browser-APIs.
+- Abhängigkeiten: `@webkit/lib/prefs` (`tools/webkit/lib/prefs.ts`, geteilt mit k3c-workbench, das sein eigenes Präfix `k3c-workbench.` bindet) und Browser-APIs.

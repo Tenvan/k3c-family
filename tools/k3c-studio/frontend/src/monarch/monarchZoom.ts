@@ -10,5 +10,7 @@ export const stepZoom = (z: number, direction: number): number =>
   clampZoom(Math.round((direction > 0 ? z * ZOOM_STEP : z / ZOOM_STEP) * 100) / 100);
 
 /** Alt + Mausrad zoomt (nach oben vergrößert), alles andere lässt das Rad der Seite. */
-export const wheelZoom = (z: number, e: { altKey: boolean; deltaY: number }): number | null =>
-  e.altKey && e.deltaY !== 0 ? stepZoom(z, -e.deltaY) : null;
+export const wheelZoom = (z: number, e: { altKey: boolean; deltaY: number; deltaX?: number }): number | null => {
+  const dy = e.deltaY !== 0 ? e.deltaY : (e.deltaX ?? 0); // Alt + Rad kommt bei manchen Mäusen als seitliches Rad
+  return e.altKey && dy !== 0 ? stepZoom(z, -dy) : null;
+};

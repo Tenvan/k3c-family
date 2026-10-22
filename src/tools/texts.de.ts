@@ -310,7 +310,7 @@ export const de = {
   'lic.sw.tests': 'Tests und Lint',
   'lic.sw.go': 'Server und Spiel-Engine der Zukunft',
   'lic.softwareNote':
-    'Weitere Werkzeuge nur für die Entwicklung (z. B. in <code>tools/k3c-dev</code>) liefern wir nicht mit dem Spiel aus; ihre Lizenzen liegen in den jeweiligen Paketen.',
+    'Weitere Werkzeuge nur für die Entwicklung (z. B. in <code>tools/k3c-workbench</code>) liefern wir nicht mit dem Spiel aus; ihre Lizenzen liegen in den jeweiligen Paketen.',
   'lic.h.thanks': 'Danke',
   'lic.thanks':
     'Von Herzen an <strong>LuizMelo</strong>, <strong>ansimuz</strong>, <strong>bluecarrot16</strong>, <strong>Jordan Irwin (AntumDeluge)</strong>, <strong>lawnjelly</strong>, <strong>Calciumtrice</strong>, <strong>lemmling</strong>, <strong>Bonsaiheldin</strong>, <strong>vico</strong>, <strong>Rusher_go</strong> und <strong>WolfTech</strong>, an die Plattformen <strong>itch.io</strong> und <strong>OpenGameArt.org</strong> und an alle Open-Source-Entwickler:innen oben. Wer Freude an ihren Werken hat: Schaut bei ihnen vorbei und unterstützt sie, wenn ihr könnt.',

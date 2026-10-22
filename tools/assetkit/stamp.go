@@ -89,7 +89,7 @@ func SetChoicesIf(root, id string, choices []Choice, stand string) (*Slot, strin
 // Änderungszeit sind der schnelle Vorfilter, erst der Hash entscheidet; eine fehlende Datei gilt als eigener Stand.
 // Der Stand beim Aufruf ist der Ausgangsstand. Endet ctx, endet die Goroutine.
 //
-// ponytail: Polling statt Dateisystem-Ereignissen wie planning.Watch in k3c-dev; fsnotify wäre eine neue
+// ponytail: Polling statt Dateisystem-Ereignissen wie planning.Watch in k3c-workbench; fsnotify wäre eine neue
 // Abhängigkeit, und ein Stat je Sekunde kostet nichts.
 func Watch(ctx context.Context, root string, every time.Duration, onChange func()) {
 	path := filepath.Join(root, RegisterPath)

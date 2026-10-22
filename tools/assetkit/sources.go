@@ -30,7 +30,7 @@ type Searcher struct {
 // sourceTimeout begrenzt jede Quelle; eine langsame Quelle hält die anderen nicht auf.
 const sourceTimeout = 15 * time.Second
 
-const userAgent = "k3c-dev/0.1 (Ressourcen-Manager, B-298)"
+const userAgent = "k3c-workbench/0.1 (Ressourcen-Manager, B-298)"
 
 // NewSearcher nutzt die echten Quellen und den freesound-Token aus K3C_FREESOUND_TOKEN oder .work/freesound-token.
 func NewSearcher(root string) Searcher {

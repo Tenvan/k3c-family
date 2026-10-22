@@ -58,4 +58,4 @@ keine (entschieden 2026-10-22 beim Bereitmachen von BD2: `PlayerCommand` kennt k
 
 ## Notizen
 
-Aus dem Review S9.4 (2026-10-09, Befund gehaltene Taste), auf Wunsch von 🧑 angelegt. Nummer von Hand (k3c-dev-Build lehnt Worktree-Planung ab, B-372).
+Aus dem Review S9.4 (2026-10-09, Befund gehaltene Taste), auf Wunsch von 🧑 angelegt. Nummer von Hand (k3c-workbench-Build lehnt Worktree-Planung ab, B-372).

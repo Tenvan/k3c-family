@@ -1,4 +1,4 @@
-# B-473 · CI auf develop rot: k3c-dev internal/planning Worktree-Tests scheitern auf dem Windows-Runner
+# B-473 · CI auf develop rot: k3c-workbench internal/planning Worktree-Tests scheitern auf dem Windows-Runner
 
 - **Domäne:** DEV
 - **Typ:** Problem
@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Der CI-Job „k3c-dev · Frontend · Tests · Lint · Wails (Windows)“ ist auf `develop` rot (Läufe zu `80311389`, `9583f02d`, `ba0c3136`). `go test ./...` in `tools/k3c-dev/internal/planning` scheitert: `TestTicketNummerAusAnderemWorktree`, `TestTicketNummerWorktreeNichtLesbar`, `TestTicketNummerAusRemoteRef` (Antwort „Warnung: Ordner ist keine Repo-Wurzel, Worktrees und Refs nicht gelesen“, `numbers_test.go`), `TestCheckWorktreesMergeBase`, `TestCheckWorktreesArchiviertesTicket` (`wtdiff_test.go`: Worktree-Änderungen vorhanden, Erwartung nicht erfüllt). Alle übrigen Jobs sind grün. Ursache offen; vermutlich Repo-Wurzel-Erkennung oder Git-Verhalten im Temp-Ordner auf dem Runner. Blockiert den Release-Tag v0.19.0 (Checkliste „Release“).
+Der CI-Job „k3c-workbench · Frontend · Tests · Lint · Wails (Windows)“ ist auf `develop` rot (Läufe zu `80311389`, `9583f02d`, `ba0c3136`). `go test ./...` in `tools/k3c-workbench/internal/planning` scheitert: `TestTicketNummerAusAnderemWorktree`, `TestTicketNummerWorktreeNichtLesbar`, `TestTicketNummerAusRemoteRef` (Antwort „Warnung: Ordner ist keine Repo-Wurzel, Worktrees und Refs nicht gelesen“, `numbers_test.go`), `TestCheckWorktreesMergeBase`, `TestCheckWorktreesArchiviertesTicket` (`wtdiff_test.go`: Worktree-Änderungen vorhanden, Erwartung nicht erfüllt). Alle übrigen Jobs sind grün. Ursache offen; vermutlich Repo-Wurzel-Erkennung oder Git-Verhalten im Temp-Ordner auf dem Runner. Blockiert den Release-Tag v0.19.0 (Checkliste „Release“).
 
 ## Ziel
 

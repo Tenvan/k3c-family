@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { FigureInfo, PreviewStage } from '../stage/PreviewStage';
+import type { KampfWorld } from '@game/scenes/kampfAnzeige';
 import type { Control } from './figure';
 import type { FigureItem } from './figureView';
 
@@ -7,11 +8,13 @@ import type { FigureItem } from './figureView';
  *  Zeichnen geladen (eigener Baustein, groß). `items` ersetzt die gezeigten Figuren (null = leer), `control` steuert die
  *  Wiedergabe; `onInfo` meldet Lücke und Bildzahl je Figur, sobald sie gezeichnet sind. Eine neuere `items`-Liste macht
  *  eine ältere Antwort ungültig. */
-export function FigureStage({ items, control, zoom, onInfo, onLoadError }: {
+export function FigureStage({ items, control, zoom, kampf, onInfo, onLoadError }: {
   items: readonly FigureItem[] | null;
   control: Control;
   /** Zoom der Ansicht (1 = alle Figuren im Bild); ohne Angabe bleibt die Ansicht, wie sie ist */
   zoom?: number;
+  /** Beispielzustand für die Boss-Anzeigen des Spiels (Boss-Leiste, Phasen-Text, Warnkreis); ohne Angabe keine */
+  kampf?: KampfWorld | null;
   onInfo?: (info: FigureInfo[]) => void;
   onLoadError?: (files: string[]) => void;
 }) {
@@ -39,6 +42,8 @@ export function FigureStage({ items, control, zoom, onInfo, onLoadError }: {
   }, [ready, items]);
 
   useEffect(() => { if (ready) stage.current?.setControl(control); }, [ready, control, items]);
+  // Boss-Anzeigen: nach dem Zeigen der Figuren (die Anzeige braucht sie) und bei jedem neuen Zustand
+  useEffect(() => { if (ready && kampf !== undefined) stage.current?.setKampf(kampf); }, [ready, kampf, items]);
   // nach dem Zeigen neuer Figuren erneut anwenden: das Einpassen setzt den Zoom neu
   useEffect(() => { if (ready && zoom !== undefined) stage.current?.setFigureZoom(zoom); }, [ready, zoom, items]);
 

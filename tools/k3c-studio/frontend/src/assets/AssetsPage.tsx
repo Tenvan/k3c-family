@@ -49,7 +49,7 @@ export function AssetsPage({ art }: { art: AssetKind }) {
         <TypFilter typen={typList} typ={typ} onTyp={setTyp} />
         <StatusFilter slots={slots.filter((s) => s.art === art)} status={status} onStatus={setStatus} />
         <TextField.Root className="as-filter" placeholder="Slot, Beschreibung oder Datei suchen" value={query} onChange={(e) => setQuery(e.target.value)} />
-        <Button variant="soft" onClick={() => void data.reload()} title="Slot-Register neu lesen, z. B. nach Änderungen durch k3c-dev oder Agenten">Neu laden</Button>
+        <Button variant="soft" onClick={() => void data.reload()} title="Slot-Register neu lesen, z. B. nach Änderungen durch k3c-workbench oder Agenten">Neu laden</Button>
       </div>
       {data.error && <p className="svc-error">{data.error}</p>}
       <div className="as-body" style={{ '--as-split': `${split}%` } as CSSProperties}>

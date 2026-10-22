@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "k3c-dev": {
+    "k3c-workbench": {
       "type": "http",
       "url": "http://127.0.0.1:${K3C_DEV_PORT:-5180}/mcp",
       "timeout": 900000,

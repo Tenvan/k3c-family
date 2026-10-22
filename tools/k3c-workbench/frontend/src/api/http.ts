@@ -1,0 +1,93 @@
+import type { Backend, EventName, Events } from './types';
+
+// Client-Server-Betrieb (k3c-workbench -headless/-dev, Go: uiapi.go): jede Methode von App ist ein POST auf
+// /api/dev/rpc/<Methode> mit den Argumenten als JSON-Array, die Antwort ist {result} oder {error}. Ereignisse kommen
+// als Server-Sent Events von /api/dev/events. Die Kopfzeile hält fremde Seiten fern (CORS-Preflight).
+const API = '/api/dev/';
+const HEADERS = { 'Content-Type': 'application/json', 'X-K3C-Dev': '1' };
+
+interface Answer<T> {
+  result?: T;
+  error?: string;
+}
+
+async function answer<T>(res: Response): Promise<T> {
+  const body = (await res.json().catch(() => ({ error: `Fehler ${res.status} von k3c-workbench` }))) as Answer<T>;
+  if (!res.ok || body.error) throw new Error(body.error || `Fehler ${res.status} von k3c-workbench`);
+  return body.result as T;
+}
+
+function rpc<T>(method: string, ...args: unknown[]): Promise<T> {
+  return fetch(`${API}rpc/${method}`, { method: 'POST', headers: HEADERS, body: JSON.stringify(args) }).then((res) =>
+    answer<T>(res),
+  );
+}
+
+/** Ein Strom für alle Ereignisse; je Name ein Listener, der die Abonnenten bedient. */
+function eventHub() {
+  let source: EventSource | null = null;
+  const listeners = new Map<string, Set<(data: unknown) => void>>();
+  return <E extends EventName>(event: E, fn: (data: Events[E]) => void): (() => void) => {
+    let set = listeners.get(event);
+    if (!set) {
+      const subs = new Set<(data: unknown) => void>();
+      listeners.set(event, subs);
+      set = subs;
+      source ??= new EventSource(`${API}events`);
+      source.addEventListener(event, (e) => {
+        const data: unknown = JSON.parse((e as MessageEvent<string>).data);
+        subs.forEach((f) => f(data));
+      });
+    }
+    const f = fn as (data: unknown) => void;
+    set.add(f);
+    return () => {
+      set.delete(f);
+    };
+  };
+}
+
+export function httpBackend(): Backend {
+  return {
+    mock: false,
+    info: () => rpc('Info'),
+    services: () => rpc('Services'),
+    servicesReload: () => rpc('ServicesReload'),
+    serviceStart: (name) => rpc('ServiceStart', name),
+    serviceStop: (name, force) => rpc('ServiceStop', name, force),
+    serviceRestart: (name) => rpc('ServiceRestart', name),
+    servicesStartAll: () => rpc('ServicesStartAll'),
+    servicesStopAll: () => rpc('ServicesStopAll'),
+    serviceLogLevels: (name) => rpc('ServiceLogLevels', name),
+    sources: () => rpc('Sources'),
+    consoleTail: (source) => rpc('ConsoleTail', source),
+    logsQuery: (source, q) => rpc('LogsQuery', source, q),
+    logsErrors: (source, level) => rpc('LogsErrors', source, level),
+    mcpOverview: () => rpc('McpOverview'),
+    mcpRestart: () => rpc('McpRestart'),
+    mcpInstructions: () => rpc('McpInstructions'),
+    mcpCalls: () => rpc('McpCalls'),
+    mcpUsage: () => rpc('McpUsage'),
+    tasks: () => rpc('Tasks'),
+    tasksReload: () => rpc('TasksReload'),
+    taskStart: (name, args) => rpc('TaskStart', name, args),
+    taskStop: (name) => rpc('TaskStop', name),
+    taskRuns: () => rpc('TaskRuns'),
+    taskGates: () => rpc('TaskGatesView'),
+    taskGateToggle: (name) => rpc('TaskGateToggle', name),
+    taskGateSave: () => rpc('TaskGateSave'),
+    planningData: () => rpc('PlanningData'),
+    planningDocs: () => rpc('PlanningDocs'),
+    planningSet: (id, field, value) => rpc('PlanningSet', id, field, value),
+    planningDoc: (name) => rpc('PlanningDoc', name),
+    planningGet: (id) => rpc('PlanningGet', id),
+    githubStatus: (force) => rpc('GitHubStatus', force),
+    worktreeCheck: () => rpc('WorktreeCheck'),
+    openInClaude: (prompt) => rpc('OpenInClaude', prompt),
+    studioOpen: () => rpc('StudioOpen'),
+    openUrl: (url) => {
+      window.open(url, '_blank', 'noopener');
+    },
+    on: eventHub(),
+  };
+}
