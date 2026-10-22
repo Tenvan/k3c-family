@@ -1,14 +1,14 @@
-# GEB9 · DEV · Ausbaustufen 1 bis 5 für alle Hub-Gebäude
+# GEB9 · DEV, CLI · Ausbaustufen 1 bis 5 für alle Hub-Gebäude
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GEB
-- **Domäne:** DEV
-- **Reife:** Entwurf
+- **Domäne:** DEV, CLI
+- **Reife:** bereit
 - **Tickets:** B-435
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 013dcb34
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-22 (Auftrag von Ralf: GEB9 autonom abarbeiten)
 
 ## Ausgangslage
 
@@ -82,23 +82,33 @@ Kleinteiligere Hub-Stufen oder neue Stufenfolge (Lagerfeuer bis Burg) und Freisc
 
 ## Offene Fragen
 
-1. **Stufe = Hub-Stufe?** Annahme: Die Gebäude folgen der Hub-Stufe (wie die Burg), nicht eigenen Gebäudestufen. Alternative: eigene `levels` je Gebäude in `data/buildings.json` (SIM/REG, eigenes Ticket). Entscheidet 🧑.
-2. **Reihenfolge zu B-458:** GEB9 jetzt mit fünf Stufen und B-458 später erweitern (Annahme), oder erst B-458 (neue Stufenfolge) und GEB9 danach? Der Gebäude-Planer (WZ9) und die erzeugte Regeltabelle (WZ15) stehen bereit, die Freischaltung für B-458 ist also kein Hindernis mehr. Entscheidet 🧑.
-3. **Zusätze:** nur Farbtausch oder je Stufe ein sichtbarer Zusatz (Schild, Banner, Anbau)? Annahme: Farbtausch plus ein Zusatz ab Stufe 3.
-4. **Camp (Rekrutierungslager):** Es steht draußen und ist ein Welt-Objekt. Folgt es der Hub-Stufe, dem Biom-Look wie die Natur-Objekte, oder bleibt es bei der Grundform? Annahme: bleibt Grundform, dann fällt es aus AC-02 heraus.
-5. **Welche Teile tauschen?** Annahme: Holzteile (Gestell, Zaun, Tresen) bleiben Holz, Mauerwerk und Dach wechseln das Material; bei Gebäuden mit Stein-Grundform (Kaserne, Taverne, Schmiede, Rüstkammer) wechselt der Stein.
-6. **Stufen vor der Freischaltung:** § 6 verlangt `stufen` lückenlos ab 2, also entstehen z. B. Rüstkammer-Stufen 2 und 3, die im Spiel heute nie erscheinen. Annahme: behalten (Vorschau, Erweiterbarkeit mit B-458, und der Gebäude-Planer kann die Freischaltung jederzeit verschieben); Alternative: Grundform späterer Gebäude zeigt das Material ihrer Freischaltungsstufe.
+Alle Fragen sind am 2026-10-22 autonom von Claude mit Default entschieden (Auftrag „autonom abarbeiten“); 🧑 ändert, was ihm nicht gefällt.
+
+1. **Stufe = Hub-Stufe:** entschieden wie angenommen. Die Gebäude folgen der Hub-Stufe (wie die Burg); eigene `levels` je Gebäude in `data/buildings.json` sind Nicht-Ziel (eigenes Ticket, falls gewünscht).
+2. **Reihenfolge zu B-458:** GEB9 jetzt mit fünf Stufen, B-458 (GEB11) erweitert später über `stufen` in derselben JSON. Begründung: Planer und Regeltabelle stehen bereit, die Stufenzahl ist nicht fest verdrahtet.
+3. **Zusätze:** Farbtausch auf allen Stufen 2–5, dazu je Gebäude höchstens ein sichtbarer Zusatz (Schild, Banner, Anbau) ab Stufe 3, damit der Ausbau auch ohne Farbe erkennbar ist.
+4. **Camp:** bleibt Grundform (Welt-Objekt, kein Hub-Gebäude). Es fällt aus AC-02 und GEB9.4 heraus; ein Biom- oder Stufen-Look wäre ein eigenes Ticket.
+5. **Welche Teile tauschen:** Holzteile (Gestell, Zaun, Tresen) bleiben Holz, Mauerwerk und Dach wechseln das Material der Stufe; bei Gebäuden mit Stein-Grundform (Kaserne, Taverne, Schmiede, Rüstkammer) wechselt der Stein. Die Feinheiten je Gebäude legt GEB9.1 in `docs/standards/gebaeude-grafik.md` § 6 fest.
+6. **Stufen vor der Freischaltung:** behalten (Vorschau, Erweiterbarkeit mit B-458); der Gebäude-Planer kann die Freischaltung jederzeit verschieben.
 
 ## Sessions
 
-- GEB9.1 (DEV) Workshop: Stufen-Looks, Zusätze, Camp und Abgrenzung zu B-458 mit 🧑 festlegen, Regeldatei § 6 inklusive Übergang nachziehen (AC-01).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| GEB9.1 | `GEB9.1-stufen-looks-regeln.md` | Umsetzung | autonom | fertig |
+| GEB9.2 | `GEB9.2-werkstatt-farm-uebergang.md` | Umsetzung | autonom | fertig |
+| GEB9.3 | `GEB9.3-kaserne-lager-taverne.md` | Umsetzung | autonom | fertig |
+| GEB9.4 | `GEB9.4-schmiede-heilplatz-ruestkammer.md` | Umsetzung | autonom | fertig |
+| GEB9.5 | `GEB9.5-spiel-zuordnung-aufraeumen.md` | Umsetzung | autonom | fertig |
+| GEB9.6 | `GEB9.6-review-abnahme.md` | Review | autonom | blockiert |
+
+- GEB9.1 (DEV) Stufen-Looks je Gebäude, Zusätze und Übergang in `docs/standards/gebaeude-grafik.md` § 6 festschreiben (Entscheidungen aus Offene Fragen), kein Workshop nötig (AC-01).
 - GEB9.2 (DEV) Übergang in `tools/buildings` (Grundform-Datei bleibt), dann Werkstatt und Farm: Stufen 2–5, PNGs, Stufenreihe im Asset-Studio prüfen (AC-02, AC-03, AC-05).
 - GEB9.3 (DEV) Kaserne, Lager, Taverne: Stufen 2–5 (AC-02, AC-03, AC-05).
-- GEB9.4 (DEV) Schmiede, Heilplatz, Rüstkammer, Camp nach Frage 4: Stufen 2–5 (AC-02, AC-03, AC-05).
+- GEB9.4 (DEV) Schmiede, Heilplatz, Rüstkammer: Stufen 2–5; das Camp bleibt Grundform (AC-02, AC-03, AC-05).
 - GEB9.5 (CLI) Spiel wählt die Grafik der acht Hub-Gebäude nach Hub-Stufe (`siteView.ts`, `buildingSprites.ts`), Zuordnung und Test; Grundform-Dateien und Verweise löschen (AC-04, AC-05).
 - GEB9.6 (CLI) Review und Abnahme durch 🧑 in Vorschau und Spiel (AC-06, alle).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-22 Review: AC-01 bis AC-05 erfüllt (Ergebnisse GEB9.1–9.5), keine schweren Befunde, Entscheidungen zu den Offenen Fragen autonom von Claude. AC-06 offen: Ralf nimmt die Stufenreihe in der Asset-Vorschau und das Spiel in mindestens zwei Hub-Stufen ab (GEB9.6 blockiert). Hinweis: `engine/devrun`-Test scheiterte unter Last, `engine/` unberührt.

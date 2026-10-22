@@ -165,6 +165,56 @@ dunkler und kühler (`christi` → `elf-green`, `atlantis` → `christi`, `dell`
 `christi` → `elf-green`, `opal` → `deep-koamaru`, Stämme eine Stufe dunkler. Bei **Adern** (`ader`) bedeutet die Stufe
 das **Material** (1 Stein, 2 Kupfer, 3 Eisen, 4 Kristall), nicht das Biom.
 
+**Hub-Gebäude (GEB9, Entscheidung autonom Claude 2026-10-22, Annahme bis 🧑 widerspricht):** Die acht Hub-Gebäude (Werkstatt,
+Farm, Kaserne, Lager, Taverne, Schmiede, Heilplatz, Rüstkammer) haben die Stufen 1–5 und folgen der **Hub-Stufe**, nicht eigenen
+Gebäudestufen. Das Material je Stufe ist das der Hub-Stufe (`docs/rules/materialien-gebaeude.md` § 2). Stufen vor der
+Freischaltung des Gebäudes bleiben erhalten (Vorschau, Erweiterbarkeit, der Gebäude-Planer verschiebt die Freischaltung). Das
+Camp (`rekrutierungslager`) ist ein Welt-Objekt und bleibt Grundform.
+
+*Farbrollen.* Der Tausch folgt der Rolle der Farbe, nicht dem Namen: jedes Material hat Körper, Licht, Schatten und Tief.
+
+| Stufe | Material | Körper | Licht | Schatten | Tief |
+|---|---|---|---|---|---|
+| 1 | Holz | `rope` | `twine` | `oiled-cedar` | `loulou` |
+| 2 | Stein | `dim-gray` | `smokey-ash` | `valhalla` | `black` |
+| 3 | Kupfer | `tahiti-gold` | `twine` | `rope` | `oiled-cedar` |
+| 4 | Eisen | `heather` | `light-steel` | `dim-gray` | `valhalla` |
+| 5 | Kristall | `royal-blue` | `cornflower` | `deep-koamaru` | `viking` |
+
+Eine Farbe der Grundform wird auf die Farbe derselben Rolle im Material der Stufe getauscht (Holz-Grundform: Spalte der Stufe 1,
+Stein-Grundform: Spalte der Stufe 2; Dachfarben `brown` = Körper, `mandy` = Licht, `loulou` = Tief). Das entspricht dem Tausch
+von Mauer, Turm und Burg. Feinabstimmung nach Sicht ist erlaubt, wenn ein Detail verschwindet (z. B. ein Eisenband, das auf Stufe 4 dieselbe
+Farbe wie der Körper bekäme); die Abweichung steht im Ergebnis der Session.
+
+*Teile statt ganzer Farbe.* Damit nur Mauerwerk und Dach das Material wechseln, kann ein Schlüssel in `farben` auf eine Bausteinart
+eingeschränkt werden: `"wand/rope": "dim-gray"` tauscht `rope` nur bei Bausteinen der Art `wand`; ein Schlüssel ohne `/` gilt
+für alle Bausteine. Der engere Schlüssel gilt vor dem weiteren; die alte Farbe muss in der Grundform bei dieser Art vorkommen.
+
+*Was tauscht, was bleibt, Zusatz.* Handwerkliche und bewegliche Teile (Gestell, Tresen, Zaun, Tür, Fass, Krug, Werkzeug, Glut,
+Heu, Tuch, Rüstung) bleiben auf allen Stufen unverändert. Je Stufe höchstens **ein** Zusatz; er trägt die Farben des Materials.
+
+Die Wandzeichnung `fuge` und `schatten` folgt immer dem Mauerwerk, zu dem sie gehört (gleiche Rolle, gleiche Wand), und steht deshalb
+bei jedem Gebäude mit in der Liste, wenn dort eine tauschende Art (`wand`, `dach`) vorkommt.
+
+| Gebäude | Arten, die das Material wechseln | Zusatz |
+|---|---|---|
+| Werkstatt | `wand`, `pfosten`, `balken` | ab Stufe 3 Wimpel am rechten Pfosten |
+| Farm | `wand`, `pfosten`, `balken`, `dach`, `schindel` | ab Stufe 3 Windfahne rechts am First (Tor mit Rahmen und Streben bleibt) |
+| Kaserne (Stein) | `wand`, `sockel`, `zinne`, `licht`, `schatten`, `fuge`, `scharte` | Stufe 2 Eisenband am Sockel (links und rechts vom Tor), ab Stufe 3 Wimpel an den Zinnen |
+| Lager | `wand` (dunkle Innenwand = Rolle Schatten), `pfosten`, `dach`, `schindel`; ab Stufe 3 auch `sockel` | ab Stufe 3 Vorratsschild an der Wand (das Lager hat kein Tor) |
+| Taverne | `wand` (Putz = Rolle Licht), `balken`, `pfosten`, `dach`, `schindel`; ab Stufe 3 auch `kamin`, `stufe` | ab Stufe 3 Laterne links neben der Tür |
+| Schmiede | `wand`, `pfosten`, `dach`, `haken`; ab Stufe 3 auch `kamin`, `esse` | ab Stufe 3 Rauchfang (Haube) über der Esse |
+| Heilplatz | `pfosten`, `gestell` (das Zelttuch bleibt) | ab Stufe 3 Laterne rechts am Zelt |
+| Rüstkammer | `wand`, `dach` (Rollen Körper, Licht für `deep-koamaru`, `venice-blue`, Tief für `valhalla`), `schindel`; ab Stufe 3 auch `sockel` | ab Stufe 3 Wimpel auf dem Dach (Tor mit Beschlägen bleibt) |
+
+*Stein-Grundform.* Die Kaserne ist in Stufe 1 schon Stein: Stufe 2 behält das Material und unterscheidet sich nur durch
+den Zusatz (Stufe 2 der Tabelle); ab Stufe 3 wechselt der Stein auf Kupfer, Eisen, Kristall. Bei Lager, Taverne, Schmiede und Rüstkammer
+(Holz mit Steinteilen) wechselt auf Stufe 2 nur das Holz-Mauerwerk, der Stein von Sockel, Kamin und Esse bleibt, ab Stufe 3 wechselt auch er.
+
+*Im Spiel (GEB9.5).* Die acht Hub-Gebäude zeigen `<id>-<hubLevel>-32.png` (`World.hubLevel`, fehlt = 1); gibt es die Stufe nicht, gilt die
+höchste vorhandene, ist die Textur nicht geladen, die Stufe 1. Grundform-Dateien `<id>-<dichte>.png` gibt es für sie nicht mehr; der
+Generator schreibt sie nur für Gebäude ohne `stufen`.
+
 ## 7. Dichte-Regel
 
 - Die Quelle speichert Formen in Kachel-Einheiten; die Pixeldichte ist ein Render-Parameter.

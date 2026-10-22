@@ -399,11 +399,63 @@
       "fein": "Plankenfugen, Schindelfugen, Torfuge, Zaunlicht, Heubänder"
     },
     "dateien": {
-      "128": "grafik/gebaeude/farm-128.png",
-      "16": "grafik/gebaeude/farm-16.png",
-      "32": "grafik/gebaeude/farm-32.png",
-      "64": "grafik/gebaeude/farm-64.png"
-    }
+      "128": "grafik/gebaeude/farm-1-128.png",
+      "16": "grafik/gebaeude/farm-1-16.png",
+      "32": "grafik/gebaeude/farm-1-32.png",
+      "64": "grafik/gebaeude/farm-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/farm-1-128.png",
+          "16": "grafik/gebaeude/farm-1-16.png",
+          "32": "grafik/gebaeude/farm-1-32.png",
+          "64": "grafik/gebaeude/farm-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Wand, Pfosten, Balken, Dach aus grauem Stein, Tor, Zaun und Heu bleiben",
+        "dateien": {
+          "128": "grafik/gebaeude/farm-2-128.png",
+          "16": "grafik/gebaeude/farm-2-16.png",
+          "32": "grafik/gebaeude/farm-2-32.png",
+          "64": "grafik/gebaeude/farm-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: Wand und Pfosten aus Kupferplatten, Kupferdach, Windfahne auf dem First",
+        "dateien": {
+          "128": "grafik/gebaeude/farm-3-128.png",
+          "16": "grafik/gebaeude/farm-3-16.png",
+          "32": "grafik/gebaeude/farm-3-32.png",
+          "64": "grafik/gebaeude/farm-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Wand und Pfosten aus Stahlplatten, Eisendach, Windfahne auf dem First",
+        "dateien": {
+          "128": "grafik/gebaeude/farm-4-128.png",
+          "16": "grafik/gebaeude/farm-4-16.png",
+          "32": "grafik/gebaeude/farm-4-32.png",
+          "64": "grafik/gebaeude/farm-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: Wand und Pfosten aus blauem Kristall, Kristalldach, leuchtende Windfahne auf dem First",
+        "dateien": {
+          "128": "grafik/gebaeude/farm-5-128.png",
+          "16": "grafik/gebaeude/farm-5-16.png",
+          "32": "grafik/gebaeude/farm-5-32.png",
+          "64": "grafik/gebaeude/farm-5-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "felsen",
@@ -495,11 +547,63 @@
       "fein": "Faltenlicht, Stofffalten der Rückwand, Kräuterbündel, Flechtung, Wasserspiegel"
     },
     "dateien": {
-      "128": "grafik/gebaeude/heilplatz-128.png",
-      "16": "grafik/gebaeude/heilplatz-16.png",
-      "32": "grafik/gebaeude/heilplatz-32.png",
-      "64": "grafik/gebaeude/heilplatz-64.png"
-    }
+      "128": "grafik/gebaeude/heilplatz-1-128.png",
+      "16": "grafik/gebaeude/heilplatz-1-16.png",
+      "32": "grafik/gebaeude/heilplatz-1-32.png",
+      "64": "grafik/gebaeude/heilplatz-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/heilplatz-1-128.png",
+          "16": "grafik/gebaeude/heilplatz-1-16.png",
+          "32": "grafik/gebaeude/heilplatz-1-32.png",
+          "64": "grafik/gebaeude/heilplatz-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Zeltpfosten und Gestell aus grauem Stein, Tuch, Liege und Kräuter bleiben",
+        "dateien": {
+          "128": "grafik/gebaeude/heilplatz-2-128.png",
+          "16": "grafik/gebaeude/heilplatz-2-16.png",
+          "32": "grafik/gebaeude/heilplatz-2-32.png",
+          "64": "grafik/gebaeude/heilplatz-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: Zeltpfosten und Gestell aus Kupfer, Laterne am Zelt",
+        "dateien": {
+          "128": "grafik/gebaeude/heilplatz-3-128.png",
+          "16": "grafik/gebaeude/heilplatz-3-16.png",
+          "32": "grafik/gebaeude/heilplatz-3-32.png",
+          "64": "grafik/gebaeude/heilplatz-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Zeltpfosten und Gestell aus Stahl, Laterne am Zelt",
+        "dateien": {
+          "128": "grafik/gebaeude/heilplatz-4-128.png",
+          "16": "grafik/gebaeude/heilplatz-4-16.png",
+          "32": "grafik/gebaeude/heilplatz-4-32.png",
+          "64": "grafik/gebaeude/heilplatz-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: Zeltpfosten und Gestell aus blauem Kristall, Laterne am Zelt",
+        "dateien": {
+          "128": "grafik/gebaeude/heilplatz-5-128.png",
+          "16": "grafik/gebaeude/heilplatz-5-16.png",
+          "32": "grafik/gebaeude/heilplatz-5-32.png",
+          "64": "grafik/gebaeude/heilplatz-5-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "hg-eisenstollen-fern",
@@ -1013,11 +1117,63 @@
       "fein": "Quaderfugen, Plankenfugen, Nieten, Tor-Beschlag, Faltenlicht im Wimpel, Waffenglanz"
     },
     "dateien": {
-      "128": "grafik/gebaeude/kaserne-128.png",
-      "16": "grafik/gebaeude/kaserne-16.png",
-      "32": "grafik/gebaeude/kaserne-32.png",
-      "64": "grafik/gebaeude/kaserne-64.png"
-    }
+      "128": "grafik/gebaeude/kaserne-1-128.png",
+      "16": "grafik/gebaeude/kaserne-1-16.png",
+      "32": "grafik/gebaeude/kaserne-1-32.png",
+      "64": "grafik/gebaeude/kaserne-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/kaserne-1-128.png",
+          "16": "grafik/gebaeude/kaserne-1-16.png",
+          "32": "grafik/gebaeude/kaserne-1-32.png",
+          "64": "grafik/gebaeude/kaserne-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Mauerwerk bleibt grauer Stein, neues Eisenband über dem Sockel",
+        "dateien": {
+          "128": "grafik/gebaeude/kaserne-2-128.png",
+          "16": "grafik/gebaeude/kaserne-2-16.png",
+          "32": "grafik/gebaeude/kaserne-2-32.png",
+          "64": "grafik/gebaeude/kaserne-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: Wand, Sockel und Zinnen aus Kupferplatten, Wimpel an den Zinnen",
+        "dateien": {
+          "128": "grafik/gebaeude/kaserne-3-128.png",
+          "16": "grafik/gebaeude/kaserne-3-16.png",
+          "32": "grafik/gebaeude/kaserne-3-32.png",
+          "64": "grafik/gebaeude/kaserne-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Wand, Sockel und Zinnen aus Stahlplatten, Wimpel an den Zinnen",
+        "dateien": {
+          "128": "grafik/gebaeude/kaserne-4-128.png",
+          "16": "grafik/gebaeude/kaserne-4-16.png",
+          "32": "grafik/gebaeude/kaserne-4-32.png",
+          "64": "grafik/gebaeude/kaserne-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: Wand, Sockel und Zinnen aus blauem Kristall, leuchtender Wimpel an den Zinnen",
+        "dateien": {
+          "128": "grafik/gebaeude/kaserne-5-128.png",
+          "16": "grafik/gebaeude/kaserne-5-16.png",
+          "32": "grafik/gebaeude/kaserne-5-32.png",
+          "64": "grafik/gebaeude/kaserne-5-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "lager",
@@ -1048,11 +1204,63 @@
       "fein": "Steinfugen, Schindelfugen, Brettfugen der Rückwand, Kistenkreuze, Fass-Maserung, Sack-Falten, Holzmaserung, Erzglanz"
     },
     "dateien": {
-      "128": "grafik/gebaeude/lager-128.png",
-      "16": "grafik/gebaeude/lager-16.png",
-      "32": "grafik/gebaeude/lager-32.png",
-      "64": "grafik/gebaeude/lager-64.png"
-    }
+      "128": "grafik/gebaeude/lager-1-128.png",
+      "16": "grafik/gebaeude/lager-1-16.png",
+      "32": "grafik/gebaeude/lager-1-32.png",
+      "64": "grafik/gebaeude/lager-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/lager-1-128.png",
+          "16": "grafik/gebaeude/lager-1-16.png",
+          "32": "grafik/gebaeude/lager-1-32.png",
+          "64": "grafik/gebaeude/lager-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Wand, Pfosten und Dach aus grauem Stein, Sockel bleibt Stein, Kisten, Fässer und Säcke bleiben",
+        "dateien": {
+          "128": "grafik/gebaeude/lager-2-128.png",
+          "16": "grafik/gebaeude/lager-2-16.png",
+          "32": "grafik/gebaeude/lager-2-32.png",
+          "64": "grafik/gebaeude/lager-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: Wand, Pfosten, Dach und Sockel aus Kupferplatten, Vorratsschild an der Wand",
+        "dateien": {
+          "128": "grafik/gebaeude/lager-3-128.png",
+          "16": "grafik/gebaeude/lager-3-16.png",
+          "32": "grafik/gebaeude/lager-3-32.png",
+          "64": "grafik/gebaeude/lager-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Wand, Pfosten, Dach und Sockel aus Stahlplatten, Vorratsschild an der Wand",
+        "dateien": {
+          "128": "grafik/gebaeude/lager-4-128.png",
+          "16": "grafik/gebaeude/lager-4-16.png",
+          "32": "grafik/gebaeude/lager-4-32.png",
+          "64": "grafik/gebaeude/lager-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: Wand, Pfosten, Dach und Sockel aus blauem Kristall, leuchtendes Vorratsschild an der Wand",
+        "dateien": {
+          "128": "grafik/gebaeude/lager-5-128.png",
+          "16": "grafik/gebaeude/lager-5-16.png",
+          "32": "grafik/gebaeude/lager-5-32.png",
+          "64": "grafik/gebaeude/lager-5-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "mauer",
@@ -1355,11 +1563,63 @@
       "fein": "Schindel-Fugen, Planken- und Steinfugen, Nieten, Helmschlitz, Wappenzeichen, Speerspitzen-Licht"
     },
     "dateien": {
-      "128": "grafik/gebaeude/ruestkammer-128.png",
-      "16": "grafik/gebaeude/ruestkammer-16.png",
-      "32": "grafik/gebaeude/ruestkammer-32.png",
-      "64": "grafik/gebaeude/ruestkammer-64.png"
-    }
+      "128": "grafik/gebaeude/ruestkammer-1-128.png",
+      "16": "grafik/gebaeude/ruestkammer-1-16.png",
+      "32": "grafik/gebaeude/ruestkammer-1-32.png",
+      "64": "grafik/gebaeude/ruestkammer-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/ruestkammer-1-128.png",
+          "16": "grafik/gebaeude/ruestkammer-1-16.png",
+          "32": "grafik/gebaeude/ruestkammer-1-32.png",
+          "64": "grafik/gebaeude/ruestkammer-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Wand und Dach aus grauem Stein, Sockel bleibt Stein, Tor, Rüstung, Wappen und Speere bleiben",
+        "dateien": {
+          "128": "grafik/gebaeude/ruestkammer-2-128.png",
+          "16": "grafik/gebaeude/ruestkammer-2-16.png",
+          "32": "grafik/gebaeude/ruestkammer-2-32.png",
+          "64": "grafik/gebaeude/ruestkammer-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: Wand, Dach und Sockel aus Kupfer, Wimpel auf dem Dach",
+        "dateien": {
+          "128": "grafik/gebaeude/ruestkammer-3-128.png",
+          "16": "grafik/gebaeude/ruestkammer-3-16.png",
+          "32": "grafik/gebaeude/ruestkammer-3-32.png",
+          "64": "grafik/gebaeude/ruestkammer-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Wand, Dach und Sockel aus Stahlplatten, Wimpel auf dem Dach",
+        "dateien": {
+          "128": "grafik/gebaeude/ruestkammer-4-128.png",
+          "16": "grafik/gebaeude/ruestkammer-4-16.png",
+          "32": "grafik/gebaeude/ruestkammer-4-32.png",
+          "64": "grafik/gebaeude/ruestkammer-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: Wand, Dach und Sockel aus blauem Kristall, leuchtender Wimpel auf dem Dach",
+        "dateien": {
+          "128": "grafik/gebaeude/ruestkammer-5-128.png",
+          "16": "grafik/gebaeude/ruestkammer-5-16.png",
+          "32": "grafik/gebaeude/ruestkammer-5-32.png",
+          "64": "grafik/gebaeude/ruestkammer-5-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "schmiede",
@@ -1389,11 +1649,63 @@
       "fein": "Werkzeug an der Wand, Steinfugen, Funken, Hammer, Trogreifen"
     },
     "dateien": {
-      "128": "grafik/gebaeude/schmiede-128.png",
-      "16": "grafik/gebaeude/schmiede-16.png",
-      "32": "grafik/gebaeude/schmiede-32.png",
-      "64": "grafik/gebaeude/schmiede-64.png"
-    }
+      "128": "grafik/gebaeude/schmiede-1-128.png",
+      "16": "grafik/gebaeude/schmiede-1-16.png",
+      "32": "grafik/gebaeude/schmiede-1-32.png",
+      "64": "grafik/gebaeude/schmiede-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/schmiede-1-128.png",
+          "16": "grafik/gebaeude/schmiede-1-16.png",
+          "32": "grafik/gebaeude/schmiede-1-32.png",
+          "64": "grafik/gebaeude/schmiede-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Wand, Pfosten und Dach aus grauem Stein, Kamin und Esse bleiben Stein, Amboss, Glut und Werkzeug bleiben",
+        "dateien": {
+          "128": "grafik/gebaeude/schmiede-2-128.png",
+          "16": "grafik/gebaeude/schmiede-2-16.png",
+          "32": "grafik/gebaeude/schmiede-2-32.png",
+          "64": "grafik/gebaeude/schmiede-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: Wand, Pfosten, Dach, Kamin und Esse aus Kupfer, Rauchfang über der Esse",
+        "dateien": {
+          "128": "grafik/gebaeude/schmiede-3-128.png",
+          "16": "grafik/gebaeude/schmiede-3-16.png",
+          "32": "grafik/gebaeude/schmiede-3-32.png",
+          "64": "grafik/gebaeude/schmiede-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Wand, Pfosten, Dach, Kamin und Esse aus Stahlplatten, Rauchfang über der Esse",
+        "dateien": {
+          "128": "grafik/gebaeude/schmiede-4-128.png",
+          "16": "grafik/gebaeude/schmiede-4-16.png",
+          "32": "grafik/gebaeude/schmiede-4-32.png",
+          "64": "grafik/gebaeude/schmiede-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: Wand, Pfosten, Dach, Kamin und Esse aus blauem Kristall, Rauchfang über der Esse",
+        "dateien": {
+          "128": "grafik/gebaeude/schmiede-5-128.png",
+          "16": "grafik/gebaeude/schmiede-5-16.png",
+          "32": "grafik/gebaeude/schmiede-5-32.png",
+          "64": "grafik/gebaeude/schmiede-5-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "setzling",
@@ -1581,11 +1893,63 @@
       "fein": "Schindel-Fugen, Sprossen, Türfugen, Beschlag, Fassreifen, Kette, Krug-Henkel"
     },
     "dateien": {
-      "128": "grafik/gebaeude/taverne-128.png",
-      "16": "grafik/gebaeude/taverne-16.png",
-      "32": "grafik/gebaeude/taverne-32.png",
-      "64": "grafik/gebaeude/taverne-64.png"
-    }
+      "128": "grafik/gebaeude/taverne-1-128.png",
+      "16": "grafik/gebaeude/taverne-1-16.png",
+      "32": "grafik/gebaeude/taverne-1-32.png",
+      "64": "grafik/gebaeude/taverne-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/taverne-1-128.png",
+          "16": "grafik/gebaeude/taverne-1-16.png",
+          "32": "grafik/gebaeude/taverne-1-32.png",
+          "64": "grafik/gebaeude/taverne-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Putzwand, Balken, Pfosten und Dach aus grauem Stein, Kamin bleibt, Fenster, Tür, Schild und Krüge bleiben",
+        "dateien": {
+          "128": "grafik/gebaeude/taverne-2-128.png",
+          "16": "grafik/gebaeude/taverne-2-16.png",
+          "32": "grafik/gebaeude/taverne-2-32.png",
+          "64": "grafik/gebaeude/taverne-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: Wand, Balken, Pfosten, Dach, Kamin und Stufe aus Kupfer, Laterne neben der Tür",
+        "dateien": {
+          "128": "grafik/gebaeude/taverne-3-128.png",
+          "16": "grafik/gebaeude/taverne-3-16.png",
+          "32": "grafik/gebaeude/taverne-3-32.png",
+          "64": "grafik/gebaeude/taverne-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Wand, Balken, Pfosten, Dach, Kamin und Stufe aus Stahlplatten, Laterne neben der Tür",
+        "dateien": {
+          "128": "grafik/gebaeude/taverne-4-128.png",
+          "16": "grafik/gebaeude/taverne-4-16.png",
+          "32": "grafik/gebaeude/taverne-4-32.png",
+          "64": "grafik/gebaeude/taverne-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: Wand, Balken, Pfosten, Dach, Kamin und Stufe aus blauem Kristall, Laterne neben der Tür",
+        "dateien": {
+          "128": "grafik/gebaeude/taverne-5-128.png",
+          "16": "grafik/gebaeude/taverne-5-16.png",
+          "32": "grafik/gebaeude/taverne-5-32.png",
+          "64": "grafik/gebaeude/taverne-5-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "tor",
@@ -1874,10 +2238,62 @@
       "fein": "Plankenfugen, Faltenlicht im Tuch, Werkzeug auf Tresen und Gestell, Schild-Zeichen"
     },
     "dateien": {
-      "128": "grafik/gebaeude/werkstatt-128.png",
-      "16": "grafik/gebaeude/werkstatt-16.png",
-      "32": "grafik/gebaeude/werkstatt-32.png",
-      "64": "grafik/gebaeude/werkstatt-64.png"
-    }
+      "128": "grafik/gebaeude/werkstatt-1-128.png",
+      "16": "grafik/gebaeude/werkstatt-1-16.png",
+      "32": "grafik/gebaeude/werkstatt-1-32.png",
+      "64": "grafik/gebaeude/werkstatt-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/werkstatt-1-128.png",
+          "16": "grafik/gebaeude/werkstatt-1-16.png",
+          "32": "grafik/gebaeude/werkstatt-1-32.png",
+          "64": "grafik/gebaeude/werkstatt-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Wand, Pfosten und Balken aus grauem Stein, Tresen, Gestell und Tuchdach bleiben",
+        "dateien": {
+          "128": "grafik/gebaeude/werkstatt-2-128.png",
+          "16": "grafik/gebaeude/werkstatt-2-16.png",
+          "32": "grafik/gebaeude/werkstatt-2-32.png",
+          "64": "grafik/gebaeude/werkstatt-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: Wand, Pfosten und Balken aus Kupferplatten, Wimpel am rechten Pfosten",
+        "dateien": {
+          "128": "grafik/gebaeude/werkstatt-3-128.png",
+          "16": "grafik/gebaeude/werkstatt-3-16.png",
+          "32": "grafik/gebaeude/werkstatt-3-32.png",
+          "64": "grafik/gebaeude/werkstatt-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Wand, Pfosten und Balken aus Stahlplatten, Wimpel am rechten Pfosten",
+        "dateien": {
+          "128": "grafik/gebaeude/werkstatt-4-128.png",
+          "16": "grafik/gebaeude/werkstatt-4-16.png",
+          "32": "grafik/gebaeude/werkstatt-4-32.png",
+          "64": "grafik/gebaeude/werkstatt-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: Wand, Pfosten und Balken aus blauem Kristall, leuchtender Wimpel am rechten Pfosten",
+        "dateien": {
+          "128": "grafik/gebaeude/werkstatt-5-128.png",
+          "16": "grafik/gebaeude/werkstatt-5-16.png",
+          "32": "grafik/gebaeude/werkstatt-5-32.png",
+          "64": "grafik/gebaeude/werkstatt-5-64.png"
+        }
+      }
+    ]
   }
 ]
