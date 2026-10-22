@@ -1,6 +1,6 @@
 # GEB11.5 · Review: alle Kriterien prüfen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -48,5 +48,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Review (Reviewer-Agent Sonnet, getrennt vom Schreiben, statisch auf `origin/sprint/geb9..sprint/geb11`): keine schweren Befunde. Bestätigt: kein Eingriff in `engine/` oder `data/hub.json`, jede Textur hat eine Datei, Rückfall auf Burg bzw. gezeichnete Form, Cache-Schlüssel verhindert Neuzeichnen je Frame, alter Snapshot ohne `hubLevel`/`hubUpgrade` fällt auf Burg, Randwerte ohne Division. Mittel (Verhalten): Das Gerüst erscheint auch bei `waitingWorker` durch Gefahr (nachts), also ohne arbeitenden Bauer — für die Abnahme von Ralf notiert. Offen: Tests für `paid > gold` und `gold = 0` (ungeprüft). AC-01, AC-03, AC-04 mit Nachweis in GEB11.1/.3/.4; AC-02 entfällt begründet (GEB11.2 verworfen). AC-04 Abnahme durch Ralf in GEB11.6 offen.

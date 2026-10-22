@@ -74,7 +74,7 @@ Beantwortet von Claude (autonom, 2026-10-22, Default bis 🧑 widerspricht):
 | GEB11.2 | `GEB11.2-stufenfolge-simulation.md` | Umsetzung | autonom | verworfen |
 | GEB11.3 | `GEB11.3-grafik-wachstumsreihe.md` | Umsetzung | autonom | fertig |
 | GEB11.4 | `GEB11.4-spiel-zeichnet-wachstum.md` | Umsetzung | autonom | fertig |
-| GEB11.5 | `GEB11.5-review.md` | Review | autonom | offen |
+| GEB11.5 | `GEB11.5-review.md` | Review | autonom | fertig |
 | GEB11.6 | `GEB11.6-abnahme.md` | Review | Mensch | blockiert |
 
 GEB11.1 ersetzt den Workshop durch eine Festlegung von Claude (Auftrag „GEB komplett autonom“); GEB11.2 entfällt bei „nur Grafik“. Kette REG → DEV → CLI, Review, Abnahme durch 🧑.
