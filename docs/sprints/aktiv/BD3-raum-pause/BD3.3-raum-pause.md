@@ -1,6 +1,6 @@
 # BD3.3 · Raum: Pause im Couch-Raum und Schutz 60 s online
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -49,4 +49,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-01 umgesetzt: Couch-Raum (einziges verbundenes Gerät pausiert) rechnet keinen Schritt; geprüft: `TestPauseCouchRaumSteht` (2 Spieler, Zustand gleich, nach resume weiter), `TestPauseZweiSpielerAmGeraet` (online → Couch).
+- AC-02 umgesetzt: online stehen die Monarchen des Geräts still und sind 1800 Ticks geschützt, danach verwundbar; geprüft: `TestPauseOnlineSchutz60s` (Tick 1800 geschützt, 1801 nicht, B läuft ungeschützt, zweites pause verlängert nicht), `TestPauseEndetBeiTrennung`; Schaden: BD3.2.
+- Review (Sonnet): kein schwerer Befund; behoben: Eingaben verfallen auch bei resume, Frist steht in der Dev-Pause. Frist ab Couch → online beginnt voll (Default, B-528).

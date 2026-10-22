@@ -58,7 +58,7 @@ keine (Protokollform beschlossen: eigene Nachricht, 🧑 2026-10-13). Beim auton
 |---|---|---|---|---|
 | BD3.1 | `BD3.1-protokoll-pause.md` | Umsetzung | autonom | fertig |
 | BD3.2 | `BD3.2-sim-schutz.md` | Umsetzung | autonom | fertig |
-| BD3.3 | `BD3.3-raum-pause.md` | Umsetzung | autonom | offen |
+| BD3.3 | `BD3.3-raum-pause.md` | Umsetzung | autonom | fertig |
 | BD3.4 | `BD3.4-review.md` | Review | autonom | offen |
 
 Der Schutz braucht ein Laufzeit-Feld in der Simulation; dafür kam beim Aktivieren die SIM-Session BD3.2 dazu (Review damit BD3.4). BD3.1 (SRV) Protokoll (AC-03), BD3.2 (SIM) geschützter Monarch (AC-02, Teil Simulation), BD3.3 (SRV) Raum (AC-01, AC-02), BD3.4 Review (alle).

@@ -89,6 +89,7 @@ type device struct {
 	connected bool
 	stages    map[int]bool // Stufen, deren Level das Gerät bekam und deren Strom läuft
 	paused    bool         // Pause des Geräts (pause.go, B-214)
+	protect   int          // restliche Ticks des Schutzes online (pause.go)
 }
 
 // Room ist ein laufendes Spiel: eine Insel, ein Spielstand, ein Code. Monarch i ist der Insel-Spieler mit Index i.

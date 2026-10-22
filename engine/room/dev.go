@@ -179,9 +179,10 @@ func (r *Room) resetScaleOnPhase() {
 	r.timescale, r.autoReset = 1, false
 }
 
-// steps sind die Simulationsschritte eines Ticks: 0 in der Dev-Pause, sonst scale() (unter Raum-Sperre).
+// steps sind die Simulationsschritte eines Ticks: 0 in der Dev-Pause und in der Pause des Couch-Raums (pause.go),
+// sonst scale() (unter Raum-Sperre).
 func (r *Room) steps() int {
-	if r.paused {
+	if r.paused || r.couchPaused() {
 		return 0
 	}
 	return r.scale()
