@@ -281,6 +281,7 @@ export class GameScene extends Phaser.Scene {
   private spawnEffects(events: readonly GameEvent[]): void {
     const view = this.level ? this.stages.get(this.level.depth) : undefined;
     if (!view) return;
+    view.renderer.noteEvents(events); // Wimpel-Farbe: wer markiert (GEB10)
     const settings = loadSettings(); // je Frame gelesen: eine Änderung in den Optionen wirkt ohne Neuladen
     const playerX = (i: number): number | undefined => this.cur?.state.players.find((p) => p.index === i)?.x;
     const now = performance.now();

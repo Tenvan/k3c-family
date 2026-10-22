@@ -1,6 +1,6 @@
 # GEB10.3 · Wimpel in Spielerfarbe, Höhlen-Flora und Truhe im Spiel
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -26,7 +26,7 @@ Im Spiel trägt ein markierter Knoten einen Wimpel in der Farbe des markierenden
 - `src/scenes/render/` (`natureSprites.ts`, `worldSprites.ts`, `buildingSprites.ts`, `worldRenderer.ts`, neue Datei für Wimpel-Farbe mit Test, zugehörige Tests, `codemap.md`)
 - `src/scenes/GameScene.ts` (nur Weitergabe der Ereignisse an den Renderer)
 - `data/assets.json` (nur `node:tree`, `node:bush`, `pickup:chest`)
-- alte PNGs `public/grafik/gebaeude/{tanne,pappel,birke}-{2,3}-{1,2}-*.png`, `docs/assets/zuordnung-welt.md`, Tests, die genau diese Dateien nennen
+- `public/grafik/gebaeude/` (Baum-JSONs ohne Höhle-Look, `index.json`, PNGs), `docs/standards/gebaeude-grafik.md` (§ 6), `docs/assets/zuordnung-welt.md`, Tests, die genau diese Dateien nennen
 - `docs/sprints/`, `docs/backlog/`
 
 ## Nicht-Ziele
@@ -43,10 +43,10 @@ Feld `markedBy` im Snapshot (SIM/Protokoll, Ticket); mehr Bäume oder Höhlenbü
 
 ## Fertig, wenn
 
-- [ ] AC-01: `natureSprites.test.ts` prüft Wald → Bäume, Höhle und Mine → Wurzeln und Höhlenbusch; alle Texturen existieren als Datei.
-- [ ] AC-02: `pickup:chest` → `truhe-geschlossen-32.png`, offene Truhe beim Aufheben (Test der Zuordnung).
-- [ ] AC-03: Vitest für die Farbwahl (Spieler 1 und 2 verschieden, unbekannt neutral, Zuordnung zum nächsten Knoten).
-- [ ] `task check:diff` grün.
+- [x] AC-01: `natureSprites.test.ts` prüft Wald → Bäume, Höhle und Mine → Wurzeln und Höhlenbusch; alle Texturen existieren als Datei.
+- [x] AC-02: `pickup:chest` → `truhe-geschlossen-32.png`, offene Truhe beim Aufheben (Test der Zuordnung).
+- [x] AC-03: Vitest für die Farbwahl (Spieler 1 und 2 verschieden, unbekannt neutral, Zuordnung zum nächsten Knoten).
+- [x] `task check:diff` grün (Go-Tests und Client grün, `golangci-lint` nur am Zeitlimit, kein Go geändert).
 
 ## Prüfen
 
@@ -60,4 +60,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- **AC-01 (B-454/AC-02) umgesetzt, geprüft:** `treeTexture` wählt im Wald 9 Baumformen, außerhalb des Walds (Höhle, Mine, weitere) `wurzel`/`wurzel-2`/`wurzel-3`; `bush` außerhalb des Walds → `hoehlenbusch`. Höhle-Look der Bäume entfernt (6 JSONs ohne `stufen`, 48 alte PNGs weg), Plantage-Pappel hoch und hinter der Farm. `natureSprites.test.ts` grün (Dateien existieren). Der Generator setzt nur im Wald Büsche → B-531 (REG).
+- **AC-02 (B-455/AC-02) umgesetzt, geprüft:** `pickup:chest` → `truhe-geschlossen`; verschwindet eine Truhe, zeigt der Renderer kurz `truhe` (offen) und blendet aus (`CHEST_OPEN`, Test in `worldSprites.test.ts`). Kein Server-Zustand nötig.
+- **AC-03 (B-456/AC-01) umgesetzt, geprüft:** Wimpel (Dreieck) in `PLAYER_COLORS` aus `coinGive`-Ereignissen (`pennant.ts`, 5 Vitests), unbekannt neutral, höchstens 11,25 Kacheln hoch. `markedBy` im Snapshot wäre genauer → B-532 (SIM).
+- Prüfungen: `task test` (alle), `typecheck`, `lint`, Studio-Vitest 464/464, `tools/buildings` go test grün; `check:diff` lief bis auf `golangci-lint` durch (Zeitlimit 10 min, Go unverändert). **Abweichung:** Materialname im `hoehlenbusch` (GEB10.1) korrigiert (`TestEchteVorlagen`). Manuell geprüft hat niemand (GEB10.5).

@@ -748,7 +748,7 @@
       "beschreibung": "Truhen, Portale, Münzen, Ausgang: pickup:chest",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/truhe-32.png"
+          "datei": "grafik/gebaeude/truhe-geschlossen-32.png"
         }
       ]
     },

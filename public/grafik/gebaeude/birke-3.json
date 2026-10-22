@@ -238,6 +238,5 @@
     {"art":"krone","rechteck":[2.625,5.375,0.5,0.125],"farbe":"dell"},
     {"art":"krone","rechteck":[2.375,5.5,0.5,0.125],"farbe":"christi"},
     {"art":"krone","rechteck":[2.625,5.5,0.25,0.125],"farbe":"dell"}
-  ],
-  "stufen": [{"stufe":2,"aenderung":"Höhle: kühleres, dunkleres Laub, bläuliche Rinde","farben":{"christi":"elf-green","atlantis":"christi","dell":"opal","white":"light-steel","heather":"topaz"}}]
+  ]
 }

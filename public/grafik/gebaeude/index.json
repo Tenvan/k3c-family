@@ -125,33 +125,11 @@
       "fein": "Querstriche auf der Rinde"
     },
     "dateien": {
-      "128": "grafik/gebaeude/birke-2-1-128.png",
-      "16": "grafik/gebaeude/birke-2-1-16.png",
-      "32": "grafik/gebaeude/birke-2-1-32.png",
-      "64": "grafik/gebaeude/birke-2-1-64.png"
-    },
-    "stufen": [
-      {
-        "stufe": 1,
-        "aenderung": "Grundform",
-        "dateien": {
-          "128": "grafik/gebaeude/birke-2-1-128.png",
-          "16": "grafik/gebaeude/birke-2-1-16.png",
-          "32": "grafik/gebaeude/birke-2-1-32.png",
-          "64": "grafik/gebaeude/birke-2-1-64.png"
-        }
-      },
-      {
-        "stufe": 2,
-        "aenderung": "Höhle: kühleres, dunkleres Laub, bläuliche Rinde",
-        "dateien": {
-          "128": "grafik/gebaeude/birke-2-2-128.png",
-          "16": "grafik/gebaeude/birke-2-2-16.png",
-          "32": "grafik/gebaeude/birke-2-2-32.png",
-          "64": "grafik/gebaeude/birke-2-2-64.png"
-        }
-      }
-    ]
+      "128": "grafik/gebaeude/birke-2-128.png",
+      "16": "grafik/gebaeude/birke-2-16.png",
+      "32": "grafik/gebaeude/birke-2-32.png",
+      "64": "grafik/gebaeude/birke-2-64.png"
+    }
   },
   {
     "id": "birke-3",
@@ -175,33 +153,11 @@
       "fein": "Querstriche auf der Rinde"
     },
     "dateien": {
-      "128": "grafik/gebaeude/birke-3-1-128.png",
-      "16": "grafik/gebaeude/birke-3-1-16.png",
-      "32": "grafik/gebaeude/birke-3-1-32.png",
-      "64": "grafik/gebaeude/birke-3-1-64.png"
-    },
-    "stufen": [
-      {
-        "stufe": 1,
-        "aenderung": "Grundform",
-        "dateien": {
-          "128": "grafik/gebaeude/birke-3-1-128.png",
-          "16": "grafik/gebaeude/birke-3-1-16.png",
-          "32": "grafik/gebaeude/birke-3-1-32.png",
-          "64": "grafik/gebaeude/birke-3-1-64.png"
-        }
-      },
-      {
-        "stufe": 2,
-        "aenderung": "Höhle: kühleres, dunkleres Laub, bläuliche Rinde",
-        "dateien": {
-          "128": "grafik/gebaeude/birke-3-2-128.png",
-          "16": "grafik/gebaeude/birke-3-2-16.png",
-          "32": "grafik/gebaeude/birke-3-2-32.png",
-          "64": "grafik/gebaeude/birke-3-2-64.png"
-        }
-      }
-    ]
+      "128": "grafik/gebaeude/birke-3-128.png",
+      "16": "grafik/gebaeude/birke-3-16.png",
+      "32": "grafik/gebaeude/birke-3-32.png",
+      "64": "grafik/gebaeude/birke-3-64.png"
+    }
   },
   {
     "id": "birke",
@@ -1002,7 +958,7 @@
       ],
       "materialien": [
         "Hintergrund Wald",
-        "Kristall",
+        "Kristall (Mauer-, Turmstufe 5)",
         "Birkenrinde"
       ],
       "stimmung": "kühl, leuchtend, unterirdisch",
@@ -1189,33 +1145,11 @@
       "fein": "keine"
     },
     "dateien": {
-      "128": "grafik/gebaeude/pappel-2-1-128.png",
-      "16": "grafik/gebaeude/pappel-2-1-16.png",
-      "32": "grafik/gebaeude/pappel-2-1-32.png",
-      "64": "grafik/gebaeude/pappel-2-1-64.png"
-    },
-    "stufen": [
-      {
-        "stufe": 1,
-        "aenderung": "Grundform",
-        "dateien": {
-          "128": "grafik/gebaeude/pappel-2-1-128.png",
-          "16": "grafik/gebaeude/pappel-2-1-16.png",
-          "32": "grafik/gebaeude/pappel-2-1-32.png",
-          "64": "grafik/gebaeude/pappel-2-1-64.png"
-        }
-      },
-      {
-        "stufe": 2,
-        "aenderung": "Höhle: kühleres, dunkleres Laub",
-        "dateien": {
-          "128": "grafik/gebaeude/pappel-2-2-128.png",
-          "16": "grafik/gebaeude/pappel-2-2-16.png",
-          "32": "grafik/gebaeude/pappel-2-2-32.png",
-          "64": "grafik/gebaeude/pappel-2-2-64.png"
-        }
-      }
-    ]
+      "128": "grafik/gebaeude/pappel-2-128.png",
+      "16": "grafik/gebaeude/pappel-2-16.png",
+      "32": "grafik/gebaeude/pappel-2-32.png",
+      "64": "grafik/gebaeude/pappel-2-64.png"
+    }
   },
   {
     "id": "pappel-3",
@@ -1239,33 +1173,11 @@
       "fein": "keine"
     },
     "dateien": {
-      "128": "grafik/gebaeude/pappel-3-1-128.png",
-      "16": "grafik/gebaeude/pappel-3-1-16.png",
-      "32": "grafik/gebaeude/pappel-3-1-32.png",
-      "64": "grafik/gebaeude/pappel-3-1-64.png"
-    },
-    "stufen": [
-      {
-        "stufe": 1,
-        "aenderung": "Grundform",
-        "dateien": {
-          "128": "grafik/gebaeude/pappel-3-1-128.png",
-          "16": "grafik/gebaeude/pappel-3-1-16.png",
-          "32": "grafik/gebaeude/pappel-3-1-32.png",
-          "64": "grafik/gebaeude/pappel-3-1-64.png"
-        }
-      },
-      {
-        "stufe": 2,
-        "aenderung": "Höhle: kühleres, dunkleres Laub",
-        "dateien": {
-          "128": "grafik/gebaeude/pappel-3-2-128.png",
-          "16": "grafik/gebaeude/pappel-3-2-16.png",
-          "32": "grafik/gebaeude/pappel-3-2-32.png",
-          "64": "grafik/gebaeude/pappel-3-2-64.png"
-        }
-      }
-    ]
+      "128": "grafik/gebaeude/pappel-3-128.png",
+      "16": "grafik/gebaeude/pappel-3-16.png",
+      "32": "grafik/gebaeude/pappel-3-32.png",
+      "64": "grafik/gebaeude/pappel-3-64.png"
+    }
   },
   {
     "id": "pappel",
@@ -1474,33 +1386,11 @@
       "fein": "Lichtpunkte in den Stufen"
     },
     "dateien": {
-      "128": "grafik/gebaeude/tanne-2-1-128.png",
-      "16": "grafik/gebaeude/tanne-2-1-16.png",
-      "32": "grafik/gebaeude/tanne-2-1-32.png",
-      "64": "grafik/gebaeude/tanne-2-1-64.png"
-    },
-    "stufen": [
-      {
-        "stufe": 1,
-        "aenderung": "Grundform",
-        "dateien": {
-          "128": "grafik/gebaeude/tanne-2-1-128.png",
-          "16": "grafik/gebaeude/tanne-2-1-16.png",
-          "32": "grafik/gebaeude/tanne-2-1-32.png",
-          "64": "grafik/gebaeude/tanne-2-1-64.png"
-        }
-      },
-      {
-        "stufe": 2,
-        "aenderung": "Höhle: kühlere, dunklere Nadeln und dunklerer Stamm",
-        "dateien": {
-          "128": "grafik/gebaeude/tanne-2-2-128.png",
-          "16": "grafik/gebaeude/tanne-2-2-16.png",
-          "32": "grafik/gebaeude/tanne-2-2-32.png",
-          "64": "grafik/gebaeude/tanne-2-2-64.png"
-        }
-      }
-    ]
+      "128": "grafik/gebaeude/tanne-2-128.png",
+      "16": "grafik/gebaeude/tanne-2-16.png",
+      "32": "grafik/gebaeude/tanne-2-32.png",
+      "64": "grafik/gebaeude/tanne-2-64.png"
+    }
   },
   {
     "id": "tanne-3",
@@ -1524,33 +1414,11 @@
       "fein": "Lichtpunkte in den Stufen"
     },
     "dateien": {
-      "128": "grafik/gebaeude/tanne-3-1-128.png",
-      "16": "grafik/gebaeude/tanne-3-1-16.png",
-      "32": "grafik/gebaeude/tanne-3-1-32.png",
-      "64": "grafik/gebaeude/tanne-3-1-64.png"
-    },
-    "stufen": [
-      {
-        "stufe": 1,
-        "aenderung": "Grundform",
-        "dateien": {
-          "128": "grafik/gebaeude/tanne-3-1-128.png",
-          "16": "grafik/gebaeude/tanne-3-1-16.png",
-          "32": "grafik/gebaeude/tanne-3-1-32.png",
-          "64": "grafik/gebaeude/tanne-3-1-64.png"
-        }
-      },
-      {
-        "stufe": 2,
-        "aenderung": "Höhle: kühlere, dunklere Nadeln und dunklerer Stamm",
-        "dateien": {
-          "128": "grafik/gebaeude/tanne-3-2-128.png",
-          "16": "grafik/gebaeude/tanne-3-2-16.png",
-          "32": "grafik/gebaeude/tanne-3-2-32.png",
-          "64": "grafik/gebaeude/tanne-3-2-64.png"
-        }
-      }
-    ]
+      "128": "grafik/gebaeude/tanne-3-128.png",
+      "16": "grafik/gebaeude/tanne-3-16.png",
+      "32": "grafik/gebaeude/tanne-3-32.png",
+      "64": "grafik/gebaeude/tanne-3-64.png"
+    }
   },
   {
     "id": "tanne",

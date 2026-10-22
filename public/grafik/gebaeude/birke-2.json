@@ -155,6 +155,5 @@
     {"art":"blatt","rechteck":[2.25,8,0.0625,0.125],"farbe":"dell"},
     {"art":"blatt","rechteck":[2.5625,3.4375,0.0625,3.125],"farbe":"christi"},
     {"art":"blatt","rechteck":[2.5625,6.4375,0.0625,0.125],"farbe":"dell"}
-  ],
-  "stufen": [{"stufe":2,"aenderung":"Höhle: kühleres, dunkleres Laub, bläuliche Rinde","farben":{"christi":"elf-green","atlantis":"christi","dell":"opal","white":"light-steel","heather":"topaz"}}]
+  ]
 }

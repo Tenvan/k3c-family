@@ -8,12 +8,14 @@ import { BuergerView } from './citizenView';
 import { createRider, updateRider } from './mountView';
 import { nodeSprite } from './natureSprites';
 import { objectImage } from './objectView';
+import { PENNANT_MAX_HEIGHT, noteMarkers, pennantColor } from './pennant';
 import { type Plot, isPlantationTree, plantationPlots } from './plantation';
 import { priceTagSites } from './priceTagRules';
 import { TEXT, createCastleView, createSiteView, updateCastleView, updateSiteView } from './siteView';
 import { hasDepth, isOnTower } from './viewRules';
 import { ENEMY_SPRITES, PLAYER_SPRITES, TROOP_SPRITES, face, makeSprite, playAnim, spriteTop } from './sprites';
-import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop, World } from '../../model/types';
+import { CHEST_OPEN } from './worldSprites';
+import type { Coin, Enemy, GameEvent, Pickup, Player, Projectile, ResourceNode, Site, Troop, World } from '../../model/types';
 
 /**
  * Zeichnet den Simulationszustand: Figuren als animierte Sprites (sprites.ts), Burg und Bauplätze über siteView.ts,
@@ -22,7 +24,7 @@ import type { Coin, Enemy, Pickup, Player, Projectile, ResourceNode, Site, Troop
 
 const U = UNIT_PX;
 const G = GROUND_Y;
-/** Setzling und Plantage-Baum stehen vor der Farm (Bauplätze: Tiefe 2) */
+/** Setzling steht vor der Farm (Bauplätze: Tiefe 2); der hohe Plantage-Baum steht wie der Wald dahinter (GEB10) */
 const PLANTATION_DEPTH = 3;
 /** Bildhöhe, auf die Fahne und Balken ohne Grafik zielen (Platzhalter-Form) */
 const PLACEHOLDER_NODE_HEIGHT = 158;
@@ -58,6 +60,8 @@ class Layer<T extends { id: number }> {
     private readonly update: (v: View, t: T) => void,
     /** true = Objekt neu aufbauen (z.B. Landstreicher wurde zum Bauer) */
     private readonly rebuild?: (v: View, t: T) => boolean,
+    /** Abschied, wenn die Entität fehlt (Standard: sofort weg) */
+    private readonly remove: (v: View) => void = (v) => v.destroy(),
   ) {}
 
   sync(items: readonly T[]): void {
@@ -77,7 +81,7 @@ class Layer<T extends { id: number }> {
     }
     for (const [id, view] of this.views) {
       if (!seen.has(id)) {
-        view.destroy();
+        this.remove(view);
         this.views.delete(id);
       }
     }
@@ -116,6 +120,8 @@ export class WorldRenderer {
   private readonly citizens: BuergerView;
   /** Bauplätze, deren Preisschild steht (nur das nächste je Spieler, B-395) */
   private priceTags = new Set<number>();
+  /** Knoten-ID → Spieler, der zuletzt eine Markier-Münze gab (Wimpel-Farbe, GEB10) */
+  private readonly markers = new Map<number, number>();
 
   constructor(
     private readonly scene: Phaser.Scene,
@@ -134,7 +140,7 @@ export class WorldRenderer {
     this.sites = this.layer((s) => createSiteView(scene, s), (v, s) => updateSiteView(scene, v, s, this.world, this.priceTags.has(s.id)));
     this.plots = this.layer((p) => this.createPlot(p), () => {});
     this.backWalls = this.layer(() => createBackWallView(scene), (v, b) => updateBackWallView(scene, v, b));
-    this.pickups = this.layer((p) => this.createPickup(p), () => {});
+    this.pickups = this.layer((p) => this.createPickup(p), () => {}, undefined, (v) => this.openChest(v));
     this.coins = this.layer((c) => scene.add.container(c.x * U, G - 8, [objectImage(scene, 'coin', 0, 8) ?? scene.add.circle(0, 0, 8, 0xffd166).setStrokeStyle(2, 0x9c6644)]).setDepth(6), () => {});
     this.troops = this.layer(
       (t) => this.createTroop(t),
@@ -154,8 +160,13 @@ export class WorldRenderer {
     return o;
   }
 
-  private layer<T extends { id: number }>(create: (t: T) => View, update: (v: View, t: T) => void, rebuild?: (v: View, t: T) => boolean): Layer<T> {
-    return new Layer((t: T) => this.put(create(t)), update, rebuild);
+  private layer<T extends { id: number }>(create: (t: T) => View, update: (v: View, t: T) => void, rebuild?: (v: View, t: T) => boolean, remove?: (v: View) => void): Layer<T> {
+    return new Layer((t: T) => this.put(create(t)), update, rebuild, remove);
+  }
+
+  /** Ereignisse eines Frames dieser Stufe: wer welchen Knoten markiert (Wimpel-Farbe, GEB10) */
+  noteEvents(events: readonly GameEvent[]): void {
+    noteMarkers(this.markers, this.world.nodes, events);
   }
 
   /** Kamera-Ziel für Spieler i */
@@ -222,7 +233,7 @@ export class WorldRenderer {
   private createNode(n: ResourceNode): View {
     const s = this.scene;
     const parts: Phaser.GameObjects.GameObject[] = [];
-    // Plantage-Baum (steht auf einem Platz): Pappel aus GEB1, vor der Farm; Waldbäume bleiben bei der Zuordnung (GEB6)
+    // Plantage-Baum (steht auf einem Platz): Pappel wie im Wald, hinter der Farm (GEB10); Waldbäume bleiben bei der Zuordnung (GEB6)
     const pappel = isPlantationTree(n, this.world.sites) && s.textures.exists('grafik:pappel');
     // Baumform aus der Position, Look aus dem Biom (GEB6); unbekannte Art oder fehlende Grafik: Platzhalter-Form
     const sprite = pappel ? s.add.image(0, 0, 'grafik:pappel').setOrigin(0.5, 1) : objectImage(s, `node:${n.kind}`, 0, 0, nodeSprite(n.kind, n.x, this.world.biome.id));
@@ -236,17 +247,17 @@ export class WorldRenderer {
     } else {
       parts.push(s.add.circle(0, -14, 18, 0x40916c)); // Busch
     }
-    // Fahne und Balken sitzen über der Bildhöhe (Platzhalter: wie früher 170 px)
-    const top = -(sprite ? sprite.displayHeight : PLACEHOLDER_NODE_HEIGHT);
-    const flag = s.add.rectangle(10, top - 12, 24, 14, 0xd00000).setOrigin(0, 0.5);
+    // Wimpel und Balken sitzen über der Bildhöhe, höchstens auf Baumhöhe (Wurzeln reichen bis an den Bildrand, GEB10)
+    const top = -Math.min(sprite ? sprite.displayHeight : PLACEHOLDER_NODE_HEIGHT, PENNANT_MAX_HEIGHT);
     const pole = s.add.rectangle(10, top - 2, 3, 30, 0xffffff);
-    return s.add.container(n.x * U, G, [...parts, pole, flag, ...bar(s, top - 32, 50, 0xffd166)]).setDepth(pappel ? PLANTATION_DEPTH : 0);
+    const pennant = s.add.triangle(11, top - 12, 0, 0, 26, 7, 0, 14, pennantColor(undefined)).setOrigin(0, 0.5).setStrokeStyle(1, 0x000000, 0.5);
+    return s.add.container(n.x * U, G, [...parts, pole, pennant, ...bar(s, top - 32, 50, 0xffd166)]);
   }
 
   private updateNode(v: View, n: ResourceNode): void {
     const i = v.length - 4;
     (v.getAt(i) as Phaser.GameObjects.Rectangle).setVisible(n.marked);
-    (v.getAt(i + 1) as Phaser.GameObjects.Rectangle).setVisible(n.marked);
+    (v.getAt(i + 1) as Phaser.GameObjects.Triangle).setVisible(n.marked).setFillStyle(pennantColor(this.markers.get(n.id)));
     setBar(v, i + 2, n.progress, n.progress > 0);
     v.setScale(1, 1 - n.progress * 0.3);
   }
@@ -308,6 +319,18 @@ export class WorldRenderer {
     const chest = p.kind === 'chest';
     const shape = objectImage(s, `pickup:${p.kind}`, 0, chest ? 0 : -44) ?? (chest ? s.add.rectangle(0, -18, 44, 36, 0x9c6644).setStrokeStyle(3, 0x5c3d2e) : s.add.star(0, -60, 5, 8, 18, 0xffd60a).setStrokeStyle(2, 0xffffff));
     return s.add.container(p.x * U, G, [shape]).setDepth(3);
+  }
+
+  /** Aufgehobene Truhe: kurz offen, dann ausblenden (GEB10); andere Pickups und fehlende Grafik verschwinden sofort */
+  private openChest(v: View): void {
+    const image = v.getAt(0);
+    const open = image instanceof Phaser.GameObjects.Sprite ? CHEST_OPEN[image.texture.key] : undefined;
+    if (!open || !this.scene.textures.exists(open)) {
+      v.destroy();
+      return;
+    }
+    (image as Phaser.GameObjects.Sprite).setTexture(open);
+    this.scene.tweens.add({ targets: v, alpha: 0, delay: 300, duration: 500, onComplete: () => v.destroy() });
   }
 
   // ---------- Monarchen ----------

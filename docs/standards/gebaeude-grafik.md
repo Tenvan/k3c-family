@@ -167,11 +167,10 @@ sich gegenüber der Grundform ändert:
 **Biom-Look bei Natur-Objekten (GEB6, Annahme, 🧑 hat mit der Freigabe zugestimmt):** Bei Objekten der Welt (Bäume,
 Busch, Fels, Erzbrocken) bedeutet die **Stufe den Look**, nicht den Ausbau: Stufe 1 = Wald (Grundform), 2 = Höhle,
 3 = Mine; `aenderung` nennt den Look („Höhle: kühleres, dunkleres Laub“). Ein Look ist ein Farbtausch derselben
-Quelle, keine zweite Zeichnung. Ein Objekt hat nur die Looks der Biome, in denen es steht: Bäume Wald und Höhle (Mine
-zeigt den Look Höhle), Busch nur Wald, Fels Wald, Höhle und Mine; Biome ohne eigenen Look (Eisenstollen,
-Kristallhöhle) zeigen Mine, begrenzt auf den höchsten Look des Objekts. Der Höhle-Look der Bäume: Laub eine Stufe
-dunkler und kühler (`christi` → `elf-green`, `atlantis` → `christi`, `dell` → `opal`), Nadeln `elf-green` → `opal`,
-`christi` → `elf-green`, `opal` → `deep-koamaru`, Stämme eine Stufe dunkler. Bei **Adern** (`ader`) bedeutet die Stufe
+Quelle, keine zweite Zeichnung. Ein Objekt hat nur die Looks der Biome, in denen es steht: Bäume nur Wald, Busch nur
+Wald, Fels Wald, Höhle und Mine; Biome ohne eigenen Look (Eisenstollen, Kristallhöhle) zeigen Mine, begrenzt auf den
+höchsten Look des Objekts. **Höhlen-Flora statt Baum-Look (GEB10):** Außerhalb des Walds zeigt ein Baum-Knoten eine der
+Wurzel-Formen und ein Busch den `hoehlenbusch` (eigene Zeichnungen, § 5); der frühere Höhle-Look der Bäume ist entfallen. Bei **Adern** (`ader`) bedeutet die Stufe
 das **Material** (1 Stein, 2 Kupfer, 3 Eisen, 4 Kristall), nicht das Biom.
 
 ## 7. Dichte-Regel

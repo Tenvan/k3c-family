@@ -384,6 +384,5 @@
     {"art":"krone","rechteck":[1.625,9.25,0.375,0.125],"farbe":"opal"},
     {"art":"krone","rechteck":[0.25,9.3125,1.625,0.0625],"farbe":"opal"},
     {"art":"licht","rechteck":[0.84375,9.25,0.03125,0.03125],"farbe":"christi","fein":true}
-  ],
-  "stufen": [{"stufe":2,"aenderung":"Höhle: kühlere, dunklere Nadeln und dunklerer Stamm","farben":{"elf-green":"opal","christi":"elf-green","opal":"deep-koamaru","oiled-cedar":"loulou","rope":"oiled-cedar"}}]
+  ]
 }

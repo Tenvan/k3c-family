@@ -377,6 +377,5 @@
     {"art":"krone","rechteck":[2.1875,7.375,0.0625,0.125],"farbe":"dell"},
     {"art":"krone","rechteck":[1.9375,7.5,0.25,0.125],"farbe":"christi"},
     {"art":"krone","rechteck":[2.125,7.5,0.0625,0.125],"farbe":"dell"}
-  ],
-  "stufen": [{"stufe":2,"aenderung":"Höhle: kühleres, dunkleres Laub","farben":{"christi":"elf-green","atlantis":"christi","dell":"opal","oiled-cedar":"loulou","rope":"oiled-cedar"}}]
+  ]
 }
