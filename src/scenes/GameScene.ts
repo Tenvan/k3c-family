@@ -160,6 +160,7 @@ export class GameScene extends Phaser.Scene {
     const client = this.client;
     if (leavesGame(client.status)) return this.leaveRoom(); // Raum geschlossen, 120 s ohne Verbindung, an anderer Stelle geöffnet: zurück zur Lobby
     if (client.status !== 'room') return;
+    client.setPaused(this.scene.isActive('options')); // Pause-Menü offen = Gerät am Server pausiert (BD7.3)
 
     if (this.registry.get(LEAVE_KEY) === true) return this.leaveRoom(); // „Spiel verlassen“ im Menü (B-293)
     const seated = client.you.map((s) => s.slot);

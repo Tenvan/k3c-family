@@ -15,6 +15,7 @@ import {
   type SlotInput,
   type SlotSeat,
 } from './clientProtocol';
+import { pauseMessage } from './clientPause';
 import { StageStreams, type Frame, type LevelInfo } from './clientStages';
 
 export type { Frame, LevelInfo } from './clientStages';
@@ -105,6 +106,8 @@ export class RoomClient {
   private lastInput = '';
   private lastInputAt = -Infinity;
   private slotsWanted: number[] = [];
+  /** Zuletzt gesendeter Pause-Zustand in diesem Raum-Beitritt (BD7.3); ein neuer Beitritt beginnt unpausiert. */
+  private pauseSent = false;
   private readonly streams = new StageStreams();
   private snapshotTimes: number[] = [];
   private lastTick = -1;
@@ -197,6 +200,17 @@ export class RoomClient {
   /** Skill-Verteilung des Slots zurücksetzen (nur am Tag an der Burg, prüft der Server), nur im Raum. */
   respec(slot: number): void {
     if (this.status === 'room') this.send({ t: 'respec', slot });
+  }
+
+  /**
+   * Pause-Menü offen (`wanted`): Gerät am Server pausieren bzw. fortsetzen (Protokoll v8, `docs/rules/bedienung.md` § 1).
+   * Aufruf je Frame; sendet nur bei Änderung und nur im Raum. Nach einem Wiederbeitritt mit offenem Menü erneut `pause` (B-535).
+   */
+  setPaused(wanted: boolean): void {
+    const message = pauseMessage(wanted, this.pauseSent, this.status === 'room');
+    if (!message) return;
+    this.send({ t: message });
+    this.pauseSent = wanted;
   }
 
   /** Raum bewusst verlassen: zurück zur Raumliste, kein Wiederverbinden. */
@@ -295,6 +309,7 @@ export class RoomClient {
     this.monarchs = [];
     this.streams.clear();
     this.slotsWanted = [];
+    this.pauseSent = false;
   }
 
   /** Verbindung weg ohne Abmeldung: neu verbinden, bis `RECONNECT_LIMIT_MS` um sind. */

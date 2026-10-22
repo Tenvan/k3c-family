@@ -29,6 +29,7 @@ func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
 		p.PayCooldown = math.Max(0, p.PayCooldown-dt)
 		if !isAlive(p) {
 			p.Paying = false
+			p.skillHeld = 0 // nach dem Respawn zählt der erste Druck wieder als neu (B-524)
 			refundPending(w, p)
 			p.RespawnIn -= dt
 			if p.RespawnIn <= 0 {

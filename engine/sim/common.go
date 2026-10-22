@@ -28,6 +28,10 @@ func intPtr(v int) *int { return &v }
 
 func isAlive(p *Player) bool { return p.RespawnIn <= 0 }
 
+// shielded: Der Monarch ist kein Ziel und nimmt keinen Schaden, wenn ein pausiertes Gerät ihn schützt (Protected, B-214) oder
+// niemand ihn steuert (Free: wartend nach Verbindungsverlust oder frei, docs/rules/bedienung.md § 3, B-530).
+func shielded(p *Player) bool { return p.Protected || p.Free }
+
 // isDangerous: nachts oder solange Gegner in der Welt sind, bleiben Bauern im Hub.
 func isDangerous(w *World) bool { return w.Cycle.Phase == "night" || len(w.Enemies) > 0 }
 
@@ -142,9 +146,9 @@ func applyDamageBy(w *World, targetID int, damage float64, cause string) {
 
 // damagePlayer: Verteidigung (defenseOf, Passive), dann zieht der Schild (Iron Wall) zuerst ab, der Rest geht auf die HP. Solange Last
 // Stand läuft, lässt ein tödlicher Treffer 1 HP stehen. Der tödliche Treffer setzt `cause` in playerDown.
-// Ein geschützter Monarch (Protected, B-214) nimmt keinen Schaden.
+// Ein geschützter Monarch (shielded: Protected oder Free) nimmt keinen Schaden.
 func damagePlayer(w *World, p *Player, damage float64, cause string) {
-	if !isAlive(p) || p.Protected {
+	if !isAlive(p) || shielded(p) {
 		return
 	}
 	dealt := math.Max(1, damage-defenseOf(w, p))

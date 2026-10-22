@@ -88,6 +88,9 @@ export type ClientMessage =
   | { t: 'learn'; slot: number; skill: string }
   | { t: 'respec'; slot: number }
   | { t: 'leave' }
+  /** Pause-Menü offen bzw. geschlossen (v8, BD7.3): Gerät pausieren bzw. fortsetzen, nur im Raum. */
+  | { t: 'pause' }
+  | { t: 'resume' }
   | DevMessage;
 
 /** Dev-Aktionen (nur Dev-Mode am Server, sonst `forbidden`; docs/protocol.md › Dev-Aktionen). */

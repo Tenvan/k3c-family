@@ -101,6 +101,41 @@ func TestGehalteneSkillTasteMeldetCastFailedEinmal(t *testing.T) {
 	}
 }
 
+// B-524/AC-01: Der Tod vergisst die gehaltene Skill-Taste. Halten ohne Ziel (ein castFailed), sterben, wiederbeleben,
+// neu drücken → ein zweites castFailed; Spieler 2 hält durchgehend und meldet kein weiteres.
+func TestSkillTasteNachTodMeldetCastFailedNeu(t *testing.T) {
+	w := quietWorld(t)
+	p, q := AddPlayer(w), AddPlayer(w)
+	for _, m := range []*Player{p, q} {
+		m.Slots, m.Skills = []string{"fireball"}, []string{"fireball"}
+	}
+	step := func(skillP int) (np, nq int) {
+		w.Events = nil
+		stepPlayers(w, []PlayerCommand{{Skill: skillP}, {Skill: 1}}, dt)
+		for _, ev := range eventsOfType(w, "castFailed") {
+			switch ev["from"] {
+			case p.ID:
+				np++
+			case q.ID:
+				nq++
+			}
+		}
+		return
+	}
+	if np, nq := step(1); np != 1 || nq != 1 {
+		t.Fatalf("erster Druck: %d/%d castFailed, erwartet je 1", np, nq)
+	}
+	p.HP, p.RespawnIn = 0, 3*dt // stirbt mit gehaltener Taste
+	for !isAlive(p) {
+		if np, nq := step(0); np != 0 || nq != 0 {
+			t.Fatalf("während des Todes: %d/%d castFailed", np, nq)
+		}
+	}
+	if np, nq := step(1); np != 1 || nq != 0 {
+		t.Fatalf("neuer Druck nach dem Respawn: %d/%d castFailed, erwartet 1/0", np, nq)
+	}
+}
+
 // B-378/AC-02: In der Budget-Aufstellung halten alle Spieler 1 min lang Skill 1 ohne Ziel; es gibt höchstens je Spieler
 // ein castFailed, das Budget bleibt unberührt.
 func TestGehalteneSkillTastenImEreignisBudget(t *testing.T) {
