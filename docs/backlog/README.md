@@ -156,6 +156,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-528](B-528-entscheidung-pause-regeldetails.md) | SRV | Frage | mittel | offen | – | Entscheidung: Regeldetails der Raum-Pause (Couch-Raum, Schutz, Frist) |
 | [B-529](B-529-entscheidung-pause-protokoll.md) | SRV | Frage | mittel | offen | – | Entscheidung: Protokoll v8 für pause/resume ohne Rückmeldung im Zustand |
 | [B-530](B-530-wartender-monarch-verwundbar.md) | SIM | Problem | mittel | offen | – | Wartende Monarchen nach Verbindungsverlust sind in der Simulation nicht unverwundbar |
+| [B-533](B-533-entscheidung-spielstand-loeschen.md) | SRV | Frage | mittel | offen | – | Entscheidung: Spielstand löschen per HTTP ohne Token, Stand bleibt als Sicherung |
+| [B-534](B-534-entscheidung-spielmenue-lobby.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Spielmenü ist die Lobby, neuer Spielstand ohne Welt-Auswahl |
 
 ## Archiv
 

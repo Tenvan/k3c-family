@@ -3,14 +3,14 @@
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** hoch
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** BD5
 - **Projekt:** BED
 - **Erstellt:** 2026-10-20
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude
 
 ## Ausgangslage
 
@@ -21,40 +21,41 @@ Ein weiterer Punkt des Berichts war leer; Rückfrage an 🧑 offen.
 
 ## Ziel
 
-Welches Ergebnis, welcher Nutzen (oder welcher Schaden verschwindet)? Kein Umsetzungsschritt.
+Spielende sehen im Spielmenü, in welcher Welt sie spielen, und legen Spielstände dort an und löschen sie, ohne Dateien von Hand anzufassen.
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spielende mit Controller und Tastatur; Ralf entscheidet und nimmt ab.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+Siehe Sprint BD5 › Anforderungen (Lobby zeigt Welt, „Neuer Spielstand“, Löschen mit Rückfrage, `DELETE /api/save`).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Welten im Spiel anlegen oder bearbeiten (Asset-Studio); Wiederherstellen gelöschter Stände im Spiel (geht über `/api/save/restore`).
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Taste B frei, View + Menu reserviert, Texte zweisprachig; Löschen nur mit Rückfrage, Sicherungen bleiben (B-533).
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+Spielstand `nord` in Welt `nordmeer` → Lobby-Zeile nennt „Welt nordmeer“. „Neuer Spielstand“ bei vorhandenen `spiel-1` → legt `spiel-2` an.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Stand in offenem Raum → `409`, Hinweis. Server-Fehler → Hinweis, nichts still. Stand ohne Welt-Feld → `standard`.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert: Test, Befehl, Datei oder Beobachtung am TV mit erwartetem Ergebnis.
+- **AC-01** Server: Anlegen (bestehendes `create`) und Löschen (`DELETE /api/save`) mit Welt in der Liste; Löschen eines geladenen Stands abgelehnt (Go-Test).
+- **AC-02** Lobby zeigt Welt, legt an und löscht mit Rückfrage (Vitest).
+- **AC-03** Ralf hat es am PC abgenommen.
 
 ## Offene Fragen
 
-- Welcher vierte Punkt war gemeint (Eintrag in der Meldung leer)? Entscheidet 🧑.
-- Welt-Auswahl beim Neuanlegen oder reine Anzeige der Welt je Spielstand? Entscheidet 🧑.
+Autonom entschieden: B-533, B-534.
 
 ## Notizen
 

@@ -1,14 +1,14 @@
-# BD5 · SRV · Spielmenü zeigt die Welt, legt Spielstände an und löscht sie
+# BD5 · SRV, CLI · Spielmenü zeigt die Welt, legt Spielstände an und löscht sie
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
-- **Domäne:** SRV
-- **Reife:** Entwurf
+- **Domäne:** SRV, CLI
+- **Reife:** bereit
 - **Tickets:** B-506
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 013dcb34
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude
 
 ## Ausgangslage
 
@@ -24,7 +24,12 @@ Spielende mit Controller und Tastatur; Agent in SRV und CLI; 🧑 klärt Umfang 
 
 ## Anforderungen
 
-B-506 › Ausgangslage (Spec noch Entwurf, Anforderungen nach Klärung der Offenen Fragen ausformulieren).
+- **Spielmenü** ist die Lobby (Raumliste mit „Spielen“, Räumen und Spielständen); im Pausenmenü im Spiel steht zusätzlich die Welt des Raums (Default, Entscheidung B-534).
+- Die Lobby zeigt die Welt, in der ein neues Spiel startet (`?world=`, sonst `standard`), und je Spielstand dessen Welt (`GET /api/saves` nennt `world`).
+- „Neuer Spielstand“ legt einen frischen Stand unter dem nächsten freien Namen `spiel-N` in dieser Welt an und startet ihn (`create` mit `fresh: true`, keine Protokoll-Änderung).
+- Löschen eines Spielstands: Pad X oder Taste Entf auf einem Spielstand öffnet eine Rückfrage mit vorgewähltem „Abbrechen“; nur „Löschen“ + A/Enter löscht genau diesen einen Stand. Kein Massenlöschen.
+- Server: `DELETE /api/save?slot=NAME` (HTTP, Protokoll-Version bleibt 8). Der Stand wandert in seine rotierenden Sicherungen (wiederherstellbar über `/api/save/restore`), die Sicherungen bleiben (Entscheidung B-533). Ist er in einem Raum offen → `409`, Hinweis im Menü.
+- Texte zentral in `texts.de.ts`/`texts.en.ts`; Taste B bleibt frei, View + Menu reserviert.
 
 ## Nicht-Ziele
 
@@ -50,13 +55,22 @@ Stand ist in einem offenen Raum geladen → Löschen abgelehnt mit Hinweis. Serv
 
 ## Offene Fragen
 
-🧑: Welcher vierte Punkt war gemeint (Meldung leer)? Welt-Auswahl beim Neuanlegen oder nur Anzeige der Welt je Spielstand? Ist mit „Spielmenü“ das Menü im Spiel oder die Lobby gemeint?
+Autonom entschieden (Ralf: „autonom abarbeiten“), im Nachgang zu bestätigen:
+- Vierter Punkt der Meldung: unbekannt, bleibt außen vor.
+- Welt-Auswahl beim Neuanlegen: nein, nur Anzeige (andere Welten gibt es nur im Dev-Mode über `?world=`), B-534.
+- „Spielmenü“ = Lobby, plus Weltanzeige im Pausenmenü, B-534.
+- Löschen per HTTP ohne Token, als Sicherung behalten statt endgültig, B-533.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BD5.1 | `BD5.1-server-spielstaende-loeschen.md` | Umsetzung | autonom | offen |
+| BD5.2 | `BD5.2-spielmenue-welt-anlegen-loeschen.md` | Umsetzung | autonom | offen |
+| BD5.3 | `BD5.3-review.md` | Review | autonom | offen |
+| BD5.4 | `BD5.4-abnahme-pc.md` | Workshop | Mensch | offen |
 
-- BD5.1 (SRV) Spielstände mit Welt anlegen und löschen, ggf. Protokoll (AC-01).
+- BD5.1 (SRV) Spielstände mit Welt auflisten und löschen, HTTP (AC-01).
 - BD5.2 (CLI) Spielmenü: Welt anzeigen, Spielstand anlegen und löschen (AC-02).
 - BD5.3 (CLI) Review (Code-Sprint): alle Kriterien prüfen.
 - BD5.4 (CLI, Mensch) Abnahme am PC (AC-03).
