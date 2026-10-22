@@ -65,7 +65,7 @@ Autonom entschieden (Ralf: „autonom abarbeiten“), im Nachgang zu bestätigen
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BD5.1 | `BD5.1-server-spielstaende-loeschen.md` | Umsetzung | autonom | offen |
+| BD5.1 | `BD5.1-server-spielstaende-loeschen.md` | Umsetzung | autonom | fertig |
 | BD5.2 | `BD5.2-spielmenue-welt-anlegen-loeschen.md` | Umsetzung | autonom | offen |
 | BD5.3 | `BD5.3-review.md` | Review | autonom | offen |
 | BD5.4 | `BD5.4-abnahme-pc.md` | Workshop | Mensch | offen |

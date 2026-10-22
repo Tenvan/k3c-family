@@ -134,6 +134,28 @@ func (s *Saves) Delete(slot string) error {
 	return s.remove(slot)
 }
 
+// Discard nimmt einen Spielstand aus der Liste, ohne Daten zu verlieren (B-506, Entscheidung B-533): Er wandert in seine
+// rotierenden Sicherungen (wiederherstellbar mit Restore), ältere Sicherungen bleiben. Ohne Stand ErrNotFound.
+func (s *Saves) Discard(slot string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	path, err := s.path(slot)
+	if err != nil {
+		return err
+	}
+	data, err := os.ReadFile(path)
+	if errors.Is(err, fs.ErrNotExist) {
+		return ErrNotFound
+	}
+	if err != nil {
+		return err
+	}
+	if err := s.rotate(slot, data); err != nil {
+		return err
+	}
+	return os.Remove(path)
+}
+
 func (s *Saves) remove(slot string) error {
 	path, err := s.path(slot)
 	if err != nil {

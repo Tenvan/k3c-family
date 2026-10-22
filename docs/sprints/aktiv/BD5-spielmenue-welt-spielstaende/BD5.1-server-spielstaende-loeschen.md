@@ -1,6 +1,6 @@
 # BD5.1 · Server: Spielstände mit Welt auflisten und löschen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -51,4 +51,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-01 umgesetzt: `DELETE /api/save?slot=` (`engine/net/saves.go`), `store.Saves.Discard` verschiebt in die Sicherungen (B-533), `room.Manager.DeleteSave` lehnt offene Stände ab (409), `GET /api/saves` nennt `world`; Anlegen bleibt `create` fresh. Protokoll-Version bleibt 8, `docs/protocol.md` nachgetragen.
+- AC-01 geprüft: Go-Tests `TestSavesDiscardBehaeltSicherungen`, `TestSavesListNenntWelt`, `TestDeleteSaveLehntOffenenStandAb`, `TestSaveLoeschenUeberHTTP`; `task check:diff` grün; Reviewer (Sonnet): keine schweren Befunde.
