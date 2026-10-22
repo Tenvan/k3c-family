@@ -56,7 +56,7 @@ keine (Protokollform beschlossen: eigene Nachricht, 🧑 2026-10-13). Beim auton
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BD3.1 | `BD3.1-protokoll-pause.md` | Umsetzung | autonom | offen |
+| BD3.1 | `BD3.1-protokoll-pause.md` | Umsetzung | autonom | fertig |
 | BD3.2 | `BD3.2-sim-schutz.md` | Umsetzung | autonom | offen |
 | BD3.3 | `BD3.3-raum-pause.md` | Umsetzung | autonom | offen |
 | BD3.4 | `BD3.4-review.md` | Review | autonom | offen |

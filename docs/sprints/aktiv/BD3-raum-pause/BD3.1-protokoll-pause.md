@@ -1,6 +1,6 @@
 # BD3.1 · Protokoll: Nachricht pause/resume, Version 8, Beispiel
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -53,4 +53,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-03 umgesetzt: `docs/protocol.md` v8 (Änderungen gegenüber v7, Tabelle), Beispiele `c2s-pause.json`, `c2s-resume.json`; geprüft: `TestPauseResumeBeispiele` (roh gesendet), `TestPauseSetztGeraet`, `TestHandschlagFalsch` (v7-Client abgelehnt).
+- Client-Konstante `PROTOCOL_VERSION` 8 mitgezogen (sonst lehnt der Server jeden Client ab). Entscheidungen zur Form und Rückmeldung: B-529. Review (Sonnet): keine schweren Befunde; Hinweis „Pause endet bei Trennung“ geht in BD3.3.
