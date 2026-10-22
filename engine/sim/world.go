@@ -8,6 +8,7 @@ package sim
 
 import (
 	"fmt"
+	"slices"
 
 	"k3c/engine/level"
 	"k3c/engine/rng"
@@ -57,6 +58,7 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 		Stock:   &Stock{},
 		Enemies: []*Enemy{}, Projectiles: []*Projectile{}, Pickups: []*Pickup{}, Camps: []*Camp{},
 		Portals: []float64{}, SpawnQueue: []QueuedSpawn{}, Events: []Event{}, hubData: opts.hub,
+		planned: slices.Clone(opts.Planned), chunkCount: opts.ChunkCount,
 	}
 	if b.Cycle.Type == "aggressionPool" {
 		w.Aggression = new(float64)
@@ -81,9 +83,15 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 // CreateWorldWith baut eine Stufe wie CreateWorld, ohne Insel, mit den Erzeugungs-Optionen (Vorschau des
 // Gebäude-Planers, WZ9.1, B-462). Ein Kandidat wird vorher mit ValidateHubData geprüft (fail closed); die Welt behält
 // eine Kopie, spätere Änderungen des Aufrufers wirken nicht. `planned` sind die geplanten Chunks dieser Stufe (WZ8.4); mit
-// Kandidat prüft der Generator sie gegen dessen Mauerlinien. Ohne Kandidat gleich CreateWorld mit CycleSpeed 1.
-func CreateWorldWith(b level.Biome, seed string, o CreateOptions, planned []level.PlannedChunk) (*World, error) {
-	opts := Options{CycleSpeed: 1, Planned: planned}
+// Kandidat prüft der Generator sie gegen dessen Mauerlinien. `chunkCount` ist die Inselgröße der Stufe (0 = Länge des
+// Bioms, sonst eine Größe nach CheckChunkCount, B-490). Ohne Kandidat gleich CreateWorld mit CycleSpeed 1.
+func CreateWorldWith(b level.Biome, seed string, o CreateOptions, planned []level.PlannedChunk, chunkCount int) (*World, error) {
+	if chunkCount != 0 {
+		if err := CheckChunkCount(chunkCount); err != nil {
+			return nil, fmt.Errorf("welt: %w", err)
+		}
+	}
+	opts := Options{CycleSpeed: 1, Planned: planned, ChunkCount: chunkCount}
 	if o.Candidate != nil {
 		if r := ValidateHubData(o.Candidate); len(r.Findings) > 0 {
 			return nil, fmt.Errorf("welt: Kandidaten-hub.json abgelehnt: %s", r.Findings[0])

@@ -1,10 +1,10 @@
-# B-490 · Sim: Chunk-Anzahl mit Kandidaten-hub.json und gemeinsame Prüfung der Inselgröße
+# B-479 · Prüfung der Kandidaten-hub.json: geplante Chunks nach WZ8 mitprüfen
 
 - **Domäne:** SIM
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ24
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-18
@@ -14,11 +14,13 @@
 
 ## Ausgangslage
 
-Befunde der Umsetzung WZ17.3 und WZ17.5 (2026-10-18): (1) `room.BuildPreview` lehnt die Chunk-Anzahl zusammen mit einer Kandidaten-`hub.json` ab („Chunk-Anzahl mit Kandidaten-hub.json noch nicht möglich“), weil `sim.CreateWorldWith` keine Anzahl nimmt und `sim.Options.hub` nicht exportiert ist. (2) Die Prüfung „Anzahl ist eine Inselgröße“ steht **dreimal**: `sim.checkChunkCount` (nicht exportiert), `room.checkPreviewCount` und `checkIslandSize` im Studio; die Meldungen sind gleich formuliert, kommen aber nicht aus einer Funktion. Eine exportierte `sim.CheckIslandSize` würde sie bündeln.
+WZ15.3 prüft eine Kandidaten-`hub.json` (`sim.ValidateHub`), aber nicht die geplanten Chunks (WZ8, `data/islands.json`), weil WZ8 beim Bau von WZ15.3 nicht im Branch lag. Das Ergebnis trägt dafür den Hinweis `NotePlannedChunksUnchecked` („geplante Chunks nicht geprüft“). Nach dem Zusammenführen von WZ8 und WZ15: geplante Chunks gegen die Kandidaten-Linien (`level.GenerateWith` mit `Options.Lines`) mitprüfen und den Hinweis entfernen. Dazu: `CreateOptions` aus WZ8.3 und WZ15.3 zusammenführen (beide legen die Struktur an, WZ15.3 mit Feld `Candidate`).
+
+Ebenso WZ9.1 (Snapshot mit Kandidaten-`hub.json`, `engine/room/preview_candidate.go`): Der Vorrang „geplante Chunks und Kandidat zugleich gesetzt → Kandidaten-Linien gelten, Planung wird dagegen geprüft“ (B-462/AC-09, Beispiel „Linie 5 bei 126 macht die Ader bei Hub +136 ungültig“) fehlt, solange `PreviewOptions.Planned` (WZ8.4) nicht im Branch liegt. Nachrüsten nach dem Zusammenführen von WZ8, WZ15 und WZ9, inklusive Go-Test für den Vorrang.
 
 ## Ziel
 
-Die Vorschau akzeptiert die Chunk-Anzahl auch mit Kandidaten-`hub.json`, und die Prüfung der Inselgröße lebt an einer Stelle (`sim.CheckChunkCount`, exportiert), die `room` nutzt.
+Welches Ergebnis, welcher Nutzen (oder welcher Schaden verschwindet)? Kein Umsetzungsschritt.
 
 ## Beteiligte und Zielgruppen
 

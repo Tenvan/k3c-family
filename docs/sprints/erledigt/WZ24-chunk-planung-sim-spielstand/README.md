@@ -1,14 +1,14 @@
-# WZ24 · REG · Geplante Chunks in Simulation und Spielstand: Regeln geklärt, Planung im Stand, eine Prüfung der Inselgröße
+# WZ24 · REG, SIM, SRV, DEV · Geplante Chunks in Simulation und Spielstand: Regeln geklärt, Planung im Stand, eine Prüfung der Inselgröße
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** WZG
-- **Domäne:** REG
-- **Reife:** Entwurf
+- **Domäne:** REG, SIM, SRV, DEV
+- **Reife:** bereit
 - **Tickets:** B-475, B-489, B-490, B-479, B-497
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-22, autonom, Claude (Auftrag Ralf: autonom abarbeiten), Revision 1; Defaults: B-475 wie umgesetzt, B-489 Kopie der Planung im Stand ohne Versionssprung, B-497 Punkt 1 (Lastmessung) im Größen-Projekt
 
 ## Ausgangslage
 
@@ -57,6 +57,14 @@ Stand ohne gespeicherte Chunk-Anzahl → 0 = Biom-Länge, wie alte Stände gebau
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ24.1 | `WZ24.1-regeln-geklaert.md` | Umsetzung | autonom | fertig |
+| WZ24.2 | `WZ24.2-sim-stand-pruefung.md` | Umsetzung | autonom | fertig |
+| WZ24.3 | `WZ24.3-srv-vorschau-anzahl.md` | Umsetzung | autonom | fertig |
+| WZ24.4 | `WZ24.4-studio-prueft-mit-sim.md` | Umsetzung | autonom | fertig |
+| WZ24.5 | `WZ24.5-review.md` | Review | autonom | fertig |
+
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - WZ24.1 (REG, Mensch) Workshop: Fragen aus B-475 und B-497 entscheiden, Regeltext angleichen (AC-01).
@@ -68,5 +76,4 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-22: AC-01 bis AC-06 nachgewiesen (WZ24.1–.5), `check:go`/`check:diff` grün, Reviewer ohne kritischen Befund. Entscheidungen für den Nachgang (Ralf): B-475 wie umgesetzt; B-489 Kopie der Planung im Stand ohne Versionssprung, alte Stände laden ohne Planung; B-497 Punkt 1 (Lastmessung) im Größen-Projekt, Punkt 4 offen. Hub-Studio prüft Planung nur der Standard-Welt. Golden unverändert.

@@ -26,6 +26,9 @@ type App struct {
 	ctx  context.Context
 	bus  *bus
 	mu   sync.Mutex // schützt world
+	// save schützt Lesen, Prüfen und Schreiben der Welt-Datei in PlanSave und PlanWorldSave: zwei gleichzeitige Aufrufe
+	// lesen sonst denselben Stand, und der zweite überschriebe den ersten (B-497)
+	save sync.Mutex
 	// world ist die gewählte Welt des Welten Editors (app_world_files.go); leer = standard
 	world string
 	// chat ist der Chat mit der Claude Code CLI (chat_*.go), angelegt beim ersten Gebrauch

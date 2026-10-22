@@ -179,6 +179,8 @@ func (a *App) PlanCheck(island string, depth int, chunks []level.PlannedChunk, c
 // der Welt-Datei (Binding). Nur gültiger Entwurf, nur auf dem Stand aus PlanLoad (sonst Stale ohne Schreibzugriff),
 // format-stabil und atomar in einem Schreibvorgang; danach der REG-Hinweis.
 func (a *App) PlanSave(island string, depth int, chunks []level.PlannedChunk, count int, stand string) PlanSaved {
+	a.save.Lock()
+	defer a.save.Unlock()
 	id := a.activeWorld()
 	path := a.worldFile(id)
 	raw, err := os.ReadFile(path)
