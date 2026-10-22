@@ -58,7 +58,7 @@ Entschieden autonom (Claude, 2026-10-22), 🧑 prüft im Entscheidungs-Sprint GR
 | GR9.1 | `GR9.1-kandidaten-import.md` | Umsetzung | autonom | fertig |
 | GR9.2 | `GR9.2-monarch-sheets.md` | Umsetzung | autonom | fertig |
 | GR9.3 | `GR9.3-monarch-einbau.md` | Umsetzung | autonom | fertig |
-| GR9.4 | `GR9.4-review.md` | Review | autonom | offen |
+| GR9.4 | `GR9.4-review.md` | Review | autonom | fertig |
 | GR9.5 | `GR9.5-abnahme-tv.md` | Umsetzung | Mensch | offen |
 
 - GR9.1 Kandidaten-Import hält `task check` grün (AC-01).
@@ -69,5 +69,7 @@ Entschieden autonom (Claude, 2026-10-22), 🧑 prüft im Entscheidungs-Sprint GR
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-10-22, Review GR9.4 (Reviewer-Agent, Diff `sprint/gr8...sprint/gr9`): keine schweren Befunde; `task check` und `task check:go` grün. AC-01 (GR9.1) umgesetzt und geprüft.
+- AC-02: Sheets und Einbau umgesetzt (GR9.2, GR9.3), Tests grün; angenommen, Validierung offen (GR9.5, TV); B-505 bleibt `eingeplant`, B-420 erledigt.
+- Hinweise des Reviews (kein Befund): Treffer im selben Frame wie `give` verwirft `give`; nach Neubau der View wird ein Treffer im ersten Frame nicht gezeigt. Beritten bleibt der Tod bei Deckkraft 0,25; Treffer kommt aus sinkendem `hp`.
+- Version: v0.19.0 vorgeschlagen (Minor: neue Animationen), gesetzt erst nach Bestätigung durch 🧑.
