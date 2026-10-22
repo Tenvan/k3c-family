@@ -1,6 +1,6 @@
 # GR9.2 · Monarch-Sheets für Wurf, Treffer, Tod und Respawn erzeugen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -53,5 +53,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 (Teil Sheets) geprüft: `go run ./tools/spritegen -monarch` (`tools/spritegen/monarch.go`) schreibt je König-Sheet give/hit/death/respawn (King 4/3/5/5, King 2 3/3/5/5 Frames), in `sprites.json` eingetragen; `go test ./tools/spritegen`, `tests/sprites.test.ts` grün, Vorschau von Claude angesehen.
+- Abweichung: Tod kippt nach vorn (Blickrichtung) und wird auf den Boden angehoben, nichts abgeschnitten (Test); give hängt idle-Frame 0 als Rückkehr an. Optik prüft 🧑 in GR9.5; keine neuen Tickets.

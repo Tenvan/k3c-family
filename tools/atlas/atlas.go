@@ -14,7 +14,7 @@ import (
 
 const pad = 2 // Abstand zwischen Frames, gegen Überbluten beim Skalieren
 
-var anims = []string{"idle", "run", "attack"} // wie ANIMS in src/scenes/render/sprites.ts
+var anims = []string{"idle", "run", "attack", "give", "hit", "death", "respawn"} // wie ANIMS in src/scenes/render/sprites.ts
 
 type sheet struct {
 	FrameWidth  int `json:"frameWidth"`

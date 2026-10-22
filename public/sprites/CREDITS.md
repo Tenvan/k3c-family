@@ -7,6 +7,8 @@ Ausnahme sind die LPC-Reittiere unten: **CC-BY 3.0**, dort ist die Namensnennung
 
 Unsere Seite stammt von **LuizMelo**. Übernommen wurden nur `Idle`, `Run` und `Attack1`,
 umbenannt in `idle.png`, `run.png` und `attack.png`.
+Abgeleitet (GR9.2, `go run ./tools/spritegen -monarch`): `give.png`, `hit.png`, `death.png` und `respawn.png` in
+`medieval-king` und `medieval-king-2` sind aus deren `idle.png` und `attack.png` erzeugt (Aufblitzen, Kippen, Einwachsen), Lizenz wie das Original.
 
 | Ordner | Pack | Urheber | Lizenz | Quelle |
 |---|---|---|---|---|

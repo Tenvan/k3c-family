@@ -1,6 +1,6 @@
 # GR9.3 · Monarch-Animationen im Client abspielen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,5 +54,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 (Teil Einbau) geprüft: `pickMonarchAnim` (`src/scenes/render/monarchAnim.ts`) wählt Zustand/Ereignis → Animation samt Rückfall, belegt in `monarchAnim.test.ts`; Atlas, `sprites.ts`, Renderer und Reiter kennen die vier Anims; vitest, tsc, oxlint, `go test ./tools/atlas` grün. `task check:diff` und TV-Abnahme (GR9.5) offen.
+- Abweichung: Treffer aus sinkendem `hp` statt aus `hit` (Effekt entfällt bei Blitzgrenze), Tod/Respawn aus `respawnIn`; beritten bleibt der Tod beim Rückfall Deckkraft 0,25. Keine neuen Tickets.
