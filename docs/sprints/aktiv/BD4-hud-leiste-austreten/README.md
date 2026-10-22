@@ -59,7 +59,7 @@ Entschieden mit Default (autonom, Claude), Prüfung durch 🧑: Goldtopf B-525, 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BD4.1 | `BD4.1-hud-leiste-kompass.md` | Umsetzung | autonom | offen |
+| BD4.1 | `BD4.1-hud-leiste-kompass.md` | Umsetzung | autonom | fertig |
 | BD4.2 | `BD4.2-fluss-spiegelung.md` | Umsetzung | autonom | offen |
 | BD4.3 | `BD4.3-austreten-menue.md` | Umsetzung | autonom | offen |
 | BD4.4 | `BD4.4-workshop-abnahme.md` | Workshop | Mensch | offen |

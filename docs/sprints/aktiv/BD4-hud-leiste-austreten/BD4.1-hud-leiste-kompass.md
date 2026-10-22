@@ -1,6 +1,6 @@
 # BD4.1 · HUD-Leiste oben und Kompass je Feld, Layout-Tests
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -49,5 +49,4 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: neuer Test in `hudLayout.test.ts` (1, 1 mit Partner, 2, 3, 4 Spieler: gemeinsame Anzeigen in der Leiste, in keinem Feld). AC-02 geprüft: neuer Test (Kompass im Feld, oberes Drittel, ohne Überlagerung, Felder ab `BAR_HEIGHT`). AC-04 geprüft: bestehender Test (Home, Touch 16:9 und 4:3). Keine Codeänderung nötig: die Leiste kam mit #277; der POC-Branch existiert nicht mehr. `task check:diff` grün (nach Projekt-Feld der Entscheidungs-Tickets).
