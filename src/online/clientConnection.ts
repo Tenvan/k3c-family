@@ -89,6 +89,8 @@ export class RoomClient {
   tickHz = 30;
   roomCode: string | null = null;
   roomName = '';
+  /** Welt-ID des Raums aus `joined.world` (BD5.2) */
+  roomWorld = '';
   you: SlotSeat[] = [];
   monarchs: MonarchState[] = [];
   /** Wird nach jeder Änderung aufgerufen (Anzeige aktualisieren) */
@@ -288,6 +290,7 @@ export class RoomClient {
   private clearRoom(): void {
     this.roomCode = null;
     this.roomName = '';
+    this.roomWorld = '';
     this.you = [];
     this.monarchs = [];
     this.streams.clear();
@@ -354,6 +357,7 @@ export class RoomClient {
         this.clearRoom();
         this.roomCode = msg.room;
         this.roomName = msg.name;
+        this.roomWorld = msg.world ?? '';
         this.you = msg.you;
         this.slotsWanted = msg.you.map((s) => s.slot);
         this.setConnected('room');

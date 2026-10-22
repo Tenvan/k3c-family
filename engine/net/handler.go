@@ -148,8 +148,10 @@ func (s *server) save(w http.ResponseWriter, r *http.Request) {
 			s.log.Info("💾 anderes Spiel, Sicherung angelegt", "ns", "save", "backup", backup)
 		}
 		writeJSON(w, http.StatusOK, map[string]any{"ok": true, "slot": slot, "backup": nullable(backup)})
+	case http.MethodDelete:
+		s.deleteSave(w, slot)
 	default:
-		fail(w, http.StatusMethodNotAllowed, "Nur GET/POST")
+		fail(w, http.StatusMethodNotAllowed, "Nur GET/POST/DELETE")
 	}
 }
 

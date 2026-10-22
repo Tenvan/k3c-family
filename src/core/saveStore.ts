@@ -66,14 +66,16 @@ export interface SaveInfo {
   name: string;
   savedAt: string;
   day?: number;
+  /** Welt-ID des Stands (BD5.1); fehlt bei Ständen vor Version 8 = standard */
+  world?: string;
   depths: number[];
 }
 
 function toSaveInfo(e: unknown): SaveInfo | null {
   if (typeof e !== 'object' || e === null || 'error' in e) return null;
-  const { name, savedAt, day, depths } = e as Record<string, unknown>;
+  const { name, savedAt, day, world, depths } = e as Record<string, unknown>;
   if (typeof name !== 'string' || typeof savedAt !== 'string' || !Array.isArray(depths) || !depths.every((d) => typeof d === 'number')) return null;
-  return { name, savedAt, depths: depths as number[], ...(typeof day === 'number' ? { day } : {}) };
+  return { name, savedAt, depths: depths as number[], ...(typeof day === 'number' ? { day } : {}), ...(typeof world === 'string' && world ? { world } : {}) };
 }
 
 /** Spielstände des Servers; Fehler, Zeitüberschreitung und unlesbare Einträge ergeben keine Einträge. */
@@ -85,4 +87,29 @@ export async function listSaves(fetchFn: typeof fetch = fetch): Promise<SaveInfo
   } catch {
     return [];
   }
+}
+
+/** Ergebnis von `deleteSave`: gelöscht, in einem Raum offen (409), fehlt (404) oder sonst fehlgeschlagen */
+export type DeleteResult = 'ok' | 'in_use' | 'not_found' | 'failed';
+
+/**
+ * Löscht genau einen Spielstand auf dem Server (`DELETE /api/save`, BD5.1); er bleibt dort als Sicherung (B-533).
+ * Die Kopie in localStorage (Rückfall) wird mit entfernt, damit der Stand nicht wieder auftaucht.
+ */
+export async function deleteSave(slot: string, fetchFn: typeof fetch = fetch): Promise<DeleteResult> {
+  let result: DeleteResult = 'failed';
+  try {
+    const res = await fetchFn(`api/save?slot=${encodeURIComponent(slot)}`, { method: 'DELETE', signal: AbortSignal.timeout(TIMEOUT_MS) });
+    result = res.ok ? 'ok' : res.status === 409 ? 'in_use' : res.status === 404 ? 'not_found' : 'failed';
+  } catch {
+    result = 'failed';
+  }
+  if (result === 'ok' || result === 'not_found') {
+    try {
+      localStorage.removeItem(localKey(slot));
+    } catch {
+      // kein localStorage (Privatmodus): nichts zu entfernen
+    }
+  }
+  return result;
 }

@@ -40,17 +40,16 @@ describe('treeTexture (GEB6.5, B-438)', () => {
     for (const art of ['tanne', 'pappel', 'birke']) expect([...keys].filter((k) => k.includes(art))).toHaveLength(3);
   });
 
-  it('Höhle (und Mine) nur Formen 2 und 3 im Look Höhle', () => {
+  it('Höhle (und Mine) zeigen Höhlen-Flora: alle drei Wurzel-Formen, keine Bäume (GEB10, B-454/AC-02)', () => {
     for (const biome of ['cave', 'mine', 'ironhold']) {
       const keys = new Set(xs.map((x) => treeTexture(x, biome)));
-      expect(keys.size, biome).toBe(6);
-      for (const k of keys) expect(k, biome).toMatch(/^grafik:tree-(tanne|pappel|birke)-[23]-2$/);
+      expect([...keys].sort(), biome).toEqual(['grafik:wurzel', 'grafik:wurzel-2', 'grafik:wurzel-3']);
     }
   });
 
-  it('Wald: Form 1 ohne Look-Suffix, Formen 2 und 3 im Look Wald; fehlende Biom-ID wie Wald', () => {
+  it('Wald: Art und Form 1–3, fehlende Biom-ID wie Wald', () => {
     const keys = new Set(xs.map((x) => treeTexture(x, 'forest')));
-    for (const k of keys) expect(k).toMatch(/^grafik:tree-(tanne|pappel|birke)-(1|[23]-1)$/);
+    for (const k of keys) expect(k).toMatch(/^grafik:tree-(tanne|pappel|birke)-[123]$/);
     expect(treeTexture(7, undefined)).toBe(treeTexture(7, 'forest'));
   });
 
@@ -69,7 +68,8 @@ describe('nodeSprite (GEB6.5)', () => {
     expect(nodeSprite('rock', 0, 'ironhold')?.key).toBe('grafik:felsen-3');
     expect(nodeSprite('copperOre', 0, 'mine')?.key).toBe('grafik:erzbrocken');
     expect(nodeSprite('bush', 0, 'forest')?.key).toBe('grafik:busch');
-    expect(nodeSprite('bush', 0, 'cave')?.key).toBe('grafik:busch'); // Busch hat nur Wald-Look
+    expect(nodeSprite('bush', 0, 'cave')?.key).toBe('grafik:hoehlenbusch'); // Höhlen-Flora (GEB10)
+    expect(nodeSprite('bush', 0, 'mine')?.key).toBe('grafik:hoehlenbusch');
   });
 
   it('Adern zeigen ihr Material, unabhängig vom Biom', () => {

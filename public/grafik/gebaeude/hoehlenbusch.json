@@ -1,0 +1,44 @@
+{
+  "id": "hoehlenbusch",
+  "klasse": "flora",
+  "vorlage": {
+    "motiv": "Höhlenbusch aus dunklen Farnwedeln mit zwei Leuchtpilzen, 1 × 1 Kachel",
+    "teile": [
+      "Vier aufrechte Farnwedel in kühlem Grün, unten ein dichter Ballen",
+      "Zwei Leuchtpilze davor, blaue Hüte mit hellem Rand",
+      "Licht links an den Wedeln, Schatten rechts und am Boden"
+    ],
+    "materialien": [
+      "Hintergrund Wald",
+      "Kristall (Mauer-, Turmstufe 5)",
+      "Birkenrinde"
+    ],
+    "stimmung": "kühl, leuchtend, unterirdisch",
+    "fein": "Glanzpunkte auf den Pilzhüten"
+  },
+  "kacheln": { "b": 1, "h": 1 },
+  "bausteine": [
+    {"art":"wedel","rechteck":[0.125,0.4375,0.1875,0.5625],"farbe":"opal"},
+    {"art":"licht","rechteck":[0.125,0.4375,0.0625,0.5625],"farbe":"verdigris"},
+    {"art":"schatten","rechteck":[0.25,0.5625,0.0625,0.4375],"farbe":"valhalla"},
+    {"art":"wedel","rechteck":[0.3125,0.25,0.1875,0.75],"farbe":"opal"},
+    {"art":"licht","rechteck":[0.3125,0.25,0.0625,0.75],"farbe":"verdigris"},
+    {"art":"schatten","rechteck":[0.4375,0.375,0.0625,0.625],"farbe":"valhalla"},
+    {"art":"wedel","rechteck":[0.5625,0.1875,0.1875,0.8125],"farbe":"opal"},
+    {"art":"licht","rechteck":[0.5625,0.1875,0.0625,0.8125],"farbe":"verdigris"},
+    {"art":"schatten","rechteck":[0.6875,0.3125,0.0625,0.6875],"farbe":"valhalla"},
+    {"art":"wedel","rechteck":[0.75,0.375,0.1875,0.625],"farbe":"opal"},
+    {"art":"licht","rechteck":[0.75,0.375,0.0625,0.625],"farbe":"verdigris"},
+    {"art":"schatten","rechteck":[0.875,0.5,0.0625,0.5],"farbe":"valhalla"},
+    {"art":"wedel","rechteck":[0.0625,0.75,0.875,0.25],"farbe":"opal"},
+    {"art":"schatten","rechteck":[0.0625,0.9375,0.875,0.0625],"farbe":"valhalla"},
+    {"art":"stiel","rechteck":[0.3125,0.75,0.0625,0.25],"farbe":"white"},
+    {"art":"hut","rechteck":[0.1875,0.625,0.25,0.125],"farbe":"royal-blue"},
+    {"art":"licht","rechteck":[0.1875,0.625,0.1875,0.0625],"farbe":"cornflower"},
+    {"art":"glanz","rechteck":[0.25,0.625,0.03125,0.03125],"farbe":"viking","fein":true},
+    {"art":"stiel","rechteck":[0.75,0.625,0.0625,0.375],"farbe":"white"},
+    {"art":"hut","rechteck":[0.625,0.5,0.3125,0.125],"farbe":"royal-blue"},
+    {"art":"licht","rechteck":[0.625,0.5,0.25,0.0625],"farbe":"cornflower"},
+    {"art":"glanz","rechteck":[0.6875,0.5,0.03125,0.03125],"farbe":"viking","fein":true}
+  ]
+}

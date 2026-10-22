@@ -12,9 +12,12 @@ nur mit Zustimmung von 🧑.
 | Klasse | Breite × Höhe (Kacheln) | Beleg |
 |---|---|---|
 | Handelsstand / kleines Gebäude | 6 × 4 | Werkstatt (`workshop`), Taverne (`tavern`), Heilplatz (`healer`), Schmiede (`smithy`), Rüstkammer (`armory`) (GEB2); Lager (`storage`), Kaserne (`barracks`) in Stein (GEB5) |
-| Baum (schmal) | 1 × 2,25 | Tanne, Pappel, Birke (GEB1.3); je Art Form 2 und 3 (`tanne-2` … `birke-3`, Looks Wald und Höhle, GEB6.1) |
+| Baum (hoch, ¾ der Szenenhöhe) | 2–4 × 11,25 (`birke-3` 4 × 9,5) | Tanne, Pappel, Birke (GEB1.3); je Art Form 2 und 3 (`tanne-2` … `birke-3`, GEB6.1); Maß GEB10: Szenenhöhe = sichtbare Welt über dem Boden 15 Kacheln (`GROUND_Y` − `WORLD_TOP`), Bäume ¾ davon |
 | Busch | 1 × 1 | `busch.json` (GEB6.1) |
+| Wurzel (Höhlen-Flora, von der Decke bis in den Boden, Klasse `flora`) | 2–3 × 15 | `wurzel`, `wurzel-2`, `wurzel-3` (GEB10.1); 15 Kacheln = bis an den oberen Rand der sichtbaren Welt |
+| Höhlenbusch (Klasse `flora`) | 1 × 1 | `hoehlenbusch.json` (GEB10.1): Farnwedel mit Leuchtpilzen |
 | Truhe (offen, mit Gold) | 1 × 1 | `truhe.json` (GEB6.4) |
+| Truhe geschlossen (eigene JSON, keine Stufe: der Goldhaufen fällt weg) | 1 × 1 | `truhe-geschlossen.json` (GEB10.2): gewölbter Deckel, Eisenbänder über Deckel und Körper, Körper wie `truhe` |
 | Portal, Ausgang (statisch, ohne Stufen) | 2 × 3 | `portal.json`, `ausgang.json` (GEB6.4); Portal mit leuchtender Kristallfläche, Ausgang mit dunkler Öffnung und Holzrahmen |
 | Rekrutierungslager (Zelt und Feuerstelle, statisch) | 3 × 2 | `rekrutierungslager.json` (GEB6.4) |
 | Ader (Stufen 1–4 = Stein, Kupfer, Eisen, Kristall) | 2 × 2 | `ader.json` (GEB6.3); Felsbuckel mit Erzgang, Stein-Ader in `pancho`/`white`, die nur im Gang vorkommt |
@@ -24,6 +27,8 @@ nur mit Zustimmung von 🧑.
 | Hintergrundmauer (Stufen 1–5, kachelbar) | 1 × 4 | `hintergrundmauer.json` (GEB3, B-442) |
 | Hintergrund-Schicht (je Biom fern, mitte, nah; kachelbar, Klasse `hintergrund`) | 24 × 15 (768 × 480 px) | `hg-<biom>-<schicht>.json` (GEB7, B-435), siehe § 10 |
 | Burg (Hub-Stufen 1–5) | 8 × 9 | `burg.json` (GEB4) |
+| Lagerfeuer mit Grill, Zelt, Holzhütte (Vorstufen der Holzburg) | 8 × 5 | `lagerfeuer.json` (GEB11), Stufen 1–3 |
+| Baugerüst (Bild vor der Burg während des Hub-Ausbaus, sonst transparent) | 8 × 9 | `hub-geruest.json` (GEB11) |
 | Tor (Stufen 1–5, Stufe der Mauerlinie) | 2 × 4 | `tor.json` (GEB4) |
 | Farm (Scheune, Holz) | 4 × 3 | `farm.json` (`farm`, GEB5) |
 | Setzling (leerer Plantage-Platz; gewachsen: Pappel) | 1 × 1 | `setzling.json` (`plantation`, GEB5) |
@@ -84,7 +89,7 @@ Ein Gebäude ist eine Liste von Rechtecken in Zeichenreihenfolge (hinten zuerst)
 `werkzeug`; Taverne: `kamin`, `dach`, `schindel`, `fenster`, `glas`, `sprosse`, `tuer`, `beschlag`, `stufe`, `ausleger`,
 `kette`, `krug`, `fass`, `reifen`; Heilplatz: `kraut`, `schnur`, `liege`, `kissen`, `decke`, `schale`, `wasser`, `korb`, `flechtung`; Mauer und Turm: `zinne`, `wand`, `bruestung`, `konsole`, `schaft`, `scharte`, `tuerrahmen`, `tuer`, `sockel`,
 `patina`, `band`, `niete`, `glanz`, `kristall`, `aura`, `runenband`, `rune`, `kante` (Hintergrundmauer); Burg: `turm`, `obergeschoss`, `mast`, `banner`; Tor: `sturz`, `fluegel`, `riegel` (Flügel in `stinger` bleiben Holz, nicht im Farbtausch); Schmiede: `haken`, `esse`, `oeffnung`, `glut`, `funke`, `klotz`, `amboss`, `hammer`, `trog`;
-Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `ruestung`, `wappen`, `speer`, `regal`; Lager: `sack`, `holz`, `erz`; Kaserne: `schwert`; Farm: `luke`, `strebe`, `zaun`, `heu`; Treppe hoch: `stufe`, `gelaender`, `laterne`; Treppe runter: `bogen`, `schlussstein`, `oeffnung`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`; Hintergrund Wald: `boden`, `huegel`, `schatten`, `farn`, `fuge`, `laub`, `gras`, `busch`, `buschlicht`; Hintergrund Höhle: `wand`, `wandkopf`, `pfeiler`, `sturz`, `stufe`, `schimmer`, `decke`, `deckenkante`, `zapfen`, `zapfenschatten`, `tropfen`, `brocken`, `brockenschatten`, `bodenkante`, `bogen`, `bogenschatten`, `stalagmit`; Hintergrund Mine: `fels`, `spalte`, `stuetze`, `kante`, `quer`, `kopfband`, `querkante`, `lampe`, `schutt`, `schotter`, `schwelle`, `schiene`, `schienenkante`; Hintergrund Eisenstollen: `bogen`, `licht`, `traeger`, `strebe`, `niete`, `pfeiler`, `platte`, `spalte`, `kern`; Hintergrund Kristall: `sockel`, `turm`, `rippe`, `kantenlicht`, `bodenlicht`, `gruppe`, `mittel`, `splitter`, `glanz`, `kristall`, `flanke`, `zapfen`, `zflanke`, `zkante`, `zlicht`, `zrand`, `zglanz`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
+Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `ruestung`, `wappen`, `speer`, `regal`; Lager: `sack`, `holz`, `erz`; Kaserne: `schwert`; Farm: `luke`, `strebe`, `zaun`, `heu`; Treppe hoch: `stufe`, `gelaender`, `laterne`; Treppe runter: `bogen`, `schlussstein`, `oeffnung`; Lagerfeuer (GEB11): `spiess`, `braten`, `tropfen`, `pflock`, `eingang`; Baugerüst: `strebe`, `brett`, `leiter`; Höhlen-Flora: `wurzel`, `licht`, `schatten`, `wedel`, `stiel`, `hut`, `glanz`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`; Hintergrund Wald: `boden`, `huegel`, `schatten`, `farn`, `fuge`, `laub`, `gras`, `busch`, `buschlicht`; Hintergrund Höhle: `wand`, `wandkopf`, `pfeiler`, `sturz`, `stufe`, `schimmer`, `decke`, `deckenkante`, `zapfen`, `zapfenschatten`, `tropfen`, `brocken`, `brockenschatten`, `bodenkante`, `bogen`, `bogenschatten`, `stalagmit`; Hintergrund Mine: `fels`, `spalte`, `stuetze`, `kante`, `quer`, `kopfband`, `querkante`, `lampe`, `schutt`, `schotter`, `schwelle`, `schiene`, `schienenkante`; Hintergrund Eisenstollen: `bogen`, `licht`, `traeger`, `strebe`, `niete`, `pfeiler`, `platte`, `spalte`, `kern`; Hintergrund Kristall: `sockel`, `turm`, `rippe`, `kantenlicht`, `bodenlicht`, `gruppe`, `mittel`, `splitter`, `glanz`, `kristall`, `flanke`, `zapfen`, `zflanke`, `zkante`, `zlicht`, `zrand`, `zglanz`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
 
 ## 5. Datenformat
 
@@ -124,12 +129,18 @@ Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `r
 
 ### Bäume
 
-Schmal, 1 Kachel breit, 2,25 Kacheln hoch, Stamm mittig (x 14–18 px Master). Sie stehen als kleiner Wald in Reihen mit
-**½ Kachel Abstand**, überlappend, von links nach rechts gezeichnet (Vorschau: `baumReihe`). Je Art gibt es **drei
-Formen** (GEB6.1): Form 1 sind `tanne`, `pappel`, `birke` (unverändert, nur Wald-Look, Dateinamen stabil), Form 2 und 3
-sind eigene JSONs mit unterscheidbarem Umriss (`tanne-2` breit mit tiefen Ästen, `tanne-3` schlank mit schiefer Spitze,
-`pappel-2` schmal mit Lücken, `pappel-3` mit Zwiegabel, `birke-2` mit hängenden Zweigen, `birke-3` niedriger und breiter).
-Der **Busch** (`busch`) ist 1 × 1, nur im Wald.
+Hoch und schmal im Verhältnis: **11,25 Kacheln hoch** (¾ der Szenenhöhe von 15 Kacheln, GEB10), 2–4 Kacheln breit, Stamm
+mittig, unten sichtbar. Sie stehen als dichter Wald in Reihen mit **1 Kachel Schritt**, stark überlappend, von links nach
+rechts gezeichnet (Vorschau: `baumReihe`). Je Art gibt es **drei Formen** (GEB6.1, GEB10.1 neu gezeichnet): `tanne` (3 breit,
+neun Stufen), `tanne-2` (4 breit mit tiefen Ästen), `tanne-3` (2 breit, schiefe Spitze), `pappel` (2 breit, Laubsäule),
+`pappel-2` (2 breit mit Lücken), `pappel-3` (3 breit mit Zwiegabel), `birke` (3 breit, Laubballen), `birke-2` (3 breit mit
+hängenden Zweigen), `birke-3` (4 × 9,5, niedriger und breiter). Dichter wirkt der Wald im Spiel über die breiteren Kronen;
+wie viele Bäume ein Abschnitt hat, bestimmt der Level-Generator (`data/biomes/*.json`). Der **Busch** (`busch`) ist 1 × 1,
+nur im Wald; der **Setzling** bleibt 1 × 1.
+
+**Höhlen-Flora** (Klasse `flora`, GEB10.1) ersetzt in der Höhle die Bäume: `wurzel`, `wurzel-2`, `wurzel-3` hängen von der
+oberen Bildkante (Decke) über die Wand bis in den Boden, unten mit Wurzelfuß; `hoehlenbusch` ist der Busch der Höhle.
+Vorschau: eigene Reihe „Höhlen-Flora“ neben der Baum-Reihe.
 
 ## 6. Ausbaustufen
 
@@ -158,12 +169,69 @@ sich gegenüber der Grundform ändert:
 **Biom-Look bei Natur-Objekten (GEB6, Annahme, 🧑 hat mit der Freigabe zugestimmt):** Bei Objekten der Welt (Bäume,
 Busch, Fels, Erzbrocken) bedeutet die **Stufe den Look**, nicht den Ausbau: Stufe 1 = Wald (Grundform), 2 = Höhle,
 3 = Mine; `aenderung` nennt den Look („Höhle: kühleres, dunkleres Laub“). Ein Look ist ein Farbtausch derselben
-Quelle, keine zweite Zeichnung. Ein Objekt hat nur die Looks der Biome, in denen es steht: Bäume Wald und Höhle (Mine
-zeigt den Look Höhle), Busch nur Wald, Fels Wald, Höhle und Mine; Biome ohne eigenen Look (Eisenstollen,
-Kristallhöhle) zeigen Mine, begrenzt auf den höchsten Look des Objekts. Der Höhle-Look der Bäume: Laub eine Stufe
-dunkler und kühler (`christi` → `elf-green`, `atlantis` → `christi`, `dell` → `opal`), Nadeln `elf-green` → `opal`,
-`christi` → `elf-green`, `opal` → `deep-koamaru`, Stämme eine Stufe dunkler. Bei **Adern** (`ader`) bedeutet die Stufe
+Quelle, keine zweite Zeichnung. Ein Objekt hat nur die Looks der Biome, in denen es steht: Bäume nur Wald, Busch nur
+Wald, Fels Wald, Höhle und Mine; Biome ohne eigenen Look (Eisenstollen, Kristallhöhle) zeigen Mine, begrenzt auf den
+höchsten Look des Objekts. **Höhlen-Flora statt Baum-Look (GEB10):** Außerhalb des Walds zeigt ein Baum-Knoten eine der
+Wurzel-Formen und ein Busch den `hoehlenbusch` (eigene Zeichnungen, § 5); der frühere Höhle-Look der Bäume ist entfallen. Bei **Adern** (`ader`) bedeutet die Stufe
 das **Material** (1 Stein, 2 Kupfer, 3 Eisen, 4 Kristall), nicht das Biom.
+
+**Hub-Gebäude (GEB9, Entscheidung autonom Claude 2026-10-22, Annahme bis 🧑 widerspricht):** Die acht Hub-Gebäude (Werkstatt,
+Farm, Kaserne, Lager, Taverne, Schmiede, Heilplatz, Rüstkammer) haben die Stufen 1–5 und folgen der **Hub-Stufe**, nicht eigenen
+Gebäudestufen. Das Material je Stufe ist das der Hub-Stufe (`docs/rules/materialien-gebaeude.md` § 2). Stufen vor der
+Freischaltung des Gebäudes bleiben erhalten (Vorschau, Erweiterbarkeit, der Gebäude-Planer verschiebt die Freischaltung). Das
+Camp (`rekrutierungslager`) ist ein Welt-Objekt und bleibt Grundform.
+
+*Farbrollen.* Der Tausch folgt der Rolle der Farbe, nicht dem Namen: jedes Material hat Körper, Licht, Schatten und Tief.
+
+| Stufe | Material | Körper | Licht | Schatten | Tief |
+|---|---|---|---|---|---|
+| 1 | Holz | `rope` | `twine` | `oiled-cedar` | `loulou` |
+| 2 | Stein | `dim-gray` | `smokey-ash` | `valhalla` | `black` |
+| 3 | Kupfer | `tahiti-gold` | `twine` | `rope` | `oiled-cedar` |
+| 4 | Eisen | `heather` | `light-steel` | `dim-gray` | `valhalla` |
+| 5 | Kristall | `royal-blue` | `cornflower` | `deep-koamaru` | `viking` |
+
+Eine Farbe der Grundform wird auf die Farbe derselben Rolle im Material der Stufe getauscht (Holz-Grundform: Spalte der Stufe 1,
+Stein-Grundform: Spalte der Stufe 2; Dachfarben `brown` = Körper, `mandy` = Licht, `loulou` = Tief). Das entspricht dem Tausch
+von Mauer, Turm und Burg. Feinabstimmung nach Sicht ist erlaubt, wenn ein Detail verschwindet (z. B. ein Eisenband, das auf Stufe 4 dieselbe
+Farbe wie der Körper bekäme); die Abweichung steht im Ergebnis der Session.
+
+*Teile statt ganzer Farbe.* Damit nur Mauerwerk und Dach das Material wechseln, kann ein Schlüssel in `farben` auf eine Bausteinart
+eingeschränkt werden: `"wand/rope": "dim-gray"` tauscht `rope` nur bei Bausteinen der Art `wand`; ein Schlüssel ohne `/` gilt
+für alle Bausteine. Der engere Schlüssel gilt vor dem weiteren; die alte Farbe muss in der Grundform bei dieser Art vorkommen.
+
+*Was tauscht, was bleibt, Zusatz.* Handwerkliche und bewegliche Teile (Gestell, Tresen, Zaun, Tür, Fass, Krug, Werkzeug, Glut,
+Heu, Tuch, Rüstung) bleiben auf allen Stufen unverändert. Je Stufe höchstens **ein** Zusatz; er trägt die Farben des Materials.
+
+Die Wandzeichnung `fuge` und `schatten` folgt immer dem Mauerwerk, zu dem sie gehört (gleiche Rolle, gleiche Wand), und steht deshalb
+bei jedem Gebäude mit in der Liste, wenn dort eine tauschende Art (`wand`, `dach`) vorkommt.
+
+| Gebäude | Arten, die das Material wechseln | Zusatz |
+|---|---|---|
+| Werkstatt | `wand`, `pfosten`, `balken` | ab Stufe 3 Wimpel am rechten Pfosten |
+| Farm | `wand`, `pfosten`, `balken`, `dach`, `schindel` | ab Stufe 3 Windfahne rechts am First (Tor mit Rahmen und Streben bleibt) |
+| Kaserne (Stein) | `wand`, `sockel`, `zinne`, `licht`, `schatten`, `fuge`, `scharte` | Stufe 2 Eisenband am Sockel (links und rechts vom Tor), ab Stufe 3 Wimpel an den Zinnen |
+| Lager | `wand` (dunkle Innenwand = Rolle Schatten), `pfosten`, `dach`, `schindel`; ab Stufe 3 auch `sockel` | ab Stufe 3 Vorratsschild an der Wand (das Lager hat kein Tor) |
+| Taverne | `wand` (Putz = Rolle Licht), `balken`, `pfosten`, `dach`, `schindel`; ab Stufe 3 auch `kamin`, `stufe` | ab Stufe 3 Laterne links neben der Tür |
+| Schmiede | `wand`, `pfosten`, `dach`, `haken`; ab Stufe 3 auch `kamin`, `esse` | ab Stufe 3 Rauchfang (Haube) über der Esse |
+| Heilplatz | `pfosten`, `gestell` (das Zelttuch bleibt) | ab Stufe 3 Laterne rechts am Zelt |
+| Rüstkammer | `wand`, `dach` (Rollen Körper, Licht für `deep-koamaru`, `venice-blue`, Tief für `valhalla`), `schindel`; ab Stufe 3 auch `sockel` | ab Stufe 3 Wimpel auf dem Dach (Tor mit Beschlägen bleibt) |
+
+*Stein-Grundform.* Die Kaserne ist in Stufe 1 schon Stein: Stufe 2 behält das Material und unterscheidet sich nur durch
+den Zusatz (Stufe 2 der Tabelle); ab Stufe 3 wechselt der Stein auf Kupfer, Eisen, Kristall. Bei Lager, Taverne, Schmiede und Rüstkammer
+(Holz mit Steinteilen) wechselt auf Stufe 2 nur das Holz-Mauerwerk, der Stein von Sockel, Kamin und Esse bleibt, ab Stufe 3 wechselt auch er.
+
+**Wachstum der Burg (GEB11, Entscheidung autonom Claude 2026-10-22):** Vor der Holzburg stehen drei Looks aus `lagerfeuer.json`
+(Stufe 1 Lagerfeuer mit Grill und Holzstapel, Stufe 2 Zelt links, Stufe 3 Holzhütte links statt Zelt; Zusätze nicht kumulativ,
+Material Holz der Hub-Stufe 1); während ein Bauer den Hub-Ausbau baut, liegt `hub-geruest.json` als zweites Bild über dem Look.
+Welcher Look wann steht, regelt `docs/rules/materialien-gebaeude.md` § 2.1; die Reihe steht einmal im Spielcode
+(`src/scenes/render/hubGrowth.ts`, `HUB_GROWTH`), die Vorschau zeigt sie im Streifen „Hub wächst (GEB11)“ (Szene Gebäude).
+Im Spiel wählt `updateCastleView` den Look über `hubLookOf` (`World.hubLevel`, `World.hubUpgrade`) und `hubLookTexture`; fehlt die
+Grafik des Looks, gilt die Burg der Hub-Stufe (GEB11.4).
+
+*Im Spiel (GEB9.5).* Die acht Hub-Gebäude zeigen `<id>-<hubLevel>-32.png` (`World.hubLevel`, fehlt = 1); gibt es die Stufe nicht, gilt die
+höchste vorhandene, ist die Textur nicht geladen, die Stufe 1. Grundform-Dateien `<id>-<dichte>.png` gibt es für sie nicht mehr; der
+Generator schreibt sie nur für Gebäude ohne `stufen`.
 
 ## 7. Dichte-Regel
 

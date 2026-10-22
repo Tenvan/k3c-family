@@ -7,6 +7,8 @@ Ausnahme sind die LPC-Reittiere unten: **CC-BY 3.0**, dort ist die Namensnennung
 
 Unsere Seite stammt von **LuizMelo**. Übernommen wurden nur `Idle`, `Run` und `Attack1`,
 umbenannt in `idle.png`, `run.png` und `attack.png`.
+Abgeleitet (GR9.2, `go run ./tools/spritegen -monarch`): `give.png`, `hit.png`, `death.png` und `respawn.png` in
+`medieval-king` und `medieval-king-2` sind aus deren `idle.png` und `attack.png` erzeugt (Aufblitzen, Kippen, Einwachsen), Lizenz wie das Original.
 
 | Ordner | Pack | Urheber | Lizenz | Quelle |
 |---|---|---|---|---|
@@ -35,6 +37,7 @@ von `run.png`. Bezogen über die Sammlung https://github.com/series-ai/jam-ready
 |---|---|---|---|---|
 | hell-hound, ghost, fire-skull, demon, nightmare, gothic-hero, wolf | Gothicvania Patreon's Collection | ansimuz | CC0 1.0 | https://opengameart.org/content/gothicvania-patreons-collection |
 | cemetery-skeleton, cemetery-skeleton-clothed, hell-gato, cemetery-hero, cemetery-ghost | Gothicvania Cemetery | ansimuz | CC0 1.0 | https://opengameart.org/content/gothicvania-cemetery-pack |
+| iron-beetle, crystal-spider | Eigene Arbeit (`tools/spritegen`, deterministisch erzeugt, DB32) | K3C | CC0 1.0 | https://github.com/tenvan/k3c-family |
 
 ## Reittiere
 

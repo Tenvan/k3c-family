@@ -1,8 +1,23 @@
-# Protokoll v7
+# Protokoll v8
+
+**Änderungen gegenüber v7 (BD3.1, Version 8, B-214):** Neue Geräte-Nachrichten `pause` und `resume` ohne Felder, nur im
+Raum (sonst `bad_request`). `pause` hält das Gerät an, `resume` setzt es fort; ein zweites `pause` und ein `resume` ohne
+Pause ändern nichts. Wirkung ([`rules/bedienung.md`](rules/bedienung.md) § 1): Ist das pausierte Gerät das einzige
+verbundene im Raum (Couch-Raum), rechnet der Raum keine Schritte, sendet aber weiter je Tick einen Zustand (unverändert,
+`delta` fast leer). Sind weitere Geräte verbunden, läuft der Raum weiter; die Monarchen des pausierten Geräts stehen still
+(Eingaben zählen nicht) und sind höchstens 60 s (1800 Ticks) geschützt: Gegner wählen sie nicht als Ziel, Schaden trifft
+sie nicht; danach sind sie verwundbar und stehen weiter still. Bricht die Verbindung ab, endet die Pause (Frist laut
+*Wiederverbinden*). Eine Rückmeldung im Zustand gibt es nicht (B-529). `hello.v` muss 8 sein; ein v7-Client erhält
+`version`. Beispiele: `c2s-pause.json`, `c2s-resume.json`.
+
+```json
+{ "t": "pause" }
+{ "t": "resume" }
+```
 
 **Nachgetragen ohne neue Version (TS1.4, B-507):** Fehler-Code `restarting` („Server startet neu“) an alle Geräte,
 bevor der Server wegen geänderter Dateien neu startet (siehe *Neustart des Servers*). Ein älterer Client zeigt ihn wie
-jeden unbekannten Code als Hinweis; die Version bleibt 7.
+jeden unbekannten Code als Hinweis; die Version blieb 7.
 
 **Änderungen gegenüber v6 (WZ18.5, Version 7, B-488):** `create` nimmt die optionale Welt-ID `world` (Muster
 `^[a-z0-9][a-z0-9-]{0,31}$`, [`rules/welten.md`](rules/welten.md) § 4/6), nur bei `fresh: true`: Der neue Stand spielt
@@ -259,8 +274,8 @@ vollständig und in Reihenfolge, deshalb braucht es keine Wiederholung und keine
 **Version:** Das Feld `v` steht nur im Handschlag (`hello`, `welcome`), nicht in jeder Nachricht. Die Version gilt für
 die ganze Verbindung; jede weitere Nachricht damit auszustatten kostet bei 30 Snapshots pro Sekunde nur Bytes.
 Erste Nachricht nach dem Verbinden ist immer `hello`. Ist sie kein gültiges `hello` (kein JSON, anderer Typ, Feld
-fehlt, `v` nicht 7), antwortet der Server mit `version` und schließt: Ein alter v1-Client schickt zuerst `join`, ein
-v6-Client schickt `v: 6`.
+fehlt, `v` nicht 8), antwortet der Server mit `version` und schließt: Ein alter v1-Client schickt zuerst `join`, ein
+v7-Client schickt `v: 7`.
 
 **Takt:** Ein laufender Raum tickt mit **30 Hz** und schickt jedem seiner Geräte pro Tick und Stufe des Geräts höchstens
 einen Zustand (`snap` oder `delta`, Stufen aufsteigend). Ein pausierter Raum schickt nichts. Geräte schicken `input`
@@ -277,7 +292,7 @@ das zählt als Abbruch.
 
 | Nachricht | Richtung | Wann | Felder | Beispiel |
 |---|---|---|---|---|
-| `hello` | Gerät → Server | als erste Nachricht | `v` Protokoll-Version (7), `device` Geräte-ID (≤ 64 Zeichen) | `c2s-hello.json` |
+| `hello` | Gerät → Server | als erste Nachricht | `v` Protokoll-Version (8), `device` Geräte-ID (≤ 64 Zeichen) | `c2s-hello.json` |
 | `welcome` | Server → Gerät | Antwort auf passendes `hello` | `v`, `tickHz`, `limits` (Grenzen aus *Grenzen*) | `s2c-welcome.json` |
 | `rooms` | Server → Gerät | nach `welcome`, sobald das Gerät wieder in keinem Raum ist, und bei jeder Änderung, solange es in keinem Raum ist | `rooms[]`: `code`, `name`, `depth`, `grade`, `taken` (besetzt + wartend), `free` (4 − `taken`), `running` | `s2c-rooms.json` |
 | `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]`, optional `grade`, `goal`, `defeat` (siehe oben), optional `seed` (nur bei `fresh`, höchstens 64 Zeichen, sonst gilt der Name), optional `world` (Welt-ID, nur bei `fresh`, fehlt = `standard`, eine andere nur im Dev-Mode; v7) | `c2s-create.json`, `c2s-create-seed.json`, `c2s-create-world.json` |
@@ -293,6 +308,8 @@ das zählt als Abbruch.
 | `learn` | Gerät → Server | Skill lernen, im Raum | `slot` (vom Gerät), `skill` Skill-ID aus `data/monarch.json › skills` | `c2s-learn.json` |
 | `respec` | Gerät → Server | Skill-Verteilung zurücksetzen, im Raum | `slot` (vom Gerät) | `c2s-respec.json` |
 | `leave` | Gerät → Server | Raum bewusst verlassen | – | `c2s-leave.json` |
+| `pause` | Gerät → Server | Gerät pausiert (Pause-Menü offen), im Raum; v8 | – | `c2s-pause.json` |
+| `resume` | Gerät → Server | Gerät setzt fort, im Raum; v8 | – | `c2s-resume.json` |
 | `dev` | Gerät → Server | nur im Dev-Mode (siehe *Dev-Aktionen*), im Raum | `action` und je Aktion: `gold` `slot`, `amount`; `material` `slot`, `resource`, `amount`; `timescale` `factor`; `pause` `paused`; `castleFall` `slot` | `c2s-dev-gold.json`, `c2s-dev-material.json`, `c2s-dev-timescale.json`, `c2s-dev-pause.json`, `c2s-dev-castlefall.json` |
 | `error` | Server → Gerät | Fehlerfall, siehe Codes | `code`, `message` (deutsch, für die Anzeige) | `s2c-error.json`, `s2c-error-forbidden.json` |
 
@@ -420,7 +437,7 @@ Geprüft von `TestWirtschaftZustand`, `TestWirtschaftDelta`, `TestKaempferZustan
 | `save_not_found` | `create` mit `fresh: false` und einem Namen, den es nicht gibt | bleibt |
 | `room_closed` | Raum abgestürzt oder Server fährt herunter; Gerät geht zurück zur Raumliste | bleibt (beim Herunterfahren: Server schließt) |
 | `replaced` | dieselbe Geräte-ID ist demselben Raum über eine neue Verbindung beigetreten | Server schließt, kein automatisches Neuverbinden |
-| `version` | erste Nachricht ist kein gültiges `hello` oder `v` ist nicht 7 | Server schließt |
+| `version` | erste Nachricht ist kein gültiges `hello` oder `v` ist nicht 8 | Server schließt |
 | `forbidden` | `dev` ohne Dev-Mode am Server, `create` mit einer anderen Welt als `standard` ohne Dev-Mode; die Warnung steht im Log | bleibt, Nachricht wird verworfen |
 | `restarting` | Server startet gleich neu (geänderte Dateien, siehe *Neustart des Servers*); danach folgt `room_closed` | bleibt (bis zum Herunterfahren) |
 | `world_unknown` | `create` mit unbekannter oder ungültiger Welt (`world`) bzw. Spielstand in einer solchen Welt (v7) | bleibt |
@@ -585,6 +602,14 @@ Sicherungen fehlen. Die Antwort ist immer ein Array. Je Eintrag: `name`, `savedA
 `depths` (die Tiefen der Spieler aus `players[].depth`, aufsteigend, jede einmal). Felder, die im Stand fehlen (etwa
 `day` und `phase` vor Version 4), fehlen auch im Eintrag; eine unlesbare Datei steht mit `"error": "ungültig"` in der
 Liste. Andere Methoden → `405`. Das WebSocket-Protokoll ändert sich dadurch nicht.
+
+**Nachgetragen ohne neue Version (BD5.1, B-506):** Jeder Eintrag nennt zusätzlich `world` (Welt-ID des Stands ab
+Spielstand-Version 8; fehlt bei älteren Ständen, dann gilt `standard`). `DELETE /api/save?slot=NAME` (ohne Token wie
+`POST`) nimmt einen Spielstand aus der Liste: Er wandert in seine rotierenden Sicherungen (`saves/backups/NAME/`, mit
+`POST /api/save/restore` wiederherstellbar), ältere Sicherungen bleiben im Rahmen der Rotation (höchstens 5 je Stand, die älteste fällt bei Überlauf weg; Entscheidung B-533). Antworten: `200`
+`{"ok": true, "slot": NAME}`; `404` ohne Stand; `400` bei ungültigem Namen; `409` `{"error": "Spielstand ist in einem Raum
+offen"}`, solange ein Raum den Stand geöffnet hat (auch ohne verbundenes Gerät). Neu anlegen bleibt `create` mit
+`fresh: true`. Das WebSocket-Protokoll und seine Version (8) ändern sich nicht.
 
 ```json
 [

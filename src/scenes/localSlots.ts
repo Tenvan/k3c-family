@@ -83,13 +83,21 @@ export class LocalSlots<I extends SlotInputDevice> {
     return 'removed';
   }
 
-  /** „Spieler abmelden“ (B-411): der höchste Platz des Geräts geht (`removeSlot`); der letzte Platz bleibt, dann `null`. */
-  removeLast(seated: readonly number[], client: SlotClient): number | null {
-    if (seated.length < 2) return null;
-    const slot = Math.max(...seated);
+  /**
+   * „Spieler abmelden“ (B-411): genau dieser Slot geht (`removeSlot`), seine Eingabe wird frei. Ist er der letzte Platz des Geräts,
+   * nur `leave` melden (der Aufrufer verlässt den Raum, wie „Spiel verlassen“). Ein Slot ohne Eingabe oder ohne Platz: `none`.
+   */
+  removeAt(slot: number, seated: readonly number[], client: SlotClient): 'leave' | 'removed' | 'none' {
+    if (!seated.includes(slot) || !this.bound[slot]) return 'none';
     this.bound[slot] = null;
+    if (seated.every((s) => s === slot)) return 'leave';
     client.removeSlot(slot);
-    return slot;
+    return 'removed';
+  }
+
+  /** Slot, den diese Eingabe steuert, sonst `-1` */
+  slotOf(input: I): number {
+    return this.bound.indexOf(input);
   }
 
   /** Eingaben für alle Plätze des Geräts: bedienter Slot mit seiner Eingabe, Mock mit „keine Bewegung“, unbedienter gar nicht. */

@@ -36,6 +36,9 @@ type Player struct {
 	// Free: Niemand steuert diesen Monarchen (vom Raum gesetzt, B-059). Er zählt nicht für den Stufenwechsel und
 	// reist mit. Nur Go, im JSON nur bei true.
 	Free bool `json:"free,omitempty"`
+	// Protected: Schutz des pausierten Monarchen online (B-214, vom Raum gesetzt): kein Ziel für Gegner, kein Schaden.
+	// Nur zur Laufzeit, weder im Spielstand noch im Protokoll.
+	Protected bool `json:"-"`
 	// Skills: gelernte Skills (IDs, Lernreihenfolge); Slots: aktive Skills in den Slots 1 bis 4 ("" = frei).
 	Skills []string `json:"skills,omitempty"`
 	Slots  []string `json:"slots,omitempty"`
@@ -51,6 +54,7 @@ type Player struct {
 	LastStandFor float64 `json:"lastStandFor,omitempty"`
 	// ReviveProgress: Sekunden, die ein Mitspieler diesen Gefallenen schon wiederbelebt (monarch_revive.go, B-120).
 	ReviveProgress float64 `json:"reviveProgress,omitempty"`
+	skillHeld      int     // Skill-Slot (1 bis 4) des Vor-Ticks, 0 = keiner: castFailed nur bei neuem Druck (B-378), ohne JSON
 	reviving       bool    // belebt in diesem Tick jemanden wieder (lässt keine Münze fallen), ohne JSON
 	hit            bool    // seit dem letzten stepRevive wirksam getroffen, ohne JSON
 }

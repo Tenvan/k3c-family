@@ -127,7 +127,7 @@ describe('create-Befehl mit slots[] (AC-14, B-082/AC-02)', () => {
 
 describe('Lobby-Auswahl (AC-03)', () => {
   it('„Spielen“ steht oben, danach die Räume', () => {
-    expect(lobbyEntries([room]).map((e) => e.kind)).toEqual(['play', 'room']);
+    expect(lobbyEntries([room]).map((e) => e.kind)).toEqual(['play', 'new', 'room']);
   });
 
   it('Auswahl bleibt in der Liste', () => {
@@ -145,7 +145,7 @@ describe('Lobby-Auswahl (AC-03)', () => {
 
   it('„Spielen“ erstellt, ein Raum aus der Liste tritt bei', () => {
     const flow = new LobbyFlow(params({ mock: 1 }));
-    const [play, entry] = lobbyEntries([room]);
+    const [play, , entry] = lobbyEntries([room]);
     expect(flow.choose(play!)).toEqual({ t: 'create', save: 'familie', fresh: false, depth: 0, slots: [0, 1] });
     expect(flow.choose(entry!)).toEqual({ t: 'join', room: 'KRNZ', slots: [0, 1] });
   });
@@ -234,7 +234,7 @@ describe('Lobby ohne Verbindung (B-083)', () => {
     expect(lobbyEntries([room], 'ended')).toEqual([{ kind: 'reload' }]);
     expect(lobbyEntries([room], 'connecting')).toEqual([]);
     expect(lobbyEntries([room], 'reconnecting')).toEqual([]);
-    expect(lobbyEntries([room], 'lobby').map((e) => e.kind)).toEqual(['play', 'room']);
+    expect(lobbyEntries([room], 'lobby').map((e) => e.kind)).toEqual(['play', 'new', 'room']);
   });
 
   it('?room und ?players=n treten mit den Slots 0…n-1 bei, ohne ?players mit einem (B-353/AC-02)', () => {
@@ -261,12 +261,12 @@ describe('Spielstand wählen (LB1.1, B-037/AC-04)', () => {
 
   it('die neuesten sechs unter den Räumen, ohne schon offene', () => {
     const entries = lobbyEntries([room], 'lobby', [...saves, save('familie', '2026-10-09T10:00:00Z')]);
-    expect(entries.map((e) => e.kind)).toEqual(['play', 'room', 'save', 'save', 'save', 'save', 'save', 'save']);
+    expect(entries.map((e) => e.kind)).toEqual(['play', 'new', 'room', 'save', 'save', 'save', 'save', 'save', 'save']);
     expect(entries.flatMap((e) => (e.kind === 'save' ? [e.save.name] : []))).toEqual(['s7', 's6', 's5', 's4', 's3', 's2']);
   });
 
   it('ohne Räume direkt unter „Spielen“; ohne Verbindung nur retry/reload', () => {
-    expect(lobbyEntries([], 'lobby', [saves[0]!]).map((e) => e.kind)).toEqual(['play', 'save']);
+    expect(lobbyEntries([], 'lobby', [saves[0]!]).map((e) => e.kind)).toEqual(['play', 'new', 'save']);
     expect(lobbyEntries([], 'lost', saves)).toEqual([{ kind: 'retry' }]);
     expect(lobbyEntries([], 'ended', saves)).toEqual([{ kind: 'reload' }]);
   });
@@ -277,8 +277,39 @@ describe('Spielstand wählen (LB1.1, B-037/AC-04)', () => {
     expect(flow.step({ status: 'lobby', errorCode: 'save_not_found' })).toBeNull();
   });
 
+  it('Spielstand-Eintrag mit dem Namen params.save: save_not_found liefert keinen Neuversuch, „Spielen“ und Autostart schon (B-382/AC-01)', () => {
+    const notFound = { status: 'lobby' as Status, errorCode: 'save_not_found' };
+    const flow = new LobbyFlow(params());
+    expect(flow.choose({ kind: 'save', save: save('familie', '2026-10-01T10:00:00Z') })).toMatchObject({ save: 'familie', fresh: false });
+    expect(flow.step(notFound)).toBeNull();
+    flow.choose({ kind: 'play' });
+    expect(flow.step(notFound)).toMatchObject({ t: 'create', save: 'familie', fresh: true });
+    expect(flow.step(notFound)).toBeNull();
+    const auto = new LobbyFlow(params({ autostart: true }));
+    auto.step(lobby);
+    expect(auto.step(notFound)).toMatchObject({ t: 'create', fresh: true });
+    expect(auto.step(notFound)).toBeNull();
+  });
+
+  it('ungültiges savedAt sortiert hinter die gültigen, übrige nach Datum (B-382/AC-02)', () => {
+    const entries = lobbyEntries([], 'lobby', [save('x', 'x'), save('alt', '2026-10-01T10:00:00Z'), save('neu', '2026-10-03T10:00:00Z'), save('leer', '')]);
+    expect(entries.flatMap((e) => (e.kind === 'save' ? [e.save.name] : []))).toEqual(['neu', 'alt', 'x', 'leer']);
+  });
+
   it('Beschriftung mit Name, Tag und Stufe', () => {
-    expect(entryLabel({ kind: 'save', save: save('burg', '2026-10-01T10:00:00Z', 3) }, 'familie')).toBe('Spielstand burg  ·  Tag 3  ·  Stufe 0, 1');
-    expect(entryLabel({ kind: 'save', save: { name: 'alt', savedAt: '', depths: [] } }, 'familie')).toBe('Spielstand alt  ·  Tag –  ·  Stufe –');
+    expect(entryLabel({ kind: 'save', save: save('burg', '2026-10-01T10:00:00Z', 3) }, 'familie')).toBe('Spielstand burg  ·  Welt standard  ·  Tag 3  ·  Stufe 0, 1');
+    expect(entryLabel({ kind: 'save', save: { name: 'alt', savedAt: '', depths: [] } }, 'familie')).toBe('Spielstand alt  ·  Welt standard  ·  Tag –  ·  Stufe –');
+    expect(entryLabel({ kind: 'save', save: { name: 'nord', savedAt: '', world: 'nordmeer', depths: [0] } }, 'familie')).toBe('Spielstand nord  ·  Welt nordmeer  ·  Tag –  ·  Stufe 0');
+  });
+});
+
+describe('Neuer Spielstand (BD5.2, B-506/AC-02)', () => {
+  it('nächster freier Name, auch gegen offene Räume; legt frisch in der Start-Welt an', () => {
+    const saves = [{ name: 'spiel-1', savedAt: '2026-10-01T10:00:00Z', depths: [0] }];
+    const [, entry] = lobbyEntries([{ ...room, name: 'spiel-2' }], 'lobby', saves);
+    expect(entry).toEqual({ kind: 'new', name: 'spiel-3' });
+    expect(entryLabel(entry!, 'familie')).toBe('Neuer Spielstand  (spiel-3)');
+    const flow = new LobbyFlow(params({ world: 'nordmeer', seed: 'abc' }));
+    expect(flow.choose(entry!)).toEqual({ t: 'create', save: 'spiel-3', fresh: true, depth: 0, slots: [0], seed: 'abc', world: 'nordmeer' });
   });
 });
