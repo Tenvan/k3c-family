@@ -17,6 +17,7 @@ nur mit Zustimmung von 🧑.
 | Wurzel (Höhlen-Flora, von der Decke bis in den Boden, Klasse `flora`) | 2–3 × 15 | `wurzel`, `wurzel-2`, `wurzel-3` (GEB10.1); 15 Kacheln = bis an den oberen Rand der sichtbaren Welt |
 | Höhlenbusch (Klasse `flora`) | 1 × 1 | `hoehlenbusch.json` (GEB10.1): Farnwedel mit Leuchtpilzen |
 | Truhe (offen, mit Gold) | 1 × 1 | `truhe.json` (GEB6.4) |
+| Truhe geschlossen (eigene JSON, keine Stufe: der Goldhaufen fällt weg) | 1 × 1 | `truhe-geschlossen.json` (GEB10.2): gewölbter Deckel, Eisenbänder über Deckel und Körper, Körper wie `truhe` |
 | Portal, Ausgang (statisch, ohne Stufen) | 2 × 3 | `portal.json`, `ausgang.json` (GEB6.4); Portal mit leuchtender Kristallfläche, Ausgang mit dunkler Öffnung und Holzrahmen |
 | Rekrutierungslager (Zelt und Feuerstelle, statisch) | 3 × 2 | `rekrutierungslager.json` (GEB6.4) |
 | Ader (Stufen 1–4 = Stein, Kupfer, Eisen, Kristall) | 2 × 2 | `ader.json` (GEB6.3); Felsbuckel mit Erzgang, Stein-Ader in `pancho`/`white`, die nur im Gang vorkommt |

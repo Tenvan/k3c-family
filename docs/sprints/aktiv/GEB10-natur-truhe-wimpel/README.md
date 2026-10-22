@@ -66,7 +66,7 @@ Autonom entschieden (Auftrag 🧑 2026-10-22: GEB komplett autonom), Meldung im 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | GEB10.1 | `GEB10.1-hohe-baeume-hoehlenflora.md` | Umsetzung | autonom | fertig |
-| GEB10.2 | `GEB10.2-truhe-geschlossen.md` | Umsetzung | autonom | offen |
+| GEB10.2 | `GEB10.2-truhe-geschlossen.md` | Umsetzung | autonom | fertig |
 | GEB10.3 | `GEB10.3-wimpel-flora-truhe-im-spiel.md` | Umsetzung | autonom | offen |
 | GEB10.4 | `GEB10.4-review.md` | Review | autonom | offen |
 | GEB10.5 | `GEB10.5-abnahme.md` | Workshop | Mensch | blockiert |

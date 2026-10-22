@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { baumDatei, baumReihe, figureCard, gebaeudeKarten, hintergrundStreifen, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './scenesLogic';
 
@@ -107,6 +108,22 @@ describe('Asset-Vorschau: Baum-Reihe (GEB1/AC-05)', () => {
     expect(baumDatei(idx[1]!, 2, 32)).toBe('tanne-2-2-32.png');
     expect(baumDatei(idx[1]!, 1, 32)).toBe('tanne-2-1-32.png');
     expect(baumDatei(idx[0]!, 2, 32)).toBeUndefined();
+  });
+});
+
+describe('Asset-Vorschau: echte Grafik (GEB10)', () => {
+  const index = JSON.parse(readFileSync(new URL('../../../../../public/grafik/gebaeude/index.json', import.meta.url), 'utf8')) as GebaeudeEintrag[];
+
+  it('zeigt offene und geschlossene Truhe direkt nacheinander (B-455/AC-01)', () => {
+    const ids = gebaeudeKarten(index).filter((k) => k.dichte === 32).map((k) => k.id);
+    expect(ids.indexOf('truhe-geschlossen')).toBe(ids.indexOf('truhe') - 1); // Dateiname: `-` sortiert vor `.`
+  });
+
+  it('Bäume 11,25 Kacheln hoch (birke-3 9,5), Höhlen-Flora in eigener Reihe (B-454)', () => {
+    const baeume = index.filter((e) => e.klasse === 'baum');
+    expect(baeume).toHaveLength(9);
+    for (const e of baeume) expect(e.kacheln.h).toBe(e.id === 'birke-3' ? 9.5 : 11.25);
+    expect(baumReihe(index, undefined, 1, 'flora').map((b) => b.id)).toEqual(['hoehlenbusch', 'wurzel-2', 'wurzel-3', 'wurzel']);
   });
 });
 

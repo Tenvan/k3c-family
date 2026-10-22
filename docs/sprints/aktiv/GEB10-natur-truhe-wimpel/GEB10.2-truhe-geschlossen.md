@@ -1,6 +1,6 @@
 # GEB10.2 · Geschlossene Truhe, Vorschau zeigt beide
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -38,8 +38,8 @@ Spiel-Zuordnung (GEB10.3); Truhen-Zustand in Simulation oder Protokoll.
 
 ## Fertig, wenn
 
-- [ ] AC-02: `truhe-geschlossen` im `index.json` mit vier Dichten, Vorschau zeigt sie neben `truhe` (Studio-Vitest grün).
-- [ ] Zweiter `task gen:gebaeude` byte-gleich; `task check:diff` grün.
+- [x] AC-02: `truhe-geschlossen` im `index.json` mit vier Dichten, Vorschau zeigt sie neben `truhe` (Studio-Vitest grün).
+- [x] Zweiter `task gen:gebaeude` byte-gleich; `task check:diff` grün.
 
 ## Prüfen
 
@@ -53,4 +53,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- **AC-02 (B-455/AC-01) umgesetzt, geprüft:** `truhe-geschlossen.json` (1 × 1, Klasse `beute`, Vorlage; Deckel gewölbt, Eisenbänder über Deckel und Körper, Körper aus `truhe` übernommen) mit PNG 16/32/64/128; `task gen:gebaeude --force` zweimal md5-gleich (53 Gebäude); 64 px und 16 px gesichtet.
+- Vorschau: Karten aus dem echten `index.json` zeigen `truhe-geschlossen` direkt vor `truhe` (neuer Vitest „echte Grafik (GEB10)“, prüft auch Baumhöhen und Flora-Reihe); Studio-Vitest 26/26, `tsc` grün. Regeldatei § 1 ergänzt.
+- B-455/AC-02 (Spiel-Zuordnung) folgt in GEB10.3.

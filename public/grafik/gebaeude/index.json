@@ -1760,6 +1760,34 @@
     }
   },
   {
+    "id": "truhe-geschlossen",
+    "klasse": "beute",
+    "kacheln": {
+      "b": 1,
+      "h": 1
+    },
+    "vorlage": {
+      "motiv": "Geschlossene Beute-Truhe mit gewölbtem Deckel, 1 × 1 Kachel, Gegenstück zur offenen Truhe",
+      "teile": [
+        "Gewölbter Holzdeckel oben, Lichtkante links, Schatten rechts und an der Unterkante",
+        "Zwei Eisenbänder laufen über Deckel und Truhenkörper",
+        "Truhenkörper wie bei der offenen Truhe mit Schloss in der Mitte"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Eisen (Rüstung, Band)"
+      ],
+      "stimmung": "verschlossen, verlockend",
+      "fein": "Maserung, Glanzpunkt am Deckel, Schlüsselloch"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/truhe-geschlossen-128.png",
+      "16": "grafik/gebaeude/truhe-geschlossen-16.png",
+      "32": "grafik/gebaeude/truhe-geschlossen-32.png",
+      "64": "grafik/gebaeude/truhe-geschlossen-64.png"
+    }
+  },
+  {
     "id": "truhe",
     "klasse": "beute",
     "kacheln": {
