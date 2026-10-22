@@ -55,7 +55,7 @@ Entschieden autonom (Claude, 2026-10-22), 🧑 prüft im Entscheidungs-Sprint GR
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GR9.1 | `GR9.1-kandidaten-import.md` | Umsetzung | autonom | offen |
+| GR9.1 | `GR9.1-kandidaten-import.md` | Umsetzung | autonom | fertig |
 | GR9.2 | `GR9.2-monarch-sheets.md` | Umsetzung | autonom | offen |
 | GR9.3 | `GR9.3-monarch-einbau.md` | Umsetzung | autonom | offen |
 | GR9.4 | `GR9.4-review.md` | Review | autonom | offen |

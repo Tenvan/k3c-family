@@ -1,6 +1,6 @@
 # GR9.1 · Kandidaten-Import hält task check grün
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -49,5 +49,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 umgesetzt, geprüft: `grafikPacks.test.ts` nimmt `kandidaten/` aus (wie `gebaeude/`), neuer Fall in `credits.test.ts` belegt Urheber, Lizenz und Quelle eines Imports in der Lizenzliste; `src/tools`-Vitest grün. `check:diff` einmal im Review GR9.4.
+- Abweichung: kein echter Import als Beispieldatei eingecheckt (nur Parser-Fall), da Importe Lizenzprüfung brauchen.
