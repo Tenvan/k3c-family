@@ -716,6 +716,7 @@
     "skillPoints": 2,
     "travel": null,
     "events": [],
-    "depth": 0
+    "depth": 0,
+    "grade": "normal"
   }
 }

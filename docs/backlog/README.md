@@ -16,7 +16,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | eingeplant | RG2 | Tiefe 3 und 4 sind beschrieben |
 | [B-041](B-041-wails-starter.md) | DEV | Idee | niedrig | eingeplant | BT1 | Wails-Starter für Windows existiert |
 | [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | HW1 | Pi-Modell und Leistungsziel sind festgelegt |
-| [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | eingeplant | KB2 | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
 | [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | HW1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
 | [B-098](B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | eingeplant | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | eingeplant | BAL6 | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
@@ -523,3 +522,4 @@ Zeile in diesen Abschnitt.
 | [B-530](archiv/B-530-wartender-monarch-verwundbar.md) | SIM | Problem | mittel | erledigt | BD7 | Wartende Monarchen nach Verbindungsverlust sind in der Simulation nicht unverwundbar |
 | [B-285](archiv/B-285-lernbare-skills-im-protokoll.md) | SRV | Problem | mittel | erledigt | RM1 | Der Server nennt je Spieler die lernbaren Skills |
 | [B-495](archiv/B-495-respec-in-aktionsliste.md) | SRV | Schuld | niedrig | erledigt | RM1 | Die Aktionsliste nennt respec, wenn CanRespec erlaubt |
+| [B-080](archiv/B-080-dev-tasten-server.md) | SRV | Idee | niedrig | erledigt | KB2 | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |

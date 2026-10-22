@@ -472,6 +472,10 @@ Aktion, Werte, Raum).
 - `pause`: `paused` (true/false, Pflicht) hält den ganzen Raum an (B-231, Cheat-Dialog): Ticks laufen weiter und
   schicken den Zustand, rechnen aber keinen Schritt; Eingaben wirken erst nach dem Lösen. Im Dev-Mode steht
   `devPaused` (true/false) wie `devTimescale` in `s`, ohne Dev-Mode fehlt das Feld. Verlässt das letzte Gerät den Raum, ist die Pause aufgehoben.
+- `grade`: `grade` (Name aus `data/difficulty.json`, sonst `bad_request`) setzt den Schwierigkeitsgrad des Raums wie
+  über `/api/dev`; er gilt ab der nächsten Welle (B-080, `c2s-dev-grade.json`). Nachgetragen ohne neue Version (KB2.6):
+  `s` von `snap` und `delta` nennt immer den aktuellen Grad des Raums als `grade` (auch ohne Dev-Mode; im Delta nur bei
+  Änderung); ein älterer Server sendet das Feld nicht.
 
 ### Kampf: Bosse, Events, Inselwechsel
 

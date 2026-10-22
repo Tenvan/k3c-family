@@ -1,6 +1,6 @@
 # KB2.6 · Nachweis Dev-Aktionen: Zustand im nächsten delta, Gradwechsel ab nächster Welle
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -53,5 +53,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-23, autonom (Claude). Vorgezogen vor K5.3 (siehe KB2 › Offene Fragen).
+
+- Befund: B-080/AC-01 belegt `TestDevTimescaleImZustand` (Dev-Aktion im nächsten `delta`); B-080/AC-02 belegt `engine/room/dev_grade_test.go` (ab nächster Welle, unbekannt `bad_request`, ohne Dev-Mode `forbidden`). Lücken: `grade` ging nur über `/api/dev`, nicht über die Nachricht `dev`; der Zustand nannte den Grad nicht.
+- **AC-05 umgesetzt, geprüft:** `dispatch.go` reicht `grade` durch; `Room.snapshot` setzt `s.grade` (Grad des Raums). Test `TestDevGradeUeberWebSocket` (Dev-Mode: nächstes `delta` mit `grade: hard`; ohne: `forbidden`). Beispiel `c2s-dev-grade.json`, `s2c-snapshot-full.json` mit `grade`, Doku `docs/protocol.md` › Dev-Aktionen (ohne neue Version).
+- `go test ./engine/net ./engine/room` grün, `go:lint` grün. Reviewer (Sonnet): keine schweren Befunde. B-080 erledigt.

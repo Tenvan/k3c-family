@@ -108,3 +108,36 @@ func TestDevTimescaleImZustand(t *testing.T) {
 		}
 	}
 }
+
+// B-080, KB2.6: Der Zustand nennt den Grad des Raums; die Dev-Aktion grade über WebSocket (c2s-dev-grade.json) ändert
+// ihn im nächsten delta; ohne Dev-Mode ist sie forbidden und der Grad bleibt.
+func TestDevGradeUeberWebSocket(t *testing.T) {
+	srv, m := devServer(t)
+	x := hello(t, srv, "xbox")
+	create(x, "dev", 0)
+	j := x.expect("joined")
+	x.expect("level")
+	if s := x.expect("snap")["s"].(map[string]any); s["grade"] == nil || s["grade"] == "hard" {
+		t.Fatalf("snap: grade %v", s["grade"])
+	}
+	raw, _ := os.ReadFile("../../testdata/protocol/c2s-dev-grade.json")
+	x.send(string(raw))
+	r := m.Room(j["room"].(string))
+	waitFor(t, func() bool {
+		r.Tick()
+		s, _ := x.expect("delta", "seats")["s"].(map[string]any)
+		return s["grade"] == "hard"
+	})
+
+	srv, m = wsServer(t)
+	y := hello(t, srv, "xbox")
+	create(y, "live", 0)
+	j = y.expect("joined")
+	y.expect("level")
+	before := y.expect("snap")["s"].(map[string]any)["grade"]
+	y.send(string(raw))
+	y.expectError("forbidden")
+	if g := m.Room(j["room"].(string)); g == nil || before == "hard" {
+		t.Fatalf("Raum fehlt oder Grad schon hart: %v", before)
+	}
+}

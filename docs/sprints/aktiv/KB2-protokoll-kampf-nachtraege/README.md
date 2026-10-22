@@ -1,14 +1,14 @@
 # KB2 · SRV, CLI · Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** KMP
 - **Domäne:** SRV, CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-385, B-344, B-381, B-386, B-324, B-080
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 5ff6ce7c
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-23, Revision 1
 
 ## Ausgangslage
 
@@ -52,7 +52,12 @@ Spieler verlässt den Raum nach Game Over → kein Speichern über den letzten S
 
 ## Offene Fragen
 
-B-386 (🧑): Gilt das Netz-Budget Q08 (≤ 200 Byte je Tick und Client) für den gesamten Zustand oder nur für Ereignisse? Gemessen: `delta` Ø 913 B, `events` Ø 2,9 B. Blockiert die Freigabe von AC-03.
+Vorentschieden (autonom, Claude, 2026-10-23), Bestätigung durch 🧑 über KR6:
+
+- **B-386 (Q08):** Variante B. Das Budget ≤ 200 Byte je Tick und Client gilt für die Ereignisse; der Zustand (`snap`, `delta`) wird nur gemessen (wie K4.2). Steht nach KB2.3 in `docs/protocol.md` und `docs/fragenkatalog.md` als Default.
+- **B-385:** Die Ereignisse des letzten Ticks der alten Insel gehen mit einem letzten `delta` an jedes Gerät, bevor `level` und `snap` der neuen Insel folgen.
+- **B-344:** Nach `Island.Over` speichert der Raum nicht mehr; er bleibt offen, bis alle gegangen sind.
+- KB2.6 läuft vor K5.3 (K5.3 braucht die Dev-Aktion `grade` über WebSocket und den Grad im Zustand).
 
 ## Sessions
 
@@ -63,7 +68,7 @@ B-386 (🧑): Gilt das Netz-Budget Q08 (≤ 200 Byte je Tick und Client) für de
 | KB2.3 | `KB2.3-haendler-protokoll.md` | Umsetzung | autonom | offen |
 | KB2.4 | `KB2.4-client-typen-gegner.md` | Umsetzung | autonom | offen |
 | KB2.5 | `KB2.5-review.md` | Review | autonom | offen |
-| KB2.6 | `KB2.6-dev-aktion-grad-nachweis.md` | Umsetzung | autonom | offen |
+| KB2.6 | `KB2.6-dev-aktion-grad-nachweis.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
