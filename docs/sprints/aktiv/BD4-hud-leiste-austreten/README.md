@@ -1,14 +1,14 @@
 # BD4 · CLI · Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-411, B-413
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Start-Commit:** 013dcb34
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-10-22 (Ralf: autonom abarbeiten)
 
 ## Ausgangslage
 
@@ -53,9 +53,17 @@ Letzter lokaler Spieler meldet sich ab → ohne Rückfrage wie „Spiel verlasse
 
 ## Offene Fragen
 
-B-413 (aus dem POC, 🧑): Wortlaut und Symbol des Goldtopfs; Hintergrund-Höhe je Biom gegen `WORLD_TOP`.
+Entschieden mit Default (autonom, Claude), Prüfung durch 🧑: Goldtopf B-525, Hintergrund-Höhe B-526, Abmelden mit zwei Tastatur-Spielern B-527.
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BD4.1 | `BD4.1-hud-leiste-kompass.md` | Umsetzung | autonom | offen |
+| BD4.2 | `BD4.2-fluss-spiegelung.md` | Umsetzung | autonom | offen |
+| BD4.3 | `BD4.3-austreten-menue.md` | Umsetzung | autonom | offen |
+| BD4.4 | `BD4.4-workshop-abnahme.md` | Workshop | Mensch | offen |
+| BD4.5 | `BD4.5-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
