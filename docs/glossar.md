@@ -199,6 +199,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Startvorrat | 100 Holz im Insel-Vorrat jeder neuen Insel (`islandStartStock`), auch nach dem Inselwechsel. | `rules/materialien-gebaeude.md` § 1, `rules/stufen.md` § 1, B-177 |
 | Startwert | Vorläufiger Zahlenwert aus Beschluss oder Vorschlag; gilt, bis der Balancing-Tester (B-099) ihn bestätigt oder ändert. | Kopf jeder Datei in `rules/` |
 | Stein | Material der Hub-Stufe 2 aus Adern in der Höhle und endlichen Felsen; für Steinmauer und -turm, Tor, Kaserne, Lager, Taverne, Treppen. | `rules/materialien-gebaeude.md` § 1 |
+| Stil-Bibel | Dokument `docs/assets/stil-bibel.md`: Ziel-Palette, Pixeldichte, Outline- und Lichtregel, nach denen die Grafik-Pipeline Assets umrechnet. | B-331, GR8.2 |
 | Streuung | Seed-abhängige Verschiebung der Linien 2–5 nur nach außen um 0 bis +4 ganze Units, je Seite und Linie, über einen eigenen RNG-Strom (`…:sites`). Linie 1 und Hub-Plätze streuen nicht. | Q56 (präzisiert Q50) |
 | Stufe | Ort einer Insel in einer Tiefe (0 Wald bis 4 Kristallhöhle) mit eigenem Hub, eigenen Wellen und Biom; pro Spieler frei begehbar, alle laufen weiter. Nicht verwechseln mit Hub-Stufe oder Material-Stufe. | `rules/stufen.md` § 1 |
 | Tag | Erste Phase des Tageszyklus, Startwert 6 min (heute Wald 10 min, bis B-470); Respec nur am Tag. | `rules/wirtschaft.md` § 3, Q65 |

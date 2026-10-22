@@ -11,9 +11,10 @@ const lizenzen =renderCredits(CREDITS.filter((c) => c.root === 'grafik'));
 
 /** Alle Dateien unter public/grafik (Schlüssel: Pfad ab dem Ordner) */
 /** ohne `gebaeude/`: eigene Grafik mit Daten-JSON aus `task gen:gebaeude` (GEB1), kein Fremd-Pack */
+/** ohne `kandidaten/`: Importe aus k3c-workbench (M10.5), kein Pack; ihre Credit-Zeilen prüft `credits.test.ts` (B-420) */
 const files = Object.keys(import.meta.glob('../../public/grafik/**/*', { query: '?url', import: 'default' }))
   .map((p) => p.replace('../../public/grafik/', ''))
-  .filter((f) => !f.startsWith('gebaeude/'));
+  .filter((f) => !f.startsWith('gebaeude/') && !f.startsWith('kandidaten/'));
 
 /** Dateiendungen, die nicht ins Repo gehören: Musik, Code, Quelldateien, Skripte */
 const FORBIDDEN = /\.(mp3|ogg|wav|js|html|psd|ase|aseprite|gif|iml|tps|json)$/i;

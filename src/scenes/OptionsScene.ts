@@ -11,9 +11,14 @@ import {
   REMOVE_PLAYER_KEY,
   applyOption,
   moveOption,
+  optionEnabled,
   optionLabel,
+  removeLabel,
+  stepChoice,
   tapOption,
   type OptionDir,
+  type OptionId,
+  type OptionsSceneData,
 } from './optionsLogic';
 import { pauseButton } from './hud/pauseButton';
 
@@ -59,9 +64,17 @@ export class OptionsScene extends Phaser.Scene {
   private padHeld = new Set<string>();
   private menu = new MenuPress();
   private tapped: { row: number; dir: OptionDir } | null = null;
+  /** Slots, die „Spieler abmelden“ treffen kann (leer = ausgegraut), und der gewählte davon (B-411) */
+  private targets: number[] = [];
+  private choice = 0;
 
   constructor() {
     super('options');
+  }
+
+  init(data?: Partial<OptionsSceneData>): void {
+    this.targets = data?.targets ?? [];
+    this.choice = 0;
   }
 
   create(): void {
@@ -100,8 +113,10 @@ export class OptionsScene extends Phaser.Scene {
       want = this.tapped.dir;
       this.tapped = null;
     }
+    const current = OPTION_IDS[this.selected]!;
+    want = this.filterRemove(current, want);
     if (want) {
-      const result = applyOption(this.settings, OPTION_IDS[this.selected]!, want);
+      const result = applyOption(this.settings, current, want);
       if (result.settings !== this.settings) {
         if (result.settings.guideHints && !this.settings.guideHints) guideSeen.reset(); // wieder an = alle Hinweise erneut (Q11)
         saveSettings((this.settings = result.settings));
@@ -109,7 +124,7 @@ export class OptionsScene extends Phaser.Scene {
       }
       if (result.close) return this.close();
       if (result.removePlayer) {
-        this.registry.set(REMOVE_PLAYER_KEY, true); // GameScene meldet den letzten lokalen Spieler ab (B-411)
+        this.registry.set(REMOVE_PLAYER_KEY, this.targets[this.choice] ?? null); // GameScene meldet genau diesen Slot ab (B-411)
         return this.close();
       }
       if (result.leave) {
@@ -122,8 +137,21 @@ export class OptionsScene extends Phaser.Scene {
     this.hint.setText(t('opt.hint'));
     this.rows.forEach((row, i) => {
       const id = OPTION_IDS[i]!;
-      row.setText(`${i === this.selected ? '▶  ' : '    '}${optionLabel(this.settings, id)}`).setColor(i === this.selected ? '#ffd166' : '#ffffff');
+      const label = id === 'removePlayer' ? removeLabel(this.settings, this.targets, this.choice) : optionLabel(this.settings, id);
+      const color = !optionEnabled(id, this.targets) ? '#777777' : i === this.selected ? '#ffd166' : '#ffffff';
+      row.setText(`${i === this.selected ? '▶  ' : '    '}${label}`).setColor(color);
     });
+  }
+
+  /** „Spieler abmelden“ (B-411): ausgegraut ohne Wirkung; bei zwei Tastatur-Spielern wählen links/rechts das Ziel, nur Bestätigen löst aus. */
+  private filterRemove(id: OptionId, want: OptionDir | null): OptionDir | null {
+    if (!want || id !== 'removePlayer') return want;
+    if (!optionEnabled(id, this.targets)) return null;
+    if (this.targets.length > 1 && want !== 'confirm') {
+      this.choice = stepChoice(this.choice, want, this.targets.length);
+      return null;
+    }
+    return want;
   }
 
   private close(): void {
