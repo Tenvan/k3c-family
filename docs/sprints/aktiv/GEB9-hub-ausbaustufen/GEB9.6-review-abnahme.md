@@ -1,6 +1,6 @@
 # GEB9.6 · Review und Abnahme
 
-- **Status:** offen
+- **Status:** blockiert
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -52,5 +52,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Review (Reviewer-Agent Sonnet, getrennt vom Schreiben, statisch auf `origin/develop..sprint/geb9`): keine schweren Befunde. Rückwärtskompatibilität des Schlüssels `art/farbe` bestätigt (Mauer/Turm/Burg byte-gleich, Randfälle `a/b/c`, `/rope` laufen in Fehler), kein Pfad verlangt eine Textur ohne Datei (40 Stufen-PNGs vorhanden), keine weiteren Verwender der gelöschten Grundform-Dateien. AC-01 bis AC-05 mit Nachweis in GEB9.1–9.5. Prüfläufe: `task test` (Client 2348 Tests), `task typecheck`, `task lint`, `go test` und `golangci-lint` für `tools/buildings`, Studio-Vitest (`scenesLogic`, vollständig 463 Tests in GEB9.2) grün. `task check:go` scheiterte an `engine/devrun` (`TestStopBrichtBeiZweitemSignalAb`, `undefined: kaputt` in einer Test-Fixture): `engine/` ist in diesem Sprint unberührt, vermutlich Wanduhr-Test unter Last bzw. Altlast, ungeprüft ob auf `develop` reproduzierbar. `check:race` nicht gefahren (kein Go-Code in `engine/` geändert). AC-06 (Abnahme durch Ralf in Asset-Vorschau und Spiel mit zwei Hub-Stufen) steht aus; Session auf `blockiert` bis dahin. Auffälligste Schwäche für die Abnahme: Heilplatz-Stufen unterscheiden sich nur dezent (Pfosten, Laterne).

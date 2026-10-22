@@ -100,7 +100,7 @@ Alle Fragen sind am 2026-10-22 autonom von Claude mit Default entschieden (Auftr
 | GEB9.3 | `GEB9.3-kaserne-lager-taverne.md` | Umsetzung | autonom | fertig |
 | GEB9.4 | `GEB9.4-schmiede-heilplatz-ruestkammer.md` | Umsetzung | autonom | fertig |
 | GEB9.5 | `GEB9.5-spiel-zuordnung-aufraeumen.md` | Umsetzung | autonom | fertig |
-| GEB9.6 | `GEB9.6-review-abnahme.md` | Review | autonom | offen |
+| GEB9.6 | `GEB9.6-review-abnahme.md` | Review | autonom | blockiert |
 
 - GEB9.1 (DEV) Stufen-Looks je Gebäude, Zusätze und Übergang in `docs/standards/gebaeude-grafik.md` § 6 festschreiben (Entscheidungen aus Offene Fragen), kein Workshop nötig (AC-01).
 - GEB9.2 (DEV) Übergang in `tools/buildings` (Grundform-Datei bleibt), dann Werkstatt und Farm: Stufen 2–5, PNGs, Stufenreihe im Asset-Studio prüfen (AC-02, AC-03, AC-05).
@@ -111,5 +111,4 @@ Alle Fragen sind am 2026-10-22 autonom von Claude mit Default entschieden (Auftr
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-22 Review: AC-01 bis AC-05 erfüllt (Ergebnisse GEB9.1–9.5), keine schweren Befunde, Entscheidungen zu den Offenen Fragen autonom von Claude. AC-06 offen: Ralf nimmt die Stufenreihe in der Asset-Vorschau und das Spiel in mindestens zwei Hub-Stufen ab (GEB9.6 blockiert). Hinweis: `engine/devrun`-Test scheiterte unter Last, `engine/` unberührt.
