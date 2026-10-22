@@ -3,14 +3,14 @@
 - **Domäne:** SIM
 - **Typ:** Problem
 - **Prio:** niedrig
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** –
+- **Sprint:** BD7
 - **Projekt:** BED
 - **Erstellt:** 2026-10-22
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-22 (mit BD7)
 
 ## Ausgangslage
 
@@ -22,7 +22,7 @@ Nach dem Respawn meldet der erste neue Tastendruck ohne Ziel wieder `castFailed`
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spielende (Rückmeldung beim Skill-Druck); Agent in SIM.
 
 ## Anforderungen
 
@@ -31,19 +31,19 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Andere Laufzeit-Felder beim Tod.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Domäne SIM, deterministisch, Golden unverändert; Feld `skillHeld` ist ohne JSON (kein Spielstand, kein Protokoll).
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+Skill 1 ohne Ziel gehalten (`castFailed`), Monarch stirbt mit gehaltener Taste, lebt wieder, Taste neu gedrückt → zweites `castFailed`.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Taste während des ganzen Todes gehalten: nach dem Respawn zählt das weitere Halten als neuer Druck (ein `castFailed`), Default autonom; danach wieder eins je Druck.
 
 ## Akzeptanzkriterien
 

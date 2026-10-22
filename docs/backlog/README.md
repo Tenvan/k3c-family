@@ -154,12 +154,13 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-527](B-527-entscheidung-abmelden-tastatur.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Abmelden mit zwei Tastatur-Spielern und Ziel per Auswahl |
 | [B-528](B-528-entscheidung-pause-regeldetails.md) | SRV | Frage | mittel | offen | – | Entscheidung: Regeldetails der Raum-Pause (Couch-Raum, Schutz, Frist) |
 | [B-529](B-529-entscheidung-pause-protokoll.md) | SRV | Frage | mittel | offen | – | Entscheidung: Protokoll v8 für pause/resume ohne Rückmeldung im Zustand |
-| [B-530](B-530-wartender-monarch-verwundbar.md) | SIM | Problem | mittel | offen | – | Wartende Monarchen nach Verbindungsverlust sind in der Simulation nicht unverwundbar |
+| [B-530](B-530-wartender-monarch-verwundbar.md) | SIM | Problem | mittel | offen | BD7 | Wartende Monarchen nach Verbindungsverlust sind in der Simulation nicht unverwundbar |
 | [B-533](B-533-entscheidung-spielstand-loeschen.md) | SRV | Frage | mittel | offen | – | Entscheidung: Spielstand löschen per HTTP ohne Token, Stand bleibt als Sicherung |
 | [B-534](B-534-entscheidung-spielmenue-lobby.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Spielmenü ist die Lobby, neuer Spielstand ohne Welt-Auswahl |
-| [B-524](B-524-skillheld-tod-zuruecksetzen.md) | SIM | Problem | niedrig | offen | – | skillHeld beim Tod zurücksetzen, damit der erste Druck nach dem Respawn castFailed meldet |
+| [B-524](B-524-skillheld-tod-zuruecksetzen.md) | SIM | Problem | niedrig | offen | BD7 | skillHeld beim Tod zurücksetzen, damit der erste Druck nach dem Respawn castFailed meldet |
 | [B-531](B-531-wald-dichter-hoehle-bueesche.md) | REG | Idee | mittel | offen | – | Wald hat mehr Bäume je Abschnitt, Höhle bekommt Deko-Büsche |
 | [B-532](B-532-snapshot-markiert-von.md) | SIM | Idee | niedrig | offen | – | Snapshot nennt, wer einen Knoten markiert hat |
+| [B-535](B-535-entscheidung-pause-nach-wiederverbinden.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Pause nach Wiederverbinden erneut senden, Schutz beginnt neu |
 
 ## Archiv
 

@@ -5,12 +5,12 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** –
+- **Sprint:** BD7
 - **Projekt:** BED
 - **Erstellt:** 2026-10-22
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-10-22 (mit BD7)
 
 ## Ausgangslage
 
@@ -26,7 +26,9 @@ Spielende online.
 
 ## Anforderungen
 
-Raum setzt für wartende Monarchen den Schutz aus BD3 (`sim.Player.Protected`) oder die Simulation behandelt `Free` gleich.
+- Die Simulation behandelt einen freien Monarchen (`sim.Player.Free`; der Raum setzt es für `waiting` und `free`, `engine/room/room.go` › `syncFree`) wie einen geschützten (`Protected`, BD3): `damagePlayer` (`engine/sim/common.go`) zieht keine HP ab, `candidates` (`engine/sim/enemies.go`) und `aoeTargets` (`engine/sim/enemies_traits.go`) wählen ihn nicht.
+- Umsetzung in SIM (eine Hilfsfunktion für „geschützt“), der Raum bleibt unverändert. Default gewählt (autonom): Die Regel § 3 nennt `waiting` und `free` gleich („bis dahin bleibt er ausgeblendet und unverwundbar“), `Free` deckt beide ab.
+- Deterministisch; Golden unverändert (offline ist `Free` immer false).
 
 ## Nicht-Ziele
 
@@ -38,7 +40,7 @@ Ausblenden im Client.
 
 ## Beispiele
 
-Gerät verliert nachts die Verbindung, Gegner laufen über seinen Monarchen: keine HP-Verluste.
+Gerät verliert nachts die Verbindung, Gegner laufen über seinen Monarchen: keine HP-Verluste, kein Gegner wählt ihn als Ziel. Ein zweiter, besetzter Monarch daneben wird weiter getroffen.
 
 ## Ausnahme- und Fehlerfälle
 
@@ -47,6 +49,7 @@ nicht relevant.
 ## Akzeptanzkriterien
 
 - **AC-01** Go-Test: Ein wartender Monarch verliert während der Frist keine HP.
+- **AC-02** Go-Test: Ein freier Monarch ist kein Ziel der Gegner und nimmt keinen Flächenschaden; besetzte Monarchen unverändert.
 
 ## Offene Fragen
 
