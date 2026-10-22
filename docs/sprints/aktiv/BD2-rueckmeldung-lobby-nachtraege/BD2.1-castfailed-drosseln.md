@@ -1,6 +1,6 @@
 # BD2.1 · castFailed einmal je Tastendruck statt je Tick
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -59,5 +59,7 @@ Einmal vor dem Commit; währenddessen nur gezielte Tests (`task test` bzw. `chec
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `TestGehalteneSkillTasteMeldetCastFailedEinmal` (30 Ticks gehalten → 1 castFailed, neuer Druck → 2., Spieler 2 unabhängig, mit Ziel kein castFailed); `go test ./...` grün, `golangci-lint ./sim/...` 0 Issues.
+- B-378/AC-02 geprüft: `TestGehalteneSkillTastenImEreignisBudget` (1 min, alle Spieler halten Skill 1; ≤ 1 castFailed je Spieler, Budget eingehalten). Golden-Läufe unverändert.
+- Abweichung: `task check:diff` rot nur wegen fehlender Frontend-Abhängigkeiten im Worktree (react/radix nicht installiert, nicht von diesem Diff); Go-Teil grün. `castSkill` bekam den Parameter `announce`.
+- Review (Sonnet): kein schwerer Befund; mittlerer Befund (skillHeld beim Tod nicht zurückgesetzt, `economy.go` nicht erlaubt) → B-524.

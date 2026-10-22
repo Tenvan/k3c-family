@@ -36,12 +36,15 @@ func stepSkills(w *World, p *Player, cmd PlayerCommand, dt float64) {
 	}
 	p.LastStandFor = math.Max(0, p.LastStandFor-dt)
 	if cmd.Skill >= 1 && cmd.Skill <= 4 {
-		castSkill(w, p, cmd.Skill-1)
+		// Der Versuch läuft jeden Tick, nur das Ereignis castFailed kommt je Tastendruck (B-378).
+		castSkill(w, p, cmd.Skill-1, p.skillHeld != cmd.Skill)
 	}
+	p.skillHeld = cmd.Skill
 }
 
 // castSkill wirkt den Skill in Slot slot (0 bis 3): Slot belegt, Skill gelernt und Abklingzeit 0, sonst nichts.
-func castSkill(w *World, p *Player, slot int) {
+// announce: Bei fehlendem Ziel castFailed melden (nur beim ersten Tick des Tastendrucks).
+func castSkill(w *World, p *Player, slot int, announce bool) {
 	if slot >= len(p.Slots) || !slices.Contains(p.Skills, p.Slots[slot]) {
 		return
 	}
@@ -57,7 +60,9 @@ func castSkill(w *World, p *Player, slot int) {
 		return
 	}
 	if !cast(w, p, e) {
-		emit(w, "castFailed", Event{"from": p.ID, "slot": slot, "x": unitX(p.X)}) // kein Ziel: keine Abklingzeit (B-321)
+		if announce {
+			emit(w, "castFailed", Event{"from": p.ID, "slot": slot, "x": unitX(p.X)}) // kein Ziel: keine Abklingzeit (B-321)
+		}
 		return
 	}
 	if s.Line == "mage" {
