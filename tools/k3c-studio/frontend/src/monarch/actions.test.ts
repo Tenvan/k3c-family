@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import monarchJson from '@data/monarch.json';
 import workerSource from '@game/scenes/render/worldRenderer.ts?raw';
+import animSource from '@game/scenes/render/monarchAnim.ts?raw';
 import { EFFECT_CONFIG } from '@game/scenes/effects/effects';
 import { ACTIONS, RESPAWN_ALPHA, actionOf, effectMs, skillRows } from './actions';
 import { MOVES, monarchItems, moveOf } from './monarchLogic';
@@ -39,8 +40,10 @@ describe('Münzen, Treffer, Tod und Respawn (B-463/AC-08, AC-09)', () => {
     for (const id of ['hit', 'down', 'respawn'] as const) expect(actionOf(id)!.gaps.length, id).toBeGreaterThan(0);
   });
 
-  it('die Deckkraft steht noch so im Spiel (worldRenderer.ts setAlpha bei respawnIn > 0)', () => {
-    expect(workerSource).toContain(`setAlpha(p.respawnIn > 0 ? ${RESPAWN_ALPHA} : 1)`);
+  it('die Deckkraft steht noch so im Spiel (monarchAnim.ts DEAD_ALPHA bei respawnIn > 0, worldRenderer.ts setAlpha(pick.alpha))', () => {
+    expect(animSource).toContain(`DEAD_ALPHA = ${RESPAWN_ALPHA}`);
+    expect(animSource).toContain('alpha: DEAD_ALPHA');
+    expect(workerSource).toContain('setAlpha(pick.alpha)');
   });
 
   it('Skill ohne Ziel zeigt noTarget mit dem Text des Spiels', () => {
