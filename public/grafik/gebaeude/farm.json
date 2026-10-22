@@ -700,5 +700,42 @@
    "farbe": "oiled-cedar",
    "fein": true
   }
- ]
+ ],
+  "stufen": [
+    {
+      "stufe": 2,
+      "aenderung": "Stein: Wand, Pfosten, Balken, Dach aus grauem Stein, Tor, Zaun und Heu bleiben",
+      "farben": {"wand/rope": "dim-gray", "schatten/oiled-cedar": "valhalla", "dach/brown": "dim-gray", "dach/mandy": "smokey-ash", "dach/loulou": "black", "schindel/loulou": "black", "pfosten/oiled-cedar": "valhalla", "pfosten/rope": "dim-gray", "balken/oiled-cedar": "valhalla", "balken/rope": "dim-gray", "fuge/oiled-cedar": "valhalla"}
+    },
+    {
+      "stufe": 3,
+      "aenderung": "Kupfer: Wand und Pfosten aus Kupferplatten, Kupferdach, Windfahne auf dem First",
+      "farben": {"wand/rope": "tahiti-gold", "schatten/oiled-cedar": "rope", "dach/brown": "tahiti-gold", "dach/mandy": "twine", "dach/loulou": "oiled-cedar", "schindel/loulou": "oiled-cedar", "pfosten/oiled-cedar": "rope", "pfosten/rope": "tahiti-gold", "balken/oiled-cedar": "rope", "balken/rope": "tahiti-gold", "fuge/oiled-cedar": "rope"},
+      "zusaetze": [
+        { "art": "mast", "rechteck": [1.96875,0,0.0625,0.3125], "farbe": "rope" },
+        { "art": "windfahne", "rechteck": [2.03125,0.03125,0.40625,0.15625], "farbe": "tahiti-gold" },
+        { "art": "windfahne", "rechteck": [2.03125,0.03125,0.40625,0.0625], "farbe": "twine" }
+      ]
+    },
+    {
+      "stufe": 4,
+      "aenderung": "Eisen: Wand und Pfosten aus Stahlplatten, Eisendach, Windfahne auf dem First",
+      "farben": {"wand/rope": "heather", "schatten/oiled-cedar": "dim-gray", "dach/brown": "heather", "dach/mandy": "light-steel", "dach/loulou": "valhalla", "schindel/loulou": "valhalla", "pfosten/oiled-cedar": "dim-gray", "pfosten/rope": "heather", "balken/oiled-cedar": "dim-gray", "balken/rope": "heather", "fuge/oiled-cedar": "dim-gray"},
+      "zusaetze": [
+        { "art": "mast", "rechteck": [1.96875,0,0.0625,0.3125], "farbe": "dim-gray" },
+        { "art": "windfahne", "rechteck": [2.03125,0.03125,0.40625,0.15625], "farbe": "heather" },
+        { "art": "windfahne", "rechteck": [2.03125,0.03125,0.40625,0.0625], "farbe": "light-steel" }
+      ]
+    },
+    {
+      "stufe": 5,
+      "aenderung": "Kristall: Wand und Pfosten aus blauem Kristall, Kristalldach, leuchtende Windfahne auf dem First",
+      "farben": {"wand/rope": "royal-blue", "schatten/oiled-cedar": "deep-koamaru", "dach/brown": "royal-blue", "dach/mandy": "cornflower", "dach/loulou": "viking", "schindel/loulou": "viking", "pfosten/oiled-cedar": "deep-koamaru", "pfosten/rope": "royal-blue", "balken/oiled-cedar": "deep-koamaru", "balken/rope": "royal-blue", "fuge/oiled-cedar": "deep-koamaru"},
+      "zusaetze": [
+        { "art": "mast", "rechteck": [1.96875,0,0.0625,0.3125], "farbe": "deep-koamaru" },
+        { "art": "windfahne", "rechteck": [2.03125,0.03125,0.40625,0.15625], "farbe": "royal-blue" },
+        { "art": "windfahne", "rechteck": [2.03125,0.03125,0.40625,0.0625], "farbe": "cornflower" }
+      ]
+    }
+  ]
 }

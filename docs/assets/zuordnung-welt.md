@@ -5,7 +5,7 @@ stehen im Kopf von `docs/assets/zuordnung.md`; Spalten, Pack-Schreibweise und L�
 Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Herkunft die Regel in `docs/rules/`.
 
 - **Objekt-IDs** (eindeutig, von `src/tools/zuordnung.test.ts` geprüft):
-  `hub:<1–5>` Hub-Stufe, `wall:<1–5>` und `tower:<1–5>` Mauer- und Turm-Stufe (`tower:5` = Zaubertum),
+  `hub:<1–5>` Hub-Stufe, `hub:camp:<1–3>` Vorstufe der Holzburg (Lagerfeuer, Zelt, Hütte) und `hub:scaffold` Baugerüst (GEB11), `wall:<1–5>` und `tower:<1–5>` Mauer- und Turm-Stufe (`tower:5` = Zaubertum),
   `material:<wood|stone|copper|iron|crystal>`, `vein:<stone|copper|iron|crystal>` Ader je Material,
   `plantation`, `portal`, `coin`, `mount:<ID aus data/sprites.json › mounts>`,
   `node:<Art aus data/economy.json › gatherables bzw. data/biomes/*.json › resourcesPerChunk>`, `camp:recruit`, `exit`,
@@ -28,6 +28,10 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 | `hub:3` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-3-32.png` (Kupfer) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
 | `hub:4` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-4-32.png` (Eisen) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
 | `hub:5` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-5-32.png` (Kristall) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
+| `hub:camp:1` | `docs/rules/materialien-gebaeude.md` § 2.1 | `grafik/gebaeude` | `lagerfeuer-1-32.png` (Lagerfeuer mit Grill, Hub-Stufe 1, nichts bezahlt) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB11 | eigen | zugeordnet |
+| `hub:camp:2` | `docs/rules/materialien-gebaeude.md` § 2.1 | `grafik/gebaeude` | `lagerfeuer-2-32.png` (Zelt, unter der Hälfte des Golds) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB11 | eigen | zugeordnet |
+| `hub:camp:3` | `docs/rules/materialien-gebaeude.md` § 2.1 | `grafik/gebaeude` | `lagerfeuer-3-32.png` (Holzhütte, ab der Hälfte des Golds) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB11 | eigen | zugeordnet |
+| `hub:scaffold` | `docs/rules/materialien-gebaeude.md` § 2.1 | `grafik/gebaeude` | `hub-geruest-32.png` (vor der Burg, solange ein Bauer den Ausbau baut) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB11 | eigen | zugeordnet |
 
 ## Mauer-Stufen
 

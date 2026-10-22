@@ -28,6 +28,7 @@ func pruefeStufen(b building) error {
 	grund := map[string]bool{}
 	for _, bs := range b.Bausteine {
 		grund[bs.Farbe] = true
+		grund[bs.Art+"/"+bs.Farbe] = true
 	}
 	for i, s := range b.Stufen {
 		if s.Stufe != i+2 {
@@ -36,14 +37,15 @@ func pruefeStufen(b building) error {
 		if strings.TrimSpace(s.Aenderung) == "" {
 			return fmt.Errorf("stufe %d: aenderung ist leer", s.Stufe)
 		}
-		for alt, neu := range s.Farben {
+		for schluessel, neu := range s.Farben {
+			_, alt := farbSchluessel(schluessel)
 			for _, f := range []string{alt, neu} {
 				if _, ok := idx[f]; !ok {
 					return fmt.Errorf("stufe %d: Farbe %q nicht in DB32", s.Stufe, f)
 				}
 			}
-			if !grund[alt] {
-				return fmt.Errorf("stufe %d: Farbe %q kommt in der Grundform nicht vor", s.Stufe, alt)
+			if !grund[schluessel] {
+				return fmt.Errorf("stufe %d: Farbe %q kommt in der Grundform nicht vor", s.Stufe, schluessel)
 			}
 		}
 	}
@@ -62,13 +64,23 @@ func stufeBauen(b building, n int) (building, error) {
 	out := b
 	out.Bausteine = make([]baustein, 0, len(b.Bausteine)+len(s.Zusaetze))
 	for _, bs := range b.Bausteine {
-		if neu, ok := s.Farben[bs.Farbe]; ok {
+		if neu, ok := s.Farben[bs.Art+"/"+bs.Farbe]; ok { // der engere Schlüssel gilt vor dem weiteren
+			bs.Farbe = neu
+		} else if neu, ok := s.Farben[bs.Farbe]; ok {
 			bs.Farbe = neu
 		}
 		out.Bausteine = append(out.Bausteine, bs)
 	}
 	out.Bausteine = append(out.Bausteine, s.Zusaetze...)
 	return out, nil
+}
+
+// farbSchluessel zerlegt einen `farben`-Schlüssel: "farbe" gilt für alle Bausteine, "art/farbe" nur für Bausteine dieser Art (§ 6).
+func farbSchluessel(s string) (art, farbe string) {
+	if art, farbe, ok := strings.Cut(s, "/"); ok {
+		return art, farbe
+	}
+	return "", s
 }
 
 // renderStufen rendert alle Stufen in allen Dichten nach out und liefert die Stufen-Einträge für den Index.

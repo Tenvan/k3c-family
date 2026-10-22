@@ -7,7 +7,7 @@ import { MONARCH } from '../../model/data';
  * data/sprites.json, die Bilder in public/sprites/<sheet>/<anim>.png.
  */
 
-export type AnimName = 'idle' | 'run' | 'attack';
+export type AnimName = 'idle' | 'run' | 'attack' | 'give' | 'hit' | 'death' | 'respawn';
 
 export interface SheetData {
   frameWidth: number;
@@ -56,7 +56,9 @@ export const PLAYER_SPRITES = DATA.players;
 export const TROOP_SPRITES = DATA.troops;
 export const ENEMY_SPRITES = DATA.enemies;
 
-const ANIMS: AnimName[] = ['idle', 'run', 'attack'];
+/** Wie `anims` in tools/atlas/atlas.go. Nur idle und run laufen in Schleife, die übrigen einmal; death hält den letzten Frame. */
+const ANIMS: AnimName[] = ['idle', 'run', 'attack', 'give', 'hit', 'death', 'respawn'];
+const LOOPS = new Set<AnimName>(['idle', 'run']);
 /** Nur Figuren mit einer Rolle laden, die übrigen sind nur für die Referenzseiten da */
 const USED = new Set([...PLAYER_SPRITES, ...Object.values(TROOP_SPRITES), ...Object.values(ENEMY_SPRITES)].map((s) => s.sheet));
 const textureKey = (sheet: string, anim: AnimName) => `${sheet}-${anim}`;
@@ -109,7 +111,7 @@ export function createSpriteAnims(scene: Phaser.Scene): void {
         key,
         frames: scene.anims.generateFrameNames(ATLAS_KEY, { prefix: `${key}/`, start: 0, end: a.frames - 1 }),
         frameRate: a.fps,
-        repeat: anim === 'attack' ? 0 : -1,
+        repeat: LOOPS.has(anim) ? -1 : 0,
       });
     }
   }
@@ -129,7 +131,7 @@ export function createSheetAnims(scene: Phaser.Scene, sheet: string): void {
       key,
       frames: scene.anims.generateFrameNumbers(key, { start: 0, end: a.frames - 1 }),
       frameRate: a.fps,
-      repeat: anim === 'attack' ? 0 : -1,
+      repeat: LOOPS.has(anim) ? -1 : 0,
     });
   }
 }
@@ -147,9 +149,15 @@ export function makeSprite(scene: Phaser.Scene, spec: SpriteSpec): Phaser.GameOb
   return sprite;
 }
 
+/** Hat das Sheet des Sprites die Animation `anim`? */
+export function hasAnim(sprite: Phaser.GameObjects.Sprite, anim: AnimName): boolean {
+  return SHEETS[sprite.getData('sheet') as string]?.anims[anim] !== undefined;
+}
+
 /**
- * Spielt eine Animation, ohne eine laufende neu zu starten. Ein Angriff läuft zu Ende, bevor wieder
- * Laufen/Stehen gezeigt wird. Fehlt eine Animation (z. B. der Geist hat kein Laufen), bleibt es bei idle.
+ * Spielt eine Animation, ohne eine laufende neu zu starten. Eine Einmal-Animation (Angriff, Wurf, Treffer, Respawn)
+ * läuft zu Ende, bevor wieder Laufen/Stehen gezeigt wird; der Tod hält seinen letzten Frame. Fehlt eine Animation
+ * (z. B. der Geist hat kein Laufen), bleibt es bei idle.
  */
 export function playAnim(sprite: Phaser.GameObjects.Sprite, anim: AnimName, restart = false): void {
   const sheet = sprite.getData('sheet') as string;
@@ -157,8 +165,9 @@ export function playAnim(sprite: Phaser.GameObjects.Sprite, anim: AnimName, rest
   const name = d.anims[anim] ? anim : 'idle';
   const key = textureKey(sheet, name);
   const current = sprite.anims.currentAnim?.key;
-  if (current === textureKey(sheet, 'attack') && sprite.anims.isPlaying && name !== 'attack') return;
-  if (current === key && sprite.anims.isPlaying && !restart) return;
+  const once = current !== undefined && !LOOPS.has(current.slice(sheet.length + 1) as AnimName);
+  if (once && sprite.anims.isPlaying && LOOPS.has(name)) return;
+  if (current === key && (sprite.anims.isPlaying || name === 'death') && !restart) return;
   sprite.play(key);
 }
 

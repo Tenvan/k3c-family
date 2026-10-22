@@ -13,7 +13,8 @@ import { type Plot, isPlantationTree, plantationPlots } from './plantation';
 import { priceTagSites } from './priceTagRules';
 import { TEXT, createCastleView, createSiteView, updateCastleView, updateSiteView } from './siteView';
 import { hasDepth, isOnTower } from './viewRules';
-import { ENEMY_SPRITES, PLAYER_SPRITES, TROOP_SPRITES, face, makeSprite, playAnim, spriteTop } from './sprites';
+import { type MonarchFrame, pickMonarchAnim } from './monarchAnim';
+import { type AnimName, ENEMY_SPRITES, PLAYER_SPRITES, TROOP_SPRITES, face, hasAnim, makeSprite, playAnim, spriteTop } from './sprites';
 import { CHEST_OPEN } from './worldSprites';
 import type { Coin, Enemy, GameEvent, Pickup, Player, Projectile, ResourceNode, Site, Troop, World } from '../../model/types';
 
@@ -130,7 +131,7 @@ export class WorldRenderer {
     private readonly root: Phaser.GameObjects.Layer,
   ) {
     this.castle = this.put(createCastleView(scene, world.castle.x * U));
-    updateCastleView(scene, this.castle, world.hubLevel ?? 1);
+    updateCastleView(scene, this.castle, world);
     this.drawStatic();
     // über der Burg (288 px hoch, GEB4)
     this.castleHp = this.put(scene.add.container(world.castle.x * U, G - 310, bar(scene, 0, 240, 0x52b788)).setDepth(5));
@@ -177,9 +178,14 @@ export class WorldRenderer {
 
   /** Der Monarch von Spieler `id` holt aus (S9.7, B-396): Angriffs-Animation der Figur bzw. des Reiters, läuft zu Ende, dann wieder Stehen/Laufen */
   swing(id: number): void {
-    const fig = this.players.views.get(id)?.getAt(1);
-    const sprite = fig instanceof Phaser.GameObjects.Container ? fig.getAt(1) : fig;
-    if (sprite instanceof Phaser.GameObjects.Sprite) playAnim(sprite, 'attack', true);
+    const sprite = monarchSprite(this.players.views.get(id));
+    if (sprite) playAnim(sprite, 'attack', true);
+  }
+
+  /** Monarch von Spieler-Index `index` gibt eine Münze (`coinGive`, GR9.3): Wurf-Animation beim nächsten Zeichnen */
+  give(index: number): void {
+    const p = this.world.players.find((q) => q.index === index);
+    this.players.views.get(p?.id ?? -1)?.setData('cue', 'give');
   }
 
   /** `hidden`: Index freier oder wartender Monarchen (kein Spieler steuert sie), sie werden nicht gezeichnet (B-411). */
@@ -197,7 +203,7 @@ export class WorldRenderer {
     this.players.sync(hidden.size === 0 ? world.players : world.players.filter((p) => !hidden.has(p.index)));
     this.projectiles.sync(world.projectiles);
     this.citizens.sync(world);
-    updateCastleView(this.scene, this.castle, world.hubLevel ?? 1); // Burg wechselt mit dem Hub-Ausbau (GEB4 AC-05)
+    updateCastleView(this.scene, this.castle, world); // Burg wächst mit Hub-Stufe und Ausbau-Stand (GEB4 AC-05, GEB11)
     setBar(this.castleHp, 0, world.castle.hp / world.castle.maxHp, world.castle.hp < world.castle.maxHp);
   }
 
@@ -348,16 +354,30 @@ export class WorldRenderer {
 
   private updatePlayer(v: View, p: Player): void {
     const fig = v.getAt(1) as Sprite | Phaser.GameObjects.Container;
-    if (fig instanceof Phaser.GameObjects.Container) updateRider(fig, p);
+    const sprite = monarchSprite(v);
+    const cur: MonarchFrame = { respawnIn: p.respawnIn, hp: p.hp, moving: Math.abs(p.vx) > 0.05 };
+    // Beritten bleibt der Tod beim Rückfall (Deckkraft): der gekippte Reiter läge im weggeschnittenen Teil unter dem Sattel
+    const mounted = fig instanceof Phaser.GameObjects.Container;
+    const has = (a: AnimName) => sprite !== undefined && hasAnim(sprite, a) && !(mounted && a === 'death');
+    const pick = pickMonarchAnim(v.getData('monarch') as MonarchFrame | undefined, cur, v.getData('cue') === 'give' ? 'give' : null, has);
+    v.setData('monarch', cur).setData('cue', null);
+    if (fig instanceof Phaser.GameObjects.Container) updateRider(fig, p, pick.anim, pick.restart);
     else {
       face(fig, p.facing);
-      playAnim(fig, Math.abs(p.vx) > 0.05 ? 'run' : 'idle');
+      playAnim(fig, pick.anim, pick.restart);
     }
     v.setPosition(p.x * U, G);
-    v.setAlpha(p.respawnIn > 0 ? 0.25 : 1);
+    v.setAlpha(pick.alpha);
 
     setBar(v, 2, p.hp / p.maxHp, p.hp < p.maxHp && p.respawnIn <= 0);
   }
+}
+
+/** Figur eines Monarchen (zu Fuß) bzw. der Reiter-Sprite (beritten, Index 1 im Reiter-Container) */
+function monarchSprite(v: View | undefined): Sprite | undefined {
+  const fig = v?.getAt(1);
+  const sprite = fig instanceof Phaser.GameObjects.Container ? fig.getAt(1) : fig;
+  return sprite instanceof Phaser.GameObjects.Sprite ? sprite : undefined;
 }
 
 export { resourceName, siteName } from './siteView';

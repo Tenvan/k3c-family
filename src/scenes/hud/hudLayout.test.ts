@@ -136,3 +136,31 @@ describe('Welt-Meldungen im Band (B-414/AC-01)', () => {
     });
   });
 });
+
+describe('Gemeinsame Anzeigen nur in der Leiste, Kompass je Feld oben (B-413/AC-01, AC-02)', () => {
+  const SHARED = ['info', 'clock', 'fight', 'shared', 'citizens', 'places'];
+
+  it.each(LAYOUTS)('%s Spieler: Vorrat, Hub, Tageszeit, Kampf in der Leiste, in keinem Spielerfeld (AC-01)', (_name, cells) => {
+    const out = hudLayout(hudItems(cells, sizes(cells), false), [HOME]);
+    for (const id of SHARED) {
+      const r = out.get(id);
+      if (!r) continue;
+      expect(r.y + r.h, `${id} in der Leiste`).toBeLessThanOrEqual(BAR_HEIGHT);
+      for (const c of cells) expect(overlaps(r, c), `${id} schneidet ein Feld`).toBe(false);
+    }
+    for (const c of cells) expect(c.y, 'Felder beginnen unter der Leiste').toBeGreaterThanOrEqual(BAR_HEIGHT);
+  });
+
+  it.each(LAYOUTS)('%s Spieler: der Kompass steht oben in seinem Feld, ohne Überlagerung (AC-02)', (_name, cells) => {
+    const out = hudLayout(hudItems(cells, sizes(cells), false), [HOME]);
+    const placed = [...out.entries()].filter((e): e is [string, Rect] => e[1] !== null);
+    cells.forEach((c, i) => {
+      const r = out.get(`radar:${i}`);
+      expect(r, `Kompass ${i}`).toBeTruthy();
+      expect(r!.x >= c.x && r!.x + r!.w <= c.x + c.w, 'Kompass im Feld').toBe(true);
+      expect(r!.y).toBeGreaterThanOrEqual(c.y); // im obersten Feld damit unter der Leiste
+      expect(r!.y + r!.h).toBeLessThanOrEqual(c.y + c.h / 3); // im oberen Drittel
+      for (const [id, q] of placed) if (id !== `radar:${i}`) expect(overlaps(r!, q), `Kompass ${i} schneidet ${id}`).toBe(false);
+    });
+  });
+});

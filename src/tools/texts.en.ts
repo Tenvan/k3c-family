@@ -107,6 +107,14 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'dm.level': 'Level {n}',
   'dm.levelLabel': 'Build level',
 
+  // Graphics pipeline (pipeline.html, B-331)
+  'pipeline.pageTitle': 'K3C Graphics Pipeline',
+  'pipeline.title': 'Graphics pipeline: before and after',
+  'pipeline.sub':
+    'Left the source from public/grafik, right the result from public/grafik-db32 (DB32, 16 px, hard alpha). Both at the same world size (×2) on a shared ground. Rules: docs/assets/stil-bibel.md.',
+  'pipeline.before': 'before',
+  'pipeline.after': 'after',
+
   // Graphics page (grafiken.html) and credits (lizenzen.html)
   'grafik.pageTitle': 'K3C All Graphics',
   'grafik.title': 'All Graphics',
@@ -152,6 +160,8 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'tile.gamepad.desc': 'Controller, B button, fullscreen, rumble, FPS · report to the PC',
   'tile.grafiken.title': 'All Graphics',
   'tile.grafiken.desc': 'Chosen CC0 packs for buildings, resources and backgrounds · with author, license and source',
+  'tile.pipeline.title': 'Graphics Pipeline',
+  'tile.pipeline.desc': 'Before and after: graphics from task gen:pipeline in DB32 at 16 px · on a shared ground',
   'tile.sound.title': 'Listening Test',
   'tile.sound.desc': 'Listen to candidates for music and effects · by state and event, with source and license',
   'tile.dm.title': 'Dungeon Master',

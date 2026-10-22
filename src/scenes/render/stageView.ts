@@ -42,10 +42,11 @@ export class StageView {
     this.effects = new StageEffects(scene, this.layer);
   }
 
-  /** Effekt zeichnen; ein Schlag lässt zusätzlich den Monarchen ausholen (S9.7, B-396) */
+  /** Effekt zeichnen; ein Schlag lässt zusätzlich den Monarchen ausholen (S9.7, B-396), eine gegebene Münze werfen (GR9.3) */
   spawn(effect: Effect): void {
     this.effects.spawn(effect);
     if (effect.by !== undefined) this.renderer.swing(effect.by);
+    if (effect.giver !== undefined) this.renderer.give(effect.giver);
   }
 
   /**

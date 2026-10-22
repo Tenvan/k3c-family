@@ -4,6 +4,7 @@
  * je Slot das aktive Asset (Präferenz 1, zum Vergleich `wahl=n`, Ausschnitt).
  */
 import spritesJson from '@data/sprites.json';
+import { HUB_GROWTH, HUB_SCAFFOLD } from '@game/scenes/render/hubGrowth';
 import type { Card } from '@game/tools/spriteReference';
 
 export interface Rect {
@@ -187,6 +188,47 @@ export function baumReihe(index: readonly GebaeudeEintrag[], anzahl?: number, st
   const ids = index.filter((e) => e.klasse === klasse && (stufe === 1 || e.stufen?.some((s) => s.stufe === stufe))).map((e) => e.id);
   if (ids.length === 0) return [];
   return Array.from({ length: anzahl ?? ids.length }, (_, i) => ({ id: ids[i % ids.length]!, x: i * BAUM_ABSTAND }));
+}
+
+/** Karte der Hub-Wachstumsreihe (GEB11/AC-03): Look in 32 px, `geruest` liegt als zweites Bild darüber; `h` in Kacheln. */
+export interface WachstumKarte {
+  titel: string;
+  wann: string;
+  datei: string;
+  h: number;
+  geruest?: string;
+}
+
+/** Name und Spielbedingung je Look `<id>-<stufe>` (Regel materialien-gebaeude.md § 2.1); der Spielcode kennt nur die Reihe. */
+const WACHSTUM_TEXT: Record<string, [string, string]> = {
+  'lagerfeuer-1': ['Lagerfeuer mit Grill', 'Hub-Stufe 1, noch kein Gold bezahlt'],
+  'lagerfeuer-2': ['Zelt am Feuer', 'Hub-Stufe 1, weniger als die Hälfte des Golds'],
+  'lagerfeuer-3': ['Holzhütte am Feuer', 'Hub-Stufe 1, ab der Hälfte des Golds'],
+  'burg-1': ['Holzburg', 'Hub-Stufe 1, Gold voll'],
+  'burg-2': ['Steinburg', 'Hub-Stufe 2'],
+  'burg-3': ['Kupferburg', 'Hub-Stufe 3'],
+  'burg-4': ['Eisenburg', 'Hub-Stufe 4'],
+  'burg-5': ['Kristallburg', 'Hub-Stufe 5'],
+};
+
+/**
+ * Wachstumsreihe der Burg in Spielreihenfolge (`HUB_GROWTH` aus dem Spielcode, Regel materialien-gebaeude.md § 2.1), danach die
+ * Steinburg mit Baugerüst als Beispiel für „ein Bauer baut den Ausbau“; Looks ohne Datei im Index entfallen.
+ */
+export function hubWachstum(index: readonly GebaeudeEintrag[]): WachstumKarte[] {
+  const byId = new Map(index.map((e) => [e.id, e]));
+  const karte = (id: string, stufe: number, titel: string, wann: string): WachstumKarte[] => {
+    const e = byId.get(id);
+    const datei = e?.stufen ? e.stufen.find((s) => s.stufe === stufe)?.dateien[32] : stufe === 1 ? e?.dateien[32] : undefined;
+    return e && datei ? [{ titel, wann, datei, h: e.kacheln.h }] : [];
+  };
+  const karten = HUB_GROWTH.flatMap((l) => {
+    const [titel, wann] = WACHSTUM_TEXT[`${l.id}-${l.stufe}`] ?? [`${l.id} · Stufe ${l.stufe}`, ''];
+    return karte(l.id, l.stufe, titel, wann);
+  });
+  const geruest = byId.get(HUB_SCAFFOLD)?.dateien[32];
+  const bau = karte('burg', 2, 'Steinburg im Ausbau', 'ein Bauer baut den Ausbau (Gerüst auf Hub-Stufe 1 bis 4)');
+  return geruest && bau[0] ? [...karten, { ...bau[0], geruest }] : karten;
 }
 
 /** Biom-ID → Namensteil der Hintergrund-Schichten `hg-<teil>-<fern|mitte|nah>` (GEB7, Regeldatei § 10) */
