@@ -1,6 +1,6 @@
 # GEB9.5 · Spiel wählt Hub-Gebäude nach Hub-Stufe, Grundform-Dateien löschen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-04 geprüft: `buildingSprites.test.ts` prüft für alle acht Hub-Gebäude Stufe 1–5 (Textur `grafik:<kind>-<n>` → `gebaeude/<id>-<n>-32.png`, Maßstab 1), Stufe 6 → höchste vorhandene, Stufe 0 und ohne Stufe → Grundform (Stufe 1), Baustelle → Platzhalter. `siteView.ts` wählt die Stufe über `siteStage` (Tor je Mauerlinie, Hub-Gebäude `World.hubLevel` mit Rückfall 1, sonst `Site.level`) und fällt auf die Grundform zurück, wenn die Stufen-Textur nicht geladen ist. AC-05 umgesetzt: 32 Grundform-Dateien `<id>-<dichte>.png` der acht Gebäude sind gelöscht (der Generator räumt beim Lauf auf), Übergangsliste und Kopie aus `tools/buildings` entfernt; die Suche nach `(werkstatt|…|kaserne)-(16|32|64|128).png` findet außer erledigten Sprints, Spec-Beispiel und dem Camp (`rekrutierungslager`, bleibt) nichts mehr. Register `data/assets.json`: Slot ohne Stufe zeigt `<id>-1-32.png`, neu `<kind>:1`–`<kind>:5` je Gebäude; `docs/assets/zuordnung-objekte.md` und § 6 nachgezogen. Keine Test-Fixtures, Mocks oder CREDITS-Zeilen betroffen (eigene Grafik, `catalog_test.go` schreibt seine Datei selbst).
+
+Prüfung: `task test` (Client, 2348 Tests), `task typecheck`, `task lint` (nach Aufteilen von `updateSiteView` in `siteStage`, Komplexität war 17), `go test ./tools/buildings` grün; `task check:diff` als Ganzes kam wieder nicht durch das 10-Minuten-Zeitlimit (Studio-Vitest unter Last), das Review GEB9.6 fährt `task check`, `check:go`, `check:race` nacheinander. Kein Reviewer-Agent: Code-Änderung unter 100 Zeilen, nicht SIM/SRV. Nicht im Browser geprüft (manuelle Abnahme AC-06 bleibt bei Ralf).

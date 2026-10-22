@@ -208,7 +208,6 @@ func build(file, prefix string, out map[string]*image.Paletted) (eintrag, error)
 	if e.Stufen, err = renderStufen(b, prefix, out); err != nil {
 		return eintrag{}, err
 	}
-	grundformKopie(b, out)
 	e.Dateien = e.Stufen[0].Dateien // Karten der Vorschau zeigen die Grundform
 	return e, nil
 }

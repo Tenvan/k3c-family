@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"os"
 	"path/filepath"
 	"strings"
@@ -43,27 +42,5 @@ func TestStufenNachArtFehler(t *testing.T) {
 	src := strings.Replace(teileQuelle, `"wand/rope"`, `"gestell/twine"`, 1)
 	if _, err := baueWerkstatt(t, src); err == nil || !strings.Contains(err.Error(), "Grundform") {
 		t.Errorf("fehlende Art/Farbe: %v", err)
-	}
-}
-
-// TestUebergangGrundform: Hub-Gebäude mit Stufen schreiben `<id>-<d>.png` byte-gleich zu Stufe 1 mit, andere Gebäude nicht.
-func TestUebergangGrundform(t *testing.T) {
-	dir, err := baueWerkstatt(t, teileQuelle)
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, d := range []string{"16", "32", "64", "128"} {
-		a, errA := os.ReadFile(filepath.Join(dir, "werkstatt-"+d+".png"))
-		b, errB := os.ReadFile(filepath.Join(dir, "werkstatt-1-"+d+".png"))
-		if errA != nil || errB != nil || !bytes.Equal(a, b) {
-			t.Errorf("Dichte %s: Grundform fehlt oder weicht von Stufe 1 ab (%v, %v)", d, errA, errB)
-		}
-	}
-	dir, err = baueStufen(t, stufenQuelle) // Mauer steht nicht auf der Übergangsliste
-	if err != nil {
-		t.Fatal(err)
-	}
-	if _, err := os.Stat(filepath.Join(dir, "mauer-32.png")); err == nil {
-		t.Error("Gebäude außerhalb der Übergangsliste bekommt keine Grundform-Datei")
 	}
 }

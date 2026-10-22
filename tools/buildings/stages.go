@@ -83,23 +83,6 @@ func farbSchluessel(s string) (art, farbe string) {
 	return "", s
 }
 
-// uebergangGrundform: Hub-Gebäude, die bis GEB9.5 zusätzlich `<id>-<dichte>.png` (= Stufe 1) bekommen, weil das Spiel
-// noch die Grundform zeichnet. GEB9.5 stellt das Spiel um und entfernt Liste und Kopie.
-var uebergangGrundform = map[string]bool{
-	"werkstatt": true, "farm": true, "kaserne": true, "lager": true,
-	"taverne": true, "schmiede": true, "heilplatz": true, "ruestkammer": true,
-}
-
-// grundformKopie legt für ein Gebäude der Übergangsliste Stufe 1 zusätzlich unter dem Namen der Grundform ab.
-func grundformKopie(b building, out map[string]*image.Paletted) {
-	if !uebergangGrundform[b.ID] {
-		return
-	}
-	for _, d := range dichtenFuer(b.Klasse) {
-		out[fmt.Sprintf("%s-%d.png", b.ID, d)] = out[fmt.Sprintf("%s-1-%d.png", b.ID, d)]
-	}
-}
-
 // renderStufen rendert alle Stufen in allen Dichten nach out und liefert die Stufen-Einträge für den Index.
 func renderStufen(b building, prefix string, out map[string]*image.Paletted) ([]stufenEintrag, error) {
 	if err := pruefeStufen(b); err != nil {

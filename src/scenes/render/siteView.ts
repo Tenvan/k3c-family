@@ -3,7 +3,7 @@ import { GROUND_Y, UNIT_PX } from '../../core/constants';
 import { currentLanguage, nameOf, t } from '../../core/texts';
 import { BUILDINGS, TROOPS } from '../../model/data';
 import type { Site, World } from '../../model/types';
-import { BUILDING_TEXTURES, hubTexture, siteTexture, textureScale } from './buildingSprites';
+import { BUILDING_TEXTURES, hubTexture, isHubBuilding, siteTexture, textureScale } from './buildingSprites';
 import { damageStage, showRubble } from './damageRules';
 import { damageTint, drawDamage, drawRubble } from './damageView';
 import { fontStyle } from './fontRules';
@@ -98,7 +98,8 @@ export function createSiteView(scene: Phaser.Scene, s: Site): View {
 /** Zeigt die Grafik, falls zugeordnet und geladen; liefert die Höhe für Schilder darüber (sonst Platzhalter-Höhe) */
 function showPicture(scene: Phaser.Scene, v: View, s: Site, stage: number): number | null {
   const picture = v.getAt(0) as Phaser.GameObjects.Image;
-  const key = siteTexture(s.kind, s.state, stage); // Mauer und Turm je Ausbau-Stufe (GEB3), Tor je Mauerlinie (GEB4)
+  let key = siteTexture(s.kind, s.state, stage); // Mauer und Turm je Ausbau-Stufe (GEB3), Tor je Mauerlinie (GEB4), Hub-Gebäude je Hub-Stufe (GEB9)
+  if (!has(scene, key)) key = siteTexture(s.kind, s.state); // Stufe nicht geladen: Grundform statt leerer Fläche
   if (!has(scene, key)) {
     picture.setVisible(false);
     return null;
@@ -107,11 +108,17 @@ function showPicture(scene: Phaser.Scene, v: View, s: Site, stage: number): numb
   return picture.displayHeight;
 }
 
+/** Stufe der Grafik: Tor je Mauerlinie (GEB4), Hub-Gebäude je Hub-Stufe (GEB9), sonst die Stufe des Bauplatzes (GEB3) */
+function siteStage(s: Site, world: World): number {
+  if (s.kind === 'gate') return gateStage(s, world.sites, world.hubX);
+  return isHubBuilding(s.kind) ? (world.hubLevel ?? 1) : (s.level ?? 1);
+}
+
 /** `near`: Das Preisschild dieses Bauplatzes steht, weil es für einen Spieler das nächste ist (`priceTagRules.ts`, B-395) */
 export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: World, near: boolean): void {
   const data = BUILDINGS[s.kind];
   const wait = siteStatus(s, world.danger);
-  const stage = s.kind === 'gate' ? gateStage(s, world.sites, world.hubX) : (s.level ?? 1);
+  const stage = siteStage(s, world);
   const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, data.cost), currentLanguage(), statusKey(wait), stage, s.ruin === true].join('|'); // stage: Mauer/Turm je Stufe (GEB3), Tor je Mauerlinie (GEB4)
   if (v.getData('key') === key) return;
   v.setData('key', key);

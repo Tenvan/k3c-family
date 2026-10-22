@@ -211,9 +211,9 @@ bei jedem Gebäude mit in der Liste, wenn dort eine tauschende Art (`wand`, `dac
 den Zusatz (Stufe 2 der Tabelle); ab Stufe 3 wechselt der Stein auf Kupfer, Eisen, Kristall. Bei Lager, Taverne, Schmiede und Rüstkammer
 (Holz mit Steinteilen) wechselt auf Stufe 2 nur das Holz-Mauerwerk, der Stein von Sockel, Kamin und Esse bleibt, ab Stufe 3 wechselt auch er.
 
-*Übergang bis GEB9.5.* Mit `stufen` schreibt `tools/buildings` sonst nur `<id>-<stufe>-<dichte>.png`. Solange das Spiel noch die Grundform
-zeichnet, schreibt der Generator für die Hub-Gebäude zusätzlich `<id>-<dichte>.png` (= Stufe 1, byte-gleich). GEB9.5 stellt das Spiel
-um, löscht diese Dateien und entfernt den Übergang.
+*Im Spiel (GEB9.5).* Die acht Hub-Gebäude zeigen `<id>-<hubLevel>-32.png` (`World.hubLevel`, fehlt = 1); gibt es die Stufe nicht, gilt die
+höchste vorhandene, ist die Textur nicht geladen, die Stufe 1. Grundform-Dateien `<id>-<dichte>.png` gibt es für sie nicht mehr; der
+Generator schreibt sie nur für Gebäude ohne `stufen`.
 
 ## 7. Dichte-Regel
 
