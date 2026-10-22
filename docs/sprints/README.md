@@ -26,6 +26,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | KR1 | REG | KRT | Kritische Fragen zu BED | – | `aktiv/KR1-fragen-bed/` |
 | KR2 | REG | KRT | Kritische Fragen zu GEB | – | `aktiv/KR2-fragen-geb/` |
 | KR3 | REG | KRT | Kritische Fragen zu GRA | – | `aktiv/KR3-fragen-gra/` |
+| KR4 | REG | KRT | Kritische Fragen zu SND | – | `aktiv/KR4-fragen-snd/` |
 
 ## Offen am Gerät
 
@@ -54,7 +55,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | KB2 | SRV, CLI | KMP | Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen | – | Entwurf | `geplant/KB2-protokoll-kampf-nachtraege/` |
 | PG1 | PLAT | REL | Präsentationsseite mit echten Spielbildern | – | Entwurf | `geplant/PG1-praesentation-bilder/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | Entwurf | `geplant/PB1-itch-io/` |
-| KR4 | REG | KRT | Kritische Fragen zu SND | – | Entwurf | `geplant/KR4-fragen-snd/` |
 | KR5 | REG | KRT | Kritische Fragen zu SKL | – | Entwurf | `geplant/KR5-fragen-skl/` |
 | KR6 | REG | KRT | Kritische Fragen zu KMP | – | Entwurf | `geplant/KR6-fragen-kmp/` |
 | HW1 | PLAT, SRV, INF, CLI | ABN | Zurückgestellte Controller-Prüfungen nachholen | – | Entwurf | `geplant/HW1-controller-pruefungen/` |
