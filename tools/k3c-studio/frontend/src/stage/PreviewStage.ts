@@ -7,7 +7,9 @@ import { TEXT, prepareBuildings, preloadBuildings, siteName } from '@game/scenes
 import { createSpriteAnims, preloadSprites } from '@game/scenes/render/sprites';
 import { DEFAULT_CONTROL, SHEETS, resolveAnim, type Control, type Gap } from '../playback/figure';
 import { FigureView, GROUND_Y, drawScale, loadFigureSheets, type FigureItem } from '../playback/figureView';
+import type { KampfWorld } from '@game/scenes/kampfAnzeige';
 import { hudPx } from './hudBar';
+import { KampfOverlay } from './kampfOverlay';
 import { siteBox } from './siteBox';
 import { refreshToParent, settleToParent } from './stageResize';
 
@@ -59,6 +61,8 @@ class PreviewScene extends Phaser.Scene {
   private figures: FigureView[] = [];
   private figureBase = 1; // Kamera-Zoom, bei dem alle Figuren im Bild stehen; `figureFactor` (Zoom der Seite) wirkt darauf
   private figureFactor = 1;
+  private kampf: KampfOverlay | null = null;
+  private kampfWorld: KampfWorld | null = null;
   private extras: Phaser.GameObjects.GameObject[] = [];
   private figureItems: readonly FigureItem[] | null = null;
   private control: Control = DEFAULT_CONTROL;
@@ -193,6 +197,7 @@ class PreviewScene extends Phaser.Scene {
     this.figures = views.filter((v): v is FigureView => v !== null);
     this.fitFigures(items);
     this.setControl(this.control);
+    this.drawKampf();
     return views.map((v, i) => (v ? { gap: v.gap, frames: v.frames() } : { gap: resolveAnim(items[i]!.spec.sheet, items[i]!.anim).gap, frames: 1 }));
   }
 
@@ -204,6 +209,18 @@ class PreviewScene extends Phaser.Scene {
 
   update(): void {
     for (const f of this.figures) f.follow();
+    this.kampf?.place();
+  }
+
+  /** Boss-Anzeigen des Spiels für den Beispielzustand `world` (null = keine, B-469); wirkt in der Figuren-Ansicht. */
+  setKampf(world: KampfWorld | null): void {
+    this.kampfWorld = world;
+    if (this.ready) this.drawKampf();
+  }
+
+  private drawKampf(): void {
+    this.kampf ??= new KampfOverlay(this);
+    this.kampf.show(this.figures.length > 0 ? this.kampfWorld : null);
   }
 
   private clearFigures(): void {
@@ -211,6 +228,7 @@ class PreviewScene extends Phaser.Scene {
     for (const o of this.extras) o.destroy();
     this.figures = [];
     this.extras = [];
+    this.kampf?.clear();
   }
 
   /** Kamera: alle Figuren und die Unit-Skala im Bild, Bodenlinie unten */
@@ -311,6 +329,11 @@ export class PreviewStage {
   /** Wiedergabe der Figuren: Schleife, Tempo, Einzelbild */
   setControl(control: Control): void {
     this.scene.setControl(control);
+  }
+
+  /** Boss-Anzeigen des Spiels für einen Beispielzustand (null = keine) */
+  setKampf(world: KampfWorld | null): void {
+    this.scene.setKampf(world);
   }
 
   /** Zoom der Figuren-Ansicht (1 = alle Figuren im Bild) */

@@ -7,6 +7,7 @@ import { FigureStage } from '../playback/FigureStage';
 import { GapBadge, PlaybackControls } from '../playback/PlaybackControls';
 import { slotOptions } from '../monarch/monarchLogic';
 import type { FigureInfo } from '../stage/PreviewStage';
+import { useBossDisplay } from './BossDisplay';
 import { bossCards } from './bossLogic';
 import { ENEMY_ACTIONS, ENEMY_ANIMS, cardOf, enemyItems, groups, type EnemyActionId, type EnemyCard, type Group } from './enemyLogic';
 
@@ -79,6 +80,8 @@ export function EnemiesPage() {
   const key = JSON.stringify([group.id, anim, actionId, withMonarch, sheets]);
   const items = useMemo(() => enemyItems(cards, { anim, ...(action ? { action } : {}), withMonarch, sheets }), [key]); // eslint-disable-line react-hooks/exhaustive-deps
   const offset = withMonarch ? 1 : 0; // die Antworten der Bühne zählen den Monarch-Vergleich mit
+  // Boss-Anzeigen des Spiels (B-469) nur in der Gruppe der Bosse; die Mitte des Warnkreises ist die Lage des Boss-Bildes
+  const boss = useBossDisplay(group.id === BOSS_GROUP_ID, (id) => items.find((i) => i.id === `enemy-${id}`)?.x ?? 0);
 
   return (
     <div className="wd-page wd-gegner">
@@ -90,7 +93,8 @@ export function EnemiesPage() {
         {action?.gaps.map((g) => <GapBadge key={g.reason} gap={g} />)}
       </div>
       <PlaybackControls control={control} onChange={setControl} frames={infos[offset]?.frames ?? 1} />
-      <FigureStage items={items} control={control} onInfo={setInfos} />
+      {boss.bar}
+      <FigureStage items={items} control={control} kampf={boss.world} onInfo={setInfos} />
       <ul className="wd-cards" aria-label="Gegner">
         {cards.map((c, i) => (
           <CardRow key={c.id} card={c} slots={slots} pick={picks[c.id] ?? 0} onPick={(n) => setPicks({ ...picks, [c.id]: n })}

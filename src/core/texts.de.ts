@@ -224,6 +224,19 @@ export const de = {
   'landing.noServer': 'Braucht den Heimnetz-Server',
   'landing.noServerText':
     'Braucht den Heimnetz-Server. Das Spiel läuft nur auf dem Go-Server (task serve), nicht auf einer statischen Seite wie GitHub Pages. Mit dem Home-Button geht es zurück.',
+
+  // Kampf: Bosse und Events (K5.1)
+  'boss.phase': 'Phase {n} von {of}',
+  'boss.goblinLeader': 'Goblin-Anführer',
+  'boss.trollKing': 'Troll-König',
+  'boss.ratQueen': 'Ratten-Königin',
+  'boss.lavaGolem': 'Lava-Golem',
+  'boss.shardTitan': 'Splitter-Titan',
+  'boss.crystalHeartWarden': 'Kristallherz-Wächter',
+  'event.timed': '{name}  ·  {left}',
+  'event.fullMoon': 'Vollmond',
+  'event.bloodMoon': 'Blutmond',
+  'event.merchantRaid': 'Händler-Überfall',
 };
 
 export type TextKey = keyof typeof de;

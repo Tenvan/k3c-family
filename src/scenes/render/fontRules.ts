@@ -29,6 +29,8 @@ export const FONTS = {
   shared: { px: 28, art: 'info', space: 'hud', color: '#ffffff' },
   fight: { px: 28, art: 'info', space: 'hud', color: '#ff8fa3' },
   banner: { px: 28, art: 'info', space: 'hud', color: '#ffffff' },
+  /** Name und Phase des Bosses über seiner Lebensleiste (K5.1) */
+  bossBar: { px: 28, art: 'info', space: 'hud', color: '#ffd166' },
   travel: { px: 40, art: 'info', space: 'hud', color: '#ffd166' },
   joinCenter: { px: 44, art: 'info', space: 'hud', color: '#ffffff' },
   joinCorner: { px: 26, art: 'side', space: 'hud', color: '#ffffff' },
