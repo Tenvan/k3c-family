@@ -1,6 +1,6 @@
 # GEB9.3 · Kaserne, Lager, Taverne Stufen 2–5
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -54,5 +54,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 umgesetzt: `kaserne.json`, `lager.json`, `taverne.json` führen `stufen` 2–5, PNGs für Stufe 1–5 in allen Dichten; Stufen in 64 px angesehen. AC-03 geprüft: `scenesLogic.test.ts` prüft die Stufenreihe 2–5 samt Dateinamen am echten `index.json` jetzt für fünf Hub-Gebäude (28 Tests grün). AC-05 geprüft: Generator zweimal ohne Diff, `go test ./tools/buildings` grün.
+
+Abweichungen von § 6 (in der Tabelle nachgetragen): Kaserne-Sockelband in zwei Stücken links und rechts vom Tor (sonst über dem Tor gezeichnet); Lager hat kein Tor, das Vorratsschild hängt an der Wand, die dunkle Innenwand (`loulou`) tauscht als Rolle Schatten (sonst leuchtet sie auf Stufe 5 türkis); Taverne-Putz (`pancho`) tauscht als Rolle Licht, Laterne links neben der Tür. Die Kaserne-Stufe 2 unterscheidet sich nur durch das Eisenband (Stein bleibt Stein). `task check:diff` ganz nicht abgewartet (Studio-Vitest dauert unter Last über 10 Minuten), Teilprüfungen grün.

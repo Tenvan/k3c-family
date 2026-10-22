@@ -200,9 +200,9 @@ bei jedem Gebäude mit in der Liste, wenn dort eine tauschende Art (`wand`, `dac
 |---|---|---|
 | Werkstatt | `wand`, `pfosten`, `balken` | ab Stufe 3 Wimpel am rechten Pfosten |
 | Farm | `wand`, `pfosten`, `balken`, `dach`, `schindel` | ab Stufe 3 Windfahne rechts am First (Tor mit Rahmen und Streben bleibt) |
-| Kaserne (Stein) | `wand`, `sockel`, `zinne`, `licht`, `schatten`, `fuge` | Stufe 2 Eisenband am Sockel, ab Stufe 3 Wimpel an den Zinnen |
-| Lager | `wand`, `sockel`, `pfosten`, `dach`, `schindel` | ab Stufe 3 Schild über dem Tor (Vorratszeichen) |
-| Taverne | `wand`, `balken`, `pfosten`, `dach`, `schindel`, `kamin`, `stufe` | ab Stufe 3 Laterne neben der Tür |
+| Kaserne (Stein) | `wand`, `sockel`, `zinne`, `licht`, `schatten`, `fuge`, `scharte` | Stufe 2 Eisenband am Sockel (links und rechts vom Tor), ab Stufe 3 Wimpel an den Zinnen |
+| Lager | `wand` (dunkle Innenwand = Rolle Schatten), `pfosten`, `dach`, `schindel`; ab Stufe 3 auch `sockel` | ab Stufe 3 Vorratsschild an der Wand (das Lager hat kein Tor) |
+| Taverne | `wand` (Putz = Rolle Licht), `balken`, `pfosten`, `dach`, `schindel`; ab Stufe 3 auch `kamin`, `stufe` | ab Stufe 3 Laterne links neben der Tür |
 | Schmiede | `wand`, `pfosten`, `dach`, `kamin`, `esse` | ab Stufe 3 Rauchfang über der Esse |
 | Heilplatz | `pfosten`, `gestell` | ab Stufe 3 Laterne am Gestell |
 | Rüstkammer (Stein) | `wand`, `sockel`, `band`, `dach`, `schindel`, `fuge` | Stufe 2 Sockelband, ab Stufe 3 Wimpel über dem Tor |

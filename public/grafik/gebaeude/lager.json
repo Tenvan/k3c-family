@@ -135,5 +135,42 @@
     {"art":"schindel","rechteck":[2.5,0.0625,0.03125,0.125],"farbe":"oiled-cedar","fein":true},
     {"art":"schindel","rechteck":[3.5,0.0625,0.03125,0.125],"farbe":"oiled-cedar","fein":true},
     {"art":"schindel","rechteck":[4.5,0.0625,0.03125,0.125],"farbe":"oiled-cedar","fein":true}
+  ],
+  "stufen": [
+    {
+      "stufe": 2,
+      "aenderung": "Stein: Wand, Pfosten und Dach aus grauem Stein, Sockel bleibt Stein, Kisten, Fässer und Säcke bleiben",
+      "farben": {"wand/loulou": "valhalla", "pfosten/oiled-cedar": "valhalla", "pfosten/rope": "dim-gray", "dach/rope": "dim-gray", "dach/twine": "smokey-ash", "dach/oiled-cedar": "valhalla", "schindel/oiled-cedar": "valhalla"}
+    },
+    {
+      "stufe": 3,
+      "aenderung": "Kupfer: Wand, Pfosten, Dach und Sockel aus Kupferplatten, Vorratsschild an der Wand",
+      "farben": {"wand/loulou": "rope", "pfosten/oiled-cedar": "rope", "pfosten/rope": "tahiti-gold", "sockel/dim-gray": "tahiti-gold", "sockel/smokey-ash": "twine", "sockel/valhalla": "rope", "dach/rope": "tahiti-gold", "dach/oiled-cedar": "rope", "schindel/oiled-cedar": "rope"},
+      "zusaetze": [
+        { "art": "schild", "rechteck": [2.5,1.5,1,0.625], "farbe": "rope" },
+        { "art": "schild", "rechteck": [2.5625,1.5625,0.875,0.5], "farbe": "tahiti-gold" },
+        { "art": "schild", "rechteck": [2.5625,1.5625,0.875,0.0625], "farbe": "twine" }
+      ]
+    },
+    {
+      "stufe": 4,
+      "aenderung": "Eisen: Wand, Pfosten, Dach und Sockel aus Stahlplatten, Vorratsschild an der Wand",
+      "farben": {"wand/loulou": "dim-gray", "pfosten/oiled-cedar": "dim-gray", "pfosten/rope": "heather", "sockel/dim-gray": "heather", "sockel/smokey-ash": "light-steel", "sockel/valhalla": "dim-gray", "dach/rope": "heather", "dach/twine": "light-steel", "dach/oiled-cedar": "dim-gray", "schindel/oiled-cedar": "dim-gray"},
+      "zusaetze": [
+        { "art": "schild", "rechteck": [2.5,1.5,1,0.625], "farbe": "dim-gray" },
+        { "art": "schild", "rechteck": [2.5625,1.5625,0.875,0.5], "farbe": "heather" },
+        { "art": "schild", "rechteck": [2.5625,1.5625,0.875,0.0625], "farbe": "light-steel" }
+      ]
+    },
+    {
+      "stufe": 5,
+      "aenderung": "Kristall: Wand, Pfosten, Dach und Sockel aus blauem Kristall, leuchtendes Vorratsschild an der Wand",
+      "farben": {"wand/loulou": "deep-koamaru", "pfosten/oiled-cedar": "deep-koamaru", "pfosten/rope": "royal-blue", "sockel/dim-gray": "royal-blue", "sockel/smokey-ash": "cornflower", "sockel/valhalla": "deep-koamaru", "dach/rope": "royal-blue", "dach/twine": "cornflower", "dach/oiled-cedar": "deep-koamaru", "schindel/oiled-cedar": "deep-koamaru"},
+      "zusaetze": [
+        { "art": "schild", "rechteck": [2.5,1.5,1,0.625], "farbe": "deep-koamaru" },
+        { "art": "schild", "rechteck": [2.5625,1.5625,0.875,0.5], "farbe": "royal-blue" },
+        { "art": "schild", "rechteck": [2.5625,1.5625,0.875,0.0625], "farbe": "cornflower" }
+      ]
+    }
   ]
 }

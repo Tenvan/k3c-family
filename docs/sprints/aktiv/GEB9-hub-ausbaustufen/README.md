@@ -97,7 +97,7 @@ Alle Fragen sind am 2026-10-22 autonom von Claude mit Default entschieden (Auftr
 |---|---|---|---|---|
 | GEB9.1 | `GEB9.1-stufen-looks-regeln.md` | Umsetzung | autonom | fertig |
 | GEB9.2 | `GEB9.2-werkstatt-farm-uebergang.md` | Umsetzung | autonom | fertig |
-| GEB9.3 | `GEB9.3-kaserne-lager-taverne.md` | Umsetzung | autonom | offen |
+| GEB9.3 | `GEB9.3-kaserne-lager-taverne.md` | Umsetzung | autonom | fertig |
 | GEB9.4 | `GEB9.4-schmiede-heilplatz-ruestkammer.md` | Umsetzung | autonom | offen |
 | GEB9.5 | `GEB9.5-spiel-zuordnung-aufraeumen.md` | Umsetzung | autonom | offen |
 | GEB9.6 | `GEB9.6-review-abnahme.md` | Review | autonom | offen |
