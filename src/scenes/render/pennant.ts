@@ -19,13 +19,17 @@ export function pennantColor(player: number | undefined): number {
   return player === undefined || player < 0 ? PENNANT_NEUTRAL : PLAYER_COLORS[player % PLAYER_COLORS.length]!;
 }
 
-type MarkNode = Pick<ResourceNode, 'id' | 'x' | 'marked'>;
+type MarkNode = Pick<ResourceNode, 'id' | 'x' | 'marked'> & { kind?: string };
+
+/** Wie `gatherOf` im Server (`engine/sim/world_vein.go`): nur Sammel-Knoten und Adern lassen sich markieren; Busch, Plantage-Baum u. a. nicht */
+const MARKABLE = new Set([...Object.keys(ECONOMY.gatherables), ...Object.keys(ECONOMY.veins)]);
+const markable = (n: MarkNode): boolean => n.kind === undefined || MARKABLE.has(n.kind);
 
 /** Knoten, den eine Münze am Ort `x` bezahlt: der nächste unmarkierte in Reichweite, sonst der nächste markierte; keiner → `null` */
 export function paidNodeId(nodes: readonly MarkNode[], x: number): number | null {
   let best: MarkNode | null = null;
   for (const n of nodes) {
-    if (Math.abs(n.x - x) > MARK_RANGE) continue;
+    if (Math.abs(n.x - x) > MARK_RANGE || !markable(n)) continue;
     const better = !best || (n.marked === best.marked ? Math.abs(n.x - x) < Math.abs(best.x - x) : !n.marked);
     if (better) best = n;
   }

@@ -32,6 +32,13 @@ describe('Wer markiert (GEB10)', () => {
     expect(paidNodeId(nodes, 15)).toBeNull();
   });
 
+  it('nicht markierbare Knoten (Busch, Plantage-Baum) bekommen keinen Wimpel, auch wenn sie näher stehen', () => {
+    const nodes = [{ ...node(1, 10.4), kind: 'bush' }, { ...node(2, 11), kind: 'tree' }, { ...node(3, 12), kind: 'ironVein' }];
+    expect(paidNodeId(nodes, 10.2)).toBe(2);
+    expect(paidNodeId([nodes[0]!], 10.2)).toBeNull();
+    expect(paidNodeId([nodes[2]!], 12)).toBe(3);
+  });
+
   it('nur Markier-Münzen zählen, die letzte gewinnt; zwei Spieler an zwei Knoten', () => {
     const owners = new Map<number, number>();
     const nodes = [node(1, 10), node(2, 30)];

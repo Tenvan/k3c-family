@@ -1,6 +1,6 @@
 # GEB10.4 · Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -52,4 +52,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Review (Reviewer-Agent Sonnet, getrennt vom Schreiben, statisch auf `origin/develop..sprint/geb10`): keine schweren Befunde. Mittel 1 (behoben): `paidNodeId` nahm jeden Knoten in Reichweite, der Server markiert aber nur Sammel-Knoten und Adern (`gatherOf`); ein näherer Busch oder Plantage-Baum bekam die Spielerfarbe. Fix: `pennant.ts` prüft `kind` gegen `ECONOMY.gatherables`/`veins` (Typ `veins` in `data.ts` ergänzt), Test ergänzt (6 Tests grün, `tsc` grün). Mittel 2 (nicht behoben, kosmetisch): `openChest` zeigt die Truhe bei jedem Abgang eines Pickups kurz offen (auch bei Stufenwechsel oder Neuaufbau), kein Leck; für die Abnahme GEB10.5 vermerkt. Texturen: keine Verwender der 48 gelöschten Baum-PNGs, alle neuen Schlüssel haben Dateien. Unberührt: `engine/`, `data/*.json` außer `assets.json`, Protokoll. AC-01 bis AC-03 mit Nachweis in GEB10.1–.3; AC-04 (Abnahme durch Ralf) in GEB10.5 offen. Die Entscheidungen D2 bis D6 (Markierer im Snapshot, Wald-Dichte, Baumgröße, Pappel, Truhe) liegen im Sprint GEB12.
