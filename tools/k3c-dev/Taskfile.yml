@@ -101,7 +101,7 @@ tasks:
       - golangci-lint run
 
   build:
-    desc: "EXE von k3c-dev bauen (wails build; nur bei geänderten Quellen, `--force` erzwingt)"
+    desc: "EXE von k3c-dev bauen, feste EXE bin/k3c-dev (wails build; nur bei geänderten Quellen, `--force` erzwingt; laufende Workbench vorher schließen, sonst scheitert die Kopie)"
     deps: [':tmp']
     dir: '{{.DEV}}'
     preconditions:
@@ -129,5 +129,8 @@ tasks:
       - exclude: '**/*_test.go'
     generates:
       - build/bin/k3c-dev{{exeExt}}
+      - ../../bin/k3c-dev{{exeExt}}
     cmds:
       - wails build
+      - mkdir -p ../../bin
+      - cp build/bin/k3c-dev{{exeExt}} ../../bin/k3c-dev{{exeExt}}

@@ -16,6 +16,10 @@
 #   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
 #
+# Gruppen dieses Taskfiles (in dieser Reihenfolge): Einrichten (install) · Client (dev, lint, typecheck, test) · Bauen und Ausliefern
+# (build, buildall, pages) · Spielserver (start, serve) · Prüfen (check, check:go, check:race, check:diff, check:dev, check:studio,
+# check:starter, check:all).
+#
 # Jedes EXE-Projekt kennt dieselben Verben: `build` (EXE bauen), `run` (bauen und starten), `dev` (Backend mit `-dev` baut und startet sich
 # bei jeder Go-Änderung selbst neu, engine/devrun; Wails-Apps zeigen die Oberfläche über Vite im Browser). Der Name des Projekts allein (`task k3c-dev`) startet `dev`.
 version: '3'
@@ -65,7 +69,7 @@ tasks:
       - npm ci --prefix tools/k3c-studio/frontend
       - npm ci --prefix tools/k3c-starter/frontend
 
-  # --- Client (Phaser, Vite) ----------------------------------------------------------------------------------------
+  # --- Client (Phaser, Vite): entwickeln und prüfen -----------------------------------------------------------------
 
   dev:
     desc: Dev-Server (LAN, Port 5183); /api und /ws gehen an den Go-Server (Port 8080, `task start`)
@@ -99,12 +103,25 @@ tasks:
     cmds:
       - npx vitest
 
+  # --- Bauen und Ausliefern -----------------------------------------------------------------------------------------
+  # `build` ist der Web-Build (dist/), `buildall` baut dazu alle EXE nach bin/, `pages` die statische Präsentationsseite.
+
   build:
     desc: Atlas, Typecheck und Produktions-Build nach dist/
     deps: [gen:atlas]
     cmds:
       - npx tsc --noEmit
       - npx vite build
+
+  buildall:
+    desc: Alle EXE bauen und nach bin/ legen (Spielserver, Lasttest, TUI, Workbench, Asset-Studio, Starter samt Web-Build dist/); laufende EXE vorher schließen, sonst scheitert die Kopie
+    cmds:
+      - task: k3c-server:build
+      - task: k3c-load:build
+      - task: k3c-tui:build
+      - task: k3c-dev:build
+      - task: k3c-studio:build
+      - task: k3c-starter:build
 
   pages:
     desc: GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build, B-507; danach z. B. `npx vite preview --outDir _site`)
