@@ -66,7 +66,7 @@ keine blockierenden. Beim autonomen Freigeben mit Default entschieden und als Ti
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | BD7.1 | `BD7.1-skillheld-tod.md` | Umsetzung | autonom | fertig |
-| BD7.2 | `BD7.2-wartende-geschuetzt.md` | Umsetzung | autonom | offen |
+| BD7.2 | `BD7.2-wartende-geschuetzt.md` | Umsetzung | autonom | fertig |
 | BD7.3 | `BD7.3-pause-client.md` | Umsetzung | autonom | offen |
 | BD7.4 | `BD7.4-review.md` | Review | autonom | offen |
 

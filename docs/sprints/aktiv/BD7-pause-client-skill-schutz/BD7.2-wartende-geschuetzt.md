@@ -1,6 +1,6 @@
 # BD7.2 · Simulation: wartende und freie Monarchen sind geschützt
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -50,5 +50,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 umgesetzt: `shielded(p)` (`Protected || Free`) in `damagePlayer`; geprüft: `TestWartenderMonarchOhneTreffer` (Nahkampf und Schütze, vorher rot).
+- AC-03 umgesetzt: `candidates` und `aoeTargets` nutzen `shielded`; geprüft: `TestFreierMonarchKeinZiel` (besetzter Partner bleibt Ziel). `task check:diff` grün (EXIT 0, nach `task install` der Wails-Frontends; der erste Lauf scheiterte nur an fehlenden `react`-Typen im frischen Worktree). Golden unverändert. Review (Sonnet): kein schwerer Befund; Lücke: kein Raum-Test über `syncFree` mit Zustand `waiting` (Free wird direkt gesetzt).

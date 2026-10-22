@@ -200,7 +200,7 @@ func candidates(w *World, e *Enemy, dir float64, wall *Site) []target {
 	r := reach{e, e.has("ranged"), dir, wall}
 	out := []target{}
 	for _, p := range w.Players {
-		if isAlive(p) && !p.Protected && r.inRange(p.X) {
+		if isAlive(p) && !shielded(p) && r.inRange(p.X) {
 			out = append(out, target{p.ID, p.X, "player", p})
 		}
 	}
