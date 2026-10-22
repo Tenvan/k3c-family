@@ -19,6 +19,7 @@ Jedes Projekt ist eine Datei `XXX-name.md` nach [`../vorlagen/projekt.md`](../vo
 | 9 | SKL · Monarch & Skills | Skill-Baum mit Klassen, lernbare Skills vom Server | [SKL-monarch-skills.md](SKL-monarch-skills.md) |
 | 10 | KMP · Kampf, Bosse, Events | Bosse, Siege, Events und Level-Elemente durchgängig | [KMP-kampf-bosse-events.md](KMP-kampf-bosse-events.md) |
 | 11 | REL · Release & Betrieb | Belegte Releases, Start im Heimnetz, Veröffentlichung | [REL-release-betrieb.md](REL-release-betrieb.md) |
+| 12 | KRT · Kritische Fragen | – | [KRT-kritische-fragen.md](KRT-kritische-fragen.md) |
 | – | ABN · Abnahmen am Gerät | Prüfungen am Gerät gesammelt | [ABN-abnahmen-geraet.md](ABN-abnahmen-geraet.md) |
 
 ## Ruht

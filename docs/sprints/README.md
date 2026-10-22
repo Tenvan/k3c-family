@@ -51,6 +51,12 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | KB2 | SRV, CLI | KMP | Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen | – | Entwurf | `geplant/KB2-protokoll-kampf-nachtraege/` |
 | PG1 | PLAT | REL | Präsentationsseite mit echten Spielbildern | – | Entwurf | `geplant/PG1-praesentation-bilder/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | Entwurf | `geplant/PB1-itch-io/` |
+| KR1 | REG | KRT | Kritische Fragen zu BED | – | Entwurf | `geplant/KR1-fragen-bed/` |
+| KR2 | REG | KRT | Kritische Fragen zu GEB | – | Entwurf | `geplant/KR2-fragen-geb/` |
+| KR3 | REG | KRT | Kritische Fragen zu GRA | – | Entwurf | `geplant/KR3-fragen-gra/` |
+| KR4 | REG | KRT | Kritische Fragen zu SND | – | Entwurf | `geplant/KR4-fragen-snd/` |
+| KR5 | REG | KRT | Kritische Fragen zu SKL | – | Entwurf | `geplant/KR5-fragen-skl/` |
+| KR6 | REG | KRT | Kritische Fragen zu KMP | – | Entwurf | `geplant/KR6-fragen-kmp/` |
 | HW1 | PLAT, SRV, INF, CLI | ABN | Zurückgestellte Controller-Prüfungen nachholen | – | Entwurf | `geplant/HW1-controller-pruefungen/` |
 | RG1 | REG | BAL | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | Beschlüsse in `docs/rules/`, geänderte Werte in `data/`, `task balance` grün | Entwurf | `geplant/RG1-werte-burg-hub-adern/` |
 | BAL6 | SIM | BAL | Balancing-Tester misst die Wirtschaft | – | Entwurf | `geplant/BAL6-tester-misst-wirtschaft/` |
