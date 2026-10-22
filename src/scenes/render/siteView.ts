@@ -3,11 +3,12 @@ import { GROUND_Y, UNIT_PX } from '../../core/constants';
 import { currentLanguage, nameOf, t } from '../../core/texts';
 import { BUILDINGS, TROOPS } from '../../model/data';
 import type { Site, World } from '../../model/types';
-import { BUILDING_TEXTURES, hubTexture, isHubBuilding, siteTexture, textureScale } from './buildingSprites';
+import { BUILDING_TEXTURES, HUB_SCAFFOLD_TEXTURE, hubLookTexture, hubTexture, isHubBuilding, siteTexture, textureScale } from './buildingSprites';
 import { damageStage, showRubble } from './damageRules';
 import { damageTint, drawDamage, drawRubble } from './damageView';
 import { fontStyle } from './fontRules';
 import { gateStage } from './gateRules';
+import { hubLookOf } from './hubGrowth';
 import { drawSiteStatus, siteStatus, statusKey } from './siteStatusView';
 import { canAfford } from './viewRules';
 
@@ -64,19 +65,29 @@ export function prepareBuildings(scene: Phaser.Scene): void {
 
 const has = (scene: Phaser.Scene, key: string | null): key is string => key !== null && scene.textures.exists(key);
 
-/** Burg (GEB4): ein Bild je Hub-Stufe, Unterkante am Boden, mittig auf `x`; Inhalt setzt `updateCastleView` */
+/** Burg (GEB4, GEB11): Bild des Looks und Baugerüst davor, Unterkante am Boden, mittig auf `x`; Inhalt setzt `updateCastleView` */
 export function createCastleView(scene: Phaser.Scene, x: number): View {
   const picture = scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 1).setVisible(false);
-  return scene.add.container(x, G, [picture, scene.add.graphics()]);
+  const scaffold = scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 1).setVisible(false);
+  return scene.add.container(x, G, [picture, scene.add.graphics(), scaffold]);
 }
 
-/** Tauscht die Burg-Grafik, wenn sich die Hub-Stufe ändert (`World.hubLevel`, fehlt = 1); ohne Grafik die bisherige Form */
-export function updateCastleView(scene: Phaser.Scene, v: View, stage: number): void {
+/**
+ * Tauscht die Burg-Grafik, wenn sich der Look der Wachstumsreihe ändert (`hubLookOf`: Hub-Stufe und Ausbau-Stand, GEB11); fehlt die
+ * Grafik des Looks, die Burg der Hub-Stufe, sonst die bisherige Form. Das Gerüst steht, solange ein Bauer den Ausbau baut.
+ */
+export function updateCastleView(scene: Phaser.Scene, v: View, world: Pick<World, 'hubLevel' | 'hubUpgrade'>): void {
+  const look = hubLookOf(world);
+  const stage = `${look.id}-${look.stufe}-${look.scaffold}`;
   if (v.getData('stage') === stage) return;
   v.setData('stage', stage);
   const picture = v.getAt(0) as Phaser.GameObjects.Image;
   const g = (v.getAt(1) as Phaser.GameObjects.Graphics).clear();
-  const key = hubTexture(stage);
+  const scaffold = v.getAt(2) as Phaser.GameObjects.Image;
+  if (look.scaffold && has(scene, HUB_SCAFFOLD_TEXTURE)) scaffold.setTexture(HUB_SCAFFOLD_TEXTURE).setScale(textureScale(HUB_SCAFFOLD_TEXTURE)).setVisible(true);
+  else scaffold.setVisible(false);
+  let key = hubLookTexture(look);
+  if (!has(scene, key)) key = hubTexture(look.id === 'burg' ? look.stufe : 1);
   if (has(scene, key)) {
     picture.setTexture(key).setScale(textureScale(key)).setVisible(true);
     return;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BUILDING_TEXTURES, backWallTexture, hubTexture, isHubBuilding, siteTexture, textureScale } from './buildingSprites';
+import { BUILDING_TEXTURES, HUB_SCAFFOLD_TEXTURE, backWallTexture, hubLookTexture, hubTexture, isHubBuilding, siteTexture, textureScale } from './buildingSprites';
 
 /** Nur die Pfade, nichts wird geladen */
 const FILES = Object.keys(import.meta.glob('../../../public/grafik/**/*.png'));
@@ -83,6 +83,20 @@ describe('Gebäude-Grafik (GR3.1)', () => {
     }
     expect(hubTexture()).toBe('grafik:hub-1');
     expect(hubTexture(6)).toBeNull();
+  });
+
+  it('Wachstumsreihe (GEB11): Lagerfeuer, Zelt, Hütte und Gerüst je eigene 32-px-Grafik, Burg über hubTexture, unbekannt null', () => {
+    for (const n of [1, 2, 3]) {
+      const key = hubLookTexture({ id: 'lagerfeuer', stufe: n });
+      expect(key).toBe(`grafik:lagerfeuer-${n}`);
+      expect(BUILDING_TEXTURES[key!]).toBe(`gebaeude/lagerfeuer-${n}-32.png`);
+      expect(textureScale(key!)).toBe(1);
+    }
+    expect(hubLookTexture({ id: 'burg', stufe: 2 })).toBe('grafik:hub-2');
+    expect(hubLookTexture({ id: 'lagerfeuer', stufe: 4 })).toBeNull();
+    expect(hubLookTexture({ id: 'burg', stufe: 6 })).toBeNull();
+    expect(BUILDING_TEXTURES[HUB_SCAFFOLD_TEXTURE]).toBe('gebaeude/hub-geruest-32.png');
+    expect(textureScale(HUB_SCAFFOLD_TEXTURE)).toBe(1);
   });
 
   it('jede genannte Datei liegt unter public/grafik/', () => {

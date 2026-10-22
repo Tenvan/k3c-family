@@ -198,6 +198,18 @@ export interface WachstumKarte {
   geruest?: string;
 }
 
+/** Name und Spielbedingung je Look `<id>-<stufe>` (Regel materialien-gebaeude.md § 2.1); der Spielcode kennt nur die Reihe. */
+const WACHSTUM_TEXT: Record<string, [string, string]> = {
+  'lagerfeuer-1': ['Lagerfeuer mit Grill', 'Hub-Stufe 1, noch kein Gold bezahlt'],
+  'lagerfeuer-2': ['Zelt am Feuer', 'Hub-Stufe 1, weniger als die Hälfte des Golds'],
+  'lagerfeuer-3': ['Holzhütte am Feuer', 'Hub-Stufe 1, ab der Hälfte des Golds'],
+  'burg-1': ['Holzburg', 'Hub-Stufe 1, Gold voll'],
+  'burg-2': ['Steinburg', 'Hub-Stufe 2'],
+  'burg-3': ['Kupferburg', 'Hub-Stufe 3'],
+  'burg-4': ['Eisenburg', 'Hub-Stufe 4'],
+  'burg-5': ['Kristallburg', 'Hub-Stufe 5'],
+};
+
 /**
  * Wachstumsreihe der Burg in Spielreihenfolge (`HUB_GROWTH` aus dem Spielcode, Regel materialien-gebaeude.md § 2.1), danach die
  * Steinburg mit Baugerüst als Beispiel für „ein Bauer baut den Ausbau“; Looks ohne Datei im Index entfallen.
@@ -209,7 +221,10 @@ export function hubWachstum(index: readonly GebaeudeEintrag[]): WachstumKarte[] 
     const datei = e?.stufen ? e.stufen.find((s) => s.stufe === stufe)?.dateien[32] : stufe === 1 ? e?.dateien[32] : undefined;
     return e && datei ? [{ titel, wann, datei, h: e.kacheln.h }] : [];
   };
-  const karten = HUB_GROWTH.flatMap((l) => karte(l.id, l.stufe, l.name, l.wann));
+  const karten = HUB_GROWTH.flatMap((l) => {
+    const [titel, wann] = WACHSTUM_TEXT[`${l.id}-${l.stufe}`] ?? [`${l.id} · Stufe ${l.stufe}`, ''];
+    return karte(l.id, l.stufe, titel, wann);
+  });
   const geruest = byId.get(HUB_SCAFFOLD)?.dateien[32];
   const bau = karte('burg', 2, 'Steinburg im Ausbau', 'ein Bauer baut den Ausbau (Gerüst auf Hub-Stufe 1 bis 4)');
   return geruest && bau[0] ? [...karten, { ...bau[0], geruest }] : karten;

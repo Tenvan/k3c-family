@@ -218,6 +218,8 @@ den Zusatz (Stufe 2 der Tabelle); ab Stufe 3 wechselt der Stein auf Kupfer, Eise
 Material Holz der Hub-Stufe 1); während ein Bauer den Hub-Ausbau baut, liegt `hub-geruest.json` als zweites Bild über dem Look.
 Welcher Look wann steht, regelt `docs/rules/materialien-gebaeude.md` § 2.1; die Reihe steht einmal im Spielcode
 (`src/scenes/render/hubGrowth.ts`, `HUB_GROWTH`), die Vorschau zeigt sie im Streifen „Hub wächst (GEB11)“ (Szene Gebäude).
+Im Spiel wählt `updateCastleView` den Look über `hubLookOf` (`World.hubLevel`, `World.hubUpgrade`) und `hubLookTexture`; fehlt die
+Grafik des Looks, gilt die Burg der Hub-Stufe (GEB11.4).
 
 *Im Spiel (GEB9.5).* Die acht Hub-Gebäude zeigen `<id>-<hubLevel>-32.png` (`World.hubLevel`, fehlt = 1); gibt es die Stufe nicht, gilt die
 höchste vorhandene, ist die Textur nicht geladen, die Stufe 1. Grundform-Dateien `<id>-<dichte>.png` gibt es für sie nicht mehr; der

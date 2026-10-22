@@ -1,6 +1,6 @@
 # GEB11.4 · Spiel zeichnet die Burg nach Hub-Stufe und Ausbau-Stand
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -52,5 +52,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-04 (Teil Spiel) umgesetzt und geprüft: `hubLookOf` (`src/scenes/render/hubGrowth.ts`) leitet den Look aus `World.hubLevel` und `World.hubUpgrade` ab (Hub-Stufe 1 vor vollem Gold: Lagerfeuer bei 0, Zelt unter der Hälfte, Hütte ab der Hälfte; sonst Burg der Stufe; `scaffold` bei `waitingWorker`; ohne `hubUpgrade` oder ohne Goldkosten die Burg, ohne `hubLevel` Stufe 1). `buildingSprites.ts` registriert `grafik:lagerfeuer-1..3` und `grafik:hub-geruest` (aus `HUB_GROWTH`), `hubLookTexture`, `HUB_SCAFFOLD_TEXTURE`; `siteView.ts` › `updateCastleView` bekommt die Welt statt der Stufe, zeigt den Look und das Gerüst als drittes Bild im Container, fällt ohne Grafik auf die Burg der Hub-Stufe und dann auf die Platzhalter-Form zurück; `worldRenderer.ts` reicht `world` durch. Tests: `hubGrowth.test.ts` (Schwellen 0/1/24/25/49/50, Gerüst, Rückfälle, Reihe = Vorschau) und `buildingSprites.test.ts` (Texturen, Dateien unter `public/grafik/`) grün. Register `data/assets.json` (`hub:camp:1..3`, `hub:scaffold`), `docs/assets/zuordnung-welt.md` und `gebaeude-grafik.md` § 6 nachgezogen. Abweichung: Namen und Bedingungen der Looks stehen nicht im Spielcode (`textRule.test.ts` verbietet deutsche Literale in `src/scenes/`), sondern im Studio (`scenesLogic.ts` › `WACHSTUM_TEXT`); der Spielcode hält nur die Reihe.
+
+Prüfung: Client-Vitest 2356/2356 und Studio-Vitest 471/471 grün, `tsc --noEmit` (Client und Studio), `oxlint` ohne Befund in den geänderten Dateien, `go test ./tools/buildings` grün. `task check:diff` als Ganzes kam nicht durch: ein Lauf brach mit „parallel golangci-lint is running“ ab (zweiter Agent in anderem Worktree), der zweite am 10-Minuten-Zeitlimit (go test bis dahin grün); dieser Sprint ändert keinen Go-Code. Kein Reviewer-Agent: unter 150 Code-Zeilen, nicht SIM/SRV, kein Protokoll. Bekannt, ungeprüft im Spiel: Der HP-Balken der Burg steht fest 310 px über dem Boden und schwebt beim Lagerfeuer höher (nur bei Schaden sichtbar). Nicht im Browser geprüft; Abnahme AC-04 durch 🧑 in GEB11.6.

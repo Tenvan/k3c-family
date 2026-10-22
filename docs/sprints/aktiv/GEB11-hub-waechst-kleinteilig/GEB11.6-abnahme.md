@@ -1,6 +1,6 @@
 # GEB11.6 · Abnahme der Wachstumsreihe in Vorschau und Spiel
 
-- **Status:** offen
+- **Status:** blockiert
 - **Typ:** Review
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -48,5 +48,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Blockiert (2026-10-22): manuelle Abnahme in Studio-Vorschau und Spiel gehört 🧑 (`docs/arbeitsweise.md` › SDD, Abnahme); wartet auf 🧑, nachdem GEB11.5 (Review) gelaufen ist.

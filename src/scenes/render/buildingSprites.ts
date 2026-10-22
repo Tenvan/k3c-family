@@ -1,4 +1,5 @@
 import type { SiteKind, SiteState } from '../../model/types';
+import { HUB_GROWTH, HUB_SCAFFOLD, type HubLook } from './hubGrowth';
 
 /**
  * Welche Grafik ein Gebäude zeigt (GR3.1, Zuordnung `docs/assets/zuordnung-objekte.md` und `zuordnung-welt.md`).
@@ -14,6 +15,9 @@ const HUB_BUILDINGS: Partial<Record<SiteKind, string>> = {
 /** Textur-Schlüssel → Datei unter `public/grafik/` (nur zugeordnete Dateien; LoadScene lädt genau diese) */
 export const BUILDING_TEXTURES: Record<string, string> = {
   ...stufen('hub', 'burg'),
+  /** Wachstumsreihe vor der Holzburg und Baugerüst (GEB11): `grafik:<id>-<stufe>`, `grafik:hub-geruest` */
+  ...Object.fromEntries(HUB_GROWTH.filter((l) => l.id !== 'burg').map((l) => [`grafik:${l.id}-${l.stufe}`, `gebaeude/${l.id}-${l.stufe}-32.png`])),
+  [`grafik:${HUB_SCAFFOLD}`]: `gebaeude/${HUB_SCAFFOLD}-32.png`,
   ...stufen('wall', 'mauer'),
   ...stufen('tower', 'turm'),
   ...stufen('backwall', 'hintergrundmauer'),
@@ -80,3 +84,13 @@ export function hubTexture(stage = 1): string | null {
   const key = `grafik:hub-${stage}`;
   return key in BUILDING_TEXTURES ? key : null;
 }
+
+/** Textur eines Looks der Wachstumsreihe (GEB11, `hubLookOf`): Burg über `hubTexture`, sonst `grafik:<id>-<stufe>`; unbekannt `null` */
+export function hubLookTexture(look: Pick<HubLook, 'id' | 'stufe'>): string | null {
+  if (look.id === 'burg') return hubTexture(look.stufe);
+  const key = `grafik:${look.id}-${look.stufe}`;
+  return key in BUILDING_TEXTURES ? key : null;
+}
+
+/** Baugerüst vor der Burg, solange ein Bauer den Hub-Ausbau baut (GEB11) */
+export const HUB_SCAFFOLD_TEXTURE = `grafik:${HUB_SCAFFOLD}`;
