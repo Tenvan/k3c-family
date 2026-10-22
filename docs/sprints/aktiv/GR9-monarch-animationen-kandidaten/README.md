@@ -1,14 +1,14 @@
-# GR9 · DEV · Monarch-Animationen für Wurf, Treffer, Tod und Respawn, Kandidaten-Import ohne roten Test
+# GR9 · DEV, CLI · Monarch-Animationen für Wurf, Treffer, Tod und Respawn, Kandidaten-Import ohne roten Test
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GRA
-- **Domäne:** DEV
-- **Reife:** Entwurf
+- **Domäne:** DEV, CLI
+- **Reife:** bereit
 - **Tickets:** B-420, B-505
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 013dcb34
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-22, Revision 1
 
 ## Ausgangslage
 
@@ -32,7 +32,7 @@ Figuren für Gegner (GR8); Skill-Darstellung (SK2); Grafik-Pipeline mit Ziel-Pal
 
 ## Regeln und Einschränkungen
 
-Reihenfolge DEV → CLI. **Abhängigkeit:** nach GR8 (Pipeline, Stil DB32/16 px). Lizenzen in den CREDITS-Dateien, Skalierung ganzzahlig (GR7.4), Atlas-Budget Xbox (GR4). Neue Animationen in `data/sprites.json`.
+Reihenfolge DEV → CLI. GR8 ist abgeschlossen (PR #434 offen); Pipeline-Ergebnisse werden hier nicht verwendet (Umschalten bleibt 🧑). Lizenzen in den CREDITS-Dateien, Atlas-Budget Xbox (GR4). Neue Animationen in `data/sprites.json`.
 
 ## Beispiele
 
@@ -49,17 +49,23 @@ Sheet ohne passende Animation → bisheriger Effekt als Rückfall. Kandidat ohne
 
 ## Offene Fragen
 
-🧑: `kandidaten/` als eigener Eintrag in `GRAFIK_PACKS` oder vom Test ausgenommen (B-420)? Woher kommen die Monarch-Animationen (anderes Sheet, eigene Zeichnung)?
+Entschieden autonom (Claude, 2026-10-22), 🧑 prüft im Entscheidungs-Sprint GR10: `kandidaten/` ist kein Pack, der Pack-Test nimmt den Ordner aus; Monarch-Animationen werden aus vorhandenen Frames abgeleitet (Blitz, Kippen, Einwachsen), keine neue Fremdquelle; Wurf nutzt die ersten Attack-Frames.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| GR9.1 | `GR9.1-kandidaten-import.md` | Umsetzung | autonom | offen |
+| GR9.2 | `GR9.2-monarch-sheets.md` | Umsetzung | autonom | offen |
+| GR9.3 | `GR9.3-monarch-einbau.md` | Umsetzung | autonom | offen |
+| GR9.4 | `GR9.4-review.md` | Review | autonom | offen |
+| GR9.5 | `GR9.5-abnahme-tv.md` | Umsetzung | Mensch | offen |
 
-- GR9.1 (DEV) Kandidaten-Import hält `task check` grün (AC-01).
-- GR9.2 (CLI, Mensch) Workshop: Quelle der Monarch-Animationen wählen (AC-02).
-- GR9.3 (CLI) Animationen in Sheet und `data/sprites.json`, Einbau im Spiel (AC-02).
-- GR9.4 (CLI) Review (Code-Sprint): alle Kriterien prüfen.
-- GR9.5 (CLI, Mensch) Abnahme am TV (AC-02).
+- GR9.1 Kandidaten-Import hält `task check` grün (AC-01).
+- GR9.2 Sheets für give/hit/death/respawn aus vorhandenen Frames (AC-02). Der geplante Workshop zur Quellenwahl entfällt: autonom entschieden, Ableitung statt Fremdgrafik.
+- GR9.3 Einbau im Client (AC-02).
+- GR9.4 Review (Code-Sprint).
+- GR9.5 Abnahme am TV, 🧑 (AC-02).
 
 ## Abnahme
 
