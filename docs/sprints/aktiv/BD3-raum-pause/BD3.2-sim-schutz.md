@@ -1,6 +1,6 @@
 # BD3.2 · Simulation: geschützter Monarch (Protected) ohne Treffer
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -50,4 +50,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-02 (Teil Simulation) umgesetzt: `sim.Player.Protected` (`json:"-"`), `damagePlayer` ignoriert ihn, `candidates` und `aoeTargets` wählen ihn nicht; geprüft: `TestProtectedOhneTreffer` (Nahkampf, Geschoss, Gegenprobe ohne Schutz), `TestProtectedKeinZiel`.
+- Review (Sonnet): kein schwerer Befund; alle HP-Verluste laufen über `damagePlayer`. Gegner laufen weiter auf ihn zu (`nearestThreat`), ohne Schaden. Golden unverändert.

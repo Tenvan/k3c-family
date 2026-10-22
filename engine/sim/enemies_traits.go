@@ -73,7 +73,7 @@ func aoeTargets(w *World, x, radius float64) []target {
 	in := func(at, extra float64) bool { return math.Abs(at-x) <= radius+extra }
 	var out []target
 	for _, p := range w.Players {
-		if isAlive(p) && in(p.X, 0) {
+		if isAlive(p) && !p.Protected && in(p.X, 0) {
 			out = append(out, target{p.ID, p.X, "player", p})
 		}
 	}
