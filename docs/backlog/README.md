@@ -151,6 +151,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-521](B-521-types-ts-aufteilen.md) | CLI | Schuld | niedrig | offen | – | src/model/types.ts liegt über der Dateigrenze von 400 Zeilen |
 | [B-522](B-522-ressourcen-auf-ruine.md) | SIM | Problem | mittel | offen | – | Zufalls-Ressourcen eines geplanten Chunks können auf seiner Ruine liegen |
 | [B-523](B-523-ruine-kollision-hub-platz.md) | SIM | Schuld | niedrig | offen | – | Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt |
+| [B-525](B-525-entscheidung-goldtopf.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Wortlaut und Symbol des Goldtopfs in der Spielerkarte |
+| [B-526](B-526-entscheidung-hintergrund-hoehe.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Hintergrund-Höhe je Biom gegen WORLD_TOP |
+| [B-527](B-527-entscheidung-abmelden-tastatur.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Abmelden mit zwei Tastatur-Spielern und Ziel per Auswahl |
 
 ## Archiv
 
