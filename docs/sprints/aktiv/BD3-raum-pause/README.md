@@ -1,14 +1,14 @@
-# BD3 · SRV · Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online
+# BD3 · SRV, SIM · Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
-- **Domäne:** SRV
-- **Reife:** Entwurf
+- **Domäne:** SRV, SIM
+- **Reife:** bereit
 - **Tickets:** B-214
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Start-Commit:** 013dcb34
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-10-22
 
 ## Ausgangslage
 
@@ -50,15 +50,18 @@ Pausiertes Gerät verliert die Verbindung → Pause endet, Frist laut § 3. `res
 
 ## Offene Fragen
 
-keine (Protokollform beschlossen: eigene Nachricht, 🧑 2026-10-13).
+keine (Protokollform beschlossen: eigene Nachricht, 🧑 2026-10-13). Beim autonomen Aktivieren mit Default entschieden und zur Prüfung durch 🧑 als Tickets angelegt: B-528 (Regeldetails: Couch-Raum, Schutz, Frist), B-529 (Protokoll v8 ohne Rückmeldung im Zustand).
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BD3.1 | `BD3.1-protokoll-pause.md` | Umsetzung | autonom | offen |
+| BD3.2 | `BD3.2-sim-schutz.md` | Umsetzung | autonom | offen |
+| BD3.3 | `BD3.3-raum-pause.md` | Umsetzung | autonom | offen |
+| BD3.4 | `BD3.4-review.md` | Review | autonom | offen |
 
-- BD3.1 Protokoll: Nachricht `pause`/`resume`, Version, Beispiel (AC-03).
-- BD3.2 Raum: Pause im Couch-Raum, Schutz 60 s online, Go-Tests (AC-01, AC-02).
-- BD3.3 Review (Code-Sprint): alle Kriterien prüfen.
+Der Schutz braucht ein Laufzeit-Feld in der Simulation; dafür kam beim Aktivieren die SIM-Session BD3.2 dazu (Review damit BD3.4). BD3.1 (SRV) Protokoll (AC-03), BD3.2 (SIM) geschützter Monarch (AC-02, Teil Simulation), BD3.3 (SRV) Raum (AC-01, AC-02), BD3.4 Review (alle).
 
 ## Abnahme
 
