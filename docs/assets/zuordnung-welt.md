@@ -73,7 +73,7 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `pickup:chest` | `data/economy.json` › `chestGold`, Pickup `chest` | `grafik/gebaeude` | `truhe-32.png` (1 × 1 Kachel, offene Truhe mit Gold) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `pickup:chest` | `data/economy.json` › `chestGold`, Pickup `chest` | `grafik/gebaeude` | `truhe-geschlossen-32.png` (1 × 1 Kachel, liegende Truhe geschlossen); beim Aufheben kurz `truhe-32.png` (offen mit Gold, `worldSprites.ts` › `CHEST_OPEN`) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6, GEB10 | eigen | zugeordnet |
 | `portal` | `data/biomes/*.json` › `portals` | `grafik/gebaeude` | `portal-32.png` (2 × 3 Kacheln, statisch) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 | `coin` | `data/economy.json` › `purse` | `grafik/16x16-small-and-medium-coin-animation` | `muenzen/sCoins_1.png`, `muenzen/sCoins_2.png` (Drehung, je 8 Frames 16×16) | 16 px, WolfTech (gelb), ×2 | CC0 1.0 | zugeordnet |
 | `guide:coin` | `src/scenes/hints/guideHints.ts` › `guideImage('coin')` (Hinweis „Münze aufheben“, B-294) | `grafik/gold-treasure-icons-16x16` | `icons/2.png` (Münze von vorn, Textur `grafik:coinIcon`); die Münze aus `sCoins_1.png` ist als Symbol zu klein und hat Markierungspixel | 16 px, Bonsaiheldin (gelb/braun), ×4 (Münze 6 px → 24 px, etwa Texthöhe) | CC0 1.0 | zugeordnet |
@@ -88,10 +88,10 @@ Level-Objekte, die `src/scenes/render/worldRenderer.ts` zeichnet (`createNode`, 
 
 | Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| `node:tree` | `data/economy.json` › `gatherables.tree` | `grafik/gebaeude` | `tanne`, `pappel`, `birke` und je zwei weitere Formen (`<art>-2`, `<art>-3`); Form aus der Position, Look Wald oder Höhle aus dem Biom (`src/scenes/render/natureSprites.ts`) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `node:tree` | `data/economy.json` › `gatherables.tree` | `grafik/gebaeude` | Wald: `tanne`, `pappel`, `birke` und je zwei weitere Formen (`<art>-2`, `<art>-3`, 2–4 × 11,25 Kacheln); außerhalb des Walds Höhlen-Flora `wurzel`, `wurzel-2`, `wurzel-3` (15 Kacheln hoch); Form aus der Position (`src/scenes/render/natureSprites.ts`) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6, GEB10 | eigen | zugeordnet |
 | `node:rock` | `data/economy.json` › `gatherables.rock` | `grafik/gebaeude` | `felsen-1-32.png` (Wald), `felsen-2-32.png` (Höhle), `felsen-3-32.png` (Mine, auch Eisenstollen und Kristallhöhle) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 | `node:copperOre` | `data/economy.json` › `gatherables.copperOre` | `grafik/gebaeude` | `erzbrocken-32.png` (1 × 1 Kachel) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
-| `node:bush` | `data/biomes/forest.json` › `resourcesPerChunk` (Deko) | `grafik/gebaeude` | `busch-32.png` (1 × 1 Kachel, nur Wald) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `node:bush` | `data/biomes/forest.json` › `resourcesPerChunk` (Deko) | `grafik/gebaeude` | Wald `busch-32.png`, sonst `hoehlenbusch-32.png` (je 1 × 1 Kachel; der Generator setzt heute nur im Wald Büsche) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6, GEB10 | eigen | zugeordnet |
 | `camp:recruit` | `data/economy.json` › `recruitCamp` | `grafik/gebaeude` | `rekrutierungslager-32.png` (3 × 2 Kacheln, Zelt und Feuerstelle in einem Bild, statisch) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 
 ## Reittiere

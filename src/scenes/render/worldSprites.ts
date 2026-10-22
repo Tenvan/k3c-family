@@ -52,11 +52,15 @@ const sprite = (key: string, frame: number | string = 0, frames = 1, zoom = 2): 
 const OBJECTS: Record<string, ObjectSprite> = {
   portal: sprite('grafik:portal', 0, 1, 1),
   exit: sprite('grafik:ausgang', 0, 1, 1),
-  'pickup:chest': sprite('grafik:truhe', 0, 1, 1),
+  // Eine liegende Truhe ist ungeöffnet: geschlossen; die offene zeigt der Renderer kurz beim Aufheben (GEB10)
+  'pickup:chest': sprite('grafik:truhe-geschlossen', 0, 1, 1),
   'pickup:skillPoint': sprite('grafik:star', 0, 4),
   coin: sprite('grafik:coins', 0, 8),
   'camp:recruit': sprite('grafik:lager', 0, 1, 1),
 };
+
+/** Geschlossene Truhe → offene: der Renderer zeigt sie kurz, wenn die Truhe aufgehoben wird (GEB10, B-455) */
+export const CHEST_OPEN: Record<string, string> = { 'grafik:truhe-geschlossen': 'grafik:truhe' };
 
 export function objectSprite(id: string): ObjectSprite | null {
   return OBJECTS[id] ?? null;

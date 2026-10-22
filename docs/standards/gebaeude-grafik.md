@@ -12,9 +12,12 @@ nur mit Zustimmung von 🧑.
 | Klasse | Breite × Höhe (Kacheln) | Beleg |
 |---|---|---|
 | Handelsstand / kleines Gebäude | 6 × 4 | Werkstatt (`workshop`), Taverne (`tavern`), Heilplatz (`healer`), Schmiede (`smithy`), Rüstkammer (`armory`) (GEB2); Lager (`storage`), Kaserne (`barracks`) in Stein (GEB5) |
-| Baum (schmal) | 1 × 2,25 | Tanne, Pappel, Birke (GEB1.3); je Art Form 2 und 3 (`tanne-2` … `birke-3`, Looks Wald und Höhle, GEB6.1) |
+| Baum (hoch, ¾ der Szenenhöhe) | 2–4 × 11,25 (`birke-3` 4 × 9,5) | Tanne, Pappel, Birke (GEB1.3); je Art Form 2 und 3 (`tanne-2` … `birke-3`, GEB6.1); Maß GEB10: Szenenhöhe = sichtbare Welt über dem Boden 15 Kacheln (`GROUND_Y` − `WORLD_TOP`), Bäume ¾ davon |
 | Busch | 1 × 1 | `busch.json` (GEB6.1) |
+| Wurzel (Höhlen-Flora, von der Decke bis in den Boden, Klasse `flora`) | 2–3 × 15 | `wurzel`, `wurzel-2`, `wurzel-3` (GEB10.1); 15 Kacheln = bis an den oberen Rand der sichtbaren Welt |
+| Höhlenbusch (Klasse `flora`) | 1 × 1 | `hoehlenbusch.json` (GEB10.1): Farnwedel mit Leuchtpilzen |
 | Truhe (offen, mit Gold) | 1 × 1 | `truhe.json` (GEB6.4) |
+| Truhe geschlossen (eigene JSON, keine Stufe: der Goldhaufen fällt weg) | 1 × 1 | `truhe-geschlossen.json` (GEB10.2): gewölbter Deckel, Eisenbänder über Deckel und Körper, Körper wie `truhe` |
 | Portal, Ausgang (statisch, ohne Stufen) | 2 × 3 | `portal.json`, `ausgang.json` (GEB6.4); Portal mit leuchtender Kristallfläche, Ausgang mit dunkler Öffnung und Holzrahmen |
 | Rekrutierungslager (Zelt und Feuerstelle, statisch) | 3 × 2 | `rekrutierungslager.json` (GEB6.4) |
 | Ader (Stufen 1–4 = Stein, Kupfer, Eisen, Kristall) | 2 × 2 | `ader.json` (GEB6.3); Felsbuckel mit Erzgang, Stein-Ader in `pancho`/`white`, die nur im Gang vorkommt |
@@ -86,7 +89,7 @@ Ein Gebäude ist eine Liste von Rechtecken in Zeichenreihenfolge (hinten zuerst)
 `werkzeug`; Taverne: `kamin`, `dach`, `schindel`, `fenster`, `glas`, `sprosse`, `tuer`, `beschlag`, `stufe`, `ausleger`,
 `kette`, `krug`, `fass`, `reifen`; Heilplatz: `kraut`, `schnur`, `liege`, `kissen`, `decke`, `schale`, `wasser`, `korb`, `flechtung`; Mauer und Turm: `zinne`, `wand`, `bruestung`, `konsole`, `schaft`, `scharte`, `tuerrahmen`, `tuer`, `sockel`,
 `patina`, `band`, `niete`, `glanz`, `kristall`, `aura`, `runenband`, `rune`, `kante` (Hintergrundmauer); Burg: `turm`, `obergeschoss`, `mast`, `banner`; Tor: `sturz`, `fluegel`, `riegel` (Flügel in `stinger` bleiben Holz, nicht im Farbtausch); Schmiede: `haken`, `esse`, `oeffnung`, `glut`, `funke`, `klotz`, `amboss`, `hammer`, `trog`;
-Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `ruestung`, `wappen`, `speer`, `regal`; Lager: `sack`, `holz`, `erz`; Kaserne: `schwert`; Farm: `luke`, `strebe`, `zaun`, `heu`; Treppe hoch: `stufe`, `gelaender`, `laterne`; Treppe runter: `bogen`, `schlussstein`, `oeffnung`; Lagerfeuer (GEB11): `spiess`, `braten`, `tropfen`, `pflock`, `eingang`; Baugerüst: `strebe`, `brett`, `leiter`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`; Hintergrund Wald: `boden`, `huegel`, `schatten`, `farn`, `fuge`, `laub`, `gras`, `busch`, `buschlicht`; Hintergrund Höhle: `wand`, `wandkopf`, `pfeiler`, `sturz`, `stufe`, `schimmer`, `decke`, `deckenkante`, `zapfen`, `zapfenschatten`, `tropfen`, `brocken`, `brockenschatten`, `bodenkante`, `bogen`, `bogenschatten`, `stalagmit`; Hintergrund Mine: `fels`, `spalte`, `stuetze`, `kante`, `quer`, `kopfband`, `querkante`, `lampe`, `schutt`, `schotter`, `schwelle`, `schiene`, `schienenkante`; Hintergrund Eisenstollen: `bogen`, `licht`, `traeger`, `strebe`, `niete`, `pfeiler`, `platte`, `spalte`, `kern`; Hintergrund Kristall: `sockel`, `turm`, `rippe`, `kantenlicht`, `bodenlicht`, `gruppe`, `mittel`, `splitter`, `glanz`, `kristall`, `flanke`, `zapfen`, `zflanke`, `zkante`, `zlicht`, `zrand`, `zglanz`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
+Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `ruestung`, `wappen`, `speer`, `regal`; Lager: `sack`, `holz`, `erz`; Kaserne: `schwert`; Farm: `luke`, `strebe`, `zaun`, `heu`; Treppe hoch: `stufe`, `gelaender`, `laterne`; Treppe runter: `bogen`, `schlussstein`, `oeffnung`; Lagerfeuer (GEB11): `spiess`, `braten`, `tropfen`, `pflock`, `eingang`; Baugerüst: `strebe`, `brett`, `leiter`; Höhlen-Flora: `wurzel`, `licht`, `schatten`, `wedel`, `stiel`, `hut`, `glanz`; Bäume: `stamm`, `krone`, `licht`, `strich`, `blatt`; Hintergrund Wald: `boden`, `huegel`, `schatten`, `farn`, `fuge`, `laub`, `gras`, `busch`, `buschlicht`; Hintergrund Höhle: `wand`, `wandkopf`, `pfeiler`, `sturz`, `stufe`, `schimmer`, `decke`, `deckenkante`, `zapfen`, `zapfenschatten`, `tropfen`, `brocken`, `brockenschatten`, `bodenkante`, `bogen`, `bogenschatten`, `stalagmit`; Hintergrund Mine: `fels`, `spalte`, `stuetze`, `kante`, `quer`, `kopfband`, `querkante`, `lampe`, `schutt`, `schotter`, `schwelle`, `schiene`, `schienenkante`; Hintergrund Eisenstollen: `bogen`, `licht`, `traeger`, `strebe`, `niete`, `pfeiler`, `platte`, `spalte`, `kern`; Hintergrund Kristall: `sockel`, `turm`, `rippe`, `kantenlicht`, `bodenlicht`, `gruppe`, `mittel`, `splitter`, `glanz`, `kristall`, `flanke`, `zapfen`, `zflanke`, `zkante`, `zlicht`, `zrand`, `zglanz`. Die Art dient der Lesbarkeit und späteren Zusätzen; gezeichnet wird nur Rechteck und Farbe.
 
 ## 5. Datenformat
 
@@ -126,12 +129,18 @@ Rüstkammer: `sockel`, `scharte`, `tor`, `band`, `niete`, `staender`, `helm`, `r
 
 ### Bäume
 
-Schmal, 1 Kachel breit, 2,25 Kacheln hoch, Stamm mittig (x 14–18 px Master). Sie stehen als kleiner Wald in Reihen mit
-**½ Kachel Abstand**, überlappend, von links nach rechts gezeichnet (Vorschau: `baumReihe`). Je Art gibt es **drei
-Formen** (GEB6.1): Form 1 sind `tanne`, `pappel`, `birke` (unverändert, nur Wald-Look, Dateinamen stabil), Form 2 und 3
-sind eigene JSONs mit unterscheidbarem Umriss (`tanne-2` breit mit tiefen Ästen, `tanne-3` schlank mit schiefer Spitze,
-`pappel-2` schmal mit Lücken, `pappel-3` mit Zwiegabel, `birke-2` mit hängenden Zweigen, `birke-3` niedriger und breiter).
-Der **Busch** (`busch`) ist 1 × 1, nur im Wald.
+Hoch und schmal im Verhältnis: **11,25 Kacheln hoch** (¾ der Szenenhöhe von 15 Kacheln, GEB10), 2–4 Kacheln breit, Stamm
+mittig, unten sichtbar. Sie stehen als dichter Wald in Reihen mit **1 Kachel Schritt**, stark überlappend, von links nach
+rechts gezeichnet (Vorschau: `baumReihe`). Je Art gibt es **drei Formen** (GEB6.1, GEB10.1 neu gezeichnet): `tanne` (3 breit,
+neun Stufen), `tanne-2` (4 breit mit tiefen Ästen), `tanne-3` (2 breit, schiefe Spitze), `pappel` (2 breit, Laubsäule),
+`pappel-2` (2 breit mit Lücken), `pappel-3` (3 breit mit Zwiegabel), `birke` (3 breit, Laubballen), `birke-2` (3 breit mit
+hängenden Zweigen), `birke-3` (4 × 9,5, niedriger und breiter). Dichter wirkt der Wald im Spiel über die breiteren Kronen;
+wie viele Bäume ein Abschnitt hat, bestimmt der Level-Generator (`data/biomes/*.json`). Der **Busch** (`busch`) ist 1 × 1,
+nur im Wald; der **Setzling** bleibt 1 × 1.
+
+**Höhlen-Flora** (Klasse `flora`, GEB10.1) ersetzt in der Höhle die Bäume: `wurzel`, `wurzel-2`, `wurzel-3` hängen von der
+oberen Bildkante (Decke) über die Wand bis in den Boden, unten mit Wurzelfuß; `hoehlenbusch` ist der Busch der Höhle.
+Vorschau: eigene Reihe „Höhlen-Flora“ neben der Baum-Reihe.
 
 ## 6. Ausbaustufen
 
@@ -160,11 +169,10 @@ sich gegenüber der Grundform ändert:
 **Biom-Look bei Natur-Objekten (GEB6, Annahme, 🧑 hat mit der Freigabe zugestimmt):** Bei Objekten der Welt (Bäume,
 Busch, Fels, Erzbrocken) bedeutet die **Stufe den Look**, nicht den Ausbau: Stufe 1 = Wald (Grundform), 2 = Höhle,
 3 = Mine; `aenderung` nennt den Look („Höhle: kühleres, dunkleres Laub“). Ein Look ist ein Farbtausch derselben
-Quelle, keine zweite Zeichnung. Ein Objekt hat nur die Looks der Biome, in denen es steht: Bäume Wald und Höhle (Mine
-zeigt den Look Höhle), Busch nur Wald, Fels Wald, Höhle und Mine; Biome ohne eigenen Look (Eisenstollen,
-Kristallhöhle) zeigen Mine, begrenzt auf den höchsten Look des Objekts. Der Höhle-Look der Bäume: Laub eine Stufe
-dunkler und kühler (`christi` → `elf-green`, `atlantis` → `christi`, `dell` → `opal`), Nadeln `elf-green` → `opal`,
-`christi` → `elf-green`, `opal` → `deep-koamaru`, Stämme eine Stufe dunkler. Bei **Adern** (`ader`) bedeutet die Stufe
+Quelle, keine zweite Zeichnung. Ein Objekt hat nur die Looks der Biome, in denen es steht: Bäume nur Wald, Busch nur
+Wald, Fels Wald, Höhle und Mine; Biome ohne eigenen Look (Eisenstollen, Kristallhöhle) zeigen Mine, begrenzt auf den
+höchsten Look des Objekts. **Höhlen-Flora statt Baum-Look (GEB10):** Außerhalb des Walds zeigt ein Baum-Knoten eine der
+Wurzel-Formen und ein Busch den `hoehlenbusch` (eigene Zeichnungen, § 5); der frühere Höhle-Look der Bäume ist entfallen. Bei **Adern** (`ader`) bedeutet die Stufe
 das **Material** (1 Stein, 2 Kupfer, 3 Eisen, 4 Kristall), nicht das Biom.
 
 **Hub-Gebäude (GEB9, Entscheidung autonom Claude 2026-10-22, Annahme bis 🧑 widerspricht):** Die acht Hub-Gebäude (Werkstatt,
