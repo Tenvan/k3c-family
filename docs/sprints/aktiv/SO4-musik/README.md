@@ -65,7 +65,7 @@ Stück fehlt → vorheriger Zustand oder Stille, kein Absturz.
 | SO4.1 | `SO4.1-workshop-stuecke.md` | Workshop | Mensch | offen |
 | SO4.2 | `SO4.2-zustandsautomat-crossfade.md` | Umsetzung | autonom | fertig |
 | SO4.3 | `SO4.3-ducking-dateien-credits.md` | Umsetzung | autonom | fertig |
-| SO4.4 | `SO4.4-review.md` | Review | autonom | offen |
+| SO4.4 | `SO4.4-review.md` | Review | autonom | fertig |
 | SO4.5 | `SO4.5-hoerprobe-tv.md` | Workshop | Mensch | offen |
 | SO4.6 | `SO4.6-audiokern-dateien-ambient.md` | Umsetzung | autonom | fertig |
 
@@ -74,4 +74,7 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+- 2026-10-22, Review SO4.4 (Reviewer-Agent, Diff `2ea58efa..HEAD`): keine schweren Befunde; `task check` grün.
+- AC-01, AC-04 (Datei-Credits), AC-05, AC-06, AC-08, AC-09 geprüft (SO4.2, SO4.3, SO4.6); Credits-Seite → SO6.1 (B-493).
+- AC-02, AC-03, AC-07: angenommen, Validierung offen (SO4.5, TV). Stückwahl vorentschieden (SO4.1 offen, B-554, B-555).
+- Sprint bleibt `aktiv`, B-168 `eingeplant`. Version: v0.20.0 vorgeschlagen (Minor: Musik im Spiel), gesetzt erst nach Bestätigung durch 🧑.
