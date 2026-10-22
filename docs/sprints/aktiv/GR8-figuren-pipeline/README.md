@@ -58,7 +58,7 @@ Entschieden autonom (Claude, 2026-10-22), 🧑 prüft im Entscheidungs-Sprint GR
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GR8.1 | `GR8.1-figuren-neue-gegner.md` | Umsetzung | autonom | in Arbeit |
+| GR8.1 | `GR8.1-figuren-neue-gegner.md` | Umsetzung | autonom | fertig |
 | GR8.2 | `GR8.2-grafik-pipeline.md` | Umsetzung | autonom | in Arbeit |
 | GR8.3 | `GR8.3-review.md` | Review | autonom | offen |
 

@@ -1,6 +1,6 @@
 # GR8.1 · Sechs neue Gegner zeigen eigene Figuren statt Platzhalter
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -55,5 +55,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 umgesetzt und geprüft: sechs Gegner mit je eigenem Sheet (lavaSlime=fire-worm, fireSpirit=cemetery-ghost, shardling=flying-eye, crystalGuardian=skeleton, je getönt; ironBeetle und crystalSpider neu aus `tools/spritegen`); `grep B-326` in der Zuordnung leer; `go test`/`golangci-lint` für spritegen und `src/tools`-Vitest grün. `task check:diff` läuft einmal im Review GR8.3.
+- Abweichung: Auswahl durch 🧑 (GR7.3) offen, Default autonom gewählt; Optik nicht am TV gesehen. Skalierung von lavaSlime und crystalGuardian nicht ganzzahlig (B-251, bestehende Regel). Entscheidung für GR10 vorgemerkt.
