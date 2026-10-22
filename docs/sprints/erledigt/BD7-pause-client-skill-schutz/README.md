@@ -1,6 +1,6 @@
 # BD7 · SIM, CLI · Pause-Client, Skill-Reset beim Tod, Schutz wartender Monarchen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** SIM, CLI
 - **Reife:** bereit
@@ -68,11 +68,12 @@ keine blockierenden. Beim autonomen Freigeben mit Default entschieden und als Ti
 | BD7.1 | `BD7.1-skillheld-tod.md` | Umsetzung | autonom | fertig |
 | BD7.2 | `BD7.2-wartende-geschuetzt.md` | Umsetzung | autonom | fertig |
 | BD7.3 | `BD7.3-pause-client.md` | Umsetzung | autonom | fertig |
-| BD7.4 | `BD7.4-review.md` | Review | autonom | offen |
+| BD7.4 | `BD7.4-review.md` | Review | autonom | fertig |
 
 BD7.1 (SIM) AC-01, BD7.2 (SIM) AC-02, AC-03, BD7.3 (CLI) AC-04, AC-05, BD7.4 Review (alle).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-22 (BD7.4, autonom): AC-01 bis AC-05 umgesetzt und geprüft (Ergebnisse BD7.1 bis BD7.3); Pause-Ablauf zusätzlich im Browser-Pane belegt (BD7.4). `task check` und `task check:go` grün, `task check:race` lokal übersprungen (kein C-Compiler, prüft die CI).
+Sprint-Review (Sonnet): abgenommen, keine schweren Befunde. Neues Ticket: B-535 (Entscheidung zur Prüfung durch 🧑: erneutes `pause` nach Wiederverbinden).
+Version: v0.21.1 vorgeschlagen (Patch: Fehlerbehebungen und Client-Anbindung einer vorhandenen Server-Funktion); gesetzt erst nach Bestätigung durch 🧑.

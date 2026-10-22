@@ -1,6 +1,6 @@
 # BD7.4 · Review BD7
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -51,5 +51,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Alle Kriterien: AC-01 (BD7.1), AC-02/AC-03 (BD7.2), AC-04/AC-05 (BD7.3) mit Nachweis. `task check`, `task check:go` grün; `task check:race` übersprungen (kein C-Compiler, prüft die CI).
+- Sprint-Review (Sonnet, Diff ab Basis-Merge): abgenommen, kein schwerer Befund.
+- Browser-Pane (Agent, Dienste des Worktrees über `svc_start`, Couch-Raum mit einem Tastatur-Spieler): Esc öffnet das Menü → `{"t":"pause"}`, `cycle.secondsLeft` steht 3 s lang still; Esc schließt → `{"t":"resume"}`, die Zeit läuft weiter (579,1 → 576,1 in 3 s). Abnahme am Gerät (Xbox, online mit zwei Geräten) offen bei 🧑.
