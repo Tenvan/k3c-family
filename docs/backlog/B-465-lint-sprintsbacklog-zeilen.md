@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-`task lint` (oxlint 1.86.0) scheitert auf `origin/develop` (`1328fca7`) mit `eslint(max-lines-per-function)`: Die Funktion `SprintsBacklog` in `tools/k3c-dev/frontend/src/planning/SprintsBacklog.tsx:26` hat 61 Zeilen, erlaubt sind 60. Die Datei kam zuletzt mit #329 (Workflow-Check für Worktree-Planung). Damit ist `task check` in jedem Checkout rot, auch bei reinen Doku-Änderungen (gefunden in WZ6.1). Typecheck und Tests sind grün.
+`task lint` (oxlint 1.86.0) scheitert auf `origin/develop` (`1328fca7`) mit `eslint(max-lines-per-function)`: Die Funktion `SprintsBacklog` in `tools/k3c-workbench/frontend/src/planning/SprintsBacklog.tsx:26` hat 61 Zeilen, erlaubt sind 60. Die Datei kam zuletzt mit #329 (Workflow-Check für Worktree-Planung). Damit ist `task check` in jedem Checkout rot, auch bei reinen Doku-Änderungen (gefunden in WZ6.1). Typecheck und Tests sind grün.
 
 ## Ziel
 
@@ -56,4 +56,4 @@ keine
 
 ## Notizen
 
-Gefunden in WZ6.1 (2026-10-17), oxlint 1.86.0. Dazu in WZ6.2: `golangci-lint run` in `tools/k3c-dev` meldet auf demselben Stand zwei Befunde, beide aus #329: `internal/planning/mergebase.go:52` (`errcheck`, `defer os.RemoveAll`) und `internal/planning/wtdiff.go:107` (`gocyclo` 17 > 15 in `diffData`). Mit diesem Ticket beheben, `task check:dev` gehört dann zu AC-02.
+Gefunden in WZ6.1 (2026-10-17), oxlint 1.86.0. Dazu in WZ6.2: `golangci-lint run` in `tools/k3c-workbench` meldet auf demselben Stand zwei Befunde, beide aus #329: `internal/planning/mergebase.go:52` (`errcheck`, `defer os.RemoveAll`) und `internal/planning/wtdiff.go:107` (`gocyclo` 17 > 15 in `diffData`). Mit diesem Ticket beheben, `task check:dev` gehört dann zu AC-02.

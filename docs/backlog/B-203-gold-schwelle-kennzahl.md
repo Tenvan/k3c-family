@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-B-099 verlangt die Kennzahl „Tick der ersten Gold-Schwelle“, nennt aber keine Schwelle. Der Balancing-Tester (BAL1.1, `tools/k3c-dev/internal/balance/`) misst sie als ersten Tick, an dem das Gold aller Monarchen zusammen mindestens `--gold-threshold` erreicht (0 = nicht messen). Jeder Monarch startet mit 100 Gold, das zugleich das Maximum ist (`data/economy.json` › `purse`); jede Schwelle bis 100 × Spieler ist also schon in Tick 1 erreicht.
+B-099 verlangt die Kennzahl „Tick der ersten Gold-Schwelle“, nennt aber keine Schwelle. Der Balancing-Tester (BAL1.1, `tools/k3c-workbench/internal/balance/`) misst sie als ersten Tick, an dem das Gold aller Monarchen zusammen mindestens `--gold-threshold` erreicht (0 = nicht messen). Jeder Monarch startet mit 100 Gold, das zugleich das Maximum ist (`data/economy.json` › `purse`); jede Schwelle bis 100 × Spieler ist also schon in Tick 1 erreicht.
 
 ## Ziel
 

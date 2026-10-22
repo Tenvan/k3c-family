@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Wunsch von 🧑 (2026-10-11, mit Bild): In der Sprint-Karte der Planungsseite zeigen die Session-Zeilen nur `Umsetzung · autonom` statt des Titels. `SessionRow` in `tools/k3c-dev/frontend/src/planning/SprintCard.tsx` zeigt `x.titel`, sonst `Typ · Agent`; `ParseSprint` in `tools/k3c-dev/internal/planning/planning.go` füllt `Titel` nur für Stichpunkt-Entwürfe (`bullet`), nicht für Sessions mit Datei (Zeile der Tabelle `Nr | Datei | Typ | Agent | Status`). Der Titel steht in der ersten Zeile der Session-Datei (`# WZ2.1 · Titel`).
+Wunsch von 🧑 (2026-10-11, mit Bild): In der Sprint-Karte der Planungsseite zeigen die Session-Zeilen nur `Umsetzung · autonom` statt des Titels. `SessionRow` in `tools/k3c-workbench/frontend/src/planning/SprintCard.tsx` zeigt `x.titel`, sonst `Typ · Agent`; `ParseSprint` in `tools/k3c-workbench/internal/planning/planning.go` füllt `Titel` nur für Stichpunkt-Entwürfe (`bullet`), nicht für Sessions mit Datei (Zeile der Tabelle `Nr | Datei | Typ | Agent | Status`). Der Titel steht in der ersten Zeile der Session-Datei (`# WZ2.1 · Titel`).
 
 ## Ziel
 

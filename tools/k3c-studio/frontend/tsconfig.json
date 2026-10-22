@@ -1,5 +1,5 @@
 {
-  // Typecheck des Asset-Studio-Frontends (wie k3c-dev). Spiel-Code und Daten nur über @game (src/) und @data (data/);
+  // Typecheck des Asset-Studio-Frontends (wie k3c-workbench). Spiel-Code und Daten nur über @game (src/) und @data (data/);
   // die importierten Dateien aus src/ prüft dieser Typecheck mit. Die Tests laufen mit vitest.config.ts (task check:studio).
   "compilerOptions": {
     "target": "ES2022",

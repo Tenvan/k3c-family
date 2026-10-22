@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Wunsch von 🧑 (2026-10-11): Auf der Planungsseite gilt ein gemeinsamer Filter (`FilterBar`, `planning.filter` in `tools/k3c-dev/frontend/src/planning/SprintsBacklog.tsx`) für Sprints, Backlog und Projekte. Der Backlog-Filter soll nur den Backlog betreffen und der Projekt-Filter nur die Projekte; heute geben `SprintsBacklog.tsx` die gefilterten Sprints und Tickets an `ProjectsView` weiter („Projekte zeigen nur diese“).
+Wunsch von 🧑 (2026-10-11): Auf der Planungsseite gilt ein gemeinsamer Filter (`FilterBar`, `planning.filter` in `tools/k3c-workbench/frontend/src/planning/SprintsBacklog.tsx`) für Sprints, Backlog und Projekte. Der Backlog-Filter soll nur den Backlog betreffen und der Projekt-Filter nur die Projekte; heute geben `SprintsBacklog.tsx` die gefilterten Sprints und Tickets an `ProjectsView` weiter („Projekte zeigen nur diese“).
 
 ## Ziel
 

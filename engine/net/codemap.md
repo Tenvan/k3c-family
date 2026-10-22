@@ -33,4 +33,4 @@ Transport- und API-Schicht des Go-Servers (Adapter zwischen HTTP/WebSocket und d
 
 - Importiert: `engine/room` (Manager, Room, Peer, Monitor, Fehler), `engine/store` (Saves, Reports), `engine/sim` (`World`, `AvailablePoints`), `engine/level` (Layout, Level-API), `github.com/coder/websocket`.
 - Konsumenten: `cmd/k3c-server` (`main.go`, Handler-Aufbau), `cmd/k3c-load` (`bots.go`, Lastgenerator über das Protokoll).
-- Gegenstelle: Browser-Client `src/online/` (Protokoll v7, `docs/protocol.md`), k3c-dev (`/api/status*`, `/api/metrics`, `/api/clientlog`), Dev-Seite `/dm` (`/api/dev`).
+- Gegenstelle: Browser-Client `src/online/` (Protokoll v7, `docs/protocol.md`), k3c-workbench (`/api/status*`, `/api/metrics`, `/api/clientlog`), Dev-Seite `/dm` (`/api/dev`).

@@ -13,7 +13,7 @@ function filesIn(dir: string, keep: (name: string) => boolean): string[] {
   if (!existsSync(join(ROOT, dir))) return [];
   return readdirSync(join(ROOT, dir)).flatMap((name) => {
     const path = join(dir, name);
-    if (name === 'node_modules') return []; // z. B. tools/k3c-dev/frontend
+    if (name === 'node_modules') return []; // z. B. tools/k3c-workbench/frontend
     if (statSync(join(ROOT, path)).isDirectory()) return filesIn(path, keep);
     return keep(name) ? [path] : [];
   });

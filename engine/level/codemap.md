@@ -25,4 +25,4 @@ Domain Service: prozeduraler Level-Generator samt Validator, Go-Port des früher
 ## Integration
 
 - Abhängigkeiten: `k3c/engine/rng`, `k3c/data` (embed der Biome, `hub.json`).
-- Konsumenten: `engine/sim` (`CreateWorld`, Biome/Cycle), `engine/room`, `engine/net` (Level-Endpoint), `tools/k3c-dev/internal/enginetools` (`level_generate`).
+- Konsumenten: `engine/sim` (`CreateWorld`, Biome/Cycle), `engine/room`, `engine/net` (Level-Endpoint), `tools/k3c-workbench/internal/enginetools` (`level_generate`).

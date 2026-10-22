@@ -18,7 +18,7 @@ Gebäude und Strukturen bestehen heute aus gemischten Grafiksammlungen (`public/
 
 ## Ziel
 
-Gebäude und Strukturen werden im Asset-Manager (k3c-dev) geplant: Aus Beschreibung und Prompt entsteht die Grafik dort und wird präsentiert, statt eine fertige Grafik auszuwählen. Alle Gebäude folgen denselben Grundregeln, die auf dem Werkstatt-Entwurf beruhen und mit jedem Gebäude wachsen.
+Gebäude und Strukturen werden im Asset-Manager (k3c-workbench) geplant: Aus Beschreibung und Prompt entsteht die Grafik dort und wird präsentiert, statt eine fertige Grafik auszuwählen. Alle Gebäude folgen denselben Grundregeln, die auf dem Werkstatt-Entwurf beruhen und mit jedem Gebäude wachsen.
 
 ## Beteiligte und Zielgruppen
 

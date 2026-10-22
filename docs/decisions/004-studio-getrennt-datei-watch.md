@@ -39,7 +39,7 @@ Option **B**:
    Ungültig: ❌ im Log, der alte Stand läuft weiter. Neuladen ohne Neustart gibt es nicht, auch keine Wege je Dateityp.
 5. **Selbst-Neustart über einen Supervisor:** `k3c-server` startet sich selbst als Kindprozess (`K3C_CHILD=1`, `K3C_DATA_DIR`
    vorher gesetzt, Daten von der Platte) und startet es neu, wenn es mit 75 endet. Die PID des Supervisors bleibt, Starter,
-   k3c-dev, Docker und `task serve` brauchen nichts Neues. Stürzt das Kind mit Daten von der Platte binnen 10 s ab, startet
+   k3c-workbench, Docker und `task serve` brauchen nichts Neues. Stürzt das Kind mit Daten von der Platte binnen 10 s ab, startet
    der Supervisor einmal mit dem eingebetteten Stand. Neustarts in laufenden Runden sind erlaubt; Spielstände bleiben gespeichert.
 6. **GitHub Pages nur `site/`:** Der Workflow lädt `site/` ohne Node und ohne Build hoch; die Bilder liegen als Kopien in
    `site/img/`, `tests/pagesSite.test.ts` prüft jede Referenz. `task pages` kopiert nur noch `site/` nach `_site/`.
@@ -50,7 +50,7 @@ Option **B**:
   Fenster des Studios, seine Sicherheit (Loopback, keine Werkzeuge, kein Schlüssel) bleibt.
 - Entscheidung 001 bleibt: die Simulation läuft weiter nur in Go; das Studio nutzt dieselbe Engine als Bibliothek.
 - Geräte sehen nach einem Neustart die Raumliste, Räume öffnen nicht von selbst wieder (B-508). Grafiken und Sound aus
-  `public/` erreichen die Clients erst nach einem Build, weil der Server `dist/` ausliefert (B-509). k3c-dev startet bei
+  `public/` erreichen die Clients erst nach einem Build, weil der Server `dist/` ausliefert (B-509). k3c-workbench startet bei
   Änderungen in `data/` zusätzlich selbst neu (B-510); atomares Schreiben des Studios (B-511); übernommener Server nach
   Selbst-Neustart (B-512).
 - Werte kommen beim Start von der Platte, wenn `data/` existiert; fehlt der Ordner (z. B. im Docker-Image ohne Volume),

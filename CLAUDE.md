@@ -9,7 +9,7 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
   genügt der Skill `k3c-session` mit `plan_next`; die ganze Datei nur beim Planen oder bei Regelfragen lesen.
 - **Glossar:** `docs/glossar.md` – verbindliche Begriffe; beim Schreiben von Specs und Texten lesen, neue Begriffe dort zuerst eintragen.
 - **Branches:** Entwickelt wird auf `develop`, PRs zielen auf `develop`; **ein PR je Sprint** (Branch `sprint/<präfix>`, ein Commit je Session). `main` ist geschützt, nur Releases (Fast-Forward durch den Nutzer).
-- **Projekte und Sprints:** Die nächste offene Session nach **Projekt-Rang** liefert `plan_next` (k3c-dev); ohne k3c-dev
+- **Projekte und Sprints:** Die nächste offene Session nach **Projekt-Rang** liefert `plan_next` (k3c-workbench); ohne k3c-workbench
   `docs/projekte/README.md` und `docs/sprints/aktiv/` lesen. `docs/sprints/geplant/` nur beim
   Planen lesen, `docs/sprints/erledigt/` nur auf Nachfrage. Übersicht: `docs/sprints/README.md`.
 - **Tickets:** `docs/backlog/` (Index `README.md`, ein Ticket pro Datei). Neue Ideen/Probleme sofort als Ticket anlegen,
@@ -17,7 +17,7 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 - **Vorlagen sind Pflicht:** Tickets, Sprints und Sessions nur als Kopie von `docs/vorlagen/*.md`; `tests/planning.test.ts` prüft das.
 - **Planung nur über MCP:** Tickets, Sprints und Sessions anlegen und ändern ausschließlich mit `plan_create`, `plan_set`,
   `plan_sections` (mehrere Abschnitte in einem Aufruf), `plan_section`, `plan_delete` (lesen: `plan_list`, `plan_get`,
-  `plan_next`) von k3c-dev; von Hand nur, wenn k3c-dev nicht läuft.
+  `plan_next`) von k3c-workbench; von Hand nur, wenn k3c-workbench nicht läuft.
 - **SDD:** Ticket und Sprint-README sind die Spec (Kriterien `AC-01` …), Sessions erfüllen genannte Kriterien.
   Freigabe (`Spec: freigegeben`) und manuelle Abnahmen nur durch den Nutzer; Ausnahme: Sagt der Nutzer ausdrücklich „autonom abarbeiten“, darf Claude Specs freigeben (Feld `Freigabe`: „autonom, Claude“), offene Fragen mit Default entscheiden und im Nachgang melden; manuelle Abnahmen bleiben beim Nutzer. Details: `docs/arbeitsweise.md` › SDD.
 - **Spielstruktur (003):** Ein Raum hat einen Spielstand mit n Inseln, jede Insel n Stufen; Stufen sind pro Spieler frei begehbar und laufen alle weiter. Im Go-Code rechnet ein Raum eine Insel mit mehreren Stufen im selben Takt, Einzelwechsel je Spieler und einem Material-Vorrat je Insel (`engine/sim/island*.go`, SP12–SP14); noch offen: mehrere Inseln und Inselwechsel (B-103). Regeln: `docs/rules/stufen.md`.
@@ -39,7 +39,7 @@ task check:diff    # nur die Prüfungen, die der Diff zu origin/develop braucht 
 task check         # Lint + Typecheck + Tests des Clients, parallel
 task check:go      # go test + golangci-lint (Rechner mit Go)
 task check:race    # Go-Race-Detector (langsam; Review-Session, check:all, CI)
-task check:dev     # k3c-dev: Frontend, go test, golangci-lint
+task check:dev     # k3c-workbench: Frontend, go test, golangci-lint
 task check:all     # alles inklusive Build
 task go:golden     # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
 task build         # Typecheck + Produktions-Build nach dist/
@@ -47,25 +47,25 @@ task buildall      # alle EXE (Server, Lasttest, TUI, Workbench, Studio, Starter
 task pages         # GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build)
 task serve         # Build + Go-Server (Port 8080, bin/k3c-server)
 task start         # Go-Server ohne Web-Build (task dev leitet /api und /ws an ihn weiter)
-task k3c-dev       # Workbench als Client/Server-Dev (Backend -dev + Vite 5191 im Browser); Fenster: k3c-dev:window, EXE: k3c-dev:build
+task k3c-workbench       # Workbench als Client/Server-Dev (Backend -dev + Vite 5191 im Browser); Fenster: k3c-workbench:window, EXE: k3c-workbench:build
 task k3c-studio    # Asset-Studio als Client/Server-Dev (Backend -dev + Vite 5192 im Browser); Fenster: k3c-studio:window, EXE: k3c-studio:build
 task check:studio  # Asset-Studio: Frontend-Vitest, go test + golangci-lint für tools/assetkit und tools/k3c-studio
 ```
 
 **Taskfile-Gruppen:** `Taskfile.yml` hält nur die Kernbefehle (Workspace) und die Prüf-Aggregate `check:*`; jedes Projekt hat sein
 Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `go` (engine/), `k3c-server`,
-`k3c-load`, `k3c-tui` (cmd/), `k3c-dev`, `k3c-studio`, `k3c-starter` (tools/), `balance`, `gen` (Generatoren: `gen:atlas`,
+`k3c-load`, `k3c-tui` (cmd/), `k3c-workbench`, `k3c-studio`, `k3c-starter` (tools/), `balance`, `gen` (Generatoren: `gen:atlas`,
 `gen:gebaeude`, `gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`). Neue Aufgaben kommen in das Taskfile ihres Projekts, nicht
 in die Wurzel.
 
 **Dev ohne Neubau-Fenster:** Jedes EXE-Projekt kennt `build` (EXE bauen), `run` (bauen und starten) und `dev`.
-Der Projektname allein (`task k3c-dev`) startet `dev`. `dev` ist Client/Server: Das Backend läuft mit `-dev` als kleiner Supervisor
+Der Projektname allein (`task k3c-workbench`) startet `dev`. `dev` ist Client/Server: Das Backend läuft mit `-dev` als kleiner Supervisor
 (`engine/devrun`), baut sich als Kind (`-headless`, ohne Fenster) und startet es bei jeder Go-Änderung neu; bei Build-Fehler läuft
-die alte Version weiter, ein Job-Objekt beendet verwaiste Kinder. Die Oberflächen der Wails-Apps (`k3c-dev` 5191, `k3c-studio` 5192,
+die alte Version weiter, ein Job-Objekt beendet verwaiste Kinder. Die Oberflächen der Wails-Apps (`k3c-workbench` 5191, `k3c-studio` 5192,
 `k3c-starter` 5194) laufen dabei unter Vite mit Hot Reload im Browser und leiten `/api` an das Kind weiter. `<app>:window` startet
 das echte Fenster mit `wails dev`. Der Server (`k3c-server:dev`) baut als Kind `bin/k3c-server` (freigegebener Pfad), `data/` und
 `public/` beobachtet er weiter selbst (Exit 75 = Neustart). Supervisor und Kinder werden mit `go build` (Konsole) gebaut, nie per
-`wails build`, damit sie sauber per CTRL_BREAK beenden. Wails-Builds (`k3c-dev:build`, `k3c-studio:build`, `k3c-starter:exe`) und die
+`wails build`, damit sie sauber per CTRL_BREAK beenden. Wails-Builds (`k3c-workbench:build`, `k3c-studio:build`, `k3c-starter:exe`) und die
 Frontends laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` erzwingt.
 Die Oberfläche des Studios steckt nicht in der EXE (liegt unter `tools/k3c-studio/frontend/dist/`), eine Änderung daran braucht keinen EXE-Neubau.
 
@@ -76,12 +76,12 @@ Der Go-Server beobachtet `data/` und `public/` immer (auch produktiv, `engine/wa
 
 Die Gamepad-Testseite (`gamepad-test.html`) schickt Berichte von der Xbox nach `reports/*.json`. Dort die Ergebnisse nachlesen.
 
-**k3c-dev zuerst:** Sind die MCP-Tools `mcp__k3c-dev__*` verbunden, gehen Prüfungen über `check_run` (statt `task check`,
+**k3c-workbench zuerst:** Sind die MCP-Tools `mcp__k3c-workbench__*` verbunden, gehen Prüfungen über `check_run` (statt `task check`,
 `task test`, `go test` …), Dienste über `svc_start`/`svc_stop` (nie `task dev`/`task start` in der Shell), Logs über
 `logs_errors`/`logs_query`, Berichte und Spielstände über `reports_list`/`report_read`/`saves_list`, Balancing über
 `sim_run`/`level_generate`. **Jeder autonome Testlauf** (Balancing, Performance von Server und Client, Stabilität;
 offline, online, headless oder mit Clients) startet und läuft **nur über `sim_test`** (`start`, `status`, `stop`, `list`),
-nie über `task balance`, `task k3c-load` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-dev nicht läuft.
+nie über `task balance`, `task k3c-load` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-workbench nicht läuft.
 
 **Tasks und Ausführungen laufen ausschließlich über `task`** (Neues in `Taskfile.yml`, nicht in `package.json`).
 Vor jedem Commit: `task check:diff` (bzw. `check_run task:check:diff`) einmal grün; währenddessen nur gezielte Tests
@@ -98,15 +98,15 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   `data/` und `public/`). `engine/` und `cmd/k3c-server` importieren nichts aus `tools/` (`engine/internal/rules/imports_test.go`).
 - `cmd/` – Go-Binaries: `k3c-server` (liefert `dist/` und die API aus; Supervisor `supervise.go`, Neustart bei geänderten
   Dateien `restart.go`), `k3c-load` (Lasttest), `k3c-tui`.
-  `tools/k3c-dev` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-dev`). `tools/k3c-studio` – Asset-Studio als
+  `tools/k3c-workbench` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-workbench`). `tools/k3c-studio` – Asset-Studio als
   eigenständiges Wails-Fenster, keine Seite des Spielservers (Entscheidung 004, B-507): Backend `tools/k3c-studio/backend`
   (`/api/studio/` auf eigenem Loopback-Port 8091, samt Chat), bindet die Engine als Bibliothek ein (Vorschau und „Im Spiel
   öffnen“ ohne Spielserver, eigene Testspielstände); Frontend `tools/k3c-studio/frontend` (Build nach
   `tools/k3c-studio/frontend/dist/`, `task k3c-studio:frontend`); `task k3c-studio` bzw. `task k3c-studio:build` → `bin/k3c-studio.exe`,
-  wie k3c-dev mit gemerkter Größe und Position. Das Studio schreibt `data/**` und `public/`, der Server liest sie nur.
-  `tools/assetkit` – gemeinsame Asset-Logik von k3c-dev und Studio (eigenes Go-Modul, per `replace` eingebunden). `tools/k3c-starter` – Windows-Starter für den Server (Wails-Fenster
+  wie k3c-workbench mit gemerkter Größe und Position. Das Studio schreibt `data/**` und `public/`, der Server liest sie nur.
+  `tools/assetkit` – gemeinsame Asset-Logik von k3c-workbench und Studio (eigenes Go-Modul, per `replace` eingebunden). `tools/k3c-starter` – Windows-Starter für den Server (Wails-Fenster
   startet `bin/k3c-server`, zeigt Status und Adresse, EXE `bin/k3c-starter.exe`, `task k3c-starter:build`, B-041).
-  `tools/webkit` – gemeinsame Oberflächen-Bausteine aller Wails-Frontends (k3c-dev, Studio, Starter) als **Atomic Design** auf
+  `tools/webkit` – gemeinsame Oberflächen-Bausteine aller Wails-Frontends (k3c-workbench, Studio, Starter) als **Atomic Design** auf
   Radix Themes: `lib/`, `atoms/`, `molecules/`, `organisms/`, `templates/` (`@webkit/<ebene>`); Seiten sind die Feature-Ordner der App.
   Verbindlich für jedes Wails-Programm: Radix nur über `@webkit`, rohe Controls nur in `atoms/`, Importe nur nach unten
   (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme, geprüft von `tests/atomicDesign.test.ts`).

@@ -23,7 +23,7 @@ const LicenseConfirmed = "bestaetigt"
 const maxImportBytes = 20 << 20
 
 // importSection ist der Abschnitt der Credit-Datei für Importe; je Datei eine Zeile (Ordner = kandidaten/<datei>).
-const importSection = "## Importe (k3c-dev)"
+const importSection = "## Importe (k3c-workbench)"
 
 // importDir und creditFile je Art: Ablage unter public/ und die Credit-Datei (B-165).
 var (
@@ -223,7 +223,7 @@ func contains(list []string, s string) bool {
 	return false
 }
 
-// DownloadHosts sind die Quellen mit direktem Download und maschinenlesbarer Lizenz. Nur sie lädt k3c-dev selbst;
+// DownloadHosts sind die Quellen mit direktem Download und maschinenlesbarer Lizenz. Nur sie lädt k3c-workbench selbst;
 // Links aus Treffern (auch von Agenten über assets_hit_add) erreichen so keine internen Adressen (SSRF).
 var DownloadHosts = map[string]bool{"upload.wikimedia.org": true}
 

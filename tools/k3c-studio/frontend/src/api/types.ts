@@ -3,7 +3,7 @@ import type { ChatApi } from './chatTypes';
 import type { DraftScaling, WorldDraftApi } from './worldTypes';
 
 // Typen des Asset-Studios (B-298, B-459): Slot-Register, Katalog und Recherche, wie Go sie liefert
-// (tools/assetkit, tools/k3c-studio/app_assets.go). Kopie aus k3c-dev, ergänzt um Stand und Backend.
+// (tools/assetkit, tools/k3c-studio/app_assets.go). Kopie aus k3c-workbench, ergänzt um Stand und Backend.
 /** Ausschnitt in Bild-Pixeln (Go: assets.Rect) */
 export interface AssetRect {
   x: number;

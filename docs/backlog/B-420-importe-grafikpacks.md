@@ -1,4 +1,4 @@
-# B-420 · Mit k3c-dev importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht
+# B-420 · Mit k3c-workbench importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht
 
 - **Domäne:** DEV
 - **Typ:** Schuld
@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Seit M10.5 importiert k3c-dev Recherche-Treffer nach `public/grafik/kandidaten/` mit Credit-Zeile `kandidaten/<datei>` in `public/grafik/CREDITS.md` (Abschnitt „Importe (k3c-dev)“). `src/tools/credits.test.ts` kennt diese Zeilen, aber `src/tools/grafikPacks.test.ts` verlangt, dass jede Datei unter `public/grafik/` zu einem Pack aus `GRAFIK_PACKS` gehört: Der erste echte Import macht `task check` rot.
+Seit M10.5 importiert k3c-workbench Recherche-Treffer nach `public/grafik/kandidaten/` mit Credit-Zeile `kandidaten/<datei>` in `public/grafik/CREDITS.md` (Abschnitt „Importe (k3c-workbench)“). `src/tools/credits.test.ts` kennt diese Zeilen, aber `src/tools/grafikPacks.test.ts` verlangt, dass jede Datei unter `public/grafik/` zu einem Pack aus `GRAFIK_PACKS` gehört: Der erste echte Import macht `task check` rot.
 
 ## Ziel
 

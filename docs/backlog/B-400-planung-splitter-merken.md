@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Wunsch von 🧑 (2026-10-11): Auf der Planungsseite (`tools/k3c-dev/frontend/src/planning/`, `SprintsBacklog.tsx`) soll zwischen Backlog und Details ein verschiebbarer Splitter sitzen, dessen Stellung beim nächsten Öffnen erhalten bleibt. Die Tasks-Seite hat dafür schon `Splitter` in `tools/k3c-dev/frontend/src/tasks/TaskBars.tsx` samt gemerktem Anteil; die Planungsseite merkt heute nur den Filter (`planning.filter`).
+Wunsch von 🧑 (2026-10-11): Auf der Planungsseite (`tools/k3c-workbench/frontend/src/planning/`, `SprintsBacklog.tsx`) soll zwischen Backlog und Details ein verschiebbarer Splitter sitzen, dessen Stellung beim nächsten Öffnen erhalten bleibt. Die Tasks-Seite hat dafür schon `Splitter` in `tools/k3c-workbench/frontend/src/tasks/TaskBars.tsx` samt gemerktem Anteil; die Planungsseite merkt heute nur den Filter (`planning.filter`).
 
 ## Ziel
 

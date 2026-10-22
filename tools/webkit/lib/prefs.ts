@@ -1,7 +1,7 @@
 // Gemerkte Einstellungen der Oberfläche (Reiter, Farbmodus) in localStorage, Schlüssel `<app>.<seite>.<was>`
 // (Workbench-Spec › Gemerkter Zustand). Der Zugriff kann werfen (gesperrte Website-Daten); dann gilt die Vorgabe und
 // nichts wird gemerkt. Freitext-Filter werden nicht gemerkt. Jede App bindet die Funktionen mit ihrem Präfix
-// (`k3c-dev.`, `k3c-studio.`) in ihrem `src/lib/prefs.ts`.
+// (`k3c-workbench.`, `k3c-studio.`) in ihrem `src/lib/prefs.ts`.
 
 export function createPrefs(prefix: string) {
   function loadPref<T extends string>(key: string, allowed: readonly T[], fallback: T): T {

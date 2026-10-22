@@ -6,7 +6,7 @@
 
 ## Ziel
 
-Die Entwickler-Werkzeuge (k3c-dev mit MCP und Planung, Werkzeug-Seiten unter `src/tools/`) decken Planung, Prüfung und Diagnose ab. Dazu kommt ein eigenes Asset-Studio (WZ6–WZ10, B-459–B-464), getrennt von der Workbench, weil Ralf dort laufend ändert: Seiten für Grafik und Sound, Welt-Betrachter mit Chunk- und Live-Vorschau, Chunk-Planung je Biom, Gebäude-Planer für die Freischaltung je Hub-Stufe sowie Vorschauen für Monarch, Gegner und Bosse.
+Die Entwickler-Werkzeuge (k3c-workbench mit MCP und Planung, Werkzeug-Seiten unter `src/tools/`) decken Planung, Prüfung und Diagnose ab. Dazu kommt ein eigenes Asset-Studio (WZ6–WZ10, B-459–B-464), getrennt von der Workbench, weil Ralf dort laufend ändert: Seiten für Grafik und Sound, Welt-Betrachter mit Chunk- und Live-Vorschau, Chunk-Planung je Biom, Gebäude-Planer für die Freischaltung je Hub-Stufe sowie Vorschauen für Monarch, Gegner und Bosse.
 
 ## Sprints
 
@@ -18,8 +18,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | DBG3 | Dungeon-Master-Seite /dm | erledigt |
 | MON2 | Monitoring-Seite mit Dashboard | erledigt |
 | PL2 | Werkzeug-Seiten in der gewählten Sprache | erledigt |
-| DV1 | Domäne DEV für k3c-dev, Sprint ohne Prio und Einschiebbar | erledigt |
-| WT1 | Worktree-Sessions richten k3c-dev-Tools per Argument auf ihren Checkout | erledigt |
+| DV1 | Domäne DEV für k3c-workbench, Sprint ohne Prio und Einschiebbar | erledigt |
+| WT1 | Worktree-Sessions richten k3c-workbench-Tools per Argument auf ihren Checkout | erledigt |
 | WZ2 | Planungs-Werkzeuge: eindeutige Nummern, Fahrplan, Flags, Prüfläufe | erledigt |
 | WZ3 | Review-Nachträge zu WZ2: Filter-Zählung, Splitter-Test, Kleinigkeiten | erledigt |
 | WZ4 | Splitter-Test in DOM-Umgebung | erledigt |
@@ -39,7 +39,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ18 | Welten im Spiel: Welt-Dateien, Welt-Wahl im Raum und Welten-Editor | erledigt |
 | WZ19 | Chat im Studio mit Claude Code CLI und Welt per Prompt füllen | erledigt |
 | TS1 | Spielserver und Asset-Studio trennen, Server beobachtet Dateien | erledigt |
-| WZ20 | k3c-dev: Planungstest für Entwürfe, Worktree-Einträge vollständig und lesend, sim_test im Worktree | erledigt |
+| WZ20 | k3c-workbench: Planungstest für Entwürfe, Worktree-Einträge vollständig und lesend, sim_test im Worktree | erledigt |
 | WZ21 | Studio-Chat: eigene Umgebung, Grundgerüst als Instruktion, Entwurf geschützt | erledigt |
 | WZ22 | Studio-Editoren: Fehler sichtbar, Im Spiel öffnen wiederholbar | erledigt |
 | WZ23 | Studio-Vorschauen: Reittiere aus dem Spielcode, Monarch-Seite, Boss-Anzeigen, Gebäude-Planer abgenommen | erledigt |

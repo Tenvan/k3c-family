@@ -47,7 +47,7 @@ func TestTraegerStirbtDropFaelltZuBoden(t *testing.T) {
 	}
 }
 
-// Passiver Spieler (Bot passive, tools/k3c-dev/internal/balance): ohne Eingaben fällt die Burg in mindestens einem Seed.
+// Passiver Spieler (Bot passive, tools/k3c-workbench/internal/balance): ohne Eingaben fällt die Burg in mindestens einem Seed.
 func TestPassiverSpielerBurgFaellt(t *testing.T) {
 	for _, seed := range []string{"1", "2", "3"} {
 		isl, err := CreateIsland(seed, []int{0}, 1, CreateOptions{})

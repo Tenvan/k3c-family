@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-BAL3.2 hat das Profil `walls` („Mauern zuerst“) nach Beschluss BAL3.1 gebaut: nur Mauern samt Ausbau, dann anwerben. Mauer-Stufe n braucht Hub-Stufe n (`data/buildings.json` › `wall.levels`), kein Profil zahlt den Hub-Ausbau. Deshalb baut `walls` nie aus und liefert in 100 Seeds (2 Spieler, 5 Tage) dieselben Kennzahlen wie `saver` (`tools/k3c-dev/internal/balance/bots.go`).
+BAL3.2 hat das Profil `walls` („Mauern zuerst“) nach Beschluss BAL3.1 gebaut: nur Mauern samt Ausbau, dann anwerben. Mauer-Stufe n braucht Hub-Stufe n (`data/buildings.json` › `wall.levels`), kein Profil zahlt den Hub-Ausbau. Deshalb baut `walls` nie aus und liefert in 100 Seeds (2 Spieler, 5 Tage) dieselben Kennzahlen wie `saver` (`tools/k3c-workbench/internal/balance/bots.go`).
 
 ## Ziel
 
@@ -46,7 +46,7 @@ nicht relevant: reine Verhaltensfrage eines Bots.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Der Beschluss von 🧑 steht in `tools/k3c-dev/internal/balance/README.md`; bei „Hub-Ausbau zahlen“ belegt ein Test, dass `walls` eine Mauer auf Stufe 2 ausbaut.
+- **AC-01** Der Beschluss von 🧑 steht in `tools/k3c-workbench/internal/balance/README.md`; bei „Hub-Ausbau zahlen“ belegt ein Test, dass `walls` eine Mauer auf Stufe 2 ausbaut.
 
 ## Offene Fragen
 

@@ -9,7 +9,7 @@ const GLOBS = {
 /** Eigene Grafik ohne Fremdlizenz (GEB1): Gebäude aus `task gen:gebaeude`, keine Credits nötig */
 const OWN = new Set(['gebaeude']);
 const dirsOf = (root: keyof typeof GLOBS) => [...new Set(GLOBS[root].map((p) => p.split('/')[4]!))].filter((d) => !OWN.has(d));
-/** Import-Zeilen aus k3c-dev nennen die Datei (kandidaten/<datei>, B-298); geprüft wird ihr Ordner. */
+/** Import-Zeilen aus k3c-workbench nennen die Datei (kandidaten/<datei>, B-298); geprüft wird ihr Ordner. */
 const dirOf = (folder: string) => folder.split('/')[0]!;
 
 describe('Credits (B-165)', () => {
@@ -67,7 +67,7 @@ describe('Credits (B-165)', () => {
     expect(parseCredits(md, 'sprites')).toEqual([
       { root: 'sprites', folders: ['a', 'b'], title: 'W', author: 'X', license: 'CC0', source: 'https://q' },
     ]);
-    // Import-Abschnitt aus k3c-dev (B-298): Zeile je Datei, Spalte Status wird ignoriert
+    // Import-Abschnitt aus k3c-workbench (B-298): Zeile je Datei, Spalte Status wird ignoriert
     const imported = [
       '| Ordner | Pack | Urheber | Lizenz | Quelle | Status |',
       '|---|---|---|---|---|---|',

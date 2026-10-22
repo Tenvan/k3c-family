@@ -11,7 +11,7 @@ version: '3'
 
 vars:
   STUDIO: '{{.ROOT_DIR}}/tools/k3c-studio'
-  # Backend-Port im dev: K3C_STUDIO_PORT, sonst Vite-Port + 3000 (8192); k3c-dev verschiebt K3C_STUDIO_UI_PORT je Worktree,
+  # Backend-Port im dev: K3C_STUDIO_PORT, sonst Vite-Port + 3000 (8192); k3c-workbench verschiebt K3C_STUDIO_UI_PORT je Worktree,
   # damit landet ein Worktree-Studio nie auf dem Backend der Wurzel.
   DEV_PORT: '{{.K3C_STUDIO_PORT | default (add 3000 (.K3C_STUDIO_UI_PORT | default "5192" | atoi))}}'
 
@@ -87,8 +87,7 @@ tasks:
       - tools/k3c-studio/go.mod
       - tools/k3c-studio/go.sum
       - tools/k3c-studio/wails.json
-      - tools/k3c-studio/build/appicon.png
-      - tools/k3c-studio/build/windows/**/*
+      - tools/k3c-studio/icon/*
       - tools/assetkit/**/*.go
       - tools/assetkit/go.mod
       - tools/ruletable/**/*.go
@@ -100,6 +99,9 @@ tasks:
     generates:
       - bin/k3c-studio{{exeExt}}
     cmds:
+      - mkdir -p {{.STUDIO}}/build/windows
+      - cp {{.STUDIO}}/icon/appicon.png {{.STUDIO}}/build/appicon.png
+      - cp {{.STUDIO}}/icon/icon.ico {{.STUDIO}}/build/windows/icon.ico
       - cd {{.STUDIO}} && wails build -s
       - mkdir -p bin
       - cp {{.STUDIO}}/build/bin/k3c-studio{{exeExt}} bin/k3c-studio{{exeExt}}

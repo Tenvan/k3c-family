@@ -8,7 +8,7 @@ Backend des Asset-Studios (B-459), Go-Paket `backend` im Modul `tools/k3c-studio
 
 - `rpc.go`: `App.Handler(remote)` unter `/api/studio/` (`Prefix`): `POST rpc/<Methode>` (JSON-Array der Argumente → `{result}` oder `{error}`; per Reflection nur Methoden mit Präfix Assets/World/Plan/Hub/Chat, `rpcPrefixes`; `Chat…` nur von Loopback), `POST chat` (Chat als Strom, `chat_http.go`), `POST import?id&hit&name` (Datei-Upload statt Dateidialog), `GET events` (Server-Sent Events `assets:changed`), `GET ping`, `GET public/…`. Schutz (`guard`): nur Loopback (`remote` öffnete es früher für den Spielserver im LAN; das Fenster übergibt `false`, B-507), POST braucht die Kopfzeile `X-K3C-Studio` (hält fremde Web-Seiten fern).
 - `app.go`: `New(ctx, root)` startet `assets.Watch` (Takt `assetsPoll`) und verteilt `assets:changed` über den internen `bus` an alle Event-Ströme.
-- `app_assets.go`: Aufrufe wie k3c-dev ohne Vite und Dienste: `AssetsList` (mit `stand` = Hash), `AssetsSet(id, wahl, stand)` über `SetChoicesIf`, `AssetsCatalog`, `AssetsHits`, `AssetsResearch`, `AssetsHitDrop`, `AssetsDownload`, `AssetsLicenseOK`.
+- `app_assets.go`: Aufrufe wie k3c-workbench ohne Vite und Dienste: `AssetsList` (mit `stand` = Hash), `AssetsSet(id, wahl, stand)` über `SetChoicesIf`, `AssetsCatalog`, `AssetsHits`, `AssetsResearch`, `AssetsHitDrop`, `AssetsDownload`, `AssetsLicenseOK`.
 - `app_world.go`: Welt-Betrachter (B-460): `WorldLevel(seed, WorldSource)` rechnet das Level des Spiels (`level.Generate`/`level.Validate`) ohne Spielserver; Quelle als Wert (`Biome` oder `Island` + `Stage`), ungültiger Seed oder unbekanntes Biom → `Error`, nie ein Pfadzugriff.
 - `app_preview.go`: Live-Vorschau (WZ7.3): `WorldPreview(WorldPreviewArgs)` ruft `net.Preview` (Welt wie ein Gerät sie im Spiel bekommt, ohne Bürger und Gegner) direkt auf, ohne Raum, Spielstand und HTTP-Endpunkt; `Error` bei ungültigen Optionen, `state` dann `null`. `Sites` setzt je Platz Baustufe, Trefferpunkte in Prozent oder „nicht gebaut“ (`sim.SiteLook`). Test `app_preview_fixture_test.go` hält die Mock-Fixture des Frontends gleich zur Server-Vorschau.
 - `app_game.go`: „Im Spiel öffnen“ (WZ7.4, seit TS1.2 ohne Spielserver): `WorldOpenGame(base, seed, biome, mode)` prüft die Adresse (nur Loopback, ohne Zugangsdaten, Pfad und Abfrage), legt bei `full` den Spielstand `voll-<seed>` in der eingebundenen Engine an (`room.Manager.FullSave`) und liefert `<Adresse>/index.html#game.html?autostart=1&save=…`; `new` nur für den Wald und Seeds im Namensformat.
@@ -33,13 +33,13 @@ Backend des Asset-Studios (B-459), Go-Paket `backend` im Modul `tools/k3c-studio
 2. Anfrage `POST /api/studio/rpc/<Methode>` → `guard` (Loopback, Kopfzeile) → `allowed` (Präfix) → Reflection ruft die `App`-Methode → `{result}` oder `{error}`.
 3. Schreibende Aufrufe (`AssetsSet`, `PlanSave`, `HubSave` …) tragen den `stand` aus dem Laden; weicht die Datei ab, kommt eine Ablehnung (`Stale`) statt eines Überschreibens; geschrieben wird atomar und format-stabil.
 4. Chat: `POST /api/studio/chat` → Loopback-Prüfung → `chatCLI.run` (Prozess `claude -p …`) → `chunk`-Ereignisse → `done` → Verlauf nach `.chats/`.
-5. Fremder Schreiber (MCP `assets_set` in k3c-dev) → `Watch` → `bus.publish` → SSE `assets:changed` → Oberfläche lädt neu.
+5. Fremder Schreiber (MCP `assets_set` in k3c-workbench) → `Watch` → `bus.publish` → SSE `assets:changed` → Oberfläche lädt neu.
 
 ## Integration
 
 - Eingehängt von `tools/k3c-studio/server.go` (`newHandler`, Loopback, Port 8091). Der Spielserver bindet es nicht mehr ein (B-507); `engine/` und `cmd/k3c-server` importieren nichts aus `tools/` (Test `engine/internal/rules/imports_test.go`).
 - Importiert: `tools/assetkit` (Register, Katalog, Recherche, per `replace` eingebunden), `tools/ruletable/table` und aus dem Hauptmodul (`replace k3c => ../..`) `engine/level`, `engine/sim`, `engine/room` (`BuildPreview`, `PreviewChunkObjects`, `Manager`), `engine/net` (`Preview`, `NewHandler`), `engine/store`, `data`.
-- Konsument: das Frontend `tools/k3c-studio/frontend/` (Aufrufe in `src/api/http.ts`, Build nach `tools/k3c-studio/frontend/dist/`); die MCP-Tools `assets_*` von k3c-dev schreiben dieselben Dateien.
+- Konsument: das Frontend `tools/k3c-studio/frontend/` (Aufrufe in `src/api/http.ts`, Build nach `tools/k3c-studio/frontend/dist/`); die MCP-Tools `assets_*` von k3c-workbench schreiben dieselben Dateien.
 - Daten: `data/assets.json`, `data/assets-recherche.json`, `data/worlds/`, `data/island-sizes.json`, `data/hub.json`, `docs/rules/materialien-gebaeude.md`, `public/**`, `.chats/` (Chat-Verlauf, lokal).
 - Laufzeit: die Claude Code CLI (`claude`) mit der Anmeldung von 🧑, nur auf seinem Rechner; nie in Tests oder CI.
 - Tasks: `task check:studio` prüft das Paket (go test, golangci-lint im Modul `tools/k3c-studio`) samt Frontend.

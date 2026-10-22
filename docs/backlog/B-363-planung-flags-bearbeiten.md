@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Wunsch von 🧑 (2026-10-08, beim Umzug in PJ3): Die Flags `autonom`/`Mensch`, `offline`/`live` und die Prio sollen in der Detailansicht der Planungsseite (`tools/k3c-dev/frontend/src/planning/`) bearbeitbar sein. Heute: `SessionDetail` in `Backlog.tsx` stellt `Agent` und `Umgebung` per `FieldMenu` um, aber nur für offene Sessions (`pickable`). Tickets haben keine Bearbeitung für `Prio`, `Umgebung` und `Projekt`. Seit PJ2 ordnet die Ticket-Prio die Tickets innerhalb eines Projekts (die Sprint-Prio entfällt, B-361).
+Wunsch von 🧑 (2026-10-08, beim Umzug in PJ3): Die Flags `autonom`/`Mensch`, `offline`/`live` und die Prio sollen in der Detailansicht der Planungsseite (`tools/k3c-workbench/frontend/src/planning/`) bearbeitbar sein. Heute: `SessionDetail` in `Backlog.tsx` stellt `Agent` und `Umgebung` per `FieldMenu` um, aber nur für offene Sessions (`pickable`). Tickets haben keine Bearbeitung für `Prio`, `Umgebung` und `Projekt`. Seit PJ2 ordnet die Ticket-Prio die Tickets innerhalb eines Projekts (die Sprint-Prio entfällt, B-361).
 
 ## Ziel
 
@@ -22,7 +22,7 @@ Im Detail eines Tickets lassen sich Prio, Umgebung und Projekt ändern, im Detai
 
 ## Beteiligte und Zielgruppen
 
-Agenten und 🧑 beim Planen über die Planungsseite von k3c-dev; 🧑 nimmt die Seite am Bildschirm ab.
+Agenten und 🧑 beim Planen über die Planungsseite von k3c-workbench; 🧑 nimmt die Seite am Bildschirm ab.
 
 ## Anforderungen
 
@@ -37,7 +37,7 @@ Flags an erledigten oder verworfenen Sessions ändern; Felder am Sprint (`Projek
 
 ## Regeln und Einschränkungen
 
-Domäne DEV (`tools/k3c-dev/frontend/src/planning/` und Go-Tools), Planung nur über `plan_set`, Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen, Komplexitäts-Budget. Die Tool-Meldung bei abgelehntem Wert wird unverändert angezeigt.
+Domäne DEV (`tools/k3c-workbench/frontend/src/planning/` und Go-Tools), Planung nur über `plan_set`, Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen, Komplexitäts-Budget. Die Tool-Meldung bei abgelehntem Wert wird unverändert angezeigt.
 
 ## Beispiele
 

@@ -1,9 +1,9 @@
-// Package conlog ist der gemeinsame Konsolen-Handler für slog (k3c-server, k3c-dev): eine Zeile je Eintrag,
+// Package conlog ist der gemeinsame Konsolen-Handler für slog (k3c-server, k3c-workbench): eine Zeile je Eintrag,
 //
 //	17:03:11.042 ERROR [svc] Dienst fehlgeschlagen port=8080 err="bereits belegt"
 //
 // mit ANSI-Farben je Level statt des key=value-Formats von slog.TextHandler. Die Level-Wörter (WARN, ERROR) bleiben
-// im Text, damit Leser ohne Farben (k3c-dev markOf, outLevel) sie weiter finden. Die JSON-Dateien bleiben unverändert.
+// im Text, damit Leser ohne Farben (k3c-workbench markOf, outLevel) sie weiter finden. Die JSON-Dateien bleiben unverändert.
 package conlog
 
 import (

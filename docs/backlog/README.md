@@ -92,7 +92,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-354](B-354-bot-eingabe-impulse-frist.md) | PLAT | Problem | mittel | eingeplant | TR4 | Die Bot-Eingabe verliert keine kurzen Drücke und hält bei stummem Feed an |
 | [B-360](B-360-plan-set-fehlendes-feld.md) | DEV | Problem | niedrig | eingeplant | WZ2 | plan_set lehnt ein Feld ab, das in der Datei fehlt, statt es still zu übergehen |
 | [B-363](B-363-planung-flags-bearbeiten.md) | DEV | Idee | mittel | eingeplant | WZ2 | Die Planungsseite ändert Prio, Umgebung, Agent und Projekt direkt im Detail |
-| [B-366](B-366-fahrplan-spalte-projekt.md) | DEV | Schuld | mittel | eingeplant | WZ2 | k3c-dev füllt im Fahrplan die Spalte Projekt und ordnet nach Rang |
+| [B-366](B-366-fahrplan-spalte-projekt.md) | DEV | Schuld | mittel | eingeplant | WZ2 | k3c-workbench füllt im Fahrplan die Spalte Projekt und ordnet nach Rang |
 | [B-367](B-367-doku-nachzug-projekte.md) | INF | Schuld | niedrig | eingeplant | WZ2 | Begriffe aus den alten Bahnen und Spuren sind nach PJ3 ersetzt und neue Projekt-Begriffe im Glossar |
 | [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | eingeplant | GL1 | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
 | [B-372](B-372-check-run-timeout-go.md) | SRV | Problem | mittel | eingeplant | WZ2 | check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab |
@@ -117,7 +117,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | eingeplant | BD4 | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
 | [B-418](B-418-spielstand-kommentare-veraltet.md) | SIM | Problem | niedrig | offen | – | Kommentare in island_save_v3.go und island_save_v5.go nennen nach W7.2 veraltete Versionen |
 | [B-419](B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | eingeplant | GD1 | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
-| [B-420](B-420-importe-grafikpacks.md) | DEV | Schuld | mittel | eingeplant | GR9 | Mit k3c-dev importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht |
+| [B-420](B-420-importe-grafikpacks.md) | DEV | Schuld | mittel | eingeplant | GR9 | Mit k3c-workbench importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht |
 | [B-422](B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | eingeplant | W11 | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | eingeplant | SV2 | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Kleine Befunde aus dem Review von SV1 sind erledigt |
@@ -133,7 +133,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-465](B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | offen | – | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
 | [B-470](B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | eingeplant | W12 | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
 | [B-472](B-472-nacht-dunkler-fackeln-lagerfeuer-licht.md) | CLI | Idee | niedrig | eingeplant | W13 | Nacht und Morgengrauen sind dunkler, Fackeln und Lagerfeuer machen Licht |
-| [B-473](B-473-ci-rot-k3c-dev-planning-worktree-tests.md) | DEV | Problem | hoch | offen | – | CI auf develop rot: k3c-dev internal/planning Worktree-Tests scheitern auf dem Windows-Runner |
+| [B-473](B-473-ci-rot-k3c-dev-planning-worktree-tests.md) | DEV | Problem | hoch | offen | – | CI auf develop rot: k3c-workbench internal/planning Worktree-Tests scheitern auf dem Windows-Runner |
 | [B-474](B-474-testdownloadhit-norton-tls.md) | DEV | Problem | mittel | offen | – | TestDownloadHit scheitert lokal am TLS-Zertifikat (Norton), check:all rot |
 | [B-492](B-492-sfx-luecken-weitere-ereignisse.md) | CLI | Idee | mittel | eingeplant | SO6 | Weitere Ereignisse bekommen eigene Sound-Slots und Sounds |
 | [B-493](B-493-credits-seite-audio.md) | PLAT | Idee | hoch | eingeplant | SO6 | Die Credits-Seite zeigt auch die Sounds unter public/audio |
@@ -191,7 +191,7 @@ Zeile in diesen Abschnitt.
 | [B-043](archiv/B-043-portierungs-fallen.md) | SIM | Problem | hoch | erledigt | SP06 | Portierungs-Fallen sind durch Golden-Tests abgedeckt |
 | [B-044](archiv/B-044-planer-struktur.md) | INF | Idee | mittel | erledigt | SP00 | Sprints und Tickets liegen als Dateien nach Pflicht-Vorlagen |
 | [B-045](archiv/B-045-sdd.md) | INF | Idee | hoch | erledigt | SP00 | Tickets und Sprints sind Specs nach Spec-Driven Development |
-| [B-046](archiv/B-046-dev-mcp.md) | SRV | Idee | mittel | erledigt | M1 | Entwickler-Werkzeug k3c-dev gibt Agenten über MCP verdichteten Zugriff auf Prüfungen und Logs |
+| [B-046](archiv/B-046-dev-mcp.md) | SRV | Idee | mittel | erledigt | M1 | Entwickler-Werkzeug k3c-workbench gibt Agenten über MCP verdichteten Zugriff auf Prüfungen und Logs |
 | [B-047](archiv/B-047-mcp-raeume-simulation.md) | SRV | Idee | mittel | erledigt | M6 | MCP-Tools zeigen laufende Räume und rechnen Level und Simulationen |
 | [B-049](archiv/B-049-sp09-domaene.md) | INF | Frage | niedrig | erledigt | SP09 | SP09 bleibt in einer Domäne oder hat einen erlaubten Grenzfall |
 | [B-050](archiv/B-050-go-dateilaenge.md) | INF | Schuld | mittel | erledigt | SP01 | Die Dateilänge von Go-Code wird wie bei TypeScript geprüft |
@@ -204,14 +204,14 @@ Zeile in diesen Abschnitt.
 | [B-059](archiv/B-059-freie-monarchen-reisen-mit.md) | SIM | Idee | hoch | erledigt | SP06 | Nur gesteuerte Monarchen entscheiden über den Stufenwechsel |
 | [B-060](archiv/B-060-sp07-protokoll-regeln.md) | SRV | Problem | hoch | erledigt | SP07 | Die Spec von SP07 deckt alle Server-Regeln aus Protokoll v2 ab |
 | [B-061](archiv/B-061-sp08-protokoll-regeln.md) | CLI | Problem | hoch | erledigt | SP08 | Die Spec von SP08 deckt alle Client-Regeln aus Protokoll v2 ab |
-| [B-062](archiv/B-062-dev-nutzungsstatistik.md) | SRV | Idee | mittel | erledigt | M2 | k3c-dev wertet MCP-Aufrufe über Sitzungen aus: Perzentile, Ausreißer und Zeitreihe |
-| [B-063](archiv/B-063-dev-berichte-spielstaende.md) | SRV | Idee | mittel | erledigt | M2 | k3c-dev macht Xbox-Berichte und Spielstände für Agenten lesbar |
-| [B-064](archiv/B-064-dev-oberflaeche-logs.md) | SRV | Idee | mittel | erledigt | M4 | k3c-dev hat eine Oberfläche mit Logs-Seite für Läufe und JSON-Logs |
-| [B-065](archiv/B-065-dev-mcp-seite.md) | SRV | Idee | mittel | erledigt | M5 | k3c-dev zeigt auf der MCP-Seite Server, Tools, Live-Monitore, Aufruf-Log und Statistik |
+| [B-062](archiv/B-062-dev-nutzungsstatistik.md) | SRV | Idee | mittel | erledigt | M2 | k3c-workbench wertet MCP-Aufrufe über Sitzungen aus: Perzentile, Ausreißer und Zeitreihe |
+| [B-063](archiv/B-063-dev-berichte-spielstaende.md) | SRV | Idee | mittel | erledigt | M2 | k3c-workbench macht Xbox-Berichte und Spielstände für Agenten lesbar |
+| [B-064](archiv/B-064-dev-oberflaeche-logs.md) | SRV | Idee | mittel | erledigt | M4 | k3c-workbench hat eine Oberfläche mit Logs-Seite für Läufe und JSON-Logs |
+| [B-065](archiv/B-065-dev-mcp-seite.md) | SRV | Idee | mittel | erledigt | M5 | k3c-workbench zeigt auf der MCP-Seite Server, Tools, Live-Monitore, Aufruf-Log und Statistik |
 | [B-066](archiv/B-066-server-json-log.md) | SRV | Idee | mittel | erledigt | D1 | Der Go-Server schreibt sein Log als JSON nach logs/ |
-| [B-067](archiv/B-067-dev-dienste.md) | SRV | Idee | mittel | erledigt | M3 | k3c-dev startet, überwacht und stoppt die Entwicklungs-Dienste, auch für Agenten |
-| [B-068](archiv/B-068-dev-dienste-seite.md) | SRV | Idee | mittel | erledigt | M4 | k3c-dev zeigt die Dienste als Karten mit Zustand, Metriken und Log-Level |
-| [B-069](archiv/B-069-ci-k3c-dev.md) | INF | Problem | mittel | erledigt | – | Der CI-Job k3c-dev ist einmal grün gelaufen |
+| [B-067](archiv/B-067-dev-dienste.md) | SRV | Idee | mittel | erledigt | M3 | k3c-workbench startet, überwacht und stoppt die Entwicklungs-Dienste, auch für Agenten |
+| [B-068](archiv/B-068-dev-dienste-seite.md) | SRV | Idee | mittel | erledigt | M4 | k3c-workbench zeigt die Dienste als Karten mit Zustand, Metriken und Log-Level |
+| [B-069](archiv/B-069-ci-k3c-dev.md) | INF | Problem | mittel | erledigt | – | Der CI-Job k3c-workbench ist einmal grün gelaufen |
 | [B-070](archiv/B-070-gitignore-verankern.md) | INF | Schuld | niedrig | erledigt | I1 | Die .gitignore ignoriert reports/, saves/ und certs/ nur an der Repo-Wurzel |
 | [B-072](archiv/B-072-depguard-rng.md) | INF | Schuld | niedrig | erledigt | I1 | depguard prüft die Schichtgrenze auch für engine/rng |
 | [B-073](archiv/B-073-go-task-umstellen.md) | INF | Schuld | hoch | erledigt | I1 | Alle Aufrufer nutzen Go Task statt npm-Skripte |
@@ -230,7 +230,7 @@ Zeile in diesen Abschnitt.
 | [B-089](archiv/B-089-ts-rng-reste.md) | CLI | Schuld | niedrig | erledigt | – | Der Client enthält keinen RNG-Rest der alten TS-Simulation mehr |
 | [B-091](archiv/B-091-level-abfrage.md) | SRV | Idee | mittel | erledigt | U2 | Der Server liefert ein generiertes Level per HTTP, ohne einen Raum anzulegen |
 | [B-096](archiv/B-096-start-ersetzt-spielstand.md) | SRV | Problem | mittel | erledigt | – | „Im Spiel starten“ ersetzt einen gleichnamigen Spielstand, statt abgewiesen zu werden |
-| [B-097](archiv/B-097-dienste-watch-modus.md) | SRV | Idee | niedrig | erledigt | – | k3c-dev startet den Go-Server bei Code-Änderungen von selbst neu |
+| [B-097](archiv/B-097-dienste-watch-modus.md) | SRV | Idee | niedrig | erledigt | – | k3c-workbench startet den Go-Server bei Code-Änderungen von selbst neu |
 | [B-093](archiv/B-093-debug-overlay.md) | CLI | Idee | mittel | erledigt | U4 | Ein Debug-Overlay zeigt Verbindung, Snapshot-Takt und Entitäten im Spiel |
 | [B-005](archiv/B-005-online-koop-ziel.md) | REG | Problem | hoch | erledigt | R1 | Game-Design nennt gemischten Koop als Kern |
 | [B-021](archiv/B-021-taste-x.md) | REG | Frage | mittel | erledigt | R1 | Belegung der Taste X ist entschieden |
@@ -249,7 +249,7 @@ Zeile in diesen Abschnitt.
 | [B-113](archiv/B-113-material-lager.md) | SIM | Idee | hoch | erledigt | SP13 | Fünf Materialien, Lager-Maximum und Tragen zum Lager sind umgesetzt |
 | [B-133](archiv/B-133-raum-auf-insel.md) | SRV | Idee | hoch | erledigt | SP14 | Der Raum rechnet mit einer Insel statt mit einer Kampagne |
 | [B-104](archiv/B-104-protokoll-stufe-und-optionen.md) | SRV | Idee | hoch | erledigt | SP14 | Das Protokoll kennt die Stufe je Spieler und die Raum-Optionen |
-| [B-171](archiv/B-171-dev-seiten-tasks-planung-git.md) | SRV | Idee | mittel | erledigt | M7 | k3c-dev zeigt Tasks, Planung und Git wie die Workbench der ErpApi |
+| [B-171](archiv/B-171-dev-seiten-tasks-planung-git.md) | SRV | Idee | mittel | erledigt | M7 | k3c-workbench zeigt Tasks, Planung und Git wie die Workbench der ErpApi |
 | [B-174](archiv/B-174-sprints-je-domaene-parallel.md) | INF | Idee | hoch | erledigt | F0 | Je Domäne darf ein Sprint aktiv sein, Sessions werden per Branch beansprucht |
 | [B-035](archiv/B-035-raspberry-pi.md) | SRV | Idee | hoch | erledigt | SP11 | Server läuft auf dem Raspberry Pi im Docker |
 | [B-175](archiv/B-175-lasttest-werkzeug.md) | SRV | Idee | mittel | erledigt | LT1 | Ein Lasttest-Werkzeug misst Tick-Dauer und CPU gegen das Pi-Ziel |
@@ -281,9 +281,9 @@ Zeile in diesen Abschnitt.
 | [B-196](archiv/B-196-pages-workflows-go-fuer-atlas.md) | INF | Problem | hoch | erledigt | GR4 | Die Pages-Workflows bauen mit Go, weil `task build` den Atlas packt |
 | [B-106](archiv/B-106-kamera-je-stufe.md) | CLI | Idee | hoch | erledigt | S4 | Jeder Spieler sieht seine Stufe, auch wenn die Spieler in verschiedenen Stufen sind |
 | [B-199](archiv/B-199-review-diff-befehl.md) | INF | Schuld | mittel | erledigt | – | Review-Sessions lesen den Sprint-Diff mit dem Befehl aus der Arbeitsweise |
-| [B-210](archiv/B-210-planung-ueber-mcp.md) | SRV | Idee | hoch | erledigt | M8 | Agenten pflegen Tickets, Sprints und Sessions über MCP-Tools von k3c-dev |
-| [B-211](archiv/B-211-planungsseite-react.md) | SRV | Schuld | mittel | erledigt | M8 | Die Planungsseite von k3c-dev ist eine React-Ansicht aus denselben Daten wie die MCP-Tools |
-| [B-212](archiv/B-212-github-status-planung.md) | SRV | Idee | mittel | erledigt | M8 | k3c-dev zeigt PR, CI und Merge-Konflikte je Sprint aus GitHub |
+| [B-210](archiv/B-210-planung-ueber-mcp.md) | SRV | Idee | hoch | erledigt | M8 | Agenten pflegen Tickets, Sprints und Sessions über MCP-Tools von k3c-workbench |
+| [B-211](archiv/B-211-planungsseite-react.md) | SRV | Schuld | mittel | erledigt | M8 | Die Planungsseite von k3c-workbench ist eine React-Ansicht aus denselben Daten wie die MCP-Tools |
+| [B-212](archiv/B-212-github-status-planung.md) | SRV | Idee | mittel | erledigt | M8 | k3c-workbench zeigt PR, CI und Merge-Konflikte je Sprint aus GitHub |
 | [B-146](archiv/B-146-optionen-pause-szene.md) | CLI | Idee | hoch | erledigt | S5 | Der Client hat eine Optionen- und Pause-Szene mit getrennter Lautstärke und Barrierefreiheit |
 | [B-172](archiv/B-172-sprachauswahl-de-en.md) | CLI | Idee | mittel | erledigt | S5 | Der Client hat Deutsch und Englisch mit Sprachauswahl in den Optionen |
 | [B-173](archiv/B-173-monarch-auf-reittier-zeichnen.md) | CLI | Idee | hoch | erledigt | S7 | Der Client zeichnet den Monarchen auf dem Standard-Reittier |
@@ -337,13 +337,13 @@ Zeile in diesen Abschnitt.
 | [B-149](archiv/B-149-controller-glyphen.md) | CLI | Idee | mittel | erledigt | S6 | Hinweise zeigen Controller-Glyphen statt Tasten-Text |
 | [B-292](archiv/B-292-neues-spiel-eindeutiger-name.md) | PLAT | Problem | hoch | erledigt | LP1 | Die Kachel „Neues Spiel“ startet auch bei vorhandenem Spielstand familie |
 | [B-340](archiv/B-340-mine-test-miniboss.md) | SIM | Frage | hoch | erledigt | K2 | K2.1a darf den Mine-Test an den Miniboss anpassen |
-| [B-275](archiv/B-275-worktree-unter-claude.md) | SRV | Problem | hoch | erledigt | M9 | k3c-dev und Vite arbeiten in Worktrees unter `.claude/worktrees/` richtig |
-| [B-213](archiv/B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | erledigt | M9 | MarkdownView in k3c-dev zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
+| [B-275](archiv/B-275-worktree-unter-claude.md) | SRV | Problem | hoch | erledigt | M9 | k3c-workbench und Vite arbeiten in Worktrees unter `.claude/worktrees/` richtig |
+| [B-213](archiv/B-213-markdown-listen-haekchen.md) | SRV | Problem | niedrig | erledigt | M9 | MarkdownView in k3c-workbench zeigt nummerierte Listen und Häkchen wie die alte Planungsseite |
 | [B-348](archiv/B-348-sim-test-workbench.md) | SRV | Idee | hoch | erledigt | TR1 | Jeder Testlauf startet und läuft über das MCP-Tool `sim_test` |
 | [B-349](archiv/B-349-bot-eingabe-client.md) | PLAT | Idee | hoch | erledigt | TR2 | Bots steuern im Client die Monarchen über die Bot-Eingabe |
 | [B-355](archiv/B-355-projekte-mit-rang.md) | INF | Idee | hoch | erledigt | PJ1 | Projekte bündeln Sprints zu Themen und werden nach Rang abgearbeitet |
 | [B-356](archiv/B-356-domaene-je-session.md) | INF | Idee | hoch | erledigt | PJ1 | Eine Session gehört zu genau einer Domäne, ein Sprint darf mehrere Domänen nacheinander enthalten |
-| [B-357](archiv/B-357-k3c-dev-projekte.md) | SRV | Idee | hoch | erledigt | PJ2 | Die plan-Tools von k3c-dev legen Projekte an, ordnen Sprints und Tickets zu und setzen den Rang |
+| [B-357](archiv/B-357-k3c-dev-projekte.md) | SRV | Idee | hoch | erledigt | PJ2 | Die plan-Tools von k3c-workbench legen Projekte an, ordnen Sprints und Tickets zu und setzen den Rang |
 | [B-358](archiv/B-358-workbench-projekte.md) | SRV | Idee | hoch | erledigt | PJ2 | Die Planungsseite der Workbench zeigt Projekte nach Rang mit ihren Sprints |
 | [B-338](archiv/B-338-session-status-verworfen.md) | INF | Schuld | hoch | erledigt | PJ1 | Sessions können den Status verworfen tragen |
 | [B-353](archiv/B-353-bot-eingabe-einbinden.md) | CLI | Idee | hoch | erledigt | TR3 | Das Spiel fragt die Bot-Eingabe ab und setzt ihre Spieler ohne Tastendruck in den Raum |
@@ -351,9 +351,9 @@ Zeile in diesen Abschnitt.
 | [B-364](archiv/B-364-planung-hierarchie-optik.md) | SRV | Idee | mittel | erledigt | – | Die Planungsseite zeigt Projekt, Sprint und Session als klar unterscheidbare Ebenen |
 | [B-359](archiv/B-359-planung-in-projekte.md) | INF | Schuld | hoch | erledigt | PJ3 | Die offene Planung ist in Projekte umgezogen, erledigte und zusammengelegte Sprints sind abgeschlossen |
 | [B-322](archiv/B-322-texte-werkzeug-seiten.md) | PLAT | Schuld | niedrig | erledigt | PL2 | Die Werkzeug-Seiten holen ihre Texte aus den zentralen Textdateien |
-| [B-365](archiv/B-365-domaene-dev-werkzeug.md) | INF | Idee | hoch | erledigt | DV1 | Das Entwickler-Werkzeug k3c-dev hat eine eigene Domäne statt SRV |
+| [B-365](archiv/B-365-domaene-dev-werkzeug.md) | INF | Idee | hoch | erledigt | DV1 | Das Entwickler-Werkzeug k3c-workbench hat eine eigene Domäne statt SRV |
 | [B-361](archiv/B-361-sprint-prio-felder-entfallen.md) | INF | Schuld | mittel | erledigt | DV1 | Die Sprint-Felder Prio und Einschiebbar entfallen in Vorlage, Planungstest und plan-Tools |
-| [B-362](archiv/B-362-k3c-dev-token-dienst.md) | DEV | Problem | hoch | erledigt | DV1 | k3c-dev fragt den selbst gestarteten Spielserver mit dessen Token an |
+| [B-362](archiv/B-362-k3c-dev-token-dienst.md) | DEV | Problem | hoch | erledigt | DV1 | k3c-workbench fragt den selbst gestarteten Spielserver mit dessen Token an |
 | [B-192](archiv/B-192-aktionsliste-schliesst-mit-oe.md) | CLI | Problem | hoch | erledigt | U5 | Die Dev-Aktionsliste schließt sich mit Ö |
 | [B-205](archiv/B-205-y-belegung-s3.md) | CLI | Problem | mittel | erledigt | S8 | Die Y-Belegung in S3 folgt dem Beschluss „kein Bau-Menü“ |
 | [B-130](archiv/B-130-bosse.md) | SIM | Idee | hoch | erledigt | K2 | Minibosse und Endboss sind spielbar |
@@ -365,7 +365,7 @@ Zeile in diesen Abschnitt.
 | [B-345](archiv/B-345-raum-tauscht-insel.md) | SRV | Idee | hoch | erledigt | K4 | Der Raum tauscht die Insel bei `SwitchReady` |
 | [B-383](archiv/B-383-sim-zustand-boss-event-wechsel.md) | SIM | Problem | mittel | erledigt | K4 | Die Welt stellt Boss-Phase, Warnkreis, Event-Restzeit und Inselwechsel für das Protokoll bereit |
 | [B-037](archiv/B-037-lobby.md) | CLI | Idee | mittel | erledigt | LB1 | Lobby zeigt Räume und startet Spiele |
-| [B-388](archiv/B-388-checkout-argument-schreibende-tools.md) | DEV | Problem | hoch | erledigt | WT1 | Schreibende k3c-dev-Tools nehmen den Ziel-Checkout als Argument, weil der Client aus Desktop-App-Worktrees die Wurzel meldet |
+| [B-388](archiv/B-388-checkout-argument-schreibende-tools.md) | DEV | Problem | hoch | erledigt | WT1 | Schreibende k3c-workbench-Tools nehmen den Ziel-Checkout als Argument, weil der Client aus Desktop-App-Worktrees die Wurzel meldet |
 | [B-339](archiv/B-339-glyphen-je-plattform.md) | CLI | Idee | mittel | verworfen | – | Spiel und Seiten zeigen Tastensymbole passend zum gerade benutzten Controller (Xbox, PlayStation, weitere) |
 | [B-316](archiv/B-316-tastatur-zwei-spieler.md) | PLAT | Idee | hoch | erledigt | PL1 | Zwei Spieler spielen an einer Tastatur im Split-Screen |
 | [B-215](archiv/B-215-texte-eingabe-shell-tools.md) | PLAT | Schuld | niedrig | erledigt | PL1 | Die Texte von Touch-Overlay, Shell und Werkzeug-Seiten kommen aus den zentralen Textdateien |
@@ -376,17 +376,17 @@ Zeile in diesen Abschnitt.
 | [B-397](archiv/B-397-auto-merge-sprint-pr.md) | INF | Idee | mittel | erledigt | – | Der PR eines Sprints wird mit Auto-Merge geöffnet |
 | [B-371](archiv/B-371-glyphen-tastatur-2.md) | CLI | Problem | mittel | erledigt | AZ1 | Hinweise und Glyphen zeigen für Spieler 2 an der Tastatur dessen Tasten |
 | [B-333](archiv/B-333-pause-anzeige.md) | CLI | Idee | mittel | erledigt | AZ1 | Der Client zeigt einen angehaltenen Raum deutlich an und hält die Figuren-Animationen an |
-| [B-368](archiv/B-368-planung-erpapi-ablage.md) | SRV | Schuld | mittel | verworfen | – | Die Planung liegt in der ErpApi-Ablage und k3c-dev bedient sie mit den Planungs-Tools der Workbench-Spec |
+| [B-368](archiv/B-368-planung-erpapi-ablage.md) | SRV | Schuld | mittel | verworfen | – | Die Planung liegt in der ErpApi-Ablage und k3c-workbench bedient sie mit den Planungs-Tools der Workbench-Spec |
 | [B-336](archiv/B-336-touch-optionen-schliessen.md) | CLI | Problem | hoch | verworfen | U6 | Die Optionen-Szene lässt sich per Touch vollständig bedienen und schließen, ohne vom Touch-Overlay verdeckt zu werden |
 | [B-390](archiv/B-390-touch-hud-verdeckt-bei-aufloesung.md) | CLI | Problem | mittel | verworfen | – | Touch-Tasten und Start-Button verdecken HUD-Infozeilen bei bestimmten Auflösungen |
 | [B-040](archiv/B-040-server-finden.md) | SRV | Idee | niedrig | verworfen | BT1 | Geräte finden den Server im Heimnetz |
 | [B-337](archiv/B-337-hud-elemente-ohne-ueberlagerung.md) | CLI | Idee | hoch | erledigt | U6 | Jede HUD-Anzeige ist ein eigenes Element mit optionalem Hintergrund und Rahmen, und HUD-Elemente überlagern sich nicht |
-| [B-405](archiv/B-405-k3c-dev-gotest-haengt.md) | DEV | Problem | mittel | verworfen | – | Der vollständige Go-Test von tools/k3c-dev läuft ohne Hänger durch |
+| [B-405](archiv/B-405-k3c-dev-gotest-haengt.md) | DEV | Problem | mittel | verworfen | – | Der vollständige Go-Test von tools/k3c-workbench läuft ohne Hänger durch |
 | [B-403](archiv/B-403-wz2-review-nachtraege.md) | DEV | Schuld | mittel | erledigt | WZ3 | Review-Nachträge zu Sprint WZ2: Filter-Zählung, Schnellfilter, Splitter-Test und Kleinigkeiten |
 | [B-404](archiv/B-404-fahrplan-projekt-aktiv.md) | DEV | Problem | niedrig | verworfen | – | Die Fahrplan-Zeile eines aktivierten Sprints trägt sein Projekt statt „–“ |
 | [B-342](archiv/B-342-w6-2-siteview-erlaubt.md) | CLI | Frage | mittel | erledigt | – | W6.2 darf den Bauplatz-Wartegrund in `siteView.ts` anbinden |
 | [B-407](archiv/B-407-wz3-verweis-b403-ac08.md) | INF | Problem | hoch | erledigt | – | WZ3-README verweist auf B-403/AC-08, das es nicht gibt (planning.test.ts rot) |
-| [B-416](archiv/B-416-checkout-git-ohne-fenster.md) | DEV | Problem | hoch | erledigt | – | Der Checkout-Aufruf von k3c-dev öffnet bei jedem Tool ein Konsolenfenster |
+| [B-416](archiv/B-416-checkout-git-ohne-fenster.md) | DEV | Problem | hoch | erledigt | – | Der Checkout-Aufruf von k3c-workbench öffnet bei jedem Tool ein Konsolenfenster |
 | [B-197](archiv/B-197-partner-zelle-schriftgroesse.md) | CLI | Frage | hoch | erledigt | GR7 | Die Schriftregel nennt eine Mindestgröße für die Mitspieler-Zelle |
 | [B-198](archiv/B-198-platzhaltertext-schrift-katalog.md) | CLI | Schuld | hoch | erledigt | GR7 | Der Platzhaltertext einer ungeladenen Stufe liest seine Schrift aus dem Katalog |
 | [B-415](archiv/B-415-cockpit-lint-rot.md) | INF | Problem | hoch | erledigt | – | Lint ist rot: tools/cockpit überschreitet die Dateigrenze |
@@ -414,24 +414,24 @@ Zeile in diesen Abschnitt.
 | [B-393](archiv/B-393-muenzbild-hinweis-fehlt.md) | CLI | Problem | mittel | erledigt | BD1 | Das Münzbild vor „Hinlaufen: Münze aufheben“ erscheint im Browser nicht |
 | [B-374](archiv/B-374-preisschild-taste.md) | CLI | Frage | mittel | erledigt | BD1 | Das Preisschild nennt die Taste zum Bezahlen |
 | [B-441](archiv/B-441-gebaeude-json-beschreibung.md) | DEV | Idee | hoch | erledigt | GEB8 | Gebäude-JSONs tragen ihre Gebäude-Vorlage (`vorlage`) |
-| [B-437](archiv/B-437-katalog-eigene-gebaeude.md) | DEV | Problem | mittel | erledigt | GEB3 | Asset-Katalog von k3c-dev kennt eigene Gebäude-Grafik nicht |
+| [B-437](archiv/B-437-katalog-eigene-gebaeude.md) | DEV | Problem | mittel | erledigt | GEB3 | Asset-Katalog von k3c-workbench kennt eigene Gebäude-Grafik nicht |
 | [B-442](archiv/B-442-hintergrundmauer-typ-b.md) | CLI | Idee | hoch | erledigt | GEB3 | Hintergrundmauern verbinden die Mauern einer Seite wie in Kingdom Two Crowns |
 | [B-449](archiv/B-449-geb5-abnahme-sichtpruefung.md) | CLI | Frage | hoch | erledigt | – | GEB5: Abnahme von Vorschau und Spiel durch Ralf |
 | [B-448](archiv/B-448-planning-testrepo-entwurf-sprint.md) | DEV | Problem | mittel | erledigt | – | dev:test TestRepo scheitert an Entwurfs-Sprints ohne Sessions (GEB7) |
 | [B-451](archiv/B-451-geb6-abnahme-sichtpruefung.md) | CLI | Frage | hoch | erledigt | – | GEB6: Abnahme von Vorschau und Spiel durch Ralf |
 | [B-452](archiv/B-452-geb7-abnahme-sichtpruefung.md) | CLI | Frage | hoch | erledigt | GEB7 | GEB7: Abnahme von Vorschau und Spiel durch Ralf |
-| [B-439](archiv/B-439-planung-erpqs-look.md) | DEV | Idee | mittel | erledigt | WZ5 | Die Planungsseite von k3c-dev zeigt und bedient die Planung wie die erp-qs-Workbench |
-| [B-421](archiv/B-421-abnahme-m10-ressourcen-manager.md) | DEV | Idee | mittel | erledigt | – | Abnahme M10: Ressourcen-Manager in k3c-dev und Mini-Szenen durch 🧑 beobachten |
-| [B-298](archiv/B-298-ressourcen-manager.md) | DEV | Idee | mittel | erledigt | M10 | Ein ResourcenManager in k3c-dev ordnet jedem Grafik- und Sound-Slot Assets mit Präferenz zu |
+| [B-439](archiv/B-439-planung-erpqs-look.md) | DEV | Idee | mittel | erledigt | WZ5 | Die Planungsseite von k3c-workbench zeigt und bedient die Planung wie die erp-qs-Workbench |
+| [B-421](archiv/B-421-abnahme-m10-ressourcen-manager.md) | DEV | Idee | mittel | erledigt | – | Abnahme M10: Ressourcen-Manager in k3c-workbench und Mini-Szenen durch 🧑 beobachten |
+| [B-298](archiv/B-298-ressourcen-manager.md) | DEV | Idee | mittel | erledigt | M10 | Ein ResourcenManager in k3c-workbench ordnet jedem Grafik- und Sound-Slot Assets mit Präferenz zu |
 | [B-299](archiv/B-299-asset-vorschau-szenen.md) | DEV | Idee | mittel | erledigt | M10 | Eine Dev-Seite zeigt die Asset-Zuordnung je Kategorie als Mini-Szene im Spielmaßstab |
 | [B-459](archiv/B-459-asset-werkzeug-eigene-exe.md) | DEV | Idee | hoch | erledigt | WZ6 | Die Asset-Seiten für Grafik und Sound laufen in einer eigenen EXE getrennt von der Workbench |
-| [B-443](archiv/B-443-dev-logs-scrollen-liste.md) | DEV | Problem | mittel | erledigt | – | Auf der Log-Seite von k3c-dev scrollt nur die Log-Liste, nicht die ganze Seite |
-| [B-444](archiv/B-444-vite-ports-plus-zehn.md) | DEV | Problem | mittel | erledigt | – | Vite-Ports von Spiel und k3c-dev liegen 10 höher und kollidieren nicht mit dem Vite-Standardport |
-| [B-445](archiv/B-445-dev-splitter-assets-mcp.md) | DEV | Idee | mittel | erledigt | – | Assets- und MCP-Seite von k3c-dev haben ziehbare Splitter zwischen den Panelen |
+| [B-443](archiv/B-443-dev-logs-scrollen-liste.md) | DEV | Problem | mittel | erledigt | – | Auf der Log-Seite von k3c-workbench scrollt nur die Log-Liste, nicht die ganze Seite |
+| [B-444](archiv/B-444-vite-ports-plus-zehn.md) | DEV | Problem | mittel | erledigt | – | Vite-Ports von Spiel und k3c-workbench liegen 10 höher und kollidieren nicht mit dem Vite-Standardport |
+| [B-445](archiv/B-445-dev-splitter-assets-mcp.md) | DEV | Idee | mittel | erledigt | – | Assets- und MCP-Seite von k3c-workbench haben ziehbare Splitter zwischen den Panelen |
 | [B-092](archiv/B-092-level-betrachter.md) | PLAT | Idee | mittel | verworfen | HW1 | Eine Testseite zeigt ein generiertes Level (Seed und Biom) ohne zu spielen |
 | [B-460](archiv/B-460-welt-betrachter-live-vorschau.md) | DEV | Idee | hoch | erledigt | WZ7 | Der Welt-Betrachter im Asset-Studio zeigt Chunks maximiert und eine Live-Vorschau mit Hub-Stufen und schaltbaren Gebäuden |
 | [B-477](archiv/B-477-welt-betrachter-nacharbeit.md) | DEV | Problem | hoch | erledigt | WZ16 | Der Welt-Betrachter zeigt Chunk- und Live-Vorschau in einer gemeinsamen, synchron scrollenden Ansicht |
-| [B-482](archiv/B-482-planung-kurzpfad-vergleich.md) | DEV | Problem | hoch | erledigt | – | Planungs-Tools erkennen die Repo-Wurzel auch bei Kurzpfaden (8.3) und die CI-Tests des k3c-dev-Jobs sind grün |
+| [B-482](archiv/B-482-planung-kurzpfad-vergleich.md) | DEV | Problem | hoch | erledigt | – | Planungs-Tools erkennen die Repo-Wurzel auch bei Kurzpfaden (8.3) und die CI-Tests des k3c-workbench-Jobs sind grün |
 | [B-480](archiv/B-480-assetkit-downloadhit-tls.md) | DEV | Problem | mittel | verworfen | – | TestDownloadHit in tools/assetkit scheitert lokal am TLS-Zertifikat und blockiert task check:all |
 | [B-466](archiv/B-466-glossar-morgengrauen-verweis.md) | INF | Problem | niedrig | erledigt | WZ13 | Der Glossar-Eintrag Tageszyklus verweist für das Morgengrauen auf das richtige Ticket |
 | [B-053](archiv/B-053-ci-lauf-sp01.md) | INF | Problem | hoch | erledigt | CI1 | Die CI hat die Prüfungen aus SP01 einmal grün durchlaufen |
@@ -460,7 +460,7 @@ Zeile in diesen Abschnitt.
 | [B-518](archiv/B-518-agentic-tempo.md) | INF | Problem | hoch | erledigt | – | Agentische Sessions laufen schneller: weniger Reviews und Prüfläufe, mehr parallel |
 | [B-468](archiv/B-468-geplante-chunks-ruinen-gegnerlager.md) | REG | Idee | mittel | erledigt | WZ14 | Geplante Chunks tragen Ruinen und Gegnerlager |
 | [B-423](archiv/B-423-sim-test-im-worktree.md) | DEV | Problem | mittel | erledigt | WZ20 | sim_test rechnet immer mit dem Code der Repo-Wurzel, nicht mit dem Worktree der Session |
-| [B-440](archiv/B-440-dev-test-entwurfs-sprints-ohne-sessions.md) | DEV | Problem | mittel | erledigt | WZ20 | k3c-dev-Planungstest lehnt Entwurfs-Sprints ohne Sessions ab |
+| [B-440](archiv/B-440-dev-test-entwurfs-sprints-ohne-sessions.md) | DEV | Problem | mittel | erledigt | WZ20 | k3c-workbench-Planungstest lehnt Entwurfs-Sprints ohne Sessions ab |
 | [B-483](archiv/B-483-worktree-eintraege-nur-lesend.md) | DEV | Problem | niedrig | erledigt | WZ20 | Planungsseite: Einträge nur im Worktree sind nur lesbar (Detail, Menüs, Rang) |
 | [B-484](archiv/B-484-worktree-neuer-sprint-leer.md) | DEV | Problem | niedrig | erledigt | WZ20 | Worktree-Vergleich: Sessions und Projekt eines neuen Sprints fehlen in den Pills |
 | [B-514](archiv/B-514-chat-entwurf-planung-nachbesserung.md) | DEV | Problem | niedrig | erledigt | WZ21 | Chat-Entwurf: Planung bei gleicher Insel-id schützen, CLI-Prozessbaum, Test-Riegel |
@@ -477,8 +477,8 @@ Zeile in diesen Abschnitt.
 | [B-497](archiv/B-497-grosse-inseln-last-und-umwandlung.md) | SIM | Frage | niedrig | erledigt | WZ24 | Große Inseln: Last im Spiel messen, Umwandlung in allen Biomen testen, PlanSave gegen Parallelität |
 | [B-508](archiv/B-508-raeume-nach-neustart-wieder-offen.md) | SRV | Idee | mittel | erledigt | WZ25 | Offene Räume sind nach einem Neustart des Servers wieder offen, Geräte kehren ohne Umweg über die Raumliste zurück |
 | [B-509](archiv/B-509-grafik-sound-aus-public-live.md) | SRV | Idee | mittel | erledigt | WZ25 | Im Studio geänderte Grafiken und Sounds erreichen die Clients ohne neuen Build |
-| [B-510](archiv/B-510-k3c-dev-kein-doppelter-neustart.md) | DEV | Schuld | niedrig | erledigt | WZ25 | k3c-dev startet den Spielserver bei Änderungen in data/ nicht mehr selbst neu, der Server macht das allein |
-| [B-512](archiv/B-512-k3c-dev-uebernommener-server-neue-pid.md) | DEV | Problem | niedrig | erledigt | WZ25 | k3c-dev beendet einen übernommenen Spielserver auch nach dessen Selbst-Neustart (neue PID am Port, Supervisor-Prozess) |
+| [B-510](archiv/B-510-k3c-dev-kein-doppelter-neustart.md) | DEV | Schuld | niedrig | erledigt | WZ25 | k3c-workbench startet den Spielserver bei Änderungen in data/ nicht mehr selbst neu, der Server macht das allein |
+| [B-512](archiv/B-512-k3c-dev-uebernommener-server-neue-pid.md) | DEV | Problem | niedrig | erledigt | WZ25 | k3c-workbench beendet einen übernommenen Spielserver auch nach dessen Selbst-Neustart (neue PID am Port, Supervisor-Prozess) |
 | [B-511](archiv/B-511-studio-schreibt-atomar.md) | DEV | Schuld | niedrig | erledigt | WZ25 | Das Studio schreibt jede Datei in data/ und public/ atomar, der Server sieht nie eine halbe Datei |
 | [B-516](archiv/B-516-studio-chat-promptgeruest-als-instruktion.md) | DEV | Idee | mittel | erledigt | WZ21 | Prompt-Grundgerüst des Studio-Chats ist eine feste Instruktion im Code statt Text im Eingabefeld |
 | [B-501](archiv/B-501-planer-vorschau-fixiert-markiert.md) | DEV | Idee | mittel | erledigt | WZ23 | Gebäude-Planer: Live-Vorschau unten fest, gewähltes Gebäude markiert |

@@ -30,10 +30,10 @@ Setzt eine Session ein Ticket auf `erledigt` oder `verworfen`, verschiebt sie es
 `docs/vorlagen/`. `tests/planning.test.ts` prüft Felder, Überschriften, Status passend zum Ordner, Index und Verweise.
 Eine Abweichung lässt `npm test` scheitern.
 
-**Planung nur über k3c-dev (B-210).** Anlegen, Felder ändern, Abschnitte füllen, archivieren, Sprints verschieben und
+**Planung nur über k3c-workbench (B-210).** Anlegen, Felder ändern, Abschnitte füllen, archivieren, Sprints verschieben und
 Entwürfe löschen laufen über die MCP-Tools `plan_list`, `plan_get`, `plan_create`, `plan_set`, `plan_section`,
 `plan_delete`; sie ziehen Index, Session-Tabelle, Fahrplan und Ordner selbst nach. Handarbeit an diesen Dateien ist nur
-der Rückfall, wenn k3c-dev nicht läuft; dann gelten die Regeln dieses Abschnitts wörtlich.
+der Rückfall, wenn k3c-workbench nicht läuft; dann gelten die Regeln dieses Abschnitts wörtlich.
 **Glossar ist verbindlich.** [`glossar.md`](glossar.md) legt die Begriffe fest und wird beim Schreiben von Specs und Texten gelesen. Ein neuer
 Begriff kommt beim Planen zuerst ins Glossar, dann in Ticket, Sprint oder Regel. Reviews achten auf Begriffs-Treue: Abweichungen gleicht der Review-Commit an (kein schwerer Befund).
 
@@ -89,7 +89,7 @@ Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten 
    `Agent: autonom` und erledigten Abhängigkeiten. Gibt es dort keine, kommt das Projekt mit dem nächsten Rang. Die **Domäne** der Session darf nicht gesperrt sein:
    Steht auf einem anderen Sprint-Branch (`git ls-remote --heads origin 'sprint/*'`) eine Session derselben Domäne auf
    `in Arbeit`, die nächste passende Session nehmen. Gibt es keine: **nichts tun** und das melden.
-   **Kurzweg:** `plan_next` (k3c-dev) trifft diese Auswahl aus den lokalen Dateien und liefert Session, Kriterien und
+   **Kurzweg:** `plan_next` (k3c-workbench) trifft diese Auswahl aus den lokalen Dateien und liefert Session, Kriterien und
    „Parallel möglich“; die Sperre über `origin` (`ls-remote`) prüft der Agent selbst.
 2. Sprint-Branch auschecken (fehlt er: von `origin/develop` anlegen, die erste Session setzt `Start-Commit`).
    Session-Datei vollständig lesen, `Status: in Arbeit` setzen, committen und sofort `git push -u origin sprint/<präfix>`
@@ -119,7 +119,7 @@ Eine Session pro Lauf. Eine Review-Session nie im selben Lauf wie eine Umsetzung
 Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und Freigaben. Deshalb:
 
 - **Prüfstufen:** Während der Arbeit nur gezielte Tests (`go test ./engine/sim/ -run TestX`, `check_run go:test` oder
-  `task:test` mit `pattern`). Vor dem Commit **genau einmal** `task check:diff`: Es wählt Client, Go, k3c-dev, Studio und
+  `task:test` mit `pattern`). Vor dem Commit **genau einmal** `task check:diff`: Es wählt Client, Go, k3c-workbench, Studio und
   Starter nach dem Diff zu `origin/develop`. Den vollen Satz (`task check`, `task check:go`, `task check:race`) fährt nur
   die Review-Session, `task check:all` nur der Release. Ein roter Lauf wird behoben und einmal wiederholt, nicht
   mehrfach „zur Sicherheit“.
@@ -154,7 +154,7 @@ sie in der Reihenfolge der Sessions. Was eine Domäne außerhalb des Sprints bra
 | **CLI** | Client: Darstellung, HUD, Grafik, Audio, Verbindung | `src/scenes/`, `public/`, `src/online/client.ts`, `src/core/saveStore.ts` |
 | **PLAT** | Plattform: Eingabe, Shell, Seiten | `src/input/`, `src/core/shell.ts`, `src/core/fullscreen.ts`, `src/landing/`, `*.html`, Pages-Präsentation `site/` |
 | **INF** | Frameworks, Tooling, CI, Repo-Aufbau, Arbeitsweise | `package.json`, `go.mod`, `vite*.ts`, `tsconfig.json`, Lint-Konfiguration, `.github/`, `tests/projectRules.test.ts`, `tests/planning.test.ts`, `docs/arbeitsweise.md`, `docs/vorlagen/` |
-| **DEV** | Entwickler-Werkzeug | `tools/k3c-dev/` (eigenes Go-Modul mit Oberfläche, MCP-Server), `tools/k3c-studio/` (Asset-Studio als eigenes Fenster: Backend in `tools/k3c-studio/backend`, Frontend in `tools/k3c-studio/frontend`; keine Seite des Spielservers, Entscheidung 004), `tools/assetkit/` (gemeinsame Asset-Logik von k3c-dev und Asset-Studio), `cmd/k3c-load/`, `cmd/k3c-tui/`, Werkzeug-Seiten `src/tools/` |
+| **DEV** | Entwickler-Werkzeug | `tools/k3c-workbench/` (eigenes Go-Modul mit Oberfläche, MCP-Server), `tools/k3c-studio/` (Asset-Studio als eigenes Fenster: Backend in `tools/k3c-studio/backend`, Frontend in `tools/k3c-studio/frontend`; keine Seite des Spielservers, Entscheidung 004), `tools/assetkit/` (gemeinsame Asset-Logik von k3c-workbench und Asset-Studio), `cmd/k3c-load/`, `cmd/k3c-tui/`, Werkzeug-Seiten `src/tools/` |
 
 Grenzfälle:
 
@@ -164,7 +164,7 @@ Grenzfälle:
   Client und Server. Eine Änderung daran bekommt eine eigene Session, die nur das Protokoll und beide Enden anpasst.
 - **Alt-Engine löschen (SP09, B-049):** INF löscht `src/world/`, `src/online/room.ts`, `src/online/wsServer.ts`, `server/*.mjs`,
   `vite.server.config.ts` und zieht dafür Importe in `src/scenes/`, `src/online/`, `src/core/`, Dev-Server, `Taskfile.yml`, CI,
-  `tools/k3c-dev/services.json` und die Landingpage-Hinweise für GitHub Pages (B-032) nach. Neue Funktionen gehören nicht dazu.
+  `tools/k3c-workbench/services.json` und die Landingpage-Hinweise für GitHub Pages (B-032) nach. Neue Funktionen gehören nicht dazu.
 - **Feature-Kette:** Ein neues Spielelement läuft als REG → SIM → CLI, als Sessions eines Sprints oder als
   aufeinanderfolgende Sprints desselben Projekts.
 
@@ -292,7 +292,7 @@ Niedrige Komplexität ist in **jeder** Session Pflicht, nicht erst im Review.
 
 ### Oberflächen der Wails-Programme (Atomic Design)
 
-Gilt verbindlich für jedes Wails-Programm mit Oberfläche (`tools/*/frontend`: k3c-dev, Asset-Studio, Starter) und jedes neue.
+Gilt verbindlich für jedes Wails-Programm mit Oberfläche (`tools/*/frontend`: k3c-workbench, Asset-Studio, Starter) und jedes neue.
 Die Oberfläche ist React mit **Radix Themes**, aufgebaut nach Atomic Design; die gemeinsamen Ebenen liegen in `tools/webkit`:
 
 | Ebene | Ort | Inhalt |
@@ -308,7 +308,7 @@ Die Oberfläche ist React mit **Radix Themes**, aufgebaut nach Atomic Design; di
 - **Radix nur über webkit:** App-Code importiert Radix Themes nie direkt, sondern über `@webkit/<ebene>` (außer `@radix-ui/themes/styles.css` in `main.tsx`; Tests ausgenommen).
 - **Keine rohen Controls:** `<button>`, `<select>`, `<input>`, `<textarea>` stehen nur in `tools/webkit/atoms`. Eigenes CSS für Controls gibt es nicht, Aussehen kommt aus Radix-Props und `tools/webkit/theme.css`; App-CSS regelt nur das Layout.
 - **App-eigene Teile** in `src/ui/{molecules,organisms,templates}` (Atome nur in webkit), sonst im Feature-Ordner. Was zwei Programme brauchen, wandert nach webkit.
-- Geprüft von `tests/atomicDesign.test.ts` (Ebenen, Importrichtung, Radix-Importe, rohe Controls); webkit-Tests laufen im Vitest von k3c-dev.
+- Geprüft von `tests/atomicDesign.test.ts` (Ebenen, Importrichtung, Radix-Importe, rohe Controls); webkit-Tests laufen im Vitest von k3c-workbench.
 
 ## Golden aktualisieren
 
@@ -346,7 +346,7 @@ Eine Session baut keine Migration, kein neues Fixture und keinen Ladetest nur f�
 |---|---|---|
 | Golden amd64 | CI-Job `go` (`task go:test`) auf dem Stand, der getaggt wird | grün |
 | Golden arm64 | CI-Job `go-arm64` (nativer arm64-Runner, B-071) | grün |
-| Alles grün | `task check:all` | Exit 0 (Client, Build, Go, k3c-dev) |
+| Alles grün | `task check:all` | Exit 0 (Client, Build, Go, k3c-workbench) |
 | Spielstand-Migration (Beschluss 2026-10-05, B-288: bis auf Widerruf keine Rücksicht auf alte Stände) | `engine/sim/save_migration_test.go` | vorhandene Tests grün; neue Version ohne Migration zulässig (Abschnitt „Spielstand-Format ändern“) |
 | Dev-Reste aus (B-098, B-107, B-080) | Release-Server ohne `K3C_DEV` (`engine/room/dev.go` lehnt Dev-Aktionen ab); Client: Debug-Overlay und `window.game` nur mit `?dev=1` (`src/main.ts`) | Dev-Aktion wird mit „🚫 Dev-Aktion abgelehnt“ geloggt, ohne `?dev=1` kein Overlay |
 | Pi-Image | CI-Job `docker` (amd64 und arm64); beim Tag schiebt `release.yml` das Image nach `ghcr.io/tenvan/k3c-family` | beide Plattformen gebaut, Image mit Tag und `latest` vorhanden |

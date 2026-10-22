@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-`sim_test` mit `clients` (TR1.3) liest den Zustand für seine Bots über ein Beobachter-Gerät, das einen der 4 Plätze im Raum belegt und selbst als Bot mitspielt; das Protokoll kennt kein Gerät ohne Platz (`room.ValidSlots` lehnt leere `slots` ab). Daher gehen mit Clients nur `players` 1–3. Der Bot-Feed (`/bot/<lauf>/<n>` an k3c-dev) nimmt nur Loopback an; `attach` geht damit nur mit Clients auf demselben Rechner, nicht mit der Xbox.
+`sim_test` mit `clients` (TR1.3) liest den Zustand für seine Bots über ein Beobachter-Gerät, das einen der 4 Plätze im Raum belegt und selbst als Bot mitspielt; das Protokoll kennt kein Gerät ohne Platz (`room.ValidSlots` lehnt leere `slots` ab). Daher gehen mit Clients nur `players` 1–3. Der Bot-Feed (`/bot/<lauf>/<n>` an k3c-workbench) nimmt nur Loopback an; `attach` geht damit nur mit Clients auf demselben Rechner, nicht mit der Xbox.
 
 ## Ziel
 

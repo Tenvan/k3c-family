@@ -1,6 +1,6 @@
 /**
  * Bot-Eingabe für Testläufe (B-349, TR2): `game.html?botfeed=<ws-Adresse>&players=n` nimmt die Eingaben der n lokalen
- * Spieler aus dem Bot-Feed der Workbench (`tools/k3c-dev/internal/botfeed`). Der Client entscheidet nichts, er spielt
+ * Spieler aus dem Bot-Feed der Workbench (`tools/k3c-workbench/internal/botfeed`). Der Client entscheidet nichts, er spielt
  * je Slot das letzte Kommando ab, bis das nächste kommt. Ohne Verbindung gibt es keine Eingabe (die Monarchen stehen).
  */
 import { clientLog } from '../core/clientLog';

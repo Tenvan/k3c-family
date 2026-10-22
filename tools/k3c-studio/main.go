@@ -1,5 +1,5 @@
 // Command k3c-studio ist das Asset-Studio von K3C als eigenständiges Fenster (B-459, B-498): ein Wails-Fenster (wie die
-// Workbench k3c-dev) mit gemerkter Größe und Position, ohne den Spielserver. Das Backend (backend/) und die
+// Workbench k3c-workbench) mit gemerkter Größe und Position, ohne den Spielserver. Das Backend (backend/) und die
 // Oberfläche (frontend/dist) bedient die EXE selbst auf Loopback; das Fenster zeigt diese Adresse. Schließen beendet alles.
 package main
 
@@ -109,7 +109,7 @@ func checkBuilt(root string) error {
 	return nil
 }
 
-// options beschreibt das Fenster wie in k3c-dev: gemerkte Größe, verdeckter Start, bis die gemerkte Position gesetzt ist.
+// options beschreibt das Fenster wie in k3c-workbench: gemerkte Größe, verdeckter Start, bis die gemerkte Position gesetzt ist.
 func (a *app) options() *options.App {
 	win, placed := loadWindow(configPath("k3c-studio.json"))
 	return &options.App{

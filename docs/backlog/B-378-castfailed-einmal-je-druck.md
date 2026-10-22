@@ -57,4 +57,4 @@ Ob die Eingabe (`PlayerCommand`) schon eine Flanke kennt oder die Sim den letzte
 
 ## Notizen
 
-Aus dem Review S9.4 (2026-10-09, Befund gehaltene Taste), auf Wunsch von 🧑 angelegt. Nummer von Hand (k3c-dev-Build lehnt Worktree-Planung ab, B-372).
+Aus dem Review S9.4 (2026-10-09, Befund gehaltene Taste), auf Wunsch von 🧑 angelegt. Nummer von Hand (k3c-workbench-Build lehnt Worktree-Planung ab, B-372).

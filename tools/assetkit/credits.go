@@ -12,7 +12,7 @@ import (
 // creditHeader ist die Tabelle des Import-Abschnitts; Ordner nennt die Datei (kandidaten/<datei>), Status die Lizenz-Prüfung.
 const creditHeader = "| Ordner | Pack | Urheber | Lizenz | Quelle | Status |\n|---|---|---|---|---|---|\n"
 
-const importIntro = "Mit k3c-dev importierte Kandidaten (B-298): je Datei eine Zeile. „Lizenz prüfen“ gilt, bis 🧑 die Lizenz in k3c-dev bestätigt.\n\n"
+const importIntro = "Mit k3c-workbench importierte Kandidaten (B-298): je Datei eine Zeile. „Lizenz prüfen“ gilt, bis 🧑 die Lizenz in k3c-workbench bestätigt.\n\n"
 
 // cell macht Text tabellentauglich (kein |, kein Zeilenumbruch).
 func cell(s, fallback string) string {
@@ -33,7 +33,7 @@ func creditStatus(h Hit, now time.Time) string {
 	return "Lizenz prüfen"
 }
 
-// addCredit trägt die Datei sofort in die Credit-Datei ein (B-165), im Abschnitt „Importe (k3c-dev)“.
+// addCredit trägt die Datei sofort in die Credit-Datei ein (B-165), im Abschnitt „Importe (k3c-workbench)“.
 func addCredit(root, kind, rel string, h Hit, now time.Time) error {
 	file := filepath.Join(root, "public", filepath.FromSlash(creditFile[kind]))
 	b, err := os.ReadFile(file)

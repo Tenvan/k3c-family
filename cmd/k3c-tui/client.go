@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// Umgebung wie beim Server und bei k3c-dev (M6): Token K3C_STATUS_TOKEN, Adresse K3C_SERVER_URL, sonst 127.0.0.1:K3C_HTTP_PORT.
+// Umgebung wie beim Server und bei k3c-workbench (M6): Token K3C_STATUS_TOKEN, Adresse K3C_SERVER_URL, sonst 127.0.0.1:K3C_HTTP_PORT.
 const (
 	envURL   = "K3C_SERVER_URL"
 	envPort  = "K3C_HTTP_PORT"

@@ -23,4 +23,4 @@ CLI entry point und Composition Root des Go-Servers: liefert `dist/` aus, stellt
 ## Integration
 
 - Abhängigkeiten: `engine/net`, `engine/room`, `engine/store`, `engine/conlog`; `dist/` aus `task build`.
-- Konsumenten: Taskfile-Tasks `start`/`serve` (`bin/k3c-server`), `Dockerfile` (Image, HEALTHCHECK `-health`), `.github/workflows/ci.yml` (Smoke-Test), `cmd/k3c-tui` und `cmd/k3c-load` (über `/api/status`); k3c-dev liest `logs/k3c-server.jsonl` und `k3c-client.jsonl`.
+- Konsumenten: Taskfile-Tasks `start`/`serve` (`bin/k3c-server`), `Dockerfile` (Image, HEALTHCHECK `-health`), `.github/workflows/ci.yml` (Smoke-Test), `cmd/k3c-tui` und `cmd/k3c-load` (über `/api/status`); k3c-workbench liest `logs/k3c-server.jsonl` und `k3c-client.jsonl`.

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "k3c-workbench",
+  "outputfilename": "k3c-workbench",
+  "frontend:install": "npm ci",
+  "frontend:build": "npx tsc --noEmit && npx vite build",
+  "frontend:dev:watcher": "npx vite",
+  "frontend:dev:serverUrl": "auto",
+  "author": { "name": "Ralf Stich" },
+  "info": { "productName": "K3C Workbench" }
+}

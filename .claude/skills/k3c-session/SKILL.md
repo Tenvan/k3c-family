@@ -11,8 +11,8 @@ die ganze Datei nur bei Regelfragen lesen.
 ## 1. Session wählen (ein Aufruf)
 
 1. `git fetch --prune`, dann `task ops:aufraeumen`.
-2. `plan_next` (k3c-dev) liefert Session, Pfad, Branch-Präfix, Kriterien und „Parallel möglich“.
-   Ohne k3c-dev: `docs/arbeitsweise.md` › Autonomer Ablauf, Schritt 1.
+2. `plan_next` (k3c-workbench) liefert Session, Pfad, Branch-Präfix, Kriterien und „Parallel möglich“.
+   Ohne k3c-workbench: `docs/arbeitsweise.md` › Autonomer Ablauf, Schritt 1.
    **Achtung:** `plan_next` liest nur den ausgecheckten Stand. Liegt `origin/sprint/<präfix>` vor, den Status der
    gewählten Session dort prüfen (`git show origin/sprint/<präfix>:<Pfad>`); ist sie nicht `offen`, den Sprint-Branch
    auschecken und `plan_next` erneut fragen (B-519).
@@ -38,7 +38,7 @@ Sprint-Branch auschecken (fehlt er: von `origin/develop`), `plan_set {Status: in
 
 1. `check_run task:check:diff` wartet bis zum Ende und liefert das Ergebnis (B-520); über 2 min macht Claude Code den
    Aufruf selbst zum Hintergrund-Task. Kommt doch „läuft noch“ mit Lauf-ID, `check_run {run}` einmal aufrufen (wartet
-   weiter), keine Schleife. Ohne k3c-dev: `task check:diff` per Bash mit `run_in_background`.
+   weiter), keine Schleife. Ohne k3c-workbench: `task check:diff` per Bash mit `run_in_background`.
 2. **Gleichzeitig** im Hintergrund ein Reviewer, aber nur bei Domäne SIM oder SRV, Protokoll- oder Spielstand-Änderung,
    Shell-, Pfad- oder Eingabe-Code oder ab etwa 150 geänderten Code-Zeilen. Auftrag: nur schwere Befunde (falsches Verhalten, Datenverlust,
    Sicherheit, Determinismus, 2 Spieler, CLAUDE.md-Regeln, Kriterium ohne Nachweis).

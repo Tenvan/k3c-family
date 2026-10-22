@@ -4,7 +4,7 @@ import katalog from '../../docs/assets/sounds.md?raw';
 import credits from '../../public/audio/README.md?raw';
 
 // Sound-Katalog und Credits (B-167/AC-01, AC-02, SO2.2): jedes Ereignis steht im Katalog, jede fremde Sound-Datei hat einen
-// Credit-Eintrag mit CC0 oder CC-BY. Die Credit-Tabelle der Sounds steht in public/audio/README.md (so schreibt sie k3c-dev).
+// Credit-Eintrag mit CC0 oder CC-BY. Die Credit-Tabelle der Sounds steht in public/audio/README.md (so schreibt sie k3c-workbench).
 
 /** Ereignisse aus B-167 › Anforderungen (Spalte „Ereignis“ des Katalogs) */
 const EREIGNISSE = ['Treffer', 'Gegner-Tod', 'Münze aufheben', 'Münze geben', 'Pfeil', 'Schlag', 'Bau-Fortschritt', 'Bau fertig', 'Tod', 'Skill',

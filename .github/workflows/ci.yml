@@ -1,4 +1,4 @@
-# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; k3c-dev, Asset-Studio und Windows-Starter: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf develop/main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
+# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; k3c-workbench, Asset-Studio und Windows-Starter: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf develop/main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
 name: CI
 
 on:
@@ -45,14 +45,14 @@ jobs:
           cache: npm
           cache-dependency-path: |
             package-lock.json
-            tools/k3c-dev/frontend/package-lock.json
+            tools/k3c-workbench/frontend/package-lock.json
             tools/k3c-studio/frontend/package-lock.json
             tools/k3c-starter/frontend/package-lock.json
       - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
       - uses: go-task/setup-task@v1
-      # Wie lokal: Client und Frontends von k3c-dev, Asset-Studio und Starter, deren Komponententests (React, Radix) laufen in task test mit.
+      # Wie lokal: Client und Frontends von k3c-workbench, Asset-Studio und Starter, deren Komponententests (React, Radix) laufen in task test mit.
       - run: task install
       - run: task lint
       - run: task typecheck
@@ -148,9 +148,9 @@ jobs:
           docker logs k3c 2>&1 | grep -q 'dev=false'
       - name: Dev-Mode per K3C_DEV=1 einschaltbar
         run: |
-          docker run -d --name k3c-dev -e K3C_DEV=1 k3c-server:ci
-          for i in $(seq 1 30); do docker exec k3c-dev /app/k3c-server -health && break; sleep 1; done
-          docker logs k3c-dev 2>&1 | grep -q 'dev=true'
+          docker run -d --name k3c-workbench -e K3C_DEV=1 k3c-server:ci
+          for i in $(seq 1 30); do docker exec k3c-workbench /app/k3c-server -health && break; sleep 1; done
+          docker logs k3c-workbench 2>&1 | grep -q 'dev=true'
       # Diagnose-TUI im Image (SP10, B-002): ein zweiter Container mit Token, k3c-tui -once ohne Terminal.
       - name: k3c-tui im Image prüfen
         run: |
@@ -160,50 +160,50 @@ jobs:
           grep -q 'K3C ' tui.txt
           grep -q 'Keine Räume' tui.txt
 
-  k3c-dev:
+  k3c-workbench:
     if: github.event_name != 'pull_request'
-    name: k3c-dev · Frontend · Tests · Lint · Wails (Windows)
+    name: k3c-workbench · Frontend · Tests · Lint · Wails (Windows)
     runs-on: windows-latest
     timeout-minutes: 15
     defaults:
       run:
-        working-directory: tools/k3c-dev
+        working-directory: tools/k3c-workbench
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-go@v7
         with:
-          go-version-file: tools/k3c-dev/go.mod
-          cache-dependency-path: tools/k3c-dev/go.sum
+          go-version-file: tools/k3c-workbench/go.mod
+          cache-dependency-path: tools/k3c-workbench/go.sum
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
           cache-dependency-path: |
             package-lock.json
-            tools/k3c-dev/frontend/package-lock.json
+            tools/k3c-workbench/frontend/package-lock.json
       # Der Typecheck des Frontends prüft auch die Tests; vitest kommt aus dem Hauptprojekt, die Konfiguration
-      # (Alias @webkit) aus tools/k3c-dev/frontend/vitest.config.ts.
+      # (Alias @webkit) aus tools/k3c-workbench/frontend/vitest.config.ts.
       - uses: go-task/setup-task@v1
       - run: npm ci
         working-directory: .
       # go:embed braucht frontend/dist, deshalb zuerst das Frontend (mit Typecheck).
       - run: npm ci
-        working-directory: tools/k3c-dev/frontend
-      - run: task k3c-dev:frontend
+        working-directory: tools/k3c-workbench/frontend
+      - run: task k3c-workbench:frontend
         working-directory: .
       - run: npx vitest run --config vitest.config.ts
-        working-directory: tools/k3c-dev/frontend
+        working-directory: tools/k3c-workbench/frontend
       - run: go test ./...
       - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.14
-          working-directory: tools/k3c-dev
+          working-directory: tools/k3c-workbench
       - run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
       - run: wails build -s
 
   # Asset-Studio (B-459, B-507): eigenes Fenster mit eigenem Server, keine Seite des Spielservers. Frontend (Typecheck,
   # Build nach tools/k3c-studio/frontend/dist, Vitest), die Asset-Logik tools/assetkit und das Modul tools/k3c-studio
-  # samt Backend (go test, Lint). Windows wie k3c-dev: das Modul bindet Wails ein.
+  # samt Backend (go test, Lint). Windows wie k3c-workbench: das Modul bindet Wails ein.
   k3c-studio:
     if: github.event_name != 'pull_request'
     name: Asset-Studio · Frontend · Tests · Lint (Windows)
@@ -244,7 +244,7 @@ jobs:
           working-directory: tools/k3c-studio
 
   # Windows-Starter (B-041, BT1.2): Frontend (React auf Radix Themes; Typecheck, Build nach tools/k3c-starter/frontend/dist, Vitest),
-  # Go-Tests, Lint, Wails-Build. Windows wie k3c-dev: das Modul bindet Wails ein.
+  # Go-Tests, Lint, Wails-Build. Windows wie k3c-workbench: das Modul bindet Wails ein.
   k3c-starter:
     if: github.event_name != 'pull_request'
     name: Windows-Starter · Frontend · Tests · Lint · Wails (Windows)

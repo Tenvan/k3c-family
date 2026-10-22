@@ -1,0 +1,22 @@
+{
+  "allowed": [
+    "build",
+    "check",
+    "check:all",
+    "check:dev",
+    "check:go",
+    "check:studio",
+    "gen:atlas",
+    "go:lint",
+    "go:test",
+    "install",
+    "k3c-workbench:frontend",
+    "k3c-studio:build",
+    "k3c-studio:frontend",
+    "k3c-studio:run",
+    "lint",
+    "pages",
+    "test",
+    "typecheck"
+  ]
+}

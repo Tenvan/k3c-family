@@ -1,6 +1,6 @@
 import type { AssetChoice, AssetKind, AssetRect, AssetSaved, AssetSlot, AssetStatus, AssetsView } from '../api';
 
-// Seiten Grafik und Sound des Asset-Studios (B-298, B-459; Kopie aus k3c-dev): reine Logik ohne React, damit sie testbar bleibt.
+// Seiten Grafik und Sound des Asset-Studios (B-298, B-459; Kopie aus k3c-workbench): reine Logik ohne React, damit sie testbar bleibt.
 
 /** Kategorien je Art wie im Slot-Register (Go: assets.Categories) */
 export const CATEGORIES: Record<AssetKind, readonly string[]> = {

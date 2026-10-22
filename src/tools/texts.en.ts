@@ -309,7 +309,7 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'lic.sw.tests': 'Tests and lint',
   'lic.sw.go': 'Server and the game engine of the future',
   'lic.softwareNote':
-    'Further tools used only for development (e.g. in <code>tools/k3c-dev</code>) are not shipped with the game; their licenses are in the respective packages.',
+    'Further tools used only for development (e.g. in <code>tools/k3c-workbench</code>) are not shipped with the game; their licenses are in the respective packages.',
   'lic.h.thanks': 'Thank you',
   'lic.thanks':
     'From the heart to <strong>LuizMelo</strong>, <strong>ansimuz</strong>, <strong>bluecarrot16</strong>, <strong>Jordan Irwin (AntumDeluge)</strong>, <strong>lawnjelly</strong>, <strong>Calciumtrice</strong>, <strong>lemmling</strong>, <strong>Bonsaiheldin</strong>, <strong>vico</strong>, <strong>Rusher_go</strong> and <strong>WolfTech</strong>, to the platforms <strong>itch.io</strong> and <strong>OpenGameArt.org</strong> and to all the open-source developers above. If you enjoy their work: drop by and support them if you can.',

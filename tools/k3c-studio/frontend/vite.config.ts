@@ -22,9 +22,9 @@ export default defineConfig(({ command }) => ({
   publicDir: command === 'serve' ? PUBLIC : false,
   build: { outDir: DIST, emptyOutDir: true },
   server: {
-    port: Number(process.env.K3C_STUDIO_UI_PORT ?? 5192), // k3c-dev verschiebt ihn je Worktree (services.json › portEnv)
+    port: Number(process.env.K3C_STUDIO_UI_PORT ?? 5192), // k3c-workbench verschiebt ihn je Worktree (services.json › portEnv)
     strictPort: true,
-    // IPv4 ausdrücklich: „localhost“ bindet unter Windows nur ::1, die Health-Prüfung von k3c-dev fragt 127.0.0.1.
+    // IPv4 ausdrücklich: „localhost“ bindet unter Windows nur ::1, die Health-Prüfung von k3c-workbench fragt 127.0.0.1.
     host: '127.0.0.1',
     // Kein CORS: sonst beantwortet Vite Preflights fremder lokaler Seiten und reicht deren Anfragen an das Backend weiter.
     cors: false,

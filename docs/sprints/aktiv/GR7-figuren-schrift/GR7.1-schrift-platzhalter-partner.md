@@ -55,7 +55,7 @@ task test -- fontRules
 task check
 ```
 
-Über k3c-dev: `check_run task:check` (Worktree: `checkout` setzen). Keine manuellen Prüfungen (Browser, Xbox, TV).
+Über k3c-workbench: `check_run task:check` (Worktree: `checkout` setzen). Keine manuellen Prüfungen (Browser, Xbox, TV).
 
 ## Ergebnis
 

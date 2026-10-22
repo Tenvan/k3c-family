@@ -12,10 +12,10 @@ import (
 	"k3c/engine/conlog"
 )
 
-// logFile ist die JSON-Log-Datei im Log-Ordner (B-066); k3c-dev liest sie als Quelle „k3c-server“.
+// logFile ist die JSON-Log-Datei im Log-Ordner (B-066); k3c-workbench liest sie als Quelle „k3c-server“.
 const logFile = "k3c-server.jsonl"
 
-// clientLogFile ist das JSON-Log der Meldungen aus dem Browser (POST /api/clientlog); k3c-dev liest es als Quelle „k3c-client“.
+// clientLogFile ist das JSON-Log der Meldungen aus dem Browser (POST /api/clientlog); k3c-workbench liest es als Quelle „k3c-client“.
 const clientLogFile = "k3c-client.jsonl"
 
 // maxClientLogBytes ist die Größe, ab der k3c-client.jsonl nach k3c-client.1.jsonl wandert (B-142): Mit einer alten

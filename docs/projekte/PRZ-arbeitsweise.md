@@ -15,7 +15,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | Sprint | Thema | Status |
 |---|---|---|
 | PJ1 | Projekte, Rang und Domäne je Session in Regeln, Vorlagen und Planungstest | erledigt |
-| PJ2 | k3c-dev plant mit Projekten: plan-Tools und Planungsseite | erledigt |
+| PJ2 | k3c-workbench plant mit Projekten: plan-Tools und Planungsseite | erledigt |
 | PJ3 | Planung in Projekte umziehen und aufräumen | erledigt |
 
 ## Nicht-Ziele

@@ -8,7 +8,7 @@ import (
 )
 
 // Das echte Slot-Register des Repos: jede Zuordnung gültig, Kategorien bekannt, IDs eindeutig,
-// und Speichern ändert kein Byte (k3c-dev schreibt dasselbe Format wie die Erstbefüllung).
+// und Speichern ändert kein Byte (k3c-workbench schreibt dasselbe Format wie die Erstbefüllung).
 func TestEchtesRegister(t *testing.T) {
 	root := repoRoot(t)
 	reg, err := Load(root)

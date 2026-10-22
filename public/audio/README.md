@@ -21,16 +21,16 @@ ffmpeg -f lavfi -i "aevalsrc='$E':d=0.8:s=44100" -ac 1 -map_metadata -1 -c:a lib
 
 `probe-a` (C-Dur-Akkord, 2 Hz Tremolo) und `probe-b` (a-Moll-Akkord, 3 Hz Tremolo): je 8 s, mono, `.ogg` und `.mp3`, für die Crossfade-Probe
 der Hörprobenseite. **Selbst erzeugt, keine fremden Inhalte** (kein Credit nötig). Die Hörprobe zeigt die Sound-Slots des
-Slot-Registers `data/assets.json` (B-298, M10; früher `kandidaten.json`); Zuordnungen setzt k3c-dev. Fremde Dateien nur mit Quelle und Lizenz (B-165).
+Slot-Registers `data/assets.json` (B-298, M10; früher `kandidaten.json`); Zuordnungen setzt k3c-workbench. Fremde Dateien nur mit Quelle und Lizenz (B-165).
 
 ```bash
 ffmpeg -f lavfi -i "aevalsrc='(sin(2*PI*262*t)+sin(2*PI*330*t)+sin(2*PI*392*t))/3*0.4*(0.7+0.3*sin(2*PI*2*t))':d=8:s=44100" -ac 1 -map_metadata -1 -c:a libvorbis -q:a 2 probe-a.ogg
 # mp3: -c:a libmp3lame -b:a 48k; probe-b: 220/277/330 Hz, Tremolo 3 Hz
 ```
 
-## Importe (k3c-dev)
+## Importe (k3c-workbench)
 
-Mit k3c-dev importierte Kandidaten (B-298): je Datei eine Zeile. „Lizenz prüfen“ gilt, bis 🧑 die Lizenz in k3c-dev bestätigt.
+Mit k3c-workbench importierte Kandidaten (B-298): je Datei eine Zeile. „Lizenz prüfen“ gilt, bis 🧑 die Lizenz in k3c-workbench bestätigt.
 
 Kenney-Dateien (Packs Digital Audio, RPG Audio, Impact Sounds, Interface Sounds, alle CC0) liegen unverändert vor. Die OpenGameArt-Stücke (Musik, alle CC0) sind zum Hören aus den Originalen neu auf Ogg Vorbis 96 kbit/s kodiert (`ffmpeg -c:a libvorbis -b:a 96k -ac 2`, Metadaten entfernt), damit die Kandidaten klein bleiben (zusammen etwa 9 MB statt 28 MB); die Wahl entscheidet später, ob das Original nachgeladen wird. Urheber bei OpenGameArt sind die dortigen Benutzernamen.
 

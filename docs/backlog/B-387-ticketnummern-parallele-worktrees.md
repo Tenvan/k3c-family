@@ -37,7 +37,7 @@ Sperren oder Reservierungsdateien zwischen Läufen; Umnummerieren bestehender Ti
 
 ## Regeln und Einschränkungen
 
-Domäne DEV (`tools/k3c-dev/internal/planning/`). Nur lesender Zugriff auf andere Worktrees, geschrieben wird nur im Ziel-Checkout. Firewall-Regel: Proben nur auf Loopback.
+Domäne DEV (`tools/k3c-workbench/internal/planning/`). Nur lesender Zugriff auf andere Worktrees, geschrieben wird nur im Ziel-Checkout. Firewall-Regel: Proben nur auf Loopback.
 
 ## Beispiele
 

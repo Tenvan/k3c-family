@@ -38,5 +38,5 @@ Domain Model und Simulation-Core des Spiels: deterministischer Tick-Step für ei
 ## Integration
 
 - Importiert `k3c/engine/level` (Layout, Biome, Cycle, `WallLine`), `k3c/engine/rng`, `k3c/data` (embed; `buildings.json`, `troops.json`, `economy.json`, `enemies.json`, `monarch.json`, `bosses.json`, `events.json`, `worlds/standard.json`, `hub.json`, Biome).
-- Konsumenten: `engine/room` (Spielschleife), `engine/net` (Protokoll v4, Snapshots, Aktionen wie Skill lernen), `tools/k3c-dev/internal/balance` und `tools/k3c-dev/internal/enginetools` (`sim_run`, Balancing).
+- Konsumenten: `engine/room` (Spielschleife), `engine/net` (Protokoll v4, Snapshots, Aktionen wie Skill lernen), `tools/k3c-workbench/internal/balance` und `tools/k3c-workbench/internal/enginetools` (`sim_run`, Balancing).
 - Client spiegelt Typen in `src/model/` (`World`, `GameEvent`).

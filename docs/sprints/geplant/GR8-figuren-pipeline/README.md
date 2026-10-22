@@ -28,7 +28,7 @@ B-329, B-331 › Anforderungen (Specs noch Entwurf). B-331 ist groß und kann be
 
 ## Nicht-Ziele
 
-Neue Gegner oder Animationen über B-329 hinaus; Sound (SND); Asset-Verwaltung in k3c-dev (M10).
+Neue Gegner oder Animationen über B-329 hinaus; Sound (SND); Asset-Verwaltung in k3c-workbench (M10).
 
 ## Regeln und Einschränkungen
 

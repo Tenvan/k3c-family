@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Wunsch von 🧑 (2026-10-18): Das Asset-Studio (`tools/k3c-studio`) soll sich Fensterposition und -größe merken wie die Workbench und sie sicher wiederherstellen, auch wenn der Monitor-Index nicht mehr stimmt. Die Workbench (`tools/k3c-dev`) kann das schon: `window.go` (`windowState`, `loadWindow`, `saveWindow`, `placeWindow`, `configPath` unter `<UserConfigDir>/k3c`), `screen_windows.go` (`onScreen` prüft, ob das Fenster auf einem vorhandenen Bildschirm greifbar ist; sonst bleibt die Position Wails überlassen), `screen_other.go`, `beforeClose` in `app.go` (merkt Größe und Position beim Schließen) und verdeckter Start in `main.go`, bis die Position gesetzt ist. Das Studio hat nichts davon. Beide Werkzeuge teilen das Modul `tools/assetkit`.
+Wunsch von 🧑 (2026-10-18): Das Asset-Studio (`tools/k3c-studio`) soll sich Fensterposition und -größe merken wie die Workbench und sie sicher wiederherstellen, auch wenn der Monitor-Index nicht mehr stimmt. Die Workbench (`tools/k3c-workbench`) kann das schon: `window.go` (`windowState`, `loadWindow`, `saveWindow`, `placeWindow`, `configPath` unter `<UserConfigDir>/k3c`), `screen_windows.go` (`onScreen` prüft, ob das Fenster auf einem vorhandenen Bildschirm greifbar ist; sonst bleibt die Position Wails überlassen), `screen_other.go`, `beforeClose` in `app.go` (merkt Größe und Position beim Schließen) und verdeckter Start in `main.go`, bis die Position gesetzt ist. Das Studio hat nichts davon. Beide Werkzeuge teilen das Modul `tools/assetkit`.
 
 ## Ziel
 

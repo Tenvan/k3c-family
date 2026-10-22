@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Am Windows-PC startet der Server per Konsole (`bin/k3c-server`, `task start`). Wails-Fenster gibt es schon für `tools/k3c-dev` (Workbench) und `tools/k3c-studio` (Asset-Studio, eigenes Go-Modul, `replace` auf das Hauptmodul, EXE in `bin/`, Wails-Build in der CI). Ein Starter für den Spielserver fehlt. Beschluss 🧑 (2026-10-18): Der Starter liegt als `tools/k3c-starter`, die Session gehört zur Domäne DEV.
+Am Windows-PC startet der Server per Konsole (`bin/k3c-server`, `task start`). Wails-Fenster gibt es schon für `tools/k3c-workbench` (Workbench) und `tools/k3c-studio` (Asset-Studio, eigenes Go-Modul, `replace` auf das Hauptmodul, EXE in `bin/`, Wails-Build in der CI). Ein Starter für den Spielserver fehlt. Beschluss 🧑 (2026-10-18): Der Starter liegt als `tools/k3c-starter`, die Session gehört zur Domäne DEV.
 
 ## Ziel
 
@@ -26,8 +26,8 @@ Wails-Starter für Windows existiert. Nutzen: Einfacher Start am Windows-PC per 
 
 ## Anforderungen
 
-- Wails-Fenster `tools/k3c-starter` (eigenes Go-Modul wie k3c-dev und Asset-Studio) startet den Spielserver aus dem Kern von `engine/` und `cmd/k3c-server` (keine Kopie der Logik) und zeigt Status und Adresse im LAN. Der QR-Code entfällt seit 2026-10-11 (Beschluss 🧑: Handy ist kein Gerät mehr).
-- Task `k3c-starter:build` baut die EXE nach `bin/k3c-starter.exe` (fester Pfad, damit die Windows-Firewall nicht jedes Mal fragt); die CI baut sie wie k3c-dev mit `wails build -s`.
+- Wails-Fenster `tools/k3c-starter` (eigenes Go-Modul wie k3c-workbench und Asset-Studio) startet den Spielserver aus dem Kern von `engine/` und `cmd/k3c-server` (keine Kopie der Logik) und zeigt Status und Adresse im LAN. Der QR-Code entfällt seit 2026-10-11 (Beschluss 🧑: Handy ist kein Gerät mehr).
+- Task `k3c-starter:build` baut die EXE nach `bin/k3c-starter.exe` (fester Pfad, damit die Windows-Firewall nicht jedes Mal fragt); die CI baut sie wie k3c-workbench mit `wails build -s`.
 
 ## Nicht-Ziele
 

@@ -24,6 +24,6 @@ Schichten von innen nach außen:
 3. Spielstände laufen über die Store-Ports von `room` nach `store`.
 
 ## Integration
-- Konsumenten: `cmd/k3c-server`, `cmd/k3c-load`; in k3c-dev `internal/enginetools`, `internal/balance`, `internal/mcpsrv`, `internal/serverapi`, `internal/applog` (`conlog`).
+- Konsumenten: `cmd/k3c-server`, `cmd/k3c-load`; in k3c-workbench `internal/enginetools`, `internal/balance`, `internal/mcpsrv`, `internal/serverapi`, `internal/applog` (`conlog`).
 - Daten: `data/` per `go:embed`.
 - `internal/` (nur Tests und Test-Hilfen): `golden` (Golden-Dateien unter `testdata/golden/`), `rules` (Repo-Regeln für Go: Verschachtelungstiefe `nesting_test.go`, `map_range_test.go` für `sim`/`level`).

@@ -1,7 +1,7 @@
 import { STALE } from './stale';
 import type { AssetChoice, AssetHit, AssetSlot, AssetsView, Backend, CatalogAsset } from './types';
 
-// Erfundenes Slot-Register und Katalog für den Mock (Kopie aus k3c-dev, B-459). Bilder liefert der Studio-Vite aus
+// Erfundenes Slot-Register und Katalog für den Mock (Kopie aus k3c-workbench, B-459). Bilder liefert der Studio-Vite aus
 // public/ (publicDir nur im Dev-Modus). Der Stand zählt jede Änderung hoch; `external` spielt einen fremden Schreiber
 // (MCP) nach, damit Neuladen und Schreibregel (AC-07) ohne Wails prüfbar sind; `quiet` hält das Ereignis zurück wie
 // der Poll-Takt in Go (Fenster zwischen fremdem Schreiben und assets:changed).
