@@ -1091,6 +1091,36 @@
     ]
   },
   {
+    "id": "hub-geruest",
+    "kacheln": {
+      "b": 8,
+      "h": 9
+    },
+    "vorlage": {
+      "motiv": "Baugerüst aus Holz als Bild vor der Burg, solange ein Bauer den Hub-Ausbau baut (GEB11), sonst transparent",
+      "teile": [
+        "Vier Stangen bei 0,2, 2,2, 5,7 und 7,7 Kacheln von 2,25 Kacheln bis zum Boden",
+        "Laufbretter auf 4, 5,75 und 7,75 Kacheln über die ganze Breite, das untere lässt das Tor frei",
+        "Diagonale Streben in den beiden äußeren Feldern",
+        "Leiter rechts vom Tor vom mittleren Brett bis zum Boden",
+        "Steinhaufen links unten, Kiste rechts neben dem Tor"
+      ],
+      "materialien": [
+        "Pfosten, Balken",
+        "Holz (Wand, Tresen, Gestell)",
+        "Stein (Kamin, Esse, Sockel, Stufe)"
+      ],
+      "stimmung": "Baustelle: hier wird gerade ausgebaut",
+      "fein": "Steinfuge, Kistenfuge"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hub-geruest-128.png",
+      "16": "grafik/gebaeude/hub-geruest-16.png",
+      "32": "grafik/gebaeude/hub-geruest-32.png",
+      "64": "grafik/gebaeude/hub-geruest-64.png"
+    }
+  },
+  {
     "id": "kaserne",
     "kacheln": {
       "b": 6,
@@ -1258,6 +1288,74 @@
           "16": "grafik/gebaeude/lager-5-16.png",
           "32": "grafik/gebaeude/lager-5-32.png",
           "64": "grafik/gebaeude/lager-5-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "lagerfeuer",
+    "kacheln": {
+      "b": 8,
+      "h": 5
+    },
+    "vorlage": {
+      "motiv": "Anfang des Hubs vor der Holzburg: Lagerfeuer mit Grill in der Mitte als Zahlziel, links wächst ein Zelt, dann eine Holzhütte (GEB11)",
+      "teile": [
+        "Links frei für Zelt (Stufe 2) oder Holzhütte (Stufe 3), etwa 0,25 bis 2,9 Kacheln",
+        "Grill mittig: zwei Astgabeln (bei 2,9 und 4,9 Kacheln) mit Spieß und Braten",
+        "Feuerstelle mittig unter dem Spieß: Flammen, gekreuzte Scheite, Steinring am Boden",
+        "Holzstapel rechts (5,5 bis 6,75 Kacheln) aus fünf Stämmen mit Jahresring",
+        "Stufe 2: helles Spitzzelt mit dunklem Eingang und Pflöcken",
+        "Stufe 3: Holzhütte mit Ziegeldach, Kamin, erleuchtetem Fenster und Tür"
+      ],
+      "materialien": [
+        "Pfosten, Balken",
+        "Holz (Wand, Tresen, Gestell)",
+        "Glut",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Metall (Werkzeug)",
+        "Zelttuch (Lager) = Stoff hell",
+        "Dachziegel",
+        "Fensterlicht"
+      ],
+      "stimmung": "kleiner Anfang wie in Kingdom Two Crowns: warm, abendlich, wächst sichtbar",
+      "fein": "Funken, Fetttropfen, Steinfugen, Plankenfugen, Schindel-Fugen, Fenstersprossen"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/lagerfeuer-1-128.png",
+      "16": "grafik/gebaeude/lagerfeuer-1-16.png",
+      "32": "grafik/gebaeude/lagerfeuer-1-32.png",
+      "64": "grafik/gebaeude/lagerfeuer-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/lagerfeuer-1-128.png",
+          "16": "grafik/gebaeude/lagerfeuer-1-16.png",
+          "32": "grafik/gebaeude/lagerfeuer-1-32.png",
+          "64": "grafik/gebaeude/lagerfeuer-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Zelt am Feuer: helles Spitzzelt links (Gold für den Ausbau fließt, weniger als die Hälfte)",
+        "dateien": {
+          "128": "grafik/gebaeude/lagerfeuer-2-128.png",
+          "16": "grafik/gebaeude/lagerfeuer-2-16.png",
+          "32": "grafik/gebaeude/lagerfeuer-2-32.png",
+          "64": "grafik/gebaeude/lagerfeuer-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Holzhütte am Feuer: Hütte mit Ziegeldach, Kamin und erleuchtetem Fenster statt Zelt (mindestens die Hälfte des Golds)",
+        "dateien": {
+          "128": "grafik/gebaeude/lagerfeuer-3-128.png",
+          "16": "grafik/gebaeude/lagerfeuer-3-16.png",
+          "32": "grafik/gebaeude/lagerfeuer-3-32.png",
+          "64": "grafik/gebaeude/lagerfeuer-3-64.png"
         }
       }
     ]

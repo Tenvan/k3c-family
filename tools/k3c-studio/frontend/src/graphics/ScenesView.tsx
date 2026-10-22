@@ -4,6 +4,7 @@ import { useAssets } from '../assets/useAssets';
 import { loadPref, savePref } from '../lib/prefs';
 import { NoticeCard } from '@webkit/molecules';
 import { BuildingStrip } from './BuildingStrip';
+import { HubGrowthStrip } from './HubGrowthStrip';
 import { Backgrounds } from './Backgrounds';
 import { FigurenCards, ImageCard } from './SlotCards';
 import { resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag, type Query, type SceneId } from './scenesLogic';
@@ -63,6 +64,7 @@ function Scene({ szene, slots, q, index }: { szene: SceneId; slots: AssetSlot[];
   return (
     <>
       {szene === 'gebaeude' && index.length > 0 && <><h3 className="sz-title">Neue Gebäude (GEB)</h3><BuildingStrip index={index} /></>}
+      {szene === 'gebaeude' && index.length > 0 && <><h3 className="sz-title">Hub wächst (GEB11)</h3><HubGrowthStrip index={index} /></>}
       {szene === 'figuren' && <FigurenCards title={TITLE.figuren!} items={items} />}
       {items.length === 0 && <Text color="gray">Keine Asset-Slots in dieser Kategorie.</Text>}
       {bilder.length > 0 && (

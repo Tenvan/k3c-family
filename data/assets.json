@@ -487,6 +487,50 @@
       ]
     },
     {
+      "id": "hub:camp:1",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Lagerfeuer mit Grill (GEB11)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/lagerfeuer-1-32.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:camp:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Zelt am Feuer (GEB11)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/lagerfeuer-2-32.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:camp:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Holzhütte am Feuer (GEB11)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/lagerfeuer-3-32.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:scaffold",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Baugerüst während des Ausbaus (GEB11)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hub-geruest-32.png"
+        }
+      ]
+    },
+    {
       "id": "wall:1",
       "art": "grafik",
       "kategorie": "gebaeude",

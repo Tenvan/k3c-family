@@ -125,7 +125,7 @@ export class WorldRenderer {
     private readonly root: Phaser.GameObjects.Layer,
   ) {
     this.castle = this.put(createCastleView(scene, world.castle.x * U));
-    updateCastleView(scene, this.castle, world.hubLevel ?? 1);
+    updateCastleView(scene, this.castle, world);
     this.drawStatic();
     // über der Burg (288 px hoch, GEB4)
     this.castleHp = this.put(scene.add.container(world.castle.x * U, G - 310, bar(scene, 0, 240, 0x52b788)).setDepth(5));
@@ -192,7 +192,7 @@ export class WorldRenderer {
     this.players.sync(hidden.size === 0 ? world.players : world.players.filter((p) => !hidden.has(p.index)));
     this.projectiles.sync(world.projectiles);
     this.citizens.sync(world);
-    updateCastleView(this.scene, this.castle, world.hubLevel ?? 1); // Burg wechselt mit dem Hub-Ausbau (GEB4 AC-05)
+    updateCastleView(this.scene, this.castle, world); // Burg wächst mit Hub-Stufe und Ausbau-Stand (GEB4 AC-05, GEB11)
     setBar(this.castleHp, 0, world.castle.hp / world.castle.maxHp, world.castle.hp < world.castle.maxHp);
   }
 
