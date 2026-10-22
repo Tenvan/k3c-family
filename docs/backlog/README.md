@@ -142,7 +142,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-495](B-495-respec-in-aktionsliste.md) | SRV | Schuld | niedrig | eingeplant | RM1 | Die Aktionsliste nennt respec, wenn CanRespec erlaubt |
 | [B-496](B-496-studio-fensterposition-merken.md) | DEV | Idee | mittel | offen | – | Das Asset-Studio merkt sich Fensterposition und Größe und stellt sie sicher wieder her |
 | [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
-| [B-501](B-501-planer-vorschau-fixiert-markiert.md) | DEV | Idee | mittel | eingeplant | WZ23 | Gebäude-Planer: Live-Vorschau unten fest, gewähltes Gebäude markiert |
 | [B-503](B-503-monarch-skill-darstellung.md) | CLI | Idee | niedrig | eingeplant | SK2 | Die 24 Monarch-Skills haben eine Darstellung im Spiel |
 | [B-504](B-504-preset-skills-backstab-smokebomb.md) | REG | Problem | niedrig | eingeplant | SK2 | Die Skills backstab und smokeBomb des Presets Dieb stehen in data/monarch.json |
 | [B-505](B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | eingeplant | GR9 | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |
@@ -483,3 +482,4 @@ Zeile in diesen Abschnitt.
 | [B-512](archiv/B-512-k3c-dev-uebernommener-server-neue-pid.md) | DEV | Problem | niedrig | erledigt | WZ25 | k3c-dev beendet einen übernommenen Spielserver auch nach dessen Selbst-Neustart (neue PID am Port, Supervisor-Prozess) |
 | [B-511](archiv/B-511-studio-schreibt-atomar.md) | DEV | Schuld | niedrig | erledigt | WZ25 | Das Studio schreibt jede Datei in data/ und public/ atomar, der Server sieht nie eine halbe Datei |
 | [B-516](archiv/B-516-studio-chat-promptgeruest-als-instruktion.md) | DEV | Idee | mittel | erledigt | WZ21 | Prompt-Grundgerüst des Studio-Chats ist eine feste Instruktion im Code statt Text im Eingabefeld |
+| [B-501](archiv/B-501-planer-vorschau-fixiert-markiert.md) | DEV | Idee | mittel | erledigt | WZ23 | Gebäude-Planer: Live-Vorschau unten fest, gewähltes Gebäude markiert |

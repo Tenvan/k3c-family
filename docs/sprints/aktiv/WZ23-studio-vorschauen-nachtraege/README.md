@@ -62,7 +62,7 @@ Reittier ohne Sheet → Platzhalter mit Warnung 🤒. Boss-Phase ohne `ability` 
 | WZ23.2 | `WZ23.2-studio-nutzt-spielcode.md` | Umsetzung | autonom | fertig |
 | WZ23.3 | `WZ23.3-gegner-seite-boss.md` | Umsetzung | autonom | blockiert |
 | WZ23.4 | `WZ23.4-review.md` | Review | autonom | fertig |
-| WZ23.5 | `WZ23.5-abnahme-pc.md` | Workshop | Mensch | offen |
+| WZ23.5 | `WZ23.5-abnahme-pc.md` | Workshop | Mensch | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
@@ -74,4 +74,4 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-2026-10-22 (Teil): AC-01 bis AC-03 nachgewiesen (WZ23.1, .2, .4), `check:diff` grün, Reviewer-Befund behoben. Sprint bleibt aktiv: AC-04 wartet auf K5.1 (WZ23.3 blockiert), AC-05 ist Ralfs Abnahme am PC (WZ23.5; B-469 und B-501 offen). Entscheidungen für den Nachgang: Reittiere auf Anforderung, Monarch-Sheets wie im Spiel.
+2026-10-22: AC-01 bis AC-03 nachgewiesen (WZ23.1, .2, .4), AC-05 von Ralf am PC abgenommen (WZ23.5, B-501 erledigt). Offen: AC-04 (WZ23.3 blockiert, wartet auf K5.1, B-469); der Sprint bleibt bis dahin aktiv. Entscheidungen für den Nachgang: Reittiere auf Anforderung, Monarch-Sheets wie im Spiel.
