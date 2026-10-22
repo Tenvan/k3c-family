@@ -20,6 +20,11 @@ describe('Wachstumsreihe der Burg (GEB11, materialien-gebaeude.md § 2.1)', () =
     expect(hubLookOf({ hubLevel: 3, hubUpgrade: { ...up(200, 'waitingWorker'), gold: 200 } })).toEqual({ id: 'burg', stufe: 3, scaffold: true });
   });
 
+  it('kein Gerüst bei Gefahr: der Bau wartet nachts, kein Bauer arbeitet (GEB12 D8)', () => {
+    expect(hubLookOf({ hubLevel: 1, hubUpgrade: up(50, 'waitingWorker'), danger: true })).toEqual({ id: 'burg', stufe: 1, scaffold: false });
+    expect(hubLookOf({ hubLevel: 2, hubUpgrade: up(50, 'waitingWorker'), danger: false })).toEqual({ id: 'burg', stufe: 2, scaffold: true });
+  });
+
   it('ab Hub-Stufe 2 die Burg der Stufe, auch während Gold fließt', () => {
     for (const n of [2, 3, 4]) expect(hubLookOf({ hubLevel: n, hubUpgrade: up(0) })).toEqual({ id: 'burg', stufe: n, scaffold: false });
     expect(hubLookOf({ hubLevel: 5 })).toEqual({ id: 'burg', stufe: 5, scaffold: false });

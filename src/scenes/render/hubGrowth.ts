@@ -18,7 +18,7 @@ export const HUB_GROWTH: readonly HubGrowthLook[] = [
   ...[1, 2, 3, 4, 5].map((stufe) => ({ id: 'burg', stufe })),
 ];
 
-/** Bild vor dem Look, solange ein Bauer den Hub-Ausbau baut (`hubUpgrade.state` = `waitingWorker`) */
+/** Bild vor dem Look, solange ein Bauer den Hub-Ausbau baut (`hubUpgrade.state` = `waitingWorker` ohne `danger`, GEB12 D8) */
 export const HUB_SCAFFOLD = 'hub-geruest';
 
 /** Look der Burg im Spiel: Grafik-Id und Stufe (`burg` = Burg der Hub-Stufe), `scaffold` = Baugerüst davor */
@@ -31,11 +31,12 @@ export interface HubLook {
 /**
  * Look aus Hub-Stufe und Ausbau-Stand (§ 2.1): Auf Hub-Stufe 1, solange Gold offen ist, Lagerfeuer (nichts bezahlt), Zelt (unter der
  * Hälfte) oder Holzhütte (ab der Hälfte); sonst die Burg der Hub-Stufe. Ohne `hubUpgrade` (letzte Stufe, älterer Server) die Burg.
+ * Das Gerüst steht nur, wenn gebaut werden kann: Bei Gefahr (`danger`, Nacht oder Gegner) wartet der Bau, dann kein Gerüst.
  */
-export function hubLookOf(world: Pick<World, 'hubLevel' | 'hubUpgrade'>): HubLook {
+export function hubLookOf(world: Pick<World, 'hubLevel' | 'hubUpgrade' | 'danger'>): HubLook {
   const level = Math.max(1, Math.trunc(world.hubLevel ?? 1) || 1);
   const up = world.hubUpgrade;
-  const scaffold = up?.state === 'waitingWorker';
+  const scaffold = up?.state === 'waitingWorker' && !world.danger;
   if (level !== 1 || !up || up.state || up.gold <= 0) return { id: 'burg', stufe: level, scaffold };
   return { id: 'lagerfeuer', stufe: up.paid <= 0 ? 1 : up.paid * 2 < up.gold ? 2 : 3, scaffold };
 }

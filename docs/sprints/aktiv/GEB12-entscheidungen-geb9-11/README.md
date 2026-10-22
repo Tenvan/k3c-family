@@ -59,7 +59,7 @@ Alle Entscheidungen sind autonom mit Default getroffen (Claude, 2026-10-22) und 
 |---|---|---|---|---|
 | GEB12.1 | `GEB12.1-workshop-entscheidungen.md` | Workshop | Mensch | offen |
 | GEB12.2 | `GEB12.2-folgearbeit-planen.md` | Workshop | autonom | fertig |
-| GEB12.3 | `GEB12.3-geruest-ohne-gefahr.md` | Umsetzung | autonom | offen |
+| GEB12.3 | `GEB12.3-geruest-ohne-gefahr.md` | Umsetzung | autonom | fertig |
 
 GEB12.1 (AC-01) entscheidet Ralf zusammen mit KR2.1. GEB12.2 (AC-02, AC-03) und GEB12.3 (AC-04) laufen autonom.
 

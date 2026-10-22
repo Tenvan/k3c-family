@@ -76,7 +76,7 @@ export function createCastleView(scene: Phaser.Scene, x: number): View {
  * Tauscht die Burg-Grafik, wenn sich der Look der Wachstumsreihe ändert (`hubLookOf`: Hub-Stufe und Ausbau-Stand, GEB11); fehlt die
  * Grafik des Looks, die Burg der Hub-Stufe, sonst die bisherige Form. Das Gerüst steht, solange ein Bauer den Ausbau baut.
  */
-export function updateCastleView(scene: Phaser.Scene, v: View, world: Pick<World, 'hubLevel' | 'hubUpgrade'>): void {
+export function updateCastleView(scene: Phaser.Scene, v: View, world: Pick<World, 'hubLevel' | 'hubUpgrade' | 'danger'>): void {
   const look = hubLookOf(world);
   const stage = `${look.id}-${look.stufe}-${look.scaffold}`;
   if (v.getData('stage') === stage) return;

@@ -1,6 +1,6 @@
 # GEB12.3 · Baugerüst nur ohne Gefahr (D8)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -45,5 +45,5 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04 umgesetzt: `hubLookOf` setzt `scaffold` nur bei `waitingWorker` ohne `danger`; `updateCastleView` reicht `danger` durch (Typ). Geprüft: Vitest `hubGrowth` (neuer Fall Gefahr) grün, `task check:diff` grün.
+- Nicht am Gerät geprüft (nachts kein Gerüst vor der Burg); Sicht in GEB11.6. Studio-Vorschau zeigt das Gerüst weiter als Beispiel. Bestätigung D8: B-545 (KR2).
