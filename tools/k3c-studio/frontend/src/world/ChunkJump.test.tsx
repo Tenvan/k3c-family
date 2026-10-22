@@ -107,6 +107,28 @@ describe('Tippen auf das Chunk-Overlay der Live-Vorschau (B-485)', () => {
   });
 });
 
+describe('Tippen und Ziehen (B-491)', () => {
+  const gesture = (h: HTMLElement, steps: { type: string; x: number }[]) => act(async () => {
+    const el = h.querySelector<HTMLElement>('.wd-stage')!;
+    el.getBoundingClientRect = () => ({ left: 0, top: 0, width: 600, height: 400, right: 600, bottom: 400, x: 0, y: 0, toJSON: () => ({}) });
+    for (const s of steps) el.dispatchEvent(new MouseEvent(s.type, { bubbles: true, clientX: s.x, clientY: BAND_Y, button: 0 }));
+  });
+
+  it('ein Hin-und-zurück-Ziehen über die Schwelle ist kein Klick', async () => {
+    const h = await mount();
+    const before = liveCenter();
+    await gesture(h, [{ type: 'pointerdown', x: 100 }, { type: 'pointermove', x: 160 }, { type: 'pointermove', x: 100 }, { type: 'pointerup', x: 100 }]);
+    expect(liveCenter()).toBeCloseTo(before);
+  });
+
+  it('pointercancel bricht das Tippen ab', async () => {
+    const h = await mount();
+    const before = liveCenter();
+    await gesture(h, [{ type: 'pointerdown', x: 100 }, { type: 'pointercancel', x: 100 }, { type: 'pointerup', x: 100 }]);
+    expect(liveCenter()).toBeCloseTo(before);
+  });
+});
+
 describe('Klick auf einen Eintrag der Planungsliste (B-485)', () => {
   it('springt zum Chunk-Platz; ein Klick in ein Feld des Eintrags nicht', async () => {
     const h = await mount();
@@ -118,5 +140,15 @@ describe('Klick auf einen Eintrag der Planungsliste (B-485)', () => {
     await act(async () => h.querySelector<HTMLElement>('.wd-planned')!.click());
     expect(liveCenter()).toBeCloseTo(mid(6)); // Platz +1 = Abschnitt rechts vom Hub
     expect(chunkCenter(h)).toBeCloseTo(mid(6));
+  });
+
+  it('ist per Tastatur erreichbar: Eintrag fokussierbar, Enter springt (B-491/3)', async () => {
+    const h = await mount();
+    await act(async () => [...h.querySelectorAll('button')].find((b) => b.textContent === 'Chunk hinzufügen')!.click());
+    await flush();
+    const item = h.querySelector<HTMLElement>('.wd-planned')!;
+    expect(item.tabIndex).toBe(0);
+    await act(async () => item.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })));
+    expect(liveCenter()).toBeCloseTo(mid(6));
   });
 });

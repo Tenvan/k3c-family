@@ -57,8 +57,8 @@ keine. Geklärt (🧑, 2026-10-21): Der Knopf „Prompt-Grundgerüst“ entfäll
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ21.2 | `WZ21.2-geruest-als-instruktion.md` | Umsetzung | autonom | fertig |
-| WZ21.3 | `WZ21.3-restpunkte-b514.md` | Umsetzung | autonom | offen |
-| WZ21.4 | `WZ21.4-review.md` | Review | autonom | offen |
+| WZ21.3 | `WZ21.3-restpunkte-b514.md` | Umsetzung | autonom | fertig |
+| WZ21.4 | `WZ21.4-review.md` | Review | autonom | fertig |
 | WZ21.1 | `WZ21.1-eigene-umgebung.md` | Umsetzung | autonom | verworfen |
 
 - WZ21.1 entfällt (eigene Umgebung und Anmeldefehler, B-515 mit PR #406 erledigt).
@@ -68,5 +68,4 @@ keine. Geklärt (🧑, 2026-10-21): Der Knopf „Prompt-Grundgerüst“ entfäll
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-21: AC-02 und AC-03 nachgewiesen (WZ21.2–WZ21.4), `check:diff` grün, Reviewer ohne schwere Befunde; B-516/AC-04 (Abnahme des Chats) steht bei Ralf, deshalb bleibt B-516 offen.

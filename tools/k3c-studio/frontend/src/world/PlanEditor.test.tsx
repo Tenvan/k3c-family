@@ -163,6 +163,24 @@ describe('Speichern schlägt fehl (B-486)', () => {
   });
 });
 
+describe('Laden und Prüfen abgelehnt (B-487)', () => {
+  it('lehnt planLoad ab, steht „Laden fehlgeschlagen: <Grund>“ am Editor', async () => {
+    vi.spyOn(backend, 'planLoad').mockRejectedValue('Wails: Bindung fehlt');
+    const h = await mount();
+    expect(h.querySelector('section[aria-label="Planung"]')!.textContent).toContain('Laden fehlgeschlagen: Wails: Bindung fehlt');
+  });
+
+  it('lehnt planCheck ab, ist Speichern gesperrt, der Grund steht am Editor und der Entwurf bleibt', async () => {
+    const h = await mount();
+    vi.spyOn(backend, 'planCheck').mockRejectedValue('Wails: Argument nicht lesbar');
+    await addChunk(h);
+    await settle();
+    expect(h.querySelector('.wd-error')!.textContent).toContain('Prüfung fehlgeschlagen: Wails: Argument nicht lesbar');
+    expect(button(h, 'Speichern').disabled).toBe(true);
+    expect(h.querySelectorAll('.wd-planned')).toHaveLength(1);
+  });
+});
+
 describe('Chunk- und Live-Vorschau lesen dieselbe Quelle (B-461/AC-11)', () => {
   it('beide fragen mit Insel, Stufe und demselben Entwurf', async () => {
     const level = vi.spyOn(backend, 'worldLevel');

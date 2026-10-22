@@ -60,23 +60,39 @@ const ANIMS: AnimName[] = ['idle', 'run', 'attack'];
 /** Nur Figuren mit einer Rolle laden, die übrigen sind nur für die Referenzseiten da */
 const USED = new Set([...PLAYER_SPRITES, ...Object.values(TROOP_SPRITES), ...Object.values(ENEMY_SPRITES)].map((s) => s.sheet));
 const textureKey = (sheet: string, anim: AnimName) => `${sheet}-${anim}`;
-/** Sheet des Standard-Reittiers (Monarch): liegt nicht im Atlas, sondern als einzelne PNGs `sprites/<sheet>/<anim>.png` */
+/** Sheet des Standard-Reittiers (Monarch): liegt nicht im Atlas, sondern als einzelne PNGs `sprites/<sheet>/<anim>.png`; die übrigen Reittiere kommen auf Anforderung (`preloadMount`) */
 const MOUNT_SHEET = MOUNTS[MONARCH.mount.sprite]?.sheet;
 
 /** Schlüssel des Figuren-Atlas (Phaser-Multiatlas aus `task gen:atlas`, Frames `<sheet>-<anim>/<i>`). */
 export const ATLAS_KEY = 'atlas';
 
-/** Im preload() der Lade-Szene aufrufen: ein Multiatlas statt je Sheet und Animation eine PNG. */
+/** Im preload() der Lade-Szene aufrufen: ein Multiatlas statt je Sheet und Animation eine PNG; dazu das Standard-Reittier. */
 export function preloadSprites(scene: Phaser.Scene): void {
   if (!scene.textures.exists(ATLAS_KEY)) scene.load.multiatlas(ATLAS_KEY, 'atlas/atlas.json', 'atlas/');
-  const d = MOUNT_SHEET ? SHEETS[MOUNT_SHEET] : undefined;
-  if (!MOUNT_SHEET || !d) return;
+  if (MOUNT_SHEET) preloadSheet(scene, MOUNT_SHEET);
+}
+
+/** Reittier `key` (Schlüssel aus `data/sprites.json › mounts`) auf Anforderung laden, nicht beim Start (B-476); wie bei
+ *  `preloadSheet` wird erst mit `scene.load.start()` geladen. Gibt die Zahl der eingereihten Dateien zurück. */
+export function preloadMount(scene: Phaser.Scene, key: string): number {
+  const sheet = MOUNTS[key]?.sheet;
+  return sheet ? preloadSheet(scene, sheet) : 0;
+}
+
+/** Einzel-PNGs eines Sheets außerhalb des Atlas einreihen (`sprites/<sheet>/<anim>.png`, Textur `<sheet>-<anim>`);
+ *  schon geladene und fehlende Animationen werden übersprungen. Gibt die Zahl der eingereihten Dateien zurück. */
+export function preloadSheet(scene: Phaser.Scene, sheet: string): number {
+  const d = SHEETS[sheet];
+  if (!d) return 0;
+  let queued = 0;
   for (const anim of ANIMS) {
-    const key = textureKey(MOUNT_SHEET, anim);
+    const key = textureKey(sheet, anim);
     if (d.anims[anim] && !scene.textures.exists(key)) {
-      scene.load.spritesheet(key, `sprites/${MOUNT_SHEET}/${anim}.png`, { frameWidth: d.frameWidth, frameHeight: d.frameHeight });
+      scene.load.spritesheet(key, `sprites/${sheet}/${anim}.png`, { frameWidth: d.frameWidth, frameHeight: d.frameHeight });
+      queued++;
     }
   }
+  return queued;
 }
 
 /** Nach dem Laden aufrufen. Legt die Animationen einmal global an (Schlüssel `<sheet>-<anim>` wie zuvor). */
@@ -97,15 +113,16 @@ export function createSpriteAnims(scene: Phaser.Scene): void {
       });
     }
   }
-  createMountAnims(scene);
+  if (MOUNT_SHEET) createSheetAnims(scene, MOUNT_SHEET);
 }
 
-function createMountAnims(scene: Phaser.Scene): void {
-  const d = MOUNT_SHEET ? SHEETS[MOUNT_SHEET] : undefined;
-  if (!MOUNT_SHEET || !d) return;
+/** Animationen eines per `preloadSheet` oder `preloadMount` geladenen Sheets anlegen (einmal global, wie im Atlas). */
+export function createSheetAnims(scene: Phaser.Scene, sheet: string): void {
+  const d = SHEETS[sheet];
+  if (!d) return;
   for (const anim of ANIMS) {
     const a = d.anims[anim];
-    const key = textureKey(MOUNT_SHEET, anim);
+    const key = textureKey(sheet, anim);
     if (!a || !scene.textures.exists(key) || scene.anims.exists(key)) continue;
     scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
     scene.anims.create({

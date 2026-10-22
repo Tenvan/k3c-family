@@ -127,7 +127,7 @@ const DRIFT = 60;
  * Baut die Seite. sameScale = true: alle Figuren im gleichen Maßstab wie im Spiel (Größen vergleichbar),
  * sonst wird jede Figur einzeln auf die Karte eingepasst.
  */
-export function renderReference(root: HTMLElement, groups: Group[], sameScale: boolean, selection?: Selection): void {
+export function renderReference(root: HTMLElement, groups: Group[], sameScale: boolean, selection?: Selection): () => void {
   const lives: Live[] = [];
   const inGame = (spec: Spec) => DATA.sheets[spec.sheet].scale * (spec.scale ?? 1);
   /** Höhe und halbe Breite im Spiel (px), bei Reittieren samt Reiter */
@@ -180,11 +180,15 @@ export function renderReference(root: HTMLElement, groups: Group[], sameScale: b
   }
 
   const start = performance.now();
+  // Die Schleife endet mit der Abmeldung oder von selbst, wenn `root` nicht mehr im Dokument hängt (B-471)
+  let stopped = false;
   const frame = (now: number) => {
+    if (stopped || !root.isConnected) return;
     for (const l of lives) if (isVisible(l.canvas)) draw(l, now - start + l.offset);
     requestAnimationFrame(frame);
   };
   requestAnimationFrame(frame);
+  return () => { stopped = true; };
 }
 
 function load(into: Live['strips'], id: string, sheet: Sheet, tint?: string): void {

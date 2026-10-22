@@ -116,24 +116,6 @@ const IN_ATLAS = new Set([...DATA.players, ...Object.values(DATA.troops), ...Obj
 
 export const inAtlas = (sheet: string): boolean => IN_ATLAS.has(sheet);
 
-export interface SheetFile {
-  key: string;
-  anim: Anim;
-  url: string;
-  frameWidth: number;
-  frameHeight: number;
-}
-
-/** Einzel-PNGs eines Sheets außerhalb des Atlas (Reittiere außer dem Standard, Slot-Alternativen) nach dem Muster von
- *  `preloadSprites`: `sprites/<sheet>/<anim>.png`, Textur-Schlüssel `<sheet>-<anim>`. */
-export function sheetFiles(sheet: string): SheetFile[] {
-  const d = SHEETS[sheet];
-  if (!d) return [];
-  return ANIMS.filter((a) => d.anims[a]).map((anim) => ({
-    key: `${sheet}-${anim}`, anim, url: `sprites/${sheet}/${anim}.png`, frameWidth: d.frameWidth, frameHeight: d.frameHeight,
-  }));
-}
-
 // ---- Reittier ------------------------------------------------------------------------------------------------------
 
 /** Kontext von `mountPose` für einen Reiter auf dem Reittier `mountKey`; `refSpeed` ist das Lauftempo ohne Sprint. */

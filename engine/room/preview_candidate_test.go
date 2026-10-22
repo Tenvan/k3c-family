@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"k3c/data"
+	"k3c/engine/level"
 	"k3c/engine/sim"
 )
 
@@ -134,5 +135,22 @@ func TestBuildPreviewSiebenStufenKandidat(t *testing.T) {
 	o.HubCandidate, o.HubLevel = nil, hubLevels(t)+1
 	if _, err := BuildPreview(o); err == nil {
 		t.Errorf("Hub-Stufe %d ohne Kandidat ohne Fehler (über der eingebetteten hub.json)", o.HubLevel)
+	}
+}
+
+// WZ24.3 (B-479, B-462/AC-09): Sind geplante Chunks und Kandidat zugleich gesetzt, gelten die Linien des Kandidaten, und
+// die Planung wird dagegen geprüft: Linie 5 bei 126 macht die Ader bei Hub +136 ungültig, bei 124 ist sie gültig.
+func TestVorschauPlanungGegenKandidatenLinien(t *testing.T) {
+	plan := []level.PlannedChunk{{Slot: 2, Kind: "cavern", Objects: []level.PlannedObject{{Kind: "stoneVein", At: 36}}}}
+	opts := func(last string) PreviewOptions {
+		o := previewOpts()
+		o.Source.Biome = "cave"
+		o.Planned = plan
+		o.HubCandidate = []byte(strings.Replace(string(embeddedHub(t)), `"wallUnits": [44, 64, 84, 104, 124]`, `"wallUnits": [44, 64, 84, 104, `+last+`]`, 1))
+		return o
+	}
+	mustPreview(t, opts("124"))
+	if _, err := BuildPreview(opts("126")); err == nil || !strings.Contains(err.Error(), "Bauplatz") {
+		t.Errorf("Linie 5 bei 126: Fehler %v, erwartet die Ablehnung der Ader bei Hub +136", err)
 	}
 }

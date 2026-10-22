@@ -56,7 +56,7 @@ function applyDraft(w: MockWorld, d: WorldDraft): MockWorld {
 /** Entwurfs-Teil des Mock-Plans: prüfen und speichern auf dem Stand (`stand`), danach `bump` (neuer Stand). */
 export function mockWorldDraft(active: () => string, world: () => MockWorld, replace: (w: MockWorld) => void, stand: () => string, bump: () => void): Omit<WorldDraftApi, 'planWorldCopy'> {
   return {
-    planWorldAnswer: async (text) => mockAnswer(active(), text),
+    planWorldAnswer: async (text) => mockAnswer(active(), text, world().islands.map((i) => i.id)),
     planWorldCheck: async (d) => mockCheckWorld(active(), d),
     planWorldSave: async (d, at): Promise<PlanSaved> => {
       if (at !== stand()) return { stand: '', hint: '', error: staleText(active()), stale: true };
@@ -80,8 +80,9 @@ function answerJSON(text: string): string | null {
 
 const KNOWN = ['id', 'name', 'notes', 'islands'];
 
-/** Antwort prüfen wie Go (PlanWorldAnswer): nicht lesbar oder unbekanntes Feld = ohne Entwurf, sonst Entwurf mit dem Grund. */
-export function mockAnswer(id: string, text: string): WorldAnswerView {
+/** Antwort prüfen wie Go (PlanWorldAnswer): nicht lesbar oder unbekanntes Feld = ohne Entwurf, sonst Entwurf mit dem Grund.
+ *  `known` sind die Inseln der Welt-Datei: ihre id ist die Herkunft (from), wie Go (draftOfAnswer). */
+export function mockAnswer(id: string, text: string, known: string[] = []): WorldAnswerView {
   const raw = answerJSON(text);
   const unreadable = (why: string): WorldAnswerView => ({ ok: false, error: `Antwort nicht lesbar: ${why}`, draft: null });
   if (raw === null) return unreadable('kein JSON gefunden');
@@ -89,7 +90,7 @@ export function mockAnswer(id: string, text: string): WorldAnswerView {
   try { v = JSON.parse(raw); } catch (e) { return unreadable(String(e)); }
   const extra = Object.keys(v).find((k) => !KNOWN.includes(k));
   if (extra) return unreadable(`unbekanntes Feld "${extra}"`);
-  const draft: WorldDraft = { name: v.name ?? '', notes: v.notes ?? '', islands: (v.islands ?? []).map((i) => ({ from: '', id: i.id, name: i.name, depths: i.depths ?? [], depthScaling: i.depthScaling, plannedChunks: i.plannedChunks, chunkCounts: i.chunkCounts })) };
+  const draft: WorldDraft = { name: v.name ?? '', notes: v.notes ?? '', islands: (v.islands ?? []).map((i) => ({ from: known.includes(i.id) ? i.id : '', id: i.id, name: i.name, depths: i.depths ?? [], depthScaling: i.depthScaling, plannedChunks: i.plannedChunks, chunkCounts: i.chunkCounts })) };
   const check = mockCheckWorld(id, draft);
   return { ok: check.ok, error: check.error, draft };
 }
