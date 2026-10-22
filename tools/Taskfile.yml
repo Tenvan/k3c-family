@@ -35,6 +35,22 @@ tasks:
       - go build -o bin/gebaeude{{exeExt}} ./tools/buildings
       - ./bin/gebaeude{{exeExt}}
 
+  pipeline:
+    desc: Grafiken aus docs/assets/pipeline-liste.json auf DB32 und 16 px umrechnen (public/grafik → public/grafik-db32, deterministisch; feste EXE bin/pipeline, B-331)
+    deps: [':tmp']
+    preconditions:
+      - sh: command -v go
+        msg: Go fehlt (requirements.md)
+    sources:
+      - tools/pipeline/*.go
+      - docs/assets/pipeline-liste.json
+      - public/grafik/**/*.png
+    generates:
+      - public/grafik-db32/**/*.png
+    cmds:
+      - go build -o bin/pipeline{{exeExt}} ./tools/pipeline
+      - ./bin/pipeline{{exeExt}}
+
   rules:
     desc: "Regeltabelle Hub-Stufe → Gebäude (docs/rules/materialien-gebaeude.md § 3) aus data/hub.json erzeugen (deterministisch; feste EXE bin/regeltabelle, WZ15.2, B-462)"
     preconditions:
