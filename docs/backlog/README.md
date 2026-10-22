@@ -179,6 +179,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-553](B-553-entscheidung-specs-gr8-gr9-gr10.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G8: Die autonom freigegebenen Specs GR8, GR9 und GR10 gelten |
 | [B-554](B-554-entscheidung-musik-stuecke.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S1: Je Musikzustand spielt die erste Präferenz des Slots, die übrigen Kandidaten bleiben bis zur Bestätigung liegen |
 | [B-555](B-555-entscheidung-musik-ende.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S2: Nach dem Fall der Burg bleibt die Musik still, das Siegstück wartet auf einen Sieg-Auslöser |
+| [B-556](B-556-entscheidung-sound-credit-datei.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S3: Die Credits der Sounds bleiben in public/audio/README.md |
+| [B-557](B-557-entscheidung-sound-atlas.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S4: Die Effekte laden aus einem Sound-Atlas, Einzeldateien sind der Rückfall |
+| [B-558](B-558-entscheidung-sound-luecken.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S5: Die Sound-Lücken bekommen vorhandene Kenney-Töne, UI-Klicks und Reiten bleiben offen |
 
 ## Archiv
 

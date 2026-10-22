@@ -296,7 +296,7 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'lic.h.graphics': 'Graphics',
   'lic.graphics':
     'All figures in the game come from talented pixel artists who give their work to the public. Without them this game would not exist in this form. <strong>Thank you very much!</strong> We cropped every figure, partly mirrored it, assembled it into strips or tinted it.',
-  'lic.creditsNote': 'The entries are in <code>public/grafik/CREDITS.md</code> and <code>public/sprites/CREDITS.md</code>; this page reads them from there.',
+  'lic.creditsNote': 'The entries are in <code>public/grafik/CREDITS.md</code>, <code>public/sprites/CREDITS.md</code> and (sounds) <code>public/audio/README.md</code>; this page reads them from there.',
   'lic.h.mounts': 'Notes on mounts (CC BY 3.0, attribution required)',
   'lic.mounts':
     'Horses, unicorn, pegasus, deer, elephant and wolves are licensed under <a href="https://creativecommons.org/licenses/by/3.0/deed.en" target="_blank" rel="noopener">Creative Commons Attribution 3.0</a>. We use them exclusively under CC BY 3.0 (not under the GPL variants also offered there). Our changes: cut out of the sheets, turned to face right, cropped, partly tinted; a rider sits on them in the game.',

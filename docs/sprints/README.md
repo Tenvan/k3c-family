@@ -21,6 +21,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | GR10 | CLI | GRA | Autonome Grafik-Entscheidungen prüfen (GR8, GR9) | – | `aktiv/GR10-entscheidungen-grafik/` |
 | SO2 | CLI | SND | SFX-Katalog und Einbau | – | `aktiv/SO2-sfx-katalog/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
+| SO6 | PLAT, INF, CLI | SND | Sound-Credits auf der Credits-Seite, Sound-Atlas und Sounds für die übrigen Ereignisse | – | `aktiv/SO6-sound-credits-atlas-luecken/` |
 | BT1 | SRV, DEV | REL | Server im Heimnetz finden, Windows-Starter, Start mit Seed | – | `aktiv/BT1-heimnetz-start/` |
 | KR1 | REG | KRT | Kritische Fragen zu BED | – | `aktiv/KR1-fragen-bed/` |
 | KR2 | REG | KRT | Kritische Fragen zu GEB | – | `aktiv/KR2-fragen-geb/` |
@@ -37,7 +38,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | SV2 | SRV | WRT | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | – | Entwurf | `geplant/SV2-voll-ausbau-regelkonform/` |
 | W13 | CLI | WRT | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | – | Entwurf | `geplant/W13-morgengrauen-licht-client/` |
 | W12 | SIM | WRT | Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln | – | Entwurf | `geplant/W12-morgengrauen-phase/` |
-| SO6 | PLAT | SND | Sound-Credits auf der Credits-Seite, Sound-Atlas und Sounds für die übrigen Ereignisse | – | Entwurf | `geplant/SO6-sound-credits-atlas-luecken/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | Entwurf | `geplant/PM1-leistung-messen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | bereit | `geplant/PF1-splitscreen-leistung/` |
 | NT1 | SRV | LST | Stabile Tests, Warteschlange und Snapshot-Budget | – | Entwurf | `geplant/NT1-netz-tests-stabil/` |

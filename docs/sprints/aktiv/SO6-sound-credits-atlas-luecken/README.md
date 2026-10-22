@@ -1,14 +1,14 @@
-# SO6 · PLAT · Sound-Credits auf der Credits-Seite, Sound-Atlas und Sounds für die übrigen Ereignisse
+# SO6 · PLAT, INF, CLI · Sound-Credits auf der Credits-Seite, Sound-Atlas und Sounds für die übrigen Ereignisse
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** SND
-- **Domäne:** PLAT
-- **Reife:** Entwurf
-- **Tickets:** B-493, B-494, B-492
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Domäne:** PLAT, INF, CLI
+- **Reife:** bereit
+- **Tickets:** B-493, B-494, B-492, B-556, B-557, B-558
+- **Start-Commit:** 7d3ee511
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-22, Revision 1
 
 ## Ausgangslage
 
@@ -32,7 +32,7 @@ Musik (SO4); neue Feedback-Ereignisse im Server, außer 🧑 entscheidet so (dan
 
 ## Regeln und Einschränkungen
 
-Reihenfolge DEV → INF → CLI. **Abhängigkeit:** nach SO2 (Hörprobe SO2.5) und SO4. Lizenzen CC0 oder CC-BY, Credits in `public/audio/README.md`. Der Client rechnet nichts, Auslöser kommen aus Ereignissen oder dem Snapshot. Neue Aufgaben ins Taskfile des Projekts.
+Reihenfolge DEV → INF → CLI. **Abhängigkeit:** nach SO2 und SO4 (Code fertig; die Hörproben SO2.5/SO4.5 sind entkoppelt, Hardware). Lizenzen CC0 oder CC-BY, Credits in `public/audio/README.md` (Default, B-556). Der Client rechnet nichts, Auslöser kommen aus Ereignissen oder dem Snapshot (Hub-Ausbau: Anstieg von `hubLevel` im Snapshot, reiner Vergleich). Neue Aufgaben ins Taskfile des Projekts (`tools/Taskfile.yml`, Namensraum `gen`).
 
 ## Beispiele
 
@@ -51,18 +51,22 @@ Selbst erzeugte Töne (`atlas`, `probe-*`, `public/audio-test/`) brauchen keinen
 
 ## Offene Fragen
 
-🧑: Credit-Datei `public/audio/README.md` oder eigene `CREDITS.md` (B-493)? Lohnt der Atlas nach der Messung in SO2.5 (B-494)? Auslöser für Hub-Ausbau und UI-Klicks, Umfang „Skill je Klasse“ und „Münze geben“, Weg für Reiten (B-492 › Offene Fragen).
+Autonom vorentschieden (Claude, 2026-10-22), 🧑 bestätigt in KR4:
+
+- Credit-Datei bleibt `public/audio/README.md` (so schreibt k3c-workbench) → B-556.
+- Atlas wird gebaut und genutzt; fehlt er oder einer seiner Einträge, laden Einzeldateien wie bisher. Ob er sich lohnt, misst 🧑 am TV → B-557.
+- Lücken (B-492): Auswahl aus vorhandenen Kenney-Kandidaten (CC0, keine neue Fremdquelle): Münze geben, Bau-Fortschritt, `revived`, Boss-Auftritt, Hub-Ausbau bekommen einen Slot; Skill je Klasse nutzt den gemeinsamen `sfx:skill`; UI-Klicks bleiben Lücke (kein Ereignis, Q08); Reiten bleibt ohne Einbau (Schleife je Spieler braucht eine Kern-Erweiterung) → B-558.
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- SO6.1 (DEV) Credits-Seite mit Sounds und Vollständigkeits-Test (`src/tools/credits.ts`; AC-01).
-- SO6.2 (INF) Task für den Sound-Atlas (AC-02).
-- SO6.3 (CLI, Mensch) Workshop: Sounds für die Lücken hören und wählen (AC-03).
-- SO6.4 (CLI) Slots, Dateien, Credits und Einbau der neuen Sounds (AC-02, AC-03).
-- SO6.5 (CLI) Review (Code-Sprint): alle Kriterien prüfen.
-- SO6.6 (CLI, Mensch) Hörprobe am TV (AC-04).
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| SO6.1 | `SO6.1-credits-seite-sounds.md` | Umsetzung | autonom | fertig |
+| SO6.2 | `SO6.2-sound-atlas-task.md` | Umsetzung | autonom | offen |
+| SO6.3 | `SO6.3-workshop-luecken.md` | Workshop | Mensch | offen |
+| SO6.4 | `SO6.4-luecken-einbau.md` | Umsetzung | autonom | offen |
+| SO6.5 | `SO6.5-review.md` | Review | autonom | offen |
+| SO6.6 | `SO6.6-hoerprobe-tv.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 
