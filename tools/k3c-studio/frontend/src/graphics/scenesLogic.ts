@@ -4,6 +4,7 @@
  * je Slot das aktive Asset (Präferenz 1, zum Vergleich `wahl=n`, Ausschnitt).
  */
 import spritesJson from '@data/sprites.json';
+import { HUB_GROWTH, HUB_SCAFFOLD } from '@game/scenes/render/hubGrowth';
 import type { Card } from '@game/tools/spriteReference';
 
 export interface Rect {
@@ -186,6 +187,32 @@ export function baumReihe(index: readonly GebaeudeEintrag[], anzahl?: number, st
   const ids = index.filter((e) => e.klasse === 'baum' && (stufe === 1 || e.stufen?.some((s) => s.stufe === stufe))).map((e) => e.id);
   if (ids.length === 0) return [];
   return Array.from({ length: anzahl ?? ids.length }, (_, i) => ({ id: ids[i % ids.length]!, x: i * BAUM_ABSTAND }));
+}
+
+/** Karte der Hub-Wachstumsreihe (GEB11/AC-03): Look in 32 px, `geruest` liegt als zweites Bild darüber; `h` in Kacheln. */
+export interface WachstumKarte {
+  titel: string;
+  wann: string;
+  datei: string;
+  h: number;
+  geruest?: string;
+}
+
+/**
+ * Wachstumsreihe der Burg in Spielreihenfolge (`HUB_GROWTH` aus dem Spielcode, Regel materialien-gebaeude.md § 2.1), danach die
+ * Steinburg mit Baugerüst als Beispiel für „ein Bauer baut den Ausbau“; Looks ohne Datei im Index entfallen.
+ */
+export function hubWachstum(index: readonly GebaeudeEintrag[]): WachstumKarte[] {
+  const byId = new Map(index.map((e) => [e.id, e]));
+  const karte = (id: string, stufe: number, titel: string, wann: string): WachstumKarte[] => {
+    const e = byId.get(id);
+    const datei = e?.stufen ? e.stufen.find((s) => s.stufe === stufe)?.dateien[32] : stufe === 1 ? e?.dateien[32] : undefined;
+    return e && datei ? [{ titel, wann, datei, h: e.kacheln.h }] : [];
+  };
+  const karten = HUB_GROWTH.flatMap((l) => karte(l.id, l.stufe, l.name, l.wann));
+  const geruest = byId.get(HUB_SCAFFOLD)?.dateien[32];
+  const bau = karte('burg', 2, 'Steinburg im Ausbau', 'ein Bauer baut den Ausbau (Gerüst auf Hub-Stufe 1 bis 4)');
+  return geruest && bau[0] ? [...karten, { ...bau[0], geruest }] : karten;
 }
 
 /** Biom-ID → Namensteil der Hintergrund-Schichten `hg-<teil>-<fern|mitte|nah>` (GEB7, Regeldatei § 10) */

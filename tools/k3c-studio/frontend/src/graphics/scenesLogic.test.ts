@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { baumDatei, baumReihe, figureCard, gebaeudeKarten, hintergrundStreifen, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './scenesLogic';
+import { baumDatei, baumReihe, figureCard, gebaeudeKarten, hintergrundStreifen, hubWachstum, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './scenesLogic';
 
 const farm: AssetSlot = {
   id: 'farm', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Farm',
@@ -149,6 +149,32 @@ describe('Asset-Vorschau: Stufenreihe der Hub-Gebäude (GEB9/AC-03)', () => {
       expect(k.datei).toBe(`grafik/gebaeude/${id}-${k.stufe}-32.png`);
       expect(k.aenderung).not.toBe('');
     }
+  });
+});
+
+describe('Asset-Vorschau: Hub wächst (GEB11/AC-03)', () => {
+  // Echter Index: die Reihe kommt aus dem Spielcode (HUB_GROWTH), die Dateien aus task gen:gebaeude.
+  const index = JSON.parse(readFileSync(new URL('../../../../../public/grafik/gebaeude/index.json', import.meta.url), 'utf8')) as GebaeudeEintrag[];
+
+  it('zeigt Lagerfeuer, Zelt, Hütte und die Burgen 1 bis 5 in Spielreihenfolge, dann die Steinburg mit Gerüst', () => {
+    const karten = hubWachstum(index);
+    expect(karten.map((k) => k.titel)).toEqual([
+      'Lagerfeuer mit Grill', 'Zelt am Feuer', 'Holzhütte am Feuer',
+      'Holzburg', 'Steinburg', 'Kupferburg', 'Eisenburg', 'Kristallburg', 'Steinburg im Ausbau',
+    ]);
+    expect(karten.map((k) => k.datei)).toEqual([
+      ...[1, 2, 3].map((n) => `grafik/gebaeude/lagerfeuer-${n}-32.png`),
+      ...[1, 2, 3, 4, 5, 2].map((n) => `grafik/gebaeude/burg-${n}-32.png`),
+    ]);
+    expect(karten.at(-1)?.geruest).toBe('grafik/gebaeude/hub-geruest-32.png');
+    expect(karten.slice(0, -1).every((k) => k.geruest === undefined && k.wann !== '')).toBe(true);
+    expect(karten.map((k) => k.h)).toEqual([5, 5, 5, 9, 9, 9, 9, 9, 9]);
+  });
+
+  it('lässt Looks ohne Datei weg; ohne Burg kein Gerüst-Beispiel', () => {
+    expect(hubWachstum([])).toEqual([]);
+    const ohneBurg = index.filter((e) => e.id !== 'burg');
+    expect(hubWachstum(ohneBurg).map((k) => k.titel)).toEqual(['Lagerfeuer mit Grill', 'Zelt am Feuer', 'Holzhütte am Feuer']);
   });
 });
 

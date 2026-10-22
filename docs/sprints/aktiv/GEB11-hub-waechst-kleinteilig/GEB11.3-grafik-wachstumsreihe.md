@@ -1,6 +1,6 @@
 # GEB11.3 · Grafik der Wachstumsreihe und Vorschau im Studio
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -55,5 +55,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03 umgesetzt und geprüft: `public/grafik/gebaeude/lagerfeuer.json` (8 × 5, Vorlage nach § 5; Grundform Lagerfeuer mit Grill, Spieß und Braten, Steinring, Holzstapel rechts; Stufe 2 Zelt links, Stufe 3 Holzhütte mit Ziegeldach, Kamin und erleuchtetem Fenster; Zusätze nicht kumulativ, nur DB32) und `hub-geruest.json` (8 × 9, transparentes Bild vor der Burg: vier Stangen, Laufbretter, Streben, Leiter, Steinhaufen, Kiste; das untere Brett lässt das Tor frei) mit PNGs in 16/32/64/128 und Einträgen in `index.json`. `task gen:gebaeude` zweimal: gleiche Bytes; `go test ./tools/buildings` grün (inkl. `TestEchteVorlagen`, Materialien aus § 3). Bilder in 16, 64 und 128 px angesehen (Kamin nach Sicht verlängert). Die Reihe steht einmal in `src/scenes/render/hubGrowth.ts` (`HUB_GROWTH`, `HUB_SCAFFOLD`); das Studio zeigt sie im neuen Streifen „Hub wächst (GEB11)“ (`HubGrowthStrip.tsx`, Logik `hubWachstum` in `scenesLogic.ts`): Lagerfeuer, Zelt, Hütte, Holz- bis Kristallburg, dann die Steinburg mit Gerüst, je mit der Spielbedingung. Test `scenesLogic.test.ts` gegen den echten `index.json` (33 Tests grün), `tsc --noEmit` im Studio grün, `task lint`, `atomicDesign`, `projectRules`, `planning` grün. Regeldatei `gebaeude-grafik.md` § 1 (Maße), § 4 (Arten), § 6 (Abschnitt Wachstum) nachgezogen. Nicht im Studio-Fenster angesehen (Abnahme GEB11.6 bei 🧑).
