@@ -36,7 +36,7 @@ tasks:
     env:
       K3C_STUDIO_API: 'http://127.0.0.1:{{.DEV_PORT}}'
     cmds:
-      - npx vite
+      - bunx vite
 
   window:
     desc: "Echtes Fenster prüfen (wails dev, Backend 8091, Seiten aus frontend/dist ohne Hot Reload; Oberfläche entwickeln mit dev)"
@@ -63,8 +63,8 @@ tasks:
     desc: Frontend des Asset-Studios nach tools/k3c-studio/frontend/dist/ bauen (das Fenster k3c-studio liefert es unter /studio/ aus, nicht der Spielserver; B-507; nur bei geänderten Quellen)
     dir: '{{.STUDIO}}/frontend'
     cmds:
-      - npx tsc --noEmit
-      - npx vite build
+      - bunx tsc --noEmit
+      - bunx vite build
     sources:
       - src/**/*
       - index.html
@@ -110,7 +110,7 @@ tasks:
     desc: Asset-Studio-Frontend und gemeinsame Asset-Logik testen (Vitest, go test; das Backend tools/k3c-studio/backend gehört zum Studio-Modul; B-459, B-507)
     deps: [':tmp', frontend]
     cmds:
-      - npx vitest run --config {{.STUDIO}}/frontend/vitest.config.ts
+      - bunx vitest run --config {{.STUDIO}}/frontend/vitest.config.ts
       - cd tools/assetkit && go test ./...
       - cd {{.STUDIO}} && go test ./...
 

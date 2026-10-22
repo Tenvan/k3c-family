@@ -1,5 +1,5 @@
 # Einstieg für alle Aufgaben: `task --list` (Voraussetzung: Go Task, requirements.md).
-# Die Werkzeuge laufen direkt (npx, go, wails); package.json hält nur noch Abhängigkeiten.
+# Die Werkzeuge laufen direkt (bunx, go, wails); package.json hält nur noch Abhängigkeiten.
 #
 # Aufbau: Dieses Taskfile hält die Kernbefehle ohne Namensraum (Workspace) und die Prüf-Aggregate `check:*`.
 # Alles andere liegt als eigenes Taskfile im Ordner des Projekts und erscheint hier unter dem Namen des Projekts
@@ -64,10 +64,10 @@ tasks:
     desc: Abhängigkeiten holen (Client, Frontends von k3c-workbench, Asset-Studio und Starter)
     cmds:
       - mkdir -p .work/tmp
-      - npm ci
-      - npm ci --prefix tools/k3c-workbench/frontend
-      - npm ci --prefix tools/k3c-studio/frontend
-      - npm ci --prefix tools/k3c-starter/frontend
+      - bun install --frozen-lockfile
+      - bun install --frozen-lockfile --cwd tools/k3c-workbench/frontend
+      - bun install --frozen-lockfile --cwd tools/k3c-studio/frontend
+      - bun install --frozen-lockfile --cwd tools/k3c-starter/frontend
 
   # --- Client (Phaser, Vite): entwickeln und prüfen -----------------------------------------------------------------
 
@@ -75,33 +75,33 @@ tasks:
     desc: Dev-Server (LAN, Port 5183); /api und /ws gehen an den Go-Server (Port 8080, `task start`)
     deps: [gen:atlas]
     cmds:
-      - npx vite --host {{.CLI_ARGS}}
+      - bunx vite --host {{.CLI_ARGS}}
 
   preview:
     desc: Produktions-Build lokal ansehen
     cmds:
-      - npx vite preview --host
+      - bunx vite preview --host
 
   lint:
     desc: Oxlint
     cmds:
-      - npx oxlint
+      - bunx oxlint
 
   typecheck:
     desc: tsc für Client und Tests
     cmds:
-      - npx tsc --noEmit
-      - npx tsc --noEmit -p tests
+      - bunx tsc --noEmit
+      - bunx tsc --noEmit -p tests
 
   test:
     desc: Vitest (Filter optional, z. B. `task test -- planning`)
     cmds:
-      - npx vitest run {{.CLI_ARGS}}
+      - bunx vitest run {{.CLI_ARGS}}
 
   test:watch:
     desc: Vitest im Watch-Modus
     cmds:
-      - npx vitest
+      - bunx vitest
 
   # --- Bauen und Ausliefern -----------------------------------------------------------------------------------------
   # `build` ist der Web-Build (dist/), `buildall` baut dazu alle EXE nach bin/, `pages` die statische Präsentationsseite.
@@ -110,8 +110,8 @@ tasks:
     desc: Atlas, Typecheck und Produktions-Build nach dist/
     deps: [gen:atlas]
     cmds:
-      - npx tsc --noEmit
-      - npx vite build
+      - bunx tsc --noEmit
+      - bunx vite build
 
   buildall:
     desc: Alle EXE bauen und nach bin/ legen (Spielserver, Lasttest, TUI, Workbench, Asset-Studio, Starter samt Web-Build dist/); laufende EXE vorher schließen, sonst scheitert die Kopie
@@ -124,7 +124,7 @@ tasks:
       - task: k3c-starter:build
 
   pages:
-    desc: GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build, B-507; danach z. B. `npx vite preview --outDir _site`)
+    desc: GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build, B-507; danach z. B. `bunx vite preview --outDir _site`)
     cmds:
       - rm -rf _site
       - mkdir -p _site

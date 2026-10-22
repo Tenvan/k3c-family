@@ -135,7 +135,7 @@ Portale, Gegner). Nach Änderungen `task test` ausführen. Die Tests prüfen 500
 (`check_run`: nur Exit-Code, Dauer und Fehlerzeilen), macht die JSON-Logs unter `logs/` lesbar (`logs_*`) und zählt jeden
 Aufruf. Die Dienste aus `tools/k3c-workbench/services.json` (Vite-Dev-Server, Heimnetz-Server) startet und stoppt er über
 `svc_*`; der Go-Server startet bei Änderungen an `cmd/`, `engine/` und `data/` von selbst neu (`watch` in `services.json`); schon laufende übernimmt er, beim Beenden stoppt er nur die eigenen. Er läuft als Fenster `K3C Dev` (Wails),
-Schließen beendet ihn. Voraussetzungen: Go, Wails-CLI und `npm ci --prefix tools/k3c-workbench/frontend` (`requirements.md`).
+Schließen beendet ihn. Voraussetzungen: Go, Wails-CLI und `bun install --frozen-lockfile --cwd tools/k3c-workbench/frontend` (`requirements.md`).
 
 ```bash
 task k3c-workbench:build
@@ -143,7 +143,7 @@ task k3c-workbench:build
 
 baut `tools/k3c-workbench/build/bin/k3c-workbench.exe` (starten per Doppelklick, die EXE muss im Repo liegen). Zum Entwickeln
 mit Neuladen: `task k3c-workbench` (Backend mit `-dev`, Oberfläche unter http://localhost:5191; das Fenster mit `wails dev`: `task k3c-workbench:window`). Die Oberfläche allein läuft im Browser gegen erfundene Daten:
-`npm --prefix tools/k3c-workbench/frontend run dev` (Port 5191).
+`bun run --cwd tools/k3c-workbench/frontend dev` (Port 5191).
 
 Er lauscht nur an `http://127.0.0.1:5180/mcp` (anderer Port: `K3C_DEV_PORT`). Claude Code verbindet sich über die
 eingecheckte `.mcp.json` (gilt so auch in jedem Worktree), freigegeben in `.claude/settings.json`. Läuft k3c-workbench nicht,

@@ -50,7 +50,7 @@ tasks:
     env:
       K3C_DEV_API: 'http://127.0.0.1:{{.DEV_UI_API_PORT}}'
     cmds:
-      - npx vite
+      - bunx vite
 
   window:
     desc: "Workbench als Fenster im Entwicklungsmodus (wails dev): Hot Reload der Oberfläche, Neubau bei Go-Änderungen in tools/k3c-workbench"
@@ -71,8 +71,8 @@ tasks:
     desc: Frontend von k3c-workbench bauen (go:embed braucht frontend/dist; nur bei geänderten Quellen)
     dir: '{{.DEV}}/frontend'
     cmds:
-      - npx tsc --noEmit
-      - npx vite build
+      - bunx tsc --noEmit
+      - bunx vite build
     status:
       - test ! -f dist/.placeholder # Platzhalter aus dist: immer echt bauen, nie in die EXE
     sources:
@@ -90,7 +90,7 @@ tasks:
     deps: [':tmp', frontend]
     dir: '{{.DEV}}'
     cmds:
-      - cd frontend && npx vitest run --config vitest.config.ts
+      - cd frontend && bunx vitest run --config vitest.config.ts
       - go test ./...
 
   lint:
