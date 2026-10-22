@@ -94,6 +94,11 @@ describe('Position (B-477/AC-01)', () => {
 describe('Mausrad (B-477/AC-01, AC-03)', () => {
   const wheel = (o: Partial<{ deltaX: number; deltaY: number; ctrlKey: boolean; shiftKey: boolean; altKey: boolean }>) => wheelAction({ deltaX: 0, deltaY: 0, ctrlKey: false, shiftKey: false, altKey: false, ...o });
 
+  it('Alt + seitliches Rad (Maus meldet deltaX statt deltaY) zoomt nur diese Vorschau', () => {
+    expect(wheel({ altKey: true, deltaX: -100 })).toMatchObject({ kind: 'zoom', own: true });
+    expect(wheel({ altKey: true, deltaX: 100 })).toMatchObject({ kind: 'zoom', factor: 0.8 });
+  });
+
   it('das gewöhnliche Rad bewirkt nichts (die Seite scrollt senkrecht)', () => {
     expect(wheel({ deltaY: 100 })).toBeNull();
   });

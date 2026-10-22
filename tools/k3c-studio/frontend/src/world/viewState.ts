@@ -87,9 +87,11 @@ export type WheelAction = { kind: 'pan'; px: number } | { kind: 'zoom'; factor: 
 /** Was ein Mausrad-Ereignis über einer Vorschau bewirkt: Strg + Rad zoomt, Alt + Rad zoomt nur diese Vorschau, Umschalt + Rad
  *  oder seitliches Rad scrollt nach links und rechts; das gewöhnliche Rad bewirkt nichts, damit die Seite senkrecht scrollen kann. */
 export function wheelAction(e: { deltaX: number; deltaY: number; ctrlKey: boolean; shiftKey: boolean; altKey?: boolean }): WheelAction {
-  const factor = e.deltaY < 0 ? 1.25 : 0.8;
+  // Mit Alt melden manche Mäuse und Treiber das senkrechte Rad als seitliches (deltaX, deltaY = 0): dann zählt deltaX
+  const dy = e.altKey && e.deltaY === 0 ? e.deltaX : e.deltaY;
+  const factor = dy < 0 ? 1.25 : 0.8;
   if (e.ctrlKey) return e.deltaY === 0 ? null : { kind: 'zoom', factor };
-  if (e.altKey) return e.deltaY === 0 ? null : { kind: 'zoom', factor, own: true };
+  if (e.altKey) return dy === 0 ? null : { kind: 'zoom', factor, own: true };
   const px = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.shiftKey ? e.deltaY : 0;
   return px === 0 ? null : { kind: 'pan', px };
 }
