@@ -399,11 +399,63 @@
       "fein": "Plankenfugen, Schindelfugen, Torfuge, Zaunlicht, Heubänder"
     },
     "dateien": {
-      "128": "grafik/gebaeude/farm-128.png",
-      "16": "grafik/gebaeude/farm-16.png",
-      "32": "grafik/gebaeude/farm-32.png",
-      "64": "grafik/gebaeude/farm-64.png"
-    }
+      "128": "grafik/gebaeude/farm-1-128.png",
+      "16": "grafik/gebaeude/farm-1-16.png",
+      "32": "grafik/gebaeude/farm-1-32.png",
+      "64": "grafik/gebaeude/farm-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/farm-1-128.png",
+          "16": "grafik/gebaeude/farm-1-16.png",
+          "32": "grafik/gebaeude/farm-1-32.png",
+          "64": "grafik/gebaeude/farm-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Wand, Pfosten, Balken, Dach aus grauem Stein, Tor, Zaun und Heu bleiben",
+        "dateien": {
+          "128": "grafik/gebaeude/farm-2-128.png",
+          "16": "grafik/gebaeude/farm-2-16.png",
+          "32": "grafik/gebaeude/farm-2-32.png",
+          "64": "grafik/gebaeude/farm-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: Wand und Pfosten aus Kupferplatten, Kupferdach, Windfahne auf dem First",
+        "dateien": {
+          "128": "grafik/gebaeude/farm-3-128.png",
+          "16": "grafik/gebaeude/farm-3-16.png",
+          "32": "grafik/gebaeude/farm-3-32.png",
+          "64": "grafik/gebaeude/farm-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Wand und Pfosten aus Stahlplatten, Eisendach, Windfahne auf dem First",
+        "dateien": {
+          "128": "grafik/gebaeude/farm-4-128.png",
+          "16": "grafik/gebaeude/farm-4-16.png",
+          "32": "grafik/gebaeude/farm-4-32.png",
+          "64": "grafik/gebaeude/farm-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: Wand und Pfosten aus blauem Kristall, Kristalldach, leuchtende Windfahne auf dem First",
+        "dateien": {
+          "128": "grafik/gebaeude/farm-5-128.png",
+          "16": "grafik/gebaeude/farm-5-16.png",
+          "32": "grafik/gebaeude/farm-5-32.png",
+          "64": "grafik/gebaeude/farm-5-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "felsen",
@@ -1874,10 +1926,62 @@
       "fein": "Plankenfugen, Faltenlicht im Tuch, Werkzeug auf Tresen und Gestell, Schild-Zeichen"
     },
     "dateien": {
-      "128": "grafik/gebaeude/werkstatt-128.png",
-      "16": "grafik/gebaeude/werkstatt-16.png",
-      "32": "grafik/gebaeude/werkstatt-32.png",
-      "64": "grafik/gebaeude/werkstatt-64.png"
-    }
+      "128": "grafik/gebaeude/werkstatt-1-128.png",
+      "16": "grafik/gebaeude/werkstatt-1-16.png",
+      "32": "grafik/gebaeude/werkstatt-1-32.png",
+      "64": "grafik/gebaeude/werkstatt-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/werkstatt-1-128.png",
+          "16": "grafik/gebaeude/werkstatt-1-16.png",
+          "32": "grafik/gebaeude/werkstatt-1-32.png",
+          "64": "grafik/gebaeude/werkstatt-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Wand, Pfosten und Balken aus grauem Stein, Tresen, Gestell und Tuchdach bleiben",
+        "dateien": {
+          "128": "grafik/gebaeude/werkstatt-2-128.png",
+          "16": "grafik/gebaeude/werkstatt-2-16.png",
+          "32": "grafik/gebaeude/werkstatt-2-32.png",
+          "64": "grafik/gebaeude/werkstatt-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: Wand, Pfosten und Balken aus Kupferplatten, Wimpel am rechten Pfosten",
+        "dateien": {
+          "128": "grafik/gebaeude/werkstatt-3-128.png",
+          "16": "grafik/gebaeude/werkstatt-3-16.png",
+          "32": "grafik/gebaeude/werkstatt-3-32.png",
+          "64": "grafik/gebaeude/werkstatt-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Wand, Pfosten und Balken aus Stahlplatten, Wimpel am rechten Pfosten",
+        "dateien": {
+          "128": "grafik/gebaeude/werkstatt-4-128.png",
+          "16": "grafik/gebaeude/werkstatt-4-16.png",
+          "32": "grafik/gebaeude/werkstatt-4-32.png",
+          "64": "grafik/gebaeude/werkstatt-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: Wand, Pfosten und Balken aus blauem Kristall, leuchtender Wimpel am rechten Pfosten",
+        "dateien": {
+          "128": "grafik/gebaeude/werkstatt-5-128.png",
+          "16": "grafik/gebaeude/werkstatt-5-16.png",
+          "32": "grafik/gebaeude/werkstatt-5-32.png",
+          "64": "grafik/gebaeude/werkstatt-5-64.png"
+        }
+      }
+    ]
   }
 ]

@@ -193,10 +193,13 @@ für alle Bausteine. Der engere Schlüssel gilt vor dem weiteren; die alte Farbe
 *Was tauscht, was bleibt, Zusatz.* Handwerkliche und bewegliche Teile (Gestell, Tresen, Zaun, Tür, Fass, Krug, Werkzeug, Glut,
 Heu, Tuch, Rüstung) bleiben auf allen Stufen unverändert. Je Stufe höchstens **ein** Zusatz; er trägt die Farben des Materials.
 
+Die Wandzeichnung `fuge` und `schatten` folgt immer dem Mauerwerk, zu dem sie gehört (gleiche Rolle, gleiche Wand), und steht deshalb
+bei jedem Gebäude mit in der Liste, wenn dort eine tauschende Art (`wand`, `dach`) vorkommt.
+
 | Gebäude | Arten, die das Material wechseln | Zusatz |
 |---|---|---|
 | Werkstatt | `wand`, `pfosten`, `balken` | ab Stufe 3 Wimpel am rechten Pfosten |
-| Farm | `wand`, `pfosten`, `balken`, `tuerrahmen`, `strebe`, `dach`, `schindel` | ab Stufe 3 Windfahne auf dem First |
+| Farm | `wand`, `pfosten`, `balken`, `dach`, `schindel` | ab Stufe 3 Windfahne rechts am First (Tor mit Rahmen und Streben bleibt) |
 | Kaserne (Stein) | `wand`, `sockel`, `zinne`, `licht`, `schatten`, `fuge` | Stufe 2 Eisenband am Sockel, ab Stufe 3 Wimpel an den Zinnen |
 | Lager | `wand`, `sockel`, `pfosten`, `dach`, `schindel` | ab Stufe 3 Schild über dem Tor (Vorratszeichen) |
 | Taverne | `wand`, `balken`, `pfosten`, `dach`, `schindel`, `kamin`, `stufe` | ab Stufe 3 Laterne neben der Tür |

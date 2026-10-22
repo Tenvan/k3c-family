@@ -1,6 +1,6 @@
 # GEB9.2 · Übergang in tools/buildings, Werkstatt und Farm Stufen 2–5
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -59,5 +59,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 umgesetzt (Werkstatt, Farm): `werkstatt.json` und `farm.json` führen `stufen` 2–5 nach § 6 (Farbrollen, tauschende Arten, Wimpel bzw. Windfahne ab Stufe 3); PNGs `<id>-1..5-<dichte>.png` liegen vor, Stufen 1–5 in 64 px angesehen. AC-03 geprüft: `scenesLogic.test.ts` (Studio, Datei heißt so, nicht `szenenLogic`) liest den echten `index.json` und prüft Stufen 2–5 samt Dateinamen für Werkstatt und Farm. AC-05 geprüft: zweiter `task gen:gebaeude` ohne Diff, Mauer/Turm/Burg unverändert (Go-Tests), `<id>-<dichte>.png` bleibt als Stufe 1 (Übergang).
+
+Umgesetzt in `tools/buildings`: Schlüssel `"art/farbe"` in `stufen.farben` (engerer Schlüssel gilt vor dem weiteren), `uebergangGrundform`-Liste mit Kopie von Stufe 1, Tests in `stages_teile_test.go`. Abweichungen von der Tabelle in § 6: Farm lässt Tor, Rahmen und Streben in Holz (sonst orange Kreuz auf dem Tor), Windfahne sitzt rechts am First (auf freiem Hintergrund, sonst unsichtbar); `fuge` und `schatten` folgen der Wand (in § 6 nachgetragen). Prüfung: `go test ./tools/buildings`, `golangci-lint` (0 Issues), Studio-Vitest (463 Tests) und `tsc` grün; `task check:diff` lief wegen Last zweimal in Zeitlimit bzw. in „parallel golangci-lint is running“, die Teilprüfungen sind einzeln grün. Studio-Frontend brauchte `bun install` im Worktree. Stufen-Skript für die weiteren Gebäude liegt nur im Scratchpad, nicht im Repo.

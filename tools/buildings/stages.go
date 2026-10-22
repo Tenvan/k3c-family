@@ -28,6 +28,7 @@ func pruefeStufen(b building) error {
 	grund := map[string]bool{}
 	for _, bs := range b.Bausteine {
 		grund[bs.Farbe] = true
+		grund[bs.Art+"/"+bs.Farbe] = true
 	}
 	for i, s := range b.Stufen {
 		if s.Stufe != i+2 {
@@ -36,14 +37,15 @@ func pruefeStufen(b building) error {
 		if strings.TrimSpace(s.Aenderung) == "" {
 			return fmt.Errorf("stufe %d: aenderung ist leer", s.Stufe)
 		}
-		for alt, neu := range s.Farben {
+		for schluessel, neu := range s.Farben {
+			_, alt := farbSchluessel(schluessel)
 			for _, f := range []string{alt, neu} {
 				if _, ok := idx[f]; !ok {
 					return fmt.Errorf("stufe %d: Farbe %q nicht in DB32", s.Stufe, f)
 				}
 			}
-			if !grund[alt] {
-				return fmt.Errorf("stufe %d: Farbe %q kommt in der Grundform nicht vor", s.Stufe, alt)
+			if !grund[schluessel] {
+				return fmt.Errorf("stufe %d: Farbe %q kommt in der Grundform nicht vor", s.Stufe, schluessel)
 			}
 		}
 	}
@@ -62,13 +64,40 @@ func stufeBauen(b building, n int) (building, error) {
 	out := b
 	out.Bausteine = make([]baustein, 0, len(b.Bausteine)+len(s.Zusaetze))
 	for _, bs := range b.Bausteine {
-		if neu, ok := s.Farben[bs.Farbe]; ok {
+		if neu, ok := s.Farben[bs.Art+"/"+bs.Farbe]; ok { // der engere Schlüssel gilt vor dem weiteren
+			bs.Farbe = neu
+		} else if neu, ok := s.Farben[bs.Farbe]; ok {
 			bs.Farbe = neu
 		}
 		out.Bausteine = append(out.Bausteine, bs)
 	}
 	out.Bausteine = append(out.Bausteine, s.Zusaetze...)
 	return out, nil
+}
+
+// farbSchluessel zerlegt einen `farben`-Schlüssel: "farbe" gilt für alle Bausteine, "art/farbe" nur für Bausteine dieser Art (§ 6).
+func farbSchluessel(s string) (art, farbe string) {
+	if art, farbe, ok := strings.Cut(s, "/"); ok {
+		return art, farbe
+	}
+	return "", s
+}
+
+// uebergangGrundform: Hub-Gebäude, die bis GEB9.5 zusätzlich `<id>-<dichte>.png` (= Stufe 1) bekommen, weil das Spiel
+// noch die Grundform zeichnet. GEB9.5 stellt das Spiel um und entfernt Liste und Kopie.
+var uebergangGrundform = map[string]bool{
+	"werkstatt": true, "farm": true, "kaserne": true, "lager": true,
+	"taverne": true, "schmiede": true, "heilplatz": true, "ruestkammer": true,
+}
+
+// grundformKopie legt für ein Gebäude der Übergangsliste Stufe 1 zusätzlich unter dem Namen der Grundform ab.
+func grundformKopie(b building, out map[string]*image.Paletted) {
+	if !uebergangGrundform[b.ID] {
+		return
+	}
+	for _, d := range dichtenFuer(b.Klasse) {
+		out[fmt.Sprintf("%s-%d.png", b.ID, d)] = out[fmt.Sprintf("%s-1-%d.png", b.ID, d)]
+	}
 }
 
 // renderStufen rendert alle Stufen in allen Dichten nach out und liefert die Stufen-Einträge für den Index.

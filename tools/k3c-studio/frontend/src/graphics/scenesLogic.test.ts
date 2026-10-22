@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { baumDatei, baumReihe, figureCard, gebaeudeKarten, hintergrundStreifen, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './scenesLogic';
 
@@ -133,6 +134,21 @@ describe('Asset-Vorschau: Stufenreihe (GEB3/AC-01)', () => {
 
   it('ohne Stufen keine Karten', () => {
     expect(stufenKarten({ id: 'x', kacheln: { b: 1, h: 1 }, dateien: {} })).toEqual([]);
+  });
+});
+
+describe('Asset-Vorschau: Stufenreihe der Hub-Gebäude (GEB9/AC-03)', () => {
+  // Echter Index der Gebäude-Grafik; jede GEB9-Session ergänzt ihre Gebäude.
+  const index = JSON.parse(readFileSync(new URL('../../../../../public/grafik/gebaeude/index.json', import.meta.url), 'utf8')) as GebaeudeEintrag[];
+  const mitStufen = ['werkstatt', 'farm'];
+
+  it.each(mitStufen)('%s zeigt die Stufen 2 bis 5 in 32 px', (id) => {
+    const e = index.find((g) => g.id === id)!;
+    expect(stufenKarten(e).map((k) => k.stufe)).toEqual([2, 3, 4, 5]);
+    for (const k of stufenKarten(e)) {
+      expect(k.datei).toBe(`grafik/gebaeude/${id}-${k.stufe}-32.png`);
+      expect(k.aenderung).not.toBe('');
+    }
   });
 });
 
