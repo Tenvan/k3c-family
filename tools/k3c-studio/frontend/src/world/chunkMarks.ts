@@ -37,7 +37,8 @@ export function chunkMarks(level: { chunks: readonly ModelChunk[] }, hints: read
   const marks = new Map<number, SlotHint>();
   for (const h of hints) {
     const chunk = chunkAtSlot(level.chunks, h.slot);
-    if (chunk) marks.set(chunk.index, h);
+    // am selben Abschnitt gewinnt ein Fehler vor der Planung, sonst der spätere (B-491/6)
+    if (chunk && marks.get(chunk.index)?.kind !== 'error') marks.set(chunk.index, h);
   }
   return marks;
 }

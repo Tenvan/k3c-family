@@ -140,17 +140,14 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-476](B-476-preload-sprites-beliebige-reittiere.md) | CLI | Schuld | niedrig | eingeplant | WZ23 | preloadSprites und createSpriteAnims laden beliebige Reittiere statt nur das Standard-Reittier |
 | [B-475](B-475-frage-geplante-ereignisse-zaehlung.md) | REG | Frage | niedrig | eingeplant | WZ24 | Frage: Wie zählen feste Ereignis-Objekte in geplanten Chunks, und gilt für „kein Platz mehr“ das Minimum oder das Maximum? |
 | [B-479](B-479-hub-pruefung-geplante-chunks.md) | SIM | Schuld | niedrig | eingeplant | WZ24 | Prüfung der Kandidaten-hub.json: geplante Chunks nach WZ8 mitprüfen |
-| [B-487](B-487-plan-editor-load-check-ablehnung.md) | DEV | Problem | niedrig | eingeplant | WZ22 | Chunk-Editor: abgelehnte Aufrufe von planLoad und planCheck bleiben stumm |
 | [B-489](B-489-spielstand-chunk-anzahl.md) | SIM | Problem | mittel | eingeplant | WZ24 | Spielstände laden Chunk-Anzahl und Planung aus den aktuellen Daten |
 | [B-490](B-490-sim-chunk-anzahl-nachtraege.md) | SIM | Schuld | niedrig | eingeplant | WZ24 | Sim: Chunk-Anzahl mit Kandidaten-hub.json und gemeinsame Prüfung der Inselgröße |
-| [B-491](B-491-welten-editor-kleinigkeiten.md) | DEV | Schuld | niedrig | eingeplant | WZ22 | Welten Editor: kleine Nachträge zu Schieber, Klick-Sprung und Planungsliste |
 | [B-492](B-492-sfx-luecken-weitere-ereignisse.md) | CLI | Idee | mittel | eingeplant | SO6 | Weitere Ereignisse bekommen eigene Sound-Slots und Sounds |
 | [B-493](B-493-credits-seite-audio.md) | PLAT | Idee | hoch | eingeplant | SO6 | Die Credits-Seite zeigt auch die Sounds unter public/audio |
 | [B-494](B-494-sound-atlas-werkzeug.md) | INF | Idee | niedrig | eingeplant | SO6 | Ein Werkzeug packt die gewählten Sounds in einen Sound-Atlas |
 | [B-495](B-495-respec-in-aktionsliste.md) | SRV | Schuld | niedrig | eingeplant | RM1 | Die Aktionsliste nennt respec, wenn CanRespec erlaubt |
 | [B-496](B-496-studio-fensterposition-merken.md) | DEV | Idee | mittel | offen | – | Das Asset-Studio merkt sich Fensterposition und Größe und stellt sie sicher wieder her |
 | [B-497](B-497-grosse-inseln-last-und-umwandlung.md) | SIM | Frage | niedrig | eingeplant | WZ24 | Große Inseln: Last im Spiel messen, Umwandlung in allen Biomen testen, PlanSave gegen Parallelität |
-| [B-499](B-499-studio-spiel-oeffnen-welt-zweimal.md) | DEV | Problem | niedrig | eingeplant | WZ22 | Studio „Im Spiel öffnen“ in eigener Welt scheitert beim zweiten Mal mit demselben Seed |
 | [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
 | [B-501](B-501-planer-vorschau-fixiert-markiert.md) | DEV | Idee | mittel | eingeplant | WZ23 | Gebäude-Planer: Live-Vorschau unten fest, gewähltes Gebäude markiert |
 | [B-503](B-503-monarch-skill-darstellung.md) | CLI | Idee | niedrig | eingeplant | SK2 | Die 24 Monarch-Skills haben eine Darstellung im Spiel |
@@ -483,3 +480,6 @@ Zeile in diesen Abschnitt.
 | [B-483](archiv/B-483-worktree-eintraege-nur-lesend.md) | DEV | Problem | niedrig | erledigt | WZ20 | Planungsseite: Einträge nur im Worktree sind nur lesbar (Detail, Menüs, Rang) |
 | [B-484](archiv/B-484-worktree-neuer-sprint-leer.md) | DEV | Problem | niedrig | erledigt | WZ20 | Worktree-Vergleich: Sessions und Projekt eines neuen Sprints fehlen in den Pills |
 | [B-514](archiv/B-514-chat-entwurf-planung-nachbesserung.md) | DEV | Problem | niedrig | erledigt | WZ21 | Chat-Entwurf: Planung bei gleicher Insel-id schützen, CLI-Prozessbaum, Test-Riegel |
+| [B-487](archiv/B-487-plan-editor-load-check-ablehnung.md) | DEV | Problem | niedrig | erledigt | WZ22 | Chunk-Editor: abgelehnte Aufrufe von planLoad und planCheck bleiben stumm |
+| [B-491](archiv/B-491-welten-editor-kleinigkeiten.md) | DEV | Schuld | niedrig | erledigt | WZ22 | Welten Editor: kleine Nachträge zu Schieber, Klick-Sprung und Planungsliste |
+| [B-499](archiv/B-499-studio-spiel-oeffnen-welt-zweimal.md) | DEV | Problem | niedrig | erledigt | WZ22 | Studio „Im Spiel öffnen“ in eigener Welt scheitert beim zweiten Mal mit demselben Seed |

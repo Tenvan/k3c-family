@@ -1,14 +1,14 @@
 # WZ22 · DEV · Studio-Editoren: Fehler sichtbar, Im Spiel öffnen wiederholbar
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-487, B-491, B-499
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-22, Chat (Ralf) und autonom, Claude; Revision 1; B-499 mit Default <welt>-<seed>
 
 ## Ausgangslage
 
@@ -54,6 +54,12 @@ Domäne DEV (`tools/k3c-studio/`); braucht B-499 eine Änderung an Spielstand-Na
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ22.1 | `WZ22.1-editor-fehler-nachtraege.md` | Umsetzung | autonom | fertig |
+| WZ22.2 | `WZ22.2-im-spiel-oeffnen-je-welt.md` | Umsetzung | autonom | fertig |
+| WZ22.3 | `WZ22.3-review.md` | Review | autonom | fertig |
+
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - WZ22.1 (DEV) Chunk-Editor meldet Ablehnungen, Nachträge Welten Editor (AC-01, AC-02).
@@ -62,5 +68,4 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-22: AC-01 bis AC-03 nachgewiesen (WZ22.1–WZ22.3), `check:diff` grün, Reviewer ohne Befund. Im Nachgang für Ralf: B-499 Default `<welt>-<seed>` (Wiederholen lädt den Stand); B-491 Punkte 4, 5, 8, 10 verworfen (Gründe in WZ22.1).

@@ -35,6 +35,8 @@ export function useBox(root: RefObject<HTMLElement | null>, selector: string, ou
     watch.observe(el);
     return () => watch.disconnect();
   }, [root, selector, outer]);
+  // Bekannte Lücke (B-491/11): Wechselt nur die Lage der Bühne ohne Größenänderung, meldet der ResizeObserver nichts; die
+  // Messung nach jedem Rendern deckt das ab, solange die Seite rendert.
   // Nach jedem Rendern der Seite neu messen (Zeilen, Meldungen, Objekte darüber, WZ17.5); ohne Änderung bleibt der Zustand.
   useLayoutEffect(() => { remeasure.current(); });
   return box;

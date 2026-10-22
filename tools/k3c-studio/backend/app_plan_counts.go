@@ -58,7 +58,8 @@ func encodeCounts(counts map[string]int) []byte {
 		if i > 0 {
 			b.WriteString(", ")
 		}
-		fmt.Fprintf(&b, "%q: %d", key, counts[key])
+		quoted, _ := json.Marshal(key) // gültiges JSON auch bei Steuerzeichen (B-491/9)
+		fmt.Fprintf(&b, "%s: %d", quoted, counts[key])
 	}
 	b.WriteByte('}')
 	return []byte(b.String())

@@ -11,6 +11,8 @@ export type { Notice } from './planSave';
 const OK: PlanCheckView = { ok: true, slot: 0, error: '' };
 const CHECK_DELAY = 200; // ms nach der letzten Änderung
 
+const reason = (e: unknown) => (e instanceof Error ? e.message : String(e));
+
 /** Zustand des Editors für geplante Chunks (B-461, WZ8.5): geladene Inseln, Auswahl von Insel und Stufe, der Entwurf der
  *  gewählten Stufe (Planung und Chunk-Anzahl, 0 = Biom-Länge, B-485/AC-04), die Prüfung des Entwurfs (verzögert) und
  *  Speichern. Der Entwurf bleibt im Speicher, bis gespeichert, verworfen oder neu geladen wird; jede Änderung ruft die
@@ -31,10 +33,14 @@ export function usePlan() {
   const savedSize = savedCount(island, stage);
 
   const load = useCallback(async () => {
-    const next = await backend.planLoad();
-    if (next.error) { setNotice({ kind: 'error', text: next.error }); return; }
-    setView(next);
-    setNotice(null);
+    try {
+      const next = await backend.planLoad();
+      if (next.error) { setNotice({ kind: 'error', text: next.error }); return; }
+      setView(next);
+      setNotice(null);
+    } catch (e) {
+      setNotice({ kind: 'error', text: `Laden fehlgeschlagen: ${reason(e)}` }); // B-487: nie stumm
+    }
   }, []);
   useEffect(() => { void load(); }, [load]);
 
@@ -47,7 +53,9 @@ export function usePlan() {
     let current = true;
     const chunks = normalized(draft);
     const timer = setTimeout(() => {
-      void backend.planCheck(island.id, depth, chunks, count).then((result) => {
+      // abgelehnte Prüfung: Fehler am Entwurf, Speichern gesperrt, das letzte gültige Bild bleibt (B-487)
+      const failed = (e: unknown): PlanCheckView => ({ ok: false, slot: 0, error: `Prüfung fehlgeschlagen: ${reason(e)}` });
+      void backend.planCheck(island.id, depth, chunks, count).catch(failed).then((result) => {
         if (!current) return;
         setCheck(result);
         if (result.ok) setShown({ island: island.id, stage, planned: chunks, chunkCount: count });

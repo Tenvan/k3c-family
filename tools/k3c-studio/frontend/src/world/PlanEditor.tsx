@@ -39,7 +39,8 @@ export function PlanEditor({ plan, seed, onSlot }: { plan: PlanState; seed: stri
       <ul className="wd-chunklist" aria-label="Geplante Chunks">
         {draft.length === 0 && <li><Text size="1" color="gray">Keine Planung: Die Stufe bleibt rein zufällig.</Text></li>}
         {draft.map((c, i) => (
-          <li key={i} className="wd-planned" data-slot={c.slot} onClick={(e) => { if (!isControl(e.target)) onSlot?.(c.slot); }}>
+          <li key={i} className="wd-planned" data-slot={c.slot} tabIndex={0} onClick={(e) => { if (!isControl(e.target)) onSlot?.(c.slot); }}
+            onKeyDown={(e) => { if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); onSlot?.(c.slot); } }}>
             <div className="wd-bar">
               <TextField.Root className="wd-slot" type="number" aria-label={`Platz ${slotLabel(c.slot)}`} value={c.slot} onChange={(e) => { const to = number(e.target.value, c.slot); change(updateChunk(draft, i, { slot: to }), to); }} />
               <KindPicker label={`Art Platz ${slotLabel(c.slot)}`} value={c.kind} options={CHUNK_KINDS} onChange={(kind) => change(updateChunk(draft, i, { kind }), c.slot)} />
