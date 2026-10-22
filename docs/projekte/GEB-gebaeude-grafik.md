@@ -24,7 +24,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | GEB7 | Hintergründe je Biom | erledigt |
 | GEB9 | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | aktiv |
 | GEB10 | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | geplant |
-| GEB11 | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | geplant |
+| GEB11 | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | aktiv |
 
 ## Nicht-Ziele
 
