@@ -14,6 +14,16 @@ export function sortByCalls(tools: ToolStats[]): ToolStats[] {
 }
 
 /** Kleine Statistik einer Tool-Kachel: „12× · Ø 34 ms · 1 Fehler“, ohne Aufruf „noch kein Aufruf“. */
+/** Name des Tools mit dem letzten Fehler (jüngster `lastError`); leer, wenn kein Tool einen Fehler mit Zeitpunkt hat. Nur seine
+ *  Kachel ist rot, die übrigen Tools mit Fehlern warnfarben. */
+export function latestErrorTool(tools: readonly ToolStats[]): string {
+  let best = { name: '', at: '' };
+  for (const t of tools) {
+    if (t.errors > 0 && t.lastError && t.lastError > best.at) best = { name: t.name, at: t.lastError }; // ISO-Zeiten im selben Format
+  }
+  return best.name;
+}
+
 export function toolLine(t: ToolStats): string {
   if (t.calls === 0) return 'noch kein Aufruf';
   const parts = [`${formatNumber(t.calls)}×`, `Ø ${formatDuration(t.avgMs)}`];

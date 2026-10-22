@@ -358,6 +358,10 @@
   color: var(--error);
 }
 
+.mcp-tile-warn {
+  color: var(--warn);
+}
+
 
 /* Workbench-Spec § 3: Serverkarte mit zwei Kennzahlengruppen, Band aus Tool-Kacheln (links) und Live-Monitoren
    (rechts), Aufruf-Log mit der Resthöhe; keine Rahmen um die Bänder, die Karten tragen ihre Titel selbst. */

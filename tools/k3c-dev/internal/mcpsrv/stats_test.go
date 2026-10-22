@@ -40,6 +40,23 @@ func TestZaehlerJeTool(t *testing.T) {
 	}
 }
 
+// Der Zeitpunkt des letzten Fehlers je Tool: leer ohne Fehler, sonst der des jüngsten fehlgeschlagenen Aufrufs.
+func TestLetzterFehlerJeTool(t *testing.T) {
+	st := testStats()
+	st.end(st.begin("a", `{}`), outcome{err: "erster"})
+	st.end(st.begin("a", `{}`), outcome{ok: true})
+	st.end(st.begin("b", `{}`), outcome{ok: true})
+	first := st.snapshot().Tools[0].LastError
+	st.end(st.begin("a", `{}`), outcome{err: "zweiter"})
+	snap := st.snapshot()
+	if first == "" || snap.Tools[0].LastError <= first {
+		t.Errorf("letzter Fehler von a: %q nach %q", snap.Tools[0].LastError, first)
+	}
+	if snap.Tools[1].LastError != "" {
+		t.Errorf("b ohne Fehler hat LastError %q", snap.Tools[1].LastError)
+	}
+}
+
 func TestParallelUndFolge(t *testing.T) {
 	st := testStats()
 	first := st.begin("a", "")

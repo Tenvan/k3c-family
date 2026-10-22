@@ -178,7 +178,8 @@ export function mockMcp(emit: Emit, mcpState: () => McpState) {
       const last = list.at(-1);
       return { name: t.name, description: t.description, calls: list.length, errors: list.filter((e) => !e.ok).length,
         avgMs: list.length ? list.reduce((a, e) => a + e.ms, 0) / list.length : 0,
-        lastCall: last ? `${new Date(last.at).toLocaleTimeString('de-DE')} ${last.args}` : '' };
+        lastCall: last ? `${new Date(last.at).toLocaleTimeString('de-DE')} ${last.args}` : '',
+        lastError: list.filter((e) => !e.ok).at(-1) ? iso(list.filter((e) => !e.ok).at(-1)!.at) : '' };
     });
     return { mcp: mcpState(), stats: { startedAt: iso(started), clients: 2, peakClients: 3, inFlight: running.size,
       peakInFlight: 3, totalCalls: session.length, errors: session.filter((e) => !e.ok).length, tools } };

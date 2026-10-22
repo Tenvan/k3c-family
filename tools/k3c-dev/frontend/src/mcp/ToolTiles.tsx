@@ -1,6 +1,6 @@
 import type { ToolStats } from '../api';
 import { Tip } from '@webkit/atoms';
-import { share, sortByCalls, toolLine } from './overview';
+import { latestErrorTool, share, sortByCalls, toolLine } from './overview';
 
 /**
  * Tool-Kacheln (Workbench-Spec § 3): kompakt mit Name, Anteilsleiste und einer Kennzahlenzeile; Beschreibung und
@@ -8,6 +8,7 @@ import { share, sortByCalls, toolLine } from './overview';
  */
 export function ToolTiles({ tools }: { tools: ToolStats[] }) {
   const total = tools.reduce((n, t) => n + t.calls, 0);
+  const latest = latestErrorTool(tools); // nur dieses Tool rot, die übrigen mit Fehlern in Warnfarbe
   return (
     <section className="mcp-tools" aria-label={`Tools (${tools.length})`}>
       <div className="mcp-tool-tiles">
@@ -20,7 +21,7 @@ export function ToolTiles({ tools }: { tools: ToolStats[] }) {
                 <div className="mcp-share" aria-hidden>
                   <span style={{ width: `${share(t.calls, total)}%` }} />
                 </div>
-                <div className={t.errors > 0 ? 'mcp-tile-line mcp-tile-bad' : 'mcp-tile-line'}>{toolLine(t)}</div>
+                <div className={t.errors === 0 ? 'mcp-tile-line' : t.name === latest ? 'mcp-tile-line mcp-tile-bad' : 'mcp-tile-line mcp-tile-warn'}>{toolLine(t)}</div>
               </div>
             </Tip>
           );

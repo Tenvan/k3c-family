@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { ToolStats } from '../api';
 import { parseInline, parseMarkdown } from '../lib/markdown';
-import { durationText, share, uptimeText, weightedAvg } from './overview';
+import { durationText, latestErrorTool, share, uptimeText, weightedAvg } from './overview';
 
 const tool = (name: string, calls: number, avgMs = 0, errors = 0): ToolStats => ({
   name, description: `${name} tut etwas`, calls, errors, avgMs, lastCall: '',
@@ -51,5 +51,19 @@ describe('Übersicht', () => {
     const now = Date.parse('2026-09-30T12:00:00Z');
     expect(uptimeText('2026-09-30T09:47:00Z', now)).toBe('2 h 13 min');
     expect(uptimeText('kaputt', now)).toBe('–');
+  });
+});
+
+describe('Tool mit dem letzten Fehler', () => {
+  const withError = (name: string, errors: number, lastError?: string): ToolStats => ({ ...tool(name, 5, 0, errors), ...(lastError ? { lastError } : {}) });
+
+  it('nur das Tool mit dem jüngsten Fehler zählt, die übrigen mit Fehlern nicht', () => {
+    const tools = [withError('a', 2, '2026-10-22T10:00:00.000+02:00'), withError('b', 1, '2026-10-22T11:30:00.000+02:00'), withError('c', 0), withError('d', 3, '2026-10-22T09:00:00.000+02:00')];
+    expect(latestErrorTool(tools)).toBe('b');
+  });
+
+  it('ohne Fehler oder ohne Zeitpunkt (älterer Server) ist keines das letzte', () => {
+    expect(latestErrorTool([withError('a', 0), withError('b', 0)])).toBe('');
+    expect(latestErrorTool([withError('a', 2)])).toBe('');
   });
 });

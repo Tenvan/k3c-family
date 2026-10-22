@@ -130,6 +130,8 @@ export interface ToolStats {
   errors: number;
   avgMs: number;
   lastCall: string;
+  /** Zeitpunkt des letzten Fehlers dieses Tools (ISO, gleiches Format wie `lastCall`); leer = keiner. Fehlt bei älteren Servern. */
+  lastError?: string;
 }
 
 /** Zähler des MCP-Servers (Go: mcpsrv.Snapshot); startedAt ISO-Zeit. */

@@ -23,6 +23,9 @@ type ToolStats struct {
 	Errors      int     `json:"errors"`
 	AvgMs       float64 `json:"avgMs"`
 	LastCall    string  `json:"lastCall"`
+	// LastError ist der Zeitpunkt des letzten fehlgeschlagenen Aufrufs dieses Tools (leer = noch keiner); die Oberfläche
+	// färbt nur das kürzlich fehlerhafte Tool rot, die übrigen mit Fehlern warnfarben.
+	LastError string `json:"lastError"`
 }
 
 // Call ist ein Eintrag im Aufruf-Log. StartSeq und EndSeq stammen aus einer gemeinsamen Folge über alle Start-
@@ -68,6 +71,7 @@ type toolCounter struct {
 	errors   int
 	sumMs    float64
 	lastCall string
+	lastErr  string
 }
 
 type runningCall struct {
@@ -167,6 +171,7 @@ func (st *stats) count(c Call) {
 	t.lastCall = c.TS
 	if !c.OK {
 		t.errors++
+		t.lastErr = c.TS
 	}
 }
 
@@ -207,7 +212,7 @@ func (st *stats) snapshot() Snapshot {
 		Tools: make([]ToolStats, 0, len(st.order))}
 	for _, name := range st.order {
 		t := st.tools[name]
-		ts := ToolStats{Name: name, Description: t.desc, Calls: t.calls, Errors: t.errors, LastCall: t.lastCall}
+		ts := ToolStats{Name: name, Description: t.desc, Calls: t.calls, Errors: t.errors, LastCall: t.lastCall, LastError: t.lastErr}
 		if t.calls > 0 {
 			ts.AvgMs = t.sumMs / float64(t.calls)
 		}
