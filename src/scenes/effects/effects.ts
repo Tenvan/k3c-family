@@ -3,7 +3,7 @@ import { t } from '../../core/texts';
 import type { GameEvent } from '../../model/types';
 
 /** Art eines Effekts; je Feedback-Event genau eine (B-164, GR5.1). */
-export type EffectKind = 'hit' | 'kill' | 'coin' | 'coinGive' | 'build' | 'built' | 'down' | 'swing' | 'noTarget';
+export type EffectKind = 'hit' | 'kill' | 'coin' | 'coinGive' | 'build' | 'built' | 'down' | 'swing' | 'noTarget' | 'skill';
 
 export interface Effect {
   kind: EffectKind;
@@ -16,6 +16,8 @@ export interface Effect {
   by?: number;
   /** Nur `coinGive`: Index des Spielers, dessen Monarch die Münze wirft (GR9.3) */
   giver?: number;
+  /** Nur `skill`: Farbe der Linie statt der Farbe aus `EFFECT_CONFIG` (SK2.3, B-503) */
+  color?: number;
 }
 
 /** Aussehen und Grenzen aller Effekte an einer Stelle (GR5.2 hängt hier Blitzgrenze und Schalter ein). */
@@ -29,7 +31,11 @@ export const EFFECT_CONFIG: Record<EffectKind, { color: number; radius: number; 
   down: { color: 0xb02030, radius: 40, durationMs: 600, particles: 8, flash: false },
   swing: { color: 0xdddddd, radius: 18, durationMs: 140, particles: 0, flash: false },
   noTarget: { color: 0xffffff, radius: 0, durationMs: 700, particles: 0, flash: false },
+  skill: { color: 0xffffff, radius: 30, durationMs: 450, particles: 4, flash: false },
 };
+
+/** Farbe des Skill-Rings je Linie aus `data/monarch.json › lines` (SK2.3, B-503: je Klasse gemeinsam, Default B-561). */
+export const LINE_COLORS: Record<string, number> = { tank: 0x6fa8ff, mage: 0xc070ff, healer: 0x70f0a0, thief: 0x9a9a9a };
 
 /** Barrierefreiheit (B-164): höchstens 3 Blitze pro Sekunde; ein Blitz im Sperrfenster wird verworfen, nicht aufgeschoben. */
 export const MAX_FLASHES_PER_SECOND = 3;

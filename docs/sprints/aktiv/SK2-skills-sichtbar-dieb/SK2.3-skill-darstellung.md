@@ -1,6 +1,6 @@
 # SK2.3 · Darstellung der Skills im Spiel
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -52,5 +52,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-23, autonom (Claude). Default aus SK2 › Offene Fragen (Bestätigung B-561).
+
+- **AC-03 (B-503/AC-01) umgesetzt, geprüft:** Effekt-Art `skill` mit `LINE_COLORS` je Linie (`effects.ts`), `Effect.color` für `StageEffects`; `SkillCasts` (`skillCasts.ts`) vergleicht je Spieler-Index Abklingzeiten (Anstieg > 0,5 s = gewirkt) und neue passive Skills; `GameScene` ruft es je Frame (+3 Zeilen; die Datei lag schon über 400 Zeilen, jetzt 460). Vitest `skillCasts.test.ts` (2 Spieler getrennt, passiv beim Lernen, reset, jede Linie mit Skills hat eine Farbe).
+- **Browser-Pane** (lokal, Port 5193/8090, 2 Spieler): Ringe in Tank-Blau und Zauberer-Violett an beiden Monarchen in beiden Zellen sichtbar, Konsole ohne Fehler. Ausgelöst per Skript über `SkillCasts.diff` (frisches Spiel hat keine Punkte); echtes Wirken nicht am Gerät geprüft.
+- **AC-03 (B-503/AC-02):** TV-Abnahme offen (SK2.5, 🧑).
+- `task check` grün (2517 Tests); erster `check:diff` rot nur durch Zeitüberschreitung in `clientLog.test.ts` unter Last (einzeln grün).

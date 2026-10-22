@@ -62,7 +62,7 @@ Vorentschieden (autonom, Claude, 2026-10-23), Bestätigung durch 🧑 in SK2.1 (
 |---|---|---|---|---|
 | SK2.1 | `SK2.1-workshop-dieb-darstellung.md` | Workshop | Mensch | offen |
 | SK2.2 | `SK2.2-preset-dieb-pruefung.md` | Umsetzung | autonom | fertig |
-| SK2.3 | `SK2.3-skill-darstellung.md` | Umsetzung | autonom | offen |
+| SK2.3 | `SK2.3-skill-darstellung.md` | Umsetzung | autonom | fertig |
 | SK2.4 | `SK2.4-review.md` | Review | autonom | offen |
 | SK2.5 | `SK2.5-abnahme-tv.md` | Workshop | Mensch | offen |
 
