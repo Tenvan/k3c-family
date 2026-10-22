@@ -1,6 +1,6 @@
 # SK2.4 · Review SK2
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -49,5 +49,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-23, autonom (Claude).
+
+- `task check` grün (2517 Tests), `go:lint` grün; `task check:go`: nur `engine/devrun` rot (Wanduhr-Tests unter Last, B-284, einzeln grün), Rest grün; `task check:race` lokal übersprungen (kein C-Compiler), prüft die CI.
+- AC-02 geprüft (SK2.2). AC-03 Test-Teil geprüft (SK2.3); TV-Teil SK2.5 und AC-01 (SK2.1) bei 🧑.
+- Reviewer (Sonnet): keine schweren Befunde. Behoben (1 Zeile): `SkillCasts.reset()` auch beim Stufenwechsel bzw. neuer Verbindung (`GameScene.takeFrames`). Ohne Fix (ungeprüft, gering): Ring immer in der Stufe des Geräts; der Zustand nennt nur die Spieler dieser Stufe (vermutet).

@@ -286,6 +286,7 @@ export class GameScene extends Phaser.Scene {
       this.timeline = new Timeline(1000 / this.client.tickHz); // Puffer leeren
       this.predictor = new Predictor(1000 / this.client.tickHz);
       this.cur = null;
+      this.skillCasts.reset(); // andere Stufe oder neue Verbindung: kein Ring aus dem Vergleich mit dem alten Stand
     }
     for (const frame of this.client.takeFrames()) {
       this.timeline.push(frame);
