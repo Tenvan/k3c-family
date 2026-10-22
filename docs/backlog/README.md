@@ -147,7 +147,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-504](B-504-preset-skills-backstab-smokebomb.md) | REG | Problem | niedrig | eingeplant | SK2 | Die Skills backstab und smokeBomb des Presets Dieb stehen in data/monarch.json |
 | [B-505](B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | eingeplant | GR9 | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |
 | [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | eingeplant | BD5 | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
-| [B-516](B-516-studio-chat-promptgeruest-als-instruktion.md) | DEV | Idee | mittel | eingeplant | WZ21 | Prompt-Grundgerüst des Studio-Chats ist eine feste Instruktion im Code statt Text im Eingabefeld |
 | [B-517](B-517-geplante-chunks-gegnerlager.md) | REG | Idee | mittel | offen | – | Geplante Chunks tragen Gegnerlager mit stationärer Wache |
 | [B-519](B-519-plan-next-origin.md) | DEV | Problem | mittel | offen | – | plan_next berücksichtigt den Stand der Sprint-Branches auf origin |
 | [B-520](B-520-check-run-blockiert.md) | DEV | Problem | hoch | offen | – | check_run wartet bis zum Ende des Laufs und meldet Fortschritt statt Lauf-ID zum Nachfragen |
@@ -483,3 +482,4 @@ Zeile in diesen Abschnitt.
 | [B-510](archiv/B-510-k3c-dev-kein-doppelter-neustart.md) | DEV | Schuld | niedrig | erledigt | WZ25 | k3c-dev startet den Spielserver bei Änderungen in data/ nicht mehr selbst neu, der Server macht das allein |
 | [B-512](archiv/B-512-k3c-dev-uebernommener-server-neue-pid.md) | DEV | Problem | niedrig | erledigt | WZ25 | k3c-dev beendet einen übernommenen Spielserver auch nach dessen Selbst-Neustart (neue PID am Port, Supervisor-Prozess) |
 | [B-511](archiv/B-511-studio-schreibt-atomar.md) | DEV | Schuld | niedrig | erledigt | WZ25 | Das Studio schreibt jede Datei in data/ und public/ atomar, der Server sieht nie eine halbe Datei |
+| [B-516](archiv/B-516-studio-chat-promptgeruest-als-instruktion.md) | DEV | Idee | mittel | erledigt | WZ21 | Prompt-Grundgerüst des Studio-Chats ist eine feste Instruktion im Code statt Text im Eingabefeld |

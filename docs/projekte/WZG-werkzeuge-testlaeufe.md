@@ -40,7 +40,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ19 | Chat im Studio mit Claude Code CLI und Welt per Prompt füllen | erledigt |
 | TS1 | Spielserver und Asset-Studio trennen, Server beobachtet Dateien | erledigt |
 | WZ20 | k3c-dev: Planungstest für Entwürfe, Worktree-Einträge vollständig und lesend, sim_test im Worktree | erledigt |
-| WZ21 | Studio-Chat: eigene Umgebung, Grundgerüst als Instruktion, Entwurf geschützt | aktiv |
+| WZ21 | Studio-Chat: eigene Umgebung, Grundgerüst als Instruktion, Entwurf geschützt | erledigt |
 | WZ22 | Studio-Editoren: Fehler sichtbar, Im Spiel öffnen wiederholbar | erledigt |
 | WZ23 | Studio-Vorschauen: Reittiere aus dem Spielcode, Monarch-Seite, Boss-Anzeigen, Gebäude-Planer abgenommen | aktiv |
 | WZ24 | Geplante Chunks in Simulation und Spielstand: Regeln geklärt, Planung im Stand, eine Prüfung der Inselgröße | erledigt |

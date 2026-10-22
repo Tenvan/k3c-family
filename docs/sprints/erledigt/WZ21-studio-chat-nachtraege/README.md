@@ -1,6 +1,6 @@
 # WZ21 · DEV · Studio-Chat: eigene Umgebung, Grundgerüst als Instruktion, Entwurf geschützt
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -68,4 +68,4 @@ keine. Geklärt (🧑, 2026-10-21): Der Knopf „Prompt-Grundgerüst“ entfäll
 
 ## Abnahme
 
-2026-10-21: AC-02 und AC-03 nachgewiesen (WZ21.2–WZ21.4), `check:diff` grün, Reviewer ohne schwere Befunde; B-516/AC-04 (Abnahme des Chats) steht bei Ralf, deshalb bleibt B-516 offen.
+2026-10-22: AC-02 und AC-03 nachgewiesen (WZ21.2–WZ21.4), `check:diff` grün, Reviewer ohne schwere Befunde. B-516/AC-04 von Ralf im Studio abgenommen („ok“, 2026-10-22).
