@@ -1,6 +1,6 @@
 # BD7.1 · Simulation: gehaltener Skill wird beim Tod vergessen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -50,5 +50,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 umgesetzt: Tod-Zweig in `stepPlayers` setzt `p.skillHeld = 0`; geprüft: `TestSkillTasteNachTodMeldetCastFailedNeu` (vorher rot, Spieler 2 hält durchgehend ohne zweites `castFailed`), Golden unverändert.
+- `task check:diff`: Client grün, `go test ./...` grün bis auf `TestLaufSammeltTicksUndRaeumtAuf` (k3c-load, Server unter Last nicht erreichbar), einzeln wiederholt grün; golangci-lint `engine/sim` 0 Befunde. Review (Sonnet): kein schwerer Befund.
