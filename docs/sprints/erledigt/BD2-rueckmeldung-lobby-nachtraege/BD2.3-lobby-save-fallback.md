@@ -1,6 +1,6 @@
 # BD2.3 · Lobby startet nach save_not_found nie still ein leeres Spiel
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -55,5 +55,5 @@ Einmal vor dem Commit; währenddessen nur `task test -- lobbyLogic`. Keine manue
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 und B-382/AC-02 geprüft: `src/scenes/lobbyLogic.ts` merkt in `LobbyFlow.retryable` die Herkunft; Autostart und „Spielen“ starten nach `save_not_found` mit `fresh: true` nur bei wiederholbarer Herkunft, ein gewählter Spielstand startet nie still leer. `savedTime` sortiert ungültige `savedAt` ans Ende. `task test -- lobbyLogic` 65/65 grün.
+- Abweichung: Test und Umsetzung in einem Zug, kein separater Rot-Lauf.

@@ -44,7 +44,7 @@ func TestSkillOhneZielMeldetCastFailed(t *testing.T) {
 	p := AddPlayer(w)
 	failed := func(slot int) []Event {
 		w.Events = nil
-		castSkill(w, p, slot)
+		castSkill(w, p, slot, true)
 		return eventsOfType(w, "castFailed")
 	}
 	if len(failed(0)) != 0 {
@@ -62,6 +62,74 @@ func TestSkillOhneZielMeldetCastFailed(t *testing.T) {
 	p.Cooldowns = []float64{5, 0, 0, 0}
 	if len(failed(0)) != 0 {
 		t.Fatal("laufende Abklingzeit meldet castFailed")
+	}
+}
+
+// Gehaltene Skill-Taste ohne Ziel: ein castFailed je Tastendruck, nicht je Tick (B-378).
+func TestGehalteneSkillTasteMeldetCastFailedEinmal(t *testing.T) {
+	w := quietWorld(t)
+	p, q := AddPlayer(w), AddPlayer(w)
+	for _, m := range []*Player{p, q} {
+		m.Slots, m.Skills = []string{"fireball"}, []string{"fireball"}
+	}
+	count := func(m *Player, skill, ticks int) (n int) {
+		for range ticks {
+			w.Events = nil
+			stepSkills(w, m, PlayerCommand{Skill: skill}, dt)
+			for _, ev := range eventsOfType(w, "castFailed") {
+				if ev["from"] == m.ID {
+					n++
+				}
+			}
+		}
+		return
+	}
+	if n := count(p, 1, 30); n != 1 {
+		t.Fatalf("30 Ticks gehalten: %d castFailed, erwartet 1", n)
+	}
+	count(p, 0, 1) // loslassen
+	if n := count(p, 1, 30); n != 1 {
+		t.Fatalf("neuer Druck: %d castFailed, erwartet 1", n)
+	}
+	if n := count(q, 1, 30); n != 1 {
+		t.Fatalf("Spieler 2 unabhängig: %d castFailed, erwartet 1", n)
+	}
+	count(p, 0, 1)
+	e := toughEnemy(w, p.X+5) // Ziel erscheint beim Halten: wirkt, kein castFailed
+	if n := count(p, 1, 1); n != 0 || p.Cooldowns == nil || p.Cooldowns[0] == 0 || lost(e) == 0 {
+		t.Fatalf("mit Ziel: %d castFailed, CD %v, Schaden %v", n, p.Cooldowns, lost(e))
+	}
+}
+
+// B-378/AC-02: In der Budget-Aufstellung halten alle Spieler 1 min lang Skill 1 ohne Ziel; es gibt höchstens je Spieler
+// ein castFailed, das Budget bleibt unberührt.
+func TestGehalteneSkillTastenImEreignisBudget(t *testing.T) {
+	isl, cmds := benchIsland(t)
+	players := 0
+	for _, w := range isl.Stages {
+		for _, p := range w.Players {
+			p.Slots, p.Skills = []string{"fireball"}, []string{"fireball"}
+			players++
+		}
+	}
+	held := make([]PlayerCommand, len(cmds))
+	for i := range held {
+		held[i].Skill = 1
+	}
+	var events, state []int
+	failed := 0
+	for range 1800 {
+		StepIsland(isl, held, dt)
+		tickBytes(t, isl, &events, &state)
+		for _, w := range isl.Stages {
+			failed += len(eventsOfType(w, "castFailed"))
+		}
+	}
+	if mean, _ := meanP99(events); mean > eventBudgetBytes {
+		t.Fatalf("Ereignis-Budget überschritten: Mittel %.1f Byte je Tick", mean)
+	}
+	if failed > players {
+		t.Fatalf("%d castFailed bei %d gehaltenen Tasten, erwartet höchstens je Spieler eines", failed, players)
 	}
 }
 

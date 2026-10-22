@@ -1,6 +1,6 @@
 # BD2.4 · Review BD2
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -52,5 +52,6 @@ Danach `task check:go`, dann `task check:race` (nacheinander). Keine manuellen P
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Abnahme BD2: AC-01 (B-378), AC-02 (B-377), AC-03 (B-382) erfüllt, Diff `origin/develop...sprint/bd2` von einem getrennten Reviewer (Sonnet) gelesen: keine schweren Befunde.
+- `task check` exit 0, `task check:go` exit 0 (6 min 44 s), `task check:race` exit 0, aber nur 581 ms (vermutlich gecacht, Aussagekraft ungeprüft).
+- Offen: B-524 (skillHeld beim Tod zurücksetzen), Projekt BED.
