@@ -8,9 +8,9 @@
 - **Sprint:** BD2
 - **Projekt:** BED
 - **Erstellt:** 2026-10-09
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-22, Ralf im Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -26,7 +26,8 @@ Alle Spieler (Rückmeldung B-318), Netz-Budget; Agent baut in `engine/sim/`.
 
 ## Anforderungen
 
-- `castFailed` nur bei der Flanke „Taste neu gedrückt“ (oder gleichwertig: höchstens einmal, bis der Slot losgelassen wurde), je Spieler und Slot.
+- `castFailed` nur bei der Flanke „Taste neu gedrückt“ (Slot ≠ Slot des Vor-Ticks), je Spieler und Slot; die Sim merkt den gehaltenen Slot in `Player` (nicht im Spielstand), weil `PlayerCommand.Skill` ein gehaltener Wert ohne Flanke ist.
+- Nur das Ereignis wird gedrosselt; der Wirkungsversuch läuft weiter jeden Tick, findet der Skill beim Halten ein Ziel, wirkt er wie heute.
 - Kein Einfluss auf Skills mit Ziel und auf die Abklingzeit.
 - Deterministisch, mit 2+ Spielern getrennt.
 
@@ -53,7 +54,7 @@ Findet der Skill während des Haltens ein Ziel, wirkt er wie heute; danach gilt 
 
 ## Offene Fragen
 
-Ob die Eingabe (`PlayerCommand`) schon eine Flanke kennt oder die Sim den letzten Zustand je Slot merken muss: beim Einplanen im Code prüfen.
+keine (entschieden 2026-10-22 beim Bereitmachen von BD2: `PlayerCommand` kennt keine Flanke, die Sim merkt den Slot des Vor-Ticks; Ralf kann das bei der Freigabe ändern)
 
 ## Notizen
 
