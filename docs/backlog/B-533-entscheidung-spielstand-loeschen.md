@@ -4,8 +4,8 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** KR1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-22
 - **Spec:** Entwurf

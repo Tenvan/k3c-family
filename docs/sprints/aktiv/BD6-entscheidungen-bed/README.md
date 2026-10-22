@@ -1,14 +1,14 @@
 # BD6 · REG · Autonome Entscheidungen zu BED prüfen und festschreiben
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** REG
-- **Reife:** Entwurf
-- **Tickets:** –
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Reife:** bereit
+- **Tickets:** B-525, B-526, B-527, B-528, B-529, B-533, B-534, B-535, B-536, B-537
+- **Start-Commit:** df21c2c2
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude
 
 ## Ausgangslage
 
@@ -24,7 +24,9 @@ Entscheidet: 🧑 Ralf. Vorbereitet: Claude. Betroffen: Spielende (Pause, HUD, S
 
 ## Anforderungen
 
-Entscheidungs-Tickets (Default und Alternative stehen je im Ticket): B-525 Goldtopf, B-526 fester WORLD_TOP, B-527 Abmelden mit zwei Tastatur-Spielern, B-528 Regeldetails der Raum-Pause, B-529 Protokollform pause/resume, B-533 Löschen ohne Token mit Sicherung, B-534 Spielmenü gleich Lobby, B-535 Pause nach Wiederverbinden erneut senden (BD7). B-524 und B-530 sind in BD7 umgesetzt. Zusätzlich: Versionen v0.21.0 (BD3) und v0.21.1 (BD7, vorgeschlagen) bestätigen.
+Entscheidungs-Tickets (Default und Alternative stehen je im Ticket unter Notizen): B-525 Goldtopf, B-526 fester WORLD_TOP, B-527 Abmelden mit zwei Tastatur-Spielern, B-528 Regeldetails der Raum-Pause, B-529 Protokollform pause/resume, B-533 Löschen ohne Token mit Sicherung, B-534 Spielmenü gleich Lobby, B-535 Pause nach Wiederverbinden erneut senden (BD7), B-536 Versionen v0.21.0 (BD3) und v0.21.1 (BD7), B-537 vierter Punkt der Meldung aus WZ18.8 (BD5). B-524 und B-530 sind in BD7 umgesetzt.
+
+Die Tickets sind dem KRT-Sprint KR1 zugeordnet (Sammelstelle aller kritischen Fragen zu BED); BD6.1 und KR1.1 sind dieselbe Durchsicht.
 
 ## Nicht-Ziele
 
@@ -44,21 +46,21 @@ Eine Entscheidung wird abgelehnt und berührt bereits gemergten Code → Folge-T
 
 ## Akzeptanzkriterien
 
-- **AC-01** Ralf hat jede Entscheidung B-525 bis B-529, B-533, B-534 und B-535 bestätigt oder geändert, vermerkt im jeweiligen Ticket.
-- **AC-02** Zu jeder geänderten Entscheidung existiert ein Umsetzungs-Ticket; bestätigte Frage-Tickets sind erledigt.
-- **AC-03** Die Versionsnummern der Sprints BD3 und BD7 sind gesetzt oder verworfen.
+- **AC-01** Ralf hat jede Entscheidung B-525 bis B-529 und B-533 bis B-537 bestätigt oder geändert, vermerkt im jeweiligen Ticket unter Notizen.
+- **AC-02** Zu jeder geänderten Entscheidung existiert ein Umsetzungs-Ticket im Projekt BED; bestätigte Frage-Tickets sind erledigt.
+- **AC-03** Die Versionsnummern der Sprints BD3 und BD7 sind gesetzt oder verworfen (B-536).
 
 ## Offene Fragen
 
-Alle Entscheidungen sind die offenen Fragen dieses Sprints; sie entscheidet 🧑 Ralf.
+Keine blockierende. Alle Entscheidungen sind mit Default umgesetzt (autonom, Claude, 2026-10-22) und gelten, bis 🧑 Ralf sie in BD6.1 bestätigt oder ändert.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BD6.1 | – (Entwurf) | Entscheidung (🧑) | Mensch | offen |
+| BD6.1 | `BD6.1-entscheidungen.md` | Workshop | Mensch | offen |
 
-BD6.1: Ralf geht die Frage-Tickets durch (AC-01, AC-02, AC-03). Die Session-Datei entsteht beim Aktivieren.
+BD6.1: Ralf geht die Frage-Tickets in KR1 durch (AC-01, AC-02, AC-03).
 
 ## Abnahme
 

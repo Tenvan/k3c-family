@@ -149,16 +149,18 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-521](B-521-types-ts-aufteilen.md) | CLI | Schuld | niedrig | offen | – | src/model/types.ts liegt über der Dateigrenze von 400 Zeilen |
 | [B-522](B-522-ressourcen-auf-ruine.md) | SIM | Problem | mittel | offen | – | Zufalls-Ressourcen eines geplanten Chunks können auf seiner Ruine liegen |
 | [B-523](B-523-ruine-kollision-hub-platz.md) | SIM | Schuld | niedrig | offen | – | Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt |
-| [B-525](B-525-entscheidung-goldtopf.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Wortlaut und Symbol des Goldtopfs in der Spielerkarte |
-| [B-526](B-526-entscheidung-hintergrund-hoehe.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Hintergrund-Höhe je Biom gegen WORLD_TOP |
-| [B-527](B-527-entscheidung-abmelden-tastatur.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Abmelden mit zwei Tastatur-Spielern und Ziel per Auswahl |
-| [B-528](B-528-entscheidung-pause-regeldetails.md) | SRV | Frage | mittel | offen | – | Entscheidung: Regeldetails der Raum-Pause (Couch-Raum, Schutz, Frist) |
-| [B-529](B-529-entscheidung-pause-protokoll.md) | SRV | Frage | mittel | offen | – | Entscheidung: Protokoll v8 für pause/resume ohne Rückmeldung im Zustand |
-| [B-533](B-533-entscheidung-spielstand-loeschen.md) | SRV | Frage | mittel | offen | – | Entscheidung: Spielstand löschen per HTTP ohne Token, Stand bleibt als Sicherung |
-| [B-534](B-534-entscheidung-spielmenue-lobby.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Spielmenü ist die Lobby, neuer Spielstand ohne Welt-Auswahl |
+| [B-525](B-525-entscheidung-goldtopf.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Wortlaut und Symbol des Goldtopfs in der Spielerkarte |
+| [B-526](B-526-entscheidung-hintergrund-hoehe.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Hintergrund-Höhe je Biom gegen WORLD_TOP |
+| [B-527](B-527-entscheidung-abmelden-tastatur.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Abmelden mit zwei Tastatur-Spielern und Ziel per Auswahl |
+| [B-528](B-528-entscheidung-pause-regeldetails.md) | SRV | Frage | mittel | eingeplant | KR1 | Entscheidung: Regeldetails der Raum-Pause (Couch-Raum, Schutz, Frist) |
+| [B-529](B-529-entscheidung-pause-protokoll.md) | SRV | Frage | mittel | eingeplant | KR1 | Entscheidung: Protokoll v8 für pause/resume ohne Rückmeldung im Zustand |
+| [B-533](B-533-entscheidung-spielstand-loeschen.md) | SRV | Frage | mittel | eingeplant | KR1 | Entscheidung: Spielstand löschen per HTTP ohne Token, Stand bleibt als Sicherung |
+| [B-534](B-534-entscheidung-spielmenue-lobby.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Spielmenü ist die Lobby, neuer Spielstand ohne Welt-Auswahl |
 | [B-531](B-531-wald-dichter-hoehle-bueesche.md) | REG | Idee | mittel | offen | – | Wald hat mehr Bäume je Abschnitt, Höhle bekommt Deko-Büsche |
 | [B-532](B-532-snapshot-markiert-von.md) | SIM | Idee | niedrig | offen | – | Snapshot nennt, wer einen Knoten markiert hat |
-| [B-535](B-535-entscheidung-pause-nach-wiederverbinden.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Pause nach Wiederverbinden erneut senden, Schutz beginnt neu |
+| [B-535](B-535-entscheidung-pause-nach-wiederverbinden.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Pause nach Wiederverbinden erneut senden, Schutz beginnt neu |
+| [B-536](B-536-entscheidung-versionen-bd3-bd7.md) | REG | Frage | hoch | eingeplant | KR1 | Entscheidung: Versionen v0.21.0 (BD3) und v0.21.1 (BD7) bestätigen |
+| [B-537](B-537-entscheidung-bd5-vierter-punkt.md) | CLI | Frage | hoch | eingeplant | KR1 | Entscheidung: Vierter Punkt der BD5-Meldung zum Spielmenü ist unbekannt |
 
 ## Archiv
 
