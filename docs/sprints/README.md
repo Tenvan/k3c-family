@@ -28,25 +28,8 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-<<<<<<< HEAD
-| BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
-| BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | Entwurf | `geplant/BD4-hud-leiste-austreten/` |
-| BD5 | SRV | BED | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | – | Entwurf | `geplant/BD5-spielmenue-welt-spielstaende/` |
-| BD6 | REG | BED | Autonome Entscheidungen zu BED prüfen und festschreiben | – | Entwurf | `geplant/BD6-entscheidungen-bed/` |
-| GEB9 | DEV | GEB | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | – | Entwurf | `geplant/GEB9-hub-ausbaustufen/` |
-| GEB10 | DEV | GEB | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | – | Entwurf | `geplant/GEB10-natur-truhe-wimpel/` |
-| GEB11 | REG | GEB | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | – | Entwurf | `geplant/GEB11-hub-waechst-kleinteilig/` |
-||||||| 013dcb34
-| BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
-| BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | Entwurf | `geplant/BD4-hud-leiste-austreten/` |
-| BD5 | SRV | BED | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | – | Entwurf | `geplant/BD5-spielmenue-welt-spielstaende/` |
-| GEB9 | DEV | GEB | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | – | Entwurf | `geplant/GEB9-hub-ausbaustufen/` |
-| GEB10 | DEV | GEB | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | – | Entwurf | `geplant/GEB10-natur-truhe-wimpel/` |
-| GEB11 | REG | GEB | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | – | Entwurf | `geplant/GEB11-hub-waechst-kleinteilig/` |
-=======
 | BD6 | REG | BED | Autonome Entscheidungen zu BED prüfen und festschreiben | – | Entwurf | `geplant/BD6-entscheidungen-bed/` |
 | GEB12 | REG | GEB | Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte) | – | Entwurf | `geplant/GEB12-entscheidungen-geb9-11/` |
->>>>>>> origin/develop
 | SV2 | SRV | WRT | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | – | Entwurf | `geplant/SV2-voll-ausbau-regelkonform/` |
 | W13 | CLI | WRT | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | – | Entwurf | `geplant/W13-morgengrauen-licht-client/` |
 | W12 | SIM | WRT | Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln | – | Entwurf | `geplant/W12-morgengrauen-phase/` |
