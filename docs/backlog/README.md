@@ -136,16 +136,11 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-472](B-472-nacht-dunkler-fackeln-lagerfeuer-licht.md) | CLI | Idee | niedrig | eingeplant | W13 | Nacht und Morgengrauen sind dunkler, Fackeln und Lagerfeuer machen Licht |
 | [B-473](B-473-ci-rot-k3c-dev-planning-worktree-tests.md) | DEV | Problem | hoch | offen | – | CI auf develop rot: k3c-dev internal/planning Worktree-Tests scheitern auf dem Windows-Runner |
 | [B-474](B-474-testdownloadhit-norton-tls.md) | DEV | Problem | mittel | offen | – | TestDownloadHit scheitert lokal am TLS-Zertifikat (Norton), check:all rot |
-| [B-475](B-475-frage-geplante-ereignisse-zaehlung.md) | REG | Frage | niedrig | eingeplant | WZ24 | Frage: Wie zählen feste Ereignis-Objekte in geplanten Chunks, und gilt für „kein Platz mehr“ das Minimum oder das Maximum? |
-| [B-479](B-479-hub-pruefung-geplante-chunks.md) | SIM | Schuld | niedrig | eingeplant | WZ24 | Prüfung der Kandidaten-hub.json: geplante Chunks nach WZ8 mitprüfen |
-| [B-489](B-489-spielstand-chunk-anzahl.md) | SIM | Problem | mittel | eingeplant | WZ24 | Spielstände laden Chunk-Anzahl und Planung aus den aktuellen Daten |
-| [B-490](B-490-sim-chunk-anzahl-nachtraege.md) | SIM | Schuld | niedrig | eingeplant | WZ24 | Sim: Chunk-Anzahl mit Kandidaten-hub.json und gemeinsame Prüfung der Inselgröße |
 | [B-492](B-492-sfx-luecken-weitere-ereignisse.md) | CLI | Idee | mittel | eingeplant | SO6 | Weitere Ereignisse bekommen eigene Sound-Slots und Sounds |
 | [B-493](B-493-credits-seite-audio.md) | PLAT | Idee | hoch | eingeplant | SO6 | Die Credits-Seite zeigt auch die Sounds unter public/audio |
 | [B-494](B-494-sound-atlas-werkzeug.md) | INF | Idee | niedrig | eingeplant | SO6 | Ein Werkzeug packt die gewählten Sounds in einen Sound-Atlas |
 | [B-495](B-495-respec-in-aktionsliste.md) | SRV | Schuld | niedrig | eingeplant | RM1 | Die Aktionsliste nennt respec, wenn CanRespec erlaubt |
 | [B-496](B-496-studio-fensterposition-merken.md) | DEV | Idee | mittel | offen | – | Das Asset-Studio merkt sich Fensterposition und Größe und stellt sie sicher wieder her |
-| [B-497](B-497-grosse-inseln-last-und-umwandlung.md) | SIM | Frage | niedrig | eingeplant | WZ24 | Große Inseln: Last im Spiel messen, Umwandlung in allen Biomen testen, PlanSave gegen Parallelität |
 | [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
 | [B-501](B-501-planer-vorschau-fixiert-markiert.md) | DEV | Idee | mittel | eingeplant | WZ23 | Gebäude-Planer: Live-Vorschau unten fest, gewähltes Gebäude markiert |
 | [B-503](B-503-monarch-skill-darstellung.md) | CLI | Idee | niedrig | eingeplant | SK2 | Die 24 Monarch-Skills haben eine Darstellung im Spiel |
@@ -483,3 +478,8 @@ Zeile in diesen Abschnitt.
 | [B-476](archiv/B-476-preload-sprites-beliebige-reittiere.md) | CLI | Schuld | niedrig | erledigt | WZ23 | preloadSprites und createSpriteAnims laden beliebige Reittiere statt nur das Standard-Reittier |
 | [B-471](archiv/B-471-renderreference-abmelden.md) | DEV | Schuld | niedrig | erledigt | WZ23 | renderReference beendet seine Animationsschleife, wenn die Karten verschwinden |
 | [B-502](archiv/B-502-monarch-seite-ansicht-wuensche.md) | DEV | Idee | mittel | erledigt | WZ23 | Monarch-Seite: einheitliches Sheet, Zoom, zweispaltige Ansicht |
+| [B-475](archiv/B-475-frage-geplante-ereignisse-zaehlung.md) | REG | Frage | niedrig | erledigt | WZ24 | Frage: Wie zählen feste Ereignis-Objekte in geplanten Chunks, und gilt für „kein Platz mehr“ das Minimum oder das Maximum? |
+| [B-489](archiv/B-489-spielstand-chunk-anzahl.md) | SIM | Problem | mittel | erledigt | WZ24 | Spielstände laden Chunk-Anzahl und Planung aus den aktuellen Daten |
+| [B-490](archiv/B-490-sim-chunk-anzahl-nachtraege.md) | SIM | Schuld | niedrig | erledigt | WZ24 | Sim: Chunk-Anzahl mit Kandidaten-hub.json und gemeinsame Prüfung der Inselgröße |
+| [B-479](archiv/B-479-hub-pruefung-geplante-chunks.md) | SIM | Schuld | niedrig | erledigt | WZ24 | Prüfung der Kandidaten-hub.json: geplante Chunks nach WZ8 mitprüfen |
+| [B-497](archiv/B-497-grosse-inseln-last-und-umwandlung.md) | SIM | Frage | niedrig | erledigt | WZ24 | Große Inseln: Last im Spiel messen, Umwandlung in allen Biomen testen, PlanSave gegen Parallelität |

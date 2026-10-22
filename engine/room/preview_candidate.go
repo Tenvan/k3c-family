@@ -27,7 +27,7 @@ func (e *CandidateError) Error() string {
 
 // candidateWorld liest und prüft den Kandidaten einmal und baut die Stufe über sim.CreateWorldWith (ohne Insel, wie
 // die Vorschau ohne Kandidat). Liefert dazu die Zahl der Hub-Stufen des Kandidaten.
-func candidateWorld(biome level.Biome, seed string, raw []byte, planned []level.PlannedChunk) (*sim.World, int, error) {
+func candidateWorld(biome level.Biome, seed string, raw []byte, planned []level.PlannedChunk, chunkCount int) (*sim.World, int, error) {
 	h, err := sim.ParseHub(raw)
 	if err != nil {
 		return nil, 0, &CandidateError{Findings: []sim.HubFinding{{Rule: sim.RuleJSON, Site: "hub.json", Detail: err.Error()}}}
@@ -35,7 +35,7 @@ func candidateWorld(biome level.Biome, seed string, raw []byte, planned []level.
 	if r := sim.ValidateHubData(h); len(r.Findings) > 0 {
 		return nil, 0, &CandidateError{Findings: r.Findings}
 	}
-	w, err := sim.CreateWorldWith(biome, seed, sim.CreateOptions{Candidate: h}, planned)
+	w, err := sim.CreateWorldWith(biome, seed, sim.CreateOptions{Candidate: h}, planned, chunkCount)
 	if err != nil {
 		return nil, 0, fmt.Errorf("vorschau: Level aus dem Kandidaten nicht erzeugbar: %w", err)
 	}

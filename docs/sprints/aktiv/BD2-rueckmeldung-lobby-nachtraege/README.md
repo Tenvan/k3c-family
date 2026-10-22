@@ -1,14 +1,14 @@
 # BD2 · SIM, SRV, CLI · Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** SIM, SRV, CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-378, B-377, B-382
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 658d5301
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-22, Ralf im Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -24,7 +24,7 @@ Spielende (weniger Netzlast, kein stiller Datenverlust); Agent in SIM, SRV und C
 
 ## Anforderungen
 
-B-378, B-377, B-382 › Anforderungen (Ticket-Specs noch Entwurf, vor der Freigabe ausfüllen).
+B-378, B-377, B-382 › Anforderungen (Ticket-Specs freigegeben, Revision 1).
 
 ## Nicht-Ziele
 
