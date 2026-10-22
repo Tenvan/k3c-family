@@ -1,6 +1,6 @@
 # GEB9.1 · Stufen-Looks und Übergang in der Regeldatei festschreiben
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -56,5 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 umgesetzt: `docs/standards/gebaeude-grafik.md` § 6 › Hub-Gebäude legt Farbrollen je Material (Holz bis Kristall, aus dem Tausch von Mauer, Turm, Burg abgeleitet), je Gebäude die tauschenden Arten, den Zusatz, die Stein-Grundform-Regel und den Übergang fest. Neu gegenüber der Spec: Farbschlüssel `"art/farbe"` in `stufen.farben`, damit nur Mauerwerk und Dach wechseln und Holzteile gleicher Farbe bleiben; umzusetzen in GEB9.2 (Session-Schritte angepasst). Alle Entscheidungen autonom (Claude), Ralf kann in der Abnahme widersprechen. `task check:diff` grün.

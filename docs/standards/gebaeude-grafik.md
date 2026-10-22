@@ -165,6 +165,53 @@ dunkler und kühler (`christi` → `elf-green`, `atlantis` → `christi`, `dell`
 `christi` → `elf-green`, `opal` → `deep-koamaru`, Stämme eine Stufe dunkler. Bei **Adern** (`ader`) bedeutet die Stufe
 das **Material** (1 Stein, 2 Kupfer, 3 Eisen, 4 Kristall), nicht das Biom.
 
+**Hub-Gebäude (GEB9, Entscheidung autonom Claude 2026-10-22, Annahme bis 🧑 widerspricht):** Die acht Hub-Gebäude (Werkstatt,
+Farm, Kaserne, Lager, Taverne, Schmiede, Heilplatz, Rüstkammer) haben die Stufen 1–5 und folgen der **Hub-Stufe**, nicht eigenen
+Gebäudestufen. Das Material je Stufe ist das der Hub-Stufe (`docs/rules/materialien-gebaeude.md` § 2). Stufen vor der
+Freischaltung des Gebäudes bleiben erhalten (Vorschau, Erweiterbarkeit, der Gebäude-Planer verschiebt die Freischaltung). Das
+Camp (`rekrutierungslager`) ist ein Welt-Objekt und bleibt Grundform.
+
+*Farbrollen.* Der Tausch folgt der Rolle der Farbe, nicht dem Namen: jedes Material hat Körper, Licht, Schatten und Tief.
+
+| Stufe | Material | Körper | Licht | Schatten | Tief |
+|---|---|---|---|---|---|
+| 1 | Holz | `rope` | `twine` | `oiled-cedar` | `loulou` |
+| 2 | Stein | `dim-gray` | `smokey-ash` | `valhalla` | `black` |
+| 3 | Kupfer | `tahiti-gold` | `twine` | `rope` | `oiled-cedar` |
+| 4 | Eisen | `heather` | `light-steel` | `dim-gray` | `valhalla` |
+| 5 | Kristall | `royal-blue` | `cornflower` | `deep-koamaru` | `viking` |
+
+Eine Farbe der Grundform wird auf die Farbe derselben Rolle im Material der Stufe getauscht (Holz-Grundform: Spalte der Stufe 1,
+Stein-Grundform: Spalte der Stufe 2; Dachfarben `brown` = Körper, `mandy` = Licht, `loulou` = Tief). Das entspricht dem Tausch
+von Mauer, Turm und Burg. Feinabstimmung nach Sicht ist erlaubt, wenn ein Detail verschwindet (z. B. ein Eisenband, das auf Stufe 4 dieselbe
+Farbe wie der Körper bekäme); die Abweichung steht im Ergebnis der Session.
+
+*Teile statt ganzer Farbe.* Damit nur Mauerwerk und Dach das Material wechseln, kann ein Schlüssel in `farben` auf eine Bausteinart
+eingeschränkt werden: `"wand/rope": "dim-gray"` tauscht `rope` nur bei Bausteinen der Art `wand`; ein Schlüssel ohne `/` gilt
+für alle Bausteine. Der engere Schlüssel gilt vor dem weiteren; die alte Farbe muss in der Grundform bei dieser Art vorkommen.
+
+*Was tauscht, was bleibt, Zusatz.* Handwerkliche und bewegliche Teile (Gestell, Tresen, Zaun, Tür, Fass, Krug, Werkzeug, Glut,
+Heu, Tuch, Rüstung) bleiben auf allen Stufen unverändert. Je Stufe höchstens **ein** Zusatz; er trägt die Farben des Materials.
+
+| Gebäude | Arten, die das Material wechseln | Zusatz |
+|---|---|---|
+| Werkstatt | `wand`, `pfosten`, `balken` | ab Stufe 3 Wimpel am rechten Pfosten |
+| Farm | `wand`, `pfosten`, `balken`, `tuerrahmen`, `strebe`, `dach`, `schindel` | ab Stufe 3 Windfahne auf dem First |
+| Kaserne (Stein) | `wand`, `sockel`, `zinne`, `licht`, `schatten`, `fuge` | Stufe 2 Eisenband am Sockel, ab Stufe 3 Wimpel an den Zinnen |
+| Lager | `wand`, `sockel`, `pfosten`, `dach`, `schindel` | ab Stufe 3 Schild über dem Tor (Vorratszeichen) |
+| Taverne | `wand`, `balken`, `pfosten`, `dach`, `schindel`, `kamin`, `stufe` | ab Stufe 3 Laterne neben der Tür |
+| Schmiede | `wand`, `pfosten`, `dach`, `kamin`, `esse` | ab Stufe 3 Rauchfang über der Esse |
+| Heilplatz | `pfosten`, `gestell` | ab Stufe 3 Laterne am Gestell |
+| Rüstkammer (Stein) | `wand`, `sockel`, `band`, `dach`, `schindel`, `fuge` | Stufe 2 Sockelband, ab Stufe 3 Wimpel über dem Tor |
+
+*Stein-Grundform.* Kaserne und Rüstkammer sind in Stufe 1 schon Stein: Stufe 2 behält das Material und unterscheidet sich nur durch
+den Zusatz (Stufe 2 der Tabelle); ab Stufe 3 wechselt der Stein auf Kupfer, Eisen, Kristall. Bei Taverne und Schmiede (Holz mit Steinteilen)
+wechselt auf Stufe 2 nur das Holz-Mauerwerk, der Stein von Kamin und Esse bleibt, ab Stufe 3 wechselt auch er.
+
+*Übergang bis GEB9.5.* Mit `stufen` schreibt `tools/buildings` sonst nur `<id>-<stufe>-<dichte>.png`. Solange das Spiel noch die Grundform
+zeichnet, schreibt der Generator für die Hub-Gebäude zusätzlich `<id>-<dichte>.png` (= Stufe 1, byte-gleich). GEB9.5 stellt das Spiel
+um, löscht diese Dateien und entfernt den Übergang.
+
 ## 7. Dichte-Regel
 
 - Die Quelle speichert Formen in Kachel-Einheiten; die Pixeldichte ist ein Render-Parameter.

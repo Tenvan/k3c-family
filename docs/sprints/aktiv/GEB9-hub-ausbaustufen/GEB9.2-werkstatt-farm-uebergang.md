@@ -34,18 +34,18 @@ Andere Gebäude, Spielcode, Löschen der Grundform-Dateien, Regeldatei (GEB9.1 h
 
 ## Schritte
 
-1. Branch `geb9/2-werkstatt-farm-uebergang`, `Status: in Arbeit`. § 6, `stages.go`, `main.go` lesen.
-2. Test zuerst: Gebäude der Übergangsliste mit `stufen` erzeugt zusätzlich `<id>-<dichte>.png` byte-gleich zu Stufe 1; Gebäude außerhalb der Liste unverändert.
-3. Übergang im Generator umsetzen.
-4. `werkstatt.json` und `farm.json`: `stufen` 2–5 nach § 6 (Farbtausch, Zusatz ab Stufe 3, `aenderung` je Stufe, Vorlage-Text bleibt Stufe 1). `task gen:gebaeude`, PNGs und `index.json` einchecken, Bilder ansehen (Read auf `*-1-128.png` bis `*-5-128.png`) und auf Lesbarkeit prüfen.
-5. Test in `szenenLogic.test.ts`: `stufenKarten` liefert für Werkstatt 5 Stufen.
+1. Branch `geb9/2-werkstatt-farm-uebergang`, `Status: in Arbeit`. § 6 (inklusive „Hub-Gebäude“), `stages.go`, `main.go` lesen.
+2. Tests zuerst: (a) Gebäude der Übergangsliste mit `stufen` erzeugt zusätzlich `<id>-<dichte>.png` byte-gleich zu Stufe 1, Gebäude außerhalb der Liste unverändert; (b) `farben`-Schlüssel `"art/farbe"` tauscht die Farbe nur bei Bausteinen dieser Art, der engere Schlüssel gilt vor dem weiteren, `pruefeStufen` lehnt eine Art/Farbe-Kombination ab, die in der Grundform nicht vorkommt.
+3. `stages.go` (`pruefeStufen`, `stufeBauen`) um die Schlüssel `art/farbe` erweitern (abwärtskompatibel: Mauer, Turm, Burg, Tor, Natürliches bleiben byte-gleich), den Übergang im Generator umsetzen (kleine Liste mit Kommentar „GEB9.5 entfernt“).
+4. `werkstatt.json` und `farm.json`: `stufen` 2–5 nach § 6 (Farbrollen, Arten, Zusatz ab Stufe 3, `aenderung` je Stufe; die Vorlage beschreibt Stufe 1). `task gen:gebaeude`, PNGs und `index.json` einchecken, Stufe 1–5 in 128 px ansehen (Read) und auf Lesbarkeit prüfen, Abweichungen von der Tabelle in § 6 im Ergebnis nennen.
+5. Test in `szenenLogic.test.ts`: `stufenKarten` liefert für die Werkstatt 5 Stufen.
 6. `task check:diff`, Ergebnis, `Status: fertig`.
 
 ## Fertig, wenn
 
 - [ ] AC-02: `werkstatt.json` und `farm.json` führen `stufen` 2–5; PNGs `<id>-1..5-<dichte>.png` liegen vor.
 - [ ] AC-03: `szenenLogic.test.ts` prüft die Stufenreihe mit einem der neuen Gebäude.
-- [ ] AC-05: zweimal `task gen:gebaeude` ergibt keinen Diff; `<id>-<dichte>.png` bleibt als Stufe 1 erhalten (Übergang); `task check:diff` grün.
+- [ ] AC-05: zweimal `task gen:gebaeude` ergibt keinen Diff; Mauer, Turm, Burg, Tor unverändert; `<id>-<dichte>.png` bleibt als Stufe 1 erhalten (Übergang); `task check:diff` grün.
 
 ## Prüfen
 
