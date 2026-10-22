@@ -606,7 +606,7 @@ Liste. Andere Methoden → `405`. Das WebSocket-Protokoll ändert sich dadurch n
 **Nachgetragen ohne neue Version (BD5.1, B-506):** Jeder Eintrag nennt zusätzlich `world` (Welt-ID des Stands ab
 Spielstand-Version 8; fehlt bei älteren Ständen, dann gilt `standard`). `DELETE /api/save?slot=NAME` (ohne Token wie
 `POST`) nimmt einen Spielstand aus der Liste: Er wandert in seine rotierenden Sicherungen (`saves/backups/NAME/`, mit
-`POST /api/save/restore` wiederherstellbar), ältere Sicherungen bleiben (Entscheidung B-533). Antworten: `200`
+`POST /api/save/restore` wiederherstellbar), ältere Sicherungen bleiben im Rahmen der Rotation (höchstens 5 je Stand, die älteste fällt bei Überlauf weg; Entscheidung B-533). Antworten: `200`
 `{"ok": true, "slot": NAME}`; `404` ohne Stand; `400` bei ungültigem Namen; `409` `{"error": "Spielstand ist in einem Raum
 offen"}`, solange ein Raum den Stand geöffnet hat (auch ohne verbundenes Gerät). Neu anlegen bleibt `create` mit
 `fresh: true`. Das WebSocket-Protokoll und seine Version (8) ändern sich nicht.

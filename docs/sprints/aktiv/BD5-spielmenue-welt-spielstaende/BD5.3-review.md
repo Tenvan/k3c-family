@@ -1,6 +1,6 @@
 # BD5.3 · Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -49,4 +49,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- `task check` grün (2398 Vitest), `task check:go` grün; `task check:race` lief durch, der Race-Detector wurde aber übersprungen (kein C-Compiler auf dem Rechner, die CI prüft `-race`).
+- AC-01 geprüft: Go-Tests aus BD5.1; AC-02 geprüft: Vitest aus BD5.2 und Browser-Pane; AC-03 offen bei BD5.4 (Ralf).
+- Getrennter Reviewer (Sonnet, Diff `857adbc3..HEAD`): keine schweren Befunde; Hinweis zur Rotation (höchstens 5 Sicherungen) in `docs/protocol.md` nachgetragen.

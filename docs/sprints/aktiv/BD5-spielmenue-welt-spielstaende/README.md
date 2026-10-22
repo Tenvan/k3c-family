@@ -67,7 +67,7 @@ Autonom entschieden (Ralf: „autonom abarbeiten“), im Nachgang zu bestätigen
 |---|---|---|---|---|
 | BD5.1 | `BD5.1-server-spielstaende-loeschen.md` | Umsetzung | autonom | fertig |
 | BD5.2 | `BD5.2-spielmenue-welt-anlegen-loeschen.md` | Umsetzung | autonom | fertig |
-| BD5.3 | `BD5.3-review.md` | Review | autonom | offen |
+| BD5.3 | `BD5.3-review.md` | Review | autonom | fertig |
 | BD5.4 | `BD5.4-abnahme-pc.md` | Workshop | Mensch | offen |
 
 - BD5.1 (SRV) Spielstände mit Welt auflisten und löschen, HTTP (AC-01).
@@ -77,5 +77,4 @@ Autonom entschieden (Ralf: „autonom abarbeiten“), im Nachgang zu bestätigen
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-22 (BD5.3, autonom): AC-01 (BD5.1, Go-Tests) und AC-02 (BD5.2, Vitest + Browser-Pane) erfüllt; AC-03 offen bei BD5.4 (Ralf am PC). Prüfungen: check, check:go grün, check:race ohne C-Compiler übersprungen. Reviewer: keine schweren Befunde, Rotations-Hinweis in `docs/protocol.md` ergänzt. Entscheidungen zur Bestätigung: B-533, B-534.
