@@ -7,7 +7,7 @@
 import { clientLog } from '../core/clientLog';
 import { parseAtlas, pickFile, type Atlas } from './atlas';
 import type { GameEvent } from '../model/types';
-import { SFX_URLS, attenuation, cueFor, nightGain, type Listener } from './events';
+import { SFX_URLS, attenuation, cueFor, hubRaised, nightGain, type Listener } from './events';
 import { Mixer, type AudioContextLike, type Bus, type GainNodeLike } from './mixer';
 import { QUICK_FADE_SECONDS, crossfadeCurves, fadeOutFrom } from './crossfade';
 import { DUCK, duckGain, extendDuck, type DuckWindow } from './ducking';
@@ -71,6 +71,7 @@ export class AudioCore {
   /** Ducking-Gain vor dem Bus „Musik“ (SO4.3): multipliziert sich mit dem Crossfade der Stücke */
   private duckNode?: GainNodeLike;
   private duckWindow?: DuckWindow;
+  private hubLevel?: number;
 
   constructor(private readonly deps: CoreDeps) {}
 
@@ -154,12 +155,23 @@ export class AudioCore {
   /** Spiel-Ereignis → Ton, je nach Position und Tageszeit gedämpft; `x` in Units (Quelle), `listeners` = Kameras der lokalen Spieler, `phase` = `world.cycle.phase`. */
   onEvent(e: GameEvent, x: number | undefined, listeners: readonly Listener[], phase?: string): boolean {
     const cue = cueFor(e);
-    const url = cue && (this.deps.sfx ?? SFX_URLS)[cue.slot];
     if (!cue) return false;
     if (cue.global) this.duck(); // Warnung senkt die Musik (Q16), auch wenn der Warn-Sound fehlt
-    const volume = attenuation(x, listeners, cue.global) * nightGain(phase);
-    if (this.atlas?.sprites[cue.slot]) return this.play(cue.slot, 'sfx', volume);
+    return this.playSlot(cue.slot, attenuation(x, listeners, cue.global) * nightGain(phase));
+  }
+
+  /** Effekt-Slot spielen: aus dem Atlas, sonst als Einzeldatei; fehlt beides, stumm. */
+  playSlot(slot: string, volume = 1): boolean {
+    if (this.atlas?.sprites[slot]) return this.play(slot, 'sfx', volume);
+    const url = (this.deps.sfx ?? SFX_URLS)[slot];
     return !!url && this.playSample(url, 'sfx', volume);
+  }
+
+  /** Hub-Ausbau (SO6.4): steigt die Hub-Stufe zwischen zwei Snapshots, klingt `sfx:hub` (global); `undefined` vergisst den Stand. */
+  onHubLevel(level: number | undefined): boolean {
+    const raised = hubRaised(this.hubLevel, level);
+    this.hubLevel = level;
+    return raised && this.playSlot('sfx:hub');
   }
 
   /**

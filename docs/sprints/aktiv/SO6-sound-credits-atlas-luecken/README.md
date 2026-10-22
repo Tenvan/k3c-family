@@ -64,7 +64,7 @@ Autonom vorentschieden (Claude, 2026-10-22), 🧑 bestätigt in KR4:
 | SO6.1 | `SO6.1-credits-seite-sounds.md` | Umsetzung | autonom | fertig |
 | SO6.2 | `SO6.2-sound-atlas-task.md` | Umsetzung | autonom | fertig |
 | SO6.3 | `SO6.3-workshop-luecken.md` | Workshop | Mensch | offen |
-| SO6.4 | `SO6.4-luecken-einbau.md` | Umsetzung | autonom | offen |
+| SO6.4 | `SO6.4-luecken-einbau.md` | Umsetzung | autonom | fertig |
 | SO6.5 | `SO6.5-review.md` | Review | autonom | offen |
 | SO6.6 | `SO6.6-hoerprobe-tv.md` | Workshop | Mensch | offen |
 

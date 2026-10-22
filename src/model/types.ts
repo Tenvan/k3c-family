@@ -256,6 +256,7 @@ export type GameEvent = (
   | { type: 'revived'; player: number; x: number }
   | { type: 'disarmed'; kind: string; x: number; cause: string }
   | { type: 'equipmentTaken'; kind: string; x: number }
+  | { type: 'bossSpawned'; boss: string; x: number }
 ) & { stage?: number };
 
 export interface World {

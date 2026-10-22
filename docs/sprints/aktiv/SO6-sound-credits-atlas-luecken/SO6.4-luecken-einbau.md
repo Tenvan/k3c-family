@@ -1,6 +1,6 @@
 # SO6.4 · Slots, Credits und Einbau der Sounds für die Lücken
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -49,5 +49,10 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-22, autonom (Claude). Auswahl ist der Default aus B-558 (SO6.3 bleibt bei 🧑).
+
+- **AC-03 (B-492/AC-01) umgesetzt, geprüft:** fünf neue Slots in `data/assets.json` (`sfx:coinGive`, `sfx:buildProgress`, `sfx:revived`, `sfx:boss`, `sfx:hub`) mit vorhandenen Kenney-Dateien (CC0); `cueFor` als Tabelle (statt `switch`, Komplexitäts-Grenze) mit `coinGive`, `buildProgress`, `revived`, `bossSpawned` (global); Hub-Ausbau: reine Funktion `hubRaised` + `AudioCore.onHubLevel` aus `world.hubLevel` (je Frame, neues Spiel vergisst den Stand). Katalog: Skill je Klasse, UI-Klicks als Lücke mit Begründung (B-558), Reiten „Einbau offen“ (B-558). Tests: `events.test.ts`, `audioCore.test.ts`, `soundKatalog.test.ts`.
+- **AC-03 (B-492/AC-02):** keine neue Datei; Credits liegen vor (Test grün).
+- **AC-02:** Atlas neu erzeugt, 16 Effekte (Test „Atlas enthält jeden aktiven Effekt-Slot“).
+- `GameEvent` kennt jetzt `bossSpawned` (wie `docs/protocol.md` und `engine/sim/boss.go`, keine Protokolländerung). `GameScene` +2 Zeilen (Hub-Stufe an den Audio-Kern).
+- `task check:diff` grün. Hören am TV: SO6.6.

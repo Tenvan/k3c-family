@@ -149,6 +149,17 @@ describe('AudioCore (AC-03, AC-05)', () => {
     const results = Array.from({ length: MAX_SAMPLE_VOICES + 2 }, () => core.onEvent({ type: 'built', kind: 'wall' }, undefined, []));
     expect(results.filter(Boolean)).toHaveLength(MAX_SAMPLE_VOICES - 1); // Stimmen-Grenze gilt auch im Atlas
   });
+  it('Hub-Ausbau (SO6.4): nur ein Anstieg der Hub-Stufe spielt sfx:hub, undefined vergisst den Stand', async () => {
+    const { core } = setup('suspended', true, { 'sfx:hub': 'audio/hub.ogg' });
+    await core.onInput();
+    await tick();
+    await tick();
+    expect(core.onHubLevel(1)).toBe(false); // erster Wert: kein Ausbau
+    expect(core.onHubLevel(1)).toBe(false);
+    expect(core.onHubLevel(2)).toBe(true);
+    expect(core.onHubLevel(undefined)).toBe(false);
+    expect(core.onHubLevel(4)).toBe(false); // neues Spiel
+  });
   it('der erzeugte Atlas enthält jeden aktiven Effekt-Slot (B-494/AC-01, task gen:soundatlas)', () => {
     const effects = Object.keys(SFX_URLS).filter((s) => s !== 'sfx:ride').sort();
     expect(Object.keys(parseAtlas(atlasFile)!.sprites).sort()).toEqual(effects);

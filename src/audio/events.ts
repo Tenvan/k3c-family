@@ -27,25 +27,34 @@ export const NIGHT_GAIN = 0.6;
 /** Rein: Pegelfaktor der Effekte zur Tageszeit (`world.cycle.phase`). */
 export const nightGain = (phase?: string): number => (phase === 'night' ? NIGHT_GAIN : 1);
 
+/** Ereignis-Typ → Sound-Slot; Warnungen (`global`) klingen überall gleich laut. Katalog `docs/assets/sounds.md`. */
+const CUES: Readonly<Partial<Record<GameEvent['type'], SoundCue>>> = {
+  coinPickup: { slot: 'sfx:coin', global: false },
+  hit: { slot: 'sfx:hit', global: false },
+  kill: { slot: 'sfx:kill', global: false },
+  arrow: { slot: 'sfx:arrow', global: false },
+  strike: { slot: 'sfx:strike', global: false },
+  built: { slot: 'sfx:build', global: false },
+  playerDown: { slot: 'sfx:death', global: false },
+  revive: { slot: 'sfx:revive', global: false },
+  skillPoint: { slot: 'sfx:skill', global: false },
+  arrived: { slot: 'sfx:portal', global: false },
+  coinGive: { slot: 'sfx:coinGive', global: false },
+  buildProgress: { slot: 'sfx:buildProgress', global: false },
+  revived: { slot: 'sfx:revived', global: false },
+  bossSpawned: { slot: 'sfx:boss', global: true },
+  dusk: { slot: 'sfx:warn', global: true },
+  wave: { slot: 'sfx:warn', global: true },
+  castleFallen: { slot: 'sfx:warn', global: true },
+};
+
 /** Rein: Ereignis → Sound-Slot. Nur lesen, kein Spielzustand (B-167/AC-04); Lücken des Katalogs und unbekannte Typen → `null` (stumm). */
 export function cueFor(e: GameEvent): SoundCue | null {
-  switch (e.type) {
-    case 'coinPickup': return { slot: 'sfx:coin', global: false };
-    case 'hit': return { slot: 'sfx:hit', global: false };
-    case 'kill': return { slot: 'sfx:kill', global: false };
-    case 'arrow': return { slot: 'sfx:arrow', global: false };
-    case 'strike': return { slot: 'sfx:strike', global: false };
-    case 'built': return { slot: 'sfx:build', global: false };
-    case 'playerDown': return { slot: 'sfx:death', global: false };
-    case 'revive': return { slot: 'sfx:revive', global: false };
-    case 'skillPoint': return { slot: 'sfx:skill', global: false };
-    case 'arrived': return { slot: 'sfx:portal', global: false };
-    case 'dusk':
-    case 'wave':
-    case 'castleFallen': return { slot: 'sfx:warn', global: true };
-    default: return null;
-  }
+  return CUES[e.type] ?? null;
 }
+
+/** Rein: Hub-Ausbau (SO6.4) = die Hub-Stufe im Snapshot steigt; ohne vorigen oder neuen Wert kein Ausbau. */
+export const hubRaised = (prev: number | undefined, next: number | undefined): boolean => prev !== undefined && next !== undefined && next > prev;
 
 /** Rein: Ort der Quelle in Units: `x` des Ereignisses, sonst `fallback` (z. B. Ort des Effekts); ohne beides `undefined` (keine Dämpfung). */
 export const eventX = (e: GameEvent, fallback?: number): number | undefined => ('x' in e && typeof e.x === 'number' ? e.x : fallback);

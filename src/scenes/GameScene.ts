@@ -116,6 +116,7 @@ export class GameScene extends Phaser.Scene {
     this.slots = new LocalSlots<PlayerInput>(data.mock, pageBots()); // Bots (`?botfeed`) sind fest an ihre Slots gebunden
     this.world_ = undefined;
     musicDirector().reset();
+    audioCore().onHubLevel(undefined); // neues Spiel: Hub-Stufe vergessen, kein Ausbau-Ton beim ersten Snapshot
     this.stages = new Map(); // die Szene hat ihre Ebenen beim Neustart schon zerstört
     this.holders = [];
     this.buildSpots.clear();
@@ -289,6 +290,7 @@ export class GameScene extends Phaser.Scene {
       this.cur = frame;
       this.pendingEvents.push(...frame.state.events);
       if (this.world_) musicDirector().update(musicViewOf(this.world_), frame.state.events); // Musik: Ereignisse wie castleFallen
+      audioCore().onHubLevel(this.world_?.hubLevel); // Hub-Ausbau-Ton (SO6.4)
       this.spawnEffects(frame.state.events);
     }
   }

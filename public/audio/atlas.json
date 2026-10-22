@@ -9,44 +9,64 @@
       "start": 0,
       "duration": 0.415
     },
-    "sfx:build": {
+    "sfx:boss": {
       "start": 0.565,
+      "duration": 1.041
+    },
+    "sfx:build": {
+      "start": 1.756,
       "duration": 0.261
     },
+    "sfx:buildProgress": {
+      "start": 2.167,
+      "duration": 0.937
+    },
     "sfx:coin": {
-      "start": 0.976,
+      "start": 3.254,
       "duration": 0.846
     },
+    "sfx:coinGive": {
+      "start": 4.25,
+      "duration": 0.338
+    },
     "sfx:death": {
-      "start": 1.972,
+      "start": 4.738,
       "duration": 0.781
     },
     "sfx:hit": {
-      "start": 2.903,
+      "start": 5.669,
       "duration": 0.431
     },
+    "sfx:hub": {
+      "start": 6.249,
+      "duration": 0.866
+    },
     "sfx:kill": {
-      "start": 3.483,
+      "start": 7.265,
       "duration": 1.475
     },
     "sfx:portal": {
-      "start": 5.108,
+      "start": 8.89,
       "duration": 0.441
     },
     "sfx:revive": {
-      "start": 5.699,
+      "start": 9.481,
       "duration": 1.149
     },
+    "sfx:revived": {
+      "start": 10.781,
+      "duration": 0.546
+    },
     "sfx:skill": {
-      "start": 6.999,
+      "start": 11.476,
       "duration": 0.676
     },
     "sfx:strike": {
-      "start": 7.825,
+      "start": 12.302,
       "duration": 0.24
     },
     "sfx:warn": {
-      "start": 8.215,
+      "start": 12.693,
       "duration": 1.48
     }
   }

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import assets from '../../data/assets.json';
 import type { GameEvent } from '../model/types';
-import { attenuation, cueFor, EDGE_GAIN, eventX, NIGHT_GAIN, nightGain, SFX_URLS, sfxUrls, type Listener, type SfxSlot } from './events';
+import { attenuation, cueFor, EDGE_GAIN, eventX, hubRaised, NIGHT_GAIN, nightGain, SFX_URLS, sfxUrls, type Listener, type SfxSlot } from './events';
 
 const p1: Listener = { center: 20, span: 20 }; // sieht 10..30
 const p2: Listener = { center: 100, span: 20 }; // sieht 90..110
@@ -37,6 +37,10 @@ const EVENTS: Record<string, GameEvent> = {
   'sfx:skill': { type: 'skillPoint', player: 0, total: 1 },
   'sfx:portal': { type: 'arrived', depth: 1, name: 'Höhle' },
   'sfx:warn': { type: 'dusk' },
+  'sfx:coinGive': { type: 'coinGive', player: 0, x: 1, to: 'site' },
+  'sfx:buildProgress': { type: 'buildProgress', site: 1, kind: 'wall', x: 1, percent: 25 },
+  'sfx:revived': { type: 'revived', player: 0, x: 1 },
+  'sfx:boss': { type: 'bossSpawned', boss: 'dragon', x: 4 },
 };
 
 describe('cueFor (B-167/AC-03, AC-04)', () => {
@@ -50,10 +54,19 @@ describe('cueFor (B-167/AC-03, AC-04)', () => {
     expect(cueFor(EVENTS['sfx:coin']!)?.global).toBe(false);
   });
   it('Lücken des Katalogs und unbekannte Typen sind stumm (kein Fehler)', () => {
-    expect(cueFor({ type: 'coinGive', player: 0, x: 1, to: 'site' })).toBeNull();
-    expect(cueFor({ type: 'buildProgress', site: 1, kind: 'wall', x: 1, percent: 25 })).toBeNull();
-    expect(cueFor({ type: 'revived', player: 0, x: 1 })).toBeNull();
     expect(cueFor({ type: 'night', day: 2 })).toBeNull();
+  });
+  it('Boss-Auftritt ist global (SO6.4)', () => expect(cueFor(EVENTS['sfx:boss']!)?.global).toBe(true));
+  it('jeder Slot des Mappings hat eine Datei im Register (SO6.4)', () => {
+    for (const slot of Object.keys(EVENTS)) expect(SFX_URLS[slot], slot).toBeDefined();
+    expect(SFX_URLS['sfx:hub']).toBeDefined();
+  });
+  it('hubRaised: nur ein Anstieg zählt, ohne Vorwert kein Ausbau', () => {
+    expect(hubRaised(1, 2)).toBe(true);
+    expect(hubRaised(2, 2)).toBe(false);
+    expect(hubRaised(3, 2)).toBe(false);
+    expect(hubRaised(undefined, 2)).toBe(false);
+    expect(hubRaised(2, undefined)).toBe(false);
   });
   it('cueFor liest nur: dasselbe Ereignis bleibt unverändert (reine Funktion)', () => {
     const e: GameEvent = { type: 'hit', x: 3, target: 'enemy', id: 1, damage: 4 };
@@ -61,10 +74,10 @@ describe('cueFor (B-167/AC-03, AC-04)', () => {
     cueFor(e);
     expect(e).toEqual(copy);
   });
-  it('jeder Effekt-Slot des Registers mit Datei, der ein Ereignis hat, ist über cueFor erreichbar; sfx:ride wartet auf B-492', () => {
+  it('jeder Effekt-Slot des Registers mit Datei, der ein Ereignis hat, ist über cueFor erreichbar; sfx:ride wartet auf B-558, sfx:hub kommt aus dem Snapshot (onHubLevel)', () => {
     const slots = (assets.slots as SfxSlot[]).filter((s) => s.art === 'sound' && s.bus === 'sfx' && s.wahl.length > 0).map((s) => s.id);
     const reachable = new Set(Object.values(EVENTS).map((e) => cueFor(e)?.slot));
-    expect(slots.filter((id) => !reachable.has(id))).toEqual(['sfx:ride']);
+    expect(slots.filter((id) => !reachable.has(id))).toEqual(['sfx:hub', 'sfx:ride']);
   });
 });
 
