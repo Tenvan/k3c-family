@@ -1,6 +1,6 @@
 # GEB11.2 · Neue Stufenfolge in Daten und Simulation
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -46,5 +46,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Verworfen (2026-10-22, autonom, Claude). Grund: Entscheidung „nur Grafik“ (GEB11.1); eine neue Stufenfolge im Server ist eine kritische Entscheidung (Regeln, Server, Protokoll, Spielstand, Golden, Balancing) und wird 🧑 in einem eigenen Sprint vorgelegt (Vorlage: Sprint-README › Offene Fragen). AC-02 entfällt damit begründet: Simulation und Daten bleiben unverändert, `task check:go` und `task balance` haben nichts Neues zu prüfen.
