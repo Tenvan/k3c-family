@@ -1,6 +1,6 @@
 # BD2 · SIM, SRV, CLI · Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** SIM, SRV, CLI
 - **Reife:** bereit
@@ -59,7 +59,7 @@ keine
 | BD2.1 | `BD2.1-castfailed-drosseln.md` | Umsetzung | autonom | fertig |
 | BD2.2 | `BD2.2-rueckmeldung-beispiel-test.md` | Umsetzung | autonom | fertig |
 | BD2.3 | `BD2.3-lobby-save-fallback.md` | Umsetzung | autonom | fertig |
-| BD2.4 | `BD2.4-review.md` | Review | autonom | offen |
+| BD2.4 | `BD2.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
