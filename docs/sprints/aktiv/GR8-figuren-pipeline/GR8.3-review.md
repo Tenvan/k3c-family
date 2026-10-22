@@ -12,31 +12,29 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Review des Sprints GR8: alle Kriterien geprüft, PR geöffnet.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Review-Session nach `docs/arbeitsweise.md` › Review-Session; Diff `origin/develop...sprint/gr8`.
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-
-- `pfad/…`
+- Befundfixes in den Domänen des Sprints, `docs/sprints/`, `docs/backlog/`
 
 ## Nicht-Ziele
 
-Was in dieser Session ausdrücklich **nicht** passiert.
+Neue Funktionen.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. `task check`, `task check:go`, `task check:race`.
+2. Diff lesen, nur schwere Befunde.
+3. Abnahme (≤ 5 Zeilen), Version vorschlagen, Sprint nach `erledigt/`, PR öffnen.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-01, AC-02: Nachweis in den Ergebnissen GR8.1 und GR8.2; Befunde behoben oder als Ticket.
 
 ## Prüfen
 

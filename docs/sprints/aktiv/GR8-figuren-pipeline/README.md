@@ -1,14 +1,14 @@
-# GR8 · CLI · Eigene Figuren für neue Gegner und Grafik-Pipeline mit Ziel-Palette
+# GR8 · CLI, DEV · Eigene Figuren für neue Gegner und Grafik-Pipeline mit Ziel-Palette
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GRA
-- **Domäne:** CLI
-- **Reife:** Entwurf
+- **Domäne:** CLI, DEV
+- **Reife:** bereit
 - **Tickets:** B-329, B-331
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 013dcb34
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-22, Revision 1
 
 ## Ausgangslage
 
@@ -49,14 +49,17 @@ Pack mit unpassender Pixeldichte → Pipeline lehnt ab und nennt das Pack. Fehle
 
 ## Offene Fragen
 
-🧑: Welche Figuren-Kandidaten aus GR7.3 sollen für die sechs Gegner gelten? Pipeline: Palette DB32 für alle Packs oder nur neue? Domäne der Pipeline (CLI oder DEV)?
+Entschieden autonom (Claude, 2026-10-22), 🧑 prüft im Entscheidungs-Sprint GR10:
+- Figuren für die sechs Gegner: GR7.3 (Auswahl durch 🧑) ist offen; Default = ungenutzte Sheets aus `public/sprites/` je Gegner (Feuergeist, Lavaschleim, Splitterwicht, Kristallwächter) und zwei selbst erzeugte Sheets (Eisenkäfer, Kristallspinne, eigene Arbeit, CC0).
+- Pipeline: DB32 für alle Packs, Ergebnis getrennt von der Quelle in einem eigenen Ordner; das Spiel lädt weiter die Quellen, das Umschalten (B-331/AC-04, TV-Abnahme) entscheidet 🧑.
+- Domäne der Pipeline: DEV (Go-CLI unter `tools/`).
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GR8.1 | `GR8.1-figuren-neue-gegner.md` | Umsetzung | autonom | offen |
-| GR8.2 | `GR8.2-grafik-pipeline.md` | Umsetzung | autonom | offen |
+| GR8.1 | `GR8.1-figuren-neue-gegner.md` | Umsetzung | autonom | in Arbeit |
+| GR8.2 | `GR8.2-grafik-pipeline.md` | Umsetzung | autonom | in Arbeit |
 | GR8.3 | `GR8.3-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
