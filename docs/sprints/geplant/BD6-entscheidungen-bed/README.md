@@ -24,7 +24,7 @@ Entscheidet: 🧑 Ralf. Vorbereitet: Claude. Betroffen: Spielende (Pause, HUD, S
 
 ## Anforderungen
 
-Entscheidungs-Tickets (Default und Alternative stehen je im Ticket): B-525 Goldtopf, B-526 fester WORLD_TOP, B-527 Abmelden mit zwei Tastatur-Spielern, B-528 Regeldetails der Raum-Pause, B-529 Protokollform pause/resume, B-533 Löschen ohne Token mit Sicherung, B-534 Spielmenü gleich Lobby. Weitere Befunde aus BD2 bis BD5 zur Einordnung: B-524 (skillHeld beim Tod zurücksetzen), B-530 (wartende Monarchen nach Verbindungsverlust nicht unverwundbar). Zusätzlich: Protokoll-Version v0.21.0 aus BD3 bestätigen.
+Entscheidungs-Tickets (Default und Alternative stehen je im Ticket): B-525 Goldtopf, B-526 fester WORLD_TOP, B-527 Abmelden mit zwei Tastatur-Spielern, B-528 Regeldetails der Raum-Pause, B-529 Protokollform pause/resume, B-533 Löschen ohne Token mit Sicherung, B-534 Spielmenü gleich Lobby, B-535 Pause nach Wiederverbinden erneut senden (BD7). B-524 und B-530 sind in BD7 umgesetzt. Zusätzlich: Versionen v0.21.0 (BD3) und v0.21.1 (BD7, vorgeschlagen) bestätigen.
 
 ## Nicht-Ziele
 
@@ -44,9 +44,9 @@ Eine Entscheidung wird abgelehnt und berührt bereits gemergten Code → Folge-T
 
 ## Akzeptanzkriterien
 
-- **AC-01** Ralf hat jede Entscheidung B-525 bis B-529, B-533 und B-534 bestätigt oder geändert, vermerkt im jeweiligen Ticket.
+- **AC-01** Ralf hat jede Entscheidung B-525 bis B-529, B-533, B-534 und B-535 bestätigt oder geändert, vermerkt im jeweiligen Ticket.
 - **AC-02** Zu jeder geänderten Entscheidung existiert ein Umsetzungs-Ticket; bestätigte Frage-Tickets sind erledigt.
-- **AC-03** B-524 und B-530 sind einem Sprint zugeordnet oder verworfen.
+- **AC-03** Die Versionsnummern der Sprints BD3 und BD7 sind gesetzt oder verworfen.
 
 ## Offene Fragen
 
