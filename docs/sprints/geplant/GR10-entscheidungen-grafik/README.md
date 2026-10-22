@@ -33,6 +33,7 @@ Entscheidungen (Default von Claude, Alternative):
 5. **DB32-Doppelung:** Palette steht in `tools/pipeline/palette.go` und `tools/buildings/db32.go`; ein gemeinsames Paket ist ein eigenes Ticket, falls gewünscht.
 6. **`kandidaten/` (GR9.1, B-420):** Default: kein Pack, Pack-Test nimmt den Ordner aus. Alternative: eigener Eintrag in `GRAFIK_PACKS`.
 7. **Monarch-Animationen (GR9.2/9.3, B-505):** Default: aus vorhandenen Frames abgeleitet (give = erste Attack-Frames, hit = Blitz + Rückstooß, death = Kippen, respawn = Einwachsen), keine Fremdquelle. Alternative: gezeichnete oder zugekaufte Sheets. Abnahme am TV: GR9.5.
+9. **Offene Sessions nur für 🧑 (nicht autonom machbar):** GR7.3 (Figuren-Kandidaten wählen, Lücken unter `public/sprites/`), GR7.4 (Skalierung am TV), GR9.5 (Monarch-Animationen am TV). Sie sind Abnahmen am Gerät bzw. Auswahl durch 🧑 (`arbeitsweise.md` › SDD, Hardware entkoppelt); Claude hat sie nicht ausgeführt. Sprints GR7 und GR9 bleiben deshalb `aktiv`, GRA nicht `erledigt`.
 8. **Autonom freigegebene Specs:** GR8 und GR9 jeweils Revision 1 („autonom, Claude, 2026-10-22“) bestätigen oder ändern.
 
 ## Nicht-Ziele
