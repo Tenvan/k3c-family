@@ -163,12 +163,12 @@ export class RoomClient {
     return this.status === 'reconnecting' ? this.downSince : null;
   }
 
-  create(save: string, fresh: boolean, depth: number, slots: number[], seed?: string, world?: string): void {
+  create(save: string, fresh: boolean, depth: number, slots: number[], seed?: string, world?: string, options?: { grade: string; goal: string; defeat: string }): void {
     if (this.status !== 'lobby') return;
     this.slotsWanted = slots;
     this.notice = null;
     this.errorCode = null;
-    this.send({ t: 'create', save, fresh, ...(fresh ? { depth } : {}), ...(fresh && seed ? { seed } : {}), ...(fresh && world ? { world } : {}), slots });
+    this.send({ t: 'create', save, fresh, ...(fresh ? { depth } : {}), ...(fresh && seed ? { seed } : {}), ...(fresh && world ? { world } : {}), ...(fresh ? options : {}), slots });
   }
 
   join(room: string, slots: number[]): void {

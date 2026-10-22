@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import createMsg from '../../testdata/protocol/c2s-create.json';
 import deltaMsg from '../../testdata/protocol/s2c-snapshot-delta.json';
 import snapMsg from '../../testdata/protocol/s2c-snapshot-full.json';
 import joined from '../../testdata/protocol/s2c-joined.json';
@@ -367,12 +368,14 @@ describe('Befehle', () => {
     expect(t.last().sent.at(-1)).toEqual({ t: 'create', save: 'probe', fresh: true, depth: 1, seed: 'Familie-2026', slots: [0] });
     t.client.create('probe', false, 0, [0], 'Familie-2026'); // laden: weder depth noch seed
     expect(t.last().sent.at(-1)).toEqual({ t: 'create', save: 'probe', fresh: false, slots: [0] });
+    t.client.create('familie', true, 0, [0], undefined, undefined, { grade: 'normal', goal: 'endboss', defeat: 'stage' }); // K5.2
+    expect(t.last().sent.at(-1)).toEqual(createMsg);
     t.client.join('KRNZ', [0, 1]);
     expect(t.last().sent.at(-1)).toEqual({ t: 'join', room: 'KRNZ', slots: [0, 1] });
     t.last().recv(joined);
     t.client.join('BWTQ', [0]); // im Raum: wird nicht gesendet (der Server würde bad_request antworten)
     t.client.create('x', true, 0, [0]);
-    expect(t.last().sent).toHaveLength(5); // hello, 3× create, join
+    expect(t.last().sent).toHaveLength(6); // hello, 4× create, join
   });
 
   it('seats aktualisiert Zuordnung und Monarchen-Zustände', () => {

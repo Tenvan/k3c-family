@@ -119,7 +119,7 @@ describe('create-Befehl mit slots[] (AC-14, B-082/AC-02)', () => {
     applyCommand(client, { t: 'create', save: 's', fresh: true, depth: 0, slots: [0, 1], seed: 'x', world: 'nordmeer' });
     applyCommand(client, { t: 'join', room: 'KRNZ', slots: [0] });
     expect(calls).toEqual([
-      ['create', 's', true, 0, [0, 1], 'x', 'nordmeer'],
+      ['create', 's', true, 0, [0, 1], 'x', 'nordmeer', undefined],
       ['join', 'KRNZ', [0]],
     ]);
   });
@@ -311,5 +311,35 @@ describe('Neuer Spielstand (BD5.2, B-506/AC-02)', () => {
     expect(entryLabel(entry!, 'familie')).toBe('Neuer Spielstand  (spiel-3)');
     const flow = new LobbyFlow(params({ world: 'nordmeer', seed: 'abc' }));
     expect(flow.choose(entry!)).toEqual({ t: 'create', save: 'spiel-3', fresh: true, depth: 0, slots: [0], seed: 'abc', world: 'nordmeer' });
+  });
+});
+
+describe('Anlegen-Dialog (K5.2, B-105/AC-02)', () => {
+  it('„Neuer Spielstand“ öffnet den Dialog; „Raum anlegen“ sendet grade, goal und defeat wie c2s-create.json', async () => {
+    const createMsg = (await import('../../testdata/protocol/c2s-create.json')).default;
+    const flow = new LobbyFlow(params());
+    flow.openDialog('spiel-2');
+    expect(flow.dialog).toMatchObject({ save: 'spiel-2', row: 0 });
+    const down = (n: number) => { for (let i = 0; i < n; i++) flow.dialogInput({ dir: 1, side: 0, confirm: false }); };
+    flow.dialogInput({ dir: 0, side: 1, confirm: false }); // Grad: normal → hard, Modus folgt dem Standard (stage)
+    down(3);
+    const cmd = flow.dialogInput({ dir: 0, side: 0, confirm: true });
+    expect(cmd).toMatchObject({ t: 'create', save: 'spiel-2', fresh: true, options: { grade: 'hard', goal: 'endboss', defeat: 'stage' } });
+    expect(Object.keys((cmd as { options: object }).options).sort()).toEqual(['defeat', 'goal', 'grade'].filter((k) => k in createMsg).sort());
+    expect(flow.dialog).toBeNull();
+    const sent: unknown[][] = [];
+    applyCommand({ create: (...a: unknown[]) => sent.push(a), join: () => {} }, cmd!);
+    expect(sent[0]?.at(-1)).toEqual({ grade: 'hard', goal: 'endboss', defeat: 'stage' });
+  });
+
+  it('„Abbrechen“ schließt ohne Befehl; Autostart sendet ohne Optionen; abgelehnte Option hat eigenen Hinweis', () => {
+    const flow = new LobbyFlow(params());
+    flow.openDialog('x');
+    flow.dialogInput({ dir: 4, side: 0, confirm: false });
+    expect(flow.dialogInput({ dir: 0, side: 0, confirm: true })).toBeNull();
+    expect(flow.dialog).toBeNull();
+    const auto = new LobbyFlow(params({ autostart: true })).step(lobby);
+    expect(auto).not.toHaveProperty('options');
+    expect(lobbyNotice({ status: 'lobby', notice: null, errorCode: 'bad_request' })).toBeTruthy();
   });
 });
