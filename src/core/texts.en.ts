@@ -137,6 +137,7 @@ export const en: Record<TextKey, string> = {
   'opt.guide': 'Hints (first night)',
   'opt.resume': 'Resume',
   'opt.removePlayer': 'Remove player',
+  'opt.removePlayerOf': 'Remove player  ◀ Player {n} ▶',
   'opt.leave': 'Leave game',
   'opt.on': 'on',
   'opt.off': 'off',

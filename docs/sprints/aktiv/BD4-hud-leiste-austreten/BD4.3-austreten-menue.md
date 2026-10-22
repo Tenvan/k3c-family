@@ -1,6 +1,6 @@
 # BD4.3 · Austreten im Spielmenü
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -49,5 +49,4 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-05 (B-411/AC-01 bis AC-04) umgesetzt und geprüft: `LocalSlots.removeAt(slot)` ersetzt `removeLast` (letzter Spieler -> `leave`), `menuOpener.ts` (Öffner, Ziele), je Pad ein `MenuPress`, `OptionsScene` mit Ziel-Auswahl und Ausgrauen; Vitest in `localSlots`, `menuOpener`, `optionsLogic`. Im Browser mit zwei Tastatur-Spielern bestätigt: Auswahl, nur der gewählte Slot geht, danach Lobby beim letzten Spieler. Keine Protokoll-Änderung. Entscheidung B-527. Pad-/Touch-Öffner und AC-06 am Gerät: BD4.4.

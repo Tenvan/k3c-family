@@ -14,7 +14,7 @@ export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'ambient', 'scre
 /** Registry-Schlüssel: die Optionen melden „Spiel verlassen“, `GameScene` verlässt den Raum (B-293) */
 export const LEAVE_KEY = 'leaveGame';
 
-/** Registry-Schlüssel: „Spieler abmelden“, `GameScene` meldet den zuletzt beigetretenen lokalen Spieler ab (B-411) */
+/** Registry-Schlüssel: „Spieler abmelden“, Wert = Slot des Spielers (sonst `null`); `GameScene` meldet genau ihn ab (B-411) */
 export const REMOVE_PLAYER_KEY = 'removePlayer';
 
 /** Pad-Tasten (standard mapping), die die Szene liest. B (Index 1) bleibt frei: Edge-Zurück auf der Xbox. */
@@ -43,7 +43,7 @@ export interface OptionResult {
   close: boolean;
   /** „Spiel verlassen“ bestätigt: Raum verlassen, zurück zur Lobby */
   leave: boolean;
-  /** „Spieler abmelden“ bestätigt: letzter lokaler Spieler geht (B-411) */
+  /** „Spieler abmelden“ bestätigt: der gewählte Slot geht (B-411) */
   removePlayer: boolean;
 }
 
@@ -105,6 +105,23 @@ export function optionLabel(settings: Settings, id: OptionId): string {
       return t('opt.leave');
   }
 }
+
+/** Szenen-Daten der Optionen: Slots, die „Spieler abmelden“ treffen kann (leer = ausgegraut, B-411) */
+export interface OptionsSceneData {
+  targets: number[];
+}
+
+/** „Spieler abmelden“ ist nur wählbar, wenn der Öffner einen Slot hat; alle anderen Einträge immer */
+export const optionEnabled = (id: OptionId, targets: readonly number[]): boolean => id !== 'removePlayer' || targets.length > 0;
+
+/** Zeilentext von „Spieler abmelden“: bei mehreren Zielen (zwei Tastatur-Spieler) mit Auswahl „◀ Spieler n ▶“ */
+export function removeLabel(settings: Settings, targets: readonly number[], choice: number): string {
+  const slot = targets[choice];
+  return targets.length > 1 && slot !== undefined ? t('opt.removePlayerOf', { n: slot + 1 }) : optionLabel(settings, 'removePlayer');
+}
+
+/** Auswahl des Ziels mit links/rechts, ohne über die Enden zu springen */
+export const stepChoice = (choice: number, dir: OptionDir, count: number): number => (dir === 'confirm' ? choice : moveOption(choice, dir === 'left' ? -1 : 1, count));
 
 /** Tippen: linkes Drittel der Zeile = links, rechtes Drittel = rechts, Mitte = bestätigen. */
 export function tapDir(x: number, width: number): OptionDir {
