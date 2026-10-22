@@ -65,10 +65,12 @@ Autonom vorentschieden (Claude, 2026-10-22), 🧑 bestätigt in KR4:
 | SO6.2 | `SO6.2-sound-atlas-task.md` | Umsetzung | autonom | fertig |
 | SO6.3 | `SO6.3-workshop-luecken.md` | Workshop | Mensch | offen |
 | SO6.4 | `SO6.4-luecken-einbau.md` | Umsetzung | autonom | fertig |
-| SO6.5 | `SO6.5-review.md` | Review | autonom | offen |
+| SO6.5 | `SO6.5-review.md` | Review | autonom | fertig |
 | SO6.6 | `SO6.6-hoerprobe-tv.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-10-22, Review SO6.5 (Reviewer-Agent, Diff `7d3ee511..HEAD`): keine schweren Befunde; `task check` grün, `check:go` grün bis auf den bekannten Wanduhr-Flacker in `engine/devrun` (Einzellauf grün).
+- AC-01, AC-02 geprüft (SO6.1, SO6.2, SO6.4). AC-03 umgesetzt mit Default (B-558), Bestätigung SO6.3 offen. AC-04 offen (SO6.6, TV).
+- Neue Tickets: B-556, B-557, B-558 (KR4). Sprint bleibt `aktiv`; B-492 bleibt `eingeplant`, B-493 und B-494 umgesetzt (Abschluss nach KR4).
+- Version: v0.21.0 vorgeschlagen (Minor: neue Sounds, Atlas), gesetzt erst nach Bestätigung durch 🧑.
