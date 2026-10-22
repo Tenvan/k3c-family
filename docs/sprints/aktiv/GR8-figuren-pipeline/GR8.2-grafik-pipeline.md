@@ -1,6 +1,6 @@
 # GR8.2 · Grafik-Pipeline mit Ziel-Palette und gleicher Pixeldichte
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -56,5 +56,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 geprüft (Claude): `task gen:pipeline` rechnet 57 Grafiken (Liste `docs/assets/pipeline-liste.json`) nach `public/grafik-db32/`; `go test ./tools/pipeline/` grün: jedes Ergebnis-Pixel DB32, Doppellauf byte-gleich, eingechecktes Ergebnis = neuer Lauf, Fehlerfall schreibt nichts.
+  `docs/assets/stil-bibel.md` nennt Palette (Hex), 16 px, Outline (1 px dunkel, wo die Quelle sie hat) und Licht oben links; Outline-/Lichtregel als Entwurf, Freigabe 🧑 (B-331/AC-01).
+- `task check:diff`: läuft beim Aufrufer.
+- Abweichungen: Vorher/Nachher-Seite `pipeline.html` schon hier (Entwicklerseite, AC-03 vorgezogen, Browser ungeprüft); `check:diff` in `Taskfile.yml` kennt `tools/pipeline/*`. Hochskalierung zählt nur, wenn die kürzere Seite danach ≥ 8 px hat (sonst schrumpfte `shadow.png` auf 1×2).
+- Offen für 🧑: Spiel auf `grafik-db32` umschalten (AC-04), `greentree.png` schrumpft auf 16×16, weiches Alpha von `castle-tower.png`/`woodwall.png` wird hart; `house-a.png` gibt es nicht mehr (dafür `props/houses.png`).

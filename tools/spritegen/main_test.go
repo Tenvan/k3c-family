@@ -34,13 +34,10 @@ func TestNurPaletteUndHartesAlpha(t *testing.T) {
 	for _, draw := range []func(*frame, pose){drawBeetle, drawSpider} {
 		for _, a := range anims {
 			img := sheet(draw, a)
-			b := img.Bounds()
-			for y := b.Min.Y; y < b.Max.Y; y++ {
-				for x := b.Min.X; x < b.Max.X; x++ {
-					c := img.NRGBAAt(x, y)
-					if c.A != 0 && !allowed[c] {
-						t.Fatalf("%s (%d,%d): Farbe %v nicht in der Palette", a.name, x, y, c)
-					}
+			for i := 0; i < len(img.Pix); i += 4 {
+				c := color.NRGBA{R: img.Pix[i], G: img.Pix[i+1], B: img.Pix[i+2], A: img.Pix[i+3]}
+				if c.A != 0 && !allowed[c] {
+					t.Fatalf("%s: Farbe %v nicht in der Palette", a.name, c)
 				}
 			}
 		}
