@@ -1,6 +1,6 @@
 # GR8 · CLI, DEV · Eigene Figuren für neue Gegner und Grafik-Pipeline mit Ziel-Palette
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GRA
 - **Domäne:** CLI, DEV
 - **Reife:** bereit
@@ -60,12 +60,13 @@ Entschieden autonom (Claude, 2026-10-22), 🧑 prüft im Entscheidungs-Sprint GR
 |---|---|---|---|---|
 | GR8.1 | `GR8.1-figuren-neue-gegner.md` | Umsetzung | autonom | fertig |
 | GR8.2 | `GR8.2-grafik-pipeline.md` | Umsetzung | autonom | fertig |
-| GR8.3 | `GR8.3-review.md` | Review | autonom | offen |
+| GR8.3 | `GR8.3-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-10-22, Review GR8.3 (Reviewer-Agent, Diff `origin/develop...sprint/gr8`): keine schweren Befunde; AC-01 (GR8.1) und AC-02 (GR8.2) mit Nachweis in den Session-Ergebnissen. `task check` und `task check:go` grün; `check:race` nicht gefahren (CI).
+- Offen für 🧑 (Sprint GR10): Figuren-Auswahl und Optik am TV, Stil-Bibel-Freigabe, Umschalten des Spiels auf `public/grafik-db32/` (B-331/AC-04). B-329 und B-331 bleiben deshalb `eingeplant`.
+- Version: v0.18.0 vorgeschlagen (Minor: neue Figuren, Werkzeug), gesetzt erst nach Bestätigung durch 🧑.
