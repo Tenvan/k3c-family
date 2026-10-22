@@ -22,15 +22,16 @@ Der Snapshot nennt je Knoten, wer ihn markiert hat; der Wimpel ist immer richtig
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spielende mit zwei Spielern (Wimpel-Farbe); 🧑 entscheidet (B-539); Agent SIM, SRV (Protokoll), CLI.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- `markedBy` deterministisch mit der letzten Markier-Münze gesetzt, im Spielstand gespeichert.
+- Zwei Spieler: jeder Knoten trägt die Farbe des letzten Markierers.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Neue Wimpel-Grafik.
 
 ## Regeln und Einschränkungen
 
@@ -38,11 +39,11 @@ Protokolländerung (`docs/protocol.md`, beide Enden, eigene Session), Spielstand
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+Spieler 2 markiert einen Baum, Gerät lädt neu → Wimpel bleibt in Farbe von Spieler 2.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Spieler verlässt den Raum → `markedBy` bleibt, Client zeigt die gespeicherte Farbe oder neutral.
 
 ## Akzeptanzkriterien
 
@@ -51,8 +52,8 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-🧑: Lohnt sich die Protokolländerung, oder reicht die Annäherung aus GEB10.3?
+Entscheidung D2 in B-539 (Sprint KR2): umsetzen oder verwerfen, Default: nach GEB10.5 entscheiden.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Geplant in GEB12.2 (2026-10-22): Prio niedrig, wartet auf B-539.

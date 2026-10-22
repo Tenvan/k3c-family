@@ -91,6 +91,8 @@ Alle Fragen sind am 2026-10-22 autonom von Claude mit Default entschieden (Auftr
 5. **Welche Teile tauschen:** Holzteile (Gestell, Zaun, Tresen) bleiben Holz, Mauerwerk und Dach wechseln das Material der Stufe; bei Gebäuden mit Stein-Grundform (Kaserne, Taverne, Schmiede, Rüstkammer) wechselt der Stein. Die Feinheiten je Gebäude legt GEB9.1 in `docs/standards/gebaeude-grafik.md` § 6 fest.
 6. **Stufen vor der Freischaltung:** behalten (Vorschau, Erweiterbarkeit mit B-458); der Gebäude-Planer kann die Freischaltung jederzeit verschieben.
 
+**Bestätigung (GEB12, D7):** Die Punkte 1, 4, 6 und die dezenten Heilplatz-Stufen liegen Ralf als Frage-Ticket B-544 (Sprint KR2) vor; bis dahin gelten die Defaults.
+
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |

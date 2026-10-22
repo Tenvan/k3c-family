@@ -22,27 +22,28 @@ Der Wald steht sichtbar dichter (mehr Bäume je Abschnitt), die Höhle zeigt Dek
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spielende (Wald, Höhle); 🧑 legt die Werte fest (B-540); Agent REG für `data/`, CLI nur falls der Höhlenbusch nicht erscheint.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- Baumzahl je Abschnitt im Wald nach 🧑 (B-540), deterministisch über den Level-Generator.
+- Höhle (optional Mine) mit `bush` als Deko; Holz-Balancing mit `sim_test` im Rahmen.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Neue Grafik; Baumgröße (B-541).
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Werte in `data/biomes/*.json`; Golden nur mit Begründung (`task go:golden`); Testläufe nur über `sim_test`.
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+Wald `tree [6, 9]` → sichtbar dichter, Holz je Nacht steigt moderat.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+🧑 sagt „so lassen“ → Ticket verworfen.
 
 ## Akzeptanzkriterien
 
@@ -51,8 +52,8 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-🧑: Wie viel dichter (Holz-Balancing)? Höhlenbüsche auch in der Mine?
+Entscheidung D3 in B-540 (Sprint KR2): Werte und Büsche je Biom. Bis dahin keine Werteänderung.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Geplant in GEB12.2 (2026-10-22): wird nach B-540 umgesetzt, Rang im Projekt GEB nach GEB12.

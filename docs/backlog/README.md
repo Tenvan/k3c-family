@@ -161,6 +161,14 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-535](B-535-entscheidung-pause-nach-wiederverbinden.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Pause nach Wiederverbinden erneut senden, Schutz beginnt neu |
 | [B-536](B-536-entscheidung-versionen-bd3-bd7.md) | REG | Frage | hoch | eingeplant | KR1 | Entscheidung: Versionen v0.21.0 (BD3) und v0.21.1 (BD7) bestätigen |
 | [B-537](B-537-entscheidung-bd5-vierter-punkt.md) | CLI | Frage | hoch | eingeplant | KR1 | Entscheidung: Vierter Punkt der BD5-Meldung zum Spielmenü ist unbekannt |
+| [B-538](B-538-entscheidung-hub-wachstum-nur-grafik.md) | REG | Frage | hoch | eingeplant | KR2 | Entscheidung D1: Hub-Wachstum bleibt reine Grafik, keine feinere Stufenfolge im Server |
+| [B-539](B-539-entscheidung-wimpel-markierer.md) | SIM | Frage | hoch | eingeplant | KR2 | Entscheidung D2: Wimpel-Farbe bleibt Client-Annäherung, markedBy erst nach GEB10.5 |
+| [B-540](B-540-entscheidung-wald-dichte.md) | REG | Frage | hoch | eingeplant | KR2 | Entscheidung D3: Wald-Dichte und Höhlenbüsche einplanen, Werte setzt Ralf |
+| [B-541](B-541-entscheidung-baumgroesse.md) | DEV | Frage | hoch | eingeplant | KR2 | Entscheidung D4: Bäume bleiben 11,25 Kacheln hoch |
+| [B-542](B-542-entscheidung-plantage-pappel.md) | DEV | Frage | hoch | eingeplant | KR2 | Entscheidung D5: Plantage-Pappel steht hinter der Farm |
+| [B-543](B-543-entscheidung-truhe-ohne-serverzustand.md) | CLI | Frage | hoch | eingeplant | KR2 | Entscheidung D6: Geschlossene Truhe ohne Serverzustand |
+| [B-544](B-544-entscheidung-geb9-defaults.md) | DEV | Frage | hoch | eingeplant | KR2 | Entscheidung D7: Hub-Gebäude folgen der Hub-Stufe (Defaults aus GEB9) |
+| [B-545](B-545-entscheidung-geruest-bei-gefahr.md) | CLI | Frage | hoch | eingeplant | KR2 | Entscheidung D8: Baugerüst nur ohne Gefahr |
 
 ## Archiv
 
