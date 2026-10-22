@@ -126,31 +126,68 @@ func checkSignature(data []byte, ext string) error {
 }
 
 // storeImport schreibt unter public/<importDir>/ mit Namen aus dem Titel; vorhandene Dateien bleiben (Suffix -2 …).
+// Atomar (B-511): erst eine Temp-Datei im selben Ordner, dann ein harter Link auf den Zielnamen (scheitert, wenn der Name
+// schon vergeben ist, ohne etwas zu überschreiben); der beobachtende Server sieht nie eine halbe Datei.
 func storeImport(root, kind, title, ext string, data []byte) (string, error) {
 	dir := filepath.Join(root, "public", filepath.FromSlash(importDir[kind]))
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return "", err
 	}
+	tmp, err := writeTemp(dir, data)
+	if err != nil {
+		return "", err
+	}
+	defer func() { _ = os.Remove(tmp) }()
 	base := slug(title)
 	for n := 1; n < 100; n++ {
 		name := base + ext
 		if n > 1 {
 			name = fmt.Sprintf("%s-%d%s", base, n, ext)
 		}
-		f, err := os.OpenFile(filepath.Join(dir, name), os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o644)
+		err := publish(tmp, filepath.Join(dir, name))
 		if errors.Is(err, os.ErrExist) {
 			continue
 		}
 		if err != nil {
 			return "", err
 		}
-		_, werr := f.Write(data)
-		if cerr := f.Close(); werr == nil {
-			werr = cerr
-		}
-		return path.Join(importDir[kind], name), werr
+		return path.Join(importDir[kind], name), nil
 	}
 	return "", fmt.Errorf("kein freier Dateiname für %q", base)
+}
+
+// writeTemp schreibt data in eine Temp-Datei in dir (mit Sync) und liefert ihren Pfad.
+func writeTemp(dir string, data []byte) (string, error) {
+	f, err := os.CreateTemp(dir, ".import-*")
+	if err != nil {
+		return "", err
+	}
+	_, werr := f.Write(data)
+	if werr == nil {
+		werr = f.Sync()
+	}
+	if cerr := f.Close(); werr == nil {
+		werr = cerr
+	}
+	if werr != nil {
+		_ = os.Remove(f.Name())
+		return "", werr
+	}
+	_ = os.Chmod(f.Name(), 0o644) // CreateTemp legt 0600 an
+	return f.Name(), nil
+}
+
+// publish macht aus der Temp-Datei tmp die Datei dst, ohne eine vorhandene zu ersetzen (os.ErrExist). Ohne Link-Unterstützung
+// des Dateisystems: Umbenennen nach einer Prüfung (ein Rennen mit gleichem Namen ist dann möglich, aber nie eine halbe Datei).
+func publish(tmp, dst string) error {
+	err := os.Link(tmp, dst)
+	if err == nil || errors.Is(err, os.ErrExist) {
+		return err
+	}
+	if _, serr := os.Stat(dst); serr == nil {
+		return os.ErrExist
+	}
+	return os.Rename(tmp, dst)
 }
 
 // slug macht aus einem Titel einen Dateinamen aus a–z, 0–9 und -, ohne Pfadanteile.

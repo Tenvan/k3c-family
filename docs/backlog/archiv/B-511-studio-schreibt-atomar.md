@@ -1,10 +1,10 @@
-# B-510 · k3c-dev startet den Spielserver bei Änderungen in data/ nicht mehr selbst neu, der Server macht das allein
+# B-511 · Das Studio schreibt jede Datei in data/ und public/ atomar, der Server sieht nie eine halbe Datei
 
 - **Domäne:** DEV
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ25
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-20
@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-k3c-dev startet den Dienst Spielserver bei Änderungen in `data/` selbst neu (Konsole: „k3c-dev: Neustart wegen Änderung an data/…“, beobachtet in TS1.4). Seit TS1.4 (B-507) beobachtet der Server dieselben Ordner, prüft den neuen Stand, kündigt den Neustart im Spiel an und startet selbst neu. Beide zusammen starten doppelt und umgehen Prüfung und Hinweis; der Neustart in k3c-dev sollte entfallen.
+Seit TS1.4 (B-507) beobachtet der Spielserver `data/` und `public/` und prüft nach 2 s Ruhe den neuen Stand. Die meisten Schreibwege des Studios sind atomar (`writeAtomic` in `tools/k3c-studio/backend/plan_file.go` und `tools/assetkit/register.go`); zu prüfen sind die übrigen, z. B. `assets.ImportFile` (Kopie nach `public/…/kandidaten`). Ziel: Jede Datei in beobachteten Ordnern entsteht per Temp-Datei und Umbenennen, damit Entprellen und Prüfung nie eine halbe Datei sehen.
 
 ## Ziel
 

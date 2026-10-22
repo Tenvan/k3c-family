@@ -1,14 +1,14 @@
-# WZ25 · SRV · Nachträge zum Server-Neustart: Räume bleiben offen, Assets ohne Build, Werkzeuge passen dazu
+# WZ25 · SRV, DEV · Nachträge zum Server-Neustart: Räume bleiben offen, Assets ohne Build, Werkzeuge passen dazu
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** WZG
-- **Domäne:** SRV
-- **Reife:** Entwurf
+- **Domäne:** SRV, DEV
+- **Reife:** bereit
 - **Tickets:** B-508, B-509, B-510, B-512, B-511
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-22, autonom, Claude (Auftrag Ralf: autonom abarbeiten), Revision 1; Defaults: B-509 public/ vor dist/ mit Caching nach Inhalt (Last-Modified, no-cache), B-508 Merkdatei restart-rooms.state im Spielstand-Ordner
 
 ## Ausgangslage
 
@@ -56,6 +56,14 @@ Ungültiger Stand → alter Server läuft weiter, Räume bleiben, nichts wird ne
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ25.1 | `WZ25.1-raeume-wieder-oeffnen.md` | Umsetzung | autonom | fertig |
+| WZ25.2 | `WZ25.2-public-ohne-build.md` | Umsetzung | autonom | fertig |
+| WZ25.3 | `WZ25.3-k3c-dev-server.md` | Umsetzung | autonom | fertig |
+| WZ25.4 | `WZ25.4-studio-schreibt-atomar.md` | Umsetzung | autonom | fertig |
+| WZ25.5 | `WZ25.5-review.md` | Review | autonom | fertig |
+
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - WZ25.1 (SRV) Räume nach geplantem Neustart wieder öffnen (AC-01).
@@ -66,5 +74,4 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-22: AC-01 bis AC-05 nachgewiesen (WZ25.1–WZ25.5), Go-Tests und Vitest grün, Reviewer ohne blockierende Befunde (Merkdatei-Alter, Punkt-Ordner, Temp-Dateien im Watcher behoben). Für Ralf im Nachgang: B-509 `public/` vor `dist/` mit Last-Modified/no-cache; B-508 Merkdatei `restart-rooms.state` (2 min gültig); Rückkehr der Geräte in den Raum am echten Gerät nicht geprüft (manuelle Abnahme).

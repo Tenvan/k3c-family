@@ -48,6 +48,9 @@ func (s *server) static(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusForbidden)
 		return
 	}
+	if s.servePublic(w, r) {
+		return
+	}
 	if info, err := os.Stat(file); err == nil && info.IsDir() {
 		file = filepath.Join(file, "index.html")
 	}
@@ -75,4 +78,45 @@ func (s *server) static(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	_, _ = w.Write(data)
+}
+
+// servePublic liefert eine Datei aus public/ vor dem Build (B-509): Dateien der Dateitypen aus mimeTypes außer HTML, die
+// es dort gibt. Gecacht wird nach Inhalt: Last-Modified und `no-cache` lassen den Browser bei jedem Aufruf nachfragen (304,
+// wenn unverändert), eine neue Fassung kommt sofort. Die HTML-Seiten und das Gerüst bleiben aus dem Build.
+func (s *server) servePublic(w http.ResponseWriter, r *http.Request) bool {
+	if s.cfg.Public == "" {
+		return false
+	}
+	file, ok := resolve(s.cfg.Public, r.URL.Path)
+	if !ok || hasDotSegment(r.URL.Path) {
+		return false
+	}
+	ext := strings.ToLower(filepath.Ext(file))
+	mime, known := mimeTypes[ext]
+	if !known || ext == ".html" || ext == ".js" || ext == ".css" {
+		return false
+	}
+	f, err := os.Open(file)
+	if err != nil {
+		return false
+	}
+	defer func() { _ = f.Close() }()
+	info, err := f.Stat()
+	if err != nil || info.IsDir() {
+		return false
+	}
+	w.Header().Set("Content-Type", mime)
+	w.Header().Set("Cache-Control", "no-cache")
+	http.ServeContent(w, r, info.Name(), info.ModTime(), f)
+	return true
+}
+
+// hasDotSegment: ein Pfadsegment mit führendem Punkt (.omc, .git …) liefert der Server nie aus, auch nicht aus public/.
+func hasDotSegment(urlPath string) bool {
+	for _, seg := range strings.Split(urlPath, "/") {
+		if strings.HasPrefix(seg, ".") && seg != "." && seg != ".." {
+			return true
+		}
+	}
+	return false
 }

@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -238,6 +239,50 @@ func TestOwnerPIDNurErreichbareAdressenOhneSystem(t *testing.T) {
 	for i, tc := range cases {
 		if got := ownerPID(tc.conns, 5173); got != tc.want {
 			t.Errorf("Fall %d: PID %d, erwartet %d", i, got, tc.want)
+		}
+	}
+}
+
+// WZ25.3 (B-512/AC-04): Startet der übernommene Server sich selbst neu (neue PID des Kindes, derselbe Supervisor), beendet
+// der Stopp mit force den Supervisor samt Kind; ein fremder Prozess am Port wird nie getroffen.
+func TestUebernommenerServerNachSelbstNeustart(t *testing.T) {
+	cases := map[string]struct {
+		supervisorAfter int
+		wantKilled      []int
+		wantErr         string
+	}{
+		"derselbe Supervisor":  {100, []int{100}, ""},
+		"anderer Supervisor":   {200, nil, "am Port lauscht jetzt PID 4712 statt 4711"},
+		"Supervisor unbekannt": {0, nil, "am Port lauscht jetzt PID 4712 statt 4711"},
+	}
+	for name, c := range cases {
+		f := &fake{listenPID: 4711}
+		f.healthy.Store(true)
+		f.busy.Store(true)
+		ctl := testController(f, nil, svc("Spielserver", true))
+		var sup atomic.Int32
+		sup.Store(100)
+		ctl.opts.Supervisor = func(_ context.Context, pid int) int {
+			if pid == 4711 || pid == 4712 {
+				return int(sup.Load())
+			}
+			return 0
+		}
+		ctl.Adopt(context.Background())
+		f.mu.Lock()
+		f.listenPID = 4712 // Selbst-Neustart: neues Kind
+		f.mu.Unlock()
+		sup.Store(int32(c.supervisorAfter))
+		st, err := ctl.Stop(context.Background(), "Spielserver", true)
+		if c.wantErr == "" {
+			if err != nil || st.State != Stopped {
+				t.Errorf("%s: %+v, %v", name, st, err)
+			}
+		} else if err == nil || !strings.Contains(err.Error(), c.wantErr) {
+			t.Errorf("%s: Fehler %v, erwartet %q", name, err, c.wantErr)
+		}
+		if fmt.Sprint(f.killed) != fmt.Sprint(c.wantKilled) {
+			t.Errorf("%s: beendet %v, erwartet %v", name, f.killed, c.wantKilled)
 		}
 	}
 }

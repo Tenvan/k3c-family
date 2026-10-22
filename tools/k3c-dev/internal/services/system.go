@@ -3,7 +3,9 @@ package services
 import (
 	"context"
 	"net"
+	"path/filepath"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -104,4 +106,27 @@ func sample(ctx context.Context, p *process.Process) (Metrics, error) {
 		m.Started = time.UnixMilli(ms)
 	}
 	return m, nil
+}
+
+// SupervisorOf liefert die PID des Elternprozesses von pid, wenn er dieselbe Programmdatei ist (k3c-server startet sich als
+// Supervisor und Kind aus derselben EXE); sonst 0. Ein fremder Elternprozess (Shell, task) zählt nicht, ein Stopp träfe ihn nie.
+func SupervisorOf(ctx context.Context, pid int) int {
+	child, err := process.NewProcessWithContext(ctx, int32(pid))
+	if err != nil {
+		return 0
+	}
+	ppid, err := child.PpidWithContext(ctx)
+	if err != nil || int(ppid) <= systemPID {
+		return 0
+	}
+	parent, err := process.NewProcessWithContext(ctx, ppid)
+	if err != nil {
+		return 0
+	}
+	a, errA := child.ExeWithContext(ctx)
+	b, errB := parent.ExeWithContext(ctx)
+	if errA != nil || errB != nil || a == "" || !strings.EqualFold(filepath.Clean(a), filepath.Clean(b)) {
+		return 0
+	}
+	return int(ppid)
 }

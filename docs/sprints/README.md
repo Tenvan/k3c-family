@@ -24,7 +24,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WZ25 | SRV | WZG | Nachträge zum Server-Neustart: Räume bleiben offen, Assets ohne Build, Werkzeuge passen dazu | – | Entwurf | `geplant/WZ25-server-neustart-nachtraege/` |
 | BD2 | SIM, SRV, CLI | BED | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | – | Entwurf | `geplant/BD2-rueckmeldung-lobby-nachtraege/` |
 | BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
 | BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | Entwurf | `geplant/BD4-hud-leiste-austreten/` |
@@ -215,3 +214,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ20 | k3c-dev: Planungstest für Entwürfe, Worktree-Einträge vollständig und lesend, sim_test im Worktree | `erledigt/WZ20-planung-worktree-simtest/` |
 | WZ22 | Studio-Editoren: Fehler sichtbar, Im Spiel öffnen wiederholbar | `erledigt/WZ22-studio-editoren-nachtraege/` |
 | WZ24 | Geplante Chunks in Simulation und Spielstand: Regeln geklärt, Planung im Stand, eine Prüfung der Inselgröße | `erledigt/WZ24-chunk-planung-sim-spielstand/` |
+| WZ25 | Nachträge zum Server-Neustart: Räume bleiben offen, Assets ohne Build, Werkzeuge passen dazu | `erledigt/WZ25-server-neustart-nachtraege/` |

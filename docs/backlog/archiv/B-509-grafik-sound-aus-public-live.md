@@ -1,10 +1,10 @@
-# B-508 · Offene Räume sind nach einem Neustart des Servers wieder offen, Geräte kehren ohne Umweg über die Raumliste zurück
+# B-509 · Im Studio geänderte Grafiken und Sounds erreichen die Clients ohne neuen Build
 
 - **Domäne:** SRV
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ25
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-20
@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Seit TS1.4 (B-507) startet der Server nach Änderungen des Studios neu. Vorher speichert er alle Räume und schickt `room_closed`; nach dem Neustart landen die Geräte in der Raumliste und müssen den Spielstand über *Raum erstellen* wieder öffnen. Idee: Beim Herunterfahren für einen Neustart die offenen Räume (Code, Spielstand, Grad, Welt) merken (nicht in beobachteten Ordnern), beim Start wieder öffnen, damit das Wiederverbinden binnen 60 s greift.
+Seit TS1.4 (B-507) beobachtet der Server `public/` und startet bei Änderungen neu. Ausgeliefert wird aber `dist/` (Kopie von `public/` beim Build, Grafiken mit `Cache-Control: immutable`). Eine im Studio geänderte Grafik oder ein Sound erreicht die Clients deshalb erst nach `task build`. Zu klären: Auslieferung aus `public/` vor `dist/` (mit passendem Caching) oder Kopie beim Start.
 
 ## Ziel
 

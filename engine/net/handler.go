@@ -19,6 +19,9 @@ import (
 // Config sind die Teile des Servers; Log darf nil sein.
 type Config struct {
 	Dist    string // Produktions-Build (dist/)
+	// Public ist public/ (Grafik, Sound, Atlas): Dateien daraus gehen dem Build vor, damit eine im Studio geänderte Datei
+	// ohne `task build` ankommt (B-509); leer = nur dist/.
+	Public string
 	Saves   *store.Saves
 	Reports *store.Reports
 	Log     *slog.Logger

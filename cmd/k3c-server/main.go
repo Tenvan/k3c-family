@@ -125,11 +125,12 @@ func run(cfg config, log *slog.Logger) error {
 	saves := &store.Saves{Dir: cfg.saves}
 	reports := &store.Reports{Dir: cfg.reports}
 	rooms := newRooms(cfg, log, saves, reports)
+	reopenRooms(rooms, saves, log) // nach einem Neustart wegen geänderter Dateien: die vorher offenen Räume (B-508)
 	conns := &sync.WaitGroup{}
 	clientLog, closeClientLog := newNamedLogger(logDir(), clientLogFile, os.Stderr)
 	defer closeClientLog()
 	notices := &k3cnet.Notices{}
-	handler := k3cnet.NewHandler(k3cnet.Config{Dist: cfg.dist, Log: log, ClientLog: clientLog, Version: version, Built: buildTime(), StartedAt: time.Now(),
+	handler := k3cnet.NewHandler(k3cnet.Config{Dist: cfg.dist, Public: cfg.public, Log: log, ClientLog: clientLog, Version: version, Built: buildTime(), StartedAt: time.Now(),
 		StatusToken: cfg.statusToken, LogDir: logDir(), Saves: saves, Reports: reports, Rooms: rooms,
 		Conns: conns, Notices: notices})
 	if cfg.statusToken == "" {
@@ -157,6 +158,7 @@ func run(cfg config, log *slog.Logger) error {
 	case <-restart:
 		log.Info("🔁 Server fährt für den Neustart herunter", "ns", "watch", "raeume", len(rooms.Rooms()))
 		reason = errRestart
+		rememberRooms(rooms, saves, log)
 	}
 	rooms.Close() // alle Räume speichern, room_closed an die Geräte, Verbindungen schließen
 	waitConns(conns, 2*time.Second)

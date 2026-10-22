@@ -32,7 +32,12 @@ func (c *Controller) adopt(ctx context.Context, u *unit, pid int) {
 		started = m.Started
 	}
 	wctx, cancel := context.WithCancel(context.Background())
+	sup := 0
+	if pid > systemPID {
+		sup = c.opts.Supervisor(ctx, pid)
+	}
 	u.mu.Lock()
+	u.supervisor = sup
 	u.unwatch = cancel
 	u.mu.Unlock()
 	c.set(u, func(s *Status) { s.State, s.PID, s.StartedAt, s.LastError = Adopted, pid, started, "" })
@@ -89,20 +94,32 @@ func (c *Controller) stopAdopted(u *unit, force bool) (Status, error) {
 	// Die PID von der Übernahme kann veraltet sein (von Hand neu gestartet, inzwischen neu vergeben): beendet wird nur,
 	// wer jetzt am Port lauscht, und nur, wenn es derselbe Prozess ist.
 	pid, listening := c.opts.Listen(context.Background(), u.svc.Port)
+	// Startet der Server sich selbst neu (Datei-Watch, TS1.4), hat das Kind eine neue PID, sein Supervisor bleibt: gleicher
+	// Supervisor wie bei der Übernahme gilt als derselbe Dienst (B-512). Beendet wird der Supervisor samt Kind, sonst
+	// startete er das Kind neu.
+	sup := 0
+	if listening && pid > systemPID {
+		sup = c.opts.Supervisor(context.Background(), pid)
+	}
+	sameFamily := sup > systemPID && sup == u.supervisor
 	switch {
 	case !listening:
 		c.release(u)
 		return c.set(u, func(s *Status) { s.State, s.PID, s.LastError, s.CPU, s.Memory = Stopped, 0, lostAdopted, 0, 0 }), nil
-	case pid != st.PID:
+	case pid != st.PID && !sameFamily:
 		return st, fmt.Errorf("%s: am Port lauscht jetzt PID %d statt %d; nichts beendet, bitte prüfen", u.svc.Name, pid, st.PID)
+	}
+	target := pid
+	if sameFamily {
+		target = sup
 	}
 	c.release(u)
 	c.set(u, func(s *Status) { s.State = Stopping })
-	if err := c.opts.KillPID(pid); err != nil {
+	if err := c.opts.KillPID(target); err != nil {
 		c.opts.Log.Warn("🛑 dienst "+u.svc.Name+": übernommenen Prozess beenden: "+err.Error(), "ns", "svc")
 	}
 	if !c.waitPortFree(u) {
-		c.adopt(context.Background(), u, pid) // lebt weiter: bleibt übernommen und überwacht
+		c.adopt(context.Background(), u, pid) // lebt weiter: bleibt übernommen und überwacht (mit neuer PID und Supervisor)
 		return u.status(), fmt.Errorf("%s: PID %d läuft nach dem Beenden weiter (Port %d belegt)", u.svc.Name, pid, u.svc.Port)
 	}
 	return c.set(u, func(s *Status) { s.State, s.PID, s.LastError, s.CPU, s.Memory = Stopped, 0, "", 0, 0 }), nil

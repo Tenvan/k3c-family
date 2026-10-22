@@ -2,10 +2,10 @@
   { "name": "Vite", "tags": ["Spiel", "Client"], "description": "Vite-Dev-Server: liefert den Browser-Client mit Hot Reload aus, leitet /api und /ws an den Go-Server weiter.",
     "command": ["task", "dev", "--", "--strictPort"], "cwd": ".", "port": 5183, "health": "http",
     "portEnv": "K3C_VITE_PORT", "autoRestart": true },
-  { "name": "Spielserver", "tags": ["Spiel", "Backend"], "description": "Go-Spielserver (Engine, API, WebSocket); startet bei Änderungen an Go-Code und data/ neu.",
+  { "name": "Spielserver", "tags": ["Spiel", "Backend"], "description": "Go-Spielserver (Engine, API, WebSocket); startet bei Änderungen an Go-Code neu; Änderungen an data/ und public/ erkennt der Server selbst (Datei-Watch mit Prüfung und Hinweis, TS1.4), k3c-dev startet ihn dafür nicht.",
     "command": ["task", "start"], "cwd": ".", "port": 8080, "health": "http", "log": "k3c-server",
     "portEnv": "K3C_HTTP_PORT", "env": { "K3C_STATUS_TOKEN": "TEST_TOKEN" },
-    "watch": { "paths": ["cmd", "engine", "data", "go.mod", "go.sum"], "ext": [".go", ".json"] } },
+    "watch": { "paths": ["cmd", "engine", "data", "go.mod", "go.sum"], "ext": [".go"] } },
   { "name": "Asset-Studio", "tags": ["Werkzeug", "Studio"], "description": "Asset-Studio als Client/Server-Dev (task k3c-studio:dev): Backend mit -dev (Neubau bei Go-Änderungen, Port 8192) und Oberfläche unter Vite mit Hot Reload.",
     "command": ["task", "k3c-studio:dev"], "cwd": ".", "port": 5192, "health": "http",
     "portEnv": "K3C_STUDIO_UI_PORT" }

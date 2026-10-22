@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -13,7 +14,9 @@ import (
 	"time"
 
 	"k3c/data"
+	"k3c/engine/room"
 	"k3c/engine/sim"
+	"k3c/engine/store"
 	"k3c/engine/watch"
 )
 
@@ -158,4 +161,46 @@ func checkData(cfg config, w io.Writer) int {
 		}
 	}
 	return code
+}
+
+// roomMemory ist die Ablage der gemerkten Räume (store.Saves); die Naht für den Test.
+type roomMemory interface {
+	RememberRooms(data []byte) error
+	TakeRememberedRooms() ([]byte, error)
+}
+
+// rememberRooms merkt sich die offenen Räume vor dem Herunterfahren für einen geplanten Neustart (B-508). Bei einem
+// Absturz oder einem Signal gibt es keine gemerkten Räume: nur der geplante Neustart öffnet sie wieder.
+func rememberRooms(rooms *room.Manager, mem roomMemory, log *slog.Logger) {
+	refs := rooms.OpenRefs()
+	if len(refs) == 0 {
+		return
+	}
+	raw, err := json.Marshal(refs)
+	if err == nil {
+		err = mem.RememberRooms(raw)
+	}
+	if err != nil {
+		log.Error("❌ offene Räume nicht gemerkt, Geräte landen nach dem Neustart in der Raumliste", "ns", "watch", "err", err)
+		return
+	}
+	log.Info("💾 offene Räume für den Neustart gemerkt", "ns", "watch", "raeume", len(refs))
+}
+
+// reopenRooms öffnet die gemerkten Räume und löscht die Merkdatei; ohne Datei geschieht nichts.
+func reopenRooms(rooms *room.Manager, mem roomMemory, log *slog.Logger) {
+	raw, err := mem.TakeRememberedRooms()
+	if errors.Is(err, store.ErrNotFound) {
+		return
+	}
+	var refs []room.RoomRef
+	if err == nil {
+		err = json.Unmarshal(raw, &refs)
+	}
+	if err != nil {
+		log.Warn("🚫 gemerkte Räume nicht lesbar, keine Räume geöffnet", "ns", "watch", "err", err)
+		return
+	}
+	n := rooms.Reopen(refs)
+	log.Info("🏰 Räume nach dem Neustart geöffnet", "ns", "watch", "gemerkt", len(refs), "geoeffnet", n)
 }

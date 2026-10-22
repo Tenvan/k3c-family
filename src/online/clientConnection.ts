@@ -408,8 +408,10 @@ export class RoomClient {
         break; // dev ohne Dev-Mode bzw. Neustart angekündigt (B-507): Hinweis zeigen, Raum und Verbindung bleiben
       case 'room_closed':
       case 'room_not_found':
+        // Nach „Server startet neu“ bleibt der Raum im Client: der Server öffnet ihn nach dem Neustart mit demselben Code
+        // wieder, das Gerät tritt beim Wiederverbinden mit `join` bei (B-508). Fehlt er, folgt room_not_found → Raumliste.
+        if (code === 'room_closed' && this.errorCode === 'restarting') return;
         this.clearRoom();
-        if (code === 'room_closed' && this.errorCode === 'restarting') return void (this.status = 'lobby'); // „Server startet neu“ bleibt
         this.setConnected();
         break;
       default:

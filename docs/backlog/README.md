@@ -147,11 +147,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-504](B-504-preset-skills-backstab-smokebomb.md) | REG | Problem | niedrig | eingeplant | SK2 | Die Skills backstab und smokeBomb des Presets Dieb stehen in data/monarch.json |
 | [B-505](B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | eingeplant | GR9 | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |
 | [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | eingeplant | BD5 | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
-| [B-508](B-508-raeume-nach-neustart-wieder-offen.md) | SRV | Idee | mittel | eingeplant | WZ25 | Offene Räume sind nach einem Neustart des Servers wieder offen, Geräte kehren ohne Umweg über die Raumliste zurück |
-| [B-509](B-509-grafik-sound-aus-public-live.md) | SRV | Idee | mittel | eingeplant | WZ25 | Im Studio geänderte Grafiken und Sounds erreichen die Clients ohne neuen Build |
-| [B-510](B-510-k3c-dev-kein-doppelter-neustart.md) | DEV | Schuld | niedrig | eingeplant | WZ25 | k3c-dev startet den Spielserver bei Änderungen in data/ nicht mehr selbst neu, der Server macht das allein |
-| [B-511](B-511-studio-schreibt-atomar.md) | DEV | Schuld | niedrig | eingeplant | WZ25 | Das Studio schreibt jede Datei in data/ und public/ atomar, der Server sieht nie eine halbe Datei |
-| [B-512](B-512-k3c-dev-uebernommener-server-neue-pid.md) | DEV | Problem | niedrig | eingeplant | WZ25 | k3c-dev beendet einen übernommenen Spielserver auch nach dessen Selbst-Neustart (neue PID am Port, Supervisor-Prozess) |
 | [B-516](B-516-studio-chat-promptgeruest-als-instruktion.md) | DEV | Idee | mittel | eingeplant | WZ21 | Prompt-Grundgerüst des Studio-Chats ist eine feste Instruktion im Code statt Text im Eingabefeld |
 | [B-517](B-517-geplante-chunks-gegnerlager.md) | REG | Idee | mittel | offen | – | Geplante Chunks tragen Gegnerlager mit stationärer Wache |
 | [B-519](B-519-plan-next-origin.md) | DEV | Problem | mittel | offen | – | plan_next berücksichtigt den Stand der Sprint-Branches auf origin |
@@ -483,3 +478,8 @@ Zeile in diesen Abschnitt.
 | [B-490](archiv/B-490-sim-chunk-anzahl-nachtraege.md) | SIM | Schuld | niedrig | erledigt | WZ24 | Sim: Chunk-Anzahl mit Kandidaten-hub.json und gemeinsame Prüfung der Inselgröße |
 | [B-479](archiv/B-479-hub-pruefung-geplante-chunks.md) | SIM | Schuld | niedrig | erledigt | WZ24 | Prüfung der Kandidaten-hub.json: geplante Chunks nach WZ8 mitprüfen |
 | [B-497](archiv/B-497-grosse-inseln-last-und-umwandlung.md) | SIM | Frage | niedrig | erledigt | WZ24 | Große Inseln: Last im Spiel messen, Umwandlung in allen Biomen testen, PlanSave gegen Parallelität |
+| [B-508](archiv/B-508-raeume-nach-neustart-wieder-offen.md) | SRV | Idee | mittel | erledigt | WZ25 | Offene Räume sind nach einem Neustart des Servers wieder offen, Geräte kehren ohne Umweg über die Raumliste zurück |
+| [B-509](archiv/B-509-grafik-sound-aus-public-live.md) | SRV | Idee | mittel | erledigt | WZ25 | Im Studio geänderte Grafiken und Sounds erreichen die Clients ohne neuen Build |
+| [B-510](archiv/B-510-k3c-dev-kein-doppelter-neustart.md) | DEV | Schuld | niedrig | erledigt | WZ25 | k3c-dev startet den Spielserver bei Änderungen in data/ nicht mehr selbst neu, der Server macht das allein |
+| [B-512](archiv/B-512-k3c-dev-uebernommener-server-neue-pid.md) | DEV | Problem | niedrig | erledigt | WZ25 | k3c-dev beendet einen übernommenen Spielserver auch nach dessen Selbst-Neustart (neue PID am Port, Supervisor-Prozess) |
+| [B-511](archiv/B-511-studio-schreibt-atomar.md) | DEV | Schuld | niedrig | erledigt | WZ25 | Das Studio schreibt jede Datei in data/ und public/ atomar, der Server sieht nie eine halbe Datei |

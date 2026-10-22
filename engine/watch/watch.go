@@ -9,6 +9,7 @@ import (
 	"io/fs"
 	"maps"
 	"slices"
+	"strings"
 	"time"
 )
 
@@ -76,12 +77,18 @@ func (w *Watcher) mark(path string, now time.Time) {
 	w.last = now
 }
 
+// isTemp: Temp-Dateien des Studios beim atomaren Schreiben (.import-*, .assets-*, .tmp-*) sind keine Änderung; erst das
+// Umbenennen zählt (B-511).
+func isTemp(name string) bool {
+	return strings.HasPrefix(name, ".import-") || strings.HasPrefix(name, ".assets-") || strings.HasPrefix(name, ".tmp-")
+}
+
 // scan liest Größe und Änderungszeit aller Dateien; fehlende oder unlesbare Ordner und Dateien fallen weg.
 func (w *Watcher) scan() map[string]stamp {
 	out := map[string]stamp{}
 	for _, r := range w.roots {
 		_ = fs.WalkDir(r.FS, ".", func(p string, d fs.DirEntry, err error) error {
-			if err != nil || d.IsDir() {
+			if err != nil || d.IsDir() || isTemp(d.Name()) {
 				return nil
 			}
 			if info, err := d.Info(); err == nil {

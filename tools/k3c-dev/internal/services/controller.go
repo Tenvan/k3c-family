@@ -76,6 +76,9 @@ type Options struct {
 	Listen        Listener
 	Sample        Sampler
 	KillPID       func(pid int) error // übernommene Prozesse (ohne Job)
+	// Supervisor liefert die PID des Supervisors, der den Prozess pid als Kind gestartet hat (k3c-server startet sich als
+	// Kind und nach einem Selbst-Neustart mit neuer PID neu), 0 = keiner. Test-Naht.
+	Supervisor func(ctx context.Context, pid int) int
 	Now           func() time.Time
 	StartTimeout  time.Duration // 60 s bis gesund
 	StartPoll     time.Duration // 1 s zwischen zwei Prüfungen beim Start
@@ -109,6 +112,9 @@ func (o *Options) defaults() {
 	}
 	if o.Sample == nil {
 		o.Sample = NewSampler()
+	}
+	if o.Supervisor == nil {
+		o.Supervisor = SupervisorOf
 	}
 	if o.KillPID == nil {
 		o.KillPID = proc.KillTree
@@ -146,6 +152,8 @@ type unit struct {
 	run      *run
 	restarts []time.Time
 	unwatch  context.CancelFunc // Überwachung eines übernommenen Dienstes
+	// supervisor ist die PID des Supervisors des übernommenen Prozesses (0 = keiner oder unbekannt, B-512)
+	supervisor int
 	unfiles  context.CancelFunc // Beobachtung der Dateien (Watch-Modus)
 }
 
