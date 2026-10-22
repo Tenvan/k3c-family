@@ -67,7 +67,7 @@ keine blockierenden. Beim autonomen Freigeben mit Default entschieden und als Ti
 |---|---|---|---|---|
 | BD7.1 | `BD7.1-skillheld-tod.md` | Umsetzung | autonom | fertig |
 | BD7.2 | `BD7.2-wartende-geschuetzt.md` | Umsetzung | autonom | fertig |
-| BD7.3 | `BD7.3-pause-client.md` | Umsetzung | autonom | offen |
+| BD7.3 | `BD7.3-pause-client.md` | Umsetzung | autonom | fertig |
 | BD7.4 | `BD7.4-review.md` | Review | autonom | offen |
 
 BD7.1 (SIM) AC-01, BD7.2 (SIM) AC-02, AC-03, BD7.3 (CLI) AC-04, AC-05, BD7.4 Review (alle).

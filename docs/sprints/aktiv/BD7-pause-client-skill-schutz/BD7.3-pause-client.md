@@ -1,6 +1,6 @@
 # BD7.3 · Client: Optionen-Szene pausiert das Gerät am Server
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -52,5 +52,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04 umgesetzt: `pauseMessage` (`src/online/clientPause.ts`), `RoomClient.setPaused` sendet nur bei Änderung und nur im Raum, `clearRoom` setzt den Stand zurück; geprüft: `clientPause.test.ts` (reine Funktion; Mock-Socket: 30 Frames → ein `pause`/`resume`, Abbruch und Wiederbeitritt mit offenem Menü → erneutes `pause`, `leave` statt `resume`). Default B-535 umgesetzt.
+- AC-05 umgesetzt: `GameScene.update` ruft `client.setPaused(this.scene.isActive('options'))` je Frame im Raum; geprüft: `task check:diff` grün (inkl. `noSim`). Review (Sonnet): kein schwerer Befund; Lücke: die eine Zeile in `GameScene` hat keinen eigenen Test. Browser-Nachweis: siehe BD7.4.
