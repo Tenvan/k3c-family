@@ -1,6 +1,6 @@
 # BD4.2 · Fluss mit gespiegeltem Hintergrund unter der Bodenlinie
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -45,5 +45,4 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03 geprüft im Browser-Pane (2 Spieler, Dev-Build auf Port 5193): unter der Bodenlinie liegt der Fluss mit kopfüber gespiegeltem Hintergrund und Wellen in beiden Feldern. Keine Codeänderung nötig (`stageView.ts` aus #277). Beobachtung am Gerät bleibt BD4.4. Hintergrund-Höhe je Biom: Default fester `WORLD_TOP`, B-526.
