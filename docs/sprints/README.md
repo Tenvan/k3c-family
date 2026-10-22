@@ -27,7 +27,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| BD3 | SRV | BED | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | – | Entwurf | `geplant/BD3-raum-pause/` |
 | BD5 | SRV | BED | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | – | Entwurf | `geplant/BD5-spielmenue-welt-spielstaende/` |
 | BD6 | REG | BED | Autonome Entscheidungen zu BED prüfen und festschreiben | – | Entwurf | `geplant/BD6-entscheidungen-bed/` |
 | GEB12 | REG | GEB | Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte) | – | Entwurf | `geplant/GEB12-entscheidungen-geb9-11/` |
@@ -216,5 +215,6 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ25 | Nachträge zum Server-Neustart: Räume bleiben offen, Assets ohne Build, Werkzeuge passen dazu | `erledigt/WZ25-server-neustart-nachtraege/` |
 | WZ21 | Studio-Chat: eigene Umgebung, Grundgerüst als Instruktion, Entwurf geschützt | `erledigt/WZ21-studio-chat-nachtraege/` |
 | WZ23 | Studio-Vorschauen: Reittiere aus dem Spielcode, Monarch-Seite, Boss-Anzeigen, Gebäude-Planer abgenommen | `erledigt/WZ23-studio-vorschauen-nachtraege/` |
+| BD3 | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | `erledigt/BD3-raum-pause/` |
 | BD2 | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | `erledigt/BD2-rueckmeldung-lobby-nachtraege/` |
 | GR8 | Eigene Figuren für neue Gegner und Grafik-Pipeline mit Ziel-Palette | `erledigt/GR8-figuren-pipeline/` |

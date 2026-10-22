@@ -53,7 +53,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | eingeplant | RG2 | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
 | [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | eingeplant | W11 | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
 | [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | eingeplant | W11 | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
-| [B-214](B-214-server-pause.md) | SRV | Idee | mittel | eingeplant | BD3 | Der Server pausiert den Raum im Couch-Raum und schützt den stehenden Monarchen online |
 | [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | eingeplant | RG1 | Burg hält Nacht 1–5 nur in 47 % der Seeds, Ziel 75–90 % |
 | [B-217](B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | eingeplant | LV1 | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | eingeplant | RG2 | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
@@ -150,6 +149,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-521](B-521-types-ts-aufteilen.md) | CLI | Schuld | niedrig | offen | – | src/model/types.ts liegt über der Dateigrenze von 400 Zeilen |
 | [B-522](B-522-ressourcen-auf-ruine.md) | SIM | Problem | mittel | offen | – | Zufalls-Ressourcen eines geplanten Chunks können auf seiner Ruine liegen |
 | [B-523](B-523-ruine-kollision-hub-platz.md) | SIM | Schuld | niedrig | offen | – | Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt |
+| [B-528](B-528-entscheidung-pause-regeldetails.md) | SRV | Frage | mittel | offen | – | Entscheidung: Regeldetails der Raum-Pause (Couch-Raum, Schutz, Frist) |
+| [B-529](B-529-entscheidung-pause-protokoll.md) | SRV | Frage | mittel | offen | – | Entscheidung: Protokoll v8 für pause/resume ohne Rückmeldung im Zustand |
+| [B-530](B-530-wartender-monarch-verwundbar.md) | SIM | Problem | mittel | offen | – | Wartende Monarchen nach Verbindungsverlust sind in der Simulation nicht unverwundbar |
 | [B-524](B-524-skillheld-tod-zuruecksetzen.md) | SIM | Problem | niedrig | offen | – | skillHeld beim Tod zurücksetzen, damit der erste Druck nach dem Respawn castFailed meldet |
 | [B-531](B-531-wald-dichter-hoehle-bueesche.md) | REG | Idee | mittel | offen | – | Wald hat mehr Bäume je Abschnitt, Höhle bekommt Deko-Büsche |
 | [B-532](B-532-snapshot-markiert-von.md) | SIM | Idee | niedrig | offen | – | Snapshot nennt, wer einen Knoten markiert hat |
@@ -488,4 +490,5 @@ Zeile in diesen Abschnitt.
 | [B-516](archiv/B-516-studio-chat-promptgeruest-als-instruktion.md) | DEV | Idee | mittel | erledigt | WZ21 | Prompt-Grundgerüst des Studio-Chats ist eine feste Instruktion im Code statt Text im Eingabefeld |
 | [B-501](archiv/B-501-planer-vorschau-fixiert-markiert.md) | DEV | Idee | mittel | erledigt | WZ23 | Gebäude-Planer: Live-Vorschau unten fest, gewähltes Gebäude markiert |
 | [B-469](archiv/B-469-gegner-seite-boss-effekte-nach-k5.md) | DEV | Idee | niedrig | erledigt | WZ23 | Die Gegner-Seite zeigt Warnkreis, Boss-Leiste, Phasen und Event-Banner aus K5.1 |
+| [B-214](archiv/B-214-server-pause.md) | SRV | Idee | mittel | erledigt | BD3 | Der Server pausiert den Raum im Couch-Raum und schützt den stehenden Monarchen online |
 | [B-420](archiv/B-420-importe-grafikpacks.md) | DEV | Schuld | mittel | erledigt | GR9 | Mit k3c-workbench importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht |

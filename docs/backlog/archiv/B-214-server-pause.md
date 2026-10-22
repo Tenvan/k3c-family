@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** BD3
 - **Projekt:** BED
 - **Erstellt:** 2026-10-04
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-22 (mit BD3)
 
 ## Ausgangslage
 
