@@ -1,6 +1,6 @@
 # SO6.2 · Task für den Sound-Atlas aus dem Slot-Register
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -51,5 +51,10 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-22, autonom (Claude). Default B-557: Atlas bauen und nutzen, Einzeldateien als Rückfall.
+
+- **AC-02 (B-494/AC-01) umgesetzt, geprüft:** `tools/soundatlas` (Go, ffmpeg) + Task `gen:soundatlas` (`tools/Taskfile.yml`, EXE `bin/soundatlas`). 11 Effekt-Slots, 9,7 s, `atlas.ogg` 66 KB, `atlas.mp3` 78 KB; zweimal erzeugt byte-gleich (deterministisch). Go-Tests `pickEntries`, `layout`; TS-Test „der erzeugte Atlas enthält jeden aktiven Effekt-Slot“ (`audioCore.test.ts`). Fehler → Slot im Text, kein halber Atlas (Temp, dann Umbenennen); Pfade außerhalb `public/` abgelehnt.
+- **AC-02 (B-494/AC-02) umgesetzt, geprüft (Test):** Kern lädt nach der ersten Eingabe `atlas.json` + eine Audiodatei; Slots im Atlas spielen als Sprite (Stimmen-Grenze `MAX_SAMPLE_VOICES` auch dort), nur Slots ohne Eintrag laden einzeln (Test der Anfragen). Effekt-Anfragen: 12 → 1 (plus `atlas.json`). Browser-Pane nicht beobachtet (Audio braucht echte Geste); Messung am TV SO6.6.
+- Der alte Sinus-Platzhalter-Atlas ist ersetzt (`public/audio/README.md` › Sound-Atlas).
+- Review (Sonnet, getrennt): keine schweren Befunde; zwei Hinweise (Umbenennen statt Überschreiben, Pfad-Prüfung) behoben. `task check:diff`, `go:lint` grün.
+- Hinweis: nach Änderung der Reihenfolge im Slot ist der Atlas veraltet, bis `task gen:soundatlas` läuft; der Test prüft nur die Slot-Menge.

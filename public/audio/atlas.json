@@ -1,8 +1,53 @@
 {
-  "files": { "ogg": "atlas.ogg", "mp3": "atlas.mp3" },
+  "_comment": "Erzeugt von task gen:soundatlas (tools/soundatlas) aus data/assets.json; nicht von Hand ändern.",
+  "files": {
+    "mp3": "atlas.mp3",
+    "ogg": "atlas.ogg"
+  },
   "sprites": {
-    "coin": { "start": 0.0, "duration": 0.2 },
-    "hit": { "start": 0.3, "duration": 0.2 },
-    "warn": { "start": 0.6, "duration": 0.2 }
+    "sfx:arrow": {
+      "start": 0,
+      "duration": 0.415
+    },
+    "sfx:build": {
+      "start": 0.565,
+      "duration": 0.261
+    },
+    "sfx:coin": {
+      "start": 0.976,
+      "duration": 0.846
+    },
+    "sfx:death": {
+      "start": 1.972,
+      "duration": 0.781
+    },
+    "sfx:hit": {
+      "start": 2.903,
+      "duration": 0.431
+    },
+    "sfx:kill": {
+      "start": 3.483,
+      "duration": 1.475
+    },
+    "sfx:portal": {
+      "start": 5.108,
+      "duration": 0.441
+    },
+    "sfx:revive": {
+      "start": 5.699,
+      "duration": 1.149
+    },
+    "sfx:skill": {
+      "start": 6.999,
+      "duration": 0.676
+    },
+    "sfx:strike": {
+      "start": 7.825,
+      "duration": 0.24
+    },
+    "sfx:warn": {
+      "start": 8.215,
+      "duration": 1.48
+    }
   }
 }

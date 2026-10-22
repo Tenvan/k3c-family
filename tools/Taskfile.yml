@@ -59,3 +59,20 @@ tasks:
     cmds:
       - go build -o bin/regeltabelle{{exeExt}} ./tools/ruletable
       - ./bin/regeltabelle{{exeExt}}
+
+  soundatlas:
+    desc: Sound-Atlas public/audio/atlas.{ogg,mp3,json} aus den Effekt-Slots in data/assets.json packen (erste Präferenz je Slot, ffmpeg; feste EXE bin/soundatlas, SO6.2, B-494)
+    deps: [':tmp']
+    preconditions:
+      - sh: command -v go
+        msg: Go fehlt (requirements.md)
+      - sh: command -v ffmpeg
+        msg: ffmpeg fehlt (requirements.md)
+    sources:
+      - tools/soundatlas/*.go
+      - data/assets.json
+    generates:
+      - public/audio/atlas.json
+    cmds:
+      - go build -o bin/soundatlas{{exeExt}} ./tools/soundatlas
+      - ./bin/soundatlas{{exeExt}}

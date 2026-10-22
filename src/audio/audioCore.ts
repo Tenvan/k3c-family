@@ -1,7 +1,8 @@
 /**
  * Audio-Kern (B-011): erzeugt den `AudioContext` erst bei der ersten Eingabe (davor kein Audio, keine Browser-Warnung) und ruft
  * `resume()`, bis er läuft (Gamepad-Tasten zählen in Chromium nicht immer als Geste: dann bleibt es stumm, ohne Fehler).
- * Danach: Mixer und Sound-Atlas laden (2 Requests: `atlas.json` + eine Audiodatei im gewählten Format).
+ * Danach: Mixer und Sound-Atlas laden (2 Requests: `atlas.json` + eine Audiodatei im gewählten Format). Der Atlas enthält die
+ * Effekt-Slots (`task gen:soundatlas`, SO6.2); nur Slots ohne Atlas-Eintrag laden als Einzeldatei (Rückfall).
  */
 import { clientLog } from '../core/clientLog';
 import { parseAtlas, pickFile, type Atlas } from './atlas';
@@ -86,8 +87,7 @@ export class AudioCore {
         this.mixer = new Mixer(this.ctx, this.deps.storage);
         this.duckNode = this.ctx.createGain();
         this.duckNode.connect(this.mixer.node('music'));
-        void this.loadAtlas();
-        void this.preloadEffects();
+        void this.loadAtlas().then(() => this.preloadEffects());
       }
       await this.ctx.resume();
     } catch (e) {
@@ -100,6 +100,9 @@ export class AudioCore {
     const sprite = this.atlas?.sprites[name];
     if (!sprite || !this.ctx || !this.mixer || !this.buffer || !this.running) return false;
     if (volume <= 0) return false;
+    const key = `sprite:${name}`;
+    const n = this.active.get(key) ?? 0;
+    if (n >= MAX_SAMPLE_VOICES) return false;
     const src = this.ctx.createBufferSource();
     src.buffer = this.buffer;
     const target = this.mixer.node(bus) as GainNodeLike;
@@ -109,7 +112,13 @@ export class AudioCore {
       g.connect(target);
       src.connect(g);
     } else src.connect(target);
-    src.start(this.ctx.currentTime, sprite.start, sprite.duration);
+    src.onended = () => this.active.set(key, Math.max(0, (this.active.get(key) ?? 1) - 1));
+    try {
+      src.start(this.ctx.currentTime, sprite.start, sprite.duration);
+    } catch {
+      return false;
+    }
+    this.active.set(key, n + 1);
     return true;
   }
 
@@ -146,8 +155,11 @@ export class AudioCore {
   onEvent(e: GameEvent, x: number | undefined, listeners: readonly Listener[], phase?: string): boolean {
     const cue = cueFor(e);
     const url = cue && (this.deps.sfx ?? SFX_URLS)[cue.slot];
-    if (cue?.global) this.duck(); // Warnung senkt die Musik (Q16), auch wenn der Warn-Sound fehlt
-    return !!cue && !!url && this.playSample(url, 'sfx', attenuation(x, listeners, cue.global) * nightGain(phase));
+    if (!cue) return false;
+    if (cue.global) this.duck(); // Warnung senkt die Musik (Q16), auch wenn der Warn-Sound fehlt
+    const volume = attenuation(x, listeners, cue.global) * nightGain(phase);
+    if (this.atlas?.sprites[cue.slot]) return this.play(cue.slot, 'sfx', volume);
+    return !!url && this.playSample(url, 'sfx', volume);
   }
 
   /**
@@ -257,7 +269,8 @@ export class AudioCore {
 
   /** Lädt die Effekt-Dateien einmal nach der Entsperrung; fehlende oder kaputte Dateien bleiben stumm (ein Logeintrag je Datei). */
   private async preloadEffects(): Promise<void> {
-    const urls = new Set(Object.values(this.deps.sfx ?? SFX_URLS));
+    const inAtlas = this.atlas?.sprites ?? {};
+    const urls = new Set(Object.entries(this.deps.sfx ?? SFX_URLS).filter(([slot]) => !inAtlas[slot]).map(([, url]) => url));
     await Promise.all([...urls].map(async (url) => {
       const buf = await this.loadBuffer(url);
       if (buf !== undefined) this.decoded.set(url, buf);
