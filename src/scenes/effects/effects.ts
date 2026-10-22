@@ -14,6 +14,8 @@ export interface Effect {
   text?: string;
   /** Nur `swing`: ID des Spielers, dessen Monarch ausholt (S9.7, B-396) */
   by?: number;
+  /** Nur `coinGive`: Index des Spielers, dessen Monarch die Münze wirft (GR9.3) */
+  giver?: number;
 }
 
 /** Aussehen und Grenzen aller Effekte an einer Stelle (GR5.2 hängt hier Blitzgrenze und Schalter ein). */
@@ -58,7 +60,7 @@ export function effectFor(e: GameEvent, playerX: (player: number) => number | un
     case 'hit': return at('hit', e.x);
     case 'kill': return at('kill', e.x);
     case 'coinPickup': return at('coin', e.x);
-    case 'coinGive': return at('coinGive', e.x);
+    case 'coinGive': { const fx = at('coinGive', e.x); return fx && { ...fx, giver: e.player }; }
     case 'buildProgress': spots.set(e.kind, e.x); return at('build', e.x, 60);
     case 'built': return at('built', spots.get(e.kind), 60);
     case 'playerDown': return at('down', playerX(e.player));

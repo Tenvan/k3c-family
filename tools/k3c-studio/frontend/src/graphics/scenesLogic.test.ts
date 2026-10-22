@@ -1,5 +1,6 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { baumDatei, baumReihe, figureCard, gebaeudeKarten, hintergrundStreifen, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './scenesLogic';
+import { baumDatei, baumReihe, figureCard, gebaeudeKarten, hintergrundStreifen, hubWachstum, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './scenesLogic';
 
 const farm: AssetSlot = {
   id: 'farm', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Farm',
@@ -79,9 +80,16 @@ describe('Asset-Vorschau: Baum-Reihe (GEB1/AC-05)', () => {
     expect(baumReihe(index, 4).map((b) => b.id)).toEqual(['birke', 'pappel', 'tanne', 'birke']);
   });
 
-  it('Nachbarn überlappen sich (Abstand kleiner als 1 Kachel Breite)', () => {
+  it('Nachbarn überlappen sich (Schritt 1 Kachel, schmalster Baum 2 Kacheln breit, GEB10)', () => {
     const reihe = baumReihe(index);
-    for (let i = 1; i < reihe.length; i++) expect(reihe[i]!.x - reihe[i - 1]!.x).toBeLessThan(1);
+    for (let i = 1; i < reihe.length; i++) expect(reihe[i]!.x - reihe[i - 1]!.x).toBe(1);
+  });
+
+  it('Höhlen-Flora als eigene Reihe (GEB10): nur Klasse flora', () => {
+    const flora = (id: string) => ({ id, klasse: 'flora', kacheln: { b: 2, h: 15 }, dateien: {} });
+    const idx = [...index, flora('hoehlenbusch'), flora('wurzel')];
+    expect(baumReihe(idx, undefined, 1, 'flora').map((b) => b.id)).toEqual(['hoehlenbusch', 'wurzel']);
+    expect(baumReihe(idx).map((b) => b.id)).toEqual(['birke', 'pappel', 'tanne']);
   });
 
   it('ohne Bäume keine Reihe', () => {
@@ -100,6 +108,22 @@ describe('Asset-Vorschau: Baum-Reihe (GEB1/AC-05)', () => {
     expect(baumDatei(idx[1]!, 2, 32)).toBe('tanne-2-2-32.png');
     expect(baumDatei(idx[1]!, 1, 32)).toBe('tanne-2-1-32.png');
     expect(baumDatei(idx[0]!, 2, 32)).toBeUndefined();
+  });
+});
+
+describe('Asset-Vorschau: echte Grafik (GEB10)', () => {
+  const index = JSON.parse(readFileSync(new URL('../../../../../public/grafik/gebaeude/index.json', import.meta.url), 'utf8')) as GebaeudeEintrag[];
+
+  it('zeigt offene und geschlossene Truhe direkt nacheinander (B-455/AC-01)', () => {
+    const ids = gebaeudeKarten(index).filter((k) => k.dichte === 32).map((k) => k.id);
+    expect(ids.indexOf('truhe-geschlossen')).toBe(ids.indexOf('truhe') - 1); // Dateiname: `-` sortiert vor `.`
+  });
+
+  it('Bäume 11,25 Kacheln hoch (birke-3 9,5), Höhlen-Flora in eigener Reihe (B-454)', () => {
+    const baeume = index.filter((e) => e.klasse === 'baum');
+    expect(baeume).toHaveLength(9);
+    for (const e of baeume) expect(e.kacheln.h).toBe(e.id === 'birke-3' ? 9.5 : 11.25);
+    expect(baumReihe(index, undefined, 1, 'flora').map((b) => b.id)).toEqual(['hoehlenbusch', 'wurzel-2', 'wurzel-3', 'wurzel']);
   });
 });
 
@@ -133,6 +157,47 @@ describe('Asset-Vorschau: Stufenreihe (GEB3/AC-01)', () => {
 
   it('ohne Stufen keine Karten', () => {
     expect(stufenKarten({ id: 'x', kacheln: { b: 1, h: 1 }, dateien: {} })).toEqual([]);
+  });
+});
+
+describe('Asset-Vorschau: Stufenreihe der Hub-Gebäude (GEB9/AC-03)', () => {
+  // Echter Index der Gebäude-Grafik; jede GEB9-Session ergänzt ihre Gebäude.
+  const index = JSON.parse(readFileSync(new URL('../../../../../public/grafik/gebaeude/index.json', import.meta.url), 'utf8')) as GebaeudeEintrag[];
+  const mitStufen = ['werkstatt', 'farm', 'kaserne', 'lager', 'taverne', 'schmiede', 'heilplatz', 'ruestkammer'];
+
+  it.each(mitStufen)('%s zeigt die Stufen 2 bis 5 in 32 px', (id) => {
+    const e = index.find((g) => g.id === id)!;
+    expect(stufenKarten(e).map((k) => k.stufe)).toEqual([2, 3, 4, 5]);
+    for (const k of stufenKarten(e)) {
+      expect(k.datei).toBe(`grafik/gebaeude/${id}-${k.stufe}-32.png`);
+      expect(k.aenderung).not.toBe('');
+    }
+  });
+});
+
+describe('Asset-Vorschau: Hub wächst (GEB11/AC-03)', () => {
+  // Echter Index: die Reihe kommt aus dem Spielcode (HUB_GROWTH), die Dateien aus task gen:gebaeude.
+  const index = JSON.parse(readFileSync(new URL('../../../../../public/grafik/gebaeude/index.json', import.meta.url), 'utf8')) as GebaeudeEintrag[];
+
+  it('zeigt Lagerfeuer, Zelt, Hütte und die Burgen 1 bis 5 in Spielreihenfolge, dann die Steinburg mit Gerüst', () => {
+    const karten = hubWachstum(index);
+    expect(karten.map((k) => k.titel)).toEqual([
+      'Lagerfeuer mit Grill', 'Zelt am Feuer', 'Holzhütte am Feuer',
+      'Holzburg', 'Steinburg', 'Kupferburg', 'Eisenburg', 'Kristallburg', 'Steinburg im Ausbau',
+    ]);
+    expect(karten.map((k) => k.datei)).toEqual([
+      ...[1, 2, 3].map((n) => `grafik/gebaeude/lagerfeuer-${n}-32.png`),
+      ...[1, 2, 3, 4, 5, 2].map((n) => `grafik/gebaeude/burg-${n}-32.png`),
+    ]);
+    expect(karten.at(-1)?.geruest).toBe('grafik/gebaeude/hub-geruest-32.png');
+    expect(karten.slice(0, -1).every((k) => k.geruest === undefined && k.wann !== '')).toBe(true);
+    expect(karten.map((k) => k.h)).toEqual([5, 5, 5, 9, 9, 9, 9, 9, 9]);
+  });
+
+  it('lässt Looks ohne Datei weg; ohne Burg kein Gerüst-Beispiel', () => {
+    expect(hubWachstum([])).toEqual([]);
+    const ohneBurg = index.filter((e) => e.id !== 'burg');
+    expect(hubWachstum(ohneBurg).map((k) => k.titel)).toEqual(['Lagerfeuer mit Grill', 'Zelt am Feuer', 'Holzhütte am Feuer']);
   });
 });
 

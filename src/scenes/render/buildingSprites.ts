@@ -1,25 +1,28 @@
 import type { SiteKind, SiteState } from '../../model/types';
+import { HUB_GROWTH, HUB_SCAFFOLD, type HubLook } from './hubGrowth';
 
 /**
  * Welche Grafik ein Gebäude zeigt (GR3.1, Zuordnung `docs/assets/zuordnung-objekte.md` und `zuordnung-welt.md`).
  * Reine Auswahl ohne Phaser: `null` = keine Grafik, dann zeichnet der Platzhalter. Lücken stehen hier nicht drin.
  */
 
+/** Hub-Gebäude (GEB9): Bauplatz → Grafik-Id aus `tools/buildings`; sie wechseln mit der Hub-Stufe (`World.hubLevel`), nicht mit einer Gebäudestufe */
+const HUB_BUILDINGS: Partial<Record<SiteKind, string>> = {
+  workshop: 'werkstatt', tavern: 'taverne', healer: 'heilplatz', smithy: 'schmiede',
+  armory: 'ruestkammer', storage: 'lager', farm: 'farm', barracks: 'kaserne',
+};
+
 /** Textur-Schlüssel → Datei unter `public/grafik/` (nur zugeordnete Dateien; LoadScene lädt genau diese) */
 export const BUILDING_TEXTURES: Record<string, string> = {
   ...stufen('hub', 'burg'),
+  /** Wachstumsreihe vor der Holzburg und Baugerüst (GEB11): `grafik:<id>-<stufe>`, `grafik:hub-geruest` */
+  ...Object.fromEntries(HUB_GROWTH.filter((l) => l.id !== 'burg').map((l) => [`grafik:${l.id}-${l.stufe}`, `gebaeude/${l.id}-${l.stufe}-32.png`])),
+  [`grafik:${HUB_SCAFFOLD}`]: `gebaeude/${HUB_SCAFFOLD}-32.png`,
   ...stufen('wall', 'mauer'),
   ...stufen('tower', 'turm'),
   ...stufen('backwall', 'hintergrundmauer'),
   ...stufen('gate', 'tor'),
-  'grafik:workshop': 'gebaeude/werkstatt-32.png',
-  'grafik:tavern': 'gebaeude/taverne-32.png',
-  'grafik:healer': 'gebaeude/heilplatz-32.png',
-  'grafik:smithy': 'gebaeude/schmiede-32.png',
-  'grafik:armory': 'gebaeude/ruestkammer-32.png',
-  'grafik:storage': 'gebaeude/lager-32.png',
-  'grafik:farm': 'gebaeude/farm-32.png',
-  'grafik:barracks': 'gebaeude/kaserne-32.png',
+  ...Object.assign({}, ...Object.entries(HUB_BUILDINGS).map(([kind, id]) => stufen(kind, id!))),
   'grafik:stairsUp': 'gebaeude/treppe-hoch-32.png',
   'grafik:stairsDown': 'gebaeude/treppe-runter-32.png',
   /** Plantage (GEB5): Setzling auf leerem Platz, Pappel auf gewachsenem Platz */
@@ -27,34 +30,31 @@ export const BUILDING_TEXTURES: Record<string, string> = {
   'grafik:pappel': 'gebaeude/pappel-32.png',
 };
 
-/** Burg, Mauer, Turm und Tor in den Stufen 1–5 aus `tools/buildings` (GEB3, GEB4): `grafik:<kind>-<n>` → `gebaeude/<id>-<n>-32.png` */
+/** Burg, Mauer, Turm, Tor und Hub-Gebäude in den Stufen 1–5 aus `tools/buildings` (GEB3, GEB4, GEB9): `grafik:<kind>-<n>` → `gebaeude/<id>-<n>-32.png` */
 function stufen(kind: string, id: string): Record<string, string> {
   return Object.fromEntries([1, 2, 3, 4, 5].map((n) => [`grafik:${kind}-${n}`, `gebaeude/${id}-${n}-32.png`]));
 }
 
 /** Material-Stufen 1–5 (Regel materialien-gebaeude.md § 3.1; Grafik GEB3, Turm 5 = Zaubertum; Tor GEB4 in der Stufe seiner Mauerlinie) */
+const stageKeys = (kind: string): string[] => [1, 2, 3, 4, 5].map((n) => `grafik:${kind}-${n}`);
 const STAGES: Partial<Record<SiteKind, string[]>> = {
-  wall: [1, 2, 3, 4, 5].map((n) => `grafik:wall-${n}`),
-  tower: [1, 2, 3, 4, 5].map((n) => `grafik:tower-${n}`),
-  gate: [1, 2, 3, 4, 5].map((n) => `grafik:gate-${n}`),
+  wall: stageKeys('wall'),
+  tower: stageKeys('tower'),
+  gate: stageKeys('gate'),
+  ...Object.fromEntries(Object.keys(HUB_BUILDINGS).map((kind) => [kind, stageKeys(kind)])),
 };
 
-/** Ohne Stufe: die Grundform (Mauer, Turm und Tor: Stufe 1, wie `Site.level` „fehlt = 1“) */
+/** Ohne Stufe: die Grundform (Mauer, Turm, Tor und Hub-Gebäude: Stufe 1, wie `Site.level` „fehlt = 1“) */
 const BASE: Partial<Record<SiteKind, string>> = {
-  wall: 'grafik:wall-1',
-  tower: 'grafik:tower-1',
-  gate: 'grafik:gate-1',
-  workshop: 'grafik:workshop',
-  tavern: 'grafik:tavern',
-  healer: 'grafik:healer',
-  smithy: 'grafik:smithy',
-  armory: 'grafik:armory',
-  storage: 'grafik:storage',
-  farm: 'grafik:farm',
-  barracks: 'grafik:barracks',
+  ...Object.fromEntries(Object.keys(STAGES).map((kind) => [kind, `grafik:${kind}-1`])),
   stairsDown: 'grafik:stairsDown',
   stairsUp: 'grafik:stairsUp',
 };
+
+/** Hub-Gebäude zeigen die Grafik der Hub-Stufe (GEB9); der Aufrufer reicht `World.hubLevel` (fehlt = 1) als Stufe durch */
+export function isHubBuilding(kind: SiteKind): boolean {
+  return kind in HUB_BUILDINGS;
+}
 
 /** Maßstab im Spiel: eigene Gebäude aus `tools/buildings` sind schon 32 px je Kachel (×1), die 16-px-Packs ×2 (GEB2) */
 export function textureScale(key: string): number {
@@ -71,7 +71,11 @@ export function backWallTexture(stage: number): string | null {
 export function siteTexture(kind: SiteKind, state: SiteState, stage?: number): string | null {
   if (state !== 'built') return null;
   const stages = STAGES[kind];
-  if (stage !== undefined && stages) return stages[stage - 1] ?? null;
+  if (stage !== undefined && stages) {
+    // Hub-Gebäude: fehlt die Stufe, gilt die höchste vorhandene (B-458 kann die Stufenzahl ändern); Mauer, Turm, Tor: Lücke = null
+    const n = isHubBuilding(kind) ? Math.min(Math.max(Math.trunc(stage) || 1, 1), stages.length) : stage;
+    return stages[n - 1] ?? null;
+  }
   return BASE[kind] ?? null;
 }
 
@@ -80,3 +84,13 @@ export function hubTexture(stage = 1): string | null {
   const key = `grafik:hub-${stage}`;
   return key in BUILDING_TEXTURES ? key : null;
 }
+
+/** Textur eines Looks der Wachstumsreihe (GEB11, `hubLookOf`): Burg über `hubTexture`, sonst `grafik:<id>-<stufe>`; unbekannt `null` */
+export function hubLookTexture(look: Pick<HubLook, 'id' | 'stufe'>): string | null {
+  if (look.id === 'burg') return hubTexture(look.stufe);
+  const key = `grafik:${look.id}-${look.stufe}`;
+  return key in BUILDING_TEXTURES ? key : null;
+}
+
+/** Baugerüst vor der Burg, solange ein Bauer den Hub-Ausbau baut (GEB11) */
+export const HUB_SCAFFOLD_TEXTURE = `grafik:${HUB_SCAFFOLD}`;

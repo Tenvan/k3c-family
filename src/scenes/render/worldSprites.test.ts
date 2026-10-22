@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { WORLD_TEXTURES, biomeBackground, objectSprite } from './worldSprites';
+import { CHEST_OPEN, WORLD_TEXTURES, biomeBackground, objectSprite } from './worldSprites';
 
 /** Nur die Pfade, nichts wird geladen */
 const FILES = Object.keys(import.meta.glob('../../../public/grafik/**/*.png'));
@@ -7,10 +7,16 @@ const FILES = Object.keys(import.meta.glob('../../../public/grafik/**/*.png'));
 describe('Welt-Grafik (GR3.2)', () => {
   it('zugeordnete Objekte bekommen ihr Bild; Portal, Ausgang, Truhe und Lager aus tools/buildings stehen still im Maßstab 1 (GEB6)', () => {
     expect(objectSprite('coin')).toMatchObject({ key: 'grafik:coins', frames: 8 });
-    for (const [id, key] of [['portal', 'grafik:portal'], ['exit', 'grafik:ausgang'], ['pickup:chest', 'grafik:truhe'], ['camp:recruit', 'grafik:lager']]) {
+    for (const [id, key] of [['portal', 'grafik:portal'], ['exit', 'grafik:ausgang'], ['pickup:chest', 'grafik:truhe-geschlossen'], ['camp:recruit', 'grafik:lager']]) {
       expect(objectSprite(id!), id).toMatchObject({ key, frame: 0, frames: 1, zoom: 1 });
     }
     expect(objectSprite('camp:recruit:fire')).toBeNull(); // das Bild enthält die Feuerstelle
+  });
+
+  it('liegende Truhe geschlossen, beim Aufheben die offene; beide geladen (GEB10, B-455/AC-02)', () => {
+    const closed = objectSprite('pickup:chest')!.key;
+    expect(CHEST_OPEN[closed]).toBe('grafik:truhe');
+    for (const key of [closed, 'grafik:truhe']) expect(WORLD_TEXTURES).toHaveProperty([key]);
   });
 
   it('ohne Zuordnung null → Platzhalter (AC-03)', () => {

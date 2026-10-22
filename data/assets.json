@@ -52,7 +52,7 @@
       "beschreibung": "Gebäude: workshop",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/werkstatt-32.png"
+          "datei": "grafik/gebaeude/werkstatt-1-32.png"
         }
       ]
     },
@@ -63,7 +63,7 @@
       "beschreibung": "Gebäude: storage",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/lager-32.png"
+          "datei": "grafik/gebaeude/lager-1-32.png"
         }
       ]
     },
@@ -74,7 +74,7 @@
       "beschreibung": "Gebäude: farm",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/farm-32.png"
+          "datei": "grafik/gebaeude/farm-1-32.png"
         }
       ]
     },
@@ -85,7 +85,7 @@
       "beschreibung": "Gebäude: barracks",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/kaserne-32.png"
+          "datei": "grafik/gebaeude/kaserne-1-32.png"
         }
       ]
     },
@@ -118,7 +118,7 @@
       "beschreibung": "Gebäude: tavern",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/taverne-32.png"
+          "datei": "grafik/gebaeude/taverne-1-32.png"
         }
       ]
     },
@@ -129,7 +129,7 @@
       "beschreibung": "Gebäude: healer",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/heilplatz-32.png"
+          "datei": "grafik/gebaeude/heilplatz-1-32.png"
         }
       ]
     },
@@ -140,7 +140,7 @@
       "beschreibung": "Gebäude: smithy",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/schmiede-32.png"
+          "datei": "grafik/gebaeude/schmiede-1-32.png"
         }
       ]
     },
@@ -151,7 +151,7 @@
       "beschreibung": "Gebäude: armory",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/ruestkammer-32.png"
+          "datei": "grafik/gebaeude/ruestkammer-1-32.png"
         }
       ]
     },
@@ -487,6 +487,50 @@
       ]
     },
     {
+      "id": "hub:camp:1",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Lagerfeuer mit Grill (GEB11)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/lagerfeuer-1-32.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:camp:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Zelt am Feuer (GEB11)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/lagerfeuer-2-32.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:camp:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Holzhütte am Feuer (GEB11)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/lagerfeuer-3-32.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:scaffold",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Baugerüst während des Ausbaus (GEB11)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hub-geruest-32.png"
+        }
+      ]
+    },
+    {
       "id": "wall:1",
       "art": "grafik",
       "kategorie": "gebaeude",
@@ -593,6 +637,446 @@
       "wahl": [
         {
           "datei": "grafik/gebaeude/turm-5-32.png"
+        }
+      ]
+    },
+    {
+      "id": "workshop:1",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: workshop:1",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/werkstatt-1-32.png"
+        }
+      ]
+    },
+    {
+      "id": "workshop:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: workshop:2",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/werkstatt-2-32.png"
+        }
+      ]
+    },
+    {
+      "id": "workshop:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: workshop:3",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/werkstatt-3-32.png"
+        }
+      ]
+    },
+    {
+      "id": "workshop:4",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: workshop:4",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/werkstatt-4-32.png"
+        }
+      ]
+    },
+    {
+      "id": "workshop:5",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: workshop:5",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/werkstatt-5-32.png"
+        }
+      ]
+    },
+    {
+      "id": "tavern:1",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: tavern:1",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/taverne-1-32.png"
+        }
+      ]
+    },
+    {
+      "id": "tavern:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: tavern:2",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/taverne-2-32.png"
+        }
+      ]
+    },
+    {
+      "id": "tavern:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: tavern:3",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/taverne-3-32.png"
+        }
+      ]
+    },
+    {
+      "id": "tavern:4",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: tavern:4",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/taverne-4-32.png"
+        }
+      ]
+    },
+    {
+      "id": "tavern:5",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: tavern:5",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/taverne-5-32.png"
+        }
+      ]
+    },
+    {
+      "id": "healer:1",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: healer:1",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/heilplatz-1-32.png"
+        }
+      ]
+    },
+    {
+      "id": "healer:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: healer:2",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/heilplatz-2-32.png"
+        }
+      ]
+    },
+    {
+      "id": "healer:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: healer:3",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/heilplatz-3-32.png"
+        }
+      ]
+    },
+    {
+      "id": "healer:4",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: healer:4",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/heilplatz-4-32.png"
+        }
+      ]
+    },
+    {
+      "id": "healer:5",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: healer:5",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/heilplatz-5-32.png"
+        }
+      ]
+    },
+    {
+      "id": "smithy:1",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: smithy:1",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/schmiede-1-32.png"
+        }
+      ]
+    },
+    {
+      "id": "smithy:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: smithy:2",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/schmiede-2-32.png"
+        }
+      ]
+    },
+    {
+      "id": "smithy:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: smithy:3",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/schmiede-3-32.png"
+        }
+      ]
+    },
+    {
+      "id": "smithy:4",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: smithy:4",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/schmiede-4-32.png"
+        }
+      ]
+    },
+    {
+      "id": "smithy:5",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: smithy:5",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/schmiede-5-32.png"
+        }
+      ]
+    },
+    {
+      "id": "armory:1",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: armory:1",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/ruestkammer-1-32.png"
+        }
+      ]
+    },
+    {
+      "id": "armory:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: armory:2",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/ruestkammer-2-32.png"
+        }
+      ]
+    },
+    {
+      "id": "armory:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: armory:3",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/ruestkammer-3-32.png"
+        }
+      ]
+    },
+    {
+      "id": "armory:4",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: armory:4",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/ruestkammer-4-32.png"
+        }
+      ]
+    },
+    {
+      "id": "armory:5",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: armory:5",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/ruestkammer-5-32.png"
+        }
+      ]
+    },
+    {
+      "id": "storage:1",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: storage:1",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/lager-1-32.png"
+        }
+      ]
+    },
+    {
+      "id": "storage:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: storage:2",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/lager-2-32.png"
+        }
+      ]
+    },
+    {
+      "id": "storage:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: storage:3",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/lager-3-32.png"
+        }
+      ]
+    },
+    {
+      "id": "storage:4",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: storage:4",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/lager-4-32.png"
+        }
+      ]
+    },
+    {
+      "id": "storage:5",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: storage:5",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/lager-5-32.png"
+        }
+      ]
+    },
+    {
+      "id": "farm:1",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: farm:1",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/farm-1-32.png"
+        }
+      ]
+    },
+    {
+      "id": "farm:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: farm:2",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/farm-2-32.png"
+        }
+      ]
+    },
+    {
+      "id": "farm:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: farm:3",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/farm-3-32.png"
+        }
+      ]
+    },
+    {
+      "id": "farm:4",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: farm:4",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/farm-4-32.png"
+        }
+      ]
+    },
+    {
+      "id": "farm:5",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: farm:5",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/farm-5-32.png"
+        }
+      ]
+    },
+    {
+      "id": "barracks:1",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: barracks:1",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/kaserne-1-32.png"
+        }
+      ]
+    },
+    {
+      "id": "barracks:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: barracks:2",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/kaserne-2-32.png"
+        }
+      ]
+    },
+    {
+      "id": "barracks:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: barracks:3",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/kaserne-3-32.png"
+        }
+      ]
+    },
+    {
+      "id": "barracks:4",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: barracks:4",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/kaserne-4-32.png"
+        }
+      ]
+    },
+    {
+      "id": "barracks:5",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Gebäude-Stufen: barracks:5",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/kaserne-5-32.png"
         }
       ]
     },
@@ -748,7 +1232,7 @@
       "beschreibung": "Truhen, Portale, Münzen, Ausgang: pickup:chest",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/truhe-32.png"
+          "datei": "grafik/gebaeude/truhe-geschlossen-32.png"
         }
       ]
     },

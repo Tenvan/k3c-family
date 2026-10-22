@@ -117,7 +117,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | eingeplant | BD4 | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
 | [B-418](B-418-spielstand-kommentare-veraltet.md) | SIM | Problem | niedrig | offen | – | Kommentare in island_save_v3.go und island_save_v5.go nennen nach W7.2 veraltete Versionen |
 | [B-419](B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | eingeplant | GD1 | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
-| [B-420](B-420-importe-grafikpacks.md) | DEV | Schuld | mittel | eingeplant | GR9 | Mit k3c-workbench importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht |
 | [B-422](B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | eingeplant | W11 | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | eingeplant | SV2 | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Kleine Befunde aus dem Review von SV1 sind erledigt |
@@ -152,6 +151,11 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-522](B-522-ressourcen-auf-ruine.md) | SIM | Problem | mittel | offen | – | Zufalls-Ressourcen eines geplanten Chunks können auf seiner Ruine liegen |
 | [B-523](B-523-ruine-kollision-hub-platz.md) | SIM | Schuld | niedrig | offen | – | Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt |
 | [B-524](B-524-skillheld-tod-zuruecksetzen.md) | SIM | Problem | niedrig | offen | – | skillHeld beim Tod zurücksetzen, damit der erste Druck nach dem Respawn castFailed meldet |
+| [B-531](B-531-wald-dichter-hoehle-bueesche.md) | REG | Idee | mittel | offen | – | Wald hat mehr Bäume je Abschnitt, Höhle bekommt Deko-Büsche |
+| [B-532](B-532-snapshot-markiert-von.md) | SIM | Idee | niedrig | offen | – | Snapshot nennt, wer einen Knoten markiert hat |
+| [B-525](B-525-entscheidung-goldtopf.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Wortlaut und Symbol des Goldtopfs in der Spielerkarte |
+| [B-526](B-526-entscheidung-hintergrund-hoehe.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Hintergrund-Höhe je Biom gegen WORLD_TOP |
+| [B-527](B-527-entscheidung-abmelden-tastatur.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Abmelden mit zwei Tastatur-Spielern und Ziel per Auswahl |
 
 ## Archiv
 
@@ -484,3 +488,4 @@ Zeile in diesen Abschnitt.
 | [B-516](archiv/B-516-studio-chat-promptgeruest-als-instruktion.md) | DEV | Idee | mittel | erledigt | WZ21 | Prompt-Grundgerüst des Studio-Chats ist eine feste Instruktion im Code statt Text im Eingabefeld |
 | [B-501](archiv/B-501-planer-vorschau-fixiert-markiert.md) | DEV | Idee | mittel | erledigt | WZ23 | Gebäude-Planer: Live-Vorschau unten fest, gewähltes Gebäude markiert |
 | [B-469](archiv/B-469-gegner-seite-boss-effekte-nach-k5.md) | DEV | Idee | niedrig | erledigt | WZ23 | Die Gegner-Seite zeigt Warnkreis, Boss-Leiste, Phasen und Event-Banner aus K5.1 |
+| [B-420](archiv/B-420-importe-grafikpacks.md) | DEV | Schuld | mittel | erledigt | GR9 | Mit k3c-workbench importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht |

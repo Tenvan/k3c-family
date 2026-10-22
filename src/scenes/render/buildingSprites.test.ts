@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BUILDING_TEXTURES, backWallTexture, hubTexture, siteTexture, textureScale } from './buildingSprites';
+import { BUILDING_TEXTURES, HUB_SCAFFOLD_TEXTURE, backWallTexture, hubLookTexture, hubTexture, isHubBuilding, siteTexture, textureScale } from './buildingSprites';
 
 /** Nur die Pfade, nichts wird geladen */
 const FILES = Object.keys(import.meta.glob('../../../public/grafik/**/*.png'));
@@ -21,11 +21,11 @@ describe('Gebäude-Grafik (GR3.1)', () => {
   });
 
   it('Gebäude aus tools/buildings: eigene 32-px-Grafik in Maßstab 1 (GEB2 AC-02, GEB5 AC-05)', () => {
-    const neu = { workshop: 'werkstatt', tavern: 'taverne', healer: 'heilplatz', smithy: 'schmiede', armory: 'ruestkammer', storage: 'lager', barracks: 'kaserne', farm: 'farm', stairsUp: 'treppe-hoch', stairsDown: 'treppe-runter' } as const;
+    const neu = { workshop: 'werkstatt-1', tavern: 'taverne-1', healer: 'heilplatz-1', smithy: 'schmiede-1', armory: 'ruestkammer-1', storage: 'lager-1', barracks: 'kaserne-1', farm: 'farm-1', stairsUp: 'treppe-hoch', stairsDown: 'treppe-runter' } as const;
     for (const [kind, id] of Object.entries(neu)) {
       const key = siteTexture(kind as keyof typeof neu, 'built');
       expect(key).not.toBeNull();
-      expect(BUILDING_TEXTURES[key!]).toBe(`gebaeude/${id}-32.png`);
+      expect(BUILDING_TEXTURES[key!]).toBe(`gebaeude/${id}-32.png`); // Hub-Gebäude ohne Stufe: Grundform = Stufe 1 (GEB9)
       expect(textureScale(key!)).toBe(1);
     }
     for (const [key, id] of [['grafik:setzling', 'setzling'], ['grafik:pappel', 'pappel']] as const) {
@@ -44,7 +44,25 @@ describe('Gebäude-Grafik (GR3.1)', () => {
       }
     }
     expect(siteTexture('wall', 'built', 9)).toBeNull();
-    expect(siteTexture('farm', 'built', 3)).toBe('grafik:farm');
+  });
+
+  it('Hub-Gebäude zeigen die Grafik der Hub-Stufe 1–5, fehlende Stufe = höchste, ohne Stufe Grundform (GEB9 AC-04)', () => {
+    const hub = { workshop: 'werkstatt', tavern: 'taverne', healer: 'heilplatz', smithy: 'schmiede', armory: 'ruestkammer', storage: 'lager', barracks: 'kaserne', farm: 'farm' } as const;
+    for (const [kind, id] of Object.entries(hub)) {
+      const k = kind as keyof typeof hub;
+      expect(isHubBuilding(k)).toBe(true);
+      for (const s of [1, 2, 3, 4, 5]) {
+        const key = siteTexture(k, 'built', s);
+        expect(key).toBe(`grafik:${kind}-${s}`);
+        expect(BUILDING_TEXTURES[key!]).toBe(`gebaeude/${id}-${s}-32.png`);
+        expect(textureScale(key!)).toBe(1);
+      }
+      expect(siteTexture(k, 'built', 6)).toBe(`grafik:${kind}-5`); // B-458: andere Stufenzahl später
+      expect(siteTexture(k, 'built', 0)).toBe(`grafik:${kind}-1`);
+      expect(siteTexture(k, 'built')).toBe(`grafik:${kind}-1`);
+      expect(siteTexture(k, 'unpaid', 3)).toBeNull(); // Baustelle: Platzhalter, unabhängig von der Stufe
+    }
+    for (const kind of ['wall', 'tower', 'gate', 'stairsUp', 'stairsDown'] as const) expect(isHubBuilding(kind)).toBe(false);
   });
 
   it('Hintergrundmauer je Stufe eigene 32-px-Grafik, unbekannte Stufe null (GEB3 AC-08)', () => {
@@ -65,6 +83,20 @@ describe('Gebäude-Grafik (GR3.1)', () => {
     }
     expect(hubTexture()).toBe('grafik:hub-1');
     expect(hubTexture(6)).toBeNull();
+  });
+
+  it('Wachstumsreihe (GEB11): Lagerfeuer, Zelt, Hütte und Gerüst je eigene 32-px-Grafik, Burg über hubTexture, unbekannt null', () => {
+    for (const n of [1, 2, 3]) {
+      const key = hubLookTexture({ id: 'lagerfeuer', stufe: n });
+      expect(key).toBe(`grafik:lagerfeuer-${n}`);
+      expect(BUILDING_TEXTURES[key!]).toBe(`gebaeude/lagerfeuer-${n}-32.png`);
+      expect(textureScale(key!)).toBe(1);
+    }
+    expect(hubLookTexture({ id: 'burg', stufe: 2 })).toBe('grafik:hub-2');
+    expect(hubLookTexture({ id: 'lagerfeuer', stufe: 4 })).toBeNull();
+    expect(hubLookTexture({ id: 'burg', stufe: 6 })).toBeNull();
+    expect(BUILDING_TEXTURES[HUB_SCAFFOLD_TEXTURE]).toBe('gebaeude/hub-geruest-32.png');
+    expect(textureScale(HUB_SCAFFOLD_TEXTURE)).toBe(1);
   });
 
   it('jede genannte Datei liegt unter public/grafik/', () => {

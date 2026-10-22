@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { DEV_SECTIONS, DEV_TILES } from './devTiles';
 
-/** Werkzeug-Seiten, die bis LP1 auf der Landingpage standen, dazu Dungeon Master (B-335/AC-02). */
-const TOOLS = ['testing.html', 'gamepad-test.html', 'grafiken.html', 'soundtest.html', 'monitor.html', 'dm.html'];
+/** Werkzeug-Seiten, die bis LP1 auf der Landingpage standen, dazu Dungeon Master (B-335/AC-02) und Grafik-Pipeline (B-331). */
+const TOOLS = ['testing.html', 'gamepad-test.html', 'grafiken.html', 'pipeline.html', 'soundtest.html', 'monitor.html', 'dm.html'];
 
 describe('Entwicklerseite (B-335)', () => {
   it('gliedert nach Entwicklung, Performance und Balancing', () => {
