@@ -1,11 +1,11 @@
 # K5 · CLI · Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** KMP
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-132, B-105, B-107, B-098
-- **Start-Commit:** –
+- **Start-Commit:** 1d368498
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-10-11, 🧑 im Chat, Revision 2 (3–4 Spieler, Touch und Handy entfallen)
@@ -55,15 +55,18 @@ Dev-Sperre aktiv → Debug-Panel und Grad „Dev“ sind nicht verfügbar.
 
 ## Offene Fragen
 
-- Tastenbelegung des Debug-Panels (B-107 › Offene Fragen).
-- Stick-Klick als Overlay-Umschalter gegen Vollbild per Stick drücken (Q06).
-- Dev-Sperre in der Lobby: Wie erkennt der Anlegen-Dialog, dass „Dev“ nicht angeboten wird (K5.2)?
+Vorentschieden (autonom, Claude, 2026-10-23), Bestätigung durch 🧑 in K5.4 bzw. KR6:
+
+- Tastenbelegung des Debug-Panels: das vorhandene Panel (D-Pad wählt, A löst aus, RB wechselt den Fokus, Mausklick) trägt die Gruppe „Grad“; B, View + Menu und X bleiben frei (B-107).
+- Stick-Klick (Q06): bleibt Overlay-Umschalter wie heute, keine Änderung in K5.
+- Dev-Sperre in der Lobby: Der Grad „Dev“ erscheint nur mit `?dev=1` in der Adresse; der Server bleibt die Sperre (`bad_request` → Hinweis in der Lobby).
+- Die Server-Aktion für den Grad über WebSocket und das Zustandsfeld `grade` fehlen (nur `/api/dev`); sie kommen in KB2.6 (SRV, vorgezogen vor K5.3).
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| K5.1 | `K5.1-boss-warnkreis-event.md` | Umsetzung | autonom | offen |
+| K5.1 | `K5.1-boss-warnkreis-event.md` | Umsetzung | autonom | fertig |
 | K5.2 | `K5.2-anlegen-dialog.md` | Umsetzung | autonom | offen |
 | K5.3 | `K5.3-debug-panel-overlay.md` | Umsetzung | autonom | offen |
 | K5.4 | `K5.4-abnahme-geraet.md` | Workshop | Mensch | offen |

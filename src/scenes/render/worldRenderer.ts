@@ -16,6 +16,7 @@ import { hasDepth, isOnTower } from './viewRules';
 import { type MonarchFrame, pickMonarchAnim } from './monarchAnim';
 import { type AnimName, ENEMY_SPRITES, PLAYER_SPRITES, TROOP_SPRITES, face, hasAnim, makeSprite, playAnim, spriteTop } from './sprites';
 import { CHEST_OPEN } from './worldSprites';
+import { WarnView } from '../kampfView';
 import type { Coin, Enemy, GameEvent, Pickup, Player, Projectile, ResourceNode, Site, Troop, World } from '../../model/types';
 
 /**
@@ -119,6 +120,7 @@ export class WorldRenderer {
   private readonly castle: View;
   private readonly castleHp: View;
   private readonly citizens: BuergerView;
+  private readonly warn: WarnView;
   /** Bauplätze, deren Preisschild steht (nur das nächste je Spieler, B-395) */
   private priceTags = new Set<number>();
   /** Knoten-ID → Spieler, der zuletzt eine Markier-Münze gab (Wimpel-Farbe, GEB10) */
@@ -137,6 +139,7 @@ export class WorldRenderer {
     this.castleHp = this.put(scene.add.container(world.castle.x * U, G - 310, bar(scene, 0, 240, 0x52b788)).setDepth(5));
 
     this.citizens = new BuergerView(scene, root);
+    this.warn = new WarnView(scene, root);
     this.nodes = this.layer((n) => this.createNode(n), (v, n) => this.updateNode(v, n));
     this.sites = this.layer((s) => createSiteView(scene, s), (v, s) => updateSiteView(scene, v, s, this.world, this.priceTags.has(s.id)));
     this.plots = this.layer((p) => this.createPlot(p), () => {});
@@ -203,6 +206,7 @@ export class WorldRenderer {
     this.players.sync(hidden.size === 0 ? world.players : world.players.filter((p) => !hidden.has(p.index)));
     this.projectiles.sync(world.projectiles);
     this.citizens.sync(world);
+    this.warn.sync(world);
     updateCastleView(this.scene, this.castle, world); // Burg wächst mit Hub-Stufe und Ausbau-Stand (GEB4 AC-05, GEB11)
     setBar(this.castleHp, 0, world.castle.hp / world.castle.maxHp, world.castle.hp < world.castle.maxHp);
   }
