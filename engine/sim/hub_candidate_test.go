@@ -119,7 +119,7 @@ func TestCreateWorldWithKandidat(t *testing.T) {
 	b := biomeForDepth(0)
 	bad := hubCopy(t)
 	bad.Levels = nil
-	if w, err := CreateWorldWith(b, "with", CreateOptions{Candidate: bad}, nil); err == nil || w != nil {
+	if w, err := CreateWorldWith(b, "with", CreateOptions{Candidate: bad}, nil, 0); err == nil || w != nil {
 		t.Errorf("ungültiger Kandidat: Welt %v, Fehler %v", w != nil, err)
 	}
 	plain, err := CreateWorld(b, "with", Options{CycleSpeed: 1})
@@ -127,7 +127,7 @@ func TestCreateWorldWithKandidat(t *testing.T) {
 		t.Fatal(err)
 	}
 	h := hubCopy(t)
-	cand, err := CreateWorldWith(b, "with", CreateOptions{Candidate: h}, nil)
+	cand, err := CreateWorldWith(b, "with", CreateOptions{Candidate: h}, nil, 0)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -145,5 +145,24 @@ func TestCreateWorldWithKandidat(t *testing.T) {
 	h.Levels, h.Sites[0].HubLevel = nil, 99 // Aufrufer ändert den Kandidaten nach dem Bau
 	if len(hubOf(cand).Levels) == 0 || hubOf(cand).Sites[0].HubLevel == 99 {
 		t.Error("Änderung am Kandidaten nach dem Bau wirkt auf die Welt (keine Kopie)")
+	}
+}
+
+// WZ24.3 (B-479/AC-04): Die geplanten Chunks der Welt werden gegen die Linien des Kandidaten mitgeprüft; eine Linie, die
+// eine Ader auf einen Bauplatz rückt, wird mit Insel, Tiefe und Platz abgelehnt (Beispiel aus B-462: Linie 5 bei 126).
+func TestHubPruefungSchliesstGeplanteChunksEin(t *testing.T) {
+	world, err := parseTestWorld(`,"depths":[0,1,4],"plannedChunks":{"1":[{"slot":2,"kind":"cavern","objects":[{"kind":"stoneVein","at":36}]}]}`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	h := cloneHub(&hub)
+	h.WallLines.WallUnits = []float64{44, 64, 84, 104, 124}
+	if f := validatePlanned(world, h); len(f) != 0 {
+		t.Fatalf("Linie 5 bei 124 abgelehnt: %v", f)
+	}
+	h.WallLines.WallUnits = []float64{44, 64, 84, 104, 126}
+	f := validatePlanned(world, h)
+	if len(f) != 1 || f[0].Rule != RulePlanned || f[0].Site != "Insel a" || !strings.Contains(f[0].Detail, "Tiefe 1") || !strings.Contains(f[0].Detail, "Platz +2") {
+		t.Errorf("Befund %v", f)
 	}
 }

@@ -5,8 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"slices"
 	"sort"
 	"strconv"
+
+	"k3c/engine/level"
 )
 
 // Spielstand (Port von src/world/sim/campaign.ts). Gespeichert wird nur, was sich nicht aus dem Seed ergibt: Hubs,
@@ -47,6 +50,10 @@ type HubSave struct {
 	NodesGone    []string    `json:"nodesGone"` // Schlüssel `kind@x` der abgebauten Bäume/Felsen
 	NodesMarked  []string    `json:"nodesMarked"`
 	PickupsTaken []string    `json:"pickupsTaken"`
+	// Erzeugung der Stufe (B-489): geplante Chunks und Chunk-Anzahl, mit denen sie gebaut wurde. Das Laden baut sie damit,
+	// nicht mit den aktuellen Daten; ohne Eintrag gilt reiner Zufall in der Länge des Bioms (kein Format-Sprung).
+	Planned    []level.PlannedChunk `json:"planned,omitempty"`
+	ChunkCount int                  `json:"chunkCount,omitempty"`
 }
 
 // PlayerSave ist das Gold eines Spielerplatzes.
@@ -119,7 +126,8 @@ func nodeKey(n *ResourceNode) (string, bool) { return key(n.Kind, n.X), true }
 func pickupKey(p *Pickup) (string, bool)     { return key(p.Kind, p.X), true }
 
 func hubSave(w, base *World) HubSave {
-	h := HubSave{Depth: w.Biome.Depth, CastleHP: w.Castle.HP, Stock: *w.Stock, Wave: w.Wave, Sites: []SiteSave{}}
+	h := HubSave{Depth: w.Biome.Depth, CastleHP: w.Castle.HP, Stock: *w.Stock, Wave: w.Wave, Sites: []SiteSave{},
+		Planned: slices.Clone(w.planned), ChunkCount: w.chunkCount}
 	if w.Aggression != nil {
 		a := *w.Aggression
 		h.Aggression = &a

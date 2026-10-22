@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
-	"strings"
 	"unicode/utf8"
 
 	"k3c/engine/level"
@@ -50,8 +49,8 @@ type PreviewOptions struct {
 	// die höchste Stufe des Kandidaten. Nur Parameter, kein globaler Zustand.
 	HubCandidate []byte
 	// ChunkCount ist die Chunk-Anzahl der Stufe (Inselgröße, WZ17.3, geplante-chunks.md § 7); 0 = Länge des Bioms wie
-	// bisher. Erlaubt sind nur die Anzahlen aus sim.IslandSizes(); die Planung wird gegen die Anzahl geprüft. Mit
-	// HubCandidate noch abgelehnt (sim.CreateWorldWith nimmt keine Anzahl). Nur Parameter, kein globaler Zustand.
+	// bisher. Erlaubt sind nur die Anzahlen aus sim.IslandSizes() (auch mit HubCandidate, B-490); die Planung wird gegen
+	// die Anzahl geprüft. Nur Parameter, kein globaler Zustand.
 	ChunkCount int
 }
 
@@ -129,7 +128,7 @@ func previewWorld(biome level.Biome, o PreviewOptions) (*sim.World, int, error) 
 		return nil, 0, err
 	}
 	if len(o.HubCandidate) > 0 {
-		return candidateWorld(biome, o.Seed, o.HubCandidate, o.Planned)
+		return candidateWorld(biome, o.Seed, o.HubCandidate, o.Planned, o.ChunkCount)
 	}
 	data, err := fullData()
 	if err != nil {
@@ -142,22 +141,14 @@ func previewWorld(biome level.Biome, o PreviewOptions) (*sim.World, int, error) 
 	return w, data.hub, nil
 }
 
-// checkPreviewCount lehnt eine Chunk-Anzahl ab, die keine Inselgröße ist (Wortlaut wie die Prüfung der Insel in
-// engine/sim), und eine Anzahl zusammen mit einem Kandidaten.
+// checkPreviewCount lehnt eine Chunk-Anzahl ab, die keine Inselgröße ist (sim.CheckChunkCount, die eine Prüfung, B-490);
+// 0 = Länge des Bioms. Mit Kandidaten-hub.json gilt dieselbe Prüfung.
 func checkPreviewCount(o PreviewOptions) error {
 	if o.ChunkCount == 0 {
 		return nil
 	}
-	sizes := sim.IslandSizes()
-	valid := make([]string, len(sizes))
-	for i, s := range sizes {
-		if s.ChunkCount == o.ChunkCount {
-			if len(o.HubCandidate) > 0 {
-				return fmt.Errorf("vorschau: Chunk-Anzahl mit Kandidaten-hub.json noch nicht möglich")
-			}
-			return nil
-		}
-		valid[i] = strconv.Itoa(s.ChunkCount)
+	if err := sim.CheckChunkCount(o.ChunkCount); err != nil {
+		return fmt.Errorf("vorschau: %w", err)
 	}
-	return fmt.Errorf("vorschau: die Chunk-Anzahl %d ist keine Inselgröße (gültig: %s)", o.ChunkCount, strings.Join(valid, ", "))
+	return nil
 }

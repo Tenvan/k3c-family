@@ -7,9 +7,11 @@ import type { FigureItem } from './figureView';
  *  Zeichnen geladen (eigener Baustein, groß). `items` ersetzt die gezeigten Figuren (null = leer), `control` steuert die
  *  Wiedergabe; `onInfo` meldet Lücke und Bildzahl je Figur, sobald sie gezeichnet sind. Eine neuere `items`-Liste macht
  *  eine ältere Antwort ungültig. */
-export function FigureStage({ items, control, onInfo, onLoadError }: {
+export function FigureStage({ items, control, zoom, onInfo, onLoadError }: {
   items: readonly FigureItem[] | null;
   control: Control;
+  /** Zoom der Ansicht (1 = alle Figuren im Bild); ohne Angabe bleibt die Ansicht, wie sie ist */
+  zoom?: number;
   onInfo?: (info: FigureInfo[]) => void;
   onLoadError?: (files: string[]) => void;
 }) {
@@ -37,6 +39,8 @@ export function FigureStage({ items, control, onInfo, onLoadError }: {
   }, [ready, items]);
 
   useEffect(() => { if (ready) stage.current?.setControl(control); }, [ready, control, items]);
+  // nach dem Zeigen neuer Figuren erneut anwenden: das Einpassen setzt den Zoom neu
+  useEffect(() => { if (ready && zoom !== undefined) stage.current?.setFigureZoom(zoom); }, [ready, zoom, items]);
 
   return <div className="wd-stage" ref={host} aria-label="Figuren-Bühne" />;
 }

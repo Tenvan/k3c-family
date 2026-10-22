@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"encoding/json"
 	"reflect"
 	"strings"
 	"testing"
@@ -171,5 +172,14 @@ func TestPlanSaveSchreibtPlanungUndAnzahlZusammen(t *testing.T) {
 	want = strings.Replace(want, `{"0": [{"slot":6,"kind":"portal"}]}, "chunkCounts": {"0": 24}`, `{}, "chunkCounts": {"0": 40}`, 1)
 	if got := readFile(t, path); got != want {
 		t.Errorf("zweites Speichern:\n%s\nerwartet:\n%s", got, want)
+	}
+}
+
+// B-491/9: Schlüssel mit Steuerzeichen bleiben gültiges JSON (kein Go-Quoting wie \x01).
+func TestEncodeCountsGueltigesJSON(t *testing.T) {
+	raw := encodeCounts(map[string]int{"a\x01\"b": 3})
+	var back map[string]int
+	if err := json.Unmarshal(raw, &back); err != nil || back["a\x01\"b"] != 3 {
+		t.Errorf("%s: %v %v", raw, back, err)
 	}
 }

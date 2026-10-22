@@ -56,7 +56,7 @@ func loopbackBase(raw string) (string, error) {
 // WorldOpenGame startet das Level im Spiel (Binding): neu (`new`: nur Wald, Seed im Namensformat) oder voll ausgebaut
 // (`full`: legt den Spielstand `voll-<seed>` in der eingebundenen Engine an, B-507/AC-02). Die Landingpage unter base
 // (der Server des Studios) öffnet danach `game.html` mit diesem Spielstand. Ist eine andere als die Standard-Welt
-// gewählt, startet `new` ein frisches Spiel in ihr (`fresh=1&world=<id>`, WZ18.6). Kein Spielserver nötig.
+// gewählt, hat `new` den Spielstand `<welt>-<seed>` (`save`, `seed`, `world`; WZ18.6, B-499: Wiederholen lädt den Stand, ein neuer Lauf braucht einen neuen Seed). Kein Spielserver nötig.
 func (a *App) WorldOpenGame(base, seed, biome, mode string) OpenGameResult {
 	root, err := loopbackBase(base)
 	if err != nil {
@@ -76,8 +76,12 @@ func (a *App) WorldOpenGame(base, seed, biome, mode string) OpenGameResult {
 		}
 	}
 	query := url.Values{"autostart": {"1"}, "save": {save}}
-	if world != standardWorld { // neues Spiel in der gewählten Welt (WZ18.5)
-		query.Set("fresh", "1")
+	if world != standardWorld {
+		// Spielstand je Welt `<welt>-<seed>` (B-499): ohne `fresh` lädt die Lobby ihn beim zweiten Öffnen; fehlt er
+		// (`save_not_found`), legt der zweite Versuch ihn mit `seed` und `world` an. Die Standard-Welt behält den Namen.
+		save = world + "-" + seed
+		query.Set("save", save)
+		query.Set("seed", seed)
 		query.Set("world", world)
 	}
 	return OpenGameResult{URL: gameURL(root, query), Save: save}
@@ -95,6 +99,9 @@ func checkOpenGame(seed, biome, mode, world string) error {
 		}
 		if !gameSaveName.MatchString(seed) {
 			return hint("Seed muss aus Kleinbuchstaben, Ziffern und - bestehen (höchstens 32 Zeichen)")
+		}
+		if world != standardWorld && !gameSaveName.MatchString(world+"-"+seed) {
+			return hint("Welt-ID und Seed ergeben zusammen höchstens 31 Zeichen (Spielstand `<welt>-<seed>`)")
 		}
 	case modeFull:
 		if world != standardWorld {

@@ -50,6 +50,10 @@ Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht
 - **Status der Spec:** `Entwurf` → `freigegeben` nur durch ausdrückliche Zustimmung von 🧑 zu genau dieser Revision
   (Feld `Freigabe`: Datum und Quelle). `rückwirkend` = aus erledigter Arbeit abgeleitet, ohne Freigabe.
   Die Freigabe eines Sprints umfasst seine Ticket-Specs in ihrer aktuellen Revision; die Tickets bekommen dieselbe Freigabe.
+  **Ausnahme (Beschluss 🧑 2026-10-22):** Sagt 🧑 ausdrücklich „autonom abarbeiten“, gilt der Vorbehalt nicht: Claude darf
+  die Specs der freigegebenen Arbeit selbst freigeben (Feld `Freigabe`: „autonom, Claude, <Datum>“), nach eigener
+  Einschätzung und bisherigem Vorgehen. Offene Fragen entscheidet Claude mit einem begründeten Default und meldet sie im
+  Nachgang; 🧑 ändert, was ihm nicht gefällt. Manuelle Abnahmen (siehe unten) bleiben bei 🧑.
 - **Änderung:** Passt eine Anforderung während der Umsetzung nicht, erst die Spec ändern (`Revision` + 1, zurück auf
   `Entwurf`, neue Freigabe), dann den Code. Nie ein Kriterium umschreiben, damit es zum Code passt.
 - **Nachweis:** Das **Ergebnis** der Session nennt je Kriterium `umgesetzt`, `geprüft` (womit), `verschoben` (Grund,

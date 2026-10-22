@@ -69,8 +69,9 @@ func TestRuineImSpielstand(t *testing.T) {
 	}
 }
 
-// Kennt die Planung eine gespeicherte Ruine nicht mehr, verliert der Stand den Platz (keine Migration).
-func TestUnbekannteRuineImSpielstandWirdVerworfen(t *testing.T) {
+// Die Planung steht im Stand (B-489): Ändert sich die Planung der Welt danach, lädt der Stand seine Stufe so, wie er sie
+// gebaut hat; die Ruinen und ihre Plätze bleiben (vorher verlor der Stand sie, WZ24.2).
+func TestRuineImSpielstandBleibtBeiGeaenderterWeltPlanung(t *testing.T) {
 	isl, err := CreateIslandIn(ruinWorld(t, true), "ruine-1", []int{0}, islandSpeed, CreateOptions{})
 	if err != nil {
 		t.Fatal(err)
@@ -81,22 +82,17 @@ func TestUnbekannteRuineImSpielstandWirdVerworfen(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	loaded, err := FromIslandSaveIn(parsed, islandSpeed, ruinWorld(t, false))
+	loaded, err := FromIslandSaveIn(parsed, islandSpeed, ruinWorld(t, false)) // die Welt hat die Planung inzwischen verloren
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, s := range loaded.Stages[0].Sites {
-		if s.Ruin {
-			t.Errorf("Ruine %s@%v nach Laden ohne Planung", s.Kind, s.X)
-		}
-	}
 	for _, r := range isl.Stages[0].Level.Ruins {
-		if siteAt(loaded.Stages[0], r.Kind, r.X) != nil {
-			t.Errorf("Platz %s@%v nicht verworfen", r.Kind, r.X)
+		if s := siteAt(loaded.Stages[0], r.Kind, r.X); s == nil || !s.Ruin {
+			t.Errorf("Ruine %s@%v nach dem Laden verloren", r.Kind, r.X)
 		}
 	}
-	if len(loaded.Stages[0].Sites)+3 != len(isl.Stages[0].Sites) {
-		t.Errorf("%d Plätze nach Laden, erwartet %d", len(loaded.Stages[0].Sites), len(isl.Stages[0].Sites)-3)
+	if len(loaded.Stages[0].Sites) != len(isl.Stages[0].Sites) {
+		t.Errorf("%d Plätze nach Laden, erwartet %d", len(loaded.Stages[0].Sites), len(isl.Stages[0].Sites))
 	}
 }
 

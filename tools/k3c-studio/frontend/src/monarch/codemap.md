@@ -17,3 +17,4 @@ Seite Monarch (B-463, WZ10): zeigt den Monarchen für beide Spielerfarben mit Re
 ## Integration
 - Abhängigkeiten: `../playback/`, `../api`, `@game/core/constants`, `@game/core/texts`, `@game/scenes/effects`, `@data/*`.
 - `slotOptions` nutzt auch `../enemies/`; eingehängt in `../App.tsx` (Seite `monarch`).
+- `monarchZoom.ts`: Zoom der Ansicht (Schritte, Grenzen, Alt + Rad), `MonarchPage` zweispaltig (Skills links, Monarchen rechts) mit Zoom-Leiste (WZ23.2, B-502); die Sheets der Spieler bleiben wie im Spiel (Entscheidung, B-502 › Offene Fragen 1).

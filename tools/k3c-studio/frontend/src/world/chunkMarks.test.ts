@@ -24,6 +24,15 @@ describe('Hinweise je Platz', () => {
   });
 });
 
+describe('Rangfolge am selben Abschnitt (B-491/6)', () => {
+  it('ein Fehler gewinnt vor der Planung, unabhängig von der Reihenfolge', () => {
+    const planned = { slot: 1, kind: 'planned' as const, label: 'p' };
+    const error = { slot: 1, kind: 'error' as const, label: 'e' };
+    expect([...chunkMarks(level, [planned, error]).values()]).toEqual([error]);
+    expect([...chunkMarks(level, [error, planned]).values()]).toEqual([error]);
+  });
+});
+
 describe('Platz -> Abschnitt (rules/geplante-chunks.md § 1)', () => {
   it('+n ist der n-te Abschnitt rechts der Hub-Abschnitte, −n der n-te links davon', () => {
     const marks = chunkMarks(level, [{ slot: 1, kind: 'planned', label: 'a' }, { slot: -1, kind: 'error', label: 'b' }, { slot: 2, kind: 'planned', label: 'c' }]);

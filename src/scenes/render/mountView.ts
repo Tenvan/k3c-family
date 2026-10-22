@@ -10,8 +10,8 @@ import { MOUNTS, PLAYER_SPRITES, RIDER_WAIST, SHEETS, face, makeSprite, playAnim
  * (`index`, `vx`, `facing`) und Daten, alle Entscheidungen trifft `mountPose`. Index 0 = Reittier, 1 = Reiter.
  */
 
-const ctxFor = (p: Player): MountContext => ({
-  key: MONARCH.mount.sprite,
+const ctxFor = (p: Player, mountKey: string): MountContext => ({
+  key: mountKey,
   rider: PLAYER_SPRITES[p.index % PLAYER_SPRITES.length],
   refSpeed: MONARCH.base.speed * MONARCH.mount.speedFactor,
   mounts: MOUNTS,
@@ -21,9 +21,10 @@ const ctxFor = (p: Player): MountContext => ({
 
 const warned = new Set<string>();
 
-/** Reiter samt Reittier oder `null` (unbekannter Schlüssel, Textur fehlt): dann zeichnet der Aufrufer die bisherige Figur. */
-export function createRider(scene: Phaser.Scene, p: Player): Phaser.GameObjects.Container | null {
-  const ctx = ctxFor(p);
+/** Reiter samt Reittier `mountKey` (Standard: das des Monarchen) oder `null` (unbekannter Schlüssel, Textur fehlt): dann
+ *  zeichnet der Aufrufer die bisherige Figur. Andere Reittiere vorher mit `preloadMount` laden (B-476). */
+export function createRider(scene: Phaser.Scene, p: Player, mountKey: string = MONARCH.mount.sprite): Phaser.GameObjects.Container | null {
+  const ctx = ctxFor(p, mountKey);
   const pose = mountPose(p, 0, ctx);
   if (!pose || !scene.textures.exists(`${pose.sheet}-idle`)) {
     if (ctx.key && !warned.has(ctx.key)) {
