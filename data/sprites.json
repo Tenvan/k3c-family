@@ -22,6 +22,22 @@
         "attack": {
           "frames": 6,
           "fps": 14
+        },
+        "give": {
+          "frames": 4,
+          "fps": 12
+        },
+        "hit": {
+          "frames": 3,
+          "fps": 14
+        },
+        "death": {
+          "frames": 5,
+          "fps": 10
+        },
+        "respawn": {
+          "frames": 5,
+          "fps": 10
         }
       },
       "pack": "Medieval King Pack",
@@ -48,6 +64,22 @@
         "attack": {
           "frames": 4,
           "fps": 14
+        },
+        "give": {
+          "frames": 3,
+          "fps": 12
+        },
+        "hit": {
+          "frames": 3,
+          "fps": 14
+        },
+        "death": {
+          "frames": 5,
+          "fps": 10
+        },
+        "respawn": {
+          "frames": 5,
+          "fps": 10
         }
       },
       "pack": "Medieval King Pack 2",

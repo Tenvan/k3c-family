@@ -1,6 +1,6 @@
 // spritegen zeichnet die Figuren-Sheets für Eisenkäfer und Kristallspinne (GR8.1, B-329).
 // Deterministisch, nur DB32-Farben, ohne Zufall: gleiche Eingabe ergibt byte-gleiche PNG.
-// Aufruf: go run ./tools/spritegen [-out public/sprites]
+// Aufruf: go run ./tools/spritegen [-out public/sprites]; mit -monarch die Monarch-Animationen (monarch.go).
 package main
 
 import (
@@ -244,7 +244,16 @@ func write(path string, img image.Image) error {
 
 func main() {
 	out := flag.String("out", "public/sprites", "Ausgabeordner")
+	monarch := flag.Bool("monarch", false, "nur die Monarch-Animationen aus den König-Sheets ableiten (GR9.2)")
 	flag.Parse()
+	if *monarch {
+		if err := runMonarch(*out); err != nil {
+			fmt.Fprintln(os.Stderr, "❌", err)
+			os.Exit(1)
+		}
+		fmt.Println("✅ Monarch-Sheets geschrieben:", *out)
+		return
+	}
 	figures := map[string]func(*frame, pose){"iron-beetle": drawBeetle, "crystal-spider": drawSpider}
 	for _, name := range []string{"iron-beetle", "crystal-spider"} {
 		dir := filepath.Join(*out, name)
