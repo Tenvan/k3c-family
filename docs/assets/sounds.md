@@ -28,15 +28,15 @@ Katalog Ereignis → Sound → Quelle → Lizenz (B-167, SO2). Die Zuordnung ste
 
 Lücken (Münze geben, Bau-Fortschritt, `revived`, Hub-Ausbau, Skill je Klasse, Boss-Auftritt, UI-Klicks) führt B-492; für Reiten ist der Slot `sfx:ride` angelegt und mit Kandidaten belegt, der Einbau (Schleife je berittenem Spieler) steht in B-492; „Selbst erzeugt“-Füller waren nicht nötig, weil alle Pflicht-Ereignisse (Q08) einen Sound haben.
 
-## Musik (Stand SO2, Auswahl und Einbau in SO4)
+## Musik (Auswahl SO4.1 vorentschieden, Einbau SO4.3)
 
 | Zustand | Slot | Sound (aktiv) | Quelle | Urheber | Lizenz | Status |
 |---|---|---|---|---|---|---|
-| Tag | `music:tag` | `audio/kandidaten/happy-adventure-loop.ogg` (+3) | https://opengameart.org/content/happy-adventure-loop | fluffrabbit | CC0 | zugeordnet |
-| Abend | `music:abend` | `audio/kandidaten/chiptune-medieval-the-old-tower-inn.ogg` | https://opengameart.org/content/chiptune-medieval-the-old-tower-inn | Snabisch | CC0 | zugeordnet |
-| Nacht | `music:nacht` | `audio/kandidaten/haunting-chiptune-loop-void-estate.ogg` (+1) | https://opengameart.org/content/haunting-chiptune-loop-void-estate | -Ryu- | CC0 | zugeordnet |
-| Kampf | `music:kampf` | `audio/kandidaten/pixel-sprinter.ogg` (+2) | https://opengameart.org/content/pixel-sprinter | Zamoar | CC0 | zugeordnet |
-| Tiefe/Höhle | `music:tiefe` | `audio/kandidaten/8-bit-cave-loop.ogg` | https://opengameart.org/content/8-bit-cave-loop | haxx | CC0 | zugeordnet |
-| Boss | `music:boss` | `audio/kandidaten/nes-shooter-music-boss.ogg` (+1) | https://opengameart.org/content/nes-shooter-music-5-tracks-3-jingles | chrismthegamedude | CC0 | zugeordnet |
-| Lobby | `music:lobby` | `audio/kandidaten/nes-shooter-music-map.ogg` (+1) | https://opengameart.org/content/nes-shooter-music-5-tracks-3-jingles | chrismthegamedude | CC0 | zugeordnet |
-| Niederlage/Sieg | `music:ende` | `audio/kandidaten/8-bit-victory-loop.ogg` | https://opengameart.org/content/8-bit-victory-loop | josepharaoh99 | CC0 | zugeordnet (nur Sieg, **Lücke** Niederlage, B-168) |
+| Tag | `music:tag` | `audio/kandidaten/happy-adventure-loop.ogg` (+3) | https://opengameart.org/content/happy-adventure-loop | TinyWorlds | CC0 | gewählt (Default Claude 2026-10-22, B-554), spielt im Spiel |
+| Abend | `music:abend` | `audio/kandidaten/chiptune-medieval-the-old-tower-inn.ogg` | https://opengameart.org/content/chiptune-medieval-the-old-tower-inn | RandomMind | CC0 | gewählt (Default Claude 2026-10-22, B-554), spielt im Spiel |
+| Nacht | `music:nacht` | `audio/kandidaten/haunting-chiptune-loop-void-estate.ogg` (+1) | https://opengameart.org/content/haunting-chiptune-loop-void-estate | Zane Little Music | CC0 | gewählt (Default Claude 2026-10-22, B-554), spielt im Spiel |
+| Kampf | `music:kampf` | `audio/kandidaten/pixel-sprinter.ogg` (+2) | https://opengameart.org/content/pixel-sprinter | Zane Little Music | CC0 | gewählt (Default Claude 2026-10-22, B-554), spielt im Spiel |
+| Tiefe/Höhle | `music:tiefe` | `audio/kandidaten/8-bit-cave-loop.ogg` | https://opengameart.org/content/8-bit-cave-loop | Wolfgang_ | CC0 | gewählt (Default Claude 2026-10-22, B-554), spielt im Spiel |
+| Boss | `music:boss` | `audio/kandidaten/nes-shooter-music-boss.ogg` (+1) | https://opengameart.org/content/nes-shooter-music-5-tracks-3-jingles | SketchyLogic | CC0 | gewählt (Default Claude 2026-10-22, B-554), spielt im Spiel |
+| Lobby | `music:lobby` | `audio/kandidaten/nes-shooter-music-map.ogg` (+1) | https://opengameart.org/content/nes-shooter-music-5-tracks-3-jingles | SketchyLogic | CC0 | gewählt (Default Claude 2026-10-22, B-554), spielt im Spiel |
+| Niederlage/Sieg | `music:ende` | `audio/kandidaten/8-bit-victory-loop.ogg` | https://opengameart.org/content/8-bit-victory-loop | Wolfgang_ | CC0 | zugeordnet für Sieg (noch kein Auslöser); Niederlage still (Default, B-555) |

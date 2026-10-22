@@ -9,6 +9,7 @@ import type { GameEvent } from '../model/types';
 import { SFX_URLS, attenuation, cueFor, nightGain, type Listener } from './events';
 import { Mixer, type AudioContextLike, type Bus, type GainNodeLike } from './mixer';
 import { QUICK_FADE_SECONDS, crossfadeCurves, fadeOutFrom } from './crossfade';
+import { DUCK, duckGain, extendDuck, type DuckWindow } from './ducking';
 
 export interface SourceLike {
   buffer: unknown;
@@ -66,6 +67,9 @@ export class AudioCore {
   private readonly voices: Partial<Record<Bus, Voice>> = {};
   private readonly decoded = new Map<string, unknown>();
   private readonly active = new Map<string, number>();
+  /** Ducking-Gain vor dem Bus „Musik“ (SO4.3): multipliziert sich mit dem Crossfade der Stücke */
+  private duckNode?: GainNodeLike;
+  private duckWindow?: DuckWindow;
 
   constructor(private readonly deps: CoreDeps) {}
 
@@ -80,6 +84,8 @@ export class AudioCore {
       if (!this.ctx) {
         this.ctx = this.deps.createContext();
         this.mixer = new Mixer(this.ctx, this.deps.storage);
+        this.duckNode = this.ctx.createGain();
+        this.duckNode.connect(this.mixer.node('music'));
         void this.loadAtlas();
         void this.preloadEffects();
       }
@@ -140,7 +146,31 @@ export class AudioCore {
   onEvent(e: GameEvent, x: number | undefined, listeners: readonly Listener[], phase?: string): boolean {
     const cue = cueFor(e);
     const url = cue && (this.deps.sfx ?? SFX_URLS)[cue.slot];
+    if (cue?.global) this.duck(); // Warnung senkt die Musik (Q16), auch wenn der Warn-Sound fehlt
     return !!cue && !!url && this.playSample(url, 'sfx', attenuation(x, listeners, cue.global) * nightGain(phase));
+  }
+
+  /**
+   * Senkt den Bus „Musik“ für eine Warnung ab und stellt ihn danach wieder her (Rampen auf dem Ducking-Gain, Werte `DUCK`);
+   * überlappende Warnungen verlängern die Absenkung. `false`, solange gesperrt. Wirft nie.
+   */
+  duck(): boolean {
+    const { ctx, duckNode } = this;
+    if (!ctx || !duckNode || !this.running) return false;
+    const now = ctx.currentTime;
+    const w = extendDuck(this.duckWindow, now);
+    this.duckWindow = w;
+    const g = duckNode.gain;
+    try {
+      g.cancelScheduledValues?.(now);
+      g.setValueAtTime?.(duckGain(now, w), now);
+      g.linearRampToValueAtTime?.(DUCK.level, Math.max(now, w.start + DUCK.attack));
+      g.setValueAtTime?.(DUCK.level, w.end);
+      g.linearRampToValueAtTime?.(1, w.end + DUCK.release);
+    } catch {
+      return false; // Kontext geschlossen: Musik bleibt, wie sie ist
+    }
+    return true;
   }
 
   /** Lädt und dekodiert eine Datei einmal je URL; `false` bei Fehler (geloggt) oder ohne laufenden Kontext. Wirft nie. */
@@ -167,7 +197,7 @@ export class AudioCore {
     const gain = ctx.createGain();
     if (fade > 0) gain.gain.setValueCurveAtTime?.(crossfadeCurves().in, ctx.currentTime, fade);
     src.connect(gain);
-    gain.connect(mixer.node(bus));
+    gain.connect(this.busInput(mixer, bus));
     src.start(ctx.currentTime, 0);
     const voice: Voice = { url, src, gain };
     src.onended = () => {
@@ -178,6 +208,11 @@ export class AudioCore {
     this.voices[bus] = voice;
     if (old) this.release(old, fade > 0 ? fade : QUICK_FADE_SECONDS);
     return true;
+  }
+
+  /** Eingang für ganze Dateien: Musik läuft über den Ducking-Gain, die anderen Busse direkt. */
+  private busInput(mixer: Mixer, bus: Bus): GainNodeLike {
+    return bus === 'music' && this.duckNode ? this.duckNode : mixer.node(bus);
   }
 
   /** Beendet das Stück eines Busses mit kurzem oder langem Ausblenden. */

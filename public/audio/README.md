@@ -66,21 +66,21 @@ Kenney-Dateien (Packs Digital Audio, RPG Audio, Impact Sounds, Interface Sounds,
 | kandidaten/kenney-impact-sounds-impactbell-heavy-00.ogg | Kenney Impact Sounds: impactBell_heavy_000 | Kenney | CC0 | https://kenney.nl/assets/impact-sounds#impactBell_heavy_000 | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-interface-sounds-bong-001.ogg | Kenney Interface Sounds: bong_001 | Kenney | CC0 | https://kenney.nl/assets/interface-sounds#bong_001 | Lizenz erkannt (Kenney) |
 | kandidaten/kenney-digital-audio-threetone2.ogg | Kenney Digital Audio: threeTone2 | Kenney | CC0 | https://kenney.nl/assets/digital-audio#threeTone2 | Lizenz erkannt (Kenney) |
-| kandidaten/happy-adventure-loop.ogg | Happy Adventure (Loop) | fluffrabbit | CC0 | https://opengameart.org/content/happy-adventure-loop | Lizenz erkannt (OpenGameArt) |
+| kandidaten/happy-adventure-loop.ogg | Happy Adventure (Loop) | TinyWorlds | CC0 | https://opengameart.org/content/happy-adventure-loop | Lizenz geprüft (Claude, 2026-10-22, CC0-Link auf der Seite) |
 | kandidaten/flowerbed-fields-loop.ogg | Flowerbed Fields [Loop] | Dylan_B | CC0 | https://opengameart.org/content/flowerbed-fields-loop | Lizenz erkannt (OpenGameArt) |
 | kandidaten/lasso-lady-seamless-loop.ogg | Lasso Lady (seamless loop) | looneybits | CC0 | https://opengameart.org/content/lasso-lady-seamless-loop | Lizenz erkannt (OpenGameArt) |
-| kandidaten/chiptune-medieval-the-old-tower-inn.ogg | [Chiptune] Medieval: The Old Tower Inn | Snabisch | CC0 | https://opengameart.org/content/chiptune-medieval-the-old-tower-inn | Lizenz erkannt (OpenGameArt) |
-| kandidaten/haunting-chiptune-loop-void-estate.ogg | Haunting Chiptune Loop [Void Estate] | -Ryu- | CC0 | https://opengameart.org/content/haunting-chiptune-loop-void-estate | Lizenz erkannt (OpenGameArt) |
+| kandidaten/chiptune-medieval-the-old-tower-inn.ogg | [Chiptune] Medieval: The Old Tower Inn | RandomMind | CC0 | https://opengameart.org/content/chiptune-medieval-the-old-tower-inn | Lizenz geprüft (Claude, 2026-10-22, CC0-Link auf der Seite) |
+| kandidaten/haunting-chiptune-loop-void-estate.ogg | Haunting Chiptune Loop [Void Estate] | Zane Little Music | CC0 | https://opengameart.org/content/haunting-chiptune-loop-void-estate | Lizenz geprüft (Claude, 2026-10-22, CC0-Link auf der Seite) |
 | kandidaten/delayed-chiptune.ogg | Delayed Chiptune | DraymaDev | CC0 | https://opengameart.org/content/delayed-chiptune | Lizenz erkannt (OpenGameArt) |
 | kandidaten/8-bit-battle-loop.ogg | 8-Bit Battle Loop | AntumDeluge | CC0 | https://opengameart.org/content/8-bit-battle-loop | Lizenz erkannt (OpenGameArt) |
 | kandidaten/confrontation.ogg | Confrontation | DraymaDev | CC0 | https://opengameart.org/content/confrontation-1 | Lizenz erkannt (OpenGameArt) |
-| kandidaten/pixel-sprinter.ogg | Pixel Sprinter | Zamoar | CC0 | https://opengameart.org/content/pixel-sprinter | Lizenz erkannt (OpenGameArt) |
-| kandidaten/8-bit-cave-loop.ogg | 8-Bit Cave Loop | haxx | CC0 | https://opengameart.org/content/8-bit-cave-loop | Lizenz erkannt (OpenGameArt) |
-| kandidaten/nes-shooter-music-boss.ogg | NES Shooter Music: Boss | chrismthegamedude | CC0 | https://opengameart.org/content/nes-shooter-music-5-tracks-3-jingles#Boss | Lizenz erkannt (OpenGameArt) |
+| kandidaten/pixel-sprinter.ogg | Pixel Sprinter | Zane Little Music | CC0 | https://opengameart.org/content/pixel-sprinter | Lizenz geprüft (Claude, 2026-10-22, CC0-Link auf der Seite) |
+| kandidaten/8-bit-cave-loop.ogg | 8-Bit Cave Loop | Wolfgang_ | CC0 | https://opengameart.org/content/8-bit-cave-loop | Lizenz geprüft (Claude, 2026-10-22, CC0-Link auf der Seite) |
+| kandidaten/nes-shooter-music-boss.ogg | NES Shooter Music: Boss | SketchyLogic | CC0 | https://opengameart.org/content/nes-shooter-music-5-tracks-3-jingles#Boss | Lizenz geprüft (Claude, 2026-10-22, CC0-Link auf der Seite) |
 | kandidaten/gods-forbid.ogg | Gods Forbid | Mjorlaja | CC0 | https://opengameart.org/content/gods-forbid | Lizenz erkannt (OpenGameArt) |
-| kandidaten/nes-shooter-music-map.ogg | NES Shooter Music: Map | chrismthegamedude | CC0 | https://opengameart.org/content/nes-shooter-music-5-tracks-3-jingles#Map | Lizenz erkannt (OpenGameArt) |
+| kandidaten/nes-shooter-music-map.ogg | NES Shooter Music: Map | SketchyLogic | CC0 | https://opengameart.org/content/nes-shooter-music-5-tracks-3-jingles#Map | Lizenz geprüft (Claude, 2026-10-22, CC0-Link auf der Seite) |
 | kandidaten/chiptune-medieval-the-bard-s-tale.ogg | [Chiptune] Medieval: The Bard's Tale | Snabisch | CC0 | https://opengameart.org/content/chiptune-medieval-the-bards-tale | Lizenz erkannt (OpenGameArt) |
-| kandidaten/8-bit-victory-loop.ogg | 8-Bit Victory Loop | josepharaoh99 | CC0 | https://opengameart.org/content/8-bit-victory-loop | Lizenz erkannt (OpenGameArt) |
+| kandidaten/8-bit-victory-loop.ogg | 8-Bit Victory Loop | Wolfgang_ | CC0 | https://opengameart.org/content/8-bit-victory-loop | Lizenz geprüft (Claude, 2026-10-22, CC0-Link auf der Seite) |
 | kandidaten/a-big-adventure.ogg | A Big Adventure | Alexandr Zhelanov | CC-BY 4.0 | https://opengameart.org/content/a-big-adventure | bestätigt 🧑 2026-10-18 |
 | kandidaten/the-adventure-begins.wav | The Adventure Begins. | mismatchedmisfitz | CC0 | https://opengameart.org/content/the-adventure-begins | bestätigt 🧑 2026-10-18 |
 | kandidaten/summer-adventure-background-music.mp3 | Summer Adventure background music | dionelou | CC-BY 4.0 | https://opengameart.org/content/summer-adventure-background-music | bestätigt 🧑 2026-10-18 |

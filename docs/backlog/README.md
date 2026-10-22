@@ -177,6 +177,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-551](B-551-entscheidung-kandidaten-kein-pack.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G6: public/grafik/kandidaten/ ist kein Grafik-Pack |
 | [B-552](B-552-entscheidung-monarch-animationen.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G7: Monarch-Animationen bleiben aus vorhandenen Frames abgeleitet |
 | [B-553](B-553-entscheidung-specs-gr8-gr9-gr10.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G8: Die autonom freigegebenen Specs GR8, GR9 und GR10 gelten |
+| [B-554](B-554-entscheidung-musik-stuecke.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S1: Je Musikzustand spielt die erste Präferenz des Slots, die übrigen Kandidaten bleiben bis zur Bestätigung liegen |
+| [B-555](B-555-entscheidung-musik-ende.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S2: Nach dem Fall der Burg bleibt die Musik still, das Siegstück wartet auf einen Sieg-Auslöser |
 
 ## Archiv
 

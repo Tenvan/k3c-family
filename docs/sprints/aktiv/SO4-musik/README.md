@@ -64,7 +64,7 @@ Stück fehlt → vorheriger Zustand oder Stille, kein Absturz.
 |---|---|---|---|---|
 | SO4.1 | `SO4.1-workshop-stuecke.md` | Workshop | Mensch | offen |
 | SO4.2 | `SO4.2-zustandsautomat-crossfade.md` | Umsetzung | autonom | fertig |
-| SO4.3 | `SO4.3-ducking-dateien-credits.md` | Umsetzung | autonom | offen |
+| SO4.3 | `SO4.3-ducking-dateien-credits.md` | Umsetzung | autonom | fertig |
 | SO4.4 | `SO4.4-review.md` | Review | autonom | offen |
 | SO4.5 | `SO4.5-hoerprobe-tv.md` | Workshop | Mensch | offen |
 | SO4.6 | `SO4.6-audiokern-dateien-ambient.md` | Umsetzung | autonom | fertig |
