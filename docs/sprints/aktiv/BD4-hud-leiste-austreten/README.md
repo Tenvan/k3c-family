@@ -63,7 +63,7 @@ Entschieden mit Default (autonom, Claude), Prüfung durch 🧑: Goldtopf B-525, 
 | BD4.2 | `BD4.2-fluss-spiegelung.md` | Umsetzung | autonom | fertig |
 | BD4.3 | `BD4.3-austreten-menue.md` | Umsetzung | autonom | fertig |
 | BD4.4 | `BD4.4-workshop-abnahme.md` | Workshop | Mensch | offen |
-| BD4.5 | `BD4.5-review.md` | Review | autonom | offen |
+| BD4.5 | `BD4.5-review.md` | Review | autonom | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 

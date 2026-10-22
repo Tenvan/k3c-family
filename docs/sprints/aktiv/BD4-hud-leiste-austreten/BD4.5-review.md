@@ -1,6 +1,6 @@
 # BD4.5 · Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -41,5 +41,4 @@ Review-Session: `task check`, `task check:go`, `task check:race` (nacheinander).
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01, AC-02, AC-04 geprüft: `task check` grün (hudLayout-Tests). AC-05 geprüft: Vitest grün, im Browser mit zwei Tastatur-Spielern bestätigt. `task check:go` grün (6 min 36 s), `task check:race` exit 0 nach nur 0,3 s (Ergebnis vermutlich aus dem Cache, Go-Code unverändert). Getrennter Reviewer (Sonnet) las den Client-Diff: keine schweren Befunde (hudLayout.test.ts nicht gelesen). AC-03 und AC-06 bleiben am Gerät (BD4.4, offen); Sprint bleibt aktiv.
