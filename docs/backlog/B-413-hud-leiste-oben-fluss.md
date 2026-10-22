@@ -8,9 +8,9 @@
 - **Sprint:** BD4
 - **Projekt:** BED
 - **Erstellt:** 2026-10-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-10-22 (Ralf: autonom abarbeiten)
 
 ## Ausgangslage
 
@@ -22,27 +22,32 @@ Eine Leiste oben über die ganze Breite zeigt die Werte für alle Spieler (Vorra
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spielende im Split-Screen (1–4); Agent in CLI; 🧑 nimmt am Gerät ab.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- Vorrat, Hub, Tageszeit, Kampf, Bürger und Raum stehen nur in der Leiste oben (`BAR_HEIGHT` 134), nie in einem Spielerfeld.
+- Spielerkarten (Name, Leben, Goldtopf) stehen in der Leiste; der Kompass oben in jedem Feld, im obersten unter der Leiste.
+- Die Leiste weicht Home-Button und Touch-Flächen aus; Layout als reine Funktion mit Test.
+- Fluss unter der Bodenlinie mit kopfüber gespiegeltem Hintergrund und strömenden Wellen.
+- 2 Spieler gleichzeitig, Client rechnet nichts (`noSim.test.ts`).
+- Stand: im Kern mit #277 umgesetzt; BD4 belegt ihn durch Tests.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Spiegelung der Figuren im Fluss; neue Grafiken (Projekt GRA); Serveränderungen.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Domaene CLI; `src/scenes` zeichnet nur Snapshots; Datei ≤ 400 Zeilen, Funktion ≤ 60; B nicht belegen.
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+3 Spieler: Vorrat, Hub, Tageszeit, Kampf nur oben in der Leiste, je Feld der Kompass oben.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Touch-Modus: Leiste weicht den Touch-Flächen aus. Zu wenig Platz: Elemente fallen nach Rang weg, Pflicht bleibt.
 
 ## Akzeptanzkriterien
 
@@ -53,7 +58,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+Entschieden mit Default (autonom, Claude): Goldtopf siehe B-525, Hintergrund-Höhe siehe B-526.
 
 ## Notizen
 
