@@ -1,6 +1,6 @@
 # RM1 · SRV · Raum-Pause im Couch-Raum und lernbare Skills vom Server
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** SKL
 - **Domäne:** SRV
 - **Reife:** bereit
@@ -58,11 +58,11 @@ keine. Entschieden (autonom, Claude, 2026-10-22): Die lernbaren Skills stehen al
 |---|---|---|---|---|
 | RM1.2 | `RM1.2-lernbare-skills-protokoll.md` | Umsetzung | autonom | fertig |
 | RM1.4 | `RM1.4-respec-in-aktionsliste.md` | Umsetzung | autonom | fertig |
-| RM1.3 | `RM1.3-review.md` | Review | autonom | offen |
+| RM1.3 | `RM1.3-review.md` | Review | autonom | fertig |
 | RM1.1 | `RM1.1-pause-couch-raum.md` | Umsetzung | autonom | verworfen |
 
 RM1.1 entfällt (Pause im Couch-Raum, B-214 an BED, PJ3).
 
 ## Abnahme
 
-–
+2026-10-23, autonom (Claude, RM1.3). AC-01 entfällt (B-214 an BED, RM1.1 verworfen); AC-02 RM1.2, AC-03 RM1.4 mit Tests. `task check`, `task check:go`, `task check:race` grün. Reviewer: keine schweren Befunde. Form `learn.skills` zur Bestätigung in KR5.

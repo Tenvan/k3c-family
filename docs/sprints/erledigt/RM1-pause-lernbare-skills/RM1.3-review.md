@@ -1,6 +1,6 @@
 # RM1.3 · Review RM1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -50,5 +50,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-23, autonom (Claude).
+
+- `task check` grün (44 s), `task check:go` grün (3:46), `task check:race` grün (264 ms, vermutlich aus dem Cache; ungeprüft, ob neu gelaufen).
+- AC-02 geprüft: RM1.2 (Go- und Vitest-Nachweise). AC-03 geprüft: RM1.4 (`TestAktionslisteRespec`).
+- Reviewer (Sonnet, getrennt): keine schweren Befunde. Hinweis ohne Fix: `respec` fehlt auch bei gefallenem Monarchen (wie alle Aktionen am Ort, dokumentiert); die Nachricht `respec` prüft "lebt" nicht (unverändert, B-495 Nicht-Ziel).
