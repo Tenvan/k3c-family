@@ -142,8 +142,9 @@ func applyDamageBy(w *World, targetID int, damage float64, cause string) {
 
 // damagePlayer: Verteidigung (defenseOf, Passive), dann zieht der Schild (Iron Wall) zuerst ab, der Rest geht auf die HP. Solange Last
 // Stand läuft, lässt ein tödlicher Treffer 1 HP stehen. Der tödliche Treffer setzt `cause` in playerDown.
+// Ein geschützter Monarch (Protected, B-214) nimmt keinen Schaden.
 func damagePlayer(w *World, p *Player, damage float64, cause string) {
-	if !isAlive(p) {
+	if !isAlive(p) || p.Protected {
 		return
 	}
 	dealt := math.Max(1, damage-defenseOf(w, p))

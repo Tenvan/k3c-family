@@ -36,6 +36,9 @@ type Player struct {
 	// Free: Niemand steuert diesen Monarchen (vom Raum gesetzt, B-059). Er zählt nicht für den Stufenwechsel und
 	// reist mit. Nur Go, im JSON nur bei true.
 	Free bool `json:"free,omitempty"`
+	// Protected: Schutz des pausierten Monarchen online (B-214, vom Raum gesetzt): kein Ziel für Gegner, kein Schaden.
+	// Nur zur Laufzeit, weder im Spielstand noch im Protokoll.
+	Protected bool `json:"-"`
 	// Skills: gelernte Skills (IDs, Lernreihenfolge); Slots: aktive Skills in den Slots 1 bis 4 ("" = frei).
 	Skills []string `json:"skills,omitempty"`
 	Slots  []string `json:"slots,omitempty"`

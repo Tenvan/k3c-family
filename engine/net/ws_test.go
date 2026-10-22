@@ -180,7 +180,8 @@ func TestHandschlagFalsch(t *testing.T) {
 	for _, first := range []string{`kein json`, `{"t":"join","room":"KRNZ","slots":[0]}`, `{"t":"hello","v":1,"device":"x"}`, `{"t":"hello","v":2,"device":"x"}`,
 		`{"t":"hello","v":4,"device":"x"}`, // v4-Client vor W5.2
 		`{"t":"hello","v":6,"device":"x"}`, // v6-Client vor WZ18.5
-		`{"t":"hello","v":7,"device":""}`, `{"t":"hello","v":7,"device":"` + strings.Repeat("x", 65) + `"}`} {
+		`{"t":"hello","v":7,"device":"x"}`, // v7-Client vor BD3.1
+		`{"t":"hello","v":8,"device":""}`, `{"t":"hello","v":8,"device":"` + strings.Repeat("x", 65) + `"}`} {
 		c := dial(t, srv)
 		c.send(first)
 		if m := c.next(); m["code"] != "version" {

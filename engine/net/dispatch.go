@@ -91,6 +91,8 @@ func (c *conn) roomMessage(r *room.Room, m inMsg) error {
 		return c.input(r, m)
 	case "learn", "respec":
 		return c.skillMessage(r, m)
+	case "pause", "resume": // Pause des Geräts (B-214), Wirkung im Tick
+		return r.Pause(c.device, c, m.T == "pause")
 	case "leave":
 		r.Leave(c.device, c)
 		c.left()

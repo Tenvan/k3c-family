@@ -130,7 +130,7 @@ func (r *Room) Drop(id string, peer Peer) {
 		mo := r.monarchs[idx]
 		mo.state, mo.since, mo.input = Waiting, now, sim.PlayerCommand{}
 	}
-	d.connected = false
+	d.connected, d.paused, d.protect = false, false, 0 // die Pause endet mit der Verbindung (B-214)
 	r.met.drop(id)
 	r.m.Monitor.Event(now, r.Code, "drop", short(id))
 	r.log().Info("⏳ Gerät getrennt, Monarchen warten", "device", short(id), "frist", WaitFor.String(), "geraete", r.connected())
@@ -180,16 +180,17 @@ func (r *Room) Tick() bool {
 	}
 	commands := make([]sim.PlayerCommand, len(r.monarchs))
 	for i, mo := range r.monarchs {
-		if mo.state == Taken {
+		if mo.state == Taken && !r.devicePaused(mo.device) { // Monarchen eines pausierten Geräts stehen still
 			commands[i] = mo.input
 		}
 	}
 	r.syncFree()
+	r.pauseTick()
 	if r.beforeStep != nil {
 		r.beforeStep()
 	}
 	before := r.depths()
-	for range r.steps() { // Zeitraffer: scale() Schritte mit denselben Eingaben, ein Tick; Dev-Pause: keiner
+	for range r.steps() { // Zeitraffer: scale() Schritte mit denselben Eingaben, ein Tick; Dev- und Couch-Pause: keiner
 		sim.StepIsland(r.isl, commands, 1.0/TickHz)
 		r.met.observe(r.isl)
 	}
