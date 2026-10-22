@@ -1,6 +1,6 @@
 # BD2.2 · Server-Test prüft das Beispiel der Rückmeldungs-Ereignisse gegen die Simulation
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -53,5 +53,5 @@ Einmal vor dem Commit; währenddessen nur der gezielte Go-Test (`check_run` mit 
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC (B-377) geprüft: `TestRueckmeldungEreignisseWieBeispiel` (engine/net/feedback_example_test.go) baut strike ohne Treffer, strike mit Treffer und castFailed aus der Simulation und vergleicht die JSON-Schlüssel mit dem Beispiel `s2c-snapshot-rueckmeldung.json`. Gegenprobe: `hit` testweise umbenannt → Test rot, zurückgenommen → grün.
+- Keine Abweichung, keine neuen Tickets.

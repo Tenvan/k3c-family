@@ -6,7 +6,7 @@
 - **Umgebung:** ?
 - **Status:** offen
 - **Sprint:** –
-- **Projekt:** –
+- **Projekt:** BED
 - **Erstellt:** 2026-10-22
 - **Spec:** Entwurf
 - **Revision:** 1

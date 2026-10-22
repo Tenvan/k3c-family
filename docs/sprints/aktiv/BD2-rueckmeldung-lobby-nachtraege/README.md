@@ -57,8 +57,8 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | BD2.1 | `BD2.1-castfailed-drosseln.md` | Umsetzung | autonom | fertig |
-| BD2.2 | `BD2.2-rueckmeldung-beispiel-test.md` | Umsetzung | autonom | offen |
-| BD2.3 | `BD2.3-lobby-save-fallback.md` | Umsetzung | autonom | offen |
+| BD2.2 | `BD2.2-rueckmeldung-beispiel-test.md` | Umsetzung | autonom | fertig |
+| BD2.3 | `BD2.3-lobby-save-fallback.md` | Umsetzung | autonom | fertig |
 | BD2.4 | `BD2.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
