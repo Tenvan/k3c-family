@@ -57,7 +57,7 @@ keine. Entschieden (autonom, Claude, 2026-10-22): Die lernbaren Skills stehen al
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RM1.2 | `RM1.2-lernbare-skills-protokoll.md` | Umsetzung | autonom | fertig |
-| RM1.4 | `RM1.4-respec-in-aktionsliste.md` | Umsetzung | autonom | offen |
+| RM1.4 | `RM1.4-respec-in-aktionsliste.md` | Umsetzung | autonom | fertig |
 | RM1.3 | `RM1.3-review.md` | Review | autonom | offen |
 | RM1.1 | `RM1.1-pause-couch-raum.md` | Umsetzung | autonom | verworfen |
 

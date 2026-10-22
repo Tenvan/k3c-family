@@ -1,6 +1,6 @@
 # RM1.4 · Aktionsliste nennt respec
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -52,5 +52,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-23, autonom (Claude).
+
+- **AC-03 (B-495/AC-01) umgesetzt, geprüft:** `actionsOf` hängt `respec` an, wenn der Monarch lebt und `sim.CanRespec` nil liefert. Test `TestAktionslisteRespec` (Tag an der Burg ja, Nacht, fern der Burg, gefallen nein; respec zuletzt). `TestWirtschaftDelta` setzt die Spieler fern der Burg (der Tageswechsel ändert sonst zu Recht die Aktionsliste).
+- **AC-03 (B-495/AC-02):** `go test ./engine/net` grün, `testdata/protocol/` unverändert (Format gleich). Doku `docs/protocol.md` nachgezogen.
+- Reviewer (Sonnet): keine schweren Befunde. `task check:diff`: nur `engine/devrun` rot (Wanduhr-Tests unter Last, B-284), einzeln mit `-count=1` grün.
