@@ -70,7 +70,7 @@ Beantwortet von Claude (autonom, 2026-10-22, Default bis 🧑 widerspricht):
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GEB11.1 | `GEB11.1-wachstumsreihe-festlegen.md` | Workshop | autonom | offen |
+| GEB11.1 | `GEB11.1-wachstumsreihe-festlegen.md` | Workshop | autonom | fertig |
 | GEB11.2 | `GEB11.2-stufenfolge-simulation.md` | Umsetzung | autonom | offen |
 | GEB11.3 | `GEB11.3-grafik-wachstumsreihe.md` | Umsetzung | autonom | offen |
 | GEB11.4 | `GEB11.4-spiel-zeichnet-wachstum.md` | Umsetzung | autonom | offen |

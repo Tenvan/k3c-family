@@ -1,6 +1,6 @@
 # GEB11.1 · Wachstumsreihe der Burg festlegen (nur Grafik), Regel nachziehen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** autonom
 - **Domäne:** REG
@@ -51,5 +51,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Festlegung autonom, Claude (2026-10-22), statt Workshop mit 🧑; Annahme bis 🧑 widerspricht.
+
+AC-01 umgesetzt: `docs/rules/materialien-gebaeude.md` § 2.1 „Sichtbares Wachstum der Burg“ legt die Reihe Lagerfeuer mit Grill → Zelt → Holzhütte → Holzburg (alle Hub-Stufe 1, nach bezahltem Gold: 0, unter der Hälfte, ab der Hälfte, voll) → Stein-, Kupfer-, Eisen-, Kristallburg (Stufen 2–5) fest, dazu ein Baugerüst während `waitingWorker`. Stufen, Kosten und Freischaltungen bleiben (§ 3 unverändert, kein `task gen:rules` nötig). Abgrenzung zu GEB4/GEB9 und Antworten auf die Offenen Fragen stehen in der Sprint-README; die kritische Entscheidung (echte Unterstufen im Server) als Vorlage mit Optionen A/B/C und Empfehlung C dort. Grundlage geprüft: `engine/sim/economy_view.go` liefert `hubUpgrade` mit `gold`, `paid`, `state` (fehlt auf der letzten Stufe).
