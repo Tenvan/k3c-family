@@ -13,11 +13,12 @@ import { MonarchPage } from './MonarchPage';
 // B-463 (WZ10.2) im DOM: Monarch-Seite mit einer Attrappe statt Phaser; die Bühne bekommt, was die Seite wählt.
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
-const calls = vi.hoisted(() => ({ shown: [] as unknown[], controls: [] as unknown[] }));
+const calls = vi.hoisted(() => ({ shown: [] as unknown[], controls: [] as unknown[], zooms: [] as number[] }));
 vi.mock('../stage/PreviewStage', () => ({
   PreviewStage: class {
     async showFigures(items: unknown) { calls.shown.push(items); return [{ gap: null, frames: 6 }]; }
     setControl(c: unknown) { calls.controls.push(c); }
+    setFigureZoom(z: number) { calls.zooms.push(z); }
     destroy() {}
   },
 }));
@@ -72,7 +73,7 @@ describe('Monarch-Seite (B-463/AC-01, AC-03, AC-04, AC-10)', () => {
     const walk = lastItems()[0]!.mount!.speed;
     await choose(h, 'Bewegung', 'Sprinten (beritten)');
     expect(lastItems()[0]!.mount!.speed).toBeGreaterThan(walk);
-    expect(h.querySelector('.wd-monarch > .wd-bar .wd-gap')).toBeNull(); // keine Lücke für Laufen oder Sprinten
+    expect(h.querySelector('.wd-monarch-main > .wd-bar .wd-gap')).toBeNull(); // keine Lücke für Laufen oder Sprinten
   });
 
   it('Animation einzeln wählbar: idle, run, attack; Steuerung (Schleife, Einzelbild, Tempo) geht an die Bühne', async () => {
@@ -104,10 +105,10 @@ describe('Aktionen und Skills (B-463/AC-05 bis AC-09)', () => {
     const h = await mount();
     await choose(h, 'Aktion', 'Münze geben');
     expect(lastItems()[0]).toMatchObject({ effect: { kind: 'coinGive' }, prop: 'coin' });
-    expect(h.querySelector('.wd-monarch > .wd-bar')!.textContent).toContain('Wurf-Animation');
+    expect(h.querySelector('.wd-monarch-main > .wd-bar')!.textContent).toContain('Wurf-Animation');
     await choose(h, 'Aktion', 'Münze aufheben');
     expect(lastItems()[0]).toMatchObject({ effect: { kind: 'coin' }, prop: 'coin' });
-    expect(h.querySelector('.wd-monarch > .wd-bar .wd-gap')).toBeNull();
+    expect(h.querySelector('.wd-monarch-main > .wd-bar .wd-gap')).toBeNull();
   });
 
   it('Getroffen, Tod und Respawn: Effekte und Deckkraft des Spiels, Lücken markiert', async () => {
@@ -118,7 +119,7 @@ describe('Aktionen und Skills (B-463/AC-05 bis AC-09)', () => {
     expect(lastItems()[0]).toMatchObject({ fade: { from: 0.25, to: 1 } });
     await choose(h, 'Aktion', 'Getroffen');
     expect(lastItems()[0]).toMatchObject({ effect: { kind: 'hit' } });
-    expect(h.querySelector('.wd-monarch > .wd-bar')!.textContent).toContain('Treffer-Animation');
+    expect(h.querySelector('.wd-monarch-main > .wd-bar')!.textContent).toContain('Treffer-Animation');
   });
 
   it('die Skill-Liste zeigt alle Skills mit Linie, Stufe, Art und Lücke, auch backstab und smokeBomb', async () => {
@@ -157,5 +158,41 @@ describe('Grafik-Auswahl (B-463/AC-12)', () => {
     await choose(h, 'Grafik Monarch 2', 'Präferenz 3: gibtsnicht');
     expect(h.querySelector('.wd-colors li[data-index="1"] .wd-gap')!.textContent).toContain('gibtsnicht');
     expect(lastItems()[1]!.spec.sheet).toBe('medieval-king-2');
+  });
+});
+
+describe('Zoom und Layout (B-502)', () => {
+  // happy-dom übernimmt altKey nicht aus dem WheelEvent-Init: die Felder auf das Ereignis setzen
+  const wheel = (h: HTMLElement, f: { deltaY: number; altKey: boolean }) => {
+    const e = Object.assign(new Event('wheel', { bubbles: true, cancelable: true }), f);
+    h.querySelector('.wd-monarch-stage')!.dispatchEvent(e);
+  };
+  const zoomButton = (h: HTMLElement, label: string) => [...h.querySelectorAll('button')].find((b) => b.getAttribute('aria-label') === label)! as HTMLButtonElement;
+
+  it('Knöpfe und Alt + Mausrad zoomen die Ansicht, Zurücksetzen stellt den Spielmaßstab her', async () => {
+    const h = await mount();
+    expect(calls.zooms.at(-1)).toBe(1);
+    expect(zoomButton(h, 'Zoom zurücksetzen').disabled).toBe(true);
+    await act(async () => zoomButton(h, 'Vergrößern').click());
+    await flush();
+    expect(calls.zooms.at(-1)).toBe(1.25);
+    expect(h.querySelector('[aria-label="Zoomstufe"]')!.textContent).toBe('125 %');
+    await act(async () => wheel(h, { deltaY: 100, altKey: true }));
+    await flush();
+    expect(calls.zooms.at(-1)).toBe(1);
+    await act(async () => wheel(h, { deltaY: -100, altKey: false })); // ohne Alt: nichts
+    expect(calls.zooms.at(-1)).toBe(1);
+    await act(async () => zoomButton(h, 'Vergrößern').click());
+    await act(async () => zoomButton(h, 'Zoom zurücksetzen').click());
+    await flush();
+    expect(calls.zooms.at(-1)).toBe(1);
+  });
+
+  it('zwei Spalten: Skills links, Monarchen rechts', async () => {
+    const h = await mount();
+    const [left, right] = [...h.querySelector('.wd-monarch')!.children];
+    expect(left!.querySelector('[aria-label="Skills"]')).not.toBeNull();
+    expect(right!.querySelector('[aria-label="Figuren-Bühne"]')).not.toBeNull();
+    expect(right!.querySelector('[aria-label="Spielerfarben"]')).not.toBeNull();
   });
 });

@@ -133,11 +133,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-465](B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | offen | – | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
 | [B-469](B-469-gegner-seite-boss-effekte-nach-k5.md) | DEV | Idee | niedrig | eingeplant | WZ23 | Die Gegner-Seite zeigt Warnkreis, Boss-Leiste, Phasen und Event-Banner aus K5.1 |
 | [B-470](B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | eingeplant | W12 | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
-| [B-471](B-471-renderreference-abmelden.md) | DEV | Schuld | niedrig | eingeplant | WZ23 | renderReference beendet seine Animationsschleife, wenn die Karten verschwinden |
 | [B-472](B-472-nacht-dunkler-fackeln-lagerfeuer-licht.md) | CLI | Idee | niedrig | eingeplant | W13 | Nacht und Morgengrauen sind dunkler, Fackeln und Lagerfeuer machen Licht |
 | [B-473](B-473-ci-rot-k3c-dev-planning-worktree-tests.md) | DEV | Problem | hoch | offen | – | CI auf develop rot: k3c-dev internal/planning Worktree-Tests scheitern auf dem Windows-Runner |
 | [B-474](B-474-testdownloadhit-norton-tls.md) | DEV | Problem | mittel | offen | – | TestDownloadHit scheitert lokal am TLS-Zertifikat (Norton), check:all rot |
-| [B-476](B-476-preload-sprites-beliebige-reittiere.md) | CLI | Schuld | niedrig | eingeplant | WZ23 | preloadSprites und createSpriteAnims laden beliebige Reittiere statt nur das Standard-Reittier |
 | [B-475](B-475-frage-geplante-ereignisse-zaehlung.md) | REG | Frage | niedrig | eingeplant | WZ24 | Frage: Wie zählen feste Ereignis-Objekte in geplanten Chunks, und gilt für „kein Platz mehr“ das Minimum oder das Maximum? |
 | [B-479](B-479-hub-pruefung-geplante-chunks.md) | SIM | Schuld | niedrig | eingeplant | WZ24 | Prüfung der Kandidaten-hub.json: geplante Chunks nach WZ8 mitprüfen |
 | [B-489](B-489-spielstand-chunk-anzahl.md) | SIM | Problem | mittel | eingeplant | WZ24 | Spielstände laden Chunk-Anzahl und Planung aus den aktuellen Daten |
@@ -153,7 +151,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-503](B-503-monarch-skill-darstellung.md) | CLI | Idee | niedrig | eingeplant | SK2 | Die 24 Monarch-Skills haben eine Darstellung im Spiel |
 | [B-504](B-504-preset-skills-backstab-smokebomb.md) | REG | Problem | niedrig | eingeplant | SK2 | Die Skills backstab und smokeBomb des Presets Dieb stehen in data/monarch.json |
 | [B-505](B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | eingeplant | GR9 | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |
-| [B-502](B-502-monarch-seite-ansicht-wuensche.md) | DEV | Idee | mittel | eingeplant | WZ23 | Monarch-Seite: einheitliches Sheet, Zoom, zweispaltige Ansicht |
 | [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | eingeplant | BD5 | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
 | [B-508](B-508-raeume-nach-neustart-wieder-offen.md) | SRV | Idee | mittel | eingeplant | WZ25 | Offene Räume sind nach einem Neustart des Servers wieder offen, Geräte kehren ohne Umweg über die Raumliste zurück |
 | [B-509](B-509-grafik-sound-aus-public-live.md) | SRV | Idee | mittel | eingeplant | WZ25 | Im Studio geänderte Grafiken und Sounds erreichen die Clients ohne neuen Build |
@@ -483,3 +480,6 @@ Zeile in diesen Abschnitt.
 | [B-487](archiv/B-487-plan-editor-load-check-ablehnung.md) | DEV | Problem | niedrig | erledigt | WZ22 | Chunk-Editor: abgelehnte Aufrufe von planLoad und planCheck bleiben stumm |
 | [B-491](archiv/B-491-welten-editor-kleinigkeiten.md) | DEV | Schuld | niedrig | erledigt | WZ22 | Welten Editor: kleine Nachträge zu Schieber, Klick-Sprung und Planungsliste |
 | [B-499](archiv/B-499-studio-spiel-oeffnen-welt-zweimal.md) | DEV | Problem | niedrig | erledigt | WZ22 | Studio „Im Spiel öffnen“ in eigener Welt scheitert beim zweiten Mal mit demselben Seed |
+| [B-476](archiv/B-476-preload-sprites-beliebige-reittiere.md) | CLI | Schuld | niedrig | erledigt | WZ23 | preloadSprites und createSpriteAnims laden beliebige Reittiere statt nur das Standard-Reittier |
+| [B-471](archiv/B-471-renderreference-abmelden.md) | DEV | Schuld | niedrig | erledigt | WZ23 | renderReference beendet seine Animationsschleife, wenn die Karten verschwinden |
+| [B-502](archiv/B-502-monarch-seite-ansicht-wuensche.md) | DEV | Idee | mittel | erledigt | WZ23 | Monarch-Seite: einheitliches Sheet, Zoom, zweispaltige Ansicht |

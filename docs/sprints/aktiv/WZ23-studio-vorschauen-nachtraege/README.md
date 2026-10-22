@@ -1,14 +1,14 @@
-# WZ23 · CLI · Studio-Vorschauen: Reittiere aus dem Spielcode, Monarch-Seite, Boss-Anzeigen, Gebäude-Planer abgenommen
+# WZ23 · CLI, DEV · Studio-Vorschauen: Reittiere aus dem Spielcode, Monarch-Seite, Boss-Anzeigen, Gebäude-Planer abgenommen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
-- **Domäne:** CLI
-- **Reife:** Entwurf
+- **Domäne:** CLI, DEV
+- **Reife:** bereit
 - **Tickets:** B-476, B-471, B-502, B-469, B-501
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-22, autonom, Claude (Auftrag Ralf: autonom abarbeiten), Revision 1; Defaults: Reittiere auf Anforderung laden, Monarch-Sheets bleiben wie im Spiel, Event-Banner nur für Boss-Ereignisse
 
 ## Ausgangslage
 
@@ -56,6 +56,14 @@ Reittier ohne Sheet → Platzhalter mit Warnung 🤒. Boss-Phase ohne `ability` 
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ23.1 | `WZ23.1-reittiere-auf-anforderung.md` | Umsetzung | autonom | fertig |
+| WZ23.2 | `WZ23.2-studio-nutzt-spielcode.md` | Umsetzung | autonom | fertig |
+| WZ23.3 | `WZ23.3-gegner-seite-boss.md` | Umsetzung | autonom | blockiert |
+| WZ23.4 | `WZ23.4-review.md` | Review | autonom | fertig |
+| WZ23.5 | `WZ23.5-abnahme-pc.md` | Workshop | Mensch | offen |
+
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - WZ23.1 (CLI) `sprites.ts` lädt Reittiere auf Anforderung, `createRider` mit Parameter (AC-01).
@@ -66,5 +74,4 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-22 (Teil): AC-01 bis AC-03 nachgewiesen (WZ23.1, .2, .4), `check:diff` grün, Reviewer-Befund behoben. Sprint bleibt aktiv: AC-04 wartet auf K5.1 (WZ23.3 blockiert), AC-05 ist Ralfs Abnahme am PC (WZ23.5; B-469 und B-501 offen). Entscheidungen für den Nachgang: Reittiere auf Anforderung, Monarch-Sheets wie im Spiel.
