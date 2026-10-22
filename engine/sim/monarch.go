@@ -152,7 +152,7 @@ func Respec(w *World, p *Player) error {
 }
 
 // ApplyPreset lernt die activeSkills eines Presets in ihrer Reihenfolge, soweit Pool-Punkte frei sind. Skills, die
-// nicht lernbar sind (z. B. Dieb-Skills ohne Katalog-Eintrag), werden übersprungen.
+// nicht lernbar sind (keine Punkte, Tier-Gating), werden übersprungen; unbekannte Skills lehnt schon das Laden ab (B-504).
 func ApplyPreset(w *World, p *Player, id string) error {
 	pr, ok := monarch.Presets[id]
 	if !ok {

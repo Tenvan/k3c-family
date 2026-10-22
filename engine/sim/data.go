@@ -159,7 +159,7 @@ var (
 		Merchant MerchantData // Händler (merchant.go)
 	}]("economy.json")
 	hub       = load[HubData]("hub.json")
-	monarch   = load[monarchData]("monarch.json")
+	monarch   = loadMonarch()
 	enemyData = loadEnemyData()
 	waves     = load[struct {
 		Table []struct {
@@ -206,7 +206,7 @@ func UseData(fsys fs.FS) error {
 	b, t, e, h, m, en, w := buildings, troops, economy, hub, monarch, enemyData, waves
 	if err := errors.Join(loadFrom(fsys, "buildings.json", &b), loadFrom(fsys, "troops.json", &t),
 		loadFrom(fsys, "economy.json", &e), loadFrom(fsys, "hub.json", &h), loadFrom(fsys, "monarch.json", &m),
-		loadEnemies(fsys, &en), loadFrom(fsys, "waves.json", &w)); err != nil {
+		loadEnemies(fsys, &en), loadFrom(fsys, "waves.json", &w), checkPresets(m)); err != nil {
 		return err
 	}
 	buildings, troops, economy, hub, monarch, enemyData, waves = b, t, e, h, m, en, w

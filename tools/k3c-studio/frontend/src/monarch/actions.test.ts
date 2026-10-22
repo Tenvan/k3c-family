@@ -73,15 +73,11 @@ describe('Skills (B-463/AC-06, AC-07)', () => {
     }
   });
 
-  it('Skills der Presets, die in skills fehlen (backstab, smokeBomb), stehen mit der Lücke „Skill fehlt in data/monarch.json“, kein Absturz', () => {
-    const rows = skillRows();
+  it('kein Preset nennt einen fehlenden Skill (B-504), die Liste hat genau die Skills aus data/monarch.json', () => {
     const missing = Object.values(MONARCH.presets).flatMap((p) => p.activeSkills).filter((id) => !(id in MONARCH.skills));
-    expect(missing).toEqual(expect.arrayContaining(['backstab', 'smokeBomb']));
-    for (const id of missing) {
-      const row = rows.find((r) => r.id === id)!;
-      expect(row.gap.reason, id).toBe('Lücke: Skill fehlt in data/monarch.json');
-      expect(row.tier).toBeNull();
-    }
-    expect(rows).toHaveLength(Object.keys(MONARCH.skills).length + new Set(missing).size);
+    expect(missing).toEqual([]);
+    const rows = skillRows();
+    expect(rows).toHaveLength(Object.keys(MONARCH.skills).length);
+    expect(rows.some((r) => r.gap.reason === 'Lücke: Skill fehlt in data/monarch.json')).toBe(false);
   });
 });

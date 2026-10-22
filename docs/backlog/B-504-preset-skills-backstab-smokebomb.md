@@ -3,14 +3,14 @@
 - **Domäne:** REG
 - **Typ:** Problem
 - **Prio:** niedrig
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** SK2
 - **Projekt:** SKL
 - **Erstellt:** 2026-10-19
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-23, Revision 1
 
 ## Ausgangslage
 
@@ -18,39 +18,40 @@ Lücke 6 der Monarch-Seite (WZ10.5, 🧑 am 2026-10-19): Das Preset Dieb nennt d
 
 ## Ziel
 
-Welches Ergebnis, welcher Nutzen (oder welcher Schaden verschwindet)? Kein Umsetzungsschritt.
+Jedes Preset nennt nur Skills, die es in `data/monarch.json` gibt; die Monarch-Seite zeigt keine Lücke 6 mehr.
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spielende (Startverteilung), Entwickler (Daten), 🧑 entscheidet über den Dieb-Inhalt.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- Default (autonom, Claude, 2026-10-23; Bestätigung 🧑 über KR5): `presets.thief.activeSkills` leer, bis der Dieb-Inhalt kommt.
+- Das Laden der Daten prüft, dass jedes Preset nur vorhandene Skills nennt, und scheitert sonst mit Meldung (Start und `-check-data`).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Dieb-Skills bauen (Backstab, Smoke Bomb; eigenes Ticket, falls 🧑 es will), Balancing.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+SIM legt Daten-Felder an; deterministisch; `docs/rules/monarch.md`: Dieb folgt später als Inhalt.
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+Preset Dieb gewählt → Basiswerte, keine Skills, keine Warnung.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Preset nennt unbekannten Skill → Laden scheitert: `data/monarch.json: preset thief nennt unbekannten Skill backstab`.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert: Test, Befehl, Datei oder Beobachtung am TV mit erwartetem Ergebnis.
+- **AC-01** Go-Test: Jedes Preset aus `data/monarch.json` nennt nur Skills aus `skills`; eine Prüfung mit unbekanntem Skill liefert einen Fehler mit Preset und Skill.
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+Dieb bauen oder Preset anpassen: Default Preset anpassen, 🧑 bestätigt über KR5.
 
 ## Notizen
 

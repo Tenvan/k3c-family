@@ -3,14 +3,14 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** niedrig
-- **Umgebung:** ?
+- **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** SK2
 - **Projekt:** SKL
 - **Erstellt:** 2026-10-19
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-23, Revision 1
 
 ## Ausgangslage
 
@@ -18,39 +18,42 @@ Lücke 5 der Monarch-Seite (WZ10.5, 🧑 am 2026-10-19): Die 24 Skills aus `data
 
 ## Ziel
 
-Welches Ergebnis, welcher Nutzen (oder welcher Schaden verschwindet)? Kein Umsetzungsschritt.
+Spielende sehen am TV, wenn ein Monarch einen Skill wirkt oder einen passiven Skill lernt.
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spielende am TV, zwei Spieler; 🧑 nimmt am TV ab.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- Default (autonom, Claude, 2026-10-23; Bestätigung 🧑 über KR5): ein Ring in der Farbe der Linie an der Figur, je Klasse gemeinsam.
+- Aktive Skills beim Wirken (Abklingzeit des Slots steigt zwischen zwei Zuständen), Passive beim Lernen (neuer Eintrag in `skills`). Reiner Vergleich, keine neuen Ereignisse, kein Spielzustand im Client.
+- 2 Spieler: je Spieler eigene Erkennung; begrenzt durch `MAX_LIVE_EFFECTS`.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Effekt je einzelnem Skill, Monarch-Animationen (GR9, B-505), Sounds je Klasse (B-558), Studio-Seite (eigenes Ticket).
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+CLI zeichnet nur Snapshot und Ereignisse; Farben je Linie in `src/scenes/effects/effects.ts`.
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+Zauberer wirkt Fireball → violetter Ring am Monarchen. Spieler lernt Thick Skin → Tank-Ring.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Skill ohne Linie in den Daten → kein Ring. Neues Spiel oder Respec → Vergleich beginnt neu, kein Ring.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert: Test, Befehl, Datei oder Beobachtung am TV mit erwartetem Ergebnis.
+- **AC-01** Vitest: Anstieg der Abklingzeit eines Slots ergibt einen Ring der Linie des Skills; ein neuer passiver Skill ebenso; jede Linie aus `data/monarch.json` mit Skills hat eine Farbe.
+- **AC-02** Am TV: Ring beim Wirken sichtbar (🧑).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+Darstellung je Skill oder je Klasse: Default je Klasse, 🧑 bestätigt über KR5.
 
 ## Notizen
 

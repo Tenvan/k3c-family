@@ -69,7 +69,7 @@ const MISSING = gap('skill', 'Lücke: Skill fehlt in data/monarch.json');
 
 /** Alle Skills aus `data/monarch.json` mit Linie, Stufe und Art (heute 24), jeder ohne eigene Darstellung im Spiel mit der
  *  Lücke „keine Darstellung im Spiel“ (nur `noTarget` bei `castFailed` kommt vor); dazu die Skills der Presets, die in
- *  `skills` fehlen (heute `backstab` und `smokeBomb` beim Dieb), mit der Lücke „Skill fehlt in data/monarch.json“. */
+ *  `skills` fehlen (seit B-504 keine; das Laden der Daten lehnt sie ab), mit der Lücke „Skill fehlt in data/monarch.json“. */
 export function skillRows(): SkillRow[] {
   const rows: SkillRow[] = Object.entries(DATA.skills).map(([id, s]) => ({
     id, line: DATA.lines[s.line]?.name ?? s.line, tier: s.tier, kind: s.kind, gap: NO_DISPLAY,

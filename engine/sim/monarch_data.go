@@ -1,6 +1,7 @@
 package sim
 
 import (
+	"fmt"
 	"maps"
 	"slices"
 	"sort"
@@ -78,4 +79,25 @@ func skillByID(id string) (SkillData, bool) {
 		return skillCatalog[i], true
 	}
 	return SkillData{}, false
+}
+
+// loadMonarch liest monarch.json und prüft die Presets (B-504); ein Fehler bricht den Start ab wie jedes ungültige Datum.
+func loadMonarch() monarchData {
+	m := load[monarchData]("monarch.json")
+	if err := checkPresets(m); err != nil {
+		panic(err)
+	}
+	return m
+}
+
+// checkPresets: Jedes Preset nennt in activeSkills nur Skills aus skills (B-504), in fester Reihenfolge geprüft.
+func checkPresets(m monarchData) error {
+	for _, id := range slices.Sorted(maps.Keys(m.Presets)) {
+		for _, s := range m.Presets[id].ActiveSkills {
+			if _, ok := m.Skills[s]; !ok {
+				return fmt.Errorf("data/monarch.json: preset %s nennt unbekannten Skill %s", id, s)
+			}
+		}
+	}
+	return nil
 }

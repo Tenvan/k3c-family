@@ -180,6 +180,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-556](B-556-entscheidung-sound-credit-datei.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S3: Die Credits der Sounds bleiben in public/audio/README.md |
 | [B-557](B-557-entscheidung-sound-atlas.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S4: Die Effekte laden aus einem Sound-Atlas, Einzeldateien sind der Rückfall |
 | [B-558](B-558-entscheidung-sound-luecken.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S5: Die Sound-Lücken bekommen vorhandene Kenney-Töne, UI-Klicks und Reiten bleiben offen |
+| [B-559](B-559-frage-form-lernbare-skills.md) | SRV | Frage | hoch | eingeplant | KR5 | Ralf bestätigt die Form der lernbaren Skills im Protokoll |
+| [B-560](B-560-frage-dieb-preset-oder-bauen.md) | REG | Frage | hoch | eingeplant | KR5 | Ralf entscheidet, ob die Dieb-Skills gebaut werden oder das Preset leer bleibt |
+| [B-561](B-561-frage-skill-darstellung-je-klasse.md) | CLI | Frage | hoch | eingeplant | KR5 | Ralf bestätigt die Darstellung der Skills als Ring je Klasse ohne neue Ereignisse |
+| [B-562](B-562-studio-monarch-skill-ring.md) | DEV | Idee | niedrig | offen | – | Die Monarch-Seite des Studios zeigt den Skill-Ring des Spiels statt der Lücke |
 
 ## Archiv
 
