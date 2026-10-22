@@ -99,5 +99,42 @@
     {"art":"kraut","rechteck":[5.625,2.25,0.0625,0.3125],"farbe":"atlantis","fein":true},
     {"art":"kraut","rechteck":[5.8125,2.25,0.125,0.3125],"farbe":"christi","fein":true},
     {"art":"kraut","rechteck":[5.8125,2.25,0.0625,0.3125],"farbe":"atlantis","fein":true}
+  ],
+  "stufen": [
+    {
+      "stufe": 2,
+      "aenderung": "Stein: Zeltpfosten und Gestell aus grauem Stein, Tuch, Liege und Kräuter bleiben",
+      "farben": {"pfosten/oiled-cedar": "valhalla", "pfosten/rope": "dim-gray", "gestell/oiled-cedar": "valhalla", "gestell/rope": "dim-gray", "gestell/twine": "smokey-ash"}
+    },
+    {
+      "stufe": 3,
+      "aenderung": "Kupfer: Zeltpfosten und Gestell aus Kupfer, Laterne am Zelt",
+      "farben": {"pfosten/oiled-cedar": "rope", "pfosten/rope": "tahiti-gold", "gestell/oiled-cedar": "rope", "gestell/rope": "tahiti-gold"},
+      "zusaetze": [
+        { "art": "laterne", "rechteck": [4.25,1.375,0.25,0.0625], "farbe": "tahiti-gold" },
+        { "art": "laterne", "rechteck": [4.25,1.4375,0.25,0.375], "farbe": "rope" },
+        { "art": "laterne", "rechteck": [4.3125,1.5,0.125,0.25], "farbe": "golden-fizz" }
+      ]
+    },
+    {
+      "stufe": 4,
+      "aenderung": "Eisen: Zeltpfosten und Gestell aus Stahl, Laterne am Zelt",
+      "farben": {"pfosten/oiled-cedar": "dim-gray", "pfosten/rope": "heather", "gestell/oiled-cedar": "dim-gray", "gestell/rope": "heather", "gestell/twine": "light-steel"},
+      "zusaetze": [
+        { "art": "laterne", "rechteck": [4.25,1.375,0.25,0.0625], "farbe": "heather" },
+        { "art": "laterne", "rechteck": [4.25,1.4375,0.25,0.375], "farbe": "dim-gray" },
+        { "art": "laterne", "rechteck": [4.3125,1.5,0.125,0.25], "farbe": "golden-fizz" }
+      ]
+    },
+    {
+      "stufe": 5,
+      "aenderung": "Kristall: Zeltpfosten und Gestell aus blauem Kristall, Laterne am Zelt",
+      "farben": {"pfosten/oiled-cedar": "deep-koamaru", "pfosten/rope": "royal-blue", "gestell/oiled-cedar": "deep-koamaru", "gestell/rope": "royal-blue", "gestell/twine": "cornflower"},
+      "zusaetze": [
+        { "art": "laterne", "rechteck": [4.25,1.375,0.25,0.0625], "farbe": "royal-blue" },
+        { "art": "laterne", "rechteck": [4.25,1.4375,0.25,0.375], "farbe": "deep-koamaru" },
+        { "art": "laterne", "rechteck": [4.3125,1.5,0.125,0.25], "farbe": "golden-fizz" }
+      ]
+    }
   ]
 }

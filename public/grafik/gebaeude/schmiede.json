@@ -93,5 +93,42 @@
     {"art":"trog","rechteck":[4.125,3.4375,1.125,0.0625],"farbe":"rope"},
     {"art":"wasser","rechteck":[4.1875,3.5,1,0.0625],"farbe":"cornflower"},
     {"art":"reifen","rechteck":[4.125,3.65625,1.125,0.03125],"farbe":"dim-gray","fein":true}
+  ],
+  "stufen": [
+    {
+      "stufe": 2,
+      "aenderung": "Stein: Wand, Pfosten und Dach aus grauem Stein, Kamin und Esse bleiben Stein, Amboss, Glut und Werkzeug bleiben",
+      "farben": {"wand/rope": "dim-gray", "schatten/oiled-cedar": "valhalla", "fuge/oiled-cedar": "valhalla", "haken/oiled-cedar": "valhalla", "pfosten/oiled-cedar": "valhalla", "pfosten/rope": "dim-gray", "dach/oiled-cedar": "valhalla", "dach/rope": "dim-gray", "dach/loulou": "black", "fuge/loulou": "black"}
+    },
+    {
+      "stufe": 3,
+      "aenderung": "Kupfer: Wand, Pfosten, Dach, Kamin und Esse aus Kupfer, Rauchfang über der Esse",
+      "farben": {"wand/rope": "tahiti-gold", "schatten/oiled-cedar": "rope", "fuge/oiled-cedar": "rope", "haken/oiled-cedar": "rope", "pfosten/oiled-cedar": "rope", "pfosten/rope": "tahiti-gold", "dach/oiled-cedar": "rope", "dach/rope": "tahiti-gold", "dach/loulou": "oiled-cedar", "fuge/loulou": "oiled-cedar", "kamin/dim-gray": "tahiti-gold", "kamin/smokey-ash": "twine", "esse/dim-gray": "tahiti-gold", "esse/smokey-ash": "twine"},
+      "zusaetze": [
+        { "art": "rauchfang", "rechteck": [0.1875,2.375,2,0.125], "farbe": "tahiti-gold" },
+        { "art": "rauchfang", "rechteck": [0.1875,2.375,2,0.0625], "farbe": "twine" },
+        { "art": "rauchfang", "rechteck": [0.1875,2.4375,2,0.0625], "farbe": "rope" }
+      ]
+    },
+    {
+      "stufe": 4,
+      "aenderung": "Eisen: Wand, Pfosten, Dach, Kamin und Esse aus Stahlplatten, Rauchfang über der Esse",
+      "farben": {"wand/rope": "heather", "schatten/oiled-cedar": "dim-gray", "fuge/oiled-cedar": "dim-gray", "haken/oiled-cedar": "dim-gray", "pfosten/oiled-cedar": "dim-gray", "pfosten/rope": "heather", "dach/oiled-cedar": "dim-gray", "dach/rope": "heather", "dach/loulou": "valhalla", "fuge/loulou": "valhalla", "kamin/dim-gray": "heather", "kamin/smokey-ash": "light-steel", "esse/dim-gray": "heather", "esse/smokey-ash": "light-steel"},
+      "zusaetze": [
+        { "art": "rauchfang", "rechteck": [0.1875,2.375,2,0.125], "farbe": "heather" },
+        { "art": "rauchfang", "rechteck": [0.1875,2.375,2,0.0625], "farbe": "light-steel" },
+        { "art": "rauchfang", "rechteck": [0.1875,2.4375,2,0.0625], "farbe": "dim-gray" }
+      ]
+    },
+    {
+      "stufe": 5,
+      "aenderung": "Kristall: Wand, Pfosten, Dach, Kamin und Esse aus blauem Kristall, Rauchfang über der Esse",
+      "farben": {"wand/rope": "royal-blue", "schatten/oiled-cedar": "deep-koamaru", "fuge/oiled-cedar": "deep-koamaru", "haken/oiled-cedar": "deep-koamaru", "pfosten/oiled-cedar": "deep-koamaru", "pfosten/rope": "royal-blue", "dach/oiled-cedar": "deep-koamaru", "dach/rope": "royal-blue", "dach/loulou": "viking", "fuge/loulou": "viking", "kamin/dim-gray": "royal-blue", "kamin/smokey-ash": "cornflower", "esse/dim-gray": "royal-blue", "esse/smokey-ash": "cornflower"},
+      "zusaetze": [
+        { "art": "rauchfang", "rechteck": [0.1875,2.375,2,0.125], "farbe": "royal-blue" },
+        { "art": "rauchfang", "rechteck": [0.1875,2.375,2,0.0625], "farbe": "cornflower" },
+        { "art": "rauchfang", "rechteck": [0.1875,2.4375,2,0.0625], "farbe": "deep-koamaru" }
+      ]
+    }
   ]
 }

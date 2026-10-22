@@ -547,11 +547,63 @@
       "fein": "Faltenlicht, Stofffalten der Rückwand, Kräuterbündel, Flechtung, Wasserspiegel"
     },
     "dateien": {
-      "128": "grafik/gebaeude/heilplatz-128.png",
-      "16": "grafik/gebaeude/heilplatz-16.png",
-      "32": "grafik/gebaeude/heilplatz-32.png",
-      "64": "grafik/gebaeude/heilplatz-64.png"
-    }
+      "128": "grafik/gebaeude/heilplatz-1-128.png",
+      "16": "grafik/gebaeude/heilplatz-1-16.png",
+      "32": "grafik/gebaeude/heilplatz-1-32.png",
+      "64": "grafik/gebaeude/heilplatz-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/heilplatz-1-128.png",
+          "16": "grafik/gebaeude/heilplatz-1-16.png",
+          "32": "grafik/gebaeude/heilplatz-1-32.png",
+          "64": "grafik/gebaeude/heilplatz-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Zeltpfosten und Gestell aus grauem Stein, Tuch, Liege und Kräuter bleiben",
+        "dateien": {
+          "128": "grafik/gebaeude/heilplatz-2-128.png",
+          "16": "grafik/gebaeude/heilplatz-2-16.png",
+          "32": "grafik/gebaeude/heilplatz-2-32.png",
+          "64": "grafik/gebaeude/heilplatz-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: Zeltpfosten und Gestell aus Kupfer, Laterne am Zelt",
+        "dateien": {
+          "128": "grafik/gebaeude/heilplatz-3-128.png",
+          "16": "grafik/gebaeude/heilplatz-3-16.png",
+          "32": "grafik/gebaeude/heilplatz-3-32.png",
+          "64": "grafik/gebaeude/heilplatz-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Zeltpfosten und Gestell aus Stahl, Laterne am Zelt",
+        "dateien": {
+          "128": "grafik/gebaeude/heilplatz-4-128.png",
+          "16": "grafik/gebaeude/heilplatz-4-16.png",
+          "32": "grafik/gebaeude/heilplatz-4-32.png",
+          "64": "grafik/gebaeude/heilplatz-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: Zeltpfosten und Gestell aus blauem Kristall, Laterne am Zelt",
+        "dateien": {
+          "128": "grafik/gebaeude/heilplatz-5-128.png",
+          "16": "grafik/gebaeude/heilplatz-5-16.png",
+          "32": "grafik/gebaeude/heilplatz-5-32.png",
+          "64": "grafik/gebaeude/heilplatz-5-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "hg-eisenstollen-fern",
@@ -1511,11 +1563,63 @@
       "fein": "Schindel-Fugen, Planken- und Steinfugen, Nieten, Helmschlitz, Wappenzeichen, Speerspitzen-Licht"
     },
     "dateien": {
-      "128": "grafik/gebaeude/ruestkammer-128.png",
-      "16": "grafik/gebaeude/ruestkammer-16.png",
-      "32": "grafik/gebaeude/ruestkammer-32.png",
-      "64": "grafik/gebaeude/ruestkammer-64.png"
-    }
+      "128": "grafik/gebaeude/ruestkammer-1-128.png",
+      "16": "grafik/gebaeude/ruestkammer-1-16.png",
+      "32": "grafik/gebaeude/ruestkammer-1-32.png",
+      "64": "grafik/gebaeude/ruestkammer-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/ruestkammer-1-128.png",
+          "16": "grafik/gebaeude/ruestkammer-1-16.png",
+          "32": "grafik/gebaeude/ruestkammer-1-32.png",
+          "64": "grafik/gebaeude/ruestkammer-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Wand und Dach aus grauem Stein, Sockel bleibt Stein, Tor, Rüstung, Wappen und Speere bleiben",
+        "dateien": {
+          "128": "grafik/gebaeude/ruestkammer-2-128.png",
+          "16": "grafik/gebaeude/ruestkammer-2-16.png",
+          "32": "grafik/gebaeude/ruestkammer-2-32.png",
+          "64": "grafik/gebaeude/ruestkammer-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: Wand, Dach und Sockel aus Kupfer, Wimpel auf dem Dach",
+        "dateien": {
+          "128": "grafik/gebaeude/ruestkammer-3-128.png",
+          "16": "grafik/gebaeude/ruestkammer-3-16.png",
+          "32": "grafik/gebaeude/ruestkammer-3-32.png",
+          "64": "grafik/gebaeude/ruestkammer-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Wand, Dach und Sockel aus Stahlplatten, Wimpel auf dem Dach",
+        "dateien": {
+          "128": "grafik/gebaeude/ruestkammer-4-128.png",
+          "16": "grafik/gebaeude/ruestkammer-4-16.png",
+          "32": "grafik/gebaeude/ruestkammer-4-32.png",
+          "64": "grafik/gebaeude/ruestkammer-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: Wand, Dach und Sockel aus blauem Kristall, leuchtender Wimpel auf dem Dach",
+        "dateien": {
+          "128": "grafik/gebaeude/ruestkammer-5-128.png",
+          "16": "grafik/gebaeude/ruestkammer-5-16.png",
+          "32": "grafik/gebaeude/ruestkammer-5-32.png",
+          "64": "grafik/gebaeude/ruestkammer-5-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "schmiede",
@@ -1545,11 +1649,63 @@
       "fein": "Werkzeug an der Wand, Steinfugen, Funken, Hammer, Trogreifen"
     },
     "dateien": {
-      "128": "grafik/gebaeude/schmiede-128.png",
-      "16": "grafik/gebaeude/schmiede-16.png",
-      "32": "grafik/gebaeude/schmiede-32.png",
-      "64": "grafik/gebaeude/schmiede-64.png"
-    }
+      "128": "grafik/gebaeude/schmiede-1-128.png",
+      "16": "grafik/gebaeude/schmiede-1-16.png",
+      "32": "grafik/gebaeude/schmiede-1-32.png",
+      "64": "grafik/gebaeude/schmiede-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/schmiede-1-128.png",
+          "16": "grafik/gebaeude/schmiede-1-16.png",
+          "32": "grafik/gebaeude/schmiede-1-32.png",
+          "64": "grafik/gebaeude/schmiede-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Stein: Wand, Pfosten und Dach aus grauem Stein, Kamin und Esse bleiben Stein, Amboss, Glut und Werkzeug bleiben",
+        "dateien": {
+          "128": "grafik/gebaeude/schmiede-2-128.png",
+          "16": "grafik/gebaeude/schmiede-2-16.png",
+          "32": "grafik/gebaeude/schmiede-2-32.png",
+          "64": "grafik/gebaeude/schmiede-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Kupfer: Wand, Pfosten, Dach, Kamin und Esse aus Kupfer, Rauchfang über der Esse",
+        "dateien": {
+          "128": "grafik/gebaeude/schmiede-3-128.png",
+          "16": "grafik/gebaeude/schmiede-3-16.png",
+          "32": "grafik/gebaeude/schmiede-3-32.png",
+          "64": "grafik/gebaeude/schmiede-3-64.png"
+        }
+      },
+      {
+        "stufe": 4,
+        "aenderung": "Eisen: Wand, Pfosten, Dach, Kamin und Esse aus Stahlplatten, Rauchfang über der Esse",
+        "dateien": {
+          "128": "grafik/gebaeude/schmiede-4-128.png",
+          "16": "grafik/gebaeude/schmiede-4-16.png",
+          "32": "grafik/gebaeude/schmiede-4-32.png",
+          "64": "grafik/gebaeude/schmiede-4-64.png"
+        }
+      },
+      {
+        "stufe": 5,
+        "aenderung": "Kristall: Wand, Pfosten, Dach, Kamin und Esse aus blauem Kristall, Rauchfang über der Esse",
+        "dateien": {
+          "128": "grafik/gebaeude/schmiede-5-128.png",
+          "16": "grafik/gebaeude/schmiede-5-16.png",
+          "32": "grafik/gebaeude/schmiede-5-32.png",
+          "64": "grafik/gebaeude/schmiede-5-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "setzling",

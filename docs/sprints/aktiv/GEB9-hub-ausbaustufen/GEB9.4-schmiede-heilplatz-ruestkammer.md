@@ -1,6 +1,6 @@
 # GEB9.4 · Schmiede, Heilplatz, Rüstkammer Stufen 2–5
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -54,5 +54,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 umgesetzt: `schmiede.json`, `heilplatz.json`, `ruestkammer.json` führen `stufen` 2–5 mit PNGs für Stufe 1–5; das Camp (`rekrutierungslager`) bleibt unverändert (Entscheidung 4). Damit haben alle acht Hub-Gebäude Stufen. Die Stufen wurden in 64 px angesehen. AC-03 geprüft: `scenesLogic.test.ts` prüft die Stufenreihe 2–5 am echten `index.json` für alle acht Hub-Gebäude (31 Tests grün). AC-05 geprüft: Generator zweimal ohne Diff, `go test ./tools/buildings` grün.
+
+Abweichungen von § 6 (in der Tabelle nachgetragen): Die Rüstkammer hat eine Holzwand auf Steinsockel (nicht Stein-Grundform), Stufe 2 tauscht also die Wand ohne Sockelband; Dachfarben als Rollen K/L/T (`deep-koamaru`, `venice-blue`, `valhalla`); Wimpel sitzt auf dem Dach. Beim Heilplatz tauschen nur Pfosten und Gestell, das Zelttuch bleibt — die Stufen unterscheiden sich dort nur dezent (Pfosten und Laterne), das ist die sichtbarste Schwäche und ein Kandidat für die Abnahme. Studio- und Go-Teilprüfungen grün, `task check:diff` als Ganzes läuft unter Last zu lange und folgt im Review GEB9.6.

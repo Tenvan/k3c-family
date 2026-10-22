@@ -140,7 +140,7 @@ describe('Asset-Vorschau: Stufenreihe (GEB3/AC-01)', () => {
 describe('Asset-Vorschau: Stufenreihe der Hub-Gebäude (GEB9/AC-03)', () => {
   // Echter Index der Gebäude-Grafik; jede GEB9-Session ergänzt ihre Gebäude.
   const index = JSON.parse(readFileSync(new URL('../../../../../public/grafik/gebaeude/index.json', import.meta.url), 'utf8')) as GebaeudeEintrag[];
-  const mitStufen = ['werkstatt', 'farm', 'kaserne', 'lager', 'taverne'];
+  const mitStufen = ['werkstatt', 'farm', 'kaserne', 'lager', 'taverne', 'schmiede', 'heilplatz', 'ruestkammer'];
 
   it.each(mitStufen)('%s zeigt die Stufen 2 bis 5 in 32 px', (id) => {
     const e = index.find((g) => g.id === id)!;

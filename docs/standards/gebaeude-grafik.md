@@ -203,13 +203,13 @@ bei jedem Gebäude mit in der Liste, wenn dort eine tauschende Art (`wand`, `dac
 | Kaserne (Stein) | `wand`, `sockel`, `zinne`, `licht`, `schatten`, `fuge`, `scharte` | Stufe 2 Eisenband am Sockel (links und rechts vom Tor), ab Stufe 3 Wimpel an den Zinnen |
 | Lager | `wand` (dunkle Innenwand = Rolle Schatten), `pfosten`, `dach`, `schindel`; ab Stufe 3 auch `sockel` | ab Stufe 3 Vorratsschild an der Wand (das Lager hat kein Tor) |
 | Taverne | `wand` (Putz = Rolle Licht), `balken`, `pfosten`, `dach`, `schindel`; ab Stufe 3 auch `kamin`, `stufe` | ab Stufe 3 Laterne links neben der Tür |
-| Schmiede | `wand`, `pfosten`, `dach`, `kamin`, `esse` | ab Stufe 3 Rauchfang über der Esse |
-| Heilplatz | `pfosten`, `gestell` | ab Stufe 3 Laterne am Gestell |
-| Rüstkammer (Stein) | `wand`, `sockel`, `band`, `dach`, `schindel`, `fuge` | Stufe 2 Sockelband, ab Stufe 3 Wimpel über dem Tor |
+| Schmiede | `wand`, `pfosten`, `dach`, `haken`; ab Stufe 3 auch `kamin`, `esse` | ab Stufe 3 Rauchfang (Haube) über der Esse |
+| Heilplatz | `pfosten`, `gestell` (das Zelttuch bleibt) | ab Stufe 3 Laterne rechts am Zelt |
+| Rüstkammer | `wand`, `dach` (Rollen Körper, Licht für `deep-koamaru`, `venice-blue`, Tief für `valhalla`), `schindel`; ab Stufe 3 auch `sockel` | ab Stufe 3 Wimpel auf dem Dach (Tor mit Beschlägen bleibt) |
 
-*Stein-Grundform.* Kaserne und Rüstkammer sind in Stufe 1 schon Stein: Stufe 2 behält das Material und unterscheidet sich nur durch
-den Zusatz (Stufe 2 der Tabelle); ab Stufe 3 wechselt der Stein auf Kupfer, Eisen, Kristall. Bei Taverne und Schmiede (Holz mit Steinteilen)
-wechselt auf Stufe 2 nur das Holz-Mauerwerk, der Stein von Kamin und Esse bleibt, ab Stufe 3 wechselt auch er.
+*Stein-Grundform.* Die Kaserne ist in Stufe 1 schon Stein: Stufe 2 behält das Material und unterscheidet sich nur durch
+den Zusatz (Stufe 2 der Tabelle); ab Stufe 3 wechselt der Stein auf Kupfer, Eisen, Kristall. Bei Lager, Taverne, Schmiede und Rüstkammer
+(Holz mit Steinteilen) wechselt auf Stufe 2 nur das Holz-Mauerwerk, der Stein von Sockel, Kamin und Esse bleibt, ab Stufe 3 wechselt auch er.
 
 *Übergang bis GEB9.5.* Mit `stufen` schreibt `tools/buildings` sonst nur `<id>-<stufe>-<dichte>.png`. Solange das Spiel noch die Grundform
 zeichnet, schreibt der Generator für die Hub-Gebäude zusätzlich `<id>-<dichte>.png` (= Stufe 1, byte-gleich). GEB9.5 stellt das Spiel
