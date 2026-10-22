@@ -6,6 +6,7 @@ import { t } from '../core/texts';
 import type { SaveInfo } from '../core/saveStore';
 import type { RoomInfo } from '../online/clientProtocol';
 import type { Status } from '../online/clientConnection';
+import { nextSaveName, worldOf } from './saveMenu';
 
 export const DEFAULT_SAVE = 'familie';
 const SAVE_FORMAT = /^[a-z0-9-]{1,32}$/;
@@ -75,6 +76,8 @@ export function applyCommand(client: LobbyClient, cmd: LobbyCommand): void {
 
 export type LobbyEntry =
   | { kind: 'play' }
+  /** Neuer Spielstand unter dem nächsten freien Namen (BD5.2, B-506) */
+  | { kind: 'new'; name: string }
   | { kind: 'room'; room: RoomInfo }
   | { kind: 'save'; save: SaveInfo }
   | { kind: 'retry' }
@@ -84,7 +87,7 @@ export type LobbyEntry =
 export const MAX_SAVES = 6;
 
 /**
- * „Spielen“ steht oben, darunter die Räume des Servers, dann die neuesten Spielstände, die noch nicht als Raum offen sind
+ * „Spielen“ steht oben, darunter „Neuer Spielstand“ (BD5.2), die Räume des Servers, dann die neuesten Spielstände, die noch nicht als Raum offen sind
  * (der Raumname ist der Name des Spielstands). Ohne Verbindung (B-083) gibt es keine wirkungslosen Einträge:
  * `lost` bietet „Erneut versuchen“, `ended` (an anderer Stelle geöffnet, veraltete Version) „Seite neu laden“, sonst nichts.
  */
@@ -99,6 +102,7 @@ export function lobbyEntries(rooms: readonly RoomInfo[], status: Status = 'lobby
     .slice(0, MAX_SAVES);
   return [
     { kind: 'play' },
+    { kind: 'new', name: nextSaveName([...saves.map((s) => s.name), ...open]) },
     ...rooms.map((room): LobbyEntry => ({ kind: 'room', room })),
     ...newest.map((save): LobbyEntry => ({ kind: 'save', save })),
   ];
@@ -110,9 +114,10 @@ export function moveSelection(selected: number, dir: number, count: number): num
 
 export function entryLabel(e: LobbyEntry, save: string): string {
   if (e.kind === 'play') return t('lobby.play', { save });
+  if (e.kind === 'new') return t('lobby.new', { name: e.name });
   if (e.kind === 'retry') return t('lobby.retry');
   if (e.kind === 'reload') return t('lobby.reload');
-  if (e.kind === 'save') return t('lobby.save', { name: e.save.name, day: e.save.day ?? '–', depths: e.save.depths.join(', ') || '–' });
+  if (e.kind === 'save') return t('lobby.save', { name: e.save.name, world: worldOf(e.save.world), day: e.save.day ?? '–', depths: e.save.depths.join(', ') || '–' });
   const r = e.room;
   return t('lobby.room', { code: r.code, name: r.name, depth: r.depth, taken: r.taken, state: t(r.running ? 'lobby.running' : 'lobby.paused') });
 }
@@ -174,6 +179,7 @@ export class LobbyFlow {
   choose(e: LobbyEntry): LobbyCommand | null {
     this.retried = false;
     if (e.kind === 'play') return this.remember(this.create(this.params.fresh));
+    if (e.kind === 'new') return this.remember(this.create(true, e.name));
     if (e.kind === 'save') return this.remember(this.create(false, e.save.name));
     if (e.kind === 'room') return this.remember({ t: 'join', room: e.room.code, slots: this.slots() });
     return null;

@@ -1,6 +1,6 @@
 # BD5.2 · Spielmenü: Welt anzeigen, Spielstand anlegen und löschen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -52,4 +52,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-02 umgesetzt: Lobby zeigt „Welt: …“ und die Welt je Spielstand, Eintrag „Neuer Spielstand (spiel-N)“ (`create` fresh in der Start-Welt), X/Entf auf einem Spielstand öffnet die Rückfrage (`saveMenu.ts`, „Abbrechen“ vorgewählt), `deleteSave` in `saveStore.ts`, Hinweis je Server-Antwort; Pausenmenü zeigt „Welt: …“ (`roomWorld` aus `joined`).
+- AC-02 geprüft: Vitest `saveMenu.test.ts`, `saveStore.test.ts`, `lobbyLogic.test.ts`, `optionsLogic.test.ts`, `clientConnection.test.ts`; Browser-Pane (Worktree-Server): Welt angezeigt, Abbrechen lässt den Stand, Löschen entfernt ihn, „Neuer Spielstand“ startet `spiel-1`, Pausenmenü „Welt: standard“; `task check:diff` grün; Reviewer: keine schweren Befunde.
+- Offen, nicht Teil von AC-02: kein Touch-Weg zum Löschen (nur Rückfrage-Zeilen tippbar); ein gelöschter Name `spiel-N` wird wieder vergeben, seine Sicherungen liegen dann neben denen des neuen Stands (B-533).

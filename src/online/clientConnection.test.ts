@@ -246,9 +246,11 @@ describe('Fehler-Codes (AC-09)', () => {
 
   it('room_closed führt zur Raumliste', () => {
     const t = inRoom();
+    expect(t.client.roomWorld).toBe('standard'); // Welt aus joined fürs Pausenmenü (BD5.2)
     t.last().recv(err('room_closed', 'Raum ist geschlossen'));
     expect(t.client.status).toBe('lobby');
     expect(t.client.roomCode).toBeNull();
+    expect(t.client.roomWorld).toBe('');
     expect(t.client.level).toBeNull();
     expect(t.client.notice).toBe('Raum ist geschlossen');
   });

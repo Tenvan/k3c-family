@@ -5,6 +5,7 @@
 import { clampVolume, type Settings } from '../core/settings';
 import { t } from '../core/texts';
 import type { SlotCommand } from './localSlots';
+import { worldOf } from './saveMenu';
 
 export type OptionId = 'music' | 'sfx' | 'ambient' | 'screenshake' | 'flash' | 'colorblind' | 'guide' | 'language' | 'resume' | 'removePlayer' | 'leave';
 
@@ -109,7 +110,12 @@ export function optionLabel(settings: Settings, id: OptionId): string {
 /** Szenen-Daten der Optionen: Slots, die „Spieler abmelden“ treffen kann (leer = ausgegraut, B-411) */
 export interface OptionsSceneData {
   targets: number[];
+  /** Welt-ID des Raums aus `joined.world` (BD5.2, B-506); leer = standard */
+  world?: string;
 }
+
+/** Zeile unter dem Titel: Welt des Raums (BD5.2, B-506); ohne Angabe keine Zeile */
+export const worldLine = (world: string | undefined): string => (world === undefined ? '' : t('opt.world', { world: worldOf(world) }));
 
 /** „Spieler abmelden“ ist nur wählbar, wenn der Öffner einen Slot hat; alle anderen Einträge immer */
 export const optionEnabled = (id: OptionId, targets: readonly number[]): boolean => id !== 'removePlayer' || targets.length > 0;

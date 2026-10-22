@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { DEFAULT_SETTINGS, type Settings } from '../core/settings';
 import { setLanguage } from '../core/texts';
-import { MenuPress, OPTION_IDS, OPTION_PAD_KEYS, applyOption, idleCommands, moveOption, optionEnabled, optionLabel, removeLabel, stepChoice, tapDir, tapOption } from './optionsLogic';
+import { MenuPress, OPTION_IDS, OPTION_PAD_KEYS, applyOption, idleCommands, moveOption, optionEnabled, optionLabel, removeLabel, stepChoice, tapDir, tapOption, worldLine } from './optionsLogic';
 
 const base: Settings = { ...DEFAULT_SETTINGS };
 
@@ -158,5 +158,14 @@ describe('B-Taste und Stillstand', () => {
       { slot: 0, moveX: 0, sprint: false, pay: false },
       { slot: 2, moveX: 0, sprint: false, pay: false },
     ]);
+  });
+});
+
+describe('Welt im Pausenmenü (BD5.2, B-506/AC-02)', () => {
+  it('nennt die Welt des Raums, leer = standard, ohne Angabe keine Zeile', () => {
+    setLanguage('de');
+    expect(worldLine('nordmeer')).toBe('Welt: nordmeer');
+    expect(worldLine('')).toBe('Welt: standard');
+    expect(worldLine(undefined)).toBe('');
   });
 });
