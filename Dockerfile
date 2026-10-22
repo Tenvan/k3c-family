@@ -14,13 +14,13 @@ RUN go run ./tools/atlas
 # Spiel-Build auf der Build-Plattform (ein Build für alle Zielplattformen)
 FROM --platform=$BUILDPLATFORM node:22-alpine AS web
 WORKDIR /src
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package.json bun.lock ./
+RUN npm i -g bun@1.4.2 && bun install --frozen-lockfile
 COPY . .
 COPY --from=atlas /src/public/atlas ./public/atlas
 # Version des Clients (Landingpage, Lobby, Debug-Overlay); .git fehlt im Image, deshalb als Build-Argument
 ARG VERSION=dev
-RUN npx tsc --noEmit && K3C_VERSION=$VERSION npx vite build
+RUN bunx tsc --noEmit && K3C_VERSION=$VERSION bunx vite build
 
 # Go-Server für die Zielplattform, ohne cgo (statisch)
 FROM --platform=$BUILDPLATFORM golang:1.27-alpine AS server

@@ -38,7 +38,7 @@ tasks:
     desc: "Oberfläche des Starters mit Hot Reload (Vite, Port 5194); /api geht an die Starter-API (K3C_STARTER_API, Standard http://127.0.0.1:8194)"
     dir: '{{.STARTER}}/frontend'
     cmds:
-      - npx vite
+      - bunx vite
 
   window:
     desc: "Echtes Wails-Fenster im Entwicklungsmodus (wails dev, Neubau bei Go-Änderungen); nicht zusammen mit dev:ui (derselbe Vite-Port)"
@@ -59,8 +59,8 @@ tasks:
     desc: Oberfläche des Starters bauen (go:embed braucht frontend/dist; nur bei geänderten Quellen)
     dir: '{{.STARTER}}/frontend'
     cmds:
-      - npx tsc --noEmit
-      - npx vite build
+      - bunx tsc --noEmit
+      - bunx vite build
     status:
       - test ! -f dist/.placeholder # Platzhalter aus dist: immer echt bauen, nie in die EXE
     sources:
@@ -112,7 +112,7 @@ tasks:
     desc: Windows-Starter testen (Frontend mit Vitest, go test; B-041)
     deps: [':tmp', frontend]
     cmds:
-      - cd {{.STARTER}}/frontend && npx vitest run --config vitest.config.ts
+      - cd {{.STARTER}}/frontend && bunx vitest run --config vitest.config.ts
       - cd {{.STARTER}} && go test ./...
 
   lint:
