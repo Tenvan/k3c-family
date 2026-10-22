@@ -1,6 +1,6 @@
 # BD3.4 · Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -50,4 +50,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-01 bis AC-03 geprüft: Nachweise in den Ergebnissen von BD3.1 bis BD3.3; getrennter Reviewer (Opus) über `origin/develop...HEAD`: abgenommen, kein schwerer Befund.
+- `task check` grün (22 s), `task check:go` grün (7 min), `task check:race` lokal übersprungen (kein gcc/clang), die CI prüft `-race`.

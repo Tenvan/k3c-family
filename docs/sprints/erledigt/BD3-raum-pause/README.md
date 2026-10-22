@@ -1,6 +1,6 @@
 # BD3 · SRV, SIM · Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** SRV, SIM
 - **Reife:** bereit
@@ -59,10 +59,12 @@ keine (Protokollform beschlossen: eigene Nachricht, 🧑 2026-10-13). Beim auton
 | BD3.1 | `BD3.1-protokoll-pause.md` | Umsetzung | autonom | fertig |
 | BD3.2 | `BD3.2-sim-schutz.md` | Umsetzung | autonom | fertig |
 | BD3.3 | `BD3.3-raum-pause.md` | Umsetzung | autonom | fertig |
-| BD3.4 | `BD3.4-review.md` | Review | autonom | offen |
+| BD3.4 | `BD3.4-review.md` | Review | autonom | fertig |
 
 Der Schutz braucht ein Laufzeit-Feld in der Simulation; dafür kam beim Aktivieren die SIM-Session BD3.2 dazu (Review damit BD3.4). BD3.1 (SRV) Protokoll (AC-03), BD3.2 (SIM) geschützter Monarch (AC-02, Teil Simulation), BD3.3 (SRV) Raum (AC-01, AC-02), BD3.4 Review (alle).
 
 ## Abnahme
 
-–
+2026-10-22 (BD3.4, autonom): AC-01 und AC-02 umgesetzt und per Go-Test geprüft (BD3.2, BD3.3), AC-03 umgesetzt (BD3.1, Protokoll v8, Beispiele `c2s-pause.json`, `c2s-resume.json`). `task check` und `task check:go` grün; `task check:race` lokal übersprungen (kein C-Compiler), prüft die CI.
+Behobene Befunde: Eingaben aus der Pause verfallen bei resume, Frist steht in der Dev-Pause. Sprint-Review (Opus): abgenommen. Neue Tickets: B-528, B-529 (Entscheidungen zur Prüfung durch 🧑), B-530 (wartende Monarchen nicht unverwundbar).
+Version: v0.21.0 vorgeschlagen (Minor: neue Server-Funktion und Protokoll v8); gesetzt erst nach Bestätigung durch 🧑.
