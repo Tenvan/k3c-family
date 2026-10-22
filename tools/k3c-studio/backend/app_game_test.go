@@ -88,11 +88,37 @@ func TestOpenGameStartetDieGewaehlteWelt(t *testing.T) {
 	a, _ := engineApp(t)
 	a.world = "probe"
 	res := a.WorldOpenGame(studioBase, "probe", "forest", "new")
-	want := studioBase + "/index.html#game.html%3Fautostart%3D1%26fresh%3D1%26save%3Dprobe%26world%3Dprobe"
-	if res.Error != "" || res.URL != want {
+	want := studioBase + "/index.html#game.html%3Fautostart%3D1%26save%3Dprobe-probe%26seed%3Dprobe%26world%3Dprobe"
+	if res.Error != "" || res.URL != want || res.Save != "probe-probe" {
 		t.Errorf("Ergebnis %+v, erwartet %s", res, want)
 	}
 	if res := a.WorldOpenGame(studioBase, "probe", "forest", "full"); res.Error == "" || res.URL != "" {
 		t.Errorf("voll ausgebaut gibt es nur für die Standard-Welt: %+v", res)
+	}
+}
+
+// B-499/AC-01: Zweimal öffnen in einer eigenen Welt liefert dieselbe URL ohne `fresh`: die Lobby lädt den Stand beim
+// zweiten Mal (kein `save_exists`) und legt ihn über `save_not_found` beim ersten Mal an.
+func TestOpenGameEigeneWeltWiederholbar(t *testing.T) {
+	a, _ := engineApp(t)
+	a.world = "nordmeer"
+	first := a.WorldOpenGame(studioBase, "abc", "forest", "new")
+	second := a.WorldOpenGame(studioBase, "abc", "forest", "new")
+	if first.Error != "" || first.URL != second.URL || strings.Contains(first.URL, "fresh") {
+		t.Errorf("erst %+v, dann %+v", first, second)
+	}
+}
+
+// B-499/AC-02: Standard-Welt und `nordmeer` mit demselben Seed ergeben verschiedene Spielstand-Namen.
+func TestOpenGameStandNameKenntDieWelt(t *testing.T) {
+	a, _ := engineApp(t)
+	std := a.WorldOpenGame(studioBase, "abc", "forest", "new")
+	a.world = "nordmeer"
+	own := a.WorldOpenGame(studioBase, "abc", "forest", "new")
+	if std.Save == own.Save || own.Save != "nordmeer-abc" {
+		t.Errorf("Stand Standard %q, nordmeer %q", std.Save, own.Save)
+	}
+	if res := a.WorldOpenGame(studioBase, strings.Repeat("a", 30), "forest", "new"); res.Error == "" {
+		t.Errorf("zu langer Name angenommen: %+v", res)
 	}
 }

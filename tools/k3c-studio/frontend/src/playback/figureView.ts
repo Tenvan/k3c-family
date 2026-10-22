@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 import { GAME_HEIGHT, UNIT_PX } from '@game/core/constants';
 import { EFFECT_CONFIG, type EffectKind } from '@game/scenes/effects/effects';
 import { objectImage } from '@game/scenes/render/objectView';
-import { face, makeSprite, playAnim } from '@game/scenes/render/sprites';
-import { ANIMS, MOUNTS, SHEETS, animInfo, inAtlas, mountPoseOf, mountsWithSheet, resolveAnim, sheetFiles, unitTicks, type Anim, type Control, type FigureSpec, type Gap } from './figure';
+import { createSheetAnims, face, makeSprite, playAnim, preloadSheet } from '@game/scenes/render/sprites';
+import { MOUNTS, SHEETS, animInfo, inAtlas, mountPoseOf, mountsWithSheet, resolveAnim, unitTicks, type Anim, type Control, type FigureSpec, type Gap } from './figure';
 
 // Phaser-Anteil der Abspiel-Bausteine (B-463, WZ10.1): zeichnet Figuren mit den Animationen und Definitionen des Spiels
 // (`makeSprite`, `playAnim`, `face` aus `src/scenes/render/sprites.ts`) auf der Bühne des Studios. Die Entscheidungen
@@ -42,13 +42,7 @@ export function loadFigureSheets(scene: Phaser.Scene, items: readonly FigureItem
     if (!inAtlas(i.spec.sheet)) sheets.add(i.spec.sheet);
   }
   let queued = 0;
-  for (const sheet of sheets) {
-    for (const f of sheetFiles(sheet)) {
-      if (scene.textures.exists(f.key)) continue;
-      scene.load.spritesheet(f.key, f.url, { frameWidth: f.frameWidth, frameHeight: f.frameHeight });
-      queued++;
-    }
-  }
+  for (const sheet of sheets) queued += preloadSheet(scene, sheet); // Laden und Animationen kommen aus dem Spiel (B-476)
   const finish = () => { for (const sheet of sheets) createSheetAnims(scene, sheet); };
   if (queued === 0) { finish(); return Promise.resolve(); }
   return new Promise((resolve) => {
@@ -59,16 +53,6 @@ export function loadFigureSheets(scene: Phaser.Scene, items: readonly FigureItem
 
 const MOUNT_SHEET = (m: NonNullable<FigureItem['mount']>): string => m.sheet ?? MOUNTS[m.key]?.sheet ?? m.key;
 const mountsOf = (m: NonNullable<FigureItem['mount']>) => (m.sheet ? mountsWithSheet(m.key, m.sheet) : MOUNTS);
-
-function createSheetAnims(scene: Phaser.Scene, sheet: string): void {
-  for (const anim of ANIMS) {
-    const info = animInfo(sheet, anim);
-    const key = textureKey(sheet, anim);
-    if (!info || !scene.textures.exists(key) || scene.anims.exists(key)) continue;
-    scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
-    scene.anims.create({ key, frames: scene.anims.generateFrameNumbers(key, { start: 0, end: info.frames - 1 }), frameRate: info.fps, repeat: anim === 'attack' ? 0 : -1 });
-  }
-}
 
 /** Eine gezeichnete Figur. `gap` ist die Lücke der gewählten Animation oder des Reittiers (null = vollständig). */
 export class FigureView {

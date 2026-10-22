@@ -15,20 +15,13 @@ import (
 // chunkCounts (nur der Wert der betroffenen Insel wird ersetzt, wie bei plannedChunks). 0 heißt „Biom-Länge“: kein
 // Eintrag, die Länge kommt aus lengthUnits des Bioms.
 
-// checkIslandSize lehnt eine Anzahl ab, die keine Inselgröße ist; 0 (Biom-Länge) ist immer gültig.
+// checkIslandSize lehnt eine Anzahl ab, die keine Inselgröße ist; 0 (Biom-Länge) ist immer gültig. Die Prüfung selbst
+// ist sim.CheckChunkCount (B-490).
 func checkIslandSize(n int) error {
 	if n == 0 {
 		return nil
 	}
-	sizes := sim.IslandSizes()
-	valid := make([]string, len(sizes))
-	for i, s := range sizes {
-		if s.ChunkCount == n {
-			return nil
-		}
-		valid[i] = strconv.Itoa(s.ChunkCount)
-	}
-	return fmt.Errorf("die Chunk-Anzahl %d ist keine Inselgröße (gültig: %s)", n, strings.Join(valid, ", "))
+	return sim.CheckChunkCount(n)
 }
 
 // countsOf liest die Chunk-Anzahlen der Insel id (Tiefe → Anzahl) aus dem Inhalt der Welt-Datei.
@@ -58,7 +51,8 @@ func encodeCounts(counts map[string]int) []byte {
 		if i > 0 {
 			b.WriteString(", ")
 		}
-		fmt.Fprintf(&b, "%q: %d", key, counts[key])
+		quoted, _ := json.Marshal(key) // gültiges JSON auch bei Steuerzeichen (B-491/9)
+		fmt.Fprintf(&b, "%s: %d", quoted, counts[key])
 	}
 	b.WriteByte('}')
 	return []byte(b.String())

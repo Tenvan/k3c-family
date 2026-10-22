@@ -20,7 +20,7 @@ import (
 const checkoutArg = "checkout"
 
 // takesCheckout: Tools mit dem Argument checkout im Schema.
-func takesCheckout(tool string) bool { return writeTools[tool] || tool == "check_run" }
+func takesCheckout(tool string) bool { return writeTools[tool] || tool == "check_run" || tool == "sim_test" }
 
 // withCheckout ergänzt das aus In abgeleitete Schema um checkout. Der Handler sieht das Feld nie (splitCheckout).
 func withCheckout[In any](names []string) (*jsonschema.Schema, []string, error) {

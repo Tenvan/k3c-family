@@ -168,7 +168,7 @@ describe('Stand-Prüfung und Spiel', () => {
   it('„Im Spiel öffnen“ startet die gewählte Welt frisch mit ihrer id', async () => {
     await mount();
     const res = await backend.worldOpenGame('http://127.0.0.1:5183', 'k3c', 'forest', 'new');
-    expect(decodeURIComponent(res.url)).toContain('game.html?autostart=1&fresh=1&save=k3c&world=probe');
+    expect(decodeURIComponent(res.url)).toContain('game.html?autostart=1&save=probe-k3c&seed=k3c&world=probe');
     expect((await backend.worldOpenGame('http://127.0.0.1:5183', 'k3c', 'forest', 'full')).error).toContain('Standard-Welt');
   });
 });

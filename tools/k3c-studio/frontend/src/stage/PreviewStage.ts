@@ -57,6 +57,8 @@ class PreviewScene extends Phaser.Scene {
   private dragX: number | null = null;
   // Figuren-Modus (WZ10.1): statt der Welt zeichnet die Bühne Figuren auf einer Bodenlinie mit Unit-Skala
   private figures: FigureView[] = [];
+  private figureBase = 1; // Kamera-Zoom, bei dem alle Figuren im Bild stehen; `figureFactor` (Zoom der Seite) wirkt darauf
+  private figureFactor = 1;
   private extras: Phaser.GameObjects.GameObject[] = [];
   private figureItems: readonly FigureItem[] | null = null;
   private control: Control = DEFAULT_CONTROL;
@@ -219,9 +221,16 @@ class PreviewScene extends Phaser.Scene {
     this.extras = drawScale(this, from, to);
     const cam = this.cameras.main;
     const zoom = Math.min(stageZoom(this.scale.height), this.scale.width / ((to - from) * UNIT_PX));
-    cam.setZoom(zoom);
+    this.figureBase = zoom;
+    cam.setZoom(zoom * this.figureFactor);
     cam.removeBounds();
     cam.centerOn(((from + to) / 2) * UNIT_PX, GROUND_Y - 140);
+  }
+
+  /** Zoom der Seite (1 = alle Figuren im Bild, B-502) auf die Figuren-Ansicht anwenden; die Mitte bleibt. */
+  setFigureZoom(factor: number): void {
+    this.figureFactor = factor;
+    if (this.figures.length > 0) this.cameras.main.setZoom(this.figureBase * factor);
   }
 
   /** Position und Zoom von der Seite übernehmen (gleicher Maßstab wie der Chunk-Streifen). */
@@ -302,6 +311,11 @@ export class PreviewStage {
   /** Wiedergabe der Figuren: Schleife, Tempo, Einzelbild */
   setControl(control: Control): void {
     this.scene.setControl(control);
+  }
+
+  /** Zoom der Figuren-Ansicht (1 = alle Figuren im Bild) */
+  setFigureZoom(factor: number): void {
+    this.scene.setFigureZoom(factor);
   }
 
   /** Position und Zoom setzen */

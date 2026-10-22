@@ -1,10 +1,12 @@
 package backend
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
+	"sync"
 	"testing"
 
 	"k3c/engine/level"
@@ -242,5 +244,39 @@ func TestWorldQuelleOhneEntwurfNimmtDieGespeichertePlanung(t *testing.T) {
 	plain, _ := level.Generate(biome, "abc")
 	if saved.Error != "" || !reflect.DeepEqual(saved.Layout, want) || reflect.DeepEqual(saved.Layout, plain) {
 		t.Errorf("Quelle Insel 2 Stufe 1: Fehler %q, gespeicherte Planung wirkt nicht", saved.Error)
+	}
+}
+
+// B-497/AC-06: Zwei gleichzeitige Aufrufe von PlanSave auf demselben Stand: genau einer speichert, der andere bekommt „veraltet“
+// (ohne den Schutz läsen beide denselben Stand, und der zweite überschriebe den ersten).
+func TestPlanSaveParallelNurEinerSpeichertAufDemStand(t *testing.T) {
+	app, _ := planApp(t, islandsFixture)
+	stand := app.PlanLoad().Stand
+	const n = 8
+	results := make(chan PlanSaved, n)
+	var wg sync.WaitGroup
+	for i := range n {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			plan := []level.PlannedChunk{{Slot: 6, Kind: "portal", Seed: fmt.Sprintf("s%d", i)}}
+			results <- app.PlanSave("island1", 0, plan, 0, stand)
+		}()
+	}
+	wg.Wait()
+	close(results)
+	saved, stale := 0, 0
+	for r := range results {
+		switch {
+		case r.Error == "":
+			saved++
+		case r.Stale:
+			stale++
+		default:
+			t.Errorf("unerwarteter Fehler: %s", r.Error)
+		}
+	}
+	if saved != 1 || stale != n-1 {
+		t.Errorf("%d gespeichert, %d veraltet; erwartet 1 und %d", saved, stale, n-1)
 	}
 }

@@ -1,5 +1,5 @@
-import { SelectField, Text, plainOptions, type SelectOption } from '@webkit/atoms';
-import { useEffect, useMemo, useState } from 'react';
+import { Button, SelectField, Text, plainOptions, type SelectOption } from '@webkit/atoms';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { backend, type AssetSlot } from '../api';
 import { DEFAULT_CONTROL, type Anim, type Control } from '../playback/figure';
 import { FigureStage } from '../playback/FigureStage';
@@ -7,6 +7,7 @@ import { GapBadge, PlaybackControls } from '../playback/PlaybackControls';
 import type { FigureInfo } from '../stage/PreviewStage';
 import { ACTIONS, actionOf, type ActionId } from './actions';
 import { SkillList } from './SkillList';
+import { stepZoom, wheelZoom } from './monarchZoom';
 import {
   DEFAULT_MOUNT, MONARCH_ANIMS, MOUNT_KEYS, MOVES, PLAYERS, monarchItems, monarchSlotId, moveOf, mountSlotId, slotOptions, type Choice, type MoveId, type SlotOption,
 } from './monarchLogic';
@@ -105,14 +106,40 @@ export function MonarchPage() {
   const m = useMonarch();
   const [infos, setInfos] = useState<FigureInfo[]>([]);
   const [missing, setMissing] = useState<string[]>([]);
+  const [zoom, setZoom] = useState(1);
+  const stageBox = useRef<HTMLDivElement>(null);
+  // nativer Listener: React hängt Wheel-Handler passiv an, preventDefault (die Seite soll bei Alt + Rad nicht scrollen) braucht passive: false
+  useEffect(() => {
+    const el = stageBox.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      if (!wheelZoom(1, e)) return;
+      e.preventDefault();
+      setZoom((z) => wheelZoom(z, e) ?? z);
+    };
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, []);
+  // Zwei Spalten (B-502): links die Skills, rechts die Monarchen; schmal untereinander (CSS)
   return (
     <div className="wd-page wd-monarch">
-      <Bar m={m} gap={infos[0]?.gap} />
-      <PlaybackControls control={m.control} onChange={m.setControl} frames={infos[0]?.frames ?? 1} />
-      {missing.length > 0 && <Text as="p" size="2" color="red" role="status">Grafiken nicht geladen: {missing.join(', ')}</Text>}
-      <FigureStage items={m.items} control={m.control} onInfo={setInfos} onLoadError={setMissing} />
-      <Colors m={m} />
-      <SkillList />
+      <aside className="wd-monarch-skills"><SkillList /></aside>
+      <div className="wd-monarch-main">
+        <Bar m={m} gap={infos[0]?.gap} />
+        <PlaybackControls control={m.control} onChange={m.setControl} frames={infos[0]?.frames ?? 1} />
+        <div className="wd-bar" role="group" aria-label="Zoom">
+          <Button variant="soft" aria-label="Verkleinern" onClick={() => setZoom((z) => stepZoom(z, -1))}>−</Button>
+          <Text size="2" aria-label="Zoomstufe">{Math.round(zoom * 100)} %</Text>
+          <Button variant="soft" aria-label="Vergrößern" onClick={() => setZoom((z) => stepZoom(z, 1))}>+</Button>
+          <Button variant="outline" aria-label="Zoom zurücksetzen" disabled={zoom === 1} onClick={() => setZoom(1)}>Spielmaßstab</Button>
+          <Text size="1" color="gray">Alt + Mausrad zoomt</Text>
+        </div>
+        {missing.length > 0 && <Text as="p" size="2" color="red" role="status">Grafiken nicht geladen: {missing.join(', ')}</Text>}
+        <div className="wd-monarch-stage" ref={stageBox}>
+          <FigureStage items={m.items} control={m.control} zoom={zoom} onInfo={setInfos} onLoadError={setMissing} />
+        </div>
+        <Colors m={m} />
+      </div>
     </div>
   );
 }

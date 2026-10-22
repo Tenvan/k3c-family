@@ -93,11 +93,12 @@ func TestImportAbgelehnt(t *testing.T) {
 	root, itch, pixabay := importRepo(t)
 	big := append([]byte("\x89PNG\r\n\x1a\n"), make([]byte, maxImportBytes)...)
 	cases := map[string]struct{ hit, src string }{
-		"nicht übernehmbar":   {pixabay, srcFile(t, "a.png", pngBytes(t))},
-		"erlaubt sind .png":   {itch, srcFile(t, "a.jpg", pngBytes(t))},
-		"inhalt ist kein png": {itch, srcFile(t, "a.png", []byte("geheim"))},
-		"größer als 20 MB":    {itch, srcFile(t, "big.png", big)},
-		"nicht gefunden":      {"nichts", srcFile(t, "a.png", pngBytes(t))},
+		"nicht übernehmbar":        {pixabay, srcFile(t, "a.png", pngBytes(t))},
+		"erlaubt sind .png":        {itch, srcFile(t, "a.jpg", pngBytes(t))},
+		"a.svg: erlaubt sind .png": {itch, srcFile(t, "a.svg", []byte("<svg><script>alert(1)</script></svg>"))}, // B-514: kein SVG importierbar
+		"inhalt ist kein png":      {itch, srcFile(t, "a.png", []byte("geheim"))},
+		"größer als 20 MB":         {itch, srcFile(t, "big.png", big)},
+		"nicht gefunden":           {"nichts", srcFile(t, "a.png", pngBytes(t))},
 	}
 	for want, c := range cases {
 		if _, err := ImportFile(root, "farm", c.hit, c.src, day); err == nil || !strings.Contains(err.Error(), want) {

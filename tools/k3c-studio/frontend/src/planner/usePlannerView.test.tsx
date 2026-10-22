@@ -26,6 +26,13 @@ describe('usePlannerView', () => {
     expect(get().position.left).toBe(0);
   });
 
+  it('Alt + Rad zoomt hier wie Strg + Rad (B-491/7)', () => {
+    const get = mount();
+    const e = { deltaX: 0, deltaY: -100, ctrlKey: false, altKey: true, shiftKey: false, preventDefault: () => {} } as unknown as WheelEvent;
+    act(() => get().onWheel(e));
+    expect(get().position.scale).toBeGreaterThan(DEFAULT_SCALE);
+  });
+
   it('Strg + Rad zoomt, der Maßstab bleibt in den Grenzen', () => {
     const get = mount();
     const prevented: boolean[] = [];

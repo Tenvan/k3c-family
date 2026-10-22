@@ -160,3 +160,13 @@ func TestChatUmgebungOhneSitzung(t *testing.T) {
 		t.Errorf("Umgebung %v, erwartet %v", got, want)
 	}
 }
+
+// B-514/AC-02: Der Riegel in TestMain sperrt das echte claude; defaultCLI() startet in Tests nie die echte CLI.
+func TestChatRiegelSperrtEchtesClaude(t *testing.T) {
+	cli := defaultCLI()
+	cli.workDir = t.TempDir()
+	out := cli.run(context.Background(), "Hallo", chatOptions{}, func(string) {})
+	if out.Status != chatFailed || !strings.Contains(out.Error, "nicht gefunden") {
+		t.Errorf("defaultCLI().run: %+v", out)
+	}
+}

@@ -83,6 +83,8 @@ func (a *App) PlanWorldCheck(d WorldDraft) WorldCheckView {
 // PlanWorldSave speichert den Entwurf der gewählten Welt (Binding): nur gültig, nur auf dem Stand aus PlanLoad (sonst
 // Stale ohne Schreibzugriff), format-stabil und atomar; danach der REG-Hinweis.
 func (a *App) PlanWorldSave(d WorldDraft, stand string) PlanSaved {
+	a.save.Lock()
+	defer a.save.Unlock()
 	id := a.activeWorld() // einmal gelesen: Lesen, Prüfen und Schreiben gelten derselben Welt
 	path := a.worldFile(id)
 	raw, err := os.ReadFile(path)
