@@ -1,6 +1,6 @@
 # KR5.1 · Workshop: kritische Fragen zu SKL entscheiden (🧑)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** REG
@@ -50,5 +50,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Workshop 2026-10-23 mit Ralf (Claude moderiert und protokolliert).
+
+- **AC-01 geprüft:** B-559, B-560, B-561 tragen Ralfs Entscheidung unter Notizen.
+- **AC-02 geprüft:** Bestätigt und `erledigt`: B-559 (a, Feld `skills` in `learn`). Geändert und `erledigt` mit Verweis: B-560 (b, Dieb-Skills bauen → B-577, SIM-Sprint mit Golden und BAL-Lauf), B-561 (b, eigener Effekt je Skill → B-578, CLI).
+- **Neue Tickets (Projekt SKL):** B-577, B-578 (Spec Entwurf; B-578 nach B-577).
+- **Abweichungen:** B-561 hing laut Plan an der TV-Abnahme SK2.5; Ralf hat sie vorab entschieden. SK2.5 prüft weiter den Ring aus SK2.3. Der Regeltext `docs/rules/monarch.md` („der Dieb folgt später“) wird erst mit B-577 nachgezogen, deshalb bleibt SK2.1 AC-01 offen.

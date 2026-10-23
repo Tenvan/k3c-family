@@ -63,7 +63,7 @@ keine (die Fragen sind der Inhalt der Tickets; Defaults gelten).
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| KR5.1 | `KR5.1-fragen-skl.md` | Workshop | Mensch | offen |
+| KR5.1 | `KR5.1-fragen-skl.md` | Workshop | Mensch | fertig |
 
 ## Abnahme
 

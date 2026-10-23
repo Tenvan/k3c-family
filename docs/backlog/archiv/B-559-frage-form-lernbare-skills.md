@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR5
 - **Projekt:** KRT
 - **Erstellt:** 2026-10-23
@@ -56,3 +56,5 @@ Form (a), (b) oder (c)? Default (a), umgesetzt.
 ## Notizen
 
 Sprint KR5, Session KR5.1.
+
+**Entscheidung 🧑 (KR5.1, 2026-10-23):** (a) bestätigt, Feld `skills` im `learn`-Eintrag, keine neue Protokoll-Version.

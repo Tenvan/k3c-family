@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR5
 - **Projekt:** KRT
 - **Erstellt:** 2026-10-23
@@ -56,3 +56,5 @@ nicht relevant: Entscheidungsfrage.
 ## Notizen
 
 Sprint KR5, Session KR5.1; TV-Abnahme SK2.5.
+
+**Entscheidung 🧑 (KR5.1, 2026-10-23):** (b), eigener Effekt je Skill. Umsetzung: B-578 (CLI, Tabelle statt `LINE_COLORS`, Ring je Klasse als Rückfall). Der Ring aus SK2.3 gilt bis dahin; die TV-Abnahme SK2.5 prüft ihn weiter.

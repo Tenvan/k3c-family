@@ -145,9 +145,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-539](B-539-entscheidung-wimpel-markierer.md) | SIM | Frage | hoch | eingeplant | KR2 | Entscheidung D2: Wimpel-Farbe bleibt Client-Annäherung, markedBy erst nach GEB10.5 |
 | [B-552](B-552-entscheidung-monarch-animationen.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G7: Monarch-Animationen bleiben aus vorhandenen Frames abgeleitet |
 | [B-554](B-554-entscheidung-musik-stuecke.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S1: Je Musikzustand spielt die erste Präferenz des Slots, die übrigen Kandidaten bleiben bis zur Bestätigung liegen |
-| [B-559](B-559-frage-form-lernbare-skills.md) | SRV | Frage | hoch | eingeplant | KR5 | Ralf bestätigt die Form der lernbaren Skills im Protokoll |
-| [B-560](B-560-frage-dieb-preset-oder-bauen.md) | REG | Frage | hoch | eingeplant | KR5 | Ralf entscheidet, ob die Dieb-Skills gebaut werden oder das Preset leer bleibt |
-| [B-561](B-561-frage-skill-darstellung-je-klasse.md) | CLI | Frage | hoch | eingeplant | KR5 | Ralf bestätigt die Darstellung der Skills als Ring je Klasse ohne neue Ereignisse |
 | [B-562](B-562-studio-monarch-skill-ring.md) | DEV | Idee | niedrig | offen | – | Die Monarch-Seite des Studios zeigt den Skill-Ring des Spiels statt der Lücke |
 | [B-563](B-563-endboss-bau-in-aktionsliste.md) | SRV | Idee | niedrig | offen | – | Die Aktionsliste nennt den Bau-Auslöser des Endbosses, das Overlay zeigt ihn |
 | [B-564](B-564-dev-seite-spiel-mit-dev-parameter.md) | PLAT | Idee | niedrig | offen | – | Die Entwicklerseite öffnet das Spiel mit Debug-Overlay (?dev=1) |
@@ -162,6 +159,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-574](B-574-sound-reiten-hufschlag.md) | CLI | Idee | niedrig | offen | – | Reiten hat eine Hufschlag-Schleife je Spieler |
 | [B-575](B-575-sound-ui-klicks.md) | CLI | Idee | niedrig | offen | – | Die Menü-Szenen haben UI-Klick-Töne |
 | [B-576](B-576-sound-skill-je-klasse.md) | CLI | Idee | niedrig | offen | – | Jede Klasse hat einen eigenen Skill-Sound |
+| [B-577](B-577-dieb-skills-bauen.md) | SIM | Idee | mittel | offen | – | Der Dieb bekommt Backstab und Smoke Bomb |
+| [B-578](B-578-skill-effekt-je-skill.md) | CLI | Idee | mittel | offen | – | Jeder Skill hat einen eigenen Effekt statt des Rings je Klasse |
 
 ## Archiv
 
@@ -536,3 +535,6 @@ Zeile in diesen Abschnitt.
 | [B-556](archiv/B-556-entscheidung-sound-credit-datei.md) | REG | Frage | hoch | erledigt | KR4 | Entscheidung S3: Die Credits der Sounds bleiben in public/audio/README.md |
 | [B-557](archiv/B-557-entscheidung-sound-atlas.md) | REG | Frage | hoch | erledigt | KR4 | Entscheidung S4: Die Effekte laden aus einem Sound-Atlas, Einzeldateien sind der Rückfall |
 | [B-558](archiv/B-558-entscheidung-sound-luecken.md) | REG | Frage | hoch | erledigt | KR4 | Entscheidung S5: Die Sound-Lücken bekommen vorhandene Kenney-Töne, UI-Klicks und Reiten bleiben offen |
+| [B-559](archiv/B-559-frage-form-lernbare-skills.md) | SRV | Frage | hoch | erledigt | KR5 | Ralf bestätigt die Form der lernbaren Skills im Protokoll |
+| [B-560](archiv/B-560-frage-dieb-preset-oder-bauen.md) | REG | Frage | hoch | erledigt | KR5 | Ralf entscheidet, ob die Dieb-Skills gebaut werden oder das Preset leer bleibt |
+| [B-561](archiv/B-561-frage-skill-darstellung-je-klasse.md) | CLI | Frage | hoch | erledigt | KR5 | Ralf bestätigt die Darstellung der Skills als Ring je Klasse ohne neue Ereignisse |

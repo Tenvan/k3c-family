@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR5
 - **Projekt:** KRT
 - **Erstellt:** 2026-10-23
@@ -56,3 +56,5 @@ nicht relevant: Entscheidungsfrage.
 ## Notizen
 
 Sprint KR5, Session KR5.1; Workshop SK2.1.
+
+**Entscheidung 🧑 (KR5.1, 2026-10-23):** (b), Backstab und Smoke Bomb werden jetzt gebaut. Umsetzung: B-577 (SIM-Sprint im Projekt SKL mit Golden und BAL-Lauf). Bis dahin bleibt das Preset Dieb leer.
