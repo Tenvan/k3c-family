@@ -51,7 +51,13 @@ Spieler in mehreren Stufen gleichzeitig → Belohnung je bespielter Stufe höchs
 
 ## Offene Fragen
 
-🧑 entscheidet vor der Freigabe: B-343 (Bau an der inneren Kante ok, oder eigenes Chunk?), B-327 (Golden-Läufe für Tiefe 3 und 4 gewünscht?), B-328 (Flammen-Fläche bauen oder Regel streichen?). B-343 und B-328 können auch als REG-Beschluss vorab fallen.
+Vorentschieden (autonom, Claude, 2026-10-23), Bestätigung durch 🧑 über KR6:
+
+- **B-379:** Vollmond-Belohnung je Stufe mit Spielern: jede bespielte Stufe, deren Burg in der Nacht hielt, bekommt die Münzen an ihrem Hub (höchstens einmal je Stufe und Nacht). Ereignisse `eventStarted`/`eventEnded` meldet weiter nur Stufe 0.
+- **B-380:** Ja, der Blutmond verstärkt auch Boss-Flächenangriff und Splitter (`moonDamage`), die Bodenfläche (Hazard) bleibt ohne Faktor.
+- **B-343:** Bau bleibt an der inneren Kante des Ausgangs-Chunks (heutige Umsetzung), kein Mindestabstand zu Portalen; Nachweis über die bestehenden Tests.
+- **B-327:** Ja, je ein Golden-Lauf für Eisenstollen und Kristallhöhle mit vollem Aggressionspool, 2 Spieler.
+- **B-328:** Keine Flammen-Fläche bauen (neue Mechanik mit Balancing-Wirkung); `docs/rules/gegner.md` vermerkt, dass der Feuergeist bis zur Entscheidung nur Fernkampf mit Abstand hat.
 
 ## Sessions
 

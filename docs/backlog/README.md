@@ -32,14 +32,12 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-168](B-168-musik-je-zustand.md) | CLI | Idee | hoch | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
 | [B-250](B-250-audiokern-datei-wiedergabe.md) | CLI | Schuld | hoch | eingeplant | SO4 | Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn |
 | [B-272](B-272-rotation-session-reports.md) | SRV | Schuld | mittel | eingeplant | ST1 | Die Rotation in reports/ erfasst auch die Spielmetrik-Reports |
-| [B-260](B-260-schutzplatz-ohne-id.md) | SIM | Schuld | niedrig | eingeplant | LV1 | Der Schutzplatz einer Truppe hängt nicht an ihrer Entity-ID |
 | [B-263](B-263-snapshot-groesse-plaetze.md) | SRV | Problem | niedrig | eingeplant | NT1 | Der Welt-Snapshot bleibt mit 39 Plätzen je Stufe im Budget |
 | [B-251](B-251-figuren-ganzzahlig-skalieren.md) | CLI | Schuld | hoch | eingeplant | GR7 | Figuren werden ganzzahlig skaliert und flimmern nicht |
 | [B-184](B-184-pages-screenshots.md) | PLAT | Idee | niedrig | eingeplant | PG1 | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
 | [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | eingeplant | RG2 | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
 | [B-186](B-186-autospeichern-takt.md) | SRV | Idee | mittel | eingeplant | ST1 | Der Server speichert alle 60 s und bei Tagesanbruch, das HUD zeigt „gesichert“ |
 | [B-187](B-187-speichern-windows-rename.md) | SRV | Problem | mittel | eingeplant | ST1 | Speichern übersteht unter Windows eine kurz gesperrte Zieldatei |
-| [B-189](B-189-toter-gegner-flieht-ins-portal.md) | SIM | Problem | mittel | eingeplant | LV1 | Ein besiegter Gegner verschwindet nicht im Portal, sondern lässt sein Gold fallen |
 | [B-190](B-190-events-dropped-im-protokoll.md) | SRV | Problem | niedrig | eingeplant | NT1 | Der Client erfährt zuverlässig, wie viele Ereignisse verworfen wurden |
 | [B-191](B-191-debug-overlay-links-unten.md) | CLI | Problem | mittel | eingeplant | U5 | Debug-Overlay und Aktionsliste verdecken das HUD nicht |
 | [B-193](B-193-figuren-luecken-suche.md) | CLI | Idee | hoch | eingeplant | GR7 | Figuren-Lücken unter public/sprites/ haben Kandidaten und eine Auswahl |
@@ -47,12 +45,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-195](B-195-debug-overlay-xbox.md) | PLAT | Problem | mittel | eingeplant | PL1 | Das Debug-Overlay lässt sich auf der Xbox öffnen |
 | [B-157](archiv/B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | erledigt | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
 | [B-159](archiv/B-159-replay-repro-format.md) | SIM | Idee | mittel | erledigt | BAL1 | Ein Lauf ist als Datei aus Seed und Eingaben wiederholbar |
-| [B-200](B-200-aggressionspool-adern.md) | SIM | Problem | mittel | eingeplant | LV1 | Der Aggressionspool unter Tage bleibt auch mit Adern im Wellen-Korridor |
 | [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | eingeplant | RG2 | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
 | [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | eingeplant | W11 | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
 | [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | eingeplant | W11 | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
 | [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | eingeplant | RG1 | Burg hält Nacht 1–5 nur in 47 % der Seeds, Ziel 75–90 % |
-| [B-217](B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | eingeplant | LV1 | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | eingeplant | RG2 | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
 | [B-218](B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | hoch | eingeplant | SO4 | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
 | [B-274](B-274-testrestore-flackert-windows.md) | SRV | Problem | mittel | eingeplant | NT1 | TestRestore läuft unter Windows auch in task check:all stabil grün |
@@ -525,3 +521,7 @@ Zeile in diesen Abschnitt.
 | [B-080](archiv/B-080-dev-tasten-server.md) | SRV | Idee | niedrig | erledigt | KB2 | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
 | [B-262](archiv/B-262-camps-nahe-portalen.md) | SIM | Frage | mittel | erledigt | LV1 | Camps liegen nach dem Abstand zu den Linien nicht zu nah an den Portalen |
 | [B-291](archiv/B-291-lava-nicht-auf-mauerlinien.md) | SIM | Problem | mittel | erledigt | LV1 | Lava liegt nicht auf den Mauerlinien |
+| [B-189](archiv/B-189-toter-gegner-flieht-ins-portal.md) | SIM | Problem | mittel | erledigt | LV1 | Ein besiegter Gegner verschwindet nicht im Portal, sondern lässt sein Gold fallen |
+| [B-217](archiv/B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | erledigt | LV1 | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
+| [B-260](archiv/B-260-schutzplatz-ohne-id.md) | SIM | Schuld | niedrig | erledigt | LV1 | Der Schutzplatz einer Truppe hängt nicht an ihrer Entity-ID |
+| [B-200](archiv/B-200-aggressionspool-adern.md) | SIM | Problem | mittel | erledigt | LV1 | Der Aggressionspool unter Tage bleibt auch mit Adern im Wellen-Korridor |

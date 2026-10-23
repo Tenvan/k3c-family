@@ -12,31 +12,30 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Golden-Läufe für Eisenstollen (Tiefe 3) und Kristallhöhle (Tiefe 4) mit vollem Aggressionspool liegen unter `testdata/golden/`.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+`engine/sim/sim_test.go` › Golden-Läufe (Vorbild `sim-mine-welle`), Level-Golden gibt es schon (`level-ironhold.json`, `level-crystal.json`). Biome `data/biomes/ironhold.json`, `crystal.json`.
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-
-- `pfad/…`
+- `engine/sim/sim_test.go`, `engine/sim/*_test.go`
+- `testdata/golden/` (nur per `task go:golden`, eigener Commit)
+- `docs/sprints/`, `docs/backlog/`
 
 ## Nicht-Ziele
 
-Was in dieser Session ausdrücklich **nicht** passiert.
+Werte, neue Gegner.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Zwei Szenarien wie `mine-welle` für ironhold und crystal ergänzen.
+2. `task go:golden`, Diff prüfen (nur zwei neue Dateien), eigener Commit.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-03 (B-327/AC-01): zwei neue `sim-*.json`, Golden-Tests grün.
 
 ## Prüfen
 

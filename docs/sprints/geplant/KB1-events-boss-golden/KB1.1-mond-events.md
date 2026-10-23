@@ -12,31 +12,31 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Vollmond-Belohnung gilt je bespielter Stufe, Blutmond verstärkt Boss-Flächenangriff und Splitter.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+`engine/sim/events_moon.go` › `nightEventsEnd` zahlt nur in Stufe 0 (`eventStage`). `moonDamage` wirkt nur in `attack` (`enemies.go`); Boss-Flächenangriff `boss.go` (`applyDamageBy` mit `e.Damage`), Splitter `boss_abilities.go` (`Projectile.Damage`). Defaults: KB1 › Offene Fragen.
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-
-- `pfad/…`
+- `engine/sim/events_moon*.go`, `engine/sim/boss*.go`, `engine/sim/*_test.go`
+- `testdata/golden/` (nur per `task go:golden`, eigener Commit)
+- `docs/sprints/`, `docs/backlog/`
 
 ## Nicht-Ziele
 
-Was in dieser Session ausdrücklich **nicht** passiert.
+Neue Events, Werte in `data/events.json`.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Test: Spieler nur in Stufe 1, Vollmond-Nacht, Burg hält → Münzen am Hub der Stufe 1; Burg fällt → keine.
+2. `nightEventsEnd`: Belohnung je Stufe mit Spielern.
+3. Test: Boss-Flächenangriff und Splitter im Blutmond mit Faktor; `moonDamage` dort einsetzen.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-01 (B-379/AC-01, B-380/AC-01): Tests grün, `task check:diff` grün.
 
 ## Prüfen
 

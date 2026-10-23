@@ -46,7 +46,7 @@ Kein Platz außerhalb der Lava → Linie entfällt mit Log-Warnung, Level bleibt
 
 - **AC-01** Lava liegt nicht auf den Mauerlinien (B-291/AC-01).
 - **AC-02** Camps liegen nach dem Abstand zu den Linien nicht zu nah an den Portalen (B-262/AC-01).
-- **AC-03** Der Aggressionspool unter Tage bleibt auch mit Adern im Wellen-Korridor (B-200/AC-01, B-200/AC-02, B-200/AC-03).
+- **AC-03** Der Aggressionspool unter Tage bleibt auch mit Adern im Wellen-Korridor (B-200/AC-02, B-200/AC-03; die Messung B-200/AC-01 über 100 Seeds ist nach B-565 verschoben).
 - **AC-04** Ein besiegter Gegner verschwindet nicht im Portal, sondern lässt sein Gold fallen (B-189/AC-01).
 - **AC-05** Die Ereignisse `built` und `playerDown` tragen ihren Ort (B-217/AC-01, B-217/AC-02).
 - **AC-06** Der Schutzplatz einer Truppe hängt nicht an ihrer Entity-ID (B-260/AC-01).
@@ -67,7 +67,7 @@ Vorentschieden (autonom, Claude, 2026-10-23), Bestätigung durch 🧑 über KR6:
 |---|---|---|---|---|
 | LV1.1 | `LV1.1-lava-camps.md` | Umsetzung | autonom | fertig |
 | LV1.2 | `LV1.2-adern-takt-besiegte-gegner.md` | Umsetzung | autonom | fertig |
-| LV1.3 | `LV1.3-ereignis-ort-schutzplatz.md` | Umsetzung | autonom | offen |
+| LV1.3 | `LV1.3-ereignis-ort-schutzplatz.md` | Umsetzung | autonom | fertig |
 | LV1.4 | `LV1.4-review.md` | Review | autonom | offen |
 
 ## Abnahme

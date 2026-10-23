@@ -1,6 +1,6 @@
 # LV1.3 · Ereignisse mit Ort, Schutzplatz ohne Entity-ID
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
