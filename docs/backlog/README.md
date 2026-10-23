@@ -68,13 +68,13 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-320](B-320-reiter-sattel-beim-laufen.md) | CLI | Problem | hoch | eingeplant | GR7 | Der Reiter sitzt beim Laufen und Sprinten auf dem Sattel, nicht auf der Kruppe |
 | [B-324](B-324-client-typen-gegnerdaten.md) | CLI | Schuld | niedrig | eingeplant | KB2 | Die Client-Typen der Gegner- und Wellendaten passen zu den JSON-Dateien |
 | [B-327](B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | eingeplant | KB1 | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
-| [B-328](B-328-feuergeist-flammen-flaeche.md) | SIM | Frage | niedrig | eingeplant | KB1 | Der Feuergeist hinterlässt eine Flammen-Fläche |
+| [B-328](B-328-feuergeist-flammen-flaeche.md) | SIM | Frage | niedrig | eingeplant | KR6 | Der Feuergeist hinterlässt eine Flammen-Fläche |
 | [B-329](B-329-figuren-neue-gegner.md) | CLI | Schuld | niedrig | eingeplant | GR8 | Die sechs neuen Gegner zeigen eigene Figuren statt Platzhalter |
 | [B-331](B-331-einheitlicher-grafikstil-pipeline.md) | CLI | Idee | mittel | eingeplant | GR8 | Alle Grafiken laufen durch eine Pipeline mit Ziel-Palette und gleicher Pixeldichte |
 | [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
 | [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | HW1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
 | [B-341](B-341-header-ursache-live-messen.md) | DEV | Problem | mittel | eingeplant | WZ2 | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
-| [B-343](B-343-bau-vor-dem-ausgang.md) | SIM | Frage | mittel | eingeplant | KB1 | Der Bau des Endbosses liegt an der inneren Kante des Ausgangs-Chunks |
+| [B-343](B-343-bau-vor-dem-ausgang.md) | SIM | Frage | mittel | eingeplant | KR6 | Der Bau des Endbosses liegt an der inneren Kante des Ausgangs-Chunks |
 | [B-344](B-344-raum-speichert-nicht-nach-game-over.md) | SRV | Idee | hoch | eingeplant | KB2 | Der Raum speichert nach „Komplett verloren“ nicht mehr |
 | [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | eingeplant | RG1 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
 | [B-347](B-347-tester-misst-wirtschaft.md) | SIM | Schuld | hoch | eingeplant | BAL6 | Der Balancing-Tester misst die Wirtschafts-Kennzahlen |
@@ -94,7 +94,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-381](B-381-protokoll-haendler-raid-hp.md) | SRV | Problem | niedrig | eingeplant | KB2 | Das Protokoll beschreibt Überfall und HP des Händlers |
 | [B-382](B-382-lobby-neuversuch-nur-spielen.md) | CLI | Problem | niedrig | eingeplant | BD2 | Ein gewählter Spielstand startet nie leer neu |
 | [B-385](B-385-inselwechsel-ereignis-geht-verloren.md) | SRV | Problem | mittel | eingeplant | KB2 | Das Ereignis `islandSwitch` erreicht beim Inselwechsel keinen Client |
-| [B-386](B-386-netz-budget-kampf-q08.md) | SRV | Frage | mittel | eingeplant | KB2 | Netz-Budget des Kampf-Zustands: Q08 gilt für alles oder nur für Ereignisse? |
+| [B-386](B-386-netz-budget-kampf-q08.md) | SRV | Frage | mittel | eingeplant | KR6 | Netz-Budget des Kampf-Zustands: Q08 gilt für alles oder nur für Ereignisse? |
 | [B-387](B-387-ticketnummern-parallele-worktrees.md) | DEV | Problem | mittel | eingeplant | WZ2 | Ticket-Nummern bleiben zwischen parallelen Worktrees eindeutig |
 | [B-394](B-394-xbox-overlay-gesten-abnahme.md) | PLAT | Frage | niedrig | eingeplant | HW1 | Overlay-Gesten (RB, LB + RB) sind an der Xbox abgenommen (B-195/AC-02) |
 | [B-400](B-400-planung-splitter-merken.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Die Planungsseite trennt Backlog und Details mit einem Splitter, dessen Stellung gemerkt wird |

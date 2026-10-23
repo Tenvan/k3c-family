@@ -5,7 +5,7 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** KB2
+- **Sprint:** KR6
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-10
 - **Spec:** Entwurf
