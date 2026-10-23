@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** KB3
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-23
 - **Spec:** Entwurf

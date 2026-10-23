@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** W14
 - **Projekt:** WRT
 - **Erstellt:** 2026-10-13
 - **Spec:** Entwurf

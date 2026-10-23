@@ -42,9 +42,16 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| WZ26 | DEV | WZG | CI rot beheben, Prüf- und Planungswerkzeuge härten | – | Entwurf | `geplant/WZ26-ci-check-tooling/` |
+| WZ27 | REG | WZG | Geplante Chunks: Gegnerlager, Ruinen-Kollision, Dateigrenze | – | Entwurf | `geplant/WZ27-chunks-lager-ruine/` |
+| BD8 | CLI | BED | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl | – | Entwurf | `geplant/BD8-lobby-welt-auswahl/` |
+| GEB13 | REG | GEB | Gebäude-Stufen in den Daten und Stufen-Look für Plantage, Camp, Heilplatz | – | Entwurf | `geplant/GEB13-gebaeude-stufen-look/` |
+| GEB14 | REG | GEB | Wald und Höhle dichter, Gerüst bei Wartenden, Knoten-Markierer im Snapshot | – | Entwurf | `geplant/GEB14-welt-deko-geruest/` |
 | SV2 | SRV | WRT | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | – | Entwurf | `geplant/SV2-voll-ausbau-regelkonform/` |
 | W13 | CLI | WRT | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | – | Entwurf | `geplant/W13-morgengrauen-licht-client/` |
 | W12 | SIM | WRT | Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln | – | Entwurf | `geplant/W12-morgengrauen-phase/` |
+| W14 | SIM | WRT | Spielstand-Kommentare nach W7.2 nachziehen | – | Entwurf | `geplant/W14-spielstand-kommentare/` |
+| SO7 | CLI | SND | Niederlage-Stück, Hufschlag, UI-Klicks und Skill-Sounds je Klasse | – | Entwurf | `geplant/SO7-sound-ergaenzungen/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | Entwurf | `geplant/PM1-leistung-messen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | bereit | `geplant/PF1-splitscreen-leistung/` |
 | NT1 | SRV | LST | Stabile Tests, Warteschlange und Snapshot-Budget | – | Entwurf | `geplant/NT1-netz-tests-stabil/` |
@@ -53,7 +60,9 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | W11 | REG, SRV, CLI | WRT | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | – | Entwurf | `geplant/W11-bauplaetze-protokoll-abstand/` |
 | GD1 | INF | TST | Golden-Daten kleiner bei gleicher Prüfschärfe | – | Entwurf | `geplant/GD1-golden-verkleinern/` |
+| SK3 | SIM | SKL | Dieb-Skills Backstab und Smoke Bomb, Skill-Effekte, Skill-Ring im Studio | – | Entwurf | `geplant/SK3-dieb-skills-effekte/` |
 | KB1 | SIM | KMP | Kampf-Nachträge: Mond-Events, Endboss-Bau, Golden-Läufe, Feuergeist | – | Entwurf | `geplant/KB1-events-boss-golden/` |
+| KB3 | SRV | KMP | Endboss-Auslöser anzeigen, Dev-Overlay-Link, Wellenabstand unter Tage messen | – | Entwurf | `geplant/KB3-endboss-dev-wellen/` |
 | PG1 | PLAT | REL | Präsentationsseite mit echten Spielbildern | – | Entwurf | `geplant/PG1-praesentation-bilder/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | Entwurf | `geplant/PB1-itch-io/` |
 | HW1 | PLAT, SRV, INF, CLI | ABN | Zurückgestellte Controller-Prüfungen nachholen | – | Entwurf | `geplant/HW1-controller-pruefungen/` |

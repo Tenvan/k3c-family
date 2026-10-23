@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ26
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-18
 - **Spec:** Entwurf

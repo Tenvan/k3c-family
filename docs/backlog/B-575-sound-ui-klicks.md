@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** SO7
 - **Projekt:** SND
 - **Erstellt:** 2026-10-23
 - **Spec:** Entwurf

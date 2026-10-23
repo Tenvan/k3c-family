@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** SK3
 - **Projekt:** SKL
 - **Erstellt:** 2026-10-23
 - **Spec:** Entwurf

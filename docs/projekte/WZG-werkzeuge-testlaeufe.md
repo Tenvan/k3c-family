@@ -45,6 +45,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ23 | Studio-Vorschauen: Reittiere aus dem Spielcode, Monarch-Seite, Boss-Anzeigen, Gebäude-Planer abgenommen | erledigt |
 | WZ24 | Geplante Chunks in Simulation und Spielstand: Regeln geklärt, Planung im Stand, eine Prüfung der Inselgröße | erledigt |
 | WZ25 | Nachträge zum Server-Neustart: Räume bleiben offen, Assets ohne Build, Werkzeuge passen dazu | erledigt |
+| WZ26 | CI rot beheben, Prüf- und Planungswerkzeuge härten | geplant |
+| WZ27 | Geplante Chunks: Gegnerlager, Ruinen-Kollision, Dateigrenze | geplant |
 
 ## Nicht-Ziele
 

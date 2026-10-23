@@ -19,6 +19,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | SO2 | SFX-Katalog und Einbau | aktiv |
 | SO4 | Musik je Zustand | aktiv |
 | SO6 | Sound-Credits auf der Credits-Seite, Sound-Atlas und Sounds für die übrigen Ereignisse | aktiv |
+| SO7 | Niederlage-Stück, Hufschlag, UI-Klicks und Skill-Sounds je Klasse | geplant |
 
 ## Nicht-Ziele
 

@@ -102,7 +102,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-411](B-411-spieler-abmelden.md) | CLI | Problem | hoch | eingeplant | BD4 | Lokale Spieler können beitreten, aber nicht einzeln austreten |
 | [B-412](B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | eingeplant | W11 | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | eingeplant | BD4 | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
-| [B-418](B-418-spielstand-kommentare-veraltet.md) | SIM | Problem | niedrig | offen | – | Kommentare in island_save_v3.go und island_save_v5.go nennen nach W7.2 veraltete Versionen |
+| [B-418](B-418-spielstand-kommentare-veraltet.md) | SIM | Problem | niedrig | eingeplant | W14 | Kommentare in island_save_v3.go und island_save_v5.go nennen nach W7.2 veraltete Versionen |
 | [B-419](B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | eingeplant | GD1 | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
 | [B-422](B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | eingeplant | W11 | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | eingeplant | SV2 | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
@@ -116,47 +116,47 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-457](B-457-geb6-abnahme-splitscreen-ausgang-geschmack.md) | CLI | Frage | mittel | eingeplant | GEB10 | GEB6: Split-Screen, Ausgang-Beschriftung und Geschmacksfragen später prüfen |
 | [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | eingeplant | GEB11 | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
 | [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
-| [B-465](B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | offen | – | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
+| [B-465](B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | eingeplant | WZ26 | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
 | [B-470](B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | eingeplant | W12 | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
 | [B-472](B-472-nacht-dunkler-fackeln-lagerfeuer-licht.md) | CLI | Idee | niedrig | eingeplant | W13 | Nacht und Morgengrauen sind dunkler, Fackeln und Lagerfeuer machen Licht |
-| [B-473](B-473-ci-rot-k3c-dev-planning-worktree-tests.md) | DEV | Problem | hoch | offen | – | CI auf develop rot: k3c-workbench internal/planning Worktree-Tests scheitern auf dem Windows-Runner |
-| [B-474](B-474-testdownloadhit-norton-tls.md) | DEV | Problem | mittel | offen | – | TestDownloadHit scheitert lokal am TLS-Zertifikat (Norton), check:all rot |
+| [B-473](B-473-ci-rot-k3c-dev-planning-worktree-tests.md) | DEV | Problem | hoch | eingeplant | WZ26 | CI auf develop rot: k3c-workbench internal/planning Worktree-Tests scheitern auf dem Windows-Runner |
+| [B-474](B-474-testdownloadhit-norton-tls.md) | DEV | Problem | mittel | eingeplant | WZ26 | TestDownloadHit scheitert lokal am TLS-Zertifikat (Norton), check:all rot |
 | [B-492](B-492-sfx-luecken-weitere-ereignisse.md) | CLI | Idee | mittel | eingeplant | SO6 | Weitere Ereignisse bekommen eigene Sound-Slots und Sounds |
 | [B-493](B-493-credits-seite-audio.md) | PLAT | Idee | hoch | eingeplant | SO6 | Die Credits-Seite zeigt auch die Sounds unter public/audio |
 | [B-494](B-494-sound-atlas-werkzeug.md) | INF | Idee | niedrig | eingeplant | SO6 | Ein Werkzeug packt die gewählten Sounds in einen Sound-Atlas |
-| [B-496](B-496-studio-fensterposition-merken.md) | DEV | Idee | mittel | offen | – | Das Asset-Studio merkt sich Fensterposition und Größe und stellt sie sicher wieder her |
+| [B-496](B-496-studio-fensterposition-merken.md) | DEV | Idee | mittel | eingeplant | WZ26 | Das Asset-Studio merkt sich Fensterposition und Größe und stellt sie sicher wieder her |
 | [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
 | [B-503](B-503-monarch-skill-darstellung.md) | CLI | Idee | niedrig | eingeplant | SK2 | Die 24 Monarch-Skills haben eine Darstellung im Spiel |
 | [B-504](B-504-preset-skills-backstab-smokebomb.md) | REG | Problem | niedrig | eingeplant | SK2 | Die Skills backstab und smokeBomb des Presets Dieb stehen in data/monarch.json |
 | [B-505](B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | eingeplant | GR9 | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |
 | [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | eingeplant | BD5 | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
-| [B-517](B-517-geplante-chunks-gegnerlager.md) | REG | Idee | mittel | offen | – | Geplante Chunks tragen Gegnerlager mit stationärer Wache |
-| [B-519](B-519-plan-next-origin.md) | DEV | Problem | mittel | offen | – | plan_next berücksichtigt den Stand der Sprint-Branches auf origin |
-| [B-520](B-520-check-run-blockiert.md) | DEV | Problem | hoch | offen | – | check_run wartet bis zum Ende des Laufs und meldet Fortschritt statt Lauf-ID zum Nachfragen |
-| [B-521](B-521-types-ts-aufteilen.md) | CLI | Schuld | niedrig | offen | – | src/model/types.ts liegt über der Dateigrenze von 400 Zeilen |
-| [B-522](B-522-ressourcen-auf-ruine.md) | SIM | Problem | mittel | offen | – | Zufalls-Ressourcen eines geplanten Chunks können auf seiner Ruine liegen |
-| [B-523](B-523-ruine-kollision-hub-platz.md) | SIM | Schuld | niedrig | offen | – | Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt |
-| [B-531](B-531-wald-dichter-hoehle-bueesche.md) | REG | Idee | mittel | offen | – | Wald hat mehr Bäume je Abschnitt, Höhle bekommt Deko-Büsche |
-| [B-532](B-532-snapshot-markiert-von.md) | SIM | Idee | niedrig | offen | – | Snapshot nennt, wer einen Knoten markiert hat |
+| [B-517](B-517-geplante-chunks-gegnerlager.md) | REG | Idee | mittel | eingeplant | WZ27 | Geplante Chunks tragen Gegnerlager mit stationärer Wache |
+| [B-519](B-519-plan-next-origin.md) | DEV | Problem | mittel | eingeplant | WZ26 | plan_next berücksichtigt den Stand der Sprint-Branches auf origin |
+| [B-520](B-520-check-run-blockiert.md) | DEV | Problem | hoch | eingeplant | WZ26 | check_run wartet bis zum Ende des Laufs und meldet Fortschritt statt Lauf-ID zum Nachfragen |
+| [B-521](B-521-types-ts-aufteilen.md) | CLI | Schuld | niedrig | eingeplant | WZ27 | src/model/types.ts liegt über der Dateigrenze von 400 Zeilen |
+| [B-522](B-522-ressourcen-auf-ruine.md) | SIM | Problem | mittel | eingeplant | WZ27 | Zufalls-Ressourcen eines geplanten Chunks können auf seiner Ruine liegen |
+| [B-523](B-523-ruine-kollision-hub-platz.md) | SIM | Schuld | niedrig | eingeplant | WZ27 | Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt |
+| [B-531](B-531-wald-dichter-hoehle-bueesche.md) | REG | Idee | mittel | eingeplant | GEB14 | Wald hat mehr Bäume je Abschnitt, Höhle bekommt Deko-Büsche |
+| [B-532](B-532-snapshot-markiert-von.md) | SIM | Idee | niedrig | eingeplant | GEB14 | Snapshot nennt, wer einen Knoten markiert hat |
 | [B-539](B-539-entscheidung-wimpel-markierer.md) | SIM | Frage | hoch | eingeplant | KR2 | Entscheidung D2: Wimpel-Farbe bleibt Client-Annäherung, markedBy erst nach GEB10.5 |
 | [B-552](B-552-entscheidung-monarch-animationen.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G7: Monarch-Animationen bleiben aus vorhandenen Frames abgeleitet |
 | [B-554](B-554-entscheidung-musik-stuecke.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S1: Je Musikzustand spielt die erste Präferenz des Slots, die übrigen Kandidaten bleiben bis zur Bestätigung liegen |
-| [B-562](B-562-studio-monarch-skill-ring.md) | DEV | Idee | niedrig | offen | – | Die Monarch-Seite des Studios zeigt den Skill-Ring des Spiels statt der Lücke |
-| [B-563](B-563-endboss-bau-in-aktionsliste.md) | SRV | Idee | niedrig | offen | – | Die Aktionsliste nennt den Bau-Auslöser des Endbosses, das Overlay zeigt ihn |
-| [B-564](B-564-dev-seite-spiel-mit-dev-parameter.md) | PLAT | Idee | niedrig | offen | – | Die Entwicklerseite öffnet das Spiel mit Debug-Overlay (?dev=1) |
-| [B-565](B-565-messung-wellenabstand-mit-adern.md) | REG | Schuld | niedrig | offen | – | Der Wellenabstand unter Tage mit besetzten Adern ist über 100 Seeds gemessen |
-| [B-566](B-566-lobby-welt-auswahl.md) | CLI | Idee | mittel | offen | – | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl |
-| [B-568](B-568-plantage-pappel-niedrig.md) | DEV | Idee | mittel | offen | – | Plantage bekommt eine eigene niedrige Pappel vor der Farm |
-| [B-569](B-569-gebaeude-eigene-stufen.md) | REG | Idee | mittel | offen | – | Gebäude bekommen eigene Stufen (levels je Gebäude) |
-| [B-570](B-570-camp-stufen-look.md) | DEV | Idee | mittel | offen | – | Das Camp bekommt einen Stufen-Look statt der Grundform |
-| [B-571](B-571-heilplatz-stufen-deutlicher.md) | DEV | Idee | mittel | offen | – | Heilplatz-Stufen sind deutlicher sichtbar (Zelt, Brunnen) |
-| [B-572](B-572-geruest-immer-bei-waitingworker.md) | CLI | Idee | mittel | offen | – | Baugerüst steht immer bei waitingWorker, auch bei Gefahr |
-| [B-573](B-573-musik-niederlage-stueck.md) | CLI | Idee | mittel | offen | – | Nach dem Fall der Burg spielt ein eigenes Niederlage-Stück |
-| [B-574](B-574-sound-reiten-hufschlag.md) | CLI | Idee | niedrig | offen | – | Reiten hat eine Hufschlag-Schleife je Spieler |
-| [B-575](B-575-sound-ui-klicks.md) | CLI | Idee | niedrig | offen | – | Die Menü-Szenen haben UI-Klick-Töne |
-| [B-576](B-576-sound-skill-je-klasse.md) | CLI | Idee | niedrig | offen | – | Jede Klasse hat einen eigenen Skill-Sound |
-| [B-577](B-577-dieb-skills-bauen.md) | SIM | Idee | mittel | offen | – | Der Dieb bekommt Backstab und Smoke Bomb |
-| [B-578](B-578-skill-effekt-je-skill.md) | CLI | Idee | mittel | offen | – | Jeder Skill hat einen eigenen Effekt statt des Rings je Klasse |
+| [B-562](B-562-studio-monarch-skill-ring.md) | DEV | Idee | niedrig | eingeplant | SK3 | Die Monarch-Seite des Studios zeigt den Skill-Ring des Spiels statt der Lücke |
+| [B-563](B-563-endboss-bau-in-aktionsliste.md) | SRV | Idee | niedrig | eingeplant | KB3 | Die Aktionsliste nennt den Bau-Auslöser des Endbosses, das Overlay zeigt ihn |
+| [B-564](B-564-dev-seite-spiel-mit-dev-parameter.md) | PLAT | Idee | niedrig | eingeplant | KB3 | Die Entwicklerseite öffnet das Spiel mit Debug-Overlay (?dev=1) |
+| [B-565](B-565-messung-wellenabstand-mit-adern.md) | REG | Schuld | niedrig | eingeplant | KB3 | Der Wellenabstand unter Tage mit besetzten Adern ist über 100 Seeds gemessen |
+| [B-566](B-566-lobby-welt-auswahl.md) | CLI | Idee | mittel | eingeplant | BD8 | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl |
+| [B-568](B-568-plantage-pappel-niedrig.md) | DEV | Idee | mittel | eingeplant | GEB13 | Plantage bekommt eine eigene niedrige Pappel vor der Farm |
+| [B-569](B-569-gebaeude-eigene-stufen.md) | REG | Idee | mittel | eingeplant | GEB13 | Gebäude bekommen eigene Stufen (levels je Gebäude) |
+| [B-570](B-570-camp-stufen-look.md) | DEV | Idee | mittel | eingeplant | GEB13 | Das Camp bekommt einen Stufen-Look statt der Grundform |
+| [B-571](B-571-heilplatz-stufen-deutlicher.md) | DEV | Idee | mittel | eingeplant | GEB13 | Heilplatz-Stufen sind deutlicher sichtbar (Zelt, Brunnen) |
+| [B-572](B-572-geruest-immer-bei-waitingworker.md) | CLI | Idee | mittel | eingeplant | GEB14 | Baugerüst steht immer bei waitingWorker, auch bei Gefahr |
+| [B-573](B-573-musik-niederlage-stueck.md) | CLI | Idee | mittel | eingeplant | SO7 | Nach dem Fall der Burg spielt ein eigenes Niederlage-Stück |
+| [B-574](B-574-sound-reiten-hufschlag.md) | CLI | Idee | niedrig | eingeplant | SO7 | Reiten hat eine Hufschlag-Schleife je Spieler |
+| [B-575](B-575-sound-ui-klicks.md) | CLI | Idee | niedrig | eingeplant | SO7 | Die Menü-Szenen haben UI-Klick-Töne |
+| [B-576](B-576-sound-skill-je-klasse.md) | CLI | Idee | niedrig | eingeplant | SO7 | Jede Klasse hat einen eigenen Skill-Sound |
+| [B-577](B-577-dieb-skills-bauen.md) | SIM | Idee | mittel | eingeplant | SK3 | Der Dieb bekommt Backstab und Smoke Bomb |
+| [B-578](B-578-skill-effekt-je-skill.md) | CLI | Idee | mittel | eingeplant | SK3 | Jeder Skill hat einen eigenen Effekt statt des Rings je Klasse |
 
 ## Archiv
 
