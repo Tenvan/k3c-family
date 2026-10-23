@@ -3,10 +3,10 @@ import type { DevMessage } from '../../online/clientProtocol';
 
 /** Dev-Aktionen im Cheat-Dialog (B-179, B-231): nur Daten und Abbildung auf die Nachricht `dev`, keine Spielregel. */
 
-export type DevActionGroup = 'gold' | 'material' | 'vorrat' | 'ausbau' | 'zeit';
+export type DevActionGroup = 'gold' | 'material' | 'vorrat' | 'ausbau' | 'zeit' | 'grad';
 
 /** Gruppen in Anzeige-Reihenfolge (eine Zeile je Gruppe im Dialog). */
-export const DEV_GROUPS: readonly DevActionGroup[] = ['gold', 'material', 'vorrat', 'ausbau', 'zeit'];
+export const DEV_GROUPS: readonly DevActionGroup[] = ['gold', 'material', 'vorrat', 'ausbau', 'zeit', 'grad'];
 
 /** Umschalter des Dialogs: Der Zustand steht lokal im Dialog, die Nachricht trägt `on`. */
 export type DevToggle = 'cheapBuild' | 'timescaleAuto';
@@ -29,6 +29,14 @@ const FACTORS = [1, 2, 4, 8];
 export const MAX_STEP = 100;
 /** Wählbare Stufen von „Alles ausbauen“ */
 export const UPGRADE_LEVELS = [1, 2, 3, 4, 5];
+/** Grade des Raums in Anzeige-Reihenfolge (K5.3, B-107); der Server prüft und lehnt ohne Dev-Mode ab */
+export const GRADES: [string, string][] = [
+  ['dev', 'Dev'],
+  ['easy', 'Leicht'],
+  ['normal', 'Normal'],
+  ['hard', 'Hart'],
+  ['ultra', 'Ultra'],
+];
 const RESOURCES: [ResourceKind, string][] = [
   ['wood', 'Holz'],
   ['stone', 'Stein'],
@@ -49,7 +57,14 @@ export const DEV_ACTIONS: readonly DevAction[] = [
   ...FACTORS.map((f): DevAction => ({ group: 'zeit', label: `Zeit ${f}×`, key: `timescale:${f}` })),
   { group: 'zeit', label: 'Zeitraffer → 1× bei Tageszeitwechsel', key: 'autoslow', toggle: 'timescaleAuto' },
   { group: 'zeit', label: 'Nächste Tageszeit', key: 'nextphase' },
+  ...GRADES.map(([g, name]): DevAction => ({ group: 'grad', label: `Grad ${name}`, key: `grade:${g}` })),
 ];
+
+/** Sichtbar: die Gruppe „Grad“ nur im Dev-Mode des Raums (B-107/AC-02); die übrigen zeigt der Dialog mit Hinweis. */
+export const actionVisible = (a: DevAction, devMode: boolean): boolean => a.group !== 'grad' || devMode;
+
+/** Aktuell gesetzter Grad: die Zeile ist markiert (Grad aus dem Zustand, `s.grade`). */
+export const isCurrentGrade = (a: DevAction, grade: string | undefined): boolean => grade !== undefined && a.key === `grade:${grade}`;
 
 /** Beschriftung einer Zeile; Umschalter zeigen „an“ bzw. „aus“. */
 export const actionLabel = (a: DevAction, toggles: DevToggles): string => (a.toggle ? `${a.label}: ${toggles[a.toggle] ? 'an' : 'aus'}` : a.label);
@@ -82,6 +97,8 @@ export function devMessage(key: string, slot: number, toggles: DevToggles = NO_T
       return { t: 'dev', action: 'nextPhase' };
     case 'castlefall':
       return { t: 'dev', action: 'castleFall', slot };
+    case 'grade':
+      return { t: 'dev', action: 'grade', grade: value };
   }
   return null;
 }

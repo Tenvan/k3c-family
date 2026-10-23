@@ -68,7 +68,7 @@ Vorentschieden (autonom, Claude, 2026-10-23), Bestätigung durch 🧑 in K5.4 bz
 |---|---|---|---|---|
 | K5.1 | `K5.1-boss-warnkreis-event.md` | Umsetzung | autonom | fertig |
 | K5.2 | `K5.2-anlegen-dialog.md` | Umsetzung | autonom | fertig |
-| K5.3 | `K5.3-debug-panel-overlay.md` | Umsetzung | autonom | offen |
+| K5.3 | `K5.3-debug-panel-overlay.md` | Umsetzung | autonom | fertig |
 | K5.4 | `K5.4-abnahme-geraet.md` | Workshop | Mensch | offen |
 | K5.5 | `K5.5-review.md` | Review | autonom | offen |
 

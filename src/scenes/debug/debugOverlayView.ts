@@ -107,7 +107,7 @@ export class DebugOverlay {
     if (this.open) this.dialog ??= new CheatDialog((i) => (this.pick = i), () => this.nextSeat(), () => this.setOpen(false));
     const devMode = client.status === 'room' && roomDevMode(world as DebugWorld | null);
     const note = devMode ? '' : 'Server ohne Dev-Mode: Cheats und Pause wirken nicht.';
-    this.dialog?.render(this.open, this.fs, `Spieler ${this.seat() + 1}`, note, this.toggles);
+    this.dialog?.render(this.open, this.fs, `Spieler ${this.seat() + 1}`, note, this.toggles, devMode, world?.grade);
   }
 
   /** Lokale Slots des Geräts, aufsteigend (Gold und Material gehen an den gewählten). */

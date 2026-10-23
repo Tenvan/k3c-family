@@ -314,6 +314,8 @@ export interface World {
 
   /** Laufende Nacht-Events (z. B. `fullMoon`, `bloodMoon`) mit Restzeit der Nacht in Sekunden; fehlt = keins. */
   nightEvents?: { id: string; secondsLeft: number }[];
+  /** Schwierigkeitsgrad des Raums (`dev` … `ultra`, docs/protocol.md › Dev-Aktionen); fehlt bei älteren Servern. */
+  grade?: string;
   /** Wechselpunkt zur nächsten Insel (nach dem Endboss): Fortschritt 0..1; fehlt = noch nicht offen. */
   islandSwitch?: { open: boolean; progress: number; ready: boolean };
 

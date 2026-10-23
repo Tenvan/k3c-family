@@ -46,8 +46,8 @@ export interface DebugInput {
 /** Schlüssel der Versionszeile in der Phaser-Registry (gesetzt in src/main.ts). */
 export const VERSION_KEY = 'versionLine';
 
-/** Entwicklungsphase: Overlay ist standardmäßig verfügbar, `?dev=0` schaltet es ab (B-093, Revision 2). `search` ist `location.search`. */
-export const debugEnabled = (search: string): boolean => new URLSearchParams(search).get('dev') !== '0';
+/** Overlay nur mit `?dev=1` (B-098, K5.3); ohne Parameter aus. `search` ist `location.search`. */
+export const debugEnabled = (search: string): boolean => new URLSearchParams(search).get('dev') === '1';
 
 const NONE = '–';
 

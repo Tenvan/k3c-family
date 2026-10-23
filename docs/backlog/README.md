@@ -184,6 +184,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-561](B-561-frage-skill-darstellung-je-klasse.md) | CLI | Frage | hoch | eingeplant | KR5 | Ralf bestätigt die Darstellung der Skills als Ring je Klasse ohne neue Ereignisse |
 | [B-562](B-562-studio-monarch-skill-ring.md) | DEV | Idee | niedrig | offen | – | Die Monarch-Seite des Studios zeigt den Skill-Ring des Spiels statt der Lücke |
 | [B-563](B-563-endboss-bau-in-aktionsliste.md) | SRV | Idee | niedrig | offen | – | Die Aktionsliste nennt den Bau-Auslöser des Endbosses, das Overlay zeigt ihn |
+| [B-564](B-564-dev-seite-spiel-mit-dev-parameter.md) | PLAT | Idee | niedrig | offen | – | Die Entwicklerseite öffnet das Spiel mit Debug-Overlay (?dev=1) |
 
 ## Archiv
 
