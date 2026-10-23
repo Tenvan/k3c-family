@@ -21,12 +21,13 @@ Katalog Ereignis → Sound → Quelle → Lizenz (B-167, SO2). Die Zuordnung ste
 | Respawn (`revive`) | `sfx:revive` | `audio/kandidaten/kenney-digital-audio-powerup3.ogg` (+2) | https://kenney.nl/assets/digital-audio | Kenney | CC0 | zugeordnet |
 | Wiederbeleben durch Mitspieler (`revived`) | `sfx:revived` | `audio/kandidaten/kenney-digital-audio-highup.ogg` | https://kenney.nl/assets/digital-audio | Kenney | CC0 | gewählt (Default Claude 2026-10-22, B-558), eingebaut SO6.4 (`revived`) |
 | Hub-Ausbau | `sfx:hub` | `audio/kandidaten/kenney-digital-audio-threetone2.ogg` | https://kenney.nl/assets/digital-audio | Kenney | CC0 | gewählt (Default Claude 2026-10-22, B-558), eingebaut SO6.4 (Anstieg `hubLevel`, global) |
-| Skill je Klasse | – | – | – | – | – | **Lücke** (B-558): gemeinsamer Ton `sfx:skill` (Default) |
+| Skill je Klasse | – | – | – | – | – | **Lücke** (B-576): gemeinsamer Ton `sfx:skill` (Rückfall); der Snapshot nennt weder Klasse noch Skill-Auslösung eines Spielers (nur Preset-Punkte, `types.ts`), ein Ereignis je gewirktem Skill fehlt |
 | Boss-Auftritt | `sfx:boss` | `audio/kandidaten/kenney-digital-audio-lowthreetone.ogg` | https://kenney.nl/assets/digital-audio | Kenney | CC0 | gewählt (Default Claude 2026-10-22, B-558), eingebaut SO6.4 (`bossSpawned`, global) |
-| UI-Klicks | – | – | – | – | – | **Lücke** (B-558): kein Ereignis (Q08), Default ohne Ton |
-| Reiten (Hufschlag, Schleife) | `sfx:ride` | `audio/kandidaten/horse-gallop-loop-01.ogg` (+2) | https://opengameart.org/content/horse-gallop-loop | AntumDeluge | CC-BY 3.0 | zugeordnet, Einbau offen (B-558: Schleife je Spieler braucht Kern-Erweiterung) |
+| UI-Klicks | `sfx:uiSelect` | `audio/kandidaten/selbst-erzeugt-ui-select.ogg` | selbst erzeugt (Rezept `public/audio/README.md`) | Claude (selbst erzeugt) | CC0 | eingebaut (B-575): Auswahl wechseln in Lobby und Optionen, kein Server-Ereignis (Q08) |
+| UI-Klick Bestätigen | `sfx:uiConfirm` | `audio/kandidaten/selbst-erzeugt-ui-confirm.ogg` | selbst erzeugt (Rezept `public/audio/README.md`) | Claude (selbst erzeugt) | CC0 | eingebaut (B-575): Bestätigen (Enter, A, Tippen) |
+| Reiten (Hufschlag, Schleife) | `sfx:ride` | `audio/kandidaten/horse-gallop-loop-01.ogg` (+2) | https://opengameart.org/content/horse-gallop-loop | AntumDeluge | CC-BY 3.0 | eingebaut (B-574): Schleife je Spieler, solange er lebt und sich bewegt (`vx`); Absteigen gibt es im Snapshot nicht (Monarch ist immer beritten) |
 
-Lücken (Münze geben, Bau-Fortschritt, `revived`, Hub-Ausbau, Skill je Klasse, Boss-Auftritt, UI-Klicks) führt B-492; für Reiten ist der Slot `sfx:ride` angelegt und mit Kandidaten belegt, der Einbau (Schleife je berittenem Spieler) steht in B-492; „Selbst erzeugt“-Füller waren nicht nötig, weil alle Pflicht-Ereignisse (Q08) einen Sound haben.
+Die Lücken Münze geben, Bau-Fortschritt, `revived`, Hub-Ausbau und Boss-Auftritt sind mit B-492 geschlossen, Reiten und UI-Klicks mit SO7 (B-574, B-575); offen bleibt nur Skill je Klasse (B-576). Selbst erzeugte Töne (UI-Klicks, Niederlage-Stück) stehen mit Rezept in `public/audio/README.md`.
 
 ## Musik (Auswahl SO4.1 vorentschieden, Einbau SO4.3)
 
@@ -39,4 +40,5 @@ Lücken (Münze geben, Bau-Fortschritt, `revived`, Hub-Ausbau, Skill je Klasse, 
 | Tiefe/Höhle | `music:tiefe` | `audio/kandidaten/8-bit-cave-loop.ogg` | https://opengameart.org/content/8-bit-cave-loop | Wolfgang_ | CC0 | gewählt (Default Claude 2026-10-22, B-554), spielt im Spiel |
 | Boss | `music:boss` | `audio/kandidaten/nes-shooter-music-boss.ogg` (+1) | https://opengameart.org/content/nes-shooter-music-5-tracks-3-jingles | SketchyLogic | CC0 | gewählt (Default Claude 2026-10-22, B-554), spielt im Spiel |
 | Lobby | `music:lobby` | `audio/kandidaten/nes-shooter-music-map.ogg` (+1) | https://opengameart.org/content/nes-shooter-music-5-tracks-3-jingles | SketchyLogic | CC0 | gewählt (Default Claude 2026-10-22, B-554), spielt im Spiel |
-| Niederlage/Sieg | `music:ende` | `audio/kandidaten/8-bit-victory-loop.ogg` | https://opengameart.org/content/8-bit-victory-loop | Wolfgang_ | CC0 | zugeordnet für Sieg (noch kein Auslöser); Niederlage still (Default, B-555) |
+| Niederlage | `music:niederlage` | `audio/kandidaten/selbst-erzeugt-niederlage.ogg` | selbst erzeugt (Rezept `public/audio/README.md`) | Claude (selbst erzeugt) | CC0 | eingebaut (B-573): spielt bei `castleFallen`, sanftes a-Moll, bis die Lobby läuft; Ersatz durch ein Stück aus der Kandidatensuche möglich (Auswahl 🧑) |
+| Sieg | `music:ende` | `audio/kandidaten/8-bit-victory-loop.ogg` | https://opengameart.org/content/8-bit-victory-loop | Wolfgang_ | CC0 | zugeordnet für Sieg (Zustand `ending`, noch kein Auslöser); läuft nicht bei Niederlage (B-573) |

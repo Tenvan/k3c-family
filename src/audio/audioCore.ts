@@ -72,6 +72,8 @@ export class AudioCore {
   private duckNode?: GainNodeLike;
   private duckWindow?: DuckWindow;
   private hubLevel?: number;
+  /** Laufende Schleifen je Schlüssel (Hufschlag je Spieler, B-574) */
+  private readonly loops = new Map<string, Voice>();
 
   constructor(private readonly deps: CoreDeps) {}
 
@@ -172,6 +174,50 @@ export class AudioCore {
     const raised = hubRaised(this.hubLevel, level);
     this.hubLevel = level;
     return raised && this.playSlot('sfx:hub');
+  }
+
+  /**
+   * Hält die Schleifen eines Effekt-Slots je Schlüssel (z. B. Hufschlag je Spieler, B-574) auf dem gewünschten Stand: neue Schlüssel
+   * starten, fehlende enden mit kurzem Ausblenden, vorhandene stellen nur ihre Lautstärke nach. Ein Slot ohne geladene Datei, ein
+   * gesperrter Kontext oder ein Fehler bleibt stumm. Schlüssel gelten je Slot; `wanted` leer = alle dieser Schleife beenden.
+   */
+  syncLoops(slot: string, wanted: readonly { key: number; volume: number }[]): void {
+    const { ctx, mixer } = this;
+    const url = (this.deps.sfx ?? SFX_URLS)[slot];
+    const keep = new Set(wanted.map((w) => `${slot}#${w.key}`));
+    for (const [id, v] of this.loops) {
+      if (!id.startsWith(`${slot}#`) || keep.has(id)) continue;
+      this.loops.delete(id);
+      this.release(v, QUICK_FADE_SECONDS);
+    }
+    const buf = url === undefined ? undefined : this.decoded.get(url);
+    if (!url || buf === undefined || !ctx || !mixer || !this.running) return;
+    for (const w of wanted) {
+      const id = `${slot}#${w.key}`;
+      const old = this.loops.get(id);
+      try {
+        if (old) {
+          old.gain.gain.value = w.volume;
+          continue;
+        }
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        src.loop = true;
+        const gain = ctx.createGain();
+        gain.gain.value = w.volume;
+        src.connect(gain);
+        gain.connect(mixer.node('sfx'));
+        src.start(ctx.currentTime, 0);
+        this.loops.set(id, { url, src, gain });
+      } catch {
+        /* Kontext geschlossen: stumm */
+      }
+    }
+  }
+
+  /** Laufen gerade Schleifen dieses Slots (Anzahl)? */
+  loopCount(slot: string): number {
+    return [...this.loops.keys()].filter((id) => id.startsWith(`${slot}#`)).length;
   }
 
   /**

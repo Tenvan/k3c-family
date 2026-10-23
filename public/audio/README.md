@@ -18,6 +18,14 @@ ffmpeg -f lavfi -i "aevalsrc='(sin(2*PI*262*t)+sin(2*PI*330*t)+sin(2*PI*392*t))/
 # mp3: -c:a libmp3lame -b:a 48k; probe-b: 220/277/330 Hz, Tremolo 3 Hz
 ```
 
+## Selbst erzeugte Töne (SO7)
+
+Ohne Netz und ohne fremde Dateien erzeugt (Claude, 2026-10-23), Lizenz CC0: Synthese in Python (nur Standardbibliothek, Sinus mit Obertönen und exponentiellem Ausklingen, 22,05 kHz mono), danach `ffmpeg -map_metadata -1 -c:a libvorbis -q:a 3`. Sie liegen unter `kandidaten/` und stehen wie die fremden Dateien in der Credit-Tabelle unten.
+
+- `selbst-erzeugt-ui-select.ogg` (B-575): 90 ms, 880 Hz, Obertöne 1 und 0,2, Abklingen 45/s.
+- `selbst-erzeugt-ui-confirm.ogg` (B-575): 220 ms, zwei Töne 660 Hz (ab 0 s) und 990 Hz (ab 70 ms), Abklingen 18/s und 16/s.
+- `selbst-erzeugt-niederlage.ogg` (B-573): 16 s nahtlose Schleife, 60 bpm, Akkordfolge a-Moll, F-Dur, d-Moll, E-Dur (Bass A2, F2, D2, E2 plus Achtel-Arpeggio), darüber eine absteigende Melodie in Glockenklang; Ausklänge laufen über das Schleifenende hinweg.
+
 ## Importe (k3c-workbench)
 
 Mit k3c-workbench importierte Kandidaten (B-298): je Datei eine Zeile. „Lizenz prüfen“ gilt, bis 🧑 die Lizenz in k3c-workbench bestätigt.
@@ -77,3 +85,6 @@ Kenney-Dateien (Packs Digital Audio, RPG Audio, Impact Sounds, Interface Sounds,
 | kandidaten/horse-gallop-loop-01.ogg | Horse Gallop Loop 01 | AntumDeluge | CC-BY 3.0 | https://opengameart.org/content/horse-gallop-loop#gallop_01 | Lizenz erkannt (OpenGameArt) |
 | kandidaten/horse-gallop-loop-02.ogg | Horse Gallop Loop 02 | AntumDeluge | CC-BY 3.0 | https://opengameart.org/content/horse-gallop-loop#gallop_02 | Lizenz erkannt (OpenGameArt) |
 | kandidaten/horse-gallop-on-different-surfaces.mp3 | Horse gallop on different surfaces | medicinestorm | CC-BY 4.0 | https://opengameart.org/content/horse-gallop-on-different-surfaces | Lizenz erkannt (OpenGameArt) |
+| kandidaten/selbst-erzeugt-niederlage.ogg | Niederlage (Schleife) | Claude (selbst erzeugt) | CC0 | selbst erzeugt, Rezept im Abschnitt „Selbst erzeugte Töne“ | erzeugt 2026-10-23 (B-573) |
+| kandidaten/selbst-erzeugt-ui-select.ogg | UI-Klick Auswahl | Claude (selbst erzeugt) | CC0 | selbst erzeugt, Rezept im Abschnitt „Selbst erzeugte Töne“ | erzeugt 2026-10-23 (B-575) |
+| kandidaten/selbst-erzeugt-ui-confirm.ogg | UI-Klick Bestätigen | Claude (selbst erzeugt) | CC0 | selbst erzeugt, Rezept im Abschnitt „Selbst erzeugte Töne“ | erzeugt 2026-10-23 (B-575) |

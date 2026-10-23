@@ -1968,11 +1968,23 @@
       "id": "music:ende",
       "art": "sound",
       "kategorie": "musik",
-      "beschreibung": "Niederlage/Sieg",
+      "beschreibung": "Sieg",
       "bus": "music",
       "wahl": [
         {
           "datei": "audio/kandidaten/8-bit-victory-loop.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music:niederlage",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Niederlage (Burg gefallen)",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/selbst-erzeugt-niederlage.ogg"
         }
       ]
     },
@@ -2240,6 +2252,30 @@
         },
         {
           "datei": "audio/kandidaten/horse-gallop-on-different-surfaces.mp3"
+        }
+      ]
+    },
+    {
+      "id": "sfx:uiSelect",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "UI: Auswahl wechseln",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/selbst-erzeugt-ui-select.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:uiConfirm",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "UI: Bestätigen",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/selbst-erzeugt-ui-confirm.ogg"
         }
       ]
     }

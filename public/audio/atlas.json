@@ -65,8 +65,16 @@
       "start": 12.302,
       "duration": 0.24
     },
-    "sfx:warn": {
+    "sfx:uiConfirm": {
       "start": 12.693,
+      "duration": 0.238
+    },
+    "sfx:uiSelect": {
+      "start": 13.081,
+      "duration": 0.078
+    },
+    "sfx:warn": {
+      "start": 13.309,
       "duration": 1.48
     }
   }

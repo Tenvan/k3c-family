@@ -1,14 +1,14 @@
 # SO7 · CLI · Niederlage-Stück, Hufschlag, UI-Klicks und Skill-Sounds je Klasse
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** SND
 - **Domäne:** CLI
-- **Reife:** Entwurf
-- **Tickets:** B-573, B-574, B-575, B-576
+- **Reife:** bereit
+- **Tickets:** B-573, B-574, B-575
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-23, Revision 1
 
 ## Ausgangslage
 
@@ -47,7 +47,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 - **AC-01** Nach dem Fall der Burg spielt ein eigenes Stück (B-573/AC).
 - **AC-02** Reiten hat eine Hufschlag-Schleife je Spieler (B-574/AC).
 - **AC-03** Die Menü-Szenen haben UI-Klick-Töne (B-575/AC).
-- **AC-04** Jede Klasse hat einen eigenen Skill-Sound (B-576/AC).
+- **AC-04** Jede Klasse hat einen eigenen Skill-Sound (B-576/AC). Verschoben: braucht ein Skill-Ereignis oder Klassenfeld im Protokoll (B-576 bleibt offen).
 - **AC-05** Quellen und Lizenzen stehen in den Sound-Credits.
 
 ## Offene Fragen
@@ -58,10 +58,10 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| SO7.1 | `SO7.1-sounds-umsetzen.md` | Umsetzung | autonom | fertig |
 
 Stichpunkte (Reife Entwurf): SO7.1 Niederlage (AC-01); SO7.2 Hufschlag (AC-02); SO7.3 UI-Klicks (AC-03); SO7.4 Skill-Sounds (AC-04, AC-05); SO7.5 Review.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-10-23, Claude autonom: AC-01 bis AC-03 und AC-05 umgesetzt, geprüft mit Vitest und tsc. AC-04 verschoben (B-576). Hörprobe der selbst erzeugten Töne am TV bleibt bei 🧑.

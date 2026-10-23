@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
+import { playUi, uiSoundFor } from '../audio/ui';
 import { guideSeen } from '../core/guideSeen';
 import { loadSettings, saveSettings, type Settings } from '../core/settings';
 import { setLanguage, t } from '../core/texts';
@@ -111,6 +112,7 @@ export class OptionsScene extends Phaser.Scene {
 
   update(): void {
     const { dir, act, close } = this.poll();
+    playUi(uiSoundFor({ dir, side: act === 'left' || act === 'right' ? 1 : 0, confirm: act === 'confirm' || !!this.tapped })); // UI-Klick (B-575)
     this.selected = moveOption(this.selected, dir);
     let want: OptionDir | null = act;
     if (this.tapped) {
