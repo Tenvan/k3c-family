@@ -54,19 +54,6 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Passen die Stücke je Zustand?
+**Entscheidung 🧑 (KR4.1, 2026-10-23):** Auswahl bestätigt (Tabelle: Tag Happy Adventure, Abend The Old Tower Inn, Nacht Haunting Chiptune Loop, Kampf Pixel Sprinter, Tiefe/Höhle 8-Bit Cave Loop, Boss NES Shooter Boss, Lobby NES Shooter Map; Niederlage siehe B-555/B-573). Die übrigen Kandidaten bleiben vorerst liegen (Tag +5, Nacht +1, Kampf +2, Boss +1, Lobby +1, unter `public/audio/kandidaten/` und im Slot).
 
-| Zustand | Stück (Default) | Urheber | Lizenz |
-|---|---|---|---|
-| Tag | Happy Adventure (Loop) | TinyWorlds | CC0 |
-| Abend | [Chiptune] Medieval: The Old Tower Inn | RandomMind | CC0 |
-| Nacht | Haunting Chiptune Loop [Void Estate] | Zane Little Music | CC0 |
-| Kampf | Pixel Sprinter | Zane Little Music | CC0 |
-| Tiefe/Höhle | 8-Bit Cave Loop | Wolfgang_ | CC0 |
-| Boss | NES Shooter Music: Boss | SketchyLogic | CC0 |
-| Lobby | NES Shooter Music: Map | SketchyLogic | CC0 |
-| Niederlage/Sieg | still (B-555) | – | – |
-
-- **A (Default, gilt, umgesetzt):** wie Tabelle. Die übrigen Kandidaten (Tag +5, Nacht +1, Kampf +2, Boss +1, Lobby +1) bleiben unter `public/audio/kandidaten/` und im Slot, bis 🧑 bestätigt; SO4.3 hat sie bewusst **nicht** gelöscht (Auswahl noch nicht von 🧑).
-- **B:** anderes Stück je Zustand: 🧑 zieht es im Asset-Studio an Platz 1.
-- **Danach (A oder B):** Claude entfernt die nicht gewählten Musik-Kandidaten samt Credit-Zeilen (etwa 9 MB weniger), SO4.1 auf `fertig`. Zwei Stücke je Zustand (Q16 erlaubt 1–2) wären ein eigenes Ticket (Wechsel im Automaten).
+**Offen:** Aufräumen (Kandidaten samt Credit-Zeilen entfernen, ca. 9 MB, SO4.1 auf `fertig`) erst nach der Hörprobe SO4.5 und Freigabe durch 🧑. Dieses Ticket bleibt `eingeplant`, KR4.1 bleibt deshalb `offen`.

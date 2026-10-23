@@ -52,8 +52,10 @@ Wald `tree [6, 9]` → sichtbar dichter, Holz je Nacht steigt moderat.
 
 ## Offene Fragen
 
-Entscheidung D3 in B-540 (Sprint KR2): Werte und Büsche je Biom. Bis dahin keine Werteänderung.
+keine (Entscheidung D3 in B-540 gefallen, 2026-10-23).
 
 ## Notizen
 
 Geplant in GEB12.2 (2026-10-22): wird nach B-540 umgesetzt, Rang im Projekt GEB nach GEB12.
+
+**Werte 🧑 (KR2.1, 2026-10-23, B-540):** Wald `tree [6, 9]` statt `[4, 7]`, Höhle `bush [1, 3]`, Mine ohne Büsche. Umsetzung REG mit `task go:golden` (Begründung in den Commit) und `sim_test` für Holz.

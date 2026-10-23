@@ -48,5 +48,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Teilergebnis aus KR5.1 (Workshop 2026-10-23, Details dort); die Session bleibt `offen`.
+
+- **Dieb (B-560):** Ralf will die Dieb-Skills bauen (B-577), nicht das Preset anpassen. Das Preset bleibt bis dahin leer.
+- **Darstellung (B-561):** eigener Effekt je Skill (B-578); Ring je Klasse bleibt Rückfall.
+- **Offen:** AC-01 verlangt den nachgezogenen Regeltext (`docs/rules/monarch.md`); er folgt mit B-577.

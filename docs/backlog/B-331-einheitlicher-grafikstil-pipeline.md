@@ -94,3 +94,4 @@ statt einzeln von Hand.
   ihre Weltgröße und werden gröber, passen aber. `greentree.png` ist 10-fach hochskaliert und schrumpft auf 16 px.
   Das dunkle Violett von Gothicvania (Dach, Schatten) fällt in DB32 teils auf Grau-Braun, die Schatten von `house-a`
   verlieren Kontrast. Die Stil-Bibel braucht dafür eine Prüfung, ggf. Feinabstimmung je Asset.
+- **KR3.1 (🧑, 2026-10-23):** AC-01 erfüllt (B-548: Stil-Bibel gilt als Leitlinie). AC-04 als „Default: nicht umschalten“ abgeschlossen (B-549: Spiel lädt weiter die Quellgrafik, `public/grafik-db32/` bleibt Vorschau).

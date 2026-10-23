@@ -47,5 +47,9 @@ task test -- planning
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Teilergebnis (Workshop 2026-10-23 mit Ralf, Claude moderiert und protokolliert); die Session bleibt `offen`, weil B-539 (D2) erst nach GEB10.5 entschieden wird.
+
+- **AC-01 teilweise:** Sieben von acht Tickets tragen Ralfs Entscheidung. B-539 trägt die Entscheidung „erst nach GEB10.5“.
+- **AC-02 teilweise:** Bestätigt und `erledigt`: B-538 (A), B-541, B-543. Geändert und `erledigt` mit Verweis: B-540 (Werte in B-531: Wald `tree [6, 9]`, Höhle `bush [1, 3]`, Mine ohne Büsche), B-542 → B-568, B-544 → B-569, B-570, B-571, B-545 → B-572. Offen: B-539 (`eingeplant`), B-532 bleibt offen mit Prio niedrig.
+- **Neue Tickets (Projekt GEB):** B-568 (niedrige Plantagen-Pappel), B-569 (eigene Gebäudestufen, Umfang vor der Spec klären), B-570 (Camp-Stufen-Look), B-571 (Heilplatz deutlicher), B-572 (Gerüst immer bei `waitingWorker`).
+- **Abweichung:** Keine Eintragung in `docs/decisions/`, weil weder D1 C noch D2 Ja gewählt wurde.

@@ -76,4 +76,4 @@ BD7.1 (SIM) AC-01, BD7.2 (SIM) AC-02, AC-03, BD7.3 (CLI) AC-04, AC-05, BD7.4 Rev
 
 2026-10-22 (BD7.4, autonom): AC-01 bis AC-05 umgesetzt und geprüft (Ergebnisse BD7.1 bis BD7.3); Pause-Ablauf zusätzlich im Browser-Pane belegt (BD7.4). `task check` und `task check:go` grün, `task check:race` lokal übersprungen (kein C-Compiler, prüft die CI).
 Sprint-Review (Sonnet): abgenommen, keine schweren Befunde. Neues Ticket: B-535 (Entscheidung zur Prüfung durch 🧑: erneutes `pause` nach Wiederverbinden).
-Version: v0.21.1 vorgeschlagen (Patch: Fehlerbehebungen und Client-Anbindung einer vorhandenen Server-Funktion); gesetzt erst nach Bestätigung durch 🧑.
+Version: v0.21.0 gemeinsam mit BD3 als ein Release, kein eigenes v0.21.1 (Entscheidung 🧑 2026-10-23, B-536/B-567); der Tag wird erst beim Release durch 🧑 gesetzt.

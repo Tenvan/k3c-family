@@ -46,5 +46,7 @@ task test -- planning
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Teilergebnis, zusammen mit KR2.1 (Workshop 2026-10-23, Details dort); die Session bleibt `offen`, bis D2 (B-539) nach GEB10.5 entschieden ist.
+
+- **AC-01 teilweise:** D1 bis D8 tragen Ralfs Entscheidung; D2 lautet „erst nach GEB10.5“. `docs/decisions/` unverändert (D1 = A, D2 nicht Ja).
+- **Neue Tickets:** B-568, B-569, B-570, B-571, B-572; B-531 trägt die Werte von D3.

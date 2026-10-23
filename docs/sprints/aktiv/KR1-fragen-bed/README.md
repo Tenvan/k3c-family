@@ -68,7 +68,7 @@ keine (die Fragen sind der Inhalt der Tickets und blockieren die Freigabe nicht,
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| KR1.1 | `KR1.1-fragen-bed.md` | Workshop | Mensch | offen |
+| KR1.1 | `KR1.1-fragen-bed.md` | Workshop | Mensch | fertig |
 
 ## Abnahme
 

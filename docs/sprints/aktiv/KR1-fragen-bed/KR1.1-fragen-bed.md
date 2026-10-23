@@ -1,6 +1,6 @@
 # KR1.1 · Workshop: kritische Fragen zu BED entscheiden (🧑)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** REG
@@ -46,5 +46,8 @@ task test -- planning
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft:** Alle zehn Tickets (B-525 bis B-529, B-533 bis B-537) tragen unter Notizen Ralfs Entscheidung vom 2026-10-23 (Workshop mit Ralf, Claude moderiert und protokolliert).
+- **AC-02 geprüft:** Acht Tickets bestätigt (B-525, B-526, B-527, B-528, B-529, B-533, B-535, B-537), alle `erledigt`. Zwei geändert und `erledigt` mit Verweis: B-534 → B-566 (Welt-Auswahl in der Lobby, Alternative A), B-536 → B-567 (BD3 und BD7 als ein Release v0.21.0, Alternative A; Vermerk in den Sprint-READMEs ist nachgetragen, B-567 `erledigt`).
+- **Abweichungen:** B-534 trug irrtümlich die Offene Frage von B-537 (Hinweis in B-534 › Notizen). Nur B-566 bleibt offen (Spec Entwurf, Projekt BED).
+- **Offen für Ralf:** Die Geräte-Abnahmen BD4.4 und BD5.4 bleiben in ihren Sprints; B-526 wird dort am Gerät geprüft.
+- **Hinweis:** v0.21.0 ist in den Abnahmen von TS1, WZ18 und WZ14 ebenfalls vorgeschlagen; Ralf vergibt die Versionsnummern beim Release.

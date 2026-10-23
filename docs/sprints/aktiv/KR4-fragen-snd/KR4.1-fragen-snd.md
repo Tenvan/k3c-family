@@ -46,5 +46,9 @@ task test -- planning
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Teilergebnis (Workshop 2026-10-23 mit Ralf, Claude moderiert und protokolliert); die Session bleibt `offen`, weil das Aufräumen der Musik-Kandidaten (B-554) erst nach der Hörprobe SO4.5 freigegeben wird.
+
+- **AC-01 geprüft:** Alle fünf Tickets (B-554 bis B-558) tragen Ralfs Entscheidung unter Notizen.
+- **AC-02 teilweise:** Bestätigt und `erledigt`: B-556 (A), B-557 (A, Atlas bleibt). Geändert und `erledigt` mit Verweis: B-555 (C → B-573, eigenes Niederlage-Stück), B-558 (Zuordnung A bestätigt; Reiten → B-574, UI-Klicks → B-575, Skill je Klasse → B-576). Offen: B-554 (Auswahl bestätigt, Kandidaten bleiben bis SO4.5, `eingeplant`).
+- **Neue Tickets (Projekt SND):** B-573, B-574, B-575, B-576 (alle CLI, Spec Entwurf).
+- **Offen für Ralf:** Hörproben SO4.5 und SO6.6 am TV, danach Freigabe zum Entfernen der Kandidaten.

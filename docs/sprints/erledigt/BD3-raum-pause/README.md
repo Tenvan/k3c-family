@@ -67,4 +67,4 @@ Der Schutz braucht ein Laufzeit-Feld in der Simulation; dafür kam beim Aktivier
 
 2026-10-22 (BD3.4, autonom): AC-01 und AC-02 umgesetzt und per Go-Test geprüft (BD3.2, BD3.3), AC-03 umgesetzt (BD3.1, Protokoll v8, Beispiele `c2s-pause.json`, `c2s-resume.json`). `task check` und `task check:go` grün; `task check:race` lokal übersprungen (kein C-Compiler), prüft die CI.
 Behobene Befunde: Eingaben aus der Pause verfallen bei resume, Frist steht in der Dev-Pause. Sprint-Review (Opus): abgenommen. Neue Tickets: B-528, B-529 (Entscheidungen zur Prüfung durch 🧑), B-530 (wartende Monarchen nicht unverwundbar).
-Version: v0.21.0 vorgeschlagen (Minor: neue Server-Funktion und Protokoll v8); gesetzt erst nach Bestätigung durch 🧑.
+Version: v0.21.0 gemeinsam mit BD7 als ein Release (Entscheidung 🧑 2026-10-23, B-536/B-567; Minor: neue Server-Funktion und Protokoll v8); der Tag wird erst beim Release durch 🧑 gesetzt.

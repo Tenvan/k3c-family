@@ -426,6 +426,156 @@ export namespace main {
 		    return a;
 		}
 	}
+	export class ResGauge {
+	    name: string;
+	    bytes: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new ResGauge(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.bytes = source["bytes"];
+	    }
+	}
+	export class ResOp {
+	    name: string;
+	    calls: number;
+	    totalMs: number;
+	    maxMs: number;
+	    alloc: number;
+	    maxAlloc: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new ResOp(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.calls = source["calls"];
+	        this.totalMs = source["totalMs"];
+	        this.maxMs = source["maxMs"];
+	        this.alloc = source["alloc"];
+	        this.maxAlloc = source["maxAlloc"];
+	    }
+	}
+	export class ResPoint {
+	    t: number;
+	    heapLive: number;
+	    total: number;
+	    private: number;
+	    rss: number;
+	    childrenRss: number;
+	    children: number;
+	    goroutines: number;
+	    handles: number;
+	    gaugeValues: number[];
+	    gcCycles: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new ResPoint(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.t = source["t"];
+	        this.heapLive = source["heapLive"];
+	        this.total = source["total"];
+	        this.private = source["private"];
+	        this.rss = source["rss"];
+	        this.childrenRss = source["childrenRss"];
+	        this.children = source["children"];
+	        this.goroutines = source["goroutines"];
+	        this.handles = source["handles"];
+	        this.gaugeValues = source["gaugeValues"];
+	        this.gcCycles = source["gcCycles"];
+	    }
+	}
+	export class ResProc {
+	    name: string;
+	    pid: number;
+	    rss: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new ResProc(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.pid = source["pid"];
+	        this.rss = source["rss"];
+	    }
+	}
+	export class ResTrend {
+	    name: string;
+	    bytes: boolean;
+	    perHour: number;
+	    windowMin: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new ResTrend(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.bytes = source["bytes"];
+	        this.perHour = source["perHour"];
+	        this.windowMin = source["windowMin"];
+	    }
+	}
+	export class ResourceView {
+	    enabled: boolean;
+	    started: number;
+	    intervalS: number;
+	    windowMin: number;
+	    points: ResPoint[];
+	    gauges: ResGauge[];
+	    ops: ResOp[];
+	    trends: ResTrend[];
+	    children: ResProc[];
+	    profiles: string[];
+	
+	    static createFrom(source: any = {}) {
+	        return new ResourceView(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.enabled = source["enabled"];
+	        this.started = source["started"];
+	        this.intervalS = source["intervalS"];
+	        this.windowMin = source["windowMin"];
+	        this.points = this.convertValues(source["points"], ResPoint);
+	        this.gauges = this.convertValues(source["gauges"], ResGauge);
+	        this.ops = this.convertValues(source["ops"], ResOp);
+	        this.trends = this.convertValues(source["trends"], ResTrend);
+	        this.children = this.convertValues(source["children"], ResProc);
+	        this.profiles = source["profiles"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class ServicesView {
 	    services: services.Status[];
 	    error: string;

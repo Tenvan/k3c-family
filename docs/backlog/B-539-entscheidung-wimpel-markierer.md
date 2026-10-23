@@ -56,6 +56,4 @@ Siehe Notizen.
 
 **Frage:** Lohnt die Protokolländerung `markedBy`, oder reicht die Annäherung?
 
-- **Default (gilt):** Annäherung bleibt; Entscheidung nach der Abnahme GEB10.5 (zwei Spieler am Gerät). B-532 bleibt offen mit Prio niedrig.
-- **Alternative:** B-532 jetzt einplanen (SIM + SRV-Protokoll + CLI, eigene Sessions).
-- **Wenn 🧑 Ja sagt:** B-532 wird Sprint im Projekt GEB; bei Nein wird B-532 verworfen.
+**Entscheidung 🧑 (KR2.1, 2026-10-23):** Default gilt, die Entscheidung fällt nach der Abnahme GEB10.5 (zwei Spieler am Gerät). Die Annäherung bleibt bis dahin, B-532 bleibt offen mit Prio niedrig. Dieses Ticket bleibt `eingeplant`, KR2.1 bleibt deshalb offen. Danach: B-532 zum Sprint im Projekt GEB (Ja) oder verwerfen (Nein).
