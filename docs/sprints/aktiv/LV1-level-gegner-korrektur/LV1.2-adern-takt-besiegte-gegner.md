@@ -1,6 +1,6 @@
 # LV1.2 · Adern-Takt und besiegte Gegner
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -52,5 +52,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-04 (B-189/AC-01) geprüft:** `stepEnemies` überspringt Gegner mit `HP <= 0` (kein Fliehen, keine Bewegung), die Portal-Schleife entfernt nur lebende; `removeDeadEnemies` rechnet ab. Tests `TestEventsKillMitGold` (toter Goblin direkt am Portal → `kill` + Münzen) und `TestFluechtenderGoblinVerschwindetImPortal` (lebender → verschwindet ohne `kill`, Gold mit) grün. Golden-Läufe unverändert grün (kein Golden-Commit nötig).
+- **AC-03 (B-200/AC-02, AC-03) geprüft:** `TestAggressionspoolMitAdernNichtVorVierMinuten`: 2 Adern mit je 2 Bauern (geprüft per `veinWorkers`), keine Kills, Maximum je Tick → 20 % aus Lieferungen in 4 min, mit Grundwert 24 % < 100 %. Keine Wertänderung in `data/`.
+- **B-200/AC-01 verschoben:** `sim_test` kennt kein Szenario „Adern besetzt“; Messung über 100 Seeds als B-565.
+- Review (Sonnet): zwei mittlere Befunde zum Adern-Test (Besetzung nicht geprüft, Pool-Reset bei 100 verdeckt) behoben.
+- `task check:diff`: einziger roter Test `src/core/clientLog.test.ts` (Timeout 5 s unter Last), einzeln grün.

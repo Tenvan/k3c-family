@@ -66,7 +66,7 @@ Vorentschieden (autonom, Claude, 2026-10-23), Bestätigung durch 🧑 über KR6:
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | LV1.1 | `LV1.1-lava-camps.md` | Umsetzung | autonom | fertig |
-| LV1.2 | `LV1.2-adern-takt-besiegte-gegner.md` | Umsetzung | autonom | offen |
+| LV1.2 | `LV1.2-adern-takt-besiegte-gegner.md` | Umsetzung | autonom | fertig |
 | LV1.3 | `LV1.3-ereignis-ort-schutzplatz.md` | Umsetzung | autonom | offen |
 | LV1.4 | `LV1.4-review.md` | Review | autonom | offen |
 
