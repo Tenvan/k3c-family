@@ -1,6 +1,9 @@
 package sim
 
-import "math"
+import (
+	"math"
+	"slices"
+)
 
 // Eigene Truppen (Port von src/world/sim/units.ts):
 //   - Landstreicher wandern um ihr Camp, bis ein Monarch sie mit einer Münze rekrutiert.
@@ -86,7 +89,7 @@ func stepPeasant(w *World, t *Troop, dt float64) {
 	}
 	if t.Job == nil {
 		if danger {
-			walkTo(t, w.HubX+float64(t.ID%5-2), dt)
+			walkTo(t, shelterX(w, t), dt)
 		} else {
 			wander(w, t, w.HubX, hub.HomeRadiusUnits, dt)
 		}
@@ -104,6 +107,13 @@ func stepPeasant(w *World, t *Troop, dt float64) {
 	case "carry":
 		carry(w, t, dt)
 	}
+}
+
+// shelterX: Schutzplatz bei Gefahr, über 5 Plätze um den Hub gestreut. Maßgeblich ist der Index der Truppe in
+// w.Troops, nicht ihre Entity-ID: Neue Bauplätze oder andere Entities verschieben so keine Schutzplätze (B-260).
+func shelterX(w *World, t *Troop) float64 {
+	// Suche nur bei Gefahr und ohne Auftrag; bei wenigen Dutzend Truppen billiger als ein durchgereichter Index.
+	return w.HubX + float64(max(0, slices.Index(w.Troops, t))%5-2)
 }
 
 // leaveOnDanger: Sammeln, Reparatur, Ausbau und jeder Auftrag an einem Vorposten (building_outpost.go) bleiben bei
@@ -136,7 +146,7 @@ func build(w *World, t *Troop, dt float64) {
 	} else if site.BuildProgress >= 1 {
 		site.State, site.BuildProgress, site.HP, site.MaxHP, site.WorkerID = "built", 1, b.HP, b.HP, nil
 		t.Job = nil
-		w.Events = append(w.Events, Event{"type": "built", "kind": site.Kind})
+		w.Events = append(w.Events, Event{"type": "built", "kind": site.Kind, "x": unitX(site.X)})
 	}
 }
 

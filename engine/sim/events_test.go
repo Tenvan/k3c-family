@@ -103,7 +103,7 @@ func TestEventsKillMitGold(t *testing.T) {
 	w := quietWorld(t)
 	e := spawnEnemy(w, "goblin", w.HubX-20)
 	e.HP, e.CarriedGold = 0, 3
-	e.HomeX = e.X - 50 // sonst verschwindet der „flüchtende“ tote Goblin im Portal (B-189)
+	e.HomeX = e.X + 0.1 // direkt am Portal: der tote Goblin zählt trotzdem als besiegt (B-189/AC-01)
 	coins := len(w.Coins)
 	kills := eventsOf(w, "kill", 1, nil)
 	if len(kills) != 1 {
@@ -298,5 +298,20 @@ func TestEventsObergrenzePrioritaet(t *testing.T) {
 	capEvents(w)
 	if w.EventsDropped != 0 || len(w.Events) != 1 {
 		t.Fatalf("unter K: %d verworfen", w.EventsDropped)
+	}
+}
+
+// B-189/AC-01: Ein lebender flüchtender Goblin am Portal verschwindet ohne kill (mitsamt geklautem Gold).
+func TestFluechtenderGoblinVerschwindetImPortal(t *testing.T) {
+	w := quietWorld(t)
+	e := spawnEnemy(w, "goblin", w.HubX-20)
+	e.HP, e.Fleeing, e.CarriedGold = e.MaxHP/4, true, 3
+	e.HomeX = e.X + 0.1
+	coins := len(w.Coins)
+	if kills := eventsOf(w, "kill", 1, nil); len(kills) != 0 {
+		t.Fatalf("kill für geflohenen Goblin: %v", kills)
+	}
+	if len(w.Enemies) != 0 || len(w.Coins) != coins {
+		t.Fatalf("Goblin %d, Münzen %d statt %d", len(w.Enemies), len(w.Coins), coins)
 	}
 }

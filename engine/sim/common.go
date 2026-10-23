@@ -171,7 +171,7 @@ func damagePlayer(w *World, p *Player, damage float64, cause string) {
 		if cause == "" {
 			cause = causeOther
 		}
-		w.Events = append(w.Events, Event{"type": "playerDown", "player": p.Index, "cause": cause})
+		w.Events = append(w.Events, Event{"type": "playerDown", "player": p.Index, "cause": cause, "x": unitX(p.X)})
 	}
 }
 

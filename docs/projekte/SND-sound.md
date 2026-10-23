@@ -18,7 +18,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | SO3 | Hörprobenseite `soundtest.html` | erledigt |
 | SO2 | SFX-Katalog und Einbau | aktiv |
 | SO4 | Musik je Zustand | aktiv |
-| SO6 | Sound-Credits auf der Credits-Seite, Sound-Atlas und Sounds für die übrigen Ereignisse | geplant |
+| SO6 | Sound-Credits auf der Credits-Seite, Sound-Atlas und Sounds für die übrigen Ereignisse | aktiv |
 
 ## Nicht-Ziele
 

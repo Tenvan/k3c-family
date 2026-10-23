@@ -114,6 +114,9 @@ func checkWartegrundUndBeruf(t *testing.T, s map[string]any) {
 func TestWirtschaftDelta(t *testing.T) {
 	_, w := wirtschaftsInsel(t)
 	w.Cycle.Phase, w.Enemies, w.Events = "day", nil, []sim.Event{}
+	for _, p := range w.Players { // fern der Burg: der Tageswechsel ändert sonst respec in der Aktionsliste (B-495)
+		p.X = w.Castle.X + 1000
+	}
 	prev := stateOf(w, 0, false)
 	w.Stock.Stone += 5
 	w.Cycle.Phase = "night"

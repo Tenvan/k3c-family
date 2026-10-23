@@ -31,6 +31,7 @@ import { hurtSeat, rumblePad, runEffect, shakeCell } from './effects/effectRules
 import { DEV_FOCUS_KEY, muteFocused } from './debug/debugOverlayPanel';
 import { pauseButton } from './hud/pauseButton';
 import { SkillMenus } from './hud/skillMenuLogic';
+import { SkillCasts } from './effects/skillCasts';
 
 /** Ein Overlay pro Seite, auch über Szenen-Neustarts hinweg */
 let sharedTouch: TouchInput | undefined;
@@ -63,6 +64,7 @@ export class GameScene extends Phaser.Scene {
   /** Geladene Stufen nach Tiefe; mit dem heutigen Protokoll (B-176 offen) nur die Stufe von `client.level` */
   private stages = new Map<number, StageView>();
   private readonly buildSpots: BuildSpots = new Map();
+  private readonly skillCasts = new SkillCasts(); // Skill-Ringe aus dem Zustand (SK2.3)
   private lastFlashAt: number | null = null;
   private rumbleWarned = false;
   private holders: Phaser.GameObjects.Layer[] = [];
@@ -116,9 +118,11 @@ export class GameScene extends Phaser.Scene {
     this.slots = new LocalSlots<PlayerInput>(data.mock, pageBots()); // Bots (`?botfeed`) sind fest an ihre Slots gebunden
     this.world_ = undefined;
     musicDirector().reset();
+    audioCore().onHubLevel(undefined); // neues Spiel: Hub-Stufe vergessen, kein Ausbau-Ton beim ersten Snapshot
     this.stages = new Map(); // die Szene hat ihre Ebenen beim Neustart schon zerstört
     this.holders = [];
     this.buildSpots.clear();
+    this.skillCasts.reset();
     this.level = null;
     this.timeline = new Timeline(1000 / data.client.tickHz);
     this.predictor = new Predictor(1000 / data.client.tickHz);
@@ -282,6 +286,7 @@ export class GameScene extends Phaser.Scene {
       this.timeline = new Timeline(1000 / this.client.tickHz); // Puffer leeren
       this.predictor = new Predictor(1000 / this.client.tickHz);
       this.cur = null;
+      this.skillCasts.reset(); // andere Stufe oder neue Verbindung: kein Ring aus dem Vergleich mit dem alten Stand
     }
     for (const frame of this.client.takeFrames()) {
       this.timeline.push(frame);
@@ -289,7 +294,9 @@ export class GameScene extends Phaser.Scene {
       this.cur = frame;
       this.pendingEvents.push(...frame.state.events);
       if (this.world_) musicDirector().update(musicViewOf(this.world_), frame.state.events); // Musik: Ereignisse wie castleFallen
+      audioCore().onHubLevel(this.world_?.hubLevel); // Hub-Ausbau-Ton (SO6.4)
       this.spawnEffects(frame.state.events);
+      for (const fx of this.skillCasts.diff(frame.state.players)) this.stages.get(this.level?.depth ?? -1)?.spawn(fx); // Skill-Ringe (SK2.3)
     }
   }
 

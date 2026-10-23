@@ -81,6 +81,9 @@ type target struct {
 
 func stepEnemies(w *World, dt float64) {
 	for _, e := range w.Enemies {
+		if e.HP <= 0 {
+			continue // besiegt: flieht nicht, bewegt sich nicht, removeDeadEnemies rechnet ab (B-189)
+		}
 		e.Cooldown, e.AoeIn = math.Max(0, e.Cooldown-dt), math.Max(0, e.AoeIn-dt)
 		if stunned(e, dt) {
 			continue
@@ -111,10 +114,14 @@ func stepEnemies(w *World, dt float64) {
 			advance(w, e, dir, wall, speed*dt)
 		}
 	}
-	// Geflohene Gegner verschwinden im Portal (mitsamt geklautem Gold).
+	leaveThroughPortal(w)
+}
+
+// leaveThroughPortal: Geflohene lebende Gegner verschwinden im Portal (mitsamt geklautem Gold); besiegte nie (B-189).
+func leaveThroughPortal(w *World) {
 	kept := w.Enemies[:0]
 	for _, e := range w.Enemies {
-		if !(e.Fleeing && math.Abs(e.X-e.HomeX) < 0.3) {
+		if e.HP <= 0 || !(e.Fleeing && math.Abs(e.X-e.HomeX) < 0.3) {
 			kept = append(kept, e)
 		}
 	}

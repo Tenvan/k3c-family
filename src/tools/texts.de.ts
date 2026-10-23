@@ -297,7 +297,7 @@ export const de = {
   'lic.h.graphics': 'Grafiken',
   'lic.graphics':
     'Alle Figuren im Spiel stammen von talentierten Pixel-Künstler:innen, die ihre Arbeit der Allgemeinheit schenken. Ohne sie gäbe es dieses Spiel in dieser Form nicht. <strong>Vielen herzlichen Dank!</strong> Jede Figur wurde von uns zugeschnitten, teils gespiegelt, zu Streifen zusammengesetzt oder eingefärbt.',
-  'lic.creditsNote': 'Die Einträge stehen in <code>public/grafik/CREDITS.md</code> und <code>public/sprites/CREDITS.md</code>; diese Seite liest sie von dort.',
+  'lic.creditsNote': 'Die Einträge stehen in <code>public/grafik/CREDITS.md</code>, <code>public/sprites/CREDITS.md</code> und (Sounds) <code>public/audio/README.md</code>; diese Seite liest sie von dort.',
   'lic.h.mounts': 'Hinweise zu Reittieren (CC BY 3.0, Namensnennung Pflicht)',
   'lic.mounts':
     'Pferde, Einhorn, Pegasus, Hirsch, Elefant und Wölfe sind unter <a href="https://creativecommons.org/licenses/by/3.0/deed.de" target="_blank" rel="noopener">Creative Commons Namensnennung 3.0</a> lizenziert. Wir nutzen sie ausschließlich unter CC BY 3.0 (nicht unter den dort ebenfalls angebotenen GPL-Varianten). Änderungen durch uns: aus den Sheets herausgeschnitten, auf Blickrichtung rechts gebracht, zugeschnitten, teils eingefärbt; darauf sitzt im Spiel ein Reiter.',

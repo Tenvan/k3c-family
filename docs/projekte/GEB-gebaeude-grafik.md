@@ -25,7 +25,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | GEB9 | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | aktiv |
 | GEB10 | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | aktiv |
 | GEB11 | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | aktiv |
-| GEB12 | Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte) | geplant |
+| GEB12 | Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte) | aktiv |
 
 ## Nicht-Ziele
 

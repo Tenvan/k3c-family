@@ -12,31 +12,29 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Die Regel zum Feuergeist passt zur Simulation: bis zur Entscheidung von 🧑 ohne Flammen-Fläche, in `docs/rules/gegner.md` vermerkt.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+`docs/rules/gegner.md` § 1 nennt „Fernkampf mit Flammen-Fläche“, `data/enemies.json` › Feuergeist hat `ranged` + `kiting`. Default KB1 › Offene Fragen: Regel anpassen statt neue Mechanik.
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-
-- `pfad/…`
+- `docs/rules/gegner.md`
+- `docs/sprints/`, `docs/backlog/`
 
 ## Nicht-Ziele
 
-Was in dieser Session ausdrücklich **nicht** passiert.
+Neue Mechanik Bodenfläche für Gegner, Werte.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Vermerk in `docs/rules/gegner.md` § 1 mit Verweis auf B-328.
+2. Frage-Ticket in KR6.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-04 (B-328/AC-01): Regel angepasst, Entscheidung offen bei 🧑 (KR6).
 
 ## Prüfen
 

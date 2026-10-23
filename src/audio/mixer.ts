@@ -18,6 +18,8 @@ export interface GainNodeLike {
     /** Nur der Browser-Gain kennt Kurven; Test-Doppelgänger dürfen sie weglassen. */
     setValueCurveAtTime?(curve: Float32Array, startTime: number, duration: number): void;
     cancelScheduledValues?(startTime: number): void;
+    setValueAtTime?(value: number, startTime: number): void;
+    linearRampToValueAtTime?(value: number, endTime: number): void;
   };
   connect(target: unknown): unknown;
 }

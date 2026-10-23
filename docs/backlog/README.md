@@ -16,7 +16,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | eingeplant | RG2 | Tiefe 3 und 4 sind beschrieben |
 | [B-041](B-041-wails-starter.md) | DEV | Idee | niedrig | eingeplant | BT1 | Wails-Starter für Windows existiert |
 | [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | HW1 | Pi-Modell und Leistungsziel sind festgelegt |
-| [B-080](B-080-dev-tasten-server.md) | SRV | Idee | niedrig | eingeplant | KB2 | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
 | [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | HW1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
 | [B-098](B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | eingeplant | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | eingeplant | BAL6 | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
@@ -33,15 +32,12 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-168](B-168-musik-je-zustand.md) | CLI | Idee | hoch | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
 | [B-250](B-250-audiokern-datei-wiedergabe.md) | CLI | Schuld | hoch | eingeplant | SO4 | Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn |
 | [B-272](B-272-rotation-session-reports.md) | SRV | Schuld | mittel | eingeplant | ST1 | Die Rotation in reports/ erfasst auch die Spielmetrik-Reports |
-| [B-260](B-260-schutzplatz-ohne-id.md) | SIM | Schuld | niedrig | eingeplant | LV1 | Der Schutzplatz einer Truppe hängt nicht an ihrer Entity-ID |
-| [B-262](B-262-camps-nahe-portalen.md) | SIM | Frage | mittel | eingeplant | LV1 | Camps liegen nach dem Abstand zu den Linien nicht zu nah an den Portalen |
 | [B-263](B-263-snapshot-groesse-plaetze.md) | SRV | Problem | niedrig | eingeplant | NT1 | Der Welt-Snapshot bleibt mit 39 Plätzen je Stufe im Budget |
 | [B-251](B-251-figuren-ganzzahlig-skalieren.md) | CLI | Schuld | hoch | eingeplant | GR7 | Figuren werden ganzzahlig skaliert und flimmern nicht |
 | [B-184](B-184-pages-screenshots.md) | PLAT | Idee | niedrig | eingeplant | PG1 | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
 | [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | eingeplant | RG2 | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
 | [B-186](B-186-autospeichern-takt.md) | SRV | Idee | mittel | eingeplant | ST1 | Der Server speichert alle 60 s und bei Tagesanbruch, das HUD zeigt „gesichert“ |
 | [B-187](B-187-speichern-windows-rename.md) | SRV | Problem | mittel | eingeplant | ST1 | Speichern übersteht unter Windows eine kurz gesperrte Zieldatei |
-| [B-189](B-189-toter-gegner-flieht-ins-portal.md) | SIM | Problem | mittel | eingeplant | LV1 | Ein besiegter Gegner verschwindet nicht im Portal, sondern lässt sein Gold fallen |
 | [B-190](B-190-events-dropped-im-protokoll.md) | SRV | Problem | niedrig | eingeplant | NT1 | Der Client erfährt zuverlässig, wie viele Ereignisse verworfen wurden |
 | [B-191](B-191-debug-overlay-links-unten.md) | CLI | Problem | mittel | eingeplant | U5 | Debug-Overlay und Aktionsliste verdecken das HUD nicht |
 | [B-193](B-193-figuren-luecken-suche.md) | CLI | Idee | hoch | eingeplant | GR7 | Figuren-Lücken unter public/sprites/ haben Kandidaten und eine Auswahl |
@@ -49,22 +45,18 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-195](B-195-debug-overlay-xbox.md) | PLAT | Problem | mittel | eingeplant | PL1 | Das Debug-Overlay lässt sich auf der Xbox öffnen |
 | [B-157](archiv/B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | erledigt | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
 | [B-159](archiv/B-159-replay-repro-format.md) | SIM | Idee | mittel | erledigt | BAL1 | Ein Lauf ist als Datei aus Seed und Eingaben wiederholbar |
-| [B-200](B-200-aggressionspool-adern.md) | SIM | Problem | mittel | eingeplant | LV1 | Der Aggressionspool unter Tage bleibt auch mit Adern im Wellen-Korridor |
 | [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | eingeplant | RG2 | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
 | [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | eingeplant | W11 | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
 | [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | eingeplant | W11 | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
 | [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | eingeplant | RG1 | Burg hält Nacht 1–5 nur in 47 % der Seeds, Ziel 75–90 % |
-| [B-217](B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | eingeplant | LV1 | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | eingeplant | RG2 | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
 | [B-218](B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | hoch | eingeplant | SO4 | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
 | [B-274](B-274-testrestore-flackert-windows.md) | SRV | Problem | mittel | eingeplant | NT1 | TestRestore läuft unter Windows auch in task check:all stabil grün |
 | [B-280](B-280-warteschlange-nicht-zustaende.md) | SRV | Problem | niedrig | eingeplant | NT1 | Die Warteschlange einer Verbindung läuft nicht voll, wenn andere Nachrichten zwischen Zuständen stehen |
 | [B-284](B-284-lasttest-eingaben-flake.md) | DEV | Problem | niedrig | eingeplant | NT1 | TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft |
-| [B-285](B-285-lernbare-skills-im-protokoll.md) | SRV | Problem | mittel | eingeplant | RM1 | Der Server nennt je Spieler die lernbaren Skills |
 | [B-286](B-286-lasttest-tick-reihe-wackelt.md) | SRV | Problem | niedrig | eingeplant | NT1 | TestTickReiheJeRaum schlägt im Gesamtlauf gelegentlich fehl |
 | [B-287](B-287-hub-ausbau-beutel-maximum.md) | REG | Problem | mittel | eingeplant | RG1 | Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar |
 | [B-289](B-289-aggressionspool-mit-adern.md) | REG | Problem | mittel | eingeplant | RG1 | Der Aggressionspool steigt mit Adern nicht zu schnell |
-| [B-291](B-291-lava-nicht-auf-mauerlinien.md) | SIM | Problem | mittel | eingeplant | LV1 | Lava liegt nicht auf den Mauerlinien |
 | [B-293](B-293-spiel-im-menue-verlassen.md) | CLI | Idee | hoch | eingeplant | S8 | Das Spielmenü hat neben „Weiter“ einen Eintrag „Spiel verlassen“ |
 | [B-294](B-294-hinweis-glyph-muenze-nacht.md) | CLI | Frage | mittel | eingeplant | S8 | Münze und „Nacht naht“ zeigen in der geführten ersten Nacht keine Glyph |
 | [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | eingeplant | RG2 | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
@@ -136,7 +128,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-492](B-492-sfx-luecken-weitere-ereignisse.md) | CLI | Idee | mittel | eingeplant | SO6 | Weitere Ereignisse bekommen eigene Sound-Slots und Sounds |
 | [B-493](B-493-credits-seite-audio.md) | PLAT | Idee | hoch | eingeplant | SO6 | Die Credits-Seite zeigt auch die Sounds unter public/audio |
 | [B-494](B-494-sound-atlas-werkzeug.md) | INF | Idee | niedrig | eingeplant | SO6 | Ein Werkzeug packt die gewählten Sounds in einen Sound-Atlas |
-| [B-495](B-495-respec-in-aktionsliste.md) | SRV | Schuld | niedrig | eingeplant | RM1 | Die Aktionsliste nennt respec, wenn CanRespec erlaubt |
 | [B-496](B-496-studio-fensterposition-merken.md) | DEV | Idee | mittel | offen | – | Das Asset-Studio merkt sich Fensterposition und Größe und stellt sie sicher wieder her |
 | [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
 | [B-503](B-503-monarch-skill-darstellung.md) | CLI | Idee | niedrig | eingeplant | SK2 | Die 24 Monarch-Skills haben eine Darstellung im Spiel |
@@ -149,16 +140,46 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-521](B-521-types-ts-aufteilen.md) | CLI | Schuld | niedrig | offen | – | src/model/types.ts liegt über der Dateigrenze von 400 Zeilen |
 | [B-522](B-522-ressourcen-auf-ruine.md) | SIM | Problem | mittel | offen | – | Zufalls-Ressourcen eines geplanten Chunks können auf seiner Ruine liegen |
 | [B-523](B-523-ruine-kollision-hub-platz.md) | SIM | Schuld | niedrig | offen | – | Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt |
-| [B-525](B-525-entscheidung-goldtopf.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Wortlaut und Symbol des Goldtopfs in der Spielerkarte |
-| [B-526](B-526-entscheidung-hintergrund-hoehe.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Hintergrund-Höhe je Biom gegen WORLD_TOP |
-| [B-527](B-527-entscheidung-abmelden-tastatur.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Abmelden mit zwei Tastatur-Spielern und Ziel per Auswahl |
-| [B-528](B-528-entscheidung-pause-regeldetails.md) | SRV | Frage | mittel | offen | – | Entscheidung: Regeldetails der Raum-Pause (Couch-Raum, Schutz, Frist) |
-| [B-529](B-529-entscheidung-pause-protokoll.md) | SRV | Frage | mittel | offen | – | Entscheidung: Protokoll v8 für pause/resume ohne Rückmeldung im Zustand |
-| [B-533](B-533-entscheidung-spielstand-loeschen.md) | SRV | Frage | mittel | offen | – | Entscheidung: Spielstand löschen per HTTP ohne Token, Stand bleibt als Sicherung |
-| [B-534](B-534-entscheidung-spielmenue-lobby.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Spielmenü ist die Lobby, neuer Spielstand ohne Welt-Auswahl |
+| [B-525](B-525-entscheidung-goldtopf.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Wortlaut und Symbol des Goldtopfs in der Spielerkarte |
+| [B-526](B-526-entscheidung-hintergrund-hoehe.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Hintergrund-Höhe je Biom gegen WORLD_TOP |
+| [B-527](B-527-entscheidung-abmelden-tastatur.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Abmelden mit zwei Tastatur-Spielern und Ziel per Auswahl |
+| [B-528](B-528-entscheidung-pause-regeldetails.md) | SRV | Frage | mittel | eingeplant | KR1 | Entscheidung: Regeldetails der Raum-Pause (Couch-Raum, Schutz, Frist) |
+| [B-529](B-529-entscheidung-pause-protokoll.md) | SRV | Frage | mittel | eingeplant | KR1 | Entscheidung: Protokoll v8 für pause/resume ohne Rückmeldung im Zustand |
+| [B-533](B-533-entscheidung-spielstand-loeschen.md) | SRV | Frage | mittel | eingeplant | KR1 | Entscheidung: Spielstand löschen per HTTP ohne Token, Stand bleibt als Sicherung |
+| [B-534](B-534-entscheidung-spielmenue-lobby.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Spielmenü ist die Lobby, neuer Spielstand ohne Welt-Auswahl |
 | [B-531](B-531-wald-dichter-hoehle-bueesche.md) | REG | Idee | mittel | offen | – | Wald hat mehr Bäume je Abschnitt, Höhle bekommt Deko-Büsche |
 | [B-532](B-532-snapshot-markiert-von.md) | SIM | Idee | niedrig | offen | – | Snapshot nennt, wer einen Knoten markiert hat |
-| [B-535](B-535-entscheidung-pause-nach-wiederverbinden.md) | CLI | Frage | niedrig | offen | – | Entscheidung: Pause nach Wiederverbinden erneut senden, Schutz beginnt neu |
+| [B-535](B-535-entscheidung-pause-nach-wiederverbinden.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Pause nach Wiederverbinden erneut senden, Schutz beginnt neu |
+| [B-536](B-536-entscheidung-versionen-bd3-bd7.md) | REG | Frage | hoch | eingeplant | KR1 | Entscheidung: Versionen v0.21.0 (BD3) und v0.21.1 (BD7) bestätigen |
+| [B-537](B-537-entscheidung-bd5-vierter-punkt.md) | CLI | Frage | hoch | eingeplant | KR1 | Entscheidung: Vierter Punkt der BD5-Meldung zum Spielmenü ist unbekannt |
+| [B-538](B-538-entscheidung-hub-wachstum-nur-grafik.md) | REG | Frage | hoch | eingeplant | KR2 | Entscheidung D1: Hub-Wachstum bleibt reine Grafik, keine feinere Stufenfolge im Server |
+| [B-539](B-539-entscheidung-wimpel-markierer.md) | SIM | Frage | hoch | eingeplant | KR2 | Entscheidung D2: Wimpel-Farbe bleibt Client-Annäherung, markedBy erst nach GEB10.5 |
+| [B-540](B-540-entscheidung-wald-dichte.md) | REG | Frage | hoch | eingeplant | KR2 | Entscheidung D3: Wald-Dichte und Höhlenbüsche einplanen, Werte setzt Ralf |
+| [B-541](B-541-entscheidung-baumgroesse.md) | DEV | Frage | hoch | eingeplant | KR2 | Entscheidung D4: Bäume bleiben 11,25 Kacheln hoch |
+| [B-542](B-542-entscheidung-plantage-pappel.md) | DEV | Frage | hoch | eingeplant | KR2 | Entscheidung D5: Plantage-Pappel steht hinter der Farm |
+| [B-543](B-543-entscheidung-truhe-ohne-serverzustand.md) | CLI | Frage | hoch | eingeplant | KR2 | Entscheidung D6: Geschlossene Truhe ohne Serverzustand |
+| [B-544](B-544-entscheidung-geb9-defaults.md) | DEV | Frage | hoch | eingeplant | KR2 | Entscheidung D7: Hub-Gebäude folgen der Hub-Stufe (Defaults aus GEB9) |
+| [B-545](B-545-entscheidung-geruest-bei-gefahr.md) | CLI | Frage | hoch | eingeplant | KR2 | Entscheidung D8: Baugerüst nur ohne Gefahr |
+| [B-546](B-546-entscheidung-gegner-figuren.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G1: Die sechs neuen Gegner behalten die GR8-Figuren, die GR7.3-Kandidaten werden nicht importiert |
+| [B-547](B-547-entscheidung-skalierung-krumm.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G2: Krumme Skalierungsfaktoren bleiben bis zur TV-Beobachtung GR7.4 |
+| [B-548](B-548-entscheidung-stil-bibel.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G3: Der Entwurf der Stil-Bibel (DB32, 16 px, Outline, Licht oben links) gilt |
+| [B-549](B-549-entscheidung-umschalten-db32.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G4: Das Spiel lädt weiter die Quellgrafik, nicht public/grafik-db32/ |
+| [B-550](B-550-entscheidung-db32-doppelung.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G5: Die DB32-Palette bleibt doppelt in pipeline und buildings |
+| [B-551](B-551-entscheidung-kandidaten-kein-pack.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G6: public/grafik/kandidaten/ ist kein Grafik-Pack |
+| [B-552](B-552-entscheidung-monarch-animationen.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G7: Monarch-Animationen bleiben aus vorhandenen Frames abgeleitet |
+| [B-553](B-553-entscheidung-specs-gr8-gr9-gr10.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G8: Die autonom freigegebenen Specs GR8, GR9 und GR10 gelten |
+| [B-554](B-554-entscheidung-musik-stuecke.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S1: Je Musikzustand spielt die erste Präferenz des Slots, die übrigen Kandidaten bleiben bis zur Bestätigung liegen |
+| [B-555](B-555-entscheidung-musik-ende.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S2: Nach dem Fall der Burg bleibt die Musik still, das Siegstück wartet auf einen Sieg-Auslöser |
+| [B-556](B-556-entscheidung-sound-credit-datei.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S3: Die Credits der Sounds bleiben in public/audio/README.md |
+| [B-557](B-557-entscheidung-sound-atlas.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S4: Die Effekte laden aus einem Sound-Atlas, Einzeldateien sind der Rückfall |
+| [B-558](B-558-entscheidung-sound-luecken.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S5: Die Sound-Lücken bekommen vorhandene Kenney-Töne, UI-Klicks und Reiten bleiben offen |
+| [B-559](B-559-frage-form-lernbare-skills.md) | SRV | Frage | hoch | eingeplant | KR5 | Ralf bestätigt die Form der lernbaren Skills im Protokoll |
+| [B-560](B-560-frage-dieb-preset-oder-bauen.md) | REG | Frage | hoch | eingeplant | KR5 | Ralf entscheidet, ob die Dieb-Skills gebaut werden oder das Preset leer bleibt |
+| [B-561](B-561-frage-skill-darstellung-je-klasse.md) | CLI | Frage | hoch | eingeplant | KR5 | Ralf bestätigt die Darstellung der Skills als Ring je Klasse ohne neue Ereignisse |
+| [B-562](B-562-studio-monarch-skill-ring.md) | DEV | Idee | niedrig | offen | – | Die Monarch-Seite des Studios zeigt den Skill-Ring des Spiels statt der Lücke |
+| [B-563](B-563-endboss-bau-in-aktionsliste.md) | SRV | Idee | niedrig | offen | – | Die Aktionsliste nennt den Bau-Auslöser des Endbosses, das Overlay zeigt ihn |
+| [B-564](B-564-dev-seite-spiel-mit-dev-parameter.md) | PLAT | Idee | niedrig | offen | – | Die Entwicklerseite öffnet das Spiel mit Debug-Overlay (?dev=1) |
+| [B-565](B-565-messung-wellenabstand-mit-adern.md) | REG | Schuld | niedrig | offen | – | Der Wellenabstand unter Tage mit besetzten Adern ist über 100 Seeds gemessen |
 
 ## Archiv
 
@@ -495,3 +516,12 @@ Zeile in diesen Abschnitt.
 | [B-420](archiv/B-420-importe-grafikpacks.md) | DEV | Schuld | mittel | erledigt | GR9 | Mit k3c-workbench importierte Kandidaten unter public/grafik/kandidaten/ brechen grafikPacks.test nicht |
 | [B-524](archiv/B-524-skillheld-tod-zuruecksetzen.md) | SIM | Problem | niedrig | erledigt | BD7 | skillHeld beim Tod zurücksetzen, damit der erste Druck nach dem Respawn castFailed meldet |
 | [B-530](archiv/B-530-wartender-monarch-verwundbar.md) | SIM | Problem | mittel | erledigt | BD7 | Wartende Monarchen nach Verbindungsverlust sind in der Simulation nicht unverwundbar |
+| [B-285](archiv/B-285-lernbare-skills-im-protokoll.md) | SRV | Problem | mittel | erledigt | RM1 | Der Server nennt je Spieler die lernbaren Skills |
+| [B-495](archiv/B-495-respec-in-aktionsliste.md) | SRV | Schuld | niedrig | erledigt | RM1 | Die Aktionsliste nennt respec, wenn CanRespec erlaubt |
+| [B-080](archiv/B-080-dev-tasten-server.md) | SRV | Idee | niedrig | erledigt | KB2 | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
+| [B-262](archiv/B-262-camps-nahe-portalen.md) | SIM | Frage | mittel | erledigt | LV1 | Camps liegen nach dem Abstand zu den Linien nicht zu nah an den Portalen |
+| [B-291](archiv/B-291-lava-nicht-auf-mauerlinien.md) | SIM | Problem | mittel | erledigt | LV1 | Lava liegt nicht auf den Mauerlinien |
+| [B-189](archiv/B-189-toter-gegner-flieht-ins-portal.md) | SIM | Problem | mittel | erledigt | LV1 | Ein besiegter Gegner verschwindet nicht im Portal, sondern lässt sein Gold fallen |
+| [B-217](archiv/B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | erledigt | LV1 | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
+| [B-260](archiv/B-260-schutzplatz-ohne-id.md) | SIM | Schuld | niedrig | erledigt | LV1 | Der Schutzplatz einer Truppe hängt nicht an ihrer Entity-ID |
+| [B-200](archiv/B-200-aggressionspool-adern.md) | SIM | Problem | mittel | erledigt | LV1 | Der Aggressionspool unter Tage bleibt auch mit Adern im Wellen-Korridor |

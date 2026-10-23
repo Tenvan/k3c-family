@@ -12,31 +12,30 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Review des Sprints KB1: Kriterien AC-01 bis AC-04 geprüft, Golden-Diffs begründet, Sprint abgeschlossen oder Restpunkte als Ticket.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Commits des Sprints KB1 (KB1.1 bis KB1.4); Golden-Commits mit Begründung.
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-
-- `pfad/…`
+- `docs/sprints/`, `docs/backlog/`
+- Fixes unter 30 Zeilen in den Dateien der Sessions
 
 ## Nicht-Ziele
 
-Was in dieser Session ausdrücklich **nicht** passiert.
+Neue Funktionen.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Reviewer-Agent über den Sprint-Diff.
+2. `task check:go` (gezielt `go:test`, `go:lint`).
+3. Ergebnis, Tickets abschließen.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] Review ohne schwere Befunde, Prüfungen grün.
 
 ## Prüfen
 

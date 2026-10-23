@@ -378,8 +378,11 @@ Felder je Spieler in `players[]` von `snap` und `delta`:
 
 `actions` nennt nur, was der Spieler **an seinem Ort** jetzt tun kann, in fester Reihenfolge: `{ "action": "attack" }`
 (lebt, Schlag bereit), `{ "action": "skill", "slot": n, "skill": id }` je belegtem, bereitem Slot (lebt; `slot` wie
-`input.p[].skill`), `{ "action": "learn" }` (`points` > 0). `respec` ist als Eintrag vorgesehen, fehlt aber, bis die
-Sim eine Prüfung ohne Seiteneffekt bietet (B-270); die Nachricht `respec` wirkt trotzdem. Die Liste nennt keine Taste,
+`input.p[].skill`), `{ "action": "learn", "skills": [id, …] }` mit den Skills, die der Spieler jetzt lernen darf
+(Punkte frei, nicht gelernt, Tier-Gating; nach ID sortiert, von `sim.LearnableSkills` berechnet; fehlt, wenn keiner
+lernbar ist; B-285). Ein älterer Server sendet `learn` ohne `skills` bei `points` > 0, der Client behandelt dann jeden
+ungelernten Skill als lernbar. Zuletzt `{ "action": "respec" }` (lebt, `sim.CanRespec` erlaubt: Tag und an der
+Burg, auch ohne gelernte Skills; B-495). Die Liste nennt keine Taste,
 die Belegung gehört dem Client. Berufe, Tausch, Grabstein und Wiederbeleben kommen später (W5, B-120).
 
 ### Wirtschaft: Hub, Lager, Wartegrund, Händler
@@ -469,6 +472,10 @@ Aktion, Werte, Raum).
 - `pause`: `paused` (true/false, Pflicht) hält den ganzen Raum an (B-231, Cheat-Dialog): Ticks laufen weiter und
   schicken den Zustand, rechnen aber keinen Schritt; Eingaben wirken erst nach dem Lösen. Im Dev-Mode steht
   `devPaused` (true/false) wie `devTimescale` in `s`, ohne Dev-Mode fehlt das Feld. Verlässt das letzte Gerät den Raum, ist die Pause aufgehoben.
+- `grade`: `grade` (Name aus `data/difficulty.json`, sonst `bad_request`) setzt den Schwierigkeitsgrad des Raums wie
+  über `/api/dev`; er gilt ab der nächsten Welle (B-080, `c2s-dev-grade.json`). Nachgetragen ohne neue Version (KB2.6):
+  `s` von `snap` und `delta` nennt immer den aktuellen Grad des Raums als `grade` (auch ohne Dev-Mode; im Delta nur bei
+  Änderung); ein älterer Server sendet das Feld nicht.
 
 ### Kampf: Bosse, Events, Inselwechsel
 
@@ -508,7 +515,7 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 | `revived` | `player`, `x` | Monarch von einem Mitspieler wiederbelebt (Q62) |
 | `disarmed` | `kind` (Figur oder Beruf), `x`, `cause` (Gegnerart wie bei `playerDown`, sonst `other`) | Bürger verliert seine Ausrüstung, sie fällt als `drops`-Eintrag zu Boden (Q69); nicht beim Burgfall |
 | `equipmentTaken` | `kind` (wie `drops[].kind`), `x` | Gegner trägt Ausrüstung weg (Q69); Felder bestätigt 🧑 2026-10-06, Sim sendet ab B-312 |
-| `playerDown` | `player`, `cause` (Gegnerart aus `data/enemies.json` bei Nahkampf und Geschoss, sonst `other`; B-182) | Monarch fällt; `cause` ist ein Zusatzfeld, die Protokollversion bleibt 3 |
+| `playerDown` | `player`, `x`, `cause` (Gegnerart aus `data/enemies.json` bei Nahkampf und Geschoss, sonst `other`; B-182) | Monarch fällt; `cause` und `x` (B-217) sind Zusatzfelder, die Protokollversion ändert sich dadurch nicht |
 | `bossSpawned` | `boss`, `x` | Boss erscheint |
 | `bossPhase` | `boss`, `phase` (ab 2) | Endboss wechselt die Phase |
 | `bossDefeated` | `boss`, `x` | Boss besiegt |
@@ -520,7 +527,7 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 | `gameOver` | – | Niederlage |
 
 Tod, Bau fertig, Skill, Nacht naht und Portal laufen über die älteren Typen `playerDown`, `built`, `skillPoint`,
-`dusk`, `arrived` (`arrived` mit `player` beim Einzelwechsel). Die Simulation begrenzt die Ereignisse je Tick und
+`dusk`, `arrived` (`arrived` mit `player` beim Einzelwechsel; `built` mit `kind` und `x` des Bauplatzes, `x` als Zusatzfeld ohne neue Version, B-217). Die Simulation begrenzt die Ereignisse je Tick und
 Stufe auf **K = 32** (`maxEventsPerTick`); bei Überlauf gehen Tod und Bau vor, `eventsDropped` in `s` zählt die
 Verworfenen und fehlt bei 0 (zuverlässige Übertragung im Delta: B-190). Ein Client übergeht unbekannte Typen
 (Banner nur für bekannte), deshalb blieb die Protokollversion dafür 3. Gilt auch für `castFailed` und das Zusatzfeld `hit` an `strike` (S9.2): Version bleibt 5.

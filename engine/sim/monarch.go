@@ -101,6 +101,17 @@ func CanLearn(w *World, p *Player, id string) error {
 	return nil
 }
 
+// LearnableSkills nennt die Skills, die der Spieler jetzt lernen darf (CanLearn ohne Fehler), nach ID sortiert (B-285).
+func LearnableSkills(w *World, p *Player) []string {
+	out := []string{}
+	for _, s := range skillCatalog {
+		if CanLearn(w, p, s.ID) == nil {
+			out = append(out, s.ID)
+		}
+	}
+	return out
+}
+
 // LearnSkill lernt einen Skill für einen Punkt. Aktive Skills belegen den ersten freien Slot 1 bis 4; ohne freien Slot
 // bleibt der Skill gelernt ohne Slot.
 func LearnSkill(w *World, p *Player, id string) error {
@@ -141,7 +152,7 @@ func Respec(w *World, p *Player) error {
 }
 
 // ApplyPreset lernt die activeSkills eines Presets in ihrer Reihenfolge, soweit Pool-Punkte frei sind. Skills, die
-// nicht lernbar sind (z. B. Dieb-Skills ohne Katalog-Eintrag), werden übersprungen.
+// nicht lernbar sind (keine Punkte, Tier-Gating), werden übersprungen; unbekannte Skills lehnt schon das Laden ab (B-504).
 func ApplyPreset(w *World, p *Player, id string) error {
 	pr, ok := monarch.Presets[id]
 	if !ok {

@@ -17,10 +17,10 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | K2 | Bosse, Siegvarianten und Inselwechsel | erledigt |
 | K3 | Events Vollmond, Blutmond und Händler-Überfall | erledigt |
 | K4 | Protokoll für Bosse, Events und Inselwechsel | erledigt |
-| K5 | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | geplant |
-| LV1 | Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs | geplant |
+| K5 | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | aktiv |
+| LV1 | Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs | aktiv |
 | KB1 | Kampf-Nachträge: Mond-Events, Endboss-Bau, Golden-Läufe, Feuergeist | geplant |
-| KB2 | Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen | geplant |
+| KB2 | Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen | aktiv |
 
 ## Nicht-Ziele
 

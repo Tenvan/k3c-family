@@ -24,6 +24,11 @@ describe('effectFor (GR5.1 AC-01, AC-03)', () => {
     expect(fx({ type: 'built', kind: 'wall' }, spots)).toMatchObject({ kind: 'built', x: 7 * UNIT_PX });
   });
 
+  it('nutzt x aus built und playerDown, wenn der Server es schickt (B-217)', () => {
+    expect(fx({ type: 'built', kind: 'wall', x: 9 })).toMatchObject({ kind: 'built', x: 9 * UNIT_PX });
+    expect(effectFor({ type: 'playerDown', player: 3, x: 4 }, none, new Map())).toMatchObject({ kind: 'down', x: 4 * UNIT_PX });
+  });
+
   it('übergeht unbekannte Typen und unbekannte Spieler ohne Fehler', () => {
     expect(fx({ type: 'dusk' })).toBeNull();
     expect(fx({ type: 'zukunft', x: 1 } as unknown as GameEvent)).toBeNull();

@@ -138,8 +138,47 @@ func TestSkillsAktionsliste(t *testing.T) {
 	if got := actionsOf(w, p); len(got) != 2 || got[0]["action"] != "skill" || got[1]["action"] != "learn" {
 		t.Fatalf("Schlag abklingend, Punkt frei: %v", got)
 	}
+	if skills, _ := actionsOf(w, p)[1]["skills"].([]string); !slices.Equal(skills, sim.LearnableSkills(w, p)) || len(skills) == 0 {
+		t.Fatalf("learn ohne lernbare Skills (B-285): %v", skills)
+	}
 	p.RespawnIn = 4
 	if got := actionsOf(w, p); len(got) != 1 || got[0]["action"] != "learn" {
 		t.Fatalf("tot: %v", got)
 	}
+}
+
+// respec steht genau dann in der Aktionsliste, wenn sim.CanRespec es erlaubt: Tag an der Burg ja, Nacht oder fern
+// der Burg nein, gefallen nein (B-495/AC-01).
+func TestAktionslisteRespec(t *testing.T) {
+	cases := []struct {
+		name    string
+		phase   string
+		x       float64
+		respawn float64
+		want    bool
+	}{
+		{"Tag an der Burg", "day", 0, 0, true},
+		{"Nacht", "night", 0, 0, false},
+		{"fern der Burg", "day", 1000, 0, false},
+		{"gefallen", "day", 0, 4, false},
+	}
+	for _, c := range cases {
+		p := &sim.Player{X: c.x, RespawnIn: c.respawn}
+		w := &sim.World{Players: []*sim.Player{p}}
+		w.Cycle.Phase = c.phase
+		got := actionsOf(w, p)
+		has := hasRespec(got)
+		if has != c.want || (has && got[len(got)-1]["action"] != "respec") {
+			t.Errorf("%s: %v", c.name, got)
+		}
+	}
+}
+
+func hasRespec(list []map[string]any) bool {
+	for _, a := range list {
+		if a["action"] == "respec" {
+			return true
+		}
+	}
+	return false
 }

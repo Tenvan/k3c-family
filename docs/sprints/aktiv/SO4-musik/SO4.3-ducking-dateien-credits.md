@@ -1,6 +1,6 @@
 # SO4.3 · Ducking bei Warnungen, Musik-Dateien und Credits
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -59,4 +59,11 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+2026-10-22, autonom (Claude), ein Branch `claude/six-projects-autonomous-completion-1083d1`.
+
+- **Grundlage:** SO4.1 ist Ralfs Workshop; Auswahl autonom vorentschieden: je Zustand die erste Präferenz des Slots `music:*` (B-554), „Ende“ still (B-555). Lizenzen aller acht Stücke auf OpenGameArt geprüft (CC0), Urheber in `public/audio/README.md` und `docs/assets/sounds.md` korrigiert.
+- **AC-03 umgesetzt, geprüft (Test):** `src/audio/ducking.ts` (Werte `DUCK`: 0,35 / 0,15 s / 1,2 s / 0,8 s an einer Stelle), reine Funktionen `duckGain`, `extendDuck`; `ducking.test.ts`: Pegel sinkt, hält, steigt zurück; überlappende Warnungen verlängern ohne Stapeln (nie unter `level`); Warnung in der Rampe hinauf ohne Sprung. Der Kern legt einen Ducking-Gain vor den Bus „Musik“ (multipliziert mit dem Crossfade), `onEvent` mit `dusk`/`wave`/`castleFallen` plant die Rampen (Test im Kern). Browser-Pane: **nicht geprüft**, weil der `AudioContext` nur mit echter Geste startet (synthetische Eingaben entsperren nicht); Hören am TV in SO4.5.
+- **Stücke im Spiel:** `MUSIC_TRACKS` kommt jetzt aus dem Slot-Register (`musicTracks`, Test); sieben Zustände spielen ihr Stück, Ralf ändert die Wahl im Asset-Studio ohne Code. Lade-Strategie: bei Bedarf (erst beim Zustandswechsel), kein Vorladen. Größe der sieben aktiven Stücke 4,1 MB (Ogg, Xbox kann Ogg laut B-166).
+- **AC-04:** Credit je Musik-Datei geprüft durch `soundKatalog.test.ts` (alle Dateien unter `public/audio/`); Teil „Credits-Seite“ **verschoben** nach SO6.1 (B-493).
+- **AC-06:** `task check:diff` grün.
+- **Abweichung:** nicht gewählte Kandidaten **nicht** entfernt, solange Ralf die Auswahl nicht bestätigt hat (B-554); Dateien bleiben unter `public/audio/kandidaten/` statt `public/audio/musik/<quelle>/` (Slot-Register und Studio verwalten sie, wie SO2.2).

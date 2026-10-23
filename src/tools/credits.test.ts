@@ -12,6 +12,31 @@ const dirsOf = (root: keyof typeof GLOBS) => [...new Set(GLOBS[root].map((p) => 
 /** Import-Zeilen aus k3c-workbench nennen die Datei (kandidaten/<datei>, B-298); geprüft wird ihr Ordner. */
 const dirOf = (folder: string) => folder.split('/')[0]!;
 
+/** Sound-Dateien unter public/audio/ (Pfad ab audio/); selbst erzeugte Töne brauchen keinen Eintrag (B-493) */
+const AUDIO = Object.keys(import.meta.glob('../../public/audio/**/*.{ogg,mp3,wav}', { query: '?url' })).map((p) => p.replace('../../public/audio/', ''));
+const OWN_AUDIO = /^(atlas|probe-[ab])\.(ogg|mp3)$/;
+
+describe('Credits der Sounds (B-493)', () => {
+  const audio = CREDITS.filter((c) => c.root === 'audio');
+
+  it('jede fremde Sound-Datei unter public/audio hat einen Eintrag (AC-02)', () => {
+    const listed = new Set(audio.flatMap((c) => c.folders));
+    expect(AUDIO.filter((f) => !OWN_AUDIO.test(f) && !listed.has(f))).toEqual([]);
+  });
+
+  it('jeder Sound-Eintrag zeigt auf eine vorhandene Datei', () => {
+    expect(audio.length).toBeGreaterThan(0);
+    expect(audio.flatMap((c) => c.folders).filter((f) => !AUDIO.includes(f))).toEqual([]);
+  });
+
+  it('die Seite zeigt die Sounds, CC-BY-Stücke hervorgehoben (AC-01)', () => {
+    const html = renderCredits(CREDITS);
+    for (const c of audio) expect(html, c.folders[0]).toContain(c.title.replace(/&/g, '&amp;').replace(/</g, '&lt;'));
+    const by = audio.filter(isCcBy).map((c) => c.folders[0]);
+    expect(by).toEqual(expect.arrayContaining(['kandidaten/a-big-adventure.ogg', 'kandidaten/summer-adventure-background-music.mp3']));
+  });
+});
+
 describe('Credits (B-165)', () => {
   it.each(['grafik', 'sprites'] as const)('jedes Verzeichnis unter public/%s hat einen Eintrag (AC-01)', (root) => {
     const listed = new Set(CREDITS.filter((c) => c.root === root).flatMap((c) => c.folders.map(dirOf)));

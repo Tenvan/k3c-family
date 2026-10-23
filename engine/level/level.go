@@ -104,6 +104,8 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 	for _, i := range g.free() {
 		g.kinds[i] = g.r.Weighted(w)
 	}
+	wallLines := lines.generate(b.ID, seed, g.hub)
+	g.lavaOffLines(wallLines)
 	chunks := make([]Chunk, len(g.kinds))
 	for i, k := range g.kinds {
 		chunks[i] = Chunk{Index: i, Kind: k, StartUnits: float64(i) * g.cw}
@@ -115,7 +117,7 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 	sort.SliceStable(entities, func(i, j int) bool { return entities[i].X < entities[j].X })
 	return Layout{
 		Seed: seed, BiomeID: b.ID, WidthUnits: float64(len(chunks)) * g.cw, ChunkWidthUnits: g.cw,
-		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: lines.generate(b.ID, seed, g.hub),
+		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: wallLines,
 		Ruins: g.ruinsOf(chunks),
 	}, nil
 }
@@ -318,4 +320,30 @@ func weights(o Ordered[float64]) []rng.Weight {
 		out[i] = rng.Weight{Key: e.Key, W: e.Value}
 	}
 	return out
+}
+
+// lavaOffLines: Ein Lava-Chunk, dessen Streifen (Chunk-Mitte ± widthUnits/2, dazu payGapUnits Abstand) Mauer, Turm
+// oder Tor einer Linie trifft, wird ohne Würfel zur ersten anderen Art aus chunkWeights (B-291). Geplante Chunks bleiben.
+func (g *gen) lavaOffLines(lines []WallLine) {
+	if g.b.Lava.WidthUnits <= 0 {
+		return
+	}
+	reach := g.b.Lava.WidthUnits/2 + payGapUnits
+	other := ""
+	for _, e := range g.b.ChunkWeights {
+		if e.Key != "lava" && other == "" {
+			other = e.Key
+		}
+	}
+	for i, k := range g.kinds {
+		if _, fixed := g.planned[i]; k != "lava" || fixed || other == "" {
+			continue
+		}
+		for _, l := range lines {
+			if math.Abs(l.Wall-g.center(i)) < reach || math.Abs(l.Tower-g.center(i)) < reach || math.Abs(l.Gate-g.center(i)) < reach {
+				g.kinds[i] = other
+				break
+			}
+		}
+	}
 }

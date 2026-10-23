@@ -105,4 +105,6 @@ export type DevMessage =
   | { t: 'dev'; action: 'buildAll'; level: number }
   | { t: 'dev'; action: 'timescaleAuto'; on: boolean }
   | { t: 'dev'; action: 'nextPhase' }
-  | { t: 'dev'; action: 'castleFall'; slot: number };
+  | { t: 'dev'; action: 'castleFall'; slot: number }
+  /** Grad des Raums, gilt ab der nächsten Welle; nur im Dev-Mode (B-080, KB2.6) */
+  | { t: 'dev'; action: 'grade'; grade: string };

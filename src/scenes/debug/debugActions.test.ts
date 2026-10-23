@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import devPause from '../../../testdata/protocol/c2s-dev-pause.json';
-import { DEV_ACTIONS, DEV_GROUPS, NO_TOGGLES, actionLabel, devMessage, nextToggles, pauseMessage, roomDevMode } from './debugActions';
+import devGrade from '../../../testdata/protocol/c2s-dev-grade.json';
+import { DEV_ACTIONS, DEV_GROUPS, GRADES, NO_TOGGLES, actionLabel, actionVisible, devMessage, isCurrentGrade, nextToggles, pauseMessage, roomDevMode } from './debugActions';
 
 describe('devMessage (B-179/AC-01)', () => {
   it('Beispiele aus testdata/protocol/: Gold und Zeitfaktor wörtlich', () => {
@@ -37,6 +38,7 @@ describe('devMessage (B-179/AC-01)', () => {
       { t: 'dev', action: 'timescale', factor: 8 },
       { t: 'dev', action: 'timescaleAuto', on: true },
       { t: 'dev', action: 'nextPhase' },
+      ...['dev', 'easy', 'normal', 'hard', 'ultra'].map((grade) => ({ t: 'dev', action: 'grade', grade })),
     ];
     expect(DEV_ACTIONS.map((a) => devMessage(a.key, 1))).toEqual(expected);
   });
@@ -49,6 +51,7 @@ describe('devMessage (B-179/AC-01)', () => {
       'Alles ausbauen: Stufe 1', 'Alles ausbauen: Stufe 2', 'Alles ausbauen: Stufe 3', 'Alles ausbauen: Stufe 4', 'Alles ausbauen: Stufe 5', 'Burgfall',
       'Zeit 1×', 'Zeit 2×', 'Zeit 4×', 'Zeit 8×',
       'Zeitraffer → 1× bei Tageszeitwechsel', 'Nächste Tageszeit',
+      'Grad Dev', 'Grad Leicht', 'Grad Normal', 'Grad Hart', 'Grad Ultra',
     ]);
   });
 
@@ -90,5 +93,22 @@ describe('roomDevMode und pauseMessage (B-231)', () => {
     expect(roomDevMode({ devTimescale: 1 })).toBe(true);
     expect(roomDevMode({})).toBe(false);
     expect(roomDevMode(null)).toBe(false);
+  });
+});
+
+describe('Gruppe Grad (K5.3, B-107/AC-01, AC-02)', () => {
+  it('jede Grad-Zeile sendet die Dev-Aktion grade wie c2s-dev-grade.json; unbekannter Grad → null', () => {
+    expect(devMessage('grade:hard', 0)).toEqual(devGrade);
+    expect(GRADES.map(([g]) => devMessage(`grade:${g}`, 0))).toEqual(GRADES.map(([g]) => ({ t: 'dev', action: 'grade', grade: g })));
+    expect(devMessage('grade:gibtsnicht', 0)).toBeNull();
+  });
+
+  it('nur im Dev-Mode des Raums sichtbar, der aktuelle Grad ist markiert', () => {
+    const grades = DEV_ACTIONS.filter((a) => a.group === 'grad');
+    expect(grades.some((a) => actionVisible(a, false))).toBe(false);
+    expect(grades.every((a) => actionVisible(a, true))).toBe(true);
+    expect(DEV_ACTIONS.filter((a) => a.group !== 'grad').every((a) => actionVisible(a, false))).toBe(true);
+    expect(grades.filter((a) => isCurrentGrade(a, 'normal')).map((a) => a.key)).toEqual(['grade:normal']);
+    expect(grades.some((a) => isCurrentGrade(a, undefined))).toBe(false);
   });
 });

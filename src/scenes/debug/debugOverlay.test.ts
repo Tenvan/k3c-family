@@ -62,9 +62,9 @@ describe('debugLines (AC-01)', () => {
 });
 
 describe('debugEnabled (AC-02)', () => {
-  it('standardmäßig an, nur ?dev=0 schaltet ab', () => {
-    expect(debugEnabled('')).toBe(true);
-    expect(debugEnabled('?x=1')).toBe(true);
+  it('nur mit ?dev=1 an, ohne Parameter aus (B-098/AC-01)', () => {
+    expect(debugEnabled('')).toBe(false); // B-098
+    expect(debugEnabled('?x=1')).toBe(false);
     expect(debugEnabled('?dev=1')).toBe(true);
     expect(debugEnabled('?seed=x&dev=0')).toBe(false);
   });

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { MUSIC_STATES, MUSIC_TRACKS, MusicDirector, nextMusicState, trackUrl, type MusicState, type MusicView } from './music';
+import { MUSIC_SLOTS, MUSIC_STATES, MUSIC_TRACKS, MusicDirector, musicTracks, nextMusicState, trackUrl, type MusicState, type MusicView } from './music';
 
 const view = (v: Partial<MusicView> = {}): MusicView => ({ phase: 'day', enemies: 0, depth: 0, ...v });
 
@@ -45,6 +45,32 @@ describe('Mapping Zustand → Stück (AC-01)', () => {
     expect(trackUrl('tag', (m) => m === 'audio/mpeg')).toBe('audio/tag.mp3');
     expect(trackUrl('tag', () => false)).toBeUndefined();
     expect(trackUrl(null, () => true)).toBeUndefined();
+  });
+
+  it('trackUrl mit Endung: die Datei selbst, wenn das Format abspielbar ist', () => {
+    expect(trackUrl('audio/kandidaten/x.ogg', () => true)).toBe('audio/kandidaten/x.ogg');
+    expect(trackUrl('audio/kandidaten/x.ogg', (m) => m === 'audio/mpeg')).toBeUndefined();
+  });
+});
+
+describe('Auswahl aus dem Slot-Register (SO4.1, SO4.3)', () => {
+  it('musicTracks nimmt die erste Präferenz je Slot; fehlender oder leerer Slot → Lücke', () => {
+    const slots = [
+      { id: 'music:tag', art: 'sound', bus: 'music', wahl: [{ datei: 'audio/a.ogg' }, { datei: 'audio/b.ogg' }] },
+      { id: 'music:nacht', art: 'sound', bus: 'music', wahl: [] },
+      { id: 'music:abend', art: 'sound', bus: 'sfx', wahl: [{ datei: 'audio/c.ogg' }] },
+    ];
+    const t = musicTracks(slots);
+    expect(t.day).toBe('audio/a.ogg');
+    expect(t.night).toBeNull();
+    expect(t.dusk).toBeNull(); // falscher Bus zählt nicht
+    expect(t.ending).toBeNull();
+  });
+
+  it('das Register belegt sieben Zustände mit Ogg-Dateien; „Ende“ bleibt still (B-555)', () => {
+    for (const s of MUSIC_STATES.filter((x) => x !== 'ending')) expect(MUSIC_TRACKS[s]).toMatch(/^audio\/.+\.ogg$/);
+    expect(MUSIC_TRACKS.ending).toBeNull();
+    expect(MUSIC_SLOTS.ending).toBeNull();
   });
 });
 

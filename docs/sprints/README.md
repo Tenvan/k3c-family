@@ -11,14 +11,27 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 |---|---|---|---|---|---|
 | BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | `aktiv/BD4-hud-leiste-austreten/` |
 | BD5 | SRV, CLI | BED | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | – | `aktiv/BD5-spielmenue-welt-spielstaende/` |
+| BD6 | REG | BED | Autonome Entscheidungen zu BED prüfen und festschreiben | – | `aktiv/BD6-entscheidungen-bed/` |
 | GEB9 | DEV, CLI | GEB | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | – | `aktiv/GEB9-hub-ausbaustufen/` |
 | GEB10 | DEV, CLI | GEB | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | – | `aktiv/GEB10-natur-truhe-wimpel/` |
 | GEB11 | REG, SIM, DEV, CLI | GEB | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | – | `aktiv/GEB11-hub-waechst-kleinteilig/` |
+| GEB12 | REG, CLI | GEB | Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte) | – | `aktiv/GEB12-entscheidungen-geb9-11/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | GR9 | DEV, CLI | GRA | Monarch-Animationen für Wurf, Treffer, Tod und Respawn, Kandidaten-Import ohne roten Test | – | `aktiv/GR9-monarch-animationen-kandidaten/` |
+| GR10 | CLI | GRA | Autonome Grafik-Entscheidungen prüfen (GR8, GR9) | – | `aktiv/GR10-entscheidungen-grafik/` |
 | SO2 | CLI | SND | SFX-Katalog und Einbau | – | `aktiv/SO2-sfx-katalog/` |
 | SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
+| SO6 | PLAT, INF, CLI | SND | Sound-Credits auf der Credits-Seite, Sound-Atlas und Sounds für die übrigen Ereignisse | – | `aktiv/SO6-sound-credits-atlas-luecken/` |
+| SK2 | REG, SIM, CLI | SKL | Skills im Spiel sichtbar, Dieb-Skills in den Daten | – | `aktiv/SK2-skills-sichtbar-dieb/` |
+| K5 | CLI | KMP | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | Boss-Leiste, Warnkreis und Event-Banner am TV, Lobby-Dialog, von 🧑 abgenommen | `aktiv/K5-anzeige-kampf/` |
+| LV1 | SIM | KMP | Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs | Keine Lava auf Linien, Camps mit Abstand, besiegte Gegner lassen Gold fallen, Ereignisse mit Ort | `aktiv/LV1-level-gegner-korrektur/` |
+| KB2 | SRV, CLI | KMP | Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen | – | `aktiv/KB2-protokoll-kampf-nachtraege/` |
 | BT1 | SRV, DEV | REL | Server im Heimnetz finden, Windows-Starter, Start mit Seed | – | `aktiv/BT1-heimnetz-start/` |
+| KR1 | REG | KRT | Kritische Fragen zu BED | – | `aktiv/KR1-fragen-bed/` |
+| KR2 | REG | KRT | Kritische Fragen zu GEB | – | `aktiv/KR2-fragen-geb/` |
+| KR3 | REG | KRT | Kritische Fragen zu GRA | – | `aktiv/KR3-fragen-gra/` |
+| KR4 | REG | KRT | Kritische Fragen zu SND | – | `aktiv/KR4-fragen-snd/` |
+| KR5 | REG | KRT | Kritische Fragen zu SKL | – | `aktiv/KR5-fragen-skl/` |
 
 ## Offen am Gerät
 
@@ -28,13 +41,9 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| BD6 | REG | BED | Autonome Entscheidungen zu BED prüfen und festschreiben | – | Entwurf | `geplant/BD6-entscheidungen-bed/` |
-| GEB12 | REG | GEB | Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte) | – | Entwurf | `geplant/GEB12-entscheidungen-geb9-11/` |
 | SV2 | SRV | WRT | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | – | Entwurf | `geplant/SV2-voll-ausbau-regelkonform/` |
 | W13 | CLI | WRT | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | – | Entwurf | `geplant/W13-morgengrauen-licht-client/` |
 | W12 | SIM | WRT | Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln | – | Entwurf | `geplant/W12-morgengrauen-phase/` |
-| GR10 | CLI | GRA | Autonome Grafik-Entscheidungen prüfen (GR8, GR9) | – | Entwurf | `geplant/GR10-entscheidungen-grafik/` |
-| SO6 | PLAT | SND | Sound-Credits auf der Credits-Seite, Sound-Atlas und Sounds für die übrigen Ereignisse | – | Entwurf | `geplant/SO6-sound-credits-atlas-luecken/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | Entwurf | `geplant/PM1-leistung-messen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | bereit | `geplant/PF1-splitscreen-leistung/` |
 | NT1 | SRV | LST | Stabile Tests, Warteschlange und Snapshot-Budget | – | Entwurf | `geplant/NT1-netz-tests-stabil/` |
@@ -43,14 +52,10 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | W11 | REG, SRV, CLI | WRT | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | – | Entwurf | `geplant/W11-bauplaetze-protokoll-abstand/` |
 | GD1 | INF | TST | Golden-Daten kleiner bei gleicher Prüfschärfe | – | Entwurf | `geplant/GD1-golden-verkleinern/` |
-| RM1 | SRV | SKL | Raum-Pause im Couch-Raum und lernbare Skills vom Server | Pause hält den Couch-Raum an; Skill-Menü zeigt nur, was der Server annimmt | Entwurf | `geplant/RM1-pause-lernbare-skills/` |
-| SK2 | REG | SKL | Skills im Spiel sichtbar, Dieb-Skills in den Daten | – | Entwurf | `geplant/SK2-skills-sichtbar-dieb/` |
-| K5 | CLI | KMP | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | Boss-Leiste, Warnkreis und Event-Banner am TV, Lobby-Dialog, von 🧑 abgenommen | bereit | `geplant/K5-anzeige-kampf/` |
-| LV1 | SIM | KMP | Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs | Keine Lava auf Linien, Camps mit Abstand, besiegte Gegner lassen Gold fallen, Ereignisse mit Ort | Entwurf | `geplant/LV1-level-gegner-korrektur/` |
 | KB1 | SIM | KMP | Kampf-Nachträge: Mond-Events, Endboss-Bau, Golden-Läufe, Feuergeist | – | Entwurf | `geplant/KB1-events-boss-golden/` |
-| KB2 | SRV, CLI | KMP | Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen | – | Entwurf | `geplant/KB2-protokoll-kampf-nachtraege/` |
 | PG1 | PLAT | REL | Präsentationsseite mit echten Spielbildern | – | Entwurf | `geplant/PG1-praesentation-bilder/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | Entwurf | `geplant/PB1-itch-io/` |
+| KR6 | REG | KRT | Kritische Fragen zu KMP | – | Entwurf | `geplant/KR6-fragen-kmp/` |
 | HW1 | PLAT, SRV, INF, CLI | ABN | Zurückgestellte Controller-Prüfungen nachholen | – | Entwurf | `geplant/HW1-controller-pruefungen/` |
 | RG1 | REG | BAL | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | Beschlüsse in `docs/rules/`, geänderte Werte in `data/`, `task balance` grün | Entwurf | `geplant/RG1-werte-burg-hub-adern/` |
 | BAL6 | SIM | BAL | Balancing-Tester misst die Wirtschaft | – | Entwurf | `geplant/BAL6-tester-misst-wirtschaft/` |
@@ -219,3 +224,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BD2 | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | `erledigt/BD2-rueckmeldung-lobby-nachtraege/` |
 | GR8 | Eigene Figuren für neue Gegner und Grafik-Pipeline mit Ziel-Palette | `erledigt/GR8-figuren-pipeline/` |
 | BD7 | Pause-Client, Skill-Reset beim Tod, Schutz wartender Monarchen | `erledigt/BD7-pause-client-skill-schutz/` |
+| RM1 | Raum-Pause im Couch-Raum und lernbare Skills vom Server | `erledigt/RM1-pause-lernbare-skills/` |

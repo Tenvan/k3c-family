@@ -1,8 +1,73 @@
 {
-  "files": { "ogg": "atlas.ogg", "mp3": "atlas.mp3" },
+  "_comment": "Erzeugt von task gen:soundatlas (tools/soundatlas) aus data/assets.json; nicht von Hand ändern.",
+  "files": {
+    "mp3": "atlas.mp3",
+    "ogg": "atlas.ogg"
+  },
   "sprites": {
-    "coin": { "start": 0.0, "duration": 0.2 },
-    "hit": { "start": 0.3, "duration": 0.2 },
-    "warn": { "start": 0.6, "duration": 0.2 }
+    "sfx:arrow": {
+      "start": 0,
+      "duration": 0.415
+    },
+    "sfx:boss": {
+      "start": 0.565,
+      "duration": 1.041
+    },
+    "sfx:build": {
+      "start": 1.756,
+      "duration": 0.261
+    },
+    "sfx:buildProgress": {
+      "start": 2.167,
+      "duration": 0.937
+    },
+    "sfx:coin": {
+      "start": 3.254,
+      "duration": 0.846
+    },
+    "sfx:coinGive": {
+      "start": 4.25,
+      "duration": 0.338
+    },
+    "sfx:death": {
+      "start": 4.738,
+      "duration": 0.781
+    },
+    "sfx:hit": {
+      "start": 5.669,
+      "duration": 0.431
+    },
+    "sfx:hub": {
+      "start": 6.249,
+      "duration": 0.866
+    },
+    "sfx:kill": {
+      "start": 7.265,
+      "duration": 1.475
+    },
+    "sfx:portal": {
+      "start": 8.89,
+      "duration": 0.441
+    },
+    "sfx:revive": {
+      "start": 9.481,
+      "duration": 1.149
+    },
+    "sfx:revived": {
+      "start": 10.781,
+      "duration": 0.546
+    },
+    "sfx:skill": {
+      "start": 11.476,
+      "duration": 0.676
+    },
+    "sfx:strike": {
+      "start": 12.302,
+      "duration": 0.24
+    },
+    "sfx:warn": {
+      "start": 12.693,
+      "duration": 1.48
+    }
   }
 }

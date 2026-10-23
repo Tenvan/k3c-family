@@ -1,6 +1,6 @@
 # SO4.4 · Review und Abnahme des Sprints SO4
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -49,4 +49,11 @@ task check
 
 ## Ergebnis
 
-–
+2026-10-22, autonom (Claude). Reviewer-Agent (Sonnet, getrennt) über den Diff `2ea58efa..HEAD` in `src/audio`, Szenen und Hörprobe: **keine schweren Befunde** (keine Musik vor der ersten Eingabe, eine Musik je Gerät, Rampen korrekt geplant, kein Stapeln beim Ducking, keine Spiel-Logik, alle Dateien mit CC0/CC-BY-Credit). `task check` grün.
+
+- AC-01 geprüft (SO4.2, SO4.3: `music.test.ts`); „Ende“ still nach Default B-555.
+- AC-02, AC-03: umgesetzt und mit Tests belegt; **angenommen, Validierung offen (SO4.5)**.
+- AC-04: Credits je Datei (`soundKatalog.test.ts`); Credits-Seite verschoben nach SO6.1 (B-493).
+- AC-05, AC-08, AC-09 geprüft (SO4.6); AC-06 grün; AC-07 offen (SO4.5, TV).
+- Hinweise ohne Befund: geladenes Stück, das nicht dekodiert, lässt das alte laufen (gewollt); `release` mitten im Crossfade setzt den Pegel laut Spec kurz neu, beide Aufrufe zur selben Zeit, hörbar nur am TV (SO4.5).
+- **Abweichung:** Sprint bleibt `aktiv` (SO4.1 und SO4.5 bei 🧑), B-168 bleibt `eingeplant`; PR öffnet der Hauptlauf (ein Branch für alle Projekte).

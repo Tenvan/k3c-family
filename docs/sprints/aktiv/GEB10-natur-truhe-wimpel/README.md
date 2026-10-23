@@ -61,6 +61,8 @@ Autonom entschieden (Auftrag 🧑 2026-10-22: GEB komplett autonom), Meldung im 
 6. **Plantage-Pappel:** wird wie alle Bäume hoch und steht deshalb hinter der Farm statt davor (Setzling bleibt davor). **Setzling** bleibt 1 × 1 (junge Pflanze).
 7. **B-457** (Ausgang-Beschriftung, Split-Screen, Geschmack) setzt kein Agent um: Prüfliste in GEB10.5.
 
+**Bestätigung (GEB12):** Frage-Tickets im Sprint KR2, bis dahin gelten die Defaults: Punkt 1 → B-541 (D4), Punkt 2 → B-540 (D3, Umsetzung B-531), Punkt 4 → B-543 (D6), Punkt 5 → B-539 (D2, Umsetzung B-532), Punkt 6 → B-542 (D5).
+
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |

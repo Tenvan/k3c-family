@@ -50,4 +50,4 @@ Manuell durch 🧑 (Browser, `soundtest.html`, am TV).
 
 ## Ergebnis
 
-–
+**Vorentschieden (2026-10-22, autonom, Claude), Session bleibt `offen`:** je Zustand die erste Präferenz des Slots `music:*` (Tabelle in `docs/assets/sounds.md` › Musik, Frage B-554); Niederlage still, Siegstück wartet auf einen Auslöser (B-555). Lizenzen auf den OpenGameArt-Seiten geprüft: alle CC0; Urheber korrigiert. Offen für 🧑: Auswahl bestätigen (Schritt 2), Lautheit am TV (mit SO4.5).

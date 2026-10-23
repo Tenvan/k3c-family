@@ -1,5 +1,5 @@
 import type { SlotCommand } from '../localSlots';
-import { DEV_ACTIONS, DEV_GROUPS, actionLabel, type DevToggles } from './debugActions';
+import { DEV_ACTIONS, DEV_GROUPS, actionLabel, actionVisible, isCurrentGrade, type DevToggles } from './debugActions';
 
 /**
  * Cheat-Dialog (B-231, vorher Dev-Aktionen B-179): modal, 80 % der Fläche, leicht durchsichtig; der Raum steht, solange er offen ist.
@@ -135,7 +135,8 @@ export class CheatDialog {
   }
 
   /** `note`: Hinweis, z. B. Server ohne Dev-Mode; leer = keiner. */
-  render(open: boolean, s: FocusState, seatLabel: string, note: string, toggles: DevToggles): void {
+  /** `devMode`: Dev-Mode des Raums (Gruppe „Grad“ nur dann), `grade`: aktueller Grad des Raums (markiert). */
+  render(open: boolean, s: FocusState, seatLabel: string, note: string, toggles: DevToggles, devMode = false, grade?: string): void {
     this.root.hidden = !open;
     if (!open) return;
     this.note.textContent = note;
@@ -145,7 +146,8 @@ export class CheatDialog {
       b.classList.toggle('sel', i === s.index);
       if (!a) return;
       b.textContent = actionLabel(a, toggles);
-      b.classList.toggle('on', a.toggle !== undefined && toggles[a.toggle]);
+      b.hidden = !actionVisible(a, devMode);
+      b.classList.toggle('on', (a.toggle !== undefined && toggles[a.toggle]) || isCurrentGrade(a, grade));
     });
   }
 

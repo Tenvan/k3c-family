@@ -99,7 +99,11 @@ func (r *Room) snapshot(w *sim.World) any {
 	if r.m.Dev {
 		timescale = r.scale()
 	}
-	return r.m.Snapshot(w, timescale, r.paused)
+	out := r.m.Snapshot(w, timescale, r.paused)
+	if s, ok := out.(map[string]any); ok && r.isl != nil && r.isl.Options.Grade != "" {
+		s["grade"] = r.isl.Options.Grade // Grad des Raums (B-080, KB2.6); die Dev-Aktion grade ändert ihn ab der nächsten Welle
+	}
+	return out
 }
 
 // startStage ist die Startstufe einer geöffneten Insel: die Stufe des ersten Spielers, sonst die mit dieser Tiefe.

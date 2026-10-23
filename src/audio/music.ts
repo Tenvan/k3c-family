@@ -7,6 +7,7 @@ import type { Phase, World } from '../model/types';
 import { FORMAT_ORDER, pickFile } from './atlas';
 import { audioCore, type AudioCore } from './audioCore';
 import { CROSSFADE_SECONDS } from './crossfade';
+import assets from '../../data/assets.json';
 
 export const MUSIC_STATES = ['day', 'dusk', 'night', 'battle', 'depth', 'boss', 'lobby', 'ending'] as const;
 export type MusicState = (typeof MUSIC_STATES)[number];
@@ -41,23 +42,56 @@ export function nextMusicState(prev: MusicState | undefined, view: MusicView, ev
 }
 
 /**
- * Zustand → genau ein Stück (Dateiname ohne Endung unter `public/audio/`, Formate `.ogg`/`.mp3`) oder `null` = Lücke.
- * Ersatzverhalten bei Lücke: Stille (das laufende Stück blendet aus). Die Auswahl trifft SO4.1, die Dateien kommen mit SO4.3.
+ * Zustand → Sound-Slot im Register `data/assets.json` (Auswahl SO4.1, Katalog `docs/assets/sounds.md` › Musik); `null` = Lücke.
+ * „Ende“ wird heute nur durch `castleFallen` (Niederlage) erreicht: für die Niederlage gibt es kein Stück, das Siegstück aus
+ * `music:ende` passt nicht dazu. Bis 🧑 entscheidet (B-555), bleibt „Ende“ still.
  */
-export const MUSIC_TRACKS: Readonly<Record<MusicState, string | null>> = {
-  day: null,
-  dusk: null,
-  night: null,
-  battle: null,
-  depth: null,
-  boss: null,
-  lobby: null,
+export const MUSIC_SLOTS: Readonly<Record<MusicState, string | null>> = {
+  day: 'music:tag',
+  dusk: 'music:abend',
+  night: 'music:nacht',
+  battle: 'music:kampf',
+  depth: 'music:tiefe',
+  boss: 'music:boss',
+  lobby: 'music:lobby',
   ending: null,
 };
 
-/** Rein: URL des ersten abspielbaren Formats (Reihenfolge wie im Audio-Kern); Lücke oder kein Format → `undefined`. */
+/** Sound-Slot des Registers (nur was die Musik braucht) */
+export interface MusicSlot {
+  id: string;
+  art: string;
+  bus?: string;
+  wahl: readonly { datei: string }[];
+}
+
+/** Rein: Zustand → Datei (erste Präferenz des Slots, Pfad unter `public/`) oder `null` (Lücke, Slot fehlt oder leer). */
+export function musicTracks(slots: readonly MusicSlot[], map: Readonly<Record<MusicState, string | null>> = MUSIC_SLOTS): Record<MusicState, string | null> {
+  const out = {} as Record<MusicState, string | null>;
+  for (const state of MUSIC_STATES) {
+    const slot = slots.find((s) => s.id === map[state] && s.art === 'sound' && s.bus === 'music');
+    out[state] = slot?.wahl[0]?.datei ?? null;
+  }
+  return out;
+}
+
+/**
+ * Zustand → genau ein Stück (Datei mit Endung, z. B. `audio/kandidaten/x.ogg`) oder `null` = Lücke.
+ * Ersatzverhalten bei Lücke: Stille (das laufende Stück blendet aus). Geladen wird erst beim Zustandswechsel (kein Vorladen
+ * aller acht Stücke beim Start, der Ladebalken bleibt kurz).
+ */
+export const MUSIC_TRACKS: Readonly<Record<MusicState, string | null>> = musicTracks(assets.slots as MusicSlot[]);
+
+const EXT = /\.(ogg|mp3|wav)$/;
+
+/**
+ * Rein: abspielbare URL. Datei mit Endung → sie selbst, wenn der Browser das Format kann; Name ohne Endung → erstes abspielbares
+ * Format unter `audio/` (Reihenfolge wie im Audio-Kern). Lücke oder kein Format → `undefined`.
+ */
 export function trackUrl(base: string | null, canPlay: (mime: string) => boolean): string | undefined {
   if (!base) return undefined;
+  const ext = EXT.exec(base)?.[1] as (typeof FORMAT_ORDER)[number] | undefined;
+  if (ext) return pickFile({ [ext]: base }, canPlay);
   const files: Partial<Record<(typeof FORMAT_ORDER)[number], string>> = {};
   for (const f of FORMAT_ORDER) files[f] = `audio/${base}.${f}`;
   return pickFile(files, canPlay);

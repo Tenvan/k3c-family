@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { FORMAT_ORDER, parseAtlas, pickFile } from './atlas';
 import { AudioCore, MAX_SAMPLE_VOICES, type FullContext, type SourceLike } from './audioCore';
+import { SFX_URLS } from './events';
+import atlasFile from '../../public/audio/atlas.json';
 
 const files = { ogg: 'a.ogg', mp3: 'a.mp3' };
 
@@ -27,7 +29,7 @@ describe('parseAtlas', () => {
   });
 });
 
-function setup(state = 'suspended', resumes = true, sfx: Record<string, string> = {}, bad: string[] = []) {
+function setup(state = 'suspended', resumes = true, sfx: Record<string, string> = {}, bad: string[] = [], sprites: Record<string, { start: number; duration: number }> = { coin: { start: 0.3, duration: 0.2 } }) {
   const log = { created: 0, resumes: 0, fetched: [] as string[], started: [] as number[][], ended: [] as (() => void)[], gains: [] as { value: number }[], sources: [] as SourceLike[] };
   const ctx: FullContext = {
     destination: {},
@@ -52,7 +54,7 @@ function setup(state = 'suspended', resumes = true, sfx: Record<string, string> 
   const core = new AudioCore({
     createContext: () => (log.created++, ctx),
     canPlay: () => true,
-    fetchJson: async (u) => (log.fetched.push(u), { files, sprites: { coin: { start: 0.3, duration: 0.2 } } }),
+    fetchJson: async (u) => (log.fetched.push(u), { files, sprites }),
     fetchBytes: async (u) => {
       log.fetched.push(u);
       if (bad.includes(u)) throw new Error('404');
@@ -134,6 +136,33 @@ describe('AudioCore (AC-03, AC-05)', () => {
     expect(core.onEvent({ type: 'hit', x: 5, target: 'enemy', id: 1, damage: 1 }, 5, [])).toBe(false);
     expect(core.onEvent({ type: 'kill', kind: 'goblin', x: 5, gold: 1 }, 5, [])).toBe(true);
     expect(log.fetched).toContain('audio/fehlt.ogg');
+  });
+  it('Atlas (B-494/AC-02): Effekte im Atlas spielen als Sprite ohne eigene Datei, fehlende Slots laden einzeln', async () => {
+    const { core, log } = setup('suspended', true, { 'sfx:build': 'audio/b.ogg', 'sfx:kill': 'audio/k.ogg' }, [], { 'sfx:build': { start: 1, duration: 0.5 } });
+    await core.onInput();
+    await tick();
+    await tick();
+    expect(log.fetched).toEqual(['audio/atlas.json', 'audio/a.ogg', 'audio/k.ogg']);
+    expect(core.onEvent({ type: 'built', kind: 'wall' }, undefined, [])).toBe(true);
+    expect(log.started.at(-1)).toEqual([1, 1, 0.5]);
+    expect(core.onEvent({ type: 'kill', kind: 'goblin', x: 5, gold: 1 }, undefined, [])).toBe(true);
+    const results = Array.from({ length: MAX_SAMPLE_VOICES + 2 }, () => core.onEvent({ type: 'built', kind: 'wall' }, undefined, []));
+    expect(results.filter(Boolean)).toHaveLength(MAX_SAMPLE_VOICES - 1); // Stimmen-Grenze gilt auch im Atlas
+  });
+  it('Hub-Ausbau (SO6.4): nur ein Anstieg der Hub-Stufe spielt sfx:hub, undefined vergisst den Stand', async () => {
+    const { core } = setup('suspended', true, { 'sfx:hub': 'audio/hub.ogg' });
+    await core.onInput();
+    await tick();
+    await tick();
+    expect(core.onHubLevel(1)).toBe(false); // erster Wert: kein Ausbau
+    expect(core.onHubLevel(1)).toBe(false);
+    expect(core.onHubLevel(2)).toBe(true);
+    expect(core.onHubLevel(undefined)).toBe(false);
+    expect(core.onHubLevel(4)).toBe(false); // neues Spiel
+  });
+  it('der erzeugte Atlas enthält jeden aktiven Effekt-Slot (B-494/AC-01, task gen:soundatlas)', () => {
+    const effects = Object.keys(SFX_URLS).filter((s) => s !== 'sfx:ride').sort();
+    expect(Object.keys(parseAtlas(atlasFile)!.sprites).sort()).toEqual(effects);
   });
   it('wirft nie, wenn der Context nicht entsteht', async () => {
     const core = new AudioCore({ createContext: () => { throw new Error('nein'); }, canPlay: () => true, fetchJson: async () => ({}), fetchBytes: async () => new ArrayBuffer(0) });

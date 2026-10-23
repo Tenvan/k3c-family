@@ -1,14 +1,16 @@
 /**
  * Audio-Kern (B-011): erzeugt den `AudioContext` erst bei der ersten Eingabe (davor kein Audio, keine Browser-Warnung) und ruft
  * `resume()`, bis er läuft (Gamepad-Tasten zählen in Chromium nicht immer als Geste: dann bleibt es stumm, ohne Fehler).
- * Danach: Mixer und Sound-Atlas laden (2 Requests: `atlas.json` + eine Audiodatei im gewählten Format).
+ * Danach: Mixer und Sound-Atlas laden (2 Requests: `atlas.json` + eine Audiodatei im gewählten Format). Der Atlas enthält die
+ * Effekt-Slots (`task gen:soundatlas`, SO6.2); nur Slots ohne Atlas-Eintrag laden als Einzeldatei (Rückfall).
  */
 import { clientLog } from '../core/clientLog';
 import { parseAtlas, pickFile, type Atlas } from './atlas';
 import type { GameEvent } from '../model/types';
-import { SFX_URLS, attenuation, cueFor, nightGain, type Listener } from './events';
+import { SFX_URLS, attenuation, cueFor, hubRaised, nightGain, type Listener } from './events';
 import { Mixer, type AudioContextLike, type Bus, type GainNodeLike } from './mixer';
 import { QUICK_FADE_SECONDS, crossfadeCurves, fadeOutFrom } from './crossfade';
+import { DUCK, duckGain, extendDuck, type DuckWindow } from './ducking';
 
 export interface SourceLike {
   buffer: unknown;
@@ -66,6 +68,10 @@ export class AudioCore {
   private readonly voices: Partial<Record<Bus, Voice>> = {};
   private readonly decoded = new Map<string, unknown>();
   private readonly active = new Map<string, number>();
+  /** Ducking-Gain vor dem Bus „Musik“ (SO4.3): multipliziert sich mit dem Crossfade der Stücke */
+  private duckNode?: GainNodeLike;
+  private duckWindow?: DuckWindow;
+  private hubLevel?: number;
 
   constructor(private readonly deps: CoreDeps) {}
 
@@ -80,8 +86,9 @@ export class AudioCore {
       if (!this.ctx) {
         this.ctx = this.deps.createContext();
         this.mixer = new Mixer(this.ctx, this.deps.storage);
-        void this.loadAtlas();
-        void this.preloadEffects();
+        this.duckNode = this.ctx.createGain();
+        this.duckNode.connect(this.mixer.node('music'));
+        void this.loadAtlas().then(() => this.preloadEffects());
       }
       await this.ctx.resume();
     } catch (e) {
@@ -94,6 +101,9 @@ export class AudioCore {
     const sprite = this.atlas?.sprites[name];
     if (!sprite || !this.ctx || !this.mixer || !this.buffer || !this.running) return false;
     if (volume <= 0) return false;
+    const key = `sprite:${name}`;
+    const n = this.active.get(key) ?? 0;
+    if (n >= MAX_SAMPLE_VOICES) return false;
     const src = this.ctx.createBufferSource();
     src.buffer = this.buffer;
     const target = this.mixer.node(bus) as GainNodeLike;
@@ -103,7 +113,13 @@ export class AudioCore {
       g.connect(target);
       src.connect(g);
     } else src.connect(target);
-    src.start(this.ctx.currentTime, sprite.start, sprite.duration);
+    src.onended = () => this.active.set(key, Math.max(0, (this.active.get(key) ?? 1) - 1));
+    try {
+      src.start(this.ctx.currentTime, sprite.start, sprite.duration);
+    } catch {
+      return false;
+    }
+    this.active.set(key, n + 1);
     return true;
   }
 
@@ -139,8 +155,46 @@ export class AudioCore {
   /** Spiel-Ereignis → Ton, je nach Position und Tageszeit gedämpft; `x` in Units (Quelle), `listeners` = Kameras der lokalen Spieler, `phase` = `world.cycle.phase`. */
   onEvent(e: GameEvent, x: number | undefined, listeners: readonly Listener[], phase?: string): boolean {
     const cue = cueFor(e);
-    const url = cue && (this.deps.sfx ?? SFX_URLS)[cue.slot];
-    return !!cue && !!url && this.playSample(url, 'sfx', attenuation(x, listeners, cue.global) * nightGain(phase));
+    if (!cue) return false;
+    if (cue.global) this.duck(); // Warnung senkt die Musik (Q16), auch wenn der Warn-Sound fehlt
+    return this.playSlot(cue.slot, attenuation(x, listeners, cue.global) * nightGain(phase));
+  }
+
+  /** Effekt-Slot spielen: aus dem Atlas, sonst als Einzeldatei; fehlt beides, stumm. */
+  playSlot(slot: string, volume = 1): boolean {
+    if (this.atlas?.sprites[slot]) return this.play(slot, 'sfx', volume);
+    const url = (this.deps.sfx ?? SFX_URLS)[slot];
+    return !!url && this.playSample(url, 'sfx', volume);
+  }
+
+  /** Hub-Ausbau (SO6.4): steigt die Hub-Stufe zwischen zwei Snapshots, klingt `sfx:hub` (global); `undefined` vergisst den Stand. */
+  onHubLevel(level: number | undefined): boolean {
+    const raised = hubRaised(this.hubLevel, level);
+    this.hubLevel = level;
+    return raised && this.playSlot('sfx:hub');
+  }
+
+  /**
+   * Senkt den Bus „Musik“ für eine Warnung ab und stellt ihn danach wieder her (Rampen auf dem Ducking-Gain, Werte `DUCK`);
+   * überlappende Warnungen verlängern die Absenkung. `false`, solange gesperrt. Wirft nie.
+   */
+  duck(): boolean {
+    const { ctx, duckNode } = this;
+    if (!ctx || !duckNode || !this.running) return false;
+    const now = ctx.currentTime;
+    const w = extendDuck(this.duckWindow, now);
+    this.duckWindow = w;
+    const g = duckNode.gain;
+    try {
+      g.cancelScheduledValues?.(now);
+      g.setValueAtTime?.(duckGain(now, w), now);
+      g.linearRampToValueAtTime?.(DUCK.level, Math.max(now, w.start + DUCK.attack));
+      g.setValueAtTime?.(DUCK.level, w.end);
+      g.linearRampToValueAtTime?.(1, w.end + DUCK.release);
+    } catch {
+      return false; // Kontext geschlossen: Musik bleibt, wie sie ist
+    }
+    return true;
   }
 
   /** Lädt und dekodiert eine Datei einmal je URL; `false` bei Fehler (geloggt) oder ohne laufenden Kontext. Wirft nie. */
@@ -167,7 +221,7 @@ export class AudioCore {
     const gain = ctx.createGain();
     if (fade > 0) gain.gain.setValueCurveAtTime?.(crossfadeCurves().in, ctx.currentTime, fade);
     src.connect(gain);
-    gain.connect(mixer.node(bus));
+    gain.connect(this.busInput(mixer, bus));
     src.start(ctx.currentTime, 0);
     const voice: Voice = { url, src, gain };
     src.onended = () => {
@@ -178,6 +232,11 @@ export class AudioCore {
     this.voices[bus] = voice;
     if (old) this.release(old, fade > 0 ? fade : QUICK_FADE_SECONDS);
     return true;
+  }
+
+  /** Eingang für ganze Dateien: Musik läuft über den Ducking-Gain, die anderen Busse direkt. */
+  private busInput(mixer: Mixer, bus: Bus): GainNodeLike {
+    return bus === 'music' && this.duckNode ? this.duckNode : mixer.node(bus);
   }
 
   /** Beendet das Stück eines Busses mit kurzem oder langem Ausblenden. */
@@ -222,7 +281,8 @@ export class AudioCore {
 
   /** Lädt die Effekt-Dateien einmal nach der Entsperrung; fehlende oder kaputte Dateien bleiben stumm (ein Logeintrag je Datei). */
   private async preloadEffects(): Promise<void> {
-    const urls = new Set(Object.values(this.deps.sfx ?? SFX_URLS));
+    const inAtlas = this.atlas?.sprites ?? {};
+    const urls = new Set(Object.entries(this.deps.sfx ?? SFX_URLS).filter(([slot]) => !inAtlas[slot]).map(([, url]) => url));
     await Promise.all([...urls].map(async (url) => {
       const buf = await this.loadBuffer(url);
       if (buf !== undefined) this.decoded.set(url, buf);

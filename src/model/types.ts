@@ -56,7 +56,8 @@ export interface Player {
 export type PlayerAction =
   | { action: 'attack' }
   | { action: 'skill'; slot: number; skill: string }
-  | { action: 'learn' }
+  /** `skills`: jetzt lernbare Skill-IDs (B-285); fehlt bei älteren Servern, dann gilt jeder ungelernte Skill. */
+  | { action: 'learn'; skills?: string[] }
   | { action: 'respec' };
 
 export interface Coin {
@@ -237,11 +238,11 @@ export type GameEvent = (
   | { type: 'skillPoint'; player: number; total: number }
   | { type: 'recruited'; player: number }
   | { type: 'armed' }
-  | { type: 'built'; kind: SiteKind }
+  | { type: 'built'; kind: SiteKind; x?: number }
   | { type: 'destroyed'; kind: SiteKind }
   | { type: 'gathered'; resource: ResourceKind; amount: number }
   | { type: 'goldStolen'; player: number; amount: number }
-  | { type: 'playerDown'; player: number }
+  | { type: 'playerDown'; player: number; x?: number }
   | { type: 'castleFallen' }
   | { type: 'arrived'; depth: number; name: string; player?: number }
   | { type: 'hit'; x: number; target: 'player' | 'troop' | 'enemy' | 'castle' | 'site'; id: number; damage: number }
@@ -256,6 +257,7 @@ export type GameEvent = (
   | { type: 'revived'; player: number; x: number }
   | { type: 'disarmed'; kind: string; x: number; cause: string }
   | { type: 'equipmentTaken'; kind: string; x: number }
+  | { type: 'bossSpawned'; boss: string; x: number }
 ) & { stage?: number };
 
 export interface World {
@@ -312,6 +314,8 @@ export interface World {
 
   /** Laufende Nacht-Events (z. B. `fullMoon`, `bloodMoon`) mit Restzeit der Nacht in Sekunden; fehlt = keins. */
   nightEvents?: { id: string; secondsLeft: number }[];
+  /** Schwierigkeitsgrad des Raums (`dev` … `ultra`, docs/protocol.md › Dev-Aktionen); fehlt bei älteren Servern. */
+  grade?: string;
   /** Wechselpunkt zur nächsten Insel (nach dem Endboss): Fortschritt 0..1; fehlt = noch nicht offen. */
   islandSwitch?: { open: boolean; progress: number; ready: boolean };
 

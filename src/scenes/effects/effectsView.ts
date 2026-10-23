@@ -20,10 +20,11 @@ export class StageEffects {
     const cfg = EFFECT_CONFIG[effect.kind];
     const count = 1 + cfg.particles;
     if (this.live + count > MAX_LIVE_EFFECTS) return;
-    this.piece(effect, cfg.color, cfg.radius, cfg.durationMs, 0, 0, cfg.flash);
+    const color = effect.color ?? cfg.color;
+    this.piece(effect, color, cfg.radius, cfg.durationMs, 0, 0, cfg.flash);
     for (let i = 0; i < cfg.particles; i++) {
       const angle = (i / cfg.particles) * Math.PI * 2;
-      this.piece(effect, cfg.color, 5, cfg.durationMs, Math.cos(angle) * cfg.radius * 1.4, Math.sin(angle) * cfg.radius * 1.4 - 12, false);
+      this.piece(effect, color, 5, cfg.durationMs, Math.cos(angle) * cfg.radius * 1.4, Math.sin(angle) * cfg.radius * 1.4 - 12, false);
     }
   }
 

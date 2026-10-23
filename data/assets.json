@@ -2166,6 +2166,66 @@
       ]
     },
     {
+      "id": "sfx:coinGive",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Münze geben",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-handlecoins2.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:buildProgress",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Bau-Fortschritt",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactmining-000.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:revived",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Wiederbeleben durch Mitspieler",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-highup.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:boss",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Boss-Auftritt",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-lowthreetone.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:hub",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Hub-Ausbau",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-threetone2.ogg"
+        }
+      ]
+    },
+    {
       "id": "sfx:ride",
       "art": "sound",
       "kategorie": "sfx",

@@ -49,7 +49,14 @@
             "skill": "taunt"
           },
           {
-            "action": "learn"
+            "action": "learn",
+            "skills": [
+              "fireball",
+              "groupHeal",
+              "heal",
+              "iceWall",
+              "shieldBash"
+            ]
           }
         ]
       },
@@ -73,7 +80,15 @@
             "action": "attack"
           },
           {
-            "action": "learn"
+            "action": "learn",
+            "skills": [
+              "fireball",
+              "groupHeal",
+              "heal",
+              "iceWall",
+              "shieldBash",
+              "taunt"
+            ]
           }
         ]
       },

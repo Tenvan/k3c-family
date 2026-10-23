@@ -66,6 +66,8 @@ Beantwortet von Claude (autonom, 2026-10-22, Default bis 🧑 widerspricht):
 - **Empfehlung: C**, falls die Freischaltung je Unterstufe gewollt ist (K2C-Gefühl: das erste Gebäude erst nach dem ersten Schritt); sonst A. B vermeiden: es vermischt Material-Stufe und Wachstum und bricht die Regel „Linie k ab Hub-Stufe k“.
 - Betroffen bei B/C: `engine/sim/hub_level.go`, `world_lines.go`, `economy_view.go`, `data/hub.json`, `docs/protocol.md`, `testdata/golden/`, Gebäude-Planer (WZ9), Regeltabelle (`task gen:rules`), Balancing (BAL).
 
+**Bestätigung (GEB12):** Default A gilt, Frage-Ticket B-538 (D1, Sprint KR2). Gerüst (Punkt 2): seit GEB12.3 nur ohne Gefahr (`danger`), nachts kein Gerüst; Frage-Ticket B-545 (D8).
+
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
