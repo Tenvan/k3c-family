@@ -145,10 +145,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-539](B-539-entscheidung-wimpel-markierer.md) | SIM | Frage | hoch | eingeplant | KR2 | Entscheidung D2: Wimpel-Farbe bleibt Client-Annäherung, markedBy erst nach GEB10.5 |
 | [B-552](B-552-entscheidung-monarch-animationen.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G7: Monarch-Animationen bleiben aus vorhandenen Frames abgeleitet |
 | [B-554](B-554-entscheidung-musik-stuecke.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S1: Je Musikzustand spielt die erste Präferenz des Slots, die übrigen Kandidaten bleiben bis zur Bestätigung liegen |
-| [B-555](B-555-entscheidung-musik-ende.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S2: Nach dem Fall der Burg bleibt die Musik still, das Siegstück wartet auf einen Sieg-Auslöser |
-| [B-556](B-556-entscheidung-sound-credit-datei.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S3: Die Credits der Sounds bleiben in public/audio/README.md |
-| [B-557](B-557-entscheidung-sound-atlas.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S4: Die Effekte laden aus einem Sound-Atlas, Einzeldateien sind der Rückfall |
-| [B-558](B-558-entscheidung-sound-luecken.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S5: Die Sound-Lücken bekommen vorhandene Kenney-Töne, UI-Klicks und Reiten bleiben offen |
 | [B-559](B-559-frage-form-lernbare-skills.md) | SRV | Frage | hoch | eingeplant | KR5 | Ralf bestätigt die Form der lernbaren Skills im Protokoll |
 | [B-560](B-560-frage-dieb-preset-oder-bauen.md) | REG | Frage | hoch | eingeplant | KR5 | Ralf entscheidet, ob die Dieb-Skills gebaut werden oder das Preset leer bleibt |
 | [B-561](B-561-frage-skill-darstellung-je-klasse.md) | CLI | Frage | hoch | eingeplant | KR5 | Ralf bestätigt die Darstellung der Skills als Ring je Klasse ohne neue Ereignisse |
@@ -162,6 +158,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-570](B-570-camp-stufen-look.md) | DEV | Idee | mittel | offen | – | Das Camp bekommt einen Stufen-Look statt der Grundform |
 | [B-571](B-571-heilplatz-stufen-deutlicher.md) | DEV | Idee | mittel | offen | – | Heilplatz-Stufen sind deutlicher sichtbar (Zelt, Brunnen) |
 | [B-572](B-572-geruest-immer-bei-waitingworker.md) | CLI | Idee | mittel | offen | – | Baugerüst steht immer bei waitingWorker, auch bei Gefahr |
+| [B-573](B-573-musik-niederlage-stueck.md) | CLI | Idee | mittel | offen | – | Nach dem Fall der Burg spielt ein eigenes Niederlage-Stück |
+| [B-574](B-574-sound-reiten-hufschlag.md) | CLI | Idee | niedrig | offen | – | Reiten hat eine Hufschlag-Schleife je Spieler |
+| [B-575](B-575-sound-ui-klicks.md) | CLI | Idee | niedrig | offen | – | Die Menü-Szenen haben UI-Klick-Töne |
+| [B-576](B-576-sound-skill-je-klasse.md) | CLI | Idee | niedrig | offen | – | Jede Klasse hat einen eigenen Skill-Sound |
 
 ## Archiv
 
@@ -532,3 +532,7 @@ Zeile in diesen Abschnitt.
 | [B-550](archiv/B-550-entscheidung-db32-doppelung.md) | REG | Frage | hoch | erledigt | KR3 | Entscheidung G5: Die DB32-Palette bleibt doppelt in pipeline und buildings |
 | [B-551](archiv/B-551-entscheidung-kandidaten-kein-pack.md) | REG | Frage | hoch | erledigt | KR3 | Entscheidung G6: public/grafik/kandidaten/ ist kein Grafik-Pack |
 | [B-553](archiv/B-553-entscheidung-specs-gr8-gr9-gr10.md) | REG | Frage | hoch | erledigt | KR3 | Entscheidung G8: Die autonom freigegebenen Specs GR8, GR9 und GR10 gelten |
+| [B-555](archiv/B-555-entscheidung-musik-ende.md) | REG | Frage | hoch | erledigt | KR4 | Entscheidung S2: Nach dem Fall der Burg bleibt die Musik still, das Siegstück wartet auf einen Sieg-Auslöser |
+| [B-556](archiv/B-556-entscheidung-sound-credit-datei.md) | REG | Frage | hoch | erledigt | KR4 | Entscheidung S3: Die Credits der Sounds bleiben in public/audio/README.md |
+| [B-557](archiv/B-557-entscheidung-sound-atlas.md) | REG | Frage | hoch | erledigt | KR4 | Entscheidung S4: Die Effekte laden aus einem Sound-Atlas, Einzeldateien sind der Rückfall |
+| [B-558](archiv/B-558-entscheidung-sound-luecken.md) | REG | Frage | hoch | erledigt | KR4 | Entscheidung S5: Die Sound-Lücken bekommen vorhandene Kenney-Töne, UI-Klicks und Reiten bleiben offen |

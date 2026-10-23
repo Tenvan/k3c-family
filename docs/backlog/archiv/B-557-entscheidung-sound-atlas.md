@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR4
 - **Projekt:** SND
 - **Erstellt:** 2026-10-22
@@ -54,8 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Bleibt der Sound-Atlas?
-
-- **A (Default, gilt, umgesetzt):** ja; zwei Anfragen für alle Effekte statt einer je Datei. Nach jeder Änderung der Effekt-Slots `task gen:soundatlas` (ein Test meldet einen veralteten Atlas).
-- **B:** Atlas verwerfen, Einzeldateien laden (Client fällt ohnehin darauf zurück, wenn `atlas.json` fehlt).
-- **Wenn 🧑 B wählt:** Atlas-Dateien und Task entfernen, eine kleine Session.
+**Entscheidung 🧑 (KR4.1, 2026-10-23):** A bestätigt, der Sound-Atlas bleibt (Rückfall auf Einzeldateien, wenn `atlas.json` fehlt). Nach jeder Änderung der Effekt-Slots `task gen:soundatlas`. Die Messung am TV (SO6.6) kann ihn nur noch in Frage stellen; dann neues Ticket.

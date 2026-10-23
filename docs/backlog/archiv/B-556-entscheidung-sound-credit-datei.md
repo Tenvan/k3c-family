@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR4
 - **Projekt:** SND
 - **Erstellt:** 2026-10-22
@@ -54,8 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Wo stehen die Credits der Sounds?
-
-- **A (Default, gilt, umgesetzt in SO6.1):** `public/audio/README.md`; die Credits-Seite liest dort die Tabellen mit Kopf `| Ordner |`.
-- **B:** eigene `public/audio/CREDITS.md`; ändert `tools/assetkit/catalog.go` (Workbench und Studio), `src/tools/credits.ts` und `soundKatalog.test.ts`.
-- **Wenn 🧑 B wählt:** Ticket DEV (assetkit) plus CLI, eine Session.
+**Entscheidung 🧑 (KR4.1, 2026-10-23):** A bestätigt, die Credits der Sounds bleiben in `public/audio/README.md`.

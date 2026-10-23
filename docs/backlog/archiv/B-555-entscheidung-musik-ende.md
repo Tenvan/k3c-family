@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR4
 - **Projekt:** SND
 - **Erstellt:** 2026-10-22
@@ -54,9 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Welche Musik läuft im Zustand „Ende“?
-
-- **A (Default, gilt, umgesetzt):** Niederlage = Stille (`MUSIC_SLOTS.ending = null` in `src/audio/music.ts`); das Siegstück bleibt im Slot für den späteren Sieg.
-- **B:** das Siegstück auch bei Niederlage (eine Zeile: `ending: 'music:ende'`).
-- **C:** zwei Zustände Sieg und Niederlage mit eigenem Niederlage-Stück (Kandidatensuche, Slot `music:niederlage`, Automat trennt `victory` und `castleFallen`).
-- **Wenn 🧑 B oder C wählt:** B eine kleine Änderung; C Ticket CLI in SND mit Kandidatensuche.
+**Entscheidung 🧑 (KR4.1, 2026-10-23):** C, Sieg und Niederlage bekommen getrennte Zustände, die Niederlage ein eigenes Stück. Umsetzung: B-573 (CLI, Kandidatensuche, Slot `music:niederlage`). Bis dahin bleibt die Niederlage still (`MUSIC_SLOTS.ending = null`).
