@@ -55,7 +55,7 @@ des Snapshots (`docs/protocol.md` › Wirtschaft). Wie in Kingdom Two Crowns beg
 | Holzhütte am Feuer | 1 | mindestens die Hälfte des Golds, Gold noch offen |
 | Holzburg | 1 | Gold voll (wartet auf Material oder Bauer) |
 | Stein-, Kupfer-, Eisen-, Kristallburg | 2–5 | beliebig |
-| + Baugerüst vor dem Look | 1–4 | Material abgebucht, ein Bauer baut |
+| + Baugerüst vor dem Look | 1–4 | Material abgebucht, der Bauer wartet oder baut (auch bei Gefahr, B-572) |
 
 - Fehlt `hubUpgrade` (letzte Stufe oder älterer Server), zeigt der Hub die Burg seiner Stufe; fehlt die Grafik eines Looks, gilt
   die Burg der Hub-Stufe.

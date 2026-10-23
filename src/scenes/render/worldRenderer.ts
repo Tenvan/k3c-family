@@ -8,7 +8,7 @@ import { BuergerView } from './citizenView';
 import { createRider, updateRider } from './mountView';
 import { campSprite, nodeSprite } from './natureSprites';
 import { objectImage } from './objectView';
-import { PENNANT_MAX_HEIGHT, noteMarkers, pennantColor } from './pennant';
+import { PENNANT_MAX_HEIGHT, markerOf, noteMarkers, pennantColor } from './pennant';
 import { type Plot, isPlantationTree, plantationPlots } from './plantation';
 import { priceTagSites } from './priceTagRules';
 import { TEXT, createCastleView, createSiteView, updateCastleView, updateSiteView } from './siteView';
@@ -268,7 +268,7 @@ export class WorldRenderer {
   private updateNode(v: View, n: ResourceNode): void {
     const i = v.length - 4;
     (v.getAt(i) as Phaser.GameObjects.Rectangle).setVisible(n.marked);
-    (v.getAt(i + 1) as Phaser.GameObjects.Triangle).setVisible(n.marked).setFillStyle(pennantColor(this.markers.get(n.id)));
+    (v.getAt(i + 1) as Phaser.GameObjects.Triangle).setVisible(n.marked).setFillStyle(pennantColor(markerOf(n, this.markers)));
     setBar(v, i + 2, n.progress, n.progress > 0);
     v.setScale(1, 1 - n.progress * 0.3);
   }
@@ -373,6 +373,7 @@ export class WorldRenderer {
     }
     v.setPosition(p.x * U, G);
     v.setAlpha(pick.alpha);
+    if (p.stealthFor) v.setAlpha(Math.min(pick.alpha, 0.35)); // Smoke Bomb: fast durchsichtig (B-577)
 
     setBar(v, 2, p.hp / p.maxHp, p.hp < p.maxHp && p.respawnIn <= 0);
   }

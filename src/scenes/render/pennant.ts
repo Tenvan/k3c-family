@@ -19,6 +19,11 @@ export function pennantColor(player: number | undefined): number {
   return player === undefined || player < 0 ? PENNANT_NEUTRAL : PLAYER_COLORS[player % PLAYER_COLORS.length]!;
 }
 
+/** Spieler des Wimpels: `markedBy` aus dem Snapshot (B-532), sonst die Ereignis-Zuordnung (älterer Server); unbekannt → `undefined` */
+export function markerOf(n: Pick<ResourceNode, 'id' | 'markedBy'>, owners: ReadonlyMap<number, number>): number | undefined {
+  return n.markedBy ?? owners.get(n.id);
+}
+
 type MarkNode = Pick<ResourceNode, 'id' | 'x' | 'marked'> & { kind?: string };
 
 /** Wie `gatherOf` im Server (`engine/sim/world_vein.go`): nur Sammel-Knoten und Adern lassen sich markieren; Busch, Plantage-Baum u. a. nicht */

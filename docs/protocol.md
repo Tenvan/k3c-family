@@ -1,5 +1,7 @@
 # Protokoll v8
 
+**Nachgetragen ohne neue Version (SK3, B-577):** Spieler in `snap`/`delta` tragen optional `stealthFor` (Sekunden unsichtbar nach Smoke Bomb; fehlt = sichtbar). Neue Skill-IDs `backstab`, `smokeBomb` in `skills`, `slots` und `actions`. Ein älterer Client ignoriert das Feld.
+
 **Nachgetragen ohne neue Version (KB3, B-563):** `actions` kennt `{ "action": "lair" }`: ein lebender Spieler ist näher als `lair.noticeUnits` (`data/bosses.json`) am Bau eines wartenden Endbosses (`sim.AtLair`; nicht ausgelöst, nicht besiegt). Ein älterer Client ignoriert den Eintrag.
 
 **Nachgetragen ohne neue Version (WZ27, B-517):** Gegner im Snapshot tragen optional `guard: true` (Wache eines Gegnerlagers, steht am Heimatpunkt, ohne Wirkung auf Wellen). Der Spielstand ist Version 9 (`guardsCleared` je Insel; Version 8 lädt weiter).
@@ -377,6 +379,7 @@ Felder je Spieler in `players[]` von `snap` und `delta`:
 | `slots` | aktive Skills in Slot 1–4 (Index 0–3, `""` = frei) | keine belegt |
 | `cooldowns` | Abklingzeit je Slot in Sekunden (Index wie `slots`) | alle 0 |
 | `attackCooldown` | Sekunden bis zum nächsten Schlag | 0 |
+| `stealthFor` | Sekunden unsichtbar (Smoke Bomb): kein Ziel der Gegner, kein Schaden | 0 |
 | `points` | verfügbare Punkte: Pool der Insel (`skillPoints`) minus gelernte Skills, vom Server berechnet | nie |
 | `actions` | gültige Aktionen am Ort des Spielers, vom Server berechnet, Liste (leer: `[]`) | nie |
 
@@ -431,6 +434,10 @@ Beispiel: `s2c-snapshot-wirtschaft.json` (Insel `w5-wirtschaft`, 3 Stufen, 4 Spi
 gefüllt, Händler da, ein Bauer mit Beruf; die drei Ereignisse in `events` sind von Hand ergänzt, siehe *Ereignisse*).
 Geprüft von `TestWirtschaftZustand`, `TestWirtschaftDelta`, `TestKaempferZustandUndDelta`, `TestWirtschaftBeispiel` und
 `src/online/clientEconomy.test.ts`.
+
+**Knoten-Markierer (B-532):** `nodes[].markedBy` (Spieler-Index, additiv und optional) nennt den Spieler der letzten
+Markier-Münze eines markierten Knotens; fehlt = unbekannt (nie markiert, Plantage, Spielstand ohne Angabe). Der Spielstand
+speichert es additiv als `nodesMarkedBy` (`kind@x` → Index), die Spielstand-Version bleibt. Protokoll-Version unverändert.
 
 ### Fehler-Codes
 

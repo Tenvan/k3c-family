@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { PLAYER_COLORS } from '../../core/constants';
 import type { GameEvent } from '../../model/types';
-import { PENNANT_NEUTRAL, noteMarkers, paidNodeId, pennantColor } from './pennant';
+import { PENNANT_NEUTRAL, noteMarkers, markerOf, paidNodeId, pennantColor } from './pennant';
 
 const node = (id: number, x: number, marked = false) => ({ id, x, marked });
 const mark = (player: number, x: number): GameEvent => ({ type: 'coinGive', player, x, to: 'mark' });
@@ -37,6 +37,13 @@ describe('Wer markiert (GEB10)', () => {
     expect(paidNodeId(nodes, 10.2)).toBe(2);
     expect(paidNodeId([nodes[0]!], 10.2)).toBeNull();
     expect(paidNodeId([nodes[2]!], 12)).toBe(3);
+  });
+
+  it('markedBy aus dem Snapshot gilt vor der Ereignis-Zuordnung (B-532)', () => {
+    const owners = new Map([[1, 0]]);
+    expect(markerOf({ id: 1, markedBy: 1 }, owners)).toBe(1);
+    expect(markerOf({ id: 1 }, owners)).toBe(0);
+    expect(markerOf({ id: 2 }, owners)).toBeUndefined();
   });
 
   it('nur Markier-Münzen zählen, die letzte gewinnt; zwei Spieler an zwei Knoten', () => {

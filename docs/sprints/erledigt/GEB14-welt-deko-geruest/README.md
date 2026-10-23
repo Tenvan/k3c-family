@@ -1,14 +1,14 @@
-# GEB14 · REG · Wald und Höhle dichter, Gerüst bei Wartenden, Knoten-Markierer im Snapshot
+# GEB14 · REG, SIM, CLI · Wald und Höhle dichter, Gerüst bei Wartenden, Knoten-Markierer im Snapshot
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** GEB
-- **Domäne:** REG
-- **Reife:** Entwurf
+- **Domäne:** REG, SIM, CLI
+- **Reife:** bereit
 - **Tickets:** B-531, B-532, B-572
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-23, Revision 1
 
 ## Ausgangslage
 
@@ -57,9 +57,12 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| GEB14.1 | `GEB14.1-level-deko.md` | Umsetzung | autonom | fertig |
+| GEB14.2 | `GEB14.2-markierer-snapshot.md` | Umsetzung | autonom | fertig |
+| GEB14.3 | `GEB14.3-geruest.md` | Umsetzung | autonom | fertig |
 
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-10-23, Claude autonom: AC-01 bis AC-04 umgesetzt, Review (Sonnet, Spielstand und Golden) ohne schwere Befunde; `deco_test.go` nachgeschärft. Golden neu geschrieben (mehr Bäume verschieben den RNG-Strom), `campaign-ausbau` Eingaben angepasst.
+- Offen: `sim_test`-Holz-Balancing zu B-531 nicht gefahren (Balancing zurückgestellt); Anzeige der Büsche im Browser ungeprüft.

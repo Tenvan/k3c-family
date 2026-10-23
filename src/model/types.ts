@@ -46,6 +46,8 @@ export interface Player {
   cooldowns?: number[];
   /** Sekunden bis zum nächsten Schlag, fehlt = 0. */
   attackCooldown?: number;
+  /** Sekunden unsichtbar (Smoke Bomb, B-577), fehlt = sichtbar. */
+  stealthFor?: number;
   /** Verfügbare Skill-Punkte (Pool der Insel minus gelernte Skills), vom Server berechnet. */
   points: number;
   /** Gültige Aktionen am Ort des Spielers, vom Server berechnet. */
@@ -107,6 +109,8 @@ export interface ResourceNode {
   x: number;
   paidGold: number;
   marked: boolean;
+  /** Spieler-Index der letzten Markier-Münze; fehlt = unbekannt (B-532, ältere Server) */
+  markedBy?: number;
   workerId: number | null;
   /** 0..1 */
   progress: number;
