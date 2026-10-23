@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR6
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-10
@@ -57,3 +57,5 @@ nicht relevant
 
 - Messung K4.2 (Intel Core Ultra 7 165H, 2026-10-09): Bosswelle, 4 Spieler, Endboss Phase 2, 1800 Ticks; `delta` ≈ 27 KB/s je Client bei 30 Hz.
 - Herkunft: Abnahme K4.3 (Sprint K4), Verweis aus B-154/AC-05.
+
+**Entscheidung 🧑 (KR6.1, 2026-10-23):** Variante B, Q08 gilt nur für Ereignisse (≤ 200 Byte je Tick und Client). Der Zustand (`snap`, `delta`) wird nur gemessen, ohne Grenze. Umgesetzt: B-154/AC-05 in Revision 3 umformuliert (`TestEventsBudgetJeTick` grün), B-154 `erledigt`; Q08 in `docs/fragenkatalog.md` nachgetragen. Falls der Zustand später doch zu groß wird (Pi 3, WLAN), ist das ein neues Ticket.

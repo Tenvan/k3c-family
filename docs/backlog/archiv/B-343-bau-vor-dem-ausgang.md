@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR6
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-07
@@ -55,3 +55,5 @@ nicht relevant: Die heutige Lage gibt es in jedem Seed.
 ## Notizen
 
 Entstanden in K2.1c (Sprint K2).
+
+**Entscheidung 🧑 (KR6.1, 2026-10-23):** bestätigt. Der Bau bleibt eine Entität an der inneren Kante des Ausgangs-Chunks (`lairX`), ohne eigenes Chunk und ohne Mindestabstand zu Portalen (ein Portal kann 12,5 Units entfernt liegen). Keine Codeänderung; die Session KB1.2 dokumentiert die Vorentscheidung und lässt die drei Tests laufen.

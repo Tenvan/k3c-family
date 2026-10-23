@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** K4
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-02
 - **Spec:** freigegeben
-- **Revision:** 2
-- **Freigabe:** 2026-10-09, 🧑 im Chat, mit Sprint K4 Revision 3
+- **Revision:** 3
+- **Freigabe:** 2026-10-23, 🧑 im Chat (KR6.1, B-386), Revision 3
 
 ## Ausgangslage
 
@@ -53,7 +53,7 @@ Inselwechsel vor dem Sieg über den Endboss oder von einem Spieler allein → Ei
 - **AC-02** Der Raum tauscht die Insel erst, wenn nach dem Sieg über den Endboss alle lebenden Spieler am Wechselpunkt stehen; eine eigene Wechsel-Bestätigung gibt es nicht (Revision 2, Beschluss 🧑 2026-10-09) (Test in `engine/room/`).
 - **AC-03** Der Snapshot einer Bosswelle enthält Boss-HP, Phase und Warnkreis; der Snapshot einer Eventnacht das Event mit Restzeit (Test auf Testdaten).
 - **AC-04** Protokollversion erhöht; ein älterer Client erhält `version` (Test).
-- **AC-05** Bytes je Tick in einer Bosswelle mit 4 Spielern gemessen und in den Notizen festgehalten; höchstens 200 Byte je Tick und Client (Q08); `task check:go` grün.
+- **AC-05** Bytes je Tick in einer Bosswelle mit 4 Spielern gemessen und in den Notizen festgehalten; die Ereignisse eines Ticks liegen bei höchstens 200 Byte je Client (Q08 gilt nur für Ereignisse, Revision 3, Beschluss 🧑 2026-10-23, B-386; Test `TestEventsBudgetJeTick`); der Zustand (`snap`, `delta`) wird nur gemessen, ohne Grenze; `task check:go` grün.
 
 ## Offene Fragen
 
@@ -62,4 +62,5 @@ keine
 ## Notizen
 
 Aus Plan Phase 3 (K4). Setzt K1 bis K3 voraus. Bandbreitenbudget kommt aus B-140.
-AC-05 verschoben (Abnahme K4.3, 2026-10-10): Die Grenze aus Q08 (200 Byte je Tick und Client) hält der Kampf-Zustand nicht ein (`snap` Ø 10,2 KB, `delta` Ø 913 B, Messung in `docs/protocol.md` › Snapshot-Größe). Ob Q08 den ganzen Zustand oder nur Ereignisse umfasst, entscheidet 🧑 in B-386. Bis dahin bleibt dieses Ticket offen und wandert nicht ins Archiv.
+AC-05 verschoben (Abnahme K4.3, 2026-10-10): Die Grenze aus Q08 (200 Byte je Tick und Client) hielt der Kampf-Zustand nicht ein (`snap` Ø 10,2 KB, `delta` Ø 913 B, Messung in `docs/protocol.md` › Snapshot-Größe).
+**Revision 3 (2026-10-23, 🧑 im Chat, KR6.1, Entscheidung zu B-386):** Q08 gilt nur für Ereignisse; AC-05 entsprechend umformuliert. Die Messung von K4.2 (Ereignisse Ø 2,9 B je Tick) belegt das Kriterium.

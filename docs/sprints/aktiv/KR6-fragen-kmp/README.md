@@ -1,14 +1,14 @@
 # KR6 · REG · Kritische Fragen zu KMP
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** KRT
 - **Domäne:** REG
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-343, B-386, B-328
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 88640930
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-23, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
@@ -63,7 +63,7 @@ keine (die Fragen sind der Inhalt der Tickets). Ob K5, LV1 und KB2 weitere offen
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| KR6.1 | `KR6.1-fragen-kmp.md` | Workshop | Mensch | offen |
+| KR6.1 | `KR6.1-fragen-kmp.md` | Workshop | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.

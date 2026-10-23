@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR6
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-06
@@ -54,4 +54,4 @@ Flammen-Fläche umsetzen (welche Werte) oder aus § 1 streichen? 🧑
 
 ## Notizen
 
-–
+**Entscheidung 🧑 (KR6.1, 2026-10-23):** Die Flammen-Fläche wird nicht umgesetzt, die Fähigkeit fällt aus `docs/rules/gegner.md` § 1 weg; der Feuergeist bleibt `ranged` + `kiting`. Die Session KB1.4 passt die Regel an (Vermerk in `gegner.md` § 1 ohne Verweis auf eine Fläche). Keine neue Mechanik, kein Balancing.

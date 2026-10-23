@@ -1,6 +1,6 @@
 # KR6.1 · Workshop: kritische Fragen zu KMP entscheiden (🧑)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** REG
@@ -51,5 +51,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Workshop 2026-10-23 mit Ralf (Claude moderiert und protokolliert).
+
+- **AC-01 geprüft:** B-343, B-386 und B-328 tragen Ralfs Entscheidung unter Notizen.
+- **AC-02 geprüft:** Alle drei bestätigt oder ohne neue Umsetzung entschieden, daher kein neues Ticket nötig und alle `erledigt`: B-343 (Lage und Abstand bleiben), B-386 (Variante B, Q08 nur für Ereignisse), B-328 (Flammen-Fläche aus der Regel gestrichen).
+- **Folgearbeit in vorhandenen Sessions:** KB1.2 dokumentiert B-343, KB1.4 passt `docs/rules/gegner.md` § 1 an (B-328).
+- **Nachgezogen von Claude:** B-154/AC-05 in Revision 3 umformuliert (Freigabe im Chat durch Ralf), B-154 `erledigt` (`go:test` `TestEventsBudgetJeTick` grün); Q08 in `docs/fragenkatalog.md` ergänzt.
+- **Abweichung:** Ob K5, LV1 und KB2 weitere offene Fragen tragen, wurde nicht geprüft.
