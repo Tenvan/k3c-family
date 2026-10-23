@@ -1,14 +1,14 @@
 # BD8 · CLI · Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-566
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-23, Revision 1
 
 ## Ausgangslage
 
@@ -54,6 +54,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| BD8.1 | `BD8.1-welt-auswahl.md` | Umsetzung | autonom | fertig |
 
 Stichpunkte (Reife Entwurf): BD8.1 Auswahl (AC-01); BD8.2 Review.
 

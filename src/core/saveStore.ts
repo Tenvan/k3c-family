@@ -113,3 +113,20 @@ export async function deleteSave(slot: string, fetchFn: typeof fetch = fetch): P
   }
   return result;
 }
+
+/**
+ * Wählbare Welt-IDs des Servers (`GET /api/worlds`, B-566), `standard` zuerst. Fehler, Zeitüberschreitung und unlesbare
+ * Einträge ergeben nur `standard`, damit die Lobby immer eine Auswahl hat.
+ */
+export async function listWorlds(fetchFn: typeof fetch = fetch): Promise<string[]> {
+  const fallback = ['standard'];
+  try {
+    const res = await fetchFn('api/worlds', { signal: AbortSignal.timeout(TIMEOUT_MS), cache: 'no-store' });
+    const data: unknown = res.ok ? await res.json() : [];
+    if (!Array.isArray(data)) return fallback;
+    const ids = data.map((e: unknown) => (typeof e === 'object' && e !== null ? (e as { id?: unknown }).id : undefined)).filter((id): id is string => typeof id === 'string' && id !== '');
+    return ids.length ? [...new Set(ids)] : fallback;
+  } catch {
+    return fallback;
+  }
+}

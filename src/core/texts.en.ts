@@ -20,6 +20,7 @@ export const en: Record<TextKey, string> = {
   'lobby.dialog.grade': 'Grade:  ◀ {value} ▶',
   'lobby.dialog.goal': 'Goal:  ◀ {value} ▶',
   'lobby.dialog.defeat': 'Defeat:  ◀ {value} ▶',
+  'lobby.dialog.world': 'World:  ◀ {value} ▶',
   'lobby.dialog.create': 'Create room',
   'lobby.dialog.cancel': 'Cancel',
   'lobby.dialog.hint': 'Up/down select · left/right or A / Enter change',

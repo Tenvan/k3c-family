@@ -24,6 +24,7 @@ export const de = {
   'lobby.dialog.grade': 'Grad:  ◀ {value} ▶',
   'lobby.dialog.goal': 'Ziel:  ◀ {value} ▶',
   'lobby.dialog.defeat': 'Niederlage:  ◀ {value} ▶',
+  'lobby.dialog.world': 'Welt:  ◀ {value} ▶',
   'lobby.dialog.create': 'Raum anlegen',
   'lobby.dialog.cancel': 'Abbrechen',
   'lobby.dialog.hint': 'Hoch/runter wählen · links/rechts oder A / Enter ändern',

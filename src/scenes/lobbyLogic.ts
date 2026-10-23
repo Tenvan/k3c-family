@@ -7,7 +7,7 @@ import type { SaveInfo } from '../core/saveStore';
 import type { RoomInfo } from '../online/clientProtocol';
 import type { Status } from '../online/clientConnection';
 import { GRADES, createOptions, dialogStep, initialDialog, type DialogInput, type DialogState, type Grade, type RoomOptions } from './lobbyOptions';
-import { nextSaveName, worldOf } from './saveMenu';
+import { DEFAULT_WORLD, nextSaveName, worldOf } from './saveMenu';
 
 export const DEFAULT_SAVE = 'familie';
 const SAVE_FORMAT = /^[a-z0-9-]{1,32}$/;
@@ -170,6 +170,8 @@ export class LobbyFlow {
   private last: LobbyCommand | null = null;
   /** Offener Anlegen-Dialog für „Neuer Spielstand“ (K5.2, B-105), null = Liste */
   dialog: (DialogState & { save: string }) | null = null;
+  /** Wählbare Welten des Servers (`GET /api/worlds`, B-566); bis sie da sind gilt nur `standard` */
+  worlds: readonly string[] = [DEFAULT_WORLD];
 
   /** `dev`: Grad „Dev“ im Dialog anbieten (`devAllowed`) */
   constructor(
@@ -211,23 +213,30 @@ export class LobbyFlow {
 
   /** „Neuer Spielstand“ mit Anlegen-Dialog: öffnet den Dialog statt sofort anzulegen (K5.2) */
   openDialog(name: string): void {
-    this.dialog = { ...initialDialog(), save: name };
+    this.dialog = { ...initialDialog(worldOf(this.params.world)), save: name };
+  }
+
+  /** Welten des Dialogs: die des Servers, dazu eine per `?world=` vorgegebene (der Server prüft sie beim Anlegen) */
+  dialogWorlds(): readonly string[] {
+    const w = this.params.world;
+    return w && !this.worlds.includes(w) ? [...this.worlds, w] : this.worlds;
   }
 
   /** Eingabe im offenen Dialog; „Raum anlegen“ liefert den create-Befehl mit den Optionen, „Abbrechen“ schließt. */
   dialogInput(input: DialogInput): LobbyCommand | null {
     if (!this.dialog) return null;
     const { save } = this.dialog;
-    const { dialog, action } = dialogStep(this.dialog, input, this.dev);
+    const { dialog, action } = dialogStep(this.dialog, input, this.dev, this.dialogWorlds());
     this.dialog = action ? null : { ...dialog, save };
     if (action !== 'create') return null;
     this.retried = false;
     this.retryable = false;
-    return this.remember(this.create(true, save, createOptions(dialog.options)));
+    return this.remember(this.create(true, save, createOptions(dialog.options), dialog.options.world));
   }
 
-  private create(fresh: boolean, save = this.params.save, options?: RoomOptions): LobbyCommand {
-    const { depth, seed, world } = this.params;
+  private create(fresh: boolean, save = this.params.save, options?: RoomOptions, chosen?: string): LobbyCommand {
+    const { depth, seed } = this.params;
+    const world = chosen === undefined ? this.params.world : chosen === DEFAULT_WORLD ? '' : chosen; // `standard` ist der Standard, das Feld entfällt
     return { t: 'create', save, fresh, depth, slots: this.slots(), ...(fresh && seed ? { seed } : {}), ...(fresh && world ? { world } : {}), ...(options ? { options } : {}) };
   }
 
