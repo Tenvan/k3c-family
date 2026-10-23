@@ -55,6 +55,9 @@ const BODY_PX = 40;
 /** Merkt sich den Ort des letzten Baufortschritts je Bauart: Rückfall für Server, deren `built` noch kein `x` trägt (B-217). */
 export type BuildSpots = Map<string, number>;
 
+/** Ort aus dem Ereignis, sonst der Rückfall (hält `effectFor` unter dem Komplexitäts-Limit). */
+const orElse = (x: number | undefined, fallback: () => number | undefined): number | undefined => x ?? fallback();
+
 /**
  * Ereignis → Effekt. Reine Zuordnung: liest nur das Ereignis (und als Rückfall `playerX` für `playerDown` ohne `x`), ändert keinen Spielzustand.
  * Unbekannte Typen und Ereignisse ohne bekannten Ort ergeben `null`.
@@ -68,8 +71,8 @@ export function effectFor(e: GameEvent, playerX: (player: number) => number | un
     case 'coinPickup': return at('coin', e.x);
     case 'coinGive': { const fx = at('coinGive', e.x); return fx && { ...fx, giver: e.player }; }
     case 'buildProgress': spots.set(e.kind, e.x); return at('build', e.x, 60);
-    case 'built': return at('built', e.x ?? spots.get(e.kind), 60);
-    case 'playerDown': return at('down', e.x ?? playerX(e.player));
+    case 'built': return at('built', orElse(e.x, () => spots.get(e.kind)), 60);
+    case 'playerDown': return at('down', orElse(e.x, () => playerX(e.player)));
     // `hit` fehlt nur beim Schlag eines Gegners (Protokoll): nur der Monarch holt aus, der Treffer kommt als eigenes `hit`
     case 'strike': { const fx = e.hit === undefined ? null : at('swing', e.x); return fx && { ...fx, by: e.from }; }
     case 'castFailed': { const fx = at('noTarget', e.x, 90); return fx && { ...fx, text: t('cast.noTarget') }; }

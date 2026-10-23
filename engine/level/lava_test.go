@@ -25,18 +25,24 @@ func TestLavaNichtAufLinien500Seeds(t *testing.T) {
 					continue
 				}
 				lava++
-				mid := c.StartUnits + l.ChunkWidthUnits/2
-				for _, line := range l.Lines {
-					for _, p := range []float64{line.Wall, line.Tower, line.Gate} {
-						if math.Abs(p-mid) <= b.Lava.WidthUnits/2 {
-							t.Fatalf("%s Seed %d: Lava bei %.1f trifft Linie %d bei %.1f", id, seed, mid, line.Index, p)
-						}
-					}
-				}
+				checkLavaAbseitsLinien(t, id, seed, b.Lava.WidthUnits, l, c)
 			}
 		}
 		if lava == 0 {
 			t.Fatalf("%s: kein Lava-Chunk in 500 Seeds", id)
+		}
+	}
+}
+
+// checkLavaAbseitsLinien prüft, dass ein Lava-Chunk keine Mauer-, Turm- oder Tor-Linie trifft.
+func checkLavaAbseitsLinien(t *testing.T, id string, seed int, width float64, l Layout, c Chunk) {
+	t.Helper()
+	mid := c.StartUnits + l.ChunkWidthUnits/2
+	for _, line := range l.Lines {
+		for _, p := range []float64{line.Wall, line.Tower, line.Gate} {
+			if math.Abs(p-mid) <= width/2 {
+				t.Fatalf("%s Seed %d: Lava bei %.1f trifft Linie %d bei %.1f", id, seed, mid, line.Index, p)
+			}
 		}
 	}
 }
