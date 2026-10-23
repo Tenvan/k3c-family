@@ -209,6 +209,7 @@ export const de = {
   'cast.noTarget': 'kein Ziel',
   'hint.learn': 'Skill lernen',
   'hint.respec': 'Skills zurücksetzen',
+  'hint.lair': 'Bau des Endbosses: Ankunft löst ihn aus',
   // Geführte erste Nacht (S6.3): Hinweise über den Objekten, {key} = Glyph
   'guide.coin': 'Hinlaufen: Münze aufheben',
   'guide.pay': '{key} halten: Bauplatz bezahlen',

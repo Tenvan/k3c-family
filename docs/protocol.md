@@ -1,5 +1,7 @@
 # Protokoll v8
 
+**Nachgetragen ohne neue Version (KB3, B-563):** `actions` kennt `{ "action": "lair" }`: ein lebender Spieler ist näher als `lair.noticeUnits` (`data/bosses.json`) am Bau eines wartenden Endbosses (`sim.AtLair`; nicht ausgelöst, nicht besiegt). Ein älterer Client ignoriert den Eintrag.
+
 **Nachgetragen ohne neue Version (WZ27, B-517):** Gegner im Snapshot tragen optional `guard: true` (Wache eines Gegnerlagers, steht am Heimatpunkt, ohne Wirkung auf Wellen). Der Spielstand ist Version 9 (`guardsCleared` je Insel; Version 8 lädt weiter).
 
 **Änderungen gegenüber v7 (BD3.1, Version 8, B-214):** Neue Geräte-Nachrichten `pause` und `resume` ohne Felder, nur im
@@ -384,7 +386,7 @@ Felder je Spieler in `players[]` von `snap` und `delta`:
 (Punkte frei, nicht gelernt, Tier-Gating; nach ID sortiert, von `sim.LearnableSkills` berechnet; fehlt, wenn keiner
 lernbar ist; B-285). Ein älterer Server sendet `learn` ohne `skills` bei `points` > 0, der Client behandelt dann jeden
 ungelernten Skill als lernbar. Zuletzt `{ "action": "respec" }` (lebt, `sim.CanRespec` erlaubt: Tag und an der
-Burg, auch ohne gelernte Skills; B-495). Die Liste nennt keine Taste,
+Burg, auch ohne gelernte Skills; B-495) und `{ "action": "lair" }` (lebt, am Bau des wartenden Endbosses: näher als `lair.noticeUnits`, Ankunft innerhalb `lair.triggerUnits` löst ihn aus; B-563; der Client zeigt eine Zeile ohne Taste). Die Liste nennt keine Taste,
 die Belegung gehört dem Client. Berufe, Tausch, Grabstein und Wiederbeleben kommen später (W5, B-120).
 
 ### Wirtschaft: Hub, Lager, Wartegrund, Händler

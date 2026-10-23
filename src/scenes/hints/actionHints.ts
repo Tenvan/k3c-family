@@ -19,7 +19,8 @@ export type Hint =
   | { action: 'attack' }
   | { action: 'skill'; slot: number; skill: string }
   | { action: 'learn' }
-  | { action: 'respec' };
+  | { action: 'respec' }
+  | { action: 'lair' };
 
 export interface HintView {
   /** Tastensymbol des Geräts als Text */
@@ -34,7 +35,7 @@ export interface HintView {
   weight: number;
 }
 
-const WEIGHT: Record<Hint['action'], number> = { revive: 5, build: 4, pay: 4, attack: 2, skill: 1, learn: 1, respec: 1 };
+const WEIGHT: Record<Hint['action'], number> = { revive: 5, build: 4, pay: 4, attack: 2, skill: 1, learn: 1, respec: 1, lair: 1 };
 
 /** Taste eines Hinweises als Aktion der Belegung (`slotBindings.ts`) */
 function actionOf(h: Hint): Action {
@@ -46,6 +47,8 @@ function actionOf(h: Hint): Action {
     case 'learn':
     case 'respec':
       return 'skillMenu';
+    case 'lair':
+      return 'confirm'; // ungenutzt: hintView() zeigt für den Bau keine Taste
     default:
       return 'confirm';
   }
@@ -66,6 +69,7 @@ function whatOf(h: Hint): string {
 
 /** Aktion → Taste und Text für ein Gerät; Bestätigen-Aktionen (A, Leertaste, Münz-Taste) werden gehalten */
 export function hintView(h: Hint, device: HintDevice): HintView {
+  if (h.action === 'lair') return { key: '', glyph: { key: null, label: '' }, around: [t('hint.lair'), ''], text: t('hint.lair'), weight: WEIGHT.lair }; // keine Taste: Ankunft löst den Endboss aus (B-563)
   const glyph = glyphOf(actionOf(h), device);
   const line = (key: string) => t(h.action === 'revive' || h.action === 'build' || h.action === 'pay' ? 'hint.hold' : 'hint.press', { key, what: whatOf(h) });
   const [before = '', after = ''] = line('\u0000').split('\u0000'); // Platzhalter ohne Leerzeichen, sonst zerfällt der Text

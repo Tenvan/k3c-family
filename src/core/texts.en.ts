@@ -199,6 +199,7 @@ export const en: Record<TextKey, string> = {
   'cast.noTarget': 'no target',
   'hint.learn': 'learn skill',
   'hint.respec': 'reset skills',
+  'hint.lair': 'boss lair: arriving wakes the final boss',
   // Guided first night (S6.3): hints above objects, {key} = glyph
   'guide.coin': 'Walk over it: pick up the coin',
   'guide.pay': 'Hold {key}: pay for the build site',

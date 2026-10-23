@@ -58,7 +58,9 @@ export type PlayerAction =
   | { action: 'skill'; slot: number; skill: string }
   /** `skills`: jetzt lernbare Skill-IDs (B-285); fehlt bei älteren Servern, dann gilt jeder ungelernte Skill. */
   | { action: 'learn'; skills?: string[] }
-  | { action: 'respec' };
+  | { action: 'respec' }
+  /** Der Spieler ist am Bau des wartenden Endbosses (B-563): Ankunft löst ihn aus. */
+  | { action: 'lair' };
 
 export interface Coin {
   id: number;
