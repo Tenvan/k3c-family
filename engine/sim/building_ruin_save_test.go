@@ -36,8 +36,8 @@ func TestRuineImSpielstand(t *testing.T) {
 	destroySite(w, ruinOf(t, w, "smithy"))
 
 	save := isl.ToSave("2026-10-21T10:00:00Z")
-	if save.Version != IslandSaveVersion || IslandSaveVersion != 8 {
-		t.Fatalf("Version %d, erwartet 8", save.Version)
+	if save.Version != IslandSaveVersion || IslandSaveVersion != 9 {
+		t.Fatalf("Version %d, erwartet 9", save.Version)
 	}
 	first := saveJSON(t, save)
 	if strings.Contains(string(first), `"ruin":`) {

@@ -1,14 +1,14 @@
-# WZ27 · REG · Geplante Chunks: Gegnerlager, Ruinen-Kollision, Dateigrenze
+# WZ27 · REG, SIM, CLI · Geplante Chunks: Gegnerlager, Ruinen-Kollision, Dateigrenze
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** WZG
-- **Domäne:** REG
-- **Reife:** Entwurf
+- **Domäne:** REG, SIM, CLI
+- **Reife:** bereit
 - **Tickets:** B-517, B-522, B-523, B-521
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-23, Revision 1
 
 ## Ausgangslage
 
@@ -57,10 +57,13 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| WZ27.1 | `WZ27.1-level-ruinen-lager.md` | Umsetzung | autonom | fertig |
+| WZ27.2 | `WZ27.2-sim-wachen.md` | Umsetzung | autonom | fertig |
+| WZ27.3 | `WZ27.3-types-aufteilen.md` | Umsetzung | autonom | fertig |
 
 Stichpunkte (Reife Entwurf): WZ27.1 Lager (AC-01); WZ27.2 Ruinen (AC-02); WZ27.3 types.ts (AC-03); WZ27.4 Review.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-10-23, Claude autonom: AC-01 bis AC-04 erfüllt, `task check:diff` grün, Review (Sonnet) ohne schwere Befunde; keine Golden-Änderung.
+- Annahmen offen für 🧑: Lagerwerte in `data/guards.json` (Aggro 10 Units, höchstens 4 Wachen), Lager-Grafik und Studio-Vorschau fehlen noch.

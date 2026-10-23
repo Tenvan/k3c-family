@@ -1,6 +1,7 @@
 package level
 
 import (
+	"math"
 	"strconv"
 
 	"k3c/engine/rng"
@@ -76,6 +77,9 @@ func (g *gen) chunkStream(c PlannedChunk) *rng.Rng {
 	return rng.New(g.b.ID + ":" + g.seed + ":chunk:" + strconv.Itoa(c.Slot))
 }
 
+// clearTries ist die Zahl der Neuwürfe, bevor eine Ressource an den Rand der Ruinen-Sperrzone gesetzt wird.
+const clearTries = 32
+
 // plannedEntities setzt die Objekte eines geplanten Chunks: feste Objekte oder die Ressourcen der Chunk-Art aus dem
 // eigenen Strom.
 func (g *gen) plannedEntities(c Chunk, pc PlannedChunk) []Entity {
@@ -90,8 +94,35 @@ func (g *gen) plannedEntities(c Chunk, pc PlannedChunk) []Entity {
 	resources, _ := g.b.ResourcesPerChunk.Get(c.Kind)
 	for _, res := range resources {
 		for range r.Int(res.Value[0], res.Value[1]) {
-			out = append(out, Entity{Kind: res.Key, X: g.inside(r, c)})
+			out = append(out, Entity{Kind: res.Key, X: g.clearOfRuin(r, c, pc)})
 		}
 	}
 	return out
+}
+
+// clearOfRuin ist eine Position wie inside, die ≥ ruinGapUnits von der Ruine des Chunks entfernt liegt (B-522). Ohne
+// Ruine ist es genau ein Wurf wie bisher; sonst wird bis zu clearTries-mal neu gewürfelt (gleicher Strom, deterministisch)
+// und zuletzt an den nächsten erlaubten Rand der Ruine gesetzt.
+func (g *gen) clearOfRuin(r *rng.Rng, c Chunk, pc PlannedChunk) float64 {
+	x := g.inside(r, c)
+	if len(pc.Buildings) == 0 {
+		return x
+	}
+	ruin := c.StartUnits + pc.Buildings[0].At
+	for range clearTries {
+		if math.Abs(x-ruin) >= ruinGapUnits {
+			return x
+		}
+		x = g.inside(r, c)
+	}
+	if math.Abs(x-ruin) >= ruinGapUnits {
+		return x
+	}
+	if lo := ruin - ruinGapUnits; lo >= c.StartUnits+edgeGapUnits && x < ruin {
+		return lo
+	}
+	if hi := ruin + ruinGapUnits; hi <= c.StartUnits+g.cw-edgeGapUnits {
+		return hi
+	}
+	return ruin - ruinGapUnits
 }

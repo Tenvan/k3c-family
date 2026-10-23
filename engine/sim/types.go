@@ -186,6 +186,8 @@ type Enemy struct {
 	// Boss: Miniboss oder Endboss (boss.go); Kind ist dann die Boss-ID aus data/bosses.json, AoeIn zählt bis zur
 	// nächsten Fähigkeit. Bosse fliehen nie.
 	Boss bool `json:"boss,omitempty"`
+	// Guard: Wache eines Gegnerlagers (enemies_guard.go); steht am Heimatpunkt HomeX, gehört zu keiner Welle.
+	Guard bool `json:"guard,omitempty"`
 }
 
 // Storm ist ein laufender Lightning Storm (skills_caster.go): PerSecond Schaden je Sekunde an Gegnern im Radius um X,
@@ -331,6 +333,10 @@ type World struct {
 	island *Island
 	// castleFellNight: letzte Nacht, in der die Burg fiel (Vollmond-Belohnung, events_moon.go); nicht im Spielstand.
 	castleFellNight int
+	// guardsSpawned: Die Wachen der Planung sind aufgestellt (erster Tick); guardsCleared: geräumte Lager `kind@x`
+	// (enemies_guard.go, im Spielstand als HubSave.GuardsCleared).
+	guardsSpawned bool
+	guardsCleared map[string]bool
 }
 
 func (w *World) newID() int {

@@ -1,10 +1,10 @@
-# B-521 · src/model/types.ts liegt über der Dateigrenze von 400 Zeilen
+# B-522 · Zufalls-Ressourcen eines geplanten Chunks können auf seiner Ruine liegen
 
-- **Domäne:** CLI
-- **Typ:** Schuld
-- **Prio:** niedrig
+- **Domäne:** SIM
+- **Typ:** Problem
+- **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ27
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-21
@@ -14,11 +14,11 @@
 
 ## Ausgangslage
 
-`src/model/types.ts` hat 414 Zeilen (vor WZ14 412), über der Grenze von 400 Zeilen je Datei (CLAUDE.md › Regeln). Gefunden im Sprint-Review WZ14.8 (L1).
+Ein geplanter Chunk ohne feste `objects` erzeugt seinen Inhalt aus dem Seed bzw. Zufall (`engine/level`). Dabei kann eine Ressource (Baum, Fels) auf der Lage seiner Ruine liegen (B-468, offen vermerkt in WZ14.2 und WZ14.3, Sprint-Review WZ14.8 L3; vermutet, nicht nachgestellt).
 
 ## Ziel
 
-Die Datei liegt wieder unter 400 Zeilen, z. B. durch Aufteilen nach Bereichen (Welt, Wirtschaft, Kampf), ohne Typen zu ändern.
+Zufalls-Ressourcen halten Abstand zur Ruine ihres Chunks wie zu festen Objekten; ohne Planung bleiben die Golden-Daten byte-gleich.
 
 ## Beteiligte und Zielgruppen
 

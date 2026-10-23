@@ -1,6 +1,8 @@
 package level
 
 import (
+	"math"
+	"strconv"
 	"encoding/json"
 	"os"
 	"reflect"
@@ -177,6 +179,58 @@ func TestRuineImLevelOhneWuerfe(t *testing.T) {
 		b.Ruins = nil
 		if !reflect.DeepEqual(a, b) {
 			t.Errorf("Seed %q: die Ruine ändert das Level", seed)
+		}
+	}
+}
+
+// B-523: Eine Ruine auf der Lage eines Hub-Platzes gleicher Art wäre für die Sim ein Hub-Platz (isRuin: Art und Lage).
+func TestRuineAufHubPlatzGleicherArtWirdAbgelehnt(t *testing.T) {
+	g := geometryOf(biome(t, "forest"), 0)
+	cases := map[string]struct {
+		p       placed
+		wantErr bool
+	}{
+		"Rüstkammer rechts":   {placed{kind: "armory", slot: 1, at: 25, dist: 40}, true},
+		"Werkstatt links":     {placed{kind: "workshop", slot: -1, at: 25, dist: 16}, true},
+		"Lager (Insel-Platz)": {placed{kind: "storage", slot: -1, at: 25, dist: 26}, true},
+		"andere Art":          {placed{kind: "tavern", slot: 1, at: 25, dist: 40}, false},
+		"andere Seite":        {placed{kind: "workshop", slot: 1, at: 25, dist: 16}, false},
+	}
+	for name, c := range cases {
+		err := checkRuinPlace(c.p, g, nil)
+		if c.wantErr && (err == nil || !strings.Contains(err.Error(), "Hub-Platz")) || !c.wantErr && err != nil {
+			t.Errorf("%s: Fehler %v, erwartet Fehler %v", name, err, c.wantErr)
+		}
+	}
+}
+
+// B-522: Zufalls-Ressourcen halten Abstand zur Ruine ihres Chunks; ohne Ruine bleibt der Inhalt unverändert.
+func TestZufallsRessourcenHaltenAbstandZurRuine(t *testing.T) {
+	forest := biome(t, "forest")
+	for _, at := range []float64{10, 25, 40} {
+		plan := []PlannedChunk{withRuin(p(3, "forest"), "smithy", at)}
+		for seed := range 300 {
+			l, err := GenerateWith(forest, strconv.Itoa(seed), Options{Planned: plan})
+			if err != nil {
+				t.Fatalf("Seed %d: %v", seed, err)
+			}
+			if len(l.Ruins) != 1 {
+				t.Fatalf("Seed %d: %d Ruinen", seed, len(l.Ruins))
+			}
+			start := l.HubCenterUnits + 50 + 2*forest.ChunkWidthUnits
+			n := 0
+			for _, e := range l.Entities {
+				if e.X < start || e.X >= start+forest.ChunkWidthUnits {
+					continue
+				}
+				n++
+				if math.Abs(e.X-l.Ruins[0].X) < ruinGapUnits {
+					t.Fatalf("Seed %d, Ruine bei %v: %s bei %v liegt auf der Ruine", seed, at, e.Kind, e.X-start)
+				}
+			}
+			if n == 0 {
+				t.Fatalf("Seed %d: der Chunk enthält keine Ressourcen", seed)
+			}
 		}
 	}
 }

@@ -1,5 +1,7 @@
 # Protokoll v8
 
+**Nachgetragen ohne neue Version (WZ27, B-517):** Gegner im Snapshot tragen optional `guard: true` (Wache eines Gegnerlagers, steht am Heimatpunkt, ohne Wirkung auf Wellen). Der Spielstand ist Version 9 (`guardsCleared` je Insel; Version 8 lädt weiter).
+
 **Änderungen gegenüber v7 (BD3.1, Version 8, B-214):** Neue Geräte-Nachrichten `pause` und `resume` ohne Felder, nur im
 Raum (sonst `bad_request`). `pause` hält das Gerät an, `resume` setzt es fort; ein zweites `pause` und ein `resume` ohne
 Pause ändern nichts. Wirkung ([`rules/bedienung.md`](rules/bedienung.md) § 1): Ist das pausierte Gerät das einzige
@@ -601,6 +603,14 @@ wechselnde Eingaben. Je Tick `JSON.stringify` des vollen Zustands und eines Delt
 ≈ 120 KB/s. Ein Raum mit 4 Geräten sendet mit `delta` ≈ 0,25 MB/s. Für WLAN im Heimnetz reicht JSON mit `delta`; ein
 Binärformat ist nicht nötig. Das Delta wird von vielen Nachkommastellen (`x`, `time`) und ganzen geänderten
 Einträgen bestimmt; Runden auf 2 Stellen wäre die nächste Stellschraube, falls die Messung am Pi (SP11) es verlangt.
+
+## HTTP: Welten
+
+**Nachgetragen ohne neue Version (BD8.1, B-566):** `GET /api/worlds` (ohne Token, nur lesend) nennt die Welten, die ein neuer
+Spielstand wählen darf, als Array `[{ "id": "standard", "name": "Standard" }]`: die Standard-Welt immer zuerst, im Dev-Mode
+dazu jede gültige Welt-Datei aus `K3C_WORLDS_DIR` nach ID sortiert (ungültige Dateien fehlen). Andere Methoden → `405`.
+Die Lobby wählt daraus die Welt für `create.world`; die Regel „andere Welt nur im Dev-Mode“ bleibt. Das WebSocket-Protokoll
+und seine Version (8) ändern sich nicht.
 
 ## HTTP: Spielstände
 

@@ -47,7 +47,7 @@ func TestSpielstandV8WeltUndInsel(t *testing.T) {
 	}
 	s := next.ToSave("2026-10-19T20:00:00Z")
 	first := saveJSON(t, s)
-	if s.Version != 8 || s.World != "nordmeer" || s.IslandID != "eisinsel" || !bytes.Contains(first, []byte(`"world":"nordmeer","islandId":"eisinsel"`)) || bytes.Contains(first, []byte(`"island":`)) {
+	if s.Version != IslandSaveVersion || s.World != "nordmeer" || s.IslandID != "eisinsel" || !bytes.Contains(first, []byte(`"world":"nordmeer","islandId":"eisinsel"`)) || bytes.Contains(first, []byte(`"island":`)) {
 		t.Fatalf("Version %d, Welt %q, Insel %q: %s", s.Version, s.World, s.IslandID, first)
 	}
 	parsed, err := ParseIslandSave(first)

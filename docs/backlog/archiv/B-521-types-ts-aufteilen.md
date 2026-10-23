@@ -1,10 +1,10 @@
-# B-523 · Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt
+# B-521 · src/model/types.ts liegt über der Dateigrenze von 400 Zeilen
 
-- **Domäne:** SIM
+- **Domäne:** CLI
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ27
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-21
@@ -14,11 +14,11 @@
 
 ## Ausgangslage
 
-`isRuin` (`engine/sim/building_ruin.go`) erkennt eine Ruine nur an Art und genauer Lage (`kind@x`). Stünde ein Hub-Platz derselben Art auf derselben Lage, gälte er als Ruine; heute verhindert das nur der Abstand der Plätze (Sprint-Review WZ14.8 L4).
+`src/model/types.ts` hat 414 Zeilen (vor WZ14 412), über der Grenze von 400 Zeilen je Datei (CLAUDE.md › Regeln). Gefunden im Sprint-Review WZ14.8 (L1).
 
 ## Ziel
 
-Die Prüfung der Planung (`checkRuinPlace` in `engine/level`) lehnt eine Ruine auf der Lage eines Hub- oder Insel-Platzes ab, sodass die Annahme abgesichert ist.
+Die Datei liegt wieder unter 400 Zeilen, z. B. durch Aufteilen nach Bereichen (Welt, Wirtschaft, Kampf), ohne Typen zu ändern.
 
 ## Beteiligte und Zielgruppen
 

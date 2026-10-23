@@ -1,10 +1,10 @@
-# B-522 · Zufalls-Ressourcen eines geplanten Chunks können auf seiner Ruine liegen
+# B-523 · Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt
 
 - **Domäne:** SIM
-- **Typ:** Problem
-- **Prio:** mittel
+- **Typ:** Schuld
+- **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ27
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-21
@@ -14,11 +14,11 @@
 
 ## Ausgangslage
 
-Ein geplanter Chunk ohne feste `objects` erzeugt seinen Inhalt aus dem Seed bzw. Zufall (`engine/level`). Dabei kann eine Ressource (Baum, Fels) auf der Lage seiner Ruine liegen (B-468, offen vermerkt in WZ14.2 und WZ14.3, Sprint-Review WZ14.8 L3; vermutet, nicht nachgestellt).
+`isRuin` (`engine/sim/building_ruin.go`) erkennt eine Ruine nur an Art und genauer Lage (`kind@x`). Stünde ein Hub-Platz derselben Art auf derselben Lage, gälte er als Ruine; heute verhindert das nur der Abstand der Plätze (Sprint-Review WZ14.8 L4).
 
 ## Ziel
 
-Zufalls-Ressourcen halten Abstand zur Ruine ihres Chunks wie zu festen Objekten; ohne Planung bleiben die Golden-Daten byte-gleich.
+Die Prüfung der Planung (`checkRuinPlace` in `engine/level`) lehnt eine Ruine auf der Lage eines Hub- oder Insel-Platzes ab, sodass die Annahme abgesichert ist.
 
 ## Beteiligte und Zielgruppen
 

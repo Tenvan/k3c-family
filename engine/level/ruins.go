@@ -117,6 +117,12 @@ func checkRuinPlace(p placed, g geometry, near []placed) error {
 	if p.at < edge || p.at > g.cw-edge {
 		return fmt.Errorf("die Ruine %s bei %v: mindestens %v Units Abstand zur Chunk-Grenze (%v…%v)", p.kind, p.at, edge, edge, g.cw-edge)
 	}
+	for _, h := range hubSites {
+		// isRuin (sim) erkennt eine Ruine an Art und Lage: ein Hub-Platz gleicher Art auf derselben Lage wäre eine (B-523).
+		if h.kind == p.kind && h.offset == p.key().x {
+			return fmt.Errorf("die Ruine %s liegt auf der Lage des Hub-Platzes gleicher Art (%v Units vom Hub)", p.kind, h.offset)
+		}
+	}
 	for _, site := range farmOffsets {
 		if math.Abs(p.dist-site) < ruinGapUnits {
 			return fmt.Errorf("die Ruine %s %v Units vom Hub, weniger als %d Units vom Farm-Weltplatz (%v)", p.kind, p.dist, ruinGapUnits, site)

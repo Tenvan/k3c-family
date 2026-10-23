@@ -26,15 +26,14 @@ type PlannedObject struct {
 }
 
 // PlannedChunk ist ein geplanter Chunk. Slot zählt relativ zu den Hub-Chunks (−n links, +n rechts, nie 0).
-// Buildings trägt höchstens eine Ruine (§ 8, B-468); Enemies ist für die Gegnerlager (B-517) im Format reserviert und
-// wird noch abgelehnt.
+// Buildings trägt höchstens eine Ruine (§ 8, B-468); Enemies sind die Wachen des Gegnerlagers (§ 9, B-517).
 type PlannedChunk struct {
 	Slot      int               `json:"slot"`
 	Kind      string            `json:"kind"`
 	Seed      string            `json:"seed,omitempty"`
 	Objects   []PlannedObject   `json:"objects,omitempty"`
 	Buildings []PlannedBuilding `json:"buildings,omitempty"`
-	Enemies   json.RawMessage   `json:"enemies,omitempty"`
+	Enemies   []PlannedEnemy    `json:"enemies,omitempty"`
 }
 
 // UnmarshalJSON liest streng: ein unbekanntes Feld (z. B. ein Tippfehler wie `object`) ist ein Fehler (fail closed).
@@ -160,6 +159,9 @@ func ValidatePlanFor(b Biome, plan []PlannedChunk, lines WallLines, count int) e
 		if err != nil {
 			return fmt.Errorf("auf Platz %+d: %w", c.Slot, err)
 		}
+		if err := checkGuards(c, b, g, lines); err != nil {
+			return fmt.Errorf("auf Platz %+d: %w", c.Slot, err)
+		}
 		if err := markSpots(spots, items, ruins); err != nil {
 			return fmt.Errorf("auf Platz %+d: %w", c.Slot, err)
 		}
@@ -197,15 +199,8 @@ func checkChunk(c PlannedChunk, b Biome, g geometry, seen map[int]bool) error {
 		return fmt.Errorf("doppelt geplant")
 	case !hasChunkKind(b, c.Kind):
 		return fmt.Errorf("unbekannte Chunk-Art %q", c.Kind)
-	case notEmpty(c.Enemies):
-		return fmt.Errorf("planbar sind Art, Seed, Objekte und eine Ruine; Gegnerlager sind noch nicht unterstützt (B-517)")
 	}
 	return nil
-}
-
-func notEmpty(raw json.RawMessage) bool {
-	t := bytes.TrimSpace(raw)
-	return len(t) > 0 && string(t) != "null" && string(t) != "[]" && string(t) != "{}"
 }
 
 // checkObjects prüft Art, Lage und Eindeutigkeit der Objekte eines Chunks. Ein Ereignis-Chunk ohne Objektliste trägt

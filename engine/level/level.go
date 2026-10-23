@@ -41,6 +41,8 @@ type Layout struct {
 	Lines []WallLine `json:"-"`
 	// Ruins sind die Ruinen der geplanten Chunks (§ 8, B-468); Plätze der Sim, nicht Teil der level-Nachricht.
 	Ruins []Ruin `json:"-"`
+	// Guards sind die Wachen der Gegnerlager geplanter Chunks (§ 9, B-517); Gegner der Sim, nicht Teil der level-Nachricht.
+	Guards []Guard `json:"-"`
 }
 
 // eventKinds in fester Reihenfolge wie `EVENT_KINDS` in TS.
@@ -118,7 +120,7 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 	return Layout{
 		Seed: seed, BiomeID: b.ID, WidthUnits: float64(len(chunks)) * g.cw, ChunkWidthUnits: g.cw,
 		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: wallLines,
-		Ruins: g.ruinsOf(chunks),
+		Ruins: g.ruinsOf(chunks), Guards: g.guardsOf(chunks),
 	}, nil
 }
 

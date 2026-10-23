@@ -54,6 +54,8 @@ type HubSave struct {
 	// nicht mit den aktuellen Daten; ohne Eintrag gilt reiner Zufall in der Länge des Bioms (kein Format-Sprung).
 	Planned    []level.PlannedChunk `json:"planned,omitempty"`
 	ChunkCount int                  `json:"chunkCount,omitempty"`
+	// Geräumte Gegnerlager (Version 9, enemies_guard.go): Schlüssel `kind@x` der besiegten Wachen, sortiert; sie kommen nie wieder.
+	GuardsCleared []string `json:"guardsCleared,omitempty"`
 }
 
 // PlayerSave ist das Gold eines Spielerplatzes.
@@ -147,6 +149,7 @@ func hubSave(w, base *World) HubSave {
 	h.NodesGone = without(keys(base.Nodes, nodeKey), keys(w.Nodes, nodeKey))
 	h.NodesMarked = keys(w.Nodes, func(n *ResourceNode) (string, bool) { return key(n.Kind, n.X), n.Marked })
 	h.PickupsTaken = without(keys(base.Pickups, pickupKey), keys(w.Pickups, pickupKey))
+	h.GuardsCleared = guardsClearedKeys(w)
 	return h
 }
 
@@ -274,6 +277,7 @@ func applyHub(w *World, h HubSave) {
 		}
 	}
 	w.Pickups = pickups
+	applyGuards(w, h)
 	applyPlots(w, h) // nach den Knoten: die Bäume der Plantage kommen dazu
 }
 

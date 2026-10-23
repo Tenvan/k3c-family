@@ -46,7 +46,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ24 | Geplante Chunks in Simulation und Spielstand: Regeln geklärt, Planung im Stand, eine Prüfung der Inselgröße | erledigt |
 | WZ25 | Nachträge zum Server-Neustart: Räume bleiben offen, Assets ohne Build, Werkzeuge passen dazu | erledigt |
 | WZ26 | CI rot beheben, Prüf- und Planungswerkzeuge härten | erledigt |
-| WZ27 | Geplante Chunks: Gegnerlager, Ruinen-Kollision, Dateigrenze | geplant |
+| WZ27 | Geplante Chunks: Gegnerlager, Ruinen-Kollision, Dateigrenze | erledigt |
 
 ## Nicht-Ziele
 

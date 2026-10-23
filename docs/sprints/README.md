@@ -42,14 +42,11 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WZ27 | REG | WZG | Geplante Chunks: Gegnerlager, Ruinen-Kollision, Dateigrenze | – | Entwurf | `geplant/WZ27-chunks-lager-ruine/` |
-| BD8 | CLI | BED | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl | – | Entwurf | `geplant/BD8-lobby-welt-auswahl/` |
 | GEB13 | REG | GEB | Gebäude-Stufen in den Daten und Stufen-Look für Plantage, Camp, Heilplatz | – | Entwurf | `geplant/GEB13-gebaeude-stufen-look/` |
 | GEB14 | REG | GEB | Wald und Höhle dichter, Gerüst bei Wartenden, Knoten-Markierer im Snapshot | – | Entwurf | `geplant/GEB14-welt-deko-geruest/` |
 | SV2 | SRV | WRT | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | – | Entwurf | `geplant/SV2-voll-ausbau-regelkonform/` |
 | W13 | CLI | WRT | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | – | Entwurf | `geplant/W13-morgengrauen-licht-client/` |
 | W12 | SIM | WRT | Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln | – | Entwurf | `geplant/W12-morgengrauen-phase/` |
-| SO7 | CLI | SND | Niederlage-Stück, Hufschlag, UI-Klicks und Skill-Sounds je Klasse | – | Entwurf | `geplant/SO7-sound-ergaenzungen/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | Entwurf | `geplant/PM1-leistung-messen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | bereit | `geplant/PF1-splitscreen-leistung/` |
 | NT1 | SRV | LST | Stabile Tests, Warteschlange und Snapshot-Budget | – | Entwurf | `geplant/NT1-netz-tests-stabil/` |
@@ -234,3 +231,6 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RM1 | Raum-Pause im Couch-Raum und lernbare Skills vom Server | `erledigt/RM1-pause-lernbare-skills/` |
 | WZ26 | CI rot beheben, Prüf- und Planungswerkzeuge härten | `erledigt/WZ26-ci-check-tooling/` |
 | W14 | Spielstand-Kommentare nach W7.2 nachziehen | `erledigt/W14-spielstand-kommentare/` |
+| SO7 | Niederlage-Stück, Hufschlag, UI-Klicks und Skill-Sounds je Klasse | `erledigt/SO7-sound-ergaenzungen/` |
+| BD8 | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl | `erledigt/BD8-lobby-welt-auswahl/` |
+| WZ27 | Geplante Chunks: Gegnerlager, Ruinen-Kollision, Dateigrenze | `erledigt/WZ27-chunks-lager-ruine/` |
