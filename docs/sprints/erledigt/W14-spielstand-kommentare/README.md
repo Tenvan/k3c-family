@@ -56,7 +56,6 @@ keine
 |---|---|---|---|---|
 | W14.1 | `W14.1-kommentare-pruefen.md` | Umsetzung | autonom | fertig |
 
-Stichpunkte (Reife Entwurf): W14.1 Kommentare (AC-01), ein Commit ohne Review (nur Kommentare).
 
 ## Abnahme
 

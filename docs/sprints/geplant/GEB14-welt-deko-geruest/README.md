@@ -58,7 +58,6 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 
-Stichpunkte (Reife Entwurf): GEB14.1 Level-Deko (AC-01); GEB14.2 Gerüst (AC-02); GEB14.3 Snapshot (AC-03); GEB14.4 Review.
 
 ## Abnahme
 

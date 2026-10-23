@@ -131,17 +131,14 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-552](B-552-entscheidung-monarch-animationen.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G7: Monarch-Animationen bleiben aus vorhandenen Frames abgeleitet |
 | [B-554](B-554-entscheidung-musik-stuecke.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S1: Je Musikzustand spielt die erste Präferenz des Slots, die übrigen Kandidaten bleiben bis zur Bestätigung liegen |
 | [B-562](B-562-studio-monarch-skill-ring.md) | DEV | Idee | niedrig | eingeplant | SK3 | Die Monarch-Seite des Studios zeigt den Skill-Ring des Spiels statt der Lücke |
-| [B-563](B-563-endboss-bau-in-aktionsliste.md) | SRV | Idee | niedrig | eingeplant | KB3 | Die Aktionsliste nennt den Bau-Auslöser des Endbosses, das Overlay zeigt ihn |
-| [B-564](B-564-dev-seite-spiel-mit-dev-parameter.md) | PLAT | Idee | niedrig | eingeplant | KB3 | Die Entwicklerseite öffnet das Spiel mit Debug-Overlay (?dev=1) |
-| [B-565](B-565-messung-wellenabstand-mit-adern.md) | REG | Schuld | niedrig | eingeplant | KB3 | Der Wellenabstand unter Tage mit besetzten Adern ist über 100 Seeds gemessen |
 | [B-568](B-568-plantage-pappel-niedrig.md) | DEV | Idee | mittel | eingeplant | GEB13 | Plantage bekommt eine eigene niedrige Pappel vor der Farm |
-| [B-569](B-569-gebaeude-eigene-stufen.md) | REG | Idee | mittel | eingeplant | GEB13 | Gebäude bekommen eigene Stufen (levels je Gebäude) |
 | [B-570](B-570-camp-stufen-look.md) | DEV | Idee | mittel | eingeplant | GEB13 | Das Camp bekommt einen Stufen-Look statt der Grundform |
 | [B-571](B-571-heilplatz-stufen-deutlicher.md) | DEV | Idee | mittel | eingeplant | GEB13 | Heilplatz-Stufen sind deutlicher sichtbar (Zelt, Brunnen) |
 | [B-572](B-572-geruest-immer-bei-waitingworker.md) | CLI | Idee | mittel | eingeplant | GEB14 | Baugerüst steht immer bei waitingWorker, auch bei Gefahr |
 | [B-576](B-576-sound-skill-je-klasse.md) | CLI | Idee | niedrig | offen | – | Jede Klasse hat einen eigenen Skill-Sound |
 | [B-577](B-577-dieb-skills-bauen.md) | SIM | Idee | mittel | eingeplant | SK3 | Der Dieb bekommt Backstab und Smoke Bomb |
 | [B-578](B-578-skill-effekt-je-skill.md) | CLI | Idee | mittel | eingeplant | SK3 | Jeder Skill hat einen eigenen Effekt statt des Rings je Klasse |
+| [B-579](B-579-wellenabstand-adern-korridor.md) | REG | Problem | mittel | offen | – | Wellenabstand unter Tage mit besetzten Adern liegt über dem Korridor 4–12 Minuten |
 
 ## Archiv
 
@@ -538,3 +535,7 @@ Zeile in diesen Abschnitt.
 | [B-522](archiv/B-522-ressourcen-auf-ruine.md) | SIM | Problem | mittel | erledigt | WZ27 | Zufalls-Ressourcen eines geplanten Chunks können auf seiner Ruine liegen |
 | [B-523](archiv/B-523-ruine-kollision-hub-platz.md) | SIM | Schuld | niedrig | erledigt | WZ27 | Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt |
 | [B-521](archiv/B-521-types-ts-aufteilen.md) | CLI | Schuld | niedrig | erledigt | WZ27 | src/model/types.ts liegt über der Dateigrenze von 400 Zeilen |
+| [B-563](archiv/B-563-endboss-bau-in-aktionsliste.md) | SRV | Idee | niedrig | erledigt | KB3 | Die Aktionsliste nennt den Bau-Auslöser des Endbosses, das Overlay zeigt ihn |
+| [B-564](archiv/B-564-dev-seite-spiel-mit-dev-parameter.md) | PLAT | Idee | niedrig | erledigt | KB3 | Die Entwicklerseite öffnet das Spiel mit Debug-Overlay (?dev=1) |
+| [B-565](archiv/B-565-messung-wellenabstand-mit-adern.md) | REG | Schuld | niedrig | erledigt | KB3 | Der Wellenabstand unter Tage mit besetzten Adern ist über 100 Seeds gemessen |
+| [B-569](archiv/B-569-gebaeude-eigene-stufen.md) | REG | Idee | mittel | erledigt | GEB13 | Gebäude bekommen eigene Stufen (levels je Gebäude) |

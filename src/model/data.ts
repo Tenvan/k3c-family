@@ -23,6 +23,8 @@ export interface BuildingData {
   archerSlots?: number;
   rangeBonus?: number;
   bowRack?: number;
+  /** Ausbau-Stufen am selben Platz (B-569); fehlt: keine eigenen Stufen */
+  levels?: { cost: Cost; hp: number; buildSeconds: number }[];
 }
 
 export interface TroopData {

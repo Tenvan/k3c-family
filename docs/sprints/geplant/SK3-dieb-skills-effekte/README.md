@@ -57,7 +57,6 @@ Verhalten der Gegner gegen Unsichtbare (kein Ziel?), entscheidet 🧑 (B-577).
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 
-Stichpunkte (Reife Entwurf): SK3.1 Dieb-Skills Sim (AC-01); SK3.2 Effekte Client (AC-02); SK3.3 Studio-Ring (AC-03); SK3.4 Review.
 
 ## Abnahme
 

@@ -61,7 +61,6 @@ keine
 | WZ27.2 | `WZ27.2-sim-wachen.md` | Umsetzung | autonom | fertig |
 | WZ27.3 | `WZ27.3-types-aufteilen.md` | Umsetzung | autonom | fertig |
 
-Stichpunkte (Reife Entwurf): WZ27.1 Lager (AC-01); WZ27.2 Ruinen (AC-02); WZ27.3 types.ts (AC-03); WZ27.4 Review.
 
 ## Abnahme
 

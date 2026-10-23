@@ -67,7 +67,7 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 | `vein:copper` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-2-32.png` (Stufe 2 Kupfer) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 | `vein:iron` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-3-32.png` (Stufe 3 Eisen) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 | `vein:crystal` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-4-32.png` (Stufe 4 Kristall) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
-| `plantation` | `docs/rules/materialien-gebaeude.md` § 1 (Farm-Plantage) | `grafik/gebaeude` | `setzling-32.png` (1 × 1 Kachel, leerer Platz; gewachsen: `pappel-32.png`) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB5 | eigen | zugeordnet |
+| `plantation` | `docs/rules/materialien-gebaeude.md` § 1 (Farm-Plantage) | `grafik/gebaeude` | `setzling-32.png` (1 × 1 Kachel, leerer Platz; gewachsen: `pappel-niedrig-32.png`, 2 × 5 Kacheln, vor der Farm, B-568) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB5 | eigen | zugeordnet |
 
 ## Truhen, Portale, Münzen, Ausgang
 
@@ -92,7 +92,7 @@ Level-Objekte, die `src/scenes/render/worldRenderer.ts` zeichnet (`createNode`, 
 | `node:rock` | `data/economy.json` › `gatherables.rock` | `grafik/gebaeude` | `felsen-1-32.png` (Wald), `felsen-2-32.png` (Höhle), `felsen-3-32.png` (Mine, auch Eisenstollen und Kristallhöhle) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 | `node:copperOre` | `data/economy.json` › `gatherables.copperOre` | `grafik/gebaeude` | `erzbrocken-32.png` (1 × 1 Kachel) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 | `node:bush` | `data/biomes/forest.json` › `resourcesPerChunk` (Deko) | `grafik/gebaeude` | Wald `busch-32.png`, sonst `hoehlenbusch-32.png` (je 1 × 1 Kachel; der Generator setzt heute nur im Wald Büsche) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6, GEB10 | eigen | zugeordnet |
-| `camp:recruit` | `data/economy.json` › `recruitCamp` | `grafik/gebaeude` | `rekrutierungslager-32.png` (3 × 2 Kacheln, Zelt und Feuerstelle in einem Bild, statisch) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+| `camp:recruit` | `data/economy.json` › `recruitCamp` | `grafik/gebaeude` | `rekrutierungslager-<look>-32.png` (3 × 2 Kacheln, Zelt und Feuerstelle in einem Bild, statisch; Look 1 Wald, 2 Höhle, 3 Mine und tiefer, B-570) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 
 ## Reittiere
 

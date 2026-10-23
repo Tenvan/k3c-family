@@ -1342,7 +1342,7 @@
       "beschreibung": "Ressourcen und Rekrutierungslager: camp:recruit",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/rekrutierungslager-32.png"
+          "datei": "grafik/gebaeude/rekrutierungslager-1-32.png"
         }
       ]
     },

@@ -27,7 +27,7 @@ export const NATURE_TEXTURES: Record<string, string> = {
   'grafik:truhe': datei('truhe'),
   'grafik:portal': datei('portal'),
   'grafik:ausgang': datei('ausgang'),
-  'grafik:lager': datei('rekrutierungslager'),
+  ...Object.fromEntries([1, 2, 3].map((look) => [look === 1 ? 'grafik:lager' : `grafik:lager-${look}`, datei(`rekrutierungslager-${look}`)])),
 };
 
 export const natureFiles = (): Record<string, WorldFile> => Object.fromEntries(Object.entries(NATURE_TEXTURES).map(([key, file]) => [key, { file }]));
@@ -36,6 +36,12 @@ export const natureFiles = (): Record<string, WorldFile> => Object.fromEntries(O
 export function natureLook(biomeId: string | undefined): 1 | 2 | 3 {
   if (!biomeId || biomeId === 'forest') return 1;
   return biomeId === 'cave' ? 2 : 3;
+}
+
+/** Rekrutierungslager im Look des Bioms (B-570): Wald Grundform, Höhle und Mine eigene Looks (`rekrutierungslager.json` › `stufen`) */
+export function campSprite(biomeId: string | undefined): ObjectSprite {
+  const look = natureLook(biomeId);
+  return still(look === 1 ? 'grafik:lager' : `grafik:lager-${look}`);
 }
 
 /** Ader-Art des Knotens → Slot `vein:<Material>`; unbekannte Art `null` */

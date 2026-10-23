@@ -56,7 +56,6 @@ keine
 |---|---|---|---|---|
 | BD8.1 | `BD8.1-welt-auswahl.md` | Umsetzung | autonom | fertig |
 
-Stichpunkte (Reife Entwurf): BD8.1 Auswahl (AC-01); BD8.2 Review.
 
 ## Abnahme
 

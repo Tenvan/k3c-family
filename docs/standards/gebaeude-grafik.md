@@ -19,7 +19,7 @@ nur mit Zustimmung von 🧑.
 | Truhe (offen, mit Gold) | 1 × 1 | `truhe.json` (GEB6.4) |
 | Truhe geschlossen (eigene JSON, keine Stufe: der Goldhaufen fällt weg) | 1 × 1 | `truhe-geschlossen.json` (GEB10.2): gewölbter Deckel, Eisenbänder über Deckel und Körper, Körper wie `truhe` |
 | Portal, Ausgang (statisch, ohne Stufen) | 2 × 3 | `portal.json`, `ausgang.json` (GEB6.4); Portal mit leuchtender Kristallfläche, Ausgang mit dunkler Öffnung und Holzrahmen |
-| Rekrutierungslager (Zelt und Feuerstelle, statisch) | 3 × 2 | `rekrutierungslager.json` (GEB6.4) |
+| Rekrutierungslager (Zelt und Feuerstelle, statisch; Looks 1–3 je Biom) | 3 × 2 | `rekrutierungslager.json` (GEB6.4, B-570) |
 | Ader (Stufen 1–4 = Stein, Kupfer, Eisen, Kristall) | 2 × 2 | `ader.json` (GEB6.3); Felsbuckel mit Erzgang, Stein-Ader in `pancho`/`white`, die nur im Gang vorkommt |
 | Fels (Looks Wald, Höhle, Mine), Erzbrocken (Look Mine) | 1 × 1 | `felsen.json`, `erzbrocken.json` (GEB6.2); Licht auf Stein ist `topaz` (heller als `dim-gray`), Risse in Höhle und Mine `black` |
 | Mauer (Stufen 1–5) | 1 × 5 | `mauer.json` (GEB3) |
@@ -31,7 +31,8 @@ nur mit Zustimmung von 🧑.
 | Baugerüst (Bild vor der Burg während des Hub-Ausbaus, sonst transparent) | 8 × 9 | `hub-geruest.json` (GEB11) |
 | Tor (Stufen 1–5, Stufe der Mauerlinie) | 2 × 4 | `tor.json` (GEB4) |
 | Farm (Scheune, Holz) | 4 × 3 | `farm.json` (`farm`, GEB5) |
-| Setzling (leerer Plantage-Platz; gewachsen: Pappel) | 1 × 1 | `setzling.json` (`plantation`, GEB5) |
+| Setzling (leerer Plantage-Platz) | 1 × 1 | `setzling.json` (`plantation`, GEB5) |
+| Niedrige Plantage-Pappel (gewachsener Platz, vor der Farm) | 2 × 5 | `pappel-niedrig.json` (`plantation`, B-568) |
 | Treppe hoch (ein Bild, Stein) | 4 × 4 | `treppe-hoch.json` (`stairsUp`, GEB5) |
 | Treppe runter (Steinbogen mit Abgang) | 4 × 3 | `treppe-runter.json` (`stairsDown`, GEB5) |
 | weitere Gebäude | legt der jeweilige GEB-Sprint fest, hier nachtragen | B-435 › Notizen |
@@ -176,10 +177,10 @@ Wurzel-Formen und ein Busch den `hoehlenbusch` (eigene Zeichnungen, § 5); der f
 das **Material** (1 Stein, 2 Kupfer, 3 Eisen, 4 Kristall), nicht das Biom.
 
 **Hub-Gebäude (GEB9, Entscheidung autonom Claude 2026-10-22, Annahme bis 🧑 widerspricht):** Die acht Hub-Gebäude (Werkstatt,
-Farm, Kaserne, Lager, Taverne, Schmiede, Heilplatz, Rüstkammer) haben die Stufen 1–5 und folgen der **Hub-Stufe**, nicht eigenen
+Farm, Kaserne, Lager, Taverne, Schmiede, Heilplatz, Rüstkammer) haben die Stufen 1–5 und folgen der **Hub-Stufe**, solange sie keine eigenen `levels` haben (GEB13, B-569: Lager, Farm, Kaserne, Taverne und Heilplatz haben sie in `data/buildings.json`, dann folgt die Grafik der Stufe des Platzes `Site.level`; Werkstatt, Schmiede und Rüstkammer behalten die Hub-Stufe, weil ihr Zahlziel schon Produkte annimmt), nicht eigenen
 Gebäudestufen. Das Material je Stufe ist das der Hub-Stufe (`docs/rules/materialien-gebaeude.md` § 2). Stufen vor der
 Freischaltung des Gebäudes bleiben erhalten (Vorschau, Erweiterbarkeit, der Gebäude-Planer verschiebt die Freischaltung). Das
-Camp (`rekrutierungslager`) ist ein Welt-Objekt und bleibt Grundform.
+Das Camp (`rekrutierungslager`) ist ein Welt-Objekt und hat keine Gebäudestufe: Seine Stufe ist der **Biom-Look** wie bei den Natur-Objekten (B-570, Annahme, 🧑 nimmt am TV ab): 1 Wald (Grundform), 2 Höhle (kühles Tuch, Laterne an Holzstange), 3 Mine und tiefer (dunkles Tuch, Steinring mit Eisenrand, Laterne an Eisenstange). Dateien `rekrutierungslager-<look>-<dichte>.png`.
 
 *Farbrollen.* Der Tausch folgt der Rolle der Farbe, nicht dem Namen: jedes Material hat Körper, Licht, Schatten und Tief.
 
@@ -214,7 +215,7 @@ bei jedem Gebäude mit in der Liste, wenn dort eine tauschende Art (`wand`, `dac
 | Lager | `wand` (dunkle Innenwand = Rolle Schatten), `pfosten`, `dach`, `schindel`; ab Stufe 3 auch `sockel` | ab Stufe 3 Vorratsschild an der Wand (das Lager hat kein Tor) |
 | Taverne | `wand` (Putz = Rolle Licht), `balken`, `pfosten`, `dach`, `schindel`; ab Stufe 3 auch `kamin`, `stufe` | ab Stufe 3 Laterne links neben der Tür |
 | Schmiede | `wand`, `pfosten`, `dach`, `haken`; ab Stufe 3 auch `kamin`, `esse` | ab Stufe 3 Rauchfang (Haube) über der Esse |
-| Heilplatz | `pfosten`, `gestell` (das Zelttuch bleibt) | ab Stufe 3 Laterne rechts am Zelt |
+| Heilplatz | `pfosten`, `gestell` (das Zelttuch bleibt) | ab Stufe 2 Zeltbahnen an beiden Dachenden (Saum in Material der Stufe), ab Stufe 3 zusätzlich ein Brunnen mit Eimer neben der Liege (B-571; er löst die Laterne ab; Ausnahme von „ein Zusatz je Stufe“) |
 | Rüstkammer | `wand`, `dach` (Rollen Körper, Licht für `deep-koamaru`, `venice-blue`, Tief für `valhalla`), `schindel`; ab Stufe 3 auch `sockel` | ab Stufe 3 Wimpel auf dem Dach (Tor mit Beschlägen bleibt) |
 
 *Stein-Grundform.* Die Kaserne ist in Stufe 1 schon Stein: Stufe 2 behält das Material und unterscheidet sich nur durch

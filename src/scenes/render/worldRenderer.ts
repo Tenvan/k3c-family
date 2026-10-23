@@ -6,7 +6,7 @@ import { type BackWall, backWalls } from './backWallRules';
 import { createBackWallView, updateBackWallView } from './backWallView';
 import { BuergerView } from './citizenView';
 import { createRider, updateRider } from './mountView';
-import { nodeSprite } from './natureSprites';
+import { campSprite, nodeSprite } from './natureSprites';
 import { objectImage } from './objectView';
 import { PENNANT_MAX_HEIGHT, noteMarkers, pennantColor } from './pennant';
 import { type Plot, isPlantationTree, plantationPlots } from './plantation';
@@ -227,7 +227,7 @@ export class WorldRenderer {
       } else if (e.kind === 'bush') {
         this.put(objectImage(scene, 'node:bush', ex, G, nodeSprite('bush', e.x, world.biome.id)) ?? scene.add.circle(ex, G - 14, 18, 0x40916c)); // Deko
       } else if (e.kind === 'recruitCamp') {
-        this.put(objectImage(scene, 'camp:recruit', ex, G) ?? scene.add.triangle(ex, G - 45, 0, 90, 60, 0, 120, 90, 0xe9c46a).setStrokeStyle(3, 0x7f5539));
+        this.put(objectImage(scene, 'camp:recruit', ex, G, campSprite(world.biome.id)) ?? scene.add.triangle(ex, G - 45, 0, 90, 60, 0, 120, 90, 0xe9c46a).setStrokeStyle(3, 0x7f5539));
       }
     }
   }
@@ -243,10 +243,10 @@ export class WorldRenderer {
   private createNode(n: ResourceNode): View {
     const s = this.scene;
     const parts: Phaser.GameObjects.GameObject[] = [];
-    // Plantage-Baum (steht auf einem Platz): Pappel wie im Wald, hinter der Farm (GEB10); Waldbäume bleiben bei der Zuordnung (GEB6)
-    const pappel = isPlantationTree(n, this.world.sites) && s.textures.exists('grafik:pappel');
+    // Plantage-Baum (steht auf einem Platz): eigene niedrige Pappel vor der Farm (B-568); Waldbäume bleiben bei der Zuordnung (GEB6)
+    const pappel = isPlantationTree(n, this.world.sites) && s.textures.exists('grafik:pappel-niedrig');
     // Baumform aus der Position, Look aus dem Biom (GEB6); unbekannte Art oder fehlende Grafik: Platzhalter-Form
-    const sprite = pappel ? s.add.image(0, 0, 'grafik:pappel').setOrigin(0.5, 1) : objectImage(s, `node:${n.kind}`, 0, 0, nodeSprite(n.kind, n.x, this.world.biome.id));
+    const sprite = pappel ? s.add.image(0, 0, 'grafik:pappel-niedrig').setOrigin(0.5, 1) : objectImage(s, `node:${n.kind}`, 0, 0, nodeSprite(n.kind, n.x, this.world.biome.id));
     if (sprite) parts.push(sprite);
     else if (n.kind === 'tree') {
       parts.push(s.add.rectangle(0, -40, 14, 80, 0x6b4226), s.add.triangle(0, -110, 0, 90, 40, 0, 80, 90, 0x2d6a4f));
@@ -261,7 +261,8 @@ export class WorldRenderer {
     const top = -Math.min(sprite ? sprite.displayHeight : PLACEHOLDER_NODE_HEIGHT, PENNANT_MAX_HEIGHT);
     const pole = s.add.rectangle(10, top - 2, 3, 30, 0xffffff);
     const pennant = s.add.triangle(11, top - 12, 0, 0, 26, 7, 0, 14, pennantColor(undefined)).setOrigin(0, 0.5).setStrokeStyle(1, 0x000000, 0.5);
-    return s.add.container(n.x * U, G, [...parts, pole, pennant, ...bar(s, top - 32, 50, 0xffd166)]);
+    const view = s.add.container(n.x * U, G, [...parts, pole, pennant, ...bar(s, top - 32, 50, 0xffd166)]);
+    return pappel ? view.setDepth(PLANTATION_DEPTH) : view; // vor der Farm (Tiefe 2), wie der Setzling
   }
 
   private updateNode(v: View, n: ResourceNode): void {

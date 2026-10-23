@@ -59,7 +59,6 @@ keine
 |---|---|---|---|---|
 | WZ26.1 | `WZ26.1-ci-rot-beheben.md` | Umsetzung | autonom | fertig |
 
-Stichpunkte (Reife Entwurf): WZ26.1 CI und Lint (AC-01, AC-02); WZ26.2 plan_next und check_run (AC-03); WZ26.3 Studio-Fenster (AC-04); WZ26.4 Review.
 
 ## Abnahme
 

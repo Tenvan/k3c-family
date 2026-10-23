@@ -11,8 +11,12 @@ func TestRuineBleibtNachAusbauBeschaedigt(t *testing.T) {
 	}
 	for _, k := range []string{"smithy", "barracks", "storage"} {
 		s := ruinOf(t, w, k)
-		if s.HP != ruinStartHP(k) || s.MaxHP != buildings[k].HP || s.HP >= s.MaxHP {
-			t.Errorf("Ruine %s nach Ausbau: HP %v/%v, erwartet %v/%v", k, s.HP, s.MaxHP, ruinStartHP(k), buildings[k].HP)
+		maxHP := buildings[k].HP // MaxHP der Stufe, falls das Gebäude Ausbau-Stufen hat (B-569)
+		if levels := buildings[k].Levels; len(levels) > 0 {
+			maxHP = levels[s.Level-1].HP
+		}
+		if s.HP != ruinStartHP(k) || s.MaxHP != maxHP || s.HP >= s.MaxHP {
+			t.Errorf("Ruine %s nach Ausbau: HP %v/%v, erwartet %v/%v", k, s.HP, s.MaxHP, ruinStartHP(k), maxHP)
 		}
 	}
 	s := ruinOf(t, w, "smithy")

@@ -16,6 +16,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | GEB10 | DEV, CLI | GEB | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | – | `aktiv/GEB10-natur-truhe-wimpel/` |
 | GEB11 | REG, SIM, DEV, CLI | GEB | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | – | `aktiv/GEB11-hub-waechst-kleinteilig/` |
 | GEB12 | REG, CLI | GEB | Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte) | – | `aktiv/GEB12-entscheidungen-geb9-11/` |
+| GEB13 | REG, DEV | GEB | Gebäude-Stufen in den Daten und Stufen-Look für Plantage, Camp, Heilplatz | – | `aktiv/GEB13-gebaeude-stufen-look/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | GR9 | DEV, CLI | GRA | Monarch-Animationen für Wurf, Treffer, Tod und Respawn, Kandidaten-Import ohne roten Test | – | `aktiv/GR9-monarch-animationen-kandidaten/` |
 | GR10 | CLI | GRA | Autonome Grafik-Entscheidungen prüfen (GR8, GR9) | – | `aktiv/GR10-entscheidungen-grafik/` |
@@ -42,7 +43,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| GEB13 | REG | GEB | Gebäude-Stufen in den Daten und Stufen-Look für Plantage, Camp, Heilplatz | – | Entwurf | `geplant/GEB13-gebaeude-stufen-look/` |
 | GEB14 | REG | GEB | Wald und Höhle dichter, Gerüst bei Wartenden, Knoten-Markierer im Snapshot | – | Entwurf | `geplant/GEB14-welt-deko-geruest/` |
 | SV2 | SRV | WRT | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | – | Entwurf | `geplant/SV2-voll-ausbau-regelkonform/` |
 | W13 | CLI | WRT | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | – | Entwurf | `geplant/W13-morgengrauen-licht-client/` |
@@ -57,7 +57,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | GD1 | INF | TST | Golden-Daten kleiner bei gleicher Prüfschärfe | – | Entwurf | `geplant/GD1-golden-verkleinern/` |
 | SK3 | SIM | SKL | Dieb-Skills Backstab und Smoke Bomb, Skill-Effekte, Skill-Ring im Studio | – | Entwurf | `geplant/SK3-dieb-skills-effekte/` |
 | KB1 | SIM | KMP | Kampf-Nachträge: Mond-Events, Endboss-Bau, Golden-Läufe, Feuergeist | – | Entwurf | `geplant/KB1-events-boss-golden/` |
-| KB3 | SRV | KMP | Endboss-Auslöser anzeigen, Dev-Overlay-Link, Wellenabstand unter Tage messen | – | Entwurf | `geplant/KB3-endboss-dev-wellen/` |
 | PG1 | PLAT | REL | Präsentationsseite mit echten Spielbildern | – | Entwurf | `geplant/PG1-praesentation-bilder/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | Entwurf | `geplant/PB1-itch-io/` |
 | HW1 | PLAT, SRV, INF, CLI | ABN | Zurückgestellte Controller-Prüfungen nachholen | – | Entwurf | `geplant/HW1-controller-pruefungen/` |
@@ -234,3 +233,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SO7 | Niederlage-Stück, Hufschlag, UI-Klicks und Skill-Sounds je Klasse | `erledigt/SO7-sound-ergaenzungen/` |
 | BD8 | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl | `erledigt/BD8-lobby-welt-auswahl/` |
 | WZ27 | Geplante Chunks: Gegnerlager, Ruinen-Kollision, Dateigrenze | `erledigt/WZ27-chunks-lager-ruine/` |
+| KB3 | Endboss-Auslöser anzeigen, Dev-Overlay-Link, Wellenabstand unter Tage messen | `erledigt/KB3-endboss-dev-wellen/` |

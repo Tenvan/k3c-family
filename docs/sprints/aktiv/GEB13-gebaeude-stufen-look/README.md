@@ -1,14 +1,14 @@
-# GEB13 · REG · Gebäude-Stufen in den Daten und Stufen-Look für Plantage, Camp, Heilplatz
+# GEB13 · REG, DEV · Gebäude-Stufen in den Daten und Stufen-Look für Plantage, Camp, Heilplatz
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GEB
-- **Domäne:** REG
-- **Reife:** Entwurf
+- **Domäne:** REG, DEV
+- **Reife:** bereit
 - **Tickets:** B-569, B-568, B-570, B-571
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-23, Revision 1
 
 ## Ausgangslage
 
@@ -57,8 +57,10 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| GEB13.1 | `GEB13.1-stufen-daten.md` | Umsetzung | autonom | fertig |
+| GEB13.2 | `GEB13.2-looks.md` | Umsetzung | autonom | fertig |
+| GEB13.3 | `GEB13.3-abnahme-tv.md` | Workshop | Mensch | offen |
 
-Stichpunkte (Reife Entwurf): GEB13.1 Stufen-Daten (AC-01); GEB13.2 Pappel (AC-02); GEB13.3 Camp, Heilplatz (AC-03); GEB13.4 Review; GEB13.5 Abnahme TV (AC-04, Mensch).
 
 ## Abnahme
 

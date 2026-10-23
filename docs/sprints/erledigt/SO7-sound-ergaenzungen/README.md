@@ -60,7 +60,6 @@ keine
 |---|---|---|---|---|
 | SO7.1 | `SO7.1-sounds-umsetzen.md` | Umsetzung | autonom | fertig |
 
-Stichpunkte (Reife Entwurf): SO7.1 Niederlage (AC-01); SO7.2 Hufschlag (AC-02); SO7.3 UI-Klicks (AC-03); SO7.4 Skill-Sounds (AC-04, AC-05); SO7.5 Review.
 
 ## Abnahme
 
