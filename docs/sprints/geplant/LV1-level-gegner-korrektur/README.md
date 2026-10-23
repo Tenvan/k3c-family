@@ -53,16 +53,22 @@ Kein Platz außerhalb der Lava → Linie entfällt mit Log-Warnung, Level bleibt
 
 ## Offene Fragen
 
-- B-262: Camp-Regel bei Portal-Nähe, entscheidet 🧑.
+Vorentschieden (autonom, Claude, 2026-10-23), Bestätigung durch 🧑 über KR6:
+
+- **B-262:** „so lassen“ (Beschluss 🧑 2026-10-04 im Ticket); AC-02 ist damit der Vermerk plus grüner Camp-Test, keine Codeänderung.
+- **B-291:** Generator-Regel: Ein Lava-Chunk, dessen Streifen einen Linien-Platz überlappt, wird zu einem gewöhnlichen Chunk (kein zusätzlicher Würfel); ändert nur den Eisenstollen-Golden.
+- **B-200:** keine Wertänderung, solange der Go-Test zeigt, dass der Pool mit 2 besetzten Adern ohne Kills nicht vor 4 min voll ist (Rechnung: 7,7 min). Die Messung (AC-01) läuft über `sim_test`; geht das nicht, Kriterium „nicht gemessen“ mit Ticket.
+- **B-217:** `x` an `built` und `playerDown` ist zusätzlich (keine neue Protokoll-Version); der Client nutzt das Feld und behält den Rückfall für ältere Server.
+- Golden-Änderungen (B-291, B-260, ggf. B-217) je in eigenem Commit mit Begründung (`task go:golden`).
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
-
-- LV1.1 Lava und Camps im Level-Generator (AC-01, AC-02).
-- LV1.2 Adern-Takt und besiegte Gegner (AC-03, AC-04).
-- LV1.3 Ereignisse mit Ort, Schutzplatz ohne Entity-ID (AC-05, AC-06).
-- LV1.4 Review (Code-Sprint): alle Kriterien prüfen.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| LV1.1 | `LV1.1-lava-camps.md` | Umsetzung | autonom | offen |
+| LV1.2 | `LV1.2-adern-takt-besiegte-gegner.md` | Umsetzung | autonom | offen |
+| LV1.3 | `LV1.3-ereignis-ort-schutzplatz.md` | Umsetzung | autonom | offen |
+| LV1.4 | `LV1.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
 
