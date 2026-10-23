@@ -110,6 +110,7 @@ export namespace logs {
 	    time: any;
 	    level: string;
 	    ns: string;
+	    checkout: string;
 	    msg: string;
 	    data?: Record<string, any>;
 	
@@ -122,6 +123,7 @@ export namespace logs {
 	        this.time = this.convertValues(source["time"], null);
 	        this.level = source["level"];
 	        this.ns = source["ns"];
+	        this.checkout = source["checkout"];
 	        this.msg = source["msg"];
 	        this.data = source["data"];
 	    }
