@@ -21,6 +21,7 @@ import (
 	"k3c/tools/k3c-workbench/internal/botfeed"
 	"k3c/tools/k3c-workbench/internal/browser"
 	"k3c/tools/k3c-workbench/internal/console"
+	"k3c/tools/k3c-workbench/internal/resmon"
 	"k3c/tools/k3c-workbench/internal/services"
 	"k3c/tools/k3c-workbench/internal/usage"
 )
@@ -55,6 +56,8 @@ type Config struct {
 	Console *console.Store   // optional: gemeinsamer Konsolenpuffer (mit dem Spiegel des eigenen Logs)
 	Log     *slog.Logger     // optional: eigenes Log
 	Usage   *usage.Tracker   // optional: Nutzungsstatistik (B-062)
+	// Resources misst den Ressourcenverbrauch (resmon): Tool workbench_resources, Messung je Aufruf, pprof unter /debug/pprof/.
+	Resources *resmon.Monitor
 	// Services führt die Dienste (B-067); ServicesErr ist der Grund, falls services.json nicht geladen wurde.
 	Services    *services.Controller
 	ServicesErr error
@@ -120,6 +123,7 @@ func New(cfg Config) *Server {
 		InitializedHandler: func(context.Context, *mcp.InitializedRequest) { s.observeClients() },
 	})
 	register(s)
+	s.registerGauges()
 	s.mcp.AddReceivingMiddleware(s.observe)
 	return s
 }
@@ -139,6 +143,9 @@ func (s *Server) Start() error {
 	mux.Handle("/mcp", forceChunked(mcp.NewStreamableHTTPHandler(func(*http.Request) *mcp.Server { return s.mcp },
 		&mcp.StreamableHTTPOptions{SessionTimeout: sessionTimeout})))
 	mux.Handle(botfeed.Prefix, s.feeds)
+	if s.cfg.Resources != nil {
+		mountPprof(mux)
+	}
 	srv := &http.Server{Handler: mux, ReadHeaderTimeout: 10 * time.Second}
 	s.http, s.addr = srv, ln.Addr().String()
 	go func() { _ = srv.Serve(ln) }()

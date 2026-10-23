@@ -6,7 +6,7 @@ import type { ErrorsView, LogEntry, LogGroup, LogQuery, LogView } from './types'
 const RANKS: Record<string, number> = { DEBUG: 0, INFO: 1, WARN: 2, ERROR: 3 };
 
 const SAMPLES: Omit<LogEntry, 'time'>[] = [
-  { level: 'INFO', ns: 'mcp', msg: 'aufruf beendet', data: { tool: 'logs_query', ms: 12 } },
+  { level: 'INFO', ns: 'mcp', checkout: 'Repo-Wurzel', msg: 'aufruf beendet', data: { tool: 'logs_query', ms: 12 } },
   { level: 'DEBUG', ns: 'usage', msg: 'statistik gespeichert' },
   { level: 'INFO', ns: 'svc', msg: 'dienst Vite: läuft', data: { pid: 41232 } },
   { level: 'WARN', ns: 'check', msg: 'lauf beendet', data: { target: 'task:test', exit: 1, ms: 5120 } },

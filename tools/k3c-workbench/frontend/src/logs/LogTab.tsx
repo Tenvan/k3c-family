@@ -79,11 +79,12 @@ function LogRow({ e }: { e: LogEntry }) {
         <td className="logrow-time">{formatTime(new Date(e.time), true)}</td>
         <td><StatusBadge tone={levelTone(e.level)}>{e.level}</StatusBadge></td>
         <td className="logrow-ns">{e.ns}</td>
+        <td className="logrow-checkout">{e.checkout || '–'}</td>
         <td className="logrow-msg">{data && <span className="logrow-arrow">{open ? '▾' : '▸'} </span>}{e.msg}</td>
       </tr>
       {open && (
         <tr className="logrow-detail">
-          <td colSpan={4}><pre>{data}</pre></td>
+          <td colSpan={5}><pre>{data}</pre></td>
         </tr>
       )}
     </>

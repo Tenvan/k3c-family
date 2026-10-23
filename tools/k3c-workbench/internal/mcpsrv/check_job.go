@@ -150,3 +150,20 @@ func (s *Server) checkJobResult(ctx context.Context, id string) (string, error) 
 	}
 	return s.awaitJob(ctx, j)
 }
+
+// stats zählt die gemerkten Läufe und die Bytes ihrer gesammelten Zeilen (Ressourcen-Monitoring).
+func (c *checkRuns) stats() (jobs int, bytes int64) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	for _, j := range c.jobs {
+		j.mu.Lock()
+		for _, l := range j.output {
+			bytes += int64(len(l))
+		}
+		for _, l := range j.tail {
+			bytes += int64(len(l))
+		}
+		j.mu.Unlock()
+	}
+	return len(c.jobs), bytes
+}

@@ -19,6 +19,13 @@ func register(s *Server) {
 		Annotations: readOnly(),
 	}, s.workbenchStatus)
 	add(s, &mcp.Tool{
+		Name: "workbench_resources",
+		Description: "Ressourcenverbrauch von k3c-workbench: Live-Heap, Prozess-RSS, Kindprozesse, Goroutinen, Handles, Trend je Stunde, " +
+			"Größe der Puffer (Konsole, Prüfläufe), die Vorgänge mit der größten Allokation und abgelegte Heap-Profile (go tool pprof). " +
+			"Nutze es bei: Workbench wird langsam oder frisst Speicher, Verdacht auf ein Leck. Statt: Task-Manager und Raten.",
+		Annotations: readOnly(),
+	}, s.workbenchResources)
+	add(s, &mcp.Tool{
 		Name: "notify_ui",
 		Description: "Zeigt dem Nutzer einen Hinweis in der Oberfläche von k3c-workbench (level info, success, warn oder error). " +
 			"Nutze es bei: lange Arbeit fertig, Entscheidung oder Freigabe nötig. Statt: auf den Chat hoffen.",

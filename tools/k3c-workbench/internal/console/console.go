@@ -134,3 +134,16 @@ func (s *Store) Sources() []string {
 	sort.Strings(names)
 	return names
 }
+
+// Stats zählt Quellen, gehaltene Zeilen und deren Text in Bytes (Ressourcen-Monitoring der Workbench).
+func (s *Store) Stats() (sources, lines int, bytes int64) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for _, r := range s.rings {
+		lines += len(r.lines)
+		for _, l := range r.lines {
+			bytes += int64(len(l.Text) + len(l.Source) + len(l.Stream))
+		}
+	}
+	return len(s.rings), lines, bytes
+}

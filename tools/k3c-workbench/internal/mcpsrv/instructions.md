@@ -12,6 +12,7 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 ## Übergreifend
 
 - `workbench_status`: Adresse, Laufzeit, Aufrufe, Clients, letzte Läufe, Log-Quellen, Checkout.
+- `workbench_resources`: Speicher (Live-Heap, RSS, Kindprozesse), Goroutinen, Handles, Trend je Stunde, Puffer und die Vorgänge mit der größten Allokation; Heap-Profile unter `logs/profile/`, pprof unter `/debug/pprof/` des MCP-Ports.
 - `notify_ui {level, title, text?}`: Hinweis an den Nutzer in der Oberfläche (`info`, `success`, `warn`, `error`), z. B.
   wenn eine lange Arbeit fertig ist oder eine Freigabe nötig wird.
 
