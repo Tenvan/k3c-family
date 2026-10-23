@@ -66,6 +66,10 @@ export function PlanningSet(arg1, arg2, arg3) {
   return window['go']['main']['App']['PlanningSet'](arg1, arg2, arg3);
 }
 
+export function Resources(arg1) {
+  return window['go']['main']['App']['Resources'](arg1);
+}
+
 export function ServiceLogLevels(arg1) {
   return window['go']['main']['App']['ServiceLogLevels'](arg1);
 }

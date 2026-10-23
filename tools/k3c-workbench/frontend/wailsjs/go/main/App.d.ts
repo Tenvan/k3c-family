@@ -42,6 +42,8 @@ export function PlanningGet(arg1:string):Promise<string>;
 
 export function PlanningSet(arg1:string,arg2:string,arg3:string):Promise<string>;
 
+export function Resources(arg1:number):Promise<main.ResourceView>;
+
 export function ServiceLogLevels(arg1:string):Promise<services.LevelCounts>;
 
 export function ServiceRestart(arg1:string):Promise<services.Status>;
