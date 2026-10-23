@@ -238,11 +238,11 @@ export type GameEvent = (
   | { type: 'skillPoint'; player: number; total: number }
   | { type: 'recruited'; player: number }
   | { type: 'armed' }
-  | { type: 'built'; kind: SiteKind }
+  | { type: 'built'; kind: SiteKind; x?: number }
   | { type: 'destroyed'; kind: SiteKind }
   | { type: 'gathered'; resource: ResourceKind; amount: number }
   | { type: 'goldStolen'; player: number; amount: number }
-  | { type: 'playerDown'; player: number }
+  | { type: 'playerDown'; player: number; x?: number }
   | { type: 'castleFallen' }
   | { type: 'arrived'; depth: number; name: string; player?: number }
   | { type: 'hit'; x: number; target: 'player' | 'troop' | 'enemy' | 'castle' | 'site'; id: number; damage: number }

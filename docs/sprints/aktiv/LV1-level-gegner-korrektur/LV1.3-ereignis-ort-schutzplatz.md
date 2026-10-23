@@ -53,5 +53,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-05 (B-217/AC-01) geprüft:** `built` (`engine/sim/unit_common.go`) und `playerDown` (`engine/sim/common.go`) tragen `x` (Units, `unitX`); Tests `TestEventBuiltMitOrt`, `TestEventPlayerDownMitOrt` grün. Client: `GameEvent` mit optionalem `x`, `effectFor` nutzt `x`, Rückfall (`BuildSpots`, `playerX`) bleibt für ältere Server; Vitest `effects.test.ts` grün. `docs/protocol.md`: Zusatzfeld, keine neue Version.
+- **AC-06 (B-260/AC-01) geprüft:** Schutzplatz `shelterX` aus dem Index in `w.Troops` (5 Plätze um den Hub), Test `TestSchutzplatzOhneEntityID` (ID-Verschiebung um 3 ändert keinen Platz). Golden: 8 Dateien neu (`task go:golden`, eigener Commit) – Ursache allein die geänderte Schutzplatz-Zuordnung.
+- Review (Sonnet): Index -1 abgesichert, Protokoll-Satz korrigiert; durchgereichter Index statt Suche verworfen (nur bei Gefahr ohne Auftrag, wenige Dutzend Truppen). Bekannt: Stirbt eine Truppe, rücken die Plätze der folgenden nach (deterministisch).
