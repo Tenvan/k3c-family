@@ -4,6 +4,7 @@ import './styles/app.css';
 import './styles/services.css';
 import './styles/logs.css';
 import './styles/mcp.css';
+import './styles/monitoring.css';
 import './styles/tasks.css';
 import './styles/planning.css';
 import './styles/planning-reader.css';

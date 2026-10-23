@@ -1,3 +1,6 @@
+export type * from './typesResources';
+import type { ResourceView } from './typesResources';
+
 // Backend-Vertrag der Oberfläche (B-064 › Backend-Vertrag). Go-Seite: tools/k3c-workbench/app.go.
 // Wails-Laufzeit → wails.ts, ohne sie → http.ts (k3c-workbench -headless/-dev), im Test und mit ?mock=1 → mock.ts; welche gilt, entscheidet index.ts.
 
@@ -472,6 +475,8 @@ export interface Backend {
   mcpInstructions(): Promise<string>;
   mcpCalls(): Promise<McpCall[]>;
   mcpUsage(): Promise<McpUsage>;
+  /** Messwerte der letzten windowMin Minuten (5 bis 1440), serverseitig auf höchstens 240 Punkte verdichtet. */
+  resources(windowMin: number): Promise<ResourceView>;
   /** Katalog; wird beim ersten Aufruf geladen und dann gehalten, `tasksReload` liest neu. */
   tasks(): Promise<TaskCatalog>;
   tasksReload(): Promise<TaskCatalog>;

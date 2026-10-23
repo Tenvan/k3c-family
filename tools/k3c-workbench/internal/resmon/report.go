@@ -84,7 +84,7 @@ func (m *Monitor) Report() string {
 		cur = m.Sample()
 	}
 	m.mu.Lock()
-	since, n, top := m.started, len(m.history), append([]procInfo(nil), m.top...)
+	since, n, top := m.started, len(m.tail()), append([]ProcInfo(nil), m.top...)
 	m.mu.Unlock()
 	out := []string{fmt.Sprintf("Ressourcen · Messgerät seit %s · %d Proben (alle %s)",
 		since.Local().Format("02.01. 15:04:05"), n, m.cfg.Interval), summary(cur)}
@@ -92,7 +92,7 @@ func (m *Monitor) Report() string {
 	if len(top) > 0 {
 		parts := make([]string, len(top))
 		for i, p := range top {
-			parts[i] = fmt.Sprintf("%s(%d) %s", p.name, p.pid, formatBytes(p.rss))
+			parts[i] = fmt.Sprintf("%s(%d) %s", p.Name, p.PID, formatBytes(p.RSS))
 		}
 		out = append(out, "Kinder nach RSS: "+strings.Join(parts, " · "))
 	}
@@ -104,26 +104,25 @@ func (m *Monitor) Report() string {
 	return strings.Join(out, "\n")
 }
 
+// trendSpecs sind die Leitgrößen des Trends (Bericht und Ansicht).
+var trendSpecs = []struct {
+	name  string
+	bytes bool
+	val   func(Sample) float64
+}{
+	{"Live-Heap", true, func(s Sample) float64 { return float64(s.HeapLive) }},
+	{"Privat", true, func(s Sample) float64 { return float64(s.Private) }},
+	{"Kinder-RSS", true, func(s Sample) float64 { return float64(s.ChildrenRSS) }},
+	{"Goroutinen", false, func(s Sample) float64 { return float64(s.Goroutines) }},
+}
+
 func (m *Monitor) trendLines() []string {
-	h := m.History()
 	var out []string
-	for _, t := range []struct {
-		name  string
-		bytes bool
-		val   func(Sample) float64
-	}{
-		{"Live-Heap", true, func(s Sample) float64 { return float64(s.HeapLive) }},
-		{"Privat", true, func(s Sample) float64 { return float64(s.Private) }},
-		{"Kinder-RSS", true, func(s Sample) float64 { return float64(s.ChildrenRSS) }},
-		{"Goroutinen", false, func(s Sample) float64 { return float64(s.Goroutines) }},
-	} {
-		tr, ok := trendOf(h, t.val)
-		switch {
-		case !ok:
-		case t.bytes:
-			out = append(out, fmt.Sprintf("Trend %s: %s/h über %s", t.name, signedBytes(tr.perHour), tr.window))
-		default:
-			out = append(out, fmt.Sprintf("Trend %s: %+.1f/h über %s", t.name, tr.perHour, tr.window))
+	for _, tr := range m.Trends() {
+		if tr.Bytes {
+			out = append(out, fmt.Sprintf("Trend %s: %s/h über %s", tr.Name, signedBytes(tr.PerHour), tr.Window))
+		} else {
+			out = append(out, fmt.Sprintf("Trend %s: %+.1f/h über %s", tr.Name, tr.PerHour, tr.Window))
 		}
 	}
 	if len(out) == 0 {

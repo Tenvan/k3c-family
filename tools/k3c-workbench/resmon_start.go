@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"time"
 
 	"k3c/tools/k3c-workbench/internal/resmon"
 )
@@ -11,12 +12,19 @@ import (
 // envHeapDumpMB ist die Schwelle des Live-Heaps in MiB für das erste Heap-Profil (Vorgabe 1024).
 const envHeapDumpMB = "K3C_DEV_HEAP_DUMP_MB"
 
-// startResources startet das Ressourcen-Monitoring: Proben alle 30 s (Verlauf 24 h), eine Zeile je 5 min im Log
+const (
+	resInterval = 10 * time.Second // Takt der Proben; die Seite Monitoring fragt im selben Takt
+	resHistory  = 8640             // 24 h bei 10 s (konstant, etwa 5 MB)
+	resLogEvery = 30               // alle 5 min eine Zeile im Log
+)
+
+// startResources startet das Ressourcen-Monitoring: Proben alle 10 s (Verlauf 24 h), eine Zeile je 5 min im Log
 // (`ns=res`), Heap- und Goroutinen-Profile unter logs/profile/ bei Überschreiten einer Schwelle. Abfragen: Tool
 // workbench_resources, `go tool pprof http://127.0.0.1:<MCP-Port>/debug/pprof/heap`. Muss nach dem Öffnen von Log
 // und Konsolenpuffer laufen, aber vor dem MCP-Server (Config.Resources).
 func (a *App) startResources() {
-	cfg := resmon.Config{Dir: filepath.Join(a.root, "logs", "profile"), Log: a.log.Logger}
+	cfg := resmon.Config{Dir: filepath.Join(a.root, "logs", "profile"), Log: a.log.Logger,
+		Interval: resInterval, History: resHistory, LogEvery: resLogEvery}
 	if mb, err := strconv.ParseUint(os.Getenv(envHeapDumpMB), 10, 32); err == nil && mb > 0 {
 		cfg.HeapDump = mb << 20
 	}

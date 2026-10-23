@@ -55,7 +55,7 @@ func readProcess() procSnapshot {
 }
 
 // descendants sammelt alle Nachkommen von root aus einem Prozess-Schnappschuss.
-func descendants(root uint32) []procInfo {
+func descendants(root uint32) []ProcInfo {
 	snap, err := windows.CreateToolhelp32Snapshot(windows.TH32CS_SNAPPROCESS, 0)
 	if err != nil {
 		return nil
@@ -68,7 +68,7 @@ func descendants(root uint32) []procInfo {
 	for err = windows.Process32First(snap, &e); err == nil; err = windows.Process32Next(snap, &e) {
 		parent[e.ProcessID], name[e.ProcessID] = e.ParentProcessID, windows.UTF16ToString(e.ExeFile[:])
 	}
-	var out []procInfo
+	var out []ProcInfo
 	for pid := range parent {
 		if isDescendant(pid, root, parent) {
 			out = append(out, child(pid, name[pid]))
@@ -91,13 +91,13 @@ func isDescendant(pid, root uint32, parent map[uint32]uint32) bool {
 	return false
 }
 
-func child(pid uint32, name string) procInfo {
-	pi := procInfo{pid: pid, name: name}
+func child(pid uint32, name string) ProcInfo {
+	pi := ProcInfo{PID: pid, Name: name}
 	h, err := windows.OpenProcess(windows.PROCESS_QUERY_LIMITED_INFORMATION, false, pid)
 	if err != nil {
 		return pi
 	}
 	defer func() { _ = windows.CloseHandle(h) }()
-	pi.rss, _ = memory(h)
+	pi.RSS, _ = memory(h)
 	return pi
 }
