@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR3
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-22
@@ -54,8 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Ist `kandidaten/` ein Pack?
-
-- **A (Default, gilt, umgesetzt):** kein Pack, Test nimmt den Ordner aus.
-- **B:** eigener Eintrag in `GRAFIK_PACKS` (kleine Änderung in `src/tools/grafikPacks.ts` und Test).
-- **Wenn 🧑 B wählt:** Ticket CLI, eine kleine Session.
+**Entscheidung 🧑 (KR3.1, 2026-10-23):** A, `public/grafik/kandidaten/` ist kein Pack; der Test nimmt den Ordner aus, Credits bleiben Pflicht.

@@ -8,7 +8,7 @@
 - **Start-Commit:** 013dcb34
 - **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** autonom, Claude, 2026-10-22, Revision 1
+- **Freigabe:** 2026-10-23, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 

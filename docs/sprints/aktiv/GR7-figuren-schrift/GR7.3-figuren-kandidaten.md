@@ -58,6 +58,15 @@ Die Wahl der Figuren ist eine manuelle Entscheidung von 🧑.
 
 ## Ergebnis
 
-**Vorbereitet (2026-10-12), Session bleibt `offen`:** Schritt 1 und 2 erledigt. Referenzseite `docs/funde/gr7-figuren-funde.html` mit bis zu drei Kandidaten je Lücke (`lavaSlime`, `ironBeetle`, `fireSpirit`, `crystalSpider`, `shardling`, `crystalGuardian`) und Auswahlfeld; `boss` ausgelassen (B-130). Lizenzen und Eignung stammen aus Suchergebnissen und sind **ungeprüft**; einige Links sind OpenGameArt-Suchlinks. Für `ironBeetle` gibt es nur zwei Kandidaten (kein CC0-Treffer), `fireSpirit` nur Effekte.
+**Vorbereitet (2026-10-12), Session bleibt `offen`:** Schritt 1 und 2 erledigt. Referenzseite `docs/funde/gr7-figuren-funde.html` mit bis zu drei Kandidaten je Lücke; `boss` ausgelassen (B-130). Lizenzen und Eignung stammen aus Suchergebnissen und sind **ungeprüft**; einige Links sind OpenGameArt-Suchlinks.
 
-**Vorentschieden (2026-10-22, autonom, Claude):** Default „kein Treffer“ je Lücke, die GR8-Figuren (B-329) bleiben, kein Fremd-Import (Lizenzen ungeprüft). Frage an 🧑: B-546 (KR3). Offen: Wahl durch 🧑 (Schritt 3); bei Bestätigung setzt Claude die Session auf `fertig`.
+**Gewählt von 🧑 (KR3.1, 2026-10-23, B-546):** Schritt 3 erledigt.
+
+- lavaSlime: Fire Slime Monster Variations DB32 (CC0)
+- ironBeetle: LPC Beetle (CC-BY 3.0 / OGA-BY 3.0, Credit Pflicht)
+- fireSpirit: GR8-Figur bleibt (cemetery-ghost), „kein Treffer“
+- crystalSpider: Spider Attack, Idle, Shoot, Walk (CC0)
+- shardling: Animated Walk-Cycle Monsters (CC0)
+- crystalGuardian: Golem animations (CC-BY 3.0, Credit Pflicht)
+
+**Offen:** Schritt 4 durch Claude (Lizenz auf der Quellseite prüfen, Dateien holen und nach `public/sprites/<sheet>/` legen, `CREDITS.md`, `data/sprites.json`, Zuordnung), Schritt 5 (`task check`), danach Sichtprüfung durch 🧑. Das Herunterladen der Fremddateien braucht die Freigabe von 🧑 für den Lauf (Quelle, Dateiname, Größe vorher nennen).

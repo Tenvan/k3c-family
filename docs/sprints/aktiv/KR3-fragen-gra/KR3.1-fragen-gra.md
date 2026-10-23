@@ -46,5 +46,9 @@ task test -- planning
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Teilergebnis (Workshop 2026-10-23 mit Ralf, Claude moderiert und protokolliert); die Session bleibt `offen`, weil B-552 (G7) erst nach GR9.5 am TV entschieden wird.
+
+- **AC-01 teilweise:** Sieben von acht Tickets tragen Ralfs Entscheidung; B-552 trägt „nach GR9.5“.
+- **AC-02 teilweise:** Bestätigt und `erledigt`: B-548 (A), B-549 (A), B-550 (A), B-551 (A), B-553 (A, Freigabe in GR8, GR9, GR10 nachgetragen). Geändert und `erledigt` mit Verweis: B-546 (B, je Gegner ein Kandidat, siehe Ticket → Einbau in GR7.3 Schritt 4) und B-547 (B, ganzzahlig skalieren → GR7.4 Schritt 3). Offen: B-552 (`eingeplant`).
+- **Neue Tickets:** keine; die Folgearbeit läuft in den vorhandenen Sessions GR7.3 und GR7.4.
+- **Hinweis:** Reihenfolge GR7.3 vor GR7.4. B-331/AC-01 und AC-04 sind abgeschlossen (Notiz in B-331).

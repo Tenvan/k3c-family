@@ -54,8 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Reichen die abgeleiteten Animationen?
-
-- **A (Default, gilt, umgesetzt):** ja.
-- **B:** gezeichnete oder zugekaufte Sheets für give/hit/death/respawn; ggf. Tod beritten eigens.
-- **Wenn 🧑 B wählt:** Sprint im Projekt GRA mit Quellensuche (Kandidatenseite, Auswahl 🧑) und Einbau in `data/sprites.json`. Bei A und bestandener GR9.5 wird B-505 erledigt.
+**Entscheidung 🧑 (KR3.1, 2026-10-23):** Default gilt, die Entscheidung fällt nach der TV-Abnahme GR9.5: abgeleitete Animationen bleiben bis dahin. Dieses Ticket bleibt `eingeplant`, KR3.1 und GR10.1 bleiben deshalb offen. Danach: A (B-505 erledigt) oder B (Sprint im Projekt GRA mit Quellensuche).

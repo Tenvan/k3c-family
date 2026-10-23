@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR3
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-22
@@ -54,9 +54,15 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Welche Figur bekommen lavaSlime, ironBeetle, fireSpirit, crystalSpider, shardling, crystalGuardian?
+**Entscheidung 🧑 (KR3.1, 2026-10-23):** B, je Gegner ein Kandidat aus `docs/funde/gr7-figuren-funde.html`, wo es einen guten gibt. Lizenzen sind ungeprüft, Claude prüft sie auf der Quellseite vor dem Import (Q70).
 
-- **A (Default, gilt):** GR8-Figuren bleiben; GR7.3 schließt je Lücke mit „kein Treffer“, keine Fremddatei wird importiert. Begründung: Lizenzen der Kandidaten sind ungeprüft, `fireSpirit` hat nur Effekt-Treffer, `ironBeetle` nur zwei Kandidaten.
-- **B:** je Gegner ein Kandidat aus `docs/funde/gr7-figuren-funde.html`; Claude prüft die Lizenz, kopiert nach `public/sprites/<sheet>/`, Credit, `data/sprites.json` (`enemies.<id>`).
-- **C:** Bild-KI oder neu gezeichnet für ironBeetle/crystalSpider.
-- **Wenn 🧑 B oder C wählt:** GR7.3 Schritt 4 (Einbau) durch Claude, danach Sichtprüfung; bei A setzt Claude GR7.3 auf `fertig` mit „kein Treffer, GR8-Figur“ und B-193, B-329 auf `erledigt`.
+| Gegner | Wahl |
+|---|---|
+| lavaSlime | Fire Slime Monster Variations DB32 (ImogiaGames, CC0) |
+| ironBeetle | LPC Beetle (Redshrike, CC-BY 3.0 / OGA-BY 3.0, Credit Pflicht) |
+| fireSpirit | GR8-Figur bleibt (cemetery-ghost), kein Import |
+| crystalSpider | Spider Attack, Idle, Shoot, Walk (ethanf30games, CC0) |
+| shardling | Animated Walk-Cycle Monsters (Night Blade, CC0) |
+| crystalGuardian | Golem animations (irmirx, CC-BY 3.0, Credit Pflicht) |
+
+Umsetzung: GR7.3 Schritt 4 (Einbau durch Claude: Lizenz prüfen, kopieren nach `public/sprites/<sheet>/`, `CREDITS.md`, `data/sprites.json`, Zuordnung), danach Sichtprüfung durch 🧑. Fehlt bei einem Kandidaten das Sheet oder die Lizenz nicht, bleibt die GR8-Figur.

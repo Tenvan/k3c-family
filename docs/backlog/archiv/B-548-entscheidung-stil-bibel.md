@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR3
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-22
@@ -54,8 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Gilt die Stil-Bibel aus GR8.2 so?
-
-- **A (Default, gilt):** ja, als Leitlinie; Outline und Licht bleiben Empfehlung, die Pipeline prüft nur Palette und Raster.
-- **B:** ändern (andere Palette, 32 px, ohne Outline) oder Outline/Licht in der Pipeline erzwingen.
-- **Wenn 🧑 B wählt:** Ticket im Projekt GRA für die Änderung von Stil-Bibel und Pipeline; B-331/AC-01 bleibt bis dahin offen. Bei A wird B-331/AC-01 abgehakt.
+**Entscheidung 🧑 (KR3.1, 2026-10-23):** A, die Stil-Bibel gilt als Leitlinie (DB32, 16 px; Outline und Licht oben links bleiben Empfehlung, die Pipeline prüft nur Palette und Raster). B-331/AC-01 ist damit erfüllt.

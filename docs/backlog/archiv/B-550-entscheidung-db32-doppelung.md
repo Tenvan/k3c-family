@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR3
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-22
@@ -54,8 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Soll die Palette in ein gemeinsames Paket?
-
-- **A (Default, gilt):** doppelt lassen; 32 Farben ändern sich nicht, kein Risiko.
-- **B:** gemeinsames Paket `tools/assetkit/palette` (DEV, klein, ca. eine Session).
-- **Wenn 🧑 B wählt:** Ticket Domäne DEV im Projekt WZG oder GRA.
+**Entscheidung 🧑 (KR3.1, 2026-10-23):** A, die DB32-Palette bleibt doppelt in `tools/pipeline` und `tools/buildings`; kein gemeinsames Paket.

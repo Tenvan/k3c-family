@@ -143,14 +143,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-531](B-531-wald-dichter-hoehle-bueesche.md) | REG | Idee | mittel | offen | – | Wald hat mehr Bäume je Abschnitt, Höhle bekommt Deko-Büsche |
 | [B-532](B-532-snapshot-markiert-von.md) | SIM | Idee | niedrig | offen | – | Snapshot nennt, wer einen Knoten markiert hat |
 | [B-539](B-539-entscheidung-wimpel-markierer.md) | SIM | Frage | hoch | eingeplant | KR2 | Entscheidung D2: Wimpel-Farbe bleibt Client-Annäherung, markedBy erst nach GEB10.5 |
-| [B-546](B-546-entscheidung-gegner-figuren.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G1: Die sechs neuen Gegner behalten die GR8-Figuren, die GR7.3-Kandidaten werden nicht importiert |
-| [B-547](B-547-entscheidung-skalierung-krumm.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G2: Krumme Skalierungsfaktoren bleiben bis zur TV-Beobachtung GR7.4 |
-| [B-548](B-548-entscheidung-stil-bibel.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G3: Der Entwurf der Stil-Bibel (DB32, 16 px, Outline, Licht oben links) gilt |
-| [B-549](B-549-entscheidung-umschalten-db32.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G4: Das Spiel lädt weiter die Quellgrafik, nicht public/grafik-db32/ |
-| [B-550](B-550-entscheidung-db32-doppelung.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G5: Die DB32-Palette bleibt doppelt in pipeline und buildings |
-| [B-551](B-551-entscheidung-kandidaten-kein-pack.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G6: public/grafik/kandidaten/ ist kein Grafik-Pack |
 | [B-552](B-552-entscheidung-monarch-animationen.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G7: Monarch-Animationen bleiben aus vorhandenen Frames abgeleitet |
-| [B-553](B-553-entscheidung-specs-gr8-gr9-gr10.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G8: Die autonom freigegebenen Specs GR8, GR9 und GR10 gelten |
 | [B-554](B-554-entscheidung-musik-stuecke.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S1: Je Musikzustand spielt die erste Präferenz des Slots, die übrigen Kandidaten bleiben bis zur Bestätigung liegen |
 | [B-555](B-555-entscheidung-musik-ende.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S2: Nach dem Fall der Burg bleibt die Musik still, das Siegstück wartet auf einen Sieg-Auslöser |
 | [B-556](B-556-entscheidung-sound-credit-datei.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S3: Die Credits der Sounds bleiben in public/audio/README.md |
@@ -532,3 +525,10 @@ Zeile in diesen Abschnitt.
 | [B-543](archiv/B-543-entscheidung-truhe-ohne-serverzustand.md) | CLI | Frage | hoch | erledigt | KR2 | Entscheidung D6: Geschlossene Truhe ohne Serverzustand |
 | [B-544](archiv/B-544-entscheidung-geb9-defaults.md) | DEV | Frage | hoch | erledigt | KR2 | Entscheidung D7: Hub-Gebäude folgen der Hub-Stufe (Defaults aus GEB9) |
 | [B-545](archiv/B-545-entscheidung-geruest-bei-gefahr.md) | CLI | Frage | hoch | erledigt | KR2 | Entscheidung D8: Baugerüst nur ohne Gefahr |
+| [B-546](archiv/B-546-entscheidung-gegner-figuren.md) | REG | Frage | hoch | erledigt | KR3 | Entscheidung G1: Die sechs neuen Gegner behalten die GR8-Figuren, die GR7.3-Kandidaten werden nicht importiert |
+| [B-547](archiv/B-547-entscheidung-skalierung-krumm.md) | REG | Frage | hoch | erledigt | KR3 | Entscheidung G2: Krumme Skalierungsfaktoren bleiben bis zur TV-Beobachtung GR7.4 |
+| [B-548](archiv/B-548-entscheidung-stil-bibel.md) | REG | Frage | hoch | erledigt | KR3 | Entscheidung G3: Der Entwurf der Stil-Bibel (DB32, 16 px, Outline, Licht oben links) gilt |
+| [B-549](archiv/B-549-entscheidung-umschalten-db32.md) | REG | Frage | hoch | erledigt | KR3 | Entscheidung G4: Das Spiel lädt weiter die Quellgrafik, nicht public/grafik-db32/ |
+| [B-550](archiv/B-550-entscheidung-db32-doppelung.md) | REG | Frage | hoch | erledigt | KR3 | Entscheidung G5: Die DB32-Palette bleibt doppelt in pipeline und buildings |
+| [B-551](archiv/B-551-entscheidung-kandidaten-kein-pack.md) | REG | Frage | hoch | erledigt | KR3 | Entscheidung G6: public/grafik/kandidaten/ ist kein Grafik-Pack |
+| [B-553](archiv/B-553-entscheidung-specs-gr8-gr9-gr10.md) | REG | Frage | hoch | erledigt | KR3 | Entscheidung G8: Die autonom freigegebenen Specs GR8, GR9 und GR10 gelten |

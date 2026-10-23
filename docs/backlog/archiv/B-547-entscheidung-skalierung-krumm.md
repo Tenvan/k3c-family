@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR3
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-22
@@ -54,8 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Stört das Flimmern krumm skalierter Figuren am TV?
-
-- **A (Default, gilt):** so lassen; B-251 wird nach GR7.4 mit Begründung verworfen, wenn kein Flimmern auffällt.
-- **B:** je Pack `scale` auf ×2 oder ×3 runden, Frames zuschneiden, Sattelpunkte nachziehen (GR7.4 Schritt 3, Claude), erneute TV-Prüfung durch 🧑.
-- **Wenn 🧑 B wählt:** Claude setzt GR7.4 Schritt 3 um (nur `data/sprites.json`, `public/sprites/`, `docs/assets/zuordnung.md`).
+**Entscheidung 🧑 (KR3.1, 2026-10-23):** B, die Figuren laufen mit ganzzahliger Skalierung (×2 oder ×3). Umsetzung: GR7.4 Schritt 3 durch Claude (nur `data/sprites.json`, `public/sprites/`, `docs/assets/zuordnung.md`; Sattelpunkte und `riderWaist` nachziehen), danach TV-Prüfung durch 🧑. Reihenfolge: nach dem Einbau der neuen Figuren aus B-546 (GR7.3), damit sie gleich den ganzzahligen Faktor bekommen. B-251 wird damit nicht verworfen, sondern umgesetzt.

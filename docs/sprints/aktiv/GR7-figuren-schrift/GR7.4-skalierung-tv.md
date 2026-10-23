@@ -51,5 +51,6 @@ Beobachtung am TV nur durch 🧑.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+**Entscheid 🧑 (KR3.1, 2026-10-23, B-547):** Umstellen auf ganzzahlige Skalierung (×2 oder ×3), ohne vorherige TV-Beobachtung. Schritt 1 und 2 damit entschieden, B-251 wird umgesetzt statt verworfen.
+
+**Offen:** Schritt 3 durch Claude (je Pack `scale` runden, Frames zuschneiden, Sattelpunkte und `riderWaist` nachziehen, `docs/assets/zuordnung.md`), `task check`, danach TV-Prüfung durch 🧑 (AC-02). Reihenfolge: nach GR7.3 Schritt 4, damit die neuen Figuren gleich ganzzahlig laufen. Session bleibt `offen`.

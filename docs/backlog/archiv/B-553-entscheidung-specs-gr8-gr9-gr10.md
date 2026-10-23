@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR3
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-22
@@ -54,8 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Gelten die autonomen Freigaben?
-
-- **A (Default, gilt):** ja; Claude trägt `Freigabe: <Datum>, Chat (Ralf), Revision 1` nach.
-- **B:** Änderung an einer Spec → Revision 2 mit neuer Freigabe, Folgesession.
-- Offene Mensch-Sessions bleiben davon unberührt: GR7.3 (B-546), GR7.4 (B-547), GR9.5 (B-552), GR10.1.
+**Entscheidung 🧑 (KR3.1, 2026-10-23):** A, die autonom freigegebenen Specs GR8, GR9 und GR10 gelten. Die Freigabe ist in den drei Sprint-READMEs nachgetragen (Freigabe: 2026-10-23, Chat (Ralf), Revision 1). Offene Mensch-Sessions bleiben unberührt: GR7.3, GR7.4, GR9.5, GR10.1.

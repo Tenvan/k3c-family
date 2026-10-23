@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR3
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-22
@@ -54,9 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Lädt das Spiel künftig `public/grafik-db32/` statt der Quellen?
-
-- **A (Default, gilt):** nein, Quellen bleiben; `grafik-db32/` ist Vorschau. Problemfälle bleiben unangetastet. Regel „ab 8 px Restkante“ und Auswahl der 57 Assets gelten.
-- **B:** umschalten für alle 57 Assets; `greentree` neu zeichnen oder Bild-KI, `castle-tower` von Hand verkleinern, `woodwall` als Ausnahme `alpha-weich`.
-- **C:** teilweise umschalten (nur Assets ohne Befund).
-- **Wenn 🧑 B oder C wählt:** Sprint im Projekt GRA „Umschalten auf DB32“ mit TV-Abnahme; bei A wird B-331/AC-04 als „Default: nicht umschalten“ abgeschlossen.
+**Entscheidung 🧑 (KR3.1, 2026-10-23):** A, nicht umschalten. Das Spiel lädt weiter die Quellgrafik, `public/grafik-db32/` bleibt Vorschau, die Problemfälle (greentree, castle-tower, woodwall) bleiben unangetastet. B-331/AC-04 ist als „Default: nicht umschalten“ abgeschlossen.
