@@ -58,7 +58,7 @@ Keine blockierende. Alle Entscheidungen sind mit Default umgesetzt (autonom, Cla
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BD6.1 | `BD6.1-entscheidungen.md` | Workshop | Mensch | offen |
+| BD6.1 | `BD6.1-entscheidungen.md` | Workshop | Mensch | fertig |
 
 BD6.1: Ralf geht die Frage-Tickets in KR1 durch (AC-01, AC-02, AC-03).
 

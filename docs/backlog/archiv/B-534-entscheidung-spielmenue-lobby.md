@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-22
@@ -56,4 +56,6 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Notizen
 
-–
+**Entscheidung 🧑 (KR1.1, 2026-10-23):** Alternative A. Die Lobby bekommt beim Anlegen eine Welt-Auswahl (Liste der Welten vom Server, neue API). Namensvergabe `spiel-N` bleibt, freie Namenseingabe (Alternative B) ist nicht gewählt. Umsetzung: B-566. Der Default aus BD5.2 bleibt bis dahin in Kraft.
+
+Hinweis: Der Abschnitt „Offene Fragen“ dieses Tickets nannte irrtümlich die Frage von B-537 (vierter Punkt der WZ18.8-Meldung); die Antwort steht in B-537.

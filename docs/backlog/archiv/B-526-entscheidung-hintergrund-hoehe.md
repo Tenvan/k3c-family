@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-22
@@ -55,4 +55,6 @@ Fester Wert oder je Biom?
 
 ## Notizen
 
-Aus B-413 › Notizen (BD4, 2026-10-22). Autonom entschieden, Claude; Pruefung am Geraet in BD4.4.
+Aus B-413 › Notizen (BD4, 2026-10-22). Autonom entschieden, Claude; Prüfung am Gerät in BD4.4.
+
+**Entscheidung 🧑 (KR1.1, 2026-10-23):** bestätigt, ein fester `WORLD_TOP` für alle Biome. Die Prüfung am Gerät bleibt in BD4.4; zeigt sie Randkanten, entsteht dort ein neues Ticket.

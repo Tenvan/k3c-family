@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-22
@@ -54,5 +54,9 @@ Siehe Notizen.
 
 ## Notizen
 
-1. **Form:** Default: zwei Nachrichten ohne Felder, `{"t":"pause"}` und `{"t":"resume"}`. Alternative: eine Nachricht `{"t":"pause","on":true|false}`.
-2. **Rückmeldung:** Default: keine; der Client weiß selbst, dass er pausiert hat, Stillstand bzw. Ende des Schutzes zeigt er aus eigener Uhr. Alternative: `snap`/`delta` nennen `paused` (Raum steht) und je Monarch `protected`, damit andere Geräte den geschützten Monarchen markieren können (additiv, ohne neue Version möglich).
+**Entscheidung 🧑 (KR1.1, 2026-10-23):** beide Defaults bestätigt.
+
+1. **Form:** zwei Nachrichten ohne Felder, `{"t":"pause"}` und `{"t":"resume"}`.
+2. **Rückmeldung:** keine; der Client zeigt Stillstand bzw. Ende des Schutzes aus eigener Uhr.
+
+Alternativen (verworfen): eine Nachricht `{"t":"pause","on":bool}`; `paused`/`protected` in `snap`/`delta` (additiv, bleibt später ohne neue Version möglich).

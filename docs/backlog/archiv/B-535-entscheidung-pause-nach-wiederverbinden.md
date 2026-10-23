@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-22
@@ -57,3 +57,5 @@ Default oder Alternative (🧑).
 ## Notizen
 
 Angelegt in BD7 (autonom abarbeiten), Default umgesetzt in BD7.3 (`src/online/clientPause.ts`).
+
+**Entscheidung 🧑 (KR1.1, 2026-10-23):** bestätigt, Client sendet nach dem Wiederbeitritt mit offenem Menü erneut `pause`.

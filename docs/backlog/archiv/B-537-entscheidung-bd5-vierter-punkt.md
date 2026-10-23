@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-22
@@ -54,7 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Was war der vierte Punkt der Meldung aus WZ18.8?
-
-- **Default (Claude, autonom):** Es gibt keinen weiteren Punkt; BD5 bleibt bei Welt-Anzeige, Anlegen und Löschen.
-- **Wenn 🧑 einen Punkt nennt:** neues Ticket im Projekt BED mit dem Punkt; BD5 bleibt unverändert, die Abnahme BD5.4 ist davon unabhängig.
+**Entscheidung 🧑 (KR1.1, 2026-10-23):** „keiner“. Es gab keinen vierten Punkt; BD5 bleibt bei Welt-Anzeige, Anlegen und Löschen.

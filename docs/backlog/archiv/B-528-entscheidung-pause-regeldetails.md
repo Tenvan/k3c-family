@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-22
@@ -54,6 +54,10 @@ Siehe Notizen (drei Punkte, je Default und Alternative).
 
 ## Notizen
 
-1. **Couch-Raum:** Default: Der Raum steht, wenn das pausierte Gerät das einzige verbundene ist (wartende Monarchen getrennter Geräte zählen nicht). Alternative: Der Raum steht auch, wenn alle verbundenen Geräte pausiert haben.
-2. **Unverwundbar:** Default: Gegner wählen den geschützten Monarchen nicht als Ziel und Schaden trifft ihn nicht (`sim.Player.Protected`), er blockt also keine Gegner. Alternative: Gegner greifen ihn an, Treffer machen 0 Schaden (er wäre 60 s ein Schild an der Mauer).
-3. **Frist:** Default: 60 s = 1800 Ticks des Raums, gezählt ab dem ersten Tick, in dem das Gerät pausiert ist und der Raum rechnet (aus einer Couch-Pause, zu der ein zweites Gerät kommt, beginnt sie dann voll); ein erneutes `pause` nach `resume` beginnt eine neue Frist. Alternative: Frist nach Wanduhr ab `pause` wie `WaitFor` bzw. ein Kontingent je Nacht.
+**Entscheidung 🧑 (KR1.1, 2026-10-23):** alle drei Defaults bestätigt.
+
+1. **Couch-Raum:** Der Raum steht, wenn das pausierte Gerät das einzige verbundene ist (wartende Monarchen getrennter Geräte zählen nicht).
+2. **Unverwundbar:** Gegner wählen den geschützten Monarchen nicht als Ziel, Schaden trifft ihn nicht (`sim.Player.Protected`); er blockt keine Gegner.
+3. **Frist:** 60 s = 1800 Raum-Ticks ab dem ersten Tick, in dem das Gerät pausiert ist und der Raum rechnet; ein erneutes `pause` nach `resume` beginnt eine neue Frist.
+
+Alternativen (verworfen): Raum steht, wenn alle verbundenen Geräte pausiert haben; Gegner greifen an, Treffer machen 0 Schaden; Frist nach Wanduhr bzw. Kontingent je Nacht.

@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-22
@@ -56,3 +56,5 @@ Default oder Alternative?
 ## Notizen
 
 Aus B-413 › Notizen (BD4, 2026-10-22). Autonom entschieden, Claude.
+
+**Entscheidung 🧑 (KR1.1, 2026-10-23):** bestätigt, Default gilt (gezeichneter Topf plus Zahl, kein Textwort).

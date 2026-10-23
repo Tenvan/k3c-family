@@ -140,18 +140,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-521](B-521-types-ts-aufteilen.md) | CLI | Schuld | niedrig | offen | – | src/model/types.ts liegt über der Dateigrenze von 400 Zeilen |
 | [B-522](B-522-ressourcen-auf-ruine.md) | SIM | Problem | mittel | offen | – | Zufalls-Ressourcen eines geplanten Chunks können auf seiner Ruine liegen |
 | [B-523](B-523-ruine-kollision-hub-platz.md) | SIM | Schuld | niedrig | offen | – | Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt |
-| [B-525](B-525-entscheidung-goldtopf.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Wortlaut und Symbol des Goldtopfs in der Spielerkarte |
-| [B-526](B-526-entscheidung-hintergrund-hoehe.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Hintergrund-Höhe je Biom gegen WORLD_TOP |
-| [B-527](B-527-entscheidung-abmelden-tastatur.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Abmelden mit zwei Tastatur-Spielern und Ziel per Auswahl |
-| [B-528](B-528-entscheidung-pause-regeldetails.md) | SRV | Frage | mittel | eingeplant | KR1 | Entscheidung: Regeldetails der Raum-Pause (Couch-Raum, Schutz, Frist) |
-| [B-529](B-529-entscheidung-pause-protokoll.md) | SRV | Frage | mittel | eingeplant | KR1 | Entscheidung: Protokoll v8 für pause/resume ohne Rückmeldung im Zustand |
-| [B-533](B-533-entscheidung-spielstand-loeschen.md) | SRV | Frage | mittel | eingeplant | KR1 | Entscheidung: Spielstand löschen per HTTP ohne Token, Stand bleibt als Sicherung |
-| [B-534](B-534-entscheidung-spielmenue-lobby.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Spielmenü ist die Lobby, neuer Spielstand ohne Welt-Auswahl |
 | [B-531](B-531-wald-dichter-hoehle-bueesche.md) | REG | Idee | mittel | offen | – | Wald hat mehr Bäume je Abschnitt, Höhle bekommt Deko-Büsche |
 | [B-532](B-532-snapshot-markiert-von.md) | SIM | Idee | niedrig | offen | – | Snapshot nennt, wer einen Knoten markiert hat |
-| [B-535](B-535-entscheidung-pause-nach-wiederverbinden.md) | CLI | Frage | niedrig | eingeplant | KR1 | Entscheidung: Pause nach Wiederverbinden erneut senden, Schutz beginnt neu |
-| [B-536](B-536-entscheidung-versionen-bd3-bd7.md) | REG | Frage | hoch | eingeplant | KR1 | Entscheidung: Versionen v0.21.0 (BD3) und v0.21.1 (BD7) bestätigen |
-| [B-537](B-537-entscheidung-bd5-vierter-punkt.md) | CLI | Frage | hoch | eingeplant | KR1 | Entscheidung: Vierter Punkt der BD5-Meldung zum Spielmenü ist unbekannt |
 | [B-538](B-538-entscheidung-hub-wachstum-nur-grafik.md) | REG | Frage | hoch | eingeplant | KR2 | Entscheidung D1: Hub-Wachstum bleibt reine Grafik, keine feinere Stufenfolge im Server |
 | [B-539](B-539-entscheidung-wimpel-markierer.md) | SIM | Frage | hoch | eingeplant | KR2 | Entscheidung D2: Wimpel-Farbe bleibt Client-Annäherung, markedBy erst nach GEB10.5 |
 | [B-540](B-540-entscheidung-wald-dichte.md) | REG | Frage | hoch | eingeplant | KR2 | Entscheidung D3: Wald-Dichte und Höhlenbüsche einplanen, Werte setzt Ralf |
@@ -180,6 +170,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-563](B-563-endboss-bau-in-aktionsliste.md) | SRV | Idee | niedrig | offen | – | Die Aktionsliste nennt den Bau-Auslöser des Endbosses, das Overlay zeigt ihn |
 | [B-564](B-564-dev-seite-spiel-mit-dev-parameter.md) | PLAT | Idee | niedrig | offen | – | Die Entwicklerseite öffnet das Spiel mit Debug-Overlay (?dev=1) |
 | [B-565](B-565-messung-wellenabstand-mit-adern.md) | REG | Schuld | niedrig | offen | – | Der Wellenabstand unter Tage mit besetzten Adern ist über 100 Seeds gemessen |
+| [B-566](B-566-lobby-welt-auswahl.md) | CLI | Idee | mittel | offen | – | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl |
 
 ## Archiv
 
@@ -525,3 +516,14 @@ Zeile in diesen Abschnitt.
 | [B-217](archiv/B-217-ereignisse-built-playerdown-ort.md) | SIM | Schuld | niedrig | erledigt | LV1 | Die Ereignisse `built` und `playerDown` tragen ihren Ort |
 | [B-260](archiv/B-260-schutzplatz-ohne-id.md) | SIM | Schuld | niedrig | erledigt | LV1 | Der Schutzplatz einer Truppe hängt nicht an ihrer Entity-ID |
 | [B-200](archiv/B-200-aggressionspool-adern.md) | SIM | Problem | mittel | erledigt | LV1 | Der Aggressionspool unter Tage bleibt auch mit Adern im Wellen-Korridor |
+| [B-525](archiv/B-525-entscheidung-goldtopf.md) | CLI | Frage | niedrig | erledigt | KR1 | Entscheidung: Wortlaut und Symbol des Goldtopfs in der Spielerkarte |
+| [B-526](archiv/B-526-entscheidung-hintergrund-hoehe.md) | CLI | Frage | niedrig | erledigt | KR1 | Entscheidung: Hintergrund-Höhe je Biom gegen WORLD_TOP |
+| [B-527](archiv/B-527-entscheidung-abmelden-tastatur.md) | CLI | Frage | niedrig | erledigt | KR1 | Entscheidung: Abmelden mit zwei Tastatur-Spielern und Ziel per Auswahl |
+| [B-528](archiv/B-528-entscheidung-pause-regeldetails.md) | SRV | Frage | mittel | erledigt | KR1 | Entscheidung: Regeldetails der Raum-Pause (Couch-Raum, Schutz, Frist) |
+| [B-529](archiv/B-529-entscheidung-pause-protokoll.md) | SRV | Frage | mittel | erledigt | KR1 | Entscheidung: Protokoll v8 für pause/resume ohne Rückmeldung im Zustand |
+| [B-533](archiv/B-533-entscheidung-spielstand-loeschen.md) | SRV | Frage | mittel | erledigt | KR1 | Entscheidung: Spielstand löschen per HTTP ohne Token, Stand bleibt als Sicherung |
+| [B-534](archiv/B-534-entscheidung-spielmenue-lobby.md) | CLI | Frage | niedrig | erledigt | KR1 | Entscheidung: Spielmenü ist die Lobby, neuer Spielstand ohne Welt-Auswahl |
+| [B-535](archiv/B-535-entscheidung-pause-nach-wiederverbinden.md) | CLI | Frage | niedrig | erledigt | KR1 | Entscheidung: Pause nach Wiederverbinden erneut senden, Schutz beginnt neu |
+| [B-536](archiv/B-536-entscheidung-versionen-bd3-bd7.md) | REG | Frage | hoch | erledigt | KR1 | Entscheidung: Versionen v0.21.0 (BD3) und v0.21.1 (BD7) bestätigen |
+| [B-537](archiv/B-537-entscheidung-bd5-vierter-punkt.md) | CLI | Frage | hoch | erledigt | KR1 | Entscheidung: Vierter Punkt der BD5-Meldung zum Spielmenü ist unbekannt |
+| [B-567](archiv/B-567-version-bd3-bd7-ein-release.md) | REG | Idee | mittel | erledigt | – | BD3 und BD7 erscheinen zusammen als ein Release v0.21.0 |

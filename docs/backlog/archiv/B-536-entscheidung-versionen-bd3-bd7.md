@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-22
@@ -54,8 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Welche Versionen bekommen BD3 und BD7?
-
-- **Default (Claude, autonom):** BD3 → v0.21.0 (neue Server-Funktion, Protokoll v8), BD7 → v0.21.1 (Patch). Alternative A: beide zusammen als ein Release v0.21.0. Alternative B: keine eigenen Tags, Versionen erst mit dem nächsten Release.
-- **Bis zur Entscheidung:** kein Tag gesetzt, nichts weiter zu tun.
-- **Wenn 🧑 anders entscheidet:** nur der Vermerk in den beiden Sprint-READMEs (Abnahme › Version) ändert sich; kein Code betroffen.
+**Entscheidung 🧑 (KR1.1, 2026-10-23):** Alternative A, BD3 und BD7 erscheinen zusammen als ein Release **v0.21.0** (kein v0.21.1). Es ist kein Tag gesetzt; den Tag setzt 🧑 beim Release. Anpassung der Vermerke in den Sprint-READMEs: B-567. Kein Code betroffen.

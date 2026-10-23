@@ -1,6 +1,6 @@
 # BD6.1 · Entscheidungen zu BD2 bis BD7 bestätigen (🧑)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** REG
@@ -54,5 +54,9 @@ task test -- planning
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Zusammen mit KR1.1 abgeschlossen (Workshop 2026-10-23, Ergebnis dort).
+
+- **AC-01 geprüft:** Alle zehn Tickets tragen Ralfs Entscheidung unter Notizen.
+- **AC-02 geprüft:** Acht bestätigt und `erledigt`; geändert: B-534 → B-566, B-536 → B-567; beide Frage-Tickets `erledigt` mit Verweis.
+- **AC-03 geprüft:** BD3 und BD7 nennen v0.21.0 als gemeinsames Release (Abnahme › Version).
+- **Neue Tickets:** B-566 (Lobby-Welt-Auswahl, offen), B-567 (Versionsvermerk, erledigt).

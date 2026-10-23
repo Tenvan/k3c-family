@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-22
@@ -56,3 +56,5 @@ Auswahl behalten?
 ## Notizen
 
 Autonom entschieden (BD4, 2026-10-22), Claude.
+
+**Entscheidung 🧑 (KR1.1, 2026-10-23):** bestätigt, Auswahl „Spieler n“ per links/rechts bleibt.

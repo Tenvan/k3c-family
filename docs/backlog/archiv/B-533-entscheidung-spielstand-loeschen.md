@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR1
 - **Projekt:** BED
 - **Erstellt:** 2026-10-22
@@ -58,3 +58,5 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 ## Notizen
 
 Default konservativ: kein Datenverlust, ein versehentliches Löschen ist über die Sicherungen umkehrbar. Rotation behält 5 Sicherungen je Slot (BackupKeep).
+
+**Entscheidung 🧑 (KR1.1, 2026-10-23):** bestätigt, Default gilt: `DELETE /api/save?slot=NAME` ohne Token, Stand wandert in `saves/backups/NAME/`, `409` im offenen Raum, Protokoll bleibt v8.
