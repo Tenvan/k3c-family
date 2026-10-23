@@ -1,6 +1,7 @@
 import monarchJson from '@data/monarch.json';
 import { t } from '@game/core/texts';
-import { EFFECT_CONFIG, type EffectKind } from '@game/scenes/effects/effects';
+import { EFFECT_CONFIG, type EffectKind, type SkillLook } from '@game/scenes/effects/effects';
+import { SKILL_LOOKS, skillLook } from '@game/scenes/effects/skillLooks';
 import { gap, type Anim, type Gap } from '../playback/figure';
 
 // Aktionen und Skills der Monarch-Seite (B-463, WZ10.3): Schlagen, Münzen, Getroffen, Tod, Respawn und die Skill-Liste mit
@@ -61,25 +62,30 @@ export interface SkillRow {
   line: string;
   tier: number | null;
   kind: string;
-  gap: Gap;
+  /** Effekt des Skills im Spiel (`skillLook`, B-578): eigener Look oder Ring der Linie; fehlt = Lücke */
+  look: SkillLook | null;
+  /** `true`: eigener Effekt des Skills, `false`: Ring der Linie (Rückfall) */
+  own: boolean;
+  gap: Gap | null;
 }
 
 const NO_DISPLAY = gap('skill', 'Lücke: keine Darstellung im Spiel');
 const MISSING = gap('skill', 'Lücke: Skill fehlt in data/monarch.json');
 
-/** Alle Skills aus `data/monarch.json` mit Linie, Stufe und Art (heute 24), jeder ohne eigene Darstellung im Spiel mit der
- *  Lücke „keine Darstellung im Spiel“ (nur `noTarget` bei `castFailed` kommt vor); dazu die Skills der Presets, die in
- *  `skills` fehlen (seit B-504 keine; das Laden der Daten lehnt sie ab), mit der Lücke „Skill fehlt in data/monarch.json“. */
+/** Alle Skills aus `data/monarch.json` mit Linie, Stufe, Art und dem Effekt des Spiels (B-562, B-578: eigener Look, sonst
+ *  der Ring der Linie aus `LINE_COLORS`); die Lücke „keine Darstellung im Spiel“ nur bei Linien ohne Farbe. Dazu die Skills
+ *  der Presets, die in `skills` fehlen (seit B-504 keine; das Laden der Daten lehnt sie ab), mit der Lücke „Skill fehlt“. */
 export function skillRows(): SkillRow[] {
-  const rows: SkillRow[] = Object.entries(DATA.skills).map(([id, s]) => ({
-    id, line: DATA.lines[s.line]?.name ?? s.line, tier: s.tier, kind: s.kind, gap: NO_DISPLAY,
-  }));
+  const rows: SkillRow[] = Object.entries(DATA.skills).map(([id, s]) => {
+    const look = skillLook(id) ?? null;
+    return { id, line: DATA.lines[s.line]?.name ?? s.line, tier: s.tier, kind: s.kind, look, own: id in SKILL_LOOKS, gap: look ? null : NO_DISPLAY };
+  });
   const known = new Set(rows.map((r) => r.id));
   for (const preset of Object.values(DATA.presets)) {
     for (const id of preset.activeSkills) {
       if (known.has(id)) continue;
       known.add(id);
-      rows.push({ id, line: '', tier: null, kind: '', gap: MISSING });
+      rows.push({ id, line: '', tier: null, kind: '', look: null, own: false, gap: MISSING });
     }
   }
   return rows;

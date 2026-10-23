@@ -43,7 +43,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| GEB14 | REG | GEB | Wald und Höhle dichter, Gerüst bei Wartenden, Knoten-Markierer im Snapshot | – | Entwurf | `geplant/GEB14-welt-deko-geruest/` |
 | SV2 | SRV | WRT | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | – | Entwurf | `geplant/SV2-voll-ausbau-regelkonform/` |
 | W13 | CLI | WRT | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | – | Entwurf | `geplant/W13-morgengrauen-licht-client/` |
 | W12 | SIM | WRT | Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln | – | Entwurf | `geplant/W12-morgengrauen-phase/` |
@@ -55,7 +54,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | W11 | REG, SRV, CLI | WRT | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | – | Entwurf | `geplant/W11-bauplaetze-protokoll-abstand/` |
 | GD1 | INF | TST | Golden-Daten kleiner bei gleicher Prüfschärfe | – | Entwurf | `geplant/GD1-golden-verkleinern/` |
-| SK3 | SIM | SKL | Dieb-Skills Backstab und Smoke Bomb, Skill-Effekte, Skill-Ring im Studio | – | Entwurf | `geplant/SK3-dieb-skills-effekte/` |
 | KB1 | SIM | KMP | Kampf-Nachträge: Mond-Events, Endboss-Bau, Golden-Läufe, Feuergeist | – | Entwurf | `geplant/KB1-events-boss-golden/` |
 | PG1 | PLAT | REL | Präsentationsseite mit echten Spielbildern | – | Entwurf | `geplant/PG1-praesentation-bilder/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | Entwurf | `geplant/PB1-itch-io/` |
@@ -234,3 +232,5 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BD8 | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl | `erledigt/BD8-lobby-welt-auswahl/` |
 | WZ27 | Geplante Chunks: Gegnerlager, Ruinen-Kollision, Dateigrenze | `erledigt/WZ27-chunks-lager-ruine/` |
 | KB3 | Endboss-Auslöser anzeigen, Dev-Overlay-Link, Wellenabstand unter Tage messen | `erledigt/KB3-endboss-dev-wellen/` |
+| GEB14 | Wald und Höhle dichter, Gerüst bei Wartenden, Knoten-Markierer im Snapshot | `erledigt/GEB14-welt-deko-geruest/` |
+| SK3 | Dieb-Skills Backstab und Smoke Bomb, Skill-Effekte, Skill-Ring im Studio | `erledigt/SK3-dieb-skills-effekte/` |

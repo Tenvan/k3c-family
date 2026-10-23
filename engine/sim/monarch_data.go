@@ -24,6 +24,7 @@ type skillEffect struct {
 	Type                                          string
 	Radius, Range, Duration, HP                   float64
 	Damage, Factor, PerSecond, Amount, HPFraction float64
+	BackDamage                                    float64 // Backstab: Schaden im Rücken des Gegners (skills_thief.go)
 	// Passive (S1.2c): Aura = Radius in Units (0 = nur der Besitzer), Castle = Burgradius statt Aura.
 	Defense, Aura, Reduction, Chance                               float64
 	MaxHPBonus, SpeedBonus, DamageBonus, SpellBonus, CooldownBonus float64

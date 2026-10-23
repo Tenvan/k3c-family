@@ -1,14 +1,14 @@
-# SK3 · SIM · Dieb-Skills Backstab und Smoke Bomb, Skill-Effekte, Skill-Ring im Studio
+# SK3 · SIM, CLI, DEV · Dieb-Skills Backstab und Smoke Bomb, Skill-Effekte, Skill-Ring im Studio
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** SKL
-- **Domäne:** SIM
-- **Reife:** Entwurf
+- **Domäne:** SIM, CLI, DEV
+- **Reife:** bereit
 - **Tickets:** B-577, B-578, B-562
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-23, Revision 1
 
 ## Ausgangslage
 
@@ -56,9 +56,12 @@ Verhalten der Gegner gegen Unsichtbare (kein Ziel?), entscheidet 🧑 (B-577).
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| SK3.1 | `SK3.1-dieb-skills-sim.md` | Umsetzung | autonom | fertig |
+| SK3.2 | `SK3.2-skill-effekte.md` | Umsetzung | autonom | fertig |
+| SK3.3 | `SK3.3-studio-skill-ring.md` | Umsetzung | autonom | fertig |
 
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-10-23, Claude autonom: AC-01 bis AC-03 umgesetzt, Review (Sonnet) ohne schwere Befunde, `task check:diff` grün.
+- Offen bei 🧑: Unsichtbarkeits-Regel bestätigen (Annahmen in SK3.1), Skill-Effekte am TV ansehen, BAL-Lauf für Backstab/Smoke Bomb (Balancing zurückgestellt).

@@ -15,7 +15,7 @@ Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot �
 
 ## 2. Klassen und Presets
 
-- **Freie Skillung**, keine feste Klasse (B-017 entschieden). Die Presets Tank, Zauberer, Heiler, (Dieb) sind **nur Startverteilungen** beim Beitritt (Basiswerte aus `monarch.json` › `presets`); danach Respec nach § 3.
+- **Freie Skillung**, keine feste Klasse (B-017 entschieden). Die Presets Tank, Zauberer, Heiler, Dieb sind **nur Startverteilungen** beim Beitritt (Basiswerte aus `monarch.json` › `presets`); danach Respec nach § 3.
 - Die Presets sind **auswählbar beim Beitritt** (Standard: Tank für Spieler 1, Zauberer für Spieler 2, wechselbar), kein Zwang zur Ergänzung der Rollen.
 - Begründung: Rollen entstehen durch Absprache der Familie, hybride Builds sind erlaubt.
 - Daten: `data/monarch.json` › `presets`.
@@ -28,7 +28,8 @@ Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot �
 | **Quellen:** versteckt in der Welt 3–5 je Stufe (heute Mittel 3,9), **Miniboss** je Stufe 1, **Endboss** der Insel 3, **Meilenstein** Hub-Stufe 2, 3, 4, 5 erreicht (im ersten Hub, einmalig je Insel) je 1, **jede 3. gefundene Truhe** der Insel 1 Punkt. Etwa 30–35 Punkte je Insel. | Mehr Quellen als nur Verstecke: Erkunden, Kämpfen, Aufbauen. | `data/biomes/*.json` › `skillPoints`, `data/monarch.json` › `skillPointSources` (SIM legt an) | Punkte im Pool nach Tag 10: ≥ 10 in ≥ 70 % |
 | **Tier-Gating:** Tier 2 ab 2, Tier 3 ab 4, Tier 4 (Ultimate) ab 6 gelernten Skills der Linie; ein Punkt kauft einen Skill, jeden höchstens einmal (Beschluss 🧑 2026-10-04, B-216). | Spezialisierung wird belohnt; mit dem Katalog ist jeder Tier jeder Linie erreichbar (GDD-Werte 5/10/15 waren unerreichbar). | `data/monarch.json` › `tierPoints` | – |
 | **Respec kostenlos, an der Burg jedes Hubs, nur am Tag** (nicht in Dämmerung und Nacht des globalen Zyklus). | Umskillen zwischen den Nächten, nicht mitten in der Welle. | `monarch.json` | – |
-| **Linien zuerst: Tank, Zauberer, Heiler** (je Tier 1 bis 4, Skill-Tabelle in `game-design.md`); der **Dieb** folgt später als Inhalt, bleibt im Regelwerk. | Gruppenrollen zuerst; weniger Aufwand für das erste Spielbare. | `data/monarch.json` › `lines` | – |
+| **Linien: Tank, Zauberer, Heiler** (je Tier 1 bis 4, Skill-Tabelle in `game-design.md`) und **Dieb** mit Tier 1: **Backstab** (40 Schaden am nächsten Gegner in 2 Units, **80 im Rücken** des Gegners, Abklingzeit 12 s) und **Smoke Bomb** (5 s unsichtbar, Abklingzeit 25 s); Tier 2 bis 4 des Diebs folgen (B-577). | Gruppenrollen zuerst; der Dieb bringt Einzelkampf und Ausweichen. | `data/monarch.json` › `lines`, `skills` (Wirkungen `backstab`, `stealth`) | – |
+| **Rücken und Unsichtbarkeit (Annahme, ungeprüft, B-577):** Ein Gegner blickt zur Burg, fliehend zu seinem Portal; „im Rücken“ heißt auf der anderen Seite. Unsichtbare wählt kein Gegner (auch keine Wache, kein Verspotten) als Ziel, ein bestehendes Ziel geht verloren, sie nehmen keinen Schaden. Ein eigener Schlag oder ein anderer eigener Skill beendet die Unsichtbarkeit sofort. | Default im Modus „autonom“; bestätigt 🧑 vor der Freigabe. | `engine/sim/skills_thief.go`, `shielded` | – |
 
 Der Skill-Punkte-Pool ist **Teil des Spielstands** (`SAVE_VERSION`), die Verteilung je Spieler auch.
 

@@ -59,6 +59,7 @@
 
 .wd-skills { border-collapse: collapse; margin-top: 4px; }
 .wd-skills th, .wd-skills td { padding: 2px 10px; text-align: left; border-bottom: 1px solid var(--gray-5); font-size: 0.8rem; }
+.wd-skill-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; border: 1px solid var(--gray-7); }
 
 /* Gegner-Seite (B-464, WZ11) */
 .wd-cards { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }

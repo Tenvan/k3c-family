@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SK3
 - **Projekt:** SKL
 - **Erstellt:** 2026-10-23

@@ -18,6 +18,20 @@ export interface Effect {
   giver?: number;
   /** Nur `skill`: Farbe der Linie statt der Farbe aus `EFFECT_CONFIG` (SK2.3, B-503) */
   color?: number;
+  /** Nur `skill`: Aussehen des Skills (`skillLooks.ts`, B-578) statt `EFFECT_CONFIG.skill` */
+  look?: SkillLook;
+}
+
+/** Bewegung der Partikel eines Skill-Effekts: `burst` im Kreis, `rise` steigt auf, `fall` fällt herab, `wave` am Boden zur Seite. */
+export type SkillMotion = 'burst' | 'rise' | 'fall' | 'wave';
+
+/** Aussehen eines Skill-Effekts (B-578): Ring plus Partikel in Farbe, Größe, Dauer und Bewegung des Skills. */
+export interface SkillLook {
+  color: number;
+  radius: number;
+  durationMs: number;
+  particles: number;
+  motion: SkillMotion;
 }
 
 /** Aussehen und Grenzen aller Effekte an einer Stelle (GR5.2 hängt hier Blitzgrenze und Schalter ein). */
@@ -34,7 +48,7 @@ export const EFFECT_CONFIG: Record<EffectKind, { color: number; radius: number; 
   skill: { color: 0xffffff, radius: 30, durationMs: 450, particles: 4, flash: false },
 };
 
-/** Farbe des Skill-Rings je Linie aus `data/monarch.json › lines` (SK2.3, B-503: je Klasse gemeinsam, Default B-561). */
+/** Farbe des Skill-Rings je Linie aus `data/monarch.json › lines` (SK2.3, B-503); Rückfall für Skills ohne eigenen Look (B-578). */
 export const LINE_COLORS: Record<string, number> = { tank: 0x6fa8ff, mage: 0xc070ff, healer: 0x70f0a0, thief: 0x9a9a9a };
 
 /** Barrierefreiheit (B-164): höchstens 3 Blitze pro Sekunde; ein Blitz im Sperrfenster wird verworfen, nicht aufgeschoben. */

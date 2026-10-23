@@ -3,6 +3,7 @@ import monarchJson from '@data/monarch.json';
 import workerSource from '@game/scenes/render/worldRenderer.ts?raw';
 import animSource from '@game/scenes/render/monarchAnim.ts?raw';
 import { EFFECT_CONFIG } from '@game/scenes/effects/effects';
+import { skillLook } from '@game/scenes/effects/skillLooks';
 import { ACTIONS, RESPAWN_ALPHA, actionOf, effectMs, skillRows } from './actions';
 import { MOVES, monarchItems, moveOf } from './monarchLogic';
 
@@ -59,17 +60,18 @@ describe('Münzen, Treffer, Tod und Respawn (B-463/AC-08, AC-09)', () => {
 });
 
 describe('Skills (B-463/AC-06, AC-07)', () => {
-  it('alle Skills aus data/monarch.json mit Linie, Stufe und Art, jeder ohne Darstellung mit der Lücke', () => {
+  it('alle Skills aus data/monarch.json mit Linie, Stufe, Art und dem Effekt des Spiels, keine Lücke (B-562/AC-01)', () => {
     const rows = skillRows();
     const fromData = Object.keys(MONARCH.skills);
-    expect(fromData).toHaveLength(24);
+    expect(fromData).toHaveLength(26);
     for (const id of fromData) {
       const row = rows.find((r) => r.id === id)!;
       expect(row, id).toBeDefined();
       expect(row.line, id).not.toBe('');
       expect(row.tier, id).toBeGreaterThan(0);
       expect(row.kind, id).not.toBe('');
-      expect(row.gap.reason, id).toBe('Lücke: keine Darstellung im Spiel');
+      expect(row.gap, id).toBeNull();
+      expect(row.look, id).toEqual(skillLook(id));
     }
   });
 
@@ -78,6 +80,6 @@ describe('Skills (B-463/AC-06, AC-07)', () => {
     expect(missing).toEqual([]);
     const rows = skillRows();
     expect(rows).toHaveLength(Object.keys(MONARCH.skills).length);
-    expect(rows.some((r) => r.gap.reason === 'Lücke: Skill fehlt in data/monarch.json')).toBe(false);
+    expect(rows.some((r) => r.gap?.reason === 'Lücke: Skill fehlt in data/monarch.json')).toBe(false);
   });
 });

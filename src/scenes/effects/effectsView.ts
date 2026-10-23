@@ -2,10 +2,11 @@ import Phaser from 'phaser';
 import { UNIT_PX } from '../../core/constants';
 import { fontStyle } from '../render/fontRules';
 import { EFFECT_CONFIG, MAX_LIVE_EFFECTS, type Effect } from './effects';
+import { particleOffset } from './skillLooks';
 
 /**
  * Zeichnet Effekte einer Stufe in deren Ebene (nur Optik, kein Spielzustand). Jeder Effekt ist ein kurzer Ring bzw. Blitz
- * plus Partikel, die gleichmäßig im Kreis auseinanderfliegen; nach Ablauf wird alles zerstört, höchstens `MAX_LIVE_EFFECTS` zugleich.
+ * plus Partikel, die gleichmäßig im Kreis auseinanderfliegen (Skills: Bewegung aus ihrem Look, B-578); nach Ablauf wird alles zerstört, höchstens `MAX_LIVE_EFFECTS` zugleich.
  */
 export class StageEffects {
   private live = 0;
@@ -17,14 +18,15 @@ export class StageEffects {
 
   spawn(effect: Effect): void {
     if (effect.text) return this.label(effect);
-    const cfg = EFFECT_CONFIG[effect.kind];
+    const base = EFFECT_CONFIG[effect.kind];
+    const cfg = effect.look ?? { ...base, motion: 'burst' as const };
     const count = 1 + cfg.particles;
     if (this.live + count > MAX_LIVE_EFFECTS) return;
-    const color = effect.color ?? cfg.color;
-    this.piece(effect, color, cfg.radius, cfg.durationMs, 0, 0, cfg.flash);
+    const color = effect.look?.color ?? effect.color ?? base.color;
+    this.piece(effect, color, cfg.radius, cfg.durationMs, 0, 0, base.flash);
     for (let i = 0; i < cfg.particles; i++) {
-      const angle = (i / cfg.particles) * Math.PI * 2;
-      this.piece(effect, color, 5, cfg.durationMs, Math.cos(angle) * cfg.radius * 1.4, Math.sin(angle) * cfg.radius * 1.4 - 12, false);
+      const [dx, dy] = particleOffset(cfg.motion, i, cfg.particles, cfg.radius);
+      this.piece(effect, color, 5, cfg.durationMs, dx, dy, false);
     }
   }
 
