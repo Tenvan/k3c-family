@@ -1,14 +1,14 @@
 # W14 · SIM · Spielstand-Kommentare nach W7.2 nachziehen
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** WRT
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-418
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-23, Revision 1
 
 ## Ausgangslage
 
@@ -54,6 +54,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| W14.1 | `W14.1-kommentare-pruefen.md` | Umsetzung | autonom | fertig |
 
 Stichpunkte (Reife Entwurf): W14.1 Kommentare (AC-01), ein Commit ohne Review (nur Kommentare).
 

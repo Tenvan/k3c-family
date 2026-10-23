@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** W14
 - **Projekt:** WRT
 - **Erstellt:** 2026-10-13

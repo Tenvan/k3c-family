@@ -102,7 +102,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-411](B-411-spieler-abmelden.md) | CLI | Problem | hoch | eingeplant | BD4 | Lokale Spieler können beitreten, aber nicht einzeln austreten |
 | [B-412](B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | eingeplant | W11 | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | eingeplant | BD4 | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
-| [B-418](B-418-spielstand-kommentare-veraltet.md) | SIM | Problem | niedrig | eingeplant | W14 | Kommentare in island_save_v3.go und island_save_v5.go nennen nach W7.2 veraltete Versionen |
 | [B-419](B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | eingeplant | GD1 | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
 | [B-422](B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | eingeplant | W11 | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | eingeplant | SV2 | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
@@ -538,3 +537,4 @@ Zeile in diesen Abschnitt.
 | [B-519](archiv/B-519-plan-next-origin.md) | DEV | Problem | mittel | erledigt | WZ26 | plan_next berücksichtigt den Stand der Sprint-Branches auf origin |
 | [B-520](archiv/B-520-check-run-blockiert.md) | DEV | Problem | hoch | erledigt | WZ26 | check_run wartet bis zum Ende des Laufs und meldet Fortschritt statt Lauf-ID zum Nachfragen |
 | [B-496](archiv/B-496-studio-fensterposition-merken.md) | DEV | Idee | mittel | erledigt | WZ26 | Das Asset-Studio merkt sich Fensterposition und Größe und stellt sie sicher wieder her |
+| [B-418](archiv/B-418-spielstand-kommentare-veraltet.md) | SIM | Problem | niedrig | erledigt | W14 | Kommentare in island_save_v3.go und island_save_v5.go nennen nach W7.2 veraltete Versionen |
