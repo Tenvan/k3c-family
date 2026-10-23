@@ -9,13 +9,15 @@ import (
 	"time"
 )
 
-// Entry ist ein Log-Eintrag; Data hält alle Felder außer time, level, msg und ns.
+// Entry ist ein Log-Eintrag; Data hält alle Felder außer time, level, msg, ns und checkout.
 type Entry struct {
-	Time  time.Time      `json:"time"`
-	Level string         `json:"level"`
-	NS    string         `json:"ns"`
-	Msg   string         `json:"msg"`
-	Data  map[string]any `json:"data,omitempty"`
+	Time  time.Time `json:"time"`
+	Level string    `json:"level"`
+	NS    string    `json:"ns"`
+	// Checkout ist der Checkout des Aufrufs (Feld `checkout` der Zeile, z. B. „Repo-Wurzel“ oder der Worktree-Name), leer ohne.
+	Checkout string         `json:"checkout"`
+	Msg      string         `json:"msg"`
+	Data     map[string]any `json:"data,omitempty"`
 }
 
 var levels = []string{"DEBUG", "INFO", "WARN", "ERROR"}
@@ -48,8 +50,9 @@ func parse(line []byte) (Entry, bool) {
 	e.Level, _ = raw["level"].(string)
 	e.Msg, _ = raw["msg"].(string)
 	e.NS, _ = raw["ns"].(string)
+	e.Checkout, _ = raw["checkout"].(string)
 	e.Level = strings.ToUpper(e.Level)
-	for _, k := range []string{"time", "level", "msg", "ns"} {
+	for _, k := range []string{"time", "level", "msg", "ns", "checkout"} {
 		delete(raw, k)
 	}
 	if len(raw) > 0 {

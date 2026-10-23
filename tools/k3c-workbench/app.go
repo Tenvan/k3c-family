@@ -17,6 +17,7 @@ import (
 	"k3c/tools/k3c-workbench/internal/github"
 	"k3c/tools/k3c-workbench/internal/mcpsrv"
 	"k3c/tools/k3c-workbench/internal/planning"
+	"k3c/tools/k3c-workbench/internal/resmon"
 	"k3c/tools/k3c-workbench/internal/services"
 	"k3c/tools/k3c-workbench/internal/taskgate"
 	"k3c/tools/k3c-workbench/internal/taskrun"
@@ -68,6 +69,7 @@ type App struct {
 	store      *console.Store // Konsolenpuffer aller Quellen
 	log        *applog.Log
 	tracker    *usage.Tracker
+	res        *resmon.Monitor // Ressourcen-Monitoring (resmon_start.go)
 	ctl        *services.Controller
 	svcErr     error // services.json nicht geladen
 	srv        *mcpsrv.Server
@@ -112,6 +114,7 @@ func (a *App) startup(ctx context.Context) {
 		func(err error) { a.log.Warn("📄 "+err.Error(), "ns", "usage") })
 	a.initTasks()
 	a.svcCtx, a.cancel = context.WithCancel(ctx)
+	a.startResources()
 	planning.Watch(a.svcCtx, a.root, planningPoll, func() { a.emit(a.ctx, evPlanning, nil) })
 	a.ctl, a.svcErr = openServices(a.svcCtx, a.root, store, a.log,
 		func(st services.Status) {
@@ -119,7 +122,7 @@ func (a *App) startup(ctx context.Context) {
 			a.emit(a.ctx, evSourceState, serviceSource(st))
 		})
 	a.srv = mcpsrv.New(mcpsrv.Config{Root: a.root, Port: a.port, Version: version, Console: store,
-		Log: a.log.Logger, Usage: a.tracker, Services: a.ctl, ServicesErr: a.svcErr, Tasks: a,
+		Log: a.log.Logger, Usage: a.tracker, Resources: a.res, Services: a.ctl, ServicesErr: a.svcErr, Tasks: a,
 		OnCheck: func(st mcpsrv.CheckState) { a.emit(a.ctx, evSourceState, checkSource(st)) },
 		OnStart: func(c mcpsrv.Call) { a.emit(a.ctx, evMCPStart, c) },
 		OnCall:  func(c mcpsrv.Call) { a.emit(a.ctx, evMCPCall, c) },

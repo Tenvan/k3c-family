@@ -155,7 +155,8 @@
 }
 
 .logrow-time,
-.logrow-ns {
+.logrow-ns,
+.logrow-checkout {
   color: var(--dim);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;

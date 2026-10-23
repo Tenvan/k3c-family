@@ -36,6 +36,7 @@ func (s *Server) observe(next mcp.MethodHandler) mcp.MethodHandler {
 			}
 		}
 		ctx = context.WithValue(ctx, wsKey{}, ws)
+		defer s.cfg.Resources.Track("tool:" + call.Params.Name)()
 		id := s.stats.begin(call.Params.Name, string(call.Params.Arguments))
 		s.log.Debug("📨 "+call.Params.Name+": start", "ns", "mcp", "tool", call.Params.Name, "args", clipArgs(call.Params.Arguments))
 		defer func() {

@@ -121,6 +121,7 @@ func (a *App) uiRPC(w http.ResponseWriter, r *http.Request) {
 		uiFail(w, http.StatusNotFound, "Unbekannte Methode "+name)
 		return
 	}
+	defer a.res.Track("ui:" + name)()
 	var raw []json.RawMessage
 	if err := json.NewDecoder(io.LimitReader(r.Body, maxUIRPCBytes)).Decode(&raw); err != nil {
 		uiFail(w, http.StatusBadRequest, "Argumente ungültig: "+err.Error())

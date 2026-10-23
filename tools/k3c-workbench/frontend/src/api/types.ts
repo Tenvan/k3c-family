@@ -81,6 +81,8 @@ export interface LogEntry {
   time: string;
   level: string;
   ns: string;
+  /** Checkout des Aufrufs (Repo-Wurzel oder Worktree-Name), leer ohne Angabe. */
+  checkout?: string;
   msg: string;
   data?: Record<string, unknown>;
 }

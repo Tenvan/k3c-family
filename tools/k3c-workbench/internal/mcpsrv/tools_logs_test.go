@@ -50,8 +50,8 @@ func TestLogsQuery(t *testing.T) {
 	ctx := context.Background()
 	text, err := s.logsQuery(ctx, queryIn{Source: "k3c-workbench", MinLevel: "WARN", Limit: 2})
 	lines := strings.Split(text, "\n")
-	if err != nil || len(lines) != 3 || !strings.HasSuffix(lines[0], " WARN main server gestoppt") ||
-		!strings.Contains(lines[1], ` ERROR mcp check_run: Ziel "task:x" unbekannt`) || !strings.HasPrefix(lines[2], "2 Einträge · ") {
+	if err != nil || len(lines) != 3 || !strings.HasSuffix(lines[0], " WARN main - server gestoppt") ||
+		!strings.Contains(lines[1], ` ERROR mcp Repo-Wurzel check_run: Ziel "task:x" unbekannt`) || !strings.HasPrefix(lines[2], "2 Einträge · ") {
 		t.Errorf("Abfrage: %q, %v", text, err)
 	}
 	text, _ = s.logsQuery(ctx, queryIn{Source: "k3c-workbench", NS: "check"})

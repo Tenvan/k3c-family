@@ -202,9 +202,13 @@ func clampLimit(n int) int {
 	return min(n, maxQueryLimit)
 }
 
-// entryLine ist ein Eintrag als Zeile: Uhrzeit, Level, Bereich, Meldung und gekürzte Daten.
+// entryLine ist ein Eintrag als Zeile: Uhrzeit, Level, Bereich, Checkout („-“ ohne), Meldung und gekürzte Daten.
 func entryLine(e logs.Entry) string {
-	line := fmt.Sprintf("%s %s %s %s", e.Time.Local().Format("15:04:05"), e.Level, e.NS, e.Msg)
+	checkout := e.Checkout
+	if checkout == "" {
+		checkout = "-"
+	}
+	line := fmt.Sprintf("%s %s %s %s %s", e.Time.Local().Format("15:04:05"), e.Level, e.NS, checkout, e.Msg)
 	if len(e.Data) > 0 {
 		data, _ := json.Marshal(e.Data)
 		line += " " + clip(string(data))
