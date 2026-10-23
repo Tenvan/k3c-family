@@ -68,6 +68,7 @@ export function httpBackend(): Backend {
     mcpInstructions: () => rpc('McpInstructions'),
     mcpCalls: () => rpc('McpCalls'),
     mcpUsage: () => rpc('McpUsage'),
+    resources: (windowMin) => rpc('Resources', windowMin),
     tasks: () => rpc('Tasks'),
     tasksReload: () => rpc('TasksReload'),
     taskStart: (name, args) => rpc('TaskStart', name, args),

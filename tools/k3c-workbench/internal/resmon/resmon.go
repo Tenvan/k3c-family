@@ -70,7 +70,7 @@ type Monitor struct {
 	nextHeap uint64
 	nextGor  int
 	n        int
-	top      []procInfo
+	top      []ProcInfo
 }
 
 // New legt ein Messgerät an; gestartet wird es mit Run.
@@ -127,7 +127,7 @@ func (m *Monitor) Sample() Sample {
 	s := m.read()
 	m.mu.Lock()
 	m.history = append(m.history, s)
-	if len(m.history) > m.cfg.History {
+	if len(m.history) >= 2*m.cfg.History { // erst bei doppelter Länge kürzen: ein Kopieren je History Proben, nicht je Probe
 		m.history = append(m.history[:0], m.history[len(m.history)-m.cfg.History:]...)
 	}
 	m.n++
@@ -152,7 +152,7 @@ func (m *Monitor) read() Sample {
 	s.RSS, s.Private, s.Handles = p.rss, p.private, p.handles
 	s.Children, s.ChildrenRSS = len(p.children), 0
 	for _, c := range p.children {
-		s.ChildrenRSS += c.rss
+		s.ChildrenRSS += c.RSS
 	}
 	m.mu.Lock()
 	gs := slicesClone(m.gauges)
@@ -167,9 +167,9 @@ func (m *Monitor) read() Sample {
 
 func slicesClone(in []gauge) []gauge { return append([]gauge(nil), in...) }
 
-func topProcs(in []procInfo, n int) []procInfo {
-	out := append([]procInfo(nil), in...)
-	sort.Slice(out, func(i, j int) bool { return out[i].rss > out[j].rss })
+func topProcs(in []ProcInfo, n int) []ProcInfo {
+	out := append([]ProcInfo(nil), in...)
+	sort.Slice(out, func(i, j int) bool { return out[i].RSS > out[j].RSS })
 	if len(out) > n {
 		out = out[:n]
 	}
@@ -192,11 +192,16 @@ func readMetrics(names ...string) []uint64 {
 	return out
 }
 
-// History liefert den Verlauf, älteste zuerst.
+// History liefert den Verlauf (höchstens Config.History Proben), älteste zuerst.
 func (m *Monitor) History() []Sample {
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	return append([]Sample(nil), m.history...)
+	return append([]Sample(nil), m.tail()...)
+}
+
+// tail ist der gültige Teil des Verlaufs; der Aufrufer hält m.mu.
+func (m *Monitor) tail() []Sample {
+	return m.history[max(0, len(m.history)-m.cfg.History):]
 }
 
 // Latest liefert die letzte Probe; ohne Probe false.

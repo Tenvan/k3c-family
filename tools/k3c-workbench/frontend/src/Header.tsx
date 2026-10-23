@@ -3,10 +3,10 @@ import { StudioLink } from './StudioLink';
 import { StatusBadge, Tip } from '@webkit/atoms';
 import { SwitchField } from '@webkit/molecules';
 
-export const PAGES = ['dienste', 'tasks', 'planung', 'mcp'] as const;
+export const PAGES = ['dienste', 'tasks', 'planung', 'mcp', 'monitoring'] as const;
 export type Page = (typeof PAGES)[number];
 
-export const LABELS: Record<Page, string> = { dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', mcp: 'MCP' };
+export const LABELS: Record<Page, string> = { dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', mcp: 'MCP', monitoring: 'Monitoring' };
 
 interface Props {
   mcp: McpState | null;

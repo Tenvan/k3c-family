@@ -3,6 +3,7 @@ import { backend, type McpState } from './api';
 import { HeaderRight, LABELS, PAGES, type Page } from './Header';
 import { loadPref, savePref } from './lib/prefs';
 import { McpPage } from './mcp/McpPage';
+import { MonitoringPage } from './monitoring/MonitoringPage';
 import { PlanningPage } from './planning/PlanningPage';
 import { ServicesPage } from './services/ServicesPage';
 import { TasksPage } from './tasks/TasksPage';
@@ -36,14 +37,18 @@ export function App() {
     savePref('app.page', next);
   };
 
+  // Dienste, Tasks und Monitoring bleiben eingehängt (Zustand, laufende Ansichten); Planung und MCP bauen sich bei jedem
+  // Wechsel neu auf und laden dabei frisch. forceMount hält den Inhalt, hidden und display verbergen ihn.
+  const keep = (v: Page) => ({ forceMount: true as const, hidden: page !== v, style: page === v ? undefined : { display: 'none' } });
+
   return (
     <AppFrame title="K3C Workbench" appearance={mode} tabs={{ pages: PAGES, labels: LABELS, value: page, onChange: choose }}
       right={<HeaderRight mcp={mcp} mock={backend.mock} dark={mode === 'dark'} onDark={(d) => setMode(d ? 'dark' : 'light')} />}
       overlay={<Notices />}>
-      <Tabs.Content value="dienste">
+      <Tabs.Content value="dienste" {...keep('dienste')}>
         <ServicesPage />
       </Tabs.Content>
-      <Tabs.Content value="tasks">
+      <Tabs.Content value="tasks" {...keep('tasks')}>
         <TasksPage />
       </Tabs.Content>
       <Tabs.Content value="planung">
@@ -51,6 +56,9 @@ export function App() {
       </Tabs.Content>
       <Tabs.Content value="mcp">
         <McpPage />
+      </Tabs.Content>
+      <Tabs.Content value="monitoring" {...keep('monitoring')}>
+        <MonitoringPage active={page === 'monitoring'} />
       </Tabs.Content>
     </AppFrame>
   );

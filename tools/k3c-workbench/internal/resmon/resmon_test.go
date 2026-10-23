@@ -106,3 +106,44 @@ func TestReportNenntWerteUndPuffer(t *testing.T) {
 		}
 	}
 }
+
+func TestVerlaufBleibtBegrenztAuchOhneKuerzenJeProbe(t *testing.T) {
+	c := &clock{t: time.Unix(1_000_000, 0)}
+	m := New(Config{History: 4, Now: c.now})
+	for i := 0; i < 50; i++ {
+		c.t = c.t.Add(time.Second)
+		m.Sample()
+	}
+	if got := len(m.History()); got != 4 {
+		t.Fatalf("Verlauf %d, will 4", got)
+	}
+	m.mu.Lock()
+	raw := len(m.history)
+	m.mu.Unlock()
+	if raw >= 2*4+1 {
+		t.Fatalf("roher Verlauf %d wächst über die Kürzgrenze", raw)
+	}
+}
+
+func TestSeriesVerdichtetMitMaximumUndBegrenztPunkte(t *testing.T) {
+	c := &clock{t: time.Unix(1_000_000, 0)}
+	m := New(Config{History: 1000, Now: c.now})
+	for i := 0; i < 100; i++ {
+		c.t = c.t.Add(10 * time.Second)
+		s := m.Sample()
+		m.mu.Lock()
+		m.history[len(m.history)-1].HeapLive = uint64(i)
+		m.mu.Unlock()
+		_ = s
+	}
+	got := m.Series(time.Hour, 10)
+	if len(got) > 10 || len(got) < 5 {
+		t.Fatalf("%d Punkte, will höchstens 10", len(got))
+	}
+	if got[len(got)-1].HeapLive != 99 {
+		t.Fatalf("Maximum des letzten Fensters %d, will 99", got[len(got)-1].HeapLive)
+	}
+	if narrow := m.Series(time.Minute, 50); len(narrow) == 0 || len(narrow) > 7 {
+		t.Fatalf("eine Minute bei 10 s Takt: %d Punkte", len(narrow))
+	}
+}

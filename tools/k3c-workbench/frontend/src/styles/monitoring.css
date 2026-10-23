@@ -1,0 +1,42 @@
+/* Seite Monitoring: Karten mit Liniendiagrammen; Farben aus dem Theme (--gold, --info, --ok, --warn). */
+.mon-page { display: flex; flex-direction: column; gap: 12px; }
+.mon-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.mon-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 12px; }
+
+.mon-card { background: var(--card); border: 1px solid var(--card-line); border-radius: 8px; padding: 10px 12px; min-width: 0; }
+.mon-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.mon-head h3 { margin: 0; font-size: 14px; color: var(--title); }
+.mon-time { color: var(--dim); font-size: 12px; font-variant-numeric: tabular-nums; }
+
+.mon-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 6px 0 4px; font-size: 12px; color: var(--dim); }
+.mon-leg i { display: inline-block; width: 10px; height: 3px; border-radius: 2px; vertical-align: middle; background: currentColor; }
+.mon-leg b { color: var(--text); font-variant-numeric: tabular-nums; }
+
+.mon-plot { position: relative; }
+.mon-plot svg { width: 100%; height: 110px; display: block; }
+.mon-max { position: absolute; top: 0; right: 0; font-size: 11px; color: var(--dim); background: var(--card); padding: 0 2px; z-index: 1; }
+.mon-line { fill: none; stroke: currentColor; stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+.mon-area { fill: currentColor; fill-opacity: 0.18; stroke: none; }
+.mon-cursor { stroke: var(--dim); stroke-width: 1; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
+
+.mon-c0 { color: var(--gold); }
+.mon-c1 { color: var(--info); }
+.mon-c2 { color: var(--ok); }
+.mon-c3 { color: var(--warn); }
+
+.mon-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
+.mon-stat { background: var(--card); border: 1px solid var(--card-line); border-radius: 8px; padding: 8px 10px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.mon-stat b { font-size: 18px; font-variant-numeric: tabular-nums; }
+.mon-stat-name { color: var(--dim); font-size: 12px; }
+.mon-stat-wide { grid-column: 1 / -1; font-size: 12px; }
+.mon-paths { overflow-wrap: anywhere; color: var(--dim); }
+.mon-trend { font-size: 12px; color: var(--dim); font-variant-numeric: tabular-nums; }
+.mon-trend-warn { color: var(--error); font-weight: 600; }
+
+.mon-ops { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 6px; }
+.mon-ops th { text-align: right; color: var(--dim); font-weight: 500; padding: 2px 8px; white-space: nowrap; }
+.mon-ops th:first-child, .mon-op-name { text-align: left; }
+.mon-ops td { text-align: right; padding: 3px 8px; border-top: 1px solid var(--card-line); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.mon-op-name { font-family: var(--code-font-family, monospace); }
+.mon-op-bar { width: 22%; }
+.mon-op-bar span { display: block; height: 8px; border-radius: 2px; background: var(--gold); opacity: 0.7; }

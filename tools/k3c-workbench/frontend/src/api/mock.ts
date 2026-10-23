@@ -1,6 +1,7 @@
 import { mockLogFiles } from './mockLogFiles';
 import { mockLogs } from './mockLogs';
 import { mockMcp } from './mockMcp';
+import { mockResources } from './mockResources';
 import { mockServices } from './mockServices';
 import { mockPlanning } from './mockPlanning';
 import { mockGates, mockTasks } from './mockTasks';
@@ -57,6 +58,7 @@ export function mockBackend(): Backend {
     ...services,
     ...mockLogFiles(),
     ...mcpTools,
+    ...mockResources(),
     tasks: tasks.tasks,
     tasksReload: tasks.tasksReload,
     taskStart: tasks.taskStart,
