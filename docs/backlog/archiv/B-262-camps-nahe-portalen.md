@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** LV1
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-04
@@ -54,6 +54,4 @@ keine: entschieden 2026-10-04 (🧑, Chat): so lassen; offen ist nur die Bewertu
 
 ## Notizen
 
-Aufgefallen beim Golden-Update in W0.3b (2026-10-04).
-
-**Entscheidung 2026-10-04 (🧑, Chat, vermerkt in W0.4):** Camps bleiben vorerst bei ±175–275 nahe den Portalen (Regel „so lassen“, AC-01). Bewertung später über Balancing-Läufe (BAL3/BR1) bzw. den Spieleabend; ohne eigenen Sprint, das Ticket bleibt bis dahin offen.
+Gewählte Regel (AC-01): so lassen (🧑, 2026-10-04); vermerkt in LV1.1 (2026-10-23). Bewertung über Balancing-Läufe bzw. Spieleabend bleibt offen (BAL).

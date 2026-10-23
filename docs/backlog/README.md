@@ -33,7 +33,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-250](B-250-audiokern-datei-wiedergabe.md) | CLI | Schuld | hoch | eingeplant | SO4 | Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn |
 | [B-272](B-272-rotation-session-reports.md) | SRV | Schuld | mittel | eingeplant | ST1 | Die Rotation in reports/ erfasst auch die Spielmetrik-Reports |
 | [B-260](B-260-schutzplatz-ohne-id.md) | SIM | Schuld | niedrig | eingeplant | LV1 | Der Schutzplatz einer Truppe hängt nicht an ihrer Entity-ID |
-| [B-262](B-262-camps-nahe-portalen.md) | SIM | Frage | mittel | eingeplant | LV1 | Camps liegen nach dem Abstand zu den Linien nicht zu nah an den Portalen |
 | [B-263](B-263-snapshot-groesse-plaetze.md) | SRV | Problem | niedrig | eingeplant | NT1 | Der Welt-Snapshot bleibt mit 39 Plätzen je Stufe im Budget |
 | [B-251](B-251-figuren-ganzzahlig-skalieren.md) | CLI | Schuld | hoch | eingeplant | GR7 | Figuren werden ganzzahlig skaliert und flimmern nicht |
 | [B-184](B-184-pages-screenshots.md) | PLAT | Idee | niedrig | eingeplant | PG1 | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
@@ -62,7 +61,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-286](B-286-lasttest-tick-reihe-wackelt.md) | SRV | Problem | niedrig | eingeplant | NT1 | TestTickReiheJeRaum schlägt im Gesamtlauf gelegentlich fehl |
 | [B-287](B-287-hub-ausbau-beutel-maximum.md) | REG | Problem | mittel | eingeplant | RG1 | Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar |
 | [B-289](B-289-aggressionspool-mit-adern.md) | REG | Problem | mittel | eingeplant | RG1 | Der Aggressionspool steigt mit Adern nicht zu schnell |
-| [B-291](B-291-lava-nicht-auf-mauerlinien.md) | SIM | Problem | mittel | eingeplant | LV1 | Lava liegt nicht auf den Mauerlinien |
 | [B-293](B-293-spiel-im-menue-verlassen.md) | CLI | Idee | hoch | eingeplant | S8 | Das Spielmenü hat neben „Weiter“ einen Eintrag „Spiel verlassen“ |
 | [B-294](B-294-hinweis-glyph-muenze-nacht.md) | CLI | Frage | mittel | eingeplant | S8 | Münze und „Nacht naht“ zeigen in der geführten ersten Nacht keine Glyph |
 | [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | eingeplant | RG2 | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
@@ -524,3 +522,5 @@ Zeile in diesen Abschnitt.
 | [B-285](archiv/B-285-lernbare-skills-im-protokoll.md) | SRV | Problem | mittel | erledigt | RM1 | Der Server nennt je Spieler die lernbaren Skills |
 | [B-495](archiv/B-495-respec-in-aktionsliste.md) | SRV | Schuld | niedrig | erledigt | RM1 | Die Aktionsliste nennt respec, wenn CanRespec erlaubt |
 | [B-080](archiv/B-080-dev-tasten-server.md) | SRV | Idee | niedrig | erledigt | KB2 | Dev-Tasten (Gold, Stufe, Neustart) wirken über den Server |
+| [B-262](archiv/B-262-camps-nahe-portalen.md) | SIM | Frage | mittel | erledigt | LV1 | Camps liegen nach dem Abstand zu den Linien nicht zu nah an den Portalen |
+| [B-291](archiv/B-291-lava-nicht-auf-mauerlinien.md) | SIM | Problem | mittel | erledigt | LV1 | Lava liegt nicht auf den Mauerlinien |

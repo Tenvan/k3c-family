@@ -1,6 +1,6 @@
 # LV1.1 · Lava und Camps im Level-Generator
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -51,5 +51,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-23, autonom (Claude). Default aus LV1 › Offene Fragen (Bestätigung KR6).
+
+- **AC-01 (B-291/AC-01) umgesetzt, geprüft:** `lavaOffLines` (`engine/level/level.go`): Lava-Chunk mit Streifen (± widthUnits/2 + payGapUnits) auf Mauer, Turm oder Tor → erste andere Art aus `chunkWeights` (ironhold: gallery), ohne Würfel, geplante Chunks bleiben. Linien vorher erzeugt (eigener Strom, keine Verschiebung). Test `TestLavaNichtAufLinien500Seeds` grün. Golden: nur `level-ironhold.json` (eigener Commit). Folge: deutlich weniger Lava im Eisenstollen nahe dem Hub (Frage in KR6).
+- **AC-02 (B-262/AC-01):** Regel „so lassen“ im Ticket vermerkt; `TestCampAbstandZuLinien500Seeds`, `TestBreiteUndDichte`, `TestLairNurInDerKristallhoehle` grün.
+- `go test ./engine/level ./engine/sim` grün, `golangci-lint ./engine/level` 0 Befunde. Reviewer (Sonnet): keine schweren Befunde. `campaign-ausbau.json` schrieb `go:golden` nur mit anderer Formatierung neu (inhaltlich gleich) → zurückgenommen.
