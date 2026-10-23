@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR2
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-22
@@ -54,8 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Darf die hohe Pappel hinter der Farm stehen?
-
-- **Default (gilt):** ja, hinter der Farm.
-- **Alternative:** eigene niedrige Plantagen-Pappel vor der Farm.
-- **Wenn 🧑 die Alternative wählt:** DEV-Ticket (neue JSON/PNG in `tools/buildings`) plus CLI-Anpassung der Ebene in `src/scenes/render/plantation.ts`.
+**Entscheidung 🧑 (KR2.1, 2026-10-23):** Alternative: eigene niedrige Pappel vor der Farm. Umsetzung: B-568 (DEV, plus CLI in `plantation.ts`).

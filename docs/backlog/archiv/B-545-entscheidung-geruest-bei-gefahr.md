@@ -1,10 +1,10 @@
-# B-543 · Entscheidung D6: Geschlossene Truhe ohne Serverzustand
+# B-545 · Entscheidung D8: Baugerüst nur ohne Gefahr
 
 - **Domäne:** CLI
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR2
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-22
@@ -14,11 +14,11 @@
 
 ## Ausgangslage
 
-GEB10 zeigt liegende Truhen geschlossen; beim Aufheben öffnet der Client sie kurz und blendet sie aus. Der Server kennt keinen Zustand „offen“.
+GEB11 zeigte das Baugerüst vor der Burg bei `hubUpgrade.state = waitingWorker`, also auch nachts, wenn der Bau wegen Gefahr wartet und kein Bauer arbeitet.
 
 ## Ziel
 
-🧑 bestätigt, dass kein Serverzustand nötig ist.
+🧑 bestätigt den umgesetzten Default.
 
 ## Beteiligte und Zielgruppen
 
@@ -34,7 +34,7 @@ nicht relevant (Frage).
 
 ## Regeln und Einschränkungen
 
-Kein SIM-Ticket ohne Entscheidung.
+`docs/rules/materialien-gebaeude.md` § 2.1 („ein Bauer baut“).
 
 ## Beispiele
 
@@ -54,8 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Reicht „liegend = geschlossen, aufgehoben = kurz offen“?
-
-- **Default (gilt):** ja, nur Client.
-- **Alternative:** Truhe bleibt geöffnet liegen (Serverzustand `opened`, SIM + Protokoll + Spielstand).
-- **Wenn 🧑 die Alternative wählt:** SIM-Ticket im Projekt GEB mit Protokollfeld, danach CLI.
+**Entscheidung 🧑 (KR2.1, 2026-10-23):** Alternative: Gerüst immer bei `waitingWorker`, auch nachts bei Gefahr (Stand GEB11). Umsetzung: B-572 (CLI, eine Zeile in `hubLookOf` und Test zurück). Der umgesetzte Default aus GEB12.3 gilt bis dahin.

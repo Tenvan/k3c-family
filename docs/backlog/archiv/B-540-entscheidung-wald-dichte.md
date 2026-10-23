@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR2
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-22
@@ -54,8 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Wie viel dichter soll der Wald werden, und bekommen Höhle und Mine Deko-Büsche?
-
-- **Default:** B-531 ist eingeplant (Rang im Projekt GEB nach GEB12), aber ohne Werteänderung, bis 🧑 Zahlen nennt. Vorschlag zum Abnicken: Wald `tree [6, 9]` statt `[4, 7]`, Höhle `bush [1, 3]`, Mine ohne Büsche.
-- **Alternative:** so lassen (Wald wirkt über breitere Kronen dichter), B-531 verwerfen.
-- **Wenn 🧑 Werte nennt:** B-531 wird mit diesen Werten umgesetzt (REG, `task go:golden` mit Begründung, `sim_test` für Holz).
+**Entscheidung 🧑 (KR2.1, 2026-10-23):** Vorschlag bestätigt: Wald `tree [6, 9]` statt `[4, 7]`, Höhle `bush [1, 3]`, Mine ohne Büsche. Umsetzung in B-531 (REG, `task go:golden` mit Begründung, `sim_test` für Holz); die Werte stehen dort.

@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR2
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-22
@@ -54,8 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Bleiben Bäume 11,25 Kacheln hoch?
-
-- **Default (gilt):** ja, 11,25 Kacheln.
-- **Alternative:** auf 9 Kacheln (Burghöhe) begrenzen.
-- **Wenn 🧑 begrenzt:** DEV-Ticket im Projekt GEB: Baum-JSONs in `tools/buildings` neu maßen, PNGs neu erzeugen, Vorschau prüfen; Spielcode unberührt.
+**Entscheidung 🧑 (KR2.1, 2026-10-23):** bestätigt, Bäume bleiben 11,25 Kacheln hoch. Die Sichtprüfung am Gerät läuft in GEB10.5; zeigt sie ein Problem, entsteht dort ein neues Ticket.

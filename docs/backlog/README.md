@@ -142,14 +142,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-523](B-523-ruine-kollision-hub-platz.md) | SIM | Schuld | niedrig | offen | – | Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt |
 | [B-531](B-531-wald-dichter-hoehle-bueesche.md) | REG | Idee | mittel | offen | – | Wald hat mehr Bäume je Abschnitt, Höhle bekommt Deko-Büsche |
 | [B-532](B-532-snapshot-markiert-von.md) | SIM | Idee | niedrig | offen | – | Snapshot nennt, wer einen Knoten markiert hat |
-| [B-538](B-538-entscheidung-hub-wachstum-nur-grafik.md) | REG | Frage | hoch | eingeplant | KR2 | Entscheidung D1: Hub-Wachstum bleibt reine Grafik, keine feinere Stufenfolge im Server |
 | [B-539](B-539-entscheidung-wimpel-markierer.md) | SIM | Frage | hoch | eingeplant | KR2 | Entscheidung D2: Wimpel-Farbe bleibt Client-Annäherung, markedBy erst nach GEB10.5 |
-| [B-540](B-540-entscheidung-wald-dichte.md) | REG | Frage | hoch | eingeplant | KR2 | Entscheidung D3: Wald-Dichte und Höhlenbüsche einplanen, Werte setzt Ralf |
-| [B-541](B-541-entscheidung-baumgroesse.md) | DEV | Frage | hoch | eingeplant | KR2 | Entscheidung D4: Bäume bleiben 11,25 Kacheln hoch |
-| [B-542](B-542-entscheidung-plantage-pappel.md) | DEV | Frage | hoch | eingeplant | KR2 | Entscheidung D5: Plantage-Pappel steht hinter der Farm |
-| [B-543](B-543-entscheidung-truhe-ohne-serverzustand.md) | CLI | Frage | hoch | eingeplant | KR2 | Entscheidung D6: Geschlossene Truhe ohne Serverzustand |
-| [B-544](B-544-entscheidung-geb9-defaults.md) | DEV | Frage | hoch | eingeplant | KR2 | Entscheidung D7: Hub-Gebäude folgen der Hub-Stufe (Defaults aus GEB9) |
-| [B-545](B-545-entscheidung-geruest-bei-gefahr.md) | CLI | Frage | hoch | eingeplant | KR2 | Entscheidung D8: Baugerüst nur ohne Gefahr |
 | [B-546](B-546-entscheidung-gegner-figuren.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G1: Die sechs neuen Gegner behalten die GR8-Figuren, die GR7.3-Kandidaten werden nicht importiert |
 | [B-547](B-547-entscheidung-skalierung-krumm.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G2: Krumme Skalierungsfaktoren bleiben bis zur TV-Beobachtung GR7.4 |
 | [B-548](B-548-entscheidung-stil-bibel.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G3: Der Entwurf der Stil-Bibel (DB32, 16 px, Outline, Licht oben links) gilt |
@@ -171,6 +164,11 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-564](B-564-dev-seite-spiel-mit-dev-parameter.md) | PLAT | Idee | niedrig | offen | – | Die Entwicklerseite öffnet das Spiel mit Debug-Overlay (?dev=1) |
 | [B-565](B-565-messung-wellenabstand-mit-adern.md) | REG | Schuld | niedrig | offen | – | Der Wellenabstand unter Tage mit besetzten Adern ist über 100 Seeds gemessen |
 | [B-566](B-566-lobby-welt-auswahl.md) | CLI | Idee | mittel | offen | – | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl |
+| [B-568](B-568-plantage-pappel-niedrig.md) | DEV | Idee | mittel | offen | – | Plantage bekommt eine eigene niedrige Pappel vor der Farm |
+| [B-569](B-569-gebaeude-eigene-stufen.md) | REG | Idee | mittel | offen | – | Gebäude bekommen eigene Stufen (levels je Gebäude) |
+| [B-570](B-570-camp-stufen-look.md) | DEV | Idee | mittel | offen | – | Das Camp bekommt einen Stufen-Look statt der Grundform |
+| [B-571](B-571-heilplatz-stufen-deutlicher.md) | DEV | Idee | mittel | offen | – | Heilplatz-Stufen sind deutlicher sichtbar (Zelt, Brunnen) |
+| [B-572](B-572-geruest-immer-bei-waitingworker.md) | CLI | Idee | mittel | offen | – | Baugerüst steht immer bei waitingWorker, auch bei Gefahr |
 
 ## Archiv
 
@@ -527,3 +525,10 @@ Zeile in diesen Abschnitt.
 | [B-536](archiv/B-536-entscheidung-versionen-bd3-bd7.md) | REG | Frage | hoch | erledigt | KR1 | Entscheidung: Versionen v0.21.0 (BD3) und v0.21.1 (BD7) bestätigen |
 | [B-537](archiv/B-537-entscheidung-bd5-vierter-punkt.md) | CLI | Frage | hoch | erledigt | KR1 | Entscheidung: Vierter Punkt der BD5-Meldung zum Spielmenü ist unbekannt |
 | [B-567](archiv/B-567-version-bd3-bd7-ein-release.md) | REG | Idee | mittel | erledigt | – | BD3 und BD7 erscheinen zusammen als ein Release v0.21.0 |
+| [B-538](archiv/B-538-entscheidung-hub-wachstum-nur-grafik.md) | REG | Frage | hoch | erledigt | KR2 | Entscheidung D1: Hub-Wachstum bleibt reine Grafik, keine feinere Stufenfolge im Server |
+| [B-540](archiv/B-540-entscheidung-wald-dichte.md) | REG | Frage | hoch | erledigt | KR2 | Entscheidung D3: Wald-Dichte und Höhlenbüsche einplanen, Werte setzt Ralf |
+| [B-541](archiv/B-541-entscheidung-baumgroesse.md) | DEV | Frage | hoch | erledigt | KR2 | Entscheidung D4: Bäume bleiben 11,25 Kacheln hoch |
+| [B-542](archiv/B-542-entscheidung-plantage-pappel.md) | DEV | Frage | hoch | erledigt | KR2 | Entscheidung D5: Plantage-Pappel steht hinter der Farm |
+| [B-543](archiv/B-543-entscheidung-truhe-ohne-serverzustand.md) | CLI | Frage | hoch | erledigt | KR2 | Entscheidung D6: Geschlossene Truhe ohne Serverzustand |
+| [B-544](archiv/B-544-entscheidung-geb9-defaults.md) | DEV | Frage | hoch | erledigt | KR2 | Entscheidung D7: Hub-Gebäude folgen der Hub-Stufe (Defaults aus GEB9) |
+| [B-545](archiv/B-545-entscheidung-geruest-bei-gefahr.md) | CLI | Frage | hoch | erledigt | KR2 | Entscheidung D8: Baugerüst nur ohne Gefahr |

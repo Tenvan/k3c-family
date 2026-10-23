@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR2
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-22
@@ -54,9 +54,6 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Soll der Hub zwischen den Hub-Stufen echte Ausbauschritte bekommen, die etwas freischalten?
+**Entscheidung 🧑 (KR2.1, 2026-10-23):** A, das Hub-Wachstum bleibt reine Grafik; keine Folgearbeit.
 
-- **A (Default, gilt):** so lassen, Wachstum nur als Grafik. Kein Risiko; die Zwischenlooks schalten nichts frei.
-- **B:** Unterstufen als zusätzliche `levels` in `data/hub.json`; bricht „Linie k ab Hub-Stufe k“, Claude rät ab.
-- **C:** Ausbauschritte je Stufe mit eigener Freischaltung (`levels[n].steps`, `sites[].hubStep`), Protokollfeld `hubStep`, Spielstand. SIM, SRV, CLI, Studio-Planer, Golden, Balancing.
-- **Wenn 🧑 C wählt:** eigener Sprint im Projekt GEB (SIM/REG „Hub-Ausbauschritte“), danach Client-Anpassung von `hubLookOf`. Bei A nichts weiter.
+Vorlage: A (so lassen), B (Unterstufen in `data/hub.json`, bricht „Linie k ab Hub-Stufe k“), C (Ausbauschritte mit Freischaltung, Protokollfeld `hubStep`). Hinweis: B-569 (eigene Gebäudestufen) betrifft Gebäude, nicht den Hub.

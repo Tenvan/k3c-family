@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR2
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-22
@@ -54,8 +54,10 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Gelten die GEB9-Defaults?
+**Entscheidung 🧑 (KR2.1, 2026-10-23):** Die GEB9-Defaults gelten nicht unverändert; geändert werden drei Punkte, je ein Ticket im Projekt GEB:
 
-- **Default (gilt):** alle sechs wie umgesetzt.
-- **Alternativen:** eigene Gebäudestufen (`levels` je Gebäude in `data/buildings.json`), Camp mit Stufen-Look, Heilplatz-Stufen deutlicher (z. B. Zelt, Brunnen ab Stufe 3).
-- **Wenn 🧑 ändert:** je Punkt ein Ticket im Projekt GEB (DEV für Grafik, SIM/REG für eigene Gebäudestufen).
+- Eigene Gebäudestufen (`levels` je Gebäude): B-569 (REG, Umfang vor der Spec mit 🧑 klären).
+- Camp mit Stufen-Look: B-570 (DEV, hängt an B-569).
+- Heilplatz-Stufen deutlicher: B-571 (DEV).
+
+Die übrigen GEB9-Defaults bleiben. Die Abnahme des Heilplatzes am Gerät läuft in GEB9.6.
