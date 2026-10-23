@@ -107,6 +107,16 @@ func TestImportAbgelehnt(t *testing.T) {
 	}
 }
 
+// tlsClient liefert den Testclient ohne Umgebungs-Proxy: Virenscanner mit Traffic-Filter (Norton) hängen sich per
+// Proxy-Umgebung auch an Loopback-Verbindungen und tauschen das Zertifikat aus (B-474).
+func tlsClient(srv *httptest.Server) *http.Client {
+	c := srv.Client()
+	if tr, ok := c.Transport.(*http.Transport); ok {
+		tr.Proxy = nil
+	}
+	return c
+}
+
 // Direkte Übernahme nur bei https und erkannter Lizenz.
 func TestDownloadHit(t *testing.T) {
 	root, itch, _ := importRepo(t)
@@ -117,7 +127,7 @@ func TestDownloadHit(t *testing.T) {
 		t.Fatal(err)
 	}
 	intern, _ := HitsOf(root, "farm")
-	if _, err := DownloadHit(context.Background(), root, "farm", intern[2].ID, srv.Client(), day); err == nil || !strings.Contains(err.Error(), "download nur von upload.wikimedia.org") {
+	if _, err := DownloadHit(context.Background(), root, "farm", intern[2].ID, tlsClient(srv), day); err == nil || !strings.Contains(err.Error(), "download nur von upload.wikimedia.org") {
 		t.Fatalf("fremder Host nicht abgelehnt: %v", err)
 	}
 	DownloadHosts["127.0.0.1"] = true // Testserver
@@ -127,7 +137,7 @@ func TestDownloadHit(t *testing.T) {
 		t.Fatal(err)
 	}
 	hits, _ := HitsOf(root, "farm")
-	rel, err := DownloadHit(context.Background(), root, "farm", hits[3].ID, srv.Client(), day)
+	rel, err := DownloadHit(context.Background(), root, "farm", hits[3].ID, tlsClient(srv), day)
 	if err != nil || rel != "grafik/kandidaten/coin-video-game-png.png" {
 		t.Fatalf("Download: %q %v", rel, err)
 	}
@@ -135,7 +145,7 @@ func TestDownloadHit(t *testing.T) {
 	if !strings.Contains(string(credits), "| CC BY-SA 3.0 | https://commons.wikimedia.org/c | Lizenz erkannt (Wikimedia Commons) |") {
 		t.Errorf("Credit:\n%s", credits)
 	}
-	if _, err := DownloadHit(context.Background(), root, "farm", itch, srv.Client(), day); err == nil || !strings.Contains(err.Error(), "manuell") {
+	if _, err := DownloadHit(context.Background(), root, "farm", itch, tlsClient(srv), day); err == nil || !strings.Contains(err.Error(), "manuell") {
 		t.Errorf("ohne Download: %v", err)
 	}
 }

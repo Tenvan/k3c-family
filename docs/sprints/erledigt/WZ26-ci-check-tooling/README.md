@@ -1,14 +1,14 @@
 # WZ26 · DEV · CI rot beheben, Prüf- und Planungswerkzeuge härten
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-465, B-473, B-474, B-519, B-520, B-496
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-23, Revision 1
 
 ## Ausgangslage
 
@@ -57,10 +57,11 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| WZ26.1 | `WZ26.1-ci-rot-beheben.md` | Umsetzung | autonom | fertig |
 
 Stichpunkte (Reife Entwurf): WZ26.1 CI und Lint (AC-01, AC-02); WZ26.2 plan_next und check_run (AC-03); WZ26.3 Studio-Fenster (AC-04); WZ26.4 Review.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-10-23, Claude autonom: AC-01 bis AC-03 erfüllt, `task check:diff` grün. CI-Rot auf develop nachgezogen: Sound-Test (Archiv-Tickets), `.dockerignore` (pipeline-liste.json), `TestSimTestMitCheckout` (Kurzpfade), `TestDownloadHit` (ohne Umgebungs-Proxy).
+- AC-04 angenommen, Validierung offen: Fensterposition des Studios am PC (B-496) und Live-Messung `check_run` (B-520) liegen bei 🧑.

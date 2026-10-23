@@ -9,6 +9,9 @@ logs
 certs
 tools/k3c-workbench
 tools/k3c-studio
-docs
+docs/*
+!docs/assets
+docs/assets/*
+!docs/assets/pipeline-liste.json
 .omc
 .claude

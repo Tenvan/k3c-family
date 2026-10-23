@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** ?
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ26
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-21
@@ -60,4 +60,4 @@ Ob Claude Code ein progressToken sendet und ob die Desktop-App die 60-s-Frist tr
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+AC-01 bis AC-03 im Code mit Go-Tests belegt (`check_wait.go`, `check_wait_test.go`). AC-04 (Live-Messung über 60 s in Claude Code) bleibt bei 🧑: angenommen, Validierung offen. Beim Lauf in WZ26 lieferte `task:check:diff` (2 min 51 s) das Ergebnis direkt.

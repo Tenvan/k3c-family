@@ -1,11 +1,11 @@
 //go:build windows
 
-package main
+package windowstate
 
 import "testing"
 
 func TestOnScreenFehlenderBildschirm(t *testing.T) {
-	if onScreen(windowState{X: -100000, Y: 100000, Width: defaultWidth, Height: defaultHeight}) {
+	if OnScreen(State{X: -100000, Y: 100000, Width: DefaultWidth, Height: DefaultHeight}) {
 		t.Error("Position weit außerhalb gilt als sichtbar")
 	}
 }

@@ -1,24 +1,24 @@
-# B-474 · TestDownloadHit scheitert lokal am TLS-Zertifikat (Norton), check:all rot
+# B-519 · plan_next berücksichtigt den Stand der Sprint-Branches auf origin
 
 - **Domäne:** DEV
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ26
 - **Projekt:** WZG
-- **Erstellt:** 2026-10-17
+- **Erstellt:** 2026-10-21
 - **Spec:** Entwurf
 - **Revision:** 1
 - **Freigabe:** –
 
 ## Ausgangslage
 
-`task check:all` scheitert lokal in `check:studio`: `TestDownloadHit` (`tools/assetkit/import_test.go:131`) meldet „tls: failed to verify certificate: x509: certificate signed by unknown authority“ beim Abruf vom `httptest.NewTLSServer` mit `srv.Client()`. In der CI ist der Test grün. Lokal liegt Norton Antivirus mit Traffic-Filter vor (`SSLKEYLOGFILE=\\.\nllMonFltProxy…`, `NODE_EXTRA_CA_CERTS`), vermutlich fängt er auch die Verbindung auf 127.0.0.1 ab. Ursache nicht bestätigt (Test gegen den Norton-Filter, z. B. mit Ausnahme, nicht geprüft).
+`plan_next` (B-518) liest nur den ausgecheckten Stand. `in Arbeit` und `fertig` stehen bis zum Sprint-PR nur auf `origin/sprint/<präfix>`; auf `develop` liefert das Tool deshalb erledigte Sessions, und die Domänen-Sperre greift kaum.
 
 ## Ziel
 
-`task check:all` läuft lokal auf dem Entwicklerrechner grün: Ursache klären (Norton oder Test) und den Test so absichern, dass er lokal und in der CI besteht.
+`plan_next` überlagert je aktivem Sprint mit Branch auf `origin` die README und Session-Dateien von dort (`git show`), wie `docs/arbeitsweise.md` › Autonomer Ablauf Schritt 1 es verlangt.
 
 ## Beteiligte und Zielgruppen
 
@@ -46,7 +46,8 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert: Test, Befehl, Datei oder Beobachtung am TV mit erwartetem Ergebnis.
+- **AC-01** Liegt `origin/sprint/<präfix>` vor, gilt dessen Status der Sessions für Auswahl, Abhängigkeiten und Domänen-Sperre (Go-Test mit Test-Repo).
+- **AC-02** Ohne Netz oder ohne Branch fällt `plan_next` auf den lokalen Stand zurück und sagt das in der Antwort.
 
 ## Offene Fragen
 

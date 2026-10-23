@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ26
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-18
@@ -60,4 +60,4 @@ Entscheidet 🧑: Gemeinsames Paket in `tools/assetkit` (Empfehlung, keine Doppe
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Umgesetzt in WZ26: Paket `tools/assetkit/windowstate`, Workbench und Studio nutzen es. AC-01 bis AC-03 geprüft (go test, golangci-lint, check:diff). AC-04 (Abnahme am PC) bleibt bei 🧑: angenommen, Validierung offen.

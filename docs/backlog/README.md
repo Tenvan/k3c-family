@@ -116,23 +116,17 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-457](B-457-geb6-abnahme-splitscreen-ausgang-geschmack.md) | CLI | Frage | mittel | eingeplant | GEB10 | GEB6: Split-Screen, Ausgang-Beschriftung und Geschmacksfragen später prüfen |
 | [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | eingeplant | GEB11 | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
 | [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
-| [B-465](B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | eingeplant | WZ26 | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
 | [B-470](B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | eingeplant | W12 | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
 | [B-472](B-472-nacht-dunkler-fackeln-lagerfeuer-licht.md) | CLI | Idee | niedrig | eingeplant | W13 | Nacht und Morgengrauen sind dunkler, Fackeln und Lagerfeuer machen Licht |
-| [B-473](B-473-ci-rot-k3c-dev-planning-worktree-tests.md) | DEV | Problem | hoch | eingeplant | WZ26 | CI auf develop rot: k3c-workbench internal/planning Worktree-Tests scheitern auf dem Windows-Runner |
-| [B-474](B-474-testdownloadhit-norton-tls.md) | DEV | Problem | mittel | eingeplant | WZ26 | TestDownloadHit scheitert lokal am TLS-Zertifikat (Norton), check:all rot |
 | [B-492](B-492-sfx-luecken-weitere-ereignisse.md) | CLI | Idee | mittel | eingeplant | SO6 | Weitere Ereignisse bekommen eigene Sound-Slots und Sounds |
 | [B-493](B-493-credits-seite-audio.md) | PLAT | Idee | hoch | eingeplant | SO6 | Die Credits-Seite zeigt auch die Sounds unter public/audio |
 | [B-494](B-494-sound-atlas-werkzeug.md) | INF | Idee | niedrig | eingeplant | SO6 | Ein Werkzeug packt die gewählten Sounds in einen Sound-Atlas |
-| [B-496](B-496-studio-fensterposition-merken.md) | DEV | Idee | mittel | eingeplant | WZ26 | Das Asset-Studio merkt sich Fensterposition und Größe und stellt sie sicher wieder her |
 | [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
 | [B-503](B-503-monarch-skill-darstellung.md) | CLI | Idee | niedrig | eingeplant | SK2 | Die 24 Monarch-Skills haben eine Darstellung im Spiel |
 | [B-504](B-504-preset-skills-backstab-smokebomb.md) | REG | Problem | niedrig | eingeplant | SK2 | Die Skills backstab und smokeBomb des Presets Dieb stehen in data/monarch.json |
 | [B-505](B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | eingeplant | GR9 | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |
 | [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | eingeplant | BD5 | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
 | [B-517](B-517-geplante-chunks-gegnerlager.md) | REG | Idee | mittel | eingeplant | WZ27 | Geplante Chunks tragen Gegnerlager mit stationärer Wache |
-| [B-519](B-519-plan-next-origin.md) | DEV | Problem | mittel | eingeplant | WZ26 | plan_next berücksichtigt den Stand der Sprint-Branches auf origin |
-| [B-520](B-520-check-run-blockiert.md) | DEV | Problem | hoch | eingeplant | WZ26 | check_run wartet bis zum Ende des Laufs und meldet Fortschritt statt Lauf-ID zum Nachfragen |
 | [B-521](B-521-types-ts-aufteilen.md) | CLI | Schuld | niedrig | eingeplant | WZ27 | src/model/types.ts liegt über der Dateigrenze von 400 Zeilen |
 | [B-522](B-522-ressourcen-auf-ruine.md) | SIM | Problem | mittel | eingeplant | WZ27 | Zufalls-Ressourcen eines geplanten Chunks können auf seiner Ruine liegen |
 | [B-523](B-523-ruine-kollision-hub-platz.md) | SIM | Schuld | niedrig | eingeplant | WZ27 | Eine Ruine auf derselben Lage wie ein Hub-Platz gleicher Art wird nicht abgelehnt |
@@ -538,3 +532,9 @@ Zeile in diesen Abschnitt.
 | [B-343](archiv/B-343-bau-vor-dem-ausgang.md) | SIM | Frage | mittel | erledigt | KR6 | Der Bau des Endbosses liegt an der inneren Kante des Ausgangs-Chunks |
 | [B-386](archiv/B-386-netz-budget-kampf-q08.md) | SRV | Frage | mittel | erledigt | KR6 | Netz-Budget des Kampf-Zustands: Q08 gilt für alles oder nur für Ereignisse? |
 | [B-328](archiv/B-328-feuergeist-flammen-flaeche.md) | SIM | Frage | niedrig | erledigt | KR6 | Der Feuergeist hinterlässt eine Flammen-Fläche |
+| [B-465](archiv/B-465-lint-sprintsbacklog-zeilen.md) | DEV | Problem | hoch | erledigt | WZ26 | task lint ist auf develop rot, weil SprintsBacklog 61 Zeilen hat |
+| [B-473](archiv/B-473-ci-rot-k3c-dev-planning-worktree-tests.md) | DEV | Problem | hoch | erledigt | WZ26 | CI auf develop rot: k3c-workbench internal/planning Worktree-Tests scheitern auf dem Windows-Runner |
+| [B-474](archiv/B-474-testdownloadhit-norton-tls.md) | DEV | Problem | mittel | erledigt | WZ26 | TestDownloadHit scheitert lokal am TLS-Zertifikat (Norton), check:all rot |
+| [B-519](archiv/B-519-plan-next-origin.md) | DEV | Problem | mittel | erledigt | WZ26 | plan_next berücksichtigt den Stand der Sprint-Branches auf origin |
+| [B-520](archiv/B-520-check-run-blockiert.md) | DEV | Problem | hoch | erledigt | WZ26 | check_run wartet bis zum Ende des Laufs und meldet Fortschritt statt Lauf-ID zum Nachfragen |
+| [B-496](archiv/B-496-studio-fensterposition-merken.md) | DEV | Idee | mittel | erledigt | WZ26 | Das Asset-Studio merkt sich Fensterposition und Größe und stellt sie sicher wieder her |

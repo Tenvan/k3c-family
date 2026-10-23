@@ -13,7 +13,7 @@ const ZUSTAENDE = ['Tag', 'Abend', 'Nacht', 'Kampf', 'Tiefe/Höhle', 'Boss', 'Lo
 /** Selbst erzeugt, kein Credit nötig (public/audio/README.md) */
 const SELBST = /^audio\/(atlas|probe-[ab])\.(ogg|mp3)$/;
 const FILES = Object.keys(import.meta.glob('../../public/audio/**/*.{ogg,mp3,wav}', { query: '?url' })).map((p) => p.replace('../../public/', ''));
-const TICKETS = new Set(Object.keys(import.meta.glob('../../docs/backlog/B-*.md', { query: '?raw' })).map((p) => /B-\d+/.exec(p)![0]));
+const TICKETS = new Set(Object.keys(import.meta.glob('../../docs/backlog/{,archiv/}B-*.md', { query: '?raw' })).map((p) => /B-\d+/.exec(p)![0]));
 
 const cells = (line: string) => line.trim().replace(/^\||\|$/g, '').split('|').map((c) => c.trim());
 const rows = (md: string, head: string) => md.replace(/\r\n/g, '\n').split('\n').filter((l) => l.startsWith('|') && !l.startsWith('| ' + head) && !l.startsWith('|---')).map(cells);

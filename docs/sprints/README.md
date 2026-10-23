@@ -42,7 +42,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WZ26 | DEV | WZG | CI rot beheben, Prüf- und Planungswerkzeuge härten | – | Entwurf | `geplant/WZ26-ci-check-tooling/` |
 | WZ27 | REG | WZG | Geplante Chunks: Gegnerlager, Ruinen-Kollision, Dateigrenze | – | Entwurf | `geplant/WZ27-chunks-lager-ruine/` |
 | BD8 | CLI | BED | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl | – | Entwurf | `geplant/BD8-lobby-welt-auswahl/` |
 | GEB13 | REG | GEB | Gebäude-Stufen in den Daten und Stufen-Look für Plantage, Camp, Heilplatz | – | Entwurf | `geplant/GEB13-gebaeude-stufen-look/` |
@@ -234,3 +233,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GR8 | Eigene Figuren für neue Gegner und Grafik-Pipeline mit Ziel-Palette | `erledigt/GR8-figuren-pipeline/` |
 | BD7 | Pause-Client, Skill-Reset beim Tod, Schutz wartender Monarchen | `erledigt/BD7-pause-client-skill-schutz/` |
 | RM1 | Raum-Pause im Couch-Raum und lernbare Skills vom Server | `erledigt/RM1-pause-lernbare-skills/` |
+| WZ26 | CI rot beheben, Prüf- und Planungswerkzeuge härten | `erledigt/WZ26-ci-check-tooling/` |

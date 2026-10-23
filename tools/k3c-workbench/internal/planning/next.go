@@ -9,8 +9,8 @@ import (
 
 // Nächste Session (B-518): plan_next wählt aus den lokalen Dateien wie docs/arbeitsweise.md › Autonomer Ablauf,
 // Schritt 1: aktive Projekte nach Rang (ABN zuletzt) → ihre aktiven Sprints in der Reihenfolge der Projekt-Tabelle →
-// erste Session mit Status offen, Agent autonom, erledigten Abhängigkeiten und nicht gesperrter Domäne. Den Stand der
-// Sprint-Branches auf origin prüft der Agent selbst.
+// erste Session mit Status offen, Agent autonom, erledigten Abhängigkeiten und nicht gesperrter Domäne. Der Stand
+// der Sprint-Branches kommt aus den lokalen Refs origin/sprint/<präfix> (next_origin.go, B-519).
 
 // NextFilter ist die Eingabe von plan_next; leer = alle Domänen.
 type NextFilter struct {
@@ -47,6 +47,7 @@ type nextState struct {
 	status  map[string]string // Session-ID → Status aus der Session-Tabelle, alle Sprints
 	tickets map[string]string // Ticket-Nr → Status (Backlog ohne Archiv)
 	locked  map[string]string // Domäne → Session in Arbeit eines aktiven Sprints
+	readmes map[string]string // Sprint-ID → README von origin/sprint/<präfix> (B-519), sonst lokal
 }
 
 // Next liefert die nächste Session als verdichteten Text: Kopf, Session-Datei, ihre Kriterien aus der Sprint-README
@@ -60,7 +61,9 @@ func Next(root string, f NextFilter) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	notes, readmes := originOverlay(root, &d)
 	st := newNextState(root, d)
+	st.readmes = readmes
 	plan := st.plan(d)
 	var cands []candidate
 	for _, pn := range plan {
@@ -68,10 +71,19 @@ func Next(root string, f NextFilter) (string, error) {
 	}
 	for _, c := range cands {
 		if c.why == "" && (want == "" || c.session.Domain == want) {
-			return st.pickText(c, parallel(cands, c))
+			out, err := st.pickText(c, parallel(cands, c))
+			return withNotes(out, notes), err
 		}
 	}
-	return noneText(plan, want), nil
+	return withNotes(noneText(plan, want), notes), nil
+}
+
+// withNotes hängt die Herkunft des Stands je aktivem Sprint (origin oder lokal) an die Antwort.
+func withNotes(text string, notes []string) string {
+	if len(notes) == 0 {
+		return text
+	}
+	return text + "\n\n── Stand der Sprints ──\n" + strings.Join(notes, "\n")
 }
 
 func newNextState(root string, d Data) nextState {
@@ -196,9 +208,12 @@ func (st nextState) pickText(c candidate, more []candidate) (string, error) {
 	if !ok {
 		return "", fmt.Errorf("sprint %s nicht gefunden", c.sprint.ID)
 	}
-	readme, _, err := readText(st.root, r.rel)
-	if err != nil {
-		return "", err
+	readme, ok := st.readmes[c.sprint.ID]
+	if !ok {
+		var err error
+		if readme, _, err = readText(st.root, r.rel); err != nil {
+			return "", err
+		}
 	}
 	x, head := c.session, sessionHead(c.session)
 	prefix := strings.ToLower(c.sprint.ID)
@@ -213,8 +228,8 @@ func (st nextState) pickText(c candidate, more []candidate) (string, error) {
 		"Domäne: " + x.Domain + " · Umgebung: " + firstOf(x.Env, "?"),
 		"Branch: sprint/" + prefix,
 		"Kriterien: " + crit,
-		"Hinweis: Die Sperre über origin prüft der Agent selbst (git ls-remote --heads origin 'sprint/*'); liegt sprint/" +
-			prefix + " schon dort, gilt der Stand der Sprint-Dateien auf origin.",
+		"Hinweis: Stand je Sprint (origin oder lokal) siehe unten; Branches, die lokal noch nicht bekannt sind, prüft der " +
+			"Agent mit git fetch --prune.",
 		"",
 		"── Session-Datei ──",
 		strings.TrimRight(strings.ReplaceAll(x.Text, "\r\n", "\n"), "\n"),
@@ -283,7 +298,6 @@ func noneText(plan []projectNext, want string) string {
 	for _, pn := range plan {
 		out = append(out, "- "+pn.project.ID+": "+pn.reason())
 	}
-	out = append(out, "Hinweis: Sessions in Arbeit auf origin (git ls-remote --heads origin 'sprint/*') prüft der Agent selbst.")
 	return strings.Join(out, "\n")
 }
 

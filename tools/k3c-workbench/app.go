@@ -12,6 +12,7 @@ import (
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
+	"k3c/tools/assetkit/windowstate"
 	"k3c/tools/k3c-workbench/internal/applog"
 	"k3c/tools/k3c-workbench/internal/console"
 	"k3c/tools/k3c-workbench/internal/github"
@@ -83,7 +84,7 @@ type App struct {
 }
 
 func newApp(root string, port int) *App {
-	a := &App{root: root, port: port, usage: configPath("mcp-usage.json"), bus: newEventBus(),
+	a := &App{root: root, port: port, usage: windowstate.ConfigPath("mcp-usage.json"), bus: newEventBus(),
 		ready: make(chan struct{}), gh: github.New(root)}
 	a.emit = a.emitAll
 	return a
@@ -194,7 +195,7 @@ func (a *App) beforeClose(ctx context.Context) bool {
 	}
 	x, y := runtime.WindowGetPosition(ctx)
 	w, h := runtime.WindowGetSize(ctx)
-	if err := saveWindow(configPath("k3c-workbench.json"), windowState{X: x, Y: y, Width: w, Height: h}); err != nil {
+	if err := windowstate.Save(windowstate.ConfigPath("k3c-workbench.json"), windowstate.State{X: x, Y: y, Width: w, Height: h}); err != nil {
 		a.log.Warn("📄 fenster nicht gemerkt: "+err.Error(), "ns", "main")
 	}
 	return false

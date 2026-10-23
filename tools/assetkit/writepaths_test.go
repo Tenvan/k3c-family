@@ -13,8 +13,8 @@ import (
 
 // Schreibwege ohne Atomarität sind nur für Ziele außerhalb der beobachteten Ordner erlaubt (Datei → Grund).
 var nonAtomicAllowed = map[string]string{
-	"k3c-studio/backend/rpc.go": "saveBody schreibt den Upload in ein Temp-Verzeichnis außerhalb des Repos",
-	"k3c-studio/window.go":      "Fensterzustand unter <UserConfigDir>/k3c",
+	"k3c-studio/backend/rpc.go":  "saveBody schreibt den Upload in ein Temp-Verzeichnis außerhalb des Repos",
+	"windowstate/windowstate.go": "Fensterzustand unter <UserConfigDir>/k3c",
 }
 
 // goFiles liefert die Go-Dateien (ohne Tests, Oberfläche und Testdaten) unter den Ordnern dirs, Schlüssel = Pfad ab tools/.

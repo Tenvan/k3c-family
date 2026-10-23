@@ -117,7 +117,8 @@ func registerPlanRead(s *Server) {
 			"nach Rang, ihre aktiven Sprints in Tabellen-Reihenfolge, erste Session offen und autonom mit erledigten Abhängigkeiten " +
 			"und freier Domäne; domain grenzt ein. Antwort: Kopf (ID, Pfad, Sprint, Domäne, Umgebung, Branch, Kriterien), " +
 			"Session-Datei, ihre Kriterien aus der Sprint-README und parallel mögliche Sessions anderer Domänen; sonst der Grund je " +
-			"Projekt. Die Sperre über origin prüft der Agent selbst. " +
+			"Projekt. Je aktivem Sprint gilt der Stand von refs/remotes/origin/sprint/<präfix> (README, Sessions; kein fetch), " +
+			"sonst der lokale Stand; die Antwort nennt das je Sprint. " +
 			"Nutze es bei: Start einer autonomen Session. Statt: Projekte, Sprint-READMEs und Session-Dateien einzeln lesen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in planning.NextFilter) (string, error) {

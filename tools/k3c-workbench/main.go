@@ -16,6 +16,7 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
+	"k3c/tools/assetkit/windowstate"
 	"k3c/tools/k3c-workbench/internal/applog"
 	"k3c/tools/k3c-workbench/internal/console"
 	"k3c/tools/k3c-workbench/internal/mcpsrv"
@@ -68,17 +69,18 @@ func run() error {
 
 // windowOptions beschreibt das Fenster: gemerkte Größe, verdeckter Start, bis die gemerkte Position gesetzt ist.
 func windowOptions(app *App) *options.App {
-	win, placed := loadWindow(configPath("k3c-workbench.json"))
+	win, placed := windowstate.Load(windowstate.ConfigPath("k3c-workbench.json"))
 	return &options.App{
-		Title: "K3C Workbench", Width: win.Width, Height: win.Height, MinWidth: minWidth, MinHeight: minHeight,
+		Title: "K3C Workbench", Width: win.Width, Height: win.Height, MinWidth: windowstate.MinWidth, MinHeight: windowstate.MinHeight,
 		StartHidden:      true,
 		BackgroundColour: &options.RGBA{R: 0x0b, G: 0x10, B: 0x26, A: 0xff}, // --night-1
 		AssetServer:      &assetserver.Options{Assets: assets},
 		OnStartup:        app.startup,
 		OnDomReady: func(ctx context.Context) {
 			go setWindowIcon() // Dev-Läufe haben die Icon-Ressource der EXE nicht
-			if placed && onScreen(win) {
-				placeWindow(ctx, win.X, win.Y)
+			if placed && windowstate.OnScreen(win) {
+				windowstate.Place(func() (int, int) { return runtime.WindowGetPosition(ctx) },
+					func(x, y int) { runtime.WindowSetPosition(ctx, x, y) }, win.X, win.Y)
 			}
 			runtime.WindowShow(ctx)
 		},
