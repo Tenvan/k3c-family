@@ -73,6 +73,9 @@ func testConfig(srv *httptest.Server, seed string, d time.Duration, rec *recorde
 // AC-01 und AC-05: 2 Räume × 2 Bots, 5 s → je Raum eine Tick-Reihe; danach kein Bot mehr verbunden, nach der Leer-Frist
 // sind Räume und Test-Spielstände weg; die Ausgabe nennt das Token nicht.
 func TestLaufSammeltTicksUndRaeumtAuf(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	srv, m, saves, skew := testServer(t)
 	var out, errOut bytes.Buffer
 	args := []string{"-url", srv.URL, "-token", testToken, "-rooms", "2", "-players", "2", "-duration", "5s", "-interval", "1s", "-target-p99", "10000", "-out", filepath.Join(t.TempDir(), "r")}
@@ -120,6 +123,9 @@ func TestTickReiheJeRaum(t *testing.T) {
 // AC-02: Zwei Läufe mit gleichem Seed senden je Bot dieselbe Eingabefolge (gemeinsamer Anfang, weil die Zahl der
 // Zustände mit der Wanduhr schwankt); ein anderer Seed sendet eine andere.
 func TestGleicherSeedGleicheEingaben(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	lauf := func(seed, tag string) map[string][]string {
 		srv, _, _, _ := testServer(t)
 		rec := &recorder{}

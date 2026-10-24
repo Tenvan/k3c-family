@@ -104,6 +104,9 @@ func TestCheckoutVorHeader(t *testing.T) {
 
 // AC-02: Unbekannter Name, Pfad außerhalb und mehrdeutiger Name werden abgelehnt, ohne zu schreiben; die Meldung nennt die Worktrees.
 func TestCheckoutUngueltig(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	main, wts := gitRepo(t, "a/doppelt", "b/doppelt", "c/einzeln")
 	s := New(Config{Root: main, Version: "test"})
 	cs := connect(t, s)
@@ -128,6 +131,9 @@ func TestCheckoutUngueltig(t *testing.T) {
 
 // check_run nimmt checkout; Lese-Tools kennen es nicht (Schema lehnt ab, Hinweis nennt die Parameter).
 func TestCheckoutNurBeiSchreibendenTools(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	main, _ := gitRepo(t, ".claude/worktrees/wt-a")
 	s := New(Config{Root: main, Version: "test"})
 	cs := connect(t, s)

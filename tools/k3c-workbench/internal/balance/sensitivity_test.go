@@ -95,6 +95,9 @@ func TestKurvenJeGrad(t *testing.T) {
 
 // Gleiche Eingaben → byte-gleicher Bericht; danach rechnen Sim und Bots wieder mit den Originaldaten.
 func TestSensitivityByteGleichUndZurueckgesetzt(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	ts := goldTargets(t)
 	o := SensitivityOptions{Paths: []string{"economy.json:purse.startGold", "buildings.json:wall.cost.gold"}, Steps: []int{25}, Nights: 1}
 	var out [2][]byte

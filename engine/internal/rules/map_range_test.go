@@ -27,6 +27,9 @@ var mapRangeAllowed = map[string]string{
 }
 
 func TestKeinRangeUeberMaps(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	used := map[string]bool{}
 	for _, dir := range mapRangeDirs {
 		fset := token.NewFileSet()

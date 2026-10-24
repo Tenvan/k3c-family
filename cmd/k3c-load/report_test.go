@@ -89,6 +89,9 @@ func TestNachtEnde(t *testing.T) {
 
 // Lauf gegen den In-Prozess-Server: Status-Proben mit Tick-Dauer und Phase landen im Bericht, Exit-Code folgt dem Ziel.
 func TestLaufSchreibtBericht(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	srv, _, _, _ := testServer(t)
 	out := filepath.Join(t.TempDir(), "load")
 	var stdout, stderr bytes.Buffer

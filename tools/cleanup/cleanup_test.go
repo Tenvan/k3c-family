@@ -109,6 +109,9 @@ func prStub(merged ...string) func(string) (bool, error) {
 }
 
 func TestLoeschtNurSichereFaelle(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	f := fixture(t)
 	var out strings.Builder
 	if err := run(opts(f.dir, false, prStub("weg-gemergt"), &out)); err != nil {
@@ -139,6 +142,9 @@ func TestLoeschtNurSichereFaelle(t *testing.T) {
 }
 
 func TestDryAendertNichts(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	f := fixture(t)
 	before := git(t, f.dir, "branch", "--list") + git(t, f.dir, "worktree", "list")
 	var out strings.Builder
@@ -157,6 +163,9 @@ func TestDryAendertNichts(t *testing.T) {
 }
 
 func TestOhneGhNurCherrySichere(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	f := fixture(t)
 	var out strings.Builder
 	noGh := func(string) (bool, error) { return false, errors.New("gh fehlt") }

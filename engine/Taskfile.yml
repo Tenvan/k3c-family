@@ -10,7 +10,7 @@ tasks:
       - sh: command -v go
         msg: Go fehlt (requirements.md)
     cmds:
-      - go test ./...
+      - go test {{.GO_TEST_FLAGS}} ./...
 
   lint:
     desc: golangci-lint

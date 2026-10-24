@@ -83,6 +83,9 @@ func byName(t *testing.T, list []Branch) map[string]Branch {
 }
 
 func TestBranchesErkenntSquashUndGone(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	r, _ := setup(t)
 	ctx := context.Background()
 	before, err := r.Branches(ctx)
@@ -125,6 +128,9 @@ func TestBranchesErkenntSquashUndGone(t *testing.T) {
 // Sammel-PR: develop bekam den Branch zusammen mit anderem in einem Squash und änderte die Datei danach weiter.
 // git allein erkennt das nicht (merge-tree Konflikt, Squash-Patch anders), der gemergte PR mit gleichem Head schon.
 func TestCheckErkenntSammelPR(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	r, work := setup(t)
 	ctx := context.Background()
 	sh(t, work, "checkout", "-q", "-b", "viapr")
@@ -159,6 +165,9 @@ func TestCheckErkenntSammelPR(t *testing.T) {
 }
 
 func TestDeleteNurGemergte(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	r, work := setup(t)
 	ctx := context.Background()
 	if _, err := r.Delete(ctx, []string{"squash"}, false); err == nil {
@@ -186,6 +195,9 @@ func TestDeleteNurGemergte(t *testing.T) {
 
 // Rev. 5: Der Fingerabdruck bleibt ohne Änderung gleich und ändert sich bei Commit, Stage und Fetch.
 func TestStampFolgtDemRepo(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	r, work := setup(t)
 	ctx := context.Background()
 	stamp := func() string {
@@ -224,6 +236,9 @@ func TestStampFolgtDemRepo(t *testing.T) {
 
 // Review B-580 (1): Scheitert die Messung zu develop, darf nichts als gemergt und löschbar gelten.
 func TestMessfehlerGiltNieAlsGemergt(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	_, work := setup(t)
 	real := execRunner(work)
 	r := NewWith(work, func(ctx context.Context, args []string) ([]byte, error) {
@@ -248,6 +263,9 @@ func TestMessfehlerGiltNieAlsGemergt(t *testing.T) {
 
 // Review B-580 (2): Liegen auf origin Commits, die develop fehlen, bleibt der Remote-Branch und auch der lokale.
 func TestRemoteMitFremdenCommitsBleibt(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	r, work := setup(t)
 	sh(t, work, "push", "-q", "-u", "origin", "merged")
 	other := filepath.Join(filepath.Dir(work), "other")
@@ -265,6 +283,9 @@ func TestRemoteMitFremdenCommitsBleibt(t *testing.T) {
 }
 
 func TestStatusUndAktionen(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	r, work := setup(t)
 	ctx := context.Background()
 	if _, err := r.Do(ctx, ActPush); err == nil || !strings.Contains(err.Error(), "develop") {

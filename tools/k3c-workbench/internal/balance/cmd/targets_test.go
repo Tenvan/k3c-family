@@ -12,6 +12,9 @@ import (
 
 // Verletzte Ziele sind kein Fehler (Exit 0, BAL2.3): Der Bericht entsteht, run liefert nil.
 func TestVerletztesZielIstKeinFehler(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	dir := t.TempDir()
 	if err := run([]string{"--targets", "--seeds", "3", "--report-dir", dir}); err != nil {
 		t.Fatalf("Bericht ohne Baseline: %v", err)
@@ -28,6 +31,9 @@ func TestVerletztesZielIstKeinFehler(t *testing.T) {
 
 // Ein Fehler des Werkzeugs selbst liefert einen Fehler (Exit ≠ 0 in main).
 func TestWerkzeugFehlerIstFehler(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	if err := run([]string{"--targets", "--seeds", "1", "--write-baseline"}); err == nil {
 		t.Fatal("--write-baseline ohne --baseline muss scheitern")
 	}

@@ -114,6 +114,9 @@ func replayWorld(t *testing.T, file string, from int, each func(tick int, w *sim
 // Belagerung der Höhle: Gegner, Pfeile, Münzen und Truppen. Ob Gegner die Burg erreichen, ist Balancing (mit der
 // Verlust-Kaskade aus W4.3a in keinem Golden-Lauf), deshalb trifft der Test die Burg selbst alle 600 Ticks (B-297).
 func TestDeltaErgibtJedenVollenZustand(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	var client, prev map[string]any
 	changes := map[string]int{}
 	replayWorld(t, "sim-cave-belagerung.json", 2400, func(tick int, w *sim.World) {

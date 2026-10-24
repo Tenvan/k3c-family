@@ -24,12 +24,17 @@
 # bei jeder Go-Änderung selbst neu, engine/devrun; Wails-Apps zeigen die Oberfläche über Vite im Browser). Der Name des Projekts allein (`task k3c-workbench`) startet `dev`.
 version: '3'
 
-# Go-Build-Temp (go-build, Test-EXEs) und Wails-Bindings-EXE liegen fest im Projekt statt in %TEMP%:
-# Nur so reicht EINE Norton-Ausnahme für `.work/` (Ordner legt `task install` an).
+# Go-Build-Temp (go-build, Test-EXEs, t.TempDir) und Wails-Bindings-EXE liegen an einem festen Ort statt in %TEMP%:
+# Nur so reicht EINE Norton-Ausnahme (`%USERPROFILE%\.k3c\tmp`). Der Ort liegt außerhalb des Repos, sonst hasht `go test`
+# die wechselnden Temp-Ordner als Eingabe und der Testcache greift nie (B-619). Nicht unter AppData: Die Claude-App (MSIX)
+# leitet Schreibzugriffe dorthin um, Git und Go sähen verschiedene Pfade. Ohne USERPROFILE (CI) `.work/tmp`.
+vars:
+  K3C_TMP: '{{if .USERPROFILE}}{{toSlash .USERPROFILE}}/.k3c/tmp{{else}}{{.ROOT_DIR}}/.work/tmp{{end}}'
+
 env:
-  GOTMPDIR: '{{.ROOT_DIR}}/.work/tmp'
-  TMP: '{{.ROOT_DIR}}/.work/tmp'
-  TEMP: '{{.ROOT_DIR}}/.work/tmp'
+  GOTMPDIR: '{{.K3C_TMP}}'
+  TMP: '{{.K3C_TMP}}'
+  TEMP: '{{.K3C_TMP}}'
 
 includes:
   go: engine/Taskfile.yml
@@ -50,7 +55,7 @@ tasks:
     internal: true
     run: once
     cmds:
-      - mkdir -p '{{.ROOT_DIR}}/.work/tmp'
+      - mkdir -p '{{.K3C_TMP}}'
 
   default:
     desc: Alle Aufgaben anzeigen
@@ -63,7 +68,7 @@ tasks:
   install:
     desc: Abhängigkeiten holen (Client, Frontends von k3c-workbench, Asset-Studio und Starter)
     cmds:
-      - mkdir -p .work/tmp
+      - mkdir -p '{{.K3C_TMP}}'
       - bun install --frozen-lockfile
       - bun install --frozen-lockfile --cwd tools/k3c-workbench/frontend
       - bun install --frozen-lockfile --cwd tools/k3c-studio/frontend
@@ -161,31 +166,42 @@ tasks:
       - task: go:race
 
   check:diff:
-    desc: Nur die Prüfungen, die der Diff zu origin/develop braucht (samt ungespeicherter Änderungen; vor jedem Commit, B-518)
+    desc: Nur die Prüfungen, die der Diff zu origin/develop braucht (samt ungespeicherter Änderungen; Go mit -short; vor jedem Commit, B-518, B-619)
     cmds:
       - cmd: |
           # Nur sh und git: check_run startet task ohne Git-Bash-PATH (kein sort, awk, grep).
+          # Je Tool getrennt: Go-Tests (…g), Lint (…l), Vitest (…v). Die Engine zieht nur die Go-Tests der Tools nach,
+          # ihre Frontends kennen die Engine nicht. Lange Go-Tests überspringt -short; voll prüfen check:go und die CI.
           base=$(git merge-base origin/develop HEAD)
-          g=; d=; s=; p=
+          g=; dg=; dl=; dv=; sg=; sl=; sv=; pg=; pl=; pv=
           for f in $(git diff --name-only "$base"; git ls-files --others --exclude-standard); do
             case "$f" in
-              engine/*|data/*|go.mod|go.sum) g=1; d=1; s=1; p=1 ;;
+              engine/*|data/*|go.mod|go.sum) g=1; dg=1; sg=1; pg=1 ;;
               cmd/*|testdata/*|.golangci*|tools/atlas/*|tools/buildings/*|tools/pipeline/*|tools/cleanup/*|tools/ruletable/*|Taskfile.yml|.github/*) g=1 ;;
-              tools/webkit/*) d=1; s=1; p=1 ;;
-              tools/assetkit/*) d=1; s=1 ;;
-              tools/k3c-workbench/*) d=1 ;;
-              tools/k3c-studio/*) s=1 ;;
-              tools/k3c-starter/*) p=1 ;;
+              tools/webkit/*) dv=1; sv=1; pv=1 ;;
+              tools/assetkit/*) dg=1; dl=1; sg=1; sl=1 ;;
+              tools/k3c-workbench/frontend/*) dv=1 ;;
+              tools/k3c-workbench/*) dg=1; dl=1 ;;
+              tools/k3c-studio/frontend/*) sv=1 ;;
+              tools/k3c-studio/*) sg=1; sl=1 ;;
+              tools/k3c-starter/frontend/*) pv=1 ;;
+              tools/k3c-starter/*) pg=1; pl=1 ;;
             esac
           done
-          # check (19 s) immer: Repo-Regeln scannen auch Go, Protokoll-Testdaten und Wails-Frontends.
+          # check (15 s) immer: Repo-Regeln scannen auch Go, Protokoll-Testdaten und Wails-Frontends.
           run="check"
-          [ -z "$g" ] || run="$run check:go"
-          [ -z "$d" ] || run="$run check:dev"
-          [ -z "$s" ] || run="$run check:studio"
-          [ -z "$p" ] || run="$run check:starter"
+          [ -z "$g" ] || run="$run go:test go:lint"
+          [ -z "$dv" ] || run="$run k3c-workbench:vitest"
+          [ -z "$dg" ] || run="$run k3c-workbench:gotest"
+          [ -z "$dl" ] || run="$run k3c-workbench:lint"
+          [ -z "$sv" ] || run="$run k3c-studio:vitest"
+          [ -z "$sg" ] || run="$run k3c-studio:gotest"
+          [ -z "$sl" ] || run="$run k3c-studio:lint"
+          [ -z "$pv" ] || run="$run k3c-starter:vitest"
+          [ -z "$pg" ] || run="$run k3c-starter:gotest"
+          [ -z "$pl" ] || run="$run k3c-starter:lint"
           echo "🚦 check:diff → $run"
-          for t in $run; do task "$t" || exit 1; done
+          for t in $run; do task "$t" GO_TEST_FLAGS=-short || exit 1; done
 
   check:dev:
     desc: k3c-workbench prüfen (Frontend mit Vitest, go test, golangci-lint)
