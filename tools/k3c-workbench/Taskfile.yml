@@ -45,12 +45,13 @@ tasks:
       - touch dist/.placeholder
 
   dev:ui:
-    desc: Oberfläche mit Vite gegen das Backend von dev:server (Proxy /api)
+    desc: Oberfläche mit Vite gegen das Backend von dev:server (Proxy /api); öffnet sie im Standard-Browser
     dir: '{{.DEV}}/frontend'
     env:
       K3C_DEV_API: 'http://127.0.0.1:{{.DEV_UI_API_PORT}}'
     cmds:
-      - bunx vite
+      # --open nur hier, nicht in vite.config.ts: die Vorschau im Browser-Pane (launch.json, `bun run dev`) öffnet nichts
+      - bunx vite --open
 
   window:
     desc: "Workbench als Fenster im Entwicklungsmodus (wails dev): Hot Reload der Oberfläche, Neubau bei Go-Änderungen in tools/k3c-workbench"
