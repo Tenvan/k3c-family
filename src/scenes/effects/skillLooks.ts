@@ -67,3 +67,24 @@ export function particleOffset(motion: SkillMotion, i: number, n: number, radius
     }
   }
 }
+
+/** Zustand eines Teils des Skill-Effekts bei Fortschritt `p` (0..1): Ort, Deckkraft, Maßstab; wie die Tweens in `effectsView.ts` (linear). */
+export interface SkillPiece {
+  x: number;
+  y: number;
+  alpha: number;
+  scale: number;
+  /** Radius in Pixeln bei Maßstab 1 */
+  radius: number;
+}
+
+/** Ring und Partikel eines Skill-Effekts zum Zeitpunkt `p` relativ zum Effekt-Ort (Ring zuerst); `p` wird auf 0..1 begrenzt. */
+export function skillFrame(look: SkillLook, p: number): SkillPiece[] {
+  const k = Math.min(1, Math.max(0, p));
+  const ring: SkillPiece = { x: 0, y: 0, alpha: 0.8 * (1 - k), scale: 1 + 0.8 * k, radius: look.radius };
+  const parts = Array.from({ length: look.particles }, (_, i): SkillPiece => {
+    const [dx, dy] = particleOffset(look.motion, i, look.particles, look.radius);
+    return { x: dx * k, y: dy * k, alpha: 0.8 * (1 - k), scale: 1 - 0.5 * k, radius: 5 };
+  });
+  return [ring, ...parts];
+}
