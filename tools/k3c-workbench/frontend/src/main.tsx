@@ -9,6 +9,7 @@ import './styles/tasks.css';
 import './styles/planning.css';
 import './styles/planning-reader.css';
 import './styles/git.css';
+import './styles/balancing.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App';

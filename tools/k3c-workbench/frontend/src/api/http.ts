@@ -1,4 +1,4 @@
-import type { Backend, EventName, Events } from './types';
+import type { Backend, BalanceBackend, EventName, Events } from './types';
 
 // Client-Server-Betrieb (k3c-workbench -headless/-dev, Go: uiapi.go): jede Methode von App ist ein POST auf
 // /api/dev/rpc/<Methode> mit den Argumenten als JSON-Array, die Antwort ist {result} oder {error}. Ereignisse kommen
@@ -44,6 +44,22 @@ function eventHub() {
     return () => {
       set.delete(f);
     };
+  };
+}
+
+function httpBalance(): BalanceBackend {
+  return {
+    balanceStart: (spec) => rpc('BalanceStart', spec),
+    balanceRuns: () => rpc('BalanceRuns'),
+    balanceStop: (id) => rpc('BalanceStop', id),
+    balanceReports: () => rpc('BalanceReports'),
+    balanceReport: (path) => rpc('BalanceReport', path),
+    balanceTuning: (path) => rpc('BalanceTuning', path),
+    balanceDataFiles: () => rpc('BalanceDataFiles'),
+    balanceDataDoc: (name) => rpc('BalanceDataDoc', name),
+    balanceDataValues: (name) => rpc('BalanceDataValues', name),
+    balanceReportRate: (path, rating) => rpc('BalanceReportRate', path, rating),
+    balanceReportDelete: (path) => rpc('BalanceReportDelete', path),
   };
 }
 
@@ -94,6 +110,9 @@ export function httpBackend(): Backend {
     gitPRAction: (number, action) => rpc('GitPRAction', number, action),
     gitCheckMerged: (names) => rpc('GitCheckMerged', names),
     gitStamp: () => rpc('GitStamp'),
+    ticketCreate: (input) => rpc('TicketCreate', input),
+    ticketRecent: (n) => rpc('TicketRecent', n),
+    ...httpBalance(),
     openUrl: (url) => {
       window.open(url, '_blank', 'noopener');
     },

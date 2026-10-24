@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTicketPage } from '@webkit/lib/ticketContext';
 import { SegmentedControl, Text } from '@webkit/atoms';
 import { NoticeCard } from '@webkit/molecules';
 import type { ResGauge, ResourceView } from '../api';
@@ -21,6 +22,7 @@ const count = (v: number) => formatNumber(Math.round(v));
  *  bleibt eingehängt, fragt aber nur ab und rechnet nur, solange sie `active` ist. */
 export function MonitoringPage({ active }: { active: boolean }) {
   const [key, setKey] = useState<WindowKey>(() => loadPref('monitoring.window', KEYS, '1h'));
+  useTicketPage('monitoring', key, active);
   const { view, error } = useResources(WINDOWS[key], active);
   const choose = (v: string) => {
     const next = KEYS.find((k) => k === v) ?? '1h';

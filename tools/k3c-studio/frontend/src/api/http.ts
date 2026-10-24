@@ -1,6 +1,7 @@
 import { chatStreamHttp } from './chatHttp';
 import type { ChatDetail, ChatOptionsView, ChatSummary } from './chatTypes';
-import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, GameServersView, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
+import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, GameServersView, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, TicketCreated, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
+import type { AssetSlotDetails } from './slotTypes';
 import type { WorldAnswerView, WorldCheckView, WorldDraft } from './worldTypes';
 
 // Das Studio ist eine Seite des Go-Servers (Backend tools/k3c-studio/backend): jede Methode von App ist ein POST auf /api/studio/rpc/<Methode>
@@ -67,11 +68,18 @@ function subscribe<E extends EventName>(event: E, fn: (data: Events[E]) => void)
   };
 }
 
+/** Vorschläge des Chats liefert das Backend erst mit WZ29.7; bis dahin klare Meldung statt eines RPC ins Leere. */
+const notYet = (): Promise<never> => Promise.reject(new Error('Chat-Vorschläge kommen mit WZ29.7'));
+
+/** Quellen und Downloads liefert das Backend erst mit WZ29.6. */
+const notYetSources = (): Promise<never> => Promise.reject(new Error('Quellen und Downloads kommen mit WZ29.6'));
+
 export function httpBackend(): Backend {
   return {
     mock: false,
     assetsList: () => rpc<AssetsView>('AssetsList'),
     assetsSet: (id: string, wahl: AssetChoice[], stand: string) => rpc<AssetSaved>('AssetsSet', id, wahl, stand),
+    assetsSlotDetails: (id: string) => rpc<AssetSlotDetails>('AssetsSlotDetails', id),
     assetsCatalog: (query: string, art: string, limit: number) => rpc<CatalogAsset[]>('AssetsCatalog', query, art, limit),
     assetsHits: (id: string) => rpc<AssetHit[]>('AssetsHits', id),
     assetsResearch: (id: string, query: string) => rpc<ResearchResult>('AssetsResearch', id, query),
@@ -100,7 +108,18 @@ export function httpBackend(): Backend {
     hubRules: (hubJSON: string) => rpc<HubRulesView>('HubRules', hubJSON),
     hubCheck: (candidate: string) => rpc<HubPlanView>('HubCheck', candidate),
     hubSave: (candidate: string, stand: HubStand) => rpc<HubSaveResult>('HubSave', candidate, stand),
+    ticketCreate: (input) => rpc<TicketCreated>('TicketCreate', input),
+    ticketRecent: (n) => rpc<TicketCreated[]>('TicketRecent', n),
     openUrl: (url: string) => void window.open(url, '_blank', 'noopener'),
+    assetSuggestions: notYet,
+    assetSuggestionAdopt: notYet,
+    assetSuggestionDrop: notYet,
+    sources: notYetSources,
+    sourceDownload: notYetSources,
+    sourceProgress: notYetSources,
+    sourceAdopt: notYetSources,
+    sourceCleanupPreview: notYetSources,
+    sourceCleanup: notYetSources,
     chatStream: chatStreamHttp,
     chatList: () => rpc<ChatSummary[]>('ChatList'),
     chatGet: (id: string) => rpc<ChatDetail>('ChatGet', id),

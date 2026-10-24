@@ -62,6 +62,25 @@ Diese Korridore stehen in den Regelwerken, ihre Messgröße liefert der Simulato
 - Material am Morgen je Rohstoff (`stufen.md` § 1; Korridor noch nicht festgelegt).
 - Hub-Stufe 4 und 5 (`materialien-gebaeude.md` § 2; Insel 1 enthält diese Stufen noch nicht).
 
+## 5. Kennzahlen im Bericht ohne Korridor (WZ28.4)
+
+Der Bericht von `task balance` (`balance-*.json`, Feld `kennzahlen`) zeigt diese Kennzahlen nur an; Korridore dafür
+legt erst eine Balancing-Runde fest (BAL). Ein Tag reicht vom Morgen bis zum nächsten Morgen, Nacht n gehört zu Tag n.
+Werte je Nacht sind Mittelwerte über die gültigen Läufe, getrennt nach Schwierigkeitsgrad (`grade`, leer = normal).
+
+| Kennzahl | Feld | Messung |
+|---|---|---|
+| Zeit bis zur ersten Mauer | `firstWallTickMedian` | Median der Ticks bis zum ersten `built` mit `kind` wall (30 Ticks = 1 s), nur Läufe mit Mauer |
+| Zeit bis zur ersten Werkstatt | `firstWorkshopTickMedian` | wie oben mit `kind` workshop; `null`, wenn in keinem Lauf eine gebaut wurde |
+| Überlebensquote je Nacht und Grad | `nights[].survival` | Anteil der Läufe in %, in denen die Burg im Tag samt Nacht n nicht fiel (`castleFallen`) |
+| Gold-Bilanz je Phase | `nights[].dayIncome`, `dayExpense`, `nightIncome`, `nightExpense` | Änderung des Golds aller Monarchen je Tick, getrennt nach Phase Nacht und Rest des Tags (Tag und Dämmerung); die Morgen-Steuer zählt zum neuen Tag |
+| Rohstoff-Fluss je Rohstoff und Nacht | `nights[].resourceIn`, `resourceOut` | Zu- und Abgang des Insel-Vorrats je Rohstoff (Holz, Stein, Kupfer, Eisen, Kristall) |
+| Anteil Wartezeit der Bauern | `nights[].idleShare` | Anteil der Bauern-Ticks in %, in denen ein Bauer weder Auftrag noch Arbeitsplatz (Werkstatt) hat |
+
+Die Rohwerte je Lauf stehen in `Metrics` des Testers (`firstWorkshopTick`, je Tag `nightIncome`, `nightExpense`,
+`stockIn`, `stockOut`, `castleFallen`, `peasantTicks`, `peasantIdleTicks`). Der Bericht nennt im Feld `varianten` die
+Wert-Varianten des Laufs (`--vary datei.json:pfad=wert`, nur im Speicher; `data/` bleibt unverändert).
+
 ## Balancing-Runde Wirtschaft (BR1)
 
 Messung vor der Runde (BR1.1, 2026-10-07, Commit `69fce4a`, Stand `develop` `edb2a8f` mit K2.1a–K2.2a). Die Zahlen in § 1–3 bleiben unverändert; hier stehen nur die Lesart und die Messung.

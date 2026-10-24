@@ -7,6 +7,8 @@
 # Hot Reload, leitet /api an das Backend weiter). Die Oberfläche im Browser: http://127.0.0.1:5192/ (`?mock=1` = erfundene Daten).
 # `window` ist das echte Fenster (`wails dev`, Backend 8091, Seiten aus frontend/dist ohne Hot Reload): zum Prüfen des Fensters.
 # Supervisor und Kind baut `go build` (Konsole), nicht `wails build`, damit das Kind sauber per CTRL_BREAK endet.
+# `web` ist der Web-Client (B-614): nur der Server (-headless, Port 8182), ohne Fenster und ohne Vite; er liefert die gebaute
+# Oberfläche wie das Fenster unter http://127.0.0.1:8182/studio/ aus.
 version: '3'
 
 vars:
@@ -14,6 +16,9 @@ vars:
   # Backend-Port im dev: K3C_STUDIO_PORT, sonst Vite-Port + 3000 (8192); k3c-workbench verschiebt K3C_STUDIO_UI_PORT je Worktree,
   # damit landet ein Worktree-Studio nie auf dem Backend der Wurzel.
   DEV_PORT: '{{.K3C_STUDIO_PORT | default (add 3000 (.K3C_STUDIO_UI_PORT | default "5192" | atoi))}}'
+  # Web-Client: Port und Browser-Start über die Umgebung änderbar (K3C_WEB_OPEN=0 öffnet keinen Browser)
+  WEB_PORT: '{{.K3C_STUDIO_WEB_PORT | default "8182"}}'
+  WEB_OPEN: '{{.K3C_WEB_OPEN | default "1"}}'
 
 tasks:
   dev:
@@ -37,6 +42,16 @@ tasks:
       K3C_STUDIO_API: 'http://127.0.0.1:{{.DEV_PORT}}'
     cmds:
       - bunx vite
+
+  web:
+    desc: "Web-Client: Studio als Server ohne Fenster, Oberfläche im Browser unter http://127.0.0.1:8182/studio/ (Port K3C_STUDIO_WEB_PORT; Oberfläche wird nur bei Änderungen neu gebaut)"
+    deps: [':tmp', frontend]
+    env:
+      K3C_STUDIO_PORT: '{{.WEB_PORT}}'
+    cmds:
+      # feste EXE (keine Firewall-Abfrage wie bei go run), go build statt wails build: Strg+C beendet sauber
+      - cd {{.STUDIO}} && go build -o ../../bin/k3c-studio-web{{exeExt}} .
+      - ./bin/k3c-studio-web{{exeExt}} -headless{{if ne .WEB_OPEN "0"}} -open{{end}}
 
   window:
     desc: "Echtes Fenster prüfen (wails dev, Backend 8091, Seiten aus frontend/dist ohne Hot Reload; Oberfläche entwickeln mit dev)"

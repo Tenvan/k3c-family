@@ -8,9 +8,9 @@
 - **Sprint:** WZ29
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-24, Ralf im Chat (mit WZ29 Revision 1)
 
 ## Ausgangslage
 
@@ -46,7 +46,7 @@ Szene „Skills“ → Heiler › groupHeal › Abspielen spielt den Heiler-Ton;
 
 ## Ausnahme- und Fehlerfälle
 
-Datei fehlt → Zeile zeigt Hinweis statt Fehler. Atlas fehlt → Hinweis `task gen:soundatlas`.
+Datei fehlt → Zeile zeigt Hinweis statt Fehler. Sound-Atlas (`public/audio/atlas.json`) fehlt → Hinweis auf den Task `soundatlas` aus `tools/Taskfile.yml`.
 
 ## Akzeptanzkriterien
 

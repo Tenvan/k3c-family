@@ -38,14 +38,19 @@ var uiMethods = map[string]bool{
 	"PlanningData": true, "PlanningDocs": true, "PlanningSet": true, "PlanningDoc": true, "PlanningGet": true,
 	"GitHubStatus": true, "WorktreeCheck": true, "OpenInClaude": true, "StudioOpen": true, "Resources": true,
 	"GitOverview": true, "GitAction": true, "GitDeleteBranches": true, "GitPRs": true, "GitPRCreate": true, "GitPRAction": true,
-	"GitCheckMerged": true, "GitStamp": true,
+	"GitCheckMerged": true, "GitStamp": true, "TicketCreate": true, "TicketRecent": true,
+	"BalanceStart": true, "BalanceRuns": true, "BalanceStop": true, "BalanceReports": true, "BalanceReport": true,
+	"BalanceTuning": true, "BalanceDataFiles": true, "BalanceDataDoc": true, "BalanceDataValues": true,
+	"BalanceReportRate": true, "BalanceReportDelete": true,
 }
 
-// uiHandler beantwortet alle Adressen unter uiPrefix.
+// uiHandler beantwortet alle Adressen unter uiPrefix, alle anderen GET liefern die eingebettete Oberfläche (web.go).
 func (a *App) uiHandler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET "+uiPrefix+"events", a.uiEvents)
 	mux.HandleFunc("POST "+uiPrefix+"rpc/{method}", a.uiRPC)
+	mux.HandleFunc("GET "+uiPrefix, func(w http.ResponseWriter, _ *http.Request) { uiFail(w, http.StatusNotFound, "Unbekannte Adresse") })
+	mux.Handle("GET /", webPages())
 	return uiGuard(mux)
 }
 

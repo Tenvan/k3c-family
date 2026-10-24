@@ -49,6 +49,8 @@ task serve         # Build + Go-Server (Port 8080, bin/k3c-server)
 task start         # Go-Server ohne Web-Build (task dev leitet /api und /ws an ihn weiter)
 task k3c-workbench       # Workbench als Client/Server-Dev (Backend -dev + Vite 5191 im Browser); Fenster: k3c-workbench:window, EXE: k3c-workbench:build
 task k3c-studio    # Asset-Studio als Client/Server-Dev (Backend -dev + Vite 5192 im Browser); Fenster: k3c-studio:window, EXE: k3c-studio:build
+task k3c-workbench:web  # Web-Client: nur der Server, Oberfläche im Browser http://127.0.0.1:8181/ (MCP 5180, nicht zugleich mit der EXE)
+task k3c-studio:web     # Web-Client: nur der Server, Oberfläche im Browser http://127.0.0.1:8182/studio/
 task check:studio  # Asset-Studio: Frontend-Vitest, go test + golangci-lint für tools/assetkit und tools/k3c-studio
 ```
 
@@ -67,6 +69,10 @@ das echte Fenster mit `wails dev`. Der Server (`k3c-server:dev`) baut als Kind `
 `public/` beobachtet er weiter selbst (Exit 75 = Neustart). Supervisor und Kinder werden mit `go build` (Konsole) gebaut, nie per
 `wails build`, damit sie sauber per CTRL_BREAK beenden. Wails-Builds (`k3c-workbench:build`, `k3c-studio:build`, `k3c-starter:exe`) und die
 Frontends laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` erzwingt.
+**Web-Client first (B-614):** `k3c-workbench:web` und `k3c-studio:web` bauen die Oberfläche (nur bei Änderungen) und eine feste EXE
+(`bin/k3c-workbench-web`, `bin/k3c-studio-web`, `go build`), starten sie `-headless -open` und liefern die gebaute Oberfläche selbst
+aus, ohne Fenster, Vite und Neubau bei Go-Änderungen. Ports über die Umgebung: `K3C_WEB_UI_PORT` (8181), `K3C_WEB_MCP_PORT` (5180),
+`K3C_STUDIO_WEB_PORT` (8182); `K3C_WEB_OPEN=0` öffnet keinen Browser. Die EXE-Builds bleiben, bis sich der Weg bewährt hat.
 Die Oberfläche des Studios steckt nicht in der EXE (liegt unter `tools/k3c-studio/frontend/dist/`), eine Änderung daran braucht keinen EXE-Neubau.
 
 Der Go-Server beobachtet `data/` und `public/` immer (auch produktiv, `engine/watch`, Entscheidung 004): Nach einer

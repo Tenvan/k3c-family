@@ -53,8 +53,9 @@ type app struct {
 func main() {
 	headless := flag.Bool("headless", false, "ohne Fenster: nur Backend und Engine auf Loopback (K3C_STUDIO_PORT), bis Strg+C")
 	dev := flag.Bool("dev", false, "Entwicklung: baut das Studio bei jeder Go-Änderung neu und startet es als -headless (engine/devrun)")
+	open := flag.Bool("open", false, "mit -headless: die Oberfläche im Standard-Browser öffnen (task k3c-studio:web)")
 	flag.Parse()
-	if err := run(*headless, *dev); err != nil {
+	if err := run(*headless, *dev, *open); err != nil {
 		fmt.Fprintln(os.Stderr, "k3c-studio:", err)
 		if !*headless && !*dev {
 			showError("K3C Asset-Studio", err.Error()) // das Fenster hat unter Windows keine Konsole
@@ -63,7 +64,7 @@ func main() {
 	}
 }
 
-func run(headless, dev bool) error {
+func run(headless, dev, open bool) error {
 	root, err := findRoot()
 	if err != nil {
 		return err
@@ -79,7 +80,7 @@ func run(headless, dev bool) error {
 		return fmt.Errorf("K3C_STUDIO_PORT %q ist kein Port", port)
 	}
 	if headless {
-		return runHeadless(root, port) // die Seiten liefert Vite, frontend/dist ist nicht nötig
+		return runHeadless(root, port, open) // im -dev liefert Vite die Seiten, im web frontend/dist (siteHandler)
 	}
 	if err := checkBuilt(root); err != nil {
 		return err
