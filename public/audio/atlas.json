@@ -61,20 +61,36 @@
       "start": 11.476,
       "duration": 0.676
     },
-    "sfx:strike": {
+    "sfx:skill:healer": {
       "start": 12.302,
+      "duration": 1.149
+    },
+    "sfx:skill:mage": {
+      "start": 13.602,
+      "duration": 0.311
+    },
+    "sfx:skill:tank": {
+      "start": 14.062,
+      "duration": 0.373
+    },
+    "sfx:skill:thief": {
+      "start": 14.585,
+      "duration": 0.4
+    },
+    "sfx:strike": {
+      "start": 15.135,
       "duration": 0.24
     },
     "sfx:uiConfirm": {
-      "start": 12.693,
+      "start": 15.525,
       "duration": 0.238
     },
     "sfx:uiSelect": {
-      "start": 13.081,
+      "start": 15.913,
       "duration": 0.078
     },
     "sfx:warn": {
-      "start": 13.309,
+      "start": 16.142,
       "duration": 1.48
     }
   }

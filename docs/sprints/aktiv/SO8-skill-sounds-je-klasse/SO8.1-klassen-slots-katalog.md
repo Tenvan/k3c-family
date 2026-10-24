@@ -1,6 +1,6 @@
 # SO8.1 · Vier Klassen-Slots im Katalog
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -44,4 +44,5 @@ Auslöser im Client (SO8.2), Ton je einzelnem Skill, Pegel-Anpassung.
 
 ## Ergebnis
 
-–
+- AC-01 umgesetzt: Slots `sfx:skill:tank` (impactMetal_light_000, impactSoft_medium_000, metalLatch), `sfx:skill:mage` (phaserUp5, zapThreeToneUp, highUp), `sfx:skill:healer` (powerUp3, threeTone2, phaserUp2), `sfx:skill:thief` (drawKnife1, knifeSlice2, pepSound3) in `data/assets.json`; alle Kenney CC0, schon vorhanden und in `public/audio/README.md` belegt, kein Download.
+- AC-01 geprüft: `task gen:soundatlas` (22 Effekte), Vitest `credits` und `assets` grün. `src/audio/events.test.ts` (Slot-Erreichbarkeit) wird erst mit dem Auslöser in SO8.2 grün; `check:diff` läuft auf Wunsch von Ralf einmal am Ende des Laufs.
