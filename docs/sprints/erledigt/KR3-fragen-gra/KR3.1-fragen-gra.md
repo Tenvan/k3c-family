@@ -1,6 +1,6 @@
 # KR3.1 · Workshop: kritische Fragen zu GRA entscheiden (🧑)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** REG
@@ -35,8 +35,8 @@ Umsetzung der Folgearbeit; die Geräte-Abnahmen selbst.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jedes Ticket trägt Ralfs Entscheidung.
-- [ ] AC-02: Bestätigte erledigt, geänderte mit Folgearbeit.
+- [x] AC-01: Jedes Ticket trägt Ralfs Entscheidung.
+- [x] AC-02: Bestätigte erledigt, geänderte mit Folgearbeit.
 
 ## Prüfen
 
@@ -46,9 +46,6 @@ task test -- planning
 
 ## Ergebnis
 
-Teilergebnis (Workshop 2026-10-23 mit Ralf, Claude moderiert und protokolliert); die Session bleibt `offen`, weil B-552 (G7) erst nach GR9.5 am TV entschieden wird.
-
-- **AC-01 teilweise:** Sieben von acht Tickets tragen Ralfs Entscheidung; B-552 trägt „nach GR9.5“.
-- **AC-02 teilweise:** Bestätigt und `erledigt`: B-548 (A), B-549 (A), B-550 (A), B-551 (A), B-553 (A, Freigabe in GR8, GR9, GR10 nachgetragen). Geändert und `erledigt` mit Verweis: B-546 (B, je Gegner ein Kandidat, siehe Ticket → Einbau in GR7.3 Schritt 4) und B-547 (B, ganzzahlig skalieren → GR7.4 Schritt 3). Offen: B-552 (`eingeplant`).
-- **Neue Tickets:** keine; die Folgearbeit läuft in den vorhandenen Sessions GR7.3 und GR7.4.
-- **Hinweis:** Reihenfolge GR7.3 vor GR7.4. B-331/AC-01 und AC-04 sind abgeschlossen (Notiz in B-331).
+- **AC-01 geprüft:** Alle acht Tickets (B-546 bis B-553) tragen Ralfs Entscheidung; G7 (B-552) am 2026-10-24 bestätigt, nachdem GR9.5 am PC (Tastatur) ok war.
+- **AC-02 geprüft:** Alle acht `erledigt`. B-546 und B-547 geändert, Folgearbeit in GR7.3 und GR7.4. B-505 erledigt.
+- Keine neuen Tickets.

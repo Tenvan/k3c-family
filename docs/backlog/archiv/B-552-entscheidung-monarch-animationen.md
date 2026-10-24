@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR3
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-22
@@ -54,4 +54,4 @@ Siehe Notizen.
 
 ## Notizen
 
-**Entscheidung 🧑 (KR3.1, 2026-10-23):** Default gilt, die Entscheidung fällt nach der TV-Abnahme GR9.5: abgeleitete Animationen bleiben bis dahin. Dieses Ticket bleibt `eingeplant`, KR3.1 und GR10.1 bleiben deshalb offen. Danach: A (B-505 erledigt) oder B (Sprint im Projekt GRA mit Quellensuche).
+**Entscheidung 🧑 (2026-10-24, GR10.1):** bestätigt. Die Monarch-Animationen bleiben aus vorhandenen Frames abgeleitet (give, hit, death, respawn), keine Fremdquelle. Abnahme GR9.5 am PC: alle vier ok.

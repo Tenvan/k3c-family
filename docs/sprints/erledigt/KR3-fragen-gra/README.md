@@ -1,6 +1,6 @@
 # KR3 · REG · Kritische Fragen zu GRA
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KRT
 - **Domäne:** REG
 - **Reife:** bereit
@@ -68,12 +68,11 @@ keine (die Fragen sind der Inhalt der Tickets; Defaults gelten).
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| KR3.1 | `KR3.1-fragen-gra.md` | Workshop | Mensch | offen |
+| KR3.1 | `KR3.1-fragen-gra.md` | Workshop | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-24: KR3.1 fertig, alle acht Fragen (B-546 bis B-553) entschieden und erledigt; Folgearbeit läuft in GR7.3 und GR7.4.

@@ -123,9 +123,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
 | [B-503](B-503-monarch-skill-darstellung.md) | CLI | Idee | niedrig | eingeplant | SK2 | Die 24 Monarch-Skills haben eine Darstellung im Spiel |
 | [B-504](B-504-preset-skills-backstab-smokebomb.md) | REG | Problem | niedrig | eingeplant | SK2 | Die Skills backstab und smokeBomb des Presets Dieb stehen in data/monarch.json |
-| [B-505](B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | eingeplant | GR9 | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |
 | [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | eingeplant | BD5 | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
-| [B-552](B-552-entscheidung-monarch-animationen.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G7: Monarch-Animationen bleiben aus vorhandenen Frames abgeleitet |
 | [B-554](B-554-entscheidung-musik-stuecke.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S1: Je Musikzustand spielt die erste Präferenz des Slots, die übrigen Kandidaten bleiben bis zur Bestätigung liegen |
 | [B-568](B-568-plantage-pappel-niedrig.md) | DEV | Idee | mittel | eingeplant | GEB13 | Plantage bekommt eine eigene niedrige Pappel vor der Farm |
 | [B-570](B-570-camp-stufen-look.md) | DEV | Idee | mittel | eingeplant | GEB13 | Das Camp bekommt einen Stufen-Look statt der Grundform |
@@ -552,3 +550,5 @@ Zeile in diesen Abschnitt.
 | [B-578](archiv/B-578-skill-effekt-je-skill.md) | CLI | Idee | mittel | erledigt | SK3 | Jeder Skill hat einen eigenen Effekt statt des Rings je Klasse |
 | [B-562](archiv/B-562-studio-monarch-skill-ring.md) | DEV | Idee | niedrig | erledigt | SK3 | Die Monarch-Seite des Studios zeigt den Skill-Ring des Spiels statt der Lücke |
 | [B-539](archiv/B-539-entscheidung-wimpel-markierer.md) | SIM | Frage | hoch | erledigt | KR2 | Entscheidung D2: Wimpel-Farbe bleibt Client-Annäherung, markedBy erst nach GEB10.5 |
+| [B-552](archiv/B-552-entscheidung-monarch-animationen.md) | REG | Frage | hoch | erledigt | KR3 | Entscheidung G7: Monarch-Animationen bleiben aus vorhandenen Frames abgeleitet |
+| [B-505](archiv/B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | erledigt | GR9 | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |

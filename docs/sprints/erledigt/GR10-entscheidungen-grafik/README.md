@@ -1,6 +1,6 @@
 # GR10 · CLI · Autonome Grafik-Entscheidungen prüfen (GR8, GR9)
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GRA
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -65,12 +65,11 @@ Keine blockierenden. Jede Entscheidung liegt mit Default als Frage-Ticket in KR3
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GR10.1 | `GR10.1-entscheidungen.md` | Workshop | Mensch | offen |
+| GR10.1 | `GR10.1-entscheidungen.md` | Workshop | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-24: GR10.1 fertig, alle acht Entscheidungen (B-546 bis B-553) entschieden und erledigt; G7 (B-552) bestätigt nach der Abnahme GR9.5. AC-02: B-505, B-420 erledigt; B-329, B-331 bleiben `eingeplant` (Pipeline-Umschaltung, Einbau GR7.3). Keine neuen Tickets.

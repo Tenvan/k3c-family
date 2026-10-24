@@ -17,8 +17,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | GR7 | Figuren-Lücken, ganzzahlige Skalierung und Schrift | aktiv |
 | M10 | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-workbench | erledigt |
 | GR8 | Eigene Figuren für neue Gegner und Grafik-Pipeline mit Ziel-Palette | erledigt |
-| GR9 | Monarch-Animationen für Wurf, Treffer, Tod und Respawn, Kandidaten-Import ohne roten Test | aktiv |
-| GR10 | Autonome Grafik-Entscheidungen prüfen (GR8, GR9) | aktiv |
+| GR9 | Monarch-Animationen für Wurf, Treffer, Tod und Respawn, Kandidaten-Import ohne roten Test | erledigt |
+| GR10 | Autonome Grafik-Entscheidungen prüfen (GR8, GR9) | erledigt |
 
 ## Nicht-Ziele
 

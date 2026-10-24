@@ -1,6 +1,6 @@
 # GR9.5 · Abnahme der Monarch-Animationen am TV
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -33,7 +33,7 @@ Umsetzung.
 
 ## Fertig, wenn
 
-- [ ] AC-02: 🧑 hat am TV bestätigt oder ein Ticket für die Abweichung angelegt.
+- [x] AC-02: 🧑 hat bestätigt (2026-10-24, PC mit Tastatur).
 
 ## Prüfen
 
@@ -47,5 +47,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 geprüft (Ralf, 2026-10-24, PC mit Tastatur): Münze geben, Treffer nehmen, Sterben und Wiederbeleben ok. Keine Abweichung, keine neuen Tickets. TV/Xbox nicht geprüft.
