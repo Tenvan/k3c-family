@@ -133,6 +133,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-594](B-594-grafik-seite-slot-details.md) | DEV | Idee | hoch | eingeplant | WZ28 | Die Grafik-Seite zeigt je Slot Name, Atlas-Definition und alles für die Zuordnung |
 | [B-595](B-595-ticket-button-ohne-ki.md) | DEV | Idee | hoch | eingeplant | WZ28 | Jede Seite hat einen Button, der ohne KI ein Ticket zur Seite anlegt |
 | [B-596](B-596-balancing-seite-offline.md) | DEV | Idee | hoch | eingeplant | WZ28 | Eine Balancing-Seite fährt Simulationen und Berichte ohne Internet und ohne Claude |
+| [B-597](B-597-sound-hoerproben-differenziert.md) | DEV | Idee | hoch | eingeplant | WZ29 | Die Sound-Seite hat differenzierte Hörproben, auch für Skills |
+| [B-598](B-598-grafik-vorschauen-differenziert.md) | DEV | Idee | hoch | eingeplant | WZ29 | Die Grafik-Seite hat differenzierte Vorschauen, auch für Skill-Effekte |
+| [B-599](B-599-szenen-sortieren-filtern.md) | DEV | Idee | hoch | eingeplant | WZ29 | Szenen auf Sound- und Grafik-Seite sind sortier- und filterbar |
+| [B-600](B-600-chat-unterstuetzung-sound-grafik.md) | DEV | Idee | hoch | eingeplant | WZ29 | Der AI-Chat unterstützt die Zuordnung auf Sound- und Grafik-Seite |
 
 ## Archiv
 
