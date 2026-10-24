@@ -2,6 +2,7 @@
   "id": "forest",
   "name": "Oberwelt (Wald)",
   "depth": 0,
+  "backdropVariants": 5,
   "lengthUnits": { "min": 900, "max": 1100 },
   "chunkWidthUnits": 50,
   "hubWidthUnits": 100,

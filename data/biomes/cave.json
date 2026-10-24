@@ -2,6 +2,7 @@
   "id": "cave",
   "name": "Tiefe 1 (Höhle)",
   "depth": 1,
+  "backdropVariants": 5,
   "lengthUnits": { "min": 700, "max": 900 },
   "chunkWidthUnits": 50,
   "hubWidthUnits": 100,

@@ -62,7 +62,7 @@ keine blockierende. Defaults (Claude, autonom, 2026-10-24): Dichte 128; Auswahl 
 | GEB18.1 | `GEB18.1-generator-dichte-varianten.md` | Umsetzung | autonom | fertig |
 | GEB18.2 | `GEB18.2-varianten-wald-hoehle-mine.md` | Umsetzung | autonom | fertig |
 | GEB18.3 | `GEB18.3-varianten-eisenstollen-kristall.md` | Umsetzung | autonom | fertig |
-| GEB18.4 | `GEB18.4-auswahl-nach-seed.md` | Umsetzung | autonom | offen |
+| GEB18.4 | `GEB18.4-auswahl-nach-seed.md` | Umsetzung | autonom | fertig |
 | GEB18.5 | `GEB18.5-protokoll-client-varianten.md` | Umsetzung | autonom | offen |
 | GEB18.6 | `GEB18.6-review.md` | Review | autonom | offen |
 | GEB18.7 | `GEB18.7-abnahme-geraet.md` | Workshop | Mensch | offen |
