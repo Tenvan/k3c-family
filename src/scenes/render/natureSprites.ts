@@ -9,6 +9,8 @@ import type { ObjectSprite, WorldFile } from './worldSprites';
 const ARTEN = ['tanne', 'pappel', 'birke'] as const;
 /** Höhlen-Flora statt Bäumen außerhalb des Walds (GEB10): fünf Wurzel-Formen (GEB15.1: `wurzel-4` kurz und buschig, `wurzel-5` lang und dünn) */
 export const WURZELN = ['wurzel', 'wurzel-2', 'wurzel-3', 'wurzel-4', 'wurzel-5'] as const;
+/** Fels-Formen, je mit den Looks 1–3 (GEB15.2, B-583): Haufen, hoher Findling, flacher Steinhaufen */
+export const FELSEN = ['felsen', 'felsen-b', 'felsen-c'] as const;
 /** Adern in der Reihenfolge ihrer Stufen (Stufe = Material, nicht Biom) */
 const ADERN = ['stone', 'copper', 'iron', 'crystal'] as const;
 
@@ -20,7 +22,7 @@ export const NATURE_TEXTURES: Record<string, string> = {
   ...Object.fromEntries(WURZELN.map((id) => [`grafik:${id}`, datei(id)])),
   'grafik:hoehlenbusch': datei('hoehlenbusch'),
   'grafik:truhe-geschlossen': datei('truhe-geschlossen'),
-  ...Object.fromEntries([1, 2, 3].map((look) => [`grafik:felsen-${look}`, datei(`felsen-${look}`)])),
+  ...Object.fromEntries(FELSEN.flatMap((id) => [1, 2, 3].map((look) => [`grafik:${id}-${look}`, datei(`${id}-${look}`)]))),
   ...Object.fromEntries(ADERN.map((_, i) => [`grafik:ader-${i + 1}`, datei(`ader-${i + 1}`)])),
   'grafik:erzbrocken': datei('erzbrocken'),
   'grafik:busch': datei('busch'),
@@ -89,12 +91,17 @@ export function decoRoots(x: number, biomeId: string | undefined, rootsPerNode =
   });
 }
 
+/** Fels-Knoten an Position `x` (Units): Form aus der Position (GEB15.2), Look aus dem Biom */
+export function rockTexture(x: number, biomeId: string | undefined): string {
+  return `grafik:${FELSEN[mix(x) % FELSEN.length]!}-${natureLook(biomeId)}`;
+}
+
 const still = (key: string): ObjectSprite => ({ key, frame: 0, frames: 1, zoom: 1 });
 
 /** Bild eines Ressourcen-Knotens (Baum, Fels, Erzbrocken, Busch, Ader) an Position `x` im Biom; unbekannte Art `null` → Platzhalter */
 export function nodeSprite(kind: string, x: number, biomeId: string | undefined): ObjectSprite | null {
   if (kind === 'tree') return still(treeTexture(x, biomeId));
-  if (kind === 'rock') return still(`grafik:felsen-${natureLook(biomeId)}`);
+  if (kind === 'rock') return still(rockTexture(x, biomeId));
   if (kind === 'copperOre') return still('grafik:erzbrocken');
   if (kind === 'bush') return still(natureLook(biomeId) === 1 ? 'grafik:busch' : 'grafik:hoehlenbusch');
   const slot = veinSlot(kind);

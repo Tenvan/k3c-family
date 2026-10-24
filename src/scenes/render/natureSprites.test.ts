@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { BIOMES } from '../../model/biome';
-import { NATURE_TEXTURES, WURZELN, campSprite, decoRoots, natureLook, nodeSprite, treeTexture, veinSlot } from './natureSprites';
+import { FELSEN, NATURE_TEXTURES, WURZELN, campSprite, decoRoots, natureLook, nodeSprite, rockTexture, treeTexture, veinSlot } from './natureSprites';
 
 /** Nur die Pfade, nichts wird geladen */
 const FILES = Object.keys(import.meta.glob('../../../public/grafik/gebaeude/*.png'));
@@ -92,11 +92,39 @@ describe('decoRoots (GEB15.1/AC-01)', () => {
   });
 });
 
+describe('rockTexture (GEB15.2/AC-02)', () => {
+  const xs = Array.from({ length: 200 }, (_, i) => i * 3.7 - 40);
+
+  it('drei Formen je Look nach Position, Wald bleibt Look 1, Dateien vorhanden', () => {
+    expect(FELSEN).toHaveLength(3);
+    for (const [biome, look] of [['forest', 1], [undefined, 1], ['cave', 2], ['mine', 3], ['ironhold', 3]] as const) {
+      const keys = new Set(xs.map((x) => rockTexture(x, biome)));
+      expect([...keys].sort(), String(biome)).toEqual(FELSEN.map((id) => `grafik:${id}-${look}`));
+    }
+    for (const id of FELSEN) {
+      for (const look of [1, 2, 3]) {
+        expect(NATURE_TEXTURES).toHaveProperty([`grafik:${id}-${look}`], `gebaeude/${id}-${look}-32.png`);
+        expect(FILES).toContain(`../../../public/grafik/gebaeude/${id}-${look}-32.png`);
+      }
+    }
+  });
+
+  it('deterministisch: gleiche Position gleiche Form, in jedem Biom dieselbe Form, nodeSprite folgt', () => {
+    const form = (key: string) => key.replace(/-\d$/, '');
+    for (const x of [0, 1.4, -0.5, -137.25, 412, 99999.9]) {
+      expect(rockTexture(x, 'cave')).toBe(rockTexture(x, 'cave'));
+      expect(form(rockTexture(x, 'forest'))).toBe(form(rockTexture(x, 'mine')));
+      expect(nodeSprite('rock', x, 'cave')?.key).toBe(rockTexture(x, 'cave'));
+    }
+    expect(rockTexture(412.2, 'forest')).toBe(rockTexture(412.4, 'forest')); // gerundet
+  });
+});
+
 describe('nodeSprite (GEB6.5)', () => {
   it('Fels folgt dem Biom, Erzbrocken und Busch haben einen Look', () => {
-    expect(nodeSprite('rock', 0, 'forest')?.key).toBe('grafik:felsen-1');
-    expect(nodeSprite('rock', 0, 'cave')?.key).toBe('grafik:felsen-2');
-    expect(nodeSprite('rock', 0, 'ironhold')?.key).toBe('grafik:felsen-3');
+    expect(nodeSprite('rock', 0, 'forest')?.key).toMatch(/^grafik:felsen(-[bc])?-1$/);
+    expect(nodeSprite('rock', 0, 'cave')?.key).toMatch(/^grafik:felsen(-[bc])?-2$/);
+    expect(nodeSprite('rock', 0, 'ironhold')?.key).toMatch(/^grafik:felsen(-[bc])?-3$/);
     expect(nodeSprite('copperOre', 0, 'mine')?.key).toBe('grafik:erzbrocken');
     expect(nodeSprite('bush', 0, 'forest')?.key).toBe('grafik:busch');
     expect(nodeSprite('bush', 0, 'cave')?.key).toBe('grafik:hoehlenbusch'); // Höhlen-Flora (GEB10)

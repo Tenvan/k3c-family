@@ -126,6 +126,17 @@ describe('Asset-Vorschau: echte Grafik (GEB10)', () => {
     for (const e of baeume) expect(e.kacheln.h).toBe(e.id === 'birke-3' ? 9.5 : e.id === 'pappel-niedrig' ? 5 : 11.25);
     expect(baumReihe(index, undefined, 1, 'flora').map((b) => b.id)).toEqual(['hoehlenbusch', 'wurzel-2', 'wurzel-3', 'wurzel-4', 'wurzel-5', 'wurzel']);
   });
+
+  it('Fels in drei Formen, je 1,5 × 1,5 Kacheln mit den Looks Wald, Höhle, Mine (GEB15.2, B-583)', () => {
+    const felsen = index.filter((e) => /^felsen(-[bc])?$/.test(e.id));
+    expect(felsen.map((e) => e.id).sort()).toEqual(['felsen', 'felsen-b', 'felsen-c']);
+    for (const e of felsen) {
+      expect(e.kacheln).toEqual({ b: 1.5, h: 1.5 });
+      expect([1, 2, 3].map((s) => baumDatei(e, s, 32))).toEqual([1, 2, 3].map((s) => `grafik/gebaeude/${e.id}-${s}-32.png`));
+    }
+    const karten = gebaeudeKarten(index).filter((k) => k.dichte === 32).map((k) => k.id);
+    for (const id of ['felsen', 'felsen-b', 'felsen-c']) expect(karten).toContain(id);
+  });
 });
 
 describe('Asset-Vorschau: Gebäude-Vorlage (GEB8/AC-03)', () => {

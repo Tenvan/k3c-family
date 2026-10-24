@@ -1,6 +1,6 @@
 # GEB15.2 · Felsen und Minen: größer, neue Varianten
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -52,5 +52,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02: umgesetzt. Der Fels ist jetzt 1,5 × 1,5 Kacheln (neu gezeichnet, nicht skaliert), in drei Formen: `felsen` (Haufen), `felsen-b` (Findling), `felsen-c` (flacher Haufen). Jede Form gibt es in den Looks 1–3, Look 3 (Mine) mit Erzglanz. `rockTexture` wählt die Form nach `mix(x)`.
+- Geprüft mit `task check` (grün), Vitest `src/scenes/render` und `tests/`, Studio `src/graphics`, `go test ./tools/buildings/... ./engine/level/... ./engine/sim/...` (Golden unverändert). Claude hat die Vorschau angesehen.
+- Die Regeldatei hat die Fels-Zeile mit 1,5 × 1,5 und Begründung B-583. Der Slot `node:rock` zeigt weiter auf `felsen-1-32.png`.
