@@ -3,7 +3,7 @@
   "name": "k3c-workbench",
   "outputfilename": "k3c-workbench",
   "frontend:install": "bun install --frozen-lockfile",
-  "frontend:build": "bunx tsc --noEmit && bunx vite build",
+  "frontend:build": "bun run build",
   "frontend:dev:watcher": "bunx vite",
   "frontend:dev:serverUrl": "auto",
   "author": { "name": "Ralf Stich" },

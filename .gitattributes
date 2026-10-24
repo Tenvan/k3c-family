@@ -16,3 +16,7 @@ Dockerfile text eol=lf
 *.exe binary
 *.ico binary
 *.woff2 binary
+
+# Go-Werkzeuge (wails, go mod tidy) schreiben go.mod/go.sum immer mit LF; sonst zeigt jeder Build eine Scheinänderung.
+go.mod text eol=lf
+go.sum text eol=lf
