@@ -11,10 +11,13 @@ type wiederholung struct {
 	Anzahl  int     `json:"anzahl"`
 }
 
-// dichtenFuer liefert die Render-Dichten der Klasse: Hintergrund-Schichten nur 16 und 32
-// (64/128 wären mehrere MB je Schicht ohne Spielwert).
-func dichtenFuer(klasse string) []int {
-	if klasse == klasseHintergrund {
+// dichtenFuer liefert die Render-Dichten: Hintergrund-Schichten im Master-Raster nur 16 und 32 (64/128 wären nur vergrößert),
+// im feinen Raster 32 (Spiel-Dichte, ohne Details) und 128 (vierfache Auflösung, GEB18).
+func dichtenFuer(klasse string, raster int) []int {
+	switch {
+	case klasse == klasseHintergrund && raster == rasterHintergrund:
+		return []int{32, rasterHintergrund}
+	case klasse == klasseHintergrund:
 		return []int{16, 32}
 	}
 	return dichten
@@ -22,7 +25,7 @@ func dichtenFuer(klasse string) []int {
 
 // aufloesen ersetzt jeden Baustein mit `wiederholung` durch seine Kopien, direkt nacheinander in der Zeichenreihenfolge.
 // Raster, Maße und Überlauf der Kopien prüft danach `check` wie bei jedem Baustein.
-func aufloesen(id string, liste []baustein) ([]baustein, error) {
+func aufloesen(id string, liste []baustein, raster int) ([]baustein, error) {
 	out := make([]baustein, 0, len(liste))
 	for i, s := range liste {
 		w := s.Wiederholung
@@ -31,7 +34,7 @@ func aufloesen(id string, liste []baustein) ([]baustein, error) {
 			continue
 		}
 		where := fmt.Sprintf("%s: Baustein %d (%s): wiederholung", id, i, s.Art)
-		schritt, err := masterPx([4]float64{w.Schritt})
+		schritt, err := masterPx([4]float64{w.Schritt}, raster)
 		if err != nil {
 			return nil, fmt.Errorf("%s.schritt: %w", where, err)
 		}
@@ -54,11 +57,11 @@ func aufloesen(id string, liste []baustein) ([]baustein, error) {
 // wiederholungenAufloesen löst die Wiederholungen der Bausteine und der Zusätze jeder Stufe auf.
 func wiederholungenAufloesen(b *building) error {
 	var err error
-	if b.Bausteine, err = aufloesen(b.ID, b.Bausteine); err != nil {
+	if b.Bausteine, err = aufloesen(b.ID, b.Bausteine, rasterVon(*b)); err != nil {
 		return err
 	}
 	for i := range b.Stufen {
-		if b.Stufen[i].Zusaetze, err = aufloesen(b.ID, b.Stufen[i].Zusaetze); err != nil {
+		if b.Stufen[i].Zusaetze, err = aufloesen(b.ID, b.Stufen[i].Zusaetze, rasterVon(*b)); err != nil {
 			return fmt.Errorf("stufe %d: %w", b.Stufen[i].Stufe, err)
 		}
 	}

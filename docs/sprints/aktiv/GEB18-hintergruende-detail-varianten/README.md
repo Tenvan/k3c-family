@@ -59,7 +59,7 @@ keine blockierende. Defaults (Claude, autonom, 2026-10-24): Dichte 128; Auswahl 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GEB18.1 | `GEB18.1-generator-dichte-varianten.md` | Umsetzung | autonom | in Arbeit |
+| GEB18.1 | `GEB18.1-generator-dichte-varianten.md` | Umsetzung | autonom | fertig |
 | GEB18.2 | `GEB18.2-varianten-wald-hoehle-mine.md` | Umsetzung | autonom | offen |
 | GEB18.3 | `GEB18.3-varianten-eisenstollen-kristall.md` | Umsetzung | autonom | offen |
 | GEB18.4 | `GEB18.4-auswahl-nach-seed.md` | Umsetzung | autonom | offen |
