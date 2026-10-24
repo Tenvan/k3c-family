@@ -6,9 +6,9 @@
 - **Reife:** Entwurf
 - **Tickets:** B-597, B-598, B-599, B-600, B-601, B-602
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-24, Ralf im Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -24,7 +24,7 @@ Ralf; Agent DEV; 🧑 nimmt am PC ab.
 
 ## Anforderungen
 
-B-597, B-598, B-599, B-600, B-601 › Anforderungen.
+B-597, B-598, B-599, B-600, B-601, B-602 › Anforderungen.
 
 ## Nicht-Ziele
 
@@ -32,7 +32,7 @@ Neue Töne oder Grafiken selbst beschaffen (macht der Chat auf Ralfs Bestätigun
 
 ## Regeln und Einschränkungen
 
-Läuft nach WZ28.1 (Slot-Details) und SO8 (Abbildung Skill → Slot); Frontend nur im Studio, Atomic Design über `@webkit`; Zeichnen/Hören mit den Funktionen des Spiels; Chat nur online, Seiten funktionieren offline; keine stille Schreibaktion des Chats.
+**Abhängigkeiten (aktivieren erst danach):** WZ28.1 (Slot-Details, B-594) und SO8 (Abbildung Skill → Slot; Stand 2026-10-24: geplant). Solange SO8 offen ist, bleibt WZ29 geplant. Frontend nur im Studio, Atomic Design über `@webkit`; Zeichnen und Hören mit den Funktionen des Spiels, keine zweite Darstellung; Chat und Downloads nur online, alle Seiten funktionieren offline; keine stille Schreibaktion des Chats; der Vorrat bleibt in `.work/vorrat/` (gitignored), in Git landen nur gewählte Dateien mit Credit und Katalog-Eintrag (B-601).
 
 ## Beispiele
 
@@ -53,7 +53,7 @@ Datei oder Sheet fehlt → Hinweis in der Zeile. Chat offline → „offline“,
 
 ## Offene Fragen
 
-keine blockierende; Pflicht-Szenen und Chat-Aktionen laut Tickets als Default, Ralf ergänzt bei der Abnahme. Spec-Freigabe steht aus.
+keine blockierende; Pflicht-Szenen und Chat-Aktionen laut Tickets als Default, Ralf ergänzt bei der Abnahme. Vor dem Aktivieren: Sessions als Dateien schreiben (`Reife: bereit`), SO8 muss erledigt sein.
 
 ## Sessions
 

@@ -8,9 +8,9 @@
 - **Sprint:** WZ28
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-24, Ralf im Chat (mit WZ28 Revision 1)
 
 ## Ausgangslage
 
@@ -50,13 +50,13 @@ Slot ohne Sheet (Lücke) → Felder leer mit Vermerk „keine Grafik“. Atlas o
 
 ## Akzeptanzkriterien
 
-- **AC-01** Der Detailbereich eines Slots nennt Name, Beschreibung, Status, Sheet-Daten und Atlas-Definition (Vitest der Aufbereitung, Beobachtung im Studio).
+- **AC-01** Der Detailbereich eines Slots nennt Name, Beschreibung, Status, Sheet-Daten und Atlas-Definition (Go-Test der Aufbereitung im Backend, Vitest der Anzeige, Beobachtung im Studio).
 - **AC-02** Er nennt Pack, Quelle, Lizenz und Verwendung des Slots.
 - **AC-03** Fehlender Atlas oder fehlendes Sheet zeigt einen klaren Hinweis statt eines Fehlers.
 
 ## Offene Fragen
 
-Welche Angaben aus `zuordnung*.md` maschinenlesbar sind (sonst Backend liest die Tabellen); in der Umsetzung klären.
+keine. Default (Claude, 2026-10-24, zur Freigabe): Das Backend liest die Tabellen aus `docs/assets/zuordnung.md`, `zuordnung-objekte.md` und `zuordnung-welt.md` direkt und tolerant (fehlende Spalten bleiben leer); ein eigenes maschinenlesbares Format entsteht nicht.
 
 ## Notizen
 
