@@ -77,6 +77,9 @@ func TestTicketNummerWorktreeNichtLesbar(t *testing.T) {
 
 // B-387/AC-04: Ein Remote-Ref ohne Worktree zählt mit, ohne Fetch.
 func TestTicketNummerAusRemoteRef(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	root := gitRepo(t)
 	wt := filepath.Join(t.TempDir(), "wt-ref")
 	git(t, root, "worktree", "add", "-q", wt, "-b", "nurref")

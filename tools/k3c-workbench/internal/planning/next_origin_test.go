@@ -40,6 +40,9 @@ func originNextRepo(t *testing.T, withRef bool) string {
 
 // AC-01: Der Status auf origin/sprint/<präfix> gilt für Auswahl und Domänen-Sperre.
 func TestNextOverlayOrigin(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	root := originNextRepo(t, true)
 	out := must(t)(Next(root, NextFilter{Domain: "SRV"}))
 	checkText(t, out, []string{"Nächste Session: A1.2", "A1: Stand von origin/sprint/a1"}, []string{"Keine Session frei"})

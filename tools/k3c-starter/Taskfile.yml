@@ -110,10 +110,21 @@ tasks:
 
   test:
     desc: Windows-Starter testen (Frontend mit Vitest, go test; B-041)
-    deps: [':tmp', frontend]
+    cmds:
+      - task: vitest
+      - task: gotest
+
+  vitest:
+    desc: Oberfläche des Starters testen (Vitest; check:diff nur bei Änderungen am Frontend, B-619)
+    deps: [frontend]
     cmds:
       - cd {{.STARTER}}/frontend && bunx vitest run --config vitest.config.ts
-      - cd {{.STARTER}} && go test ./...
+
+  gotest:
+    desc: go test für den Windows-Starter (GO_TEST_FLAGS=-short lässt lange Tests aus, B-619)
+    deps: [':tmp', frontend]
+    cmds:
+      - cd {{.STARTER}} && go test {{.GO_TEST_FLAGS}} ./...
 
   lint:
     desc: golangci-lint für den Windows-Starter

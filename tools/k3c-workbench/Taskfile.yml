@@ -106,11 +106,23 @@ tasks:
 
   test:
     desc: k3c-workbench testen (Frontend mit Vitest, go test)
+    cmds:
+      - task: vitest
+      - task: gotest
+
+  vitest:
+    desc: Frontend von k3c-workbench testen (Vitest; check:diff nur bei Änderungen am Frontend, B-619)
+    deps: [frontend]
+    dir: '{{.DEV}}/frontend'
+    cmds:
+      - bunx vitest run --config vitest.config.ts
+
+  gotest:
+    desc: go test für k3c-workbench (GO_TEST_FLAGS=-short lässt lange Tests aus, B-619)
     deps: [':tmp', frontend]
     dir: '{{.DEV}}'
     cmds:
-      - cd frontend && bunx vitest run --config vitest.config.ts
-      - go test ./...
+      - go test {{.GO_TEST_FLAGS}} ./...
 
   lint:
     desc: golangci-lint für k3c-workbench

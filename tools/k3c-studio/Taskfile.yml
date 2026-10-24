@@ -123,11 +123,22 @@ tasks:
 
   test:
     desc: Asset-Studio-Frontend und gemeinsame Asset-Logik testen (Vitest, go test; das Backend tools/k3c-studio/backend gehört zum Studio-Modul; B-459, B-507)
-    deps: [':tmp', frontend]
+    cmds:
+      - task: vitest
+      - task: gotest
+
+  vitest:
+    desc: Frontend des Asset-Studios testen (Vitest; check:diff nur bei Änderungen am Frontend, B-619)
+    deps: [frontend]
     cmds:
       - bunx vitest run --config {{.STUDIO}}/frontend/vitest.config.ts
-      - cd tools/assetkit && go test ./...
-      - cd {{.STUDIO}} && go test ./...
+
+  gotest:
+    desc: go test für tools/assetkit und das Studio-Modul (GO_TEST_FLAGS=-short lässt lange Tests aus, B-619)
+    deps: [':tmp', frontend]
+    cmds:
+      - cd tools/assetkit && go test {{.GO_TEST_FLAGS}} ./...
+      - cd {{.STUDIO}} && go test {{.GO_TEST_FLAGS}} ./...
 
   lint:
     desc: golangci-lint für das Asset-Studio und tools/assetkit
