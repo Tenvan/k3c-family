@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** GEB17
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-24
 - **Spec:** Entwurf

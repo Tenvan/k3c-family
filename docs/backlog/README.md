@@ -121,9 +121,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-587](B-587-snapshot-site-payable.md) | SRV | Idee | mittel | eingeplant | GEB16 | Der Server meldet je Bauplatz, ob er jetzt Münzen annimmt |
 | [B-588](B-588-abbau-symbole-axt-spitzhacke.md) | CLI | Idee | niedrig | eingeplant | GEB16 | Abbau-Schilder zeigen eine Axt für Bäume und eine Spitzhacke für Felsen |
 | [B-589](B-589-holz-balancing-dichter-wald.md) | REG | Idee | mittel | eingeplant | BAL7 | Holz-Balancing nach dem dichteren Wald messen und nachziehen |
-| [B-590](B-590-wachstumsreihe-unterscheidbar.md) | DEV | Problem | hoch | offen | – | Die Wachstumsreihe der Burg zeigt echte Unterschiede statt derselben Burg in Farben |
-| [B-591](B-591-burg-ausbau-angebot-fehlt.md) | CLI | Problem | hoch | offen | – | Vor der Burg erscheint kein Ausbau-Angebot, wenn der Spieler davor steht |
-| [B-592](B-592-hub-ausbaustufen-je-inselstufe.md) | REG | Idee | hoch | offen | – | Der Hub hat zwei bis drei Ausbaustufen je Inselstufe, weiter mit dem Material der nächsten Inselstufe |
+| [B-590](B-590-wachstumsreihe-unterscheidbar.md) | DEV | Problem | hoch | eingeplant | GEB17 | Die Wachstumsreihe der Burg zeigt echte Unterschiede statt derselben Burg in Farben |
+| [B-591](B-591-burg-ausbau-angebot-fehlt.md) | CLI | Problem | hoch | eingeplant | GEB17 | Vor der Burg erscheint kein Ausbau-Angebot, wenn der Spieler davor steht |
+| [B-592](B-592-hub-ausbaustufen-je-inselstufe.md) | REG | Idee | hoch | eingeplant | GEB17 | Der Hub hat zwei bis drei Ausbaustufen je Inselstufe, weiter mit dem Material der nächsten Inselstufe |
 | [B-594](B-594-grafik-seite-slot-details.md) | DEV | Idee | hoch | eingeplant | WZ28 | Die Grafik-Seite zeigt je Slot Name, Atlas-Definition und alles für die Zuordnung |
 | [B-595](B-595-ticket-button-ohne-ki.md) | DEV | Idee | hoch | eingeplant | WZ28 | Jede Seite hat einen Button, der ohne KI ein Ticket zur Seite anlegt |
 | [B-596](B-596-balancing-seite-offline.md) | DEV | Idee | hoch | eingeplant | WZ28 | Eine Balancing-Seite fährt Simulationen und Berichte ohne Internet und ohne Claude |
@@ -133,7 +133,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-600](B-600-chat-unterstuetzung-sound-grafik.md) | DEV | Idee | hoch | eingeplant | WZ29 | Der AI-Chat unterstützt die Zuordnung auf Sound- und Grafik-Seite |
 | [B-601](B-601-download-vorschlagsliste-offline-vorrat.md) | DEV | Idee | hoch | eingeplant | WZ29 | Eine Download-Vorschlagsliste für empfohlene Assets ermöglicht Offline-Tests |
 | [B-602](B-602-studio-szene-kampf-anzeigen.md) | DEV | Idee | hoch | eingeplant | WZ29 | Das Studio zeigt Boss-Leiste, Phasen, Warnkreis und Event-Banner mit Mock-Zuständen |
-| [B-603](B-603-dev-aktionen-boss-event.md) | SRV | Idee | hoch | offen | – | Dev-Aktionen lösen Boss, Phasenwechsel und Events (Vollmond, Blutmond, Händler) sofort aus |
+| [B-603](B-603-dev-aktionen-boss-event.md) | SRV | Idee | hoch | eingeplant | KB4 | Dev-Aktionen lösen Boss, Phasenwechsel und Events (Vollmond, Blutmond, Händler) sofort aus |
 | [B-604](B-604-welt-anzeige-pausenmenue-lobby.md) | CLI | Problem | mittel | eingeplant | BD9 | Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby |
 | [B-605](B-605-schutzplatz-stabil-bei-truppenwechsel.md) | SIM | Schuld | niedrig | offen | – | Schutzplatz bleibt stabil, wenn Truppen sterben oder hinzukommen |
 | [B-613](B-613-http-origin-pruefen.md) | SRV | Problem | niedrig | offen | – | Schreibende HTTP-Endpunkte des Spielservers lehnen fremde Webseiten ab |
