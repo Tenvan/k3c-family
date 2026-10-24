@@ -3,6 +3,7 @@ import { GROUND_Y, UNIT_PX } from '../../core/constants';
 import { currentLanguage, nameOf, t } from '../../core/texts';
 import { BUILDINGS, TROOPS } from '../../model/data';
 import type { Site, World } from '../../model/types';
+import { drawBuildSign } from './buildSignView';
 import { BUILDING_TEXTURES, HUB_SCAFFOLD_TEXTURE, hubLookTexture, hubTexture, isHubBuilding, siteTexture, textureScale } from './buildingSprites';
 import { damageStage, showRubble } from './damageRules';
 import { damageTint, drawDamage, drawRubble } from './damageView';
@@ -126,11 +127,11 @@ function siteStage(s: Site, world: World): number {
 }
 
 /** `near`: Das Preisschild dieses Bauplatzes steht, weil es für einen Spieler das nächste ist (`priceTagRules.ts`, B-395) */
-export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: World, near: boolean): void {
+export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: World, near: boolean, buildable = true): void {
   const data = BUILDINGS[s.kind];
   const wait = siteStatus(s, world.danger);
   const stage = siteStage(s, world);
-  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, data.cost), currentLanguage(), statusKey(wait), stage, s.ruin === true].join('|'); // stage: Mauer/Turm je Stufe (GEB3), Tor je Mauerlinie (GEB4)
+  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, data.cost), currentLanguage(), statusKey(wait), stage, s.ruin === true, buildable].join('|'); // stage: Mauer/Turm je Stufe (GEB3), Tor je Mauerlinie (GEB4)
   if (v.getData('key') === key) return;
   v.setData('key', key);
 
@@ -152,8 +153,8 @@ export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: Wor
     return;
   }
 
-  // Noch nicht gebaut: Umriss + Preisschild bzw. Baufortschritt
-  g.lineStyle(3, 0xffffff, 0.5).strokeRect(-w / 2, -h, w, h);
+  // Noch nicht gebaut: Bauschild (B-584) + Preisschild bzw. Baufortschritt
+  if (buildable) drawBuildSign(g, s.kind); // nur Plätze, die jetzt Münzen annehmen
   if (s.buildProgress > 0) {
     g.fillStyle(0xdda15e, 0.8).fillRect(-w / 2, -h * s.buildProgress, w, h * s.buildProgress);
   }
