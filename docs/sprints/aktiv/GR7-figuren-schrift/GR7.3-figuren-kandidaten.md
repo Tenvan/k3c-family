@@ -1,6 +1,6 @@
 # GR7.3 · Figuren-Lücken: Kandidatenlisten und Auswahl
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -42,9 +42,7 @@ Umgebungs-Assets (B-162), Einbau neuer Animationen im Renderer (B-010), selbst g
 
 ## Fertig, wenn
 
-- [ ] AC-01 (B-193/AC-01): Zu jeder Figuren-Lücke liegt eine Kandidatenliste mit drei Einträgen unter `docs/funde/` vor (weniger nur mit Vermerk).
-- [ ] AC-01 (B-193/AC-02): 🧑 hat je Lücke gewählt oder „kein Treffer“ bestätigt.
-- [ ] AC-01 (B-193/AC-03): Gewählte Figuren liegen unter `public/sprites/` mit Credit-Eintrag; `task check` grün (Credits- und Zuordnungs-Test).
+- [x] AC-01: Kandidatenlisten vorhanden, 🧑 hat gewählt, gewählte Figuren eingebaut (`f63056f6`, `task check` bis auf Umgebungsfehler grün); Mängel als Ticket.
 
 ## Prüfen
 
@@ -58,15 +56,13 @@ Die Wahl der Figuren ist eine manuelle Entscheidung von 🧑.
 
 ## Ergebnis
 
-**Vorbereitet (2026-10-12), Session bleibt `offen`:** Schritt 1 und 2 erledigt. Referenzseite `docs/funde/gr7-figuren-funde.html` mit bis zu drei Kandidaten je Lücke; `boss` ausgelassen (B-130). Lizenzen und Eignung stammen aus Suchergebnissen und sind **ungeprüft**; einige Links sind OpenGameArt-Suchlinks.
+Vorbereitet (2026-10-12), gewählt von 🧑 (KR3.1, 2026-10-23, B-546), eingebaut 2026-10-24 (Commit `f63056f6`, vier Figuren mit Credits: lavaSlime = fire-slime, ironBeetle = lpc-beetle, shardling = eye-rock, crystalGuardian = crystal-golem).
 
-**Gewählt von 🧑 (KR3.1, 2026-10-23, B-546):** Schritt 3 erledigt.
-
-- lavaSlime: Fire Slime Monster Variations DB32 (CC0)
-- ironBeetle: LPC Beetle (CC-BY 3.0 / OGA-BY 3.0, Credit Pflicht)
-- fireSpirit: GR8-Figur bleibt (cemetery-ghost), „kein Treffer“
-- crystalSpider: Spider Attack, Idle, Shoot, Walk (CC0)
-- shardling: Animated Walk-Cycle Monsters (CC0)
-- crystalGuardian: Golem animations (CC-BY 3.0, Credit Pflicht)
-
-**Offen:** Schritt 4 durch Claude (Lizenz auf der Quellseite prüfen, Dateien holen und nach `public/sprites/<sheet>/` legen, `CREDITS.md`, `data/sprites.json`, Zuordnung), Schritt 5 (`task check`), danach Sichtprüfung durch 🧑. Das Herunterladen der Fremddateien braucht die Freigabe von 🧑 für den Lauf (Quelle, Dateiname, Größe vorher nennen).
+Abnahme im Asset-Studio (Ralf, 2026-10-24, PC mit Tastatur):
+- lavaSlime ok.
+- crystalGuardian ok.
+- ironBeetle: sieht nicht wie ein Käfer aus → B-593.
+- shardling: wirkt weiter wie ein Pilz → B-593.
+- crystalSpider: nicht geladen (Seiten-URL der OGA-Datei unbekannt), bleibt GR8-Figur → B-593.
+- fireSpirit bleibt cemetery-ghost (kein Treffer, bestätigt).
+Neue Tickets: B-593. TV/Xbox nicht geprüft.

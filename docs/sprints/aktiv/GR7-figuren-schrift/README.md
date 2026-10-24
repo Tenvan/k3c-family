@@ -60,7 +60,7 @@ Keine passende Figur → Lücke bleibt mit Ticket, Platzhalter-Rückfall.
 |---|---|---|---|---|
 | GR7.1 | `GR7.1-schrift-platzhalter-partner.md` | Umsetzung | autonom | fertig |
 | GR7.2 | `GR7.2-sattelsitz.md` | Umsetzung | autonom | fertig |
-| GR7.3 | `GR7.3-figuren-kandidaten.md` | Workshop | Mensch | offen |
+| GR7.3 | `GR7.3-figuren-kandidaten.md` | Workshop | Mensch | fertig |
 | GR7.4 | `GR7.4-skalierung-tv.md` | Umsetzung | Mensch | offen |
 | GR7.5 | `GR7.5-review.md` | Review | autonom | fertig |
 

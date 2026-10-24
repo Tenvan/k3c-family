@@ -143,6 +143,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-590](B-590-wachstumsreihe-unterscheidbar.md) | DEV | Problem | hoch | offen | – | Die Wachstumsreihe der Burg zeigt echte Unterschiede statt derselben Burg in Farben |
 | [B-591](B-591-burg-ausbau-angebot-fehlt.md) | CLI | Problem | hoch | offen | – | Vor der Burg erscheint kein Ausbau-Angebot, wenn der Spieler davor steht |
 | [B-592](B-592-hub-ausbaustufen-je-inselstufe.md) | REG | Idee | hoch | offen | – | Der Hub hat zwei bis drei Ausbaustufen je Inselstufe, weiter mit dem Material der nächsten Inselstufe |
+| [B-593](B-593-figuren-kaefer-splitterwicht-spinne.md) | CLI | Problem | mittel | offen | – | Eisenkäfer, Splitterwicht und Kristallspinne brauchen passende Figuren |
 
 ## Archiv
 
