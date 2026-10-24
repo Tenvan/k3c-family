@@ -59,4 +59,4 @@ keine
 
 ## Notizen
 
-Aus R4.2 und R4.3. Abhängig von B-154 und B-130.
+Umgesetzt in K5.1 (Boss-Leiste, Phasen-Text, Warnkreis, Event-Banner). Abnahme am Gerät (AC-03) 2026-10-24 verschoben: im Spiel kaum erreichbar, im Studio nicht testbar → Studio-Szene „Kampf-Anzeigen“ (B-602, WZ29) und Dev-Aktionen für Boss und Events (B-603); Abnahme in WZ29.9. Ticket bleibt bis dahin `eingeplant`.

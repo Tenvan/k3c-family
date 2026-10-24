@@ -15,10 +15,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-041](B-041-wails-starter.md) | DEV | Idee | niedrig | eingeplant | BT1 | Wails-Starter für Windows existiert |
 | [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | HW1 | Pi-Modell und Leistungsziel sind festgelegt |
 | [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | HW1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
-| [B-098](B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | eingeplant | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | eingeplant | BAL6 | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
-| [B-105](B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | eingeplant | K5 | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
-| [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | eingeplant | K5 | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
 | [B-117](B-117-anzeige-bau-lager.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Wartezeit, Lagerstand, Hub-Stufe, Adern und Plantage |
 | [B-126](B-126-buerger-ui.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Berufe, Ausbildung, Händler, Truppen-Limit und Heilung |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
@@ -563,3 +560,6 @@ Zeile in diesen Abschnitt.
 | [B-503](archiv/B-503-monarch-skill-darstellung.md) | CLI | Idee | niedrig | erledigt | SK2 | Die 24 Monarch-Skills haben eine Darstellung im Spiel |
 | [B-504](archiv/B-504-preset-skills-backstab-smokebomb.md) | REG | Problem | niedrig | erledigt | SK2 | Die Skills backstab und smokeBomb des Presets Dieb stehen in data/monarch.json |
 | [B-007](archiv/B-007-skill-baum.md) | SIM | Idee | hoch | erledigt | – | Skill-Baum mit Tank und Zauberer ist spielbar |
+| [B-105](archiv/B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | erledigt | K5 | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
+| [B-107](archiv/B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | erledigt | K5 | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
+| [B-098](archiv/B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | erledigt | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |

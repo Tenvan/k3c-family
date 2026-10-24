@@ -1,6 +1,6 @@
 # K5 · CLI · Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -69,7 +69,7 @@ Vorentschieden (autonom, Claude, 2026-10-23), Bestätigung durch 🧑 in K5.4 bz
 | K5.1 | `K5.1-boss-warnkreis-event.md` | Umsetzung | autonom | fertig |
 | K5.2 | `K5.2-anlegen-dialog.md` | Umsetzung | autonom | fertig |
 | K5.3 | `K5.3-debug-panel-overlay.md` | Umsetzung | autonom | fertig |
-| K5.4 | `K5.4-abnahme-geraet.md` | Workshop | Mensch | offen |
+| K5.4 | `K5.4-abnahme-geraet.md` | Workshop | Mensch | fertig |
 | K5.5 | `K5.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -77,4 +77,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-2026-10-23, autonom (Claude, K5.5), vorläufig. AC-01–AC-05 mit Nachweis (K5.1–K5.3, KB2.6 vorgezogen); AC-06 offen in K5.4 (🧑). Reviewer: keine schweren Befunde. Neu: B-563, B-564. Sprint bleibt aktiv bis K5.4.
+2026-10-23, autonom (Claude, K5.5): AC-01–AC-05 mit Nachweis; Reviewer ohne schwere Befunde. 2026-10-24 (K5.4, Ralf am PC): AC-06 für Dialog (B-105) und Panel (B-107) abgenommen, B-105, B-107, B-098 erledigt. Die Anzeigen (B-132) sind noch nicht abgenommen: verschoben auf B-602 (Studio-Szene) und B-603 (Dev-Aktionen), Abnahme in WZ29.9; B-132 bleibt `eingeplant`.
