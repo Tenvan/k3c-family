@@ -4,7 +4,7 @@
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** Entwurf
-- **Tickets:** B-597, B-598, B-599, B-600
+- **Tickets:** B-597, B-598, B-599, B-600, B-601
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -16,7 +16,7 @@ Ralf (2026-10-24): Für Skills gibt es im Studio keine vernünftige Hörprobe, S
 
 ## Ziel
 
-Sound- und Grafik-Seite haben differenzierte Hörproben und Vorschauen (auch Skills und Skill-Effekte), einheitlich filter- und sortierbare Szenen und eine Chat-Unterstützung mit bestätigten Vorschlägen. Am Ende sichtbar: Skill-Szene mit Hörprobe, Skill-Effekte-Szene, Filter und ein Chat-Vorschlag für einen Ton.
+Sound- und Grafik-Seite haben differenzierte Hörproben und Vorschauen (auch Skills und Skill-Effekte), einheitlich filter- und sortierbare Szenen, eine Chat-Unterstützung mit bestätigten Vorschlägen und einen Offline-Vorrat: eine gefüllte Download-Vorschlagsliste für Ton und Grafik, aus der Ralf online empfohlene Assets vorab lädt. Am Ende sichtbar: Skill-Szene mit Hörprobe, Skill-Effekte-Szene, Filter, ein Chat-Vorschlag und ein Offline-Test mit geladenem Vorrat.
 
 ## Beteiligte und Zielgruppen
 
@@ -24,7 +24,7 @@ Ralf; Agent DEV; 🧑 nimmt am PC ab.
 
 ## Anforderungen
 
-B-597, B-598, B-599, B-600 › Anforderungen.
+B-597, B-598, B-599, B-600, B-601 › Anforderungen.
 
 ## Nicht-Ziele
 
@@ -48,7 +48,8 @@ Datei oder Sheet fehlt → Hinweis in der Zeile. Chat offline → „offline“,
 - **AC-02** Sound-Szenen Skills, Gegner/Bosse, Bauen, Reiten, UI, Warnungen, Misch-, Lautheits- und Abstandsprobe (B-597).
 - **AC-03** Grafik-Szenen Skill-Effekte, Schilder/Gerüste, Gegner je Biom, Reittiere, Bosse, Biom und Licht wählbar (B-598).
 - **AC-04** Der Chat erhält den Seitenkontext, Vorschläge als Karten, Schreiben nur nach „Übernehmen“, Lizenz- und Download-Regeln erzwungen, offline sauber (B-600/AC-01 bis AC-04).
-- **AC-05** Ralf hat Szenen, Filter und einen Chat-Vorschlag für Ton und Grafik am PC abgenommen (B-600/AC-05).
+- **AC-05** Die Download-Vorschlagsliste für Ton und Grafik ist gefüllt (mindestens drei Kandidaten je Lücke und Skill-Linie, Lizenz geprüft), das Studio lädt Auswahl nach Bestätigung, legt Credit und Katalog an, räumt auf und zeigt Geladenes offline spielbar (B-601/AC-01 bis AC-04).
+- **AC-06** Ralf hat Szenen, Filter, einen Chat-Vorschlag und den Offline-Vorrat für Ton und Grafik am PC abgenommen (B-600/AC-05, B-601/AC-05).
 
 ## Offene Fragen
 
@@ -63,16 +64,20 @@ keine blockierende; Pflicht-Szenen und Chat-Aktionen laut Tickets als Default, R
 | WZ29.3 | – | Umsetzung | autonom | offen |
 | WZ29.4 | – | Umsetzung | autonom | offen |
 | WZ29.5 | – | Umsetzung | autonom | offen |
-| WZ29.6 | – | Review | autonom | offen |
-| WZ29.7 | – | Workshop | Mensch | offen |
+| WZ29.6 | – | Umsetzung | autonom | offen |
+| WZ29.7 | – | Umsetzung | autonom | offen |
+| WZ29.8 | – | Review | autonom | offen |
+| WZ29.9 | – | Workshop | Mensch | offen |
 
 - WZ29.1 (DEV) Filter-/Sortier-Baustein in `@webkit` mit reinen Funktionen und Tests, Einbau in Sound- und Grafik-Szenen (AC-01).
 - WZ29.2 (DEV) Sound-Szenen: Skills, Gegner/Bosse, Bauen, Reiten, UI, Warnungen (AC-02).
 - WZ29.3 (DEV) Misch-, Lautheits- und Abstandsprobe (AC-02).
 - WZ29.4 (DEV) Grafik-Szenen: Skill-Effekte, Schilder/Gerüste, Gegner je Biom, Reittiere, Bosse, Biom und Licht (AC-03).
-- WZ29.5 (DEV) Chat-Unterstützung: Kontext, Vorschlagskarten, Bestätigung, Lizenz- und Download-Regeln, offline (AC-04).
-- WZ29.6 (DEV) Review mit Offline-Nachweis (alle Kriterien).
-- WZ29.7 (Mensch) Abnahme am PC (AC-05).
+- WZ29.5 (DEV) **Vorschlagsliste füllen (vor der Download-Funktion):** Recherche für Ton und Grafik, `data/assets-vorschlaege.json` mit Quelle, Datei-URL, Lizenz, Größe, Priorität; Lizenzen auf den Quellseiten prüfen; Test der Liste (AC-05, B-601/AC-01).
+- WZ29.6 (DEV) Vorrat: Download mit Bestätigung, Credit und Katalog-Eintrag, Offline-Anzeige, Aufräumen, für Sound- und Grafik-Seite (AC-05).
+- WZ29.7 (DEV) Chat-Unterstützung: Kontext, Vorschlagskarten, Bestätigung, Lizenz- und Download-Regeln, offline; nutzt die Vorschlagsliste (AC-04).
+- WZ29.8 (DEV) Review mit Offline-Nachweis (alle Kriterien).
+- WZ29.9 (Mensch) Abnahme am PC (AC-06).
 
 ## Abnahme
 

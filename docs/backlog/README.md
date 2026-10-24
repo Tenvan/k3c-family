@@ -137,6 +137,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-598](B-598-grafik-vorschauen-differenziert.md) | DEV | Idee | hoch | eingeplant | WZ29 | Die Grafik-Seite hat differenzierte Vorschauen, auch für Skill-Effekte |
 | [B-599](B-599-szenen-sortieren-filtern.md) | DEV | Idee | hoch | eingeplant | WZ29 | Szenen auf Sound- und Grafik-Seite sind sortier- und filterbar |
 | [B-600](B-600-chat-unterstuetzung-sound-grafik.md) | DEV | Idee | hoch | eingeplant | WZ29 | Der AI-Chat unterstützt die Zuordnung auf Sound- und Grafik-Seite |
+| [B-601](B-601-download-vorschlagsliste-offline-vorrat.md) | DEV | Idee | hoch | eingeplant | WZ29 | Eine Download-Vorschlagsliste für empfohlene Assets ermöglicht Offline-Tests |
 
 ## Archiv
 
