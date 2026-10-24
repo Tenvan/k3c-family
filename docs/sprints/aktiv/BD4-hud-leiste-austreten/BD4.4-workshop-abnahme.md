@@ -1,6 +1,6 @@
 # BD4.4 · Workshop: Abnahme am Gerät
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -34,8 +34,8 @@ Code ändern.
 
 ## Fertig, wenn
 
-- [ ] AC-03 beobachtet.
-- [ ] AC-06 beobachtet.
+- [x] AC-03 beobachtet (PC, 2 Spieler).
+- [x] AC-06 beobachtet (PC, 2 Spieler).
 
 ## Prüfen
 
@@ -43,4 +43,6 @@ Manuell durch Ralf.
 
 ## Ergebnis
 
-–
+- AC-03: geprüft (Ralf, 2026-10-24, PC mit Tastatur, 2 Spieler): HUD-Leiste, Kompass und Fluss ok.
+- AC-06: geprüft (Ralf, 2026-10-24, PC, 2 Spieler): Abmelden über das Menü und Wiederbeitritt per A ok.
+- Nicht geprüft: TV/Xbox und 3–4 Spieler (laut B-337 entfallen 3–4 Spieler und Touch aus der Abnahme).
