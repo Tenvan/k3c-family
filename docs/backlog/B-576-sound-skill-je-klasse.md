@@ -28,12 +28,13 @@ Spielende; Agent DEV (Slots, Katalog) und CLI (Auslöser); 🧑 bestätigt die A
 
 - Ein Slot je Skill-Linie (Tank, Zauberer, Heiler, Dieb) in `data/assets.json` (`sfx:skill:tank`, `sfx:skill:mage`, `sfx:skill:healer`, `sfx:skill:thief`), Kandidaten aus CC0-Quellen (Kenney), Auswahl durch den Agenten als Default, Bestätigung durch 🧑 beim Hören.
 - Auslöser ohne Protokolländerung: `SkillCasts` (`src/scenes/effects/skillCasts.ts`) erkennt das Wirken eines aktiven Skills am Anstieg der Abklingzeit und kennt die Linie des Skills (`MONARCH.skills[id].line`); daraus spielt der Client den Slot der Linie.
-- Gemeinsamer `sfx:skill` bleibt als Rückfall (Linie ohne Slot, Ton nicht geladen); `sfx:skill` wird weiter für `skillPoint` genutzt.
+- **Passive Skills:** Auch für sie ist ein Ton definierbar (Entscheidung 🧑, 2026-10-24: wird später mit dem AI-Chat gesetzt). Die Abbildung kennt dafür optionale Slots je Skill (`sfx:skill:<skillId>`, Vorrang vor dem der Linie); solange keiner gesetzt ist, bleibt der passive Skill still. Auslöser eines passiven Skills ist wie bei seinem Ring das neue Erscheinen in `skills` (Lernen); das Studio zeigt die möglichen Slots (leer = ohne Ton) und erlaubt, einen zuzuordnen.
+- Gemeinsamer `sfx:skill` bleibt als Rückfall für aktive Skills (Linie ohne Slot, Ton nicht geladen); `sfx:skill` wird weiter für `skillPoint` genutzt.
 - Nach der Slot-Änderung `task gen:soundatlas`, Credits-Zeilen für neue Dateien.
 
 ## Nicht-Ziele
 
-Eigener Sound je einzelnem Skill; Protokoll- und Server-Änderungen; Lautheits-Feinschliff über Bus-Gain.
+Eigener Ton für alle aktiven Skills im Voraus (nur je Klasse, einzelne Skills über den optionalen Slot); Protokoll- und Server-Änderungen; Lautheits-Feinschliff über Bus-Gain; die Auswahl der Töne für passive Skills (kommt später mit dem AI-Chat).
 
 ## Regeln und Einschränkungen
 
@@ -45,13 +46,14 @@ Heiler wirkt `groupHeal` → Heiler-Ton; Tank wirkt `taunt` → Tank-Ton; Linie 
 
 ## Ausnahme- und Fehlerfälle
 
-Passiver Skill gelernt → kein Ton (wie bisher kein Wirken). Slot-Datei fehlt → Rückfall `sfx:skill`, kein Absturz.
+Passiver Skill ohne gesetzten Slot → kein Ton. Skill-Slot gesetzt, Datei fehlt → bei aktiven Skills Rückfall `sfx:skill`, bei passiven still. Linie ohne Slot → `sfx:skill`.
 
 ## Akzeptanzkriterien
 
 - **AC-01** Vier Slots `sfx:skill:<linie>` mit Kandidaten und Credit im Katalog; Atlas neu erzeugt (Test: Katalog und Credits).
 - **AC-02** Das Wirken eines aktiven Skills spielt den Ton seiner Linie, ohne Slot den gemeinsamen (Vitest der Abbildung Skill → Slot).
-- **AC-03** 🧑 hat die vier Klassen-Töne gehört und bestätigt oder geändert.
+- **AC-03** Für einen passiven (und jeden einzelnen) Skill lässt sich ein Ton über einen Slot `sfx:skill:<skillId>` definieren; ohne Eintrag bleibt er still (Vitest der Abbildung, ein Beispiel-Slot im Test).
+- **AC-04** 🧑 hat die vier Klassen-Töne gehört und bestätigt oder geändert.
 
 ## Offene Fragen
 

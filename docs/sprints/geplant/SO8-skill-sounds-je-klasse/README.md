@@ -28,7 +28,7 @@ B-576 › Anforderungen.
 
 ## Nicht-Ziele
 
-Protokoll- und Server-Änderungen, Ton je einzelnem Skill, Pegel-Feinschliff.
+Protokoll- und Server-Änderungen, die Auswahl der Töne für passive und einzelne Skills (später mit dem AI-Chat), Pegel-Feinschliff.
 
 ## Regeln und Einschränkungen
 
@@ -40,13 +40,14 @@ Heiler wirkt `groupHeal` → Heiler-Ton.
 
 ## Ausnahme- und Fehlerfälle
 
-Linie ohne Slot oder Datei fehlt → `sfx:skill` als Rückfall.
+Linie ohne Slot oder Datei fehlt → `sfx:skill` als Rückfall (aktive Skills). Passiver Skill ohne gesetzten Slot → still.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Vier Slots `sfx:skill:<linie>` mit Kandidaten und Credit, Atlas neu (B-576/AC-01 Teil 1).
+- **AC-01** Vier Slots `sfx:skill:<linie>` mit Kandidaten und Credit, Atlas neu (B-576/AC-01).
 - **AC-02** Das Wirken eines aktiven Skills spielt den Ton seiner Linie, Rückfall `sfx:skill` (B-576/AC-02).
-- **AC-03** 🧑 hat die vier Töne gehört und bestätigt oder geändert (B-576/AC-03).
+- **AC-03** Für passive und einzelne Skills lässt sich ein Ton über `sfx:skill:<skillId>` definieren, ohne Eintrag bleiben sie still (B-576/AC-03).
+- **AC-04** 🧑 hat die vier Töne gehört und bestätigt oder geändert (B-576/AC-04).
 
 ## Offene Fragen
 
@@ -62,9 +63,9 @@ keine. Auswahl der Töne als Default durch den Agenten, 🧑 bestätigt in SO8.4
 | SO8.4 | – | Workshop | Mensch | offen |
 
 - SO8.1 (DEV) Vier Slots `sfx:skill:<linie>` in `data/assets.json` mit Kenney-CC0-Kandidaten, Credits, `task gen:soundatlas` (AC-01).
-- SO8.2 (CLI) Auslöser: Abbildung Skill → Linie → Slot in `src/audio` und `SkillCasts`-Anbindung, Rückfall `sfx:skill`, Vitest (AC-02).
+- SO8.2 (CLI) Auslöser: Abbildung Skill → (Skill-Slot vor Linien-Slot vor `sfx:skill`) in `src/audio` und `SkillCasts`-Anbindung für aktive Skills und neu gelernte passive, Vitest (AC-02, AC-03).
 - SO8.3 Review: alle Kriterien prüfen.
-- SO8.4 (Mensch) Hörprobe der vier Klassen-Töne am PC (AC-03).
+- SO8.4 (Mensch) Hörprobe der vier Klassen-Töne am PC (AC-04).
 
 ## Abnahme
 
