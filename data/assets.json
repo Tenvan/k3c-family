@@ -1859,21 +1859,6 @@
       "wahl": [
         {
           "datei": "audio/kandidaten/happy-adventure-loop.ogg"
-        },
-        {
-          "datei": "audio/kandidaten/flowerbed-fields-loop.ogg"
-        },
-        {
-          "datei": "audio/kandidaten/lasso-lady-seamless-loop.ogg"
-        },
-        {
-          "datei": "audio/kandidaten/a-big-adventure.ogg"
-        },
-        {
-          "datei": "audio/kandidaten/the-adventure-begins.wav"
-        },
-        {
-          "datei": "audio/kandidaten/summer-adventure-background-music.mp3"
         }
       ]
     },
@@ -1898,9 +1883,6 @@
       "wahl": [
         {
           "datei": "audio/kandidaten/haunting-chiptune-loop-void-estate.ogg"
-        },
-        {
-          "datei": "audio/kandidaten/delayed-chiptune.ogg"
         }
       ]
     },
@@ -1913,12 +1895,6 @@
       "wahl": [
         {
           "datei": "audio/kandidaten/pixel-sprinter.ogg"
-        },
-        {
-          "datei": "audio/kandidaten/8-bit-battle-loop.ogg"
-        },
-        {
-          "datei": "audio/kandidaten/confrontation.ogg"
         }
       ]
     },
@@ -1943,9 +1919,6 @@
       "wahl": [
         {
           "datei": "audio/kandidaten/nes-shooter-music-boss.ogg"
-        },
-        {
-          "datei": "audio/kandidaten/gods-forbid.ogg"
         }
       ]
     },
@@ -1958,9 +1931,6 @@
       "wahl": [
         {
           "datei": "audio/kandidaten/nes-shooter-music-map.ogg"
-        },
-        {
-          "datei": "audio/kandidaten/chiptune-medieval-the-bard-s-tale.ogg"
         }
       ]
     },

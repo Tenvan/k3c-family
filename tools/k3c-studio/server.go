@@ -94,7 +94,9 @@ func hostGuard(next http.Handler) http.Handler {
 // Wurzel führt zum Studio.
 func siteHandler(root string) http.Handler {
 	files := http.FileServer(overlay{http.Dir(filepath.Join(root, "public")), http.Dir(filepath.Join(root, "dist"))})
-	ui := http.StripPrefix(strings.TrimSuffix(studioPage, "/"), http.FileServer(http.Dir(filepath.Join(root, filepath.FromSlash(uiDir)))))
+	// Die Oberfläche steht unter /studio/, ihre relativen Adressen (audio/…, grafik/…) landen also auch dort: Was die Oberfläche nicht
+	// selbst hat, kommt aus public/ und dist/ (Hörprobe und Bilder im Fenster).
+	ui := http.StripPrefix(strings.TrimSuffix(studioPage, "/"), http.FileServer(overlay{http.Dir(filepath.Join(root, filepath.FromSlash(uiDir))), http.Dir(filepath.Join(root, "public")), http.Dir(filepath.Join(root, "dist"))}))
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/" {
 			http.Redirect(w, r, studioPage, http.StatusFound)

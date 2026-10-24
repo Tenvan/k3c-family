@@ -72,8 +72,8 @@ export function fileFor(c: Candidate, canPlay: (mime: string) => boolean): strin
   return pickFile(files, canPlay);
 }
 
-/** Rein: Auswahl um `delta` verschieben, an den Enden anhalten. */
-export const moveSelection = (index: number, count: number, delta: number): number => (count <= 0 ? 0 : Math.min(count - 1, Math.max(0, index + delta)));
+/** Rein: Auswahl um `delta` verschieben, am Ende zum Anfang und umgekehrt. */
+export const moveSelection = (index: number, count: number, delta: number): number => (count <= 0 ? 0 : (((index + delta) % count) + count) % count);
 
 /** Rein: Lautstärke in 10er-Schritten, 0–100. */
 export const stepVolume = (percent: number, delta: number): number => Math.min(100, Math.max(0, Math.round(percent / 10) * 10 + delta * 10));

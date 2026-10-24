@@ -8,19 +8,14 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
-| [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | offen | – | Skill-Baum mit Tank und Zauberer ist spielbar |
 | [B-008](B-008-spieleabend.md) | REG | Frage | niedrig | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
-| [B-011](B-011-sound.md) | CLI | Idee | mittel | eingeplant | SO2 | Spiel hat Sound und Musik |
 | [B-015](B-015-gebaeude-werte.md) | REG | Problem | niedrig | eingeplant | BR1 | Gebäude-HP und -Kosten sind gebalanced |
 | [B-023](B-023-itch-io.md) | INF | Idee | niedrig | eingeplant | PB1 | Spiel ist auf itch.io veröffentlicht |
 | [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | eingeplant | RG2 | Tiefe 3 und 4 sind beschrieben |
 | [B-041](B-041-wails-starter.md) | DEV | Idee | niedrig | eingeplant | BT1 | Wails-Starter für Windows existiert |
 | [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | HW1 | Pi-Modell und Leistungsziel sind festgelegt |
 | [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | HW1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
-| [B-098](B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | eingeplant | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | eingeplant | BAL6 | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
-| [B-105](B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | eingeplant | K5 | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
-| [B-107](B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | eingeplant | K5 | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
 | [B-117](B-117-anzeige-bau-lager.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Wartezeit, Lagerstand, Hub-Stufe, Adern und Plantage |
 | [B-126](B-126-buerger-ui.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Berufe, Ausbildung, Händler, Truppen-Limit und Heilung |
 | [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
@@ -28,18 +23,14 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-155](B-155-balancing-runde-wirtschaft.md) | REG | Idee | niedrig | eingeplant | BR1 | Die Wirtschaft ist in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
 | [B-156](B-156-balancing-runde-kampf-bosse.md) | REG | Idee | niedrig | eingeplant | BR2 | Kampf, Gegner und Bosse sind in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
 | [B-160](B-160-abgleich-spielmetrik-simulator.md) | REG | Idee | mittel | eingeplant | BAL4 | Spielmetrik echter Abende und Simulatorwerte sind abgeglichen |
-| [B-168](B-168-musik-je-zustand.md) | CLI | Idee | hoch | eingeplant | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
-| [B-250](B-250-audiokern-datei-wiedergabe.md) | CLI | Schuld | hoch | eingeplant | SO4 | Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn |
 | [B-272](B-272-rotation-session-reports.md) | SRV | Schuld | mittel | eingeplant | ST1 | Die Rotation in reports/ erfasst auch die Spielmetrik-Reports |
 | [B-263](B-263-snapshot-groesse-plaetze.md) | SRV | Problem | niedrig | eingeplant | NT1 | Der Welt-Snapshot bleibt mit 39 Plätzen je Stufe im Budget |
-| [B-251](B-251-figuren-ganzzahlig-skalieren.md) | CLI | Schuld | hoch | eingeplant | GR7 | Figuren werden ganzzahlig skaliert und flimmern nicht |
 | [B-184](B-184-pages-screenshots.md) | PLAT | Idee | niedrig | eingeplant | PG1 | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
 | [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | eingeplant | RG2 | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
 | [B-186](B-186-autospeichern-takt.md) | SRV | Idee | mittel | eingeplant | ST1 | Der Server speichert alle 60 s und bei Tagesanbruch, das HUD zeigt „gesichert“ |
 | [B-187](B-187-speichern-windows-rename.md) | SRV | Problem | mittel | eingeplant | ST1 | Speichern übersteht unter Windows eine kurz gesperrte Zieldatei |
 | [B-190](B-190-events-dropped-im-protokoll.md) | SRV | Problem | niedrig | eingeplant | NT1 | Der Client erfährt zuverlässig, wie viele Ereignisse verworfen wurden |
 | [B-191](B-191-debug-overlay-links-unten.md) | CLI | Problem | mittel | eingeplant | U5 | Debug-Overlay und Aktionsliste verdecken das HUD nicht |
-| [B-193](B-193-figuren-luecken-suche.md) | CLI | Idee | hoch | eingeplant | GR7 | Figuren-Lücken unter public/sprites/ haben Kandidaten und eine Auswahl |
 | [B-194](B-194-splitscreen-ruckelt-xbox.md) | CLI | Problem | hoch | eingeplant | PF1 | Der Split-Screen läuft auf der Xbox flüssig |
 | [B-195](B-195-debug-overlay-xbox.md) | PLAT | Problem | mittel | eingeplant | PL1 | Das Debug-Overlay lässt sich auf der Xbox öffnen |
 | [B-157](archiv/B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | erledigt | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
@@ -49,7 +40,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | eingeplant | W11 | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
 | [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | eingeplant | RG1 | Burg hält Nacht 1–5 nur in 47 % der Seeds, Ziel 75–90 % |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | eingeplant | RG2 | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
-| [B-218](B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | hoch | eingeplant | SO4 | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
 | [B-274](B-274-testrestore-flackert-windows.md) | SRV | Problem | mittel | eingeplant | NT1 | TestRestore läuft unter Windows auch in task check:all stabil grün |
 | [B-280](B-280-warteschlange-nicht-zustaende.md) | SRV | Problem | niedrig | eingeplant | NT1 | Die Warteschlange einer Verbindung läuft nicht voll, wenn andere Nachrichten zwischen Zuständen stehen |
 | [B-284](B-284-lasttest-eingaben-flake.md) | DEV | Problem | niedrig | eingeplant | NT1 | TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft |
@@ -64,11 +54,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-314](B-314-controller-pruefungen-zurueckgestellt.md) | PLAT | Schuld | niedrig | eingeplant | HW1 | Alle Controller-Prüfungen sind gesammelt nachgeholt |
 | [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | eingeplant | SV1 | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
 | [B-317](B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | eingeplant | U5 | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
-| [B-320](B-320-reiter-sattel-beim-laufen.md) | CLI | Problem | hoch | eingeplant | GR7 | Der Reiter sitzt beim Laufen und Sprinten auf dem Sattel, nicht auf der Kruppe |
 | [B-324](B-324-client-typen-gegnerdaten.md) | CLI | Schuld | niedrig | eingeplant | KB2 | Die Client-Typen der Gegner- und Wellendaten passen zu den JSON-Dateien |
 | [B-327](B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | eingeplant | KB1 | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
-| [B-329](B-329-figuren-neue-gegner.md) | CLI | Schuld | niedrig | eingeplant | GR8 | Die sechs neuen Gegner zeigen eigene Figuren statt Platzhalter |
-| [B-331](B-331-einheitlicher-grafikstil-pipeline.md) | CLI | Idee | mittel | eingeplant | GR8 | Alle Grafiken laufen durch eine Pipeline mit Ziel-Palette und gleicher Pixeldichte |
 | [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
 | [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | HW1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
 | [B-341](B-341-header-ursache-live-messen.md) | DEV | Problem | mittel | eingeplant | WZ2 | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
@@ -117,23 +104,37 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
 | [B-470](B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | eingeplant | W12 | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
 | [B-472](B-472-nacht-dunkler-fackeln-lagerfeuer-licht.md) | CLI | Idee | niedrig | eingeplant | W13 | Nacht und Morgengrauen sind dunkler, Fackeln und Lagerfeuer machen Licht |
-| [B-492](B-492-sfx-luecken-weitere-ereignisse.md) | CLI | Idee | mittel | eingeplant | SO6 | Weitere Ereignisse bekommen eigene Sound-Slots und Sounds |
-| [B-493](B-493-credits-seite-audio.md) | PLAT | Idee | hoch | eingeplant | SO6 | Die Credits-Seite zeigt auch die Sounds unter public/audio |
-| [B-494](B-494-sound-atlas-werkzeug.md) | INF | Idee | niedrig | eingeplant | SO6 | Ein Werkzeug packt die gewählten Sounds in einen Sound-Atlas |
 | [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
-| [B-503](B-503-monarch-skill-darstellung.md) | CLI | Idee | niedrig | eingeplant | SK2 | Die 24 Monarch-Skills haben eine Darstellung im Spiel |
-| [B-504](B-504-preset-skills-backstab-smokebomb.md) | REG | Problem | niedrig | eingeplant | SK2 | Die Skills backstab und smokeBomb des Presets Dieb stehen in data/monarch.json |
-| [B-505](B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | eingeplant | GR9 | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |
 | [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | eingeplant | BD5 | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
-| [B-539](B-539-entscheidung-wimpel-markierer.md) | SIM | Frage | hoch | eingeplant | KR2 | Entscheidung D2: Wimpel-Farbe bleibt Client-Annäherung, markedBy erst nach GEB10.5 |
-| [B-552](B-552-entscheidung-monarch-animationen.md) | REG | Frage | hoch | eingeplant | KR3 | Entscheidung G7: Monarch-Animationen bleiben aus vorhandenen Frames abgeleitet |
-| [B-554](B-554-entscheidung-musik-stuecke.md) | REG | Frage | hoch | eingeplant | KR4 | Entscheidung S1: Je Musikzustand spielt die erste Präferenz des Slots, die übrigen Kandidaten bleiben bis zur Bestätigung liegen |
 | [B-568](B-568-plantage-pappel-niedrig.md) | DEV | Idee | mittel | eingeplant | GEB13 | Plantage bekommt eine eigene niedrige Pappel vor der Farm |
 | [B-570](B-570-camp-stufen-look.md) | DEV | Idee | mittel | eingeplant | GEB13 | Das Camp bekommt einen Stufen-Look statt der Grundform |
 | [B-571](B-571-heilplatz-stufen-deutlicher.md) | DEV | Idee | mittel | eingeplant | GEB13 | Heilplatz-Stufen sind deutlicher sichtbar (Zelt, Brunnen) |
-| [B-576](B-576-sound-skill-je-klasse.md) | CLI | Idee | niedrig | offen | – | Jede Klasse hat einen eigenen Skill-Sound |
+| [B-576](B-576-sound-skill-je-klasse.md) | CLI | Idee | niedrig | eingeplant | SO8 | Jede Klasse hat einen eigenen Skill-Sound |
 | [B-579](B-579-wellenabstand-adern-korridor.md) | REG | Problem | mittel | offen | – | Wellenabstand unter Tage mit besetzten Adern liegt über dem Korridor 4–12 Minuten |
 | [B-580](B-580-workbench-git-seite.md) | DEV | Idee | mittel | offen | – | Die Workbench hat eine Git-Seite für dieses Repo |
+| [B-581](B-581-offenen-raum-schliessen.md) | CLI | Idee | mittel | eingeplant | BD9 | Ein offener Raum lässt sich in der Lobby über Entfernen schließen |
+| [B-582](B-582-hoehlen-flora-variation.md) | DEV | Idee | mittel | eingeplant | GEB15 | Höhlen-Wurzeln sind zahlreicher und unterscheiden sich in Form und Größe |
+| [B-583](B-583-minen-felsen-groesser-varianten.md) | DEV | Idee | mittel | eingeplant | GEB15 | Minen und Felsen sind größer und haben zwei bis drei Varianten mehr |
+| [B-584](B-584-bauschilder-statt-rahmen.md) | CLI | Idee | mittel | eingeplant | GEB16 | Bauplätze zeigen kleine Bauschilder statt grauer Rahmen |
+| [B-585](B-585-wald-chunks-voller-baeume.md) | REG | Problem | mittel | eingeplant | GEB16 | Wald-Chunks stehen voller Bäume |
+| [B-586](B-586-baugeruest-in-gebaeudeform.md) | CLI | Idee | mittel | eingeplant | GEB16 | Im Bau zeigt der Platz ein Gerüst in der Form des neuen Gebäudes |
+| [B-587](B-587-snapshot-site-payable.md) | SRV | Idee | mittel | eingeplant | GEB16 | Der Server meldet je Bauplatz, ob er jetzt Münzen annimmt |
+| [B-588](B-588-abbau-symbole-axt-spitzhacke.md) | CLI | Idee | niedrig | eingeplant | GEB16 | Abbau-Schilder zeigen eine Axt für Bäume und eine Spitzhacke für Felsen |
+| [B-589](B-589-holz-balancing-dichter-wald.md) | REG | Idee | mittel | eingeplant | BAL7 | Holz-Balancing nach dem dichteren Wald messen und nachziehen |
+| [B-590](B-590-wachstumsreihe-unterscheidbar.md) | DEV | Problem | hoch | offen | – | Die Wachstumsreihe der Burg zeigt echte Unterschiede statt derselben Burg in Farben |
+| [B-591](B-591-burg-ausbau-angebot-fehlt.md) | CLI | Problem | hoch | offen | – | Vor der Burg erscheint kein Ausbau-Angebot, wenn der Spieler davor steht |
+| [B-592](B-592-hub-ausbaustufen-je-inselstufe.md) | REG | Idee | hoch | offen | – | Der Hub hat zwei bis drei Ausbaustufen je Inselstufe, weiter mit dem Material der nächsten Inselstufe |
+| [B-594](B-594-grafik-seite-slot-details.md) | DEV | Idee | hoch | eingeplant | WZ28 | Die Grafik-Seite zeigt je Slot Name, Atlas-Definition und alles für die Zuordnung |
+| [B-595](B-595-ticket-button-ohne-ki.md) | DEV | Idee | hoch | eingeplant | WZ28 | Jede Seite hat einen Button, der ohne KI ein Ticket zur Seite anlegt |
+| [B-596](B-596-balancing-seite-offline.md) | DEV | Idee | hoch | eingeplant | WZ28 | Eine Balancing-Seite fährt Simulationen und Berichte ohne Internet und ohne Claude |
+| [B-597](B-597-sound-hoerproben-differenziert.md) | DEV | Idee | hoch | eingeplant | WZ29 | Die Sound-Seite hat differenzierte Hörproben, auch für Skills |
+| [B-598](B-598-grafik-vorschauen-differenziert.md) | DEV | Idee | hoch | eingeplant | WZ29 | Die Grafik-Seite hat differenzierte Vorschauen, auch für Skill-Effekte |
+| [B-599](B-599-szenen-sortieren-filtern.md) | DEV | Idee | hoch | eingeplant | WZ29 | Szenen auf Sound- und Grafik-Seite sind sortier- und filterbar |
+| [B-600](B-600-chat-unterstuetzung-sound-grafik.md) | DEV | Idee | hoch | eingeplant | WZ29 | Der AI-Chat unterstützt die Zuordnung auf Sound- und Grafik-Seite |
+| [B-601](B-601-download-vorschlagsliste-offline-vorrat.md) | DEV | Idee | hoch | eingeplant | WZ29 | Eine Download-Vorschlagsliste für empfohlene Assets ermöglicht Offline-Tests |
+| [B-602](B-602-studio-szene-kampf-anzeigen.md) | DEV | Idee | hoch | eingeplant | WZ29 | Das Studio zeigt Boss-Leiste, Phasen, Warnkreis und Event-Banner mit Mock-Zuständen |
+| [B-603](B-603-dev-aktionen-boss-event.md) | SRV | Idee | hoch | offen | – | Dev-Aktionen lösen Boss, Phasenwechsel und Events (Vollmond, Blutmond, Händler) sofort aus |
+| [B-604](B-604-welt-anzeige-pausenmenue-lobby.md) | CLI | Problem | mittel | eingeplant | BD9 | Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby |
 
 ## Archiv
 
@@ -540,3 +541,26 @@ Zeile in diesen Abschnitt.
 | [B-577](archiv/B-577-dieb-skills-bauen.md) | SIM | Idee | mittel | erledigt | SK3 | Der Dieb bekommt Backstab und Smoke Bomb |
 | [B-578](archiv/B-578-skill-effekt-je-skill.md) | CLI | Idee | mittel | erledigt | SK3 | Jeder Skill hat einen eigenen Effekt statt des Rings je Klasse |
 | [B-562](archiv/B-562-studio-monarch-skill-ring.md) | DEV | Idee | niedrig | erledigt | SK3 | Die Monarch-Seite des Studios zeigt den Skill-Ring des Spiels statt der Lücke |
+| [B-539](archiv/B-539-entscheidung-wimpel-markierer.md) | SIM | Frage | hoch | erledigt | KR2 | Entscheidung D2: Wimpel-Farbe bleibt Client-Annäherung, markedBy erst nach GEB10.5 |
+| [B-552](archiv/B-552-entscheidung-monarch-animationen.md) | REG | Frage | hoch | erledigt | KR3 | Entscheidung G7: Monarch-Animationen bleiben aus vorhandenen Frames abgeleitet |
+| [B-505](archiv/B-505-monarch-animationen-wurf-treffer-tod-respawn.md) | CLI | Idee | niedrig | erledigt | GR9 | Monarch hat Animationen für Wurf, Treffer, Tod und Respawn |
+| [B-251](archiv/B-251-figuren-ganzzahlig-skalieren.md) | CLI | Schuld | hoch | verworfen | GR7 | Figuren werden ganzzahlig skaliert und flimmern nicht |
+| [B-593](archiv/B-593-figuren-kaefer-splitterwicht-spinne.md) | CLI | Problem | mittel | verworfen | – | Eisenkäfer, Splitterwicht und Kristallspinne brauchen passende Figuren |
+| [B-193](archiv/B-193-figuren-luecken-suche.md) | CLI | Idee | hoch | erledigt | GR7 | Figuren-Lücken unter public/sprites/ haben Kandidaten und eine Auswahl |
+| [B-329](archiv/B-329-figuren-neue-gegner.md) | CLI | Schuld | niedrig | erledigt | GR8 | Die sechs neuen Gegner zeigen eigene Figuren statt Platzhalter |
+| [B-331](archiv/B-331-einheitlicher-grafikstil-pipeline.md) | CLI | Idee | mittel | erledigt | GR8 | Alle Grafiken laufen durch eine Pipeline mit Ziel-Palette und gleicher Pixeldichte |
+| [B-320](archiv/B-320-reiter-sattel-beim-laufen.md) | CLI | Problem | hoch | erledigt | GR7 | Der Reiter sitzt beim Laufen und Sprinten auf dem Sattel, nicht auf der Kruppe |
+| [B-554](archiv/B-554-entscheidung-musik-stuecke.md) | REG | Frage | hoch | erledigt | KR4 | Entscheidung S1: Je Musikzustand spielt die erste Präferenz des Slots, die übrigen Kandidaten bleiben bis zur Bestätigung liegen |
+| [B-168](archiv/B-168-musik-je-zustand.md) | CLI | Idee | hoch | erledigt | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
+| [B-492](archiv/B-492-sfx-luecken-weitere-ereignisse.md) | CLI | Idee | mittel | erledigt | SO6 | Weitere Ereignisse bekommen eigene Sound-Slots und Sounds |
+| [B-493](archiv/B-493-credits-seite-audio.md) | PLAT | Idee | hoch | erledigt | SO6 | Die Credits-Seite zeigt auch die Sounds unter public/audio |
+| [B-494](archiv/B-494-sound-atlas-werkzeug.md) | INF | Idee | niedrig | erledigt | SO6 | Ein Werkzeug packt die gewählten Sounds in einen Sound-Atlas |
+| [B-011](archiv/B-011-sound.md) | CLI | Idee | mittel | erledigt | SO2 | Spiel hat Sound und Musik |
+| [B-218](archiv/B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | hoch | erledigt | SO4 | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
+| [B-250](archiv/B-250-audiokern-datei-wiedergabe.md) | CLI | Schuld | hoch | erledigt | SO4 | Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn |
+| [B-503](archiv/B-503-monarch-skill-darstellung.md) | CLI | Idee | niedrig | erledigt | SK2 | Die 24 Monarch-Skills haben eine Darstellung im Spiel |
+| [B-504](archiv/B-504-preset-skills-backstab-smokebomb.md) | REG | Problem | niedrig | erledigt | SK2 | Die Skills backstab und smokeBomb des Presets Dieb stehen in data/monarch.json |
+| [B-007](archiv/B-007-skill-baum.md) | SIM | Idee | hoch | erledigt | – | Skill-Baum mit Tank und Zauberer ist spielbar |
+| [B-105](archiv/B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | erledigt | K5 | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
+| [B-107](archiv/B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | erledigt | K5 | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
+| [B-098](archiv/B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | erledigt | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |

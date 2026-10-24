@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { DEFAULT_SETTINGS, type Settings } from '../core/settings';
 import { setLanguage } from '../core/texts';
-import { MenuPress, OPTION_IDS, OPTION_PAD_KEYS, applyOption, idleCommands, moveOption, optionEnabled, optionLabel, removeLabel, stepChoice, tapDir, tapOption, worldLine } from './optionsLogic';
+import { MenuPress, OPTION_IDS, OPTION_PAD_KEYS, applyOption, idleCommands, moveOption, optionEnabled, optionLabel, removeLabel, stepChoice, syncVolumes, tapDir, tapOption, worldLine } from './optionsLogic';
 
 const base: Settings = { ...DEFAULT_SETTINGS };
 
@@ -16,9 +16,9 @@ describe('Einträge', () => {
 });
 
 describe('Auswahl', () => {
-  it('springt nicht über die Enden', () => {
-    expect(moveOption(0, -1)).toBe(0);
-    expect(moveOption(OPTION_IDS.length - 1, 1)).toBe(OPTION_IDS.length - 1);
+  it('läuft am Ende zum Anfang und umgekehrt', () => {
+    expect(moveOption(0, -1)).toBe(OPTION_IDS.length - 1);
+    expect(moveOption(OPTION_IDS.length - 1, 1)).toBe(0);
     expect(moveOption(2, 1)).toBe(3);
     expect(moveOption(2, 0)).toBe(2);
   });
@@ -167,5 +167,13 @@ describe('Welt im Pausenmenü (BD5.2, B-506/AC-02)', () => {
     expect(worldLine('nordmeer')).toBe('Welt: nordmeer');
     expect(worldLine('')).toBe('Welt: standard');
     expect(worldLine(undefined)).toBe('');
+  });
+});
+
+describe('Lautstärke wirkt im Spiel', () => {
+  it('syncVolumes setzt alle drei Busse aus den Einstellungen', () => {
+    const calls: [string, number][] = [];
+    syncVolumes({ ...DEFAULT_SETTINGS, musicVolume: 30, sfxVolume: 60, ambientVolume: 10 }, { setVolume: (bus, percent) => calls.push([bus, percent]) });
+    expect(calls).toEqual([['music', 30], ['sfx', 60], ['ambient', 10]]);
   });
 });

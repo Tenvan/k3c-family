@@ -1,7 +1,7 @@
 # SKL · Monarch & Skills
 
-- **Status:** aktiv
-- **Rang:** 9
+- **Status:** erledigt
+- **Rang:** –
 - **Ziel-Tickets:** –
 
 ## Ziel
@@ -16,7 +16,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 |---|---|---|
 | SK1 | Skill-Baum mit Tank und Zauberer, Respec-Regeln abfragbar | erledigt |
 | RM1 | Raum-Pause im Couch-Raum und lernbare Skills vom Server | erledigt |
-| SK2 | Skills im Spiel sichtbar, Dieb-Skills in den Daten | aktiv |
+| SK2 | Skills im Spiel sichtbar, Dieb-Skills in den Daten | erledigt |
 | SK3 | Dieb-Skills Backstab und Smoke Bomb, Skill-Effekte, Skill-Ring im Studio | erledigt |
 
 ## Nicht-Ziele

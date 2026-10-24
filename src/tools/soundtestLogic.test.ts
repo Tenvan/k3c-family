@@ -29,8 +29,8 @@ describe('Hörprobe-Logik', () => {
     expect(fileFor(c('Tag'), () => false)).toBeUndefined();
   });
 
-  it('moveSelection und stepVolume halten die Grenzen', () => {
-    expect([moveSelection(0, 3, -1), moveSelection(1, 3, 1), moveSelection(2, 3, 1), moveSelection(0, 0, 1)]).toEqual([0, 2, 2, 0]);
+  it('moveSelection läuft rundum, stepVolume hält die Grenzen', () => {
+    expect([moveSelection(0, 3, -1), moveSelection(1, 3, 1), moveSelection(2, 3, 1), moveSelection(0, 0, 1)]).toEqual([2, 2, 0, 0]);
     expect([stepVolume(100, 1), stepVolume(0, -1), stepVolume(55, 1)]).toEqual([100, 0, 70]);
   });
 

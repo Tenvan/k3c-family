@@ -47,12 +47,12 @@ Skalierung ×2 bis ×3, Nachbearbeitung nur Skalieren und Palette.
 | `zombie` | `data/enemies.json` | `sprites/cemetery-skeleton-clothed` | `idle/run/attack.png`, Frame 34×46 | Figur 40 px, Gothicvania, ×2,5 | CC0 1.0 | zugeordnet |
 | `ratSwarm` | `data/enemies.json` | `sprites/mushroom` | `idle/run/attack.png`, Frame 150×150, Tönung `#b08968` | Figur 37 px, LuizMelo, ×1,4 (2 × 0,7); Vermerk: Skalierung nicht ganzzahlig bzw. außerhalb ×2–×3, B-251 | CC0 1.0 | zugeordnet |
 | `mineGhost` | `data/enemies.json` | `sprites/ghost` | `idle/run/attack.png`, Frame 48×54, Deckkraft 0,85 | Figur 42 px, Gothicvania, ×2,5 | CC0 1.0 | zugeordnet |
-| `lavaSlime` | `data/enemies.json` | `sprites/fire-worm` | `idle/run/attack.png`, Frame 74×56, Tönung `#ff9248` | Figur 41 px, LuizMelo, ×1,75; Vermerk: Skalierung nicht ganzzahlig, B-251 | CC0 1.0 | zugeordnet |
-| `ironBeetle` | `data/enemies.json` | `sprites/iron-beetle` | `idle/run/attack.png`, Frame 32×24 | Figur 17 px, eigene Arbeit (`tools/spritegen`), ×4 | CC0 1.0 | zugeordnet |
+| `lavaSlime` | `data/enemies.json` | `sprites/fire-slime` | `idle/run/attack.png`, Frame 24×30 (je 3 Frames, Zeile 0 der Quelle) | Figur 28 px, ImogiaGames (DB32), ×2 | CC0 1.0 | zugeordnet |
+| `ironBeetle` | `data/enemies.json` | `sprites/lpc-beetle` | `idle/run/attack.png`, Frame 40×22 | Figur 20 px, Redshrike (LPC Beetle), ×3; Namensnennung Pflicht (CC-BY 3.0 / OGA-BY 3.0) | CC-BY 3.0 / OGA-BY 3.0 | zugeordnet |
 | `fireSpirit` | `data/enemies.json` | `sprites/cemetery-ghost` | `idle/attack.png`, Frame 37×60, Tönung `#f4a261` | Figur 46 px, Gothicvania, ×2 | CC0 1.0 | zugeordnet |
 | `crystalSpider` | `data/enemies.json` | `sprites/crystal-spider` | `idle/run/attack.png`, Frame 32×24 | Figur 20 px, eigene Arbeit (`tools/spritegen`), ×3 | CC0 1.0 | zugeordnet |
-| `shardling` | `data/enemies.json` | `sprites/flying-eye` | `idle/attack.png`, Frame 150×150, Tönung `#a9def9`, schwebt 40 px | Figur 33 px, LuizMelo, ×2 | CC0 1.0 | zugeordnet |
-| `crystalGuardian` | `data/enemies.json` | `sprites/skeleton` | `idle/run/attack.png`, Frame 150×150, Tönung `#4361ee` | Figur 51 px, LuizMelo, ×2,5 (2 × 1,25); Vermerk: Skalierung nicht ganzzahlig, B-251 | CC0 1.0 | zugeordnet |
+| `shardling` | `data/enemies.json` | `sprites/eye-rock` | `idle/run/attack.png`, Frame 66×66 | Figur 64 px, Night Blade, ×1 | CC0 1.0 | zugeordnet |
+| `crystalGuardian` | `data/enemies.json` | `sprites/crystal-golem` | `idle/run/attack.png`, Frame 160×112 (idle = run) | Figur 110 px, irmirx (Golem animations, 30 % verkleinert), ×1; Namensnennung Pflicht (CC-BY 3.0) | CC-BY 3.0 | zugeordnet |
 
 ## Truppen
 

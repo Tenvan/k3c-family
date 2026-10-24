@@ -9,29 +9,10 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| BD4 | CLI | BED | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | – | `aktiv/BD4-hud-leiste-austreten/` |
-| BD5 | SRV, CLI | BED | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | – | `aktiv/BD5-spielmenue-welt-spielstaende/` |
-| BD6 | REG | BED | Autonome Entscheidungen zu BED prüfen und festschreiben | – | `aktiv/BD6-entscheidungen-bed/` |
-| GEB9 | DEV, CLI | GEB | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | – | `aktiv/GEB9-hub-ausbaustufen/` |
-| GEB10 | DEV, CLI | GEB | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | – | `aktiv/GEB10-natur-truhe-wimpel/` |
-| GEB11 | REG, SIM, DEV, CLI | GEB | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | – | `aktiv/GEB11-hub-waechst-kleinteilig/` |
-| GEB12 | REG, CLI | GEB | Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte) | – | `aktiv/GEB12-entscheidungen-geb9-11/` |
-| GEB13 | REG, DEV | GEB | Gebäude-Stufen in den Daten und Stufen-Look für Plantage, Camp, Heilplatz | – | `aktiv/GEB13-gebaeude-stufen-look/` |
-| GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
-| GR9 | DEV, CLI | GRA | Monarch-Animationen für Wurf, Treffer, Tod und Respawn, Kandidaten-Import ohne roten Test | – | `aktiv/GR9-monarch-animationen-kandidaten/` |
-| GR10 | CLI | GRA | Autonome Grafik-Entscheidungen prüfen (GR8, GR9) | – | `aktiv/GR10-entscheidungen-grafik/` |
-| SO2 | CLI | SND | SFX-Katalog und Einbau | – | `aktiv/SO2-sfx-katalog/` |
-| SO4 | CLI | SND | Musik je Zustand | – | `aktiv/SO4-musik/` |
-| SO6 | PLAT, INF, CLI | SND | Sound-Credits auf der Credits-Seite, Sound-Atlas und Sounds für die übrigen Ereignisse | – | `aktiv/SO6-sound-credits-atlas-luecken/` |
-| SK2 | REG, SIM, CLI | SKL | Skills im Spiel sichtbar, Dieb-Skills in den Daten | – | `aktiv/SK2-skills-sichtbar-dieb/` |
-| K5 | CLI | KMP | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | Boss-Leiste, Warnkreis und Event-Banner am TV, Lobby-Dialog, von 🧑 abgenommen | `aktiv/K5-anzeige-kampf/` |
 | LV1 | SIM | KMP | Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs | Keine Lava auf Linien, Camps mit Abstand, besiegte Gegner lassen Gold fallen, Ereignisse mit Ort | `aktiv/LV1-level-gegner-korrektur/` |
 | KB2 | SRV, CLI | KMP | Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen | – | `aktiv/KB2-protokoll-kampf-nachtraege/` |
 | BT1 | SRV, DEV | REL | Server im Heimnetz finden, Windows-Starter, Start mit Seed | – | `aktiv/BT1-heimnetz-start/` |
 | KR1 | REG | KRT | Kritische Fragen zu BED | – | `aktiv/KR1-fragen-bed/` |
-| KR2 | REG | KRT | Kritische Fragen zu GEB | – | `aktiv/KR2-fragen-geb/` |
-| KR3 | REG | KRT | Kritische Fragen zu GRA | – | `aktiv/KR3-fragen-gra/` |
-| KR4 | REG | KRT | Kritische Fragen zu SND | – | `aktiv/KR4-fragen-snd/` |
 | KR5 | REG | KRT | Kritische Fragen zu SKL | – | `aktiv/KR5-fragen-skl/` |
 | KR6 | REG | KRT | Kritische Fragen zu KMP | – | `aktiv/KR6-fragen-kmp/` |
 
@@ -43,9 +24,15 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| WZ28 | DEV | WZG | Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite | – | Entwurf | `geplant/WZ28-offline-werkzeuge/` |
+| WZ29 | DEV | WZG | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | – | Entwurf | `geplant/WZ29-sound-grafik-seiten-ausbau/` |
+| BD9 | SRV | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | Entwurf | `geplant/BD9-welt-anzeige-raum-schliessen/` |
+| GEB15 | DEV | GEB | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | – | Entwurf | `geplant/GEB15-hoehle-fels-varianten/` |
+| GEB16 | DEV | GEB | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | – | Entwurf | `geplant/GEB16-bauschilder-wald-geruest/` |
 | SV2 | SRV | WRT | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | – | Entwurf | `geplant/SV2-voll-ausbau-regelkonform/` |
 | W13 | CLI | WRT | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | – | Entwurf | `geplant/W13-morgengrauen-licht-client/` |
 | W12 | SIM | WRT | Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln | – | Entwurf | `geplant/W12-morgengrauen-phase/` |
+| SO8 | DEV, CLI | SND | Skill-Sounds je Klasse | – | bereit | `geplant/SO8-skill-sounds-je-klasse/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | Entwurf | `geplant/PM1-leistung-messen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | bereit | `geplant/PF1-splitscreen-leistung/` |
 | NT1 | SRV | LST | Stabile Tests, Warteschlange und Snapshot-Budget | – | Entwurf | `geplant/NT1-netz-tests-stabil/` |
@@ -65,6 +52,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | BAL4 | REG | BAL | Abgleich Spielmetrik und Simulator | – | bereit | `geplant/BAL4-metrik-abgleich/` |
 | BR1 | REG | BAL | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
 | BR2 | REG | BAL | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR2-balancing-kampf/` |
+| BAL7 | REG | BAL | Holz-Balancing nach dem dichteren Wald | – | Entwurf | `geplant/BAL7-holz-balancing-wald/` |
 | GRJ1 | CLI | GRJ | Alte Biom-Hintergründe mit Lizenz im Archiv | – | Entwurf | `geplant/GRJ1-alte-hintergruende-archiv/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
@@ -234,3 +222,22 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | KB3 | Endboss-Auslöser anzeigen, Dev-Overlay-Link, Wellenabstand unter Tage messen | `erledigt/KB3-endboss-dev-wellen/` |
 | GEB14 | Wald und Höhle dichter, Gerüst bei Wartenden, Knoten-Markierer im Snapshot | `erledigt/GEB14-welt-deko-geruest/` |
 | SK3 | Dieb-Skills Backstab und Smoke Bomb, Skill-Effekte, Skill-Ring im Studio | `erledigt/SK3-dieb-skills-effekte/` |
+| BD5 | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | `erledigt/BD5-spielmenue-welt-spielstaende/` |
+| BD4 | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | `erledigt/BD4-hud-leiste-austreten/` |
+| BD6 | Autonome Entscheidungen zu BED prüfen und festschreiben | `erledigt/BD6-entscheidungen-bed/` |
+| GEB12 | Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte) | `erledigt/GEB12-entscheidungen-geb9-11/` |
+| KR2 | Kritische Fragen zu GEB | `erledigt/KR2-fragen-geb/` |
+| GEB13 | Gebäude-Stufen in den Daten und Stufen-Look für Plantage, Camp, Heilplatz | `erledigt/GEB13-gebaeude-stufen-look/` |
+| GEB10 | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | `erledigt/GEB10-natur-truhe-wimpel/` |
+| GEB9 | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | `erledigt/GEB9-hub-ausbaustufen/` |
+| GEB11 | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | `erledigt/GEB11-hub-waechst-kleinteilig/` |
+| GR9 | Monarch-Animationen für Wurf, Treffer, Tod und Respawn, Kandidaten-Import ohne roten Test | `erledigt/GR9-monarch-animationen-kandidaten/` |
+| GR10 | Autonome Grafik-Entscheidungen prüfen (GR8, GR9) | `erledigt/GR10-entscheidungen-grafik/` |
+| KR3 | Kritische Fragen zu GRA | `erledigt/KR3-fragen-gra/` |
+| GR7 | Figuren-Lücken, ganzzahlige Skalierung und Schrift | `erledigt/GR7-figuren-schrift/` |
+| KR4 | Kritische Fragen zu SND | `erledigt/KR4-fragen-snd/` |
+| SO4 | Musik je Zustand | `erledigt/SO4-musik/` |
+| SO2 | SFX-Katalog und Einbau | `erledigt/SO2-sfx-katalog/` |
+| SO6 | Sound-Credits auf der Credits-Seite, Sound-Atlas und Sounds für die übrigen Ereignisse | `erledigt/SO6-sound-credits-atlas-luecken/` |
+| SK2 | Skills im Spiel sichtbar, Dieb-Skills in den Daten | `erledigt/SK2-skills-sichtbar-dieb/` |
+| K5 | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | `erledigt/K5-anzeige-kampf/` |

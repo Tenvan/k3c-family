@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
+import { audioCore } from '../audio/audioCore';
 import { playUi, uiSoundFor } from '../audio/ui';
 import { guideSeen } from '../core/guideSeen';
 import { loadSettings, saveSettings, type Settings } from '../core/settings';
@@ -16,6 +17,7 @@ import {
   optionLabel,
   removeLabel,
   stepChoice,
+  syncVolumes,
   tapOption,
   worldLine,
   type OptionDir,
@@ -128,6 +130,7 @@ export class OptionsScene extends Phaser.Scene {
         if (result.settings.guideHints && !this.settings.guideHints) guideSeen.reset(); // wieder an = alle Hinweise erneut (Q11)
         saveSettings((this.settings = result.settings));
         setLanguage(this.settings.language);
+        syncVolumes(this.settings, audioCore()); // Regler wirken sofort auf Musik, Effekte und Ambient
       }
       if (result.close) return this.close();
       if (result.removePlayer) {

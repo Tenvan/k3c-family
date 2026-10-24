@@ -130,10 +130,10 @@ describe('Lobby-Auswahl (AC-03)', () => {
     expect(lobbyEntries([room]).map((e) => e.kind)).toEqual(['play', 'new', 'room']);
   });
 
-  it('Auswahl bleibt in der Liste', () => {
-    expect(moveSelection(0, -1, 3)).toBe(0);
+  it('Auswahl läuft am Ende zum Anfang und umgekehrt', () => {
+    expect(moveSelection(0, -1, 3)).toBe(2);
     expect(moveSelection(0, 1, 3)).toBe(1);
-    expect(moveSelection(2, 1, 3)).toBe(2);
+    expect(moveSelection(2, 1, 3)).toBe(0);
   });
 
   it('Zeile unter dem Zeiger', () => {
