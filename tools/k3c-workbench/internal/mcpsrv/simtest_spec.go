@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"k3c/tools/k3c-workbench/internal/balance"
+	"k3c/tools/k3c-workbench/internal/simrun"
 )
 
 // simTestIn sind die Parameter von sim_test (B-348 › Anforderungen). Geprüft wird über Positivlisten und Grenzen.
@@ -123,9 +124,9 @@ func (s *simSpec) checkMode() error {
 }
 
 // simRunner wählt den Runner des Modus; online prüft er vorher, ob der Spielserver des Checkouts antwortet.
-func (s *Server) simRunner(ctx context.Context, spec simSpec) (func(context.Context, *simRun), error) {
+func (s *Server) simRunner(ctx context.Context, spec simSpec) (simrun.Runner, error) {
 	if spec.mode == "offline" {
-		return func(ctx context.Context, run *simRun) { s.runOffline(ctx, run, spec) }, nil
+		return s.sims.Offline(*spec.offline()), nil
 	}
 	c, err := s.serverClient(ctx)
 	if err == nil {
@@ -170,6 +171,14 @@ func (s *simSpec) onlineDefaults() {
 	if s.duration == 0 {
 		s.duration = 5 * time.Minute
 	}
+}
+
+// offline ist die Spec des Offline-Runners (internal/simrun); online nil.
+func (s simSpec) offline() *simrun.Spec {
+	if s.mode != "offline" {
+		return nil
+	}
+	return &simrun.Spec{Seeds: s.seeds}
 }
 
 func oneLine(err error) string { return strings.ReplaceAll(err.Error(), "\n", " ") }

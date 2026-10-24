@@ -8,9 +8,9 @@
 - **Sprint:** WZ29
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-24, Ralf im Chat (mit WZ29 Revision 1)
 
 ## Ausgangslage
 
@@ -27,7 +27,7 @@ Ralf (Abnahme und Gestaltung); Agent DEV.
 ## Anforderungen
 
 - Szene auf der Grafik-Seite (WZ29, B-598), Steuerung: Boss wählen (`data/bosses.json`), Phase, Lebensanteil, Warnkreis (Radius, Restzeit), Event (Vollmond, Blutmond, Händler-Überfall), Mondanzeige, Spieleranzahl (1–2), Zellengröße.
-- Zeichnet mit denselben Funktionen wie das Spiel (`src/scenes/hud`, `kampfView.ts` und die reinen Funktionen aus K5.1), keine zweite Darstellung.
+- Zeichnet mit denselben Funktionen wie das Spiel (`src/scenes/kampfView.ts`, `src/scenes/hud/` und die reinen Funktionen aus K5.1), keine zweite Darstellung.
 - Zeigt die freizuhaltende Fläche (Home-Button, oben 70 px) als Hilfslinie und die Mindest-Schrift.
 - Animationsablauf abspielbar: Boss-Auftritt, Phasenwechsel, Warnkreis läuft ab, Event-Banner erscheint und verschwindet.
 

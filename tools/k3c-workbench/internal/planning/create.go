@@ -5,6 +5,8 @@ import (
 	"path"
 	"strings"
 	"time"
+
+	ticketkit "k3c/tools/assetkit/ticket"
 )
 
 // NewDoc beschreibt ein neues Ticket, einen Sprint, eine Session (B-210) oder ein Projekt (B-357). ID bei Sprint (M9),
@@ -57,14 +59,17 @@ func fromTemplate(c *changeSet, kind, tpl, header string, defaults, values map[s
 	return setFields(c.root, kind, joinLines(lines), merged)
 }
 
+// createTicket: Vorlage füllen und Index-Zeile bilden macht der Ticket-Kern (B-595), Nummer und Feldprüfung planning.
 func createTicket(c *changeSet, in NewDoc, tpl string) error {
 	nr, numberNotes, err := nextTicket(c.root)
 	if err != nil {
 		return err
 	}
-	text, err := fromTemplate(c, "ticket", tpl, nr+" · "+in.Title, map[string]string{"Status": "offen", "Umgebung": "?", "Sprint": "–", "Projekt": "–",
-		"Erstellt": time.Now().Format("2006-01-02"), "Spec": "Entwurf", "Revision": "1", "Freigabe": "–"}, in.Fields)
+	text, err := ticketkit.Draft(tpl, nr, in.Title, ticketkit.Defaults(time.Now()))
 	if err != nil {
+		return err
+	}
+	if text, err = setFields(c.root, "ticket", text, in.Fields); err != nil {
 		return err
 	}
 	t := ParseTicket(text)
@@ -74,12 +79,22 @@ func createTicket(c *changeSet, in NewDoc, tpl string) error {
 	if err := checkProjectRef(c, t.Project); err != nil {
 		return err
 	}
-	rel := "backlog/" + nr + "-" + in.Slug + ".md"
+	file := nr + "-" + in.Slug + ".md"
+	rel := "backlog/" + file
+	index, err := c.read("backlog/README.md")
+	if err != nil {
+		return err
+	}
+	if index, err = ticketkit.AddToIndex(index, ticketkit.Row{Nr: t.Nr, Link: file, Domain: t.Domain, Typ: t.Typ,
+		Prio: t.Prio, Status: t.Status, Sprint: t.Sprint, Title: t.Title}); err != nil {
+		return fmt.Errorf("backlog/README.md: %w", err)
+	}
 	c.write(rel, text)
 	c.crlf[rel] = c.crlf["vorlagen/ticket.md"]
+	c.write("backlog/README.md", index)
 	c.notes = append(c.notes, nr+" angelegt: docs/"+rel+" (Index ergänzt)")
 	c.notes = append(c.notes, numberNotes...)
-	return syncIndex(c, t, rel)
+	return nil
 }
 
 func createSprint(c *changeSet, in NewDoc, tpl string) error {

@@ -38,7 +38,10 @@ var uiMethods = map[string]bool{
 	"PlanningData": true, "PlanningDocs": true, "PlanningSet": true, "PlanningDoc": true, "PlanningGet": true,
 	"GitHubStatus": true, "WorktreeCheck": true, "OpenInClaude": true, "StudioOpen": true, "Resources": true,
 	"GitOverview": true, "GitAction": true, "GitDeleteBranches": true, "GitPRs": true, "GitPRCreate": true, "GitPRAction": true,
-	"GitCheckMerged": true, "GitStamp": true,
+	"GitCheckMerged": true, "GitStamp": true, "TicketCreate": true, "TicketRecent": true,
+	"BalanceStart": true, "BalanceRuns": true, "BalanceStop": true, "BalanceReports": true, "BalanceReport": true,
+	"BalanceTuning": true, "BalanceDataFiles": true, "BalanceDataDoc": true, "BalanceDataValues": true,
+	"BalanceReportRate": true, "BalanceReportDelete": true,
 }
 
 // uiHandler beantwortet alle Adressen unter uiPrefix.

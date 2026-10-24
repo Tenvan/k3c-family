@@ -6,54 +6,18 @@ import (
 	"maps"
 	"os"
 	"os/exec"
-	"path"
 	"path/filepath"
-	"regexp"
 	"slices"
-	"strconv"
 	"strings"
 	"time"
 
+	ticketkit "k3c/tools/assetkit/ticket"
 	"k3c/tools/k3c-workbench/internal/proc"
 )
 
-// reTicketFile liest die Nummer aus dem Dateinamen eines Tickets (B-387-name.md).
-var reTicketFile = regexp.MustCompile(`^B-(\d+)-.*\.md$`)
-
 // B-387: Die nächste Ticket-Nummer berücksichtigt alle Checkouts des Repos (Wurzel, Git-Worktrees samt Archiv) und die
-// lokalen Remote-Refs origin/develop und origin/sprint/* (aus dem lokalen Stand, ohne Fetch).
-
-// highestTicket ist die größte Ticket-Nummer in den Dateinamen, 0 ohne Ticket.
-func highestTicket(names []string) int {
-	top := 0
-	for _, n := range names {
-		if m := reTicketFile.FindStringSubmatch(path.Base(n)); m != nil {
-			nr, _ := strconv.Atoi(m[1])
-			top = max(top, nr)
-		}
-	}
-	return top
-}
-
-// checkoutHighest liest backlog/ und backlog/archiv/ eines Checkouts; ohne backlog/ ist er nicht lesbar.
-func checkoutHighest(root string) (int, error) {
-	var top int
-	for _, dir := range []string{"backlog", "backlog/archiv"} {
-		entries, err := os.ReadDir(docsPath(root, dir))
-		if err != nil {
-			if dir == "backlog" {
-				return 0, err
-			}
-			continue
-		}
-		names := make([]string, 0, len(entries))
-		for _, e := range entries {
-			names = append(names, e.Name())
-		}
-		top = max(top, highestTicket(names))
-	}
-	return top, nil
-}
+// lokalen Remote-Refs origin/develop und origin/sprint/* (aus dem lokalen Stand, ohne Fetch). Die Nummer eines
+// Checkouts und der Dateinamen rechnet der Ticket-Kern (assetkit/ticket als ticketkit, B-595).
 
 func gitOut(root string, args ...string) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -100,7 +64,7 @@ func remoteHighest(root string) map[string]int {
 		if err != nil {
 			continue
 		}
-		found[strings.TrimPrefix(ref, "refs/remotes/")] = highestTicket(strings.Fields(tree))
+		found[strings.TrimPrefix(ref, "refs/remotes/")] = ticketkit.Highest(strings.Fields(tree))
 	}
 	return found
 }
@@ -108,7 +72,7 @@ func remoteHighest(root string) map[string]int {
 // nextTicket vergibt die nächste Nummer über alle Checkouts und Remote-Refs; die Hinweise nennen den bestimmenden
 // Checkout, übersprungene Worktrees und fehlendes git.
 func nextTicket(root string) (string, []string, error) {
-	own, err := checkoutHighest(root)
+	own, err := ticketkit.LocalHighest(root)
 	if err != nil {
 		return "", nil, err
 	}
@@ -132,7 +96,7 @@ func nextTicket(root string) (string, []string, error) {
 			if samePath(p, root) {
 				continue
 			}
-			n, err := checkoutHighest(p)
+			n, err := ticketkit.LocalHighest(p)
 			if err != nil {
 				notes = append(notes, fmt.Sprintf("übersprungen: Worktree %s nicht lesbar (%v)", filepath.Base(p), err))
 				continue

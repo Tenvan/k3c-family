@@ -44,4 +44,12 @@ describe('Asset-Studio-Rahmen (B-459)', () => {
       expect(html, page).toContain('data-testid="chat-toggle"');
     }
   });
+
+  it('zeigt den Ticket-Knopf in der Kopfzeile jeder Seite (WZ28.3/AC-03)', () => {
+    for (const page of PAGES) {
+      const html = renderToStaticMarkup(<App initial={page} />);
+      const header = html.slice(html.indexOf('<header'), html.indexOf('</header>'));
+      expect(header, page).toMatch(/<button[^>]*>Ticket<\/button>/);
+    }
+  });
 });

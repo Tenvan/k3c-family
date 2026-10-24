@@ -1,4 +1,5 @@
 import { Tabs } from '@webkit/organisms';
+import { useTicketPage } from '@webkit/lib/ticketContext';
 import { useEffect, useState } from 'react';
 import { AssetsPage } from '../assets/AssetsPage';
 import { loadPref, savePref } from '../lib/prefs';
@@ -14,6 +15,7 @@ type Tab = (typeof TABS)[number];
 export function SoundPage() {
   const [tab, setTab] = useState<Tab>(() => loadPref('sound.tab', TABS, 'slots'));
   useEffect(() => stopAll, []);
+  useTicketPage('sound', tab, tab !== 'slots');
   const choose = (v: string) => {
     const next = TABS.find((t) => t === v) ?? 'slots';
     setTab(next);

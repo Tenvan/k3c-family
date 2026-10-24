@@ -2,6 +2,7 @@ package planning
 
 import (
 	"fmt"
+	ticketkit "k3c/tools/assetkit/ticket"
 	"os"
 	"path"
 	"path/filepath"
@@ -167,5 +168,5 @@ func writeAtomic(path, text string, crlf bool) error {
 		_ = os.Remove(tmp.Name())
 		return fmt.Errorf("schreiben: %v %v", werr, cerr)
 	}
-	return os.Rename(tmp.Name(), path)
+	return ticketkit.Rename(tmp.Name(), path)
 }

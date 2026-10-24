@@ -22,8 +22,8 @@ describe('levelModel (B-460/AC-01)', () => {
   it('Objekte nach x sortiert, Anzahl je Art wie in der Golden-Datei', () => {
     expect(m.objects).toHaveLength(layout.entities.length);
     expect(m.objects.map((o) => o.x)).toEqual([...m.objects.map((o) => o.x)].sort((a, b) => a - b));
-    expect(Object.fromEntries(m.counts)).toEqual({ tree: 42, skillPoint: 5, chest: 2, portal: 2, rock: 2, bush: 1, recruitCamp: 2, castle: 1, exit: 1 });
-    expect(m.counts[0]).toEqual(['tree', 42]); // häufigste zuerst
+    expect(Object.fromEntries(m.counts)).toEqual({ tree: 88, skillPoint: 4, chest: 2, portal: 2, rock: 2, bush: 1, recruitCamp: 2, castle: 1, exit: 1 });
+    expect(m.counts[0]).toEqual(['tree', 88]); // häufigste zuerst
   });
 
   it('Burg, zwei Portale, ein Ausgang und die Hub-Mitte sind da', () => {

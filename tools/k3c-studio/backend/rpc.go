@@ -30,7 +30,7 @@ const (
 )
 
 // rpcPrefixes nennen die Methoden von App, die die Oberfläche aufrufen darf.
-var rpcPrefixes = []string{"Assets", "World", "Plan", "Hub", "Chat"}
+var rpcPrefixes = []string{"Assets", "World", "Plan", "Hub", "Chat", "Ticket"}
 
 // bus verteilt Ereignisse (assets:changed) an die offenen Event-Ströme.
 type bus struct {
@@ -135,7 +135,8 @@ func (a *App) rpc(w http.ResponseWriter, r *http.Request) {
 		fail(w, http.StatusNotFound, "Unbekannte Methode "+name)
 		return
 	}
-	if strings.HasPrefix(name, "Chat") && !isLoopback(r.RemoteAddr) { // startet ein Modell mit der Anmeldung von 🧑
+	// Chat startet ein Modell mit der Anmeldung von 🧑, Ticket schreibt ins Repo: beides nur vom eigenen Rechner.
+	if (strings.HasPrefix(name, "Chat") || strings.HasPrefix(name, "Ticket")) && !isLoopback(r.RemoteAddr) {
 		fail(w, http.StatusForbidden, chatLoopbackMsg)
 		return
 	}

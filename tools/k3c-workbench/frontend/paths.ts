@@ -9,3 +9,6 @@ export const DEDUPE = ['react', 'react-dom', '@radix-ui/themes'];
 
 /** tools/webkit liegt außerhalb des Frontends; der Dev-Server darf es ausliefern. */
 export const WEBKIT = ALIAS['@webkit'];
+
+/** Der Mock der Balancing-Seite liest die echten Beschreibungen und Daten (docs/data/, data/) aus der Repo-Wurzel. */
+export const MOCK_DATA = ['../../../docs/data', '../../../data'].map((p) => fileURLToPath(new URL(p, import.meta.url)));

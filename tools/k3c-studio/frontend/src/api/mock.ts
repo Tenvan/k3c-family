@@ -1,5 +1,6 @@
 import { mockChats } from './mockChat';
 import { mockAssets } from './mockAssets';
+import { mockTickets } from './mockTickets';
 import { mockPlan } from './mockPlan';
 import { mockHubCheck, mockHubPlan, mockHubRules, mockHubSave } from './mockHub';
 import { mockGameServers, mockOpenGame, mockWorldLevel, mockWorldPreview } from './mockWorld';
@@ -23,6 +24,7 @@ export function mockBackend(): Backend & { external: (id: string, wahl: AssetCho
     hubRules: async (hubJSON) => mockHubRules(hubJSON),
     hubCheck: async (candidate) => mockHubCheck(candidate),
     hubSave: async (candidate, stand) => mockHubSave(candidate, stand),
+    ...mockTickets(),
     openUrl: (url) => window.open(url, '_blank', 'noopener'),
     ...mockChats(),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) => {
