@@ -59,7 +59,7 @@ keine. Entschieden (🧑, 2026-10-24): Jedes Gerät darf einen Raum schließen, 
 |---|---|---|---|---|
 | BD9.1 | `BD9.1-server-welt-schliessen.md` | Umsetzung | autonom | fertig |
 | BD9.2 | `BD9.2-lobby-pause-anzeige.md` | Umsetzung | autonom | fertig |
-| BD9.3 | `BD9.3-review.md` | Review | autonom | offen |
+| BD9.3 | `BD9.3-review.md` | Review | autonom | in Arbeit |
 | BD9.4 | `BD9.4-abnahme-pc.md` | Workshop | Mensch | offen |
 
 - BD9.1 (SRV) Server: Welt in `rooms[]`, `POST api/room/close`, Protokoll (AC-02, AC-03).

@@ -1,6 +1,6 @@
 # BD9.3 · Review BD9
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SRV
