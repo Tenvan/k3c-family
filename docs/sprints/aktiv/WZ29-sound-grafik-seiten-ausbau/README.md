@@ -62,7 +62,7 @@ keine blockierende; Pflicht-Szenen und Chat-Aktionen laut Tickets als Default, R
 | WZ29.1 | `WZ29.1-filter-baustein.md` | Umsetzung | autonom | verworfen |
 | WZ29.2 | `WZ29.2-sound-szenen.md` | Umsetzung | autonom | fertig |
 | WZ29.3 | `WZ29.3-misch-lautheit-abstand.md` | Umsetzung | autonom | verworfen |
-| WZ29.4 | `WZ29.4-grafik-szenen.md` | Umsetzung | autonom | offen |
+| WZ29.4 | `WZ29.4-grafik-szenen.md` | Umsetzung | autonom | fertig |
 | WZ29.5 | `WZ29.5-vorschlagsliste.md` | Umsetzung | autonom | offen |
 | WZ29.6 | `WZ29.6-quellen-seite.md` | Umsetzung | autonom | offen |
 | WZ29.7 | `WZ29.7-chat-zuordnung.md` | Umsetzung | autonom | offen |

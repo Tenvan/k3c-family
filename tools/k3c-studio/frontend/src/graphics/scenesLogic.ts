@@ -4,6 +4,7 @@
  * je Slot das aktive Asset (Präferenz 1, zum Vergleich `wahl=n`, Ausschnitt).
  */
 import spritesJson from '@data/sprites.json';
+import { BIOMES, type BiomeConfig } from '@game/model/biome';
 import { HUB_GROWTH, HUB_SCAFFOLD } from '@game/scenes/render/hubGrowth';
 import type { Card } from '@game/tools/spriteReference';
 import type { ListFilterConfig } from '@webkit/lib/listFilter';
@@ -86,6 +87,7 @@ export function sceneFilter(items: readonly Resolved[], credits: readonly Licens
       { key: 'art', label: 'Art', values: (r) => r.slot.id.split(':')[0] },
       { key: 'bus', label: 'Bus', values: (r) => r.slot.bus },
       { key: 'lizenz', label: 'Lizenz', values: (r) => (r.choice ? (licenseFlag(r.choice.datei, credits) === 'NC' ? 'NC' : 'frei') : undefined), order: ['NC', 'frei'] },
+      { key: 'biom', label: 'Biom/Tiefe', values: (r) => biomeTags(r.slot.id), order: BIOMES.map(biomeTag) },
     ],
     sorts: [
       { key: 'spiel', label: 'Reihenfolge im Spiel', compare: (a, b) => (order.get(a.slot.id) ?? 0) - (order.get(b.slot.id) ?? 0) },
@@ -93,6 +95,18 @@ export function sceneFilter(items: readonly Resolved[], credits: readonly Licens
       { key: 'status', label: 'Status', compare: (a, b) => status(a).localeCompare(status(b), 'de') || byId(a, b) },
     ],
   };
+}
+
+const biomeTag = (b: BiomeConfig): string => `Tiefe ${b.depth} · ${b.name}`;
+
+/**
+ * Biome eines Grafik-Slots (WZ29.4, B-599): Hintergrund `bg:<biom>:<n>` gehört zu seinem Biom, ein Gegner zu jedem Biom, das ihn
+ * spawnen lässt (Portal oder Nacht, aus den Biom-Daten des Spiels); alles andere hat kein Biom und fehlt in der Dimension.
+ */
+export function biomeTags(slotId: string): string[] | undefined {
+  const [kind, biom] = slotId.split(':');
+  const hits = BIOMES.filter((b) => (kind === 'bg' ? b.id === biom : [...b.enemies.portal, ...b.enemies.night].includes(slotId)));
+  return hits.length ? hits.map(biomeTag) : undefined;
 }
 
 /** Lizenz-Eintrag eines Packs (wie `Credit` aus `credits.ts`) */

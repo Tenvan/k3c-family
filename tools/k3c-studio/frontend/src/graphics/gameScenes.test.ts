@@ -6,7 +6,11 @@ import { drawBar, drawWarn } from '@game/scenes/kampfView';
 import { FONTS } from '@game/scenes/render/fontRules';
 import { MONARCH } from '@game/model/data';
 import { canvasGraphics } from './canvasGraphics';
-import { ABLAUF_SEKUNDEN, ablauf, BOSSES, kampfBild, MIN_SCHRIFT_PX, mockWorld, MOCK_START, phaseAt, TOP_STRIP } from './combatLogic';
+import { GAME_HEIGHT } from '@game/core/constants';
+import { BIOMES } from '@game/model/biome';
+import { BAR_HEIGHT, WORLD_TOP } from '@game/scenes/layout';
+import { ABLAUF_SEKUNDEN, ablauf, BOSSES, kampfBild, MIN_SCHRIFT_PX, mockWorld, MOCK_START, phaseAt, TOP_STRIP, ZELLEN, zellenZoom } from './combatLogic';
+import { biomeTags, sceneFilter } from './scenesLogic';
 import { bossKarten, gegnerKarten, GAME_SCENES, reittierKarten, SIGN_SAMPLES, skillRows } from './gameScenesLogic';
 
 // B-598 / B-602: Aufbereitung und Mock-Zustände der Spiel-Szenen; der Import-Test belegt, dass das Studio mit den Spiel-Funktionen zeichnet.
@@ -88,6 +92,27 @@ describe('Kampf-Anzeigen: Mock-Zustände (B-602 AC-01)', () => {
     expect(FONTS.banner.px).toBeGreaterThanOrEqual(MIN_SCHRIFT_PX);
     expect(TOP_STRIP).toBe(70);
   });
+  it('Zellengröße: Zoom der Welt aus Layout und viewZoom des Spiels, kleinere Zelle zoomt weniger (WZ29.4)', () => {
+    const zoom = (h: number) => h / (GAME_HEIGHT - WORLD_TOP);
+    expect(zellenZoom('voll')).toBeCloseTo(zoom(GAME_HEIGHT - BAR_HEIGHT));
+    expect(zellenZoom('partner')).toBeCloseTo(zoom(((GAME_HEIGHT - BAR_HEIGHT) * 2) / 3));
+    expect(zellenZoom('streifen')).toBeCloseTo(zoom((GAME_HEIGHT - BAR_HEIGHT) / 2));
+    expect(ZELLEN.map(zellenZoom)).toEqual([...ZELLEN.map(zellenZoom)].sort((a, b) => b - a));
+  });
+});
+
+describe('Filter Biom/Tiefe (WZ29.4, B-599)', () => {
+  it('Hintergrund gehört zu seinem Biom, Gegner zu jedem Biom, das ihn spawnen lässt; sonst kein Biom', () => {
+    const forest = BIOMES.find((b) => b.id === 'forest')!;
+    expect(biomeTags('bg:forest:2')).toEqual([`Tiefe ${forest.depth} · ${forest.name}`]);
+    const goblin = BIOMES.filter((b) => [...b.enemies.portal, ...b.enemies.night].includes('goblin'));
+    expect(goblin.length).toBeGreaterThan(0);
+    expect(biomeTags('goblin')).toEqual(goblin.map((b) => `Tiefe ${b.depth} · ${b.name}`));
+    expect(biomeTags('castle')).toBeUndefined();
+    const dim = sceneFilter([], []).dimensions.find((d) => d.key === 'biom')!;
+    expect(dim.label).toBe('Biom/Tiefe');
+    expect(dim.order).toEqual(BIOMES.map((b) => `Tiefe ${b.depth} · ${b.name}`));
+  });
 });
 
 describe('Spiel-Funktionen statt zweiter Darstellung (B-598 / B-602 AC-02)', () => {
@@ -95,14 +120,14 @@ describe('Spiel-Funktionen statt zweiter Darstellung (B-598 / B-602 AC-02)', () 
   const alle = quellen.map(([, s]) => s).join('\n');
 
   it('importiert die Zeichen- und Anzeige-Funktionen aus dem Spielcode', () => {
-    for (const name of ['@game/scenes/kampfView', '@game/scenes/kampfAnzeige', '@game/scenes/render/buildSignView', '@game/scenes/effects/skillLooks', '@game/tools/spriteReference']) expect(alle).toContain(`from '${name}'`);
+    for (const name of ['@game/scenes/kampfView', '@game/scenes/kampfAnzeige', '@game/scenes/layout', '@game/scenes/render/buildSignView', '@game/scenes/effects/skillLooks', '@game/tools/spriteReference']) expect(alle).toContain(`from '${name}'`);
     expect(typeof drawBar).toBe('function');
     expect(typeof drawWarn).toBe('function');
     expect(typeof drawBuildSign).toBe('function');
   });
 
   it('definiert keine eigene Fassung dieser Funktionen', () => {
-    for (const name of ['bossBar', 'warnCircles', 'eventBanner', 'phaseText', 'drawBuildSign', 'drawBar', 'drawWarn', 'skillLook', 'particleOffset', 'signVariant'])
+    for (const name of ['bossBar', 'warnCircles', 'eventBanner', 'phaseText', 'drawBuildSign', 'drawBar', 'drawWarn', 'skillLook', 'particleOffset', 'signVariant', 'computeLayout', 'viewZoom'])
       expect(alle, name).not.toMatch(new RegExp(`(function|const)\\s+${name}\\b`));
   });
 
