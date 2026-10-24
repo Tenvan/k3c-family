@@ -1,3 +1,4 @@
+import { mockGit } from './mockGit';
 import { mockLogFiles } from './mockLogFiles';
 import { mockLogs } from './mockLogs';
 import { mockMcp } from './mockMcp';
@@ -59,6 +60,7 @@ export function mockBackend(): Backend {
     ...mockLogFiles(),
     ...mcpTools,
     ...mockResources(),
+    ...mockGit(),
     tasks: tasks.tasks,
     tasksReload: tasks.tasksReload,
     taskStart: tasks.taskStart,

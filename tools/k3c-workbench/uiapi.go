@@ -37,6 +37,7 @@ var uiMethods = map[string]bool{
 	"TaskGatesView": true, "TaskGateToggle": true, "TaskGateSave": true,
 	"PlanningData": true, "PlanningDocs": true, "PlanningSet": true, "PlanningDoc": true, "PlanningGet": true,
 	"GitHubStatus": true, "WorktreeCheck": true, "OpenInClaude": true, "StudioOpen": true, "Resources": true,
+	"GitOverview": true, "GitAction": true, "GitDeleteBranches": true, "GitPRs": true, "GitPRCreate": true, "GitPRAction": true,
 }
 
 // uiHandler beantwortet alle Adressen unter uiPrefix.

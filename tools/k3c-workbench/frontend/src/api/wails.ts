@@ -1,6 +1,7 @@
 import type {
   Backend, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, McpCall, McpOverview,
   McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData, WorktreeDiff,
+  GitPRList, GitView,
 } from './types';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
@@ -42,6 +43,12 @@ interface GoApp {
   WorktreeCheck(): Promise<WorktreeDiff[]>;
   OpenInClaude(prompt: string): Promise<void>;
   StudioOpen(): Promise<void>;
+  GitOverview(): Promise<GitView>;
+  GitAction(action: string): Promise<string>;
+  GitDeleteBranches(names: string[], remote: boolean): Promise<string>;
+  GitPRs(): Promise<GitPRList>;
+  GitPRCreate(title: string, body: string): Promise<string>;
+  GitPRAction(number: number, action: string): Promise<string>;
 }
 
 interface WailsRuntime {
@@ -101,6 +108,12 @@ export function wailsBackend(): Backend {
     worktreeCheck: () => app.WorktreeCheck(),
     openInClaude: (prompt) => app.OpenInClaude(prompt),
     studioOpen: () => app.StudioOpen(),
+    gitOverview: () => app.GitOverview(),
+    gitAction: (action) => app.GitAction(action),
+    gitDeleteBranches: (names, remote) => app.GitDeleteBranches(names, remote),
+    gitPRs: () => app.GitPRs(),
+    gitPRCreate: (title, body) => app.GitPRCreate(title, body),
+    gitPRAction: (number, action) => app.GitPRAction(number, action),
     openUrl: (url) => runtime.BrowserOpenURL(url),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),

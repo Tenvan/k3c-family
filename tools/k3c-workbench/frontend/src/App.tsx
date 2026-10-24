@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { backend, type McpState } from './api';
 import { HeaderRight, LABELS, PAGES, type Page } from './Header';
 import { loadPref, savePref } from './lib/prefs';
+import { GitPage } from './git/GitPage';
 import { McpPage } from './mcp/McpPage';
 import { MonitoringPage } from './monitoring/MonitoringPage';
 import { PlanningPage } from './planning/PlanningPage';
@@ -53,6 +54,9 @@ export function App() {
       </Tabs.Content>
       <Tabs.Content value="planung">
         <PlanningPage />
+      </Tabs.Content>
+      <Tabs.Content value="git">
+        <GitPage />
       </Tabs.Content>
       <Tabs.Content value="mcp">
         <McpPage />
