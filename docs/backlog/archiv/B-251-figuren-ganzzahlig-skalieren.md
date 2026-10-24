@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** verworfen
 - **Sprint:** GR7
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-04
@@ -55,4 +55,4 @@ Stört das Flimmern am TV überhaupt? Entscheidet 🧑.
 
 ## Notizen
 
-Liste der Faktoren je Pack: `docs/assets/zuordnung.md` › Figuren-Packs.
+**Verworfen (🧑, Chat, 2026-10-24):** Die bisherigen Umsetzungen sind ausreichend; Grafik wird künftig mit der Integration des AI-Chats anders und besser gelöst. Keine ganzzahlige Umstellung (ersetzt die Entscheidung B-547 B vom 2026-10-23).

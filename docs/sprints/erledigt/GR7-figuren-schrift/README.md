@@ -1,6 +1,6 @@
 # GR7 · CLI · Figuren-Lücken, ganzzahlige Skalierung und Schrift
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GRA
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -61,7 +61,7 @@ Keine passende Figur → Lücke bleibt mit Ticket, Platzhalter-Rückfall.
 | GR7.1 | `GR7.1-schrift-platzhalter-partner.md` | Umsetzung | autonom | fertig |
 | GR7.2 | `GR7.2-sattelsitz.md` | Umsetzung | autonom | fertig |
 | GR7.3 | `GR7.3-figuren-kandidaten.md` | Workshop | Mensch | fertig |
-| GR7.4 | `GR7.4-skalierung-tv.md` | Umsetzung | Mensch | offen |
+| GR7.4 | `GR7.4-skalierung-tv.md` | Umsetzung | Mensch | fertig |
 | GR7.5 | `GR7.5-review.md` | Review | autonom | fertig |
 
 - GR7.1 Platzhaltertext aus dem Katalog, Regel für die Mitspieler-Zelle (AC-03, AC-04).
@@ -72,7 +72,4 @@ Keine passende Figur → Lücke bleibt mit Ticket, Platzhalter-Rückfall.
 
 ## Abnahme
 
-- 2026-10-13, Review GR7.5 (Diff des gemergten PR #279): keine schweren Befunde; AC-03, AC-04, AC-05 geprüft (Ergebnisse GR7.1, GR7.2, Test `mountData.test.ts`).
-- AC-01, AC-02: angenommen, Validierung offen (GR7.3, GR7.4); B-193, B-251 und B-320 (Sichtprüfung) bleiben `eingeplant`; B-197 und B-198 erledigt.
-- Lint und Cockpit-Tests waren rot durch `tools/cockpit/` aus PR #278, nicht durch GR7; behoben mit B-415 (Mod aus Lint und Vitest ausgenommen), `task check` grün.
-- Version: v0.17.0 vorgeschlagen (Minor: Wirkung im Client, Schrift und Reiter; letzter Tag v0.16.0), gesetzt erst nach Bestätigung durch 🧑.
+2026-10-24: GR7.1, GR7.2, GR7.5 früher erledigt; GR7.3 (Figuren eingebaut, Mängel B-593 verworfen) und GR7.4 (keine Umstellung, B-251 verworfen) auf Entscheid von Ralf: Alle Figuren und Grafiken gelten als abgenommen, bisherige Umsetzungen sind ausreichend, Grafik wird künftig mit dem AI-Chat gelöst. B-193, B-329, B-331 erledigt. Nicht einzeln am Gerät geprüft.

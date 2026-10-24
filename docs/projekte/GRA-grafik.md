@@ -1,7 +1,7 @@
 # GRA · Grafik
 
-- **Status:** aktiv
-- **Rang:** 5
+- **Status:** erledigt
+- **Rang:** –
 - **Ziel-Tickets:** –
 
 ## Ziel
@@ -14,7 +14,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
-| GR7 | Figuren-Lücken, ganzzahlige Skalierung und Schrift | aktiv |
+| GR7 | Figuren-Lücken, ganzzahlige Skalierung und Schrift | erledigt |
 | M10 | Ressourcen-Manager für Grafik- und Sound-Slots in k3c-workbench | erledigt |
 | GR8 | Eigene Figuren für neue Gegner und Grafik-Pipeline mit Ziel-Palette | erledigt |
 | GR9 | Monarch-Animationen für Wurf, Treffer, Tod und Respawn, Kandidaten-Import ohne roten Test | erledigt |

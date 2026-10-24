@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Projekt:** GRA
 - **Erstellt:** 2026-10-24
@@ -57,4 +57,4 @@ keine
 
 ## Notizen
 
-Aus GR7.3. Spec: Entwurf. Der bisherige Einbau (`f63056f6`) bleibt, bis Ersatz da ist.
+**Verworfen (🧑, Chat, 2026-10-24):** Die bisherigen Figuren sind ausreichend; Grafik wird künftig mit der Integration des AI-Chats anders und besser gelöst. Der Einbau `f63056f6` bleibt. Offener Rest, falls später gewünscht: Käfer, Splitterwicht, Kristallspinne neu wählen; `tools/spritegen/main.go` erzeugt noch `iron-beetle` und `crystal-spider`.

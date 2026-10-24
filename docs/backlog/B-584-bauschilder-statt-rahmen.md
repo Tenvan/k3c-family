@@ -6,7 +6,7 @@
 - **Umgebung:** live
 - **Status:** eingeplant
 - **Sprint:** GEB16
-- **Projekt:** GRA
+- **Projekt:** GEB
 - **Erstellt:** 2026-10-24
 - **Spec:** Entwurf
 - **Revision:** 1

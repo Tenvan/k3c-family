@@ -1,6 +1,6 @@
 # GR7.4 · Figuren am TV beobachten, ganzzahlig skalieren oder verwerfen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -38,8 +38,7 @@ Neue Figuren (B-193), Umgebungsgrafik, Ziel-Palette und Pixeldichte-Pipeline (B-
 
 ## Fertig, wenn
 
-- [ ] AC-02 (B-251/AC-01): Am TV beobachtet (🧑): Figuren flimmern beim Laufen nicht, oder B-251 ist mit Begründung verworfen.
-- [ ] Bei Umstellung: `task check` grün, Zuordnung nennt die neuen Faktoren.
+- [x] AC-02: Entschieden von 🧑 (2026-10-24): Die bisherigen Umsetzungen sind ausreichend, keine Umstellung; B-251 verworfen mit Begründung.
 
 ## Prüfen
 
@@ -51,6 +50,4 @@ Beobachtung am TV nur durch 🧑.
 
 ## Ergebnis
 
-**Entscheid 🧑 (KR3.1, 2026-10-23, B-547):** Umstellen auf ganzzahlige Skalierung (×2 oder ×3), ohne vorherige TV-Beobachtung. Schritt 1 und 2 damit entschieden, B-251 wird umgesetzt statt verworfen.
-
-**Offen:** Schritt 3 durch Claude (je Pack `scale` runden, Frames zuschneiden, Sattelpunkte und `riderWaist` nachziehen, `docs/assets/zuordnung.md`), `task check`, danach TV-Prüfung durch 🧑 (AC-02). Reihenfolge: nach GR7.3 Schritt 4, damit die neuen Figuren gleich ganzzahlig laufen. Session bleibt `offen`.
+**Entscheid 🧑 (Chat, 2026-10-24):** Alle Figuren und Grafiken gelten als abgenommen; die bisherigen Umsetzungen sind ausreichend. Grafik wird künftig mit der Integration des AI-Chats anders und besser gelöst. Daher keine Umstellung auf ganzzahlige Skalierung (B-251 verworfen, B-547 B nicht umgesetzt), keine weitere Beobachtung am TV. Nicht einzeln am Gerät geprüft.
