@@ -8,9 +8,9 @@
 - **Sprint:** WZ28
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-24, Ralf im Chat (mit WZ28 Revision 1)
 
 ## Ausgangslage
 
@@ -39,7 +39,7 @@ Tickets abarbeiten oder Specs schreiben (bleibt bei Claude); Synchronisation zwi
 
 ## Regeln und Einschränkungen
 
-Vorlage und Nummernvergabe wie die Planungswerkzeuge (`tools/k3c-workbench/internal/planning`, `tests/planning.test.ts` prüft das); Studio schreibt Tickets nur im Backlog-Ordner; Atomic Design (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme); Texte zweisprachig.
+Vorlage und Nummernvergabe wie die Planungswerkzeuge (`tests/planning.test.ts` prüft das); der Kern dazu zieht nach `tools/assetkit/ticket`, weil das Studio `tools/k3c-workbench/internal/planning` nicht importieren kann (WZ28 › Regeln); Studio schreibt Tickets nur im Backlog-Ordner; Atomic Design (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme), der Button sitzt in `tools/webkit/organisms/AppHeader.tsx`; Texte zweisprachig.
 
 ## Beispiele
 

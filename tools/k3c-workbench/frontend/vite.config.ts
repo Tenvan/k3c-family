@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import { ALIAS, DEDUPE, WEBKIT } from './paths.ts';
+import { ALIAS, DEDUPE, MOCK_DATA, WEBKIT } from './paths.ts';
 import { waitForBackend } from '../../webkit/lib/devProxy.ts';
 
 const API = process.env.K3C_DEV_API ?? 'http://127.0.0.1:8191';
@@ -16,7 +16,7 @@ export default defineConfig({
     port: 5191,
     strictPort: true,
     cors: false,
-    fs: { allow: ['.', WEBKIT] },
+    fs: { allow: ['.', WEBKIT, ...MOCK_DATA] },
     proxy: { '/api': { target: API, changeOrigin: false } },
   },
 });

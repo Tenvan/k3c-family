@@ -86,8 +86,8 @@ func (m Matrix) Scenarios() ([]Scenario, error) {
 // checkBots: Jeder Bot ist bekannt und hat in jeder Spieleranzahl genug Monarchen.
 func (m Matrix) checkBots() error {
 	for _, b := range m.Bots {
-		if bots[b] == nil {
-			return fmt.Errorf("matrix: unbekannter Bot %q (bekannt: %v)", b, BotNames())
+		if _, ok := BotByName(b); !ok {
+			return fmt.Errorf("matrix: unbekannter Bot %q (bekannt: %v, je Spieler mit %s)", b, BotNames(), MixSep)
 		}
 		for _, n := range m.Players {
 			if err := checkPlayers(b, n); err != nil {
@@ -130,7 +130,8 @@ func runOne(sc Scenario, threshold int) (res Result) {
 		res.Error = err.Error()
 		return res
 	}
-	bot, c := bots[sc.Bot], newCollector(isl, threshold)
+	bot, _ := BotByName(sc.Bot)
+	c := newCollector(isl, threshold)
 	cmds := make([]sim.PlayerCommand, sc.Players)
 	rp := &Replay{Version: ReplayVersion, Scenario: sc, DataHash: dataHash}
 	for tick := 1; tick <= sc.Days*maxTicksPerDay; tick++ {

@@ -21,7 +21,8 @@ Alle Profile spielen nur über `sim.PlayerCommand` und stehen nachts an der Burg
 | `coop2` | Koop 2 Spieler | Rollen geteilt: Monarch 1 spielt „Mauern zuerst“, Monarch 2 „Wirtschaft zuerst“; braucht 2 Spieler. |
 | `coop4` | Koop 4 Spieler | Wie Koop 2, die Rollen wiederholen sich (1 und 3 Mauern, 2 und 4 Wirtschaft); braucht 4 Spieler. |
 
-Ein Profil, das mehr Spieler braucht, als das Szenario hat, ist ein Fehler beim Start. Ein „Kind-Bot“ kommt später (Q19).
+Eine **Mischung je Spieler** (B-611) verbindet Profile mit `+`: `saver+passive` = Monarch 1 `saver`, Monarch 2 `passive`;
+genau ein Profil je Spieler, ohne `coop2`/`coop4`. Ein Profil, das mehr Spieler braucht, als das Szenario hat, ist ein Fehler beim Start. Ein „Kind-Bot“ kommt später (Q19).
 
 ### Grad-Kurven
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTicketPage } from '@webkit/lib/ticketContext';
 import { backend, type PlanDoc } from '../api';
 import { Button, Flex, SegmentedControl, Text } from '@webkit/atoms';
 import { errorText } from '@webkit/lib/errors';
@@ -24,6 +25,7 @@ export function PlanningPage() {
     savePref('planning.view', v);
   };
   const doc = docs.find((d) => d === view); // gemerkte Ansicht ohne Datei → Sprints & Backlog
+  useTicketPage('planung', doc ?? 'sprints');
   return (
     <div className="pl-page">
       <SegmentedControl.Root value={doc ?? 'sprints'} onValueChange={choose} size="2">

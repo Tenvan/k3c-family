@@ -1,19 +1,22 @@
 import { Tabs } from '@webkit/organisms';
+import { useTicketPage } from '@webkit/lib/ticketContext';
 import { useEffect, useState } from 'react';
 import { AssetsPage } from '../assets/AssetsPage';
 import { loadPref, savePref } from '../lib/prefs';
 import { stopAll } from './audio';
 import { Hoerprobe } from './Hoerprobe';
+import { Proben } from './Proben';
 import { SoundScenes } from './SoundScenes';
 
-const TABS = ['slots', 'szenen', 'hoerprobe'] as const;
+const TABS = ['slots', 'szenen', 'proben', 'hoerprobe'] as const;
 type Tab = (typeof TABS)[number];
 
-/** Seite Sound des Asset-Studios (B-459): Slots mit Hörprobe je Zuordnung, Szenen (frühere Asset-Vorschau) und Hörprobe
+/** Seite Sound des Asset-Studios (B-459): Slots mit Hörprobe je Zuordnung, Szenen (frühere Asset-Vorschau), Proben (Misch-, Lautheits-, Abstandsprobe) und Hörprobe
  *  (soundtest.html). Verlassen der Seite stoppt alle Busse. */
 export function SoundPage() {
   const [tab, setTab] = useState<Tab>(() => loadPref('sound.tab', TABS, 'slots'));
   useEffect(() => stopAll, []);
+  useTicketPage('sound', tab, tab !== 'slots');
   const choose = (v: string) => {
     const next = TABS.find((t) => t === v) ?? 'slots';
     setTab(next);
@@ -24,10 +27,12 @@ export function SoundPage() {
       <Tabs.List size="1">
         <Tabs.Trigger value="slots">Slots</Tabs.Trigger>
         <Tabs.Trigger value="szenen">Szenen</Tabs.Trigger>
+        <Tabs.Trigger value="proben">Proben</Tabs.Trigger>
         <Tabs.Trigger value="hoerprobe">Hörprobe</Tabs.Trigger>
       </Tabs.List>
       <Tabs.Content value="slots"><AssetsPage art="sound" /></Tabs.Content>
       <Tabs.Content value="szenen"><SoundScenes /></Tabs.Content>
+      <Tabs.Content value="proben"><Proben /></Tabs.Content>
       <Tabs.Content value="hoerprobe"><Hoerprobe /></Tabs.Content>
     </Tabs.Root>
   );

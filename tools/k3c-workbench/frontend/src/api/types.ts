@@ -1,7 +1,10 @@
+export type * from './typesBalance';
 export type * from './typesGit';
 export type * from './typesResources';
+import type { BalanceBackend } from './typesBalance';
 import type { GitBackend } from './typesGit';
 import type { ResourceView } from './typesResources';
+import type { TicketCreated, TicketInput } from '@webkit/lib/ticket';
 
 // Backend-Vertrag der Oberfläche (B-064 › Backend-Vertrag). Go-Seite: tools/k3c-workbench/app.go.
 // Wails-Laufzeit → wails.ts, ohne sie → http.ts (k3c-workbench -headless/-dev), im Test und mit ?mock=1 → mock.ts; welche gilt, entscheidet index.ts.
@@ -450,7 +453,15 @@ export interface Events {
 
 export type EventName = keyof Events;
 
-export interface Backend extends GitBackend {
+export type { TicketCreated, TicketInput };
+
+/** Ticket-Baustein (B-595, WZ28.3): Anlegen in docs/backlog/ und die letzten Tickets; n <= 0 = 5. */
+export interface TicketBackend {
+  ticketCreate(input: TicketInput): Promise<TicketCreated>;
+  ticketRecent(n: number): Promise<TicketCreated[]>;
+}
+
+export interface Backend extends GitBackend, TicketBackend, BalanceBackend {
   /** true ohne Wails-Laufzeit: erfundene Daten, Badge `Mock`. */
   readonly mock: boolean;
   info(): Promise<Info>;

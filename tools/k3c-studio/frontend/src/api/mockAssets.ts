@@ -1,4 +1,6 @@
+import { soundSlots } from './mockSounds';
 import { STALE } from './stale';
+import type { AssetSlotDetails } from './slotTypes';
 import type { AssetChoice, AssetHit, AssetSlot, AssetsView, Backend, CatalogAsset } from './types';
 
 // Erfundenes Slot-Register und Katalog für den Mock (Kopie aus k3c-workbench, B-459). Bilder liefert der Studio-Vite aus
@@ -36,6 +38,7 @@ function initial(): AssetSlot[] {
     slot('music:abend', 'sound', 'musik', 'Abend', [], 'music'),
     slot('music:nacht', 'sound', 'musik', 'Nacht', [{ datei: 'audio/probe-b.ogg' }], 'music'),
     slot('music:kampf', 'sound', 'musik', 'Kampf', [{ datei: 'audio/probe-b.ogg' }, { datei: 'audio/probe-a.ogg' }], 'music'),
+    ...soundSlots(),
   ];
 }
 
@@ -77,7 +80,24 @@ function mockImport(slots: AssetSlot[], hits: Map<string, AssetHit[]>, id: strin
   return datei;
 }
 
-type AssetCalls = Pick<Backend, 'assetsList' | 'assetsSet' | 'assetsCatalog' | 'assetsHits' | 'assetsResearch' | 'assetsHitDrop' | 'assetsImport' | 'assetsDownload' | 'assetsLicenseOk'>;
+/** Erfundene Slot-Details: mit Sheet (Pferd) vollständig, sonst nur Definition; ohne Zuordnung ein Hinweis. */
+function mockDetails(s: AssetSlot): AssetSlotDetails {
+  const base: AssetSlotDetails = { id: s.id, art: s.art, kategorie: s.kategorie, beschreibung: s.beschreibung, status: s.status, zuordnung: [], verwendung: [], hinweise: [] };
+  const w = s.wahl[0];
+  if (!w) return { ...base, hinweise: [s.art === 'sound' ? 'kein Ton' : 'keine Grafik'] };
+  const out: AssetSlotDetails = { ...base, wahl: { datei: w.datei, ...(w.sheet && { sheet: w.sheet }) } };
+  if (w.sheet !== 'horse') return out;
+  return {
+    ...out,
+    sheet: { name: 'horse', label: 'Pferd', pack: 'horse', frameW: 100, frameH: 65, scale: 1, height: 32, originX: 0.5, originY: 1, tint: '', anims: [{ name: 'idle', frames: 4, fps: 6 }] },
+    atlas: { anims: [{ name: 'idle', frames: 4, page: 'atlas-0.png', x: 10, y: 20, w: 100, h: 65 }] },
+    pack: { id: 'horse', quelle: 'Beispiel-Urheber', lizenz: 'CC0 1.0' },
+    zuordnung: [{ datei: 'zuordnung-objekte.md', abschnitt: 'Reittiere', zellen: { Objekt: '`mount:horse`', Lizenz: 'CC0' } }],
+    verwendung: ['data/mounts.json › horse.id'],
+  };
+}
+
+type AssetCalls = Pick<Backend, 'assetsList' | 'assetsSet' | 'assetsSlotDetails' | 'assetsCatalog' | 'assetsHits' | 'assetsResearch' | 'assetsHitDrop' | 'assetsImport' | 'assetsDownload' | 'assetsLicenseOk'>;
 
 /** Mock der Asset-Bindings; onChange meldet jede Änderung des Registers (wie Watch in Go), external schreibt als Fremder. */
 export function mockAssets(onChange: () => void): AssetCalls & { external: (id: string, wahl: AssetChoice[], quiet?: boolean) => void } {
@@ -111,6 +131,11 @@ export function mockAssets(onChange: () => void): AssetCalls & { external: (id: 
       check(s, wahl);
       write(s, wahl);
       return { slot: { ...s, wahl: [...s.wahl] }, stand: String(stand) };
+    },
+    assetsSlotDetails: async (id) => {
+      const s = slots.find((x) => x.id === id);
+      if (!s) throw new Error(`unbekannter Asset-Slot "${id}"`);
+      return mockDetails(s);
     },
     assetsHits: async (id) => [...(hits.get(id) ?? [])],
     assetsResearch: async (id, query) => {
