@@ -75,7 +75,7 @@ keine. Entschieden (🧑, 2026-10-24): nächste freie Ticket-Nummer genügt (Ral
 | WZ28.6 | `WZ28.6-automatisches-balancing.md` | Umsetzung | autonom | offen |
 | WZ28.7 | `WZ28.7-review.md` | Review | autonom | offen |
 | WZ28.8 | `WZ28.8-abnahme-notebook-offline.md` | Workshop | Mensch | offen |
-| WZ28.9 | `WZ28.9-studio-tests-gruen.md` | Umsetzung | autonom | offen |
+| WZ28.9 | `WZ28.9-studio-tests-gruen.md` | Umsetzung | autonom | fertig |
 
 - WZ28.1 (DEV) Slot-Details im Studio: Backend-Aufbereitung aus Atlas, `sprites.json`, `assets.json`, Zuordnung; Detailbereich (AC-01).
 - WZ28.2 (DEV) Ticket-Baustein: Go-Paket zum Anlegen nach Vorlage, `TicketButton` und Dialog in `@webkit`, Kontext-Provider (AC-02).

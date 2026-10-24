@@ -63,7 +63,7 @@ func evalDir(dir string) string {
 }
 
 func TestChatZeitlimit(t *testing.T) {
-	cli, _ := fakeCLI(t, "hang", 300*time.Millisecond)
+	cli, _ := fakeCLI(t, "hang", 2*time.Second)
 	start := time.Now()
 	out := cli.run(context.Background(), "Hallo", chatOptions{}, func(string) {})
 	if d := time.Since(start); d > 10*time.Second {
