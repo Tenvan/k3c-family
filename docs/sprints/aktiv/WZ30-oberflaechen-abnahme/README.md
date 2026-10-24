@@ -64,7 +64,7 @@ keine. Default (Claude): Die Oberflächen nutzen die endgültigen API-Typen; WZ2
 | WZ30.3 | `WZ30.3-grafik-szenen-kampf.md` | Umsetzung | autonom | fertig |
 | WZ30.4 | `WZ30.4-quellen-seite.md` | Umsetzung | autonom | fertig |
 | WZ30.5 | `WZ30.5-chat-karten.md` | Umsetzung | autonom | fertig |
-| WZ30.6 | `WZ30.6-review.md` | Review | autonom | offen |
+| WZ30.6 | `WZ30.6-review.md` | Review | autonom | fertig |
 | WZ30.7 | `WZ30.7-abnahme-oberflaechen.md` | Workshop | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -72,5 +72,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-24: AC-01 bis AC-05 erfüllt (WZ30.1–WZ30.5 › Ergebnis), AC-06 offen (WZ30.7, Ralf). Behoben im Review: Szenenleiste, Dateigrenze `api/types.ts`. Bekannt: `engine/devrun`-Uhrzeit-Test unter Last (B-284). Keine neuen Tickets.
