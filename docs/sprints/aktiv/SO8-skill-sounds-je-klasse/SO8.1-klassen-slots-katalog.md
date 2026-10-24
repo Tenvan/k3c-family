@@ -1,6 +1,6 @@
 # SO8.1 · Vier Klassen-Slots im Katalog
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV

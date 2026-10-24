@@ -1,11 +1,11 @@
 # SO8 · DEV, CLI · Skill-Sounds je Klasse
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** SND
 - **Domäne:** DEV, CLI
 - **Reife:** bereit
 - **Tickets:** B-576
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** d086ab4f
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-24, Chat (Ralf), Revision 1
@@ -57,7 +57,7 @@ keine. Auswahl der Töne als Default durch den Agenten, 🧑 bestätigt in SO8.4
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SO8.1 | `SO8.1-klassen-slots-katalog.md` | Umsetzung | autonom | offen |
+| SO8.1 | `SO8.1-klassen-slots-katalog.md` | Umsetzung | autonom | in Arbeit |
 | SO8.2 | `SO8.2-ausloeser-skill-ton.md` | Umsetzung | autonom | offen |
 | SO8.3 | `SO8.3-review.md` | Review | autonom | offen |
 | SO8.4 | `SO8.4-hoerprobe-klassen-toene.md` | Workshop | Mensch | offen |
