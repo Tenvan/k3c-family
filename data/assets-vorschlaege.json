@@ -594,22 +594,6 @@
       "status": "offen"
     },
     {
-      "id": "v038",
-      "slot": "skill-effekt:thief",
-      "art": "grafik",
-      "titel": "Poison skull",
-      "quelle": "OpenGameArt",
-      "seite": "https://opengameart.org/content/poison-skull",
-      "dateiUrl": "https://opengameart.org/sites/default/files/poison_skull_alpha.gif",
-      "urheber": "Jorge Avila",
-      "lizenz": "CC-BY 3.0",
-      "dateiname": "poison_skull_alpha.gif",
-      "groesse": 262,
-      "prioritaet": 3,
-      "hinweis": "einzelnes GIF, Gift-Symbol, sehr klein",
-      "status": "offen"
-    },
-    {
       "id": "v039",
       "slot": "skill-icon",
       "art": "grafik",

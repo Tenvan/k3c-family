@@ -132,6 +132,9 @@ func checkSuggestion(s Suggestion) error {
 	if s.ID == "" || s.Slot == "" || s.Title == "" || s.FileName == "" {
 		return errors.New("id, slot, titel und dateiname sind Pflicht")
 	}
+	if !vorratExt[strings.ToLower(filepath.Ext(s.FileName))] {
+		return fmt.Errorf("endung von %q lädt der Vorrat nicht", s.FileName)
+	}
 	if err := checkSuggestionValues(s); err != nil {
 		return err
 	}
