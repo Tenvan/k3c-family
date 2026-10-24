@@ -1,6 +1,7 @@
 import { chatStreamHttp } from './chatHttp';
 import type { ChatDetail, ChatOptionsView, ChatSummary } from './chatTypes';
 import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, GameServersView, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
+import type { AssetSlotDetails } from './slotTypes';
 import type { WorldAnswerView, WorldCheckView, WorldDraft } from './worldTypes';
 
 // Das Studio ist eine Seite des Go-Servers (Backend tools/k3c-studio/backend): jede Methode von App ist ein POST auf /api/studio/rpc/<Methode>
@@ -72,6 +73,7 @@ export function httpBackend(): Backend {
     mock: false,
     assetsList: () => rpc<AssetsView>('AssetsList'),
     assetsSet: (id: string, wahl: AssetChoice[], stand: string) => rpc<AssetSaved>('AssetsSet', id, wahl, stand),
+    assetsSlotDetails: (id: string) => rpc<AssetSlotDetails>('AssetsSlotDetails', id),
     assetsCatalog: (query: string, art: string, limit: number) => rpc<CatalogAsset[]>('AssetsCatalog', query, art, limit),
     assetsHits: (id: string) => rpc<AssetHit[]>('AssetsHits', id),
     assetsResearch: (id: string, query: string) => rpc<ResearchResult>('AssetsResearch', id, query),

@@ -1,5 +1,6 @@
 import type { LevelLayout } from '@game/model/types';
 import type { ChatApi } from './chatTypes';
+import type { AssetSlotDetails } from './slotTypes';
 import type { DraftScaling, WorldDraftApi } from './worldTypes';
 
 // Typen des Asset-Studios (B-298, B-459): Slot-Register, Katalog und Recherche, wie Go sie liefert
@@ -351,6 +352,7 @@ export interface Backend extends WorldDraftApi, ChatApi {
   mock: boolean;
   assetsList(): Promise<AssetsView>;
   assetsSet(id: string, wahl: AssetChoice[], stand: string): Promise<AssetSaved>;
+  assetsSlotDetails(id: string): Promise<AssetSlotDetails>;
   assetsCatalog(query: string, art: string, limit: number): Promise<CatalogAsset[]>;
   assetsHits(id: string): Promise<AssetHit[]>;
   assetsResearch(id: string, query: string): Promise<ResearchResult>;
