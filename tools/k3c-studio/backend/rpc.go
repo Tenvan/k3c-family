@@ -30,7 +30,7 @@ const (
 )
 
 // rpcPrefixes nennen die Methoden von App, die die Oberfläche aufrufen darf.
-var rpcPrefixes = []string{"Assets", "World", "Plan", "Hub", "Chat", "Ticket", "Source"}
+var rpcPrefixes = []string{"Assets", "AssetSuggestion", "World", "Plan", "Hub", "Chat", "Ticket", "Source"}
 
 // bus verteilt Ereignisse (assets:changed) an die offenen Event-Ströme.
 type bus struct {

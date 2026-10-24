@@ -2,6 +2,8 @@ import { Button, SegmentedControl, Select, Splitter, Text, TextField, type Tone 
 import { useTicketPage } from '@webkit/lib/ticketContext';
 import { useMemo, useState, type CSSProperties } from 'react';
 import type { AssetKind, AssetSlot, AssetStatus } from '../api';
+import { assignContext } from '../chat/assignContext';
+import { useAssignContext } from '../chat/chatBridge';
 import * as prefs from '../lib/prefs';
 import { NoticeCard } from '@webkit/molecules';
 import { useSplit } from '@webkit/lib/split';
@@ -31,6 +33,7 @@ export function AssetsPage({ art }: { art: AssetKind }) {
   const used = useMemo(() => new Set(slots.flatMap((s) => s.wahl.map((c) => c.datei))), [slots]);
   const { slot, missing } = selectionOf(slots, art, selected);
   useTicketPage(art, slot?.id ?? '');
+  useAssignContext(assignContext(art, slot?.id ?? '', { kategorie, typ: aktivTyp, status, suche: query })); // Chat „Zuordnung“ (B-600)
 
   if (!data.view) return data.error ? <NoticeCard title="Slot-Register nicht lesbar" tone="error">{data.error}</NoticeCard> : <Text color="gray">Lade Slot-Register …</Text>;
   if (data.view.error) return <NoticeCard title="Slot-Register ungültig" tone="error">{data.view.error}</NoticeCard>;

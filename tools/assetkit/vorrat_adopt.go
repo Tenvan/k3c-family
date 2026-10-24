@@ -19,12 +19,42 @@ var ErrVorratPackage = errors.New("Paket: Datei von Hand auswählen") //nolint:s
 // (daraus der Katalog-Eintrag) und Zuordnung als letzte Präferenz des Slots; Gruppen wie `skill-effekt:*` bekommen
 // keine Zuordnung. Ein schon übernommener Eintrag liefert seine Datei, ohne etwas zu schreiben.
 func VorratAdopt(root, id string, now time.Time) (string, error) {
+	return vorratAdopt(root, id, "", now)
+}
+
+// VorratAdoptIf ist VorratAdopt mit der Schreibregel von SetChoicesIf (Chat-Vorschläge, B-600): nur auf dem Stand
+// stand des Registers, sonst ErrStale vor jedem Schreibzugriff; ein schon übernommener Eintrag wird dem Slot
+// zugeordnet, falls er dort fehlt. Liefert die Datei und den neuen Stand.
+func VorratAdoptIf(root, id, stand string, now time.Time) (string, string, error) {
+	if stand == "" {
+		return "", "", ErrStale
+	}
+	cur, err := Stamp(root)
+	if err != nil {
+		return "", "", err
+	}
+	if cur != stand {
+		return "", "", ErrStale
+	}
+	rel, err := vorratAdopt(root, id, stand, now)
+	if err != nil {
+		return "", "", err
+	}
+	next, err := Stamp(root)
+	return rel, next, err
+}
+
+// vorratAdopt übernimmt; stand ≠ "" prüft beim Zuordnen den Stand des Registers (unter mu).
+func vorratAdopt(root, id, stand string, now time.Time) (string, error) {
 	s, e, err := vorratAdoptTarget(root, id)
 	if err != nil {
 		return "", err
 	}
 	if e.Public != "" && fileExists(publicPath(root, e.Public)) {
-		return e.Public, nil
+		if stand == "" {
+			return e.Public, nil
+		}
+		return e.Public, appendChoice(root, s.Slot, e.Public, stand)
 	}
 	ext := strings.ToLower(path.Ext(e.File))
 	if ext == ".zip" || ext == ".7z" {
@@ -51,7 +81,7 @@ func VorratAdopt(root, id string, now time.Time) (string, error) {
 	if err := addCredit(root, s.Kind, rel, hit, now); err != nil {
 		return "", err
 	}
-	if err := appendChoice(root, s.Slot, rel); err != nil {
+	if err := appendChoice(root, s.Slot, rel, stand); err != nil {
 		return "", err
 	}
 	return rel, changeVorrat(root, func(v *VorratIndex) error {
@@ -75,6 +105,9 @@ func vorratAdoptTarget(root, id string) (Suggestion, VorratEntry, error) {
 	for _, s := range list.List {
 		if s.ID != id {
 			continue
+		}
+		if !SuggestionLicenseAllowed(s.License) {
+			return Suggestion{}, VorratEntry{}, fmt.Errorf("%s: Lizenz %s nicht erlaubt (Q70)", id, s.License)
 		}
 		st := states[id]
 		if st.Status != VorratLoaded {
@@ -104,13 +137,23 @@ func checkAdoptSlot(root string, s Suggestion) error {
 	return nil
 }
 
-// appendChoice hängt rel als letzte Präferenz an den Slot; Gruppen bekommen keine Zuordnung.
-func appendChoice(root, slotID, rel string) error {
+// appendChoice hängt rel als letzte Präferenz an den Slot, wenn er sie noch nicht hat; Gruppen bekommen keine
+// Zuordnung. stand ≠ "" verlangt diesen Stand des Registers (sonst ErrStale, nichts geschrieben).
+func appendChoice(root, slotID, rel, stand string) error {
 	if strings.HasPrefix(slotID, groupPrefix) {
 		return nil
 	}
 	mu.Lock()
 	defer mu.Unlock()
+	if stand != "" {
+		cur, err := Stamp(root)
+		if err != nil {
+			return err
+		}
+		if cur != stand {
+			return ErrStale
+		}
+	}
 	reg, err := Load(root)
 	if err != nil {
 		return err
@@ -118,6 +161,11 @@ func appendChoice(root, slotID, rel string) error {
 	slot := reg.Find(slotID)
 	if slot == nil {
 		return fmt.Errorf("unbekannter Asset-Slot %q", slotID)
+	}
+	for _, c := range slot.Choices {
+		if c.File == rel {
+			return nil
+		}
 	}
 	_, err = setChoices(root, slotID, append(slot.Choices, Choice{File: rel}))
 	return err

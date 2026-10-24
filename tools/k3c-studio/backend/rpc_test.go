@@ -124,7 +124,7 @@ func TestRPCKodierterPfadUndLanHost(t *testing.T) {
 
 // Die Oberfläche darf genau diese Methoden aufrufen; eine neue mit passendem Präfix fällt hier auf.
 func TestRPCMethodenmenge(t *testing.T) {
-	want := []string{"AssetsCatalog", "AssetsDownload", "AssetsHitDrop", "AssetsHits", "AssetsLicenseOK", "AssetsList", "AssetsResearch", "AssetsSet", "AssetsSlotDetails",
+	want := []string{"AssetSuggestionAdopt", "AssetSuggestionDrop", "AssetSuggestions", "AssetsCatalog", "AssetsDownload", "AssetsHitDrop", "AssetsHits", "AssetsLicenseOK", "AssetsList", "AssetsResearch", "AssetsSet", "AssetsSlotDetails",
 		"ChatCancel", "ChatDelete", "ChatGet", "ChatList", "ChatOptions", "HubCheck", "HubPlan", "HubRules", "HubSave", "PlanChunkObjects", "PlanCheck", "PlanLoad", "PlanSave", "PlanWorldAdd", "PlanWorldAnswer", "PlanWorldCheck", "PlanWorldCopy", "PlanWorldRemove", "PlanWorldSave", "PlanWorldSelect", "PlanWorlds", "SourceAdopt", "SourceCleanup", "SourceCleanupPreview", "SourceDownload", "SourceProgress", "Sources", "TicketCreate", "TicketRecent", "WorldGameServers", "WorldLevel", "WorldOpenGame", "WorldOpenGameServer", "WorldPreview",
 		"WorldTestSaveCreate", "WorldTestSaveDelete", "WorldTestSaveOpen", "WorldTestSaves"}
 	var got []string
