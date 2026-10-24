@@ -77,6 +77,6 @@ keine blockierende. Defaults (Claude, autonom, 2026-10-24): Dichte 128; Auswahl 
 
 ## Abnahme
 
-2026-10-24, Claude (GEB18.6): `task check`, `task check:go` und `task check:race` grün. Der Race-Lauf kam aus dem Go-Testcache, siehe B-619.
+2026-10-24, Claude (GEB18.6): `task check` und `task check:go` grün; `task check:race` lokal übersprungen (kein C-Compiler), die CI prüft `-race`.
 AC-01 bis AC-04 und AC-06 sind laut den Ergebnissen von GEB18.1 bis GEB18.5 erfüllt. Claude hat den Diff gelesen (backdrop.go, objectView/stageView) und keine schweren Befunde gefunden.
 AC-05 fehlt noch, das ist die Geräte-Abnahme durch Ralf in GEB18.7. Der Sprint bleibt aktiv, bis sie erledigt ist.
