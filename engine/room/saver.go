@@ -22,6 +22,9 @@ type saver struct {
 
 // save kodiert den Spielstand und lässt ihn außerhalb der Sperre schreiben (im Takt, beim Verlassen und Trennen).
 func (r *Room) save() {
+	if r.gameOver() {
+		return
+	}
 	data, err := r.encode()
 	if err != nil {
 		r.log().Error("💥 Spielstand nicht gespeichert", "err", err)
@@ -69,12 +72,25 @@ func (r *Room) flush() { r.saves.wg.Wait() }
 // saveNow speichert synchron (Aufräumen, Herunterfahren): erst ausstehende Stände, dann der aktuelle.
 func (r *Room) saveNow() {
 	r.flush()
+	if r.gameOver() {
+		return
+	}
 	data, err := r.encode()
 	if err != nil {
 		r.log().Error("💥 Spielstand nicht gespeichert", "err", err)
 		return
 	}
 	r.write(data, r.tick)
+}
+
+// gameOver: Die Insel ist „Komplett verloren“ (Island.Over, B-344). Der Raum schreibt dann keinen Spielstand mehr,
+// der zuletzt gespeicherte bleibt Byte für Byte gleich; ausstehende Stände von vor dem Game Over schreibt er noch.
+func (r *Room) gameOver() bool {
+	if !r.isl.Over {
+		return false
+	}
+	r.log().Info("🚫 Spielstand nicht gespeichert, Insel komplett verloren", "tick", r.tick)
+	return true
 }
 
 // write schreibt einen kodierten Stand und meldet das Ergebnis im Log.

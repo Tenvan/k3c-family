@@ -1,6 +1,6 @@
 # KB2.2 · Raum speichert nach „Komplett verloren“ nicht über den letzten Spielstand
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -48,5 +48,7 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-02** umgesetzt: Riegel `gameOver` in `save`, `saveNow` und `SaveNow` (`ErrGameOver`, Log 🚫); Stände von vor dem Game Over schreibt die Schreib-Goroutine noch. Geprüft: `gameover_save_test.go` (Verlassen, Abbruch, Diagnose, Aufräumen, Herunterfahren; ohne vorherigen Stand keine Datei), `go test ./engine/room ./engine/net ./engine/store` grün, `golangci-lint` 0 Befunde.
+- `task check:diff` rot außerhalb des Diffs: `engine/*` zieht die Frontends von Workbench, Studio und Starter mit, im Worktree fehlen deren `node_modules` (TS2307 `react`); bekannte rote Studio-Tests B-606. `task check:go` im Zeitlimit, einziger Fehler `engine/devrun` `TestStopBrichtBeiZweitemSignalAb` (Wanduhr unter Last, B-284), einzeln grün.
+- Review (Sonnet): keine schweren Befunde. Hinweis: `afterDisconnect` loggt nach Game Over weiter „💾 Raum leer und pausiert, speichert“ (folgenlos, nicht in den Erlaubten Dateien).
+- Offene Frage B-344 mit Default entschieden: Raum bleibt nach Game Over offen, bis alle gegangen sind. `POST /api/status/save` antwortet nach Game Over mit 500 „Spielstand nicht gesichert“ (kein eigener Protokoll-Code).
