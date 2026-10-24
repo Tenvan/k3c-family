@@ -48,6 +48,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ26 | CI rot beheben, Prüf- und Planungswerkzeuge härten | erledigt |
 | WZ27 | Geplante Chunks: Gegnerlager, Ruinen-Kollision, Dateigrenze | erledigt |
 | WZ28 | Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite | aktiv |
+| WZ30 | Oberflächen zur Abnahme: Szenen, Filter, Quellen, Chat-Karten mit Mock-Daten | geplant |
 | WZ29 | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | geplant |
 
 ## Nicht-Ziele

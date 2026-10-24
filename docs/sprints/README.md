@@ -25,6 +25,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
 | WZ29 | DEV | WZG | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | – | bereit | `geplant/WZ29-sound-grafik-seiten-ausbau/` |
+| WZ30 | DEV | WZG | Oberflächen zur Abnahme: Szenen, Filter, Quellen, Chat-Karten mit Mock-Daten | – | bereit | `geplant/WZ30-oberflaechen-abnahme/` |
 | BD9 | SRV | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | Entwurf | `geplant/BD9-welt-anzeige-raum-schliessen/` |
 | GEB15 | DEV | GEB | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | – | Entwurf | `geplant/GEB15-hoehle-fels-varianten/` |
 | GEB16 | DEV | GEB | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | – | Entwurf | `geplant/GEB16-bauschilder-wald-geruest/` |
