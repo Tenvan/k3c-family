@@ -10,7 +10,6 @@ import { campSprite, nodeSprite } from './natureSprites';
 import { objectImage } from './objectView';
 import { PENNANT_MAX_HEIGHT, markerOf, noteMarkers, pennantColor } from './pennant';
 import { type Plot, isPlantationTree, plantationPlots } from './plantation';
-import { buildableSites } from './buildableRules';
 import { priceTagSites } from './priceTagRules';
 import { TEXT, createCastleView, createSiteView, updateCastleView, updateSiteView } from './siteView';
 import { hasDepth, isOnTower } from './viewRules';
@@ -124,7 +123,6 @@ export class WorldRenderer {
   private readonly warn: WarnView;
   /** Bauplätze, deren Preisschild steht (nur das nächste je Spieler, B-395) */
   private priceTags = new Set<number>();
-  private buildable = new Set<number>();
   /** Knoten-ID → Spieler, der zuletzt eine Markier-Münze gab (Wimpel-Farbe, GEB10) */
   private readonly markers = new Map<number, number>();
 
@@ -143,7 +141,7 @@ export class WorldRenderer {
     this.citizens = new BuergerView(scene, root);
     this.warn = new WarnView(scene, root);
     this.nodes = this.layer((n) => this.createNode(n), (v, n) => this.updateNode(v, n));
-    this.sites = this.layer((s) => createSiteView(scene, s), (v, s) => updateSiteView(scene, v, s, this.world, this.priceTags.has(s.id), this.buildable.has(s.id)));
+    this.sites = this.layer((s) => createSiteView(scene, s), (v, s) => updateSiteView(scene, v, s, this.world, this.priceTags.has(s.id)));
     this.plots = this.layer((p) => this.createPlot(p), () => {});
     this.backWalls = this.layer(() => createBackWallView(scene), (v, b) => updateBackWallView(scene, v, b));
     this.pickups = this.layer((p) => this.createPickup(p), () => {}, undefined, (v) => this.openChest(v));
@@ -197,7 +195,6 @@ export class WorldRenderer {
   sync(world: World, hidden: ReadonlySet<number> = new Set()): void {
     this.world = world;
     this.priceTags = priceTagSites(world);
-    this.buildable = buildableSites(world);
     this.nodes.sync(world.nodes);
     this.sites.sync(world.sites);
     this.plots.sync(plantationPlots(world.sites, world.nodes).filter((p) => p.tree === null));

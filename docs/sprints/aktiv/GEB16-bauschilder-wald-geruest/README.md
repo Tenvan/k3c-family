@@ -59,7 +59,7 @@ Entschieden: Gerüst-Grafiken je Größenklasse; Abbau-Schild je abbaubarem Baum
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | GEB16.1 | `GEB16.1-payable-snapshot.md` | Umsetzung | autonom | fertig |
-| GEB16.2 | `GEB16.2-schild-nur-payable.md` | Umsetzung | autonom | offen |
+| GEB16.2 | `GEB16.2-schild-nur-payable.md` | Umsetzung | autonom | fertig |
 | GEB16.3 | `GEB16.3-geruest-werkzeug-grafik.md` | Umsetzung | autonom | offen |
 | GEB16.4 | `GEB16.4-geruest-abbauschild-spiel.md` | Umsetzung | autonom | offen |
 | GEB16.5 | `GEB16.5-wald-dichter.md` | Umsetzung | autonom | offen |

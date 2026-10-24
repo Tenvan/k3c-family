@@ -1,6 +1,6 @@
 # GEB16.2 · Client zeigt das Bauschild nur bei payable, buildableRules.ts gelöscht
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -50,5 +50,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 (Client-Teil): umgesetzt. Das Bauschild erscheint nur bei `payable` an nicht gebauten Plätzen (`showsBuildSign`). `buildableRules.ts` ist samt Test gelöscht. Typen `Site.payable?` und `ResourceNode.minable?`.
+- Geprüft mit `bunx tsc`, Vitest `src tests` (2694 grün) und oxlint ohne Fehler.

@@ -111,6 +111,8 @@ export interface ResourceNode {
   marked: boolean;
   /** Spieler-Index der letzten Markier-Münze; fehlt = unbekannt (B-532, ältere Server) */
   markedBy?: number;
+  /** Nimmt jetzt eine Markier-Münze (Server, B-588); fehlt = nein. */
+  minable?: boolean;
   workerId: number | null;
   /** 0..1 */
   progress: number;
@@ -143,6 +145,8 @@ export interface Site {
   upgradePaid?: number;
   /** Ruine der Planung (docs/rules/geplante-chunks.md § 8); fehlt = keine Ruine. */
   ruin?: boolean;
+  /** Nimmt jetzt Münzen für Bau oder Ausbau (Server, B-587); fehlt = nein. */
+  payable?: boolean;
 }
 
 /** Ausbau auf die nächste Hub-Stufe (docs/protocol.md › Wirtschaft), vom Server berechnet. */
