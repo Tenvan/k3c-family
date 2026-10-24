@@ -1,6 +1,6 @@
 # KB2.4 · Client-Typen für Gegner- und Wellendaten passen zu den JSON-Dateien
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -12,31 +12,29 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+`src/model/data.ts` beschreibt Gegner- und Wellendaten so, wie sie in `data/enemies.json` und `data/waves.json` stehen, ohne `as unknown as`.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+`src/model/data.ts` (`EnemyData`, `ENEMIES`, `WAVES`), `data/enemies.json`, `data/waves.json`. JSON-Importe kennen keine Tupel (`Range`) und keine Literal-Typen (`tier`).
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-
-- `pfad/…`
+- `src/model/data.ts`
 
 ## Nicht-Ziele
 
-Was in dieser Session ausdrücklich **nicht** passiert.
+Anzeige der Traits (K5); andere Datentabellen in `data.ts`.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. `EnemyData` um `attacksPerSecond` und die optionalen Felder ergänzen.
+2. `WAVES` ohne `attacksPerSecond`, mit `perExtraPlayer`.
+3. Prüfung der Form per `JsonOf<T>` statt `as unknown as`.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [x] AC-04: `task typecheck` ist grün. `WAVES.attacksPerSecond` wäre jetzt ein Typfehler.
 
 ## Prüfen
 
@@ -48,5 +46,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04: umgesetzt. Geprüft mit `task typecheck`, `task lint` und `task test -- model`, alle grün.
+- Der neue Typ `JsonOf<T>` prüft beim Typecheck, dass die JSON-Datei die Felder des Typs hat. Danach ist der Cast nur noch die Verengung auf Tupel und Literale. Die übrigen `as unknown as` in `data.ts` (Gebäude, Truppen, Ökonomie) bleiben, sie gehören nicht zu diesem Kriterium.

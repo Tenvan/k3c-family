@@ -1,6 +1,6 @@
 # KB2.3 · Protokoll beschreibt Händler-Überfall und HP des Händlers
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
