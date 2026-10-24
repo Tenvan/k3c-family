@@ -643,6 +643,131 @@
     }
   },
   {
+    "id": "hg-hoehle-fern-v1",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Tropfsteinhalle: Schicht fern in vierfacher Auflösung (GEB18), Variante 1",
+      "teile": [
+        "Decke und Rückwand als periodische Profile",
+        "Ferne Zapfen oben und Kegel unten",
+        "Schichtlinien und Glanzpunkte als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-hoehle-fern-v1-128.png",
+      "32": "grafik/gebaeude/hg-hoehle-fern-v1-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-fern-v2",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "enger Spalt: Schicht fern in vierfacher Auflösung (GEB18), Variante 2",
+      "teile": [
+        "Decke und Rückwand als periodische Profile",
+        "Ferne Zapfen oben und Kegel unten",
+        "Schichtlinien und Glanzpunkte als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-hoehle-fern-v2-128.png",
+      "32": "grafik/gebaeude/hg-hoehle-fern-v2-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-fern-v3",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Felsbögen: Schicht fern in vierfacher Auflösung (GEB18), Variante 3",
+      "teile": [
+        "Decke und Rückwand als periodische Profile",
+        "Ferne Zapfen oben und Kegel unten",
+        "Schichtlinien und Glanzpunkte als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-hoehle-fern-v3-128.png",
+      "32": "grafik/gebaeude/hg-hoehle-fern-v3-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-fern-v4",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Pilzgrotte: Schicht fern in vierfacher Auflösung (GEB18), Variante 4",
+      "teile": [
+        "Decke und Rückwand als periodische Profile",
+        "Ferne Zapfen oben und Kegel unten",
+        "Schichtlinien und Glanzpunkte als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-hoehle-fern-v4-128.png",
+      "32": "grafik/gebaeude/hg-hoehle-fern-v4-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-fern-v5",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "unterirdischer See: Schicht fern in vierfacher Auflösung (GEB18), Variante 5",
+      "teile": [
+        "Decke und Rückwand als periodische Profile",
+        "Ferne Zapfen oben und Kegel unten",
+        "Schichtlinien und Glanzpunkte als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-hoehle-fern-v5-128.png",
+      "32": "grafik/gebaeude/hg-hoehle-fern-v5-32.png"
+    }
+  },
+  {
     "id": "hg-hoehle-fern",
     "klasse": "hintergrund",
     "kacheln": {
@@ -669,6 +794,131 @@
     }
   },
   {
+    "id": "hg-hoehle-mitte-v1",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Tropfsteinhalle: Schicht mitte in vierfacher Auflösung (GEB18), Variante 1",
+      "teile": [
+        "Felssäulen und Bögen",
+        "Zapfen und Kegel in mittlerer Größe",
+        "Vorsprünge, Risse, Tropfen"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-hoehle-mitte-v1-128.png",
+      "32": "grafik/gebaeude/hg-hoehle-mitte-v1-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-mitte-v2",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "enger Spalt: Schicht mitte in vierfacher Auflösung (GEB18), Variante 2",
+      "teile": [
+        "Felssäulen und Bögen",
+        "Zapfen und Kegel in mittlerer Größe",
+        "Vorsprünge, Risse, Tropfen"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-hoehle-mitte-v2-128.png",
+      "32": "grafik/gebaeude/hg-hoehle-mitte-v2-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-mitte-v3",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Felsbögen: Schicht mitte in vierfacher Auflösung (GEB18), Variante 3",
+      "teile": [
+        "Felssäulen und Bögen",
+        "Zapfen und Kegel in mittlerer Größe",
+        "Vorsprünge, Risse, Tropfen"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-hoehle-mitte-v3-128.png",
+      "32": "grafik/gebaeude/hg-hoehle-mitte-v3-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-mitte-v4",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Pilzgrotte: Schicht mitte in vierfacher Auflösung (GEB18), Variante 4",
+      "teile": [
+        "Felssäulen und Bögen",
+        "Zapfen und Kegel in mittlerer Größe",
+        "Vorsprünge, Risse, Tropfen"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-hoehle-mitte-v4-128.png",
+      "32": "grafik/gebaeude/hg-hoehle-mitte-v4-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-mitte-v5",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "unterirdischer See: Schicht mitte in vierfacher Auflösung (GEB18), Variante 5",
+      "teile": [
+        "Felssäulen und Bögen",
+        "Zapfen und Kegel in mittlerer Größe",
+        "Vorsprünge, Risse, Tropfen"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-hoehle-mitte-v5-128.png",
+      "32": "grafik/gebaeude/hg-hoehle-mitte-v5-32.png"
+    }
+  },
+  {
     "id": "hg-hoehle-mitte",
     "klasse": "hintergrund",
     "kacheln": {
@@ -692,6 +942,131 @@
     "dateien": {
       "16": "grafik/gebaeude/hg-hoehle-mitte-16.png",
       "32": "grafik/gebaeude/hg-hoehle-mitte-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-nah-v1",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Tropfsteinhalle: Schicht nah in vierfacher Auflösung (GEB18), Variante 1",
+      "teile": [
+        "Große Felsblöcke und Kegel mit Lichtkante",
+        "Pfützen und Moos",
+        "Kiesel und Funkeln als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-hoehle-nah-v1-128.png",
+      "32": "grafik/gebaeude/hg-hoehle-nah-v1-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-nah-v2",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "enger Spalt: Schicht nah in vierfacher Auflösung (GEB18), Variante 2",
+      "teile": [
+        "Große Felsblöcke und Kegel mit Lichtkante",
+        "Pfützen und Moos",
+        "Kiesel und Funkeln als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-hoehle-nah-v2-128.png",
+      "32": "grafik/gebaeude/hg-hoehle-nah-v2-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-nah-v3",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Felsbögen: Schicht nah in vierfacher Auflösung (GEB18), Variante 3",
+      "teile": [
+        "Große Felsblöcke und Kegel mit Lichtkante",
+        "Pfützen und Moos",
+        "Kiesel und Funkeln als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-hoehle-nah-v3-128.png",
+      "32": "grafik/gebaeude/hg-hoehle-nah-v3-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-nah-v4",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Pilzgrotte: Schicht nah in vierfacher Auflösung (GEB18), Variante 4",
+      "teile": [
+        "Große Felsblöcke und Kegel mit Lichtkante",
+        "Pfützen und Moos",
+        "Kiesel und Funkeln als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-hoehle-nah-v4-128.png",
+      "32": "grafik/gebaeude/hg-hoehle-nah-v4-32.png"
+    }
+  },
+  {
+    "id": "hg-hoehle-nah-v5",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "unterirdischer See: Schicht nah in vierfacher Auflösung (GEB18), Variante 5",
+      "teile": [
+        "Große Felsblöcke und Kegel mit Lichtkante",
+        "Pfützen und Moos",
+        "Kiesel und Funkeln als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-hoehle-nah-v5-128.png",
+      "32": "grafik/gebaeude/hg-hoehle-nah-v5-32.png"
     }
   },
   {
@@ -801,6 +1176,141 @@
     }
   },
   {
+    "id": "hg-mine-fern-v1",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Schachtwand mit Gerüst: Schicht fern in vierfacher Auflösung (GEB18), Variante 1",
+      "teile": [
+        "Gesteinsschichten als periodische Profile",
+        "Ferne Stollenöffnungen und Gerüst-Silhouetten",
+        "Erzglanz als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-mine-fern-v1-128.png",
+      "32": "grafik/gebaeude/hg-mine-fern-v1-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-fern-v2",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Stollen mit Schienen: Schicht fern in vierfacher Auflösung (GEB18), Variante 2",
+      "teile": [
+        "Gesteinsschichten als periodische Profile",
+        "Ferne Stollenöffnungen und Gerüst-Silhouetten",
+        "Erzglanz als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-mine-fern-v2-128.png",
+      "32": "grafik/gebaeude/hg-mine-fern-v2-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-fern-v3",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Erzader: Schicht fern in vierfacher Auflösung (GEB18), Variante 3",
+      "teile": [
+        "Gesteinsschichten als periodische Profile",
+        "Ferne Stollenöffnungen und Gerüst-Silhouetten",
+        "Erzglanz als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-mine-fern-v3-128.png",
+      "32": "grafik/gebaeude/hg-mine-fern-v3-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-fern-v4",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Förderturm: Schicht fern in vierfacher Auflösung (GEB18), Variante 4",
+      "teile": [
+        "Gesteinsschichten als periodische Profile",
+        "Ferne Stollenöffnungen und Gerüst-Silhouetten",
+        "Erzglanz als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-mine-fern-v4-128.png",
+      "32": "grafik/gebaeude/hg-mine-fern-v4-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-fern-v5",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "eingestürzter Gang: Schicht fern in vierfacher Auflösung (GEB18), Variante 5",
+      "teile": [
+        "Gesteinsschichten als periodische Profile",
+        "Ferne Stollenöffnungen und Gerüst-Silhouetten",
+        "Erzglanz als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-mine-fern-v5-128.png",
+      "32": "grafik/gebaeude/hg-mine-fern-v5-32.png"
+    }
+  },
+  {
     "id": "hg-mine-fern",
     "klasse": "hintergrund",
     "kacheln": {
@@ -825,6 +1335,141 @@
     "dateien": {
       "16": "grafik/gebaeude/hg-mine-fern-16.png",
       "32": "grafik/gebaeude/hg-mine-fern-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-mitte-v1",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Schachtwand mit Gerüst: Schicht mitte in vierfacher Auflösung (GEB18), Variante 1",
+      "teile": [
+        "Stützgestelle aus Pfosten und Kappe mit Streben",
+        "Laternen mit Glutschein",
+        "Felswand, Erzadern und Schienen"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-mine-mitte-v1-128.png",
+      "32": "grafik/gebaeude/hg-mine-mitte-v1-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-mitte-v2",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Stollen mit Schienen: Schicht mitte in vierfacher Auflösung (GEB18), Variante 2",
+      "teile": [
+        "Stützgestelle aus Pfosten und Kappe mit Streben",
+        "Laternen mit Glutschein",
+        "Felswand, Erzadern und Schienen"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-mine-mitte-v2-128.png",
+      "32": "grafik/gebaeude/hg-mine-mitte-v2-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-mitte-v3",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Erzader: Schicht mitte in vierfacher Auflösung (GEB18), Variante 3",
+      "teile": [
+        "Stützgestelle aus Pfosten und Kappe mit Streben",
+        "Laternen mit Glutschein",
+        "Felswand, Erzadern und Schienen"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-mine-mitte-v3-128.png",
+      "32": "grafik/gebaeude/hg-mine-mitte-v3-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-mitte-v4",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Förderturm: Schicht mitte in vierfacher Auflösung (GEB18), Variante 4",
+      "teile": [
+        "Stützgestelle aus Pfosten und Kappe mit Streben",
+        "Laternen mit Glutschein",
+        "Felswand, Erzadern und Schienen"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-mine-mitte-v4-128.png",
+      "32": "grafik/gebaeude/hg-mine-mitte-v4-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-mitte-v5",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "eingestürzter Gang: Schicht mitte in vierfacher Auflösung (GEB18), Variante 5",
+      "teile": [
+        "Stützgestelle aus Pfosten und Kappe mit Streben",
+        "Laternen mit Glutschein",
+        "Felswand, Erzadern und Schienen"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-mine-mitte-v5-128.png",
+      "32": "grafik/gebaeude/hg-mine-mitte-v5-32.png"
     }
   },
   {
@@ -856,6 +1501,141 @@
     }
   },
   {
+    "id": "hg-mine-nah-v1",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Schachtwand mit Gerüst: Schicht nah in vierfacher Auflösung (GEB18), Variante 1",
+      "teile": [
+        "Dicke Stützbalken mit Brettern und Nägeln",
+        "Schienen mit Schwellen, Loren und Kisten",
+        "Kohle, Erzbrocken und Funken als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-mine-nah-v1-128.png",
+      "32": "grafik/gebaeude/hg-mine-nah-v1-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-nah-v2",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Stollen mit Schienen: Schicht nah in vierfacher Auflösung (GEB18), Variante 2",
+      "teile": [
+        "Dicke Stützbalken mit Brettern und Nägeln",
+        "Schienen mit Schwellen, Loren und Kisten",
+        "Kohle, Erzbrocken und Funken als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-mine-nah-v2-128.png",
+      "32": "grafik/gebaeude/hg-mine-nah-v2-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-nah-v3",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Erzader: Schicht nah in vierfacher Auflösung (GEB18), Variante 3",
+      "teile": [
+        "Dicke Stützbalken mit Brettern und Nägeln",
+        "Schienen mit Schwellen, Loren und Kisten",
+        "Kohle, Erzbrocken und Funken als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-mine-nah-v3-128.png",
+      "32": "grafik/gebaeude/hg-mine-nah-v3-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-nah-v4",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Förderturm: Schicht nah in vierfacher Auflösung (GEB18), Variante 4",
+      "teile": [
+        "Dicke Stützbalken mit Brettern und Nägeln",
+        "Schienen mit Schwellen, Loren und Kisten",
+        "Kohle, Erzbrocken und Funken als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-mine-nah-v4-128.png",
+      "32": "grafik/gebaeude/hg-mine-nah-v4-32.png"
+    }
+  },
+  {
+    "id": "hg-mine-nah-v5",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "eingestürzter Gang: Schicht nah in vierfacher Auflösung (GEB18), Variante 5",
+      "teile": [
+        "Dicke Stützbalken mit Brettern und Nägeln",
+        "Schienen mit Schwellen, Loren und Kisten",
+        "Kohle, Erzbrocken und Funken als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-mine-nah-v5-128.png",
+      "32": "grafik/gebaeude/hg-mine-nah-v5-32.png"
+    }
+  },
+  {
     "id": "hg-mine-nah",
     "klasse": "hintergrund",
     "kacheln": {
@@ -880,6 +1660,136 @@
     "dateien": {
       "16": "grafik/gebaeude/hg-mine-nah-16.png",
       "32": "grafik/gebaeude/hg-mine-nah-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-fern-v1",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Tannenhang: Schicht fern in vierfacher Auflösung (GEB18), Variante 1",
+      "teile": [
+        "Zwei Hügelketten als periodisches Profil",
+        "Tannen-Silhouetten auf den Kämmen",
+        "Lichtspitzen nur in Dichte 128"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-wald-fern-v1-128.png",
+      "32": "grafik/gebaeude/hg-wald-fern-v1-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-fern-v2",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Laubwald: Schicht fern in vierfacher Auflösung (GEB18), Variante 2",
+      "teile": [
+        "Zwei Hügelketten als periodisches Profil",
+        "Tannen-Silhouetten auf den Kämmen",
+        "Lichtspitzen nur in Dichte 128"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-wald-fern-v2-128.png",
+      "32": "grafik/gebaeude/hg-wald-fern-v2-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-fern-v3",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Lichtung mit Felsen: Schicht fern in vierfacher Auflösung (GEB18), Variante 3",
+      "teile": [
+        "Zwei Hügelketten als periodisches Profil",
+        "Tannen-Silhouetten auf den Kämmen",
+        "Lichtspitzen nur in Dichte 128"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-wald-fern-v3-128.png",
+      "32": "grafik/gebaeude/hg-wald-fern-v3-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-fern-v4",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "dichter Mischwald: Schicht fern in vierfacher Auflösung (GEB18), Variante 4",
+      "teile": [
+        "Zwei Hügelketten als periodisches Profil",
+        "Tannen-Silhouetten auf den Kämmen",
+        "Lichtspitzen nur in Dichte 128"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-wald-fern-v4-128.png",
+      "32": "grafik/gebaeude/hg-wald-fern-v4-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-fern-v5",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Hügel mit Birken: Schicht fern in vierfacher Auflösung (GEB18), Variante 5",
+      "teile": [
+        "Zwei Hügelketten als periodisches Profil",
+        "Tannen-Silhouetten auf den Kämmen",
+        "Lichtspitzen nur in Dichte 128"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-wald-fern-v5-128.png",
+      "32": "grafik/gebaeude/hg-wald-fern-v5-32.png"
     }
   },
   {
@@ -909,6 +1819,141 @@
     }
   },
   {
+    "id": "hg-wald-mitte-v1",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Tannenhang: Schicht mitte in vierfacher Auflösung (GEB18), Variante 1",
+      "teile": [
+        "Bodenwelle",
+        "Bäume der Variante mit Stamm und Krone",
+        "Büsche und Farne",
+        "Blattlichter und Rindenstriche als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-wald-mitte-v1-128.png",
+      "32": "grafik/gebaeude/hg-wald-mitte-v1-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-mitte-v2",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Laubwald: Schicht mitte in vierfacher Auflösung (GEB18), Variante 2",
+      "teile": [
+        "Bodenwelle",
+        "Bäume der Variante mit Stamm und Krone",
+        "Büsche und Farne",
+        "Blattlichter und Rindenstriche als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-wald-mitte-v2-128.png",
+      "32": "grafik/gebaeude/hg-wald-mitte-v2-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-mitte-v3",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Lichtung mit Felsen: Schicht mitte in vierfacher Auflösung (GEB18), Variante 3",
+      "teile": [
+        "Bodenwelle",
+        "Bäume der Variante mit Stamm und Krone",
+        "Büsche und Farne",
+        "Blattlichter und Rindenstriche als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-wald-mitte-v3-128.png",
+      "32": "grafik/gebaeude/hg-wald-mitte-v3-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-mitte-v4",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "dichter Mischwald: Schicht mitte in vierfacher Auflösung (GEB18), Variante 4",
+      "teile": [
+        "Bodenwelle",
+        "Bäume der Variante mit Stamm und Krone",
+        "Büsche und Farne",
+        "Blattlichter und Rindenstriche als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-wald-mitte-v4-128.png",
+      "32": "grafik/gebaeude/hg-wald-mitte-v4-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-mitte-v5",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Hügel mit Birken: Schicht mitte in vierfacher Auflösung (GEB18), Variante 5",
+      "teile": [
+        "Bodenwelle",
+        "Bäume der Variante mit Stamm und Krone",
+        "Büsche und Farne",
+        "Blattlichter und Rindenstriche als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-wald-mitte-v5-128.png",
+      "32": "grafik/gebaeude/hg-wald-mitte-v5-32.png"
+    }
+  },
+  {
     "id": "hg-wald-mitte",
     "klasse": "hintergrund",
     "kacheln": {
@@ -933,6 +1978,136 @@
     "dateien": {
       "16": "grafik/gebaeude/hg-wald-mitte-16.png",
       "32": "grafik/gebaeude/hg-wald-mitte-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-nah-v1",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Tannenhang: Schicht nah in vierfacher Auflösung (GEB18), Variante 1",
+      "teile": [
+        "Dicke Stämme mit Licht- und Schattenkante, Rinde und Wurzeln",
+        "Laubbüschel oben",
+        "Grasband mit Halmen, Blumen und Pilzen"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-wald-nah-v1-128.png",
+      "32": "grafik/gebaeude/hg-wald-nah-v1-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-nah-v2",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Laubwald: Schicht nah in vierfacher Auflösung (GEB18), Variante 2",
+      "teile": [
+        "Dicke Stämme mit Licht- und Schattenkante, Rinde und Wurzeln",
+        "Laubbüschel oben",
+        "Grasband mit Halmen, Blumen und Pilzen"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-wald-nah-v2-128.png",
+      "32": "grafik/gebaeude/hg-wald-nah-v2-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-nah-v3",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Lichtung mit Felsen: Schicht nah in vierfacher Auflösung (GEB18), Variante 3",
+      "teile": [
+        "Dicke Stämme mit Licht- und Schattenkante, Rinde und Wurzeln",
+        "Laubbüschel oben",
+        "Grasband mit Halmen, Blumen und Pilzen"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-wald-nah-v3-128.png",
+      "32": "grafik/gebaeude/hg-wald-nah-v3-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-nah-v4",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "dichter Mischwald: Schicht nah in vierfacher Auflösung (GEB18), Variante 4",
+      "teile": [
+        "Dicke Stämme mit Licht- und Schattenkante, Rinde und Wurzeln",
+        "Laubbüschel oben",
+        "Grasband mit Halmen, Blumen und Pilzen"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-wald-nah-v4-128.png",
+      "32": "grafik/gebaeude/hg-wald-nah-v4-32.png"
+    }
+  },
+  {
+    "id": "hg-wald-nah-v5",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Hügel mit Birken: Schicht nah in vierfacher Auflösung (GEB18), Variante 5",
+      "teile": [
+        "Dicke Stämme mit Licht- und Schattenkante, Rinde und Wurzeln",
+        "Laubbüschel oben",
+        "Grasband mit Halmen, Blumen und Pilzen"
+      ],
+      "materialien": [
+        "Hintergrund Wald",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-wald-nah-v5-128.png",
+      "32": "grafik/gebaeude/hg-wald-nah-v5-32.png"
     }
   },
   {

@@ -1,6 +1,6 @@
 # GEB18.2 · Fünf detailreiche Varianten für Wald, Höhle und Mine
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -43,5 +43,7 @@ Eisenstollen und Kristall (GEB18.3), Katalog-Slots, Client.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 (Teil) umgesetzt: Wald, Höhle und Mine haben je fünf Varianten (`hg-<biom>-<schicht>-v1` … `-v5`, 45 Vorlagen, Raster 128) mit eigenem Thema je Variante (Wald: Tannenhang, Laubwald, Lichtung, Mischwald, Birkenhügel; Höhle: Tropfsteinhalle, Spalt, Felsbögen, Pilzgrotte, See; Mine: Schachtwand, Stollen mit Schienen, Erzader, Förderturm, Geröll), gerendert in 32 und 128 px (90 PNG, zusammen 2,5 MB, größte 93 KB). Erzeugt mit einem Autoren-Skript aus festen Seeds; die Vorlagen sind statische Daten (Regeldatei § 10). Das Skript liegt lokal unter `.work/hg-erzeuger/` (gitignored).
+- AC-02 geprüft: `go test ./tools/buildings/` grün (Naht, oberste Zeile, Bodenlinie, Helligkeitsstufen je Variante: Wald 43/57–61/70–71, Höhle 35–37/46–51/69–71, Mine 30–32/52–53/65–66, `nah` ≤ 75). Sichtprüfung durch Claude: Ebenen und Tiefe stimmen, die Varianten wirken aber noch schematisch und ähneln sich (vor allem Höhle und Mine) – Urteil und Feinschliff bei Ralf.
+- Vorgezogen auf Wunsch von Ralf (Chat 2026-10-24) aus GEB18.3: Studio-Szene „Umgebung“ zeigt je Biom die bisherige Fassung und jede Variante in 128 px ×0,5 und 32 px (`hintergrundStreifen` mit Feld `variante`, `Backgrounds.tsx`); Studio-Vitest `graphics` (54), `tsc`, `task:lint` grün, im Browser geprüft (40 Bilder). `task check:diff` nicht gelaufen (Ralf: in dieser Claude-Session gesperrt).
+- Offen: Autoren-Skript ins Repo übernehmen (Ort klären), sonst sind die Vorlagen nur von Hand änderbar.

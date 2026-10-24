@@ -223,6 +223,14 @@ describe('Asset-Vorschau: Hintergründe je Biom (GEB7/AC-03)', () => {
     expect(s[0]!.schichten.map((l) => l.id)).toEqual(['hg-wald-fern', 'hg-wald-mitte', 'hg-wald-nah']);
   });
 
+  it('zeigt nach der bisherigen Fassung jede vollständige Variante aufsteigend (GEB18)', () => {
+    const v = (n: number, schicht: string): GebaeudeEintrag => ({ ...wald[0]!, id: `hg-wald-${schicht}-v${n}` });
+    const index = [...wald, ...['fern', 'mitte', 'nah'].flatMap((s) => [v(10, s), v(2, s)]), v(3, 'fern')];
+    const s = hintergrundStreifen(index, biome);
+    expect(s.map((x) => x.variante)).toEqual(['', 'v2', 'v10']);
+    expect(s[1]!.schichten.map((l) => l.id)).toEqual(['hg-wald-fern-v2', 'hg-wald-mitte-v2', 'hg-wald-nah-v2']);
+  });
+
   it('lässt Biome ohne vollständige Schichten und unbekannte Biome weg', () => {
     expect(hintergrundStreifen(wald.slice(0, 2), biome)).toEqual([]);
     expect(hintergrundStreifen(wald, [{ id: 'sumpf', palette: { sky: '#000000' } }])).toEqual([]);
