@@ -56,4 +56,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Aus B-558 (KR4.1). Spec noch Entwurf.
+SO7.1 (2026-10-23): ohne Klasse im Snapshot und ohne Skill-Ereignis wären neue Slots tote Töne. Voraussetzung: Skill-Ereignis oder Klassenfeld im Protokoll (Engine, `src/model/types.ts`), passt zu SK3/B-578. Bis dahin Katalog-Lücke mit diesem Ticket, `sfx:skill` als Rückfall. Ticket zurück auf offen, ohne Sprint.

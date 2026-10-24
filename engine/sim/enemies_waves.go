@@ -148,6 +148,10 @@ func removeDeadEnemies(w *World) {
 		} else {
 			enemyDrop(w, e)
 		}
+		if e.Guard {
+			markCleared(w, e) // keine Wirkung auf den Aggressionspool, kein Respawn
+			continue
+		}
 		if w.Aggression != nil && w.Biome.Cycle.Type == "aggressionPool" {
 			*w.Aggression = math.Min(100, *w.Aggression+w.Biome.Cycle.PercentPerKill)
 		}

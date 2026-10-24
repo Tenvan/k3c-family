@@ -20,6 +20,7 @@ export const en: Record<TextKey, string> = {
   'lobby.dialog.grade': 'Grade:  ◀ {value} ▶',
   'lobby.dialog.goal': 'Goal:  ◀ {value} ▶',
   'lobby.dialog.defeat': 'Defeat:  ◀ {value} ▶',
+  'lobby.dialog.world': 'World:  ◀ {value} ▶',
   'lobby.dialog.create': 'Create room',
   'lobby.dialog.cancel': 'Cancel',
   'lobby.dialog.hint': 'Up/down select · left/right or A / Enter change',
@@ -198,6 +199,7 @@ export const en: Record<TextKey, string> = {
   'cast.noTarget': 'no target',
   'hint.learn': 'learn skill',
   'hint.respec': 'reset skills',
+  'hint.lair': 'boss lair: arriving wakes the final boss',
   // Guided first night (S6.3): hints above objects, {key} = glyph
   'guide.coin': 'Walk over it: pick up the coin',
   'guide.pay': 'Hold {key}: pay for the build site',

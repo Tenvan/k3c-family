@@ -521,7 +521,7 @@
       },
       {
         "stufe": 2,
-        "aenderung": "Stein: Zeltpfosten und Gestell aus grauem Stein, Tuch, Liege und Kräuter bleiben",
+        "aenderung": "Stein: Zeltpfosten und Gestell aus grauem Stein, Zeltbahnen hängen an beiden Dachenden herab",
         "dateien": {
           "128": "grafik/gebaeude/heilplatz-2-128.png",
           "16": "grafik/gebaeude/heilplatz-2-16.png",
@@ -531,7 +531,7 @@
       },
       {
         "stufe": 3,
-        "aenderung": "Kupfer: Zeltpfosten und Gestell aus Kupfer, Laterne am Zelt",
+        "aenderung": "Kupfer: Pfosten und Gestell aus Kupfer, Zeltbahnen mit Kupfersaum, gemauerter Brunnen mit Eimer neben der Liege",
         "dateien": {
           "128": "grafik/gebaeude/heilplatz-3-128.png",
           "16": "grafik/gebaeude/heilplatz-3-16.png",
@@ -541,7 +541,7 @@
       },
       {
         "stufe": 4,
-        "aenderung": "Eisen: Zeltpfosten und Gestell aus Stahl, Laterne am Zelt",
+        "aenderung": "Eisen: Pfosten und Gestell aus Stahl, Zeltbahnen mit Stahlsaum, Brunnen aus Stahl mit hellem Rand",
         "dateien": {
           "128": "grafik/gebaeude/heilplatz-4-128.png",
           "16": "grafik/gebaeude/heilplatz-4-16.png",
@@ -551,7 +551,7 @@
       },
       {
         "stufe": 5,
-        "aenderung": "Kristall: Zeltpfosten und Gestell aus blauem Kristall, Laterne am Zelt",
+        "aenderung": "Kristall: Pfosten und Gestell aus blauem Kristall, Zeltbahnen mit Kristallsaum, Brunnen aus Kristall mit leuchtendem Wasser",
         "dateien": {
           "128": "grafik/gebaeude/heilplatz-5-128.png",
           "16": "grafik/gebaeude/heilplatz-5-16.png",
@@ -1486,6 +1486,34 @@
     }
   },
   {
+    "id": "pappel-niedrig",
+    "klasse": "baum",
+    "kacheln": {
+      "b": 2,
+      "h": 5
+    },
+    "vorlage": {
+      "motiv": "Niedrige Pappel der Plantage, 2 × 5 Kacheln, steht vor der Farm (B-568)",
+      "teile": [
+        "Gedrungene Laubsäule, die Form der hohen Pappel auf 4¼ Kacheln gestaucht",
+        "Lichtkante links, Schatten rechts, Blattbüschel als Kerben",
+        "Kurzer Stamm mittig, unten sichtbar"
+      ],
+      "materialien": [
+        "Laub (Pappel, Birke)",
+        "Pfosten, Balken"
+      ],
+      "stimmung": "sommerlich, aufrecht, gepflegt",
+      "fein": "keine"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/pappel-niedrig-128.png",
+      "16": "grafik/gebaeude/pappel-niedrig-16.png",
+      "32": "grafik/gebaeude/pappel-niedrig-32.png",
+      "64": "grafik/gebaeude/pappel-niedrig-64.png"
+    }
+  },
+  {
     "id": "pappel",
     "klasse": "baum",
     "kacheln": {
@@ -1566,11 +1594,43 @@
       "fein": "Funken, Fugen"
     },
     "dateien": {
-      "128": "grafik/gebaeude/rekrutierungslager-128.png",
-      "16": "grafik/gebaeude/rekrutierungslager-16.png",
-      "32": "grafik/gebaeude/rekrutierungslager-32.png",
-      "64": "grafik/gebaeude/rekrutierungslager-64.png"
-    }
+      "128": "grafik/gebaeude/rekrutierungslager-1-128.png",
+      "16": "grafik/gebaeude/rekrutierungslager-1-16.png",
+      "32": "grafik/gebaeude/rekrutierungslager-1-32.png",
+      "64": "grafik/gebaeude/rekrutierungslager-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/rekrutierungslager-1-128.png",
+          "16": "grafik/gebaeude/rekrutierungslager-1-16.png",
+          "32": "grafik/gebaeude/rekrutierungslager-1-32.png",
+          "64": "grafik/gebaeude/rekrutierungslager-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühles Zelttuch in Stahlgrau, Steinring der Feuerstelle dunkler, Laterne an Stange zwischen Zelt und Feuer",
+        "dateien": {
+          "128": "grafik/gebaeude/rekrutierungslager-2-128.png",
+          "16": "grafik/gebaeude/rekrutierungslager-2-16.png",
+          "32": "grafik/gebaeude/rekrutierungslager-2-32.png",
+          "64": "grafik/gebaeude/rekrutierungslager-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Mine: dunkles Zelttuch, Steinring mit Eisenrand, Laterne an Eisenstange",
+        "dateien": {
+          "128": "grafik/gebaeude/rekrutierungslager-3-128.png",
+          "16": "grafik/gebaeude/rekrutierungslager-3-16.png",
+          "32": "grafik/gebaeude/rekrutierungslager-3-32.png",
+          "64": "grafik/gebaeude/rekrutierungslager-3-64.png"
+        }
+      }
+    ]
   },
   {
     "id": "ruestkammer",

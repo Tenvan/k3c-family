@@ -1,5 +1,11 @@
 # Protokoll v8
 
+**Nachgetragen ohne neue Version (SK3, B-577):** Spieler in `snap`/`delta` tragen optional `stealthFor` (Sekunden unsichtbar nach Smoke Bomb; fehlt = sichtbar). Neue Skill-IDs `backstab`, `smokeBomb` in `skills`, `slots` und `actions`. Ein älterer Client ignoriert das Feld.
+
+**Nachgetragen ohne neue Version (KB3, B-563):** `actions` kennt `{ "action": "lair" }`: ein lebender Spieler ist näher als `lair.noticeUnits` (`data/bosses.json`) am Bau eines wartenden Endbosses (`sim.AtLair`; nicht ausgelöst, nicht besiegt). Ein älterer Client ignoriert den Eintrag.
+
+**Nachgetragen ohne neue Version (WZ27, B-517):** Gegner im Snapshot tragen optional `guard: true` (Wache eines Gegnerlagers, steht am Heimatpunkt, ohne Wirkung auf Wellen). Der Spielstand ist Version 9 (`guardsCleared` je Insel; Version 8 lädt weiter).
+
 **Änderungen gegenüber v7 (BD3.1, Version 8, B-214):** Neue Geräte-Nachrichten `pause` und `resume` ohne Felder, nur im
 Raum (sonst `bad_request`). `pause` hält das Gerät an, `resume` setzt es fort; ein zweites `pause` und ein `resume` ohne
 Pause ändern nichts. Wirkung ([`rules/bedienung.md`](rules/bedienung.md) § 1): Ist das pausierte Gerät das einzige
@@ -373,6 +379,7 @@ Felder je Spieler in `players[]` von `snap` und `delta`:
 | `slots` | aktive Skills in Slot 1–4 (Index 0–3, `""` = frei) | keine belegt |
 | `cooldowns` | Abklingzeit je Slot in Sekunden (Index wie `slots`) | alle 0 |
 | `attackCooldown` | Sekunden bis zum nächsten Schlag | 0 |
+| `stealthFor` | Sekunden unsichtbar (Smoke Bomb): kein Ziel der Gegner, kein Schaden | 0 |
 | `points` | verfügbare Punkte: Pool der Insel (`skillPoints`) minus gelernte Skills, vom Server berechnet | nie |
 | `actions` | gültige Aktionen am Ort des Spielers, vom Server berechnet, Liste (leer: `[]`) | nie |
 
@@ -382,7 +389,7 @@ Felder je Spieler in `players[]` von `snap` und `delta`:
 (Punkte frei, nicht gelernt, Tier-Gating; nach ID sortiert, von `sim.LearnableSkills` berechnet; fehlt, wenn keiner
 lernbar ist; B-285). Ein älterer Server sendet `learn` ohne `skills` bei `points` > 0, der Client behandelt dann jeden
 ungelernten Skill als lernbar. Zuletzt `{ "action": "respec" }` (lebt, `sim.CanRespec` erlaubt: Tag und an der
-Burg, auch ohne gelernte Skills; B-495). Die Liste nennt keine Taste,
+Burg, auch ohne gelernte Skills; B-495) und `{ "action": "lair" }` (lebt, am Bau des wartenden Endbosses: näher als `lair.noticeUnits`, Ankunft innerhalb `lair.triggerUnits` löst ihn aus; B-563; der Client zeigt eine Zeile ohne Taste). Die Liste nennt keine Taste,
 die Belegung gehört dem Client. Berufe, Tausch, Grabstein und Wiederbeleben kommen später (W5, B-120).
 
 ### Wirtschaft: Hub, Lager, Wartegrund, Händler
@@ -427,6 +434,10 @@ Beispiel: `s2c-snapshot-wirtschaft.json` (Insel `w5-wirtschaft`, 3 Stufen, 4 Spi
 gefüllt, Händler da, ein Bauer mit Beruf; die drei Ereignisse in `events` sind von Hand ergänzt, siehe *Ereignisse*).
 Geprüft von `TestWirtschaftZustand`, `TestWirtschaftDelta`, `TestKaempferZustandUndDelta`, `TestWirtschaftBeispiel` und
 `src/online/clientEconomy.test.ts`.
+
+**Knoten-Markierer (B-532):** `nodes[].markedBy` (Spieler-Index, additiv und optional) nennt den Spieler der letzten
+Markier-Münze eines markierten Knotens; fehlt = unbekannt (nie markiert, Plantage, Spielstand ohne Angabe). Der Spielstand
+speichert es additiv als `nodesMarkedBy` (`kind@x` → Index), die Spielstand-Version bleibt. Protokoll-Version unverändert.
 
 ### Fehler-Codes
 
@@ -601,6 +612,14 @@ wechselnde Eingaben. Je Tick `JSON.stringify` des vollen Zustands und eines Delt
 ≈ 120 KB/s. Ein Raum mit 4 Geräten sendet mit `delta` ≈ 0,25 MB/s. Für WLAN im Heimnetz reicht JSON mit `delta`; ein
 Binärformat ist nicht nötig. Das Delta wird von vielen Nachkommastellen (`x`, `time`) und ganzen geänderten
 Einträgen bestimmt; Runden auf 2 Stellen wäre die nächste Stellschraube, falls die Messung am Pi (SP11) es verlangt.
+
+## HTTP: Welten
+
+**Nachgetragen ohne neue Version (BD8.1, B-566):** `GET /api/worlds` (ohne Token, nur lesend) nennt die Welten, die ein neuer
+Spielstand wählen darf, als Array `[{ "id": "standard", "name": "Standard" }]`: die Standard-Welt immer zuerst, im Dev-Mode
+dazu jede gültige Welt-Datei aus `K3C_WORLDS_DIR` nach ID sortiert (ungültige Dateien fehlen). Andere Methoden → `405`.
+Die Lobby wählt daraus die Welt für `create.world`; die Regel „andere Welt nur im Dev-Mode“ bleibt. Das WebSocket-Protokoll
+und seine Version (8) ändern sich nicht.
 
 ## HTTP: Spielstände
 

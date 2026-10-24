@@ -322,7 +322,7 @@ describe('Anlegen-Dialog (K5.2, B-105/AC-02)', () => {
     expect(flow.dialog).toMatchObject({ save: 'spiel-2', row: 0 });
     const down = (n: number) => { for (let i = 0; i < n; i++) flow.dialogInput({ dir: 1, side: 0, confirm: false }); };
     flow.dialogInput({ dir: 0, side: 1, confirm: false }); // Grad: normal → hard, Modus folgt dem Standard (stage)
-    down(3);
+    down(4);
     const cmd = flow.dialogInput({ dir: 0, side: 0, confirm: true });
     expect(cmd).toMatchObject({ t: 'create', save: 'spiel-2', fresh: true, options: { grade: 'hard', goal: 'endboss', defeat: 'stage' } });
     expect(Object.keys((cmd as { options: object }).options).sort()).toEqual(['defeat', 'goal', 'grade'].filter((k) => k in createMsg).sort());
@@ -335,11 +335,43 @@ describe('Anlegen-Dialog (K5.2, B-105/AC-02)', () => {
   it('„Abbrechen“ schließt ohne Befehl; Autostart sendet ohne Optionen; abgelehnte Option hat eigenen Hinweis', () => {
     const flow = new LobbyFlow(params());
     flow.openDialog('x');
-    flow.dialogInput({ dir: 4, side: 0, confirm: false });
+    flow.dialogInput({ dir: 5, side: 0, confirm: false });
     expect(flow.dialogInput({ dir: 0, side: 0, confirm: true })).toBeNull();
     expect(flow.dialog).toBeNull();
     const auto = new LobbyFlow(params({ autostart: true })).step(lobby);
     expect(auto).not.toHaveProperty('options');
     expect(lobbyNotice({ status: 'lobby', notice: null, errorCode: 'bad_request' })).toBeTruthy();
+  });
+});
+
+describe('Welt-Auswahl im Anlegen-Dialog (BD8.1, B-566/AC-01)', () => {
+  const toWorld = (flow: LobbyFlow) => flow.dialogInput({ dir: 3, side: 0, confirm: false });
+
+  it('die gewählte Welt geht in create.world; `standard` lässt das Feld weg', () => {
+    const flow = new LobbyFlow(params(), true);
+    flow.worlds = ['standard', 'nordmeer'];
+    flow.openDialog('spiel-1');
+    toWorld(flow);
+    flow.dialogInput({ dir: 0, side: 1, confirm: false }); // Welt: standard → nordmeer
+    expect(flow.dialog?.options.world).toBe('nordmeer');
+    expect(flow.dialogInput({ dir: 1, side: 0, confirm: false })).toBeNull();
+    expect(flow.dialogInput({ dir: 0, side: 0, confirm: true })).toMatchObject({ t: 'create', save: 'spiel-1', fresh: true, world: 'nordmeer' });
+
+    flow.openDialog('spiel-2');
+    flow.dialogInput({ dir: 4, side: 0, confirm: false });
+    expect(flow.dialogInput({ dir: 0, side: 0, confirm: true })).not.toHaveProperty('world');
+  });
+
+  it('Welt per A/Enter im Kreis, links/rechts begrenzt; ?world= ist vorgewählt und wählbar', () => {
+    const flow = new LobbyFlow(params({ world: 'suedsee' }), true);
+    flow.worlds = ['standard', 'nordmeer'];
+    expect(flow.dialogWorlds()).toEqual(['standard', 'nordmeer', 'suedsee']);
+    flow.openDialog('x');
+    expect(flow.dialog?.options.world).toBe('suedsee');
+    toWorld(flow);
+    flow.dialogInput({ dir: 0, side: 0, confirm: true }); // suedsee → standard (Kreis)
+    expect(flow.dialog?.options.world).toBe('standard');
+    flow.dialogInput({ dir: 0, side: -1, confirm: false });
+    expect(flow.dialog?.options.world).toBe('standard');
   });
 });

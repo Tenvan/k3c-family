@@ -26,6 +26,7 @@ import (
 	"k3c/engine/conlog"
 	"k3c/tools/k3c-studio/backend"
 	assets "k3c/tools/assetkit"
+	"k3c/tools/assetkit/windowstate"
 )
 
 // instancePrefix plus Hash der Wurzel verbindet einen zweiten Start für denselben Checkout mit dem laufenden Fenster.
@@ -111,17 +112,18 @@ func checkBuilt(root string) error {
 
 // options beschreibt das Fenster wie in k3c-workbench: gemerkte Größe, verdeckter Start, bis die gemerkte Position gesetzt ist.
 func (a *app) options() *options.App {
-	win, placed := loadWindow(configPath("k3c-studio.json"))
+	win, placed := windowstate.Load(windowstate.ConfigPath("k3c-studio.json"))
 	return &options.App{
-		Title: "Asset-Studio", Width: win.Width, Height: win.Height, MinWidth: minWidth, MinHeight: minHeight,
+		Title: "Asset-Studio", Width: win.Width, Height: win.Height, MinWidth: windowstate.MinWidth, MinHeight: windowstate.MinHeight,
 		StartHidden:      true,
 		BackgroundColour: &options.RGBA{R: 0x0b, G: 0x10, B: 0x26, A: 0xff},
 		AssetServer:      &assetserver.Options{Handler: a.redirect()},
 		OnStartup:        a.startup,
 		OnDomReady: func(ctx context.Context) {
 			go setWindowIcon() // Dev-Läufe haben die Icon-Ressource der EXE nicht
-			if placed && onScreen(win) {
-				placeWindow(ctx, win.X, win.Y)
+			if placed && windowstate.OnScreen(win) {
+				windowstate.Place(func() (int, int) { return runtime.WindowGetPosition(ctx) },
+					func(x, y int) { runtime.WindowSetPosition(ctx, x, y) }, win.X, win.Y)
 			}
 			runtime.WindowShow(ctx)
 		},
@@ -178,7 +180,7 @@ func (a *app) beforeClose(ctx context.Context) bool {
 	}
 	x, y := runtime.WindowGetPosition(ctx)
 	w, h := runtime.WindowGetSize(ctx)
-	if err := saveWindow(configPath("k3c-studio.json"), windowState{X: x, Y: y, Width: w, Height: h}); err != nil {
+	if err := windowstate.Save(windowstate.ConfigPath("k3c-studio.json"), windowstate.State{X: x, Y: y, Width: w, Height: h}); err != nil {
 		a.log.Warn("❌ Fenster nicht gemerkt", "ns", "main", "err", err)
 	}
 	return false

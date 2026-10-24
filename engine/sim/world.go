@@ -148,6 +148,7 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	w.Events = []Event{}
 	w.Time += dt
 	stepCycle(w, dt)
+	spawnGuards(w)
 	stepSpawns(w)
 	stepPlayers(w, commands, dt)
 	stepPassives(w, dt)
@@ -190,7 +191,7 @@ func castleFallen(w *World) {
 	for _, p := range w.Players {
 		respawn(w, p)
 	}
-	w.Enemies, w.SpawnQueue, w.Projectiles = []*Enemy{}, []QueuedSpawn{}, []*Projectile{}
+	w.Enemies, w.SpawnQueue, w.Projectiles = keepGuards(w.Enemies), []QueuedSpawn{}, []*Projectile{}
 }
 
 // castleLosses: Stufenverlust. Bauplätze der Stufe leer (Ruinen zurück in den Ausgangszustand, auch zerstörte),

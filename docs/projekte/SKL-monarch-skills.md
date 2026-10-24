@@ -17,6 +17,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | SK1 | Skill-Baum mit Tank und Zauberer, Respec-Regeln abfragbar | erledigt |
 | RM1 | Raum-Pause im Couch-Raum und lernbare Skills vom Server | erledigt |
 | SK2 | Skills im Spiel sichtbar, Dieb-Skills in den Daten | aktiv |
+| SK3 | Dieb-Skills Backstab und Smoke Bomb, Skill-Effekte, Skill-Ring im Studio | erledigt |
 
 ## Nicht-Ziele
 

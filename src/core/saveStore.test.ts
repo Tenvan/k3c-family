@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { deleteSave, listSaves } from './saveStore';
+import { deleteSave, listSaves, listWorlds } from './saveStore';
 
 const respond = (body: unknown, ok = true) => (() => Promise.resolve({ ok, json: () => Promise.resolve(body) } as Response)) as typeof fetch;
 
@@ -49,5 +49,18 @@ describe('deleteSave (BD5.2, B-506/AC-02)', () => {
     expect(await deleteSave('nord', status(404).fn)).toBe('not_found');
     expect(await deleteSave('nord', status(500).fn)).toBe('failed');
     expect(await deleteSave('nord', (() => Promise.reject(new Error('weg'))) as typeof fetch)).toBe('failed');
+  });
+});
+
+describe('listWorlds (BD8.1, B-566/AC-01)', () => {
+  it('liefert die IDs des Servers ohne Doppelte und unlesbare Einträge', async () => {
+    expect(await listWorlds(respond([{ id: 'standard', name: 'Standard' }, { id: 'nordmeer', name: 'Nordmeer' }, { id: 'nordmeer' }, { name: 'x' }, 7]))).toEqual(['standard', 'nordmeer']);
+  });
+
+  it('Fehler, Server-Fehler, leere Liste und falsches Format ergeben nur standard', async () => {
+    expect(await listWorlds((() => Promise.reject(new Error('weg'))) as typeof fetch)).toEqual(['standard']);
+    expect(await listWorlds(respond([], false))).toEqual(['standard']);
+    expect(await listWorlds(respond([]))).toEqual(['standard']);
+    expect(await listWorlds(respond({ id: 'x' }))).toEqual(['standard']);
   });
 });

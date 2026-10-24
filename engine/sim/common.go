@@ -1,6 +1,9 @@
 package sim
 
-import "math"
+import (
+	"math"
+	"slices"
+)
 
 // Gemeinsame Helfer (Port von src/world/sim/common.ts).
 
@@ -29,11 +32,14 @@ func intPtr(v int) *int { return &v }
 func isAlive(p *Player) bool { return p.RespawnIn <= 0 }
 
 // shielded: Der Monarch ist kein Ziel und nimmt keinen Schaden, wenn ein pausiertes Gerät ihn schützt (Protected, B-214) oder
-// niemand ihn steuert (Free: wartend nach Verbindungsverlust oder frei, docs/rules/bedienung.md § 3, B-530).
-func shielded(p *Player) bool { return p.Protected || p.Free }
+// niemand ihn steuert (Free: wartend nach Verbindungsverlust oder frei, docs/rules/bedienung.md § 3, B-530) oder er
+// unsichtbar ist (StealthFor, Smoke Bomb, B-577): Gegner wählen ihn nicht und verlieren ihn als Ziel.
+func shielded(p *Player) bool { return p.Protected || p.Free || p.StealthFor > 0 }
 
-// isDangerous: nachts oder solange Gegner in der Welt sind, bleiben Bauern im Hub.
-func isDangerous(w *World) bool { return w.Cycle.Phase == "night" || len(w.Enemies) > 0 }
+// isDangerous: nachts oder solange Gegner einer Welle in der Welt sind (Wachen eines Lagers zählen nicht), bleiben Bauern im Hub.
+func isDangerous(w *World) bool {
+	return w.Cycle.Phase == "night" || slices.ContainsFunc(w.Enemies, isWaveEnemy)
+}
 
 // outerWall ist die intakte Mauer auf der Seite side (-1 links, 1 rechts), die am weitesten außen steht.
 func outerWall(w *World, side float64) *Site {

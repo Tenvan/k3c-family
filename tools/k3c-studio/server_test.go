@@ -174,26 +174,6 @@ func TestListenFallsBackWhenBusy(t *testing.T) {
 	}
 }
 
-func TestWindowStateRoundTrip(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "k3c", "w.json")
-	if _, ok := loadWindow(path); ok {
-		t.Fatal("fehlende Datei darf nicht ok sein")
-	}
-	want := windowState{X: -1200, Y: 40, Width: 1500, Height: 900}
-	if err := saveWindow(path, want); err != nil {
-		t.Fatal(err)
-	}
-	if got, ok := loadWindow(path); !ok || got != want {
-		t.Errorf("geladen %v ok=%v, erwartet %v", got, ok, want)
-	}
-	if err := saveWindow(path, windowState{Width: 10, Height: 10}); err != nil {
-		t.Fatal(err)
-	}
-	if got, _ := loadWindow(path); got.Width != minWidth || got.Height != minHeight {
-		t.Errorf("Minimum nicht angewandt: %v", got)
-	}
-}
-
 func TestWindowURL(t *testing.T) {
 	if got := windowURL("127.0.0.1:8091"); got != "http://127.0.0.1:8091/studio/" {
 		t.Errorf("Adresse des Fensters: %q", got)

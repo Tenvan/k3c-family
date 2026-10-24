@@ -156,6 +156,8 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'dev.blocked': 'New window blocked: please open {url} by hand.',
   'tile.testing.title': 'Testing',
   'tile.testing.desc': 'Start test scenarios · 1 to 4 players with mock players (Go server required)',
+  'tile.gamedev.title': 'Game (Dev)',
+  'tile.gamedev.desc': 'Game with debug overlay (?dev=1) · window.game for the console',
   'tile.gamepad.title': 'Gamepad Test',
   'tile.gamepad.desc': 'Controller, B button, fullscreen, rumble, FPS · report to the PC',
   'tile.grafiken.title': 'All Graphics',

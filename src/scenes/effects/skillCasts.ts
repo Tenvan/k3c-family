@@ -1,16 +1,16 @@
 import { GROUND_Y, UNIT_PX } from '../../core/constants';
 import { MONARCH } from '../../model/data';
 import type { Player } from '../../model/types';
-import { LINE_COLORS, type Effect } from './effects';
+import type { Effect } from './effects';
+import { skillLook } from './skillLooks';
 
 /**
- * Skill-Ringe aus dem Zustand (SK2.3, B-503; Default B-561): ein aktiver Skill wirkt, wenn die Abklingzeit seines Slots
+ * Skill-Effekte aus dem Zustand (SK2.3, B-503; je Skill eigener Look, B-578): ein aktiver Skill wirkt, wenn die Abklingzeit seines Slots
  * zwischen zwei Zuständen steigt (die Sim setzt sie beim Wirken auf den vollen Wert); ein passiver Skill zeigt seinen Ring,
  * wenn er neu in `skills` steht. Reiner Vergleich je Spieler-Index, kein Spielzustand und keine Regel im Client.
  */
 
-type SkillInfo = { line: string; kind: string };
-const SKILLS = MONARCH.skills as Record<string, SkillInfo>;
+const SKILLS = MONARCH.skills as Record<string, { kind: string }>;
 
 /** Höhe über dem Boden, in der der Ring am Monarchen erscheint */
 const RING_PX = 50;
@@ -46,6 +46,6 @@ export class SkillCasts {
 }
 
 function push(out: Effect[], p: Player, id: string | undefined): void {
-  const color = id ? LINE_COLORS[SKILLS[id]?.line ?? ''] : undefined;
-  if (color !== undefined) out.push({ kind: 'skill', x: p.x * UNIT_PX, y: GROUND_Y - RING_PX, color });
+  const look = id ? skillLook(id) : undefined;
+  if (look) out.push({ kind: 'skill', x: p.x * UNIT_PX, y: GROUND_Y - RING_PX, color: look.color, look });
 }

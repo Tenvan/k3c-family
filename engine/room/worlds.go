@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/fs"
 	"slices"
+	"strings"
 
 	"k3c/engine/sim"
 )
@@ -59,4 +60,34 @@ func (m *Manager) loadIn(s sim.IslandSave) (*sim.Island, error) {
 // worldErrorf ist die Meldung aus welten.md § 5/6 mit dem Fehlerwert code in Klammern (errors.Is).
 func worldErrorf(code error, format string, args ...any) error {
 	return fmt.Errorf("%s (%w)", fmt.Sprintf(format, args...), code)
+}
+
+// WorldInfo ist ein Eintrag der Weltliste für die Lobby (GET /api/worlds).
+type WorldInfo struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+// WorldList nennt die Welten, die ein neuer Spielstand wählen darf: die Standard-Welt immer zuerst, im Dev-Mode dazu jede
+// gültige Welt-Datei aus Manager.Worlds (nach ID sortiert). Ungültige Dateien fehlen in der Liste (Fehler beim Anlegen).
+func (m *Manager) WorldList() []WorldInfo {
+	std := sim.StandardWorld()
+	out := []WorldInfo{{ID: std.ID, Name: std.Name}}
+	if !m.Dev || m.Worlds == nil {
+		return out
+	}
+	entries, err := fs.ReadDir(m.Worlds, ".")
+	if err != nil {
+		return out
+	}
+	for _, e := range entries { // ReadDir sortiert nach Dateiname
+		id, ok := strings.CutSuffix(e.Name(), ".json")
+		if !ok || e.IsDir() || id == sim.StandardWorldID {
+			continue
+		}
+		if w, err := sim.LoadWorld(m.Worlds, id); err == nil {
+			out = append(out, WorldInfo{ID: w.ID, Name: w.Name})
+		}
+	}
+	return out
 }

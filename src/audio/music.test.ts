@@ -21,19 +21,25 @@ describe('Zustands-Automat (SO4.2 AC-01)', () => {
   it('Niederlage über castleFallen bleibt bis zur Lobby; andere Ereignisse ändern nichts', () => {
     expect(nextMusicState('night', view({ phase: 'night' }), [{ type: 'hit' }])).toBe('night');
     const lost = nextMusicState('night', view({ phase: 'night', enemies: 2 }), [{ type: 'castleFallen' }]);
-    expect(lost).toBe('ending');
-    expect(nextMusicState(lost, view({ phase: 'day' }))).toBe('ending');
+    expect(lost).toBe('defeat');
+    expect(nextMusicState(lost, view({ phase: 'day' }))).toBe('defeat');
+    expect(nextMusicState(lost, view({ phase: 'day', victory: true }))).toBe('defeat');
     expect(nextMusicState(lost, view({ lobby: true }))).toBe('lobby');
   });
 
   it('Boss und Sieg ohne Quelle: künstlicher Zustand genügt', () => {
     expect(nextMusicState('day', view({ boss: true }))).toBe('boss');
     expect(nextMusicState('day', view({ victory: true }))).toBe('ending');
+    expect(nextMusicState('ending', view({ phase: 'day' }))).toBe('ending');
+  });
+
+  it('Niederlage und Sieg sind getrennte Zustände (B-573/AC-01)', () => {
+    expect(nextMusicState('day', view(), [{ type: 'castleFallen' }])).not.toBe(nextMusicState('day', view({ victory: true })));
   });
 });
 
 describe('Mapping Zustand → Stück (AC-01)', () => {
-  it('jeder der acht Zustände hat genau einen Eintrag: ein Stück oder Lücke; kein Stück doppelt', () => {
+  it('jeder der neun Zustände hat genau einen Eintrag: ein Stück oder Lücke; kein Stück doppelt', () => {
     expect(Object.keys(MUSIC_TRACKS).sort()).toEqual([...MUSIC_STATES].sort());
     for (const s of MUSIC_STATES) expect(['string', 'object']).toContain(typeof MUSIC_TRACKS[s]); // Text oder null (Lücke)
     const tracks = Object.values(MUSIC_TRACKS).filter((t) => t !== null);
@@ -67,10 +73,11 @@ describe('Auswahl aus dem Slot-Register (SO4.1, SO4.3)', () => {
     expect(t.ending).toBeNull();
   });
 
-  it('das Register belegt sieben Zustände mit Ogg-Dateien; „Ende“ bleibt still (B-555)', () => {
-    for (const s of MUSIC_STATES.filter((x) => x !== 'ending')) expect(MUSIC_TRACKS[s]).toMatch(/^audio\/.+\.ogg$/);
-    expect(MUSIC_TRACKS.ending).toBeNull();
-    expect(MUSIC_SLOTS.ending).toBeNull();
+  it('das Register belegt alle neun Zustände mit Ogg-Dateien; Niederlage und Sieg haben je ein eigenes Stück (B-573)', () => {
+    for (const s of MUSIC_STATES) expect(MUSIC_TRACKS[s]).toMatch(/^audio\/.+\.ogg$/);
+    expect(MUSIC_SLOTS.defeat).toBe('music:niederlage');
+    expect(MUSIC_SLOTS.ending).toBe('music:ende');
+    expect(MUSIC_TRACKS.defeat).not.toBe(MUSIC_TRACKS.ending);
   });
 });
 
@@ -149,7 +156,7 @@ describe('MusicDirector', () => {
   it('Lobby meldet sich selbst; reset vergisst das Ende', () => {
     const { director } = setup({});
     director.update(view(), [{ type: 'castleFallen' }]);
-    expect(director.current).toBe('ending');
+    expect(director.current).toBe('defeat');
     director.reset();
     director.lobby();
     expect(director.current).toBe('lobby');

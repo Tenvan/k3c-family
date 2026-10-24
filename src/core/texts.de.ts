@@ -24,6 +24,7 @@ export const de = {
   'lobby.dialog.grade': 'Grad:  ◀ {value} ▶',
   'lobby.dialog.goal': 'Ziel:  ◀ {value} ▶',
   'lobby.dialog.defeat': 'Niederlage:  ◀ {value} ▶',
+  'lobby.dialog.world': 'Welt:  ◀ {value} ▶',
   'lobby.dialog.create': 'Raum anlegen',
   'lobby.dialog.cancel': 'Abbrechen',
   'lobby.dialog.hint': 'Hoch/runter wählen · links/rechts oder A / Enter ändern',
@@ -208,6 +209,7 @@ export const de = {
   'cast.noTarget': 'kein Ziel',
   'hint.learn': 'Skill lernen',
   'hint.respec': 'Skills zurücksetzen',
+  'hint.lair': 'Bau des Endbosses: Ankunft löst ihn aus',
   // Geführte erste Nacht (S6.3): Hinweise über den Objekten, {key} = Glyph
   'guide.coin': 'Hinlaufen: Münze aufheben',
   'guide.pay': '{key} halten: Bauplatz bezahlen',

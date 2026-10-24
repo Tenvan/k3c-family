@@ -1,3 +1,4 @@
+import { BUILDINGS } from '../../model/data';
 import type { SiteKind, SiteState } from '../../model/types';
 import { HUB_GROWTH, HUB_SCAFFOLD, type HubLook } from './hubGrowth';
 
@@ -6,7 +7,7 @@ import { HUB_GROWTH, HUB_SCAFFOLD, type HubLook } from './hubGrowth';
  * Reine Auswahl ohne Phaser: `null` = keine Grafik, dann zeichnet der Platzhalter. Lücken stehen hier nicht drin.
  */
 
-/** Hub-Gebäude (GEB9): Bauplatz → Grafik-Id aus `tools/buildings`; sie wechseln mit der Hub-Stufe (`World.hubLevel`), nicht mit einer Gebäudestufe */
+/** Hub-Gebäude (GEB9): Bauplatz → Grafik-Id aus `tools/buildings`; ohne eigene `levels` in `data/buildings.json` wechseln sie mit der Hub-Stufe (`World.hubLevel`), mit `levels` folgen sie der Gebäudestufe (`Site.level`, B-569) */
 const HUB_BUILDINGS: Partial<Record<SiteKind, string>> = {
   workshop: 'werkstatt', tavern: 'taverne', healer: 'heilplatz', smithy: 'schmiede',
   armory: 'ruestkammer', storage: 'lager', farm: 'farm', barracks: 'kaserne',
@@ -25,9 +26,9 @@ export const BUILDING_TEXTURES: Record<string, string> = {
   ...Object.assign({}, ...Object.entries(HUB_BUILDINGS).map(([kind, id]) => stufen(kind, id!))),
   'grafik:stairsUp': 'gebaeude/treppe-hoch-32.png',
   'grafik:stairsDown': 'gebaeude/treppe-runter-32.png',
-  /** Plantage (GEB5): Setzling auf leerem Platz, Pappel auf gewachsenem Platz */
+  /** Plantage (GEB5, B-568): Setzling auf leerem Platz, niedrige Pappel auf gewachsenem Platz (vor der Farm) */
   'grafik:setzling': 'gebaeude/setzling-32.png',
-  'grafik:pappel': 'gebaeude/pappel-32.png',
+  'grafik:pappel-niedrig': 'gebaeude/pappel-niedrig-32.png',
 };
 
 /** Burg, Mauer, Turm, Tor und Hub-Gebäude in den Stufen 1–5 aus `tools/buildings` (GEB3, GEB4, GEB9): `grafik:<kind>-<n>` → `gebaeude/<id>-<n>-32.png` */
@@ -51,9 +52,9 @@ const BASE: Partial<Record<SiteKind, string>> = {
   stairsUp: 'grafik:stairsUp',
 };
 
-/** Hub-Gebäude zeigen die Grafik der Hub-Stufe (GEB9); der Aufrufer reicht `World.hubLevel` (fehlt = 1) als Stufe durch */
+/** Hub-Gebäude ohne eigene Stufen zeigen die Grafik der Hub-Stufe (GEB9); der Aufrufer reicht `World.hubLevel` (fehlt = 1) als Stufe durch. Mit `levels` (B-569) zählt die Stufe des Platzes */
 export function isHubBuilding(kind: SiteKind): boolean {
-  return kind in HUB_BUILDINGS;
+  return kind in HUB_BUILDINGS && !BUILDINGS[kind]?.levels?.length;
 }
 
 /** Maßstab im Spiel: eigene Gebäude aus `tools/buildings` sind schon 32 px je Kachel (×1), die 16-px-Packs ×2 (GEB2) */
@@ -72,8 +73,8 @@ export function siteTexture(kind: SiteKind, state: SiteState, stage?: number): s
   if (state !== 'built') return null;
   const stages = STAGES[kind];
   if (stage !== undefined && stages) {
-    // Hub-Gebäude: fehlt die Stufe, gilt die höchste vorhandene (B-458 kann die Stufenzahl ändern); Mauer, Turm, Tor: Lücke = null
-    const n = isHubBuilding(kind) ? Math.min(Math.max(Math.trunc(stage) || 1, 1), stages.length) : stage;
+    // Hub-Gebäude (mit und ohne eigene Stufen): fehlt die Stufe, gilt die höchste vorhandene (B-458 kann die Stufenzahl ändern); Mauer, Turm, Tor: Lücke = null
+    const n = kind in HUB_BUILDINGS ? Math.min(Math.max(Math.trunc(stage) || 1, 1), stages.length) : stage;
     return stages[n - 1] ?? null;
   }
   return BASE[kind] ?? null;

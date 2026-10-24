@@ -248,7 +248,7 @@ func payOneCoin(w *World, p *Player) {
 		n := target.node
 		n.PaidGold++
 		if g, _ := gatherOf(n.Kind); n.PaidGold >= g.MarkCost {
-			n.Marked = true
+			markNode(n, p)
 			clearPending(p)
 		}
 	}

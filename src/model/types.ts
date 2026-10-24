@@ -46,6 +46,8 @@ export interface Player {
   cooldowns?: number[];
   /** Sekunden bis zum nächsten Schlag, fehlt = 0. */
   attackCooldown?: number;
+  /** Sekunden unsichtbar (Smoke Bomb, B-577), fehlt = sichtbar. */
+  stealthFor?: number;
   /** Verfügbare Skill-Punkte (Pool der Insel minus gelernte Skills), vom Server berechnet. */
   points: number;
   /** Gültige Aktionen am Ort des Spielers, vom Server berechnet. */
@@ -58,7 +60,9 @@ export type PlayerAction =
   | { action: 'skill'; slot: number; skill: string }
   /** `skills`: jetzt lernbare Skill-IDs (B-285); fehlt bei älteren Servern, dann gilt jeder ungelernte Skill. */
   | { action: 'learn'; skills?: string[] }
-  | { action: 'respec' };
+  | { action: 'respec' }
+  /** Der Spieler ist am Bau des wartenden Endbosses (B-563): Ankunft löst ihn aus. */
+  | { action: 'lair' };
 
 export interface Coin {
   id: number;
@@ -105,6 +109,8 @@ export interface ResourceNode {
   x: number;
   paidGold: number;
   marked: boolean;
+  /** Spieler-Index der letzten Markier-Münze; fehlt = unbekannt (B-532, ältere Server) */
+  markedBy?: number;
   workerId: number | null;
   /** 0..1 */
   progress: number;
@@ -190,6 +196,8 @@ export interface Enemy {
   aoeIn?: number;
   phase?: number;
   warn?: WarnZone;
+  /** Wache eines Gegnerlagers (docs/rules/geplante-chunks.md § 9): steht an `homeX`, gehört zu keiner Welle. */
+  guard?: boolean;
 }
 
 /** Nächster Flächenschlag eines Bosses: Mitte `x` und Radius `r` in Units, `in` Sekunden bis zum Schlag. */
@@ -371,48 +379,5 @@ export interface CycleInfo {
   secondsLeft: number;
 }
 
-export const SAVE_VERSION = 1;
-
-export interface HubSave {
-  depth: number;
-  castleHp: number;
-  stock: Stock;
-  wave: number;
-  aggression: number | null;
-  sites: { kind: string; x: number; state: SiteState; paidGold: number; buildProgress: number; hp: number; bows: number; bowPaidGold: number }[];
-  /** Nur Bauern und Bogenschützen. Landstreicher kommen von allein aus den Camps. */
-  troops: { kind: TroopKind; x: number; anchorX: number }[];
-  /** Schlüssel `kind@x` der Bäume/Felsen, die schon abgebaut sind bzw. markiert */
-  nodesGone: string[];
-  nodesMarked: string[];
-  pickupsTaken: string[];
-}
-
-export interface SaveGame {
-  version: number;
-  /** Gleiche id = gleiches Spiel. Der Server legt beim Überschreiben eines anderen Spiels eine Sicherung an. */
-  campaignId: string;
-  savedAt: string;
-  seed: string;
-  depth: number;
-  unlockedDepth: number;
-  time: number;
-  skillPoints: number;
-  players: { gold: number }[];
-  hubs: HubSave[];
-}
-
-/** Prüft grob, ob ein JSON ein Spielstand ist, den wir laden können. */
-export function isSaveGame(data: unknown): data is SaveGame {
-  const s = data as SaveGame;
-  return (
-    !!s &&
-    s.version === SAVE_VERSION &&
-    typeof s.campaignId === 'string' &&
-    typeof s.seed === 'string' &&
-    typeof s.depth === 'number' &&
-    typeof s.time === 'number' &&
-    Array.isArray(s.hubs) &&
-    Array.isArray(s.players)
-  );
-}
+// Spielstand-Typen liegen in save.ts; die Re-Exports halten die Importe aus './types' gültig (B-521).
+export * from './save';

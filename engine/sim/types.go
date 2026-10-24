@@ -52,6 +52,8 @@ type Player struct {
 	Shield       float64 `json:"shield,omitempty"`
 	ShieldFor    float64 `json:"shieldFor,omitempty"`
 	LastStandFor float64 `json:"lastStandFor,omitempty"`
+	// StealthFor: so lange ist der Monarch unsichtbar (Smoke Bomb, skills_thief.go): kein Ziel, kein Schaden.
+	StealthFor float64 `json:"stealthFor,omitempty"`
 	// ReviveProgress: Sekunden, die ein Mitspieler diesen Gefallenen schon wiederbelebt (monarch_revive.go, B-120).
 	ReviveProgress float64 `json:"reviveProgress,omitempty"`
 	skillHeld      int     // Skill-Slot (1 bis 4) des Vor-Ticks, 0 = keiner: castFailed nur bei neuem Druck (B-378), ohne JSON
@@ -106,6 +108,7 @@ type ResourceNode struct {
 	X        float64 `json:"x"`
 	PaidGold int     `json:"paidGold"`
 	Marked   bool    `json:"marked"`
+	MarkedBy *int    `json:"markedBy,omitempty"` // Spieler-Index der letzten Markier-Münze, fehlt = unbekannt (B-532)
 	WorkerID *int    `json:"workerId"`
 	Progress float64 `json:"progress"`
 	gone     bool    // abgebaut und aus Nodes entfernt (Plantage, building_plantation.go)
@@ -136,14 +139,14 @@ type Site struct {
 	SwordDone     float64 `json:"swordDone,omitempty"`
 	// Ausbau (hub_level.go): Level = Stufe des gebauten Platzes (0 = 1), Upgrade = Zustand des Ausbaus auf die nächste
 	// Stufe ("", waitingMaterial, waitingWorker), UpgradePaid = dafür gezahltes Gold.
-	Level       int     `json:"level,omitempty"`
-	Upgrade     string  `json:"upgrade,omitempty"`
-	UpgradePaid int     `json:"upgradePaid,omitempty"`
+	Level       int    `json:"level,omitempty"`
+	Upgrade     string `json:"upgrade,omitempty"`
+	UpgradePaid int    `json:"upgradePaid,omitempty"`
 	// Ruin: Der Platz ist eine Ruine der Planung (building_ruin.go). Dauerhafte Herkunft, immer aus dem Level per
 	// kind@x abgeleitet (isRuin), damit emptySite und destroySite sie neu setzen; nicht im Spielstand.
-	Ruin        bool    `json:"ruin,omitempty"`
-	plots       []plot  // Plantage einer gebauten Farm (building_plantation.go), ohne JSON
-	spellIn     float64 // Zaubertum: Sekunden bis zum nächsten Schuss (building_spell_tower.go), ohne JSON
+	Ruin    bool    `json:"ruin,omitempty"`
+	plots   []plot  // Plantage einer gebauten Farm (building_plantation.go), ohne JSON
+	spellIn float64 // Zaubertum: Sekunden bis zum nächsten Schuss (building_spell_tower.go), ohne JSON
 }
 
 // Castle ist die Burg in der Hub-Mitte.
@@ -186,6 +189,8 @@ type Enemy struct {
 	// Boss: Miniboss oder Endboss (boss.go); Kind ist dann die Boss-ID aus data/bosses.json, AoeIn zählt bis zur
 	// nächsten Fähigkeit. Bosse fliehen nie.
 	Boss bool `json:"boss,omitempty"`
+	// Guard: Wache eines Gegnerlagers (enemies_guard.go); steht am Heimatpunkt HomeX, gehört zu keiner Welle.
+	Guard bool `json:"guard,omitempty"`
 }
 
 // Storm ist ein laufender Lightning Storm (skills_caster.go): PerSecond Schaden je Sekunde an Gegnern im Radius um X,
@@ -331,6 +336,10 @@ type World struct {
 	island *Island
 	// castleFellNight: letzte Nacht, in der die Burg fiel (Vollmond-Belohnung, events_moon.go); nicht im Spielstand.
 	castleFellNight int
+	// guardsSpawned: Die Wachen der Planung sind aufgestellt (erster Tick); guardsCleared: geräumte Lager `kind@x`
+	// (enemies_guard.go, im Spielstand als HubSave.GuardsCleared).
+	guardsSpawned bool
+	guardsCleared map[string]bool
 }
 
 func (w *World) newID() int {

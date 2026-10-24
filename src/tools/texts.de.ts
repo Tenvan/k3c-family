@@ -157,6 +157,8 @@ export const de = {
   'dev.blocked': 'Neues Fenster gesperrt: {url} bitte von Hand öffnen.',
   'tile.testing.title': 'Testing',
   'tile.testing.desc': 'Test-Szenarien starten · 1 bis 4 Spieler mit Mock-Spielern (Go-Server nötig)',
+  'tile.gamedev.title': 'Spiel (Dev)',
+  'tile.gamedev.desc': 'Spiel mit Debug-Overlay (?dev=1) · window.game für die Konsole',
   'tile.gamepad.title': 'Gamepad-Test',
   'tile.gamepad.desc': 'Controller, B-Taste, Vollbild, Vibration, FPS · Bericht an den PC',
   'tile.grafiken.title': 'Alle Grafiken',

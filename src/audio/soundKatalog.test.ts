@@ -9,11 +9,11 @@ import credits from '../../public/audio/README.md?raw';
 /** Ereignisse aus B-167 › Anforderungen (Spalte „Ereignis“ des Katalogs) */
 const EREIGNISSE = ['Treffer', 'Gegner-Tod', 'Münze aufheben', 'Münze geben', 'Pfeil', 'Schlag', 'Bau-Fortschritt', 'Bau fertig', 'Tod', 'Skill',
   'Nacht naht', 'Portal öffnet', 'Respawn (`revive`)', 'Wiederbeleben durch Mitspieler (`revived`)', 'Hub-Ausbau', 'Skill je Klasse', 'Boss-Auftritt', 'UI-Klicks', 'Reiten (Hufschlag, Schleife)'];
-const ZUSTAENDE = ['Tag', 'Abend', 'Nacht', 'Kampf', 'Tiefe/Höhle', 'Boss', 'Lobby', 'Niederlage/Sieg'];
+const ZUSTAENDE = ['Tag', 'Abend', 'Nacht', 'Kampf', 'Tiefe/Höhle', 'Boss', 'Lobby', 'Niederlage', 'Sieg'];
 /** Selbst erzeugt, kein Credit nötig (public/audio/README.md) */
 const SELBST = /^audio\/(atlas|probe-[ab])\.(ogg|mp3)$/;
 const FILES = Object.keys(import.meta.glob('../../public/audio/**/*.{ogg,mp3,wav}', { query: '?url' })).map((p) => p.replace('../../public/', ''));
-const TICKETS = new Set(Object.keys(import.meta.glob('../../docs/backlog/B-*.md', { query: '?raw' })).map((p) => /B-\d+/.exec(p)![0]));
+const TICKETS = new Set(Object.keys(import.meta.glob('../../docs/backlog/{,archiv/}B-*.md', { query: '?raw' })).map((p) => /B-\d+/.exec(p)![0]));
 
 const cells = (line: string) => line.trim().replace(/^\||\|$/g, '').split('|').map((c) => c.trim());
 const rows = (md: string, head: string) => md.replace(/\r\n/g, '\n').split('\n').filter((l) => l.startsWith('|') && !l.startsWith('| ' + head) && !l.startsWith('|---')).map(cells);

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { NATURE_TEXTURES, natureLook, nodeSprite, treeTexture, veinSlot } from './natureSprites';
+import { NATURE_TEXTURES, campSprite, natureLook, nodeSprite, treeTexture, veinSlot } from './natureSprites';
 
 /** Nur die Pfade, nichts wird geladen */
 const FILES = Object.keys(import.meta.glob('../../../public/grafik/gebaeude/*.png'));
@@ -82,5 +82,18 @@ describe('nodeSprite (GEB6.5)', () => {
   it('alles im Maßstab 1; unbekannte Art null (Platzhalter)', () => {
     for (const kind of ['tree', 'rock', 'copperOre', 'bush', 'stoneVein']) expect(nodeSprite(kind, 3, 'forest')?.zoom).toBe(1);
     expect(nodeSprite('goldVein', 3, 'forest')).toBeNull();
+  });
+});
+
+describe('campSprite (B-570)', () => {
+  it('Rekrutierungslager zeigt den Look des Bioms, Datei je Look vorhanden', () => {
+    expect(campSprite('forest').key).toBe('grafik:lager');
+    expect(campSprite(undefined).key).toBe('grafik:lager');
+    expect(campSprite('cave').key).toBe('grafik:lager-2');
+    for (const biome of ['mine', 'ironhold', 'crystal']) expect(campSprite(biome).key).toBe('grafik:lager-3');
+    for (const [key, file] of [['grafik:lager', 1], ['grafik:lager-2', 2], ['grafik:lager-3', 3]] as const) {
+      expect(NATURE_TEXTURES[key]).toBe(`gebaeude/rekrutierungslager-${file}-32.png`);
+      expect(FILES).toContain(`../../../public/grafik/${NATURE_TEXTURES[key]}`);
+    }
   });
 });

@@ -55,7 +55,7 @@ des Snapshots (`docs/protocol.md` › Wirtschaft). Wie in Kingdom Two Crowns beg
 | Holzhütte am Feuer | 1 | mindestens die Hälfte des Golds, Gold noch offen |
 | Holzburg | 1 | Gold voll (wartet auf Material oder Bauer) |
 | Stein-, Kupfer-, Eisen-, Kristallburg | 2–5 | beliebig |
-| + Baugerüst vor dem Look | 1–4 | Material abgebucht, ein Bauer baut |
+| + Baugerüst vor dem Look | 1–4 | Material abgebucht, der Bauer wartet oder baut (auch bei Gefahr, B-572) |
 
 - Fehlt `hubUpgrade` (letzte Stufe oder älterer Server), zeigt der Hub die Burg seiner Stufe; fehlt die Grafik eines Looks, gilt
   die Burg der Hub-Stufe.
@@ -116,6 +116,8 @@ Zusatzgebäude: **Lager** (Stufe 2), Taverne (Stufe 2), Heilplatz (Stufe 3).
 
 Turm: Kosten und Bauzeiten der Stufen 2–5 sind Startwerte (Q45, 2026-10-04), Ausbau am selben Platz; 2 Bogenplätze, +3 Reichweite. Stufe 5 ist der **Zaubertum**: Flächenschaden statt Bogen, als eigener Schuss mit den Startwerten 40 Schaden, Radius 3, Reichweite 13, alle 1,5 s; die Schützen steigen beim Ausbau ab und zählen weiter als Kämpfer (Q31, 2026-10-04). Daten: `data/buildings.json` (SIM legt Stufen an).
 Zielkorridor: Erste Mauer vor Ende Tag 1 in ≥ 90 %; erster Turm vor Ende Tag 2 in ≥ 70 %.
+
+**Eigene Stufen weiterer Gebäude (GEB13, B-569, Annahme bis 🧑 widerspricht):** Lager, Farm, Kaserne, Taverne und Heilplatz haben wie Mauer und Turm `levels` 1–5 in `data/buildings.json` (Ausbau am selben Platz, Stufe n ab Hub-Stufe n, Material je Stufe wie in § 2, Kosten, HP und Bauzeit wie beim Turm skaliert: Material ×1/1,5/2/2,5/3, Gold ×1/1,25/2,5/5/10, HP ×1/2/3,5/5,5/8,5, Bauzeit ×1/1,5/2/2,7/3,3; Startwerte, Stufe 1 = Grundwerte). Die Grafik folgt der Stufe des Platzes. Werkstatt, Schmiede und Rüstkammer haben keine `levels`: ihr Zahlziel nimmt schon Produkte an (Bogen, Elite, Rüstung), und die Grafik folgt weiter der Hub-Stufe.
 
 ### 3.2 Wirkungen der übrigen Gebäude
 

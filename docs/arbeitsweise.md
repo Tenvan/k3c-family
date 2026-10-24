@@ -90,7 +90,9 @@ Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten 
    Steht auf einem anderen Sprint-Branch (`git ls-remote --heads origin 'sprint/*'`) eine Session derselben Domäne auf
    `in Arbeit`, die nächste passende Session nehmen. Gibt es keine: **nichts tun** und das melden.
    **Kurzweg:** `plan_next` (k3c-workbench) trifft diese Auswahl aus den lokalen Dateien und liefert Session, Kriterien und
-   „Parallel möglich“; die Sperre über `origin` (`ls-remote`) prüft der Agent selbst.
+   „Parallel möglich“; je aktivem Sprint überlagert es den Stand von `origin/sprint/<präfix>` (lokaler Ref nach `git fetch`,
+   Schritt 1 oben; fehlt der Ref, gilt der lokale Stand und die Antwort sagt das, B-519). Sprint-Branches, die lokal noch nicht
+   bekannt sind, zeigt `git fetch --prune`.
 2. Sprint-Branch auschecken (fehlt er: von `origin/develop` anlegen, die erste Session setzt `Start-Commit`).
    Session-Datei vollständig lesen, `Status: in Arbeit` setzen, committen und sofort `git push -u origin sprint/<präfix>`
    (beansprucht die Session; scheitert der Push, hat ein anderer Lauf sie: neu holen und bei 1. beginnen).

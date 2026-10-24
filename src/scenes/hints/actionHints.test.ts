@@ -41,6 +41,15 @@ describe('hintView: Aktion → Taste und Text je Gerät (B-125/AC-01)', () => {
     expect(hintView({ action: 'skill', slot: 2, skill: 'shieldBash' }, 'keyboard').text).toBe('R: Shield Bash');
   });
 
+  it('Bau des Endbosses: Zeile ohne Taste (B-563/AC-01)', () => {
+    const v = hintView({ action: 'lair' }, 'pad');
+    expect(v.glyph.key).toBeNull();
+    expect(v.text).toBe('Bau des Endbosses: Ankunft löst ihn aus');
+    expect(playerHint(world([]), player({ actions: [{ action: 'lair' }] }), 'pad')?.text).toBe(v.text);
+    // Kampf geht vor: im Bau-Radius bleibt „Schlag“ die Hauptzeile
+    expect(playerHint(world([]), player({ actions: [{ action: 'attack' }, { action: 'lair' }] }), 'pad')?.text).not.toBe(v.text);
+  });
+
   it('Text um die Glyph bleibt erhalten (S6.2)', () => {
     expect(hintView({ action: 'build', name: 'Mauer' }, 'pad').around).toEqual(['', ' halten: Mauer bauen']);
     expect(hintView({ action: 'attack' }, 'pad').around).toEqual(['', ': Schlag']);

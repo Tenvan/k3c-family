@@ -9,7 +9,7 @@ import { audioCore, type AudioCore } from './audioCore';
 import { CROSSFADE_SECONDS } from './crossfade';
 import assets from '../../data/assets.json';
 
-export const MUSIC_STATES = ['day', 'dusk', 'night', 'battle', 'depth', 'boss', 'lobby', 'ending'] as const;
+export const MUSIC_STATES = ['day', 'dusk', 'night', 'battle', 'depth', 'boss', 'lobby', 'defeat', 'ending'] as const;
 export type MusicState = (typeof MUSIC_STATES)[number];
 
 /** Auszug des Snapshots, den der Automat braucht. `boss` und `victory` liefert die Simulation erst mit K2/K4 (bis dahin nie gesetzt). */
@@ -29,12 +29,14 @@ export interface MusicView {
 export const musicViewOf = (w: Pick<World, 'cycle' | 'enemies' | 'biome'>): MusicView => ({ phase: w.cycle.phase, enemies: w.enemies.length, depth: w.biome.depth });
 
 /**
- * Rein: nächster Zustand. Priorität: Lobby > Niederlage/Sieg > Boss > Kampf > Tiefe > Tageszeit.
- * „Ende“ (Niederlage `castleFallen`, Sieg) bleibt, bis die Lobby wieder läuft (`prev`).
+ * Rein: nächster Zustand. Priorität: Lobby > Niederlage > Sieg > Boss > Kampf > Tiefe > Tageszeit.
+ * „Niederlage“ (`castleFallen`) und „Sieg“ (`ending`) bleiben, bis die Lobby wieder läuft (`prev`); Niederlage und Sieg haben je
+ * ein eigenes Stück (B-573), die Niederlage gewinnt, wenn beides zusammentrifft.
  */
 export function nextMusicState(prev: MusicState | undefined, view: MusicView, events: readonly { type: string }[] = []): MusicState {
   if (view.lobby) return 'lobby';
-  if (prev === 'ending' || view.victory || events.some((e) => e.type === 'castleFallen')) return 'ending';
+  if (prev === 'defeat' || events.some((e) => e.type === 'castleFallen')) return 'defeat';
+  if (prev === 'ending' || view.victory) return 'ending';
   if (view.boss) return 'boss';
   if (view.enemies > 0) return 'battle';
   if (view.depth > 0) return 'depth';
@@ -43,8 +45,7 @@ export function nextMusicState(prev: MusicState | undefined, view: MusicView, ev
 
 /**
  * Zustand → Sound-Slot im Register `data/assets.json` (Auswahl SO4.1, Katalog `docs/assets/sounds.md` › Musik); `null` = Lücke.
- * „Ende“ wird heute nur durch `castleFallen` (Niederlage) erreicht: für die Niederlage gibt es kein Stück, das Siegstück aus
- * `music:ende` passt nicht dazu. Bis 🧑 entscheidet (B-555), bleibt „Ende“ still.
+ * Die Niederlage (`castleFallen`) hat ein eigenes Stück, das Siegstück `music:ende` bleibt dem Sieg vorbehalten (B-573, B-555).
  */
 export const MUSIC_SLOTS: Readonly<Record<MusicState, string | null>> = {
   day: 'music:tag',
@@ -54,7 +55,8 @@ export const MUSIC_SLOTS: Readonly<Record<MusicState, string | null>> = {
   depth: 'music:tiefe',
   boss: 'music:boss',
   lobby: 'music:lobby',
-  ending: null,
+  defeat: 'music:niederlage',
+  ending: 'music:ende',
 };
 
 /** Sound-Slot des Registers (nur was die Musik braucht) */

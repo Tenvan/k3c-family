@@ -104,7 +104,7 @@ func TestIslandSaveV3FixtureLaedt(t *testing.T) {
 func TestIslandSaveV3Fehler(t *testing.T) {
 	player := func(m map[string]any, i int) map[string]any { return m["players"].([]any)[i].(map[string]any) }
 	cases := map[string]func(map[string]any){
-		"unbekannter Skill":    func(m map[string]any) { player(m, 0)["skills"] = []any{"taunt", "backstab"} },
+		"unbekannter Skill":    func(m map[string]any) { player(m, 0)["skills"] = []any{"taunt", "shadowStrike"} },
 		"doppelter Skill":      func(m map[string]any) { player(m, 1)["skills"] = []any{"fireball", "fireball"} },
 		"mehr Skills als Pool": func(m map[string]any) { m["skillPool"] = 2 },
 		"Gating verletzt":      func(m map[string]any) { player(m, 0)["skills"] = []any{"taunt", "armorAura"} },

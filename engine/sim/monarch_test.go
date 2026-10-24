@@ -112,7 +112,7 @@ func TestMonarchTierGating(t *testing.T) {
 		t.Fatal("Tier 4 mit 5 Skills der Linie gelernt")
 	}
 	mustLearn(t, w, p, "regeneration", "lastStand")
-	for _, bad := range []string{"taunt", "backstab"} {
+	for _, bad := range []string{"taunt", "shadowStrike"} {
 		if LearnSkill(w, p, bad) == nil {
 			t.Errorf("%s: schon gelernt bzw. unbekannt, trotzdem gelernt", bad)
 		}

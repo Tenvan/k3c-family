@@ -46,14 +46,18 @@ type HubSave struct {
 	// Rüstungsstufe der Kämpfer des Hubs (Version 7, save_economy.go), 0 = keine.
 	ArmorLevel int `json:"armorLevel,omitempty"`
 	// Nur Bauern und Bogenschützen. Landstreicher kommen von allein aus den Camps.
-	Troops       []TroopSave `json:"troops"`
-	NodesGone    []string    `json:"nodesGone"` // Schlüssel `kind@x` der abgebauten Bäume/Felsen
-	NodesMarked  []string    `json:"nodesMarked"`
-	PickupsTaken []string    `json:"pickupsTaken"`
+	Troops      []TroopSave `json:"troops"`
+	NodesGone   []string    `json:"nodesGone"` // Schlüssel `kind@x` der abgebauten Bäume/Felsen
+	NodesMarked []string    `json:"nodesMarked"`
+	// Spieler-Index je markiertem Knoten (`kind@x`), nur bekannte (B-532); fehlt in älteren Ständen.
+	NodesMarkedBy map[string]int `json:"nodesMarkedBy,omitempty"`
+	PickupsTaken  []string       `json:"pickupsTaken"`
 	// Erzeugung der Stufe (B-489): geplante Chunks und Chunk-Anzahl, mit denen sie gebaut wurde. Das Laden baut sie damit,
 	// nicht mit den aktuellen Daten; ohne Eintrag gilt reiner Zufall in der Länge des Bioms (kein Format-Sprung).
 	Planned    []level.PlannedChunk `json:"planned,omitempty"`
 	ChunkCount int                  `json:"chunkCount,omitempty"`
+	// Geräumte Gegnerlager (Version 9, enemies_guard.go): Schlüssel `kind@x` der besiegten Wachen, sortiert; sie kommen nie wieder.
+	GuardsCleared []string `json:"guardsCleared,omitempty"`
 }
 
 // PlayerSave ist das Gold eines Spielerplatzes.
@@ -146,7 +150,9 @@ func hubSave(w, base *World) HubSave {
 	h.Troops = troopsSave(w)
 	h.NodesGone = without(keys(base.Nodes, nodeKey), keys(w.Nodes, nodeKey))
 	h.NodesMarked = keys(w.Nodes, func(n *ResourceNode) (string, bool) { return key(n.Kind, n.X), n.Marked })
+	h.NodesMarkedBy = markedByOf(w)
 	h.PickupsTaken = without(keys(base.Pickups, pickupKey), keys(w.Pickups, pickupKey))
+	h.GuardsCleared = guardsClearedKeys(w)
 	return h
 }
 
@@ -263,6 +269,7 @@ func applyHub(w *World, h HubSave) {
 	for _, n := range w.Nodes {
 		if !gone[key(n.Kind, n.X)] {
 			n.Marked = n.Marked || marked[key(n.Kind, n.X)]
+			applyMarkedBy(n, h.NodesMarkedBy)
 			nodes = append(nodes, n)
 		}
 	}
@@ -274,6 +281,7 @@ func applyHub(w *World, h HubSave) {
 		}
 	}
 	w.Pickups = pickups
+	applyGuards(w, h)
 	applyPlots(w, h) // nach den Knoten: die Bäume der Plantage kommen dazu
 }
 

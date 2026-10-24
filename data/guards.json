@@ -1,0 +1,6 @@
+{
+  "notes": "Gegnerlager in geplanten Chunks (docs/rules/geplante-chunks.md § 9, B-517, WZ27): aggroRadiusUnits = Radius um den Heimatpunkt der Wache, in dem sie Spieler und Truppen angreift; maxPerChunk = Wachen je Chunk; minGapUnits = Mindestabstand zweier Wachen eines Chunks.",
+  "aggroRadiusUnits": 10,
+  "maxPerChunk": 4,
+  "minGapUnits": 1.5
+}

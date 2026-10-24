@@ -24,7 +24,7 @@ import { PLACEHOLDER_BG, StageView, placeholderLayer, showOnly } from './render/
 import { clientLog } from '../core/clientLog';
 import { audioCore } from '../audio/audioCore';
 import { musicDirector, musicViewOf } from '../audio/music';
-import { eventX, type Listener } from '../audio/events';
+import { eventX, rideLoops, type Listener } from '../audio/events';
 import { loadSettings } from '../core/settings';
 import { EFFECT_CONFIG, SHAKE, effectFor, type BuildSpots } from './effects/effects';
 import { hurtSeat, rumblePad, runEffect, shakeCell } from './effects/effectRules';
@@ -118,6 +118,7 @@ export class GameScene extends Phaser.Scene {
     this.slots = new LocalSlots<PlayerInput>(data.mock, pageBots()); // Bots (`?botfeed`) sind fest an ihre Slots gebunden
     this.world_ = undefined;
     musicDirector().reset();
+    audioCore().syncLoops('sfx:ride', []); // kein Hufschlag aus dem alten Spiel
     audioCore().onHubLevel(undefined); // neues Spiel: Hub-Stufe vergessen, kein Ausbau-Ton beim ersten Snapshot
     this.stages = new Map(); // die Szene hat ihre Ebenen beim Neustart schon zerstört
     this.holders = [];
@@ -356,6 +357,7 @@ export class GameScene extends Phaser.Scene {
       this.loadStage(this.world_);
     }
     musicDirector().update(musicViewOf(this.world_));
+    audioCore().syncLoops('sfx:ride', rideLoops(this.world_.players, this.listeners(), this.world_.cycle.phase)); // Hufschlag je Reiter (B-574)
     const unattended = new Set<number>();
     this.client.monarchs.forEach((m, i) => m !== 'taken' && unattended.add(i));
     const stage = this.stages.get(level.depth);

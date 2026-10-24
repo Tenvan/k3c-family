@@ -122,13 +122,14 @@ describe('Aktionen und Skills (B-463/AC-05 bis AC-09)', () => {
     expect(h.querySelector('.wd-monarch-main > .wd-bar')!.textContent).toContain('Treffer-Animation');
   });
 
-  it('die Skill-Liste zeigt alle Skills mit Linie, Stufe, Art und Lücke (Preset Dieb ohne fehlende Skills, B-504)', async () => {
+  it('die Skill-Liste zeigt alle Skills mit Linie, Stufe, Art und dem Effekt des Spiels statt der Lücke (B-562/AC-01)', async () => {
     const h = await mount();
     const rows = h.querySelectorAll('.wd-skills tbody tr');
-    expect(rows).toHaveLength(24);
+    expect(rows).toHaveLength(26);
     expect(h.querySelector('[data-skill="fireball"]')!.textContent).toContain('Zauberer');
-    expect(h.querySelector('[data-skill="fireball"]')!.textContent).toContain('keine Darstellung im Spiel');
-    expect(h.querySelector('[data-skill="backstab"]')).toBeNull();
+    expect(h.querySelector('.wd-skills')!.textContent).not.toContain('keine Darstellung im Spiel');
+    expect(h.querySelector('[data-skill="backstab"]')!.textContent).toContain('Dieb');
+    expect(h.querySelector('[data-skill="backstab"] .wd-skill-swatch')).not.toBeNull();
   });
 });
 

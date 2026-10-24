@@ -67,7 +67,7 @@ func stepSpawns(w *World) {
 // sendEnemiesHome: Bei Tagesanbruch fliehen alle Gegner zurück zu ihren Portalen (K2C), Bosse bleiben.
 func sendEnemiesHome(w *World) {
 	for _, e := range w.Enemies {
-		e.Fleeing = !e.Boss
+		e.Fleeing = !e.Boss && isWaveEnemy(e)
 	}
 	w.SpawnQueue = []QueuedSpawn{}
 }
@@ -86,6 +86,10 @@ func stepEnemies(w *World, dt float64) {
 		}
 		e.Cooldown, e.AoeIn = math.Max(0, e.Cooldown-dt), math.Max(0, e.AoeIn-dt)
 		if stunned(e, dt) {
+			continue
+		}
+		if e.Guard {
+			stepGuard(w, e, dt)
 			continue
 		}
 		bossAbility(w, e)
@@ -121,7 +125,7 @@ func stepEnemies(w *World, dt float64) {
 func leaveThroughPortal(w *World) {
 	kept := w.Enemies[:0]
 	for _, e := range w.Enemies {
-		if e.HP <= 0 || !(e.Fleeing && math.Abs(e.X-e.HomeX) < 0.3) {
+		if e.HP <= 0 || e.Guard || !(e.Fleeing && math.Abs(e.X-e.HomeX) < 0.3) {
 			kept = append(kept, e)
 		}
 	}
@@ -289,7 +293,7 @@ func chooseTarget(w *World, e *Enemy, dir float64, wall *Site) *target {
 
 func attack(w *World, e *Enemy, t *target) {
 	e.Cooldown = 1 / attackRate(e.Kind)
-	if p := t.player; p != nil && e.has("stealsGold") && p.Gold > 0 && !w.protectedNight() {
+	if p := t.player; p != nil && e.has("stealsGold") && !e.Guard && p.Gold > 0 && !w.protectedNight() {
 		amount := min(p.Gold, waves.StealGold)
 		p.Gold -= amount
 		e.CarriedGold += amount

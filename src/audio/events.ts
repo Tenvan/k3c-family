@@ -59,6 +59,22 @@ export const hubRaised = (prev: number | undefined, next: number | undefined): b
 /** Rein: Ort der Quelle in Units: `x` des Ereignisses, sonst `fallback` (z. B. Ort des Effekts); ohne beides `undefined` (keine Dämpfung). */
 export const eventX = (e: GameEvent, fallback?: number): number | undefined => ('x' in e && typeof e.x === 'number' ? e.x : fallback);
 
+/** Ab dieser Geschwindigkeit (Units/s) hört man den Hufschlag (B-574); darunter steht das Pferd. */
+export const RIDE_MIN_SPEED = 0.3;
+/** Pegel der Hufschlag-Schleife: ein dezenter Teppich unter den Effekten. */
+export const RIDE_GAIN = 0.5;
+
+/**
+ * Rein: Hufschlag je reitendem Spieler (B-574). Reitend = lebt und bewegt sich (`vx` im Snapshot; der Monarch ist immer beritten,
+ * `data/monarch.json` › `mount`). Schlüssel = `index` des Spielers, Pegel nach Abstand zur Kamera und Tageszeit wie die Effekte.
+ */
+export function rideLoops(players: readonly { index: number; x: number; vx: number; respawnIn: number }[], listeners: readonly Listener[], phase?: string): { key: number; volume: number }[] {
+  return players
+    .filter((p) => p.respawnIn <= 0 && Math.abs(p.vx) >= RIDE_MIN_SPEED)
+    .map((p) => ({ key: p.index, volume: attenuation(p.x, listeners, false) * nightGain(phase) * RIDE_GAIN }))
+    .filter((l) => l.volume > 0);
+}
+
 /** Sound-Slot des Registers (nur was der Client braucht) */
 export interface SfxSlot {
   id: string;

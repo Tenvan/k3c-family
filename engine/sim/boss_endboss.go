@@ -55,6 +55,18 @@ func lairX(w *World) (float64, bool) {
 	return 0, false
 }
 
+// AtLair: Der Endboss der Stufe wartet noch in seinem Bau (nicht ausgelöst, nicht besiegt) und der lebende Spieler ist
+// näher als `lair.noticeUnits` daran; die Aktionsliste nennt dann den Bau als Auslöser (B-563, `lair`).
+func AtLair(w *World, p *Player) bool {
+	isl := w.island
+	b := endBoss(w.Biome.Depth)
+	x, ok := lairX(w)
+	if isl == nil || b == nil || !ok || isl.endboss != nil || isl.EndbossDefeated || slices.Contains(isl.DefeatedBosses, b.ID) {
+		return false
+	}
+	return !p.Free && p.HP > 0 && p.RespawnIn <= 0 && math.Abs(p.X-x) < b.Lair.NoticeUnits
+}
+
 // playerNear: Ein lebender, gesteuerter Spieler ist näher als dist an x.
 func playerNear(w *World, x, dist float64) bool {
 	return slices.ContainsFunc(w.Players, func(p *Player) bool {

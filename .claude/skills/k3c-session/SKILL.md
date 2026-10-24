@@ -13,11 +13,10 @@ die ganze Datei nur bei Regelfragen lesen.
 1. `git fetch --prune`, dann `task ops:aufraeumen`.
 2. `plan_next` (k3c-workbench) liefert Session, Pfad, Branch-Präfix, Kriterien und „Parallel möglich“.
    Ohne k3c-workbench: `docs/arbeitsweise.md` › Autonomer Ablauf, Schritt 1.
-   **Achtung:** `plan_next` liest nur den ausgecheckten Stand. Liegt `origin/sprint/<präfix>` vor, den Status der
-   gewählten Session dort prüfen (`git show origin/sprint/<präfix>:<Pfad>`); ist sie nicht `offen`, den Sprint-Branch
-   auschecken und `plan_next` erneut fragen (B-519).
-3. Sperre über `origin`: `git ls-remote --heads origin 'sprint/*'`; steht dort eine Session derselben Domäne auf
-   `in Arbeit`, `plan_next` mit anderer `domain` fragen.
+   `plan_next` überlagert je aktivem Sprint automatisch den Stand von `origin/sprint/<präfix>` (lokaler Ref aus dem
+   `git fetch` in Schritt 1, B-519); die Zeilen unter „Stand der Sprints“ nennen, ob origin oder der lokale Stand gilt.
+3. Sperre über `origin`: Sie ist in `plan_next` enthalten; nur für Sprint-Branches, die lokal unbekannt sind, hilft
+   `git fetch --prune`.
 4. Steht unter „Parallel möglich“ eine `offline`-Session einer anderen Domäne, sie Ralf als eigene Session vorschlagen
    (Worktree), nicht nacheinander abarbeiten.
 

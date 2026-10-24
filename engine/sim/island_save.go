@@ -10,12 +10,12 @@ import (
 	"k3c/engine/level"
 )
 
-// Spielstand der Insel (Version 8, B-100, S1.4, S2.2, K2.3b, K3.2a, W7.2, WZ18.3). Die Campaign schreibt weiter Version 1 (save.go); der Raum benutzt bis zur
+// Spielstand der Insel (Version 9, B-100, S1.4, S2.2, K2.3b, K3.2a, W7.2, WZ18.3, WZ27.1). Die Campaign schreibt weiter Version 1 (save.go); der Raum benutzt bis zur
 // Umstellung (B-133) nur Version 1. Gespeichert wird wie dort nur, was sich nicht aus dem Seed ergibt: Hubs, Truppen,
 // Vorrat, Gold und Entferntes. Flüchtiges (Gegner, Münzen am Boden, Geschosse, Zufallsstand) geht beim Laden verloren.
 
 // IslandSaveVersion ist die Version des Insel-Spielstands.
-const IslandSaveVersion = 8
+const IslandSaveVersion = 9
 
 // IslandSave ist ein Spielstand einer Insel.
 type IslandSave struct {
@@ -42,6 +42,7 @@ type IslandSave struct {
 	MerchantVisits int           `json:"merchantVisits,omitempty"`
 	Merchant       *MerchantSave `json:"merchant,omitempty"`
 	// Version 7 (save_economy.go): Rüstung, Berufe, Krieger, Elite, Schwerter und Plantage stehen in den Stufen (HubSave).
+	// Version 9 (enemies_guard.go): geräumte Gegnerlager stehen in den Stufen (HubSave.GuardsCleared).
 }
 
 // IslandPlayerSave ist ein Spieler der Insel: inselweiter Index, Gold, die Tiefe seiner Stufe und seine Verteilung
@@ -77,7 +78,7 @@ func (isl *Island) ToSave(savedAt string) IslandSave {
 	return s
 }
 
-// ParseIslandSave liest einen Spielstand der Version 8 oder, überführt, der Version 7 (Insel als Index), 6 (ohne
+// ParseIslandSave liest einen Spielstand der Version 9 oder, überführt, der Version 8 (ohne geräumte Lager), 7 (Insel als Index), 6 (ohne
 // Wirtschaft), 5 (ohne Händler), 4 (ohne Bosse und Insel), 3 (ohne Tag und Phase), 2 oder 1 (Campaign). Stände bis
 // Version 7 kommen in die Standard-Welt (migrateWorld). Tag und Phase wirken beim Laden nicht, die Zeit kommt aus `time`.
 func ParseIslandSave(raw []byte) (IslandSave, error) {
@@ -91,7 +92,7 @@ func ParseIslandSave(raw []byte) (IslandSave, error) {
 	var s IslandSave
 	var err error
 	switch head.Version {
-	case IslandSaveVersion:
+	case IslandSaveVersion, 8:
 		return parseIslandV3(raw, "world", "islandId")
 	case SaveVersion:
 		var old SaveGame
@@ -103,7 +104,7 @@ func ParseIslandSave(raw []byte) (IslandSave, error) {
 	case 3, 4, 5, 6, 7:
 		s, err = parseIslandV3(raw)
 	default:
-		return IslandSave{}, fmt.Errorf("spielstand: Version %d, erwartet %d, 2, 3, 4, 5, 6, 7 oder %d", head.Version, SaveVersion, IslandSaveVersion)
+		return IslandSave{}, fmt.Errorf("spielstand: Version %d, erwartet %d, 2, 3, 4, 5, 6, 7, 8 oder %d", head.Version, SaveVersion, IslandSaveVersion)
 	}
 	if err != nil {
 		return IslandSave{}, err

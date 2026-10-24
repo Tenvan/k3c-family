@@ -123,7 +123,7 @@ func TestParseIslandSaveRejectsBadInput(t *testing.T) {
 		t.Fatal(err)
 	}
 	cases := map[string]func(map[string]any){
-		"Version":           func(m map[string]any) { m["version"] = 9 },
+		"Version":           func(m map[string]any) { m["version"] = 99 },
 		"Pflichtfeld":       func(m map[string]any) { delete(m, "stock") },
 		"Spieler ohne Stufe": func(m map[string]any) { m["players"] = []any{map[string]any{"index": 0, "gold": 1, "depth": 2}} },
 		"doppelter Index":   func(m map[string]any) { m["players"] = []any{map[string]any{"index": 0, "gold": 1, "depth": 0}, map[string]any{"index": 0, "gold": 1, "depth": 0}} },

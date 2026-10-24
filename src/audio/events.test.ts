@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import assets from '../../data/assets.json';
 import type { GameEvent } from '../model/types';
-import { attenuation, cueFor, EDGE_GAIN, eventX, hubRaised, NIGHT_GAIN, nightGain, SFX_URLS, sfxUrls, type Listener, type SfxSlot } from './events';
+import { attenuation, cueFor, EDGE_GAIN, eventX, hubRaised, NIGHT_GAIN, nightGain, RIDE_GAIN, RIDE_MIN_SPEED, rideLoops, SFX_URLS, sfxUrls, type Listener, type SfxSlot } from './events';
 
 const p1: Listener = { center: 20, span: 20 }; // sieht 10..30
 const p2: Listener = { center: 100, span: 20 }; // sieht 90..110
@@ -74,10 +74,10 @@ describe('cueFor (B-167/AC-03, AC-04)', () => {
     cueFor(e);
     expect(e).toEqual(copy);
   });
-  it('jeder Effekt-Slot des Registers mit Datei, der ein Ereignis hat, ist über cueFor erreichbar; sfx:ride wartet auf B-558, sfx:hub kommt aus dem Snapshot (onHubLevel)', () => {
+  it('jeder Effekt-Slot des Registers mit Datei, der ein Ereignis hat, ist über cueFor erreichbar; sfx:hub kommt aus dem Snapshot (onHubLevel), sfx:ride aus den Spielern (rideLoops, B-574), sfx:uiSelect und sfx:uiConfirm aus den Menü-Szenen (B-575)', () => {
     const slots = (assets.slots as SfxSlot[]).filter((s) => s.art === 'sound' && s.bus === 'sfx' && s.wahl.length > 0).map((s) => s.id);
     const reachable = new Set(Object.values(EVENTS).map((e) => cueFor(e)?.slot));
-    expect(slots.filter((id) => !reachable.has(id))).toEqual(['sfx:hub', 'sfx:ride']);
+    expect(slots.filter((id) => !reachable.has(id))).toEqual(['sfx:hub', 'sfx:ride', 'sfx:uiSelect', 'sfx:uiConfirm']);
   });
 });
 
@@ -109,4 +109,19 @@ describe('Nacht leise (B-167/AC-06) und Ort', () => {
     expect(eventX({ type: 'built', kind: 'wall' }, 99)).toBe(99);
     expect(eventX({ type: 'dusk' })).toBeUndefined();
   });
+});
+
+describe('rideLoops (B-574)', () => {
+  const pl = (index: number, x: number, vx: number, respawnIn = 0) => ({ index, x, vx, respawnIn });
+  it('nur lebende, bewegte Spieler reiten; Schlüssel = Spieler-Index; zwei Reiter = zwei Schleifen', () => {
+    const r = rideLoops([pl(0, 20, 5), pl(1, 22, -5), pl(2, 21, 0), pl(3, 21, RIDE_MIN_SPEED / 2), pl(4, 21, 5, 3)], [p1], 'day');
+    expect(r.map((l) => l.key)).toEqual([0, 1]);
+    expect(r[0]!.volume).toBe(RIDE_GAIN);
+  });
+  it('Absteigen (Stillstand) beendet die Schleife: leere Liste', () => expect(rideLoops([pl(0, 20, 0)], [p1])).toEqual([]));
+  it('Nacht leiser, weit außerhalb der Kamera stumm', () => {
+    expect(rideLoops([pl(0, 20, 5)], [p1], 'night')[0]!.volume).toBeCloseTo(RIDE_GAIN * NIGHT_GAIN);
+    expect(rideLoops([pl(0, 500, 5)], [p1])).toEqual([]);
+  });
+  it('der Slot sfx:ride hat eine Datei im Register', () => expect(SFX_URLS['sfx:ride']).toMatch(/horse-gallop/));
 });

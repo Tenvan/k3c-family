@@ -30,6 +30,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | BD5 | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | aktiv |
 | BD6 | Autonome Entscheidungen zu BED prüfen und festschreiben | aktiv |
 | BD7 | Pause-Client, Skill-Reset beim Tod, Schutz wartender Monarchen | erledigt |
+| BD8 | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl | erledigt |
 
 ## Nicht-Ziele
 

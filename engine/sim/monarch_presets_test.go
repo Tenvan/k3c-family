@@ -11,9 +11,9 @@ func TestPresetsNennenNurVorhandeneSkills(t *testing.T) {
 		t.Fatalf("eingebettete Daten: %v", err)
 	}
 	bad := monarch
-	bad.Presets = map[string]presetData{"thief": {Name: "Dieb", ActiveSkills: []string{"taunt", "backstab"}}}
+	bad.Presets = map[string]presetData{"thief": {Name: "Dieb", ActiveSkills: []string{"taunt", "shadowStrike"}}}
 	err := checkPresets(bad)
-	if err == nil || !strings.Contains(err.Error(), "thief") || !strings.Contains(err.Error(), "backstab") {
+	if err == nil || !strings.Contains(err.Error(), "thief") || !strings.Contains(err.Error(), "shadowStrike") {
 		t.Fatalf("unbekannter Skill: %v", err)
 	}
 }

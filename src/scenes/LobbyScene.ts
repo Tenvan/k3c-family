@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
-import { deleteSave, listSaves, type SaveInfo } from '../core/saveStore';
+import { deleteSave, listSaves, listWorlds, type SaveInfo } from '../core/saveStore';
 import { t } from '../core/texts';
 import type { RoomClient, Status } from '../online/clientConnection';
 import type { GameSceneData } from './GameScene';
@@ -9,6 +9,7 @@ import { DIALOG_ROWS, devAllowed, type DialogState } from './lobbyOptions';
 import { DeleteDialog, deleteNotice, worldOf } from './saveMenu';
 import { VERSION_KEY } from './debug/debugOverlay';
 import { musicDirector } from '../audio/music';
+import { playUi, uiSoundFor } from '../audio/ui';
 
 export interface LobbySceneData {
   client: RoomClient;
@@ -112,13 +113,14 @@ export class LobbyScene extends Phaser.Scene {
     musicDirector().lobby();
     const client = this.client;
     if (client.status === 'room') return this.enterGame();
-    if (client.status === 'lobby' && this.lastStatus !== 'lobby') void listSaves().then((saves) => (this.saves = saves));
+    this.loadLists(client.status);
     this.lastStatus = client.status;
     const first = this.flow.step(client);
     if (first) applyCommand(client, first);
 
     const entries = lobbyEntries(client.rooms, client.status, this.saves);
     const input = this.poll();
+    playUi(uiSoundFor({ ...input, confirm: input.confirm || (this.tapped !== null && this.tapped >= 0) })); // UI-Klick (B-575)
     if (this.updateDialogs(input)) return;
     this.selected = moveSelection(this.selected, input.dir, entries.length);
     let chosen = input.confirm ? this.selected : null;
@@ -137,6 +139,13 @@ export class LobbyScene extends Phaser.Scene {
       this.dialog.toggle(marked.save.name);
     }
     this.draw(entries);
+  }
+
+  /** Spielstände und wählbare Welten des Servers laden, nur beim Wechsel nach `lobby` */
+  private loadLists(status: Status): void {
+    if (status !== 'lobby' || this.lastStatus === 'lobby') return;
+    void listSaves().then((saves) => (this.saves = saves));
+    void listWorlds().then((worlds) => (this.flow.worlds = worlds));
   }
 
   /** Offene Dialoge (Anlegen, Löschen) bekommen die Eingabe; außerhalb der Lobby schließen beide. true = ein Dialog ist offen */
@@ -183,6 +192,7 @@ export class LobbyScene extends Phaser.Scene {
       t('lobby.dialog.grade', { value: gradeName(o.grade) }),
       t('lobby.dialog.goal', { value: t(`opt.goal.${o.goal}`) }),
       t('lobby.dialog.defeat', { value: t(`opt.defeat.${o.defeat}`) }),
+      t('lobby.dialog.world', { value: o.world }),
       t('lobby.dialog.create'),
       t('lobby.dialog.cancel'),
     ];

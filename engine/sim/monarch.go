@@ -20,6 +20,7 @@ func stepAttack(w *World, p *Player, cmd PlayerCommand, dt float64) {
 	a := monarch.Attack
 	e := nearest(w.Enemies, func(e *Enemy) float64 { return e.X }, p.X, a.Range, func(e *Enemy) bool { return e.HP > 0 })
 	p.AttackCooldown = a.Cooldown
+	p.StealthFor = 0 // ein eigener Schlag beendet die Unsichtbarkeit (Smoke Bomb, B-577)
 	emit(w, "strike", Event{"from": p.ID, "x": unitX(p.X), "hit": e != nil})
 	if e == nil {
 		return

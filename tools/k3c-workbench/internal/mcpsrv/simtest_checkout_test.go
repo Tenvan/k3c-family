@@ -40,13 +40,13 @@ func TestSimTestMitCheckout(t *testing.T) {
 	if len(specs) < 2 {
 		t.Fatalf("%d Schritte statt bauen und rechnen\n%s", len(specs), status)
 	}
-	if want := filepath.Join(wts[0], "tools", "k3c-workbench"); specs[0].dir != want {
+	if want := filepath.Join(wts[0], "tools", "k3c-workbench"); !samePath(specs[0].dir, want) {
 		t.Errorf("Build in %q, erwartet %q", specs[0].dir, want)
 	}
-	if specs[1].dir != wts[0] {
+	if !samePath(specs[1].dir, wts[0]) {
 		t.Errorf("Lauf in %q, erwartet %q", specs[1].dir, wts[0])
 	}
-	if want := "K3C_DATA_DIR=" + filepath.Join(wts[0], "data"); len(specs[1].env) != 1 || specs[1].env[0] != want {
+	if want := "K3C_DATA_DIR=" + filepath.Join(wts[0], "data"); len(specs[1].env) != 1 || !strings.HasPrefix(specs[1].env[0], "K3C_DATA_DIR=") || !samePath(strings.TrimPrefix(specs[1].env[0], "K3C_DATA_DIR="), strings.TrimPrefix(want, "K3C_DATA_DIR=")) {
 		t.Errorf("env %v, erwartet %q", specs[1].env, want)
 	}
 	if !strings.Contains(status, "wt-a") {

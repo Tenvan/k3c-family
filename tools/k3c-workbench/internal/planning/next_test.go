@@ -96,7 +96,7 @@ func TestNextNachRangUndAbhaengigkeit(t *testing.T) {
 	checkText(t, out, []string{
 		"Pfad: docs/sprints/aktiv/B1-s/B1.4-x.md", "Sprint: B1 · Sprint B1 (Projekt BBB, Rang 1)",
 		"Domäne: CLI · Umgebung: offline", "Branch: sprint/b1", "Kriterien: AC-02", "Ziel B1.4.",
-		"- **AC-02** Zweites\n  mit Folgezeile.", "git ls-remote",
+		"- **AC-02** Zweites\n  mit Folgezeile.", "Stand der Sprints",
 		"── Parallel möglich ──\n- INF · A1.3 · Titel A1.3 (Sprint A1, offline)",
 	}, []string{"- **AC-01**", "Nachsatz", "A1.4", "A1.5", "R1.1", "SRV ·"})
 }

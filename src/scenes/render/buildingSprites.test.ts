@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { BUILDINGS } from '../../model/data';
 import { BUILDING_TEXTURES, HUB_SCAFFOLD_TEXTURE, backWallTexture, hubLookTexture, hubTexture, isHubBuilding, siteTexture, textureScale } from './buildingSprites';
 
 /** Nur die Pfade, nichts wird geladen */
@@ -28,7 +29,7 @@ describe('Gebäude-Grafik (GR3.1)', () => {
       expect(BUILDING_TEXTURES[key!]).toBe(`gebaeude/${id}-32.png`); // Hub-Gebäude ohne Stufe: Grundform = Stufe 1 (GEB9)
       expect(textureScale(key!)).toBe(1);
     }
-    for (const [key, id] of [['grafik:setzling', 'setzling'], ['grafik:pappel', 'pappel']] as const) {
+    for (const [key, id] of [['grafik:setzling', 'setzling'], ['grafik:pappel-niedrig', 'pappel-niedrig']] as const) {
       expect(BUILDING_TEXTURES[key]).toBe(`gebaeude/${id}-32.png`); // Plantage (GEB5 AC-02)
       expect(textureScale(key)).toBe(1);
     }
@@ -50,7 +51,7 @@ describe('Gebäude-Grafik (GR3.1)', () => {
     const hub = { workshop: 'werkstatt', tavern: 'taverne', healer: 'heilplatz', smithy: 'schmiede', armory: 'ruestkammer', storage: 'lager', barracks: 'kaserne', farm: 'farm' } as const;
     for (const [kind, id] of Object.entries(hub)) {
       const k = kind as keyof typeof hub;
-      expect(isHubBuilding(k)).toBe(true);
+      expect(isHubBuilding(k)).toBe(!BUILDINGS[kind].levels?.length); // B-569: mit eigenen `levels` folgt die Grafik der Gebäudestufe
       for (const s of [1, 2, 3, 4, 5]) {
         const key = siteTexture(k, 'built', s);
         expect(key).toBe(`grafik:${kind}-${s}`);
@@ -63,6 +64,17 @@ describe('Gebäude-Grafik (GR3.1)', () => {
       expect(siteTexture(k, 'unpaid', 3)).toBeNull(); // Baustelle: Platzhalter, unabhängig von der Stufe
     }
     for (const kind of ['wall', 'tower', 'gate', 'stairsUp', 'stairsDown'] as const) expect(isHubBuilding(kind)).toBe(false);
+  });
+
+  it('Gebäude mit `levels` in den Daten: Stufe 1 = Grundwerte, fünf Stufen, Grafik je Gebäudestufe (B-569 AC-01)', () => {
+    const withLevels = Object.entries(BUILDINGS).filter(([, d]) => d.levels?.length);
+    expect(withLevels.map(([k]) => k).sort()).toEqual(['barracks', 'farm', 'healer', 'storage', 'tavern', 'tower', 'wall'].sort());
+    for (const [kind, d] of withLevels) {
+      expect(d.levels).toHaveLength(5);
+      expect(d.levels![0]).toEqual({ cost: d.cost, hp: d.hp, buildSeconds: d.buildSeconds });
+      for (let n = 1; n < 5; n++) expect(d.levels![n].hp).toBeGreaterThan(d.levels![n - 1].hp);
+      expect(siteTexture(kind as 'wall', 'built', 3)).toBe(`grafik:${kind}-3`);
+    }
   });
 
   it('Hintergrundmauer je Stufe eigene 32-px-Grafik, unbekannte Stufe null (GEB3 AC-08)', () => {

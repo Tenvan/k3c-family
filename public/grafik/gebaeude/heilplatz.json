@@ -103,37 +103,73 @@
   "stufen": [
     {
       "stufe": 2,
-      "aenderung": "Stein: Zeltpfosten und Gestell aus grauem Stein, Tuch, Liege und Kräuter bleiben",
-      "farben": {"pfosten/oiled-cedar": "valhalla", "pfosten/rope": "dim-gray", "gestell/oiled-cedar": "valhalla", "gestell/rope": "dim-gray", "gestell/twine": "smokey-ash"}
+      "aenderung": "Stein: Zeltpfosten und Gestell aus grauem Stein, Zeltbahnen hängen an beiden Dachenden herab",
+      "farben": {"pfosten/oiled-cedar": "valhalla", "pfosten/rope": "dim-gray", "gestell/oiled-cedar": "valhalla", "gestell/rope": "dim-gray", "gestell/twine": "smokey-ash"},
+      "zusaetze": [
+        { "art": "bahn", "rechteck": [0.25,1.4375,0.1875,1.5], "farbe": "pancho" },
+        { "art": "bahn", "rechteck": [0.25,2.9375,0.1875,0.0625], "farbe": "smokey-ash" },
+        { "art": "bahn", "rechteck": [4.1875,1.4375,0.3125,1.5], "farbe": "pancho" },
+        { "art": "bahn", "rechteck": [4.1875,2.9375,0.3125,0.0625], "farbe": "smokey-ash" }
+      ]
     },
     {
       "stufe": 3,
-      "aenderung": "Kupfer: Zeltpfosten und Gestell aus Kupfer, Laterne am Zelt",
+      "aenderung": "Kupfer: Pfosten und Gestell aus Kupfer, Zeltbahnen mit Kupfersaum, gemauerter Brunnen mit Eimer neben der Liege",
       "farben": {"pfosten/oiled-cedar": "rope", "pfosten/rope": "tahiti-gold", "gestell/oiled-cedar": "rope", "gestell/rope": "tahiti-gold"},
       "zusaetze": [
-        { "art": "laterne", "rechteck": [4.25,1.375,0.25,0.0625], "farbe": "tahiti-gold" },
-        { "art": "laterne", "rechteck": [4.25,1.4375,0.25,0.375], "farbe": "rope" },
-        { "art": "laterne", "rechteck": [4.3125,1.5,0.125,0.25], "farbe": "golden-fizz" }
+        { "art": "bahn", "rechteck": [0.25,1.4375,0.1875,1.5], "farbe": "pancho" },
+        { "art": "bahn", "rechteck": [0.25,2.9375,0.1875,0.0625], "farbe": "tahiti-gold" },
+        { "art": "bahn", "rechteck": [4.1875,1.4375,0.3125,1.5], "farbe": "pancho" },
+        { "art": "bahn", "rechteck": [4.1875,2.9375,0.3125,0.0625], "farbe": "tahiti-gold" },
+        { "art": "brunnen", "rechteck": [3.125,2.5,0.125,0.875], "farbe": "oiled-cedar" },
+        { "art": "brunnen", "rechteck": [3.75,2.5,0.125,0.875], "farbe": "oiled-cedar" },
+        { "art": "brunnen", "rechteck": [3.0625,2.4375,0.875,0.125], "farbe": "oiled-cedar" },
+        { "art": "brunnen", "rechteck": [3.4375,2.5625,0.03125,0.4375], "farbe": "twine", "fein": true },
+        { "art": "brunnen", "rechteck": [3.375,3,0.15625,0.125], "farbe": "rope" },
+        { "art": "brunnen", "rechteck": [3.0625,3.375,0.875,0.5625], "farbe": "dim-gray" },
+        { "art": "brunnen", "rechteck": [3,3.3125,1,0.125], "farbe": "smokey-ash" },
+        { "art": "wasser", "rechteck": [3.125,3.3125,0.75,0.0625], "farbe": "cornflower" },
+        { "art": "wasser", "rechteck": [3.125,3.3125,0.25,0.0625], "farbe": "viking" }
       ]
     },
     {
       "stufe": 4,
-      "aenderung": "Eisen: Zeltpfosten und Gestell aus Stahl, Laterne am Zelt",
+      "aenderung": "Eisen: Pfosten und Gestell aus Stahl, Zeltbahnen mit Stahlsaum, Brunnen aus Stahl mit hellem Rand",
       "farben": {"pfosten/oiled-cedar": "dim-gray", "pfosten/rope": "heather", "gestell/oiled-cedar": "dim-gray", "gestell/rope": "heather", "gestell/twine": "light-steel"},
       "zusaetze": [
-        { "art": "laterne", "rechteck": [4.25,1.375,0.25,0.0625], "farbe": "heather" },
-        { "art": "laterne", "rechteck": [4.25,1.4375,0.25,0.375], "farbe": "dim-gray" },
-        { "art": "laterne", "rechteck": [4.3125,1.5,0.125,0.25], "farbe": "golden-fizz" }
+        { "art": "bahn", "rechteck": [0.25,1.4375,0.1875,1.5], "farbe": "pancho" },
+        { "art": "bahn", "rechteck": [0.25,2.9375,0.1875,0.0625], "farbe": "light-steel" },
+        { "art": "bahn", "rechteck": [4.1875,1.4375,0.3125,1.5], "farbe": "pancho" },
+        { "art": "bahn", "rechteck": [4.1875,2.9375,0.3125,0.0625], "farbe": "light-steel" },
+        { "art": "brunnen", "rechteck": [3.125,2.5,0.125,0.875], "farbe": "dim-gray" },
+        { "art": "brunnen", "rechteck": [3.75,2.5,0.125,0.875], "farbe": "dim-gray" },
+        { "art": "brunnen", "rechteck": [3.0625,2.4375,0.875,0.125], "farbe": "dim-gray" },
+        { "art": "brunnen", "rechteck": [3.4375,2.5625,0.03125,0.4375], "farbe": "twine", "fein": true },
+        { "art": "brunnen", "rechteck": [3.375,3,0.15625,0.125], "farbe": "rope" },
+        { "art": "brunnen", "rechteck": [3.0625,3.375,0.875,0.5625], "farbe": "heather" },
+        { "art": "brunnen", "rechteck": [3,3.3125,1,0.125], "farbe": "light-steel" },
+        { "art": "wasser", "rechteck": [3.125,3.3125,0.75,0.0625], "farbe": "cornflower" },
+        { "art": "wasser", "rechteck": [3.125,3.3125,0.25,0.0625], "farbe": "viking" }
       ]
     },
     {
       "stufe": 5,
-      "aenderung": "Kristall: Zeltpfosten und Gestell aus blauem Kristall, Laterne am Zelt",
+      "aenderung": "Kristall: Pfosten und Gestell aus blauem Kristall, Zeltbahnen mit Kristallsaum, Brunnen aus Kristall mit leuchtendem Wasser",
       "farben": {"pfosten/oiled-cedar": "deep-koamaru", "pfosten/rope": "royal-blue", "gestell/oiled-cedar": "deep-koamaru", "gestell/rope": "royal-blue", "gestell/twine": "cornflower"},
       "zusaetze": [
-        { "art": "laterne", "rechteck": [4.25,1.375,0.25,0.0625], "farbe": "royal-blue" },
-        { "art": "laterne", "rechteck": [4.25,1.4375,0.25,0.375], "farbe": "deep-koamaru" },
-        { "art": "laterne", "rechteck": [4.3125,1.5,0.125,0.25], "farbe": "golden-fizz" }
+        { "art": "bahn", "rechteck": [0.25,1.4375,0.1875,1.5], "farbe": "pancho" },
+        { "art": "bahn", "rechteck": [0.25,2.9375,0.1875,0.0625], "farbe": "cornflower" },
+        { "art": "bahn", "rechteck": [4.1875,1.4375,0.3125,1.5], "farbe": "pancho" },
+        { "art": "bahn", "rechteck": [4.1875,2.9375,0.3125,0.0625], "farbe": "cornflower" },
+        { "art": "brunnen", "rechteck": [3.125,2.5,0.125,0.875], "farbe": "deep-koamaru" },
+        { "art": "brunnen", "rechteck": [3.75,2.5,0.125,0.875], "farbe": "deep-koamaru" },
+        { "art": "brunnen", "rechteck": [3.0625,2.4375,0.875,0.125], "farbe": "deep-koamaru" },
+        { "art": "brunnen", "rechteck": [3.4375,2.5625,0.03125,0.4375], "farbe": "twine", "fein": true },
+        { "art": "brunnen", "rechteck": [3.375,3,0.15625,0.125], "farbe": "rope" },
+        { "art": "brunnen", "rechteck": [3.0625,3.375,0.875,0.5625], "farbe": "royal-blue" },
+        { "art": "brunnen", "rechteck": [3,3.3125,1,0.125], "farbe": "cornflower" },
+        { "art": "wasser", "rechteck": [3.125,3.3125,0.75,0.0625], "farbe": "cornflower" },
+        { "art": "wasser", "rechteck": [3.125,3.3125,0.25,0.0625], "farbe": "viking" }
       ]
     }
   ]

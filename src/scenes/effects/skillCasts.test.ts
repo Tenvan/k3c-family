@@ -3,21 +3,22 @@ import { UNIT_PX } from '../../core/constants';
 import { MONARCH } from '../../model/data';
 import type { Player } from '../../model/types';
 import { LINE_COLORS } from './effects';
+import { SKILL_LOOKS } from './skillLooks';
 import { SkillCasts } from './skillCasts';
 
 const player = (index: number, over: Partial<Player> = {}): Player =>
   ({ id: index, index, x: 10 + index, vx: 0, facing: 1, gold: 0, hp: 100, maxHp: 100, respawnIn: 0, payCooldown: 0, paying: false, payKey: null, payAmount: 0, points: 0, actions: [], ...over }) as Player;
 
 describe('SkillCasts (SK2.3, B-503/AC-01)', () => {
-  it('Anstieg der Abklingzeit ergibt einen Ring in der Farbe der Linie, je Spieler getrennt', () => {
+  it('Anstieg der Abklingzeit ergibt den Effekt des Skills (B-578), je Spieler getrennt', () => {
     const casts = new SkillCasts();
     const tank = { skills: ['taunt'], slots: ['taunt'] };
     const mage = { skills: ['fireball'], slots: ['fireball'] };
     expect(casts.diff([player(0, { ...tank, cooldowns: [0] }), player(1, { ...mage, cooldowns: [0] })])).toEqual([]);
     const fx = casts.diff([player(0, { ...tank, cooldowns: [0] }), player(1, { ...mage, cooldowns: [8] })]);
-    expect(fx).toEqual([expect.objectContaining({ kind: 'skill', x: 11 * UNIT_PX, color: LINE_COLORS.mage })]);
+    expect(fx).toEqual([expect.objectContaining({ kind: 'skill', x: 11 * UNIT_PX, look: SKILL_LOOKS.fireball })]);
     expect(casts.diff([player(0, { ...tank, cooldowns: [15] }), player(1, { ...mage, cooldowns: [7.9] })])).toEqual([
-      expect.objectContaining({ x: 10 * UNIT_PX, color: LINE_COLORS.tank }),
+      expect.objectContaining({ x: 10 * UNIT_PX, look: SKILL_LOOKS.taunt }),
     ]);
   });
 
@@ -25,7 +26,7 @@ describe('SkillCasts (SK2.3, B-503/AC-01)', () => {
     const casts = new SkillCasts();
     casts.diff([player(0)]);
     expect(casts.diff([player(0, { skills: ['heal'] })])).toEqual([]);
-    expect(casts.diff([player(0, { skills: ['heal', 'healingAura'] })])).toEqual([expect.objectContaining({ color: LINE_COLORS.healer })]);
+    expect(casts.diff([player(0, { skills: ['heal', 'healingAura'] })])).toEqual([expect.objectContaining({ look: SKILL_LOOKS.healingAura })]);
     casts.reset();
     expect(casts.diff([player(0, { skills: ['heal', 'healingAura', 'thickSkin'], slots: ['heal'], cooldowns: [9] })])).toEqual([]);
   });

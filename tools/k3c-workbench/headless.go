@@ -18,6 +18,7 @@ import (
 
 	"k3c/engine/conlog"
 	"k3c/engine/devrun"
+	"k3c/tools/assetkit/windowstate"
 	"k3c/tools/k3c-workbench/internal/mcpsrv"
 )
 
@@ -66,7 +67,7 @@ func runHeadless(root string, port int) error {
 	defer stop()
 	app := newApp(root, port)
 	if devrun.IsChild() {
-		app.usage = configPath("mcp-usage-dev.json") // die Statistik der Workbench bleibt unberührt
+		app.usage = windowstate.ConfigPath("mcp-usage-dev.json") // die Statistik der Workbench bleibt unberührt
 	}
 	app.startup(context.Background())
 	reqCtx, endStreams := context.WithCancel(context.Background()) // beendet die SSE-Ströme beim Stoppen

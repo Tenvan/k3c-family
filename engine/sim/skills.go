@@ -22,6 +22,9 @@ var skillEffects = map[string]func(w *World, p *Player, e skillEffect) bool{
 	"heal":           castHeal,
 	"groupHeal":      castGroupHeal,
 	"reviveTroops":   castReviveTroops,
+	// Dieb (skills_thief.go, B-577)
+	"backstab": castBackstab,
+	"stealth":  castStealth,
 }
 
 // stepSkills senkt Abklingzeiten und Skill-Effekte des Spielers und löst den Slot aus cmd.Skill aus. Nur für lebende
@@ -35,6 +38,7 @@ func stepSkills(w *World, p *Player, cmd PlayerCommand, dt float64) {
 		p.Shield = 0
 	}
 	p.LastStandFor = math.Max(0, p.LastStandFor-dt)
+	p.StealthFor = math.Max(0, p.StealthFor-dt)
 	if cmd.Skill >= 1 && cmd.Skill <= 4 {
 		// Der Versuch läuft jeden Tick, nur das Ereignis castFailed kommt je Tastendruck (B-378).
 		castSkill(w, p, cmd.Skill-1, p.skillHeld != cmd.Skill)
@@ -55,7 +59,7 @@ func castSkill(w *World, p *Player, slot int, announce bool) {
 	cast := skillEffects[s.Effect.Type]
 	e, cd := s.Effect, s.Cooldown
 	mult := damageMultOf(w, p, true) // Passive (monarch_passives.go): Zauberschaden, Abklingzeit, Spell Echo
-	e.Damage, e.PerSecond = float64(e.Damage*mult), float64(e.PerSecond*mult)
+	e.Damage, e.PerSecond, e.BackDamage = float64(e.Damage*mult), float64(e.PerSecond*mult), float64(e.BackDamage*mult)
 	if !ok || cast == nil {
 		return
 	}
@@ -64,6 +68,9 @@ func castSkill(w *World, p *Player, slot int, announce bool) {
 			emit(w, "castFailed", Event{"from": p.ID, "slot": slot, "x": unitX(p.X)}) // kein Ziel: keine Abklingzeit (B-321)
 		}
 		return
+	}
+	if e.Type != "stealth" {
+		p.StealthFor = 0 // jeder andere Skill beendet die Unsichtbarkeit (B-577, Annahme)
 	}
 	if s.Line == "mage" {
 		cd = float64(cd * cooldownMultOf(w, p))

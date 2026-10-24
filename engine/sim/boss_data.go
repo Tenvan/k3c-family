@@ -21,7 +21,7 @@ type BossData struct {
 	Ability                BossAbility // Miniboss; ein Endboss hat seine Fähigkeiten in Phases
 	Reward                 struct{ Gold, Material int }
 	// Endboss (boss_endboss.go): Bau mit Auslöse-Abstand und Phasen in Reihenfolge.
-	Lair   struct{ TriggerUnits float64 }
+	Lair   struct{ TriggerUnits, NoticeUnits float64 }
 	Phases []BossPhase
 }
 
@@ -125,6 +125,9 @@ func checkBoss(b BossData) error {
 func checkPhases(b BossData) error {
 	if b.Lair.TriggerUnits <= 0 || len(b.Phases) == 0 || b.Phases[0].Ability == nil {
 		return fmt.Errorf("endboss braucht lair.triggerUnits > 0 und eine erste Phase mit Fähigkeit")
+	}
+	if b.Lair.NoticeUnits < b.Lair.TriggerUnits {
+		return fmt.Errorf("lair.noticeUnits darf nicht unter triggerUnits liegen")
 	}
 	below := 100.0
 	for i, p := range b.Phases {

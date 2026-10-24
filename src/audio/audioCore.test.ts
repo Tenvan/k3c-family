@@ -129,6 +129,31 @@ describe('AudioCore (AC-03, AC-05)', () => {
     log.sources[0]!.onended?.();
     expect(core.onEvent(hit, 5, [])).toBe(true);
   });
+  it('Schleifen je Schlüssel (B-574): zwei Reiter spielen je eine, Pegel wird nachgestellt, Absteigen beendet nur die eigene', async () => {
+    const { core, log } = setup('suspended', true, { 'sfx:ride': 'audio/r.ogg' });
+    expect(core.loopCount('sfx:ride')).toBe(0);
+    core.syncLoops('sfx:ride', [{ key: 0, volume: 0.5 }]); // gesperrt: stumm
+    expect(core.loopCount('sfx:ride')).toBe(0);
+    await core.onInput();
+    await tick();
+    core.syncLoops('sfx:ride', [{ key: 0, volume: 0.5 }, { key: 1, volume: 0.4 }]);
+    expect(core.loopCount('sfx:ride')).toBe(2);
+    expect(log.sources.filter((s) => s.loop)).toHaveLength(2);
+    core.syncLoops('sfx:ride', [{ key: 0, volume: 0.5 }, { key: 1, volume: 0.2 }]); // läuft weiter, kein neuer Start
+    expect(log.sources.filter((s) => s.loop)).toHaveLength(2);
+    expect(log.gains.at(-1)!.value).toBe(0.2);
+    core.syncLoops('sfx:ride', [{ key: 1, volume: 0.2 }]);
+    expect(core.loopCount('sfx:ride')).toBe(1);
+    core.syncLoops('sfx:ride', []);
+    expect(core.loopCount('sfx:ride')).toBe(0);
+  });
+  it('Schleife ohne Datei im Register bleibt stumm (B-574)', async () => {
+    const { core } = setup('suspended', true, {});
+    await core.onInput();
+    await tick();
+    core.syncLoops('sfx:ride', [{ key: 0, volume: 1 }]);
+    expect(core.loopCount('sfx:ride')).toBe(0);
+  });
   it('Rückfall (B-167/AC-05): fehlende Datei bleibt stumm ohne Fehler, die anderen spielen', async () => {
     const { core, log } = setup('suspended', true, { 'sfx:hit': 'audio/fehlt.ogg', 'sfx:kill': 'audio/k.ogg' }, ['audio/fehlt.ogg']);
     await core.onInput();

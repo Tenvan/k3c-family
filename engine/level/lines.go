@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"slices"
 
 	"k3c/data"
 	"k3c/engine/rng"
@@ -109,21 +110,41 @@ func (d WallLines) generate(biomeID, seed string, hub float64) []WallLine {
 	return out
 }
 
+// hubSite ist ein Hub- oder Insel-Platz aus data/hub.json (sites, islandSites): Art und Lage als Abstand zur Hub-Mitte,
+// links negativ.
+type hubSite struct {
+	kind   string
+	offset float64
+}
+
+// hubSites sind alle Hub- und Insel-Plätze aus data/hub.json.
+var hubSites = loadHubSites()
+
 // farmOffsets sind die Abstände der Farm-Bauplätze zur Hub-Mitte aus data/hub.json › sites (beide Seiten, Q57).
 var farmOffsets = loadFarmOffsets()
 
-func loadFarmOffsets() []float64 {
+func loadHubSites() []hubSite {
+	type entry struct {
+		Kind        string  `json:"kind"`
+		OffsetUnits float64 `json:"offsetUnits"`
+	}
 	var hub struct {
-		Sites []struct {
-			Kind        string  `json:"kind"`
-			OffsetUnits float64 `json:"offsetUnits"`
-		} `json:"sites"`
+		Sites       []entry `json:"sites"`
+		IslandSites []entry `json:"islandSites"`
 	}
 	readData("hub.json", &hub)
+	var out []hubSite
+	for _, s := range slices.Concat(hub.Sites, hub.IslandSites) {
+		out = append(out, hubSite{s.Kind, s.OffsetUnits})
+	}
+	return out
+}
+
+func loadFarmOffsets() []float64 {
 	var out []float64
-	for _, s := range hub.Sites {
-		if s.Kind == "farm" {
-			out = append(out, math.Abs(s.OffsetUnits))
+	for _, s := range hubSites {
+		if s.kind == "farm" {
+			out = append(out, math.Abs(s.offset))
 		}
 	}
 	return out
