@@ -86,7 +86,9 @@ describe('Vorschlagskarten (WZ30.5/AC-05)', () => {
     const sound = await mountNode(<ChatPanel page="sound" />);
     expect(sound.querySelector('[data-testid="suggestions"]')).not.toBeNull();
   });
+});
 
+describe('Vorschlagskarten mit Vorrat und Seitenkontext (WZ29.7)', () => {
   it('sperrt „Übernehmen“, solange die Datei nicht im Vorrat liegt (Download nur über Quellen)', async () => {
     const h = await mountNode(<SuggestionList kind="grafik" />);
     const offen = cards(h)[1]!;
