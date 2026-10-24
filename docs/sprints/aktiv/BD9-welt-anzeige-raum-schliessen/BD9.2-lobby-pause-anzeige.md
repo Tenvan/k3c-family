@@ -1,6 +1,6 @@
 # BD9.2 · Client: Welt im Pausenmenü und in der Lobby, Raum schließen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
