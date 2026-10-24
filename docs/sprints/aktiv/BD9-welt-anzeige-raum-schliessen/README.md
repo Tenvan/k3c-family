@@ -1,14 +1,14 @@
 # BD9 · SRV, CLI · Welt-Anzeige größer und je Spielstand, offene Räume schließen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** SRV, CLI
 - **Reife:** bereit
 - **Tickets:** B-604, B-581
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-24, Ralf im Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -51,7 +51,7 @@ Mitspieler noch verbunden → Rückfrage nennt es. Spielstand ohne Welt → Plat
 
 ## Offene Fragen
 
-keine. Default (Claude, 2026-10-24): Jedes Gerät darf einen Raum schließen, mit Rückfrage (B-581).
+keine. Entschieden (🧑, 2026-10-24): Jedes Gerät darf einen Raum schließen, mit Rückfrage (B-581).
 
 ## Sessions
 

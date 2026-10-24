@@ -8,9 +8,9 @@
 - **Sprint:** BD9
 - **Projekt:** BED
 - **Erstellt:** 2026-10-24
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-24, Ralf im Chat (mit BD9 Revision 1)
 
 ## Ausgangslage
 
@@ -53,7 +53,7 @@ Mitspieler ist noch verbunden → Rückfrage nennt es.
 
 ## Offene Fragen
 
-keine. Default (Claude, 2026-10-24, gilt mit der Freigabe): Jedes Gerät darf schließen, mit Rückfrage, die verbundene Geräte nennt; eine Host-Rolle gibt es nicht, und Ralf spielt allein bzw. mit der Familie am selben Ort.
+keine. Entschieden (🧑, 2026-10-24): Jedes Gerät darf schließen, mit Rückfrage, die verbundene Geräte nennt.
 
 ## Notizen
 
