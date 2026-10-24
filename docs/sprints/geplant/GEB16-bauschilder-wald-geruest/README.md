@@ -52,7 +52,7 @@ Gerüst-Grafik fehlt → einfache gezeichnete Form.
 
 ## Offene Fragen
 
-Entschieden: Gerüst-Grafiken je Größenklasse. Offen: Ort des Abbau-Schilds (B-588, Default: an markierten Bäumen und Felsen); Endwert der Wald-Dichte (B-585, Default `[22, 30]`). Spec-Freigabe steht aus.
+Entschieden: Gerüst-Grafiken je Größenklasse; Abbau-Schild je abbaubarem Baum (Waldrand, Tiefe 5) und freiem Fels/Stein (B-588). Offen: Meldet der Server schon, was abbaubar ist, sonst Feld im Snapshot (B-588/B-587); Endwert der Wald-Dichte (B-585, Default `[22, 30]`). Spec-Freigabe steht aus.
 
 ## Sessions
 

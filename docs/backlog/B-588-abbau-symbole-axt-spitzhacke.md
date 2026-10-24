@@ -26,8 +26,9 @@ Spielende; 🧑 entscheidet über Aussehen und Ort; Grafik über das Asset-Studi
 
 ## Anforderungen
 
-- Zwei Symbole als Pixel-Grafik: Axt, Spitzhacke.
-- Zeichnung als Abbau-Variante des Bauschilds.
+- Zwei Symbole als Pixel-Grafik: Axt (Baum), Spitzhacke (Fels, Stein).
+- Ein Abbau-Schild je abbaubarem Baum bzw. Fels (Entscheidung Ralf, 2026-10-24: pro Baum gewollt).
+- Abbaubar sind nur Bäume an Waldrändern (Tiefe 5) und Felsen/Stein, wenn sie frei liegen; das Schild zeigt nur, was der Server als abbaubar meldet (Prinzip B-587).
 
 ## Nicht-Ziele
 
@@ -52,8 +53,8 @@ Grafik fehlt → kein Symbol (nie ein falsches).
 
 ## Offene Fragen
 
-Wo genau steht das Schild: an jedem markierten Baum/Fels (Default, ersetzt oder ergänzt den Wimpel) oder an jedem abbaubaren? Bei 14–20 Bäumen je Abschnitt wäre „jeder abbaubare“ zu voll; 🧑 entscheidet bei der Spec.
+Server-Seite: Meldet der Snapshot schon, welche Bäume (Waldrand, Tiefe 5) und Felsen (frei liegend) abbaubar sind? Falls nicht, braucht es ein Feld wie `payable` in B-587 (z. B. `mineable` je Knoten); in der Spec klären.
 
 ## Notizen
 
-Aus der Abnahme am 2026-10-24. Spec: Entwurf.
+Aus der Abnahme am 2026-10-24. Ort entschieden: je Baum, nur abbaubare. Spec: Entwurf.
