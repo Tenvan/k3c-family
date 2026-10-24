@@ -1,14 +1,14 @@
-# GEB16 · DEV · Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik
+# GEB16 · SRV, CLI, DEV, REG · Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GEB
-- **Domäne:** DEV
-- **Reife:** Entwurf
+- **Domäne:** SRV, CLI, DEV, REG
+- **Reife:** bereit
 - **Tickets:** B-584, B-585, B-586, B-587, B-588
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt; Defaults: payable-Feld neu, falls der Server Abbaubares nicht meldet; Wald-Dichte [22, 30])
 
 ## Ausgangslage
 
@@ -58,13 +58,13 @@ Entschieden: Gerüst-Grafiken je Größenklasse; Abbau-Schild je abbaubarem Baum
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GEB16.1 | – | Umsetzung | autonom | offen |
-| GEB16.2 | – | Umsetzung | autonom | offen |
-| GEB16.3 | – | Umsetzung | autonom | offen |
-| GEB16.4 | – | Umsetzung | autonom | offen |
-| GEB16.5 | – | Umsetzung | autonom | offen |
-| GEB16.6 | – | Review | autonom | offen |
-| GEB16.7 | – | Workshop | Mensch | offen |
+| GEB16.1 | `GEB16.1-payable-snapshot.md` | Umsetzung | autonom | in Arbeit |
+| GEB16.2 | `GEB16.2-schild-nur-payable.md` | Umsetzung | autonom | offen |
+| GEB16.3 | `GEB16.3-geruest-werkzeug-grafik.md` | Umsetzung | autonom | offen |
+| GEB16.4 | `GEB16.4-geruest-abbauschild-spiel.md` | Umsetzung | autonom | offen |
+| GEB16.5 | `GEB16.5-wald-dichter.md` | Umsetzung | autonom | offen |
+| GEB16.6 | `GEB16.6-review.md` | Review | autonom | offen |
+| GEB16.7 | `GEB16.7-abnahme-geraet.md` | Workshop | Mensch | offen |
 
 - GEB16.1 (SRV) Feld `payable` je Bauplatz im Snapshot und in `docs/protocol.md` (AC-01).
 - GEB16.2 (CLI) Client zeigt das Schild nur bei `payable`, `buildableRules.ts` löschen (AC-01).
