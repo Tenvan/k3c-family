@@ -24,14 +24,15 @@ import { PLACEHOLDER_BG, StageView, placeholderLayer, showOnly } from './render/
 import { clientLog } from '../core/clientLog';
 import { audioCore } from '../audio/audioCore';
 import { musicDirector, musicViewOf } from '../audio/music';
-import { eventX, rideLoops, type Listener } from '../audio/events';
+import { attenuation, eventX, nightGain, rideLoops, type Listener } from '../audio/events';
+import { skillSlot } from '../audio/skills';
 import { loadSettings } from '../core/settings';
 import { EFFECT_CONFIG, SHAKE, effectFor, type BuildSpots } from './effects/effects';
 import { hurtSeat, rumblePad, runEffect, shakeCell } from './effects/effectRules';
 import { DEV_FOCUS_KEY, muteFocused } from './debug/debugOverlayPanel';
 import { pauseButton } from './hud/pauseButton';
 import { SkillMenus } from './hud/skillMenuLogic';
-import { SkillCasts } from './effects/skillCasts';
+import { SkillCasts, type SkillCast } from './effects/skillCasts';
 
 /** Ein Overlay pro Seite, auch über Szenen-Neustarts hinweg */
 let sharedTouch: TouchInput | undefined;
@@ -64,7 +65,7 @@ export class GameScene extends Phaser.Scene {
   /** Geladene Stufen nach Tiefe; mit dem heutigen Protokoll (B-176 offen) nur die Stufe von `client.level` */
   private stages = new Map<number, StageView>();
   private readonly buildSpots: BuildSpots = new Map();
-  private readonly skillCasts = new SkillCasts(); // Skill-Ringe aus dem Zustand (SK2.3)
+  private readonly skillCasts = new SkillCasts((c) => this.playSkill(c)); // Skill-Ringe (SK2.3) und Skill-Ton (SO8.2) aus dem Zustand
   private lastFlashAt: number | null = null;
   private rumbleWarned = false;
   private holders: Phaser.GameObjects.Layer[] = [];
@@ -324,6 +325,12 @@ export class GameScene extends Phaser.Scene {
   /** Sichtbare Ausschnitte der lokalen Spieler für die Positions-Dämpfung des Tons (Mitte und Breite in Units). */
   private listeners(): Listener[] {
     return this.hudCells().flatMap((c) => (c.monarch !== null && c.view ? [{ center: c.view.fromUnits + c.view.spanUnits / 2, span: c.view.spanUnits }] : []));
+  }
+
+  /** Skill-Ton (SO8.2, B-576) am Ort des wirkenden Spielers, nach Abstand und Tageszeit gedämpft; ohne Slot still. */
+  private playSkill(c: SkillCast): void {
+    const slot = skillSlot(c.skill);
+    if (slot) audioCore().playSlot(slot, attenuation(c.x, this.listeners(), false) * nightGain(this.world_?.cycle.phase));
   }
 
   /** Treffer an einem lokalen Spieler: nur dessen Kamera schüttelt (Schalter `screenshake`), nur dessen Controller vibriert. */

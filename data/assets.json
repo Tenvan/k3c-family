@@ -2112,6 +2112,78 @@
       ]
     },
     {
+      "id": "sfx:skill:tank",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Skill Tank (dumpf, metallisch)",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactmetal-light-0.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactsoft-medium-0.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-metallatch.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:skill:mage",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Skill Zauberer (hell, mystisch)",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-phaserup5.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-zapthreetoneup.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-highup.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:skill:healer",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Skill Heiler (weich, aufsteigend)",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-powerup3.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-threetone2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-phaserup2.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:skill:thief",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Skill Dieb (kurz, leise)",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-drawknife1.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-knifeslice2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-pepsound3.ogg"
+        }
+      ]
+    },
+    {
       "id": "sfx:warn",
       "art": "sound",
       "kategorie": "sfx",

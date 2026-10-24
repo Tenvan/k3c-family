@@ -74,8 +74,10 @@ describe('cueFor (B-167/AC-03, AC-04)', () => {
     cueFor(e);
     expect(e).toEqual(copy);
   });
-  it('jeder Effekt-Slot des Registers mit Datei, der ein Ereignis hat, ist über cueFor erreichbar; sfx:hub kommt aus dem Snapshot (onHubLevel), sfx:ride aus den Spielern (rideLoops, B-574), sfx:uiSelect und sfx:uiConfirm aus den Menü-Szenen (B-575)', () => {
-    const slots = (assets.slots as SfxSlot[]).filter((s) => s.art === 'sound' && s.bus === 'sfx' && s.wahl.length > 0).map((s) => s.id);
+  it('jeder Effekt-Slot des Registers mit Datei, der ein Ereignis hat, ist über cueFor erreichbar; sfx:hub kommt aus dem Snapshot (onHubLevel), sfx:ride aus den Spielern (rideLoops, B-574), sfx:uiSelect und sfx:uiConfirm aus den Menü-Szenen (B-575), sfx:skill:* aus SkillCasts (skillSlot, SO8.2)', () => {
+    const slots = (assets.slots as SfxSlot[])
+      .filter((s) => s.art === 'sound' && s.bus === 'sfx' && s.wahl.length > 0 && !s.id.startsWith('sfx:skill:'))
+      .map((s) => s.id);
     const reachable = new Set(Object.values(EVENTS).map((e) => cueFor(e)?.slot));
     expect(slots.filter((id) => !reachable.has(id))).toEqual(['sfx:hub', 'sfx:ride', 'sfx:uiSelect', 'sfx:uiConfirm']);
   });
