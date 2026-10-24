@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { DEFAULT_SETTINGS, type Settings } from '../core/settings';
 import { setLanguage } from '../core/texts';
-import { MenuPress, OPTION_IDS, OPTION_PAD_KEYS, applyOption, idleCommands, moveOption, optionEnabled, optionLabel, removeLabel, stepChoice, syncVolumes, tapDir, tapOption, worldLine } from './optionsLogic';
+import { MenuPress, OPTION_IDS, OPTION_PAD_KEYS, applyOption, idleCommands, moveOption, optionEnabled, optionLabel, removeLabel, stepChoice, syncVolumes, tapDir, tapOption, worldLine, OPTIONS_LAYOUT } from './optionsLogic';
 
 const base: Settings = { ...DEFAULT_SETTINGS };
 
@@ -175,5 +175,16 @@ describe('Lautstärke wirkt im Spiel', () => {
     const calls: [string, number][] = [];
     syncVolumes({ ...DEFAULT_SETTINGS, musicVolume: 30, sfxVolume: 60, ambientVolume: 10 }, { setVolume: (bus, percent) => calls.push([bus, percent]) });
     expect(calls).toEqual([['music', 30], ['sfx', 60], ['ambient', 10]]);
+  });
+});
+
+describe('Weltzeile im Pausenmenü: 40 px (BD9.2, B-604/AC-01)', () => {
+  it('Schrift 40 px, 70 px oben frei, Abstand zu Titel und Optionen', () => {
+    const L = OPTIONS_LAYOUT;
+    expect(L.worldPx).toBeGreaterThanOrEqual(40);
+    expect(L.titleY - L.titlePx / 2).toBeGreaterThanOrEqual(70);
+    expect(L.worldY - L.worldPx / 2).toBeGreaterThanOrEqual(L.titleY + L.titlePx / 2); // unter dem Titel
+    expect(L.worldY + L.worldPx / 2).toBeLessThanOrEqual(L.top - L.rowPx / 2); // über der ersten Option
+    expect(L.top + (OPTION_IDS.length - 1) * L.rowH + L.rowPx / 2).toBeLessThan(1080 - 60 - 14); // vor dem Hinweis
   });
 });

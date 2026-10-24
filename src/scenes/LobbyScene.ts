@@ -1,12 +1,12 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
-import { deleteSave, listSaves, listWorlds, type SaveInfo } from '../core/saveStore';
+import { closeRoom, deleteSave, listSaves, listWorlds, type SaveInfo } from '../core/saveStore';
 import { t } from '../core/texts';
 import type { RoomClient, Status } from '../online/clientConnection';
 import type { GameSceneData } from './GameScene';
 import { LobbyFlow, applyCommand, entryLabel, gradeName, lobbyEntries, lobbyNotice, moveSelection, parseStartParams, rowAt, slotsFor, type StartParams } from './lobbyLogic';
 import { DIALOG_ROWS, devAllowed, type DialogState } from './lobbyOptions';
-import { DeleteDialog, deleteNotice, worldOf } from './saveMenu';
+import { DeleteDialog, closeNotice, deleteNotice, worldOf } from './saveMenu';
 import { VERSION_KEY } from './debug/debugOverlay';
 import { musicDirector } from '../audio/music';
 import { playUi, uiSoundFor } from '../audio/ui';
@@ -47,7 +47,7 @@ function heldPadKeys(pads: readonly (Phaser.Input.Gamepad.Gamepad | null)[]): Se
 
 /**
  * Raumliste (Spielmenü): Welt, „Spielen“, „Neuer Spielstand“, die Räume und die Spielstände des Servers. Bedienung per
- * Pfeile/Stick und A/Enter oder Tippen; X/Entf auf einem Spielstand fragt nach dem Löschen (BD5.2). Zeichnet nur, Logik in
+ * Pfeile/Stick und A/Enter oder Tippen; X/Entf auf einem Spielstand fragt nach dem Löschen (BD5.2), auf einem Raum nach dem Schließen (BD9.2). Zeichnet nur, Logik in
  * `lobbyLogic.ts` und `saveMenu.ts`.
  */
 export class LobbyScene extends Phaser.Scene {
@@ -133,12 +133,16 @@ export class LobbyScene extends Phaser.Scene {
       this.message = null;
       this.activate(entry);
     }
-    const marked = entries[this.selected];
-    if (input.del && marked?.kind === 'save') {
-      this.message = null;
-      this.dialog.toggle(marked.save.name);
-    }
+    if (input.del) this.askRemove(entries[this.selected]);
     this.draw(entries);
+  }
+
+  /** X/Entf: Rückfrage zum Löschen eines Spielstands oder zum Schließen eines Raums (BD9.2); andere Einträge ignorieren es */
+  private askRemove(marked: ReturnType<typeof lobbyEntries>[number] | undefined): void {
+    if (marked?.kind !== 'save' && marked?.kind !== 'room') return;
+    this.message = null;
+    if (marked.kind === 'save') this.dialog.toggle(marked.save.name);
+    else this.dialog.toggle(marked.room.name, 'room', marked.room.taken);
   }
 
   /** Spielstände und wählbare Welten des Servers laden, nur beim Wechsel nach `lobby` */
@@ -163,13 +167,14 @@ export class LobbyScene extends Phaser.Scene {
   /** Rückfrage offen: Richtung wählt, A/Enter oder Tippen bestätigt, X/Entf bricht ab; nur „Löschen“ löscht (BD5.2) */
   private updateDialog(input: { dir: number; confirm: boolean; del: boolean }): void {
     this.dialog.move(input.dir);
+    const kind = this.dialog.kind;
     let name: string | null = null;
     if (this.tapped !== null) {
       if (this.tapped >= 0) name = this.dialog.confirm(this.tapped);
       this.tapped = null;
     } else if (input.confirm) name = this.dialog.confirm();
     else if (input.del) this.dialog.close();
-    if (name) this.remove(name);
+    if (name) this.remove(name, kind);
     this.drawDialog();
   }
 
@@ -206,10 +211,12 @@ export class LobbyScene extends Phaser.Scene {
     this.hint.setText(t('lobby.dialog.hint'));
   }
 
-  private remove(name: string): void {
-    void deleteSave(name)
-      .then((result) => {
-        this.message = deleteNotice(name, result);
+  /** Spielstand löschen oder offenen Raum schließen (BD9.2); danach Spielstände neu laden (die Raumliste schickt der Server selbst) */
+  private remove(name: string, kind: 'save' | 'room'): void {
+    const done = kind === 'room' ? closeRoom(name).then((r) => closeNotice(name, r)) : deleteSave(name).then((r) => deleteNotice(name, r));
+    void done
+      .then((message) => {
+        this.message = message;
         return listSaves();
       })
       .then((saves) => (this.saves = saves));
@@ -222,7 +229,7 @@ export class LobbyScene extends Phaser.Scene {
       row.setText(`${i === this.dialog.selected ? '▶  ' : '    '}${label}`).setColor(i === this.dialog.selected ? '#ffd166' : '#ffffff');
     });
     this.rows.slice(this.dialog.labels().length).forEach((r) => r.setText(''));
-    this.notice.setText(t('lobby.deleteAsk', { name: this.dialog.name ?? '' }));
+    this.notice.setText(this.dialog.ask());
   }
 
   private activate(entry: ReturnType<typeof lobbyEntries>[number]): void {

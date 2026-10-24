@@ -126,7 +126,7 @@ export function entryLabel(e: LobbyEntry, save: string): string {
   if (e.kind === 'reload') return t('lobby.reload');
   if (e.kind === 'save') return t('lobby.save', { name: e.save.name, world: worldOf(e.save.world), day: e.save.day ?? '–', depths: e.save.depths.join(', ') || '–' });
   const r = e.room;
-  const room = t('lobby.room', { code: r.code, name: r.name, depth: r.depth, taken: r.taken, state: t(r.running ? 'lobby.running' : 'lobby.paused') });
+  const room = t('lobby.room', { code: r.code, name: r.name, world: worldOf(r.world), depth: r.depth, taken: r.taken, state: t(r.running ? 'lobby.running' : 'lobby.paused') });
   return r.grade ? `${room}  ·  ${gradeName(r.grade)}` : room;
 }
 

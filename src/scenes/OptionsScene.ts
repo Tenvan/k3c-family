@@ -19,6 +19,7 @@ import {
   stepChoice,
   syncVolumes,
   tapOption,
+  OPTIONS_LAYOUT,
   worldLine,
   type OptionDir,
   type OptionId,
@@ -26,9 +27,7 @@ import {
 } from './optionsLogic';
 import { pauseButton } from './hud/pauseButton';
 
-const TOP = 230;
-const ROW_H = 72; // 11 Zeilen über dem Hinweis unten
-const FONT_PX = 40; // ≥ 28 px (Q03)
+const { top: TOP, rowH: ROW_H, rowPx: FONT_PX } = OPTIONS_LAYOUT; // 11 Zeilen über dem Hinweis unten, Zeilen ≥ 28 px (Q03)
 const STICK = 0.5;
 const STYLE = { fontFamily: 'sans-serif', fontStyle: 'bold', color: '#ffffff', stroke: '#000000', strokeThickness: 6 };
 
@@ -94,8 +93,8 @@ export class OptionsScene extends Phaser.Scene {
     const K = Phaser.Input.Keyboard.KeyCodes;
     this.keys = this.input.keyboard!.addKeys({ up: K.UP, down: K.DOWN, w: K.W, s: K.S, left: K.LEFT, right: K.RIGHT, enter: K.ENTER, space: K.SPACE, esc: K.ESC }) as OptionsScene['keys'];
     this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.8).setOrigin(0);
-    this.title = this.add.text(GAME_WIDTH / 2, 130, '', { ...STYLE, fontSize: '64px', strokeThickness: 10 }).setOrigin(0.5);
-    this.add.text(GAME_WIDTH / 2, 186, worldLine(this.world), { ...STYLE, fontSize: '28px', strokeThickness: 4 }).setOrigin(0.5);
+    this.title = this.add.text(GAME_WIDTH / 2, OPTIONS_LAYOUT.titleY, '', { ...STYLE, fontSize: `${OPTIONS_LAYOUT.titlePx}px`, strokeThickness: 10 }).setOrigin(0.5);
+    this.add.text(GAME_WIDTH / 2, OPTIONS_LAYOUT.worldY, worldLine(this.world), { ...STYLE, fontSize: `${OPTIONS_LAYOUT.worldPx}px`, strokeThickness: 6 }).setOrigin(0.5);
     this.hint = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 60, '', { ...STYLE, fontSize: '28px', strokeThickness: 4 }).setOrigin(0.5);
     this.rows = OPTION_IDS.map((_, i) => this.add.text(GAME_WIDTH / 2, TOP + i * ROW_H, '', { ...STYLE, fontSize: `${FONT_PX}px` }).setOrigin(0.5));
     // Touch über das Fenster, wie in der Lobby; das Touch-Overlay ist ausgeblendet, solange die Szene offen ist.

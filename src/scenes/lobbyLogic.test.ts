@@ -375,3 +375,13 @@ describe('Welt-Auswahl im Anlegen-Dialog (BD8.1, B-566/AC-01)', () => {
     expect(flow.dialog?.options.world).toBe('standard');
   });
 });
+
+describe('Welt in der Lobby-Zeile (BD9.2, B-604/AC-02)', () => {
+  it('Raum nennt room.world, Spielstand seine Welt', () => {
+    const r = { code: 'KRNZ', name: 'nord', depth: 1, grade: 'normal', taken: 2, free: 2, running: true, world: 'nordmeer' };
+    const label = entryLabel({ kind: 'room', room: r }, 'familie');
+    expect(label).toContain('Welt nordmeer');
+    expect(entryLabel({ kind: 'room', room: { ...r, world: '' } }, 'familie')).toContain('Welt standard');
+    expect(entryLabel({ kind: 'save', save: { name: 'nord', savedAt: '', world: 'nordmeer', depths: [0] } }, 'familie')).toContain('Welt nordmeer');
+  });
+});

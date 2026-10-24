@@ -1,6 +1,6 @@
 # BD9.2 · Client: Welt im Pausenmenü und in der Lobby, Raum schließen
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -55,5 +55,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 umgesetzt, geprüft: Weltzeile im Pausenmenü 40 px (`OPTIONS_LAYOUT` in `optionsLogic.ts`: Titel y=110, Welt y=182, erste Option y=250; oben 70 px frei, keine Überlappung mit dem Hinweis), Vitest der Layout-Werte.
+- AC-02 umgesetzt, geprüft: Raum-Einträge der Lobby zeigen `worldOf(room.world)` (Protokoll v9 aus BD9.1), Spielstände wie bisher; Vitest von `entryLabel`.
+- AC-03 umgesetzt, geprüft: Entf/X auf einem Raum öffnet „Raum schließen?“ (Abbrechen vorgewählt, nennt belegte Plätze), `closeRoom(slot)` ruft `POST api/room/close`, Meldungen für ok/nicht gefunden/Fehler, Spielstände neu geladen (Raumliste schickt der Server); Texte de/en; Vitest von Dialog und `closeRoom`.
+- `task check:diff` grün, Review-Agent ohne schwere Befunde; daraus geändert: Text „Belegte Plätze: N“ statt „N Plätze sind belegt“.
+- Abweichung: `taken` zählt Plätze, nicht Geräte; die Rückfrage nennt deshalb Plätze.
