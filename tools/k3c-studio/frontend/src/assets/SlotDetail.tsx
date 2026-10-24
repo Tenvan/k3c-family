@@ -9,6 +9,7 @@ import { CatalogPicker } from './CatalogPicker';
 import { CutEditor } from './CutEditor';
 import { MiniScene } from './MiniScene';
 import { ResearchPanel } from './ResearchPanel';
+import { SlotInfo } from './SlotInfo';
 
 interface Props {
   slot: AssetSlot;
@@ -30,6 +31,7 @@ export function SlotDetail({ slot, onSave, onReload, used }: Props) {
     <div className="as-detail-split" style={{ '--as-scene': `${split}%` } as CSSProperties}>
     <div className="as-detail-body">
       <Heading size="4">{slot.id} <Text size="2" color="gray">{slot.beschreibung} · {slot.art}/{slot.kategorie}{slot.bus ? ` · Bus ${slot.bus}` : ''}</Text></Heading>
+      <SlotInfo slot={slot} />
       <Text size="2" color="gray">Präferenz 1 ist im Spiel aktiv, die weiteren sind Reserve und Vergleich. Reihenfolge per Ziehen.</Text>
       <ChoiceList slot={slot} active={active} onActive={setActive}
         onMove={(from, to) => void save(move(slot.wahl, from, to)).then((ok) => ok && setActive(to))}

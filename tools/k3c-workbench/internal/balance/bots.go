@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"math"
 	"slices"
+	"strings"
 
 	"k3c/data"
 	"k3c/engine/sim"
@@ -31,8 +32,16 @@ var bots = map[string]Bot{
 // minPlayers ist die Mindest-Spieleranzahl eines Profils (fehlt der Name: 1).
 var minPlayers = map[string]int{"coop2": 2, "coop4": 4}
 
-// checkPlayers meldet einen Fehler, wenn das Profil mehr Spieler braucht, als das Szenario hat.
+// MixSep trennt die Profile einer Mischung je Spieler (B-611): "saver+passive" = Spieler 1 saver, Spieler 2 passive.
+// Das Komma bleibt Trenner der Matrix (--bots).
+const MixSep = "+"
+
+// checkPlayers meldet einen Fehler, wenn das Profil mehr Spieler braucht, als das Szenario hat, oder eine Mischung
+// nicht genau ein Profil je Spieler nennt.
 func checkPlayers(bot string, players int) error {
+	if parts := strings.Split(bot, MixSep); len(parts) > 1 && len(parts) != players {
+		return fmt.Errorf("mischung %s nennt %d Profile, Szenario hat %d Spieler", bot, len(parts), players)
+	}
 	if n := minPlayers[bot]; players < n {
 		return fmt.Errorf("profil %s braucht %d Spieler, Szenario hat %d", bot, n, players)
 	}
@@ -49,10 +58,22 @@ func BotNames() []string {
 	return names
 }
 
-// BotByName liefert das Profil mit diesem Namen (Testläufe online, internal/botdev).
+// BotByName liefert das Profil mit diesem Namen (Testläufe online, internal/botdev) oder eine Mischung je Spieler
+// ("saver+passive", B-611): Spieler i nimmt das i-te Profil. coop2/coop4 verteilen selbst und gehören in keine Mischung.
 func BotByName(name string) (Bot, bool) {
-	b, ok := bots[name]
-	return b, ok
+	parts := strings.Split(name, MixSep)
+	if len(parts) == 1 {
+		b, ok := bots[name]
+		return b, ok
+	}
+	list := make([]Bot, len(parts))
+	for i, n := range parts {
+		if bots[n] == nil || minPlayers[n] > 0 {
+			return nil, false
+		}
+		list[i] = bots[n]
+	}
+	return func(w *sim.World, p *sim.Player) sim.PlayerCommand { return list[p.Index%len(list)](w, p) }, true
 }
 
 // prices sind die Werte aus data/, die ein Bot zum Entscheiden braucht (nur gelesen; withData tauscht sie).

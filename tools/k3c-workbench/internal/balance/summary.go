@@ -17,11 +17,14 @@ type Entry struct {
 }
 
 // Summary ist der Bericht: alle Ziele mit Urteil. Seeds ist die Zahl der gespielten Seeds (kleiner als in der Datei bei --seeds N).
+// Varianten und Kennzahlen (WZ28.4) fehlen in älteren Berichten und in der Baseline; ReadSummary liest beide.
 type Summary struct {
-	Version int     `json:"version"`
-	Seeds   int     `json:"seeds"`
-	Pass    bool    `json:"pass"`
-	Targets []Entry `json:"targets"`
+	Version    int      `json:"version"`
+	Seeds      int      `json:"seeds"`
+	Pass       bool     `json:"pass"`
+	Targets    []Entry  `json:"targets"`
+	Varianten  []string `json:"varianten,omitempty"`  // Wert-Varianten des Laufs (datei.json:a.b.c=wert)
+	Kennzahlen *Figures `json:"kennzahlen,omitempty"` // FiguresOf des Laufs
 }
 
 // Change ist ein Ziel, dessen Bewertung gegenüber der Baseline anders ist. Before/After sind Status; „neu“ und
@@ -35,8 +38,14 @@ type Change struct {
 
 // RunTargets spielt alle Szenarien der Ziele über die ersten n Seeds der Datei (0 = alle).
 func (t *Targets) RunTargets(n int) (Report, error) {
+	return t.RunTargetsProgress(n, nil)
+}
+
+// RunTargetsProgress wie RunTargets; progress (darf nil sein) erfährt nach jedem Lauf fertige und alle Läufe.
+func (t *Targets) RunTargetsProgress(n int, progress func(done, total int)) (Report, error) {
 	seedList := t.seedList(n)
 	var rep Report
+	var all []Scenario
 	done := map[Scenario]bool{}
 	for _, g := range t.Targets {
 		key := Scenario{Players: g.Players, Bot: g.Bot, Depth: g.Depth, Days: g.Days}
@@ -44,14 +53,22 @@ func (t *Targets) RunTargets(n int) (Report, error) {
 			continue
 		}
 		done[key] = true
-		r, err := Run(Matrix{Seeds: seedList, Players: []int{g.Players}, Bots: []string{g.Bot}, Depths: []int{g.Depth}, Days: g.Days})
+		m := Matrix{Seeds: seedList, Players: []int{g.Players}, Bots: []string{g.Bot}, Depths: []int{g.Depth}, Days: g.Days, Grade: t.grade}
+		sc, err := m.Scenarios()
 		if err != nil {
 			return Report{}, err
 		}
-		if rep.Results == nil {
-			rep.Matrix = r.Matrix
+		if all == nil {
+			rep.Matrix = m
 		}
-		rep.Results = append(rep.Results, r.Results...)
+		all = append(all, sc...)
+	}
+	rep.Results = make([]Result, 0, len(all))
+	for i, sc := range all {
+		rep.Results = append(rep.Results, runOne(sc, 0))
+		if progress != nil {
+			progress(i+1, len(all))
+		}
 	}
 	return rep, nil
 }

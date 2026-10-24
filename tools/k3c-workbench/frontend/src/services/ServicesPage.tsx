@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTicketPage } from '@webkit/lib/ticketContext';
 import { backend, type ServiceStatus, type ServicesView } from '../api';
 import { Button, Flex, Heading, Text } from '@webkit/atoms';
 import { errorText } from '@webkit/lib/errors';
@@ -18,10 +19,11 @@ type Bulk = 'start' | 'stop' | 'reload';
  * Reiter `Dienste & Logs` (B-068, B-064): links Sammelaktionen, Dienst-Karten und die übrigen Quellen, rechts
  * Konsole und Log der gewählten Quelle.
  */
-export function ServicesPage() {
+export function ServicesPage({ active = true }: { active?: boolean }) {
   const { view, setView, loadError } = useServices();
   const { sources, error: srcError } = useSources();
   const [wanted, setWanted] = useState(() => loadText('services.source', ''));
+  useTicketPage('dienste', wanted, active);
   const choose = (name: string) => {
     setWanted(name);
     savePref('services.source', name);

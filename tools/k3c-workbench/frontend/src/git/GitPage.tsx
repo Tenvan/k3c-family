@@ -1,4 +1,5 @@
 import { useState, type Dispatch, type SetStateAction } from 'react';
+import { useTicketPage } from '@webkit/lib/ticketContext';
 import { ActionButton, Flex, StatusBadge, Text } from '@webkit/atoms';
 import { NoticeCard } from '@webkit/molecules';
 import { errorText } from '@webkit/lib/errors';
@@ -22,6 +23,7 @@ export function GitPage({ active }: { active: boolean }) {
   const { view, setView, prs, error, loadedAt, stale, load } = useGitData(active);
   const [result, setResult] = useState<Result | null>(null);
   const [ask, setAsk] = useState<ConfirmRequest | null>(null);
+  useTicketPage('git', view?.branches.find((b) => b.state === 'aktuell')?.name ?? '', active);
 
   const act = async (task: Promise<string>) => {
     try {

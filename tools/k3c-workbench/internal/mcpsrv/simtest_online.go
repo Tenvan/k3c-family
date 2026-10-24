@@ -3,7 +3,6 @@ package mcpsrv
 import (
 	"context"
 	"fmt"
-	"path/filepath"
 	"slices"
 	"strings"
 	"time"
@@ -11,6 +10,7 @@ import (
 	"k3c/tools/k3c-workbench/internal/balance"
 	"k3c/tools/k3c-workbench/internal/botdev"
 	"k3c/tools/k3c-workbench/internal/serverapi"
+	"k3c/tools/k3c-workbench/internal/simrun"
 )
 
 // Modus online headless (B-348/AC-03): `rooms` Räume mit je `players` Bot-Geräten gegen den Spielserver des Checkouts.
@@ -36,18 +36,18 @@ func (s *Server) runOnline(ctx context.Context, run *simRun, spec simSpec, c *se
 	if st, err := c.Status(ctx); err == nil {
 		o.failures = len(st.Failures)
 	}
-	s.sims.setPhase(run, "verbinden")
-	err := o.connect(ctx, c.Base, run.id, spec)
+	s.sims.SetPhase(run, "verbinden")
+	err := o.connect(ctx, c.Base, run.ID(), spec)
 	defer func() {
 		for _, d := range o.devices {
 			d.Stop()
 		}
 	}()
 	if err != nil {
-		s.finishRun(run, "fehler", "", []string{"verbinden: " + err.Error()}, simReportDir(run))
+		s.sims.Finish(run, "fehler", "", []string{"verbinden: " + err.Error()}, simrun.ReportDir(run))
 		return
 	}
-	s.sims.setPhase(run, "messen")
+	s.sims.SetPhase(run, "messen")
 	deadline := time.After(spec.duration)
 	tick := time.NewTicker(onlineSample)
 	defer tick.Stop()
@@ -59,7 +59,7 @@ func (s *Server) runOnline(ctx context.Context, run *simRun, spec simSpec, c *se
 			done = true
 		case <-tick.C:
 			o.sample(ctx, c)
-			s.sims.setLines(run, o.lines(spec, 0))
+			s.sims.SetLines(run, o.lines(spec, 0))
 		}
 	}
 	o.sample(context.Background(), c)
@@ -68,7 +68,7 @@ func (s *Server) runOnline(ctx context.Context, run *simRun, spec simSpec, c *se
 		newFailures = len(st.Failures) - o.failures
 	}
 	verdict := o.verdict(spec, newFailures)
-	s.finishRun(run, "fertig", verdict, o.lines(spec, newFailures), simReportDir(run))
+	s.sims.Finish(run, "fertig", verdict, o.lines(spec, newFailures), simrun.ReportDir(run))
 }
 
 // connect: je Raum legt das erste Gerät einen Raum an (Name mit Präfix test-), die übrigen treten bei.
@@ -166,5 +166,3 @@ func (o *onlineRun) verdict(spec simSpec, newFailures int) string {
 	}
 	return "Pass"
 }
-
-func simReportDir(run *simRun) string { return filepath.Join("reports", "simtest-"+run.id) }

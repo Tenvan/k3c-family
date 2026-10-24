@@ -1,4 +1,5 @@
 import { SelectField, Text, plainOptions, type SelectOption } from '@webkit/atoms';
+import { useTicketPage } from '@webkit/lib/ticketContext';
 import { CheckField } from '@webkit/molecules';
 import { useEffect, useMemo, useState } from 'react';
 import { backend, type AssetSlot } from '../api';
@@ -62,6 +63,7 @@ export function EnemiesPage() {
   const slots = useSlots();
   const all = useMemo<Group[]>(() => [...groups(), { id: BOSS_GROUP_ID, title: 'Bosse (je Tiefe)', depth: null, ids: [] }], []);
   const [groupId, setGroupId] = useState(all[0]!.id);
+  useTicketPage('gegner', groupId);
   const [anim, setAnim] = useState<Anim>('idle');
   const [actionId, setActionId] = useState<EnemyActionId | ''>('');
   const [withMonarch, setWithMonarch] = useState(false);

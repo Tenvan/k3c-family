@@ -23,6 +23,7 @@ import (
 	"k3c/tools/k3c-workbench/internal/console"
 	"k3c/tools/k3c-workbench/internal/resmon"
 	"k3c/tools/k3c-workbench/internal/services"
+	"k3c/tools/k3c-workbench/internal/simrun"
 	"k3c/tools/k3c-workbench/internal/usage"
 )
 
@@ -75,7 +76,7 @@ type Server struct {
 	console *console.Store
 	log     *slog.Logger
 	checks  *checkRuns
-	sims    simRuns      // Testläufe von sim_test (simtest.go)
+	sims    *simrun.Registry // Testläufe von sim_test und der Balancing-Seite (internal/simrun)
 	feeds   *botfeed.Hub // Bot-Feeds der Läufe mit Clients (simtest_clients.go), Route /bot/
 	// findBrowser und launch starten die Clients von sim_test; Test-Naht.
 	findBrowser   func() (string, error)
@@ -117,6 +118,11 @@ func New(cfg Config) *Server {
 	if s.log == nil {
 		s.log = applog.Discard()
 	}
+	s.sims = simrun.New(s.log)
+	s.sims.Exec = func(ctx context.Context, p simrun.Proc) simrun.Result { // über die Test-Naht s.run
+		res := s.run(ctx, runSpec{dir: p.Dir, args: p.Args, timeout: p.Timeout, env: p.Env, out: p.Out})
+		return simrun.Result{Exit: res.exit, TimedOut: res.timedOut, Err: res.err}
+	}
 	s.stats.onStart, s.stats.onCall = cfg.OnStart, cfg.OnCall
 	s.mcp = mcp.NewServer(&mcp.Implementation{Name: "k3c-workbench", Version: cfg.Version}, &mcp.ServerOptions{
 		Instructions:       instructions,
@@ -155,7 +161,7 @@ func (s *Server) Start() error {
 // Stop schließt den HTTP-Server (offene Streams bekommen stopTimeout) und alle Sessions, damit sie nach einem
 // Neustart nicht weiter als Clients zählen.
 func (s *Server) Stop() error {
-	s.sims.cancelAll()
+	s.sims.CancelAll()
 	s.mu.Lock()
 	srv := s.http
 	s.http = nil
@@ -206,6 +212,9 @@ func (s *Server) Stats() Snapshot {
 
 // Calls liefert das Aufruf-Log, laufende Aufrufe eingeschlossen, neueste zuerst.
 func (s *Server) Calls() []Call { return s.stats.calls() }
+
+// Sims ist das Register der Testläufe, das sim_test und die Balancing-Seite teilen.
+func (s *Server) Sims() *simrun.Registry { return s.sims }
 
 func (s *Server) observeClients() {
 	n := 0

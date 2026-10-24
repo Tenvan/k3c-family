@@ -3,3 +3,5 @@
 export { AlertDialog, ContextMenu, Dialog, DropdownMenu, TabNav, Table, Tabs } from '@radix-ui/themes';
 
 export { AppHeader, type HeaderTabs } from './AppHeader';
+export { TicketButton } from './TicketButton';
+export { TicketDialog } from './TicketDialog';

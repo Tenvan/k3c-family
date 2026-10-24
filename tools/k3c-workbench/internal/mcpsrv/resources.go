@@ -28,7 +28,7 @@ func (s *Server) registerGauges() {
 	r.Gauge("Konsole-Text", "B", func() int64 { _, _, b := s.console.Stats(); return b })
 	r.Gauge("Prüfläufe", "", func() int64 { n, _ := s.checks.stats(); return int64(n) })
 	r.Gauge("Prüflauf-Text", "B", func() int64 { _, b := s.checks.stats(); return b })
-	r.Gauge("Testläufe", "", func() int64 { return int64(s.sims.count()) })
+	r.Gauge("Testläufe", "", func() int64 { return int64(s.sims.Count()) })
 	r.Gauge("MCP-Sessions", "", func() int64 {
 		n := 0
 		for range s.mcp.Sessions() {
@@ -36,13 +36,6 @@ func (s *Server) registerGauges() {
 		}
 		return int64(n)
 	})
-}
-
-// count ist die Zahl der gemerkten Testläufe.
-func (r *simRuns) count() int {
-	r.mu.Lock()
-	defer r.mu.Unlock()
-	return len(r.runs)
 }
 
 // mountPprof hängt net/http/pprof unter /debug/pprof/ ein (`go tool pprof http://127.0.0.1:<Port>/debug/pprof/heap`).

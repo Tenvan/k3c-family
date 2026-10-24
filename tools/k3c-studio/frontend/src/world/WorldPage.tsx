@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTicketPage } from '@webkit/lib/ticketContext';
 import { LivePreview } from '../stage/LivePreview';
 import { ChunkPreview } from './ChunkPreview';
 import { chunkAtSlot, slotHints } from './chunkMarks';
@@ -24,6 +25,7 @@ export function WorldPage() {
   const [maximized, setMaximized] = useState(true);
   const [source, setSource] = useState({ seed: 'k3c', biome: 'forest' });
   const plan = usePlan();
+  useTicketPage('welt', `${source.seed}/${source.biome}`);
   const [model, setModel] = useState<LevelModel | null>(null);
   const [gates, setGates] = useState<number[]>([]);
   const frame = useRef<HTMLDivElement>(null);

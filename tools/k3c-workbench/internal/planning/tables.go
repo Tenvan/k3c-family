@@ -3,6 +3,8 @@ package planning
 import (
 	"fmt"
 	"strings"
+
+	ticketkit "k3c/tools/assetkit/ticket"
 )
 
 // mdTable ist eine Markdown-Tabelle in einer Zeilenliste: Kopf, erste Datenzeile, Ende (exklusiv).
@@ -95,7 +97,7 @@ func syncIndex(c *changeSet, t Ticket, rel string) error {
 	if strings.HasPrefix(link, "archiv/") {
 		section = "## Archiv"
 	}
-	row := tableRow([]string{"[" + t.Nr + "](" + link + ")", t.Domain, t.Typ, t.Prio, t.Status, t.Sprint, t.Title})
+	row := ticketkit.IndexRow(ticketkit.Row{Nr: t.Nr, Link: link, Domain: t.Domain, Typ: t.Typ, Prio: t.Prio, Status: t.Status, Sprint: t.Sprint, Title: t.Title})
 	lines, err := placeRow(splitLines(text), "| ["+t.Nr+"](", heading(section), row)
 	if err != nil {
 		return fmt.Errorf("backlog/README.md: %w", err)

@@ -8,9 +8,9 @@
 - **Sprint:** WZ29
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-24, Ralf im Chat (mit WZ29 Revision 1)
 
 ## Ausgangslage
 
@@ -29,9 +29,9 @@ Ralf; Agent DEV (Funktion) und Agent Recherche (Liste füllen, im Sprint autonom
 - Datei `data/assets-vorschlaege.json` (Studio schreibt `data/**`): je Eintrag Slot oder Gruppe, Art (Ton, Grafik), Titel, Quelle (URL der Seite und Datei-URL), Urheber, Lizenz (Q70: CC0, CC-BY, OGA-BY, CC-BY-SA), Dateiname, Größe, Priorität, Hinweis, Status (offen, geladen, verworfen).
 - Befüllung im Sprint durch den Agenten per Recherche (`assets_research`, OpenGameArt, Kenney, itch.io): für alle Lücken und schwachen Slots Kandidaten, auch für Skills je Linie und passive Skills, Skill-Effekt-Grafiken, Gegner-Lücken (Käfer, Splitterwicht, Spinne), Bauschilder und Gerüste, Abbau-Symbole (Axt, Spitzhacke), Höhlen-Wurzeln, Felsen. Lizenz auf der Quellseite prüfen, Dateigröße und Datei-URL nennen.
 - **Eigene Seite „Quellen“ im Studio** (Entscheidung 🧑, 2026-10-24: eine eigene Assets-Source-Seite ist hilfreich), für Ton und Grafik gemeinsam, statt eines Reiters je Seite: Übersicht je Quelle (OpenGameArt, Kenney, itch.io, freesound …) mit Lizenzregeln und Zähler (vorgeschlagen, geladen, verwendet), die Vorschlagsliste mit Filter (B-599, auch nach Quelle, Art, Slot, Lizenz, Status), Summe der Größen, Auswahl einzeln oder alle, Button „Herunterladen“ (nur mit Bestätigung der Gesamtgröße und der Quellen), Fortschritt, Wiederaufnahme, Prüfsumme/Größe nach dem Laden. Von Sound- und Grafik-Seite führt „Vorschläge für diesen Slot“ gefiltert auf die Quellen-Seite.
-- Geladene Dateien landen in `public/audio/kandidaten/` bzw. `public/grafik/kandidaten/`, Credits-Zeilen und Katalog-Einträge (Kandidat ohne Zuordnung) werden mit angelegt; der Credits-Test bleibt grün.
+- Geladene Dateien landen im Vorrat `.work/vorrat/` (siehe Regeln); erst die Auswahl für einen Slot kopiert die Datei an ihren Platz unter `public/` und legt Credit-Zeile und Katalog-Eintrag an; der Credits-Test bleibt grün.
 - Offline sichtbar: Die Seite zeigt „geladen“ und „nicht geladen“, Hörprobe/Vorschau funktioniert für Geladenes ohne Netz; ungeladene Einträge sind ausgegraut.
-- Aufräumen: nicht gewählte Kandidaten lassen sich gesammelt entfernen (mit Bestätigung), wie bei B-554; „verwendet/unverwendet“ je Datei sichtbar.
+- Aufräumen: nicht gewählte Kandidaten lassen sich gesammelt aus dem Vorrat entfernen (mit Bestätigung), wie bei B-554; „verwendet/unverwendet“ je Datei sichtbar.
 
 ## Nicht-Ziele
 
@@ -52,7 +52,7 @@ Download scheitert → Eintrag bleibt „offen“, Fehlertext, Wiederholen mögl
 ## Akzeptanzkriterien
 
 - **AC-01** Die Vorschlagsliste ist im Sprint gefüllt: mindestens drei Kandidaten je Lücke und je Skill-Linie, mit geprüfter Lizenz, Datei-URL und Größe (Prüfung per Test der Liste).
-- **AC-02** Das Studio lädt ausgewählte Einträge nach Bestätigung und legt Datei, Credit und Katalog-Eintrag an (Go-Test mit lokalem Testserver, Credits-Test grün).
+- **AC-02** Das Studio lädt ausgewählte Einträge nach Bestätigung in den Vorrat `.work/vorrat/` (Index mit Quelle, Lizenz, Größe, Prüfsumme); erst bei der Auswahl für einen Slot kopiert es die Datei nach `public/` und legt Credit und Katalog-Eintrag an (Go-Test mit lokalem Testserver, Credits-Test grün).
 - **AC-03** Offline zeigt der Vorrat Geladenes spielbar und Ungeladenes ausgegraut (Vitest, Beobachtung ohne Netz).
 - **AC-04** Gesammeltes Aufräumen nicht gewählter Kandidaten mit Bestätigung.
 - **AC-05** Ralf lädt am PC einen Teil der Liste und testet ihn offline (Abnahme).

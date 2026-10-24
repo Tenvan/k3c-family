@@ -1,6 +1,8 @@
 import { Tabs } from '@radix-ui/themes';
 import type { ReactNode } from 'react';
 import { Flex, Text } from '../atoms';
+import { useTicketOptional } from '../lib/ticketContext';
+import { TicketButton } from './TicketButton';
 
 /** Reiter der Kopfzeile: Schlüssel in Anzeige-Reihenfolge und ihre Beschriftung. */
 export interface HeaderTabs<P extends string> {
@@ -18,6 +20,7 @@ interface Props<P extends string> {
 
 /** Kopfzeile eines Wails-Programms (B-064 › Kopfzeile): Titel, Reiter, rechte Leiste. */
 export function AppHeader<P extends string>({ title, tabs, right }: Props<P>) {
+  const tickets = useTicketOptional();
   return (
     <header className="wk-header">
       <Text weight="bold" className="wk-header-title">
@@ -36,6 +39,7 @@ export function AppHeader<P extends string>({ title, tabs, right }: Props<P>) {
       )}
       <Flex align="center" gap="3" className="wk-header-right">
         {right}
+        {tickets && <TicketButton />}
       </Flex>
     </header>
   );

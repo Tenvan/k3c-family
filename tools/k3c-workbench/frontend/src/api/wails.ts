@@ -1,7 +1,7 @@
 import type {
   Backend, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, McpCall, McpOverview,
   McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData, WorktreeDiff,
-  GitBranch, GitPRList, GitView,
+  BalanceBackend, BalanceDataFile, BalanceDataValue, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning, GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
 } from './types';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
@@ -51,6 +51,20 @@ interface GoApp {
   GitPRAction(number: number, action: string): Promise<string>;
   GitCheckMerged(names: string[]): Promise<GitBranch[]>;
   GitStamp(): Promise<string>;
+  TicketCreate(input: TicketInput): Promise<TicketCreated>;
+  TicketRecent(n: number): Promise<TicketCreated[]>;
+  // Balancing-Seite (WZ28.4, WZ28.5)
+  BalanceStart(spec: BalanceSpec): Promise<BalanceRun>;
+  BalanceRuns(): Promise<BalanceRun[]>;
+  BalanceStop(id: string): Promise<void>;
+  BalanceReports(): Promise<BalanceReportInfo[]>;
+  BalanceReport(path: string): Promise<BalanceSummary>;
+  BalanceTuning(path: string): Promise<Tuning>;
+  BalanceDataFiles(): Promise<BalanceDataFile[]>;
+  BalanceDataDoc(name: string): Promise<string>;
+  BalanceDataValues(name: string): Promise<BalanceDataValue[]>;
+  BalanceReportRate(path: string, rating: string): Promise<void>;
+  BalanceReportDelete(path: string): Promise<void>;
 }
 
 interface WailsRuntime {
@@ -67,6 +81,22 @@ declare global {
 
 export function hasWails(): boolean {
   return window.go?.main?.App !== undefined && window.runtime !== undefined;
+}
+
+function balanceWails(app: GoApp): BalanceBackend {
+  return {
+    balanceStart: (spec) => app.BalanceStart(spec),
+    balanceRuns: () => app.BalanceRuns(),
+    balanceStop: (id) => app.BalanceStop(id),
+    balanceReports: () => app.BalanceReports(),
+    balanceReport: (path) => app.BalanceReport(path),
+    balanceTuning: (path) => app.BalanceTuning(path),
+    balanceDataFiles: () => app.BalanceDataFiles(),
+    balanceDataDoc: (name) => app.BalanceDataDoc(name),
+    balanceDataValues: (name) => app.BalanceDataValues(name),
+    balanceReportRate: (path, rating) => app.BalanceReportRate(path, rating),
+    balanceReportDelete: (path) => app.BalanceReportDelete(path),
+  };
 }
 
 export function wailsBackend(): Backend {
@@ -118,6 +148,9 @@ export function wailsBackend(): Backend {
     gitPRAction: (number, action) => app.GitPRAction(number, action),
     gitCheckMerged: (names) => app.GitCheckMerged(names),
     gitStamp: () => app.GitStamp(),
+    ticketCreate: (input) => app.TicketCreate(input),
+    ticketRecent: (n) => app.TicketRecent(n),
+    ...balanceWails(app),
     openUrl: (url) => runtime.BrowserOpenURL(url),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),

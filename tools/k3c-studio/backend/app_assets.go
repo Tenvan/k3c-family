@@ -103,3 +103,9 @@ func (a *App) AssetsDownload(id, hit string) (string, error) {
 func (a *App) AssetsLicenseOK(id, hit string) error {
 	return assets.ConfirmLicense(a.root, id, hit, time.Now())
 }
+
+// AssetsSlotDetails führt Register, Sheet, Atlas, Zuordnungs-Tabellen und Verwendung eines Slots zusammen (Binding,
+// B-594); fehlende Nebenquellen stehen in hinweise, Fehler nur bei unbekanntem Slot oder kaputtem Register.
+func (a *App) AssetsSlotDetails(id string) (assets.SlotDetails, error) {
+	return assets.SlotDetailsFor(a.root, id)
+}

@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-597, B-598, B-599, B-600, B-601, B-602
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-10-24, Revision 2 (Abhängigkeit SO8.2 statt SO8; Ziel von Ralf: WZG komplett umsetzen, soweit autonom möglich; Revision 1: 2026-10-24, Ralf im Chat)
 
 ## Ausgangslage
 
@@ -24,7 +24,7 @@ Ralf; Agent DEV; 🧑 nimmt am PC ab.
 
 ## Anforderungen
 
-B-597, B-598, B-599, B-600, B-601 › Anforderungen.
+B-597, B-598, B-599, B-600, B-601, B-602 › Anforderungen.
 
 ## Nicht-Ziele
 
@@ -32,7 +32,7 @@ Neue Töne oder Grafiken selbst beschaffen (macht der Chat auf Ralfs Bestätigun
 
 ## Regeln und Einschränkungen
 
-Läuft nach WZ28.1 (Slot-Details) und SO8 (Abbildung Skill → Slot); Frontend nur im Studio, Atomic Design über `@webkit`; Zeichnen/Hören mit den Funktionen des Spiels; Chat nur online, Seiten funktionieren offline; keine stille Schreibaktion des Chats.
+**Abhängigkeiten (aktivieren erst danach):** WZ28.1 (Slot-Details, B-594, erledigt) und SO8.2 (Abbildung Skill → Slot im Client, Sprint SO8 aus Projekt SND). Die Hörprobe SO8.4 mit Ralf ist keine Voraussetzung (Revision 2: vorher „SO8 erledigt“, das hätte WZ29 an eine Mensch-Session gebunden). Frontend nur im Studio, Atomic Design über `@webkit`; Zeichnen und Hören mit den Funktionen des Spiels, keine zweite Darstellung; Chat und Downloads nur online, alle Seiten funktionieren offline; keine stille Schreibaktion des Chats; der Vorrat bleibt in `.work/vorrat/` (gitignored), in Git landen nur gewählte Dateien mit Credit und Katalog-Eintrag (B-601).
 
 ## Beispiele
 
@@ -53,21 +53,21 @@ Datei oder Sheet fehlt → Hinweis in der Zeile. Chat offline → „offline“,
 
 ## Offene Fragen
 
-keine blockierende; Pflicht-Szenen und Chat-Aktionen laut Tickets als Default, Ralf ergänzt bei der Abnahme. Spec-Freigabe steht aus.
+keine blockierende; Pflicht-Szenen und Chat-Aktionen laut Tickets als Default, Ralf ergänzt bei der Abnahme.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ29.1 | – | Umsetzung | autonom | offen |
-| WZ29.2 | – | Umsetzung | autonom | offen |
-| WZ29.3 | – | Umsetzung | autonom | offen |
-| WZ29.4 | – | Umsetzung | autonom | offen |
-| WZ29.5 | – | Umsetzung | autonom | offen |
-| WZ29.6 | – | Umsetzung | autonom | offen |
-| WZ29.7 | – | Umsetzung | autonom | offen |
-| WZ29.8 | – | Review | autonom | offen |
-| WZ29.9 | – | Workshop | Mensch | offen |
+| WZ29.1 | `WZ29.1-filter-baustein.md` | Umsetzung | autonom | offen |
+| WZ29.2 | `WZ29.2-sound-szenen.md` | Umsetzung | autonom | offen |
+| WZ29.3 | `WZ29.3-misch-lautheit-abstand.md` | Umsetzung | autonom | offen |
+| WZ29.4 | `WZ29.4-grafik-szenen.md` | Umsetzung | autonom | offen |
+| WZ29.5 | `WZ29.5-vorschlagsliste.md` | Umsetzung | autonom | offen |
+| WZ29.6 | `WZ29.6-quellen-seite.md` | Umsetzung | autonom | offen |
+| WZ29.7 | `WZ29.7-chat-zuordnung.md` | Umsetzung | autonom | offen |
+| WZ29.8 | `WZ29.8-review.md` | Review | autonom | offen |
+| WZ29.9 | `WZ29.9-abnahme-pc.md` | Workshop | Mensch | offen |
 
 - WZ29.1 (DEV) Filter-/Sortier-Baustein in `@webkit` mit reinen Funktionen und Tests, Einbau in Sound- und Grafik-Szenen (AC-01).
 - WZ29.2 (DEV) Sound-Szenen: Skills, Gegner/Bosse, Bauen, Reiten, UI, Warnungen (AC-02).
