@@ -8,9 +8,9 @@
 - **Sprint:** SO8
 - **Projekt:** SND
 - **Erstellt:** 2026-10-23
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-24, Chat (Ralf), Revision 2 (mit Ton für passive Skills)
 
 ## Ausgangslage
 

@@ -1,14 +1,14 @@
-# SO8 · DEV · Skill-Sounds je Klasse
+# SO8 · DEV, CLI · Skill-Sounds je Klasse
 
 - **Status:** geplant
 - **Projekt:** SND
-- **Domäne:** DEV
-- **Reife:** Entwurf
+- **Domäne:** DEV, CLI
+- **Reife:** bereit
 - **Tickets:** B-576
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-24, Chat (Ralf), Revision 1
 
 ## Ausgangslage
 
@@ -57,10 +57,10 @@ keine. Auswahl der Töne als Default durch den Agenten, 🧑 bestätigt in SO8.4
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SO8.1 | – | Umsetzung | autonom | offen |
-| SO8.2 | – | Umsetzung | autonom | offen |
-| SO8.3 | – | Review | autonom | offen |
-| SO8.4 | – | Workshop | Mensch | offen |
+| SO8.1 | `SO8.1-klassen-slots-katalog.md` | Umsetzung | autonom | offen |
+| SO8.2 | `SO8.2-ausloeser-skill-ton.md` | Umsetzung | autonom | offen |
+| SO8.3 | `SO8.3-review.md` | Review | autonom | offen |
+| SO8.4 | `SO8.4-hoerprobe-klassen-toene.md` | Workshop | Mensch | offen |
 
 - SO8.1 (DEV) Vier Slots `sfx:skill:<linie>` in `data/assets.json` mit Kenney-CC0-Kandidaten, Credits, `task gen:soundatlas` (AC-01).
 - SO8.2 (CLI) Auslöser: Abbildung Skill → (Skill-Slot vor Linien-Slot vor `sfx:skill`) in `src/audio` und `SkillCasts`-Anbindung für aktive Skills und neu gelernte passive, Vitest (AC-02, AC-03).
