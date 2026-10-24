@@ -1,6 +1,6 @@
 # BD9.3 · Review BD9
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -51,5 +51,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 bis AC-03 geprüft gegen BD9.1 und BD9.2 › Ergebnis; `task check` und `task check:go` grün (`-race` lokal nicht möglich, CGO aus; läuft in der CI).
+- Im Browser-Pane mit Spielserver und Vite, zwei Tabs: Lobby zeigt den offenen Raum „familie · Welt standard · 1/4 Plätze“ (AC-02); `POST api/room/close?slot=familie` → 200, unbekannter Slot → 404; Tab im Raum kehrt mit „Raum ist geschlossen“ in die Lobby zurück, der Stand steht danach als Spielstand in der Liste (AC-03, Server). Der Dialog selbst ließ sich im Pane nicht per Tastatur bedienen (Fokus), ist per Vitest belegt; die Prüfung am Gerät folgt in BD9.4.
+- Keine schweren Befunde in den Reviews von BD9.1 und BD9.2. Neues Ticket B-613 (Origin-Prüfung schreibender Endpunkte).

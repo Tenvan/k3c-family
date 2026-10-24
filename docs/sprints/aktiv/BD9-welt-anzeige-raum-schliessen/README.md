@@ -59,7 +59,7 @@ keine. Entschieden (🧑, 2026-10-24): Jedes Gerät darf einen Raum schließen, 
 |---|---|---|---|---|
 | BD9.1 | `BD9.1-server-welt-schliessen.md` | Umsetzung | autonom | fertig |
 | BD9.2 | `BD9.2-lobby-pause-anzeige.md` | Umsetzung | autonom | fertig |
-| BD9.3 | `BD9.3-review.md` | Review | autonom | in Arbeit |
+| BD9.3 | `BD9.3-review.md` | Review | autonom | fertig |
 | BD9.4 | `BD9.4-abnahme-pc.md` | Workshop | Mensch | offen |
 
 - BD9.1 (SRV) Server: Welt in `rooms[]`, `POST api/room/close`, Protokoll (AC-02, AC-03).
@@ -69,5 +69,4 @@ keine. Entschieden (🧑, 2026-10-24): Jedes Gerät darf einen Raum schließen, 
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-24: AC-01 bis AC-03 erfüllt (BD9.1, BD9.2 › Ergebnis), AC-03 zusätzlich im Browser mit zwei Tabs geprüft; AC-04 offen (BD9.4, Ralf). Behoben: Text der Rückfrage („Belegte Plätze: N“). Neue Tickets: B-613.
