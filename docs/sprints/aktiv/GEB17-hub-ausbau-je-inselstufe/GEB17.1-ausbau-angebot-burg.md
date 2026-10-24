@@ -1,6 +1,6 @@
 # GEB17.1 · Ausbau-Angebot erscheint vor der Burg
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

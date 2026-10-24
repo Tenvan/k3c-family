@@ -1,14 +1,14 @@
 # GEB17 · CLI, REG, SIM, DEV · Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GEB
 - **Domäne:** CLI, REG, SIM, DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-591, B-592, B-590
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt; GEB17.2 bleibt Workshop mit Ralf)
 
 ## Ausgangslage
 
@@ -59,7 +59,7 @@ Zahl der Schritte je Inselstufe (2 oder 3), Kosten und Bauzeit je Schritt, Zahl 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GEB17.1 | `GEB17.1-ausbau-angebot-burg.md` | Umsetzung | autonom | offen |
+| GEB17.1 | `GEB17.1-ausbau-angebot-burg.md` | Umsetzung | autonom | in Arbeit |
 | GEB17.2 | `GEB17.2-workshop-stufenfolge.md` | Workshop | Mensch | offen |
 | GEB17.3 | `GEB17.3-regeln-stufenfolge.md` | Umsetzung | autonom | offen |
 | GEB17.4 | `GEB17.4-sim-protokoll-hubstep.md` | Umsetzung | autonom | offen |
