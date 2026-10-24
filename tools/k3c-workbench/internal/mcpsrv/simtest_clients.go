@@ -16,6 +16,7 @@ import (
 	"k3c/tools/k3c-workbench/internal/botfeed"
 	"k3c/tools/k3c-workbench/internal/browser"
 	"k3c/tools/k3c-workbench/internal/serverapi"
+	"k3c/tools/k3c-workbench/internal/simrun"
 )
 
 // Modus online mit Clients (B-348/AC-04, TR1.3): je Client ein Raum. Die Workbench legt ihn mit einem
@@ -50,7 +51,7 @@ func launchBrowser(ctx context.Context, exe, profile, url string) (func(), error
 }
 
 // clientsRunner prüft, was der Modus braucht (Browser, Vite, Feed), und liefert den Runner.
-func (s *Server) clientsRunner(ctx context.Context, spec simSpec, c *serverapi.Client) (func(context.Context, *simRun), error) {
+func (s *Server) clientsRunner(ctx context.Context, spec simSpec, c *serverapi.Client) (simrun.Runner, error) {
 	feedBase := s.feedBase()
 	if feedBase == "" {
 		return nil, fmt.Errorf("sim_test start abgelehnt: der Bot-Feed braucht den laufenden HTTP-Server von k3c-workbench")
@@ -109,16 +110,16 @@ func (s *Server) runClients(ctx context.Context, run *simRun, spec simSpec, c *s
 		o.failures = len(st.Failures)
 	}
 	started := time.Now()
-	s.sims.setPhase(run, "verbinden")
+	s.sims.SetPhase(run, "verbinden")
 	seats, err := s.openSeats(ctx, run, spec, o, c.Base, exe, vite, feedBase)
 	defer s.closeSeats(seats)
 	if err != nil {
-		s.finishRun(run, "fehler", "", []string{"verbinden: " + err.Error()}, simReportDir(run))
+		s.sims.Finish(run, "fehler", "", []string{"verbinden: " + err.Error()}, simrun.ReportDir(run))
 		return
 	}
-	s.sims.setPhase(run, "messen")
+	s.sims.SetPhase(run, "messen")
 	bot, _ := balance.BotByName(spec.bots)
-	logPath := filepath.Join(run.root, "logs", "k3c-client.jsonl")
+	logPath := filepath.Join(run.Root(), "logs", "k3c-client.jsonl")
 	deadline := time.After(spec.duration)
 	drive, sample := time.NewTicker(clientTick), time.NewTicker(onlineSample)
 	defer drive.Stop()
@@ -135,7 +136,7 @@ func (s *Server) runClients(ctx context.Context, run *simRun, spec simSpec, c *s
 			}
 		case <-sample.C:
 			o.sample(ctx, c)
-			s.sims.setLines(run, clientLines(spec, o, seats, 0, readClientMetrics(logPath, started, o.codes)))
+			s.sims.SetLines(run, clientLines(spec, o, seats, 0, readClientMetrics(logPath, started, o.codes)))
 		}
 	}
 	o.sample(context.Background(), c)
@@ -144,7 +145,7 @@ func (s *Server) runClients(ctx context.Context, run *simRun, spec simSpec, c *s
 		newFailures = len(st.Failures) - o.failures
 	}
 	m := readClientMetrics(logPath, started, o.codes)
-	s.finishRun(run, "fertig", clientVerdict(spec, o, seats, m, newFailures), clientLines(spec, o, seats, newFailures, m), simReportDir(run))
+	s.sims.Finish(run, "fertig", clientVerdict(spec, o, seats, m, newFailures), clientLines(spec, o, seats, newFailures, m), simrun.ReportDir(run))
 }
 
 // openSeats legt je Client Raum, Beobachter und Feed an und startet den Browser (ohne attach).
@@ -152,17 +153,17 @@ func (s *Server) openSeats(ctx context.Context, run *simRun, spec simSpec, o *on
 	bot, _ := balance.BotByName(spec.bots)
 	var seats []*clientSeat
 	for i := range spec.clients {
-		d, err := botdev.Dial(ctx, base, fmt.Sprintf("simtest-%s-beobachter-%d", run.id, i), bot)
+		d, err := botdev.Dial(ctx, base, fmt.Sprintf("simtest-%s-beobachter-%d", run.ID(), i), bot)
 		if err != nil {
 			return seats, err
 		}
 		o.devices = append(o.devices, d)
-		seat := &clientSeat{observer: d, feedName: run.id + "/" + strconv.Itoa(i)}
+		seat := &clientSeat{observer: d, feedName: run.ID() + "/" + strconv.Itoa(i)}
 		seats = append(seats, seat)
 		if spec.attach != "" {
 			seat.code, err = spec.attach, d.Join(ctx, spec.attach)
 		} else {
-			seat.code, err = d.Create(ctx, fmt.Sprintf("test-sim-%s-%d", run.id, i))
+			seat.code, err = d.Create(ctx, fmt.Sprintf("test-sim-%s-%d", run.ID(), i))
 		}
 		if err != nil {
 			return seats, err
@@ -175,12 +176,12 @@ func (s *Server) openSeats(ctx context.Context, run *simRun, spec simSpec, o *on
 		url := fmt.Sprintf("%s/game.html?room=%s&players=%d&botfeed=%s%s%s", vite, seat.code, spec.players,
 			feedBase, botfeed.Prefix, seat.feedName)
 		// eigener Ordner je Start: Lauf-IDs beginnen nach einem Neustart von k3c-workbench wieder bei 1
-		profile := filepath.Join(run.root, ".work", "simtest-browser",
-			fmt.Sprintf("%s-%d-%d", run.id, run.started.UnixNano(), i))
+		profile := filepath.Join(run.Root(), ".work", "simtest-browser",
+			fmt.Sprintf("%s-%d-%d", run.ID(), run.Started().UnixNano(), i))
 		if seat.stop, err = s.launch(ctx, exe, profile, url); err != nil {
 			return seats, fmt.Errorf("start des Browsers gescheitert: %v", err)
 		}
-		s.log.Info("🌐 client gestartet", "ns", "simtest", "id", run.id, "room", seat.code, "url", url)
+		s.log.Info("🌐 client gestartet", "ns", "simtest", "id", run.ID(), "room", seat.code, "url", url)
 	}
 	return seats, nil
 }

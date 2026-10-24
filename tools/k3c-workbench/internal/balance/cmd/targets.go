@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"flag"
 	"fmt"
 	"io/fs"
 	"os"
@@ -20,6 +21,43 @@ type targetOpts struct {
 	baseline string // Datei zum Vergleichen oder (write) zum Schreiben
 	write    bool
 	replays  string // Ordner für Replays der Seeds verletzter Ziele
+	variants []string
+	scope    balance.Scope
+	depth    int
+	bot      string
+	grade    string
+	progress bool
+}
+
+func (o *targetOpts) register(fs *flag.FlagSet) {
+	fs.BoolVar(&o.on, "targets", false, "Ziele aus data/balance-targets.json bewerten, Bericht als JSON und Markdown; --seeds N = nur die ersten N, sonst alle")
+	fs.StringVar(&o.dir, "report-dir", "reports", "Ordner für balance-<Zeit>.json und .md (--targets) bzw. sensitivity-<Zeit>.* (--sensitivity, --curves)")
+	fs.StringVar(&o.baseline, "baseline", "", "Baseline-Datei zum Vergleichen (nur mit --targets)")
+	fs.BoolVar(&o.write, "write-baseline", false, "Bericht nach --baseline schreiben statt vergleichen")
+	fs.IntVar(&o.depth, "depth", 0, "nur mit --targets: Tiefe aller Zielläufe statt der des Ziels")
+	fs.StringVar(&o.bot, "bot", "", "nur mit --targets: Bot aller Zielläufe statt des Ziel-Bots")
+	fs.StringVar(&o.grade, "grade", "", "nur mit --targets: Schwierigkeitsgrad aller Zielläufe (leer = normal)")
+	fs.BoolVar(&o.progress, "progress", false, "nur mit --targets: nach jedem Lauf PROGRESS <fertig>/<gesamt> auf stdout")
+}
+
+// scopeFrom setzt das Szenario der Zielläufe aus den gesetzten Flags --depth, --players, --days, --bot, --grade
+// (--players und --days gelten ohne --targets weiter für die Matrix).
+func (o *targetOpts) scopeFrom(fs *flag.FlagSet, players string, days int) error {
+	o.scope = balance.Scope{Bot: o.bot, Grade: o.grade}
+	if isSet(fs, "depth") {
+		o.scope.Depth = &o.depth
+	}
+	if isSet(fs, "days") {
+		o.scope.Days = &days
+	}
+	if isSet(fs, "players") {
+		n, err := ints(players)
+		if err != nil || len(n) != 1 {
+			return fmt.Errorf("--players mit --targets braucht genau eine Zahl, war %q", players)
+		}
+		o.scope.Players = &n[0]
+	}
+	return nil
 }
 
 // runTargets spielt die Ziele aus data/balance-targets.json, schreibt Bericht (JSON, Markdown) und vergleicht mit der
@@ -29,12 +67,20 @@ func runTargets(o targetOpts) error {
 	if err != nil {
 		return err
 	}
+	if ts, err = ts.Restrict(o.scope); err != nil {
+		return err
+	}
 	start := time.Now()
-	report, err := ts.RunTargets(o.seeds)
+	var report balance.Report
+	err = balance.WithVariants(o.variants, func() (err error) {
+		report, err = ts.RunTargetsProgress(o.seeds, o.onProgress())
+		return err
+	})
 	if err != nil {
 		return err
 	}
 	sum := ts.Summarize(report)
+	sum.Varianten, sum.Kennzahlen = o.variants, balance.FiguresOf(report)
 	if o.write {
 		return writeBaseline(o.baseline, sum)
 	}
@@ -50,6 +96,14 @@ func runTargets(o targetOpts) error {
 	}
 	fmt.Fprintf(os.Stderr, "k3c-balance: %d Läufe in %s\n", len(report.Results), time.Since(start).Round(time.Second))
 	return nil
+}
+
+// onProgress schreibt mit --progress nach jedem Lauf eine Zeile für die Laufsteuerung (simrun).
+func (o *targetOpts) onProgress() func(done, total int) {
+	if !o.progress {
+		return nil
+	}
+	return func(done, total int) { fmt.Printf("PROGRESS %d/%d\n", done, total) }
 }
 
 func writeBaseline(path string, sum balance.Summary) error {

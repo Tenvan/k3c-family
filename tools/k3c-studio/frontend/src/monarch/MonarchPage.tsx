@@ -1,4 +1,5 @@
 import { Button, SelectField, Text, plainOptions, type SelectOption } from '@webkit/atoms';
+import { useTicketPage } from '@webkit/lib/ticketContext';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { backend, type AssetSlot } from '../api';
 import { DEFAULT_CONTROL, type Anim, type Control } from '../playback/figure';
@@ -104,6 +105,7 @@ function Colors({ m }: { m: Monarch }) {
  *  Grafik-Auswahl aus den Slots `monarch:*` und `mount:*` als Vorschau (das Register bleibt unverändert). */
 export function MonarchPage() {
   const m = useMonarch();
+  useTicketPage('monarch', m.mount);
   const [infos, setInfos] = useState<FigureInfo[]>([]);
   const [missing, setMissing] = useState<string[]>([]);
   const [zoom, setZoom] = useState(1);

@@ -1,4 +1,5 @@
 import { ActionButton, StatusBadge, Text } from '@webkit/atoms';
+import { useTicketPage } from '@webkit/lib/ticketContext';
 import { useMemo, useState } from 'react';
 import type { HubPlanView, HubRulesView, HubSaveResult } from '../api';
 import { LivePreview, type PlanerSource } from '../stage/LivePreview';
@@ -91,6 +92,7 @@ function PlanerBody({ planer, plan, shown }: { planer: ReturnType<typeof usePlan
   const { rules, rulesFailed, hub, candidate, edit, saving } = planer;
   const [chosen, setChosen] = useState<number | null>(null);
   const [selected, setSelected] = useState('');
+  useTicketPage('planer', selected);
   const levels = shown.matrix.levels;
   const hubLevel = chosen !== null && chosen <= levels ? chosen : Math.max(1, levels);
   const view = usePlannerView();
@@ -130,6 +132,7 @@ export function PlannerPage() {
   const { plan, failed, reload } = planer;
   const shown = planer.view ?? plan;
   const levels = shown?.matrix.levels ?? 0;
+  useTicketPage('planer', '', !(plan && !plan.error && shown)); // mit geladenem Planer meldet PlannerBody die Zeile
   return (
     <div className="pl-page">
       <div className="wd-bar">

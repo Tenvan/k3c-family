@@ -1,4 +1,5 @@
 import { Tabs } from '@webkit/organisms';
+import { useTicketPage } from '@webkit/lib/ticketContext';
 import { useState } from 'react';
 import { AssetsPage } from '../assets/AssetsPage';
 import { loadPref, savePref } from '../lib/prefs';
@@ -12,6 +13,7 @@ type Tab = (typeof TABS)[number];
  *  Packs (grafiken.html). */
 export function GraphicsPage() {
   const [tab, setTab] = useState<Tab>(() => loadPref('grafik.tab', TABS, 'slots'));
+  useTicketPage('grafik', tab, tab !== 'slots'); // auf Slots meldet AssetsPage den gewählten Slot
   const choose = (v: string) => {
     const next = TABS.find((t) => t === v) ?? 'slots';
     setTab(next);

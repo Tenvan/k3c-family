@@ -120,7 +120,7 @@ func TestSimTestHoechstensZweiLaeufe(t *testing.T) {
 	if _, err := s.simTest(context.Background(), simTestIn{Action: "start"}); err == nil {
 		t.Error("dritter Lauf gestartet")
 	}
-	s.sims.cancelAll()
+	s.sims.CancelAll()
 	waitDone(t, s, a)
 	waitDone(t, s, b)
 }

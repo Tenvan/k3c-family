@@ -1,4 +1,5 @@
 import { useState, type CSSProperties } from 'react';
+import { useTicketPage } from '@webkit/lib/ticketContext';
 import { SegmentedControl, Splitter, Text } from '@webkit/atoms';
 import { useSplit } from '@webkit/lib/split';
 import { NoticeCard } from '@webkit/molecules';
@@ -17,6 +18,7 @@ type View = (typeof VIEWS)[number];
  *  und Live-Monitoren (B-445). */
 export function McpPage() {
   const [view, setView] = useState<View>(() => loadPref('mcp.view', VIEWS, 'uebersicht'));
+  useTicketPage('mcp', view);
   const data = useMcpData();
   const [split, setSplit, resetSplit] = useSplit(prefsStore, 'mcp.split.band', 60);
   const choose = (v: string) => {

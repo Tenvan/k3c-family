@@ -1,4 +1,5 @@
 import { Button, SegmentedControl, Select, Splitter, Text, TextField, type Tone } from '@webkit/atoms';
+import { useTicketPage } from '@webkit/lib/ticketContext';
 import { useMemo, useState, type CSSProperties } from 'react';
 import type { AssetKind, AssetSlot, AssetStatus } from '../api';
 import * as prefs from '../lib/prefs';
@@ -28,10 +29,11 @@ export function AssetsPage({ art }: { art: AssetKind }) {
   const aktivTyp = typList.includes(typ) ? typ : ''; // Typ, der nach einem Reload fehlt, filtert nicht unsichtbar weiter
   const visible = useMemo(() => filterSlots(slots, { art, kategorie, typ: aktivTyp, status, query }), [slots, art, kategorie, aktivTyp, status, query]);
   const used = useMemo(() => new Set(slots.flatMap((s) => s.wahl.map((c) => c.datei))), [slots]);
+  const { slot, missing } = selectionOf(slots, art, selected);
+  useTicketPage(art, slot?.id ?? '');
 
   if (!data.view) return data.error ? <NoticeCard title="Slot-Register nicht lesbar" tone="error">{data.error}</NoticeCard> : <Text color="gray">Lade Slot-Register …</Text>;
   if (data.view.error) return <NoticeCard title="Slot-Register ungültig" tone="error">{data.view.error}</NoticeCard>;
-  const { slot, missing } = selectionOf(slots, art, selected);
   const pick = (id: string) => {
     setSelected(id);
     prefs.savePref(`${art}.selected`, id);

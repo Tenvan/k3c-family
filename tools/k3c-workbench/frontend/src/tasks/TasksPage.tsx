@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTicketPage } from '@webkit/lib/ticketContext';
 import { Splitter, Text } from '@webkit/atoms';
 import { useSplit } from '@webkit/lib/split';
 import { NoticeCard } from '@webkit/molecules';
@@ -33,9 +34,10 @@ function useTaskPrefs() {
 }
 
 /** Reiter `Tasks` (Workbench-Spec § 4): Kopf mit Filter und Schaltern, Baum | Splitter | Ausgabe, Fußzeile. */
-export function TasksPage() {
+export function TasksPage({ active = true }: { active?: boolean }) {
   const data = useTasks();
   const prefs = useTaskPrefs();
+  useTicketPage('tasks', prefs.selected, active);
   const [query, setQuery] = useState('');
   const { catalog, gates } = data;
   const visible = useMemo(() => {

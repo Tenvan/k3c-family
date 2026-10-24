@@ -6,6 +6,7 @@
 import spritesJson from '@data/sprites.json';
 import { HUB_GROWTH, HUB_SCAFFOLD } from '@game/scenes/render/hubGrowth';
 import type { Card } from '@game/tools/spriteReference';
+import type { ListFilterConfig } from '@webkit/lib/listFilter';
 
 export interface Rect {
   x: number;
@@ -67,6 +68,31 @@ export function resolveSlot(slot: AssetSlot, q: Query): Resolved {
   const pref = q.slot === slot.id ? q.wahl : 1;
   const choice = slot.wahl[pref - 1];
   return { slot, pref, choice, placeholder: !choice };
+}
+
+/**
+ * Suche, Filter und Sortierung der Szenen-Listen (B-599, Baustein `ListFilter`): gleich für Sound und Grafik.
+ * `items` gibt die Reihenfolge im Spiel vor (Register-Reihenfolge); „Bus“ gibt es nur bei Sound-Slots und bleibt sonst aus.
+ * Dimensionen ohne Daten (z. B. „vom Chat vorgeschlagen“) kommen erst hinzu, wenn es Daten dafür gibt.
+ */
+export function sceneFilter(items: readonly Resolved[], credits: readonly LicenseEntry[]): ListFilterConfig<Resolved> {
+  const order = new Map(items.map((r, i) => [r.slot.id, i]));
+  const byId = (a: Resolved, b: Resolved) => a.slot.id.localeCompare(b.slot.id, 'de');
+  const status = (r: Resolved) => (r.choice ? 'zugeordnet' : 'Lücke');
+  return {
+    searchText: (r) => `${r.slot.id} ${r.slot.beschreibung} ${r.choice?.datei ?? ''}`,
+    dimensions: [
+      { key: 'status', label: 'Status', values: status, order: ['Lücke', 'zugeordnet'] },
+      { key: 'art', label: 'Art', values: (r) => r.slot.id.split(':')[0] },
+      { key: 'bus', label: 'Bus', values: (r) => r.slot.bus },
+      { key: 'lizenz', label: 'Lizenz', values: (r) => (r.choice ? (licenseFlag(r.choice.datei, credits) === 'NC' ? 'NC' : 'frei') : undefined), order: ['NC', 'frei'] },
+    ],
+    sorts: [
+      { key: 'spiel', label: 'Reihenfolge im Spiel', compare: (a, b) => (order.get(a.slot.id) ?? 0) - (order.get(b.slot.id) ?? 0) },
+      { key: 'name', label: 'Name', compare: byId },
+      { key: 'status', label: 'Status', compare: (a, b) => status(a).localeCompare(status(b), 'de') || byId(a, b) },
+    ],
+  };
 }
 
 /** Lizenz-Eintrag eines Packs (wie `Credit` aus `credits.ts`) */
