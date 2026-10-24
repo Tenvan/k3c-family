@@ -1,6 +1,6 @@
 # GEB16.3 · Gerüst-Grafiken je Größenklasse sowie Axt und Spitzhacke
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -50,5 +50,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 und AC-04 (Grafik): umgesetzt.
+  - Gerüste `geruest-1/2/3/4/6` je Breite der Gebäude, mit Stangen, Riegeln, Brettern, Streben und halbfertiger Wand, ab Breite 4 mit Leiter.
+  - Symbole `symbol-axt` und `symbol-spitzhacke`.
+  - Slots `site:scaffold:<n>`, `sign:axe`, `sign:pickaxe`; Zuordnung und Regeldatei nachgezogen.
+- Geprüft mit `go test` und golangci-lint in `tools/buildings`, Asset-Tests und Studio `src/graphics`. Claude hat die PNGs selbst angesehen.
+- Abweichung: fünf Größenklassen (1, 2, 3, 4, 6) statt drei, passend zu den Gebäudebreiten.
