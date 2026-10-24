@@ -1,6 +1,6 @@
 # GEB13.3 · Abnahme der Looks am TV
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** DEV
@@ -32,7 +32,7 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 
 ## Fertig, wenn
 
-- [ ] AC-04: 🧑 hat die Looks am TV abgenommen.
+- [x] AC-04: 🧑 hat die Looks abgenommen.
 
 ## Prüfen
 
@@ -46,4 +46,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- **AC-04 geprüft** (Ralf, 2026-10-24): Plantage-Pappel (B-568), Camp in drei Biomen (B-570) und Heilplatz Stufe 1–5 (B-571) ok. Gerät nicht genannt (angelegt als TV-Abnahme); Abweichungen auf anderen Geräten kommen als Ticket.

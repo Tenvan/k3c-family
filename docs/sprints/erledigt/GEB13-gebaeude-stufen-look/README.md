@@ -1,6 +1,6 @@
 # GEB13 · REG, DEV · Gebäude-Stufen in den Daten und Stufen-Look für Plantage, Camp, Heilplatz
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GEB
 - **Domäne:** REG, DEV
 - **Reife:** bereit
@@ -59,10 +59,9 @@ keine
 |---|---|---|---|---|
 | GEB13.1 | `GEB13.1-stufen-daten.md` | Umsetzung | autonom | fertig |
 | GEB13.2 | `GEB13.2-looks.md` | Umsetzung | autonom | fertig |
-| GEB13.3 | `GEB13.3-abnahme-tv.md` | Workshop | Mensch | offen |
+| GEB13.3 | `GEB13.3-abnahme-tv.md` | Workshop | Mensch | fertig |
 
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-24: AC-01 (GEB13.1), AC-02 und AC-03 (GEB13.2) umgesetzt; AC-04 (GEB13.3): Ralf hat Pappel, Camp und Heilplatz abgenommen, alle ok. Neue Tickets: keine.

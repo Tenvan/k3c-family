@@ -1,6 +1,6 @@
 # GEB10.5 · Abnahme in Vorschau und Spiel mit zwei Spielern, GEB6-Restpunkte
 
-- **Status:** blockiert
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -42,7 +42,7 @@ Prüfliste für 🧑:
 
 ## Fertig, wenn
 
-- [ ] AC-04: Punkte 1–7 von 🧑 abgenommen oder als Ticket benannt; Ergebnis mit Datum.
+- [x] AC-04: Punkte 1–7 von 🧑 abgenommen oder als Ticket benannt; Ergebnis mit Datum.
 
 ## Prüfen
 
@@ -56,4 +56,12 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Blockiert: Abnahme durch Ralf (AC-04), Prüfliste unter Schritte. Kein Agent setzt diese Session um.
+AC-04 geprüft (Ralf, 2026-10-24, Gerät nicht genannt):
+1. Bäume ok.
+2. Höhlen-Flora: ok, aber zu wenige Wurzeln und alle gleich → B-582.
+3. Truhe ok.
+4. Wimpel ok.
+5. Ausgang-Beschriftung ok.
+6. Split-Screen ok.
+7. Geschmack: Minen und Felsen größer, zwei bis drei Varianten mehr → B-583.
+B-582 und B-583 laufen im Sprint GEB15. Die Entscheidungen 1–6 der Sprint-README wurden nicht ausdrücklich bestätigt oder geändert.

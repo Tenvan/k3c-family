@@ -1,6 +1,6 @@
 # GEB10 · DEV, CLI · Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GEB
 - **Domäne:** DEV, CLI
 - **Reife:** bereit
@@ -71,7 +71,7 @@ Autonom entschieden (Auftrag 🧑 2026-10-22: GEB komplett autonom), Meldung im 
 | GEB10.2 | `GEB10.2-truhe-geschlossen.md` | Umsetzung | autonom | fertig |
 | GEB10.3 | `GEB10.3-wimpel-flora-truhe-im-spiel.md` | Umsetzung | autonom | fertig |
 | GEB10.4 | `GEB10.4-review.md` | Review | autonom | fertig |
-| GEB10.5 | `GEB10.5-abnahme.md` | Workshop | Mensch | blockiert |
+| GEB10.5 | `GEB10.5-abnahme.md` | Workshop | Mensch | fertig |
 
 - GEB10.1 (DEV) Bäume höher und dichter, Höhlen-Flora als JSON und PNG, Vorschau (AC-01).
 - GEB10.2 (DEV) Geschlossene Truhe, Vorschau zeigt beide (AC-02).
@@ -81,5 +81,4 @@ Autonom entschieden (Auftrag 🧑 2026-10-22: GEB komplett autonom), Meldung im 
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-24: AC-01 bis AC-03 durch GEB10.1 bis GEB10.4; AC-04 (GEB10.5): Ralf hat die Prüfliste durchgesehen, Punkte 1, 3–6 ok, Höhlen-Flora und Felsen/Minen mit Nachbesserung. Neue Tickets: B-582, B-583 (Sprint GEB15).
