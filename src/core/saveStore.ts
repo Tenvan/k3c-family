@@ -114,6 +114,19 @@ export async function deleteSave(slot: string, fetchFn: typeof fetch = fetch): P
   return result;
 }
 
+/** Ergebnis von `closeRoom`: geschlossen, Raum unbekannt (404) oder sonst fehlgeschlagen (400, Server, Netz) */
+export type CloseResult = 'ok' | 'not_found' | 'failed';
+
+/** Schließt einen offenen Raum auf dem Server (`POST /api/room/close`, BD9.1): Stand wird gespeichert, verbundene Geräte kehren in die Lobby zurück. */
+export async function closeRoom(slot: string, fetchFn: typeof fetch = fetch): Promise<CloseResult> {
+  try {
+    const res = await fetchFn(`api/room/close?slot=${encodeURIComponent(slot)}`, { method: 'POST', signal: AbortSignal.timeout(TIMEOUT_MS) });
+    return res.ok ? 'ok' : res.status === 404 ? 'not_found' : 'failed';
+  } catch {
+    return 'failed';
+  }
+}
+
 /**
  * Wählbare Welt-IDs des Servers (`GET /api/worlds`, B-566), `standard` zuerst. Fehler, Zeitüberschreitung und unlesbare
  * Einträge ergeben nur `standard`, damit die Lobby immer eine Auswahl hat.

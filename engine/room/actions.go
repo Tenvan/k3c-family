@@ -286,9 +286,11 @@ type Info struct {
 	Taken   int    `json:"taken"` // besetzt + wartend
 	Free    int    `json:"free"`  // 4 − taken
 	Running bool   `json:"running"`
+	World   string `json:"world"` // Welt-ID des Raums (BD9.1, B-604)
 }
 
 func (r *Room) info() Info {
 	taken := r.count(Taken) + r.count(Waiting)
-	return Info{r.Code, r.Name, r.isl.Stages[0].Biome.Depth, r.isl.Options.Grade, taken, MaxMonarchs - taken, r.connected() > 0}
+	return Info{r.Code, r.Name, r.isl.Stages[0].Biome.Depth, r.isl.Options.Grade, taken, MaxMonarchs - taken, r.connected() > 0,
+		r.isl.WorldID()}
 }

@@ -371,7 +371,7 @@ func TestRaumlisteUndChanged(t *testing.T) {
 	r := need(f.m.Create("xbox", x, "liste", true, 0, []int{0, 1}, Options{}))(t)
 	r.Drop("xbox", x)
 	got := f.m.Rooms()
-	if len(got) != 1 || got[0] != (Info{"KRNZ", "liste", 0, "normal", 2, 2, false}) || calls != 2 {
+	if len(got) != 1 || got[0] != (Info{"KRNZ", "liste", 0, "normal", 2, 2, false, "standard"}) || calls != 2 {
 		t.Fatalf("Raumliste %+v, Changed %d", got, calls)
 	}
 	if !strings.HasPrefix(x.log[0], "joined") {

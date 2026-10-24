@@ -16,7 +16,7 @@ import {
   type StartParams,
 } from './lobbyLogic';
 
-const room = { code: 'KRNZ', name: 'familie', depth: 1, grade: 'normal', taken: 2, free: 2, running: true };
+const room = { code: 'KRNZ', name: 'familie', depth: 1, grade: 'normal', taken: 2, free: 2, running: true, world: 'standard' };
 const lobby = { status: 'lobby' as Status, errorCode: null };
 const params = (p: Partial<StartParams> = {}): StartParams => ({ autostart: false, fresh: false, save: 'familie', mock: 0, room: null, players: 1, depth: 0, seed: '', world: '', ...p });
 
@@ -227,7 +227,7 @@ describe('Hinweise (AC-09, AC-10)', () => {
 });
 
 describe('Lobby ohne Verbindung (B-083)', () => {
-  const room = { code: 'KRNZ', name: 'familie', depth: 0, grade: 'normal', taken: 1, free: 3, running: true };
+  const room = { code: 'KRNZ', name: 'familie', depth: 0, grade: 'normal', taken: 1, free: 3, running: true, world: 'standard' };
 
   it('lost bietet nur „Erneut versuchen“, ended nur „Seite neu laden“, ohne Verbindung gibt es keine Einträge', () => {
     expect(lobbyEntries([room], 'lost')).toEqual([{ kind: 'retry' }]);
@@ -373,5 +373,15 @@ describe('Welt-Auswahl im Anlegen-Dialog (BD8.1, B-566/AC-01)', () => {
     expect(flow.dialog?.options.world).toBe('standard');
     flow.dialogInput({ dir: 0, side: -1, confirm: false });
     expect(flow.dialog?.options.world).toBe('standard');
+  });
+});
+
+describe('Welt in der Lobby-Zeile (BD9.2, B-604/AC-02)', () => {
+  it('Raum nennt room.world, Spielstand seine Welt', () => {
+    const r = { code: 'KRNZ', name: 'nord', depth: 1, grade: 'normal', taken: 2, free: 2, running: true, world: 'nordmeer' };
+    const label = entryLabel({ kind: 'room', room: r }, 'familie');
+    expect(label).toContain('Welt nordmeer');
+    expect(entryLabel({ kind: 'room', room: { ...r, world: '' } }, 'familie')).toContain('Welt standard');
+    expect(entryLabel({ kind: 'save', save: { name: 'nord', savedAt: '', world: 'nordmeer', depths: [0] } }, 'familie')).toContain('Welt nordmeer');
   });
 });

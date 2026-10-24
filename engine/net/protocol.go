@@ -12,7 +12,7 @@ import (
 // Beispiele und den Client (docs/arbeitsweise.md › Grenzfall Protokoll).
 
 // ProtocolVersion steht nur im Handschlag (hello, welcome).
-const ProtocolVersion = 8
+const ProtocolVersion = 9
 
 // Codes ohne Gegenstück in engine/room.
 const (

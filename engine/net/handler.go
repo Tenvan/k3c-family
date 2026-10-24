@@ -84,6 +84,7 @@ func NewHandler(cfg Config) http.Handler {
 		cfg.Rooms.Monitor.CPU = newCPUMeter(procCPUTime) // eigener Messer, teilt kein Intervall mit /api/status
 		cfg.Rooms.Snapshot = func(w *sim.World, timescale int, paused bool) any { return stateOf(w, timescale, paused) }
 		mux.HandleFunc("/ws", s.websocket)
+		mux.HandleFunc("/api/room/close", s.closeRoom)
 	}
 	if cfg.Notices != nil {
 		cfg.Notices.restarting = s.broadcastRestarting

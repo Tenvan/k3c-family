@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DeleteDialog, deleteNotice, nextSaveName, worldOf } from './saveMenu';
+import { DeleteDialog, closeNotice, deleteNotice, nextSaveName, worldOf } from './saveMenu';
 
 describe('Spielstände im Spielmenü (BD5.2, B-506/AC-02)', () => {
   it('neuer Spielstand bekommt den nächsten freien Namen spiel-N', () => {
@@ -53,5 +53,34 @@ describe('Spielstände im Spielmenü (BD5.2, B-506/AC-02)', () => {
     expect(deleteNotice('nord', 'in_use')).toBe('Spielstand nord ist in einem Raum offen und bleibt');
     expect(deleteNotice('nord', 'not_found')).toBe('Spielstand nord gibt es nicht mehr');
     expect(deleteNotice('nord', 'failed')).toBe('Spielstand nord: Löschen fehlgeschlagen');
+  });
+});
+
+describe('Raum schließen (BD9.2, B-581/AC-03)', () => {
+  it('Rückfrage für einen Raum: Abbrechen vorgewählt, nennt die belegten Plätze, nur „Raum schließen“ liefert den Namen', () => {
+    const d = new DeleteDialog();
+    d.toggle('nord', 'room', 2);
+    expect(d.kind).toBe('room');
+    expect(d.labels()).toEqual(['Abbrechen', 'Raum schließen']);
+    expect(d.ask()).toContain('Belegte Plätze: 2');
+    expect(d.confirm()).toBeNull();
+    d.toggle('nord', 'room', 0);
+    expect(d.ask()).toBe('Raum nord schließen? Der Stand wird gespeichert.');
+    d.move(1);
+    expect(d.confirm()).toBe('nord');
+  });
+
+  it('Rückfrage für einen Spielstand bleibt Löschen', () => {
+    const d = new DeleteDialog();
+    d.toggle('nord');
+    expect(d.kind).toBe('save');
+    expect(d.labels()).toEqual(['Abbrechen', 'Löschen']);
+    expect(d.ask()).toBe('Spielstand nord löschen? Er bleibt als Sicherung erhalten.');
+  });
+
+  it('Hinweis nach dem Schließen', () => {
+    expect(closeNotice('nord', 'ok')).toBe('Raum nord geschlossen');
+    expect(closeNotice('nord', 'not_found')).toBe('Raum nord gibt es nicht mehr');
+    expect(closeNotice('nord', 'failed')).toBe('Raum nord: Schließen fehlgeschlagen');
   });
 });

@@ -119,6 +119,9 @@ export interface OptionsSceneData {
   world?: string;
 }
 
+/** Lage im Pausenmenü (1920 × 1080): Titel 64 px, Weltzeile 40 px (BD9.2, B-604), danach die 11 Zeilen; oben bleiben 70 px frei */
+export const OPTIONS_LAYOUT = { titleY: 110, titlePx: 64, worldY: 182, worldPx: 40, top: 250, rowH: 72, rowPx: 40 } as const;
+
 /** Zeile unter dem Titel: Welt des Raums (BD5.2, B-506); ohne Angabe keine Zeile */
 export const worldLine = (world: string | undefined): string => (world === undefined ? '' : t('opt.world', { world: worldOf(world) }));
 
