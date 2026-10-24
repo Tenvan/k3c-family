@@ -82,6 +82,9 @@ func TestWurzelInKurzformCheckWorktrees(t *testing.T) {
 }
 
 func TestWurzelInKurzformIstRepoWurzel(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	root := gitRepo(t)
 	short, long := formen(t, root)
 	wt := filepath.Join(t.TempDir(), "wt")

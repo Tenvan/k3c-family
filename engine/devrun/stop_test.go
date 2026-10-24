@@ -52,6 +52,9 @@ func TestStopBrichtBeiZweitemSignalAb(t *testing.T) {
 
 // Ein schon beendetes Kind stoppt sofort, ohne Signal und ohne hartes Beenden.
 func TestStopKehrtBeiBeendetemKindSofortZurueck(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	r, rec, state := startChild(t, time.Minute)
 	ch := r.cur
 	write(t, filepath.Join(state, "exit"), "0")
@@ -64,6 +67,9 @@ func TestStopKehrtBeiBeendetemKindSofortZurueck(t *testing.T) {
 
 // Nach loopMax schnellen Neustarts mit RestartCode wartet Run auf die nächste Änderung; ein Build setzt die Bremse zurück.
 func TestRunBremstNeustartSchleife(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	a := startApp(t, 75, "EXIT_AT_START=75")
 	a.waitFor("🚫-Log", func() bool { return a.rec.count("🚫 zu viele Neustarts") > 0 })
 	time.Sleep(restartPause + 500*time.Millisecond)

@@ -39,6 +39,9 @@ func TestFeedNurLoopback(t *testing.T) {
 }
 
 func TestFeedSchicktJeSlot(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	h := NewHub()
 	f := h.Open("run-1/0")
 	srv := httptest.NewServer(h)
