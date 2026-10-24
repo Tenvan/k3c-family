@@ -4,7 +4,7 @@
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** Entwurf
-- **Tickets:** B-597, B-598, B-599, B-600, B-601
+- **Tickets:** B-597, B-598, B-599, B-600, B-601, B-602
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -46,10 +46,10 @@ Datei oder Sheet fehlt → Hinweis in der Zeile. Chat offline → „offline“,
 
 - **AC-01** Gemeinsamer Filter-/Sortier-Baustein, beide Seiten nutzen ihn (B-599).
 - **AC-02** Sound-Szenen Skills, Gegner/Bosse, Bauen, Reiten, UI, Warnungen, Misch-, Lautheits- und Abstandsprobe (B-597).
-- **AC-03** Grafik-Szenen Skill-Effekte, Schilder/Gerüste, Gegner je Biom, Reittiere, Bosse, Biom und Licht wählbar (B-598).
+- **AC-03** Grafik-Szenen Skill-Effekte, Schilder/Gerüste, Gegner je Biom, Reittiere, Bosse, Biom und Licht wählbar; dazu die Szene „Kampf-Anzeigen“ mit Mock-Zuständen für Boss-Leiste, Phasen, Warnkreis, Event-Banner und Mondanzeige (B-598, B-602).
 - **AC-04** Der Chat erhält den Seitenkontext, Vorschläge als Karten, Schreiben nur nach „Übernehmen“, Lizenz- und Download-Regeln erzwungen, offline sauber (B-600/AC-01 bis AC-04).
 - **AC-05** Die Download-Vorschlagsliste für Ton und Grafik ist gefüllt (mindestens drei Kandidaten je Lücke und Skill-Linie, Lizenz geprüft), das Studio lädt Auswahl nach Bestätigung, legt Credit und Katalog an, räumt auf und zeigt Geladenes offline spielbar (B-601/AC-01 bis AC-04).
-- **AC-06** Ralf hat Szenen, Filter, einen Chat-Vorschlag und den Offline-Vorrat für Ton und Grafik am PC abgenommen (B-600/AC-05, B-601/AC-05).
+- **AC-06** Ralf hat Szenen, Filter, einen Chat-Vorschlag, den Offline-Vorrat und die Kampf-Anzeigen am PC abgenommen (B-600/AC-05, B-601/AC-05, B-602/AC-03).
 
 ## Offene Fragen
 
