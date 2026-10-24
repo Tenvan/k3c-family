@@ -26,7 +26,7 @@ Spielende; 🧑 entscheidet über das Aussehen und nimmt ab; Grafik über das As
 
 ## Anforderungen
 
-- Gerüst je Gebäudeart in der Form des fertigen Gebäudes (Größe aus `SITE_SIZE` bzw. dem Gebäude-Sprite).
+- Gerüst als Pixel-Grafik aus dem Asset-Studio (Entscheidung Ralf, 2026-10-24), je Gebäudeart in der Form des fertigen Gebäudes (Größe aus `SITE_SIZE` bzw. dem Gebäude-Sprite).
 - Gilt für die Zustände `waitingMaterial`, `waitingWorker` und den Bau mit Fortschritt.
 - Der Baufortschritt bleibt sichtbar.
 
@@ -44,7 +44,7 @@ Werkstatt wird gebaut → Holzgerüst in Werkstatt-Größe statt leerer Fläche.
 
 ## Ausnahme- und Fehlerfälle
 
-Gebäude ohne Sprite → Gerüst als einfache Form in `SITE_SIZE`.
+Fehlt die Gerüst-Grafik einer Gebäudeart → einfache gezeichnete Form in `SITE_SIZE` als Rückfall.
 
 ## Akzeptanzkriterien
 
@@ -53,7 +53,7 @@ Gebäude ohne Sprite → Gerüst als einfache Form in `SITE_SIZE`.
 
 ## Offene Fragen
 
-Gerüst als Pixel-Grafik oder gezeichnet? Default: gezeichnet je Gebäudegröße, Pixel-Grafik später.
+keine (Entscheidung: Pixel-Grafik aus dem Asset-Studio, 2026-10-24). Offen bleibt nur der Umfang der Grafiken (eine je Gebäudeart oder wenige Größenklassen); Default: Größenklassen, 🧑 bestätigt bei der Spec.
 
 ## Notizen
 
