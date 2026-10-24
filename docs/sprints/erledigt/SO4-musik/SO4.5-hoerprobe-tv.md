@@ -1,6 +1,6 @@
 # SO4.5 · Hörprobe am TV: Crossfade, Ducking, Lautheit der Musik
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -37,8 +37,8 @@ Code-Änderungen, neue Stücke, Pegel-Anpassung (eigenes Ticket).
 
 ## Fertig, wenn
 
-- [ ] AC-02: 🧑 bestätigt den hörbar sauberen Wechsel Tag → Abend → Nacht (oder Abweichung als Ticket).
-- [ ] AC-03: 🧑 bestätigt, dass Warnungen die Musik absenken und diese zurückkehrt (oder Abweichung als Ticket).
+- [x] AC-02: 🧑 bestätigt den sauberen Wechsel Tag → Abend → Nacht.
+- [x] AC-03: 🧑 bestätigt, dass Warnungen die Musik absenken und diese zurückkehrt.
 
 ## Prüfen
 
@@ -46,4 +46,6 @@ Manuell durch 🧑 an der Xbox.
 
 ## Ergebnis
 
-–
+AC-02, AC-03 und AC-07 geprüft (Ralf, 2026-10-24, im Spiel): Sounds passten, nichts aufgefallen (Übergänge, Absenken bei Warnungen, Lautheit). Gerät nicht genannt (angelegt als TV-Abnahme). Keine Abweichung, keine Tickets.
+
+Nebenbefund: Die Hörprobe im Studio-Fenster lieferte „Datei fehlt“, weil relative Adressen unter `/studio/` nicht aus `public/` kamen. Behoben in `0f97f6a9` (EXE neu bauen).

@@ -17,7 +17,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | SO1 | Audio-Kern | erledigt |
 | SO3 | Hörprobenseite `soundtest.html` | erledigt |
 | SO2 | SFX-Katalog und Einbau | aktiv |
-| SO4 | Musik je Zustand | aktiv |
+| SO4 | Musik je Zustand | erledigt |
 | SO6 | Sound-Credits auf der Credits-Seite, Sound-Atlas und Sounds für die übrigen Ereignisse | aktiv |
 | SO7 | Niederlage-Stück, Hufschlag, UI-Klicks und Skill-Sounds je Klasse | erledigt |
 

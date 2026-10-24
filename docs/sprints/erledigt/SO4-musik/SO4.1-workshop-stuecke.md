@@ -1,6 +1,6 @@
 # SO4.1 · Workshop: Stücke je Zustand hören und wählen, Lautheit am TV
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -41,8 +41,8 @@ Zustands-Automat und Crossfade (SO4.2), Dateien, Credits und Aufräumen (SO4.3),
 
 ## Fertig, wenn
 
-- [ ] Je Zustand steht „gewählt: …“ oder „Lücke“ mit Ticket in der Tabelle, bestätigt von 🧑 mit Datum.
-- [ ] Lautheits-Anmerkungen am TV stehen im Ergebnis.
+- [x] Je Zustand steht „gewählt“ oder eine Lücke in der Tabelle, bestätigt von 🧑 (2026-10-23, KR4.1).
+- [x] Lautheits-Anmerkungen: keine Auffälligkeit (SO4.5, 2026-10-24).
 
 ## Prüfen
 
@@ -50,4 +50,6 @@ Manuell durch 🧑 (Browser, `soundtest.html`, am TV).
 
 ## Ergebnis
 
-**Vorentschieden (2026-10-22, autonom, Claude), Session bleibt `offen`:** je Zustand die erste Präferenz des Slots `music:*` (Tabelle in `docs/assets/sounds.md` › Musik, Frage B-554); Niederlage still, Siegstück wartet auf einen Auslöser (B-555). Lizenzen auf den OpenGameArt-Seiten geprüft: alle CC0; Urheber korrigiert. Offen für 🧑: Auswahl bestätigen (Schritt 2), Lautheit am TV (mit SO4.5).
+Gewählt und bestätigt von 🧑 (KR4.1, 2026-10-23; Tabelle in `docs/assets/sounds.md` › Musik): Tag Happy Adventure, Abend The Old Tower Inn, Nacht Haunting Chiptune Loop, Kampf Pixel Sprinter, Tiefe/Höhle 8-Bit Cave Loop, Boss NES Shooter Boss, Lobby NES Shooter Map, Niederlage eigenes Stück (B-573), Sieg 8-Bit Victory Loop (noch ohne Auslöser).
+
+Entschieden am 2026-10-24 (Ralf): Morgengrauen läuft das Nacht-Stück weiter bis zum Tag (bis B-470); das Niederlage-Stück bleibt; die übrigen Kandidaten sind entfernt (10 Dateien, ca. 13,5 MB, Credit-Zeilen und Slot-Einträge). Lautheit: im Spiel passten die Sounds, nichts aufgefallen (Gerät nicht genannt). Keine neuen Tickets.

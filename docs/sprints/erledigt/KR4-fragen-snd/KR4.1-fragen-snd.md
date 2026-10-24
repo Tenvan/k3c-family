@@ -1,6 +1,6 @@
 # KR4.1 · Workshop: kritische Fragen zu SND entscheiden (🧑)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** REG
@@ -35,8 +35,8 @@ Umsetzung der Folgearbeit; die Hörproben selbst.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jedes Ticket trägt Ralfs Entscheidung.
-- [ ] AC-02: Bestätigte erledigt, geänderte mit Folgearbeit.
+- [x] AC-01: Jedes Ticket trägt Ralfs Entscheidung.
+- [x] AC-02: Bestätigte erledigt, geänderte mit Folgearbeit.
 
 ## Prüfen
 
@@ -46,9 +46,6 @@ task test -- planning
 
 ## Ergebnis
 
-Teilergebnis (Workshop 2026-10-23 mit Ralf, Claude moderiert und protokolliert); die Session bleibt `offen`, weil das Aufräumen der Musik-Kandidaten (B-554) erst nach der Hörprobe SO4.5 freigegeben wird.
-
-- **AC-01 geprüft:** Alle fünf Tickets (B-554 bis B-558) tragen Ralfs Entscheidung unter Notizen.
-- **AC-02 teilweise:** Bestätigt und `erledigt`: B-556 (A), B-557 (A, Atlas bleibt). Geändert und `erledigt` mit Verweis: B-555 (C → B-573, eigenes Niederlage-Stück), B-558 (Zuordnung A bestätigt; Reiten → B-574, UI-Klicks → B-575, Skill je Klasse → B-576). Offen: B-554 (Auswahl bestätigt, Kandidaten bleiben bis SO4.5, `eingeplant`).
-- **Neue Tickets (Projekt SND):** B-573, B-574, B-575, B-576 (alle CLI, Spec Entwurf).
-- **Offen für Ralf:** Hörproben SO4.5 und SO6.6 am TV, danach Freigabe zum Entfernen der Kandidaten.
+- **AC-01 geprüft:** Alle fünf Tickets (B-554 bis B-558) tragen Ralfs Entscheidung.
+- **AC-02 geprüft:** B-556, B-557 bestätigt und `erledigt`; B-555 → B-573, B-558 → B-574, B-575, B-576 mit Verweis `erledigt`; B-554 am 2026-10-24 nach der Hörprobe `erledigt` (Kandidaten entfernt).
+- Neue Tickets (Projekt SND): B-573, B-574, B-575, B-576.

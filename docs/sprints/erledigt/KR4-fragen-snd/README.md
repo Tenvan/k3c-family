@@ -1,6 +1,6 @@
 # KR4 · REG · Kritische Fragen zu SND
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KRT
 - **Domäne:** REG
 - **Reife:** bereit
@@ -65,12 +65,11 @@ keine (die Fragen sind der Inhalt der Tickets; Defaults gelten).
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| KR4.1 | `KR4.1-fragen-snd.md` | Workshop | Mensch | offen |
+| KR4.1 | `KR4.1-fragen-snd.md` | Workshop | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-24: KR4.1 fertig, alle fünf Fragen (B-554 bis B-558) entschieden und erledigt; Folgearbeit B-573 bis B-576.

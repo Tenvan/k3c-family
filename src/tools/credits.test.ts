@@ -33,7 +33,7 @@ describe('Credits der Sounds (B-493)', () => {
     const html = renderCredits(CREDITS);
     for (const c of audio) expect(html, c.folders[0]).toContain(c.title.replace(/&/g, '&amp;').replace(/</g, '&lt;'));
     const by = audio.filter(isCcBy).map((c) => c.folders[0]);
-    expect(by).toEqual(expect.arrayContaining(['kandidaten/a-big-adventure.ogg', 'kandidaten/summer-adventure-background-music.mp3']));
+    expect(by).toEqual(expect.arrayContaining(['kandidaten/horse-gallop-loop-01.ogg', 'kandidaten/horse-gallop-on-different-surfaces.mp3']));
   });
 });
 

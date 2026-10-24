@@ -1,6 +1,6 @@
 # SO4 · CLI · Musik je Zustand
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** SND
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -62,11 +62,11 @@ Stück fehlt → vorheriger Zustand oder Stille, kein Absturz.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SO4.1 | `SO4.1-workshop-stuecke.md` | Workshop | Mensch | offen |
+| SO4.1 | `SO4.1-workshop-stuecke.md` | Workshop | Mensch | fertig |
 | SO4.2 | `SO4.2-zustandsautomat-crossfade.md` | Umsetzung | autonom | fertig |
 | SO4.3 | `SO4.3-ducking-dateien-credits.md` | Umsetzung | autonom | fertig |
 | SO4.4 | `SO4.4-review.md` | Review | autonom | fertig |
-| SO4.5 | `SO4.5-hoerprobe-tv.md` | Workshop | Mensch | offen |
+| SO4.5 | `SO4.5-hoerprobe-tv.md` | Workshop | Mensch | fertig |
 | SO4.6 | `SO4.6-audiokern-dateien-ambient.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -74,7 +74,6 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-- 2026-10-22, Review SO4.4 (Reviewer-Agent, Diff `2ea58efa..HEAD`): keine schweren Befunde; `task check` grün.
-- AC-01, AC-04 (Datei-Credits), AC-05, AC-06, AC-08, AC-09 geprüft (SO4.2, SO4.3, SO4.6); Credits-Seite → SO6.1 (B-493).
-- AC-02, AC-03, AC-07: angenommen, Validierung offen (SO4.5, TV). Stückwahl vorentschieden (SO4.1 offen, B-554, B-555).
-- Sprint bleibt `aktiv`, B-168 `eingeplant`. Version: v0.20.0 vorgeschlagen (Minor: Musik im Spiel), gesetzt erst nach Bestätigung durch 🧑.
+- 2026-10-22, Review SO4.4: keine schweren Befunde; `task check` grün. AC-01, AC-04, AC-05, AC-06, AC-08, AC-09 geprüft (SO4.2, SO4.3, SO4.6).
+- 2026-10-24 (SO4.1, SO4.5, Ralf im Spiel): AC-02, AC-03, AC-07 abgenommen (Übergänge, Absenken, Lautheit ok, Gerät nicht genannt). Stückwahl von Ralf bestätigt (B-554), Morgengrauen = Nacht-Stück bis B-470, übrige Kandidaten entfernt. B-168 erledigt.
+- Version v0.20.0 (Minor: Musik im Spiel) vorgeschlagen, gesetzt erst nach Bestätigung durch 🧑.

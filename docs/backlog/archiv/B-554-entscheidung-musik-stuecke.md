@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR4
 - **Projekt:** SND
 - **Erstellt:** 2026-10-22
@@ -54,6 +54,6 @@ Siehe Notizen.
 
 ## Notizen
 
-**Entscheidung 🧑 (KR4.1, 2026-10-23):** Auswahl bestätigt (Tabelle: Tag Happy Adventure, Abend The Old Tower Inn, Nacht Haunting Chiptune Loop, Kampf Pixel Sprinter, Tiefe/Höhle 8-Bit Cave Loop, Boss NES Shooter Boss, Lobby NES Shooter Map; Niederlage siehe B-555/B-573). Die übrigen Kandidaten bleiben vorerst liegen (Tag +5, Nacht +1, Kampf +2, Boss +1, Lobby +1, unter `public/audio/kandidaten/` und im Slot).
+**Entscheidung 🧑 (KR4.1, 2026-10-23):** Auswahl bestätigt (Tag Happy Adventure, Abend The Old Tower Inn, Nacht Haunting Chiptune Loop, Kampf Pixel Sprinter, Tiefe/Höhle 8-Bit Cave Loop, Boss NES Shooter Boss, Lobby NES Shooter Map; Niederlage siehe B-555/B-573).
 
-**Offen:** Aufräumen (Kandidaten samt Credit-Zeilen entfernen, ca. 9 MB, SO4.1 auf `fertig`) erst nach der Hörprobe SO4.5 und Freigabe durch 🧑. Dieses Ticket bleibt `eingeplant`, KR4.1 bleibt deshalb `offen`.
+**Aufgeräumt (🧑 Freigabe, 2026-10-24, nach Hörprobe SO4.5):** Die übrigen Musik-Kandidaten sind entfernt (10 Dateien, ca. 13,5 MB, Slot-Einträge in `data/assets.json`, Credit-Zeilen in `public/audio/README.md`).
