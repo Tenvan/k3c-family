@@ -66,7 +66,7 @@ keine. Entschieden (🧑, 2026-10-24): nächste freie Ticket-Nummer genügt (Ral
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ28.1 | `WZ28.1-slot-details.md` | Umsetzung | autonom | offen |
+| WZ28.1 | `WZ28.1-slot-details.md` | Umsetzung | autonom | in Arbeit |
 | WZ28.2 | `WZ28.2-ticket-baustein.md` | Umsetzung | autonom | offen |
 | WZ28.3 | `WZ28.3-ticket-button-alle-seiten.md` | Umsetzung | autonom | offen |
 | WZ28.4 | `WZ28.4-balancing-backend.md` | Umsetzung | autonom | offen |
