@@ -136,9 +136,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-581](B-581-offenen-raum-schliessen.md) | CLI | Idee | mittel | eingeplant | BD9 | Ein offener Raum lässt sich in der Lobby über Entfernen schließen |
 | [B-582](B-582-hoehlen-flora-variation.md) | DEV | Idee | mittel | eingeplant | GEB15 | Höhlen-Wurzeln sind zahlreicher und unterscheiden sich in Form und Größe |
 | [B-583](B-583-minen-felsen-groesser-varianten.md) | DEV | Idee | mittel | eingeplant | GEB15 | Minen und Felsen sind größer und haben zwei bis drei Varianten mehr |
-| [B-584](B-584-bauschilder-statt-rahmen.md) | CLI | Idee | mittel | offen | – | Bauplätze zeigen kleine Bauschilder statt grauer Rahmen |
-| [B-585](B-585-wald-chunks-voller-baeume.md) | REG | Problem | mittel | offen | – | Wald-Chunks stehen voller Bäume |
-| [B-586](B-586-baugeruest-in-gebaeudeform.md) | CLI | Idee | mittel | offen | – | Im Bau zeigt der Platz ein Gerüst in der Form des neuen Gebäudes |
+| [B-584](B-584-bauschilder-statt-rahmen.md) | CLI | Idee | mittel | eingeplant | GEB16 | Bauplätze zeigen kleine Bauschilder statt grauer Rahmen |
+| [B-585](B-585-wald-chunks-voller-baeume.md) | REG | Problem | mittel | eingeplant | GEB16 | Wald-Chunks stehen voller Bäume |
+| [B-586](B-586-baugeruest-in-gebaeudeform.md) | CLI | Idee | mittel | eingeplant | GEB16 | Im Bau zeigt der Platz ein Gerüst in der Form des neuen Gebäudes |
 
 ## Archiv
 
