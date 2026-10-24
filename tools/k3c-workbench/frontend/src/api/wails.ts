@@ -53,6 +53,12 @@ interface GoApp {
   GitStamp(): Promise<string>;
   TicketCreate(input: TicketInput): Promise<TicketCreated>;
   TicketRecent(n: number): Promise<TicketCreated[]>;
+  // Balancing-Seite (WZ28.4); Typen folgen mit der Seite (WZ28.5)
+  BalanceStart(spec: Record<string, unknown>): Promise<unknown>;
+  BalanceRuns(): Promise<unknown[]>;
+  BalanceStop(id: string): Promise<void>;
+  BalanceReports(): Promise<unknown[]>;
+  BalanceReport(path: string): Promise<unknown>;
 }
 
 interface WailsRuntime {

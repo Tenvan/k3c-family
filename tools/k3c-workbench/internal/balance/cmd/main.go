@@ -36,21 +36,24 @@ func run(args []string) error {
 	replayDir := fs.String("replay-dir", "", "Ordner für eine Replay-Datei je gültigem Lauf (leer = keine)")
 	play := fs.String("play", "", "Replay-Datei ohne Bot abspielen statt einer Matrix")
 	var to targetOpts
-	fs.BoolVar(&to.on, "targets", false, "Ziele aus data/balance-targets.json bewerten, Bericht als JSON und Markdown; --seeds N = nur die ersten N, sonst alle")
-	fs.StringVar(&to.dir, "report-dir", "reports", "Ordner für balance-<Zeit>.json und .md (--targets) bzw. sensitivity-<Zeit>.* (--sensitivity, --curves)")
-	fs.StringVar(&to.baseline, "baseline", "", "Baseline-Datei zum Vergleichen (nur mit --targets)")
-	fs.BoolVar(&to.write, "write-baseline", false, "Bericht nach --baseline schreiben statt vergleichen")
+	to.register(fs)
 	var so sensOpts
 	so.register(fs)
 	if err := fs.Parse(args); err != nil {
 		return err
+	}
+	if len(so.variants) > 0 && !to.on {
+		return fmt.Errorf("--vary datei.json:pfad=wert braucht --targets")
 	}
 	if so.vary || so.curves {
 		so.dir, so.seeds = to.dir, explicitSeeds(fs, *seeds)
 		return runSensitivity(so)
 	}
 	if to.on {
-		to.replays, to.seeds = *replayDir, explicitSeeds(fs, *seeds)
+		to.replays, to.seeds, to.variants = *replayDir, explicitSeeds(fs, *seeds), so.variants
+		if err := to.scopeFrom(fs, *players, *days); err != nil {
+			return err
+		}
 		return runTargets(to)
 	}
 	if *play != "" {
@@ -80,11 +83,17 @@ func run(args []string) error {
 
 // explicitSeeds: n, wenn --seeds gesetzt ist, sonst 0 (= alle Seeds aus data/balance-targets.json).
 func explicitSeeds(fs *flag.FlagSet, n int) int {
-	set := 0
+	if isSet(fs, "seeds") {
+		return n
+	}
+	return 0
+}
+
+// isSet: Das Flag steht in den Argumenten.
+func isSet(fs *flag.FlagSet, name string) bool {
+	set := false
 	fs.Visit(func(f *flag.Flag) {
-		if f.Name == "seeds" {
-			set = n
-		}
+		set = set || f.Name == name
 	})
 	return set
 }

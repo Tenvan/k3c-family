@@ -65,6 +65,7 @@ type Targets struct {
 	} `json:"margin"`
 	Seeds   []string `json:"seeds"` // die festen Seeds, keine Zufallsauswahl
 	Targets []Target `json:"targets"`
+	grade   string   // Grad aller Zielläufe, leer = normal (Restrict)
 }
 
 // Target ist ein Ziel: Kennzahl, Szenario (ohne Seed) und Korridor. Eine fehlende Grenze (null) heißt: keine in diese Richtung.

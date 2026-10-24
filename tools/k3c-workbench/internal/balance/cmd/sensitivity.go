@@ -15,6 +15,7 @@ import (
 type sensOpts struct {
 	vary, curves bool
 	paths        []string // leer = balance.DefaultPaths
+	variants     []string // Wert-Varianten datei.json:a.b.c=wert (nur --targets, WZ28.4)
 	seeds        int      // 0 = alle Seeds aus data/balance-targets.json
 	dir          string
 }
@@ -23,8 +24,15 @@ func (o *sensOpts) register(fs *flag.FlagSet) {
 	fs.BoolVar(&o.vary, "sensitivity", false, "Sensitivität: Werte aus data/ um −25/−10/+10/+25 % ändern (nur im Speicher), "+
 		"gekippte Ziele nach reports/sensitivity-<Zeit>.json und .md; --seeds N = nur die ersten N Seeds")
 	fs.Func("vary", "Pfad datei.json:a.b.c zum Variieren (setzt --sensitivity), mehrfach oder mit Komma (Standard: "+
-		strings.Join(balance.DefaultPaths, ", ")+")", func(s string) error {
-		o.vary, o.paths = true, append(o.paths, split(s)...)
+		strings.Join(balance.DefaultPaths, ", ")+"); mit =wert (datei.json:a.b.c=wert) eine feste Wert-Variante für --targets, "+
+		"nur im Speicher", func(s string) error {
+		for _, part := range split(s) {
+			if strings.Contains(part, "=") {
+				o.variants = append(o.variants, part)
+			} else {
+				o.vary, o.paths = true, append(o.paths, part)
+			}
+		}
 		return nil
 	})
 	fs.BoolVar(&o.curves, "curves", false, "Grad-Kurven je Schwierigkeitsgrad (Nacht 1–5, Wald, 2 Spieler, saver) in den Sensitivitäts-Bericht")
