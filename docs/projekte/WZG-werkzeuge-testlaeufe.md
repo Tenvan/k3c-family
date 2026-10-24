@@ -50,6 +50,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ28 | Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite | aktiv |
 | WZ30 | Oberflächen zur Abnahme: Szenen, Filter, Quellen, Chat-Karten mit Mock-Daten | aktiv |
 | WZ29 | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | geplant |
+| WZ31 | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | aktiv |
 
 ## Nicht-Ziele
 

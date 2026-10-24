@@ -52,9 +52,9 @@ func resolveUIPort(raw string) (int, error) {
 	return port, nil
 }
 
-// runHeadless läuft bis Strg+C oder SIGTERM: App wie im Fenster (MCP-Server, Dienste), dazu die Oberflächen-API auf
-// 127.0.0.1:<K3C_DEV_UI_API_PORT>.
-func runHeadless(root string, port int) error {
+// runHeadless läuft bis Strg+C oder SIGTERM: App wie im Fenster (MCP-Server, Dienste), dazu die Oberflächen-API und die
+// eingebettete Oberfläche (web.go) auf 127.0.0.1:<K3C_DEV_UI_API_PORT>. open öffnet die Oberfläche im Browser (-open).
+func runHeadless(root string, port int, open bool) error {
 	uiPort, err := resolveUIPort(os.Getenv(envUIPort))
 	if err != nil {
 		return err
@@ -75,7 +75,11 @@ func runHeadless(root string, port int) error {
 		BaseContext: func(net.Listener) context.Context { return reqCtx }}
 	served := make(chan error, 1)
 	go func() { served <- srv.Serve(ln) }()
-	app.log.Info("🚀 Oberflächen-API bereit", "ns", "main", "url", "http://"+ln.Addr().String()+uiPrefix)
+	pageURL := "http://" + ln.Addr().String() + "/"
+	app.log.Info("🚀 Oberflächen-API bereit", "ns", "main", "url", pageURL+strings.TrimPrefix(uiPrefix, "/"), "seite", pageURL)
+	if open {
+		openPage(app, pageURL)
+	}
 	select {
 	case <-ctx.Done():
 	case err = <-served:
