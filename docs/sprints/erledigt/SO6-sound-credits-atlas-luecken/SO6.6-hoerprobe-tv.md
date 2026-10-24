@@ -1,6 +1,6 @@
 # SO6.6 · Hörprobe am TV: Boss-Auftritt, Wiederbeleben, Hub-Ausbau (🧑)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -33,7 +33,7 @@ Neue Sounds.
 
 ## Fertig, wenn
 
-- [ ] AC-04 (B-492/AC-03): am TV gehört.
+- [x] AC-04 (B-492/AC-03): gehört (2026-10-24, PC).
 
 ## Prüfen
 
@@ -41,5 +41,4 @@ Manuell durch 🧑 am TV.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-04 geprüft (Ralf, 2026-10-24, PC mit Lautsprechern/Kopfhörern): Boss-Auftritt (lowthreetone), Wiederbeleben durch Mitspieler (highup) und Hub-Ausbau (threetone2) ok, Lautheit passt. Atlas (B-557): bleibt wie entschieden. Keine Tickets. TV/Xbox nicht geprüft.

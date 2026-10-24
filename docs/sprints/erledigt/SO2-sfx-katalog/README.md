@@ -1,6 +1,6 @@
 # SO2 · CLI · SFX-Katalog und Einbau
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** SND
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -65,14 +65,11 @@ Sound lädt nicht → stumm und Log-Eintrag, kein Absturz.
 | SO2.2 | `SO2.2-sounds-beschaffen.md` | Umsetzung | autonom | fertig |
 | SO2.3 | `SO2.3-einbau-rueckfall.md` | Umsetzung | autonom | fertig |
 | SO2.4 | `SO2.4-review.md` | Review | autonom | fertig |
-| SO2.5 | `SO2.5-hoerprobe-tv.md` | Workshop | Mensch | offen |
+| SO2.5 | `SO2.5-hoerprobe-tv.md` | Workshop | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-2026-10-18: SO2.1 bis SO2.4 fertig. AC-01, AC-02, AC-04 bis AC-07 geprüft (Tests `soundKatalog.test.ts`, `events.test.ts`, `audioCore.test.ts`, Browser-Pane), AC-03 angenommen, Validierung offen (SO2.5, Hören am TV).
-Befunde: kein schwerer; Audio-Kern erweitert (Einzeldateien statt Atlas), CC-BY-Namensnennung auf `lizenzen.html` fehlt bis B-493 (vor Release erledigen).
-Neue Tickets: B-492 (weitere Sounds, Reiten), B-493 (Credits-Seite Audio, Prio hoch), B-494 (Sound-Atlas-Werkzeug). Sprint bleibt aktiv bis SO2.5.
-Version: v0.20.0 vorgeschlagen (Minor: Effekt-Sounds im Spiel).
+2026-10-24 (SO2.5, Ralf am PC): AC-03 abgenommen: die fünf Effekte lösen ihren Sound aus, Lautheit passt, nichts erschreckend. SO2.1 bis SO2.4 früher erledigt. Keine neuen Tickets.

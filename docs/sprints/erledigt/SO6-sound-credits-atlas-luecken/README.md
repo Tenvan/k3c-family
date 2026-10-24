@@ -1,6 +1,6 @@
 # SO6 · PLAT, INF, CLI · Sound-Credits auf der Credits-Seite, Sound-Atlas und Sounds für die übrigen Ereignisse
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** SND
 - **Domäne:** PLAT, INF, CLI
 - **Reife:** bereit
@@ -63,14 +63,11 @@ Autonom vorentschieden (Claude, 2026-10-22), 🧑 bestätigt in KR4:
 |---|---|---|---|---|
 | SO6.1 | `SO6.1-credits-seite-sounds.md` | Umsetzung | autonom | fertig |
 | SO6.2 | `SO6.2-sound-atlas-task.md` | Umsetzung | autonom | fertig |
-| SO6.3 | `SO6.3-workshop-luecken.md` | Workshop | Mensch | offen |
+| SO6.3 | `SO6.3-workshop-luecken.md` | Workshop | Mensch | fertig |
 | SO6.4 | `SO6.4-luecken-einbau.md` | Umsetzung | autonom | fertig |
 | SO6.5 | `SO6.5-review.md` | Review | autonom | fertig |
-| SO6.6 | `SO6.6-hoerprobe-tv.md` | Workshop | Mensch | offen |
+| SO6.6 | `SO6.6-hoerprobe-tv.md` | Workshop | Mensch | fertig |
 
 ## Abnahme
 
-- 2026-10-22, Review SO6.5 (Reviewer-Agent, Diff `7d3ee511..HEAD`): keine schweren Befunde; `task check` grün, `check:go` grün bis auf den bekannten Wanduhr-Flacker in `engine/devrun` (Einzellauf grün).
-- AC-01, AC-02 geprüft (SO6.1, SO6.2, SO6.4). AC-03 umgesetzt mit Default (B-558), Bestätigung SO6.3 offen. AC-04 offen (SO6.6, TV).
-- Neue Tickets: B-556, B-557, B-558 (KR4). Sprint bleibt `aktiv`; B-492 bleibt `eingeplant`, B-493 und B-494 umgesetzt (Abschluss nach KR4).
-- Version: v0.21.0 vorgeschlagen (Minor: neue Sounds, Atlas), gesetzt erst nach Bestätigung durch 🧑.
+2026-10-24 (SO6.3, SO6.6, Ralf am PC): AC-03 und AC-04 abgenommen: Sounds für Münze geben, Bau-Fortschritt, Wiederbeleben, Boss-Auftritt und Hub-Ausbau ok, Atlas bleibt. SO6.1, SO6.2, SO6.4, SO6.5 früher erledigt. B-492, B-493, B-494 erledigt. Keine neuen Tickets.

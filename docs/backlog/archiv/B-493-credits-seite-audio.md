@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SO6
 - **Projekt:** SND
 - **Erstellt:** 2026-10-18

@@ -10,7 +10,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 |---|---|---|---|---|---|---|
 | [B-007](B-007-skill-baum.md) | SIM | Idee | hoch | offen | – | Skill-Baum mit Tank und Zauberer ist spielbar |
 | [B-008](B-008-spieleabend.md) | REG | Frage | niedrig | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
-| [B-011](B-011-sound.md) | CLI | Idee | mittel | eingeplant | SO2 | Spiel hat Sound und Musik |
 | [B-015](B-015-gebaeude-werte.md) | REG | Problem | niedrig | eingeplant | BR1 | Gebäude-HP und -Kosten sind gebalanced |
 | [B-023](B-023-itch-io.md) | INF | Idee | niedrig | eingeplant | PB1 | Spiel ist auf itch.io veröffentlicht |
 | [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | eingeplant | RG2 | Tiefe 3 und 4 sind beschrieben |
@@ -28,7 +27,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-155](B-155-balancing-runde-wirtschaft.md) | REG | Idee | niedrig | eingeplant | BR1 | Die Wirtschaft ist in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
 | [B-156](B-156-balancing-runde-kampf-bosse.md) | REG | Idee | niedrig | eingeplant | BR2 | Kampf, Gegner und Bosse sind in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
 | [B-160](B-160-abgleich-spielmetrik-simulator.md) | REG | Idee | mittel | eingeplant | BAL4 | Spielmetrik echter Abende und Simulatorwerte sind abgeglichen |
-| [B-250](B-250-audiokern-datei-wiedergabe.md) | CLI | Schuld | hoch | eingeplant | SO4 | Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn |
 | [B-272](B-272-rotation-session-reports.md) | SRV | Schuld | mittel | eingeplant | ST1 | Die Rotation in reports/ erfasst auch die Spielmetrik-Reports |
 | [B-263](B-263-snapshot-groesse-plaetze.md) | SRV | Problem | niedrig | eingeplant | NT1 | Der Welt-Snapshot bleibt mit 39 Plätzen je Stufe im Budget |
 | [B-184](B-184-pages-screenshots.md) | PLAT | Idee | niedrig | eingeplant | PG1 | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
@@ -46,7 +44,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | eingeplant | W11 | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
 | [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | eingeplant | RG1 | Burg hält Nacht 1–5 nur in 47 % der Seeds, Ziel 75–90 % |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | eingeplant | RG2 | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
-| [B-218](B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | hoch | eingeplant | SO4 | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
 | [B-274](B-274-testrestore-flackert-windows.md) | SRV | Problem | mittel | eingeplant | NT1 | TestRestore läuft unter Windows auch in task check:all stabil grün |
 | [B-280](B-280-warteschlange-nicht-zustaende.md) | SRV | Problem | niedrig | eingeplant | NT1 | Die Warteschlange einer Verbindung läuft nicht voll, wenn andere Nachrichten zwischen Zuständen stehen |
 | [B-284](B-284-lasttest-eingaben-flake.md) | DEV | Problem | niedrig | eingeplant | NT1 | TestGleicherSeedGleicheEingaben scheitert nicht, wenn task check:go parallel läuft |
@@ -111,9 +108,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
 | [B-470](B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | eingeplant | W12 | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
 | [B-472](B-472-nacht-dunkler-fackeln-lagerfeuer-licht.md) | CLI | Idee | niedrig | eingeplant | W13 | Nacht und Morgengrauen sind dunkler, Fackeln und Lagerfeuer machen Licht |
-| [B-492](B-492-sfx-luecken-weitere-ereignisse.md) | CLI | Idee | mittel | eingeplant | SO6 | Weitere Ereignisse bekommen eigene Sound-Slots und Sounds |
-| [B-493](B-493-credits-seite-audio.md) | PLAT | Idee | hoch | eingeplant | SO6 | Die Credits-Seite zeigt auch die Sounds unter public/audio |
-| [B-494](B-494-sound-atlas-werkzeug.md) | INF | Idee | niedrig | eingeplant | SO6 | Ein Werkzeug packt die gewählten Sounds in einen Sound-Atlas |
 | [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
 | [B-503](B-503-monarch-skill-darstellung.md) | CLI | Idee | niedrig | eingeplant | SK2 | Die 24 Monarch-Skills haben eine Darstellung im Spiel |
 | [B-504](B-504-preset-skills-backstab-smokebomb.md) | REG | Problem | niedrig | eingeplant | SK2 | Die Skills backstab und smokeBomb des Presets Dieb stehen in data/monarch.json |
@@ -556,3 +550,9 @@ Zeile in diesen Abschnitt.
 | [B-320](archiv/B-320-reiter-sattel-beim-laufen.md) | CLI | Problem | hoch | erledigt | GR7 | Der Reiter sitzt beim Laufen und Sprinten auf dem Sattel, nicht auf der Kruppe |
 | [B-554](archiv/B-554-entscheidung-musik-stuecke.md) | REG | Frage | hoch | erledigt | KR4 | Entscheidung S1: Je Musikzustand spielt die erste Präferenz des Slots, die übrigen Kandidaten bleiben bis zur Bestätigung liegen |
 | [B-168](archiv/B-168-musik-je-zustand.md) | CLI | Idee | hoch | erledigt | SO4 | Die Musik wechselt je Spielzustand mit Crossfade |
+| [B-492](archiv/B-492-sfx-luecken-weitere-ereignisse.md) | CLI | Idee | mittel | erledigt | SO6 | Weitere Ereignisse bekommen eigene Sound-Slots und Sounds |
+| [B-493](archiv/B-493-credits-seite-audio.md) | PLAT | Idee | hoch | erledigt | SO6 | Die Credits-Seite zeigt auch die Sounds unter public/audio |
+| [B-494](archiv/B-494-sound-atlas-werkzeug.md) | INF | Idee | niedrig | erledigt | SO6 | Ein Werkzeug packt die gewählten Sounds in einen Sound-Atlas |
+| [B-011](archiv/B-011-sound.md) | CLI | Idee | mittel | erledigt | SO2 | Spiel hat Sound und Musik |
+| [B-218](archiv/B-218-optionen-ambient-lautstaerke.md) | CLI | Idee | hoch | erledigt | SO4 | Die Optionen-Szene regelt auch die Lautstärke des Ambient-Busses |
+| [B-250](archiv/B-250-audiokern-datei-wiedergabe.md) | CLI | Schuld | hoch | erledigt | SO4 | Der Audio-Kern spielt ganze Dateien mit Crossfade, die Hörprobe nutzt ihn |

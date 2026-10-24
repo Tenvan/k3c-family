@@ -1,6 +1,6 @@
 # SO2.5 · Hörprobe am TV: Effekte, Lautheit, Kindertauglichkeit
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -36,7 +36,7 @@ Code-Änderungen, neue Sounds, Musik (SO4).
 
 ## Fertig, wenn
 
-- [ ] AC-03: 🧑 bestätigt am TV, dass die fünf Ereignisse ihren Sound auslösen (oder Abweichung als Ticket).
+- [x] AC-03: 🧑 bestätigt, dass die fünf Ereignisse ihren Sound auslösen (2026-10-24, PC).
 
 ## Prüfen
 
@@ -44,4 +44,4 @@ Manuell durch 🧑 an der Xbox.
 
 ## Ergebnis
 
-–
+AC-03 geprüft (Ralf, 2026-10-24, PC mit Lautsprechern/Kopfhörern, Studio-Hörprobe und Spiel): Münze aufheben, Schlag, Gegner-Tod, Bauen fertig und Nacht naht (Warnung, auch im Split-Screen) ok; Lautheit passt, nichts erschreckend. Keine Abweichung, keine Tickets. TV/Xbox nicht geprüft.

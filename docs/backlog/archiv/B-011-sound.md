@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SO2
 - **Projekt:** SND
 - **Erstellt:** 2026-09-29

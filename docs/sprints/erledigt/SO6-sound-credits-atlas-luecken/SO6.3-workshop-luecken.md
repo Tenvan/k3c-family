@@ -1,6 +1,6 @@
 # SO6.3 · Workshop: Sounds für die Lücken hören und wählen (🧑)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -33,7 +33,7 @@ Neue Auslöser im Server.
 
 ## Fertig, wenn
 
-- [ ] AC-03: Jede Lücke hat einen gewählten Sound oder eine von 🧑 bestätigte Begründung.
+- [x] AC-03: Jede Lücke hat einen gewählten Sound, bestätigt von 🧑 (2026-10-24).
 
 ## Prüfen
 
@@ -41,4 +41,4 @@ Manuell durch 🧑 (Asset-Studio, TV).
 
 ## Ergebnis
 
-**Vorentschieden (2026-10-22, autonom, Claude), Session bleibt `offen`:** Auswahl aus vorhandenen Kenney-Kandidaten (CC0), siehe B-558.
+AC-03 geprüft (Ralf, 2026-10-24, PC): Die vorentschiedene Auswahl (B-558, Kenney, CC0) ist bestätigt: Münze geben (handlecoins2), Bau-Fortschritt (impactmining), Wiederbeleben (highup), Boss-Auftritt (lowthreetone), Hub-Ausbau (threetone2) ok. Keine Änderung am Katalog, kein `gen:soundatlas` nötig.
