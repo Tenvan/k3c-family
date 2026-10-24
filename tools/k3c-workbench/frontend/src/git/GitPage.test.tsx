@@ -54,6 +54,29 @@ describe('Ablauf und Laden', () => {
     expect(host.textContent).not.toContain('Repo geändert');
   });
 
+  it('Änderung am Repo von außen lädt die ganze Seite neu (Rev. 6)', async () => {
+    vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] });
+    try {
+      const overview = vi.spyOn(backend, 'gitOverview');
+      const prs = vi.spyOn(backend, 'gitPRs');
+      await mount();
+      expect(overview).toHaveBeenCalledTimes(1);
+      vi.advanceTimersByTime(3_000);
+      await flush();
+      expect(overview).toHaveBeenCalledTimes(1); // nichts geändert
+      vi.spyOn(backend, 'gitStamp').mockResolvedValue('von-aussen'); // z. B. Fetch im Terminal
+      vi.advanceTimersByTime(3_000);
+      await flush();
+      expect(overview).toHaveBeenCalledTimes(2);
+      expect(prs).toHaveBeenCalledTimes(2);
+      vi.advanceTimersByTime(3_000);
+      await flush();
+      expect(overview).toHaveBeenCalledTimes(2); // gleicher Stand: kein weiteres Laden
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('liest erst beim ersten Öffnen und danach nur über „Neu laden“', async () => {
     const spy = vi.spyOn(backend, 'gitOverview');
     const prs = vi.spyOn(backend, 'gitPRs');

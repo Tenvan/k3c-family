@@ -9,7 +9,7 @@
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
 - **Spec:** freigegeben
-- **Revision:** 5
+- **Revision:** 6
 - **Freigabe:** 2026-10-24 🧑 Chat (Mock bestätigt, Umsetzung beauftragt)
 
 ## Ausgangslage
@@ -53,6 +53,9 @@ einem Klick, passend zur Arbeitsweise (`develop` als Basis, ein PR je Sprint, Sq
 - Rev. 5 (🧑 2026-10-24): Ändert sich der Git-Zustand (Fetch, Commit, Stage, Checkout, Merge – auch außerhalb der
   Seite), lädt die PR-Karte sofort neu. Erkannt über einen Fingerabdruck aus HEAD, Index, Refs und FETCH_HEAD
   (`GitStamp`, alle 3 s bei offenem Reiter); der übrige Stand zeigt „Repo geändert“ und bleibt bei „Neu laden“.
+- Rev. 6 (🧑 2026-10-24): Bei einer Änderung am Repo lädt die ganze Seite automatisch neu, nicht nur die PRs
+  (ersetzt den Hinweis „Repo geändert“ aus Rev. 5). Der Fingerabdruck nimmt statt der Änderungszeit des Index die
+  gestagten Änderungen (`diff --cached`), damit Editoren mit ständigem `git status` kein Dauer-Neuladen auslösen.
 - Alle Git- und gh-Aufrufe laufen ohne Shell mit festen Argumenten; Namen und Nummern aus der Oberfläche werden geprüft.
 
 ## Nicht-Ziele

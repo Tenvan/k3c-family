@@ -11,18 +11,24 @@ import (
 	"strings"
 )
 
-// stampFiles ändern sich bei Checkout, Commit, Stage, Fetch, Merge und Reset.
-var stampFiles = []string{"HEAD", "index", "FETCH_HEAD", "ORIG_HEAD", "MERGE_HEAD", "packed-refs", "logs/HEAD"}
+// stampFiles ändern sich bei Checkout, Commit, Fetch, Merge und Reset. Der Index fehlt bewusst: Editoren frischen ihn
+// mit `git status` ständig auf, ohne dass sich etwas ändert; gestagte Änderungen zählen über `diff --cached`.
+var stampFiles = []string{"HEAD", "FETCH_HEAD", "ORIG_HEAD", "MERGE_HEAD", "packed-refs", "logs/HEAD"}
 
-// Stamp ist ein Fingerabdruck des Repo-Zustands aus Größe und Änderungszeit von HEAD, Index, FETCH_HEAD, packed-refs
-// und allen losen Refs (Branches, origin, Stash). Er kostet nur ein paar stat-Aufrufe und kein git, damit die Seite
-// ihn im Takt fragen kann (B-580 Rev. 5). Ungestagte Änderungen im Working Tree sieht er nicht.
+// Stamp ist ein Fingerabdruck des Repo-Zustands aus Größe und Änderungszeit von HEAD, FETCH_HEAD, packed-refs und
+// allen losen Refs (Branches, origin, Stash) sowie den gestagten Änderungen. Er kostet ein paar stat-Aufrufe und einen
+// schnellen git-Aufruf, damit die Seite ihn im Takt fragen kann (B-580 Rev. 5). Ungestagtes sieht er nicht.
 func (r *Repo) Stamp(ctx context.Context) (string, error) {
 	dir, err := r.commonDir(ctx)
 	if err != nil {
 		return "", err
 	}
+	staged, err := r.git(ctx, "diff", "--cached", "--raw", "--no-renames")
+	if err != nil {
+		return "", err
+	}
 	var b strings.Builder
+	b.WriteString(staged)
 	for _, f := range stampFiles {
 		stampEntry(&b, f, filepath.Join(dir, f))
 	}
