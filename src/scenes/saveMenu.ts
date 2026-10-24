@@ -3,7 +3,7 @@
  * dem Löschen. `LobbyScene` zeichnet nur und gibt Eingaben weiter.
  */
 import { t } from '../core/texts';
-import type { DeleteResult } from '../core/saveStore';
+import type { CloseResult, DeleteResult } from '../core/saveStore';
 
 /** Welt-ID ohne Angabe (Stände vor Version 8, `?world=` leer) */
 export const DEFAULT_WORLD = 'standard';
@@ -33,6 +33,8 @@ export const DELETE_CHOICES: readonly DeleteChoice[] = ['cancel', 'delete'];
 export class DeleteDialog {
   private target: string | null = null;
   private index = 0;
+  private what: 'save' | 'room' = 'save';
+  private seats = 0;
 
   get open(): boolean {
     return this.target !== null;
@@ -46,10 +48,17 @@ export class DeleteDialog {
     return this.index;
   }
 
-  /** Öffnet die Rückfrage für name; ist sie schon offen, schließt sie (Abbrechen) */
-  toggle(name: string): void {
+  /** Spielstand löschen oder offenen Raum schließen (BD9.2); vor `confirm` lesen, `confirm` schließt die Rückfrage */
+  get kind(): 'save' | 'room' {
+    return this.what;
+  }
+
+  /** Öffnet die Rückfrage für name (Spielstand, oder Raum mit `taken` belegten Plätzen); ist sie schon offen, schließt sie (Abbrechen) */
+  toggle(name: string, kind: 'save' | 'room' = 'save', taken = 0): void {
     if (this.target !== null) return this.close();
     this.target = name;
+    this.what = kind;
+    this.seats = taken;
     this.index = 0;
   }
 
@@ -71,8 +80,23 @@ export class DeleteDialog {
 
   /** Zeilentexte der Rückfrage */
   labels(): string[] {
-    return DELETE_CHOICES.map((c) => t(c === 'delete' ? 'lobby.deleteYes' : 'lobby.deleteNo'));
+    const yes = this.what === 'room' ? 'lobby.closeYes' : 'lobby.deleteYes';
+    return DELETE_CHOICES.map((c) => t(c === 'delete' ? yes : 'lobby.deleteNo'));
   }
+
+  /** Fragetext: bei einem Raum mit den belegten Plätzen (verbundene Geräte werden getrennt) */
+  ask(): string {
+    const name = this.target ?? '';
+    if (this.what === 'save') return t('lobby.deleteAsk', { name });
+    return this.seats > 0 ? t('lobby.closeAsk', { name, taken: this.seats }) : t('lobby.closeAskFree', { name });
+  }
+}
+
+/** Hinweis nach dem Schließen eines Raums; nichts bleibt still */
+export function closeNotice(name: string, result: CloseResult): string {
+  if (result === 'ok') return t('lobby.closed', { name });
+  if (result === 'not_found') return t('lobby.closeMissing', { name });
+  return t('lobby.closeFailed', { name });
 }
 
 /** Hinweis nach dem Löschen; nichts bleibt still */

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { deleteSave, listSaves, listWorlds } from './saveStore';
+import { closeRoom, deleteSave, listSaves, listWorlds } from './saveStore';
 
 const respond = (body: unknown, ok = true) => (() => Promise.resolve({ ok, json: () => Promise.resolve(body) } as Response)) as typeof fetch;
 
@@ -62,5 +62,28 @@ describe('listWorlds (BD8.1, B-566/AC-01)', () => {
     expect(await listWorlds(respond([], false))).toEqual(['standard']);
     expect(await listWorlds(respond([]))).toEqual(['standard']);
     expect(await listWorlds(respond({ id: 'x' }))).toEqual(['standard']);
+  });
+});
+
+describe('closeRoom (BD9.2, B-581/AC-03)', () => {
+  const status = (code: number) => {
+    const calls: [string, RequestInit | undefined][] = [];
+    const fn = ((url: string, init?: RequestInit) => {
+      calls.push([url, init]);
+      return Promise.resolve({ ok: code === 200, status: code } as Response);
+    }) as typeof fetch;
+    return { fn, calls };
+  };
+
+  it('schickt POST für genau diesen Raum, 200 = ok', async () => {
+    const { fn, calls } = status(200);
+    expect(await closeRoom('nord', fn)).toBe('ok');
+    expect(calls.map(([url, init]) => [url, init?.method])).toEqual([['api/room/close?slot=nord', 'POST']]);
+  });
+
+  it('404, 400, Server- und Netzfehler ergeben ein Ergebnis', async () => {
+    expect(await closeRoom('nord', status(404).fn)).toBe('not_found');
+    expect(await closeRoom('nord', status(400).fn)).toBe('failed');
+    expect(await closeRoom('nord', (() => Promise.reject(new Error('weg'))) as typeof fetch)).toBe('failed');
   });
 });

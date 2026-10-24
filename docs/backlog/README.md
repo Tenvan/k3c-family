@@ -136,6 +136,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-603](B-603-dev-aktionen-boss-event.md) | SRV | Idee | hoch | offen | – | Dev-Aktionen lösen Boss, Phasenwechsel und Events (Vollmond, Blutmond, Händler) sofort aus |
 | [B-604](B-604-welt-anzeige-pausenmenue-lobby.md) | CLI | Problem | mittel | eingeplant | BD9 | Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby |
 | [B-605](B-605-schutzplatz-stabil-bei-truppenwechsel.md) | SIM | Schuld | niedrig | offen | – | Schutzplatz bleibt stabil, wenn Truppen sterben oder hinzukommen |
+| [B-613](B-613-http-origin-pruefen.md) | SRV | Problem | niedrig | offen | – | Schreibende HTTP-Endpunkte des Spielservers lehnen fremde Webseiten ab |
 | [B-614](B-614-workbench-studio-web-client.md) | DEV | Idee | hoch | offen | WZ31 | Workbench und Studio starten als Server, gearbeitet wird im Browser |
 | [B-617](B-617-studio-levelview-test-golden.md) | DEV | Problem | hoch | offen | – | Der Studio-Test levelView passt wieder zur Golden-Datei level-forest.json |
 | [B-608](B-608-daten-beschreibungen.md) | DEV | Idee | hoch | offen | WZ28 | Jede balancing-relevante Datei in data/ hat eine Beschreibung mit Aufbau und Werten |

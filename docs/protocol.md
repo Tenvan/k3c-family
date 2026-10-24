@@ -1,4 +1,9 @@
-# Protokoll v8
+# Protokoll v9
+
+**Änderungen gegenüber v8 (BD9.1, Version 9, B-604, B-581):** Jeder Eintrag von `rooms[]` nennt zusätzlich `world`
+(Welt-ID des Raums, wie `joined.world`). Neu ist `POST /api/room/close?slot=NAME` (siehe *HTTP: Raum schließen*): Der
+offene Raum speichert, seine Geräte bekommen `room_closed` und gehen zurück zur Raumliste. `hello.v` muss 9 sein; ein
+v8-Client erhält `version`. Beispiel: `s2c-rooms.json`.
 
 **Nachgetragen ohne neue Version (SK3, B-577):** Spieler in `snap`/`delta` tragen optional `stealthFor` (Sekunden unsichtbar nach Smoke Bomb; fehlt = sichtbar). Neue Skill-IDs `backstab`, `smokeBomb` in `skills`, `slots` und `actions`. Ein älterer Client ignoriert das Feld.
 
@@ -248,7 +253,7 @@ sequenceDiagram
 | Unbekannter Code (nie vergeben oder aufgeräumt) | Fehler „Raum nicht gefunden“, das Gerät bleibt bei der Raumliste. |
 | Neuer Spielstand unter einem Namen, den es schon gibt (gespeichert oder in einem Raum offen) | Fehler „Spielstand gibt es schon“, das Gerät bleibt bei der Raumliste. |
 | Gespeicherter Spielstand, den es nicht gibt | Fehler „Spielstand nicht gefunden“, das Gerät bleibt bei der Raumliste. |
-| Raum stürzt ab oder der Server fährt herunter | Fehler „Raum ist geschlossen“ an alle Geräte im Raum; sie gehen zurück zur Raumliste (beim Herunterfahren schließt der Server danach die Verbindung). |
+| Raum stürzt ab, ein Gerät schließt ihn (`POST /api/room/close`) oder der Server fährt herunter | Fehler „Raum ist geschlossen“ an alle Geräte im Raum; sie gehen zurück zur Raumliste (beim Herunterfahren schließt der Server danach die Verbindung). |
 | Dieselbe Geräte-ID tritt demselben Raum über eine neue Verbindung bei | Die alte Verbindung bekommt „an anderer Stelle geöffnet“ und wird geschlossen, kein automatisches Neuverbinden (siehe *Wiederverbinden*). |
 | Gerät kommt nach mehr als 60 s zurück | Kein Fehler: normales Beitreten, freie Monarchen desselben Geräts zuerst (siehe *Wiederverbinden*). |
 | Falsche Protokoll-Version oder erste Nachricht ist kein gültiges `hello` | Fehler „veraltete Version, Seite neu laden“, der Server schließt die Verbindung. |
@@ -280,7 +285,7 @@ vollständig und in Reihenfolge, deshalb braucht es keine Wiederholung und keine
 **Version:** Das Feld `v` steht nur im Handschlag (`hello`, `welcome`), nicht in jeder Nachricht. Die Version gilt für
 die ganze Verbindung; jede weitere Nachricht damit auszustatten kostet bei 30 Snapshots pro Sekunde nur Bytes.
 Erste Nachricht nach dem Verbinden ist immer `hello`. Ist sie kein gültiges `hello` (kein JSON, anderer Typ, Feld
-fehlt, `v` nicht 8), antwortet der Server mit `version` und schließt: Ein alter v1-Client schickt zuerst `join`, ein
+fehlt, `v` nicht 9), antwortet der Server mit `version` und schließt: Ein alter v1-Client schickt zuerst `join`, ein
 v7-Client schickt `v: 7`.
 
 **Takt:** Ein laufender Raum tickt mit **30 Hz** und schickt jedem seiner Geräte pro Tick und Stufe des Geräts höchstens
@@ -298,9 +303,9 @@ das zählt als Abbruch.
 
 | Nachricht | Richtung | Wann | Felder | Beispiel |
 |---|---|---|---|---|
-| `hello` | Gerät → Server | als erste Nachricht | `v` Protokoll-Version (8), `device` Geräte-ID (≤ 64 Zeichen) | `c2s-hello.json` |
+| `hello` | Gerät → Server | als erste Nachricht | `v` Protokoll-Version (9), `device` Geräte-ID (≤ 64 Zeichen) | `c2s-hello.json` |
 | `welcome` | Server → Gerät | Antwort auf passendes `hello` | `v`, `tickHz`, `limits` (Grenzen aus *Grenzen*) | `s2c-welcome.json` |
-| `rooms` | Server → Gerät | nach `welcome`, sobald das Gerät wieder in keinem Raum ist, und bei jeder Änderung, solange es in keinem Raum ist | `rooms[]`: `code`, `name`, `depth`, `grade`, `taken` (besetzt + wartend), `free` (4 − `taken`), `running` | `s2c-rooms.json` |
+| `rooms` | Server → Gerät | nach `welcome`, sobald das Gerät wieder in keinem Raum ist, und bei jeder Änderung, solange es in keinem Raum ist | `rooms[]`: `code`, `name`, `depth`, `grade`, `taken` (besetzt + wartend), `free` (4 − `taken`), `running`, `world` (Welt-ID, ab v9) | `s2c-rooms.json` |
 | `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]`, optional `grade`, `goal`, `defeat` (siehe oben), optional `seed` (nur bei `fresh`, höchstens 64 Zeichen, sonst gilt der Name), optional `world` (Welt-ID, nur bei `fresh`, fehlt = `standard`, eine andere nur im Dev-Mode; v7) | `c2s-create.json`, `c2s-create-seed.json`, `c2s-create-world.json` |
 | `join` | Gerät → Server | Raum beitreten oder wiederverbinden | `room` Code, `slots[]` | `c2s-join.json` |
 | `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `world` (Welt-ID des Raums, v7), `you[]`: `slot` → `monarch`, `depth`, `stage` | `s2c-joined.json` |
@@ -451,9 +456,9 @@ speichert es additiv als `nodesMarkedBy` (`kind@x` → Index), die Spielstand-Ve
 | `room_not_found` | unbekannter Code | bleibt |
 | `save_exists` | `create` mit `fresh: true` und einem Namen, den es schon gibt | bleibt |
 | `save_not_found` | `create` mit `fresh: false` und einem Namen, den es nicht gibt | bleibt |
-| `room_closed` | Raum abgestürzt oder Server fährt herunter; Gerät geht zurück zur Raumliste | bleibt (beim Herunterfahren: Server schließt) |
+| `room_closed` | Raum abgestürzt, von einem Gerät geschlossen oder Server fährt herunter; Gerät geht zurück zur Raumliste | bleibt (beim Herunterfahren: Server schließt) |
 | `replaced` | dieselbe Geräte-ID ist demselben Raum über eine neue Verbindung beigetreten | Server schließt, kein automatisches Neuverbinden |
-| `version` | erste Nachricht ist kein gültiges `hello` oder `v` ist nicht 8 | Server schließt |
+| `version` | erste Nachricht ist kein gültiges `hello` oder `v` ist nicht 9 | Server schließt |
 | `forbidden` | `dev` ohne Dev-Mode am Server, `create` mit einer anderen Welt als `standard` ohne Dev-Mode; die Warnung steht im Log | bleibt, Nachricht wird verworfen |
 | `restarting` | Server startet gleich neu (geänderte Dateien, siehe *Neustart des Servers*); danach folgt `room_closed` | bleibt (bis zum Herunterfahren) |
 | `world_unknown` | `create` mit unbekannter oder ungültiger Welt (`world`) bzw. Spielstand in einer solchen Welt (v7) | bleibt |
@@ -646,6 +651,15 @@ offen"}`, solange ein Raum den Stand geöffnet hat (auch ohne verbundenes Gerät
   { "name": "kaputt", "error": "ungültig" }
 ]
 ```
+
+## HTTP: Raum schließen
+
+**Neu mit Version 9 (BD9.1, B-581):** `POST /api/room/close?slot=NAME` (ohne Token wie `DELETE /api/save`) schließt den
+offenen Raum mit dem Spielstand `NAME`, auch wenn noch Geräte verbunden sind. Ablauf wie das Aufräumen eines leeren
+Raums: Der Raum speichert (nicht nach Game Over), schreibt seinen Spielmetrik-Report und schließt; jedes verbundene Gerät
+bekommt `room_closed` und danach die Raumliste, seine Verbindung bleibt. Der Code wird frei, der Stand ist danach mit
+`DELETE /api/save` löschbar. Antworten: `200` `{"ok": true, "slot": NAME}`; `404` `{"error": "Kein Raum offen"}`, wenn
+kein Raum diesen Stand offen hat; `400` bei fehlendem oder ungültigem Namen; andere Methoden → `405`.
 
 ## HTTP: Dungeon-Master-Seite (B-232)
 
