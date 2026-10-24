@@ -112,6 +112,8 @@ export interface GitBackend {
   /** Löscht nur gemergte lokale Branches (Go prüft erneut); remote auch auf origin. */
   gitDeleteBranches(names: string[], remote: boolean): Promise<string>;
   gitPRs(): Promise<GitPRList>;
+  /** Fingerabdruck des Repo-Zustands (HEAD, Index, Refs, FETCH_HEAD); billig, für den Takt der Seite. */
+  gitStamp(): Promise<string>;
   /** PR vom aktuellen Branch nach develop; Antwort ist die Adresse. */
   gitPRCreate(title: string, body: string): Promise<string>;
   gitPRAction(number: number, action: GitPRAction): Promise<string>;

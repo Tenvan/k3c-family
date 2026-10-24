@@ -184,6 +184,44 @@ func TestDeleteNurGemergte(t *testing.T) {
 	}
 }
 
+// Rev. 5: Der Fingerabdruck bleibt ohne Änderung gleich und ändert sich bei Commit, Stage und Fetch.
+func TestStampFolgtDemRepo(t *testing.T) {
+	r, work := setup(t)
+	ctx := context.Background()
+	stamp := func() string {
+		t.Helper()
+		s, err := r.Stamp(ctx)
+		if err != nil || s == "" {
+			t.Fatalf("Stamp = %q, %v", s, err)
+		}
+		return s
+	}
+	a := stamp()
+	if b := stamp(); a != b {
+		t.Fatalf("ohne Änderung %q ≠ %q", a, b)
+	}
+	steps := []struct {
+		name string
+		do   func()
+	}{
+		{"commit", func() { commit(t, work, "neu.txt", "n") }},
+		{"stage", func() {
+			if err := os.WriteFile(filepath.Join(work, "x.txt"), []byte("x"), 0o600); err != nil {
+				t.Fatal(err)
+			}
+			sh(t, work, "add", "x.txt")
+		}},
+		{"fetch", func() { sh(t, work, "fetch", "-q", "--force", "origin", "develop:refs/remotes/origin/probe") }},
+	}
+	for _, s := range steps {
+		before := stamp()
+		s.do()
+		if stamp() == before {
+			t.Errorf("%s: Fingerabdruck unverändert", s.name)
+		}
+	}
+}
+
 // Review B-580 (1): Scheitert die Messung zu develop, darf nichts als gemergt und löschbar gelten.
 func TestMessfehlerGiltNieAlsGemergt(t *testing.T) {
 	_, work := setup(t)

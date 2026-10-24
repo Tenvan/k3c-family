@@ -43,6 +43,17 @@ describe('Ablauf und Laden', () => {
     expect(files.indexOf('uiapi.go')).toBeLessThan(files.indexOf('Nicht gestaged'));
   });
 
+  it('Fetch über die Seite lädt auch die PRs neu, ohne „Repo geändert“', async () => {
+    const prs = vi.spyOn(backend, 'gitPRs');
+    const host = await mount();
+    expect(prs).toHaveBeenCalledTimes(1);
+    act(() => button('Fetch').click());
+    await flush();
+    expect(prs).toHaveBeenCalledTimes(2);
+    expect(host.textContent).toContain('Mock: fetch fertig');
+    expect(host.textContent).not.toContain('Repo geändert');
+  });
+
   it('liest erst beim ersten Öffnen und danach nur über „Neu laden“', async () => {
     const spy = vi.spyOn(backend, 'gitOverview');
     const prs = vi.spyOn(backend, 'gitPRs');
