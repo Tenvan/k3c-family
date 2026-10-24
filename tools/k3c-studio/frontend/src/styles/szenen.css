@@ -47,3 +47,6 @@
 .sz-table th, .sz-table td { padding: 4px 8px; text-align: left; vertical-align: middle; border-bottom: 1px solid var(--card-line); }
 .sz-swatch { display: inline-block; width: 12px; height: 12px; border: 1px solid #fff; vertical-align: middle; }
 .sz-kampf { width: 100%; max-width: 1100px; height: auto; }
+/* Zwölf Szenen sind breiter als die Seite: nur die Leiste scrollt, die Szene bleibt im Blick (WZ30.6). */
+.sz-page { min-width: 0; }
+.sz-page > .as-head > .rt-SegmentedControlRoot { max-width: 100%; overflow-x: auto; flex-shrink: 1; }
