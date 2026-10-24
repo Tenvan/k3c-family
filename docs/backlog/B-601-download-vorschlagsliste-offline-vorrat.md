@@ -28,10 +28,10 @@ Ralf; Agent DEV (Funktion) und Agent Recherche (Liste füllen, im Sprint autonom
 
 - Datei `data/assets-vorschlaege.json` (Studio schreibt `data/**`): je Eintrag Slot oder Gruppe, Art (Ton, Grafik), Titel, Quelle (URL der Seite und Datei-URL), Urheber, Lizenz (Q70: CC0, CC-BY, OGA-BY, CC-BY-SA), Dateiname, Größe, Priorität, Hinweis, Status (offen, geladen, verworfen).
 - Befüllung im Sprint durch den Agenten per Recherche (`assets_research`, OpenGameArt, Kenney, itch.io): für alle Lücken und schwachen Slots Kandidaten, auch für Skills je Linie und passive Skills, Skill-Effekt-Grafiken, Gegner-Lücken (Käfer, Splitterwicht, Spinne), Bauschilder und Gerüste, Abbau-Symbole (Axt, Spitzhacke), Höhlen-Wurzeln, Felsen. Lizenz auf der Quellseite prüfen, Dateigröße und Datei-URL nennen.
-- Seite „Vorrat“ (Sound- und Grafik-Seite, Reiter): Liste mit Filter (B-599), Summe der Größen, Auswahl einzeln oder alle, Button „Herunterladen“ (nur mit Bestätigung der Gesamtgröße und der Quellen), Fortschritt, Wiederaufnahme, Prüfsumme/Größe nach dem Laden.
+- **Eigene Seite „Quellen“ im Studio** (Entscheidung 🧑, 2026-10-24: eine eigene Assets-Source-Seite ist hilfreich), für Ton und Grafik gemeinsam, statt eines Reiters je Seite: Übersicht je Quelle (OpenGameArt, Kenney, itch.io, freesound …) mit Lizenzregeln und Zähler (vorgeschlagen, geladen, verwendet), die Vorschlagsliste mit Filter (B-599, auch nach Quelle, Art, Slot, Lizenz, Status), Summe der Größen, Auswahl einzeln oder alle, Button „Herunterladen“ (nur mit Bestätigung der Gesamtgröße und der Quellen), Fortschritt, Wiederaufnahme, Prüfsumme/Größe nach dem Laden. Von Sound- und Grafik-Seite führt „Vorschläge für diesen Slot“ gefiltert auf die Quellen-Seite.
 - Geladene Dateien landen in `public/audio/kandidaten/` bzw. `public/grafik/kandidaten/`, Credits-Zeilen und Katalog-Einträge (Kandidat ohne Zuordnung) werden mit angelegt; der Credits-Test bleibt grün.
-- Offline sichtbar: Vorrat zeigt „geladen“ und „nicht geladen“, Hörprobe/Vorschau funktioniert für Geladenes ohne Netz; ungeladene Einträge sind ausgegraut.
-- Aufräumen: nicht gewählte Kandidaten lassen sich gesammelt entfernen (mit Bestätigung), wie bei B-554.
+- Offline sichtbar: Die Seite zeigt „geladen“ und „nicht geladen“, Hörprobe/Vorschau funktioniert für Geladenes ohne Netz; ungeladene Einträge sind ausgegraut.
+- Aufräumen: nicht gewählte Kandidaten lassen sich gesammelt entfernen (mit Bestätigung), wie bei B-554; „verwendet/unverwendet“ je Datei sichtbar.
 
 ## Nicht-Ziele
 

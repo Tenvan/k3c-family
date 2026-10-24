@@ -74,7 +74,7 @@ keine blockierende; Pflicht-Szenen und Chat-Aktionen laut Tickets als Default, R
 - WZ29.3 (DEV) Misch-, Lautheits- und Abstandsprobe (AC-02).
 - WZ29.4 (DEV) Grafik-Szenen: Skill-Effekte, Schilder/Gerüste, Gegner je Biom, Reittiere, Bosse, Biom und Licht (AC-03).
 - WZ29.5 (DEV) **Vorschlagsliste füllen (vor der Download-Funktion):** Recherche für Ton und Grafik, `data/assets-vorschlaege.json` mit Quelle, Datei-URL, Lizenz, Größe, Priorität; Lizenzen auf den Quellseiten prüfen; Test der Liste (AC-05, B-601/AC-01).
-- WZ29.6 (DEV) Vorrat: Download mit Bestätigung, Credit und Katalog-Eintrag, Offline-Anzeige, Aufräumen, für Sound- und Grafik-Seite (AC-05).
+- WZ29.6 (DEV) **Eigene Seite „Quellen“** im Studio für Ton und Grafik: Quellen-Übersicht, Vorschlagsliste mit Filter, Download mit Bestätigung, Credit und Katalog-Eintrag, Offline-Anzeige, Aufräumen, Sprung von Sound- und Grafik-Seite (AC-05).
 - WZ29.7 (DEV) Chat-Unterstützung: Kontext, Vorschlagskarten, Bestätigung, Lizenz- und Download-Regeln, offline; nutzt die Vorschlagsliste (AC-04).
 - WZ29.8 (DEV) Review mit Offline-Nachweis (alle Kriterien).
 - WZ29.9 (Mensch) Abnahme am PC (AC-06).
