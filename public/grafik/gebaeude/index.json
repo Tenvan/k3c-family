@@ -2435,6 +2435,62 @@
     }
   },
   {
+    "id": "wurzel-4",
+    "klasse": "flora",
+    "kacheln": {
+      "b": 3,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Dicke, buschige Wurzel von der Höhlendecke bis in den Boden, 3 × 15 Kacheln, Form 4 der Wurzel",
+      "teile": [
+        "Ein sehr dicker Strang von der oberen Bildkante (Decke) bis zum Boden, leicht gewellt, in der Mitte schmaler",
+        "Zwölf kurze Seitenwurzeln abwechselnd links und rechts, alle enden frei",
+        "Breiter Wurzelfuß am Boden über fast drei Kacheln"
+      ],
+      "materialien": [
+        "Erde (Wurzeln, Hügelrand) = Pfosten, Balken",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "struppig, wuchtig",
+      "fein": "keine"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/wurzel-4-128.png",
+      "16": "grafik/gebaeude/wurzel-4-16.png",
+      "32": "grafik/gebaeude/wurzel-4-32.png",
+      "64": "grafik/gebaeude/wurzel-4-64.png"
+    }
+  },
+  {
+    "id": "wurzel-5",
+    "klasse": "flora",
+    "kacheln": {
+      "b": 2,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Sehr lange, dünne Wurzel in weiten Schlingen, 2 × 15 Kacheln, Form 5 der Wurzel",
+      "teile": [
+        "Ein dünner Strang von der Decke bis in den Boden, schlängelt in weiten Bögen hin und her",
+        "Zwei haarfeine Seitenwurzeln enden frei",
+        "Kleiner, flacher Wurzelfuß am Boden"
+      ],
+      "materialien": [
+        "Erde (Wurzeln, Hügelrand) = Pfosten, Balken",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "zart, verloren",
+      "fein": "keine"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/wurzel-5-128.png",
+      "16": "grafik/gebaeude/wurzel-5-16.png",
+      "32": "grafik/gebaeude/wurzel-5-32.png",
+      "64": "grafik/gebaeude/wurzel-5-64.png"
+    }
+  },
+  {
     "id": "wurzel",
     "klasse": "flora",
     "kacheln": {

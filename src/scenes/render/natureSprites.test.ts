@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { NATURE_TEXTURES, campSprite, natureLook, nodeSprite, treeTexture, veinSlot } from './natureSprites';
+import { BIOMES } from '../../model/biome';
+import { NATURE_TEXTURES, WURZELN, campSprite, decoRoots, natureLook, nodeSprite, treeTexture, veinSlot } from './natureSprites';
 
 /** Nur die Pfade, nichts wird geladen */
 const FILES = Object.keys(import.meta.glob('../../../public/grafik/gebaeude/*.png'));
@@ -40,10 +41,11 @@ describe('treeTexture (GEB6.5, B-438)', () => {
     for (const art of ['tanne', 'pappel', 'birke']) expect([...keys].filter((k) => k.includes(art))).toHaveLength(3);
   });
 
-  it('Höhle (und Mine) zeigen Höhlen-Flora: alle drei Wurzel-Formen, keine Bäume (GEB10, B-454/AC-02)', () => {
+  it('Höhle (und Mine) zeigen Höhlen-Flora: alle fünf Wurzel-Formen, keine Bäume (GEB10, GEB15.1/AC-01)', () => {
+    expect(WURZELN).toHaveLength(5);
     for (const biome of ['cave', 'mine', 'ironhold']) {
       const keys = new Set(xs.map((x) => treeTexture(x, biome)));
-      expect([...keys].sort(), biome).toEqual(['grafik:wurzel', 'grafik:wurzel-2', 'grafik:wurzel-3']);
+      expect([...keys].sort(), biome).toEqual(['grafik:wurzel', 'grafik:wurzel-2', 'grafik:wurzel-3', 'grafik:wurzel-4', 'grafik:wurzel-5']);
     }
   });
 
@@ -58,6 +60,35 @@ describe('treeTexture (GEB6.5, B-438)', () => {
       for (const x of xs) expect(NATURE_TEXTURES).toHaveProperty([treeTexture(x, biome)]);
     }
     for (const file of Object.values(NATURE_TEXTURES)) expect(FILES).toContain(`../../../public/grafik/${file}`);
+  });
+});
+
+describe('decoRoots (GEB15.1/AC-01)', () => {
+  const xs = Array.from({ length: 200 }, (_, i) => i * 3.7 - 40);
+  const dichte = (id: string) => BIOMES.find((b) => b.id === id)?.rootsPerNode;
+
+  it('Zahl je Knoten kommt aus den Daten: Höhle 2 Wurzeln (eine Deko), ohne Feld 1, Wald keine', () => {
+    expect(dichte('cave')).toBe(2);
+    for (const x of xs) expect(decoRoots(x, 'cave', dichte('cave'))).toHaveLength(1);
+    expect(decoRoots(5, 'mine', dichte('mine'))).toEqual([]);
+    expect(decoRoots(5, 'cave', 4)).toHaveLength(3);
+    expect(decoRoots(5, 'forest', 3)).toEqual([]);
+  });
+
+  it('deterministisch, Versatz 0,4–1,2 Units zu beiden Seiten, andere Form als der Knoten, Schlüssel geladen', () => {
+    const seiten = new Set<number>();
+    for (const x of xs) {
+      const deko = decoRoots(x, 'cave', 3);
+      expect(decoRoots(x, 'cave', 3)).toEqual(deko);
+      for (const d of deko) {
+        expect(Math.abs(d.dx)).toBeGreaterThanOrEqual(0.4);
+        expect(Math.abs(d.dx)).toBeLessThanOrEqual(1.2);
+        expect(d.key).not.toBe(treeTexture(x, 'cave'));
+        expect(NATURE_TEXTURES).toHaveProperty([d.key]);
+        seiten.add(Math.sign(d.dx));
+      }
+    }
+    expect([...seiten].sort()).toEqual([-1, 1]);
   });
 });
 

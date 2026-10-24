@@ -1,6 +1,6 @@
 # GEB15.1 · Höhlen-Wurzeln: mehr Varianten und dichter
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -55,5 +55,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01: umgesetzt.
+  - Neu `wurzel-4` (dick, buschig, 3 × 15) und `wurzel-5` (lang, dünn, 2 × 15), beide regelkonform von der Decke bis in den Boden. `WURZELN` hat jetzt fünf Formen.
+  - Die Dichte steht als `rootsPerNode` in `data/biomes/cave.json` (2, sonst 1). `decoRoots` zeichnet Deko-Wurzeln je Knoten mit festem Versatz nach Position und immer in einer anderen Form als der Knoten.
+  - Simulation und Golden sind unverändert.
+- Geprüft mit `task check` (grün), Vitest `src/scenes/render` und `tests/`, Studio `src/graphics`, `go test ./tools/buildings/... ./engine/level/... ./engine/sim/...`. Claude hat die PNGs selbst angesehen.
+- Abweichung: Die Deko-Wurzeln hängen am Container des Knotens und verschwinden mit ihm. `data/assets.json` führt Wurzeln nicht als Slot, die Studio-Vorschau liest sie aus `index.json`.

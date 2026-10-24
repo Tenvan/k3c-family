@@ -124,7 +124,7 @@ describe('Asset-Vorschau: echte Grafik (GEB10)', () => {
     const baeume = index.filter((e) => e.klasse === 'baum');
     expect(baeume).toHaveLength(10); // pappel-niedrig (B-568) ist bewusst nur 5 Kacheln hoch
     for (const e of baeume) expect(e.kacheln.h).toBe(e.id === 'birke-3' ? 9.5 : e.id === 'pappel-niedrig' ? 5 : 11.25);
-    expect(baumReihe(index, undefined, 1, 'flora').map((b) => b.id)).toEqual(['hoehlenbusch', 'wurzel-2', 'wurzel-3', 'wurzel']);
+    expect(baumReihe(index, undefined, 1, 'flora').map((b) => b.id)).toEqual(['hoehlenbusch', 'wurzel-2', 'wurzel-3', 'wurzel-4', 'wurzel-5', 'wurzel']);
   });
 });
 
