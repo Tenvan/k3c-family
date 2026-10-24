@@ -1,10 +1,10 @@
 import { ActionButton, Button, SegmentedControl, Text } from '@webkit/atoms';
 import { CREDITS } from '@game/tools/credits';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useAssets } from '../assets/useAssets';
-import { licenseFlag, resolveSlot, SCENES, slotsOf, type Query, type Resolved, type SceneId } from '../graphics/scenesLogic';
-import { loadPref, savePref } from '../lib/prefs';
-import { NoticeCard } from '@webkit/molecules';
+import { licenseFlag, resolveSlot, sceneFilter, SCENES, slotsOf, type Query, type Resolved, type SceneId } from '../graphics/scenesLogic';
+import { loadJSON, loadPref, saveJSON, savePref } from '../lib/prefs';
+import { ListFilter, NoticeCard } from '@webkit/molecules';
 import { playChoice, stopAll } from './audio';
 import { playStatus } from './playback';
 
@@ -20,8 +20,9 @@ export function SoundScenes() {
   const [szene, setSzene] = useState<SceneId>(() => loadPref('sound.szene', SOUND, 'sfx'));
   const [q, setQ] = useState<Query>({ wahl: 1 });
   const [status, setStatus] = useState('');
+  const items = useMemo(() => (data.view ? slotsOf(data.view.slots, szene).map((s) => resolveSlot(s, q)) : []), [data.view, szene, q]);
+  const filter = useMemo(() => sceneFilter(items, CREDITS), [items]);
   if (!data.view) return data.error ? <NoticeCard title="Slot-Register nicht lesbar" tone="error">{data.error}</NoticeCard> : <Text color="gray">Lade Slot-Register …</Text>;
-  const items = slotsOf(data.view.slots, szene).map((s) => resolveSlot(s, q));
   const pick = (v: string) => {
     const next = SOUND.find((s) => s === v) ?? 'sfx';
     setSzene(next);
@@ -40,8 +41,10 @@ export function SoundScenes() {
         <Button variant="soft" color="gray" onClick={() => { stopAll(); setStatus(''); }}>Stopp</Button>
       </div>
       <Text size="2" color="gray" role="status">{status || 'Klick auf „Abspielen“ entsperrt den Ton (Nutzergeste).'}</Text>
-      {items.length === 0 && <Text color="gray">Keine Asset-Slots in dieser Kategorie.</Text>}
-      {items.map((r) => <SoundRow key={r.slot.id} r={r} q={q} onQ={setQ} onPlay={play} />)}
+      <ListFilter
+        key={szene} items={items} {...filter} itemKey={(r) => r.slot.id} renderItem={(r) => <SoundRow r={r} q={q} onQ={setQ} onPlay={play} />}
+        storageKey={`sound.${szene}.filter`} prefs={{ loadJSON, saveJSON }} emptyHint="Keine Asset-Slots in dieser Kategorie."
+      />
     </div>
   );
 }

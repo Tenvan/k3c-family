@@ -68,6 +68,9 @@ function subscribe<E extends EventName>(event: E, fn: (data: Events[E]) => void)
   };
 }
 
+/** Vorschläge des Chats liefert das Backend erst mit WZ29.7; bis dahin klare Meldung statt eines RPC ins Leere. */
+const notYet = (): Promise<never> => Promise.reject(new Error('Chat-Vorschläge kommen mit WZ29.7'));
+
 export function httpBackend(): Backend {
   return {
     mock: false,
@@ -105,6 +108,9 @@ export function httpBackend(): Backend {
     ticketCreate: (input) => rpc<TicketCreated>('TicketCreate', input),
     ticketRecent: (n) => rpc<TicketCreated[]>('TicketRecent', n),
     openUrl: (url: string) => void window.open(url, '_blank', 'noopener'),
+    assetSuggestions: notYet,
+    assetSuggestionAdopt: notYet,
+    assetSuggestionDrop: notYet,
     chatStream: chatStreamHttp,
     chatList: () => rpc<ChatSummary[]>('ChatList'),
     chatGet: (id: string) => rpc<ChatDetail>('ChatGet', id),

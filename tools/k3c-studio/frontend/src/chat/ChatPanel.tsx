@@ -3,25 +3,28 @@ import { setChatOpen, useChatOpen } from './chatBridge';
 import { ChatControls } from './ChatControls';
 import { ChatSplitter, useChatWidth } from './ChatSplitter';
 import { ChatThread } from './ChatThread';
+import { SuggestionList, suggestionKind } from './SuggestionList';
 import { useChatChoices } from './useChatChoices';
 import { useChatSession } from './useChatSession';
 
 /** Der Chat rechts im Studio (B-488, WZ19.2): assistant-ui mit der Claude Code CLI als Modell, auf allen Seiten da,
  *  ein- und ausblendbar, durch eine Trennlinie in der Breite einstellbar. Kopf: Neuer Chat, gespeicherte Chats,
  *  Anbieter/Modell/Denkstufe. Bleibt auch ausgeblendet eingehängt, damit Verlauf und Entwurf stehen bleiben. */
-export function ChatPanel() {
+export function ChatPanel({ page }: { page?: string }) {
   const open = useChatOpen();
   const [width, setWidth, resetWidth] = useChatWidth();
   const choices = useChatChoices();
   const { chats, session, setSession, error, running, setRunning, refresh, onNew, onSelect, onDelete } = useChatSession(choices);
 
   const key = session.key;
+  const kind = suggestionKind(page);
   return (
     <>
       {open && <ChatSplitter width={width} onChange={setWidth} onReset={resetWidth} />}
       <aside className="chat" data-testid="chat-panel" hidden={!open} aria-label="Chat" style={{ flexBasis: width }}>
         <ChatControls chats={chats} chat={session.chat} choices={choices} running={running} error={error}
           onNew={onNew} onSelect={onSelect} onDelete={onDelete} onHide={() => setChatOpen(false)} />
+        {kind && <SuggestionList key={kind} kind={kind} />}
         <ChatThread key={key} chat={session.chat} initial={session.messages} current={choices.current} onEnd={refresh} onRunning={setRunning}
           onChat={(id) => setSession((s) => (s.key === key ? { ...s, chat: id } : s))} />
       </aside>

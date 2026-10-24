@@ -14,6 +14,7 @@ export {
 } from '@radix-ui/themes';
 
 export { NoticeCard } from './NoticeCard';
+export { ListFilter, type ListFilterPrefs, type ListFilterProps } from './ListFilter';
 export { CheckField, SwitchField } from './ToggleField';
 export { BarChart, type BarChartProps } from './BarChart';
 export { CorridorBar, type CorridorBarProps } from './CorridorBar';

@@ -1,13 +1,15 @@
 import { SegmentedControl, Select, Text } from '@webkit/atoms';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import type { ListFilterConfig } from '@webkit/lib/listFilter';
 import { useAssets } from '../assets/useAssets';
-import { loadPref, savePref } from '../lib/prefs';
-import { NoticeCard } from '@webkit/molecules';
+import { loadJSON, loadPref, saveJSON, savePref } from '../lib/prefs';
+import { ListFilter, NoticeCard } from '@webkit/molecules';
+import { CREDITS } from '@game/tools/credits';
 import { BuildingStrip } from './BuildingStrip';
 import { HubGrowthStrip } from './HubGrowthStrip';
 import { Backgrounds } from './Backgrounds';
 import { FigurenCards, ImageCard } from './SlotCards';
-import { resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag, type Query, type SceneId } from './scenesLogic';
+import { resolveSlot, sceneFilter, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag, type Query, type Resolved, type SceneId } from './scenesLogic';
 
 // Reiter „Szenen“ der Seite Grafik (B-459/AC-06, Inhalt der früheren Asset-Vorschau): je Kategorie eine Mini-Szene mit den
 // aktiven Zuordnungen aus AssetsList; lädt bei assets:changed neu. Vergleich: Präferenz n eines Slots statt Präferenz 1.
@@ -36,8 +38,10 @@ export function ScenesView() {
   const index = useGebaeudeIndex();
   const [szene, setSzene] = useState<SceneId>(() => loadPref('grafik.szene', GRAFIK, 'figuren'));
   const [q, setQ] = useState<Query>({ wahl: 1 });
+  const slots = useMemo(() => (data.view ? slotsOf(data.view.slots, szene) : []), [data.view, szene]);
+  const items = useMemo(() => slots.map((s) => resolveSlot(s, q)), [slots, q]);
+  const filter = useMemo(() => sceneFilter(items, CREDITS), [items]);
   if (!data.view) return data.error ? <NoticeCard title="Slot-Register nicht lesbar" tone="error">{data.error}</NoticeCard> : <Text color="gray">Lade Slot-Register …</Text>;
-  const slots = slotsOf(data.view.slots, szene);
   const pick = (v: string) => {
     const next = GRAFIK.find((s) => s === v) ?? 'figuren';
     setSzene(next);
@@ -53,24 +57,31 @@ export function ScenesView() {
         <Vergleich slots={slots} q={q} onQ={setQ} />
       </div>
       <Text size="2" color="gray">Aktive Zuordnungen im Spielmaßstab ×2; 1 Unit = 32 px. Lücken und fehlende Dateien sind markiert.</Text>
-      <Scene szene={szene} slots={slots} q={q} index={index ?? []} />
+      <Scene szene={szene} items={items} filter={filter} index={index ?? []} />
     </div>
   );
 }
 
-function Scene({ szene, slots, q, index }: { szene: SceneId; slots: AssetSlot[]; q: Query; index: GebaeudeEintrag[] }) {
-  const items = slots.map((s) => resolveSlot(s, q));
-  const bilder = szene === 'figuren' ? items.filter((r) => !r.choice?.sheet) : items;
+function Scene({ szene, items, filter, index }: { szene: SceneId; items: Resolved[]; filter: ListFilterConfig<Resolved>; index: GebaeudeEintrag[] }) {
   return (
     <>
       {szene === 'gebaeude' && index.length > 0 && <><h3 className="sz-title">Neue Gebäude (GEB)</h3><BuildingStrip index={index} /></>}
       {szene === 'gebaeude' && index.length > 0 && <><h3 className="sz-title">Hub wächst (GEB11)</h3><HubGrowthStrip index={index} /></>}
-      {szene === 'figuren' && <FigurenCards title={TITLE.figuren!} items={items} />}
-      {items.length === 0 && <Text color="gray">Keine Asset-Slots in dieser Kategorie.</Text>}
-      {bilder.length > 0 && (
-        <div className={`sz-strip sz-${szene}`}>{bilder.map((r) => <ImageCard key={r.slot.id} r={r} />)}</div>
-      )}
+      <ListFilter
+        key={szene} items={items} {...filter} storageKey={`grafik.${szene}.filter`} prefs={{ loadJSON, saveJSON }}
+        emptyHint="Keine Asset-Slots in dieser Kategorie." renderList={(list) => <Bilder szene={szene} items={list} />}
+      />
       {szene === 'umgebung' && <Backgrounds index={index} />}
+    </>
+  );
+}
+
+function Bilder({ szene, items }: { szene: SceneId; items: Resolved[] }) {
+  const bilder = szene === 'figuren' ? items.filter((r) => !r.choice?.sheet) : items;
+  return (
+    <>
+      {szene === 'figuren' && <FigurenCards title={TITLE.figuren!} items={items} />}
+      {bilder.length > 0 && <div className={`sz-strip sz-${szene}`}>{bilder.map((r) => <ImageCard key={r.slot.id} r={r} />)}</div>}
     </>
   );
 }

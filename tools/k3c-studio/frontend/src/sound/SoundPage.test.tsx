@@ -50,6 +50,18 @@ describe('Seite Sound (B-459)', () => {
     expect([...h.querySelectorAll('button')].some((b) => b.textContent === 'Stopp')).toBe(true);
   });
 
+  it('Szenen: gemerkter Filter „Lücke“ blendet zugeordnete Slots aus, Zurücksetzen holt sie zurück (B-599)', async () => {
+    localStorage.setItem('k3c-studio.sound.szene', 'sfx');
+    localStorage.setItem('k3c-studio.sound.sfx.filter', JSON.stringify({ query: '', chips: { status: ['Lücke'] }, sort: 'spiel', group: '' }));
+    const h = await mount(<SoundScenes />);
+    const counter = () => [...h.querySelectorAll('[role="status"]')].map((e) => e.textContent).find((t) => / von /.test(t ?? ''));
+    expect(counter()).toMatch(/^0 von [1-9]\d*$/);
+    expect(h.querySelectorAll('.sd-row')).toHaveLength(0);
+    await act(async () => [...h.querySelectorAll('button')].find((b) => b.textContent === 'Filter zurücksetzen')!.click());
+    expect(h.textContent).toContain('sfx:coin · Münze');
+    expect(JSON.parse(localStorage.getItem('k3c-studio.sound.sfx.filter')!).chips).toEqual({});
+  });
+
   it('Hörprobe: ganze Dateien nach Musik-Zustand, Atlas-Töne fehlen wie in soundtest.html', async () => {
     const h = await mount(<Hoerprobe />);
     expect(h.querySelector('h3')?.textContent).toContain('Tag');

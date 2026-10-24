@@ -59,11 +59,11 @@ keine. Default (Claude): Die Oberflächen nutzen die endgültigen API-Typen; WZ2
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ30.1 | `WZ30.1-filter-baustein.md` | Umsetzung | autonom | in Arbeit |
+| WZ30.1 | `WZ30.1-filter-baustein.md` | Umsetzung | autonom | fertig |
 | WZ30.2 | `WZ30.2-sound-szenen-proben.md` | Umsetzung | autonom | offen |
 | WZ30.3 | `WZ30.3-grafik-szenen-kampf.md` | Umsetzung | autonom | offen |
 | WZ30.4 | `WZ30.4-quellen-seite.md` | Umsetzung | autonom | offen |
-| WZ30.5 | `WZ30.5-chat-karten.md` | Umsetzung | autonom | in Arbeit |
+| WZ30.5 | `WZ30.5-chat-karten.md` | Umsetzung | autonom | fertig |
 | WZ30.6 | `WZ30.6-review.md` | Review | autonom | offen |
 | WZ30.7 | `WZ30.7-abnahme-oberflaechen.md` | Workshop | Mensch | offen |
 

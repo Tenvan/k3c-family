@@ -37,7 +37,7 @@ export function App({ initial }: { initial?: Page }) {
   );
   return (
     <TicketProvider app="k3c-studio" defaultDomain="DEV" defaultProject="WZG" create={createTicket} recent={recentTickets}>
-    <AppFrame title="Asset-Studio" appearance="dark" tabs={{ pages: PAGES, labels: LABELS, value: page, onChange: choose }} right={right} aside={<ChatPanel />} fixed>
+    <AppFrame title="Asset-Studio" appearance="dark" tabs={{ pages: PAGES, labels: LABELS, value: page, onChange: choose }} right={right} aside={<ChatPanel page={page} />} fixed>
       <Tabs.Content value="grafik"><GraphicsPage /></Tabs.Content>
       <Tabs.Content value="sound"><SoundPage /></Tabs.Content>
       <Tabs.Content value="welt"><WorldPage /></Tabs.Content>
