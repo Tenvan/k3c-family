@@ -1,6 +1,6 @@
 # GEB18.1 · Generator erzeugt Hintergründe in vierfacher Auflösung und mit Varianten
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
