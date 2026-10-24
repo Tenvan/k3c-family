@@ -96,12 +96,13 @@ func TestWiederholungFein(t *testing.T) {
 	}
 }
 
-// TestHintergrundVarianten: IDs mit `-v<n>` gehören zur Variante n, ohne Endung zur Variante 1; vollständig = fern, mitte, nah.
+// TestHintergrundVarianten: IDs mit `-v<n>` gehören zur Variante n, ohne Endung zur bisherigen Fassung (0, zählt nicht);
+// vollständig = fern, mitte, nah.
 func TestHintergrundVarianten(t *testing.T) {
 	if biom, schicht, v, ok := hintergrundTeile("hg-wald-mitte-v3"); !ok || biom != "wald" || schicht != "mitte" || v != 3 {
 		t.Errorf("hg-wald-mitte-v3 → %s %s %d %v", biom, schicht, v, ok)
 	}
-	if _, _, v, ok := hintergrundTeile("hg-wald-nah"); !ok || v != 1 {
+	if _, _, v, ok := hintergrundTeile("hg-wald-nah"); !ok || v != 0 {
 		t.Errorf("ohne Endung: Variante %d, ok %v", v, ok)
 	}
 	for _, id := range []string{"hg-wald-oben", "hg-wald-nah-v0", "wall-1", "hg-Wald-nah"} {
@@ -110,11 +111,13 @@ func TestHintergrundVarianten(t *testing.T) {
 		}
 	}
 	ids := []string{"hg-wald-fern", "hg-wald-mitte", "hg-wald-nah", "hg-wald-fern-v2", "hg-wald-mitte-v2", "hg-wald-nah-v2", "hg-mine-fern-v1", "castle"}
-	want := []string{"mine: 0 von 2 Varianten vollständig"}
-	if got := fehlendeVarianten(ids, 2); !reflect.DeepEqual(got, want) {
+	if got, want := fehlendeVarianten(ids, 2), []string{"mine: 0 von 2 Varianten vollständig", "wald: 1 von 2 Varianten vollständig"}; !reflect.DeepEqual(got, want) {
+		t.Errorf("fehlende Varianten %v, erwartet %v (die bisherige Fassung zählt nicht)", got, want)
+	}
+	if got, want := fehlendeVarianten(ids, 1), []string{"mine: 0 von 1 Varianten vollständig"}; !reflect.DeepEqual(got, want) {
 		t.Errorf("fehlende Varianten %v, erwartet %v", got, want)
 	}
-	if got := fehlendeVarianten(ids[:6], 2); len(got) != 0 {
-		t.Errorf("Wald hat zwei vollständige Varianten, gemeldet: %v", got)
+	if g := hintergrundGruppen(ids)["wald"]; g[0]["fern"] != "hg-wald-fern" || g[2]["fern"] != "hg-wald-fern-v2" {
+		t.Errorf("bisherige Fassung und Variante getrennt: %v", g)
 	}
 }

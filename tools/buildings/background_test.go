@@ -130,6 +130,23 @@ func idVonDatei(name string) string { return dichteSuffix.ReplaceAllString(name,
 
 // TestHintergrundStufen: je Biom drei Schichten fern, mitte, nah; mittlere Helligkeit steigt um mindestens hgMinStufe
 // und „nah“ bleibt unter hgNahMax, also dunkler als die Gebäude davor (GEB7 AC-04, Regeldatei § 10).
+// TestHintergrundVariantenJeStufe: jede der fünf Stufen hat mindestens fünf vollständige Varianten (GEB18, B-618/AC-02).
+func TestHintergrundVariantenJeStufe(t *testing.T) {
+	out := map[string]*image.Paletted{}
+	var ids []string
+	for id, k := range ladeKlasse(t, out) {
+		if k == "hintergrund" {
+			ids = append(ids, id)
+		}
+	}
+	if n := len(hintergrundGruppen(ids)); n != 5 {
+		t.Errorf("%d Biome mit Hintergrund, erwartet 5", n)
+	}
+	if f := fehlendeVarianten(ids, 5); len(f) > 0 {
+		t.Errorf("zu wenige Varianten: %v", f)
+	}
+}
+
 // Je Variante eines Bioms (GEB18) gilt dieselbe Regel; gemessen wird in der Spiel-Dichte 32.
 func TestHintergrundStufen(t *testing.T) {
 	out := map[string]*image.Paletted{}

@@ -562,6 +562,141 @@
     ]
   },
   {
+    "id": "hg-eisenstollen-fern-v1",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Schmiedehalle mit Glut: Schicht fern in vierfacher Auflösung (GEB18), Variante 1",
+      "teile": [
+        "Dunkle Gewölbe als periodische Profile",
+        "Ferne Träger-Silhouetten",
+        "Glutpunkte als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-eisenstollen-fern-v1-128.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-fern-v1-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-fern-v2",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Trägerbrücke: Schicht fern in vierfacher Auflösung (GEB18), Variante 2",
+      "teile": [
+        "Dunkle Gewölbe als periodische Profile",
+        "Ferne Träger-Silhouetten",
+        "Glutpunkte als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-eisenstollen-fern-v2-128.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-fern-v2-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-fern-v3",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Lavaspalte: Schicht fern in vierfacher Auflösung (GEB18), Variante 3",
+      "teile": [
+        "Dunkle Gewölbe als periodische Profile",
+        "Ferne Träger-Silhouetten",
+        "Glutpunkte als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-eisenstollen-fern-v3-128.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-fern-v3-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-fern-v4",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Kettenschacht: Schicht fern in vierfacher Auflösung (GEB18), Variante 4",
+      "teile": [
+        "Dunkle Gewölbe als periodische Profile",
+        "Ferne Träger-Silhouetten",
+        "Glutpunkte als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-eisenstollen-fern-v4-128.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-fern-v4-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-fern-v5",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Hochofen: Schicht fern in vierfacher Auflösung (GEB18), Variante 5",
+      "teile": [
+        "Dunkle Gewölbe als periodische Profile",
+        "Ferne Träger-Silhouetten",
+        "Glutpunkte als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-eisenstollen-fern-v5-128.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-fern-v5-32.png"
+    }
+  },
+  {
     "id": "hg-eisenstollen-fern",
     "klasse": "hintergrund",
     "kacheln": {
@@ -585,6 +720,141 @@
     "dateien": {
       "16": "grafik/gebaeude/hg-eisenstollen-fern-16.png",
       "32": "grafik/gebaeude/hg-eisenstollen-fern-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-mitte-v1",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Schmiedehalle mit Glut: Schicht mitte in vierfacher Auflösung (GEB18), Variante 1",
+      "teile": [
+        "Stahlträger mit Flanschen und Streben",
+        "Glutspalten und Lavaschein in kleinen Flächen",
+        "Ketten und Niete als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-eisenstollen-mitte-v1-128.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-mitte-v1-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-mitte-v2",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Trägerbrücke: Schicht mitte in vierfacher Auflösung (GEB18), Variante 2",
+      "teile": [
+        "Stahlträger mit Flanschen und Streben",
+        "Glutspalten und Lavaschein in kleinen Flächen",
+        "Ketten und Niete als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-eisenstollen-mitte-v2-128.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-mitte-v2-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-mitte-v3",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Lavaspalte: Schicht mitte in vierfacher Auflösung (GEB18), Variante 3",
+      "teile": [
+        "Stahlträger mit Flanschen und Streben",
+        "Glutspalten und Lavaschein in kleinen Flächen",
+        "Ketten und Niete als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-eisenstollen-mitte-v3-128.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-mitte-v3-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-mitte-v4",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Kettenschacht: Schicht mitte in vierfacher Auflösung (GEB18), Variante 4",
+      "teile": [
+        "Stahlträger mit Flanschen und Streben",
+        "Glutspalten und Lavaschein in kleinen Flächen",
+        "Ketten und Niete als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-eisenstollen-mitte-v4-128.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-mitte-v4-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-mitte-v5",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Hochofen: Schicht mitte in vierfacher Auflösung (GEB18), Variante 5",
+      "teile": [
+        "Stahlträger mit Flanschen und Streben",
+        "Glutspalten und Lavaschein in kleinen Flächen",
+        "Ketten und Niete als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-eisenstollen-mitte-v5-128.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-mitte-v5-32.png"
     }
   },
   {
@@ -612,6 +882,141 @@
     "dateien": {
       "16": "grafik/gebaeude/hg-eisenstollen-mitte-16.png",
       "32": "grafik/gebaeude/hg-eisenstollen-mitte-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-nah-v1",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Schmiedehalle mit Glut: Schicht nah in vierfacher Auflösung (GEB18), Variante 1",
+      "teile": [
+        "Massive Träger und Platten mit Nieten",
+        "Rost, Funken und Glut in kleinen Flächen",
+        "Schlacke und Brocken am Boden"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-eisenstollen-nah-v1-128.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-nah-v1-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-nah-v2",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Trägerbrücke: Schicht nah in vierfacher Auflösung (GEB18), Variante 2",
+      "teile": [
+        "Massive Träger und Platten mit Nieten",
+        "Rost, Funken und Glut in kleinen Flächen",
+        "Schlacke und Brocken am Boden"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-eisenstollen-nah-v2-128.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-nah-v2-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-nah-v3",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Lavaspalte: Schicht nah in vierfacher Auflösung (GEB18), Variante 3",
+      "teile": [
+        "Massive Träger und Platten mit Nieten",
+        "Rost, Funken und Glut in kleinen Flächen",
+        "Schlacke und Brocken am Boden"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-eisenstollen-nah-v3-128.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-nah-v3-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-nah-v4",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Kettenschacht: Schicht nah in vierfacher Auflösung (GEB18), Variante 4",
+      "teile": [
+        "Massive Träger und Platten mit Nieten",
+        "Rost, Funken und Glut in kleinen Flächen",
+        "Schlacke und Brocken am Boden"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-eisenstollen-nah-v4-128.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-nah-v4-32.png"
+    }
+  },
+  {
+    "id": "hg-eisenstollen-nah-v5",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Hochofen: Schicht nah in vierfacher Auflösung (GEB18), Variante 5",
+      "teile": [
+        "Massive Träger und Platten mit Nieten",
+        "Rost, Funken und Glut in kleinen Flächen",
+        "Schlacke und Brocken am Boden"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-eisenstollen-nah-v5-128.png",
+      "32": "grafik/gebaeude/hg-eisenstollen-nah-v5-32.png"
     }
   },
   {
@@ -1096,6 +1501,141 @@
     }
   },
   {
+    "id": "hg-kristall-fern-v1",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Kristallhalle: Schicht fern in vierfacher Auflösung (GEB18), Variante 1",
+      "teile": [
+        "Dunkle Höhlenwand als periodisches Profil",
+        "Ferne Kristallgruppen als Silhouette",
+        "Schimmerpunkte als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-kristall-fern-v1-128.png",
+      "32": "grafik/gebaeude/hg-kristall-fern-v1-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-fern-v2",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Geodenwand: Schicht fern in vierfacher Auflösung (GEB18), Variante 2",
+      "teile": [
+        "Dunkle Höhlenwand als periodisches Profil",
+        "Ferne Kristallgruppen als Silhouette",
+        "Schimmerpunkte als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-kristall-fern-v2-128.png",
+      "32": "grafik/gebaeude/hg-kristall-fern-v2-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-fern-v3",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Kristallsee: Schicht fern in vierfacher Auflösung (GEB18), Variante 3",
+      "teile": [
+        "Dunkle Höhlenwand als periodisches Profil",
+        "Ferne Kristallgruppen als Silhouette",
+        "Schimmerpunkte als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-kristall-fern-v3-128.png",
+      "32": "grafik/gebaeude/hg-kristall-fern-v3-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-fern-v4",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Zapfenwald: Schicht fern in vierfacher Auflösung (GEB18), Variante 4",
+      "teile": [
+        "Dunkle Höhlenwand als periodisches Profil",
+        "Ferne Kristallgruppen als Silhouette",
+        "Schimmerpunkte als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-kristall-fern-v4-128.png",
+      "32": "grafik/gebaeude/hg-kristall-fern-v4-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-fern-v5",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "leuchtende Adern: Schicht fern in vierfacher Auflösung (GEB18), Variante 5",
+      "teile": [
+        "Dunkle Höhlenwand als periodisches Profil",
+        "Ferne Kristallgruppen als Silhouette",
+        "Schimmerpunkte als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "entsättigt, dunkel, weit",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-kristall-fern-v5-128.png",
+      "32": "grafik/gebaeude/hg-kristall-fern-v5-32.png"
+    }
+  },
+  {
     "id": "hg-kristall-fern",
     "klasse": "hintergrund",
     "kacheln": {
@@ -1119,6 +1659,141 @@
     "dateien": {
       "16": "grafik/gebaeude/hg-kristall-fern-16.png",
       "32": "grafik/gebaeude/hg-kristall-fern-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-mitte-v1",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Kristallhalle: Schicht mitte in vierfacher Auflösung (GEB18), Variante 1",
+      "teile": [
+        "Kristallgruppen in mittlerer Größe mit Kante",
+        "Zapfen von oben",
+        "Leuchtadern in kleinen Flächen"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-kristall-mitte-v1-128.png",
+      "32": "grafik/gebaeude/hg-kristall-mitte-v1-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-mitte-v2",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Geodenwand: Schicht mitte in vierfacher Auflösung (GEB18), Variante 2",
+      "teile": [
+        "Kristallgruppen in mittlerer Größe mit Kante",
+        "Zapfen von oben",
+        "Leuchtadern in kleinen Flächen"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-kristall-mitte-v2-128.png",
+      "32": "grafik/gebaeude/hg-kristall-mitte-v2-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-mitte-v3",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Kristallsee: Schicht mitte in vierfacher Auflösung (GEB18), Variante 3",
+      "teile": [
+        "Kristallgruppen in mittlerer Größe mit Kante",
+        "Zapfen von oben",
+        "Leuchtadern in kleinen Flächen"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-kristall-mitte-v3-128.png",
+      "32": "grafik/gebaeude/hg-kristall-mitte-v3-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-mitte-v4",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Zapfenwald: Schicht mitte in vierfacher Auflösung (GEB18), Variante 4",
+      "teile": [
+        "Kristallgruppen in mittlerer Größe mit Kante",
+        "Zapfen von oben",
+        "Leuchtadern in kleinen Flächen"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-kristall-mitte-v4-128.png",
+      "32": "grafik/gebaeude/hg-kristall-mitte-v4-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-mitte-v5",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "leuchtende Adern: Schicht mitte in vierfacher Auflösung (GEB18), Variante 5",
+      "teile": [
+        "Kristallgruppen in mittlerer Größe mit Kante",
+        "Zapfen von oben",
+        "Leuchtadern in kleinen Flächen"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "mittlere Tiefe",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-kristall-mitte-v5-128.png",
+      "32": "grafik/gebaeude/hg-kristall-mitte-v5-32.png"
     }
   },
   {
@@ -1147,6 +1822,141 @@
     "dateien": {
       "16": "grafik/gebaeude/hg-kristall-mitte-16.png",
       "32": "grafik/gebaeude/hg-kristall-mitte-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-nah-v1",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Kristallhalle: Schicht nah in vierfacher Auflösung (GEB18), Variante 1",
+      "teile": [
+        "Große Kristalle mit Licht- und Schattenkante",
+        "Felsblöcke",
+        "Glanz und Splitter als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-kristall-nah-v1-128.png",
+      "32": "grafik/gebaeude/hg-kristall-nah-v1-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-nah-v2",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Geodenwand: Schicht nah in vierfacher Auflösung (GEB18), Variante 2",
+      "teile": [
+        "Große Kristalle mit Licht- und Schattenkante",
+        "Felsblöcke",
+        "Glanz und Splitter als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-kristall-nah-v2-128.png",
+      "32": "grafik/gebaeude/hg-kristall-nah-v2-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-nah-v3",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Kristallsee: Schicht nah in vierfacher Auflösung (GEB18), Variante 3",
+      "teile": [
+        "Große Kristalle mit Licht- und Schattenkante",
+        "Felsblöcke",
+        "Glanz und Splitter als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-kristall-nah-v3-128.png",
+      "32": "grafik/gebaeude/hg-kristall-nah-v3-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-nah-v4",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Zapfenwald: Schicht nah in vierfacher Auflösung (GEB18), Variante 4",
+      "teile": [
+        "Große Kristalle mit Licht- und Schattenkante",
+        "Felsblöcke",
+        "Glanz und Splitter als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-kristall-nah-v4-128.png",
+      "32": "grafik/gebaeude/hg-kristall-nah-v4-32.png"
+    }
+  },
+  {
+    "id": "hg-kristall-nah-v5",
+    "klasse": "hintergrund",
+    "kacheln": {
+      "b": 24,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "leuchtende Adern: Schicht nah in vierfacher Auflösung (GEB18), Variante 5",
+      "teile": [
+        "Große Kristalle mit Licht- und Schattenkante",
+        "Felsblöcke",
+        "Glanz und Splitter als Detail"
+      ],
+      "materialien": [
+        "Hintergrund Fels",
+        "Hintergrund Holz",
+        "Hintergrund Glut"
+      ],
+      "stimmung": "dunkler Vordergrund, kräftige Formen",
+      "fein": "Lichtkanten, Rindenstriche, Moos, Funken nur in Dichte 128 (detail)"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hg-kristall-nah-v5-128.png",
+      "32": "grafik/gebaeude/hg-kristall-nah-v5-32.png"
     }
   },
   {

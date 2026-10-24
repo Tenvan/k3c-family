@@ -43,7 +43,7 @@ func entfaellt(s baustein, d, raster int) bool {
 	return (d < master && s.Fein) || (d < raster && s.Detail)
 }
 
-// hintergrundID: `hg-<biom>-<fern|mitte|nah>` mit optionaler Variante `-v<n>`; ohne Endung ist es Variante 1.
+// hintergrundID: `hg-<biom>-<fern|mitte|nah>` mit optionaler Variante `-v<n>`; ohne Endung ist es die bisherige Fassung (Variante 0, GEB7).
 var hintergrundID = regexp.MustCompile(`^hg-([a-z]+)-(fern|mitte|nah)(?:-v([1-9][0-9]*))?$`)
 
 // hintergrundTeile zerlegt eine Hintergrund-ID in Biom, Schicht und Variante.
@@ -52,7 +52,7 @@ func hintergrundTeile(id string) (biom, schicht string, variante int, ok bool) {
 	if m == nil {
 		return "", "", 0, false
 	}
-	variante = 1
+	variante = 0
 	if m[3] != "" {
 		variante, _ = strconv.Atoi(m[3])
 	}
@@ -78,14 +78,14 @@ func hintergrundGruppen(ids []string) map[string]map[int]map[string]string {
 	return out
 }
 
-// fehlendeVarianten nennt je Biom, wie viele vollständige Varianten (fern, mitte und nah) fehlen, bis `min` erreicht ist;
-// leer = jedes Biom hat genug (B-618/AC-02).
+// fehlendeVarianten nennt je Biom, wie viele vollständige Varianten (fern, mitte und nah, ab `-v1`) fehlen, bis `min` erreicht ist;
+// die bisherige Fassung ohne Endung zählt nicht; leer = jedes Biom hat genug (B-618/AC-02).
 func fehlendeVarianten(ids []string, min int) []string {
 	var out []string
 	for biom, varianten := range hintergrundGruppen(ids) {
 		voll := 0
-		for _, s := range varianten {
-			if len(s) == 3 {
+		for v, s := range varianten {
+			if v >= 1 && len(s) == 3 {
 				voll++
 			}
 		}

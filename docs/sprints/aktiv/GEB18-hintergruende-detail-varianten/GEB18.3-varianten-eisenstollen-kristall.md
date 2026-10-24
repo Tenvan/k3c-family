@@ -1,6 +1,6 @@
 # GEB18.3 · Fünf detailreiche Varianten für Eisenstollen und Kristallhöhle, Studio-Szene Umgebung
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -44,5 +44,7 @@ Gezielte Tests (`task:test` mit Muster `assets`, Studio-Vitest `graphics`), vor 
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 umgesetzt: Eisenstollen (Schmiedehalle, Trägerbrücke, Lavaspalte, Kettenschacht, Hochofen) und Kristallhöhle (Kristallhalle, Geodenwand, Kristallsee, Zapfenwald, leuchtende Adern) haben je fünf Varianten (30 Vorlagen, 60 PNG); damit alle 5 Stufen × 5 Varianten × 3 Schichten (150 PNG, 4,3 MB). Katalog: 75 Slots `bg:<biom>:<schicht>:v<n>` auf die 128-px-Datei, hinter `bg:crystal:3`; die alten `bg:<biom>:<n>` bleiben bis GEB18.5. Studio-Szene „Umgebung“ zeigte die Varianten schon seit GEB18.2.
+- AC-02 geprüft: Go-Test `TestHintergrundVariantenJeStufe` (5 Biome, je mindestens 5 vollständige Varianten) und Helligkeit je Variante grün (Eisenstollen 24–27/51–54/72–75, Kristall 35/54–57/70); Vitest `assets`, `zuordnung`, `worldSprites` grün; `tools/assetkit` und `k3c-server -check-data` grün. `task check:diff` nicht gelaufen (Ralf: in dieser Claude-Session gesperrt).
+- Fix aus GEB18.1: Eine ID ohne Endung zählte als Variante 1 und fiel mit `-v1` zusammen (Helligkeitstest hätte alte und neue Schichten gemischt); jetzt bisherige Fassung = Variante 0, zählt nicht mit. Test in `tools/buildings/` (außerhalb der erlaubten Dateien, nötig für den Katalog-Test).
+- Sichtprüfung durch Claude: Regeln erfüllt, Motive aber noch schematisch (flache Träger, wenig Struktur); Urteil bei Ralf in GEB18.7.
