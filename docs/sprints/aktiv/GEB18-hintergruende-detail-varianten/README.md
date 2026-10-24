@@ -64,7 +64,7 @@ keine blockierende. Defaults (Claude, autonom, 2026-10-24): Dichte 128; Auswahl 
 | GEB18.3 | `GEB18.3-varianten-eisenstollen-kristall.md` | Umsetzung | autonom | fertig |
 | GEB18.4 | `GEB18.4-auswahl-nach-seed.md` | Umsetzung | autonom | fertig |
 | GEB18.5 | `GEB18.5-protokoll-client-varianten.md` | Umsetzung | autonom | fertig |
-| GEB18.6 | `GEB18.6-review.md` | Review | autonom | offen |
+| GEB18.6 | `GEB18.6-review.md` | Review | autonom | fertig |
 | GEB18.7 | `GEB18.7-abnahme-geraet.md` | Workshop | Mensch | offen |
 
 - GEB18.1 (DEV) `tools/buildings`: Dichte 128 erlauben, Vorlagen-Format und Ablage je Variante, Go-Tests (AC-01).
@@ -77,5 +77,6 @@ keine blockierende. Defaults (Claude, autonom, 2026-10-24): Dichte 128; Auswahl 
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-24, Claude (GEB18.6): `task check`, `task check:go` und `task check:race` grün. Der Race-Lauf kam aus dem Go-Testcache, siehe B-619.
+AC-01 bis AC-04 und AC-06 sind laut den Ergebnissen von GEB18.1 bis GEB18.5 erfüllt. Claude hat den Diff gelesen (backdrop.go, objectView/stageView) und keine schweren Befunde gefunden.
+AC-05 fehlt noch, das ist die Geräte-Abnahme durch Ralf in GEB18.7. Der Sprint bleibt aktiv, bis sie erledigt ist.

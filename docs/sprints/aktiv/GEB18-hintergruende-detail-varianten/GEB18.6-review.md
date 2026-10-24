@@ -1,6 +1,6 @@
 # GEB18.6 · Review GEB18
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -50,5 +50,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 bis AC-04, AC-06: geprüft mit `task check`, `task check:go` und `task check:race` (alle grün) sowie per Diff-Lesung `origin/develop...origin/sprint/geb18`.
+- Keine schweren Befunde und keine neuen Tickets. Die Abnahme steht in der Sprint-README.
