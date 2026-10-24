@@ -31,6 +31,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | BD6 | Autonome Entscheidungen zu BED prüfen und festschreiben | erledigt |
 | BD7 | Pause-Client, Skill-Reset beim Tod, Schutz wartender Monarchen | erledigt |
 | BD8 | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl | erledigt |
+| BD9 | Welt-Anzeige größer und je Spielstand, offene Räume schließen | geplant |
 
 ## Nicht-Ziele
 
