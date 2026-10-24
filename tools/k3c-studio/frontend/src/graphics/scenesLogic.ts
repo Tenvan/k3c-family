@@ -144,6 +144,17 @@ export function figureCard(slot: AssetSlot, choice: Choice & { sheet: string }):
 // src/scenes/render/worldSprites.ts). Erst übernehmen, wenn die Vorschau dort täuscht.
 export const GRAFIK_SCALE = 2;
 
+const DICHTE = /^grafik\/gebaeude\/.+-(16|32|64|128)\.png$/;
+
+/**
+ * Spielmaßstab einer Slot-Datei: Generator-Grafik (`grafik/gebaeude/<id>-<dichte>.png`) hat ihre Dichte im Namen und erscheint im
+ * Spiel mit 32 px je Unit, also ×32/Dichte (128 px → ×0,25, GEB18); alles andere ×GRAFIK_SCALE.
+ */
+export function grafikScale(datei: string): number {
+  const d = DICHTE.exec(datei)?.[1];
+  return d ? 32 / Number(d) : GRAFIK_SCALE;
+}
+
 /** Eintrag aus `public/grafik/gebaeude/index.json` (schreibt `task gen:gebaeude`, GEB1) */
 export interface GebaeudeEintrag {
   id: string;

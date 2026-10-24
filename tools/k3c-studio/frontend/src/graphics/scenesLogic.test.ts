@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { buildView, emptyState, toggleChip } from '@webkit/lib/listFilter';
 import { describe, expect, it } from 'vitest';
-import { baumDatei, baumReihe, figureCard, gebaeudeKarten, hintergrundStreifen, hubWachstum, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, resolveSlot, sceneFilter, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './scenesLogic';
+import { baumDatei, baumReihe, figureCard, gebaeudeKarten, GRAFIK_SCALE, grafikScale, hintergrundStreifen, hubWachstum, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, resolveSlot, sceneFilter, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './scenesLogic';
 
 const farm: AssetSlot = {
   id: 'farm', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Farm',
@@ -221,6 +221,13 @@ describe('Asset-Vorschau: Hintergründe je Biom (GEB7/AC-03)', () => {
     expect(s[0]!.biom).toBe('forest');
     expect(s[0]!.himmel).toBe('#123456');
     expect(s[0]!.schichten.map((l) => l.id)).toEqual(['hg-wald-fern', 'hg-wald-mitte', 'hg-wald-nah']);
+  });
+
+  it('Spielmaßstab: Generator-Grafik nach Dichte im Namen (32/Dichte), sonst ×GRAFIK_SCALE (GEB18)', () => {
+    expect(grafikScale('grafik/gebaeude/hg-hoehle-fern-v1-128.png')).toBe(0.25);
+    expect(grafikScale('grafik/gebaeude/hg-wald-fern-32.png')).toBe(1);
+    expect(grafikScale('grafik/gebaeude/castle-16.png')).toBe(2);
+    expect(grafikScale('grafik/gothicvania-town/props-einzeln/well.png')).toBe(GRAFIK_SCALE);
   });
 
   it('zeigt nach der bisherigen Fassung jede vollständige Variante aufsteigend (GEB18)', () => {
