@@ -43,6 +43,7 @@ func main() {
 func run() error {
 	headless := flag.Bool("headless", false, "ohne Fenster: MCP-Server und Oberflächen-API ("+envUIPort+")")
 	dev := flag.Bool("dev", false, "wie -headless, neu gebaut und gestartet bei jeder Go-Änderung")
+	open := flag.Bool("open", false, "mit -headless: die Oberfläche im Standard-Browser öffnen (task k3c-workbench:web)")
 	flag.Parse()
 	wd, err := os.Getwd()
 	if err != nil {
@@ -60,7 +61,7 @@ func run() error {
 	case *dev:
 		return runDev(root)
 	case *headless:
-		return runHeadless(root, port)
+		return runHeadless(root, port, *open)
 	}
 	app := newApp(root, port)
 	app.window = true
