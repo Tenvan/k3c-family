@@ -34,6 +34,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | GEB16 | DEV | GEB | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | – | Entwurf | `geplant/GEB16-bauschilder-wald-geruest/` |
 | GEB16 | DEV | GEB | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | – | Entwurf | `geplant/GEB16-bauschilder-wald-geruest/` |
 | GEB17 | CLI, REG, SIM, DEV | GEB | Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe | – | Entwurf | `geplant/GEB17-hub-ausbau-je-inselstufe/` |
+| GEB18 | DEV, SIM, CLI | GEB | Hintergründe der fünf Stufen: vierfache Auflösung, fünf Varianten je Stufe nach Seed | – | bereit | `geplant/GEB18-hintergruende-detail-varianten/` |
 | SV2 | SRV | WRT | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | – | Entwurf | `geplant/SV2-voll-ausbau-regelkonform/` |
 | SV2 | SRV | WRT | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | – | Entwurf | `geplant/SV2-voll-ausbau-regelkonform/` |
 | W13 | CLI | WRT | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | – | Entwurf | `geplant/W13-morgengrauen-licht-client/` |
