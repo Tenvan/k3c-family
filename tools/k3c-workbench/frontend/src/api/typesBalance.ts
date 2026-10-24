@@ -52,7 +52,12 @@ export interface BalanceReportInfo {
   varianten?: string[];
   /** `balance` (balance-*.json) oder `tuning` (tuning-*.json). */
   kind: 'balance' | 'tuning';
+  /** Bewertung aus reports/ratings.json (WZ28.13); fehlt = keine. */
+  rating?: ReportRating;
 }
+
+/** Bewertung eines Berichts (Go: simrun.Ratings); leer = keine. */
+export type ReportRating = '' | 'gut' | 'schlecht' | 'unklar' | 'referenz';
 
 /** Bewertetes Ziel (Go: balance.Entry = Verdict + Target + Pass). */
 export interface BalanceEntry {
@@ -142,6 +147,24 @@ export interface Tuning {
   diff: string;
 }
 
+/** Datei in data/, die das Balancing beeinflusst (Go: datadoc.File, WZ28.10); Zweck und Werte aus docs/data/<doc>.md. */
+export interface BalanceDataFile {
+  name: string;
+  doc: string;
+  readBy: string[];
+  purpose: string;
+  key: string;
+  /** Zahlenwerte als Variante nutzbar (nur Dateien direkt unter data/, die die Simulation liest). */
+  vary: boolean;
+  missing: boolean;
+}
+
+/** Zahlenwert einer Datei mit Pfad `a.b.0.c` (Go: datadoc.Value). */
+export interface BalanceDataValue {
+  path: string;
+  value: number;
+}
+
 export interface BalanceBackend {
   balanceStart(spec: BalanceSpec): Promise<BalanceRun>;
   balanceRuns(): Promise<BalanceRun[]>;
@@ -149,4 +172,9 @@ export interface BalanceBackend {
   balanceReports(): Promise<BalanceReportInfo[]>;
   balanceReport(path: string): Promise<BalanceSummary>;
   balanceTuning(path: string): Promise<Tuning>;
+  balanceDataFiles(): Promise<BalanceDataFile[]>;
+  balanceDataDoc(name: string): Promise<string>;
+  balanceDataValues(name: string): Promise<BalanceDataValue[]>;
+  balanceReportRate(path: string, rating: ReportRating): Promise<void>;
+  balanceReportDelete(path: string): Promise<void>;
 }

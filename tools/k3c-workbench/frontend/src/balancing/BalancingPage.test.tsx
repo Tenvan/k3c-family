@@ -92,7 +92,7 @@ describe('Balancing-Seite', () => {
   it('vergleicht zwei Berichte mit Differenzen', async () => {
     const host = await mount();
     const row = (name: string) => [...host.querySelectorAll('[aria-label="Berichte"] .bal-report-row')].find((r) => r.textContent?.includes(name))!;
-    await act(async () => row('simtest-run-2').querySelectorAll('button')[1].click());
+    await act(async () => [...row('simtest-run-2').querySelectorAll('button')].find((b) => b.textContent === 'Vergleichsbasis')!.click());
     await act(async () => row('balance-1.json').querySelector('button')!.click());
     await flush();
     await until(host, () => host.querySelector('[aria-label="Vergleich"]') !== null || host.querySelector('[aria-label="Bericht"]') !== null);
@@ -108,7 +108,7 @@ describe('Balancing-Seite: Abstimmen', () => {
     const host = await mount();
     const row = [...host.querySelectorAll('[aria-label="Berichte"] .bal-report-row')].find((r) => r.textContent?.includes('tuning-1.json'))!;
     expect(row.textContent).toContain('Abstimmung');
-    expect(row.textContent).not.toContain('Als Basis');
+    expect(row.textContent).not.toContain('Vergleichsbasis');
     await act(async () => row.querySelector('button')!.click());
     await flush();
     const view = host.querySelector('[aria-label="Abstimmung"]')!;

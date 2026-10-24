@@ -1,5 +1,6 @@
 import { SelectField, Text, TextArea, TextField } from '@webkit/atoms';
 import type { TuneMode } from '../api';
+import { HelpField } from './HelpButton';
 import type { TuneForm } from './tune';
 
 const MODES = [
@@ -14,22 +15,21 @@ export function TuneConfig({ tune, onTune }: { tune: TuneForm; onTune: (t: TuneF
   return (
     <fieldset className="bal-tune" aria-label="Abstimmen">
       <Text size="2" weight="medium">Abstimmen</Text>
-      <SelectField aria-label="Abstimm-Modus" value={tune.mode} options={MODES} onChange={(v) => onTune({ ...tune, mode: v as '' | TuneMode })} />
+      <HelpField name="mode" hint={false}>
+        <SelectField aria-label="Abstimm-Modus" value={tune.mode} options={MODES} onChange={(v) => onTune({ ...tune, mode: v as '' | TuneMode })} />
+      </HelpField>
       {tune.mode !== '' && (
         <>
-          <label className="bal-field">
-            <Text size="1" color="gray">Parameter (1–2, eine je Zeile: datei.json:pfad=min..max)</Text>
-            <TextArea aria-label="Parameter" rows={2} value={tune.params} onChange={(e) => set('params')(e.target.value)} />
-          </label>
+          <HelpField name="params">
+            <TextArea aria-label="Parameter" rows={2} placeholder="buildings.json:wall.cost.gold=2..6" value={tune.params} onChange={(e) => set('params')(e.target.value)} />
+          </HelpField>
           <div className="bal-grid">
-            <label className="bal-field">
-              <Text size="1" color="gray">Schritte (2–21)</Text>
+            <HelpField name="steps">
               <TextField.Root aria-label="Schritte" placeholder="5" value={tune.steps} onChange={(e) => set('steps')(e.target.value)} />
-            </label>
-            <label className="bal-field">
-              <Text size="1" color="gray">Budget (Auswertungen)</Text>
+            </HelpField>
+            <HelpField name="budget">
               <TextField.Root aria-label="Budget" placeholder="40" value={tune.budget} onChange={(e) => set('budget')(e.target.value)} />
-            </label>
+            </HelpField>
           </div>
         </>
       )}

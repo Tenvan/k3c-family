@@ -36,7 +36,7 @@ function intField(raw: string, label: string, min: number, max: number): { n?: n
 export function paramError(p: string): string | undefined {
   const [path, range = ''] = p.split('=');
   const [lo, hi] = range.split('..').map(Number);
-  if (!PARAM.test(p) || path.includes('..') || !(lo < hi)) return `Parameter „${p}“: Form datei.json:pfad=min..max mit min < max`;
+  if (!PARAM.test(p) || path.includes('..') || !(lo < hi)) return `Parameter „${p}“: Form datei.json:pfad=min..max mit min < max, z. B. buildings.json:wall.cost.gold=2..6`;
   return undefined;
 }
 

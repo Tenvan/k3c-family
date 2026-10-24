@@ -132,6 +132,7 @@ type ReportInfo struct {
 	Pass      bool      `json:"pass"`
 	Varianten []string  `json:"varianten,omitempty"`
 	Kind      string    `json:"kind"` // balance (balance-*.json) oder tuning (tuning-*.json)
+	Rating    string    `json:"rating,omitempty"` // Bewertung aus reports/ratings.json (WZ28.13), leer = keine
 }
 
 // Reports nennt die Berichte des Checkouts: reports/*/balance-*.json, reports/balance-*.json und ebenso tuning-*.json,
@@ -152,6 +153,15 @@ func Reports(root string) ([]ReportInfo, error) {
 		}
 	}
 	slices.SortFunc(out, func(a, b ReportInfo) int { return b.Modified.Compare(a.Modified) })
+	ratingsMu.Lock()
+	ratings, err := loadRatings(root)
+	ratingsMu.Unlock()
+	if err != nil {
+		return nil, err
+	}
+	for i := range out {
+		out[i].Rating = ratings[out[i].Path]
+	}
 	return out, nil
 }
 

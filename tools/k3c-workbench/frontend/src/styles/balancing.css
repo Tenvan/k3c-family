@@ -25,3 +25,22 @@
 .bal-table tr[data-tipped] td:first-child { font-weight: 600; }
 .bal-tune { display: flex; flex-direction: column; gap: 6px; border: 1px solid var(--card-line); border-radius: 8px; padding: 8px; margin: 0; min-width: 0; }
 .bal-diff { margin: 0; padding: 8px; max-height: 320px; overflow: auto; font-size: 12px; background: var(--accent-a3); border-radius: 6px; white-space: pre; }
+.bal-hint { line-height: 1.3; }
+.bal-example { display: flex; gap: 8px; align-items: center; justify-content: space-between; padding: 4px 0; border-top: 1px solid var(--card-line); }
+.bal-example p { margin: 0; }
+.bal-file { display: flex; flex-direction: column; gap: 3px; padding: 6px 0; border-top: 1px solid var(--card-line); }
+.bal-file-text p { margin: 0; font-size: 12px; }
+.bal-help .md-table { overflow-x: auto; }
+.bal-mix { margin-top: 4px; }
+.bal-files { display: flex; flex-direction: column; gap: 4px; }
+/* Modale Popups (WZ28.10): Titel und Fußzeile bleiben stehen, nur der Inhalt rollt. */
+.bal-modal { display: flex; flex-direction: column; max-height: min(85vh, 900px); overflow: hidden; }
+.bal-modal-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding-right: 4px; }
+/* Berichte verwalten (WZ28.13): Werkzeuge rechts, Farbe der Bewertung als Streifen links. */
+.bal-report-tools { display: flex; gap: 6px; align-items: center; margin-left: auto; }
+.bal-report-row[data-rating] { box-shadow: inset 3px 0 0 var(--rating); }
+.bal-report-row[data-rating='gut'] { --rating: var(--green-9); }
+.bal-report-row[data-rating='schlecht'] { --rating: var(--red-9); }
+.bal-report-row[data-rating='unklar'] { --rating: var(--amber-9); }
+.bal-report-row[data-rating='referenz'] { --rating: var(--blue-9); }
+.bal-base-hint { padding: 4px 6px; border-radius: 6px; background: var(--accent-a3); }

@@ -139,6 +139,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-608](B-608-daten-beschreibungen.md) | DEV | Idee | hoch | offen | WZ28 | Jede balancing-relevante Datei in data/ hat eine Beschreibung mit Aufbau und Werten |
 | [B-609](B-609-balancing-hilfe-eingaben.md) | DEV | Idee | hoch | offen | WZ28 | Die Balancing-Konfiguration erklärt jedes Eingabefeld |
 | [B-610](B-610-balancing-konfigurationsdateien.md) | DEV | Idee | hoch | offen | WZ28 | Die Balancing-Seite listet die Konfigurationsdateien, die das Balancing beeinflussen |
+| [B-611](B-611-balancing-bot-je-spieler.md) | DEV | Idee | hoch | offen | WZ28 | Ein Balancing-Lauf kann für jeden Spieler einen eigenen Bot wählen |
+| [B-612](B-612-balancing-berichte-verwalten.md) | DEV | Idee | hoch | offen | WZ28 | Balancing-Berichte lassen sich einzeln löschen und bewerten, der Vergleich erklärt sich selbst |
 
 ## Archiv
 

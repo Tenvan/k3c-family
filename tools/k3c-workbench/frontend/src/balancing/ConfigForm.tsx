@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { ActionButton, Button, Flex, SelectField, Text, TextArea, TextField } from '@webkit/atoms';
 import type { BalanceSpec } from '../api';
+import { BotField } from './BotField';
+import { CHOICES, FIELD_HELP, isMix, mixCount, resizeMix } from './help';
+import { HelpField } from './HelpButton';
 import { TuneConfig } from './TuneConfig';
 import { dropPreset, EMPTY_FORM, savePreset, specFromForm, type BalanceForm, type Preset } from './spec';
 
@@ -10,17 +13,27 @@ interface Props {
   presets: Preset[];
   onPresets: (p: Preset[]) => void;
   onStart: (spec: BalanceSpec) => Promise<void>;
+  /** Neben der Überschrift, z. B. der Knopf „Konfigurationsdateien“. */
+  children?: ReactNode;
 }
 
-const NUMBER_FIELDS = [
-  ['seeds', 'Seeds', 'alle'], ['depth', 'Tiefe', 'Ziel (0 = Wald)'], ['players', 'Spieler', 'Ziel'], ['days', 'Tage', 'Ziel'],
-] as const;
+const TEXT_FIELDS = [['seeds', 'alle'], ['days', 'Ziel']] as const;
+const SELECT_FIELDS = ['depth', 'players', 'bot', 'grade'] as const;
+type SelectKey = Exclude<(typeof SELECT_FIELDS)[number], 'bot'>;
+
+/** Auswahl eines Felds; ein fremder Wert (z. B. aus einem alten Lauf) bleibt als eigener Eintrag sichtbar. */
+function choices(key: SelectKey, value: string) {
+  const list = CHOICES[key];
+  return list.some((o) => o.value === value) ? list : [...list, { value, label: value }];
+}
 
 /** Konfiguration eines Laufs: leere Felder nehmen den Standard der Ziele (data/balance-targets.json). */
-export function ConfigForm({ form, onForm, presets, onPresets, onStart }: Props) {
+export function ConfigForm({ form, onForm, presets, onPresets, onStart, children }: Props) {
   const [error, setError] = useState('');
   const [presetName, setPresetName] = useState('');
   const set = (key: keyof BalanceForm) => (v: string) => onForm({ ...form, [key]: v });
+  // Bot je Spieler folgt der Spielerzahl (WZ28.12).
+  const setPlayers = (v: string) => onForm({ ...form, players: v, bot: isMix(form.bot) ? resizeMix(form.bot, mixCount(v)) : form.bot });
   const start = async () => {
     const { spec, error: err } = specFromForm(form);
     setError(err ?? '');
@@ -28,32 +41,29 @@ export function ConfigForm({ form, onForm, presets, onPresets, onStart }: Props)
   };
   return (
     <section className="bal-card" aria-label="Konfiguration">
-      <Text weight="bold">Lauf konfigurieren</Text>
+      <Flex justify="between" align="center" gap="2" wrap="wrap">
+        <Text weight="bold">Lauf konfigurieren</Text>
+        <Flex gap="2">{children}</Flex>
+      </Flex>
       <div className="bal-grid">
-        {NUMBER_FIELDS.map(([key, label, hint]) => (
-          <label key={key} className="bal-field">
-            <Text size="1" color="gray">{label}</Text>
-            <TextField.Root aria-label={label} placeholder={hint} value={form[key]} onChange={(e) => set(key)(e.target.value)} />
-          </label>
+        {TEXT_FIELDS.map(([key, hint]) => (
+          <HelpField key={key} name={key}>
+            <TextField.Root aria-label={FIELD_HELP[key].label} placeholder={hint} value={form[key]} onChange={(e) => set(key)(e.target.value)} />
+          </HelpField>
         ))}
-        <label className="bal-field">
-          <Text size="1" color="gray">Bot</Text>
-          <TextField.Root aria-label="Bot" placeholder="Ziel" value={form.bot} onChange={(e) => set('bot')(e.target.value)} />
-        </label>
-        <label className="bal-field">
-          <Text size="1" color="gray">Grad</Text>
-          <TextField.Root aria-label="Grad" placeholder="Ziel" value={form.grade} onChange={(e) => set('grade')(e.target.value)} />
-        </label>
+        {SELECT_FIELDS.map((key) => key === 'bot' ? <BotField key={key} form={form} onForm={onForm} /> : (
+          <HelpField key={key} name={key} hint={false}>
+            <SelectField aria-label={FIELD_HELP[key].label} value={form[key]} options={choices(key, form[key])} onChange={key === 'players' ? setPlayers : set(key)} />
+          </HelpField>
+        ))}
       </div>
-      <label className="bal-field">
-        <Text size="1" color="gray">Varianten (eine je Zeile: datei.json:pfad=wert)</Text>
-        <TextArea aria-label="Varianten" rows={3} value={form.vary} onChange={(e) => set('vary')(e.target.value)} />
-      </label>
+      <HelpField name="vary">
+        <TextArea aria-label="Varianten" rows={3} placeholder="economy.json:purse.startGold=120" value={form.vary} onChange={(e) => set('vary')(e.target.value)} />
+      </HelpField>
       <TuneConfig tune={form.tune} onTune={(tune) => onForm({ ...form, tune })} />
-      <label className="bal-field">
-        <Text size="1" color="gray">Label</Text>
+      <HelpField name="label">
         <TextField.Root aria-label="Label" value={form.label} onChange={(e) => set('label')(e.target.value)} />
-      </label>
+      </HelpField>
       {error && <p className="svc-error" role="alert">{error}</p>}
       <Flex gap="2" align="center" wrap="wrap">
         <ActionButton onClick={start}>Lauf starten</ActionButton>

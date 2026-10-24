@@ -58,21 +58,37 @@ function finishTuning(r: BalanceRun, n: number, reports: BalanceReportInfo[], tu
 function seedReports(): BalanceReportInfo[] {
   return [
     { path: 'reports/tuning-1.json', run: '', modified: '2026-10-24T09:00:00Z', seeds: 0, pass: true, kind: 'tuning' },
-    { path: 'reports/balance-1.json', run: '', modified: '2026-10-23T18:00:00Z', seeds: 8, pass: true, kind: 'balance' },
+    { path: 'reports/balance-1.json', run: '', modified: '2026-10-23T18:00:00Z', seeds: 8, pass: true, kind: 'balance', rating: 'referenz' },
     { path: 'reports/simtest-run-2/balance-2.json', run: 'simtest-run-2', modified: '2026-10-24T08:00:00Z', seeds: 8, pass: false, varianten: ['bot.json:a=1'], kind: 'balance' },
   ];
 }
 
+/** Bewerten und Löschen im Mock (WZ28.13): ändert die Liste im Speicher. */
+function manageReports(reports: BalanceReportInfo[]): Pick<BalanceBackend, 'balanceReportRate' | 'balanceReportDelete'> {
+  const find = (path: string) => {
+    const i = reports.findIndex((r) => r.path === path);
+    if (i < 0) throw new Error(`bericht ${path} unbekannt`);
+    return i;
+  };
+  return {
+    balanceReportRate: async (path, rating) => {
+      reports[find(path)].rating = rating || undefined;
+    },
+    balanceReportDelete: async (path) => {
+      reports.splice(find(path), 1);
+    },
+  };
+}
+
 /** Mock-Backend: Läufe warten nacheinander, der vorderste läuft (Fortschritt je Tick) und schreibt dann einen Bericht. */
-export function mockBalance(): BalanceBackend {
+export function mockBalance(): Omit<BalanceBackend, 'balanceDataFiles' | 'balanceDataDoc' | 'balanceDataValues'> {
   const runs: BalanceRun[] = [], reports = seedReports();
   const tunings = new Map<string, Tuning>([['reports/tuning-1.json', exampleTuning(1)]]);
   const summaries = new Map<string, BalanceSummary>([
     ['reports/balance-1.json', exampleSummary()],
     ['reports/simtest-run-2/balance-2.json', exampleSummary(0.15, true, ['bot.json:a=1'])],
   ]);
-  let n = 2;
-  let timer: ReturnType<typeof setInterval> | undefined;
+  let n = 2, timer: ReturnType<typeof setInterval> | undefined;
   const finish = (r: BalanceRun) => {
     n++;
     if (r.spec?.tune) return finishTuning(r, n, reports, tunings);
@@ -112,6 +128,7 @@ export function mockBalance(): BalanceBackend {
       if (r.state === 'wartet' || r.state === 'läuft') Object.assign(r, { state: 'abgebrochen', phase: 'abgebrochen', ended: new Date().toISOString() });
     },
     balanceReports: async () => structuredClone(reports),
+    ...manageReports(reports),
     balanceReport: async (path) => {
       const s = summaries.get(path);
       if (!s) throw new Error(`bericht ${path} unbekannt`);

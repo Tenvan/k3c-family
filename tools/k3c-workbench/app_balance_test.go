@@ -4,9 +4,12 @@ import (
 	"context"
 	"os"
 	"path/filepath"
+	"regexp"
+	"slices"
 	"testing"
 	"time"
 
+	"k3c/tools/k3c-workbench/internal/balance"
 	"k3c/tools/k3c-workbench/internal/mcpsrv"
 	"k3c/tools/k3c-workbench/internal/simrun"
 )
@@ -118,5 +121,36 @@ func TestBalanceTuningPfad(t *testing.T) {
 		if _, err := a.BalanceTuning(bad); err == nil {
 			t.Errorf("%q gelesen", bad)
 		}
+	}
+}
+
+// WZ28.10: Die Auswahlboxen Bot und Grad der Balancing-Seite (help.ts) nennen genau die Bots und Grade der Engine.
+func TestAuswahlWieGo(t *testing.T) {
+	src, err := os.ReadFile("frontend/src/balancing/help.ts")
+	if err != nil {
+		t.Fatal(err)
+	}
+	list := func(name string) []string {
+		m := regexp.MustCompile(`export const ` + name + ` = \[([^\]]*)\]`).FindSubmatch(src)
+		if m == nil {
+			t.Fatalf("help.ts: %s fehlt", name)
+		}
+		var out []string
+		for _, q := range regexp.MustCompile(`'([a-z0-9-]+)'`).FindAllSubmatch(m[1], -1) {
+			out = append(out, string(q[1]))
+		}
+		slices.Sort(out)
+		return out
+	}
+	grades, err := balance.Grades()
+	if err != nil {
+		t.Fatal(err)
+	}
+	slices.Sort(grades)
+	if got := list("BOTS"); !slices.Equal(got, balance.BotNames()) {
+		t.Errorf("BOTS = %v, Go: %v", got, balance.BotNames())
+	}
+	if got := list("GRADES"); !slices.Equal(got, grades) {
+		t.Errorf("GRADES = %v, Go: %v", got, grades)
 	}
 }

@@ -91,17 +91,22 @@ func findAssignment(root, id string) []AssignmentRow {
 				if len(r) == 0 || cleanCell(r[0]) != id {
 					continue
 				}
-				cells := map[string]string{}
-				for i, h := range t.head {
-					if i < len(r) {
-						cells[h] = r[i]
-					}
-				}
-				rows = append(rows, AssignmentRow{File: filepath.Base(f), Section: t.section, Cells: cells})
+				rows = append(rows, AssignmentRow{File: filepath.Base(f), Section: t.section, Cells: rowCells(t.head, r)})
 			}
 		}
 	}
 	return rows
+}
+
+// rowCells ordnet die Zellen einer Zeile den Spaltenköpfen zu; fehlende Zellen bleiben weg.
+func rowCells(head, r []string) map[string]string {
+	cells := map[string]string{}
+	for i, h := range head {
+		if i < len(r) {
+			cells[h] = r[i]
+		}
+	}
+	return cells
 }
 
 // findPack sucht den Pack-Ordner der Datei in der Pack-Tabelle von zuordnung.md (Spalte „Pack (Ordner-ID)“, mehrere
