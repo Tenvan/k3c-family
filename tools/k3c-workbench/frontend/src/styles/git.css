@@ -1,0 +1,8 @@
+/* Seite Git (B-580): Karten untereinander, Tabellen kompakt; Farben aus dem Theme wie Monitoring. */
+.git-page { display: flex; flex-direction: column; gap: 12px; }
+.git-card { background: var(--card); border: 1px solid var(--card-line); border-radius: 8px; padding: 10px 12px; min-width: 0; }
+.git-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.git-advice { margin: 8px 0 0; padding-left: 18px; color: var(--text); }
+.git-table { margin-top: 6px; }
+.git-ellipsis { display: inline-block; max-width: 420px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
+.git-create { max-width: 640px; }

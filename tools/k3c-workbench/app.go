@@ -16,6 +16,7 @@ import (
 	"k3c/tools/k3c-workbench/internal/applog"
 	"k3c/tools/k3c-workbench/internal/console"
 	"k3c/tools/k3c-workbench/internal/github"
+	"k3c/tools/k3c-workbench/internal/gitops"
 	"k3c/tools/k3c-workbench/internal/mcpsrv"
 	"k3c/tools/k3c-workbench/internal/planning"
 	"k3c/tools/k3c-workbench/internal/resmon"
@@ -77,7 +78,8 @@ type App struct {
 	tasks      taskState
 	taskRunner *taskrun.Runner
 	taskGate   *taskgate.Gate // Freigabe-Schloss der Tasks (task_start)
-	gh         *github.Client // GitHub-Stand der Planungsseite (B-212)
+	gh         *github.Client // GitHub-Stand der Planungsseite (B-212), PRs der Seite Git
+	git        *gitops.Repo   // Seite Git (B-580)
 
 	mu  sync.Mutex
 	mcp MCPState
@@ -85,7 +87,7 @@ type App struct {
 
 func newApp(root string, port int) *App {
 	a := &App{root: root, port: port, usage: windowstate.ConfigPath("mcp-usage.json"), bus: newEventBus(),
-		ready: make(chan struct{}), gh: github.New(root)}
+		ready: make(chan struct{}), gh: github.New(root), git: gitops.New(root)}
 	a.emit = a.emitAll
 	return a
 }
