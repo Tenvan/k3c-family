@@ -63,7 +63,7 @@ Vorentschieden (autonom, Claude, 2026-10-23), Bestätigung durch 🧑 über KR6:
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| KB2.1 | `KB2.1-island-switch-ereignis.md` | Umsetzung | autonom | in Arbeit |
+| KB2.1 | `KB2.1-island-switch-ereignis.md` | Umsetzung | autonom | fertig |
 | KB2.2 | `KB2.2-gameover-nicht-speichern.md` | Umsetzung | autonom | offen |
 | KB2.3 | `KB2.3-haendler-protokoll.md` | Umsetzung | autonom | offen |
 | KB2.4 | `KB2.4-client-typen-gegner.md` | Umsetzung | autonom | offen |

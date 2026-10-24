@@ -136,6 +136,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-603](B-603-dev-aktionen-boss-event.md) | SRV | Idee | hoch | offen | – | Dev-Aktionen lösen Boss, Phasenwechsel und Events (Vollmond, Blutmond, Händler) sofort aus |
 | [B-604](B-604-welt-anzeige-pausenmenue-lobby.md) | CLI | Problem | mittel | eingeplant | BD9 | Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby |
 | [B-605](B-605-schutzplatz-stabil-bei-truppenwechsel.md) | SIM | Schuld | niedrig | offen | – | Schutzplatz bleibt stabil, wenn Truppen sterben oder hinzukommen |
+| [B-607](B-607-studio-levelview-test-golden-dichter-wald.md) | DEV | Problem | hoch | offen | – | Der Studio-Test levelView erwartet die Baum-Zahl vor dem dichten Wald |
 
 ## Archiv
 

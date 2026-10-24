@@ -351,8 +351,10 @@ Gerät ohne Slots bekommt keinen. Stufen ohne eigenen Slot kommen nie an.
   dort nicht mehr vorkommen. Kommt ein Slot zurück, beginnt der Strom wieder mit `level` und `snap`.
 - **Wiederverbinden:** `level` und `snap` aller Stufen des Geräts, aufsteigend, danach `seats`.
 - **Inselwechsel** (v6, B-345): Meldet die Sim `islandSwitch.ready`, tauscht der Raum im selben Tick die Insel. Geräte
-  und Slots bleiben, alle Spieler stehen in Stufe 0 der neuen Insel; das Gerät bekommt `seats`, danach `level` und `snap`
-  (kein `delta` über den Wechsel). Auf der letzten Insel gibt es keinen Wechsel.
+  und Slots bleiben, alle Spieler stehen in Stufe 0 der neuen Insel. Das Gerät bekommt zuerst ein letztes `delta` je
+  Stufe der alten Insel mit den Ereignissen ihres letzten Ticks (darunter `islandSwitch` in der Stufe des Wechselpunkts,
+  B-385), danach `seats`, `level` und `snap` der neuen Insel (kein `delta` über den Wechsel). Auf der letzten Insel gibt
+  es keinen Wechsel.
 - **Neue Slots** (`addSlot`, Beitreten) kommen in die Stufe des kleinsten Slots des Geräts.
 - **Client heute:** `RoomClient.level` und `takeFrames()` liefern die Stufe des kleinsten eigenen Slots,
   `stages()`, `levelOf(stage)` und `takeFramesOf(stage)` die übrigen (Kamera je Stufe: B-106).
@@ -504,7 +506,7 @@ Phasen-Text und Zeitanzeige entstehen aus den Feldern. Zeiten in Sekunden, Orte 
 
 Beispiele: `s2c-snapshot-boss.json` (Endboss in Phase 2 mit Warnkreis) und `s2c-snapshot-event.json` (Vollmond-Nacht,
 Wechselpunkt halb gefüllt), auf dem Zustand von `s2c-snapshot-full.json` aufgebaut. Geprüft von `TestKampfZustand`,
-`TestKampfDelta`, `TestKampfBeispiele` und `src/online/clientCombat.test.ts`. Der Wechsel entsteht durch Anwesenheit (keine Eingabe), siehe Strom-Regel „Inselwechsel“; das Ereignis `islandSwitch` kommt heute nicht beim Client an (B-385).
+`TestKampfDelta`, `TestKampfBeispiele` und `src/online/clientCombat.test.ts`. Der Wechsel entsteht durch Anwesenheit (keine Eingabe), siehe Strom-Regel „Inselwechsel“; das Ereignis `islandSwitch` kommt mit dem letzten `delta` der alten Insel (B-385, `TestKampfInselwechselEreignisErreichtGeraete`).
 
 ### Ereignisse
 

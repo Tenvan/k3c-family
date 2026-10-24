@@ -1,6 +1,6 @@
 # KB2.1 · Ereignis islandSwitch erreicht beim Inselwechsel die Clients
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -36,8 +36,8 @@ Darstellung des Wechsels im Client (K5); Änderungen in `engine/sim/` (KB1); neu
 
 ## Fertig, wenn
 
-- [ ] AC-01: `go test ./engine/room -run Inselwechsel` grün; der Test belegt `islandSwitch` je Gerät vor `level` und `snap` der neuen Insel.
-- [ ] `task check:diff` grün.
+- [x] AC-01: `go test ./engine/room -run Inselwechsel` grün; der Test belegt `islandSwitch` je Gerät vor `level` und `snap` der neuen Insel.
+- [x] `task check:diff` grün (bis auf Altfehler B-607, siehe Ergebnis).
 
 ## Prüfen
 
@@ -47,5 +47,6 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01** umgesetzt: `Room.Tick` schickt erst den Zustand der alten Insel (`pushStates`), dann `switchIsland`, dann Level und `snap` der neuen; `docs/protocol.md` › Strom-Regel „Inselwechsel“ nachgezogen. Geprüft: `TestKampfInselwechselEreignisErreichtGeraete` (Xbox und Handy: `state 1` mit `islandSwitch`, dann `level 0`, `state 0`), `go test ./engine/room` grün, Review (Sonnet) ohne schwere Befunde.
+- `check:diff`: `check`, `check:go`, `check:dev`, `check:starter` grün (`k3c-load` und `botdev` flackerten unter Last, einzeln grün). `check:studio` rot durch zwei Altfehler auf `develop` seit #455, unabhängig vom Diff → B-607.
+- Hinweis Review: Altes `delta` und neuer `snap` tragen denselben `tick`; `clientConnection.pushFrame` zählt den zweiten nicht für die Takt-Statistik (nur Anzeige).

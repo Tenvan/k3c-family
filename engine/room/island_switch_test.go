@@ -1,7 +1,9 @@
 package room
 
 import (
+	"fmt"
 	"maps"
+	"slices"
 	"testing"
 
 	"k3c/engine/sim"
@@ -84,5 +86,43 @@ func TestKampfInselwechselLetzteInselOhneTausch(t *testing.T) {
 	ticks(r, 5)
 	if r.isl != old {
 		t.Fatal("Insel getauscht, obwohl es keine nächste gibt")
+	}
+}
+
+// switchPeer merkt sich je Zustand, ob er das Ereignis islandSwitch trägt (der Zustand ist ohne Manager.Snapshot die
+// lebende Welt, deshalb beim Senden lesen).
+type switchPeer struct{ stagePeer }
+
+func (p *switchPeer) State(tick, stage int, s any) {
+	p.stagePeer.State(tick, stage, s)
+	if w, ok := s.(*sim.World); ok && slices.ContainsFunc(w.Events, func(e sim.Event) bool { return e["type"] == "islandSwitch" }) {
+		p.msgs = append(p.msgs, fmt.Sprintf("islandSwitch %d", stage))
+	}
+}
+
+// AC-01 (KB2.1, B-385): Beim Inselwechsel bekommt jedes Gerät den letzten Zustand der alten Insel mit dem Ereignis
+// islandSwitch, danach seats, Level und Zustand der neuen Insel.
+func TestKampfInselwechselEreignisErreichtGeraete(t *testing.T) {
+	f, _ := worldFixture()
+	x, h := &switchPeer{}, &switchPeer{}
+	r := need(f.m.Create("xbox", x, "stufen", true, 4, []int{0}, Options{World: "nordmeer"}))(t)
+	need(f.m.Join("handy", h, r.Code, []int{0}))(t)
+	gate := r.isl.Stages[1]
+	for _, p := range gate.Players {
+		p.X = gate.HubX
+	}
+	old, xi, hi := r.isl, len(x.msgs), len(h.msgs)
+	old.EndbossDefeated = true
+	for i := 0; i < 120 && r.isl == old; i++ {
+		ticks(r, 1)
+	}
+	if r.isl == old {
+		t.Fatal("Insel nicht getauscht")
+	}
+	want := []string{"state 1", "islandSwitch 1", "level 0", "state 0"}
+	for name, got := range map[string][]string{"Xbox": x.since(xi), "Handy": h.since(hi)} {
+		if i := slices.Index(got, "islandSwitch 1"); i < 1 || !slices.Equal(got[i-1:], want) {
+			t.Errorf("%s: %v", name, got)
+		}
 	}
 }
