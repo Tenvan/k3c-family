@@ -32,6 +32,10 @@ type Repo struct {
 	run  Runner
 	mu   sync.Mutex // eine schreibende Aktion zur Zeit
 	memo sync.Map   // Merge-Zustand je "branch-sha develop-sha" (merged.go)
+
+	dirOnce sync.Once // gemeinsamer Git-Ordner für Stamp (stamp.go)
+	dir     string
+	dirErr  error
 }
 
 // New baut ein Repo für root mit dem echten git.

@@ -50,6 +50,7 @@ interface GoApp {
   GitPRCreate(title: string, body: string): Promise<string>;
   GitPRAction(number: number, action: string): Promise<string>;
   GitCheckMerged(names: string[]): Promise<GitBranch[]>;
+  GitStamp(): Promise<string>;
 }
 
 interface WailsRuntime {
@@ -116,6 +117,7 @@ export function wailsBackend(): Backend {
     gitPRCreate: (title, body) => app.GitPRCreate(title, body),
     gitPRAction: (number, action) => app.GitPRAction(number, action),
     gitCheckMerged: (names) => app.GitCheckMerged(names),
+    gitStamp: () => app.GitStamp(),
     openUrl: (url) => runtime.BrowserOpenURL(url),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),

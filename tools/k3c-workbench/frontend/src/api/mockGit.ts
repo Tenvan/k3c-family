@@ -32,15 +32,21 @@ function checkMock(branches: GitBranch[], names: string[]): GitBranch[] {
   });
 }
 
+/** Zwei offene PRs: einer mergebar, einer mit roter CI und Konflikt. */
+function mockPrs(): GitPR[] {
+  return [
+    { number: 452, title: 'K5: Debug-Overlay nur mit ?dev=1', url: 'https://github.com/tenvan/k3c-family/pull/452', head: 'sprint/k5', author: 'tenvan', updated: new Date(Date.now() - 3_600_000).toISOString(), state: 'offen', ci: 'grün', merge: 'konfliktfrei' },
+    { number: 447, title: 'W11: Bauplätze mit Platz-Stufe', url: 'https://github.com/tenvan/k3c-family/pull/447', head: 'sprint/w11', author: 'tenvan', updated: new Date(Date.now() - 2 * 86_400_000).toISOString(), state: 'offen', ci: 'rot', merge: 'Konflikt' },
+  ];
+}
+
 /** Erfundener Stand für `?mock=1` und Tests: ein Feature-Branch mit ungepushtem Commit, gemergte und offene Branches,
  *  zwei PRs. Aktionen ändern den Stand so, dass die Seite sichtbar reagiert. */
 export function mockGit(): GitBackend {
   let branches = mockBranches();
   let stashes = 0;
-  let prs: GitPR[] = [
-    { number: 452, title: 'K5: Debug-Overlay nur mit ?dev=1', url: 'https://github.com/tenvan/k3c-family/pull/452', head: 'sprint/k5', author: 'tenvan', updated: new Date(Date.now() - 3_600_000).toISOString(), state: 'offen', ci: 'grün', merge: 'konfliktfrei' },
-    { number: 447, title: 'W11: Bauplätze mit Platz-Stufe', url: 'https://github.com/tenvan/k3c-family/pull/447', head: 'sprint/w11', author: 'tenvan', updated: new Date(Date.now() - 2 * 86_400_000).toISOString(), state: 'offen', ci: 'rot', merge: 'Konflikt' },
-  ];
+  let stamp = 1; // jede Aktion ändert den Repo-Zustand
+  let prs = mockPrs();
   const view = (): GitView => ({
     status: {
       branch: 'feat/git-seite', upstream: 'origin/feat/git-seite', upstreamGone: false, ahead: 1, behind: 0, baseAhead: 1,
@@ -63,7 +69,9 @@ export function mockGit(): GitBackend {
   });
   return {
     gitOverview: async () => view(),
+    gitStamp: async () => `mock-${stamp}`,
     gitAction: async (action) => {
+      stamp += 1;
       if (action === 'stash') stashes += 1;
       if (action === 'stash-pop') {
         if (stashes === 0) throw new Error('git stash: No stash entries found.');

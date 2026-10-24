@@ -74,6 +74,13 @@ func (a *App) GitCheckMerged(names []string) ([]gitops.Branch, error) {
 	return a.git.Branches(a.ctx)
 }
 
+// GitStamp liefert den Fingerabdruck des Repo-Zustands (Binding); die Seite fragt ihn im Takt und lädt bei einer
+// Änderung die PRs neu.
+func (a *App) GitStamp() (string, error) {
+	a.wait()
+	return a.git.Stamp(a.ctx)
+}
+
 // GitPRs liefert die offenen PRs gegen develop (Binding); ein Fehler von gh steht in Error.
 func (a *App) GitPRs() github.PRList {
 	a.wait()
