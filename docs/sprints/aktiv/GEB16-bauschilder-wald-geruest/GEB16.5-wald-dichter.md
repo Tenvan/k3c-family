@@ -1,6 +1,6 @@
 # GEB16.5 · Wald noch dichter, Golden und campaign-ausbau angepasst
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -50,5 +50,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02: umgesetzt.
+  - `forest.tree` von [14, 20] auf [22, 30], `stream.tree` von [3, 6] auf [5, 8]. `deco_test.go` prüft den neuen Wert.
+  - Golden neu geschrieben mit `task go:golden`. Grund: Mehr Bäume verschieben Knoten und IDs (gewollt, B-585).
+  - `campaign-ausbau.json`: drei Eingabewerte angepasst (Segment 5 ohne Zahlen, weil dort jetzt ein Fels steht; Segment 18 +10 und Segment 20 −10 Ticks). Zähler am Ende: nodesGone 4, nodesMarked 1, pickupsTaken 1, gebaut 1, Bogenschützen 2.
+- Geprüft mit `go test ./engine/...`, golangci-lint und `task check`, alle grün.
+- Abweichung: Die Golden-Daten wachsen auf 18,1 MB. Die Grenze steigt auf 20 MB; die Bestätigung ist als kritische Frage B-620 (Projekt KRT) offen, das Verkleinern bleibt GD1.
