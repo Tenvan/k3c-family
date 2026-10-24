@@ -1,6 +1,6 @@
 # GEB11 · REG, SIM, DEV, CLI · Hub wächst kleinteilig vom Lagerfeuer bis zur Burg
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GEB
 - **Domäne:** REG, SIM, DEV, CLI
 - **Reife:** bereit
@@ -77,11 +77,10 @@ Beantwortet von Claude (autonom, 2026-10-22, Default bis 🧑 widerspricht):
 | GEB11.3 | `GEB11.3-grafik-wachstumsreihe.md` | Umsetzung | autonom | fertig |
 | GEB11.4 | `GEB11.4-spiel-zeichnet-wachstum.md` | Umsetzung | autonom | fertig |
 | GEB11.5 | `GEB11.5-review.md` | Review | autonom | fertig |
-| GEB11.6 | `GEB11.6-abnahme.md` | Review | Mensch | blockiert |
+| GEB11.6 | `GEB11.6-abnahme.md` | Review | Mensch | fertig |
 
 GEB11.1 ersetzt den Workshop durch eine Festlegung von Claude (Auftrag „GEB komplett autonom“); GEB11.2 entfällt bei „nur Grafik“. Kette REG → DEV → CLI, Review, Abnahme durch 🧑.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-24 (GEB11.6, Ralf am PC): AC-03 und AC-04 mit Mängeln abgenommen. Grafik der Reihe unterscheidet sich zu wenig (B-590), Ausbau-Angebot an der Burg fehlt (B-591), Ausbaustufen sollen auf 2–3 je Inselstufe wachsen (B-592). Die Abnahme ist damit erledigt, die Nachbesserung läuft über die Tickets.

@@ -24,7 +24,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | GEB7 | Hintergründe je Biom | erledigt |
 | GEB9 | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | erledigt |
 | GEB10 | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | erledigt |
-| GEB11 | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | aktiv |
+| GEB11 | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | erledigt |
 | GEB12 | Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte) | erledigt |
 | GEB13 | Gebäude-Stufen in den Daten und Stufen-Look für Plantage, Camp, Heilplatz | erledigt |
 | GEB14 | Wald und Höhle dichter, Gerüst bei Wartenden, Knoten-Markierer im Snapshot | erledigt |

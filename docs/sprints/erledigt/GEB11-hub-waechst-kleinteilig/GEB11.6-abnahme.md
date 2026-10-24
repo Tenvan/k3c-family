@@ -1,6 +1,6 @@
 # GEB11.6 · Abnahme der Wachstumsreihe in Vorschau und Spiel
 
-- **Status:** blockiert
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -34,7 +34,7 @@ Neue Grafik; Befunde werden Tickets.
 
 ## Fertig, wenn
 
-- [ ] AC-03, AC-04: 🧑 hat Vorschau und Spiel abgenommen (Datum im Ergebnis).
+- [x] AC-03, AC-04: 🧑 hat Vorschau und Spiel abgenommen (2026-10-24), Mängel als Tickets.
 
 ## Prüfen
 
@@ -48,4 +48,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Blockiert (2026-10-22): manuelle Abnahme in Studio-Vorschau und Spiel gehört 🧑 (`docs/arbeitsweise.md` › SDD, Abnahme); wartet auf 🧑, nachdem GEB11.5 (Review) gelaufen ist.
+AC-03 und AC-04 geprüft mit Mängeln (Ralf, 2026-10-24, PC mit Tastatur):
+- Wachstumsreihe: Nur das Lagerfeuer ist anders, danach immer dieselbe Burg in anderen Farben; Form und Größe passen nicht → B-590.
+- Vor der Burg erscheint kein Ausbau-Angebot → B-591.
+- Fünf Ausbaustufen sind zu wenig, gewünscht 2–3 je Inselstufe mit dem Material der nächsten Inselstufe → B-592 (hebt D1 A aus B-538 auf).
+Nicht geprüft: TV/Xbox.

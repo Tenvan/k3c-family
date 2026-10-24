@@ -142,6 +142,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-587](B-587-snapshot-site-payable.md) | SRV | Idee | mittel | eingeplant | GEB16 | Der Server meldet je Bauplatz, ob er jetzt Münzen annimmt |
 | [B-588](B-588-abbau-symbole-axt-spitzhacke.md) | CLI | Idee | niedrig | eingeplant | GEB16 | Abbau-Schilder zeigen eine Axt für Bäume und eine Spitzhacke für Felsen |
 | [B-589](B-589-holz-balancing-dichter-wald.md) | REG | Idee | mittel | eingeplant | BAL7 | Holz-Balancing nach dem dichteren Wald messen und nachziehen |
+| [B-590](B-590-wachstumsreihe-unterscheidbar.md) | DEV | Problem | hoch | offen | – | Die Wachstumsreihe der Burg zeigt echte Unterschiede statt derselben Burg in Farben |
+| [B-591](B-591-burg-ausbau-angebot-fehlt.md) | CLI | Problem | hoch | offen | – | Vor der Burg erscheint kein Ausbau-Angebot, wenn der Spieler davor steht |
+| [B-592](B-592-hub-ausbaustufen-je-inselstufe.md) | REG | Idee | hoch | offen | – | Der Hub hat zwei bis drei Ausbaustufen je Inselstufe, weiter mit dem Material der nächsten Inselstufe |
 
 ## Archiv
 

@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| GEB11 | REG, SIM, DEV, CLI | GEB | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | – | `aktiv/GEB11-hub-waechst-kleinteilig/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | GR9 | DEV, CLI | GRA | Monarch-Animationen für Wurf, Treffer, Tod und Respawn, Kandidaten-Import ohne roten Test | – | `aktiv/GR9-monarch-animationen-kandidaten/` |
 | GR10 | CLI | GRA | Autonome Grafik-Entscheidungen prüfen (GR8, GR9) | – | `aktiv/GR10-entscheidungen-grafik/` |
@@ -238,3 +237,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GEB13 | Gebäude-Stufen in den Daten und Stufen-Look für Plantage, Camp, Heilplatz | `erledigt/GEB13-gebaeude-stufen-look/` |
 | GEB10 | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | `erledigt/GEB10-natur-truhe-wimpel/` |
 | GEB9 | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | `erledigt/GEB9-hub-ausbaustufen/` |
+| GEB11 | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | `erledigt/GEB11-hub-waechst-kleinteilig/` |
