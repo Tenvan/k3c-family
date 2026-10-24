@@ -1,6 +1,6 @@
 # BD9.1 · Server: Welt in der Raumliste und Raum schließen
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -58,5 +58,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 (Server) umgesetzt, geprüft: `rooms[].world` aus `isl.WorldID()`, Protokollversion 8 → 9 in Go, Client (`clientProtocol.ts`), `testdata/protocol` und `docs/protocol.md`; Go-Test der Raumliste grün.
+- AC-03 (Server) umgesetzt, geprüft: `Manager.CloseRoom(name)` (Ablauf wie `lockedSweep`: speichern, Bericht, `closed`, Geräte bekommen `room_closed`, aus der Liste, Lobby neu benachrichtigt) und `POST api/room/close?slot=NAME` (200/404/400/405); Go-Tests mit verbundenem Gerät, gespeichertem Stand, anschließendem Löschen und unbekanntem Raum grün.
+- `task check:diff` grün, Review-Agent ohne schwere Befunde (Sperr-Reihenfolge wie Sweep, kein Doppel-Schließen). Neues Ticket B-613: fehlende `Origin`-Prüfung schreibender Endpunkte ( gilt auch für `DELETE api/save`).
+- Abweichungen: `testdata/protocol/*.json`, `src/online/clientSkills.test.ts`, `src/scenes/lobbyLogic.test.ts` an Version und Feld angepasst; Grund „vom Gerät geschlossen“ nur im Server-Log, kein neues Protokollfeld. Testfix aus WZ28.9 (`levelView.test.ts`, `previewFixture.json`, `chat_cli_test.go`) unverändert übernommen, weil `develop` ihn noch nicht hat.
