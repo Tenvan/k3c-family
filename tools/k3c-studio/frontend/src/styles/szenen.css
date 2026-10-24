@@ -15,6 +15,10 @@
 .sz-fig { margin: 0; flex: 0 0 auto; max-width: 40rem; color: #e8edf4; }
 .sz-fig figcaption { font-size: 12px; margin-top: 4px; word-break: break-all; }
 .sz-canvas { display: block; image-rendering: pixelated; }
+/* Hintergründe (GEB18): auf die Spaltenbreite skaliert, je Zeile zwei Bilder; verkleinert mit Glättung, damit Details nicht flimmern. */
+.sz-hg-row { align-self: stretch; }
+.sz-hg { flex: 1 1 0; min-width: 0; max-width: none; }
+.sz-hg canvas { width: 100%; height: auto; image-rendering: auto; }
 .sz-nc { color: #ff8fa3; font-weight: bold; }
 .sz-gap { border: 2px dashed #ff8fa3; color: #ff8fa3; padding: 20px 14px; font-size: 13px; min-width: 120px; text-align: center; }
 .sz-change { max-width: 10rem; font-size: 12px; margin: 4px 0 0; }

@@ -26,12 +26,12 @@ export function Backgrounds({ index }: { index: readonly GebaeudeEintrag[] }) {
       <h3 className="sz-title">Hintergründe</h3>
       <div className="sz-strip sz-column">
         {streifen.map((s) => (
-          <div key={`${s.biom}:${s.variante}`} className="sz-row">
+          <div key={`${s.biom}:${s.variante}`} className="sz-row sz-hg-row">
             {DICHTEN.map(([dichte, scale]) => {
               const dateien = s.schichten.flatMap((l) => l.dateien[dichte] ?? []);
               if (dateien.length !== s.schichten.length) return null;
               return (
-                <figure key={dichte} className="sz-fig">
+                <figure key={dichte} className="sz-fig sz-hg">
                   <Pixel draw={(c) => zeichnen(c, s.himmel, dateien, scale)} drawKey={`${s.himmel}:${dateien.join(',')}:${scale}`} />
                   <figcaption>{s.biom} · {s.variante ? `Variante ${s.variante.slice(1)}` : 'bisher (GEB7)'} · {dichte} px ×{scale}</figcaption>
                 </figure>
