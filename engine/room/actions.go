@@ -196,12 +196,10 @@ func (r *Room) Tick() bool {
 	}
 	r.resetScaleOnPhase()
 	r.tick++
-	travelled := r.switchIsland()
-	states := map[int]any{} // ein Zustand je Stufe, alle Geräte der Stufe teilen ihn (B-276)
-	for _, d := range r.devices {
-		if d.connected && r.pushState(d, states) {
-			travelled = true
-		}
+	travelled := r.pushStates()
+	if r.switchIsland() { // erst die Ereignisse des letzten Ticks der alten Insel, dann Level und snap der neuen (B-385)
+		r.pushStates()
+		travelled = true
 	}
 	if after := r.depths(); !slices.Equal(before, after) { // irgendein Monarch hat die Stufe gewechselt
 		travelled = true
@@ -212,6 +210,18 @@ func (r *Room) Tick() bool {
 		r.save()
 	}
 	return true
+}
+
+// pushStates schickt jedem verbundenen Gerät den Zustand seiner Stufen; ein Zustand je Stufe, alle Geräte der Stufe
+// teilen ihn (B-276). true: Mindestens ein Gerät bekam ein Level (neue Stufe).
+func (r *Room) pushStates() (levelSent bool) {
+	states := map[int]any{}
+	for _, d := range r.devices {
+		if d.connected && r.pushState(d, states) {
+			levelSent = true
+		}
+	}
+	return levelSent
 }
 
 // sweep prüft die Fristen nach Wanduhr, auch im pausierten Raum. remove: Raum ist seit EmptyFor leer.
