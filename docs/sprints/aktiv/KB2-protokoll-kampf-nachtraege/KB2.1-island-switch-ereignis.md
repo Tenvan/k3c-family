@@ -37,7 +37,7 @@ Darstellung des Wechsels im Client (K5); Änderungen in `engine/sim/` (KB1); neu
 ## Fertig, wenn
 
 - [x] AC-01: `go test ./engine/room -run Inselwechsel` grün; der Test belegt `islandSwitch` je Gerät vor `level` und `snap` der neuen Insel.
-- [x] `task check:diff` grün (bis auf Altfehler B-607, siehe Ergebnis).
+- [x] `task check:diff` grün (bis auf bekannte Altfehler B-606, siehe Ergebnis).
 
 ## Prüfen
 
@@ -48,5 +48,5 @@ task check:diff
 ## Ergebnis
 
 - **AC-01** umgesetzt: `Room.Tick` schickt erst den Zustand der alten Insel (`pushStates`), dann `switchIsland`, dann Level und `snap` der neuen; `docs/protocol.md` › Strom-Regel „Inselwechsel“ nachgezogen. Geprüft: `TestKampfInselwechselEreignisErreichtGeraete` (Xbox und Handy: `state 1` mit `islandSwitch`, dann `level 0`, `state 0`), `go test ./engine/room` grün, Review (Sonnet) ohne schwere Befunde.
-- `check:diff`: `check`, `check:go`, `check:dev`, `check:starter` grün (`k3c-load` und `botdev` flackerten unter Last, einzeln grün). `check:studio` rot durch zwei Altfehler auf `develop` seit #455, unabhängig vom Diff → B-607.
+- `check:diff`: `check`, `check:go`, `check:dev`, `check:starter` grün (`k3c-load` und `botdev` flackerten unter Last, einzeln grün). `check:studio` rot nur durch bekannte Altfehler seit 87e0831c (`levelView.test.ts`, `TestMockVorschauIstDieVorschauDesServers`) → B-606; B-607 als Duplikat verworfen.
 - Hinweis Review: Altes `delta` und neuer `snap` tragen denselben `tick`; `clientConnection.pushFrame` zählt den zweiten nicht für die Takt-Statistik (nur Anzeige).

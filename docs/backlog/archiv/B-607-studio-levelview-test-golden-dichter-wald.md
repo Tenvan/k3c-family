@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Projekt:** –
 - **Erstellt:** 2026-10-24
@@ -60,4 +60,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Duplikat von B-606 (auf `sprint/wz28`), dort erfasst samt `TestChatZeitlimit`. Verworfen.
