@@ -78,3 +78,16 @@ func TestBerichteBewertenUndLoeschen(t *testing.T) {
 		t.Errorf("anderer Bericht weg: %v", err)
 	}
 }
+
+// Review WZ28.7: Eine kaputte ratings.json kostet nur die Bewertungen, nicht die Liste und nicht das Löschen.
+func TestKaputteBewertungen(t *testing.T) {
+	root := t.TempDir()
+	writeReport(t, root, "reports/balance-1.json", `{"seeds":1,"pass":true}`)
+	writeReport(t, root, "reports/ratings.json", "{kaputt")
+	if list, err := Reports(root); err != nil || len(list) != 1 {
+		t.Fatalf("Liste: %v %v", list, err)
+	}
+	if err := DeleteReport(root, "reports/balance-1.json"); err != nil {
+		t.Errorf("Löschen: %v", err)
+	}
+}

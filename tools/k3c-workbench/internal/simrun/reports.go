@@ -157,7 +157,7 @@ func Reports(root string) ([]ReportInfo, error) {
 	ratings, err := loadRatings(root)
 	ratingsMu.Unlock()
 	if err != nil {
-		return nil, err
+		ratings = map[string]string{} // unlesbare ratings.json: Liste ohne Bewertungen statt ohne Berichte
 	}
 	for i := range out {
 		out[i].Rating = ratings[out[i].Path]

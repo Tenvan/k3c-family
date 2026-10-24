@@ -109,7 +109,9 @@ func DeleteReport(root, rel string) error {
 	if dir := filepath.Dir(path); filepath.Base(dir) != "reports" {
 		_ = os.Remove(dir) // nur ein leerer Ordner lässt sich entfernen
 	}
-	return updateRatings(root, func(r map[string]string) { delete(r, key) })
+	// Der Bericht ist weg; eine unlesbare ratings.json hält das Löschen nicht auf (die Liste zeigt sie ohne Bewertungen).
+	_ = updateRatings(root, func(r map[string]string) { delete(r, key) })
+	return nil
 }
 
 // reportKey prüft einen vorhandenen Bericht (balance-*.json, tuning-*.json unter reports/) und liefert seinen Pfad in
