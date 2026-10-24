@@ -1,14 +1,14 @@
 # W11 · REG, SRV, CLI · Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WRT
 - **Domäne:** REG, SRV, CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-409, B-208, B-410, B-408, B-412
-- **Start-Commit:** a8d46d9e
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt)
 
 ## Ausgangslage
 
@@ -58,7 +58,7 @@ Geklärt mit 🧑 (2026-10-14): W11 vor W8; Treppen ≥ 8 Units zu **allen** Zah
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | W11.1 | `W11.1-treppen-abstand.md` | Umsetzung | autonom | fertig |
-| W11.2 | `W11.2-bauplaetze-im-zustand.md` | Umsetzung | autonom | offen |
+| W11.2 | `W11.2-bauplaetze-im-zustand.md` | Umsetzung | autonom | in Arbeit |
 | W11.3 | `W11.3-aktionen-ausbilden-tauschen.md` | Umsetzung | autonom | offen |
 | W11.4 | `W11.4-bauplaetze-figuren-client.md` | Umsetzung | autonom | offen |
 | W11.5 | `W11.5-review.md` | Review | autonom | offen |
