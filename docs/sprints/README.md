@@ -9,6 +9,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| WZ29 | DEV | WZG | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | – | `aktiv/WZ29-sound-grafik-seiten-ausbau/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | WZ31 | DEV | WZG | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | – | `aktiv/WZ31-web-client-first/` |
 | WZ28 | DEV | WZG | Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite | – | `aktiv/WZ28-offline-werkzeuge/` |
@@ -28,7 +29,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WZ29 | DEV | WZG | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | – | bereit | `geplant/WZ29-sound-grafik-seiten-ausbau/` |
 | GEB15 | DEV | GEB | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | – | Entwurf | `geplant/GEB15-hoehle-fels-varianten/` |
 | GEB15 | DEV | GEB | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | – | Entwurf | `geplant/GEB15-hoehle-fels-varianten/` |
 | GEB16 | DEV | GEB | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | – | Entwurf | `geplant/GEB16-bauschilder-wald-geruest/` |

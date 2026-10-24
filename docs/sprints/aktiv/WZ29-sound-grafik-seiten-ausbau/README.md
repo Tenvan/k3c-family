@@ -1,11 +1,11 @@
 # WZ29 · DEV · Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-597, B-598, B-599, B-600, B-601, B-602
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** f8bee41c
 - **Spec:** freigegeben
 - **Revision:** 3
 - **Freigabe:** 2026-10-24, Ralf im Chat, Revision 3 (Doppelungen zu WZ30 entfernt: WZ29.1 und WZ29.3 verworfen, WZ29.2/.4/.6/.7 auf Anbindung echter Daten und Backends gekürzt; Abhängigkeit SO8 auf develop); Revision 2: autonom, Claude; Revision 1: Ralf im Chat
@@ -60,7 +60,7 @@ keine blockierende; Pflicht-Szenen und Chat-Aktionen laut Tickets als Default, R
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ29.1 | `WZ29.1-filter-baustein.md` | Umsetzung | autonom | verworfen |
-| WZ29.2 | `WZ29.2-sound-szenen.md` | Umsetzung | autonom | offen |
+| WZ29.2 | `WZ29.2-sound-szenen.md` | Umsetzung | autonom | in Arbeit |
 | WZ29.3 | `WZ29.3-misch-lautheit-abstand.md` | Umsetzung | autonom | verworfen |
 | WZ29.4 | `WZ29.4-grafik-szenen.md` | Umsetzung | autonom | offen |
 | WZ29.5 | `WZ29.5-vorschlagsliste.md` | Umsetzung | autonom | offen |
