@@ -1,6 +1,6 @@
 # SK2.5 · Abnahme am TV
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -34,7 +34,7 @@ Neue Effekte.
 
 ## Fertig, wenn
 
-- [ ] AC-03 (B-503/AC-02): Ring am TV sichtbar, Farbe passt zur Klasse.
+- [x] AC-03 (B-503/AC-02): Effekt je Skill sichtbar, Farbe passt zur Klasse (2026-10-24, PC).
 
 ## Prüfen
 
@@ -48,5 +48,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03 geprüft (Ralf, 2026-10-24, PC mit Tastatur, zwei Spieler): Tank (taunt, shieldBash), Zauberer, Heiler und Dieb (backstab, smokeBomb) zeigen ihren Effekt, Farbe passt; passiven Skill lernen zeigt den Ring, zwei Spieler ohne Durcheinander. Dabei die Regel aus SK3.1 bestätigt: Unsichtbare werden nicht als Ziel gewählt, nehmen keinen Schaden, jeder eigene Schlag oder Skill beendet die Unsichtbarkeit, Backstab-Reichweite 2 Units. Keine Tickets. TV/Xbox nicht geprüft.

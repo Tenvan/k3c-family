@@ -1,7 +1,7 @@
 # KRT · Kritische Fragen
 
 - **Status:** aktiv
-- **Rang:** 11
+- **Rang:** 10
 - **Ziel-Tickets:** –
 
 ## Ziel

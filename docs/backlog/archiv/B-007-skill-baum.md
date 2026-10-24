@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** SKL
 - **Erstellt:** 2026-09-29
@@ -58,9 +58,4 @@ Entschieden 2026-10-06 (🧑, Chat): Skill-Tasten (B-026) und Presets (B-017) si
 
 ## Notizen
 
-Erst nach der Go-Portierung (nach SP11): REG Regelwerk II → SIM → CLI.
-
-R1 (2026-10-02): Das Skill-Menü liegt **nicht auf View** (View + Menu ist reserviert), die Taste legt Regelwerk II fest (Vorschlag LB + RB); Taste X bleibt für Skills frei.
-Regelwerk dazu: B-110 (Skillung, Klassen, Level von Monarchen und Bürgern); die SIM-Umsetzung folgt nach dem Beschluss.
-
-R3 (2026-10-02): Regelwerk II ist beschlossen (`docs/rules/monarch.md`, `buerger.md`). B-007 ist das **Dach-Ticket**; die Umsetzung läuft in B-118 (Schlag, Pool, Verteilung), B-119 (Skills Tank, Zauberer, Heiler), B-120 (Wiederbeleben), B-123 (Protokoll), B-124 (Skill-Menü, Tasten) und B-125 (Aktionen-Overlay). Entschieden: freie Skillung (B-017), gemeinsamer Fund-Pool mit persönlicher Verteilung, kein Level; Tank, Zauberer und Heiler zuerst, der Dieb später.
+**Erledigt (2026-10-24):** Der Skill-Baum mit Tank, Zauberer, Heiler und Dieb ist spielbar (SK1, RM1, SK2, SK3); Skills wirken sichtbar mit eigenem Effekt (B-578), Ralf hat die Effekte am PC abgenommen (SK2.5). Balancing der Skills läuft über WZ28/BAL.
