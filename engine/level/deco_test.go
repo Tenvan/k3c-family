@@ -2,7 +2,7 @@ package level
 
 import "testing"
 
-// B-531: Die Höhle (`bush` in `resourcesPerChunk`) zeigt Deko-Büsche, der Wald hat je Waldabschnitt 6 bis 9 Bäume (Werte: data/biomes).
+// B-531: Die Höhle (`bush` in `resourcesPerChunk`) zeigt Deko-Büsche, der Wald hat je Waldabschnitt 14 bis 20 Bäume (Werte: data/biomes).
 func TestHoehleMitBueschen(t *testing.T) {
 	count := func(id, kind string) int {
 		n := 0
@@ -24,8 +24,8 @@ func TestHoehleMitBueschen(t *testing.T) {
 	}
 	forest, _ := biome(t, "forest").ResourcesPerChunk.Get("forest")
 	trees, _ := forest.Get("tree")
-	if trees != [2]int{6, 9} {
-		t.Fatalf("Wald-Abschnitt: tree %v, erwartet [6 9]", trees)
+	if trees != [2]int{14, 20} {
+		t.Fatalf("Wald-Abschnitt: tree %v, erwartet [14 20]", trees)
 	}
 	if got := count("forest", "tree"); got == 0 {
 		t.Fatal("Wald ohne Bäume")
