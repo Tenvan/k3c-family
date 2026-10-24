@@ -42,8 +42,16 @@ export function useTicket(): TicketApi {
   return ctx;
 }
 
-/** Meldet Seite und Auswahl der sichtbaren Seite an den Provider (Kontext der Tickets). */
-export function useTicketPage(page: string, selection = ''): void {
-  const { setPage } = useTicket();
-  useEffect(() => setPage({ page, selection }), [setPage, page, selection]);
+/** Wie useTicket, aber ohne Provider null (für Bausteine, die auch ohne Ticket-Knopf laufen, z. B. AppHeader). */
+export function useTicketOptional(): TicketApi | null {
+  return useContext(TicketContext);
+}
+
+/** Meldet Seite und Auswahl der sichtbaren Seite an den Provider (Kontext der Tickets); `active=false` meldet nichts
+ *  (eingehängte, aber verborgene Seiten); ohne Provider ohne Wirkung. */
+export function useTicketPage(page: string, selection = '', active = true): void {
+  const setPage = useContext(TicketContext)?.setPage; // ohne Provider (Seite allein, Tests) bewusst still
+  useEffect(() => {
+    if (active) setPage?.({ page, selection });
+  }, [setPage, page, selection, active]);
 }

@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ28
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-24 (mit WZ28 Revision 2)
 
 ## Ausgangslage
 

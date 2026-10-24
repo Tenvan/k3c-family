@@ -9,8 +9,12 @@ import { PlanningPage } from './planning/PlanningPage';
 import { ServicesPage } from './services/ServicesPage';
 import { TasksPage } from './tasks/TasksPage';
 import { Notices } from './ui/organisms/Notices';
+import { TicketProvider } from '@webkit/lib/ticketContext';
 import { Tabs } from '@webkit/organisms';
 import { AppFrame } from '@webkit/templates';
+
+const createTicket = (input: Parameters<typeof backend.ticketCreate>[0]) => backend.ticketCreate(input);
+const recentTickets = () => backend.ticketRecent(5);
 
 const MODES = ['dark', 'light'] as const;
 
@@ -22,10 +26,14 @@ export function App() {
   const [page, setPage] = useState<Page>(() => loadPref('app.page', PAGES, 'dienste'));
   const [mode, setMode] = useState(() => loadPref('app.mode', MODES, systemMode()));
   const [mcp, setMcp] = useState<McpState | null>(null);
+  const [version, setVersion] = useState('');
 
   useEffect(() => {
     const off = backend.on('mcp:state', setMcp);
-    backend.info().then((info) => setMcp((cur) => cur ?? info.mcp), () => undefined);
+    backend.info().then((info) => {
+      setMcp((cur) => cur ?? info.mcp);
+      setVersion(info.version);
+    }, () => undefined);
     return off;
   }, []);
 
@@ -43,14 +51,15 @@ export function App() {
   const keep = (v: Page) => ({ forceMount: true as const, hidden: page !== v, style: page === v ? undefined : { display: 'none' } });
 
   return (
+    <TicketProvider app="k3c-workbench" version={version} defaultDomain="DEV" defaultProject="WZG" create={createTicket} recent={recentTickets}>
     <AppFrame title="K3C Workbench" appearance={mode} tabs={{ pages: PAGES, labels: LABELS, value: page, onChange: choose }}
       right={<HeaderRight mcp={mcp} mock={backend.mock} dark={mode === 'dark'} onDark={(d) => setMode(d ? 'dark' : 'light')} />}
       overlay={<Notices />}>
       <Tabs.Content value="dienste" {...keep('dienste')}>
-        <ServicesPage />
+        <ServicesPage active={page === 'dienste'} />
       </Tabs.Content>
       <Tabs.Content value="tasks" {...keep('tasks')}>
-        <TasksPage />
+        <TasksPage active={page === 'tasks'} />
       </Tabs.Content>
       <Tabs.Content value="planung">
         <PlanningPage />
@@ -65,5 +74,6 @@ export function App() {
         <MonitoringPage active={page === 'monitoring'} />
       </Tabs.Content>
     </AppFrame>
+    </TicketProvider>
   );
 }

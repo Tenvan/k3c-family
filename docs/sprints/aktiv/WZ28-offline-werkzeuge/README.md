@@ -4,11 +4,11 @@
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
-- **Tickets:** B-594, B-595, B-596
+- **Tickets:** B-594, B-595, B-596, B-606
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-24, Ralf im Chat (Revision 1)
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-10-24, Revision 2 (Ziel von Ralf: WZG komplett umsetzen, soweit autonom möglich; Revision 1: 2026-10-24, Ralf im Chat)
 
 ## Ausgangslage
 
@@ -57,6 +57,7 @@ Atlas fehlt → Hinweis `task gen:atlas`. Backlog nicht beschreibbar → Eingabe
 - **AC-06** Sweep und automatische Suche liefern Vorschläge mit Diff, ohne `data/` zu ändern (B-596/AC-06).
 - **AC-07** Alle drei Teile laufen ohne Netzwerk, geprüft per Test und ohne externe Anfragen (B-595/AC-04, B-596/AC-05).
 - **AC-08** Ralf hat Ticket-Button und Balancing-Seite am Notebook ohne Internet abgenommen.
+- **AC-09** Die Studio-Tests sind grün und `check_run task:check:diff` läuft mit Studio-Anteil durch (B-606/AC-01, B-606/AC-02); Voraussetzung für das Review.
 
 ## Offene Fragen
 
@@ -68,12 +69,13 @@ keine. Entschieden (🧑, 2026-10-24): nächste freie Ticket-Nummer genügt (Ral
 |---|---|---|---|---|
 | WZ28.1 | `WZ28.1-slot-details.md` | Umsetzung | autonom | fertig |
 | WZ28.2 | `WZ28.2-ticket-baustein.md` | Umsetzung | autonom | fertig |
-| WZ28.3 | `WZ28.3-ticket-button-alle-seiten.md` | Umsetzung | autonom | in Arbeit |
+| WZ28.3 | `WZ28.3-ticket-button-alle-seiten.md` | Umsetzung | autonom | fertig |
 | WZ28.4 | `WZ28.4-balancing-backend.md` | Umsetzung | autonom | offen |
 | WZ28.5 | `WZ28.5-balancing-seite.md` | Umsetzung | autonom | offen |
 | WZ28.6 | `WZ28.6-automatisches-balancing.md` | Umsetzung | autonom | offen |
 | WZ28.7 | `WZ28.7-review.md` | Review | autonom | offen |
 | WZ28.8 | `WZ28.8-abnahme-notebook-offline.md` | Workshop | Mensch | offen |
+| WZ28.9 | `WZ28.9-studio-tests-gruen.md` | Umsetzung | autonom | offen |
 
 - WZ28.1 (DEV) Slot-Details im Studio: Backend-Aufbereitung aus Atlas, `sprites.json`, `assets.json`, Zuordnung; Detailbereich (AC-01).
 - WZ28.2 (DEV) Ticket-Baustein: Go-Paket zum Anlegen nach Vorlage, `TicketButton` und Dialog in `@webkit`, Kontext-Provider (AC-02).

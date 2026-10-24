@@ -94,6 +94,8 @@ export function httpBackend(): Backend {
     gitPRAction: (number, action) => rpc('GitPRAction', number, action),
     gitCheckMerged: (names) => rpc('GitCheckMerged', names),
     gitStamp: () => rpc('GitStamp'),
+    ticketCreate: (input) => rpc('TicketCreate', input),
+    ticketRecent: (n) => rpc('TicketRecent', n),
     openUrl: (url) => {
       window.open(url, '_blank', 'noopener');
     },

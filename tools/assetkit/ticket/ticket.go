@@ -126,7 +126,10 @@ func validate(root string, in Input) error {
 	if in.Projekt == "" {
 		return nil
 	}
-	if found, _ := filepath.Glob(filepath.Join(root, "docs", "projekte", in.Projekt+"-*.md")); !reProject.MatchString(in.Projekt) || len(found) == 0 {
+	if !reProject.MatchString(in.Projekt) {
+		return fmt.Errorf("unbekanntes Projekt %q", in.Projekt)
+	}
+	if found, _ := filepath.Glob(filepath.Join(root, "docs", "projekte", in.Projekt+"-*.md")); len(found) == 0 {
 		return fmt.Errorf("unbekanntes Projekt %q", in.Projekt)
 	}
 	return nil

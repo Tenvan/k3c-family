@@ -1,4 +1,5 @@
 import { mockGit } from './mockGit';
+import { mockTickets } from './mockTickets';
 import { mockLogFiles } from './mockLogFiles';
 import { mockLogs } from './mockLogs';
 import { mockMcp } from './mockMcp';
@@ -61,11 +62,8 @@ export function mockBackend(): Backend {
     ...mcpTools,
     ...mockResources(),
     ...mockGit(),
-    tasks: tasks.tasks,
-    tasksReload: tasks.tasksReload,
-    taskStart: tasks.taskStart,
-    taskStop: tasks.taskStop,
-    taskRuns: tasks.taskRuns,
+    ...mockTickets(),
+    tasks: tasks.tasks, tasksReload: tasks.tasksReload, taskStart: tasks.taskStart, taskStop: tasks.taskStop, taskRuns: tasks.taskRuns,
     ...mockGates(),
     ...mockPlanning(() => emit('planning:changed', null)),
     // Im Browser gibt es keine EXE: der Verweis zeigt den Hinweis wie in Go (app_studio.go).

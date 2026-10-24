@@ -2,6 +2,7 @@ import type { LevelLayout } from '@game/model/types';
 import type { ChatApi } from './chatTypes';
 import type { AssetSlotDetails } from './slotTypes';
 import type { DraftScaling, WorldDraftApi } from './worldTypes';
+import type { TicketCreated, TicketInput } from '@webkit/lib/ticket';
 
 // Typen des Asset-Studios (B-298, B-459): Slot-Register, Katalog und Recherche, wie Go sie liefert
 // (tools/assetkit, tools/k3c-studio/app_assets.go). Kopie aus k3c-workbench, ergänzt um Stand und Backend.
@@ -347,8 +348,16 @@ export interface Events {
 }
 export type EventName = keyof Events;
 
+export type { TicketCreated, TicketInput };
+
+/** Ticket-Baustein (B-595, WZ28.3): Anlegen in docs/backlog/ und die letzten Tickets; n <= 0 = 5. */
+export interface TicketBackend {
+  ticketCreate(input: TicketInput): Promise<TicketCreated>;
+  ticketRecent(n: number): Promise<TicketCreated[]>;
+}
+
 /** Bindings des Asset-Studios (Wails) bzw. ihr Mock im Browser */
-export interface Backend extends WorldDraftApi, ChatApi {
+export interface Backend extends WorldDraftApi, ChatApi, TicketBackend {
   mock: boolean;
   assetsList(): Promise<AssetsView>;
   assetsSet(id: string, wahl: AssetChoice[], stand: string): Promise<AssetSaved>;

@@ -1,6 +1,6 @@
 import { chatStreamHttp } from './chatHttp';
 import type { ChatDetail, ChatOptionsView, ChatSummary } from './chatTypes';
-import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, GameServersView, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
+import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, GameServersView, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, TicketCreated, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
 import type { AssetSlotDetails } from './slotTypes';
 import type { WorldAnswerView, WorldCheckView, WorldDraft } from './worldTypes';
 
@@ -102,6 +102,8 @@ export function httpBackend(): Backend {
     hubRules: (hubJSON: string) => rpc<HubRulesView>('HubRules', hubJSON),
     hubCheck: (candidate: string) => rpc<HubPlanView>('HubCheck', candidate),
     hubSave: (candidate: string, stand: HubStand) => rpc<HubSaveResult>('HubSave', candidate, stand),
+    ticketCreate: (input) => rpc<TicketCreated>('TicketCreate', input),
+    ticketRecent: (n) => rpc<TicketCreated[]>('TicketRecent', n),
     openUrl: (url: string) => void window.open(url, '_blank', 'noopener'),
     chatStream: chatStreamHttp,
     chatList: () => rpc<ChatSummary[]>('ChatList'),

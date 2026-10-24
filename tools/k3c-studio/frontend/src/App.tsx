@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { StatusBadge } from '@webkit/atoms';
+import { TicketProvider } from '@webkit/lib/ticketContext';
 import { Tabs } from '@webkit/organisms';
 import { AppFrame } from '@webkit/templates';
 import { backend } from './api';
@@ -11,6 +12,9 @@ import { MonarchPage } from './monarch/MonarchPage';
 import { PlannerPage } from './planner/PlannerPage';
 import { SoundPage } from './sound/SoundPage';
 import { WorldPage } from './world/WorldPage';
+
+const createTicket = (input: Parameters<typeof backend.ticketCreate>[0]) => backend.ticketCreate(input);
+const recentTickets = () => backend.ticketRecent(5);
 
 export const PAGES = ['grafik', 'sound', 'welt', 'planer', 'monarch', 'gegner'] as const;
 export type Page = (typeof PAGES)[number];
@@ -32,6 +36,7 @@ export function App({ initial }: { initial?: Page }) {
     </>
   );
   return (
+    <TicketProvider app="k3c-studio" defaultDomain="DEV" defaultProject="WZG" create={createTicket} recent={recentTickets}>
     <AppFrame title="Asset-Studio" appearance="dark" tabs={{ pages: PAGES, labels: LABELS, value: page, onChange: choose }} right={right} aside={<ChatPanel />} fixed>
       <Tabs.Content value="grafik"><GraphicsPage /></Tabs.Content>
       <Tabs.Content value="sound"><SoundPage /></Tabs.Content>
@@ -40,5 +45,6 @@ export function App({ initial }: { initial?: Page }) {
       <Tabs.Content value="monarch"><MonarchPage /></Tabs.Content>
       <Tabs.Content value="gegner"><EnemiesPage /></Tabs.Content>
     </AppFrame>
+    </TicketProvider>
   );
 }
