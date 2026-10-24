@@ -68,7 +68,9 @@ describe('Statuskarte und Zeit', () => {
   it('Pillen sagen, was zu tun ist', () => {
     const s = { branch: 'f', upstream: 'origin/f', upstreamGone: false, ahead: 2, behind: 0, baseAhead: 2, baseBehind: 0, mainBehind: 3,
       changes: [], stashes: [], worktrees: [], fetchedAt: 0, advice: [] };
-    expect(badges(s).map((b) => b[1])).toEqual(['2 nicht gepusht', 'develop +2 / −0', 'Working Tree sauber', 'main 3 hinter origin']);
+    expect(badges(s).map((b) => b[1])).toEqual(['2 nicht gepusht', 'develop +2 / −0', 'main 3 hinter origin']);
+    const changes = [{ path: 'a', code: 'M', staged: true }, { path: 'a', code: 'M', staged: false }, { path: 'b', code: '?', staged: false }];
+    expect(badges({ ...s, changes }).map((b) => b[1])).toContain('2 Dateien nicht committet');
   });
 
   it('ago', () => {

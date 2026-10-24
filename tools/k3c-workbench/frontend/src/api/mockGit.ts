@@ -35,10 +35,11 @@ export function mockGit(): GitBackend {
     status: {
       branch: 'feat/git-seite', upstream: 'origin/feat/git-seite', upstreamGone: false, ahead: 1, behind: 0, baseAhead: 1,
       baseBehind: 0, mainBehind: 275, fetchedAt: Date.now() - 120_000,
-      changes: [{ path: 'tools/k3c-workbench/app_git.go', code: 'M', staged: false }, { path: 'docs/notiz.md', code: '?', staged: false }],
+      changes: [{ path: 'tools/k3c-workbench/uiapi.go', code: 'M', staged: true }, { path: 'tools/k3c-workbench/app_git.go', code: 'M', staged: false },
+        { path: 'docs/notiz.md', code: '?', staged: false }],
       stashes: Array.from({ length: stashes }, (_, i) => ({ ref: `stash@{${i}}`, age: 'vor 1 Minute', subject: 'On feat/git-seite: workbench' })),
       worktrees: [{ path: 'C:/WORKSPACE/k3c/.claude/worktrees/gra-6d4c38', branch: '', head: '4348d4fc' }],
-      advice: ['2 geänderte Dateien committen oder stashen', 'Push: 1 Commits nicht gepusht', 'main liegt 275 hinter origin/main (Fast-Forward macht Ralf)'],
+      advice: ['3 geänderte Dateien committen oder stashen', 'Push: 1 Commits nicht gepusht', 'main liegt 275 hinter origin/main (Fast-Forward macht Ralf)'],
     },
     branches,
     files: {

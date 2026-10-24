@@ -17,14 +17,43 @@ async function flush() {
   for (let i = 0; i < 5; i++) await act(async () => new Promise((r) => setTimeout(r, 0)));
 }
 
-async function mount(): Promise<HTMLElement> {
+async function mount(active = true): Promise<HTMLElement> {
   const host = document.createElement('div');
   document.body.appendChild(host);
   root = createRoot(host);
-  act(() => root!.render(<Theme><GitPage /></Theme>));
+  act(() => root!.render(<Theme><GitPage active={active} /></Theme>));
   await flush();
   return host;
 }
+
+describe('Ablauf und Laden', () => {
+  it('Karten in der Reihenfolge Dateien, Commit-Status, PRs, Branches; gestaged getrennt von nicht gestaged', async () => {
+    const host = await mount();
+    const cards = [...host.querySelectorAll('section.git-card')].map((s) => s.getAttribute('aria-label'));
+    expect(cards).toEqual(['Geänderte Dateien', 'Commit-Status', 'Pull Requests', 'Branches']);
+    const files = host.querySelector('[aria-label="Geänderte Dateien"]')!.textContent!;
+    expect(files.indexOf('Gestaged')).toBeLessThan(files.indexOf('uiapi.go'));
+    expect(files.indexOf('Nicht gestaged')).toBeLessThan(files.indexOf('app_git.go'));
+    expect(files.indexOf('uiapi.go')).toBeLessThan(files.indexOf('Nicht gestaged'));
+  });
+
+  it('liest erst beim ersten Öffnen und danach nur über „Neu laden“', async () => {
+    const spy = vi.spyOn(backend, 'gitOverview');
+    const prs = vi.spyOn(backend, 'gitPRs');
+    await mount(false);
+    expect(spy).not.toHaveBeenCalled();
+    act(() => root!.render(<Theme><GitPage active /></Theme>));
+    await flush();
+    act(() => root!.render(<Theme><GitPage active={false} /></Theme>));
+    act(() => root!.render(<Theme><GitPage active /></Theme>));
+    await flush();
+    expect(spy).toHaveBeenCalledTimes(1);
+    act(() => button('Neu laden').click());
+    await flush();
+    expect(spy).toHaveBeenCalledTimes(2);
+    expect(prs).toHaveBeenCalledTimes(2);
+  });
+});
 
 const button = (label: string, within: ParentNode = document.body) => {
   const b = [...within.querySelectorAll('button')].find((x) => x.textContent?.trim() === label);

@@ -1,11 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActionButton, Flex, Text } from '@webkit/atoms';
 import { NoticeCard } from '@webkit/molecules';
 import { errorText } from '@webkit/lib/errors';
-import { backend, type GitAction, type GitView } from '../api';
+import { backend, type GitAction, type GitPRList, type GitView } from '../api';
 import { BranchesCard } from './BranchesCard';
 import { Confirm, type ConfirmRequest } from './Confirm';
 import { FilesCard } from './FilesCard';
+import { ago } from './format';
 import { PrsCard } from './PrsCard';
 import { StatusCard } from './StatusCard';
 
@@ -14,18 +15,31 @@ interface Result {
   text: string;
 }
 
-/** Reiter `Git` (B-580): Stand des Repos und die täglichen Handgriffe. Baut sich bei jedem Wechsel neu auf und lädt
- *  dabei frisch; nach jeder Aktion lädt sie neu, das Ergebnis steht oben. */
-export function GitPage() {
+/** Reiter `Git` (B-580) in der Reihenfolge des Ablaufs: Dateien, Commit-Status, PRs, Branches. Die Seite bleibt
+ *  eingehängt und liest das Repo nur beim ersten Öffnen, mit „Laden“ und nach einer eigenen Aktion. */
+export function GitPage({ active }: { active: boolean }) {
   const [view, setView] = useState<GitView | null>(null);
+  const [prs, setPrs] = useState<GitPRList | null>(null);
   const [error, setError] = useState('');
+  const [loadedAt, setLoadedAt] = useState(0);
   const [result, setResult] = useState<Result | null>(null);
   const [ask, setAsk] = useState<ConfirmRequest | null>(null);
-  const load = useCallback(() => backend.gitOverview().then((v) => {
-    setView(v);
-    setError('');
-  }, (e: unknown) => setError(errorText(e))), []);
-  useEffect(() => void load(), [load]);
+  const started = useRef(false);
+
+  const load = useCallback(async () => {
+    const prsTask = backend.gitPRs().then(setPrs, (e: unknown) => setPrs({ prs: [], error: errorText(e) }));
+    await backend.gitOverview().then((v) => {
+      setView(v);
+      setError('');
+    }, (e: unknown) => setError(errorText(e)));
+    await prsTask;
+    setLoadedAt(Date.now());
+  }, []);
+  useEffect(() => {
+    if (!active || started.current) return;
+    started.current = true;
+    void load();
+  }, [active, load]);
 
   const act = async (task: Promise<string>) => {
     try {
@@ -38,17 +52,18 @@ export function GitPage() {
   return (
     <div className="git-page">
       <Flex gap="3" align="center">
-        <ActionButton size="1" variant="soft" onClick={load}>Neu laden</ActionButton>
+        <ActionButton size="1" onClick={load}>{view ? 'Neu laden' : 'Laden'}</ActionButton>
+        {loadedAt > 0 && <Text size="1" color="gray">Stand {ago(loadedAt)}</Text>}
         {!view && !error && <Text size="2" color="gray">Lese das Repo …</Text>}
         {result && <Text size="2" color={result.ok ? 'green' : 'red'} role="status">{result.text}</Text>}
       </Flex>
       {error && <NoticeCard title="Repo nicht gelesen" tone="error">{error}</NoticeCard>}
       {view && (
         <>
-          <StatusCard status={view.status} run={(a: GitAction) => act(backend.gitAction(a))} confirm={setAsk} />
+          <FilesCard changes={view.status.changes} />
+          <StatusCard status={view.status} files={view.files} run={(a: GitAction) => act(backend.gitAction(a))} confirm={setAsk} />
+          <PrsCard branch={view.status.branch} list={prs} act={act} confirm={setAsk} />
           <BranchesCard branches={view.branches} remove={(names, remote) => act(backend.gitDeleteBranches(names, remote))} confirm={setAsk} />
-          <FilesCard status={view.status} files={view.files} />
-          <PrsCard branch={view.status.branch} act={act} confirm={setAsk} />
         </>
       )}
       <Confirm request={ask} onClose={() => setAsk(null)} />

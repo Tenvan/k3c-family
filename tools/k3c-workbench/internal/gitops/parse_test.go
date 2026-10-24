@@ -14,6 +14,7 @@ func TestParseStatus(t *testing.T) {
 		"# branch.ab +2 -1",
 		"1 .M N... 100644 100644 100644 aaa bbb src/a b.ts",
 		"1 A. N... 000000 100644 100644 000 ccc docs/neu.md",
+		"1 MM N... 100644 100644 100644 aaa bbb beides.go",
 		"2 R. N... 100644 100644 100644 ddd eee R100 neu.go\talt.go",
 		"u UU N... 100644 100644 100644 100644 f1 f2 f3 konflikt.go",
 		"? tmp/ü.txt",
@@ -25,6 +26,8 @@ func TestParseStatus(t *testing.T) {
 	want := []Change{
 		{Path: "src/a b.ts", Code: "M"},
 		{Path: "docs/neu.md", Code: "A", Staged: true},
+		{Path: "beides.go", Code: "M", Staged: true},
+		{Path: "beides.go", Code: "M"},
 		{Path: "neu.go", Code: "R", Staged: true},
 		{Path: "konflikt.go", Code: "U"},
 		{Path: "tmp/ü.txt", Code: "?"},

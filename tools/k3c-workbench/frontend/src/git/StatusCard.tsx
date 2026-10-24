@@ -1,26 +1,29 @@
 import { ActionButton, Code, Flex, StatusBadge, Text } from '@webkit/atoms';
-import type { GitAction, GitStatus } from '../api';
+import type { GitAction, GitStatus, GitView } from '../api';
 import type { ConfirmRequest } from './Confirm';
+import { DiffList, fileCount } from './FilesCard';
 import { ago } from './format';
 
 interface Props {
   status: GitStatus;
+  files: GitView['files'];
   run: (action: GitAction) => Promise<void>;
   confirm: (r: ConfirmRequest) => void;
 }
 
-/** Kopf der Seite: Branch, Abstände, Working Tree und die Handgriffe Fetch, Pull, Push, Stash. */
-export function StatusCard({ status: s, run, confirm }: Props) {
+/** Zweiter Schritt des Ablaufs: Commits des Branches gegenüber Remote und develop, dazu Fetch, Pull, Push, Stash. */
+export function StatusCard({ status: s, files, run, confirm }: Props) {
   const popStash = () => confirm({
     title: 'Letzten Stash zurückholen?', action: 'Zurückholen',
     text: `${s.stashes[0]?.subject ?? ''} wird auf den Working Tree gelegt; bei Konflikten bleibt der Stash erhalten.`,
     run: () => void run('stash-pop'),
   });
   return (
-    <section className="git-card" aria-label="Status">
+    <section className="git-card" aria-label="Commit-Status">
       <header className="git-head">
         <div>
-          <Code size="3" variant="ghost">{s.branch || 'detached HEAD'}</Code>
+          <Text weight="bold">Commit-Status </Text>
+          <Code size="2" variant="ghost">{s.branch || 'detached HEAD'}</Code>
           <Text size="1" color="gray"> {s.upstream ? `→ ${s.upstream}` : 'ohne Upstream'} · Fetch {ago(s.fetchedAt)}</Text>
         </div>
         <Flex gap="2" wrap="wrap">
@@ -39,13 +42,14 @@ export function StatusCard({ status: s, run, confirm }: Props) {
           {s.advice.map((a) => <li key={a}><Text size="2">{a}</Text></li>)}
         </ul>
       )}
+      <DiffList base={files.base} files={files.files} />
     </section>
   );
 }
 
 type Badge = ['ok' | 'warn' | 'error' | 'info' | 'neutral', string];
 
-/** Pillen der Statuskarte; nur, was etwas sagt. */
+/** Pillen des Commit-Status; nur, was etwas sagt. Den Working Tree zeigt die Karte darüber. */
 export function badges(s: GitStatus): Badge[] {
   const b: Badge[] = [];
   if (s.upstreamGone) b.push(['error', 'Remote-Branch gelöscht']);
@@ -53,7 +57,7 @@ export function badges(s: GitStatus): Badge[] {
   if (s.behind > 0) b.push(['warn', `${s.behind} auf dem Remote`]);
   if (s.upstream && !s.upstreamGone && s.ahead === 0 && s.behind === 0) b.push(['ok', 'synchron mit Remote']);
   b.push(['neutral', `develop +${s.baseAhead} / −${s.baseBehind}`]);
-  b.push(s.changes.length === 0 ? ['ok', 'Working Tree sauber'] : ['warn', `${s.changes.length} geänderte Dateien`]);
+  if (s.changes.length > 0) b.push(['warn', `${fileCount(s.changes)} Dateien nicht committet`]);
   if (s.stashes.length > 0) b.push(['info', `${s.stashes.length} Stashes`]);
   if (s.worktrees.length > 0) b.push(['info', `${s.worktrees.length} Worktrees`]);
   if (s.mainBehind > 0) b.push(['warn', `main ${s.mainBehind} hinter origin`]);

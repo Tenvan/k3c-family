@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ActionButton, Button, Flex, LinkButton, StatusBadge, Text, TextArea, TextField, type Tone } from '@webkit/atoms';
 import { NoticeCard } from '@webkit/molecules';
 import { Table } from '@webkit/organisms';
-import { errorText } from '@webkit/lib/errors';
 import { backend, type GitPR, type GitPRAction, type GitPRList } from '../api';
 import { CopyPrompt } from '../planning/PromptParts';
 import type { ConfirmRequest } from './Confirm';
@@ -14,22 +13,20 @@ const MERGE_TONE: Record<string, Tone> = { konfliktfrei: 'ok', Konflikt: 'error'
 interface Props {
   /** Aktueller Branch; von develop/main und ohne Branch gibt es kein „PR anlegen“. */
   branch: string;
+  /** null: noch nicht geladen. Die Seite lädt sie mit „Laden“ und nach jeder Aktion. */
+  list: GitPRList | null;
   act: (task: Promise<string>) => Promise<void>;
   confirm: (r: ConfirmRequest) => void;
 }
 
-/** Offene PRs gegen develop mit CI- und Merge-Stand; anlegen, mergen, per Squash mergen, schließen. */
-export function PrsCard({ branch, act, confirm }: Props) {
-  const [list, setList] = useState<GitPRList | null>(null);
-  const load = useCallback(() => backend.gitPRs().then(setList, (e: unknown) => setList({ prs: [], error: errorText(e) })), []);
-  useEffect(() => void load(), [load]);
-  const doAct = (task: Promise<string>) => act(task).then(load);
+/** Dritter Schritt des Ablaufs: offene PRs gegen develop mit CI- und Merge-Stand; anlegen, mergen, schließen. */
+export function PrsCard({ branch, list, act, confirm }: Props) {
   const ask = (pr: GitPR, action: GitPRAction) => confirm({
     title: action === 'close' ? `PR #${pr.number} schließen?` : `PR #${pr.number} ${action === 'squash' ? 'per Squash ' : ''}mergen?`,
     text: `„${pr.title}“ (${pr.head} → develop). Den Branch räumt danach die Branch-Liste auf.`,
     action: action === 'close' ? 'Schließen' : action === 'squash' ? 'Squash-Merge' : 'Mergen',
     danger: action === 'close',
-    run: () => void doAct(backend.gitPRAction(pr.number, action)),
+    run: () => void act(backend.gitPRAction(pr.number, action)),
   });
   const prs = list?.prs ?? [];
   return (
@@ -37,7 +34,6 @@ export function PrsCard({ branch, act, confirm }: Props) {
       <header className="git-head">
         <Text weight="bold">Pull Requests gegen develop <Text color="gray" size="1">({prs.length} offen)</Text></Text>
         <Flex gap="2" align="center">
-          <ActionButton size="1" variant="soft" onClick={load}>Aktualisieren</ActionButton>
           {prs.length > 0 && <><Text size="1" color="gray">Alle prüfen:</Text><CopyPrompt prompt={reviewAllPrsPrompt(prs)} what="Alle PRs prüfen und mergen" /></>}
         </Flex>
       </header>
@@ -49,7 +45,7 @@ export function PrsCard({ branch, act, confirm }: Props) {
         </Table.Root>
       )}
       {list && !list.error && prs.length === 0 && <Text size="2" color="gray">Keine offenen PRs.</Text>}
-      <CreatePr branch={branch} create={(title, body) => doAct(backend.gitPRCreate(title, body).then((url) => `PR angelegt: ${url}`))} />
+      <CreatePr branch={branch} create={(title, body) => act(backend.gitPRCreate(title, body).then((url) => `PR angelegt: ${url}`))} />
     </section>
   );
 }

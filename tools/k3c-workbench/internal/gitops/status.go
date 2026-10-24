@@ -119,15 +119,16 @@ func parseStatus(out string) Status {
 		case strings.HasPrefix(l, "? "):
 			s.Changes = append(s.Changes, Change{Path: l[2:], Code: "?"})
 		case len(l) > 2 && (l[0] == '1' || l[0] == '2' || l[0] == 'u') && l[1] == ' ':
-			s.Changes = append(s.Changes, parseEntry(l))
+			s.Changes = append(s.Changes, parseEntry(l)...)
 		}
 	}
 	s.UpstreamGone = s.Upstream != "" && !hasAB
 	return s
 }
 
-// parseEntry liest eine Zeile 1 (geändert), 2 (umbenannt/kopiert) oder u (Konflikt).
-func parseEntry(l string) Change {
+// parseEntry liest eine Zeile 1 (geändert), 2 (umbenannt/kopiert) oder u (Konflikt). Eine Datei mit Änderungen im
+// Index (X) und im Working Tree (Y) liefert zwei Einträge: einmal gestaged, einmal nicht.
+func parseEntry(l string) []Change {
 	fields := map[byte]int{'1': 8, '2': 9, 'u': 10}[l[0]] // Felder vor dem Pfad
 	parts := strings.SplitN(l, " ", fields+1)
 	path := parts[len(parts)-1]
@@ -136,12 +137,25 @@ func parseEntry(l string) Change {
 	}
 	xy := parts[1]
 	if l[0] == 'u' {
-		return Change{Path: path, Code: "U"}
+		return []Change{{Path: path, Code: "U"}}
 	}
+	var out []Change
 	if xy[0] != '.' {
-		return Change{Path: path, Code: string(xy[0]), Staged: true}
+		out = append(out, Change{Path: path, Code: string(xy[0]), Staged: true})
 	}
-	return Change{Path: path, Code: string(xy[1])}
+	if xy[1] != '.' {
+		out = append(out, Change{Path: path, Code: string(xy[1])})
+	}
+	return out
+}
+
+// changedFiles zählt Dateien, nicht Einträge (gestaged und ungestaged zählt einmal).
+func changedFiles(c []Change) int {
+	seen := map[string]bool{}
+	for _, x := range c {
+		seen[x.Path] = true
+	}
+	return len(seen)
 }
 
 func parseStashes(out string) []Stash {
@@ -188,7 +202,7 @@ func shortHash(h string) string {
 func advise(s Status) []string {
 	var a []string
 	if len(s.Changes) > 0 {
-		a = append(a, fmt.Sprintf("%d geänderte Dateien committen oder stashen", len(s.Changes)))
+		a = append(a, fmt.Sprintf("%d geänderte Dateien committen oder stashen", changedFiles(s.Changes)))
 	}
 	switch {
 	case s.Branch == "":

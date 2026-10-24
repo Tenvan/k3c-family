@@ -9,7 +9,7 @@
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
 - **Spec:** freigegeben
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** 2026-10-24 🧑 Chat (Mock bestätigt, Umsetzung beauftragt)
 
 ## Ausgangslage
@@ -39,6 +39,10 @@ einem Klick, passend zur Arbeitsweise (`develop` als Basis, ein PR je Sprint, Sq
 - Fetch, Pull (nur Fast-Forward), Push (mit Upstream, nie Force), Stash anlegen und letzten Stash zurückholen.
 - PRs: offene PRs gegen `develop` mit CI- und Merge-Stand; anlegen (aktueller Branch), mergen, per Squash mergen,
   schließen; Prompt „Beheben“ für PRs mit roter CI oder Konflikt.
+- Reihenfolge des Ablaufs (Rev. 2, 🧑 2026-10-24): geänderte Dateien getrennt nach gestaged und nicht gestaged,
+  dann Commit-Status (mit den Dateien der Commits seit develop), dann PRs, dann Branches.
+- Gelesen wird beim ersten Öffnen des Reiters, danach nur über einen Knopf „Neu laden“ (und nach einer eigenen Aktion);
+  ein Reiterwechsel lädt nicht neu.
 - Alle Git- und gh-Aufrufe laufen ohne Shell mit festen Argumenten; Namen und Nummern aus der Oberfläche werden geprüft.
 
 ## Nicht-Ziele
