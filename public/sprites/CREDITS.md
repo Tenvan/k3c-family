@@ -3,7 +3,7 @@
 Die Nicht-kommerziell-Lizenz des Projekts (`LICENSE`) gilt **nicht** für diese Fremdwerke; sie behalten ihre Lizenz. Die Danksagung im Spiel steht auf `lizenzen.html` und muss mit dieser Datei übereinstimmen.
 
 Die Figuren stehen unter **CC0 1.0** (gemeinfrei), Namensnennung ist nicht nötig, aber erwünscht.
-Ausnahme sind die LPC-Reittiere unten: **CC-BY 3.0**, dort ist die Namensnennung Pflicht.
+Ausnahme sind die LPC-Reittiere unten sowie `lpc-beetle` und `crystal-golem`: **CC-BY 3.0** (bzw. OGA-BY 3.0), dort ist die Namensnennung Pflicht.
 
 Unsere Seite stammt von **LuizMelo**. Übernommen wurden nur `Idle`, `Run` und `Attack1`,
 umbenannt in `idle.png`, `run.png` und `attack.png`.
@@ -37,7 +37,11 @@ von `run.png`. Bezogen über die Sammlung https://github.com/series-ai/jam-ready
 |---|---|---|---|---|
 | hell-hound, ghost, fire-skull, demon, nightmare, gothic-hero, wolf | Gothicvania Patreon's Collection | ansimuz | CC0 1.0 | https://opengameart.org/content/gothicvania-patreons-collection |
 | cemetery-skeleton, cemetery-skeleton-clothed, hell-gato, cemetery-hero, cemetery-ghost | Gothicvania Cemetery | ansimuz | CC0 1.0 | https://opengameart.org/content/gothicvania-cemetery-pack |
-| iron-beetle, crystal-spider | Eigene Arbeit (`tools/spritegen`, deterministisch erzeugt, DB32) | K3C | CC0 1.0 | https://github.com/tenvan/k3c-family |
+| crystal-spider | Eigene Arbeit (`tools/spritegen`, deterministisch erzeugt, DB32) | K3C | CC0 1.0 | https://github.com/tenvan/k3c-family |
+| fire-slime | Fire Slime Monster Variations DB32 (Remix von Spring Spring) | ImogiaGames | CC0 1.0 | https://opengameart.org/content/fire-slime-monster-variations-db32 |
+| lpc-beetle | LPC Beetle | Stephen „Redshrike“ Challener | CC-BY 3.0 / OGA-BY 3.0 (Namensnennung Pflicht) | https://opengameart.org/content/lpc-beetle |
+| eye-rock | Animated Walk-Cycle Monsters (Hijabi, Eman Quest) | Night Blade | CC0 1.0 | https://opengameart.org/content/animated-walk-cycle-monsters-hijabi-from-eman-quest |
+| crystal-golem | Golem animations | irmirx | CC-BY 3.0 (Namensnennung Pflicht) | https://opengameart.org/content/golem-animations |
 
 ## Reittiere
 
@@ -57,3 +61,5 @@ Bezogen über https://github.com/hckr/endless-horse-run (LPC Horses) und https:/
 Der Rappe ist das braune Pferd, im Spiel dunkel eingefärbt.
 
 Welche Figur wofür steht, steht in `data/sprites.json`. Ansehen: Asset-Studio (Seiten Grafik, Monarch und Gegner).
+
+Bearbeitet (GR7.3): `fire-slime`, `lpc-beetle` und `eye-rock` sind Ausschnitte der Originalbilder (Zeile bzw. Frames, Magenta-Hintergrund transparent), `crystal-golem` ist aus den Einzelbildern (idle-walk, attack) auf 30 % verkleinert und zu Streifen zusammengesetzt; `idle` und `run` des Golems sind dieselben Bilder.
