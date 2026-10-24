@@ -57,7 +57,7 @@ keine. Entschieden (🧑, 2026-10-24): Jedes Gerät darf einen Raum schließen, 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BD9.1 | `BD9.1-server-welt-schliessen.md` | Umsetzung | autonom | offen |
+| BD9.1 | `BD9.1-server-welt-schliessen.md` | Umsetzung | autonom | in Arbeit |
 | BD9.2 | `BD9.2-lobby-pause-anzeige.md` | Umsetzung | autonom | offen |
 | BD9.3 | `BD9.3-review.md` | Review | autonom | offen |
 | BD9.4 | `BD9.4-abnahme-pc.md` | Workshop | Mensch | offen |

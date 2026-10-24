@@ -1,6 +1,6 @@
 # BD9.1 · Server: Welt in der Raumliste und Raum schließen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
