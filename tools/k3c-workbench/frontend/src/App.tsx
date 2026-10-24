@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { backend, type McpState } from './api';
 import { HeaderRight, LABELS, PAGES, type Page } from './Header';
 import { loadPref, savePref } from './lib/prefs';
+import { GitPage } from './git/GitPage';
 import { McpPage } from './mcp/McpPage';
 import { MonitoringPage } from './monitoring/MonitoringPage';
 import { PlanningPage } from './planning/PlanningPage';
@@ -37,7 +38,7 @@ export function App() {
     savePref('app.page', next);
   };
 
-  // Dienste, Tasks und Monitoring bleiben eingehängt (Zustand, laufende Ansichten); Planung und MCP bauen sich bei jedem
+  // Dienste, Tasks, Git und Monitoring bleiben eingehängt (Zustand, laufende Ansichten); Planung und MCP bauen sich bei jedem
   // Wechsel neu auf und laden dabei frisch. forceMount hält den Inhalt, hidden und display verbergen ihn.
   const keep = (v: Page) => ({ forceMount: true as const, hidden: page !== v, style: page === v ? undefined : { display: 'none' } });
 
@@ -53,6 +54,9 @@ export function App() {
       </Tabs.Content>
       <Tabs.Content value="planung">
         <PlanningPage />
+      </Tabs.Content>
+      <Tabs.Content value="git" {...keep('git')}>
+        <GitPage active={page === 'git'} />
       </Tabs.Content>
       <Tabs.Content value="mcp">
         <McpPage />

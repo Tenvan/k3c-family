@@ -4,7 +4,7 @@
 - **Projekt:** BED
 - **Domäne:** SRV
 - **Reife:** Entwurf
-- **Tickets:** B-580, B-581
+- **Tickets:** B-604, B-581
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Aus der Abnahme BD5.4 (Ralf, 2026-10-24, PC): Die Welt im Pausenmenü ist zu klein, in der Lobby fehlt die Welt bei Spielständen, und offene Räume lassen sich nicht schließen (B-580, B-581).
+Aus der Abnahme BD5.4 (Ralf, 2026-10-24, PC): Die Welt im Pausenmenü ist zu klein, in der Lobby fehlt die Welt bei Spielständen, und offene Räume lassen sich nicht schließen (B-604, B-581).
 
 ## Ziel
 
@@ -24,7 +24,7 @@ Spielende; Agent in SRV und CLI; 🧑 entscheidet die offene Frage zu B-581 und 
 
 ## Anforderungen
 
-B-580 › Anforderungen, B-581 › Anforderungen.
+B-604 › Anforderungen, B-581 › Anforderungen.
 
 ## Nicht-Ziele
 
@@ -44,8 +44,8 @@ Mitspieler noch verbunden → Rückfrage nennt es. Spielstand ohne Welt → Plat
 
 ## Akzeptanzkriterien
 
-- **AC-01** Das Pausenmenü zeigt die Welt in größerer Schrift (B-580/AC-01).
-- **AC-02** Jeder Spielstand der Lobby nennt seine Welt (B-580/AC-02).
+- **AC-01** Das Pausenmenü zeigt die Welt in größerer Schrift (B-604/AC-01).
+- **AC-02** Jeder Spielstand der Lobby nennt seine Welt (B-604/AC-02).
 - **AC-03** Entfernen auf einem offenen Raum bietet „Schließen“; danach lässt sich der Stand löschen (B-581/AC-01, B-581/AC-02).
 - **AC-04** Ralf hat AC-01 bis AC-03 am PC abgenommen.
 

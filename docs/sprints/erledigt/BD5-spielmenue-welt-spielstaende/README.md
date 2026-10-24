@@ -78,4 +78,4 @@ Autonom entschieden (Ralf: „autonom abarbeiten“), im Nachgang zu bestätigen
 ## Abnahme
 
 2026-10-22 (BD5.3, autonom): AC-01 (BD5.1, Go-Tests) und AC-02 (BD5.2, Vitest + Browser-Pane) erfüllt. Prüfungen: check, check:go grün, check:race ohne C-Compiler übersprungen. Reviewer: keine schweren Befunde, Rotations-Hinweis in `docs/protocol.md` ergänzt.
-2026-10-24 (BD5.4, Ralf am PC): AC-03 erfüllt. Abweichungen als Tickets: B-580 (Welt größer im Pausenmenü, Welt bei jedem Spielstand), B-581 (offenen Raum schließen). Entscheidungen B-533, B-534 gelten (von Ralf nicht beanstandet).
+2026-10-24 (BD5.4, Ralf am PC): AC-03 erfüllt. Abweichungen als Tickets: B-604 (Welt größer im Pausenmenü, Welt bei jedem Spielstand), B-581 (offenen Raum schließen). Entscheidungen B-533, B-534 gelten (von Ralf nicht beanstandet).

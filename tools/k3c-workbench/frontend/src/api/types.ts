@@ -1,4 +1,6 @@
+export type * from './typesGit';
 export type * from './typesResources';
+import type { GitBackend } from './typesGit';
 import type { ResourceView } from './typesResources';
 
 // Backend-Vertrag der Oberfläche (B-064 › Backend-Vertrag). Go-Seite: tools/k3c-workbench/app.go.
@@ -448,7 +450,7 @@ export interface Events {
 
 export type EventName = keyof Events;
 
-export interface Backend {
+export interface Backend extends GitBackend {
   /** true ohne Wails-Laufzeit: erfundene Daten, Badge `Mock`. */
   readonly mock: boolean;
   info(): Promise<Info>;

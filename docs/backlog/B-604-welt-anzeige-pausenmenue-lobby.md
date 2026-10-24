@@ -1,4 +1,4 @@
-# B-580 · Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby
+# B-604 · Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby
 
 - **Domäne:** CLI
 - **Typ:** Problem

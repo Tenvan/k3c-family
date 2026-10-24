@@ -86,6 +86,14 @@ export function httpBackend(): Backend {
     worktreeCheck: () => rpc('WorktreeCheck'),
     openInClaude: (prompt) => rpc('OpenInClaude', prompt),
     studioOpen: () => rpc('StudioOpen'),
+    gitOverview: () => rpc('GitOverview'),
+    gitAction: (action) => rpc('GitAction', action),
+    gitDeleteBranches: (names, remote) => rpc('GitDeleteBranches', names, remote),
+    gitPRs: () => rpc('GitPRs'),
+    gitPRCreate: (title, body) => rpc('GitPRCreate', title, body),
+    gitPRAction: (number, action) => rpc('GitPRAction', number, action),
+    gitCheckMerged: (names) => rpc('GitCheckMerged', names),
+    gitStamp: () => rpc('GitStamp'),
     openUrl: (url) => {
       window.open(url, '_blank', 'noopener');
     },
