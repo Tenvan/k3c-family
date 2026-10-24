@@ -18,7 +18,7 @@ Balancing-Läufe starten bisher über Claude und MCP (`sim_test`, `sim_run`, `in
 
 ## Ziel
 
-Eine Seite führt Balancing-Simulationen aus und zeigt Berichte, ohne dass Claude oder Internet nötig sind.
+Eine Seite führt Balancing-Simulationen für Kampf und Wirtschaft aus und zeigt Berichte, ohne dass Claude oder Internet nötig sind; Werte lassen sich automatisch gegen die Zielkorridore abstimmen.
 
 ## Beteiligte und Zielgruppen
 
@@ -37,7 +37,7 @@ Ralf (Balancing und Spieleabende, Projekt BAL); Agent DEV.
 
 ## Nicht-Ziele
 
-Neue Balancing-Regeln und Zielkorridore (BAL4–BAL7); Client-Lasttests mit Browsern (`k3c-load`, TST).
+Neue Balancing-Regeln und Zielkorridore selbst (BAL4–BAL7; die Seite prüft gegen sie); Client-Lasttests mit Browsern (`k3c-load`, TST).
 
 ## Regeln und Einschränkungen
 
@@ -67,4 +67,4 @@ keine. Entschieden (🧑, 2026-10-24): Seite in der Workbench; Kennzahlen nach B
 
 ## Notizen
 
-Aus Ralfs Wunsch 2026-10-24. Spec: Entwurf. Sprint WZ28. Zusammenhang: B-589 (BAL7), B-348.
+Aus Ralfs Wunsch 2026-10-24; Ergänzung 2026-10-24: **Die Wirtschaft gehört ausdrücklich dazu** (Rohstoff-Fluss, Gold-Bilanz, Kosten und Bauzeiten, Hub-Ausbau, Lager, Bürger und Berufe, Händler). Kennzahlen und Korridore der Wirtschaft aus `docs/rules/wirtschaft.md` und `zielkorridore.md`; Sweep und automatische Suche gelten für Wirtschafts-Werte (z. B. Kosten in `data/buildings.json`, `data/hub.json`, Holz je Baum) genauso wie für Kampf-Werte. Spec: Entwurf. Sprint WZ28. Zusammenhang: B-589 (BAL7), B-348.

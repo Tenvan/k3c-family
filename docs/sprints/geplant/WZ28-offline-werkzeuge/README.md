@@ -16,7 +16,7 @@ Ralf (2026-10-24): Die Grafik-Seite zeigt zu wenig zu den Slots (B-594); er muss
 
 ## Ziel
 
-Slot-Details auf der Grafik-Seite, ein Ticket-Button ohne KI auf jeder Seite von Workbench und Studio und eine Balancing-Seite mit Berichten, alles ohne Internet und ohne Claude. Am Ende sichtbar: Notebook ohne Netz legt Tickets an und fährt einen Balancing-Lauf mit Bericht.
+Slot-Details auf der Grafik-Seite, ein Ticket-Button ohne KI auf jeder Seite von Workbench und Studio und eine Balancing-Seite für Kampf und Wirtschaft mit Berichten und automatischem Abstimmen der Werte, alles ohne Internet und ohne Claude. Am Ende sichtbar: Notebook ohne Netz legt Tickets an und fährt einen Balancing-Lauf mit Bericht.
 
 ## Beteiligte und Zielgruppen
 
@@ -73,9 +73,9 @@ keine. Entschieden (🧑, 2026-10-24): nächste freie Ticket-Nummer genügt (Ral
 - WZ28.1 (DEV) Slot-Details im Studio: Backend-Aufbereitung aus Atlas, `sprites.json`, `assets.json`, Zuordnung; Detailbereich (AC-01).
 - WZ28.2 (DEV) Ticket-Baustein: Go-Paket zum Anlegen nach Vorlage, `TicketButton` und Dialog in `@webkit`, Kontext-Provider (AC-02).
 - WZ28.3 (DEV) Einbau des Ticket-Buttons in alle Seiten von Workbench und Studio, Seitenliste-Test (AC-03).
-- WZ28.4 (DEV) Balancing-Backend ohne MCP: Lauf starten, Status, Abbruch, Warteschlange, Berichte speichern, Wert-Varianten, neue Kennzahlen (AC-04, AC-05).
+- WZ28.4 (DEV) Balancing-Backend ohne MCP für Kampf und Wirtschaft: Lauf starten, Status, Abbruch, Warteschlange, Berichte speichern, Wert-Varianten, neue Kennzahlen (Kampf und Wirtschaft) (AC-04, AC-05).
 - WZ28.5 (DEV) Balancing-Seite in der Workbench: Konfiguration, Fortschritt, Bericht mit Diagrammen, Vergleich, Export (AC-05).
-- WZ28.6 (DEV) Automatisches Balancing: Parameter-Sweep, Suche gegen die Zielkorridore, Vorschlag mit Diff und Begründung, Seite dazu (AC-06).
+- WZ28.6 (DEV) Automatisches Balancing für Kampf- und Wirtschafts-Werte: Parameter-Sweep, Suche gegen die Zielkorridore, Vorschlag mit Diff und Begründung, Seite dazu (AC-06).
 - WZ28.7 (DEV) Review und Offline-Nachweis: Test, dass keine externen Anfragen entstehen (AC-07).
 - WZ28.8 (Mensch) Abnahme am Notebook ohne Internet (AC-08).
 
