@@ -16,9 +16,9 @@ describe('Einträge', () => {
 });
 
 describe('Auswahl', () => {
-  it('springt nicht über die Enden', () => {
-    expect(moveOption(0, -1)).toBe(0);
-    expect(moveOption(OPTION_IDS.length - 1, 1)).toBe(OPTION_IDS.length - 1);
+  it('läuft am Ende zum Anfang und umgekehrt', () => {
+    expect(moveOption(0, -1)).toBe(OPTION_IDS.length - 1);
+    expect(moveOption(OPTION_IDS.length - 1, 1)).toBe(0);
     expect(moveOption(2, 1)).toBe(3);
     expect(moveOption(2, 0)).toBe(2);
   });

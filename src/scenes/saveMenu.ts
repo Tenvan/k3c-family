@@ -54,7 +54,7 @@ export class DeleteDialog {
   }
 
   move(dir: number): void {
-    if (this.target !== null) this.index = Math.max(0, Math.min(DELETE_CHOICES.length - 1, this.index + dir));
+    if (this.target !== null) this.index = (this.index + dir + DELETE_CHOICES.length) % DELETE_CHOICES.length;
   }
 
   /** Bestätigt die gewählte Zeile (oder `row` beim Tippen): Name zum Löschen oder null (abgebrochen); schließt die Rückfrage */

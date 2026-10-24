@@ -116,7 +116,7 @@ export function lobbyEntries(rooms: readonly RoomInfo[], status: Status = 'lobby
 }
 
 export function moveSelection(selected: number, dir: number, count: number): number {
-  return Math.max(0, Math.min(count - 1, selected + dir));
+  return count <= 0 ? 0 : (((selected + dir) % count) + count) % count; // am Ende weiter zum Anfang und umgekehrt
 }
 
 export function entryLabel(e: LobbyEntry, save: string): string {

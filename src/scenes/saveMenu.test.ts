@@ -25,7 +25,10 @@ describe('Spielstände im Spielmenü (BD5.2, B-506/AC-02)', () => {
 
     d.toggle('nord');
     d.move(1);
-    d.move(1); // bleibt auf der letzten Zeile
+    expect(d.selected).toBe(1);
+    d.move(1); // läuft zum Anfang zurück
+    expect(d.selected).toBe(0);
+    d.move(-1); // und umgekehrt
     expect(d.selected).toBe(1);
     expect(d.confirm()).toBe('nord');
     expect(d.open).toBe(false);

@@ -33,9 +33,9 @@ const VOLUMES = { music: 'musicVolume', sfx: 'sfxVolume', ambient: 'ambientVolum
 
 export type OptionDir = 'left' | 'right' | 'confirm';
 
-/** Auswahl bewegt sich um `dir` (-1/0/1) und springt nicht über die Enden. */
+/** Auswahl bewegt sich um `dir` (-1/0/1) und springt am Ende zum Anfang und umgekehrt. */
 export function moveOption(selected: number, dir: number, count = OPTION_IDS.length): number {
-  return Math.max(0, Math.min(count - 1, selected + dir));
+  return count <= 0 ? 0 : (((selected + dir) % count) + count) % count;
 }
 
 export interface OptionResult {
@@ -127,7 +127,7 @@ export function removeLabel(settings: Settings, targets: readonly number[], choi
 }
 
 /** Auswahl des Ziels mit links/rechts, ohne über die Enden zu springen */
-export const stepChoice = (choice: number, dir: OptionDir, count: number): number => (dir === 'confirm' ? choice : moveOption(choice, dir === 'left' ? -1 : 1, count));
+export const stepChoice = (choice: number, dir: OptionDir, count: number): number => (dir === 'confirm' ? choice : Math.max(0, Math.min(count - 1, choice + (dir === 'left' ? -1 : 1))));
 
 /** Tippen: linkes Drittel der Zeile = links, rechtes Drittel = rechts, Mitte = bestätigen. */
 export function tapDir(x: number, width: number): OptionDir {
