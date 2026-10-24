@@ -31,6 +31,11 @@ const SWITCHES = { screenshake: 'screenshake', flash: 'flash', colorblind: 'colo
 /** Regler-Einträge → Feld der Einstellungen (ein Regler je Bus) */
 const VOLUMES = { music: 'musicVolume', sfx: 'sfxVolume', ambient: 'ambientVolume' } as const;
 
+/** Überträgt die Lautstärken der Einstellungen auf die laufenden Busse (der Mixer liest sie nur beim Start; ohne diesen Schritt greifen die Regler im Spiel nicht). */
+export function syncVolumes(settings: Settings, core: { setVolume(bus: 'music' | 'sfx' | 'ambient', percent: number): void }): void {
+  for (const [bus, field] of Object.entries(VOLUMES) as ['music' | 'sfx' | 'ambient', keyof Settings][]) core.setVolume(bus, settings[field] as number);
+}
+
 export type OptionDir = 'left' | 'right' | 'confirm';
 
 /** Auswahl bewegt sich um `dir` (-1/0/1) und springt am Ende zum Anfang und umgekehrt. */
