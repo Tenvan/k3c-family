@@ -46,7 +46,7 @@ func get(t *testing.T, h http.Handler, method, path string) *httptest.ResponseRe
 
 func TestSiteHandlerPublicBeforeDist(t *testing.T) {
 	h := siteHandler(fixture(t))
-	cases := map[string]string{"/bild.png": "aus public", "/beide.txt": "public gewinnt", "/nur-dist.txt": "aus dist", "/studio/": "studio"}
+	cases := map[string]string{"/bild.png": "aus public", "/beide.txt": "public gewinnt", "/nur-dist.txt": "aus dist", "/studio/": "studio", "/studio/bild.png": "aus public", "/studio/nur-dist.txt": "aus dist"} // relative Adressen der Oberfläche (audio/…, grafik/…) landen unter /studio/
 	for path, want := range cases {
 		rec := get(t, h, http.MethodGet, path)
 		if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), want) {
