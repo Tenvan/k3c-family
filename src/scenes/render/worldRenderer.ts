@@ -6,6 +6,7 @@ import { type BackWall, backWalls } from './backWallRules';
 import { createBackWallView, updateBackWallView } from './backWallView';
 import { BuergerView } from './citizenView';
 import { createRider, updateRider } from './mountView';
+import { createMineSign, showsMineSign } from './mineSignView';
 import { campSprite, nodeSprite } from './natureSprites';
 import { objectImage } from './objectView';
 import { PENNANT_MAX_HEIGHT, markerOf, noteMarkers, pennantColor } from './pennant';
@@ -261,12 +262,14 @@ export class WorldRenderer {
     const top = -Math.min(sprite ? sprite.displayHeight : PLACEHOLDER_NODE_HEIGHT, PENNANT_MAX_HEIGHT);
     const pole = s.add.rectangle(10, top - 2, 3, 30, 0xffffff);
     const pennant = s.add.triangle(11, top - 12, 0, 0, 26, 7, 0, 14, pennantColor(undefined)).setOrigin(0, 0.5).setStrokeStyle(1, 0x000000, 0.5);
-    const view = s.add.container(n.x * U, G, [...parts, pole, pennant, ...bar(s, top - 32, 50, 0xffd166)]);
+    const sign = createMineSign(s, n.kind, -24); // Abbau-Schild links am Fuß (B-588), Sichtbarkeit in updateNode
+    const view = s.add.container(n.x * U, G, [...parts, sign, pole, pennant, ...bar(s, top - 32, 50, 0xffd166)]);
     return pappel ? view.setDepth(PLANTATION_DEPTH) : view; // vor der Farm (Tiefe 2), wie der Setzling
   }
 
   private updateNode(v: View, n: ResourceNode): void {
     const i = v.length - 4;
+    (v.getAt(i - 1) as View).setVisible(showsMineSign(n));
     (v.getAt(i) as Phaser.GameObjects.Rectangle).setVisible(n.marked);
     (v.getAt(i + 1) as Phaser.GameObjects.Triangle).setVisible(n.marked).setFillStyle(pennantColor(markerOf(n, this.markers)));
     setBar(v, i + 2, n.progress, n.progress > 0);

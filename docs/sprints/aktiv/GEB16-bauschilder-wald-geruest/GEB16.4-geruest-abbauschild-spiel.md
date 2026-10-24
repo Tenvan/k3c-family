@@ -1,6 +1,6 @@
 # GEB16.4 · Gerüst im Bau und Abbau-Schilder im Spiel
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -50,5 +50,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 und AC-04 (Spiel): umgesetzt.
+  - Im Bau steht das Gerüst der passenden Klasse, nie zugleich mit dem Schild (`scaffoldView.ts`). Fehlt die Grafik, zeichnet der Client eine einfache Form. Der Fortschritt ist ein Balken über dem Gerüst.
+  - Abbau-Schild bei `minable` (`mineSignView.ts`): Axt am Baum, Spitzhacke an Fels, Erz und Ader, Busch ohne Symbol.
+- Geprüft mit `task check` (grün), Vitest 2708 und oxlint ohne Fehler.
+- Abweichung: Das Abbau-Schild gab es noch nicht, es ist neu als Brett am Fuß des Knotens. Im Spiel ist nichts geprüft (AC-05, Ralf).
