@@ -565,3 +565,4 @@ Zeile in diesen Abschnitt.
 | [B-105](archiv/B-105-anlegen-dialog-optionen.md) | CLI | Idee | mittel | erledigt | K5 | Der Anlegen-Dialog der Lobby wählt Grad, Ziel und Niederlage-Modus |
 | [B-107](archiv/B-107-debug-panel-gradwechsel.md) | CLI | Idee | mittel | erledigt | K5 | Ein Debug-Panel im Dev-Mode wechselt den Schwierigkeitsgrad und weitere Optionen |
 | [B-098](archiv/B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | erledigt | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
+| [B-607](archiv/B-607-studio-levelview-test-golden-dichter-wald.md) | DEV | Problem | hoch | verworfen | – | Der Studio-Test levelView erwartet die Baum-Zahl vor dem dichten Wald |

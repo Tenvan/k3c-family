@@ -1,6 +1,6 @@
 # KB2.2 · Raum speichert nach „Komplett verloren“ nicht über den letzten Spielstand
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -12,41 +12,43 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Nach „Komplett verloren“ (`Island.Over`) schreibt der Raum keinen Spielstand mehr; der zuletzt gespeicherte Stand bleibt Byte für Byte gleich (B-344).
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+`engine/sim/island_defeat.go` setzt bei Niederlage-Modus `lost` `Island.Over = true` und meldet `gameOver`; `StepIsland` ändert danach nichts mehr. `engine/room/saver.go` speichert über `save()` (Stufenwechsel, Verlassen, Abbruch) und `saveNow()` (Aufräumen des leeren Raums, Herunterfahren); `Room.SaveNow` (Diagnose, B-088) schreibt direkt. Alle drei Wege brauchen den Riegel. Spielstand-Format bleibt (v5).
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-
-- `pfad/…`
+- `engine/room/saver.go`, `engine/room/room.go` (nur `SaveNow`)
+- `engine/room/gameover_save_test.go` (neu)
+- `engine/room/codemap.md`
 
 ## Nicht-Ziele
 
-Was in dieser Session ausdrücklich **nicht** passiert.
+Anzeige des Endes (K5), Neustart nach Game Over, Protokollfeld für `gameOver` (K4), Änderungen in `engine/sim/`. Offene Frage aus B-344 (Raum sofort schließen?) bleibt: Default „Raum bleibt offen, bis alle gegangen sind“.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Riegel `r.isl.Over` in `save()`, `saveNow()` und `SaveNow` (Fehler `ErrGameOver`), Log 🚫.
+2. Test: Stand vor Game Over bleibt bei Verlassen, Aufräumen und Herunterfahren gleich; ohne vorherigen Stand entsteht keine Datei.
+3. `task check:diff`, Reviewer parallel.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-02: `go test ./engine/room -run GameOver` grün: Datei nach `Island.Over` bei Verlassen, Aufräumen und Herunterfahren unverändert, ohne vorherigen Stand keine Datei, Log mit 🚫.
+- [ ] `task check:diff` grün (bekannte rote Studio-Tests: B-606).
 
 ## Prüfen
 
 ```bash
-task check
+go test ./engine/room -run GameOver
+task check:diff
 ```
-
-Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑 sie für diesen Lauf freigegeben hat.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-02** umgesetzt: Riegel `gameOver` in `save`, `saveNow` und `SaveNow` (`ErrGameOver`, Log 🚫); Stände von vor dem Game Over schreibt die Schreib-Goroutine noch. Geprüft: `gameover_save_test.go` (Verlassen, Abbruch, Diagnose, Aufräumen, Herunterfahren; ohne vorherigen Stand keine Datei), `go test ./engine/room ./engine/net ./engine/store` grün, `golangci-lint` 0 Befunde.
+- `task check:diff` rot außerhalb des Diffs: `engine/*` zieht die Frontends von Workbench, Studio und Starter mit, im Worktree fehlen deren `node_modules` (TS2307 `react`); bekannte rote Studio-Tests B-606. `task check:go` im Zeitlimit, einziger Fehler `engine/devrun` `TestStopBrichtBeiZweitemSignalAb` (Wanduhr unter Last, B-284), einzeln grün.
+- Review (Sonnet): keine schweren Befunde. Hinweis: `afterDisconnect` loggt nach Game Over weiter „💾 Raum leer und pausiert, speichert“ (folgenlos, nicht in den Erlaubten Dateien).
+- Offene Frage B-344 mit Default entschieden: Raum bleibt nach Game Over offen, bis alle gegangen sind. `POST /api/status/save` antwortet nach Game Over mit 500 „Spielstand nicht gesichert“ (kein eigener Protokoll-Code).

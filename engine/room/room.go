@@ -38,6 +38,8 @@ var (
 	ErrSaveInUse    = errors.New("save_in_use") // Spielstand in einem Raum mit verbundenem Gerät offen (B-424)
 	// ErrWorldUnknown: Welt unbekannt, Welt-ID oder Welt-Datei ungültig (welten.md § 5/6); Protokoll-Code world_unknown (WZ18.5).
 	ErrWorldUnknown = errors.New("world_unknown")
+	// ErrGameOver: Die Insel ist komplett verloren, der Raum speichert nicht mehr (B-344); kein Protokoll-Code.
+	ErrGameOver = errors.New("game_over")
 )
 
 // Zustände eines Monarchen.
@@ -296,6 +298,9 @@ func (r *Room) SaveNow() (backup string, err error) {
 		return "", ErrClosed
 	}
 	r.flush()
+	if r.gameOver() {
+		return "", ErrGameOver
+	}
 	data, err := r.encode()
 	if err != nil {
 		return "", err
