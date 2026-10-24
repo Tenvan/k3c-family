@@ -15,6 +15,7 @@ import (
 
 	"k3c/engine/conlog"
 	"k3c/engine/devrun"
+	"k3c/tools/assetkit/browser"
 )
 
 // devGrace ist die Frist, in der das Kind nach dem Stopp-Signal seine Räume speichern darf (engineSaveWait plus Luft).
@@ -24,8 +25,9 @@ const devGrace = 10 * time.Second
 const listenWait = 5 * time.Second
 
 // runHeadless ist das Studio ohne Fenster (`-headless`): Backend und eingebettete Engine auf Loopback, bis zum Signal.
-// Der Port ist fest (K3C_STUDIO_PORT, Standard 8091), denn Vite leitet /api genau dorthin (K3C_STUDIO_API).
-func runHeadless(root, port string) error {
+// Der Port ist fest (K3C_STUDIO_PORT, Standard 8091), denn Vite leitet /api genau dorthin (K3C_STUDIO_API). Die gebaute
+// Oberfläche steht wie im Fenster unter /studio/ (`task k3c-studio:web`, B-614); open öffnet sie im Browser (-open).
+func runHeadless(root, port string, open bool) error {
 	log := slog.New(conlog.New(os.Stderr, slog.LevelInfo, conlog.Color()))
 	ln, err := devrun.Listen("tcp", net.JoinHostPort("127.0.0.1", port), listenWait)
 	if err != nil {
@@ -35,6 +37,12 @@ func runHeadless(root, port string) error {
 	defer stop()
 	a := &app{root: root, ln: ln, url: windowURL(ln.Addr().String()), ready: make(chan struct{}), log: log}
 	a.startup(ctx)
+	log.Info("🚀 Oberfläche bereit", "ns", "main", "url", a.url)
+	if open {
+		if err := browser.Open(a.url); err != nil {
+			log.Warn("🚫 Browser nicht geöffnet", "ns", "main", "url", a.url, "err", err)
+		}
+	}
 	<-ctx.Done()
 	log.Info("🛑 Asset-Studio beendet", "ns", "main")
 	a.stopServer()
