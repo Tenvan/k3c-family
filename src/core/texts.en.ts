@@ -142,6 +142,7 @@ export const en: Record<TextKey, string> = {
   'hub.levelShort': 'Hub {n}',
   'hub.upgrade': 'Hub level {n} → {next}: {cost}',
   'hub.upgradeShort': 'Hub {n}→{next}: {cost}',
+  'hub.offer': 'Upgrade',
   // Citizens (W6.1): limit, professions, merchant
   'limit.text': 'Fighters {n} of {max}',
   'limit.full': 'Fighters {n} of {max}: limit reached',

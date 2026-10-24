@@ -210,7 +210,7 @@ export class WorldRenderer {
     this.projectiles.sync(world.projectiles);
     this.citizens.sync(world);
     this.warn.sync(world);
-    updateCastleView(this.scene, this.castle, world); // Burg wächst mit Hub-Stufe und Ausbau-Stand (GEB4 AC-05, GEB11)
+    updateCastleView(this.scene, this.castle, world, this.priceTags.has(world.castle.id)); // Burg wächst mit Hub-Stufe und Ausbau-Stand (GEB4 AC-05, GEB11), Ausbau-Schild (B-591)
     setBar(this.castleHp, 0, world.castle.hp / world.castle.maxHp, world.castle.hp < world.castle.maxHp);
   }
 

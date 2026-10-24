@@ -151,6 +151,7 @@ export const de = {
   'hub.levelShort': 'Hub {n}',
   'hub.upgrade': 'Hub-Stufe {n} → {next}: {cost}',
   'hub.upgradeShort': 'Hub {n}→{next}: {cost}',
+  'hub.offer': 'Ausbauen',
   // Bürger (W6.1): Limit, Berufe, Händler
   'limit.text': 'Kämpfer {n} von {max}',
   'limit.full': 'Kämpfer {n} von {max}: Limit erreicht',

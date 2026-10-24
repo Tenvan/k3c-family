@@ -10,6 +10,8 @@ import { damageTint, drawDamage, drawRubble } from './damageView';
 import { fontStyle } from './fontRules';
 import { gateStage } from './gateRules';
 import { hubLookOf } from './hubGrowth';
+import { offersHubUpgrade } from './priceTagRules';
+import { hubWait } from '../hud/economyLabels';
 import { drawSiteStatus, siteStatus, statusKey } from './siteStatusView';
 import { canAfford } from './viewRules';
 
@@ -66,18 +68,45 @@ export function prepareBuildings(scene: Phaser.Scene): void {
 
 const has = (scene: Phaser.Scene, key: string | null): key is string => key !== null && scene.textures.exists(key);
 
-/** Burg (GEB4, GEB11): Bild des Looks und Baugerüst davor, Unterkante am Boden, mittig auf `x`; Inhalt setzt `updateCastleView` */
+/** Burg (GEB4, GEB11): Bild des Looks und Baugerüst davor, Unterkante am Boden, mittig auf `x`; darüber das Ausbau-Schild (B-591) */
 export function createCastleView(scene: Phaser.Scene, x: number): View {
   const picture = scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 1).setVisible(false);
   const scaffold = scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 1).setVisible(false);
-  return scene.add.container(x, G, [picture, scene.add.graphics(), scaffold]);
+  const label = scene.add.text(0, 0, '', { ...TEXT, ...fontStyle('priceTag') }).setOrigin(0.5, 1);
+  return scene.add.container(x, G, [picture, scene.add.graphics(), scaffold, scene.add.graphics(), label]);
+}
+
+type CastleWorld = Pick<World, 'hubLevel' | 'hubUpgrade' | 'danger' | 'stock'>;
+
+/**
+ * Ausbau-Schild über der Burg (B-591): `near` (nächstes Preisschild eines Spielers, `priceTagRules.ts`) zeigt Gold und
+ * Material aus `hubUpgrade`; läuft der Ausbau schon (`hubUpgrade.state`), steht der Wartegrund statt des Angebots.
+ */
+function updateCastleSign(v: View, world: CastleWorld, near: boolean): void {
+  const up = world.hubUpgrade;
+  const wait = hubWait(world, false);
+  const picture = v.getAt(0) as Phaser.GameObjects.Image;
+  const h = picture.visible ? picture.displayHeight : 290;
+  const key = [near, up?.gold, up?.paid, statusKey(wait), canAfford(world.stock, up?.material ?? {}), currentLanguage(), h].join('|');
+  if (v.getData('sign') === key) return;
+  v.setData('sign', key);
+  const g = (v.getAt(3) as Phaser.GameObjects.Graphics).clear();
+  const label = (v.getAt(4) as Phaser.GameObjects.Text).setText('');
+  if (wait) drawSiteStatus(g, label, wait, t('hub.offer'), -h - 20);
+  else if (up && near && offersHubUpgrade(world)) drawPrice(g, label, world, -h - 20, up.gold, up.paid, t('hub.offer'), up.material);
 }
 
 /**
  * Tauscht die Burg-Grafik, wenn sich der Look der Wachstumsreihe ändert (`hubLookOf`: Hub-Stufe und Ausbau-Stand, GEB11); fehlt die
  * Grafik des Looks, die Burg der Hub-Stufe, sonst die bisherige Form. Das Gerüst steht, solange ein Bauer den Ausbau baut.
+ * Danach das Ausbau-Schild (`near`: Preisschild steht, B-591).
  */
-export function updateCastleView(scene: Phaser.Scene, v: View, world: Pick<World, 'hubLevel' | 'hubUpgrade' | 'danger'>): void {
+export function updateCastleView(scene: Phaser.Scene, v: View, world: CastleWorld, near = false): void {
+  drawCastle(scene, v, world);
+  updateCastleSign(v, world, near);
+}
+
+function drawCastle(scene: Phaser.Scene, v: View, world: CastleWorld): void {
   const look = hubLookOf(world);
   const stage = `${look.id}-${look.stufe}-${look.scaffold}`;
   if (v.getData('stage') === stage) return;
@@ -189,7 +218,7 @@ function drawBuiltPlaceholder(g: Phaser.GameObjects.Graphics, s: Site, w: number
 }
 
 /** Münz-Slots (K2C): gefüllt = bezahlt. Baumaterial steht darüber. */
-function drawPrice(g: Phaser.GameObjects.Graphics, label: Phaser.GameObjects.Text, world: World, y: number, total: number, paid: number, name: string, cost: Record<string, number | undefined>): void {
+function drawPrice(g: Phaser.GameObjects.Graphics, label: Phaser.GameObjects.Text, world: Pick<World, 'stock'>, y: number, total: number, paid: number, name: string, cost: Record<string, number | undefined>): void {
   const perRow = 10;
   for (let i = 0; i < total; i++) {
     const row = Math.floor(i / perRow);
@@ -199,7 +228,7 @@ function drawPrice(g: Phaser.GameObjects.Graphics, label: Phaser.GameObjects.Tex
     g.lineStyle(2, 0xffd166).strokeCircle(cx, cy, 8);
     if (i < paid) g.fillStyle(0xffd166).fillCircle(cx, cy, 8);
   }
-  const material = (['wood', 'stone', 'copper'] as const).filter((r) => cost[r]).map((r) => `${cost[r]} ${resourceName(r)}`);
+  const material = (['wood', 'stone', 'copper', 'iron', 'crystal'] as const).filter((r) => cost[r]).map((r) => `${cost[r]} ${nameOf('res', r, r)}`); // Eisen, Kristall: Hub-Ausbau (B-591)
   const enough = canAfford(world.stock, cost);
   label.setPosition(0, y - Math.ceil(total / perRow) * 22).setText([name, ...material].join(' · ')).setColor(enough ? '#ffffff' : '#ff8fa3');
 }
