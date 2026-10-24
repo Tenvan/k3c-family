@@ -56,6 +56,24 @@ func (a *App) GitDeleteBranches(names []string, remote bool) (string, error) {
 	return msg, err
 }
 
+// GitCheckMerged prüft Branches gründlich auf Squash-Merges (gemergter PR, merge-tree, Squash-Patch) und liefert die
+// Branch-Liste neu (Binding); names leer = alle ungeprüften. Ohne gh prüft git allein.
+func (a *App) GitCheckMerged(names []string) ([]gitops.Branch, error) {
+	a.wait()
+	var prs []gitops.MergedPR
+	if heads, err := a.gh.Merged(a.ctx); err == nil {
+		for _, h := range heads {
+			prs = append(prs, gitops.MergedPR{Number: h.Number, Head: h.Head, SHA: h.SHA})
+		}
+	} else if a.log != nil {
+		a.log.Warn("❌ Gemergte PRs nicht gelesen, prüfe nur mit git", "ns", "main", "fehler", err.Error())
+	}
+	if err := a.git.Check(a.ctx, names, prs); err != nil {
+		return nil, err
+	}
+	return a.git.Branches(a.ctx)
+}
+
 // GitPRs liefert die offenen PRs gegen develop (Binding); ein Fehler von gh steht in Error.
 func (a *App) GitPRs() github.PRList {
 	a.wait()

@@ -84,7 +84,18 @@ func byName(t *testing.T, list []Branch) map[string]Branch {
 
 func TestBranchesErkenntSquashUndGone(t *testing.T) {
 	r, _ := setup(t)
-	list, err := r.Branches(context.Background())
+	ctx := context.Background()
+	before, err := r.Branches(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if sq := byName(t, before)["squash"]; sq.State != StateOpen || sq.Checked || sq.Deletable {
+		t.Fatalf("ohne Prüfung: %+v", sq) // die teure Prüfung läuft nur auf Knopfdruck
+	}
+	if err := r.Check(ctx, nil, nil); err != nil {
+		t.Fatal(err)
+	}
+	list, err := r.Branches(ctx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -94,7 +105,6 @@ func TestBranchesErkenntSquashUndGone(t *testing.T) {
 		deletable          bool
 	}{
 		{"develop", StateBase, TrackSync, false}, // ausgecheckt, aber Basis geht vor
-
 		{"main", StateBase, TrackSync, false},
 		{"squash", StateSquash, TrackGone, true},
 		{"merged", StateMerged, TrackNone, true},
@@ -107,14 +117,56 @@ func TestBranchesErkenntSquashUndGone(t *testing.T) {
 				got.Deletable, c.state, c.track, c.deletable)
 		}
 	}
-	if b["offen"].BaseAhead != 1 {
-		t.Errorf("offen: BaseAhead = %d", b["offen"].BaseAhead)
+	if b["offen"].BaseAhead != 1 || !b["offen"].Checked {
+		t.Errorf("offen: %+v", b["offen"])
+	}
+}
+
+// Sammel-PR: develop bekam den Branch zusammen mit anderem in einem Squash und änderte die Datei danach weiter.
+// git allein erkennt das nicht (merge-tree Konflikt, Squash-Patch anders), der gemergte PR mit gleichem Head schon.
+func TestCheckErkenntSammelPR(t *testing.T) {
+	r, work := setup(t)
+	ctx := context.Background()
+	sh(t, work, "checkout", "-q", "-b", "viapr")
+	commit(t, work, "a.txt", "2")
+	sha := sh(t, work, "rev-parse", "HEAD")
+	sh(t, work, "checkout", "-q", "develop")
+	sh(t, work, "merge", "-q", "--squash", "viapr")
+	if err := os.WriteFile(filepath.Join(work, "anderes.txt"), []byte("x"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	sh(t, work, "add", "anderes.txt")
+	sh(t, work, "commit", "-q", "-m", "Sammel-PR (#9)")
+	commit(t, work, "a.txt", "3")
+	sh(t, work, "push", "-q", "origin", "develop")
+	sh(t, work, "fetch", "-q")
+
+	if err := r.Check(ctx, []string{"viapr"}, nil); err != nil {
+		t.Fatal(err)
+	}
+	list, _ := r.Branches(ctx)
+	if v := byName(t, list)["viapr"]; v.State != StateOpen || !v.Checked || v.Deletable {
+		t.Fatalf("nur git: %+v", v)
+	}
+	prs := []MergedPR{{Number: 3, Head: "anderer", SHA: sha}, {Number: 9, Head: "viapr", SHA: sha}}
+	if err := r.Check(ctx, []string{"viapr"}, prs); err != nil {
+		t.Fatal(err)
+	}
+	list, _ = r.Branches(ctx)
+	if v := byName(t, list)["viapr"]; v.State != StateSquash || v.PR != 9 || !v.Deletable {
+		t.Fatalf("mit PR: %+v", v)
 	}
 }
 
 func TestDeleteNurGemergte(t *testing.T) {
 	r, work := setup(t)
 	ctx := context.Background()
+	if _, err := r.Delete(ctx, []string{"squash"}, false); err == nil {
+		t.Fatal("ungeprüfter Squash-Branch darf nicht löschbar sein")
+	}
+	if err := r.Check(ctx, nil, nil); err != nil {
+		t.Fatal(err)
+	}
 	for _, names := range [][]string{{"offen"}, {"develop"}, {"main"}, {"gibtsnicht"}, {"-D"}, {"squash", "offen"}} {
 		if _, err := r.Delete(ctx, names, false); err == nil {
 			t.Errorf("Delete(%v) muss scheitern", names)

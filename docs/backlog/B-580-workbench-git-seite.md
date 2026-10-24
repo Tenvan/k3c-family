@@ -9,7 +9,7 @@
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
 - **Spec:** freigegeben
-- **Revision:** 2
+- **Revision:** 3
 - **Freigabe:** 2026-10-24 🧑 Chat (Mock bestätigt, Umsetzung beauftragt)
 
 ## Ausgangslage
@@ -43,6 +43,10 @@ einem Klick, passend zur Arbeitsweise (`develop` als Basis, ein PR je Sprint, Sq
   dann Commit-Status (mit den Dateien der Commits seit develop), dann PRs, dann Branches.
 - Gelesen wird beim ersten Öffnen des Reiters, danach nur über einen Knopf „Neu laden“ (und nach einer eigenen Aktion);
   ein Reiterwechsel lädt nicht neu.
+- Rev. 3 (🧑 2026-10-24): Die Dateien der Commits seit develop erscheinen erst per Knopf. Squash-Merges prüft die Seite
+  nur auf Knopfdruck (alle ungeprüften oder je Zeile), weil das je Branch dauert: gemergter PR mit dem Branch als Head
+  (auch Sammel-PRs), sonst merge-tree, sonst Squash-Patch; ohne Prüfung heißt ein Branch „ungeprüft“. Markieren lässt
+  sich jeder lokale Branch außer Basis, aktuellem und Worktree; gelöscht werden nur die gemergten, der Prompt nimmt alle.
 - Alle Git- und gh-Aufrufe laufen ohne Shell mit festen Argumenten; Namen und Nummern aus der Oberfläche werden geprüft.
 
 ## Nicht-Ziele

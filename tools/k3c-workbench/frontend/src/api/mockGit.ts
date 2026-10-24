@@ -7,19 +7,29 @@ function mockBranches(): GitBranch[] {
   const now = Math.floor(Date.now() / 1000);
   const branch = (b: Partial<GitBranch> & Pick<GitBranch, 'name' | 'state'>): GitBranch => ({
     remote: false, upstream: `origin/${b.name}`, sha: '0123456789abcdef', track: 'synchron', ahead: 0, behind: 0, baseAhead: 0, baseBehind: 0,
-    date: now - DAY, subject: '', deletable: b.state === 'gemergt' || b.state === 'squash', reason: '', ...b,
+    date: now - DAY, subject: '', deletable: b.state === 'gemergt' || b.state === 'squash', reason: '', checked: true, pr: 0, ...b,
   });
   return [
     branch({ name: 'feat/git-seite', state: 'aktuell', track: 'voraus', ahead: 1, baseAhead: 1, subject: 'feat(dev): Git-Seite', date: now - 600, reason: 'ausgecheckt' }),
     branch({ name: 'develop', state: 'basis', subject: 'Neun Sprints (#451)', reason: 'develop und main bleiben' }),
     branch({ name: 'main', state: 'basis', track: 'zurück', behind: 275, baseBehind: 275, subject: 'M8 (#106)', date: now - 40 * DAY, reason: 'develop und main bleiben' }),
-    branch({ name: 'sprint/bd2', state: 'squash', track: 'gone', baseAhead: 4, baseBehind: 61, subject: 'docs(bd2): Review', date: now - 12 * DAY }),
+    branch({ name: 'sprint/bd2', state: 'squash', pr: 431, track: 'gone', baseAhead: 4, baseBehind: 61, subject: 'docs(bd2): Review', date: now - 12 * DAY }),
+    branch({ name: 'w11-lauf', state: 'ungemergt', checked: false, track: 'zurück', behind: 24, baseAhead: 1, baseBehind: 70, subject: 'feat(srv): Bauplätze (W11.2)', date: now - 18 * DAY, reason: 'ungeprüft: erst „Prüfen“' }),
     branch({ name: 'sprint/gr8', state: 'squash', track: 'gone', baseAhead: 3, baseBehind: 80, subject: 'docs(cli): Review GR8', date: now - 15 * DAY }),
     branch({ name: 'k4-weiter-arbeit', state: 'gemergt', track: 'gone', baseBehind: 120, subject: 'feat(srv): Raum tauscht die Insel', date: now - 20 * DAY }),
-    branch({ name: 'backup/wz19-alt', state: 'ungemergt', track: 'auseinander', ahead: 18, behind: 26, baseAhead: 18, baseBehind: 90, subject: 'docs(dev): WZ19.1', date: now - 25 * DAY, reason: 'nicht in develop' }),
+    branch({ name: 'backup/wz19-alt', state: 'ungemergt', checked: false, track: 'auseinander', ahead: 18, behind: 26, baseAhead: 18, baseBehind: 90, subject: 'docs(dev): WZ19.1', date: now - 25 * DAY, reason: 'ungeprüft: erst „Prüfen“' }),
     branch({ name: 'sprint/gr9', state: 'worktree', track: 'gone', baseAhead: 2, subject: 'docs(cli): GR10', date: now - 9 * DAY, reason: 'in einem Worktree ausgecheckt' }),
     branch({ name: 'sprint/k5', state: 'ungemergt', remote: true, upstream: '', track: 'nur remote', baseAhead: 4, baseBehind: 38, subject: 'feat(cli): Debug-Overlay (K5.3)', date: now - 3 * DAY, reason: 'nur remote' }),
   ];
+}
+
+/** Prüfung im Mock: w11-lauf hängt an PR #427, alle anderen ungeprüften bleiben ungemergt (jetzt geprüft). */
+function checkMock(branches: GitBranch[], names: string[]): GitBranch[] {
+  return branches.map((b) => {
+    if (b.remote || b.state !== 'ungemergt' || (names.length > 0 ? !names.includes(b.name) : b.checked)) return b;
+    if (b.name === 'w11-lauf') return { ...b, state: 'squash', pr: 427, checked: true, deletable: true, reason: '' };
+    return { ...b, checked: true, reason: 'nicht in develop' };
+  });
 }
 
 /** Erfundener Stand für `?mock=1` und Tests: ein Feature-Branch mit ungepushtem Commit, gemergte und offene Branches,
@@ -66,6 +76,11 @@ export function mockGit(): GitBackend {
       if (bad.length > 0) throw new Error(`nicht gelöscht: ${bad.join(', ')}`);
       branches = branches.filter((b) => !names.includes(b.name));
       return `${names.length} Branches gelöscht`;
+    },
+    gitCheckMerged: async (names) => {
+      await new Promise((r) => setTimeout(r, 300));
+      branches = checkMock(branches, names);
+      return branches;
     },
     gitPRs: async () => ({ prs, fetched: new Date().toISOString() }),
     gitPRCreate: async (title) => {

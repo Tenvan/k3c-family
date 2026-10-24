@@ -77,6 +77,32 @@ func ParseOpen(b []byte) ([]OpenPR, error) {
 	return list, nil
 }
 
+// MergedHead ist ein gemergter PR mit seinem letzten Commit; die Seite Git erkennt daran Squash-Merges.
+type MergedHead struct {
+	Number int    `json:"number"`
+	Head   string `json:"headRefName"`
+	SHA    string `json:"headRefOid"`
+}
+
+// Nur PRs nach develop: ein PR in einen Sprint- oder Feature-Branch bringt nichts nach develop.
+var mergedArgs = []string{"gh", "pr", "list", "--state", "merged", "--base", "develop", "--limit", "500", "--json",
+	"number,headRefName,headRefOid"}
+
+// Merged liest die letzten 500 nach develop gemergten PRs (eine Abfrage für alle Branches).
+func (c *Client) Merged(ctx context.Context) ([]MergedHead, error) {
+	ctx, cancel := context.WithTimeout(ctx, 2*timeout)
+	defer cancel()
+	out, err := c.run(ctx, c.root, mergedArgs)
+	if err != nil {
+		return nil, errors.New(hint(err))
+	}
+	var list []MergedHead
+	if err := json.Unmarshal(out, &list); err != nil {
+		return nil, fmt.Errorf("gh pr list: %w", err)
+	}
+	return list, nil
+}
+
 // Create legt einen PR von head nach develop an und liefert seine Adresse.
 func (c *Client) Create(ctx context.Context, head, title, body string) (string, error) {
 	title = strings.TrimSpace(title)

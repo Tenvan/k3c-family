@@ -92,6 +92,7 @@ export function httpBackend(): Backend {
     gitPRs: () => rpc('GitPRs'),
     gitPRCreate: (title, body) => rpc('GitPRCreate', title, body),
     gitPRAction: (number, action) => rpc('GitPRAction', number, action),
+    gitCheckMerged: (names) => rpc('GitCheckMerged', names),
     openUrl: (url) => {
       window.open(url, '_blank', 'noopener');
     },

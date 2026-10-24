@@ -1,4 +1,5 @@
-import { Code, Text } from '@webkit/atoms';
+import { useState } from 'react';
+import { Button, Code, Flex, Text } from '@webkit/atoms';
 import { Table } from '@webkit/organisms';
 import type { GitChange, GitDiffFile } from '../api';
 
@@ -43,14 +44,20 @@ function ChangeList({ title, list }: { title: string; list: GitChange[] }) {
   );
 }
 
-/** Dateien der Commits seit develop (das, was ein PR zeigen würde); Teil des Commit-Status. */
+/** Dateien der Commits seit develop (das, was ein PR zeigen würde); Teil des Commit-Status, aufgeklappt nur per Knopf. */
 export function DiffList({ base, files }: { base: string; files: GitDiffFile[] }) {
+  const [open, setOpen] = useState(false);
   const added = files.reduce((n, f) => n + f.added, 0);
   const deleted = files.reduce((n, f) => n + f.deleted, 0);
   return (
     <>
-      <Text size="1" color="gray" as="p" mt="2">Commits seit {base}: {files.length} Dateien, +{added} −{deleted}</Text>
-      {files.length > 0 && (
+      <Flex gap="2" align="center" mt="2">
+        <Text size="1" color="gray">Commits seit {base}: {files.length} Dateien, +{added} −{deleted}</Text>
+        {files.length > 0 && (
+          <Button size="1" variant="ghost" onClick={() => setOpen((o) => !o)}>{open ? 'Dateien ausblenden' : 'Dateien zeigen'}</Button>
+        )}
+      </Flex>
+      {open && files.length > 0 && (
         <Table.Root size="1" className="git-table">
           <Table.Body>
             {files.map((f) => (

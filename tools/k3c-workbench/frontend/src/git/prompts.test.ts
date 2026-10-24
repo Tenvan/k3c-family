@@ -10,7 +10,7 @@ vi.mock('../api', () => ({ backend: {} }));
 // B-580/AC-03: Prompts nennen die betroffenen Branches bzw. PRs und die Regeln des Repos.
 
 const br = (b: Partial<GitBranch> & Pick<GitBranch, 'name' | 'state'>): GitBranch => ({
-  remote: false, upstream: '', sha: '', track: 'fehlt', ahead: 0, behind: 0, baseAhead: 0, baseBehind: 0, date: 0, subject: '',
+  remote: false, upstream: '', sha: '', checked: true, pr: 0, track: 'fehlt', ahead: 0, behind: 0, baseAhead: 0, baseBehind: 0, date: 0, subject: '',
   deletable: b.state === 'gemergt' || b.state === 'squash', reason: '', ...b,
 });
 

@@ -30,6 +30,21 @@ func TestParseOpen(t *testing.T) {
 	}
 }
 
+func TestMerged(t *testing.T) {
+	c, calls := fake(`[{"number":431,"headRefName":"sprint/bd2","headRefOid":"abc"}]`, nil)
+	got, err := c.Merged(context.Background())
+	if err != nil || !reflect.DeepEqual(got, []MergedHead{{Number: 431, Head: "sprint/bd2", SHA: "abc"}}) {
+		t.Fatalf("Merged = %+v, %v", got, err)
+	}
+	if !reflect.DeepEqual((*calls)[0], mergedArgs) || !strings.Contains(strings.Join(mergedArgs, " "), "--base develop") {
+		t.Fatalf("Argumente = %q (nur PRs nach develop zählen)", (*calls)[0])
+	}
+	bad, _ := fake("", errors.New("boom"))
+	if _, err := bad.Merged(context.Background()); err == nil {
+		t.Fatal("Fehler von gh muss durchkommen")
+	}
+}
+
 // fake merkt sich die Argumente und antwortet mit out bzw. err; `gh pr view` beantwortet view (Stand des PRs).
 func fake(out string, err error) (*Client, *[][]string) {
 	return fakeView(out, err, `{"state":"OPEN","baseRefName":"develop","headRefOid":"abc123"}`)

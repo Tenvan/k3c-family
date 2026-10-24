@@ -49,6 +49,16 @@ export function GitPage({ active }: { active: boolean }) {
     }
     await load();
   };
+  // Die Prüfung liefert nur die Branch-Liste neu; der übrige Stand bleibt, bis jemand „Neu laden“ drückt.
+  const check = async (names: string[]) => {
+    try {
+      const branches = await backend.gitCheckMerged(names);
+      setView((v) => (v ? { ...v, branches } : v));
+      setResult({ ok: true, text: names.length === 1 ? `${names[0]} geprüft` : 'Branches geprüft' });
+    } catch (e) {
+      setResult({ ok: false, text: errorText(e) });
+    }
+  };
   return (
     <div className="git-page">
       <Flex gap="3" align="center">
@@ -63,7 +73,7 @@ export function GitPage({ active }: { active: boolean }) {
           <FilesCard changes={view.status.changes} />
           <StatusCard status={view.status} files={view.files} run={(a: GitAction) => act(backend.gitAction(a))} confirm={setAsk} />
           <PrsCard branch={view.status.branch} list={prs} act={act} confirm={setAsk} />
-          <BranchesCard branches={view.branches} remove={(names, remote) => act(backend.gitDeleteBranches(names, remote))} confirm={setAsk} />
+          <BranchesCard branches={view.branches} remove={(names, remote) => act(backend.gitDeleteBranches(names, remote))} check={check} confirm={setAsk} />
         </>
       )}
       <Confirm request={ask} onClose={() => setAsk(null)} />

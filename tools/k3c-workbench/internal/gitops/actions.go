@@ -117,11 +117,13 @@ func (r *Repo) deleteAll(ctx context.Context, names []string, byName map[string]
 			}
 			res.remote = append(res.remote, n)
 		}
-		// -D statt -d: nach einem Squash-Merge hält git den Branch für ungemergt; geprüft hat Delete selbst.
-		if _, err := r.git(ctx, "branch", "-D", n); err != nil {
+		// update-ref mit erwartetem Hash statt branch -D: kam seit der Prüfung ein Commit dazu, scheitert das Löschen.
+		// (-d prüft „gemergt“ nur gegen Vorfahren und lehnt Squash-Merges ab; geprüft hat Delete selbst.)
+		if _, err := r.git(ctx, "update-ref", "-d", "refs/heads/"+n, b.SHA); err != nil {
 			res.failed = append(res.failed, n+": "+err.Error())
 			continue
 		}
+		_, _ = r.git(ctx, "config", "--remove-section", "branch."+n) // Upstream-Eintrag; fehlt er, ist es gleich
 		res.local = append(res.local, n+" ("+shortHash(b.SHA)+")")
 	}
 	if len(res.failed) > 0 {
@@ -137,11 +139,18 @@ func (r *Repo) deleteRemote(ctx context.Context, b Branch) error {
 	if !ok || !ValidBranch(up) || protected(up) {
 		return fmt.Errorf("upstream %q wird nicht gelöscht", b.Upstream)
 	}
-	ahead, _, measured := r.aheadBehind(ctx, b.Upstream, baseRemote)
-	if !measured || (ahead > 0 && !r.squashed(ctx, b.Upstream)) {
-		return errors.New("origin hat Commits, die develop fehlen; nichts gelöscht")
+	seen, err := r.git(ctx, "rev-parse", "--verify", "--quiet", b.Upstream)
+	if err != nil {
+		return errors.New("der Stand von origin ist unbekannt; nichts gelöscht")
 	}
-	_, err := r.git(ctx, "push", "origin", "--delete", up)
+	if b.PR == 0 || seen != b.SHA { // über einen gemergten PR geprüft: origin darf nur genau diesen Stand haben
+		ahead, _, measured := r.aheadBehind(ctx, b.Upstream, baseRemote)
+		if in, _ := r.squashed(ctx, b.Upstream); !measured || (ahead > 0 && !in) {
+			return errors.New("origin hat Commits, die develop fehlen; nichts gelöscht")
+		}
+	}
+	// Lease auf den zuletzt gesehenen Stand: hat seit dem letzten Fetch jemand nachgepusht, lehnt origin ab.
+	_, err = r.git(ctx, "push", "--force-with-lease=refs/heads/"+up+":"+seen, "origin", "--delete", up)
 	return err
 }
 

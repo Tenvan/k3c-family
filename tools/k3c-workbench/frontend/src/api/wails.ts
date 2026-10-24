@@ -1,7 +1,7 @@
 import type {
   Backend, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, McpCall, McpOverview,
   McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData, WorktreeDiff,
-  GitPRList, GitView,
+  GitBranch, GitPRList, GitView,
 } from './types';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
@@ -49,6 +49,7 @@ interface GoApp {
   GitPRs(): Promise<GitPRList>;
   GitPRCreate(title: string, body: string): Promise<string>;
   GitPRAction(number: number, action: string): Promise<string>;
+  GitCheckMerged(names: string[]): Promise<GitBranch[]>;
 }
 
 interface WailsRuntime {
@@ -114,6 +115,7 @@ export function wailsBackend(): Backend {
     gitPRs: () => app.GitPRs(),
     gitPRCreate: (title, body) => app.GitPRCreate(title, body),
     gitPRAction: (number, action) => app.GitPRAction(number, action),
+    gitCheckMerged: (names) => app.GitCheckMerged(names),
     openUrl: (url) => runtime.BrowserOpenURL(url),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),

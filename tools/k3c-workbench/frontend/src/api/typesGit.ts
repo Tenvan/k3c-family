@@ -51,6 +51,10 @@ export interface GitBranch {
   baseAhead: number;
   baseBehind: number;
   state: GitBranchState;
+  /** Merge-Zustand sicher (Vorfahre oder geprüft); falsch: „ungemergt“ ist nur vermutet. */
+  checked: boolean;
+  /** Gemergter PR, an dem der Branch hängt (nach gitCheckMerged), 0 = keiner. */
+  pr: number;
   sha: string;
   /** Unix-Sekunden des letzten Commits. */
   date: number;
@@ -102,6 +106,9 @@ export interface GitBackend {
   gitOverview(): Promise<GitView>;
   /** Nie mit Force; Push lehnt develop und main ab, Pull nur Fast-Forward. Antwort ist ein Satz zum Ergebnis. */
   gitAction(action: GitAction): Promise<string>;
+  /** Prüft gründlich auf Squash-Merges (gemergter PR, merge-tree, Squash-Patch); leer = alle ungeprüften. Dauert
+   *  je Branch einen Moment; Antwort ist die neue Branch-Liste. */
+  gitCheckMerged(names: string[]): Promise<GitBranch[]>;
   /** Löscht nur gemergte lokale Branches (Go prüft erneut); remote auch auf origin. */
   gitDeleteBranches(names: string[], remote: boolean): Promise<string>;
   gitPRs(): Promise<GitPRList>;

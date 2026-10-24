@@ -38,6 +38,7 @@ var uiMethods = map[string]bool{
 	"PlanningData": true, "PlanningDocs": true, "PlanningSet": true, "PlanningDoc": true, "PlanningGet": true,
 	"GitHubStatus": true, "WorktreeCheck": true, "OpenInClaude": true, "StudioOpen": true, "Resources": true,
 	"GitOverview": true, "GitAction": true, "GitDeleteBranches": true, "GitPRs": true, "GitPRCreate": true, "GitPRAction": true,
+	"GitCheckMerged": true,
 }
 
 // uiHandler beantwortet alle Adressen unter uiPrefix.

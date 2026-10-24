@@ -39,6 +39,8 @@ type Branch struct {
 	BaseAhead  int    `json:"baseAhead"`
 	BaseBehind int    `json:"baseBehind"`
 	State      string `json:"state"`
+	Checked    bool   `json:"checked"` // Merge-Zustand sicher (Vorfahre oder geprüft); falsch: ungemergt nur vermutet
+	PR         int    `json:"pr"`      // gemergter PR, an dem der Branch hängt (Check)
 	SHA        string `json:"sha"`
 	Date       int64  `json:"date"` // Unix-Sekunden des letzten Commits
 	Subject    string `json:"subject"`
@@ -115,7 +117,7 @@ func (r *Repo) branch(ctx context.Context, f ref, base, current string, wt map[s
 		b.Deletable, b.Reason = false, "Stand zu origin/develop unbekannt"
 		return b
 	default:
-		b.State = r.mergedState(ctx, target, f.sha, base, ahead)
+		b.State, b.PR, b.Checked = r.mergedState(f.sha, base, ahead)
 	}
 	b.Deletable, b.Reason = deletable(b)
 	return b
@@ -132,6 +134,8 @@ func deletable(b Branch) (bool, string) {
 		return false, "ausgecheckt"
 	case b.State == StateWorktree:
 		return false, "in einem Worktree ausgecheckt"
+	case b.State == StateOpen && !b.Checked:
+		return false, "ungeprüft: erst „Prüfen“"
 	case b.State == StateOpen:
 		return false, "nicht in develop"
 	}
