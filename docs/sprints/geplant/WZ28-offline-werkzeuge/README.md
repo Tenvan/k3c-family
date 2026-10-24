@@ -48,13 +48,14 @@ Atlas fehlt → Hinweis `task gen:atlas`. Backlog nicht beschreibbar → Eingabe
 - **AC-02** Gemeinsamer Ticket-Baustein und Backend legen Tickets nach Vorlage mit Seitenkontext an (B-595/AC-01, B-595/AC-03).
 - **AC-03** Der Ticket-Button steht auf allen Seiten von Workbench und Studio (B-595/AC-02).
 - **AC-04** Das Balancing-Backend startet, zeigt und bricht Läufe ab, auch mit Wert-Varianten (B-596/AC-01, B-596/AC-04).
-- **AC-05** Die Balancing-Seite konfiguriert Läufe, zeigt Fortschritt und Berichte, vergleicht und exportiert (B-596/AC-02, B-596/AC-03).
-- **AC-06** Alle drei Teile laufen ohne Netzwerk, geprüft per Test und ohne externe Anfragen (B-595/AC-04, B-596/AC-05).
-- **AC-07** Ralf hat Ticket-Button und Balancing-Seite am Notebook ohne Internet abgenommen.
+- **AC-05** Die Balancing-Seite in der Workbench konfiguriert Läufe, zeigt Fortschritt und Berichte, vergleicht und exportiert (B-596/AC-02, B-596/AC-03, B-596/AC-07).
+- **AC-06** Sweep und automatische Suche liefern Vorschläge mit Diff, ohne `data/` zu ändern (B-596/AC-06).
+- **AC-07** Alle drei Teile laufen ohne Netzwerk, geprüft per Test und ohne externe Anfragen (B-595/AC-04, B-596/AC-05).
+- **AC-08** Ralf hat Ticket-Button und Balancing-Seite am Notebook ohne Internet abgenommen.
 
 ## Offene Fragen
 
-1. Nummern-Kollision bei zwei Rechnern (B-595, Default: nächste freie Nummer). 2. Balancing-Seite in der Workbench (Default) oder im Studio (B-596). 3. Pflicht-Kennzahlen im Bericht (B-596, Default aus `zielkorridore.md`). Spec-Freigabe steht aus.
+keine. Entschieden (🧑, 2026-10-24): nächste freie Ticket-Nummer genügt (Ralf arbeitet allein), Balancing-Seite in der Workbench, Kennzahlen nach Bedarf, Schwerpunkt automatisiertes Balancing. Spec-Freigabe steht aus.
 
 ## Sessions
 
@@ -65,16 +66,18 @@ Atlas fehlt → Hinweis `task gen:atlas`. Backlog nicht beschreibbar → Eingabe
 | WZ28.3 | – | Umsetzung | autonom | offen |
 | WZ28.4 | – | Umsetzung | autonom | offen |
 | WZ28.5 | – | Umsetzung | autonom | offen |
-| WZ28.6 | – | Review | autonom | offen |
-| WZ28.7 | – | Workshop | Mensch | offen |
+| WZ28.6 | – | Umsetzung | autonom | offen |
+| WZ28.7 | – | Review | autonom | offen |
+| WZ28.8 | – | Workshop | Mensch | offen |
 
 - WZ28.1 (DEV) Slot-Details im Studio: Backend-Aufbereitung aus Atlas, `sprites.json`, `assets.json`, Zuordnung; Detailbereich (AC-01).
 - WZ28.2 (DEV) Ticket-Baustein: Go-Paket zum Anlegen nach Vorlage, `TicketButton` und Dialog in `@webkit`, Kontext-Provider (AC-02).
 - WZ28.3 (DEV) Einbau des Ticket-Buttons in alle Seiten von Workbench und Studio, Seitenliste-Test (AC-03).
-- WZ28.4 (DEV) Balancing-Backend ohne MCP: Lauf starten, Status, Abbruch, Berichte speichern, Wert-Varianten (AC-04).
-- WZ28.5 (DEV) Balancing-Seite: Konfiguration, Fortschritt, Bericht mit Diagrammen, Vergleich, Export (AC-05).
-- WZ28.6 (DEV) Review und Offline-Nachweis: Test, dass keine externen Anfragen entstehen (AC-06).
-- WZ28.7 (Mensch) Abnahme am Notebook ohne Internet (AC-07).
+- WZ28.4 (DEV) Balancing-Backend ohne MCP: Lauf starten, Status, Abbruch, Warteschlange, Berichte speichern, Wert-Varianten, neue Kennzahlen (AC-04, AC-05).
+- WZ28.5 (DEV) Balancing-Seite in der Workbench: Konfiguration, Fortschritt, Bericht mit Diagrammen, Vergleich, Export (AC-05).
+- WZ28.6 (DEV) Automatisches Balancing: Parameter-Sweep, Suche gegen die Zielkorridore, Vorschlag mit Diff und Begründung, Seite dazu (AC-06).
+- WZ28.7 (DEV) Review und Offline-Nachweis: Test, dass keine externen Anfragen entstehen (AC-07).
+- WZ28.8 (Mensch) Abnahme am Notebook ohne Internet (AC-08).
 
 ## Abnahme
 

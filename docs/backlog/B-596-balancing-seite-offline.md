@@ -26,12 +26,13 @@ Ralf (Balancing und Spieleabende, Projekt BAL); Agent DEV.
 
 ## Anforderungen
 
-- Neue Seite „Balancing“ in k3c-workbench (oder Studio, je nach Spec), Backend nutzt dieselbe Engine und dieselben Läufe wie `sim_test`/`sim_run` (`internal/balance`, `engine/sim`).
+- Neue Seite „Balancing“ in k3c-workbench (Entscheidung 🧑, 2026-10-24); Backend nutzt dieselbe Engine und dieselben Läufe wie `sim_test`/`sim_run` (`internal/balance`, `engine/sim`).
 - Lauf konfigurieren: Biom/Welt, Seeds oder Anzahl, Bot-Profil, Grad, Spieleranzahl, Tiefe, Dauer; gespeicherte Voreinstellungen.
-- Start, Fortschritt live, Abbruch; mehrere Läufe nacheinander; Läufe gehen im Hintergrund weiter.
-- Bericht je Lauf: Zielkorridor-Prüfung (Pass/Fail), Kennzahlen (Holz je Nacht, Hub-Stufen-Zeit, Verluste, Gold), Diagramme, Zeitreihen, Abweichung zu den Zielen aus `balance-targets.json`.
+- Start, Fortschritt live, Abbruch; mehrere Läufe nacheinander in einer Warteschlange; Läufe gehen im Hintergrund weiter.
+- Bericht je Lauf: Zielkorridor-Prüfung (Pass/Fail), Kennzahlen, Diagramme, Zeitreihen, Abweichung zu den Zielen aus `balance-targets.json`. Kennzahlen: die vorhandenen (Holz je Nacht, Hub-Stufen-Zeit, Verluste, Gold) plus neue, wo sie helfen (z. B. Rohstoff-Fluss je Rohstoff und Nacht, Zeit bis zur ersten Mauer/Werkstatt, Gold-Bilanz je Phase, Überlebensquote je Nacht und Grad, Anteil Wartezeit der Bauern). Der Agent legt sie nach Bedarf an und dokumentiert sie in `docs/rules/zielkorridore.md`.
 - Berichte speichern (Ordner `reports/` oder `.work/balance`), Liste, Vergleich zweier Läufe, Export als Markdown und JSON.
 - Werte-Varianten: einen Wert aus `data/` überschreiben (nur im Lauf, ohne Datei zu ändern) und Läufe vergleichen.
+- **Automatisches Balancing** (Schwerpunkt, Entscheidung 🧑: das Spiel ist weit, jetzt fehlt hauptsächlich möglichst automatisiertes Balancing): Parameter-Sweep über ein Raster von Werten, Bewertung gegen die Zielkorridore, automatische Suche (z. B. Bisektion/Raster) nach Werten, die alle Korridore treffen, und ein Vorschlag mit Begründung; Läufe ohne Eingriff in der Warteschlange (über Nacht). Der Vorschlag wird nie selbst in `data/` geschrieben, sondern als Diff zur Übernahme angeboten.
 - Läuft offline: keine externen Schriften, Skripte oder API-Aufrufe.
 
 ## Nicht-Ziele
@@ -57,10 +58,12 @@ Lauf bricht ab → Teilbericht mit Fehlermeldung. Ziele fehlen → Bericht ohne 
 - **AC-03** Berichte enthalten Korridor-Prüfung, Kennzahlen und Diagramme; sie lassen sich speichern, vergleichen und exportieren.
 - **AC-04** Wert-Varianten im Lauf, ohne Dateien zu ändern (Go-Test).
 - **AC-05** Ohne Netzwerk läuft alles (Test, Beobachtung am Notebook).
+- **AC-06** Parameter-Sweep und automatische Suche liefern einen Vorschlag mit Begründung und einem Diff, ohne `data/` zu ändern (Go-Test mit kleinem Szenario).
+- **AC-07** Neue Kennzahlen sind im Bericht und in `docs/rules/zielkorridore.md` beschrieben.
 
 ## Offene Fragen
 
-Welche Kennzahlen im Bericht Pflicht sind: Defaults aus `docs/rules/zielkorridore.md` und `balance-targets.json`; 🧑 ergänzt bei der Abnahme. Seite in Workbench (Default) oder Studio?
+keine. Entschieden (🧑, 2026-10-24): Seite in der Workbench; Kennzahlen nach Bedarf des Agenten, auch neue; Schwerpunkt automatisiertes Balancing.
 
 ## Notizen
 

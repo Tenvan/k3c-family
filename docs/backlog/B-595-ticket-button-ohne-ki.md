@@ -26,8 +26,8 @@ Ralf beim Testen unterwegs; Agent DEV; später arbeitet Claude die Tickets ab.
 
 ## Anforderungen
 
-- Ein Button „Ticket“ (immer sichtbar, Kopfzeile) öffnet einen Dialog: Titel, Beschreibung, Typ (Idee, Problem, Frage), Prio, Domäne (Vorgabe aus der Seite); Senden legt das Ticket mit der Ticket-Vorlage an (Nummer, Index) wie `plan_create`.
-- Seitenkontext wird automatisch eingetragen: App, Seite, ausgewählter Eintrag (z. B. Slot, Chunk, Lauf), Version, Zeit; optional Screenshot-Notiz als Text.
+- Ein Button „Ticket“ (immer sichtbar, Kopfzeile) öffnet einen Dialog: Titel, Beschreibung, Typ (Idee, Problem, Frage), Prio, Domäne (Vorgabe aus der Seite); Senden legt das Ticket mit der Ticket-Vorlage an (nächste freie Nummer, Index) wie `plan_create`.
+- Seitenkontext wird automatisch eingetragen: App, Seite, ausgewählter Eintrag (z. B. Slot, Chunk, Lauf), Version, Zeit.
 - Funktioniert offline: nur lokale Dateien, kein Netzwerk, kein Claude, kein MCP.
 - Gleicher Baustein in allen Wails-Apps über `@webkit` (Atomic Design), Backend über das gemeinsame Planungs-Paket.
 - Anzeige der zuletzt angelegten Tickets im Dialog; Ticket später in Planung bearbeitbar.
@@ -47,7 +47,7 @@ Auf der Grafik-Seite Slot `shardling` gewählt → Dialog mit Kontext „Studio 
 
 ## Ausnahme- und Fehlerfälle
 
-Backlog nicht beschreibbar → Fehlermeldung, Eingabe bleibt erhalten. Zwei Rechner vergeben dieselbe Nummer → Nummern-Kollision wird beim Zusammenführen erkannt (Planungstest), Dialog legt neue Tickets mit Hinweis „Nummer vorläufig“ an.
+Backlog nicht beschreibbar → Fehlermeldung, Eingabe bleibt erhalten.
 
 ## Akzeptanzkriterien
 
@@ -58,7 +58,7 @@ Backlog nicht beschreibbar → Fehlermeldung, Eingabe bleibt erhalten. Zwei Rech
 
 ## Offene Fragen
 
-Nummern-Kollision bei zwei Rechnern: vorläufige Nummer oder Rechnerkennung im Namen? Default: nächste freie Nummer, Kollision später per Planungstest beheben. 🧑 entscheidet.
+keine. Entschieden (🧑, 2026-10-24): Ralf arbeitet allein, der Stand ändert sich nur durch ihn; nächste freie Nummer genügt, keine Kollisionsbehandlung nötig.
 
 ## Notizen
 
