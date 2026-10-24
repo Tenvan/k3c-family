@@ -34,6 +34,15 @@ export async function playChoice(slot: PlaySlot, choice: PlayChoice, far = false
   return c.playFile(plan.url, plan.opts);
 }
 
+/** Spielt eine Zuordnung mit festem Pegel auf dem Bus „Effekte“ (Abstandsprobe, Lautheit); Atlas-Ton oder vorgeladene Datei. */
+export async function playAtGain(choice: PlayChoice, gain: number): Promise<boolean> {
+  const c = core();
+  await c.onInput();
+  if (!c.running) return false;
+  if (choice.sprite) return playSprite(choice.sprite, 'sfx', gain);
+  return (await c.preload(choice.datei)) && c.playSample(choice.datei, 'sfx', gain);
+}
+
 /** Stoppt Musik, Effekte und Umgebungsgeräusche (Knopf „Stopp“, Verlassen der Seite Sound). */
 export function stopAll(): void {
   generation += 1;

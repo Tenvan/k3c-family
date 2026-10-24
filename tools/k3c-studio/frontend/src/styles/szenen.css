@@ -43,3 +43,7 @@
 .hp-item { width: 100%; height: auto; margin: 0; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 4px 10px; }
 .hp-on { box-shadow: inset 3px 0 0 var(--green-9); }
 .hp-off { opacity: 0.5; }
+.sz-table { border-collapse: collapse; font-size: 13px; color: #e8edf4; }
+.sz-table th, .sz-table td { padding: 4px 8px; text-align: left; vertical-align: middle; border-bottom: 1px solid var(--card-line); }
+.sz-swatch { display: inline-block; width: 12px; height: 12px; border: 1px solid #fff; vertical-align: middle; }
+.sz-kampf { width: 100%; max-width: 1100px; height: auto; }

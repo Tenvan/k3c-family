@@ -33,6 +33,6 @@ export function playPlan(slot: PlaySlot, choice: PlayChoice, far = false): Plan 
 /** Statuszeile wie in der früheren Asset-Vorschau: „Beschreibung · Datei#Ton“ oder die fehlende Datei. */
 export function playStatus(beschreibung: string, choice: PlayChoice, ok: boolean): string {
   if (ok) return `${beschreibung} · ${choice.datei}${choice.sprite ? `#${choice.sprite}` : ''}`;
-  if (choice.sprite) return `Ton „${choice.sprite}“ nicht im Audio-Atlas (oder Atlas nicht geladen)`;
+  if (choice.sprite) return `Ton „${choice.sprite}“ nicht im Audio-Atlas (oder Atlas nicht geladen; Atlas bauen mit „task soundatlas“)`;
   return `Datei fehlt oder ist nicht abspielbar: ${choice.datei}`;
 }

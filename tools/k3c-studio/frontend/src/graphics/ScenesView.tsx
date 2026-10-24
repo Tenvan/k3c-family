@@ -1,22 +1,27 @@
-import { SegmentedControl, Select, Text } from '@webkit/atoms';
+import { SegmentedControl, Select, SelectField, Text } from '@webkit/atoms';
 import { useEffect, useMemo, useState } from 'react';
 import type { ListFilterConfig } from '@webkit/lib/listFilter';
 import { useAssets } from '../assets/useAssets';
 import { loadJSON, loadPref, saveJSON, savePref } from '../lib/prefs';
 import { ListFilter, NoticeCard } from '@webkit/molecules';
+import { BIOMES } from '@game/model/biome';
 import { CREDITS } from '@game/tools/credits';
 import { BuildingStrip } from './BuildingStrip';
 import { HubGrowthStrip } from './HubGrowthStrip';
 import { Backgrounds } from './Backgrounds';
+import { GameScene } from './GameScene';
+import { GAME_SCENES, isGameScene, LICHT, type Licht } from './gameScenesLogic';
 import { FigurenCards, ImageCard } from './SlotCards';
 import { resolveSlot, sceneFilter, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag, type Query, type Resolved, type SceneId } from './scenesLogic';
 
 // Reiter „Szenen“ der Seite Grafik (B-459/AC-06, Inhalt der früheren Asset-Vorschau): je Kategorie eine Mini-Szene mit den
 // aktiven Zuordnungen aus AssetsList; lädt bei assets:changed neu. Vergleich: Präferenz n eines Slots statt Präferenz 1.
 
-const GRAFIK = SCENES.filter((s) => s.art === 'grafik').map((s) => s.id);
-const TITLE: Partial<Record<SceneId, string>> = { figuren: 'Figuren', gebaeude: 'Gebäude', umgebung: 'Umgebung', objekte: 'Objekte', hud: 'HUD' };
+const SLOT_SCENES = SCENES.filter((s) => s.art === 'grafik').map((s) => s.id);
+const GRAFIK: readonly string[] = [...SLOT_SCENES, ...GAME_SCENES];
+const TITLE: Record<string, string> = { figuren: 'Figuren', gebaeude: 'Gebäude', umgebung: 'Umgebung', objekte: 'Objekte', hud: 'HUD', skills: 'Skill-Effekte', schilder: 'Schilder & Gerüste', gegner: 'Gegner je Biom', reittiere: 'Reittiere', bosse: 'Bosse', kampf: 'Kampf-Anzeigen' };
 const NONE = 'keiner';
+const BIOM_IDS = BIOMES.map((b) => b.id);
 
 /** Gebäude-Index (schreibt `task gen:gebaeude`, GEB1); null = lädt noch, [] = fehlt */
 function useGebaeudeIndex(): GebaeudeEintrag[] | null {
@@ -36,9 +41,11 @@ function useGebaeudeIndex(): GebaeudeEintrag[] | null {
 export function ScenesView() {
   const data = useAssets();
   const index = useGebaeudeIndex();
-  const [szene, setSzene] = useState<SceneId>(() => loadPref('grafik.szene', GRAFIK, 'figuren'));
+  const [szene, setSzene] = useState<string>(() => loadPref('grafik.szene', GRAFIK, 'figuren'));
+  const [biom, setBiom] = useState<string>(() => loadPref('grafik.biom', BIOM_IDS, BIOM_IDS[0]!));
+  const [licht, setLicht] = useState<Licht>(() => loadPref('grafik.licht', LICHT, 'tag'));
   const [q, setQ] = useState<Query>({ wahl: 1 });
-  const slots = useMemo(() => (data.view ? slotsOf(data.view.slots, szene) : []), [data.view, szene]);
+  const slots = useMemo(() => (data.view ? slotsOf(data.view.slots, szene as SceneId) : []), [data.view, szene]);
   const items = useMemo(() => slots.map((s) => resolveSlot(s, q)), [slots, q]);
   const filter = useMemo(() => sceneFilter(items, CREDITS), [items]);
   if (!data.view) return data.error ? <NoticeCard title="Slot-Register nicht lesbar" tone="error">{data.error}</NoticeCard> : <Text color="gray">Lade Slot-Register …</Text>;
@@ -55,14 +62,15 @@ export function ScenesView() {
           {GRAFIK.map((s) => <SegmentedControl.Item key={s} value={s}>{TITLE[s]}</SegmentedControl.Item>)}
         </SegmentedControl.Root>
         <Vergleich slots={slots} q={q} onQ={setQ} />
+        {isGameScene(szene) && <Umgebung biom={biom} licht={licht} onBiom={(b) => { setBiom(b); savePref('grafik.biom', b); }} onLicht={(l) => { setLicht(l); savePref('grafik.licht', l); }} />}
       </div>
       <Text size="2" color="gray">Aktive Zuordnungen im Spielmaßstab ×2; 1 Unit = 32 px. Lücken und fehlende Dateien sind markiert.</Text>
-      <Scene szene={szene} items={items} filter={filter} index={index ?? []} />
+      {isGameScene(szene) ? <GameScene szene={szene} biom={biom} licht={licht} index={index ?? []} /> : <Scene szene={szene} items={items} filter={filter} index={index ?? []} />}
     </div>
   );
 }
 
-function Scene({ szene, items, filter, index }: { szene: SceneId; items: Resolved[]; filter: ListFilterConfig<Resolved>; index: GebaeudeEintrag[] }) {
+function Scene({ szene, items, filter, index }: { szene: string; items: Resolved[]; filter: ListFilterConfig<Resolved>; index: GebaeudeEintrag[] }) {
   return (
     <>
       {szene === 'gebaeude' && index.length > 0 && <><h3 className="sz-title">Neue Gebäude (GEB)</h3><BuildingStrip index={index} /></>}
@@ -76,7 +84,7 @@ function Scene({ szene, items, filter, index }: { szene: SceneId; items: Resolve
   );
 }
 
-function Bilder({ szene, items }: { szene: SceneId; items: Resolved[] }) {
+function Bilder({ szene, items }: { szene: string; items: Resolved[] }) {
   const bilder = szene === 'figuren' ? items.filter((r) => !r.choice?.sheet) : items;
   return (
     <>
@@ -105,6 +113,19 @@ function Vergleich({ slots, q, onQ }: { slots: AssetSlot[]; q: Query; onQ: (q: Q
           {slot.wahl.map((_, i) => <SegmentedControl.Item key={i} value={String(i + 1)}>Präf. {i + 1}</SegmentedControl.Item>)}
         </SegmentedControl.Root>
       )}
+    </>
+  );
+}
+
+/** Biom (Himmel, Boden) und Tageslicht der Spiel-Szenen (B-598/AC-03) */
+function Umgebung({ biom, licht, onBiom, onLicht }: { biom: string; licht: Licht; onBiom: (b: string) => void; onLicht: (l: Licht) => void }) {
+  return (
+    <>
+      <SelectField value={biom} aria-label="Biom" onChange={onBiom} options={BIOMES.map((b) => ({ value: b.id, label: `Biom: ${b.name}` }))} />
+      <SegmentedControl.Root value={licht} onValueChange={(v) => onLicht(v === 'nacht' ? 'nacht' : 'tag')}>
+        <SegmentedControl.Item value="tag">Tag</SegmentedControl.Item>
+        <SegmentedControl.Item value="nacht">Nacht</SegmentedControl.Item>
+      </SegmentedControl.Root>
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { mockChats } from './mockChat';
+import { mockSources } from './mockSources';
 import { mockSuggestions } from './mockSuggestions';
 import { mockAssets } from './mockAssets';
 import { mockTickets } from './mockTickets';
@@ -29,6 +30,7 @@ export function mockBackend(): Backend & { external: (id: string, wahl: AssetCho
     openUrl: (url) => window.open(url, '_blank', 'noopener'),
     ...mockChats(),
     ...mockSuggestions(),
+    ...mockSources(),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) => {
       const set = subs.get(event) ?? new Set();
       set.add(fn as (data: never) => void);

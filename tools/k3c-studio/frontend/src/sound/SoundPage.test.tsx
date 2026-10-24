@@ -5,6 +5,7 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { AssetsPage } from '../assets/AssetsPage';
 import { Hoerprobe } from './Hoerprobe';
+import { Proben } from './Proben';
 import { SoundScenes } from './SoundScenes';
 
 // B-459/AC-02, AC-06 im DOM mit dem Mock: Hörprobe am Slot (auch Atlas-Ton mit „fern“), Szenen und Hörprobe-Liste.
@@ -60,6 +61,45 @@ describe('Seite Sound (B-459)', () => {
     await act(async () => [...h.querySelectorAll('button')].find((b) => b.textContent === 'Filter zurücksetzen')!.click());
     expect(h.textContent).toContain('sfx:coin · Münze');
     expect(JSON.parse(localStorage.getItem('k3c-studio.sound.sfx.filter')!).chips).toEqual({});
+  });
+
+});
+
+describe('Seite Sound: Szenen und Proben (WZ30.2)', () => {
+  it('Szenen: Skills nach Linie mit Herkunft (Linie, Rückfall) und Lücken-Hinweis (WZ30.2)', async () => {
+    localStorage.setItem('k3c-studio.sound.szene', 'skills');
+    const h = await mount(<SoundScenes />);
+    const row = (t: string) => [...h.querySelectorAll('.sd-row')].find((r) => r.textContent?.includes(t))?.textContent ?? '';
+    expect(row('groupHeal')).toContain('sfx:skill:healer');
+    expect(row('groupHeal')).toContain('Linien-Slot');
+    expect(row('fireball')).toContain('Rückfall sfx:skill'); // Linien-Slot der Zauberer ist leer
+    expect([...h.querySelectorAll('.sd-row')].every((r) => [...r.querySelectorAll('button')].some((b) => b.textContent === 'Abspielen'))).toBe(true);
+  });
+
+  it.each([['gegner', 'sfx:hit'], ['bauen', 'sfx:hub'], ['reiten', 'sfx:ride'], ['ui', 'sfx:uiSelect'], ['warnungen', 'sfx:warn']])('Szenen: %s zeigt Slot %s abspielbar', async (szene, slotId) => {
+    localStorage.setItem('k3c-studio.sound.szene', szene);
+    const h = await mount(<SoundScenes />);
+    expect(h.textContent).toContain(slotId);
+    expect([...h.querySelectorAll('button')].some((b) => b.textContent === 'Abspielen')).toBe(true);
+  });
+
+  it('Szenen: UI-Bestätigen ohne Zuordnung zeigt Lücke statt Fehler', async () => {
+    localStorage.setItem('k3c-studio.sound.szene', 'ui');
+    const h = await mount(<SoundScenes />);
+    expect(h.textContent).toContain('Lücke: sfx:uiConfirm hat keine Zuordnung');
+  });
+
+  it('Proben: Misch-, Lautheits- und Abstandsprobe sind bedienbar (WZ30.2)', async () => {
+    const h = await mount(<Proben />);
+    const names = () => [...h.querySelectorAll('button')].map((b) => b.textContent ?? '');
+    expect(h.textContent).toContain('35 %'); // Ducking-Pegel aus DUCK
+    expect(names()).toEqual(expect.arrayContaining(['Musik starten', 'Effekt dazu', 'Kampf-Mischung']));
+    expect(names().some((n) => n.startsWith('nah (im Bild)') && n.endsWith('100 %'))).toBe(true);
+    expect(names().find((n) => n.startsWith('halbe Breite'))).toContain('25 %');
+    const play = () => [...h.querySelectorAll('button')].find((b) => b.textContent?.startsWith('Nacheinander'))!;
+    expect(play().disabled).toBe(true);
+    await act(async () => h.querySelector<HTMLElement>('button[role="checkbox"][aria-label="sfx:hit"]')!.click());
+    expect(play().disabled).toBe(false);
   });
 
   it('Hörprobe: ganze Dateien nach Musik-Zustand, Atlas-Töne fehlen wie in soundtest.html', async () => {
