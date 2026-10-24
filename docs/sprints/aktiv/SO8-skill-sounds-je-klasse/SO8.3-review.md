@@ -1,6 +1,6 @@
 # SO8.3 · Review SO8
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -43,4 +43,7 @@ Neue Funktionen.
 
 ## Ergebnis
 
-–
+- AC-01 geprüft: vier Slots mit je drei Kenney-CC0-Kandidaten und Credit, Atlas im Diff, Vitest `skills.test.ts` (Katalog je Klasse) (SO8.1).
+- AC-02, AC-03 geprüft: Vitest `skills.test.ts` und `skillCasts.test.ts` (SO8.2).
+- Prüfläufe nacheinander: `task check` grün (9,9 s), `task check:go` grün (2 min 18 s), `task check:race` grün (aus dem Cache, keine Go-Änderung).
+- Review (Sonnet, getrennt): keine schweren Befunde; kein doppelter Ton im Split-Screen, kein Ton aus dem ersten Zustand oder nach `reset`.
