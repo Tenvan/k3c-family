@@ -1641,10 +1641,10 @@
       "id": "bg:forest:1",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:forest:1 (fern)",
+      "beschreibung": "Hintergründe je Biom: bg:forest:1 (fern); im Spiel Variante je Kachel nach Seed, Varianten bg:forest:1:v1 … v5 (GEB18)",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/hg-wald-fern-32.png"
+          "datei": "grafik/gebaeude/hg-wald-fern-v1-64.png"
         }
       ]
     },
@@ -1652,10 +1652,10 @@
       "id": "bg:forest:2",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:forest:2 (mitte)",
+      "beschreibung": "Hintergründe je Biom: bg:forest:2 (mitte); im Spiel Variante je Kachel nach Seed, Varianten bg:forest:2:v1 … v5 (GEB18)",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/hg-wald-mitte-32.png"
+          "datei": "grafik/gebaeude/hg-wald-mitte-v1-64.png"
         }
       ]
     },
@@ -1663,10 +1663,10 @@
       "id": "bg:forest:3",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:forest:3 (nah)",
+      "beschreibung": "Hintergründe je Biom: bg:forest:3 (nah); im Spiel Variante je Kachel nach Seed, Varianten bg:forest:3:v1 … v5 (GEB18)",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/hg-wald-nah-32.png"
+          "datei": "grafik/gebaeude/hg-wald-nah-v1-64.png"
         }
       ]
     },
@@ -1674,10 +1674,10 @@
       "id": "bg:cave:1",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:cave:1 (fern)",
+      "beschreibung": "Hintergründe je Biom: bg:cave:1 (fern); im Spiel Variante je Kachel nach Seed, Varianten bg:cave:1:v1 … v5 (GEB18)",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/hg-hoehle-fern-32.png"
+          "datei": "grafik/gebaeude/hg-hoehle-fern-v1-64.png"
         }
       ]
     },
@@ -1685,10 +1685,10 @@
       "id": "bg:cave:2",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:cave:2 (mitte)",
+      "beschreibung": "Hintergründe je Biom: bg:cave:2 (mitte); im Spiel Variante je Kachel nach Seed, Varianten bg:cave:2:v1 … v5 (GEB18)",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/hg-hoehle-mitte-32.png"
+          "datei": "grafik/gebaeude/hg-hoehle-mitte-v1-64.png"
         }
       ]
     },
@@ -1696,10 +1696,10 @@
       "id": "bg:cave:3",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:cave:3 (nah)",
+      "beschreibung": "Hintergründe je Biom: bg:cave:3 (nah); im Spiel Variante je Kachel nach Seed, Varianten bg:cave:3:v1 … v5 (GEB18)",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/hg-hoehle-nah-32.png"
+          "datei": "grafik/gebaeude/hg-hoehle-nah-v1-64.png"
         }
       ]
     },
@@ -1707,10 +1707,10 @@
       "id": "bg:mine:1",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:mine:1 (fern)",
+      "beschreibung": "Hintergründe je Biom: bg:mine:1 (fern); im Spiel Variante je Kachel nach Seed, Varianten bg:mine:1:v1 … v5 (GEB18)",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/hg-mine-fern-32.png"
+          "datei": "grafik/gebaeude/hg-mine-fern-v1-64.png"
         }
       ]
     },
@@ -1718,10 +1718,10 @@
       "id": "bg:mine:2",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:mine:2 (mitte)",
+      "beschreibung": "Hintergründe je Biom: bg:mine:2 (mitte); im Spiel Variante je Kachel nach Seed, Varianten bg:mine:2:v1 … v5 (GEB18)",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/hg-mine-mitte-32.png"
+          "datei": "grafik/gebaeude/hg-mine-mitte-v1-64.png"
         }
       ]
     },
@@ -1729,10 +1729,10 @@
       "id": "bg:mine:3",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:mine:3 (nah)",
+      "beschreibung": "Hintergründe je Biom: bg:mine:3 (nah); im Spiel Variante je Kachel nach Seed, Varianten bg:mine:3:v1 … v5 (GEB18)",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/hg-mine-nah-32.png"
+          "datei": "grafik/gebaeude/hg-mine-nah-v1-64.png"
         }
       ]
     },
@@ -1740,10 +1740,10 @@
       "id": "bg:ironhold:1",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:ironhold:1 (fern)",
+      "beschreibung": "Hintergründe je Biom: bg:ironhold:1 (fern); im Spiel Variante je Kachel nach Seed, Varianten bg:ironhold:1:v1 … v5 (GEB18)",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/hg-eisenstollen-fern-32.png"
+          "datei": "grafik/gebaeude/hg-eisenstollen-fern-v1-64.png"
         }
       ]
     },
@@ -1751,10 +1751,10 @@
       "id": "bg:ironhold:2",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:ironhold:2 (mitte)",
+      "beschreibung": "Hintergründe je Biom: bg:ironhold:2 (mitte); im Spiel Variante je Kachel nach Seed, Varianten bg:ironhold:2:v1 … v5 (GEB18)",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/hg-eisenstollen-mitte-32.png"
+          "datei": "grafik/gebaeude/hg-eisenstollen-mitte-v1-64.png"
         }
       ]
     },
@@ -1762,10 +1762,10 @@
       "id": "bg:ironhold:3",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:ironhold:3 (nah)",
+      "beschreibung": "Hintergründe je Biom: bg:ironhold:3 (nah); im Spiel Variante je Kachel nach Seed, Varianten bg:ironhold:3:v1 … v5 (GEB18)",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/hg-eisenstollen-nah-32.png"
+          "datei": "grafik/gebaeude/hg-eisenstollen-nah-v1-64.png"
         }
       ]
     },
@@ -1773,10 +1773,10 @@
       "id": "bg:crystal:1",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:crystal:1 (fern)",
+      "beschreibung": "Hintergründe je Biom: bg:crystal:1 (fern); im Spiel Variante je Kachel nach Seed, Varianten bg:crystal:1:v1 … v5 (GEB18)",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/hg-kristall-fern-32.png"
+          "datei": "grafik/gebaeude/hg-kristall-fern-v1-64.png"
         }
       ]
     },
@@ -1784,10 +1784,10 @@
       "id": "bg:crystal:2",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:crystal:2 (mitte)",
+      "beschreibung": "Hintergründe je Biom: bg:crystal:2 (mitte); im Spiel Variante je Kachel nach Seed, Varianten bg:crystal:2:v1 … v5 (GEB18)",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/hg-kristall-mitte-32.png"
+          "datei": "grafik/gebaeude/hg-kristall-mitte-v1-64.png"
         }
       ]
     },
@@ -1795,10 +1795,10 @@
       "id": "bg:crystal:3",
       "art": "grafik",
       "kategorie": "umgebung",
-      "beschreibung": "Hintergründe je Biom: bg:crystal:3 (nah)",
+      "beschreibung": "Hintergründe je Biom: bg:crystal:3 (nah); im Spiel Variante je Kachel nach Seed, Varianten bg:crystal:3:v1 … v5 (GEB18)",
       "wahl": [
         {
-          "datei": "grafik/gebaeude/hg-kristall-nah-32.png"
+          "datei": "grafik/gebaeude/hg-kristall-nah-v1-64.png"
         }
       ]
     },

@@ -366,6 +366,8 @@ export interface LevelLayout {
   hubCenterUnits: number;
   chunks: Chunk[];
   entities: LevelEntity[];
+  /** Hintergrund-Variante (1 …) je Kachel von 24 Units im Raum der Schicht (GEB18); fehlt → Variante 1 überall */
+  backdrops?: number[];
 }
 
 export type Phase = 'day' | 'dusk' | 'night';

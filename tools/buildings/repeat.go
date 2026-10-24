@@ -12,11 +12,12 @@ type wiederholung struct {
 }
 
 // dichtenFuer liefert die Render-Dichten: Hintergrund-Schichten im Master-Raster nur 16 und 32 (64/128 wären nur vergrößert),
-// im feinen Raster 32 (Spiel-Dichte, ohne Details) und 128 (vierfache Auflösung, GEB18).
+// im feinen Raster 32 (Spiel-Dichte), 64 (das lädt das Spiel, Entscheidung Ralf 2026-10-24: auf 1080p voll sichtbar,
+// ein Viertel des Speichers von 128) und 128 (vierfache Auflösung, Quelle und Studio, GEB18).
 func dichtenFuer(klasse string, raster int) []int {
 	switch {
 	case klasse == klasseHintergrund && raster == rasterHintergrund:
-		return []int{32, rasterHintergrund}
+		return []int{32, 64, rasterHintergrund}
 	case klasse == klasseHintergrund:
 		return []int{16, 32}
 	}

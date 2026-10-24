@@ -26,8 +26,28 @@ func TestRasterFein(t *testing.T) {
 	if err := pruefeRaster(b); err != nil {
 		t.Fatal(err)
 	}
-	if got := dichtenFuer(b.Klasse, rasterVon(b)); !reflect.DeepEqual(got, []int{32, 128}) {
-		t.Fatalf("Dichten %v, erwartet [32 128]", got)
+	if got := dichtenFuer(b.Klasse, rasterVon(b)); !reflect.DeepEqual(got, []int{32, 64, 128}) {
+		t.Fatalf("Dichten %v, erwartet [32 64 128]", got)
+	}
+	mid, err := render(b, 64)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if mid.Bounds().Dx() != 128 {
+		t.Fatalf("Breite 64: %d, erwartet 128", mid.Bounds().Dx())
+	}
+	_, idx := palette()
+	if mid.ColorIndexAt(32, 16) != idx["rope"] {
+		t.Error("Dichte 64: Detail von 1 Raster-Pixel muss entfallen")
+	}
+	b2 := hgFein()
+	b2.Bausteine[2].Rechteck[2], b2.Bausteine[2].Rechteck[3] = 0.015625, 0.015625 // 2 Raster-Pixel: in 64 genau 1 px
+	mid2, err := render(b2, 64)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if mid2.ColorIndexAt(32, 16) != idx["white"] {
+		t.Error("Dichte 64: Detail von 2 Raster-Pixeln muss sichtbar sein")
 	}
 	hi, err := render(b, 128)
 	if err != nil {
@@ -40,7 +60,6 @@ func TestRasterFein(t *testing.T) {
 	if hi.Bounds().Dx() != 4*lo.Bounds().Dx() || hi.Bounds().Dx() != 256 {
 		t.Fatalf("Breite 128: %d, 32: %d; erwartet 256 und ein Viertel davon", hi.Bounds().Dx(), lo.Bounds().Dx())
 	}
-	_, idx := palette()
 	if hi.ColorIndexAt(65, 33) != idx["white"] {
 		t.Error("Detail fehlt in Dichte 128")
 	}

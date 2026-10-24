@@ -43,9 +43,9 @@ type Layout struct {
 	Ruins []Ruin `json:"-"`
 	// Guards sind die Wachen der Gegnerlager geplanter Chunks (§ 9, B-517); Gegner der Sim, nicht Teil der level-Nachricht.
 	Guards []Guard `json:"-"`
-	// Backdrops ist die Hintergrund-Variante je Kachel von BackdropTileUnits (backdrop.go, GEB18); in die level-Nachricht
-	// kommt sie mit GEB18.5.
-	Backdrops []int `json:"-"`
+	// Backdrops ist die Hintergrund-Variante (1 …) je Kachel von BackdropTileUnits (backdrop.go, GEB18); Teil der
+	// level-Nachricht (additiv, docs/protocol.md), ohne Varianten im Biom fehlt das Feld.
+	Backdrops []int `json:"backdrops,omitempty"`
 }
 
 // eventKinds in fester Reihenfolge wie `EVENT_KINDS` in TS.

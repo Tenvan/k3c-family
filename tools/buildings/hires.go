@@ -38,9 +38,18 @@ func pruefeRaster(b building) error {
 	return nil
 }
 
-// entfaellt: `fein` fehlt unter der Spiel-Dichte (32), `detail` unter der Dichte des feinen Rasters (128).
+// entfaellt: `fein` fehlt unter der Spiel-Dichte (32); `detail` fehlt, sobald es in Dichte d schmaler oder niedriger als
+// 1 px wäre (in 128 immer da, in 64 ab 2 Raster-Pixeln, in 32 ab 4).
 func entfaellt(s baustein, d, raster int) bool {
-	return (d < master && s.Fein) || (d < raster && s.Detail)
+	if d < master && s.Fein {
+		return true
+	}
+	return s.Detail && d < raster && zuDuenn(s, d)
+}
+
+// zuDuenn: Breite oder Höhe des Bausteins ergibt in Dichte d weniger als 1 px.
+func zuDuenn(s baustein, d int) bool {
+	return s.Rechteck[2]*float64(d) < 1 || s.Rechteck[3]*float64(d) < 1
 }
 
 // hintergrundID: `hg-<biom>-<fern|mitte|nah>` mit optionaler Variante `-v<n>`; ohne Endung ist es die bisherige Fassung (Variante 0, GEB7).
