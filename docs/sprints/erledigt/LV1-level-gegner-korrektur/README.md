@@ -1,6 +1,6 @@
 # LV1 · SIM · Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -68,8 +68,12 @@ Vorentschieden (autonom, Claude, 2026-10-23), Bestätigung durch 🧑 über KR6:
 | LV1.1 | `LV1.1-lava-camps.md` | Umsetzung | autonom | fertig |
 | LV1.2 | `LV1.2-adern-takt-besiegte-gegner.md` | Umsetzung | autonom | fertig |
 | LV1.3 | `LV1.3-ereignis-ort-schutzplatz.md` | Umsetzung | autonom | fertig |
-| LV1.4 | `LV1.4-review.md` | Review | autonom | in Arbeit |
+| LV1.4 | `LV1.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-–
+Review LV1.4 (autonom, Claude, 2026-10-24): AC-01 bis AC-06 haben je einen Go-Test als Nachweis. Kein schwerer Befund.
+Der Code lag schon in develop (fc14a8ef, #446), deshalb gab es den Review-Diff nur im Squash.
+Verschoben: B-200/AC-01, also die Messung über 100 Seeds (B-565), und der stabile Schutzplatz samt Golden-Nachweis (B-605).
+`task check` grün. `check:go` hatte nur Last-Flackern in k3c-load und devrun, einzeln grün. `-race` läuft nur in der CI, weil lokal kein C-Compiler da ist.
+KR6 bestätigt die Vorentscheidungen (Mensch).
