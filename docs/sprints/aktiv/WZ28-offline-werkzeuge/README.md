@@ -78,7 +78,7 @@ keine. Entschieden (🧑, 2026-10-24): nächste freie Ticket-Nummer genügt (Ral
 | WZ28.4 | `WZ28.4-balancing-backend.md` | Umsetzung | autonom | fertig |
 | WZ28.5 | `WZ28.5-balancing-seite.md` | Umsetzung | autonom | fertig |
 | WZ28.6 | `WZ28.6-automatisches-balancing.md` | Umsetzung | autonom | fertig |
-| WZ28.7 | `WZ28.7-review.md` | Review | autonom | offen |
+| WZ28.7 | `WZ28.7-review.md` | Review | autonom | fertig |
 | WZ28.8 | `WZ28.8-abnahme-notebook-offline.md` | Workshop | Mensch | offen |
 | WZ28.9 | `WZ28.9-studio-tests-gruen.md` | Umsetzung | autonom | fertig |
 | WZ28.10 | `WZ28.10-balancing-hilfe.md` | Umsetzung | autonom | fertig |
@@ -101,5 +101,7 @@ keine. Entschieden (🧑, 2026-10-24): nächste freie Ticket-Nummer genügt (Ral
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-10-24, Review-Session WZ28.7 (autonom, Claude): AC-01–AC-07, AC-09–AC-14 belegt (Session-Ergebnisse, Offline-Nachweis `offline_test.go`, `tests/offlineTools.test.ts`); AC-08 offen bei WZ28.8 (Ralf am Notebook).
+- `task check` und `task check:go` grün; `check:race` nur in der CI (lokal CGO aus).
+- Behoben im Review: unlesbare `reports/ratings.json` blockiert Liste und Löschen nicht mehr; vorher `findAssignment` (TestGoNestingDepth).
+- Neue Tickets: B-615, B-616. Balancing-Seite (Hilfen, Dateien, Bot je Spieler, Berichte) hat Ralf im Mock abgenommen.
