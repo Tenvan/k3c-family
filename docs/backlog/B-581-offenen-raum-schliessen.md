@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Bei der Abnahme BD5.4 (2026-10-24, PC) zeigte sich: Offene Räume stehen in der Spielstand-Liste der Lobby, lassen sich aber nicht löschen (gewollt, BD5.1).
+Bei der Abnahme BD5.4 (2026-10-24, PC) zeigte sich: Offene Räume stehen in der Spielstand-Liste der Lobby, lassen sich aber nicht löschen (gewollt, BD5.1: `Manager.DeleteSave` liefert `ErrSaveInUse`, sonst schriebe der Raum den Stand neu). Code (2026-10-24): Einen Weg, einen einzelnen Raum auf Anforderung zu schließen, gibt es nicht; geschlossen wird nur beim Herunterfahren (`Manager.Close`) und nach Leerlauf (`lockedSweep`: `saveNow()`, `closed = true`, `peer.Closed`). Clients kehren bei `room_closed` in die Lobby zurück (`clientConnection.ts`). Eine Host-Rolle gibt es nicht.
 
 ## Ziel
 
@@ -26,8 +26,9 @@ Spieler am Gerät; 🧑 nimmt ab.
 
 ## Anforderungen
 
-- Entfernen auf einem offenen Raum bietet „Raum schließen“ mit Rückfrage.
-- Schließen speichert den Stand und wirft verbundene Clients sauber in die Lobby.
+- Server: `POST api/room/close?slot=NAME` (wie `DELETE api/save`): speichert den Stand, schließt den Raum, schickt verbundenen Geräten `room_closed` (Grund „vom Gerät geschlossen“) und entfernt ihn aus der Raumliste; Antworten 200, 404 (`not_found`), 400. Ablauf wie `lockedSweep`, kein zweiter Speicherweg.
+- Client: Entfernen (X bzw. Entf) auf einem offenen Raum öffnet „Raum schließen?“ mit „Abbrechen“ vorgewählt; die Rückfrage nennt die Zahl verbundener Geräte (`taken`). Nach dem Schließen steht der Stand als Spielstand in der Liste und lässt sich wie gewohnt löschen.
+- Verbundene Geräte landen mit Meldung in der Lobby.
 
 ## Nicht-Ziele
 
@@ -35,7 +36,7 @@ Automatisches Löschen nach dem Schließen.
 
 ## Regeln und Einschränkungen
 
-Protokoll laut `docs/protocol.md`; Server-Seite SRV, Client CLI; 2 Spieler.
+Protokoll laut `docs/protocol.md` (neuer HTTP-Endpunkt dokumentieren); Server SRV, Client CLI; 2 Spieler; B nicht belegen; Texte über `t()`.
 
 ## Beispiele
 
@@ -47,12 +48,12 @@ Mitspieler ist noch verbunden → Rückfrage nennt es.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Entfernen auf einem offenen Raum bietet „Schließen“ (Test und Beobachtung am PC).
-- **AC-02** Nach dem Schließen lässt sich der Spielstand löschen.
+- **AC-01** Entfernen auf einem offenen Raum bietet „Schließen“ mit Rückfrage (Vitest, Beobachtung am PC).
+- **AC-02** Nach dem Schließen ist der Stand gespeichert und lässt sich löschen; verbundene Geräte sind in der Lobby (Go-Test des Endpunkts mit verbundenem Gerät, Beobachtung).
 
 ## Offene Fragen
 
-Wer darf schließen, wenn mehrere Geräte im Raum sind? Default: jedes Gerät mit Rückfrage; 🧑 entscheidet.
+keine. Default (Claude, 2026-10-24, gilt mit der Freigabe): Jedes Gerät darf schließen, mit Rückfrage, die verbundene Geräte nennt; eine Host-Rolle gibt es nicht, und Ralf spielt allein bzw. mit der Familie am selben Ort.
 
 ## Notizen
 

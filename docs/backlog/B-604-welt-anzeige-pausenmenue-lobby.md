@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Bei der Abnahme BD5.4 (2026-10-24, PC) fiel auf: Die Welt-Anzeige im Pausenmenü ist klein, und in der Lobby steht die Welt nicht bei jedem Spielstand.
+Bei der Abnahme BD5.4 (2026-10-24, PC) fiel auf: Die Welt-Anzeige im Pausenmenü ist klein, und in der Lobby steht die Welt nicht bei jedem Eintrag. Code (2026-10-24): Das Pausenmenü (`src/scenes/OptionsScene.ts:98`, `worldLine` in `optionsLogic.ts`) zeichnet die Welt mit 28 px, die Optionszeilen mit 40 px. In der Lobby (`src/scenes/lobbyLogic.ts`, `entryLabel`) zeigen Spielstände ihre Welt schon (`SaveInfo.world`), offene Räume nicht: `rooms[]` (`room.Info`, `engine/room/actions.go`, `docs/protocol.md`) hat kein Feld für die Welt.
 
 ## Ziel
 
@@ -26,8 +26,9 @@ Spieler; 🧑 nimmt ab.
 
 ## Anforderungen
 
-- Welt-Anzeige im Pausenmenü größer (Mindest-Schrift laut `docs/rules/bedienung.md` § 2 einhalten).
-- Jeder Spielstand in der Lobby zeigt seine Welt.
+- Weltzeile im Pausenmenü in 40 px wie die Optionszeilen (`FONT_PX`), weiter oberhalb der Optionen.
+- `rooms[]` im Protokoll bekommt `world` (ID der Welt, aus `isl.WorldID()`), Protokollversion + 1, `docs/protocol.md` und Client-Typ `RoomInfo` nachziehen.
+- Jeder Eintrag der Lobby (offener Raum und Spielstand) nennt seine Welt; unbekannt → „–“.
 
 ## Nicht-Ziele
 
@@ -35,7 +36,7 @@ Neue Welt-Auswahl.
 
 ## Regeln und Einschränkungen
 
-Nur zeichnen (ADR 001), Texte über `t()`, Datei ≤ 400 Zeilen.
+Nur zeichnen im Client (ADR 001); Protokoll-Änderung mit Version und Doku (`docs/protocol.md`, `src/online/clientProtocol.ts`); Texte über `t()`; Mindest-Schrift laut `docs/rules/bedienung.md` § 2; Datei ≤ 400 Zeilen.
 
 ## Beispiele
 
@@ -47,8 +48,8 @@ Spielstand ohne bekannte Welt → Platzhalter „–“.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Pausenmenü zeigt die Welt in größerer Schrift (Beobachtung am PC).
-- **AC-02** Jeder Spielstand der Lobby nennt seine Welt (Beobachtung am PC).
+- **AC-01** Pausenmenü zeigt die Welt in 40 px (Vitest der Layout-Werte, Beobachtung am PC).
+- **AC-02** Jeder Eintrag der Lobby nennt seine Welt, auch offene Räume (Go-Test von `rooms[].world`, Vitest von `entryLabel`, Beobachtung am PC).
 
 ## Offene Fragen
 

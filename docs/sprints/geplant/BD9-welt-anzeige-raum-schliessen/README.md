@@ -1,9 +1,9 @@
-# BD9 · SRV · Welt-Anzeige größer und je Spielstand, offene Räume schließen
+# BD9 · SRV, CLI · Welt-Anzeige größer und je Spielstand, offene Räume schließen
 
 - **Status:** geplant
 - **Projekt:** BED
-- **Domäne:** SRV
-- **Reife:** Entwurf
+- **Domäne:** SRV, CLI
+- **Reife:** bereit
 - **Tickets:** B-604, B-581
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Aus der Abnahme BD5.4 (Ralf, 2026-10-24, PC): Die Welt im Pausenmenü ist zu klein, in der Lobby fehlt die Welt bei Spielständen, und offene Räume lassen sich nicht schließen (B-604, B-581).
+Aus der Abnahme BD5.4 (Ralf, 2026-10-24, PC): Die Welt im Pausenmenü ist zu klein, in der Lobby fehlt die Welt bei offenen Räumen, und offene Räume lassen sich nicht schließen (B-604, B-581). Code: Pausenmenü 28 px (`OptionsScene.ts`), `rooms[]` ohne Welt, kein Schließen-Weg im Server.
 
 ## Ziel
 
@@ -32,7 +32,7 @@ Neue Welt-Auswahl (BD8), automatisches Löschen nach dem Schließen.
 
 ## Regeln und Einschränkungen
 
-Nur zeichnen im Client (ADR 001); Raum schließen braucht ggf. eine Protokoll-Änderung, dann eigene SRV-Session vor der CLI-Session (`docs/protocol.md`); Texte zweisprachig über `t()`; B nicht belegen.
+Nur zeichnen im Client (ADR 001). Zwei Protokoll-Änderungen: `rooms[].world` (WebSocket, Version + 1) und `POST api/room/close` (HTTP); erst die SRV-Session (BD9.1) mit `docs/protocol.md`, dann die CLI-Session (BD9.2). Review-Agent vor dem Commit (Protokoll, SRV). Texte zweisprachig über `t()`; B nicht belegen; 2 Spieler.
 
 ## Beispiele
 
@@ -44,27 +44,27 @@ Mitspieler noch verbunden → Rückfrage nennt es. Spielstand ohne Welt → Plat
 
 ## Akzeptanzkriterien
 
-- **AC-01** Das Pausenmenü zeigt die Welt in größerer Schrift (B-604/AC-01).
-- **AC-02** Jeder Spielstand der Lobby nennt seine Welt (B-604/AC-02).
-- **AC-03** Entfernen auf einem offenen Raum bietet „Schließen“; danach lässt sich der Stand löschen (B-581/AC-01, B-581/AC-02).
+- **AC-01** Das Pausenmenü zeigt die Welt in 40 px (B-604/AC-01).
+- **AC-02** Jeder Eintrag der Lobby nennt seine Welt, auch offene Räume (B-604/AC-02).
+- **AC-03** Entfernen auf einem offenen Raum bietet „Schließen“; danach ist der Stand gespeichert und löschbar, verbundene Geräte sind in der Lobby (B-581/AC-01, B-581/AC-02).
 - **AC-04** Ralf hat AC-01 bis AC-03 am PC abgenommen.
 
 ## Offene Fragen
 
-B-581: Wer darf einen Raum mit mehreren Geräten schließen? Default: jedes Gerät mit Rückfrage; 🧑 entscheidet. Spec-Freigabe steht aus.
+keine. Default (Claude, 2026-10-24): Jedes Gerät darf einen Raum schließen, mit Rückfrage (B-581).
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BD9.1 | – | Umsetzung | autonom | offen |
-| BD9.2 | – | Umsetzung | autonom | offen |
-| BD9.3 | – | Review | autonom | offen |
-| BD9.4 | – | Workshop | Mensch | offen |
+| BD9.1 | `BD9.1-server-welt-schliessen.md` | Umsetzung | autonom | offen |
+| BD9.2 | `BD9.2-lobby-pause-anzeige.md` | Umsetzung | autonom | offen |
+| BD9.3 | `BD9.3-review.md` | Review | autonom | offen |
+| BD9.4 | `BD9.4-abnahme-pc.md` | Workshop | Mensch | offen |
 
-- BD9.1 (CLI) Welt im Pausenmenü größer, Welt je Spielstand in der Lobby (AC-01, AC-02).
-- BD9.2 (SRV, CLI) Offenen Raum schließen: Server-Weg, Menü-Eintrag mit Rückfrage (AC-03).
-- BD9.3 Review: alle Kriterien prüfen.
+- BD9.1 (SRV) Server: Welt in `rooms[]`, `POST api/room/close`, Protokoll (AC-02, AC-03).
+- BD9.2 (CLI) Pausenmenü 40 px, Welt je Lobby-Eintrag, Raum schließen mit Rückfrage (AC-01, AC-02, AC-03).
+- BD9.3 Review: alle Kriterien prüfen, PR.
 - BD9.4 (Mensch) Abnahme am PC (AC-04).
 
 ## Abnahme

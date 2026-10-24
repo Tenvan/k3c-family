@@ -25,7 +25,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 |---|---|---|---|---|---|---|
 | WZ28 | DEV | WZG | Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite | – | Entwurf | `geplant/WZ28-offline-werkzeuge/` |
 | WZ29 | DEV | WZG | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | – | Entwurf | `geplant/WZ29-sound-grafik-seiten-ausbau/` |
-| BD9 | SRV | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | Entwurf | `geplant/BD9-welt-anzeige-raum-schliessen/` |
+| BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | bereit | `geplant/BD9-welt-anzeige-raum-schliessen/` |
 | GEB15 | DEV | GEB | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | – | Entwurf | `geplant/GEB15-hoehle-fels-varianten/` |
 | GEB16 | DEV | GEB | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | – | Entwurf | `geplant/GEB16-bauschilder-wald-geruest/` |
 | SV2 | SRV | WRT | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | – | Entwurf | `geplant/SV2-voll-ausbau-regelkonform/` |
