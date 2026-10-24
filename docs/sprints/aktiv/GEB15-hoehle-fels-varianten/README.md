@@ -1,14 +1,14 @@
 # GEB15 · DEV · Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GEB
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-582, B-583
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt)
 
 ## Ausgangslage
 
@@ -56,10 +56,10 @@ Dichte, Größenfaktor und Variantenzahl: Defaults in B-582 und B-583; 🧑 best
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GEB15.1 | – | Umsetzung | autonom | offen |
-| GEB15.2 | – | Umsetzung | autonom | offen |
-| GEB15.3 | – | Review | autonom | offen |
-| GEB15.4 | – | Workshop | Mensch | offen |
+| GEB15.1 | `GEB15.1-hoehlen-wurzeln.md` | Umsetzung | autonom | in Arbeit |
+| GEB15.2 | `GEB15.2-felsen-minen.md` | Umsetzung | autonom | offen |
+| GEB15.3 | `GEB15.3-review.md` | Review | autonom | offen |
+| GEB15.4 | `GEB15.4-abnahme-geraet.md` | Workshop | Mensch | offen |
 
 - GEB15.1 (DEV) Höhlen-Wurzeln: Varianten und Dichte (AC-01).
 - GEB15.2 (DEV) Felsen und Minen: größer, neue Varianten (AC-02).

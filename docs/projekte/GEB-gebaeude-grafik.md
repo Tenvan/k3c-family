@@ -28,7 +28,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | GEB12 | Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte) | erledigt |
 | GEB13 | Gebäude-Stufen in den Daten und Stufen-Look für Plantage, Camp, Heilplatz | erledigt |
 | GEB14 | Wald und Höhle dichter, Gerüst bei Wartenden, Knoten-Markierer im Snapshot | erledigt |
-| GEB15 | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | geplant |
+| GEB15 | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | aktiv |
 | GEB16 | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | geplant |
 | GEB17 | Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe | geplant |
 
