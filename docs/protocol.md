@@ -433,6 +433,13 @@ auch nach Zerstörung und Wiederaufbau; sonst fehlt das Feld (additiv, Protokoll
 jeder andere (`state`, `hp`, `maxHp`, Ausbau); die Vorschau des Studios liefert sie mit. Geprüft von
 `TestRuineInSnapUndDelta` und `TestRuineInDerVorschau` (`engine/net/ruin_test.go`).
 
+**Bezahlbar und abbaubar (GEB16, B-587, B-588):** `sites[].payable` ist `true`, wenn der Platz gerade Münzen für Bau
+oder Ausbau annimmt (gleiche Regel wie `input.pay`: `sim.SitePayable`), `nodes[].minable` ist `true`, wenn der Knoten
+gerade eine Markier-Münze annimmt (sammelbar und nicht markiert: `sim.NodeMarkable`). Beide fehlen bei `false`
+(additiv, Protokoll-Version unverändert); im Delta kommt der ganze Eintrag. Der Client zeigt Bau- und Abbau-Schild nur
+danach und rechnet nichts nach; ein älterer Server ohne Felder zeigt kein Schild. Geprüft von `TestPayableUndMinable`
+(`engine/net/payable_test.go`).
+
 **Berufe:** `troops[].profession` (`miner`, `builder`, `craftsman`; fehlt = keiner) und `troops[].workSite` (Site-ID
 des Arbeitsplatzes, fehlt = keiner). Berufswahl, Tausch und Hub-Ausbau als Eingabe stehen in W5.2.
 

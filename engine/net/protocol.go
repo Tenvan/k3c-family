@@ -148,7 +148,7 @@ type stateMsg struct {
 
 // stateOf ist der Zustand für `snap`: die Welt ohne seed, biome, level, rng, widthUnits, mit events und depth, oben
 // mit dem Wirtschaftsstand aus sim.EconomyOf (stockMax, hubLevel, hubUpgrade, danger; W5.1), je
-// Spieler mit points und actions (actions.go). Das Feld
+// Spieler mit points und actions (actions.go), je Bauplatz payable und je Knoten minable (payable.go). Das Feld
 // `free` der Spieler (B-059) fällt weg, der Zustand der Monarchen steht in `seats`. timescale > 0 (nur Dev-Mode) steht
 // als `devTimescale` darin, daneben die Dev-Pause als `devPaused` (B-231).
 func stateOf(w *sim.World, timescale int, paused bool) map[string]any {
@@ -163,6 +163,7 @@ func stateOf(w *sim.World, timescale int, paused bool) map[string]any {
 		delete(p.(map[string]any), "free")
 	}
 	addActions(w, s["players"].([]any))
+	addPayable(w, s)
 	s["depth"] = w.Biome.Depth
 	if timescale > 0 {
 		s["devTimescale"] = timescale

@@ -1,6 +1,6 @@
 # GEB16.1 · Feld payable je Bauplatz im Snapshot und im Protokoll
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -50,5 +50,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 (Server-Teil): umgesetzt.
+  - Der Snapshot trägt `sites[].payable` und `nodes[].minable` (`engine/net/payable.go`), berechnet aus denselben Sim-Regeln wie `input.pay`: `sim.SitePayable` und `sim.NodeMarkable`; die Regel steckt jetzt in `nodeMarkable`.
+  - Doku in `docs/protocol.md`, Beispiel `s2c-snapshot-wirtschaft.json`.
+- Geprüft mit `go test ./engine/...` (neu `payable_test.go`, auch Wegfall im Delta) und golangci-lint, beide grün. Golden ist unverändert.
+- Review (Protokoll): keine schweren Befunde. Das Feld hängt nicht vom Spieler ab, gilt also für 2 Spieler bzw. Split-Screen. Notiz: Die Rechenkosten pro Tick sind gering, eine Map hilft, falls der Lasttest sie zeigt.
+- B-588: Der Server meldete das Abbaubare bisher nicht, deshalb gibt es das neue Feld `minable`.
