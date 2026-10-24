@@ -80,7 +80,7 @@ func TestWirtschaftZustand(t *testing.T) {
 	if st := s["stock"].(map[string]any); st["wood"] != 40.0 || st["stone"] != 30.0 || st["copper"] != 12.0 {
 		t.Errorf("stock: %v", st)
 	}
-	if m := s["merchant"].(map[string]any); m["resource"] != "stone" || m["leaves"] != 3.0 || m["hp"] != 100.0 || m["maxHp"] != 100.0 {
+	if m := s["merchant"]; !reflect.DeepEqual(m, map[string]any{"resource": "stone", "leaves": 3.0, "hp": 100.0, "maxHp": 100.0}) {
 		t.Errorf("merchant: %v", m)
 	}
 	checkWartegrundUndBeruf(t, s)

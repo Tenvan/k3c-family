@@ -1,6 +1,6 @@
 # KB2 · SRV, CLI · Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** SRV, CLI
 - **Reife:** bereit
@@ -67,7 +67,7 @@ Vorentschieden (autonom, Claude, 2026-10-23), Bestätigung durch 🧑 über KR6:
 | KB2.2 | `KB2.2-gameover-nicht-speichern.md` | Umsetzung | autonom | fertig |
 | KB2.3 | `KB2.3-haendler-protokoll.md` | Umsetzung | autonom | fertig |
 | KB2.4 | `KB2.4-client-typen-gegner.md` | Umsetzung | autonom | fertig |
-| KB2.5 | `KB2.5-review.md` | Review | autonom | offen |
+| KB2.5 | `KB2.5-review.md` | Review | autonom | fertig |
 | KB2.6 | `KB2.6-dev-aktion-grad-nachweis.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -75,5 +75,7 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-25, Claude (KB2.5): `task check` und `task check:go` sind grün. Beim ersten Lauf hat gocyclo einmal angeschlagen, in `TestWirtschaftZustand` (wegen KB2.3). Claude hat das behoben.
+`task check:race` wurde lokal übersprungen, weil kein C-Compiler da ist; `-race` prüft die CI.
+AC-01, AC-02 und AC-05 sind laut KB2.1, KB2.2 und KB2.6 erfüllt (schon auf develop, #458). AC-03 ist mit KB2.3 erfüllt (Review ohne Befund), AC-04 mit KB2.4.
+Keine neuen Tickets.
