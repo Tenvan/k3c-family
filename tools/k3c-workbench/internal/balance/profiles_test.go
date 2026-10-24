@@ -8,6 +8,9 @@ import (
 
 // BAL3/AC-01: Jedes neue Profil liefert mit gleichem Seed und gleichen Daten byte-gleiche, gültige Kennzahlen.
 func TestNeueProfileGleicheBytes(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	for _, tc := range []struct {
 		bot     string
 		players int

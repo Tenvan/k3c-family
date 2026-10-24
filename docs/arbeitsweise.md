@@ -122,9 +122,14 @@ Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und
 
 - **Prüfstufen:** Während der Arbeit nur gezielte Tests (`go test ./engine/sim/ -run TestX`, `check_run go:test` oder
   `task:test` mit `pattern`). Vor dem Commit **genau einmal** `task check:diff`: Es wählt Client, Go, k3c-workbench, Studio und
-  Starter nach dem Diff zu `origin/develop`. Den vollen Satz (`task check`, `task check:go`, `task check:race`) fährt nur
+  Starter nach dem Diff zu `origin/develop`, je Tool getrennt nach Go-Tests, Lint und Vitest, und ruft `go test -short`.
+  Den vollen Satz (`task check`, `task check:go`, `task check:race`) fährt nur
   die Review-Session, `task check:all` nur der Release. Ein roter Lauf wird behoben und einmal wiederholt, nicht
   mehrfach „zur Sicherheit“.
+- **Lange Tests (B-619):** Ein Go-Test, der über etwa 3 s braucht (echte Git-Repos, `go build`, lange Lauf-Simulationen,
+  Repo-Scans), beginnt mit `if testing.Short() { t.Skip(…) }`. `check:diff` lässt ihn aus, `check:go`, die
+  Review-Session und die CI fahren ihn. Unveränderte Pakete liefert der Go-Testcache; er greift nur, weil das Go-Temp
+  außerhalb des Repos liegt (`%USERPROFILE%\.k3c\tmp`, `requirements.md`).
 - **Review in der Umsetzung:** nur bei Domäne SIM oder SRV, bei Protokoll- oder Spielstand-Änderungen, bei Code mit
   Shell-Aufrufen, Pfaden oder Eingaben von außen oder ab etwa 150 geänderten Code-Zeilen. Ein Reviewer (Sonnet; Opus nur bei Protokoll, Spielstand oder Nebenläufigkeit), Maßstab wie in
   der Review-Session (nur schwere Befunde). Er startet im Hintergrund **parallel** zu `task check:diff`. Ein Fix unter

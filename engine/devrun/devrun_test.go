@@ -195,6 +195,9 @@ func (a *app) waitLine(line string, n int) {
 
 // Bauen und starten, bei Änderung neu bauen und sauber tauschen, ein Build-Fehler lässt das Kind stehen, ctx beendet sauber.
 func TestRunBautNeuUndBehaeltKindBeiBuildFehler(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	a := startApp(t, 0)
 	a.waitLine("a start 1x", 1)
 
@@ -223,6 +226,9 @@ func TestRunBautNeuUndBehaeltKindBeiBuildFehler(t *testing.T) {
 
 // RestartCode startet ohne Neubau neu, ein anderer Code wartet auf die nächste Änderung.
 func TestRunStartetBeiRestartCodeNeu(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test, läuft ohne -short (B-619)")
+	}
 	a := startApp(t, 75)
 	a.waitLine("a start 1x", 1)
 

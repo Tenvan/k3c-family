@@ -63,6 +63,12 @@ bun install --frozen-lockfile --cwd tools/k3c-starter/frontend
 Die zweite Zeile nur für `tools/k3c-workbench` (Frontend der Oberfläche, `task check:dev`), die dritte für das Asset-Studio
 (`task check:studio`), die vierte für den Windows-Starter (`task check:starter`); `task install` macht alle vier.
 
+Go-Temp (`go-build`, Test-EXEs, `t.TempDir`): Jeder `task`-Aufruf setzt `GOTMPDIR`, `TMP` und `TEMP` auf
+`%USERPROFILE%\.k3c\tmp` (ohne `USERPROFILE`, etwa in der CI: `.work/tmp`; nicht unter AppData, dorthin leitet die Claude-App als MSIX-Paket Schreibzugriffe um). Für diesen Ordner einmal eine Ausnahme im
+Virenscanner (Norton) anlegen, sonst prüft er jede Test-EXE. Er liegt bewusst außerhalb des Repos: Im Repo hasht `go test`
+die wechselnden Temp-Ordner mit, und der Testcache greift nie (B-619). Eine laufende Workbench übernimmt den Ort erst nach
+einem Neustart.
+
 ## Alles prüfen
 
 ```bash
