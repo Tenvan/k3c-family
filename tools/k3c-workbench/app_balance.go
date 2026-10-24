@@ -2,6 +2,7 @@ package main
 
 import (
 	"k3c/tools/k3c-workbench/internal/balance"
+	"k3c/tools/k3c-workbench/internal/datadoc"
 	"k3c/tools/k3c-workbench/internal/simrun"
 )
 
@@ -37,4 +38,29 @@ func (a *App) BalanceReport(path string) (balance.Summary, error) {
 // BalanceTuning liest ein Abstimm-Ergebnis tuning-*.json (WZ28.6); nur Pfade unter reports/.
 func (a *App) BalanceTuning(path string) (balance.Tuning, error) {
 	return simrun.ReadTuning(a.root, path)
+}
+
+// BalanceDataFiles nennt die Dateien in data/, die das Balancing beeinflussen, mit Zweck aus docs/data/ (WZ28.10, B-610).
+func (a *App) BalanceDataFiles() []datadoc.File {
+	return datadoc.List(a.root)
+}
+
+// BalanceDataDoc liest die Beschreibung docs/data/<name>.md; nur Namen der Liste.
+func (a *App) BalanceDataDoc(name string) (string, error) {
+	return datadoc.Doc(a.root, name)
+}
+
+// BalanceDataValues nennt die Zahlenwerte einer variierbaren Datei (Pfade wie in Varianten).
+func (a *App) BalanceDataValues(name string) ([]datadoc.Value, error) {
+	return datadoc.Values(a.root, name)
+}
+
+// BalanceReportRate setzt die Bewertung eines Berichts (gut, schlecht, unklar, referenz; leer = keine, WZ28.13).
+func (a *App) BalanceReportRate(path, rating string) error {
+	return simrun.RateReport(a.root, path, rating)
+}
+
+// BalanceReportDelete löscht einen Bericht unter reports/ samt .md und Bewertung (WZ28.13).
+func (a *App) BalanceReportDelete(path string) error {
+	return simrun.DeleteReport(a.root, path)
 }

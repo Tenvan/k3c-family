@@ -145,7 +145,7 @@ func (g Target) validate() error {
 		return fmt.Errorf("name und rule sind Pflicht")
 	case g.Kind != m.kind:
 		return fmt.Errorf("art %q passt nicht zur Kennzahl %s (%s)", g.Kind, g.Measure, m.kind)
-	case bots[g.Bot] == nil:
+	case !knownBot(g.Bot):
 		return fmt.Errorf("unbekannter Bot %q", g.Bot)
 	case g.Players < 1 || g.Players > 4 || g.Days < 1:
 		return fmt.Errorf("players 1 bis 4 und days ab 1 nötig, war %d und %d", g.Players, g.Days)
@@ -171,4 +171,9 @@ func (g Target) validateBounds() error {
 		}
 	}
 	return nil
+}
+
+func knownBot(name string) bool {
+	_, ok := BotByName(name)
+	return ok
 }

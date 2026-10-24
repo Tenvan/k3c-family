@@ -43,7 +43,7 @@ export function specFromForm(form: BalanceForm): SpecResult {
   }
   const vary = form.vary.split('\n').map((l) => l.trim()).filter(Boolean);
   const bad = vary.find((v) => !VARY.test(v));
-  if (bad) return { error: `Variante „${bad}“: Form datei.json:pfad.zum.wert=wert` };
+  if (bad) return { error: `Variante „${bad}“: Form datei.json:pfad.zum.wert=wert, z. B. economy.json:purse.startGold=120` };
   if (vary.length > 0) spec.vary = vary;
   const { tune, error } = tuneFromForm(form.tune);
   if (error) return { error };

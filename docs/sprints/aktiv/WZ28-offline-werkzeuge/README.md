@@ -4,11 +4,11 @@
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
-- **Tickets:** B-594, B-595, B-596, B-606, B-608, B-609, B-610
+- **Tickets:** B-594, B-595, B-596, B-606, B-608, B-609, B-610, B-611, B-612
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** freigegeben
-- **Revision:** 3
-- **Freigabe:** autonom, Claude, 2026-10-24 (Wunsch Ralf im Chat), Revision 3; Revision 2: autonom, Claude, 2026-10-24 (Ziel von Ralf: WZG komplett umsetzen); Revision 1: 2026-10-24, Ralf im Chat
+- **Revision:** 5
+- **Freigabe:** Ralf im Chat, 2026-10-24, Revision 5 (B-612 als Session in WZ28); Revision 4: Ralf im Chat (B-611); Revision 3: autonom, Claude, 2026-10-24 (Wunsch Ralf im Chat); Revision 2: autonom, Claude, 2026-10-24 (Ziel von Ralf: WZG komplett umsetzen); Revision 1: 2026-10-24, Ralf im Chat
 
 ## Ausgangslage
 
@@ -61,6 +61,8 @@ Atlas fehlt → Hinweis `task gen:atlas`. Backlog nicht beschreibbar → Eingabe
 - **AC-10** Hilfen und Beispiele: Jedes Eingabefeld der Balancing-Konfiguration hat Hilfetext und Hilfe-Knopf mit Popup, Beispiel-Läufe lassen sich übernehmen (B-609/AC-01, B-609/AC-02).
 - **AC-11** Datei-Liste mit Popups: Die Balancing-Seite listet alle Dateien, die das Balancing beeinflussen (Go-Test gegen die Loader), zeigt je Datei die Beschreibung als Popup und übernimmt Zahlenwerte als Variante (B-610/AC-01, B-610/AC-02).
 - **AC-12** Beschreibungen in `docs/data/`: alle 17 Dateien beschrieben, Pfade geprüft (B-608/AC-01, B-608/AC-02).
+- **AC-13** Bot je Spieler: Offline-Läufe geben jedem Spieler ein eigenes Profil (`saver+passive`), Seite mit Auswahl je Spieler (B-611/AC-01, B-611/AC-02).
+- **AC-14** Berichte verwalten: einzeln bewerten und nach Rückfrage löschen, Vergleich mit Vergleichsbasis erklärt (B-612/AC-01, B-612/AC-02).
 
 ## Offene Fragen
 
@@ -79,8 +81,10 @@ keine. Entschieden (🧑, 2026-10-24): nächste freie Ticket-Nummer genügt (Ral
 | WZ28.7 | `WZ28.7-review.md` | Review | autonom | offen |
 | WZ28.8 | `WZ28.8-abnahme-notebook-offline.md` | Workshop | Mensch | offen |
 | WZ28.9 | `WZ28.9-studio-tests-gruen.md` | Umsetzung | autonom | fertig |
-| WZ28.10 | `WZ28.10-balancing-hilfe.md` | Umsetzung | autonom | in Arbeit |
-| WZ28.11 | `WZ28.11-daten-beschreibungen.md` | Umsetzung | autonom | in Arbeit |
+| WZ28.10 | `WZ28.10-balancing-hilfe.md` | Umsetzung | autonom | fertig |
+| WZ28.11 | `WZ28.11-daten-beschreibungen.md` | Umsetzung | autonom | fertig |
+| WZ28.12 | `WZ28.12-bot-je-spieler.md` | Umsetzung | autonom | fertig |
+| WZ28.13 | `WZ28.13-berichte-verwalten.md` | Umsetzung | autonom | fertig |
 
 - WZ28.1 (DEV) Slot-Details im Studio: Backend-Aufbereitung aus Atlas, `sprites.json`, `assets.json`, Zuordnung; Detailbereich (AC-01).
 - WZ28.2 (DEV) Ticket-Baustein: Go-Paket zum Anlegen nach Vorlage, `TicketButton` und Dialog in `@webkit`, Kontext-Provider (AC-02).
@@ -92,6 +96,8 @@ keine. Entschieden (🧑, 2026-10-24): nächste freie Ticket-Nummer genügt (Ral
 - WZ28.8 (Mensch) Abnahme am Notebook ohne Internet (AC-08).
 - WZ28.10 (DEV) Balancing-Seite: Hilfetexte und Hilfe-Knopf je Feld, Beispiele, Liste der Konfigurationsdateien mit Popup, RPC für `docs/data/*.md` mit Pfadprüfung (AC-10, AC-11).
 - WZ28.11 (DEV) Beschreibungen der 17 balancing-relevanten Dateien unter `docs/data/` mit Test auf Vollständigkeit und Pfade (AC-12).
+- WZ28.12 (DEV) Bot je Spieler in Offline-Läufen und auf der Balancing-Seite (AC-13).
+- WZ28.13 (DEV) Berichte löschen und bewerten, Vergleichsbasis erklären (AC-14).
 
 ## Abnahme
 

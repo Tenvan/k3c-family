@@ -4,6 +4,9 @@ import { NoticeCard } from '@webkit/molecules';
 import { useTicketPage } from '@webkit/lib/ticketContext';
 import { loadJSON, saveJSON } from '../lib/prefs';
 import { CompareView } from './CompareView';
+import { DataFiles } from './DataFiles';
+import { Examples } from './Examples';
+import { appendLine, formFromExample } from './help';
 import { ConfigForm } from './ConfigForm';
 import { ReportList } from './ReportList';
 import { ReportView } from './ReportView';
@@ -24,7 +27,7 @@ function TuningDetail({ path }: { path: string }) {
 function ReportDetail({ selected, base }: { selected: string; base: string }) {
   const b = useSummary(selected);
   const a = useSummary(base);
-  if (!selected) return <NoticeCard title="Kein Bericht gewählt" tone="neutral">In der Liste einen Bericht öffnen; mit „Als Basis“ wird er mit dem gewählten verglichen.</NoticeCard>;
+  if (!selected) return <NoticeCard title="Kein Bericht gewählt" tone="neutral">In der Liste einen Bericht öffnen. Mit „Vergleichsbasis“ wird ein Bericht zum Maßstab A, jeder danach geöffnete Bericht B erscheint neben ihm.</NoticeCard>;
   if (b.error) return <NoticeCard title="Bericht nicht lesbar" tone="error">{b.error}</NoticeCard>;
   if (b.loading || !b.summary) return <Text color="gray">Lade Bericht …</Text>;
   if (base && base !== selected) {
@@ -40,7 +43,8 @@ function Detail({ selected, base, tuning }: { selected: string; base: string; tu
   return <ReportDetail selected={selected} base={base} />;
 }
 
-/** Reiter `Balancing` (WZ28.5): Konfiguration, Warteschlange, Berichte mit Diagrammen, Vergleich, Export. */
+/** Reiter `Balancing` (WZ28.5): Konfiguration, Warteschlange, Berichte mit Diagrammen, Vergleich, Export; Hilfen,
+ *  Beispiele und Konfigurationsdateien (WZ28.10). */
 export function BalancingPage({ active = true }: { active?: boolean }) {
   const data = useBalancing(active);
   const [form, setForm] = useState<BalanceForm>(EMPTY_FORM);
@@ -56,11 +60,20 @@ export function BalancingPage({ active = true }: { active?: boolean }) {
     <div className="bal-page">
       {data.error && <p className="svc-error" role="alert">{data.error}</p>}
       <div className="bal-col">
-        <ConfigForm form={form} onForm={setForm} presets={presets} onPresets={keepPresets} onStart={data.start} />
+        <ConfigForm form={form} onForm={setForm} presets={presets} onPresets={keepPresets} onStart={data.start}>
+          <Examples onPick={(e) => setForm(formFromExample(e, EMPTY_FORM))} />
+          <DataFiles
+            onVary={(line) => setForm((f) => ({ ...f, vary: appendLine(f.vary, line) }))}
+            onParam={(line) => setForm((f) => ({ ...f, tune: { ...f.tune, mode: f.tune.mode || 'search', params: appendLine(f.tune.params, line) } }))}
+          />
+        </ConfigForm>
         <RunQueue runs={data.runs} onStop={data.stop} onOpen={setSelected} onReuse={(r) => setForm(formFromSpec(r.spec))} />
       </div>
       <div className="bal-col">
-        <ReportList reports={data.reports} selected={selected} base={base} onSelect={setSelected} onBase={setBase} onReload={data.reloadReports} />
+        <ReportList
+          reports={data.reports} selected={selected} base={base} onSelect={setSelected} onBase={setBase} onReload={data.reloadReports}
+          onRate={data.rate} onDelete={(path) => { if (path === selected) setSelected(''); if (path === base) setBase(''); void data.remove(path); }}
+        />
         <Detail selected={selected} base={base} tuning={data.reports.find((r) => r.path === selected)?.kind === 'tuning'} />
       </div>
     </div>

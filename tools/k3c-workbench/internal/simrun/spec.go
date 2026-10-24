@@ -3,7 +3,6 @@ package simrun
 import (
 	"fmt"
 	"regexp"
-	"slices"
 	"strconv"
 	"strings"
 	"unicode/utf8"
@@ -56,7 +55,7 @@ func (s Spec) Check() error {
 		{s.Depth != nil && (*s.Depth < 0 || *s.Depth > 20), "depth 0 bis 20"},
 		{s.Players < 0 || s.Players > 4, "players 1 bis 4"},
 		{s.Days < 0 || s.Days > 100, "days 1 bis 100"},
-		{s.Bot != "" && !slices.Contains(balance.BotNames(), s.Bot), "bot: " + strings.Join(balance.BotNames(), ", ")},
+		{s.Bot != "" && !knownBot(s.Bot), "bot: " + strings.Join(balance.BotNames(), ", ") + " oder je Spieler a" + balance.MixSep + "b"},
 		{s.Grade != "" && !gradeName.MatchString(s.Grade), "grade: Kleinbuchstaben, Ziffern, Bindestrich"},
 		{len(s.Vary) > maxVary, fmt.Sprintf("höchstens %d Varianten", maxVary)},
 		{utf8.RuneCountInString(s.Label) > 60 || strings.ContainsAny(s.Label, "\r\n"), "label höchstens 60 Zeichen, eine Zeile"},
@@ -175,4 +174,9 @@ func (s Spec) args(exe, dir string) []string {
 		args = append(args, "--vary", v)
 	}
 	return append(args, s.Tune.args()...)
+}
+
+func knownBot(name string) bool {
+	_, ok := balance.BotByName(name)
+	return ok
 }

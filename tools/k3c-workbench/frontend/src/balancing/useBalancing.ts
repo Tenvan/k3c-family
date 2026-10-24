@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { backend, type BalanceReportInfo, type BalanceRun, type BalanceSpec, type BalanceSummary, type Tuning } from '../api';
+import { backend, type BalanceReportInfo, type BalanceRun, type BalanceSpec, type BalanceSummary, type ReportRating, type Tuning } from '../api';
 import { errorText } from '@webkit/lib/errors';
 import { isActive, mergeRuns } from './spec';
 
@@ -46,16 +46,21 @@ export function useBalancing(active: boolean) {
       setError(errorText(e));
     }
   };
-  const stop = async (id: string) => {
+  /** Aufruf ans Backend, danach neu laden; Fehler als Text. */
+  const call = async (fn: () => Promise<unknown>, after: () => void) => {
     setError('');
     try {
-      await backend.balanceStop(id);
-      loadRuns();
+      await fn();
+      after();
     } catch (e) {
       setError(errorText(e));
     }
   };
-  return { runs, reports, error, start, stop, reloadReports: loadReports };
+  const stop = (id: string) => call(() => backend.balanceStop(id), loadRuns);
+  // Berichte bewerten und löschen (WZ28.13).
+  const rate = (path: string, rating: ReportRating) => call(() => backend.balanceReportRate(path, rating), loadReports);
+  const remove = (path: string) => call(() => backend.balanceReportDelete(path), loadReports);
+  return { runs, reports, error, start, stop, rate, remove, reloadReports: loadReports };
 }
 
 /** Bericht zu einem Pfad; leerer Pfad = keiner. */
