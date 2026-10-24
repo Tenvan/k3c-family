@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KR2
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-22
@@ -54,6 +54,6 @@ Siehe Notizen.
 
 ## Notizen
 
-**Frage:** Lohnt die Protokolländerung `markedBy`, oder reicht die Annäherung?
+**Entscheidung 🧑 (2026-10-24, Chat):** `markedBy` bleibt. Umgesetzt in GEB14 (B-532, Snapshot nennt den Markierer, im Spielstand gespeichert). Die Client-Annäherung in `pennant.ts` bleibt nur als Rückfall; kein Umbau, keine Folgearbeit.
 
-**Entscheidung 🧑 (KR2.1, 2026-10-23):** Default gilt, die Entscheidung fällt nach der Abnahme GEB10.5 (zwei Spieler am Gerät). Die Annäherung bleibt bis dahin, B-532 bleibt offen mit Prio niedrig. Dieses Ticket bleibt `eingeplant`, KR2.1 bleibt deshalb offen. Danach: B-532 zum Sprint im Projekt GEB (Ja) oder verwerfen (Nein).
+Früherer Stand (KR2.1, 2026-10-23): Entscheidung erst nach GEB10.5; damit überholt.

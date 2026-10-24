@@ -12,7 +12,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | GEB9 | DEV, CLI | GEB | Ausbaustufen 1 bis 5 für alle Hub-Gebäude | – | `aktiv/GEB9-hub-ausbaustufen/` |
 | GEB10 | DEV, CLI | GEB | Natur-Nachträge: hohe Bäume, Höhlen-Flora, geschlossene Truhe, Wimpel in Spielerfarbe | – | `aktiv/GEB10-natur-truhe-wimpel/` |
 | GEB11 | REG, SIM, DEV, CLI | GEB | Hub wächst kleinteilig vom Lagerfeuer bis zur Burg | – | `aktiv/GEB11-hub-waechst-kleinteilig/` |
-| GEB12 | REG, CLI | GEB | Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte) | – | `aktiv/GEB12-entscheidungen-geb9-11/` |
 | GEB13 | REG, DEV | GEB | Gebäude-Stufen in den Daten und Stufen-Look für Plantage, Camp, Heilplatz | – | `aktiv/GEB13-gebaeude-stufen-look/` |
 | GR7 | CLI | GRA | Figuren-Lücken, ganzzahlige Skalierung und Schrift | – | `aktiv/GR7-figuren-schrift/` |
 | GR9 | DEV, CLI | GRA | Monarch-Animationen für Wurf, Treffer, Tod und Respawn, Kandidaten-Import ohne roten Test | – | `aktiv/GR9-monarch-animationen-kandidaten/` |
@@ -26,7 +25,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | KB2 | SRV, CLI | KMP | Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen | – | `aktiv/KB2-protokoll-kampf-nachtraege/` |
 | BT1 | SRV, DEV | REL | Server im Heimnetz finden, Windows-Starter, Start mit Seed | – | `aktiv/BT1-heimnetz-start/` |
 | KR1 | REG | KRT | Kritische Fragen zu BED | – | `aktiv/KR1-fragen-bed/` |
-| KR2 | REG | KRT | Kritische Fragen zu GEB | – | `aktiv/KR2-fragen-geb/` |
 | KR3 | REG | KRT | Kritische Fragen zu GRA | – | `aktiv/KR3-fragen-gra/` |
 | KR4 | REG | KRT | Kritische Fragen zu SND | – | `aktiv/KR4-fragen-snd/` |
 | KR5 | REG | KRT | Kritische Fragen zu SKL | – | `aktiv/KR5-fragen-skl/` |
@@ -235,3 +233,5 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BD5 | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | `erledigt/BD5-spielmenue-welt-spielstaende/` |
 | BD4 | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | `erledigt/BD4-hud-leiste-austreten/` |
 | BD6 | Autonome Entscheidungen zu BED prüfen und festschreiben | `erledigt/BD6-entscheidungen-bed/` |
+| GEB12 | Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte) | `erledigt/GEB12-entscheidungen-geb9-11/` |
+| KR2 | Kritische Fragen zu GEB | `erledigt/KR2-fragen-geb/` |

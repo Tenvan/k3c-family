@@ -1,6 +1,6 @@
 # KR2 · REG · Kritische Fragen zu GEB
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KRT
 - **Domäne:** REG
 - **Reife:** bereit
@@ -68,9 +68,8 @@ keine (die Fragen sind der Inhalt der Tickets; Defaults gelten).
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| KR2.1 | `KR2.1-fragen-geb.md` | Workshop | Mensch | offen |
+| KR2.1 | `KR2.1-fragen-geb.md` | Workshop | Mensch | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-24: KR2.1 fertig, alle acht Fragen (B-538 bis B-545) entschieden und erledigt; Folgearbeit B-531, B-568 bis B-572 im Projekt GEB.

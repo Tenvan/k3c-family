@@ -15,7 +15,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | Sprint | Thema | Status |
 |---|---|---|
 | KR1 | Kritische Fragen zu BED | aktiv |
-| KR2 | Kritische Fragen zu GEB | aktiv |
+| KR2 | Kritische Fragen zu GEB | erledigt |
 | KR3 | Kritische Fragen zu GRA | aktiv |
 | KR4 | Kritische Fragen zu SND | aktiv |
 | KR5 | Kritische Fragen zu SKL | aktiv |

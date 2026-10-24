@@ -1,6 +1,6 @@
 # KR2.1 · Workshop: kritische Fragen zu GEB entscheiden (🧑)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** REG
@@ -36,8 +36,8 @@ Umsetzung der Folgearbeit; die Geräte-Abnahmen selbst.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jedes Ticket trägt Ralfs Entscheidung.
-- [ ] AC-02: Bestätigte erledigt, geänderte mit Folgearbeit.
+- [x] AC-01: Jedes Ticket trägt Ralfs Entscheidung.
+- [x] AC-02: Bestätigte erledigt, geänderte mit Folgearbeit.
 
 ## Prüfen
 
@@ -47,9 +47,6 @@ task test -- planning
 
 ## Ergebnis
 
-Teilergebnis (Workshop 2026-10-23 mit Ralf, Claude moderiert und protokolliert); die Session bleibt `offen`, weil B-539 (D2) erst nach GEB10.5 entschieden wird.
-
-- **AC-01 teilweise:** Sieben von acht Tickets tragen Ralfs Entscheidung. B-539 trägt die Entscheidung „erst nach GEB10.5“.
-- **AC-02 teilweise:** Bestätigt und `erledigt`: B-538 (A), B-541, B-543. Geändert und `erledigt` mit Verweis: B-540 (Werte in B-531: Wald `tree [6, 9]`, Höhle `bush [1, 3]`, Mine ohne Büsche), B-542 → B-568, B-544 → B-569, B-570, B-571, B-545 → B-572. Offen: B-539 (`eingeplant`), B-532 bleibt offen mit Prio niedrig.
-- **Neue Tickets (Projekt GEB):** B-568 (niedrige Plantagen-Pappel), B-569 (eigene Gebäudestufen, Umfang vor der Spec klären), B-570 (Camp-Stufen-Look), B-571 (Heilplatz deutlicher), B-572 (Gerüst immer bei `waitingWorker`).
-- **Abweichung:** Keine Eintragung in `docs/decisions/`, weil weder D1 C noch D2 Ja gewählt wurde.
+- **AC-01 geprüft:** Alle acht Tickets (B-538 bis B-545) tragen Ralfs Entscheidung; D2 am 2026-10-24: `markedBy` bleibt (GEB14/B-532).
+- **AC-02 geprüft:** Alle acht `erledigt`. Folgearbeit: B-531 (D3), B-568 (D5), B-569/B-570/B-571 (D7), B-572 (D8), alle im Projekt GEB.
+- Keine Eintragung in `docs/decisions/`.

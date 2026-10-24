@@ -1,6 +1,6 @@
 # GEB12.1 · Workshop: D1–D8 bestätigen (🧑)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** REG
@@ -36,7 +36,7 @@ Umsetzung der Folgearbeit.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jedes der acht Tickets trägt Ralfs Entscheidung; Regelentscheidungen stehen in `docs/decisions/`.
+- [x] AC-01: Jedes der acht Tickets trägt Ralfs Entscheidung; Regelentscheidungen stehen in `docs/decisions/` (keine nötig).
 
 ## Prüfen
 
@@ -46,7 +46,5 @@ task test -- planning
 
 ## Ergebnis
 
-Teilergebnis, zusammen mit KR2.1 (Workshop 2026-10-23, Details dort); die Session bleibt `offen`, bis D2 (B-539) nach GEB10.5 entschieden ist.
-
-- **AC-01 teilweise:** D1 bis D8 tragen Ralfs Entscheidung; D2 lautet „erst nach GEB10.5“. `docs/decisions/` unverändert (D1 = A, D2 nicht Ja).
+- **AC-01 geprüft:** D1 bis D8 tragen Ralfs Entscheidung (Workshop 2026-10-23, D2 am 2026-10-24: `markedBy` bleibt, umgesetzt in GEB14/B-532, B-539 erledigt). `docs/decisions/` unverändert, weil weder D1 C noch ein neuer D2-Umbau gewählt wurde.
 - **Neue Tickets:** B-568, B-569, B-570, B-571, B-572; B-531 trägt die Werte von D3.

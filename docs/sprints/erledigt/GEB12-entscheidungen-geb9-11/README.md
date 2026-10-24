@@ -1,6 +1,6 @@
 # GEB12 · REG, CLI · Entscheidungen zu GEB9 bis GEB11 (Server-Stufenfolge, Markierer im Snapshot, Wald-Dichte)
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GEB
 - **Domäne:** REG, CLI
 - **Reife:** bereit
@@ -57,7 +57,7 @@ Alle Entscheidungen sind autonom mit Default getroffen (Claude, 2026-10-22) und 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GEB12.1 | `GEB12.1-workshop-entscheidungen.md` | Workshop | Mensch | offen |
+| GEB12.1 | `GEB12.1-workshop-entscheidungen.md` | Workshop | Mensch | fertig |
 | GEB12.2 | `GEB12.2-folgearbeit-planen.md` | Workshop | autonom | fertig |
 | GEB12.3 | `GEB12.3-geruest-ohne-gefahr.md` | Umsetzung | autonom | fertig |
 
@@ -65,5 +65,4 @@ GEB12.1 (AC-01) entscheidet Ralf zusammen mit KR2.1. GEB12.2 (AC-02, AC-03) und 
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-24: AC-01 (GEB12.1/KR2.1: D1–D8 entschieden, D2 `markedBy` bleibt), AC-02 und AC-03 (GEB12.2), AC-04 (GEB12.3) erfüllt. Neue Tickets: B-531 (Werte D3), B-568 bis B-572.
