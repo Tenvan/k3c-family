@@ -138,6 +138,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-583](B-583-minen-felsen-groesser-varianten.md) | DEV | Idee | mittel | eingeplant | GEB15 | Minen und Felsen sind größer und haben zwei bis drei Varianten mehr |
 | [B-584](B-584-bauschilder-statt-rahmen.md) | CLI | Idee | mittel | offen | – | Bauplätze zeigen kleine Bauschilder statt grauer Rahmen |
 | [B-585](B-585-wald-chunks-voller-baeume.md) | REG | Problem | mittel | offen | – | Wald-Chunks stehen voller Bäume |
+| [B-586](B-586-baugeruest-in-gebaeudeform.md) | CLI | Idee | mittel | offen | – | Im Bau zeigt der Platz ein Gerüst in der Form des neuen Gebäudes |
 
 ## Archiv
 
