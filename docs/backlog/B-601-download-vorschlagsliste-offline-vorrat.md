@@ -39,7 +39,7 @@ Automatisches Laden ohne Bestätigung; Lizenz-fremde Quellen (NC nur markiert); 
 
 ## Regeln und Einschränkungen
 
-Downloads fremder Dateien nur mit ausdrücklicher Bestätigung von Ralf (Quelle, Datei, Größe); Lizenzregel Q70, Credits-Test; Dateien sind untrusted Daten (nie ausführen, nur Bilder/Audio mit erlaubter Endung, Größenlimit je Datei); Studio schreibt nur in `data/assets-vorschlaege.json` und in den lokalen Vorratsordner. **Vorratsordner** (gitignored, z. B. `public/audio/kandidaten/` und `public/grafik/kandidaten/` bzw. ein eigener `vorrat/`): nicht ausgewählte Kandidaten bleiben lokal und kommen nie in Git; beim Auswählen (Platz 1 oder Zuordnung) wird die Datei an ihren Platz im Repo kopiert und committet. Der Credits-Test prüft nur Dateien, die in Git liegen (Vorrat ausgenommen); Atomic Design über `@webkit`.
+Downloads fremder Dateien nur mit ausdrücklicher Bestätigung von Ralf (Quelle, Datei, Größe); Lizenzregel Q70, Credits-Test; Dateien sind untrusted Daten (nie ausführen, nur Bilder/Audio mit erlaubter Endung, Größenlimit je Datei). **Vorrat als Cache in `.work/vorrat/`** (`audio/`, `grafik/`, je Quelle ein Unterordner, gitignored): nicht ausgewählte Kandidaten bleiben dort und kommen nie in Git; ein Index `.work/vorrat/index.json` merkt Quelle, Lizenz, Größe, Prüfsumme, Ladezeit. Das Studio liefert den Vorrat unter einem eigenen Pfad (z. B. `/vorrat/…`, nur lesend, wie `public.go`) für Hörprobe und Vorschau aus, sodass geladene Dateien ohne Kopie ins Repo abspielbar sind; beim Auswählen (Platz 1 oder Zuordnung) wird die Datei an ihren Platz in `public/` kopiert, Credit und Katalog-Eintrag folgen, erst dann wird sie committet. Die bereits in Git liegenden nicht gewählten Kandidaten (`public/audio/kandidaten/`) ziehen einmalig in den Vorrat um. Der Credits-Test prüft nur Dateien, die in Git liegen. Studio schreibt nur in `data/assets-vorschlaege.json`, `.work/vorrat/` und die gewählten Dateien unter `public/`. Atomic Design über `@webkit`.
 
 ## Beispiele
 
@@ -59,7 +59,7 @@ Download scheitert → Eintrag bleibt „offen“, Fehlertext, Wiederholen mögl
 
 ## Offene Fragen
 
-keine. Entschieden (🧑, 2026-10-24): Der Vorrat bleibt nur lokal (gitignored). In Git landen nur die ausgewählten Grafiken und Sounds (mit Credit und Katalog-Eintrag) sowie die Vorschlagsliste `data/assets-vorschlaege.json`.
+keine. Entschieden (🧑, 2026-10-24): Der Vorrat bleibt nur lokal und wird in `.work/` gecacht (`.work/vorrat/`, gitignored, dort gilt auch die Norton-Ausnahme). In Git landen nur die ausgewählten Grafiken und Sounds (mit Credit und Katalog-Eintrag) sowie die Vorschlagsliste `data/assets-vorschlaege.json`.
 
 ## Notizen
 
