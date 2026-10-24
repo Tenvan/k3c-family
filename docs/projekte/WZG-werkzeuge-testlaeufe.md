@@ -47,6 +47,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ25 | Nachträge zum Server-Neustart: Räume bleiben offen, Assets ohne Build, Werkzeuge passen dazu | erledigt |
 | WZ26 | CI rot beheben, Prüf- und Planungswerkzeuge härten | erledigt |
 | WZ27 | Geplante Chunks: Gegnerlager, Ruinen-Kollision, Dateigrenze | erledigt |
+| WZ28 | Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite | geplant |
 
 ## Nicht-Ziele
 

@@ -138,6 +138,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-590](B-590-wachstumsreihe-unterscheidbar.md) | DEV | Problem | hoch | offen | – | Die Wachstumsreihe der Burg zeigt echte Unterschiede statt derselben Burg in Farben |
 | [B-591](B-591-burg-ausbau-angebot-fehlt.md) | CLI | Problem | hoch | offen | – | Vor der Burg erscheint kein Ausbau-Angebot, wenn der Spieler davor steht |
 | [B-592](B-592-hub-ausbaustufen-je-inselstufe.md) | REG | Idee | hoch | offen | – | Der Hub hat zwei bis drei Ausbaustufen je Inselstufe, weiter mit dem Material der nächsten Inselstufe |
+| [B-594](B-594-grafik-seite-slot-details.md) | DEV | Idee | hoch | eingeplant | WZ28 | Die Grafik-Seite zeigt je Slot Name, Atlas-Definition und alles für die Zuordnung |
+| [B-595](B-595-ticket-button-ohne-ki.md) | DEV | Idee | hoch | eingeplant | WZ28 | Jede Seite hat einen Button, der ohne KI ein Ticket zur Seite anlegt |
+| [B-596](B-596-balancing-seite-offline.md) | DEV | Idee | hoch | eingeplant | WZ28 | Eine Balancing-Seite fährt Simulationen und Berichte ohne Internet und ohne Claude |
 
 ## Archiv
 
