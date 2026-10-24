@@ -1,6 +1,6 @@
 # SO8.2 · Auslöser: Skill-Ton je Skill, Linie und Rückfall
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -45,4 +45,7 @@ Neue Slots (SO8.1), Auswahl der Töne für passive Skills, Pegel-Feinschliff.
 
 ## Ergebnis
 
-–
+- AC-02 umgesetzt: reine Funktion `skillSlot` in `src/audio/skills.ts` (eigener Slot vor Linie vor `sfx:skill`); `SkillCasts` meldet Wirken/Lernen per Callback, `GameScene.playSkill` spielt den Slot am Ort des Spielers mit `attenuation` und `nightGain`. Reset bei Stufenwechsel wie beim Ring.
+- AC-02 geprüft: Vitest `src/audio/skills.test.ts` (taunt → Tank-Slot, ohne Linien-Slot → `sfx:skill`, Katalog hat einen Slot je Klasse), `skillCasts.test.ts` (Meldung je Spieler, nicht aus dem ersten Zustand); Typecheck und Lint grün.
+- AC-03 geprüft: Vitest: `regeneration` ohne Slot still, mit `sfx:skill:regeneration` spielt er ihn, der Skill-Slot hat Vorrang vor der Linie.
+- Abweichung: Schritt 1 nennt `skillSlot(skillId, kind)`, die Art liest die Funktion aus `MONARCH.skills`, der zweite Parameter ist das Slot-Register (testbar). `events.test.ts` nimmt `sfx:skill:*` aus der Erreichbarkeit über `cueFor` aus.

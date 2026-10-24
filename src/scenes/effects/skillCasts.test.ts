@@ -31,6 +31,19 @@ describe('SkillCasts (SK2.3, B-503/AC-01)', () => {
     expect(casts.diff([player(0, { skills: ['heal', 'healingAura', 'thickSkin'], slots: ['heal'], cooldowns: [9] })])).toEqual([]);
   });
 
+  it('meldet Wirken und Lernen je Spieler mit Skill-Id, auch ohne Ring; nicht aus dem ersten Zustand (SO8.2)', () => {
+    const heard: unknown[] = [];
+    const casts = new SkillCasts((c) => heard.push(c));
+    casts.diff([player(0, { skills: ['heal'], slots: ['heal'], cooldowns: [9] }), player(1)]);
+    expect(heard).toEqual([]);
+    casts.diff([player(0, { skills: ['heal'], slots: ['heal'], cooldowns: [0] }), player(1, { skills: ['regeneration'] })]);
+    casts.diff([player(0, { skills: ['heal'], slots: ['heal'], cooldowns: [9] }), player(1, { skills: ['regeneration'] })]);
+    expect(heard).toEqual([
+      { index: 1, skill: 'regeneration', x: 11 },
+      { index: 0, skill: 'heal', x: 10 },
+    ]);
+  });
+
   it('jede Linie aus data/monarch.json mit Skills hat eine Farbe (Rückfall je Klasse für alle Skills)', () => {
     const lines = new Set(Object.values(MONARCH.skills as Record<string, { line: string }>).map((s) => s.line));
     for (const line of lines) expect(LINE_COLORS[line], line).toBeTypeOf('number');

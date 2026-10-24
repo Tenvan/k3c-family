@@ -58,7 +58,7 @@ keine. Auswahl der Töne als Default durch den Agenten, 🧑 bestätigt in SO8.4
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | SO8.1 | `SO8.1-klassen-slots-katalog.md` | Umsetzung | autonom | fertig |
-| SO8.2 | `SO8.2-ausloeser-skill-ton.md` | Umsetzung | autonom | offen |
+| SO8.2 | `SO8.2-ausloeser-skill-ton.md` | Umsetzung | autonom | fertig |
 | SO8.3 | `SO8.3-review.md` | Review | autonom | offen |
 | SO8.4 | `SO8.4-hoerprobe-klassen-toene.md` | Workshop | Mensch | offen |
 

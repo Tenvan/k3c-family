@@ -20,8 +20,18 @@ interface Seen {
   skills: Set<string>;
 }
 
+/** Wirken (aktiv) oder Lernen (passiv) eines Skills durch einen Spieler; `x` in Units (SO8.2, Ton je Skill). */
+export interface SkillCast {
+  index: number;
+  skill: string;
+  x: number;
+}
+
 export class SkillCasts {
   private readonly seen = new Map<number, Seen>();
+
+  /** `onCast` hört jedes Wirken und Lernen, auch ohne Ring (z. B. für den Ton). */
+  constructor(private readonly onCast?: (cast: SkillCast) => void) {}
 
   /** Neues Spiel oder neue Stufe: alles vergessen, der erste Zustand danach zeigt keinen Ring. */
   reset(): void {
@@ -37,15 +47,20 @@ export class SkillCasts {
       this.seen.set(p.index, now);
       if (!prev) continue;
       now.cooldowns.forEach((cd, i) => {
-        if (cd > (prev.cooldowns[i] ?? 0) + 0.5) push(out, p, p.slots?.[i]);
+        if (cd > (prev.cooldowns[i] ?? 0) + 0.5) this.push(out, p, p.slots?.[i]);
       });
-      for (const id of now.skills) if (!prev.skills.has(id) && SKILLS[id]?.kind === 'passive') push(out, p, id);
+      for (const id of now.skills) if (!prev.skills.has(id) && SKILLS[id]?.kind === 'passive') this.push(out, p, id);
     }
     return out;
   }
+
+  private push(out: Effect[], p: Player, id: string | undefined): void {
+    if (id) this.onCast?.({ index: p.index, skill: id, x: p.x });
+    ring(out, p, id);
+  }
 }
 
-function push(out: Effect[], p: Player, id: string | undefined): void {
+function ring(out: Effect[], p: Player, id: string | undefined): void {
   const look = id ? skillLook(id) : undefined;
   if (look) out.push({ kind: 'skill', x: p.x * UNIT_PX, y: GROUND_Y - RING_PX, color: look.color, look });
 }
