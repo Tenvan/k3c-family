@@ -4,11 +4,11 @@
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
-- **Tickets:** B-594, B-595, B-596, B-606
+- **Tickets:** B-594, B-595, B-596, B-606, B-608, B-609, B-610
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** freigegeben
-- **Revision:** 2
-- **Freigabe:** autonom, Claude, 2026-10-24, Revision 2 (Ziel von Ralf: WZG komplett umsetzen, soweit autonom möglich; Revision 1: 2026-10-24, Ralf im Chat)
+- **Revision:** 3
+- **Freigabe:** autonom, Claude, 2026-10-24 (Wunsch Ralf im Chat), Revision 3; Revision 2: autonom, Claude, 2026-10-24 (Ziel von Ralf: WZG komplett umsetzen); Revision 1: 2026-10-24, Ralf im Chat
 
 ## Ausgangslage
 
@@ -24,7 +24,7 @@ Ralf; Agent DEV; 🧑 entscheidet die offenen Fragen und nimmt am Notebook ab.
 
 ## Anforderungen
 
-B-594, B-595, B-596 › Anforderungen.
+B-594, B-595, B-596 › Anforderungen; Revision 3: B-608, B-609, B-610 › Anforderungen.
 
 ## Nicht-Ziele
 
@@ -58,6 +58,9 @@ Atlas fehlt → Hinweis `task gen:atlas`. Backlog nicht beschreibbar → Eingabe
 - **AC-07** Alle drei Teile laufen ohne Netzwerk, geprüft per Test und ohne externe Anfragen (B-595/AC-04, B-596/AC-05).
 - **AC-08** Ralf hat Ticket-Button und Balancing-Seite am Notebook ohne Internet abgenommen.
 - **AC-09** Die Studio-Tests sind grün und `check_run task:check:diff` läuft mit Studio-Anteil durch (B-606/AC-01, B-606/AC-02); Voraussetzung für das Review.
+- **AC-10** Hilfen und Beispiele: Jedes Eingabefeld der Balancing-Konfiguration hat Hilfetext und Hilfe-Knopf mit Popup, Beispiel-Läufe lassen sich übernehmen (B-609/AC-01, B-609/AC-02).
+- **AC-11** Datei-Liste mit Popups: Die Balancing-Seite listet alle Dateien, die das Balancing beeinflussen (Go-Test gegen die Loader), zeigt je Datei die Beschreibung als Popup und übernimmt Zahlenwerte als Variante (B-610/AC-01, B-610/AC-02).
+- **AC-12** Beschreibungen in `docs/data/`: alle 17 Dateien beschrieben, Pfade geprüft (B-608/AC-01, B-608/AC-02).
 
 ## Offene Fragen
 
@@ -76,6 +79,8 @@ keine. Entschieden (🧑, 2026-10-24): nächste freie Ticket-Nummer genügt (Ral
 | WZ28.7 | `WZ28.7-review.md` | Review | autonom | offen |
 | WZ28.8 | `WZ28.8-abnahme-notebook-offline.md` | Workshop | Mensch | offen |
 | WZ28.9 | `WZ28.9-studio-tests-gruen.md` | Umsetzung | autonom | fertig |
+| WZ28.10 | `WZ28.10-balancing-hilfe.md` | Umsetzung | autonom | in Arbeit |
+| WZ28.11 | `WZ28.11-daten-beschreibungen.md` | Umsetzung | autonom | in Arbeit |
 
 - WZ28.1 (DEV) Slot-Details im Studio: Backend-Aufbereitung aus Atlas, `sprites.json`, `assets.json`, Zuordnung; Detailbereich (AC-01).
 - WZ28.2 (DEV) Ticket-Baustein: Go-Paket zum Anlegen nach Vorlage, `TicketButton` und Dialog in `@webkit`, Kontext-Provider (AC-02).
@@ -85,6 +90,8 @@ keine. Entschieden (🧑, 2026-10-24): nächste freie Ticket-Nummer genügt (Ral
 - WZ28.6 (DEV) Automatisches Balancing für Kampf- und Wirtschafts-Werte: Parameter-Sweep, Suche gegen die Zielkorridore, Vorschlag mit Diff und Begründung, Seite dazu (AC-06).
 - WZ28.7 (DEV) Review und Offline-Nachweis: Test, dass keine externen Anfragen entstehen (AC-07).
 - WZ28.8 (Mensch) Abnahme am Notebook ohne Internet (AC-08).
+- WZ28.10 (DEV) Balancing-Seite: Hilfetexte und Hilfe-Knopf je Feld, Beispiele, Liste der Konfigurationsdateien mit Popup, RPC für `docs/data/*.md` mit Pfadprüfung (AC-10, AC-11).
+- WZ28.11 (DEV) Beschreibungen der 17 balancing-relevanten Dateien unter `docs/data/` mit Test auf Vollständigkeit und Pfade (AC-12).
 
 ## Abnahme
 
