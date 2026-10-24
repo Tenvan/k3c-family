@@ -40,6 +40,7 @@ var uiMethods = map[string]bool{
 	"GitOverview": true, "GitAction": true, "GitDeleteBranches": true, "GitPRs": true, "GitPRCreate": true, "GitPRAction": true,
 	"GitCheckMerged": true, "GitStamp": true, "TicketCreate": true, "TicketRecent": true,
 	"BalanceStart": true, "BalanceRuns": true, "BalanceStop": true, "BalanceReports": true, "BalanceReport": true,
+	"BalanceTuning": true,
 }
 
 // uiHandler beantwortet alle Adressen unter uiPrefix.

@@ -33,3 +33,8 @@ func (a *App) BalanceReports() ([]simrun.ReportInfo, error) {
 func (a *App) BalanceReport(path string) (balance.Summary, error) {
 	return simrun.ReadReport(a.root, path)
 }
+
+// BalanceTuning liest ein Abstimm-Ergebnis tuning-*.json (WZ28.6); nur Pfade unter reports/.
+func (a *App) BalanceTuning(path string) (balance.Tuning, error) {
+	return simrun.ReadTuning(a.root, path)
+}

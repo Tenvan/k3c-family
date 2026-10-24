@@ -100,9 +100,5 @@ func writeAtomic(p, text string, crlf bool) error {
 		_ = os.Remove(tmp.Name())
 		return fmt.Errorf("schreiben: %v %v", werr, cerr)
 	}
-	if err := os.Rename(tmp.Name(), p); err != nil {
-		_ = os.Remove(tmp.Name())
-		return err
-	}
-	return nil
+	return Rename(tmp.Name(), p)
 }

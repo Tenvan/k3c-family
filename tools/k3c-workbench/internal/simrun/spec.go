@@ -22,14 +22,28 @@ type Spec struct {
 	Days    int      `json:"days,omitempty"`
 	Vary    []string `json:"vary,omitempty"` // datei.json:pfad.zum.wert=wert
 	Label   string   `json:"label,omitempty"`
+	Tune    *Tune    `json:"tune,omitempty"` // automatisches Balancing (WZ28.6), Ergebnis tuning-*.json
 }
 
-const maxVary = 20
+// Tune wird --tune, --param, --steps und --budget der Balance-CLI; 0 heißt Vorgabe der CLI.
+type Tune struct {
+	Mode   string   `json:"mode"`   // sweep oder search
+	Params []string `json:"params"` // datei.json:pfad.zum.wert=min..max, 1 oder 2
+	Steps  int      `json:"steps,omitempty"`
+	Budget int      `json:"budget,omitempty"`
+}
+
+const (
+	maxVary   = 20
+	maxBudget = 1000
+)
 
 var (
 	gradeName = regexp.MustCompile(`^[a-z0-9-]{1,20}$`)
 	// varyArg: Datei ohne Ordner, Pfad aus Namen und Indizes, Wert ohne Leerraum.
 	varyArg = regexp.MustCompile(`^[A-Za-z0-9_-]+\.json:[A-Za-z0-9_.\[\]-]+=[^\s=]{1,64}$`)
+	// tuneParam: wie varyArg, der Wert ist ein Bereich min..max aus zwei Zahlen.
+	tuneParam = regexp.MustCompile(`^[A-Za-z0-9_-]+\.json:[A-Za-z0-9_.\[\]-]+=-?[0-9]+(\.[0-9]+)?\.\.-?[0-9]+(\.[0-9]+)?$`)
 )
 
 // Check prüft die Spec über Grenzen und Positivlisten; jeder Fehler ist eine Zeile mit Grund.
@@ -57,7 +71,53 @@ func (s Spec) Check() error {
 			return fmt.Errorf("lauf abgelehnt: vary %q, Form datei.json:pfad.zum.wert=wert", v)
 		}
 	}
+	return s.Tune.check()
+}
+
+// check prüft das Abstimmen wie vary: Modus, 1 bis 2 Parameter, kein „..“ vor dem Bereich, Grenzen von steps und budget.
+func (t *Tune) check() error {
+	if t == nil {
+		return nil
+	}
+	checks := []struct {
+		bad bool
+		msg string
+	}{
+		{t.Mode != balance.TuneSweep && t.Mode != balance.TuneSearch, "tune.mode: sweep oder search"},
+		{len(t.Params) < 1 || len(t.Params) > balance.MaxTuneParams, "tune.params: 1 oder 2 Parameter"},
+		{t.Steps != 0 && (t.Steps < 2 || t.Steps > balance.MaxTuneSteps), fmt.Sprintf("tune.steps 2 bis %d", balance.MaxTuneSteps)},
+		{t.Budget < 0 || t.Budget > maxBudget, fmt.Sprintf("tune.budget 1 bis %d", maxBudget)},
+	}
+	for _, c := range checks {
+		if c.bad {
+			return fmt.Errorf("lauf abgelehnt: %s", c.msg)
+		}
+	}
+	for _, p := range t.Params {
+		path, _, _ := strings.Cut(p, "=")
+		if !tuneParam.MatchString(p) || strings.Contains(path, "..") {
+			return fmt.Errorf("lauf abgelehnt: tune.params %q, Form datei.json:pfad.zum.wert=min..max", p)
+		}
+	}
 	return nil
+}
+
+// args sind die Flags des Abstimmens.
+func (t *Tune) args() []string {
+	if t == nil {
+		return nil
+	}
+	out := []string{"--tune", t.Mode}
+	for _, p := range t.Params {
+		out = append(out, "--param", p)
+	}
+	if t.Steps > 0 {
+		out = append(out, "--steps", strconv.Itoa(t.Steps))
+	}
+	if t.Budget > 0 {
+		out = append(out, "--budget", strconv.Itoa(t.Budget))
+	}
+	return out
 }
 
 // Title ist die Bezeichnung des Laufs: Label oder eine Kurzform der gesetzten Felder.
@@ -85,6 +145,9 @@ func (s Spec) Title() string {
 	if len(s.Vary) > 0 {
 		parts = append(parts, fmt.Sprintf("%d Varianten", len(s.Vary)))
 	}
+	if s.Tune != nil {
+		parts = append(parts, fmt.Sprintf("tune %s %d Parameter", s.Tune.Mode, len(s.Tune.Params)))
+	}
 	return strings.Join(parts, " · ")
 }
 
@@ -111,5 +174,5 @@ func (s Spec) args(exe, dir string) []string {
 	for _, v := range s.Vary {
 		args = append(args, "--vary", v)
 	}
-	return args
+	return append(args, s.Tune.args()...)
 }

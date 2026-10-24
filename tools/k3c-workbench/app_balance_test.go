@@ -99,3 +99,24 @@ func checkBalanceReports(t *testing.T, a *App) {
 		}
 	}
 }
+
+// WZ28.6: BalanceTuning liest tuning-*.json unter reports/ und lehnt andere Pfade ab.
+func TestBalanceTuningPfad(t *testing.T) {
+	a := balanceApp(t, nil)
+	dir := filepath.Join(a.root, "reports", "simtest-run-1")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	body := `{"version":1,"mode":"search","best":{"values":[3],"score":0,"pass":true},"reason":"ok","diff":"-a\n+b"}`
+	if err := os.WriteFile(filepath.Join(dir, "tuning-1.json"), []byte(body), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if tn, err := a.BalanceTuning("reports/simtest-run-1/tuning-1.json"); err != nil || tn.Mode != "search" || !tn.Best.Pass {
+		t.Errorf("ergebnis: %+v, %v", tn, err)
+	}
+	for _, bad := range []string{"../go.mod", "data/x.json", filepath.Join(dir, "tuning-1.json"), "reports/x.md"} {
+		if _, err := a.BalanceTuning(bad); err == nil {
+			t.Errorf("%q gelesen", bad)
+		}
+	}
+}

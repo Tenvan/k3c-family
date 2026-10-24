@@ -1,5 +1,7 @@
+export type * from './typesBalance';
 export type * from './typesGit';
 export type * from './typesResources';
+import type { BalanceBackend } from './typesBalance';
 import type { GitBackend } from './typesGit';
 import type { ResourceView } from './typesResources';
 import type { TicketCreated, TicketInput } from '@webkit/lib/ticket';
@@ -459,7 +461,7 @@ export interface TicketBackend {
   ticketRecent(n: number): Promise<TicketCreated[]>;
 }
 
-export interface Backend extends GitBackend, TicketBackend {
+export interface Backend extends GitBackend, TicketBackend, BalanceBackend {
   /** true ohne Wails-Laufzeit: erfundene Daten, Badge `Mock`. */
   readonly mock: boolean;
   info(): Promise<Info>;

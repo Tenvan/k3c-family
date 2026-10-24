@@ -91,28 +91,28 @@ func (g *Registry) Offline(spec Spec) Runner {
 				mu.Lock()
 				lines := append([]string{st.phase + ": " + failed}, tail...)
 				mu.Unlock()
-				g.finishFailed(run, lines, dir)
+				g.finishFailed(run, lines, dir, spec.Tune != nil)
 				return
 			}
 		}
-		sum, err := readBalanceSummary(filepath.Join(run.root, dir), run.Started())
+		verdict, lines, err := readResult(filepath.Join(run.root, dir), run.Started(), spec.Tune != nil)
 		if err != nil {
 			g.Finish(run, Failed, "", []string{err.Error()}, dir)
 			return
 		}
-		g.Finish(run, Done, sum.verdict(), sum.lines(), dir)
+		g.Finish(run, Done, verdict, lines, dir)
 	}
 }
 
-// finishFailed beendet einen gescheiterten oder abgebrochenen Lauf; steht schon ein balance-*.json, gilt er als
-// Teilbericht und liefert seine Kennzahlen.
-func (g *Registry) finishFailed(run *Run, lines []string, dir string) {
-	sum, err := readBalanceSummary(filepath.Join(run.root, dir), run.Started())
+// finishFailed beendet einen gescheiterten oder abgebrochenen Lauf; steht schon ein Bericht (balance-*.json bzw.
+// tuning-*.json), gilt er als Teilbericht und liefert seine Kennzahlen.
+func (g *Registry) finishFailed(run *Run, lines []string, dir string, tune bool) {
+	verdict, part, err := readResult(filepath.Join(run.root, dir), run.Started(), tune)
 	if err != nil {
 		g.Finish(run, Failed, "", lines, dir)
 		return
 	}
-	g.Finish(run, Failed, sum.verdict(), append(append(lines, "Teilbericht:"), sum.lines()...), dir)
+	g.Finish(run, Failed, verdict, append(append(lines, "Teilbericht:"), part...), dir)
 }
 
 // stepFailed beschreibt einen gescheiterten Schritt; leer heißt geschafft. Ein Abbruch über Stop zählt als Grund.

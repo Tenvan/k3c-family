@@ -39,11 +39,13 @@ func run(args []string) error {
 	to.register(fs)
 	var so sensOpts
 	so.register(fs)
+	var tu tuneOpts
+	tu.register(fs)
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
-	if len(so.variants) > 0 && !to.on {
-		return fmt.Errorf("--vary datei.json:pfad=wert braucht --targets")
+	if err := checkFlags(to, so, tu); err != nil {
+		return err
 	}
 	if so.vary || so.curves {
 		so.dir, so.seeds = to.dir, explicitSeeds(fs, *seeds)
@@ -53,6 +55,9 @@ func run(args []string) error {
 		to.replays, to.seeds, to.variants = *replayDir, explicitSeeds(fs, *seeds), so.variants
 		if err := to.scopeFrom(fs, *players, *days); err != nil {
 			return err
+		}
+		if tu.mode != "" {
+			return runTune(to, tu)
 		}
 		return runTargets(to)
 	}
@@ -79,6 +84,19 @@ func run(args []string) error {
 		return err
 	}
 	return write(*out, b)
+}
+
+// checkFlags lehnt Flags ab, die --targets bzw. --tune brauchen.
+func checkFlags(to targetOpts, so sensOpts, tu tuneOpts) error {
+	switch {
+	case len(so.variants) > 0 && !to.on:
+		return fmt.Errorf("--vary datei.json:pfad=wert braucht --targets")
+	case (tu.mode != "" || len(tu.params) > 0) && !to.on:
+		return fmt.Errorf("--tune und --param brauchen --targets")
+	case len(tu.params) > 0 && tu.mode == "":
+		return fmt.Errorf("--param braucht --tune sweep|search")
+	}
+	return nil
 }
 
 // explicitSeeds: n, wenn --seeds gesetzt ist, sonst 0 (= alle Seeds aus data/balance-targets.json).

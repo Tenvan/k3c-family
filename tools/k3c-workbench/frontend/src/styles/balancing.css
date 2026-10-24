@@ -1,0 +1,27 @@
+/* Balancing-Seite (WZ28.5): links Konfiguration und Läufe, rechts Berichte. Unter 1000 px untereinander. */
+.bal-page { display: grid; grid-template-columns: minmax(300px, 4fr) minmax(420px, 6fr); gap: 14px; align-items: start; container-type: inline-size; }
+@container (max-width: 1000px) { .bal-page { grid-template-columns: 1fr; } }
+.bal-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.bal-card, .bal-report { display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--card-line); border-radius: 10px; background: var(--card); padding: 12px; }
+.bal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.bal-field { display: flex; flex-direction: column; gap: 2px; }
+.bal-presets { border-top: 1px solid var(--card-line); padding-top: 8px; }
+.bal-run { display: flex; flex-direction: column; gap: 4px; padding: 6px 0; border-top: 1px solid var(--card-line); }
+.bal-run-head { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.bal-run-progress { display: flex; flex-direction: column; gap: 2px; }
+.bal-run-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.bal-report-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding: 3px 4px; border-radius: 6px; }
+.bal-report-row[data-on] { background: var(--accent-a4); }
+.bal-targets { display: flex; flex-direction: column; gap: 8px; }
+.bal-target { display: grid; grid-template-columns: auto auto 1fr; gap: 2px 8px; align-items: center; }
+.bal-target > :nth-child(3), .bal-target > :nth-child(4) { grid-column: 1 / -1; }
+.bal-charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+.bal-charts figure { margin: 0; min-width: 0; }
+.bal-charts figcaption { font-size: 12px; color: var(--dim); margin-bottom: 2px; }
+.bal-table { border-collapse: collapse; font-size: 12px; width: 100%; }
+.bal-table th, .bal-table td { text-align: left; padding: 3px 8px 3px 0; border-bottom: 1px solid var(--card-line); }
+.bal-table td[data-sign='+'] { color: var(--green-11); }
+.bal-table td[data-sign='-'] { color: var(--red-11); }
+.bal-table tr[data-tipped] td:first-child { font-weight: 600; }
+.bal-tune { display: flex; flex-direction: column; gap: 6px; border: 1px solid var(--card-line); border-radius: 8px; padding: 8px; margin: 0; min-width: 0; }
+.bal-diff { margin: 0; padding: 8px; max-height: 320px; overflow: auto; font-size: 12px; background: var(--accent-a3); border-radius: 6px; white-space: pre; }

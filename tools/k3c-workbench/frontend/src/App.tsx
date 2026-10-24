@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { backend, type McpState } from './api';
 import { HeaderRight, LABELS, PAGES, type Page } from './Header';
 import { loadPref, savePref } from './lib/prefs';
+import { BalancingPage } from './balancing/BalancingPage';
 import { GitPage } from './git/GitPage';
 import { McpPage } from './mcp/McpPage';
 import { MonitoringPage } from './monitoring/MonitoringPage';
@@ -72,6 +73,9 @@ export function App() {
       </Tabs.Content>
       <Tabs.Content value="monitoring" {...keep('monitoring')}>
         <MonitoringPage active={page === 'monitoring'} />
+      </Tabs.Content>
+      <Tabs.Content value="balancing" {...keep('balancing')}>
+        <BalancingPage active={page === 'balancing'} />
       </Tabs.Content>
     </AppFrame>
     </TicketProvider>

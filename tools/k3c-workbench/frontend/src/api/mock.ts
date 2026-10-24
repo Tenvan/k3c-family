@@ -1,3 +1,4 @@
+import { mockBalance } from './mockBalance';
 import { mockGit } from './mockGit';
 import { mockTickets } from './mockTickets';
 import { mockLogFiles } from './mockLogFiles';
@@ -63,6 +64,7 @@ export function mockBackend(): Backend {
     ...mockResources(),
     ...mockGit(),
     ...mockTickets(),
+    ...mockBalance(),
     tasks: tasks.tasks, tasksReload: tasks.tasksReload, taskStart: tasks.taskStart, taskStop: tasks.taskStop, taskRuns: tasks.taskRuns,
     ...mockGates(),
     ...mockPlanning(() => emit('planning:changed', null)),
