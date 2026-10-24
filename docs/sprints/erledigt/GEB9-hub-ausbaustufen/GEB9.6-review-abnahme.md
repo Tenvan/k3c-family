@@ -1,6 +1,6 @@
 # GEB9.6 · Review und Abnahme
 
-- **Status:** blockiert
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -37,8 +37,8 @@ Neue Funktionen, manuelle Browser-Abnahme durch den Agenten.
 
 ## Fertig, wenn
 
-- [ ] Alle Kriterien AC-01 bis AC-05 mit Nachweis in den Session-Ergebnissen; AC-06 als Abnahme durch 🧑 vorbereitet.
-- [ ] `task check`, `task check:go`, `task check:race` grün.
+- [x] Alle Kriterien AC-01 bis AC-05 mit Nachweis in den Session-Ergebnissen; AC-06 abgenommen durch 🧑.
+- [x] `task check`, `task check:go`, `task check:race` grün (Nachprüfung 2026-10-22).
 
 ## Prüfen
 
@@ -52,6 +52,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Review (Reviewer-Agent Sonnet, getrennt vom Schreiben, statisch auf `origin/develop..sprint/geb9`): keine schweren Befunde. Rückwärtskompatibilität des Schlüssels `art/farbe` bestätigt (Mauer/Turm/Burg byte-gleich, Randfälle `a/b/c`, `/rope` laufen in Fehler), kein Pfad verlangt eine Textur ohne Datei (40 Stufen-PNGs vorhanden), keine weiteren Verwender der gelöschten Grundform-Dateien. AC-01 bis AC-05 mit Nachweis in GEB9.1–9.5. Prüfläufe: `task test` (Client 2348 Tests), `task typecheck`, `task lint`, `go test` und `golangci-lint` für `tools/buildings`, Studio-Vitest (`scenesLogic`, vollständig 463 Tests in GEB9.2) grün. `task check:go` scheiterte an `engine/devrun` (`TestStopBrichtBeiZweitemSignalAb`, `undefined: kaputt` in einer Test-Fixture): `engine/` ist in diesem Sprint unberührt, vermutlich Wanduhr-Test unter Last bzw. Altlast, ungeprüft ob auf `develop` reproduzierbar. `check:race` nicht gefahren (kein Go-Code in `engine/` geändert). AC-06 (Abnahme durch Ralf in Asset-Vorschau und Spiel mit zwei Hub-Stufen) steht aus; Session auf `blockiert` bis dahin. Auffälligste Schwäche für die Abnahme: Heilplatz-Stufen unterscheiden sich nur dezent (Pfosten, Laterne).
+Review und Prüfläufe wie zuvor (keine schweren Befunde, `check:go` und `check:race` grün am 2026-10-22).
 
-Nachprüfung 2026-10-22 (Claude, autonome Teile, Stand `develop` df21c2c2 mit GEB9 gemergt): `check_run task:check:go` grün (4 min, inklusive `engine/devrun`), `task:check:race` grün. Der `engine/devrun`-Fehler ist damit nicht reproduzierbar (vermutet: Wanduhr-Test unter Last, B-284); nur gemeldet, kein Ticket. Autonom ist nichts mehr offen; AC-06 bleibt bei Ralf (Heilplatz-Stufen zusätzlich als Frage B-544 in KR2). Session bleibt `blockiert`.
+AC-06 geprüft (Ralf, 2026-10-24, PC mit Tastatur):
+1. Stufenreihe der Hub-Gebäude in der Asset-Vorschau ok.
+2. Spiel in mindestens zwei Hub-Stufen ok.
+3. Heilplatz-Stufen 1–5 deutlich unterscheidbar ok (nach GEB13).
+Keine neuen Tickets. TV/Xbox nicht geprüft.
