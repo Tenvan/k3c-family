@@ -9,7 +9,7 @@
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
 - **Spec:** freigegeben
-- **Revision:** 3
+- **Revision:** 4
 - **Freigabe:** 2026-10-24 🧑 Chat (Mock bestätigt, Umsetzung beauftragt)
 
 ## Ausgangslage
@@ -47,6 +47,9 @@ einem Klick, passend zur Arbeitsweise (`develop` als Basis, ein PR je Sprint, Sq
   nur auf Knopfdruck (alle ungeprüften oder je Zeile), weil das je Branch dauert: gemergter PR mit dem Branch als Head
   (auch Sammel-PRs), sonst merge-tree, sonst Squash-Patch; ohne Prüfung heißt ein Branch „ungeprüft“. Markieren lässt
   sich jeder lokale Branch außer Basis, aktuellem und Worktree; gelöscht werden nur die gemergten, der Prompt nimmt alle.
+- Rev. 4 (🧑 2026-10-24): Ändert sich ein PR auf GitHub (CI, Merge-Stand, Merge von außen), aktualisiert sich die
+  PR-Karte selbst, solange der Reiter offen ist: alle 30 s, alle 10 s solange eine CI läuft oder GitHub die
+  Mergebarkeit noch rechnet. Der übrige Stand bleibt beim Knopf „Neu laden“.
 - Alle Git- und gh-Aufrufe laufen ohne Shell mit festen Argumenten; Namen und Nummern aus der Oberfläche werden geprüft.
 
 ## Nicht-Ziele

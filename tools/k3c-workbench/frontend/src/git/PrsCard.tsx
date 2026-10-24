@@ -5,6 +5,7 @@ import { Table } from '@webkit/organisms';
 import { backend, type GitPR, type GitPRAction, type GitPRList } from '../api';
 import { CopyPrompt } from '../planning/PromptParts';
 import type { ConfirmRequest } from './Confirm';
+import { ago } from './format';
 import { fixPrPrompt, reviewAllPrsPrompt } from './prompts';
 
 const CI_TONE: Record<string, Tone> = { grün: 'ok', rot: 'error', läuft: 'info' };
@@ -32,7 +33,8 @@ export function PrsCard({ branch, list, act, confirm }: Props) {
   return (
     <section className="git-card" aria-label="Pull Requests">
       <header className="git-head">
-        <Text weight="bold">Pull Requests gegen develop <Text color="gray" size="1">({prs.length} offen)</Text></Text>
+        <Text weight="bold">Pull Requests gegen develop <Text color="gray" size="1">({prs.length} offen
+          {list?.fetched && ` · GitHub ${ago(Date.parse(list.fetched))}, aktualisiert sich selbst`})</Text></Text>
         <Flex gap="2" align="center">
           {prs.length > 0 && <><Text size="1" color="gray">Alle prüfen:</Text><CopyPrompt prompt={reviewAllPrsPrompt(prs)} what="Alle PRs prüfen und mergen" /></>}
         </Flex>

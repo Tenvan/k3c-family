@@ -7,6 +7,7 @@ import { BranchesCard } from './BranchesCard';
 import { Confirm, type ConfirmRequest } from './Confirm';
 import { FilesCard } from './FilesCard';
 import { ago } from './format';
+import { usePrPoll } from './prPoll';
 import { PrsCard } from './PrsCard';
 import { StatusCard } from './StatusCard';
 
@@ -16,7 +17,8 @@ interface Result {
 }
 
 /** Reiter `Git` (B-580) in der Reihenfolge des Ablaufs: Dateien, Commit-Status, PRs, Branches. Die Seite bleibt
- *  eingehängt und liest das Repo nur beim ersten Öffnen, mit „Laden“ und nach einer eigenen Aktion. */
+ *  eingehängt und liest das Repo nur beim ersten Öffnen, mit „Laden“ und nach einer eigenen Aktion; nur die PRs folgen
+ *  GitHub im Takt, solange der Reiter offen ist (prPoll.ts). */
 export function GitPage({ active }: { active: boolean }) {
   const [view, setView] = useState<GitView | null>(null);
   const [prs, setPrs] = useState<GitPRList | null>(null);
@@ -26,15 +28,20 @@ export function GitPage({ active }: { active: boolean }) {
   const [ask, setAsk] = useState<ConfirmRequest | null>(null);
   const started = useRef(false);
 
+  // Ein Fehler beim Nachladen lässt die zuletzt gesehenen PRs stehen und zeigt nur den Hinweis.
+  const refreshPrs = useCallback(() => backend.gitPRs().then(setPrs,
+    (e: unknown) => setPrs((cur) => ({ prs: cur?.prs ?? [], error: errorText(e), fetched: cur?.fetched }))), []);
+  usePrPoll(active, prs, refreshPrs);
+
   const load = useCallback(async () => {
-    const prsTask = backend.gitPRs().then(setPrs, (e: unknown) => setPrs({ prs: [], error: errorText(e) }));
+    const prsTask = refreshPrs();
     await backend.gitOverview().then((v) => {
       setView(v);
       setError('');
     }, (e: unknown) => setError(errorText(e)));
     await prsTask;
     setLoadedAt(Date.now());
-  }, []);
+  }, [refreshPrs]);
   useEffect(() => {
     if (!active || started.current) return;
     started.current = true;
@@ -61,12 +68,7 @@ export function GitPage({ active }: { active: boolean }) {
   };
   return (
     <div className="git-page">
-      <Flex gap="3" align="center">
-        <ActionButton size="1" onClick={load}>{view ? 'Neu laden' : 'Laden'}</ActionButton>
-        {loadedAt > 0 && <Text size="1" color="gray">Stand {ago(loadedAt)}</Text>}
-        {!view && !error && <Text size="2" color="gray">Lese das Repo …</Text>}
-        {result && <Text size="2" color={result.ok ? 'green' : 'red'} role="status">{result.text}</Text>}
-      </Flex>
+      <LoadBar loaded={view !== null} loadedAt={loadedAt} reading={!view && !error} result={result} load={load} />
       {error && <NoticeCard title="Repo nicht gelesen" tone="error">{error}</NoticeCard>}
       {view && (
         <>
@@ -78,5 +80,25 @@ export function GitPage({ active }: { active: boolean }) {
       )}
       <Confirm request={ask} onClose={() => setAsk(null)} />
     </div>
+  );
+}
+
+interface LoadBarProps {
+  loaded: boolean;
+  loadedAt: number;
+  reading: boolean;
+  result: Result | null;
+  load: () => Promise<void>;
+}
+
+/** Kopfleiste: der eine Knopf zum Laden, Alter des Stands und Ergebnis der letzten Aktion. */
+function LoadBar({ loaded, loadedAt, reading, result, load }: LoadBarProps) {
+  return (
+    <Flex gap="3" align="center">
+      <ActionButton size="1" onClick={load}>{loaded ? 'Neu laden' : 'Laden'}</ActionButton>
+      {loadedAt > 0 && <Text size="1" color="gray">Stand {ago(loadedAt)}</Text>}
+      {reading && <Text size="2" color="gray">Lese das Repo …</Text>}
+      {result && <Text size="2" color={result.ok ? 'green' : 'red'} role="status">{result.text}</Text>}
+    </Flex>
   );
 }
