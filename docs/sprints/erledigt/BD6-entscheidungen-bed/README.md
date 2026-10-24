@@ -1,6 +1,6 @@
 # BD6 · REG · Autonome Entscheidungen zu BED prüfen und festschreiben
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** REG
 - **Reife:** bereit
@@ -64,5 +64,4 @@ BD6.1: Ralf geht die Frage-Tickets in KR1 durch (AC-01, AC-02, AC-03).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-24: BD6.1 fertig (Ralf hat die Entscheidungen zu BED durchgesehen, siehe Session-Ergebnis). Keine weiteren Sessions. Neue Tickets aus BED-Abnahmen: B-580, B-581.

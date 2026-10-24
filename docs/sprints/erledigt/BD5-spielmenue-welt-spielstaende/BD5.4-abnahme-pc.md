@@ -1,6 +1,6 @@
 # BD5.4 · Abnahme am PC
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -35,7 +35,7 @@ Kein Code.
 
 ## Fertig, wenn
 
-- [ ] AC-03: Ralf hat die Schritte 1–4 am PC gesehen.
+- [x] AC-03: Ralf hat die Schritte 1–4 am PC gesehen.
 
 ## Prüfen
 
@@ -43,4 +43,5 @@ Manuell durch Ralf.
 
 ## Ergebnis
 
-–
+- AC-03 geprüft (Ralf, 2026-10-24, PC): Schritte 1 und 3 ok, Schritt 2 ok, Schritt 4 mit Abweichung (offene Räume stehen in der Liste, lassen sich nicht löschen: wie in BD5.1 gewollt).
+- Neue Tickets: B-580 (Welt im Pausenmenü größer, Welt bei jedem Spielstand der Lobby), B-581 (offenen Raum über Entfernen schließen).

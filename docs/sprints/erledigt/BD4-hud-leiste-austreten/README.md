@@ -1,6 +1,6 @@
 # BD4 · CLI · Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -75,4 +75,4 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-–
+2026-10-24 (BD4.4, Ralf am PC, 2 Spieler): AC-03 und AC-06 erfüllt (HUD-Leiste, Fluss, Abmelden und Wiederbeitritt ok). AC-01, AC-02, AC-04, AC-05 durch BD4.1 bis BD4.3 und das Review BD4.5. TV/Xbox und 3–4 Spieler nicht geprüft; Abweichungen kommen als Tickets.

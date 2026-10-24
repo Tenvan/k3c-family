@@ -26,9 +26,9 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | BD1 | Kamera, Beitritts-Hinweis, Overlay-Taste und HUD-Nachträge | erledigt |
 | BD2 | Rückmeldungs-Ereignisse gedrosselt und geprüft, Lobby startet nie still leer | erledigt |
 | BD3 | Raum-Pause im Couch-Raum, Schutz des pausierten Monarchen online | erledigt |
-| BD4 | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | aktiv |
-| BD5 | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | aktiv |
-| BD6 | Autonome Entscheidungen zu BED prüfen und festschreiben | aktiv |
+| BD4 | Gemeinsame HUD-Leiste oben, Fluss unten, lokale Spieler treten einzeln aus | erledigt |
+| BD5 | Spielmenü zeigt die Welt, legt Spielstände an und löscht sie | erledigt |
+| BD6 | Autonome Entscheidungen zu BED prüfen und festschreiben | erledigt |
 | BD7 | Pause-Client, Skill-Reset beim Tod, Schutz wartender Monarchen | erledigt |
 | BD8 | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl | erledigt |
 

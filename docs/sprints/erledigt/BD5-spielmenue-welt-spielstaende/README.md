@@ -1,6 +1,6 @@
 # BD5 · SRV, CLI · Spielmenü zeigt die Welt, legt Spielstände an und löscht sie
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** SRV, CLI
 - **Reife:** bereit
@@ -68,7 +68,7 @@ Autonom entschieden (Ralf: „autonom abarbeiten“), im Nachgang zu bestätigen
 | BD5.1 | `BD5.1-server-spielstaende-loeschen.md` | Umsetzung | autonom | fertig |
 | BD5.2 | `BD5.2-spielmenue-welt-anlegen-loeschen.md` | Umsetzung | autonom | fertig |
 | BD5.3 | `BD5.3-review.md` | Review | autonom | fertig |
-| BD5.4 | `BD5.4-abnahme-pc.md` | Workshop | Mensch | offen |
+| BD5.4 | `BD5.4-abnahme-pc.md` | Workshop | Mensch | fertig |
 
 - BD5.1 (SRV) Spielstände mit Welt auflisten und löschen, HTTP (AC-01).
 - BD5.2 (CLI) Spielmenü: Welt anzeigen, Spielstand anlegen und löschen (AC-02).
@@ -77,4 +77,5 @@ Autonom entschieden (Ralf: „autonom abarbeiten“), im Nachgang zu bestätigen
 
 ## Abnahme
 
-2026-10-22 (BD5.3, autonom): AC-01 (BD5.1, Go-Tests) und AC-02 (BD5.2, Vitest + Browser-Pane) erfüllt; AC-03 offen bei BD5.4 (Ralf am PC). Prüfungen: check, check:go grün, check:race ohne C-Compiler übersprungen. Reviewer: keine schweren Befunde, Rotations-Hinweis in `docs/protocol.md` ergänzt. Entscheidungen zur Bestätigung: B-533, B-534.
+2026-10-22 (BD5.3, autonom): AC-01 (BD5.1, Go-Tests) und AC-02 (BD5.2, Vitest + Browser-Pane) erfüllt. Prüfungen: check, check:go grün, check:race ohne C-Compiler übersprungen. Reviewer: keine schweren Befunde, Rotations-Hinweis in `docs/protocol.md` ergänzt.
+2026-10-24 (BD5.4, Ralf am PC): AC-03 erfüllt. Abweichungen als Tickets: B-580 (Welt größer im Pausenmenü, Welt bei jedem Spielstand), B-581 (offenen Raum schließen). Entscheidungen B-533, B-534 gelten (von Ralf nicht beanstandet).

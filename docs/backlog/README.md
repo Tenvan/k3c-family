@@ -133,6 +133,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-571](B-571-heilplatz-stufen-deutlicher.md) | DEV | Idee | mittel | eingeplant | GEB13 | Heilplatz-Stufen sind deutlicher sichtbar (Zelt, Brunnen) |
 | [B-576](B-576-sound-skill-je-klasse.md) | CLI | Idee | niedrig | offen | – | Jede Klasse hat einen eigenen Skill-Sound |
 | [B-579](B-579-wellenabstand-adern-korridor.md) | REG | Problem | mittel | offen | – | Wellenabstand unter Tage mit besetzten Adern liegt über dem Korridor 4–12 Minuten |
+| [B-580](B-580-welt-anzeige-pausenmenue-lobby.md) | CLI | Problem | mittel | offen | – | Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby |
+| [B-581](B-581-offenen-raum-schliessen.md) | CLI | Idee | mittel | offen | – | Ein offener Raum lässt sich in der Lobby über Entfernen schließen |
 
 ## Archiv
 
