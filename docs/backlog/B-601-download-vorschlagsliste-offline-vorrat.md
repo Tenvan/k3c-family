@@ -39,7 +39,7 @@ Automatisches Laden ohne Bestätigung; Lizenz-fremde Quellen (NC nur markiert); 
 
 ## Regeln und Einschränkungen
 
-Downloads fremder Dateien nur mit ausdrücklicher Bestätigung von Ralf (Quelle, Datei, Größe); Lizenzregel Q70, Credits-Test; Dateien sind untrusted Daten (nie ausführen, nur Bilder/Audio mit erlaubter Endung, Größenlimit je Datei); Studio schreibt nur in `data/assets-vorschlaege.json` und `public/**/kandidaten/`; Repo bleibt klein (Vorrat gitignored oder per LFS? Default: Vorrat nicht in Git, Liste schon); Atomic Design über `@webkit`.
+Downloads fremder Dateien nur mit ausdrücklicher Bestätigung von Ralf (Quelle, Datei, Größe); Lizenzregel Q70, Credits-Test; Dateien sind untrusted Daten (nie ausführen, nur Bilder/Audio mit erlaubter Endung, Größenlimit je Datei); Studio schreibt nur in `data/assets-vorschlaege.json` und in den lokalen Vorratsordner. **Vorratsordner** (gitignored, z. B. `public/audio/kandidaten/` und `public/grafik/kandidaten/` bzw. ein eigener `vorrat/`): nicht ausgewählte Kandidaten bleiben lokal und kommen nie in Git; beim Auswählen (Platz 1 oder Zuordnung) wird die Datei an ihren Platz im Repo kopiert und committet. Der Credits-Test prüft nur Dateien, die in Git liegen (Vorrat ausgenommen); Atomic Design über `@webkit`.
 
 ## Beispiele
 
@@ -59,7 +59,7 @@ Download scheitert → Eintrag bleibt „offen“, Fehlertext, Wiederholen mögl
 
 ## Offene Fragen
 
-Vorrat in Git oder lokal? Default: Dateien lokal und gitignored, die Liste und die Credits in Git (Repo bleibt klein); 🧑 entscheidet.
+keine. Entschieden (🧑, 2026-10-24): Der Vorrat bleibt nur lokal (gitignored). In Git landen nur die ausgewählten Grafiken und Sounds (mit Credit und Katalog-Eintrag) sowie die Vorschlagsliste `data/assets-vorschlaege.json`.
 
 ## Notizen
 
