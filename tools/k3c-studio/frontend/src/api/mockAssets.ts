@@ -1,3 +1,4 @@
+import { soundSlots } from './mockSounds';
 import { STALE } from './stale';
 import type { AssetSlotDetails } from './slotTypes';
 import type { AssetChoice, AssetHit, AssetSlot, AssetsView, Backend, CatalogAsset } from './types';
@@ -37,6 +38,7 @@ function initial(): AssetSlot[] {
     slot('music:abend', 'sound', 'musik', 'Abend', [], 'music'),
     slot('music:nacht', 'sound', 'musik', 'Nacht', [{ datei: 'audio/probe-b.ogg' }], 'music'),
     slot('music:kampf', 'sound', 'musik', 'Kampf', [{ datei: 'audio/probe-b.ogg' }, { datei: 'audio/probe-a.ogg' }], 'music'),
+    ...soundSlots(),
   ];
 }
 

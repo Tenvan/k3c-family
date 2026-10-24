@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
+import { buildView, emptyState, toggleChip } from '@webkit/lib/listFilter';
 import { describe, expect, it } from 'vitest';
-import { baumDatei, baumReihe, figureCard, gebaeudeKarten, hintergrundStreifen, hubWachstum, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, resolveSlot, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './scenesLogic';
+import { baumDatei, baumReihe, figureCard, gebaeudeKarten, hintergrundStreifen, hubWachstum, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, resolveSlot, sceneFilter, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './scenesLogic';
 
 const farm: AssetSlot = {
   id: 'farm', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Farm',
@@ -229,5 +230,29 @@ describe('Asset-Vorschau: Hintergründe je Biom (GEB7/AC-03)', () => {
 
   it('zeigt Hintergrund-Schichten nicht als Gebäude-Karten', () => {
     expect(gebaeudeKarten(wald)).toEqual([]);
+  });
+});
+
+describe('Szenen: Filter (B-599)', () => {
+  const credits = [{ root: 'audio', folders: ['nc'], license: 'CC-BY-NC' }];
+  const nc: AssetSlot = { id: 'sfx:nc', art: 'sound', kategorie: 'sfx', beschreibung: 'Zischen', bus: 'ui', wahl: [{ datei: 'audio/nc/zisch.ogg' }] };
+  const gap: AssetSlot = { id: 'skill:heal', art: 'sound', kategorie: 'sfx', beschreibung: 'Heilen', bus: 'sfx', wahl: [] };
+  const items = [coin, nc, gap].map((s) => resolveSlot(s, { wahl: 1 }));
+  const cfg = sceneFilter(items, credits);
+  const ids = (state = emptyState('spiel')) => buildView(items, cfg, state).items.map((r) => r.slot.id);
+
+  it('Reihenfolge im Spiel, Name und Status', () => {
+    expect(ids()).toEqual(['sfx:coin', 'sfx:nc', 'skill:heal']);
+    expect(ids(emptyState('name'))).toEqual(['sfx:coin', 'sfx:nc', 'skill:heal'].sort());
+    expect(ids(emptyState('status'))[0]).toBe('skill:heal');
+  });
+
+  it('Lücke, Bus, Art und Lizenz filtern; Suche findet Beschreibung und Datei', () => {
+    expect(ids(toggleChip(emptyState('spiel'), 'status', 'Lücke'))).toEqual(['skill:heal']);
+    expect(ids(toggleChip(emptyState('spiel'), 'bus', 'ui'))).toEqual(['sfx:nc']);
+    expect(ids(toggleChip(emptyState('spiel'), 'art', 'skill'))).toEqual(['skill:heal']);
+    expect(ids(toggleChip(emptyState('spiel'), 'lizenz', 'NC'))).toEqual(['sfx:nc']);
+    expect(ids({ ...emptyState('spiel'), query: 'zisch' })).toEqual(['sfx:nc']);
+    expect(ids({ ...emptyState('spiel'), query: 'heilen' })).toEqual(['skill:heal']);
   });
 });
