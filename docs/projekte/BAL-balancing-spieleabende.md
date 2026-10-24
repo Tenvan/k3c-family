@@ -21,6 +21,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | BAL4 | Abgleich Spielmetrik und Simulator | geplant |
 | BR1 | Balancing-Runde Wirtschaft und Spieleabend 2 | geplant |
 | BR2 | Balancing-Runde Kampf und Bosse und Spieleabend 3 | geplant |
+| BAL7 | Holz-Balancing nach dem dichteren Wald | geplant |
 
 ## Nicht-Ziele
 

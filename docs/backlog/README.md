@@ -139,6 +139,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-584](B-584-bauschilder-statt-rahmen.md) | CLI | Idee | mittel | eingeplant | GEB16 | Bauplätze zeigen kleine Bauschilder statt grauer Rahmen |
 | [B-585](B-585-wald-chunks-voller-baeume.md) | REG | Problem | mittel | eingeplant | GEB16 | Wald-Chunks stehen voller Bäume |
 | [B-586](B-586-baugeruest-in-gebaeudeform.md) | CLI | Idee | mittel | eingeplant | GEB16 | Im Bau zeigt der Platz ein Gerüst in der Form des neuen Gebäudes |
+| [B-587](B-587-snapshot-site-payable.md) | SRV | Idee | mittel | eingeplant | GEB16 | Der Server meldet je Bauplatz, ob er jetzt Münzen annimmt |
+| [B-588](B-588-abbau-symbole-axt-spitzhacke.md) | CLI | Idee | niedrig | eingeplant | GEB16 | Abbau-Schilder zeigen eine Axt für Bäume und eine Spitzhacke für Felsen |
+| [B-589](B-589-holz-balancing-dichter-wald.md) | REG | Idee | mittel | eingeplant | BAL7 | Holz-Balancing nach dem dichteren Wald messen und nachziehen |
 
 ## Archiv
 

@@ -54,7 +54,7 @@ nicht relevant, nur Darstellung.
 
 ## Offene Fragen
 
-Abbau-Variante für Bäume und Felsen? Als Ticket, wenn gewünscht.
+Entschieden 2026-10-24 (🧑): Der Client zeigt nur, was der Server meldet; die Client-Regel `buildableRules.ts` wird durch das Server-Feld `payable` ersetzt (B-587). Eine Abbau-Variante mit Axt und Spitzhacke kommt als B-588.
 
 ## Notizen
 
