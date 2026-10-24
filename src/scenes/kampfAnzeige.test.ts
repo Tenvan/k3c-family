@@ -74,14 +74,14 @@ describe('Event-Banner', () => {
   it('zwei Events in einer Nacht, Händler-Überfall ohne Restzeit', () => {
     const both = [{ id: 'fullMoon', secondsLeft: 61 }, { id: 'bloodMoon', secondsLeft: 61 }];
     expect(eventBanner(world({ nightEvents: both }))).toBe('Vollmond  ·  1:01\nBlutmond  ·  1:01');
-    const merchant = { resource: 'wood', leaves: 3, raid: true } as KampfWorld['merchant'];
+    const merchant = { resource: 'wood', leaves: 3, raid: true, hp: 100, maxHp: 100 } as KampfWorld['merchant'];
     expect(eventBanner(world({ merchant }))).toBe('Händler-Überfall');
   });
 
   it('unbekanntes Event → ID; kein Event oder ohne Felder → null', () => {
     expect(eventBanner(world({ nightEvents: [{ id: 'neu', secondsLeft: 5 }] }))).toBe('neu  ·  0:05');
     expect(eventBanner(world({ nightEvents: [] }))).toBeNull();
-    expect(eventBanner(world({ merchant: { resource: 'wood', leaves: 3 } }))).toBeNull();
+    expect(eventBanner(world({ merchant: { resource: 'wood', leaves: 3, hp: 100, maxHp: 100 } }))).toBeNull();
     expect(eventBanner({} as KampfWorld)).toBeNull();
   });
 });

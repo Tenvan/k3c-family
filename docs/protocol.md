@@ -419,7 +419,7 @@ vom Server je Stufe abgelesen; die übrigen aus der Welt):
 | `danger` | `true`: Nacht oder Gegner da, Bau und Ausbau warten | keine Gefahr |
 | `fighters` | Zahl der Kämpfer der Stufe (für „Kämpfer/Limit“; W10.2, B-332) | nie (älterer Server); 0 ist ein Wert |
 | `troopLimit` | Truppen-Limit der Stufe (Regel `docs/rules/buerger.md` § 3, zerstörte Kaserne zählt nicht) | nie (älterer Server) |
-| `merchant` | anwesender Händler: `resource` (sein Material), `leaves` (Tag der Abreise), `buyPaid` (Gold des laufenden Kaufs, fehlt bei 0) | kein Händler (nur Tiefe 0) |
+| `merchant` | anwesender Händler: `resource` (sein Material), `leaves` (Tag der Abreise), `buyPaid` (Gold des laufenden Kaufs, fehlt bei 0), `raid` (`true`: dieser Besuch wird überfallen, Gegner greifen den Händler zuerst an; fehlt sonst), `hp`/`maxHp` (Lebenspunkte; bei 0 flieht er, KB2.3, B-381) | kein Händler (nur Tiefe 0) |
 | `drops` | Ausrüstung am Boden, Liste mit `id`: `kind` (Figur oder Beruf), `x`, `workSite` (fehlt bei 0) | keine |
 | `armorLevel` | Rüstungsstufe der Kämpfer des Hubs | 0 |
 
@@ -555,7 +555,9 @@ Verworfenen und fehlt bei 0 (zuverlässige Übertragung im Delta: B-190). Ein Cl
 **Budget (Beschluss Q08):** Ereignisse ≤ **200 Byte je Tick und Client im Mittel**, bei 30 Hz also **6 KB/s je
 Client**; sie laufen im Delta mit, keine eigene Nachricht. Geprüft von `TestEventsBudgetJeTick`
 (`engine/sim/events_budget_test.go`): 3 Stufen, 4 Spieler, Seed `bench`, 1800 Ticks, Mittel je Stufe und Tick ≤ 200
-Byte, sonst rot. Für den ganzen Zustand ist keine Grenze beschlossen, er wird nur gemessen.
+Byte, sonst rot. Für den ganzen Zustand ist keine Grenze beschlossen, er wird nur gemessen (Entscheidung zu Q08,
+Variante B, B-386, 2026-10-23: das Budget gilt nur für Ereignisse, `snap` und `delta` haben keine Grenze; wird der
+Zustand später zu groß, z. B. auf Pi 3 oder im WLAN, ist das ein neues Ticket).
 
 **Ist-Wert Go-Server** (2026-10-03, Intel Core Ultra 7 165H, `go test -bench Island -run '^$' ./engine/sim`; JSON je
 Stufe und Tick, erste 1800 Ticks nach dem Aufwärmen, schneller Zyklus mit Nächten):

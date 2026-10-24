@@ -154,11 +154,15 @@ export interface HubUpgrade {
   state?: 'waitingMaterial' | 'waitingWorker';
 }
 
-/** Anwesender Händler: Material, Abreisetag, Gold des laufenden Kaufs (fehlt = 0). */
+/** Anwesender Händler: Material, Abreisetag, Gold des laufenden Kaufs (fehlt = 0), Überfall und Lebenspunkte (KB2.3). */
 export interface Merchant {
   resource: string;
   leaves: number;
   buyPaid?: number;
+  /** Dieser Besuch wird überfallen, Gegner greifen den Händler zuerst an (fehlt = nein). */
+  raid?: boolean;
+  hp: number;
+  maxHp: number;
 }
 
 /** Ausrüstung am Boden (Figur oder Beruf, Verlust-Kaskade). */
