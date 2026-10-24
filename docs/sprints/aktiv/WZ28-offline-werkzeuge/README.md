@@ -71,7 +71,7 @@ keine. Entschieden (🧑, 2026-10-24): nächste freie Ticket-Nummer genügt (Ral
 | WZ28.2 | `WZ28.2-ticket-baustein.md` | Umsetzung | autonom | fertig |
 | WZ28.3 | `WZ28.3-ticket-button-alle-seiten.md` | Umsetzung | autonom | fertig |
 | WZ28.4 | `WZ28.4-balancing-backend.md` | Umsetzung | autonom | fertig |
-| WZ28.5 | `WZ28.5-balancing-seite.md` | Umsetzung | autonom | offen |
+| WZ28.5 | `WZ28.5-balancing-seite.md` | Umsetzung | autonom | in Arbeit |
 | WZ28.6 | `WZ28.6-automatisches-balancing.md` | Umsetzung | autonom | offen |
 | WZ28.7 | `WZ28.7-review.md` | Review | autonom | offen |
 | WZ28.8 | `WZ28.8-abnahme-notebook-offline.md` | Workshop | Mensch | offen |
