@@ -1,6 +1,6 @@
 # W12 · SIM, SRV, REG · Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WRT
 - **Domäne:** SIM, SRV, REG
 - **Reife:** bereit
@@ -61,7 +61,7 @@ Biom ohne Dauer des Morgengrauens oder mit nicht positiver Dauer → Laden abgel
 | W12.1 | `W12.1-vier-phasen-sim.md` | Umsetzung | autonom | fertig |
 | W12.2 | `W12.2-protokoll-dawn.md` | Umsetzung | autonom | fertig |
 | W12.3 | `W12.3-regeltexte.md` | Umsetzung | autonom | fertig |
-| W12.4 | `W12.4-review.md` | Review | autonom | offen |
+| W12.4 | `W12.4-review.md` | Review | autonom | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
@@ -72,5 +72,7 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-25, Claude (W12.4): `task check`, `task check:go` und `check:studio` grün. `dev:test` war einmal rot, ein Flake ohne Bezug zu W12 (B-621, mit -count=5 grün). `check:race` lokal übersprungen (kein C-Compiler).
+AC-01, AC-02, AC-05 erfüllt durch W12.1 (vier Phasen, `data/light.json`), AC-03 durch W12.2 (Protokoll `dawn`), AC-04 durch W12.3 (Regeltexte). Golden ist im eigenen Commit verschoben.
+Review (Opus) ohne schwere Befunde in Sim/Server; die zwei Client-Befunde sind behoben, dabei B-470/AC-04 und AC-05 vorgezogen.
+Gestapelt auf `sprint/geb16`; die dort roten Studio-Tests (Fixture, Zählung) sind auf beiden Branches behoben. Neues Ticket B-621.
