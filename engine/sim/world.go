@@ -51,7 +51,7 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 	hubX := lv.HubCenterUnits
 	w := &World{
 		Seed: seed, Biome: b, Level: lv, rng: rng.New(b.ID + ":" + seed + ":sim"),
-		Time: opts.Time, CycleSpeed: speed, NextID: 1, WidthUnits: lv.WidthUnits, HubX: hubX, HubLevel: 1,
+		Time: opts.Time, CycleSpeed: speed, NextID: 1, WidthUnits: lv.WidthUnits, HubX: hubX, HubLevel: 1, HubStep: 1,
 		Cycle:   cycleAt(globalDayNight, float64(opts.Time*speed)),
 		Players: []*Player{}, Coins: []*Coin{}, Troops: []*Troop{}, Nodes: []*ResourceNode{}, Sites: []*Site{},
 		Castle:  Castle{X: hubX, HP: buildings["castle"].HP, MaxHP: buildings["castle"].HP},

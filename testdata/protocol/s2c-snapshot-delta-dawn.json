@@ -1,0 +1,22 @@
+{
+  "t": "delta",
+  "stage": 0,
+  "tick": 21600,
+  "ack": 42,
+  "s": {
+    "time": 720.0333333333333,
+    "cycle": {
+      "phase": "dawn",
+      "day": 2,
+      "progress": 0.0002777777777777778,
+      "secondsLeft": 119.96666666666667
+    },
+    "events": [
+      {
+        "type": "dawn",
+        "day": 2,
+        "stage": 0
+      }
+    ]
+  }
+}

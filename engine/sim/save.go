@@ -43,6 +43,8 @@ type HubSave struct {
 	// Hub-Stufe (W1.3, 0 = 1) und ein laufender Hub-Ausbau an der Burg (hub_level.go), beide optional.
 	HubLevel   int       `json:"hubLevel,omitempty"`
 	HubUpgrade *SiteSave `json:"hubUpgrade,omitempty"`
+	// HubStep ist der laufende Ausbauschritt (B-592, hub_level.go); fehlt bei Schritt 1. Additiv, Version bleibt.
+	HubStep int `json:"hubStep,omitempty"`
 	// Rüstungsstufe der Kämpfer des Hubs (Version 7, save_economy.go), 0 = keine.
 	ArmorLevel int `json:"armorLevel,omitempty"`
 	// Nur Bauern und Bogenschützen. Landstreicher kommen von allein aus den Camps.
@@ -141,6 +143,9 @@ func hubSave(w, base *World) HubSave {
 	}
 	if w.HubLevel > 1 {
 		h.HubLevel = w.HubLevel
+	}
+	if w.HubStep > 1 {
+		h.HubStep = w.HubStep
 	}
 	if u := w.hubSite; u != nil && (u.Upgrade != "" || u.UpgradePaid > 0) {
 		saved := siteSave(u)
@@ -308,9 +313,10 @@ func applySite(w *World, saved SiteSave) {
 	// Bauplatz gibt es in dieser Version nicht mehr
 }
 
-// applyHubLevel übernimmt Hub-Stufe und laufenden Hub-Ausbau.
+// applyHubLevel übernimmt Hub-Stufe, Ausbauschritt (1 bis Schrittzahl der Stufe) und laufenden Hub-Ausbau.
 func applyHubLevel(w *World, h HubSave) {
 	w.HubLevel = max(1, h.HubLevel)
+	w.HubStep = min(max(1, h.HubStep), max(1, hubSteps(w)))
 	if u := h.HubUpgrade; u != nil && w.hubSite != nil {
 		applyUpgrade(w.hubSite, *u)
 	}

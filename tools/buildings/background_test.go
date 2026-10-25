@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"sort"
-	"strings"
 	"testing"
 )
 
@@ -131,32 +130,54 @@ func idVonDatei(name string) string { return dichteSuffix.ReplaceAllString(name,
 
 // TestHintergrundStufen: je Biom drei Schichten fern, mitte, nah; mittlere Helligkeit steigt um mindestens hgMinStufe
 // und „nah“ bleibt unter hgNahMax, also dunkler als die Gebäude davor (GEB7 AC-04, Regeldatei § 10).
+// TestHintergrundVariantenJeStufe: jede der fünf Stufen hat mindestens fünf vollständige Varianten (GEB18, B-618/AC-02).
+func TestHintergrundVariantenJeStufe(t *testing.T) {
+	out := map[string]*image.Paletted{}
+	var ids []string
+	for id, k := range ladeKlasse(t, out) {
+		if k == "hintergrund" {
+			ids = append(ids, id)
+		}
+	}
+	if n := len(hintergrundGruppen(ids)); n != 5 {
+		t.Errorf("%d Biome mit Hintergrund, erwartet 5", n)
+	}
+	if f := fehlendeVarianten(ids, 5); len(f) > 0 {
+		t.Errorf("zu wenige Varianten: %v", f)
+	}
+}
+
+// Je Variante eines Bioms (GEB18) gilt dieselbe Regel; gemessen wird in der Spiel-Dichte 32.
 func TestHintergrundStufen(t *testing.T) {
 	out := map[string]*image.Paletted{}
 	klassen := ladeKlasse(t, out)
-	biome := map[string]bool{}
+	var ids []string
 	for id, k := range klassen {
 		if k == "hintergrund" {
-			biome[strings.Split(id, "-")[1]] = true
+			ids = append(ids, id)
 		}
 	}
-	if len(biome) == 0 {
+	gruppen := hintergrundGruppen(ids)
+	if len(gruppen) == 0 {
 		t.Skip("noch keine Hintergrund-Schichten")
 	}
-	for biom := range biome {
-		var l [3]float64
-		for i, s := range []string{"fern", "mitte", "nah"} {
-			img, ok := out[fmt.Sprintf("hg-%s-%s-32.png", biom, s)]
-			if !ok {
-				t.Fatalf("hg-%s-%s fehlt (je Biom fern, mitte, nah)", biom, s)
+	for biom, varianten := range gruppen {
+		for v, schichten := range varianten {
+			name := fmt.Sprintf("%s v%d", biom, v)
+			var l [3]float64
+			for i, s := range []string{"fern", "mitte", "nah"} {
+				id, ok := schichten[s]
+				if !ok {
+					t.Fatalf("%s: Schicht %s fehlt (je Variante fern, mitte, nah)", name, s)
+				}
+				l[i] = lumaMittel(out[id+"-32.png"])
 			}
-			l[i] = lumaMittel(img)
-		}
-		if l[1]-l[0] < hgMinStufe || l[2]-l[1] < hgMinStufe {
-			t.Errorf("%s: Helligkeit fern %.1f, mitte %.1f, nah %.1f; Abstand mindestens %.0f je Schicht", biom, l[0], l[1], l[2], hgMinStufe)
-		}
-		if l[2] > hgNahMax {
-			t.Errorf("%s: nah %.1f heller als die Obergrenze %.0f", biom, l[2], hgNahMax)
+			if l[1]-l[0] < hgMinStufe || l[2]-l[1] < hgMinStufe {
+				t.Errorf("%s: Helligkeit fern %.1f, mitte %.1f, nah %.1f; Abstand mindestens %.0f je Schicht", name, l[0], l[1], l[2], hgMinStufe)
+			}
+			if l[2] > hgNahMax {
+				t.Errorf("%s: nah %.1f heller als die Obergrenze %.0f", name, l[2], hgNahMax)
+			}
 		}
 	}
 }

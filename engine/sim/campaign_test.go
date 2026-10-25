@@ -2,13 +2,12 @@ package sim
 
 import (
 	"encoding/json"
-	"os"
 	"testing"
 
 	"k3c/engine/internal/golden"
 )
 
-// campaignFile ist testdata/golden/campaign-abstieg.json (ursprünglich aus der TS-Simulation; neu schreiben mit
+// campaignFile ist testdata/golden/campaign-abstieg.json.gz (gzip, GD1) (ursprünglich aus der TS-Simulation; neu schreiben mit
 // `task go:golden`, B-137).
 type campaignFile struct {
 	Name          string
@@ -37,11 +36,8 @@ func loadCampaign(t *testing.T) campaignFile { return loadCampaignAt(t, campaign
 
 func loadCampaignAt(t *testing.T, path string) campaignFile {
 	t.Helper()
-	raw, err := os.ReadFile(path)
 	var f campaignFile
-	if err == nil {
-		err = json.Unmarshal(raw, &f)
-	}
+	err := json.Unmarshal(golden.Read(t, path), &f)
 	if err != nil || len(f.Snapshots) == 0 || f.SaveAt == 0 || len(f.Save) == 0 {
 		t.Fatalf("%s unbrauchbar: %v", path, err)
 	}
@@ -63,8 +59,8 @@ type campaignGot struct {
 }
 
 const (
-	campaignPath       = "../../testdata/golden/campaign-abstieg.json"
-	campaignAusbauPath = "../../testdata/golden/campaign-ausbau.json"
+	campaignPath       = "../../testdata/golden/campaign-abstieg.json.gz"
+	campaignAusbauPath = "../../testdata/golden/campaign-ausbau.json.gz"
 )
 
 func compareCampaign(t *testing.T, f campaignFile, snap int, c *Campaign, got *campaignGot) {

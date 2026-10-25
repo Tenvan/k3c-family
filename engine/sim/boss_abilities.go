@@ -49,7 +49,7 @@ func shardThrow(w *World, e *Enemy, a BossAbility) {
 	}
 	e.AoeIn, e.Cooldown = a.IntervalSeconds, a.IntervalSeconds
 	p := &Projectile{
-		ID: w.newID(), X: e.X, TargetID: t.id, Team: "enemy", Damage: e.Damage, Speed: shardSpeed, Cause: e.Kind,
+		ID: w.newID(), X: e.X, TargetID: t.id, Team: "enemy", Damage: moonDamage(w, e.Damage), Speed: shardSpeed, Cause: e.Kind,
 		Splash: a.Radius,
 	}
 	w.Projectiles = append(w.Projectiles, p)

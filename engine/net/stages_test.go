@@ -57,7 +57,8 @@ func TestStufenZweiStroemeUeberWebSocket(t *testing.T) {
 }
 
 // Eine blockierte Schreib-Goroutine mit zwei Stufen: Ein neuer Zustand ersetzt nur den wartenden derselben Stufe und
-// übernimmt nur dessen Ereignisse; je Stufe bleibt die Reihenfolge level → snap → delta, die Warteschlange wächst nicht.
+// übernimmt nur dessen Ereignisse, auch über das Level der anderen Stufe hinweg (B-280); je Stufe bleibt die Reihenfolge
+// level → snap → delta, die Warteschlange wächst nicht.
 func TestStufenBlockierteVerbindungZweiStroeme(t *testing.T) {
 	cancelled := false
 	c := queueConn("x", &cancelled)
@@ -89,7 +90,7 @@ func TestStufenBlockierteVerbindungZweiStroeme(t *testing.T) {
 			}
 		}
 	}
-	if fmt.Sprint(got[0]) != "[level <nil> snap 1 delta 10]" || fmt.Sprint(got[1]) != "[level <nil> snap 10]" {
+	if fmt.Sprint(got[0]) != "[level <nil> snap 10]" || fmt.Sprint(got[1]) != "[level <nil> snap 10]" {
 		t.Fatalf("Stufe 0 %v, Stufe 1 %v", got[0], got[1])
 	}
 	if events[0] != 10 || events[1] != 10 {

@@ -50,6 +50,27 @@ func (r *recorder) sent(device string, msg []byte) {
 	r.msgs[device] = append(r.msgs[device], msg)
 }
 
+// enough: bots Geräte haben je mindestens n input-Nachrichten gesendet.
+func (r *recorder) enough(bots, n int) bool {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	if len(r.msgs) < bots {
+		return false
+	}
+	for _, msgs := range r.msgs {
+		count := 0
+		for _, m := range msgs {
+			if bytes.Contains(m, []byte(`"t":"input"`)) {
+				count++
+			}
+		}
+		if count < n {
+			return false
+		}
+	}
+	return true
+}
+
 // inputs liefert die input-Nachrichten je Bot, der Schlüssel ohne Lauf-Kennung („Raum-Bot“).
 func (r *recorder) inputs() map[string][]string {
 	out := map[string][]string{}
@@ -121,7 +142,8 @@ func TestTickReiheJeRaum(t *testing.T) {
 }
 
 // AC-02: Zwei Läufe mit gleichem Seed senden je Bot dieselbe Eingabefolge (gemeinsamer Anfang, weil die Zahl der
-// Zustände mit der Wanduhr schwankt); ein anderer Seed sendet eine andere.
+// Zustände mit der Wanduhr schwankt); ein anderer Seed sendet eine andere. Ein Lauf endet, sobald jeder Bot 30
+// Eingaben gesendet hat, nicht nach fester Wanduhr: unter Last kamen in 2 s zu wenige zusammen (B-284).
 func TestGleicherSeedGleicheEingaben(t *testing.T) {
 	if testing.Short() {
 		t.Skip("langer Test, läuft ohne -short (B-619)")
@@ -129,9 +151,17 @@ func TestGleicherSeedGleicheEingaben(t *testing.T) {
 	lauf := func(seed, tag string) map[string][]string {
 		srv, _, _, _ := testServer(t)
 		rec := &recorder{}
-		c := testConfig(srv, seed, 2*time.Second, rec)
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+		c := testConfig(srv, seed, 30*time.Second, rec) // Obergrenze, falls der Server hängt
 		c.tag = tag
-		if _, err := load(context.Background(), c); err != nil {
+		c.sent = func(dev string, msg []byte) {
+			rec.sent(dev, msg)
+			if rec.enough(4, 30) {
+				cancel()
+			}
+		}
+		if _, err := load(ctx, c); err != nil {
 			t.Fatal(err)
 		}
 		return rec.inputs()

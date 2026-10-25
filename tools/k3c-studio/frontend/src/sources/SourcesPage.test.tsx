@@ -41,8 +41,23 @@ describe('Seite Quellen', () => {
     expect(takePendingSlot()).toBe('');
   });
 
-  it('meldet im HTTP-Backend „kommt mit WZ29.6“', async () => {
-    await expect(httpBackend().sources()).rejects.toThrow('WZ29.6');
-    await expect(httpBackend().sourceDownload(['q1'])).rejects.toThrow('WZ29.6');
+  it('ruft im HTTP-Backend die RPC-Methoden des Studios (WZ29.6)', async () => {
+    const calls: { url: string; body: string }[] = [];
+    vi.stubGlobal('fetch', (url: string, init: RequestInit) => {
+      calls.push({ url, body: String(init.body) });
+      return Promise.resolve(new Response(JSON.stringify({ result: null }), { status: 200 }));
+    });
+    try {
+      await httpBackend().sources();
+      await httpBackend().sourceDownload(['q1', 'q2'], 300);
+      await httpBackend().sourceAdopt('q1');
+    } finally {
+      vi.unstubAllGlobals();
+    }
+    expect(calls).toEqual([
+      { url: '/api/studio/rpc/Sources', body: '[]' },
+      { url: '/api/studio/rpc/SourceDownload', body: '[["q1","q2"],300]' },
+      { url: '/api/studio/rpc/SourceAdopt', body: '["q1"]' },
+    ]);
   });
 });

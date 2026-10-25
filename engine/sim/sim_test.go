@@ -2,7 +2,6 @@ package sim
 
 import (
 	"encoding/json"
-	"os"
 	"path/filepath"
 	"slices"
 	"testing"
@@ -11,7 +10,7 @@ import (
 	"k3c/engine/level"
 )
 
-// goldenRun ist eine Datei testdata/golden/sim-*.json (ursprünglich aus der TS-Simulation; neu schreiben mit
+// goldenRun ist eine Datei testdata/golden/sim-*.json.gz (gzip, GD1) (ursprünglich aus der TS-Simulation; neu schreiben mit
 // `task go:golden`, B-137).
 type goldenRun struct {
 	path          string
@@ -24,6 +23,8 @@ type goldenRun struct {
 	Ticks         int
 	SnapshotEvery int
 	Setup         *goldenSetup // nach CreateWorld und AddPlayer
+	// Aggression: Stand des Aggressionspools nach dem Setup (100 = voll, die Welle kommt im ersten Tick; KB1.3).
+	Aggression float64
 	Inputs        []struct {
 		Ticks    int
 		Commands []PlayerCommand
@@ -43,16 +44,13 @@ type goldenSetup struct {
 
 func goldenRuns(t *testing.T) []goldenRun {
 	t.Helper()
-	files, err := filepath.Glob("../../testdata/golden/sim-*.json")
+	files, err := filepath.Glob("../../testdata/golden/sim-*.json.gz")
 	if err != nil || len(files) == 0 {
 		t.Fatalf("keine Golden-Läufe in testdata/golden/: %v", err)
 	}
 	runs := make([]goldenRun, len(files))
 	for i, f := range files {
-		raw, err := os.ReadFile(f)
-		if err == nil {
-			err = json.Unmarshal(raw, &runs[i])
-		}
+		err := json.Unmarshal(golden.Read(t, f), &runs[i])
 		if err != nil || (len(runs[i].Snapshots) == 0 && !*golden.Update) || runs[i].SnapshotEvery == 0 {
 			t.Fatalf("%s unbrauchbar: %v", f, err)
 		}
@@ -94,6 +92,9 @@ func replay(t *testing.T, run goldenRun) {
 	}
 	if run.Setup != nil {
 		applySetup(t, w, run)
+	}
+	if run.Aggression > 0 && w.Aggression != nil {
+		*w.Aggression = run.Aggression
 	}
 	snap, tick := 0, 0
 	var got []snapshot
@@ -157,6 +158,7 @@ func TestGoldenLaeufeVollstaendig(t *testing.T) {
 	for _, want := range []string{
 		"forest-tag", "forest-nacht", "cave-aggression", "forest-ohne-spieler",
 		"forest-aufbau", "cave-aufbau", "forest-raub", "forest-sturm", "cave-belagerung", "mine-welle", "forest-monarch",
+		"ironhold-welle", "crystal-welle",
 	} {
 		if !slices.Contains(names, want) {
 			t.Errorf("Golden-Lauf sim-%s fehlt", want)

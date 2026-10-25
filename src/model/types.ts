@@ -62,7 +62,11 @@ export type PlayerAction =
   | { action: 'learn'; skills?: string[] }
   | { action: 'respec' }
   /** Der Spieler ist am Bau des wartenden Endbosses (B-563): Ankunft löst ihn aus. */
-  | { action: 'lair' };
+  | { action: 'lair' }
+  /** Ausbilden am Gebäude (W11.3, B-410): Beruf, den das Bezahlen vergibt. */
+  | { action: 'train'; profession: string }
+  /** Tauschen beim Händler (W11.3, B-410): kaufen oder verkaufen, Material. */
+  | { action: 'trade'; side: 'buy' | 'sell'; resource: string };
 
 export interface Coin {
   id: number;
@@ -111,6 +115,8 @@ export interface ResourceNode {
   marked: boolean;
   /** Spieler-Index der letzten Markier-Münze; fehlt = unbekannt (B-532, ältere Server) */
   markedBy?: number;
+  /** Nimmt jetzt eine Markier-Münze (Server, B-588); fehlt = nein. */
+  minable?: boolean;
   workerId: number | null;
   /** 0..1 */
   progress: number;
@@ -143,22 +149,32 @@ export interface Site {
   upgradePaid?: number;
   /** Ruine der Planung (docs/rules/geplante-chunks.md § 8); fehlt = keine Ruine. */
   ruin?: boolean;
+  /** Platz-Stufe: ab dieser Hub-Stufe bezahlbar (B-208); fehlt = älterer Server. */
+  hubLevel?: number;
+  /** Nimmt jetzt Münzen für Bau oder Ausbau (Server, B-587); fehlt = nein. */
+  payable?: boolean;
 }
 
-/** Ausbau auf die nächste Hub-Stufe (docs/protocol.md › Wirtschaft), vom Server berechnet. */
+/** Laufender Ausbauschritt auf die nächste Hub-Stufe (docs/protocol.md › Wirtschaft), vom Server berechnet. */
 export interface HubUpgrade {
   gold: number;
   material: Partial<Record<ResourceKind, number>>;
   paid: number;
-  /** Fehlt, solange Gold offen ist. */
-  state?: 'waitingMaterial' | 'waitingWorker';
+  /** Fehlt, solange Gold offen ist; `waitingNextIsland` = Material-Tor fehlt, „Material der nächsten Insel“ (B-592). */
+  state?: 'waitingMaterial' | 'waitingNextIsland' | 'waitingWorker';
+  /** Zahl der Ausbauschritte auf die nächste Hub-Stufe (B-592); fehlt = älterer Server. */
+  steps?: number;
 }
 
-/** Anwesender Händler: Material, Abreisetag, Gold des laufenden Kaufs (fehlt = 0). */
+/** Anwesender Händler: Material, Abreisetag, Gold des laufenden Kaufs (fehlt = 0), Überfall und Lebenspunkte (KB2.3). */
 export interface Merchant {
   resource: string;
   leaves: number;
   buyPaid?: number;
+  /** Dieser Besuch wird überfallen, Gegner greifen den Händler zuerst an (fehlt = nein). */
+  raid?: boolean;
+  hp: number;
+  maxHp: number;
 }
 
 /** Ausrüstung am Boden (Figur oder Beruf, Verlust-Kaskade). */
@@ -266,6 +282,7 @@ export type GameEvent = (
   | { type: 'disarmed'; kind: string; x: number; cause: string }
   | { type: 'equipmentTaken'; kind: string; x: number }
   | { type: 'bossSpawned'; boss: string; x: number }
+  | { type: 'saved' }
 ) & { stage?: number };
 
 export interface World {
@@ -307,6 +324,8 @@ export interface World {
   /** Gold-Maximum je Spieler, nur mit Dev-Bonus (maxStock); sonst gilt `ECONOMY.purse.maxGold`. */
   purseMax?: number;
   hubLevel?: number;
+  /** Laufender Ausbauschritt 1 bis `hubUpgrade.steps` (B-592); fehlt auf der letzten Stufe und beim älteren Server. */
+  hubStep?: number;
   hubUpgrade?: HubUpgrade;
   /** Nacht oder Gegner: Bau und Ausbau warten (`waitingWorker` heißt dann Gefahr). */
   danger?: boolean;
@@ -329,7 +348,7 @@ export interface World {
 
   /** Ereignisse des letzten Ticks (für HUD-Meldungen), werden bei jedem step() geleert. */
   events: GameEvent[];
-  /** Vom Server verworfene Ereignisse dieses Ticks (Obergrenze je Tick); fehlt bei 0. */
+  /** Vom Server verworfene Ereignisse seit dem vorigen Zustand der Stufe (Obergrenze je Tick, Warteschlange); fehlt bei 0 (B-190). */
   eventsDropped?: number;
 }
 
@@ -366,13 +385,16 @@ export interface LevelLayout {
   hubCenterUnits: number;
   chunks: Chunk[];
   entities: LevelEntity[];
+  /** Hintergrund-Variante (1 …) je Kachel von 24 Units im Raum der Schicht (GEB18); fehlt → Variante 1 überall */
+  backdrops?: number[];
 }
 
-export type Phase = 'day' | 'dusk' | 'night';
+/** Tageszeit des Zyklus (docs/protocol.md › Tageszeit); `dawn` = Morgengrauen, kompatibel ohne neue Version (B-470). */
+export type Phase = 'day' | 'dusk' | 'night' | 'dawn';
 
 export interface CycleInfo {
   phase: Phase;
-  /** 1 = erster Tag. Die Nacht gehört zum Tag davor. */
+  /** 1 = erster Tag. Die Nacht gehört zum Tag davor, das Morgengrauen schon zum neuen Tag. */
   day: number;
   /** 0..1 innerhalb der Phase */
   progress: number;

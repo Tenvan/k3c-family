@@ -16,6 +16,7 @@ describe('Zustands-Automat (SO4.2 AC-01)', () => {
     expect(nextMusicState(undefined, { ...all, victory: false, boss: false })).toBe('battle');
     expect(nextMusicState(undefined, { ...all, victory: false, boss: false, enemies: 0 })).toBe('depth');
     expect(nextMusicState(undefined, view({ phase: 'night' }))).toBe('night');
+    expect(nextMusicState(undefined, view({ phase: 'dawn' }))).toBe('night'); // W12.2: Morgengrauen ohne eigenes Stück
   });
 
   it('Niederlage über castleFallen bleibt bis zur Lobby; andere Ereignisse ändern nichts', () => {

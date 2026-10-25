@@ -23,9 +23,11 @@ export interface BiomeConfig {
   primaryResource: string;
   enemies: { portal: string[]; night: string[] };
   cycle:
-    | { type: 'dayNight'; dayMinutes: number; nightMinutes: number; twilightMinutes: number }
+    | { type: 'dayNight'; dayMinutes: number; twilightMinutes: number; nightMinutes: number; dawnMinutes: number }
     | { type: 'aggressionPool'; percentPerMinute: number; percentPerKill: number; percentPerGather: number };
   palette: { sky: string; far: string; near: string; ground: string };
+  /** Wurzeln je Baum-Knoten im Höhle-Look (GEB15.1); ab der zweiten reine Deko des Clients, ohne Feld 1 */
+  rootsPerNode?: number;
 }
 
 // Alle Biome aus data/biomes/, nach Tiefe sortiert (B-290). JSON kennt keine Tupel/Literal-Typen, daher der Cast;

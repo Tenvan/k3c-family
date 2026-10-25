@@ -33,8 +33,8 @@ Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot �
 
 | Event | Auslöser | Wirkung | Belohnung |
 |---|---|---|---|
-| **Vollmond** | jede **7. Nacht** (Oberwelt) | verstärkte Wolfswelle (+50 % Wolfsanteil), dazu ein **Alpha-Wolf** (Elite) | 50 Gold |
-| **Blutmond** | jede **13. Nacht** | alle Gegner +30 % Schaden in dieser Nacht | doppelter Drop der Gegner dieser Nacht |
+| **Vollmond** | jede **7. Nacht** (globaler Zyklus) | verstärkte Wolfswelle (+50 % Wolfsanteil), dazu ein **Alpha-Wolf** (Elite) | 50 Gold je bespielter Stufe, deren Burg die Nacht hielt, an ihrem Hub (höchstens einmal je Stufe und Nacht; bespielt = beim Morgengrauen steht dort ein gesteuerter Monarch, B-379) |
+| **Blutmond** | jede **13. Nacht** | alle Gegner +30 % Schaden in dieser Nacht, auch Flächenangriff und Splitter der Bosse; die Bodenfläche (Hazard) bleibt ohne Faktor (B-380) | doppelter Drop der Gegner dieser Nacht |
 | **Händler-Überfall** | jeder **4. Händler-Besuch** (`buerger.md`) | Gegner greifen den Händler an; er flieht, wenn er stirbt | Wird er geschützt, schenkt er Material oder einen Rabatt beim Tausch (Startwert: 100 Material der Insel) |
 
 Begründung: Abwechslung im Wellenrhythmus und Gewicht für den Händler. Daten: `data/events.json` (SIM legt an). Zielkorridor: Burg hält Vollmond und Blutmond in ≥ 70 % der Seeds (Startziel).
@@ -43,5 +43,5 @@ Begründung: Abwechslung im Wellenrhythmus und Gewicht für den Händler. Daten:
 
 - **Alle Zahlen** (Welle 5/3, 8×/30× HP, 2× Schaden, Belohnungen, Phasenwerte, Event-Rhythmen) und die Namen der Bosse sind Vorschläge des Agenten; 🧑 hat den Satz „Vorschlag“ bestätigt, einzelne Zahlen nicht gesondert.
 - Händler-Überfall: Rhythmus „jeder 4. Besuch“ und die Belohnung sind Startwerte (B-099, B-121).
-- Blutmond und Vollmond treten in der Oberwelt ein; wie sie unten wirken (Aggressionspool), legt das SIM-Ticket fest (Annahme: gelten für die Nacht des globalen Zyklus).
+- Blutmond und Vollmond gelten für die Nacht des globalen Zyklus in allen Stufen (KB1, B-379, B-380). Stichtag für „bespielt“ ist das Morgengrauen: Wer kurz davor die Stufe wechselt, verschiebt die Belohnung (bewusst einfach gehalten, Bestätigung durch 🧑 über KR6).
 - Kennzahlen, die fehlen: `bossSpawned`, `bossDefeated`, Kampfdauer, Event-Ereignisse (B-099).

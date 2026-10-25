@@ -97,7 +97,7 @@ func TestSavesList(t *testing.T) {
 	text, err := SavesList(root, SavesDir(root, ""))
 	want := []string{
 		"autosave-2026-09-29T10-00-00-000Z · Stufe 0/0 · Tag 1 · 1 Spieler · " + local("2026-09-29T10:00:00.000Z"),
-		// time 4000 s, Zyklus (10 + 1 + 5) min = 960 s → Tag 5
+		// time 4000 s, Zyklus (6 + 2 + 4 + 2) min = 840 s, Morgengrauen 120 s zählt zum neuen Tag → Tag 5
 		"autosave · Stufe 2/3 · Tag 5 · 2 Spieler · " + local("2026-09-30T18:02:00.000Z"),
 		"kaputt · nicht lesbar",
 	}

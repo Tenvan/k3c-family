@@ -2,7 +2,7 @@ import hubData from '@data/hub.json';
 import { BIOMES } from '@game/model/biome';
 import type { World } from '@game/model/types';
 import { createViewWorld } from '@game/online/clientWorld';
-import { biomeBackground } from '@game/scenes/render/worldSprites';
+import { biomeLayers } from '@game/scenes/render/worldSprites';
 import type { WorldState } from '@game/online/clientProtocol';
 import type { PlannedChunk, SiteLook, WorldPreviewArgs, WorldPreviewView } from '../api';
 import type { SimPhase } from './timeOfDay';
@@ -117,7 +117,7 @@ const DEPTH_NAMES = ['fern', 'mittel', 'nah'];
 
 /** Hintergrund-Schichten eines Bioms von fern nach nah; leer bei einem Biom ohne Schichten (dann Silhouetten, Schalter ausgegraut). */
 export function backgroundToggles(biomeId: string): BackgroundToggle[] {
-  const layers = biomeBackground(biomeId)?.layers ?? [];
+  const layers = biomeLayers(biomeId) ?? [];
   return layers.map((l, i) => ({ key: l.key, scroll: l.scroll, label: `Schicht ${i + 1}${layers.length === DEPTH_NAMES.length ? ` (${DEPTH_NAMES[i]})` : ''}` }));
 }
 

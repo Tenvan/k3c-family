@@ -96,4 +96,9 @@ describe('debugEnabled (AC-02)', () => {
     expect(debugLines(input({ client: c }))).toContain('Dev abgelehnt: Nur im Dev-Mode erlaubt');
     expect(debugLines(input({ client: client({ errorCode: 'room_full', notice: 'Raum voll' }) })).some((l) => l.startsWith('Dev'))).toBe(false);
   });
+
+  it('zeigt die Frame-Zeit neben den FPS, wenn sie bekannt ist (PF1.1)', () => {
+    const lines = debugLines(input({ frameMs: 16.66 }));
+    expect(lines).toContain('60 FPS · Frame 16.7 ms');
+  });
 });
