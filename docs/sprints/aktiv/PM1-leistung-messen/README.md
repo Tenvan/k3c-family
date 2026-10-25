@@ -1,14 +1,14 @@
 # PM1 · CLI · Leistung messen: Diagnose-Zeile und Performance-Modus
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** LST
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-351, B-334
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt; Defaults: Performance-Modus per URL-Parameter ?perf=1, Bericht über /api/report, PM1 vor PF1)
 
 ## Ausgangslage
 
@@ -61,6 +61,13 @@ B-351 › Ausnahme- und Fehlerfälle; B-334 › Ausnahme- und Fehlerfälle (Serv
 - Soll PM1 vor PF1.1 laufen, damit PF1 mit Berichten misst? 🧑
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| PM1.1 | `PM1.1-diagnose-zeile.md` | Umsetzung | autonom | in Arbeit |
+| PM1.2 | `PM1.2-performance-modus.md` | Umsetzung | autonom | offen |
+| PM1.3 | `PM1.3-review.md` | Review | autonom | offen |
+| PM1.4 | `PM1.4-messlauf-pc.md` | Workshop | Mensch | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
