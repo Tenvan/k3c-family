@@ -1,6 +1,6 @@
 # NT1 · SRV · Stabile Tests, Warteschlange und Snapshot-Budget
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** LST
 - **Domäne:** SRV
 - **Reife:** bereit
@@ -61,7 +61,7 @@ keine
 |---|---|---|---|---|
 | NT1.1 | `NT1.1-flakige-tests.md` | Umsetzung | autonom | fertig |
 | NT1.2 | `NT1.2-warteschlange-budget.md` | Umsetzung | autonom | fertig |
-| NT1.3 | `NT1.3-review.md` | Review | autonom | offen |
+| NT1.3 | `NT1.3-review.md` | Review | autonom | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
@@ -71,4 +71,7 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-–
+2026-10-25, Claude (NT1.3): `task check` und `task check:go` grün, ohne Wiederholung; `check:race` lokal übersprungen (kein C-Compiler), die CI prüft es.
+AC-01 bis AC-03 erfüllt durch NT1.1 (Ursachen behoben, Nachweis mit -count=20 bzw. 200 unter Last), AC-04 bis AC-06 durch NT1.2 (Warteschlange, `eventsDropped`, Messwert im Protokoll).
+Review (Opus): APPROVE, der LOW-Befund (wiederholte Warnung) ist behoben.
+Keine neuen Tickets.
