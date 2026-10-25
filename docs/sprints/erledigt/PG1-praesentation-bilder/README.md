@@ -1,6 +1,6 @@
 # PG1 · PLAT · Präsentationsseite mit echten Spielbildern
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** REL
 - **Domäne:** PLAT
 - **Reife:** bereit
@@ -55,7 +55,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | PG1.1 | `PG1.1-bilder-einbinden.md` | Umsetzung | autonom | fertig |
-| PG1.2 | `PG1.2-review.md` | Review | autonom | offen |
+| PG1.2 | `PG1.2-review.md` | Review | autonom | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
@@ -64,4 +64,6 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-–
+2026-10-25, Claude (PG1.2): `task check` grün, die Bildpfade der Seite sind vorhanden.
+AC-01 erfüllt durch PG1.1: drei echte Bilder (Split-Screen, Hub, Nacht) im Abschnitt „Aus dem Spiel“ von `site/index.html`.
+Keine Befunde, keine neuen Tickets. Ralf sieht die Seite nach dem Merge auf GitHub Pages.
