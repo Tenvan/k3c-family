@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import buildingsJson from '../../data/buildings.json';
 import hubJson from '../../data/hub.json';
-import { HUB } from './data';
+import { HUB, LIGHT } from './data';
 
 // B-209: Jede Platz-Art aus data/hub.json muss der Client kennen (SiteKind = Gebäude außer Burg).
 const known = new Set(Object.keys(buildingsJson).filter((k) => k !== 'castle'));
@@ -21,5 +21,17 @@ describe('HUB passt zu data/hub.json', () => {
   it('Typ deckt wallLines ab', () => {
     expect(HUB.wallLines.wallUnits.length).toBeGreaterThan(0);
     expect(HUB.wallLines.gateHubLevel).toBeGreaterThan(0);
+  });
+});
+
+// W12.1 (B-472): Licht-Felder für Fackeln und Lagerfeuer stehen in data/light.json, Radius positiv, Stärke in (0, 1].
+describe('LIGHT passt zu data/light.json', () => {
+  it('Fackel und Lagerfeuer haben Radius und Stärke', () => {
+    for (const kind of ['torch', 'campfire'] as const) {
+      const { radius, strength } = LIGHT.sources[kind];
+      expect(radius, kind).toBeGreaterThan(0);
+      expect(strength, kind).toBeGreaterThan(0);
+      expect(strength, kind).toBeLessThanOrEqual(1);
+    }
   });
 });

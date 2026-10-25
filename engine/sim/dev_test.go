@@ -1,6 +1,9 @@
 package sim
 
-import "testing"
+import (
+	"slices"
+	"testing"
+)
 
 // coinsAt zählt die Münzen der Welt genau bei x.
 func coinsAt(w *World, x float64) int {
@@ -71,7 +74,8 @@ func TestDevStartWave(t *testing.T) {
 	}
 }
 
-// B-232/AC-05: Dev-Tageszeit springt zur nächsten Phase; die Nacht bringt ihre Welle, der Tag den nächsten Tag.
+// B-232/AC-05, B-470/AC-01: Dev-Tageszeit springt in jede der vier Phasen; die Nacht bringt ihre Welle, das
+// Morgengrauen den nächsten Tag samt Ereignis dawn, der Tag danach kein weiteres.
 func TestDevSetPhase(t *testing.T) {
 	isl := mustIsland(t, "dev-phase", []int{0})
 	AddIslandPlayer(isl, 0)
@@ -80,7 +84,7 @@ func TestDevSetPhase(t *testing.T) {
 	for _, c := range []struct {
 		phase string
 		day   int
-	}{{"night", 1}, {"night", 2}, {"dusk", 3}, {"day", 4}} {
+	}{{"night", 1}, {"night", 2}, {"dusk", 3}, {"day", 4}, {"dawn", 5}, {"day", 5}, {"dawn", 6}} {
 		wave := w.Wave
 		if !DevSetPhase(isl, c.phase) {
 			t.Fatalf("%s abgelehnt", c.phase)
@@ -91,6 +95,9 @@ func TestDevSetPhase(t *testing.T) {
 		}
 		if c.phase == "night" && w.Wave != wave+1 {
 			t.Fatalf("Nacht ohne Welle: %d", w.Wave)
+		}
+		if dawn := slices.ContainsFunc(w.Events, func(e Event) bool { return e["type"] == "dawn" }); dawn != (c.phase == "dawn") {
+			t.Fatalf("%s: Ereignis dawn %v", c.phase, dawn)
 		}
 	}
 	if DevSetPhase(isl, "mittag") {

@@ -13,10 +13,8 @@ import (
 
 // cycleSeconds: Beginn der Nacht n und Länge eines Zyklus in Zyklus-Sekunden (globalDayNight).
 func cycleSeconds(n int) (nightStart, length float64) {
-	c := globalDayNight
-	day, dusk, night := float64(c.DayMinutes*60), float64(c.TwilightMinutes*60), float64(c.NightMinutes*60)
-	length = day + dusk + night
-	return float64(n-1)*length + day + dusk, length
+	phases, length := cyclePhases(globalDayNight)
+	return float64(n-1)*length + phases[2].start, length
 }
 
 // moonIsland ist eine Insel (Oberwelt und Höhle) mit zwei Spielern, kurz vor Einbruch der Nacht n.

@@ -58,9 +58,9 @@ Biom ohne Dauer des Morgengrauens oder mit nicht positiver Dauer → Laden abgel
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| W12.1 | `W12.1-vier-phasen-sim.md` | Umsetzung | autonom | in Arbeit |
-| W12.2 | `W12.2-protokoll-dawn.md` | Umsetzung | autonom | offen |
-| W12.3 | `W12.3-regeltexte.md` | Umsetzung | autonom | offen |
+| W12.1 | `W12.1-vier-phasen-sim.md` | Umsetzung | autonom | fertig |
+| W12.2 | `W12.2-protokoll-dawn.md` | Umsetzung | autonom | fertig |
+| W12.3 | `W12.3-regeltexte.md` | Umsetzung | autonom | fertig |
 | W12.4 | `W12.4-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.

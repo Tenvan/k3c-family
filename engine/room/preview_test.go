@@ -52,7 +52,6 @@ func TestBuildPreviewLehntUngueltigeOptionenAb(t *testing.T) {
 		"Biom mit Pfad":     func(o *PreviewOptions) { o.Source.Biome = "../hub" },
 		"Hub-Stufe -1":      func(o *PreviewOptions) { o.HubLevel = -1 },
 		"Hub-Stufe zu hoch": func(o *PreviewOptions) { o.HubLevel = hubLevels(t) + 1 },
-		"Phase dawn":        func(o *PreviewOptions) { o.Phase = "dawn" },
 		"Phase unbekannt":   func(o *PreviewOptions) { o.Phase = "mittag" },
 		"Fortschritt -0.1":  func(o *PreviewOptions) { o.Progress = -0.1 },
 		"Fortschritt 1":     func(o *PreviewOptions) { o.Progress = 1 },
