@@ -1,14 +1,14 @@
 # SV2 · SRV · Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** WRT
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-500, B-425, B-426
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt; offene Frage: DevBuildAll je Inselstufe reicht, Default ja)
 
 ## Ausgangslage
 
@@ -54,6 +54,12 @@ Voll-Stand anlegen → Inselstufe mit Hub 2 hat keine Mauer Stufe 3, keine Rüst
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| SV2.1 | `SV2.1-voll-stand-regelkonform.md` | Umsetzung | autonom | fertig |
+| SV2.2 | `SV2.2-store-test-content-type.md` | Umsetzung | autonom | fertig |
+| SV2.3 | `SV2.3-review.md` | Review | autonom | fertig |
+
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - SV2.1 (SRV) Voll-Stand aus der Welt-Datei und über `sim.DevBuildAll` (AC-01, AC-02).
@@ -62,5 +68,7 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-25, Claude (SV2.3): `task check` und `task check:go` grün; `check:race` lokal übersprungen (kein C-Compiler), die CI prüft es.
+AC-01 und AC-02 erfüllt durch SV2.1 (Tiefen aus der Welt-Datei, `DevBuildAll` je Inselstufe, Golden byte-gleich). AC-03 durch SV2.1/SV2.2 (echter `store.Saves`, 415 ohne JSON).
+Review ohne schwere Befunde. Auf Tiefe 4 (Hub 1) bleibt `stairsUp` regulär ungebaut.
+Keine neuen Tickets.
