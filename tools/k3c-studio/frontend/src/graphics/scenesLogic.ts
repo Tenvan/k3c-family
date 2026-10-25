@@ -250,20 +250,26 @@ export interface WachstumKarte {
   geruest?: string;
 }
 
-/** Name und Spielbedingung je Look `<id>-<stufe>` (Regel materialien-gebaeude.md § 2.1); der Spielcode kennt nur die Reihe. */
+/** Burg-Material je Hub-Stufe 2–5 und die Zusätze der Ausbauschritte 2 und 3 (`burg.json` › Stufen 6–13, GEB17.6) */
+const BURG_NAME = ['Steinburg', 'Kupferburg', 'Eisenburg', 'Kristallburg'];
+const SCHRITT_ZUSATZ = ['', ' mit Bannern', ' mit Türmchen'];
+
+/**
+ * Name und Spielbedingung je Look `<id>-<stufe>` (Regel materialien-gebaeude.md § 2.1, Ausbauschritte stufen.md § 8); der Spielcode
+ * kennt nur die Reihe. Hub-Stufe 1 = Lagerfeuer, Zelt, Holzhütte; ab Hub-Stufe 2 je Ausbauschritt eine eigene Burg.
+ */
 const WACHSTUM_TEXT: Record<string, [string, string]> = {
-  'lagerfeuer-1': ['Lagerfeuer mit Grill', 'Hub-Stufe 1, noch kein Gold bezahlt'],
-  'lagerfeuer-2': ['Zelt am Feuer', 'Hub-Stufe 1, weniger als die Hälfte des Golds'],
-  'lagerfeuer-3': ['Holzhütte am Feuer', 'Hub-Stufe 1, ab der Hälfte des Golds'],
-  'burg-1': ['Holzburg', 'Hub-Stufe 1, Gold voll'],
-  'burg-2': ['Steinburg', 'Hub-Stufe 2'],
-  'burg-3': ['Kupferburg', 'Hub-Stufe 3'],
-  'burg-4': ['Eisenburg', 'Hub-Stufe 4'],
-  'burg-5': ['Kristallburg', 'Hub-Stufe 5'],
+  'lagerfeuer-1': ['Lagerfeuer mit Grill', 'Hub-Stufe 1, Ausbauschritt 1'],
+  'lagerfeuer-2': ['Zelt am Feuer', 'Hub-Stufe 1, Ausbauschritt 2'],
+  'lagerfeuer-3': ['Holzhütte am Feuer', 'Hub-Stufe 1, Ausbauschritt 3'],
+  ...Object.fromEntries(BURG_NAME.flatMap((name, i) => [1, 2, 3].map((step) => [
+    `burg-${HUB_GROWTH[(i + 1) * 3 + step - 1]!.stufe}`,
+    [name + SCHRITT_ZUSATZ[step - 1], `Hub-Stufe ${i + 2}, Ausbauschritt ${step}`],
+  ]))),
 };
 
 /**
- * Wachstumsreihe der Burg in Spielreihenfolge (`HUB_GROWTH` aus dem Spielcode, Regel materialien-gebaeude.md § 2.1), danach die
+ * Wachstumsreihe der Burg in Spielreihenfolge (`HUB_GROWTH` aus dem Spielcode, ein Look je Hub-Stufe und Ausbauschritt), danach die
  * Steinburg mit Baugerüst als Beispiel für „ein Bauer baut den Ausbau“; Looks ohne Datei im Index entfallen.
  */
 export function hubWachstum(index: readonly GebaeudeEintrag[]): WachstumKarte[] {

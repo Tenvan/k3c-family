@@ -490,7 +490,7 @@
       "id": "hub:camp:1",
       "art": "grafik",
       "kategorie": "gebaeude",
-      "beschreibung": "Hub-Wachstum: Lagerfeuer mit Grill (GEB11)",
+      "beschreibung": "Hub-Wachstum: Lagerfeuer mit Grill, Hub-Stufe 1, Ausbauschritt 1 (GEB11, GEB17.6)",
       "wahl": [
         {
           "datei": "grafik/gebaeude/lagerfeuer-1-32.png"
@@ -501,7 +501,7 @@
       "id": "hub:camp:2",
       "art": "grafik",
       "kategorie": "gebaeude",
-      "beschreibung": "Hub-Wachstum: Zelt am Feuer (GEB11)",
+      "beschreibung": "Hub-Wachstum: Zelt am Feuer, Hub-Stufe 1, Ausbauschritt 2 (GEB11, GEB17.6)",
       "wahl": [
         {
           "datei": "grafik/gebaeude/lagerfeuer-2-32.png"
@@ -512,10 +512,98 @@
       "id": "hub:camp:3",
       "art": "grafik",
       "kategorie": "gebaeude",
-      "beschreibung": "Hub-Wachstum: Holzhütte am Feuer (GEB11)",
+      "beschreibung": "Hub-Wachstum: Holzhütte am Feuer, Hub-Stufe 1, Ausbauschritt 3 (GEB11, GEB17.6)",
       "wahl": [
         {
           "datei": "grafik/gebaeude/lagerfeuer-3-32.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:2:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Steinburg mit Bannern, Hub-Stufe 2, Ausbauschritt 2 (GEB17.6)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/burg-6-32.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:2:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Steinburg mit Türmchen, Hub-Stufe 2, Ausbauschritt 3 (GEB17.6)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/burg-7-32.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:3:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Kupferburg mit Bannern, Hub-Stufe 3, Ausbauschritt 2 (GEB17.6)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/burg-8-32.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:3:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Kupferburg mit Türmchen, Hub-Stufe 3, Ausbauschritt 3 (GEB17.6)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/burg-9-32.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:4:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Eisenburg mit Bannern, Hub-Stufe 4, Ausbauschritt 2 (GEB17.6)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/burg-10-32.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:4:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Eisenburg mit Türmchen, Hub-Stufe 4, Ausbauschritt 3 (GEB17.6)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/burg-11-32.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:5:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Kristallburg mit Bannern, Hub-Stufe 5, Ausbauschritt 2 (GEB17.6)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/burg-12-32.png"
+        }
+      ]
+    },
+    {
+      "id": "hub:5:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hub-Wachstum: Kristallburg mit Türmchen, Hub-Stufe 5, Ausbauschritt 3 (GEB17.6)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/burg-13-32.png"
         }
       ]
     },

@@ -285,6 +285,9 @@ type World struct {
 	HubX       float64 `json:"hubX"`
 	// HubLevel ist die Hub-Stufe (Start 1, Ausbau an der Burg: hub_level.go); ohne JSON-Ausgabe (B-208).
 	HubLevel int `json:"-"`
+	// HubStep ist der laufende Ausbauschritt auf die nächste Hub-Stufe (1 bis 3, hub.json › levels[].steps; B-592);
+	// ohne JSON-Ausgabe wie HubLevel, der Zustand nennt ihn als `hubStep` (EconomyOf).
+	HubStep int `json:"-"`
 	// planned und chunkCount sind die Erzeugungs-Parameter dieser Stufe (Options.Planned, Options.ChunkCount); der Spielstand
 	// schreibt sie mit, damit das Laden die Stufe so baut, wie sie gebaut wurde (B-489).
 	planned    []level.PlannedChunk

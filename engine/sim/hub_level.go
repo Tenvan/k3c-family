@@ -4,13 +4,20 @@ package sim
 // Mauer und Turm 1 bis Anzahl ihrer levels am selben Platz (Q45). Ein Ausbau läuft wie jeder Bau: Gold zahlen → Material aus dem Vorrat → ein Bauer baut.
 // Während des Ausbaus bleibt die alte Stufe gebaut und wirkt weiter. Der Ausbau wartet bei Gefahr (Bauer baut danach).
 //
+// Ausbauschritte (B-592, GEB17.4, docs/rules/stufen.md § 8): Der Ausbau auf Hub-Stufe n läuft in den Schritten
+// hub.json › levels[n-1].steps (`World.HubStep` 1 bis Anzahl); jeder Schritt wird bezahlt und gebaut wie ein Ausbau,
+// erst der letzte hebt die Hub-Stufe. Er braucht zusätzlich das Material-Tor (`gate`, Material der nächsten Inselstufe).
+//
 // Der Hub-Ausbau ist ein Platz ohne Liste (`World.hubSite`, Art castle, ID der Burg): Er steht nicht in `w.Sites`,
 // damit Snapshot, Golden-Daten und Client unverändert bleiben (Protokoll W5, Anzeige W6).
 
-// LevelData ist eine Ausbau-Stufe; Eintrag n-1 einer `levels`-Liste ist Stufe n.
+// LevelData ist eine Ausbau-Stufe; Eintrag n-1 einer `levels`-Liste ist Stufe n. Nur der Hub nutzt Steps (die
+// Ausbauschritte der Stufe, ohne Steps ist die Stufe selbst der einzige Schritt) und Gate (Material-Tor eines Schritts).
 type LevelData struct {
 	Cost             Cost
+	Gate             Cost
 	HP, BuildSeconds float64
+	Steps            []LevelData
 }
 
 // newHubSite ist der Zahlplatz für den Hub-Ausbau an der Burg.
@@ -53,8 +60,8 @@ func levelOf(w *World, s *Site) int {
 	return max(1, s.Level)
 }
 
-// nextLevel ist die nächste Ausbau-Stufe eines gebauten Platzes; nil, wenn er keine hat oder die Hub-Stufe fehlt
-// (Stufe n von Mauer und Turm erst ab Hub-Stufe n).
+// nextLevel ist die nächste Ausbau-Stufe eines gebauten Platzes, beim Hub der nächste Ausbauschritt (Kosten samt
+// Material-Tor); nil, wenn er keine hat oder die Hub-Stufe fehlt (Stufe n von Mauer und Turm erst ab Hub-Stufe n).
 func nextLevel(w *World, s *Site) *LevelData {
 	levels := buildings[s.Kind].Levels
 	if s == w.hubSite {
@@ -65,8 +72,45 @@ func nextLevel(w *World, s *Site) *LevelData {
 		return nil
 	}
 	next := levels[n-1]
+	if s == w.hubSite {
+		next = hubStepOf(next, w.HubStep)
+	}
 	next.Cost = cheap(w, next.Cost)
 	return &next
+}
+
+// hubStepOf ist Schritt step (ab 1) der Hub-Stufe lv mit dem Material-Tor in den Kosten; ohne Steps die Stufe selbst.
+func hubStepOf(lv LevelData, step int) LevelData {
+	if len(lv.Steps) == 0 {
+		return lv
+	}
+	st := lv.Steps[min(max(1, step), len(lv.Steps))-1]
+	st.Cost = addCost(st.Cost, st.Gate)
+	return st
+}
+
+// hubSteps ist die Zahl der Ausbauschritte auf die nächste Hub-Stufe (mindestens 1); 0 auf der letzten Stufe.
+func hubSteps(w *World) int {
+	levels := hubOf(w).Levels
+	if w.HubLevel >= len(levels) {
+		return 0
+	}
+	return max(1, len(levels[w.HubLevel].Steps))
+}
+
+// hubGate ist das Material-Tor des laufenden Ausbauschritts (leer ohne Tor oder auf der letzten Stufe).
+func hubGate(w *World) Cost {
+	levels := hubOf(w).Levels
+	if w.HubLevel >= len(levels) || len(levels[w.HubLevel].Steps) == 0 {
+		return Cost{}
+	}
+	steps := levels[w.HubLevel].Steps
+	return cheap(w, steps[min(max(1, w.HubStep), len(steps))-1].Gate)
+}
+
+// addCost sind die Kosten a und b zusammen.
+func addCost(a, b Cost) Cost {
+	return Cost{a.Gold + b.Gold, a.Wood + b.Wood, a.Stone + b.Stone, a.Copper + b.Copper, a.Iron + b.Iron, a.Crystal + b.Crystal}
 }
 
 // upgradePayable: Nimmt der gebaute Platz Münzen für die nächste Stufe?
@@ -102,13 +146,18 @@ func upgradeJob(w *World, j *Job) bool {
 	return s != nil && s.Upgrade == "waitingWorker"
 }
 
-// finishUpgrade setzt die neue Stufe: Hub-Stufe + 1 bzw. Platz-Stufe + 1 mit vollen HP der Stufe.
+// finishUpgrade setzt die neue Stufe: Hub-Stufe + 1 bzw. Platz-Stufe + 1 mit vollen HP der Stufe. Beim Hub hebt nur
+// der letzte Ausbauschritt die Stufe, davor zählt HubStep weiter (ohne Ereignis, der Zustand nennt `hubStep`).
 func finishUpgrade(w *World, s *Site) {
 	next := nextLevel(w, s)
 	level := levelOf(w, s) + 1
 	s.Upgrade, s.UpgradePaid, s.BuildProgress, s.WorkerID = "", 0, 1, nil
+	if step := max(1, w.HubStep); s == w.hubSite && step < hubSteps(w) {
+		w.HubStep = step + 1
+		return
+	}
 	if s == w.hubSite {
-		w.HubLevel = level
+		w.HubLevel, w.HubStep = level, 1
 	} else {
 		s.Level, s.HP, s.MaxHP = level, next.HP, next.HP
 	}

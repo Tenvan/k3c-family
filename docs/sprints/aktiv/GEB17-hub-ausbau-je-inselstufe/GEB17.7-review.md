@@ -1,14 +1,14 @@
-# GEB17.2 · Workshop: Ausbauschritte je Inselstufe, Kosten und Material-Tor
+# GEB17.7 · Review GEB17
 
-- **Status:** offen
-- **Typ:** Workshop
-- **Agent:** Mensch
-- **Domäne:** REG
+- **Status:** fertig
+- **Typ:** Review
+- **Agent:** autonom
+- **Domäne:** CLI
 - **Umgebung:** offline
-- **Branch:** geb17/2-workshop-stufenfolge
-- **Abhängig von:** –
-- **Tickets:** B-592
-- **Kriterien:** AC-02
+- **Branch:** geb17/7-review
+- **Abhängig von:** GEB17.5, GEB17.6
+- **Tickets:** B-590, B-591, B-592
+- **Kriterien:** AC-01, AC-02, AC-03, AC-04, AC-05
 
 ## Ziel
 
@@ -50,5 +50,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 bis AC-05: geprüft mit `task check`, `task check:go` und `check:studio` (grün) sowie dem Review zu GEB17.3 bis 17.5 und der Sichtprüfung zu GEB17.6.
+- Die Abnahme steht in der Sprint-README.

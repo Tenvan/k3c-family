@@ -1,14 +1,14 @@
-# GEB17.7 · Review GEB17
+# GEB17.5 · Client zeigt Ausbauschritt und Wartegrund
 
-- **Status:** offen
-- **Typ:** Review
+- **Status:** fertig
+- **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
 - **Umgebung:** offline
-- **Branch:** geb17/7-review
-- **Abhängig von:** GEB17.5, GEB17.6
-- **Tickets:** B-590, B-591, B-592
-- **Kriterien:** AC-01, AC-02, AC-03, AC-04, AC-05
+- **Branch:** geb17/5-client-schritt-wartegrund
+- **Abhängig von:** GEB17.4
+- **Tickets:** B-592
+- **Kriterien:** AC-04
 
 ## Ziel
 
@@ -50,5 +50,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04: umgesetzt. Das Burg-Schild zeigt „Ausbau 2/3“, das HUD nennt den Schritt. Der Wartegrund „Material der nächsten Insel (…)“ nennt nur das Material, das im Vorrat fehlt (Review-Fix).
+- Geprüft mit `task check` (grün) und Vitest `economyLabels` (20 Fälle).

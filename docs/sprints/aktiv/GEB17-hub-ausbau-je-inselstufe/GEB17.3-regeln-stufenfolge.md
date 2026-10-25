@@ -1,14 +1,14 @@
-# GEB17.6 · Eigene Grafik je Schritt der Wachstumsreihe
+# GEB17.3 · Regeldatei beschreibt die Stufenfolge des Hubs mit Material-Tor
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
-- **Domäne:** DEV
+- **Domäne:** REG
 - **Umgebung:** offline
-- **Branch:** geb17/6-grafik-wachstumsreihe
-- **Abhängig von:** GEB17.3
-- **Tickets:** B-590
-- **Kriterien:** AC-05
+- **Branch:** geb17/3-regeln-stufenfolge
+- **Abhängig von:** GEB17.2
+- **Tickets:** B-592
+- **Kriterien:** AC-02
 
 ## Ziel
 
@@ -50,5 +50,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 (Teil Regel): umgesetzt. `docs/rules/stufen.md` § 8 beschreibt 5 Hub-Stufen × 3 Ausbauschritte und das Material-Tor. Das Glossar hat jetzt Ausbauschritt und Material-Tor, `materialien-gebaeude.md` verweist darauf. Ralf bestätigt über B-623 (KRT).

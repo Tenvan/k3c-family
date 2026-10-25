@@ -31,7 +31,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | GEB18 | Hintergründe der fünf Stufen: vierfache Auflösung, fünf Varianten je Stufe nach Seed | aktiv |
 | GEB15 | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | aktiv |
 | GEB16 | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | aktiv |
-| GEB17 | Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe | geplant |
+| GEB17 | Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe | aktiv |
 
 ## Nicht-Ziele
 

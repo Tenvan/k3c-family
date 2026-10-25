@@ -66,8 +66,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-372](B-372-check-run-timeout-go.md) | SRV | Problem | mittel | eingeplant | WZ2 | check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab |
 | [B-377](B-377-beispiel-rueckmeldung-servertest.md) | SRV | Schuld | niedrig | eingeplant | BD2 | Ein Server-Test prüft das Beispiel der Rückmeldungs-Ereignisse gegen die Simulation |
 | [B-378](B-378-castfailed-einmal-je-druck.md) | SIM | Problem | mittel | eingeplant | BD2 | Eine gehaltene Skill-Taste ohne Ziel meldet castFailed einmal je Tastendruck |
-| [B-379](B-379-vollmond-belohnung-nur-stufe-0.md) | SIM | Problem | mittel | eingeplant | KB1 | Die Vollmond-Belohnung gilt für die Stufen, in denen gespielt wird |
-| [B-380](B-380-blutmond-boss-faehigkeiten.md) | SIM | Problem | niedrig | eingeplant | KB1 | Der Blutmond verstärkt auch die Flächenangriffe der Bosse |
 | [B-381](B-381-protokoll-haendler-raid-hp.md) | SRV | Problem | niedrig | eingeplant | KB2 | Das Protokoll beschreibt Überfall und HP des Händlers |
 | [B-382](B-382-lobby-neuversuch-nur-spielen.md) | CLI | Problem | niedrig | eingeplant | BD2 | Ein gewählter Spielstand startet nie leer neu |
 | [B-387](B-387-ticketnummern-parallele-worktrees.md) | DEV | Problem | mittel | eingeplant | WZ2 | Ticket-Nummern bleiben zwischen parallelen Worktrees eindeutig |
@@ -141,6 +139,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-620](B-620-golden-grenze-20-mb.md) | INF | Frage | mittel | offen | – | Golden-Grenze 20 MB nach dem dichteren Wald bestätigen |
 | [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | offen | – | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
 | [B-622](B-622-fackeln-als-spielobjekt.md) | SIM | Idee | niedrig | offen | – | Fackeln gibt es als Spielobjekt mit Licht in der Nacht |
+| [B-623](B-623-hub-stufenfolge-bestaetigen.md) | REG | Frage | mittel | offen | – | Stufenfolge des Hubs (3 Schritte je Hub-Stufe, Material-Tor) bestätigen |
 
 ## Archiv
 

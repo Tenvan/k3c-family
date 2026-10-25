@@ -26,10 +26,33 @@ type site struct {
 	island      bool    // aus `islandSites`: gilt je Insel, nicht je Hub
 }
 
+// level ist eine Hub-Stufe: Kosten direkt oder verteilt auf die Ausbauschritte (`steps`, B-592); das Material-Tor
+// (`gate`) zählt nicht zum Material der Stufe.
+type level struct {
+	Cost  map[string]int `json:"cost"`
+	Steps []struct {
+		Cost map[string]int `json:"cost"`
+	} `json:"steps"`
+}
+
+// cost sind die Kosten der Stufe samt aller Ausbauschritte.
+func (l level) cost() map[string]int {
+	out := map[string]int{}
+	for k, v := range l.Cost {
+		out[k] += v
+	}
+	for _, s := range l.Steps {
+		for k, v := range s.Cost {
+			out[k] += v
+		}
+	}
+	return out
+}
+
 type hub struct {
-	Levels      []struct{ Cost map[string]int } `json:"levels"`
-	Sites       []site                          `json:"sites"`
-	IslandSites []site                          `json:"islandSites"`
+	Levels      []level `json:"levels"`
+	Sites       []site  `json:"sites"`
+	IslandSites []site  `json:"islandSites"`
 	WallLines   struct {
 		WallUnits          []float64 `json:"wallUnits"`
 		FixedLines         int       `json:"fixedLines"`
@@ -66,7 +89,7 @@ func Block(hubJSON []byte) (string, error) {
 		return "", err
 	}
 	for level := 1; level <= len(h.Levels); level++ {
-		mat, err := material(level, h.Levels[level-1].Cost)
+		mat, err := material(level, h.Levels[level-1].cost())
 		if err != nil {
 			return "", err
 		}

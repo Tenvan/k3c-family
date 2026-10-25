@@ -115,8 +115,10 @@ describe('Gebäude-Grafik (GR3.1)', () => {
       expect(textureScale(key!)).toBe(1);
     }
     expect(hubLookTexture({ id: 'burg', stufe: 2 })).toBe('grafik:hub-2');
+    expect(hubLookTexture({ id: 'burg', stufe: 6 })).toBe('grafik:burg-6'); // Ausbauschritte (GEB17.6)
+    expect(BUILDING_TEXTURES['grafik:burg-13']).toBe('gebaeude/burg-13-32.png');
     expect(hubLookTexture({ id: 'lagerfeuer', stufe: 4 })).toBeNull();
-    expect(hubLookTexture({ id: 'burg', stufe: 6 })).toBeNull();
+    expect(hubLookTexture({ id: 'burg', stufe: 14 })).toBeNull();
     expect(BUILDING_TEXTURES[HUB_SCAFFOLD_TEXTURE]).toBe('gebaeude/hub-geruest-32.png');
     expect(textureScale(HUB_SCAFFOLD_TEXTURE)).toBe(1);
   });

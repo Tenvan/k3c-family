@@ -1,14 +1,14 @@
-# GEB17.4 · Daten, Simulation und Protokoll setzen die Ausbauschritte um (hubStep)
+# GEB17.1 · Ausbau-Angebot erscheint vor der Burg
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
-- **Domäne:** SIM
+- **Domäne:** CLI
 - **Umgebung:** offline
-- **Branch:** geb17/4-sim-protokoll-hubstep
-- **Abhängig von:** GEB17.3
-- **Tickets:** B-592
-- **Kriterien:** AC-03
+- **Branch:** geb17/1-ausbau-angebot-burg
+- **Abhängig von:** –
+- **Tickets:** B-591
+- **Kriterien:** AC-01
 
 ## Ziel
 
@@ -50,5 +50,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01: umgesetzt (Geräte-Abnahme offen).
+  - Ursache im Client: Die Burg (`hubSite`) steht nicht in `world.sites`, deshalb fand `priceTagSites` sie nie. Die Burg-View hatte kein Schild. Der Server meldet `hubUpgrade` korrekt.
+  - Fix: Die Burg nimmt an „nur das nächste Preisschild“ teil (`offersHubUpgrade` aus `hubUpgrade`). Das Schild zeigt Gold und Material bzw. den Wartegrund, das Material-Label kennt Eisen und Kristall.
+- Geprüft mit `task check` (grün). Neuer Vitest mit echten Snapshot-Daten (Angebot vor der Burg, näherer Platz gewinnt, kein Angebot auf Stufe 5, bei laufendem Ausbau oder bezahltem Gold).
+- Hinweis: Das Schild erscheint ab 6 Units, der Server nimmt Münzen ab 2 Units an. Mit GEB16 (`payable`) kann die Burg später auch auf ein Server-Feld umziehen.

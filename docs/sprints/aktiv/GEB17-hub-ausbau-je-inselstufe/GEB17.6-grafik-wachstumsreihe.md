@@ -1,14 +1,14 @@
-# GEB17.3 · Regeldatei beschreibt die Stufenfolge des Hubs mit Material-Tor
+# GEB17.6 · Eigene Grafik je Schritt der Wachstumsreihe
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
-- **Domäne:** REG
+- **Domäne:** DEV
 - **Umgebung:** offline
-- **Branch:** geb17/3-regeln-stufenfolge
-- **Abhängig von:** GEB17.2
-- **Tickets:** B-592
-- **Kriterien:** AC-02
+- **Branch:** geb17/6-grafik-wachstumsreihe
+- **Abhängig von:** GEB17.3
+- **Tickets:** B-590
+- **Kriterien:** AC-05
 
 ## Ziel
 
@@ -50,5 +50,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-05: umgesetzt.
+  - 15 unterscheidbare Ansichten: Hub-Stufe 1 zeigt Lagerfeuer, Zelt und Hütte; Hub-Stufe 2–5 zeigt in Schritt 1 die Burg der Stufe, in Schritt 2 dazu Banner und Fackeln, in Schritt 3 zusätzlich Wehrtürmchen im Material der Stufe.
+  - Der Generator kennt das Stufen-Feld `basis` (Test `TestStufeBasis`).
+  - `hubGrowth.ts` wählt nur nach `hubLevel` und `hubStep`; damit ist auch der Neustart der Reihe je Schritt aus GEB17.4 behoben.
+- Geprüft mit `task check` (grün), Vitest (15 Kombinationen, 15 Texturen), Studio-Vitest, `go test ./tools/buildings/...` und einer Sichtprüfung der PNGs durch Claude.
+- Abweichungen: Die Ansichten für Hub-Stufe 5, Schritt 2 und 3 sind im Spiel nicht erreichbar. `burg-1` bleibt nur als Rückfall.
