@@ -1,14 +1,14 @@
 # PG1 · PLAT · Präsentationsseite mit echten Spielbildern
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** REL
 - **Domäne:** PLAT
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-184
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt)
 
 ## Ausgangslage
 
@@ -51,6 +51,11 @@ Bild fehlt → Seite bleibt lesbar, Alt-Text.
 keine
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| PG1.1 | `PG1.1-bilder-einbinden.md` | Umsetzung | autonom | fertig |
+| PG1.2 | `PG1.2-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
