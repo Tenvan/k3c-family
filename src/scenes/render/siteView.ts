@@ -100,7 +100,7 @@ function updateCastleSign(v: View, world: CastleWorld, near: boolean): void {
 }
 
 /**
- * Tauscht die Burg-Grafik, wenn sich der Look der Wachstumsreihe ändert (`hubLookOf`: Hub-Stufe und Ausbau-Stand, GEB11); fehlt die
+ * Tauscht die Burg-Grafik, wenn sich der Look der Wachstumsreihe ändert (`hubLookOf`: Hub-Stufe und Ausbauschritt, GEB17.6); fehlt die
  * Grafik des Looks, die Burg der Hub-Stufe, sonst die bisherige Form. Das Gerüst steht, solange ein Bauer den Ausbau baut.
  * Danach das Ausbau-Schild (`near`: Preisschild steht, B-591).
  */
@@ -120,7 +120,7 @@ function drawCastle(scene: Phaser.Scene, v: View, world: CastleWorld): void {
   if (look.scaffold && has(scene, HUB_SCAFFOLD_TEXTURE)) scaffold.setTexture(HUB_SCAFFOLD_TEXTURE).setScale(textureScale(HUB_SCAFFOLD_TEXTURE)).setVisible(true);
   else scaffold.setVisible(false);
   let key = hubLookTexture(look);
-  if (!has(scene, key)) key = hubTexture(look.id === 'burg' ? look.stufe : 1);
+  if (!has(scene, key)) key = hubTexture(look.level);
   if (has(scene, key)) {
     picture.setTexture(key).setScale(textureScale(key)).setVisible(true);
     return;

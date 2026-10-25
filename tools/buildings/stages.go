@@ -10,6 +10,7 @@ import (
 type stufe struct {
 	Stufe     int               `json:"stufe"`
 	Aenderung string            `json:"aenderung"`
+	Basis     int               `json:"basis,omitempty"`  // baut auf dieser früheren Stufe auf statt auf der Grundform (GEB17.6)
 	Farben    map[string]string `json:"farben,omitempty"` // Farbtausch alt → neu, beide DB32
 	Zusaetze  []baustein        `json:"zusaetze,omitempty"`
 }
@@ -37,6 +38,9 @@ func pruefeStufen(b building) error {
 		if strings.TrimSpace(s.Aenderung) == "" {
 			return fmt.Errorf("stufe %d: aenderung ist leer", s.Stufe)
 		}
+		if s.Basis != 0 && (s.Basis < 2 || s.Basis >= s.Stufe || len(s.Farben) > 0) {
+			return fmt.Errorf("stufe %d: basis %d muss eine frühere Stufe ab 2 sein, ohne eigenen Farbtausch", s.Stufe, s.Basis)
+		}
 		for schluessel, neu := range s.Farben {
 			_, alt := farbSchluessel(schluessel)
 			for _, f := range []string{alt, neu} {
@@ -52,7 +56,8 @@ func pruefeStufen(b building) error {
 	return nil
 }
 
-// stufeBauen liefert das Gebäude in Stufe n: Grundform mit dem Farbtausch der Stufe, danach ihre Zusätze.
+// stufeBauen liefert das Gebäude in Stufe n: Grundform mit dem Farbtausch der Stufe, danach ihre Zusätze. Mit `basis`
+// die fertige frühere Stufe (samt Farbtausch und Zusätzen), danach die eigenen Zusätze (GEB17.6).
 func stufeBauen(b building, n int) (building, error) {
 	if n == 1 {
 		return b, nil
@@ -61,6 +66,11 @@ func stufeBauen(b building, n int) (building, error) {
 		return b, fmt.Errorf("%s: stufe %d gibt es nicht", b.ID, n)
 	}
 	s := b.Stufen[n-2]
+	if s.Basis >= 2 && s.Basis < n {
+		out, err := stufeBauen(b, s.Basis)
+		out.Bausteine = append(append([]baustein{}, out.Bausteine...), s.Zusaetze...)
+		return out, err
+	}
 	out := b
 	out.Bausteine = make([]baustein, 0, len(b.Bausteine)+len(s.Zusaetze))
 	for _, bs := range b.Bausteine {

@@ -26,7 +26,7 @@ nur mit Zustimmung von 🧑.
 | Turm (Stufen 1–5) | 3 × 8 | `turm.json` (GEB3) |
 | Hintergrundmauer (Stufen 1–5, kachelbar) | 1 × 4 | `hintergrundmauer.json` (GEB3, B-442) |
 | Hintergrund-Schicht (je Biom fern, mitte, nah; kachelbar, Klasse `hintergrund`) | 24 × 15 (768 × 480 px) | `hg-<biom>-<schicht>.json` (GEB7, B-435), siehe § 10 |
-| Burg (Hub-Stufen 1–5) | 8 × 9 | `burg.json` (GEB4) |
+| Burg (Hub-Stufen 1–5; Stufen 6–13 = Ausbauschritte 2 und 3 der Hub-Stufen 2–5) | 8 × 9 | `burg.json` (GEB4, GEB17.6) |
 | Lagerfeuer mit Grill, Zelt, Holzhütte (Vorstufen der Holzburg) | 8 × 5 | `lagerfeuer.json` (GEB11), Stufen 1–3 |
 | Baugerüst (Bild vor der Burg während des Hub-Ausbaus, sonst transparent) | 8 × 9 | `hub-geruest.json` (GEB11) |
 | Gerüst im Bau (je Größenklasse = Breite des Gebäudes, Höhe wie das Gebäude; statt Bauschild, B-586) | 1 × 5, 2 × 4, 3 × 8, 4 × 3, 6 × 4 | `geruest-<breite>.json` (GEB16): Mauer, Tor, Turm, Farm und Treppen, Hub-Gebäude |
@@ -165,6 +165,8 @@ sich gegenüber der Grundform ändert:
 - `stufe` 2, 3, … lückenlos und in Reihenfolge; `aenderung` (Pflicht) ist der Text zur Stufe und gehört zur Vorlage.
 - `farben` tauscht Farben der Grundform-Bausteine (alt → neu, beide DB32); `zusaetze` werden danach gezeichnet und
   gelten wie Bausteine (Raster, Maße, `fein`). Zusätze einer Stufe gelten nur für diese Stufe, nicht für spätere.
+- `basis` (optional, GEB17.6): die Stufe baut auf einer früheren Stufe ab 2 auf (deren Farbtausch und Zusätze), danach
+  ihre eigenen Zusätze; ohne eigenen `farben`. So wachsen Ausbauschritte schrittweise (`burg` Stufen 6–13).
 - Ausgabe `<id>-<stufe>-<dichte>.png` für alle Stufen einschließlich 1; `index.json` führt `stufen` mit Nummer,
   Änderung (Stufe 1: „Grundform“) und Dateien, `dateien` des Eintrags zeigt die Grundform.
 - Gebäude ohne `stufen` bleiben bei `<id>-<dichte>.png`.

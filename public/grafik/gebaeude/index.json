@@ -272,6 +272,86 @@
           "32": "grafik/gebaeude/burg-5-32.png",
           "64": "grafik/gebaeude/burg-5-64.png"
         }
+      },
+      {
+        "stufe": 6,
+        "aenderung": "Steinburg, Ausbauschritt 2 (Hub-Stufe 2): zwei rote Wappenbanner an der Mauer, Fackeln am Tor",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-6-128.png",
+          "16": "grafik/gebaeude/burg-6-16.png",
+          "32": "grafik/gebaeude/burg-6-32.png",
+          "64": "grafik/gebaeude/burg-6-64.png"
+        }
+      },
+      {
+        "stufe": 7,
+        "aenderung": "Steinburg, Ausbauschritt 3 (Hub-Stufe 2): dazu zwei Wehrtürmchen auf der Mauerkrone mit Wimpeln",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-7-128.png",
+          "16": "grafik/gebaeude/burg-7-16.png",
+          "32": "grafik/gebaeude/burg-7-32.png",
+          "64": "grafik/gebaeude/burg-7-64.png"
+        }
+      },
+      {
+        "stufe": 8,
+        "aenderung": "Kupferburg, Ausbauschritt 2 (Hub-Stufe 3): zwei rote Wappenbanner an der Mauer, Fackeln am Tor",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-8-128.png",
+          "16": "grafik/gebaeude/burg-8-16.png",
+          "32": "grafik/gebaeude/burg-8-32.png",
+          "64": "grafik/gebaeude/burg-8-64.png"
+        }
+      },
+      {
+        "stufe": 9,
+        "aenderung": "Kupferburg, Ausbauschritt 3 (Hub-Stufe 3): dazu zwei Wehrtürmchen auf der Mauerkrone mit Wimpeln",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-9-128.png",
+          "16": "grafik/gebaeude/burg-9-16.png",
+          "32": "grafik/gebaeude/burg-9-32.png",
+          "64": "grafik/gebaeude/burg-9-64.png"
+        }
+      },
+      {
+        "stufe": 10,
+        "aenderung": "Eisenburg, Ausbauschritt 2 (Hub-Stufe 4): zwei rote Wappenbanner an der Mauer, Fackeln am Tor",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-10-128.png",
+          "16": "grafik/gebaeude/burg-10-16.png",
+          "32": "grafik/gebaeude/burg-10-32.png",
+          "64": "grafik/gebaeude/burg-10-64.png"
+        }
+      },
+      {
+        "stufe": 11,
+        "aenderung": "Eisenburg, Ausbauschritt 3 (Hub-Stufe 4): dazu zwei Wehrtürmchen auf der Mauerkrone mit Wimpeln",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-11-128.png",
+          "16": "grafik/gebaeude/burg-11-16.png",
+          "32": "grafik/gebaeude/burg-11-32.png",
+          "64": "grafik/gebaeude/burg-11-64.png"
+        }
+      },
+      {
+        "stufe": 12,
+        "aenderung": "Kristallburg, Ausbauschritt 2 (Hub-Stufe 5): zwei rote Wappenbanner an der Mauer, Fackeln am Tor",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-12-128.png",
+          "16": "grafik/gebaeude/burg-12-16.png",
+          "32": "grafik/gebaeude/burg-12-32.png",
+          "64": "grafik/gebaeude/burg-12-64.png"
+        }
+      },
+      {
+        "stufe": 13,
+        "aenderung": "Kristallburg, Ausbauschritt 3 (Hub-Stufe 5): dazu zwei Wehrtürmchen auf der Mauerkrone mit Wimpeln",
+        "dateien": {
+          "128": "grafik/gebaeude/burg-13-128.png",
+          "16": "grafik/gebaeude/burg-13-16.png",
+          "32": "grafik/gebaeude/burg-13-32.png",
+          "64": "grafik/gebaeude/burg-13-64.png"
+        }
       }
     ]
   },

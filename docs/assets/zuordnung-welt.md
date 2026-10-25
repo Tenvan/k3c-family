@@ -5,7 +5,7 @@ stehen im Kopf von `docs/assets/zuordnung.md`; Spalten, Pack-Schreibweise und L�
 Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Herkunft die Regel in `docs/rules/`.
 
 - **Objekt-IDs** (eindeutig, von `src/tools/zuordnung.test.ts` geprüft):
-  `hub:<1–5>` Hub-Stufe, `hub:camp:<1–3>` Vorstufe der Holzburg (Lagerfeuer, Zelt, Hütte) und `hub:scaffold` Baugerüst (GEB11), `site:scaffold:<1|2|3|4|6>` Gerüst im Bau je Breite und `sign:<axe|pickaxe>` Abbau-Symbol (GEB16), `wall:<1–5>` und `tower:<1–5>` Mauer- und Turm-Stufe (`tower:5` = Zaubertum),
+  `hub:<1–5>` Hub-Stufe, `hub:camp:<1–3>` Hub-Stufe 1 in den Ausbauschritten 1–3 (Lagerfeuer, Zelt, Hütte), `hub:<2–5>:<2|3>` Burg der Hub-Stufe im Ausbauschritt 2 oder 3 (GEB17.6) und `hub:scaffold` Baugerüst (GEB11), `site:scaffold:<1|2|3|4|6>` Gerüst im Bau je Breite und `sign:<axe|pickaxe>` Abbau-Symbol (GEB16), `wall:<1–5>` und `tower:<1–5>` Mauer- und Turm-Stufe (`tower:5` = Zaubertum),
   `material:<wood|stone|copper|iron|crystal>`, `vein:<stone|copper|iron|crystal>` Ader je Material,
   `plantation`, `portal`, `coin`, `mount:<ID aus data/sprites.json › mounts>`,
   `node:<Art aus data/economy.json › gatherables bzw. data/biomes/*.json › resourcesPerChunk>`, `camp:recruit`, `exit`,
@@ -28,9 +28,17 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 | `hub:3` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-3-32.png` (Kupfer) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
 | `hub:4` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-4-32.png` (Eisen) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
 | `hub:5` | `docs/rules/materialien-gebaeude.md` § 2 | `grafik/gebaeude` | `burg-5-32.png` (Kristall) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB4 | eigen | zugeordnet |
-| `hub:camp:1` | `docs/rules/materialien-gebaeude.md` § 2.1 | `grafik/gebaeude` | `lagerfeuer-1-32.png` (Lagerfeuer mit Grill, Hub-Stufe 1, nichts bezahlt) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB11 | eigen | zugeordnet |
-| `hub:camp:2` | `docs/rules/materialien-gebaeude.md` § 2.1 | `grafik/gebaeude` | `lagerfeuer-2-32.png` (Zelt, unter der Hälfte des Golds) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB11 | eigen | zugeordnet |
-| `hub:camp:3` | `docs/rules/materialien-gebaeude.md` § 2.1 | `grafik/gebaeude` | `lagerfeuer-3-32.png` (Holzhütte, ab der Hälfte des Golds) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB11 | eigen | zugeordnet |
+| `hub:camp:1` | `docs/rules/materialien-gebaeude.md` § 2.1 | `grafik/gebaeude` | `lagerfeuer-1-32.png` (Lagerfeuer mit Grill, Hub-Stufe 1, Ausbauschritt 1) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB11 | eigen | zugeordnet |
+| `hub:camp:2` | `docs/rules/materialien-gebaeude.md` § 2.1 | `grafik/gebaeude` | `lagerfeuer-2-32.png` (Zelt, Hub-Stufe 1, Ausbauschritt 2) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB11 | eigen | zugeordnet |
+| `hub:camp:3` | `docs/rules/materialien-gebaeude.md` § 2.1 | `grafik/gebaeude` | `lagerfeuer-3-32.png` (Holzhütte, Hub-Stufe 1, Ausbauschritt 3) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB11 | eigen | zugeordnet |
+| `hub:2:2` | `docs/rules/stufen.md` § 8 | `grafik/gebaeude` | `burg-6-32.png` (Steinburg mit Bannern, Ausbauschritt 2) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB17.6 | eigen | zugeordnet |
+| `hub:2:3` | `docs/rules/stufen.md` § 8 | `grafik/gebaeude` | `burg-7-32.png` (Steinburg mit Türmchen, Ausbauschritt 3) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB17.6 | eigen | zugeordnet |
+| `hub:3:2` | `docs/rules/stufen.md` § 8 | `grafik/gebaeude` | `burg-8-32.png` (Kupferburg mit Bannern, Ausbauschritt 2) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB17.6 | eigen | zugeordnet |
+| `hub:3:3` | `docs/rules/stufen.md` § 8 | `grafik/gebaeude` | `burg-9-32.png` (Kupferburg mit Türmchen, Ausbauschritt 3) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB17.6 | eigen | zugeordnet |
+| `hub:4:2` | `docs/rules/stufen.md` § 8 | `grafik/gebaeude` | `burg-10-32.png` (Eisenburg mit Bannern, Ausbauschritt 2) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB17.6 | eigen | zugeordnet |
+| `hub:4:3` | `docs/rules/stufen.md` § 8 | `grafik/gebaeude` | `burg-11-32.png` (Eisenburg mit Türmchen, Ausbauschritt 3) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB17.6 | eigen | zugeordnet |
+| `hub:5:2` | `docs/rules/stufen.md` § 8 | `grafik/gebaeude` | `burg-12-32.png` (Kristallburg mit Bannern, Ausbauschritt 2) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB17.6 | eigen | zugeordnet |
+| `hub:5:3` | `docs/rules/stufen.md` § 8 | `grafik/gebaeude` | `burg-13-32.png` (Kristallburg mit Türmchen, Ausbauschritt 3) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB17.6 | eigen | zugeordnet |
 | `hub:scaffold` | `docs/rules/materialien-gebaeude.md` § 2.1 | `grafik/gebaeude` | `hub-geruest-32.png` (vor der Burg, solange ein Bauer den Ausbau baut) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB11 | eigen | zugeordnet |
 
 ## Mauer-Stufen
