@@ -108,6 +108,31 @@ tasks:
       - task: :k3c-server:build
       - task: exe
 
+  itch:
+    desc: "Windows-Paket für itch.io bauen: release/k3c-family-windows.zip (Starter, Server, dist/, public/, Anleitung; B-023). Baut vorher Web-Client und EXE; veröffentlicht nichts"
+    vars:
+      STAGE: '{{.ROOT_DIR}}/release/k3c-family'
+    cmds:
+      - task: build
+      - rm -rf release
+      - mkdir -p {{.STAGE}}
+      - cp bin/k3c-starter{{exeExt}} bin/k3c-server{{exeExt}} LICENSE LICENSE-ASSETS docs/release/LIES-MICH.txt {{.STAGE}}/
+      - cp -r dist public {{.STAGE}}/
+      # Windows-tar (bsdtar, System32) schreibt Zip-Einträge mit /; GNU tar aus Git Bash kann kein zip
+      - cd release/k3c-family && C:/Windows/System32/tar.exe -a -c -f ../k3c-family-windows.zip *
+      - rm -rf {{.STAGE}}
+      - ls -l release/k3c-family-windows.zip
+    sources:
+      - bin/k3c-starter{{exeExt}}
+      - bin/k3c-server{{exeExt}}
+      - dist/**/*
+      - public/**/*
+      - docs/release/LIES-MICH.txt
+      - LICENSE
+      - LICENSE-ASSETS
+    generates:
+      - release/k3c-family-windows.zip
+
   test:
     desc: Windows-Starter testen (Frontend mit Vitest, go test; B-041)
     cmds:

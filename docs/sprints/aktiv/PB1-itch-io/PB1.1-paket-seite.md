@@ -1,6 +1,6 @@
 # PB1.1 · Windows-Paket mit Server und Anleitung bauen, Seitentext vorbereiten
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -50,5 +50,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 (Vorbereitung): umgesetzt.
+  - `task k3c-starter:itch` baut Web-Client, Server und Starter und legt `release/k3c-family-windows.zip` an (lokal 31,3 MB). Darin sind Starter, Server, `dist/`, `public/`, Lizenzen und `LIES-MICH.txt`, im Layout, das `findLayout` erwartet. `data/` ist eingebettet.
+  - Anleitung `docs/release/LIES-MICH.txt` und Seitentext `docs/release/itch-io.md`.
+- Geprüft mit `task --list` und `vitest tests` (grün), das Zip ist lokal gebaut.
+- Ungeprüft: Start aus dem entpackten Ordner. Claude hat das nicht ausgeführt, weil eine EXE aus einem neuen Pfad die Firewall-Abfrage auslöst; Ralf prüft das in PB1.2 vor dem Hochladen.
+- Die offene Lizenzfrage aus B-023 steht als Hinweis im Seitentext.

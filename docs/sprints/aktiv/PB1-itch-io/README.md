@@ -54,7 +54,7 @@ Build ohne Server → klare Meldung statt leerem Bildschirm.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| PB1.1 | `PB1.1-paket-seite.md` | Umsetzung | autonom | in Arbeit |
+| PB1.1 | `PB1.1-paket-seite.md` | Umsetzung | autonom | fertig |
 | PB1.2 | `PB1.2-veroeffentlichen.md` | Workshop | Mensch | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
