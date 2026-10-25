@@ -5,6 +5,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -70,7 +71,9 @@ func TestVorschlagslisteRundlauf(t *testing.T) {
 	if err := list.save(root); err != nil {
 		t.Fatal(err)
 	}
-	if got, _ := os.ReadFile(filepath.Join(root, SuggestionsPath)); string(got) != string(want) {
+	// Windows-Arbeitsbaum (core.autocrlf) hat CRLF, save schreibt LF wie das Repo; nur der Inhalt zählt.
+	lf := func(b []byte) string { return strings.ReplaceAll(string(b), "\r\n", "\n") }
+	if got, _ := os.ReadFile(filepath.Join(root, SuggestionsPath)); lf(got) != lf(want) {
 		t.Error("Speichern ändert die Form der Vorschlagsliste")
 	}
 }
