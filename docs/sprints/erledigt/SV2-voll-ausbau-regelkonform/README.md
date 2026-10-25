@@ -1,6 +1,6 @@
 # SV2 · SRV · Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WRT
 - **Domäne:** SRV
 - **Reife:** bereit
@@ -58,7 +58,7 @@ Voll-Stand anlegen → Inselstufe mit Hub 2 hat keine Mauer Stufe 3, keine Rüst
 |---|---|---|---|---|
 | SV2.1 | `SV2.1-voll-stand-regelkonform.md` | Umsetzung | autonom | fertig |
 | SV2.2 | `SV2.2-store-test-content-type.md` | Umsetzung | autonom | fertig |
-| SV2.3 | `SV2.3-review.md` | Review | autonom | offen |
+| SV2.3 | `SV2.3-review.md` | Review | autonom | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
@@ -68,5 +68,7 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-25, Claude (SV2.3): `task check` und `task check:go` grün; `check:race` lokal übersprungen (kein C-Compiler), die CI prüft es.
+AC-01 und AC-02 erfüllt durch SV2.1 (Tiefen aus der Welt-Datei, `DevBuildAll` je Inselstufe, Golden byte-gleich). AC-03 durch SV2.1/SV2.2 (echter `store.Saves`, 415 ohne JSON).
+Review ohne schwere Befunde. Auf Tiefe 4 (Hub 1) bleibt `stairsUp` regulär ungebaut.
+Keine neuen Tickets.
