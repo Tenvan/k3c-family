@@ -1,6 +1,6 @@
 # KB4.2 · Debug-Panel bekommt die Gruppe „Kampf“
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -50,5 +50,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03: umgesetzt. Das Debug-Panel hat die Gruppe „Kampf“ mit den Bossen aus `data/bosses.json`, „Boss: nächste Phase“, den Events aus `data/events.json` (Namen aus den Texten) und „Nacht sofort“.
+- Geprüft mit Vitest `debugActions.test.ts`, `tsc` und oxlint, alle grün.
