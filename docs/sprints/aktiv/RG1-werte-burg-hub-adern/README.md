@@ -1,14 +1,14 @@
 # RG1 · REG · Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAL
 - **Domäne:** REG
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-230, B-287, B-289, B-346
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf; nur Messung und Vorschlag, Werte entscheidet Ralf in RG1.2)
 
 ## Ausgangslage
 
@@ -54,6 +54,11 @@ Korridor nicht erreichbar → Korridor per Beschluss anpassen, nie still.
 - Werte und Korridore entscheidet 🧑 im Workshop.
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| RG1.1 | `RG1.1-messung-ursachen.md` | Umsetzung | autonom | fertig |
+| RG1.2 | `RG1.2-workshop-werte.md` | Workshop | Mensch | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 

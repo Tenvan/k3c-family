@@ -1,11 +1,11 @@
 # BR2 · REG · Balancing-Runde Kampf und Bosse und Spieleabend 3
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAL
 - **Domäne:** REG
 - **Reife:** bereit
 - **Tickets:** B-156
-- **Start-Commit:** –
+- **Start-Commit:** 819c53d3
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-04, Chat, durch 🧑, Revision 1; mit Änderungen aus der Spec-Prüfung
@@ -60,7 +60,7 @@ Termin und Teilnehmer: `docs/fragenkatalog.md Q24` (🧑).
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BR2.1 | `BR2.1-vorbereitung-messung.md` | Umsetzung | autonom | offen |
+| BR2.1 | `BR2.1-vorbereitung-messung.md` | Umsetzung | autonom | fertig |
 | BR2.2 | `BR2.2-spieleabend-3.md` | Workshop | Mensch | offen |
 | BR2.3 | `BR2.3-auswertung-abschluss.md` | Umsetzung | autonom | offen |
 

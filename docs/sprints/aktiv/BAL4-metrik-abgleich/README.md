@@ -1,14 +1,14 @@
 # BAL4 · REG · Abgleich Spielmetrik und Simulator
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAL
 - **Domäne:** REG
 - **Reife:** bereit
 - **Tickets:** B-160
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf; Werte entscheidet Ralf in BAL4.2)
 
 ## Ausgangslage
 
@@ -57,7 +57,7 @@ Zu wenige Sitzungen → „nicht aussagekräftig“, keine Wertänderung.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BAL4.1 | `BAL4.1-abgleichtabelle.md` | Umsetzung | autonom | offen |
+| BAL4.1 | `BAL4.1-abgleichtabelle.md` | Umsetzung | autonom | fertig |
 | BAL4.2 | `BAL4.2-workshop-abweichungen.md` | Workshop | Mensch | offen |
 | BAL4.3 | `BAL4.3-werte-umsetzen.md` | Umsetzung | autonom | offen |
 
