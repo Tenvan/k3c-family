@@ -35,7 +35,7 @@ func wirtschaftsInsel(t *testing.T) (*sim.Island, *sim.World) {
 		sim.StepIsland(isl, cmds, 1.0/30)
 	}
 	*isl.Stock = sim.Stock{Wood: 40, Stone: 30, Copper: 12}
-	w.Merchant = &sim.Merchant{Resource: "stone", Leaves: 3}
+	w.Merchant = &sim.Merchant{Resource: "stone", Leaves: 3, HP: 100, MaxHP: 100}
 	for _, s := range w.Sites {
 		switch s.Kind {
 		case "storage":
@@ -89,7 +89,7 @@ func TestWirtschaftZustand(t *testing.T) {
 	if st := s["stock"].(map[string]any); st["wood"] != 40.0 || st["stone"] != 30.0 || st["copper"] != 12.0 {
 		t.Errorf("stock: %v", st)
 	}
-	if m := s["merchant"].(map[string]any); m["resource"] != "stone" || m["leaves"] != 3.0 {
+	if m := s["merchant"]; !reflect.DeepEqual(m, map[string]any{"resource": "stone", "leaves": 3.0, "hp": 100.0, "maxHp": 100.0}) {
 		t.Errorf("merchant: %v", m)
 	}
 	checkWartegrundUndBeruf(t, s)
@@ -205,5 +205,15 @@ func TestWirtschaftBeispiel(t *testing.T) {
 	}
 	if len(fields) > 0 {
 		t.Errorf("Ereignisse fehlen im Beispiel: %v", fields)
+	}
+}
+
+// Ein überfallener Händler steht mit raid, hp und maxHp im Zustand (KB2.3, B-381/AC-01).
+func TestHaendlerUeberfallImZustand(t *testing.T) {
+	_, w := wirtschaftsInsel(t)
+	w.Merchant = &sim.Merchant{Resource: "stone", Leaves: 3, Raid: true, HP: 60, MaxHP: 100}
+	m := asJSON(t, stateOf(w, 0, false)).(map[string]any)["merchant"].(map[string]any)
+	if m["raid"] != true || m["hp"] != 60.0 || m["maxHp"] != 100.0 {
+		t.Errorf("merchant: %v", m)
 	}
 }

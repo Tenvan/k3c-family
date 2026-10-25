@@ -31,6 +31,8 @@ func (c *conn) handle(data []byte) {
 		err = room.ErrBadRequest
 	case m.T == "create":
 		err = c.create(m)
+	case m.T == "join" && m.Observe:
+		err = c.enter(c.s.cfg.Rooms.Observe(c.device, c, m.Room))
 	case m.T == "join":
 		err = c.enter(c.s.cfg.Rooms.Join(c.device, c, m.Room, m.Slots))
 	case r == nil:
@@ -49,8 +51,10 @@ func (c *conn) fail(code string) {
 }
 
 func (c *conn) create(m inMsg) error {
-	if err := room.ValidSlots(m.Slots); err != nil {
-		return err // too_many_slots vor allen anderen Prüfungen (docs/protocol.md › Beitreten, Schritt 1)
+	if !m.Observe { // ein Beobachter (B-352) hat keine slots
+		if err := room.ValidSlots(m.Slots); err != nil {
+			return err // too_many_slots vor allen anderen Prüfungen (docs/protocol.md › Beitreten, Schritt 1)
+		}
 	}
 	if m.Fresh == nil {
 		return room.ErrBadRequest
@@ -58,6 +62,9 @@ func (c *conn) create(m inMsg) error {
 	opts := room.Options{Grade: m.Grade, Goal: m.Goal, Defeat: m.Defeat, Seed: m.Seed}
 	if *m.Fresh {
 		opts.World = m.World // ein Stand lädt in seiner gespeicherten Welt
+	}
+	if m.Observe {
+		return c.enter(c.s.cfg.Rooms.CreateObserved(c.device, c, m.Save, *m.Fresh, m.Depth, opts))
 	}
 	return c.enter(c.s.cfg.Rooms.Create(c.device, c, m.Save, *m.Fresh, m.Depth, m.Slots, opts))
 }
@@ -98,7 +105,8 @@ func (c *conn) roomMessage(r *room.Room, m inMsg) error {
 		c.left()
 		return nil
 	case "dev":
-		return r.Dev(c.device, c, room.DevAction{Action: m.Action, Slot: m.Slot, Amount: m.Amount, Resource: m.Resource, Factor: m.Factor, Paused: m.Paused, Grade: m.Grade, On: m.On, Level: m.Level})
+		return r.Dev(c.device, c, room.DevAction{Action: m.Action, Slot: m.Slot, Amount: m.Amount, Resource: m.Resource, Factor: m.Factor,
+			Paused: m.Paused, Grade: m.Grade, On: m.On, Level: m.Level, Boss: m.Boss, Event: m.Event})
 	}
 	return room.ErrBadRequest
 }

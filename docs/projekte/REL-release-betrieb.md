@@ -18,7 +18,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | CI1 | CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung | erledigt |
 | RP1 | Repo-Hygiene: Branches aufräumen, Altlasten, Regeln | erledigt |
 | BT1 | Server im Heimnetz finden, Windows-Starter, Start mit Seed | aktiv |
-| PG1 | Präsentationsseite mit echten Spielbildern | geplant |
+| PG1 | Präsentationsseite mit echten Spielbildern | erledigt |
 | PB1 | Veröffentlichung auf itch.io | geplant |
 
 ## Nicht-Ziele

@@ -30,7 +30,7 @@ const (
 )
 
 // rpcPrefixes nennen die Methoden von App, die die Oberfläche aufrufen darf.
-var rpcPrefixes = []string{"Assets", "World", "Plan", "Hub", "Chat", "Ticket"}
+var rpcPrefixes = []string{"Assets", "AssetSuggestion", "World", "Plan", "Hub", "Chat", "Ticket", "Source"}
 
 // bus verteilt Ereignisse (assets:changed) an die offenen Event-Ströme.
 type bus struct {
@@ -69,6 +69,7 @@ func (a *App) Handler(remote bool) http.Handler {
 	mux.HandleFunc("POST "+Prefix+"import", a.importFile)
 	mux.HandleFunc("POST "+Prefix+"chat", a.chatSend)
 	mux.Handle("GET "+Prefix+"public/", http.StripPrefix(strings.TrimSuffix(Prefix, "/")+"/public", publicHandler(a.root)))
+	mux.Handle("GET "+Prefix+"vorrat/", http.StripPrefix(strings.TrimSuffix(Prefix, "/")+"/vorrat", vorratHandler(a.root)))
 	return guard(mux, remote)
 }
 

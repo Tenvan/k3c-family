@@ -1,5 +1,3 @@
-import { daylight } from '@game/scenes/render/viewRules';
-import type { CycleInfo } from '@game/model/types';
 
 // Tageszeit der Live-Vorschau (B-460/AC-05, WZ7.4): vier Einträge, vier Sim-Phasen in Go. Das Morgengrauen ist seit B-470
 // (W12) eine echte Phase `dawn`; Helligkeit nach `daylight()` in `src/scenes/render/viewRules.ts`.
@@ -23,10 +21,6 @@ export function simTime(id: TimeOfDayId, p: number): { phase: SimPhase; progress
   return { phase: id, progress: clamped };
 }
 
-/** Helligkeitsfaktor der Kamera: wie in `GameScene` (Nacht-Untergrenze 0,45, darüber nach `daylight()`). B-472 macht die
- *  Nacht dunkler; wer zuletzt landet, zieht diese Konstante nach. */
-export const NIGHT_BRIGHTNESS = 0.45;
-
-export function brightnessOf(cycle: Pick<CycleInfo, 'phase' | 'progress'>): number {
-  return NIGHT_BRIGHTNESS + (1 - NIGHT_BRIGHTNESS) * daylight(cycle as CycleInfo);
-}
+// Helligkeit der Kamera und Licht wie im Spiel (W13.2, B-472/AC-03): `brightnessOf` und `NIGHT_BRIGHTNESS` aus
+// `src/scenes/render/nightLight.ts` (Untergrenze aus `data/light.json`), das Lagerfeuer-Licht zeichnet der `WorldRenderer` selbst.
+export { NIGHT_BRIGHTNESS, brightnessOf } from '@game/scenes/render/nightLight';

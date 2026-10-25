@@ -85,6 +85,7 @@ export const en: Record<TextKey, string> = {
   'hud.clockNight': 'Night {day}  ·  Morning in {left}',
   'hud.clockDawn': 'Day {day}  ·  Sunrise in {left}',
   'hud.aggression': '  ·  Aggression {pct}%',
+  'hud.saved': '  ·  saved',
 
   'ev.dusk': 'Night is coming!',
   'ev.night': 'Night {day}',
@@ -207,6 +208,9 @@ export const en: Record<TextKey, string> = {
   'hint.space': 'Space',
   'hint.build': 'build {name}',
   'hint.pay': 'buy {name}',
+  'hint.train': 'train {name}',
+  'hint.buy': 'buy {name}',
+  'hint.sell': 'sell {name}',
   'hint.revive': 'revive',
   'hint.attack': 'strike',
   'cast.noTarget': 'no target',

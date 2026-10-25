@@ -23,9 +23,9 @@ type Merchant struct {
 	BuyPaid  int    `json:"buyPaid,omitempty"`
 	// Raid: Dieser Besuch wird überfallen (events_merchant.go); Gegner greifen den Händler zuerst an.
 	Raid bool `json:"raid,omitempty"`
-	// HP, MaxHP: nicht im Zustand (Protokoll unverändert, Anzeige mit K4/K5); gespeichert über MerchantSave.
-	HP    float64 `json:"-"`
-	MaxHP float64 `json:"-"`
+	// HP, MaxHP: Lebenspunkte des Händlers im Zustand (KB2.3, B-381); gespeichert über MerchantSave.
+	HP    float64 `json:"hp"`
+	MaxHP float64 `json:"maxHp"`
 }
 
 // MerchantSave ist der anwesende Händler im Spielstand (Version 6, B-373).
@@ -58,13 +58,19 @@ func merchantDawn(w *World) {
 	if w.Merchant != nil || every <= 0 || day%every != 0 {
 		return
 	}
+	merchantArrive(w)
+	merchantRaidStart(w) // jeder 4. Besuch (events_merchant.go)
+}
+
+// merchantArrive: Der Händler kommt an (Material per w.rng, Besuch zählt); auch für die Dev-Aktion event (dev_combat.go).
+func merchantArrive(w *World) {
+	m := economy.Merchant
 	mats := m.Materials[:min(len(m.Materials), max(1, w.HubLevel))]
-	w.Merchant = &Merchant{Resource: mats[w.rng.Int(0, len(mats)-1)], Leaves: day + m.StayDays, HP: m.HP, MaxHP: m.HP}
+	w.Merchant = &Merchant{Resource: mats[w.rng.Int(0, len(mats)-1)], Leaves: w.Cycle.Day + m.StayDays, HP: m.HP, MaxHP: m.HP}
 	if w.island != nil {
 		w.island.MerchantVisits++ // Besuche zählen, Rhythmus des Händler-Überfalls (K3.2)
 	}
 	emit(w, "merchantArrived", Event{"resource": w.Merchant.Resource, "x": unitX(merchantX(w, "buy"))})
-	merchantRaidStart(w) // jeder 4. Besuch (events_merchant.go)
 }
 
 // merchantLeaves: Der Händler reist ab (typ merchantLeft) oder flieht (merchantFled); ein halber Kauf fällt als Münzen.

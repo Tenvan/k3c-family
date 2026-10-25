@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import devPause from '../../../testdata/protocol/c2s-dev-pause.json';
 import devGrade from '../../../testdata/protocol/c2s-dev-grade.json';
-import { DEV_ACTIONS, DEV_GROUPS, GRADES, NO_TOGGLES, actionLabel, actionVisible, devMessage, isCurrentGrade, nextToggles, pauseMessage, roomDevMode } from './debugActions';
+import devBoss from '../../../testdata/protocol/c2s-dev-boss.json';
+import devBossPhase from '../../../testdata/protocol/c2s-dev-bossphase.json';
+import devEvent from '../../../testdata/protocol/c2s-dev-event.json';
+import devNight from '../../../testdata/protocol/c2s-dev-night.json';
+import eventsJson from '../../../data/events.json';
+import { BOSSES, DEV_ACTIONS, DEV_GROUPS, EVENTS, GRADES, NO_TOGGLES, actionLabel, actionVisible, devMessage, isCurrentGrade, nextToggles, pauseMessage, roomDevMode } from './debugActions';
 
 describe('devMessage (B-179/AC-01)', () => {
   it('Beispiele aus testdata/protocol/: Gold und Zeitfaktor wörtlich', () => {
@@ -39,6 +44,10 @@ describe('devMessage (B-179/AC-01)', () => {
       { t: 'dev', action: 'timescaleAuto', on: true },
       { t: 'dev', action: 'nextPhase' },
       ...['dev', 'easy', 'normal', 'hard', 'ultra'].map((grade) => ({ t: 'dev', action: 'grade', grade })),
+      ...['goblinLeader', 'trollKing', 'ratQueen', 'lavaGolem', 'shardTitan', 'crystalHeartWarden'].map((boss) => ({ t: 'dev', action: 'boss', slot: 1, boss })),
+      { t: 'dev', action: 'bossPhase' },
+      ...['fullMoon', 'bloodMoon', 'merchantRaid'].map((event) => ({ t: 'dev', action: 'event', event })),
+      { t: 'dev', action: 'night' },
     ];
     expect(DEV_ACTIONS.map((a) => devMessage(a.key, 1))).toEqual(expected);
   });
@@ -52,6 +61,8 @@ describe('devMessage (B-179/AC-01)', () => {
       'Zeit 1×', 'Zeit 2×', 'Zeit 4×', 'Zeit 8×',
       'Zeitraffer → 1× bei Tageszeitwechsel', 'Nächste Tageszeit',
       'Grad Dev', 'Grad Leicht', 'Grad Normal', 'Grad Hart', 'Grad Ultra',
+      'Boss Goblin-Anführer', 'Boss Troll-König', 'Boss Ratten-Königin', 'Boss Lava-Golem', 'Boss Splitter-Titan', 'Boss Kristallherz-Wächter',
+      'Boss: nächste Phase', 'Event Vollmond', 'Event Blutmond', 'Event Händler-Überfall', 'Nacht sofort',
     ]);
   });
 
@@ -110,5 +121,30 @@ describe('Gruppe Grad (K5.3, B-107/AC-01, AC-02)', () => {
     expect(DEV_ACTIONS.filter((a) => a.group !== 'grad').every((a) => actionVisible(a, false))).toBe(true);
     expect(grades.filter((a) => isCurrentGrade(a, 'normal')).map((a) => a.key)).toEqual(['grade:normal']);
     expect(grades.some((a) => isCurrentGrade(a, undefined))).toBe(false);
+  });
+});
+
+describe('Gruppe Kampf (KB4.2, B-603/AC-03)', () => {
+  it('Boss, Phase, Event und Nacht senden die Nachrichten wie c2s-dev-boss/-bossphase/-event/-night.json', () => {
+    expect(devMessage('boss:goblinLeader', 0)).toEqual(devBoss);
+    expect(devMessage('bossphase', 0)).toEqual(devBossPhase);
+    expect(devMessage('event:bloodMoon', 0)).toEqual(devEvent);
+    expect(devMessage('night', 0)).toEqual(devNight);
+    expect(devMessage('boss:goblinLeader', 1)).toEqual({ ...devBoss, slot: 1 });
+  });
+
+  it('Event-Auswahl aus den bekannten Ids (data/events.json), unbekannte Boss- oder Event-Id → null', () => {
+    expect(EVENTS.map(([id]) => id)).toEqual(eventsJson.events.map((e) => e.id));
+    expect(EVENTS.map(([, name]) => name)).toEqual(['Vollmond', 'Blutmond', 'Händler-Überfall']);
+    expect(BOSSES.length).toBeGreaterThan(0);
+    expect(devMessage('event:neumond', 0)).toBeNull();
+    expect(devMessage('boss:drache', 0)).toBeNull();
+  });
+
+  it('eigene Gruppe am Ende, ohne Dev-Mode sichtbar (der Server lehnt ab)', () => {
+    expect(DEV_GROUPS.at(-1)).toBe('kampf');
+    const kampf = DEV_ACTIONS.filter((a) => a.group === 'kampf');
+    expect(kampf).toHaveLength(BOSSES.length + EVENTS.length + 2);
+    expect(kampf.every((a) => actionVisible(a, false))).toBe(true);
   });
 });

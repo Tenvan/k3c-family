@@ -2,6 +2,8 @@ import { Button, SegmentedControl, Select, Splitter, Text, TextField, type Tone 
 import { useTicketPage } from '@webkit/lib/ticketContext';
 import { useMemo, useState, type CSSProperties } from 'react';
 import type { AssetKind, AssetSlot, AssetStatus } from '../api';
+import { assignContext } from '../chat/assignContext';
+import { useAssignContext } from '../chat/chatBridge';
 import * as prefs from '../lib/prefs';
 import { NoticeCard } from '@webkit/molecules';
 import { useSplit } from '@webkit/lib/split';
@@ -13,6 +15,8 @@ const STATUS_TONE: Record<AssetStatus, Tone> = { zugeordnet: 'ok', luecke: 'warn
 const STATUS_LABEL: Record<AssetStatus, string> = { zugeordnet: 'zugeordnet', luecke: 'Lücke', fehlt: 'Datei fehlt' };
 const ALL = 'alle';
 const SPLIT_DEFAULT = 38;
+/** Schmale Seite: Anteil des Details unter der Liste (waagerechter Splitter) */
+const STACK_DEFAULT = 60;
 
 /** Slots einer Art (Seite Grafik oder Sound, B-459): Slot-Liste mit Status | Splitter | Detail mit Zuordnungen.
  *  Neuladen ersetzt nur die Daten (useAssets); Auswahl, Filter und Eingaben bleiben. */
@@ -24,6 +28,7 @@ export function AssetsPage({ art }: { art: AssetKind }) {
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState(() => prefs.loadText(`${art}.selected`, ''));
   const [split, setSplit, resetSplit] = useSplit(prefs, `${art}.split`, SPLIT_DEFAULT);
+  const [stack, setStack, resetStack] = useSplit(prefs, `${art}.stack`, STACK_DEFAULT);
   const slots = useMemo(() => data.view?.slots ?? [], [data.view]);
   const typList = useMemo(() => typen(slots.filter((s) => s.art === art && (!kategorie || s.kategorie === kategorie))), [slots, art, kategorie]);
   const aktivTyp = typList.includes(typ) ? typ : ''; // Typ, der nach einem Reload fehlt, filtert nicht unsichtbar weiter
@@ -31,6 +36,7 @@ export function AssetsPage({ art }: { art: AssetKind }) {
   const used = useMemo(() => new Set(slots.flatMap((s) => s.wahl.map((c) => c.datei))), [slots]);
   const { slot, missing } = selectionOf(slots, art, selected);
   useTicketPage(art, slot?.id ?? '');
+  useAssignContext(assignContext(art, slot?.id ?? '', { kategorie, typ: aktivTyp, status, suche: query })); // Chat „Zuordnung“ (B-600)
 
   if (!data.view) return data.error ? <NoticeCard title="Slot-Register nicht lesbar" tone="error">{data.error}</NoticeCard> : <Text color="gray">Lade Slot-Register …</Text>;
   if (data.view.error) return <NoticeCard title="Slot-Register ungültig" tone="error">{data.view.error}</NoticeCard>;
@@ -54,9 +60,10 @@ export function AssetsPage({ art }: { art: AssetKind }) {
         <Button variant="soft" onClick={() => void data.reload()} title="Slot-Register neu lesen, z. B. nach Änderungen durch k3c-workbench oder Agenten">Neu laden</Button>
       </div>
       {data.error && <p className="svc-error">{data.error}</p>}
-      <div className="as-body" style={{ '--as-split': `${split}%` } as CSSProperties}>
+      <div className="as-body" style={{ '--as-split': `${split}%`, '--as-stack': `${stack}%` } as CSSProperties}>
         <SlotList slots={visible} selected={slot?.id ?? ''} onSelect={pick} />
         <Splitter className="as-split" value={split} onChange={setSplit} onReset={resetSplit} />
+        <Splitter horizontal className="as-split-stack" value={stack} onChange={setStack} onReset={resetStack} />
         <section className="as-detail">
           {slot ? <SlotDetail key={slot.id} slot={slot} used={used} onSave={data.save} onReload={() => void data.reload()} /> : <NoSlot art={art} missing={missing ? selected : ''} />}
         </section>

@@ -1,5 +1,7 @@
 {
-  "notes": "Licht in Nacht und Morgengrauen (B-472, gezeichnet ab W13, nur im Client). sources: Lichtquellen je Art; radius in Units um die Quelle, strength = Aufhellung in der Mitte (0 = keine, 1 = volle Tageshelligkeit), nach außen fällt sie bis zum Radius auf 0. Überlappende Quellen addieren sich höchstens bis zur Tageshelligkeit. Werte vorläufig, Dunkelstufe und Lichtwerte legt Ralf fest.",
+  "notes": "Licht in Nacht und Morgengrauen (B-472, gezeichnet ab W13, nur im Client). nightBrightness = Kamerahelligkeit in tiefster Nacht (0 = schwarz, 1 = Tag), darüber nach daylight(). sources: Lichtquellen je Art; radius in Units um die Quelle, strength = Aufhellung in der Mitte (0 = keine, 1 = volle Tageshelligkeit), nach außen fällt sie bis zum Radius auf 0; sie wirkt mit (1 − daylight), am Tag also nicht. glowColor = Farbe des Lichtscheins. Werte vorläufig, Dunkelstufe und Lichtwerte legt Ralf fest.",
+  "nightBrightness": 0.3,
+  "glowColor": "#ffc982",
   "sources": {
     "torch": { "radius": 3, "strength": 0.5 },
     "campfire": { "radius": 6, "strength": 0.7 }

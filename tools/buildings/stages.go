@@ -120,7 +120,7 @@ func renderStufen(b building, prefix string, out map[string]*image.Paletted) ([]
 // renderDichten rendert ein Gebäude in allen erlaubten Dichten als `<name>-<d>.png` nach out; liefert Dichte → Pfad.
 func renderDichten(b building, name, prefix string, out map[string]*image.Paletted) (map[string]string, error) {
 	dateien := map[string]string{}
-	for _, d := range dichtenFuer(b.Klasse) {
+	for _, d := range dichtenFuer(b.Klasse, rasterVon(b)) {
 		img, err := render(b, d)
 		if err != nil {
 			return nil, err

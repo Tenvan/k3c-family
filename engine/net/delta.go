@@ -7,8 +7,9 @@ import (
 
 // Delta nach docs/protocol.md › Zustand und Delta: nur geänderte Felder. Listen mit `id` stehen als
 // {"set": [geänderte oder neue Einträge], "del": [entfernte ids]}, alles andere bei einer Änderung ganz. `null` ist ein
-// Wert. `events` fehlt, wenn es im Tick keine gab. Felder, die in prev standen und in cur fehlen (außer `events`), stehen
-// sortiert in `unset`; fehlt keins, fehlt `unset`.
+// Wert. `events` fehlt, wenn es im Tick keine gab, `eventsDropped` bei 0 (beide gelten nur für diesen Zustand, B-190).
+// Felder, die in prev standen und in cur fehlen (außer diesen beiden), stehen sortiert in `unset`; fehlt keins, fehlt
+// `unset`.
 
 // idLists sind die Listen, deren Einträge eine `id` haben.
 var idLists = map[string]bool{
@@ -25,6 +26,8 @@ func deltaOf(prev, cur map[string]any) map[string]any {
 			if l, _ := v.([]any); len(l) > 0 {
 				d[k] = v
 			}
+		case k == "eventsDropped": // steht nur bei mehr als 0 in cur
+			d[k] = v
 		case idLists[k]:
 			if set, del := listDelta(prev[k], v); len(set)+len(del) > 0 {
 				d[k] = map[string]any{"set": set, "del": del}
@@ -39,11 +42,11 @@ func deltaOf(prev, cur map[string]any) map[string]any {
 	return d
 }
 
-// unsetOf nennt sortiert die Felder aus prev, die in cur fehlen (`events` ausgenommen).
+// unsetOf nennt sortiert die Felder aus prev, die in cur fehlen (`events` und `eventsDropped` ausgenommen).
 func unsetOf(prev, cur map[string]any) []string {
 	var unset []string
 	for k := range prev {
-		if _, ok := cur[k]; !ok && k != "events" {
+		if _, ok := cur[k]; !ok && k != "events" && k != "eventsDropped" {
 			unset = append(unset, k)
 		}
 	}

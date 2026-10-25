@@ -1,83 +1,214 @@
 {
   "id": "felsen",
   "vorlage": {
-    "motiv": "Kleiner Felsbrocken-Haufen, 1 × 1 Kachel, niedrig und breit am Boden: ein großer Brocken, ein kleinerer rechts, ein kleiner links vorn",
+    "motiv": "Felsbrocken-Haufen, 1,5 × 1,5 Kacheln (B-583, GEB15.2), niedrig und breit am Boden: ein großer Brocken, ein kleinerer rechts, ein kleiner links vorn",
     "teile": [
-      "Großer Brocken links und mittig",
+      "Großer Brocken links und mittig mit Moos oben",
       "Kleinerer Brocken rechts davor",
       "Kleiner Stein ganz links vorn",
       "Lichtkante links oben (topaz), Schattenflächen rechts und unten (smokey-ash)",
-      "Feine Risse (valhalla), Moos oben auf dem großen Brocken"
+      "Feine Risse (valhalla), Moos-Lichtpunkte (atlantis); Mine: Erzglanz (tahiti-gold, golden-fizz)"
     ],
     "materialien": [
       "Fels (Felsen, Erzbrocken) = Stein",
       "Laub (Pappel, Birke)"
     ],
     "stimmung": "schlicht, kantig, abbaubar",
-    "fein": "Risse und Moos-Lichtpunkte"
+    "fein": "Risse, Moos-Lichtpunkte, Erzglanz"
   },
-  "kacheln": { "b": 1, "h": 1 },
+  "kacheln": {"b": 1.5, "h": 1.5},
   "bausteine": [
-    {"art":"moos","rechteck":[0.125,0.375,0.4375,0.0625],"farbe":"christi"},
-    {"art":"fels","rechteck":[0.5625,0.375,0.125,0.0625],"farbe":"topaz"},
-    {"art":"fels","rechteck":[0.0625,0.4375,0.125,0.0625],"farbe":"topaz"},
-    {"art":"moos","rechteck":[0.1875,0.4375,0.25,0.0625],"farbe":"christi"},
-    {"art":"moos","rechteck":[0.4375,0.4375,0.0625,0.0625],"farbe":"dell"},
-    {"art":"fels","rechteck":[0.5,0.4375,0.1875,0.0625],"farbe":"dim-gray"},
-    {"art":"fels","rechteck":[0.6875,0.4375,0.0625,0.0625],"farbe":"smokey-ash"},
-    {"art":"fels","rechteck":[0,0.5,0.1875,0.0625],"farbe":"topaz"},
-    {"art":"moos","rechteck":[0.1875,0.5,0.125,0.0625],"farbe":"dell"},
-    {"art":"fels","rechteck":[0.3125,0.5,0.0625,0.0625],"farbe":"dim-gray"},
-    {"art":"moos","rechteck":[0.375,0.5,0.0625,0.0625],"farbe":"dell"},
-    {"art":"fels","rechteck":[0.4375,0.5,0.3125,0.0625],"farbe":"dim-gray"},
-    {"art":"fels","rechteck":[0.75,0.5,0.0625,0.125],"farbe":"smokey-ash"},
-    {"art":"fels","rechteck":[0,0.5625,0.125,0.0625],"farbe":"topaz"},
-    {"art":"fels","rechteck":[0.125,0.5625,0.625,0.0625],"farbe":"dim-gray"},
-    {"art":"fels","rechteck":[0,0.625,0.0625,0.125],"farbe":"topaz"},
-    {"art":"fels","rechteck":[0.0625,0.625,0.5625,0.0625],"farbe":"dim-gray"},
-    {"art":"fels","rechteck":[0.625,0.625,0.1875,0.0625],"farbe":"smokey-ash"},
-    {"art":"fels","rechteck":[0.0625,0.6875,0.5,0.0625],"farbe":"dim-gray"},
-    {"art":"fels","rechteck":[0.5625,0.6875,0.0625,0.0625],"farbe":"smokey-ash"},
-    {"art":"fels","rechteck":[0.625,0.6875,0.3125,0.0625],"farbe":"topaz"},
-    {"art":"fels","rechteck":[0.9375,0.6875,0.0625,0.1875],"farbe":"smokey-ash"},
-    {"art":"fels","rechteck":[0,0.75,0.1875,0.0625],"farbe":"topaz"},
-    {"art":"fels","rechteck":[0.1875,0.75,0.0625,0.1875],"farbe":"smokey-ash"},
-    {"art":"fels","rechteck":[0.25,0.75,0.0625,0.0625],"farbe":"topaz"},
-    {"art":"fels","rechteck":[0.3125,0.75,0.1875,0.0625],"farbe":"dim-gray"},
-    {"art":"fels","rechteck":[0.5,0.75,0.0625,0.125],"farbe":"smokey-ash"},
-    {"art":"fels","rechteck":[0.5625,0.75,0.0625,0.1875],"farbe":"topaz"},
-    {"art":"fels","rechteck":[0.625,0.75,0.3125,0.125],"farbe":"dim-gray"},
-    {"art":"fels","rechteck":[0,0.8125,0.0625,0.125],"farbe":"topaz"},
-    {"art":"fels","rechteck":[0.0625,0.8125,0.125,0.125],"farbe":"dim-gray"},
-    {"art":"fels","rechteck":[0.25,0.8125,0.25,0.0625],"farbe":"dim-gray"},
-    {"art":"fels","rechteck":[0.25,0.875,0.125,0.0625],"farbe":"dim-gray"},
-    {"art":"fels","rechteck":[0.375,0.875,0.1875,0.0625],"farbe":"smokey-ash"},
-    {"art":"fels","rechteck":[0.625,0.875,0.1875,0.0625],"farbe":"dim-gray"},
-    {"art":"fels","rechteck":[0.8125,0.875,0.1875,0.0625],"farbe":"smokey-ash"},
-    {"art":"fels","rechteck":[0,0.9375,0.9375,0.0625],"farbe":"smokey-ash"},
-    {"art":"moos-licht","rechteck":[0.25,0.375,0.09375,0.03125],"farbe":"atlantis","fein":true},
-    {"art":"riss","rechteck":[0.6875,0.4375,0.03125,0.03125],"farbe":"valhalla","fein":true},
-    {"art":"riss","rechteck":[0.71875,0.46875,0.03125,0.03125],"farbe":"valhalla","fein":true},
-    {"art":"riss","rechteck":[0.3125,0.5,0.03125,0.03125],"farbe":"valhalla","fein":true},
-    {"art":"riss","rechteck":[0.34375,0.53125,0.03125,0.03125],"farbe":"valhalla","fein":true},
-    {"art":"riss","rechteck":[0.75,0.53125,0.03125,0.03125],"farbe":"valhalla","fein":true},
-    {"art":"riss","rechteck":[0.375,0.5625,0.0625,0.03125],"farbe":"valhalla","fein":true},
-    {"art":"riss","rechteck":[0.40625,0.625,0.03125,0.03125],"farbe":"valhalla","fein":true},
-    {"art":"riss","rechteck":[0.875,0.6875,0.03125,0.03125],"farbe":"valhalla","fein":true},
-    {"art":"riss","rechteck":[0.90625,0.71875,0.03125,0.03125],"farbe":"valhalla","fein":true},
-    {"art":"riss","rechteck":[0.25,0.75,0.0625,0.03125],"farbe":"valhalla","fein":true},
-    {"art":"riss","rechteck":[0.28125,0.78125,0.03125,0.03125],"farbe":"valhalla","fein":true}
+    {"art":"moos","rechteck":[0.4375,0.5625,0.375,0.0625],"farbe":"christi"},
+    {"art":"moos","rechteck":[0.3125,0.625,0.25,0.0625],"farbe":"christi"},
+    {"art":"moos","rechteck":[0.5625,0.625,0.0625,0.0625],"farbe":"dell"},
+    {"art":"moos","rechteck":[0.625,0.625,0.25,0.0625],"farbe":"christi"},
+    {"art":"fels","rechteck":[0.25,0.6875,0.0625,0.0625],"farbe":"topaz"},
+    {"art":"moos","rechteck":[0.3125,0.6875,0.125,0.0625],"farbe":"christi"},
+    {"art":"moos","rechteck":[0.4375,0.6875,0.125,0.0625],"farbe":"dell"},
+    {"art":"fels","rechteck":[0.5625,0.6875,0.0625,0.0625],"farbe":"dim-gray"},
+    {"art":"moos","rechteck":[0.625,0.6875,0.125,0.0625],"farbe":"christi"},
+    {"art":"moos","rechteck":[0.75,0.6875,0.0625,0.0625],"farbe":"dell"},
+    {"art":"fels","rechteck":[0.8125,0.6875,0.0625,0.0625],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[0.875,0.6875,0.0625,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0.1875,0.75,0.125,0.0625],"farbe":"topaz"},
+    {"art":"fels","rechteck":[0.3125,0.75,0.0625,0.0625],"farbe":"dim-gray"},
+    {"art":"moos","rechteck":[0.375,0.75,0.0625,0.0625],"farbe":"dell"},
+    {"art":"fels","rechteck":[0.4375,0.75,0.4375,0.0625],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[0.875,0.75,0.125,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0.1875,0.8125,0.0625,0.0625],"farbe":"topaz"},
+    {"art":"fels","rechteck":[0.25,0.8125,0.6875,0.0625],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[0.9375,0.8125,0.0625,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0.125,0.875,0.125,0.0625],"farbe":"topaz"},
+    {"art":"fels","rechteck":[0.25,0.875,0.625,0.0625],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[0.875,0.875,0.125,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[1.125,0.875,0.1875,0.0625],"farbe":"topaz"},
+    {"art":"fels","rechteck":[0.125,0.9375,0.0625,0.1875],"farbe":"topaz"},
+    {"art":"fels","rechteck":[0.1875,0.9375,0.75,0.125],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[0.9375,0.9375,0.0625,0.125],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[1,0.9375,0.125,0.0625],"farbe":"topaz"},
+    {"art":"fels","rechteck":[1.125,0.9375,0.1875,0.0625],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[1.3125,0.9375,0.0625,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[1,1,0.0625,0.0625],"farbe":"topaz"},
+    {"art":"fels","rechteck":[1.0625,1,0.3125,0.0625],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[1.375,1,0.0625,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0.1875,1.0625,0.6875,0.125],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[0.875,1.0625,0.0625,0.125],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0.9375,1.0625,0.0625,0.1875],"farbe":"topaz"},
+    {"art":"fels","rechteck":[1,1.0625,0.375,0.0625],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[1.375,1.0625,0.125,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0,1.125,0.1875,0.0625],"farbe":"topaz"},
+    {"art":"fels","rechteck":[1,1.125,0.4375,0.125],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[1.4375,1.125,0.0625,0.125],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0,1.1875,0.0625,0.1875],"farbe":"topaz"},
+    {"art":"fels","rechteck":[0.0625,1.1875,0.125,0.0625],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[0.1875,1.1875,0.0625,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0.25,1.1875,0.5625,0.0625],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[0.8125,1.1875,0.125,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0.0625,1.25,0.1875,0.125],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[0.25,1.25,0.0625,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0.3125,1.25,0.4375,0.0625],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[0.75,1.25,0.125,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0.875,1.25,0.0625,0.125],"farbe":"topaz"},
+    {"art":"fels","rechteck":[0.9375,1.25,0.4375,0.0625],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[1.375,1.25,0.125,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0.25,1.3125,0.125,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0.375,1.3125,0.3125,0.0625],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[0.6875,1.3125,0.1875,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0.9375,1.3125,0.375,0.0625],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[1.3125,1.3125,0.1875,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0,1.375,0.0625,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0.0625,1.375,0.125,0.0625],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[0.1875,1.375,0.8125,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[1,1.375,0.1875,0.0625],"farbe":"dim-gray"},
+    {"art":"fels","rechteck":[1.1875,1.375,0.3125,0.0625],"farbe":"smokey-ash"},
+    {"art":"fels","rechteck":[0,1.4375,1.4375,0.0625],"farbe":"smokey-ash"},
+    {"art":"moos-licht","rechteck":[0.5,0.625,0.125,0.03125],"farbe":"atlantis","fein":true},
+    {"art":"moos-licht","rechteck":[0.6875,0.6875,0.0625,0.03125],"farbe":"atlantis","fein":true},
+    {"art":"riss","rechteck":[0.625,0.8125,0.03125,0.03125],"farbe":"valhalla","fein":true},
+    {"art":"riss","rechteck":[0.65625,0.84375,0.03125,0.03125],"farbe":"valhalla","fein":true},
+    {"art":"riss","rechteck":[0.65625,0.875,0.0625,0.03125],"farbe":"valhalla","fein":true},
+    {"art":"riss","rechteck":[0.4375,1,0.03125,0.03125],"farbe":"valhalla","fein":true},
+    {"art":"riss","rechteck":[0.46875,1.03125,0.03125,0.03125],"farbe":"valhalla","fein":true},
+    {"art":"riss","rechteck":[1.125,1,0.03125,0.03125],"farbe":"valhalla","fein":true},
+    {"art":"riss","rechteck":[1.15625,1.03125,0.03125,0.03125],"farbe":"valhalla","fein":true},
+    {"art":"riss","rechteck":[1.15625,1.0625,0.0625,0.03125],"farbe":"valhalla","fein":true},
+    {"art":"riss","rechteck":[0.3125,1.25,0.0625,0.03125],"farbe":"valhalla","fein":true},
+    {"art":"riss","rechteck":[0.34375,1.28125,0.03125,0.03125],"farbe":"valhalla","fein":true},
+    {"art":"riss","rechteck":[0.75,1.1875,0.03125,0.03125],"farbe":"valhalla","fein":true},
+    {"art":"riss","rechteck":[0.78125,1.21875,0.03125,0.03125],"farbe":"valhalla","fein":true}
   ],
   "stufen": [
     {
       "stufe": 2,
       "aenderung": "Höhle: kühler, bläulicher Stein, Moos wird bläulicher Schimmer",
-      "farben": {"dim-gray": "topaz", "topaz": "heather", "smokey-ash": "deep-koamaru", "valhalla": "black", "christi": "viking", "dell": "venice-blue", "atlantis": "light-steel"}
+      "farben": {
+        "dim-gray": "topaz",
+        "topaz": "heather",
+        "smokey-ash": "deep-koamaru",
+        "valhalla": "black",
+        "christi": "viking",
+        "dell": "venice-blue",
+        "atlantis": "light-steel"
+      }
     },
     {
       "stufe": 3,
-      "aenderung": "Mine: dunkler, wärmerer brauner Stein, Moos entfällt (wird zur Steinfarbe)",
-      "farben": {"dim-gray": "smokey-ash", "topaz": "dim-gray", "smokey-ash": "oiled-cedar", "valhalla": "black", "christi": "smokey-ash", "dell": "smokey-ash", "atlantis": "smokey-ash"}
+      "aenderung": "Mine: dunkler, wärmerer brauner Stein, Moos entfällt (wird zur Steinfarbe), Erzglanz in tahiti-gold und golden-fizz",
+      "farben": {
+        "dim-gray": "smokey-ash",
+        "topaz": "dim-gray",
+        "smokey-ash": "oiled-cedar",
+        "valhalla": "black",
+        "christi": "smokey-ash",
+        "dell": "smokey-ash",
+        "atlantis": "smokey-ash"
+      },
+      "zusaetze": [
+        {
+          "art": "erz",
+          "rechteck": [
+            0.4375,
+            1,
+            0.0625,
+            0.0625
+          ],
+          "farbe": "tahiti-gold"
+        },
+        {
+          "art": "erz",
+          "rechteck": [
+            0.6875,
+            1.125,
+            0.0625,
+            0.0625
+          ],
+          "farbe": "tahiti-gold"
+        },
+        {
+          "art": "erz",
+          "rechteck": [
+            1.1875,
+            1.125,
+            0.0625,
+            0.0625
+          ],
+          "farbe": "tahiti-gold"
+        },
+        {
+          "art": "erz",
+          "rechteck": [
+            0.375,
+            1.25,
+            0.0625,
+            0.0625
+          ],
+          "farbe": "tahiti-gold"
+        },
+        {
+          "art": "erzglanz",
+          "rechteck": [
+            0.4375,
+            1,
+            0.03125,
+            0.03125
+          ],
+          "farbe": "golden-fizz",
+          "fein": true
+        },
+        {
+          "art": "erzglanz",
+          "rechteck": [
+            0.6875,
+            1.125,
+            0.03125,
+            0.03125
+          ],
+          "farbe": "golden-fizz",
+          "fein": true
+        },
+        {
+          "art": "erzglanz",
+          "rechteck": [
+            1.1875,
+            1.125,
+            0.03125,
+            0.03125
+          ],
+          "farbe": "golden-fizz",
+          "fein": true
+        },
+        {
+          "art": "erzglanz",
+          "rechteck": [
+            0.375,
+            1.25,
+            0.03125,
+            0.03125
+          ],
+          "farbe": "golden-fizz",
+          "fein": true
+        }
+      ]
     }
   ]
 }
