@@ -138,7 +138,7 @@ func TestOfflineAlterBerichtZaehltNicht(t *testing.T) {
 	if err := os.Chtimes(old, past, past); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := readBalanceSummary(dir, time.Now()); err == nil {
+	if _, _, err := readBalanceSummary(dir, time.Now()); err == nil {
 		t.Error("alter Bericht gelesen")
 	}
 }

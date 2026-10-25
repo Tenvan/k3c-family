@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** TST
 - **Erstellt:** 2026-10-25
@@ -66,4 +66,15 @@ keine; Richtwerte der Kennzahlen sind Startwerte, Ralf justiert sie später.
 
 ## Notizen
 
-Vorgabe Ralf im Chat 2026-10-25 („Gib alles, was du rausholen kannst“, HTML mit Spielgrafiken aufpeppen); Erkundung der Bestandsstruktur siehe Ausgangslage.
+Vorgabe Ralf im Chat 2026-10-25 („Gib alles, was du rausholen kannst“, HTML mit Spielgrafiken aufpeppen); Erkundung der Bestandsstruktur siehe Ausgangslage. Ralf wollte zuerst einen Mock sehen (HTML-Bericht mit Daten aus `simtest-run-7` im Browser-Pane) und fragte, wohin die Kopierbefehle gehören: Jeder Befehl trägt jetzt ein Ziel (Chat an Claude, Terminal, Workbench › Balancing-Seite), in der Workbench gibt es zu Chat-Befehlen „In Claude öffnen“.
+
+### Ergebnis (2026-10-25, Claude)
+
+- **AC-01** `internal/balance/insights*.go`: `BuildInsights` liefert Ampel je Ziel (Abstand in % der Korridorbreite, Trend zur Baseline), Ampel je Kennzahl, Stärken, Schwächen, Tuning-Hinweise, Kurzauswertung (3–6 Sätze), nächsten Lauf (Seeds aus `failSeeds`, `--tune search`-Bereich ab dem Wert in `data/`, Befehle mit Ziel). Tests `TestInsightsAmpeln`, `TestInsightsTexte`, `TestInsightsKennzahlenUndNaechsterLauf`, `TestInsightsTrend`, `TestInsightsAllesGruen`, `TestHebelBereich` auf dem festen Bericht `testdata/insights-run7.json`.
+- **AC-02** `data/balance-hints.json` (Richtwerte als Bänder, Hebel `low`/`high` je Ziel), geladen mit `DisallowUnknownFields` und Prüfung (`TestRichtwerteFehler`), jeder Hebel zeigt auf eine Zahl in `data/` (`TestRichtwerteLaden`). Doku `docs/data/balance-hints.md`, Startwerte mit Begründung in `docs/rules/zielkorridore.md` § 5.
+- **AC-03** `balance-*.md` beginnt mit Kurzauswertung, Ampeln, Stärken/Schwächen, Tuning-Hinweisen, Nächstem Lauf und Kennzahlen je Nacht (`TestMarkdownMitAuswertung`).
+- **AC-04** `balance-*.html` entsteht je Lauf neben JSON/MD: eine Datei, Vorlage `internal/balance/report/*` per embed, Spielgrafiken aus `public/` (Burg, Mauer, Turm, Lagerfeuer, Axt, Spitzhacke, Erz, Münze, Skelett, Goblin) als data-URIs, Palette der Landingpage, Nacht/Tag-Thema. Interaktiv: Filter nach Ampel/Grad/Szenario/Suche, sortierbare Tabellen, aufklappbare Ziele mit Seeds und Hebeln, vier SVG-Diagramme mit Tooltips, Baseline-Vergleich, Kopierknöpfe. `TestHTMLEigenstaendig` (keine externen URLs), `TestHTMLOhneGrafiken` (Platzhalter). Im Browser-Pane geprüft (Screenshots, keine Konsolenfehler, Filter/Sortierung/Details/Tooltips per Skript).
+- **AC-05** Workbench: `ReportView` zeigt `InsightsView` (Ampeln, Kurzauswertung, Stärken/Schwächen, Hinweise, Nächster Lauf mit Kopieren und „In Claude öffnen“) und den Knopf „HTML-Bericht öffnen“ (RPCs `BalanceInsights`, `BalanceReportHTML`). `sim_test status` nennt die ersten drei Sätze der Kurzauswertung und den Pfad des HTML-Berichts (`TestStatusMitKurzauswertung`, `TestBalanceAuswertungUndHTML`, `InsightsView.test.tsx`).
+- **AC-06** Alte Berichte bleiben lesbar (ohne `kennzahlen` graue Kennzahl-Ampeln mit Hinweis, `TestInsightsAlterBericht`); nachträglich: CLI `k3c-balance --insights reports/…/balance-<Zeit>.json` und „HTML-Bericht öffnen“ in der Workbench (`TestReevaluate`).
+- Läufe aus der Workbench vergleichen jetzt mit `testdata/balance/baseline.json` (Trend). Die Baseline ist veraltet (B-625): alle Ziele erscheinen dort als „neu“.
+- `task check:diff` grün, Review (Sonnet) ohne schweren Befund; behoben: `--insights` nur für `balance-*.json`.

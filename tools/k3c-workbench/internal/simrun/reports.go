@@ -30,14 +30,15 @@ type balanceSummary struct {
 }
 
 // readBalanceSummary liest den neuesten balance-*.json in dir, der nicht vor since geschrieben wurde (ein alter Bericht
-// derselben Lauf-ID aus einer früheren Sitzung der Workbench zählt nicht).
-func readBalanceSummary(dir string, since time.Time) (balanceSummary, error) {
-	var sum balanceSummary
-	return sum, readNewest(dir, "balance-*.json", since, &sum)
+// derselben Lauf-ID aus einer früheren Sitzung der Workbench zählt nicht); file ist sein Pfad.
+func readBalanceSummary(dir string, since time.Time) (sum balanceSummary, file string, err error) {
+	file, err = readNewest(dir, "balance-*.json", since, &sum)
+	return sum, file, err
 }
 
-// readNewest liest den neuesten Bericht nach pattern in dir, der nicht vor since geschrieben wurde, nach v.
-func readNewest(dir, pattern string, since time.Time, v any) error {
+// readNewest liest den neuesten Bericht nach pattern in dir, der nicht vor since geschrieben wurde, nach v; Ergebnis
+// ist sein Pfad.
+func readNewest(dir, pattern string, since time.Time, v any) (string, error) {
 	files, _ := filepath.Glob(filepath.Join(dir, pattern))
 	for _, f := range slices.Backward(files) {
 		if st, err := os.Stat(f); err != nil || st.ModTime().Before(since.Add(-time.Second)) {
@@ -45,14 +46,14 @@ func readNewest(dir, pattern string, since time.Time, v any) error {
 		}
 		raw, err := os.ReadFile(f)
 		if err != nil {
-			return err
+			return "", err
 		}
 		if err := json.Unmarshal(raw, v); err != nil {
-			return fmt.Errorf("bericht unlesbar: %w", err)
+			return "", fmt.Errorf("bericht unlesbar: %w", err)
 		}
-		return nil
+		return f, nil
 	}
-	return fmt.Errorf("kein Bericht %s in %s", pattern, filepath.ToSlash(dir))
+	return "", fmt.Errorf("kein Bericht %s in %s", pattern, filepath.ToSlash(dir))
 }
 
 // tuningSummary ist der Teil von tuning-*.json, den Status und Liste lesen (Format: internal/balance/tune.go).
@@ -66,11 +67,14 @@ type tuningSummary struct {
 // readResult liest Urteil und Zeilen eines Laufs: tuning-*.json beim Abstimmen, sonst balance-*.json.
 func readResult(dir string, since time.Time, tune bool) (string, []string, error) {
 	if !tune {
-		sum, err := readBalanceSummary(dir, since)
-		return sum.verdict(), sum.lines(), err
+		sum, file, err := readBalanceSummary(dir, since)
+		if err != nil {
+			return "", nil, err
+		}
+		return sum.verdict(), append(insightLines(file), sum.lines()...), nil
 	}
 	var t tuningSummary
-	if err := readNewest(dir, "tuning-*.json", since, &t); err != nil {
+	if _, err := readNewest(dir, "tuning-*.json", since, &t); err != nil {
 		return "", nil, err
 	}
 	verdict := "Fail"
@@ -79,6 +83,32 @@ func readResult(dir string, since time.Time, tune bool) (string, []string, error
 	}
 	score := t.Best.Score
 	return verdict, []string{fmt.Sprintf("%d Punkte (%s), bester Score %s", len(t.Points), t.Mode, num(&score)), t.Reason}, nil
+}
+
+// statusSentences: so viele Sätze der Kurzauswertung nennt sim_test status (Grenze 10 Zeilen, B-348).
+const statusSentences = 3
+
+// insightLines: Kurzauswertung (B-632) und Pfad des HTML-Berichts zu file (reports/<lauf>/balance-*.json); ohne
+// lesbare Auswertung leer.
+func insightLines(file string) []string {
+	raw, err := os.ReadFile(file)
+	if err != nil {
+		return nil
+	}
+	s, err := balance.ReadSummary(raw)
+	if err != nil {
+		return nil
+	}
+	in, err := s.Insights(nil, balance.Meta{})
+	if err != nil {
+		return nil
+	}
+	out := slices.Clone(in.Summary[:min(statusSentences, len(in.Summary))])
+	html := strings.TrimSuffix(file, filepath.Ext(file)) + ".html"
+	if _, err := os.Stat(html); err == nil {
+		out = append(out, "HTML-Bericht: "+filepath.ToSlash(filepath.Join("reports", filepath.Base(filepath.Dir(file)), filepath.Base(html))))
+	}
+	return out
 }
 
 func (b balanceSummary) verdict() string {
@@ -249,4 +279,39 @@ func readReportFile(root, rel string) ([]byte, error) {
 		return nil, fmt.Errorf("bericht %q ist keine Datei", rel)
 	}
 	return os.ReadFile(path)
+}
+
+// ReadInsights wertet einen balance-*.json unter reports/ aus (B-632); die Baseline des Checkouts liefert den Trend.
+func ReadInsights(root, rel string) (balance.Insights, error) {
+	s, err := readBalanceReport(root, rel)
+	if err != nil {
+		return balance.Insights{}, err
+	}
+	base, err := balance.ReadBaseline(filepath.Join(root, filepath.FromSlash(balance.BaselinePath)))
+	if err != nil {
+		return balance.Insights{}, err
+	}
+	stem := strings.TrimSuffix(rel, filepath.Ext(rel))
+	return s.Insights(base, balance.MetaOf(stem, balance.BaselinePath))
+}
+
+// WriteHTML schreibt .md und .html eines balance-*.json unter reports/ neu (auch für alte Berichte); Ergebnis ist der
+// absolute Pfad der HTML-Datei.
+func WriteHTML(root, rel string) (string, error) {
+	if _, err := readBalanceReport(root, rel); err != nil {
+		return "", err
+	}
+	path, err := ReportPath(root, rel)
+	if err != nil {
+		return "", err
+	}
+	return balance.Reevaluate(path, root)
+}
+
+// readBalanceReport: nur balance-*.json (ein tuning-*.json hat ein anderes Format).
+func readBalanceReport(root, rel string) (balance.Summary, error) {
+	if !strings.HasPrefix(filepath.Base(filepath.FromSlash(rel)), "balance-") {
+		return balance.Summary{}, fmt.Errorf("bericht %q: nur balance-*.json", rel)
+	}
+	return ReadReport(root, rel)
 }

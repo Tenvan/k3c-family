@@ -1,3 +1,4 @@
+import { mockInsights } from './mockInsights';
 import type { BalanceBackend, BalanceEntry, BalanceFigures, BalanceReportInfo, BalanceRun, BalanceSummary, NightFigures, Tuning } from './types';
 
 // Mock der Balancing-RPC (WZ28.5): Warteschlange mit einem rechnenden Lauf, Fortschritt per Timer, Beispielbericht.
@@ -128,7 +129,7 @@ export function mockBalance(): Omit<BalanceBackend, 'balanceDataFiles' | 'balanc
       if (r.state === 'wartet' || r.state === 'läuft') Object.assign(r, { state: 'abgebrochen', phase: 'abgebrochen', ended: new Date().toISOString() });
     },
     balanceReports: async () => structuredClone(reports),
-    ...manageReports(reports),
+    ...manageReports(reports), ...mockInsights(summaries),
     balanceReport: async (path) => {
       const s = summaries.get(path);
       if (!s) throw new Error(`bericht ${path} unbekannt`);

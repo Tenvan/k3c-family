@@ -27,6 +27,7 @@ type targetOpts struct {
 	bot      string
 	grade    string
 	progress bool
+	insights string // vorhandener balance-*.json: Auswertung (.md, .html) neu schreiben (B-632)
 }
 
 func (o *targetOpts) register(fs *flag.FlagSet) {
@@ -38,6 +39,7 @@ func (o *targetOpts) register(fs *flag.FlagSet) {
 	fs.StringVar(&o.bot, "bot", "", "nur mit --targets: Bot aller Zielläufe statt des Ziel-Bots")
 	fs.StringVar(&o.grade, "grade", "", "nur mit --targets: Schwierigkeitsgrad aller Zielläufe (leer = normal)")
 	fs.BoolVar(&o.progress, "progress", false, "nur mit --targets: nach jedem Lauf PROGRESS <fertig>/<gesamt> auf stdout")
+	fs.StringVar(&o.insights, "insights", "", "vorhandenen Bericht balance-<Zeit>.json auswerten: .md und .html daneben neu schreiben (Baseline: "+balance.BaselinePath+")")
 }
 
 // scopeFrom setzt das Szenario der Zielläufe aus den gesetzten Flags --depth, --players, --days, --bot, --grade
@@ -91,7 +93,7 @@ func runTargets(o targetOpts) error {
 	if err := writeReplays(onlyFailSeeds(report, sum), o.replays); err != nil {
 		return err
 	}
-	if err := writeSummary(o.dir, sum, base); err != nil {
+	if err := writeSummary(o.dir, sum, base, o.baseline); err != nil {
 		return err
 	}
 	fmt.Fprintf(os.Stderr, "k3c-balance: %d Läufe in %s\n", len(report.Results), time.Since(start).Round(time.Second))
@@ -136,8 +138,8 @@ func readBaseline(path string) (*balance.Summary, error) {
 	return &s, err
 }
 
-// writeSummary schreibt balance-<Zeit>.json und .md nach dir und nennt die Pfade.
-func writeSummary(dir string, sum balance.Summary, base *balance.Summary) error {
+// writeSummary schreibt balance-<Zeit>.json, .md und .html (Auswertung B-632) nach dir und nennt die Pfade.
+func writeSummary(dir string, sum balance.Summary, base *balance.Summary, baseName string) error {
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return err
 	}
@@ -149,10 +151,20 @@ func writeSummary(dir string, sum balance.Summary, base *balance.Summary) error 
 	if err := os.WriteFile(stem+".json", b, 0o644); err != nil {
 		return err
 	}
-	if err := os.WriteFile(stem+".md", []byte(sum.Markdown(base)), 0o644); err != nil {
+	if err := balance.WriteReports(stem, sum, base, baseName, "."); err != nil {
 		return err
 	}
-	fmt.Fprintf(os.Stderr, "k3c-balance: Bericht %s.json und %s.md\n", stem, stem)
+	fmt.Fprintf(os.Stderr, "k3c-balance: Bericht %s.json, %s.md und %s.html\n", stem, stem, stem)
+	return nil
+}
+
+// runInsights wertet einen vorhandenen Bericht neu aus (--insights); Grafiken aus public/ des aktuellen Ordners.
+func runInsights(path string) error {
+	page, err := balance.Reevaluate(path, ".")
+	if err != nil {
+		return err
+	}
+	fmt.Fprintf(os.Stderr, "k3c-balance: Auswertung %s\n", page)
 	return nil
 }
 

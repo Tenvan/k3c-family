@@ -1,6 +1,9 @@
 package main
 
 import (
+	"os/exec"
+	"path/filepath"
+
 	"k3c/tools/k3c-workbench/internal/balance"
 	"k3c/tools/k3c-workbench/internal/datadoc"
 	"k3c/tools/k3c-workbench/internal/simrun"
@@ -63,4 +66,36 @@ func (a *App) BalanceReportRate(path, rating string) error {
 // BalanceReportDelete löscht einen Bericht unter reports/ samt .md und Bewertung (WZ28.13).
 func (a *App) BalanceReportDelete(path string) error {
 	return simrun.DeleteReport(a.root, path)
+}
+
+// BalanceInsights wertet einen Bericht aus (B-632): Ampeln, Kurzauswertung, Hinweise und nächster Lauf.
+func (a *App) BalanceInsights(path string) (balance.Insights, error) {
+	return simrun.ReadInsights(a.root, path)
+}
+
+// BalanceReportHTML schreibt .md und .html eines Berichts neu (auch für alte Berichte, B-632) und öffnet den
+// HTML-Bericht im Standard-Browser; Ergebnis ist sein Pfad relativ zum Checkout.
+func (a *App) BalanceReportHTML(path string) (string, error) {
+	page, err := simrun.WriteHTML(a.root, path)
+	if err != nil {
+		return "", err
+	}
+	if err := openFile(page); err != nil {
+		return "", err
+	}
+	if a.log != nil {
+		a.log.Info("📄 HTML-Bericht geöffnet", "ns", "main", "datei", filepath.Base(page))
+	}
+	rel, _ := filepath.Rel(a.root, page)
+	return filepath.ToSlash(rel), nil
+}
+
+// openFile öffnet eine Datei mit ihrem Standardprogramm (wie OpenInClaude ohne Job-Objekt); Tests ersetzen es.
+var openFile = func(path string) error {
+	cmd := exec.Command("rundll32", "url.dll,FileProtocolHandler", path)
+	if err := cmd.Start(); err != nil {
+		return err
+	}
+	go func() { _ = cmd.Wait() }()
+	return nil
 }

@@ -4,6 +4,7 @@ import { NoticeCard } from '@webkit/molecules';
 import type { BalanceSummary } from '../api';
 import { corridorText, downloadText, summaryJSON, summaryMarkdown } from './export';
 import { goldSeries, idleSeries, resourceBars, survivalSeries } from './figures';
+import { HtmlButton, InsightsView } from './InsightsView';
 
 /** Export als Markdown und JSON (Download über Blob). */
 export function ExportButtons({ name, summary }: { name: string; summary: BalanceSummary }) {
@@ -51,7 +52,7 @@ function Figures({ summary }: { summary: BalanceSummary }) {
   );
 }
 
-/** Ein Bericht: Kopf, Korridor-Prüfung je Ziel, Kennzahl-Diagramme, Varianten, Export. */
+/** Ein Bericht: Kopf, Auswertung (B-632), Korridor-Prüfung je Ziel, Kennzahl-Diagramme, Varianten, Export. */
 export function ReportView({ name, summary }: { name: string; summary: BalanceSummary }) {
   return (
     <article className="bal-report" aria-label="Bericht">
@@ -61,7 +62,9 @@ export function ReportView({ name, summary }: { name: string; summary: BalanceSu
         <Text size="2" color="gray">{summary.seeds} Seeds</Text>
       </div>
       {summary.varianten?.length ? <Text size="2">Varianten: {summary.varianten.join(', ')}</Text> : null}
+      <div className="bal-run-actions"><HtmlButton path={name} /></div>
       <ExportButtons name={name} summary={summary} />
+      <InsightsView path={name} />
       <Targets summary={summary} />
       <Figures summary={summary} />
     </article>

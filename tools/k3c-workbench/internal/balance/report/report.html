@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="de" data-theme="night">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>K3C · Balancing-Bericht __TITLE__</title>
+<style>
+__CSS__
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"><div class="stars"></div><div class="moon"></div></div>
+<main class="wrap">
+  <header class="top">
+    <div class="brand">
+      <img class="sprite castle" data-asset="castle" alt="">
+      <div>
+        <h1>Balancing-Bericht</h1>
+        <p class="sub" id="sub"></p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <span class="verdict" id="verdict"></span>
+      <button class="btn ghost" id="theme" type="button" title="Hell/Dunkel">☀︎ / ☾</button>
+    </div>
+  </header>
+
+  <div class="scene" id="scene" aria-hidden="true"></div>
+
+  <section class="card hero">
+    <div class="hero-text">
+      <h2><img class="ico" data-asset="coin" alt="">Kurzauswertung</h2>
+      <ul id="summary" class="summary"></ul>
+    </div>
+    <div class="lights" id="lights"></div>
+  </section>
+
+  <section class="grid two">
+    <div class="card"><h2><img class="ico" data-asset="tower" alt="">Stärken</h2><ul id="strengths" class="bullets good"></ul></div>
+    <div class="card"><h2><img class="ico" data-asset="enemy" alt="">Schwächen</h2><ul id="weaknesses" class="bullets bad"></ul></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <h2><img class="ico" data-asset="wall" alt="">Ziele</h2>
+      <div class="filters" id="filters"></div>
+    </div>
+    <table class="tbl sortable" id="targets"></table>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <h2><img class="ico" data-asset="axe" alt="">Kennzahlen</h2>
+      <span class="note" id="figure-note"></span>
+    </div>
+    <div class="figure-lights" id="figure-lights"></div>
+    <div class="charts" id="charts"></div>
+    <details class="more"><summary>Tabelle je Grad und Nacht</summary><table class="tbl sortable" id="nights"></table></details>
+  </section>
+
+  <section class="card">
+    <h2><img class="ico" data-asset="pick" alt="">Tuning-Hinweise</h2>
+    <ul id="hints" class="hints"></ul>
+  </section>
+
+  <section class="card next">
+    <h2><img class="ico" data-asset="fire" alt="">Nächster Lauf</h2>
+    <div id="next"></div>
+  </section>
+
+  <section class="card" id="compare-card">
+    <h2>Vergleich mit der Baseline</h2>
+    <div id="compare"></div>
+  </section>
+
+  <footer class="foot" id="foot"></footer>
+</main>
+<div class="tip" id="tip" role="tooltip"></div>
+<script type="application/json" id="report-data">__DATA__</script>
+<script type="application/json" id="report-assets">__ASSETS__</script>
+<script>
+__JS__
+</script>
+</body>
+</html>

@@ -133,7 +133,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-626](B-626-rg1-werte-entscheiden.md) | REG | Frage | mittel | offen | – | Wertvorschläge aus RG1.1 und BR2.1 entscheiden |
 | [B-627](B-627-rg2-regelklaerungen.md) | REG | Frage | mittel | offen | – | Regelklärungen RG2.1 (Handwerker, Verlust-Korridor, Gold-Schwelle) entscheiden |
 | [B-630](B-630-quellen-werden-nicht-uebernommen.md) | DEV | Problem | mittel | offen | – | Quellen werden nicht übernommen |
-| [B-632](B-632-balancing-auswertung-ampeln-html.md) | DEV | Idee | hoch | offen | – | Balancing-Berichte bringen Ampeln, Kurzauswertung, Tuning-Hinweise und einen interaktiven HTML-Bericht |
 | [B-633](B-633-wartegrund-material-tor-text.md) | CLI | Problem | niedrig | offen | – | Wartegrund des Material-Tors heißt nicht mehr „Material der nächsten Insel“ |
 
 ## Archiv
@@ -594,3 +593,4 @@ Zeile in diesen Abschnitt.
 | [B-589](archiv/B-589-holz-balancing-dichter-wald.md) | REG | Idee | mittel | erledigt | BAL7 | Holz-Balancing nach dem dichteren Wald messen und nachziehen |
 | [B-628](archiv/B-628-simtest-checkout-kurzpfad-ci.md) | DEV | Problem | hoch | erledigt | – | TestSimTestMitCheckout scheitert auf dem Windows-Runner an 8.3-Kurzpfaden |
 | [B-631](archiv/B-631-tore-treppen-material-je-stufe.md) | SIM | Idee | hoch | erledigt | – | Tore, Treppen und Material-Tor nutzen nur Material der eigenen Stufe, Bau läuft durchgängig |
+| [B-632](archiv/B-632-balancing-auswertung-ampeln-html.md) | DEV | Idee | hoch | erledigt | – | Balancing-Berichte bringen Ampeln, Kurzauswertung, Tuning-Hinweise und einen interaktiven HTML-Bericht |

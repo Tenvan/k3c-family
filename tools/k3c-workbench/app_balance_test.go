@@ -154,3 +154,35 @@ func TestAuswahlWieGo(t *testing.T) {
 		t.Errorf("GRADES = %v, Go: %v", got, grades)
 	}
 }
+
+// B-632/AC-05, AC-06: Auswertung lesen; „HTML-Bericht öffnen“ schreibt .md/.html eines alten Berichts und öffnet die Datei.
+func TestBalanceAuswertungUndHTML(t *testing.T) {
+	a := balanceApp(t, nil)
+	dir := filepath.Join(a.root, "reports", "simtest-run-4")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	raw, err := os.ReadFile("internal/balance/testdata/insights-run7.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "balance-20261025-062117.json"), raw, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	rel := "reports/simtest-run-4/balance-20261025-062117.json"
+	in, err := a.BalanceInsights(rel)
+	if err != nil || in.Run != "simtest-run-4" || in.Counts[balance.LightRed] != 4 {
+		t.Fatalf("Auswertung: %v %+v", err, in.Counts)
+	}
+	var opened string
+	old := openFile
+	t.Cleanup(func() { openFile = old })
+	openFile = func(p string) error { opened = p; return nil }
+	page, err := a.BalanceReportHTML(rel)
+	if err != nil || page != "reports/simtest-run-4/balance-20261025-062117.html" || filepath.Base(opened) != filepath.Base(page) {
+		t.Fatalf("HTML: %q %q %v", page, opened, err)
+	}
+	if _, err := a.BalanceInsights("reports/tuning-1.json"); err == nil {
+		t.Error("tuning-*.json darf keine Auswertung liefern")
+	}
+}

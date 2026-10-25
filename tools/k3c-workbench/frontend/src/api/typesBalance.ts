@@ -68,6 +68,7 @@ export interface BalanceEntry {
   bot: string;
   depth: number;
   days: number;
+  grade?: string;
   lower: number | null;
   upper: number | null;
   margin?: number;
@@ -165,6 +166,41 @@ export interface BalanceDataValue {
   value: number;
 }
 
+/** Ampel der Auswertung (B-632): grün ok, gelb knapp, rot verletzt, grau ungültig/ohne Messwert. */
+export type Light = 'green' | 'yellow' | 'red' | 'grey';
+
+/** Hebel in data/ (Go: balance.Lever); `step` relativ (0.1 = 10 %). */
+export interface Lever { path: string; direction: '+' | '-'; step: number; label: string }
+
+/** Ziel mit Ampel (Go: balance.TargetInsight); `distance` in % der Korridorbreite, negativ = außerhalb. */
+export interface TargetInsight {
+  name: string; measure: string; kind: string; unit: string; grade: string; scenario: string;
+  value: number; lower: number | null; upper: number | null; status: string; light: Light;
+  distance: number | null; trend: { before: number; delta: number; better: boolean; beforeStatus: string } | null;
+  failSeeds: string[] | null; invalidSeeds: string[] | null; rule: string; levers: Lever[];
+}
+
+/** Kennzahl mit Ampel (Go: balance.FigureLight). */
+export interface FigureLight { key: string; name: string; unit: string; grade?: string; value: number | null; light: Light; text: string }
+
+export interface InsightHint { target: string; light: Light; text: string; why: string; levers: Lever[] }
+
+/** Kopierbarer Befehl; `where`: Chat an Claude, Terminal oder Workbench (Go: balance.Command). */
+export interface InsightCommand { label: string; where: 'chat' | 'shell' | 'workbench'; text: string }
+
+/** Auswertung eines Berichts (Go: balance.Insights, B-632). */
+export interface BalanceInsights {
+  title: string; run: string; generated: string; seeds: number; pass: boolean;
+  counts: Record<Light, number>;
+  summary: string[]; strengths: string[]; weaknesses: string[];
+  targets: TargetInsight[];
+  figures: { note: string; bands: Record<string, [number | null, number | null]>; lights: FigureLight[]; nights: NightFigures[] };
+  hints: InsightHint[];
+  next: { steps: string[]; seeds: string[]; commands: InsightCommand[] };
+  baseline: { present: boolean; note: string; changes: { name: string; before: string; after: string; tipped: boolean }[] };
+  varianten: string[];
+}
+
 export interface BalanceBackend {
   balanceStart(spec: BalanceSpec): Promise<BalanceRun>;
   balanceRuns(): Promise<BalanceRun[]>;
@@ -177,4 +213,8 @@ export interface BalanceBackend {
   balanceDataValues(name: string): Promise<BalanceDataValue[]>;
   balanceReportRate(path: string, rating: ReportRating): Promise<void>;
   balanceReportDelete(path: string): Promise<void>;
+  /** Auswertung eines balance-*.json (B-632). */
+  balanceInsights(path: string): Promise<BalanceInsights>;
+  /** Schreibt .md und .html neu und öffnet den HTML-Bericht; Ergebnis: Pfad relativ zum Checkout. */
+  balanceReportHTML(path: string): Promise<string>;
 }

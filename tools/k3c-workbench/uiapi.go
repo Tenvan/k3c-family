@@ -41,7 +41,7 @@ var uiMethods = map[string]bool{
 	"GitCheckMerged": true, "GitStamp": true, "TicketCreate": true, "TicketRecent": true,
 	"BalanceStart": true, "BalanceRuns": true, "BalanceStop": true, "BalanceReports": true, "BalanceReport": true,
 	"BalanceTuning": true, "BalanceDataFiles": true, "BalanceDataDoc": true, "BalanceDataValues": true,
-	"BalanceReportRate": true, "BalanceReportDelete": true,
+	"BalanceReportRate": true, "BalanceReportDelete": true, "BalanceInsights": true, "BalanceReportHTML": true,
 }
 
 // uiHandler beantwortet alle Adressen unter uiPrefix, alle anderen GET liefern die eingebettete Oberfläche (web.go).

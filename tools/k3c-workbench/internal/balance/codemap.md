@@ -12,6 +12,11 @@ Balancing-Tester (B-099, BAL1/BAL2): spielt eine Szenario-Matrix (Seed x Spieler
 - Sensitivität (`vary.go`, `sensitivity.go`): `variedFS` ändert einen Wert `datei.json:a.b.c` um ±10/±25 % in einer Kopie von `data.Files` im Speicher (`fstest.MapFS`), nur in Dateien, die `sim.UseData` neu lädt (`reloaded`, B-301), `withData` lädt sie per `sim.UseData` und `loadPrices` und stellt danach `data.Files` wieder her; `Targets.Sensitivity` vergleicht die Bewertungen je Variation mit dem unveränderten Lauf (`Flip`), `SensitivityReport.JSON`/`Markdown`.
 - Grad-Kurven (`curves.go`): `Grades` (aus `data/difficulty.json`, nach Wellengröße), `Curves` spielt Wald, 2 Spieler, `saver` je Grad (`Matrix.Grade` → `Scenario.Grade` → `sim.SetGrade` in `newIsland`) und liefert je Nacht Anteil Burg hält, Median zerstörte Gebäude, Median Gold zur Dämmerung.
 - Summary (`summary.go`): `Summary`/`Entry`/`Change`, `RunTargets`, `Summarize`, `Compare` gegen Baseline (selbst ein Summary-JSON), `Summary.Markdown`.
+- Auswertung (B-632, `insights*.go`, `hints.go`): `BuildInsights` → Ampel je Ziel (Abstand in % der Korridorbreite, Trend
+  zur Baseline) und je Kennzahl (Richtwerte und Hebel aus `data/balance-hints.json`), Stärken, Schwächen, Tuning-Hinweise,
+  Kurzauswertung, `NextRun` (Befehle mit Ziel Chat/Terminal/Workbench); `Insights.Markdown`, `Insights.HTML`
+  (`report_html.go`, Vorlage `report/*` per embed, Spielgrafiken aus `public/` als data-URIs); `WriteReports`, `Reevaluate`
+  (CLI `--insights`).
 
 ## Flow
 1. `DefaultTargets` lädt `balance-targets.json` aus `data.Files` und validiert.
