@@ -1,6 +1,6 @@
 # GEB17.2 · Workshop: Ausbauschritte je Inselstufe, Kosten und Material-Tor
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** REG
@@ -50,5 +50,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Vorentschieden (autonom, Claude, 2026-10-25) laut Ralfs Ziel „ohne Nachfragen, kritische Nachfragen in KRT“. Ralf bestätigt über B-623 (KRT).
+- Die 5 Hub-Stufen bleiben, je Stufe 3 Schritte (`hubStep`). Schritt 3 braucht das Material der nächsten Inselstufe (Material-Tor). Die bisherigen Kosten werden auf die Schritte verteilt (ca. 25/25/50 %). Protokoll additiv. Je Schritt eine eigene Burg-Ansicht.

@@ -60,7 +60,7 @@ Zahl der Schritte je Inselstufe (2 oder 3), Kosten und Bauzeit je Schritt, Zahl 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | GEB17.1 | `GEB17.1-ausbau-angebot-burg.md` | Umsetzung | autonom | fertig |
-| GEB17.2 | `GEB17.2-workshop-stufenfolge.md` | Workshop | Mensch | offen |
+| GEB17.2 | `GEB17.2-workshop-stufenfolge.md` | Workshop | Mensch | fertig |
 | GEB17.3 | `GEB17.3-regeln-stufenfolge.md` | Umsetzung | autonom | offen |
 | GEB17.4 | `GEB17.4-sim-protokoll-hubstep.md` | Umsetzung | autonom | offen |
 | GEB17.5 | `GEB17.5-client-schritt-wartegrund.md` | Umsetzung | autonom | offen |
