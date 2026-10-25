@@ -66,7 +66,7 @@ B-351 › Ausnahme- und Fehlerfälle; B-334 › Ausnahme- und Fehlerfälle (Serv
 |---|---|---|---|---|
 | PM1.1 | `PM1.1-diagnose-zeile.md` | Umsetzung | autonom | fertig |
 | PM1.2 | `PM1.2-performance-modus.md` | Umsetzung | autonom | fertig |
-| PM1.3 | `PM1.3-review.md` | Review | autonom | offen |
+| PM1.3 | `PM1.3-review.md` | Review | autonom | fertig |
 | PM1.4 | `PM1.4-messlauf-pc.md` | Workshop | Mensch | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
@@ -78,4 +78,7 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-–
+2026-10-25, Claude (PM1.3): `task check` und `task check:go` grün; `check:race` lokal übersprungen (kein C-Compiler).
+AC-01 erfüllt durch PM1.1 (Diagnose-Zeile alle 5 s), AC-03 bis AC-05 durch PM1.2 (`?perf=1`, Bericht über `/api/report`, Einbrüche mit Begleitwerten).
+Defaults aus der Freigabe: Schalter per URL-Parameter, kein neuer Server-Typ.
+Offen sind AC-02 und AC-06, Messlauf und `sim_test` mit Client durch Ralf (PM1.4). Keine neuen Tickets.
