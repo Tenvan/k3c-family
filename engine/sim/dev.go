@@ -142,7 +142,7 @@ func DevBuildAll(isl *Island, level int) bool {
 		return false
 	}
 	for _, w := range isl.Stages {
-		w.HubLevel = level
+		w.HubLevel, w.HubStep = level, 1
 		if h := w.hubSite; h != nil {
 			h.Upgrade, h.UpgradePaid, h.BuildProgress, h.WorkerID = "", 0, 1, nil
 		}

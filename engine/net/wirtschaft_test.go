@@ -66,17 +66,26 @@ func asJSON(t *testing.T, v any) any {
 	return out
 }
 
+// wantHubUpgrade prüft den ersten Ausbauschritt mit bezahltem Gold im Zustand s (GEB17.4: hubStep, hubUpgrade.steps).
+func wantHubUpgrade(t *testing.T, s map[string]any) {
+	t.Helper()
+	up, _ := s["hubUpgrade"].(map[string]any)
+	mat, _ := up["material"].(map[string]any)
+	if up["gold"] != 13.0 || up["paid"] != 13.0 || up["state"] != "waitingMaterial" || mat["stone"] != 25.0 || up["steps"] != 3.0 {
+		t.Errorf("hubUpgrade: %v", up)
+	}
+	if s["hubStep"] != 1.0 {
+		t.Errorf("hubStep: %v", s["hubStep"])
+	}
+}
+
 func TestWirtschaftZustand(t *testing.T) {
 	_, w := wirtschaftsInsel(t)
 	s := asJSON(t, stateOf(w, 0, false)).(map[string]any)
 	if s["hubLevel"] != 1.0 || s["stockMax"] != 1200.0 {
 		t.Errorf("hubLevel/stockMax: %v %v", s["hubLevel"], s["stockMax"])
 	}
-	up, _ := s["hubUpgrade"].(map[string]any)
-	mat, _ := up["material"].(map[string]any)
-	if up["gold"] != 50.0 || up["paid"] != 50.0 || up["state"] != "waitingMaterial" || mat["stone"] != 100.0 {
-		t.Errorf("hubUpgrade: %v", up)
-	}
+	wantHubUpgrade(t, s)
 	if st := s["stock"].(map[string]any); st["wood"] != 40.0 || st["stone"] != 30.0 || st["copper"] != 12.0 {
 		t.Errorf("stock: %v", st)
 	}

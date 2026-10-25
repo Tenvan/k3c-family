@@ -50,15 +50,17 @@
     ],
     "fighters": 2,
     "hubLevel": 1,
+    "hubStep": 1,
     "hubUpgrade": {
-      "gold": 50,
+      "gold": 13,
       "material": {
         "copper": 0,
-        "stone": 100,
+        "stone": 25,
         "wood": 0
       },
-      "paid": 50,
-      "state": "waitingMaterial"
+      "paid": 13,
+      "state": "waitingMaterial",
+      "steps": 3
     },
     "hubX": 550,
     "merchant": {

@@ -56,7 +56,7 @@ func PreviewHubLevel(w *World, level int) error {
 	if n := len(hubOf(w).Levels); level < 1 || level > n {
 		return fmt.Errorf("vorschau: Hub-Stufe %d außerhalb von 1 bis %d", level, n)
 	}
-	w.HubLevel = level
+	w.HubLevel, w.HubStep = level, 1
 	if h := w.hubSite; h != nil {
 		h.Upgrade, h.UpgradePaid, h.BuildProgress, h.WorkerID = "", 0, 1, nil
 	}

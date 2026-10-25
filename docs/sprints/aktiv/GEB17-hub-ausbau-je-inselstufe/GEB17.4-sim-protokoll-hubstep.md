@@ -1,6 +1,6 @@
 # GEB17.4 · Daten, Simulation und Protokoll setzen die Ausbauschritte um (hubStep)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -50,5 +50,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03: umgesetzt.
+  - `data/hub.json` hat `levels[].steps`; die Summen entsprechen genau den alten Kosten und Bauzeiten, dazu kommt das Tor (20 Kupfer, Eisen bzw. Kristall).
+  - `World.HubStep`: Schritt 3 hebt `HubLevel`. Der Zustand meldet `hubStep`, `hubUpgrade.steps` und den Wartegrund `waitingNextIsland`.
+  - Der Spielstand speichert `hubStep` additiv. Protokoll und Beispiele sind nachgezogen.
+- Geprüft mit `go test ./engine/... ./cmd/... ./tools/...` (neu `hub_step_test.go`, 2 Spieler) und golangci-lint. Golden ist unverändert (kein Golden-Lauf baut den Hub aus).
+- Review (Opus): APPROVE, kein Deadlock. Kupfer kommt über den Tiefen-Eingang aus der Mine oder vom Händler.
+- Risiko: Das Balancing ändert sich, weil Hub-Stufe 2 jetzt Kupfer braucht; die Messung kommt mit einem eigenen Sprint.
