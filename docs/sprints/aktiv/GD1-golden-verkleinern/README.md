@@ -56,7 +56,7 @@ Gewählter Weg macht Diffs unlesbar → Lesehilfe (`task`) oder anderer Weg, im 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | GD1.1 | `GD1.1-wege-messen.md` | Workshop | Mensch | fertig |
-| GD1.2 | `GD1.2-golden-gzip.md` | Umsetzung | autonom | in Arbeit |
+| GD1.2 | `GD1.2-golden-gzip.md` | Umsetzung | autonom | fertig |
 | GD1.3 | `GD1.3-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.

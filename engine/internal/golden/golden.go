@@ -3,12 +3,15 @@ package golden
 
 import (
 	"bytes"
+	"compress/gzip"
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"slices"
 	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -95,10 +98,7 @@ type File struct {
 // ReadFile liest eine Golden-Datei mit der Reihenfolge ihrer Schlüssel.
 func ReadFile(t testing.TB, path string) *File {
 	t.Helper()
-	raw, err := os.ReadFile(path)
-	if err != nil {
-		t.Fatal(err)
-	}
+	raw := Read(t, path)
 	f := &File{vals: map[string]json.RawMessage{}, crlf: bytes.Contains(raw, []byte("\r\n"))}
 	dec := json.NewDecoder(bytes.NewReader(raw))
 	if tok, err := dec.Token(); err != nil || tok != json.Delim('{') {
@@ -190,7 +190,44 @@ func (f *File) Write(t testing.TB, path string) {
 	if f.crlf {
 		out = bytes.ReplaceAll(out, []byte("\n"), []byte("\r\n"))
 	}
-	if err := os.WriteFile(path, out, 0o644); err != nil {
+	write(t, path, out)
+}
+
+// Read liest eine Golden-Datei; endet der Name auf .gz, entpackt es sie (GD1, B-624). Der Inhalt ist derselbe JSON-Text.
+func Read(t testing.TB, path string) []byte {
+	t.Helper()
+	raw, err := os.ReadFile(path)
+	if err == nil && strings.HasSuffix(path, ".gz") {
+		var zr *gzip.Reader
+		if zr, err = gzip.NewReader(bytes.NewReader(raw)); err == nil {
+			raw, err = io.ReadAll(zr)
+		}
+	}
+	if err != nil {
+		t.Fatalf("%s: %v", path, err)
+	}
+	return raw
+}
+
+// write schreibt data nach path, bei .gz gepackt mit festem Kopf (ohne Zeit, Name und Kommentar): Gleicher Inhalt
+// ergibt dieselben Bytes, `task go:golden` ohne Änderung erzeugt keinen Diff.
+func write(t testing.TB, path string, data []byte) {
+	t.Helper()
+	if strings.HasSuffix(path, ".gz") {
+		var b bytes.Buffer
+		zw, err := gzip.NewWriterLevel(&b, gzip.BestCompression)
+		if err == nil {
+			_, err = zw.Write(data)
+		}
+		if err == nil {
+			err = zw.Close()
+		}
+		if err != nil {
+			t.Fatalf("%s: %v", path, err)
+		}
+		data = b.Bytes()
+	}
+	if err := os.WriteFile(path, data, 0o644); err != nil {
 		t.Fatal(err)
 	}
 }

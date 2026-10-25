@@ -1,6 +1,6 @@
 # GD1.2 · Golden als gzip mit lesbaren Diffs, Abweichungs-Test
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -50,5 +50,11 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 und AC-02: umgesetzt.
+  - 15 Golden-Dateien (`sim-*`, `campaign-*`) liegen als `.json.gz`, entpackt byte-gleich mit vorher; `snapshotEvery` ist unverändert.
+  - Größe: vorher 18 756 751 B, nachher 760 737 B.
+  - `engine/internal/golden` liest und schreibt gz deterministisch (Zeitstempel 0, zweiter Lauf ohne Diff).
+  - Diffs bleiben lesbar über `.gitattributes` `diff=gzip` und `task go:golden-setup`; die Anleitung steht in `docs/arbeitsweise.md`.
+  - Die Grenze liegt wieder bei 16 MB.
+- Geprüft mit `task check` und `task check:go` (grün), Studio `go test` und Vitest. Abweichungs-Test `golden_gz_test.go`: ein geändertes `stock.wood` wird erkannt.
+- `level-*.json` und `rng.json` bleiben JSON, weil der Studio-Test sie importiert.
