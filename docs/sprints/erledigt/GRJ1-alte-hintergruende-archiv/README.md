@@ -1,14 +1,14 @@
 # GRJ1 · CLI · Alte Biom-Hintergründe mit Lizenz im Archiv
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** GRJ
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-453
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt; Ort: Git-Tag archiv/hintergruende-vor-geb7)
 
 ## Ausgangslage
 
@@ -52,6 +52,11 @@ Pack ohne erhaltene Lizenz → nicht archivieren, im Ergebnis nennen.
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| GRJ1.1 | `GRJ1.1-archiv-tag.md` | Umsetzung | autonom | fertig |
+| GRJ1.2 | `GRJ1.2-review.md` | Review | autonom | fertig |
+
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - GRJ1.1 (CLI) Alte Hintergründe mit Lizenz ins Archiv (AC-01).
@@ -59,5 +64,4 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-25, Claude (GRJ1.2): AC-01 erfüllt durch GRJ1.1 (Tag `archiv/hintergruende-vor-geb7` mit Bildern und Lizenzen auf origin). `task check` grün. Keine neuen Tickets.

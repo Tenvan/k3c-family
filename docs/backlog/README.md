@@ -82,7 +82,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-422](B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | eingeplant | W11 | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
 | [B-435](B-435-gebaeude-grafik-per-prompt.md) | DEV | Idee | mittel | eingeplant | GEB1 | Gebäude und Strukturen entstehen im Asset-Manager aus Beschreibung und Prompt |
 | [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | eingeplant | GEB6 | Werkstatt und Bäume aus tools/buildings erscheinen im Spiel |
-| [B-453](B-453-alte-biom-hintergruende-aufbewahren.md) | CLI | Idee | mittel | eingeplant | GRJ1 | Alte Biom-Hintergründe (Packs) als Grafik aufbewahren |
 | [B-454](B-454-baeume-hoeher-dichter-hoehle-wurzeln.md) | DEV | Problem | hoch | eingeplant | GEB10 | Bäume höher und dichter, Höhle mit eigener Unterwelt-Flora (Wurzeln) |
 | [B-455](B-455-truhe-geschlossen.md) | DEV | Idee | mittel | eingeplant | GEB10 | Truhe gibt es auch geschlossen |
 | [B-456](B-456-fahne-spielerfarbe-wimpel.md) | CLI | Idee | mittel | eingeplant | GEB10 | Markierungsfahne als Wimpel in Spielerfarbe |
@@ -592,3 +591,4 @@ Zeile in diesen Abschnitt.
 | [B-327](archiv/B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | erledigt | KB1 | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
 | [B-419](archiv/B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | erledigt | GD1 | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
 | [B-620](archiv/B-620-golden-grenze-20-mb.md) | INF | Frage | mittel | erledigt | – | Golden-Grenze 20 MB nach dem dichteren Wald bestätigen |
+| [B-453](archiv/B-453-alte-biom-hintergruende-aufbewahren.md) | CLI | Idee | mittel | erledigt | GRJ1 | Alte Biom-Hintergründe (Packs) als Grafik aufbewahren |
