@@ -8,9 +8,9 @@
 - **Sprint:** BAL6
 - **Projekt:** BAL
 - **Erstellt:** 2026-10-05
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25
 
 ## Ausgangslage
 

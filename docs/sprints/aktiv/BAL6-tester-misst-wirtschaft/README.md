@@ -1,14 +1,14 @@
 # BAL6 · SIM · Balancing-Tester misst die Wirtschaft
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAL
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-347, B-300, B-301, B-099
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt; Default: neues Profil wirtschaft, saver bleibt; keine Wertänderungen in data/ außer Zielen in balance-targets.json)
 
 ## Ausgangslage
 
@@ -53,6 +53,12 @@ B-347 › Ausnahme- und Fehlerfälle (Kennzahl ohne Ereignis: aus dem Zustand ab
 - Ein neues Standardprofil statt `saver` umbauen? 🧑, blockiert BAL6.1.
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BAL6.1 | `BAL6.1-wirtschaft-messen.md` | Umsetzung | autonom | in Arbeit |
+| BAL6.3 | `BAL6.3-profil-sensitivitaet.md` | Umsetzung | autonom | offen |
+| BAL6.2 | `BAL6.2-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
