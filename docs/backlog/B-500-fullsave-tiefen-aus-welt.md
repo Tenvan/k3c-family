@@ -8,9 +8,9 @@
 - **Sprint:** SV2
 - **Projekt:** WRT
 - **Erstellt:** 2026-10-19
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25
 
 ## Ausgangslage
 

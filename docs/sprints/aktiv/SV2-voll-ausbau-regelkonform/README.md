@@ -1,14 +1,14 @@
 # SV2 · SRV · Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WRT
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-500, B-425, B-426
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt; offene Frage: DevBuildAll je Inselstufe reicht, Default ja)
 
 ## Ausgangslage
 
@@ -53,6 +53,12 @@ Voll-Stand anlegen → Inselstufe mit Hub 2 hat keine Mauer Stufe 3, keine Rüst
 🧑: Reicht `DevBuildAll(isl, level)` je Inselstufe (B-425)?
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| SV2.1 | `SV2.1-voll-stand-regelkonform.md` | Umsetzung | autonom | in Arbeit |
+| SV2.2 | `SV2.2-store-test-content-type.md` | Umsetzung | autonom | offen |
+| SV2.3 | `SV2.3-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
