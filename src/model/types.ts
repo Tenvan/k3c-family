@@ -62,7 +62,11 @@ export type PlayerAction =
   | { action: 'learn'; skills?: string[] }
   | { action: 'respec' }
   /** Der Spieler ist am Bau des wartenden Endbosses (B-563): Ankunft löst ihn aus. */
-  | { action: 'lair' };
+  | { action: 'lair' }
+  /** Ausbilden am Gebäude (W11.3, B-410): Beruf, den das Bezahlen vergibt. */
+  | { action: 'train'; profession: string }
+  /** Tauschen beim Händler (W11.3, B-410): kaufen oder verkaufen, Material. */
+  | { action: 'trade'; side: 'buy' | 'sell'; resource: string };
 
 export interface Coin {
   id: number;
@@ -145,6 +149,8 @@ export interface Site {
   upgradePaid?: number;
   /** Ruine der Planung (docs/rules/geplante-chunks.md § 8); fehlt = keine Ruine. */
   ruin?: boolean;
+  /** Platz-Stufe: ab dieser Hub-Stufe bezahlbar (B-208); fehlt = älterer Server. */
+  hubLevel?: number;
   /** Nimmt jetzt Münzen für Bau oder Ausbau (Server, B-587); fehlt = nein. */
   payable?: boolean;
 }

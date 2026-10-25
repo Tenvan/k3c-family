@@ -17,6 +17,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | GEB18 | DEV, SIM, CLI | GEB | Hintergründe der fünf Stufen: vierfache Auflösung, fünf Varianten je Stufe nach Seed | – | `aktiv/GEB18-hintergruende-detail-varianten/` |
 | GEB15 | DEV | GEB | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | – | `aktiv/GEB15-hoehle-fels-varianten/` |
 | GEB16 | SRV, CLI, DEV, REG | GEB | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | – | `aktiv/GEB16-bauschilder-wald-geruest/` |
+| W11 | REG, SRV, CLI | WRT | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | – | `aktiv/W11-bauplaetze-protokoll-abstand/` |
 | SO8 | DEV, CLI | SND | Skill-Sounds je Klasse | – | `aktiv/SO8-skill-sounds-je-klasse/` |
 | BT1 | SRV, DEV | REL | Server im Heimnetz finden, Windows-Starter, Start mit Seed | – | `aktiv/BT1-heimnetz-start/` |
 | KR1 | REG | KRT | Kritische Fragen zu BED | – | `aktiv/KR1-fragen-bed/` |
@@ -42,7 +43,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | ST1 | SRV | LST | Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik | HUD zeigt „gesichert“, Spielstände überstehen gesperrte Dateien, `reports/` bleibt begrenzt | Entwurf | `geplant/ST1-speichern-robust/` |
 | TR4 | PLAT, SRV | TST | Bot-Eingabe ohne verlorene Drücke, Beobachter ohne Platz im Raum | – | Entwurf | `geplant/TR4-bot-feed-beobachter/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
-| W11 | REG, SRV, CLI | WRT | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | – | Entwurf | `geplant/W11-bauplaetze-protokoll-abstand/` |
 | GD1 | INF | TST | Golden-Daten kleiner bei gleicher Prüfschärfe | – | Entwurf | `geplant/GD1-golden-verkleinern/` |
 | KB1 | SIM | KMP | Kampf-Nachträge: Mond-Events, Endboss-Bau, Golden-Läufe, Feuergeist | – | Entwurf | `geplant/KB1-events-boss-golden/` |
 | KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | Entwurf | `geplant/KB4-dev-aktionen-boss-event/` |

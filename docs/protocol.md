@@ -5,6 +5,10 @@
 offene Raum speichert, seine Geräte bekommen `room_closed` und gehen zurück zur Raumliste. `hello.v` muss 9 sein; ein
 v8-Client erhält `version`. Beispiel: `s2c-rooms.json`.
 
+**Nachgetragen ohne neue Version (W11.3, B-410):** `actions` kennt `{ "action": "train", "profession" }` (Ausbilden am Berufs-Angebot) und `{ "action": "trade", "side", "resource" }` (Tauschen am Händler; Beispiel `s2c-snapshot-wirtschaft.json`). Anzeige im Client ab W11.4.
+
+**Nachgetragen ohne neue Version (W11.2, B-208, B-408):** `sites[].hubLevel` (Platz-Stufe); unbezahlte Plätze über Hub-Stufe + 1 fehlen im Zustand (siehe *Wirtschaft*). Ein älterer Client ignoriert das Feld und zeichnet weniger Plätze.
+
 **Nachgetragen ohne neue Version (SK3, B-577):** Spieler in `snap`/`delta` tragen optional `stealthFor` (Sekunden unsichtbar nach Smoke Bomb; fehlt = sichtbar). Neue Skill-IDs `backstab`, `smokeBomb` in `skills`, `slots` und `actions`. Ein älterer Client ignoriert das Feld.
 
 **Nachgetragen ohne neue Version (KB3, B-563):** `actions` kennt `{ "action": "lair" }`: ein lebender Spieler ist näher als `lair.noticeUnits` (`data/bosses.json`) am Bau eines wartenden Endbosses (`sim.AtLair`; nicht ausgelöst, nicht besiegt). Ein älterer Client ignoriert den Eintrag.
@@ -400,9 +404,13 @@ Felder je Spieler in `players[]` von `snap` und `delta`:
 `input.p[].skill`), `{ "action": "learn", "skills": [id, …] }` mit den Skills, die der Spieler jetzt lernen darf
 (Punkte frei, nicht gelernt, Tier-Gating; nach ID sortiert, von `sim.LearnableSkills` berechnet; fehlt, wenn keiner
 lernbar ist; B-285). Ein älterer Server sendet `learn` ohne `skills` bei `points` > 0, der Client behandelt dann jeden
-ungelernten Skill als lernbar. Zuletzt `{ "action": "respec" }` (lebt, `sim.CanRespec` erlaubt: Tag und an der
-Burg, auch ohne gelernte Skills; B-495) und `{ "action": "lair" }` (lebt, am Bau des wartenden Endbosses: näher als `lair.noticeUnits`, Ankunft innerhalb `lair.triggerUnits` löst ihn aus; B-563; der Client zeigt eine Zeile ohne Taste). Die Liste nennt keine Taste,
-die Belegung gehört dem Client. Berufe, Tausch, Grabstein und Wiederbeleben kommen später (W5, B-120).
+ungelernten Skill als lernbar. Dann `{ "action": "respec" }` (lebt, `sim.CanRespec` erlaubt: Tag und an der
+Burg, auch ohne gelernte Skills; B-495), `{ "action": "train", "profession": "miner" | "builder" | "craftsman" }`
+(Ausbilden: lebt, hat Gold, das Zahlziel am Ort ist ein bezahlbares Berufs-Angebot; `sim.TrainAt`; B-410) oder
+`{ "action": "trade", "side": "buy" | "sell", "resource": id }` (Tauschen am Händler: Kaufen mit Gold und Platz im
+Lager, Verkaufen mit genug `resource` im Vorrat; `sim.TradeAt`; B-410; höchstens einer der beiden, Bezahlen bleibt
+`input.pay`) und zuletzt `{ "action": "lair" }` (lebt, am Bau des wartenden Endbosses: näher als `lair.noticeUnits`, Ankunft innerhalb `lair.triggerUnits` löst ihn aus; B-563; der Client zeigt eine Zeile ohne Taste). Die Liste nennt keine Taste,
+die Belegung gehört dem Client. Grabstein und Wiederbeleben kommen später (W5, B-120). Unbekannte Aktionen ignoriert der Client mit Log (W11.4).
 
 ### Wirtschaft: Hub, Lager, Wartegrund, Händler
 
@@ -432,6 +440,13 @@ vom Server je Stufe abgelesen; die übrigen aus der Welt):
 `sites[].upgrade` (`waitingMaterial`, `waitingWorker`; fehlt ohne Ausbau oder solange Gold offen) mit `upgradePaid` und
 `level` (fehlt = 1) für den Ausbau von Mauer und Turm, `hubUpgrade.state` für den Hub. `waitingWorker` heißt bei
 `danger` „Gefahr“, sonst „kein Bauer“; den Text bildet der Client.
+
+**Platz-Stufe und Sichtbarkeit (W11.2, B-208, B-408):** `sites[].hubLevel` ist die Hub-Stufe, ab der ein Platz
+bezahlbar ist (`sim.SiteHubLevel`: Hub-Plätze nach `data/hub.json`, Mauer und Turm der Linie k ab k, Tor ab
+`max(gateHubLevel, k)`). Der Zustand nennt unbezahlte Plätze nur bis zur nächsten Hub-Stufe (`hubLevel` ≤ Hub-Stufe + 1,
+`sim.SiteVisible`); bezahlte, angezahlte, wartende und gebaute Plätze stehen immer darin. Steigt die Hub-Stufe, kommen
+die Plätze der neuen nächsten Stufe im `delta` unter `sites.set`. Additiv, keine neue Version; ein älterer Server sendet
+alle Plätze ohne `hubLevel`. Geprüft von `engine/net/sites_test.go`.
 
 **Ruinen (WZ14, B-468):** `sites[].ruin` ist `true` an einer Ruine der Planung (`docs/rules/geplante-chunks.md` § 8),
 auch nach Zerstörung und Wiederaufbau; sonst fehlt das Feld (additiv, Protokoll bleibt 7). Eine Ruine ist ein Platz wie
