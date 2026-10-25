@@ -1,6 +1,6 @@
 # NT1.2 · Warteschlange, verworfene Ereignisse, Snapshot-Budget
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -50,5 +50,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04 bis AC-06: umgesetzt.
+  - B-280: Ein neuer Zustand ersetzt den wartenden Zustand derselben Stufe, auch über andere Nachrichten hinweg (`engine/net/queue.go`, neuer Test).
+  - B-190: `eventsDropped` gilt je Zustand und zählt auch ersetzte Zustände. Der Client warnt mit 🤒 am Beginn einer Reihe; den Zustand dafür hält jetzt der Strom (Review-Fix). Protokoll und Beispiel `s2c-snapshot-delta-dropped.json` sind ergänzt.
+  - B-263 gemessen (40 Plätze, 4 Spieler, 1800 Ticks): `snap` Ø 26,2 KB, `delta` Ø 2,5 KB, Ereignisse Ø 9 B, also im Budget Q08. Der Wert steht in `docs/protocol.md`.
+- Geprüft mit `go test ./engine/... ./cmd/...`, golangci-lint und `task check`, alle grün. Review (Opus): APPROVE.
+- Abweichung: Zwei Tests sind an das neue Verhalten angepasst (Stufe 0 bekommt `snap 10` statt `snap 1, delta 10`). Laut Review ist das korrekt.

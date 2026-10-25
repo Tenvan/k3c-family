@@ -69,7 +69,52 @@ func TestBlockierteVerbindungVerwirftAlteZustaende(t *testing.T) {
 	}
 }
 
-// Ein verworfener Zustand gibt seine Ereignisse an den neuesten weiter; andere Nachrichten werden nie ersetzt.
+// B-280/AC-01: Zustand und andere Nachricht abwechselnd, zusammen mehr als sendBuffer, ohne Senden: Die Verbindung
+// bleibt, je Stufe wartet nur der neueste Zustand hinter den anderen Nachrichten; nach dem Anwenden hat der Client den
+// Zustand des Servers.
+func TestZustaendeZwischenAnderenNachrichtenStauenNicht(t *testing.T) {
+	m := room.NewManager(memSaves{})
+	NewHandler(Config{Rooms: m})
+	cancelled := false
+	c := queueConn("wackelig", &cancelled)
+	r, err := m.Create(c.device, c, "wackelig", true, 0, []int{0}, room.Options{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	msgs := drain(t, c)
+	client := msgs[2]["s"].(map[string]any)
+	const rounds = sendBuffer/2 + 8 // 2 Nachrichten je Runde: mehr als sendBuffer
+	for range rounds {
+		c.Seats(nil, nil)
+		r.Tick()
+	}
+	c.qmu.Lock()
+	queued, last := len(c.queue), c.queue[len(c.queue)-1]
+	c.qmu.Unlock()
+	if cancelled || queued != rounds+1 || last.state == nil {
+		t.Fatalf("getrennt %v, %d Nachrichten, zuletzt ein Zustand: %v", cancelled, queued, last.state != nil)
+	}
+	msgs = drain(t, c)
+	for _, msg := range msgs[:rounds] {
+		if msg["t"] != "seats" {
+			t.Fatalf("erwartet erst alle seats: %v", msg["t"])
+		}
+	}
+	d := msgs[rounds]
+	if d["t"] != "delta" || d["tick"] != float64(last.tick) {
+		t.Fatalf("erwartet delta zu Tick %d: %v %v", last.tick, d["t"], d["tick"])
+	}
+	client = apply(client, d["s"].(map[string]any))
+	want := wire(t, last.state)
+	delete(client, "events")
+	delete(want, "events")
+	if !reflect.DeepEqual(client, want) {
+		t.Fatal("Client-Zustand nach dem Delta weicht vom Server ab")
+	}
+}
+
+// Ein verworfener Zustand gibt seine Ereignisse an den neuesten weiter; andere Nachrichten werden nie ersetzt, der
+// neueste Zustand steht hinter ihnen (B-280).
 func TestVerworfenerZustandBehaeltEreignisse(t *testing.T) {
 	cancelled := false
 	c := queueConn("x", &cancelled)
@@ -78,7 +123,7 @@ func TestVerworfenerZustandBehaeltEreignisse(t *testing.T) {
 	c.push(out{state: map[string]any{"events": []any{"b"}}, tick: 3})
 	c.push(out{data: []byte(`{"t":"seats"}`)})
 	c.push(out{state: map[string]any{"events": []any{}}, tick: 4})
-	if len(c.queue) != 3 || c.queue[0].tick != 3 || !reflect.DeepEqual(c.queue[0].events, []any{"a", "b"}) || c.queue[2].events != nil {
+	if len(c.queue) != 2 || c.queue[0].data == nil || c.queue[1].tick != 4 || !reflect.DeepEqual(c.queue[1].events, []any{"a", "b"}) {
 		t.Fatalf("Warteschlange: %+v", c.queue)
 	}
 }

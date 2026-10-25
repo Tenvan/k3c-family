@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import droppedMsg from '../../testdata/protocol/s2c-snapshot-delta-dropped.json';
 import timescaleMsg from '../../testdata/protocol/s2c-snapshot-delta-timescale.json';
 import { applyDelta } from './clientDelta';
 
@@ -34,6 +35,12 @@ describe('applyDelta', () => {
   it('events fehlt: leer; events vorhanden: ersetzt', () => {
     expect(applyDelta(base, { time: 2 }).events).toEqual([]);
     expect(applyDelta(base, { events: [{ type: 'y' }] }).events).toEqual([{ type: 'y' }]);
+  });
+
+  it('eventsDropped gilt nur für seinen Zustand: aus dem Beispiel 7, im nächsten Delta ohne Feld 0 (B-190)', () => {
+    const dropped = applyDelta(base, droppedMsg.s);
+    expect(dropped.eventsDropped).toBe(7);
+    expect(applyDelta(dropped, { time: 2 })).not.toHaveProperty('eventsDropped');
   });
 
   it('ein Eintrag, der im selben Delta gesetzt und gelöscht wird, bleibt gelöscht', () => {
