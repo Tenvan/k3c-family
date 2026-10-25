@@ -10,6 +10,7 @@ import { damageTint, drawDamage, drawRubble } from './damageView';
 import { fontStyle } from './fontRules';
 import { gateStage } from './gateRules';
 import { hubLookOf } from './hubGrowth';
+import { drawScaffoldShape, scaffoldTexture, siteMarker } from './scaffoldView';
 import { drawSiteStatus, siteStatus, statusKey } from './siteStatusView';
 import { canAfford } from './viewRules';
 
@@ -127,11 +128,12 @@ function siteStage(s: Site, world: World): number {
 }
 
 /** `near`: Das Preisschild dieses Bauplatzes steht, weil es für einen Spieler das nächste ist (`priceTagRules.ts`, B-395) */
-export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: World, near: boolean, buildable = true): void {
+export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: World, near: boolean): void {
   const data = BUILDINGS[s.kind];
   const wait = siteStatus(s, world.danger);
   const stage = siteStage(s, world);
-  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, data.cost), currentLanguage(), statusKey(wait), stage, s.ruin === true, buildable].join('|'); // stage: Mauer/Turm je Stufe (GEB3), Tor je Mauerlinie (GEB4)
+  const marker = siteMarker(s); // Bauschild oder Gerüst im Bau, nie beides (B-586)
+  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, data.cost), currentLanguage(), statusKey(wait), stage, s.ruin === true, marker].join('|'); // stage: Mauer/Turm je Stufe (GEB3), Tor je Mauerlinie (GEB4)
   if (v.getData('key') === key) return;
   v.setData('key', key);
 
@@ -153,13 +155,23 @@ export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: Wor
     return;
   }
 
-  // Noch nicht gebaut: Bauschild (B-584) + Preisschild bzw. Baufortschritt
-  if (buildable) drawBuildSign(g, s.kind); // nur Plätze, die jetzt Münzen annehmen
-  if (s.buildProgress > 0) {
-    g.fillStyle(0xdda15e, 0.8).fillRect(-w / 2, -h * s.buildProgress, w, h * s.buildProgress);
-  }
+  // Noch nicht gebaut: Bauschild (B-584) nur bei payable, im Bau das Gerüst (B-586) mit Fortschrittsbalken darüber
+  if (marker === 'sign') drawBuildSign(g, s.kind);
+  const top = marker === 'scaffold' ? showScaffold(scene, v, g, s.kind, w, h) : h;
+  if (s.buildProgress > 0) drawBar(g, -top - 12, 80, s.buildProgress, 0xdda15e);
   if (s.state === 'unpaid' && near) drawPrice(g, label, world, -h - 20, data.cost.gold ?? 0, s.paidGold, siteName(s.kind), data.cost);
-  if (wait) drawSiteStatus(g, label, wait, siteName(s.kind), -h - 20);
+  if (wait) drawSiteStatus(g, label, wait, siteName(s.kind), -top - 20);
+}
+
+/** Gerüst der Größenklasse als Bild, ohne geladene Grafik die gezeichnete Form; liefert die Höhe für Balken und Status darüber */
+function showScaffold(scene: Phaser.Scene, v: View, g: Phaser.GameObjects.Graphics, kind: Site['kind'], w: number, h: number): number {
+  const key = scaffoldTexture(kind);
+  if (!has(scene, key)) {
+    drawScaffoldShape(g, w, h);
+    return h;
+  }
+  const picture = (v.getAt(0) as Phaser.GameObjects.Image).setTexture(key).setScale(textureScale(key)).setVisible(true);
+  return picture.displayHeight;
 }
 
 /** Über einem gebauten Gebäude: Treppen-Schild, Lebensbalken, Bögen und Bogen-Preis der Werkstatt */

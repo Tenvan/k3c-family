@@ -83,3 +83,46 @@ func TestStoreSessionLegtNeueDateiAn(t *testing.T) {
 		t.Fatalf("Liste angenommen: %v", err)
 	}
 }
+
+// ST1.2 (B-272/AC-01): StoreSession begrenzt session-*.json auf MaxReports, die neuesten bleiben; Gamepad-Berichte
+// daneben bleiben unberührt, und Store verdrängt umgekehrt keine Sessions.
+func TestSessionReportsRotierenOhneGamepadBerichte(t *testing.T) {
+	dir := t.TempDir()
+	start := time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)
+	name := func(prefix string, i int) string {
+		return prefix + start.Add(time.Duration(i)*time.Minute).Format("2006-01-02T15-04-05-000Z") + ".json"
+	}
+	for i := range MaxReports + 5 {
+		if err := os.WriteFile(filepath.Join(dir, name("session-", i)), []byte(`{}`), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	for i := range 3 {
+		if err := os.WriteFile(filepath.Join(dir, name("gamepad-", i)), []byte(`{}`), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	r := &Reports{Dir: dir, Now: func() time.Time { return start.Add(1000 * time.Minute) }}
+	if _, err := r.StoreSession([]byte(`{"schema":1}`)); err != nil {
+		t.Fatal(err)
+	}
+	sessions, _ := filepath.Glob(filepath.Join(dir, "session-*.json"))
+	if len(sessions) != MaxReports {
+		t.Fatalf("Sessions: %d, erwartet %d", len(sessions), MaxReports)
+	}
+	for i := range MaxReports + 5 {
+		_, err := os.Stat(filepath.Join(dir, name("session-", i)))
+		if gone := os.IsNotExist(err); gone != (i <= 5) {
+			t.Errorf("Session %d gelöscht = %v", i, gone)
+		}
+	}
+	if n := r.Count(); n != 3 {
+		t.Fatalf("Gamepad-Berichte: %d, erwartet 3", n)
+	}
+	if _, err := r.Store([]byte(`{}`), "1.2.3.4"); err != nil {
+		t.Fatal(err)
+	}
+	if after, _ := filepath.Glob(filepath.Join(dir, "session-*.json")); len(after) != MaxReports {
+		t.Fatalf("Store hat Sessions verdrängt: %d", len(after))
+	}
+}

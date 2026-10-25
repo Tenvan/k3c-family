@@ -5,7 +5,8 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { resetMockSuggestions, setMockSuggestionsOffline } from '../api/mockSuggestions';
 import { ChatPanel } from './ChatPanel';
-import { setChatOpen } from './chatBridge';
+import { chatContext, chatTask, setChatOpen, useAssignContext } from './chatBridge';
+import type { AssignContext } from '../api/chatTypes';
 import { button, flush, waitFor } from './chatTestKit';
 import { SuggestionList } from './SuggestionList';
 import { formatSize } from './SuggestionCard';
@@ -84,6 +85,30 @@ describe('Vorschlagskarten (WZ30.5/AC-05)', () => {
     host!.remove();
     const sound = await mountNode(<ChatPanel page="sound" />);
     expect(sound.querySelector('[data-testid="suggestions"]')).not.toBeNull();
+  });
+});
+
+describe('Vorschlagskarten mit Vorrat und Seitenkontext (WZ29.7)', () => {
+  it('sperrt „Übernehmen“, solange die Datei nicht im Vorrat liegt (Download nur über Quellen)', async () => {
+    const h = await mountNode(<SuggestionList kind="grafik" />);
+    const offen = cards(h)[1]!;
+    expect(inCard(offen, 'Übernehmen').disabled).toBe(true);
+    expect(offen.textContent).toContain('erst auf der Seite Quellen laden');
+    expect(offen.querySelector('img')).toBeNull();
+  });
+
+  it('nimmt den Slot aus dem Seitenkontext und macht Nachrichten zu Zuordnungs-Aufträgen (WZ29.7)', async () => {
+    const ctx: AssignContext = { seite: 'grafik', slot: 'tavern', filter: 'Status luecke' };
+    function Page() { useAssignContext(ctx); return <ChatPanel page="grafik" />; }
+    const h = await mountNode(<Page />);
+    await waitFor(() => cards(h).length === 2);
+    expect(cards(h).map((c) => c.dataset.slot)).toEqual(['tavern', 'tavern']);
+    expect(chatTask()).toBe('zuordnung');
+    expect(chatContext()).toEqual(ctx);
+    expect(h.querySelector('[data-testid="chat-assign"]')?.textContent).toContain('Grafik · Slot tavern · Status luecke');
+    act(() => root!.unmount());
+    root = null;
+    expect(chatTask()).toBeUndefined();
   });
 
   it('formatiert Größen', () => {

@@ -3,7 +3,7 @@ import { renderReference, type Card } from '@game/tools/spriteReference';
 import { useEffect, useRef } from 'react';
 import { fileUrl } from '../assets/assets';
 import { Pixel, ladeBild, pixelContext } from './pixel';
-import { figureCard, GRAFIK_SCALE, licenseFlag, type Resolved } from './scenesLogic';
+import { figureCard, grafikScale, licenseFlag, type Resolved } from './scenesLogic';
 
 // Karten der Slot-Szenen (umgezogen aus der früheren Asset-Vorschau): Bildkarte im Spielmaßstab mit Ausschnitt,
 // NC-Kennzeichen, Lücke und fehlende Datei markiert; Figuren über renderReference aus dem Spiel-Code.
@@ -27,7 +27,8 @@ export function ImageCard({ r }: { r: Resolved }) {
     if (!c) return;
     const img = await ladeBild(fileUrl(c.datei));
     const cut = c.ausschnitt ?? { x: 0, y: 0, w: img.width, h: img.height };
-    pixelContext(canvas, cut.w * GRAFIK_SCALE, cut.h * GRAFIK_SCALE)?.drawImage(img, cut.x, cut.y, cut.w, cut.h, 0, 0, canvas.width, canvas.height);
+    const scale = grafikScale(c.datei);
+    pixelContext(canvas, Math.round(cut.w * scale), Math.round(cut.h * scale))?.drawImage(img, cut.x, cut.y, cut.w, cut.h, 0, 0, canvas.width, canvas.height);
   };
   return (
     <figure className="sz-fig">

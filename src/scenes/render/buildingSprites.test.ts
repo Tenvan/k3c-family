@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { BUILDINGS } from '../../model/data';
 import { BUILDING_TEXTURES, HUB_SCAFFOLD_TEXTURE, backWallTexture, hubLookTexture, hubTexture, isHubBuilding, siteTexture, textureScale } from './buildingSprites';
+import { NATURE_TEXTURES, nodeSprite } from './natureSprites';
 
 /** Nur die Pfade, nichts wird geladen */
 const FILES = Object.keys(import.meta.glob('../../../public/grafik/**/*.png'));
@@ -33,6 +34,15 @@ describe('Gebäude-Grafik (GR3.1)', () => {
       expect(BUILDING_TEXTURES[key]).toBe(`gebaeude/${id}-32.png`); // Plantage (GEB5 AC-02)
       expect(textureScale(key)).toBe(1);
     }
+  });
+
+  it('Adern, Plantage und Lager zeigen Figuren statt Platzhalter, die Dateien liegen vor (B-412, W11.4)', () => {
+    const datei = (key: string | null | undefined) => `../../../public/grafik/${BUILDING_TEXTURES[key!] ?? NATURE_TEXTURES[key!]}`;
+    const figuren = [
+      siteTexture('storage', 'built'), siteTexture('storage', 'built', 3), siteTexture('farm', 'built'), 'grafik:setzling', 'grafik:pappel-niedrig',
+      ...['stoneVein', 'copperVein', 'ironVein', 'crystalVein'].map((kind) => nodeSprite(kind, 0, 'cave')?.key),
+    ];
+    for (const key of figuren) expect(FILES).toContain(datei(key));
   });
 
   it('Material-Stufen wählen das Sprite je Stufe, Lücken sind null (AC-04)', () => {

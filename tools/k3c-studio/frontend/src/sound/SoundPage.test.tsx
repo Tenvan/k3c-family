@@ -73,7 +73,9 @@ describe('Seite Sound: Szenen und Proben (WZ30.2)', () => {
     expect(row('groupHeal')).toContain('sfx:skill:healer');
     expect(row('groupHeal')).toContain('Linien-Slot');
     expect(row('fireball')).toContain('Rückfall sfx:skill'); // Linien-Slot der Zauberer ist leer
-    expect([...h.querySelectorAll('.sd-row')].every((r) => [...r.querySelectorAll('button')].some((b) => b.textContent === 'Abspielen'))).toBe(true);
+    expect(row('healingAura')).toContain('still (kein Slot)'); // passiv ohne eigenen Slot: im Spiel still (SO8.2, WZ29.2)
+    const playable = (r: Element) => [...r.querySelectorAll('button')].some((b) => b.textContent === 'Abspielen');
+    expect([...h.querySelectorAll('.sd-row')].every((r) => playable(r) || r.textContent?.includes('still (kein Slot)'))).toBe(true);
   });
 
   it.each([['gegner', 'sfx:hit'], ['bauen', 'sfx:hub'], ['reiten', 'sfx:ride'], ['ui', 'sfx:uiSelect'], ['warnungen', 'sfx:warn']])('Szenen: %s zeigt Slot %s abspielbar', async (szene, slotId) => {
