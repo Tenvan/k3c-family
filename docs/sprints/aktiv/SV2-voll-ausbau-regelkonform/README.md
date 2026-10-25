@@ -56,7 +56,7 @@ Voll-Stand anlegen → Inselstufe mit Hub 2 hat keine Mauer Stufe 3, keine Rüst
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SV2.1 | `SV2.1-voll-stand-regelkonform.md` | Umsetzung | autonom | in Arbeit |
+| SV2.1 | `SV2.1-voll-stand-regelkonform.md` | Umsetzung | autonom | fertig |
 | SV2.2 | `SV2.2-store-test-content-type.md` | Umsetzung | autonom | offen |
 | SV2.3 | `SV2.3-review.md` | Review | autonom | offen |
 

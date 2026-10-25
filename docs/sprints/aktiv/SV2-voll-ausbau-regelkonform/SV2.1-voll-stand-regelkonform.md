@@ -1,6 +1,6 @@
 # SV2.1 · Voll-Stand aus der Welt-Datei und über sim.DevBuildAll
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -50,5 +50,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 und AC-02: umgesetzt. Der Voll-Stand nimmt die Tiefen aus der Welt-Datei und baut je Inselstufe über `sim.DevBuildAll(isl, hub-i)` aus. `islandDepths` und die eigene Stufen-Logik sind entfernt.
+- Geprüft mit `go test ./engine/... ./cmd/...` und golangci-lint (grün). Neu ist `TestVollAusgebautHaeltAusbauregeln` (Tiefen, Stufe ≤ Hub, Voraussetzungen, Tore), dazu der Test mit echtem `store.Saves`. Golden ist byte-gleich.
+- Abweichung: Den SV1.3-Test „jeder Platz gebaut“ hat Claude gelockert, weil er B-425/AC-01 widerspricht. Auf Tiefe 4 (Hub 1) bleibt `stairsUp` ungebaut, ein regulärer Zustand (Review: kein Befund).
