@@ -1,0 +1,11 @@
+{
+  "t": "delta",
+  "stage": 0,
+  "tick": 1801,
+  "ack": 42,
+  "s": {
+    "events": [
+      { "type": "saved", "stage": 0 }
+    ]
+  }
+}

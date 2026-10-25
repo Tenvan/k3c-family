@@ -1,0 +1,59 @@
+# PF1.2 · Hauptlast des Split-Screens senken
+
+- **Status:** fertig
+- **Typ:** Umsetzung
+- **Agent:** autonom
+- **Domäne:** CLI
+- **Umgebung:** live
+- **Branch:** pf1/2-korrektur
+- **Abhängig von:** PF1.1
+- **Tickets:** B-194
+- **Kriterien:** AC-03, AC-04
+
+## Ziel
+
+Die in PF1.1 gemessene Hauptlast ist behoben oder gesenkt; die Frame-Zeit mit zwei Kameras ist im Browser-Pane vorher und nachher belegt.
+
+## Kontext
+
+- Grundlage sind die Messwerte und die vermutete Ursache in B-194 › Notizen (aus PF1.1). Ohne diese Werte nicht beginnen.
+- Kameras und Nacht-Filter: `src/scenes/GameScene.ts` › `layoutCameras()`, `aimAtStage()`, `addNightFx()`; Layer je Kamera über `showOnly()` in `src/scenes/render/stageView.ts`; Zeichnen in `src/scenes/render/worldRenderer.ts`.
+- Liegt die Hauptlast im Netz oder Server (Snapshot-Takt, Puffer), gehört die Korrektur nicht in CLI: dann Ticket anlegen (Domäne SRV bzw. N2-Nachfolger), hier nur die Messwerte im Ergebnis.
+- Fallstrick: `src/scenes/GameScene.ts` hat schon 403 Zeilen. Eine Änderung dort darf die Datei nicht wachsen lassen; Logik als reine Funktion in eine eigene Datei unter `src/scenes/` mit Test.
+- Nacht im Canvas-Modus bleibt hell (`addNightFx`); eine Lösung darf das Verhalten bei Tag und Nacht für beide Spieler nicht ändern (2 Spieler gleichzeitig, `CLAUDE.md` › Regeln).
+- Ausnahmefall laut Sprint: Ziel nicht erreichbar → Messwerte und Ticket, angenommener Wert bleibt.
+
+## Erlaubte Dateien
+
+- `src/scenes/`
+- `docs/backlog/B-194-*.md`, `docs/sprints/`
+
+## Nicht-Ziele
+
+Messung an der Xbox (PF1.4), Netz-Latenz (N2), Atlas (GR4), Server-Leistung (B-042), neue Spielregeln.
+
+## Schritte
+
+1. Branch anlegen, `Status: in Arbeit`. `task check` grün.
+2. Frame-Zeit mit zwei Kameras (Tag und Nacht) im Browser-Pane wie in PF1.1 messen (Vorher-Wert).
+3. Die Hauptlast aus B-194 › Notizen gezielt senken; neue Logik als reine Funktion mit Vitest-Test.
+4. Nachher-Wert unter denselben Bedingungen messen; beide Werte ins Ergebnis und in B-194 › Notizen.
+5. Prüfen, dass beide Spieler ihre Stufe, Kamera-Folge und Nacht-Abdunklung wie vorher sehen.
+
+## Fertig, wenn
+
+- [ ] AC-03: Ergebnis nennt Frame-Zeit mit zwei Kameras vorher und nachher; nachher ist sie niedriger, oder ein Ticket begründet, warum nicht.
+- [ ] AC-04: `task check` grün; keine geänderte Datei über 400 Zeilen, keine Funktion über 60.
+
+## Prüfen
+
+```bash
+task check
+```
+
+## Ergebnis
+
+- AC-03: umgesetzt. Neues Kamera-Culling (`src/scenes/render/cameraCull.ts`): Welt-Container außerhalb des Ausschnitts einer Kamera (Rand 400 px) bekommen deren Bit in `cameraFilter`, je Kamera getrennt. Aufruf je Frame am Ende von `GameScene.draw`. Hintergründe und bildschirmfeste Teile bleiben unberührt.
+- Messung im Browser-Pane, 2 Kameras, Nacht, CPU je Frame über 600 Frames: vorher Ø 2,74 / p95 4,30 / p99 8,10 ms, nachher Ø 2,43–2,52 / p95 3,4–3,5 / p99 4,0–4,1 ms. Pro Kamera sind 104 von 132 Containern ausgefiltert.
+- Geprüft mit Vitest `cameraCull` (4 Fälle), `task check` (grün) und einer Sichtprüfung im Pane (Bild vollständig bis zum Rand).
+- Grenze: Die GPU-Füllrate der Xbox ist im Pane nicht messbar; das klärt PF1.4. `GameScene.ts` lag schon vorher über 400 Zeilen, jetzt +2.

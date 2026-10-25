@@ -8,9 +8,9 @@
 - **Sprint:** PF1
 - **Projekt:** LST
 - **Erstellt:** 2026-10-03
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25
 
 ## Ausgangslage
 
@@ -56,4 +56,19 @@ Welche Szenario-Einstellung lief (Mock-Spieler, Layout, Stufe)? Ruckelt auch `ga
 
 ## Notizen
 
-Gemeldet von 🧑 nach X1.2. Sprite-Budget und Audio: `docs/game-design.md` › Xbox-Messung.
+Messung PF1.1 (Claude, 2026-10-25, Browser-Pane Desktop, WebGL, Spielstand `familie`, Wald, 2 Spieler per Tastatur). Die Game-Loop ist von Hand getaktet, gemessen ist die CPU-Zeit je `game.loop.step` über 600 Frames:
+
+| Fall | Ø | p50 | p95 | p99 | davon Render | davon Update |
+|---|---|---|---|---|---|---|
+| 1 Kamera, Tag (1 Spieler) | 1,09 ms | 0,90 | 2,00 | 2,80 | – | – |
+| 2 Kameras, Tag | 2,60 ms | 2,40 | 3,60 | 4,90 | 2,23 | 0,34 |
+| 2 Kameras, Nacht (Welle) | 2,74 ms | 2,40 | 4,30 | 8,10 | 2,31 | 0,41 |
+| Nacht, 2. Kamera ausgeblendet | 2,33 ms | 2,00 | 4,00 | 5,10 | – | – |
+| 2 Kameras, Container außerhalb beider Sichten unsichtbar | 2,74 ms | 2,10 | 3,50 | 4,60 | – | – |
+
+Zustands-Abstand: 29,6 Zustände/s, p50 33 ms, p95 45 ms, max 125 ms (das Pane läuft womöglich gedrosselt).
+Einmalige Spitzen bis 316 ms (vermutet: Nachladen oder GC beim Beitritt).
+
+Vermutete Hauptlast: Rendern (rund 85 % der Frame-Zeit). Die Spielszene hat rund 650 Objekte, davon 145 Welt-Container, von denen nur rund 25 in einer der Kameras liegen. Phaser zeichnet Container ohne Kamera-Culling in jeder Kamera, deshalb kostet die zweite Kamera am Desktop nur ca. 0,4 ms CPU.
+Auf der Xbox zählt vermutlich die GPU-Füllrate (zwei Viewports mit je bis zu 7 bildschirmbreiten Parallax-Schichten) mehr; im Pane ist das nicht messbar (vermutet).
+Senkbar im Client: Welt-Container außerhalb aller Kamerasichten nicht zeichnen (gemessen p50 −12 %).
