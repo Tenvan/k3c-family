@@ -1,4 +1,5 @@
 import { Button } from '@webkit/atoms';
+import { useState } from 'react';
 import { setChatOpen, useChatOpen } from './chatBridge';
 import { ChatControls } from './ChatControls';
 import { ChatSplitter, useChatWidth } from './ChatSplitter';
@@ -16,6 +17,7 @@ export function ChatPanel({ page }: { page?: string }) {
   const choices = useChatChoices();
   const { chats, session, setSession, error, running, setRunning, refresh, onNew, onSelect, onDelete } = useChatSession(choices);
 
+  const [round, setRound] = useState(0); // jede beendete Antwort lädt die Vorschlagskarten neu (B-600)
   const key = session.key;
   const kind = suggestionKind(page);
   return (
@@ -24,8 +26,8 @@ export function ChatPanel({ page }: { page?: string }) {
       <aside className="chat" data-testid="chat-panel" hidden={!open} aria-label="Chat" style={{ flexBasis: width }}>
         <ChatControls chats={chats} chat={session.chat} choices={choices} running={running} error={error}
           onNew={onNew} onSelect={onSelect} onDelete={onDelete} onHide={() => setChatOpen(false)} />
-        {kind && <SuggestionList key={kind} kind={kind} />}
-        <ChatThread key={key} chat={session.chat} initial={session.messages} current={choices.current} onEnd={refresh} onRunning={setRunning}
+        {kind && <SuggestionList key={kind} kind={kind} round={round} />}
+        <ChatThread key={key} chat={session.chat} initial={session.messages} current={choices.current} onEnd={() => { refresh(); setRound((r) => r + 1); }} onRunning={setRunning}
           onChat={(id) => setSession((s) => (s.key === key ? { ...s, chat: id } : s))} />
       </aside>
     </>

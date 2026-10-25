@@ -5,7 +5,8 @@ import type { World } from '../../model/types';
 import type { Effect } from '../effects/effects';
 import { StageEffects } from '../effects/effectsView';
 import { fontStyle, OUTLINE_COLOR } from './fontRules';
-import { backgroundLayers } from './objectView';
+import { backgroundLayers, loadBackground, type BackgroundView } from './objectView';
+import { BACKGROUND_ZOOM, backgroundPlan, type BackgroundLayerPlan } from './worldSprites';
 import { WorldRenderer } from './worldRenderer';
 
 /** Hintergrundfarbe einer Zelle, deren Stufe noch nicht geladen ist */
@@ -27,20 +28,53 @@ export class StageView {
   readonly effects: StageEffects;
   /** Endlos laufende Tweens des Flusses; enden mit der Stufe */
   private river: Phaser.Tweens.Tween[] = [];
+  /** Hintergrund (Silhouetten oder Bilder) samt Spiegelung und Drift; die Bilder ersetzen die Silhouetten, sobald geladen */
+  private backdrop: { objects: Phaser.GameObjects.GameObject[]; mirrors: Phaser.GameObjects.GameObject[]; tweens: Phaser.Tweens.Tween[] };
+  private readonly water: Phaser.GameObjects.Rectangle;
+  private alive = true;
 
   constructor(scene: Phaser.Scene, readonly world: World) {
     this.layer = scene.add.layer();
     const widthPx = world.widthUnits * UNIT_PX;
     const palette = world.biome.palette;
-    // Parallax-Ebenen des Bioms (GR3.2); ohne Grafik zwei gezackte Silhouetten (Berge / Höhlenwände).
-    const fallback = (): Phaser.GameObjects.GameObject[] => RIDGES.map((r) => ridge(scene, widthPx, hex(palette[r.color]), r.scroll, r.baseY, r.amplitude));
-    const tiles = backgroundLayers(scene, world.biome.id, widthPx);
-    for (const o of tiles ?? fallback()) this.layer.add(o);
+    // Erst zwei gezackte Silhouetten (Berge / Höhlenwände); die Parallax-Bilder des Bioms ersetzen sie nach dem Laden (GEB18).
+    const ridges = RIDGES.map((r) => ridge(scene, widthPx, hex(palette[r.color]), r.scroll, r.baseY, r.amplitude));
+    for (const o of ridges) this.layer.add(o);
     this.layer.add(scene.add.rectangle(0, GROUND_Y, widthPx, RIVER_Y - GROUND_Y, hex(palette.ground)).setOrigin(0, 0));
-    this.river = addRiver(scene, this.layer, widthPx, tiles, palette);
+    this.water = scene.add.rectangle(0, RIVER_Y, widthPx, GAME_HEIGHT - RIVER_Y, WATER.base).setOrigin(0, 0);
+    this.layer.add(this.water);
+    const mirrors = ridgeMirrors(scene, widthPx, palette);
+    for (const m of mirrors) this.layer.add(m);
+    this.river = [flow(scene, this.layer, widthPx)];
+    this.backdrop = { objects: ridges, mirrors, tweens: [] };
     this.renderer = new WorldRenderer(scene, world, this.layer);
     this.effects = new StageEffects(scene, this.layer);
+    const plan = backgroundPlan(world.biome.id, widthPx, GAME_WIDTH, world.level.backdrops);
+    if (plan) loadBackground(scene, plan, () => this.alive && this.useImages(scene, plan));
   }
+
+  /** Ersetzt die Silhouetten durch die Bilder des Plans (hinten im Layer) und ihre Spiegelung im Fluss (über dem Wasser). */
+  private useImages(scene: Phaser.Scene, plan: readonly BackgroundLayerPlan[]): void {
+    const views = backgroundLayers(scene, plan);
+    if (!views) return;
+    const old = this.backdrop;
+    old.tweens.forEach((t) => t.stop());
+    for (const o of [...old.objects, ...old.mirrors]) o.destroy();
+    views.forEach((v, i) => this.layer.addAt(v.container, i));
+    const mirrors = views.map((v) => mirrorOf(scene, v));
+    let below: Phaser.GameObjects.GameObject = this.water;
+    for (const m of mirrors) {
+      this.layer.add(m);
+      this.layer.moveAbove(m, below);
+      below = m;
+    }
+    const tweens = mirrors.map((m) => scene.tweens.add({ targets: m, x: `+=${WATER.driftPx}`, duration: WATER.driftMs, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' }));
+    this.backdrop = { objects: views.map((v) => v.container), mirrors, tweens };
+    this.onBackground?.();
+  }
+
+  /** Wird gerufen, wenn die Hintergrund-Bilder die Silhouetten ersetzt haben (Studio: Sichtbarkeit der Schichten neu setzen) */
+  onBackground?: () => void;
 
   /** Effekt zeichnen; ein Schlag lässt zusätzlich den Monarchen ausholen (S9.7, B-396), eine gegebene Münze werfen (GR9.3) */
   spawn(effect: Effect): void {
@@ -66,7 +100,9 @@ export class StageView {
   }
 
   destroy(): void {
+    this.alive = false;
     this.river.forEach((t) => t.stop());
+    this.backdrop.tweens.forEach((t) => t.stop());
     this.effects.destroy();
     this.layer.destroy();
   }
@@ -111,36 +147,19 @@ function rippleTexture(scene: Phaser.Scene): string {
 }
 
 /**
- * Fluss unter dem Boden: dunkles Wasser mit dem Hintergrund kopfüber darin (gleiche Parallax-Faktoren, getönt), das
- * langsam hin und her treibt. Nur der Hintergrund spiegelt sich; Gebäude und Figuren stehen noch nicht im Wasser.
- * `tiles` = die Parallax-Ebenen der Stufe, `null` = Silhouetten ohne Grafik. Gibt die endlosen Tweens zurück.
+ * Spiegelung einer Hintergrund-Schicht im Fluss: dieselben Kacheln kopfüber ab der Wasserkante (der untere Rand der Bilder
+ * liegt an der Bodenlinie), getönt und halb durchsichtig, gleicher Scroll-Faktor. Was unter den Bildschirm reicht, bleibt
+ * unsichtbar. Gebäude und Figuren stehen noch nicht im Wasser.
  */
-function addRiver(scene: Phaser.Scene, layer: Phaser.GameObjects.Layer, widthPx: number, tiles: Phaser.GameObjects.TileSprite[] | null, palette: World['biome']['palette']): Phaser.Tweens.Tween[] {
-  layer.add(scene.add.rectangle(0, RIVER_Y, widthPx, GAME_HEIGHT - RIVER_Y, WATER.base).setOrigin(0, 0));
-  const tweens: Phaser.Tweens.Tween[] = [];
-  if (tiles) {
-    for (const src of tiles) {
-      const rows = (GAME_HEIGHT - RIVER_Y) / src.scaleY; // nur der Streifen direkt über dem Boden wird sichtbar
-      const m = scene.add
-        .tileSprite(0, RIVER_Y, src.width, Math.min(src.frame.height, rows), src.texture.key)
-        .setOrigin(0, 0)
-        .setScale(src.scaleX, src.scaleY)
-        .setScrollFactor(src.scrollFactorX, 1)
-        .setFlipY(true)
-        .setTint(WATER.tint)
-        .setAlpha(WATER.mirror);
-      m.tilePositionY = src.frame.height - m.height; // der untere Rand der Textur liegt an der Bodenlinie
-      layer.add(m);
-      tweens.push(scene.tweens.add({ targets: m, tilePositionX: `+=${WATER.driftPx}`, duration: WATER.driftMs, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' }));
-    }
-    return [...tweens, flow(scene, layer, widthPx)];
-  }
-  for (const r of RIDGES) {
-    const g = ridge(scene, widthPx, hex(palette[r.color]), r.scroll, r.baseY, r.amplitude);
-    g.setY(RIVER_Y + GROUND_Y).setScale(1, -1).setAlpha(WATER.mirror);
-    layer.add(g);
-  }
-  return [flow(scene, layer, widthPx)];
+function mirrorOf(scene: Phaser.Scene, v: BackgroundView): Phaser.GameObjects.Container {
+  const images = v.parts.map((p) => scene.add.image(p.x, 0, p.key).setOrigin(0, 0).setScale(BACKGROUND_ZOOM).setFlipY(true).setTint(WATER.tint));
+  // beginnt um die Drift weiter links: die Drift (+driftPx, hin und zurück) öffnet so am Weltanfang keine Lücke
+  return scene.add.container(-WATER.driftPx, RIVER_Y, images).setScrollFactor(v.scroll, 1).setAlpha(WATER.mirror).setName(v.container.name);
+}
+
+/** Spiegelung der Silhouetten, solange die Bilder noch laden oder fehlen */
+function ridgeMirrors(scene: Phaser.Scene, widthPx: number, palette: World['biome']['palette']): Phaser.GameObjects.Graphics[] {
+  return RIDGES.map((r) => ridge(scene, widthPx, hex(palette[r.color]), r.scroll, r.baseY, r.amplitude).setY(RIVER_Y + GROUND_Y).setScale(1, -1).setAlpha(WATER.mirror));
 }
 
 /** Wellenstriche über Spiegelung und Wasser, strömen endlos nach links */
