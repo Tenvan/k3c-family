@@ -55,7 +55,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| TR4.1 | `TR4.1-bot-feed-druecke.md` | Umsetzung | autonom | in Arbeit |
+| TR4.1 | `TR4.1-bot-feed-druecke.md` | Umsetzung | autonom | fertig |
 | TR4.2 | `TR4.2-beobachter-ohne-platz.md` | Umsetzung | autonom | offen |
 | TR4.3 | `TR4.3-review.md` | Review | autonom | offen |
 

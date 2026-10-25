@@ -1,6 +1,6 @@
 # TR4.1 · Bot-Eingabe verliert keine kurzen Drücke und hält bei stummem Feed an
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PLAT
@@ -48,5 +48,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01: umgesetzt. `BotFeed.takePressed` behält einen Druck auch zwischen zwei Frames. Nach 1000 ms ohne Nachricht liefert der Slot keine Eingabe mehr; einmal geloggt (🤒 nie verbunden, 👋 nach Abbruch).
+- Geprüft mit Vitest (4 neue Fälle mit Fake-Timern), `tsc` und `task check`. Review: Es bleibt keine Taste hängen, die Slots sind für 2 Spieler getrennt.
