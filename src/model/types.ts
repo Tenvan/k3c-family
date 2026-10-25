@@ -149,13 +149,15 @@ export interface Site {
   payable?: boolean;
 }
 
-/** Ausbau auf die nächste Hub-Stufe (docs/protocol.md › Wirtschaft), vom Server berechnet. */
+/** Laufender Ausbauschritt auf die nächste Hub-Stufe (docs/protocol.md › Wirtschaft), vom Server berechnet. */
 export interface HubUpgrade {
   gold: number;
   material: Partial<Record<ResourceKind, number>>;
   paid: number;
-  /** Fehlt, solange Gold offen ist. */
-  state?: 'waitingMaterial' | 'waitingWorker';
+  /** Fehlt, solange Gold offen ist; `waitingNextIsland` = Material-Tor fehlt, „Material der nächsten Insel“ (B-592). */
+  state?: 'waitingMaterial' | 'waitingNextIsland' | 'waitingWorker';
+  /** Zahl der Ausbauschritte auf die nächste Hub-Stufe (B-592); fehlt = älterer Server. */
+  steps?: number;
 }
 
 /** Anwesender Händler: Material, Abreisetag, Gold des laufenden Kaufs (fehlt = 0). */
@@ -311,6 +313,8 @@ export interface World {
   /** Gold-Maximum je Spieler, nur mit Dev-Bonus (maxStock); sonst gilt `ECONOMY.purse.maxGold`. */
   purseMax?: number;
   hubLevel?: number;
+  /** Laufender Ausbauschritt 1 bis `hubUpgrade.steps` (B-592); fehlt auf der letzten Stufe und beim älteren Server. */
+  hubStep?: number;
   hubUpgrade?: HubUpgrade;
   /** Nacht oder Gegner: Bau und Ausbau warten (`waitingWorker` heißt dann Gefahr). */
   danger?: boolean;

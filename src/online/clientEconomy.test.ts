@@ -17,7 +17,8 @@ describe('Wirtschaft im Zustand', () => {
   it('snap liefert Hub-Stufe, Ausbau, Lager mit Maximum, Wartegrund, Händler und Beruf', () => {
     const w = createViewWorld(level, snap);
     expect(w.hubLevel).toBe(1);
-    expect(w.hubUpgrade).toEqual({ gold: 50, material: { wood: 0, stone: 100, copper: 0 }, paid: 50, state: 'waitingMaterial' });
+    expect(w.hubStep).toBe(1);
+    expect(w.hubUpgrade).toEqual({ gold: 13, material: { wood: 0, stone: 25, copper: 0 }, paid: 13, state: 'waitingMaterial', steps: 3 });
     expect(w.stockMax).toBe(1200);
     expect(w.stock).toEqual({ wood: 40, stone: 30, copper: 12 });
     expect(w.sites.some((s) => s.state === 'waitingMaterial')).toBe(true);

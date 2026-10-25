@@ -11,7 +11,7 @@ import { fontStyle } from './fontRules';
 import { gateStage } from './gateRules';
 import { hubLookOf } from './hubGrowth';
 import { offersHubUpgrade } from './priceTagRules';
-import { hubWait } from '../hud/economyLabels';
+import { hubOfferTitle, hubWait } from '../hud/economyLabels';
 import { drawScaffoldShape, scaffoldTexture, siteMarker } from './scaffoldView';
 import { drawSiteStatus, siteStatus, statusKey } from './siteStatusView';
 import { canAfford } from './viewRules';
@@ -77,24 +77,26 @@ export function createCastleView(scene: Phaser.Scene, x: number): View {
   return scene.add.container(x, G, [picture, scene.add.graphics(), scaffold, scene.add.graphics(), label]);
 }
 
-type CastleWorld = Pick<World, 'hubLevel' | 'hubUpgrade' | 'danger' | 'stock'>;
+type CastleWorld = Pick<World, 'hubLevel' | 'hubUpgrade' | 'danger' | 'stock'> & Partial<Pick<World, 'hubStep'>>;
 
 /**
  * Ausbau-Schild über der Burg (B-591): `near` (nächstes Preisschild eines Spielers, `priceTagRules.ts`) zeigt Gold und
  * Material aus `hubUpgrade`; läuft der Ausbau schon (`hubUpgrade.state`), steht der Wartegrund statt des Angebots.
+ * Titel mit dem Ausbauschritt („Ausbau 2/3“, `hubStep`, B-592), ohne Schritt „Ausbauen“.
  */
 function updateCastleSign(v: View, world: CastleWorld, near: boolean): void {
   const up = world.hubUpgrade;
   const wait = hubWait(world, false);
   const picture = v.getAt(0) as Phaser.GameObjects.Image;
   const h = picture.visible ? picture.displayHeight : 290;
-  const key = [near, up?.gold, up?.paid, statusKey(wait), canAfford(world.stock, up?.material ?? {}), currentLanguage(), h].join('|');
+  const title = hubOfferTitle(world);
+  const key = [near, up?.gold, up?.paid, title, statusKey(wait), canAfford(world.stock, up?.material ?? {}), currentLanguage(), h].join('|');
   if (v.getData('sign') === key) return;
   v.setData('sign', key);
   const g = (v.getAt(3) as Phaser.GameObjects.Graphics).clear();
   const label = (v.getAt(4) as Phaser.GameObjects.Text).setText('');
-  if (wait) drawSiteStatus(g, label, wait, t('hub.offer'), -h - 20);
-  else if (up && near && offersHubUpgrade(world)) drawPrice(g, label, world, -h - 20, up.gold, up.paid, t('hub.offer'), up.material);
+  if (wait) drawSiteStatus(g, label, wait, title, -h - 20);
+  else if (up && near && offersHubUpgrade(world)) drawPrice(g, label, world, -h - 20, up.gold, up.paid, title, up.material);
 }
 
 /**
