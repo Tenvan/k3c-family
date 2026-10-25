@@ -3,8 +3,9 @@
  * Der Client rechnet nichts: Schlag, Skills, Lernen und Respec kommen aus `actions` des Servers; im Bereich eines
  * Preisschilds (`siteView.ts`, unbezahlter Bauplatz bzw. Bogen-Regal) zeigt das Overlay keinen Hinweis (B-319).
  */
+import { clientLog } from '../../core/clientLog';
 import { t } from '../../core/texts';
-import type { Player, World } from '../../model/types';
+import type { Player, PlayerAction, World } from '../../model/types';
 import type { Action, SlotAction } from '../../input/slotBindings';
 import type { FontName } from '../render/fontRules';
 import { glyphOf, type Glyph, type HintDevice } from './glyphs';
@@ -91,5 +92,17 @@ function atPriceTag(world: World, p: Player): boolean {
  */
 export function playerHint(world: World, p: Player, device: HintDevice): HintView | null {
   if (p.respawnIn > 0 || atPriceTag(world, p)) return null;
-  return p.actions.map((h) => hintView(h, device)).sort((a, b) => b.weight - a.weight)[0] ?? null;
+  return p.actions.filter(known).map((h) => hintView(h, device)).sort((a, b) => b.weight - a.weight)[0] ?? null;
+}
+
+const warned = new Set<string>();
+
+/** Aktionen, die der Client (noch) nicht kennt, ignoriert er mit einer Warnung je Art (Protokoll › Aktionsliste, W11.3) */
+function known(h: PlayerAction): h is Exclude<PlayerAction, { action: 'train' | 'trade' }> {
+  if (h.action in WEIGHT) return true;
+  if (!warned.has(h.action)) {
+    warned.add(h.action);
+    clientLog('warn', `🤒 unbekannte Aktion ${h.action} ignoriert`);
+  }
+  return false;
 }

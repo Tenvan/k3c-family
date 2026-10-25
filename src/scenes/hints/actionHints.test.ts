@@ -73,6 +73,12 @@ describe('playerHint: ein Hinweis je Spieler (B-319)', () => {
     expect(playerHint(world([]), player(), 'pad')).toBeNull();
   });
 
+  it('ignoriert Aktionen, die der Client noch nicht kennt (train, trade; W11.3)', () => {
+    const fremd = [{ action: 'train', profession: 'miner' }, { action: 'trade', side: 'buy', resource: 'stone' }] as const;
+    expect(playerHint(world([]), player({ actions: [...fremd, { action: 'attack' }] }), 'pad')?.text).toBe('X: Schlag');
+    expect(playerHint(world([]), player({ actions: [...fremd] }), 'pad')).toBeNull();
+  });
+
   it('im Bereich eines Preisschilds kein Hinweis, das Preisschild trägt die Aktion (AC-02)', () => {
     expect(playerHint(world([site({})]), player({ actions: [{ action: 'attack' }] }), 'pad')).toBeNull();
     const shop = site({ kind: 'workshop', state: 'built', bows: 0 });
