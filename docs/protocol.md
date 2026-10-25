@@ -51,6 +51,11 @@ bleibt der Name der Seed wie bisher, alte Clients funktionieren unverändert. Ei
 unbekannte Startstufe `depth`. Bei `fresh: false` wird `seed` ignoriert. Beispiel: `c2s-create-seed.json`; Level zu Seed und
 Tiefe liefert auch `GET /api/level?seed=…&biome=…`.
 
+**Optionales Feld `level.layout.backdrops` (GEB18, B-618, Version bleibt):** Liste von Hintergrund-Varianten (1 …) je Kachel
+von 24 Units im Raum der Hintergrund-Schicht, Länge ⌈`widthUnits`/24⌉ + 1, benachbarte Einträge verschieden; der Server würfelt
+sie aus dem eigenen Strom `<biom>:<seed>:backdrop` (gleicher Seed, gleiche Folge). Kachel k jeder Schicht zeigt Variante
+`backdrops[k]`; fehlt das Feld (Biom ohne Varianten, alter Server), zeigt der Client überall Variante 1. Beispiel: `s2c-level.json`.
+
 **Änderungen gegenüber v5 (K4, Version 6, B-154, B-345):** `snap`/`delta` nennen Endboss-Phase und Warnkreis
 (`enemies[].phase`, `enemies[].warn`), aktive Nacht-Events mit Restzeit (`nightEvents`) und den Wechselpunkt zur
 nächsten Insel (`islandSwitch`); siehe *Kampf: Bosse, Events, Inselwechsel*. Wechselt der Raum die Insel, beginnt jeder
@@ -309,7 +314,7 @@ das zählt als Abbruch.
 | `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]`, optional `grade`, `goal`, `defeat` (siehe oben), optional `seed` (nur bei `fresh`, höchstens 64 Zeichen, sonst gilt der Name), optional `world` (Welt-ID, nur bei `fresh`, fehlt = `standard`, eine andere nur im Dev-Mode; v7) | `c2s-create.json`, `c2s-create-seed.json`, `c2s-create-world.json` |
 | `join` | Gerät → Server | Raum beitreten oder wiederverbinden | `room` Code, `slots[]` | `c2s-join.json` |
 | `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `world` (Welt-ID des Raums, v7), `you[]`: `slot` → `monarch`, `depth`, `stage` | `s2c-joined.json` |
-| `level` | Server → Gerät | nach `joined` und sobald eine Stufe für das Gerät neu ist, vor dem ersten Zustand der Stufe | `stage`, `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte) | `s2c-level.json` |
+| `level` | Server → Gerät | nach `joined` und sobald eine Stufe für das Gerät neu ist, vor dem ersten Zustand der Stufe | `stage`, `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte, optional `backdrops`) | `s2c-level.json` |
 | `snap` | Server → Gerät | voller Zustand einer Stufe: nach ihrem `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `stage`, `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json`, `s2c-snapshot-wirtschaft.json`, `s2c-snapshot-boss.json`, `s2c-snapshot-event.json` |
 | `delta` | Server → Gerät | jeder weitere Tick, je Stufe | `stage`, `tick`, `ack`, `s` (nur Änderungen zum zuletzt gesendeten Zustand dieser Stufe) | `s2c-snapshot-delta.json` |
 | `seats` | Server → alle Geräte im Raum | wenn sich eine Zuordnung, ein Monarch-Zustand oder eine Stufe ändert | `you[]` (eigene Slots mit `monarch`, `depth` und `stage`), `monarchs[]` je Index `taken`/`waiting`/`free` | `s2c-seats.json` |

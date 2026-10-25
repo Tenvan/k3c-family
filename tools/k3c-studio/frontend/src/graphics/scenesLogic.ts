@@ -144,6 +144,17 @@ export function figureCard(slot: AssetSlot, choice: Choice & { sheet: string }):
 // src/scenes/render/worldSprites.ts). Erst übernehmen, wenn die Vorschau dort täuscht.
 export const GRAFIK_SCALE = 2;
 
+const DICHTE = /^grafik\/gebaeude\/.+-(16|32|64|128)\.png$/;
+
+/**
+ * Spielmaßstab einer Slot-Datei: Generator-Grafik (`grafik/gebaeude/<id>-<dichte>.png`) hat ihre Dichte im Namen und erscheint im
+ * Spiel mit 32 px je Unit, also ×32/Dichte (128 px → ×0,25, GEB18); alles andere ×GRAFIK_SCALE.
+ */
+export function grafikScale(datei: string): number {
+  const d = DICHTE.exec(datei)?.[1];
+  return d ? 32 / Number(d) : GRAFIK_SCALE;
+}
+
 /** Eintrag aus `public/grafik/gebaeude/index.json` (schreibt `task gen:gebaeude`, GEB1) */
 export interface GebaeudeEintrag {
   id: string;
@@ -262,17 +273,28 @@ const HINTERGRUND_TEIL: Record<string, string> = { forest: 'wald', cave: 'hoehle
 
 export interface HintergrundStreifen {
   biom: string;
+  /** `''` = bisherige Fassung (GEB7), sonst die Variante `v1` … (GEB18) */
+  variante: string;
   /** `palette.sky` des Bioms: Untergrund, auf dem die Schichten stehen */
   himmel: string;
   /** hinten (fern) zuerst */
   schichten: { id: string; dateien: Record<string, string> }[];
 }
 
-/** Je Biom (Reihenfolge von `biome`) die drei Hintergrund-Schichten fern → nah; Biome ohne alle drei Schichten entfallen. */
+const VARIANTE = /^hg-[a-z]+-(?:fern|mitte|nah)-(v[1-9][0-9]*)$/;
+
+/**
+ * Je Biom (Reihenfolge von `biome`) die drei Hintergrund-Schichten fern → nah: erst die bisherige Fassung, dann jede Variante
+ * `hg-<teil>-<schicht>-v<n>` (GEB18) aufsteigend; Fassungen ohne alle drei Schichten entfallen.
+ */
 export function hintergrundStreifen(index: readonly GebaeudeEintrag[], biome: readonly { id: string; palette: { sky: string } }[]): HintergrundStreifen[] {
-  const byId = new Map(index.filter((e) => e.klasse === 'hintergrund').map((e) => [e.id, e]));
-  return biome.flatMap((b) => {
-    const schichten = ['fern', 'mitte', 'nah'].flatMap((s) => byId.get(`hg-${HINTERGRUND_TEIL[b.id]}-${s}`) ?? []);
-    return schichten.length === 3 ? [{ biom: b.id, himmel: b.palette.sky, schichten: schichten.map((e) => ({ id: e.id, dateien: e.dateien })) }] : [];
-  });
+  const hg = index.filter((e) => e.klasse === 'hintergrund');
+  const byId = new Map(hg.map((e) => [e.id, e]));
+  const varianten = [...new Set(hg.flatMap((e) => VARIANTE.exec(e.id)?.[1] ?? []))].sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)));
+  return biome.flatMap((b) =>
+    ['', ...varianten].flatMap((v) => {
+      const schichten = ['fern', 'mitte', 'nah'].flatMap((s) => byId.get(`hg-${HINTERGRUND_TEIL[b.id]}-${s}${v ? `-${v}` : ''}`) ?? []);
+      return schichten.length === 3 ? [{ biom: b.id, variante: v, himmel: b.palette.sky, schichten: schichten.map((e) => ({ id: e.id, dateien: e.dateien })) }] : [];
+    }),
+  );
 }
