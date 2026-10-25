@@ -1,14 +1,14 @@
 # PF1 · CLI · Split-Screen flüssig auf der Xbox
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** LST
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-194
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt)
 
 ## Ausgangslage
 
@@ -59,7 +59,7 @@ Nicht blockierend: Welche Szenario-Einstellung lief am 2026-10-03 auf der Testse
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| PF1.1 | `PF1.1-profil.md` | Umsetzung | autonom | offen |
+| PF1.1 | `PF1.1-profil.md` | Umsetzung | autonom | fertig |
 | PF1.2 | `PF1.2-korrektur.md` | Umsetzung | autonom | offen |
 | PF1.3 | `PF1.3-review.md` | Review | autonom | offen |
 | PF1.4 | `PF1.4-xbox-messung.md` | Umsetzung | Mensch | offen |

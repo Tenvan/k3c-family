@@ -1,6 +1,6 @@
 # PF1.1 · Split-Screen im Browser-Pane profilieren
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,4 +54,7 @@ task check
 
 ## Ergebnis
 
-–
+- AC-02: umgesetzt. Gemessen sind CPU-Frame-Zeit, Render- und Update-Anteil mit 1 und 2 Kameras, Tag und Nacht, sowie der Zustands-Abstand. Die Tabelle und die vermutete Hauptlast stehen in B-194 › Notizen.
+- Da das Pane im Hintergrund lief, ist die Game-Loop von Hand getaktet (CLAUDE.md). Gemessen ist deshalb CPU-Zeit je Schritt, nicht die echte FPS am Bildschirm.
+- Das Debug-Overlay zeigt jetzt die Frame-Zeit neben den FPS (`debugOverlay.ts`, Test), für die Messung an der Xbox (PF1.4).
+- Geprüft mit Vitest `debugOverlay`.
