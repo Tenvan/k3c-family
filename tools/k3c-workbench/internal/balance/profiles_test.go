@@ -88,7 +88,7 @@ func TestMauernZuerstBautMauerAus(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, r := range []string{"wood", "stone"} {
+	for _, r := range []string{"wood", "stone", "copper"} { // Kupfer: Material-Tor des Hub-Ausbaus 1 → 2 (GEB17)
 		if _, ok := sim.DevAddStock(isl, 0, r, 200); !ok {
 			t.Fatalf("Vorrat %s", r)
 		}

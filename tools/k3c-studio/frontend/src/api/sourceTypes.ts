@@ -74,7 +74,20 @@ export interface SourceCleanupView {
   groesse: number;
 }
 
+/** Netz-Modus des Studios (Schalter in der Kopfzeile): auto = Erreichbarkeitsprobe, online/offline = fest gesetzt. */
+export type NetworkMode = 'auto' | 'online' | 'offline';
+
+/** Gewählter Modus und ob das Studio damit offline ist (Quellen, Chat-Vorschläge). */
+export interface NetworkView {
+  mode: NetworkMode;
+  offline: boolean;
+}
+
 export interface SourceApi {
+  /** Netz-Modus und Zustand; im Modus auto mit Probe */
+  network(): Promise<NetworkView>;
+  /** Setzt den Netz-Modus; auto fragt neu */
+  setNetwork(mode: NetworkMode): Promise<NetworkView>;
   sources(): Promise<SourcesView>;
   /** Startet den Download der Einträge (nur nach Bestätigung der Gesamtgröße und der Quellen); scheitert offline und bei gesperrten Einträgen */
   sourceDownload(ids: string[], confirmedBytes: number): Promise<void>;

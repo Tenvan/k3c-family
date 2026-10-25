@@ -17,7 +17,7 @@ function Overview({ quellen }: { quellen: SourceInfo[] }) {
         <Flex key={q.name} direction="column" gap="1" style={{ border: '1px solid var(--gray-6)', borderRadius: 6, padding: 8, minWidth: 200, maxWidth: 260 }}>
           <Text weight="bold">{q.name}</Text>
           <Text size="1" color="gray">{q.lizenzregeln}</Text>
-          <Flex gap="2">
+          <Flex gap="2" wrap="wrap">
             <Badge variant="soft">{q.vorgeschlagen} vorgeschlagen</Badge>
             <Badge variant="soft" color="green">{q.geladen} geladen</Badge>
             <Badge variant="soft" color="blue">{q.verwendet} verwendet</Badge>

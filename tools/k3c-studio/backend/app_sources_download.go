@@ -14,17 +14,20 @@ import (
 const (
 	// sourceTimeout begrenzt einen Download (Liste: höchstens 50 MB je Datei).
 	sourceTimeout = 5 * time.Minute
-	// sourceProbeTimeout und probeCache: Erreichbarkeitsprobe für „offline“, höchstens alle 30 s.
-	sourceProbeTimeout = 2 * time.Second
-	probeCache   = 30 * time.Second
-	// probeURL ist das Ziel der Probe (die meisten Einträge kommen von OpenGameArt).
-	probeURL = "https://opengameart.org/"
+	// sourceProbeTimeout und probeCache: Erreichbarkeitsprobe für „offline“, höchstens alle 30 s. OpenGameArt braucht
+	// für die Antwort oft über 2 s, deshalb 5 s.
+	sourceProbeTimeout = 5 * time.Second
+	probeCache         = 30 * time.Second
 )
+
+// probeURLs sind die Ziele der Probe, parallel gefragt; eine Antwort genügt (die Quellen der Vorschlagsliste).
+var probeURLs = []string{"https://opengameart.org/", "https://kenney.nl/", "https://freesound.org/"}
 
 // sourceState hält Downloads, Fortschritt und die Offline-Probe eines Studios.
 type sourceState struct {
 	client *http.Client // Test-Naht: httptest-Server statt Internet
-	probe  string       // Adresse der Erreichbarkeitsprobe
+	probes []string     // Adressen der Erreichbarkeitsprobe
+	mode   string       // NetworkAuto (Probe), NetworkOnline oder NetworkOffline (Schalter, app_network.go)
 
 	mu       sync.Mutex
 	busy     bool
@@ -41,7 +44,7 @@ var sourceStates sync.Map
 func (a *App) sourceState() *sourceState {
 	v, _ := sourceStates.LoadOrStore(a, &sourceState{
 		client:   &http.Client{Timeout: sourceTimeout, CheckRedirect: assets.VorratRedirect},
-		probe:    probeURL,
+		probes:   probeURLs,
 		progress: map[string]*SourceProgress{},
 		faults:   map[string]string{},
 	})
@@ -51,6 +54,11 @@ func (a *App) sourceState() *sourceState {
 // offline: die Probe (HEAD, 2 s) scheitert oder der letzte Download scheiterte am Netz; das Ergebnis gilt 30 s.
 func (st *sourceState) offline(ctx context.Context) bool {
 	st.mu.Lock()
+	if st.mode == NetworkOnline || st.mode == NetworkOffline {
+		off := st.mode == NetworkOffline
+		st.mu.Unlock()
+		return off
+	}
 	if !st.checked.IsZero() && time.Since(st.checked) < probeCache {
 		down := st.down
 		st.mu.Unlock()
@@ -64,11 +72,25 @@ func (st *sourceState) offline(ctx context.Context) bool {
 	return down
 }
 
-// reachable: jede HTTP-Antwort zählt, nur ein Netzfehler oder die Frist nicht.
+// reachable fragt alle Probe-Ziele parallel: jede HTTP-Antwort zählt, nur Netzfehler oder Frist bei allen nicht.
 func (st *sourceState) reachable(ctx context.Context) bool {
 	ctx, cancel := context.WithTimeout(ctx, sourceProbeTimeout)
 	defer cancel()
-	req, err := http.NewRequestWithContext(ctx, http.MethodHead, st.probe, nil)
+	ok := make(chan bool, len(st.probes))
+	for _, u := range st.probes {
+		go func() { ok <- st.answers(ctx, u) }()
+	}
+	for range st.probes {
+		if <-ok {
+			return true
+		}
+	}
+	return false
+}
+
+// answers: Antwortet u innerhalb der Frist von ctx mit irgendeinem HTTP-Status?
+func (st *sourceState) answers(ctx context.Context, u string) bool {
+	req, err := http.NewRequestWithContext(ctx, http.MethodHead, u, nil)
 	if err != nil {
 		return false
 	}

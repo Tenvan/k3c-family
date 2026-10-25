@@ -73,21 +73,13 @@ func TestBauplaetzeBezahltImmerSichtbar(t *testing.T) {
 	}
 }
 
-// Hub-Stufe 1 → 2 über die Sim: Das nächste Delta trägt die Plätze der Stufe 3 in sites.set (B-208/AC-02).
+// Hub-Stufe 1 → 2: Das nächste Delta trägt die Plätze der Stufe 3 in sites.set (B-208/AC-02). Den Ausbau in Schritten
+// mit Material-Tor prüft engine/sim/hub_step_test.go (GEB17), hier zählt nur das Delta danach.
 func TestBauplaetzeDeltaNachHubAusbau(t *testing.T) {
 	isl, w := wirtschaftsInsel(t)
 	sim.DevSetPhase(isl, "day")
-	sim.DevFillStock(isl)
 	prev := stateOf(w, 0, false)
-	cmds := make([]sim.PlayerCommand, len(w.Players))
-	for range 30 * 600 {
-		if w.HubLevel == 2 {
-			break
-		}
-		w.Enemies = nil
-		sim.StepIsland(isl, cmds, 1.0/30)
-	}
-	if w.HubLevel != 2 {
+	if !sim.DevBuildAll(isl, 2) || w.HubLevel != 2 {
 		t.Fatalf("Hub-Stufe %d nach dem Ausbau, erwartet 2", w.HubLevel)
 	}
 	d := asJSON(t, deltaOf(prev, stateOf(w, 0, false))).(map[string]any)

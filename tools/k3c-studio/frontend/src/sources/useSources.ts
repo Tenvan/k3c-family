@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { backend, type SourceProgress, type SourcesView } from '../api';
 import { running } from './sourcesLogic';
+import { NETWORK_CHANGED } from './NetworkSwitch';
 
 const POLL_MS = 400;
 
@@ -30,6 +31,11 @@ export function useSources(): SourcesState {
     }
   }, []);
   useEffect(() => void reload(), [reload]);
+  useEffect(() => {
+    const again = () => void reload();
+    window.addEventListener(NETWORK_CHANGED, again);
+    return () => window.removeEventListener(NETWORK_CHANGED, again);
+  }, [reload]);
 
   useEffect(() => {
     if (!active) return;
