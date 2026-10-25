@@ -23,7 +23,8 @@ func TestZielkorridoreLaden(t *testing.T) {
 	for name, bad := range map[string]string{
 		"Kennzahl unbekannt": strings.Replace(string(raw), `"castleHeld"`, `"gibtsNicht"`, 1),
 		"Art passt nicht":    strings.Replace(string(raw), `"kind": "share"`, `"kind": "median"`, 1),
-		"Bot unbekannt":      strings.Replace(string(raw), `"saver"`, `"nobody"`, 1),
+		"Bot unbekannt":      strings.Replace(string(raw), `"wirtschaft"`, `"nobody"`, 1),
+		"Grad unbekannt":     strings.Replace(string(raw), `"grade": "dev"`, `"grade": "raten"`, 1),
 	} {
 		if _, err := LoadTargets([]byte(bad)); err == nil {
 			t.Errorf("%s: Ladefehler erwartet", name)
@@ -143,8 +144,11 @@ func seeds(n int) []string {
 	return s
 }
 
+// gradeLabel: Grad aus data/difficulty.json → Name in der Spalte Szenario der Tabelle (§ 2).
+var gradeLabel = map[string]string{"dev": "Dev", "easy": "Leicht", "hard": "Hart", "ultra": "Ultra"}
+
 // Datei und Tabelle in docs/rules/zielkorridore.md nennen dieselben Grenzen (Zeile = Name als Anfang der Kennzahl,
-// Szenario genau „Standard“).
+// Szenario genau „Standard“, mit Grad „Standard, Grad <Name>“).
 func TestGrenzenWieTabelle(t *testing.T) {
 	raw, err := os.ReadFile("../../../../docs/rules/zielkorridore.md")
 	if err != nil {
@@ -161,9 +165,13 @@ func TestGrenzenWieTabelle(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, g := range ts.Targets {
+		scenario := "Standard"
+		if g.Grade != "" {
+			scenario += ", Grad " + gradeLabel[g.Grade]
+		}
 		var hit [][]string
 		for _, r := range rows {
-			if len(r) >= 4 && strings.HasPrefix(strings.TrimSpace(r[0]), g.Name) && strings.TrimSpace(r[1]) == "Standard" {
+			if len(r) >= 4 && strings.HasPrefix(strings.TrimSpace(r[0]), g.Name) && strings.TrimSpace(r[1]) == scenario {
 				hit = append(hit, r)
 			}
 		}

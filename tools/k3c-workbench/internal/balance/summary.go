@@ -48,12 +48,12 @@ func (t *Targets) RunTargetsProgress(n int, progress func(done, total int)) (Rep
 	var all []Scenario
 	done := map[Scenario]bool{}
 	for _, g := range t.Targets {
-		key := Scenario{Players: g.Players, Bot: g.Bot, Depth: g.Depth, Days: g.Days}
+		key := Scenario{Players: g.Players, Bot: g.Bot, Depth: g.Depth, Days: g.Days, Grade: g.Grade}
 		if done[key] {
 			continue
 		}
 		done[key] = true
-		m := Matrix{Seeds: seedList, Players: []int{g.Players}, Bots: []string{g.Bot}, Depths: []int{g.Depth}, Days: g.Days, Grade: t.grade}
+		m := Matrix{Seeds: seedList, Players: []int{g.Players}, Bots: []string{g.Bot}, Depths: []int{g.Depth}, Days: g.Days, Grade: g.Grade}
 		sc, err := m.Scenarios()
 		if err != nil {
 			return Report{}, err
@@ -109,7 +109,7 @@ func ReadSummary(raw []byte) (Summary, error) {
 
 // targetKey unterscheidet Ziele auch bei gleichem Namen (Szenario gehört dazu).
 func (e Entry) targetKey() string {
-	return fmt.Sprintf("%s|%s|%d|%s|%d|%d", e.Measure, e.Name, e.Players, e.Bot, e.Depth, e.Days)
+	return fmt.Sprintf("%s|%s|%d|%s|%d|%d|%s", e.Measure, e.Name, e.Players, e.Bot, e.Depth, e.Days, e.Grade)
 }
 
 // Compare nennt die Ziele, deren Status sich gegenüber der Baseline geändert hat, in der Reihenfolge von cur

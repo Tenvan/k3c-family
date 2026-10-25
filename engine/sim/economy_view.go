@@ -86,3 +86,29 @@ func NodeMarkable(n *ResourceNode) bool { return nodeMarkable(n) }
 func materialOf(c Cost) Stock {
 	return Stock{Wood: c.Wood, Stone: c.Stone, Copper: c.Copper, Iron: c.Iron, Crystal: c.Crystal}
 }
+
+// SiteGoldLeft ist das Gold, das der Platz bis zum vollen Preis noch nimmt (Bau, Ausbau oder Produkt wie in paySite),
+// und ob er gerade Münzen nimmt (sitePayable). Nur gelesen, für die Bots des Balancing-Testers (BAL6), die so die
+// Zahl-Regeln nicht nachbilden müssen.
+func SiteGoldLeft(w *World, s *Site) (int, bool) {
+	if !sitePayable(w, s) {
+		return 0, false
+	}
+	switch {
+	case s.State == "unpaid":
+		return cheap(w, buildings[s.Kind].Cost).Gold - s.PaidGold, true
+	case upgradePayable(w, s):
+		return nextLevel(w, s).Cost.Gold - s.UpgradePaid, true
+	}
+	price := 0
+	switch s.Kind {
+	case "workshop":
+		price = cheap(w, troops["archer"].Cost).Gold
+	case "smithy":
+		price = cheap(w, troops["eliteArcher"].Cost).Gold
+	case "armory":
+		stage, _ := armorStage(w)
+		price = stage.Cost.Gold
+	}
+	return price - s.BowPaidGold, true
+}

@@ -51,7 +51,7 @@ func TestWerkzeugFehlerIstFehler(t *testing.T) {
 func TestFortschrittVarianteImBericht(t *testing.T) {
 	dir := t.TempDir()
 	out := captureStdout(t, func() error {
-		return run([]string{"--targets", "--seeds", "1", "--days", "1", "--progress", "--vary",
+		return run([]string{"--targets", "--seeds", "1", "--days", "1", "--grade", "normal", "--progress", "--vary",
 			"economy.json:purse.startGold=120", "--report-dir", dir})
 	})
 	if !strings.Contains(out, "PROGRESS 1/1\n") {

@@ -18,10 +18,28 @@ type Metrics struct {
 	FirstBowTick   *int `json:"firstBowTick"`
 	CastleFallTick *int `json:"castleFallTick"` // erstes castleFallen
 	// FirstWorkshopTick: erstes Ereignis built mit kind workshop (WZ28.4).
-	FirstWorkshopTick *int          `json:"firstWorkshopTick"`
-	ReachedDepth      int           `json:"reachedDepth"` // tiefste Stufe, auf der am Ende ein Monarch steht
-	Days              []DayMetrics  `json:"days"`
-	Waves             []WaveMetrics `json:"waves"`
+	FirstWorkshopTick *int `json:"firstWorkshopTick"`
+	// FirstTowerTick: erstes Ereignis built mit kind tower; HubLevel2Tick/HubLevel3Tick: erstes Ereignis upgraded mit
+	// kind castle auf Stufe 2 bzw. 3 (BAL6, B-347).
+	FirstTowerTick *int          `json:"firstTowerTick"`
+	HubLevel2Tick  *int          `json:"hubLevel2Tick"`
+	HubLevel3Tick  *int          `json:"hubLevel3Tick"`
+	ReachedDepth   int           `json:"reachedDepth"` // tiefste Stufe, auf der am Ende ein Monarch steht
+	Days           []DayMetrics  `json:"days"`
+	Waves          []WaveMetrics `json:"waves"`
+	Dawns          []DawnMetrics `json:"dawns"`
+}
+
+// DawnMetrics: Stand zu Tagesbeginn (BAL6, B-347): Tag 1 ist der Start (Tick 0), jeder weitere das Ereignis dawn der
+// Stufe des Szenarios, auch der Morgen nach dem letzten Tag. Gold je Monarch in der Reihenfolge der Spieler, Vorrat der
+// Insel, Hub-Stufe und Kämpfer (Truppen außer Landstreichern und Bauern) der Stufe.
+type DawnMetrics struct {
+	Day      int       `json:"day"`
+	Tick     int       `json:"tick"`
+	Gold     []int     `json:"gold"`
+	Stock    sim.Stock `json:"stock"`
+	HubLevel int       `json:"hubLevel"`
+	Fighters int       `json:"fighters"`
 }
 
 // DayMetrics: Stand zu Dämmerungsbeginn (Ereignis dusk) und Gold-Fluss eines Tags. Der Fluss ist die Änderung des
@@ -75,6 +93,7 @@ type collector struct {
 func newCollector(isl *sim.Island, threshold int) *collector {
 	c := &collector{isl: isl, threshold: threshold, m: Metrics{Days: []DayMetrics{}, Waves: []WaveMetrics{}}}
 	c.gold, c.stock = c.totalGold(), *isl.Stock
+	c.dawn(isl.Stages[0], 0)
 	return c
 }
 
@@ -119,7 +138,11 @@ func (c *collector) event(w *sim.World, ev sim.Event, tick int) {
 			first(&c.m.FirstWallTick, tick)
 		case "workshop":
 			first(&c.m.FirstWorkshopTick, tick)
+		case "tower":
+			first(&c.m.FirstTowerTick, tick)
 		}
+	case "upgraded":
+		c.upgraded(ev, tick)
 	case "armed":
 		first(&c.m.FirstBowTick, tick)
 	case "castleFallen":
@@ -137,11 +160,38 @@ func (c *collector) event(w *sim.World, ev sim.Event, tick int) {
 		c.openWave(w, ev, tick)
 	case "dawn":
 		c.closeWave(w, tick)
+		if w == c.isl.Stages[0] {
+			c.dawn(w, tick)
+		}
 	case "destroyed":
 		c.countInWave(func(wm *WaveMetrics) { wm.BuildingsDestroyed++ })
 	case "playerDown":
 		c.countInWave(func(wm *WaveMetrics) { wm.PlayersDown++ })
 	}
+}
+
+// upgraded merkt den ersten Ausbau des Hubs (Burg) auf Stufe 2 und 3.
+func (c *collector) upgraded(ev sim.Event, tick int) {
+	if ev["kind"] != "castle" {
+		return
+	}
+	switch ev["level"] {
+	case 2:
+		first(&c.m.HubLevel2Tick, tick)
+	case 3:
+		first(&c.m.HubLevel3Tick, tick)
+	}
+}
+
+// dawn legt den Stand zu Tagesbeginn ab (Tag aus dem Zyklus der Stufe).
+func (c *collector) dawn(w *sim.World, tick int) {
+	d := DawnMetrics{Day: w.Cycle.Day, Tick: tick, Gold: []int{}, Stock: *w.Stock}
+	for _, p := range c.isl.Players() {
+		d.Gold = append(d.Gold, p.Gold)
+	}
+	e := sim.EconomyOf(w)
+	d.HubLevel, d.Fighters = e.HubLevel, e.Fighters
+	c.m.Dawns = append(c.m.Dawns, d)
 }
 
 func (c *collector) openWave(w *sim.World, ev sim.Event, tick int) {

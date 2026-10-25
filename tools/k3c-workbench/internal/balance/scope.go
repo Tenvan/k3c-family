@@ -26,19 +26,12 @@ func (t *Targets) Restrict(s Scope) (*Targets, error) {
 		if s.Bot != "" {
 			g.Bot = s.Bot
 		}
+		if s.Grade != "" {
+			g.Grade = s.Grade
+		}
 		if err := g.validate(); err != nil {
 			return nil, fmt.Errorf("szenario: %w", err)
 		}
-	}
-	if s.Grade != "" {
-		grades, err := Grades()
-		if err != nil {
-			return nil, err
-		}
-		if !slices.Contains(grades, s.Grade) {
-			return nil, fmt.Errorf("szenario: unbekannter Grad %q (bekannt: %v)", s.Grade, grades)
-		}
-		out.grade = s.Grade
 	}
 	return &out, nil
 }

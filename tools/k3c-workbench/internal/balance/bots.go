@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/fs"
+	"maps"
 	"math"
 	"slices"
 	"strings"
@@ -21,12 +22,13 @@ type Bot func(w *sim.World, p *sim.Player) sim.PlayerCommand
 
 // bots sind die Profile nach Name; Reihenfolge der Namen: BotNames.
 var bots = map[string]Bot{
-	"passive": passive, // steht am Hub, zahlt nichts
-	"saver":   saver,   // sparsam: erst Mauern, dann Landstreicher anwerben, nur wenn das Gold reicht
-	"walls":   walls,   // Mauern zuerst: nur Mauern samt Ausbau, anwerben erst ohne offene Mauer
-	"economy": economy, // Wirtschaft zuerst: erst Landstreicher, Mauern ab Tag 2
-	"coop2":   coop,    // Rollen nach Index: gerade Mauern zuerst, ungerade Wirtschaft zuerst
-	"coop4":   coop,
+	"passive":    passive,    // steht am Hub, zahlt nichts
+	"saver":      saver,      // sparsam: erst Mauern, dann Landstreicher anwerben, nur wenn das Gold reicht
+	"walls":      walls,      // Mauern zuerst: nur Mauern samt Ausbau, anwerben erst ohne offene Mauer
+	"economy":    economy,    // Wirtschaft zuerst: erst Landstreicher, Mauern ab Tag 2
+	"wirtschaft": wirtschaft, // Standardszenario (BAL6): Mauern, Turm, Farm, Werkstatt, Hub-Ausbau, Bögen, Anwerben
+	"coop2":      coop,       // Rollen nach Index: gerade Mauern zuerst, ungerade Wirtschaft zuerst
+	"coop4":      coop,
 }
 
 // minPlayers ist die Mindest-Spieleranzahl eines Profils (fehlt der Name: 1).
@@ -83,6 +85,16 @@ type priceList struct {
 	wallGold, recruitGold int
 	wallLevelGold         []int // Gold je Mauer-Stufe (Eintrag n-1 = Stufe n, buildings.json › wall.levels)
 	payRange              float64
+	nodes                 map[string]nodePrice // Rohstoff-Knoten nach Art (economy.json › gatherables, veins)
+	cost                  map[string]sim.Cost  // Baukosten nach Art (buildings.json › cost)
+	merchantGold          int                  // Gold je Kauf beim Händler (economy.json › merchant.gold)
+	merchantBuyOffset     float64              // Kaufen-Zahlziel relativ zur Hub-Mitte (hub.json › merchant.buyOffsetUnits)
+}
+
+// nodePrice: Rohstoff, Menge je Ernte und Markierungs-Preis eines Knotens.
+type nodePrice struct {
+	Resource         string
+	Amount, MarkCost int
 }
 
 func must(p priceList, err error) priceList {
@@ -94,15 +106,22 @@ func must(p priceList, err error) priceList {
 
 func loadPrices(fsys fs.FS) (priceList, error) {
 	var b map[string]struct {
-		Cost   struct{ Gold int }
+		Cost   sim.Cost
 		Levels []struct{ Cost struct{ Gold int } }
 	}
 	var t map[string]struct{ RecruitCost struct{ Gold int } }
-	var e struct{ PayRangeUnits float64 }
+	var e struct {
+		PayRangeUnits      float64
+		Gatherables, Veins map[string]nodePrice
+		Merchant           struct{ Gold int }
+	}
+	var h struct {
+		Merchant struct{ BuyOffsetUnits float64 }
+	}
 	for _, f := range []struct {
 		name string
 		v    any
-	}{{"buildings.json", &b}, {"troops.json", &t}, {"economy.json", &e}} {
+	}{{"buildings.json", &b}, {"troops.json", &t}, {"economy.json", &e}, {"hub.json", &h}} {
 		raw, err := fs.ReadFile(fsys, f.name)
 		if err == nil {
 			err = json.Unmarshal(raw, f.v)
@@ -115,7 +134,15 @@ func loadPrices(fsys fs.FS) (priceList, error) {
 	for i, l := range b["wall"].Levels {
 		levels[i] = l.Cost.Gold
 	}
-	return priceList{wallGold: b["wall"].Cost.Gold, recruitGold: max(1, t["vagrant"].RecruitCost.Gold), wallLevelGold: levels, payRange: e.PayRangeUnits}, nil
+	nodes := maps.Clone(e.Gatherables)
+	maps.Copy(nodes, e.Veins)
+	cost := map[string]sim.Cost{}
+	for k, v := range b {
+		cost[k] = v.Cost
+	}
+	return priceList{wallGold: b["wall"].Cost.Gold, recruitGold: max(1, t["vagrant"].RecruitCost.Gold), wallLevelGold: levels,
+		payRange: e.PayRangeUnits, nodes: nodes, cost: cost, merchantGold: max(1, e.Merchant.Gold),
+		merchantBuyOffset: h.Merchant.BuyOffsetUnits}, nil
 }
 
 func passive(*sim.World, *sim.Player) sim.PlayerCommand { return sim.PlayerCommand{} }
@@ -135,13 +162,14 @@ func saver(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	return recruitOrHub(w, p)
 }
 
-// walls (Mauern zuerst): nachts an der Burg; tags nur Mauern, unbezahlte und ausbaubare, jeweils nur mit genug Gold
-// für den Rest. Erst wenn keine Mauer mehr offen oder ausbaubar ist, wirbt er Landstreicher an.
+// walls (Mauern zuerst): nachts an der Burg; tags Mauern, unbezahlte und ausbaubare, jeweils nur mit genug Gold für den
+// Rest. Ist keine Mauer offen, baut er Türme (Material im Vorrat) und zahlt den Hub-Ausbau, der die nächste Mauer-Stufe
+// freischaltet (hubStep wie das Profil wirtschaft; B-300, Beschluss BAL6.3). Erst danach wirbt er Landstreicher an.
 func walls(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	if w.Cycle.Phase == "night" {
 		return goTo(p, w.HubX, false)
 	}
-	wall, open := nearestWall(w, p)
+	wall := nearestPayable(w, p, "wall", "unpaid", 0)
 	up, upOpen := nearestUpgrade(w, p)
 	if up != nil && (wall == nil || closer(p.X, up.X, wall.X)) {
 		wall = up
@@ -149,8 +177,14 @@ func walls(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	switch {
 	case wall != nil:
 		return goTo(p, wall.X, true)
-	case open || upOpen:
+	case upOpen || wallPayable(w):
 		return goTo(p, w.HubX, false)
+	}
+	if s := nearestPayable(w, p, "tower", "unpaid", 0); s != nil && covers(*w.Stock, prices.cost["tower"]) {
+		return goTo(p, s.X, true)
+	}
+	if x, _ := hubStep(w, p); x != nil {
+		return goTo(p, *x, true)
 	}
 	return recruitOrHub(w, p)
 }
@@ -201,6 +235,17 @@ func nearestUpgrade(w *sim.World, p *sim.Player) (best *sim.Site, open bool) {
 		}
 	}
 	return best, open
+}
+
+// wallPayable: Eine unbezahlte Mauer nimmt gerade Münzen (ihre Linie ist offen). Anders als nearestWall zählen Mauern
+// späterer Linien nicht, die erst mit höherer Hub-Stufe bezahlbar sind (B-300: sonst wartet walls auf sie für immer).
+func wallPayable(w *sim.World) bool {
+	for _, s := range w.Sites {
+		if _, ok := sim.SiteGoldLeft(w, s); ok && s.Kind == "wall" && s.State == "unpaid" {
+			return true
+		}
+	}
+	return false
 }
 
 // nearestWall: die nächste unbezahlte Mauer, deren Rest das Gold deckt; open meldet, ob überhaupt eine offen ist.

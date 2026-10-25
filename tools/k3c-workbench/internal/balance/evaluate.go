@@ -42,7 +42,7 @@ func (g Target) evaluate(t *Targets, results []Result) Verdict {
 	var vals []float64
 	var owner []string // Seed zu jedem Wert
 	for _, res := range results {
-		if res.Players != g.Players || res.Bot != g.Bot || res.Depth != g.Depth || res.Days != g.Days || !slices.Contains(t.Seeds, res.Seed) {
+		if res.Players != g.Players || res.Bot != g.Bot || res.Depth != g.Depth || res.Days != g.Days || res.Grade != g.Grade || !slices.Contains(t.Seeds, res.Seed) {
 			continue
 		}
 		if !res.Valid || res.Metrics == nil {

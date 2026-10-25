@@ -1,14 +1,14 @@
 # BAL6 · SIM · Balancing-Tester misst die Wirtschaft
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** BAL
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-347, B-300, B-301, B-099
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt; Default: neues Profil wirtschaft, saver bleibt; keine Wertänderungen in data/ außer Zielen in balance-targets.json)
 
 ## Ausgangslage
 
@@ -54,6 +54,12 @@ B-347 › Ausnahme- und Fehlerfälle (Kennzahl ohne Ereignis: aus dem Zustand ab
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BAL6.1 | `BAL6.1-wirtschaft-messen.md` | Umsetzung | autonom | fertig |
+| BAL6.3 | `BAL6.3-profil-sensitivitaet.md` | Umsetzung | autonom | fertig |
+| BAL6.2 | `BAL6.2-review.md` | Review | autonom | fertig |
+
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - BAL6.1 Messgrößen der Wirtschaft, Bot spielt Wirtschaft, Ziele in `balance-targets.json` (AC-01).
@@ -62,4 +68,6 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-–
+2026-10-25, Claude (BAL6.2): `task check:go`, `dev:test` und das Workbench-`go test` grün.
+AC-01 erfüllt durch BAL6.1 (13 Korridore bewertet), AC-02 und AC-03 durch BAL6.3. Review: keine Blocker, der Laufzeit-Hinweis ist ergänzt.
+Befund für BR1.3: Hub-Stufe 2 ist in Tiefe 0 mangels Stein nicht erreichbar. Neues Ticket B-625 (Baseline neu).
