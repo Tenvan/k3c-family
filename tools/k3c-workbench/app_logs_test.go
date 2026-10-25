@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"sync/atomic"
 	"testing"
@@ -50,7 +51,9 @@ func TestSourcesUndConsoleTail(t *testing.T) {
 		t.Errorf("leeres Log = %+v", s)
 	}
 	own, err := app.ConsoleTail("k3c-workbench")
-	if err != nil || len(own) == 0 || !strings.Contains(own[len(own)-1].Text, "k3c-workbench gestartet") {
+	// nicht zwingend die letzte Zeile: der Ressourcen-Takt kann unter Last direkt danach schreiben
+	started := slices.ContainsFunc(own, func(l console.Line) bool { return strings.Contains(l.Text, "k3c-workbench gestartet") })
+	if err != nil || !started {
 		t.Errorf("ConsoleTail(k3c-workbench) = %+v, %v", own, err)
 	}
 	if empty, err := app.ConsoleTail("server"); err != nil || empty == nil || len(empty) != 0 {
