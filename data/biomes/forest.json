@@ -2,6 +2,7 @@
   "id": "forest",
   "name": "Oberwelt (Wald)",
   "depth": 0,
+  "backdropVariants": 5,
   "lengthUnits": { "min": 900, "max": 1100 },
   "chunkWidthUnits": 50,
   "hubWidthUnits": 100,
@@ -14,10 +15,10 @@
   },
   "skillPoints": { "min": 3, "max": 5 },
   "resourcesPerChunk": {
-    "forest": { "tree": [14, 20] },
+    "forest": { "tree": [22, 30] },
     "clearing": { "tree": [0, 2], "bush": [1, 3] },
     "rocks": { "tree": [1, 2], "rock": [2, 4] },
-    "stream": { "tree": [3, 6] }
+    "stream": { "tree": [5, 8] }
   },
   "primaryResource": "wood",
   "enemies": { "portal": ["greed", "goblin", "goblinArcher"], "night": ["wolf"] },

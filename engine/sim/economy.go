@@ -113,11 +113,7 @@ func findPayTarget(w *World, p *Player) *payTarget {
 	if t := nearest(w.Troops, func(t *Troop) float64 { return t.X }, p.X, r, func(t *Troop) bool { return t.Kind == "vagrant" }); t != nil {
 		return &payTarget{troop: t}
 	}
-	markable := func(n *ResourceNode) bool {
-		_, ok := gatherOf(n.Kind)
-		return !n.Marked && ok
-	}
-	if n := nearest(w.Nodes, func(n *ResourceNode) float64 { return n.X }, p.X, r, markable); n != nil {
+	if n := nearest(w.Nodes, func(n *ResourceNode) float64 { return n.X }, p.X, r, nodeMarkable); n != nil {
 		return &payTarget{node: n}
 	}
 	return nil

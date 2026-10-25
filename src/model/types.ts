@@ -115,6 +115,8 @@ export interface ResourceNode {
   marked: boolean;
   /** Spieler-Index der letzten Markier-Münze; fehlt = unbekannt (B-532, ältere Server) */
   markedBy?: number;
+  /** Nimmt jetzt eine Markier-Münze (Server, B-588); fehlt = nein. */
+  minable?: boolean;
   workerId: number | null;
   /** 0..1 */
   progress: number;
@@ -149,6 +151,8 @@ export interface Site {
   ruin?: boolean;
   /** Platz-Stufe: ab dieser Hub-Stufe bezahlbar (B-208); fehlt = älterer Server. */
   hubLevel?: number;
+  /** Nimmt jetzt Münzen für Bau oder Ausbau (Server, B-587); fehlt = nein. */
+  payable?: boolean;
 }
 
 /** Ausbau auf die nächste Hub-Stufe (docs/protocol.md › Wirtschaft), vom Server berechnet. */
@@ -160,11 +164,15 @@ export interface HubUpgrade {
   state?: 'waitingMaterial' | 'waitingWorker';
 }
 
-/** Anwesender Händler: Material, Abreisetag, Gold des laufenden Kaufs (fehlt = 0). */
+/** Anwesender Händler: Material, Abreisetag, Gold des laufenden Kaufs (fehlt = 0), Überfall und Lebenspunkte (KB2.3). */
 export interface Merchant {
   resource: string;
   leaves: number;
   buyPaid?: number;
+  /** Dieser Besuch wird überfallen, Gegner greifen den Händler zuerst an (fehlt = nein). */
+  raid?: boolean;
+  hp: number;
+  maxHp: number;
 }
 
 /** Ausrüstung am Boden (Figur oder Beruf, Verlust-Kaskade). */
@@ -372,6 +380,8 @@ export interface LevelLayout {
   hubCenterUnits: number;
   chunks: Chunk[];
   entities: LevelEntity[];
+  /** Hintergrund-Variante (1 …) je Kachel von 24 Units im Raum der Schicht (GEB18); fehlt → Variante 1 überall */
+  backdrops?: number[];
 }
 
 export type Phase = 'day' | 'dusk' | 'night';

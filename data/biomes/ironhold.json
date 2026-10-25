@@ -2,6 +2,7 @@
   "id": "ironhold",
   "name": "Tiefe 3 (Eisenstollen)",
   "depth": 3,
+  "backdropVariants": 5,
   "lengthUnits": { "min": 480, "max": 560 },
   "chunkWidthUnits": 25,
   "hubWidthUnits": 100,
