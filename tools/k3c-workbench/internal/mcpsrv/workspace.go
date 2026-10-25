@@ -149,11 +149,20 @@ func samePath(a, b string) bool {
 }
 
 // canon macht einen Pfad vergleichbar: Windows-Kurznamen (RUNNER~1) und Links werden aufgelöst, git schreibt lange Pfade.
+// Fehlt der Pfad (noch), gilt das für seinen längsten vorhandenen Anfang; der Rest bleibt angehängt (B-628).
 func canon(p string) string {
-	if c, err := filepath.EvalSymlinks(p); err == nil {
-		return c
+	p = filepath.Clean(p)
+	rest := ""
+	for cur := p; ; {
+		if c, err := filepath.EvalSymlinks(cur); err == nil {
+			return filepath.Join(c, rest)
+		}
+		parent := filepath.Dir(cur)
+		if parent == cur {
+			return p
+		}
+		rest, cur = filepath.Join(filepath.Base(cur), rest), parent
 	}
-	return filepath.Clean(p)
 }
 
 // FindRoot sucht ab dir aufwärts das go.mod des Spiels (module k3c): die Repo-Wurzel bzw. den Worktree.

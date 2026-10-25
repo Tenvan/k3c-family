@@ -2,16 +2,18 @@
 
 - **Zweck:** Layout und Ausbau des Hubs: Bauplätze, Hub-Stufen, Mauerlinien, Händler-Zahlziele, Insel-Startvorrat und Starttruppen.
 - **Gelesen von:** Simulation (`engine/sim/hub_level.go`, `engine/sim/world_lines.go`), Level-Generator (`engine/level/lines.go`, `engine/level/planned_gen.go`), Raum (`engine/room/preview.go`)
-- **Wichtigste Werte:** `levels.1.cost.gold`, `levels.1.buildSeconds`, `wallLines.wallUnits`, `islandStartStock.wood`, `startTroops.archer`, `travel.seconds`
+- **Wichtigste Werte:** `levels.1.steps.0.cost.gold`, `levels.1.steps.2.gate.copper`, `wallLines.wallUnits`, `islandStartStock.wood`, `startTroops.archer`, `travel.seconds`
 - **Regeln:** `docs/rules/materialien-gebaeude.md` § 3, `docs/rules/stufen.md`
 
 ## Aufbau
 
 | Pfad | Typ | Einheit | Bedeutung | Typische Werte |
 |---|---|---|---|---|
-| `levels.*.cost` | Objekt | Gold und Material | Kosten des Burg-Ausbaus auf Hub-Stufe n (Stufe 1 ohne Kosten) | Stein 100 bis Kristall 250 |
-| `levels.*.cost.gold` | Zahl | Gold | Goldanteil des Ausbaus | 50 bis 400 |
-| `levels.*.buildSeconds` | Zahl | s | Bauzeit des Ausbaus | 20 bis 50 |
+| `levels.*.steps` | Liste | – | Ausbauschritte 1 bis 3 auf Hub-Stufe n (Stufe 1 ohne Schritte, GEB17) | 3 Schritte |
+| `levels.*.steps.*.cost` | Objekt | Gold und Material | Kosten eines Ausbauschritts (etwa 25/25/50 % der Stufe) | Stein 25 bis Kristall 125 |
+| `levels.*.steps.*.cost.gold` | Zahl | Gold | Goldanteil des Schritts | 12 bis 200 |
+| `levels.*.steps.*.buildSeconds` | Zahl | s | Bauzeit des Schritts | 5 bis 25 |
+| `levels.*.steps.*.gate` | Objekt | Material | Material-Tor des letzten Schritts: Material der nächsten Inselstufe zusätzlich (Stufe 5 ohne) | 20 |
 | `sites.*.kind` | Text | – | Gebäudeart am Bauplatz | workshop, farm, tavern, … |
 | `sites.*.offsetUnits` | Zahl | Units | Position relativ zur Hub-Mitte | -52 bis 52 |
 | `sites.*.hubLevel` | Ganzzahl | Hub-Stufe | Ab dieser Stufe bezahlbar | 1 bis 4 |
@@ -41,7 +43,7 @@ Hub-Kosten und Bauzeiten bestimmen das Tempo des Gesamtfortschritts (Stein, Kupf
 
 ## Beispiele für Varianten
 
-- `hub.json:levels.1.cost.gold=75` – teurerer erster Ausbau.
-- `hub.json:levels.1.buildSeconds=15` – schnellerer erster Ausbau.
+- `hub.json:levels.1.steps.0.cost.gold=20` – teurerer erster Ausbauschritt.
+- `hub.json:levels.1.steps.2.buildSeconds=5` – schnellerer letzter Schritt zu Hub-Stufe 2.
 - `hub.json:islandStartStock.wood=140` – mehr Startholz, mehr Mauern in Nacht 1.
 - `hub.json:startTroops.archer=3` – ein Bogenschütze mehr zu Beginn.

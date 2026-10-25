@@ -123,7 +123,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-616](B-616-lauf-id-nach-neustart.md) | DEV | Problem | niedrig | offen | – | Lauf-IDs der Balancing-Seite bleiben über einen Neustart der Workbench eindeutig |
 | [B-618](B-618-hintergruende-detail-varianten.md) | DEV | Problem | hoch | eingeplant | GEB18 | Die Hintergründe der fünf Stufen sind detailreich (vierfache Auflösung) und wechseln je Seed zwischen fünf Varianten |
 | [B-619](B-619-check-diff-cache-und-short.md) | INF | Problem | hoch | offen | – | check:diff nutzt den Go-Testcache und lässt lange Tests aus |
-| [B-628](B-628-simtest-checkout-kurzpfad-ci.md) | DEV | Problem | hoch | offen | – | TestSimTestMitCheckout scheitert auf dem Windows-Runner an 8.3-Kurzpfaden |
 | [B-629](B-629-buildall-web-exe.md) | INF | Problem | hoch | offen | – | task buildall baut die Web-EXEs von Studio und Workbench nicht mit |
 | [B-620](B-620-golden-grenze-20-mb.md) | INF | Frage | mittel | offen | – | Golden-Grenze 20 MB nach dem dichteren Wald bestätigen |
 | [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | offen | – | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
@@ -133,6 +132,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-625](B-625-balance-baseline-neu.md) | REG | Schuld | mittel | offen | – | Balance-Baseline nach BAL6 neu schreiben |
 | [B-626](B-626-rg1-werte-entscheiden.md) | REG | Frage | mittel | offen | – | Wertvorschläge aus RG1.1 und BR2.1 entscheiden |
 | [B-627](B-627-rg2-regelklaerungen.md) | REG | Frage | mittel | offen | – | Regelklärungen RG2.1 (Handwerker, Verlust-Korridor, Gold-Schwelle) entscheiden |
+| [B-630](B-630-quellen-werden-nicht-uebernommen.md) | DEV | Problem | mittel | offen | – | Quellen werden nicht übernommen |
+| [B-631](B-631-tore-treppen-material-je-stufe.md) | SIM | Idee | hoch | offen | – | Tore, Treppen und Material-Tor nutzen nur Material der eigenen Stufe, Bau läuft durchgängig |
 
 ## Archiv
 
@@ -590,3 +591,4 @@ Zeile in diesen Abschnitt.
 | [B-300](archiv/B-300-mauern-zuerst-wie-sparsam.md) | SIM | Frage | mittel | erledigt | BAL6 | Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“ |
 | [B-301](archiv/B-301-vary-ohne-wirkung.md) | SIM | Problem | niedrig | erledigt | BAL6 | Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler |
 | [B-589](archiv/B-589-holz-balancing-dichter-wald.md) | REG | Idee | mittel | erledigt | BAL7 | Holz-Balancing nach dem dichteren Wald messen und nachziehen |
+| [B-628](archiv/B-628-simtest-checkout-kurzpfad-ci.md) | DEV | Problem | hoch | erledigt | – | TestSimTestMitCheckout scheitert auf dem Windows-Runner an 8.3-Kurzpfaden |

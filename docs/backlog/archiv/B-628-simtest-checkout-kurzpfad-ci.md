@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-25
@@ -56,3 +56,5 @@ keine
 ## Notizen
 
 Gefunden 2026-10-25 beim vollen CI-Lauf für WZ29 (`workflow_dispatch`). Bei PRs laufen die vollen Jobs nicht (`if: github.event_name != 'pull_request'`), deshalb fiel es erst nach dem Merge auf `develop` auf.
+
+Umgesetzt 2026-10-25: `canon` (`tools/k3c-workbench/internal/mcpsrv/workspace.go`) löst bei einem (noch) fehlenden Pfad den längsten vorhandenen Anfang auf und hängt den Rest an; vorher fiel es auf `filepath.Clean` zurück und ließ `RUNNER~1` stehen. Nachweis: `TestSamePathKurznameOhneVorhandenesEnde` (echter Kurzname über `GetShortPathName`, rot mit der alten Fassung), `TestSimTestMitCheckout` grün.
