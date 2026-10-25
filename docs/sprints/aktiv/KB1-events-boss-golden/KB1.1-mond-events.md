@@ -1,6 +1,6 @@
 # KB1.1 · Vollmond-Belohnung und Blutmond-Faktor gelten in allen bespielten Stufen und für Boss-Flächen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM

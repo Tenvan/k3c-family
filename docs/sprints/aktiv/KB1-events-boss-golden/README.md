@@ -1,14 +1,14 @@
 # KB1 · SIM · Kampf-Nachträge: Mond-Events, Endboss-Bau, Golden-Läufe, Feuergeist
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** KMP
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-379, B-380, B-343, B-327, B-328
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 80f2d3e9
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt; Vorentscheidungen vom 2026-10-23 gelten; gestapelt auf sprint/w12 wegen der Golden-Regel)
 
 ## Ausgangslage
 
@@ -63,7 +63,7 @@ Vorentschieden (autonom, Claude, 2026-10-23), Bestätigung durch 🧑 über KR6:
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| KB1.1 | `KB1.1-mond-events.md` | Umsetzung | autonom | offen |
+| KB1.1 | `KB1.1-mond-events.md` | Umsetzung | autonom | in Arbeit |
 | KB1.2 | `KB1.2-endboss-bau-lage.md` | Umsetzung | autonom | offen |
 | KB1.3 | `KB1.3-golden-eisen-kristall.md` | Umsetzung | autonom | offen |
 | KB1.4 | `KB1.4-feuergeist-flaeche.md` | Umsetzung | autonom | offen |
