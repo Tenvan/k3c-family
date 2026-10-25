@@ -35,8 +35,8 @@ func TestBlockInhaltFuerDieHeutigenFuenfStufen(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, want := range []string{
-		"| 1 | Holz | Werkstatt −16; Farm −52, +52 | Linie 1: Mauer ±44, Turm ±36 (fest) | Kaufen +16, Verkaufen +20 (nur Tiefe 0) |",
-		"| 2 | Stein | Treppe hoch +16 (ab Tiefe 1); Treppe runter +8 (nur mit tieferer Stufe); Taverne −32; Kaserne +24; Lager −26 (je Insel) | Linie 2: Mauer ±64, Turm ±56, Tor ±68 (0…+4 je Seed); Tor Linie 1 ±48 | – |",
+		"| 1 | Holz | Werkstatt −16; Farm −52, +52 | Linie 1: Mauer ±44, Turm ±36, Tor ±48 (fest) | Kaufen +16, Verkaufen +20 (nur Tiefe 0) |",
+		"| 2 | Stein | Treppe hoch +16 (ab Tiefe 1); Treppe runter +8 (nur mit tieferer Stufe); Taverne −32; Kaserne +24; Lager −26 (je Insel) | Linie 2: Mauer ±64, Turm ±56, Tor ±68 (0…+4 je Seed) | – |", // B-631: Tor ab Hub-Stufe 1
 		"| 5 | Kristall | – | Linie 5: Mauer ±124, Turm ±116, Tor ±128 (0…+4 je Seed) | – |",
 	} {
 		if !strings.Contains(block, want) {

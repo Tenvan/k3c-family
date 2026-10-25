@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-25
@@ -62,3 +62,11 @@ keine
 ## Notizen
 
 Vorschlag und Freigabe im Chat 2026-10-25 (Tor-Werte, Treppen je Tiefe, Material-Tor eigene Stufe).
+
+Umgesetzt 2026-10-25:
+- AC-01 geprüft: `engine/sim/gate_level_test.go` (`TestTorStufenInDenDaten`, `TestTorAusbauAbHubStufe` mit zwei Spielern).
+- AC-02 geprüft: `engine/sim/stairs_cost_test.go` (Tiefen 0–4, Treppe hoch in der Höhle kostet Holz, Rückfall), Client `economyLabels.test.ts` (`buildCost`).
+- AC-03 geprüft: `TestHubMaterialTor` (20 Stein), `TestMauernZuerstBautMauerAus` ohne Kupfer grün, Validierung `checkGates`.
+- AC-04 geprüft: Regeln, Glossar, `docs/data/*` angepasst, `task gen:rules`, datadoc grün; `task check:diff` grün, Review ohne schwere Befunde.
+- Abweichung: Tor wird in seiner eigenen Stufe gezeichnet (statt der Stufe seiner Mauer, GEB4 AC-05); `gateRules.ts` entfernt.
+- Folge-Ticket: B-633 (Text des Wartegrunds). Golden unverändert (Szenarien bauen keine Tore/Treppen).

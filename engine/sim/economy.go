@@ -254,7 +254,7 @@ func paySite(w *World, p *Player, s *Site) {
 	switch {
 	case s.State == "unpaid":
 		s.PaidGold++
-		if s.PaidGold >= cheap(w, buildings[s.Kind].Cost).Gold {
+		if s.PaidGold >= siteCost(w, s).Gold {
 			s.State = "waitingMaterial"
 		}
 	case upgradePayable(w, s):
@@ -372,7 +372,7 @@ func spend(s *Stock, c Cost) {
 // auf (building_upgrades.go).
 func stepSites(w *World) {
 	for _, s := range w.Sites {
-		if cost := cheap(w, buildings[s.Kind].Cost); s.State == "waitingMaterial" && canAfford(*w.Stock, cost) {
+		if cost := siteCost(w, s); s.State == "waitingMaterial" && canAfford(*w.Stock, cost) {
 			spend(w.Stock, cost)
 			s.State = "waitingWorker"
 		}

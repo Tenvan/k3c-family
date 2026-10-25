@@ -26,6 +26,8 @@ export interface BuildingData {
   bowRack?: number;
   /** Ausbau-Stufen am selben Platz (B-569); fehlt: keine eigenen Stufen */
   levels?: { cost: Cost; hp: number; buildSeconds: number }[];
+  /** Treppen: Kosten je Biom-Tiefe 0 bis 4 (B-631); fehlt oder leer: `cost` */
+  costByDepth?: Cost[];
 }
 
 export interface TroopData {

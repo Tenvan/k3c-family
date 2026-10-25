@@ -22,6 +22,12 @@ func TestHubSchritteInDenDaten(t *testing.T) {
 			if hasGate := st.Gate != (Cost{}); hasGate != (i == 2 && n < len(hub.Levels)) {
 				t.Errorf("Stufe %d Schritt %d: Tor %+v", n, i+1, st.Gate)
 			}
+			g, c := st.Gate, st.Cost // Tor nur aus Material, das der Schritt selbst kostet (B-631/AC-03)
+			for _, m := range [][2]int{{g.Wood, c.Wood}, {g.Stone, c.Stone}, {g.Copper, c.Copper}, {g.Iron, c.Iron}, {g.Crystal, c.Crystal}} {
+				if m[0] > 0 && m[1] == 0 {
+					t.Errorf("Stufe %d: Tor %+v nicht aus dem Material der Stufe %+v", n, g, c)
+				}
+			}
 		}
 	}
 }
@@ -37,25 +43,28 @@ func payHubStep(t *testing.T, w *World) {
 	}
 }
 
-// Schritt 3 von Hub-Stufe 1 wartet mit bezahltem Gold auf Kupfer (Tor), meldet dann „Material der nächsten Insel“
-// und hebt mit Kupfer die Hub-Stufe.
+// Schritt 3 von Hub-Stufe 1 wartet mit bezahltem Gold auf die 20 Stein des Tors (Material der eigenen neuen Stufe,
+// B-631/AC-03, kein Kupfer), meldet dann „Material der nächsten Insel“ und hebt mit dem Tor-Stein die Hub-Stufe.
 func TestHubMaterialTor(t *testing.T) {
 	w := dayWorld(t)
 	AddPlayer(w)
 	AddPlayer(w)
 	w.HubStep = 3
 	st := hub.Levels[1].Steps[2]
-	*w.Stock = materialOf(st.Cost) // Stein da, Kupfer fehlt
+	if st.Gate != (Cost{Stone: 20}) {
+		t.Fatalf("Tor von Hub-Stufe 2: %+v, erwartet 20 Stein", st.Gate)
+	}
+	*w.Stock = materialOf(st.Cost) // Stein des Schritts da, Tor-Stein fehlt
 	payHubStep(t, w)
 	run(w, 3)
 	up := EconomyOf(w).HubUpgrade
-	if w.hubSite.Upgrade != "waitingMaterial" || up.State != WaitingNextIsland || up.Material.Copper != st.Gate.Copper {
+	if w.hubSite.Upgrade != "waitingMaterial" || up.State != WaitingNextIsland || up.Material.Stone != st.Cost.Stone+st.Gate.Stone || up.Material.Copper != 0 {
 		t.Fatalf("ohne Tor: Platz %q, Zustand %+v", w.hubSite.Upgrade, up)
 	}
 	if w.HubLevel != 1 || EconomyOf(w).HubStep != 3 {
 		t.Fatalf("ohne Tor ausgebaut: Hub-Stufe %d Schritt %d", w.HubLevel, w.HubStep)
 	}
-	w.Stock.Copper = st.Gate.Copper
+	w.Stock.Stone += st.Gate.Stone
 	if runUntil(w, 2*st.BuildSeconds+1, func() bool { return w.HubLevel == 2 }) < 0 {
 		t.Fatalf("mit Tor nicht ausgebaut: %+v", w.hubSite)
 	}
@@ -64,13 +73,13 @@ func TestHubMaterialTor(t *testing.T) {
 	}
 }
 
-// Fehlt im Tor-Schritt nur das Material der laufenden Stufe, bleibt der Wartegrund waitingMaterial.
+// Fehlt im Tor-Schritt mehr als der Tor-Anteil (der Stein des Schritts selbst), bleibt der Wartegrund waitingMaterial.
 func TestHubTorSchrittOhneEigenesMaterial(t *testing.T) {
 	w := dayWorld(t)
 	AddPlayer(w)
 	AddPlayer(w)
 	w.HubStep = 3
-	*w.Stock = Stock{Copper: hub.Levels[1].Steps[2].Gate.Copper}
+	*w.Stock = Stock{Stone: hub.Levels[1].Steps[2].Gate.Stone}
 	payHubStep(t, w)
 	run(w, 1)
 	if up := EconomyOf(w).HubUpgrade; up.State != "waitingMaterial" {

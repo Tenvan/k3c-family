@@ -8,10 +8,9 @@ import { BUILDING_TEXTURES, HUB_SCAFFOLD_TEXTURE, hubLookTexture, hubTexture, is
 import { damageStage, showRubble } from './damageRules';
 import { damageTint, drawDamage, drawRubble } from './damageView';
 import { fontStyle } from './fontRules';
-import { gateStage } from './gateRules';
 import { hubLookOf } from './hubGrowth';
 import { offersHubUpgrade } from './priceTagRules';
-import { hubOfferTitle, hubWait } from '../hud/economyLabels';
+import { buildCost, hubOfferTitle, hubWait } from '../hud/economyLabels';
 import { drawScaffoldShape, scaffoldTexture, siteMarker } from './scaffoldView';
 import { drawSiteStatus, siteStatus, statusKey } from './siteStatusView';
 import { canAfford } from './viewRules';
@@ -142,7 +141,7 @@ export function createSiteView(scene: Phaser.Scene, s: Site): View {
 /** Zeigt die Grafik, falls zugeordnet und geladen; liefert die Höhe für Schilder darüber (sonst Platzhalter-Höhe) */
 function showPicture(scene: Phaser.Scene, v: View, s: Site, stage: number): number | null {
   const picture = v.getAt(0) as Phaser.GameObjects.Image;
-  let key = siteTexture(s.kind, s.state, stage); // Mauer und Turm je Ausbau-Stufe (GEB3), Tor je Mauerlinie (GEB4), Hub-Gebäude je Hub-Stufe (GEB9)
+  let key = siteTexture(s.kind, s.state, stage); // Mauer, Turm und Tor je Ausbau-Stufe (GEB3, B-631), Hub-Gebäude je Hub-Stufe (GEB9)
   if (!has(scene, key)) key = siteTexture(s.kind, s.state); // Stufe nicht geladen: Grundform statt leerer Fläche
   if (!has(scene, key)) {
     picture.setVisible(false);
@@ -152,19 +151,18 @@ function showPicture(scene: Phaser.Scene, v: View, s: Site, stage: number): numb
   return picture.displayHeight;
 }
 
-/** Stufe der Grafik: Tor je Mauerlinie (GEB4), Hub-Gebäude je Hub-Stufe (GEB9), sonst die Stufe des Bauplatzes (GEB3) */
+/** Stufe der Grafik: Hub-Gebäude je Hub-Stufe (GEB9), sonst die Stufe des Bauplatzes (GEB3; das Tor hat eigene Stufen, B-631) */
 function siteStage(s: Site, world: World): number {
-  if (s.kind === 'gate') return gateStage(s, world.sites, world.hubX);
   return isHubBuilding(s.kind) ? (world.hubLevel ?? 1) : (s.level ?? 1);
 }
 
 /** `near`: Das Preisschild dieses Bauplatzes steht, weil es für einen Spieler das nächste ist (`priceTagRules.ts`, B-395) */
 export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: World, near: boolean): void {
-  const data = BUILDINGS[s.kind];
-  const wait = siteStatus(s, world.danger);
+  const cost = buildCost(s.kind, world.biome.depth); // Treppen je Tiefe (B-631)
+  const wait = siteStatus(s, world.danger, world.biome.depth);
   const stage = siteStage(s, world);
   const marker = siteMarker(s); // Bauschild oder Gerüst im Bau, nie beides (B-586)
-  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, data.cost), currentLanguage(), statusKey(wait), stage, s.ruin === true, marker].join('|'); // stage: Mauer/Turm je Stufe (GEB3), Tor je Mauerlinie (GEB4)
+  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, cost), currentLanguage(), statusKey(wait), stage, s.ruin === true, marker].join('|'); // stage: Mauer, Turm und Tor je Stufe (GEB3, B-631)
   if (v.getData('key') === key) return;
   v.setData('key', key);
 
@@ -190,7 +188,7 @@ export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: Wor
   if (marker === 'sign') drawBuildSign(g, s.kind);
   const top = marker === 'scaffold' ? showScaffold(scene, v, g, s.kind, w, h) : h;
   if (s.buildProgress > 0) drawBar(g, -top - 12, 80, s.buildProgress, 0xdda15e);
-  if (s.state === 'unpaid' && near) drawPrice(g, label, world, -h - 20, data.cost.gold ?? 0, s.paidGold, siteName(s.kind), data.cost);
+  if (s.state === 'unpaid' && near) drawPrice(g, label, world, -h - 20, cost.gold ?? 0, s.paidGold, siteName(s.kind), cost);
   if (wait) drawSiteStatus(g, label, wait, siteName(s.kind), -top - 20);
 }
 
