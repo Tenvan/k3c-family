@@ -43,6 +43,9 @@ type Layout struct {
 	Ruins []Ruin `json:"-"`
 	// Guards sind die Wachen der Gegnerlager geplanter Chunks (§ 9, B-517); Gegner der Sim, nicht Teil der level-Nachricht.
 	Guards []Guard `json:"-"`
+	// Backdrops ist die Hintergrund-Variante (1 …) je Kachel von BackdropTileUnits (backdrop.go, GEB18); Teil der
+	// level-Nachricht (additiv, docs/protocol.md), ohne Varianten im Biom fehlt das Feld.
+	Backdrops []int `json:"backdrops,omitempty"`
 }
 
 // eventKinds in fester Reihenfolge wie `EVENT_KINDS` in TS.
@@ -117,10 +120,11 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 		entities = append(entities, Entity{Kind: "lair", X: g.lairX()})
 	}
 	sort.SliceStable(entities, func(i, j int) bool { return entities[i].X < entities[j].X })
+	width := float64(len(chunks)) * g.cw
 	return Layout{
-		Seed: seed, BiomeID: b.ID, WidthUnits: float64(len(chunks)) * g.cw, ChunkWidthUnits: g.cw,
+		Seed: seed, BiomeID: b.ID, WidthUnits: width, ChunkWidthUnits: g.cw,
 		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: wallLines,
-		Ruins: g.ruinsOf(chunks), Guards: g.guardsOf(chunks),
+		Ruins: g.ruinsOf(chunks), Guards: g.guardsOf(chunks), Backdrops: backdrops(b.ID, seed, b.BackdropVariants, width),
 	}, nil
 }
 

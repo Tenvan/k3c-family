@@ -5,6 +5,10 @@
 offene Raum speichert, seine Geräte bekommen `room_closed` und gehen zurück zur Raumliste. `hello.v` muss 9 sein; ein
 v8-Client erhält `version`. Beispiel: `s2c-rooms.json`.
 
+**Nachgetragen ohne neue Version (W11.3, B-410):** `actions` kennt `{ "action": "train", "profession" }` (Ausbilden am Berufs-Angebot) und `{ "action": "trade", "side", "resource" }` (Tauschen am Händler; Beispiel `s2c-snapshot-wirtschaft.json`). Anzeige im Client ab W11.4.
+
+**Nachgetragen ohne neue Version (W11.2, B-208, B-408):** `sites[].hubLevel` (Platz-Stufe); unbezahlte Plätze über Hub-Stufe + 1 fehlen im Zustand (siehe *Wirtschaft*). Ein älterer Client ignoriert das Feld und zeichnet weniger Plätze.
+
 **Nachgetragen ohne neue Version (SK3, B-577):** Spieler in `snap`/`delta` tragen optional `stealthFor` (Sekunden unsichtbar nach Smoke Bomb; fehlt = sichtbar). Neue Skill-IDs `backstab`, `smokeBomb` in `skills`, `slots` und `actions`. Ein älterer Client ignoriert das Feld.
 
 **Nachgetragen ohne neue Version (KB3, B-563):** `actions` kennt `{ "action": "lair" }`: ein lebender Spieler ist näher als `lair.noticeUnits` (`data/bosses.json`) am Bau eines wartenden Endbosses (`sim.AtLair`; nicht ausgelöst, nicht besiegt). Ein älterer Client ignoriert den Eintrag.
@@ -50,6 +54,11 @@ nur bei `fresh: true`. Er ist der Seed des neuen Stands und trennt ihn vom Namen
 bleibt der Name der Seed wie bisher, alte Clients funktionieren unverändert. Ein längerer Seed ergibt `bad_request`, ebenso eine
 unbekannte Startstufe `depth`. Bei `fresh: false` wird `seed` ignoriert. Beispiel: `c2s-create-seed.json`; Level zu Seed und
 Tiefe liefert auch `GET /api/level?seed=…&biome=…`.
+
+**Optionales Feld `level.layout.backdrops` (GEB18, B-618, Version bleibt):** Liste von Hintergrund-Varianten (1 …) je Kachel
+von 24 Units im Raum der Hintergrund-Schicht, Länge ⌈`widthUnits`/24⌉ + 1, benachbarte Einträge verschieden; der Server würfelt
+sie aus dem eigenen Strom `<biom>:<seed>:backdrop` (gleicher Seed, gleiche Folge). Kachel k jeder Schicht zeigt Variante
+`backdrops[k]`; fehlt das Feld (Biom ohne Varianten, alter Server), zeigt der Client überall Variante 1. Beispiel: `s2c-level.json`.
 
 **Änderungen gegenüber v5 (K4, Version 6, B-154, B-345):** `snap`/`delta` nennen Endboss-Phase und Warnkreis
 (`enemies[].phase`, `enemies[].warn`), aktive Nacht-Events mit Restzeit (`nightEvents`) und den Wechselpunkt zur
@@ -309,7 +318,7 @@ das zählt als Abbruch.
 | `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]`, optional `grade`, `goal`, `defeat` (siehe oben), optional `seed` (nur bei `fresh`, höchstens 64 Zeichen, sonst gilt der Name), optional `world` (Welt-ID, nur bei `fresh`, fehlt = `standard`, eine andere nur im Dev-Mode; v7) | `c2s-create.json`, `c2s-create-seed.json`, `c2s-create-world.json` |
 | `join` | Gerät → Server | Raum beitreten oder wiederverbinden | `room` Code, `slots[]` | `c2s-join.json` |
 | `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `world` (Welt-ID des Raums, v7), `you[]`: `slot` → `monarch`, `depth`, `stage` | `s2c-joined.json` |
-| `level` | Server → Gerät | nach `joined` und sobald eine Stufe für das Gerät neu ist, vor dem ersten Zustand der Stufe | `stage`, `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte) | `s2c-level.json` |
+| `level` | Server → Gerät | nach `joined` und sobald eine Stufe für das Gerät neu ist, vor dem ersten Zustand der Stufe | `stage`, `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte, optional `backdrops`) | `s2c-level.json` |
 | `snap` | Server → Gerät | voller Zustand einer Stufe: nach ihrem `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `stage`, `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json`, `s2c-snapshot-wirtschaft.json`, `s2c-snapshot-boss.json`, `s2c-snapshot-event.json` |
 | `delta` | Server → Gerät | jeder weitere Tick, je Stufe | `stage`, `tick`, `ack`, `s` (nur Änderungen zum zuletzt gesendeten Zustand dieser Stufe) | `s2c-snapshot-delta.json`, `s2c-snapshot-delta-dropped.json` |
 | `seats` | Server → alle Geräte im Raum | wenn sich eine Zuordnung, ein Monarch-Zustand oder eine Stufe ändert | `you[]` (eigene Slots mit `monarch`, `depth` und `stage`), `monarchs[]` je Index `taken`/`waiting`/`free` | `s2c-seats.json` |
@@ -395,9 +404,13 @@ Felder je Spieler in `players[]` von `snap` und `delta`:
 `input.p[].skill`), `{ "action": "learn", "skills": [id, …] }` mit den Skills, die der Spieler jetzt lernen darf
 (Punkte frei, nicht gelernt, Tier-Gating; nach ID sortiert, von `sim.LearnableSkills` berechnet; fehlt, wenn keiner
 lernbar ist; B-285). Ein älterer Server sendet `learn` ohne `skills` bei `points` > 0, der Client behandelt dann jeden
-ungelernten Skill als lernbar. Zuletzt `{ "action": "respec" }` (lebt, `sim.CanRespec` erlaubt: Tag und an der
-Burg, auch ohne gelernte Skills; B-495) und `{ "action": "lair" }` (lebt, am Bau des wartenden Endbosses: näher als `lair.noticeUnits`, Ankunft innerhalb `lair.triggerUnits` löst ihn aus; B-563; der Client zeigt eine Zeile ohne Taste). Die Liste nennt keine Taste,
-die Belegung gehört dem Client. Berufe, Tausch, Grabstein und Wiederbeleben kommen später (W5, B-120).
+ungelernten Skill als lernbar. Dann `{ "action": "respec" }` (lebt, `sim.CanRespec` erlaubt: Tag und an der
+Burg, auch ohne gelernte Skills; B-495), `{ "action": "train", "profession": "miner" | "builder" | "craftsman" }`
+(Ausbilden: lebt, hat Gold, das Zahlziel am Ort ist ein bezahlbares Berufs-Angebot; `sim.TrainAt`; B-410) oder
+`{ "action": "trade", "side": "buy" | "sell", "resource": id }` (Tauschen am Händler: Kaufen mit Gold und Platz im
+Lager, Verkaufen mit genug `resource` im Vorrat; `sim.TradeAt`; B-410; höchstens einer der beiden, Bezahlen bleibt
+`input.pay`) und zuletzt `{ "action": "lair" }` (lebt, am Bau des wartenden Endbosses: näher als `lair.noticeUnits`, Ankunft innerhalb `lair.triggerUnits` löst ihn aus; B-563; der Client zeigt eine Zeile ohne Taste). Die Liste nennt keine Taste,
+die Belegung gehört dem Client. Grabstein und Wiederbeleben kommen später (W5, B-120). Unbekannte Aktionen ignoriert der Client mit Log (W11.4).
 
 ### Wirtschaft: Hub, Lager, Wartegrund, Händler
 
@@ -419,7 +432,7 @@ vom Server je Stufe abgelesen; die übrigen aus der Welt):
 | `danger` | `true`: Nacht oder Gegner da, Bau und Ausbau warten | keine Gefahr |
 | `fighters` | Zahl der Kämpfer der Stufe (für „Kämpfer/Limit“; W10.2, B-332) | nie (älterer Server); 0 ist ein Wert |
 | `troopLimit` | Truppen-Limit der Stufe (Regel `docs/rules/buerger.md` § 3, zerstörte Kaserne zählt nicht) | nie (älterer Server) |
-| `merchant` | anwesender Händler: `resource` (sein Material), `leaves` (Tag der Abreise), `buyPaid` (Gold des laufenden Kaufs, fehlt bei 0) | kein Händler (nur Tiefe 0) |
+| `merchant` | anwesender Händler: `resource` (sein Material), `leaves` (Tag der Abreise), `buyPaid` (Gold des laufenden Kaufs, fehlt bei 0), `raid` (`true`: dieser Besuch wird überfallen, Gegner greifen den Händler zuerst an; fehlt sonst), `hp`/`maxHp` (Lebenspunkte; bei 0 flieht er, KB2.3, B-381) | kein Händler (nur Tiefe 0) |
 | `drops` | Ausrüstung am Boden, Liste mit `id`: `kind` (Figur oder Beruf), `x`, `workSite` (fehlt bei 0) | keine |
 | `armorLevel` | Rüstungsstufe der Kämpfer des Hubs | 0 |
 
@@ -428,10 +441,24 @@ vom Server je Stufe abgelesen; die übrigen aus der Welt):
 `level` (fehlt = 1) für den Ausbau von Mauer und Turm, `hubUpgrade.state` für den Hub. `waitingWorker` heißt bei
 `danger` „Gefahr“, sonst „kein Bauer“; den Text bildet der Client.
 
+**Platz-Stufe und Sichtbarkeit (W11.2, B-208, B-408):** `sites[].hubLevel` ist die Hub-Stufe, ab der ein Platz
+bezahlbar ist (`sim.SiteHubLevel`: Hub-Plätze nach `data/hub.json`, Mauer und Turm der Linie k ab k, Tor ab
+`max(gateHubLevel, k)`). Der Zustand nennt unbezahlte Plätze nur bis zur nächsten Hub-Stufe (`hubLevel` ≤ Hub-Stufe + 1,
+`sim.SiteVisible`); bezahlte, angezahlte, wartende und gebaute Plätze stehen immer darin. Steigt die Hub-Stufe, kommen
+die Plätze der neuen nächsten Stufe im `delta` unter `sites.set`. Additiv, keine neue Version; ein älterer Server sendet
+alle Plätze ohne `hubLevel`. Geprüft von `engine/net/sites_test.go`.
+
 **Ruinen (WZ14, B-468):** `sites[].ruin` ist `true` an einer Ruine der Planung (`docs/rules/geplante-chunks.md` § 8),
 auch nach Zerstörung und Wiederaufbau; sonst fehlt das Feld (additiv, Protokoll bleibt 7). Eine Ruine ist ein Platz wie
 jeder andere (`state`, `hp`, `maxHp`, Ausbau); die Vorschau des Studios liefert sie mit. Geprüft von
 `TestRuineInSnapUndDelta` und `TestRuineInDerVorschau` (`engine/net/ruin_test.go`).
+
+**Bezahlbar und abbaubar (GEB16, B-587, B-588):** `sites[].payable` ist `true`, wenn der Platz gerade Münzen für Bau
+oder Ausbau annimmt (gleiche Regel wie `input.pay`: `sim.SitePayable`), `nodes[].minable` ist `true`, wenn der Knoten
+gerade eine Markier-Münze annimmt (sammelbar und nicht markiert: `sim.NodeMarkable`). Beide fehlen bei `false`
+(additiv, Protokoll-Version unverändert); im Delta kommt der ganze Eintrag. Der Client zeigt Bau- und Abbau-Schild nur
+danach und rechnet nichts nach; ein älterer Server ohne Felder zeigt kein Schild. Geprüft von `TestPayableUndMinable`
+(`engine/net/payable_test.go`).
 
 **Berufe:** `troops[].profession` (`miner`, `builder`, `craftsman`; fehlt = keiner) und `troops[].workSite` (Site-ID
 des Arbeitsplatzes, fehlt = keiner). Berufswahl, Tausch und Hub-Ausbau als Eingabe stehen in W5.2.
@@ -564,7 +591,9 @@ Nachrichten warten. Ein Client übergeht unbekannte Typen
 **Budget (Beschluss Q08):** Ereignisse ≤ **200 Byte je Tick und Client im Mittel**, bei 30 Hz also **6 KB/s je
 Client**; sie laufen im Delta mit, keine eigene Nachricht. Geprüft von `TestEventsBudgetJeTick`
 (`engine/sim/events_budget_test.go`): 3 Stufen, 4 Spieler, Seed `bench`, 1800 Ticks, Mittel je Stufe und Tick ≤ 200
-Byte, sonst rot. Für den ganzen Zustand ist keine Grenze beschlossen, er wird nur gemessen.
+Byte, sonst rot. Für den ganzen Zustand ist keine Grenze beschlossen, er wird nur gemessen (Entscheidung zu Q08,
+Variante B, B-386, 2026-10-23: das Budget gilt nur für Ereignisse, `snap` und `delta` haben keine Grenze; wird der
+Zustand später zu groß, z. B. auf Pi 3 oder im WLAN, ist das ein neues Ticket).
 
 **Ist-Wert Go-Server** (2026-10-03, Intel Core Ultra 7 165H, `go test -bench Island -run '^$' ./engine/sim`; JSON je
 Stufe und Tick, erste 1800 Ticks nach dem Aufwärmen, schneller Zyklus mit Nächten):

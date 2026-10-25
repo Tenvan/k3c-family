@@ -47,6 +47,12 @@ describe('applyDelta', () => {
     expect(applyDelta(base, { players: { set: [{ id: 1, x: 99 }], del: [1] } }).players).toEqual([{ id: 2, x: 20 }]);
   });
 
+  it('Bauplätze: neue Stufe kommt mit hubLevel über set, ein nicht mehr erreichbarer Platz verschwindet über del (W11.2, W11.4)', () => {
+    const state = { sites: [{ id: 1, hubLevel: 1 }, { id: 2, hubLevel: 2 }] };
+    const next = applyDelta(state, { sites: { set: [{ id: 3, hubLevel: 3 }], del: [2] } });
+    expect(next.sites).toEqual([{ id: 1, hubLevel: 1 }, { id: 3, hubLevel: 3 }]);
+  });
+
   it('Liste fehlt im alten Zustand: wird aus set aufgebaut', () => {
     expect(applyDelta({}, { coins: { set: [{ id: 5 }], del: [] } }).coins).toEqual([{ id: 5 }]);
   });
