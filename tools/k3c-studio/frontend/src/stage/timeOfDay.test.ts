@@ -1,5 +1,7 @@
 import { daylight } from '@game/scenes/render/viewRules';
+import { LIGHT } from '@game/model/data';
 import type { CycleInfo } from '@game/model/types';
+import * as game from '@game/scenes/render/nightLight';
 import { describe, expect, it } from 'vitest';
 import { MAX_PROGRESS, NIGHT_BRIGHTNESS, TIMES_OF_DAY, brightnessOf, simTime } from './timeOfDay';
 
@@ -44,5 +46,13 @@ describe('Tageszeit: vier Einträge, drei Sim-Phasen (B-460/AC-05)', () => {
     expect(dawn[1]).toBeGreaterThan(dawn[0]!);
     expect(dawn[2]).toBeGreaterThan(dawn[1]!);
     expect(dawn[2]).toBeLessThan(1);
+  });
+
+  it('keine zweite Kopie: Helligkeit und Untergrenze sind die des Spiels aus data/light.json (W13.2, B-472/AC-03)', () => {
+    expect(brightnessOf).toBe(game.brightnessOf);
+    expect(NIGHT_BRIGHTNESS).toBe(LIGHT.nightBrightness);
+    expect(NIGHT_BRIGHTNESS).toBeLessThan(0.45);
+    const dawn = simTime('dawn', 0.5);
+    expect(brightnessOf(dawn)).toBeCloseTo(game.brightnessOf(cycle('dawn', 0.5)), 10);
   });
 });

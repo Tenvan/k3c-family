@@ -1,6 +1,6 @@
 // Package botdev ist ein Bot-Gerät für Testläufe (B-348, TR1.2): eine WebSocket-Verbindung zum Spielserver mit einem
 // Slot, dessen Monarchen ein Bot des Balancing-Testers steuert. Der Bot entscheidet auf dem Zustand, den der Server
-// schickt, und antwortet mit `input` wie ein Client.
+// schickt, und antwortet mit `input` wie ein Client. Als Beobachter (B-352, TR4.2) belegt es keinen Platz und liest nur.
 package botdev
 
 import (
@@ -33,7 +33,8 @@ type Device struct {
 	name    string
 	ws      *websocket.Conn
 	bot     balance.Bot
-	monarch int
+	monarch int  // eigener Monarch, -1 beim Beobachter
+	watch   bool // Beobachter ohne Platz: liest nur, schickt keine Eingabe
 	seq     int64
 	done    chan struct{}
 
@@ -88,6 +89,19 @@ func (d *Device) Create(ctx context.Context, save string) (string, error) {
 // Join tritt dem Raum per Code bei.
 func (d *Device) Join(ctx context.Context, code string) error {
 	_, err := d.enter(ctx, map[string]any{"t": "join", "room": code, "slots": []int{0}})
+	return err
+}
+
+// CreateObserved legt den Raum wie Create an, aber als Beobachter ohne Platz (B-352).
+func (d *Device) CreateObserved(ctx context.Context, save string) (string, error) {
+	d.watch, d.monarch = true, -1
+	return d.enter(ctx, map[string]any{"t": "create", "save": save, "fresh": true, "observe": true})
+}
+
+// Observe tritt dem Raum per Code als Beobachter ohne Platz bei (B-352).
+func (d *Device) Observe(ctx context.Context, code string) error {
+	d.watch, d.monarch = true, -1
+	_, err := d.enter(ctx, map[string]any{"t": "join", "room": code, "observe": true})
 	return err
 }
 
@@ -193,6 +207,9 @@ func (d *Device) onState(m inMsg) (sim.PlayerCommand, bool) {
 	} else if st := d.states[m.Stage]; st != nil {
 		applyDelta(st, s)
 	}
+	if d.watch {
+		d.follow(m.Stage)
+	}
 	if m.Stage != d.stage || d.states[m.Stage] == nil {
 		return sim.PlayerCommand{}, false
 	}
@@ -208,6 +225,9 @@ func (d *Device) onState(m inMsg) (sim.PlayerCommand, bool) {
 		return sim.PlayerCommand{}, false
 	}
 	d.world = w
+	if d.watch {
+		return sim.PlayerCommand{}, false
+	}
 	for _, p := range w.Players {
 		if p.Index == d.monarch {
 			d.track(p.X)
@@ -215,6 +235,16 @@ func (d *Device) onState(m inMsg) (sim.PlayerCommand, bool) {
 		}
 	}
 	return sim.PlayerCommand{}, false
+}
+
+// follow: Der Beobachter liest die Stufe mit Spielern; er bleibt bei ihr, bis sie leer ist (unter mu).
+func (d *Device) follow(stage int) {
+	if stage == d.stage || len(asList(d.states[stage]["players"])) == 0 {
+		return
+	}
+	if d.world == nil || len(d.world.Players) == 0 {
+		d.stage = stage
+	}
 }
 
 func (d *Device) track(x float64) {

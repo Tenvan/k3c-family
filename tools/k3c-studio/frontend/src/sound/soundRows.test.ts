@@ -1,27 +1,42 @@
 import { describe, expect, it } from 'vitest';
+import assets from '@data/assets.json';
 import { DUCK } from '@game/audio/ducking';
 import type { AssetSlot } from '../api';
 import { combatMix, distanceSteps, duckSummary, loudnessQueue, playable } from './probes';
-import { eventRows, GLOBAL_SLOTS, HERKUNFT_LABEL, rowFilter, skillRows, skillSlot, soundRows, ROW_SCENES } from './soundRows';
+import { eventRows, GLOBAL_SLOTS, HERKUNFT_LABEL, rowFilter, skillRows, skillTone, soundRows, ROW_SCENES } from './soundRows';
 
 const slot = (id: string, n = 1, bus = 'sfx'): AssetSlot => ({ id, art: 'sound', kategorie: 'sfx', beschreibung: id, bus, wahl: Array.from({ length: n }, (_, i) => ({ datei: `audio/${i}.ogg` })), status: n ? 'zugeordnet' : 'luecke' });
 
-describe('Skill → Slot (vorläufig, ersetzt WZ29.2 durch SO8.2)', () => {
-  it('Linien-Slot vor sfx:skill, sonst still', () => {
-    const reg = [slot('sfx:skill'), slot('sfx:skill:healer')];
-    expect(skillSlot('healer', reg)).toMatchObject({ herkunft: 'linie', slot: { id: 'sfx:skill:healer' } });
-    expect(skillSlot('tank', reg)).toMatchObject({ herkunft: 'rueckfall', slot: { id: 'sfx:skill' } });
-    expect(skillSlot('tank', [slot('sfx:skill:tank', 0)])).toEqual({ herkunft: 'still' }); // Slot ohne Zuordnung zählt nicht
-    expect(skillSlot('mage', [])).toEqual({ herkunft: 'still' });
+describe('Skill → Slot mit der Abbildung des Spiels (SO8.2, WZ29.2)', () => {
+  it('Skill-Slot vor Linien-Slot vor sfx:skill; passiv ohne eigenen Slot still', () => {
+    const reg = [slot('sfx:skill'), slot('sfx:skill:healer'), slot('sfx:skill:regeneration')];
+    expect(skillTone('groupHeal', reg)).toMatchObject({ herkunft: 'linie', slot: { id: 'sfx:skill:healer' } });
+    expect(skillTone('taunt', reg)).toMatchObject({ herkunft: 'rueckfall', slot: { id: 'sfx:skill' } });
+    expect(skillTone('regeneration', reg)).toMatchObject({ herkunft: 'skill', slot: { id: 'sfx:skill:regeneration' } });
+    expect(skillTone('healingAura', reg)).toEqual({ herkunft: 'still' });
+    expect(skillTone('taunt', [slot('sfx:skill:tank', 0)])).toEqual({ herkunft: 'still' }); // Slot ohne Zuordnung zählt nicht, Rückfall fehlt
+    expect(skillTone('fireball', [])).toEqual({ herkunft: 'still' });
   });
-  it('Zeilen: alle Skills nach Linie und Art (aktiv/passiv) mit Herkunft', () => {
+  it('Zeilen: alle Skills nach Linie und Art (aktiv/passiv) mit Herkunft; jeder Skill hat Ton oder ist still', () => {
     const rows = skillRows([slot('sfx:skill'), slot('sfx:skill:healer')]);
     const by = (id: string) => rows.find((r) => r.titel === id)!;
     expect(by('groupHeal')).toMatchObject({ gruppe: 'Heiler', linie: 'healer', art: 'aktiv', herkunft: 'linie' });
-    expect(by('healingAura')).toMatchObject({ art: 'passiv', herkunft: 'linie' });
+    expect(by('healingAura')).toMatchObject({ art: 'passiv', herkunft: 'still' });
     expect(by('fireball')).toMatchObject({ linie: 'mage', herkunft: 'rueckfall' });
     expect(new Set(rows.map((r) => r.linie))).toEqual(new Set(['tank', 'mage', 'healer', 'thief']));
+    expect(rows.every((r) => (r.herkunft === 'still') === !r.choice)).toBe(true);
     expect(skillRows([]).every((r) => r.herkunft === 'still' && !r.choice)).toBe(true);
+  });
+  it('echter Katalog (data/assets.json): jeder aktive Skill hat den Ton seiner Klasse, passive sind still (SO8.1)', () => {
+    const rows = skillRows(assets.slots as unknown as AssetSlot[]);
+    for (const r of rows) expect(r.herkunft, r.titel).toBe(r.art === 'aktiv' ? 'linie' : 'still');
+    expect(rows.find((r) => r.titel === 'backstab')?.slot?.id).toBe('sfx:skill:thief');
+  });
+  it('Filter Linie/Klasse zeigt den Namen der Klasse', () => {
+    const rows = skillRows([slot('sfx:skill')]);
+    const linie = rowFilter(rows, []).dimensions.find((d) => d.key === 'linie')!;
+    expect(linie.label).toBe('Linie/Klasse');
+    expect(linie.values(rows.find((r) => r.titel === 'groupHeal')!)).toBe('Heiler');
   });
 });
 
@@ -50,7 +65,7 @@ describe('Ereignis-Szenen', () => {
     expect(f.dimensions.map((d) => d.key)).toContain('herkunft');
     const status = f.dimensions.find((d) => d.key === 'status')!;
     expect(rows.map((r) => status.values(r))).toContain('Lücke');
-    expect(Object.keys(HERKUNFT_LABEL)).toHaveLength(5);
+    expect(Object.keys(HERKUNFT_LABEL)).toHaveLength(6);
   });
 });
 

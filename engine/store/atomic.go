@@ -5,6 +5,7 @@ package store
 
 import (
 	"errors"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -59,14 +60,34 @@ const (
 var renameFile = os.Rename
 
 // Rename benennt oldPath nach newPath um und ersetzt eine vorhandene Datei. Unter Windows wird ein kurz verweigertes
-// Ersetzen begrenzt wiederholt; andere Fehler und andere Systeme melden den Fehler sofort.
+// Ersetzen begrenzt wiederholt (⏳ im Log, nach dem letzten Versuch ❌); andere Fehler und andere Systeme melden den
+// Fehler sofort. Scheitert es, bleibt newPath unverändert.
 func Rename(oldPath, newPath string) error {
 	err := renameFile(oldPath, newPath)
-	for i := 1; i < renameTries && retryable(err); i++ {
+	i := 1
+	for ; i < renameTries && retryable(err); i++ {
+		slog.Warn("⏳ Datei gesperrt, neuer Versuch", "ns", "store", "datei", filepath.Base(newPath), "versuch", i+1, "err", err)
 		time.Sleep(renamePause)
 		err = renameFile(oldPath, newPath)
 	}
+	if i > 1 && err != nil {
+		slog.Error("❌ Datei bleibt gesperrt, nicht ersetzt", "ns", "store", "datei", filepath.Base(newPath), "versuche", i, "err", err)
+	}
 	return err
+}
+
+// readFile ist os.ReadFile; die Naht für den Test.
+var readFile = os.ReadFile
+
+// readRetry liest path wie os.ReadFile. Unter Windows hält ein Virenscanner eine gerade umbenannte Datei kurz offen
+// (B-274); das Lesen wird dann wie Rename begrenzt wiederholt.
+func readRetry(path string) ([]byte, error) {
+	data, err := readFile(path)
+	for i := 1; i < renameTries && retryable(err); i++ {
+		time.Sleep(renamePause)
+		data, err = readFile(path)
+	}
+	return data, err
 }
 
 func retryable(err error) bool {

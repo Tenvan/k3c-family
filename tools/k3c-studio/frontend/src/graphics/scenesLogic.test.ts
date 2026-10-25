@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { buildView, emptyState, toggleChip } from '@webkit/lib/listFilter';
 import { describe, expect, it } from 'vitest';
-import { baumDatei, baumReihe, figureCard, gebaeudeKarten, hintergrundStreifen, hubWachstum, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, resolveSlot, sceneFilter, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './scenesLogic';
+import { baumDatei, baumReihe, figureCard, gebaeudeKarten, GRAFIK_SCALE, grafikScale, hintergrundStreifen, hubWachstum, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, resolveSlot, sceneFilter, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './scenesLogic';
 
 const farm: AssetSlot = {
   id: 'farm', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Farm',
@@ -124,7 +124,18 @@ describe('Asset-Vorschau: echte Grafik (GEB10)', () => {
     const baeume = index.filter((e) => e.klasse === 'baum');
     expect(baeume).toHaveLength(10); // pappel-niedrig (B-568) ist bewusst nur 5 Kacheln hoch
     for (const e of baeume) expect(e.kacheln.h).toBe(e.id === 'birke-3' ? 9.5 : e.id === 'pappel-niedrig' ? 5 : 11.25);
-    expect(baumReihe(index, undefined, 1, 'flora').map((b) => b.id)).toEqual(['hoehlenbusch', 'wurzel-2', 'wurzel-3', 'wurzel']);
+    expect(baumReihe(index, undefined, 1, 'flora').map((b) => b.id)).toEqual(['hoehlenbusch', 'wurzel-2', 'wurzel-3', 'wurzel-4', 'wurzel-5', 'wurzel']);
+  });
+
+  it('Fels in drei Formen, je 1,5 × 1,5 Kacheln mit den Looks Wald, Höhle, Mine (GEB15.2, B-583)', () => {
+    const felsen = index.filter((e) => /^felsen(-[bc])?$/.test(e.id));
+    expect(felsen.map((e) => e.id).sort()).toEqual(['felsen', 'felsen-b', 'felsen-c']);
+    for (const e of felsen) {
+      expect(e.kacheln).toEqual({ b: 1.5, h: 1.5 });
+      expect([1, 2, 3].map((s) => baumDatei(e, s, 32))).toEqual([1, 2, 3].map((s) => `grafik/gebaeude/${e.id}-${s}-32.png`));
+    }
+    const karten = gebaeudeKarten(index).filter((k) => k.dichte === 32).map((k) => k.id);
+    for (const id of ['felsen', 'felsen-b', 'felsen-c']) expect(karten).toContain(id);
   });
 });
 
@@ -221,6 +232,21 @@ describe('Asset-Vorschau: Hintergründe je Biom (GEB7/AC-03)', () => {
     expect(s[0]!.biom).toBe('forest');
     expect(s[0]!.himmel).toBe('#123456');
     expect(s[0]!.schichten.map((l) => l.id)).toEqual(['hg-wald-fern', 'hg-wald-mitte', 'hg-wald-nah']);
+  });
+
+  it('Spielmaßstab: Generator-Grafik nach Dichte im Namen (32/Dichte), sonst ×GRAFIK_SCALE (GEB18)', () => {
+    expect(grafikScale('grafik/gebaeude/hg-hoehle-fern-v1-128.png')).toBe(0.25);
+    expect(grafikScale('grafik/gebaeude/hg-wald-fern-32.png')).toBe(1);
+    expect(grafikScale('grafik/gebaeude/castle-16.png')).toBe(2);
+    expect(grafikScale('grafik/gothicvania-town/props-einzeln/well.png')).toBe(GRAFIK_SCALE);
+  });
+
+  it('zeigt nach der bisherigen Fassung jede vollständige Variante aufsteigend (GEB18)', () => {
+    const v = (n: number, schicht: string): GebaeudeEintrag => ({ ...wald[0]!, id: `hg-wald-${schicht}-v${n}` });
+    const index = [...wald, ...['fern', 'mitte', 'nah'].flatMap((s) => [v(10, s), v(2, s)]), v(3, 'fern')];
+    const s = hintergrundStreifen(index, biome);
+    expect(s.map((x) => x.variante)).toEqual(['', 'v2', 'v10']);
+    expect(s[1]!.schichten.map((l) => l.id)).toEqual(['hg-wald-fern-v2', 'hg-wald-mitte-v2', 'hg-wald-nah-v2']);
   });
 
   it('lässt Biome ohne vollständige Schichten und unbekannte Biome weg', () => {

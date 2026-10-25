@@ -55,13 +55,14 @@ export function useSources(): SourcesState {
 
   const download = useCallback(async (ids: string[]) => {
     try {
-      await backend.sourceDownload(ids);
+      const bytes = (view?.vorschlaege ?? []).filter((s) => ids.includes(s.id)).reduce((sum, s) => sum + s.groesse, 0);
+      await backend.sourceDownload(ids, bytes);
       setError('');
       setActive(true);
     } catch (e) {
       setError((e as Error).message);
     }
-  }, []);
+  }, [view]);
 
   const adopt = useCallback(async (id: string) => {
     try {

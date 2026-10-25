@@ -44,7 +44,7 @@ describe('Mock der Quellen', () => {
 
   it('lädt mit Fortschritt und meldet den Fehlerfall; Wiederholen bleibt möglich', async () => {
     const api = mockSources();
-    await api.sourceDownload(['q05', 'q06']);
+    await api.sourceDownload(['q05', 'q06'], 0);
     const first = await api.sourceProgress();
     expect(first.map((j) => [j.id, j.status, percent(j)])).toEqual([['q05', 'laedt', 25], ['q06', 'laedt', 25]]);
     await drain(api);
@@ -56,9 +56,9 @@ describe('Mock der Quellen', () => {
 
   it('verweigert gesperrte Einträge und alles offline, zeigt die Liste aber weiter', async () => {
     const api = mockSources();
-    await expect(api.sourceDownload(['q04'])).rejects.toThrow('gesperrt');
+    await expect(api.sourceDownload(['q04'], 0)).rejects.toThrow('gesperrt');
     setMockSourcesOffline(true);
-    await expect(api.sourceDownload(['q03'])).rejects.toThrow('offline');
+    await expect(api.sourceDownload(['q03'], 0)).rejects.toThrow('offline');
     const v = await api.sources();
     expect(v.offline).toBe(true);
     expect(v.vorschlaege.filter((s) => s.status === 'geladen')).toHaveLength(3);

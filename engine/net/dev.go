@@ -3,6 +3,7 @@ package net
 import (
 	"encoding/json"
 	"errors"
+	"mime"
 	"net/http"
 
 	"k3c/engine/room"
@@ -20,6 +21,8 @@ type devBody struct {
 	Grade    string `json:"grade"`
 	On       *bool  `json:"on"`
 	Level    int    `json:"level"`
+	Boss     string `json:"boss"`
+	Event    string `json:"event"`
 }
 
 // dev ist /api/dev für die Seite /dm (B-232): GET ohne room liefert Dev-Mode und Raumliste, GET mit room die Diagnose
@@ -58,7 +61,8 @@ func (s *server) devAction(w http.ResponseWriter, r *http.Request, rm *room.Room
 		return
 	}
 	err := rm.DevPage(room.DevAction{Action: b.Action, Slot: b.Slot, Amount: b.Amount, Resource: b.Resource,
-		Factor: b.Factor, Paused: b.Paused, Phase: b.Phase, Grade: b.Grade, On: b.On, Level: b.Level})
+		Factor: b.Factor, Paused: b.Paused, Phase: b.Phase, Grade: b.Grade, On: b.On, Level: b.Level,
+		Boss: b.Boss, Event: b.Event})
 	switch {
 	case errors.Is(err, room.ErrForbidden):
 		fail(w, http.StatusForbidden, messages["forbidden"])
@@ -71,6 +75,7 @@ func (s *server) devAction(w http.ResponseWriter, r *http.Request, rm *room.Room
 
 // devFullSave ist POST /api/dev/fullsave {"seed": "…"} (B-315, SV1.3): legt den Spielstand „voll ausgebaut“ an und
 // antwortet mit seinem Namen {"save": "voll-…"}. Nur im Dev-Mode, sonst 403; der Level-Betrachter startet ihn danach.
+// Ohne Content-Type application/json 415 (B-426): ein einfaches Formular einer fremden Seite kommt so nicht durch.
 func (s *server) devFullSave(w http.ResponseWriter, r *http.Request) {
 	if s.cfg.Rooms == nil {
 		http.NotFound(w, r)
@@ -78,6 +83,11 @@ func (s *server) devFullSave(w http.ResponseWriter, r *http.Request) {
 	}
 	if r.Method != http.MethodPost {
 		fail(w, http.StatusMethodNotAllowed, "Nur POST")
+		return
+	}
+	if ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type")); err != nil || ct != "application/json" {
+		s.log.Warn("🚫 Spielstand voll ausgebaut ohne JSON abgelehnt", "contentType", r.Header.Get("Content-Type"))
+		fail(w, http.StatusUnsupportedMediaType, "Nur application/json")
 		return
 	}
 	var b struct {

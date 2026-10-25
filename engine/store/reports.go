@@ -18,9 +18,13 @@ const MaxReportBytes = 256 << 10
 
 // MaxReports ist die Zahl der Berichte, die liegen bleiben (B-142): 100 × MaxReportBytes = höchstens 25 MB auf der
 // SD-Karte des Pi, und 100 Testläufe reichen für jeden Vergleich. Ältere Berichte löscht Store vor dem Schreiben.
+// Dieselbe Grenze gilt getrennt für die Spielmetrik-Reports (B-272): Gamepad-Berichte und Sessions verdrängen sich nicht.
 const MaxReports = 100
 
-const reportGlob = "gamepad-*.json"
+const (
+	reportGlob  = "gamepad-*.json"
+	sessionGlob = "session-*.json"
+)
 
 // Reports sind die Testberichte der Gamepad-Testseite unter Dir.
 type Reports struct {
@@ -52,7 +56,7 @@ func (r *Reports) Store(data []byte, remote string) (string, error) {
 	if err := os.MkdirAll(r.Dir, 0o755); err != nil {
 		return "", err
 	}
-	if n, err := r.prune(MaxReports - 1); err != nil {
+	if n, err := r.prune(reportGlob, MaxReports-1); err != nil {
 		return "", err
 	} else if n > 0 {
 		slog.Info("🧹 alte Berichte gelöscht", "ns", "report", "anzahl", n)
@@ -86,10 +90,11 @@ func writeNew(dir, base string, data []byte) (string, error) {
 	return "", fmt.Errorf("%s: zu viele Berichte in derselben Millisekunde", base)
 }
 
-// prune löscht die ältesten Berichte in Dir, bis höchstens keep übrig sind, und meldet, wie viele es waren. Die Ordnung
-// folgt dem Zeitstempel im Dateinamen, nicht der Dateizeit; andere Dateien und Ordner (etwa saves/) bleiben unberührt.
-func (r *Reports) prune(keep int) (int, error) {
-	files, err := filepath.Glob(filepath.Join(r.Dir, reportGlob))
+// prune löscht die ältesten Dateien zu glob in Dir, bis höchstens keep übrig sind, und meldet, wie viele es waren. Die
+// Ordnung folgt dem Zeitstempel im Dateinamen, nicht der Dateizeit; andere Dateien und Ordner (etwa saves/) bleiben
+// unberührt.
+func (r *Reports) prune(glob string, keep int) (int, error) {
+	files, err := filepath.Glob(filepath.Join(r.Dir, glob))
 	if err != nil || len(files) <= keep {
 		return 0, err
 	}
@@ -111,7 +116,8 @@ func (r *Reports) Count() int {
 
 // StoreSession schreibt einen Spielmetrik-Report (B-150, docs/protocol.md › Spielmetrik-Report) als
 // session-<zeit>.json, ohne eine vorhandene Datei zu überschreiben. Die Antwort ist der Pfad der Datei. Ein Report
-// muss ein JSON-Objekt sein.
+// muss ein JSON-Objekt sein. Ältere Reports über MaxReports löscht er vorher (B-272); scheitert das Löschen, steht es
+// im Log und der neue Report wird trotzdem geschrieben.
 func (r *Reports) StoreSession(data []byte) (string, error) {
 	if len(data) > MaxReportBytes {
 		return "", ErrTooLarge
@@ -126,6 +132,11 @@ func (r *Reports) StoreSession(data []byte) (string, error) {
 	}
 	if err := os.MkdirAll(r.Dir, 0o755); err != nil {
 		return "", err
+	}
+	if n, err := r.prune(sessionGlob, MaxReports-1); err != nil {
+		slog.Error("❌ alte Spielmetrik-Reports nicht gelöscht", "ns", "report", "err", err)
+	} else if n > 0 {
+		slog.Info("🧹 alte Spielmetrik-Reports gelöscht", "ns", "report", "anzahl", n)
 	}
 	stamp := strings.NewReplacer(":", "-", ".", "-").Replace(now().UTC().Format("2006-01-02T15:04:05.000Z"))
 	return writeNew(r.Dir, "session-"+stamp, data)

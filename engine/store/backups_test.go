@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"sync"
+	"syscall"
 	"testing"
 	"time"
 )
@@ -110,5 +112,38 @@ func TestGleichzeitigesSpeichern(t *testing.T) {
 	}
 	if list, _ := s.Backups("autosave"); len(list) != BackupKeep {
 		t.Errorf("%d Sicherungen", len(list))
+	}
+}
+
+// B-274: Scheitert das Lesen des bisherigen Stands (Virenscanner hält die Datei), wird nie ohne Sicherung überschrieben:
+// dauerhaft gesperrt → Fehler und alter Stand bleibt; kurz gesperrt (Windows) → wiederholt und gesichert.
+func TestStoreUeberschreibtNieOhneSicherung(t *testing.T) {
+	s := &Saves{Dir: t.TempDir(), Now: clock()}
+	_, _ = s.Store("autosave", save(1))
+	defer func(f func(string) ([]byte, error)) { readFile = f }(readFile)
+	readFile = func(string) ([]byte, error) { return nil, &os.PathError{Op: "open", Err: syscall.EINVAL} }
+	if _, err := s.Store("autosave", save(2)); err == nil {
+		t.Fatal("Store ohne lesbaren bisherigen Stand gelungen")
+	}
+	readFile = os.ReadFile
+	if cur, _ := s.Load("autosave"); string(cur) != string(save(1)) {
+		t.Fatalf("bisheriger Stand überschrieben: %s", cur)
+	}
+	if runtime.GOOS != "windows" {
+		return
+	}
+	calls := 0
+	readFile = func(p string) ([]byte, error) {
+		if calls++; calls < 3 {
+			return nil, &os.PathError{Op: "open", Path: p, Err: errSharingViolation}
+		}
+		return os.ReadFile(p)
+	}
+	if _, err := s.Store("autosave", save(2)); err != nil {
+		t.Fatal(err)
+	}
+	list, _ := s.Backups("autosave")
+	if got, _ := os.ReadFile(filepath.Join(s.backupDir("autosave"), list[0].Name)); string(got) != string(save(1)) {
+		t.Errorf("Sicherung = %s", got)
 	}
 }

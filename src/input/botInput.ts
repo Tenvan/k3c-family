@@ -1,7 +1,8 @@
 /**
  * Bot-Eingabe für Testläufe (B-349, TR2): `game.html?botfeed=<ws-Adresse>&players=n` nimmt die Eingaben der n lokalen
  * Spieler aus dem Bot-Feed der Workbench (`tools/k3c-workbench/internal/botfeed`). Der Client entscheidet nichts, er spielt
- * je Slot das letzte Kommando ab, bis das nächste kommt. Ohne Verbindung gibt es keine Eingabe (die Monarchen stehen).
+ * je Slot das letzte Kommando ab, bis das nächste kommt. Ohne Verbindung oder nach STALE_MS ohne Nachricht gibt es keine
+ * Eingabe (die Monarchen stehen). Ein Druck, der zwischen zwei Frames kommt und geht, zählt im nächsten Frame (B-354).
  */
 import { clientLog } from '../core/clientLog';
 import type { Action, PlayerInput } from './playerInput';
@@ -20,6 +21,8 @@ export interface FeedCommand {
 export const MAX_BOT_PLAYERS = 4;
 /** Pause vor dem nächsten Verbindungsversuch, wenn der Feed abbricht */
 export const RETRY_MS = 1000;
+/** Frist je Slot: kommt so lange keine Nachricht, liefert er keine Eingabe mehr (Feed hängt, B-354) */
+export const STALE_MS = 1000;
 const LOCAL_HOSTS = new Set(['127.0.0.1', 'localhost', '[::1]']);
 
 export type BotFeedParams = { kind: 'none' } | { kind: 'rejected'; url: string } | { kind: 'feed'; url: string; players: number };
@@ -73,6 +76,8 @@ export interface FeedSocket {
 export interface FeedDeps {
   open: (url: string) => FeedSocket;
   later: (fn: () => void, ms: number) => void;
+  /** Uhr in ms für die Frist STALE_MS; fehlt = `Date.now` */
+  now?: () => number;
 }
 
 const browserDeps: FeedDeps = {
@@ -80,11 +85,23 @@ const browserDeps: FeedDeps = {
   later: (fn, ms) => void setTimeout(fn, ms),
 };
 
-/** Verbindung zum Bot-Feed: hält das letzte Kommando je Slot, verbindet nach einem Abbruch neu. */
+/** Letztes Kommando eines Slots mit Empfangszeit */
+interface SlotFeed {
+  cmd: FeedCommand;
+  at: number;
+}
+
+/**
+ * Verbindung zum Bot-Feed: hält das letzte Kommando je Slot und merkt sich jeden neuen Druck bis zum Abholen
+ * (`takePressed`), verbindet nach einem Abbruch neu. Nur der erste Abbruch einer Folge wird geloggt.
+ */
 export class BotFeed {
-  private readonly last = new Map<number, FeedCommand>();
+  private readonly last = new Map<number, SlotFeed>();
+  private readonly pressed = new Map<number, Set<Action>>();
   private socket: FeedSocket | null = null;
   private stopped = false;
+  private opened = false;
+  private quiet = false;
 
   constructor(
     readonly url: string,
@@ -93,15 +110,28 @@ export class BotFeed {
     this.connect();
   }
 
-  /** Letztes Kommando des Slots, null ohne Verbindung oder bevor eines kam */
+  /** Letztes Kommando des Slots, null ohne Verbindung, bevor eines kam oder nach STALE_MS ohne Nachricht */
   command(slot: number): FeedCommand | null {
-    return this.last.get(slot) ?? null;
+    const f = this.last.get(slot);
+    return f && this.now() - f.at <= STALE_MS ? f.cmd : null;
+  }
+
+  /** Aktionen, die seit dem letzten Abholen im Slot neu gedrückt wurden (auch schon wieder losgelassene) */
+  takePressed(slot: number): Set<Action> {
+    const p = this.pressed.get(slot) ?? new Set<Action>();
+    this.pressed.delete(slot);
+    return p;
   }
 
   /** Nimmt eine Nachricht an (sonst über den WebSocket) */
   receive(data: unknown): void {
     const cmd = parseCommand(data);
-    if (cmd) this.last.set(cmd.slot, cmd);
+    if (!cmd) return;
+    const before = held(this.command(cmd.slot) ?? IDLE);
+    const p = this.pressed.get(cmd.slot) ?? new Set<Action>();
+    for (const a of held(cmd)) if (!before.has(a)) p.add(a);
+    this.pressed.set(cmd.slot, p);
+    this.last.set(cmd.slot, { cmd, at: this.now() });
   }
 
   stop(): void {
@@ -112,16 +142,33 @@ export class BotFeed {
   private connect(): void {
     const s = this.deps.open(this.url);
     this.socket = s;
-    s.onopen = () => clientLog('info', `🔌 Bot-Feed verbunden: ${this.url}`);
+    s.onopen = () => {
+      this.opened = true;
+      this.quiet = false;
+      clientLog('info', `🔌 Bot-Feed verbunden: ${this.url}`);
+    };
     s.onmessage = (e) => this.receive(e.data);
     s.onclose = () => {
       if (this.socket !== s) return;
       this.last.clear(); // Feed weg: die Monarchen stehen
+      this.pressed.clear();
       this.socket = null;
       if (this.stopped) return;
-      clientLog('warn', `👋 Bot-Feed getrennt, neuer Versuch in ${RETRY_MS} ms: ${this.url}`);
+      this.logLost();
       this.deps.later(() => this.stopped || this.connect(), RETRY_MS);
     };
+  }
+
+  /** Loggt nur den ersten Abbruch einer Folge; weitere Versuche bleiben still, bis der Feed wieder verbunden ist. */
+  private logLost(): void {
+    if (this.quiet) return;
+    this.quiet = true;
+    if (this.opened) clientLog('warn', `👋 Bot-Feed getrennt, neue Versuche alle ${RETRY_MS} ms: ${this.url}`);
+    else clientLog('warn', `🤒 Bot-Feed nicht erreichbar, neue Versuche alle ${RETRY_MS} ms: ${this.url}`);
+  }
+
+  private now(): number {
+    return (this.deps.now ?? Date.now)();
   }
 }
 
@@ -132,19 +179,23 @@ export class BotInput implements PlayerInput {
   readonly label: string;
   private previous = new Set<Action>();
   private current = new Set<Action>();
+  private pressed = new Set<Action>();
   private cmd: FeedCommand = IDLE;
 
   constructor(
     readonly slot: number,
-    private readonly feed: Pick<BotFeed, 'command'>,
+    private readonly feed: Pick<BotFeed, 'command' | 'takePressed'>,
   ) {
     this.label = `Bot ${slot + 1}`;
   }
 
+  /** Ein Druck seit dem letzten Frame zählt in diesem Frame als gedrückt, auch wenn er schon wieder los ist. */
   update(): void {
     this.cmd = this.feed.command(this.slot) ?? IDLE;
+    this.pressed = this.feed.takePressed(this.slot);
     this.previous = this.current;
     this.current = held(this.cmd);
+    for (const a of this.pressed) this.current.add(a);
   }
 
   moveX(): number {
@@ -156,7 +207,7 @@ export class BotInput implements PlayerInput {
   }
 
   justPressed(action: Action): boolean {
-    return this.current.has(action) && !this.previous.has(action);
+    return this.pressed.has(action) || (this.current.has(action) && !this.previous.has(action));
   }
 
   held(action: Action): boolean {

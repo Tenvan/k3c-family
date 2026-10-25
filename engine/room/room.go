@@ -22,6 +22,9 @@ const (
 	TickHz      = 30
 	WaitFor     = 60 * time.Second
 	EmptyFor    = 10 * time.Minute
+	// SaveEvery ist der Takt des Speicherns (B-186, Q10). Gezählt in Raum-Ticks, nicht in Spielzeit und nicht nach
+	// Wanduhr: ein Tick ist 1/TickHz Sekunden echter Zeit, auch im Zeitraffer; ein Raum ohne Gerät tickt nicht.
+	SaveEvery = 60 * time.Second
 )
 
 // Fehler; der Text ist der Code aus docs/protocol.md › Fehler-Codes.
@@ -92,6 +95,7 @@ type device struct {
 	stages    map[int]bool // Stufen, deren Level das Gerät bekam und deren Strom läuft
 	paused    bool         // Pause des Geräts (pause.go, B-214)
 	protect   int          // restliche Ticks des Schutzes online (pause.go)
+	observer  bool         // Beobachter ohne Platz (observer.go, B-352)
 }
 
 // Room ist ein laufendes Spiel: eine Insel, ein Spielstand, ein Code. Monarch i ist der Insel-Spieler mit Index i.
@@ -232,10 +236,11 @@ func (r *Room) count(state string) int {
 	return n
 }
 
+// connected zählt die verbundenen Geräte mit Platz; Beobachter zählen nicht (observer.go).
 func (r *Room) connected() int {
 	n := 0
 	for _, d := range r.devices {
-		if d.connected {
+		if d.connected && !d.observer {
 			n++
 		}
 	}
