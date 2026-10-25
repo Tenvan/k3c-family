@@ -59,7 +59,7 @@ keine
 |---|---|---|---|---|
 | KB4.1 | `KB4.1-dev-aktionen-server.md` | Umsetzung | autonom | fertig |
 | KB4.2 | `KB4.2-debug-panel-kampf.md` | Umsetzung | autonom | fertig |
-| KB4.3 | `KB4.3-review.md` | Review | autonom | offen |
+| KB4.3 | `KB4.3-review.md` | Review | autonom | fertig |
 | KB4.4 | `KB4.4-abnahme-pc.md` | Workshop | Mensch | offen |
 
 - KB4.1 (SRV) Aktionen `boss`, `bossPhase`, `event`, `night` in Sim und Server, Go-Tests, `docs/protocol.md`, Beispiel-Dateien (AC-01, AC-02).
@@ -69,5 +69,7 @@ keine
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-25, Claude (KB4.3): `task check` und `task check:go` grün; `check:race` lokal übersprungen (kein C-Compiler), die CI prüft es.
+AC-01 und AC-02 erfüllt durch KB4.1 (vier Dev-Aktionen nur im Dev-Mode, Protokoll und Beispiele), AC-03 durch KB4.2 (Gruppe „Kampf“ im Debug-Panel).
+Review (Opus): normales Spiel und Golden unverändert. Der MEDIUM-Befund (Dev-Nacht auf der nächsten Insel) ist behoben, die LOW-Punkte sind dokumentiert.
+Offen ist AC-04, Boss und Event über das Panel am PC durch Ralf (KB4.4). Keine neuen Tickets.
