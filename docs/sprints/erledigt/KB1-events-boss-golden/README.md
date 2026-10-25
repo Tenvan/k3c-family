@@ -1,6 +1,6 @@
 # KB1 · SIM · Kampf-Nachträge: Mond-Events, Endboss-Bau, Golden-Läufe, Feuergeist
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -67,12 +67,14 @@ Vorentschieden (autonom, Claude, 2026-10-23), Bestätigung durch 🧑 über KR6:
 | KB1.2 | `KB1.2-endboss-bau-lage.md` | Umsetzung | autonom | fertig |
 | KB1.3 | `KB1.3-golden-eisen-kristall.md` | Umsetzung | autonom | fertig |
 | KB1.4 | `KB1.4-feuergeist-flaeche.md` | Umsetzung | autonom | fertig |
-| KB1.5 | `KB1.5-review.md` | Review | autonom | offen |
+| KB1.5 | `KB1.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-25, Claude (KB1.5): `task check` und `task check:go` grün; `check:race` lokal übersprungen (kein C-Compiler).
+AC-01 erfüllt durch KB1.1, AC-02 durch KB1.2 (bestehende Tests), AC-03 durch KB1.3 (zwei neue Golden-Läufe, 17,9 MiB), AC-04 durch KB1.4 (Regeldatei).
+Review ohne schwere Befunde; `bosse.md` ist nachgezogen, der Stichtag „Morgengrauen“ ist vermerkt.
+Gestapelt auf W12 (#479). Keine neuen Tickets.
