@@ -5,6 +5,11 @@
 offene Raum speichert, seine Geräte bekommen `room_closed` und gehen zurück zur Raumliste. `hello.v` muss 9 sein; ein
 v8-Client erhält `version`. Beispiel: `s2c-rooms.json`.
 
+**Nachgetragen ohne neue Version (W12.2, B-470):** `cycle.phase` in `snap`/`delta` kennt den neuen Wert `dawn`
+(Morgengrauen): Der Zyklus läuft `day` → `dusk` → `night` → `dawn` → `day` (siehe *Tageszeit*). Das Ereignis `dawn` fällt
+bei Beginn der Phase `dawn`, nicht mehr bei Beginn des Tages; der Wechsel `dawn` → `day` meldet nichts. Ein älterer Client
+zeichnet die unbekannte Phase wie `night`. Beispiel: `s2c-snapshot-delta-dawn.json`.
+
 **Nachgetragen ohne neue Version (SK3, B-577):** Spieler in `snap`/`delta` tragen optional `stealthFor` (Sekunden unsichtbar nach Smoke Bomb; fehlt = sichtbar). Neue Skill-IDs `backstab`, `smokeBomb` in `skills`, `slots` und `actions`. Ein älterer Client ignoriert das Feld.
 
 **Nachgetragen ohne neue Version (KB3, B-563):** `actions` kennt `{ "action": "lair" }`: ein lebender Spieler ist näher als `lair.noticeUnits` (`data/bosses.json`) am Bau eines wartenden Endbosses (`sim.AtLair`; nicht ausgelöst, nicht besiegt). Ein älterer Client ignoriert den Eintrag.
@@ -206,7 +211,7 @@ Schreiben, `engine/store`), der Raum läuft weiter. Jede Speicherung loggt ihre 
 als Warnung. Ein Autospeicher-Takt und Speichern bei Tagesanbruch gibt es nicht (B-186).
 
 Der Stand (Version 4, `engine/sim/island_save.go`) nennt neben der Welt `savedAt` (Zeitpunkt, ISO 8601), `day` (Tag)
-und `phase` (`day`, `dusk`, `night`) beim Speichern sowie je Spieler die Tiefe seiner Stufe (`players[].depth`). `day`
+und `phase` (`day`, `dusk`, `night`, `dawn`) beim Speichern sowie je Spieler die Tiefe seiner Stufe (`players[].depth`). `day`
 und `phase` dienen nur der Anzeige; beim Laden gilt `time`. Ein Stand der Version 3 ohne die beiden Felder lädt weiter.
 
 Ein Spielstand speichert die Welt, nicht die Monarchen und nicht die Zuordnung zu Geräten. Ein geöffneter Stand hat
@@ -340,6 +345,14 @@ kein Löschen. Felder, die im vorigen Zustand standen und jetzt fehlen (z. B. `m
 Tick keine. `seq` zählt je Verbindung ab 1, nach einem Wiederverbinden also
 neu. `ack` ist das höchste `seq`, das der Server von **dieser** Verbindung verrechnet hat (Grundlage für eine spätere
 Vorhersage, B-039).
+
+**Tageszeit (`cycle`, B-470):** `phase` ist `day`, `dusk`, `night` oder `dawn` (Tag, Dämmerung, Nacht, Morgengrauen, in
+dieser Reihenfolge; Dauern aus `data/biomes/*.json` › `cycle`, Wald 6/2/4/2 min). `day` zählt ab 1; die Nacht gehört zum
+Tag davor, das Morgengrauen schon zum neuen Tag. `progress` (0…1) und `secondsLeft` gelten je Phase. Bei Beginn von
+`dawn` meldet die Stufe das Ereignis `dawn` mit dem neuen `day` (Gold je Spieler, Taverne, Händler, Gegner ziehen ab,
+Nacht-Events enden); `night` kommt bei Beginn der Nacht, `dusk` bei Beginn der Dämmerung, der Beginn des Tages meldet
+nichts. Unter Tage (Aggressionspool) läuft derselbe Zyklus der Oberwelt weiter. Ein Client behandelt eine unbekannte
+Phase wie `night`. Beispiel: `s2c-snapshot-delta-dawn.json` (Wald, Tick 21600 = 720 s, Beginn des Morgengrauens von Tag 2).
 
 ### Mehrere Stufen je Gerät
 
@@ -680,8 +693,8 @@ Aktionen nur im Dev-Mode (`K3C_DEV`), sonst `403`.
 | `POST /api/dev?room=CODE` | Body wie die Nachricht `dev` ohne `t`, `slot` ist der Index des Monarchen; `{"ok": true, "room": Diagnose}`, `400` bei ungültiger Aktion |
 
 Zusätzlich zu den Aktionen der Nachricht `dev`: `{"action":"wave","slot":0}` startet sofort eine Welle in der Stufe des
-Monarchen, `{"action":"phase","phase":"night"}` springt alle Stufen zum Beginn der nächsten Phase `day`, `dusk` oder
-`night`; der Wechsel und seine Ereignisse (Nachtwelle, Morgen-Einkommen) folgen im nächsten Schritt.
+Monarchen, `{"action":"phase","phase":"night"}` springt alle Stufen zum Beginn der nächsten Phase `day`, `dusk`,
+`night` oder `dawn`; der Wechsel und seine Ereignisse (Nachtwelle, Morgen-Einkommen) folgen im nächsten Schritt.
 `{"action":"grade","grade":"hard"}` setzt den Schwierigkeitsgrad des Raums (Name aus `data/difficulty.json`, sonst
 `400`); er gilt ab der nächsten Welle, die laufende bleibt (B-080).
 
@@ -695,7 +708,7 @@ Weitere Dev-Aktionen (nur Dev-Mode, wirken auf die Insel des Raums, nichts davon
 | `cheapBuild` | `on` (true/false) | Baukosten (Gebäude, Hub-, Mauer-, Turm-Ausbau, Angebote, Waffen, Rüstung) höchstens 1 je Posten, Schalter |
 | `buildAll` | `level` 1 bis 5 | alle Stufen: Hub-Stufe, Mauern/Türme bis Linie `level` gebaut und auf Stufe `level`, freie Plätze bis `level` gebaut (Tore nicht) |
 | `timescaleAuto` | `on` | Zeitraffer endet (1x) beim nächsten Tageszeitwechsel, einmalig; `on:false` nimmt es zurück |
-| `nextPhase` | | springt zum Beginn der nächsten Tageszeit (day → dusk → night → day) |
+| `nextPhase` | | springt zum Beginn der nächsten Tageszeit (day → dusk → night → dawn → day) |
 | `castleFall` | `slot` | Stufenverlust in der Stufe des Monarchen wie beim Burgfall mit Niederlage-Modus `stage` (Plätze leer, Ruinen in den Ausgangszustand, Vorrat und Gold −50 %, Truppen außer Landstreichern weg), unabhängig vom Niederlage-Modus des Raums; Beispiel `c2s-dev-castlefall.json` |
 
 Die Diagnose (`GET /api/dev?room=`, Summary) trägt dazu `devCheapBuild`, `devStockBonus`, `devPurseBonus` (gleicher Wert) und `devTimescaleAuto`; das
@@ -767,7 +780,7 @@ Schema 1 (`engine/room/metrics.go`):
 | `nights[]` | je beendete Nacht `day` und `survived` (false, wenn in einer Stufe `castleFallen` kam); eine bei Raumende laufende Nacht fehlt |
 | `deaths[]` | je `playerDown`: `monarch` (Index), `day`, `phase`, `depth`, `cause` (Gegnerart oder `other`, B-182) |
 | `firstBuildSeconds` | simulierte Sekunden bis zum ersten `built`, sonst `null` |
-| `goldPerDay[]` | bei jedem `dawn`: `day` (der neue Tag) und `gold[]` je Monarch-Index |
+| `goldPerDay[]` | bei jedem `dawn` (Beginn des Morgengrauens): `day` (der neue Tag) und `gold[]` je Monarch-Index |
 | `goldEnd[]` | Gold je Monarch-Index bei Raumende |
 | `disconnects[]` | je Gerät mit Abbrüchen `device` (Kürzel) und `count`, sortiert |
 
