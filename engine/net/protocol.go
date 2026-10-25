@@ -64,6 +64,7 @@ type inMsg struct {
 	Seed     string    `json:"seed"`  // create: Seed des neuen Stands (höchstens 64 Zeichen), leer = Name
 	World    string    `json:"world"` // create: Welt-ID des neuen Stands, leer = standard, eine andere nur im Dev-Mode
 	Slots    []int     `json:"slots"`
+	Observe  bool      `json:"observe"` // create, join: Beobachter ohne Platz, slots entfällt (B-352)
 	Room     string    `json:"room"`
 	Slot     *int      `json:"slot"`
 	Seq      int64     `json:"seq"`

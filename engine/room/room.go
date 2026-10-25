@@ -92,6 +92,7 @@ type device struct {
 	stages    map[int]bool // Stufen, deren Level das Gerät bekam und deren Strom läuft
 	paused    bool         // Pause des Geräts (pause.go, B-214)
 	protect   int          // restliche Ticks des Schutzes online (pause.go)
+	observer  bool         // Beobachter ohne Platz (observer.go, B-352)
 }
 
 // Room ist ein laufendes Spiel: eine Insel, ein Spielstand, ein Code. Monarch i ist der Insel-Spieler mit Index i.
@@ -232,10 +233,11 @@ func (r *Room) count(state string) int {
 	return n
 }
 
+// connected zählt die verbundenen Geräte mit Platz; Beobachter zählen nicht (observer.go).
 func (r *Room) connected() int {
 	n := 0
 	for _, d := range r.devices {
-		if d.connected {
+		if d.connected && !d.observer {
 			n++
 		}
 	}

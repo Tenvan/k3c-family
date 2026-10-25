@@ -5,6 +5,20 @@
 offene Raum speichert, seine Geräte bekommen `room_closed` und gehen zurück zur Raumliste. `hello.v` muss 9 sein; ein
 v8-Client erhält `version`. Beispiel: `s2c-rooms.json`.
 
+**Nachgetragen ohne neue Version (TR4.2, B-352):** `create` und `join` nehmen das optionale Feld `observe: true`: Das
+Gerät tritt als **Beobachter** ohne Platz bei, `slots` entfällt (wird ignoriert). Es bekommt `joined` mit `you: []`,
+`seats` und `level`/`snap`/`delta` jeder Stufe, in der ein Monarch steht (ohne Monarchen die Startstufe), belegt aber
+keinen Monarchen; `taken`/`free` der Raumliste ändern sich nicht. `input`, `addSlot`, `pause` und `dev` eines Beobachters ergeben
+`bad_request` (Log 🚫). Er zählt nicht als verbundenes Gerät: Ein Raum nur mit Beobachtern rechnet keine Schritte (wie
+ein leerer, `running` false), wird aber erst aufgeräumt, wenn auch der letzte Beobachter gegangen ist. Tritt ein Gerät
+mit Plätzen als Beobachter neu bei, sind seine Monarchen sofort frei. Gedacht für `sim_test` mit Clients (Workbench);
+ein älterer Server ignoriert das Feld und lehnt die leeren `slots` mit `bad_request` ab. Beispiele:
+`c2s-join-observe.json`, `c2s-create-observe.json`.
+
+```json
+{ "t": "join", "room": "KRNZ", "observe": true }
+```
+
 **Nachgetragen ohne neue Version (SK3, B-577):** Spieler in `snap`/`delta` tragen optional `stealthFor` (Sekunden unsichtbar nach Smoke Bomb; fehlt = sichtbar). Neue Skill-IDs `backstab`, `smokeBomb` in `skills`, `slots` und `actions`. Ein älterer Client ignoriert das Feld.
 
 **Nachgetragen ohne neue Version (KB3, B-563):** `actions` kennt `{ "action": "lair" }`: ein lebender Spieler ist näher als `lair.noticeUnits` (`data/bosses.json`) am Bau eines wartenden Endbosses (`sim.AtLair`; nicht ausgelöst, nicht besiegt). Ein älterer Client ignoriert den Eintrag.
@@ -306,8 +320,8 @@ das zählt als Abbruch.
 | `hello` | Gerät → Server | als erste Nachricht | `v` Protokoll-Version (9), `device` Geräte-ID (≤ 64 Zeichen) | `c2s-hello.json` |
 | `welcome` | Server → Gerät | Antwort auf passendes `hello` | `v`, `tickHz`, `limits` (Grenzen aus *Grenzen*) | `s2c-welcome.json` |
 | `rooms` | Server → Gerät | nach `welcome`, sobald das Gerät wieder in keinem Raum ist, und bei jeder Änderung, solange es in keinem Raum ist | `rooms[]`: `code`, `name`, `depth`, `grade`, `taken` (besetzt + wartend), `free` (4 − `taken`), `running`, `world` (Welt-ID, ab v9) | `s2c-rooms.json` |
-| `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]`, optional `grade`, `goal`, `defeat` (siehe oben), optional `seed` (nur bei `fresh`, höchstens 64 Zeichen, sonst gilt der Name), optional `world` (Welt-ID, nur bei `fresh`, fehlt = `standard`, eine andere nur im Dev-Mode; v7) | `c2s-create.json`, `c2s-create-seed.json`, `c2s-create-world.json` |
-| `join` | Gerät → Server | Raum beitreten oder wiederverbinden | `room` Code, `slots[]` | `c2s-join.json` |
+| `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]`, optional `grade`, `goal`, `defeat` (siehe oben), optional `seed` (nur bei `fresh`, höchstens 64 Zeichen, sonst gilt der Name), optional `world` (Welt-ID, nur bei `fresh`, fehlt = `standard`, eine andere nur im Dev-Mode; v7), optional `observe` (Beobachter ohne Platz, dann ohne `slots`; B-352) | `c2s-create.json`, `c2s-create-seed.json`, `c2s-create-world.json`, `c2s-create-observe.json` |
+| `join` | Gerät → Server | Raum beitreten oder wiederverbinden | `room` Code, `slots[]`; oder `observe: true` ohne `slots` (Beobachter ohne Platz, B-352) | `c2s-join.json`, `c2s-join-observe.json` |
 | `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `world` (Welt-ID des Raums, v7), `you[]`: `slot` → `monarch`, `depth`, `stage` | `s2c-joined.json` |
 | `level` | Server → Gerät | nach `joined` und sobald eine Stufe für das Gerät neu ist, vor dem ersten Zustand der Stufe | `stage`, `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte) | `s2c-level.json` |
 | `snap` | Server → Gerät | voller Zustand einer Stufe: nach ihrem `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `stage`, `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json`, `s2c-snapshot-wirtschaft.json`, `s2c-snapshot-boss.json`, `s2c-snapshot-event.json` |
