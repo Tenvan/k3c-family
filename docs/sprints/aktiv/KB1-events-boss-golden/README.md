@@ -63,10 +63,10 @@ Vorentschieden (autonom, Claude, 2026-10-23), Bestätigung durch 🧑 über KR6:
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| KB1.1 | `KB1.1-mond-events.md` | Umsetzung | autonom | in Arbeit |
-| KB1.2 | `KB1.2-endboss-bau-lage.md` | Umsetzung | autonom | offen |
-| KB1.3 | `KB1.3-golden-eisen-kristall.md` | Umsetzung | autonom | offen |
-| KB1.4 | `KB1.4-feuergeist-flaeche.md` | Umsetzung | autonom | offen |
+| KB1.1 | `KB1.1-mond-events.md` | Umsetzung | autonom | fertig |
+| KB1.2 | `KB1.2-endboss-bau-lage.md` | Umsetzung | autonom | fertig |
+| KB1.3 | `KB1.3-golden-eisen-kristall.md` | Umsetzung | autonom | fertig |
+| KB1.4 | `KB1.4-feuergeist-flaeche.md` | Umsetzung | autonom | fertig |
 | KB1.5 | `KB1.5-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
