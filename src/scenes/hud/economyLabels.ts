@@ -50,10 +50,20 @@ export function waitInfo(state: WaitState, danger: boolean | undefined, resource
   return { reason: 'material', icon: 'wait-material', text };
 }
 
-/** Wartegrund eines Bauplatzes: erst der Bau (`state`), sonst der laufende Ausbau (`upgrade`). Material aus den Daten. */
-export function siteWait(site: Pick<Site, 'kind' | 'state' | 'upgrade' | 'level'>, danger: boolean | undefined, compact: boolean): WaitInfo | null {
+/**
+ * Baukosten eines unbezahlten Platzes laut Daten: der Eintrag der Biom-Tiefe `depth` in `costByDepth` (Treppen, B-631),
+ * fehlt er oder ist er leer, `cost` der Art. Spiegel von `siteCost` in engine/sim/hub_level.go, nur für die Anzeige.
+ */
+export function buildCost(kind: string, depth: number | undefined): CostMap {
+  const data = BUILDINGS[kind];
+  const byDepth = depth === undefined ? undefined : data?.costByDepth?.[depth];
+  return byDepth && Object.keys(byDepth).length > 0 ? byDepth : (data?.cost ?? {});
+}
+
+/** Wartegrund eines Bauplatzes: erst der Bau (`state`), sonst der laufende Ausbau (`upgrade`). Material aus den Daten, `depth` = Biom-Tiefe. */
+export function siteWait(site: Pick<Site, 'kind' | 'state' | 'upgrade' | 'level'>, danger: boolean | undefined, compact: boolean, depth?: number): WaitInfo | null {
   const data = BUILDINGS[site.kind] as (typeof BUILDINGS)[string] & LevelData | undefined;
-  if (site.state !== 'built') return waitInfo(site.state, danger, materialsOf(data?.cost), compact);
+  if (site.state !== 'built') return waitInfo(site.state, danger, materialsOf(buildCost(site.kind, depth)), compact);
   // Ausbau zielt auf Stufe level+1, das ist Eintrag `level` (0-basiert) der Daten
   return waitInfo(site.upgrade, danger, materialsOf(data?.levels?.[site.level ?? 1]?.cost), compact);
 }

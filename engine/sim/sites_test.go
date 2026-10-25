@@ -11,7 +11,7 @@ import (
 // einen Bauern bauen. Rückgabe: Bauzeit in Sekunden, -1 bei Zeitablauf.
 func buildNew(t *testing.T, w *World, players []*Player, s *Site) float64 {
 	t.Helper()
-	cost := buildings[s.Kind].Cost
+	cost := siteCost(w, s)
 	*w.Stock = materialOf(cost)
 	share := cost.Gold / len(players)
 	for i, p := range players {
@@ -94,20 +94,20 @@ func TestHubGebaeudeAusDenDaten(t *testing.T) {
 	}
 }
 
-// Tor: Platz der Linie aus dem Layout, ab gateHubLevel, Kosten, HP und Bauzeit aus buildings.json.
+// Tor: Platz der Linie aus dem Layout, ab gateHubLevel (B-631: Hub-Stufe 1) an der gebauten Mauer, Kosten, HP und
+// Bauzeit aus buildings.json.
 func TestTorAusDenDaten(t *testing.T) {
 	w := dayWorld(t)
 	players := []*Player{AddPlayer(w), AddPlayer(w)}
-	built(lineSite(t, w, "wall", -1, 1))
+	w.HubLevel = hub.WallLines.GateHubLevel
 	gate := lineSite(t, w, "gate", -1, 1)
 	if l, _ := siteLine(w, gate); gate.X != l.Gate {
 		t.Errorf("Tor bei %v, laut Layout %v", gate.X, l.Gate)
 	}
-	w.HubLevel = hub.WallLines.GateHubLevel - 1
 	if sitePayable(w, gate) {
-		t.Errorf("Tor bei Hub-Stufe %d bezahlbar", w.HubLevel)
+		t.Errorf("Tor ohne Mauer bei Hub-Stufe %d bezahlbar", w.HubLevel)
 	}
-	w.HubLevel = hub.WallLines.GateHubLevel
+	built(lineSite(t, w, "wall", -1, 1))
 	wantBuiltFromData(t, gate, buildNew(t, w, players, gate))
 }
 

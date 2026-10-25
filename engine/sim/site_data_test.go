@@ -248,3 +248,16 @@ func TestSiteDataMehrLinienAlsStufen(t *testing.T) {
 		t.Errorf("Befund %q erwartet, bekommen %q", RuleLines, r.Findings)
 	}
 }
+
+// B-631/AC-03: Ein Material-Tor aus dem Material einer tieferen Stufe (Kupfer auf Hub-Stufe 2) ist ein Befund; die
+// eingebetteten Daten (Stein) sind gültig.
+func TestSiteDataMaterialTorEigeneStufe(t *testing.T) {
+	if r := ValidateHubData(hubCopy(t)); hasFinding(r, RuleGate, "") {
+		t.Errorf("eingebettete hub.json: %q", r.Findings)
+	}
+	h := hubCopy(t)
+	h.Levels[1].Steps[2].Gate = Cost{Copper: 20}
+	if r := ValidateHubData(h); !hasFinding(r, RuleGate, "levels[1].steps[2].gate") {
+		t.Errorf("Kupfer-Tor auf Hub-Stufe 2 ohne Befund: %q", r.Findings)
+	}
+}

@@ -13,9 +13,9 @@ const COLOR: Record<WaitReason, { symbol: number; text: string }> = {
   danger: { symbol: 0xe63946, text: '#ff6b6b' },
 };
 
-/** Wartegrund eines Bauplatzes; läuft der Bau schon (Fortschritt > 0) und fehlt nur der Bauer, bleibt der Platz leer. */
-export function siteStatus(s: Pick<Site, 'kind' | 'state' | 'upgrade' | 'level' | 'buildProgress'>, danger: boolean | undefined): WaitInfo | null {
-  const info = siteWait(s, danger, false);
+/** Wartegrund eines Bauplatzes; läuft der Bau schon (Fortschritt > 0) und fehlt nur der Bauer, bleibt der Platz leer. `depth`: Biom-Tiefe (Treppen-Kosten). */
+export function siteStatus(s: Pick<Site, 'kind' | 'state' | 'upgrade' | 'level' | 'buildProgress'>, danger: boolean | undefined, depth?: number): WaitInfo | null {
+  const info = siteWait(s, danger, false, depth);
   if (info?.reason === 'worker' && s.state !== 'built' && s.buildProgress > 0) return null;
   return info;
 }

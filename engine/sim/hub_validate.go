@@ -36,9 +36,10 @@ const (
 	RuleKind      = "art"          // unbekannte Art oder Art, die nicht in sites gehört
 	RuleRequired  = "pflichtplatz" // Pflichtplatz fehlt oder steht mehrfach
 	RuleOnePerBau = "ein-platz-je-bau"
-	RuleLines     = "linien"  // Mauerlinien unstimmig oder zu nah am Portal
-	RuleGap       = "abstand" // zwei Zahlziele näher als 2 × payRangeUnits bei voller Streuung
-	RuleStairs    = "treppe"  // Treppe näher als stairsGapUnits an einem Zahlziel derselben Tiefe
+	RuleLines     = "linien"       // Mauerlinien unstimmig oder zu nah am Portal
+	RuleGap       = "abstand"      // zwei Zahlziele näher als 2 × payRangeUnits bei voller Streuung
+	RuleStairs    = "treppe"       // Treppe näher als stairsGapUnits an einem Zahlziel derselben Tiefe
+	RuleGate      = "material-tor" // Material-Tor nicht aus dem Material der eigenen Hub-Stufe (B-631)
 )
 
 // RulePlanned: Eine geplante Chunk-Planung der Welt (Welt-Datei › plannedChunks) wäre mit den Linien des Kandidaten
@@ -86,6 +87,7 @@ func ValidateHubData(h *HubData) HubReport { return ValidateHubDataIn(h, Standar
 func ValidateHubDataIn(h *HubData, world WorldDef) HubReport {
 	var out []HubFinding
 	out = append(out, checkHubLevels(h)...)
+	out = append(out, checkGates(h)...)
 	out = append(out, checkSiteKinds(h)...)
 	lines := checkWallLines(h.WallLines)
 	out = append(out, lines...)
@@ -133,6 +135,28 @@ func checkHubLevels(h *HubData) []HubFinding {
 	}
 	if g := h.WallLines.GateHubLevel; g < 1 || g > n {
 		out = append(out, HubFinding{RuleLevels, "wallLines.gateHubLevel", fmt.Sprintf("%d außerhalb 1…%d", g, n)})
+	}
+	return out
+}
+
+// checkGates: Das Material-Tor eines Ausbauschritts nutzt nur Material, das die Schritte derselben Hub-Stufe kosten
+// (B-631: Material der eigenen Stufe, damit der Ausbau ohne Material tieferer Stufen läuft).
+func checkGates(h *HubData) []HubFinding {
+	var out []HubFinding
+	for n, lv := range h.Levels {
+		var own Cost
+		for _, st := range lv.Steps {
+			own = addCost(own, st.Cost)
+		}
+		for i, st := range lv.Steps {
+			g := st.Gate
+			for _, m := range [][2]int{{g.Wood, own.Wood}, {g.Stone, own.Stone}, {g.Copper, own.Copper}, {g.Iron, own.Iron}, {g.Crystal, own.Crystal}} {
+				if m[0] > 0 && m[1] == 0 {
+					out = append(out, HubFinding{RuleGate, fmt.Sprintf("levels[%d].steps[%d].gate", n, i), fmt.Sprintf("%+v nicht aus dem Material der Stufe %d", g, n+1)})
+					break
+				}
+			}
+		}
 	}
 	return out
 }

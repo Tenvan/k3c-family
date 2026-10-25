@@ -2,7 +2,7 @@
 
 - **Zweck:** Werte aller Gebäude: HP, Bauzeit, Kosten und Stufen 1 bis 5 mit gleicher Platzierung.
 - **Gelesen von:** Simulation (`engine/sim/data.go`), Level-Generator (`engine/level/ruins.go`), Gebäude-Logik (`engine/sim/building_*.go`)
-- **Wichtigste Werte:** `wall.levels.0.cost.gold`, `wall.levels.0.hp`, `tower.levels.0.cost.wood`, `tower.archerSlots`, `barracks.troopLimit.base`, `farm.plantation.growSeconds`
+- **Wichtigste Werte:** `wall.levels.0.cost.gold`, `wall.levels.0.hp`, `tower.levels.0.cost.wood`, `gate.levels.1.cost.stone`, `stairsDown.costByDepth.1.stone`, `tower.archerSlots`, `barracks.troopLimit.base`, `farm.plantation.growSeconds`
 - **Regeln:** `docs/rules/materialien-gebaeude.md`
 
 ## Aufbau
@@ -15,10 +15,13 @@
 | `*.cost.gold` | Zahl | Gold | Goldkosten des Gebäudes (Stufe 1) | 5 bis 100 |
 | `*.cost.wood` | Zahl | Holz | Holzkosten | 20 bis 50 |
 | `*.cost.stone` | Zahl | Stein | Steinkosten | 30 bis 100 |
-| `*.levels.*.cost` | Objekt | Gold und Material | Kosten des Ausbaus auf Stufe n; Material je Stufe: Holz, Stein, Kupfer, Eisen, Kristall | Gold wächst von 5 bis 300 |
+| `*.levels.*.cost` | Objekt | Gold und Material | Kosten des Ausbaus auf Stufe n (Mauer, Turm, Tor und Hub-Gebäude); Material je Stufe: Holz, Stein, Kupfer, Eisen, Kristall | Gold wächst von 5 bis 300 |
 | `*.levels.*.cost.gold` | Zahl | Gold | Goldanteil der Stufe | 5 bis 300 |
-| `*.levels.*.hp` | Zahl | HP | HP der Stufe | Mauer 300, 600, 1000, 1600, 2500 |
+| `*.levels.*.hp` | Zahl | HP | HP der Stufe | Mauer 300, 600, 1000, 1600, 2500; Tor 250, 500, 850, 1350, 2100 |
 | `*.levels.*.buildSeconds` | Zahl | s | Bauzeit der Stufe | 6 bis 40 |
+| `stairsDown.costByDepth` | Liste | Gold und Material | Kosten der Treppe runter je Biom-Tiefe 0 bis 4: 100 Material der eigenen Stufe + 50 Gold (Holz, Stein, Kupfer, Eisen; Tiefe 4 leer); leer oder fehlt = `cost` (B-631) | 100 Material, 50 Gold |
+| `stairsUp.costByDepth` | Liste | Gold und Material | Kosten der Treppe hoch je Biom-Tiefe 0 bis 4: 100 Material der Stufe darüber + 50 Gold (Tiefe 0 leer); leer oder fehlt = `cost` | 100 Material, 50 Gold |
+| `stairsUp.costByDepth.*.gold` | Zahl | Gold | Goldanteil der Treppe je Tiefe | 50 |
 | `tower.archerSlots` | Ganzzahl | Schützen | Bogenschützen-Plätze am Turm | 2 |
 | `tower.rangeBonus` | Zahl | Units | Reichweitenbonus für Schützen im Turm | 3 |
 | `tower.spell.fromLevel` | Ganzzahl | Stufe | Ab dieser Stufe ein Zauberturm | 5 |
@@ -56,4 +59,6 @@ Mauer-, Turm- und Truppenwerte bestimmen direkt, ob die Burg die Nächte hält (
 - `buildings.json:wall.levels.0.cost.gold=8` – teurere erste Mauer.
 - `buildings.json:wall.levels.0.hp=400` – stabilere erste Mauer.
 - `buildings.json:tower.levels.0.cost.wood=40` – billigerer Turm.
+- `buildings.json:gate.levels.1.hp=600` – stabileres Stein-Tor.
+- `buildings.json:stairsUp.costByDepth.1.wood=80` – billigere Treppe hoch in der Höhle.
 - `buildings.json:barracks.troopLimit.base=14` – höheres Kämpfer-Limit ohne Kaserne.

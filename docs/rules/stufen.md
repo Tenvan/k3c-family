@@ -95,18 +95,18 @@ Mauerlinien, Tor), bleiben; nur der Weg von einer Hub-Stufe zur nächsten wird f
 |---|---|---|---|
 | Der Ausbau auf die nächste Hub-Stufe läuft in **3 Ausbauschritten** (`hubStep` 1–3). Jeder Schritt wird an der Burg bezahlt (Gold, dann Material aus dem Insel-Vorrat) und von einem Bauern gebaut wie bisher der ganze Ausbau; **erst Schritt 3 hebt die Hub-Stufe**. Schritte 1 und 2 schalten nichts frei, die Burg zeigt je Schritt eine eigene Ansicht (B-590). | Der Hub wächst sichtbar öfter, ohne die Freischaltungen der fünf Hub-Stufen zu ändern. | `data/hub.json` › `levels[].steps` | – |
 | **Kosten:** Die bisherigen Kosten und Bauzeiten je Hub-Stufe (§ 2 der Materialregeln) verteilen sich etwa **25/25/50 %** auf die Schritte (Startwerte ohne Balancing). Schritte 1 und 2 kosten Gold und das Material der neuen Hub-Stufe. | Gleicher Gesamtpreis, damit das bisherige Balancing gilt; Balancing in einem eigenen Sprint. | `levels[].steps[].cost`, `buildSeconds` | wie § 2 der Materialregeln |
-| **Material-Tor:** Schritt 3 braucht zusätzlich etwas **Material der nächsten Inselstufe** (das Material der übernächsten Hub-Stufe). Ist das Gold bezahlt, aber das Tor-Material fehlt im Vorrat, wartet der Ausbau mit dem Wartegrund **„Material der nächsten Insel“** (`hubUpgrade.state` = `waitingNextIsland`). Fehlt nur das Material der laufenden Stufe, bleibt der Wartegrund „Material fehlt“. | Der Hub-Fortschritt zieht die Spieler in die Tiefe; ohne Tor ließe sich jede Stufe allein im Wald ausbauen. | `levels[].steps[].gate` | – |
-| Der Ausbau auf Hub-Stufe 5 hat **kein Tor**: Insel 1 hat unter der Kristallhöhle keine tiefere Stufe. | Kein Material, das es auf der Insel nicht gibt. | – | – |
+| **Material-Tor:** Schritt 3 braucht zusätzlich **20 Material der neuen Hub-Stufe selbst** (Hub-Stufe 2 Stein, 3 Kupfer, 4 Eisen; B-631, 🧑 2026-10-25, ersetzt das Material der übernächsten Hub-Stufe aus GEB17). Ist das Gold bezahlt und fehlt nur noch der Tor-Anteil im Vorrat, wartet der Ausbau mit dem Wartegrund **„Material der nächsten Insel“** (`hubUpgrade.state` = `waitingNextIsland`); fehlt mehr, bleibt der Wartegrund „Material fehlt“. | Der Hub-Fortschritt zieht die Spieler in die Tiefe (das Material von Hub-Stufe n liegt ab Tiefe n−1), verlangt aber kein Material, das auf der Stufe des neuen Hubs noch gar nicht abbaubar ist; der Bau läuft durchgängig (B-631). | `levels[].steps[].gate` | – |
+| Der Ausbau auf Hub-Stufe 5 hat **kein Tor**. | Startwert (B-631); der Kristall der Stufe 5 ist schon der teuerste Ausbau. | – | – |
 | Der laufende Schritt steht im Spielstand (`hubStep`, fehlt = 1); alte Spielstände beginnen bei Schritt 1. | Keine Rücksicht auf alte Spielstände (bis auf Widerruf). | `engine/sim/save.go` | – |
 
 Startwerte (Gold + Material, Bauzeit; Tor nur in Schritt 3):
 
 | Ausbau auf Hub-Stufe | Schritt 1 | Schritt 2 | Schritt 3 | Material-Tor (Schritt 3) |
 |---|---|---|---|---|
-| 2 | 25 Stein + 13 Gold, 5 s | 25 Stein + 12 Gold, 5 s | 50 Stein + 25 Gold, 10 s | 20 Kupfer (Mine) |
-| 3 | 40 Kupfer + 25 Gold, 8 s | 35 Kupfer + 25 Gold, 7 s | 75 Kupfer + 50 Gold, 15 s | 20 Eisen (Eisenstollen) |
-| 4 | 50 Eisen + 50 Gold, 10 s | 50 Eisen + 50 Gold, 10 s | 100 Eisen + 100 Gold, 20 s | 20 Kristall (Kristallhöhle) |
+| 2 | 25 Stein + 13 Gold, 5 s | 25 Stein + 12 Gold, 5 s | 50 Stein + 25 Gold, 10 s | 20 Stein |
+| 3 | 40 Kupfer + 25 Gold, 8 s | 35 Kupfer + 25 Gold, 7 s | 75 Kupfer + 50 Gold, 15 s | 20 Kupfer |
+| 4 | 50 Eisen + 50 Gold, 10 s | 50 Eisen + 50 Gold, 10 s | 100 Eisen + 100 Gold, 20 s | 20 Eisen |
 | 5 | 65 Kristall + 100 Gold, 13 s | 60 Kristall + 100 Gold, 12 s | 125 Kristall + 200 Gold, 25 s | – |
 
-Beispiel: Hub-Stufe 1, Schritt 3 → der Ausbau auf Hub-Stufe 2 braucht Kupfer aus der Mine; solange es fehlt, steht an
-der Burg „Material der nächsten Insel“.
+Beispiel: Hub-Stufe 1, Schritt 3 → der Ausbau auf Hub-Stufe 2 braucht 50 + 20 Stein, kein Kupfer; sind die 50 Stein
+des Schritts da und fehlen nur die 20 Stein des Tors, steht an der Burg „Material der nächsten Insel“ (B-631).

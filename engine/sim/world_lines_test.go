@@ -80,19 +80,21 @@ func TestLineZerstoerteMauerSperrtNurNeueLinien(t *testing.T) {
 	wantPayable(t, w, "wall", -1, 3, true)
 }
 
-// (c): Tor ab Hub-Stufe max(gateHubLevel, k), nur an der äußersten gebauten Mauer; ein gebautes inneres Tor bleibt.
+// (c): Tor ab Hub-Stufe max(gateHubLevel, k) (B-631: gateHubLevel 1), nur an der äußersten gebauten Mauer; ein gebautes inneres Tor bleibt.
 func TestLineTorNurAnDerAeusserstenLinie(t *testing.T) {
 	w := quietWorld(t)
-	gateLevel := hub.WallLines.GateHubLevel
-	w.HubLevel = gateLevel - 1
+	if gateLevel := hub.WallLines.GateHubLevel; gateLevel != 1 {
+		t.Fatalf("gateHubLevel %d, erwartet 1 (B-631)", gateLevel)
+	}
+	w.HubLevel = 1
+	wantPayable(t, w, "gate", -1, 1, false) // Mauer 1 fehlt
 	built(lineSite(t, w, "wall", -1, 1))
-	wantPayable(t, w, "gate", -1, 1, false)
-	w.HubLevel = gateLevel
 	wantPayable(t, w, "gate", -1, 1, true)
 	wantPayable(t, w, "gate", -1, 2, false) // Mauer 2 fehlt
 	wantPayable(t, w, "gate", 1, 1, false)  // rechte Mauer 1 fehlt
 	gate1 := lineSite(t, w, "gate", -1, 1)
 	built(gate1)
+	w.HubLevel = 2
 	built(lineSite(t, w, "wall", -1, 2))
 	if gate1.State != "built" {
 		t.Fatalf("inneres Tor: %s", gate1.State)
@@ -105,7 +107,7 @@ func TestLineTorNurAnDerAeusserstenLinie(t *testing.T) {
 	w.HubLevel = 3
 	built(lineSite(t, w, "wall", 1, 3))
 	w.HubLevel = 2
-	wantPayable(t, w, "gate", 1, 3, false) // Hub-Stufe max(2, 3) fehlt
+	wantPayable(t, w, "gate", 1, 3, false) // Hub-Stufe max(1, 3) fehlt
 	wantPayable(t, w, "gate", 1, 2, false)
 }
 

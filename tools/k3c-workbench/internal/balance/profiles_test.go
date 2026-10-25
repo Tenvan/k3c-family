@@ -82,13 +82,14 @@ func TestMauernZuerstAndersAlsSparsam(t *testing.T) {
 }
 
 // B-300/AC-01 (Beschluss BAL6.3, autonom): „Mauern zuerst“ zahlt den Hub-Ausbau und baut danach eine Mauer auf Stufe 2
-// aus. Holz und Stein für Mauern, Türme, Hub-Stufe 2 und den Mauer-Ausbau liegen im Vorrat (Dev-Vorrat).
+// aus. Holz und Stein für Mauern, Türme, Hub-Stufe 2 und den Mauer-Ausbau liegen im Vorrat (Dev-Vorrat), kein Kupfer
+// (B-631/AC-03: das Material-Tor von Hub-Stufe 2 ist Stein).
 func TestMauernZuerstBautMauerAus(t *testing.T) {
 	isl, err := newIsland(Scenario{Seed: "1", Players: 2, Days: 1})
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, r := range []string{"wood", "stone", "copper"} { // Kupfer: Material-Tor des Hub-Ausbaus 1 → 2 (GEB17)
+	for _, r := range []string{"wood", "stone"} { // ohne Kupfer: das Material-Tor von Hub-Stufe 2 ist Stein (B-631/AC-03)
 		if _, ok := sim.DevAddStock(isl, 0, r, 200); !ok {
 			t.Fatalf("Vorrat %s", r)
 		}

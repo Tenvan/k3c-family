@@ -107,7 +107,7 @@ func TestHubSaveGateHubLevel(t *testing.T) {
 	hubBefore, rulesBefore := readIn(t, root, hubFile), readIn(t, root, rulesFile)
 	_, res := saveEdit(t, root, func(m map[string]any) { m["wallLines"].(map[string]any)["gateHubLevel"] = 3 })
 	wantSaved(t, root, rulesBefore, res)
-	wantOneLine(t, hubBefore, readIn(t, root, hubFile), `"gateHubLevel": 2`, `"gateHubLevel": 3`)
+	wantOneLine(t, hubBefore, readIn(t, root, hubFile), `"gateHubLevel": 1`, `"gateHubLevel": 3`)
 }
 
 func TestHubSaveHaendler(t *testing.T) {

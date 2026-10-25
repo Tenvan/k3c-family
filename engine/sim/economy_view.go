@@ -57,8 +57,9 @@ func EconomyOf(w *World) Economy {
 	return e
 }
 
-// hubWaitState ist der Wartegrund des Hub-Ausbaus: waitingNextIsland, solange mit bezahltem Gold ein Material des
-// Material-Tors im Vorrat fehlt (need sind die Kosten des Schritts samt Tor), sonst der Stand des Platzes.
+// hubWaitState ist der Wartegrund des Hub-Ausbaus: waitingNextIsland, solange mit bezahltem Gold von einem Material
+// des Material-Tors nur der Tor-Anteil im Vorrat fehlt (need sind die Kosten des Schritts samt Tor; das Tor nutzt
+// das Material der Stufe selbst, B-631), sonst der Stand des Platzes.
 func hubWaitState(w *World, h *Site, need Cost) string {
 	if h.Upgrade != "waitingMaterial" {
 		return h.Upgrade
@@ -67,7 +68,7 @@ func hubWaitState(w *World, h *Site, need Cost) string {
 	// je Material: Tor, Vorrat, Bedarf
 	for _, m := range [][3]int{{gate.Wood, have.Wood, need.Wood}, {gate.Stone, have.Stone, need.Stone},
 		{gate.Copper, have.Copper, need.Copper}, {gate.Iron, have.Iron, need.Iron}, {gate.Crystal, have.Crystal, need.Crystal}} {
-		if m[0] > 0 && m[1] < m[2] {
+		if m[0] > 0 && m[1] < m[2] && m[1] >= m[2]-m[0] {
 			return WaitingNextIsland
 		}
 	}
@@ -96,7 +97,7 @@ func SiteGoldLeft(w *World, s *Site) (int, bool) {
 	}
 	switch {
 	case s.State == "unpaid":
-		return cheap(w, buildings[s.Kind].Cost).Gold - s.PaidGold, true
+		return siteCost(w, s).Gold - s.PaidGold, true
 	case upgradePayable(w, s):
 		return nextLevel(w, s).Cost.Gold - s.UpgradePaid, true
 	}
