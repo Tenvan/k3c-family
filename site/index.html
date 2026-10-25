@@ -138,6 +138,10 @@
 
       footer { padding: 44px 16px 56px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.92rem; }
       footer .wrap { display: grid; gap: 10px; }
+      .shots { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin-top: 28px; }
+      .shots figure { margin: 0; }
+      .shots img { width: 100%; height: auto; display: block; border-radius: 6px; border: 1px solid rgba(255,255,255,.12); }
+      .shots figcaption { font-size: .92rem; opacity: .85; margin-top: 8px; }
 
       @media (max-width: 640px) {
         section { padding: 64px 16px; }
@@ -201,6 +205,21 @@
               <h3>⬇️ Tiefer</h3>
               <ol><li>Am Ende jeder Stufe liegt der Tiefen-Eingang</li><li>Dahinter startet ein neuer Hub</li><li>Selbst gebaute Treppen bringen euch wieder nach oben</li><li>Ganz unten sitzt der Endboss der Insel</li></ol>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="bilder">
+        <div class="wrap">
+          <h2><small>Aus dem Spiel</small>So sieht K3C wirklich aus</h2>
+          <p class="lead">Echte Bilder aus dem laufenden Spiel, ohne Nachbearbeitung (PG1, B-184).</p>
+          <div class="shots">
+            <figure><img class="px" src="img/spiel/splitscreen-nacht.jpg" alt="Zwei Spieler im Split-Screen bei Nacht im Wald, beide zu Pferd am Lagerfeuer" loading="lazy" width="1280" height="720" />
+              <figcaption>Split-Screen: zwei Monarchen, jeder mit eigener Kamera.</figcaption></figure>
+            <figure><img class="px" src="img/spiel/hub-tag.jpg" alt="Ausgebauter Hub bei Tag mit Burg, Händlerstand, Werkstatt und Treppe nach unten" loading="lazy" width="1280" height="720" />
+              <figcaption>Der Hub bei Tag: Burg, Händler, Werkstatt und die Treppe in die Tiefe.</figcaption></figure>
+            <figure><img class="px" src="img/spiel/nacht-mauer.jpg" alt="Nachtwelle: Gegner greifen den Turm und die Mauer an, der Monarch reitet zur Verteidigung" loading="lazy" width="1280" height="720" />
+              <figcaption>Die Nacht: Die Welle rennt gegen Turm und Mauer.</figcaption></figure>
           </div>
         </div>
       </section>
