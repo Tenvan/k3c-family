@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/fs"
 	"math"
+	"slices"
 	"strconv"
 	"strings"
 	"testing/fstest"
@@ -29,6 +30,19 @@ var DefaultPaths = []string{
 	"waves.json:perExtraPlayer",
 }
 
+// reloaded sind die Dateien, die sim.UseData (und loadPrices) neu laden (B-301). Eine Variation in einer anderen Datei
+// (difficulty.json, biomes/…) hätte keine Wirkung und ist ein Fehler; TestReloadedWieUseData hält die Liste gleich.
+var reloaded = []string{"buildings.json", "troops.json", "economy.json", "hub.json", "monarch.json", "enemies.json", "waves.json"}
+
+// checkReloaded: Die Datei wird für einen Lauf neu geladen, sonst Fehler mit dem Dateinamen.
+func checkReloaded(file string) error {
+	if !slices.Contains(reloaded, file) {
+		return fmt.Errorf("%s wird nicht neu geladen, die Variation hätte keine Wirkung (neu geladen: %s)", file,
+			strings.Join(reloaded, ", "))
+	}
+	return nil
+}
+
 // variedFS liefert alle Dateien aus data.Files im Speicher, den Wert unter path um pct Prozent geändert (Ganzzahlen
 // bleiben gerundet ganz), und den Wert vorher und nachher. Unbekannter Pfad oder keine Zahl: Fehler mit Pfad.
 func variedFS(path string, pct int) (fstest.MapFS, float64, float64, error) {
@@ -38,6 +52,9 @@ func variedFS(path string, pct int) (fstest.MapFS, float64, float64, error) {
 	file, keys, ok := strings.Cut(path, ":")
 	if !ok || keys == "" {
 		return fail(errors.New("erwartet datei.json:a.b.c"))
+	}
+	if err := checkReloaded(file); err != nil {
+		return fail(err)
 	}
 	raw, err := data.Files.ReadFile(file)
 	if err != nil {

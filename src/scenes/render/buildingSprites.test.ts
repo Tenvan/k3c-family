@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { BUILDINGS } from '../../model/data';
 import { BUILDING_TEXTURES, HUB_SCAFFOLD_TEXTURE, backWallTexture, hubLookTexture, hubTexture, isHubBuilding, siteTexture, textureScale } from './buildingSprites';
+import { NATURE_TEXTURES, nodeSprite } from './natureSprites';
 
 /** Nur die Pfade, nichts wird geladen */
 const FILES = Object.keys(import.meta.glob('../../../public/grafik/**/*.png'));
@@ -33,6 +34,15 @@ describe('Gebäude-Grafik (GR3.1)', () => {
       expect(BUILDING_TEXTURES[key]).toBe(`gebaeude/${id}-32.png`); // Plantage (GEB5 AC-02)
       expect(textureScale(key)).toBe(1);
     }
+  });
+
+  it('Adern, Plantage und Lager zeigen Figuren statt Platzhalter, die Dateien liegen vor (B-412, W11.4)', () => {
+    const datei = (key: string | null | undefined) => `../../../public/grafik/${BUILDING_TEXTURES[key!] ?? NATURE_TEXTURES[key!]}`;
+    const figuren = [
+      siteTexture('storage', 'built'), siteTexture('storage', 'built', 3), siteTexture('farm', 'built'), 'grafik:setzling', 'grafik:pappel-niedrig',
+      ...['stoneVein', 'copperVein', 'ironVein', 'crystalVein'].map((kind) => nodeSprite(kind, 0, 'cave')?.key),
+    ];
+    for (const key of figuren) expect(FILES).toContain(datei(key));
   });
 
   it('Material-Stufen wählen das Sprite je Stufe, Lücken sind null (AC-04)', () => {
@@ -105,8 +115,10 @@ describe('Gebäude-Grafik (GR3.1)', () => {
       expect(textureScale(key!)).toBe(1);
     }
     expect(hubLookTexture({ id: 'burg', stufe: 2 })).toBe('grafik:hub-2');
+    expect(hubLookTexture({ id: 'burg', stufe: 6 })).toBe('grafik:burg-6'); // Ausbauschritte (GEB17.6)
+    expect(BUILDING_TEXTURES['grafik:burg-13']).toBe('gebaeude/burg-13-32.png');
     expect(hubLookTexture({ id: 'lagerfeuer', stufe: 4 })).toBeNull();
-    expect(hubLookTexture({ id: 'burg', stufe: 6 })).toBeNull();
+    expect(hubLookTexture({ id: 'burg', stufe: 14 })).toBeNull();
     expect(BUILDING_TEXTURES[HUB_SCAFFOLD_TEXTURE]).toBe('gebaeude/hub-geruest-32.png');
     expect(textureScale(HUB_SCAFFOLD_TEXTURE)).toBe(1);
   });

@@ -4,6 +4,9 @@ import (
 	"bytes"
 	"strings"
 	"testing"
+
+	"k3c/engine/sim"
+	"k3c/tools/k3c-workbench/internal/enginetools"
 )
 
 // BAL3/AC-01: Jedes neue Profil liefert mit gleichem Seed und gleichen Daten byte-gleiche, gültige Kennzahlen.
@@ -14,7 +17,7 @@ func TestNeueProfileGleicheBytes(t *testing.T) {
 	for _, tc := range []struct {
 		bot     string
 		players int
-	}{{"walls", 2}, {"economy", 2}, {"coop2", 2}, {"coop4", 4}} {
+	}{{"walls", 2}, {"economy", 2}, {"wirtschaft", 2}, {"coop2", 2}, {"coop4", 4}} {
 		t.Run(tc.bot, func(t *testing.T) {
 			m := Matrix{Seeds: []string{"1"}, Players: []int{tc.players}, Bots: []string{tc.bot}, Depths: []int{0}, Days: 1}
 			r := mustRun(t, m)
@@ -63,4 +66,46 @@ func TestProfilZuWenigeSpieler(t *testing.T) {
 			t.Errorf("Ziel %s mit %d Spielern: Fehler erwartet, war %v", tc.bot, tc.players, err)
 		}
 	}
+}
+
+// BAL6/AC-02 (B-300/AC-01): „Mauern zuerst“ spielt messbar anders als „sparsam“: Es baut an Tag 1 einen Turm,
+// „sparsam“ nie.
+func TestMauernZuerstAndersAlsSparsam(t *testing.T) {
+	r := mustRun(t, Matrix{Seeds: []string{"1"}, Players: []int{2}, Bots: []string{"walls", "saver"}, Depths: []int{0}, Days: 1})
+	walls, saver := r.Results[0].Metrics, r.Results[1].Metrics
+	if walls.FirstTowerTick == nil {
+		t.Error("walls: kein Turm an Tag 1")
+	}
+	if saver.FirstTowerTick != nil {
+		t.Errorf("saver: Turm bei Tick %d", *saver.FirstTowerTick)
+	}
+}
+
+// B-300/AC-01 (Beschluss BAL6.3, autonom): „Mauern zuerst“ zahlt den Hub-Ausbau und baut danach eine Mauer auf Stufe 2
+// aus. Holz und Stein für Mauern, Türme, Hub-Stufe 2 und den Mauer-Ausbau liegen im Vorrat (Dev-Vorrat).
+func TestMauernZuerstBautMauerAus(t *testing.T) {
+	isl, err := newIsland(Scenario{Seed: "1", Players: 2, Days: 1})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, r := range []string{"wood", "stone"} {
+		if _, ok := sim.DevAddStock(isl, 0, r, 200); !ok {
+			t.Fatalf("Vorrat %s", r)
+		}
+	}
+	w, cmds := isl.Stages[0], make([]sim.PlayerCommand, 2)
+	upgraded, tick := false, 0
+	for ; tick < 10*60*enginetools.TickHz && w.Cycle.Phase == "day" && !upgraded; tick++ {
+		for _, p := range w.Players {
+			cmds[p.Index] = bots["walls"](w, p)
+		}
+		sim.StepIsland(isl, cmds, 1.0/enginetools.TickHz)
+		for _, ev := range w.Events {
+			upgraded = upgraded || (ev["type"] == "upgraded" && ev["kind"] == "wall" && ev["level"] == 2)
+		}
+	}
+	if w.HubLevel < 2 || !upgraded {
+		t.Errorf("Hub-Stufe %d, Mauer auf Stufe 2 ausgebaut: %v (nach %d Ticks)", w.HubLevel, upgraded, tick)
+	}
+	t.Logf("Mauer auf Stufe 2 nach %d Ticks", tick)
 }

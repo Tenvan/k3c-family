@@ -22,8 +22,7 @@ import (
 // Modus online mit Clients (B-348/AC-04, TR1.3): je Client ein Raum. Die Workbench legt ihn mit einem
 // Beobachter-Gerät an (botdev), öffnet den Client headless mit ?room=<Code>&players=<n>&botfeed=<Feed> und schickt
 // im Takt die Kommandos ihres Bots über den Bot-Feed (/bot/<lauf>/<client>, nur Loopback). Den Zustand liest der Bot
-// über das Beobachter-Gerät: Das Protokoll kennt keinen Zuschauer, also belegt es einen Platz und spielt selbst als
-// Bot mit; der Client bräuchte für den anderen Weg (Zustand über den Feed) eine Erweiterung von B-349.
+// über das Beobachter-Gerät; es belegt keinen Platz (`observe`, B-352), der Client hat alle 4 Plätze.
 // Mit attach hängt sich der Lauf an einen laufenden Raum, die Clients öffnet der Mensch mit der Feed-Adresse.
 
 var clientTick = 200 * time.Millisecond // Takt der Bot-Kommandos; Test-Naht
@@ -161,9 +160,9 @@ func (s *Server) openSeats(ctx context.Context, run *simRun, spec simSpec, o *on
 		seat := &clientSeat{observer: d, feedName: run.ID() + "/" + strconv.Itoa(i)}
 		seats = append(seats, seat)
 		if spec.attach != "" {
-			seat.code, err = spec.attach, d.Join(ctx, spec.attach)
+			seat.code, err = spec.attach, d.Observe(ctx, spec.attach)
 		} else {
-			seat.code, err = d.Create(ctx, fmt.Sprintf("test-sim-%s-%d", run.ID(), i))
+			seat.code, err = d.CreateObserved(ctx, fmt.Sprintf("test-sim-%s-%d", run.ID(), i))
 		}
 		if err != nil {
 			return seats, err
@@ -198,8 +197,8 @@ func (s *Server) closeSeats(seats []*clientSeat) {
 	}
 }
 
-// drive schickt je Monarch des Clients ein Kommando. Die Monarchen des Clients sind alle außer dem des Beobachters,
-// nach Index geordnet: Slot k ist der k-te (der Server vergibt freie Plätze aufsteigend). Monarchen auf einer anderen
+// drive schickt je Monarch des Clients ein Kommando. Die Monarchen des Clients sind alle im Raum (der Beobachter hat
+// keinen), nach Index geordnet: Slot k ist der k-te (der Server vergibt freie Plätze aufsteigend). Monarchen auf einer anderen
 // Stufe als der Beobachter sieht er nicht; sie bekommen kein Kommando.
 func (seat *clientSeat) drive(ctx context.Context, bot balance.Bot) {
 	w, own := seat.observer.World()

@@ -1,0 +1,73 @@
+# BAL6 · SIM · Balancing-Tester misst die Wirtschaft
+
+- **Status:** erledigt
+- **Projekt:** BAL
+- **Domäne:** SIM
+- **Reife:** bereit
+- **Tickets:** B-347, B-300, B-301, B-099
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt; Default: neues Profil wirtschaft, saver bleibt; keine Wertänderungen in data/ außer Zielen in balance-targets.json)
+
+## Ausgangslage
+
+BR1.1 konnte nur 3 von 10 Wirtschafts-Korridoren messen: Der Bot `saver` baut nur Mauern, und Messgrößen für Turm, Hub-Stufe, Kämpfer je Hub sowie Gold und Holz bei `dawn` fehlen (B-347).
+
+## Ziel
+
+Alle Wirtschafts-Korridore aus `zielkorridore.md` › BR1 sind messbar, und der Bot des Standardszenarios spielt die Wirtschaft. Am Ende sichtbar: `task balance` zeigt je Wirtschafts-Korridor eine bewertete Zeile.
+
+## Beteiligte und Zielgruppen
+
+REG (BR1.3, BR2, RG1) nutzt die Berichte; ein Agent baut in `tools/k3c-workbench/internal/balance/`; 🧑 gibt die Spec frei.
+
+## Anforderungen
+
+B-347 › Anforderungen; B-300 › Anforderungen; B-301 › Anforderungen (B-300, B-301 aus BAL5, PJ3).
+
+## Nicht-Ziele
+
+Wertänderungen in `data/` außer `balance-targets.json` (BR1.3); Miniboss Nacht 5 (RG1, AC-04). Profil „Mauern zuerst“ und Sensitivität gehören seit PJ3 zu diesem Sprint (AC-02, AC-03).
+
+## Regeln und Einschränkungen
+
+Domäne SIM. Deterministisch, 100 feste Seeds, nur `engine/rng`. Baseline nur mit Begründung (`task balance:baseline`). Testläufe nur über `sim_test`, nie über `task balance` in der Shell (B-348). Datei ≤ 400, Funktion ≤ 60 Zeilen.
+
+## Beispiele
+
+B-347 › Beispiele.
+
+## Ausnahme- und Fehlerfälle
+
+B-347 › Ausnahme- und Fehlerfälle (Kennzahl ohne Ereignis: aus dem Zustand ableiten, im Bericht vermerken).
+
+## Akzeptanzkriterien
+
+- **AC-01** `task balance` bewertet alle Zeilen der Tabelle „Korridore der Wirtschaft“ (BR1) (`B-347/AC-01`).
+- **AC-02** Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“ (B-300/AC-01; aus BAL5 AC-01, PJ3).
+- **AC-03** Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler (B-301/AC-01; aus BAL5 AC-02, PJ3).
+
+## Offene Fragen
+
+- Ein neues Standardprofil statt `saver` umbauen? 🧑, blockiert BAL6.1.
+
+## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BAL6.1 | `BAL6.1-wirtschaft-messen.md` | Umsetzung | autonom | fertig |
+| BAL6.3 | `BAL6.3-profil-sensitivitaet.md` | Umsetzung | autonom | fertig |
+| BAL6.2 | `BAL6.2-review.md` | Review | autonom | fertig |
+
+Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+
+- BAL6.1 Messgrößen der Wirtschaft, Bot spielt Wirtschaft, Ziele in `balance-targets.json` (AC-01).
+- BAL6.2 Review (Code-Sprint): alle Kriterien prüfen.
+- BAL6.3 Profil „Mauern zuerst“ schärfen, Sensitivität prüft Wirkung (AC-02, AC-03; aus BAL5.1, PJ3). Beim Bereitmachen vor das Review ordnen.
+
+## Abnahme
+
+2026-10-25, Claude (BAL6.2): `task check:go`, `dev:test` und das Workbench-`go test` grün.
+AC-01 erfüllt durch BAL6.1 (13 Korridore bewertet), AC-02 und AC-03 durch BAL6.3. Review: keine Blocker, der Laufzeit-Hinweis ist ergänzt.
+Befund für BR1.3: Hub-Stufe 2 ist in Tiefe 0 mangels Stein nicht erreichbar. Neues Ticket B-625 (Baseline neu).

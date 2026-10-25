@@ -5,6 +5,30 @@
 offene Raum speichert, seine Geräte bekommen `room_closed` und gehen zurück zur Raumliste. `hello.v` muss 9 sein; ein
 v8-Client erhält `version`. Beispiel: `s2c-rooms.json`.
 
+**Nachgetragen ohne neue Version (W11.3, B-410):** `actions` kennt `{ "action": "train", "profession" }` (Ausbilden am Berufs-Angebot) und `{ "action": "trade", "side", "resource" }` (Tauschen am Händler; Beispiel `s2c-snapshot-wirtschaft.json`). Anzeige im Client ab W11.4.
+
+**Nachgetragen ohne neue Version (W11.2, B-208, B-408):** `sites[].hubLevel` (Platz-Stufe); unbezahlte Plätze über Hub-Stufe + 1 fehlen im Zustand (siehe *Wirtschaft*). Ein älterer Client ignoriert das Feld und zeichnet weniger Plätze.
+
+**Nachgetragen ohne neue Version (TR4.2, B-352):** `create` und `join` nehmen das optionale Feld `observe: true`: Das
+Gerät tritt als **Beobachter** ohne Platz bei, `slots` entfällt (wird ignoriert). Es bekommt `joined` mit `you: []`,
+`seats` und `level`/`snap`/`delta` jeder Stufe, in der ein Monarch steht (ohne Monarchen die Startstufe), belegt aber
+keinen Monarchen; `taken`/`free` der Raumliste ändern sich nicht. `input`, `addSlot`, `pause` und `dev` eines Beobachters ergeben
+`bad_request` (Log 🚫). Er zählt nicht als verbundenes Gerät: Ein Raum nur mit Beobachtern rechnet keine Schritte (wie
+ein leerer, `running` false), wird aber erst aufgeräumt, wenn auch der letzte Beobachter gegangen ist. Tritt ein Gerät
+mit Plätzen als Beobachter neu bei, sind seine Monarchen sofort frei. Gedacht für `sim_test` mit Clients (Workbench);
+ein älterer Server ignoriert das Feld und lehnt die leeren `slots` mit `bad_request` ab. Beispiele:
+`c2s-join-observe.json`, `c2s-create-observe.json`.
+
+```json
+{ "t": "join", "room": "KRNZ", "observe": true }
+```
+
+
+**Nachgetragen ohne neue Version (W12.2, B-470):** `cycle.phase` in `snap`/`delta` kennt den neuen Wert `dawn`
+(Morgengrauen): Der Zyklus läuft `day` → `dusk` → `night` → `dawn` → `day` (siehe *Tageszeit*). Das Ereignis `dawn` fällt
+bei Beginn der Phase `dawn`, nicht mehr bei Beginn des Tages; der Wechsel `dawn` → `day` meldet nichts. Ein älterer Client
+zeichnet die unbekannte Phase wie `night`. Beispiel: `s2c-snapshot-delta-dawn.json`.
+
 **Nachgetragen ohne neue Version (SK3, B-577):** Spieler in `snap`/`delta` tragen optional `stealthFor` (Sekunden unsichtbar nach Smoke Bomb; fehlt = sichtbar). Neue Skill-IDs `backstab`, `smokeBomb` in `skills`, `slots` und `actions`. Ein älterer Client ignoriert das Feld.
 
 **Nachgetragen ohne neue Version (KB3, B-563):** `actions` kennt `{ "action": "lair" }`: ein lebender Spieler ist näher als `lair.noticeUnits` (`data/bosses.json`) am Bau eines wartenden Endbosses (`sim.AtLair`; nicht ausgelöst, nicht besiegt). Ein älterer Client ignoriert den Eintrag.
@@ -51,6 +75,11 @@ bleibt der Name der Seed wie bisher, alte Clients funktionieren unverändert. Ei
 unbekannte Startstufe `depth`. Bei `fresh: false` wird `seed` ignoriert. Beispiel: `c2s-create-seed.json`; Level zu Seed und
 Tiefe liefert auch `GET /api/level?seed=…&biome=…`.
 
+**Optionales Feld `level.layout.backdrops` (GEB18, B-618, Version bleibt):** Liste von Hintergrund-Varianten (1 …) je Kachel
+von 24 Units im Raum der Hintergrund-Schicht, Länge ⌈`widthUnits`/24⌉ + 1, benachbarte Einträge verschieden; der Server würfelt
+sie aus dem eigenen Strom `<biom>:<seed>:backdrop` (gleicher Seed, gleiche Folge). Kachel k jeder Schicht zeigt Variante
+`backdrops[k]`; fehlt das Feld (Biom ohne Varianten, alter Server), zeigt der Client überall Variante 1. Beispiel: `s2c-level.json`.
+
 **Änderungen gegenüber v5 (K4, Version 6, B-154, B-345):** `snap`/`delta` nennen Endboss-Phase und Warnkreis
 (`enemies[].phase`, `enemies[].warn`), aktive Nacht-Events mit Restzeit (`nightEvents`) und den Wechselpunkt zur
 nächsten Insel (`islandSwitch`); siehe *Kampf: Bosse, Events, Inselwechsel*. Wechselt der Raum die Insel, beginnt jeder
@@ -58,7 +87,7 @@ Strom des Geräts neu mit `level` und `snap` (kein `delta` über den Wechsel). K
 Wechsel-Bestätigung: Der Wechsel entsteht durch Anwesenheit am Wechselpunkt. `hello.v` muss 6 sein; ein v5-Client
 erhält `version`. Dev-Seite: Aktion `grade` (siehe *HTTP: Dungeon-Master-Seite*).
 
-**Änderungen gegenüber v4 (W5, Version 5, B-153, B-283):** `snap`/`delta` nennen den Wirtschaftsstand (`stockMax`, `hubLevel`, `hubUpgrade`, `danger`, `merchant`, `drops`, Berufe der Bürger; siehe *Wirtschaft: Hub, Lager, Wartegrund, Händler*) und die Ereignisse `revived`, `disarmed`, `equipmentTaken`. Keine neuen Nachrichten: Hub-Ausbau, Tausch beim Händler und Berufswahl bleiben Bezahlen am Ort über `input.pay` (B-330). `hello.v` muss 5 sein; ein v4-Client erhält `version`. Nachgetragen ohne neue Version (W10.2, B-332): `fighters` und `troopLimit` im Zustand, Zusatzfelder wie `playerDown.cause`.
+**Änderungen gegenüber v4 (W5, Version 5, B-153, B-283):** `snap`/`delta` nennen den Wirtschaftsstand (`stockMax`, `hubLevel`, `hubUpgrade`, `danger`, `merchant`, `drops`, Berufe der Bürger; siehe *Wirtschaft: Hub, Lager, Wartegrund, Händler*) und die Ereignisse `revived`, `disarmed`, `equipmentTaken`. Keine neuen Nachrichten: Hub-Ausbau, Tausch beim Händler und Berufswahl bleiben Bezahlen am Ort über `input.pay` (B-330). `hello.v` muss 5 sein; ein v4-Client erhält `version`. Nachgetragen ohne neue Version (W10.2, B-332): `fighters` und `troopLimit` im Zustand, Zusatzfelder wie `playerDown.cause`. Ebenso additiv (GEB17.4, B-592): `hubStep`, `hubUpgrade.steps` und der Wartegrund `hubUpgrade.state` = `waitingNextIsland` (Beispiel `testdata/protocol/s2c-snapshot-wirtschaft.json`).
 
 **Änderungen in v4 (S2.4, B-176):** Ein Gerät bekommt Level und Zustand **jeder** Stufe, in der einer seiner Slots
 steht, je Stufe ein eigener Strom. `level`, `snap` und `delta` tragen auf oberster Ebene `stage` (Index der Stufe auf
@@ -206,7 +235,7 @@ Schreiben, `engine/store`), der Raum läuft weiter. Jede Speicherung loggt ihre 
 als Warnung. Ein Autospeicher-Takt und Speichern bei Tagesanbruch gibt es nicht (B-186).
 
 Der Stand (Version 4, `engine/sim/island_save.go`) nennt neben der Welt `savedAt` (Zeitpunkt, ISO 8601), `day` (Tag)
-und `phase` (`day`, `dusk`, `night`) beim Speichern sowie je Spieler die Tiefe seiner Stufe (`players[].depth`). `day`
+und `phase` (`day`, `dusk`, `night`, `dawn`) beim Speichern sowie je Spieler die Tiefe seiner Stufe (`players[].depth`). `day`
 und `phase` dienen nur der Anzeige; beim Laden gilt `time`. Ein Stand der Version 3 ohne die beiden Felder lädt weiter.
 
 Ein Spielstand speichert die Welt, nicht die Monarchen und nicht die Zuordnung zu Geräten. Ein geöffneter Stand hat
@@ -306,12 +335,12 @@ das zählt als Abbruch.
 | `hello` | Gerät → Server | als erste Nachricht | `v` Protokoll-Version (9), `device` Geräte-ID (≤ 64 Zeichen) | `c2s-hello.json` |
 | `welcome` | Server → Gerät | Antwort auf passendes `hello` | `v`, `tickHz`, `limits` (Grenzen aus *Grenzen*) | `s2c-welcome.json` |
 | `rooms` | Server → Gerät | nach `welcome`, sobald das Gerät wieder in keinem Raum ist, und bei jeder Änderung, solange es in keinem Raum ist | `rooms[]`: `code`, `name`, `depth`, `grade`, `taken` (besetzt + wartend), `free` (4 − `taken`), `running`, `world` (Welt-ID, ab v9) | `s2c-rooms.json` |
-| `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]`, optional `grade`, `goal`, `defeat` (siehe oben), optional `seed` (nur bei `fresh`, höchstens 64 Zeichen, sonst gilt der Name), optional `world` (Welt-ID, nur bei `fresh`, fehlt = `standard`, eine andere nur im Dev-Mode; v7) | `c2s-create.json`, `c2s-create-seed.json`, `c2s-create-world.json` |
-| `join` | Gerät → Server | Raum beitreten oder wiederverbinden | `room` Code, `slots[]` | `c2s-join.json` |
+| `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]`, optional `grade`, `goal`, `defeat` (siehe oben), optional `seed` (nur bei `fresh`, höchstens 64 Zeichen, sonst gilt der Name), optional `world` (Welt-ID, nur bei `fresh`, fehlt = `standard`, eine andere nur im Dev-Mode; v7), optional `observe` (Beobachter ohne Platz, dann ohne `slots`; B-352) | `c2s-create.json`, `c2s-create-seed.json`, `c2s-create-world.json`, `c2s-create-observe.json` |
+| `join` | Gerät → Server | Raum beitreten oder wiederverbinden | `room` Code, `slots[]`; oder `observe: true` ohne `slots` (Beobachter ohne Platz, B-352) | `c2s-join.json`, `c2s-join-observe.json` |
 | `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `world` (Welt-ID des Raums, v7), `you[]`: `slot` → `monarch`, `depth`, `stage` | `s2c-joined.json` |
-| `level` | Server → Gerät | nach `joined` und sobald eine Stufe für das Gerät neu ist, vor dem ersten Zustand der Stufe | `stage`, `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte) | `s2c-level.json` |
+| `level` | Server → Gerät | nach `joined` und sobald eine Stufe für das Gerät neu ist, vor dem ersten Zustand der Stufe | `stage`, `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte, optional `backdrops`) | `s2c-level.json` |
 | `snap` | Server → Gerät | voller Zustand einer Stufe: nach ihrem `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `stage`, `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json`, `s2c-snapshot-wirtschaft.json`, `s2c-snapshot-boss.json`, `s2c-snapshot-event.json` |
-| `delta` | Server → Gerät | jeder weitere Tick, je Stufe | `stage`, `tick`, `ack`, `s` (nur Änderungen zum zuletzt gesendeten Zustand dieser Stufe) | `s2c-snapshot-delta.json` |
+| `delta` | Server → Gerät | jeder weitere Tick, je Stufe | `stage`, `tick`, `ack`, `s` (nur Änderungen zum zuletzt gesendeten Zustand dieser Stufe) | `s2c-snapshot-delta.json`, `s2c-snapshot-delta-dropped.json` |
 | `seats` | Server → alle Geräte im Raum | wenn sich eine Zuordnung, ein Monarch-Zustand oder eine Stufe ändert | `you[]` (eigene Slots mit `monarch`, `depth` und `stage`), `monarchs[]` je Index `taken`/`waiting`/`free` | `s2c-seats.json` |
 | `addSlot` | Gerät → Server | lokaler Spieler kommt dazu | `slot` 0–3 | `c2s-add-slot.json` |
 | `removeSlot` | Gerät → Server | lokaler Spieler geht | `slot` | `c2s-remove-slot.json` |
@@ -321,7 +350,7 @@ das zählt als Abbruch.
 | `leave` | Gerät → Server | Raum bewusst verlassen | – | `c2s-leave.json` |
 | `pause` | Gerät → Server | Gerät pausiert (Pause-Menü offen), im Raum; v8 | – | `c2s-pause.json` |
 | `resume` | Gerät → Server | Gerät setzt fort, im Raum; v8 | – | `c2s-resume.json` |
-| `dev` | Gerät → Server | nur im Dev-Mode (siehe *Dev-Aktionen*), im Raum | `action` und je Aktion: `gold` `slot`, `amount`; `material` `slot`, `resource`, `amount`; `timescale` `factor`; `pause` `paused`; `castleFall` `slot` | `c2s-dev-gold.json`, `c2s-dev-material.json`, `c2s-dev-timescale.json`, `c2s-dev-pause.json`, `c2s-dev-castlefall.json` |
+| `dev` | Gerät → Server | nur im Dev-Mode (siehe *Dev-Aktionen*), im Raum | `action` und je Aktion: `gold` `slot`, `amount`; `material` `slot`, `resource`, `amount`; `timescale` `factor`; `pause` `paused`; `castleFall` `slot`; `boss` `slot`, `boss`; `event` `event`; `bossPhase`, `night` ohne Felder | `c2s-dev-gold.json`, `c2s-dev-material.json`, `c2s-dev-timescale.json`, `c2s-dev-pause.json`, `c2s-dev-castlefall.json`, `c2s-dev-boss.json`, `c2s-dev-bossphase.json`, `c2s-dev-event.json`, `c2s-dev-night.json` |
 | `error` | Server → Gerät | Fehlerfall, siehe Codes | `code`, `message` (deutsch, für die Anzeige) | `s2c-error.json`, `s2c-error-forbidden.json` |
 
 Die Beispiele stammen aus dem Ablauf *2 Controller an der Xbox + 1 Handy*; `level`, `snap` und `delta` sind aus der
@@ -336,10 +365,18 @@ heutigen TS-Simulation erzeugt (Seed `familie`, 3 Spieler, Tick 299/300). **Auß
 "del": [entfernte ids] }`. Alles ohne `id` (einfache Werte, Objekte wie `cycle`, `castle`, `stock`, `travel`, Listen
 wie `camps`, `portals`, `spawnQueue`) steht bei einer Änderung ganz darin. `null` ist ein Wert (z. B. `travel` endet),
 kein Löschen. Felder, die im vorigen Zustand standen und jetzt fehlen (z. B. `merchant`, `drops`), nennt `delta` in
-`unset` (Namen, sortiert, `events` nie); der Client entfernt sie. Fehlt keins, fehlt `unset`. Fehlt `events`, gab es im
-Tick keine. `seq` zählt je Verbindung ab 1, nach einem Wiederverbinden also
+`unset` (Namen, sortiert, `events` und `eventsDropped` nie); der Client entfernt sie. Fehlt keins, fehlt `unset`. Fehlt `events`, gab es im
+Tick keine; fehlt `eventsDropped`, ist es 0 (beide gelten nur für ihren Zustand). `seq` zählt je Verbindung ab 1, nach einem Wiederverbinden also
 neu. `ack` ist das höchste `seq`, das der Server von **dieser** Verbindung verrechnet hat (Grundlage für eine spätere
 Vorhersage, B-039).
+
+**Tageszeit (`cycle`, B-470):** `phase` ist `day`, `dusk`, `night` oder `dawn` (Tag, Dämmerung, Nacht, Morgengrauen, in
+dieser Reihenfolge; Dauern aus `data/biomes/*.json` › `cycle`, Wald 6/2/4/2 min). `day` zählt ab 1; die Nacht gehört zum
+Tag davor, das Morgengrauen schon zum neuen Tag. `progress` (0…1) und `secondsLeft` gelten je Phase. Bei Beginn von
+`dawn` meldet die Stufe das Ereignis `dawn` mit dem neuen `day` (Gold je Spieler, Taverne, Händler, Gegner ziehen ab,
+Nacht-Events enden); `night` kommt bei Beginn der Nacht, `dusk` bei Beginn der Dämmerung, der Beginn des Tages meldet
+nichts. Unter Tage (Aggressionspool) läuft derselbe Zyklus der Oberwelt weiter. Ein Client behandelt eine unbekannte
+Phase wie `night`. Beispiel: `s2c-snapshot-delta-dawn.json` (Wald, Tick 21600 = 720 s, Beginn des Morgengrauens von Tag 2).
 
 ### Mehrere Stufen je Gerät
 
@@ -395,9 +432,13 @@ Felder je Spieler in `players[]` von `snap` und `delta`:
 `input.p[].skill`), `{ "action": "learn", "skills": [id, …] }` mit den Skills, die der Spieler jetzt lernen darf
 (Punkte frei, nicht gelernt, Tier-Gating; nach ID sortiert, von `sim.LearnableSkills` berechnet; fehlt, wenn keiner
 lernbar ist; B-285). Ein älterer Server sendet `learn` ohne `skills` bei `points` > 0, der Client behandelt dann jeden
-ungelernten Skill als lernbar. Zuletzt `{ "action": "respec" }` (lebt, `sim.CanRespec` erlaubt: Tag und an der
-Burg, auch ohne gelernte Skills; B-495) und `{ "action": "lair" }` (lebt, am Bau des wartenden Endbosses: näher als `lair.noticeUnits`, Ankunft innerhalb `lair.triggerUnits` löst ihn aus; B-563; der Client zeigt eine Zeile ohne Taste). Die Liste nennt keine Taste,
-die Belegung gehört dem Client. Berufe, Tausch, Grabstein und Wiederbeleben kommen später (W5, B-120).
+ungelernten Skill als lernbar. Dann `{ "action": "respec" }` (lebt, `sim.CanRespec` erlaubt: Tag und an der
+Burg, auch ohne gelernte Skills; B-495), `{ "action": "train", "profession": "miner" | "builder" | "craftsman" }`
+(Ausbilden: lebt, hat Gold, das Zahlziel am Ort ist ein bezahlbares Berufs-Angebot; `sim.TrainAt`; B-410) oder
+`{ "action": "trade", "side": "buy" | "sell", "resource": id }` (Tauschen am Händler: Kaufen mit Gold und Platz im
+Lager, Verkaufen mit genug `resource` im Vorrat; `sim.TradeAt`; B-410; höchstens einer der beiden, Bezahlen bleibt
+`input.pay`) und zuletzt `{ "action": "lair" }` (lebt, am Bau des wartenden Endbosses: näher als `lair.noticeUnits`, Ankunft innerhalb `lair.triggerUnits` löst ihn aus; B-563; der Client zeigt eine Zeile ohne Taste). Die Liste nennt keine Taste,
+die Belegung gehört dem Client. Grabstein und Wiederbeleben kommen später (W5, B-120). Unbekannte Aktionen ignoriert der Client mit Log (W11.4).
 
 ### Wirtschaft: Hub, Lager, Wartegrund, Händler
 
@@ -407,7 +448,7 @@ die Belegung gehört dem Client. Berufe, Tausch, Grabstein und Wiederbeleben kom
 behandelt sie deshalb alle als optional. Im `delta` stehen sie wie jedes Feld ohne `id` bei einer Änderung ganz (außer
 `drops`, Liste mit `id`); fehlt eins jetzt, steht es in `unset`. Mengen sind Stück, Gold sind Münzen.
 
-Felder oben in `s` (`stockMax`, `hubLevel`, `hubUpgrade`, `danger`, `fighters`, `troopLimit` aus `sim.EconomyOf`, `engine/sim/economy_view.go`,
+Felder oben in `s` (`stockMax`, `hubLevel`, `hubStep`, `hubUpgrade`, `danger`, `fighters`, `troopLimit` aus `sim.EconomyOf`, `engine/sim/economy_view.go`,
 vom Server je Stufe abgelesen; die übrigen aus der Welt):
 
 | Feld | Bedeutung | fehlt |
@@ -415,11 +456,12 @@ vom Server je Stufe abgelesen; die übrigen aus der Welt):
 | `stock` | Vorrat der Insel je Rohstoff (`wood`, `stone`, `copper`, `iron`, `crystal`; Eisen und Kristall fehlen bei 0), alle Stufen gleich | nie |
 | `stockMax` | Lager-Maximum je Rohstoff (ein Wert für alle) | ohne Insel (unbegrenzt) |
 | `hubLevel` | Hub-Stufe 1 bis 5 | nie (älterer Server) |
-| `hubUpgrade` | Ausbau auf die nächste Hub-Stufe: `gold` (Kosten), `material` (Kosten, Form wie `stock`), `paid` (bezahltes Gold), `state` (`waitingMaterial`, `waitingWorker`; fehlt, solange Gold offen ist) | auf Stufe 5 |
+| `hubStep` | laufender Ausbauschritt auf die nächste Hub-Stufe, 1 bis `hubUpgrade.steps` (GEB17.4, B-592, Regel `docs/rules/stufen.md` § 8); erst der letzte Schritt hebt `hubLevel` | auf Stufe 5 (wie `hubUpgrade`) |
+| `hubUpgrade` | laufender Ausbauschritt auf die nächste Hub-Stufe: `gold` (Kosten), `material` (Kosten samt Material-Tor, Form wie `stock`), `paid` (bezahltes Gold), `steps` (Zahl der Schritte der Stufe), `state` (`waitingMaterial`, `waitingNextIsland` = Gold bezahlt, aber das Material-Tor fehlt im Vorrat, „Material der nächsten Insel“, `waitingWorker`; fehlt, solange Gold offen ist) | auf Stufe 5 |
 | `danger` | `true`: Nacht oder Gegner da, Bau und Ausbau warten | keine Gefahr |
 | `fighters` | Zahl der Kämpfer der Stufe (für „Kämpfer/Limit“; W10.2, B-332) | nie (älterer Server); 0 ist ein Wert |
 | `troopLimit` | Truppen-Limit der Stufe (Regel `docs/rules/buerger.md` § 3, zerstörte Kaserne zählt nicht) | nie (älterer Server) |
-| `merchant` | anwesender Händler: `resource` (sein Material), `leaves` (Tag der Abreise), `buyPaid` (Gold des laufenden Kaufs, fehlt bei 0) | kein Händler (nur Tiefe 0) |
+| `merchant` | anwesender Händler: `resource` (sein Material), `leaves` (Tag der Abreise), `buyPaid` (Gold des laufenden Kaufs, fehlt bei 0), `raid` (`true`: dieser Besuch wird überfallen, Gegner greifen den Händler zuerst an; fehlt sonst), `hp`/`maxHp` (Lebenspunkte; bei 0 flieht er, KB2.3, B-381) | kein Händler (nur Tiefe 0) |
 | `drops` | Ausrüstung am Boden, Liste mit `id`: `kind` (Figur oder Beruf), `x`, `workSite` (fehlt bei 0) | keine |
 | `armorLevel` | Rüstungsstufe der Kämpfer des Hubs | 0 |
 
@@ -428,10 +470,24 @@ vom Server je Stufe abgelesen; die übrigen aus der Welt):
 `level` (fehlt = 1) für den Ausbau von Mauer und Turm, `hubUpgrade.state` für den Hub. `waitingWorker` heißt bei
 `danger` „Gefahr“, sonst „kein Bauer“; den Text bildet der Client.
 
+**Platz-Stufe und Sichtbarkeit (W11.2, B-208, B-408):** `sites[].hubLevel` ist die Hub-Stufe, ab der ein Platz
+bezahlbar ist (`sim.SiteHubLevel`: Hub-Plätze nach `data/hub.json`, Mauer und Turm der Linie k ab k, Tor ab
+`max(gateHubLevel, k)`). Der Zustand nennt unbezahlte Plätze nur bis zur nächsten Hub-Stufe (`hubLevel` ≤ Hub-Stufe + 1,
+`sim.SiteVisible`); bezahlte, angezahlte, wartende und gebaute Plätze stehen immer darin. Steigt die Hub-Stufe, kommen
+die Plätze der neuen nächsten Stufe im `delta` unter `sites.set`. Additiv, keine neue Version; ein älterer Server sendet
+alle Plätze ohne `hubLevel`. Geprüft von `engine/net/sites_test.go`.
+
 **Ruinen (WZ14, B-468):** `sites[].ruin` ist `true` an einer Ruine der Planung (`docs/rules/geplante-chunks.md` § 8),
 auch nach Zerstörung und Wiederaufbau; sonst fehlt das Feld (additiv, Protokoll bleibt 7). Eine Ruine ist ein Platz wie
 jeder andere (`state`, `hp`, `maxHp`, Ausbau); die Vorschau des Studios liefert sie mit. Geprüft von
 `TestRuineInSnapUndDelta` und `TestRuineInDerVorschau` (`engine/net/ruin_test.go`).
+
+**Bezahlbar und abbaubar (GEB16, B-587, B-588):** `sites[].payable` ist `true`, wenn der Platz gerade Münzen für Bau
+oder Ausbau annimmt (gleiche Regel wie `input.pay`: `sim.SitePayable`), `nodes[].minable` ist `true`, wenn der Knoten
+gerade eine Markier-Münze annimmt (sammelbar und nicht markiert: `sim.NodeMarkable`). Beide fehlen bei `false`
+(additiv, Protokoll-Version unverändert); im Delta kommt der ganze Eintrag. Der Client zeigt Bau- und Abbau-Schild nur
+danach und rechnet nichts nach; ein älterer Server ohne Felder zeigt kein Schild. Geprüft von `TestPayableUndMinable`
+(`engine/net/payable_test.go`).
 
 **Berufe:** `troops[].profession` (`miner`, `builder`, `craftsman`; fehlt = keiner) und `troops[].workSite` (Site-ID
 des Arbeitsplatzes, fehlt = keiner). Berufswahl, Tausch und Hub-Ausbau als Eingabe stehen in W5.2.
@@ -494,6 +550,25 @@ Aktion, Werte, Raum).
   über `/api/dev`; er gilt ab der nächsten Welle (B-080, `c2s-dev-grade.json`). Nachgetragen ohne neue Version (KB2.6):
   `s` von `snap` und `delta` nennt immer den aktuellen Grad des Raums als `grade` (auch ohne Dev-Mode; im Delta nur bei
   Änderung); ein älterer Server sendet das Feld nicht.
+- Kampf (B-603, additiv ohne neue Version; ein älterer Server antwortet `bad_request`):
+  - `boss`: `boss` (Id aus `data/bosses.json`, Mini- oder Endboss) erscheint am Portal der Stufe, das dem Monarchen
+    von `slot` am nächsten ist, auch wenn er schon besiegt war; ein Endboss beginnt dort seinen Kampf mit Phase 1
+    (`c2s-dev-boss.json`). Lebt in der Stufe schon ein Boss oder läuft der Endboss-Kampf der Insel, ist die Aktion
+    `bad_request` mit dem Hinweis „Boss schon da“ als Warnung im Log; unbekannte Id, fehlender `slot` oder eine Stufe
+    ohne Portal ebenso `bad_request`.
+  - `bossPhase`: Der laufende Endboss wechselt in seine nächste Phase; seine HP fallen dazu knapp unter deren Schwelle,
+    der Zustand nennt die Phase wie sonst, das Ereignis `bossPhase` kommt mit (`c2s-dev-bossphase.json`). Ohne
+    Endboss-Kampf oder in der letzten Phase `bad_request` (Minibosse haben keine Phasen).
+  - `event`: `event` `fullMoon` oder `bloodMoon` springt alle Stufen zum Beginn der nächsten Nacht (wie `night`) und
+    lässt das Event in genau dieser Nacht laufen, zusätzlich zum Rhythmus (`eventStarted`, `nightEvents`, Welle mit
+    Vollmond-Wölfen, Faktoren des Blutmonds, Ende und Belohnung bei Tagesanbruch). `merchantRaid` lässt den Händler in
+    seiner Stufe ankommen, wenn er fehlt, und überfällt diesen Besuch (Welle, Belohnung bei Abreise wie sonst); läuft
+    der Überfall schon, `bad_request` (`c2s-dev-event.json`). Andere Werte `bad_request`.
+  - `night`: alle Stufen springen zum Beginn der nächsten Nacht; der Wechsel mit Nachtwelle folgt im nächsten Schritt
+    (`c2s-dev-night.json`).
+  - Folgen im Spielstand: Ein per `merchantRaid` geholter Händler zählt als Besuch (Rhythmus „jeder 4. Besuch“), ein
+    besiegter Dev-Endboss gilt als besiegt. Die erzwungene Event-Nacht selbst liegt nur im Speicher (nicht im
+    Spielstand, nicht auf der nächsten Insel).
 
 ### Kampf: Bosse, Events, Inselwechsel
 
@@ -543,19 +618,31 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 | `islandSwitch` | `island` | Alle stehen am Wechselpunkt, die Insel wechselt |
 | `victory` | `goal`, `day` | Siegbedingung erreicht |
 | `gameOver` | – | Niederlage |
+| `saved` | – | Der Server hat den Spielstand des Raums geschrieben (B-186: alle 60 s, bei Tagesanbruch, Stufen- und Inselwechsel, Verlassen); kommt mit dem nächsten Zustand **jeder** Stufe, nur nach gelungenem Schreiben. Der Client zeigt kurz „gesichert“. Kein Ereignis der Simulation: kein Einfluss auf Spielverlauf und Golden-Hash. Beispiel `s2c-snapshot-gesichert.json`, geprüft von `TestSpeichertImTakt` (`engine/room/autosave_test.go`) und `src/scenes/hud/savedHint.test.ts` |
 
 Tod, Bau fertig, Skill, Nacht naht und Portal laufen über die älteren Typen `playerDown`, `built`, `skillPoint`,
 `dusk`, `arrived` (`arrived` mit `player` beim Einzelwechsel; `built` mit `kind` und `x` des Bauplatzes, `x` als Zusatzfeld ohne neue Version, B-217). Die Simulation begrenzt die Ereignisse je Tick und
 Stufe auf **K = 32** (`maxEventsPerTick`); bei Überlauf gehen Tod und Bau vor, `eventsDropped` in `s` zählt die
-Verworfenen und fehlt bei 0 (zuverlässige Übertragung im Delta: B-190). Ein Client übergeht unbekannte Typen
-(Banner nur für bekannte), deshalb blieb die Protokollversion dafür 3. Gilt auch für `castFailed` und das Zusatzfeld `hit` an `strike` (S9.2): Version bleibt 5.
+Verworfenen und fehlt bei 0.
+
+**Nachgetragen ohne neue Version (NT1.2, B-190):** `eventsDropped` (Zahl, in `snap` und `delta`) gilt wie `events` nur
+für den Zustand, in dem es steht: die seit dem vorigen gesendeten Zustand dieser Stufe verworfenen Ereignisse. Es
+zählt die Obergrenze je Tick und, wenn die Warteschlange eines langsamen Geräts wartende Zustände durch den neuesten
+ersetzt, deren `eventsDropped` und die Ereignisse über 256 je Gerät (`maxEvents`). Fehlt das Feld, ist es 0; ein
+`delta` nennt es nie in `unset`, der Client setzt es bei jedem `delta` zurück (`applyDelta`). Beispiel:
+`s2c-snapshot-delta-dropped.json`. Ein Zustand ersetzt in der Warteschlange einen wartenden derselben Stufe auch über
+andere Nachrichten hinweg und stellt sich hinten an (B-280); ein Gerät wird nur getrennt, wenn 64 nicht ersetzbare
+Nachrichten warten. Ein Client übergeht unbekannte Typen
+(Banner nur für bekannte), deshalb blieb die Protokollversion dafür 3. Gilt auch für `castFailed` und das Zusatzfeld `hit` an `strike` (S9.2): Version bleibt 5. Ebenso für `saved` (B-186, ST1.1): Version bleibt.
 
 ### Snapshot-Größe
 
 **Budget (Beschluss Q08):** Ereignisse ≤ **200 Byte je Tick und Client im Mittel**, bei 30 Hz also **6 KB/s je
 Client**; sie laufen im Delta mit, keine eigene Nachricht. Geprüft von `TestEventsBudgetJeTick`
 (`engine/sim/events_budget_test.go`): 3 Stufen, 4 Spieler, Seed `bench`, 1800 Ticks, Mittel je Stufe und Tick ≤ 200
-Byte, sonst rot. Für den ganzen Zustand ist keine Grenze beschlossen, er wird nur gemessen.
+Byte, sonst rot. Für den ganzen Zustand ist keine Grenze beschlossen, er wird nur gemessen (Entscheidung zu Q08,
+Variante B, B-386, 2026-10-23: das Budget gilt nur für Ereignisse, `snap` und `delta` haben keine Grenze; wird der
+Zustand später zu groß, z. B. auf Pi 3 oder im WLAN, ist das ein neues Ticket).
 
 **Ist-Wert Go-Server** (2026-10-03, Intel Core Ultra 7 165H, `go test -bench Island -run '^$' ./engine/sim`; JSON je
 Stufe und Tick, erste 1800 Ticks nach dem Aufwärmen, schneller Zyklus mit Nächten):
@@ -589,6 +676,22 @@ Phase 2 mit Warnkreis, 1800 Ticks. `go test ./engine/net -run KampfBytes -v` (`k
 | `delta` | 913 Byte | 1 534 Byte |
 
 Ereignisse bleiben weit unter dem Budget (Q08: 200 Byte; p99 unter dem Mittel, weil wenige große Ereignisse wie `bossPhase` das Mittel heben); `delta` ≈ 27 KB/s je Client bei 30 Hz.
+
+**Alle Plätze (NT1.2, B-263/AC-01, 2026-10-25, Windows-Entwicklerrechner):** Stufe 0 mit 40 Plätzen (seit W0: Linien
+und Hub), 4 Spieler, Seed `bench`, schneller Zyklus mit Nacht, 1800 Ticks; `go test ./engine/net -run
+SnapshotBytesAllePlaetze -v` (`sites_bytes_test.go`, `snap` und `delta` wie `stateData`):
+
+| je Stufe und Tick | Mittel | p99 |
+|---|---|---|
+| `events` | 9,0 Byte | 54 Byte |
+| ganzer Zustand (`snap`) | 26,2 KB | 29,5 KB |
+| davon `sites` (40 Plätze) | 5,7 KB | – |
+| `delta` | 2,5 KB | 3,7 KB |
+
+Im Budget: Ereignisse 9 Byte je Tick (Q08: 200 Byte, der Test prüft es). Für den ganzen Zustand gibt es keine Grenze;
+ein `snap` kommt nur nach `level`. Das `delta` braucht ≈ 74 KB/s (≈ 0,6 Mbit/s) je Gerät und Stufe, ≈ 20 % über der
+Schätzung der TS-Messung unten (61 KB/s), für WLAN im Heimnetz unkritisch; unveränderte Plätze stehen im `delta` nicht.
+Kein Folge-Ticket nötig.
 
 **Je Gerät (S2.4, B-176/AC-04):** Mit mehreren Stufen gilt das Budget **je Gerät**, also für die Summe über seine
 Stufen. Geprüft von `TestStufenEreignisBudgetJeGeraet` (`engine/room/stages_bench_test.go`): ein Gerät, zwei Spieler in
@@ -673,8 +776,8 @@ Aktionen nur im Dev-Mode (`K3C_DEV`), sonst `403`.
 | `POST /api/dev?room=CODE` | Body wie die Nachricht `dev` ohne `t`, `slot` ist der Index des Monarchen; `{"ok": true, "room": Diagnose}`, `400` bei ungültiger Aktion |
 
 Zusätzlich zu den Aktionen der Nachricht `dev`: `{"action":"wave","slot":0}` startet sofort eine Welle in der Stufe des
-Monarchen, `{"action":"phase","phase":"night"}` springt alle Stufen zum Beginn der nächsten Phase `day`, `dusk` oder
-`night`; der Wechsel und seine Ereignisse (Nachtwelle, Morgen-Einkommen) folgen im nächsten Schritt.
+Monarchen, `{"action":"phase","phase":"night"}` springt alle Stufen zum Beginn der nächsten Phase `day`, `dusk`,
+`night` oder `dawn`; der Wechsel und seine Ereignisse (Nachtwelle, Morgen-Einkommen) folgen im nächsten Schritt.
 `{"action":"grade","grade":"hard"}` setzt den Schwierigkeitsgrad des Raums (Name aus `data/difficulty.json`, sonst
 `400`); er gilt ab der nächsten Welle, die laufende bleibt (B-080).
 
@@ -688,7 +791,7 @@ Weitere Dev-Aktionen (nur Dev-Mode, wirken auf die Insel des Raums, nichts davon
 | `cheapBuild` | `on` (true/false) | Baukosten (Gebäude, Hub-, Mauer-, Turm-Ausbau, Angebote, Waffen, Rüstung) höchstens 1 je Posten, Schalter |
 | `buildAll` | `level` 1 bis 5 | alle Stufen: Hub-Stufe, Mauern/Türme bis Linie `level` gebaut und auf Stufe `level`, freie Plätze bis `level` gebaut (Tore nicht) |
 | `timescaleAuto` | `on` | Zeitraffer endet (1x) beim nächsten Tageszeitwechsel, einmalig; `on:false` nimmt es zurück |
-| `nextPhase` | | springt zum Beginn der nächsten Tageszeit (day → dusk → night → day) |
+| `nextPhase` | | springt zum Beginn der nächsten Tageszeit (day → dusk → night → dawn → day) |
 | `castleFall` | `slot` | Stufenverlust in der Stufe des Monarchen wie beim Burgfall mit Niederlage-Modus `stage` (Plätze leer, Ruinen in den Ausgangszustand, Vorrat und Gold −50 %, Truppen außer Landstreichern weg), unabhängig vom Niederlage-Modus des Raums; Beispiel `c2s-dev-castlefall.json` |
 
 Die Diagnose (`GET /api/dev?room=`, Summary) trägt dazu `devCheapBuild`, `devStockBonus`, `devPurseBonus` (gleicher Wert) und `devTimescaleAuto`; das
@@ -760,7 +863,7 @@ Schema 1 (`engine/room/metrics.go`):
 | `nights[]` | je beendete Nacht `day` und `survived` (false, wenn in einer Stufe `castleFallen` kam); eine bei Raumende laufende Nacht fehlt |
 | `deaths[]` | je `playerDown`: `monarch` (Index), `day`, `phase`, `depth`, `cause` (Gegnerart oder `other`, B-182) |
 | `firstBuildSeconds` | simulierte Sekunden bis zum ersten `built`, sonst `null` |
-| `goldPerDay[]` | bei jedem `dawn`: `day` (der neue Tag) und `gold[]` je Monarch-Index |
+| `goldPerDay[]` | bei jedem `dawn` (Beginn des Morgengrauens): `day` (der neue Tag) und `gold[]` je Monarch-Index |
 | `goldEnd[]` | Gold je Monarch-Index bei Raumende |
 | `disconnects[]` | je Gerät mit Abbrüchen `device` (Kürzel) und `count`, sortiert |
 

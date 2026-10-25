@@ -91,7 +91,7 @@ func TestDevBaukostenEins(t *testing.T) {
 		t.Fatalf("Hub-Ausbau %+v", next)
 	}
 	DevSetCheapBuild(isl, false)
-	if next := nextLevel(w, w.hubSite); next.Cost.Gold != 50 {
+	if next := nextLevel(w, w.hubSite); next.Cost.Gold != 13 {
 		t.Fatalf("Hub-Ausbau nach Aus %+v", next.Cost)
 	}
 }
@@ -131,11 +131,11 @@ func TestDevBuildAll(t *testing.T) {
 	}
 }
 
-// Nächste Tageszeit: day → dusk → night → day, die Stufe wechselt im nächsten Schritt.
+// Nächste Tageszeit: day → dusk → night → dawn → day, die Stufe wechselt im nächsten Schritt.
 func TestDevNextPhase(t *testing.T) {
 	isl := mustIsland(t, "dev-phase", []int{0})
 	w := isl.Stages[0]
-	for _, want := range []string{"dusk", "night", "day", "dusk"} {
+	for _, want := range []string{"dusk", "night", "dawn", "day", "dusk"} {
 		if got := DevNextPhase(isl); got != want {
 			t.Fatalf("Phase %q, erwartet %q", got, want)
 		}

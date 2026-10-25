@@ -80,7 +80,7 @@ func clientLines(spec simSpec, o *onlineRun, seats []*clientSeat, newFailures in
 	if spec.attach != "" {
 		how = "angehängt an " + spec.attach
 	}
-	lines[0] = fmt.Sprintf("%d Clients × %d Spieler (%s), %s, +1 Beobachter-Bot je Raum, %d Proben",
+	lines[0] = fmt.Sprintf("%d Clients × %d Spieler (%s), %s, Beobachter ohne Platz, %d Proben",
 		spec.clients, spec.players, spec.bots, how, o.samples)
 	now, never, sent := feedTotals(seats)
 	feed := fmt.Sprintf("Feed: verbunden %d/%d, nie verbunden %d, Kommandos %d", now, len(seats), never, sent)

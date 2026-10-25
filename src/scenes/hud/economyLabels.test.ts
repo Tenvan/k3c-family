@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { setLanguage } from '../../core/texts';
 import type { Site, World } from '../../model/types';
-import { hubText, hubWait, siteWait, stockTexts, waitInfo } from './economyLabels';
+import { hubOfferTitle, hubText, hubWait, siteWait, stockTexts, waitInfo } from './economyLabels';
 
 beforeEach(() => setLanguage('de'));
 afterEach(() => setLanguage('de'));
@@ -96,5 +96,38 @@ describe('Hub-Stufe mit Kosten (AC-01, B-117)', () => {
 
   it('älterer Server ohne hubLevel → null', () => {
     expect(hubText({}, false)).toBeNull();
+  });
+});
+
+describe('Ausbauschritt und Material der nächsten Insel (GEB17.5, B-592/AC-03)', () => {
+  const up: NonNullable<World['hubUpgrade']> = { gold: 25, paid: 25, material: { stone: 50, copper: 20 }, steps: 3 };
+
+  it('HUD nennt den Schritt, lang und kurz', () => {
+    expect(hubText({ hubLevel: 1, hubStep: 2, hubUpgrade: { ...up, paid: 0 } }, false)).toBe('Hub-Stufe 1 → 2, Ausbau 2/3: 0/25 Gold, 50 Stein, 20 Kupfer');
+    expect(hubText({ hubLevel: 1, hubStep: 2, hubUpgrade: { ...up, paid: 0 } }, true)).toBe('Hub 1→2 2/3: 0/25 Gold, 50 Stein, 20 Kupfer');
+  });
+
+  it('Preisschild der Burg: „Ausbau 2/3“, ohne Schritt (älterer Server) „Ausbauen“', () => {
+    expect(hubOfferTitle({ hubStep: 2, hubUpgrade: up })).toBe('Ausbau 2/3');
+    expect(hubOfferTitle({ hubUpgrade: { ...up, steps: undefined } })).toBe('Ausbauen');
+    expect(hubOfferTitle({})).toBe('Ausbauen');
+  });
+
+  it('Wartegrund waitingNextIsland: „Material der nächsten Insel“, lang und kurz, Symbol Material', () => {
+    const wait = hubWait({ hubUpgrade: { ...up, state: 'waitingNextIsland' } }, false);
+    expect(wait).toEqual({ reason: 'material', icon: 'wait-material', text: 'Material der nächsten Insel (Stein, Kupfer)' });
+    expect(hubWait({ hubUpgrade: { ...up, state: 'waitingNextIsland' } }, true)?.text).toBe('nächste Insel');
+  });
+
+  it('Material-Tor nennt nur, was im Vorrat fehlt (Review GEB17)', () => {
+    const wait = hubWait({ hubUpgrade: { ...up, state: 'waitingNextIsland' }, stock: { stone: 80 } as never }, false);
+    expect(wait?.text).toBe('Material der nächsten Insel (Kupfer)');
+  });
+
+  it('englisch', () => {
+    setLanguage('en');
+    expect(hubOfferTitle({ hubStep: 3, hubUpgrade: up })).toBe('Upgrade 3/3');
+    expect(hubWait({ hubUpgrade: { ...up, state: 'waitingNextIsland' } }, false)?.text).toBe('material from the next island (Stone, Copper)');
+    expect(hubText({ hubLevel: 1, hubStep: 3, hubUpgrade: up }, false)).toBe('Hub level 1 → 2, step 3/3: 25/25 gold, 50 Stone, 20 Copper');
   });
 });

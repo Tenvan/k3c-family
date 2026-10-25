@@ -31,7 +31,7 @@ type PreviewOptions struct {
 	Seed     string
 	Source   PreviewSource
 	HubLevel int // 1 bis Anzahl hub.json › levels; 0 = die höchste
-	// Phase und Progress: Tageszeit als Sim-Phase (day, dusk, night; leer = day) und Fortschritt in [0, 1).
+	// Phase und Progress: Tageszeit als Sim-Phase (day, dusk, night, dawn; leer = day) und Fortschritt in [0, 1).
 	Phase    string
 	Progress float64
 	// Buildings: false schaltet einen Platz aus (Schlüssel PreviewSiteKey); fehlende und unbekannte Schlüssel

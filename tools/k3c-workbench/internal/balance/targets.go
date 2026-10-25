@@ -65,7 +65,6 @@ type Targets struct {
 	} `json:"margin"`
 	Seeds   []string `json:"seeds"` // die festen Seeds, keine Zufallsauswahl
 	Targets []Target `json:"targets"`
-	grade   string   // Grad aller Zielläufe, leer = normal (Restrict)
 }
 
 // Target ist ein Ziel: Kennzahl, Szenario (ohne Seed) und Korridor. Eine fehlende Grenze (null) heißt: keine in diese Richtung.
@@ -77,6 +76,7 @@ type Target struct {
 	Bot     string   `json:"bot"`
 	Depth   int      `json:"depth"`
 	Days    int      `json:"days"`
+	Grade   string   `json:"grade,omitempty"` // Schwierigkeitsgrad aus data/difficulty.json, leer = normal (BAL6)
 	Lower   *float64 `json:"lower"`
 	Upper   *float64 `json:"upper"`
 	Margin  *float64 `json:"margin,omitempty"` // Breite von „knapp“ statt des Standardwerts der Datei
@@ -153,6 +153,9 @@ func (g Target) validate() error {
 	if err := checkPlayers(g.Bot, g.Players); err != nil {
 		return err
 	}
+	if err := checkGrade(g.Grade); err != nil {
+		return err
+	}
 	return g.validateBounds()
 }
 
@@ -169,6 +172,21 @@ func (g Target) validateBounds() error {
 		if g.Kind == KindShare && b != nil && (*b < 0 || *b > 100) {
 			return fmt.Errorf("grenze %v eines Anteils muss in 0 bis 100 liegen", *b)
 		}
+	}
+	return nil
+}
+
+// checkGrade: leer (normal) oder ein Grad aus data/difficulty.json.
+func checkGrade(grade string) error {
+	if grade == "" {
+		return nil
+	}
+	grades, err := Grades()
+	if err != nil {
+		return err
+	}
+	if !slices.Contains(grades, grade) {
+		return fmt.Errorf("unbekannter Grad %q (bekannt: %v)", grade, grades)
 	}
 	return nil
 }

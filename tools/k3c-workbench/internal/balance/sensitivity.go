@@ -113,8 +113,13 @@ func flips(base, cur Summary) []Flip {
 	return out
 }
 
+// scenarioText nennt das Szenario eines Ziels; der Grad nur, wenn er gesetzt ist (leer = normal).
 func scenarioText(g Target) string {
-	return fmt.Sprintf("%d Spieler, %s, Tiefe %d, %d Tage", g.Players, g.Bot, g.Depth, g.Days)
+	s := fmt.Sprintf("%d Spieler, %s, Tiefe %d, %d Tage", g.Players, g.Bot, g.Depth, g.Days)
+	if g.Grade != "" {
+		s += ", Grad " + g.Grade
+	}
+	return s
 }
 
 // JSON schreibt den Bericht eingerückt mit Zeilenende.

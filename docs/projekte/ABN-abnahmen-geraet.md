@@ -14,7 +14,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
-| HW1 | Zurückgestellte Controller-Prüfungen nachholen | geplant |
+| HW1 | Zurückgestellte Controller-Prüfungen nachholen | aktiv |
 
 ## Nicht-Ziele
 

@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** eingeplant
-- **Sprint:** TR4
+- **Status:** offen
+- **Sprint:** –
 - **Projekt:** TST
 - **Erstellt:** 2026-10-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25
 
 ## Ausgangslage
 
@@ -56,4 +56,4 @@ Wie der Feed im LAN abgesichert wird (Token je Lauf?) und ob die Firewall-Abfrag
 
 ## Notizen
 
-Gefunden in TR1.3 (2026-10-07).
+TR4.2 (2026-10-25, Claude): Beobachter ohne Platz und `sim_test` mit Clients bis 4 Spieler sind umgesetzt (B-352/AC-02 erfüllt). Offen bleibt der Bot-Feed im LAN mit der Frage an 🧑, deshalb ist das Ticket wieder `offen`.

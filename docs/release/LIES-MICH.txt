@@ -1,0 +1,52 @@
+FAMILY THREE CROWNS (K3C) - Windows-Paket
+==========================================
+
+Ein Koop-Spiel fuer die Couch: Ihr baut zusammen einen Hub aus, rekrutiert
+Buerger und verteidigt ihn nachts gegen Gegner. Gespielt wird im Browser,
+zum Beispiel auf der Xbox (Edge), am PC oder mit dem Handy. Der Spielserver
+laeuft auf eurem Windows-PC.
+
+So geht es los
+--------------
+1. Den ganzen Ordner entpacken (nicht aus dem Zip heraus starten).
+2. k3c-starter.exe starten. Das Fenster zeigt, ob der Server laeuft, und die
+   Adressen im Heimnetz (z. B. http://192.168.0.12:8080).
+3. Auf dem PC: im Browser http://localhost:8080 oeffnen.
+   Auf der Xbox: im Edge-Browser die im Starter angezeigte Adresse eintippen.
+   PC und Xbox muessen im selben Heimnetz sein.
+4. Mit A (Controller) oder Leertaste beitreten, bis zu zwei Spieler pro Geraet.
+
+Steuerung (Xbox-Controller / Tastatur)
+--------------------------------------
+- Laufen: linker Stick oder Steuerkreuz / A, D oder Pfeiltasten
+- Sprinten: RT / Shift
+- Beitreten, Muenzen geben, bauen (A halten): A / Leertaste
+- Schlag: X / E
+- Skills: LB, RB, LT, Steuerkreuz hoch / Q, R, T, Z
+- Pause: Menu / Esc
+- Vollbild: rechten Stick druecken / F
+- Zurueck zur Startseite: View und Menu gemeinsam halten / Pos1
+Die Taste B ist nicht belegt (Edge auf der Xbox nutzt sie als "Zurueck").
+
+Firewall
+--------
+Beim ersten Start fragt Windows, ob k3c-server.exe im Netzwerk kommunizieren
+darf. Erlaubt es fuer "Private Netzwerke" (Heimnetz), sonst erreicht die Xbox
+den Server nicht. Fuer ein oeffentliches Netzwerk besser nicht freigeben.
+
+Port belegt?
+------------
+Die Meldung "Port 8080 ist belegt" heisst, dass der Server schon laeuft oder
+ein anderes Programm den Port nutzt. Anderer Port: vor dem Start die
+Umgebungsvariable K3C_HTTP_PORT setzen (z. B. 8090).
+
+Datenschutz
+-----------
+Alles bleibt auf eurem PC. Spielstaende liegen im Ordner "saves" neben dem
+Programm. Der Server laeuft nur in eurem Heimnetz. Zum Beenden den Starter
+schliessen.
+
+Lizenzen
+--------
+LICENSE (Code, nicht-kommerziell) und LICENSE-ASSETS liegen bei.
+Fremde Grafiken und Sounds behalten ihre Lizenz, Details: public/sprites/CREDITS.md

@@ -5,6 +5,7 @@
 import bossesJson from '@data/bosses.json';
 import { bossBar, eventBanner, warnCircles, type BossBarView, type KampfWorld, type WarnCircleView } from '@game/scenes/kampfAnzeige';
 import { TOP_STRIP } from '@game/scenes/hud/radar';
+import { computeLayout, viewZoom } from '@game/scenes/layout';
 import { FONTS } from '@game/scenes/render/fontRules';
 import type { Enemy } from '@game/model/types';
 
@@ -60,7 +61,7 @@ export function phaseAt(boss: BossInfo, hpPercent: number): number | undefined {
 export function mockWorld(m: KampfMock): KampfWorld | null {
   const boss = BOSSES.find((b) => b.id === m.boss);
   if (!boss) return null;
-  const enemy = { id: 1, kind: boss.id, x: 20, hp: m.hpPercent, maxHp: 100, boss: true, phase: phaseAt(boss, m.hpPercent), ...(m.warn && { warn: { x: 20, r: m.warn.radius, in: m.warn.seconds } }) } as unknown as Enemy;
+  const enemy = { id: 1, kind: boss.id, x: BOSS_X, hp: m.hpPercent, maxHp: 100, boss: true, phase: phaseAt(boss, m.hpPercent), ...(m.warn && { warn: { x: BOSS_X, r: m.warn.radius, in: m.warn.seconds } }) } as unknown as Enemy;
   return {
     enemies: [enemy],
     cycleSpeed: 1,
@@ -104,6 +105,20 @@ export function ablauf(base: KampfMock, t: number): Ablauf {
     leiste: Math.min(1, k / 1),
     banner: fade(3, 11),
   };
+}
+
+/** Ort des Bosses (und seines Warnkreises) in Units; um ihn zoomt die Welt bei der Zellengröße */
+export const BOSS_X = 20;
+
+/** Zellengröße (B-602): Vollbild (1 Spieler), mit Mitspieler eines anderen Geräts (2/3 der Höhe), Streifen bei 2 Spielern (1/2). */
+export const ZELLEN = ['voll', 'partner', 'streifen'] as const;
+export type Zelle = (typeof ZELLEN)[number];
+export const ZELLE_LABEL: Record<Zelle, string> = { voll: 'Zelle: Vollbild', partner: 'Zelle: mit Mitspieler (2/3)', streifen: 'Zelle: Streifen (1/2)' };
+
+/** Zoom der Welt in der Zelle wie im Spiel: Höhe der eigenen Zelle aus `computeLayout`, Zoom aus `viewZoom`; das HUD zoomt nicht. */
+export function zellenZoom(z: Zelle): number {
+  const cells = z === 'streifen' ? computeLayout(2, false) : computeLayout(1, z === 'partner');
+  return viewZoom(cells.find((c) => c.kind === 'player')!.h);
 }
 
 /** Kleinste Schrift der Szene (px) aus den Schriftregeln des Spiels; Mindest-Schrift bei 1 Spieler laut `bedienung.md` § 2 */

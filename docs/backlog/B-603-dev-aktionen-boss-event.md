@@ -8,9 +8,9 @@
 - **Sprint:** KB4
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-24
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25
 
 ## Ausgangslage
 

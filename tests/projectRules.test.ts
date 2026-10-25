@@ -71,7 +71,8 @@ describe('Komplexität & Schichten', () => {
     expect(goFiles.filter((f) => lines(f) > HARD)).toEqual([]);
   });
 
-  it('Golden-Daten gesamt höchstens 16 MB (B-417)', () => {
+  // 16 MB (B-417, Ralf 2026-10-13); die großen Läufe liegen seit GD1 gepackt (B-624, B-620).
+  it('Golden-Daten gesamt höchstens 16 MB (B-417, GD1)', () => {
     const bytes = filesIn('testdata/golden', () => true).reduce((sum, f) => sum + statSync(join(ROOT, f)).size, 0);
     expect(bytes).toBeLessThanOrEqual(16 * 1024 * 1024);
   });
