@@ -54,12 +54,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-314](B-314-controller-pruefungen-zurueckgestellt.md) | PLAT | Schuld | niedrig | eingeplant | HW1 | Alle Controller-Prüfungen sind gesammelt nachgeholt |
 | [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | eingeplant | SV1 | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
 | [B-317](B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | eingeplant | U5 | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
-| [B-324](B-324-client-typen-gegnerdaten.md) | CLI | Schuld | niedrig | eingeplant | KB2 | Die Client-Typen der Gegner- und Wellendaten passen zu den JSON-Dateien |
 | [B-327](B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | eingeplant | KB1 | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
 | [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
 | [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | HW1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
 | [B-341](B-341-header-ursache-live-messen.md) | DEV | Problem | mittel | eingeplant | WZ2 | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
-| [B-344](B-344-raum-speichert-nicht-nach-game-over.md) | SRV | Idee | hoch | eingeplant | KB2 | Der Raum speichert nach „Komplett verloren“ nicht mehr |
 | [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | eingeplant | RG1 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
 | [B-347](B-347-tester-misst-wirtschaft.md) | SIM | Schuld | hoch | eingeplant | BAL6 | Der Balancing-Tester misst die Wirtschafts-Kennzahlen |
 | [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
@@ -75,9 +73,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-378](B-378-castfailed-einmal-je-druck.md) | SIM | Problem | mittel | eingeplant | BD2 | Eine gehaltene Skill-Taste ohne Ziel meldet castFailed einmal je Tastendruck |
 | [B-379](B-379-vollmond-belohnung-nur-stufe-0.md) | SIM | Problem | mittel | eingeplant | KB1 | Die Vollmond-Belohnung gilt für die Stufen, in denen gespielt wird |
 | [B-380](B-380-blutmond-boss-faehigkeiten.md) | SIM | Problem | niedrig | eingeplant | KB1 | Der Blutmond verstärkt auch die Flächenangriffe der Bosse |
-| [B-381](B-381-protokoll-haendler-raid-hp.md) | SRV | Problem | niedrig | eingeplant | KB2 | Das Protokoll beschreibt Überfall und HP des Händlers |
 | [B-382](B-382-lobby-neuversuch-nur-spielen.md) | CLI | Problem | niedrig | eingeplant | BD2 | Ein gewählter Spielstand startet nie leer neu |
-| [B-385](B-385-inselwechsel-ereignis-geht-verloren.md) | SRV | Problem | mittel | eingeplant | KB2 | Das Ereignis `islandSwitch` erreicht beim Inselwechsel keinen Client |
 | [B-387](B-387-ticketnummern-parallele-worktrees.md) | DEV | Problem | mittel | eingeplant | WZ2 | Ticket-Nummern bleiben zwischen parallelen Worktrees eindeutig |
 | [B-394](B-394-xbox-overlay-gesten-abnahme.md) | PLAT | Frage | niedrig | eingeplant | HW1 | Overlay-Gesten (RB, LB + RB) sind an der Xbox abgenommen (B-195/AC-02) |
 | [B-400](B-400-planung-splitter-merken.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Die Planungsseite trennt Backlog und Details mit einem Splitter, dessen Stellung gemerkt wird |
@@ -581,3 +577,7 @@ Zeile in diesen Abschnitt.
 | [B-098](archiv/B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | erledigt | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-607](archiv/B-607-studio-levelview-test-golden-dichter-wald.md) | DEV | Problem | hoch | verworfen | – | Der Studio-Test levelView erwartet die Baum-Zahl vor dem dichten Wald |
 | [B-606](archiv/B-606-studio-tests-rot-nach-dichtem-wald.md) | DEV | Problem | hoch | erledigt | WZ28 | Die Studio-Tests sind nach dem dichten Wald wieder grün und check_run hängt nicht bei k3c-studio:test |
+| [B-324](archiv/B-324-client-typen-gegnerdaten.md) | CLI | Schuld | niedrig | erledigt | KB2 | Die Client-Typen der Gegner- und Wellendaten passen zu den JSON-Dateien |
+| [B-344](archiv/B-344-raum-speichert-nicht-nach-game-over.md) | SRV | Idee | hoch | erledigt | KB2 | Der Raum speichert nach „Komplett verloren“ nicht mehr |
+| [B-381](archiv/B-381-protokoll-haendler-raid-hp.md) | SRV | Problem | niedrig | erledigt | KB2 | Das Protokoll beschreibt Überfall und HP des Händlers |
+| [B-385](archiv/B-385-inselwechsel-ereignis-geht-verloren.md) | SRV | Problem | mittel | erledigt | KB2 | Das Ereignis `islandSwitch` erreicht beim Inselwechsel keinen Client |
