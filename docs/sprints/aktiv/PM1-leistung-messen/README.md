@@ -64,7 +64,7 @@ B-351 › Ausnahme- und Fehlerfälle; B-334 › Ausnahme- und Fehlerfälle (Serv
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| PM1.1 | `PM1.1-diagnose-zeile.md` | Umsetzung | autonom | in Arbeit |
+| PM1.1 | `PM1.1-diagnose-zeile.md` | Umsetzung | autonom | fertig |
 | PM1.2 | `PM1.2-performance-modus.md` | Umsetzung | autonom | offen |
 | PM1.3 | `PM1.3-review.md` | Review | autonom | offen |
 | PM1.4 | `PM1.4-messlauf-pc.md` | Workshop | Mensch | offen |

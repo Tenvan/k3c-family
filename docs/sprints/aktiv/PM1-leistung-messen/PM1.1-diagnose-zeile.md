@@ -1,6 +1,6 @@
 # PM1.1 · Sammel-Funktion und Diagnose-Zeile im Client-Log
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -50,5 +50,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01: umgesetzt. `src/online/clientPerf.ts` (`collectPerf`, `startDiag`) schickt alle 5 s `💓 Diagnose #n` mit `ctx {fps, latencyMs, bufferMs}` über `clientLog`, auch ohne `?perf=1` (für `sim_test`, B-351). Verdrahtet ist es über `perfProbe` (Commit PM1.2).
+- Geprüft mit `task check` (grün) und Vitest mit Fake-Timern.
