@@ -46,8 +46,19 @@ export interface EnemyData {
   damage: number;
   speed: number;
   range: number;
+  attacksPerSecond: number;
   gold: Range;
   traits: string[];
+  /** Greif-Reichweite für Ausrüstung am Boden (Units) */
+  grabRange?: number;
+  /** Abstand, den Fernkämpfer halten (Units) */
+  kiteDistance?: number;
+  /** Flächenschaden: Radius (Units) und Abstand der Treffer (s) */
+  aoe?: { radius: number; intervalSeconds: number };
+  swarmSize?: number;
+  /** Phasen: alle `everySeconds` für `durationSeconds` */
+  phases?: { everySeconds: number; durationSeconds: number };
+  notes?: string;
 }
 
 export interface GatherableData {
@@ -65,7 +76,14 @@ export interface WaveRow {
 
 export const BUILDINGS = buildingsJson as unknown as Record<string, BuildingData>;
 export const TROOPS = troopsJson as unknown as Record<'vagrant' | 'peasant' | 'archer', TroopData>;
-export const ENEMIES = enemiesJson as unknown as Record<string, EnemyData>;
+/**
+ * Form einer JSON-Datei zum Typ T: JSON-Importe kennen keine Tupel und keine Literal-Typen. Die Zuweisung an `JsonOf<T>`
+ * prüft, dass die Datei alle Felder von T hat; danach ist der Cast auf T nur noch die Verengung (B-324).
+ */
+type JsonOf<T> = T extends readonly (infer E)[] ? JsonOf<E>[] : T extends string ? string : T extends object ? { [K in keyof T]: JsonOf<T[K]> } : T;
+
+const enemiesFile: Record<string, JsonOf<EnemyData>> = enemiesJson;
+export const ENEMIES = enemiesFile as Record<string, EnemyData>;
 export const MONARCH = monarchJson;
 /** Bauplatz aus `data/hub.json` (`sites`, `islandSites`); `hubLevel` = ab welcher Hub-Stufe er frei ist. */
 export interface HubSite {
@@ -105,10 +123,13 @@ export const ECONOMY = economyJson as unknown as {
   veins: Record<string, unknown>;
   recruitCamp: { maxVagrants: number; respawnSeconds: number; wanderUnits: number };
 };
-export const WAVES = wavesJson as unknown as {
+export interface WavesData {
   table: WaveRow[];
   spawnSpreadSeconds: number;
+  /** Zuschlag auf die Gegnerzahl je weiterem Spieler */
+  perExtraPlayer: number;
   depthScaling: { hp: number; damage: number; speed: number };
-  attacksPerSecond: number;
   stealGold: number;
-};
+}
+const wavesFile: JsonOf<WavesData> = wavesJson;
+export const WAVES = wavesFile as WavesData;

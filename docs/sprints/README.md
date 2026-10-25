@@ -15,7 +15,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WZ30 | DEV | WZG | Oberflächen zur Abnahme: Szenen, Filter, Quellen, Chat-Karten mit Mock-Daten | – | `aktiv/WZ30-oberflaechen-abnahme/` |
 | GEB18 | DEV, SIM, CLI | GEB | Hintergründe der fünf Stufen: vierfache Auflösung, fünf Varianten je Stufe nach Seed | – | `aktiv/GEB18-hintergruende-detail-varianten/` |
 | SO8 | DEV, CLI | SND | Skill-Sounds je Klasse | – | `aktiv/SO8-skill-sounds-je-klasse/` |
-| KB2 | SRV, CLI | KMP | Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen | – | `aktiv/KB2-protokoll-kampf-nachtraege/` |
 | BT1 | SRV, DEV | REL | Server im Heimnetz finden, Windows-Starter, Start mit Seed | – | `aktiv/BT1-heimnetz-start/` |
 | KR1 | REG | KRT | Kritische Fragen zu BED | – | `aktiv/KR1-fragen-bed/` |
 | KR5 | REG | KRT | Kritische Fragen zu SKL | – | `aktiv/KR5-fragen-skl/` |
@@ -247,3 +246,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SK2 | Skills im Spiel sichtbar, Dieb-Skills in den Daten | `erledigt/SK2-skills-sichtbar-dieb/` |
 | K5 | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | `erledigt/K5-anzeige-kampf/` |
 | LV1 | Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs | `erledigt/LV1-level-gegner-korrektur/` |
+| KB2 | Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen | `erledigt/KB2-protokoll-kampf-nachtraege/` |

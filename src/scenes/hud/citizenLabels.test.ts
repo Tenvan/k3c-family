@@ -53,9 +53,9 @@ describe('Berufsanzeige (AC-01, B-126)', () => {
 
 describe('Händler (B-126)', () => {
   it('anwesend: Angebot und Abreisetag, laufender Kauf in der langen Form', () => {
-    expect(merchantText({ merchant: { resource: 'stone', leaves: 7 } }, false)).toBe('Händler: Stein · bis Tag 7');
-    expect(merchantText({ merchant: { resource: 'iron', leaves: 7, buyPaid: 3 } }, false)).toBe('Händler: Eisen · bis Tag 7 · Kauf 3 Gold');
-    expect(merchantText({ merchant: { resource: 'stone', leaves: 7, buyPaid: 3 } }, true)).toBe('Händler Stein');
+    expect(merchantText({ merchant: { resource: 'stone', leaves: 7, hp: 100, maxHp: 100 } }, false)).toBe('Händler: Stein · bis Tag 7');
+    expect(merchantText({ merchant: { resource: 'iron', leaves: 7, buyPaid: 3, hp: 100, maxHp: 100 } }, false)).toBe('Händler: Eisen · bis Tag 7 · Kauf 3 Gold');
+    expect(merchantText({ merchant: { resource: 'stone', leaves: 7, buyPaid: 3, hp: 100, maxHp: 100 } }, true)).toBe('Händler Stein');
   });
 
   it('nicht anwesend → null', () => {
@@ -82,13 +82,13 @@ describe('Heilplatz (B-126)', () => {
 
 describe('Händlerfigur und HUD-Zeilen (W6.3, B-126)', () => {
   it('Figur steht im Hub bei Mitte + 8 Units, nur wenn anwesend', () => {
-    const merchant = { resource: 'stone', leaves: 7 };
+    const merchant = { resource: 'stone', leaves: 7, hp: 100, maxHp: 100 };
     expect(merchantSpot({ castle: { x: 20 }, merchant })).toEqual({ x: 28 * UNIT_PX, text: 'Händler Stein' });
     expect(merchantSpot({ castle: { x: 20 } })).toBeNull();
   });
 
   it('Zeilen: Limit zuerst, dann Händler; fehlende Felder → leer', () => {
-    const w = { fighters: 20, troopLimit: 20, merchant: { resource: 'stone', leaves: 7 } };
+    const w = { fighters: 20, troopLimit: 20, merchant: { resource: 'stone', leaves: 7, hp: 100, maxHp: 100 } };
     expect(buergerLines(w, false)).toEqual(['Kämpfer 20 von 20: Limit erreicht', 'Händler: Stein · bis Tag 7']);
     expect(buergerLines({ fighters: 3, troopLimit: 10 }, true)).toEqual(['Limit 3/10']);
     expect(buergerLines({}, false)).toEqual([]);
