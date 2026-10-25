@@ -61,12 +61,15 @@ Geklärt mit 🧑 (2026-10-14): W11 vor W8; Treppen ≥ 8 Units zu **allen** Zah
 | W11.2 | `W11.2-bauplaetze-im-zustand.md` | Umsetzung | autonom | fertig |
 | W11.3 | `W11.3-aktionen-ausbilden-tauschen.md` | Umsetzung | autonom | fertig |
 | W11.4 | `W11.4-bauplaetze-figuren-client.md` | Umsetzung | autonom | fertig |
-| W11.5 | `W11.5-review.md` | Review | autonom | offen |
+| W11.5 | `W11.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-25, Claude (W11.5):
+- Prüfläufe: `task check` und `task check:go` grün. Beim ersten Lauf ist `TestZweiGeraeteGetrennteReihen` unter Last abgebrochen (bekannt, B-284), einzeln grün. `check:race` lokal übersprungen (kein C-Compiler).
+- Kriterien: AC-01 durch W11.1 (Treppen-Abstand). AC-02 durch W11.2 (nur erreichbare Plätze mit `hubLevel`). AC-03 durch W11.3 (`train` und `trade` in `actions`). AC-04 Client-Teil durch W11.4.
+- Review zu W11.2/.3: zwei Befunde, beide behoben (Client ignoriert unbekannte Aktionen; Typen). Dazu ein Längen-Schutz in `filterSites`.
+- Offen: Die Abnahme am TV (Rest von AC-04) macht Ralf. Beim Merge mit GEB16 (`payable`) die Bezahl-Regel auf eine Quelle zusammenführen.
