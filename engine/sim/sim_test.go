@@ -24,6 +24,8 @@ type goldenRun struct {
 	Ticks         int
 	SnapshotEvery int
 	Setup         *goldenSetup // nach CreateWorld und AddPlayer
+	// Aggression: Stand des Aggressionspools nach dem Setup (100 = voll, die Welle kommt im ersten Tick; KB1.3).
+	Aggression float64
 	Inputs        []struct {
 		Ticks    int
 		Commands []PlayerCommand
@@ -95,6 +97,9 @@ func replay(t *testing.T, run goldenRun) {
 	if run.Setup != nil {
 		applySetup(t, w, run)
 	}
+	if run.Aggression > 0 && w.Aggression != nil {
+		*w.Aggression = run.Aggression
+	}
 	snap, tick := 0, 0
 	var got []snapshot
 	compare(t, run, 0, wantAt(t, run, 0, 0), w, &got)
@@ -157,6 +162,7 @@ func TestGoldenLaeufeVollstaendig(t *testing.T) {
 	for _, want := range []string{
 		"forest-tag", "forest-nacht", "cave-aggression", "forest-ohne-spieler",
 		"forest-aufbau", "cave-aufbau", "forest-raub", "forest-sturm", "cave-belagerung", "mine-welle", "forest-monarch",
+		"ironhold-welle", "crystal-welle",
 	} {
 		if !slices.Contains(names, want) {
 			t.Errorf("Golden-Lauf sim-%s fehlt", want)
