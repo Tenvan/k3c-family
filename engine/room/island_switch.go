@@ -24,6 +24,7 @@ func (r *Room) switchIsland() bool {
 	}
 	r.log().Info("🪜 Inselwechsel", "von", r.isl.Number, "nach", next.Number, "tick", r.tick)
 	next.Dev = r.isl.Dev
+	next.Dev.Nights = nil // erzwungene Dev-Nächte gehören zur alten Insel, ihr Tageszähler gilt dort nicht (Review KB4)
 	r.isl, r.start = next, 0
 	for _, d := range r.devices {
 		clear(d.stages)

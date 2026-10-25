@@ -13,10 +13,12 @@ import (
 // Hub. Seine Phasen (`phases`) wechseln an den HP-Schwellen, jeder Wechsel wird einmal gemeldet (`bossPhase`). Der
 // Sieg setzt Island.EndbossDefeated; danach bleibt der Bau leer. Kein rng außer den Münzen der Belohnung.
 
-// endbossFight ist der laufende Kampf gegen den Endboss einer Insel; phase ist der Index in BossData.Phases.
+// endbossFight ist der laufende Kampf gegen den Endboss einer Insel; phase ist der Index in BossData.Phases, home die
+// Stufe des Kampfs (sonst der Bau, mit der Dev-Aktion boss die Stufe des Monarchen).
 type endbossFight struct {
 	boss  *Enemy
 	phase int
+	home  *World
 }
 
 // stepEndboss (vor stepEnemies): Auslösung am Bau, Rückkehr nach einem Burgfall, Phasenwechsel und Tempo.
@@ -25,15 +27,18 @@ func stepEndboss(w *World, dt float64) {
 	if isl == nil {
 		return
 	}
-	x, ok := lairX(w)
-	if !ok {
-		return
-	}
 	if f := isl.endboss; f != nil {
+		if f.home != w {
+			return
+		}
 		if !slices.Contains(w.Enemies, f.boss) { // castleFallen räumt die Gegner ab, der Endboss bleibt
 			w.Enemies = append(w.Enemies, f.boss)
 		}
 		endbossPhase(w, f, dt)
+		return
+	}
+	x, ok := lairX(w)
+	if !ok {
 		return
 	}
 	b := endBoss(w.Biome.Depth)
@@ -42,7 +47,7 @@ func stepEndboss(w *World, dt float64) {
 	}
 	e := spawnBoss(w, b, x)
 	armBoss(e, *b.Phases[0].Ability)
-	isl.endboss = &endbossFight{boss: e}
+	isl.endboss = &endbossFight{boss: e, home: w}
 }
 
 // lairX: Ort des Baus aus dem Level der Stufe (false: die Stufe hat keinen).

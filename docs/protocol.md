@@ -344,7 +344,7 @@ das zählt als Abbruch.
 | `leave` | Gerät → Server | Raum bewusst verlassen | – | `c2s-leave.json` |
 | `pause` | Gerät → Server | Gerät pausiert (Pause-Menü offen), im Raum; v8 | – | `c2s-pause.json` |
 | `resume` | Gerät → Server | Gerät setzt fort, im Raum; v8 | – | `c2s-resume.json` |
-| `dev` | Gerät → Server | nur im Dev-Mode (siehe *Dev-Aktionen*), im Raum | `action` und je Aktion: `gold` `slot`, `amount`; `material` `slot`, `resource`, `amount`; `timescale` `factor`; `pause` `paused`; `castleFall` `slot` | `c2s-dev-gold.json`, `c2s-dev-material.json`, `c2s-dev-timescale.json`, `c2s-dev-pause.json`, `c2s-dev-castlefall.json` |
+| `dev` | Gerät → Server | nur im Dev-Mode (siehe *Dev-Aktionen*), im Raum | `action` und je Aktion: `gold` `slot`, `amount`; `material` `slot`, `resource`, `amount`; `timescale` `factor`; `pause` `paused`; `castleFall` `slot`; `boss` `slot`, `boss`; `event` `event`; `bossPhase`, `night` ohne Felder | `c2s-dev-gold.json`, `c2s-dev-material.json`, `c2s-dev-timescale.json`, `c2s-dev-pause.json`, `c2s-dev-castlefall.json`, `c2s-dev-boss.json`, `c2s-dev-bossphase.json`, `c2s-dev-event.json`, `c2s-dev-night.json` |
 | `error` | Server → Gerät | Fehlerfall, siehe Codes | `code`, `message` (deutsch, für die Anzeige) | `s2c-error.json`, `s2c-error-forbidden.json` |
 
 Die Beispiele stammen aus dem Ablauf *2 Controller an der Xbox + 1 Handy*; `level`, `snap` und `delta` sind aus der
@@ -535,6 +535,25 @@ Aktion, Werte, Raum).
   über `/api/dev`; er gilt ab der nächsten Welle (B-080, `c2s-dev-grade.json`). Nachgetragen ohne neue Version (KB2.6):
   `s` von `snap` und `delta` nennt immer den aktuellen Grad des Raums als `grade` (auch ohne Dev-Mode; im Delta nur bei
   Änderung); ein älterer Server sendet das Feld nicht.
+- Kampf (B-603, additiv ohne neue Version; ein älterer Server antwortet `bad_request`):
+  - `boss`: `boss` (Id aus `data/bosses.json`, Mini- oder Endboss) erscheint am Portal der Stufe, das dem Monarchen
+    von `slot` am nächsten ist, auch wenn er schon besiegt war; ein Endboss beginnt dort seinen Kampf mit Phase 1
+    (`c2s-dev-boss.json`). Lebt in der Stufe schon ein Boss oder läuft der Endboss-Kampf der Insel, ist die Aktion
+    `bad_request` mit dem Hinweis „Boss schon da“ als Warnung im Log; unbekannte Id, fehlender `slot` oder eine Stufe
+    ohne Portal ebenso `bad_request`.
+  - `bossPhase`: Der laufende Endboss wechselt in seine nächste Phase; seine HP fallen dazu knapp unter deren Schwelle,
+    der Zustand nennt die Phase wie sonst, das Ereignis `bossPhase` kommt mit (`c2s-dev-bossphase.json`). Ohne
+    Endboss-Kampf oder in der letzten Phase `bad_request` (Minibosse haben keine Phasen).
+  - `event`: `event` `fullMoon` oder `bloodMoon` springt alle Stufen zum Beginn der nächsten Nacht (wie `night`) und
+    lässt das Event in genau dieser Nacht laufen, zusätzlich zum Rhythmus (`eventStarted`, `nightEvents`, Welle mit
+    Vollmond-Wölfen, Faktoren des Blutmonds, Ende und Belohnung bei Tagesanbruch). `merchantRaid` lässt den Händler in
+    seiner Stufe ankommen, wenn er fehlt, und überfällt diesen Besuch (Welle, Belohnung bei Abreise wie sonst); läuft
+    der Überfall schon, `bad_request` (`c2s-dev-event.json`). Andere Werte `bad_request`.
+  - `night`: alle Stufen springen zum Beginn der nächsten Nacht; der Wechsel mit Nachtwelle folgt im nächsten Schritt
+    (`c2s-dev-night.json`).
+  - Folgen im Spielstand: Ein per `merchantRaid` geholter Händler zählt als Besuch (Rhythmus „jeder 4. Besuch“), ein
+    besiegter Dev-Endboss gilt als besiegt. Die erzwungene Event-Nacht selbst liegt nur im Speicher (nicht im
+    Spielstand, nicht auf der nächsten Insel).
 
 ### Kampf: Bosse, Events, Inselwechsel
 

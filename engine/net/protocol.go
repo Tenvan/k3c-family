@@ -77,6 +77,8 @@ type inMsg struct {
 	Paused   *bool     `json:"paused"`   // dev: pause
 	On       *bool     `json:"on"`       // dev: cheapBuild, timescaleAuto
 	Level    int       `json:"level"`    // dev: buildAll (1 bis 5)
+	Boss     string    `json:"boss"`     // dev: boss (Id aus data/bosses.json)
+	Event    string    `json:"event"`    // dev: event (fullMoon, bloodMoon, merchantRaid)
 }
 
 type inInput struct {

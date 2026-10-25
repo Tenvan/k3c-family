@@ -105,7 +105,8 @@ func (c *conn) roomMessage(r *room.Room, m inMsg) error {
 		c.left()
 		return nil
 	case "dev":
-		return r.Dev(c.device, c, room.DevAction{Action: m.Action, Slot: m.Slot, Amount: m.Amount, Resource: m.Resource, Factor: m.Factor, Paused: m.Paused, Grade: m.Grade, On: m.On, Level: m.Level})
+		return r.Dev(c.device, c, room.DevAction{Action: m.Action, Slot: m.Slot, Amount: m.Amount, Resource: m.Resource, Factor: m.Factor,
+			Paused: m.Paused, Grade: m.Grade, On: m.On, Level: m.Level, Boss: m.Boss, Event: m.Event})
 	}
 	return room.ErrBadRequest
 }
