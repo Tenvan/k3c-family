@@ -1,5 +1,6 @@
-import { describe, expect, it } from 'vitest';
-import { BotFeed, BotInput, RETRY_MS, botInputs, parseBotFeed, parseCommand, type FeedDeps, type FeedSocket } from './botInput';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import * as clientLogModule from '../core/clientLog';
+import { BotFeed, BotInput, RETRY_MS, STALE_MS, botInputs, parseBotFeed, parseCommand, type FeedDeps, type FeedSocket } from './botInput';
 
 /** Feed-Verbindungen ohne Netz: jede `open` legt einen Socket an, `later` sammelt die Wiederholungen. */
 function fakeDeps() {
@@ -37,7 +38,7 @@ describe('BotInput (B-349/AC-01)', () => {
   });
 
   it('ohne Feed oder vor der ersten Nachricht keine Aktion', () => {
-    const idle = new BotInput(0, { command: () => null });
+    const idle = new BotInput(0, { command: () => null, takePressed: () => new Set() });
     idle.update();
     expect([idle.moveX(), idle.sprint(), idle.held('confirm'), idle.justPressed('attack')]).toEqual([0, false, false, false]);
   });
@@ -68,6 +69,73 @@ describe('BotInput (B-349/AC-01)', () => {
     expect(parseCommand(JSON.stringify({ slot: 4 }))).toBeNull();
     expect(parseCommand(JSON.stringify({ slot: 'x' }))).toBeNull();
     expect(parseCommand(JSON.stringify({ slot: 2, moveX: 7, skill: 9, pay: 'ja' }))).toEqual({ slot: 2, moveX: 1, sprint: false, pay: false, attack: false, skill: 0 });
+  });
+});
+
+describe('BotFeed: kurze Drücke und stummer Feed (B-354)', () => {
+  beforeEach(() => void vi.useFakeTimers());
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  });
+
+  it('AC-01: ein Druck zwischen zwei update() zählt im nächsten Frame einmal', () => {
+    const { deps, sockets } = fakeDeps();
+    const input = new BotInput(0, new BotFeed('ws://127.0.0.1:5180/bot/1/0', deps));
+    input.update();
+    sockets[0]!.onmessage!(msg({ slot: 0, attack: true, skill: 2 }));
+    vi.advanceTimersByTime(5);
+    sockets[0]!.onmessage!(msg({ slot: 0, attack: false }));
+    vi.advanceTimersByTime(25);
+    input.update();
+    expect([input.justPressed('attack'), input.held('attack'), input.justPressed('skill2')]).toEqual([true, true, true]);
+    input.update();
+    expect([input.justPressed('attack'), input.held('attack'), input.justPressed('skill2')]).toEqual([false, false, false]);
+  });
+
+  it('AC-01: loslassen und neu drücken zwischen zwei Frames zählt als neuer Druck', () => {
+    const { deps, sockets } = fakeDeps();
+    const input = new BotInput(0, new BotFeed('ws://127.0.0.1:5180/bot/1/0', deps));
+    sockets[0]!.onmessage!(msg({ slot: 0, pay: true }));
+    input.update();
+    input.update();
+    expect([input.held('confirm'), input.justPressed('confirm')]).toEqual([true, false]);
+    sockets[0]!.onmessage!(msg({ slot: 0, pay: false }));
+    sockets[0]!.onmessage!(msg({ slot: 0, pay: true }));
+    input.update();
+    expect(input.justPressed('confirm')).toBe(true);
+  });
+
+  it('AC-02: ohne Nachricht länger als STALE_MS liefert der Slot keine Eingabe', () => {
+    const { deps, sockets } = fakeDeps();
+    const input = new BotInput(0, new BotFeed('ws://127.0.0.1:5180/bot/1/0', deps));
+    sockets[0]!.onmessage!(msg({ slot: 0, moveX: 1, sprint: true, attack: true }));
+    vi.advanceTimersByTime(STALE_MS);
+    input.update();
+    expect([input.moveX(), input.held('attack')]).toEqual([1, true]);
+    vi.advanceTimersByTime(1);
+    input.update();
+    expect([input.moveX(), input.sprint(), input.held('attack')]).toEqual([0, false, false]);
+    sockets[0]!.onmessage!(msg({ slot: 0, moveX: -1 }));
+    input.update();
+    expect(input.moveX()).toBe(-1);
+  });
+
+  it('AC-03: dauerhaft fehlender Feed loggt nur den ersten Abbruch', () => {
+    const log = vi.spyOn(clientLogModule, 'clientLog').mockImplementation(() => {});
+    const { deps, sockets, pending } = fakeDeps();
+    new BotFeed('ws://127.0.0.1:5180/bot/1/0', deps);
+    for (let i = 0; i < 5; i++) {
+      sockets[i]!.onclose!();
+      pending.shift()!();
+    }
+    const lost = () => log.mock.calls.filter(([, text]) => /🤒|👋/u.test(text));
+    expect(lost()).toHaveLength(1);
+    expect(lost()[0]![1]).toContain('🤒');
+    sockets[5]!.onopen!();
+    sockets[5]!.onclose!();
+    expect(lost()).toHaveLength(2);
+    expect(lost()[1]![1]).toContain('👋');
   });
 });
 

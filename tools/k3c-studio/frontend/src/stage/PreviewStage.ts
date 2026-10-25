@@ -117,6 +117,7 @@ class PreviewScene extends Phaser.Scene {
     this.clearMarks();
     if (!world) return;
     this.view = new StageView(this, world);
+    this.view.onBackground = () => this.applyLook(); // Bilder ersetzen die Silhouetten nach dem Laden: Schalter neu anwenden
     this.cameras.main.setBackgroundColor(world.biome.palette.sky); // wie GameScene: der Himmel des Bioms, die Helligkeit der Tageszeit liegt als Filter darüber
     this.view.renderer.sync(world);
     this.applyView();
@@ -172,9 +173,9 @@ class PreviewScene extends Phaser.Scene {
 
   private applyLook(): void {
     this.fx?.colorMatrix.brightness(this.look.brightness);
-    // Schichten sind TileSprites mit Schlüssel bg:<biom>:<n>; die Spiegelung im Fluss nutzt dieselbe Textur und folgt mit.
+    // Schichten sind Container mit Namen bg:<biom>:<n> (GEB18); die Spiegelung im Fluss heißt gleich und folgt mit.
     for (const o of this.view?.layer.list ?? []) {
-      if (o instanceof Phaser.GameObjects.TileSprite && o.texture.key.startsWith('bg:')) o.setVisible(!this.look.hiddenLayers.has(o.texture.key));
+      if (o instanceof Phaser.GameObjects.Container && o.name.startsWith('bg:')) o.setVisible(!this.look.hiddenLayers.has(o.name));
     }
   }
 

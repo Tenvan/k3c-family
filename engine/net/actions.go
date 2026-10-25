@@ -3,7 +3,8 @@ package net
 import "k3c/engine/sim"
 
 // Aktionsliste je Spieler (docs/protocol.md › Skills und Aktionen, B-123): nur der Ort des Spielers, feste
-// Reihenfolge attack, skill nach Slot, learn mit den lernbaren Skills (B-285), respec nach sim.CanRespec (B-495), zuletzt lair.
+// Reihenfolge attack, skill nach Slot, learn mit den lernbaren Skills (B-285), respec nach sim.CanRespec (B-495), train
+// und trade am Zahlziel (B-410), zuletzt lair.
 
 // addActions ergänzt je Spieler im Zustand `points` (verfügbare Punkte) und `actions`; players ist s["players"] aus
 // stateOf in der Reihenfolge von w.Players.
@@ -34,8 +35,23 @@ func actionsOf(w *sim.World, p *sim.Player) []map[string]any {
 	if p.RespawnIn <= 0 && sim.CanRespec(w, p) == nil {
 		out = append(out, map[string]any{"action": "respec"})
 	}
+	if p.RespawnIn <= 0 {
+		out = append(out, payActions(w, p)...)
+	}
 	if p.RespawnIn <= 0 && sim.AtLair(w, p) {
 		out = append(out, map[string]any{"action": "lair"})
 	}
 	return out
+}
+
+// payActions sind Ausbilden (`train` mit `profession`) und Tauschen (`trade` mit `side` und `resource`) am Zahlziel des
+// Spielers (sim.TrainAt, sim.TradeAt; B-410). Ein Ort hat höchstens ein Zahlziel, also höchstens einen Eintrag.
+func payActions(w *sim.World, p *sim.Player) []map[string]any {
+	if kind := sim.TrainAt(w, p); kind != "" {
+		return []map[string]any{{"action": "train", "profession": kind}}
+	}
+	if side, res := sim.TradeAt(w, p); side != "" {
+		return []map[string]any{{"action": "trade", "side": side, "resource": res}}
+	}
+	return nil
 }

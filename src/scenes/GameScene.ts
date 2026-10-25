@@ -34,6 +34,7 @@ import { DEV_FOCUS_KEY, muteFocused } from './debug/debugOverlayPanel';
 import { pauseButton } from './hud/pauseButton';
 import { SkillMenus } from './hud/skillMenuLogic';
 import { SkillCasts, type SkillCast } from './effects/skillCasts';
+import { startPerfProbe } from './perfProbe';
 
 /** Ein Overlay pro Seite, auch über Szenen-Neustarts hinweg */
 let sharedTouch: TouchInput | undefined;
@@ -150,6 +151,7 @@ export class GameScene extends Phaser.Scene {
     gamepads.on('connected', addPad);
     gamepads.on('disconnected', (pad: Phaser.Input.Gamepad.Gamepad) => this.padLost(pad));
     this.scene.launch('hud');
+    startPerfProbe(this); // Diagnose-Zeile, mit ?perf=1 auch Leistungsbericht (PM1)
     if (this.touch) {
       pauseButton().show(true);
       this.events.once('shutdown', () => pauseButton().show(false));

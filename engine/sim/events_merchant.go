@@ -13,6 +13,12 @@ func merchantRaidStart(w *World) {
 	if w.island == nil || w.Merchant == nil || w.island.MerchantVisits%raid.EveryVisits != 0 {
 		return
 	}
+	raidMerchant(w)
+}
+
+// raidMerchant: Der Besuch wird überfallen, eine Welle der Stufe kommt dazu (auch Dev-Aktion event, dev_combat.go).
+func raidMerchant(w *World) {
+	raid := merchantRaid()
 	w.Merchant.Raid = true
 	size, hp, damage := w.island.waveFactors()
 	queueWave(w, planWave(w.Biome, max(w.Wave, 1), w.rng, w.Portals, w.Cycle.Phase == "night", size), hp, damage)

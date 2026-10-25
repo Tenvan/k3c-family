@@ -1,6 +1,7 @@
 import { BUILDINGS } from '../../model/data';
 import type { SiteKind, SiteState } from '../../model/types';
 import { HUB_GROWTH, HUB_SCAFFOLD, type HubLook } from './hubGrowth';
+import { SCAFFOLD_CLASSES, scaffoldKey } from './scaffoldView';
 
 /**
  * Welche Grafik ein Gebäude zeigt (GR3.1, Zuordnung `docs/assets/zuordnung-objekte.md` und `zuordnung-welt.md`).
@@ -19,6 +20,8 @@ export const BUILDING_TEXTURES: Record<string, string> = {
   /** Wachstumsreihe vor der Holzburg und Baugerüst (GEB11): `grafik:<id>-<stufe>`, `grafik:hub-geruest` */
   ...Object.fromEntries(HUB_GROWTH.filter((l) => l.id !== 'burg').map((l) => [`grafik:${l.id}-${l.stufe}`, `gebaeude/${l.id}-${l.stufe}-32.png`])),
   [`grafik:${HUB_SCAFFOLD}`]: `gebaeude/${HUB_SCAFFOLD}-32.png`,
+  /** Gerüst im Bau je Größenklasse (GEB16, B-586): `grafik:geruest-<breite>` */
+  ...Object.fromEntries(SCAFFOLD_CLASSES.map((c) => [scaffoldKey(c), `gebaeude/geruest-${c}-32.png`])),
   ...stufen('wall', 'mauer'),
   ...stufen('tower', 'turm'),
   ...stufen('backwall', 'hintergrundmauer'),

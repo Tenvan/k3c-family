@@ -82,6 +82,8 @@ func DevSetPhase(isl *Island, phase string) bool {
 type DevFlags struct {
 	CheapBuild bool // alle Bau-, Ausbau- und Angebotskosten höchstens 1 je Posten
 	StockBonus int  // zusätzliches Lager-Maximum je Rohstoff und Gold-Maximum je Spieler (devMaxStock)
+	// Nights: Event-Id → Nacht, in der das Event zusätzlich zum Rhythmus läuft (DevStartEvent, dev_combat.go).
+	Nights map[string]int
 }
 
 // DevStockStep und DevStockBonusMax: Schritt und Obergrenze des zusätzlichen Lager-Maximums.

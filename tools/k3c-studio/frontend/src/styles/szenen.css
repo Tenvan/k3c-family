@@ -15,6 +15,11 @@
 .sz-fig { margin: 0; flex: 0 0 auto; max-width: 40rem; color: #e8edf4; }
 .sz-fig figcaption { font-size: 12px; margin-top: 4px; word-break: break-all; }
 .sz-canvas { display: block; image-rendering: pixelated; }
+.sz-fig .sz-canvas { max-width: 100%; height: auto; } /* breite Grafik (z. B. Hintergrund-Schichten) bleibt in der Karte */
+/* Hintergründe (GEB18): auf die Spaltenbreite skaliert, je Zeile zwei Bilder; verkleinert mit Glättung, damit Details nicht flimmern. */
+.sz-hg-row { align-self: stretch; }
+.sz-hg { flex: 1 1 0; min-width: 0; max-width: none; }
+.sz-hg canvas { width: 100%; height: auto; image-rendering: auto; }
 .sz-nc { color: #ff8fa3; font-weight: bold; }
 .sz-gap { border: 2px dashed #ff8fa3; color: #ff8fa3; padding: 20px 14px; font-size: 13px; min-width: 120px; text-align: center; }
 .sz-change { max-width: 10rem; font-size: 12px; margin: 4px 0 0; }
@@ -47,6 +52,10 @@
 .sz-table th, .sz-table td { padding: 4px 8px; text-align: left; vertical-align: middle; border-bottom: 1px solid var(--card-line); }
 .sz-swatch { display: inline-block; width: 12px; height: 12px; border: 1px solid #fff; vertical-align: middle; }
 .sz-kampf { width: 100%; max-width: 1100px; height: auto; }
-/* Zwölf Szenen sind breiter als die Seite: nur die Leiste scrollt, die Szene bleibt im Blick (WZ30.6). */
+/* Zwölf Szenen sind breiter als die Seite: die Leiste bricht um (Ralf, WZ29), statt zu scrollen. Das Radix-Grid wird zur
+   umbrechenden Zeile; der wandernde Indikator passt dazu nicht, die aktive Szene trägt deshalb seine Farbe selbst. */
 .sz-page { min-width: 0; }
-.sz-page > .as-head > .rt-SegmentedControlRoot { max-width: 100%; overflow-x: auto; flex-shrink: 1; }
+.sz-page > .as-head > .rt-SegmentedControlRoot { display: flex; flex-wrap: wrap; height: auto; min-width: 0; max-width: 100%; flex: 1 1 100%; gap: 2px; }
+.sz-page > .as-head > .rt-SegmentedControlRoot > .rt-SegmentedControlIndicator { display: none; }
+.sz-page > .as-head > .rt-SegmentedControlRoot > .rt-SegmentedControlItem { flex: 0 0 auto; height: var(--space-6); padding: 0 var(--space-3); border-radius: var(--radius-2); }
+.sz-page > .as-head > .rt-SegmentedControlRoot > .rt-SegmentedControlItem[data-state='on'] { background: var(--segmented-control-indicator-background-color, var(--gray-a5)); font-weight: 600; }

@@ -13,7 +13,7 @@ import (
 func devExamples(t *testing.T) []string {
 	t.Helper()
 	var out []string
-	for _, f := range []string{"gold", "material", "timescale", "pause", "castlefall"} {
+	for _, f := range []string{"gold", "material", "timescale", "pause", "castlefall", "boss", "bossphase", "event", "night"} {
 		raw, err := os.ReadFile("../../testdata/protocol/c2s-dev-" + f + ".json")
 		if err != nil || !json.Valid(raw) {
 			t.Fatalf("%s: %v", f, err)
