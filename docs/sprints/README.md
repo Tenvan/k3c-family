@@ -20,6 +20,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | W11 | REG, SRV, CLI | WRT | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | – | `aktiv/W11-bauplaetze-protokoll-abstand/` |
 | SO8 | DEV, CLI | SND | Skill-Sounds je Klasse | – | `aktiv/SO8-skill-sounds-je-klasse/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | `aktiv/PM1-leistung-messen/` |
+| ST1 | SRV | LST | Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik | HUD zeigt „gesichert“, Spielstände überstehen gesperrte Dateien, `reports/` bleibt begrenzt | `aktiv/ST1-speichern-robust/` |
 | BT1 | SRV, DEV | REL | Server im Heimnetz finden, Windows-Starter, Start mit Seed | – | `aktiv/BT1-heimnetz-start/` |
 | KR1 | REG | KRT | Kritische Fragen zu BED | – | `aktiv/KR1-fragen-bed/` |
 | KR5 | REG | KRT | Kritische Fragen zu SKL | – | `aktiv/KR5-fragen-skl/` |
@@ -38,7 +39,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | W12 | SIM | WRT | Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln | – | Entwurf | `geplant/W12-morgengrauen-phase/` |
 | SO8 | DEV, CLI | SND | Skill-Sounds je Klasse | – | bereit | `geplant/SO8-skill-sounds-je-klasse/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | bereit | `geplant/PF1-splitscreen-leistung/` |
-| ST1 | SRV | LST | Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik | HUD zeigt „gesichert“, Spielstände überstehen gesperrte Dateien, `reports/` bleibt begrenzt | Entwurf | `geplant/ST1-speichern-robust/` |
 | TR4 | PLAT, SRV | TST | Bot-Eingabe ohne verlorene Drücke, Beobachter ohne Platz im Raum | – | Entwurf | `geplant/TR4-bot-feed-beobachter/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | GD1 | INF | TST | Golden-Daten kleiner bei gleicher Prüfschärfe | – | Entwurf | `geplant/GD1-golden-verkleinern/` |

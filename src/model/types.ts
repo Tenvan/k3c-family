@@ -280,6 +280,7 @@ export type GameEvent = (
   | { type: 'disarmed'; kind: string; x: number; cause: string }
   | { type: 'equipmentTaken'; kind: string; x: number }
   | { type: 'bossSpawned'; boss: string; x: number }
+  | { type: 'saved' }
 ) & { stage?: number };
 
 export interface World {

@@ -1,14 +1,14 @@
 # ST1 · SRV · Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** LST
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-186, B-187, B-272
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt)
 
 ## Ausgangslage
 
@@ -54,6 +54,12 @@ keine
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| ST1.1 | `ST1.1-speichern-60s.md` | Umsetzung | autonom | fertig |
+| ST1.2 | `ST1.2-sperre-rotation.md` | Umsetzung | autonom | fertig |
+| ST1.3 | `ST1.3-review.md` | Review | autonom | fertig |
+
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - ST1.1 Speichern alle 60 s und bei Tagesanbruch, Anzeige „gesichert“ (AC-01).
@@ -62,4 +68,7 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-–
+2026-10-25, Claude (ST1.3): `task check` und `task check:go` grün; `check:race` lokal übersprungen (kein C-Compiler), die CI prüft es.
+AC-01 erfüllt durch ST1.1 (Autosave 60 s und Tagesanbruch, Ereignis `saved`, HUD), AC-02 und AC-03 durch ST1.2 (Rename-Wiederholung mit Test, Rotation der Session-Reports).
+Review: Der MEDIUM-Befund („gesichert“ nach Game Over) ist behoben, zwei LOW-Punkte stehen im Ergebnis von ST1.1.
+Offen: Ralf sieht die Anzeige „gesichert“ am TV (B-186/AC-03). Keine neuen Tickets.
