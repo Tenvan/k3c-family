@@ -112,18 +112,28 @@ func (s *Saves) store(slot string, data []byte) (backup string, err error) {
 	if err != nil {
 		return "", err
 	}
-	if prev, err := os.ReadFile(path); err == nil {
-		old, perr := parseSave(prev)
-		if perr == nil && (old.campaignID != next.campaignID || old.version != next.version) {
-			backup = fmt.Sprintf("%s-%s.json", slot, s.stamp(old.savedAt))
-			if err := os.Rename(path, filepath.Join(s.Dir, backup)); err != nil {
-				return "", err
-			}
-		} else if err := s.rotate(slot, prev); err != nil {
-			return "", err
-		}
+	prev, err := readRetry(path)
+	if errors.Is(err, fs.ErrNotExist) {
+		return "", writeAtomic(path, data)
+	}
+	if err != nil {
+		return "", err // nie ohne Sicherung überschreiben: ein gesperrtes Lesen ist kein fehlender Stand (B-274)
+	}
+	if backup, err = s.backupPrev(slot, path, prev, next); err != nil {
+		return "", err
 	}
 	return backup, writeAtomic(path, data)
+}
+
+// backupPrev sichert den bisherigen Stand prev: anderes Spiel oder andere Version unter eigenem Namen
+// (<slot>-<savedAt>.json, Rückgabe), sonst in die rotierenden Sicherungen.
+func (s *Saves) backupPrev(slot, path string, prev []byte, next header) (string, error) {
+	old, perr := parseSave(prev)
+	if perr != nil || (old.campaignID == next.campaignID && old.version == next.version) {
+		return "", s.rotate(slot, prev)
+	}
+	backup := fmt.Sprintf("%s-%s.json", slot, s.stamp(old.savedAt))
+	return backup, os.Rename(path, filepath.Join(s.Dir, backup))
 }
 
 // Delete entfernt einen Spielstand und seine rotierenden Sicherungen. Gibt es ihn nicht, ist das kein Fehler.

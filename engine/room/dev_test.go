@@ -220,3 +220,18 @@ func TestDevZeitrafferEndetMitTageszeit(t *testing.T) {
 		t.Fatal("Zeitraffer ohne Auto beendet")
 	}
 }
+
+// Review TR4.2: Ein Beobachter löst keine Dev-Aktion aus, auch keine raumweite (Grad, Phase, Zeitraffer).
+func TestDevBeobachterAbgelehnt(t *testing.T) {
+	r, _, _ := devRoom(t)
+	o := &peer{}
+	if _, err := r.m.Observe("o", o, r.Code); err != nil {
+		t.Fatal(err)
+	}
+	if err := r.Dev("o", o, DevAction{Action: "grade", Grade: "ultra"}); err != ErrBadRequest {
+		t.Fatalf("Beobachter dev grade: %v", err)
+	}
+	if r.isl.Options.Grade == "ultra" {
+		t.Fatal("Grad durch Beobachter geändert")
+	}
+}

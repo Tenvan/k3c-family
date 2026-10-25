@@ -141,14 +141,11 @@ func (s *Server) simRunner(ctx context.Context, spec simSpec) (simrun.Runner, er
 	return func(ctx context.Context, run *simRun) { s.runOnline(ctx, run, spec, c) }, nil
 }
 
-// onlineCheck prüft die Kombinationen mit Clients und füllt die Standards. Mit Clients hat jeder Client seinen Raum,
-// in dem das Beobachter-Gerät der Workbench einen der 4 Plätze belegt (simtest_clients.go).
+// onlineCheck prüft die Kombinationen mit Clients und füllt die Standards. Mit Clients hat jeder Client seinen Raum;
+// das Beobachter-Gerät der Workbench belegt dort keinen Platz (simtest_clients.go, B-352), players geht bis 4.
 func (s *simSpec) onlineCheck() error {
-	switch {
-	case s.clients > 0 && s.rooms != 0:
+	if s.clients > 0 && s.rooms != 0 {
 		return fmt.Errorf("sim_test start abgelehnt: rooms ergibt sich aus clients (ein Raum je Client)")
-	case s.clients > 0 && s.players > 3:
-		return fmt.Errorf("sim_test start abgelehnt: players 1 bis 3 mit Clients, das Beobachter-Gerät belegt einen Platz")
 	}
 	s.onlineDefaults()
 	if s.clients > 0 {

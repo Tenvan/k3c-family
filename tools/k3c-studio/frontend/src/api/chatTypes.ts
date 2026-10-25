@@ -19,11 +19,21 @@ export interface ChatChoiceValues {
   effort: string;
 }
 
-/** Auftragsart einer Nachricht: `welt` schickt das Grundgerüst als Instruktion mit (B-516); fehlt sie, ist es ein freier Chat. */
-export type ChatTask = 'welt';
+/** Auftragsart einer Nachricht: `welt` schickt das Grundgerüst als Instruktion mit (B-516), `zuordnung` den Seitenkontext
+ *  von Sound- oder Grafik-Seite (B-600); fehlt sie, ist es ein freier Chat. */
+export type ChatTask = 'welt' | 'zuordnung';
 
-/** Wahl und Auftragsart einer Nachricht. */
-export type ChatSendOptions = ChatChoiceValues & { task?: ChatTask };
+/** Seitenkontext eines Zuordnungs-Auftrags (Go: assignContext; Aufbereitung chat/assignContext.ts). */
+export interface AssignContext {
+  seite: 'sound' | 'grafik';
+  /** gewählter Slot, leer = keiner */
+  slot: string;
+  /** aktiver Filter als Text */
+  filter: string;
+}
+
+/** Wahl, Auftragsart und (nur bei `zuordnung`) Seitenkontext einer Nachricht. */
+export type ChatSendOptions = ChatChoiceValues & { task?: ChatTask; kontext?: AssignContext };
 
 /** Schickt `text` an den Chat `chat` (leer = neuer Chat) mit der Wahl `options` und liefert die Ereignisse der Antwort; `signal` bricht ab. */
 export type ChatStream = (chat: string, text: string, options: ChatSendOptions, signal: AbortSignal) => AsyncGenerator<ChatEvent, void>;

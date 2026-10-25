@@ -40,6 +40,8 @@ interface Stream {
   level: LevelInfo | null;
   state: Record<string, unknown> | null;
   frames: Frame[];
+  /** Der letzte Zustand meldete verworfene Ereignisse (Warnung nur am Beginn einer Reihe) */
+  dropping?: boolean;
   received: number;
 }
 
@@ -90,6 +92,11 @@ export class StageStreams {
     stream.state = msg.t === 'snap' ? (msg.s as Record<string, unknown>) : applyDelta(stream.state!, msg.s as Record<string, unknown>);
     const frame: Frame = { tick: msg.tick, ack: msg.ack, receivedAt, state: stream.state as unknown as WorldState };
     if (stream.received++ === 0) clientLog('info', '✅ Erster Zustand nach Level', { stage: msg.stage, tick: msg.tick, sites: frame.state.sites?.map((s) => s.kind) });
+    const dropped = frame.state.eventsDropped ?? 0;
+    if (dropped > 0 && !stream.dropping) {
+      clientLog('warn', '🤒 Server hat Ereignisse verworfen', { stage: msg.stage, tick: msg.tick, dropped }); // nur der Beginn einer Reihe
+    }
+    stream.dropping = dropped > 0; // am Strom, nicht am Frame: takeFrames leert die Liste
     stream.frames.push(frame);
     if (stream.frames.length > MAX_FRAMES) stream.frames.shift();
     return frame;

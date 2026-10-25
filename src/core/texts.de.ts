@@ -91,6 +91,7 @@ export const de = {
   'hud.clockNight': 'Nacht {day}  ·  Morgen in {left}',
   'hud.clockDawn': 'Tag {day}  ·  Sonnenaufgang in {left}',
   'hud.aggression': '  ·  Aggression {pct}%',
+  'hud.saved': '  ·  gesichert',
 
   // Meldungen (Ereignisse)
   'ev.dusk': 'Nacht naht!',
@@ -211,6 +212,9 @@ export const de = {
   'hint.space': 'Leertaste',
   'hint.build': '{name} bauen',
   'hint.pay': '{name} kaufen',
+  'hint.train': '{name} ausbilden',
+  'hint.buy': '{name} kaufen',
+  'hint.sell': '{name} verkaufen',
   'hint.revive': 'Wiederbeleben',
   'hint.attack': 'Schlag',
   'cast.noTarget': 'kein Ziel',
