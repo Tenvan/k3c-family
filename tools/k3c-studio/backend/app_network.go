@@ -18,8 +18,8 @@ type NetworkView struct {
 	Offline bool   `json:"offline"`
 }
 
-// Network liefert Modus und Zustand (Binding); im Modus auto mit Probe (höchstens alle 30 s).
-func (a *App) Network() NetworkView {
+// SourceNetwork liefert Modus und Zustand (Binding); im Modus auto mit Probe (höchstens alle 30 s).
+func (a *App) SourceNetwork() NetworkView {
 	st := a.sourceState()
 	st.mu.Lock()
 	mode := st.mode
@@ -30,8 +30,8 @@ func (a *App) Network() NetworkView {
 	return NetworkView{Mode: mode, Offline: st.offline(a.context())}
 }
 
-// SetNetwork setzt den Modus (Binding); auto verwirft das gemerkte Probe-Ergebnis und fragt neu.
-func (a *App) SetNetwork(mode string) (NetworkView, error) {
+// SourceSetNetwork setzt den Modus (Binding); auto verwirft das gemerkte Probe-Ergebnis und fragt neu.
+func (a *App) SourceSetNetwork(mode string) (NetworkView, error) {
 	if mode != NetworkAuto && mode != NetworkOnline && mode != NetworkOffline {
 		return NetworkView{}, fmt.Errorf("unbekannter Netz-Modus %q (auto, online, offline)", mode)
 	}
@@ -39,5 +39,5 @@ func (a *App) SetNetwork(mode string) (NetworkView, error) {
 	st.mu.Lock()
 	st.mode, st.checked, st.down = mode, time.Time{}, false
 	st.mu.Unlock()
-	return a.Network(), nil
+	return a.SourceNetwork(), nil
 }
