@@ -1,6 +1,6 @@
 # GD1.3 · Review GD1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** INF
@@ -50,5 +50,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 und AC-02: geprüft mit `task check` und `task check:go` (grün), Determinismus von `task go:golden` (zweiter Lauf ohne Diff) und per Diff-Lesung.
+- Die Abnahme steht in der Sprint-README.

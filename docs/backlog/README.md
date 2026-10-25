@@ -86,7 +86,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-411](B-411-spieler-abmelden.md) | CLI | Problem | hoch | eingeplant | BD4 | Lokale Spieler können beitreten, aber nicht einzeln austreten |
 | [B-412](B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | eingeplant | W11 | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | eingeplant | BD4 | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
-| [B-419](B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | eingeplant | GD1 | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
 | [B-422](B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | eingeplant | W11 | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
 | [B-425](B-425-fullsave-ausbauregeln.md) | SRV | Problem | mittel | eingeplant | SV2 | Der Voll-Ausbau-Stand hält die Ausbauregeln des Spiels ein |
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Kleine Befunde aus dem Review von SV1 sind erledigt |
@@ -143,7 +142,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-615](B-615-ticket-nummer-gleichzeitig.md) | DEV | Problem | mittel | offen | – | Gleichzeitiges Anlegen von Tickets vergibt nie dieselbe Nummer |
 | [B-616](B-616-lauf-id-nach-neustart.md) | DEV | Problem | niedrig | offen | – | Lauf-IDs der Balancing-Seite bleiben über einen Neustart der Workbench eindeutig |
 | [B-619](B-619-check-diff-cache-und-short.md) | INF | Problem | hoch | offen | – | check:diff nutzt den Go-Testcache und lässt lange Tests aus |
-| [B-620](B-620-golden-grenze-20-mb.md) | INF | Frage | mittel | offen | – | Golden-Grenze 20 MB nach dem dichteren Wald bestätigen |
 | [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | offen | – | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
 | [B-623](B-623-hub-stufenfolge-bestaetigen.md) | REG | Frage | mittel | offen | – | Stufenfolge des Hubs (3 Schritte je Hub-Stufe, Material-Tor) bestätigen |
 | [B-624](B-624-golden-gzip-bestaetigen.md) | INF | Frage | mittel | offen | – | Golden-Daten als gzip mit lesbaren Diffs bestätigen |
@@ -582,3 +580,5 @@ Zeile in diesen Abschnitt.
 | [B-379](archiv/B-379-vollmond-belohnung-nur-stufe-0.md) | SIM | Problem | mittel | erledigt | KB1 | Die Vollmond-Belohnung gilt für die Stufen, in denen gespielt wird |
 | [B-380](archiv/B-380-blutmond-boss-faehigkeiten.md) | SIM | Problem | niedrig | erledigt | KB1 | Der Blutmond verstärkt auch die Flächenangriffe der Bosse |
 | [B-327](archiv/B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | erledigt | KB1 | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
+| [B-419](archiv/B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | erledigt | GD1 | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
+| [B-620](archiv/B-620-golden-grenze-20-mb.md) | INF | Frage | mittel | erledigt | – | Golden-Grenze 20 MB nach dem dichteren Wald bestätigen |

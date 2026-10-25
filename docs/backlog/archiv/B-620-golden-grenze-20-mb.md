@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** KRT
 - **Erstellt:** 2026-10-25
@@ -55,3 +55,5 @@ nicht relevant
 ## Notizen
 
 Herkunft: GEB16.5, Sprint GEB16 (2026-10-25).
+
+Nachtrag (GD1, 2026-10-25): Die Golden-Daten liegen jetzt gzip-komprimiert bei 0,73 MiB, die Grenze steht wieder auf 16 MB. Die Frage nach 20 MB ist damit hinfällig; offen bleibt nur die Bestätigung des Wegs (B-624).
