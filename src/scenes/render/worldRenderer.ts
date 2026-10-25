@@ -6,12 +6,13 @@ import { type BackWall, backWalls } from './backWallRules';
 import { createBackWallView, updateBackWallView } from './backWallView';
 import { BuergerView } from './citizenView';
 import { createRider, updateRider } from './mountView';
-import { campSprite, nodeSprite } from './natureSprites';
+import { createMineSign, showsMineSign } from './mineSignView';
+import { campSprite, decoRoots, nodeSprite } from './natureSprites';
 import { objectImage } from './objectView';
 import { PENNANT_MAX_HEIGHT, markerOf, noteMarkers, pennantColor } from './pennant';
 import { type Plot, isPlantationTree, plantationPlots } from './plantation';
-import { buildableSites } from './buildableRules';
 import { priceTagSites } from './priceTagRules';
+import { LightView } from './lightView';
 import { TEXT, createCastleView, createSiteView, updateCastleView, updateSiteView } from './siteView';
 import { hasDepth, isOnTower } from './viewRules';
 import { type MonarchFrame, pickMonarchAnim } from './monarchAnim';
@@ -122,9 +123,9 @@ export class WorldRenderer {
   private readonly castleHp: View;
   private readonly citizens: BuergerView;
   private readonly warn: WarnView;
+  private readonly lights: LightView;
   /** Bauplätze, deren Preisschild steht (nur das nächste je Spieler, B-395) */
   private priceTags = new Set<number>();
-  private buildable = new Set<number>();
   /** Knoten-ID → Spieler, der zuletzt eine Markier-Münze gab (Wimpel-Farbe, GEB10) */
   private readonly markers = new Map<number, number>();
 
@@ -142,8 +143,9 @@ export class WorldRenderer {
 
     this.citizens = new BuergerView(scene, root);
     this.warn = new WarnView(scene, root);
+    this.lights = new LightView(scene, root); // Lagerfeuer-Licht in der Nacht (W13.1)
     this.nodes = this.layer((n) => this.createNode(n), (v, n) => this.updateNode(v, n));
-    this.sites = this.layer((s) => createSiteView(scene, s), (v, s) => updateSiteView(scene, v, s, this.world, this.priceTags.has(s.id), this.buildable.has(s.id)));
+    this.sites = this.layer((s) => createSiteView(scene, s), (v, s) => updateSiteView(scene, v, s, this.world, this.priceTags.has(s.id)));
     this.plots = this.layer((p) => this.createPlot(p), () => {});
     this.backWalls = this.layer(() => createBackWallView(scene), (v, b) => updateBackWallView(scene, v, b));
     this.pickups = this.layer((p) => this.createPickup(p), () => {}, undefined, (v) => this.openChest(v));
@@ -197,7 +199,6 @@ export class WorldRenderer {
   sync(world: World, hidden: ReadonlySet<number> = new Set()): void {
     this.world = world;
     this.priceTags = priceTagSites(world);
-    this.buildable = buildableSites(world);
     this.nodes.sync(world.nodes);
     this.sites.sync(world.sites);
     this.plots.sync(plantationPlots(world.sites, world.nodes).filter((p) => p.tree === null));
@@ -210,7 +211,8 @@ export class WorldRenderer {
     this.projectiles.sync(world.projectiles);
     this.citizens.sync(world);
     this.warn.sync(world);
-    updateCastleView(this.scene, this.castle, world); // Burg wächst mit Hub-Stufe und Ausbau-Stand (GEB4 AC-05, GEB11)
+    this.lights.sync(world);
+    updateCastleView(this.scene, this.castle, world, this.priceTags.has(world.castle.id)); // Burg wächst mit Hub-Stufe und Ausbau-Stand (GEB4 AC-05, GEB11), Ausbau-Schild (B-591)
     setBar(this.castleHp, 0, world.castle.hp / world.castle.maxHp, world.castle.hp < world.castle.maxHp);
   }
 
@@ -250,6 +252,9 @@ export class WorldRenderer {
     const pappel = isPlantationTree(n, this.world.sites) && s.textures.exists('grafik:pappel-niedrig');
     // Baumform aus der Position, Look aus dem Biom (GEB6); unbekannte Art oder fehlende Grafik: Platzhalter-Form
     const sprite = pappel ? s.add.image(0, 0, 'grafik:pappel-niedrig').setOrigin(0.5, 1) : objectImage(s, `node:${n.kind}`, 0, 0, nodeSprite(n.kind, n.x, this.world.biome.id));
+    // Deko-Wurzeln hinter dem Knoten (GEB15.1): nur Darstellung, Dichte aus dem Biom, gehen mit dem Knoten
+    const deko = n.kind === 'tree' && !pappel ? decoRoots(n.x, this.world.biome.id, this.world.biome.rootsPerNode) : [];
+    for (const d of deko) if (s.textures.exists(d.key)) parts.push(s.add.image(d.dx * U, 0, d.key).setOrigin(0.5, 1));
     if (sprite) parts.push(sprite);
     else if (n.kind === 'tree') {
       parts.push(s.add.rectangle(0, -40, 14, 80, 0x6b4226), s.add.triangle(0, -110, 0, 90, 40, 0, 80, 90, 0x2d6a4f));
@@ -264,12 +269,14 @@ export class WorldRenderer {
     const top = -Math.min(sprite ? sprite.displayHeight : PLACEHOLDER_NODE_HEIGHT, PENNANT_MAX_HEIGHT);
     const pole = s.add.rectangle(10, top - 2, 3, 30, 0xffffff);
     const pennant = s.add.triangle(11, top - 12, 0, 0, 26, 7, 0, 14, pennantColor(undefined)).setOrigin(0, 0.5).setStrokeStyle(1, 0x000000, 0.5);
-    const view = s.add.container(n.x * U, G, [...parts, pole, pennant, ...bar(s, top - 32, 50, 0xffd166)]);
+    const sign = createMineSign(s, n.kind, -24); // Abbau-Schild links am Fuß (B-588), Sichtbarkeit in updateNode
+    const view = s.add.container(n.x * U, G, [...parts, sign, pole, pennant, ...bar(s, top - 32, 50, 0xffd166)]);
     return pappel ? view.setDepth(PLANTATION_DEPTH) : view; // vor der Farm (Tiefe 2), wie der Setzling
   }
 
   private updateNode(v: View, n: ResourceNode): void {
     const i = v.length - 4;
+    (v.getAt(i - 1) as View).setVisible(showsMineSign(n));
     (v.getAt(i) as Phaser.GameObjects.Rectangle).setVisible(n.marked);
     (v.getAt(i + 1) as Phaser.GameObjects.Triangle).setVisible(n.marked).setFillStyle(pennantColor(markerOf(n, this.markers)));
     setBar(v, i + 2, n.progress, n.progress > 0);

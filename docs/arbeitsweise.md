@@ -322,7 +322,9 @@ Die Oberfläche ist React mit **Radix Themes**, aufgebaut nach Atomic Design; di
 Die Golden-Daten (`testdata/golden/`) halten fest, was Simulation und Level-Generator rechnen; die Go-Tests vergleichen Feld für Feld.
 
 - **Erlaubt** nur bei einer gewollten Regel- oder Wertänderung (Beschluss, Ticket, Daten in `data/`). Bricht ein Golden-Test ohne solche Änderung, ist das ein Fehler im Code, kein Anlass zum Update.
-- **Befehl:** `task go:golden` schreibt `sim-*.json`, `campaign-abstieg.json` und `level-*.json` aus dem Ist-Zustand neu. Unveränderte Einträge behalten ihre Bytes; der Diff zeigt nur, was sich wirklich geändert hat.
+- **Befehl:** `task go:golden` schreibt `sim-*.json.gz`, `campaign-*.json.gz` und `level-*.json` aus dem Ist-Zustand neu. Unveränderte Einträge behalten ihre Bytes; der Diff zeigt nur, was sich wirklich geändert hat.
+- **Gepackt (GD1, B-624):** Die großen Läufe (`sim-*`, `campaign-*`) liegen als `.json.gz`, Inhalt und `snapshotEvery` wie vorher. `engine/internal/golden` liest und schreibt sie anhand der Endung; `-update` packt mit festem Kopf ohne Zeitstempel, gleicher Inhalt ergibt dieselben Bytes. Die `level-*.json` bleiben JSON, weil TS-Tests sie direkt importieren.
+- **Lesbare Diffs:** `.gitattributes` setzt `*.json.gz diff=gzip`. Einmal je Klon `task go:golden-setup` (setzt `git config diff.gzip.textconv "gzip -dc"`), dann zeigen `git diff` und `git log -p` den entpackten JSON-Text.
 - **Prüfen:** `git diff --stat testdata/golden` lesen. Ändert sich mehr als die Regel erklärt, Ursache klären und nicht einchecken.
 - **Begründung im Commit-Text:** welche Regel, welcher Wert, welche Kennzahl sich dadurch ändert. Golden-Änderungen in eigenem Commit.
 - **Bestätigung:** Kein Freigabe-Zwang durch 🧑 (Beschluss Q09); die Review-Session des Sprints prüft Diff und Begründung.

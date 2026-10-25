@@ -30,8 +30,8 @@ func (r *Room) AddSlot(id string, peer Peer, slot int) (err error) {
 	switch {
 	case slot >= MaxSlots:
 		return ErrTooManySlots
-	case d == nil || slot < 0:
-		return ErrBadRequest
+	case d == nil || d.observer || slot < 0:
+		return ErrBadRequest // ein Beobachter bekommt keinen Platz (B-352)
 	}
 	if _, used := d.slots[slot]; used {
 		return ErrBadRequest
@@ -106,6 +106,10 @@ func (r *Room) leave(id string) {
 	if d == nil {
 		return
 	}
+	if d.observer {
+		r.unobserve(id)
+		return
+	}
 	for _, idx := range d.slots {
 		r.release(idx)
 	}
@@ -123,6 +127,10 @@ func (r *Room) Drop(id string, peer Peer) {
 	defer r.mu.Unlock()
 	d := r.own(id, peer)
 	if ok = d != nil; !ok {
+		return
+	}
+	if d.observer { // ein Beobachter hat keine wartenden Monarchen
+		r.unobserve(id)
 		return
 	}
 	now := r.m.now()
@@ -167,7 +175,8 @@ func (r *Room) afterDisconnect() {
 }
 
 // Tick rechnet einen Schritt mit 1/TickHz Sekunden, im Zeitraffer scale() solche Schritte. Ein Raum ohne verbundenes Gerät ist pausiert und tickt nicht.
-// Wechselt ein Gerät die Stufe, speichert der Raum und schickt das neue Level vor dem Zustand.
+// Wechselt ein Gerät die Stufe, speichert der Raum und schickt das neue Level vor dem Zustand; dazu speichert er im
+// Takt SaveEvery und bei Tagesanbruch (autosave).
 // false: Der Raum ist geschlossen.
 func (r *Room) Tick() bool {
 	r.mu.Lock()
@@ -189,14 +198,15 @@ func (r *Room) Tick() bool {
 	if r.beforeStep != nil {
 		r.beforeStep()
 	}
-	before := r.depths()
+	before, day := r.depths(), r.isl.Stages[0].Cycle.Day
 	for range r.steps() { // Zeitraffer: scale() Schritte mit denselben Eingaben, ein Tick; Dev- und Couch-Pause: keiner
 		sim.StepIsland(r.isl, commands, 1.0/TickHz)
 		r.met.observe(r.isl)
 	}
 	r.resetScaleOnPhase()
 	r.tick++
-	travelled := r.pushStates()
+	dawn := r.isl.Stages[0].Cycle.Day > day // der Tag zählt bei Tagesanbruch weiter (world_cycle.go)
+	travelled := r.pushStatesSaved()
 	if r.switchIsland() { // erst die Ereignisse des letzten Ticks der alten Insel, dann Level und snap der neuen (B-385)
 		r.pushStates()
 		travelled = true
@@ -206,9 +216,7 @@ func (r *Room) Tick() bool {
 		r.log().Info("🪜 Stufenwechsel", "vorher", before, "nachher", after, "tick", r.tick)
 		r.broadcastSeats()
 	}
-	if travelled {
-		r.save()
-	}
+	r.autosave(travelled, dawn)
 	return true
 }
 
@@ -242,7 +250,7 @@ func (r *Room) sweep(now time.Time) (changed, remove bool) {
 		r.syncFree()
 		r.broadcastSeats()
 	}
-	if r.connected() > 0 || r.emptySince.IsZero() {
+	if r.connected() > 0 || r.watching() > 0 || r.emptySince.IsZero() {
 		return changed, false
 	}
 	if r.isTest() { // B-204: ein Test-Raum wartet nur auf wartende Monarchen, nicht auf EmptyFor

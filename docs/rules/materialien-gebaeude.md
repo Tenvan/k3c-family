@@ -40,25 +40,24 @@ Jeder Hub (jede Stufe einer Insel) hat eine **Ausbaustufe 1 bis 5**. Stufe n sch
 | 4 | 200 Eisen + 200 Gold | 40 s | Korridor mit B-099 (Insel 1 Stufe 4 noch nicht gebaut) |
 | 5 | 250 Kristall + 400 Gold | 50 s | Korridor mit B-099 |
 
-Begründung: Fortschritt über Tiefe und Material, kein reines Goldsparen. Daten: neu `data/hub.json` › `levels` (SIM legt an).
+Begründung: Fortschritt über Tiefe und Material, kein reines Goldsparen. Daten: neu `data/hub.json` › `levels` (SIM legt an). Die Kosten je Stufe verteilen sich seit GEB17 auf 3 Ausbauschritte mit Material-Tor im letzten Schritt ([`stufen.md`](stufen.md) § 8, B-592); die Tabelle nennt die Summe ohne Tor.
 
 ### 2.1 Sichtbares Wachstum der Burg (GEB11)
 
 Festgelegt autonom von Claude am 2026-10-22 (B-458, Annahme bis 🧑 widerspricht). **Nur Darstellung:** Hub-Stufen,
-Kosten, Bauzeiten und Freischaltungen bleiben wie oben; der Client wählt den Look allein aus `hubLevel` und `hubUpgrade`
+Kosten, Bauzeiten und Freischaltungen bleiben wie oben; der Client wählt den Look allein aus `hubLevel` und `hubStep`
 des Snapshots (`docs/protocol.md` › Wirtschaft). Wie in Kingdom Two Crowns beginnt jeder Hub als Lagerfeuer.
 
-| Look | Hub-Stufe | Ausbau auf die nächste Stufe |
+| Look | Hub-Stufe | Ausbauschritt (`hubStep`, stufen.md § 8; GEB17.6) |
 |---|---|---|
-| Lagerfeuer mit Grill | 1 | noch kein Gold bezahlt |
-| Zelt am Feuer | 1 | Gold bezahlt, weniger als die Hälfte |
-| Holzhütte am Feuer | 1 | mindestens die Hälfte des Golds, Gold noch offen |
-| Holzburg | 1 | Gold voll (wartet auf Material oder Bauer) |
-| Stein-, Kupfer-, Eisen-, Kristallburg | 2–5 | beliebig |
+| Lagerfeuer mit Grill, Zelt am Feuer, Holzhütte am Feuer | 1 | 1, 2, 3 |
+| Stein-, Kupfer-, Eisen-, Kristallburg (`burg` 2–5) | 2–5 | 1 |
+| … mit Wappenbannern und Fackeln (`burg` 6, 8, 10, 12) | 2–5 | 2 |
+| … dazu mit Wehrtürmchen und Wimpeln (`burg` 7, 9, 11, 13) | 2–5 | 3 |
 | + Baugerüst vor dem Look | 1–4 | Material abgebucht, der Bauer wartet oder baut (auch bei Gefahr, B-572) |
 
-- Fehlt `hubUpgrade` (letzte Stufe oder älterer Server), zeigt der Hub die Burg seiner Stufe; fehlt die Grafik eines Looks, gilt
-  die Burg der Hub-Stufe.
+- Fehlt `hubStep` (letzte Stufe oder älterer Server), gilt Schritt 1; fehlt die Grafik eines Looks, gilt die Burg der Hub-Stufe.
+  Die Holzburg (`burg-1`) steht nicht mehr in der Reihe, sie bleibt als Grafik und Rückfall.
 - Die Burg bleibt in jedem Look Zahlziel und Hub-Kern (HP, Niederlage, Radius `castleRadiusUnits`) wie in § 3.2.
 - Eine echte feinere Stufenfolge im Server (Unterstufen mit eigener Freischaltung) ist offen: Vorlage in GEB11 › Offene Fragen.
 

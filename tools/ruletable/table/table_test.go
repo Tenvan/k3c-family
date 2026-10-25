@@ -124,6 +124,11 @@ func TestBlockKommazahlenUndStufenGrenzen(t *testing.T) {
 	if _, err = Block(doc(`{"kind":"farm","offsetUnits":52,"hubLevel":1}`, `[{"cost":{}},{"cost":{"mithril":1}}]`)); err == nil {
 		t.Error("unbekanntes Material muss ein Fehler sein")
 	}
+	// Ausbauschritte (B-592): Material aus den Kosten der Schritte, das Material-Tor zählt nicht
+	steps := `[{"steps":[]},{"steps":[{"cost":{"stone":1,"gold":1}},{"cost":{"stone":2},"gate":{"copper":3}}]}]`
+	if block, err = Block(doc(`{"kind":"farm","offsetUnits":52,"hubLevel":1}`, steps)); err != nil || !strings.Contains(block, "| 2 | Stein |") {
+		t.Fatalf("Schritte: %v\n%s", err, block)
+	}
 }
 
 func TestErsetzenNormalisiertDenBlock(t *testing.T) {

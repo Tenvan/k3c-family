@@ -1,46 +1,51 @@
 import { describe, expect, it } from 'vitest';
 import type { HubUpgrade } from '../../model/types';
+import { BUILDING_TEXTURES, hubLookTexture } from './buildingSprites';
 import { HUB_GROWTH, hubLookOf } from './hubGrowth';
 
 /** Ausbau auf Hub-Stufe 2 (data/hub.json: 50 Gold, 100 Stein) mit `paid` bezahltem Gold */
 const up = (paid: number, state?: HubUpgrade['state']): HubUpgrade => ({ gold: 50, material: { stone: 100 }, paid, ...(state ? { state } : {}) });
 
-describe('Wachstumsreihe der Burg (GEB11, materialien-gebaeude.md § 2.1)', () => {
-  it('Hub-Stufe 1: Lagerfeuer, Zelt, Holzhütte nach bezahltem Gold, Holzburg bei vollem Gold', () => {
-    expect(hubLookOf({ hubLevel: 1, hubUpgrade: up(0) })).toEqual({ id: 'lagerfeuer', stufe: 1, scaffold: false });
-    expect(hubLookOf({ hubLevel: 1, hubUpgrade: up(1) })).toEqual({ id: 'lagerfeuer', stufe: 2, scaffold: false });
-    expect(hubLookOf({ hubLevel: 1, hubUpgrade: up(24) })).toMatchObject({ id: 'lagerfeuer', stufe: 2 });
-    expect(hubLookOf({ hubLevel: 1, hubUpgrade: up(25) })).toMatchObject({ id: 'lagerfeuer', stufe: 3 });
-    expect(hubLookOf({ hubLevel: 1, hubUpgrade: up(49) })).toMatchObject({ id: 'lagerfeuer', stufe: 3 });
-    expect(hubLookOf({ hubLevel: 1, hubUpgrade: up(50, 'waitingMaterial') })).toEqual({ id: 'burg', stufe: 1, scaffold: false });
+/** 32-px-Grafiken unter public/grafik/gebaeude/, als Pfad relativ zu public/grafik/ */
+const files = new Set(Object.keys(import.meta.glob('../../../public/grafik/gebaeude/*-32.png')).map((p) => p.replace('../../../public/grafik/', '')));
+
+/** Alle 15 Kombinationen aus Hub-Stufe 1–5 und Ausbauschritt 1–3 */
+const combos = [1, 2, 3, 4, 5].flatMap((hubLevel) => [1, 2, 3].map((hubStep) => ({ hubLevel, hubStep })));
+
+describe('Wachstumsreihe der Burg (GEB17.6, materialien-gebaeude.md § 2.1)', () => {
+  it('15 Kombinationen aus Hub-Stufe und Ausbauschritt geben 15 verschiedene Texturen, deterministisch (AC-05)', () => {
+    const keys = combos.map((c) => hubLookTexture(hubLookOf(c)));
+    expect(keys.every((k) => k !== null)).toBe(true);
+    expect(new Set(keys).size).toBe(15);
+    expect(combos.map((c) => hubLookTexture(hubLookOf(c)))).toEqual(keys);
+    for (const k of keys) expect(files.has(BUILDING_TEXTURES[k!]!), k!).toBe(true);
   });
 
-  it('Gerüst, solange ein Bauer den Ausbau baut, auf jeder Stufe', () => {
-    expect(hubLookOf({ hubLevel: 1, hubUpgrade: up(50, 'waitingWorker') })).toEqual({ id: 'burg', stufe: 1, scaffold: true });
-    expect(hubLookOf({ hubLevel: 3, hubUpgrade: { ...up(200, 'waitingWorker'), gold: 200 } })).toEqual({ id: 'burg', stufe: 3, scaffold: true });
+  it('Hub-Stufe 1 folgt dem Ausbauschritt, nicht dem bezahlten Gold (GEB17.4 begann je Schritt neu)', () => {
+    expect(hubLookOf({ hubLevel: 1, hubStep: 1, hubUpgrade: up(49) })).toEqual({ id: 'lagerfeuer', stufe: 1, level: 1, scaffold: false });
+    expect(hubLookOf({ hubLevel: 1, hubStep: 2, hubUpgrade: up(0) })).toEqual({ id: 'lagerfeuer', stufe: 2, level: 1, scaffold: false });
+    expect(hubLookOf({ hubLevel: 1, hubStep: 3, hubUpgrade: up(0) })).toEqual({ id: 'lagerfeuer', stufe: 3, level: 1, scaffold: false });
+    expect(hubLookOf({ hubLevel: 1, hubStep: 3, hubUpgrade: up(50, 'waitingMaterial') })).toMatchObject({ id: 'lagerfeuer', stufe: 3 });
+  });
+
+  it('ab Hub-Stufe 2: Schritt 1 die Burg der Stufe, Schritte 2 und 3 ihre Ausbauschritte (burg 6–13)', () => {
+    expect(combos.slice(3).map((c) => hubLookOf(c).stufe)).toEqual([2, 6, 7, 3, 8, 9, 4, 10, 11, 5, 12, 13]);
+    expect(hubLookOf({ hubLevel: 5 })).toEqual({ id: 'burg', stufe: 5, level: 5, scaffold: false });
   });
 
   it('Gerüst bei jedem waitingWorker, auch bei Gefahr (B-572)', () => {
-    expect(hubLookOf({ hubLevel: 1, hubUpgrade: up(50, 'waitingWorker'), danger: true })).toEqual({ id: 'burg', stufe: 1, scaffold: true });
-    expect(hubLookOf({ hubLevel: 2, hubUpgrade: up(50, 'waitingWorker'), danger: false })).toEqual({ id: 'burg', stufe: 2, scaffold: true });
+    expect(hubLookOf({ hubLevel: 1, hubStep: 2, hubUpgrade: up(50, 'waitingWorker'), danger: true })).toEqual({ id: 'lagerfeuer', stufe: 2, level: 1, scaffold: true });
+    expect(hubLookOf({ hubLevel: 3, hubStep: 3, hubUpgrade: up(50, 'waitingWorker'), danger: false })).toEqual({ id: 'burg', stufe: 9, level: 3, scaffold: true });
   });
 
-  it('ab Hub-Stufe 2 die Burg der Stufe, auch während Gold fließt', () => {
-    for (const n of [2, 3, 4]) expect(hubLookOf({ hubLevel: n, hubUpgrade: up(0) })).toEqual({ id: 'burg', stufe: n, scaffold: false });
-    expect(hubLookOf({ hubLevel: 5 })).toEqual({ id: 'burg', stufe: 5, scaffold: false });
+  it('Rückfälle: ohne hubStep Schritt 1, ohne hubLevel Stufe 1, Werte außerhalb begrenzt', () => {
+    expect(hubLookOf({})).toEqual({ id: 'lagerfeuer', stufe: 1, level: 1, scaffold: false });
+    expect(hubLookOf({ hubLevel: 2 })).toMatchObject({ id: 'burg', stufe: 2 });
+    expect(hubLookOf({ hubLevel: 0, hubStep: 9 })).toMatchObject({ id: 'lagerfeuer', stufe: 3 });
+    expect(hubLookOf({ hubLevel: 7, hubStep: 0 })).toMatchObject({ id: 'burg', stufe: 5, level: 5 });
   });
 
-  it('Rückfälle: ohne hubUpgrade (letzte Stufe, älterer Server) und ohne Goldkosten die Burg; ohne hubLevel Stufe 1', () => {
-    expect(hubLookOf({ hubLevel: 1 })).toEqual({ id: 'burg', stufe: 1, scaffold: false });
-    expect(hubLookOf({})).toEqual({ id: 'burg', stufe: 1, scaffold: false });
-    expect(hubLookOf({ hubLevel: 1, hubUpgrade: { ...up(0), gold: 0 } })).toMatchObject({ id: 'burg', stufe: 1 });
-    expect(hubLookOf({ hubUpgrade: up(0) })).toMatchObject({ id: 'lagerfeuer', stufe: 1 });
-    expect(hubLookOf({ hubLevel: 0, hubUpgrade: up(10) })).toMatchObject({ id: 'lagerfeuer', stufe: 2 });
-  });
-
-  it('jeder Look der Spielableitung steht in der Reihe der Vorschau', () => {
-    const looks = [0, 1, 25].map((p) => hubLookOf({ hubLevel: 1, hubUpgrade: up(p) }));
-    for (const l of looks) expect(HUB_GROWTH.some((g) => g.id === l.id && g.stufe === l.stufe)).toBe(true);
-    expect(HUB_GROWTH.map((g) => `${g.id}-${g.stufe}`)).toEqual(['lagerfeuer-1', 'lagerfeuer-2', 'lagerfeuer-3', 'burg-1', 'burg-2', 'burg-3', 'burg-4', 'burg-5']);
+  it('die Reihe der Vorschau ist genau die Spielableitung in Spielreihenfolge', () => {
+    expect(HUB_GROWTH.map((g) => `${g.id}-${g.stufe}`)).toEqual(combos.map((c) => `${hubLookOf(c).id}-${hubLookOf(c).stufe}`));
   });
 });

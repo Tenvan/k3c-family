@@ -87,20 +87,20 @@ Messung vor der Runde (BR1.1, 2026-10-07, Commit `69fce4a`, Stand `develop` `edb
 
 ### Korridore der Wirtschaft
 
-Zur Wirtschaft zählen die Zeilen aus § 1–3 mit Quelle `wirtschaft.md`, `materialien-gebaeude.md` oder `buerger.md`. Die Zeitgrenzen hängen an Tag und Phase, nicht an Minuten. Umgerechnet auf den Tageszyklus nach Q65 (Tag 6, Dämmerung 2, Nacht 4, Morgengrauen 2 min, 14 min je Tag) bzw. auf den heutigen Code bis B-470 (10/1/5 min, 16 min je Tag) ergibt das:
+Zur Wirtschaft zählen die Zeilen aus § 1–3 mit Quelle `wirtschaft.md`, `materialien-gebaeude.md` oder `buerger.md`. Die Zeitgrenzen hängen an Tag und Phase, nicht an Minuten. Umgerechnet auf den gebauten Tageszyklus nach Q65 (Tag 6, Dämmerung 2, Nacht 4, Morgengrauen 2 min, 14 min je Tag, `data/biomes/forest.json` › `cycle`) ergibt das:
 
-| Kennzahl | Korridor | Grenze nach Q65 | Grenze heute (bis B-470) | Quelle |
-|---|---|---|---|---|
-| Burg hält Nacht 1–5, Normal | 75–90 % | Tagesanbruch nach Nacht 5 = 68 min | 80 min | § 1, `wirtschaft.md` § 4 |
-| Burg hält Nacht 1–5, Dev / Leicht / Hart / Ultra | ≥ 99 % / 90–100 % / 50–70 % / 25–45 % | wie Normal | wie Normal | § 2 |
-| Gold am Morgen je Spieler, Median | 20–70 Gold, nicht dauerhaft am Maximum | bei `dawn` | bei `dawn` | § 1, `wirtschaft.md` § 1 |
-| Erste Mauer gebaut vor Ende der hellen Phase von Tag 1 | 90–100 % | 6 min | 10 min | § 1, `materialien-gebaeude.md` § 3.1 |
-| Erster Turm gebaut vor Ende von Tag 2 (helle Phase) | 70–100 % | 20 min | 26 min | § 3, `materialien-gebaeude.md` § 3.1 |
-| Holz am Tagesbeginn ≥ 100, ab Tag 3 | 70–100 % | Beginn Tag n = (n−1) × 14 min | (n−1) × 16 min | § 3, `materialien-gebaeude.md` § 1 |
-| Hub-Stufe 2 erreicht vor Tag 5 | 60–85 % | 56 min | 64 min | § 3, `materialien-gebaeude.md` § 2 |
-| Hub-Stufe 3 erreicht vor Tag 10 | 40–70 % | 126 min | 144 min | § 3, `materialien-gebaeude.md` § 2 |
-| Zerstörte Gebäude je Welle 1–5, Median | ≤ 1 | – | – | § 3, `materialien-gebaeude.md` § 4 |
-| Kämpfer je Hub zu Tagesbeginn: Tag 3 ≥ 4 und Tag 6 ≥ 8 | 70–100 % | Beginn Tag 3 = 28 min, Tag 6 = 70 min | 32 / 80 min | § 3, `buerger.md` § 3 |
+| Kennzahl | Korridor | Grenze | Quelle |
+|---|---|---|---|
+| Burg hält Nacht 1–5, Normal | 75–90 % | Tagesanbruch nach Nacht 5 = 68 min | § 1, `wirtschaft.md` § 4 |
+| Burg hält Nacht 1–5, Dev / Leicht / Hart / Ultra | ≥ 99 % / 90–100 % / 50–70 % / 25–45 % | wie Normal | § 2 |
+| Gold am Morgen je Spieler, Median | 20–70 Gold, nicht dauerhaft am Maximum | bei `dawn` (Beginn des Morgengrauens) | § 1, `wirtschaft.md` § 1 |
+| Erste Mauer gebaut vor Ende der hellen Phase von Tag 1 | 90–100 % | 6 min | § 1, `materialien-gebaeude.md` § 3.1 |
+| Erster Turm gebaut vor Ende von Tag 2 (helle Phase) | 70–100 % | 20 min | § 3, `materialien-gebaeude.md` § 3.1 |
+| Holz am Tagesbeginn ≥ 100, ab Tag 3 | 70–100 % | Beginn Tag n = (n−1) × 14 min | § 3, `materialien-gebaeude.md` § 1 |
+| Hub-Stufe 2 erreicht vor Tag 5 | 60–85 % | 56 min | § 3, `materialien-gebaeude.md` § 2 |
+| Hub-Stufe 3 erreicht vor Tag 10 | 40–70 % | 126 min | § 3, `materialien-gebaeude.md` § 2 |
+| Zerstörte Gebäude je Welle 1–5, Median | ≤ 1 | – | § 3, `materialien-gebaeude.md` § 4 |
+| Kämpfer je Hub zu Tagesbeginn: Tag 3 ≥ 4 und Tag 6 ≥ 8 | 70–100 % | Beginn Tag 3 = 28 min, Tag 6 = 70 min | § 3, `buerger.md` § 3 |
 
 Nicht zur Wirtschaft (Quelle `stufen.md`, `gegner.md`, `monarch.md`, `bosse.md`): Höhle erreicht, Wellenabstand unter Tage, Tick-Dauer, Gegner bis Tagesanbruch, Skill-Punkte, Bosse, Events (BR2).
 

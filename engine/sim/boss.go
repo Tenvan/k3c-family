@@ -72,7 +72,7 @@ func bossAbility(w *World, e *Enemy) {
 		e.AoeIn = a.IntervalSeconds
 		emit(w, "strike", Event{"from": e.ID, "x": unitX(e.X)})
 		for _, c := range targets {
-			applyDamageBy(w, c.id, e.Damage, e.Kind)
+			applyDamageBy(w, c.id, moonDamage(w, e.Damage), e.Kind) // Blutmond (events_moon.go)
 			if c.player != nil {
 				frostArmorHit(c.player, e)
 			}

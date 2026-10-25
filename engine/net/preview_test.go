@@ -105,9 +105,9 @@ func TestPreviewIstDeterministischUndSchreibtNichts(t *testing.T) {
 
 func TestPreviewLehntUngueltigeOptionenAb(t *testing.T) {
 	o := previewOpts()
-	o.Phase = "dawn"
+	o.Phase = "mittag"
 	if _, err := Preview(o); err == nil {
-		t.Error("dawn wurde nicht abgelehnt")
+		t.Error("mittag wurde nicht abgelehnt")
 	}
 	o = previewOpts()
 	o.Progress = 1

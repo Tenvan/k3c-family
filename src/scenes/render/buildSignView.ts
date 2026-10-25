@@ -27,6 +27,9 @@ const BOARD: Record<SignVariant, { wood: number; trim: number }> = {
 
 export const SIGN = { stick: 17, stickW: 8, w: 34, h: 22 };
 
+/** Schild nur an einem ungebauten Platz, den der Server als bezahlbar meldet (`payable`, B-587); ohne Feld nie */
+export const showsBuildSign = (s: Pick<Site, 'state' | 'payable'>): boolean => s.state !== 'built' && s.payable === true;
+
 /** Zeichnet das Schild mit Fuß bei (0, 0); Oberkante des Bretts liegt bei `-(stick + h)` */
 export function drawBuildSign(g: Phaser.GameObjects.Graphics, kind: Site['kind']): void {
   const c = BOARD[signVariant(kind)];

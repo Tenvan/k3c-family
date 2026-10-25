@@ -122,3 +122,31 @@ func TestFarbtauschEinmal(t *testing.T) {
 		t.Errorf("Tausch: %s, %s", s.Bausteine[0].Farbe, s.Bausteine[1].Farbe)
 	}
 }
+
+// TestStufeBasis: eine Stufe mit `basis` übernimmt Farbtausch und Zusätze der früheren Stufe und zeichnet ihre eigenen
+// Zusätze dazu (Ausbauschritte der Burg, GEB17.6); basis 1, eine spätere Stufe oder eigener Farbtausch brechen ab.
+func TestStufeBasis(t *testing.T) {
+	quelle := strings.Replace(stufenQuelle, `]}]}`, `]},{"stufe":3,"aenderung":"Wimpel dazu","basis":2,`+
+		`"zusaetze":[{"art":"banner","rechteck":[0.5,0,0.5,0.5],"farbe":"brown"}]}]}`, 1)
+	var b building
+	if err := json.Unmarshal([]byte(quelle), &b); err != nil {
+		t.Fatal(err)
+	}
+	if err := pruefeStufen(b); err != nil {
+		t.Fatal(err)
+	}
+	_, idx := palette()
+	s3 := mustRender(t, mitStufe(t, b, 3), 32)
+	if s3.ColorIndexAt(4, 20) != idx["dim-gray"] || s3.ColorIndexAt(4, 4) != idx["smokey-ash"] || s3.ColorIndexAt(20, 4) != idx["brown"] {
+		t.Error("Stufe 3 zeigt nicht Stufe 2 samt eigenem Zusatz")
+	}
+	for _, falsch := range []string{`"basis":1,`, `"basis":3,`, `"basis":2,"farben":{"rope":"black"},`} {
+		var f building
+		if err := json.Unmarshal([]byte(strings.Replace(quelle, `"basis":2,`, falsch, 1)), &f); err != nil {
+			t.Fatal(err)
+		}
+		if pruefeStufen(f) == nil {
+			t.Errorf("%s: kein Fehler", falsch)
+		}
+	}
+}

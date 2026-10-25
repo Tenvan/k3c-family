@@ -113,6 +113,11 @@ func (m *Manager) Create(id string, peer Peer, name string, fresh bool, depth in
 	if err := ValidSlots(slots); err != nil {
 		return nil, err
 	}
+	return m.createWith(id, name, fresh, depth, opts, slots, func(r *Room) error { return r.lockedJoin(id, peer, slots) })
+}
+
+// createWith ist Create mit einem beliebigen Eintritt des Geräts (Plätze oder Beobachter, observer.go).
+func (m *Manager) createWith(id, name string, fresh bool, depth int, opts Options, slots []int, enter func(*Room) error) (*Room, error) {
 	if !saveName.MatchString(name) {
 		return nil, ErrBadRequest
 	}
@@ -127,11 +132,11 @@ func (m *Manager) Create(id string, peer Peer, name string, fresh bool, depth in
 	if m.shut {
 		return nil, ErrClosed
 	}
-	r, err = m.create(id, peer, name, fresh, depth, slots, opts)
+	r, err = m.create(id, name, fresh, depth, opts, slots, enter)
 	return r, err
 }
 
-func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth int, slots []int, opts Options) (*Room, error) {
+func (m *Manager) create(id, name string, fresh bool, depth int, opts Options, slots []int, enter func(*Room) error) (*Room, error) {
 	for _, r := range m.rooms {
 		if r.Name != name {
 			continue
@@ -139,7 +144,7 @@ func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth in
 		if fresh {
 			return nil, ErrSaveExists
 		}
-		return r, r.lockedJoin(id, peer, slots)
+		return r, enter(r)
 	}
 	isl, err := m.open(name, fresh, depth, opts)
 	if err != nil {
@@ -158,7 +163,7 @@ func (m *Manager) create(id string, peer Peer, name string, fresh bool, depth in
 	if m.ctx != nil {
 		go r.run(m.ctx)
 	}
-	return r, r.lockedJoin(id, peer, slots)
+	return r, enter(r)
 }
 
 // seedOf ist der Seed eines neuen Stands: `create.seed`, ohne Angabe der Name (B-095); zu lang → ErrBadRequest.

@@ -30,8 +30,9 @@ export function isOnTower(world: Pick<World, 'sites'>, troop: Troop): boolean {
 export function daylight(info: CycleInfo): number {
   if (info.phase === 'day') return 1;
   if (info.phase === 'dusk') return 1 - info.progress;
-  // Letzte 10% der Nacht: Morgengrauen
-  return info.progress > 0.9 ? (info.progress - 0.9) * 10 : 0;
+  // Morgengrauen als eigene Phase (B-470): linear von dunkel nach hell; Nacht und unbekannte Phasen bleiben dunkel
+  if (info.phase === 'dawn') return info.progress;
+  return 0;
 }
 
 /** Preisschild und Bauen/Zahlen im Aktionen-Overlay erscheinen, wenn ein Monarch so viele Units nah am Ziel steht */

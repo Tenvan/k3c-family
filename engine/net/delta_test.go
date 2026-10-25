@@ -2,10 +2,10 @@ package net
 
 import (
 	"encoding/json"
-	"os"
 	"reflect"
 	"testing"
 
+	"k3c/engine/internal/golden"
 	"k3c/engine/level"
 	"k3c/engine/sim"
 )
@@ -17,6 +17,7 @@ func apply(prev, d map[string]any) map[string]any {
 		next[k] = v
 	}
 	next["events"] = []any{}
+	delete(next, "eventsDropped") // gilt wie events nur für den Zustand, in dem es steht (B-190)
 	for k, v := range d {
 		if k == "unset" {
 			for _, f := range v.([]any) {
@@ -76,7 +77,7 @@ func wire(t *testing.T, v any) map[string]any {
 // replayWorld spielt die Eingaben eines Golden-Laufs ab und ruft each für jeden Tick ab from auf.
 func replayWorld(t *testing.T, file string, from int, each func(tick int, w *sim.World)) {
 	t.Helper()
-	raw, err := os.ReadFile("../../testdata/golden/" + file)
+	raw := golden.Read(t, "../../testdata/golden/"+file)
 	var run struct {
 		Biome, Seed string
 		CycleSpeed  float64
@@ -86,9 +87,7 @@ func replayWorld(t *testing.T, file string, from int, each func(tick int, w *sim
 			Commands []sim.PlayerCommand
 		}
 	}
-	if err == nil {
-		err = json.Unmarshal(raw, &run)
-	}
+	err := json.Unmarshal(raw, &run)
 	b, berr := level.LoadBiome(run.Biome)
 	if err != nil || berr != nil {
 		t.Fatal(err, berr)
@@ -119,7 +118,7 @@ func TestDeltaErgibtJedenVollenZustand(t *testing.T) {
 	}
 	var client, prev map[string]any
 	changes := map[string]int{}
-	replayWorld(t, "sim-cave-belagerung.json", 2400, func(tick int, w *sim.World) {
+	replayWorld(t, "sim-cave-belagerung.json.gz", 2400, func(tick int, w *sim.World) {
 		if tick%600 == 0 {
 			w.Castle.HP--
 		}

@@ -2,6 +2,7 @@
   "id": "cave",
   "name": "Tiefe 1 (Höhle)",
   "depth": 1,
+  "backdropVariants": 5,
   "lengthUnits": { "min": 700, "max": 900 },
   "chunkWidthUnits": 50,
   "hubWidthUnits": 100,
@@ -23,5 +24,6 @@
   "veins": { "count": 2, "kind": "stoneVein" },
   "enemies": { "portal": ["bat", "caveTroll"], "night": ["skeleton"] },
   "cycle": { "type": "aggressionPool", "percentPerMinute": 1, "percentPerKill": 5, "percentPerGather": 1 },
+  "rootsPerNode": 2,
   "palette": { "sky": "#35354d", "far": "#2e2e3a", "near": "#44444f", "ground": "#5c5c66" }
 }

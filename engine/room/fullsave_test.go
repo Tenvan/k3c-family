@@ -11,8 +11,8 @@ import (
 	"k3c/engine/sim"
 )
 
-// B-315/AC-01: Jeder Bauplatz aller Stufen ist gebaut, jede Ausbaustufe (Hub, Mauer, Turm) kommt mindestens einmal vor,
-// und der Stand lädt.
+// B-315/AC-01: Jede Ausbaustufe (Hub, Mauer, Turm) kommt mindestens einmal vor, und der Stand lädt. Seit B-425 sind nur
+// die Plätze gebaut, die die Hub-Stufe ihrer Inselstufe zulässt (fullsave_rules_test.go); gebaute haben HP.
 func TestVollAusgebauterSpielstand(t *testing.T) {
 	f := newFixture()
 	f.m.Dev = true
@@ -28,7 +28,7 @@ func TestVollAusgebauterSpielstand(t *testing.T) {
 	for _, h := range s.Stages {
 		seen["hub"][max(1, h.HubLevel)] = true
 		for _, site := range h.Sites {
-			if site.State != "built" || site.HP <= 0 {
+			if site.State == "built" && site.HP <= 0 {
 				t.Fatalf("Tiefe %d: %s@%v ist %s mit HP %v", h.Depth, site.Kind, site.X, site.State, site.HP)
 			}
 			if seen[site.Kind] != nil {
@@ -49,14 +49,14 @@ func TestVollAusgebauterSpielstand(t *testing.T) {
 	loadsBuilt(t, s)
 }
 
-// loadsBuilt: Der Stand lädt, jeder Platz ist danach gebaut und die erste Stufe hat Hub 5.
+// loadsBuilt: Der Stand lädt, jeder Platz hat danach den Zustand aus dem Stand und die erste Stufe hat Hub 5.
 func loadsBuilt(t *testing.T, s sim.IslandSave) {
 	t.Helper()
 	isl := need(sim.FromIslandSave(s, 1))(t)
-	for _, w := range isl.Stages {
-		for _, site := range w.Sites {
-			if site.State != "built" {
-				t.Fatalf("nach Laden: Tiefe %d %s ist %s", w.Biome.Depth, site.Kind, site.State)
+	for i, w := range isl.Stages {
+		for j, site := range w.Sites {
+			if want := s.Stages[i].Sites[j].State; site.State != want {
+				t.Fatalf("nach Laden: Tiefe %d %s ist %s, erwartet %s", w.Biome.Depth, site.Kind, site.State, want)
 			}
 		}
 	}

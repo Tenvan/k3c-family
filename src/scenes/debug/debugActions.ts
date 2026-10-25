@@ -1,12 +1,15 @@
+import bossesJson from '../../../data/bosses.json';
+import eventsJson from '../../../data/events.json';
+import { de } from '../../core/texts.de';
 import type { ResourceKind } from '../../model/types';
 import type { DevMessage } from '../../online/clientProtocol';
 
 /** Dev-Aktionen im Cheat-Dialog (B-179, B-231): nur Daten und Abbildung auf die Nachricht `dev`, keine Spielregel. */
 
-export type DevActionGroup = 'gold' | 'material' | 'vorrat' | 'ausbau' | 'zeit' | 'grad';
+export type DevActionGroup = 'gold' | 'material' | 'vorrat' | 'ausbau' | 'zeit' | 'grad' | 'kampf';
 
 /** Gruppen in Anzeige-Reihenfolge (eine Zeile je Gruppe im Dialog). */
-export const DEV_GROUPS: readonly DevActionGroup[] = ['gold', 'material', 'vorrat', 'ausbau', 'zeit', 'grad'];
+export const DEV_GROUPS: readonly DevActionGroup[] = ['gold', 'material', 'vorrat', 'ausbau', 'zeit', 'grad', 'kampf'];
 
 /** Umschalter des Dialogs: Der Zustand steht lokal im Dialog, die Nachricht trägt `on`. */
 export type DevToggle = 'cheapBuild' | 'timescaleAuto';
@@ -37,6 +40,13 @@ export const GRADES: [string, string][] = [
   ['hard', 'Hart'],
   ['ultra', 'Ultra'],
 ];
+/** Bosse der Gruppe „Kampf“ (B-603): Mini- und Endbosse aus data/bosses.json mit ihrem Namen. */
+export const BOSSES: [string, string][] = [...bossesJson.bosses, ...bossesJson.endBosses].map((b) => [b.id, b.name]);
+/** Events der Gruppe „Kampf“: Ids aus data/events.json, Namen aus den Texten (ohne Text die Id). */
+export const EVENTS: [string, string][] = eventsJson.events.map((e) => {
+  const key = `event.${e.id}`;
+  return [e.id, key in de ? de[key as keyof typeof de] : e.id];
+});
 const RESOURCES: [ResourceKind, string][] = [
   ['wood', 'Holz'],
   ['stone', 'Stein'],
@@ -58,6 +68,10 @@ export const DEV_ACTIONS: readonly DevAction[] = [
   { group: 'zeit', label: 'Zeitraffer → 1× bei Tageszeitwechsel', key: 'autoslow', toggle: 'timescaleAuto' },
   { group: 'zeit', label: 'Nächste Tageszeit', key: 'nextphase' },
   ...GRADES.map(([g, name]): DevAction => ({ group: 'grad', label: `Grad ${name}`, key: `grade:${g}` })),
+  ...BOSSES.map(([id, name]): DevAction => ({ group: 'kampf', label: `Boss ${name}`, key: `boss:${id}` })),
+  { group: 'kampf', label: 'Boss: nächste Phase', key: 'bossphase' },
+  ...EVENTS.map(([id, name]): DevAction => ({ group: 'kampf', label: `Event ${name}`, key: `event:${id}` })),
+  { group: 'kampf', label: 'Nacht sofort', key: 'night' },
 ];
 
 /** Sichtbar: die Gruppe „Grad“ nur im Dev-Mode des Raums (B-107/AC-02); die übrigen zeigt der Dialog mit Hinweis. */
@@ -69,13 +83,30 @@ export const isCurrentGrade = (a: DevAction, grade: string | undefined): boolean
 /** Beschriftung einer Zeile; Umschalter zeigen „an“ bzw. „aus“. */
 export const actionLabel = (a: DevAction, toggles: DevToggles): string => (a.toggle ? `${a.label}: ${toggles[a.toggle] ? 'an' : 'aus'}` : a.label);
 
+/** Nachricht der Gruppe „Kampf“ (B-603): Boss an der Stufe des lokalen Slots, Phase, Event, Nacht; sonst `null`. */
+function combatMessage(action: string, value: string, slot: number): DevMessage | null {
+  switch (action) {
+    case 'boss':
+      return { t: 'dev', action: 'boss', slot, boss: value };
+    case 'bossphase':
+      return { t: 'dev', action: 'bossPhase' };
+    case 'event':
+      return { t: 'dev', action: 'event', event: value };
+    case 'night':
+      return { t: 'dev', action: 'night' };
+  }
+  return null;
+}
+
 /**
- * Nachricht `dev` für eine Auswahl der Liste, den lokalen Slot (gold, material, castlefall) und den Zustand der Umschalter
- * (die Nachricht setzt den umgekehrten Wert); unbekannte Auswahl → `null`.
+ * Nachricht `dev` für eine Auswahl der Liste, den lokalen Slot (gold, material, castlefall, boss) und den Zustand der
+ * Umschalter (die Nachricht setzt den umgekehrten Wert); unbekannte Auswahl → `null`.
  */
 export function devMessage(key: string, slot: number, toggles: DevToggles = NO_TOGGLES): DevMessage | null {
   if (!DEV_ACTIONS.some((a) => a.key === key)) return null;
   const [action, value] = key.split(':') as [string, string];
+  const combat = combatMessage(action, value, slot);
+  if (combat) return combat;
   switch (action) {
     case 'gold':
       return { t: 'dev', action: 'gold', slot, amount: Number(value) };

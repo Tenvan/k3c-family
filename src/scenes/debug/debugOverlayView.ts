@@ -71,7 +71,7 @@ export class DebugOverlay {
     this.text.setVisible(this.shown);
     this.updateDialog(client, world);
     if (!this.shown) return;
-    const lines = debugLines({ client, protocol: PROTOCOL_VERSION, world, fps: this.scene.game.loop.actualFps, now: performance.now(), delayMs: (this.scene.scene.get('game') as GameScene | null)?.delayMs, version: this.scene.registry.get(VERSION_KEY) as string | undefined });
+    const lines = debugLines({ client, protocol: PROTOCOL_VERSION, world, fps: this.scene.game.loop.actualFps, frameMs: this.scene.game.loop.delta, now: performance.now(), delayMs: (this.scene.scene.get('game') as GameScene | null)?.delayMs, version: this.scene.registry.get(VERSION_KEY) as string | undefined });
     this.text.setText(lines);
   }
 

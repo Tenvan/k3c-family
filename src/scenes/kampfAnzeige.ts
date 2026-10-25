@@ -9,8 +9,8 @@ import type { Enemy, Merchant, World } from '../model/types';
  * ableiten (Anteil, Text, Pixel). Fehlen die Felder (älterer Server), liefern alle `null` bzw. eine leere Liste.
  */
 
-/** Zustand, den die Anzeige liest; alle Felder dürfen fehlen. `merchant.raid` sendet der Server (K4), `types.ts` kennt es noch nicht. */
-export type KampfWorld = Partial<Pick<World, 'enemies' | 'cycleSpeed' | 'nightEvents'>> & { merchant?: Merchant & { raid?: boolean } };
+/** Zustand, den die Anzeige liest; alle Felder dürfen fehlen. */
+export type KampfWorld = Partial<Pick<World, 'enemies' | 'cycleSpeed' | 'nightEvents'>> & { merchant?: Merchant };
 
 export interface BossBarView {
   id: number;

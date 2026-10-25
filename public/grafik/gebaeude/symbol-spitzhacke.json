@@ -1,0 +1,35 @@
+{
+  "id": "symbol-spitzhacke",
+  "vorlage": {
+    "motiv": "Spitzhacke als kleines Symbol für das Abbau-Schild an Felsen, Erz und Stein (GEB16, B-588)",
+    "teile": [
+      "Holzstiel senkrecht in der Mitte bis zum Boden",
+      "Gebogener Eisenkopf oben über die ganze Breite mit zwei hellen Spitzen, Band am Stiel"
+    ],
+    "materialien": [
+      "Pfosten, Balken",
+      "Holz (Wand, Tresen, Gestell)",
+      "Eisen (Rüstung, Band)"
+    ],
+    "stimmung": "Stein brechen",
+    "fein": "Licht und Schatten am Stiel, Licht auf dem Kopf"
+  },
+  "kacheln": {
+    "b": 1,
+    "h": 1
+  },
+  "bausteine": [
+    {"art":"stiel","rechteck":[0.4375,0.25,0.125,0.6875],"farbe":"rope"},
+    {"art":"licht","rechteck":[0.4375,0.25,0.03125,0.6875],"farbe":"twine","fein":true},
+    {"art":"schatten","rechteck":[0.53125,0.25,0.03125,0.6875],"farbe":"oiled-cedar","fein":true},
+    {"art":"kopf","rechteck":[0.0625,0.34375,0.09375,0.125],"farbe":"heather"},
+    {"art":"kopf","rechteck":[0.125,0.25,0.15625,0.125],"farbe":"heather"},
+    {"art":"kopf","rechteck":[0.25,0.1875,0.5,0.125],"farbe":"heather"},
+    {"art":"kopf","rechteck":[0.71875,0.25,0.15625,0.125],"farbe":"heather"},
+    {"art":"kopf","rechteck":[0.84375,0.34375,0.09375,0.125],"farbe":"heather"},
+    {"art":"spitze","rechteck":[0.0625,0.4375,0.0625,0.0625],"farbe":"light-steel"},
+    {"art":"spitze","rechteck":[0.875,0.4375,0.0625,0.0625],"farbe":"light-steel"},
+    {"art":"band","rechteck":[0.40625,0.1875,0.1875,0.1875],"farbe":"dim-gray"},
+    {"art":"licht","rechteck":[0.25,0.1875,0.5,0.03125],"farbe":"light-steel","fein":true}
+  ]
+}
