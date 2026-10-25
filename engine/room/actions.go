@@ -30,8 +30,8 @@ func (r *Room) AddSlot(id string, peer Peer, slot int) (err error) {
 	switch {
 	case slot >= MaxSlots:
 		return ErrTooManySlots
-	case d == nil || slot < 0:
-		return ErrBadRequest
+	case d == nil || d.observer || slot < 0:
+		return ErrBadRequest // ein Beobachter bekommt keinen Platz (B-352)
 	}
 	if _, used := d.slots[slot]; used {
 		return ErrBadRequest
@@ -106,6 +106,10 @@ func (r *Room) leave(id string) {
 	if d == nil {
 		return
 	}
+	if d.observer {
+		r.unobserve(id)
+		return
+	}
 	for _, idx := range d.slots {
 		r.release(idx)
 	}
@@ -123,6 +127,10 @@ func (r *Room) Drop(id string, peer Peer) {
 	defer r.mu.Unlock()
 	d := r.own(id, peer)
 	if ok = d != nil; !ok {
+		return
+	}
+	if d.observer { // ein Beobachter hat keine wartenden Monarchen
+		r.unobserve(id)
 		return
 	}
 	now := r.m.now()
@@ -242,7 +250,7 @@ func (r *Room) sweep(now time.Time) (changed, remove bool) {
 		r.syncFree()
 		r.broadcastSeats()
 	}
-	if r.connected() > 0 || r.emptySince.IsZero() {
+	if r.connected() > 0 || r.watching() > 0 || r.emptySince.IsZero() {
 		return changed, false
 	}
 	if r.isTest() { // B-204: ein Test-Raum wartet nur auf wartende Monarchen, nicht auf EmptyFor

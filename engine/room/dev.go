@@ -44,7 +44,7 @@ func (r *Room) Dev(id string, peer Peer, a DevAction) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	d := r.own(id, peer)
-	if d == nil {
+	if d == nil || d.observer { // Beobachter ändern nichts, auch nicht raumweit (Phase, Grad, Zeitraffer; Review TR4.2)
 		return ErrBadRequest
 	}
 	return r.devApply(short(id), a, func(slot int) (int, bool) {

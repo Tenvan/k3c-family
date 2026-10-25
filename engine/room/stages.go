@@ -25,8 +25,11 @@ func (r *Room) deviceStage(d *device) int {
 	return r.isl.StageOf(d.slots[first])
 }
 
-// deviceStages sind die Stufen der Slots des Geräts, aufsteigend und ohne Doppelte.
+// deviceStages sind die Stufen der Slots des Geräts, aufsteigend und ohne Doppelte; beim Beobachter die aller Monarchen.
 func (r *Room) deviceStages(d *device) []int {
+	if d.observer {
+		return r.observerStages()
+	}
 	out := []int{}
 	for _, idx := range d.slots {
 		out = append(out, r.isl.StageOf(idx))

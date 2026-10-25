@@ -21,7 +21,7 @@ func (r *Room) Pause(id string, peer Peer, on bool) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	d := r.own(id, peer)
-	if d == nil {
+	if d == nil || d.observer {
 		return ErrBadRequest
 	}
 	if d.paused == on {
@@ -42,7 +42,7 @@ func (r *Room) Pause(id string, peer Peer, on bool) error {
 func (r *Room) couchPaused() bool {
 	n, paused := 0, false
 	for _, d := range r.devices {
-		if d.connected {
+		if d.connected && !d.observer {
 			n++
 			paused = d.paused
 		}

@@ -71,3 +71,36 @@ func TestDeltaListen(t *testing.T) {
 		t.Error("unset nicht angewendet")
 	}
 }
+
+// TR4.2, B-352: Der Beobachter legt den Raum ohne Platz an, liest den Zustand mit dem Monarchen des Spielers und
+// schickt keine Eingabe.
+func TestBeobachterOhnePlatz(t *testing.T) {
+	srv := startServer(t, "geheim")
+	bot, _ := balance.BotByName("saver")
+	ctx := context.Background()
+	o, err := Dial(ctx, srv.URL, "beobachter", bot)
+	if err != nil {
+		t.Fatal(err)
+	}
+	code, err := o.CreateObserved(ctx, "test-beobachter")
+	if err != nil {
+		t.Fatal(err)
+	}
+	p, err := Dial(ctx, srv.URL, "spieler", bot)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Join(ctx, code); err != nil {
+		t.Fatal(err)
+	}
+	time.Sleep(time.Second)
+	w, own := o.World()
+	p.Stop()
+	o.Stop()
+	if st := o.Stats(); st.States == 0 || st.Inputs != 0 || st.Errors != 0 || st.Disconnected {
+		t.Errorf("Beobachter: %+v", st)
+	}
+	if w == nil || own != -1 || len(w.Players) != 1 {
+		t.Fatalf("Zustand des Beobachters: eigener Monarch %d, Welt %v", own, w)
+	}
+}
