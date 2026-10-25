@@ -39,7 +39,7 @@ type Biome struct {
 		Count int    `json:"count"`
 		Kind  string `json:"kind"`
 	} `json:"veins"`
-	// Lair: Das Level hat den Bau des Endbosses (Chunk und Entität `lair`, level.go › placeLair); ohne Feld keinen.
+	// Lair: Das Level hat den Bau des Endbosses (Entität `lair` an der inneren Kante des Ausgangs-Chunks, B-343); ohne Feld keinen.
 	Lair bool `json:"lair"`
 	// Lava: Chunks der Art „lava“ tragen in der Mitte einen Streifen von WidthUnits, der Figuren DamagePerSecond
 	// Schaden zufügt (B-115, Q28; Wirkung in engine/sim/world_lava.go). Ohne Feld keine Lava.
@@ -53,13 +53,14 @@ type Biome struct {
 	} `json:"enemies"`
 }
 
-// Cycle ist der Zyklus eines Bioms: `dayNight` (Oberwelt) oder `aggressionPool` (unter Tage). Die Simulation
-// (engine/sim) braucht ihn, der Generator nicht.
+// Cycle ist der Zyklus eines Bioms: `dayNight` (Oberwelt, vier Phasen Tag, Dämmerung, Nacht, Morgengrauen, Q65) oder
+// `aggressionPool` (unter Tage). Die Simulation (engine/sim) braucht ihn, der Generator nicht.
 type Cycle struct {
 	Type             string  `json:"type"`
 	DayMinutes       float64 `json:"dayMinutes"`
 	TwilightMinutes  float64 `json:"twilightMinutes"`
 	NightMinutes     float64 `json:"nightMinutes"`
+	DawnMinutes      float64 `json:"dawnMinutes"`
 	PercentPerMinute float64 `json:"percentPerMinute"`
 	PercentPerGather float64 `json:"percentPerGather"`
 	PercentPerKill   float64 `json:"percentPerKill"`
@@ -75,7 +76,28 @@ func LoadBiome(id string) (Biome, error) {
 	if err := json.Unmarshal(raw, &b); err != nil {
 		return Biome{}, fmt.Errorf("biomes/%s.json: %w", id, err)
 	}
+	if err := b.Cycle.Check(); err != nil {
+		return Biome{}, fmt.Errorf("biomes/%s.json: %w", id, err)
+	}
 	return b, nil
+}
+
+// Check lehnt einen Tag/Nacht-Zyklus ab, dem eine Dauer fehlt oder dessen Dauer nicht positiv ist (kein stiller
+// Standardwert, B-470). Der Aggressionspool hat keine Phasen.
+func (c Cycle) Check() error {
+	if c.Type != "dayNight" {
+		return nil
+	}
+	for _, d := range []struct {
+		name    string
+		minutes float64
+	}{{"dayMinutes", c.DayMinutes}, {"twilightMinutes", c.TwilightMinutes}, {"nightMinutes", c.NightMinutes},
+		{"dawnMinutes", c.DawnMinutes}} {
+		if !(d.minutes > 0) {
+			return fmt.Errorf("cycle.%s fehlt oder ist nicht positiv (%v)", d.name, d.minutes)
+		}
+	}
+	return nil
 }
 
 // Entry ist ein Schlüssel eines JSON-Objekts mit seinem Wert.

@@ -40,7 +40,7 @@ export function nextMusicState(prev: MusicState | undefined, view: MusicView, ev
   if (view.boss) return 'boss';
   if (view.enemies > 0) return 'battle';
   if (view.depth > 0) return 'depth';
-  return view.phase;
+  return view.phase === 'dawn' ? 'night' : view.phase; // Morgengrauen ohne eigenes Stück (Q16, B-168): Nachtmusik läuft weiter
 }
 
 /**

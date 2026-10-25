@@ -9,7 +9,7 @@ import (
 // DevAction ist eine Dev-Aktion eines Geräts (Nachricht dev, B-178): gold und material brauchen slot und amount,
 // material zusätzlich resource, timescale braucht factor, pause braucht paused (B-231); wave und castleFall (Stufenverlust
 // in der Stufe des Monarchen, WZ14.5) brauchen slot, phase braucht
-// phase (day, dusk, night) (B-232); grade braucht grade (Name aus data/difficulty.json, gilt ab der nächsten Welle, B-080).
+// phase (day, dusk, night, dawn) (B-232); grade braucht grade (Name aus data/difficulty.json, gilt ab der nächsten Welle, B-080).
 // maxStock (+100 je Aufruf), fillStock und nextPhase brauchen nichts; cheapBuild und timescaleAuto brauchen on, buildAll
 // braucht level (1 bis 5).
 type DevAction struct {

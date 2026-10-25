@@ -55,7 +55,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | eingeplant | SV1 | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
 | [B-317](B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | eingeplant | U5 | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
 | [B-324](B-324-client-typen-gegnerdaten.md) | CLI | Schuld | niedrig | eingeplant | KB2 | Die Client-Typen der Gegner- und Wellendaten passen zu den JSON-Dateien |
-| [B-327](B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | eingeplant | KB1 | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
 | [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
 | [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | HW1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
 | [B-341](B-341-header-ursache-live-messen.md) | DEV | Problem | mittel | eingeplant | WZ2 | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
@@ -73,8 +72,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-372](B-372-check-run-timeout-go.md) | SRV | Problem | mittel | eingeplant | WZ2 | check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab |
 | [B-377](B-377-beispiel-rueckmeldung-servertest.md) | SRV | Schuld | niedrig | eingeplant | BD2 | Ein Server-Test prüft das Beispiel der Rückmeldungs-Ereignisse gegen die Simulation |
 | [B-378](B-378-castfailed-einmal-je-druck.md) | SIM | Problem | mittel | eingeplant | BD2 | Eine gehaltene Skill-Taste ohne Ziel meldet castFailed einmal je Tastendruck |
-| [B-379](B-379-vollmond-belohnung-nur-stufe-0.md) | SIM | Problem | mittel | eingeplant | KB1 | Die Vollmond-Belohnung gilt für die Stufen, in denen gespielt wird |
-| [B-380](B-380-blutmond-boss-faehigkeiten.md) | SIM | Problem | niedrig | eingeplant | KB1 | Der Blutmond verstärkt auch die Flächenangriffe der Bosse |
 | [B-381](B-381-protokoll-haendler-raid-hp.md) | SRV | Problem | niedrig | eingeplant | KB2 | Das Protokoll beschreibt Überfall und HP des Händlers |
 | [B-382](B-382-lobby-neuversuch-nur-spielen.md) | CLI | Problem | niedrig | eingeplant | BD2 | Ein gewählter Spielstand startet nie leer neu |
 | [B-385](B-385-inselwechsel-ereignis-geht-verloren.md) | SRV | Problem | mittel | eingeplant | KB2 | Das Ereignis `islandSwitch` erreicht beim Inselwechsel keinen Client |
@@ -102,7 +99,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-457](B-457-geb6-abnahme-splitscreen-ausgang-geschmack.md) | CLI | Frage | mittel | eingeplant | GEB10 | GEB6: Split-Screen, Ausgang-Beschriftung und Geschmacksfragen später prüfen |
 | [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | eingeplant | GEB11 | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
 | [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
-| [B-470](B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | eingeplant | W12 | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
 | [B-472](B-472-nacht-dunkler-fackeln-lagerfeuer-licht.md) | CLI | Idee | niedrig | eingeplant | W13 | Nacht und Morgengrauen sind dunkler, Fackeln und Lagerfeuer machen Licht |
 | [B-500](B-500-fullsave-tiefen-aus-welt.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Voll ausgebauter Spielstand nimmt Tiefen aus den Biomen statt aus der Standard-Welt |
 | [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | eingeplant | BD5 | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
@@ -147,6 +143,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-615](B-615-ticket-nummer-gleichzeitig.md) | DEV | Problem | mittel | offen | – | Gleichzeitiges Anlegen von Tickets vergibt nie dieselbe Nummer |
 | [B-616](B-616-lauf-id-nach-neustart.md) | DEV | Problem | niedrig | offen | – | Lauf-IDs der Balancing-Seite bleiben über einen Neustart der Workbench eindeutig |
 | [B-619](B-619-check-diff-cache-und-short.md) | INF | Problem | hoch | offen | – | check:diff nutzt den Go-Testcache und lässt lange Tests aus |
+| [B-620](B-620-golden-grenze-20-mb.md) | INF | Frage | mittel | offen | – | Golden-Grenze 20 MB nach dem dichteren Wald bestätigen |
+| [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | offen | – | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
 
 ## Archiv
 
@@ -578,3 +576,7 @@ Zeile in diesen Abschnitt.
 | [B-098](archiv/B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | erledigt | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-607](archiv/B-607-studio-levelview-test-golden-dichter-wald.md) | DEV | Problem | hoch | verworfen | – | Der Studio-Test levelView erwartet die Baum-Zahl vor dem dichten Wald |
 | [B-606](archiv/B-606-studio-tests-rot-nach-dichtem-wald.md) | DEV | Problem | hoch | erledigt | WZ28 | Die Studio-Tests sind nach dem dichten Wald wieder grün und check_run hängt nicht bei k3c-studio:test |
+| [B-470](archiv/B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | erledigt | W12 | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
+| [B-379](archiv/B-379-vollmond-belohnung-nur-stufe-0.md) | SIM | Problem | mittel | erledigt | KB1 | Die Vollmond-Belohnung gilt für die Stufen, in denen gespielt wird |
+| [B-380](archiv/B-380-blutmond-boss-faehigkeiten.md) | SIM | Problem | niedrig | erledigt | KB1 | Der Blutmond verstärkt auch die Flächenangriffe der Bosse |
+| [B-327](archiv/B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | erledigt | KB1 | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |

@@ -531,6 +531,83 @@
       ]
     },
     {
+      "id": "site:scaffold:1",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gerüst im Bau, Breite 1 (Mauer, GEB16)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/geruest-1-32.png"
+        }
+      ]
+    },
+    {
+      "id": "site:scaffold:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gerüst im Bau, Breite 2 (Tor, GEB16)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/geruest-2-32.png"
+        }
+      ]
+    },
+    {
+      "id": "site:scaffold:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gerüst im Bau, Breite 3 (Turm, GEB16)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/geruest-3-32.png"
+        }
+      ]
+    },
+    {
+      "id": "site:scaffold:4",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gerüst im Bau, Breite 4 (Farm, Treppen, GEB16)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/geruest-4-32.png"
+        }
+      ]
+    },
+    {
+      "id": "site:scaffold:6",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Gerüst im Bau, Breite 6 (Werkstatt, Lager, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer, GEB16)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/geruest-6-32.png"
+        }
+      ]
+    },
+    {
+      "id": "sign:axe",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Abbau-Schild: Axt am Baum (GEB16)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/symbol-axt-32.png"
+        }
+      ]
+    },
+    {
+      "id": "sign:pickaxe",
+      "art": "grafik",
+      "kategorie": "objekte",
+      "beschreibung": "Abbau-Schild: Spitzhacke an Fels, Erz und Ader (GEB16)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/symbol-spitzhacke-32.png"
+        }
+      ]
+    },
+    {
       "id": "wall:1",
       "art": "grafik",
       "kategorie": "gebaeude",

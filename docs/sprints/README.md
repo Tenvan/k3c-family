@@ -13,6 +13,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WZ31 | DEV | WZG | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | – | `aktiv/WZ31-web-client-first/` |
 | WZ28 | DEV | WZG | Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite | – | `aktiv/WZ28-offline-werkzeuge/` |
 | WZ30 | DEV | WZG | Oberflächen zur Abnahme: Szenen, Filter, Quellen, Chat-Karten mit Mock-Daten | – | `aktiv/WZ30-oberflaechen-abnahme/` |
+| GEB16 | SRV, CLI, DEV, REG | GEB | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | – | `aktiv/GEB16-bauschilder-wald-geruest/` |
 | GEB17 | CLI, REG, SIM, DEV | GEB | Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe | – | `aktiv/GEB17-hub-ausbau-je-inselstufe/` |
 | SO8 | DEV, CLI | SND | Skill-Sounds je Klasse | – | `aktiv/SO8-skill-sounds-je-klasse/` |
 | KB2 | SRV, CLI | KMP | Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen | – | `aktiv/KB2-protokoll-kampf-nachtraege/` |
@@ -31,10 +32,8 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 |---|---|---|---|---|---|---|
 | WZ29 | DEV | WZG | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | – | bereit | `geplant/WZ29-sound-grafik-seiten-ausbau/` |
 | GEB15 | DEV | GEB | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | – | Entwurf | `geplant/GEB15-hoehle-fels-varianten/` |
-| GEB16 | DEV | GEB | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | – | Entwurf | `geplant/GEB16-bauschilder-wald-geruest/` |
 | SV2 | SRV | WRT | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | – | Entwurf | `geplant/SV2-voll-ausbau-regelkonform/` |
 | W13 | CLI | WRT | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | – | Entwurf | `geplant/W13-morgengrauen-licht-client/` |
-| W12 | SIM | WRT | Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln | – | Entwurf | `geplant/W12-morgengrauen-phase/` |
 | SO8 | DEV, CLI | SND | Skill-Sounds je Klasse | – | bereit | `geplant/SO8-skill-sounds-je-klasse/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | Entwurf | `geplant/PM1-leistung-messen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | bereit | `geplant/PF1-splitscreen-leistung/` |
@@ -44,7 +43,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | W11 | REG, SRV, CLI | WRT | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | – | Entwurf | `geplant/W11-bauplaetze-protokoll-abstand/` |
 | GD1 | INF | TST | Golden-Daten kleiner bei gleicher Prüfschärfe | – | Entwurf | `geplant/GD1-golden-verkleinern/` |
-| KB1 | SIM | KMP | Kampf-Nachträge: Mond-Events, Endboss-Bau, Golden-Läufe, Feuergeist | – | Entwurf | `geplant/KB1-events-boss-golden/` |
 | KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | Entwurf | `geplant/KB4-dev-aktionen-boss-event/` |
 | PG1 | PLAT | REL | Präsentationsseite mit echten Spielbildern | – | Entwurf | `geplant/PG1-praesentation-bilder/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | Entwurf | `geplant/PB1-itch-io/` |
@@ -246,3 +244,5 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SK2 | Skills im Spiel sichtbar, Dieb-Skills in den Daten | `erledigt/SK2-skills-sichtbar-dieb/` |
 | K5 | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | `erledigt/K5-anzeige-kampf/` |
 | LV1 | Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs | `erledigt/LV1-level-gegner-korrektur/` |
+| W12 | Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln | `erledigt/W12-morgengrauen-phase/` |
+| KB1 | Kampf-Nachträge: Mond-Events, Endboss-Bau, Golden-Läufe, Feuergeist | `erledigt/KB1-events-boss-golden/` |

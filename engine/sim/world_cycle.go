@@ -6,32 +6,44 @@ import (
 	"k3c/engine/level"
 )
 
-// Tag/Nacht-Zyklus (Port von src/world/sim/cycle.ts): Tag → Dämmerung → Nacht → nächster Tag.
+// Tag/Nacht-Zyklus (Q65, docs/rules/wirtschaft.md § 3): Tag → Dämmerung → Nacht → Morgengrauen → nächster Tag.
 // Unter Tage läuft der globale Zyklus der Oberwelt weiter, Wellen kommen dort über den Aggressionspool.
 
-// CycleInfo ist der Stand des Zyklus. Day 1 = erster Tag, die Nacht gehört zum Tag davor.
+// CycleInfo ist der Stand des Zyklus. Day 1 = erster Tag; die Nacht gehört zum Tag davor, das Morgengrauen schon zum
+// neuen Tag (mit ihm fällt das Ereignis dawn, „Tag n – die Sonne geht auf“).
 type CycleInfo struct {
-	Phase       string  `json:"phase"` // day, dusk, night
+	Phase       string  `json:"phase"` // day, dusk, night, dawn
 	Day         int     `json:"day"`
 	Progress    float64 `json:"progress"` // 0..1 innerhalb der Phase
 	SecondsLeft float64 `json:"secondsLeft"`
 }
 
+// cyclePhase ist eine Phase des Zyklus mit Beginn und Länge in Zyklus-Sekunden.
+type cyclePhase struct {
+	name          string
+	start, length float64
+}
+
+// cyclePhases liefert die vier Phasen in ihrer Reihenfolge und die Länge eines ganzen Zyklus.
+func cyclePhases(c level.Cycle) ([4]cyclePhase, float64) {
+	day, dusk := c.DayMinutes*60, c.TwilightMinutes*60
+	night, dawn := c.NightMinutes*60, c.DawnMinutes*60
+	return [4]cyclePhase{
+		{"day", 0, day}, {"dusk", day, dusk}, {"night", day + dusk, night}, {"dawn", day + dusk + night, dawn},
+	}, day + dusk + night + dawn
+}
+
 func cycleAt(c level.Cycle, seconds float64) CycleInfo {
-	day := float64(c.DayMinutes * 60)
-	dusk := float64(c.TwilightMinutes * 60)
-	night := float64(c.NightMinutes * 60)
-	length := day + dusk + night
+	phases, length := cyclePhases(c)
 	n := math.Floor(seconds / length)
-	t := seconds - float64(n*length)
-	d := int(n) + 1
-	if t < day {
-		return CycleInfo{"day", d, t / day, day - t}
+	t := seconds - n*length
+	for _, p := range phases[:3] {
+		if t < p.start+p.length {
+			return CycleInfo{p.name, int(n) + 1, (t - p.start) / p.length, p.start + p.length - t}
+		}
 	}
-	if t < day+dusk {
-		return CycleInfo{"dusk", d, (t - day) / dusk, day + dusk - t}
-	}
-	return CycleInfo{"night", d, (t - day - dusk) / night, length - t}
+	dawn := phases[3]
+	return CycleInfo{dawn.name, int(n) + 2, (t - dawn.start) / dawn.length, length - t}
 }
 
 func stepCycle(w *World, dt float64) {
@@ -49,7 +61,7 @@ func stepCycle(w *World, dt float64) {
 			startWave(w)
 		}
 	}
-	if changed && w.Cycle.Phase == "day" {
+	if changed && w.Cycle.Phase == "dawn" { // der Übergang Morgengrauen → Tag löst nichts aus (Q65)
 		w.Events = append(w.Events, Event{"type": "dawn", "day": w.Cycle.Day})
 		if dayNight {
 			sendEnemiesHome(w)

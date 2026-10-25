@@ -89,6 +89,7 @@ export const de = {
   'hud.clockDay': 'Tag {day}  ·  Dämmerung in {left}',
   'hud.clockDusk': 'Dämmerung  ·  Nacht in {left}',
   'hud.clockNight': 'Nacht {day}  ·  Morgen in {left}',
+  'hud.clockDawn': 'Tag {day}  ·  Sonnenaufgang in {left}',
   'hud.aggression': '  ·  Aggression {pct}%',
 
   // Meldungen (Ereignisse)

@@ -23,7 +23,7 @@ export interface BiomeConfig {
   primaryResource: string;
   enemies: { portal: string[]; night: string[] };
   cycle:
-    | { type: 'dayNight'; dayMinutes: number; nightMinutes: number; twilightMinutes: number }
+    | { type: 'dayNight'; dayMinutes: number; twilightMinutes: number; nightMinutes: number; dawnMinutes: number }
     | { type: 'aggressionPool'; percentPerMinute: number; percentPerKill: number; percentPerGather: number };
   palette: { sky: string; far: string; near: string; ground: string };
 }

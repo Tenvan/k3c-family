@@ -111,6 +111,8 @@ export interface ResourceNode {
   marked: boolean;
   /** Spieler-Index der letzten Markier-Münze; fehlt = unbekannt (B-532, ältere Server) */
   markedBy?: number;
+  /** Nimmt jetzt eine Markier-Münze (Server, B-588); fehlt = nein. */
+  minable?: boolean;
   workerId: number | null;
   /** 0..1 */
   progress: number;
@@ -143,6 +145,8 @@ export interface Site {
   upgradePaid?: number;
   /** Ruine der Planung (docs/rules/geplante-chunks.md § 8); fehlt = keine Ruine. */
   ruin?: boolean;
+  /** Nimmt jetzt Münzen für Bau oder Ausbau (Server, B-587); fehlt = nein. */
+  payable?: boolean;
 }
 
 /** Ausbau auf die nächste Hub-Stufe (docs/protocol.md › Wirtschaft), vom Server berechnet. */
@@ -368,11 +372,12 @@ export interface LevelLayout {
   entities: LevelEntity[];
 }
 
-export type Phase = 'day' | 'dusk' | 'night';
+/** Tageszeit des Zyklus (docs/protocol.md › Tageszeit); `dawn` = Morgengrauen, kompatibel ohne neue Version (B-470). */
+export type Phase = 'day' | 'dusk' | 'night' | 'dawn';
 
 export interface CycleInfo {
   phase: Phase;
-  /** 1 = erster Tag. Die Nacht gehört zum Tag davor. */
+  /** 1 = erster Tag. Die Nacht gehört zum Tag davor, das Morgengrauen schon zum neuen Tag. */
   day: number;
   /** 0..1 innerhalb der Phase */
   progress: number;

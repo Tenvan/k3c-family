@@ -2,6 +2,7 @@ import buildingsJson from '../../data/buildings.json';
 import economyJson from '../../data/economy.json';
 import enemiesJson from '../../data/enemies.json';
 import hubJson from '../../data/hub.json';
+import lightJson from '../../data/light.json';
 import monarchJson from '../../data/monarch.json';
 import troopsJson from '../../data/troops.json';
 import wavesJson from '../../data/waves.json';
@@ -112,3 +113,11 @@ export const WAVES = wavesJson as unknown as {
   attacksPerSecond: number;
   stealGold: number;
 };
+
+/** Lichtquelle in Nacht und Morgengrauen (B-472): Radius in Units, Aufhellung in der Mitte 0..1 (1 = Tag). */
+export interface LightSource {
+  radius: number;
+  strength: number;
+}
+export type LightSourceKind = 'torch' | 'campfire';
+export const LIGHT = lightJson as { sources: Record<LightSourceKind, LightSource> };

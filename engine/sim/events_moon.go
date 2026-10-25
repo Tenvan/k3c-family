@@ -98,21 +98,31 @@ func nightEventsStart(w *World) {
 	}
 }
 
-// nightEventsEnd meldet bei Tagesanbruch das Ende der Events der vergangenen Nacht und zahlt die Vollmond-Belohnung,
-// wenn die Burg der Stufe in dieser Nacht nicht gefallen ist (stepCycle, Phase day).
+// nightEventsEnd meldet bei Tagesanbruch das Ende der Events der vergangenen Nacht (nur Stufe 0) und zahlt die
+// Vollmond-Belohnung in jeder bespielten Stufe, deren Burg in dieser Nacht nicht gefallen ist, an ihren Hub (B-379,
+// stepCycle, Phase dawn). Der Übergang in den Morgen kommt je Stufe und Nacht einmal, also auch die Belohnung.
 func nightEventsEnd(w *World) {
 	night := w.Cycle.Day - 1
-	if !eventStage(w) {
-		return
-	}
-	for i := range nightEvents {
-		if ev := &nightEvents[i]; eventInNight(w, ev, night) {
-			emit(w, "eventEnded", Event{"event": ev.ID, "day": night})
+	if eventStage(w) {
+		for i := range nightEvents {
+			if ev := &nightEvents[i]; eventInNight(w, ev, night) {
+				emit(w, "eventEnded", Event{"event": ev.ID, "day": night})
+			}
 		}
 	}
-	if full := fullMoon(); eventInNight(w, full, night) && w.castleFellNight != night {
+	if full := fullMoon(); eventInNight(w, full, night) && w.castleFellNight != night && stagePlayed(w) {
 		scatterCoins(w, w.HubX, full.RewardGold)
 	}
+}
+
+// stagePlayed: In der Stufe steht mindestens ein gesteuerter Monarch (getrennte, Player.Free, zählen nicht).
+func stagePlayed(w *World) bool {
+	for _, p := range w.Players {
+		if !p.Free {
+			return true
+		}
+	}
+	return false
 }
 
 // fullMoonExtra: In einer Vollmondnacht kommen zur Welle einer Tag/Nacht-Stufe zusätzliche Gegner der Art Kind
@@ -135,7 +145,8 @@ func fullMoonExtra(w *World, plan []spawnOrder) []spawnOrder {
 	return spawnOrders(picks, w.Portals, w.rng)
 }
 
-// moonDamage ist der Schaden eines Gegnerangriffs, im Blutmond mit dem Faktor der Daten (attack).
+// moonDamage ist der Schaden eines Gegnerangriffs, im Blutmond mit dem Faktor der Daten (attack, Flächenangriff und
+// Splitter der Bosse, B-380); die Bodenfläche (Hazard) bleibt ohne Faktor.
 func moonDamage(w *World, damage float64) float64 {
 	if blood := bloodMoon(); eventActive(w, blood) {
 		return damage * blood.DamageFactor

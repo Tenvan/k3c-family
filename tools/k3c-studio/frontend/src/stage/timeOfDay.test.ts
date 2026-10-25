@@ -11,17 +11,9 @@ describe('Tageszeit: vier Einträge, drei Sim-Phasen (B-460/AC-05)', () => {
   });
 
   it('Tag, Dämmerung und Nacht gehen unverändert an die Sim-Phase', () => {
-    for (const id of ['day', 'dusk', 'night'] as const) {
+    for (const id of ['day', 'dusk', 'night', 'dawn'] as const) {
       expect(simTime(id, 0)).toEqual({ phase: id, progress: 0 });
       expect(simTime(id, 0.5)).toEqual({ phase: id, progress: 0.5 });
-    }
-  });
-
-  it('Morgengrauen = Nacht mit Fortschritt 0,9 + 0,1·p', () => {
-    for (const [p, want] of [[0, 0.9], [0.5, 0.95], [0.9, 0.99]] as const) {
-      const t = simTime('dawn', p);
-      expect(t.phase).toBe('night');
-      expect(t.progress).toBeCloseTo(want, 10);
     }
   });
 

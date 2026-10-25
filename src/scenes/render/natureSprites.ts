@@ -1,3 +1,4 @@
+import { MINE_SYMBOL_TEXTURES } from './mineSignView';
 import type { ObjectSprite, WorldFile } from './worldSprites';
 
 /**
@@ -28,6 +29,7 @@ export const NATURE_TEXTURES: Record<string, string> = {
   'grafik:portal': datei('portal'),
   'grafik:ausgang': datei('ausgang'),
   ...Object.fromEntries([1, 2, 3].map((look) => [look === 1 ? 'grafik:lager' : `grafik:lager-${look}`, datei(`rekrutierungslager-${look}`)])),
+  ...MINE_SYMBOL_TEXTURES, // Axt und Spitzhacke am Abbau-Schild (GEB16, B-588)
 };
 
 export const natureFiles = (): Record<string, WorldFile> => Object.fromEntries(Object.entries(NATURE_TEXTURES).map(([key, file]) => [key, { file }]));
