@@ -21,6 +21,7 @@ import { refollow } from './render/cameraFollow';
 import type { JoinCandidate } from './hud/joinHint';
 import { cellStages } from './cellStages';
 import { PLACEHOLDER_BG, StageView, placeholderLayer, showOnly } from './render/stageView';
+import { cullLayer } from './render/cameraCull';
 import { clientLog } from '../core/clientLog';
 import { audioCore } from '../audio/audioCore';
 import { musicDirector, musicViewOf } from '../audio/music';
@@ -378,6 +379,7 @@ export class GameScene extends Phaser.Scene {
     for (const fx of this.nightFx) fx.colorMatrix.brightness(brightness);
     this.updateLayout(this.world_);
     this.follows.forEach((f) => (f.target = refollow(f.cam, f.target, f.stage.renderer.playerView(f.monarch))));
+    if (stage) cullLayer(stage.layer, this.cameras.cameras); // nur zeichnen, was eine Kamera sieht (PF1.2)
   }
 
   /** Nächster Mitspieler eines anderen Geräts; der bisherige bleibt, solange kein anderer deutlich näher ist (kein Flackern). */

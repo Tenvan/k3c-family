@@ -1,6 +1,6 @@
 # PF1.3 · Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -49,4 +49,5 @@ task check
 
 ## Ergebnis
 
-–
+- AC-02 bis AC-04: geprüft mit `task check` und `task check:go` (grün), per Diff-Lesung und Sichtprüfung im Browser-Pane.
+- Die Abnahme steht in der Sprint-README.

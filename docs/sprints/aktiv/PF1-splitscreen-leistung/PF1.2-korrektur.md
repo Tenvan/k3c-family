@@ -1,6 +1,6 @@
 # PF1.2 · Hauptlast des Split-Screens senken
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -53,4 +53,7 @@ task check
 
 ## Ergebnis
 
-–
+- AC-03: umgesetzt. Neues Kamera-Culling (`src/scenes/render/cameraCull.ts`): Welt-Container außerhalb des Ausschnitts einer Kamera (Rand 400 px) bekommen deren Bit in `cameraFilter`, je Kamera getrennt. Aufruf je Frame am Ende von `GameScene.draw`. Hintergründe und bildschirmfeste Teile bleiben unberührt.
+- Messung im Browser-Pane, 2 Kameras, Nacht, CPU je Frame über 600 Frames: vorher Ø 2,74 / p95 4,30 / p99 8,10 ms, nachher Ø 2,43–2,52 / p95 3,4–3,5 / p99 4,0–4,1 ms. Pro Kamera sind 104 von 132 Containern ausgefiltert.
+- Geprüft mit Vitest `cameraCull` (4 Fälle), `task check` (grün) und einer Sichtprüfung im Pane (Bild vollständig bis zum Rand).
+- Grenze: Die GPU-Füllrate der Xbox ist im Pane nicht messbar; das klärt PF1.4. `GameScene.ts` lag schon vorher über 400 Zeilen, jetzt +2.
