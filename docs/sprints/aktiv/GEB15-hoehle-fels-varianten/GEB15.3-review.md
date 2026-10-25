@@ -1,14 +1,14 @@
-# GEB18.6 · Review GEB18
+# GEB15.3 · Review GEB15
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
-- **Domäne:** CLI
+- **Domäne:** DEV
 - **Umgebung:** offline
-- **Branch:** geb18/6-review
-- **Abhängig von:** GEB18.2, GEB18.3, GEB18.5
-- **Tickets:** B-618
-- **Kriterien:** AC-01, AC-02, AC-03, AC-04, AC-06
+- **Branch:** geb15/3-review
+- **Abhängig von:** GEB15.1, GEB15.2
+- **Tickets:** B-582, B-583
+- **Kriterien:** AC-01, AC-02
 
 ## Ziel
 
@@ -50,5 +50,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 und AC-02: geprüft mit `task check` und `task check:go` (grün), per Diff-Lesung und Sichtprüfung der PNGs.
+- Keine Befunde. Die Abnahme steht in der Sprint-README.

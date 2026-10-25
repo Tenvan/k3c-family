@@ -1,14 +1,14 @@
 # GEB15 · DEV · Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GEB
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-582, B-583
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt)
 
 ## Ausgangslage
 
@@ -56,10 +56,10 @@ Dichte, Größenfaktor und Variantenzahl: Defaults in B-582 und B-583; 🧑 best
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GEB15.1 | – | Umsetzung | autonom | offen |
-| GEB15.2 | – | Umsetzung | autonom | offen |
-| GEB15.3 | – | Review | autonom | offen |
-| GEB15.4 | – | Workshop | Mensch | offen |
+| GEB15.1 | `GEB15.1-hoehlen-wurzeln.md` | Umsetzung | autonom | fertig |
+| GEB15.2 | `GEB15.2-felsen-minen.md` | Umsetzung | autonom | fertig |
+| GEB15.3 | `GEB15.3-review.md` | Review | autonom | fertig |
+| GEB15.4 | `GEB15.4-abnahme-geraet.md` | Workshop | Mensch | offen |
 
 - GEB15.1 (DEV) Höhlen-Wurzeln: Varianten und Dichte (AC-01).
 - GEB15.2 (DEV) Felsen und Minen: größer, neue Varianten (AC-02).
@@ -68,5 +68,7 @@ Dichte, Größenfaktor und Variantenzahl: Defaults in B-582 und B-583; 🧑 best
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-25, Claude (GEB15.3): `task check` und `task check:go` grün; `check:race` lokal übersprungen (kein C-Compiler), die CI prüft es.
+AC-01 erfüllt mit GEB15.1 (fünf Wurzel-Formen, Deko-Dichte `rootsPerNode`), AC-02 mit GEB15.2 (Fels 1,5 × 1,5, drei Formen je Look). Simulation und Golden sind unverändert.
+Offen ist AC-03, die Abnahme am Gerät durch Ralf in GEB15.4. Dabei bestätigt Ralf die Defaults: Dichte 2 in der Höhle, Faktor 1,5.
+Keine neuen Tickets.

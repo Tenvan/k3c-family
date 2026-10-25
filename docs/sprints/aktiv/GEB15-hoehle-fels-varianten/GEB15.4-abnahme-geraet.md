@@ -1,14 +1,14 @@
-# GEB18.7 · Abnahme am Gerät: Hintergründe, Abwechslung, Speicher auf der Xbox
+# GEB15.4 · Abnahme am Gerät: Wurzeln, Felsen, Minen
 
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
-- **Domäne:** CLI
+- **Domäne:** DEV
 - **Umgebung:** live
-- **Branch:** geb18/7-abnahme-geraet
-- **Abhängig von:** GEB18.6
-- **Tickets:** B-618
-- **Kriterien:** AC-05
+- **Branch:** geb15/4-abnahme-geraet
+- **Abhängig von:** GEB15.3
+- **Tickets:** B-582, B-583
+- **Kriterien:** AC-03
 
 ## Ziel
 

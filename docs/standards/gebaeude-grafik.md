@@ -21,7 +21,8 @@ nur mit Zustimmung von 🧑.
 | Portal, Ausgang (statisch, ohne Stufen) | 2 × 3 | `portal.json`, `ausgang.json` (GEB6.4); Portal mit leuchtender Kristallfläche, Ausgang mit dunkler Öffnung und Holzrahmen |
 | Rekrutierungslager (Zelt und Feuerstelle, statisch; Looks 1–3 je Biom) | 3 × 2 | `rekrutierungslager.json` (GEB6.4, B-570) |
 | Ader (Stufen 1–4 = Stein, Kupfer, Eisen, Kristall) | 2 × 2 | `ader.json` (GEB6.3); Felsbuckel mit Erzgang, Stein-Ader in `pancho`/`white`, die nur im Gang vorkommt |
-| Fels (Looks Wald, Höhle, Mine), Erzbrocken (Look Mine) | 1 × 1 | `felsen.json`, `erzbrocken.json` (GEB6.2); Licht auf Stein ist `topaz` (heller als `dim-gray`), Risse in Höhle und Mine `black` |
+| Fels (Formen `felsen`, `felsen-b`, `felsen-c`, je Looks Wald, Höhle, Mine) | 1,5 × 1,5 | `felsen.json` (Haufen), `felsen-b.json` (hoher Findling), `felsen-c.json` (flacher Steinhaufen); B-583 (GEB15.2): 1,5-fach größer als zuvor (1 × 1), weil der Fels neben Bäumen und Wurzeln zu klein wirkte, Fußpunkt unten mittig bleibt; Form aus der Position, Look aus dem Biom; Licht auf Stein ist `topaz` (heller als `dim-gray`), Risse in Höhle und Mine `black`, Mine mit Erzglanz `tahiti-gold`/`golden-fizz` |
+| Erzbrocken (Look Mine) | 1 × 1 | `erzbrocken.json` (GEB6.2) |
 | Mauer (Stufen 1–5) | 1 × 5 | `mauer.json` (GEB3) |
 | Turm (Stufen 1–5) | 3 × 8 | `turm.json` (GEB3) |
 | Hintergrundmauer (Stufen 1–5, kachelbar) | 1 × 4 | `hintergrundmauer.json` (GEB3, B-442) |

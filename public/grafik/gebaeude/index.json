@@ -414,26 +414,147 @@
     ]
   },
   {
-    "id": "felsen",
+    "id": "felsen-b",
     "kacheln": {
-      "b": 1,
-      "h": 1
+      "b": 1.5,
+      "h": 1.5
     },
     "vorlage": {
-      "motiv": "Kleiner Felsbrocken-Haufen, 1 × 1 Kachel, niedrig und breit am Boden: ein großer Brocken, ein kleinerer rechts, ein kleiner links vorn",
+      "motiv": "Hoher Findling, 1,5 × 1,5 Kacheln (B-583, GEB15.2): ein aufrechter Block fast über die ganze Höhe, ein Kiesel rechts am Fuß",
       "teile": [
-        "Großer Brocken links und mittig",
+        "Aufrechter Findling mittig, oben schmaler mit Moos-Kappe",
+        "Kleiner Kiesel rechts am Fuß",
+        "Lichtkante links (topaz), Schattenseite rechts und unten (smokey-ash)",
+        "Feine Risse (valhalla) quer über die Flanke; Mine: Erzglanz (tahiti-gold, golden-fizz)"
+      ],
+      "materialien": [
+        "Fels (Felsen, Erzbrocken) = Stein",
+        "Laub (Pappel, Birke)"
+      ],
+      "stimmung": "schwer, aufrecht, abbaubar",
+      "fein": "Risse, Moos-Lichtpunkte, Erzglanz"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/felsen-b-1-128.png",
+      "16": "grafik/gebaeude/felsen-b-1-16.png",
+      "32": "grafik/gebaeude/felsen-b-1-32.png",
+      "64": "grafik/gebaeude/felsen-b-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/felsen-b-1-128.png",
+          "16": "grafik/gebaeude/felsen-b-1-16.png",
+          "32": "grafik/gebaeude/felsen-b-1-32.png",
+          "64": "grafik/gebaeude/felsen-b-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühler, bläulicher Stein, Moos wird bläulicher Schimmer",
+        "dateien": {
+          "128": "grafik/gebaeude/felsen-b-2-128.png",
+          "16": "grafik/gebaeude/felsen-b-2-16.png",
+          "32": "grafik/gebaeude/felsen-b-2-32.png",
+          "64": "grafik/gebaeude/felsen-b-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Mine: dunkler, wärmerer brauner Stein, Moos entfällt (wird zur Steinfarbe), Erzglanz in tahiti-gold und golden-fizz",
+        "dateien": {
+          "128": "grafik/gebaeude/felsen-b-3-128.png",
+          "16": "grafik/gebaeude/felsen-b-3-16.png",
+          "32": "grafik/gebaeude/felsen-b-3-32.png",
+          "64": "grafik/gebaeude/felsen-b-3-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "felsen-c",
+    "kacheln": {
+      "b": 1.5,
+      "h": 1.5
+    },
+    "vorlage": {
+      "motiv": "Flacher Steinhaufen, 1,5 × 1,5 Kacheln (B-583, GEB15.2): mehrere kleine Steine nebeneinander, nur etwa halb so hoch wie breit",
+      "teile": [
+        "Größerer Stein mittig mit Moos",
+        "Stein links und Stein rechts",
+        "Zwei kleine Steine vorn dazwischen",
+        "Lichtkanten links (topaz), Schatten rechts und unten (smokey-ash)",
+        "Feine Risse (valhalla); Mine: Erzglanz (tahiti-gold, golden-fizz)"
+      ],
+      "materialien": [
+        "Fels (Felsen, Erzbrocken) = Stein",
+        "Laub (Pappel, Birke)"
+      ],
+      "stimmung": "flach, verstreut, abbaubar",
+      "fein": "Risse, Moos-Lichtpunkte, Erzglanz"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/felsen-c-1-128.png",
+      "16": "grafik/gebaeude/felsen-c-1-16.png",
+      "32": "grafik/gebaeude/felsen-c-1-32.png",
+      "64": "grafik/gebaeude/felsen-c-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/felsen-c-1-128.png",
+          "16": "grafik/gebaeude/felsen-c-1-16.png",
+          "32": "grafik/gebaeude/felsen-c-1-32.png",
+          "64": "grafik/gebaeude/felsen-c-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Höhle: kühler, bläulicher Stein, Moos wird bläulicher Schimmer",
+        "dateien": {
+          "128": "grafik/gebaeude/felsen-c-2-128.png",
+          "16": "grafik/gebaeude/felsen-c-2-16.png",
+          "32": "grafik/gebaeude/felsen-c-2-32.png",
+          "64": "grafik/gebaeude/felsen-c-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Mine: dunkler, wärmerer brauner Stein, Moos entfällt (wird zur Steinfarbe), Erzglanz in tahiti-gold und golden-fizz",
+        "dateien": {
+          "128": "grafik/gebaeude/felsen-c-3-128.png",
+          "16": "grafik/gebaeude/felsen-c-3-16.png",
+          "32": "grafik/gebaeude/felsen-c-3-32.png",
+          "64": "grafik/gebaeude/felsen-c-3-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "felsen",
+    "kacheln": {
+      "b": 1.5,
+      "h": 1.5
+    },
+    "vorlage": {
+      "motiv": "Felsbrocken-Haufen, 1,5 × 1,5 Kacheln (B-583, GEB15.2), niedrig und breit am Boden: ein großer Brocken, ein kleinerer rechts, ein kleiner links vorn",
+      "teile": [
+        "Großer Brocken links und mittig mit Moos oben",
         "Kleinerer Brocken rechts davor",
         "Kleiner Stein ganz links vorn",
         "Lichtkante links oben (topaz), Schattenflächen rechts und unten (smokey-ash)",
-        "Feine Risse (valhalla), Moos oben auf dem großen Brocken"
+        "Feine Risse (valhalla), Moos-Lichtpunkte (atlantis); Mine: Erzglanz (tahiti-gold, golden-fizz)"
       ],
       "materialien": [
         "Fels (Felsen, Erzbrocken) = Stein",
         "Laub (Pappel, Birke)"
       ],
       "stimmung": "schlicht, kantig, abbaubar",
-      "fein": "Risse und Moos-Lichtpunkte"
+      "fein": "Risse, Moos-Lichtpunkte, Erzglanz"
     },
     "dateien": {
       "128": "grafik/gebaeude/felsen-1-128.png",
@@ -464,7 +585,7 @@
       },
       {
         "stufe": 3,
-        "aenderung": "Mine: dunkler, wärmerer brauner Stein, Moos entfällt (wird zur Steinfarbe)",
+        "aenderung": "Mine: dunkler, wärmerer brauner Stein, Moos entfällt (wird zur Steinfarbe), Erzglanz in tahiti-gold und golden-fizz",
         "dateien": {
           "128": "grafik/gebaeude/felsen-3-128.png",
           "16": "grafik/gebaeude/felsen-3-16.png",
@@ -4091,6 +4212,62 @@
       "16": "grafik/gebaeude/wurzel-3-16.png",
       "32": "grafik/gebaeude/wurzel-3-32.png",
       "64": "grafik/gebaeude/wurzel-3-64.png"
+    }
+  },
+  {
+    "id": "wurzel-4",
+    "klasse": "flora",
+    "kacheln": {
+      "b": 3,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Dicke, buschige Wurzel von der Höhlendecke bis in den Boden, 3 × 15 Kacheln, Form 4 der Wurzel",
+      "teile": [
+        "Ein sehr dicker Strang von der oberen Bildkante (Decke) bis zum Boden, leicht gewellt, in der Mitte schmaler",
+        "Zwölf kurze Seitenwurzeln abwechselnd links und rechts, alle enden frei",
+        "Breiter Wurzelfuß am Boden über fast drei Kacheln"
+      ],
+      "materialien": [
+        "Erde (Wurzeln, Hügelrand) = Pfosten, Balken",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "struppig, wuchtig",
+      "fein": "keine"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/wurzel-4-128.png",
+      "16": "grafik/gebaeude/wurzel-4-16.png",
+      "32": "grafik/gebaeude/wurzel-4-32.png",
+      "64": "grafik/gebaeude/wurzel-4-64.png"
+    }
+  },
+  {
+    "id": "wurzel-5",
+    "klasse": "flora",
+    "kacheln": {
+      "b": 2,
+      "h": 15
+    },
+    "vorlage": {
+      "motiv": "Sehr lange, dünne Wurzel in weiten Schlingen, 2 × 15 Kacheln, Form 5 der Wurzel",
+      "teile": [
+        "Ein dünner Strang von der Decke bis in den Boden, schlängelt in weiten Bögen hin und her",
+        "Zwei haarfeine Seitenwurzeln enden frei",
+        "Kleiner, flacher Wurzelfuß am Boden"
+      ],
+      "materialien": [
+        "Erde (Wurzeln, Hügelrand) = Pfosten, Balken",
+        "Hintergrund Holz"
+      ],
+      "stimmung": "zart, verloren",
+      "fein": "keine"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/wurzel-5-128.png",
+      "16": "grafik/gebaeude/wurzel-5-16.png",
+      "32": "grafik/gebaeude/wurzel-5-32.png",
+      "64": "grafik/gebaeude/wurzel-5-64.png"
     }
   },
   {
