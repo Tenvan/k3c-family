@@ -1,6 +1,6 @@
 # PM1.2 · Performance-Modus mit Bericht und Einbrüchen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -50,5 +50,11 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 bis AC-05: umgesetzt.
+  - Ohne `?perf=1` misst und sendet der Client nichts (Test).
+  - Mit `?perf=1` sammelt `PerfRecorder` Frame-Zeit (p50/p95/p99), Zustands-Abstand, Puffer, Latenz und Einbrüche (Frame > 50 ms, Lücke > 250 ms, mit Begleitwerten). Der Bericht geht einmal beim Ende oder bei `pagehide` über `/api/report` (`kind: perf`).
+- Geprüft mit `task check` (grün) und Vitest 2726/2726.
+- Abweichungen:
+  - Die Schwellen sind Konstanten, weil es in `data/` keine passende Datei gibt.
+  - Der Bericht ist auf 100 Einbrüche und 180 Verlaufspunkte begrenzt (`keepalive` 64 KiB), `dropsTotal` zählt alle.
+  - `GameScene.ts` lag schon vorher über 400 Zeilen, jetzt +2.
