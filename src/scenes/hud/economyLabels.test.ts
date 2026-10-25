@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { setLanguage } from '../../core/texts';
 import type { Site, World } from '../../model/types';
-import { hubOfferTitle, hubText, hubWait, siteWait, stockTexts, waitInfo } from './economyLabels';
+import { buildCost, hubOfferTitle, hubText, hubWait, siteWait, stockTexts, waitInfo } from './economyLabels';
 
 beforeEach(() => setLanguage('de'));
 afterEach(() => setLanguage('de'));
@@ -129,5 +129,24 @@ describe('Ausbauschritt und Material der nächsten Insel (GEB17.5, B-592/AC-03)'
     expect(hubOfferTitle({ hubStep: 3, hubUpgrade: up })).toBe('Upgrade 3/3');
     expect(hubWait({ hubUpgrade: { ...up, state: 'waitingNextIsland' } }, false)?.text).toBe('material from the next island (Stone, Copper)');
     expect(hubText({ hubLevel: 1, hubStep: 3, hubUpgrade: up }, false)).toBe('Hub level 1 → 2, step 3/3: 25/25 gold, 50 Stone, 20 Copper');
+  });
+});
+
+describe('Treppen-Kosten je Tiefe (B-631/AC-02)', () => {
+  it('Treppe runter: Material der eigenen Stufe, Treppe hoch: Material der Stufe darüber, je 50 Gold', () => {
+    expect(buildCost('stairsDown', 0)).toEqual({ wood: 100, gold: 50 });
+    expect(buildCost('stairsDown', 2)).toEqual({ copper: 100, gold: 50 });
+    expect(buildCost('stairsUp', 1)).toEqual({ wood: 100, gold: 50 });
+    expect(buildCost('stairsUp', 4)).toEqual({ iron: 100, gold: 50 });
+  });
+
+  it('ohne Eintrag der Tiefe oder ohne Tiefe: cost der Art', () => {
+    expect(buildCost('stairsUp', 0)).toEqual({ stone: 100, gold: 50 });
+    expect(buildCost('stairsDown', undefined)).toEqual({ stone: 100, gold: 50 });
+    expect(buildCost('farm', 3)).toEqual({ wood: 30, gold: 10 });
+  });
+
+  it('Wartegrund am Platz nennt das Material der Tiefe', () => {
+    expect(siteWait(site({ kind: 'stairsUp', state: 'waitingMaterial' }), false, false, 1)?.text).toBe('wartet auf Material (Holz)');
   });
 });

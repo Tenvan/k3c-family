@@ -1,12 +1,12 @@
 package sim
 
 // Ausbau-Stufen (B-112, materialien-gebaeude.md §§ 2–4): Hub-Stufe 1 bis Anzahl hub.json › levels an der Burg (Q44),
-// Mauer und Turm 1 bis Anzahl ihrer levels am selben Platz (Q45). Ein Ausbau läuft wie jeder Bau: Gold zahlen → Material aus dem Vorrat → ein Bauer baut.
+// Mauer, Turm und Tor (B-631) 1 bis Anzahl ihrer levels am selben Platz (Q45). Ein Ausbau läuft wie jeder Bau: Gold zahlen → Material aus dem Vorrat → ein Bauer baut.
 // Während des Ausbaus bleibt die alte Stufe gebaut und wirkt weiter. Der Ausbau wartet bei Gefahr (Bauer baut danach).
 //
 // Ausbauschritte (B-592, GEB17.4, docs/rules/stufen.md § 8): Der Ausbau auf Hub-Stufe n läuft in den Schritten
 // hub.json › levels[n-1].steps (`World.HubStep` 1 bis Anzahl); jeder Schritt wird bezahlt und gebaut wie ein Ausbau,
-// erst der letzte hebt die Hub-Stufe. Er braucht zusätzlich das Material-Tor (`gate`, Material der nächsten Inselstufe).
+// erst der letzte hebt die Hub-Stufe. Er braucht zusätzlich das Material-Tor (`gate`, Material der neuen Hub-Stufe, B-631).
 //
 // Der Hub-Ausbau ist ein Platz ohne Liste (`World.hubSite`, Art castle, ID der Burg): Er steht nicht in `w.Sites`,
 // damit Snapshot, Golden-Daten und Client unverändert bleiben (Protokoll W5, Anzeige W6).
@@ -60,8 +60,18 @@ func levelOf(w *World, s *Site) int {
 	return max(1, s.Level)
 }
 
+// siteCost sind die Baukosten eines unbezahlten Platzes: der Eintrag der Biom-Tiefe in costByDepth (Treppen, B-631),
+// ohne Eintrag dieser Tiefe (fehlt oder leer) die Kosten cost seiner Art.
+func siteCost(w *World, s *Site) Cost {
+	b := buildings[s.Kind]
+	if d := w.Biome.Depth; d >= 0 && d < len(b.CostByDepth) && b.CostByDepth[d] != (Cost{}) {
+		return cheap(w, b.CostByDepth[d])
+	}
+	return cheap(w, b.Cost)
+}
+
 // nextLevel ist die nächste Ausbau-Stufe eines gebauten Platzes, beim Hub der nächste Ausbauschritt (Kosten samt
-// Material-Tor); nil, wenn er keine hat oder die Hub-Stufe fehlt (Stufe n von Mauer und Turm erst ab Hub-Stufe n).
+// Material-Tor); nil, wenn er keine hat oder die Hub-Stufe fehlt (Stufe n von Mauer, Turm und Tor erst ab Hub-Stufe n).
 func nextLevel(w *World, s *Site) *LevelData {
 	levels := buildings[s.Kind].Levels
 	if s == w.hubSite {

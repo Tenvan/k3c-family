@@ -78,7 +78,7 @@ describe('Gebäude-Grafik (GR3.1)', () => {
 
   it('Gebäude mit `levels` in den Daten: Stufe 1 = Grundwerte, fünf Stufen, Grafik je Gebäudestufe (B-569 AC-01)', () => {
     const withLevels = Object.entries(BUILDINGS).filter(([, d]) => d.levels?.length);
-    expect(withLevels.map(([k]) => k).sort()).toEqual(['barracks', 'farm', 'healer', 'storage', 'tavern', 'tower', 'wall'].sort());
+    expect(withLevels.map(([k]) => k).sort()).toEqual(['barracks', 'farm', 'gate', 'healer', 'storage', 'tavern', 'tower', 'wall'].sort()); // gate: B-631
     for (const [kind, d] of withLevels) {
       expect(d.levels).toHaveLength(5);
       expect(d.levels![0]).toEqual({ cost: d.cost, hp: d.hp, buildSeconds: d.buildSeconds });

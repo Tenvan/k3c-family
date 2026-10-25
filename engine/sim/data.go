@@ -26,11 +26,12 @@ type Cost struct {
 type BuildingData struct {
 	HP, BuildSeconds                 float64
 	Cost                             Cost
+	CostByDepth                      []Cost             // Treppen: Kosten je Biom-Tiefe (B-631, siteCost), leer = Cost
 	ArcherSlots, RangeBonus, BowRack int
 	SwordRack                        int                // Werkstatt: Schwerter im Regal (unit_warrior.go)
 	Offers                           []Offer            // Angebots-Zahlziele am Gebäude (Q52), Berufe: unit_professions.go
 	CraftSeconds                     map[string]float64 // Herstellungszeit je Stück (Q35, unit_professions.go)
-	Levels                           []LevelData        // Ausbau-Stufen am Platz (Mauer, Turm; hub_level.go)
+	Levels                           []LevelData        // Ausbau-Stufen am Platz (Mauer, Turm, Tor; hub_level.go)
 	Plantation                       Plantation         // Farm: Bäume wachsen nach (building_plantation.go)
 	TroopLimit                       TroopLimit         // Kaserne: Kämpfer-Limit je Hub (building_barracks.go)
 	Vagrants                         Vagrants           // Taverne: Landstreicher je dawn (building_tavern.go)
