@@ -56,8 +56,8 @@ B-347 › Ausnahme- und Fehlerfälle (Kennzahl ohne Ereignis: aus dem Zustand ab
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BAL6.1 | `BAL6.1-wirtschaft-messen.md` | Umsetzung | autonom | in Arbeit |
-| BAL6.3 | `BAL6.3-profil-sensitivitaet.md` | Umsetzung | autonom | offen |
+| BAL6.1 | `BAL6.1-wirtschaft-messen.md` | Umsetzung | autonom | fertig |
+| BAL6.3 | `BAL6.3-profil-sensitivitaet.md` | Umsetzung | autonom | fertig |
 | BAL6.2 | `BAL6.2-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.

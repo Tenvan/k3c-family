@@ -49,6 +49,9 @@ func setVariant(mem fstest.MapFS, spec string) error {
 	if _, err := strconv.ParseFloat(value, 64); err != nil {
 		return fmt.Errorf("wert %q ist keine Zahl", value)
 	}
+	if err := checkReloaded(file); err != nil {
+		return err
+	}
 	f, found := mem[file]
 	if !found {
 		return fmt.Errorf("datei %q fehlt in data/", file)

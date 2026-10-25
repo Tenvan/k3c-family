@@ -1,6 +1,6 @@
 # BAL6.3 · Profil Mauern zuerst schärfen, Sensitivität prüft Wirkung
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -50,5 +50,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02: umgesetzt. `walls` wartet nur auf Mauern einer offenen Linie und zahlt dann Türme und Hub-Ausbau; damit spielt es messbar anders als `saver` (Test in `profiles_test.go`). Vorher erkannte es nie offene Linien.
+- AC-03: umgesetzt. `vary` und `variant` lehnen Dateien ab, die die Sim nicht neu lädt (Test in `sensitivity_test.go`).
+- Geprüft mit `go test` und golangci-lint im Workbench-Modul.
+- Hinweis: `coop2` und `coop4` erben das neue Verhalten von `walls`.

@@ -3,10 +3,12 @@ package balance
 import (
 	"bytes"
 	"encoding/json"
+	"io/fs"
 	"maps"
 	"slices"
 	"strings"
 	"testing"
+	"testing/fstest"
 
 	"k3c/data"
 	"k3c/engine/sim"
@@ -126,5 +128,43 @@ func TestSensitivityByteGleichUndZurueckgesetzt(t *testing.T) {
 	_, startGold, _, _ := variedFS("economy.json:purse.startGold", 0)
 	if g := sim.AddIslandPlayer(isl, 0).Gold; float64(g) != startGold || prices.wallGold != orig.wallGold {
 		t.Errorf("nicht zurückgesetzt: Startgold %d, Mauerpreis %d statt %d", g, prices.wallGold, orig.wallGold)
+	}
+}
+
+// BAL6/AC-03 (B-301/AC-01): Ein Pfad in einer Datei, die die Sim nicht neu lädt, ist ein Fehler mit Pfad, bevor der
+// erste Lauf startet; ebenso als Wert-Variante.
+func TestVaryOhneWirkung(t *testing.T) {
+	path := "difficulty.json:grades.hard.waveSize"
+	_, err := goldTargets(t).Sensitivity(SensitivityOptions{Paths: []string{path}})
+	if err == nil || !strings.Contains(err.Error(), path) || !strings.Contains(err.Error(), "difficulty.json wird nicht neu geladen") {
+		t.Errorf("Sensitivität: Fehler mit Pfad erwartet, war %v", err)
+	}
+	err = WithVariants([]string{path + "=2"}, func() error { t.Fatal("Lauf trotz Fehler"); return nil })
+	if err == nil || !strings.Contains(err.Error(), "wird nicht neu geladen") {
+		t.Errorf("Variante: Fehler erwartet, war %v", err)
+	}
+}
+
+// Die Liste reloaded passt zu sim.UseData: Genau die Dateien darin liest UseData (eine kaputte Datei ist dann ein Fehler).
+func TestReloadedWieUseData(t *testing.T) {
+	files, err := fs.Glob(data.Files, "*.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() {
+		if err := sim.UseData(data.Files); err != nil {
+			t.Fatal(err)
+		}
+	})
+	for _, name := range files {
+		mem, err := VariantFS(nil)
+		if err != nil {
+			t.Fatal(err)
+		}
+		mem[name] = &fstest.MapFile{Data: []byte("{")}
+		read := sim.UseData(mem) != nil
+		if want := slices.Contains(reloaded, name); read != want {
+			t.Errorf("%s: UseData liest die Datei %v, in reloaded %v", name, read, want)
+		}
 	}
 }

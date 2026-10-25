@@ -39,7 +39,7 @@ export const FIELD_HELP: Record<HelpKey, FieldHelp> = {
   bot: {
     label: 'Bot',
     hint: 'Spielweise der Monarchen: ein Profil für alle oder „je Spieler“; „Ziel“ = Bot je Ziel.',
-    help: 'Der **Bot** spielt die Monarchen ohne Zufall nach einem festen Profil.\n\n| Bot | Spielweise |\n|---|---|\n| `passive` | steht am Hub, zahlt nichts (Untergrenze) |\n| `saver` | sparsam: erst Mauern, dann Landstreicher anwerben |\n| `walls` | nur Mauern samt Ausbau, anwerben erst ohne offene Mauer |\n| `economy` | Wirtschaft zuerst, Mauern ab Tag 2 |\n| `coop2`, `coop4` | Rollen nach Spieler: gerade Mauern, ungerade Wirtschaft (ab 2 bzw. 4 Spielern) |\n\n- Leer: Bot des Ziels (heute `saver`).\n- Wirkung: Die Zielkorridore sind für `saver` gedacht; andere Bots zeigen, wie robust die Werte gegen andere Spielweisen sind.',
+    help: 'Der **Bot** spielt die Monarchen ohne Zufall nach einem festen Profil.\n\n| Bot | Spielweise |\n|---|---|\n| `passive` | steht am Hub, zahlt nichts (Untergrenze) |\n| `saver` | sparsam: erst Mauern, dann Landstreicher anwerben |\n| `walls` | Mauern samt Ausbau, dann Türme und Hub-Ausbau, anwerben zuletzt |\n| `economy` | Wirtschaft zuerst, Mauern ab Tag 2 |\n| `wirtschaft` | Standard: Mauern, Turm, Farm, Werkstatt, Hub-Ausbau, Bögen, anwerben |\n| `coop2`, `coop4` | Rollen nach Spieler: gerade Mauern, ungerade Wirtschaft (ab 2 bzw. 4 Spielern) |\n\n- Leer: Bot des Ziels (heute `wirtschaft`).\n- Wirkung: Die Zielkorridore sind für `wirtschaft` gedacht; andere Bots zeigen, wie robust die Werte gegen andere Spielweisen sind.',
   },
   grade: {
     label: 'Grad',
@@ -84,7 +84,7 @@ export const FIELD_HELP: Record<HelpKey, FieldHelp> = {
 };
 
 /** Bots und Grade wie in Go (balance.BotNames, data/difficulty.json › grades); TestAuswahlWieGo hält sie gleich. */
-export const BOTS = ['passive', 'saver', 'walls', 'economy', 'coop2', 'coop4'] as const;
+export const BOTS = ['passive', 'saver', 'walls', 'economy', 'wirtschaft', 'coop2', 'coop4'] as const;
 export const GRADES = ['dev', 'easy', 'normal', 'hard', 'ultra'] as const;
 
 /** Bot je Spieler (WZ28.12, B-611): Profile mit `+` verbunden, Spieler 1 zuerst; ohne coop2/coop4. */

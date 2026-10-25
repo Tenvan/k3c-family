@@ -5,7 +5,7 @@
 
 Alle Kennzahlen mit Zielkorridor aus den Regelwerken in einer Tabelle (Beschluss Q02: der Agent schlägt Startwerte vor, 🧑 bestätigt; Pass/Fail je Kennzahl über 100 feste Seeds). **Alle Zahlen in § 1–3 sind von 🧑 bestätigt** (Datum im Kopf). Sie sind Startwerte; die Balancing-Runden B-155 und B-156 passen sie an, jede Änderung erhöht die Revision.
 
-**Standardszenario** (wenn die Zeile nichts anderes nennt): Insel 1, Wald-Start, Grad Normal, 2 Spieler, Bot „sparsam“, 100 Seeds (`wirtschaft.md`, Kopf).
+**Standardszenario** (wenn die Zeile nichts anderes nennt): Insel 1, Wald-Start, Grad Normal, 2 Spieler, Bot „Wirtschaft“ (`wirtschaft`, seit BAL6; vorher „sparsam“), 100 Seeds (`wirtschaft.md`, Kopf).
 **Lesart:** Ein Anteil in % ist der Anteil der Seeds, in denen die Bedingung erfüllt ist; ein Median oder eine Zeit gilt über alle Seeds des Szenarios. „–“ heißt: keine Grenze in diese Richtung.
 **Messbar mit:** `sim_run` = ein Lauf in k3c-workbench (ein Seed, feste Eingaben, kein Bot) liefert die Größe schon heute; `B-099` = braucht den Balancing-Tester (Bots, 100 Seeds), Prüfung als `task balance` mit B-157; `Bench` = Go-Benchmark bzw. Lasttest.
 

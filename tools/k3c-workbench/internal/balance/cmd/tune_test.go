@@ -14,7 +14,7 @@ import (
 func TestTuneSchreibtErgebnis(t *testing.T) {
 	dir := t.TempDir()
 	out := captureStdout(t, func() error {
-		return run([]string{"--targets", "--seeds", "1", "--days", "1", "--progress", "--tune", "sweep", "--steps", "2",
+		return run([]string{"--targets", "--seeds", "1", "--days", "1", "--grade", "normal", "--progress", "--tune", "sweep", "--steps", "2",
 			"--param", "economy.json:purse.startGold=80..120", "--report-dir", dir})
 	})
 	if !strings.Contains(out, "PROGRESS 2/2\n") {

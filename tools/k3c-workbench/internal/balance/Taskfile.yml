@@ -14,7 +14,7 @@ tasks:
       - go build -o ../../bin/k3c-balance{{exeExt}} ./internal/balance/cmd
 
   targets:
-    desc: 'Zielkorridore prüfen: 100 feste Seeds, Bericht reports/balance-<Zeit>.json und .md, Vergleich mit testdata/balance/baseline.json (z. B. `task balance -- --seeds 10`; kein Teil von `task check`)'
+    desc: 'Zielkorridore prüfen: 100 feste Seeds (seit BAL6 sechs Szenarien, geschätzt 35–40 min; zum Entwickeln `task balance -- --seeds 10`), Bericht reports/balance-<Zeit>.json und .md, Vergleich mit testdata/balance/baseline.json (kein Teil von `task check`)'
     cmds:
       - task: build
       - ./bin/k3c-balance{{exeExt}} --targets --baseline testdata/balance/baseline.json --replay-dir reports/balance-replays {{.CLI_ARGS}}
