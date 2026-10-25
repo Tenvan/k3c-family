@@ -21,7 +21,7 @@ describe('Wirtschaft im Zustand', () => {
     expect(w.stockMax).toBe(1200);
     expect(w.stock).toEqual({ wood: 40, stone: 30, copper: 12 });
     expect(w.sites.some((s) => s.state === 'waitingMaterial')).toBe(true);
-    expect(w.merchant).toEqual({ resource: 'stone', leaves: 3 });
+    expect(w.merchant).toEqual({ resource: 'stone', leaves: 3, hp: 100, maxHp: 100 });
     expect(w.troops.some((t) => t.profession === 'builder')).toBe(true);
     expect(w.danger).toBeUndefined();
     expect(w.fighters).toBe(2);

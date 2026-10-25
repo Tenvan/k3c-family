@@ -18,7 +18,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | W7 | Ausrüstung ohne Unverwundbarkeit, Spielstand vollständig | erledigt |
 | SV1 | Raum mit allen Stufen, Voll-Ausbau-Spielstand, leere Test-Räume | erledigt |
 | W8 | Bauplätze mit Grund und alle Rohstoffe im Client | erledigt |
-| W11 | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | geplant |
+| W11 | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | aktiv |
 | SV2 | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | erledigt |
 | W12 | Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln | geplant |
 | W13 | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | geplant |
