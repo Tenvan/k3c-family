@@ -148,6 +148,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-619](B-619-check-diff-cache-und-short.md) | INF | Problem | hoch | offen | – | check:diff nutzt den Go-Testcache und lässt lange Tests aus |
 | [B-620](B-620-golden-grenze-20-mb.md) | INF | Frage | mittel | offen | – | Golden-Grenze 20 MB nach dem dichteren Wald bestätigen |
 | [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | offen | – | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
+| [B-622](B-622-fackeln-als-spielobjekt.md) | SIM | Idee | niedrig | offen | – | Fackeln gibt es als Spielobjekt mit Licht in der Nacht |
 
 ## Archiv
 

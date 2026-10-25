@@ -12,6 +12,7 @@ import { objectImage } from './objectView';
 import { PENNANT_MAX_HEIGHT, markerOf, noteMarkers, pennantColor } from './pennant';
 import { type Plot, isPlantationTree, plantationPlots } from './plantation';
 import { priceTagSites } from './priceTagRules';
+import { LightView } from './lightView';
 import { TEXT, createCastleView, createSiteView, updateCastleView, updateSiteView } from './siteView';
 import { hasDepth, isOnTower } from './viewRules';
 import { type MonarchFrame, pickMonarchAnim } from './monarchAnim';
@@ -122,6 +123,7 @@ export class WorldRenderer {
   private readonly castleHp: View;
   private readonly citizens: BuergerView;
   private readonly warn: WarnView;
+  private readonly lights: LightView;
   /** Bauplätze, deren Preisschild steht (nur das nächste je Spieler, B-395) */
   private priceTags = new Set<number>();
   /** Knoten-ID → Spieler, der zuletzt eine Markier-Münze gab (Wimpel-Farbe, GEB10) */
@@ -141,6 +143,7 @@ export class WorldRenderer {
 
     this.citizens = new BuergerView(scene, root);
     this.warn = new WarnView(scene, root);
+    this.lights = new LightView(scene, root); // Lagerfeuer-Licht in der Nacht (W13.1)
     this.nodes = this.layer((n) => this.createNode(n), (v, n) => this.updateNode(v, n));
     this.sites = this.layer((s) => createSiteView(scene, s), (v, s) => updateSiteView(scene, v, s, this.world, this.priceTags.has(s.id)));
     this.plots = this.layer((p) => this.createPlot(p), () => {});
@@ -208,6 +211,7 @@ export class WorldRenderer {
     this.projectiles.sync(world.projectiles);
     this.citizens.sync(world);
     this.warn.sync(world);
+    this.lights.sync(world);
     updateCastleView(this.scene, this.castle, world); // Burg wächst mit Hub-Stufe und Ausbau-Stand (GEB4 AC-05, GEB11)
     setBar(this.castleHp, 0, world.castle.hp / world.castle.maxHp, world.castle.hp < world.castle.maxHp);
   }
