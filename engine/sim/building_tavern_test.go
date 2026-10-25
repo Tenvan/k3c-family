@@ -8,13 +8,17 @@ import (
 // W3.1 (B-116/AC-01, Sprint W3 AC-01): Die gebaute Taverne liefert bei jedem dawn Landstreicher bis zum Maximum
 // (Q30), Werte aus data/buildings.json › tavern.vagrants.
 
-// toDawn rechnet bis zum nächsten Tagesanbruch.
+// toDawn rechnet bis zum nächsten Tagesanbruch (Beginn des Morgengrauens).
 func toDawn(t *testing.T, w *World) {
 	t.Helper()
-	c := globalDayNight
-	length := float64((c.DayMinutes + c.TwilightMinutes + c.NightMinutes) * 60)
-	w.Time = (math.Floor(w.Time*w.CycleSpeed/length)+1)*length/w.CycleSpeed - 2*dt
-	w.Cycle = cycleAt(c, w.Time*w.CycleSpeed)
+	phases, length := cyclePhases(globalDayNight)
+	now := w.Time * w.CycleSpeed
+	target := math.Floor(now/length)*length + phases[3].start
+	if target <= now+2*dt*w.CycleSpeed {
+		target += length
+	}
+	w.Time = target/w.CycleSpeed - 2*dt
+	w.Cycle = cycleAt(globalDayNight, w.Time*w.CycleSpeed)
 	for range 10 {
 		Step(w, nil, dt)
 		for _, e := range w.Events {

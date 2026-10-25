@@ -16,10 +16,12 @@ function mergeList(old: Entry[] | undefined, change: { set?: Entry[]; del?: numb
 
 /**
  * Liefert den neuen vollen Zustand, `state` bleibt unverändert. Ein fehlendes Feld ist unverändert, `null` ist ein Wert,
- * `events` fehlt im Delta, wenn es im Tick keine gab (dann leer). Felder aus `unset` fehlen im neuen Zustand.
+ * `events` fehlt im Delta, wenn es im Tick keine gab (dann leer), `eventsDropped` bei 0 (dann fehlt es, B-190).
+ * Felder aus `unset` fehlen im neuen Zustand.
  */
 export function applyDelta(state: State, delta: State): State {
   const next: State = { ...state, events: [] };
+  delete next.eventsDropped;
   for (const [key, value] of Object.entries(delta)) {
     if (key === 'unset') {
       for (const field of value as string[]) delete next[field];

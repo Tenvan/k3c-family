@@ -1,8 +1,8 @@
 import type { AssetKind } from './types';
 
-// Quellen und Download-Vorschlagsliste (B-601, WZ30.4). Endgültige Typen: WZ29.6 liefert sie im Backend (RPC Sources,
-// SourceDownload, SourceProgress, SourceAdopt, SourceCleanupPreview, SourceCleanup; Liste `data/assets-vorschlaege.json`,
-// Vorrat `.work/vorrat/`), bis dahin kommen sie aus api/mockSources.ts.
+// Quellen und Download-Vorschlagsliste (B-601, WZ30.4). Das Backend liefert sie seit WZ29.6 (RPC Sources, SourceDownload,
+// SourceProgress, SourceAdopt, SourceCleanupPreview, SourceCleanup in backend/app_sources.go; Liste
+// `data/assets-vorschlaege.json`, Vorrat `.work/vorrat/`), im Mock-Modus api/mockSources.ts.
 
 /** Status eines Eintrags in `data/assets-vorschlaege.json`; „gesperrt“ setzt das Backend, wenn die Quelle eine andere Lizenz nennt. */
 export type SourceStatus = 'offen' | 'geladen' | 'verworfen' | 'gesperrt';
@@ -77,7 +77,7 @@ export interface SourceCleanupView {
 export interface SourceApi {
   sources(): Promise<SourcesView>;
   /** Startet den Download der Einträge (nur nach Bestätigung der Gesamtgröße und der Quellen); scheitert offline und bei gesperrten Einträgen */
-  sourceDownload(ids: string[]): Promise<void>;
+  sourceDownload(ids: string[], confirmedBytes: number): Promise<void>;
   /** Fortschritt aller laufenden und eben beendeten Downloads */
   sourceProgress(): Promise<SourceProgress[]>;
   /** Kopiert einen geladenen Eintrag an den Platz seines Slots unter `public/` und legt Credit und Katalog-Eintrag an */

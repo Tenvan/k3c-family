@@ -285,6 +285,9 @@ type World struct {
 	HubX       float64 `json:"hubX"`
 	// HubLevel ist die Hub-Stufe (Start 1, Ausbau an der Burg: hub_level.go); ohne JSON-Ausgabe (B-208).
 	HubLevel int `json:"-"`
+	// HubStep ist der laufende Ausbauschritt auf die nächste Hub-Stufe (1 bis 3, hub.json › levels[].steps; B-592);
+	// ohne JSON-Ausgabe wie HubLevel, der Zustand nennt ihn als `hubStep` (EconomyOf).
+	HubStep int `json:"-"`
 	// planned und chunkCount sind die Erzeugungs-Parameter dieser Stufe (Options.Planned, Options.ChunkCount); der Spielstand
 	// schreibt sie mit, damit das Laden die Stufe so baut, wie sie gebaut wurde (B-489).
 	planned    []level.PlannedChunk
@@ -324,7 +327,7 @@ type World struct {
 	NightEvents  []ActiveEvent `json:"nightEvents,omitempty"`
 	IslandSwitch *SwitchState  `json:"islandSwitch,omitempty"`
 	// EventsDropped zählt die Ereignisse, die die Obergrenze je Tick in diesem Step verworfen hat (capEvents).
-	EventsDropped int `json:"eventsDropped,omitempty"` // 0 fehlt im JSON (Protokoll-Beispiele unverändert, Übertragung: B-190)
+	EventsDropped int `json:"eventsDropped,omitempty"` // 0 fehlt im JSON; gilt wie Events nur je Zustand (docs/protocol.md, B-190)
 
 	// noTravel: Die Stufe gehört zu einer Insel, deren Spieler einzeln wechseln (island_travel.go); der gemeinsame
 	// Stufenwechsel der Campaign (stepTravel) ist dort aus.

@@ -11,20 +11,17 @@ import (
 
 // phaseSeconds liefert Beginn und Länge einer Sim-Phase im globalen Zyklus.
 func phaseSeconds(phase string) (start, length float64) {
-	day := float64(globalDayNight.DayMinutes * 60)
-	dusk := float64(globalDayNight.TwilightMinutes * 60)
-	night := float64(globalDayNight.NightMinutes * 60)
-	switch phase {
-	case "dusk":
-		return day, dusk
-	case "night":
-		return day + dusk, night
+	phases, _ := cyclePhases(globalDayNight)
+	for _, p := range phases {
+		if p.name == phase {
+			return p.start, p.length
+		}
 	}
-	return 0, day
+	return 0, phases[0].length
 }
 
 func TestPreviewCycleSetztPhaseUndFortschritt(t *testing.T) {
-	for _, phase := range []string{"day", "dusk", "night"} {
+	for _, phase := range []string{"day", "dusk", "night", "dawn"} {
 		for _, p := range []float64{0, 0.25, 0.5, 0.9, 0.999} {
 			w := newWorld(0, "x", Options{})
 			if err := PreviewCycle(w, phase, p); err != nil {
@@ -49,7 +46,7 @@ func TestPreviewCycleSetztPhaseUndFortschritt(t *testing.T) {
 
 func TestPreviewCycleBehaeltDenTagUndRechnetMitZyklusGeschwindigkeit(t *testing.T) {
 	w := newWorld(0, "x", Options{CycleSpeed: 4})
-	length := float64((globalDayNight.DayMinutes + globalDayNight.TwilightMinutes + globalDayNight.NightMinutes) * 60)
+	_, length := cyclePhases(globalDayNight)
 	w.Time = (2*length + 10) / 4 // dritter Tag
 	if err := PreviewCycle(w, "night", 0.5); err != nil {
 		t.Fatal(err)
@@ -69,7 +66,7 @@ func TestPreviewCycleLehntUngueltigesAb(t *testing.T) {
 		phase    string
 		progress float64
 	}{
-		{"dawn", "dawn", 0}, {"leer", "", 0}, {"unbekannt", "noon", 0.5},
+		{"Dawn", "Dawn", 0}, {"leer", "", 0}, {"unbekannt", "noon", 0.5},
 		{"negativ", "day", -0.1}, {"eins", "night", 1}, {"groesser", "dusk", 1.5}, {"nan", "day", nan}, {"inf", "day", math.Inf(1)},
 	}
 	for _, c := range cases {
@@ -249,9 +246,9 @@ func TestPreviewWeltLaeuftWeiter(t *testing.T) {
 
 // Nicht-Zweierpotenz-Geschwindigkeiten und spätere Tage: Phasenbeginn (Fortschritt 0) bleibt in der gesetzten Phase.
 func TestPreviewCycleGeschwindigkeitenUndPhasenbeginn(t *testing.T) {
-	length := float64((globalDayNight.DayMinutes + globalDayNight.TwilightMinutes + globalDayNight.NightMinutes) * 60)
+	_, length := cyclePhases(globalDayNight)
 	for _, speed := range []float64{0.1, 3, 7, 50} {
-		for _, phase := range []string{"day", "dusk", "night"} {
+		for _, phase := range []string{"day", "dusk", "night", "dawn"} {
 			for _, today := range []float64{0, 1, 5} {
 				w := newWorld(0, "x", Options{CycleSpeed: speed})
 				w.Time = (today*length + 5) / speed
@@ -259,7 +256,11 @@ func TestPreviewCycleGeschwindigkeitenUndPhasenbeginn(t *testing.T) {
 					t.Fatal(err)
 				}
 				c := cycleAt(globalDayNight, float64(w.Time*w.CycleSpeed))
-				if c.Phase != phase || c.Day != int(today)+1 || w.Cycle.Day != c.Day {
+				want := int(today) + 1
+				if phase == "dawn" { // das Morgengrauen gehört zum nächsten Tag
+					want++
+				}
+				if c.Phase != phase || c.Day != want || w.Cycle.Day != c.Day {
 					t.Errorf("Tempo %v, %s, Tag %v: cycleAt %+v, Cycle %+v", speed, phase, today+1, c, w.Cycle)
 				}
 			}

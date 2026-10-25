@@ -704,14 +704,16 @@
     "troopLimit": 10,
     "stockMax": 300,
     "hubLevel": 1,
+    "hubStep": 1,
     "hubUpgrade": {
-      "gold": 50,
+      "gold": 13,
       "material": {
         "wood": 0,
-        "stone": 100,
+        "stone": 25,
         "copper": 0
       },
-      "paid": 0
+      "paid": 0,
+      "steps": 3
     },
     "skillPoints": 2,
     "travel": null,

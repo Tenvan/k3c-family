@@ -25,7 +25,7 @@ func TestWiederholungKopien(t *testing.T) {
 	list, err := aufloesen("probe", []baustein{
 		{Art: "stamm", Rechteck: [4]float64{1, 0, 0.5, 1}, Farbe: "rope", Wiederholung: &wiederholung{Schritt: 2.5, Anzahl: 3}},
 		{Art: "boden", Rechteck: [4]float64{0, 1, 8, 1}, Farbe: "dell"},
-	})
+	}, master)
 	if err != nil {
 		t.Fatal(err)
 	}

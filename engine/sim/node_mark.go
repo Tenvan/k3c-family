@@ -1,5 +1,11 @@
 package sim
 
+// nodeMarkable: Nimmt der Knoten gerade eine Markier-Münze? Sammelbar (Baum, Fels, Erz, Ader) und noch nicht markiert.
+func nodeMarkable(n *ResourceNode) bool {
+	_, ok := gatherOf(n.Kind)
+	return !n.Marked && ok
+}
+
 // markNode markiert einen Knoten und merkt den Spieler der letzten Markier-Münze (B-532).
 func markNode(n *ResourceNode, p *Player) {
 	n.Marked = true

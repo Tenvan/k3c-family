@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import droppedMsg from '../../testdata/protocol/s2c-snapshot-delta-dropped.json';
 import timescaleMsg from '../../testdata/protocol/s2c-snapshot-delta-timescale.json';
 import { applyDelta } from './clientDelta';
 
@@ -36,8 +37,20 @@ describe('applyDelta', () => {
     expect(applyDelta(base, { events: [{ type: 'y' }] }).events).toEqual([{ type: 'y' }]);
   });
 
+  it('eventsDropped gilt nur für seinen Zustand: aus dem Beispiel 7, im nächsten Delta ohne Feld 0 (B-190)', () => {
+    const dropped = applyDelta(base, droppedMsg.s);
+    expect(dropped.eventsDropped).toBe(7);
+    expect(applyDelta(dropped, { time: 2 })).not.toHaveProperty('eventsDropped');
+  });
+
   it('ein Eintrag, der im selben Delta gesetzt und gelöscht wird, bleibt gelöscht', () => {
     expect(applyDelta(base, { players: { set: [{ id: 1, x: 99 }], del: [1] } }).players).toEqual([{ id: 2, x: 20 }]);
+  });
+
+  it('Bauplätze: neue Stufe kommt mit hubLevel über set, ein nicht mehr erreichbarer Platz verschwindet über del (W11.2, W11.4)', () => {
+    const state = { sites: [{ id: 1, hubLevel: 1 }, { id: 2, hubLevel: 2 }] };
+    const next = applyDelta(state, { sites: { set: [{ id: 3, hubLevel: 3 }], del: [2] } });
+    expect(next.sites).toEqual([{ id: 1, hubLevel: 1 }, { id: 3, hubLevel: 3 }]);
   });
 
   it('Liste fehlt im alten Zustand: wird aus set aufgebaut', () => {

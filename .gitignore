@@ -10,6 +10,7 @@ _site/
 /logs/
 .task/
 /bin/
+/release/
 /public/atlas/
 *.exe
 *.md5

@@ -1,6 +1,9 @@
 package sim
 
-import "math"
+import (
+	"math"
+	"slices"
+)
 
 // Dev-Aktionen (B-178): nur für den Dev-Mode des Raums (engine/room/dev.go), keine Spielregel.
 
@@ -55,17 +58,16 @@ func DevCastleFall(isl *Island, index int) bool {
 	return true
 }
 
-// DevSetPhase lässt die Zeit aller Stufen vorwärts zum Beginn der nächsten Phase (day, dusk, night) springen (B-232).
+// DevSetPhase lässt die Zeit aller Stufen vorwärts zum Beginn der nächsten Phase (day, dusk, night, dawn) springen (B-232).
 // Der Zyklus steht danach kurz vor dem Wechsel, damit der nächste Schritt ihn samt Ereignissen (Welle, Morgen-Einkommen)
 // wie sonst auslöst, auch wenn die Stufe schon in dieser Phase war. false: unbekannte Phase.
 func DevSetPhase(isl *Island, phase string) bool {
-	day := float64(globalDayNight.DayMinutes * 60)
-	starts := map[string]float64{"day": 0, "dusk": day, "night": day + float64(globalDayNight.TwilightMinutes*60)}
-	start, ok := starts[phase]
-	if !ok {
+	phases, length := cyclePhases(globalDayNight)
+	i := slices.IndexFunc(phases[:], func(p cyclePhase) bool { return p.name == phase })
+	if i < 0 {
 		return false
 	}
-	length := day + float64((globalDayNight.TwilightMinutes+globalDayNight.NightMinutes)*60)
+	start := phases[i].start
 	for _, w := range isl.Stages {
 		now := w.Time * w.CycleSpeed
 		target := math.Floor(now/length)*length + start
@@ -82,6 +84,8 @@ func DevSetPhase(isl *Island, phase string) bool {
 type DevFlags struct {
 	CheapBuild bool // alle Bau-, Ausbau- und Angebotskosten höchstens 1 je Posten
 	StockBonus int  // zusätzliches Lager-Maximum je Rohstoff und Gold-Maximum je Spieler (devMaxStock)
+	// Nights: Event-Id → Nacht, in der das Event zusätzlich zum Rhythmus läuft (DevStartEvent, dev_combat.go).
+	Nights map[string]int
 }
 
 // DevStockStep und DevStockBonusMax: Schritt und Obergrenze des zusätzlichen Lager-Maximums.
@@ -140,7 +144,7 @@ func DevBuildAll(isl *Island, level int) bool {
 		return false
 	}
 	for _, w := range isl.Stages {
-		w.HubLevel = level
+		w.HubLevel, w.HubStep = level, 1
 		if h := w.hubSite; h != nil {
 			h.Upgrade, h.UpgradePaid, h.BuildProgress, h.WorkerID = "", 0, 1, nil
 		}
@@ -175,9 +179,9 @@ func devBuildSite(w *World, s *Site, level int) {
 	s.Upgrade, s.UpgradePaid = "", 0
 }
 
-// DevNextPhase springt zum Beginn der nächsten Tageszeit (day → dusk → night → day) und liefert ihren Namen.
+// DevNextPhase springt zum Beginn der nächsten Tageszeit (day → dusk → night → dawn → day) und liefert ihren Namen.
 func DevNextPhase(isl *Island) string {
-	next := map[string]string{"day": "dusk", "dusk": "night", "night": "day"}[isl.Stages[0].Cycle.Phase]
+	next := map[string]string{"day": "dusk", "dusk": "night", "night": "dawn", "dawn": "day"}[isl.Stages[0].Cycle.Phase]
 	if next == "" {
 		next = "dusk"
 	}

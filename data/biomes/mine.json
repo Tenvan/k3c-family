@@ -2,6 +2,7 @@
   "id": "mine",
   "name": "Tiefe 2 (Mine)",
   "depth": 2,
+  "backdropVariants": 5,
   "lengthUnits": { "min": 550, "max": 700 },
   "chunkWidthUnits": 50,
   "hubWidthUnits": 100,

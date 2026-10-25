@@ -109,4 +109,9 @@ export type DevMessage =
   | { t: 'dev'; action: 'nextPhase' }
   | { t: 'dev'; action: 'castleFall'; slot: number }
   /** Grad des Raums, gilt ab der nächsten Welle; nur im Dev-Mode (B-080, KB2.6) */
-  | { t: 'dev'; action: 'grade'; grade: string };
+  | { t: 'dev'; action: 'grade'; grade: string }
+  /** Kampf (B-603): Boss-Id aus data/bosses.json am nächsten Portal, nächste Endboss-Phase, Event-Id aus data/events.json, Nacht */
+  | { t: 'dev'; action: 'boss'; slot: number; boss: string }
+  | { t: 'dev'; action: 'bossPhase' }
+  | { t: 'dev'; action: 'event'; event: string }
+  | { t: 'dev'; action: 'night' };

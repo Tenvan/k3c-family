@@ -21,7 +21,7 @@ interface Answer { key: string; off: string; view: WorldPreviewView }
 /** Vorschau-Welt zu Seed, Biom, Hub-Stufe und Tageszeit. `all` hat alle Gebäude (daraus die Schalter), `view` die Auswahl.
  *  Die Auswahl gehört zu Seed, Biom, Hub-Stufe und Planer-Stand (`ctx`): wechselt eines davon, gilt sie sofort als leer. Jede Antwort
  *  trägt ihren Schlüssel, eine veraltete wird nie gezeigt; bis die neue da ist, bleibt die letzte Welt stehen. */
-function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { phase: 'day' | 'dusk' | 'night'; progress: number }, plan: PlanSource | undefined, candidate: string) {
+function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { phase: 'day' | 'dusk' | 'night' | 'dawn'; progress: number }, plan: PlanSource | undefined, candidate: string) {
   const ctx = `${seed}|${biome}|${hubLevel}|${candidate}|${JSON.stringify(plan ?? null)}`; // ein anderer Planer-Stand oder Entwurf leert die Auswahl wie eine andere Stufe
   const key = `${ctx}|${time.phase}|${time.progress}`;
   const [chosen, setChosen] = useState<{ ctx: string; off: ReadonlySet<string>; looks: Looks }>({ ctx, off: NONE, looks: NO_LOOKS });

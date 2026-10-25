@@ -25,7 +25,7 @@ type IslandSave struct {
 	IslandID   string             `json:"islandId"` // Insel-ID der aktuellen Insel in der Welt (Version 8)
 	SavedAt    string             `json:"savedAt"`
 	Day        int                `json:"day,omitempty"`   // Tag der Insel beim Speichern (Version 4, nur Anzeige)
-	Phase      string             `json:"phase,omitempty"` // day, dusk, night beim Speichern (Version 4, nur Anzeige)
+	Phase      string             `json:"phase,omitempty"` // day, dusk, night, dawn beim Speichern (Version 4, nur Anzeige)
 	Seed       string             `json:"seed"`
 	Time       float64            `json:"time"`
 	Stock      Stock              `json:"stock"`     // Vorrat der Insel (alle Stufen teilen ihn)

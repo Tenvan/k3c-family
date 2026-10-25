@@ -4,6 +4,7 @@
  * je Slot das aktive Asset (Präferenz 1, zum Vergleich `wahl=n`, Ausschnitt).
  */
 import spritesJson from '@data/sprites.json';
+import { BIOMES, type BiomeConfig } from '@game/model/biome';
 import { HUB_GROWTH, HUB_SCAFFOLD } from '@game/scenes/render/hubGrowth';
 import type { Card } from '@game/tools/spriteReference';
 import type { ListFilterConfig } from '@webkit/lib/listFilter';
@@ -86,6 +87,7 @@ export function sceneFilter(items: readonly Resolved[], credits: readonly Licens
       { key: 'art', label: 'Art', values: (r) => r.slot.id.split(':')[0] },
       { key: 'bus', label: 'Bus', values: (r) => r.slot.bus },
       { key: 'lizenz', label: 'Lizenz', values: (r) => (r.choice ? (licenseFlag(r.choice.datei, credits) === 'NC' ? 'NC' : 'frei') : undefined), order: ['NC', 'frei'] },
+      { key: 'biom', label: 'Biom/Tiefe', values: (r) => biomeTags(r.slot.id), order: BIOMES.map(biomeTag) },
     ],
     sorts: [
       { key: 'spiel', label: 'Reihenfolge im Spiel', compare: (a, b) => (order.get(a.slot.id) ?? 0) - (order.get(b.slot.id) ?? 0) },
@@ -93,6 +95,18 @@ export function sceneFilter(items: readonly Resolved[], credits: readonly Licens
       { key: 'status', label: 'Status', compare: (a, b) => status(a).localeCompare(status(b), 'de') || byId(a, b) },
     ],
   };
+}
+
+const biomeTag = (b: BiomeConfig): string => `Tiefe ${b.depth} · ${b.name}`;
+
+/**
+ * Biome eines Grafik-Slots (WZ29.4, B-599): Hintergrund `bg:<biom>:<n>` gehört zu seinem Biom, ein Gegner zu jedem Biom, das ihn
+ * spawnen lässt (Portal oder Nacht, aus den Biom-Daten des Spiels); alles andere hat kein Biom und fehlt in der Dimension.
+ */
+export function biomeTags(slotId: string): string[] | undefined {
+  const [kind, biom] = slotId.split(':');
+  const hits = BIOMES.filter((b) => (kind === 'bg' ? b.id === biom : [...b.enemies.portal, ...b.enemies.night].includes(slotId)));
+  return hits.length ? hits.map(biomeTag) : undefined;
 }
 
 /** Lizenz-Eintrag eines Packs (wie `Credit` aus `credits.ts`) */
@@ -143,6 +157,17 @@ export function figureCard(slot: AssetSlot, choice: Choice & { sheet: string }):
 // ponytail: ein Faktor für alle; im Spiel haben einzelne Objekte eigene Zooms (Portal ×1, Hintergründe aller fünf Biome ×1,
 // src/scenes/render/worldSprites.ts). Erst übernehmen, wenn die Vorschau dort täuscht.
 export const GRAFIK_SCALE = 2;
+
+const DICHTE = /^grafik\/gebaeude\/.+-(16|32|64|128)\.png$/;
+
+/**
+ * Spielmaßstab einer Slot-Datei: Generator-Grafik (`grafik/gebaeude/<id>-<dichte>.png`) hat ihre Dichte im Namen und erscheint im
+ * Spiel mit 32 px je Unit, also ×32/Dichte (128 px → ×0,25, GEB18); alles andere ×GRAFIK_SCALE.
+ */
+export function grafikScale(datei: string): number {
+  const d = DICHTE.exec(datei)?.[1];
+  return d ? 32 / Number(d) : GRAFIK_SCALE;
+}
 
 /** Eintrag aus `public/grafik/gebaeude/index.json` (schreibt `task gen:gebaeude`, GEB1) */
 export interface GebaeudeEintrag {
@@ -225,20 +250,26 @@ export interface WachstumKarte {
   geruest?: string;
 }
 
-/** Name und Spielbedingung je Look `<id>-<stufe>` (Regel materialien-gebaeude.md § 2.1); der Spielcode kennt nur die Reihe. */
+/** Burg-Material je Hub-Stufe 2–5 und die Zusätze der Ausbauschritte 2 und 3 (`burg.json` › Stufen 6–13, GEB17.6) */
+const BURG_NAME = ['Steinburg', 'Kupferburg', 'Eisenburg', 'Kristallburg'];
+const SCHRITT_ZUSATZ = ['', ' mit Bannern', ' mit Türmchen'];
+
+/**
+ * Name und Spielbedingung je Look `<id>-<stufe>` (Regel materialien-gebaeude.md § 2.1, Ausbauschritte stufen.md § 8); der Spielcode
+ * kennt nur die Reihe. Hub-Stufe 1 = Lagerfeuer, Zelt, Holzhütte; ab Hub-Stufe 2 je Ausbauschritt eine eigene Burg.
+ */
 const WACHSTUM_TEXT: Record<string, [string, string]> = {
-  'lagerfeuer-1': ['Lagerfeuer mit Grill', 'Hub-Stufe 1, noch kein Gold bezahlt'],
-  'lagerfeuer-2': ['Zelt am Feuer', 'Hub-Stufe 1, weniger als die Hälfte des Golds'],
-  'lagerfeuer-3': ['Holzhütte am Feuer', 'Hub-Stufe 1, ab der Hälfte des Golds'],
-  'burg-1': ['Holzburg', 'Hub-Stufe 1, Gold voll'],
-  'burg-2': ['Steinburg', 'Hub-Stufe 2'],
-  'burg-3': ['Kupferburg', 'Hub-Stufe 3'],
-  'burg-4': ['Eisenburg', 'Hub-Stufe 4'],
-  'burg-5': ['Kristallburg', 'Hub-Stufe 5'],
+  'lagerfeuer-1': ['Lagerfeuer mit Grill', 'Hub-Stufe 1, Ausbauschritt 1'],
+  'lagerfeuer-2': ['Zelt am Feuer', 'Hub-Stufe 1, Ausbauschritt 2'],
+  'lagerfeuer-3': ['Holzhütte am Feuer', 'Hub-Stufe 1, Ausbauschritt 3'],
+  ...Object.fromEntries(BURG_NAME.flatMap((name, i) => [1, 2, 3].map((step) => [
+    `burg-${HUB_GROWTH[(i + 1) * 3 + step - 1]!.stufe}`,
+    [name + SCHRITT_ZUSATZ[step - 1], `Hub-Stufe ${i + 2}, Ausbauschritt ${step}`],
+  ]))),
 };
 
 /**
- * Wachstumsreihe der Burg in Spielreihenfolge (`HUB_GROWTH` aus dem Spielcode, Regel materialien-gebaeude.md § 2.1), danach die
+ * Wachstumsreihe der Burg in Spielreihenfolge (`HUB_GROWTH` aus dem Spielcode, ein Look je Hub-Stufe und Ausbauschritt), danach die
  * Steinburg mit Baugerüst als Beispiel für „ein Bauer baut den Ausbau“; Looks ohne Datei im Index entfallen.
  */
 export function hubWachstum(index: readonly GebaeudeEintrag[]): WachstumKarte[] {
@@ -262,17 +293,28 @@ const HINTERGRUND_TEIL: Record<string, string> = { forest: 'wald', cave: 'hoehle
 
 export interface HintergrundStreifen {
   biom: string;
+  /** `''` = bisherige Fassung (GEB7), sonst die Variante `v1` … (GEB18) */
+  variante: string;
   /** `palette.sky` des Bioms: Untergrund, auf dem die Schichten stehen */
   himmel: string;
   /** hinten (fern) zuerst */
   schichten: { id: string; dateien: Record<string, string> }[];
 }
 
-/** Je Biom (Reihenfolge von `biome`) die drei Hintergrund-Schichten fern → nah; Biome ohne alle drei Schichten entfallen. */
+const VARIANTE = /^hg-[a-z]+-(?:fern|mitte|nah)-(v[1-9][0-9]*)$/;
+
+/**
+ * Je Biom (Reihenfolge von `biome`) die drei Hintergrund-Schichten fern → nah: erst die bisherige Fassung, dann jede Variante
+ * `hg-<teil>-<schicht>-v<n>` (GEB18) aufsteigend; Fassungen ohne alle drei Schichten entfallen.
+ */
 export function hintergrundStreifen(index: readonly GebaeudeEintrag[], biome: readonly { id: string; palette: { sky: string } }[]): HintergrundStreifen[] {
-  const byId = new Map(index.filter((e) => e.klasse === 'hintergrund').map((e) => [e.id, e]));
-  return biome.flatMap((b) => {
-    const schichten = ['fern', 'mitte', 'nah'].flatMap((s) => byId.get(`hg-${HINTERGRUND_TEIL[b.id]}-${s}`) ?? []);
-    return schichten.length === 3 ? [{ biom: b.id, himmel: b.palette.sky, schichten: schichten.map((e) => ({ id: e.id, dateien: e.dateien })) }] : [];
-  });
+  const hg = index.filter((e) => e.klasse === 'hintergrund');
+  const byId = new Map(hg.map((e) => [e.id, e]));
+  const varianten = [...new Set(hg.flatMap((e) => VARIANTE.exec(e.id)?.[1] ?? []))].sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)));
+  return biome.flatMap((b) =>
+    ['', ...varianten].flatMap((v) => {
+      const schichten = ['fern', 'mitte', 'nah'].flatMap((s) => byId.get(`hg-${HINTERGRUND_TEIL[b.id]}-${s}${v ? `-${v}` : ''}`) ?? []);
+      return schichten.length === 3 ? [{ biom: b.id, variante: v, himmel: b.palette.sky, schichten: schichten.map((e) => ({ id: e.id, dateien: e.dateien })) }] : [];
+    }),
+  );
 }
