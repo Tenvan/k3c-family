@@ -1,14 +1,14 @@
 # HW1 · PLAT, SRV, INF, CLI · Zurückgestellte Controller-Prüfungen nachholen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** ABN
 - **Domäne:** PLAT, SRV, INF, CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-314, B-042, B-090, B-335, B-394
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt)
 
 ## Ausgangslage
 
@@ -70,6 +70,8 @@ keine
 | HW1.8 | `HW1.8-audio-tv.md` | Workshop | Mensch | offen |
 | HW1.9 | `HW1.9-hoerprobe-tv.md` | Workshop | Mensch | offen |
 | HW1.10 | `HW1.10-overlay-gesten-xbox.md` | Workshop | Mensch | offen |
+| HW1.1 | `HW1.1-pruefliste.md` | Umsetzung | autonom | fertig |
+| HW1.2 | `HW1.2-durchgang-geraet.md` | Workshop | Mensch | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
