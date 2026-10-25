@@ -5,7 +5,7 @@ stehen im Kopf von `docs/assets/zuordnung.md`; Spalten, Pack-Schreibweise und L�
 Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Herkunft die Regel in `docs/rules/`.
 
 - **Objekt-IDs** (eindeutig, von `src/tools/zuordnung.test.ts` geprüft):
-  `hub:<1–5>` Hub-Stufe, `hub:camp:<1–3>` Vorstufe der Holzburg (Lagerfeuer, Zelt, Hütte) und `hub:scaffold` Baugerüst (GEB11), `wall:<1–5>` und `tower:<1–5>` Mauer- und Turm-Stufe (`tower:5` = Zaubertum),
+  `hub:<1–5>` Hub-Stufe, `hub:camp:<1–3>` Vorstufe der Holzburg (Lagerfeuer, Zelt, Hütte) und `hub:scaffold` Baugerüst (GEB11), `site:scaffold:<1|2|3|4|6>` Gerüst im Bau je Breite und `sign:<axe|pickaxe>` Abbau-Symbol (GEB16), `wall:<1–5>` und `tower:<1–5>` Mauer- und Turm-Stufe (`tower:5` = Zaubertum),
   `material:<wood|stone|copper|iron|crystal>`, `vein:<stone|copper|iron|crystal>` Ader je Material,
   `plantation`, `portal`, `coin`, `mount:<ID aus data/sprites.json › mounts>`,
   `node:<Art aus data/economy.json › gatherables bzw. data/biomes/*.json › resourcesPerChunk>`, `camp:recruit`, `exit`,
@@ -93,6 +93,18 @@ Level-Objekte, die `src/scenes/render/worldRenderer.ts` zeichnet (`createNode`, 
 | `node:copperOre` | `data/economy.json` › `gatherables.copperOre` | `grafik/gebaeude` | `erzbrocken-32.png` (1 × 1 Kachel) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 | `node:bush` | `data/biomes/forest.json` › `resourcesPerChunk` (Deko) | `grafik/gebaeude` | Wald `busch-32.png`, sonst `hoehlenbusch-32.png` (je 1 × 1 Kachel; der Generator setzt heute nur im Wald Büsche) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6, GEB10 | eigen | zugeordnet |
 | `camp:recruit` | `data/economy.json` › `recruitCamp` | `grafik/gebaeude` | `rekrutierungslager-<look>-32.png` (3 × 2 Kacheln, Zelt und Feuerstelle in einem Bild, statisch; Look 1 Wald, 2 Höhle, 3 Mine und tiefer, B-570) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
+
+## Baustellen und Abbau-Schilder
+
+| Objekt | Herkunft | Pack | Datei/Frame | Stil (Raster, Palette, Skalierung) | Lizenz | Status |
+|---|---|---|---|---|---|---|
+| `site:scaffold:1` | B-586 | `grafik/gebaeude` | `geruest-1-32.png` (Gerüst im Bau, Breite 1: Mauer) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB16 | eigen | zugeordnet |
+| `site:scaffold:2` | B-586 | `grafik/gebaeude` | `geruest-2-32.png` (Gerüst im Bau, Breite 2: Tor) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB16 | eigen | zugeordnet |
+| `site:scaffold:3` | B-586 | `grafik/gebaeude` | `geruest-3-32.png` (Gerüst im Bau, Breite 3: Turm) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB16 | eigen | zugeordnet |
+| `site:scaffold:4` | B-586 | `grafik/gebaeude` | `geruest-4-32.png` (Gerüst im Bau, Breite 4: Farm, Treppen) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB16 | eigen | zugeordnet |
+| `site:scaffold:6` | B-586 | `grafik/gebaeude` | `geruest-6-32.png` (Gerüst im Bau, Breite 6: Werkstatt, Lager, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB16 | eigen | zugeordnet |
+| `sign:axe` | B-588 | `grafik/gebaeude` | `symbol-axt-32.png` (Abbau-Schild am Baum) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB16 | eigen | zugeordnet |
+| `sign:pickaxe` | B-588 | `grafik/gebaeude` | `symbol-spitzhacke-32.png` (Abbau-Schild an Fels, Erz und Ader) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB16 | eigen | zugeordnet |
 
 ## Reittiere
 

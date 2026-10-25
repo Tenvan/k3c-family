@@ -146,6 +146,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-619](B-619-check-diff-cache-und-short.md) | INF | Problem | hoch | offen | – | check:diff nutzt den Go-Testcache und lässt lange Tests aus |
 | [B-628](B-628-simtest-checkout-kurzpfad-ci.md) | DEV | Problem | hoch | offen | – | TestSimTestMitCheckout scheitert auf dem Windows-Runner an 8.3-Kurzpfaden |
 | [B-629](B-629-buildall-web-exe.md) | INF | Problem | hoch | offen | – | task buildall baut die Web-EXEs von Studio und Workbench nicht mit |
+| [B-620](B-620-golden-grenze-20-mb.md) | INF | Frage | mittel | offen | – | Golden-Grenze 20 MB nach dem dichteren Wald bestätigen |
 
 ## Archiv
 

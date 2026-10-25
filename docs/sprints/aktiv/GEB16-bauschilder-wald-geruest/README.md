@@ -1,14 +1,14 @@
-# GEB16 · DEV · Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik
+# GEB16 · SRV, CLI, DEV, REG · Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** GEB
-- **Domäne:** DEV
-- **Reife:** Entwurf
+- **Domäne:** SRV, CLI, DEV, REG
+- **Reife:** bereit
 - **Tickets:** B-584, B-585, B-586, B-587, B-588
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt; Defaults: payable-Feld neu, falls der Server Abbaubares nicht meldet; Wald-Dichte [22, 30])
 
 ## Ausgangslage
 
@@ -58,13 +58,13 @@ Entschieden: Gerüst-Grafiken je Größenklasse; Abbau-Schild je abbaubarem Baum
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GEB16.1 | – | Umsetzung | autonom | offen |
-| GEB16.2 | – | Umsetzung | autonom | offen |
-| GEB16.3 | – | Umsetzung | autonom | offen |
-| GEB16.4 | – | Umsetzung | autonom | offen |
-| GEB16.5 | – | Umsetzung | autonom | offen |
-| GEB16.6 | – | Review | autonom | offen |
-| GEB16.7 | – | Workshop | Mensch | offen |
+| GEB16.1 | `GEB16.1-payable-snapshot.md` | Umsetzung | autonom | fertig |
+| GEB16.2 | `GEB16.2-schild-nur-payable.md` | Umsetzung | autonom | fertig |
+| GEB16.3 | `GEB16.3-geruest-werkzeug-grafik.md` | Umsetzung | autonom | fertig |
+| GEB16.4 | `GEB16.4-geruest-abbauschild-spiel.md` | Umsetzung | autonom | fertig |
+| GEB16.5 | `GEB16.5-wald-dichter.md` | Umsetzung | autonom | fertig |
+| GEB16.6 | `GEB16.6-review.md` | Review | autonom | fertig |
+| GEB16.7 | `GEB16.7-abnahme-geraet.md` | Workshop | Mensch | offen |
 
 - GEB16.1 (SRV) Feld `payable` je Bauplatz im Snapshot und in `docs/protocol.md` (AC-01).
 - GEB16.2 (CLI) Client zeigt das Schild nur bei `payable`, `buildableRules.ts` löschen (AC-01).
@@ -76,5 +76,7 @@ Entschieden: Gerüst-Grafiken je Größenklasse; Abbau-Schild je abbaubarem Baum
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-25, Claude (GEB16.6): `task check` und `task check:go` grün; `check:race` lokal übersprungen (kein C-Compiler), die CI prüft es.
+AC-01: GEB16.1 und .2 (`payable` und `minable` im Snapshot, Review ohne schwere Befunde). AC-02: GEB16.5 (Wald [22, 30], Golden neu). AC-03 und AC-04: GEB16.3 und .4 (Gerüste je Breite, Axt und Spitzhacke).
+Neues Ticket B-620 (KRT): Die Golden-Grenze steigt von 16 auf 20 MB, Ralf bestätigt.
+Offen ist AC-05, die Abnahme am Gerät durch Ralf in GEB16.7.

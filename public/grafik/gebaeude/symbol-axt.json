@@ -1,0 +1,55 @@
+{
+  "id": "symbol-axt",
+  "vorlage": {
+    "motiv": "Axt als kleines Symbol für das Abbau-Schild an Bäumen (GEB16, B-588)",
+    "teile": [
+      "Holzstiel diagonal von unten links nach oben rechts",
+      "Eisenklinge oben rechts mit heller Schneide rechts, Nacken links am Stiel"
+    ],
+    "materialien": [
+      "Pfosten, Balken",
+      "Holz (Wand, Tresen, Gestell)",
+      "Eisen (Rüstung, Band)"
+    ],
+    "stimmung": "Holz hacken",
+    "fein": "Licht am Stiel und auf der Klinge"
+  },
+  "kacheln": {
+    "b": 1,
+    "h": 1
+  },
+  "bausteine": [
+    {"art":"stiel","rechteck":[0.15625,0.8125,0.09375,0.09375],"farbe":"oiled-cedar"},
+    {"art":"stiel","rechteck":[0.1875,0.78125,0.09375,0.09375],"farbe":"rope"},
+    {"art":"stiel","rechteck":[0.21875,0.75,0.09375,0.09375],"farbe":"rope"},
+    {"art":"stiel","rechteck":[0.25,0.71875,0.09375,0.09375],"farbe":"rope"},
+    {"art":"stiel","rechteck":[0.28125,0.6875,0.09375,0.09375],"farbe":"oiled-cedar"},
+    {"art":"stiel","rechteck":[0.3125,0.65625,0.09375,0.09375],"farbe":"rope"},
+    {"art":"stiel","rechteck":[0.34375,0.625,0.09375,0.09375],"farbe":"rope"},
+    {"art":"stiel","rechteck":[0.375,0.59375,0.09375,0.09375],"farbe":"rope"},
+    {"art":"stiel","rechteck":[0.40625,0.5625,0.09375,0.09375],"farbe":"oiled-cedar"},
+    {"art":"stiel","rechteck":[0.4375,0.53125,0.09375,0.09375],"farbe":"rope"},
+    {"art":"stiel","rechteck":[0.46875,0.5,0.09375,0.09375],"farbe":"rope"},
+    {"art":"stiel","rechteck":[0.5,0.46875,0.09375,0.09375],"farbe":"rope"},
+    {"art":"stiel","rechteck":[0.53125,0.4375,0.09375,0.09375],"farbe":"oiled-cedar"},
+    {"art":"stiel","rechteck":[0.5625,0.40625,0.09375,0.09375],"farbe":"rope"},
+    {"art":"stiel","rechteck":[0.59375,0.375,0.09375,0.09375],"farbe":"rope"},
+    {"art":"stiel","rechteck":[0.625,0.34375,0.09375,0.09375],"farbe":"rope"},
+    {"art":"stiel","rechteck":[0.65625,0.3125,0.09375,0.09375],"farbe":"oiled-cedar"},
+    {"art":"licht","rechteck":[0.15625,0.8125,0.03125,0.03125],"farbe":"twine","fein":true},
+    {"art":"licht","rechteck":[0.21875,0.75,0.03125,0.03125],"farbe":"twine","fein":true},
+    {"art":"licht","rechteck":[0.28125,0.6875,0.03125,0.03125],"farbe":"twine","fein":true},
+    {"art":"licht","rechteck":[0.34375,0.625,0.03125,0.03125],"farbe":"twine","fein":true},
+    {"art":"licht","rechteck":[0.40625,0.5625,0.03125,0.03125],"farbe":"twine","fein":true},
+    {"art":"licht","rechteck":[0.46875,0.5,0.03125,0.03125],"farbe":"twine","fein":true},
+    {"art":"licht","rechteck":[0.53125,0.4375,0.03125,0.03125],"farbe":"twine","fein":true},
+    {"art":"licht","rechteck":[0.59375,0.375,0.03125,0.03125],"farbe":"twine","fein":true},
+    {"art":"licht","rechteck":[0.65625,0.3125,0.03125,0.03125],"farbe":"twine","fein":true},
+    {"art":"nacken","rechteck":[0.4375,0.21875,0.125,0.1875],"farbe":"dim-gray"},
+    {"art":"klinge","rechteck":[0.5625,0.125,0.1875,0.375],"farbe":"heather"},
+    {"art":"klinge","rechteck":[0.75,0.09375,0.09375,0.4375],"farbe":"heather"},
+    {"art":"schneide","rechteck":[0.84375,0.125,0.0625,0.375],"farbe":"light-steel"},
+    {"art":"schatten","rechteck":[0.5625,0.4375,0.1875,0.0625],"farbe":"dim-gray"},
+    {"art":"licht","rechteck":[0.5625,0.125,0.1875,0.03125],"farbe":"light-steel","fein":true}
+  ]
+}

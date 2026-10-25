@@ -47,6 +47,14 @@ func EconomyOf(w *World) Economy {
 	return e
 }
 
+// SitePayable: Nimmt der Bauplatz gerade Münzen für Bau oder Ausbau? Dieselbe Regel wie für `input.pay` (sitePayable),
+// für `sites[].payable` im Zustand (B-587); nur gelesen, nichts gespeichert.
+func SitePayable(w *World, s *Site) bool { return sitePayable(w, s) }
+
+// NodeMarkable: Nimmt der Knoten gerade eine Markier-Münze? Dieselbe Regel wie für `input.pay` (nodeMarkable), für
+// `nodes[].minable` im Zustand (B-588).
+func NodeMarkable(n *ResourceNode) bool { return nodeMarkable(n) }
+
 // materialOf sind die Materialkosten ohne Gold.
 func materialOf(c Cost) Stock {
 	return Stock{Wood: c.Wood, Stone: c.Stone, Copper: c.Copper, Iron: c.Iron, Crystal: c.Crystal}

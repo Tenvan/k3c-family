@@ -24,8 +24,8 @@ func TestHoehleMitBueschen(t *testing.T) {
 	}
 	forest, _ := biome(t, "forest").ResourcesPerChunk.Get("forest")
 	trees, _ := forest.Get("tree")
-	if trees != [2]int{14, 20} {
-		t.Fatalf("Wald-Abschnitt: tree %v, erwartet [14 20]", trees)
+	if trees != [2]int{22, 30} {
+		t.Fatalf("Wald-Abschnitt: tree %v, erwartet [22 30]", trees)
 	}
 	if got := count("forest", "tree"); got == 0 {
 		t.Fatal("Wald ohne Bäume")

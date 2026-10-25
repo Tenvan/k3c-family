@@ -16,6 +16,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WZ30 | DEV | WZG | Oberflächen zur Abnahme: Szenen, Filter, Quellen, Chat-Karten mit Mock-Daten | – | `aktiv/WZ30-oberflaechen-abnahme/` |
 | GEB18 | DEV, SIM, CLI | GEB | Hintergründe der fünf Stufen: vierfache Auflösung, fünf Varianten je Stufe nach Seed | – | `aktiv/GEB18-hintergruende-detail-varianten/` |
 | GEB15 | DEV | GEB | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | – | `aktiv/GEB15-hoehle-fels-varianten/` |
+| GEB16 | SRV, CLI, DEV, REG | GEB | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | – | `aktiv/GEB16-bauschilder-wald-geruest/` |
 | SO8 | DEV, CLI | SND | Skill-Sounds je Klasse | – | `aktiv/SO8-skill-sounds-je-klasse/` |
 | BT1 | SRV, DEV | REL | Server im Heimnetz finden, Windows-Starter, Start mit Seed | – | `aktiv/BT1-heimnetz-start/` |
 | KR1 | REG | KRT | Kritische Fragen zu BED | – | `aktiv/KR1-fragen-bed/` |
@@ -30,7 +31,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| GEB16 | DEV | GEB | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | – | Entwurf | `geplant/GEB16-bauschilder-wald-geruest/` |
 | GEB17 | CLI, REG, SIM, DEV | GEB | Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe | – | Entwurf | `geplant/GEB17-hub-ausbau-je-inselstufe/` |
 | SV2 | SRV | WRT | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | – | Entwurf | `geplant/SV2-voll-ausbau-regelkonform/` |
 | W13 | CLI | WRT | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | – | Entwurf | `geplant/W13-morgengrauen-licht-client/` |

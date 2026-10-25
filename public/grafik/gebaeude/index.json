@@ -596,6 +596,153 @@
     ]
   },
   {
+    "id": "geruest-1",
+    "kacheln": {
+      "b": 1,
+      "h": 5
+    },
+    "vorlage": {
+      "motiv": "Baugerüst aus Holz in Gebäudeform für Bauplätze der Breite 1 Kacheln im Bau (GEB16, B-586): Mauer (1 × 5)",
+      "teile": [
+        "Unfertige Steinwand hinten, links höher als rechts, bis 1,5 Kacheln über dem Boden",
+        "2 Stangen über die Breite, von 0,25 Kacheln bis zum Boden",
+        "Laufbretter über die ganze Breite auf 0,75, 2,25, 3,75 Kacheln, darunter je ein Riegel",
+        "Diagonale Streben in den äußeren Feldern, je Ebene die Richtung wechselnd"
+      ],
+      "materialien": [
+        "Pfosten, Balken",
+        "Holz (Wand, Tresen, Gestell)",
+        "Stein (Kamin, Esse, Sockel, Stufe)"
+      ],
+      "stimmung": "Baustelle: hier entsteht ein Gebäude",
+      "fein": "Steinfuge, Licht an Stangen und Brettern, Brettschatten"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/geruest-1-128.png",
+      "16": "grafik/gebaeude/geruest-1-16.png",
+      "32": "grafik/gebaeude/geruest-1-32.png",
+      "64": "grafik/gebaeude/geruest-1-64.png"
+    }
+  },
+  {
+    "id": "geruest-2",
+    "kacheln": {
+      "b": 2,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Baugerüst aus Holz in Gebäudeform für Bauplätze der Breite 2 Kacheln im Bau (GEB16, B-586): Tor (2 × 4)",
+      "teile": [
+        "Unfertige Steinwand hinten, links höher als rechts, bis 1,1875 Kacheln über dem Boden",
+        "2 Stangen über die Breite, von 0,25 Kacheln bis zum Boden",
+        "Laufbretter über die ganze Breite auf 0,75, 2,25 Kacheln, darunter je ein Riegel",
+        "Diagonale Streben in den äußeren Feldern, je Ebene die Richtung wechselnd"
+      ],
+      "materialien": [
+        "Pfosten, Balken",
+        "Holz (Wand, Tresen, Gestell)",
+        "Stein (Kamin, Esse, Sockel, Stufe)"
+      ],
+      "stimmung": "Baustelle: hier entsteht ein Gebäude",
+      "fein": "Steinfuge, Licht an Stangen und Brettern, Brettschatten"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/geruest-2-128.png",
+      "16": "grafik/gebaeude/geruest-2-16.png",
+      "32": "grafik/gebaeude/geruest-2-32.png",
+      "64": "grafik/gebaeude/geruest-2-64.png"
+    }
+  },
+  {
+    "id": "geruest-3",
+    "kacheln": {
+      "b": 3,
+      "h": 8
+    },
+    "vorlage": {
+      "motiv": "Baugerüst aus Holz in Gebäudeform für Bauplätze der Breite 3 Kacheln im Bau (GEB16, B-586): Turm (3 × 8)",
+      "teile": [
+        "Unfertige Steinwand hinten, links höher als rechts, bis 2,40625 Kacheln über dem Boden",
+        "2 Stangen über die Breite, von 0,25 Kacheln bis zum Boden",
+        "Laufbretter über die ganze Breite auf 0,75, 2,25, 3,75, 5,25, 6,75 Kacheln, darunter je ein Riegel",
+        "Diagonale Streben in den äußeren Feldern, je Ebene die Richtung wechselnd"
+      ],
+      "materialien": [
+        "Pfosten, Balken",
+        "Holz (Wand, Tresen, Gestell)",
+        "Stein (Kamin, Esse, Sockel, Stufe)"
+      ],
+      "stimmung": "Baustelle: hier entsteht ein Gebäude",
+      "fein": "Steinfuge, Licht an Stangen und Brettern, Brettschatten"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/geruest-3-128.png",
+      "16": "grafik/gebaeude/geruest-3-16.png",
+      "32": "grafik/gebaeude/geruest-3-32.png",
+      "64": "grafik/gebaeude/geruest-3-64.png"
+    }
+  },
+  {
+    "id": "geruest-4",
+    "kacheln": {
+      "b": 4,
+      "h": 3
+    },
+    "vorlage": {
+      "motiv": "Baugerüst aus Holz in Gebäudeform für Bauplätze der Breite 4 Kacheln im Bau (GEB16, B-586): Farm und Treppen (4 × 3 bzw. 4 × 4)",
+      "teile": [
+        "Unfertige Steinwand hinten, links höher als rechts, bis 0,90625 Kacheln über dem Boden",
+        "3 Stangen über die Breite, von 0,25 Kacheln bis zum Boden",
+        "Laufbretter über die ganze Breite auf 0,75, 2,25 Kacheln, darunter je ein Riegel",
+        "Diagonale Streben in den äußeren Feldern, je Ebene die Richtung wechselnd",
+        "Leiter rechts der Mitte vom untersten Brett bis zum Boden"
+      ],
+      "materialien": [
+        "Pfosten, Balken",
+        "Holz (Wand, Tresen, Gestell)",
+        "Stein (Kamin, Esse, Sockel, Stufe)"
+      ],
+      "stimmung": "Baustelle: hier entsteht ein Gebäude",
+      "fein": "Steinfuge, Licht an Stangen und Brettern, Brettschatten"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/geruest-4-128.png",
+      "16": "grafik/gebaeude/geruest-4-16.png",
+      "32": "grafik/gebaeude/geruest-4-32.png",
+      "64": "grafik/gebaeude/geruest-4-64.png"
+    }
+  },
+  {
+    "id": "geruest-6",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Baugerüst aus Holz in Gebäudeform für Bauplätze der Breite 6 Kacheln im Bau (GEB16, B-586): Werkstatt, Lager, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer (6 × 4)",
+      "teile": [
+        "Unfertige Steinwand hinten, links höher als rechts, bis 1,1875 Kacheln über dem Boden",
+        "4 Stangen über die Breite, von 0,25 Kacheln bis zum Boden",
+        "Laufbretter über die ganze Breite auf 0,75, 2,25 Kacheln, darunter je ein Riegel",
+        "Diagonale Streben in den äußeren Feldern, je Ebene die Richtung wechselnd",
+        "Leiter rechts der Mitte vom untersten Brett bis zum Boden"
+      ],
+      "materialien": [
+        "Pfosten, Balken",
+        "Holz (Wand, Tresen, Gestell)",
+        "Stein (Kamin, Esse, Sockel, Stufe)"
+      ],
+      "stimmung": "Baustelle: hier entsteht ein Gebäude",
+      "fein": "Steinfuge, Licht an Stangen und Brettern, Brettschatten"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/geruest-6-128.png",
+      "16": "grafik/gebaeude/geruest-6-16.png",
+      "32": "grafik/gebaeude/geruest-6-32.png",
+      "64": "grafik/gebaeude/geruest-6-64.png"
+    }
+  },
+  {
     "id": "heilplatz",
     "kacheln": {
       "b": 6,
@@ -3612,6 +3759,60 @@
       "16": "grafik/gebaeude/setzling-16.png",
       "32": "grafik/gebaeude/setzling-32.png",
       "64": "grafik/gebaeude/setzling-64.png"
+    }
+  },
+  {
+    "id": "symbol-axt",
+    "kacheln": {
+      "b": 1,
+      "h": 1
+    },
+    "vorlage": {
+      "motiv": "Axt als kleines Symbol für das Abbau-Schild an Bäumen (GEB16, B-588)",
+      "teile": [
+        "Holzstiel diagonal von unten links nach oben rechts",
+        "Eisenklinge oben rechts mit heller Schneide rechts, Nacken links am Stiel"
+      ],
+      "materialien": [
+        "Pfosten, Balken",
+        "Holz (Wand, Tresen, Gestell)",
+        "Eisen (Rüstung, Band)"
+      ],
+      "stimmung": "Holz hacken",
+      "fein": "Licht am Stiel und auf der Klinge"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/symbol-axt-128.png",
+      "16": "grafik/gebaeude/symbol-axt-16.png",
+      "32": "grafik/gebaeude/symbol-axt-32.png",
+      "64": "grafik/gebaeude/symbol-axt-64.png"
+    }
+  },
+  {
+    "id": "symbol-spitzhacke",
+    "kacheln": {
+      "b": 1,
+      "h": 1
+    },
+    "vorlage": {
+      "motiv": "Spitzhacke als kleines Symbol für das Abbau-Schild an Felsen, Erz und Stein (GEB16, B-588)",
+      "teile": [
+        "Holzstiel senkrecht in der Mitte bis zum Boden",
+        "Gebogener Eisenkopf oben über die ganze Breite mit zwei hellen Spitzen, Band am Stiel"
+      ],
+      "materialien": [
+        "Pfosten, Balken",
+        "Holz (Wand, Tresen, Gestell)",
+        "Eisen (Rüstung, Band)"
+      ],
+      "stimmung": "Stein brechen",
+      "fein": "Licht und Schatten am Stiel, Licht auf dem Kopf"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/symbol-spitzhacke-128.png",
+      "16": "grafik/gebaeude/symbol-spitzhacke-16.png",
+      "32": "grafik/gebaeude/symbol-spitzhacke-32.png",
+      "64": "grafik/gebaeude/symbol-spitzhacke-64.png"
     }
   },
   {
