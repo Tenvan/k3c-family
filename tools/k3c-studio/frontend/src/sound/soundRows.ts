@@ -6,6 +6,7 @@
 import bosses from '@data/bosses.json';
 import monarch from '@data/monarch.json';
 import { cueFor } from '@game/audio/events';
+import { SKILL_FALLBACK, skillSlot as gameSkillSlot } from '@game/audio/skills';
 import { UI_SLOTS } from '@game/audio/ui';
 import type { GameEvent } from '@game/model/types';
 import type { ListFilterConfig } from '@webkit/lib/listFilter';
@@ -19,11 +20,11 @@ export const ROW_TITLE: Record<RowScene, string> = {
   skills: 'Skills', gegner: 'Gegner und Bosse', bauen: 'Bauen', reiten: 'Reiten', ui: 'UI', warnungen: 'Warnungen',
 };
 
-/** Woher der Ton einer Zeile kommt: Linien-Slot, Rückfall `sfx:skill`, eigener Slot, noch ohne Zuordnung oder gar kein Slot. */
-export type Herkunft = 'linie' | 'rueckfall' | 'slot' | 'luecke' | 'still';
+/** Woher der Ton einer Zeile kommt: Slot des Skills, Linien-Slot, Rückfall `sfx:skill`, eigener Slot, noch ohne Zuordnung oder gar kein Slot. */
+export type Herkunft = 'skill' | 'linie' | 'rueckfall' | 'slot' | 'luecke' | 'still';
 
 export const HERKUNFT_LABEL: Record<Herkunft, string> = {
-  linie: 'Linien-Slot', rueckfall: 'Rückfall sfx:skill', slot: 'Slot', luecke: 'Lücke (Slot ohne Zuordnung)', still: 'still (kein Slot)',
+  skill: 'Skill-Slot', linie: 'Linien-Slot', rueckfall: 'Rückfall sfx:skill', slot: 'Slot', luecke: 'Lücke (Slot ohne Zuordnung)', still: 'still (kein Slot)',
 };
 
 export interface SoundRow {
@@ -43,21 +44,19 @@ export interface SoundRow {
   global: boolean;
 }
 
-const LINE_SLOT = (line: string) => `sfx:skill:${line}`;
-const FALLBACK_SLOT = 'sfx:skill';
-
 const withTone = (s: AssetSlot | undefined): s is AssetSlot => !!s && s.wahl.length > 0;
 
 /**
- * Skill-Linie → Slot, vorläufig (WZ30.2): erst der Linien-Slot `sfx:skill:<linie>`, dann `sfx:skill`, sonst still. Ein Slot zählt
- * nur mit Zuordnung. WZ29.2 ersetzt diese Funktion durch die Abbildung aus SO8.2, damit es sie nur einmal gibt (B-597).
+ * Skill → Slot mit der Abbildung des Spiels (`@game/audio/skills`, SO8.2): Slot des Skills vor Linien-Slot vor `sfx:skill`, passiv ohne
+ * eigenen Slot still. Grundlage ist das Register des Studios (ein Slot zählt nur mit Zuordnung); spielt das Spiel nichts, ist die Zeile still.
  */
-export function skillSlot(line: string, slots: readonly AssetSlot[]): { herkunft: 'linie' | 'rueckfall' | 'still'; slot?: AssetSlot } {
-  const own = slots.find((s) => s.id === LINE_SLOT(line));
-  if (withTone(own)) return { herkunft: 'linie', slot: own };
-  const rest = slots.find((s) => s.id === FALLBACK_SLOT);
-  if (withTone(rest)) return { herkunft: 'rueckfall', slot: rest };
-  return { herkunft: 'still' };
+export function skillTone(skillId: string, slots: readonly AssetSlot[]): { herkunft: 'skill' | 'linie' | 'rueckfall' | 'still'; slot?: AssetSlot } {
+  const files = Object.fromEntries(slots.filter(withTone).map((s) => [s.id, s.wahl[0]!.datei]));
+  const id = gameSkillSlot(skillId, files);
+  const slot = slots.find((s) => s.id === id);
+  if (!id || !withTone(slot)) return { herkunft: 'still' };
+  if (id === SKILL_FALLBACK) return { herkunft: 'rueckfall', slot };
+  return { herkunft: id === `sfx:skill:${skillId}` ? 'skill' : 'linie', slot };
 }
 
 interface SkillDef {
@@ -67,10 +66,10 @@ interface SkillDef {
 const SKILLS = monarch.skills as unknown as Record<string, SkillDef>;
 const LINES = monarch.lines as unknown as Record<string, { name: string }>;
 
-/** Alle Skills nach Linie (Reihenfolge der Daten) mit Art aktiv/passiv und dem Ton nach `skillSlot`. */
+/** Alle Skills nach Linie (Reihenfolge der Daten) mit Art aktiv/passiv und dem Ton nach `skillTone`. */
 export function skillRows(slots: readonly AssetSlot[]): SoundRow[] {
   return Object.entries(SKILLS).map(([id, def]) => {
-    const r = skillSlot(def.line, slots);
+    const r = skillTone(id, slots);
     const art = def.kind === 'passive' ? 'passiv' : 'aktiv';
     return { key: `skill:${id}`, szene: 'skills', titel: id, gruppe: LINES[def.line]?.name ?? def.line, linie: def.line, art, herkunft: r.herkunft, slot: r.slot, choice: r.slot?.wahl[0], global: false };
   });
@@ -157,7 +156,7 @@ export function rowFilter(rows: readonly SoundRow[], credits: readonly LicenseEn
     dimensions: [
       { key: 'status', label: 'Status', values: status, order: ['Lücke', 'zugeordnet'] },
       { key: 'herkunft', label: 'Herkunft', values: (r) => HERKUNFT_LABEL[r.herkunft] },
-      { key: 'linie', label: 'Linie', values: (r) => r.linie },
+      { key: 'linie', label: 'Linie/Klasse', values: (r) => (r.linie ? LINES[r.linie]?.name ?? r.linie : undefined) },
       { key: 'art', label: 'Art', values: (r) => r.art, order: ['aktiv', 'passiv'] },
       { key: 'gruppe', label: 'Gruppe', values: (r) => r.gruppe },
       { key: 'lizenz', label: 'Lizenz', values: (r) => (r.choice ? (licenseFlag(r.choice.datei, credits) === 'NC' ? 'NC' : 'frei') : undefined), order: ['NC', 'frei'] },

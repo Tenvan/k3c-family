@@ -1,10 +1,10 @@
-import { GAME_WIDTH } from '@game/core/constants';
+import { GAME_WIDTH, UNIT_PX } from '@game/core/constants';
 import { BAR_HEIGHT } from '@game/scenes/layout';
 import { BAR, drawBar, drawWarn } from '@game/scenes/kampfView';
 import { fontStyle } from '@game/scenes/render/fontRules';
 import { zeichneHintergrund, zeichneMonarch } from './backdrop';
 import { canvasGraphics } from './canvasGraphics';
-import { TOP_STRIP, type KampfBild } from './combatLogic';
+import { BOSS_X, TOP_STRIP, type KampfBild } from './combatLogic';
 import type { Licht } from './gameScenesLogic';
 
 // Zeichnet die Szene „Kampf-Anzeigen“ in Spielkoordinaten (1920 px breit) mit `drawBar`/`drawWarn` aus `kampfView.ts` des Spiels;
@@ -23,6 +23,8 @@ export interface KampfOptionen {
   /** Deckkraft von Leiste und Banner (Auftritt, Ein-/Ausblenden) */
   leiste: number;
   banner: number;
+  /** Zoom der Welt in der gewählten Zelle (`zellenZoom`); das HUD bleibt ungezoomt wie im Spiel */
+  zoom: number;
 }
 
 function text(ctx: CanvasRenderingContext2D, name: 'bossBar' | 'banner', s: string, y: number): number {
@@ -47,11 +49,17 @@ function text(ctx: CanvasRenderingContext2D, name: 'bossBar' | 'banner', s: stri
 export function zeichneKampf(ctx: CanvasRenderingContext2D, bild: KampfBild, o: KampfOptionen): void {
   const g = canvasGraphics(ctx);
   zeichneHintergrund(ctx, KAMPF_W, KAMPF_H, GROUND, o.biom, o.licht);
-  // Welt: Warnkreise am Boden (Pixel des Szenenraums), Monarchen
+  // Welt: Warnkreise am Boden (Pixel des Szenenraums), Monarchen; gezoomt um den Boss am Boden wie die Kamera der Zelle
+  const pivot = BOSS_X * UNIT_PX;
+  ctx.save();
+  ctx.translate(pivot, GROUND);
+  ctx.scale(o.zoom, o.zoom);
+  ctx.translate(-pivot, -GROUND);
   drawWarn(g, bild.circles, GROUND);
   zeichneMonarch(ctx, o.spieler === 1 ? 400 : 440, GROUND);
+  if (o.spieler === 2) zeichneMonarch(ctx, 1480, GROUND);
+  ctx.restore();
   if (o.spieler === 2) {
-    zeichneMonarch(ctx, 1480, GROUND);
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(KAMPF_W / 2 - 2, BAR_HEIGHT, 4, KAMPF_H - BAR_HEIGHT);
   }

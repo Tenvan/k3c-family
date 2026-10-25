@@ -175,7 +175,8 @@ func (r *Room) afterDisconnect() {
 }
 
 // Tick rechnet einen Schritt mit 1/TickHz Sekunden, im Zeitraffer scale() solche Schritte. Ein Raum ohne verbundenes Gerät ist pausiert und tickt nicht.
-// Wechselt ein Gerät die Stufe, speichert der Raum und schickt das neue Level vor dem Zustand.
+// Wechselt ein Gerät die Stufe, speichert der Raum und schickt das neue Level vor dem Zustand; dazu speichert er im
+// Takt SaveEvery und bei Tagesanbruch (autosave).
 // false: Der Raum ist geschlossen.
 func (r *Room) Tick() bool {
 	r.mu.Lock()
@@ -197,14 +198,15 @@ func (r *Room) Tick() bool {
 	if r.beforeStep != nil {
 		r.beforeStep()
 	}
-	before := r.depths()
+	before, day := r.depths(), r.isl.Stages[0].Cycle.Day
 	for range r.steps() { // Zeitraffer: scale() Schritte mit denselben Eingaben, ein Tick; Dev- und Couch-Pause: keiner
 		sim.StepIsland(r.isl, commands, 1.0/TickHz)
 		r.met.observe(r.isl)
 	}
 	r.resetScaleOnPhase()
 	r.tick++
-	travelled := r.pushStates()
+	dawn := r.isl.Stages[0].Cycle.Day > day // der Tag zählt bei Tagesanbruch weiter (world_cycle.go)
+	travelled := r.pushStatesSaved()
 	if r.switchIsland() { // erst die Ereignisse des letzten Ticks der alten Insel, dann Level und snap der neuen (B-385)
 		r.pushStates()
 		travelled = true
@@ -214,9 +216,7 @@ func (r *Room) Tick() bool {
 		r.log().Info("🪜 Stufenwechsel", "vorher", before, "nachher", after, "tick", r.tick)
 		r.broadcastSeats()
 	}
-	if travelled {
-		r.save()
-	}
+	r.autosave(travelled, dawn)
 	return true
 }
 

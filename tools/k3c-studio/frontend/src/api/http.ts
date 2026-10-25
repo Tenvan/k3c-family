@@ -2,6 +2,8 @@ import { chatStreamHttp } from './chatHttp';
 import type { ChatDetail, ChatOptionsView, ChatSummary } from './chatTypes';
 import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, GameServersView, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, TicketCreated, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
 import type { AssetSlotDetails } from './slotTypes';
+import type { SourceCleanupView, SourceProgress, SourcesView } from './sourceTypes';
+import type { AssetSuggestionsView } from './suggestionTypes';
 import type { WorldAnswerView, WorldCheckView, WorldDraft } from './worldTypes';
 
 // Das Studio ist eine Seite des Go-Servers (Backend tools/k3c-studio/backend): jede Methode von App ist ein POST auf /api/studio/rpc/<Methode>
@@ -68,12 +70,6 @@ function subscribe<E extends EventName>(event: E, fn: (data: Events[E]) => void)
   };
 }
 
-/** Vorschläge des Chats liefert das Backend erst mit WZ29.7; bis dahin klare Meldung statt eines RPC ins Leere. */
-const notYet = (): Promise<never> => Promise.reject(new Error('Chat-Vorschläge kommen mit WZ29.7'));
-
-/** Quellen und Downloads liefert das Backend erst mit WZ29.6. */
-const notYetSources = (): Promise<never> => Promise.reject(new Error('Quellen und Downloads kommen mit WZ29.6'));
-
 export function httpBackend(): Backend {
   return {
     mock: false,
@@ -111,15 +107,15 @@ export function httpBackend(): Backend {
     ticketCreate: (input) => rpc<TicketCreated>('TicketCreate', input),
     ticketRecent: (n) => rpc<TicketCreated[]>('TicketRecent', n),
     openUrl: (url: string) => void window.open(url, '_blank', 'noopener'),
-    assetSuggestions: notYet,
-    assetSuggestionAdopt: notYet,
-    assetSuggestionDrop: notYet,
-    sources: notYetSources,
-    sourceDownload: notYetSources,
-    sourceProgress: notYetSources,
-    sourceAdopt: notYetSources,
-    sourceCleanupPreview: notYetSources,
-    sourceCleanup: notYetSources,
+    assetSuggestions: (slotId: string) => rpc<AssetSuggestionsView>('AssetSuggestions', slotId),
+    assetSuggestionAdopt: (slotId: string, id: string, stand: string) => rpc<string>('AssetSuggestionAdopt', slotId, id, stand),
+    assetSuggestionDrop: (slotId: string, id: string) => rpc<void>('AssetSuggestionDrop', slotId, id),
+    sources: () => rpc<SourcesView>('Sources'),
+    sourceDownload: (ids: string[], confirmedBytes: number) => rpc<void>('SourceDownload', ids, confirmedBytes),
+    sourceProgress: () => rpc<SourceProgress[]>('SourceProgress'),
+    sourceAdopt: (id: string) => rpc<void>('SourceAdopt', id),
+    sourceCleanupPreview: () => rpc<SourceCleanupView>('SourceCleanupPreview'),
+    sourceCleanup: () => rpc<SourceCleanupView>('SourceCleanup'),
     chatStream: chatStreamHttp,
     chatList: () => rpc<ChatSummary[]>('ChatList'),
     chatGet: (id: string) => rpc<ChatDetail>('ChatGet', id),
