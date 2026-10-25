@@ -1,6 +1,6 @@
 # TR4.3 · Review TR4
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -48,5 +48,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 und AC-02: geprüft mit `task check`, `task check:go` und `dev:test` (grün) sowie dem Review zu TR4.1/.2.
+- Die Abnahme steht in der Sprint-README.

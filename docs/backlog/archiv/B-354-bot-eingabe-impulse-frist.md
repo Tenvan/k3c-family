@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** TR4
 - **Projekt:** TST
 - **Erstellt:** 2026-10-07

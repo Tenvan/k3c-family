@@ -1,6 +1,6 @@
 # TR4 · PLAT, SRV · Bot-Eingabe ohne verlorene Drücke, Beobachter ohne Platz im Raum
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** TST
 - **Domäne:** PLAT, SRV
 - **Reife:** bereit
@@ -57,12 +57,14 @@ keine
 |---|---|---|---|---|
 | TR4.1 | `TR4.1-bot-feed-druecke.md` | Umsetzung | autonom | fertig |
 | TR4.2 | `TR4.2-beobachter-ohne-platz.md` | Umsetzung | autonom | fertig |
-| TR4.3 | `TR4.3-review.md` | Review | autonom | offen |
+| TR4.3 | `TR4.3-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-25, Claude (TR4.3): `task check`, `task check:go` und `dev:test` (Workbench) grün; `check:race` lokal übersprungen (kein C-Compiler), die CI prüft es.
+AC-01 erfüllt durch TR4.1 (Bot-Feed behält kurze Drücke, hält bei stummem Feed an), AC-02 durch TR4.2 (Beobachter ohne Platz, `sim_test` bis 4 Spieler).
+Review: Der Befund HOCH (Dev-Aktionen durch Beobachter) und der Befund NIEDRIG (Frist EmptyFor) sind behoben, mit Test.
+Offen: Bot-Feed im LAN (B-352, Frage an Ralf, kein Kriterium des Sprints). Keine neuen Tickets.

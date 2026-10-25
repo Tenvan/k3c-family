@@ -63,8 +63,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | eingeplant | RG1 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
 | [B-347](B-347-tester-misst-wirtschaft.md) | SIM | Schuld | hoch | eingeplant | BAL6 | Der Balancing-Tester misst die Wirtschafts-Kennzahlen |
 | [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
-| [B-352](B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | eingeplant | TR4 | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
-| [B-354](B-354-bot-eingabe-impulse-frist.md) | PLAT | Problem | mittel | eingeplant | TR4 | Die Bot-Eingabe verliert keine kurzen Drücke und hält bei stummem Feed an |
+| [B-352](B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | offen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
 | [B-360](B-360-plan-set-fehlendes-feld.md) | DEV | Problem | niedrig | eingeplant | WZ2 | plan_set lehnt ein Feld ab, das in der Datei fehlt, statt es still zu übergehen |
 | [B-363](B-363-planung-flags-bearbeiten.md) | DEV | Idee | mittel | eingeplant | WZ2 | Die Planungsseite ändert Prio, Umgebung, Agent und Projekt direkt im Detail |
 | [B-366](B-366-fahrplan-spalte-projekt.md) | DEV | Schuld | mittel | eingeplant | WZ2 | k3c-workbench füllt im Fahrplan die Spalte Projekt und ordnet nach Rang |
@@ -578,3 +577,4 @@ Zeile in diesen Abschnitt.
 | [B-098](archiv/B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | erledigt | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-607](archiv/B-607-studio-levelview-test-golden-dichter-wald.md) | DEV | Problem | hoch | verworfen | – | Der Studio-Test levelView erwartet die Baum-Zahl vor dem dichten Wald |
 | [B-606](archiv/B-606-studio-tests-rot-nach-dichtem-wald.md) | DEV | Problem | hoch | erledigt | WZ28 | Die Studio-Tests sind nach dem dichten Wald wieder grün und check_run hängt nicht bei k3c-studio:test |
+| [B-354](archiv/B-354-bot-eingabe-impulse-frist.md) | PLAT | Problem | mittel | erledigt | TR4 | Die Bot-Eingabe verliert keine kurzen Drücke und hält bei stummem Feed an |
