@@ -1,11 +1,11 @@
 # WZ29 · DEV · Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-597, B-598, B-599, B-600, B-601, B-602
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** f8bee41c
 - **Spec:** freigegeben
 - **Revision:** 3
 - **Freigabe:** 2026-10-24, Ralf im Chat, Revision 3 (Doppelungen zu WZ30 entfernt: WZ29.1 und WZ29.3 verworfen, WZ29.2/.4/.6/.7 auf Anbindung echter Daten und Backends gekürzt; Abhängigkeit SO8 auf develop); Revision 2: autonom, Claude; Revision 1: Ralf im Chat
@@ -60,13 +60,13 @@ keine blockierende; Pflicht-Szenen und Chat-Aktionen laut Tickets als Default, R
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ29.1 | `WZ29.1-filter-baustein.md` | Umsetzung | autonom | verworfen |
-| WZ29.2 | `WZ29.2-sound-szenen.md` | Umsetzung | autonom | offen |
+| WZ29.2 | `WZ29.2-sound-szenen.md` | Umsetzung | autonom | fertig |
 | WZ29.3 | `WZ29.3-misch-lautheit-abstand.md` | Umsetzung | autonom | verworfen |
-| WZ29.4 | `WZ29.4-grafik-szenen.md` | Umsetzung | autonom | offen |
-| WZ29.5 | `WZ29.5-vorschlagsliste.md` | Umsetzung | autonom | offen |
-| WZ29.6 | `WZ29.6-quellen-seite.md` | Umsetzung | autonom | offen |
-| WZ29.7 | `WZ29.7-chat-zuordnung.md` | Umsetzung | autonom | offen |
-| WZ29.8 | `WZ29.8-review.md` | Review | autonom | offen |
+| WZ29.4 | `WZ29.4-grafik-szenen.md` | Umsetzung | autonom | fertig |
+| WZ29.5 | `WZ29.5-vorschlagsliste.md` | Umsetzung | autonom | fertig |
+| WZ29.6 | `WZ29.6-quellen-seite.md` | Umsetzung | autonom | fertig |
+| WZ29.7 | `WZ29.7-chat-zuordnung.md` | Umsetzung | autonom | fertig |
+| WZ29.8 | `WZ29.8-review.md` | Review | autonom | fertig |
 | WZ29.9 | `WZ29.9-abnahme-pc.md` | Workshop | Mensch | offen |
 
 - WZ29.1 verworfen: durch WZ30.1 erfüllt (`@webkit` `ListFilter`).
@@ -81,5 +81,8 @@ keine blockierende; Pflicht-Szenen und Chat-Aktionen laut Tickets als Default, R
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-25, Claude (WZ29.8):
+- Prüfläufe: `task check`, `task check:go` und `task check:studio` sind grün. Zuvor hat Claude einen Lint-Fehler behoben: `describe` mit mehr als 60 Zeilen in `SuggestionList.test.tsx`, jetzt aufgeteilt. `check:race` wurde lokal übersprungen (kein C-Compiler), die CI prüft es.
+- Kriterien: AC-01 erfüllt durch WZ30.1 und WZ29.2/.4, AC-02 durch WZ29.2, AC-03 durch WZ29.4, AC-04 durch WZ29.7, AC-05 durch WZ29.5 und .6. Die Reviews zu WZ29.6 (SSRF, Bestätigung im Backend) und WZ29.7 (Q70 im Backend) sind behoben.
+- Offline: Die gebaute Studio-Oberfläche lädt keine externen Ressourcen. Chat und Download melden „offline“.
+- Offen ist AC-06, die Abnahme am PC durch Ralf in WZ29.9. Keine neuen Tickets.

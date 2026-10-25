@@ -3,7 +3,7 @@ import { SelectField } from '@webkit/atoms';
 import { CheckField } from '@webkit/molecules';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { zeichneKampf, KAMPF_H, KAMPF_W } from './combatDraw';
-import { ABLAUF_SEKUNDEN, ablauf, BOSSES, EVENTS, kampfBild, MIN_SCHRIFT_PX, MOCK_START, schriftPx, type KampfEvent, type KampfMock } from './combatLogic';
+import { ABLAUF_SEKUNDEN, ablauf, BOSSES, EVENTS, kampfBild, MIN_SCHRIFT_PX, MOCK_START, schriftPx, ZELLE_LABEL, ZELLEN, zellenZoom, type KampfEvent, type KampfMock, type Zelle } from './combatLogic';
 import { pixelContext } from './pixel';
 import type { Licht } from './gameScenesLogic';
 
@@ -15,6 +15,8 @@ const EVENT_LABEL: Record<KampfEvent, string> = { fullMoon: 'Vollmond', bloodMoo
 export function CombatScene({ biom, licht }: { biom: string; licht: Licht }) {
   const [mock, setMock] = useState<KampfMock>(MOCK_START);
   const [t, setT] = useState<number | null>(null);
+  const [zelle, setZelle] = useState<Zelle>('voll');
+  const zoom = zellenZoom(zelle);
   const ref = useRef<HTMLCanvasElement>(null);
   const spiel = t === null ? { mock, leiste: 1, banner: 1 } : ablauf(mock, t);
   const bild = useMemo(() => kampfBild(spiel.mock), [JSON.stringify(spiel.mock)]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -22,8 +24,8 @@ export function CombatScene({ biom, licht }: { biom: string; licht: Licht }) {
   useEffect(() => {
     const c = ref.current;
     const g = c && pixelContext(c, KAMPF_W, KAMPF_H);
-    if (g) zeichneKampf(g, bild, { biom, licht, spieler: mock.spieler, leiste: spiel.leiste, banner: spiel.banner });
-  }, [bild, biom, licht, mock.spieler, spiel.leiste, spiel.banner]);
+    if (g) zeichneKampf(g, bild, { biom, licht, spieler: mock.spieler, leiste: spiel.leiste, banner: spiel.banner, zoom });
+  }, [bild, biom, licht, mock.spieler, spiel.leiste, spiel.banner, zoom]);
   useEffect(() => {
     if (t === null) return;
     const t0 = performance.now() - t * 1000;
@@ -43,6 +45,7 @@ export function CombatScene({ biom, licht }: { biom: string; licht: Licht }) {
       <Flex gap="3" wrap="wrap" align="center">
         <SelectField value={mock.boss} aria-label="Boss" onChange={(boss) => set({ boss })} options={BOSSES.map((b) => ({ value: b.id, label: `${b.id} (${b.kind === 'end' ? 'Endboss' : 'Miniboss'})` }))} />
         <SelectField value={String(mock.spieler)} aria-label="Spieler" onChange={(v) => set({ spieler: v === '2' ? 2 : 1 })} options={[{ value: '1', label: '1 Spieler' }, { value: '2', label: '2 Spieler' }]} />
+        <SelectField value={zelle} aria-label="Zellengröße" onChange={(v) => setZelle(ZELLEN.find((z) => z === v) ?? 'voll')} options={ZELLEN.map((z) => ({ value: z, label: `${ZELLE_LABEL[z]} · Welt ×${zellenZoom(z).toFixed(2)}` }))} />
         <Text size="2">Leben {Math.round(spiel.mock.hpPercent)} %</Text>
         <Slider aria-label="Lebensanteil" style={{ width: 160 }} min={0} max={100} value={[mock.hpPercent]} disabled={t !== null} onValueChange={([v]) => set({ hpPercent: v ?? 0 })} />
         <CheckField label="Warnkreis" checked={mock.warn !== null} onCheckedChange={(on) => set({ warn: on === true ? { radius: 5, seconds: 1.5 } : null })} />
