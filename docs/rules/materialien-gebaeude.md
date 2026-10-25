@@ -40,7 +40,7 @@ Jeder Hub (jede Stufe einer Insel) hat eine **Ausbaustufe 1 bis 5**. Stufe n sch
 | 4 | 200 Eisen + 200 Gold | 40 s | Korridor mit B-099 (Insel 1 Stufe 4 noch nicht gebaut) |
 | 5 | 250 Kristall + 400 Gold | 50 s | Korridor mit B-099 |
 
-Begründung: Fortschritt über Tiefe und Material, kein reines Goldsparen. Daten: neu `data/hub.json` › `levels` (SIM legt an).
+Begründung: Fortschritt über Tiefe und Material, kein reines Goldsparen. Daten: neu `data/hub.json` › `levels` (SIM legt an). Die Kosten je Stufe verteilen sich seit GEB17 auf 3 Ausbauschritte mit Material-Tor im letzten Schritt ([`stufen.md`](stufen.md) § 8, B-592); die Tabelle nennt die Summe ohne Tor.
 
 ### 2.1 Sichtbares Wachstum der Burg (GEB11)
 
