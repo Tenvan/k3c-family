@@ -37,9 +37,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 |---|---|---|---|---|---|---|
 | GEB17 | CLI, REG, SIM, DEV | GEB | Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe | – | Entwurf | `geplant/GEB17-hub-ausbau-je-inselstufe/` |
 | W13 | CLI | WRT | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | – | Entwurf | `geplant/W13-morgengrauen-licht-client/` |
-| W12 | SIM | WRT | Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln | – | Entwurf | `geplant/W12-morgengrauen-phase/` |
 | SO8 | DEV, CLI | SND | Skill-Sounds je Klasse | – | bereit | `geplant/SO8-skill-sounds-je-klasse/` |
-| PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | bereit | `geplant/PF1-splitscreen-leistung/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | GD1 | INF | TST | Golden-Daten kleiner bei gleicher Prüfschärfe | – | Entwurf | `geplant/GD1-golden-verkleinern/` |
 | KB1 | SIM | KMP | Kampf-Nachträge: Mond-Events, Endboss-Bau, Golden-Läufe, Feuergeist | – | Entwurf | `geplant/KB1-events-boss-golden/` |

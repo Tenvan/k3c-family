@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** W12
 - **Projekt:** WRT
 - **Erstellt:** 2026-10-17
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25
 
 ## Ausgangslage
 

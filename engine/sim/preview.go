@@ -3,32 +3,25 @@ package sim
 import (
 	"fmt"
 	"math"
+	"slices"
 )
 
 // Hilfen für die Vorschau des Welt-Betrachters (WZ7.8, B-460). Beide arbeiten nur auf der übergebenen Welt, lesen die
 // geladenen Daten und setzen keinen globalen Zustand.
 
-// PreviewCycle setzt die Tageszeit der Welt direkt: Sim-Phase (day, dusk, night) und Fortschritt in [0, 1) innerhalb
-// der Phase. Der Tag bleibt, w.Time wird so abgeleitet, dass cycleAt dieselbe Phase liefert; es entstehen keine
-// Ereignisse. Eine andere Phase (auch dawn, nur ein Ereignis beim Tagesbeginn) und ein Fortschritt außerhalb von
-// [0, 1) (1 wäre der Beginn der nächsten Phase) ergeben einen Fehler, ebenso CycleSpeed 0 (der Zyklus steht); die Welt
-// bleibt dann unverändert. w.Time darf auch rückwärts springen: gedacht für eine frisch erzeugte Vorschau-Welt, nicht
-// für eine laufende Simulation (Fristen wie CraftDone liegen sonst in der Zukunft).
+// PreviewCycle setzt die Tageszeit der Welt direkt: Sim-Phase (day, dusk, night, dawn) und Fortschritt in [0, 1)
+// innerhalb der Phase. Der Zyklus bleibt, w.Time wird so abgeleitet, dass cycleAt dieselbe Phase liefert; es entstehen
+// keine Ereignisse. Eine andere Phase und ein Fortschritt außerhalb von [0, 1) (1 wäre der Beginn der nächsten Phase)
+// ergeben einen Fehler, ebenso CycleSpeed 0 (der Zyklus steht); die Welt bleibt dann unverändert. w.Time darf auch
+// rückwärts springen: gedacht für eine frisch erzeugte Vorschau-Welt, nicht für eine laufende Simulation (Fristen wie
+// CraftDone liegen sonst in der Zukunft).
 func PreviewCycle(w *World, phase string, progress float64) error {
-	day := float64(globalDayNight.DayMinutes * 60)
-	dusk := float64(globalDayNight.TwilightMinutes * 60)
-	night := float64(globalDayNight.NightMinutes * 60)
-	var start, length float64
-	switch phase {
-	case "day":
-		start, length = 0, day
-	case "dusk":
-		start, length = day, dusk
-	case "night":
-		start, length = day+dusk, night
-	default:
-		return fmt.Errorf("vorschau: unbekannte Phase %q (day, dusk, night)", phase)
+	phases, cycleLen := cyclePhases(globalDayNight)
+	i := slices.IndexFunc(phases[:], func(p cyclePhase) bool { return p.name == phase })
+	if i < 0 {
+		return fmt.Errorf("vorschau: unbekannte Phase %q (day, dusk, night, dawn)", phase)
 	}
+	start, length := phases[i].start, phases[i].length
 	if !(progress >= 0 && progress < 1) {
 		return fmt.Errorf("vorschau: Fortschritt %v außerhalb von [0, 1)", progress)
 	}
@@ -36,7 +29,6 @@ func PreviewCycle(w *World, phase string, progress float64) error {
 	if speed <= 0 {
 		return fmt.Errorf("vorschau: CycleSpeed %v, der Zyklus steht", speed)
 	}
-	cycleLen := day + dusk + night
 	today := math.Floor(float64(w.Time*speed) / cycleLen)
 	seconds := today*cycleLen + start + progress*length
 	w.Time = seconds / speed
@@ -46,7 +38,11 @@ func PreviewCycle(w *World, phase string, progress float64) error {
 		}
 		w.Time = math.Nextafter(w.Time, math.Inf(1))
 	}
-	w.Cycle = CycleInfo{Phase: phase, Day: int(today) + 1, Progress: progress, SecondsLeft: (1 - progress) * length}
+	day := int(today) + 1
+	if phase == "dawn" { // das Morgengrauen gehört schon zum nächsten Tag (cycleAt)
+		day++
+	}
+	w.Cycle = CycleInfo{Phase: phase, Day: day, Progress: progress, SecondsLeft: (1 - progress) * length}
 	return nil
 }
 

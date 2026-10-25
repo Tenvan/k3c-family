@@ -313,7 +313,8 @@ function deviceOf(input: PlayerInput | null | undefined, keyboard2: PlayerInput)
 
 function clockText(w: World): string {
   const left = formatTime(w.cycle.secondsLeft / w.cycleSpeed);
-  const key = w.cycle.phase === 'day' ? 'hud.clockDay' : w.cycle.phase === 'dusk' ? 'hud.clockDusk' : 'hud.clockNight';
+  const keys = { day: 'hud.clockDay', dusk: 'hud.clockDusk', dawn: 'hud.clockDawn' } as const;
+  const key = keys[w.cycle.phase as keyof typeof keys] ?? 'hud.clockNight';
   let time = t(key, { day: w.cycle.day, left });
   if (w.aggression !== null) time += t('hud.aggression', { pct: Math.floor(w.aggression) });
   return time;

@@ -104,8 +104,7 @@ func TestSiegTageUeberleben(t *testing.T) {
 
 // setDay stellt die Uhr aller Stufen auf den Anfang von Tag day (der Zyklus rechnet den Tag aus der Zeit).
 func setDay(isl *Island, day int) {
-	c := globalDayNight
-	length := float64((c.DayMinutes + c.TwilightMinutes + c.NightMinutes) * 60)
+	_, length := cyclePhases(globalDayNight)
 	for _, w := range isl.Stages {
 		w.Time = float64(day-1)*length/w.CycleSpeed + dt
 	}

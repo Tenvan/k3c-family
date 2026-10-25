@@ -1,0 +1,7 @@
+{
+  "notes": "Licht in Nacht und Morgengrauen (B-472, gezeichnet ab W13, nur im Client). sources: Lichtquellen je Art; radius in Units um die Quelle, strength = Aufhellung in der Mitte (0 = keine, 1 = volle Tageshelligkeit), nach außen fällt sie bis zum Radius auf 0. Überlappende Quellen addieren sich höchstens bis zur Tageshelligkeit. Werte vorläufig, Dunkelstufe und Lichtwerte legt Ralf fest.",
+  "sources": {
+    "torch": { "radius": 3, "strength": 0.5 },
+    "campfire": { "radius": 6, "strength": 0.7 }
+  }
+}

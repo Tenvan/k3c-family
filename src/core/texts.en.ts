@@ -83,6 +83,7 @@ export const en: Record<TextKey, string> = {
   'hud.clockDay': 'Day {day}  ·  Dusk in {left}',
   'hud.clockDusk': 'Dusk  ·  Night in {left}',
   'hud.clockNight': 'Night {day}  ·  Morning in {left}',
+  'hud.clockDawn': 'Day {day}  ·  Sunrise in {left}',
   'hud.aggression': '  ·  Aggression {pct}%',
   'hud.saved': '  ·  saved',
 

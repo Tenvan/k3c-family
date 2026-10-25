@@ -22,6 +22,6 @@
   },
   "primaryResource": "wood",
   "enemies": { "portal": ["greed", "goblin", "goblinArcher"], "night": ["wolf"] },
-  "cycle": { "type": "dayNight", "dayMinutes": 10, "nightMinutes": 5, "twilightMinutes": 1 },
+  "cycle": { "type": "dayNight", "dayMinutes": 6, "twilightMinutes": 2, "nightMinutes": 4, "dawnMinutes": 2 },
   "palette": { "sky": "#8ecae6", "far": "#6a8caf", "near": "#3a5a40", "ground": "#588157" }
 }

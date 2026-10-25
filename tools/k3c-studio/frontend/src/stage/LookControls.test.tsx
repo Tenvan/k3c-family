@@ -86,14 +86,14 @@ describe('Tageszeit in der Live-Vorschau (B-460/AC-05)', () => {
     expect(lastLook().brightness).toBeCloseTo(0.45, 10);
   });
 
-  it('Morgengrauen: Sim-Phase night mit 0,9 + 0,1·p (p = 0,5 → 0,95), Helligkeit nach daylight() gleich p', async () => {
+  it('Morgengrauen: Sim-Phase dawn mit Fortschritt p (B-470), Helligkeit nach daylight() gleich p', async () => {
     const spy = vi.spyOn(backend, 'worldPreview');
     const h = await mount();
     await chooseTime(h, 'Morgengrauen');
     await setProgress(h, 0.5);
     const args = spy.mock.calls.at(-1)![0];
-    expect(args.phase).toBe('night');
-    expect(args.progress).toBeCloseTo(0.95, 10);
+    expect(args.phase).toBe('dawn');
+    expect(args.progress).toBeCloseTo(0.5, 10);
     expect(lastLook().brightness).toBeCloseTo(0.45 + 0.55 * 0.5, 10);
   });
 });

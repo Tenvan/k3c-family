@@ -385,11 +385,12 @@ export interface LevelLayout {
   backdrops?: number[];
 }
 
-export type Phase = 'day' | 'dusk' | 'night';
+/** Tageszeit des Zyklus (docs/protocol.md › Tageszeit); `dawn` = Morgengrauen, kompatibel ohne neue Version (B-470). */
+export type Phase = 'day' | 'dusk' | 'night' | 'dawn';
 
 export interface CycleInfo {
   phase: Phase;
-  /** 1 = erster Tag. Die Nacht gehört zum Tag davor. */
+  /** 1 = erster Tag. Die Nacht gehört zum Tag davor, das Morgengrauen schon zum neuen Tag. */
   day: number;
   /** 0..1 innerhalb der Phase */
   progress: number;

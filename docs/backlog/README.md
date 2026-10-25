@@ -90,7 +90,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-457](B-457-geb6-abnahme-splitscreen-ausgang-geschmack.md) | CLI | Frage | mittel | eingeplant | GEB10 | GEB6: Split-Screen, Ausgang-Beschriftung und Geschmacksfragen später prüfen |
 | [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | eingeplant | GEB11 | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
 | [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
-| [B-470](B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | eingeplant | W12 | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
 | [B-472](B-472-nacht-dunkler-fackeln-lagerfeuer-licht.md) | CLI | Idee | niedrig | eingeplant | W13 | Nacht und Morgengrauen sind dunkler, Fackeln und Lagerfeuer machen Licht |
 | [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | eingeplant | BD5 | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
 | [B-568](B-568-plantage-pappel-niedrig.md) | DEV | Idee | mittel | eingeplant | GEB13 | Plantage bekommt eine eigene niedrige Pappel vor der Farm |
@@ -138,6 +137,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-628](B-628-simtest-checkout-kurzpfad-ci.md) | DEV | Problem | hoch | offen | – | TestSimTestMitCheckout scheitert auf dem Windows-Runner an 8.3-Kurzpfaden |
 | [B-629](B-629-buildall-web-exe.md) | INF | Problem | hoch | offen | – | task buildall baut die Web-EXEs von Studio und Workbench nicht mit |
 | [B-620](B-620-golden-grenze-20-mb.md) | INF | Frage | mittel | offen | – | Golden-Grenze 20 MB nach dem dichteren Wald bestätigen |
+| [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | offen | – | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
 
 ## Archiv
 
@@ -584,3 +584,4 @@ Zeile in diesen Abschnitt.
 | [B-263](archiv/B-263-snapshot-groesse-plaetze.md) | SRV | Problem | niedrig | erledigt | NT1 | Der Welt-Snapshot bleibt mit 39 Plätzen je Stufe im Budget |
 | [B-354](archiv/B-354-bot-eingabe-impulse-frist.md) | PLAT | Problem | mittel | erledigt | TR4 | Die Bot-Eingabe verliert keine kurzen Drücke und hält bei stummem Feed an |
 | [B-184](archiv/B-184-pages-screenshots.md) | PLAT | Idee | niedrig | erledigt | PG1 | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
+| [B-470](archiv/B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | erledigt | W12 | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |

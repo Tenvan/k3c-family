@@ -50,8 +50,8 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Chunk-Vorschau | Streifen eines generierten Levels aus Chunks mit Objekten (Seed, Biom), im Welten Editor beim Öffnen maximiert. | B-460 |
 | Couch-Koop | Mehrere Spieler an einem Gerät mit eigener Eingabe und Split-Screen; mit Online-Spielern im selben Raum mischbar. | `game-design.md` › Koop |
 | Couch-Raum | Raum, in dem alle Spieler an einem Gerät sitzen; dort hält die Pause den ganzen Raum an. | `rules/bedienung.md` § 1, Q01 |
-| Dämmerung (`dusk`) | Phase des Tageszyklus zwischen Tag und Nacht, Startwert 2 min (heute 1 min, bis B-470); Ereignis `dusk` = „Nacht naht“. Der Musik-Zustand „Abend“ (Q16) ist die Dämmerung. | `rules/wirtschaft.md` § 3, `engine/sim/world_cycle.go`, Q65 |
-| `dawn` | Ereignis bei Beginn des Morgengrauens (heute bis B-470: Beginn des Tages); siehe Tagesanbruch. | `engine/sim/world_cycle.go`, Q65 |
+| Dämmerung (`dusk`) | Phase des Tageszyklus zwischen Tag und Nacht, Startwert 2 min; Ereignis `dusk` = „Nacht naht“. Der Musik-Zustand „Abend“ (Q16) ist die Dämmerung. | `rules/wirtschaft.md` § 3, `engine/sim/world_cycle.go`, Q65 |
+| `dawn` | Phase Morgengrauen (`cycle.phase`) und Ereignis bei ihrem Beginn; siehe Morgengrauen und Tagesanbruch. | `engine/sim/world_cycle.go`, `docs/protocol.md` › Tageszeit, Q65 |
 | Delta | Nachricht `delta`: nur die Änderungen zum vorigen Tick; Gegenstück zum vollen `snap`. | `protocol.md` › Nachrichten |
 | Determinismus | Gleicher Seed und gleiche Eingaben ergeben dasselbe Ergebnis. Zufall nur über `engine/rng` (`rng.New(seed)`), nie `math/rand` oder `Math.random()`. | `CLAUDE.md` › Regeln |
 | Dev-Mode | Entwicklungsmodus des Servers (`K3C_DEV`): erlaubt den Grad Dev, das Debug-Panel und Dev-Aktionen. | `rules/wirtschaft.md` § 4, `protocol.md` |
@@ -138,9 +138,9 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Monarch | Figur eines Spielers (Index 0–3), immer beritten; kämpft mit Schlag und Skills, seine Hauptrolle ist das Management der Bürger. | `protocol.md` › Begriffe, `rules/monarch.md` |
 | Monarch-Seite | Seite im Asset-Studio neben Grafik und Sound: spielt den Monarchen immer beritten mit den Animationen und Effekten des Spiels ab (Reittiere, Skills, Münzen, Spielerfarben); Lücken sind markiert. | B-463 |
 | Monitoring-Seite | Seite `monitor.html` (Kachel „Monitor“) mit Ampel je Raum, Verläufen der Messreihen mit Perzentilen und der Fehler-Zeitleiste aus `/api/metrics`; rechnet nur Statistik, keine Spiel-Logik. | B-282 |
-| Morgengrauen | Phase des Tageszyklus zwischen Nacht und Tag, Startwert 2 min; beginnt mit `dawn` (Nacht endet, Gegner ziehen ab). Noch nicht als Phase gebaut, B-470 baut sie; der Client zeichnet das Morgengrauen heute als letzte 10 % der Nacht. | `rules/wirtschaft.md` § 3, Q65, B-470 |
+| Morgengrauen | Phase `dawn` des Tageszyklus zwischen Nacht und Tag, Startwert 2 min; beginnt mit dem Ereignis `dawn` (Nacht endet, Gegner ziehen ab) und gehört schon zum neuen Tag. Der Übergang zum Tag löst nichts aus. | `rules/wirtschaft.md` § 3, `data/biomes/forest.json` › `cycle.dawnMinutes`, Q65 |
 | Münze | Ein Gold als Gegenstand: per A-Halten bezahlt (alle 0,25 s, Reichweite 2 Units); fallen gelassen nach 1,5 s für andere aufhebbar. | `rules/wirtschaft.md` § 1 |
-| Nacht | Phase des Tageszyklus zwischen Dämmerung und Morgengrauen, Startwert 4 min (heute 5 min, bis B-470); in der Oberwelt kommt eine Welle je Nacht. | `rules/wirtschaft.md` § 3, Q65 |
+| Nacht | Phase des Tageszyklus zwischen Dämmerung und Morgengrauen, Startwert 4 min; in der Oberwelt kommt eine Welle je Nacht. | `rules/wirtschaft.md` § 3, Q65 |
 | Niederlage-Modus | Raum-Option für den Fall einer Burg: Gold/Material-Verlust, Stufenverlust oder Komplett verloren (`defeat`: `resources`, `stage`, `lost`). | `rules/stufen.md` § 4 |
 | Oberwelt | Die Stufe der Tiefe 0, der Wald. | `rules/stufen.md` § 1 |
 | Pixeldichte | Größe eines Quell-Pixels im Spiel, gemessen am 16-px-Raster (Q13). Assets mit gröberen oder feineren Pixeln wirken fremd, auch bei gleicher Palette. | B-331 |
@@ -202,9 +202,9 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Stil-Bibel | Dokument `docs/assets/stil-bibel.md`: Ziel-Palette, Pixeldichte, Outline- und Lichtregel, nach denen die Grafik-Pipeline Assets umrechnet. | B-331, GR8.2 |
 | Streuung | Seed-abhängige Verschiebung der Linien 2–5 nur nach außen um 0 bis +4 ganze Units, je Seite und Linie, über einen eigenen RNG-Strom (`…:sites`). Linie 1 und Hub-Plätze streuen nicht. | Q56 (präzisiert Q50) |
 | Stufe | Ort einer Insel in einer Tiefe (0 Wald bis 4 Kristallhöhle) mit eigenem Hub, eigenen Wellen und Biom; pro Spieler frei begehbar, alle laufen weiter. Nicht verwechseln mit Hub-Stufe oder Material-Stufe. | `rules/stufen.md` § 1 |
-| Tag | Erste Phase des Tageszyklus, Startwert 6 min (heute Wald 10 min, bis B-470); Respec nur am Tag. | `rules/wirtschaft.md` § 3, Q65 |
-| Tagesanbruch (`dawn`) | Ende der Nacht bei Beginn des Morgengrauens (heute bis B-470: Beginn des Tages): Ereignis `dawn` mit +5 Gold je lebendem Spieler, Taverne und Händler, Autosave; Gegner ziehen ab (fliehen nur in der Oberwelt). | `rules/wirtschaft.md` §§ 1, 3, `rules/gegner.md` § 3, Q10, Q65 |
-| Tageszyklus | Globaler Zyklus aus Tag, Dämmerung, Nacht, Morgengrauen im Verhältnis 3:1:2:1, Startwert 6/2/4/2 min (14 min); läuft in allen Stufen. Heute drei Phasen 10/1/5 min (Wald), `dawn` nur als Ereignis beim Beginn des Tages, Umbau mit B-470. | `rules/wirtschaft.md` § 3, `data/biomes/forest.json` › `cycle`, `engine/sim/world_cycle.go`, Q65 |
+| Tag | Erste Phase des Tageszyklus, Startwert 6 min; Respec nur am Tag. Der Tageszähler springt schon mit dem Morgengrauen davor. | `rules/wirtschaft.md` § 3, Q65 |
+| Tagesanbruch (`dawn`) | Ende der Nacht bei Beginn des Morgengrauens: Ereignis `dawn` mit +5 Gold je lebendem Spieler, Taverne und Händler, Ende der Nacht-Events; kein Speichern (B-186); Gegner ziehen ab (fliehen nur in der Oberwelt). | `rules/wirtschaft.md` §§ 1, 3, `rules/gegner.md` § 3, Q10, Q65 |
+| Tageszyklus | Globaler Zyklus aus Tag, Dämmerung, Nacht, Morgengrauen (`day`, `dusk`, `night`, `dawn`) im Verhältnis 3:1:2:1, Startwert 6/2/4/2 min (14 min); läuft in allen Stufen. | `rules/wirtschaft.md` § 3, `data/biomes/forest.json` › `cycle`, `engine/sim/world_cycle.go`, Q65 |
 | Taverne | Gebäude der Hub-Stufe 2: bei jedem `dawn` ein Landstreicher, solange dort weniger als 2 stehen. | `rules/materialien-gebaeude.md` § 3.2, Q30 |
 | Testlauf (`sim_test`) | Lauf über das MCP-Tool `sim_test` der Workbench für Balancing, Performance oder Stabilität, mit Lauf-ID, Status und Bericht unter `reports/`; jeder autonome Testlauf geht darüber. | B-348 |
 | Tick (Takt) | Ein Rechenschritt eines Raums; ein Raum tickt mit 30 Hz und schickt je Tick einen Zustand an jedes Gerät. | `protocol.md` › Nachrichten |
