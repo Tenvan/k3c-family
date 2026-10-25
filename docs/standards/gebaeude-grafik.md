@@ -260,9 +260,10 @@ Generator schreibt sie nur für Gebäude ohne `stufen`.
 
 ## 10. Hintergrund-Schichten
 
-Je Biom drei Schichten (`hg-<biom>-fern|mitte|nah`, Biom: `wald`, `hoehle`, `mine`, `eisenstollen`, `kristall`; Klasse `hintergrund`, GEB7).
+Je Biom drei Schichten in mindestens fünf Varianten (`hg-<biom>-fern|mitte|nah-v<n>`, Biom: `wald`, `hoehle`, `mine`, `eisenstollen`, `kristall`; Klasse `hintergrund`, GEB7, GEB18).
 
-- **Maß:** 24 × 15 Kacheln (768 × 480 px bei 32 px, 384 × 240 px bei 16 px); Spiel: Maßstab 1, Unterkante auf der Bodenlinie. Der Himmel ist `palette.sky` des Bioms (`data/biomes/*.json`, nicht DB32) und scheint oben durch: **oberste Pixelzeile transparent**.
+- **Maß:** 24 × 15 Kacheln im feinen Raster 1/128 Kachel (`raster: 128`): 3072 × 1920 px bei 128 px (Quelle, Studio), 1536 × 960 px bei 64 px (lädt das Spiel, Maßstab 0,5), 768 × 480 px bei 32 px; Unterkante auf der Bodenlinie. Bausteine mit `detail` erscheinen nur, wo sie mindestens 1 px groß sind.
+- **Varianten:** Je Kachel wählt der Server die Variante nach Seed (`level.layout.backdrops`, Nachbarn verschieden); alle drei Schichten nutzen dieselbe Folge im Raum ihres Scroll-Faktors. Der Himmel ist `palette.sky` des Bioms (`data/biomes/*.json`, nicht DB32) und scheint oben durch: **oberste Pixelzeile transparent**.
 - **Bodenlinie:** unterste Pixelzeile **durchgehend deckend** (kein Spalt über dem Boden, die Fluss-Spiegelung zeigt sonst Streifen).
 - **Naht:** erste = letzte Pixelspalte. Nichts berührt die Randspalten außer durchgehenden Bändern (Boden); Bausteine gehen nie über die Bildkante, Wiederholungen enden mit Abstand zum Rand.
 - **Helligkeit (Luma 0,299 R + 0,587 G + 0,114 B, Mittel über die deckenden Pixel bei 32 px):** fern < mitte < nah, je Schicht mindestens **8** Punkte heller als die dahinter; „nah“ im Mittel höchstens **75**, also dunkler als das dunkelste Gebäude (Farm 79). Leuchtfarben (Glut, Kristalllicht) nur in kleinen Flächen. Prüfung: `TestHintergrundStufen` (`tools/buildings/hintergrund_test.go`).

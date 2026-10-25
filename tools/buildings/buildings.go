@@ -32,6 +32,8 @@ type baustein struct {
 	Rechteck [4]float64 `json:"rechteck"`
 	Farbe    string     `json:"farbe"`
 	Fein     bool       `json:"fein,omitempty"`
+	// Detail entfällt unter der Dichte des feinen Rasters (nur mit `raster` 128, GEB18): Feinheiten der vierfachen Auflösung.
+	Detail bool `json:"detail,omitempty"`
 	// Wiederholung kopiert den Baustein entlang x (Regeldatei § 5); `build` löst sie vor dem Zeichnen auf.
 	Wiederholung *wiederholung `json:"wiederholung,omitempty"`
 }
@@ -50,6 +52,8 @@ type building struct {
 	Klasse    string     `json:"klasse,omitempty"` // z. B. "baum"; die Vorschau gruppiert danach
 	Vorlage   *vorlage   `json:"vorlage"`
 	Kacheln   kacheln    `json:"kacheln"`
+	// Raster in Teilen je Kachel: ohne Angabe 32, Hintergrund-Schichten in vierfacher Auflösung 128 (GEB18, `hires.go`)
+	Raster    int        `json:"raster,omitempty"`
 	Bausteine []baustein `json:"bausteine"`
 	Stufen    []stufe    `json:"stufen,omitempty"` // Ausbaustufen 2, 3, …; Grundform = Stufe 1 (§ 6)
 }
@@ -72,13 +76,13 @@ func erlaubt(d int) bool {
 	return false
 }
 
-// masterPx rechnet [x, y, b, h] in ganze Master-Pixel um; nur Vielfache von 1/32 Kachel sind erlaubt.
-func masterPx(r [4]float64) ([4]int, error) {
+// masterPx rechnet [x, y, b, h] in ganze Raster-Pixel um; nur Vielfache von 1/raster Kachel sind erlaubt.
+func masterPx(r [4]float64, raster int) ([4]int, error) {
 	var out [4]int
 	for i, v := range r {
-		m := v * master
+		m := v * float64(raster)
 		if math.Abs(m-math.Round(m)) > 1e-9 {
-			return out, fmt.Errorf("wert %g liegt nicht im 1/%d-Kachel-Raster", v, master)
+			return out, fmt.Errorf("wert %g liegt nicht im 1/%d-Kachel-Raster", v, raster)
 		}
 		out[i] = int(math.Round(m))
 	}
@@ -90,23 +94,24 @@ func render(b building, d int) (*image.Paletted, error) {
 	if !erlaubt(d) {
 		return nil, fmt.Errorf("dichte %d nicht erlaubt (16, 32, 64, 128 px je Kachel)", d)
 	}
-	size, err := masterPx([4]float64{0, 0, b.Kacheln.B, b.Kacheln.H})
+	raster := rasterVon(b)
+	size, err := masterPx([4]float64{0, 0, b.Kacheln.B, b.Kacheln.H}, raster)
 	if err != nil || size[2] <= 0 || size[3] <= 0 {
 		return nil, fmt.Errorf("%s: kacheln %v ungültig", b.ID, b.Kacheln)
 	}
 	pal, idx := palette()
-	img := image.NewPaletted(image.Rect(0, 0, size[2]*d/master, size[3]*d/master), pal)
+	img := image.NewPaletted(image.Rect(0, 0, size[2]*d/raster, size[3]*d/raster), pal)
 	for i, s := range b.Bausteine {
 		c, m, err := check(b, i, idx, size, d)
 		if err != nil {
 			return nil, err
 		}
-		if d < master && s.Fein {
+		if entfaellt(s, d, raster) {
 			continue
 		}
-		// Ganzzahlige Abbildung Master-Pixel → Ziel-Pixel; bei d ≥ Master exakt, bei 16 abgerundet.
-		x0, y0 := m[0]*d/master, m[1]*d/master
-		x1, y1 := (m[0]+m[2])*d/master, (m[1]+m[3])*d/master
+		// Ganzzahlige Abbildung Raster-Pixel → Ziel-Pixel; bei d ≥ Raster exakt, darunter abgerundet.
+		x0, y0 := m[0]*d/raster, m[1]*d/raster
+		x1, y1 := (m[0]+m[2])*d/raster, (m[1]+m[3])*d/raster
 		for y := y0; y < y1; y++ {
 			for x := x0; x < x1; x++ {
 				img.SetColorIndex(x, y, c)
@@ -124,15 +129,16 @@ func check(b building, i int, idx map[string]uint8, size [4]int, d int) (uint8, 
 	if !ok {
 		return 0, [4]int{}, fmt.Errorf("%s: Farbe %q nicht in DB32", where, s.Farbe)
 	}
-	m, err := masterPx(s.Rechteck)
+	raster := rasterVon(b)
+	m, err := masterPx(s.Rechteck, raster)
 	if err != nil {
 		return 0, m, fmt.Errorf("%s: %w", where, err)
 	}
 	if m[0] < 0 || m[1] < 0 || m[2] <= 0 || m[3] <= 0 || m[0]+m[2] > size[2] || m[1]+m[3] > size[3] {
 		return 0, m, fmt.Errorf("%s: Rechteck %v außerhalb von %g×%g Kacheln", where, s.Rechteck, b.Kacheln.B, b.Kacheln.H)
 	}
-	if d < master && !s.Fein && (m[2]*d < master || m[3]*d < master) {
-		return 0, m, fmt.Errorf("%s: dünner als 1 px bei %d px je Kachel, als fein markieren", where, d)
+	if !entfaellt(s, d, raster) && (m[2]*d < raster || m[3]*d < raster) {
+		return 0, m, fmt.Errorf("%s: dünner als 1 px bei %d px je Kachel, als fein oder detail markieren", where, d)
 	}
 	return c, m, nil
 }
@@ -192,6 +198,9 @@ func build(file, prefix string, out map[string]*image.Paletted) (eintrag, error)
 		return eintrag{}, fmt.Errorf("%s: %w", file, err)
 	}
 	if err := pruefeVorlage(b.Vorlage); err != nil {
+		return eintrag{}, fmt.Errorf("%s: %w", file, err)
+	}
+	if err := pruefeRaster(b); err != nil {
 		return eintrag{}, fmt.Errorf("%s: %w", file, err)
 	}
 	if err := wiederholungenAufloesen(&b); err != nil {

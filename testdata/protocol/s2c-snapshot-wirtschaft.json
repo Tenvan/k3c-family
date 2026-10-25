@@ -62,7 +62,9 @@
     },
     "hubX": 550,
     "merchant": {
+      "hp": 100,
       "leaves": 3,
+      "maxHp": 100,
       "resource": "stone"
     },
     "nextId": 93,

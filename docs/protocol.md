@@ -51,6 +51,11 @@ bleibt der Name der Seed wie bisher, alte Clients funktionieren unverändert. Ei
 unbekannte Startstufe `depth`. Bei `fresh: false` wird `seed` ignoriert. Beispiel: `c2s-create-seed.json`; Level zu Seed und
 Tiefe liefert auch `GET /api/level?seed=…&biome=…`.
 
+**Optionales Feld `level.layout.backdrops` (GEB18, B-618, Version bleibt):** Liste von Hintergrund-Varianten (1 …) je Kachel
+von 24 Units im Raum der Hintergrund-Schicht, Länge ⌈`widthUnits`/24⌉ + 1, benachbarte Einträge verschieden; der Server würfelt
+sie aus dem eigenen Strom `<biom>:<seed>:backdrop` (gleicher Seed, gleiche Folge). Kachel k jeder Schicht zeigt Variante
+`backdrops[k]`; fehlt das Feld (Biom ohne Varianten, alter Server), zeigt der Client überall Variante 1. Beispiel: `s2c-level.json`.
+
 **Änderungen gegenüber v5 (K4, Version 6, B-154, B-345):** `snap`/`delta` nennen Endboss-Phase und Warnkreis
 (`enemies[].phase`, `enemies[].warn`), aktive Nacht-Events mit Restzeit (`nightEvents`) und den Wechselpunkt zur
 nächsten Insel (`islandSwitch`); siehe *Kampf: Bosse, Events, Inselwechsel*. Wechselt der Raum die Insel, beginnt jeder
@@ -309,7 +314,7 @@ das zählt als Abbruch.
 | `create` | Gerät → Server | Raum erstellen | `save` Name des Spielstands (`^[a-z0-9-]{1,32}$`), `fresh` neu (true) oder gespeicherten laden, `depth` Startstufe (nur bei `fresh`), `slots[]`, optional `grade`, `goal`, `defeat` (siehe oben), optional `seed` (nur bei `fresh`, höchstens 64 Zeichen, sonst gilt der Name), optional `world` (Welt-ID, nur bei `fresh`, fehlt = `standard`, eine andere nur im Dev-Mode; v7) | `c2s-create.json`, `c2s-create-seed.json`, `c2s-create-world.json` |
 | `join` | Gerät → Server | Raum beitreten oder wiederverbinden | `room` Code, `slots[]` | `c2s-join.json` |
 | `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `world` (Welt-ID des Raums, v7), `you[]`: `slot` → `monarch`, `depth`, `stage` | `s2c-joined.json` |
-| `level` | Server → Gerät | nach `joined` und sobald eine Stufe für das Gerät neu ist, vor dem ersten Zustand der Stufe | `stage`, `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte) | `s2c-level.json` |
+| `level` | Server → Gerät | nach `joined` und sobald eine Stufe für das Gerät neu ist, vor dem ersten Zustand der Stufe | `stage`, `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte, optional `backdrops`) | `s2c-level.json` |
 | `snap` | Server → Gerät | voller Zustand einer Stufe: nach ihrem `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `stage`, `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json`, `s2c-snapshot-wirtschaft.json`, `s2c-snapshot-boss.json`, `s2c-snapshot-event.json` |
 | `delta` | Server → Gerät | jeder weitere Tick, je Stufe | `stage`, `tick`, `ack`, `s` (nur Änderungen zum zuletzt gesendeten Zustand dieser Stufe) | `s2c-snapshot-delta.json` |
 | `seats` | Server → alle Geräte im Raum | wenn sich eine Zuordnung, ein Monarch-Zustand oder eine Stufe ändert | `you[]` (eigene Slots mit `monarch`, `depth` und `stage`), `monarchs[]` je Index `taken`/`waiting`/`free` | `s2c-seats.json` |
@@ -419,7 +424,7 @@ vom Server je Stufe abgelesen; die übrigen aus der Welt):
 | `danger` | `true`: Nacht oder Gegner da, Bau und Ausbau warten | keine Gefahr |
 | `fighters` | Zahl der Kämpfer der Stufe (für „Kämpfer/Limit“; W10.2, B-332) | nie (älterer Server); 0 ist ein Wert |
 | `troopLimit` | Truppen-Limit der Stufe (Regel `docs/rules/buerger.md` § 3, zerstörte Kaserne zählt nicht) | nie (älterer Server) |
-| `merchant` | anwesender Händler: `resource` (sein Material), `leaves` (Tag der Abreise), `buyPaid` (Gold des laufenden Kaufs, fehlt bei 0) | kein Händler (nur Tiefe 0) |
+| `merchant` | anwesender Händler: `resource` (sein Material), `leaves` (Tag der Abreise), `buyPaid` (Gold des laufenden Kaufs, fehlt bei 0), `raid` (`true`: dieser Besuch wird überfallen, Gegner greifen den Händler zuerst an; fehlt sonst), `hp`/`maxHp` (Lebenspunkte; bei 0 flieht er, KB2.3, B-381) | kein Händler (nur Tiefe 0) |
 | `drops` | Ausrüstung am Boden, Liste mit `id`: `kind` (Figur oder Beruf), `x`, `workSite` (fehlt bei 0) | keine |
 | `armorLevel` | Rüstungsstufe der Kämpfer des Hubs | 0 |
 
@@ -555,7 +560,9 @@ Verworfenen und fehlt bei 0 (zuverlässige Übertragung im Delta: B-190). Ein Cl
 **Budget (Beschluss Q08):** Ereignisse ≤ **200 Byte je Tick und Client im Mittel**, bei 30 Hz also **6 KB/s je
 Client**; sie laufen im Delta mit, keine eigene Nachricht. Geprüft von `TestEventsBudgetJeTick`
 (`engine/sim/events_budget_test.go`): 3 Stufen, 4 Spieler, Seed `bench`, 1800 Ticks, Mittel je Stufe und Tick ≤ 200
-Byte, sonst rot. Für den ganzen Zustand ist keine Grenze beschlossen, er wird nur gemessen.
+Byte, sonst rot. Für den ganzen Zustand ist keine Grenze beschlossen, er wird nur gemessen (Entscheidung zu Q08,
+Variante B, B-386, 2026-10-23: das Budget gilt nur für Ereignisse, `snap` und `delta` haben keine Grenze; wird der
+Zustand später zu groß, z. B. auf Pi 3 oder im WLAN, ist das ein neues Ticket).
 
 **Ist-Wert Go-Server** (2026-10-03, Intel Core Ultra 7 165H, `go test -bench Island -run '^$' ./engine/sim`; JSON je
 Stufe und Tick, erste 1800 Ticks nach dem Aufwärmen, schneller Zyklus mit Nächten):
