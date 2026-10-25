@@ -1,6 +1,6 @@
 # ST1.2 · Wiederholung bei gesperrter Datei, Rotation für Spielmetrik
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -50,5 +50,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 und AC-03: umgesetzt.
+  - B-187 war weitgehend vorhanden (`store.Rename` mit 6 Versuchen à 20 ms). Neu sind ⏳/❌-Logs und `TestWriteAtomicGesperrteZieldatei`: Bei dauerhafter Sperre bleibt der alte Stand ohne Temp-Datei, bei zwei Sperren klappt der Schreibvorgang.
+  - B-272: `prune` begrenzt jetzt auch `session-*.json`, getrennt von den Gamepad-Berichten (Test).
+- Geprüft mit `go test ./engine/...` und golangci-lint (grün). Review ohne Befund zur Rotation.
