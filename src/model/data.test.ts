@@ -28,10 +28,16 @@ describe('HUB passt zu data/hub.json', () => {
 describe('LIGHT passt zu data/light.json', () => {
   it('Fackel und Lagerfeuer haben Radius und Stärke', () => {
     for (const kind of ['torch', 'campfire'] as const) {
-      const { radius, strength } = LIGHT.sources[kind];
+      const { radius, strength } = LIGHT.sources[kind]!;
       expect(radius, kind).toBeGreaterThan(0);
       expect(strength, kind).toBeGreaterThan(0);
       expect(strength, kind).toBeLessThanOrEqual(1);
     }
+  });
+
+  it('Nacht-Untergrenze in (0, 1) und Lichtfarbe als #rrggbb (W13.1)', () => {
+    expect(LIGHT.nightBrightness).toBeGreaterThan(0);
+    expect(LIGHT.nightBrightness).toBeLessThan(1);
+    expect(LIGHT.glowColor).toMatch(/^#[0-9a-f]{6}$/i);
   });
 });

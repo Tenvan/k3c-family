@@ -16,7 +16,7 @@ import { LEAVE_KEY, MenuPress, REMOVE_PLAYER_KEY, idleCommands, type OptionsScen
 import { findOpener, removeTargets, type OpenSignal } from './menuOpener';
 import { LocalSlots, pageBots } from './localSlots';
 import type { RadarCell } from './hud/radarView';
-import { daylight } from './render/viewRules';
+import { brightnessOf } from './render/nightLight';
 import { refollow } from './render/cameraFollow';
 import type { JoinCandidate } from './hud/joinHint';
 import { cellStages } from './cellStages';
@@ -49,8 +49,6 @@ export interface GameSceneData {
 
 /** Der Mitspieler oben wechselt erst, wenn ein anderer um so viele Units näher ist */
 const PARTNER_SWITCH_UNITS = 10;
-/** Helligkeit in tiefster Nacht */
-const NIGHT_BRIGHTNESS = 0.45;
 
 /**
  * Spielwelt im Browser: sendet die Eingaben der lokalen Spieler (Slots) an den Server und zeichnet die interpolierten Zustände.
@@ -375,7 +373,7 @@ export class GameScene extends Phaser.Scene {
     // Schrift in der Welt: Zoom der kleinsten Zelle ausgleichen, damit sie nie unter ihre Größe fällt; die Mitspieler-Zelle zählt nicht (Texte dort ausgeblendet, B-197)
     const textCells = this.cells.filter((c) => c.kind !== 'partner');
     if (stage && textCells.length > 0) stage.scaleTexts(1 / Math.min(...textCells.map((c) => viewZoom(c.h))), this.partnerCamId);
-    const brightness = NIGHT_BRIGHTNESS + (1 - NIGHT_BRIGHTNESS) * daylight(this.world_.cycle);
+    const brightness = brightnessOf(this.world_.cycle); // Nacht-Untergrenze aus data/light.json (W13.1)
     for (const fx of this.nightFx) fx.colorMatrix.brightness(brightness);
     this.updateLayout(this.world_);
     this.follows.forEach((f) => (f.target = refollow(f.cam, f.target, f.stage.renderer.playerView(f.monarch))));

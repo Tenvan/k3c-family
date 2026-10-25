@@ -138,6 +138,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-629](B-629-buildall-web-exe.md) | INF | Problem | hoch | offen | – | task buildall baut die Web-EXEs von Studio und Workbench nicht mit |
 | [B-620](B-620-golden-grenze-20-mb.md) | INF | Frage | mittel | offen | – | Golden-Grenze 20 MB nach dem dichteren Wald bestätigen |
 | [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | offen | – | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
+| [B-622](B-622-fackeln-als-spielobjekt.md) | SIM | Idee | niedrig | offen | – | Fackeln gibt es als Spielobjekt mit Licht in der Nacht |
 
 ## Archiv
 
