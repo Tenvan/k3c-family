@@ -1,6 +1,6 @@
 # BAL6 · SIM · Balancing-Tester misst die Wirtschaft
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAL
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -58,7 +58,7 @@ B-347 › Ausnahme- und Fehlerfälle (Kennzahl ohne Ereignis: aus dem Zustand ab
 |---|---|---|---|---|
 | BAL6.1 | `BAL6.1-wirtschaft-messen.md` | Umsetzung | autonom | fertig |
 | BAL6.3 | `BAL6.3-profil-sensitivitaet.md` | Umsetzung | autonom | fertig |
-| BAL6.2 | `BAL6.2-review.md` | Review | autonom | offen |
+| BAL6.2 | `BAL6.2-review.md` | Review | autonom | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
@@ -68,4 +68,6 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-–
+2026-10-25, Claude (BAL6.2): `task check:go`, `dev:test` und das Workbench-`go test` grün.
+AC-01 erfüllt durch BAL6.1 (13 Korridore bewertet), AC-02 und AC-03 durch BAL6.3. Review: keine Blocker, der Laufzeit-Hinweis ist ergänzt.
+Befund für BR1.3: Hub-Stufe 2 ist in Tiefe 0 mangels Stein nicht erreichbar. Neues Ticket B-625 (Baseline neu).

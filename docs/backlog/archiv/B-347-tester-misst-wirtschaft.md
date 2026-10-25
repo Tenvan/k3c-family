@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** BAL6
 - **Projekt:** BAL
 - **Erstellt:** 2026-10-07

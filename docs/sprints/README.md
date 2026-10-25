@@ -19,7 +19,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | KR1 | REG | KRT | Kritische Fragen zu BED | – | `aktiv/KR1-fragen-bed/` |
 | KR5 | REG | KRT | Kritische Fragen zu SKL | – | `aktiv/KR5-fragen-skl/` |
 | KR6 | REG | KRT | Kritische Fragen zu KMP | – | `aktiv/KR6-fragen-kmp/` |
-| BAL6 | SIM | BAL | Balancing-Tester misst die Wirtschaft | – | `aktiv/BAL6-tester-misst-wirtschaft/` |
 
 ## Offen am Gerät
 
@@ -246,3 +245,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SK2 | Skills im Spiel sichtbar, Dieb-Skills in den Daten | `erledigt/SK2-skills-sichtbar-dieb/` |
 | K5 | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | `erledigt/K5-anzeige-kampf/` |
 | LV1 | Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs | `erledigt/LV1-level-gegner-korrektur/` |
+| BAL6 | Balancing-Tester misst die Wirtschaft | `erledigt/BAL6-tester-misst-wirtschaft/` |

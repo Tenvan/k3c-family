@@ -49,8 +49,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-293](B-293-spiel-im-menue-verlassen.md) | CLI | Idee | hoch | eingeplant | S8 | Das Spielmenü hat neben „Weiter“ einen Eintrag „Spiel verlassen“ |
 | [B-294](B-294-hinweis-glyph-muenze-nacht.md) | CLI | Frage | mittel | eingeplant | S8 | Münze und „Nacht naht“ zeigen in der geführten ersten Nacht keine Glyph |
 | [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | eingeplant | RG2 | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
-| [B-300](B-300-mauern-zuerst-wie-sparsam.md) | SIM | Frage | mittel | eingeplant | BAL6 | Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“ |
-| [B-301](B-301-vary-ohne-wirkung.md) | SIM | Problem | niedrig | eingeplant | BAL6 | Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler |
 | [B-314](B-314-controller-pruefungen-zurueckgestellt.md) | PLAT | Schuld | niedrig | eingeplant | HW1 | Alle Controller-Prüfungen sind gesammelt nachgeholt |
 | [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | eingeplant | SV1 | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
 | [B-317](B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | eingeplant | U5 | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
@@ -61,7 +59,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-341](B-341-header-ursache-live-messen.md) | DEV | Problem | mittel | eingeplant | WZ2 | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
 | [B-344](B-344-raum-speichert-nicht-nach-game-over.md) | SRV | Idee | hoch | eingeplant | KB2 | Der Raum speichert nach „Komplett verloren“ nicht mehr |
 | [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | eingeplant | RG1 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
-| [B-347](B-347-tester-misst-wirtschaft.md) | SIM | Schuld | hoch | eingeplant | BAL6 | Der Balancing-Tester misst die Wirtschafts-Kennzahlen |
 | [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
 | [B-352](B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | eingeplant | TR4 | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
 | [B-354](B-354-bot-eingabe-impulse-frist.md) | PLAT | Problem | mittel | eingeplant | TR4 | Die Bot-Eingabe verliert keine kurzen Drücke und hält bei stummem Feed an |
@@ -579,3 +576,6 @@ Zeile in diesen Abschnitt.
 | [B-098](archiv/B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | erledigt | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-607](archiv/B-607-studio-levelview-test-golden-dichter-wald.md) | DEV | Problem | hoch | verworfen | – | Der Studio-Test levelView erwartet die Baum-Zahl vor dem dichten Wald |
 | [B-606](archiv/B-606-studio-tests-rot-nach-dichtem-wald.md) | DEV | Problem | hoch | erledigt | WZ28 | Die Studio-Tests sind nach dem dichten Wald wieder grün und check_run hängt nicht bei k3c-studio:test |
+| [B-347](archiv/B-347-tester-misst-wirtschaft.md) | SIM | Schuld | hoch | erledigt | BAL6 | Der Balancing-Tester misst die Wirtschafts-Kennzahlen |
+| [B-300](archiv/B-300-mauern-zuerst-wie-sparsam.md) | SIM | Frage | mittel | erledigt | BAL6 | Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“ |
+| [B-301](archiv/B-301-vary-ohne-wirkung.md) | SIM | Problem | niedrig | erledigt | BAL6 | Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler |
