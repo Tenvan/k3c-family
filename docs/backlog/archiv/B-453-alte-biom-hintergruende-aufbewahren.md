@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** GRJ1
 - **Projekt:** GRJ
 - **Erstellt:** 2026-10-17

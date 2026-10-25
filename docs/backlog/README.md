@@ -95,7 +95,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-426](B-426-fullsave-review-kleinigkeiten.md) | SRV | Schuld | niedrig | eingeplant | SV2 | Kleine Befunde aus dem Review von SV1 sind erledigt |
 | [B-435](B-435-gebaeude-grafik-per-prompt.md) | DEV | Idee | mittel | eingeplant | GEB1 | Gebäude und Strukturen entstehen im Asset-Manager aus Beschreibung und Prompt |
 | [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | eingeplant | GEB6 | Werkstatt und Bäume aus tools/buildings erscheinen im Spiel |
-| [B-453](B-453-alte-biom-hintergruende-aufbewahren.md) | CLI | Idee | mittel | eingeplant | GRJ1 | Alte Biom-Hintergründe (Packs) als Grafik aufbewahren |
 | [B-454](B-454-baeume-hoeher-dichter-hoehle-wurzeln.md) | DEV | Problem | hoch | eingeplant | GEB10 | Bäume höher und dichter, Höhle mit eigener Unterwelt-Flora (Wurzeln) |
 | [B-455](B-455-truhe-geschlossen.md) | DEV | Idee | mittel | eingeplant | GEB10 | Truhe gibt es auch geschlossen |
 | [B-456](B-456-fahne-spielerfarbe-wimpel.md) | CLI | Idee | mittel | eingeplant | GEB10 | Markierungsfahne als Wimpel in Spielerfarbe |
@@ -578,3 +577,4 @@ Zeile in diesen Abschnitt.
 | [B-098](archiv/B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | erledigt | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-607](archiv/B-607-studio-levelview-test-golden-dichter-wald.md) | DEV | Problem | hoch | verworfen | – | Der Studio-Test levelView erwartet die Baum-Zahl vor dem dichten Wald |
 | [B-606](archiv/B-606-studio-tests-rot-nach-dichtem-wald.md) | DEV | Problem | hoch | erledigt | WZ28 | Die Studio-Tests sind nach dem dichten Wald wieder grün und check_run hängt nicht bei k3c-studio:test |
+| [B-453](archiv/B-453-alte-biom-hintergruende-aufbewahren.md) | CLI | Idee | mittel | erledigt | GRJ1 | Alte Biom-Hintergründe (Packs) als Grafik aufbewahren |
