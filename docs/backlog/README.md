@@ -101,7 +101,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-586](B-586-baugeruest-in-gebaeudeform.md) | CLI | Idee | mittel | eingeplant | GEB16 | Im Bau zeigt der Platz ein Gerüst in der Form des neuen Gebäudes |
 | [B-587](B-587-snapshot-site-payable.md) | SRV | Idee | mittel | eingeplant | GEB16 | Der Server meldet je Bauplatz, ob er jetzt Münzen annimmt |
 | [B-588](B-588-abbau-symbole-axt-spitzhacke.md) | CLI | Idee | niedrig | eingeplant | GEB16 | Abbau-Schilder zeigen eine Axt für Bäume und eine Spitzhacke für Felsen |
-| [B-589](B-589-holz-balancing-dichter-wald.md) | REG | Idee | mittel | eingeplant | BAL7 | Holz-Balancing nach dem dichteren Wald messen und nachziehen |
 | [B-590](B-590-wachstumsreihe-unterscheidbar.md) | DEV | Problem | hoch | eingeplant | GEB17 | Die Wachstumsreihe der Burg zeigt echte Unterschiede statt derselben Burg in Farben |
 | [B-591](B-591-burg-ausbau-angebot-fehlt.md) | CLI | Problem | hoch | eingeplant | GEB17 | Vor der Burg erscheint kein Ausbau-Angebot, wenn der Spieler davor steht |
 | [B-592](B-592-hub-ausbaustufen-je-inselstufe.md) | REG | Idee | hoch | eingeplant | GEB17 | Der Hub hat zwei bis drei Ausbaustufen je Inselstufe, weiter mit dem Material der nächsten Inselstufe |
@@ -137,6 +136,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-623](B-623-hub-stufenfolge-bestaetigen.md) | REG | Frage | mittel | offen | – | Stufenfolge des Hubs (3 Schritte je Hub-Stufe, Material-Tor) bestätigen |
 | [B-624](B-624-golden-gzip-bestaetigen.md) | INF | Frage | mittel | offen | – | Golden-Daten als gzip mit lesbaren Diffs bestätigen |
 | [B-625](B-625-balance-baseline-neu.md) | REG | Schuld | mittel | offen | – | Balance-Baseline nach BAL6 neu schreiben |
+| [B-626](B-626-rg1-werte-entscheiden.md) | REG | Frage | mittel | offen | – | Wertvorschläge aus RG1.1 und BR2.1 entscheiden |
+| [B-627](B-627-rg2-regelklaerungen.md) | REG | Frage | mittel | offen | – | Regelklärungen RG2.1 (Handwerker, Verlust-Korridor, Gold-Schwelle) entscheiden |
 
 ## Archiv
 
@@ -593,3 +594,4 @@ Zeile in diesen Abschnitt.
 | [B-347](archiv/B-347-tester-misst-wirtschaft.md) | SIM | Schuld | hoch | erledigt | BAL6 | Der Balancing-Tester misst die Wirtschafts-Kennzahlen |
 | [B-300](archiv/B-300-mauern-zuerst-wie-sparsam.md) | SIM | Frage | mittel | erledigt | BAL6 | Das Profil „Mauern zuerst“ spielt messbar anders als „sparsam“ |
 | [B-301](archiv/B-301-vary-ohne-wirkung.md) | SIM | Problem | niedrig | erledigt | BAL6 | Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler |
+| [B-589](archiv/B-589-holz-balancing-dichter-wald.md) | REG | Idee | mittel | erledigt | BAL7 | Holz-Balancing nach dem dichteren Wald messen und nachziehen |

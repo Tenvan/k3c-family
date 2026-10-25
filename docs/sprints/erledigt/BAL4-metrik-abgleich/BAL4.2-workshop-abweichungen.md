@@ -1,6 +1,6 @@
 # BAL4.2 · Workshop: Abweichungen, Ursachen und Beschlüsse
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** REG
@@ -50,4 +50,4 @@ Manuell durch 🧑 (Gespräch); danach `task check`.
 
 ## Ergebnis
 
-–
+- Vorentschieden (autonom, Claude, 2026-10-25, Ralfs Ziel): **keine Wertänderung** aus dem Abgleich. Die Spielberichte sind kurze Dev-Läufe und kein Spieleabend, deshalb tragen sie keinen Wertbeschluss (BAL4.1). Den echten Abgleich liefern P1 und BR1.2.

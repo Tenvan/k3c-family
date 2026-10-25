@@ -1,6 +1,6 @@
 # BAL4.3 · Beschlossene Werte umsetzen und Sprint abschließen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -57,4 +57,4 @@ task check
 
 ## Ergebnis
 
-–
+- Es ist nichts umzusetzen (Beschluss BAL4.2). Die Abnahme steht in der Sprint-README.

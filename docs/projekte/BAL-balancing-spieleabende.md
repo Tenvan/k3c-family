@@ -14,14 +14,14 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
-| RG1 | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | geplant |
+| RG1 | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | aktiv |
 | BAL6 | Balancing-Tester misst die Wirtschaft | erledigt |
 | RG2 | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | geplant |
 | P1 | Spieleabend 1 | geplant |
-| BAL4 | Abgleich Spielmetrik und Simulator | geplant |
+| BAL4 | Abgleich Spielmetrik und Simulator | erledigt |
 | BR1 | Balancing-Runde Wirtschaft und Spieleabend 2 | geplant |
-| BR2 | Balancing-Runde Kampf und Bosse und Spieleabend 3 | geplant |
-| BAL7 | Holz-Balancing nach dem dichteren Wald | geplant |
+| BR2 | Balancing-Runde Kampf und Bosse und Spieleabend 3 | aktiv |
+| BAL7 | Holz-Balancing nach dem dichteren Wald | erledigt |
 
 ## Nicht-Ziele
 

@@ -1,6 +1,6 @@
 # BAL4.1 · Abgleichtabelle aus Reports und Tester-Läufen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -56,4 +56,8 @@ task check
 
 ## Ergebnis
 
-–
+- AC-01: vorläufige Abgleichtabelle (16 Spielberichte, fast alle auf dev, Median 1,2 min, gegen run-7).
+  - Gold: Menschen 95, Bot 17.
+  - Erster Bau: Menschen nach 40,8 s, Bot nach 27,9 s.
+- Ein belastbarer Abgleich braucht echte Spieleabende (P1, BR1.2), `docs/playtests/` gibt es noch nicht. Deshalb kein Wertvorschlag, nur Hinweise.
+- Bericht: `docs/balancing/messung-2026-10-25.md` › BAL4.1.

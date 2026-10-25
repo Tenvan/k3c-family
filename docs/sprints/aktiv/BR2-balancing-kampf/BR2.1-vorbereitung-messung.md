@@ -1,6 +1,6 @@
 # BR2.1 · Vorbereitung: Korridore prüfen, Kennzahlen je Grad messen, Wertänderungen vorschlagen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -55,4 +55,8 @@ task check
 
 ## Ergebnis
 
-–
+- AC (Vorbereitung): gemessen (run-7, alle Grade). Bei „Burg hält Nacht 1–5“ liegen alle fünf Grade im Korridor.
+- Zerstörte Gebäude je Welle: 2 statt höchstens 1. Vorschlag `goblin.damage` 12 → 10, alternativ Wellen 1–5 mit [4, 9] statt [5, 10] Gegnern.
+- Sieben Boss- und Event-Korridore kann `sim_test` heute nicht messen.
+- Ralf entscheidet in BR2.2.
+- Bericht: `docs/balancing/messung-2026-10-25.md` › BR2.1.
