@@ -61,9 +61,11 @@ Nicht blockierend: Welche Szenario-Einstellung lief am 2026-10-03 auf der Testse
 |---|---|---|---|---|
 | PF1.1 | `PF1.1-profil.md` | Umsetzung | autonom | fertig |
 | PF1.2 | `PF1.2-korrektur.md` | Umsetzung | autonom | fertig |
-| PF1.3 | `PF1.3-review.md` | Review | autonom | offen |
+| PF1.3 | `PF1.3-review.md` | Review | autonom | fertig |
 | PF1.4 | `PF1.4-xbox-messung.md` | Umsetzung | Mensch | offen |
 
 ## Abnahme
 
-–
+2026-10-25, Claude (PF1.3): `task check` und `task check:go` grün; `check:race` lokal übersprungen (kein C-Compiler).
+AC-02 erfüllt durch PF1.1 (Messwerte in B-194 › Notizen), AC-03 durch PF1.2 (Kamera-Culling, p95 −20 %, p99 −50 % mit 2 Kameras nachts). AC-04 gilt für die neuen Dateien; `GameScene.ts` lag schon vorher über 400 Zeilen.
+Offen ist AC-01, die Messung an der Xbox durch Ralf (PF1.4). Die Frame-Zeit steht jetzt im Debug-Overlay. Keine neuen Tickets.
