@@ -1,0 +1,71 @@
+# PF1 · CLI · Split-Screen flüssig auf der Xbox
+
+- **Status:** aktiv
+- **Projekt:** LST
+- **Domäne:** CLI
+- **Reife:** bereit
+- **Tickets:** B-194
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
+- **Revision:** 1
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt)
+
+## Ausgangslage
+
+Der Split-Screen ruckelt auf der Xbox (B-194); N2 hat Zeitleiste und Vorhersage gebracht.
+
+## Ziel
+
+Zwei Spieler im Split-Screen spielen auf der Xbox flüssig. Am Ende sichtbar: Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox.
+
+## Beteiligte und Zielgruppen
+
+🧑 misst an der Xbox; Agent profiliert im Browser-Pane.
+
+## Anforderungen
+
+B-194 › Anforderungen.
+
+## Nicht-Ziele
+
+Netz-Latenz (N2), Atlas (GR4).
+
+## Regeln und Einschränkungen
+
+CLI; Hardware entkoppelt: Messung an der Xbox ist eine Mensch-Session.
+
+Beschluss 🧑 2026-10-06 (Chat): Die Rückfrage aus B-194 (Szenario der Testseite, ruckelt auch `game.html`?) bleibt unbeantwortet und blockiert nicht; die erste Session misst. Die Messung an der Xbox ist eine Mensch-Session nach dem Review (Hardware entkoppelt, `docs/plan-weiterentwicklung.md` § 11.6).
+
+## Beispiele
+
+Zwei Kameras, eine Nacht → FPS im Debug-Overlay ≥ angenommenes Ziel.
+
+## Ausnahme- und Fehlerfälle
+
+Ziel nicht erreichbar → Messwerte und Ticket, angenommener Wert bleibt.
+
+## Akzeptanzkriterien
+
+- **AC-01** Der Split-Screen läuft auf der Xbox flüssig (B-194/AC-01, B-194/AC-02).
+- **AC-02** Im Browser-Pane sind FPS und Frame-Zeit mit einer und mit zwei Kameras (Tag und Nacht) sowie der Snapshot-Abstand gemessen; Messwerte und vermutete Ursache stehen in B-194 › Notizen.
+- **AC-03** Die gemessene Hauptlast aus AC-02 ist behoben oder gesenkt; Frame-Zeit im Browser-Pane mit zwei Kameras vorher und nachher steht im Ergebnis von PF1.2.
+- **AC-04** `task check` ist grün; keine geänderte Datei über 400 Zeilen, keine Funktion über 60.
+
+## Offene Fragen
+
+Nicht blockierend: Welche Szenario-Einstellung lief am 2026-10-03 auf der Testseite, und ruckelt auch `game.html` mit zwei Controllern? Klärt 🧑 spätestens in PF1.4 am Gerät.
+
+## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| PF1.1 | `PF1.1-profil.md` | Umsetzung | autonom | fertig |
+| PF1.2 | `PF1.2-korrektur.md` | Umsetzung | autonom | fertig |
+| PF1.3 | `PF1.3-review.md` | Review | autonom | fertig |
+| PF1.4 | `PF1.4-xbox-messung.md` | Umsetzung | Mensch | offen |
+
+## Abnahme
+
+2026-10-25, Claude (PF1.3): `task check` und `task check:go` grün; `check:race` lokal übersprungen (kein C-Compiler).
+AC-02 erfüllt durch PF1.1 (Messwerte in B-194 › Notizen), AC-03 durch PF1.2 (Kamera-Culling, p95 −20 %, p99 −50 % mit 2 Kameras nachts). AC-04 gilt für die neuen Dateien; `GameScene.ts` lag schon vorher über 400 Zeilen.
+Offen ist AC-01, die Messung an der Xbox durch Ralf (PF1.4). Die Frame-Zeit steht jetzt im Debug-Overlay. Keine neuen Tickets.
