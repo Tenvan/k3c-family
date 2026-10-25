@@ -23,9 +23,9 @@ type Merchant struct {
 	BuyPaid  int    `json:"buyPaid,omitempty"`
 	// Raid: Dieser Besuch wird überfallen (events_merchant.go); Gegner greifen den Händler zuerst an.
 	Raid bool `json:"raid,omitempty"`
-	// HP, MaxHP: nicht im Zustand (Protokoll unverändert, Anzeige mit K4/K5); gespeichert über MerchantSave.
-	HP    float64 `json:"-"`
-	MaxHP float64 `json:"-"`
+	// HP, MaxHP: Lebenspunkte des Händlers im Zustand (KB2.3, B-381); gespeichert über MerchantSave.
+	HP    float64 `json:"hp"`
+	MaxHP float64 `json:"maxHp"`
 }
 
 // MerchantSave ist der anwesende Händler im Spielstand (Version 6, B-373).
