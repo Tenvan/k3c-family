@@ -56,7 +56,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| ST1.1 | `ST1.1-speichern-60s.md` | Umsetzung | autonom | in Arbeit |
+| ST1.1 | `ST1.1-speichern-60s.md` | Umsetzung | autonom | fertig |
 | ST1.2 | `ST1.2-sperre-rotation.md` | Umsetzung | autonom | offen |
 | ST1.3 | `ST1.3-review.md` | Review | autonom | offen |
 

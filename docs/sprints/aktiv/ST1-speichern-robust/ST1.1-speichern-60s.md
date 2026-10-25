@@ -1,6 +1,6 @@
 # ST1.1 · Speichern alle 60 s und bei Tagesanbruch, Anzeige gesichert
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -50,5 +50,11 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01: umgesetzt (Anzeige am TV offen).
+  - Autosave alle 1800 Raum-Ticks, also 60 s Echtzeit auch im Zeitraffer, und bei Tagesanbruch (`Cycle.Day` der Stufe 0).
+  - Nach gelungenem Schreiben geht das Ereignis `saved` an jede Stufe und wird danach aus der Welt entfernt (Golden unverändert, `TestTaktAendertSpielverlaufNicht`). Das HUD zeigt 2 s „· gesichert“.
+  - Protokoll additiv, Beispiel `s2c-snapshot-gesichert.json`.
+- Geprüft mit `go test ./engine/... ./cmd/...`, golangci-lint, `tsc` und Vitest, alle grün.
+- Review-Fix: Nach Game Over meldet der Raum kein „gesichert“ mehr (B-344).
+- Offen (LOW): Ein „gesichert“ nach Verlassen oder Trennen erscheint erst beim nächsten Tick. Tagesanbruch zählt nur in Stufe 0, der 60-s-Takt sichert trotzdem.
+- Abweichung: `SaveEvery` ist eine Konstante in `room.go` (Serverbetrieb, kein Balancing).

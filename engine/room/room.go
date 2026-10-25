@@ -22,6 +22,9 @@ const (
 	TickHz      = 30
 	WaitFor     = 60 * time.Second
 	EmptyFor    = 10 * time.Minute
+	// SaveEvery ist der Takt des Speicherns (B-186, Q10). Gezählt in Raum-Ticks, nicht in Spielzeit und nicht nach
+	// Wanduhr: ein Tick ist 1/TickHz Sekunden echter Zeit, auch im Zeitraffer; ein Raum ohne Gerät tickt nicht.
+	SaveEvery = 60 * time.Second
 )
 
 // Fehler; der Text ist der Code aus docs/protocol.md › Fehler-Codes.

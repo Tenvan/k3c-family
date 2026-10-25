@@ -543,12 +543,13 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 | `islandSwitch` | `island` | Alle stehen am Wechselpunkt, die Insel wechselt |
 | `victory` | `goal`, `day` | Siegbedingung erreicht |
 | `gameOver` | – | Niederlage |
+| `saved` | – | Der Server hat den Spielstand des Raums geschrieben (B-186: alle 60 s, bei Tagesanbruch, Stufen- und Inselwechsel, Verlassen); kommt mit dem nächsten Zustand **jeder** Stufe, nur nach gelungenem Schreiben. Der Client zeigt kurz „gesichert“. Kein Ereignis der Simulation: kein Einfluss auf Spielverlauf und Golden-Hash. Beispiel `s2c-snapshot-gesichert.json`, geprüft von `TestSpeichertImTakt` (`engine/room/autosave_test.go`) und `src/scenes/hud/savedHint.test.ts` |
 
 Tod, Bau fertig, Skill, Nacht naht und Portal laufen über die älteren Typen `playerDown`, `built`, `skillPoint`,
 `dusk`, `arrived` (`arrived` mit `player` beim Einzelwechsel; `built` mit `kind` und `x` des Bauplatzes, `x` als Zusatzfeld ohne neue Version, B-217). Die Simulation begrenzt die Ereignisse je Tick und
 Stufe auf **K = 32** (`maxEventsPerTick`); bei Überlauf gehen Tod und Bau vor, `eventsDropped` in `s` zählt die
 Verworfenen und fehlt bei 0 (zuverlässige Übertragung im Delta: B-190). Ein Client übergeht unbekannte Typen
-(Banner nur für bekannte), deshalb blieb die Protokollversion dafür 3. Gilt auch für `castFailed` und das Zusatzfeld `hit` an `strike` (S9.2): Version bleibt 5.
+(Banner nur für bekannte), deshalb blieb die Protokollversion dafür 3. Gilt auch für `castFailed` und das Zusatzfeld `hit` an `strike` (S9.2): Version bleibt 5. Ebenso für `saved` (B-186, ST1.1): Version bleibt.
 
 ### Snapshot-Größe
 

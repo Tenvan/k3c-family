@@ -90,6 +90,7 @@ export const de = {
   'hud.clockDusk': 'Dämmerung  ·  Nacht in {left}',
   'hud.clockNight': 'Nacht {day}  ·  Morgen in {left}',
   'hud.aggression': '  ·  Aggression {pct}%',
+  'hud.saved': '  ·  gesichert',
 
   // Meldungen (Ereignisse)
   'ev.dusk': 'Nacht naht!',
