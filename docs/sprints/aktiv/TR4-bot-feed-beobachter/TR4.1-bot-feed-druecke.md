@@ -1,6 +1,6 @@
 # TR4.1 · Bot-Eingabe verliert keine kurzen Drücke und hält bei stummem Feed an
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PLAT

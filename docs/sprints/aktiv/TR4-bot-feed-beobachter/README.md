@@ -1,14 +1,14 @@
 # TR4 · PLAT, SRV · Bot-Eingabe ohne verlorene Drücke, Beobachter ohne Platz im Raum
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** TST
 - **Domäne:** PLAT, SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-354, B-352
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt)
 
 ## Ausgangslage
 
@@ -55,7 +55,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| TR4.1 | `TR4.1-bot-feed-druecke.md` | Umsetzung | autonom | offen |
+| TR4.1 | `TR4.1-bot-feed-druecke.md` | Umsetzung | autonom | in Arbeit |
 | TR4.2 | `TR4.2-beobachter-ohne-platz.md` | Umsetzung | autonom | offen |
 | TR4.3 | `TR4.3-review.md` | Review | autonom | offen |
 
