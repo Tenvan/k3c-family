@@ -18,8 +18,9 @@ import (
 )
 
 // WebSocket /ws nach Protokoll v7. Jede Verbindung hat eine Lese-Schleife (diese Goroutine) und eine
-// Schreib-Goroutine mit Warteschlange. Ein Zustand ersetzt einen noch wartenden derselben Stufe am Ende der Warteschlange
-// (nur der neueste zählt, B-276; je Stufe ein Strom, B-176); Delta und JSON des Zustands baut erst die Schreib-Goroutine. Ist die Warteschlange voll, wird die
+// Schreib-Goroutine mit Warteschlange. Ein Zustand ersetzt einen noch wartenden derselben Stufe seit deren letztem Level
+// und stellt sich hinten an (nur der neueste zählt, B-276, auch über andere Nachrichten hinweg, B-280; je Stufe ein
+// Strom, B-176); Delta und JSON des Zustands baut erst die Schreib-Goroutine. Ist die Warteschlange voll, wird die
 // Verbindung geschlossen, das zählt als Abbruch.
 
 const (
@@ -32,15 +33,16 @@ const (
 
 // out ist eine Nachricht in der Warteschlange: fertige Bytes (data), ein Zustand (state) oder mit close das Schließen.
 type out struct {
-	data   []byte
-	level  bool           // Level: der nächste Zustand dieser Stufe ist ein snap
-	stage  int            // Stufe von Level und Zustand
-	state  map[string]any // aus stateOf, unveränderlich und mit den anderen Geräten der Stufe geteilt
-	tick   int
-	ack    int64 // höchstes verrechnetes seq beim Aufbau des Zustands (unter der Raum-Sperre)
-	events []any // nicht nil: Ereignisse verworfener Zustände samt denen von state
-	close  websocket.StatusCode
-	reason string
+	data    []byte
+	level   bool           // Level: der nächste Zustand dieser Stufe ist ein snap
+	stage   int            // Stufe von Level und Zustand
+	state   map[string]any // aus stateOf, unveränderlich und mit den anderen Geräten der Stufe geteilt
+	tick    int
+	ack     int64 // höchstes verrechnetes seq beim Aufbau des Zustands (unter der Raum-Sperre)
+	events  []any // nicht nil: Ereignisse verworfener Zustände samt denen von state
+	dropped int   // verworfene Ereignisse ersetzter Zustände (deren eventsDropped und über maxEvents), B-190
+	close   websocket.StatusCode
+	reason  string
 }
 
 // conn ist ein Gerät; es setzt room.Peer um. Die Peer-Methoden laufen unter der Sperre des Raums und schreiben nur
@@ -73,77 +75,6 @@ func (c *conn) enqueue(v any) {
 	c.push(out{data: b})
 }
 
-// push stellt o hinten an; ein Zustand ersetzt einen wartenden derselben Stufe (waiting) und übernimmt dessen Ereignisse.
-func (c *conn) push(o out) {
-	c.qmu.Lock()
-	n, lost, i := len(c.queue), 0, c.waiting(o)
-	switch {
-	case i >= 0:
-		o.events, lost = mergeEvents(c.queue[i], o.state)
-		c.queue[i] = o
-		c.drops++
-		if lost > 0 && c.warned {
-			lost = 0
-		}
-		c.warned = c.warned || lost > 0
-	case n >= sendBuffer:
-		c.qmu.Unlock()
-		c.s.log.Warn("🐢 Warteschlange voll, Verbindung zu", "ns", "ws", "device", short(c.device))
-		c.cancel()
-		return
-	default:
-		c.queue = append(c.queue, o)
-	}
-	c.qmu.Unlock()
-	if lost > 0 {
-		c.s.log.Warn("🐢 Ereignisse verworfen", "ns", "ws", "device", short(c.device), "anzahl", lost)
-	}
-	select {
-	case c.wake <- struct{}{}:
-	default:
-	}
-}
-
-// waiting ist der Platz des wartenden Zustands derselben Stufe, den der Zustand o ersetzt: gesucht nur in den Zuständen
-// am Ende der Warteschlange, damit er kein Level und keine andere Nachricht überholt; -1: keiner.
-func (c *conn) waiting(o out) int {
-	for i := len(c.queue) - 1; o.state != nil && i >= 0 && c.queue[i].state != nil; i-- {
-		if c.queue[i].stage == o.stage {
-			return i
-		}
-	}
-	return -1
-}
-
-// pop nimmt die vorderste Nachricht; false: Warteschlange leer.
-func (c *conn) pop() (out, bool) {
-	c.qmu.Lock()
-	defer c.qmu.Unlock()
-	if len(c.queue) == 0 {
-		return out{}, false
-	}
-	o := c.queue[0]
-	c.queue[0] = out{}
-	c.queue = c.queue[1:]
-	return o, true
-}
-
-// mergeEvents sind die Ereignisse des verworfenen Zustands old und des neuen cur, höchstens maxEvents (die neuesten),
-// und die Zahl der dabei verworfenen; nil, wenn old keine hatte.
-func mergeEvents(old out, cur map[string]any) ([]any, int) {
-	prev := old.events
-	if prev == nil {
-		prev, _ = old.state["events"].([]any)
-	}
-	if len(prev) == 0 {
-		return nil, 0
-	}
-	now, _ := cur["events"].([]any)
-	all := append(append(make([]any, 0, len(prev)+len(now)), prev...), now...)
-	lost := max(0, len(all)-maxEvents)
-	return all[lost:], lost
-}
-
 func (c *conn) Joined(code, name, world string, you []room.Seat) {
 	c.mu.Lock()
 	c.inRoom = true
@@ -174,11 +105,14 @@ func (c *conn) stateData(o out) []byte {
 	msg := stateMsg{"snap", o.stage, o.tick, o.ack, o.state}
 	if prev := c.prev[o.stage]; prev != nil {
 		msg.T, msg.S = "delta", deltaOf(prev, o.state)
-	} else if len(o.events) > 0 {
+	} else if len(o.events) > 0 || o.dropped > 0 {
 		msg.S = maps.Clone(o.state) // geteilt: nicht ändern
 	}
 	if len(o.events) > 0 {
 		msg.S["events"] = o.events
+	}
+	if o.dropped > 0 {
+		msg.S["eventsDropped"] = droppedOf(o.state) + o.dropped
 	}
 	b, err := json.Marshal(msg)
 	if err != nil {

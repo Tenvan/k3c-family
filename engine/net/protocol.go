@@ -148,7 +148,8 @@ type stateMsg struct {
 
 // stateOf ist der Zustand für `snap`: die Welt ohne seed, biome, level, rng, widthUnits, mit events und depth, oben
 // mit dem Wirtschaftsstand aus sim.EconomyOf (stockMax, hubLevel, hubUpgrade, danger; W5.1), je
-// Spieler mit points und actions (actions.go). Das Feld
+// Spieler mit points und actions (actions.go), je Bauplatz payable und je Knoten minable (payable.go), Bauplätze mit hubLevel
+// und nur bis zur nächsten Hub-Stufe (filterSites; nach addPayable, beide ordnen über die Position in w.Sites zu). Das Feld
 // `free` der Spieler (B-059) fällt weg, der Zustand der Monarchen steht in `seats`. timescale > 0 (nur Dev-Mode) steht
 // als `devTimescale` darin, daneben die Dev-Pause als `devPaused` (B-231).
 func stateOf(w *sim.World, timescale int, paused bool) map[string]any {
@@ -163,10 +164,31 @@ func stateOf(w *sim.World, timescale int, paused bool) map[string]any {
 		delete(p.(map[string]any), "free")
 	}
 	addActions(w, s["players"].([]any))
+	addPayable(w, s)
+	filterSites(w, s)
 	s["depth"] = w.Biome.Depth
 	if timescale > 0 {
 		s["devTimescale"] = timescale
 		s["devPaused"] = paused // immer mitsenden: das Delta kennt kein Entfernen von Feldern
 	}
 	return s
+}
+
+// filterSites setzt je Bauplatz die Platz-Stufe `hubLevel` (sim.SiteHubLevel) und lässt unbezahlte Plätze über der
+// nächsten Hub-Stufe weg (sim.SiteVisible; B-208, B-408, W11.2). s["sites"] steht in der Reihenfolge von w.Sites.
+func filterSites(w *sim.World, s map[string]any) {
+	raw, _ := s["sites"].([]any)
+	if raw == nil || len(raw) != len(w.Sites) { // Liste und Welt laufen parallel; sonst nichts filtern statt falsch zuordnen
+		return
+	}
+	out := make([]any, 0, len(raw))
+	for i, e := range raw {
+		site := w.Sites[i]
+		if !sim.SiteVisible(w, site) {
+			continue
+		}
+		e.(map[string]any)["hubLevel"] = sim.SiteHubLevel(w, site)
+		out = append(out, e)
+	}
+	s["sites"] = out
 }

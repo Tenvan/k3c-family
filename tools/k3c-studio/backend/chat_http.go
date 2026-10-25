@@ -118,12 +118,13 @@ type chatEnd struct {
 }
 
 type chatRequest struct {
-	Chat     string `json:"chat"`
-	Text     string `json:"text"`
-	Provider string `json:"provider"` // leer = Standard; erlaubt laut chat_options.go
-	Model    string `json:"model"`
-	Effort   string `json:"effort"`
-	Task     string `json:"task"` // leer = freier Chat, chatTaskWorld = Welt-Auftrag
+	Chat     string         `json:"chat"`
+	Text     string         `json:"text"`
+	Provider string         `json:"provider"` // leer = Standard; erlaubt laut chat_options.go
+	Model    string         `json:"model"`
+	Effort   string         `json:"effort"`
+	Task     string         `json:"task"`              // leer = freier Chat, chatTaskWorld = Welt-Auftrag, chatTaskAssign = Zuordnung
+	Context  *assignContext `json:"kontext,omitempty"` // nur bei chatTaskAssign
 }
 
 func (r chatRequest) options() chatOptions {
@@ -132,6 +133,17 @@ func (r chatRequest) options() chatOptions {
 		o.instruction = worldInstruction()
 	}
 	return o
+}
+
+// taskOptions sind die Optionen samt Instruktion des Auftrags; die Zuordnung braucht dafür das Repo.
+func (a *App) taskOptions(req chatRequest) (chatOptions, error) {
+	opts := req.options()
+	if req.Task != chatTaskAssign {
+		return opts, nil
+	}
+	var err error
+	opts.instruction, err = a.assignInstruction(*req.Context)
+	return opts, err
 }
 
 func readChatRequest(r *http.Request) (chatRequest, error) {
@@ -145,8 +157,13 @@ func readChatRequest(r *http.Request) (chatRequest, error) {
 	if req.Chat != "" && !chatIDPattern.MatchString(req.Chat) {
 		return req, errors.New("ungültige Chat-id (nur Kleinbuchstaben, Ziffern, Bindestrich)")
 	}
-	if req.Task != "" && req.Task != chatTaskWorld {
-		return req, fmt.Errorf("unbekannte Auftragsart %q (erlaubt: leer oder %q)", req.Task, chatTaskWorld)
+	if req.Task != "" && req.Task != chatTaskWorld && req.Task != chatTaskAssign {
+		return req, fmt.Errorf("unbekannte Auftragsart %q (erlaubt: leer, %q oder %q)", req.Task, chatTaskWorld, chatTaskAssign)
+	}
+	if req.Task == chatTaskAssign {
+		if err := req.Context.validate(); err != nil {
+			return req, err
+		}
 	}
 	return req, req.options().validate()
 }
@@ -160,6 +177,11 @@ func (a *App) chatSend(w http.ResponseWriter, r *http.Request) {
 	req, err := readChatRequest(r)
 	if err != nil {
 		fail(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	opts, err := a.taskOptions(req)
+	if err != nil {
+		fail(w, http.StatusUnprocessableEntity, err.Error())
 		return
 	}
 	fl, ok := w.(http.Flusher)
@@ -191,10 +213,12 @@ func (a *App) chatSend(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Cache-Control", "no-store")
 	sendEvent(w, fl, "start", map[string]string{"chat": log.ID})
 	asked := h.store.now()
-	opts := req.options()
 	out := h.cli.run(ctx, chatPrompt(log.Messages, req.Text), opts, func(s string) {
 		sendEvent(w, fl, "chunk", map[string]string{"text": s})
 	})
+	if req.Task == chatTaskAssign && out.Status == chatDone {
+		a.rememberPicks(*req.Context, out.Text) // Karten aus der Antwort; der Chat schreibt nichts
+	}
 	sendEvent(w, fl, "done", h.record(&log, req.Text, opts, asked, out))
 }
 

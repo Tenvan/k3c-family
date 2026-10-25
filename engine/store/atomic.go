@@ -76,6 +76,20 @@ func Rename(oldPath, newPath string) error {
 	return err
 }
 
+// readFile ist os.ReadFile; die Naht für den Test.
+var readFile = os.ReadFile
+
+// readRetry liest path wie os.ReadFile. Unter Windows hält ein Virenscanner eine gerade umbenannte Datei kurz offen
+// (B-274); das Lesen wird dann wie Rename begrenzt wiederholt.
+func readRetry(path string) ([]byte, error) {
+	data, err := readFile(path)
+	for i := 1; i < renameTries && retryable(err); i++ {
+		time.Sleep(renamePause)
+		data, err = readFile(path)
+	}
+	return data, err
+}
+
 func retryable(err error) bool {
 	var errno syscall.Errno
 	return runtime.GOOS == "windows" && errors.As(err, &errno) && (errno == errAccessDenied || errno == errSharingViolation)

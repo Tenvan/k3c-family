@@ -114,6 +114,21 @@ describe('Chat-Adapter: Auswahl, geladener Chat, Fehlertext (B-515)', () => {
     expect(seen).toEqual([{ ...choice('', 'opus', ''), task: 'welt' }, choice('', 'opus', '')]);
   });
 
+  it('schickt beim Auftrag „zuordnung“ den Seitenkontext mit, sonst nie (B-600)', async () => {
+    const seen: ChatSendOptions[] = [];
+    const stream: ChatStream = async function* (_c, _t, options) {
+      seen.push(options);
+      yield { kind: 'done', status: 'fertig' };
+    };
+    const kontext = { seite: 'sound' as const, slot: 'sfx:coin', filter: '' };
+    let task: ChatTask | undefined = 'zuordnung';
+    const adapter = createChatAdapter(stream, { options: () => choice('', '', ''), task: () => task, context: () => kontext });
+    await collect(adapter, 'Vorschlag?');
+    task = 'welt';
+    await collect(adapter, 'Welt');
+    expect(seen).toEqual([{ ...choice('', '', ''), task: 'zuordnung', kontext }, { ...choice('', '', ''), task: 'welt' }]);
+  });
+
   it('setzt einen geladenen Chat fort und meldet Kennung und Ende', async () => {
     const seen: { chat: string; text: string }[] = [];
     const calls: string[] = [];
