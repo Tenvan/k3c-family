@@ -1,14 +1,14 @@
 # NT1 · SRV · Stabile Tests, Warteschlange und Snapshot-Budget
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** LST
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-274, B-284, B-286, B-280, B-190, B-263
-- **Start-Commit:** –
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt)
 
 ## Ausgangslage
 
@@ -56,6 +56,12 @@ Ursache liegt außerhalb SRV → Ticket, Test bleibt aktiv.
 keine
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| NT1.1 | `NT1.1-flakige-tests.md` | Umsetzung | autonom | in Arbeit |
+| NT1.2 | `NT1.2-warteschlange-budget.md` | Umsetzung | autonom | offen |
+| NT1.3 | `NT1.3-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
