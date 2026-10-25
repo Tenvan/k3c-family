@@ -57,7 +57,7 @@ Nacht am Lagerfeuer → Umgebung im Radius heller, außerhalb dunkel. Welt-Betra
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | W13.1 | `W13.1-nacht-licht-client.md` | Umsetzung | autonom | fertig |
-| W13.2 | `W13.2-welt-betrachter-dawn.md` | Umsetzung | autonom | offen |
+| W13.2 | `W13.2-welt-betrachter-dawn.md` | Umsetzung | autonom | fertig |
 | W13.3 | `W13.3-review.md` | Review | autonom | offen |
 | W13.4 | `W13.4-abnahme-tv.md` | Workshop | Mensch | offen |
 

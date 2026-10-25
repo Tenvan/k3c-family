@@ -7,6 +7,7 @@ import { backend } from '../api';
 import { optionTexts } from '../../../../webkit/testing/options';
 import { pickOption } from '../../../../webkit/testing/select';
 import { LivePreview } from './LivePreview';
+import { NIGHT_BRIGHTNESS } from './timeOfDay';
 
 // B-460/AC-05 im DOM: Tageszeit mit vier Einträgen und Fortschritt gehen als Sim-Phase an die Vorschau, die Helligkeit
 // folgt daylight(), Hintergrund-Schichten sind schaltbar (Biom ohne Schichten ausgegraut). Die Phaser-Bühne ersetzt eine Attrappe.
@@ -75,7 +76,7 @@ describe('Tageszeit in der Live-Vorschau (B-460/AC-05)', () => {
     await chooseTime(h, 'Dämmerung');
     await setProgress(h, 0.5);
     expect(spy).toHaveBeenLastCalledWith(expect.objectContaining({ phase: 'dusk', progress: 0.5 }));
-    expect(lastLook().brightness).toBeCloseTo(0.45 + 0.55 * 0.5, 10);
+    expect(lastLook().brightness).toBeCloseTo(NIGHT_BRIGHTNESS + (1 - NIGHT_BRIGHTNESS) * 0.5, 10);
   });
 
   it('Nacht: tiefste Helligkeit', async () => {
@@ -83,7 +84,7 @@ describe('Tageszeit in der Live-Vorschau (B-460/AC-05)', () => {
     const h = await mount();
     await chooseTime(h, 'Nacht');
     expect(spy).toHaveBeenLastCalledWith(expect.objectContaining({ phase: 'night', progress: 0 }));
-    expect(lastLook().brightness).toBeCloseTo(0.45, 10);
+    expect(lastLook().brightness).toBeCloseTo(NIGHT_BRIGHTNESS, 10);
   });
 
   it('Morgengrauen: Sim-Phase dawn mit Fortschritt p (B-470), Helligkeit nach daylight() gleich p', async () => {
@@ -94,7 +95,7 @@ describe('Tageszeit in der Live-Vorschau (B-460/AC-05)', () => {
     const args = spy.mock.calls.at(-1)![0];
     expect(args.phase).toBe('dawn');
     expect(args.progress).toBeCloseTo(0.5, 10);
-    expect(lastLook().brightness).toBeCloseTo(0.45 + 0.55 * 0.5, 10);
+    expect(lastLook().brightness).toBeCloseTo(NIGHT_BRIGHTNESS + (1 - NIGHT_BRIGHTNESS) * 0.5, 10);
   });
 });
 
