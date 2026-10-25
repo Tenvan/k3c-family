@@ -24,6 +24,7 @@ import { joinHintDevices } from './hud/joinHint';
 import { stepControlsHint, type ControlsTrack } from './hud/controlsHint';
 import { stepGoldFlash, type GoldFlash } from './hud/goldFlash';
 import { enqueueBanner } from './hud/bannerQueue';
+import { stepSaved } from './hud/savedHint';
 import { loadSettings } from '../core/settings';
 import { GamepadInput, type PlayerInput } from '../input/playerInput';
 import { TouchInput } from '../input/touchInput';
@@ -76,6 +77,8 @@ export class HudScene extends Phaser.Scene {
   private animsPaused = false;
   private bannerQueue: string[] = [];
   private bannerLeft = 0;
+  /** Restzeit der Anzeige „gesichert“ nach dem Ereignis saved (B-186), in Sekunden */
+  private savedLeft = 0;
 
   constructor() {
     super('hud');
@@ -90,6 +93,7 @@ export class HudScene extends Phaser.Scene {
     this.bannerQueue = [];
     this.controlsTrack = null;
     this.bannerLeft = 0;
+    this.savedLeft = 0;
     this.radar = new RadarLayer(this);
     this.skills = new SkillMenuLayer(this);
     this.actions = new ActionOverlay(this);
@@ -220,13 +224,15 @@ export class HudScene extends Phaser.Scene {
     const hub = hubText(world, compact);
     const lines = [stock.join('  ·  '), ...(hub ? [hub] : []), ...buergerLines(world, compact)];
     this.shared.setText(lines.join('\n'));
-    this.clock.setText(clockText(world));
+    this.clock.setText(clockText(world) + (this.savedLeft > 0 ? t('hud.saved') : ''));
     const enemies = world.enemies.length + world.spawnQueue.length;
     this.fight.setText(enemies > 0 ? t('hud.wave', { wave: world.wave, n: enemies }) : '');
   }
 
   private showBanner(game: GameScene, deltaMs: number): void {
-    for (const e of game.pendingEvents.splice(0)) {
+    const events = game.pendingEvents.splice(0);
+    this.savedLeft = stepSaved(this.savedLeft, events, deltaMs / 1000);
+    for (const e of events) {
       const text = eventText(e);
       if (text) this.bannerQueue = enqueueBanner(this.bannerQueue, this.banner.visible ? this.banner.text : null, text);
     }
@@ -307,7 +313,8 @@ function deviceOf(input: PlayerInput | null | undefined, keyboard2: PlayerInput)
 
 function clockText(w: World): string {
   const left = formatTime(w.cycle.secondsLeft / w.cycleSpeed);
-  const key = w.cycle.phase === 'day' ? 'hud.clockDay' : w.cycle.phase === 'dusk' ? 'hud.clockDusk' : 'hud.clockNight';
+  const keys = { day: 'hud.clockDay', dusk: 'hud.clockDusk', dawn: 'hud.clockDawn' } as const;
+  const key = keys[w.cycle.phase as keyof typeof keys] ?? 'hud.clockNight';
   let time = t(key, { day: w.cycle.day, left });
   if (w.aggression !== null) time += t('hud.aggression', { pct: Math.floor(w.aggression) });
   return time;

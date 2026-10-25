@@ -35,7 +35,7 @@ func TestEconomyInselMitLagerAusbauUndNacht(t *testing.T) {
 	}
 	up, _ := got["hubUpgrade"].(map[string]any)
 	mat, _ := up["material"].(map[string]any)
-	if up["gold"] != 50.0 || up["paid"] != 50.0 || up["state"] != "waitingMaterial" || mat["stone"] != 100.0 {
+	if up["gold"] != 13.0 || up["paid"] != 13.0 || up["state"] != "waitingMaterial" || mat["stone"] != 25.0 || up["steps"] != 3.0 {
 		t.Errorf("hubUpgrade: %v", up)
 	}
 }
@@ -51,11 +51,11 @@ func TestEconomyOhneInselUndStufe5(t *testing.T) {
 	if _, ok := got["danger"]; ok {
 		t.Errorf("am Tag ohne Gegner keine Gefahr: %v", got)
 	}
-	if up, _ := got["hubUpgrade"].(map[string]any); up["gold"] != 50.0 || up["paid"] != 0.0 || up["state"] != nil {
+	if up, _ := got["hubUpgrade"].(map[string]any); up["gold"] != 13.0 || up["paid"] != 0.0 || up["state"] != nil || got["hubStep"] != 1.0 {
 		t.Errorf("Stufe 1 ohne Zahlung: %v", up)
 	}
 	w.HubLevel = len(hub.Levels)
-	if got := economyJSON(t, w); got["hubLevel"] != 5.0 || got["hubUpgrade"] != nil {
+	if got := economyJSON(t, w); got["hubLevel"] != 5.0 || got["hubUpgrade"] != nil || got["hubStep"] != nil {
 		t.Errorf("Stufe 5 ohne Kosten: %v", got)
 	}
 }

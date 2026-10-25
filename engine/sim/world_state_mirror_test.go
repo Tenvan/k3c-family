@@ -63,7 +63,7 @@ func TestMirrorEvent(t *testing.T) {
 		t.Fatalf("Vollmond: %+v, Zyklus %+v", w.NightEvents, w.Cycle)
 	}
 	left := w.NightEvents[0].SecondsLeft
-	runIsland(isl, nil, 3)
+	runIsland(isl, nil, 1) // Nacht 4 min bei Tempo 60: 4 s Spielzeit
 	if w.NightEvents[0].SecondsLeft >= left || !strings.Contains(mirrorJSON(t, w), `"nightEvents":[{"id":"fullMoon","secondsLeft":`) {
 		t.Errorf("Restzeit sinkt nicht: %v -> %v", left, w.NightEvents[0].SecondsLeft)
 	}

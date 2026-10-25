@@ -85,7 +85,7 @@ Der Hub hat **Ausbaustufen 1 bis 5** (Holz, Stein, Kupfer, Eisen, Kristall); jed
 
 | Stufe | Biom | Länge (Units) | Primär-Ressource | Zyklus | Gegner |
 |---|---|---|---|---|---|
-| 0 | Oberwelt (Wald) | 900–1100 | Holz | Tag 6, Dämmerung 2, Nacht 4, Morgengrauen 2 min (Startwert, Q65; heute 10/1/5 min bis B-470) | Greed, Goblin, Goblin Archer (Elite), Wolf (nachts) |
+| 0 | Oberwelt (Wald) | 900–1100 | Holz | Tag 6, Dämmerung 2, Nacht 4, Morgengrauen 2 min (Startwert, Q65) | Greed, Goblin, Goblin Archer (Elite), Wolf (nachts) |
 | 1 | Höhle | 700–900 | Stein | Aggressionspool | Fledermaus, Höhlentroll (Elite), Skelett (nachts) |
 | 2 | Mine | 550–700 | Kupfer | Aggressionspool | Zombie, Rattenschwarm, Minengeist (Elite) |
 

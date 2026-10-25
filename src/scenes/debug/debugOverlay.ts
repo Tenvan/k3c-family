@@ -39,6 +39,8 @@ export interface DebugInput {
   now: number;
   /** Verzögerung der Zeitleiste in ms (B-277); fehlt = keine Zeile */
   delayMs?: number;
+  /** Dauer des letzten Frames in ms (`game.loop.delta`, PF1.1: Messung an der Xbox); fehlt = keine Zeile */
+  frameMs?: number;
   /** Versionszeile `Client … · Server …` (src/core/version.ts); fehlt = keine Zeile */
   version?: string;
 }
@@ -88,7 +90,7 @@ export function debugLines(i: DebugInput): string[] {
     if (world.devTimescale !== undefined) lines.push(world.devPaused ? 'Raum angehalten' : `Zeit ${world.devTimescale}×`);
   }
   if (c.errorCode === 'forbidden') lines.push(`Dev abgelehnt: ${c.notice ?? ''}`);
-  lines.push(`${num(i.fps)} FPS`);
+  lines.push(i.frameMs === undefined ? `${num(i.fps)} FPS` : `${num(i.fps)} FPS · Frame ${i.frameMs.toFixed(1)} ms`);
   if (i.version) lines.push(i.version);
   return lines;
 }

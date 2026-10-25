@@ -46,26 +46,21 @@ func runUntil(w *World, seconds float64, done func() bool) float64 {
 	return -1
 }
 
+// GEB17.4 (B-592/AC-02): Jede Hub-Stufe wird in ihren Ausbauschritten bezahlt und gebaut, Kosten samt Material-Tor
+// und Bauzeit aus data/hub.json; erst der letzte Schritt hebt die Hub-Stufe.
 func TestHubAusbauStufe2Bis5(t *testing.T) {
 	w := dayWorld(t)
 	p := AddPlayer(w)
-	const spare = 7
 	for n := 2; n <= len(hub.Levels); n++ {
-		lv := hub.Levels[n-1]
-		*w.Stock = materialOf(lv.Cost)
-		w.Stock.Wood += spare
-		p.Gold = lv.Cost.Gold
-		seconds := 1.2*float64(lv.Cost.Gold)*economy.PayIntervalSeconds + 5 // Takt auf ganze Ticks gerundet
-		if !payAt(w, []*Player{p}, w.Castle.X, seconds, func() bool { return w.hubSite.Upgrade == "waitingWorker" }) {
-			t.Fatalf("Stufe %d: Ausbau nicht bezahlt: %+v, Vorrat %+v", n, w.hubSite, *w.Stock)
+		steps := len(hub.Levels[n-1].Steps)
+		for step := 1; step <= steps; step++ {
+			if w.HubLevel != n-1 || w.HubStep != step {
+				t.Fatalf("vor Stufe %d Schritt %d: Hub-Stufe %d Schritt %d", n, step, w.HubLevel, w.HubStep)
+			}
+			buildHubStep(t, w, p, hubStepOf(hub.Levels[n-1], step))
 		}
-		if p.Gold != 0 || *w.Stock != (Stock{Wood: spare}) {
-			t.Errorf("Stufe %d: Gold übrig %d, Vorrat %+v; erwartet genau %+v abgebucht", n, p.Gold, *w.Stock, lv.Cost)
-		}
-		w.Troops[0].X = w.Castle.X // ohne Weg: gemessen wird nur die Bauzeit
-		took := runUntil(w, 2*lv.BuildSeconds, func() bool { return w.HubLevel == n })
-		if took < lv.BuildSeconds-dt || took > lv.BuildSeconds+0.5 {
-			t.Errorf("Stufe %d: Bau dauerte %.2f s, laut Daten %v s", n, took, lv.BuildSeconds)
+		if w.HubLevel != n || w.HubStep != 1 {
+			t.Fatalf("nach Stufe %d: Hub-Stufe %d Schritt %d", n, w.HubLevel, w.HubStep)
 		}
 	}
 	if w.hubSite.State != "built" || upgradePayable(w, w.hubSite) {
@@ -73,18 +68,41 @@ func TestHubAusbauStufe2Bis5(t *testing.T) {
 	}
 }
 
+// buildHubStep zahlt den Ausbauschritt st genau (Gold von p, Material im Vorrat) und lässt ihn bauen; die Bauzeit muss
+// der aus den Daten entsprechen.
+func buildHubStep(t *testing.T, w *World, p *Player, st LevelData) {
+	t.Helper()
+	const spare = 7
+	*w.Stock = materialOf(st.Cost)
+	w.Stock.Wood += spare
+	p.Gold = st.Cost.Gold
+	seconds := 1.2*float64(st.Cost.Gold)*economy.PayIntervalSeconds + 5 // Takt auf ganze Ticks gerundet
+	if !payAt(w, []*Player{p}, w.Castle.X, seconds, func() bool { return w.hubSite.Upgrade == "waitingWorker" }) {
+		t.Fatalf("Schritt nicht bezahlt: %+v, Vorrat %+v", w.hubSite, *w.Stock)
+	}
+	if p.Gold != 0 || *w.Stock != (Stock{Wood: spare}) {
+		t.Errorf("Gold übrig %d, Vorrat %+v; erwartet genau %+v abgebucht", p.Gold, *w.Stock, st.Cost)
+	}
+	level, step := w.HubLevel, w.HubStep
+	w.Troops[0].X = w.Castle.X // ohne Weg: gemessen wird nur die Bauzeit
+	took := runUntil(w, 2*st.BuildSeconds+1, func() bool { return w.HubLevel != level || w.HubStep != step })
+	if took < st.BuildSeconds-dt || took > st.BuildSeconds+0.5 {
+		t.Errorf("Schritt dauerte %.2f s, laut Daten %v s", took, st.BuildSeconds)
+	}
+}
+
 func TestHubAusbauWartetAufMaterial(t *testing.T) {
 	w := dayWorld(t)
 	p := AddPlayer(w)
-	lv := hub.Levels[1]
+	lv := hubStepOf(hub.Levels[1], 1)
 	p.Gold = lv.Cost.Gold
 	payAt(w, []*Player{p}, w.Castle.X, 30, func() bool { return w.hubSite.Upgrade != "" })
 	run(w, 5)
-	if w.hubSite.Upgrade != "waitingMaterial" || w.HubLevel != 1 {
-		t.Fatalf("ohne Material: %+v, Hub-Stufe %d", w.hubSite, w.HubLevel)
+	if w.hubSite.Upgrade != "waitingMaterial" || w.HubStep != 1 {
+		t.Fatalf("ohne Material: %+v, Schritt %d", w.hubSite, w.HubStep)
 	}
 	*w.Stock = materialOf(lv.Cost)
-	if runUntil(w, 2*lv.BuildSeconds+1, func() bool { return w.HubLevel == 2 }) < 0 {
+	if runUntil(w, 2*lv.BuildSeconds+1, func() bool { return w.HubStep == 2 }) < 0 {
 		t.Fatalf("mit Material nicht ausgebaut: %+v", w.hubSite)
 	}
 }
@@ -93,7 +111,7 @@ func TestHubAusbauWartetAufMaterial(t *testing.T) {
 func TestHubAusbauNachDerGefahr(t *testing.T) {
 	w := dayWorld(t)
 	p := AddPlayer(w)
-	lv := hub.Levels[1]
+	lv := hubStepOf(hub.Levels[1], 1)
 	*w.Stock = materialOf(lv.Cost)
 	p.Gold = lv.Cost.Gold
 	e := spawnEnemy(w, "goblin", w.WidthUnits-1)
@@ -102,11 +120,11 @@ func TestHubAusbauNachDerGefahr(t *testing.T) {
 		t.Fatalf("bei Gefahr nicht bezahlbar: %+v", w.hubSite)
 	}
 	run(w, 2*lv.BuildSeconds)
-	if w.HubLevel != 1 || w.hubSite.BuildProgress != 0 {
-		t.Fatalf("bei Gefahr gebaut: Hub-Stufe %d, Fortschritt %v", w.HubLevel, w.hubSite.BuildProgress)
+	if w.HubStep != 1 || w.hubSite.BuildProgress != 0 {
+		t.Fatalf("bei Gefahr gebaut: Schritt %d, Fortschritt %v", w.HubStep, w.hubSite.BuildProgress)
 	}
 	w.Enemies = []*Enemy{}
-	if runUntil(w, 2*lv.BuildSeconds+1, func() bool { return w.HubLevel == 2 }) < 0 {
+	if runUntil(w, 2*lv.BuildSeconds+1, func() bool { return w.HubStep == 2 }) < 0 {
 		t.Fatal("nach der Gefahr nicht ausgebaut")
 	}
 }
@@ -114,7 +132,7 @@ func TestHubAusbauNachDerGefahr(t *testing.T) {
 func TestHubAusbauZweiSpielerZahlenGemeinsam(t *testing.T) {
 	w := dayWorld(t)
 	p0, p1 := AddPlayer(w), AddPlayer(w)
-	lv := hub.Levels[1]
+	lv := hubStepOf(hub.Levels[1], 1)
 	half := lv.Cost.Gold / 2
 	p0.Gold, p1.Gold = half, lv.Cost.Gold-half
 	if !payAt(w, []*Player{p0, p1}, w.Castle.X, 30, func() bool { return w.hubSite.Upgrade != "" }) {

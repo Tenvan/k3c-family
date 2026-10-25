@@ -67,7 +67,7 @@ func TestWorldPreviewGebaeudeAuswahlUndFehler(t *testing.T) {
 		t.Errorf("Plätze %d, erwartet %d", got, len(sites)-1)
 	}
 	for name, mutate := range map[string]func(*WorldPreviewArgs){
-		"dawn":          func(x *WorldPreviewArgs) { x.Phase = "dawn" },
+		"mittag":        func(x *WorldPreviewArgs) { x.Phase = "mittag" },
 		"Fortschritt 1": func(x *WorldPreviewArgs) { x.Progress = 1 },
 		"Hub-Stufe 99":  func(x *WorldPreviewArgs) { x.HubLevel = 99 },
 		"Biom":          func(x *WorldPreviewArgs) { x.Source.Biome = "nirgendwo" },

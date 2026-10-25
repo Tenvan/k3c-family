@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
-import { GAME_WIDTH, GROUND_Y } from '../../core/constants';
-import { WORLD_TEXTURES, biomeBackground, objectSprite, type ObjectSprite } from './worldSprites';
+import { GROUND_Y } from '../../core/constants';
+import { BACKGROUND_ZOOM, WORLD_TEXTURES, backgroundFile, objectSprite, planKeys, type BackgroundLayerPlan, type ObjectSprite } from './worldSprites';
 
 /** Lädt, bereitet vor und setzt die Welt-Grafiken aus worldSprites.ts (GR3.2). Zeichnet nur. */
 
@@ -36,15 +36,41 @@ export function objectImage(scene: Phaser.Scene, id: string, x: number, y: numbe
 }
 
 /**
- * Parallax-Ebenen eines Bioms als TileSprites, Unterkante auf dem Boden. Breit genug für die ganze Welt beim jeweiligen
- * Scroll-Faktor; jede Kamera verschiebt sie selbst. `null` = Biom ohne Zuordnung oder Textur fehlt → Silhouetten.
+ * Lädt die Hintergrund-Bilder eines Plans, die noch fehlen (nur die Varianten dieser Stufe, GEB18), und ruft danach `done`;
+ * sind alle schon da, sofort. Eine Datei, die nicht lädt, bleibt weg (Rückfall Variante 1 in `backgroundLayers`).
  */
-export function backgroundLayers(scene: Phaser.Scene, biome: string, widthPx: number): Phaser.GameObjects.TileSprite[] | null {
-  const bg = biomeBackground(biome);
-  if (!bg || !bg.layers.every((l) => scene.textures.exists(l.key))) return null;
-  return bg.layers.map(({ key, scroll }) => {
-    const frame = scene.textures.getFrame(key);
-    const width = Math.ceil((widthPx * scroll + GAME_WIDTH * 2) / bg.zoom);
-    return scene.add.tileSprite(0, GROUND_Y, width, frame.height, key).setOrigin(0, 1).setScale(bg.zoom).setScrollFactor(scroll, 1);
+export function loadBackground(scene: Phaser.Scene, plan: readonly BackgroundLayerPlan[], done: () => void): void {
+  const missing = planKeys(plan).filter((key) => !scene.textures.exists(key));
+  if (missing.length === 0) return done();
+  for (const key of missing) {
+    const f = backgroundFile(key);
+    if (f) scene.load.image(key, `grafik/${f.file}`);
+  }
+  scene.load.once(Phaser.Loader.Events.COMPLETE, () => {
+    for (const key of missing) if (scene.textures.exists(key)) scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
+    done();
+  });
+  scene.load.start();
+}
+
+/** Eine Parallax-Schicht aus Einzelbildern: je Kachel ein Bild, Unterkante auf `y` (Boden oder Spiegelung); der Container heißt `bg:<biom>:<n>` */
+export interface BackgroundView {
+  scroll: number;
+  /** Textur und x je Kachel, wie gezeichnet (Rückfall schon aufgelöst) */
+  parts: { key: string; x: number }[];
+  container: Phaser.GameObjects.Container;
+}
+
+/**
+ * Parallax-Ebenen eines Plans als Container (Scroll-Faktor je Schicht, Maßstab `BACKGROUND_ZOOM`), Unterkante auf dem Boden.
+ * Fehlt die Textur einer Variante, nimmt die Kachel Variante 1; fehlt auch die → `null`, dann bleiben die Silhouetten.
+ */
+export function backgroundLayers(scene: Phaser.Scene, plan: readonly BackgroundLayerPlan[]): BackgroundView[] | null {
+  const resolved = plan.map((l) => ({ scroll: l.scroll, parts: l.parts.map((p) => ({ x: p.x, key: scene.textures.exists(p.key) ? p.key : p.key.replace(/:v\d+$/, ':v1') })) }));
+  if (!resolved.every((l) => l.parts.every((p) => scene.textures.exists(p.key)))) return null;
+  return resolved.map(({ scroll, parts }, i) => {
+    const images = parts.map((p) => scene.add.image(p.x, 0, p.key).setOrigin(0, 1).setScale(BACKGROUND_ZOOM));
+    const name = parts[0]?.key.replace(/:[1-3]:v\d+$/, `:${i + 1}`) ?? '';
+    return { scroll, parts, container: scene.add.container(0, GROUND_Y, images).setScrollFactor(scroll, 1).setName(name) };
   });
 }

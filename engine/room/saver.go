@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"sync"
 	"time"
+
+	"k3c/engine/sim"
 )
 
 // Speichern (docs/protocol.md › Spielstand, B-276): Unter der Raum-Sperre wird der Spielstand nur kodiert, die Datei
@@ -18,10 +20,46 @@ type saver struct {
 	pending []byte         // neuester Stand, nil = keiner
 	tick    int
 	busy    bool
+	written bool // seit dem letzten Tick gelungen geschrieben: der nächste Zustand trägt das Ereignis saved (B-186)
+	due     int  // Ticks seit dem letzten Speichern (Takt SaveEvery); nur unter der Raum-Sperre
+}
+
+// saveTicks ist SaveEvery in Raum-Ticks.
+const saveTicks = int(SaveEvery * TickHz / time.Second)
+
+// autosave speichert im Takt SaveEvery, bei Tagesanbruch und nach einem Stufen- oder Inselwechsel (B-186, im Tick).
+func (r *Room) autosave(travelled, dawn bool) {
+	r.saves.due++
+	if travelled || dawn || r.saves.due >= saveTicks {
+		r.save()
+	}
+}
+
+// pushStatesSaved schickt die Zustände wie pushStates. Wurde seit dem letzten Tick ein Spielstand geschrieben, trägt
+// jede Stufe dabei das Ereignis saved (docs/protocol.md › Ereignisse); danach verschwindet es wieder aus der Welt, denn
+// es ist kein Ereignis der Simulation (Pause und Golden-Hash bleiben unberührt).
+func (r *Room) pushStatesSaved() bool {
+	s := &r.saves
+	s.mu.Lock()
+	written := s.written
+	s.written = false
+	s.mu.Unlock()
+	if !written || r.isl.Over { // nach Game Over meldet der Raum kein „gesichert“ mehr (B-344), auch für ältere Stände
+		return r.pushStates()
+	}
+	for i, w := range r.isl.Stages {
+		w.Events = append(w.Events, sim.Event{"type": "saved", "stage": i})
+	}
+	sent := r.pushStates()
+	for _, w := range r.isl.Stages {
+		w.Events = w.Events[:len(w.Events)-1]
+	}
+	return sent
 }
 
 // save kodiert den Spielstand und lässt ihn außerhalb der Sperre schreiben (im Takt, beim Verlassen und Trennen).
 func (r *Room) save() {
+	r.saves.due = 0
 	if r.gameOver() {
 		return
 	}
@@ -62,7 +100,11 @@ func (r *Room) writeSaves() {
 			return
 		}
 		s.mu.Unlock()
-		r.write(data, tick)
+		if r.write(data, tick) {
+			s.mu.Lock()
+			s.written = true
+			s.mu.Unlock()
+		}
 	}
 }
 
@@ -93,8 +135,8 @@ func (r *Room) gameOver() bool {
 	return true
 }
 
-// write schreibt einen kodierten Stand und meldet das Ergebnis im Log.
-func (r *Room) write(data []byte, tick int) {
+// write schreibt einen kodierten Stand und meldet das Ergebnis im Log. true: geschrieben.
+func (r *Room) write(data []byte, tick int) bool {
 	start := time.Now() // Wanduhr nur fürs Log, nicht für den Spielverlauf
 	backup, err := r.m.Store.Store(r.Name, data)
 	took := time.Since(start)
@@ -102,13 +144,14 @@ func (r *Room) write(data []byte, tick int) {
 	ms := took.Milliseconds()
 	if err != nil {
 		r.log().Error("💥 Spielstand nicht gespeichert", "err", err, "ms", ms)
-		return
+		return false
 	}
 	if ms > slowSaveMs {
 		r.log().Warn("🐢 Spielstand gespeichert, langsamer als ein Tick", "tick", tick, "sicherung", backup, "ms", ms)
-		return
+		return true
 	}
 	r.log().Debug("💾 Spielstand gespeichert", "tick", tick, "sicherung", backup, "ms", ms)
+	return true
 }
 
 // slowSaveMs ist der Zielwert einer Speicherung (B-147, S2.2): ein Tick bei 30 Hz.

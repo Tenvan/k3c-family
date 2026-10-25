@@ -43,8 +43,9 @@ export function waitInfo(state: WaitState, danger: boolean | undefined, resource
     const key: TextKey = danger ? (compact ? 'wait.dangerShort' : 'wait.danger') : compact ? 'wait.workerShort' : 'wait.worker';
     return { reason, icon: `wait-${reason}`, text: t(key) };
   }
-  if (state !== 'waitingMaterial') return null;
   const names = resources.map(resName).join(', ');
+  if (state === 'waitingNextIsland') return { reason: 'material', icon: 'wait-material', text: t(compact ? 'wait.nextIslandShort' : 'wait.nextIsland', { res: names }) };
+  if (state !== 'waitingMaterial') return null;
   const text = compact ? t('wait.materialShort') : names ? t('wait.material', { res: names }) : t('wait.materialAny');
   return { reason: 'material', icon: 'wait-material', text };
 }
@@ -58,9 +59,15 @@ export function siteWait(site: Pick<Site, 'kind' | 'state' | 'upgrade' | 'level'
 }
 
 /** Wartegrund des Hub-Ausbaus (`hubUpgrade.state`). */
-export function hubWait(world: Pick<World, 'hubUpgrade' | 'danger'>, compact: boolean): WaitInfo | null {
+export function hubWait(world: Pick<World, 'hubUpgrade' | 'danger'> & { stock?: World['stock'] }, compact: boolean): WaitInfo | null {
   const up = world.hubUpgrade;
-  return up ? waitInfo(up.state, world.danger, materialsOf(up.material), compact) : null;
+  if (!up) return null;
+  // Material-Tor: nur nennen, was im Vorrat noch fehlt (sonst stünde „Stein, Kupfer“, obwohl nur Kupfer fehlt; Review GEB17)
+  const stock = (world.stock ?? {}) as CostMap;
+  const need = (up.material ?? {}) as CostMap;
+  const names = materialsOf(up.material);
+  const missing = up.state === 'waitingNextIsland' ? names.filter((r) => (stock[r] ?? 0) < (need[r] ?? 0)) : names;
+  return waitInfo(up.state, world.danger, missing.length > 0 ? missing : names, compact);
 }
 
 /**
@@ -89,10 +96,26 @@ function hubCost(up: NonNullable<World['hubUpgrade']>): string {
   return parts.join(', ');
 }
 
-/** Hub-Stufe mit Kosten der nächsten Stufe; höchste Stufe (kein `hubUpgrade`) ohne Kosten; ohne `hubLevel` → null. */
-export function hubText(world: Pick<World, 'hubLevel' | 'hubUpgrade'>, compact: boolean): string | null {
+/** Ausbauschritt als Zahlen (B-592), nur wenn der Server `hubStep` und `hubUpgrade.steps` meldet. */
+function hubStepOf(world: Partial<Pick<World, 'hubStep' | 'hubUpgrade'>>): { step: number; steps: number } | null {
+  const step = world.hubStep;
+  const steps = world.hubUpgrade?.steps;
+  return step !== undefined && steps !== undefined ? { step, steps } : null;
+}
+
+/** Titel des Ausbau-Schilds an der Burg: „Ausbau 2/3“ mit Schritt (B-592), sonst „Ausbauen“. */
+export function hubOfferTitle(world: Partial<Pick<World, 'hubStep' | 'hubUpgrade'>>): string {
+  const s = hubStepOf(world);
+  return s ? t('hub.step', s) : t('hub.offer');
+}
+
+/** Hub-Stufe mit Schritt und Kosten des laufenden Ausbauschritts; höchste Stufe (kein `hubUpgrade`) ohne Kosten; ohne `hubLevel` → null. */
+export function hubText(world: Pick<World, 'hubLevel' | 'hubUpgrade'> & Partial<Pick<World, 'hubStep'>>, compact: boolean): string | null {
   const n = world.hubLevel;
   if (n === undefined) return null;
   if (!world.hubUpgrade) return t(compact ? 'hub.levelShort' : 'hub.level', { n });
-  return t(compact ? 'hub.upgradeShort' : 'hub.upgrade', { n, next: n + 1, cost: hubCost(world.hubUpgrade) });
+  const params = { n, next: n + 1, cost: hubCost(world.hubUpgrade) };
+  const s = hubStepOf(world);
+  if (s) return t(compact ? 'hub.upgradeStepShort' : 'hub.upgradeStep', { ...params, ...s });
+  return t(compact ? 'hub.upgradeShort' : 'hub.upgrade', params);
 }

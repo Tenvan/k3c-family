@@ -49,3 +49,8 @@ tasks:
         msg: Go fehlt (requirements.md)
     cmds:
       - go test -count=1 ./engine/sim ./engine/level -run Golden -update
+
+  golden-setup:
+    desc: "Einmal je Klon: git zeigt Diffs der gepackten Golden-Dateien (*.json.gz) als JSON-Text (GD1, B-624)"
+    cmds:
+      - git config diff.gzip.textconv "gzip -dc"

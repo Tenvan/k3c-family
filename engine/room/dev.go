@@ -9,9 +9,10 @@ import (
 // DevAction ist eine Dev-Aktion eines Geräts (Nachricht dev, B-178): gold und material brauchen slot und amount,
 // material zusätzlich resource, timescale braucht factor, pause braucht paused (B-231); wave und castleFall (Stufenverlust
 // in der Stufe des Monarchen, WZ14.5) brauchen slot, phase braucht
-// phase (day, dusk, night) (B-232); grade braucht grade (Name aus data/difficulty.json, gilt ab der nächsten Welle, B-080).
+// phase (day, dusk, night, dawn) (B-232); grade braucht grade (Name aus data/difficulty.json, gilt ab der nächsten Welle, B-080).
 // maxStock (+100 je Aufruf), fillStock und nextPhase brauchen nichts; cheapBuild und timescaleAuto brauchen on, buildAll
-// braucht level (1 bis 5).
+// braucht level (1 bis 5). Kampf (B-603, dev_combat.go): boss braucht slot und boss (Id aus data/bosses.json), event
+// braucht event (fullMoon, bloodMoon, merchantRaid), bossPhase und night brauchen nichts.
 type DevAction struct {
 	Action   string
 	Slot     *int
@@ -23,6 +24,8 @@ type DevAction struct {
 	Grade    string
 	On       *bool
 	Level    int
+	Boss     string
+	Event    string
 }
 
 // devMaxAmount ist die Obergrenze von amount (gold, material).
@@ -44,7 +47,7 @@ func (r *Room) Dev(id string, peer Peer, a DevAction) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	d := r.own(id, peer)
-	if d == nil {
+	if d == nil || d.observer { // Beobachter ändern nichts, auch nicht raumweit (Phase, Grad, Zeitraffer; Review TR4.2)
 		return ErrBadRequest
 	}
 	return r.devApply(short(id), a, func(slot int) (int, bool) {
@@ -110,7 +113,7 @@ func (r *Room) devApply(who string, a DevAction, player func(int) (int, bool)) e
 		}
 	default:
 		var more []any
-		more, ok = r.devExtra(a)
+		more, ok = r.devExtra(who, a, player)
 		attrs = append(attrs, more...)
 	}
 	if !ok {
@@ -120,8 +123,8 @@ func (r *Room) devApply(who string, a DevAction, player func(int) (int, bool)) e
 	return nil
 }
 
-// devExtra führt die Aktionen für Lager, Baukosten, Ausbau und Tageszeit aus und liefert die Log-Felder.
-func (r *Room) devExtra(a DevAction) (attrs []any, ok bool) {
+// devExtra führt die Aktionen für Lager, Baukosten, Ausbau, Tageszeit und Kampf aus und liefert die Log-Felder.
+func (r *Room) devExtra(who string, a DevAction, player func(int) (int, bool)) (attrs []any, ok bool) {
 	switch a.Action {
 	case "maxStock":
 		ok = sim.DevRaiseMaxStock(r.isl)
@@ -144,6 +147,8 @@ func (r *Room) devExtra(a DevAction) (attrs []any, ok bool) {
 			r.autoReset, r.resetPhase = *a.On, r.isl.Stages[r.start].Cycle.Phase
 			attrs = []any{"an", *a.On}
 		}
+	default:
+		attrs, ok = r.devCombat(who, a, player)
 	}
 	return attrs, ok
 }

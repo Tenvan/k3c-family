@@ -33,9 +33,10 @@
 | `enemies.portal` | Liste | – | Gegner-Arten, die aus den Portalen kommen | z. B. greed, goblin, goblinArcher |
 | `enemies.night` | Liste | – | Gegner-Arten der Nacht im Hub | wolf, skeleton, … |
 | `cycle.type` | Text | – | dayNight (Wald) oder aggressionPool (Tiefen) | dayNight, aggressionPool |
-| `cycle.dayMinutes` | Zahl | min | Länge des Tages (dayNight) | 10 |
-| `cycle.nightMinutes` | Zahl | min | Länge der Nacht (dayNight) | 5 |
-| `cycle.twilightMinutes` | Zahl | min | Länge der Dämmerung (dayNight) | 1 |
+| `cycle.dayMinutes` | Zahl | min | Länge des Tages (dayNight) | 6 |
+| `cycle.twilightMinutes` | Zahl | min | Länge der Dämmerung (dayNight) | 2 |
+| `cycle.nightMinutes` | Zahl | min | Länge der Nacht (dayNight) | 4 |
+| `cycle.dawnMinutes` | Zahl | min | Länge des Morgengrauens (dayNight); bei seinem Beginn fällt `dawn`. Jede Dauer muss positiv sein, sonst lehnt das Laden ab | 2 |
 | `cycle.percentPerMinute` | Zahl | % je min | Zuwachs des Aggro-Pools nach Zeit (aggressionPool) | 1 |
 | `cycle.percentPerKill` | Zahl | % je Kill | Zuwachs je Kill | 5 |
 | `cycle.percentPerGather` | Zahl | % je Abbau | Zuwachs je Abbau | 1 |

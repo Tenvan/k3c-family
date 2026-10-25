@@ -1,6 +1,7 @@
 import { BUILDINGS } from '../../model/data';
 import type { SiteKind, SiteState } from '../../model/types';
 import { HUB_GROWTH, HUB_SCAFFOLD, type HubLook } from './hubGrowth';
+import { SCAFFOLD_CLASSES, scaffoldKey } from './scaffoldView';
 
 /**
  * Welche Grafik ein Gebäude zeigt (GR3.1, Zuordnung `docs/assets/zuordnung-objekte.md` und `zuordnung-welt.md`).
@@ -16,9 +17,11 @@ const HUB_BUILDINGS: Partial<Record<SiteKind, string>> = {
 /** Textur-Schlüssel → Datei unter `public/grafik/` (nur zugeordnete Dateien; LoadScene lädt genau diese) */
 export const BUILDING_TEXTURES: Record<string, string> = {
   ...stufen('hub', 'burg'),
-  /** Wachstumsreihe vor der Holzburg und Baugerüst (GEB11): `grafik:<id>-<stufe>`, `grafik:hub-geruest` */
-  ...Object.fromEntries(HUB_GROWTH.filter((l) => l.id !== 'burg').map((l) => [`grafik:${l.id}-${l.stufe}`, `gebaeude/${l.id}-${l.stufe}-32.png`])),
+  /** Wachstumsreihe ohne die Burgen der Hub-Stufen (GEB11, GEB17.6) und Baugerüst: `grafik:<id>-<stufe>`, `grafik:hub-geruest` */
+  ...Object.fromEntries(HUB_GROWTH.filter((l) => !isHubStage(l)).map((l) => [`grafik:${l.id}-${l.stufe}`, `gebaeude/${l.id}-${l.stufe}-32.png`])),
   [`grafik:${HUB_SCAFFOLD}`]: `gebaeude/${HUB_SCAFFOLD}-32.png`,
+  /** Gerüst im Bau je Größenklasse (GEB16, B-586): `grafik:geruest-<breite>` */
+  ...Object.fromEntries(SCAFFOLD_CLASSES.map((c) => [scaffoldKey(c), `gebaeude/geruest-${c}-32.png`])),
   ...stufen('wall', 'mauer'),
   ...stufen('tower', 'turm'),
   ...stufen('backwall', 'hintergrundmauer'),
@@ -86,9 +89,14 @@ export function hubTexture(stage = 1): string | null {
   return key in BUILDING_TEXTURES ? key : null;
 }
 
-/** Textur eines Looks der Wachstumsreihe (GEB11, `hubLookOf`): Burg über `hubTexture`, sonst `grafik:<id>-<stufe>`; unbekannt `null` */
+/** Burg einer Hub-Stufe 1–5 (`burg-<n>`, Schlüssel `grafik:hub-<n>`); die Ausbauschritte `burg-6` … liegen unter `grafik:burg-<n>` */
+function isHubStage(look: Pick<HubLook, 'id' | 'stufe'>): boolean {
+  return look.id === 'burg' && look.stufe >= 1 && look.stufe <= 5;
+}
+
+/** Textur eines Looks der Wachstumsreihe (GEB11, GEB17.6, `hubLookOf`): Burg der Hub-Stufe über `hubTexture`, sonst `grafik:<id>-<stufe>`; unbekannt `null` */
 export function hubLookTexture(look: Pick<HubLook, 'id' | 'stufe'>): string | null {
-  if (look.id === 'burg') return hubTexture(look.stufe);
+  if (isHubStage(look)) return hubTexture(look.stufe);
   const key = `grafik:${look.id}-${look.stufe}`;
   return key in BUILDING_TEXTURES ? key : null;
 }
