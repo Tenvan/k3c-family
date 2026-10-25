@@ -19,7 +19,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RP1 | Repo-Hygiene: Branches aufräumen, Altlasten, Regeln | erledigt |
 | BT1 | Server im Heimnetz finden, Windows-Starter, Start mit Seed | aktiv |
 | PG1 | Präsentationsseite mit echten Spielbildern | geplant |
-| PB1 | Veröffentlichung auf itch.io | geplant |
+| PB1 | Veröffentlichung auf itch.io | aktiv |
 
 ## Nicht-Ziele
 
