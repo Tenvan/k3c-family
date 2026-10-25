@@ -120,7 +120,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-586](B-586-baugeruest-in-gebaeudeform.md) | CLI | Idee | mittel | eingeplant | GEB16 | Im Bau zeigt der Platz ein Gerüst in der Form des neuen Gebäudes |
 | [B-587](B-587-snapshot-site-payable.md) | SRV | Idee | mittel | eingeplant | GEB16 | Der Server meldet je Bauplatz, ob er jetzt Münzen annimmt |
 | [B-588](B-588-abbau-symbole-axt-spitzhacke.md) | CLI | Idee | niedrig | eingeplant | GEB16 | Abbau-Schilder zeigen eine Axt für Bäume und eine Spitzhacke für Felsen |
-| [B-589](B-589-holz-balancing-dichter-wald.md) | REG | Idee | mittel | eingeplant | BAL7 | Holz-Balancing nach dem dichteren Wald messen und nachziehen |
 | [B-590](B-590-wachstumsreihe-unterscheidbar.md) | DEV | Problem | hoch | eingeplant | GEB17 | Die Wachstumsreihe der Burg zeigt echte Unterschiede statt derselben Burg in Farben |
 | [B-591](B-591-burg-ausbau-angebot-fehlt.md) | CLI | Problem | hoch | eingeplant | GEB17 | Vor der Burg erscheint kein Ausbau-Angebot, wenn der Spieler davor steht |
 | [B-592](B-592-hub-ausbaustufen-je-inselstufe.md) | REG | Idee | hoch | eingeplant | GEB17 | Der Hub hat zwei bis drei Ausbaustufen je Inselstufe, weiter mit dem Material der nächsten Inselstufe |
@@ -147,6 +146,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-615](B-615-ticket-nummer-gleichzeitig.md) | DEV | Problem | mittel | offen | – | Gleichzeitiges Anlegen von Tickets vergibt nie dieselbe Nummer |
 | [B-616](B-616-lauf-id-nach-neustart.md) | DEV | Problem | niedrig | offen | – | Lauf-IDs der Balancing-Seite bleiben über einen Neustart der Workbench eindeutig |
 | [B-619](B-619-check-diff-cache-und-short.md) | INF | Problem | hoch | offen | – | check:diff nutzt den Go-Testcache und lässt lange Tests aus |
+| [B-626](B-626-rg1-werte-entscheiden.md) | REG | Frage | mittel | offen | – | Wertvorschläge aus RG1.1 und BR2.1 entscheiden |
+| [B-627](B-627-rg2-regelklaerungen.md) | REG | Frage | mittel | offen | – | Regelklärungen RG2.1 (Handwerker, Verlust-Korridor, Gold-Schwelle) entscheiden |
 
 ## Archiv
 
@@ -578,3 +579,4 @@ Zeile in diesen Abschnitt.
 | [B-098](archiv/B-098-debug-overlay-standard-zurueck.md) | CLI | Schuld | niedrig | erledigt | K5 | Das Debug-Overlay ist vor dem Release wieder nur mit ?dev=1 verfügbar |
 | [B-607](archiv/B-607-studio-levelview-test-golden-dichter-wald.md) | DEV | Problem | hoch | verworfen | – | Der Studio-Test levelView erwartet die Baum-Zahl vor dem dichten Wald |
 | [B-606](archiv/B-606-studio-tests-rot-nach-dichtem-wald.md) | DEV | Problem | hoch | erledigt | WZ28 | Die Studio-Tests sind nach dem dichten Wald wieder grün und check_run hängt nicht bei k3c-studio:test |
+| [B-589](archiv/B-589-holz-balancing-dichter-wald.md) | REG | Idee | mittel | erledigt | BAL7 | Holz-Balancing nach dem dichteren Wald messen und nachziehen |

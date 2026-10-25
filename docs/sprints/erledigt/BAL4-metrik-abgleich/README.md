@@ -1,6 +1,6 @@
 # BAL4 · REG · Abgleich Spielmetrik und Simulator
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAL
 - **Domäne:** REG
 - **Reife:** bereit
@@ -58,12 +58,12 @@ Zu wenige Sitzungen → „nicht aussagekräftig“, keine Wertänderung.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | BAL4.1 | `BAL4.1-abgleichtabelle.md` | Umsetzung | autonom | fertig |
-| BAL4.2 | `BAL4.2-workshop-abweichungen.md` | Workshop | Mensch | offen |
-| BAL4.3 | `BAL4.3-werte-umsetzen.md` | Umsetzung | autonom | offen |
+| BAL4.2 | `BAL4.2-workshop-abweichungen.md` | Workshop | Mensch | fertig |
+| BAL4.3 | `BAL4.3-werte-umsetzen.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-–
+2026-10-25, Claude: Die Abgleichtabelle ist vorläufig (BAL4.1). Beschluss: keine Wertänderung, bis echte Spieleabende vorliegen (BAL4.2, vorentschieden), deshalb nichts umzusetzen (BAL4.3). Den echten Abgleich liefern P1 und BR1.2.

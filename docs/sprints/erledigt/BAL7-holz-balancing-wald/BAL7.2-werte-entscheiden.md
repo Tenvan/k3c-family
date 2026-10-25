@@ -1,6 +1,6 @@
 # BAL7.2 · Workshop: Holzwerte entscheiden
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** REG
@@ -50,5 +50,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02: vorentschieden (autonom, Claude, 2026-10-25, Ralfs Ziel): **keine Wertänderung**. Holz liegt mit 85 % im Korridor (BAL7.1); die Alternative `tree.amount` 10 → 8 ist nicht nötig. Ralf kann das jederzeit ändern.

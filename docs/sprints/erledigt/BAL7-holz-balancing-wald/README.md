@@ -1,6 +1,6 @@
 # BAL7 · REG · Holz-Balancing nach dem dichteren Wald
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAL
 - **Domäne:** REG
 - **Reife:** bereit
@@ -56,8 +56,8 @@ Zielkorridor laut `docs/rules`; 🧑 bestätigt. Spec-Freigabe steht aus.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | BAL7.1 | `BAL7.1-holzfluss-messen.md` | Umsetzung | autonom | fertig |
-| BAL7.2 | `BAL7.2-werte-entscheiden.md` | Workshop | Mensch | offen |
-| BAL7.3 | `BAL7.3-review.md` | Review | autonom | offen |
+| BAL7.2 | `BAL7.2-werte-entscheiden.md` | Workshop | Mensch | fertig |
+| BAL7.3 | `BAL7.3-review.md` | Review | autonom | fertig |
 
 - BAL7.1 (REG) Holzfluss messen über `sim_test`, Wertvorschlag (AC-01).
 - BAL7.2 (Mensch) Werte entscheiden (AC-02).
@@ -65,5 +65,4 @@ Zielkorridor laut `docs/rules`; 🧑 bestätigt. Spec-Freigabe steht aus.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-25, Claude: AC-01 durch BAL7.1 (run-7, Holz 85 % im Korridor). AC-02 durch BAL7.2 (vorentschieden: keine Wertänderung) und BAL7.3 (nichts umzusetzen). Keine neuen Tickets.

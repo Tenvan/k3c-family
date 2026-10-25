@@ -18,10 +18,10 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | BAL6 | Balancing-Tester misst die Wirtschaft | geplant |
 | RG2 | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | geplant |
 | P1 | Spieleabend 1 | geplant |
-| BAL4 | Abgleich Spielmetrik und Simulator | aktiv |
+| BAL4 | Abgleich Spielmetrik und Simulator | erledigt |
 | BR1 | Balancing-Runde Wirtschaft und Spieleabend 2 | geplant |
 | BR2 | Balancing-Runde Kampf und Bosse und Spieleabend 3 | aktiv |
-| BAL7 | Holz-Balancing nach dem dichteren Wald | aktiv |
+| BAL7 | Holz-Balancing nach dem dichteren Wald | erledigt |
 
 ## Nicht-Ziele
 

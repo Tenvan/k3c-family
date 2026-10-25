@@ -20,9 +20,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | KR5 | REG | KRT | Kritische Fragen zu SKL | – | `aktiv/KR5-fragen-skl/` |
 | KR6 | REG | KRT | Kritische Fragen zu KMP | – | `aktiv/KR6-fragen-kmp/` |
 | RG1 | REG | BAL | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | Beschlüsse in `docs/rules/`, geänderte Werte in `data/`, `task balance` grün | `aktiv/RG1-werte-burg-hub-adern/` |
-| BAL4 | REG | BAL | Abgleich Spielmetrik und Simulator | – | `aktiv/BAL4-metrik-abgleich/` |
 | BR2 | REG | BAL | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | `aktiv/BR2-balancing-kampf/` |
-| BAL7 | REG | BAL | Holz-Balancing nach dem dichteren Wald | – | `aktiv/BAL7-holz-balancing-wald/` |
 
 ## Offen am Gerät
 
@@ -246,3 +244,5 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SK2 | Skills im Spiel sichtbar, Dieb-Skills in den Daten | `erledigt/SK2-skills-sichtbar-dieb/` |
 | K5 | Anzeigen für Kampf, Bosse und Events, Anlegen-Dialog, Debug-Panel | `erledigt/K5-anzeige-kampf/` |
 | LV1 | Level und Gegner: Lava, Camps, Adern-Takt, Orte und IDs | `erledigt/LV1-level-gegner-korrektur/` |
+| BAL7 | Holz-Balancing nach dem dichteren Wald | `erledigt/BAL7-holz-balancing-wald/` |
+| BAL4 | Abgleich Spielmetrik und Simulator | `erledigt/BAL4-metrik-abgleich/` |
