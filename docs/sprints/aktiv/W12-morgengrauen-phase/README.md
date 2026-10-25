@@ -1,14 +1,14 @@
-# W12 · SIM · Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln
+# W12 · SIM, SRV, REG · Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WRT
-- **Domäne:** SIM
-- **Reife:** Entwurf
+- **Domäne:** SIM, SRV, REG
+- **Reife:** bereit
 - **Tickets:** B-470
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 80f2d3e9
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt; Defaults: dawn als kompatible Erweiterung ohne Versionssprung, Helligkeit linear, vor BR1, weil BAL ruht; gestapelt auf sprint/geb16 wegen der Golden-Regel)
 
 ## Ausgangslage
 
@@ -55,6 +55,13 @@ Biom ohne Dauer des Morgengrauens oder mit nicht positiver Dauer → Laden abgel
 🧑: Protokoll-Version oder kompatible Erweiterung (B-470 › Offene Fragen 1)? Vor oder nach BR1 (B-470 › 3)? Gibt es Fackeln schon als Spielobjekt (B-472 › 2)?
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| W12.1 | `W12.1-vier-phasen-sim.md` | Umsetzung | autonom | in Arbeit |
+| W12.2 | `W12.2-protokoll-dawn.md` | Umsetzung | autonom | offen |
+| W12.3 | `W12.3-regeltexte.md` | Umsetzung | autonom | offen |
+| W12.4 | `W12.4-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
