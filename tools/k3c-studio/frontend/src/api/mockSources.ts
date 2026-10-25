@@ -1,4 +1,4 @@
-import type { SourceApi, SourceCleanupView, SourceInfo, SourceProgress, SourceProposal } from './sourceTypes';
+import type { NetworkMode, SourceApi, SourceCleanupView, SourceInfo, SourceProgress, SourceProposal } from './sourceTypes';
 
 // Erfundene Quellen und Vorschlagsliste für den Mock (WZ30.4): Einträge in allen Status, simulierter Download mit
 // Fortschritt (je Abfrage von sourceProgress +25 %) und einem Fehlerfall (q06 scheitert bei 50 %), Offline-Schalter.
@@ -36,6 +36,9 @@ const initial = (): SourceProposal[] => [
 
 let list = initial();
 let offline = typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('offline');
+let mode: NetworkMode = 'auto';
+/** Offline laut Schalter, im Modus auto laut Mock-Probe (`offline`). */
+const isOffline = () => (mode === 'auto' ? offline : mode === 'offline');
 let jobs = new Map<string, SourceProgress>();
 
 /** Schaltet den Mock offline oder wieder online (auch `?offline=1` in der Adresse). */
@@ -48,6 +51,7 @@ export function resetMockSources(): void {
   list = initial();
   jobs = new Map();
   offline = false;
+  mode = 'auto';
 }
 
 const info = (): SourceInfo[] =>
@@ -90,9 +94,14 @@ function cleanupView(): SourceCleanupView {
 
 export function mockSources(): SourceApi {
   return {
-    sources: async () => ({ offline, quellen: info(), vorschlaege: list.map((s) => ({ ...s })) }),
+    network: async () => ({ mode, offline: isOffline() }),
+    setNetwork: async (next) => {
+      mode = next;
+      return { mode, offline: isOffline() };
+    },
+    sources: async () => ({ offline: isOffline(), quellen: info(), vorschlaege: list.map((s) => ({ ...s })) }),
     sourceDownload: async (ids) => {
-      if (offline) throw new Error('offline: Download braucht Internet');
+      if (isOffline()) throw new Error('offline: Download braucht Internet');
       const todo = ids.map(need);
       for (const s of todo) {
         if (!s.lizenzErlaubt || s.status === 'gesperrt') throw new Error(`${s.id} gesperrt: ${s.sperrgrund ?? s.lizenz}`);

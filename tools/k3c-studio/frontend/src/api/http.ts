@@ -2,7 +2,7 @@ import { chatStreamHttp } from './chatHttp';
 import type { ChatDetail, ChatOptionsView, ChatSummary } from './chatTypes';
 import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, GameServersView, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, TicketCreated, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
 import type { AssetSlotDetails } from './slotTypes';
-import type { SourceCleanupView, SourceProgress, SourcesView } from './sourceTypes';
+import type { NetworkMode, NetworkView, SourceCleanupView, SourceProgress, SourcesView } from './sourceTypes';
 import type { AssetSuggestionsView } from './suggestionTypes';
 import type { WorldAnswerView, WorldCheckView, WorldDraft } from './worldTypes';
 
@@ -110,6 +110,8 @@ export function httpBackend(): Backend {
     assetSuggestions: (slotId: string) => rpc<AssetSuggestionsView>('AssetSuggestions', slotId),
     assetSuggestionAdopt: (slotId: string, id: string, stand: string) => rpc<string>('AssetSuggestionAdopt', slotId, id, stand),
     assetSuggestionDrop: (slotId: string, id: string) => rpc<void>('AssetSuggestionDrop', slotId, id),
+    network: () => rpc<NetworkView>('Network'),
+    setNetwork: (mode: NetworkMode) => rpc<NetworkView>('SetNetwork', mode),
     sources: () => rpc<SourcesView>('Sources'),
     sourceDownload: (ids: string[], confirmedBytes: number) => rpc<void>('SourceDownload', ids, confirmedBytes),
     sourceProgress: () => rpc<SourceProgress[]>('SourceProgress'),

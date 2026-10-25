@@ -80,7 +80,7 @@ func TestDevStartEventMond(t *testing.T) {
 	if len(w.NightEvents) != 1 || w.NightEvents[0].ID != "bloodMoon" {
 		t.Fatalf("Zustand %v", w.NightEvents)
 	}
-	DevSetPhase(isl, "day")
+	DevSetPhase(isl, "dawn") // Events enden mit dem Morgengrauen (W12, nightEventsEnd)
 	StepIsland(isl, nil, dt)
 	if eventActive(w, bloodMoon()) || !slices.ContainsFunc(w.Events, func(e Event) bool { return e["type"] == "eventEnded" }) {
 		t.Fatalf("Blutmond endet nicht: %v", w.Events)

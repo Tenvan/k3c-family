@@ -33,19 +33,24 @@ func checkPayable(t *testing.T, w *sim.World, s map[string]any) *sim.Site {
 	t.Helper()
 	var paid *sim.Site
 	yes, no := 0, 0
-	for i, raw := range s["sites"].([]any) {
+	byID := map[float64]*sim.Site{}
+	for _, site := range w.Sites {
+		byID[float64(site.ID)] = site
+	}
+	for _, raw := range s["sites"].([]any) {
+		site := byID[raw.(map[string]any)["id"].(float64)] // filterSites lässt Plätze weg: über die ID zuordnen
 		got, has := raw.(map[string]any)["payable"]
-		want := sim.SitePayable(w, w.Sites[i])
+		want := sim.SitePayable(w, site)
 		if want != (got == true) || (!want && has) {
-			t.Errorf("Platz %d (%s): payable %v, erwartet %v", w.Sites[i].ID, w.Sites[i].Kind, got, want)
+			t.Errorf("Platz %d (%s): payable %v, erwartet %v", site.ID, site.Kind, got, want)
 		}
 		if !want {
 			no++
 			continue
 		}
 		yes++
-		if paid == nil && w.Sites[i].State == "unpaid" {
-			paid = w.Sites[i]
+		if paid == nil && site.State == "unpaid" {
+			paid = site
 		}
 	}
 	if yes == 0 || no == 0 || paid == nil {

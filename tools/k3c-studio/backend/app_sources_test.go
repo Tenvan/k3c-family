@@ -44,9 +44,9 @@ func sourcesApp(t *testing.T, probe string) (*App, *httptest.Server) {
 	a := &App{root: root, bus: newBus()}
 	st := a.sourceState()
 	st.client = srv.Client()
-	st.probe = probe
+	st.probes = []string{probe}
 	if probe == "" {
-		st.probe = srv.URL
+		st.probes = []string{srv.URL}
 	}
 	return a, srv
 }

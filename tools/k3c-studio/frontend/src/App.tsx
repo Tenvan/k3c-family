@@ -12,6 +12,7 @@ import { MonarchPage } from './monarch/MonarchPage';
 import { PlannerPage } from './planner/PlannerPage';
 import { SoundPage } from './sound/SoundPage';
 import { GOTO_SOURCES } from './sources/jump';
+import { NetworkSwitch } from './sources/NetworkSwitch';
 import { SourcesPage } from './sources/SourcesPage';
 import { WorldPage } from './world/WorldPage';
 
@@ -39,6 +40,7 @@ export function App({ initial }: { initial?: Page }) {
   const right = (
     <>
       {backend.mock && <StatusBadge tone="warn">Mock</StatusBadge>}
+      <NetworkSwitch />
       <ChatToggle />
     </>
   );
