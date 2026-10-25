@@ -1,14 +1,14 @@
 # KB4 · SRV, CLI · Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** KMP
 - **Domäne:** SRV, CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-603
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 819c53d3
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt)
 
 ## Ausgangslage
 
@@ -57,7 +57,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| KB4.1 | `KB4.1-dev-aktionen-server.md` | Umsetzung | autonom | offen |
+| KB4.1 | `KB4.1-dev-aktionen-server.md` | Umsetzung | autonom | in Arbeit |
 | KB4.2 | `KB4.2-debug-panel-kampf.md` | Umsetzung | autonom | offen |
 | KB4.3 | `KB4.3-review.md` | Review | autonom | offen |
 | KB4.4 | `KB4.4-abnahme-pc.md` | Workshop | Mensch | offen |

@@ -1,6 +1,6 @@
 # KB4.1 · Dev-Aktionen boss, bossPhase, event und night im Server
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
