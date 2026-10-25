@@ -1,14 +1,14 @@
 # GD1 · INF · Golden-Daten kleiner bei gleicher Prüfschärfe
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** TST
 - **Domäne:** INF
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-419
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 80f2d3e9
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt; Weg vorentschieden über B-624; gestapelt auf sprint/geb17 wegen der Golden-Regel)
 
 ## Ausgangslage
 
@@ -52,6 +52,12 @@ Gewählter Weg macht Diffs unlesbar → Lesehilfe (`task`) oder anderer Weg, im 
 🧑: Welcher Weg (gzip, `snapshotEvery`, Deltas)? Neue Grenze statt 16 MB?
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| GD1.1 | `GD1.1-wege-messen.md` | Workshop | Mensch | fertig |
+| GD1.2 | `GD1.2-golden-gzip.md` | Umsetzung | autonom | in Arbeit |
+| GD1.3 | `GD1.3-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
