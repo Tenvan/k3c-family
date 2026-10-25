@@ -1,14 +1,14 @@
-# W13 · CLI · Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht
+# W13 · CLI, DEV · Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WRT
-- **Domäne:** CLI
-- **Reife:** Entwurf
+- **Domäne:** CLI, DEV
+- **Reife:** bereit
 - **Tickets:** B-472, B-470
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 80f2d3e9
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt; Defaults: Nacht-Untergrenze dunkler, Licht nach data/light.json, Morgengrauen linear; Ralf justiert am TV in W13.4; gestapelt auf sprint/w12)
 
 ## Ausgangslage
 
@@ -53,6 +53,13 @@ Nacht am Lagerfeuer → Umgebung im Radius heller, außerhalb dunkel. Welt-Betra
 🧑: Mindesthelligkeit, Radius und Stärke des Lichts (B-472 › Offene Fragen); Helligkeitskurve im Morgengrauen (B-470 › Offene Fragen 2).
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| W13.1 | `W13.1-nacht-licht-client.md` | Umsetzung | autonom | in Arbeit |
+| W13.2 | `W13.2-welt-betrachter-dawn.md` | Umsetzung | autonom | offen |
+| W13.3 | `W13.3-review.md` | Review | autonom | offen |
+| W13.4 | `W13.4-abnahme-tv.md` | Workshop | Mensch | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
