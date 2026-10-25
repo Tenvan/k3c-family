@@ -81,6 +81,27 @@ Die Rohwerte je Lauf stehen in `Metrics` des Testers (`firstWorkshopTick`, je Ta
 `stockIn`, `stockOut`, `castleFallen`, `peasantTicks`, `peasantIdleTicks`). Der Bericht nennt im Feld `varianten` die
 Wert-Varianten des Laufs (`--vary datei.json:pfad=wert`, nur im Speicher; `data/` bleibt unverändert).
 
+### Richtwerte und Hebel der Auswertung (B-632, Startwerte)
+
+Die Auswertung der Berichte (Kurzauswertung, Ampeln, Tuning-Hinweise, `balance-*.md` und `balance-*.html`) bewertet die
+Kennzahlen gegen Richtwerte aus `data/balance-hints.json` (Aufbau: `docs/data/balance-hints.md`). Das sind **Startwerte
+ohne Workshop-Beschluss**; Korridore beschließt erst eine Balancing-Runde (RG, BAL). Grün und Gelb sind Bänder, außerhalb
+von Gelb ist die Ampel rot.
+
+| Kennzahl | Grün | Gelb | Begründung |
+|---|---|---|---|
+| Erste Mauer (Median) | ≤ 1500 Ticks (50 s) | ≤ 3000 Ticks | Die erste Mauer soll klar vor der ersten Dämmerung stehen (§ 1: vor Ende der hellen Phase) |
+| Erste Werkstatt (Median) | ≤ 6000 Ticks (200 s) | ≤ 12000 Ticks | Bögen vor Nacht 2, damit Türme besetzt werden können (§ 3: erster Turm vor Ende von Tag 2) |
+| Leerlauf der Bauern | ≤ 25 % | ≤ 35 % | Mehr als ein Viertel Wartezeit heißt: zu wenig Aufträge oder zu viele Bauern |
+| Überlebensabfall je Nacht | ≤ 5 Pkt. | ≤ 15 Pkt. | Größter Abfall von Nacht zu Nacht (vor Nacht 1: 100 %); ein Sprung zeigt eine zu harte Welle. Nur für normal, bei hard und ultra ist der Abfall gewollt |
+| Gold-Bilanz je Tag ab Tag 2 | −20 bis 60 | −60 bis 120 | Tag 1 ist Bauphase; danach soll das Gold weder wegschmelzen noch sich stauen (Börse begrenzt, `economy.json:purse.maxGold`) |
+| Holz-Bilanz je Tag | 0 bis 150 | −30 bis 300 | Leichter Überschuss trägt die Bauten von Tag 3 (§ 3: Holz am Tagesbeginn ≥ 100) |
+| Stein-Bilanz je Tag | 0 bis 80 | −20 bis 160 | Stein trägt die Hub-Stufen (`hub.json`) |
+
+Je Ziel nennt die Datei Hebel in Richtung „zu niedrig“ (`low`) und „zu hoch“ (`high`): Datenpfad, Richtung und
+relative Schrittweite. Der Vorschlag „Nächster Lauf“ stimmt den ersten Hebel jedes verletzten Ziels höchstens drei
+Schritte ab dem aktuellen Wert ab (`--tune search`).
+
 ## Balancing-Runde Wirtschaft (BR1)
 
 Messung vor der Runde (BR1.1, 2026-10-07, Commit `69fce4a`, Stand `develop` `edb2a8f` mit K2.1a–K2.2a). Die Zahlen in § 1–3 bleiben unverändert; hier stehen nur die Lesart und die Messung.

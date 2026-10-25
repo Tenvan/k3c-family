@@ -44,3 +44,13 @@
 .bal-report-row[data-rating='unklar'] { --rating: var(--amber-9); }
 .bal-report-row[data-rating='referenz'] { --rating: var(--blue-9); }
 .bal-base-hint { padding: 4px 6px; border-radius: 6px; background: var(--accent-a3); }
+/* Auswertung (B-632) */
+.bal-insights { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--card-line); padding-top: 8px; }
+.bal-insight-summary { margin: 0; padding-left: 18px; }
+.bal-insight-list { margin: 4px 0; padding-left: 18px; font-size: var(--font-size-2); }
+.bal-insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.bal-insight-hint { border-left: 3px solid var(--red-9); padding: 4px 8px; margin: 6px 0; background: var(--gray-a2); border-radius: 0 6px 6px 0; }
+.bal-insight-hint[data-light='yellow'] { border-left-color: var(--amber-9); }
+.bal-insight-hint[data-light='grey'] { border-left-color: var(--gray-9); }
+.bal-insight-cmd { display: flex; flex-direction: column; gap: 4px; margin: 6px 0; }
+.bal-insight-code { white-space: pre-wrap; word-break: break-all; padding: 6px 8px; }

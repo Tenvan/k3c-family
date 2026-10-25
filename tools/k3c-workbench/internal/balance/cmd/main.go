@@ -44,7 +44,7 @@ func run(args []string) error {
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
-	if err := checkFlags(to, so, tu); err != nil {
+	if done, err := early(to, so, tu); done || err != nil {
 		return err
 	}
 	if so.vary || so.curves {
@@ -84,6 +84,17 @@ func run(args []string) error {
 		return err
 	}
 	return write(*out, b)
+}
+
+// early prüft die Flags und erledigt --insights (vorhandenen Bericht auswerten, B-632); done: nichts weiter tun.
+func early(to targetOpts, so sensOpts, tu tuneOpts) (done bool, err error) {
+	if err := checkFlags(to, so, tu); err != nil {
+		return true, err
+	}
+	if to.insights != "" {
+		return true, runInsights(to.insights)
+	}
+	return false, nil
 }
 
 // checkFlags lehnt Flags ab, die --targets bzw. --tune brauchen.

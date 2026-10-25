@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "notes": "Richtwerte der Kennzahlen und Hebel je Ziel für die Auswertung der Balancing-Berichte (B-632). Startwerte ohne Workshop-Beschluss, Begründung: docs/rules/zielkorridore.md § 5. green/yellow: Band [von, bis], null = offen; außerhalb von yellow ist die Ampel rot. allGrades: auch die Grade außer normal bewerten. step: relative Schrittweite eines Hebels (0.1 = 10 %).",
+  "figures": {
+    "firstWallTick": { "name": "Erste Mauer", "unit": "Ticks", "green": [null, 1500], "yellow": [null, 3000] },
+    "firstWorkshopTick": { "name": "Erste Werkstatt", "unit": "Ticks", "green": [null, 6000], "yellow": [null, 12000] },
+    "idleShare": { "name": "Leerlauf der Bauern", "unit": "%", "green": [null, 25], "yellow": [null, 35], "allGrades": true },
+    "survivalDrop": { "name": "Überlebensabfall je Nacht", "unit": "Pkt.", "green": [null, 5], "yellow": [null, 15] },
+    "goldBalance": { "name": "Gold-Bilanz je Tag ab Tag 2", "unit": "Gold", "green": [-20, 60], "yellow": [-60, 120] },
+    "woodBalance": { "name": "Holz-Bilanz je Tag", "unit": "Holz", "green": [0, 150], "yellow": [-30, 300] },
+    "stoneBalance": { "name": "Stein-Bilanz je Tag", "unit": "Stein", "green": [0, 80], "yellow": [-20, 160] }
+  },
+  "levers": {
+    "castleHeld": {
+      "low": [
+        { "path": "buildings.json:wall.levels.0.hp", "direction": "+", "step": 0.2, "label": "Mauer-HP Stufe 1 erhöhen" },
+        { "path": "waves.json:table.0.standard.1", "direction": "-", "step": 0.1, "label": "Gegner je Welle 1–5 senken" },
+        { "path": "troops.json:archer.damage", "direction": "+", "step": 0.1, "label": "Schaden der Bogenschützen erhöhen" }
+      ],
+      "high": [
+        { "path": "waves.json:table.0.standard.1", "direction": "+", "step": 0.1, "label": "Gegner je Welle 1–5 erhöhen" },
+        { "path": "buildings.json:wall.levels.0.hp", "direction": "-", "step": 0.1, "label": "Mauer-HP Stufe 1 senken" }
+      ]
+    },
+    "goldAtDawnPerPlayer": {
+      "low": [
+        { "path": "economy.json:dawnGoldPerPlayer", "direction": "+", "step": 0.2, "label": "Morgen-Gold je Spieler erhöhen" },
+        { "path": "economy.json:purse.startGold", "direction": "+", "step": 0.1, "label": "Startgold erhöhen" }
+      ],
+      "high": [
+        { "path": "economy.json:dawnGoldPerPlayer", "direction": "-", "step": 0.2, "label": "Morgen-Gold je Spieler senken" },
+        { "path": "buildings.json:wall.levels.0.cost.gold", "direction": "+", "step": 0.2, "label": "Gold-Kosten der Mauer erhöhen" }
+      ]
+    },
+    "firstWallBeforeDusk1": {
+      "low": [
+        { "path": "buildings.json:wall.levels.0.cost.wood", "direction": "-", "step": 0.1, "label": "Holz-Kosten der Mauer senken" },
+        { "path": "economy.json:purse.startGold", "direction": "+", "step": 0.1, "label": "Startgold erhöhen" }
+      ],
+      "high": []
+    },
+    "firstTowerBeforeDusk2": {
+      "low": [
+        { "path": "buildings.json:tower.levels.0.cost.wood", "direction": "-", "step": 0.1, "label": "Holz-Kosten des Turms senken" },
+        { "path": "buildings.json:tower.levels.0.cost.gold", "direction": "-", "step": 0.1, "label": "Gold-Kosten des Turms senken" }
+      ],
+      "high": []
+    },
+    "woodAtDawnFrom3": {
+      "low": [
+        { "path": "economy.json:gatherables.tree.markCost", "direction": "-", "step": 0.5, "label": "Kosten fürs Markieren eines Baums senken" },
+        { "path": "buildings.json:wall.levels.0.cost.wood", "direction": "-", "step": 0.1, "label": "Holz-Kosten der Mauer senken" }
+      ],
+      "high": [
+        { "path": "buildings.json:tower.levels.0.cost.wood", "direction": "+", "step": 0.1, "label": "Holz-Kosten des Turms erhöhen" }
+      ]
+    },
+    "hubLevel2BeforeDay5": {
+      "low": [
+        { "path": "hub.json:levels.1.steps.0.cost.stone", "direction": "-", "step": 0.1, "label": "Stein-Kosten Hub-Stufe 2 (Schritt 1) senken" },
+        { "path": "hub.json:levels.1.steps.2.cost.stone", "direction": "-", "step": 0.1, "label": "Stein-Kosten Hub-Stufe 2 (Schritt 3) senken" }
+      ],
+      "high": [
+        { "path": "hub.json:levels.1.steps.2.cost.stone", "direction": "+", "step": 0.1, "label": "Stein-Kosten Hub-Stufe 2 (Schritt 3) erhöhen" }
+      ]
+    },
+    "hubLevel3BeforeDay10": {
+      "low": [
+        { "path": "hub.json:levels.2.steps.2.cost.gold", "direction": "-", "step": 0.1, "label": "Gold-Kosten Hub-Stufe 3 (Schritt 3) senken" },
+        { "path": "economy.json:dawnGoldPerPlayer", "direction": "+", "step": 0.2, "label": "Morgen-Gold je Spieler erhöhen" }
+      ],
+      "high": [
+        { "path": "hub.json:levels.2.steps.2.cost.gold", "direction": "+", "step": 0.1, "label": "Gold-Kosten Hub-Stufe 3 (Schritt 3) erhöhen" }
+      ]
+    },
+    "destroyedPerWave": {
+      "low": [],
+      "high": [
+        { "path": "buildings.json:wall.levels.0.hp", "direction": "+", "step": 0.2, "label": "Mauer-HP Stufe 1 erhöhen" },
+        { "path": "waves.json:table.0.standard.1", "direction": "-", "step": 0.1, "label": "Gegner je Welle 1–5 senken" }
+      ]
+    },
+    "fightersAtDawn": {
+      "low": [
+        { "path": "troops.json:archer.cost.wood", "direction": "-", "step": 0.1, "label": "Holz-Kosten des Bogenschützen senken" },
+        { "path": "troops.json:vagrant.recruitCost.gold", "direction": "-", "step": 0.5, "label": "Anwerben der Landstreicher verbilligen" }
+      ],
+      "high": [
+        { "path": "troops.json:archer.cost.wood", "direction": "+", "step": 0.1, "label": "Holz-Kosten des Bogenschützen erhöhen" }
+      ]
+    }
+  }
+}

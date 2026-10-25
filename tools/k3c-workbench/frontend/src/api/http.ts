@@ -60,6 +60,8 @@ function httpBalance(): BalanceBackend {
     balanceDataValues: (name) => rpc('BalanceDataValues', name),
     balanceReportRate: (path, rating) => rpc('BalanceReportRate', path, rating),
     balanceReportDelete: (path) => rpc('BalanceReportDelete', path),
+    balanceInsights: (path) => rpc('BalanceInsights', path),
+    balanceReportHTML: (path) => rpc('BalanceReportHTML', path),
   };
 }
 

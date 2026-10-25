@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { backend, type BalanceReportInfo, type BalanceRun, type BalanceSpec, type BalanceSummary, type ReportRating, type Tuning } from '../api';
+import { backend, type BalanceInsights, type BalanceReportInfo, type BalanceRun, type BalanceSpec, type BalanceSummary, type ReportRating, type Tuning } from '../api';
 import { errorText } from '@webkit/lib/errors';
 import { isActive, mergeRuns } from './spec';
 
@@ -97,4 +97,22 @@ export function useTuning(path: string) {
   }, [path]);
   const cur = state.path === path ? state : { path };
   return { tuning: path ? cur.tuning : undefined, error: path ? cur.error : undefined, loading: !!path && !cur.tuning && !cur.error };
+}
+
+/** Auswertung eines Berichts (B-632); leerer Pfad = keine. Ein Fehler (z. B. tuning-*.json) bleibt als Text. */
+export function useInsights(path: string) {
+  const [state, setState] = useState<{ path: string; insights?: BalanceInsights; error?: string }>({ path: '' });
+  useEffect(() => {
+    if (!path) return;
+    let live = true;
+    backend.balanceInsights(path).then(
+      (insights) => live && setState({ path, insights }),
+      (e) => live && setState({ path, error: errorText(e) }),
+    );
+    return () => {
+      live = false;
+    };
+  }, [path]);
+  const cur = state.path === path ? state : { path };
+  return { insights: path ? cur.insights : undefined, error: path ? cur.error : undefined };
 }

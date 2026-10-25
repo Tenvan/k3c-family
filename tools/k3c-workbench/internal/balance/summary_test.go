@@ -57,7 +57,9 @@ func TestVergleichNenntGekippte(t *testing.T) {
 	if len(ch) != 1 || ch[0].Name != "x" || ch[0].Before != StatusOK || ch[0].After != StatusViolated || !ch[0].Tipped {
 		t.Fatalf("Änderungen: %+v", ch)
 	}
-	if md := cur.Markdown(&base); !strings.Contains(md, "- x: ok → verletzt **gekippt**") || strings.Contains(md, "- y:") {
+	// nur der Vergleichsabschnitt: die Auswertung oben (B-632) nennt y als Stärke
+	_, md, _ := strings.Cut(cur.Markdown(&base), "## Vergleich mit der Baseline")
+	if !strings.Contains(md, "- x: ok → verletzt **gekippt**") || strings.Contains(md, "- y:") {
 		t.Errorf("Markdown:\n%s", md)
 	}
 	if len(Compare(base, base)) != 0 {

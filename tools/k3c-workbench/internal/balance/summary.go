@@ -138,14 +138,28 @@ func Compare(base, cur Summary) []Change {
 	return out
 }
 
-// Markdown schreibt die Tabelle je Ziel und den Vergleich. base == nil: Hinweis „keine Baseline“.
+// Markdown schreibt Auswertung (B-632, mit den eingebetteten Richtwerten), Tabelle je Ziel und Vergleich.
+// base == nil: Hinweis „keine Baseline“.
 func (s Summary) Markdown(base *Summary) string {
+	in, err := s.Insights(base, Meta{Baseline: "Baseline"})
+	if err != nil {
+		return s.MarkdownWith(base, nil)
+	}
+	return s.MarkdownWith(base, &in)
+}
+
+// MarkdownWith wie Markdown mit einer fertigen Auswertung; in == nil: ohne Auswertung.
+func (s Summary) MarkdownWith(base *Summary, in *Insights) string {
 	var b strings.Builder
 	verdict := "Pass"
 	if !s.Pass {
 		verdict = "Fail"
 	}
 	fmt.Fprintf(&b, "# Balancing-Bericht\n\nGesamt: **%s**, %d Seeds, Ziele nach `data/balance-targets.json`.\n\n", verdict, s.Seeds)
+	if in != nil {
+		b.WriteString(in.Markdown())
+		b.WriteString("\n## Ziele im Detail\n\n")
+	}
 	b.WriteString("| Ziel | Szenario | Wert | Grenzen | Bewertung | Seeds zum Nachspielen |\n|---|---|---|---|---|---|\n")
 	for _, e := range s.Targets {
 		fmt.Fprintf(&b, "| %s | %d Spieler, %s, Tiefe %d, %d Tage | %s | %s | %s | %s |\n",

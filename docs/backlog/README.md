@@ -592,3 +592,4 @@ Zeile in diesen Abschnitt.
 | [B-301](archiv/B-301-vary-ohne-wirkung.md) | SIM | Problem | niedrig | erledigt | BAL6 | Ein Sensitivitäts-Pfad ohne Wirkung ergibt einen Fehler |
 | [B-589](archiv/B-589-holz-balancing-dichter-wald.md) | REG | Idee | mittel | erledigt | BAL7 | Holz-Balancing nach dem dichteren Wald messen und nachziehen |
 | [B-628](archiv/B-628-simtest-checkout-kurzpfad-ci.md) | DEV | Problem | hoch | erledigt | – | TestSimTestMitCheckout scheitert auf dem Windows-Runner an 8.3-Kurzpfaden |
+| [B-632](archiv/B-632-balancing-auswertung-ampeln-html.md) | DEV | Idee | hoch | erledigt | – | Balancing-Berichte bringen Ampeln, Kurzauswertung, Tuning-Hinweise und einen interaktiven HTML-Bericht |

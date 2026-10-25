@@ -150,9 +150,10 @@ func (s Spec) Title() string {
 	return strings.Join(parts, " · ")
 }
 
-// args baut die Argumente der Balance-CLI; dir ist der Berichtsordner relativ zum Checkout.
+// args baut die Argumente der Balance-CLI; dir ist der Berichtsordner relativ zum Checkout. Die Baseline des Repos
+// liefert den Trend der Auswertung (B-632); fehlt sie, rechnet die CLI ohne.
 func (s Spec) args(exe, dir string) []string {
-	args := []string{exe, "--targets", "--report-dir", dir, "--progress"}
+	args := []string{exe, "--targets", "--report-dir", dir, "--progress", "--baseline", balance.BaselinePath}
 	for _, f := range []struct {
 		flag string
 		n    int
