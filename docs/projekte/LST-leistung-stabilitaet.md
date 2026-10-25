@@ -16,7 +16,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 |---|---|---|
 | PM1 | Leistung messen: Diagnose-Zeile und Performance-Modus | aktiv |
 | PF1 | Split-Screen flüssig auf der Xbox | geplant |
-| NT1 | Stabile Tests, Warteschlange und Snapshot-Budget | geplant |
+| NT1 | Stabile Tests, Warteschlange und Snapshot-Budget | erledigt |
 | ST1 | Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik | geplant |
 
 ## Nicht-Ziele

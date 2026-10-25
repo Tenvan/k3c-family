@@ -1,0 +1,16 @@
+{
+  "t": "delta",
+  "stage": 0,
+  "tick": 302,
+  "ack": 42,
+  "s": {
+    "events": [
+      {
+        "type": "built",
+        "kind": "wall",
+        "x": 540
+      }
+    ],
+    "eventsDropped": 7
+  }
+}

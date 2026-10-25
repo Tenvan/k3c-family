@@ -320,7 +320,7 @@ das zählt als Abbruch.
 | `joined` | Server → Gerät | nach erfolgreichem `create`/`join` | `room`, `name`, `world` (Welt-ID des Raums, v7), `you[]`: `slot` → `monarch`, `depth`, `stage` | `s2c-joined.json` |
 | `level` | Server → Gerät | nach `joined` und sobald eine Stufe für das Gerät neu ist, vor dem ersten Zustand der Stufe | `stage`, `depth`, `layout` (Level: Biom-ID, Breite, Chunks, Objekte, optional `backdrops`) | `s2c-level.json` |
 | `snap` | Server → Gerät | voller Zustand einer Stufe: nach ihrem `level` (Beitreten, Wiederverbinden, Stufenwechsel) | `stage`, `tick`, `ack`, `s` (Zustand der Welt ohne Statisches, mit `events` und `depth`) | `s2c-snapshot-full.json`, `s2c-snapshot-wirtschaft.json`, `s2c-snapshot-boss.json`, `s2c-snapshot-event.json` |
-| `delta` | Server → Gerät | jeder weitere Tick, je Stufe | `stage`, `tick`, `ack`, `s` (nur Änderungen zum zuletzt gesendeten Zustand dieser Stufe) | `s2c-snapshot-delta.json` |
+| `delta` | Server → Gerät | jeder weitere Tick, je Stufe | `stage`, `tick`, `ack`, `s` (nur Änderungen zum zuletzt gesendeten Zustand dieser Stufe) | `s2c-snapshot-delta.json`, `s2c-snapshot-delta-dropped.json` |
 | `seats` | Server → alle Geräte im Raum | wenn sich eine Zuordnung, ein Monarch-Zustand oder eine Stufe ändert | `you[]` (eigene Slots mit `monarch`, `depth` und `stage`), `monarchs[]` je Index `taken`/`waiting`/`free` | `s2c-seats.json` |
 | `addSlot` | Gerät → Server | lokaler Spieler kommt dazu | `slot` 0–3 | `c2s-add-slot.json` |
 | `removeSlot` | Gerät → Server | lokaler Spieler geht | `slot` | `c2s-remove-slot.json` |
@@ -345,8 +345,8 @@ heutigen TS-Simulation erzeugt (Seed `familie`, 3 Spieler, Tick 299/300). **Auß
 "del": [entfernte ids] }`. Alles ohne `id` (einfache Werte, Objekte wie `cycle`, `castle`, `stock`, `travel`, Listen
 wie `camps`, `portals`, `spawnQueue`) steht bei einer Änderung ganz darin. `null` ist ein Wert (z. B. `travel` endet),
 kein Löschen. Felder, die im vorigen Zustand standen und jetzt fehlen (z. B. `merchant`, `drops`), nennt `delta` in
-`unset` (Namen, sortiert, `events` nie); der Client entfernt sie. Fehlt keins, fehlt `unset`. Fehlt `events`, gab es im
-Tick keine. `seq` zählt je Verbindung ab 1, nach einem Wiederverbinden also
+`unset` (Namen, sortiert, `events` und `eventsDropped` nie); der Client entfernt sie. Fehlt keins, fehlt `unset`. Fehlt `events`, gab es im
+Tick keine; fehlt `eventsDropped`, ist es 0 (beide gelten nur für ihren Zustand). `seq` zählt je Verbindung ab 1, nach einem Wiederverbinden also
 neu. `ack` ist das höchste `seq`, das der Server von **dieser** Verbindung verrechnet hat (Grundlage für eine spätere
 Vorhersage, B-039).
 
@@ -574,7 +574,16 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 Tod, Bau fertig, Skill, Nacht naht und Portal laufen über die älteren Typen `playerDown`, `built`, `skillPoint`,
 `dusk`, `arrived` (`arrived` mit `player` beim Einzelwechsel; `built` mit `kind` und `x` des Bauplatzes, `x` als Zusatzfeld ohne neue Version, B-217). Die Simulation begrenzt die Ereignisse je Tick und
 Stufe auf **K = 32** (`maxEventsPerTick`); bei Überlauf gehen Tod und Bau vor, `eventsDropped` in `s` zählt die
-Verworfenen und fehlt bei 0 (zuverlässige Übertragung im Delta: B-190). Ein Client übergeht unbekannte Typen
+Verworfenen und fehlt bei 0.
+
+**Nachgetragen ohne neue Version (NT1.2, B-190):** `eventsDropped` (Zahl, in `snap` und `delta`) gilt wie `events` nur
+für den Zustand, in dem es steht: die seit dem vorigen gesendeten Zustand dieser Stufe verworfenen Ereignisse. Es
+zählt die Obergrenze je Tick und, wenn die Warteschlange eines langsamen Geräts wartende Zustände durch den neuesten
+ersetzt, deren `eventsDropped` und die Ereignisse über 256 je Gerät (`maxEvents`). Fehlt das Feld, ist es 0; ein
+`delta` nennt es nie in `unset`, der Client setzt es bei jedem `delta` zurück (`applyDelta`). Beispiel:
+`s2c-snapshot-delta-dropped.json`. Ein Zustand ersetzt in der Warteschlange einen wartenden derselben Stufe auch über
+andere Nachrichten hinweg und stellt sich hinten an (B-280); ein Gerät wird nur getrennt, wenn 64 nicht ersetzbare
+Nachrichten warten. Ein Client übergeht unbekannte Typen
 (Banner nur für bekannte), deshalb blieb die Protokollversion dafür 3. Gilt auch für `castFailed` und das Zusatzfeld `hit` an `strike` (S9.2): Version bleibt 5.
 
 ### Snapshot-Größe
@@ -618,6 +627,22 @@ Phase 2 mit Warnkreis, 1800 Ticks. `go test ./engine/net -run KampfBytes -v` (`k
 | `delta` | 913 Byte | 1 534 Byte |
 
 Ereignisse bleiben weit unter dem Budget (Q08: 200 Byte; p99 unter dem Mittel, weil wenige große Ereignisse wie `bossPhase` das Mittel heben); `delta` ≈ 27 KB/s je Client bei 30 Hz.
+
+**Alle Plätze (NT1.2, B-263/AC-01, 2026-10-25, Windows-Entwicklerrechner):** Stufe 0 mit 40 Plätzen (seit W0: Linien
+und Hub), 4 Spieler, Seed `bench`, schneller Zyklus mit Nacht, 1800 Ticks; `go test ./engine/net -run
+SnapshotBytesAllePlaetze -v` (`sites_bytes_test.go`, `snap` und `delta` wie `stateData`):
+
+| je Stufe und Tick | Mittel | p99 |
+|---|---|---|
+| `events` | 9,0 Byte | 54 Byte |
+| ganzer Zustand (`snap`) | 26,2 KB | 29,5 KB |
+| davon `sites` (40 Plätze) | 5,7 KB | – |
+| `delta` | 2,5 KB | 3,7 KB |
+
+Im Budget: Ereignisse 9 Byte je Tick (Q08: 200 Byte, der Test prüft es). Für den ganzen Zustand gibt es keine Grenze;
+ein `snap` kommt nur nach `level`. Das `delta` braucht ≈ 74 KB/s (≈ 0,6 Mbit/s) je Gerät und Stufe, ≈ 20 % über der
+Schätzung der TS-Messung unten (61 KB/s), für WLAN im Heimnetz unkritisch; unveränderte Plätze stehen im `delta` nicht.
+Kein Folge-Ticket nötig.
 
 **Je Gerät (S2.4, B-176/AC-04):** Mit mehreren Stufen gilt das Budget **je Gerät**, also für die Summe über seine
 Stufen. Geprüft von `TestStufenEreignisBudgetJeGeraet` (`engine/room/stages_bench_test.go`): ein Gerät, zwei Spieler in

@@ -343,7 +343,7 @@ export interface World {
 
   /** Ereignisse des letzten Ticks (für HUD-Meldungen), werden bei jedem step() geleert. */
   events: GameEvent[];
-  /** Vom Server verworfene Ereignisse dieses Ticks (Obergrenze je Tick); fehlt bei 0. */
+  /** Vom Server verworfene Ereignisse seit dem vorigen Zustand der Stufe (Obergrenze je Tick, Warteschlange); fehlt bei 0 (B-190). */
   eventsDropped?: number;
 }
 

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/coder/websocket"
@@ -56,6 +57,7 @@ type bot struct {
 	run    *roomRun // nur beim ersten Bot eines Raums: sammelt die Tick-Reihe
 	start  time.Time
 	done   sync.WaitGroup
+	leave  atomic.Bool // stop hat leave gesendet: keine Eingaben mehr, Antworten darauf zählen nicht (B-286)
 }
 
 // startRooms verbindet alle Bots: der erste je Raum erstellt ihn, die anderen treten per Code bei. Bei einem Fehler
@@ -172,8 +174,10 @@ func (b *bot) play() {
 		if json.Unmarshal(data, &m) != nil {
 			continue
 		}
-		switch m.T {
-		case "snap", "delta":
+		switch {
+		case b.leave.Load():
+			// Nach leave beantwortet der Server eine noch unterwegs gesendete Eingabe mit bad_request (B-286).
+		case m.T == "snap" || m.T == "delta":
 			if b.run != nil {
 				b.run.Ticks = append(b.run.Ticks, tickPoint{time.Since(b.start), m.Tick})
 			}
@@ -181,7 +185,7 @@ func (b *bot) play() {
 			if b.send(ctx, outMsg{T: "input", Seq: b.seq, P: []pad{b.script.next()}}) != nil {
 				return
 			}
-		case "error":
+		case m.T == "error":
 			if b.run != nil {
 				b.run.Errors++
 			}
@@ -193,6 +197,7 @@ func (b *bot) play() {
 func (b *bot) stop() {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
+	b.leave.Store(true)
 	_ = b.send(ctx, outMsg{T: "leave"})
 	_ = b.ws.Close(websocket.StatusNormalClosure, "Lauf beendet")
 	b.done.Wait()
