@@ -65,7 +65,7 @@ Zahl der Schritte je Inselstufe (2 oder 3), Kosten und Bauzeit je Schritt, Zahl 
 | GEB17.4 | `GEB17.4-sim-protokoll-hubstep.md` | Umsetzung | autonom | fertig |
 | GEB17.5 | `GEB17.5-client-schritt-wartegrund.md` | Umsetzung | autonom | fertig |
 | GEB17.6 | `GEB17.6-grafik-wachstumsreihe.md` | Umsetzung | autonom | fertig |
-| GEB17.7 | `GEB17.7-review.md` | Review | autonom | offen |
+| GEB17.7 | `GEB17.7-review.md` | Review | autonom | fertig |
 | GEB17.8 | `GEB17.8-abnahme-geraet.md` | Workshop | Mensch | offen |
 
 - GEB17.1 (CLI, ggf. SRV) Ausbau-Angebot vor der Burg: Ursache per `room_snapshot` nachstellen (`siteView.ts`, `priceTagRules.ts`, `hubSite` oder `hubUpgrade`), beheben, Test der Anzeige-Regel (AC-01).
@@ -79,5 +79,7 @@ Zahl der Schritte je Inselstufe (2 oder 3), Kosten und Bauzeit je Schritt, Zahl 
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-25, Claude (GEB17.7): `task check`, `task check:go` und `check:studio` grün; `check:race` lokal übersprungen (kein C-Compiler).
+AC-01: GEB17.1 (Angebot vor der Burg). AC-02: GEB17.3, vorentschieden über B-623 (KRT). AC-03: GEB17.4 (hubStep, Material-Tor; Review Opus APPROVE, kein Deadlock). AC-04: GEB17.5. AC-05: GEB17.6 (15 Ansichten).
+Gestapelt auf KB1 (#481), Golden unverändert.
+Offen: AC-06, die Abnahme am Gerät durch Ralf (GEB17.8); Bestätigung der Stufenfolge über B-623.

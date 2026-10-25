@@ -1,6 +1,6 @@
 # GEB17.7 · Review GEB17
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -50,5 +50,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 bis AC-05: geprüft mit `task check`, `task check:go` und `check:studio` (grün) sowie dem Review zu GEB17.3 bis 17.5 und der Sichtprüfung zu GEB17.6.
+- Die Abnahme steht in der Sprint-README.
