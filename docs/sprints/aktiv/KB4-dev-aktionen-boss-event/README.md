@@ -57,7 +57,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| KB4.1 | `KB4.1-dev-aktionen-server.md` | Umsetzung | autonom | in Arbeit |
+| KB4.1 | `KB4.1-dev-aktionen-server.md` | Umsetzung | autonom | fertig |
 | KB4.2 | `KB4.2-debug-panel-kampf.md` | Umsetzung | autonom | offen |
 | KB4.3 | `KB4.3-review.md` | Review | autonom | offen |
 | KB4.4 | `KB4.4-abnahme-pc.md` | Workshop | Mensch | offen |

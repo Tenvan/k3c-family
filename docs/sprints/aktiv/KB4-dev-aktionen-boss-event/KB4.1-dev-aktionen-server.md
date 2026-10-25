@@ -1,6 +1,6 @@
 # KB4.1 · Dev-Aktionen boss, bossPhase, event und night im Server
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -50,5 +50,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 und AC-02: umgesetzt.
+  - Die Dev-Aktionen `boss`, `bossPhase`, `event` (fullMoon, bloodMoon, merchantRaid) und `night` laufen nur im Dev-Mode, sonst `forbidden`; falsche Argumente ergeben `bad_request`.
+  - Protokoll additiv, Beispiele `c2s-dev-{boss,bossphase,event,night}.json`.
+- Geprüft mit `go test ./engine/... ./cmd/...` (Golden unverändert) und golangci-lint, beide grün.
+- Review (Opus): Das normale Spiel bleibt unverändert, inklusive rng-Reihenfolge von `merchantArrive`. Fix: Die Dev-Nacht springt nicht auf die nächste Insel über. Die Doku nennt die Folgen im Spielstand.
+- Abweichung: Den Boss „Eisenherr“ aus dem Beispiel gibt es nicht, das Beispiel nutzt `goblinLeader`.

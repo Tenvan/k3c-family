@@ -73,9 +73,13 @@ func findEvent(events []NightEvent, id string) *NightEvent {
 func fullMoon() *NightEvent  { return findEvent(nightEvents, "fullMoon") }
 func bloodMoon() *NightEvent { return findEvent(nightEvents, "bloodMoon") }
 
-// eventInNight: Das Event läuft in Nacht n der Insel (Nacht n = Cycle.Day n, die Nacht gehört zum Tag davor).
+// eventInNight: Das Event läuft in Nacht n der Insel (Nacht n = Cycle.Day n, die Nacht gehört zum Tag davor), nach
+// Rhythmus oder erzwungen von der Dev-Aktion event (DevFlags.Nights).
 func eventInNight(w *World, ev *NightEvent, n int) bool {
-	return w.island != nil && n > 0 && ev.EveryNights > 0 && n%ev.EveryNights == 0 // ohne Nacht-Rhythmus: merchantRaid
+	if w.island == nil || n <= 0 {
+		return false
+	}
+	return (ev.EveryNights > 0 && n%ev.EveryNights == 0) || w.island.Dev.Nights[ev.ID] == n // ohne Nacht-Rhythmus: merchantRaid
 }
 
 // eventActive: Das Event läuft jetzt (Phase night).
