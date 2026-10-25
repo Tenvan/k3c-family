@@ -132,6 +132,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-625](B-625-balance-baseline-neu.md) | REG | Schuld | mittel | offen | – | Balance-Baseline nach BAL6 neu schreiben |
 | [B-626](B-626-rg1-werte-entscheiden.md) | REG | Frage | mittel | offen | – | Wertvorschläge aus RG1.1 und BR2.1 entscheiden |
 | [B-627](B-627-rg2-regelklaerungen.md) | REG | Frage | mittel | offen | – | Regelklärungen RG2.1 (Handwerker, Verlust-Korridor, Gold-Schwelle) entscheiden |
+| [B-630](B-630-quellen-werden-nicht-uebernommen.md) | DEV | Problem | mittel | offen | – | Quellen werden nicht übernommen |
+| [B-631](B-631-tore-treppen-material-je-stufe.md) | SIM | Idee | hoch | offen | – | Tore, Treppen und Material-Tor nutzen nur Material der eigenen Stufe, Bau läuft durchgängig |
 
 ## Archiv
 
