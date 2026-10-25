@@ -7,6 +7,7 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 - **Objekt-IDs** (eindeutig, von `src/tools/zuordnung.test.ts` geprüft):
   `hub:<1–5>` Hub-Stufe, `hub:camp:<1–3>` Vorstufe der Holzburg (Lagerfeuer, Zelt, Hütte) und `hub:scaffold` Baugerüst (GEB11), `site:scaffold:<1|2|3|4|6>` Gerüst im Bau je Breite und `sign:<axe|pickaxe>` Abbau-Symbol (GEB16), `wall:<1–5>` und `tower:<1–5>` Mauer- und Turm-Stufe (`tower:5` = Zaubertum),
 
+
   `hub:<1–5>` Hub-Stufe, `hub:camp:<1–3>` Hub-Stufe 1 in den Ausbauschritten 1–3 (Lagerfeuer, Zelt, Hütte), `hub:<2–5>:<2|3>` Burg der Hub-Stufe im Ausbauschritt 2 oder 3 (GEB17.6) und `hub:scaffold` Baugerüst (GEB11), `site:scaffold:<1|2|3|4|6>` Gerüst im Bau je Breite und `sign:<axe|pickaxe>` Abbau-Symbol (GEB16), `wall:<1–5>` und `tower:<1–5>` Mauer- und Turm-Stufe (`tower:5` = Zaubertum),
   `material:<wood|stone|copper|iron|crystal>`, `vein:<stone|copper|iron|crystal>` Ader je Material,
   `plantation`, `portal`, `coin`, `mount:<ID aus data/sprites.json › mounts>`,

@@ -1,14 +1,38 @@
+<<<<<<<< HEAD:docs/sprints/aktiv/GEB16-bauschilder-wald-geruest/GEB16.7-abnahme-geraet.md
+# GEB16.7 · Abnahme am Gerät: Schilder, Wald, Gerüst, Abbau-Symbole
+|||||||| 819c53d3:docs/sprints/geplant/GEB17-hub-ausbau-je-inselstufe/GEB17.6-grafik-wachstumsreihe.md
+# GEB17.6 · Eigene Grafik je Schritt der Wachstumsreihe
+========
 # GEB15.4 · Abnahme am Gerät: Wurzeln, Felsen, Minen
+>>>>>>>> origin/develop:docs/sprints/aktiv/GEB15-hoehle-fels-varianten/GEB15.4-abnahme-geraet.md
 
 - **Status:** offen
 - **Typ:** Workshop
 - **Agent:** Mensch
+<<<<<<<< HEAD:docs/sprints/aktiv/GEB16-bauschilder-wald-geruest/GEB16.7-abnahme-geraet.md
+- **Domäne:** CLI
+- **Umgebung:** live
+- **Branch:** geb16/7-abnahme-geraet
+- **Abhängig von:** GEB16.6
+- **Tickets:** B-584, B-585
+- **Kriterien:** AC-05
+|||||||| 819c53d3:docs/sprints/geplant/GEB17-hub-ausbau-je-inselstufe/GEB17.6-grafik-wachstumsreihe.md
+- **Typ:** Umsetzung
+- **Agent:** autonom
+- **Domäne:** DEV
+- **Umgebung:** offline
+- **Branch:** geb17/6-grafik-wachstumsreihe
+- **Abhängig von:** GEB17.3
+- **Tickets:** B-590
+- **Kriterien:** AC-05
+========
 - **Domäne:** DEV
 - **Umgebung:** live
 - **Branch:** geb15/4-abnahme-geraet
 - **Abhängig von:** GEB15.3
 - **Tickets:** B-582, B-583
 - **Kriterien:** AC-03
+>>>>>>>> origin/develop:docs/sprints/aktiv/GEB15-hoehle-fels-varianten/GEB15.4-abnahme-geraet.md
 
 ## Ziel
 

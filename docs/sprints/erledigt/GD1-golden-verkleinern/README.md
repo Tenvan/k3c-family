@@ -1,14 +1,14 @@
 # GD1 · INF · Golden-Daten kleiner bei gleicher Prüfschärfe
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** TST
 - **Domäne:** INF
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-419
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 80f2d3e9
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25, Revision 1 (Ziel von Ralf: Specs genehmigt; Weg vorentschieden über B-624; gestapelt auf sprint/geb17 wegen der Golden-Regel)
 
 ## Ausgangslage
 
@@ -53,6 +53,12 @@ Gewählter Weg macht Diffs unlesbar → Lesehilfe (`task`) oder anderer Weg, im 
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| GD1.1 | `GD1.1-wege-messen.md` | Workshop | Mensch | fertig |
+| GD1.2 | `GD1.2-golden-gzip.md` | Umsetzung | autonom | fertig |
+| GD1.3 | `GD1.3-review.md` | Review | autonom | fertig |
+
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - GD1.1 (INF, Mensch) Workshop: Wege messen und wählen (AC-01).
@@ -61,5 +67,6 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-25, Claude (GD1.3): `task check` und `task check:go` grün; `check:race` lokal übersprungen (kein C-Compiler).
+AC-01 erfüllt durch GD1.1/GD1.2: gzip mit textconv-Diffs, 18 756 751 → 760 737 B, vorentschieden über B-624 (KRT). AC-02 durch GD1.2: Inhalt byte-gleich, Abweichungs-Test über den gz-Pfad. arm64 prüft die CI.
+Die Grenze liegt wieder bei 16 MB; B-620 ist damit hinfällig. Gestapelt auf GEB17 (#482).

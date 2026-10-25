@@ -79,7 +79,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-411](B-411-spieler-abmelden.md) | CLI | Problem | hoch | eingeplant | BD4 | Lokale Spieler können beitreten, aber nicht einzeln austreten |
 | [B-412](B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | eingeplant | W11 | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | eingeplant | BD4 | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
-| [B-419](B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | eingeplant | GD1 | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
 | [B-422](B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | eingeplant | W11 | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
 | [B-435](B-435-gebaeude-grafik-per-prompt.md) | DEV | Idee | mittel | eingeplant | GEB1 | Gebäude und Strukturen entstehen im Asset-Manager aus Beschreibung und Prompt |
 | [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | eingeplant | GEB6 | Werkstatt und Bäume aus tools/buildings erscheinen im Spiel |
@@ -140,6 +139,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | offen | – | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
 | [B-622](B-622-fackeln-als-spielobjekt.md) | SIM | Idee | niedrig | offen | – | Fackeln gibt es als Spielobjekt mit Licht in der Nacht |
 | [B-623](B-623-hub-stufenfolge-bestaetigen.md) | REG | Frage | mittel | offen | – | Stufenfolge des Hubs (3 Schritte je Hub-Stufe, Material-Tor) bestätigen |
+| [B-624](B-624-golden-gzip-bestaetigen.md) | INF | Frage | mittel | offen | – | Golden-Daten als gzip mit lesbaren Diffs bestätigen |
 
 ## Archiv
 
@@ -590,3 +590,5 @@ Zeile in diesen Abschnitt.
 | [B-379](archiv/B-379-vollmond-belohnung-nur-stufe-0.md) | SIM | Problem | mittel | erledigt | KB1 | Die Vollmond-Belohnung gilt für die Stufen, in denen gespielt wird |
 | [B-380](archiv/B-380-blutmond-boss-faehigkeiten.md) | SIM | Problem | niedrig | erledigt | KB1 | Der Blutmond verstärkt auch die Flächenangriffe der Bosse |
 | [B-327](archiv/B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | erledigt | KB1 | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
+| [B-419](archiv/B-419-golden-daten-verkleinern.md) | INF | Idee | niedrig | erledigt | GD1 | Golden-Daten werden gezielt verkleinert, ohne die Prüfschärfe zu verlieren |
+| [B-620](archiv/B-620-golden-grenze-20-mb.md) | INF | Frage | mittel | erledigt | – | Golden-Grenze 20 MB nach dem dichteren Wald bestätigen |
