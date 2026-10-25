@@ -1,6 +1,6 @@
 # KB1.4 · Feuergeist: Flammen-Fläche umsetzen oder Regel anpassen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -46,5 +46,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04: umgesetzt. Laut Entscheidung gibt es keine Flammen-Fläche. `docs/rules/gegner.md` § 1 vermerkt, dass der Feuergeist bis zur Entscheidung von Ralf (B-328) nur Fernkampf mit Abstand hat.
