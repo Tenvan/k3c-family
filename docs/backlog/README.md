@@ -50,6 +50,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | eingeplant | SV1 | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
 | [B-317](B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | eingeplant | U5 | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
 | [B-327](B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | eingeplant | KB1 | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |
+| [B-324](B-324-client-typen-gegnerdaten.md) | CLI | Schuld | niedrig | eingeplant | KB2 | Die Client-Typen der Gegner- und Wellendaten passen zu den JSON-Dateien |
 | [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
 | [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | HW1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
 | [B-341](B-341-header-ursache-live-messen.md) | DEV | Problem | mittel | eingeplant | WZ2 | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
@@ -67,6 +68,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-378](B-378-castfailed-einmal-je-druck.md) | SIM | Problem | mittel | eingeplant | BD2 | Eine gehaltene Skill-Taste ohne Ziel meldet castFailed einmal je Tastendruck |
 | [B-379](B-379-vollmond-belohnung-nur-stufe-0.md) | SIM | Problem | mittel | eingeplant | KB1 | Die Vollmond-Belohnung gilt für die Stufen, in denen gespielt wird |
 | [B-380](B-380-blutmond-boss-faehigkeiten.md) | SIM | Problem | niedrig | eingeplant | KB1 | Der Blutmond verstärkt auch die Flächenangriffe der Bosse |
+| [B-381](B-381-protokoll-haendler-raid-hp.md) | SRV | Problem | niedrig | eingeplant | KB2 | Das Protokoll beschreibt Überfall und HP des Händlers |
 | [B-382](B-382-lobby-neuversuch-nur-spielen.md) | CLI | Problem | niedrig | eingeplant | BD2 | Ein gewählter Spielstand startet nie leer neu |
 | [B-387](B-387-ticketnummern-parallele-worktrees.md) | DEV | Problem | mittel | eingeplant | WZ2 | Ticket-Nummern bleiben zwischen parallelen Worktrees eindeutig |
 | [B-394](B-394-xbox-overlay-gesten-abnahme.md) | PLAT | Frage | niedrig | eingeplant | HW1 | Overlay-Gesten (RB, LB + RB) sind an der Xbox abgenommen (B-195/AC-02) |
@@ -586,3 +588,6 @@ Zeile in diesen Abschnitt.
 | [B-354](archiv/B-354-bot-eingabe-impulse-frist.md) | PLAT | Problem | mittel | erledigt | TR4 | Die Bot-Eingabe verliert keine kurzen Drücke und hält bei stummem Feed an |
 | [B-184](archiv/B-184-pages-screenshots.md) | PLAT | Idee | niedrig | erledigt | PG1 | Die Präsentationsseite zeigt echte Bilder aus dem Spiel |
 | [B-470](archiv/B-470-morgengrauen-als-phase.md) | SIM | Idee | niedrig | erledigt | W12 | Der Tageszyklus hat eine eigene Phase Morgengrauen (Q65, 3:1:2:1) |
+| [B-379](archiv/B-379-vollmond-belohnung-nur-stufe-0.md) | SIM | Problem | mittel | erledigt | KB1 | Die Vollmond-Belohnung gilt für die Stufen, in denen gespielt wird |
+| [B-380](archiv/B-380-blutmond-boss-faehigkeiten.md) | SIM | Problem | niedrig | erledigt | KB1 | Der Blutmond verstärkt auch die Flächenangriffe der Bosse |
+| [B-327](archiv/B-327-golden-tiefe-stufen.md) | SIM | Frage | niedrig | erledigt | KB1 | Golden-Läufe decken Eisenstollen und Kristallhöhle ab |

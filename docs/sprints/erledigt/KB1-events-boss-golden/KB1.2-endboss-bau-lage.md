@@ -1,6 +1,6 @@
 # KB1.2 · Lage des Endboss-Baus im Ausgangs-Chunk entscheiden und umsetzen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -46,5 +46,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02: Die Lage ist entschieden (KR6): innere Kante des Ausgangs-Chunks. Belegt durch `TestValidate500Seeds`, `TestLairNurInDerKristallhoehle` und `TestValidateMeldetFalschenBau` (grün).
+- Nur der veraltete Kommentar in `engine/level/biome.go` ist angepasst.

@@ -22,7 +22,7 @@ Werte der **neuen** Gegner (Startwerte; bestehende Gegner wie in `data/enemies.j
 |---|---|---|---|---|---|---|
 | Lavaschleim | 120 | 25 | 3 | 1 | wie Zombie-Klasse | – |
 | Eisenkäfer | 90 | 18 | 5 | 1 | wie Wolf-Klasse | – |
-| Feuergeist (Elite) | 150 | 35 | 3 | 8 | Elite-Klasse | Fernkampf mit Flammen-Fläche |
+| Feuergeist (Elite) | 150 | 35 | 3 | 8 | Elite-Klasse | Fernkampf mit Abstand (`ranged`, `kiting`); eine Flammen-Fläche gibt es bis zur Entscheidung von 🧑 nicht (B-328, KB1) |
 | Kristallspinne | 110 | 28 | 5 | 1 | wie Zombie-Klasse | – |
 | Splitterwicht | 60 | 15 | 6 | 1 | wie Ratte | `swarm` |
 | Kristallwächter (Elite) | 350 | 45 | 2 | 2 | Elite-Klasse | Flächenschlag (Radius 3) |

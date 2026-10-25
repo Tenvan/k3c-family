@@ -40,7 +40,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | SO8 | DEV, CLI | SND | Skill-Sounds je Klasse | – | bereit | `geplant/SO8-skill-sounds-je-klasse/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | GD1 | INF | TST | Golden-Daten kleiner bei gleicher Prüfschärfe | – | Entwurf | `geplant/GD1-golden-verkleinern/` |
-| KB1 | SIM | KMP | Kampf-Nachträge: Mond-Events, Endboss-Bau, Golden-Läufe, Feuergeist | – | Entwurf | `geplant/KB1-events-boss-golden/` |
 | KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | Entwurf | `geplant/KB4-dev-aktionen-boss-event/` |
 | PG1 | PLAT | REL | Präsentationsseite mit echten Spielbildern | – | Entwurf | `geplant/PG1-praesentation-bilder/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | Entwurf | `geplant/PB1-itch-io/` |

@@ -1,6 +1,6 @@
 # KB1.1 · Vollmond-Belohnung und Blutmond-Faktor gelten in allen bespielten Stufen und für Boss-Flächen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -48,5 +48,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01: umgesetzt.
+  - Die Vollmond-Belohnung zahlt jede bespielte Stufe, deren Burg hielt, an ihrem Hub, höchstens einmal je Stufe und Nacht. Stichtag ist das Morgengrauen.
+  - Der Blutmond verstärkt Flächenangriff und Splitter der Bosse über `moonDamage`, die Bodenfläche bleibt ohne Faktor.
+  - `docs/rules/bosse.md` ist nachgezogen.
+- Geprüft mit `go test ./engine/...` (neu `events_moon_stages_test.go`, 5 Tests) und golangci-lint. Die bestehende Golden bleibt unverändert.
+- Review: keine schweren Befunde. Der Stichtag „Morgengrauen“ ist bewusst einfach gehalten (Wechsel kurz davor verschiebt die Belohnung) und in der Regeldatei vermerkt.

@@ -5,8 +5,6 @@
 offene Raum speichert, seine Geräte bekommen `room_closed` und gehen zurück zur Raumliste. `hello.v` muss 9 sein; ein
 v8-Client erhält `version`. Beispiel: `s2c-rooms.json`.
 
-<<<<<<< ours
-=======
 **Nachgetragen ohne neue Version (W11.3, B-410):** `actions` kennt `{ "action": "train", "profession" }` (Ausbilden am Berufs-Angebot) und `{ "action": "trade", "side", "resource" }` (Tauschen am Händler; Beispiel `s2c-snapshot-wirtschaft.json`). Anzeige im Client ab W11.4.
 
 **Nachgetragen ohne neue Version (W11.2, B-208, B-408):** `sites[].hubLevel` (Platz-Stufe); unbezahlte Plätze über Hub-Stufe + 1 fehlen im Zustand (siehe *Wirtschaft*). Ein älterer Client ignoriert das Feld und zeichnet weniger Plätze.
@@ -25,7 +23,6 @@ ein älterer Server ignoriert das Feld und lehnt die leeren `slots` mit `bad_req
 { "t": "join", "room": "KRNZ", "observe": true }
 ```
 
->>>>>>> theirs
 **Nachgetragen ohne neue Version (W12.2, B-470):** `cycle.phase` in `snap`/`delta` kennt den neuen Wert `dawn`
 (Morgengrauen): Der Zyklus läuft `day` → `dusk` → `night` → `dawn` → `day` (siehe *Tageszeit*). Das Ereignis `dawn` fällt
 bei Beginn der Phase `dawn`, nicht mehr bei Beginn des Tages; der Wechsel `dawn` → `day` meldet nichts. Ein älterer Client

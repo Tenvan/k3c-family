@@ -1,6 +1,6 @@
 # KB1.3 · Golden-Läufe für Eisenstollen und Kristallhöhle
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -47,5 +47,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03: umgesetzt. Neue Golden-Läufe `sim-ironhold-welle.json` und `sim-crystal-welle.json` (voller Aggressionspool, 2 Spieler, 1500 Ticks), dazu das Feld `Aggression` in `sim_test.go`. Golden gesamt 17,9 MiB (Grenze 20 MiB).
+- Geprüft mit `go test ./engine/...` und `vitest tests` (Größe), beide grün.
+- Abweichung: Welle 1 zieht nur Grundgegner, Feuergeist und Kristallwächter kommen in den Läufen nicht vor.

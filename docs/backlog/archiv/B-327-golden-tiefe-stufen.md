@@ -4,13 +4,13 @@
 - **Typ:** Frage
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** KB1
 - **Projekt:** KMP
 - **Erstellt:** 2026-10-06
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-10-25
 
 ## Ausgangslage
 
