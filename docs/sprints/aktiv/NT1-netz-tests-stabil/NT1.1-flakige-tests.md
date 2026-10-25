@@ -1,6 +1,6 @@
 # NT1.1 · Flakige Tests: TestRestore, TestGleicherSeedGleicheEingaben, TestTickReiheJeRaum
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -50,5 +50,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 bis AC-03: umgesetzt.
+  - `TestRestore` (B-274): Ursache im Code. `store()` behandelte einen Lesefehler als „kein Stand“ und überschrieb ohne Sicherung. Jetzt liest es begrenzt erneut (6 × 20 ms) und bricht sonst ohne Überschreiben ab. Die Ursache ist vermutet: Sie passt zum Fehlerbild, ließ sich aber nicht nachstellen.
+  - `TestTickReiheJeRaum` (B-286): Der Bot schickte nach `leave` noch eine Eingabe, das ergab `bad_request`. Jetzt schickt er nach `leave` nichts mehr.
+  - `TestGleicherSeedGleicheEingaben` (B-284): Statt einer festen Wanduhr von 2 s läuft der Test bis 30 Eingaben je Bot (höchstens 30 s).
+- Geprüft unter Last (parallel `go test -count=3 -p 8 ./engine/...`): TestRestore `-count=200`, die anderen beiden `-count=20`, alle grün. Review (Opus) ohne schwere Befunde.

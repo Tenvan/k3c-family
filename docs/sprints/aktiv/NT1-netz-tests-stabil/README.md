@@ -59,7 +59,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NT1.1 | `NT1.1-flakige-tests.md` | Umsetzung | autonom | in Arbeit |
+| NT1.1 | `NT1.1-flakige-tests.md` | Umsetzung | autonom | fertig |
 | NT1.2 | `NT1.2-warteschlange-budget.md` | Umsetzung | autonom | offen |
 | NT1.3 | `NT1.3-review.md` | Review | autonom | offen |
 
