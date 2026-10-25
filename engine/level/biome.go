@@ -39,6 +39,8 @@ type Biome struct {
 		Count int    `json:"count"`
 		Kind  string `json:"kind"`
 	} `json:"veins"`
+	// BackdropVariants: Zahl der Hintergrund-Varianten (GEB18, backdrop.go); 0 = keine Folge.
+	BackdropVariants int `json:"backdropVariants"`
 	// Lair: Das Level hat den Bau des Endbosses (Entität `lair` an der inneren Kante des Ausgangs-Chunks, B-343); ohne Feld keinen.
 	Lair bool `json:"lair"`
 	// Lava: Chunks der Art „lava“ tragen in der Mitte einen Streifen von WidthUnits, der Figuren DamagePerSecond

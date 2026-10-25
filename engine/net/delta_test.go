@@ -17,6 +17,7 @@ func apply(prev, d map[string]any) map[string]any {
 		next[k] = v
 	}
 	next["events"] = []any{}
+	delete(next, "eventsDropped") // gilt wie events nur für den Zustand, in dem es steht (B-190)
 	for k, v := range d {
 		if k == "unset" {
 			for _, f := range v.([]any) {

@@ -327,7 +327,7 @@ type World struct {
 	NightEvents  []ActiveEvent `json:"nightEvents,omitempty"`
 	IslandSwitch *SwitchState  `json:"islandSwitch,omitempty"`
 	// EventsDropped zählt die Ereignisse, die die Obergrenze je Tick in diesem Step verworfen hat (capEvents).
-	EventsDropped int `json:"eventsDropped,omitempty"` // 0 fehlt im JSON (Protokoll-Beispiele unverändert, Übertragung: B-190)
+	EventsDropped int `json:"eventsDropped,omitempty"` // 0 fehlt im JSON; gilt wie Events nur je Zustand (docs/protocol.md, B-190)
 
 	// noTravel: Die Stufe gehört zu einer Insel, deren Spieler einzeln wechseln (island_travel.go); der gemeinsame
 	// Stufenwechsel der Campaign (stepTravel) ist dort aus.

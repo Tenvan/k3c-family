@@ -149,10 +149,10 @@ func TestSimTestClientsFakeClient(t *testing.T) {
 	oldSample, oldTick := onlineSample, clientTick
 	onlineSample, clientTick = 300*time.Millisecond, 50*time.Millisecond
 	t.Cleanup(func() { onlineSample, clientTick = oldSample, oldTick })
-	id := start(t, s, simTestIn{Mode: "online", Clients: 2, Players: 2, Duration: "3s", Focus: []string{"perf", "stability"}})
+	id := start(t, s, simTestIn{Mode: "online", Clients: 2, Players: 4, Duration: "3s", Focus: []string{"perf", "stability"}})
 	out := waitDone(t, s, id)
 	t.Log("\n" + out)
-	for _, want := range []string{"✅ " + id, "online·2 Clients·perf,stability", "2 Clients × 2 Spieler (saver), gestartet",
+	for _, want := range []string{"✅ " + id, "online·2 Clients·perf,stability", "2 Clients × 4 Spieler (saver), gestartet, Beobachter ohne Platz",
 		"Feed: verbunden 2/2, nie verbunden 0", "Client-FPS min 58, Mittel 60; Latenz max 40 ms, Puffer max 80 ms (4 Diagnose-Zeilen)",
 		"Client-Fehler 0", "Trennungen 0, Fehler 0"} {
 		if !strings.Contains(out, want) {
@@ -168,8 +168,8 @@ func TestSimTestClientsFakeClient(t *testing.T) {
 		t.Fatalf("Räume %v, erwartet 2", f.got)
 	}
 	for room, slots := range f.got {
-		if slots[0] == 0 || slots[1] == 0 || len(slots) != 2 {
-			t.Errorf("Raum %s: Kommandos je Slot %v, erwartet Slot 0 und 1", room, slots)
+		if slots[0] == 0 || slots[3] == 0 || len(slots) != 4 { // B-352/AC-02: 4 Spieler, der Beobachter hat keinen Platz
+			t.Errorf("Raum %s: Kommandos je Slot %v, erwartet Slot 0 bis 3", room, slots)
 		}
 	}
 }
@@ -191,7 +191,7 @@ func TestSimTestClientsAblehnung(t *testing.T) {
 		in   simTestIn
 		want string
 	}{
-		{simTestIn{Clients: 1, Players: 4}, "players 1 bis 3 mit Clients"},
+		{simTestIn{Clients: 1, Players: 5}, "players 1 bis 4"},
 		{simTestIn{Clients: 2, Rooms: 2}, "rooms ergibt sich aus clients"},
 		{simTestIn{Clients: 2, Attach: "ABCD"}, "attach nur mit mode online und clients 1"},
 		{simTestIn{Clients: 1, Attach: "AB1"}, "attach: Raumcode aus 4 Buchstaben"},
