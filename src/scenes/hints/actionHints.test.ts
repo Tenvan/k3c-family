@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { setLanguage } from '../../core/texts';
-import type { Player, Site, World } from '../../model/types';
+import { nameOf, setLanguage } from '../../core/texts';
+import type { Player, PlayerAction, Site, World } from '../../model/types';
 import type { Device } from '../../input/slotBindings';
 import { GAME_WIDTH } from '../../core/constants';
-import { HINT_FONT, hintView, playerHint, type Hint } from './actionHints';
+import { HINT_FONT, WEIGHT, hintView, playerHint, type Hint } from './actionHints';
 import { FONTS, minFontPx } from '../render/fontRules';
 
 const player = (over: Partial<Player> = {}): Player =>
@@ -64,6 +64,38 @@ describe('hintView: Aktion → Taste und Text je Gerät (B-125/AC-01)', () => {
   });
 });
 
+describe('Ausbilden und Tauschen (W11.4, B-410)', () => {
+  const train = (profession: string): Hint => ({ action: 'train', profession });
+  const trade = (side: 'buy' | 'sell', resource: string): Hint => ({ action: 'trade', side, resource });
+
+  it('deutsche Texte: Taste halten, Beruf bzw. Material aus den Textdateien', () => {
+    expect(hintView(train('miner'), 'pad').text).toBe('A halten: Bergmann ausbilden');
+    expect(hintView(train('craftsman'), 'touch').text).toBe('🪙 halten: Handwerker ausbilden');
+    expect(hintView(trade('buy', 'stone'), 'pad').text).toBe('A halten: Stein kaufen');
+    expect(hintView(trade('sell', 'stone'), 'pad').text).toBe('A halten: Stein verkaufen');
+  });
+
+  it('englische Texte', () => {
+    setLanguage('en');
+    expect(hintView(train('miner'), 'pad').text).toBe('Hold A: train Miner');
+    expect(hintView(trade('buy', 'copper'), 'pad').text).toBe(`Hold A: buy ${nameOf('res', 'copper', 'copper')}`);
+    expect(hintView(trade('sell', 'copper'), 'pad').text).toMatch(/^Hold A: sell \S/);
+  });
+
+  it('unbekanntes Material oder unbekannter Beruf: Name aus dem Protokoll, kein Absturz', () => {
+    expect(hintView(trade('buy', 'mithril'), 'pad').text).toBe('A halten: mithril kaufen');
+    expect(hintView(train('wizard'), 'pad').text).toMatch(/^A halten: .+ ausbilden$/);
+  });
+
+  it('Gewicht wie Bezahlen: über Schlag und Skills, unter Wiederbeleben', () => {
+    expect(WEIGHT.train).toBe(WEIGHT.pay);
+    expect(WEIGHT.trade).toBe(WEIGHT.pay);
+    expect(WEIGHT.trade).toBeGreaterThan(WEIGHT.attack);
+    expect(WEIGHT.revive).toBeGreaterThan(WEIGHT.train);
+    expect(hintView(trade('buy', 'stone'), 'pad').weight).toBe(WEIGHT.trade);
+  });
+});
+
 describe('playerHint: ein Hinweis je Spieler (B-319)', () => {
   const skill = { action: 'skill', slot: 1, skill: 'taunt' } as const;
 
@@ -73,10 +105,17 @@ describe('playerHint: ein Hinweis je Spieler (B-319)', () => {
     expect(playerHint(world([]), player(), 'pad')).toBeNull();
   });
 
-  it('ignoriert Aktionen, die der Client noch nicht kennt (train, trade; W11.3)', () => {
-    const fremd = [{ action: 'train', profession: 'miner' }, { action: 'trade', side: 'buy', resource: 'stone' }] as const;
-    expect(playerHint(world([]), player({ actions: [...fremd, { action: 'attack' }] }), 'pad')?.text).toBe('X: Schlag');
-    expect(playerHint(world([]), player({ actions: [...fremd] }), 'pad')).toBeNull();
+  it('ignoriert Aktionen, die der Client nicht kennt (W11.3)', () => {
+    const fremd = { action: 'grave' } as unknown as PlayerAction;
+    expect(playerHint(world([]), player({ actions: [fremd, { action: 'attack' }] }), 'pad')?.text).toBe('X: Schlag');
+    expect(playerHint(world([]), player({ actions: [fremd] }), 'pad')).toBeNull();
+  });
+
+  it('Ausbilden und Tauschen stehen auch am Preisschild: Sie sagen, was das Bezahlen tut (W11.4)', () => {
+    const train = { action: 'train', profession: 'builder' } as const;
+    expect(playerHint(world([site({})]), player({ actions: [{ action: 'attack' }, train] }), 'pad')?.text).toBe('A halten: Baumeister ausbilden');
+    const sell = { action: 'trade', side: 'sell', resource: 'iron' } as const;
+    expect(playerHint(world([]), player({ actions: [{ action: 'attack' }, sell] }), 'keyboard')?.text).toBe('Leertaste halten: Eisen verkaufen');
   });
 
   it('im Bereich eines Preisschilds kein Hinweis, das Preisschild trägt die Aktion (AC-02)', () => {
