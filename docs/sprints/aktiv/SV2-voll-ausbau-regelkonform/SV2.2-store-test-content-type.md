@@ -1,6 +1,6 @@
 # SV2.2 · Test mit echtem store.Saves, Content-Type-Prüfung für fullsave
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -50,5 +50,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03: umgesetzt. `POST /api/dev/fullsave` antwortet ohne `application/json` mit 415 und loggt mit 🚫 (`; charset=utf-8` ist erlaubt). Der Test mit echtem `store.Saves` liegt in `engine/room/fullsave_rules_test.go` (Commit SV2.1).
+- Geprüft mit `go test ./engine/...` und golangci-lint (grün). Review ohne schwere Befunde.
