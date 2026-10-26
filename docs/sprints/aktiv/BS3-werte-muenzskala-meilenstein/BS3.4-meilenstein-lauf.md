@@ -55,10 +55,10 @@ Balancing nur über `sim_test`.
 
 ## Ergebnis
 
-**Blockiert, Entscheidung 🧑 nötig (B-645).** Meilenstein-Lauf nicht grün, nach fünf Diagnose-Läufen kein Justieren der Werte sinnvoll: Das Problem liegt bei den Bots, nicht bei den Preisen.
+**Blockiert/in Arbeit, Richtungswechsel von 🧑 (2026-10-26): erst Single-Player, erst Durchspielbarkeit sichern, Werte für coop2 später.**
 
-- Läufe über `sim_test` auf der neu gestarteten Workbench (`wait: true` funktioniert): `run-1` bis `run-5` (coop2 und wirtschaft, standard, 40 Tage, Seed `k3c-dev`, 1:35 bis 3:43 min). Alle rot; Endboss 0 %.
-- Messwerte (Details B-645): Hub-Stufe am Ende 1 auf jeder Stufe, Kämpfer 0, Leerlauf der Bauern 94–100 %, Burg der Startstufe fällt ab Nacht 3–5, Schiff: Kiel ab Tag 13, Rumpf und Segel nie bezahlbar. Der Endboss erscheint nur, wenn ein Monarch die Kristallhöhle erreicht.
-- Während der Läufe gefunden und behoben (Commit, `check:diff` grün): Der Bericht stürzte die Oberfläche ab (`levers: null` bei neuen Zielen ohne Hinweise), Abstand bei Korridor ohne Breite, Diagnosewerte je Stufe (Boss erschienen, gefallene Monarchen, Hub-Stufe, Kämpfer), Absteige-Regel: bei mehreren Monarchen steigen nur die mit ungeradem Index ab (sonst fällt der Hub in Nacht 3).
-- AC-05 offen. Nächster Schritt nach Entscheidung zu B-645 (A: `coop2` mit den Bausteinen von `wirtschaft`; B: Bot „Insel“; C: Werte).
-- Neue Tickets: B-645.
+- Entscheidung B-645 (A): coop2 nutzt je Rolle die Bausteine von wirtschaft; sim_test offline mit players und vary (Werte nur für den Lauf).
+- Neu (Vorschlag 🧑): Stufen-Tests für ein komplettes Spiel mit einem Bot im Balance-Paket, Build-Tag fullgame, nicht in check:diff: task balance:fullgame STUFE=n (Datei fullgame_test.go, Taskfile balance). Stufe 1 Miniboss Wald ✅ (Tag 5), Stufe 2 tiefste Stufe erreicht ✅ (Tag 3), Stufe 3 alle vier Minibosse (aktuell 2 von 4: Troll-König ✅, Ratten-Königin ✗), Stufe 4 Endboss (offen). Sie laufen mit Dev-Hilfen (Dev-Baukosten, voller Vorrat, Grad dev); K3C_FULLGAME=ohne spielt ohne.
+- Bot-Regel gelernt: Der Bot darf eine Stufe erst verlassen, wenn ihr Miniboss besiegt ist (sonst fällt der Hub). Mit dem Tor baut er Hub-Stufe 5 und 10 Kämpfer in Wald, Höhle und Mine.
+- Nächste Schritte (je Stufe nur den aktuellen Test fahren): Stufe 3 (Ratten-Königin), dann Lava-Golem und Endboss; danach ohne Hilfen, dann coop2 mit Werten.
+- AC-05 weiter offen.
