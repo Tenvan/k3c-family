@@ -19,6 +19,7 @@ import (
 // immer nur der aktuelle (`task balance:fullgame STUFE=3`, Standard in Taskfile.yml); neue Stufen kommen unten dazu.
 // Bewusst NICHT Teil von `task check:diff` (Build-Tag `fullgame`, läuft Minuten).
 //
+// „boss“ setzt zusätzlich die HP des Endbosses auf 300, sobald er erscheint (er steht am Bau, die Truppen erreichen ihn nicht, B-647).
 // Dev-Hilfen (Umgebung K3C_FULLGAME): „hilfen“ (Standard: Dev-Baukosten, voller Insel-Vorrat, Grad dev), „voll“ (zusätzlich
 // alle Stufen voll ausgebaut, Dev-Bau Stufe 5) oder „ohne“
 // (Grad normal, nichts geschenkt: der offene Meilenstein der Balance, Fehler gelten dort nur als Hinweis im Log).
@@ -41,7 +42,7 @@ func fullgame(t *testing.T, done func(*sim.Island) bool) (isl *sim.Island, day i
 	if helps {
 		sim.DevSetCheapBuild(isl, true)
 		sim.DevFillStock(isl)
-		if mode == "voll" { // zusätzlich alle Stufen der Insel voll ausgebaut (Hub 5, Mauern, Türme)
+		if mode == "voll" || mode == "boss" { // zusätzlich alle Stufen der Insel voll ausgebaut (Hub 5, Mauern, Türme)
 			sim.DevBuildAll(isl, 5)
 		}
 	}
@@ -55,6 +56,9 @@ func fullgame(t *testing.T, done func(*sim.Island) bool) (isl *sim.Island, day i
 			}
 		}
 		sim.StepIsland(isl, cmds, 1.0/enginetools.TickHz)
+		if mode == "boss" {
+			weakenEndboss(isl)
+		}
 		if d := isl.Stages[0].Cycle.Day; d != last {
 			last = d
 			logFullgameDay(t, isl, d)
@@ -144,3 +148,20 @@ func logFullgameDay(t *testing.T, isl *sim.Island, day int) {
 	}
 	t.Log(line + " | Bosse " + strings.Join(isl.DefeatedBosses, ", "))
 }
+
+// weakenEndboss setzt den erschienenen Endboss auf 300 HP: Ohne das trifft ihn nur der Monarch (10 Schaden), er steht am Bau
+// außerhalb der Reichweite der Truppen (B-647). Prüft so den Rest der Kette: Sieg, Belohnung, Insel-Zustand.
+func weakenEndboss(isl *sim.Island) {
+	for _, w := range isl.Stages {
+		for _, e := range w.Enemies {
+			if e.Boss && e.MaxHP > 300 && !bossDownKind(e.Kind) {
+				e.HP, e.MaxHP = 300, 300
+			}
+		}
+	}
+}
+
+// bossDownKind: Miniboss-IDs bleiben unberührt (nur der Endboss wird abgeschwächt).
+func bossDownKind(kind string) bool { return miniBossKind[kind] }
+
+var miniBossKind = map[string]bool{"goblinLeader": true, "trollKing": true, "ratQueen": true, "shardTitan": true, "lavaGolem": true}
