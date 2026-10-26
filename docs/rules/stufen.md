@@ -29,7 +29,7 @@ Standardszenario **Wald, 2 Spieler, Bot „sparsam“, Normal, je 100 Seeds**.
 
 ## 2. Aggressionspool (unter Tage)
 
-Unverändert (🧑 hat nicht gesondert bestätigt): Unter Tage statt Tag/Nacht: +1 %/min, +5 % je Kill, +1 % je gesammelter Ressource; bei 100 % kommt eine Welle und der Pool geht auf 0. Der globale Tag/Nacht-Zyklus läuft weiter (Nacht-Gegner wie Skelette). Daten: `data/biomes/cave.json`, `mine.json`. Zielkorridor: Wellen unter Tage im Abstand von 4–12 Minuten Spielzeit (Normal, Mine, Ressourcen gesammelt) – Startziel, Messgröße mit B-099.
+Unverändert (🧑 hat nicht gesondert bestätigt): Unter Tage statt Tag/Nacht: +1 %/min, +5 % je Kill, +1 % je gesammelter Ressource; bei 100 % kommt eine Welle und der Pool geht auf 0. **Der Pool friert ein** (B-646, 🧑 2026-10-26), solange Gegner einer Welle leben oder noch kommen (Wachen zählen nicht) und in den ersten **4 min Spielzeit** nach einer Welle; sonst löste jede getötete Welle über die +5 % je Kill sofort die nächste aus (Wellen-Lawine). Der globale Tag/Nacht-Zyklus läuft weiter (Nacht-Gegner wie Skelette). Daten: `data/biomes/cave.json`, `mine.json`. Zielkorridor: Wellen unter Tage im Abstand von 4–12 Minuten Spielzeit (Normal, Mine, Ressourcen gesammelt) – Startziel, Messgröße mit B-099.
 
 ## 3. Bosse und Ziel der Kampagne
 

@@ -2,6 +2,7 @@ package sim
 
 import (
 	"math"
+	"slices"
 
 	"k3c/engine/level"
 )
@@ -72,10 +73,34 @@ func stepCycle(w *World, dt float64) {
 		nightEventsEnd(w)
 	}
 	if w.Aggression != nil && w.Biome.Cycle.Type == "aggressionPool" {
-		*w.Aggression = math.Min(100, *w.Aggression+float64(w.Biome.Cycle.PercentPerMinute/60*dt*w.CycleSpeed))
+		addPool(w, float64(w.Biome.Cycle.PercentPerMinute/60*dt*w.CycleSpeed))
 		if *w.Aggression >= 100 {
 			*w.Aggression = 0
 			startWave(w)
 		}
 	}
+}
+
+// minWaveGapSeconds ist der Mindestabstand zweier Wellen unter Tage (4 min Spielzeit, zielkorridore.md § 1, B-646).
+const minWaveGapSeconds = 240
+
+// poolFrozen: Der Aggressionspool wächst nicht, solange Gegner einer Welle leben oder noch kommen und innerhalb des
+// Mindestabstands nach der letzten Welle. Ohne das löst jede getötete Welle über +5 % je Kill sofort die nächste aus
+// (Wellen-Lawine, B-646).
+func poolFrozen(w *World) bool {
+	if w.Wave > 0 && w.Time-w.lastWaveAt < minWaveGapSeconds {
+		return true
+	}
+	if len(w.SpawnQueue) > 0 {
+		return true
+	}
+	return slices.ContainsFunc(w.Enemies, func(e *Enemy) bool { return e.HP > 0 && !e.Guard })
+}
+
+// addPool erhöht den Aggressionspool um amount (höchstens auf 100), sofern es ihn gibt und er nicht eingefroren ist.
+func addPool(w *World, amount float64) {
+	if w.Aggression == nil || w.Biome.Cycle.Type != "aggressionPool" || poolFrozen(w) {
+		return
+	}
+	*w.Aggression = math.Min(100, *w.Aggression+amount)
 }

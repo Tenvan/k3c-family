@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** BS3
 - **Projekt:** BAS
 - **Erstellt:** 2026-10-26
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-26, Chat, durch 🧑, Revision 1
 
 ## Ausgangslage
 
@@ -57,4 +57,4 @@ Welche Regel (Vorschlag oben, Alternative Wert)? 🧑 entscheidet; Default: Pool
 
 ## Notizen
 
-Reproduktion: `K3C_FULLGAME=voll task balance:fullgame STUFE=4` (Log je Tag zeigt Pool, Welle, Gegner je Stufe). Gefunden zusammen mit: Der Endboss `crystalHeartWarden` (10 024 HP) wird vom einzelnen Bot nie getroffen; dort ist eine zweite Entscheidung nötig (B-645).
+Entschieden von 🧑 am 2026-10-26: Pool friert ein, solange Gegner der Welle leben oder kommen (Wachen zählen nicht), plus Mindestabstand 4 min Spielzeit nach einer Welle. Umgesetzt in `engine/sim/world_cycle.go` (`poolFrozen`, `addPool`, drei Eintrittspunkte: Zeit, Kill, Sammeln), Tests `TestAggressionspoolFriertEin`, `TestKeineWellenLawine` (ohne Fix 14 006 Wellen in 10 min, mit Fix höchstens 3), Golden mit Aggressionspool neu (task go:golden: die Pool-Stände sinken, weil der Pool bei laufender Welle einfriert), Regeln stufen.md § 2 und gegner.md. Risiko: Ein Gegner, der nie stirbt, friert den Pool dauerhaft ein (ungeprüft).

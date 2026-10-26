@@ -194,9 +194,7 @@ func carry(w *World, t *Troop, dt float64) {
 
 // gatherPressure erhöht den Aggressionspool je vollständig abgegebenem Sammel-Auftrag.
 func gatherPressure(w *World) {
-	if w.Aggression != nil && w.Biome.Cycle.Type == "aggressionPool" {
-		*w.Aggression = math.Min(100, *w.Aggression+w.Biome.Cycle.PercentPerGather)
-	}
+	addPool(w, w.Biome.Cycle.PercentPerGather)
 }
 
 // findJob: Bogen holen, sonst nächsten wartenden Bauplatz, sonst (ohne Gefahr) die markierte Ressource nächst am Hub.

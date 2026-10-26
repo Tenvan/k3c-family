@@ -337,6 +337,8 @@ type World struct {
 	// island: die Insel, zu der die Stufe gehört (nil bei Campaign und einzelnen Welten: keine Optionen, Faktor 1,
 	// kein Lager-Maximum).
 	island *Island
+	// lastWaveAt: Spielzeit (Time) der letzten Welle; der Aggressionspool wächst erst nach minWaveGapSeconds wieder (B-646).
+	lastWaveAt float64
 	// castleFellNight: letzte Nacht, in der die Burg fiel (Vollmond-Belohnung, events_moon.go); nicht im Spielstand.
 	castleFellNight int
 	// guardsSpawned: Die Wachen der Planung sind aufgestellt (erster Tick); guardsCleared: geräumte Lager `kind@x`

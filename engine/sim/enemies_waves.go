@@ -71,6 +71,7 @@ func spawnOrders(picks []string, portals []float64, r *rng.Rng) []spawnOrder {
 
 func startWave(w *World) {
 	w.Wave++
+	w.lastWaveAt = w.Time
 	size, hp, damage := 1.0, 1.0, 1.0 // nur Inseln skalieren nach Spieleranzahl und Grad
 	if w.island != nil {
 		size, hp, damage = w.island.waveFactors()
@@ -152,9 +153,7 @@ func removeDeadEnemies(w *World) {
 			markCleared(w, e) // keine Wirkung auf den Aggressionspool, kein Respawn
 			continue
 		}
-		if w.Aggression != nil && w.Biome.Cycle.Type == "aggressionPool" {
-			*w.Aggression = math.Min(100, *w.Aggression+w.Biome.Cycle.PercentPerKill)
-		}
+		addPool(w, w.Biome.Cycle.PercentPerKill)
 	}
 	w.Enemies = kept
 }
