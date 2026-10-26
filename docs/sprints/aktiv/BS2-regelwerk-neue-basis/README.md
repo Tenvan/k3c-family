@@ -1,6 +1,6 @@
 # BS2 · REG · Regelwerk der neuen Basis: Münzskala, Baumschule, Hafen und Schiff
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAS
 - **Domäne:** REG
 - **Reife:** bereit
