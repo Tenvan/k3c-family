@@ -1,11 +1,11 @@
 # BS3 · REG, DEV · Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAS
 - **Domäne:** REG, DEV
 - **Reife:** bereit
 - **Tickets:** B-635, B-638
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 48e285ff
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-26, Chat, durch 🧑, Revision 1, mit den Defaults der offenen Fragen

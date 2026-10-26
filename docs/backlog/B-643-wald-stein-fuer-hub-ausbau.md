@@ -5,7 +5,7 @@
 - **Prio:** hoch
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** –
+- **Sprint:** BS3
 - **Projekt:** BAS
 - **Erstellt:** 2026-10-26
 - **Spec:** Entwurf
