@@ -6,7 +6,7 @@
 - **Domäne:** DEV
 - **Umgebung:** offline
 - **Branch:** bs3/3-bericht-schiff-bedarf
-- **Abhängig von:** BS3.2, BS1.3
+- **Abhängig von:** BS3.2, BS1.4, BS11.5
 - **Tickets:** B-638
 - **Kriterien:** AC-04
 

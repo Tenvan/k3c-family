@@ -52,6 +52,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | BS8 | DEV | BAS | Meilenstein 2: Bots und Delta-Runde Baumschule gegen Baseline M1 | – | Entwurf | `geplant/BS8-meilenstein-2-delta-baumschule/` |
 | BS9 | DEV | BAS | Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2 | – | Entwurf | `geplant/BS9-meilenstein-3-delta-schiff/` |
 | BS10 | DEV | BAS | Grafiken für Hafen und Schiff | – | Entwurf | `geplant/BS10-grafik-hafen-schiff/` |
+| BS11 | DEV | BAS | Balancing-Tester spielt die ganze Insel bis zum Endboss | – | bereit | `geplant/BS11-tester-ganze-insel/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 | P1 | REG | BAL | Spieleabend 1 | Protokoll und Folge-Tickets | bereit | `geplant/P1-spieleabend-1/` |

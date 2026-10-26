@@ -16,10 +16,11 @@
 
 ## Kontext
 
-- Lauf nur über MCP: `sim_test start bots=coop2 world=standard` (offline, Seed-Modus `dev`), dann `sim_test status`. Nie Shell oder Binaries (B-348).
+- Lauf nur über MCP: `sim_test {action: start, bots: coop2, world: standard, days: 40}` (offline, Seed-Modus `dev`, Insel-Lauf aus BS11), dann `sim_test status`. Nie Shell oder Binaries (B-348).
 - Vorher prüfen, dass die Workbench nach BS3.3 neu gestartet ist (`workbench_status`, Bericht kennt Schiff-Zeile); sonst `Status: blockiert` und 🧑 deutlich um Neustart bitten.
+- Vergleich: Referenzlauf mit den alten Werten aus BS11.4 (Bericht-ID in B-642 › Notizen).
 - Justieren nur in `data/` nach den Regeln aus BS2; Tuning-Hinweise des Berichts nutzen.
-- „Durchlaufen“ = Endboss Insel 1 besiegt (Default B-635).
+- „Durchlaufen“ = Endboss der Insel 1 im Insel-Lauf besiegt (`zielkorridore.md` § 6, B-642 Variante A).
 
 ## Erlaubte Dateien
 

@@ -34,7 +34,7 @@ Baumschule und Hafen als Mechanik (BS4, BS5); eigenes Balancing für Events, gep
 
 ## Regeln und Einschränkungen
 
-Abhängig von BS1 und BS2. Werte nur in `data/`; Golden über `task go:golden` mit Begründung. Läufe nur über `sim_test`, Seed-Modus `dev`. Keine Rücksicht auf alte Spielstände.
+Abhängig von BS1, BS2 und **BS11** (Insel-Lauf bis zum Endboss, B-642 Variante A). Werte nur in `data/`; Golden über `task go:golden` mit Begründung. Läufe nur über `sim_test`, Seed-Modus `dev`. Keine Rücksicht auf alte Spielstände.
 
 **Konflikt:** Die aktiven BAL-Sprints RG1 und BR2 messen auf der alten Skala; ihre Ergebnisse sind nach BS3 hinfällig (siehe Projekt BAS › Notizen).
 

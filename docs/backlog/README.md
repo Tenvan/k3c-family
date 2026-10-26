@@ -142,7 +142,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-639](B-639-prompt-buttons-einfach.md) | DEV | Idee | hoch | eingeplant | BS1 | Prompt-Buttons der Workbench schicken nur kurze Prompts ohne Anweisungen |
 | [B-640](B-640-balancing-delta-runden.md) | DEV | Idee | hoch | eingeplant | BS7 | Balancing nach Mechanik-Änderungen läuft als Delta-Runde gegen eine Baseline |
 | [B-641](B-641-grafik-hafen-schiff.md) | DEV | Idee | hoch | eingeplant | BS10 | Hafen und Schiff haben eigene Grafiken je Bauabschnitt |
-| [B-642](B-642-meilenstein-lauf-ganze-insel.md) | DEV | Frage | hoch | offen | – | Der Balancing-Tester spielt nur eine Stufe, der Meilenstein-Lauf braucht die ganze Insel |
+| [B-642](B-642-meilenstein-lauf-ganze-insel.md) | DEV | Idee | hoch | eingeplant | BS11 | Der Balancing-Tester spielt nur eine Stufe, der Meilenstein-Lauf braucht die ganze Insel |
 
 ## Archiv
 

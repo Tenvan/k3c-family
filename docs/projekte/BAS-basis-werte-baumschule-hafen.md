@@ -24,6 +24,7 @@ Erledigt, wenn M4 erreicht ist und BS6 und BS10 am Gerät abgenommen sind.
 |---|---|---|
 | BS1 | Schneller Balancing-Lauf mit Seed k3c-dev | aktiv |
 | BS2 | Regelwerk der neuen Basis: Münzskala, Baumschule, Hafen und Schiff | aktiv |
+| BS11 | Balancing-Tester spielt die ganze Insel bis zum Endboss (vor M1) | geplant |
 | BS3 | Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch | geplant |
 | BS7 | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | geplant |
 | BS4 | Baumschule auf gerodeten Waldbauplätzen (Server) | geplant |
@@ -39,10 +40,10 @@ Eigenes Balancing für Events, geplante/manuelle Chunks und Bosse (später, eige
 
 ## Notizen
 
-- Angelegt 2026-10-26 auf Wunsch 🧑, Rang 1. Kette: Basis (BS1, BS2 parallel) → Werte M1 (BS3) → Delta-Werkzeug (BS7) → Mechanik + Meilenstein im Wechsel (BS4 → BS8, BS5 → BS9) → Client M4 (BS6).
+- Angelegt 2026-10-26 auf Wunsch 🧑, Rang 1. Kette: Basis (BS1, BS2 parallel) → Insel-Lauf im Tester (BS11, B-642 Variante A) → Werte M1 (BS3) → Delta-Werkzeug (BS7) → Mechanik + Meilenstein im Wechsel (BS4 → BS8, BS5 → BS9) → Client M4 (BS6).
 - **Kein komplettes Neu-Balancing je Mechanik:** Nach jedem Meilenstein wird die abgenommene Werte-Gruppe eingefroren und der Lauf als Baseline gesichert; der nächste Meilenstein justiert nur die Gruppe seiner Mechanik und vergleicht gegen die letzte Baseline (B-640). Kippt eine eingefrorene Gruppe, ist das ein Befund für 🧑, keine stille Voll-Runde.
 - **Alle Simulationen über `sim_test` (MCP).** Wo das Tool fehlt, wird es erweitert (BS1, BS7: Parameter, Beschreibung, `instructions.md`). Durchgelaufene Läufe stehen im Balancing-Editor unter „Beispiele › Basis-Läufe“.
-- **⚠️ Workbench-Neustart:** Jede Session, die Go-Code, Instructions oder die eingebettete Oberfläche der Workbench ändert (BS1.1–BS1.3, BS3.3, BS7.1–BS7.3, BS8.1, BS9.1, BS6.4), meldet den Neustart deutlich: erste Ergebniszeile, `notify_ui` (warn), Chat. Folgeläufe prüfen erst `workbench_status` und blockieren sonst.
+- **⚠️ Workbench-Neustart:** Jede Session, die Go-Code, Instructions oder die eingebettete Oberfläche der Workbench ändert (BS1.1–BS1.3, BS11.1–BS11.4, BS3.3, BS7.1–BS7.3, BS8.1, BS9.1, BS6.4), meldet den Neustart deutlich: erste Ergebniszeile, `notify_ui` (warn), Chat. Folgeläufe prüfen erst `workbench_status` und blockieren sonst.
 - **Konflikt:** Aktive BAL-Sprints RG1 und BR2 messen auf der alten Skala; nach BS3 sind ihre Werte hinfällig. Entscheidung 🧑: pausieren/verwerfen oder nach BS3 neu aufsetzen.
 - Keine Rücksicht auf alte Spielstände.
 - **Branch (Beschluss 🧑 2026-10-26):** Abweichend von „ein PR je Sprint“ läuft ganz BAS auf dem Feature-Branch `feature/bas-remake` (ab `develop` 3e95ba48) im Haupt-Checkout: ein Commit je Session, keine Sprint-Branches, keine Worktrees, keine PRs bis auf Widerruf.
