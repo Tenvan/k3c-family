@@ -1,6 +1,6 @@
 # BS3.4 · Meilenstein-Lauf coop2 standard läuft durch
 
-- **Status:** offen
+- **Status:** blockiert
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -55,5 +55,10 @@ Balancing nur über `sim_test`.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+**Blockiert, Entscheidung 🧑 nötig (B-645).** Meilenstein-Lauf nicht grün, nach fünf Diagnose-Läufen kein Justieren der Werte sinnvoll: Das Problem liegt bei den Bots, nicht bei den Preisen.
+
+- Läufe über `sim_test` auf der neu gestarteten Workbench (`wait: true` funktioniert): `run-1` bis `run-5` (coop2 und wirtschaft, standard, 40 Tage, Seed `k3c-dev`, 1:35 bis 3:43 min). Alle rot; Endboss 0 %.
+- Messwerte (Details B-645): Hub-Stufe am Ende 1 auf jeder Stufe, Kämpfer 0, Leerlauf der Bauern 94–100 %, Burg der Startstufe fällt ab Nacht 3–5, Schiff: Kiel ab Tag 13, Rumpf und Segel nie bezahlbar. Der Endboss erscheint nur, wenn ein Monarch die Kristallhöhle erreicht.
+- Während der Läufe gefunden und behoben (Commit, `check:diff` grün): Der Bericht stürzte die Oberfläche ab (`levers: null` bei neuen Zielen ohne Hinweise), Abstand bei Korridor ohne Breite, Diagnosewerte je Stufe (Boss erschienen, gefallene Monarchen, Hub-Stufe, Kämpfer), Absteige-Regel: bei mehreren Monarchen steigen nur die mit ungeradem Index ab (sonst fällt der Hub in Nacht 3).
+- AC-05 offen. Nächster Schritt nach Entscheidung zu B-645 (A: `coop2` mit den Bausteinen von `wirtschaft`; B: Bot „Insel“; C: Werte).
+- Neue Tickets: B-645.

@@ -142,6 +142,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-641](B-641-grafik-hafen-schiff.md) | DEV | Idee | hoch | eingeplant | BS10 | Hafen und Schiff haben eigene Grafiken je Bauabschnitt |
 | [B-642](B-642-meilenstein-lauf-ganze-insel.md) | DEV | Idee | hoch | eingeplant | BS11 | Der Balancing-Tester spielt nur eine Stufe, der Meilenstein-Lauf braucht die ganze Insel |
 | [B-644](B-644-sim-test-warten-wie-check-run.md) | DEV | Idee | mittel | offen | – | sim_test wartet wie check_run auf das Ende und meldet Fortschritt je Tag |
+| [B-645](B-645-meilenstein-bots-bauen-keine-wirtschaft.md) | DEV | Problem | hoch | offen | BS3 | Der Meilenstein-Lauf coop2 scheitert an den Bots, nicht an den Werten: Es entsteht keine Wirtschaft |
 
 ## Archiv
 

@@ -17,6 +17,8 @@ type StageMetrics struct {
 	ArrivalTick    *int `json:"arrivalTick"`
 	CastleFallTick *int `json:"castleFallTick"`
 	Downs          int  `json:"downs,omitempty"` // Ereignisse playerDown auf dieser Stufe (ein Monarch fiel)
+	HubLevel       int  `json:"hubLevel,omitempty"` // Hub-Stufe am Ende des Laufs
+	Fighters       int  `json:"fighters,omitempty"` // Kämpfer (Truppen außer Landstreichern und Bauern) am Ende
 }
 
 // BossMetrics: ein besiegter Boss (Ereignis bossDefeated) mit Tag und Tick.
@@ -96,6 +98,10 @@ func (c *collector) islandEvent(w *sim.World, ev sim.Event, tick int) {
 func (c *collector) shipNeed() {
 	if !c.multi() {
 		return
+	}
+	for i, w := range c.isl.Stages {
+		e := sim.EconomyOf(w)
+		c.m.Stages[i].HubLevel, c.m.Stages[i].Fighters = e.HubLevel, e.Fighters
 	}
 	if stages, err := LoadShip(); err == nil {
 		c.m.Ship = shipNeeds(stages, &c.m)

@@ -8,20 +8,26 @@ import (
 // ihre Stufe sicher steht: die Mauern der Linie 1 stehen auf beiden Seiten, es ist heller Tag und mindestens Tag
 // minDescentDay. Der Hub-Ausbau gehört nicht zur Regel: Den Stein für Hub-Stufe 2 liefert die Höhle (Adern, Regel
 // materialien-gebaeude.md § 1), der Weg nach unten kommt also vor dem Ausbau. Jeder Spieler wechselt allein
-// (Einzelwechsel, stufen.md § 1); weil die Regel nur von der Stufe abhängt, gehen alle Spieler der Stufe zusammen.
+// (Einzelwechsel, stufen.md § 1). Mit mehreren Monarchen steigen nur die mit ungeradem Index ab (Rollen wie bei coop2:
+// Monarch 2 holt das Material, Monarch 1 hält den Hub), sonst fiele der verlassene Hub schon in Nacht 3 (BS3.4, run-3).
 // Auf der neuen Stufe spielt der Bot sein Profil weiter: Mauern und Bauten gelten je Stufe.
 
 // minDescentDay ist der früheste Tag des Abstiegs (Tag 1 gehört dem Aufbau der ersten Mauern).
 const minDescentDay = 2
 
 // withDescent legt den Abstieg über ein Profil.
-func withDescent(inner Bot, deepest int) Bot {
+func withDescent(inner Bot, isl *sim.Island, deepest int) Bot {
 	return func(w *sim.World, p *sim.Player) sim.PlayerCommand {
-		if x, ok := descentX(w, deepest); ok && stageSafe(w) {
+		if x, ok := descentX(w, deepest); ok && mayDescend(isl, p) && stageSafe(w) {
 			return goTo(p, x, false)
 		}
 		return inner(w, p)
 	}
+}
+
+// mayDescend: ein einzelner Monarch geht immer, bei mehreren nur die mit ungeradem Index.
+func mayDescend(isl *sim.Island, p *sim.Player) bool {
+	return len(isl.Players()) == 1 || p.Index%2 == 1
 }
 
 // descentX: der Tiefen-Eingang der Stufe, wenn es eine tiefere Stufe der Insel gibt.

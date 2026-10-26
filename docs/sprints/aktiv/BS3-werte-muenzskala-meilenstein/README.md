@@ -65,7 +65,7 @@ keine (Defaults aus BS2).
 | BS3.1 | `BS3.1-preise.md` | Umsetzung | autonom | fertig |
 | BS3.2 | `BS3.2-einnahmen-schiffskosten.md` | Umsetzung | autonom | fertig |
 | BS3.3 | `BS3.3-bericht-schiff-bedarf.md` | Umsetzung | autonom | fertig |
-| BS3.4 | `BS3.4-meilenstein-lauf.md` | Umsetzung | autonom | offen |
+| BS3.4 | `BS3.4-meilenstein-lauf.md` | Umsetzung | autonom | blockiert |
 | BS3.5 | `BS3.5-review.md` | Review | autonom | offen |
 
 ## Abnahme

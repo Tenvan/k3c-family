@@ -91,7 +91,7 @@ func checkInselBericht(t *testing.T, m *Metrics) {
 	}
 	var b strings.Builder
 	f.Island.markdown(&b)
-	if !strings.Contains(b.String(), "| mini2 | 100") || !strings.Contains(b.String(), "| 4 |") {
+	if !strings.Contains(b.String(), "| mini2 | 0 | 100") || !strings.Contains(b.String(), "| 4 |") {
 		t.Errorf("Markdown ohne Tiefen und Bosse: %s", b.String())
 	}
 }
