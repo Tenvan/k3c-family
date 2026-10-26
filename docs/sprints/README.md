@@ -42,6 +42,16 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| BS1 | DEV | BAS | Schneller Balancing-Lauf mit Seed k3c-dev | – | bereit | `geplant/BS1-balancing-seed-k3c-dev/` |
+| BS2 | REG | BAS | Regelwerk der neuen Basis: Münzskala, Baumschule, Hafen und Schiff | – | bereit | `geplant/BS2-regelwerk-neue-basis/` |
+| BS3 | REG, DEV | BAS | Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch | – | bereit | `geplant/BS3-werte-muenzskala-meilenstein/` |
+| BS4 | SIM | BAS | Baumschule auf gerodeten Waldbauplätzen | – | Entwurf | `geplant/BS4-baumschule-waldbauplaetze/` |
+| BS5 | SIM | BAS | Hafen-Chunk, Schiff bauen und Inselwechsel am Hafen | – | Entwurf | `geplant/BS5-hafen-schiff-inselwechsel/` |
+| BS6 | CLI | BAS | Client: Baumschule, Hafen und Schiff, neue Münzskala | – | Entwurf | `geplant/BS6-client-baumschule-hafen-skala/` |
+| BS7 | DEV | BAS | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | – | bereit | `geplant/BS7-delta-balancing-basis-laeufe/` |
+| BS8 | DEV | BAS | Meilenstein 2: Bots und Delta-Runde Baumschule gegen Baseline M1 | – | Entwurf | `geplant/BS8-meilenstein-2-delta-baumschule/` |
+| BS9 | DEV | BAS | Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2 | – | Entwurf | `geplant/BS9-meilenstein-3-delta-schiff/` |
+| BS10 | DEV | BAS | Grafiken für Hafen und Schiff | – | Entwurf | `geplant/BS10-grafik-hafen-schiff/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 | P1 | REG | BAL | Spieleabend 1 | Protokoll und Folge-Tickets | bereit | `geplant/P1-spieleabend-1/` |

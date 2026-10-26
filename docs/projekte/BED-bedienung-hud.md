@@ -1,7 +1,7 @@
 # BED · Bedienung & HUD
 
 - **Status:** aktiv
-- **Rang:** 2
+- **Rang:** 3
 - **Ziel-Tickets:** –
 
 ## Ziel
