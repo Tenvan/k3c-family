@@ -1,8 +1,12 @@
 package sim
 
 import (
+	"bytes"
+	"encoding/json"
 	"slices"
 	"testing"
+
+	"k3c/data"
 )
 
 // BS3.1/AC-01 (B-635): Reguläre Goldpreise liegen auf der Münzskala (wirtschaft.md § 8); Ausnahmen stehen ausdrücklich in der Liste.
@@ -69,5 +73,39 @@ func checkTroopScale(t *testing.T, kind string, tr TroopData) {
 	}
 	for name, p := range tr.Professions {
 		onScale(t, "troops."+kind+".professions."+name, p.Cost.Gold)
+	}
+}
+
+// BS3.2/AC-03 (B-638): Schiffskosten je Abschnitt stehen in data/ship.json, Gold auf der Skala, Schema stimmt.
+func TestSchiffskostenInDenDaten(t *testing.T) {
+	raw, err := data.Files.ReadFile("ship.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var s2 struct {
+		Version int
+		Notes   string
+		Stages  []struct {
+			ID, Name string
+			Cost     Cost
+		}
+	}
+	d2 := json.NewDecoder(bytes.NewReader(raw))
+	d2.DisallowUnknownFields()
+	if err := d2.Decode(&s2); err != nil {
+		t.Fatalf("Schema: %v", err)
+	}
+	ids := []string{"keel", "hull", "sail"}
+	if len(s2.Stages) != len(ids) {
+		t.Fatalf("%d Abschnitte, erwartet %d", len(s2.Stages), len(ids))
+	}
+	for i, st := range s2.Stages {
+		if st.ID != ids[i] || st.Name == "" {
+			t.Errorf("Abschnitt %d: %+v", i, st)
+		}
+		onScale(t, "ship."+st.ID, st.Cost.Gold)
+		if c := st.Cost; c.Wood+c.Stone+c.Copper+c.Iron+c.Crystal == 0 {
+			t.Errorf("Abschnitt %s ohne Material", st.ID)
+		}
 	}
 }

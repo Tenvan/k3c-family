@@ -214,8 +214,8 @@ func TestSiegWerteAusDaten(t *testing.T) {
 	if err := json.Unmarshal(raw, &want); err != nil {
 		t.Fatal(err)
 	}
-	if goals.Gold != want.Gold || goals.Days != want.Days || want.Gold != 1000 || want.Days != 20 {
-		t.Fatalf("goals %+v, data/goals.json %+v (Startwerte 1000 Gold, 20 Tage)", goals, want)
+	if goals.Gold != want.Gold || goals.Days != want.Days || want.Gold != 66 || want.Days != 20 {
+		t.Fatalf("goals %+v, data/goals.json %+v (Startwerte 66 Gold, 20 Tage)", goals, want)
 	}
 }
 

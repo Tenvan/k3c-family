@@ -202,8 +202,8 @@ func TestEndbossBelohnung(t *testing.T) {
 			near++
 		}
 	}
-	if count(events, "bossDefeated") != 1 || len(w.Coins)-coins != 500 || near != 500 {
-		t.Fatalf("%d× bossDefeated, %d neue Münzen (%d am Bau), erwartet 500", count(events, "bossDefeated"), len(w.Coins)-coins, near)
+	if count(events, "bossDefeated") != 1 || len(w.Coins)-coins != 42 || near != 42 {
+		t.Fatalf("%d× bossDefeated, %d neue Münzen (%d am Bau), erwartet 42", count(events, "bossDefeated"), len(w.Coins)-coins, near)
 	}
 	if isl.Stock.Crystal != 250 || isl.SkillPool-pool != 3 || w.SkillPoints != isl.SkillPool {
 		t.Fatalf("Kristall %d, Pool +%d (Stufe %d), erwartet 250 und +3", isl.Stock.Crystal, isl.SkillPool-pool, w.SkillPoints)
@@ -279,7 +279,7 @@ func TestEndbossDeterministisch(t *testing.T) {
 func TestEndbossDaten(t *testing.T) {
 	b := endBoss(4)
 	if len(endBosses) != 1 || b == nil || b.ID != wardenID || b.HPFactor != 30 || len(b.Phases) != 3 ||
-		b.Phases[2].BelowHPPercent != 25 || b.Phases[2].Tempo != 1.5 || b.Reward.Gold != 500 || b.Reward.Material != 250 {
+		b.Phases[2].BelowHPPercent != 25 || b.Phases[2].Tempo != 1.5 || b.Reward.Gold != 42 || b.Reward.Material != 250 {
 		t.Fatalf("Endbosse %+v", endBosses)
 	}
 	raw, err := data.Files.ReadFile("bosses.json")

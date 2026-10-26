@@ -89,14 +89,14 @@ func TestDevGold(t *testing.T) {
 		return n
 	}
 	before0, before1 := at(m0.X), at(m1.X)
-	if err := r.Dev("a", p, DevAction{Action: "gold", Slot: slot(0), Amount: 50}); err != nil {
+	if err := r.Dev("a", p, DevAction{Action: "gold", Slot: slot(0), Amount: 20}); err != nil {
 		t.Fatal(err)
 	}
-	if at(m0.X)-before0 != 50 || at(m1.X) != before1 {
+	if at(m0.X)-before0 != 20 || at(m1.X) != before1 {
 		t.Fatalf("Münzen bei Monarch 0: +%d, bei Monarch 1: +%d", at(m0.X)-before0, at(m1.X)-before1)
 	}
 	r.Tick()
-	if m0.Gold < 50 || m1.Gold != 0 {
+	if m0.Gold < 20 || m1.Gold != 0 {
 		t.Fatalf("Gold Monarch 0 %d, Monarch 1 %d", m0.Gold, m1.Gold)
 	}
 }
@@ -182,8 +182,8 @@ func TestDevLagerKostenAusbau(t *testing.T) {
 	ok(t, r.Dev("a", p, DevAction{Action: "cheapBuild", On: &yes}))
 	ok(t, r.Dev("a", p, DevAction{Action: "buildAll", Level: 2}))
 	ok(t, r.Dev("a", p, DevAction{Action: "fillStock"}))
-	if g := islPlayer(t, r, 0).Gold; g != 100+200 {
-		t.Fatalf("Gold %d nach fillStock, erwartet Maximum 300", g)
+	if g := islPlayer(t, r, 0).Gold; g != 30+200 {
+		t.Fatalf("Gold %d nach fillStock, erwartet Maximum 230", g)
 	}
 	s := r.Summary()
 	if s.DevStockPlus != 200 || s.DevPurseBonus != 200 || !s.DevCheap {

@@ -38,9 +38,10 @@ var measures = map[string]measure{
 	}},
 	// Insel-Läufe (World, BS11): Endboss besiegt, Tag des Siegs, Höhle (Tiefe 1) vor Beginn von Tag 6 erreicht.
 	"endbossDefeated": {KindShare, func(m *Metrics) []float64 { return []float64{b2f(m.EndbossTick != nil)} }},
+	// Ohne Sieg zählt der Tag nach dem Lauf (Tageslimit + 1): ein Lauf ohne Sieg liegt über jeder Obergrenze, statt ungültig zu sein.
 	"endbossDay": {KindMedian, func(m *Metrics) []float64 {
 		if m.EndbossDay == nil {
-			return nil
+			return []float64{float64(len(m.Days)) + 1}
 		}
 		return []float64{float64(*m.EndbossDay)}
 	}},

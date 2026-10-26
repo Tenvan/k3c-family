@@ -13,6 +13,7 @@ import (
 // Snapshot aus sim-forest-tag.json.gz passt zur frisch erzeugten Welt; ein absichtlich geändertes Feld meldet Diff
 // mit seinem Pfad.
 func TestGoldenGzAbweichung(t *testing.T) {
+	goldenPurse(t)
 	var run goldenRun
 	if err := json.Unmarshal(golden.Read(t, "../../testdata/golden/sim-forest-tag.json.gz"), &run); err != nil {
 		t.Fatal(err)
@@ -39,4 +40,13 @@ func TestGoldenGzAbweichung(t *testing.T) {
 	if d := golden.Diff("world", want, golden.Tree(t, w)); !strings.HasPrefix(d, "world.stock.wood") {
 		t.Fatalf("geändertes Feld nicht erkannt: %q", d)
 	}
+}
+
+// goldenPurse stellt für einen Golden-Lauf den Beutel der Zeit vor der Münzskala (100 Gold, BS3) ein: Die aufgezeichneten
+// Eingaben brauchen so viel Gold, und die Läufe prüfen die Simulation, nicht die Werte der Wirtschaft.
+func goldenPurse(t *testing.T) {
+	t.Helper()
+	old := economy.Purse
+	economy.Purse.StartGold, economy.Purse.MaxGold = 100, 100
+	t.Cleanup(func() { economy.Purse = old })
 }

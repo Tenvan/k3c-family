@@ -63,7 +63,14 @@ func TestZielMitGrad(t *testing.T) {
 // BAL6.1 (B-347): Der Bot wirtschaft baut Turm, Farm und Werkstatt und schafft Kämpfer; der Lauf legt jeden
 // Tagesbeginn ab (Tag 1 = Start, zuletzt der Morgen nach dem letzten Tag) mit Gold je Monarch.
 func TestWirtschaftsBotUndTagesbeginn(t *testing.T) {
-	r := mustRun(t, Matrix{Seeds: []string{"1"}, Players: []int{2}, Bots: []string{"wirtschaft"}, Depths: []int{0}, Days: 2})
+	// Mit dem reichen Beutel von vor der Münzskala: der Test prüft den Bot, die Wirtschaft der Münzskala stimmt BS3.4 ab.
+	var r Report
+	if err := WithVariants([]string{"economy.json:purse.startGold=100", "economy.json:purse.maxGold=100"}, func() error {
+		r = mustRun(t, Matrix{Seeds: []string{"1"}, Players: []int{2}, Bots: []string{"wirtschaft"}, Depths: []int{0}, Days: 2})
+		return nil
+	}); err != nil {
+		t.Fatal(err)
+	}
 	res := r.Results[0]
 	if !res.Valid {
 		t.Fatalf("ungültig: %s", res.Error)

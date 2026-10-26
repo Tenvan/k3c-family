@@ -14,8 +14,8 @@ import (
 	"k3c/engine/sim"
 )
 
-// goldTargets: ein Testziel „Median Gold zur Dämmerung von Tag 1“ (1 Spieler, saver, 1 Tag, Seed 1) mit Obergrenze 105
-// ohne Randbreite. Mit den Daten von heute liegt der Wert bei 95; Startgold +25 % hebt ihn über 105 (→ verletzt).
+// goldTargets: ein Testziel „Median Gold zur Dämmerung von Tag 1“ (1 Spieler, saver, 1 Tag, Seed 1) mit Obergrenze 13
+// ohne Randbreite. Mit den Daten von heute liegt der Wert bei 12 (Startgold 14, Münzskala); Startgold +25 % hebt ihn über 13 (→ verletzt).
 func goldTargets(t *testing.T) *Targets {
 	t.Helper()
 	measures["testGoldAtDusk1"] = measure{KindMedian, func(m *Metrics) []float64 {
@@ -26,7 +26,7 @@ func goldTargets(t *testing.T) *Targets {
 	}}
 	t.Cleanup(func() { delete(measures, "testGoldAtDusk1") })
 	return &Targets{Version: 1, Seeds: []string{"1"}, Targets: []Target{{Measure: "testGoldAtDusk1", Name: "Gold Tag 1",
-		Kind: KindMedian, Players: 1, Bot: "saver", Days: 1, Upper: f(105), Margin: f(0), Rule: "Test"}}}
+		Kind: KindMedian, Players: 1, Bot: "saver", Days: 1, Upper: f(13), Margin: f(0), Rule: "Test"}}}
 }
 
 // AC-03: ±10 % und ±25 % auf purse.startGold; +25 % kippt das Testziel und der Bericht nennt es mit vorher/nachher.
@@ -39,10 +39,10 @@ func TestSensitivityNenntGekippteZiele(t *testing.T) {
 		t.Fatalf("%d Variationen, erwartet %d", got, len(Steps))
 	}
 	v := rep.Variations[3]
-	if v.Percent != 25 || v.Before != 100 || v.After != 125 {
+	if v.Percent != 25 || v.Before != 14 || v.After != 18 {
 		t.Fatalf("Variation %+v", v)
 	}
-	if len(v.Flips) != 1 || v.Flips[0].Before != StatusOK || v.Flips[0].After != StatusViolated || v.Flips[0].ValueAfter <= 105 {
+	if len(v.Flips) != 1 || v.Flips[0].Before != StatusOK || v.Flips[0].After != StatusViolated || v.Flips[0].ValueAfter <= 13 {
 		t.Fatalf("gekippt: %+v", v.Flips)
 	}
 	if md := rep.Markdown(); !strings.Contains(md, "Gold Tag 1 (1 Spieler, saver, Tiefe 0, 1 Tage): ok") {

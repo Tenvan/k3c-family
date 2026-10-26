@@ -24,8 +24,9 @@ func TestMessgroessenEndboss(t *testing.T) {
 	if v := measures["endbossDefeated"].values(m); v[0] != 0 {
 		t.Errorf("nicht besiegt: %v", v)
 	}
-	if v := measures["endbossDay"].values(m); len(v) != 0 {
-		t.Errorf("ohne Sieg kein Tag: %v", v)
+	m.Days = make([]DayMetrics, 41)
+	if v := measures["endbossDay"].values(m); len(v) != 1 || v[0] != 42 {
+		t.Errorf("ohne Sieg zählt der Tag nach dem Lauf: %v", v)
 	}
 	if v := measures["caveBeforeDay6"].values(m); v[0] != 0 {
 		t.Errorf("Höhle erst Tag 6: %v", v)

@@ -141,8 +141,8 @@ func TestBossBelohnungEisenUndKristall(t *testing.T) {
 		coins, before := len(w.Coins), *stock
 		boss.HP = 0
 		removeDeadEnemies(w)
-		if got := len(w.Coins) - coins; got != 100 {
-			t.Fatalf("Stufe %d: %d Münzen, erwartet 100", stage, got)
+		if got := len(w.Coins) - coins; got != 14 {
+			t.Fatalf("Stufe %d: %d Münzen, erwartet 14", stage, got)
 		}
 		if got := *stock - before; got != 50 {
 			t.Fatalf("Stufe %d: %d %s, erwartet 50", stage, got, w.Biome.PrimaryResource)

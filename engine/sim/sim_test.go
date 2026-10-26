@@ -79,6 +79,7 @@ func compare(t *testing.T, run goldenRun, tick int, want map[string]any, w *Worl
 
 // replay rechnet einen Golden-Lauf mit seinen Eingaben nach und vergleicht jeden Snapshot.
 func replay(t *testing.T, run goldenRun) {
+	goldenPurse(t)
 	b, err := level.LoadBiome(run.Biome)
 	if err != nil {
 		t.Fatal(err)
