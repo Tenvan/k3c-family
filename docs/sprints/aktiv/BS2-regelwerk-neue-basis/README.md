@@ -5,7 +5,7 @@
 - **Domäne:** REG
 - **Reife:** bereit
 - **Tickets:** B-635, B-636, B-637, B-638
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 3e95ba48
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-26, Chat, durch 🧑, Revision 1, mit den Defaults der offenen Fragen
@@ -63,7 +63,7 @@ Aus den Tickets, je mit Default (nicht blockierend):
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BS2.1 | `BS2.1-muenzskala.md` | Umsetzung | autonom | offen |
+| BS2.1 | `BS2.1-muenzskala.md` | Umsetzung | autonom | fertig |
 | BS2.2 | `BS2.2-baumschule-hafen-schiff.md` | Umsetzung | autonom | offen |
 
 ## Abnahme

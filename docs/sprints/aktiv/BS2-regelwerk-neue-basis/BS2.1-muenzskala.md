@@ -1,6 +1,6 @@
 # BS2.1 · Regel Münzskala 2–30 und Zielkorridore
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -49,5 +49,7 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 umgesetzt: `wirtschaft.md` § 8 Münzskala (Stufen 2–30, Kurve `2·(alt/5)^0,66`, Einnahmen, Kleinbeträge, Ausnahme-Preise, Daten-Test-Pflicht); § 1 und § 3 auf die Skala (Start 14, Beutel 30, Morgen 2, Truhen 3–6, Greed 2).
+- AC-01 umgesetzt: `zielkorridore.md` Revision 2: Gold am Morgen 5–20, Gold-Bilanz grün −4…10 / gelb −10…16, BR1-Teil als historisch markiert, neuer § 6 Meilenstein-Läufe („durchlaufen“ = Endboss Insel 1 besiegt).
+- Glossar: Ausnahme-Preis, Meilenstein-Lauf, Münzskala.
+- Geprüft: `task check:diff` grün. Defaults aus B-635 übernommen (Freigabe 🧑 2026-10-26).

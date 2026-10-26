@@ -45,4 +45,4 @@ Eigenes Balancing für Events, geplante/manuelle Chunks und Bosse (später, eige
 - **⚠️ Workbench-Neustart:** Jede Session, die Go-Code, Instructions oder die eingebettete Oberfläche der Workbench ändert (BS1.1–BS1.3, BS3.3, BS7.1–BS7.3, BS8.1, BS9.1, BS6.4), meldet den Neustart deutlich: erste Ergebniszeile, `notify_ui` (warn), Chat. Folgeläufe prüfen erst `workbench_status` und blockieren sonst.
 - **Konflikt:** Aktive BAL-Sprints RG1 und BR2 messen auf der alten Skala; nach BS3 sind ihre Werte hinfällig. Entscheidung 🧑: pausieren/verwerfen oder nach BS3 neu aufsetzen.
 - Keine Rücksicht auf alte Spielstände.
-- **Branch (Beschluss 🧑 2026-10-26):** Abweichend von „ein PR je Sprint“ läuft ganz BAS auf dem Feature-Branch `bas-remake` im Haupt-Checkout: ein Commit je Session, keine Sprint-Branches, keine Worktrees, keine PRs bis auf Widerruf.
+- **Branch (Beschluss 🧑 2026-10-26):** Abweichend von „ein PR je Sprint“ läuft ganz BAS auf dem Feature-Branch `feature/bas-remake` (ab `develop` 3e95ba48) im Haupt-Checkout: ein Commit je Session, keine Sprint-Branches, keine Worktrees, keine PRs bis auf Widerruf.

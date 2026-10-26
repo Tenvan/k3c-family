@@ -1,7 +1,7 @@
 # Zielkorridore (Kennzahlen für das Balancing)
 
 - **Stand:** Entwurf von Agent (F1.2, 2026-10-03), **Bestätigt von 🧑 am 2026-10-03** im Workshop F1.4 (alle Zahlen in § 1–3 unverändert)
-- **Revision:** 1
+- **Revision:** 2 (BAS, 2026-10-26: Gold-Korridore auf die Münzskala umgerechnet, `wirtschaft.md` § 8; Meilenstein-Lauf § 6)
 
 Alle Kennzahlen mit Zielkorridor aus den Regelwerken in einer Tabelle (Beschluss Q02: der Agent schlägt Startwerte vor, 🧑 bestätigt; Pass/Fail je Kennzahl über 100 feste Seeds). **Alle Zahlen in § 1–3 sind von 🧑 bestätigt** (Datum im Kopf). Sie sind Startwerte; die Balancing-Runden B-155 und B-156 passen sie an, jede Änderung erhöht die Revision.
 
@@ -14,7 +14,7 @@ Alle Kennzahlen mit Zielkorridor aus den Regelwerken in einer Tabelle (Beschluss
 | Kennzahl | Szenario | Untergrenze | Obergrenze | Quelle | Messbar mit |
 |---|---|---|---|---|---|
 | Burg hält Nacht 1–5 (kein `castleFallen` bis Tagesanbruch nach Nacht 5) | Standard | 75 % | 90 % | `wirtschaft.md` § 4 | B-099 (`castleFallen`, Tag aus `World.Cycle`) |
-| Gold am Morgen je Spieler, Median | Standard | 20 Gold | 70 Gold | `wirtschaft.md` § 1 | sim_run (`Player.Gold` bei `dawn`); Median über Seeds B-099 |
+| Gold am Morgen je Spieler, Median | Standard | 5 Gold | 20 Gold | `wirtschaft.md` § 1 | sim_run (`Player.Gold` bei `dawn`); Median über Seeds B-099 |
 | Erste Mauer gebaut vor Ende der hellen Phase von Tag 1 (≤ 10 min Spielzeit, `data/biomes/forest.json` › `cycle.dayMinutes`) | Standard | 90 % | 100 % | `wirtschaft.md` § 3, `materialien-gebaeude.md` § 3.1 | sim_run (Ereignis `built`, Zeit aus dem Tick); Anteil B-099 |
 | Höhle erreicht vor Beginn von Tag 6 | Standard | 80 % | 100 % | `stufen.md` § 3 | B-099 (Ereignis `arrived`, Tag) |
 | Abstand der Wellen unter Tage | Mine, Normal, 2 Spieler, Ressourcen gesammelt, 100 Seeds | 4 min | 12 min | `stufen.md` § 2, `gegner.md` § 3 | sim_run (Ereignis `wave`, Zeit); Verteilung B-099 |
@@ -94,7 +94,7 @@ von Gelb ist die Ampel rot.
 | Erste Werkstatt (Median) | ≤ 6000 Ticks (200 s) | ≤ 12000 Ticks | Bögen vor Nacht 2, damit Türme besetzt werden können (§ 3: erster Turm vor Ende von Tag 2) |
 | Leerlauf der Bauern | ≤ 25 % | ≤ 35 % | Mehr als ein Viertel Wartezeit heißt: zu wenig Aufträge oder zu viele Bauern |
 | Überlebensabfall je Nacht | ≤ 5 Pkt. | ≤ 15 Pkt. | Größter Abfall von Nacht zu Nacht (vor Nacht 1: 100 %); ein Sprung zeigt eine zu harte Welle. Nur für normal, bei hard und ultra ist der Abfall gewollt |
-| Gold-Bilanz je Tag ab Tag 2 | −20 bis 60 | −60 bis 120 | Tag 1 ist Bauphase; danach soll das Gold weder wegschmelzen noch sich stauen (Börse begrenzt, `economy.json:purse.maxGold`) |
+| Gold-Bilanz je Tag ab Tag 2 | −4 bis 10 | −10 bis 16 | Münzskala (`wirtschaft.md` § 8, Kurve auf die alten Grenzen −20 bis 60 bzw. −60 bis 120). Tag 1 ist Bauphase; danach soll das Gold weder wegschmelzen noch sich stauen (Börse begrenzt, `economy.json:purse.maxGold`) |
 | Holz-Bilanz je Tag | 0 bis 150 | −30 bis 300 | Leichter Überschuss trägt die Bauten von Tag 3 (§ 3: Holz am Tagesbeginn ≥ 100) |
 | Stein-Bilanz je Tag | 0 bis 80 | −20 bis 160 | Stein trägt die Hub-Stufen (`hub.json`) |
 
@@ -103,6 +103,8 @@ relative Schrittweite. Der Vorschlag „Nächster Lauf“ stimmt den ersten Hebe
 Schritte ab dem aktuellen Wert ab (`--tune search`).
 
 ## Balancing-Runde Wirtschaft (BR1)
+
+> **Historisch, alte Skala:** Die Gold-Beträge dieses Abschnitts und von „Vorbereitung B-015“ stammen aus der Zeit vor der Münzskala (BAS, `wirtschaft.md` § 8) und gelten nicht mehr.
 
 Messung vor der Runde (BR1.1, 2026-10-07, Commit `69fce4a`, Stand `develop` `edb2a8f` mit K2.1a–K2.2a). Die Zahlen in § 1–3 bleiben unverändert; hier stehen nur die Lesart und die Messung.
 
@@ -174,3 +176,18 @@ Ob ein Wert kippt, entscheidet erst die Messung mit dem verbesserten Bot (B-347)
 | Treppen | 100 Stein + 50 Gold / 500 | Kosten wie Hub-Stufe 2, damit der Weg nach unten eine Entscheidung ist; hohe HP, weil der Verlust die Stufe abschneidet |
 
 Gemessen sind bisher nur Burg, Mauer 1 und die Zerstörung je Welle; alle übrigen Begründungen prüft BR1.3 nach B-347.
+
+## 6. Meilenstein-Läufe (BAS, B-635, B-640)
+
+Beschlossen von 🧑 am 2026-10-26 (Chat, Defaults aus B-635). Ein Meilenstein des Projekts BAS gilt als erreicht, wenn
+ein Lauf **durchläuft**: Im Lauf `sim_test` mit Bot-Profil `coop2`, Welt `standard`, Grad Normal besiegen die Bots den
+**Endboss der Insel 1** (M3: und verlassen die Insel per Schiff). Bis zur Abnahme der neuen Werte rechnet der Lauf nur den
+Seed `k3c-dev` (Seed-Modus `dev`, B-634); der Abschluss-Lauf von M4 rechnet alle Seeds. Die Korridore aus § 1–3 bleiben
+Richtwerte; sie entscheiden nicht über den Meilenstein.
+
+| Meilenstein | Sprint | Bedingung | Vergleich |
+|---|---|---|---|
+| M1 | BS3 | Neue Werte auf der Münzskala, Lauf läuft durch | – |
+| M2 | BS8 | Mit Baumschule, Lauf läuft durch | Baseline M1, nur Gruppe `holz` frei |
+| M3 | BS9 | Mit Schiff, Insel 1 per Schiff verlassen | Baseline M2, nur Gruppe `schiff` frei |
+| M4 | BS6 | Client fertig, alle Seeds | Baseline M3, keine Gruppe kippt |

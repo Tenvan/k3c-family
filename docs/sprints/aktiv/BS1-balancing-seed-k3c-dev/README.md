@@ -5,7 +5,7 @@
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-634, B-639
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 3e95ba48
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-26, Chat, durch 🧑, Revision 1, mit den Defaults der offenen Fragen
