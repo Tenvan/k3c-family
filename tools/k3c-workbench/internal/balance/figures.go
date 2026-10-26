@@ -14,6 +14,7 @@ type Figures struct {
 	FirstWallTickMedian     *float64       `json:"firstWallTickMedian"`
 	FirstWorkshopTickMedian *float64       `json:"firstWorkshopTickMedian"`
 	Nights                  []NightFigures `json:"nights"`
+	Island                  *IslandFigures `json:"island,omitempty"` // nur bei Läufen mit World (BS11)
 }
 
 // NightFigures: Mittelwerte je Lauf für Tag n samt Nacht n eines Grads (leer = normal). Survival ist der Anteil der
@@ -67,6 +68,7 @@ func FiguresOf(r Report) *Figures {
 		return nil
 	}
 	f.FirstWallTickMedian, f.FirstWorkshopTickMedian = medianOrNil(walls), medianOrNil(shops)
+	f.Island = islandFiguresOf(r)
 	for i := range f.Nights {
 		f.Nights[i].finish(idle[i], ticks[i])
 	}

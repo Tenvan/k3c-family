@@ -24,6 +24,8 @@ type Matrix struct {
 	// GoldThreshold: Schwelle für Metrics.GoldThresholdTick (Gold aller Monarchen zusammen); 0 = nicht messen.
 	GoldThreshold int    `json:"goldThreshold"`
 	Grade         string `json:"grade,omitempty"` // Schwierigkeitsgrad aller Läufe, leer = normal (Grad-Kurven, BAL3.3)
+	// World: ID der Welt (z. B. standard); gesetzt baut der Lauf alle Tiefen der ersten Insel (BS11, B-642), Depths gilt dann nicht.
+	World string `json:"world,omitempty"`
 }
 
 // Scenario ist ein einzelner Lauf.
@@ -34,6 +36,7 @@ type Scenario struct {
 	Depth   int    `json:"depth"`
 	Days    int    `json:"days"`
 	Grade   string `json:"grade,omitempty"` // leer = normal; steht so auch im Replay
+	World   string `json:"world,omitempty"` // leer = eine Stufe der Tiefe Depth; sonst alle Tiefen der ersten Insel der Welt (BS11)
 }
 
 // Result ist ein Lauf mit Kennzahlen; ein ungültiger Lauf hat Error statt Metrics.
@@ -75,7 +78,7 @@ func (m Matrix) Scenarios() ([]Scenario, error) {
 		for _, n := range m.Players {
 			for _, b := range m.Bots {
 				for _, d := range m.Depths {
-					out = append(out, Scenario{Seed: seed, Players: n, Bot: b, Depth: d, Days: m.Days, Grade: m.Grade})
+					out = append(out, Scenario{Seed: seed, Players: n, Bot: b, Depth: d, Days: m.Days, Grade: m.Grade, World: m.World})
 				}
 			}
 		}
@@ -152,7 +155,7 @@ func runOne(sc Scenario, threshold int) (res Result) {
 
 // newIsland erzeugt die Insel eines Szenarios mit seinen Monarchen auf Stufe 0 (Lauf und Wiedergabe).
 func newIsland(sc Scenario) (*sim.Island, error) {
-	isl, err := sim.CreateIsland(sc.Seed, []int{sc.Depth}, 1, sim.CreateOptions{})
+	isl, err := createIsland(sc)
 	if err != nil {
 		return nil, err
 	}

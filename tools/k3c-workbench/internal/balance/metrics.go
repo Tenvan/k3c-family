@@ -28,6 +28,7 @@ type Metrics struct {
 	Days           []DayMetrics  `json:"days"`
 	Waves          []WaveMetrics `json:"waves"`
 	Dawns          []DawnMetrics `json:"dawns"`
+	IslandMetrics
 }
 
 // DawnMetrics: Stand zu Tagesbeginn (BAL6, B-347): Tag 1 ist der Start (Tick 0), jeder weitere das Ereignis dawn der
@@ -94,6 +95,7 @@ func newCollector(isl *sim.Island, threshold int) *collector {
 	c := &collector{isl: isl, threshold: threshold, m: Metrics{Days: []DayMetrics{}, Waves: []WaveMetrics{}}}
 	c.gold, c.stock = c.totalGold(), *isl.Stock
 	c.dawn(isl.Stages[0], 0)
+	c.initStages()
 	return c
 }
 
@@ -126,8 +128,10 @@ func (c *collector) observe(tick int) {
 	for _, w := range c.isl.Stages {
 		for _, ev := range w.Events {
 			c.event(w, ev, tick)
+			c.islandEvent(w, ev, tick)
 		}
 	}
+	c.observeIsland(tick)
 }
 
 func (c *collector) event(w *sim.World, ev sim.Event, tick int) {

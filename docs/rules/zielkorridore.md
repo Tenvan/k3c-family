@@ -185,6 +185,12 @@ ein Lauf **durchläuft**: Im Lauf `sim_test` mit Bot-Profil `coop2`, Welt `stand
 Seed `k3c-dev` (Seed-Modus `dev`, B-634); der Abschluss-Lauf von M4 rechnet alle Seeds. Die Korridore aus § 1–3 bleiben
 Richtwerte; sie entscheiden nicht über den Meilenstein.
 
+**Messumfang (BS11, B-642, Variante A; beschlossen von 🧑 am 2026-10-26):** Der Meilenstein misst über die **ganze Insel 1**:
+Der Tester baut alle Tiefen der ersten Insel der Welt (`World: standard`, Tiefen 0–4, eine Stufe je Tiefe), die Bots steigen ab
+(BS11.2) und kämpfen die Bossnächte (BS11.3). Der Bericht zeigt je Tiefe Ankunftstag und gefallene Burg, je Boss den Tag des
+Siegs und für den Endboss `endbossDefeated` (Anteil der Seeds) und `endbossDay` (Median). Ohne `World` läuft der Tester wie bisher
+mit einer Stufe der Tiefe `Depth`; die Korridore aus § 1–3 messen weiter diese Einzelstufe.
+
 | Meilenstein | Sprint | Bedingung | Vergleich |
 |---|---|---|---|
 | M1 | BS3 | Neue Werte auf der Münzskala, Lauf läuft durch | – |

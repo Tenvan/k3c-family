@@ -15,6 +15,7 @@ type FigureInsights struct {
 	Bands  map[string]Band `json:"bands"`
 	Lights []FigureLight   `json:"lights"`
 	Nights []NightFigures  `json:"nights"`
+	Island *IslandFigures  `json:"island,omitempty"`
 }
 
 // FigureLight ist eine Kennzahl mit Ampel; Value nil: kein Messwert (graue Ampel).
@@ -55,6 +56,7 @@ func figureInsights(f *Figures, h *Hints) FigureInsights {
 	}
 	out.Note = fmt.Sprintf("Kennzahlen aus %d gültigen Läufen; Richtwerte sind Startwerte (data/balance-hints.json).", f.Runs)
 	out.Nights = f.Nights
+	out.Island = f.Island
 	out.Lights = append(out.Lights, tickLight(h, "firstWallTick", f.FirstWallTickMedian), tickLight(h, "firstWorkshopTick", f.FirstWorkshopTickMedian))
 	out.Lights = slices.DeleteFunc(out.Lights, func(l FigureLight) bool { return l.Key == "" })
 	for _, g := range gradesOf(f.Nights) {
