@@ -1,6 +1,6 @@
 # BS1 · DEV · Schneller Balancing-Lauf mit Seed k3c-dev
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAS
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -68,9 +68,8 @@ B-634 › Ausnahme- und Fehlerfälle.
 | BS1.1 | `BS1.1-seed-modus.md` | Umsetzung | autonom | fertig |
 | BS1.2 | `BS1.2-laufzeit.md` | Umsetzung | autonom | fertig |
 | BS1.3 | `BS1.3-prompt-buttons.md` | Umsetzung | autonom | fertig |
-| BS1.4 | `BS1.4-review.md` | Review | autonom | offen |
+| BS1.4 | `BS1.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-26, Claude (Review BS1.4, auf `feature/bas-remake`, kein PR). AC-01–AC-06 siehe BS1.1/BS1.2 (Laufzeit k3c-dev 14 min → 4 min, parallele Läufe), AC-07/AC-08 siehe BS1.3. `world` für `sim_test` → BS11 (B-642). `check:race` lokal übersprungen. Behoben: flackernder Test `TestSimTestOfflineBewertetZiele`. Neue Tickets: B-642.

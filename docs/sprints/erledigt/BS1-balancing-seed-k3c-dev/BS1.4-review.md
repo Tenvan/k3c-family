@@ -1,6 +1,6 @@
 # BS1.4 · Review BS1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -49,5 +49,7 @@ task check:race
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 bis AC-08 gegen BS1.1–BS1.3 geprüft, alle erfüllt; AC-05 bis auf `world` (verschoben nach BS11, B-642).
+- `task check` grün (erster Lauf: 2 Timeouts unter Last in `offlineTools`/`projectRules`, einzeln grün, Wiederholung grün), `task check:go` grün, `task check:race` **übersprungen** (lokal kein C-Compiler); die Nebenläufigkeit aus BS1.2 belegt nur `TestParallelWieNacheinander`, Race-Detector folgt in der CI.
+- Diff `3e95ba48..HEAD` gelesen (Eingabeprüfung `sim_test`/`simrun`, Seed-Modus, Parallel-Läufe): keine neuen Befunde.
+- Offen (niedrig, aus dem Review von BS1.1): Folgebefehle der Auswertung nennen `--seeds N` statt der Seed-Liste; Baseline-Vergleich bei anderem Seed-Modus nur als Hinweis (BS7).
