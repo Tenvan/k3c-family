@@ -1,6 +1,6 @@
 # BS2 · REG · Regelwerk der neuen Basis: Münzskala, Baumschule, Hafen und Schiff
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAS
 - **Domäne:** REG
 - **Reife:** bereit
@@ -64,9 +64,8 @@ Aus den Tickets, je mit Default (nicht blockierend):
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | BS2.1 | `BS2.1-muenzskala.md` | Umsetzung | autonom | fertig |
-| BS2.2 | `BS2.2-baumschule-hafen-schiff.md` | Umsetzung | autonom | offen |
+| BS2.2 | `BS2.2-baumschule-hafen-schiff.md` | Umsetzung | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-26, Claude (Doku-Sprint, letzte Session BS2.2). AC-01 siehe BS2.1, AC-02 bis AC-04 siehe BS2.2. Befund: BS2.1 änderte den Gold-Korridor nur in der Regel, `balance-targets.json` zog BS1.1 nach (Go-Test `TestGrenzenWieTabelle` lief bei Docs-Diffs nicht mit). Neue Tickets: keine.

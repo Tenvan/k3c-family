@@ -1,6 +1,6 @@
 # BS2.2 · Regeln Baumschule, Hafen und Schiff, Sprint abschließen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -54,5 +54,8 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 umgesetzt, geprüft: Baumschule in `materialien-gebaeude.md` (§ 1, § 3, neuer § 3.3 Baumschule und Roden), `gegner.md`, `wirtschaft.md`, `geplante-chunks.md`, `zielkorridore.md`. `grep -i farm docs/rules` findet nur noch die Code-ID „bis BS4 `farm`“ und den aus `data/hub.json` erzeugten Block `rules:hub-levels` („Farm −52, +52“); beide folgen mit BS4 (Daten-Umbau, dann `task gen:rules`).
+- AC-03 umgesetzt: `stufen.md` § 1 Inselwechsel am Hafen (Schiff fertig + Endboss, alle am Steg, kein Portal), `geplante-chunks.md` § 10 Hafen-Chunk (`harbor`, Tiefe 0, Platz −7), `bosse.md`, `welten.md`.
+- AC-04 umgesetzt: Schiffskosten in `wirtschaft.md` § 8 (Kiel 10 + 80 Holz, Rumpf 20 + 60 Stein + 40 Kupfer, Segel 30 + 40 Eisen + 20 Kristall, Startwerte), Korridor „Schiff fertig“ in `zielkorridore.md` § 6.
+- Glossar: Baumschule, Baumschul-Platz, Roden, Hafen, Hafen-Chunk, Schiff, Schiff-Abschnitt; Farm, Bauplatz, Holz, Plantage, Endboss, Inselwechsel angepasst.
+- Geprüft: `task check:diff` grün (nach `task gen:rules`), `TestGrenzenWieTabelle` grün. Defaults aus B-636/B-637 (Freigabe 🧑 2026-10-26).

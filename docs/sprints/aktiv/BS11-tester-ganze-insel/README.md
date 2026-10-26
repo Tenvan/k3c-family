@@ -1,14 +1,14 @@
 # BS11 · DEV · Balancing-Tester spielt die ganze Insel bis zum Endboss
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAS
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-642
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 3e95ba48
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-26, Chat, durch 🧑, Revision 1, mit den Defaults der offenen Fragen
 
 ## Ausgangslage
 

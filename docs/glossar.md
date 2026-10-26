@@ -30,7 +30,9 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Bau-Menü | Gibt es nicht: Gebaut wird nur an Bauplätzen durch Bezahlen, die Taste Y bleibt frei. | Q06, Q34 |
 | Bauer | Rekrutierter Landstreicher (1 Gold): sammelt markierte Ressourcen, baut, repariert, holt Waffen, flieht bei Gefahr in die Burg. Zählt nicht zum Truppen-Limit. Bei 0 HP lässt er seine Münze fallen und wird Landstreicher; ein Kämpfer oder Beruf, der seine Ausrüstung verliert, wird wieder Bauer (volle HP). | `rules/buerger.md` §§ 1, 3, Q67 |
 | Baumeister | Beruf (20 Gold): Bauer, der +50 % schneller baut und repariert. | `rules/buerger.md` §§ 1–2 |
-| Bauplatz | Fester Ort, an dem genau ein Gebäude gebaut und am selben Ort ausgebaut wird; kein Platz bewegt sich. Klassen: Hub-Platz, Mauerlinie (Mauer, Turm), Tor-Platz, Farm-Weltplatz, Angebots-Anhang. | Q43, `rules/materialien-gebaeude.md` § 3; `data/hub.json` › `sites` |
+| Baumschul-Platz | Bauplatz der Baumschule: je Seite einer in einem Wald-Chunk hinter Linie 2 (nur Tiefe 0), vom Generator gewürfelt; kaufbar erst nach dem Roden. | `rules/materialien-gebaeude.md` § 3.3, B-636 |
+| Baumschule | Gebäude der Hub-Stufe 1 auf einem Baumschul-Platz im Wald (Code `nursery`, früher Farm); wirkt als Plantage. | `rules/materialien-gebaeude.md` §§ 1, 3.3, B-636 |
+| Bauplatz | Fester Ort, an dem genau ein Gebäude gebaut und am selben Ort ausgebaut wird; kein Platz bewegt sich. Klassen: Hub-Platz, Mauerlinie (Mauer, Turm), Tor-Platz, Baumschul-Platz, Angebots-Anhang. | Q43, `rules/materialien-gebaeude.md` § 3; `data/hub.json` › `sites` |
 | Bauzeit | Zeit, die ein Bauer nach dem Bezahlen baut (z. B. Hub-Ausbau 20/30/40/50 s); Baumeister sind schneller. | `rules/materialien-gebaeude.md` §§ 2–3, Q44, Q45 |
 | Bergmann | Beruf (20 Gold): +50 % Abbaurate an Adern, Fels und Kupfererz; zählt als einer der höchstens 2 Bauern an einer Ader. | `rules/buerger.md` § 1, Q35 |
 | Beruf | Spezialisierung eines Bauern gegen Gold: Bergmann, Baumeister, Handwerker. Umschulung kostet erneut. | `rules/buerger.md` § 1 |
@@ -68,12 +70,12 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Eisen | Material der Hub-Stufe 4 aus Adern im Eisenstollen; für Eisenmauer, Eisenturm, Rüstkammer, Rüstung. | `rules/materialien-gebaeude.md` § 1 |
 | Eisenstollen | Stufe der Tiefe 3 (Biom `ironhold`, geplant) mit Eisen-Adern, Lava und 3 Portalen. | `rules/stufen.md` § 1, Q28 |
 | Elite | (1) Elite-Gegner: stärkerer Gegner einer Stufe mit genau einer Fähigkeit. (2) Elite-Bogenschütze/-Krieger: Kämpfer nach Upgrade in der Schmiede. | `rules/gegner.md` § 1, `rules/buerger.md` § 1 |
-| Endboss | Boss einer Insel in seinem Bau, sitzt immer in der tiefsten Stufe (bis W2 die Mine, danach die Kristallhöhle); ausgelöst bei Ankunft eines Spielers, sein Sieg öffnet den Inselwechsel. | `rules/bosse.md` § 1, `rules/stufen.md` § 3, Q60 |
+| Endboss | Boss einer Insel in seinem Bau, sitzt immer in der tiefsten Stufe (bis W2 die Mine, danach die Kristallhöhle); ausgelöst bei Ankunft eines Spielers, sein Sieg ist eine Bedingung des Inselwechsels (dazu fertiges Schiff am Hafen). | `rules/bosse.md` § 1, `rules/stufen.md` § 3, Q60 |
 | `equipmentTaken` | Ereignis (geplant): Ein Gegner hat Ausrüstung zum Portal getragen, sie ist verloren. | `rules/buerger.md` § 3, `rules/gegner.md` § 4, Q68, Q69 |
 | Ereignis (Event) | Meldung der Simulation im letzten Tick einer Stufe (`events` in `snap`/`delta`), z. B. `hit`, `kill`, `built`, `playerDown`, `revive` (Respawn), `revived` (Wiederbeleben, kommt mit W4.1/W5), `disarmed` und `equipmentTaken` (geplant, Q69); höchstens 32 je Tick und Stufe. | `protocol.md` › Ereignisse, `engine/sim/events.go`, Q62 |
 | Event-Banner | Einblendung im HUD, wenn ein Boss erscheint, die Phase wechselt oder er fällt (`bossSpawned`, `bossPhase`, `bossDefeated`); bis zur Anbindung (B-469) im Asset-Studio eine Lücke. | B-464, B-469 |
 | Extrapolation | Läuft die Zeitleiste leer, laufen Figuren mit ihrer letzten Bewegung höchstens 100 ms weiter (angenommen) und bleiben dann stehen. | B-277 |
-| Farm | Gebäude der Hub-Stufe 1 auf einem festen Farm-Weltplatz je Seite zwischen Linie 1 und 2 (±52); wirkt als Plantage. | `rules/materialien-gebaeude.md` § 3, Q51 |
+| Farm | Alter Name der Baumschule (bis Projekt BAS); im Code bis BS4 noch `farm`. | B-636 |
 | Filterleiste | Leiste über beiden Spalten der Planungsseite, nach Wirkung gegliedert: Gemeinsam (Suche, Prio, Umgebung, Projekt = Backlog-Filter), Projekte (Zustand, Sprints, Domänen = Projekt-Filter), Backlog (Einplanung). Je Gruppe eine Checkliste, angehakte Werte als Chips mit ×, rechts die Trefferzahl. | B-439, `tools/k3c-workbench/frontend/src/planning/filterGroups.ts` |
 | Fixture | Kleiner, aus dem Code erzeugter Spielstand je Version unter `testdata/saves/v<n>/`; alte bleiben unverändert, `TestJedeVersionHatFixture` verlangt eines je Version. | `arbeitsweise.md` › Spielstand-Format |
 | Freifläche | Bildschirmbereich, den kein HUD-Element belegen darf: Home-Button, „☰ Optionen“, Touch-Knöpfe und der Bereich der Diagnose. Die Layout-Funktion spart ihn aus. | B-337, `src/scenes/hud/hudLayout.ts` |
@@ -87,6 +89,8 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Gold | Währung je Spieler (Start 100, höchstens 100, morgens +5); bezahlt Bauten, Rekrutierung, Markierung. Gehört dem Spieler, ist kein Material. | `rules/wirtschaft.md` § 1 |
 | Golden (Golden-Daten) | Referenzergebnisse von Simulation und Level-Generator in `testdata/golden/`; Update nur bei gewollter Regeländerung per `task go:golden` mit Begründung. | `arbeitsweise.md` › Golden aktualisieren |
 | Grabstein | Gefallener Monarch, der am Ort liegen bleibt, bis er wiederbelebt wird oder respawnt. | `rules/monarch.md` § 5 |
+| Hafen | Ort des Inselwechsels im Hafen-Chunk: Steg an der Wasserkante mit dem Schiffs-Bauplatz. | `rules/stufen.md` § 1, `rules/geplante-chunks.md` § 10, B-637 |
+| Hafen-Chunk | Geplanter Chunk der Art `harbor`, genau einer je Insel in Tiefe 0 (Standard-Welt: Platz −7); ohne Ressourcen, Adern, Portale. | `rules/geplante-chunks.md` § 10, B-637 |
 | Händler | Besucher je Insel im Hub der Tiefe 0 (Hub-Platz +8/+12): kommt bei `dawn` alle 3 Tage (mit Taverne alle 2), bleibt einen Tag, tauscht 10 Material = 5 Gold an „Kaufen“ und „Verkaufen“. | `rules/buerger.md` § 1, Q36, Q55 |
 | Handwerker | Beruf (30 Gold) in Werkstatt, Schmiede oder Rüstkammer (1–2 je Gebäude): +50 % Herstellungstempo je Handwerker. | `rules/buerger.md` § 1, Q35 |
 | Heilplatz | Gebäude der Hub-Stufe 3: heilt Truppen (Kämpfer) und Spieler im Radius 6 mit 5 HP/s, immer, auch im Kampf. Sonst gibt es keine Regeneration. | `rules/materialien-gebaeude.md` § 3.2, Q32 |
@@ -94,7 +98,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Hintergrund-Schicht | Ein in der Breite kachelbares Bild eines Biom-Hintergrunds mit eigenem Scroll-Faktor (hinten langsam, vorn schneller); je Biom mehrere Schichten übereinander, Unterkante auf der Bodenlinie, Himmel darüber aus `palette.sky`. Nur Darstellung. Nicht verwechseln mit Hintergrundmauer (Bauwerk) und Ebene (Insel-Variante). Code: `BackgroundLayer` in `src/scenes/render/worldSprites.ts`. | GEB7, B-435 |
 | Hintergrundmauer | Mauer im Hintergrund (Typ B), die zwei benachbarte gebaute Mauern (Typ A, Mauer-Platz der Mauerlinie) derselben Seite verbindet, wie in Kingdom Two Crowns. Ihre Stufe ist die der äußeren der beiden Mauern. Nur Darstellung, kein eigener Bauplatz. | B-442, GEB3 |
 | Höhle | Stufe der Tiefe 1 (Biom `cave`) mit Stein-Adern; Wellen über den Aggressionspool. | `game-design.md` › Welt & Stufen |
-| Holz | Material der Hub-Stufe 1 aus Bäumen im Wald und aus Farm-Plantagen; Grundgebäude, Holzmauer und -turm, Bogen und Schwert. | `rules/materialien-gebaeude.md` § 1 |
+| Holz | Material der Hub-Stufe 1 aus Bäumen im Wald und aus Baumschul-Plantagen; Grundgebäude, Holzmauer und -turm, Bogen und Schwert. | `rules/materialien-gebaeude.md` § 1 |
 | Home-Kombi | View + Menu gemeinsam halten (Tastatur Pos1) = zurück zur Landingpage; auf keiner Seite anders belegt. | `CLAUDE.md` › Seiten & Navigation |
 | Hub | Basis einer Stufe mit Burg, eigenen Bauplätzen, Bürgern und Hub-Stufe; jede Stufe hat einen eigenen Hub, der von Grund auf gebaut wird. | `rules/stufen.md` § 1 |
 | Hub-Ausbau | Erhöhen der Hub-Stufe auf 2–5 in 3 Ausbauschritten, bezahlt an der Burg mit Gold plus Material der neuen Stufe (zusammen z. B. 100 Stein + 50 Gold) und im letzten Schritt dem Material-Tor; ein Bauer baut. | `rules/materialien-gebaeude.md` § 2, Q44 |
@@ -106,7 +110,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Insel-ID | Kennung einer Insel in ihrer Welt-Datei (`a-z`, `0-9`, `-`, höchstens 32 Zeichen), eindeutig je Welt, über Welten hinweg frei (`island1` gibt es in jeder Kopie der Standard-Welt); der Spielstand speichert sie als `islandId` statt eines Index. | `rules/welten.md` § 4, § 5 |
 | Insel-Vorrat | Gemeinsames Baumaterial aller Stufen und Hubs einer Insel (`World.stock`); Kapazität je Rohstoff 300 je Hub plus 300 je Lager. | `rules/materialien-gebaeude.md` § 1 |
 | Inselgröße | Eine der sechs Größen für die Chunk-Anzahl einer Stufe: sehr klein 16 · klein 24 · mittel 40 · groß 64 · sehr groß 100 · mega groß 160 Chunks; gesetzt je Insel und Tiefe in `chunkCounts`, Tabelle in `data/island-sizes.json`. | `rules/geplante-chunks.md` § 7, B-485 |
-| Inselwechsel | Gemeinsamer Wechsel aller lebenden Spieler zur nächsten Insel der Welt-Datei des Raums (Boot oder Portal) nach dem Sieg über den Endboss. | `rules/stufen.md` § 1, `rules/welten.md` § 6, B-103 |
+| Inselwechsel | Gemeinsamer Wechsel aller lebenden Spieler zur nächsten Insel der Welt-Datei des Raums am **Hafen**: Schiff fertig und Endboss besiegt, alle Spieler am Steg. Kein Portal. | `rules/stufen.md` § 1, `rules/welten.md` § 6, B-103, B-637 |
 | Kampagne | Das gesamte Spiel eines Spielstands bis zum Ziel des Raums (Standard: Endboss der letzten Insel). | `rules/stufen.md` § 3 |
 | Kämpfer | Bürger, die kämpfen und zum Truppen-Limit zählen: Bogenschützen und Krieger, auch Elite. Gleichbedeutend mit Truppe. | `rules/buerger.md` § 3, Q63 |
 | Kaserne | Gebäude der Hub-Stufe 2: Truppen-Limit +10. | `rules/materialien-gebaeude.md` § 3.2 |
@@ -149,7 +153,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Niederlage-Modus | Raum-Option für den Fall einer Burg: Gold/Material-Verlust, Stufenverlust oder Komplett verloren (`defeat`: `resources`, `stage`, `lost`). | `rules/stufen.md` § 4 |
 | Oberwelt | Die Stufe der Tiefe 0, der Wald. | `rules/stufen.md` § 1 |
 | Pixeldichte | Größe eines Quell-Pixels im Spiel, gemessen am 16-px-Raster (Q13). Assets mit gröberen oder feineren Pixeln wirken fremd, auch bei gleicher Palette. | B-331 |
-| Plantage | Wirkung der Farm: 6 Plätze, je Platz alle 30 s ein Baum mit 10 Holz, ohne Markierung; zählt nicht für „Alles abbauen“. | `rules/materialien-gebaeude.md` § 1, Q25 |
+| Plantage | Wirkung der Baumschule: 6 Plätze, je Platz alle 30 s ein Baum mit 10 Holz, ohne Markierung; zählt nicht für „Alles abbauen“. | `rules/materialien-gebaeude.md` § 1, Q25 |
 | Platz-Stufe | Gespeicherte Stufe eines Bauplatzes im Spielstand v3 (`SiteSave`). | B-202, Q42 |
 | Portal | Ausgangspunkt der Gegnerwellen: 2 je Stufe, ab Tiefe 3 drei; mindestens 150 Units vom Hub und außerhalb der Linie 5 inklusive Streuung. | `rules/gegner.md` § 3, Q49, Q57 |
 | Posten | Standplatz eines Kämpfers: Bogenschützen auf dem Turm oder hinter der äußersten Mauer, Krieger hinter der äußersten gebauten Sperre. Posten sind keine Bauplätze. | `rules/buerger.md` § 1, Q46 |
@@ -174,10 +178,13 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Revision | Zähler der Spec-Fassung; jede Änderung erhöht ihn und setzt die Spec auf `Entwurf` zurück. | `arbeitsweise.md` › SDD |
 | `revive` | Ereignis: Monarch steht nach der Wartezeit an der Burg wieder (Respawn). | `protocol.md` › Ereignisse, Q62 |
 | `revived` | Ereignis (geplant, B-120/W4.1, Protokoll mit W5): Monarch wurde von einem Mitspieler wiederbelebt. | Q62, B-120 |
+| Roden | Alle Bäume im Streifen eines Baumschul-Platzes fällen; erst danach ist die Baumschule kaufbar („erst roden“). Nachwachsende Plantage-Bäume zählen nicht. | `rules/materialien-gebaeude.md` § 3.3, B-636 |
 | RTT (Ping) | Umlaufzeit eines WebSocket-Pings vom Server zum Gerät und zurück, vom Server einmal je Sekunde gemessen (Messreihe je Gerät). Nicht die Latenz (die misst der Client über `ack`). | B-281, `engine/net/ping.go` |
 | Ruine | Gebautes, stark beschädigtes Nutzgebäude (25 % HP) an fester Lage eines geplanten Chunks, höchstens eine je Chunk; wirkt wie ein gebautes Gebäude seiner Art, ist Hub-neutral, wird von Bauern repariert und kehrt nach dem Burgfall zurück. Umsetzung WZ14. | `rules/geplante-chunks.md` § 8, B-468 |
 | Rüstkammer | Gebäude der Hub-Stufe 4: Rüstungsstufen für alle Kämpfer. | `rules/materialien-gebaeude.md` § 3.2 |
 | Rüstungsstufe | Upgrade in der Rüstkammer, 2 Stufen (ab Hub-Stufe 4 und 5): +20 % bzw. +40 % Basis-HP für alle Kämpfer, sofort, ohne Vollheilung. | `rules/buerger.md` § 2, Q37 |
+| Schiff | Bauwerk am Hafen, mit dem die Spieler die Insel verlassen; 3 Schiff-Abschnitte, Gegner beschädigen es nicht. Synonym: Boot. | `rules/stufen.md` § 1, `rules/wirtschaft.md` § 8, B-637 |
+| Schiff-Abschnitt | Bauabschnitt des Schiffs: Kiel, Rumpf, Segel; je Münzen und Material, von einem Bauern gebaut. | `rules/wirtschaft.md` § 8, B-637, B-638 |
 | Schlag | Einfacher Nahkampfangriff des Monarchen (X bzw. E): 10 Schaden, Reichweite 1,5 Units, Abklingzeit 0,7 s. | `rules/monarch.md` § 1 |
 | Schmiede | Gebäude der Hub-Stufe 3: Elite-Upgrades für Bogenschützen und Krieger. | `rules/materialien-gebaeude.md` § 3.2 |
 | Schwierigkeitsgrad | Raum-Option Dev, Leicht, Normal, Hart, Ultra (`grade`); ändert nur Wellen und Gegner, nicht die Wirtschaft. Dev nur im Dev-Mode. | `rules/wirtschaft.md` § 4 |

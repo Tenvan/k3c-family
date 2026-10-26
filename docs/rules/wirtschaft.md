@@ -58,7 +58,7 @@ Die Faktoren sind **Startwerte** (Basis: heutige Werte = Normal); der Balancing-
 
 ## 5. Truppen und Gebäude: beschlossen, später gebaut
 
-Gebäude und Material sind in `materialien-gebaeude.md` beschlossen (R2), Bürger, Berufe und Truppen-Limit in `buerger.md` (R3). Krieger, Elite-Upgrades, Tor, Farm, Kaserne und das Truppen-Limit bleiben im Regelwerk und in `data/`, sind aber im Code noch nicht umgesetzt. Bis dahin gilt: kein Truppen-Limit, kein Tor, keine Farm, keine Kaserne im Hub. Die Werte werden mit Regelwerk III (`gegner-truppen.md`) festgelegt, die Umsetzung kommt als SIM-Ticket in einem späteren Sprint.
+Gebäude und Material sind in `materialien-gebaeude.md` beschlossen (R2), Bürger, Berufe und Truppen-Limit in `buerger.md` (R3). Krieger, Elite-Upgrades, Tor, Baumschule, Kaserne und das Truppen-Limit bleiben im Regelwerk und in `data/`, sind aber im Code noch nicht umgesetzt. Bis dahin gilt: kein Truppen-Limit, kein Tor, keine Baumschule, keine Kaserne im Hub. Die Werte werden mit Regelwerk III (`gegner-truppen.md`) festgelegt, die Umsetzung kommt als SIM-Ticket in einem späteren Sprint.
 
 ## 6. Steuerung
 
@@ -86,6 +86,7 @@ Man zählt Münzen, statt Beträge zu lesen.
 | **Einnahmen** folgen derselben Kurve, gerundet auf ganze Münzen, mindestens 1: Startgold 14, Tageseinkommen 2, Truhen 3–6, Drops Standard etwa 1–6 und Elite etwa 4–12, Greed stiehlt 2. Ausnahme ist der Beutel: höchstens 30. | Ausgaben und Einnahmen schrumpfen im selben Verhältnis, Tempo und Spannung bleiben. Der volle Beutel (30) bezahlt genau das teuerste reguläre Bauwerk. | `economy.json` › `purse`, `dawnGoldPerPlayer`, `chestGold`; `enemies.json` › `gold`; `waves.json` › `stealGold` | Gold am Morgen: Median 5–20 (§ 1) |
 | **Kleinbeträge** außerhalb der Skala: Markieren (1–2 Münzen, `markCost`) und Rekrutieren (1 Münze) bleiben unverändert. | Weniger als eine Münze geht nicht; diese Beträge waren schon klein. | `economy.json` › `gatherables`, `veins`, `recruitCamp` | – |
 | **Ausnahme-Preise:** Geplante und manuelle Chunks, Events, Bosse (Beute), Ruinen und Spielziele dürfen außerhalb der Skala liegen und bekommen später ein eigenes Balancing. Bis dahin werden sie mit derselben Kurve umgerechnet und in `notes` als „vorläufig (Ausnahme, B-635)“ markiert. | Sonderfälle sollen sich anders anfühlen dürfen; ihr Balancing kommt, wenn wir damit anfangen. | `bosses.json`, `events.json`, `ruins.json`, `goals.json`, `data/worlds/*.json` › `plannedChunks` | – |
+| **Schiff** (B-637, B-638): 3 Abschnitte, je Münzen auf der Skala plus Material der Insel — **Kiel** 10 Münzen + 80 Holz, **Rumpf** 20 Münzen + 60 Stein + 40 Kupfer, **Segel** 30 Münzen + 40 Eisen + 20 Kristall. Ein Abschnitt wird wie ein Gebäude bezahlt und von einem Bauern gebaut. Startwerte, BS3 übernimmt sie in `data/`, BS9 stimmt sie ab. | Das Schiff ist das teuerste Bauwerk der Insel und braucht Material aller Stufen; so zieht es durch die ganze Insel. | Schiffskosten in `data/` (BS3) | Schiff fertig: `zielkorridore.md` § 6 |
 | **Prüfung:** Ein Daten-Test lehnt reguläre Goldpreise außerhalb der Skala ab und kennt die Ausnahmen als ausdrückliche Liste (BS3.1). | Die Skala bleibt beim späteren Feinschliff erhalten. | `engine/sim/*_data_test.go` | – |
 
 Die konkreten Werte setzt BS3 in `data/`; bis dahin stehen dort noch die alten Beträge.

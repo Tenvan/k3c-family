@@ -142,7 +142,7 @@ Befehle (Standardszenario Wald, Normal, 2 Spieler, Bot `saver`, Seeds 1–100):
 | Gold am Morgen je Spieler, Median | 100 (Maximum), ab Tag 2 in 99 % am Maximum | Fail | Messgröße Gold zur Dämmerung (`goldAtDusk` / 2) statt bei `dawn`; Bot `saver` gibt nach den Mauern kein Gold aus (B-347) |
 | Erste Mauer vor Ende der hellen Phase Tag 1 | 100 %, Median 28 s | Pass | auch nach Q65 (6 min) sicher |
 | Erster Turm vor Ende Tag 2 | nicht messbar | – | Der Bot baut keinen Turm (`firstBowTick` nur in 4 Läufen); keine Messgröße für `built` Turm (B-347) |
-| Holz am Tagesbeginn ≥ 100, ab Tag 3 | 1–11 % (Tag 3–5), Median 70–80 | Fail | Messgröße Vorrat zur Dämmerung; ohne Farm wächst kein Holz nach (Bot baut keine Farm, B-347) |
+| Holz am Tagesbeginn ≥ 100, ab Tag 3 | 1–11 % (Tag 3–5), Median 70–80 | Fail | Messgröße Vorrat zur Dämmerung; ohne Baumschule wächst kein Holz nach (Bot baut keine, B-347) |
 | Hub-Stufe 2 / 3 | nicht messbar | – | keine Messgröße, Bot baut nicht aus (B-347) |
 | Zerstörte Gebäude je Welle 1–5, Median | 0 | Pass | |
 | Kämpfer je Hub Tag 3 / Tag 6 | 3 / 0 (Median) | Fail (vorläufig) | `troopsAtStart` der Welle; nur die 3 Start-Truppen, nach Welle 5 keine; Bot rekrutiert nicht (B-347) |
@@ -153,7 +153,7 @@ Befehle (Standardszenario Wald, Normal, 2 Spieler, Bot `saver`, Seeds 1–100):
 |---|---|---|---|
 | `economy.json › purse.startGold` | 100 → 60 | Gold am Morgen Median 100 → ≈ 60; erste Mauer bleibt 100 % (5 Gold) | Am Maximum fehlt der Anreiz zum Ausgeben; 60 Gold zahlen zwei Mauern, einen Turm und die erste Rekrutierung. Messung mit `--vary economy.json:purse.startGold` in BR1.3 |
 | `economy.json › dawnGoldPerPlayer` | 5 → 5 (unverändert) | – | Erst nach dem Umbau des Bots bewerten; bei vollem Beutel wirkt das Einkommen nicht |
-| `hub.json › islandStartStock.wood` | 100 → 100 (unverändert) | Holz ≥ 100 ab Tag 3 | Ursache ist die fehlende Farm im Bot, nicht der Startvorrat; nach B-347 neu messen |
+| `hub.json › islandStartStock.wood` | 100 → 100 (unverändert) | Holz ≥ 100 ab Tag 3 | Ursache ist die fehlende Baumschule im Bot, nicht der Startvorrat; nach B-347 neu messen |
 | `bosses.json › goblinLeader.hpFactor` | 8 → (BR2) | Burg hält Nacht 1–5: 4 % → Ziel 75–90 % | Kampfwert, gehört in BR2 (B-346); ohne diese Änderung ist der Wirtschafts-Korridor „Burg hält“ nicht erreichbar |
 
 Ob ein Wert kippt, entscheidet erst die Messung mit dem verbesserten Bot (B-347). Die Vorschläge gehen an 🧑 im Spieleabend 2 (BR1.2).
@@ -167,7 +167,7 @@ Ob ein Wert kippt, entscheidet erst die Messung mit dem verbesserten Bot (B-347)
 | Turm 1–5 | 50 Holz + 20 Gold … 150 Kristall + 200 Gold / 200 … 1700 | Turm 1 + zwei Mauern = 90 Holz ≤ Startvorrat; HP unter der Mauer derselben Stufe, weil er hinter ihr steht |
 | Tor | 30 Holz + 10 Gold / 250 | Weniger HP als die Mauer, weil es eigene Leute durchlässt; billig genug für die äußerste Linie |
 | Werkstatt | 40 Holz + 15 Gold / 150 | Erstes Ausgabeziel nach den Mauern; geringe HP, steht innen |
-| Farm | 30 Holz + 10 Gold / 100 | Amortisiert sich in 2,5 min (≈ 12 Holz/min); ungeschützt zwischen Linie 1 und 2, daher billig |
+| Baumschule | 30 Holz + 10 Gold / 100 | Amortisiert sich in 2,5 min (≈ 12 Holz/min); ungeschützt zwischen Linie 1 und 2, daher billig |
 | Lager | 50 Stein + 20 Gold / 200 | Erst mit Stein bezahlbar (Hub-Stufe 2), +300 Kapazität |
 | Kaserne, Taverne | 60 Stein + 30 Gold / 200, 150 | Stufe-2-Ausbau, teurer als das Lager, weil Truppen-Limit und Landstreicher dauerhaft wirken |
 | Heilplatz | 50 Kupfer + 30 Gold / 150 | Kupfer-Einstieg, Wirkung immer an; HP gering, steht innen |
@@ -191,3 +191,5 @@ Richtwerte; sie entscheiden nicht über den Meilenstein.
 | M2 | BS8 | Mit Baumschule, Lauf läuft durch | Baseline M1, nur Gruppe `holz` frei |
 | M3 | BS9 | Mit Schiff, Insel 1 per Schiff verlassen | Baseline M2, nur Gruppe `schiff` frei |
 | M4 | BS6 | Client fertig, alle Seeds | Baseline M3, keine Gruppe kippt |
+
+**Schiff (B-638):** Korridor „Schiff fertig“ (Startwert): zwischen **2 Tage vor und 1 Tag nach** dem Sieg über den Endboss. Bis zum Schiffsbau (BS5) misst der Bericht nur, ab wann die Bots jeden Abschnitt hätten bezahlen können (Bedarf gegen Bestand, BS3.3); danach den Bau-Tag je Abschnitt (BS9).

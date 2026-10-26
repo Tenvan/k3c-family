@@ -14,7 +14,7 @@ Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot �
 | **Werte:** Miniboss etwa **8× HP und 2× Schaden** eines Standardgegners der Stufe, **1 Fähigkeit**; Endboss etwa **30× HP**, **3 Phasen** mit je einer neuen Fähigkeit. Zusätzlich skaliert nach der Insel-Tabelle (`stufen.md`) und mit der **Spieleranzahl der Insel** (HP × (1 + 0,5 je Zusatzspieler), wie die Wellen). | Bosse bleiben ein Gruppenkampf, auch bei 4 Spielern. | `data/bosses.json` | Boss-Kampfdauer Median 60–180 s (Kennzahl fehlt, B-099) |
 | **Gold und Material:** Miniboss **100 Gold + 50 Material** der Stufe, Endboss **500 Gold + 250 Material** der Stufe, als Haufen am Ort für alle; dazu die **Skill-Punkte** (Miniboss 1, Endboss 3, `monarch.md` § 3). | Bosse sind lohnend. | `data/bosses.json` › `reward` | – |
 | Ein besiegter Boss **kehrt nie zurück**; der Sieg steht im Spielstand, auch bei Stufenverlust. | Bosse sind Meilensteine, keine Wiederholung. | Spielstand | – |
-| Der **Sieg über den Endboss** öffnet Boot/Portal zur nächsten Insel (gemeinsamer Wechsel) und löst bei Ziel „Endboss“ den Kampagnensieg aus (`stufen.md`). | Beschlossene Rahmenregeln. | – | – |
+| Der **Sieg über den Endboss** erfüllt die Endboss-Bedingung des Inselwechsels am Hafen (dazu fertiges Schiff, `stufen.md` § 1) und löst bei Ziel „Endboss“ den Kampagnensieg aus (`stufen.md`). | Beschlossene Rahmenregeln. | – | – |
 | Fällt ein Spieler im Bosskampf, wird er wie üblich wiederbelebt (A halten, 3 s) oder respawnt nach 15 s (`monarch.md` § 5). | Keine Sonderregel. | – | – |
 
 ### 1.1 Bosse der Insel 1 (Startwerte, Namen vorläufig)
