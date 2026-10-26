@@ -32,6 +32,8 @@ type IslandMetrics struct {
 	EndbossDay  *int           `json:"endbossDay,omitempty"`  // Tag des Siegs über den Endboss der Insel
 	EndbossTick *int           `json:"endbossTick,omitempty"` // Tick dazu
 	VictoryTick *int           `json:"victoryTick,omitempty"` // Ereignis victory (nur auf der letzten Insel der Welt)
+	// Ship: je Schiff-Abschnitt der Tag, ab dem er bezahlbar gewesen wäre (ship_need.go, BS3.3); nur Insel-Lauf.
+	Ship []ShipNeed `json:"ship,omitempty"`
 }
 
 func (c *collector) multi() bool { return len(c.isl.Stages) > 1 }
@@ -77,5 +79,15 @@ func (c *collector) islandEvent(w *sim.World, ev sim.Event, tick int) {
 		}
 	case "victory":
 		first(&c.m.VictoryTick, tick)
+	}
+}
+
+// shipNeed rechnet am Ende des Insel-Laufs den Bedarf gegen den Bestand (ship_need.go).
+func (c *collector) shipNeed() {
+	if !c.multi() {
+		return
+	}
+	if stages, err := LoadShip(); err == nil {
+		c.m.Ship = shipNeeds(stages, &c.m)
 	}
 }

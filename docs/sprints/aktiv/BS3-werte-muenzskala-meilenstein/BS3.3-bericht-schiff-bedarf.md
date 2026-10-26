@@ -1,6 +1,6 @@
 # BS3.3 · Balancing-Bericht: Schiff bezahlbar ab Tag
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -52,5 +52,10 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+**⚠️ Workbench-Neustart nötig** (Go-Code der Workbench geändert, `sim_test` liefert die Zeile erst danach).
+
+- AC-04 geprüft: `ship_need.go` rechnet je Abschnitt (Kiel, Rumpf, Segel) „bezahlbar ab Tag“ aus dem Verlauf (Startgold plus Einnahmen, kumulierter Zufluss des Insel-Vorrats gegen die kumulierten Kosten aus `data/ship.json`); `Metrics.ship` nur im Insel-Lauf. Der Bericht (`kennzahlen.ship`, Markdown) nennt „🟢 Schiff (Bedarf): Kiel bezahlbar T3, Rumpf bezahlbar T4, Segel bezahlbar T7 (Ziel T6–T9)“. Ampel gegen den Korridor aus `zielkorridore.md` § 6: grün im Fenster Endboss-Tag −2 … +1, gelb bis 2 Tage daneben, sonst rot; grau, solange der Endboss nicht besiegt ist. Tests: `TestSchiffBedarfAusDemVerlauf`, `TestSchiffAmpel`, `TestSchiffNurImInselLauf`. `task check:diff` grün.
+- Abweichung 1: Der Tuning-Hinweis steht im Bericht-Text („Schiffskosten in data/ship.json erhöhen/senken“), nicht in `data/balance-hints.json`: Das Schema dort kennt nur Kennzahlen mit Bändern und Hebel je Ziel, ein Ziel „Schiff“ gibt es erst mit BS5.
+- Abweichung 2 (Fund aus BS11): Das Markdown des Berichts zeigte die Tabellen der Insel-Kennzahlen (Tiefe, Boss, Endboss) bisher nicht, nur das JSON. Die Einbindung in `insights_markdown.go` war im BS11-Commit nie wirksam; jetzt verdrahtet.
+- Hinweis: Der Bedarf ist eine Obergrenze („hätten bezahlen können“), weil Gold und Material im Lauf auch in andere Bauten gehen; den echten Tag liefert der Bau ab BS5/BS9.
+- Neue Tickets: keine.

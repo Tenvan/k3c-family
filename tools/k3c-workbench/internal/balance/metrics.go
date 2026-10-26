@@ -250,6 +250,7 @@ func (c *collector) result() *Metrics {
 			c.m.ReachedDepth = max(c.m.ReachedDepth, w.Biome.Depth)
 		}
 	}
+	c.shipNeed()
 	return &c.m
 }
 

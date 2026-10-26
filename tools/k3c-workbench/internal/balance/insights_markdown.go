@@ -72,6 +72,12 @@ func (in Insights) figuresMarkdown(b *strings.Builder) {
 	for _, l := range f.Lights {
 		fmt.Fprintf(b, "- %s %s: %s (%s)\n", lightIcon[l.Light], l.label(), l.valueText(), l.Text)
 	}
+	if f.Island != nil {
+		f.Island.markdown(b)
+	}
+	if f.Ship != nil {
+		f.Ship.markdown(b)
+	}
 	if len(f.Nights) == 0 {
 		return
 	}
