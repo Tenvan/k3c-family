@@ -7,11 +7,11 @@ import "testing"
 // Die fünf Tor-Stufen laut Spec: Material der Stufe, Gold, HP, Bauzeit.
 func TestTorStufenInDenDaten(t *testing.T) {
 	want := []LevelData{
-		{Cost: Cost{Wood: 30, Gold: 10}, HP: 250, BuildSeconds: 6},
-		{Cost: Cost{Stone: 45, Gold: 15}, HP: 500, BuildSeconds: 9},
-		{Cost: Cost{Copper: 60, Gold: 30}, HP: 850, BuildSeconds: 12},
-		{Cost: Cost{Iron: 75, Gold: 60}, HP: 1350, BuildSeconds: 16},
-		{Cost: Cost{Crystal: 90, Gold: 120}, HP: 2100, BuildSeconds: 20},
+		{Cost: Cost{Wood: 30, Gold: 3}, HP: 250, BuildSeconds: 6},
+		{Cost: Cost{Stone: 45, Gold: 4}, HP: 500, BuildSeconds: 9},
+		{Cost: Cost{Copper: 60, Gold: 6}, HP: 850, BuildSeconds: 12},
+		{Cost: Cost{Iron: 75, Gold: 10}, HP: 1350, BuildSeconds: 16},
+		{Cost: Cost{Crystal: 90, Gold: 15}, HP: 2100, BuildSeconds: 20},
 	}
 	got := buildings["gate"].Levels
 	if len(got) != len(want) {
@@ -40,7 +40,7 @@ func TestTorAusbauAbHubStufe(t *testing.T) {
 		t.Fatalf("Tor auf Hub-Stufe 1 ausbaubar: %+v", nextLevel(w, gate))
 	}
 	w.HubLevel = 2
-	if next := nextLevel(w, gate); next == nil || next.Cost != (Cost{Stone: 45, Gold: 15}) {
+	if next := nextLevel(w, gate); next == nil || next.Cost != (Cost{Stone: 45, Gold: 4}) {
 		t.Fatalf("Tor-Stufe 2 auf Hub-Stufe 2: %+v", next)
 	}
 	wantLevel(t, gate, 2, gate.X, upgradeAt(t, w, players, gate))

@@ -133,17 +133,17 @@ describe('Ausbauschritt und Material der nächsten Insel (GEB17.5, B-592/AC-03)'
 });
 
 describe('Treppen-Kosten je Tiefe (B-631/AC-02)', () => {
-  it('Treppe runter: Material der eigenen Stufe, Treppe hoch: Material der Stufe darüber, je 50 Gold', () => {
-    expect(buildCost('stairsDown', 0)).toEqual({ wood: 100, gold: 50 });
-    expect(buildCost('stairsDown', 2)).toEqual({ copper: 100, gold: 50 });
-    expect(buildCost('stairsUp', 1)).toEqual({ wood: 100, gold: 50 });
-    expect(buildCost('stairsUp', 4)).toEqual({ iron: 100, gold: 50 });
+  it('Treppe runter: Material der eigenen Stufe, Treppe hoch: Material der Stufe darüber, je 10 Gold', () => {
+    expect(buildCost('stairsDown', 0)).toEqual({ wood: 100, gold: 10 });
+    expect(buildCost('stairsDown', 2)).toEqual({ copper: 100, gold: 10 });
+    expect(buildCost('stairsUp', 1)).toEqual({ wood: 100, gold: 10 });
+    expect(buildCost('stairsUp', 4)).toEqual({ iron: 100, gold: 10 });
   });
 
   it('ohne Eintrag der Tiefe oder ohne Tiefe: cost der Art', () => {
-    expect(buildCost('stairsUp', 0)).toEqual({ stone: 100, gold: 50 });
-    expect(buildCost('stairsDown', undefined)).toEqual({ stone: 100, gold: 50 });
-    expect(buildCost('farm', 3)).toEqual({ wood: 30, gold: 10 });
+    expect(buildCost('stairsUp', 0)).toEqual({ stone: 100, gold: 10 });
+    expect(buildCost('stairsDown', undefined)).toEqual({ stone: 100, gold: 10 });
+    expect(buildCost('farm', 3)).toEqual({ wood: 30, gold: 3 });
   });
 
   it('Wartegrund am Platz nennt das Material der Tiefe', () => {

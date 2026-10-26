@@ -1,6 +1,6 @@
 # BS3.1 · Preise von Gebäuden, Hub und Truppen auf der Münzskala
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -52,5 +52,8 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `TestGoldpreiseAufDerMuenzskala` (`engine/sim/coin_scale_data_test.go`) prüft Gebäude, Ausbaustufen, Treppen, Rüstung, Hub-Schritte und Truppen auf die Skala 2–30 und Mauer Stufe 1 = 2; einzige Ausnahme `troops.vagrant.recruitCost` (Kleinbetrag 1). `task check:diff` grün (zwei Fehlversuche: ein Frontend-Test mit 5-s-Timeout unter Last, Wiederholung grün; ein gocyclo-Treffer im neuen Test, aufgeteilt).
+- Umrechnung nach `wirtschaft.md` § 8 (Kurve 2·(alt/5)^0,66, nächste Stufe, Gleichstand höher): Mauer 5→2, 10→3, 20→4, 40→8, 80→12; Turm 20→4 … 200→25; Tor 10→3 … 120→15; Hub-Schritte 13/12→4, 25→6, 50→10, 100→15, 200→25; Kaserne/Taverne/Heiler 30→6 … 300→30; Treppen 50→10; Truppen 20→4, 30→6, 50→10. Material und `notes` angepasst (Hinweis auf die Skala).
+- Golden: 11 Dateien neu (`task go:golden`), nur Goldstände ändern sich, weil Gebäude billiger sind (Begründung im Commit). Tests mit alten Preisen nachgezogen (`gate_level`, `stairs_cost`, `economy_view`, `dev_cheat`, `net/wirtschaft`, Client `economyLabels`).
+- Hinweis: `economy.json` (Beutel, Einnahmen) bleibt BS3.2; bis dahin sind Preise billig gegenüber Einnahmen, Läufe sind bis BS3.2 nicht aussagekräftig.
+- Neue Tickets: keine.

@@ -91,7 +91,7 @@ func TestDevBaukostenEins(t *testing.T) {
 		t.Fatalf("Hub-Ausbau %+v", next)
 	}
 	DevSetCheapBuild(isl, false)
-	if next := nextLevel(w, w.hubSite); next.Cost.Gold != 13 {
+	if next := nextLevel(w, w.hubSite); next.Cost.Gold != 4 {
 		t.Fatalf("Hub-Ausbau nach Aus %+v", next.Cost)
 	}
 }
