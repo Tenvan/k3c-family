@@ -134,6 +134,14 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-627](B-627-rg2-regelklaerungen.md) | REG | Frage | mittel | offen | – | Regelklärungen RG2.1 (Handwerker, Verlust-Korridor, Gold-Schwelle) entscheiden |
 | [B-630](B-630-quellen-werden-nicht-uebernommen.md) | DEV | Problem | mittel | offen | – | Quellen werden nicht übernommen |
 | [B-633](B-633-wartegrund-material-tor-text.md) | CLI | Problem | niedrig | offen | – | Wartegrund des Material-Tors heißt nicht mehr „Material der nächsten Insel“ |
+| [B-634](B-634-balancing-seed-k3c-dev.md) | DEV | Idee | hoch | eingeplant | BS1 | Balancing läuft bis zur Abnahme nur mit Seed k3c-dev und ist schneller |
+| [B-635](B-635-muenzskala-2-bis-30.md) | REG | Idee | hoch | eingeplant | BS2 | Münzpreise liegen auf einer kleinen Skala von 2 bis 30 Gold |
+| [B-636](B-636-farm-heisst-baumschule.md) | SIM | Idee | hoch | eingeplant | BS4 | Die Farm heißt Baumschule und steht auf gerodeten Waldbauplätzen |
+| [B-637](B-637-hafen-chunk-boot.md) | SIM | Idee | hoch | eingeplant | BS5 | Ein Hafen-Chunk auf Inselstufe 1 baut das Boot zum Verlassen der Insel |
+| [B-638](B-638-boot-ressourcen-balancing.md) | DEV | Idee | hoch | eingeplant | BS3 | Das Balancing misst die Ressourcen für das Boot |
+| [B-639](B-639-prompt-buttons-einfach.md) | DEV | Idee | hoch | eingeplant | BS1 | Prompt-Buttons der Workbench schicken nur kurze Prompts ohne Anweisungen |
+| [B-640](B-640-balancing-delta-runden.md) | DEV | Idee | hoch | eingeplant | BS7 | Balancing nach Mechanik-Änderungen läuft als Delta-Runde gegen eine Baseline |
+| [B-641](B-641-grafik-hafen-schiff.md) | DEV | Idee | hoch | eingeplant | BS10 | Hafen und Schiff haben eigene Grafiken je Bauabschnitt |
 
 ## Archiv
 
