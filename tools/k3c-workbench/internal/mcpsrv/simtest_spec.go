@@ -19,7 +19,7 @@ type simTestIn struct {
 	ID       string   `json:"id,omitempty" jsonschema:"Lauf-ID für status und stop, z. B. run-1"`
 	Mode     string   `json:"mode,omitempty" jsonschema:"offline (Mocks im Prozess, Standard) oder online (Spielserver des Checkouts)"`
 	Clients  int      `json:"clients,omitempty" jsonschema:"0 = headless (Standard), 1 bis 4 = laufende Clients mit Bot-Eingabe, nur online"`
-	Players  int      `json:"players,omitempty" jsonschema:"Spieler je Raum, 1 bis 4 (online)"`
+	Players  int      `json:"players,omitempty" jsonschema:"Spieler je Raum, 1 bis 4 (online); offline die Spieleranzahl aller Ziele, z. B. 1 für den Single-Player-Meilenstein"`
 	Rooms    int      `json:"rooms,omitempty" jsonschema:"Räume, 1 bis 8 (online)"`
 	Bots     string   `json:"bots,omitempty" jsonschema:"Bot-Profil des Balancing-Testers, z. B. coop2 oder saver; offline ersetzt es den Bot aller Ziele"`
 	Seeds    int      `json:"seeds,omitempty" jsonschema:"Seeds, 1 bis 200; offline ohne Angabe nach seedMode aus data/balance-targets.json (dev: nur k3c-dev)"`
@@ -133,9 +133,9 @@ func (s *simSpec) checkMode() error {
 		return fmt.Errorf("sim_test start abgelehnt: offline mit Clients geht nicht, ein Client braucht den Spielserver (mode online)")
 	case !slices.Equal(s.focus, []string{"balance"}):
 		return fmt.Errorf("sim_test start abgelehnt: offline misst nur balance; perf und stability mit mode online")
-	case s.players != 0 || s.rooms != 0 || s.duration != 0:
+	case s.rooms != 0 || s.duration != 0:
 		return fmt.Errorf("sim_test start abgelehnt: offline bewertet die Ziele aus data/balance-targets.json; " +
-			"Spieler, Räume und Dauer legen dort die Ziele fest (bots ersetzt den Bot aller Ziele)")
+			"Räume und Dauer legen dort die Ziele fest (bots ersetzt den Bot aller Ziele, players die Spieleranzahl)")
 	}
 	return s.offline().Check()
 }
@@ -192,7 +192,7 @@ func (s simSpec) offline() *simrun.Spec {
 	if s.mode != "offline" {
 		return nil
 	}
-	return &simrun.Spec{Seeds: s.seeds, SeedList: s.seedList, Bot: s.bots, World: s.world, Days: s.days}
+	return &simrun.Spec{Seeds: s.seeds, SeedList: s.seedList, Bot: s.bots, World: s.world, Days: s.days, Players: s.players}
 }
 
 // emptyList: Die Eingabe ist gesetzt, enthält aber keinen Eintrag (z. B. „,“).

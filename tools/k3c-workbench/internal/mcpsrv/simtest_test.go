@@ -145,7 +145,7 @@ func TestSimTestLehntAb(t *testing.T) {
 		{Action: "start", Focus: []string{"spass"}},
 		{Action: "start", Clients: 2},
 		{Action: "start", Focus: []string{"perf"}},
-		{Action: "start", Players: 2},
+		{Action: "start", Players: 5},
 		{Action: "start", Mode: "online", Duration: "3h"},
 		{Action: "start", Mode: "online"},
 		{Action: "status", ID: "run-99"},

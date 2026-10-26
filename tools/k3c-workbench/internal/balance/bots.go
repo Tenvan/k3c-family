@@ -203,12 +203,45 @@ func economy(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	return goTo(p, w.HubX, false)
 }
 
-// coop (Koop 2 und 4): Rollen nach Index, gerade Monarchen spielen „Mauern zuerst“, ungerade „Wirtschaft zuerst“.
+// coop (Koop 2 und 4): Rollen nach Index, gerade Monarchen spielen „Mauern zuerst“, ungerade „Wirtschaft zuerst“. Beide
+// Rollen fallen auf die Bausteine von `wirtschaft` zurück (BS3.4, B-645 A): Die Rollen setzen nur die erste Priorität,
+// danach bauen sie Turm, Farm, Werkstatt und Hub aus, markieren Holz und Stein und schaffen Kämpfer. Ohne das arbeiten
+// die Bauern nie (nichts markiert) und es entsteht keine Wirtschaft.
 func coop(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	if p.Index%2 == 0 {
-		return walls(w, p)
+		return wallsRole(w, p)
 	}
-	return economy(w, p)
+	return economyRole(w, p)
+}
+
+// wallsRole: nachts an der Burg; tags erst Mauern (unbezahlte und Ausbau) mit genug Gold, sonst wie `wirtschaft`.
+func wallsRole(w *sim.World, p *sim.Player) sim.PlayerCommand {
+	if w.Cycle.Phase == "night" {
+		return goTo(p, w.HubX, false)
+	}
+	wall := nearestPayable(w, p, "wall", "unpaid", 0)
+	up, upOpen := nearestUpgrade(w, p)
+	if up != nil && (wall == nil || closer(p.X, up.X, wall.X)) {
+		wall = up
+	}
+	switch {
+	case wall != nil:
+		return goTo(p, wall.X, true)
+	case upOpen || wallPayable(w):
+		return goTo(p, w.HubX, false)
+	}
+	return wirtschaft(w, p)
+}
+
+// economyRole: nachts an der Burg; tags erst Landstreicher anwerben (bis zum Bauern-Limit, Tag 1 immer), sonst wie `wirtschaft`.
+func economyRole(w *sim.World, p *sim.Player) sim.PlayerCommand {
+	if w.Cycle.Phase == "night" {
+		return goTo(p, w.HubX, false)
+	}
+	if w.Cycle.Day < 2 || (nearestVagrant(w, p) != nil && peasants(w) < peasantLimit) {
+		return recruitOrHub(w, p)
+	}
+	return wirtschaft(w, p)
 }
 
 // recruitOrHub: zum nächsten bezahlbaren Landstreicher, sonst zur Burg.
