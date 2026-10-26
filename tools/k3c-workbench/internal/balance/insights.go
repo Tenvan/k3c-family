@@ -158,7 +158,7 @@ func distance(e Entry) float64 {
 	width := 1.0
 	switch {
 	case e.Lower != nil && e.Upper != nil:
-		width = math.Max(*e.Upper-*e.Lower, 1e-9)
+		width = math.Max(*e.Upper-*e.Lower, 1) // ein Korridor ohne Breite (100–100) gäbe sonst Abstände um 10^13 %
 	case e.Lower != nil:
 		width = math.Max(math.Abs(*e.Lower), 1)
 	case e.Upper != nil:

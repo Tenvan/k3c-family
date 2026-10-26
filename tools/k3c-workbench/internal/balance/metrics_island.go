@@ -16,6 +16,7 @@ type StageMetrics struct {
 	ArrivalDay     *int `json:"arrivalDay"`
 	ArrivalTick    *int `json:"arrivalTick"`
 	CastleFallTick *int `json:"castleFallTick"`
+	Downs          int  `json:"downs,omitempty"` // Ereignisse playerDown auf dieser Stufe (ein Monarch fiel)
 }
 
 // BossMetrics: ein besiegter Boss (Ereignis bossDefeated) mit Tag und Tick.
@@ -29,6 +30,8 @@ type BossMetrics struct {
 type IslandMetrics struct {
 	Stages      []StageMetrics `json:"stages,omitempty"`
 	Bosses      []BossMetrics  `json:"bosses,omitempty"`
+	// BossSpawns: Ereignis bossSpawned (Miniboss mit der Welle, Endboss am Bau); zeigt, ob ein Boss überhaupt kam.
+	BossSpawns []BossMetrics `json:"bossSpawns,omitempty"`
 	EndbossDay  *int           `json:"endbossDay,omitempty"`  // Tag des Siegs über den Endboss der Insel
 	EndbossTick *int           `json:"endbossTick,omitempty"` // Tick dazu
 	VictoryTick *int           `json:"victoryTick,omitempty"` // Ereignis victory (nur auf der letzten Insel der Welt)
@@ -73,6 +76,13 @@ func (c *collector) islandEvent(w *sim.World, ev sim.Event, tick int) {
 	case "bossDefeated":
 		id, _ := ev["boss"].(string)
 		c.m.Bosses = append(c.m.Bosses, BossMetrics{Boss: id, Day: w.Cycle.Day, Tick: tick})
+	case "bossSpawned":
+		id, _ := ev["boss"].(string)
+		c.m.BossSpawns = append(c.m.BossSpawns, BossMetrics{Boss: id, Day: w.Cycle.Day, Tick: tick})
+	case "playerDown":
+		if i := slices.Index(c.isl.Stages, w); i >= 0 {
+			c.m.Stages[i].Downs++
+		}
 	case "castleFallen":
 		if i := slices.Index(c.isl.Stages, w); i >= 0 {
 			first(&c.m.Stages[i].CastleFallTick, tick)

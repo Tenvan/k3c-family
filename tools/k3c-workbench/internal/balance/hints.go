@@ -153,8 +153,16 @@ func (f FigureHint) Light(v float64) string {
 	return LightRed
 }
 
-// leversFor: Hebel eines Ziels in die nötige Richtung (unter der Untergrenze Low, sonst High).
+// leversFor: Hebel eines Ziels in die nötige Richtung (unter der Untergrenze Low, sonst High). Nie nil: Das JSON trägt
+// sonst null und die Oberfläche stürzt bei `.length` ab (ein Ziel ohne Eintrag in balance-hints.json, z. B. ein neues).
 func (h *Hints) leversFor(e Entry) []Lever {
+	if l := h.leversRaw(e); l != nil {
+		return l
+	}
+	return []Lever{}
+}
+
+func (h *Hints) leversRaw(e Entry) []Lever {
 	l := h.Levers[e.Measure]
 	if e.Lower != nil && e.Value < *e.Lower {
 		return l.Low

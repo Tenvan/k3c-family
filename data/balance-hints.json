@@ -11,6 +11,26 @@
     "stoneBalance": { "name": "Stein-Bilanz je Tag", "unit": "Stein", "green": [0, 80], "yellow": [-20, 160] }
   },
   "levers": {
+    "endbossDefeated": {
+      "low": [
+        { "path": "bosses.json:endBosses.0.hpFactor", "direction": "-", "step": 0.1, "label": "Endboss-HP senken" },
+        { "path": "troops.json:archer.damage", "direction": "+", "step": 0.1, "label": "Schaden der Bogenschützen erhöhen" }
+      ],
+      "high": []
+    },
+    "endbossDay": {
+      "low": [],
+      "high": [
+        { "path": "bosses.json:endBosses.0.hpFactor", "direction": "-", "step": 0.1, "label": "Endboss-HP senken" },
+        { "path": "troops.json:archer.damage", "direction": "+", "step": 0.1, "label": "Schaden der Bogenschützen erhöhen" }
+      ]
+    },
+    "caveBeforeDay6": {
+      "low": [
+        { "path": "economy.json:dawnGoldPerPlayer", "direction": "+", "step": 0.5, "label": "Tageseinkommen erhöhen" }
+      ],
+      "high": []
+    },
     "castleHeld": {
       "low": [
         { "path": "buildings.json:wall.levels.0.hp", "direction": "+", "step": 0.2, "label": "Mauer-HP Stufe 1 erhöhen" },
