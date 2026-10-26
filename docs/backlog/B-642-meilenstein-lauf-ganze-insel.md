@@ -66,4 +66,11 @@ Bots kommen nicht weiter (Stufe hält nicht, kein Material) → Lauf endet nach 
 
 ## Notizen
 
-Gefunden in BS1.1 (2026-10-26): Der Parameter `world` für `sim_test` ist deshalb noch nicht umgesetzt; er hängt an dieser Entscheidung.
+Gefunden in BS1.1 (2026-10-26): Der Parameter `world` für `sim_test` war deshalb nicht umgesetzt; er hing an dieser Entscheidung.
+
+**Referenzlauf mit den alten Werten (BS11.4, 2026-10-26):** `sim_test {bots: coop2, world: standard, days: 40}` (Seed `k3c-dev`, `run-1`, Bericht `reports/simtest-run-1/`), Laufzeit **10 min 57 s** (nach Neustart der Workbench; ein erster Lauf davor wurde durch den Neustart abgebrochen). Das Szenario galt für alle 5 Ziel-Gruppen (Grade dev bis ultra), daher 5 Läufe.
+- Ergebnis rot, wie erlaubt: 10 von 16 Zielen verletzt, 1 knapp, 4 im Korridor, 1 ungültig.
+- Ankunft je Tiefe (Median Tag): Wald 1, Höhle **4**, Mine **13**, Eisenstollen **25**, Kristallhöhle **37** (jeweils 60 % der Läufe). Die Tage folgen größtenteils dem Notausstieg der Bots (B-643), nicht der Hub-Regel.
+- Boss: Troll-König (Höhle) in 60 % besiegt, Median Tag 12. **Endboss: 0 % besiegt** (`endbossDefeated` 0 %, `endbossDay` ungültig).
+- Burgfall auf jeder Stufe in 100 % der Läufe (auch auf unbesuchten Stufen ohne Verteidiger). „Höhle vor Tag 6“ in 100 % ok.
+- Schluss: Der Insel-Lauf läuft durch, die Bots erreichen die tiefste Stufe, besiegen den Endboss aber nicht; Werte und Bots sind der Stoff von BS3. Folge-Ticket: B-643 (Stein im Wald).
