@@ -8,7 +8,12 @@ import (
 // sobald ihre Stufe sicher steht (Default aus B-642): Hub-Stufe mindestens Tiefe + 2 (die letzte Hub-Stufe genügt) und
 // die Mauern der Linie 1 stehen auf beiden Seiten. Sie gehen nur am hellen Tag. Jeder Spieler wechselt allein
 // (Einzelwechsel, stufen.md § 1); weil die Regel nur von der Stufe abhängt, gehen alle Spieler der Stufe zusammen.
-// Auf der neuen Stufe spielt der Bot sein Profil weiter: Hub-Ausbau, Mauern und Bauten gelten je Stufe.
+// Fällt der Hub-Ausbau aus (im Wald fehlt Stein: der Hub-Ausbau braucht 25, der Vorrat bleibt bei 20), steigen sie ab dem
+// Tag fallbackDay + 2 × Tiefe trotzdem ab (Notausstieg, Abweichung vom Default, B-642 gemeldet); sonst liefe der Tester nie über
+// Tiefe 0 hinaus. Auf der neuen Stufe spielt der Bot sein Profil weiter: Hub-Ausbau, Mauern und Bauten gelten je Stufe.
+
+// fallbackDay ist der Tag, ab dem der Notausstieg der Stufe Tiefe 0 gilt; jede Tiefe darunter zwei Tage später.
+const fallbackDay = 4
 
 // withDescent legt den Abstieg über ein Profil.
 func withDescent(inner Bot, deepest int) Bot {
@@ -38,10 +43,8 @@ func stageSafe(w *sim.World) bool {
 	if w.Cycle.Phase != "day" {
 		return false
 	}
-	if up := sim.EconomyOf(w).HubUpgrade; up != nil && w.HubLevel < w.Biome.Depth+2 {
-		return false
-	}
-	return innerWallsBuilt(w)
+	hubOK := sim.EconomyOf(w).HubUpgrade == nil || w.HubLevel >= w.Biome.Depth+2 || w.Cycle.Day >= fallbackDay+2*w.Biome.Depth
+	return hubOK && innerWallsBuilt(w)
 }
 
 // innerWallsBuilt: je Seite mit Linien steht die Mauer der innersten Linie (Index 1).

@@ -64,7 +64,7 @@ Aus B-642, je mit Default (nicht blockierend): Absteige-Regel der Bots (Hub-Stuf
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | BS11.1 | `BS11.1-insel-lauf-metriken.md` | Umsetzung | autonom | fertig |
-| BS11.2 | `BS11.2-bots-abstieg.md` | Umsetzung | autonom | offen |
+| BS11.2 | `BS11.2-bots-abstieg.md` | Umsetzung | autonom | fertig |
 | BS11.3 | `BS11.3-bots-bosskampf-ziele.md` | Umsetzung | autonom | offen |
 | BS11.4 | `BS11.4-sim-test-world-referenz.md` | Umsetzung | autonom | offen |
 | BS11.5 | `BS11.5-review.md` | Review | autonom | offen |
