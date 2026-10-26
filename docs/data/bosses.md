@@ -27,6 +27,7 @@
 | `endBosses.*.damageFactor` | Zahl | Faktor | Schaden relativ zum Bezugsgegner | 2 |
 | `endBosses.*.lair.triggerUnits` | Zahl | Units | Abstand eines Spielers, der den Kampf auslöst | 15 |
 | `endBosses.*.lair.noticeUnits` | Zahl | Units | Abstand, ab dem der Bau in der Aktionsliste steht | 40 |
+| `endBosses.*.lair.escortUnits` | Zahl | Units | Begleitschutz (B-647): Kommt ein lebender Monarch näher als das an den kämpfenden Endboss, marschieren die Kämpfer der Stufe zu ihm und bleiben, bis er stirbt; 0 = nie | 160 |
 | `endBosses.*.phases.*.belowHpPercent` | Zahl | % HP | Schwelle, ab der die Phase gilt | 60, 25 |
 | `endBosses.*.phases.*.tempo` | Zahl | Faktor | Beschleunigung von Angriff, Fähigkeit und Lauftempo | 1,5 |
 | `endBosses.*.reward.gold` | Ganzzahl | Gold | Belohnung des Endbosses | 500 |

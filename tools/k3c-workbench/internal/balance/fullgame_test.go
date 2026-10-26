@@ -22,7 +22,7 @@ import (
 // „boss“ (Weg D aus B-647) setzt zusätzlich die HP des Endbosses auf 300, sobald er erscheint (er steht am Bau, die Truppen
 // erreichen ihn nicht), und heilt die Monarchen jeden Tick (ein Bot ohne Skills regeneriert nicht).
 // Dev-Hilfen (Umgebung K3C_FULLGAME): „hilfen“ (Dev-Baukosten, voller Insel-Vorrat, Grad dev), „voll“ (zusätzlich
-// alle Stufen voll ausgebaut, Dev-Bau Stufe 5), „boss“ (Standard, alles davor) oder „ohne“
+// alle Stufen voll ausgebaut, Dev-Bau Stufe 5), „boss“ (alles davor, schwacher Endboss und geheilter Monarch: der Nachweis ohne Spielregeln-Hilfen) oder „ohne“
 // (Grad normal, nichts geschenkt: der offene Meilenstein der Balance, Fehler gelten dort nur als Hinweis im Log).
 
 const fullgameDays = 40
@@ -32,7 +32,7 @@ func fullgame(t *testing.T, done func(*sim.Island) bool) (isl *sim.Island, day i
 	t.Helper()
 	mode := os.Getenv("K3C_FULLGAME")
 	if mode == "" {
-		mode = "boss" // alle Hilfen: der Nachweis, dass die Simulation durchspielbar ist (B-647 Weg D)
+		mode = "voll" // Dev-Bau Stufe 5 und voller Vorrat, Endboss und Monarch unverändert (Begleitschutz und Skills, B-647 A und B)
 	}
 	helps = mode != "ohne"
 	grade := ""

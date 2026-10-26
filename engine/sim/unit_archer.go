@@ -64,6 +64,9 @@ func stepArcher(w *World, t *Troop, dt float64) {
 	} else if wall != nil {
 		post = wall.X - float64(side*2)
 	}
+	if ex, ok := escortPost(w, t); ok {
+		post, tower = ex, nil // Begleitschutz: der Schütze verlässt Turm und Mauer (unit_escort.go)
+	}
 	walkTo(t, post, dt)
 
 	t.Cooldown = math.Max(0, t.Cooldown-dt)

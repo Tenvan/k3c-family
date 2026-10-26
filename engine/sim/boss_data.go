@@ -21,7 +21,7 @@ type BossData struct {
 	Ability                BossAbility // Miniboss; ein Endboss hat seine Fähigkeiten in Phases
 	Reward                 struct{ Gold, Material int }
 	// Endboss (boss_endboss.go): Bau mit Auslöse-Abstand und Phasen in Reihenfolge.
-	Lair   struct{ TriggerUnits, NoticeUnits float64 }
+	Lair   struct{ TriggerUnits, NoticeUnits, EscortUnits float64 } // EscortUnits: Monarch näher als das am Bau, solange der Endboss kämpft → die Truppen der Stufe marschieren zu ihm (unit_escort.go, B-647)
 	Phases []BossPhase
 }
 

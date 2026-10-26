@@ -44,7 +44,8 @@ func fightX(w *sim.World, p *sim.Player, deepest int, won bool) (float64, bool) 
 	if boss != nil && w.Biome.Depth == deepest {
 		return boss.X - math.Copysign(0.3, boss.X-p.X), true
 	}
-	if w.Biome.Depth != deepest || won || w.Cycle.Phase != "day" || p.HP < fightHP*p.MaxHP {
+	// Erst die Armee: Seit dem Begleitschutz (unit_escort.go) kämpfen die Truppen am Boss mit, also baut der Bot sie vorher auf.
+	if w.Biome.Depth != deepest || won || w.Cycle.Phase != "day" || p.HP < fightHP*p.MaxHP || sim.EconomyOf(w).Fighters < fighterWant {
 		return 0, false
 	}
 	for _, e := range w.Level.Entities {

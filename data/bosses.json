@@ -36,7 +36,7 @@
     {
       "id": "crystalHeartWarden", "name": "Kristallherz-Wächter", "kind": "end", "depth": 4,
       "base": "crystalSpider", "hpFactor": 30, "damageFactor": 2, "speed": 0, "range": 2,
-      "lair": { "triggerUnits": 15, "noticeUnits": 40 },
+      "lair": { "triggerUnits": 15, "noticeUnits": 40, "escortUnits": 160 },
       "phases": [
         { "ability": { "type": "summon", "enemy": "crystalSpider", "count": 2, "intervalSeconds": 10 } },
         { "belowHpPercent": 60, "ability": { "type": "aoe", "radius": 5, "intervalSeconds": 6 } },

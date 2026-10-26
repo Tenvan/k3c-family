@@ -16,9 +16,10 @@ import (
 // endbossFight ist der laufende Kampf gegen den Endboss einer Insel; phase ist der Index in BossData.Phases, home die
 // Stufe des Kampfs (sonst der Bau, mit der Dev-Aktion boss die Stufe des Monarchen).
 type endbossFight struct {
-	boss  *Enemy
-	phase int
-	home  *World
+	boss   *Enemy
+	phase  int
+	home   *World
+	escort bool // Begleitschutz läuft (unit_escort.go): rastet ein, sobald ein Monarch nahe kam, bis der Boss stirbt
 }
 
 // stepEndboss (vor stepEnemies): Auslösung am Bau, Rückkehr nach einem Burgfall, Phasenwechsel und Tempo.
@@ -35,6 +36,7 @@ func stepEndboss(w *World, dt float64) {
 			w.Enemies = append(w.Enemies, f.boss)
 		}
 		endbossPhase(w, f, dt)
+		escortCheck(w, f)
 		return
 	}
 	x, ok := lairX(w)

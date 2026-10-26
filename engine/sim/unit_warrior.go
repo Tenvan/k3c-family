@@ -221,6 +221,9 @@ func stepWarrior(w *World, t *Troop, dt float64) {
 		side = -1
 	}
 	post, front := warriorPost(w, side)
+	if ex, ok := escortPost(w, t); ok {
+		post, front = ex, ex // Begleitschutz: der Krieger geht zum Endboss (unit_escort.go)
+	}
 	from := t.X
 	if walkTo(t, post, dt) {
 		from = front
