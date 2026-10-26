@@ -16,6 +16,9 @@
     { "measure": "hubLevel2BeforeDay5", "name": "Hub-Stufe 2 erreicht vor Tag 5", "kind": "share", "players": 2, "bot": "wirtschaft", "depth": 0, "days": 5, "lower": 60, "upper": 85, "rule": "docs/rules/zielkorridore.md § 3" },
     { "measure": "hubLevel3BeforeDay10", "name": "Hub-Stufe 3 erreicht vor Tag 10", "kind": "share", "players": 2, "bot": "wirtschaft", "depth": 0, "days": 9, "lower": 40, "upper": 70, "rule": "docs/rules/zielkorridore.md § 3" },
     { "measure": "destroyedPerWave", "name": "Zerstörte Gebäude je Welle 1–5, Median", "kind": "median", "players": 2, "bot": "wirtschaft", "depth": 0, "days": 5, "lower": null, "upper": 1, "rule": "docs/rules/zielkorridore.md § 3" },
-    { "measure": "fightersAtDawn", "name": "Kämpfer je Hub zu Tagesbeginn: Tag 3 ≥ 4 und Tag 6 ≥ 8", "kind": "share", "players": 2, "bot": "wirtschaft", "depth": 0, "days": 5, "lower": 70, "upper": 100, "rule": "docs/rules/zielkorridore.md § 3" }
+    { "measure": "fightersAtDawn", "name": "Kämpfer je Hub zu Tagesbeginn: Tag 3 ≥ 4 und Tag 6 ≥ 8", "kind": "share", "players": 2, "bot": "wirtschaft", "depth": 0, "days": 5, "lower": 70, "upper": 100, "rule": "docs/rules/zielkorridore.md § 3" },
+    { "measure": "endbossDefeated", "name": "Endboss der Insel 1 besiegt (Meilenstein)", "kind": "share", "players": 2, "bot": "coop2", "depth": 0, "days": 40, "world": "standard", "lower": 100, "upper": 100, "rule": "docs/rules/zielkorridore.md § 6" },
+    { "measure": "endbossDay", "name": "Tag des Siegs über den Endboss, Median", "kind": "median", "players": 2, "bot": "coop2", "depth": 0, "days": 40, "world": "standard", "lower": null, "upper": 40, "rule": "docs/rules/zielkorridore.md § 6" },
+    { "measure": "caveBeforeDay6", "name": "Höhle erreicht vor Beginn von Tag 6", "kind": "share", "players": 2, "bot": "coop2", "depth": 0, "days": 40, "world": "standard", "lower": 80, "upper": 100, "rule": "docs/rules/zielkorridore.md § 1" }
   ]
 }

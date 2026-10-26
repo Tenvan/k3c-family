@@ -18,6 +18,10 @@ type Scope struct {
 func (t *Targets) Restrict(s Scope) (*Targets, error) {
 	out := *t
 	out.Targets = slices.Clone(t.Targets)
+	if s.Depth != nil || s.Players != nil || s.Days != nil || s.Bot != "" || s.Grade != "" {
+		// eine Einschränkung erkundet die Einzelstufe: die Ziele des Insel-Laufs (World, BS11) entfallen
+		out.Targets = slices.DeleteFunc(out.Targets, func(g Target) bool { return g.World != "" })
+	}
 	for i := range out.Targets {
 		g := &out.Targets[i]
 		setIf(&g.Depth, s.Depth)

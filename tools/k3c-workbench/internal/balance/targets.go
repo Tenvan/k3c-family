@@ -36,6 +36,18 @@ var measures = map[string]measure{
 		ok := len(m.Days) > 0 && m.Days[0].DuskTick != nil && m.FirstWallTick != nil && *m.FirstWallTick <= *m.Days[0].DuskTick
 		return []float64{b2f(ok)}
 	}},
+	// Insel-Läufe (World, BS11): Endboss besiegt, Tag des Siegs, Höhle (Tiefe 1) vor Beginn von Tag 6 erreicht.
+	"endbossDefeated": {KindShare, func(m *Metrics) []float64 { return []float64{b2f(m.EndbossTick != nil)} }},
+	"endbossDay": {KindMedian, func(m *Metrics) []float64 {
+		if m.EndbossDay == nil {
+			return nil
+		}
+		return []float64{float64(*m.EndbossDay)}
+	}},
+	"caveBeforeDay6": {KindShare, func(m *Metrics) []float64 {
+		ok := len(m.Stages) > 1 && m.Stages[1].ArrivalDay != nil && *m.Stages[1].ArrivalDay < 6
+		return []float64{b2f(ok)}
+	}},
 	// Zerstörte Gebäude je Welle 1–5.
 	"destroyedPerWave": {KindMedian, func(m *Metrics) []float64 {
 		var v []float64
@@ -79,6 +91,7 @@ type Target struct {
 	Depth   int      `json:"depth"`
 	Days    int      `json:"days"`
 	Grade   string   `json:"grade,omitempty"` // Schwierigkeitsgrad aus data/difficulty.json, leer = normal (BAL6)
+	World   string   `json:"world,omitempty"` // leer = eine Stufe der Tiefe Depth; sonst die ganze erste Insel der Welt (BS11)
 	Lower   *float64 `json:"lower"`
 	Upper   *float64 `json:"upper"`
 	Margin  *float64 `json:"margin,omitempty"` // Breite von „knapp“ statt des Standardwerts der Datei
@@ -150,6 +163,11 @@ func (g Target) validate() error {
 	}
 	if err := checkGrade(g.Grade); err != nil {
 		return err
+	}
+	if g.World != "" {
+		if _, err := loadWorld(g.World); err != nil {
+			return fmt.Errorf("welt %q: %w", g.World, err)
+		}
 	}
 	return g.validateBounds()
 }

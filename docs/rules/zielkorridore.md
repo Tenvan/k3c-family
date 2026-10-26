@@ -191,6 +191,15 @@ Der Tester baut alle Tiefen der ersten Insel der Welt (`World: standard`, Tiefen
 Siegs und für den Endboss `endbossDefeated` (Anteil der Seeds) und `endbossDay` (Median). Ohne `World` läuft der Tester wie bisher
 mit einer Stufe der Tiefe `Depth`; die Korridore aus § 1–3 messen weiter diese Einzelstufe.
 
+Die Ziele des Insel-Laufs (Welt `standard`, `coop2`, 40 Tage, `data/balance-targets.json` › `world`):
+
+| Kennzahl | Szenario | Untergrenze | Obergrenze | Messung |
+|---|---|---|---|---|
+| Endboss der Insel 1 besiegt (Meilenstein) | Standard | 100 % | 100 % | `endbossDefeated`: Anteil der Seeds mit besiegtem Endboss |
+| Tag des Siegs über den Endboss, Median | Standard | – | 40 | `endbossDay`: Median des Tags (Seeds ohne Sieg zählen nicht, ein Lauf ohne Sieg verletzt schon das Ziel darüber) |
+
+Die Ankunft in der Höhle bis Tag 5 aus § 1 misst derselbe Lauf (`caveBeforeDay6`).
+
 | Meilenstein | Sprint | Bedingung | Vergleich |
 |---|---|---|---|
 | M1 | BS3 | Neue Werte auf der Münzskala, Lauf läuft durch | – |

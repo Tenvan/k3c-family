@@ -14,11 +14,12 @@
 | `margin.medianFraction` | Zahl | Anteil | Toleranz bei Kennzahlen vom Typ median | 0,1 |
 | `seedMode` | Text | – | `dev`: ohne Seed-Angabe nur der erste Seed (`k3c-dev`, Projekt BAS bis zur Abnahme der Werte); `all` oder leer: alle (B-634) | `dev`, `all` |
 | `seeds` | Liste | Seeds | Seeds, über die der Tester jede Variante misst; `k3c-dev` steht vorn (B-634) | `k3c-dev`, 1 bis 100 |
-| `targets.*.measure` | Text | – | Kennzahl (castleHeld, firstWallBeforeDusk1, destroyedPerWave) | je Ziel |
+| `targets.*.measure` | Text | – | Kennzahl (castleHeld, firstWallBeforeDusk1, destroyedPerWave, endbossDefeated, endbossDay, caveBeforeDay6 …) | je Ziel |
 | `targets.*.name` | Text | – | Anzeigename des Ziels | je Ziel |
 | `targets.*.kind` | Text | – | share (Anteil der Läufe) oder median | share, median |
 | `targets.*.players` | Ganzzahl | Spieler | Spielerzahl der Messung | 2 |
 | `targets.*.bot` | Text | – | Bot, der spielt | saver |
+| `targets.*.world` | Text | – | Optional (BS11): Welt-ID, z. B. `standard`; dann spielt der Lauf alle Tiefen der ersten Insel (Bots steigen ab und kämpfen), `depth` gilt nicht; leer = eine Stufe | `standard` |
 | `targets.*.depth` | Ganzzahl | Tiefe | Gemessene Stufe | 0 |
 | `targets.*.days` | Ganzzahl | Tage | Länge des Messlaufs | 5 |
 | `targets.*.lower` | Zahl | % bzw. Wert | Untergrenze des Korridors; null = keine | 75 bis 90 |
