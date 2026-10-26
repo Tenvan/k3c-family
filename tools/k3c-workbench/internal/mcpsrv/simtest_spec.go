@@ -25,6 +25,7 @@ type simTestIn struct {
 	Seeds    int      `json:"seeds,omitempty" jsonschema:"Seeds, 1 bis 200; offline ohne Angabe nach seedMode aus data/balance-targets.json (dev: nur k3c-dev)"`
 	World    string   `json:"world,omitempty" jsonschema:"nur offline: Welt aus data/worlds, z. B. standard; der Lauf spielt die ganze erste Insel (Bots steigen ab und kämpfen), Meilenstein-Lauf mit bots coop2, days 40"`
 	Days     int      `json:"days,omitempty" jsonschema:"nur offline: Tage je Lauf, 1 bis 60; ersetzt die Tage aller Ziele"`
+	Vary     string   `json:"vary,omitempty" jsonschema:"nur offline: Werte-Varianten für diesen Lauf, mit Semikolon, z. B. economy.json:purse.startGold=500;economy.json:purse.maxGold=500; data/ bleibt unverändert"`
 	SeedList string   `json:"seedList,omitempty" jsonschema:"nur offline: genau diese Seeds mit Komma, z. B. k3c-dev oder k3c-dev,7; statt seeds"`
 	Duration string   `json:"duration,omitempty" jsonschema:"Dauer online, z. B. 5m, höchstens 2h"`
 	Focus    []string `json:"focus,omitempty" jsonschema:"balance, perf, stability; offline nur balance (Standard)"`
@@ -38,6 +39,7 @@ type simSpec struct {
 	players, rooms int
 	bots           string
 	world          string // offline: Welt der Insel-Läufe (BS11)
+	vary           []string // offline: Werte-Varianten (datei.json:pfad=wert)
 	days           int    // offline: Tage je Lauf
 	attach         string // Raumcode laufender Clients, leer = Browser starten
 	seeds          int
@@ -61,7 +63,7 @@ func (s simSpec) label() string {
 
 // spec prüft die Parameter von start; jeder Fehler ist eine Zeile mit Grund.
 func (in simTestIn) spec() (simSpec, error) {
-	s := simSpec{mode: in.Mode, clients: in.Clients, players: in.Players, rooms: in.Rooms, bots: in.Bots, world: in.World, days: in.Days,
+	s := simSpec{mode: in.Mode, clients: in.Clients, players: in.Players, rooms: in.Rooms, bots: in.Bots, world: in.World, days: in.Days, vary: splitSemi(in.Vary),
 		seeds: in.Seeds, seedList: splitList(in.SeedList), focus: in.Focus, attach: strings.ToUpper(in.Attach)}
 	if s.mode == "" {
 		s.mode = "offline"
@@ -120,8 +122,8 @@ func (s *simSpec) checkMode() error {
 		return err
 	}
 	if s.mode == "online" {
-		if s.world != "" || s.days != 0 {
-			return fmt.Errorf("sim_test start abgelehnt: world und days nur offline")
+		if s.world != "" || s.days != 0 || len(s.vary) > 0 {
+			return fmt.Errorf("sim_test start abgelehnt: world, days und vary nur offline")
 		}
 		if len(s.seedList) > 0 {
 			return fmt.Errorf("sim_test start abgelehnt: seedList nur offline")
@@ -192,11 +194,22 @@ func (s simSpec) offline() *simrun.Spec {
 	if s.mode != "offline" {
 		return nil
 	}
-	return &simrun.Spec{Seeds: s.seeds, SeedList: s.seedList, Bot: s.bots, World: s.world, Days: s.days, Players: s.players}
+	return &simrun.Spec{Seeds: s.seeds, SeedList: s.seedList, Bot: s.bots, World: s.world, Days: s.days, Players: s.players, Vary: s.vary}
 }
 
 // emptyList: Die Eingabe ist gesetzt, enthält aber keinen Eintrag (z. B. „,“).
 func emptyList(raw string, list []string) bool { return strings.TrimSpace(raw) != "" && len(list) == 0 }
+
+// splitSemi teilt eine Liste mit Semikolon und lässt leere Einträge weg.
+func splitSemi(v string) []string {
+	var out []string
+	for _, p := range strings.Split(v, ";") {
+		if p = strings.TrimSpace(p); p != "" {
+			out = append(out, p)
+		}
+	}
+	return out
+}
 
 // splitList teilt eine Komma-Liste und lässt leere Einträge weg.
 func splitList(v string) []string {
