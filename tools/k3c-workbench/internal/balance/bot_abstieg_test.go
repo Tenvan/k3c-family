@@ -5,7 +5,7 @@ import "testing"
 // BS11.2/AC-03 (B-642/AC-03): Ein kurzer Insel-Lauf mit coop2 erreicht mindestens Tiefe 1 und die Bots spielen dort weiter;
 // ohne World steigt kein Bot ab (alte Läufe bleiben gleich).
 func TestBotsSteigenAb(t *testing.T) {
-	r := mustRun(t, Matrix{Seeds: []string{"k3c-dev"}, Players: []int{2}, Bots: []string{"coop2"}, Depths: []int{0}, Days: fallbackDay, World: "standard"})
+	r := mustRun(t, Matrix{Seeds: []string{"k3c-dev"}, Players: []int{2}, Bots: []string{"coop2"}, Depths: []int{0}, Days: 2, World: "standard"})
 	res := r.Results[0]
 	if !res.Valid {
 		t.Fatal(res.Error)
@@ -14,7 +14,7 @@ func TestBotsSteigenAb(t *testing.T) {
 	if m.ReachedDepth < 1 || m.Stages[1].ArrivalDay == nil {
 		t.Fatalf("Tiefe %d erreicht, Stufe 1: %+v", m.ReachedDepth, m.Stages[1])
 	}
-	if d := *m.Stages[1].ArrivalDay; d > fallbackDay {
+	if d := *m.Stages[1].ArrivalDay; d > 2 {
 		t.Errorf("Ankunft in der Höhle erst Tag %d", d)
 	}
 }

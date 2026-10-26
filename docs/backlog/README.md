@@ -141,7 +141,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-640](B-640-balancing-delta-runden.md) | DEV | Idee | hoch | eingeplant | BS7 | Balancing nach Mechanik-Änderungen läuft als Delta-Runde gegen eine Baseline |
 | [B-641](B-641-grafik-hafen-schiff.md) | DEV | Idee | hoch | eingeplant | BS10 | Hafen und Schiff haben eigene Grafiken je Bauabschnitt |
 | [B-642](B-642-meilenstein-lauf-ganze-insel.md) | DEV | Idee | hoch | eingeplant | BS11 | Der Balancing-Tester spielt nur eine Stufe, der Meilenstein-Lauf braucht die ganze Insel |
-| [B-643](B-643-wald-stein-fuer-hub-ausbau.md) | REG | Problem | hoch | offen | BS3 | Im Wald gibt es keinen Stein für den Hub-Ausbau auf Stufe 2 |
 | [B-644](B-644-sim-test-warten-wie-check-run.md) | DEV | Idee | mittel | offen | – | sim_test wartet wie check_run auf das Ende und meldet Fortschritt je Tag |
 
 ## Archiv
@@ -605,3 +604,4 @@ Zeile in diesen Abschnitt.
 | [B-632](archiv/B-632-balancing-auswertung-ampeln-html.md) | DEV | Idee | hoch | erledigt | – | Balancing-Berichte bringen Ampeln, Kurzauswertung, Tuning-Hinweise und einen interaktiven HTML-Bericht |
 | [B-634](archiv/B-634-balancing-seed-k3c-dev.md) | DEV | Idee | hoch | erledigt | BS1 | Balancing läuft bis zur Abnahme nur mit Seed k3c-dev und ist schneller |
 | [B-639](archiv/B-639-prompt-buttons-einfach.md) | DEV | Idee | hoch | erledigt | BS1 | Prompt-Buttons der Workbench schicken nur kurze Prompts ohne Anweisungen |
+| [B-643](archiv/B-643-wald-stein-fuer-hub-ausbau.md) | REG | Problem | hoch | erledigt | BS3 | Im Wald gibt es keinen Stein für den Hub-Ausbau auf Stufe 2 |
