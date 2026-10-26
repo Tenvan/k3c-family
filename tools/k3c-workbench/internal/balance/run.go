@@ -130,6 +130,9 @@ func runOne(sc Scenario, threshold int) (res Result) {
 		return res
 	}
 	bot, _ := BotByName(sc.Bot)
+	if sc.World != "" {
+		bot = withDescent(bot, deepestOf(isl))
+	}
 	c := newCollector(isl, threshold)
 	cmds := make([]sim.PlayerCommand, sc.Players)
 	rp := &Replay{Version: ReplayVersion, Scenario: sc, DataHash: dataHash}
