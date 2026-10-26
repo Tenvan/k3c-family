@@ -14,10 +14,10 @@ tasks:
       - go build -o ../../bin/k3c-balance{{exeExt}} ./internal/balance/cmd
 
   fullgame:
-    desc: 'Vollständiges Spiel mit einem Bot (BS3.4): Go-Test mit Build-Tag fullgame, bewusst nicht in task check; nur die aktuelle Stufe, `task balance:fullgame STUFE=3` (Standard 3); K3C_FULLGAME=ohne spielt ohne Dev-Hilfen'
+    desc: 'Vollständiges Spiel mit einem Bot (BS3.4): Go-Test mit Build-Tag fullgame, bewusst nicht in task check; nur die aktuelle Stufe, `task balance:fullgame STUFE=4` (Standard 4); K3C_FULLGAME=hilfen|voll|boss (Standard)|ohne'
     dir: '{{.DEV}}'
     vars:
-      STUFE: '{{.STUFE | default "3"}}'
+      STUFE: '{{.STUFE | default "4"}}'
     cmds:
       - go test -tags fullgame -run 'TestFullGame{{.STUFE}}' -v -count=1 -timeout 30m ./internal/balance
 

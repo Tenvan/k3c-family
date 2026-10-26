@@ -144,6 +144,9 @@ func runOne(sc Scenario, threshold int) (res Result) {
 		}
 		rp.record(cmds)
 		sim.StepIsland(isl, cmds, 1.0/enginetools.TickHz)
+		if sc.World != "" && tick%enginetools.TickHz == 0 {
+			botLearn(isl) // einmal je Sekunde, wie ein Mensch im Menü (bot_learn.go)
+		}
 		c.observe(tick)
 		res.Ticks = tick
 		if isl.Stages[0].Cycle.Day > sc.Days {

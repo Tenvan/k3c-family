@@ -19,9 +19,10 @@ import (
 // immer nur der aktuelle (`task balance:fullgame STUFE=3`, Standard in Taskfile.yml); neue Stufen kommen unten dazu.
 // Bewusst NICHT Teil von `task check:diff` (Build-Tag `fullgame`, läuft Minuten).
 //
-// „boss“ setzt zusätzlich die HP des Endbosses auf 300, sobald er erscheint (er steht am Bau, die Truppen erreichen ihn nicht, B-647).
-// Dev-Hilfen (Umgebung K3C_FULLGAME): „hilfen“ (Standard: Dev-Baukosten, voller Insel-Vorrat, Grad dev), „voll“ (zusätzlich
-// alle Stufen voll ausgebaut, Dev-Bau Stufe 5) oder „ohne“
+// „boss“ (Weg D aus B-647) setzt zusätzlich die HP des Endbosses auf 300, sobald er erscheint (er steht am Bau, die Truppen
+// erreichen ihn nicht), und heilt die Monarchen jeden Tick (ein Bot ohne Skills regeneriert nicht).
+// Dev-Hilfen (Umgebung K3C_FULLGAME): „hilfen“ (Dev-Baukosten, voller Insel-Vorrat, Grad dev), „voll“ (zusätzlich
+// alle Stufen voll ausgebaut, Dev-Bau Stufe 5), „boss“ (Standard, alles davor) oder „ohne“
 // (Grad normal, nichts geschenkt: der offene Meilenstein der Balance, Fehler gelten dort nur als Hinweis im Log).
 
 const fullgameDays = 40
@@ -30,6 +31,9 @@ const fullgameDays = 40
 func fullgame(t *testing.T, done func(*sim.Island) bool) (isl *sim.Island, day int, helps bool) {
 	t.Helper()
 	mode := os.Getenv("K3C_FULLGAME")
+	if mode == "" {
+		mode = "boss" // alle Hilfen: der Nachweis, dass die Simulation durchspielbar ist (B-647 Weg D)
+	}
 	helps = mode != "ohne"
 	grade := ""
 	if helps {
@@ -56,8 +60,12 @@ func fullgame(t *testing.T, done func(*sim.Island) bool) (isl *sim.Island, day i
 			}
 		}
 		sim.StepIsland(isl, cmds, 1.0/enginetools.TickHz)
+		if tick%enginetools.TickHz == 0 {
+			botLearn(isl)
+		}
 		if mode == "boss" {
 			weakenEndboss(isl)
+			healMonarchs(isl)
 		}
 		if d := isl.Stages[0].Cycle.Day; d != last {
 			last = d
@@ -165,3 +173,14 @@ func weakenEndboss(isl *sim.Island) {
 func bossDownKind(kind string) bool { return miniBossKind[kind] }
 
 var miniBossKind = map[string]bool{"goblinLeader": true, "trollKing": true, "ratQueen": true, "shardTitan": true, "lavaGolem": true}
+
+// healMonarchs stellt die HP lebender Monarchen voll her (Dev-Hilfe ohne Skills, B-647 Weg D).
+func healMonarchs(isl *sim.Island) {
+	for _, w := range isl.Stages {
+		for _, p := range w.Players {
+			if p.HP > 0 {
+				p.HP = p.MaxHP
+			}
+		}
+	}
+}

@@ -57,3 +57,8 @@ Welcher Weg (A bis D)? 🧑 entscheidet; Default: D jetzt, B danach.
 ## Notizen
 
 Verwandt: B-645 (Bots), B-646 (Wellen-Lawine, erledigt).
+
+**Stand 2026-10-26 (Entscheidung 🧑: zuerst Weg D, danach B):**
+- **Weg D umgesetzt:** `K3C_FULLGAME=boss` (Standard des Stufen-Tests) setzt den Endboss auf 300 HP, sobald er erscheint, und heilt die Monarchen jeden Tick. Alle vier Stufen (Miniboss Wald, tiefste Stufe, alle Minibosse, Endboss) sind grün, Stufe 4 an Tag 19 in 27 s: Ein Bot spielt die Insel 1 mit Dev-Hilfen komplett durch, die Simulation ist durchspielbar.
+- **Weg B umgesetzt (ohne Änderung an `sim.PlayerCommand`):** Der Tester gibt dem Bot dieselbe Aktion wie ein Mensch im Menü (`sim.LearnSkill`, `bot_learn.go`): freie Skill-Punkte gehen in die Tank-Linie (Taunt, Schildstoß, Regeneration, dicke Haut …). Im Lauf `voll` (ohne schwachen Endboss und ohne Heilung) steht der Monarch danach bei 105 HP und kämpft, trifft den Endboss aber nur für 20 von 10 024 HP: Allein reicht der Schaden des Monarchen (10 je 0,7 s) nicht.
+- **Offen:** Für einen Sieg ohne Dev-Hilfe (`K3C_FULLGAME=ohne`, Stufe 5 des Tests) braucht es A (Truppen begleiten den Monarchen) oder C (Endboss läuft zum Hub) oder Werte (Endboss-HP): Entscheidung 🧑.
