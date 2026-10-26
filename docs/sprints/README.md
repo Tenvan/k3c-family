@@ -9,6 +9,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| BS1 | DEV | BAS | Schneller Balancing-Lauf mit Seed k3c-dev | – | `aktiv/BS1-balancing-seed-k3c-dev/` |
 | WZ29 | DEV | WZG | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | – | `aktiv/WZ29-sound-grafik-seiten-ausbau/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | WZ31 | DEV | WZG | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | – | `aktiv/WZ31-web-client-first/` |
@@ -42,7 +43,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| BS1 | DEV | BAS | Schneller Balancing-Lauf mit Seed k3c-dev | – | bereit | `geplant/BS1-balancing-seed-k3c-dev/` |
 | BS2 | REG | BAS | Regelwerk der neuen Basis: Münzskala, Baumschule, Hafen und Schiff | – | bereit | `geplant/BS2-regelwerk-neue-basis/` |
 | BS3 | REG, DEV | BAS | Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch | – | bereit | `geplant/BS3-werte-muenzskala-meilenstein/` |
 | BS4 | SIM | BAS | Baumschule auf gerodeten Waldbauplätzen | – | Entwurf | `geplant/BS4-baumschule-waldbauplaetze/` |

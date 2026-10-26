@@ -22,7 +22,7 @@ Erledigt, wenn M4 erreicht ist und BS6 und BS10 am Gerät abgenommen sind.
 
 | Sprint | Thema | Status |
 |---|---|---|
-| BS1 | Schneller Balancing-Lauf mit Seed k3c-dev | geplant |
+| BS1 | Schneller Balancing-Lauf mit Seed k3c-dev | aktiv |
 | BS2 | Regelwerk der neuen Basis: Münzskala, Baumschule, Hafen und Schiff | geplant |
 | BS3 | Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch | geplant |
 | BS7 | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | geplant |

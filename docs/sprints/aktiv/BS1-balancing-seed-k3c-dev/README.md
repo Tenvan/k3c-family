@@ -1,6 +1,6 @@
 # BS1 · DEV · Schneller Balancing-Lauf mit Seed k3c-dev
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAS
 - **Domäne:** DEV
 - **Reife:** bereit
