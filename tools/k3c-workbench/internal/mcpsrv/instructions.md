@@ -149,7 +149,12 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
   der Shell. `sim_test {action: start, mode, clients, focus, …}` kehrt sofort mit einer ID zurück; `sim_test {action:
   status, id}` zeigt den Lauf in höchstens 10 Zeilen, `stop` bricht ab, `list` zeigt die Läufe des Checkouts.
 - `mode: offline` (Standard, Mocks im Prozess) baut den Balancing-Tester im Checkout und bewertet die Ziele aus
-  `data/balance-targets.json` (`seeds` optional). `mode: online, clients: 0` startet `rooms` × `players` Bot-Geräte
+  `data/balance-targets.json`. Ohne `seeds` gilt dort `seedMode`: `dev` rechnet nur den ersten Seed `k3c-dev`, `all`
+  alle (B-634). `seeds: N` nimmt die ersten N, `seedList: "k3c-dev,7"` genau diese; `bots` (z. B. `coop2`) ersetzt
+  offline den Bot aller Ziele. Der Bericht nennt Seed-Anzahl und Seed-Modus.
+- **BAS-Standardlauf** (Projekt BAS, Meilenstein-Läufe `docs/rules/zielkorridore.md` § 6): `sim_test {action: start,
+  bots: coop2}`. Bis zur Abnahme der neuen Werte rechnet er nur `k3c-dev` und ist in Minuten fertig.
+- `mode: online, clients: 0` startet `rooms` × `players` Bot-Geräte
   (`bots`, Standard 1 × 2 `saver`, `duration` 5m) gegen den Spielserver des Checkouts (vorher `svc_start`) und
   misst Tick p99, CPU, Trennungen und Fehler.
 - `mode: online, clients: 1`–`4` öffnet je Client einen Raum mit einem Beobachter der Workbench (ohne Platz, B-352,

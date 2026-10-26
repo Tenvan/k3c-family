@@ -50,6 +50,7 @@ type Flip struct {
 
 // Sensitivity rechnet Variationen und Kurven. Alle Pfade werden vor dem ersten Lauf geprüft.
 func (t *Targets) Sensitivity(o SensitivityOptions) (SensitivityReport, error) {
+	t = t.allSeeds() // Sensitivität und Kurven brauchen viele Seeds; der Seed-Modus dev gilt hier nicht (B-634)
 	steps := o.Steps
 	if len(steps) == 0 {
 		steps = Steps

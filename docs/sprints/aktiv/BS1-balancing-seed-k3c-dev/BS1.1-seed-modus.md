@@ -1,6 +1,6 @@
 # BS1.1 · Seed k3c-dev zuerst und Seed-Modus dev/all
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -63,5 +63,11 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+⚠️ **Workbench-Neustart nötig:** `sim_test`, Instructions und Balance-CLI geändert; die laufende Workbench kennt `seedList` und `bots` offline erst nach dem Neustart.
+- AC-01 umgesetzt, geprüft: `k3c-dev` an `seeds[0]`, `TestDevSeedStehtVorn`.
+- AC-02 umgesetzt, geprüft: `seedMode: dev` rechnet ohne Angabe einen Seed, Bericht-Kopf „1 Seed, Seed-Modus dev (k3c-dev)“ (`TestSeedModus`, `TestBerichtNenntSeedModus`); Sensitivität und Kurven rechnen weiter alle Seeds.
+- AC-04 umgesetzt, geprüft: `seedMode: all` bzw. leer wie bisher; `--seed-list` und `seedList` gehen vor (`TestWithSeeds`), `check:diff` grün.
+- AC-05 teilweise: `sim_test` offline nimmt `bots` und `seedList` (Test in `TestSimTestLehntAb`), Beschreibung und `instructions.md` nennen den BAS-Standardlauf. **`world` verschoben (B-642):** Der Tester spielt nur eine Stufe, Meilenstein-Definition klärt 🧑.
+- AC-06: Neustart oben, per `notify_ui` und im Chat gemeldet.
+- Abweichungen: Gold-Korridor in `balance-targets.json` auf 5–20 nachgezogen (BS2.1 hatte nur die Regel geändert, `TestGrenzenWieTabelle` war rot); `docs/data/balance-targets.md` um `seedMode` ergänzt. Vorher-Laufzeit nicht gemessen (100 Seeds ≈ 35–40 min laut README), kommt in BS1.2 über `seedList`.
+- Review (Sonnet): kein Blocker; behoben: Modus „auswahl“ bei Seed-Liste, Sensitivität ohne dev-Modus, leere/doppelte `seedList` abgelehnt. Offen (niedrig): Folgebefehle der Auswertung nennen `--seeds N` statt der Seed-Liste; Baseline-Vergleich bei anderem Seed-Modus nur als Hinweis (BS7).

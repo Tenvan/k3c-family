@@ -3,6 +3,7 @@ package simrun
 import (
 	"fmt"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 	"unicode/utf8"
@@ -14,6 +15,8 @@ import (
 // Null bzw. leer heißt: Flag weglassen, die CLI nimmt alle Ziele aus data/balance-targets.json.
 type Spec struct {
 	Seeds   int      `json:"seeds,omitempty"`
+	// SeedList: genau diese Seeds (--seed-list, B-634) statt der ersten Seeds bzw. des Seed-Modus der Datei.
+	SeedList []string `json:"seedList,omitempty"`
 	Depth   *int     `json:"depth,omitempty"` // 0 ist Wald, daher Zeiger: nil = Tiefe des Ziels
 	Players int      `json:"players,omitempty"`
 	Bot     string   `json:"bot,omitempty"`
@@ -39,6 +42,7 @@ const (
 
 var (
 	gradeName = regexp.MustCompile(`^[a-z0-9-]{1,20}$`)
+	seedName  = regexp.MustCompile(`^[A-Za-z0-9_-]{1,40}$`)
 	// varyArg: Datei ohne Ordner, Pfad aus Namen und Indizes, Wert ohne Leerraum.
 	varyArg = regexp.MustCompile(`^[A-Za-z0-9_-]+\.json:[A-Za-z0-9_.\[\]-]+=[^\s=]{1,64}$`)
 	// tuneParam: wie varyArg, der Wert ist ein Bereich min..max aus zwei Zahlen.
@@ -52,6 +56,10 @@ func (s Spec) Check() error {
 		msg string
 	}{
 		{s.Seeds < 0 || s.Seeds > 200, "seeds 1 bis 200"},
+		{len(s.SeedList) > 200, "seedList höchstens 200 Seeds"},
+		{s.Seeds > 0 && len(s.SeedList) > 0, "seeds oder seedList, nicht beides"},
+		{len(slices.Compact(slices.Sorted(slices.Values(s.SeedList)))) != len(s.SeedList), "seedList ohne doppelte Seeds"},
+		{slices.ContainsFunc(s.SeedList, func(n string) bool { return !seedName.MatchString(n) }), "seedList: Buchstaben, Ziffern, _ und -, höchstens 40 Zeichen"},
 		{s.Depth != nil && (*s.Depth < 0 || *s.Depth > 20), "depth 0 bis 20"},
 		{s.Players < 0 || s.Players > 4, "players 1 bis 4"},
 		{s.Days < 0 || s.Days > 100, "days 1 bis 100"},
@@ -133,6 +141,9 @@ func (s Spec) Title() string {
 			parts = append(parts, f.name+" "+strconv.Itoa(f.n))
 		}
 	}
+	if len(s.SeedList) > 0 {
+		parts = append(parts, "seeds "+strings.Join(s.SeedList, ","))
+	}
 	if s.Depth != nil {
 		parts = append(parts, "depth "+strconv.Itoa(*s.Depth))
 	}
@@ -161,6 +172,9 @@ func (s Spec) args(exe, dir string) []string {
 		if f.n > 0 {
 			args = append(args, f.flag, strconv.Itoa(f.n))
 		}
+	}
+	if len(s.SeedList) > 0 {
+		args = append(args, "--seed-list", strings.Join(s.SeedList, ","))
 	}
 	if s.Depth != nil {
 		args = append(args, "--depth", strconv.Itoa(*s.Depth))

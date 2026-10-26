@@ -52,8 +52,8 @@ func run(args []string) error {
 		return runSensitivity(so)
 	}
 	if to.on {
-		to.replays, to.seeds, to.variants = *replayDir, explicitSeeds(fs, *seeds), so.variants
-		if err := to.scopeFrom(fs, *players, *days); err != nil {
+		to.replays, to.variants = *replayDir, so.variants
+		if err := to.prepare(fs, *seeds, *seedList, *players, *days); err != nil {
 			return err
 		}
 		if tu.mode != "" {

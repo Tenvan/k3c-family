@@ -12,7 +12,8 @@
 | `version` | Ganzzahl | – | Version des Dateiformats | 1 |
 | `margin.sharePp` | Zahl | Prozentpunkte | Toleranz bei Kennzahlen vom Typ share | 5 |
 | `margin.medianFraction` | Zahl | Anteil | Toleranz bei Kennzahlen vom Typ median | 0,1 |
-| `seeds` | Liste | Seeds | Seeds, über die der Tester jede Variante misst | 1 bis 100 |
+| `seedMode` | Text | – | `dev`: ohne Seed-Angabe nur der erste Seed (`k3c-dev`, Projekt BAS bis zur Abnahme der Werte); `all` oder leer: alle (B-634) | `dev`, `all` |
+| `seeds` | Liste | Seeds | Seeds, über die der Tester jede Variante misst; `k3c-dev` steht vorn (B-634) | `k3c-dev`, 1 bis 100 |
 | `targets.*.measure` | Text | – | Kennzahl (castleHeld, firstWallBeforeDusk1, destroyedPerWave) | je Ziel |
 | `targets.*.name` | Text | – | Anzeigename des Ziels | je Ziel |
 | `targets.*.kind` | Text | – | share (Anteil der Läufe) oder median | share, median |

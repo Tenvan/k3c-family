@@ -16,7 +16,7 @@ func TestZielkorridoreLaden(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(ts.Seeds) != 100 || len(ts.Targets) == 0 {
+	if len(ts.Seeds) != 101 || len(ts.Targets) == 0 { // k3c-dev und 1–100 (B-634)
 		t.Fatalf("%d Seeds, %d Ziele", len(ts.Seeds), len(ts.Targets))
 	}
 	raw, _ := os.ReadFile("../../../../data/balance-targets.json")

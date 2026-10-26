@@ -64,6 +64,8 @@ type Targets struct {
 		MedianFraction float64 `json:"medianFraction"` // Anteil der Korridorbreite bei Medianen
 	} `json:"margin"`
 	Seeds   []string `json:"seeds"` // die festen Seeds, keine Zufallsauswahl
+	// SeedMode (B-634): dev = ohne Seed-Angabe nur der erste Seed, all bzw. leer = alle (seedmode.go).
+	SeedMode string   `json:"seedMode,omitempty"`
 	Targets []Target `json:"targets"`
 }
 
@@ -113,15 +115,8 @@ func (t *Targets) validate() error {
 	if t.Margin.SharePp < 0 || t.Margin.MedianFraction < 0 {
 		return fmt.Errorf("margin darf nicht negativ sein")
 	}
-	if len(t.Seeds) == 0 {
-		return fmt.Errorf("seeds: mindestens ein Seed nötig")
-	}
-	seen := map[string]bool{}
-	for _, s := range t.Seeds {
-		if s == "" || seen[s] {
-			return fmt.Errorf("seeds: %q ist leer oder doppelt", s)
-		}
-		seen[s] = true
+	if err := t.validateSeeds(); err != nil {
+		return err
 	}
 	for i, g := range t.Targets {
 		if err := g.validate(); err != nil {

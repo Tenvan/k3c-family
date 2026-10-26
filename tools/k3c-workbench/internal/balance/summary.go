@@ -21,6 +21,8 @@ type Entry struct {
 type Summary struct {
 	Version    int      `json:"version"`
 	Seeds      int      `json:"seeds"`
+	SeedMode   string   `json:"seedMode,omitempty"`  // dev, all oder auswahl (B-634); fehlt in älteren Berichten
+	SeedNames  []string `json:"seedNames,omitempty"` // die Seeds bei höchstens 5, sonst leer
 	Pass       bool     `json:"pass"`
 	Targets    []Entry  `json:"targets"`
 	Varianten  []string `json:"varianten,omitempty"`  // Wert-Varianten des Laufs (datei.json:a.b.c=wert)
@@ -73,17 +75,15 @@ func (t *Targets) RunTargetsProgress(n int, progress func(done, total int)) (Rep
 	return rep, nil
 }
 
-// seedList: die ersten n Seeds der Datei (0 = alle).
-func (t *Targets) seedList(n int) []string {
-	if n > 0 && n < len(t.Seeds) {
-		return t.Seeds[:n]
-	}
-	return t.Seeds
-}
-
 // Summarize bewertet einen Bericht gegen die Ziele.
 func (t *Targets) Summarize(r Report) Summary {
 	s := Summary{Version: 1, Seeds: len(r.Matrix.Seeds), Pass: true}
+	if len(t.Seeds) > 0 {
+		s.SeedMode = t.seedModeOf(r.Matrix.Seeds)
+	}
+	if len(r.Matrix.Seeds) <= 5 {
+		s.SeedNames = r.Matrix.Seeds
+	}
 	for _, v := range t.Evaluate(r) {
 		e := Entry{Verdict: v, Pass: v.Status == StatusOK || v.Status == StatusNarrow}
 		s.Pass = s.Pass && e.Pass
@@ -155,7 +155,7 @@ func (s Summary) MarkdownWith(base *Summary, in *Insights) string {
 	if !s.Pass {
 		verdict = "Fail"
 	}
-	fmt.Fprintf(&b, "# Balancing-Bericht\n\nGesamt: **%s**, %d Seeds, Ziele nach `data/balance-targets.json`.\n\n", verdict, s.Seeds)
+	fmt.Fprintf(&b, "# Balancing-Bericht\n\nGesamt: **%s**, %s, Ziele nach `data/balance-targets.json`.\n\n", verdict, s.seedText())
 	if in != nil {
 		b.WriteString(in.Markdown())
 		b.WriteString("\n## Ziele im Detail\n\n")
