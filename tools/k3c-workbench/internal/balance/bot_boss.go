@@ -9,8 +9,8 @@ import (
 // Bosskampf (BS11.3, B-642): Im Insel-Lauf schlagen die Bots jeden Gegner in Reichweite und gehen auf den Boss los. Der
 // Miniboss kommt mit seiner Welle zum Hub (die Truppen und Monarchen dort kämpfen); den Endboss weckt nur, wer sich dem Bau
 // der tiefsten Stufe nähert (boss_endboss.go): Am hellen Tag geht ein gesunder Monarch zum Bau und schlägt auf den Boss ein.
-// Fällt die Gesundheit unter retreatHP (Anteil), zieht er sich zur Burg zurück. Die Stufe des Bosses merkt sich das Profil
-// (Closure je Lauf): Nach dem Ereignis bossDefeated der tiefsten Stufe bleibt er bei seinem Profil.
+// Fällt die Gesundheit unter retreatHP (Anteil), zieht er sich zur Burg zurück. Ist der Endboss besiegt
+// (Island.EndbossDefeated), bleibt er bei seinem Profil.
 
 const (
 	retreatHP   = 0.35 // darunter zieht sich der Bot zur Burg zurück
@@ -19,18 +19,12 @@ const (
 )
 
 // withBossFight legt den Bosskampf über ein Profil; deepest ist die tiefste Tiefe der Insel.
-func withBossFight(inner Bot, deepest int) Bot {
-	won := false
+func withBossFight(inner Bot, isl *sim.Island, deepest int) Bot {
 	return func(w *sim.World, p *sim.Player) sim.PlayerCommand {
-		if w.Biome.Depth == deepest {
-			for _, ev := range w.Events {
-				won = won || ev["type"] == "bossDefeated"
-			}
-		}
 		cmd := inner(w, p)
 		if p.HP < retreatHP*p.MaxHP {
 			cmd = goTo(p, w.HubX, false)
-		} else if x, ok := fightX(w, p, deepest, won); ok {
+		} else if x, ok := fightX(w, p, deepest, isl.EndbossDefeated); ok {
 			cmd = goTo(p, x, false)
 		}
 		cmd.Attack = enemyWithin(w, p.X, strikeRange)
@@ -48,7 +42,7 @@ func fightX(w *sim.World, p *sim.Player, deepest int, won bool) (float64, bool) 
 		}
 	}
 	if boss != nil && w.Biome.Depth == deepest {
-		return boss.X - math.Copysign(strikeRange*0.5, boss.X-p.X), true
+		return boss.X - math.Copysign(0.3, boss.X-p.X), true
 	}
 	if w.Biome.Depth != deepest || won || w.Cycle.Phase != "day" || p.HP < fightHP*p.MaxHP {
 		return 0, false

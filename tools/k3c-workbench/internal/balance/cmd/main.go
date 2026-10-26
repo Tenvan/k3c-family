@@ -102,6 +102,8 @@ func checkFlags(to targetOpts, so sensOpts, tu tuneOpts) error {
 	switch {
 	case len(so.variants) > 0 && !to.on:
 		return fmt.Errorf("--vary datei.json:pfad=wert braucht --targets")
+	case to.world != "" && !to.on:
+		return fmt.Errorf("--world braucht --targets")
 	case (tu.mode != "" || len(tu.params) > 0) && !to.on:
 		return fmt.Errorf("--tune und --param brauchen --targets")
 	case len(tu.params) > 0 && tu.mode == "":

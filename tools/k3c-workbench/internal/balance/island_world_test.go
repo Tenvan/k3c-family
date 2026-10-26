@@ -125,3 +125,16 @@ func TestScopeWorld(t *testing.T) {
 		}
 	}
 }
+
+// BS11.5: Der Insel-Lauf ist deterministisch: gleiche Matrix, gleiche Bytes.
+func TestInselLaufDeterministisch(t *testing.T) {
+	m := Matrix{Seeds: []string{"k3c-dev"}, Players: []int{2}, Bots: []string{"coop2"}, Depths: []int{0}, Days: 1, World: "standard"}
+	a, err := mustRun(t, m).JSON()
+	if err != nil {
+		t.Fatal(err)
+	}
+	b, _ := mustRun(t, m).JSON()
+	if string(a) != string(b) {
+		t.Error("zweiter Insel-Lauf liefert andere Bytes")
+	}
+}

@@ -30,6 +30,7 @@ func registerSimTest(s *Server) {
 			"clients 0 = headless, 1–4 = laufende Clients mit Bot-Eingabe; focus balance, perf, stability. Bericht unter reports/simtest-<id>/. " +
 			"Offline ohne seeds gilt seedMode aus data/balance-targets.json (dev: nur k3c-dev); bots (z. B. coop2) und seedList gehen auch offline. " +
 			"world (z. B. standard) und days (1–60) gelten nur offline: der Lauf spielt die ganze erste Insel. " +
+			"wait: true (bei start) oder action wait {id} wartet wie check_run auf das Ende (mit progressToken bis zum Ende, sonst höchstens 4 min). " +
 			"BAS-Standardlauf: {action: start, bots: coop2}; Meilenstein-Lauf: {action: start, bots: coop2, world: standard, days: 40}. " +
 			"Nutze es bei: jedem Balancing-, Performance- oder Stabilitätslauf. Statt: task balance, task k3c-load oder Binaries in der Shell.",
 		Annotations: &mcp.ToolAnnotations{OpenWorldHint: new(bool)},
@@ -45,12 +46,14 @@ func (s *Server) simTest(ctx context.Context, in simTestIn) (string, error) {
 		return s.simStart(ctx, ws, in)
 	case "status":
 		return s.simStatus(root, in.ID)
+	case "wait":
+		return s.awaitSim(ctx, root, in.ID)
 	case "stop":
 		return s.simStop(root, in.ID)
 	case "list":
 		return s.simList(root), nil
 	}
-	return "", fmt.Errorf("action %q unbekannt: start, status, stop oder list", in.Action)
+	return "", fmt.Errorf("action %q unbekannt: start, status, wait, stop oder list", in.Action)
 }
 
 func (s *Server) simStart(ctx context.Context, ws workspace, in simTestIn) (string, error) {
@@ -68,6 +71,9 @@ func (s *Server) simStart(ctx context.Context, ws workspace, in simTestIn) (stri
 		return "", fmt.Errorf("schon %d Läufe in diesem Checkout; mit sim_test stop einen beenden", simrun.MaxPerRoot)
 	}
 	id := run.ID()
+	if in.Wait {
+		return s.awaitSim(ctx, root, id)
+	}
 	return fmt.Sprintf("▶ %s %s gestartet; Fortschritt mit sim_test status %s", id, spec.label(), id), nil
 }
 

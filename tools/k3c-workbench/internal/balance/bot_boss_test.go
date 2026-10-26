@@ -61,7 +61,7 @@ func TestBosskampfRueckzugUndSchlag(t *testing.T) {
 		t.Fatal(err)
 	}
 	w, p := isl.Stages[0], isl.Stages[0].Players[0]
-	bot := withBossFight(passive, 4)
+	bot := withBossFight(passive, isl, 4)
 	p.X = w.HubX + 20
 	p.HP = 0.2 * p.MaxHP
 	if cmd := bot(w, p); cmd.MoveX >= 0 {

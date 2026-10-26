@@ -14,7 +14,8 @@ import (
 
 // simTestIn sind die Parameter von sim_test (B-348 › Anforderungen). Geprüft wird über Positivlisten und Grenzen.
 type simTestIn struct {
-	Action   string   `json:"action" jsonschema:"start, status, stop oder list"`
+	Action   string   `json:"action" jsonschema:"start, status, wait, stop oder list"`
+	Wait     bool     `json:"wait,omitempty" jsonschema:"bei start: wartet wie check_run auf das Ende des Laufs (mit progressToken bis zum Ende, sonst höchstens 4 min, dann Lauf-ID)"`
 	ID       string   `json:"id,omitempty" jsonschema:"Lauf-ID für status und stop, z. B. run-1"`
 	Mode     string   `json:"mode,omitempty" jsonschema:"offline (Mocks im Prozess, Standard) oder online (Spielserver des Checkouts)"`
 	Clients  int      `json:"clients,omitempty" jsonschema:"0 = headless (Standard), 1 bis 4 = laufende Clients mit Bot-Eingabe, nur online"`
@@ -79,7 +80,7 @@ func (in simTestIn) spec() (simSpec, error) {
 		{s.seeds < 0 || s.seeds > 200, "seeds 1 bis 200"},
 		{s.bots != "" && !slices.Contains(balance.BotNames(), s.bots), "bots: " + strings.Join(balance.BotNames(), ", ")},
 		{slices.ContainsFunc(s.focus, func(f string) bool { return !slices.Contains(simFocus, f) }), "focus: balance, perf, stability"},
-		{in.ID != "", "id nur bei status und stop"},
+		{in.ID != "", "id nur bei status, wait und stop"},
 		{emptyList(in.SeedList, s.seedList), "seedList: Seeds mit Komma, z. B. k3c-dev,7"},
 	}
 	for _, c := range checks {

@@ -158,6 +158,9 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
   ganze erste Insel der Welt (alle Tiefen; die Bots steigen ab und kämpfen). `world` (Welt-Datei aus `data/worlds/`) und
   `days` (1 bis 60) gelten nur offline und für alle Ziele des Laufs; der Bericht zeigt je Tiefe Ankunftstag und Burgfall, je
   Boss den Tag und den Endboss (`kennzahlen.island`). Ein 40-Tage-Lauf dauert mehrere Minuten je Seed.
+- **Warten wie `check_run`** (B-644): `sim_test {action: start, …, wait: true}` bzw. `sim_test {action: wait, id}` wartet auf das Ende
+  des Laufs und liefert den Endstatus. Mit `progressToken` meldet der Aufruf alle 20 s ein Lebenszeichen und wartet bis zum Ende;
+  ohne antwortet er nach 4 min mit „läuft noch“ und der ID. Der Lauf überlebt den Aufruf; `stop` bricht ihn ab.
 - `mode: online, clients: 0` startet `rooms` × `players` Bot-Geräte
   (`bots`, Standard 1 × 2 `saver`, `duration` 5m) gegen den Spielserver des Checkouts (vorher `svc_start`) und
   misst Tick p99, CPU, Trennungen und Fehler.
