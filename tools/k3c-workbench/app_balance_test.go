@@ -153,6 +153,14 @@ func TestAuswahlWieGo(t *testing.T) {
 	if got := list("GRADES"); !slices.Equal(got, grades) {
 		t.Errorf("GRADES = %v, Go: %v", got, grades)
 	}
+	worlds, err := balance.Worlds()
+	if err != nil {
+		t.Fatal(err)
+	}
+	slices.Sort(worlds)
+	if got := list("WORLDS"); !slices.Equal(got, worlds) {
+		t.Errorf("WORLDS = %v, Go: %v", got, worlds)
+	}
 }
 
 // B-632/AC-05, AC-06: Auswertung lesen; „HTML-Bericht öffnen“ schreibt .md/.html eines alten Berichts und öffnet die Datei.

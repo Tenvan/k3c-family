@@ -18,7 +18,7 @@ interface Props {
 }
 
 const TEXT_FIELDS = [['seeds', 'alle'], ['days', 'Ziel']] as const;
-const SELECT_FIELDS = ['depth', 'players', 'bot', 'grade'] as const;
+const SELECT_FIELDS = ['depth', 'players', 'bot', 'grade', 'world'] as const;
 type SelectKey = Exclude<(typeof SELECT_FIELDS)[number], 'bot'>;
 
 /** Auswahl eines Felds; ein fremder Wert (z. B. aus einem alten Lauf) bleibt als eigener Eintrag sichtbar. */

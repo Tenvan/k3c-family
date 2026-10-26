@@ -19,6 +19,14 @@ describe('Spec aus dem Formular', () => {
     expect(specFromForm({ ...EMPTY_FORM, vary: 'kaputt' }).error).toMatch(/datei\.json:pfad/);
   });
 
+  it('nimmt die Welt für die ganze Insel mit und kennt alte Voreinstellungen ohne Welt (BS11)', () => {
+    expect(specFromForm({ ...EMPTY_FORM, world: 'standard', players: '1', bot: 'wirtschaft', days: '40' }).spec).toEqual({ world: 'standard', players: 1, bot: 'wirtschaft', days: 40 });
+    const { world: _w, ...alt } = EMPTY_FORM;
+    expect(specFromForm(alt as typeof EMPTY_FORM).spec).toEqual({});
+    expect(isPresetList([{ name: 'alt', form: alt }])).toBe(true);
+    expect(formFromSpec({ world: 'standard' }).world).toBe('standard');
+  });
+
   it('formFromSpec ist die Umkehrung', () => {
     const form = { ...EMPTY_FORM, seeds: '3', depth: '0', vary: 'a.json:x=1', label: 'L' };
     expect(formFromSpec(specFromForm(form).spec)).toEqual(form);

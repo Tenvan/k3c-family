@@ -7,6 +7,8 @@ export interface BalanceSpec {
   players?: number;
   bot?: string;
   grade?: string;
+  /** Welt (BS11): spielt die ganze erste Insel statt einer Stufe; leer = eine Stufe. */
+  world?: string;
   days?: number;
   vary?: string[];
   tune?: BalanceTune;
