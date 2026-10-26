@@ -11,6 +11,9 @@ import (
 type Scope struct {
 	Depth, Players, Days *int
 	Bot, Grade           string
+	// World (BS11): jedes Ziel spielt die ganze erste Insel dieser Welt; ohne World entfallen bei einer Einschränkung
+	// die Ziele mit world (Erkundung der Einzelstufe).
+	World string
 }
 
 // Restrict liefert eine Kopie der Ziele mit dem Szenario aus s; ein ungültiges Szenario oder ein unbekannter Grad ist
@@ -18,7 +21,7 @@ type Scope struct {
 func (t *Targets) Restrict(s Scope) (*Targets, error) {
 	out := *t
 	out.Targets = slices.Clone(t.Targets)
-	if s.Depth != nil || s.Players != nil || s.Days != nil || s.Bot != "" || s.Grade != "" {
+	if s.World == "" && (s.Depth != nil || s.Players != nil || s.Days != nil || s.Bot != "" || s.Grade != "") {
 		// eine Einschränkung erkundet die Einzelstufe: die Ziele des Insel-Laufs (World, BS11) entfallen
 		out.Targets = slices.DeleteFunc(out.Targets, func(g Target) bool { return g.World != "" })
 	}
@@ -32,6 +35,9 @@ func (t *Targets) Restrict(s Scope) (*Targets, error) {
 		}
 		if s.Grade != "" {
 			g.Grade = s.Grade
+		}
+		if s.World != "" {
+			g.World = s.World
 		}
 		if err := g.validate(); err != nil {
 			return nil, fmt.Errorf("szenario: %w", err)

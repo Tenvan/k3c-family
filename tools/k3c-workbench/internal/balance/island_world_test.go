@@ -95,3 +95,33 @@ func checkInselBericht(t *testing.T, m *Metrics) {
 		t.Errorf("Markdown ohne Tiefen und Bosse: %s", b.String())
 	}
 }
+
+// BS11.4: Scope.World lässt alle Ziele die ganze Insel spielen; jede andere Einschränkung ohne World entfernt die Insel-Ziele.
+func TestScopeWorld(t *testing.T) {
+	ts, err := DefaultTargets()
+	if err != nil {
+		t.Fatal(err)
+	}
+	days := 40
+	w, err := ts.Restrict(Scope{Days: &days, Bot: "coop2", World: "standard"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(w.Targets) != len(ts.Targets) {
+		t.Errorf("%d statt %d Ziele", len(w.Targets), len(ts.Targets))
+	}
+	for _, g := range w.Targets {
+		if g.World != "standard" || g.Days != 40 || g.Bot != "coop2" {
+			t.Fatalf("Ziel %q: %+v", g.Name, g)
+		}
+	}
+	one, err := ts.Restrict(Scope{Days: &days})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, g := range one.Targets {
+		if g.World != "" {
+			t.Errorf("Ziel %q behält World", g.Name)
+		}
+	}
+}

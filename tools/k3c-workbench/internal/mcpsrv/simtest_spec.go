@@ -22,6 +22,8 @@ type simTestIn struct {
 	Rooms    int      `json:"rooms,omitempty" jsonschema:"Räume, 1 bis 8 (online)"`
 	Bots     string   `json:"bots,omitempty" jsonschema:"Bot-Profil des Balancing-Testers, z. B. coop2 oder saver; offline ersetzt es den Bot aller Ziele"`
 	Seeds    int      `json:"seeds,omitempty" jsonschema:"Seeds, 1 bis 200; offline ohne Angabe nach seedMode aus data/balance-targets.json (dev: nur k3c-dev)"`
+	World    string   `json:"world,omitempty" jsonschema:"nur offline: Welt aus data/worlds, z. B. standard; der Lauf spielt die ganze erste Insel (Bots steigen ab und kämpfen), Meilenstein-Lauf mit bots coop2, days 40"`
+	Days     int      `json:"days,omitempty" jsonschema:"nur offline: Tage je Lauf, 1 bis 60; ersetzt die Tage aller Ziele"`
 	SeedList string   `json:"seedList,omitempty" jsonschema:"nur offline: genau diese Seeds mit Komma, z. B. k3c-dev oder k3c-dev,7; statt seeds"`
 	Duration string   `json:"duration,omitempty" jsonschema:"Dauer online, z. B. 5m, höchstens 2h"`
 	Focus    []string `json:"focus,omitempty" jsonschema:"balance, perf, stability; offline nur balance (Standard)"`
@@ -34,6 +36,8 @@ type simSpec struct {
 	clients        int
 	players, rooms int
 	bots           string
+	world          string // offline: Welt der Insel-Läufe (BS11)
+	days           int    // offline: Tage je Lauf
 	attach         string // Raumcode laufender Clients, leer = Browser starten
 	seeds          int
 	seedList       []string // offline: genau diese Seeds (B-634)
@@ -56,7 +60,7 @@ func (s simSpec) label() string {
 
 // spec prüft die Parameter von start; jeder Fehler ist eine Zeile mit Grund.
 func (in simTestIn) spec() (simSpec, error) {
-	s := simSpec{mode: in.Mode, clients: in.Clients, players: in.Players, rooms: in.Rooms, bots: in.Bots,
+	s := simSpec{mode: in.Mode, clients: in.Clients, players: in.Players, rooms: in.Rooms, bots: in.Bots, world: in.World, days: in.Days,
 		seeds: in.Seeds, seedList: splitList(in.SeedList), focus: in.Focus, attach: strings.ToUpper(in.Attach)}
 	if s.mode == "" {
 		s.mode = "offline"
@@ -108,10 +112,16 @@ func (s simSpec) checkAttach() error {
 
 // checkMode lehnt Kombinationen ab, die der Modus nicht kann, und füllt die Standards von online.
 func (s *simSpec) checkMode() error {
+	if s.days < 0 || s.days > 60 {
+		return fmt.Errorf("sim_test start abgelehnt: days 1 bis 60")
+	}
 	if err := s.checkAttach(); err != nil {
 		return err
 	}
 	if s.mode == "online" {
+		if s.world != "" || s.days != 0 {
+			return fmt.Errorf("sim_test start abgelehnt: world und days nur offline")
+		}
 		if len(s.seedList) > 0 {
 			return fmt.Errorf("sim_test start abgelehnt: seedList nur offline")
 		}
@@ -181,7 +191,7 @@ func (s simSpec) offline() *simrun.Spec {
 	if s.mode != "offline" {
 		return nil
 	}
-	return &simrun.Spec{Seeds: s.seeds, SeedList: s.seedList, Bot: s.bots}
+	return &simrun.Spec{Seeds: s.seeds, SeedList: s.seedList, Bot: s.bots, World: s.world, Days: s.days}
 }
 
 // emptyList: Die Eingabe ist gesetzt, enthält aber keinen Eintrag (z. B. „,“).

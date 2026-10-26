@@ -3,6 +3,7 @@ package balance
 import (
 	"fmt"
 	"io/fs"
+	"strings"
 
 	"k3c/data"
 	"k3c/engine/sim"
@@ -23,6 +24,25 @@ func createIsland(sc Scenario) (*sim.Island, error) {
 	}
 	first := world.Islands[0]
 	return sim.CreateIslandIn(world, sc.Seed, first.Depths, 1, first.CreateOptions())
+}
+
+// Worlds liefert die IDs der Welt-Dateien in data/worlds (sortiert), die ein Lauf als World nehmen darf.
+func Worlds() ([]string, error) {
+	worlds, err := fs.Sub(data.Files, "worlds")
+	if err != nil {
+		return nil, err
+	}
+	entries, err := fs.ReadDir(worlds, ".")
+	if err != nil {
+		return nil, err
+	}
+	var ids []string
+	for _, e := range entries {
+		if id, ok := strings.CutSuffix(e.Name(), ".json"); ok && !e.IsDir() {
+			ids = append(ids, id)
+		}
+	}
+	return ids, nil
 }
 
 func loadWorld(id string) (sim.WorldDef, error) {

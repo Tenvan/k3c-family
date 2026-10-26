@@ -154,6 +154,10 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
   offline den Bot aller Ziele. Der Bericht nennt Seed-Anzahl und Seed-Modus.
 - **BAS-Standardlauf** (Projekt BAS, Meilenstein-Läufe `docs/rules/zielkorridore.md` § 6): `sim_test {action: start,
   bots: coop2}`. Bis zur Abnahme der neuen Werte rechnet er nur `k3c-dev` und ist in Minuten fertig.
+- **Insel-Lauf / Meilenstein** (BS11, B-642): `sim_test {action: start, bots: coop2, world: standard, days: 40}` spielt die
+  ganze erste Insel der Welt (alle Tiefen; die Bots steigen ab und kämpfen). `world` (Welt-Datei aus `data/worlds/`) und
+  `days` (1 bis 60) gelten nur offline und für alle Ziele des Laufs; der Bericht zeigt je Tiefe Ankunftstag und Burgfall, je
+  Boss den Tag und den Endboss (`kennzahlen.island`). Ein 40-Tage-Lauf dauert mehrere Minuten je Seed.
 - `mode: online, clients: 0` startet `rooms` × `players` Bot-Geräte
   (`bots`, Standard 1 × 2 `saver`, `duration` 5m) gegen den Spielserver des Checkouts (vorher `svc_start`) und
   misst Tick p99, CPU, Trennungen und Fehler.

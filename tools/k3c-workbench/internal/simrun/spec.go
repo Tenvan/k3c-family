@@ -1,6 +1,7 @@
 package simrun
 
 import (
+	"cmp"
 	"fmt"
 	"regexp"
 	"slices"
@@ -22,6 +23,8 @@ type Spec struct {
 	Bot     string   `json:"bot,omitempty"`
 	Grade   string   `json:"grade,omitempty"`
 	Days    int      `json:"days,omitempty"`
+	// World (BS11, B-642): Welt-ID aus data/worlds; der Lauf spielt die ganze erste Insel statt einer Stufe.
+	World string `json:"world,omitempty"`
 	Vary    []string `json:"vary,omitempty"` // datei.json:pfad.zum.wert=wert
 	Label   string   `json:"label,omitempty"`
 	Tune    *Tune    `json:"tune,omitempty"` // automatisches Balancing (WZ28.6), Ergebnis tuning-*.json
@@ -78,7 +81,14 @@ func (s Spec) Check() error {
 			return fmt.Errorf("lauf abgelehnt: vary %q, Form datei.json:pfad.zum.wert=wert", v)
 		}
 	}
-	return s.Tune.check()
+	return cmp.Or(s.checkWorld(), s.Tune.check())
+}
+
+func (s Spec) checkWorld() error {
+	if s.World != "" && !knownWorld(s.World) {
+		return fmt.Errorf("lauf abgelehnt: world: %s", strings.Join(worldNames(), ", "))
+	}
+	return nil
 }
 
 // check prüft das Abstimmen wie vary: Modus, 1 bis 2 Parameter, kein „..“ vor dem Bereich, Grenzen von steps und budget.
@@ -147,7 +157,7 @@ func (s Spec) Title() string {
 	if s.Depth != nil {
 		parts = append(parts, "depth "+strconv.Itoa(*s.Depth))
 	}
-	for _, f := range []string{s.Bot, s.Grade} {
+	for _, f := range []string{s.Bot, s.Grade, s.World} {
 		if f != "" {
 			parts = append(parts, f)
 		}
@@ -185,6 +195,9 @@ func (s Spec) args(exe, dir string) []string {
 	if s.Grade != "" {
 		args = append(args, "--grade", s.Grade)
 	}
+	if s.World != "" {
+		args = append(args, "--world", s.World)
+	}
 	for _, v := range s.Vary {
 		args = append(args, "--vary", v)
 	}
@@ -195,3 +208,10 @@ func knownBot(name string) bool {
 	_, ok := balance.BotByName(name)
 	return ok
 }
+
+func worldNames() []string {
+	ids, _ := balance.Worlds()
+	return ids
+}
+
+func knownWorld(id string) bool { return slices.Contains(worldNames(), id) }

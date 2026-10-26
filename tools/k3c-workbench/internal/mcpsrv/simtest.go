@@ -29,7 +29,8 @@ func registerSimTest(s *Server) {
 			"status (≤ 10 Zeilen), stop, list. mode offline (Mocks im Prozess) oder online (Spielserver des Checkouts), " +
 			"clients 0 = headless, 1–4 = laufende Clients mit Bot-Eingabe; focus balance, perf, stability. Bericht unter reports/simtest-<id>/. " +
 			"Offline ohne seeds gilt seedMode aus data/balance-targets.json (dev: nur k3c-dev); bots (z. B. coop2) und seedList gehen auch offline. " +
-			"BAS-Standardlauf: {action: start, bots: coop2}. " +
+			"world (z. B. standard) und days (1–60) gelten nur offline: der Lauf spielt die ganze erste Insel. " +
+			"BAS-Standardlauf: {action: start, bots: coop2}; Meilenstein-Lauf: {action: start, bots: coop2, world: standard, days: 40}. " +
 			"Nutze es bei: jedem Balancing-, Performance- oder Stabilitätslauf. Statt: task balance, task k3c-load oder Binaries in der Shell.",
 		Annotations: &mcp.ToolAnnotations{OpenWorldHint: new(bool)},
 	}, s.simTest)
