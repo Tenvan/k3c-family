@@ -22,11 +22,26 @@ const minDescentDay = 2
 // withDescent legt den Abstieg über ein Profil.
 func withDescent(inner Bot, isl *sim.Island, deepest int) Bot {
 	return func(w *sim.World, p *sim.Player) sim.PlayerCommand {
-		if x, ok := descentX(w, deepest); ok && mayDescend(isl, p) && stageSafe(w) && miniDefeated(isl, w.Biome.Depth) {
-			return goTo(p, x, false)
+		if x, ok := descentX(w, deepest); ok && mayDescend(isl, p) && stageSafe(w) {
+			if miniDefeated(isl, w.Biome.Depth) {
+				return goTo(p, x, false)
+			}
+			if n := pumpNode(w, p); n != nil { // Unter Tage kommt der Miniboss mit der Welle, und die füllt der Aggressionspool
+				return goTo(p, n.X, true)
+			}
 		}
 		return inner(w, p)
 	}
+}
+
+// pumpNode: ein unmarkierter Knoten (Baum, Fels, Ader), den der Bot markiert, damit die Bauern sammeln: Unter Tage füllt
+// jede gesammelte Ressource den Aggressionspool (stufen.md § 2), bei vollem Pool kommt die Welle mit dem Miniboss. Nur dort
+// (Stufen mit Aggressionspool); im Wald kommt die Welle mit der Nacht von selbst.
+func pumpNode(w *sim.World, p *sim.Player) *sim.ResourceNode {
+	if w.Aggression == nil || w.Cycle.Phase != "day" {
+		return nil
+	}
+	return nodeFor(w, p, sim.Cost{Wood: 1 << 20, Stone: 1 << 20, Copper: 1 << 20, Iron: 1 << 20, Crystal: 1 << 20})
 }
 
 // miniDefeated: Der Miniboss der Stufe ist besiegt (oder die Stufe hat keinen). Wer vorher geht, lässt die Stufe mit ihrer

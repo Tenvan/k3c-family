@@ -19,7 +19,8 @@ import (
 // immer nur der aktuelle (`task balance:fullgame STUFE=3`, Standard in Taskfile.yml); neue Stufen kommen unten dazu.
 // Bewusst NICHT Teil von `task check:diff` (Build-Tag `fullgame`, läuft Minuten).
 //
-// Dev-Hilfen (Umgebung K3C_FULLGAME): „hilfen“ (Standard: Dev-Baukosten, voller Insel-Vorrat, Grad dev) oder „ohne“
+// Dev-Hilfen (Umgebung K3C_FULLGAME): „hilfen“ (Standard: Dev-Baukosten, voller Insel-Vorrat, Grad dev), „voll“ (zusätzlich
+// alle Stufen voll ausgebaut, Dev-Bau Stufe 5) oder „ohne“
 // (Grad normal, nichts geschenkt: der offene Meilenstein der Balance, Fehler gelten dort nur als Hinweis im Log).
 
 const fullgameDays = 40
@@ -27,7 +28,8 @@ const fullgameDays = 40
 // fullgame spielt einen Bot, bis done wahr ist oder fullgameDays vorbei sind; den Stand liefert die Insel.
 func fullgame(t *testing.T, done func(*sim.Island) bool) (isl *sim.Island, day int, helps bool) {
 	t.Helper()
-	helps = os.Getenv("K3C_FULLGAME") != "ohne"
+	mode := os.Getenv("K3C_FULLGAME")
+	helps = mode != "ohne"
 	grade := ""
 	if helps {
 		grade = "dev"
@@ -39,6 +41,9 @@ func fullgame(t *testing.T, done func(*sim.Island) bool) (isl *sim.Island, day i
 	if helps {
 		sim.DevSetCheapBuild(isl, true)
 		sim.DevFillStock(isl)
+		if mode == "voll" { // zusätzlich alle Stufen der Insel voll ausgebaut (Hub 5, Mauern, Türme)
+			sim.DevBuildAll(isl, 5)
+		}
 	}
 	bot := withBossFight(withDescent(wirtschaft, isl, deepestOf(isl)), isl, deepestOf(isl))
 	cmds := make([]sim.PlayerCommand, 1)
@@ -123,6 +128,19 @@ func logFullgameDay(t *testing.T, isl *sim.Island, day int) {
 	for i, w := range isl.Stages {
 		e := sim.EconomyOf(w)
 		line += " | S" + strconv.Itoa(i) + " Hub " + strconv.Itoa(e.HubLevel) + " Kämpfer " + strconv.Itoa(e.Fighters)
+		if w.Aggression != nil {
+			line += " (Pool " + strconv.Itoa(int(*w.Aggression)) + " Welle " + strconv.Itoa(w.Wave) + " Gegner " + strconv.Itoa(len(w.Enemies)) + ")"
+		}
+		for _, en := range w.Enemies {
+			if en.Boss && en.HP > 0 {
+				line += " [" + en.Kind + " " + strconv.Itoa(int(en.HP)) + "/" + strconv.Itoa(int(en.MaxHP)) + " x" + strconv.Itoa(int(en.X)) + "]"
+			}
+		}
+	}
+	for _, w := range isl.Stages {
+		for _, p := range w.Players {
+			line += " | Monarch HP " + strconv.Itoa(int(p.HP)) + " Gold " + strconv.Itoa(p.Gold) + " x" + strconv.Itoa(int(p.X)) + " (Hub x" + strconv.Itoa(int(w.HubX)) + ")"
+		}
 	}
 	t.Log(line + " | Bosse " + strings.Join(isl.DefeatedBosses, ", "))
 }
