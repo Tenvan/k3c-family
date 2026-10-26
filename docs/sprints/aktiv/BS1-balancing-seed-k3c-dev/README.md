@@ -67,7 +67,7 @@ B-634 › Ausnahme- und Fehlerfälle.
 |---|---|---|---|---|
 | BS1.1 | `BS1.1-seed-modus.md` | Umsetzung | autonom | fertig |
 | BS1.2 | `BS1.2-laufzeit.md` | Umsetzung | autonom | offen |
-| BS1.3 | `BS1.3-prompt-buttons.md` | Umsetzung | autonom | offen |
+| BS1.3 | `BS1.3-prompt-buttons.md` | Umsetzung | autonom | fertig |
 | BS1.4 | `BS1.4-review.md` | Review | autonom | offen |
 
 ## Abnahme

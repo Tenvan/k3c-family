@@ -1,6 +1,6 @@
 ---
 name: k3c-session
-description: Schlanker Ablauf für eine K3C-Session (Sprint-Session umsetzen, Review-Session, Planungs-Session) mit plan_next, parallelen Agenten, gezielten Tests, einem check:diff und Review nur bei Risiko. Use when Ralf "nächste Session", "weiter mit <Sprint>", "Session <ID> umsetzen", "Review-Session" oder "autonom weiterarbeiten" sagt. Nicht für reine Fragen oder Ticket-Anlage ohne Umsetzung.
+description: Schlanker Ablauf für eine K3C-Session (Sprint-Session umsetzen, Review-Session, Planungs-Session) mit plan_next, parallelen Agenten, gezielten Tests, einem check:diff und Review nur bei Risiko. Use when Ralf "nächste Session", "weiter mit <Sprint>", "Session <ID> umsetzen", "Review-Session" oder "autonom weiterarbeiten" sagt, oder wenn eine Nachricht nur aus der Kurzform eines Workbench-Buttons besteht: "Session <ID>", "Sessions <ID>, <ID>", "Sprint <ID>", "Projekt <Kürzel>" (B-639). Nicht für reine Fragen oder Ticket-Anlage ohne Umsetzung.
 ---
 
 # K3C-Session

@@ -1,6 +1,6 @@
 # BS1.3 · Prompt-Buttons: kurze Prompts ohne Anweisungen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -53,5 +53,8 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+⚠️ **Workbench-Neustart nötig:** Die EXE bettet die Oberfläche ein; die kurzen Prompts erscheinen erst nach `task k3c-workbench:build` und Neustart (bzw. Neustart von `k3c-workbench:web`).
+- AC-07 umgesetzt, geprüft: `planning/prompts.ts` und `git/prompts.ts` liefern eine Zeile ohne Anweisungen (`Session BS1.1`, `Sessions M9.1, W1.1`, `Sprint BS1`, `Projekt BAS`, `Ticket B-007 in Sprint M8`, `Neuer Sprint aus Tickets …`, `Branches aufräumen: …`, `PR #447 beheben (sprint/w11): CI rot, Konflikt`, `Offene PRs prüfen und mergen: …`); Tests `planning/prompts.test.ts`, `git/prompts.test.ts`, `dev:test` grün.
+- AC-08 umgesetzt: Skill `k3c-session` nennt die Kurzformen als Trigger; Neustart oben, per `notify_ui` und im Chat gemeldet.
+- Abweichung: Die Git-Prompts enthielten Sicherheitsregeln (kein Force-Push, nichts an main); laut Spec entfallen sie, GitHub setzt sie für `develop` und `main` durch.
+- Geprüft: `task check:diff` grün.
