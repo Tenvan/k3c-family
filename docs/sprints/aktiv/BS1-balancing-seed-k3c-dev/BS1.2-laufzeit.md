@@ -1,6 +1,6 @@
 # BS1.2 · Laufzeit coop2 standard messen und verkürzen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -53,5 +53,9 @@ Läufe nur über `sim_test`.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 umgesetzt, geprüft: Laufzeit `coop2` standard, Seed `k3c-dev`: vorher 14 min 23 s (run-1, nacheinander), nachher 3 min 58 s inkl. Bau (run-2, parallel); Tabelle in B-634 › Notizen. Alle Seeds alt nicht gemessen, hochgerechnet etwa 24 h.
+- Tempo-Hebel: `balance/parallel.go` rechnet die Szenarien eines Berichts gleichzeitig (je Kern ein Lauf, Reihenfolge der Ergebnisse unverändert); `TestParallelWieNacheinander` und der Vergleich run-1/run-2 (Ziele und Kennzahlen identisch) belegen den Determinismus.
+- AC-06: Messläufe über `sim_test` nach dem Neustart (EXE 11:28 nach BS1.1, `bots` offline angenommen). Kein weiterer Neustart nötig: Der Tester wird je Lauf aus dem Checkout gebaut.
+- Befund: Der Lauf besteht nicht (Burg hält in allen Graden 0 %), erwartet vor der Werte-Runde BS3.
+- Abweichung: Flackernden Test `TestSimTestOfflineBewertetZiele` behoben (außerhalb der erlaubten Dateien, eine Zeile): `waitDone` wartete auf „Bericht:“, das seit B-632 schon in „im Bericht:“ der Auswertung steht; jetzt auf die Zeile „Bericht: “. 5 von 5 Läufen grün.
+- Geprüft: `task check:diff` grün.

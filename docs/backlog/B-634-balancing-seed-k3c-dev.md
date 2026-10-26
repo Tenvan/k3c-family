@@ -68,3 +68,14 @@ Unbekannter `seedMode` → `-check-data` lehnt ab. Ausdrücklich übergebene See
 ## Notizen
 
 Wunsch 🧑 2026-10-26: „Balancing bis zur Abnahme in der Performance erhöhen, u. a. durch einen Seed k3c-dev, der auch als erster in die Balancing-Seeds kommt.“
+
+**Messung BS1.2 (2026-10-26, Rechner mit 22 Kernen, `sim_test {action: start, bots: coop2}`, Seed-Modus dev):**
+
+| Lauf | Seeds | Läufe | Dauer | Anmerkung |
+|---|---|---|---|---|
+| vorher (run-1) | 1 (`k3c-dev`) | nacheinander | 14 min 23 s | zeitweise parallel zu `check:diff` |
+| nachher (run-2) | 1 (`k3c-dev`) | parallel (`runAll`, je Kern ein Lauf) | 3 min 58 s inkl. Bau des Testers | Ziele und Kennzahlen identisch zu run-1 |
+| alle Seeds, alt | 101 | nacheinander | nicht gemessen; hochgerechnet aus run-1 etwa 24 h | vor B-634 der Standard ohne `--seeds` |
+
+Ein Lauf ohne Seed-Angabe ist damit gegenüber dem alten Standard (alle Seeds, nacheinander) um mehr als das Hundertfache kürzer.
+Der Tester wird bei jedem `sim_test`-Lauf aus dem Checkout gebaut: Änderungen im Paket `balance` brauchen **keinen** Workbench-Neustart, nur Änderungen an `mcpsrv` und `simrun`.

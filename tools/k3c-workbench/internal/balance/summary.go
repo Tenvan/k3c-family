@@ -65,13 +65,7 @@ func (t *Targets) RunTargetsProgress(n int, progress func(done, total int)) (Rep
 		}
 		all = append(all, sc...)
 	}
-	rep.Results = make([]Result, 0, len(all))
-	for i, sc := range all {
-		rep.Results = append(rep.Results, runOne(sc, 0))
-		if progress != nil {
-			progress(i+1, len(all))
-		}
-	}
+	rep.Results = runAll(all, 0, progress)
 	return rep, nil
 }
 

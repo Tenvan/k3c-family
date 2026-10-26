@@ -55,7 +55,7 @@ func waitDone(t *testing.T, s *Server, id string) string {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if strings.Contains(out, "Bericht:") { // fertig, nach stop erst, wenn der Runner aufgeräumt hat
+		if strings.Contains(out, "\nBericht: ") { // fertig, nach stop erst, wenn der Runner aufgeräumt hat (nicht „im Bericht:“ der Auswertung)
 			return out
 		}
 		time.Sleep(10 * time.Millisecond)

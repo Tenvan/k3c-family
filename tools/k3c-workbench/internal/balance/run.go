@@ -98,17 +98,13 @@ func (m Matrix) checkBots() error {
 	return nil
 }
 
-// Run spielt alle Läufe der Matrix nacheinander. Ein abgebrochener Lauf erscheint als ungültig, der Rest läuft weiter.
+// Run spielt alle Läufe der Matrix (parallel, parallel.go). Ein abgebrochener Lauf erscheint als ungültig, der Rest läuft weiter.
 func Run(m Matrix) (Report, error) {
 	scenarios, err := m.Scenarios()
 	if err != nil {
 		return Report{}, err
 	}
-	r := Report{Matrix: m, Results: make([]Result, 0, len(scenarios))}
-	for _, sc := range scenarios {
-		r.Results = append(r.Results, runOne(sc, m.GoldThreshold))
-	}
-	return r, nil
+	return Report{Matrix: m, Results: runAll(scenarios, m.GoldThreshold, nil)}, nil
 }
 
 // JSON schreibt den Bericht eingerückt mit Zeilenende; Feldreihenfolge aus den Structs.
