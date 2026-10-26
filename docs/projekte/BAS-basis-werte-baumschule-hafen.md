@@ -24,7 +24,7 @@ Erledigt, wenn M4 erreicht ist und BS6 und BS10 am Gerät abgenommen sind.
 |---|---|---|
 | BS1 | Schneller Balancing-Lauf mit Seed k3c-dev | erledigt |
 | BS2 | Regelwerk der neuen Basis: Münzskala, Baumschule, Hafen und Schiff | erledigt |
-| BS11 | Balancing-Tester spielt die ganze Insel bis zum Endboss | aktiv |
+| BS11 | Balancing-Tester spielt die ganze Insel bis zum Endboss | erledigt |
 | BS3 | Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch | geplant |
 | BS7 | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | geplant |
 | BS4 | Baumschule auf gerodeten Waldbauplätzen (Server) | geplant |

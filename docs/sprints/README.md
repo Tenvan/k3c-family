@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| BS11 | DEV | BAS | Balancing-Tester spielt die ganze Insel bis zum Endboss | – | `aktiv/BS11-tester-ganze-insel/` |
 | WZ29 | DEV | WZG | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | – | `aktiv/WZ29-sound-grafik-seiten-ausbau/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | WZ31 | DEV | WZG | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | – | `aktiv/WZ31-web-client-first/` |
@@ -257,3 +256,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | W12 | Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln | `erledigt/W12-morgengrauen-phase/` |
 | BS2 | Regelwerk der neuen Basis: Münzskala, Baumschule, Hafen und Schiff | `erledigt/BS2-regelwerk-neue-basis/` |
 | BS1 | Schneller Balancing-Lauf mit Seed k3c-dev | `erledigt/BS1-balancing-seed-k3c-dev/` |
+| BS11 | Balancing-Tester spielt die ganze Insel bis zum Endboss | `erledigt/BS11-tester-ganze-insel/` |

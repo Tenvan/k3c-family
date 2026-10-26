@@ -1,6 +1,6 @@
 # BS11 · DEV · Balancing-Tester spielt die ganze Insel bis zum Endboss
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAS
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -67,9 +67,8 @@ Aus B-642, je mit Default (nicht blockierend): Absteige-Regel der Bots (Hub-Stuf
 | BS11.2 | `BS11.2-bots-abstieg.md` | Umsetzung | autonom | fertig |
 | BS11.3 | `BS11.3-bots-bosskampf-ziele.md` | Umsetzung | autonom | fertig |
 | BS11.4 | `BS11.4-sim-test-world-referenz.md` | Umsetzung | autonom | fertig |
-| BS11.5 | `BS11.5-review.md` | Review | autonom | offen |
+| BS11.5 | `BS11.5-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-26, Claude (AC-01 bis AC-06 laut Ergebnis BS11.1–BS11.5). Referenzlauf `run-1` rot (Endboss 0 %, Kristallhöhle Tag 37), Werte in B-642. Review: zwei mittlere Befunde behoben. `check:race` lokal nicht gelaufen (kein C-Compiler). Neue Tickets: B-643, B-644.
