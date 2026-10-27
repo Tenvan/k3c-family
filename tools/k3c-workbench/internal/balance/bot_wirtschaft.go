@@ -28,14 +28,20 @@ func wirtschaft(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	if w.Cycle.Phase == "night" {
 		return goTo(p, w.HubX, false)
 	}
+	if peasants(w) == 0 && nearestVagrant(w, p) != nil { // ohne Arbeiter bleibt jeder bezahlte Bau liegen (waitingWorker): erst anwerben
+		return recruitOrHub(w, p)
+	}
+	x, reserve := hubStep(w, p)
+	if x == &w.Castle.X { // Material und Gold für den Hub-Ausbau liegen bereit: zuerst zahlen, vor neuen Bauten
+		return goTo(p, *x, true)
+	}
 	if !waitingMaterial(w) {
 		for _, kind := range buildOrder {
-			if s := nearestPayable(w, p, kind, "unpaid", 0); s != nil && covers(*w.Stock, prices.cost[kind]) {
+			if s := nearestPayable(w, p, kind, "unpaid", reserve); s != nil && covers(*w.Stock, prices.cost[kind]) {
 				return goTo(p, s.X, true)
 			}
 		}
 	}
-	x, reserve := hubStep(w, p)
 	if x == nil && reserve == 0 {
 		if n := nodeFor(w, p, sim.Cost{Wood: woodWant}); n != nil {
 			x = &n.X
