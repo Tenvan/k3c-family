@@ -79,3 +79,13 @@ Die Ursache liegt in der Höhle (Messung Tag 7–16): Die Wellen (der Pool füll
 - Liegt der Hub-Ausbau bereit, zahlt er zuerst, und neue Bauten lassen die Rücklage für den Ausbau stehen.
 Wirkung: Hub-Stufe 2 in der Höhle ab etwa Tag 30 (vorher nie), Troll-König weiter nie; mit Hilfen `voll` fällt der Endboss unverändert an Tag 20.
 Offen (🧑): Die Höhle verlangt vom Bot mehr, als 2 Gold je Morgen hergeben. Hebel Werte (Tageseinkommen, Beute, Hub-Ausbau) oder eine schwächere Pool-Füllung der Höhle.
+
+**Hebel 1 und 4, zwei Werte-Runden (2026-10-27, Claude, Solo, Seed k3c-dev, ohne Hilfen, Stufen-Test 3, nur `economy.json` im Speicher geändert, danach zurückgesetzt):**
+| Runde | startGold | dawnGoldPerPlayer | Ergebnis bis Tag 40 |
+|---|---|---|---|
+| Ausgang | 14 | 2 | Goblin-Anführer; Höhle: Hub 1, 0 Kämpfer (mit Bot-Korrekturen Hub 2 ab Tag 30) |
+| 1 | 20 | 4 | Goblin-Anführer; Höhle: Hub 2 ab Tag 15, weiter 0 Kämpfer, kein Troll-König |
+| 2 | 30 | 8 | Goblin-Anführer und Troll-König (vor Tag 15); Höhle 8 Kämpfer; Spieler in der Mine ab Tag 17–20, dort Hub 1, Ratten-Königin fällt nicht |
+- Der Hub-Ausbau (Hebel 4) war nicht der Engpass: Er kostet nur 4 Gold und 25 Stein; was fehlt, ist laufendes Gold für Wiederaufbau und Bögen nach jeder Welle.
+- Ab etwa 8 Gold je Morgen trägt sich die Höhle. Das ist das Vierfache des Werts der Münzskala (wirtschaft.md § 8: Einnahmen folgen der Kurve, Tageseinkommen 2). Werte in `data/` bleiben unverändert; Entscheidung bei 🧑.
+- Optionen: (a) Tageseinkommen 3–4 plus Beute der Wellen anheben (Gegner lassen Gold fallen, `enemyResourceDrop` ist heute Material), (b) Stufen ab Tiefe 1 zahlen mehr Morgengold (nach Tiefe skaliert), (c) Welle der Höhle schwächer (Pool-Füllung), (d) Skala beibehalten, der Meilenstein läuft mit Hilfen.
