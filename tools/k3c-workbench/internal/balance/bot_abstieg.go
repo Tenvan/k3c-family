@@ -26,7 +26,9 @@ func withDescent(inner Bot, isl *sim.Island, deepest int) Bot {
 			if miniDefeated(isl, w.Biome.Depth) {
 				return goTo(p, x, false)
 			}
-			if n := pumpNode(w, p); n != nil { // Unter Tage kommt der Miniboss mit der Welle, und die füllt der Aggressionspool
+			// Unter Tage kommt der Miniboss mit der Welle, und die füllt der Aggressionspool. Erst die Armee: Ein Miniboss mit
+			// Tausenden HP trifft sonst auf einen Hub ohne Kämpfer (BS3.4, Eisenstollen: Lava-Golem gegen Monarch und einen Bauern).
+			if n := pumpNode(w, p); n != nil && sim.EconomyOf(w).Fighters >= fighterWant {
 				return goTo(p, n.X, true)
 			}
 		}

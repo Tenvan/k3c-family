@@ -35,6 +35,9 @@ func wirtschaft(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	if x == &w.Castle.X { // Material und Gold für den Hub-Ausbau liegen bereit: zuerst zahlen, vor neuen Bauten
 		return goTo(p, *x, true)
 	}
+	if x := fighterStep(w, p, reserve); x != nil { // Kämpfer vor Wiederaufbau: Unter Tage räumt jede Welle Mauern und Türme ab, die Armee trägt
+		return goTo(p, *x, true)
+	}
 	if s := nextBuild(w, p, reserve); s != nil {
 		return goTo(p, s.X, true)
 	}
