@@ -72,3 +72,10 @@ Diagnose-Werte (Commit nach BS3.3): Insel-Bericht zeigt je Tiefe Ankunft, Burgfa
 - Gewählt: 4 (mitten im funktionierenden Bereich; die Grenze zwischen 5 und 6 ist scharf, ungeprüft für andere Seeds).
 - Danach neuer Engpass: Hub bleibt Stufe 1, in der Höhle 0 Kämpfer (das Heer bleibt im Wald), Gold 2–8 über Tage, kein Troll-König bis Tag 40. Mit Hilfen `voll` fällt der Endboss weiter an Tag 20.
 - Offene Hebel: Tageseinkommen oder Hub-Ausbaukosten (Werte, 🧑 entscheidet), oder der Bot wartet mit dem Abstieg, bis er in der Höhle bestehen kann.
+
+**Hebel „Abstieg abwarten“ probiert (2026-10-27, Claude, nur Bot, keine Werte):** Mit Mindestgold beim Abstieg (0, 12, 22, 30) bleibt der Ausgang gleich: Kämpfer 0 in der Höhle, Troll-König fällt nie. Das Gold ist beim Abstieg schon über 22 (Belohnung des Goblin-Anführers); das Heer bleibt ohnehin in der Wald-Stufe zurück, Warten stärkt die Höhle also nicht. Verworfen, nicht im Code.
+Die Ursache liegt in der Höhle (Messung Tag 7–16): Die Wellen (der Pool füllt sich durch die gesammelten Rohstoffe, alle 3–4 Tage) räumen Mauern, Türme und Bauern ab; mit 2 Gold je Morgen baut der Bot nur wieder auf, der Hub-Ausbau (4 Gold, 25 Stein, Stein ist da) kam nicht dazwischen. Zwei Bot-Korrekturen, im Code (Commit 99fdf123):
+- Ohne Bauern wirbt der Bot zuerst an (sonst blieben bezahlte Bauten im Zustand waitingWorker liegen).
+- Liegt der Hub-Ausbau bereit, zahlt er zuerst, und neue Bauten lassen die Rücklage für den Ausbau stehen.
+Wirkung: Hub-Stufe 2 in der Höhle ab etwa Tag 30 (vorher nie), Troll-König weiter nie; mit Hilfen `voll` fällt der Endboss unverändert an Tag 20.
+Offen (🧑): Die Höhle verlangt vom Bot mehr, als 2 Gold je Morgen hergeben. Hebel Werte (Tageseinkommen, Beute, Hub-Ausbau) oder eine schwächere Pool-Füllung der Höhle.
