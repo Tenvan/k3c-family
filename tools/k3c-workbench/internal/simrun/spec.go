@@ -25,6 +25,8 @@ type Spec struct {
 	Days    int      `json:"days,omitempty"`
 	// World (BS11, B-642): Welt-ID aus data/worlds; der Lauf spielt die ganze erste Insel statt einer Stufe.
 	World string `json:"world,omitempty"`
+	// Helps: Dev-Hilfen wie im Stufen-Test (hilfen, voll, boss), nur mit World.
+	Helps string `json:"helps,omitempty"`
 	Vary    []string `json:"vary,omitempty"` // datei.json:pfad.zum.wert=wert
 	Label   string   `json:"label,omitempty"`
 	Tune    *Tune    `json:"tune,omitempty"` // automatisches Balancing (WZ28.6), Ergebnis tuning-*.json
@@ -81,7 +83,17 @@ func (s Spec) Check() error {
 			return fmt.Errorf("lauf abgelehnt: vary %q, Form datei.json:pfad.zum.wert=wert", v)
 		}
 	}
-	return cmp.Or(s.checkWorld(), s.Tune.check())
+	return cmp.Or(s.checkWorld(), s.checkHelps(), s.Tune.check())
+}
+
+func (s Spec) checkHelps() error {
+	if s.Helps != "" && !slices.Contains(balance.HelpsNames(), s.Helps) {
+		return fmt.Errorf("lauf abgelehnt: helps: %s", strings.Join(balance.HelpsNames(), ", "))
+	}
+	if s.Helps != "" && s.World == "" {
+		return fmt.Errorf("lauf abgelehnt: helps braucht eine world")
+	}
+	return nil
 }
 
 func (s Spec) checkWorld() error {
@@ -157,7 +169,7 @@ func (s Spec) Title() string {
 	if s.Depth != nil {
 		parts = append(parts, "depth "+strconv.Itoa(*s.Depth))
 	}
-	for _, f := range []string{s.Bot, s.Grade, s.World} {
+	for _, f := range []string{s.Bot, s.Grade, s.World, s.Helps} {
 		if f != "" {
 			parts = append(parts, f)
 		}
@@ -197,6 +209,9 @@ func (s Spec) args(exe, dir string) []string {
 	}
 	if s.World != "" {
 		args = append(args, "--world", s.World)
+	}
+	if s.Helps != "" {
+		args = append(args, "--helps", s.Helps)
 	}
 	for _, v := range s.Vary {
 		args = append(args, "--vary", v)

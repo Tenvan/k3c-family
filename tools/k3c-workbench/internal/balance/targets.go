@@ -93,6 +93,9 @@ type Target struct {
 	Days    int      `json:"days"`
 	Grade   string   `json:"grade,omitempty"` // Schwierigkeitsgrad aus data/difficulty.json, leer = normal (BAL6)
 	World   string   `json:"world,omitempty"` // leer = eine Stufe der Tiefe Depth; sonst die ganze erste Insel der Welt (BS11)
+	Helps   string   `json:"helps,omitempty"` // Dev-Hilfen (helps.go), nur mit World
+	// Role (B-648): goal bestimmt Erfolg oder Misserfolg des Laufs, guard warnt bei Verletzung, info ist nur Diagnose; leer = goal.
+	Role    string   `json:"role,omitempty"`
 	Lower   *float64 `json:"lower"`
 	Upper   *float64 `json:"upper"`
 	Margin  *float64 `json:"margin,omitempty"` // Breite von „knapp“ statt des Standardwerts der Datei
@@ -105,7 +108,14 @@ func DefaultTargets() (*Targets, error) {
 	if err != nil {
 		return nil, err
 	}
-	return LoadTargets(raw)
+	t, err := LoadTargets(raw)
+	if err != nil {
+		return nil, err
+	}
+	if err := t.checkRoles(); err != nil {
+		return nil, fmt.Errorf("balance-targets: %w", err)
+	}
+	return t, nil
 }
 
 // LoadTargets liest und prüft eine Korridor-Datei.
@@ -140,7 +150,50 @@ func (t *Targets) validate() error {
 	return nil
 }
 
+// Rollen eines Ziels (B-648).
+const (
+	RoleGoal  = "goal"
+	RoleGuard = "guard"
+	RoleInfo  = "info"
+)
+
+// role liefert die Rolle; ohne Angabe gilt das Ziel als goal (ältere Dateien und Berichte).
+func (g Target) role() string {
+	if g.Role == "" {
+		return RoleGoal
+	}
+	return g.Role
+}
+
+// checkRoles verlangt in der Datei der Ziele eine gültige Rolle je Ziel und mindestens ein goal.
+func (t *Targets) checkRoles() error {
+	goals := 0
+	for i, g := range t.Targets {
+		switch g.Role {
+		case RoleGoal:
+			goals++
+		case RoleGuard, RoleInfo:
+		default:
+			return fmt.Errorf("ziel %d (%q): role %q, erlaubt: goal, guard, info", i+1, g.Name, g.Role)
+		}
+	}
+	if goals == 0 {
+		return fmt.Errorf("mindestens ein Ziel mit role goal nötig")
+	}
+	return nil
+}
+
+func (g Target) validateRole() error {
+	if g.Role != "" && g.Role != RoleGoal && g.Role != RoleGuard && g.Role != RoleInfo {
+		return fmt.Errorf("role %q, erlaubt: goal, guard, info", g.Role)
+	}
+	return checkHelps(g.Helps, g.World)
+}
+
 func (g Target) validate() error {
+	if err := g.validateRole(); err != nil {
+		return err
+	}
 	m, ok := measures[g.Measure]
 	switch {
 	case !ok:

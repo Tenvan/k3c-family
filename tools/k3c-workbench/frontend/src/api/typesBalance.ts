@@ -9,6 +9,8 @@ export interface BalanceSpec {
   grade?: string;
   /** Welt (BS11): spielt die ganze erste Insel statt einer Stufe; leer = eine Stufe. */
   world?: string;
+  /** Dev-Hilfen wie im Stufen-Test (hilfen, voll, boss), nur mit Welt; fehlt = keine. */
+  helps?: string;
   days?: number;
   vary?: string[];
   tune?: BalanceTune;

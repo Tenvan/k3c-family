@@ -20,6 +20,7 @@
 | `targets.*.players` | Ganzzahl | Spieler | Spielerzahl der Messung | 2 |
 | `targets.*.bot` | Text | – | Bot, der spielt | saver |
 | `targets.*.world` | Text | – | Optional (BS11): Welt-ID, z. B. `standard`; dann spielt der Lauf alle Tiefen der ersten Insel (Bots steigen ab und kämpfen), `depth` gilt nicht; leer = eine Stufe | `standard` |
+| `targets.*.role` | Text | – | Pflicht (B-648): `goal` bestimmt Erfolg oder Misserfolg des Laufs, `guard` warnt bei Verletzung (zählt zur Qualität), `info` ist nur Diagnose; „knapp“ gibt es nur bei `goal`. Im Insel-Lauf (`--world`) sind Ziele ohne Welt nur `guard` | `goal` |
 | `targets.*.depth` | Ganzzahl | Tiefe | Gemessene Stufe | 0 |
 | `targets.*.days` | Ganzzahl | Tage | Länge des Messlaufs | 5 |
 | `targets.*.lower` | Zahl | % bzw. Wert | Untergrenze des Korridors; null = keine | 75 bis 90 |

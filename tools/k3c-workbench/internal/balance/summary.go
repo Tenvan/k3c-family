@@ -23,7 +23,11 @@ type Summary struct {
 	Seeds      int      `json:"seeds"`
 	SeedMode   string   `json:"seedMode,omitempty"`  // dev, all oder auswahl (B-634); fehlt in älteren Berichten
 	SeedNames  []string `json:"seedNames,omitempty"` // die Seeds bei höchstens 5, sonst leer
+	// Pass: alle Ziele mit Rolle goal erreicht (B-648); ohne Rollen (alte Berichte) alle Ziele.
 	Pass       bool     `json:"pass"`
+	Goal       *GoalView    `json:"goal,omitempty"`     // Urteil über die Ziele (Rolle goal)
+	Quality    *QualityView `json:"quality,omitempty"`  // Korridore mit Rolle guard im Korridor
+	Progress   *Progress    `json:"progress,omitempty"` // Meilenstein-Leiter des Insel-Laufs
 	Targets    []Entry  `json:"targets"`
 	Varianten  []string `json:"varianten,omitempty"`  // Wert-Varianten des Laufs (datei.json:a.b.c=wert)
 	Kennzahlen *Figures `json:"kennzahlen,omitempty"` // FiguresOf des Laufs
@@ -50,12 +54,12 @@ func (t *Targets) RunTargetsProgress(n int, progress func(done, total int)) (Rep
 	var all []Scenario
 	done := map[Scenario]bool{}
 	for _, g := range t.Targets {
-		key := Scenario{Players: g.Players, Bot: g.Bot, Depth: g.Depth, Days: g.Days, Grade: g.Grade, World: g.World}
+		key := Scenario{Players: g.Players, Bot: g.Bot, Depth: g.Depth, Days: g.Days, Grade: g.Grade, World: g.World, Helps: g.Helps}
 		if done[key] {
 			continue
 		}
 		done[key] = true
-		m := Matrix{Seeds: seedList, Players: []int{g.Players}, Bots: []string{g.Bot}, Depths: []int{g.Depth}, Days: g.Days, Grade: g.Grade, World: g.World}
+		m := Matrix{Seeds: seedList, Players: []int{g.Players}, Bots: []string{g.Bot}, Depths: []int{g.Depth}, Days: g.Days, Grade: g.Grade, World: g.World, Helps: g.Helps}
 		sc, err := m.Scenarios()
 		if err != nil {
 			return Report{}, err
@@ -71,19 +75,54 @@ func (t *Targets) RunTargetsProgress(n int, progress func(done, total int)) (Rep
 
 // Summarize bewertet einen Bericht gegen die Ziele.
 func (t *Targets) Summarize(r Report) Summary {
-	s := Summary{Version: 1, Seeds: len(r.Matrix.Seeds), Pass: true}
+	s := Summary{Version: 1, Seeds: len(r.Matrix.Seeds)}
 	if len(t.Seeds) > 0 {
 		s.SeedMode = t.seedModeOf(r.Matrix.Seeds)
 	}
 	if len(r.Matrix.Seeds) <= 5 {
 		s.SeedNames = r.Matrix.Seeds
 	}
+	var goal GoalView
+	var quality QualityView
 	for _, v := range t.Evaluate(r) {
+		role := v.role()
+		if role != RoleGoal && v.Status == StatusNarrow {
+			v.Status = StatusOK // „knapp“ gibt es nur bei Zielen (B-648)
+		}
 		e := Entry{Verdict: v, Pass: v.Status == StatusOK || v.Status == StatusNarrow}
-		s.Pass = s.Pass && e.Pass
+		switch role {
+		case RoleGoal:
+			goal.Total++
+			if e.Pass {
+				goal.Hit++
+			}
+		case RoleGuard:
+			quality.Total++
+			if e.Pass {
+				quality.Passed++
+			}
+		}
 		s.Targets = append(s.Targets, e)
 	}
+	goal.Reached = goal.Hit == goal.Total
+	s.Pass, s.Goal = goal.Reached, &goal
+	if quality.Total > 0 {
+		s.Quality = &quality
+	}
+	if sc, ok := t.goalScenario(); ok {
+		s.Progress = progressOf(r, sc, r.Matrix.Seeds)
+	}
 	return s
+}
+
+// goalScenario ist das Szenario des ersten Ziels mit Rolle goal und Welt (Insel-Lauf).
+func (t *Targets) goalScenario() (Scenario, bool) {
+	for _, g := range t.Targets {
+		if g.World != "" && g.role() == RoleGoal {
+			return Scenario{Players: g.Players, Bot: g.Bot, Days: g.Days, Grade: g.Grade, World: g.World, Helps: g.Helps}, true
+		}
+	}
+	return Scenario{}, false
 }
 
 // JSON schreibt den Bericht eingerückt mit Zeilenende.
@@ -103,7 +142,7 @@ func ReadSummary(raw []byte) (Summary, error) {
 
 // targetKey unterscheidet Ziele auch bei gleichem Namen (Szenario gehört dazu).
 func (e Entry) targetKey() string {
-	return fmt.Sprintf("%s|%s|%d|%s|%d|%d|%s|%s", e.Measure, e.Name, e.Players, e.Bot, e.Depth, e.Days, e.Grade, e.World)
+	return fmt.Sprintf("%s|%s|%d|%s|%d|%d|%s|%s|%s", e.Measure, e.Name, e.Players, e.Bot, e.Depth, e.Days, e.Grade, e.World, e.Helps)
 }
 
 // Compare nennt die Ziele, deren Status sich gegenüber der Baseline geändert hat, in der Reihenfolge von cur
@@ -148,6 +187,12 @@ func (s Summary) MarkdownWith(base *Summary, in *Insights) string {
 	verdict := "Pass"
 	if !s.Pass {
 		verdict = "Fail"
+	}
+	if s.Goal != nil && s.Goal.Total > 0 {
+		verdict = "Ziel nicht erreicht"
+		if s.Goal.Reached {
+			verdict = "Ziel erreicht"
+		}
 	}
 	fmt.Fprintf(&b, "# Balancing-Bericht\n\nGesamt: **%s**, %s, Ziele nach `data/balance-targets.json`.\n\n", verdict, s.seedText())
 	if in != nil {

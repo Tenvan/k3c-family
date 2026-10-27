@@ -25,6 +25,8 @@ import (
 // alle Stufen voll ausgebaut, Dev-Bau Stufe 5), „boss“ (alles davor, schwacher Endboss und geheilter Monarch: der Nachweis ohne Spielregeln-Hilfen) oder „ohne“
 // (Grad normal, nichts geschenkt: der offene Meilenstein der Balance, Fehler gelten dort nur als Hinweis im Log).
 
+// Die Beispiele „Insel 1 solo …“ der Balancing-Seite (frontend/src/balancing/help.ts › EXAMPLES) bilden genau diese Konfigurationen
+// ab (Seed, Spieler, Bot, Tage, Hilfen); wer sie hier ändert, ändert dort mit.
 const fullgameDays = 40
 
 // fullgame spielt einen Bot, bis done wahr ist oder fullgameDays vorbei sind; den Stand liefert die Insel.
@@ -35,20 +37,13 @@ func fullgame(t *testing.T, done func(*sim.Island) bool) (isl *sim.Island, day i
 		mode = "voll" // Dev-Bau Stufe 5 und voller Vorrat, Endboss und Monarch unverändert (Begleitschutz und Skills, B-647 A und B)
 	}
 	helps = mode != "ohne"
-	grade := ""
+	sc := Scenario{Seed: "k3c-dev", Players: 1, Days: fullgameDays, World: "standard"}
 	if helps {
-		grade = "dev"
+		sc.Helps = mode // hilfen, voll oder boss (helps.go: dieselben Hilfen wie auf der Balancing-Seite)
 	}
-	isl, err := newIsland(Scenario{Seed: "k3c-dev", Players: 1, Days: fullgameDays, World: "standard", Grade: grade})
+	isl, err := newIsland(sc)
 	if err != nil {
 		t.Fatal(err)
-	}
-	if helps {
-		sim.DevSetCheapBuild(isl, true)
-		sim.DevFillStock(isl)
-		if mode == "voll" || mode == "boss" { // zusätzlich alle Stufen der Insel voll ausgebaut (Hub 5, Mauern, Türme)
-			sim.DevBuildAll(isl, 5)
-		}
 	}
 	bot := withBossFight(withDescent(wirtschaft, isl, deepestOf(isl)), isl, deepestOf(isl))
 	cmds := make([]sim.PlayerCommand, 1)
@@ -60,13 +55,7 @@ func fullgame(t *testing.T, done func(*sim.Island) bool) (isl *sim.Island, day i
 			}
 		}
 		sim.StepIsland(isl, cmds, 1.0/enginetools.TickHz)
-		if tick%enginetools.TickHz == 0 {
-			botLearn(isl)
-		}
-		if mode == "boss" {
-			weakenEndboss(isl)
-			healMonarchs(isl)
-		}
+		afterStep(isl, sc, tick, enginetools.TickHz)
 		if d := isl.Stages[0].Cycle.Day; d != last {
 			last = d
 			logFullgameDay(t, isl, d)
@@ -155,32 +144,4 @@ func logFullgameDay(t *testing.T, isl *sim.Island, day int) {
 		}
 	}
 	t.Log(line + " | Bosse " + strings.Join(isl.DefeatedBosses, ", "))
-}
-
-// weakenEndboss setzt den erschienenen Endboss auf 300 HP: Ohne das trifft ihn nur der Monarch (10 Schaden), er steht am Bau
-// außerhalb der Reichweite der Truppen (B-647). Prüft so den Rest der Kette: Sieg, Belohnung, Insel-Zustand.
-func weakenEndboss(isl *sim.Island) {
-	for _, w := range isl.Stages {
-		for _, e := range w.Enemies {
-			if e.Boss && e.MaxHP > 300 && !bossDownKind(e.Kind) {
-				e.HP, e.MaxHP = 300, 300
-			}
-		}
-	}
-}
-
-// bossDownKind: Miniboss-IDs bleiben unberührt (nur der Endboss wird abgeschwächt).
-func bossDownKind(kind string) bool { return miniBossKind[kind] }
-
-var miniBossKind = map[string]bool{"goblinLeader": true, "trollKing": true, "ratQueen": true, "shardTitan": true, "lavaGolem": true}
-
-// healMonarchs stellt die HP lebender Monarchen voll her (Dev-Hilfe ohne Skills, B-647 Weg D).
-func healMonarchs(isl *sim.Island) {
-	for _, w := range isl.Stages {
-		for _, p := range w.Players {
-			if p.HP > 0 {
-				p.HP = p.MaxHP
-			}
-		}
-	}
 }

@@ -14,6 +14,8 @@ type Scope struct {
 	// World (BS11): jedes Ziel spielt die ganze erste Insel dieser Welt; ohne World entfallen bei einer Einschränkung
 	// die Ziele mit world (Erkundung der Einzelstufe).
 	World string
+	// Helps: Dev-Hilfen der Insel-Läufe (helps.go), nur mit World.
+	Helps string
 }
 
 // Restrict liefert eine Kopie der Ziele mit dem Szenario aus s; ein ungültiges Szenario oder ein unbekannter Grad ist
@@ -27,6 +29,7 @@ func (t *Targets) Restrict(s Scope) (*Targets, error) {
 	}
 	for i := range out.Targets {
 		g := &out.Targets[i]
+		wasIsland := g.World != ""
 		setIf(&g.Depth, s.Depth)
 		setIf(&g.Players, s.Players)
 		setIf(&g.Days, s.Days)
@@ -38,6 +41,12 @@ func (t *Targets) Restrict(s Scope) (*Targets, error) {
 		}
 		if s.World != "" {
 			g.World = s.World
+			if !wasIsland && g.role() == RoleGoal {
+				g.Role = RoleGuard // im Insel-Lauf ist nur das Ziel der Insel (Endboss) das Ziel (B-648)
+			}
+		}
+		if s.Helps != "" {
+			g.Helps = s.Helps
 		}
 		if err := g.validate(); err != nil {
 			return nil, fmt.Errorf("szenario: %w", err)

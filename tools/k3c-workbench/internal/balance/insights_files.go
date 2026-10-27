@@ -23,6 +23,13 @@ func WriteReports(stem string, s Summary, base *Summary, baseName, root string) 
 		return err
 	}
 	in := BuildInsights(s, base, h, MetaOf(stem, baseName))
+	if prev, name := findPrevious(stem, s); prev != nil {
+		markArrows(in.Progress, prev.Progress)
+		in.Previous = name
+	}
+	if err := writeResult(stem, in); err != nil {
+		return err
+	}
 	if err := os.WriteFile(stem+".md", []byte(s.MarkdownWith(base, &in)), 0o644); err != nil {
 		return err
 	}

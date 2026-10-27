@@ -28,6 +28,7 @@ type targetOpts struct {
 	bot      string
 	grade    string
 	world    string
+	helps    string
 	progress bool
 	insights string // vorhandener balance-*.json: Auswertung (.md, .html) neu schreiben (B-632)
 }
@@ -41,6 +42,7 @@ func (o *targetOpts) register(fs *flag.FlagSet) {
 	fs.StringVar(&o.bot, "bot", "", "nur mit --targets: Bot aller Zielläufe statt des Ziel-Bots")
 	fs.StringVar(&o.grade, "grade", "", "nur mit --targets: Schwierigkeitsgrad aller Zielläufe (leer = normal)")
 	fs.StringVar(&o.world, "world", "", "nur mit --targets: Welt aller Zielläufe, z. B. standard; die Läufe spielen die ganze erste Insel (BS11)")
+	fs.StringVar(&o.helps, "helps", "", "nur mit --targets und --world: Dev-Hilfen wie im Stufen-Test: hilfen, voll oder boss (leer = keine)")
 	fs.BoolVar(&o.progress, "progress", false, "nur mit --targets: nach jedem Lauf PROGRESS <fertig>/<gesamt> auf stdout")
 	fs.StringVar(&o.insights, "insights", "", "vorhandenen Bericht balance-<Zeit>.json auswerten: .md und .html daneben neu schreiben (Baseline: "+balance.BaselinePath+")")
 }
@@ -70,7 +72,7 @@ func (o *targetOpts) seedsFrom(fs *flag.FlagSet, n int, list string) error {
 // scopeFrom setzt das Szenario der Zielläufe aus den gesetzten Flags --depth, --players, --days, --bot, --grade
 // (--players und --days gelten ohne --targets weiter für die Matrix).
 func (o *targetOpts) scopeFrom(fs *flag.FlagSet, players string, days int) error {
-	o.scope = balance.Scope{Bot: o.bot, Grade: o.grade, World: o.world}
+	o.scope = balance.Scope{Bot: o.bot, Grade: o.grade, World: o.world, Helps: o.helps}
 	if isSet(fs, "depth") {
 		o.scope.Depth = &o.depth
 	}

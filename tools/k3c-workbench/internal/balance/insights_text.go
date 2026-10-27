@@ -55,12 +55,20 @@ func cmpFloat(a, b float64) int {
 
 func summary(in Insights) []string {
 	c := in.Counts
-	verdict := "der Lauf besteht"
-	if !in.Pass {
-		verdict = "der Lauf besteht nicht"
+	var out []string
+	verdict := ""
+	if in.Goal != nil {
+		out = append(out, in.GoalText)
+		if in.Progress != nil && in.Progress.Blocker != "" {
+			out = append(out, in.Progress.Blocker)
+		}
+	} else if in.Pass {
+		verdict = ": der Lauf besteht"
+	} else {
+		verdict = ": der Lauf besteht nicht"
 	}
-	out := []string{fmt.Sprintf("%d von %d Zielen verletzt, %d knapp, %d im Korridor%s: %s.", c[LightRed], len(in.Targets),
-		c[LightYellow], c[LightGreen], invalidText(c[LightGrey]), verdict)}
+	out = append(out, fmt.Sprintf("%d von %d Zielen verletzt, %d knapp, %d im Korridor%s%s.", c[LightRed], len(in.Targets),
+		c[LightYellow], c[LightGreen], invalidText(c[LightGrey]), verdict))
 	if s := castleSentence(in); s != "" {
 		out = append(out, s)
 	}
@@ -78,7 +86,7 @@ func summary(in Insights) []string {
 	if in.Baseline.Present {
 		out = append(out, baselineSentence(in.Baseline))
 	}
-	return out[:min(6, len(out))]
+	return out[:min(7, len(out))]
 }
 
 func invalidText(n int) string {

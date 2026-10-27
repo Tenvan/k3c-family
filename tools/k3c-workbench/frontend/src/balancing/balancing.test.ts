@@ -27,6 +27,13 @@ describe('Spec aus dem Formular', () => {
     expect(formFromSpec({ world: 'standard' }).world).toBe('standard');
   });
 
+  it('nimmt die Hilfen des Stufen-Tests mit (helps)', () => {
+    const form = { ...EMPTY_FORM, world: 'standard', helps: 'voll' };
+    expect(specFromForm(form).spec).toEqual({ world: 'standard', helps: 'voll' });
+    expect(formFromSpec({ world: 'standard', helps: 'boss' }).helps).toBe('boss');
+    expect(formFromSpec({}).helps).toBe('');
+  });
+
   it('formFromSpec ist die Umkehrung', () => {
     const form = { ...EMPTY_FORM, seeds: '3', depth: '0', vary: 'a.json:x=1', label: 'L' };
     expect(formFromSpec(specFromForm(form).spec)).toEqual(form);

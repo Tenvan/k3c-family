@@ -208,3 +208,20 @@ Die Ankunft in der Höhle bis Tag 5 aus § 1 misst derselbe Lauf (`caveBeforeDay
 | M4 | BS6 | Client fertig, alle Seeds | Baseline M3, keine Gruppe kippt |
 
 **Schiff (B-638):** Korridor „Schiff fertig“ (Startwert): zwischen **2 Tage vor und 1 Tag nach** dem Sieg über den Endboss. Bis zum Schiffsbau (BS5) misst der Bericht nur, ab wann die Bots jeden Abschnitt hätten bezahlen können (Bedarf gegen Bestand, BS3.3); danach den Bau-Tag je Abschnitt (BS9).
+
+## 7. Rahmenregeln für Berichte (B-648)
+
+**Beschlossen von 🧑 (Ralf) am 2026-10-27 im Interview.** Quelle der Regeln; umgesetzt in `tools/k3c-workbench/internal/balance`
+(`progress.go`, `insights_progress.go`), geprüft in `progress_test.go`.
+
+1. **Zwei Urteile.** „Ziel erreicht ja/nein“ (alle Ziele mit Rolle `goal`) und „Qualität x von y Korridoren“ (Rolle `guard`). Nur das Ziel färbt den Lauf grün oder rot und setzt `pass`; ohne Ziel (keine Rolle `goal` in der Auswahl) gibt es kein Urteil.
+2. **Rollen** je Ziel in `data/balance-targets.json` (`role`, Pflicht): `goal`, `guard`, `info`. Im Insel-Lauf (`--world`) sind die Ziele der Einzelstufen nur `guard`; das Ziel der Insel ist der Endboss (`endbossDefeated`, `endbossDay`).
+3. **Meilenstein-Leiter** der ersten Insel der Welt: Stufe erreicht, Miniboss besiegt, Endboss besiegt, je Meilenstein Seeds (erreicht/gespielt) und Median-Tag.
+4. **Vergleich** mit dem letzten Lauf gleicher Konfiguration (Konfiguration, Seeds, Varianten) als Pfeil ▲ besser, ▼ schlechter, = gleich; die feste Baseline bleibt für die CI.
+5. **Blocker-Satz:** Wo der erste Lauf ohne Endboss stecken blieb, mit Hub, Kämpfern und Gold zu Tagesbeginn.
+6. **Aufbau:** Ergebnis, Leiter, Blocker; danach Kurzauswertung, Ziele und Kennzahlen (Diagnose, im HTML einklappbar).
+7. **Agenten-Format:** `result.json` neben dem Bericht (`goalReached`, `goal`, `quality`, `config`, `testMatch`, `milestones`, `blocker`, `previous`, `nextLever`).
+8. **Knapp** gibt es nur bei `goal`; ein `guard` zeigt ok oder verletzt.
+9. **Konfiguration** im Kopf mit der Entsprechung zum Stufen-Test (`fullgame_test.go`: Seed `k3c-dev`, 1 Spieler, Bot `wirtschaft`, 40 Tage, Hilfen `hilfen`/`voll`/`boss` oder ohne) oder der Abweichung.
+10. **Mehrere Seeds:** Quote je Meilenstein; Erfolg des Ziels wie bisher über den Korridor des Ziels.
+11. **Hilfen:** Das Urteil nennt die Hilfe-Stufe. Ohne Hilfen gilt ein verfehltes Ziel als Fortschritt gegen den offenen Meilenstein (B-645), nicht als Regression. Offen: ab wann ohne Hilfen ein Fehler ist (🧑).

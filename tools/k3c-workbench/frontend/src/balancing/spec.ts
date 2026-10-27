@@ -10,6 +10,8 @@ export interface BalanceForm {
   grade: string;
   /** Welt aus data/worlds (BS11): ganze Insel 1 statt einer Stufe; leer = eine Stufe. */
   world: string;
+  /** Dev-Hilfen (hilfen, voll, boss), nur mit Welt; leer = keine. */
+  helps: string;
   days: string;
   /** Eine Variante je Zeile: `datei.json:pfad.zum.wert=wert`. */
   vary: string;
@@ -17,7 +19,7 @@ export interface BalanceForm {
   tune: TuneForm;
 }
 
-export const EMPTY_FORM: BalanceForm = { seeds: '', depth: '', players: '', bot: '', grade: '', world: '', days: '', vary: '', label: '', tune: EMPTY_TUNE };
+export const EMPTY_FORM: BalanceForm = { seeds: '', depth: '', players: '', bot: '', grade: '', world: '', helps: '', days: '', vary: '', label: '', tune: EMPTY_TUNE };
 
 /** Gleiche Form wie in Go (simrun/spec.go: varyArg). */
 const VARY = /^[A-Za-z0-9_-]+\.json:[A-Za-z0-9_.[\]-]+=[^\s=]{1,64}$/;
@@ -39,7 +41,7 @@ export function specFromForm(form: BalanceForm): SpecResult {
     if (!Number.isInteger(n) || n < min) return { error: `${label}: ganze Zahl ab ${min} erwartet` };
     spec[key] = n;
   }
-  for (const key of ['bot', 'grade', 'world', 'label'] as const) {
+  for (const key of ['bot', 'grade', 'world', 'helps', 'label'] as const) {
     const raw = (form[key] ?? '').trim(); // alte Voreinstellungen kennen `world` nicht
     if (raw !== '') spec[key] = raw;
   }
@@ -58,7 +60,7 @@ export function formFromSpec(spec: BalanceSpec | undefined): BalanceForm {
   const s = spec ?? {};
   const text = (v: number | string | undefined) => (v === undefined ? '' : String(v));
   return {
-    seeds: text(s.seeds), depth: text(s.depth), players: text(s.players), bot: s.bot ?? '', grade: s.grade ?? '', world: s.world ?? '', days: text(s.days),
+    seeds: text(s.seeds), depth: text(s.depth), players: text(s.players), bot: s.bot ?? '', grade: s.grade ?? '', world: s.world ?? '', helps: s.helps ?? '', days: text(s.days),
     vary: (s.vary ?? []).join('\n'), label: s.label ?? '', tune: formFromTune(s.tune),
   };
 }
@@ -74,7 +76,7 @@ export function isPresetList(v: unknown): v is Preset[] {
     Array.isArray(v) &&
     v.every((p) => {
       const x = p as Preset | null;
-      return !!x && typeof x.name === 'string' && !!x.form && Object.keys(EMPTY_FORM).every((k) => (k === 'tune' ? typeof x.form.tune === 'object' && x.form.tune !== null : k === 'world' ? x.form.world === undefined || typeof x.form.world === 'string' : typeof x.form[k as keyof BalanceForm] === 'string'));
+      return !!x && typeof x.name === 'string' && !!x.form && Object.keys(EMPTY_FORM).every((k) => (k === 'tune' ? typeof x.form.tune === 'object' && x.form.tune !== null : k === 'world' || k === 'helps' ? x.form[k] === undefined || typeof x.form[k] === 'string' : typeof x.form[k as keyof BalanceForm] === 'string'));
     })
   );
 }

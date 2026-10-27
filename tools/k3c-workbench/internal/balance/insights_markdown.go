@@ -25,6 +25,7 @@ func (s Summary) Insights(base *Summary, m Meta) (Insights, error) {
 // Markdown schreibt die Auswertung: Kurzauswertung, Ampeln, Stärken und Schwächen, Hinweise, nächster Lauf, Kennzahlen.
 func (in Insights) Markdown() string {
 	var b strings.Builder
+	in.ladderMarkdown(&b)
 	b.WriteString("## Kurzauswertung\n\n")
 	bullets(&b, in.Summary, "")
 	fmt.Fprintf(&b, "\n## Ampeln\n\n🟢 %d gut · 🟡 %d knapp · 🔴 %d verletzt · ⚪ %d ungültig\n\n",

@@ -37,12 +37,17 @@ func (t *Targets) Evaluate(r Report) []Verdict {
 	return out
 }
 
+// runs sagt, ob der Lauf zum Szenario des Ziels gehört (ohne Seed).
+func (g Target) runs(res Result) bool {
+	return res.Players == g.Players && res.Bot == g.Bot && res.Depth == g.Depth && res.Days == g.Days && res.Grade == g.Grade && res.World == g.World && res.Helps == g.Helps
+}
+
 func (g Target) evaluate(t *Targets, results []Result) Verdict {
 	v := Verdict{Target: g}
 	var vals []float64
 	var owner []string // Seed zu jedem Wert
 	for _, res := range results {
-		if res.Players != g.Players || res.Bot != g.Bot || res.Depth != g.Depth || res.Days != g.Days || res.Grade != g.Grade || res.World != g.World || !slices.Contains(t.Seeds, res.Seed) {
+		if !g.runs(res) || !slices.Contains(t.Seeds, res.Seed) {
 			continue
 		}
 		if !res.Valid || res.Metrics == nil {

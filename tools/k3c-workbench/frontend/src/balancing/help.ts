@@ -5,7 +5,7 @@ import { EMPTY_TUNE, type TuneForm } from './tune';
 // ausführliche Hilfe (Markdown) für das Popup; dazu Beispiel-Läufe zum Übernehmen. Die Beschreibungen der Dateien in
 // data/ stehen nicht hier, sondern in docs/data/*.md (Popup der Datei-Liste).
 
-export type HelpKey = 'seeds' | 'depth' | 'players' | 'bot' | 'grade' | 'world' | 'days' | 'vary' | 'label' | 'mode' | 'params' | 'steps' | 'budget';
+export type HelpKey = 'seeds' | 'depth' | 'players' | 'bot' | 'grade' | 'world' | 'helps' | 'days' | 'vary' | 'label' | 'mode' | 'params' | 'steps' | 'budget';
 
 export interface FieldHelp {
   label: string;
@@ -18,7 +18,7 @@ export interface FieldHelp {
 const TARGETS = 'Die Ziele (Zielkorridore) stehen in `data/balance-targets.json` (Beschreibung: Liste „Konfigurationsdateien“).';
 
 /** Felder mit Auswahlbox: Hilfetext nur im Popup. */
-export const SELECT_HELP: readonly HelpKey[] = ['depth', 'players', 'bot', 'grade', 'world', 'mode'];
+export const SELECT_HELP: readonly HelpKey[] = ['depth', 'players', 'bot', 'grade', 'world', 'helps', 'mode'];
 
 export const FIELD_HELP: Record<HelpKey, FieldHelp> = {
   seeds: {
@@ -45,6 +45,11 @@ export const FIELD_HELP: Record<HelpKey, FieldHelp> = {
     label: 'Welt',
     hint: 'Ganze Insel 1 statt einer Stufe.',
     help: 'Mit einer **Welt** spielt jeder Lauf die ganze erste Insel (alle Tiefen) statt einer einzelnen Stufe (BS11, B-642).\n\n- Werte: Welt-Dateien aus `data/worlds/` (heute `standard`: Wald, Höhle, Mine, Eisenstollen, Kristallhöhle).\n- Leer: eine Stufe in der Tiefe des Ziels (wie bisher).\n- Bots steigen ab, sobald der Miniboss ihrer Stufe besiegt ist, bauen auf jeder Stufe auf und kämpfen am Ende gegen den Endboss (Begleitschutz der Truppen); mit mehreren Spielern steigen nur Spieler 2, 4 … ab.\n- Der Bericht zeigt je Tiefe Ankunft, Burgfall, gefallene Monarchen, Hub-Stufe und Kämpfer, je Boss Erscheinen und Sieg, den Endboss und „Schiff bezahlbar ab Tag“.\n- Ein Lauf dauert Minuten (40 Tage ≈ 1–4 min je Seed). Mit der Welt gelten **alle** Ziele für die Insel; für den Meilenstein Bot `wirtschaft`, 1 Spieler, 40 Tage wählen.',
+  },
+  helps: {
+    label: 'Hilfen',
+    hint: 'Dev-Hilfen wie im Stufen-Test (nur mit Welt); leer = keine.',
+    help: 'Die **Hilfen** schalten dieselben Dev-Hilfen ein wie der Stufen-Test `task balance:fullgame` (BS3.4). Ohne Hilfen läuft der offene Meilenstein der Balance: Grad normal, nichts geschenkt.\n\n- `hilfen`: Grad `dev` (falls keiner gewählt), Dev-Baukosten, voller Insel-Vorrat.\n- `voll`: zusätzlich alle Stufen voll ausgebaut (Hub 5, Mauern, Türme). Standard des Stufen-Tests.\n- `boss`: zusätzlich Endboss mit 300 HP und jeden Tick geheilte Monarchen (Nachweis der Kette bis zum Sieg).\n- Nur mit **Welt**; ohne Welt lehnt der Lauf ab.\n- Leer: keine Hilfen. Erst dann sagt der Lauf etwas über die echte Balance.',
   },
   grade: {
     label: 'Grad',
@@ -93,6 +98,8 @@ export const BOTS = ['passive', 'saver', 'walls', 'economy', 'wirtschaft', 'coop
 export const GRADES = ['dev', 'easy', 'normal', 'hard', 'ultra'] as const;
 /** Welten wie in Go (balance.Worlds, data/worlds/*.json). */
 export const WORLDS = ['standard'] as const;
+/** Hilfen wie in Go (balance.HelpsNames). */
+export const HELPS = ['hilfen', 'voll', 'boss'] as const;
 
 /** Bot je Spieler (WZ28.12, B-611): Profile mit `+` verbunden, Spieler 1 zuerst; ohne coop2/coop4. */
 export const PER_PLAYER = 'je-spieler';
@@ -117,6 +124,7 @@ export const CHOICES = {
   players: [{ value: '', label: 'Ziel (je Ziel)' }, ...['1', '2', '3', '4'].map((n) => ({ value: n, label: n }))],
   bot: [{ value: '', label: 'Ziel (je Ziel)' }, ...BOTS.map((b) => ({ value: b, label: b })), { value: PER_PLAYER, label: 'je Spieler …' }],
   grade: [{ value: '', label: 'normal (Vorgabe)' }, ...GRADES.map((g) => ({ value: g, label: g }))],
+  helps: [{ value: '', label: 'keine (Vorgabe)' }, ...HELPS.map((x) => ({ value: x, label: x }))],
   world: [{ value: '', label: 'Einzelstufe (je Ziel)' }, ...WORLDS.map((w) => ({ value: w, label: `${w} · ganze Insel 1` }))],
 };
 
@@ -128,9 +136,12 @@ export interface Example {
 }
 
 export const EXAMPLES: Example[] = [
-  { name: 'Insel 1 komplett, ein Bot', text: 'Single-Player-Meilenstein (BS3.4): Bot wirtschaft spielt die ganze Insel 1, 40 Tage, nur der erste Seed (k3c-dev). Dauer 1–4 min.', form: { seeds: '1', players: '1', bot: 'wirtschaft', world: 'standard', days: '40', label: 'Insel 1 solo' } },
-  { name: 'Insel 1 komplett, coop2', text: 'Meilenstein-Lauf (BS3.4): coop2 mit 2 Spielern auf der ganzen Insel 1, 40 Tage.', form: { seeds: '1', players: '2', bot: 'coop2', world: 'standard', days: '40', label: 'Insel 1 coop2' } },
-  { name: 'Insel 1, Startgold hoch', text: 'Ein Bot auf Insel 1 mit Startgold und Beutel 500: zeigt, wie viel die Münzskala bremst.', form: { seeds: '1', players: '1', bot: 'wirtschaft', world: 'standard', days: '40', vary: 'economy.json:purse.startGold=500\neconomy.json:purse.maxGold=500', label: 'Insel 1 reich' } },
+  { name: 'Insel 1 solo (Stufen-Test 1–4, voll)', text: 'Gleiche Konfiguration wie `task balance:fullgame` (fullgame_test.go): Seed k3c-dev, 1 Spieler, Bot wirtschaft, 40 Tage, Hilfen voll (Standard des Tests). Der Test bricht je Stufe beim Ziel ab (1 Goblin-Anführer, 2 tiefste Stufe, 3 alle Minibosse, 4 Endboss); der Lauf hier spielt bis Tag 40 und zeigt Endboss-Sieg an Tag 19.', form: { seeds: '1', players: '1', bot: 'wirtschaft', world: 'standard', helps: 'voll', days: '40', label: 'Insel 1 solo' } },
+  { name: 'Insel 1 solo, Hilfen (Stufen-Test hilfen)', text: 'Gleiche Konfiguration wie `task balance:fullgame` (fullgame_test.go): Seed k3c-dev, 1 Spieler, Bot wirtschaft, 40 Tage, Hilfen hilfen (Grad dev, Dev-Baukosten, Vorrat; K3C_FULLGAME=hilfen).', form: { seeds: '1', players: '1', bot: 'wirtschaft', world: 'standard', helps: 'hilfen', days: '40', label: 'Insel 1 hilfen' } },
+  { name: 'Insel 1 solo, Endboss schwach (Stufen-Test boss)', text: 'Gleiche Konfiguration wie `task balance:fullgame` (fullgame_test.go): Seed k3c-dev, 1 Spieler, Bot wirtschaft, 40 Tage, Hilfen boss (voll plus Endboss 300 HP, Monarch geheilt; K3C_FULLGAME=boss).', form: { seeds: '1', players: '1', bot: 'wirtschaft', world: 'standard', helps: 'boss', days: '40', label: 'Insel 1 boss' } },
+  { name: 'Insel 1 solo ohne Hilfen (Stufen-Test ohne)', text: 'Gleiche Konfiguration wie `task balance:fullgame` (fullgame_test.go): Seed k3c-dev, 1 Spieler, Bot wirtschaft, 40 Tage, keine Hilfen (K3C_FULLGAME=ohne): der offene Meilenstein B-645, schlägt heute fehl.', form: { seeds: '1', players: '1', bot: 'wirtschaft', world: 'standard', days: '40', label: 'Insel 1 ohne Hilfen' } },
+  { name: 'Insel 1 komplett, coop2', text: 'Wie „Insel 1 solo“ (Hilfen voll, Seed k3c-dev, 40 Tage), aber coop2 mit 2 Spielern. Ohne Hilfen: Hilfen leeren.', form: { seeds: '1', players: '2', bot: 'coop2', world: 'standard', helps: 'voll', days: '40', label: 'Insel 1 coop2' } },
+  { name: 'Insel 1, Startgold hoch', text: 'Wie „Insel 1 solo“ (Hilfen voll), dazu Startgold und Beutel 500: zeigt, wie viel die Münzskala bremst. Zum Vergleich mit Hilfen leer starten.', form: { seeds: '1', players: '1', bot: 'wirtschaft', world: 'standard', helps: 'voll', days: '40', vary: 'economy.json:purse.startGold=500\neconomy.json:purse.maxGold=500', label: 'Insel 1 reich' } },
   { name: 'Schneller Überblick', text: '20 Seeds im Wald mit den Zielen, Bot saver.', form: { seeds: '20', depth: '0', label: 'Überblick Wald' } },
   { name: 'Startgold variieren', text: 'Gleicher Lauf mit 120 statt 100 Startgold; danach mit dem Überblick als Vergleichsbasis vergleichen.', form: { seeds: '20', depth: '0', vary: 'economy.json:purse.startGold=120', label: 'Startgold 120' } },
   { name: 'Höhle, hart', text: '20 Seeds in Tiefe 1 mit Grad hard.', form: { seeds: '20', depth: '1', grade: 'hard', label: 'Höhle hart' } },

@@ -19,7 +19,11 @@ type balanceSummary struct {
 	Seeds     int      `json:"seeds"`
 	Pass      bool     `json:"pass"`
 	Varianten []string `json:"varianten"`
+	Goal      *balance.GoalView    `json:"goal"`
+	Quality   *balance.QualityView `json:"quality"`
+	Progress  *balance.Progress    `json:"progress"`
 	Targets   []struct {
+		Role  string   `json:"role"`
 		Name  string   `json:"name"`
 		Kind  string   `json:"kind"`
 		Value *float64 `json:"value"`
@@ -111,6 +115,30 @@ func insightLines(file string) []string {
 	return out
 }
 
+// progressLines: Urteil über das Ziel, Qualität, erreichte Meilensteine und Blocker (B-648).
+func (b balanceSummary) progressLines() []string {
+	var out []string
+	if b.Goal != nil && b.Goal.Total > 0 {
+		out = append(out, fmt.Sprintf("Ziel %s (%d von %d)", map[bool]string{true: "erreicht", false: "nicht erreicht"}[b.Goal.Reached], b.Goal.Hit, b.Goal.Total))
+	}
+	if b.Quality != nil {
+		out = append(out, fmt.Sprintf("Qualität %d von %d Korridoren", b.Quality.Passed, b.Quality.Total))
+	}
+	if p := b.Progress; p != nil {
+		done := 0
+		for _, r := range p.Ladder {
+			if r.Reached == r.Runs && r.Runs > 0 {
+				done++
+			}
+		}
+		out = append(out, fmt.Sprintf("Meilensteine %d von %d in allen Seeds; %s", done, len(p.Ladder), p.TestMatch))
+		if p.Blocker != "" {
+			out = append(out, p.Blocker)
+		}
+	}
+	return out
+}
+
 func (b balanceSummary) verdict() string {
 	if b.Pass {
 		return "Pass"
@@ -121,6 +149,7 @@ func (b balanceSummary) verdict() string {
 // lines: eine Zeile je Ziel, z. B. „Fail Burg hält Nacht 1–5: 4 % (75–90 %)“.
 func (b balanceSummary) lines() []string {
 	out := []string{fmt.Sprintf("%d Seeds", b.Seeds)}
+	out = append(out, b.progressLines()...)
 	for _, t := range b.Targets {
 		unit := ""
 		if t.Kind == "share" {
@@ -129,6 +158,8 @@ func (b balanceSummary) lines() []string {
 		mark := "Fail"
 		if t.Pass {
 			mark = "Pass"
+		} else if t.Role == "guard" || t.Role == "info" {
+			mark = "Warn" // nur Ziele (goal) lassen den Lauf scheitern (B-648)
 		}
 		out = append(out, fmt.Sprintf("%s %s: %s%s (%s)", mark, t.Name, num(t.Value), unit, bounds(t.Lower, t.Upper, unit)))
 	}

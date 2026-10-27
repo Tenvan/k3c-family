@@ -81,11 +81,38 @@ function renderHead() {
   $('sub').textContent = [R.run, R.generated, R.seeds + ' Seeds', (R.varianten || []).length ? 'Varianten: ' + R.varianten.join(', ') : '']
     .filter(Boolean).join(' · ');
   const v = $('verdict');
-  v.textContent = R.pass ? '✔ bestanden' : '✖ nicht bestanden';
+  const goal = R.goal && R.goal.total > 0 ? R.goal : null;
+  v.textContent = goal ? (goal.reached ? '✔ Ziel erreicht' : '✖ Ziel nicht erreicht') : (R.pass ? '✔ bestanden' : '✖ nicht bestanden');
   v.className = 'verdict ' + (R.pass ? 'pass' : 'fail');
+  renderResult();
   const ul = $('summary');
   for (const s of R.summary || []) ul.append(el('li', {}, s));
   $('foot').textContent = 'Erzeugt von k3c-workbench (B-632) · Richtwerte: data/balance-hints.json · Korridore: data/balance-targets.json';
+}
+
+// Ergebnis, Meilenstein-Leiter und Blocker (B-648): steht oben, die Diagnose darunter.
+function renderResult() {
+  if (!R.goal) return;
+  $('result').hidden = false;
+  $('goal').textContent = (R.goal.reached ? '✅ ' : '❌ ') + (R.goalText || '');
+  if (R.quality) $('quality').textContent = 'Qualität: ' + R.quality.passed + ' von ' + R.quality.total + ' Korridoren im Korridor.';
+  const p = R.progress;
+  if (!p) return;
+  const c = p.config;
+  $('cfg').textContent = 'Konfiguration: Welt ' + c.world + ' · Bot ' + c.bot + ' · ' + c.players + ' Spieler · ' + c.days + ' Tage' +
+    (c.grade ? ' · Grad ' + c.grade : '') + (c.helps ? ' · Hilfen ' + c.helps : '') + ' – ' + p.testMatch + '.';
+  const tbl = $('ladder');
+  tbl.append(el('thead', {}, el('tr', {}, ['', 'Meilenstein', 'Seeds', 'Median-Tag'].map((h) => el('th', {}, h)))));
+  const body = el('tbody');
+  for (const r of p.ladder) {
+    const done = r.runs > 0 && r.reached === r.runs;
+    body.append(el('tr', { class: done ? 'done' : (r.reached ? 'part' : 'open') },
+      el('td', { class: 'arrow' }, r.arrow || '·'), el('td', {}, (done ? '✔ ' : r.reached ? '◐ ' : '○ ') + r.label),
+      el('td', { class: 'num' }, r.reached + '/' + r.runs), el('td', { class: 'num' }, r.medianDay == null ? '–' : 'Tag ' + r.medianDay)));
+  }
+  tbl.append(body);
+  if (R.previous) $('ladder-note').textContent = 'Pfeile (▲ besser, ▼ schlechter, = gleich) gegen den letzten Lauf gleicher Konfiguration: ' + R.previous;
+  if (p.blocker) $('blocker').textContent = 'Blocker: ' + p.blocker;
 }
 
 function renderLights() {

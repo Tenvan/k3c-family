@@ -3,6 +3,7 @@ package balance
 import (
 	"fmt"
 	"math"
+	"slices"
 )
 
 // Auswertung eines Balancing-Berichts ohne KI (B-632): Ampel je Ziel und Kennzahl, Stärken, Schwächen,
@@ -34,6 +35,12 @@ type Insights struct {
 	Next       NextRun         `json:"next"`
 	Baseline   BaselineView    `json:"baseline"`
 	Varianten  []string        `json:"varianten"`
+	// B-648: Urteil über das Ziel, Qualität der Korridore, Spielfortschritt (Leiter mit Pfeilen) und der Lauf, mit dem verglichen wurde.
+	Goal     *GoalView    `json:"goal"`
+	Quality  *QualityView `json:"quality"`
+	Progress *Progress    `json:"progress"`
+	Previous string       `json:"previous"`
+	GoalText string       `json:"goalText"`
 }
 
 // TargetInsight ist ein Ziel mit Ampel. Distance: Abstand zur nächsten Grenze in % der Korridorbreite, positiv im
@@ -105,6 +112,13 @@ func BuildInsights(s Summary, base *Summary, h *Hints, m Meta) Insights {
 	in.Figures = figureInsights(s.Kennzahlen, h)
 	in.Baseline = baselineView(s, base, m.Baseline)
 	in.Strengths, in.Weaknesses = strengths(in), weaknesses(in)
+	in.Goal, in.Quality = s.Goal, s.Quality
+	if s.Progress != nil {
+		p := *s.Progress
+		p.Ladder = slices.Clone(p.Ladder)
+		in.Progress = &p
+	}
+	in.GoalText = goalText(in)
 	in.Hints = hints(in)
 	in.Next = nextRun(in, s)
 	in.Summary = summary(in)
