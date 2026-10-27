@@ -15,6 +15,7 @@ import (
 const (
 	retreatHP   = 0.35 // darunter zieht sich der Bot zur Burg zurück
 	fightHP     = 0.7  // ab diesem Anteil geht er zum Bau des Endbosses
+	bossHubRange = 40.0 // so nah am Hub gilt ein Boss als Verteidigungsfall, weiter weg geht der Bot nur mit Heer hin
 	strikeRange = 1.4  // etwas unter monarch.json › attack.range (1,5): der Schlag trifft sicher
 )
 
@@ -35,13 +36,10 @@ func withBossFight(inner Bot, isl *sim.Island, deepest int) Bot {
 // fightX: der Ort, zu dem der Bot zum Kampf läuft: ein lebender Boss der Stufe, sonst der Bau des Endbosses der
 // tiefsten Stufe, solange der Endboss nicht besiegt ist und es hell ist.
 func fightX(w *sim.World, p *sim.Player, deepest int, won bool) (float64, bool) {
-	var boss *sim.Enemy
-	for _, e := range w.Enemies {
-		if e.Boss && e.HP > 0 && (boss == nil || math.Abs(e.X-p.X) < math.Abs(boss.X-p.X)) {
-			boss = e
-		}
-	}
-	if boss != nil && w.Biome.Depth == deepest {
+	boss := nearestBoss(w, p)
+	// Ein Boss weit vom Hub (Endboss am Bau, B-645): allein dorthin zu laufen kostet das Leben und das Gold (Kristallhöhle, Tag 34:
+	// der Monarch starb im Minutentakt am Bau). Ohne Heer verteidigt er den Hub; der Boss kommt mit der Welle zu ihm.
+	if boss != nil && w.Biome.Depth == deepest && (math.Abs(boss.X-w.HubX) <= bossHubRange || sim.EconomyOf(w).Fighters >= fighterWant) {
 		return boss.X - math.Copysign(0.3, boss.X-p.X), true
 	}
 	// Erst die Armee: Seit dem Begleitschutz (unit_escort.go) kämpfen die Truppen am Boss mit, also baut der Bot sie vorher auf.
@@ -54,6 +52,17 @@ func fightX(w *sim.World, p *sim.Player, deepest int, won bool) (float64, bool) 
 		}
 	}
 	return 0, false
+}
+
+// nearestBoss: der nächste lebende Boss der Stufe (nil: keiner).
+func nearestBoss(w *sim.World, p *sim.Player) *sim.Enemy {
+	var boss *sim.Enemy
+	for _, e := range w.Enemies {
+		if e.Boss && e.HP > 0 && (boss == nil || math.Abs(e.X-p.X) < math.Abs(boss.X-p.X)) {
+			boss = e
+		}
+	}
+	return boss
 }
 
 // enemyWithin: ein lebender Gegner liegt höchstens dist von x entfernt.
