@@ -15,7 +15,8 @@
 | `payIntervalSeconds` | Zahl | s | Abstand zwischen zwei eingezahlten Münzen | 0,25 |
 | `pickupRangeUnits` | Zahl | Units | Aufheb-Reichweite für Münzen am Boden | 0,8 |
 | `dropPickupDelaySeconds` | Zahl | s | Sperre, bevor abgeworfene Münzen wieder aufgehoben werden | 1,5 |
-| `dawnGoldPerPlayer` | Zahl | Gold | Gold je Spieler bei Tagesanbruch, wenn die Burg hielt | 5 |
+| `dawnGoldPerPlayer` | Zahl | Gold | Gold je Spieler bei Tagesanbruch, wenn die Burg hielt | 2 |
+| `dawnGoldPerDepth` | Zahl | Gold je Tiefe | Zuschlag auf das Morgengold je Tiefe der Stufe (Tiefe 0 Wald: keiner); Morgengold = `dawnGoldPerPlayer` + Zuschlag · Tiefe (B-645) | 6 |
 | `chestGold` | Liste | Gold | Spanne [min, max] einer Truhe | [10, 25] |
 | `enemyResourceDrop.chance` | Zahl | Anteil 0–1 | Wahrscheinlichkeit, dass ein Gegner Material fallen lässt | 0,1 |
 | `enemyResourceDrop.amount` | Ganzzahl | Material | Menge eines Material-Drops | 5 |

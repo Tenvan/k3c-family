@@ -96,21 +96,28 @@ function renderResult() {
   $('result').hidden = false;
   $('goal').textContent = (R.goal.reached ? '✅ ' : '❌ ') + (R.goalText || '');
   if (R.quality) $('quality').textContent = 'Qualität: ' + R.quality.passed + ' von ' + R.quality.total + ' Korridoren im Korridor.';
-  const p = R.progress;
-  if (!p) return;
-  const c = p.config;
-  $('cfg').textContent = 'Konfiguration: Welt ' + c.world + ' · Bot ' + c.bot + ' · ' + c.players + ' Spieler · ' + c.days + ' Tage' +
-    (c.grade ? ' · Grad ' + c.grade : '') + (c.helps ? ' · Hilfen ' + c.helps : '') + ' – ' + p.testMatch + '.';
+  if (R.progress) renderProgress(R.progress);
+}
+
+function configText(c) {
+  const opt = (label, v) => (v ? ' · ' + label + ' ' + v : '');
+  return 'Welt ' + c.world + ' · Bot ' + c.bot + ' · ' + c.players + ' Spieler · ' + c.days + ' Tage' + opt('Grad', c.grade) + opt('Hilfen', c.helps);
+}
+
+function ladderRow(r) {
+  const done = r.runs > 0 && r.reached === r.runs;
+  const mark = done ? '✔ ' : r.reached ? '◐ ' : '○ ';
+  const day = r.medianDay == null ? '–' : 'Tag ' + r.medianDay;
+  return el('tr', { class: done ? 'done' : (r.reached ? 'part' : 'open') },
+    el('td', { class: 'arrow' }, r.arrow || '·'), el('td', {}, mark + r.label),
+    el('td', { class: 'num' }, r.reached + '/' + r.runs), el('td', { class: 'num' }, day));
+}
+
+function renderProgress(p) {
+  $('cfg').textContent = 'Konfiguration: ' + configText(p.config) + ' – ' + p.testMatch + '.';
   const tbl = $('ladder');
   tbl.append(el('thead', {}, el('tr', {}, ['', 'Meilenstein', 'Seeds', 'Median-Tag'].map((h) => el('th', {}, h)))));
-  const body = el('tbody');
-  for (const r of p.ladder) {
-    const done = r.runs > 0 && r.reached === r.runs;
-    body.append(el('tr', { class: done ? 'done' : (r.reached ? 'part' : 'open') },
-      el('td', { class: 'arrow' }, r.arrow || '·'), el('td', {}, (done ? '✔ ' : r.reached ? '◐ ' : '○ ') + r.label),
-      el('td', { class: 'num' }, r.reached + '/' + r.runs), el('td', { class: 'num' }, r.medianDay == null ? '–' : 'Tag ' + r.medianDay)));
-  }
-  tbl.append(body);
+  tbl.append(el('tbody', {}, p.ladder.map(ladderRow)));
   if (R.previous) $('ladder-note').textContent = 'Pfeile (▲ besser, ▼ schlechter, = gleich) gegen den letzten Lauf gleicher Konfiguration: ' + R.previous;
   if (p.blocker) $('blocker').textContent = 'Blocker: ' + p.blocker;
 }

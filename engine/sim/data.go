@@ -145,6 +145,7 @@ var (
 		PayRangeUnits, PayIntervalSeconds, PickupRangeUnits float64
 		DropPickupDelaySeconds                              float64
 		DawnGoldPerPlayer                                   int
+		DawnGoldPerDepth                                    int // Zuschlag je Tiefe der Stufe auf das Morgengold (wirtschaft.md § 8, B-645)
 		ChestGold                                           [2]int
 		EnemyResourceDrop                                   struct {
 			Chance float64

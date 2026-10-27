@@ -6,6 +6,7 @@
   "pickupRangeUnits": 0.8,
   "dropPickupDelaySeconds": 1.5,
   "dawnGoldPerPlayer": 2,
+  "dawnGoldPerDepth": 6,
   "chestGold": [3, 6],
   "enemyResourceDrop": { "chance": 0.1, "amount": 5 },
   "gatherables": {

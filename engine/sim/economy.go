@@ -385,12 +385,3 @@ func stepSites(w *World) {
 	stepOffers(w)
 	stepCrafts(w)
 }
-
-// payDawnIncome: morgens Steuern für jeden lebenden Monarchen.
-func payDawnIncome(w *World) {
-	for _, p := range w.Players {
-		if isAlive(p) {
-			giveGold(w, p, economy.DawnGoldPerPlayer, p.X)
-		}
-	}
-}

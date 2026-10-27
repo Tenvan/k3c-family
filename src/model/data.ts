@@ -120,6 +120,7 @@ export const ECONOMY = economyJson as unknown as {
   pickupRangeUnits: number;
   dropPickupDelaySeconds: number;
   dawnGoldPerPlayer: number;
+  dawnGoldPerDepth: number;
   chestGold: Range;
   enemyResourceDrop: { chance: number; amount: number };
   gatherables: Record<string, GatherableData>;

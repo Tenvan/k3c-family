@@ -35,12 +35,8 @@ func wirtschaft(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	if x == &w.Castle.X { // Material und Gold für den Hub-Ausbau liegen bereit: zuerst zahlen, vor neuen Bauten
 		return goTo(p, *x, true)
 	}
-	if !waitingMaterial(w) {
-		for _, kind := range buildOrder {
-			if s := nearestPayable(w, p, kind, "unpaid", reserve); s != nil && covers(*w.Stock, prices.cost[kind]) {
-				return goTo(p, s.X, true)
-			}
-		}
+	if s := nextBuild(w, p, reserve); s != nil {
+		return goTo(p, s.X, true)
 	}
 	if x == nil && reserve == 0 {
 		if n := nodeFor(w, p, sim.Cost{Wood: woodWant}); n != nil {
@@ -57,6 +53,19 @@ func wirtschaft(w *sim.World, p *sim.Player) sim.PlayerCommand {
 		return recruitOrHub(w, p)
 	}
 	return goTo(p, w.HubX, false)
+}
+
+// nextBuild: der nächste Bau aus buildOrder, dessen Material im Vorrat liegt und dessen Rest plus Rücklage das Gold deckt.
+func nextBuild(w *sim.World, p *sim.Player, reserve int) *sim.Site {
+	if waitingMaterial(w) {
+		return nil
+	}
+	for _, kind := range buildOrder {
+		if s := nearestPayable(w, p, kind, "unpaid", reserve); s != nil && covers(*w.Stock, prices.cost[kind]) {
+			return s
+		}
+	}
+	return nil
 }
 
 // hubStep: Ort zum Zahlen für den Hub-Ausbau (Burg, Knoten oder Händler) oder die Rücklage, solange das Gold fehlt.
