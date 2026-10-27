@@ -65,3 +65,10 @@ Diagnose-Werte (Commit nach BS3.3): Insel-Bericht zeigt je Tiefe Ankunft, Burgfa
 - Ursache vermutet (ungeprüft): Die Welle von Nacht 5 trifft einen Hub ohne Ausbau und ohne Verteidiger; die Münzskala (2 Gold/Tag) lässt keinen Wiederaufbau zu.
 - Mit Hilfen (voll) fällt der Endboss an Tag 19: Der Bot selbst kann also durchspielen, es fehlt die Ökonomie der ersten fünf Tage.
 - Hebel zur Entscheidung (🧑): (1) Tageseinkommen oder Startgold anheben (`economy.json`), (2) Welle 1–5 im Wald schwächer, (3) Bot verteidigt die Burg nachts besser (Bauern in die Burg statt Holz am Waldrand), (4) Kosten Hub-Ausbau Stufe 2 (Gold 4 plus Stein 25) senken.
+
+**Hebel 3 probiert (2026-10-27, Claude, nur Bot, keine Werte):** Die Bauern suchen nachts schon von selbst den Hub auf (`isDangerous`). Sie sterben trotzdem, weil Nacht 5 (10 Goblins, Goblin-Anführer, Gierling) 2 Mauern, 2 Türme und 2 Bogenschützen überrollt. Das Gold (etwa 22 bis Nacht 5) reicht nicht für 8 Bauern und eine Verteidigung. Gemessen mit `peasantLimit` (Solo, Seed k3c-dev, ohne Hilfen):
+- 6 oder 8 Bauern: Alles stirbt in Nacht 5, Tag 6 ohne Truppen, Stillstand (wie oben).
+- 2 bis 5 Bauern: Mehr Gold fließt in Bögen (7–10 Kämpfer bis Tag 6), der Goblin-Anführer fällt, der Bot steigt an Tag 7 in die Höhle ab.
+- Gewählt: 4 (mitten im funktionierenden Bereich; die Grenze zwischen 5 und 6 ist scharf, ungeprüft für andere Seeds).
+- Danach neuer Engpass: Hub bleibt Stufe 1, in der Höhle 0 Kämpfer (das Heer bleibt im Wald), Gold 2–8 über Tage, kein Troll-König bis Tag 40. Mit Hilfen `voll` fällt der Endboss weiter an Tag 20.
+- Offene Hebel: Tageseinkommen oder Hub-Ausbaukosten (Werte, 🧑 entscheidet), oder der Bot wartet mit dem Abstieg, bis er in der Höhle bestehen kann.

@@ -17,7 +17,7 @@ var buildOrder = []string{"wall", "tower", "farm", "workshop"}
 
 const (
 	woodWant     = 150 // Holz, das er im Vorrat halten will (Korridor ≥ 100 plus ein Bogen); darunter markiert er Bäume
-	peasantLimit = 8   // so viele Bauern wirbt er höchstens an (Arbeiter und Träger der Bögen)
+	peasantLimit = 4   // so viele Bauern wirbt er höchstens an (Arbeiter und Träger der Bögen); ab 6 fehlt das Gold für Mauern und Bögen, Nacht 5 vernichtet alles (B-645, Hebel 3)
 	fighterWant  = 8   // so viele Kämpfer will er (Korridor Tag 6 ≥ 8); darüber spart er das Gold für den Hub
 )
 
