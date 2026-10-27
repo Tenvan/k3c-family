@@ -186,7 +186,7 @@ func density(t *testing.T, id string) float64 {
 // W2.2 (B-115/AC-02, Sprint W2 AC-04, Beschluss Q28): Breiten laut materialien-gebaeude.md § 1, Dichte unter Tage
 // nicht abnehmend und ab der Mine mindestens 2,8 endliche Objekte je 100 Units.
 func TestBreiteUndDichte(t *testing.T) {
-	widths := map[string]Range{"forest": {900, 1100}, "cave": {700, 900}, "mine": {550, 700}, "ironhold": {480, 560}, "crystal": {400, 480}}
+	widths := map[string]Range{"forest": {900, 1100}, "cave": {700, 900}, "mine": {550, 700}, "ironhold": {480, 560}, "crystal": {600, 700}} // Kristallhöhle B-645: Platz für das Camp außerhalb der Linien
 	for id, want := range widths {
 		if got := biome(t, id).LengthUnits; got != want {
 			t.Errorf("%s: Breite %v, laut Regel %v", id, got, want)
@@ -205,7 +205,8 @@ func TestBreiteUndDichte(t *testing.T) {
 }
 
 // K2.1c (B-130/AC-02): Die Kristallhöhle hat über 500 Seeds genau einen Bau vor dem Ausgang; ohne Bau entsteht dasselbe
-// Level ohne die Entität (kein Würfel). Alle übrigen Biome haben keinen Bau.
+// Level ohne die Entität (kein Würfel) für Biome ohne Bau. Mit Bau hängt die Lage des Camps vom Bau ab (B-645, bosse.md § 1:
+// Abstand zum Bau, nicht hinter einem Portal) und mit ihr die Verteilung der freien Chunks. Alle übrigen Biome haben keinen Bau.
 func TestLairNurInDerKristallhoehle(t *testing.T) {
 	for _, id := range biomeIDs(t) {
 		b := biome(t, id)
@@ -217,9 +218,8 @@ func TestLairNurInDerKristallhoehle(t *testing.T) {
 		for seed := range 500 {
 			l, _ := Generate(b, strconv.Itoa(seed))
 			without, _ := Generate(bare, strconv.Itoa(seed))
-			rest := slices.DeleteFunc(slices.Clone(l.Entities), func(e Entity) bool { return e.Kind == "lair" })
-			if !slices.Equal(rest, without.Entities) || !slices.Equal(l.Chunks, without.Chunks) {
-				t.Fatalf("Biom %s, Seed %d: Bau verschiebt andere Objekte", id, seed)
+			if !b.Lair && (!slices.Equal(l.Entities, without.Entities) || !slices.Equal(l.Chunks, without.Chunks)) {
+				t.Fatalf("Biom %s, Seed %d: ohne Bau muss dasselbe Level entstehen", id, seed)
 			}
 			want := 0
 			if b.Lair {

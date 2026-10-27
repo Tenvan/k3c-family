@@ -10,6 +10,7 @@ package level
 import (
 	"fmt"
 	"math"
+	"slices"
 	"sort"
 
 	"k3c/engine/rng"
@@ -223,11 +224,15 @@ func (g *gen) placeEvents(seed string) error {
 			return fmt.Errorf("level zu kurz für %dx %s (Seed %s)", count, kind, seed)
 		}
 		if kind == "recruitCamp" {
+			safe := g.safeCampSlots()
 			// Stabil: gleich gute Slots behalten ihre Reihenfolge aus dem Mischen.
 			sort.SliceStable(slots, func(i, j int) bool {
 				di, dj := g.center(slots[i])-g.hub, g.center(slots[j])-g.hub
 				if ci, cj := g.lines.ClearOf(di), g.lines.ClearOf(dj); ci != cj {
 					return ci
+				}
+				if safe[slots[i]] != safe[slots[j]] {
+					return safe[slots[i]]
 				}
 				return math.Abs(di) < math.Abs(dj)
 			})
@@ -238,6 +243,29 @@ func (g *gen) placeEvents(seed string) error {
 	}
 	g.swapCampsWithChests()
 	return nil
+}
+
+// lairCampGapUnits: So nah am Bau des Endbosses liegt kein Camp: lair.noticeUnits (40) plus 40 Units Rand (docs/rules/bosse.md § 1, B-645).
+const lairCampGapUnits = 80
+
+// safeCampSlots: die Chunks, in denen ein Camp sicher steht (Ordnung nach dem Abstand zu den Linien, B-261, bleibt davor): Bei Biomen
+// mit Bau nicht näher als lairCampGapUnits am Bau und nie hinter einem Portal (vom Hub aus gesehen); dort laufen die Beschwörung des
+// Endbosses und die Portal-Gegner, und der Weg zum Camp wäre tödlich (BS3.4, Kristallhöhle). Biome ohne Bau: alle sicher.
+func (g *gen) safeCampSlots() map[int]bool {
+	safe := map[int]bool{}
+	var portals []float64
+	for i, k := range g.kinds {
+		if k == "portal" {
+			portals = append(portals, g.center(i))
+		}
+	}
+	lair := g.lairX()
+	for i := range g.kinds {
+		x := g.center(i)
+		behind := slices.ContainsFunc(portals, func(p float64) bool { return (p-g.hub)*(x-g.hub) > 0 && math.Abs(p-g.hub) < math.Abs(x-g.hub) })
+		safe[i] = !g.b.Lair || (math.Abs(x-lair) >= lairCampGapUnits && !behind)
+	}
+	return safe
 }
 
 // swapCampsWithChests: Fehlt einem Camp ein freier Chunk auf Abstand zu den Linien (kurzes Level), tauscht es den

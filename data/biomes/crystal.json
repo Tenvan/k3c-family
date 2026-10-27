@@ -3,7 +3,7 @@
   "name": "Tiefe 4 (Kristallhöhle)",
   "depth": 4,
   "backdropVariants": 5,
-  "lengthUnits": { "min": 400, "max": 480 },
+  "lengthUnits": { "min": 600, "max": 700 },
   "chunkWidthUnits": 25,
   "hubWidthUnits": 100,
   "exitSide": "right",

@@ -139,7 +139,7 @@ func TestLeereFelderSindKeinePlanung(t *testing.T) {
 }
 
 func TestPlatzGrenzenJeBiom(t *testing.T) {
-	want := map[string]int{"forest": 7, "cave": 5, "mine": 4, "ironhold": 7, "crystal": 5}
+	want := map[string]int{"forest": 7, "cave": 5, "mine": 4, "ironhold": 7, "crystal": 9}
 	for id, n := range want {
 		if got := geometryOf(biome(t, id), 0).usable; got != n {
 			t.Errorf("%s: %d planbare Plätze je Seite, erwartet %d", id, got, n)
