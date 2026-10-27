@@ -27,7 +27,7 @@ import (
 
 // Die Beispiele „Insel 1 solo …“ der Balancing-Seite (frontend/src/balancing/help.ts › EXAMPLES) bilden genau diese Konfigurationen
 // ab (Seed, Spieler, Bot, Tage, Hilfen); wer sie hier ändert, ändert dort mit.
-const fullgameDays = 40
+// fullgameDays (40) steht in progress.go: Der Bericht nennt damit die Entsprechung zum Stufen-Test.
 
 // fullgame spielt einen Bot, bis done wahr ist oder fullgameDays vorbei sind; den Stand liefert die Insel.
 func fullgame(t *testing.T, done func(*sim.Island) bool) (isl *sim.Island, day int, helps bool) {

@@ -58,3 +58,10 @@ A, B oder C (siehe Anforderungen); ob der Meilenstein-Bot `coop2` oder ein neues
 ## Notizen
 
 Diagnose-Werte (Commit nach BS3.3): Insel-Bericht zeigt je Tiefe Ankunft, Burgfall, gefallene Monarchen, Hub-Stufe und Kämpfer am Ende (`kennzahlen.island`). Die Wirtschaft von `wirtschaft` im Standardszenario (Tag 1–5, Wald) ist unabhängig davon verletzt: Hub-Stufe 2 und 3 nie, Kämpfer nie ≥ 4 an Tag 3; die Korridore aus `zielkorridore.md` § 3 stammen aus der alten Skala (Startgold 100) und sind als Richtwerte neu abzustimmen (BS3.4/BS6).
+
+**Diagnose ohne Hilfen, Solo, Seed k3c-dev (2026-10-27, Claude, Commit f21a2007):** Der Lauf bricht in Nacht 5 zusammen und erholt sich nie.
+- Tag 1–5: Startgold 14, danach 2 Gold je Morgen. Die Bauern (8, ab Tag 3) häufen Holz an (bis 645, Wunsch 150) und holen kaum Stein (0–20, der Hub-Ausbau braucht 25); Hub bleibt Stufe 1, Kämpfer 2.
+- Tag 6: alle 8 Bauern und beide Kämpfer sind tot, die Stufe 0 hat danach 0 Truppen. Ab da bleibt das Gold bei 2 (Tageseinkommen = Ausgabe), der Vorrat leert sich, bis Tag 35 passiert nichts mehr.
+- Ursache vermutet (ungeprüft): Die Welle von Nacht 5 trifft einen Hub ohne Ausbau und ohne Verteidiger; die Münzskala (2 Gold/Tag) lässt keinen Wiederaufbau zu.
+- Mit Hilfen (voll) fällt der Endboss an Tag 19: Der Bot selbst kann also durchspielen, es fehlt die Ökonomie der ersten fünf Tage.
+- Hebel zur Entscheidung (🧑): (1) Tageseinkommen oder Startgold anheben (`economy.json`), (2) Welle 1–5 im Wald schwächer, (3) Bot verteidigt die Burg nachts besser (Bauern in die Burg statt Holz am Waldrand), (4) Kosten Hub-Ausbau Stufe 2 (Gold 4 plus Stein 25) senken.
