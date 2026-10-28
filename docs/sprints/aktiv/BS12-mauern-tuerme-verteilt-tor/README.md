@@ -59,10 +59,11 @@ keine (Defaults aus B-652).
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | BS12.1 | `BS12.1-daten-regeln-generator.md` | Umsetzung | autonom | fertig |
-| BS12.2 | `BS12.2-sim-tor-freiraum.md` | Umsetzung | autonom | offen |
-| BS12.3 | `BS12.3-bots-client-protokoll.md` | Umsetzung | autonom | offen |
+| BS12.2 | `BS12.2-sim-tor-freiraum.md` | Umsetzung | autonom | fertig |
+| BS12.3 | `BS12.3-bots-client-protokoll.md` | Umsetzung | autonom | fertig |
 | BS12.4 | `BS12.4-simulationen.md` | Umsetzung | autonom | offen |
 | BS12.5 | `BS12.5-review.md` | Review | autonom | offen |
+| BS12.6 | `BS12.6-aufraeumen-gate-linien.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.

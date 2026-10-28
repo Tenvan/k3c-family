@@ -70,4 +70,6 @@ Chunk ohne freien Platz (Lava, Portal, Camp): weniger als 1 Platz erlaubt, Test 
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+**Messung nach BS12.2 (2026-10-28, Claude, `task balance:milestone`, coop2, standard, k3c-dev, 40 Tage):** Der Frühspiel-Lauf bricht zusammen. Die Burg im Wald fällt schon in der ersten Nacht (`castleFallTick` 17517), Hub-Stufe 1, 0 Kämpfer, nur der Troll-König fällt (Tag 23), der Goblin-Anführer nie. Vorher (Mauerlinien): Stufe 5 ab Tag 22, vier Minibosse.
+Ursache (belegt durch die Bot-Spur, Zusammenhang gemessen, Gegenprobe fehlt): Der Freiraum-Radius (6 Units, Wald mit 22–30 Bäumen je Chunk) sperrt jeden Platz. Vor der ersten Nacht müssten mehrere Bäume markiert (Gold), von Bauern gefällt (Zeit) und danach die Mauer bezahlt werden; mit 14 Startgold und noch keinen Bauern gelingt das nicht. Das ist die Folge der Regel selbst, nicht ein Fehler des Bots.
+**Entscheidung 🧑 nötig** (Empfehlung A): (A) Der Generator legt je Seite in Zone 1 mindestens eine Mauer und einen Turm auf **freien Baugrund** (Plätze zuerst in Bäume-freien Lagen, oder die Bäume im Radius werden aus der Entitätenliste genommen); alle anderen Plätze brauchen den Freiraum. (B) Freiraum-Radius kleiner (z. B. 2 Units statt 6). (C) Startgold/Bäume im Wald anders (Basiswerte, nach deiner Regel nicht ohne Weiteres). Nach der Entscheidung erneut messen (BS12.4).
