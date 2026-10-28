@@ -146,6 +146,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-648](B-648-balancing-bericht-rahmenregeln.md) | DEV | Problem | hoch | offen | – | Balancing-Bericht urteilt nach Ziel und zeigt den Fortschritt |
 | [B-649](B-649-balancing-bericht-klartext.md) | DEV | Problem | mittel | offen | – | Balancing-Bericht in Klartext: Prozentwerte, Stellschrauben mit Bereich |
 | [B-650](B-650-boss-hp-je-spieler-eigenes-feld.md) | SIM | Idee | hoch | eingeplant | BS3 | Boss-HP je Zusatzspieler bekommt ein eigenes Feld, getrennt von der Wellengröße |
+| [B-651](B-651-kristallhoehle-titan-welle-raeumt-hub-ab.md) | SIM | Problem | hoch | offen | BS3 | Die Titan-Welle der Kristallhöhle räumt den Hub eines Einzelmonarchen in Sekunden ab (coop2) |
 
 ## Archiv
 
