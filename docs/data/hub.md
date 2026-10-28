@@ -21,6 +21,8 @@
 | `sites.*.needsDeeper` | Wahrheitswert | – | Nur wenn eine tiefere Stufe existiert | true |
 | `islandSites.*.offsetUnits` | Zahl | Units | Position der Insel-Bauplätze (Lager) | -26 |
 | `sitePlacement.zoneStartUnits` | Zahl | Units | Abstand der ersten Platz-Zone zur Hub-Mitte; Zone n spannt einen Chunk (B-652) | 40 |
+| `sitePlacement.zone1WallUnits` | Zahl | Units | Fester Baugrund-Platz der Zone 1 je Seite: Mauer (wie die frühere Linie 1, B-652) | 44 |
+| `sitePlacement.zone1TowerUnits` | Zahl | Units | Fester Baugrund-Platz der Zone 1 je Seite: Turm | 36 |
 | `sitePlacement.zones` | Ganzzahl | Zonen | Zonen je Seite mit Mauer- und Turm-Plätzen; Zone n ab Hub-Stufe n sichtbar | 5 |
 | `sitePlacement.perZoneMin` | Ganzzahl | Plätze | Mindestzahl Mauern und Türme je Zone und Seite | 1 |
 | `sitePlacement.perZoneMax` | Ganzzahl | Plätze | Höchstzahl Mauern und Türme je Zone und Seite | 3 |

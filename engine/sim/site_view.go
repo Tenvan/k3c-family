@@ -12,6 +12,12 @@ func SiteHubLevel(w *World, s *Site) int {
 	return siteHubLevel(w, s)
 }
 
+// SiteZone ist die Zone n (von innen, ab 1) eines Mauer- oder Turm-Platzes; false für alle übrigen Plätze (Bots, B-652).
+func SiteZone(w *World, s *Site) (int, bool) {
+	l, ok := levelSite(w, s)
+	return l.Zone, ok
+}
+
 // SiteVisible sagt, ob ein Platz im Zustand für den Client steht (B-408): Plätze bis zur nächsten Hub-Stufe
 // (Platz-Stufe ≤ Hub-Stufe + 1); bezahlte, wartende und gebaute Plätze immer.
 func SiteVisible(w *World, s *Site) bool {

@@ -56,6 +56,8 @@
   },
   "sitePlacement": {
     "zoneStartUnits": 40,
+    "zone1WallUnits": 44,
+    "zone1TowerUnits": 36,
     "zones": 5,
     "perZoneMin": 1,
     "perZoneMax": 3,

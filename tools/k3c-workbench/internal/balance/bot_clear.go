@@ -38,7 +38,7 @@ func blockedSite(w *sim.World) *sim.Site {
 		if (s.Kind != "wall" && s.Kind != "tower") || s.State != "unpaid" || sim.SiteHubLevel(w, s) > w.HubLevel {
 			continue
 		}
-		if len(sim.SiteBlockers(w, s)) > 0 && (site == nil || rank(w, s) < rank(w, site)) {
+		if len(sim.SiteBlockers(w, s)) > 0 && wanted(w, s) && (site == nil || rank(w, s) < rank(w, site)) {
 			site = s
 		}
 	}
@@ -53,4 +53,22 @@ func rank(w *sim.World, s *sim.Site) float64 {
 		d += 1e6
 	}
 	return d
+}
+
+// wanted: Der Bot baut je Seite, Zone und Art (Mauer, Turm) nur einen Platz, den billigsten (innersten); weitere Plätze der
+// Zone lässt er stehen, sonst verbrennt er das Startgold an verstreuten Mauern statt an Bauern und Bögen (B-652). Plätze,
+// die nicht aus den Zonen stammen, sind immer gewollt.
+func wanted(w *sim.World, s *sim.Site) bool {
+	z, ok := sim.SiteZone(w, s)
+	if !ok {
+		return true
+	}
+	for _, o := range w.Sites {
+		if o != s && o.Kind == s.Kind && o.State != "unpaid" && (o.X < w.HubX) == (s.X < w.HubX) {
+			if oz, ok := sim.SiteZone(w, o); ok && oz == z {
+				return false
+			}
+		}
+	}
+	return true
 }

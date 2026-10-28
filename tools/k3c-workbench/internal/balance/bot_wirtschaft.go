@@ -127,7 +127,7 @@ func fighterStep(w *sim.World, p *sim.Player, reserve int) *float64 {
 func nearestPayable(w *sim.World, p *sim.Player, kind, state string, reserve int) *sim.Site {
 	var best *sim.Site
 	for _, s := range w.Sites {
-		if s.Kind != kind || s.State != state {
+		if s.Kind != kind || s.State != state || (state == "unpaid" && !wanted(w, s)) {
 			continue
 		}
 		if left, ok := sim.SiteGoldLeft(w, s); ok && left > 0 && p.Gold >= left+reserve && (best == nil || closer(p.X, s.X, best.X)) {

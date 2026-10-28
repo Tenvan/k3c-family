@@ -55,7 +55,7 @@ func checkSiteSpacing(t *testing.T, seed string, lay Layout, p SitePlacement) {
 	t.Helper()
 	end := p.ZoneStartUnits + float64(p.Zones)*lay.ChunkWidthUnits
 	for a, sa := range lay.Sites {
-		if d := math.Abs(sa.X - lay.HubCenterUnits); d < p.ZoneStartUnits || d >= end {
+		if d := math.Abs(sa.X - lay.HubCenterUnits); d < min(p.ZoneStartUnits, p.Zone1TowerUnits) || d >= end {
 			t.Fatalf("%s: Platz %v außerhalb der Zonen", seed, sa)
 		}
 		for _, sb := range lay.Sites[a+1:] {

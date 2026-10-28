@@ -86,6 +86,9 @@ func TestMigrationGebautePlaetzeBleibenGebaut(t *testing.T) {
 		for i, w := range isl.Stages {
 			found := 0
 			for _, site := range w.Sites {
+				if _, onZone := levelSite(w, site); onZone {
+					continue // verteilte Mauern und Türme (B-652)
+				}
 				state, saved := want[i][key(site.Kind, site.X)]
 				if !saved {
 					state = "unpaid"

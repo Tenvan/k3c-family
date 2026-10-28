@@ -19,6 +19,8 @@ type WallSite struct {
 // SitePlacement sind die Felder aus data/hub.json › sitePlacement (B-652).
 type SitePlacement struct {
 	ZoneStartUnits    float64 `json:"zoneStartUnits"`    // Abstand der ersten Zone zur Hub-Mitte
+	Zone1WallUnits    float64 `json:"zone1WallUnits"`    // fester Baugrund-Platz der Zone 1 je Seite: Mauer (wie die frühere Linie 1)
+	Zone1TowerUnits   float64 `json:"zone1TowerUnits"`   // und Turm
 	Zones             int     `json:"zones"`             // Zonen je Seite (Zone n ab Hub-Stufe n sichtbar)
 	PerZoneMin        int     `json:"perZoneMin"`        // Mauern und Türme je Zone, mindestens
 	PerZoneMax        int     `json:"perZoneMax"`        // und höchstens
@@ -82,13 +84,20 @@ type zonePlacer struct {
 
 func (g *gen) placeZone(r *rng.Rng, p SitePlacement, side, zone int, lo, hi float64, taken *[]float64, chunks []Chunk) []WallSite {
 	z := &zonePlacer{g: g, r: r, p: p, side: side, zone: zone, lo: lo, hi: hi, taken: taken, chunks: chunks}
-	for range r.Int(p.PerZoneMin, p.PerZoneMax) {
+	extraWalls, extraTowers := r.Int(p.PerZoneMin, p.PerZoneMax), r.Int(p.PerZoneMin, p.PerZoneMax)
+	if zone == 1 { // fester Baugrund wie die frühere Linie 1 (B-652, E); die Würfe darüber hinaus bleiben Zusatzplätze
+		z.add("wall", p.Zone1WallUnits)
+		z.walls = append(z.walls, p.Zone1WallUnits)
+		z.add("tower", p.Zone1TowerUnits)
+		extraWalls, extraTowers = extraWalls-1, extraTowers-1
+	}
+	for range extraWalls {
 		if d, ok := z.pick(lo, hi); ok {
 			z.add("wall", d)
 			z.walls = append(z.walls, d)
 		}
 	}
-	for range r.Int(p.PerZoneMin, p.PerZoneMax) {
+	for range extraTowers {
 		d, ok := z.nearWall()
 		if !ok {
 			d, ok = z.pick(lo, hi)
