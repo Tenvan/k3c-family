@@ -16,6 +16,7 @@ const (
 	retreatHP   = 0.35 // darunter zieht sich der Bot zur Burg zurück
 	fightHP     = 0.7  // ab diesem Anteil geht er zum Bau des Endbosses
 	bossHubRange = 40.0 // so nah am Hub gilt ein Boss als Verteidigungsfall, weiter weg geht der Bot nur mit Heer hin
+	endbossWant = 16 // so viele Kämpfer braucht er, bevor er den Endboss am Bau weckt (B-651: 8 Bögen starben in Minuten an dessen Beschwörung)
 	strikeRange = 1.4  // etwas unter monarch.json › attack.range (1,5): der Schlag trifft sicher
 )
 
@@ -39,11 +40,11 @@ func fightX(w *sim.World, p *sim.Player, deepest int, won bool) (float64, bool) 
 	boss := nearestBoss(w, p)
 	// Ein Boss weit vom Hub (Endboss am Bau, B-645): allein dorthin zu laufen kostet das Leben und das Gold (Kristallhöhle, Tag 34:
 	// der Monarch starb im Minutentakt am Bau). Ohne Heer verteidigt er den Hub; der Boss kommt mit der Welle zu ihm.
-	if boss != nil && w.Biome.Depth == deepest && (math.Abs(boss.X-w.HubX) <= bossHubRange || sim.EconomyOf(w).Fighters >= fighterWant) {
+	if boss != nil && w.Biome.Depth == deepest && (math.Abs(boss.X-w.HubX) <= bossHubRange || sim.EconomyOf(w).Fighters >= endbossWant) {
 		return boss.X - math.Copysign(0.3, boss.X-p.X), true
 	}
 	// Erst die Armee: Seit dem Begleitschutz (unit_escort.go) kämpfen die Truppen am Boss mit, also baut der Bot sie vorher auf.
-	if w.Biome.Depth != deepest || won || w.Cycle.Phase != "day" || p.HP < fightHP*p.MaxHP || sim.EconomyOf(w).Fighters < fighterWant {
+	if w.Biome.Depth != deepest || won || w.Cycle.Phase != "day" || p.HP < fightHP*p.MaxHP || sim.EconomyOf(w).Fighters < endbossWant {
 		return 0, false
 	}
 	for _, e := range w.Level.Entities {

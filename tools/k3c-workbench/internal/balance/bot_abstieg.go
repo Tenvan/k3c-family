@@ -12,8 +12,9 @@ import (
 // ihre Stufe sicher steht: die Mauern der Linie 1 stehen auf beiden Seiten, es ist heller Tag und mindestens Tag
 // minDescentDay. Der Hub-Ausbau gehört nicht zur Regel: Den Stein für Hub-Stufe 2 liefert die Höhle (Adern, Regel
 // materialien-gebaeude.md § 1), der Weg nach unten kommt also vor dem Ausbau. Jeder Spieler wechselt allein
-// (Einzelwechsel, stufen.md § 1). Mit mehreren Monarchen steigen nur die mit ungeradem Index ab (Rollen wie bei coop2:
-// Monarch 2 holt das Material, Monarch 1 hält den Hub), sonst fiele der verlassene Hub schon in Nacht 3 (BS3.4, run-3).
+// (Einzelwechsel, stufen.md § 1). Mit mehreren Monarchen steigen zuerst nur die mit ungeradem Index ab (Rollen wie bei coop2:
+// Monarch 2 holt das Material, Monarch 1 hält den Hub), sonst fiele der verlassene Hub schon in Nacht 3 (BS3.4, run-3);
+// der Hub-Halter folgt erst, wenn sein Heer steht (mayDescend, B-651).
 // Auf der neuen Stufe spielt der Bot sein Profil weiter: Mauern und Bauten gelten je Stufe.
 
 // minDescentDay ist der früheste Tag des Abstiegs (Tag 1 gehört dem Aufbau der ersten Mauern).
@@ -22,7 +23,7 @@ const minDescentDay = 2
 // withDescent legt den Abstieg über ein Profil.
 func withDescent(inner Bot, isl *sim.Island, deepest int) Bot {
 	return func(w *sim.World, p *sim.Player) sim.PlayerCommand {
-		if x, ok := descentX(w, deepest); ok && mayDescend(isl, p) && stageSafe(w) {
+		if x, ok := descentX(w, deepest); ok && mayDescend(isl, w, p) && stageSafe(w) {
 			if miniDefeated(isl, w.Biome.Depth) {
 				return goTo(p, x, false)
 			}
@@ -78,8 +79,14 @@ func miniBossID(depth int) string {
 }
 
 // mayDescend: ein einzelner Monarch geht immer, bei mehreren nur die mit ungeradem Index.
-func mayDescend(isl *sim.Island, p *sim.Player) bool {
-	return len(isl.Players()) == 1 || p.Index%2 == 1
+func mayDescend(isl *sim.Island, w *sim.World, p *sim.Player) bool {
+	if len(isl.Players()) == 1 || p.Index%2 == 1 {
+		return true
+	}
+	// Der Hub-Halter folgt, sobald sein Heer den Hub allein hält (B-651): Zwei Monarchen unten verdoppeln das Morgengold der
+	// tiefen Stufe, sonst reicht es dort nie für Bögen gegen die Welle.
+	e := sim.EconomyOf(w)
+	return e.Fighters >= fighterWant && e.HubLevel >= 2
 }
 
 // descentX: der Tiefen-Eingang der Stufe, wenn es eine tiefere Stufe der Insel gibt.

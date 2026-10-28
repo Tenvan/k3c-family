@@ -63,4 +63,7 @@ Welcher Hebel zuerst: A (zweiter Monarch/Heer mitnehmen) ist nach der Messung de
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+**Hebel A umgesetzt und gemessen (2026-10-28, Claude, nur Bot, keine Werte):** `mayDescend` (`bot_abstieg.go`): Der Hub-Halter (gerader Index) folgt, sobald sein Heer den Hub hält (Kämpfer ≥ 8, Hub-Stufe ≥ 2). Zusätzlich `endbossWant` 16 (`bot_boss.go`): Der Endboss am Bau wird erst mit 16 Kämpfern geweckt (vorher 8; hatte in der Messung keine Wirkung, bleibt als Schutz).
+Wirkung (coop2, standard, k3c-dev, `task balance:milestone`): beide Monarchen sind ab Tag 22 in der Kristallhöhle, 52 Gold je Morgen, bis Tag 22 stehen dort 3 bis 5 Kämpfer, am Morgen von Tag 23 sechs. **Die Welle von Tag 23 (32 Gegner: Splitter-Titan 5569 HP, 24 Splitterlinge, 7 Kristallspinnen) räumt sie trotzdem ab**; danach 0 Kämpfer, Gold 0 bis 26 im Wiederaufbau. Ergebnis wie vorher: Stufe 5 ab Tag 22, Titan fällt nicht (Troll-König jetzt T16 statt T14).
+Ursache (vermutet, ungeprüft): Der Aggressionspool der Kristallhöhle steht bei Ankunft schon bei 56–90 (er füllt sich, während niemand dort ist), die erste Nacht bringt also sofort die Titan-Welle auf einen Hub mit 5 bis 6 Bögen. Mehr Gold hilft nicht, weil ein Bogen Zeit (Bauer, Werkstatt) braucht.
+Offene Hebel (Entscheidung 🧑): (B) Bot kommt mit mehr Heer in der Stufe davor und wartet mit dem Abstieg in die tiefste Stufe, bis dort Zeit zum Aufbau bleibt (Heer geht nicht mit, Truppen sind je Stufe); (C) Pool-Füllung unbesuchter Stufen begrenzen (Mechanik, `engine/sim`, Regel in `stufen.md`/`aggression`); (D) Schwarm-Zählung der 24–32 Splitterlinge prüfen.

@@ -21,8 +21,9 @@ func TestBotsSteigenErstNachDemMiniboss(t *testing.T) {
 		t.Error("Miniboss besiegt, Abstieg gesperrt")
 	}
 	p0, p1 := isl.Stages[0].Players[0], isl.Stages[0].Players[1]
-	if mayDescend(isl, p0) || !mayDescend(isl, p1) {
-		t.Errorf("bei zwei Monarchen steigt nur der mit ungeradem Index ab: %d %d", p0.Index, p1.Index)
+	w := isl.Stages[0]
+	if mayDescend(isl, w, p0) || !mayDescend(isl, w, p1) {
+		t.Errorf("bei zwei Monarchen steigt zuerst nur der mit ungeradem Index ab: %d %d", p0.Index, p1.Index)
 	}
 	if miniBossID(99) != "" || !miniDefeated(isl, 99) {
 		t.Error("Stufe ohne Miniboss muss frei sein")
