@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars -- die Teile werden zu einem Skript verkettet (report_html.go), genutzt in report-next.js */
 // Balancing-Bericht (B-649), Teil 4: Ansicht. „Was jetzt tun?“-Kasten, einklappbare Abschnitte mit Ein-Zeilen-Zusammenfassung,
 // Verweise statt Doppelungen und die Hilfen der Kompakt-Ansicht (?kompakt=1: Balken je Stellschraube, Ausmaß-Fußnote).
 
@@ -73,20 +74,24 @@ function linkWeaknesses() {
   }
 }
 
-function initView() {
+// Abschnitte einklappen: Zusammenfassung je Abschnitt in einer Zeile, Startzustand offen oder zu.
+function foldSections() {
   const c = R.counts || {};
-  const f = R.figures || {};
-  const lights = f.lights || [];
+  const lights = (R.figures || {}).lights || [];
   const b = R.baseline || {};
+  const changes = (b.changes || []).length;
   const cards = (id) => $(id).closest('.card');
-  linkWeaknesses();
   fold(cards('strengths'), (R.strengths || []).length + ' Stärken', false);
   fold(cards('weaknesses'), (R.weaknesses || []).length + ' Schwächen, Klick springt zur Tabelle', true);
   fold(cards('targets'), (c.red || 0) + ' verletzt · ' + (c.yellow || 0) + ' knapp · ' + (c.green || 0) + ' gut', true);
   fold(cards('charts'), lights.length + ' Kennzahlen, ' + lights.filter((l) => l.light === 'red').length + ' außerhalb des Richtwerts', false);
   fold(cards('hints'), (R.leverGroups || []).length + ' Stellschrauben', true);
   fold(cards('next'), ((R.next || {}).commands || []).length + ' Befehle', true);
-  fold(cards('compare'), b.present ? (b.changes || []).length + ' Ziele mit anderem Status' : 'keine Baseline', !!(b.present && (b.changes || []).length));
+  fold(cards('compare'), b.present ? changes + ' Ziele mit anderem Status' : 'keine Baseline', changes > 0);
+}
+
+// Knopf oben: wechselt zwischen vollständiger und kompakter Ansicht (lädt die Seite mit bzw. ohne ?kompakt=1 neu).
+function initViewToggle() {
   const btn = $('view');
   btn.textContent = COMPACT ? 'Ansicht: kompakt ⇄' : 'Ansicht: vollständig ⇄';
   btn.addEventListener('click', () => {
@@ -94,4 +99,10 @@ function initView() {
     if (COMPACT) u.searchParams.delete('kompakt'); else u.searchParams.set('kompakt', '1');
     location.href = u.toString();
   });
+}
+
+function initView() {
+  linkWeaknesses();
+  foldSections();
+  initViewToggle();
 }
