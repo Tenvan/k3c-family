@@ -30,15 +30,20 @@ Der Meilenstein-Lauf coop2 (standard, `k3c-dev`) besiegt den Splitter-Titan und 
 
 ## Anforderungen
 
-Hebel zur Entscheidung (ungeprüft, nach Wirkung geschätzt):
-- (A) Bot: Die Kämpfer wandern mit dem Monarchen, oder ein zweiter Monarch steigt ab (heute nur ungerade Indizes, `bot_abstieg.go`). Wirkung vermutlich groß, ändert coop2-Bot, keine Werte.
-- (B) Bot: Vor der Titan-Welle Gold für Bögen statt Wiederaufbau zurücklegen (Reihenfolge in `bot_wirtschaft.go`).
-- (C) Wert (Multiplikator): Wellengröße der Kristallhöhle über `data/worlds/standard.json` (Insel-Tabelle) senken, sofern das keine Solo-Basis ist (prüfen: Welt-Tabelle gilt für alle Spielerzahlen, dann Basiswert und nach Regel von 🧑 nicht erlaubt).
-- (D) Prüfen, ob 32 Splitterlinge als Schwarm gezählt werden sollten (`bosses.json` Schwarm-Gegner zählen als ganzer Schwarm): ob die Welle hier unbeabsichtigt 32 Einzelgegner statt eines Schwarms bringt (ungeprüft, Verdacht).
+Hebel-Übersicht (A umgesetzt, B verworfen, siehe Notizen). **Spec zu Hebel C (Entwurf, Claude, 2026-10-28): Der Aggressionspool einer Stufe wächst nur, solange dort ein lebender Spieler ist.**
+
+1. **Regel:** In `engine/sim/world_cycle.go` (Zeile ~76, `addPool` mit `percentPerMinute`) wächst der Pool der Zeit nur, wenn mindestens ein lebender Monarch in dieser Stufe steht (`len(w.Players) > 0` mit HP > 0; Stufenwechsel einzeln je Spieler, `stufen.md` § 1). Ohne Spieler: Pool und Wellenzähler bleiben stehen, es kommen keine Wellen in leere Stufen. Die Anteile je Kill (+5 %) und je gesammelter Ressource (+1 %) bleiben unverändert (sie entstehen nur mit Spielern). Das bestehende Einfrieren (`poolFrozen`, B-646) bleibt.
+2. **Bei Ankunft** beginnt der Pool dort, wo die Stufe zuletzt stand (neue Stufe: 0). Die erste Welle kommt nach rund 100 Pool-Punkten aus Zeit, Kills und Rohstoffen, nicht mehr in der ersten Nacht.
+3. **Gilt für jede Spielerzahl** (Solo eingeschlossen), `percentPerMinute` und alle Daten bleiben unverändert; keine neuen Datenfelder.
+4. **Regeltext:** `docs/rules/stufen.md` § 2 (Satz „der Pool wächst nur mit Spieler in der Stufe“), Glossar ›Aggressionspool‹ (`docs/glossar.md`) und `docs/rules/gegner.md` § 3 nennen die Regel.
+5. **Folgen (zu messen):** Golden der sechs tiefen Szenarien und `sim-*`-Wellen-Golden verändern sich (`task go:golden` mit Begründung im Commit); `balance-targets.json`-Korridore zu Wellen unter Tage bleiben, die Messung „Wellen im Abstand 4–12 min“ gilt nur mit Spieler in der Stufe. Die Bots müssen ihre Stufen nicht verlassen, um Wellen zu stoppen.
+6. Deterministisch, 2+ Spieler: Die Regel hängt nur vom Zustand ab (kein Zufall, keine Uhr).
+
+Weitere Hebel: (D) Schwarm-Zählung der 24–32 Splitterlinge prüfen (ungeprüft).
 
 ## Nicht-Ziele
 
-Neue Mechanik; Solo-Basiswerte ändern (Beschluss 🧑 2026-10-28).
+Neue Mechanik außer Regel C; Solo-Basiswerte ändern (Beschluss 🧑 2026-10-28); `percentPerMinute` oder Wellentabellen ändern; Spielstand-Kompatibilität (keine Rücksicht auf alte Spielstände).
 
 ## Regeln und Einschränkungen
 
@@ -56,10 +61,14 @@ Bleibt der Lauf nach (A) und (B) rot: Befund an 🧑, kein weiteres Justieren oh
 
 - **AC-01** `task balance:milestone` (coop2, standard, k3c-dev, 40 Tage): Splitter-Titan besiegt.
 - **AC-02** Endboss Insel 1 besiegt (= BS3 AC-05).
+- **AC-03** (Regel C) Test in `engine/sim`: Eine Stufe ohne lebenden Spieler lässt den Pool über 10 Spielminuten bei seinem Wert und löst keine Welle aus; mit einem Spieler wächst er um `percentPerMinute` je Minute.
+- **AC-04** (Regel C) Test: Ein Spieler, der eine lange unbesuchte Stufe betritt, findet den Pool bei seinem letzten Wert (0 bei neuer Stufe), die erste Welle kommt nicht in der ersten Nacht nach Ankunft.
+- **AC-05** (Regel C) `stufen.md` § 2, `gegner.md` § 3 und Glossar nennen die Regel; Golden neu mit Begründung, `task check:diff` grün.
 
 ## Offene Fragen
 
-Welcher Hebel zuerst: A (zweiter Monarch/Heer mitnehmen) ist nach der Messung der aussichtsreichste (ungeprüft).
+- Freigabe der Spec C durch 🧑 (Mechanik, gilt auch Solo).
+- Ob „Spieler anwesend“ nur lebende Monarchen zählt (Vorschlag: ja) oder auch tote im Respawn (15 s).
 
 ## Notizen
 
