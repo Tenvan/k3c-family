@@ -1,6 +1,6 @@
 # BS3.6 · Simulationen BS3: Meilenstein-Lauf coop2 und Stufen-Tests
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -57,11 +57,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-**Zwischenstand 2026-10-28 (Claude), AC-05 offen, Session nicht fertig.**
-- `task balance:milestone` (Go-Test `TestMeilensteinCoop2`, `K3C_VARY`, `K3C_SEEDS`) fährt den Meilenstein-Lauf ohne Workbench-Neubau (Commit 23141f44).
-- Regel von 🧑: Coop nur über Multiplikator-Felder, Basiswerte bleiben Solo-Werte.
-- `waves.json › perExtraPlayer` 0,5 → 0,25 (Commit 5125c425): coop2 kommt von Stufe 2 bis Stufe 5 (vier Minibosse bis Tag 22). Ausgang: hing nach Stufe 2, Troll-König fiel nie. Rundenreihe 0 / 0,1 / 0,15 / 0,2 / 0,25 / 0,3 / 0,5: nur 0,15 und 0,25 tragen bis Stufe 5.
-- Neues Feld `waves.json › bossHpPerExtraPlayer` (B-650, Commit 6fd5b4d6), Startwert 0,25, trennt Boss-HP von der Wellengröße.
-- Boss-HP-Runde (perExtraPlayer 0,25 fest): bossHpPerExtraPlayer 0,25 / 0,15 / 0,1 → gleiches Ergebnis (Stufe 5, Splitter-Titan fällt nicht); 0 → schlechter (Lava-Golem fällt nicht). **Die Boss-HP sind damit nicht die Ursache beim Splitter-Titan**; Ursache liegt bei der Welle/dem Bot (Heer wird abgeräumt, B-645).
-- Schiff im letzten Lauf: Kiel T1, Rumpf T16,5, Segel T28.
-- Nächster Schritt: Splitter-Titan-Kampf Tag für Tag diagnostizieren (Bot, ohne Werte), danach Endboss.
+- AC-05 (Fassung 2026-10-28, BS3 Revision 2: bis Splitter-Titan) geprüft mit `task balance:milestone` (Go-Test, coop2, standard, 40 Tage): Seed `k3c-dev` besiegt den Splitter-Titan an Tag 26; Mehr-Seed-Lauf `k3c-dev,1,2,3`: Goblin-Anführer 4/4 (Tag 5), Troll-König 4/4 (15), Ratten-Königin 4/4 (20), Lava-Golem 4/4 (22), Splitter-Titan 3/4 (32), Endboss 0/4 (dem Stufen-Test überlassen). Schiff: Kiel T1, Rumpf und Segel spät (Bericht).
+- Werte: `waves.json › perExtraPlayer` 0,5 → 0,25 (Commit 5125c425), neues Feld `bossHpPerExtraPlayer` 0,25 (B-650, 6fd5b4d6); Basiswerte unverändert (Regel 🧑: Coop nur über Multiplikatoren).
+- Weg dorthin (alles über Tickets belegt): B-645 (Bots), B-650, B-651 (Kristallhöhle: Pool-Hebel B/C/E gemessen und verworfen), B-652 (verteilte Mauern/Türme, Tor = äußerste Mauer, BS12) mit Endspiel-Bot (Commit e60e84e6).
+- `task balance:milestone` ersetzt die Workbench-Neubäume für Simuläufe (Commit 23141f44).
+- `task check:diff` grün.

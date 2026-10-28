@@ -1,6 +1,6 @@
 # BS3.4 · Meilenstein-Lauf coop2 standard läuft durch
 
-- **Status:** blockiert
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -55,10 +55,6 @@ Balancing nur über `sim_test`.
 
 ## Ergebnis
 
-**Blockiert/in Arbeit, Richtungswechsel von 🧑 (2026-10-26): erst Single-Player, erst Durchspielbarkeit sichern, Werte für coop2 später.**
-
-- Entscheidung B-645 (A): coop2 nutzt je Rolle die Bausteine von wirtschaft; sim_test offline mit players und vary (Werte nur für den Lauf).
-- Neu (Vorschlag 🧑): Stufen-Tests für ein komplettes Spiel mit einem Bot im Balance-Paket, Build-Tag fullgame, nicht in check:diff: task balance:fullgame STUFE=n (Datei fullgame_test.go, Taskfile balance). Stufe 1 Miniboss Wald ✅ (Tag 5), Stufe 2 tiefste Stufe erreicht ✅ (Tag 3), Stufe 3 alle vier Minibosse (aktuell 2 von 4: Troll-König ✅, Ratten-Königin ✗), Stufe 4 Endboss (offen). Sie laufen mit Dev-Hilfen (Dev-Baukosten, voller Vorrat, Grad dev); K3C_FULLGAME=ohne spielt ohne.
-- Bot-Regel gelernt: Der Bot darf eine Stufe erst verlassen, wenn ihr Miniboss besiegt ist (sonst fällt der Hub). Mit dem Tor baut er Hub-Stufe 5 und 10 Kämpfer in Wald, Höhle und Mine.
-- Nächste Schritte (je Stufe nur den aktuellen Test fahren): Stufe 3 (Ratten-Königin), dann Lava-Golem und Endboss; danach ohne Hilfen, dann coop2 mit Werten.
-- AC-05 weiter offen.
+**Abgeschlossen durch BS3.6 (2026-10-28).** Der Weg: Richtungswechsel von 🧑 (erst Single-Player, Durchspielbarkeit sichern, Stufen-Tests `task balance:fullgame`), Entscheidungen B-645, B-650, B-651, B-652 (BS12: verteilte Mauern/Türme, Tor = äußerste Mauer) und der Endspiel-Bot.
+- AC-05 (Fassung vom 2026-10-28, BS3 Revision 2: bis Splitter-Titan) → siehe BS3.6 › Ergebnis: Titan fällt bei `k3c-dev` an Tag 26, bei 3 von 4 Seeds an Tag 32; Endboss dem Stufen-Test überlassen.
+- Keine Werte-Runden in dieser Session; die Werte-Änderung steht in BS3.6 (`perExtraPlayer` 0,25, `bossHpPerExtraPlayer` 0,25).
