@@ -107,24 +107,23 @@ func stageSafe(w *sim.World) bool {
 	return w.Cycle.Phase == "day" && w.Cycle.Day >= minDescentDay && innerWallsBuilt(w)
 }
 
-// innerWallsBuilt: je Seite mit Linien steht die Mauer der innersten Linie (Index 1).
+// innerWallsBuilt: je Seite mit Mauer-Plätzen steht mindestens eine gebaute Mauer der Zone 1 (B-652).
 func innerWallsBuilt(w *sim.World) bool {
-	need := map[int]float64{}
-	for _, l := range w.Level.Lines {
-		if l.Index == 1 {
-			need[l.Side] = l.Wall
+	built := map[bool]bool{} // Seite (links = true) → in Zone 1 steht eine gebaute Mauer
+	sides := map[bool]bool{}
+	for _, s := range w.Sites {
+		if z, ok := sim.SiteZone(w, s); ok && z == 1 && s.Kind == "wall" {
+			left := s.X < w.HubX
+			sides[left] = true
+			built[left] = built[left] || s.State == "built"
 		}
 	}
-	for _, x := range need {
-		ok := false
-		for _, s := range w.Sites {
-			ok = ok || (s.Kind == "wall" && s.X == x && s.State == "built")
-		}
-		if !ok {
+	for side := range sides {
+		if !built[side] {
 			return false
 		}
 	}
-	return len(need) > 0
+	return len(sides) > 0
 }
 
 // deepestOf ist die tiefste Tiefe der Stufen der Insel.
