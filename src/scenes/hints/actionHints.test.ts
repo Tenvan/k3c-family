@@ -8,7 +8,7 @@ import { FONTS, minFontPx } from '../render/fontRules';
 
 const player = (over: Partial<Player> = {}): Player =>
   ({ id: 0, index: 0, x: 10, vx: 0, facing: 1, gold: 0, hp: 100, maxHp: 100, respawnIn: 0, payCooldown: 0, paying: false, payKey: null, payAmount: 0, points: 0, actions: [], ...over }) as Player;
-const site = (over: Partial<Site>): Site => ({ id: 1, kind: 'wall', x: 12, state: 'unpaid', paidGold: 0, buildProgress: 0, hp: 1, maxHp: 1, workerId: null, bows: 0, bowPaidGold: 0, ...over });
+const site = (over: Partial<Site>): Site => ({ id: 1, kind: 'wall', x: 12, state: 'unpaid', paidGold: 0, buildProgress: 0, hp: 1, maxHp: 1, workerId: null, bows: 0, bowPaidGold: 0, payable: true, ...over });
 const world = (sites: Site[]): World => ({ sites }) as unknown as World;
 
 const ALL: Hint[] = [
@@ -123,6 +123,7 @@ describe('playerHint: ein Hinweis je Spieler (B-319)', () => {
     const shop = site({ kind: 'workshop', state: 'built', bows: 0 });
     expect(playerHint(world([shop]), player({ actions: [{ action: 'attack' }] }), 'pad')).toBeNull();
     expect(playerHint(world([site({ x: 40 })]), player({ actions: [{ action: 'attack' }] }), 'pad')?.text).toBe('X: Schlag');
+    expect(playerHint(world([site({ payable: false })]), player({ actions: [{ action: 'attack' }] }), 'pad')?.text).toBe('X: Schlag'); // gesperrter Platz: kein Preisschild (B-653)
     const full = site({ kind: 'workshop', state: 'built', bows: 99 });
     expect(playerHint(world([full]), player({ actions: [{ action: 'attack' }] }), 'pad')?.text).toBe('X: Schlag');
   });

@@ -7,9 +7,9 @@ import { PRICE_TAG_RANGE } from './viewRules';
  * Preisschild in Reichweite, die übrigen entfallen. Reine Anzeige-Regel ohne Simulation.
  */
 
-/** Zeigt dieser Bauplatz ein Preisschild: unbezahlt oder gebaute Werkstatt mit freiem Bogen-Regal */
+/** Zeigt dieser Bauplatz ein Preisschild: unbezahlt und vom Server als bezahlbar gemeldet (`payable`, B-653), oder gebaute Werkstatt mit freiem Bogen-Regal */
 export function offersPrice(s: Site): boolean {
-  if (s.state === 'unpaid') return true;
+  if (s.state === 'unpaid') return s.payable === true;
   return s.state === 'built' && s.kind === 'workshop' && s.bows < (BUILDINGS.workshop.bowRack ?? 0);
 }
 

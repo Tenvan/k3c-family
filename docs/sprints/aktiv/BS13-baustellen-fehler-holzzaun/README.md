@@ -56,7 +56,7 @@ keine.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BS13.1 | `BS13.1-schilder-bauoptionen.md` | Umsetzung | autonom | offen |
+| BS13.1 | `BS13.1-schilder-bauoptionen.md` | Umsetzung | autonom | fertig |
 | BS13.2 | `BS13.2-holzzaun.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

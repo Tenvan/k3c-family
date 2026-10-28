@@ -21,8 +21,8 @@ export function mineSymbol(kind: string): string | null {
   return null;
 }
 
-/** Schild nur, wenn der Server den Knoten als abbaubar meldet; ohne Feld (älterer Server) nie */
-export const showsMineSign = (n: Pick<ResourceNode, 'minable'>): boolean => n.minable === true;
+/** Schild nur an einem zum Abbau markierten Knoten, anstelle des früheren Wimpels (B-653); unmarkiert nie */
+export const showsMineSign = (n: Pick<ResourceNode, 'marked'>): boolean => n.marked === true;
 
 const BOARD = 40;
 const STICK = 14;
