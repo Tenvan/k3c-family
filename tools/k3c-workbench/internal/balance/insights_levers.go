@@ -67,3 +67,29 @@ func (g LeverGroup) text() string {
 	}
 	return s
 }
+
+// recommendations ist ein Kopierblock mit dem Startvorschlag jeder Stellschraube als Wert-Variante (`datei.json:a.b.c=wert`),
+// je Zeile mit Kommentar (Ziele, Bereich). Ein Wert in Gegenrichtung zu einem Vorschlag mit mehr Verletzungen entfällt,
+// ebenso ein Hebel ohne seriösen Startwert (der steht im Kommentar-Block darunter).
+func recommendations(groups []LeverGroup) (Command, bool) {
+	var lines, skipped []string
+	taken := map[string]bool{}
+	for _, g := range groups {
+		switch {
+		case taken[g.Path]:
+			skipped = append(skipped, fmt.Sprintf("# %s: Gegenrichtung zu einem Vorschlag mit mehr Verletzungen, nicht mitgenommen.", g.Path))
+		case !g.Plan.Known:
+			skipped = append(skipped, fmt.Sprintf("# %s: Startwert nicht seriös abschätzbar, Wert von Hand wählen.", g.Path))
+		default:
+			taken[g.Path] = true
+			lines = append(lines, fmt.Sprintf("%s=%s  # %s; aktuell %s, Bereich %s … %s; verbessert: %s", g.Path, g.Plan.Start,
+				g.Plan.Label, g.Plan.Current, g.Plan.Min, g.Plan.Max, strings.Join(g.Targets, "; ")))
+		}
+	}
+	if len(lines) == 0 {
+		return Command{}, false
+	}
+	text := "# Empfehlungen aller Stellschrauben (Startvorschläge) als Wert-Varianten, ein Lauf mit allen zugleich:\n" +
+		strings.Join(append(lines, skipped...), "\n")
+	return Command{Label: "Alle Empfehlungen als ein Block", Where: WhereChat, Text: text}, true
+}

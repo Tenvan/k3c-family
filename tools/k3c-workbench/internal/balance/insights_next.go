@@ -109,6 +109,9 @@ func nextRun(in Insights, s Summary) NextRun {
 		n.Steps = append(n.Steps, "Hebel abstimmen: "+strings.Join(params, ", ")+" (Suche über höchstens drei Schritte).")
 		n.Commands = append(n.Commands, tuneCommands(params, s.Seeds)...)
 	}
+	if c, ok := recommendations(in.LeverGroups); ok {
+		n.Commands = append([]Command{c}, n.Commands...)
+	}
 	switch {
 	case in.Pass && in.Counts[LightYellow] == 0:
 		n.Steps = append(n.Steps, "Alle Ziele grün: Baseline neu schreiben (task balance:baseline), damit spätere Läufe dagegen vergleichen.")

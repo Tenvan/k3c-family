@@ -145,3 +145,27 @@ func TestLeverGroupsFassenZusammen(t *testing.T) {
 		t.Errorf("y.json:b hat keinen Konflikt: %+v", groups[2])
 	}
 }
+
+// Ein Kopierblock fasst alle Startvorschläge zusammen; Gegenrichtung und unbekannte Startwerte stehen nur als Kommentar.
+func TestRecommendationsEinBlock(t *testing.T) {
+	groups := []LeverGroup{
+		{Path: "x.json:a", Direction: "-", Targets: []string{"Ziel A", "Ziel B"}, Plan: LeverPlan{Label: "A senken", Known: true, Current: "100", Min: "70", Max: "100", Start: "90"}},
+		{Path: "x.json:a", Direction: "+", Targets: []string{"Ziel C"}, Plan: LeverPlan{Known: true, Start: "110"}},
+		{Path: "y.json:b", Direction: "+", Targets: []string{"Ziel D"}, Plan: LeverPlan{Label: "B erhöhen"}},
+	}
+	c, ok := recommendations(groups)
+	if !ok || c.Where != WhereChat {
+		t.Fatalf("Befehl: %+v %v", c, ok)
+	}
+	for _, w := range []string{"x.json:a=90  # A senken; aktuell 100, Bereich 70 … 100; verbessert: Ziel A; Ziel B", "# x.json:a: Gegenrichtung", "# y.json:b: Startwert nicht seriös"} {
+		if !strings.Contains(c.Text, w) {
+			t.Errorf("%q fehlt in\n%s", w, c.Text)
+		}
+	}
+	if strings.Contains(c.Text, "=110") {
+		t.Errorf("Gegenrichtung darf keinen Wert liefern:\n%s", c.Text)
+	}
+	if _, ok := recommendations(nil); ok {
+		t.Error("ohne Stellschrauben kein Block")
+	}
+}
