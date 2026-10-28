@@ -15,6 +15,16 @@ import (
 // buildOrder: unbezahlte Plätze in dieser Reihenfolge, je Art der nächste bezahlbare.
 var buildOrder = []string{"wall", "tower", "farm", "workshop"}
 
+// deepBuildOrder gilt unter Tage: die Werkstatt zuerst, ohne sie entstehen keine Bögen, und jede Welle räumt sie ab (B-652).
+var deepBuildOrder = []string{"workshop", "wall", "tower", "farm"}
+
+func buildOrderOf(w *sim.World) []string {
+	if w.Biome.Depth >= 1 {
+		return deepBuildOrder
+	}
+	return buildOrder
+}
+
 const (
 	woodWant     = 150 // Holz, das er im Vorrat halten will (Korridor ≥ 100 plus ein Bogen); darunter markiert er Bäume
 	peasantLimit = 4   // so viele Bauern wirbt er höchstens an (Arbeiter und Träger der Bögen); ab 6 fehlt das Gold für Mauern und Bögen, Nacht 5 vernichtet alles (B-645, Hebel 3)
@@ -77,7 +87,7 @@ func nextBuild(w *sim.World, p *sim.Player, reserve int) *sim.Site {
 	if waitingMaterial(w) {
 		return nil
 	}
-	for _, kind := range buildOrder {
+	for _, kind := range buildOrderOf(w) {
 		if s := nearestPayable(w, p, kind, "unpaid", reserve); s != nil && covers(*w.Stock, prices.cost[kind]) {
 			return s
 		}
@@ -171,7 +181,7 @@ func nodeFor(w *sim.World, p *sim.Player, need sim.Cost) *sim.ResourceNode {
 	var best *sim.ResourceNode
 	for _, n := range w.Nodes {
 		np, ok := prices.nodes[n.Kind]
-		if !ok || n.Marked || p.Gold < np.MarkCost-n.PaidGold || nearAny(n.X, blocked) ||
+		if !ok || n.Marked || p.Gold < np.MarkCost-n.PaidGold || nearAny(n.X, blocked) || nearLair(w, n.X) ||
 			amountOf(*w.Stock, np.Resource)+pending[np.Resource] >= costOf(need, np.Resource) {
 			continue
 		}

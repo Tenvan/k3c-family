@@ -72,3 +72,20 @@ func wanted(w *sim.World, s *sim.Site) bool {
 	}
 	return true
 }
+
+// lairSafeUnits ist der Abstand zum Bau des Endbosses, den der Bot beim Markieren und Sammeln hält: Wer dort hinläuft, weckt den
+// Endboss (lair.triggerUnits 15) und seine Beschwörung räumt das Heer ab (B-652: Kristall-Knoten am Bau, Tag 27).
+const lairSafeUnits = 60.0
+
+// nearLair: x liegt nahe am Bau des Endbosses dieser Stufe, solange das Heer ihn nicht tragen kann (< endbossWant Kämpfer).
+func nearLair(w *sim.World, x float64) bool {
+	if sim.EconomyOf(w).Fighters >= endbossWant {
+		return false
+	}
+	for _, e := range w.Level.Entities {
+		if e.Kind == "lair" && math.Abs(e.X-x) < lairSafeUnits {
+			return true
+		}
+	}
+	return false
+}
