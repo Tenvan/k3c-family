@@ -5,6 +5,8 @@ const R = JSON.parse(document.getElementById('report-data').textContent);
 const A = JSON.parse(document.getElementById('report-assets').textContent || '{}');
 const LIGHTS = { green: 'gut', yellow: 'knapp', red: 'verletzt', grey: 'ungültig' };
 const $ = (id) => document.getElementById(id);
+// Kompakt-Ansicht (B-649): ?kompakt=1 oder data-view="kompakt"; Standard ist die vollständige Ansicht.
+const COMPACT = /[?&]kompakt=1/.test(location.search) || document.documentElement.dataset.view === 'kompakt';
 
 function el(tag, attrs, ...kids) {
   const e = document.createElement(tag);
@@ -140,7 +142,7 @@ function renderBullets(id, items, emptyText) {
 }
 
 // ---------- Ziele: Filter, Tabelle, Details ----------
-const filter = { light: '', grade: '', scenario: '', q: '' };
+const filter = { light: '', grade: '', scenario: '', q: '', green: !COMPACT };
 
 function toggleLight(light) {
   filter.light = filter.light === light ? '' : light;
@@ -162,6 +164,10 @@ function renderFilters() {
     f.append(el('button', { class: 'chip', type: 'button', 'data-light': light, onclick: () => toggleLight(light) }, dot(light), LIGHTS[light]));
   }
   const uniq = (key) => [...new Set((R.targets || []).map((t) => t[key]))].sort();
+  if (COMPACT && (R.counts || {}).green) {
+    f.append(el('button', { class: 'chip', type: 'button', onclick: (e) => { filter.green = !filter.green; e.currentTarget.classList.toggle('on', filter.green); applyFilter(); } },
+      dot('green'), (R.counts.green) + ' im Korridor anzeigen'));
+  }
   f.append(select('grade', 'Grad', uniq('grade')), select('scenario', 'Szenario', uniq('scenario')));
   const q = el('input', { type: 'search', placeholder: 'Suche …', 'aria-label': 'Ziele durchsuchen' });
   q.addEventListener('input', () => { filter.q = q.value.toLowerCase(); applyFilter(); });
@@ -171,7 +177,7 @@ function renderFilters() {
 function applyFilter() {
   for (const tr of document.querySelectorAll('#targets tr.row')) {
     const t = R.targets[+tr.dataset.i];
-    const ok = (!filter.light || t.light === filter.light) && (!filter.grade || t.grade === filter.grade) &&
+    const ok = (filter.green || t.light !== 'green' || filter.light === 'green') && (!filter.light || t.light === filter.light) && (!filter.grade || t.grade === filter.grade) &&
       (!filter.scenario || t.scenario === filter.scenario) && (!filter.q || (t.name + ' ' + t.measure).toLowerCase().includes(filter.q));
     tr.hidden = !ok;
     if (!ok) tr.nextElementSibling.hidden = true;
@@ -216,7 +222,7 @@ function leverList(levers, plans) {
   if (!levers || !levers.length) return el('p', { class: 'empty' }, 'Keine Hebel hinterlegt.');
   return el('div', {}, levers.map((l, i) => el('div', { class: 'lever' },
     el('b', { class: l.direction === '+' ? 'l-green' : 'l-red' }, l.direction === '+' ? '▲' : '▼'),
-    el('span', {}, l.label, ' ', el('code', {}, l.path), plans && plans[i] ? el('div', { class: 'why' }, plans[i].text) : null))));
+    el('span', {}, l.label, ' ', el('code', {}, l.path), plans && plans[i] ? el('div', { class: 'why' }, planText(plans[i])) : null, plans && plans[i] ? rangeBar(plans[i]) : null))));
 }
 
 function targetDetail(t) {
@@ -227,7 +233,7 @@ function targetDetail(t) {
     el('div', {}, el('p', { class: 'why' }, t.plain, t.trendText ? ' ' + t.trendText : ''),
       el('div', {}, el('span', { class: 'tag' }, t.measure), ' ', el('span', { class: 'tag' }, t.kind === 'share' ? 'Anteil' : 'Median'),
       ' ', el('code', {}, t.rule)),
-    seeds(t.failSeeds, 'Seeds zum Nachspielen'), seeds(t.invalidSeeds, 'Ungültige Seeds'),
+    hintLine(t), seeds(t.failSeeds, 'Seeds zum Nachspielen'), seeds(t.invalidSeeds, 'Ungültige Seeds'),
     t.failSeeds && t.failSeeds.length ? el('button', { class: 'btn small', type: 'button', onclick: () => copy(t.failSeeds.join(',')) }, 'Seeds kopieren') : null),
     el('div', {}, el('b', {}, 'Hebel'), leverList(t.levers, t.plans)))));
 }

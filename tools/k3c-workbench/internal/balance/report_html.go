@@ -16,11 +16,11 @@ import (
 // HTML-Bericht (B-632): eine Datei ohne externe Ressourcen. Vorlage, Stil und Skripte liegen in report/ (embed), die
 // Auswertung kommt als JSON hinein, Spielgrafiken aus public/ als data-URIs (erster Frame, ohne transparenten Rand).
 
-//go:embed report/report.html report/report.css report/report-core.js report/report-charts.js report/report-next.js
+//go:embed report/report.html report/report.css report/report-core.js report/report-charts.js report/report-view.js report/report-next.js
 var reportFiles embed.FS
 
 // reportScripts in Lade-Reihenfolge: core definiert die Hilfen, next startet.
-var reportScripts = []string{"report-core.js", "report-charts.js", "report-next.js"}
+var reportScripts = []string{"report-core.js", "report-charts.js", "report-view.js", "report-next.js"}
 
 // reportAsset ist eine Grafik des Berichts: Datei unter public/ und Breite eines Frames (0 = ganzes Bild, sonst der
 // erste Frame eines waagrechten Streifens bzw. das Feld oben links).
