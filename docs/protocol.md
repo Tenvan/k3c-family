@@ -491,6 +491,8 @@ danach und rechnet nichts nach; ein älterer Server ohne Felder zeigt kein Schil
 
 **Erst roden (B-636, B-652):** `sites[].clearing` ist `true`, wenn der Platz seine Hub-Stufe erreicht hat, aber im Freiraum noch Bäume oder Felsen stehen (Baumschule, Mauer, Turm: `sim.SiteNeedsClearing`); der Platz ist dann nicht `payable`. Fehlt bei `false` (additiv, Protokoll-Version unverändert); der Client zeigt „erst roden“ statt des Bau-Schilds (Darstellung kommt mit BS6, bis dahin zeigt er kein Schild). Geprüft von `TestBaumschuleErstNachDemRoden` (`engine/sim/building_plantation_test.go`) und `TestClearingImSnapshot` (`engine/net/payable_test.go`).
 
+**Schiff (B-637, BS5):** Der Hafen-Chunk der Stufe 0 (`harbor`) trägt einen Bauplatz `sites[].kind = "ship"` (letzter Eintrag der Liste, ohne Hub-Stufe und Linie bezahlbar). Seine Abschnitte (Kiel, Rumpf, Segel aus `data/ship.json`) sind die Stufen des Platzes: `level` 1 bis 3, `upgrade` und `upgradePaid` zeigen den laufenden Abschnitt wie bei Mauer und Turm. Fertig ist das Schiff mit `level` 3 (gebaut, kein `upgrade`). Mit besiegtem Endboss und fertigem Schiff öffnet `islandSwitch.open` (Ereignis `islandGateOpen` mit dem `x` des Stegs); der Wechsel läuft, wenn alle lebenden Spieler am Steg stehen. Keine neuen Felder, Protokoll-Version unverändert. Geprüft von `TestSchiffInAbschnittenBauen`, `TestInselwechselBrauchtFertigesSchiff` und `TestSchiffSpielstandRundlauf` (`engine/sim/ship_test.go`).
+
 **Berufe:** `troops[].profession` (`miner`, `builder`, `craftsman`; fehlt = keiner) und `troops[].workSite` (Site-ID
 des Arbeitsplatzes, fehlt = keiner). Berufswahl, Tausch und Hub-Ausbau als Eingabe stehen in W5.2.
 

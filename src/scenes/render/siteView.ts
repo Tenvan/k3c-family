@@ -38,6 +38,7 @@ export const SITE_SIZE: Record<Site['kind'], [number, number]> = {
   healer: [100, 100],
   smithy: [120, 110],
   armory: [130, 120],
+  ship: [170, 110], // vorläufig, die Grafik des Schiffs folgt mit BS10
 };
 const SITE_COLOR: Record<Site['kind'], number> = {
   wall: 0x8d99ae,
@@ -52,6 +53,7 @@ const SITE_COLOR: Record<Site['kind'], number> = {
   healer: 0xe5e5e5,
   smithy: 0x495057,
   armory: 0x5c677d,
+  ship: 0x4a6fa5,
 };
 
 /** Nur die zugeordneten Gebäude-Grafiken laden (LoadScene.preload) */

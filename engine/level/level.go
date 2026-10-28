@@ -54,7 +54,11 @@ type Layout struct {
 // eventKinds in fester Reihenfolge wie `EVENT_KINDS` in TS.
 var eventKinds = []string{"chest", "recruitCamp"}
 
-func isEvent(kind string) bool { return kind == "chest" || kind == "recruitCamp" }
+func isEvent(kind string) bool { return kind == "chest" || kind == "recruitCamp" || kind == HarborKind }
+
+// HarborKind ist die Chunk-Art des Hafens (BAS, B-637, docs/rules/geplante-chunks.md § 10): ein geplanter Chunk mit
+// genau einem festen Objekt in der Mitte, kein Zufalls-Ereignis (nicht in eventKinds) und nicht in den Biom-Summen.
+const HarborKind = "harbor"
 
 // gen hält den Zustand während der Erzeugung; "" in kinds heißt: Chunk noch frei.
 type gen struct {

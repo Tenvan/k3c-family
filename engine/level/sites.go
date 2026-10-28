@@ -223,7 +223,7 @@ func (g *gen) blockedXs(entities []Entity) []float64 {
 	}
 	for _, e := range entities {
 		switch e.Kind {
-		case "castle", "portal", "exit", "chest", "recruitCamp", "lair":
+		case "castle", "portal", "exit", "chest", "recruitCamp", "lair", HarborKind:
 			out = append(out, e.X)
 		default:
 			if strings.HasSuffix(e.Kind, "Vein") { // feste und gewürfelte Adern: die Plätze halten Abstand

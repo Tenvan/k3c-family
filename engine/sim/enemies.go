@@ -167,9 +167,10 @@ func stunned(e *Enemy, dt float64) bool {
 func isBarrier(s *Site) bool { return s.Kind == "wall" && s.State == "built" }
 
 // isBuilding: übrige gebaute Gebäude (Heilplatz, Taverne, Lager, Schmiede, Rüstkammer, Werkstatt, Baumschule, Kaserne) sind
-// Ziele der Gegner (gegner.md § 4). Mauer und Tor halten auf, Türme sind Ziele der Fernkämpfer, Treppen Reisepunkte.
+// Ziele der Gegner (gegner.md § 4). Mauer und Tor halten auf, Türme sind Ziele der Fernkämpfer, Treppen Reisepunkte; das
+// Schiff ist kein Ziel (B-637, Default: Gegner zerstören es nicht).
 func isBuilding(s *Site) bool {
-	return s.State == "built" && !isBarrier(s) && !slices.Contains([]string{"tower", "stairsUp", "stairsDown"}, s.Kind)
+	return s.State == "built" && !isBarrier(s) && !slices.Contains([]string{"tower", "stairsUp", "stairsDown", shipKind}, s.Kind)
 }
 
 func blockingWall(w *World, e *Enemy, dir float64) *Site {

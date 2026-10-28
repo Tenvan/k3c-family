@@ -18,7 +18,7 @@ import (
 
 // nordmeerRaw ist eine Test-Welt mit zwei Inseln (nicht aus data/worlds/).
 const nordmeerRaw = `{"id":"nordmeer","name":"Nordmeer","islands":[` +
-	`{"id":"island1","name":"Insel 1","depths":[0,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1}},` +
+	`{"id":"island1","name":"Insel 1","depths":[0,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1},"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}},` +
 	`{"id":"eisinsel","name":"Eisinsel","depths":[0,4],"depthScaling":{"hp":1.6,"damage":1.4,"speed":1.15}}]}`
 
 // worldFixture ist ein Manager im Dev-Mode mit dem Test-Ordner der Welten und einem Log.

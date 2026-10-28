@@ -188,7 +188,7 @@ func TestZonenInselJedeStufeEigeneSites(t *testing.T) {
 			if _, ok := levelSite(w, s); ok {
 				sites++
 			}
-			if j > 0 && s.X < w.Sites[j-1].X && s.Kind != "storage" {
+			if j > 0 && s.X < w.Sites[j-1].X && s.Kind != "storage" && s.Kind != shipKind {
 				t.Errorf("Stufe %d: Platz %s@%v vor %s@%v nicht nach X", i, s.Kind, s.X, w.Sites[j-1].Kind, w.Sites[j-1].X)
 			}
 		}

@@ -23,10 +23,23 @@ func nordmeerGate(t *testing.T) (*fixture, *Room, *stagePeer, *stagePeer) {
 	if len(gate.Players) != 2 || gate.Biome.Depth != 4 {
 		t.Fatalf("Spieler in Tiefe %d: %d", gate.Biome.Depth, len(gate.Players))
 	}
-	for _, p := range gate.Players {
-		p.X = gate.HubX
-	}
+	boardHarbor(r.isl)
 	return f, r, x, h
+}
+
+// boardHarbor baut das Schiff fertig und stellt alle Spieler (Stufe 1, tiefste) an den Steg des Hafens (Stufe 0).
+func boardHarbor(isl *sim.Island) {
+	sim.DevBuildAll(isl, 5)
+	harbor, deep := isl.Stages[0], isl.Stages[1]
+	for _, s := range harbor.Sites {
+		if s.Kind != "ship" {
+			continue
+		}
+		for _, p := range deep.Players {
+			p.X = s.X
+		}
+	}
+	harbor.Players, deep.Players = append(harbor.Players, deep.Players...), nil
 }
 
 func TestKampfInselwechselErstBeiSwitchReady(t *testing.T) {
@@ -107,10 +120,7 @@ func TestKampfInselwechselEreignisErreichtGeraete(t *testing.T) {
 	x, h := &switchPeer{}, &switchPeer{}
 	r := need(f.m.Create("xbox", x, "stufen", true, 4, []int{0}, Options{World: "nordmeer"}))(t)
 	need(f.m.Join("handy", h, r.Code, []int{0}))(t)
-	gate := r.isl.Stages[1]
-	for _, p := range gate.Players {
-		p.X = gate.HubX
-	}
+	boardHarbor(r.isl)
 	old, xi, hi := r.isl, len(x.msgs), len(h.msgs)
 	old.EndbossDefeated = true
 	for i := 0; i < 120 && r.isl == old; i++ {
@@ -119,9 +129,9 @@ func TestKampfInselwechselEreignisErreichtGeraete(t *testing.T) {
 	if r.isl == old {
 		t.Fatal("Insel nicht getauscht")
 	}
-	want := []string{"state 1", "islandSwitch 1", "level 0", "state 0"}
+	want := []string{"state 0", "islandSwitch 0", "level 0", "state 0"} // der Steg liegt in Stufe 0 (Hafen)
 	for name, got := range map[string][]string{"Xbox": x.since(xi), "Handy": h.since(hi)} {
-		if i := slices.Index(got, "islandSwitch 1"); i < 1 || !slices.Equal(got[i-1:], want) {
+		if i := slices.Index(got, "islandSwitch 0"); i < 1 || !slices.Equal(got[i-1:], want) {
 			t.Errorf("%s: %v", name, got)
 		}
 	}

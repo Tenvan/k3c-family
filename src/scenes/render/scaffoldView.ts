@@ -24,6 +24,7 @@ export const SCAFFOLD_CLASS: Record<SiteKind, ScaffoldClass> = {
   healer: 6,
   smithy: 6,
   armory: 6,
+  ship: 6,
 };
 
 export const SCAFFOLD_CLASSES: readonly ScaffoldClass[] = [1, 2, 3, 4, 6];

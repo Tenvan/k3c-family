@@ -123,7 +123,8 @@ export interface ResourceNode {
 }
 
 /** Jedes Gebäude aus data/buildings.json außer der Burg kann ein Bauplatz sein (der Server legt sie aus den Daten an). */
-export type SiteKind = Exclude<keyof typeof buildingsJson, 'castle'>;
+// `ship` ist der Schiffs-Platz des Hafens (B-637); seine Werte stehen in data/ship.json, nicht in buildings.json.
+export type SiteKind = Exclude<keyof typeof buildingsJson, 'castle'> | 'ship';
 export type SiteState = 'unpaid' | 'waitingMaterial' | 'waitingWorker' | 'built';
 
 export interface Site {

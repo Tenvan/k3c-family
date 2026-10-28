@@ -1,14 +1,14 @@
-# BS5 · SIM · Hafen-Chunk, Schiff bauen und Inselwechsel am Hafen
+# BS5 · SIM, SRV · Hafen-Chunk, Schiff bauen und Inselwechsel am Hafen
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** BAS
-- **Domäne:** SIM
-- **Reife:** Entwurf
+- **Domäne:** SIM, SRV
+- **Reife:** bereit
 - **Tickets:** B-637, B-638
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 5d51f15b
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude (2026-10-28, Defaults aus B-637)
 
 ## Ausgangslage
 
@@ -56,6 +56,12 @@ keine (Defaults aus BS2).
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BS5.1 | `BS5.1-harbor-chunk.md` | Umsetzung | autonom | fertig |
+| BS5.2 | `BS5.2-schiff-bauen.md` | Umsetzung | autonom | fertig |
+| BS5.3 | `BS5.3-protokoll-spielstand.md` | Umsetzung | autonom | fertig |
+
 Reife Entwurf, Stichpunkte:
 - BS5.1 · SIM · Chunk-Art `harbor` im Generator (AC-01)
 - BS5.2 · SIM · Schiff bauen, Wechselbedingung (AC-02)
@@ -64,5 +70,4 @@ Reife Entwurf, Stichpunkte:
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-29, Claude (autonom): AC-01 bis AC-03 erfüllt (BS5.1 bis BS5.3: harbor-Chunk Slot −7 in standard.json, Platz `ship` mit drei Abschnitten aus data/ship.json, Wechsel nur mit fertigem Schiff + Endboss + allen am Steg, Spielstand-Rundlauf, Protokoll-Absatz). Review (Sonnet): Gate-Reset bei Schiffverlust, Schiff aus allBuilt ausgenommen, Welten ohne Hafen auf nicht-letzter Insel werden abgelehnt (gewollt). Offen: Client (BS6, B-637/AC-05), Bots (BS9), Standard-Welt hat nur eine Insel, der Wechsel greift erst mit Insel 2.

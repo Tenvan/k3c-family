@@ -36,7 +36,7 @@ func TestCreateMitSeedUndTiefe(t *testing.T) {
 		seedOfAPI  string
 	}{
 		{"probe", "Familie-2026 ÄÖ", 1, "cave", "Familie-2026 ÄÖ"},
-		{"nur-name", "", 0, "forest", "nur-name"},
+		{"nur-name", "", 3, "ironhold", "nur-name"}, // Tiefe 0 trägt den geplanten Hafen (B-637), /api/level kennt keine Planung
 		{"mine-lang", strings.Repeat("ü", 64), 2, "mine", strings.Repeat("ü", 64)},
 	}
 	for _, c := range cases {

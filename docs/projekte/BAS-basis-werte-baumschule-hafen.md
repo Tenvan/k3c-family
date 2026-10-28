@@ -29,7 +29,7 @@ Erledigt, wenn M4 erreicht ist und BS6 und BS10 am Gerät abgenommen sind.
 | BS7 | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | aktiv |
 | BS4 | Baumschule auf gerodeten Waldbauplätzen | erledigt |
 | BS8 | **Meilenstein 2:** Bots und Delta-Runde Baumschule | geplant |
-| BS5 | Hafen-Chunk, Schiff bauen, Inselwechsel am Hafen (Server) | geplant |
+| BS5 | Hafen-Chunk, Schiff bauen und Inselwechsel am Hafen | erledigt |
 | BS9 | **Meilenstein 3:** Bots bauen das Schiff, Delta-Runde Schiff | geplant |
 | BS6 | Client: Baumschule, Hafen und Schiff, neue Münzskala, **Meilenstein 4** | geplant |
 | BS10 | Grafiken für Hafen und Schiff | geplant |

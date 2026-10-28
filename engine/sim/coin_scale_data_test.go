@@ -86,8 +86,9 @@ func TestSchiffskostenInDenDaten(t *testing.T) {
 		Version int
 		Notes   string
 		Stages  []struct {
-			ID, Name string
-			Cost     Cost
+			ID, Name          string
+			Cost              Cost
+			HP, BuildSeconds float64
 		}
 	}
 	d2 := json.NewDecoder(bytes.NewReader(raw))

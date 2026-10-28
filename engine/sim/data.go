@@ -136,7 +136,7 @@ type HubData struct {
 }
 
 var (
-	buildings = load[map[string]BuildingData]("buildings.json")
+	buildings = withShip(load[map[string]BuildingData]("buildings.json"), load[shipFile]("ship.json"))
 	troops    = load[map[string]TroopData]("troops.json")
 	economy   = load[struct {
 		Purse                                               struct{ StartGold, MaxGold int }
@@ -195,12 +195,13 @@ func loadFrom[T any](fsys fs.FS, name string, dst *T) error {
 // Nicht nebenläufig zu laufenden Simulationen aufrufen.
 func UseData(fsys fs.FS) error {
 	b, t, e, h, m, en, w := buildings, troops, economy, hub, monarch, enemyData, waves
-	if err := errors.Join(loadFrom(fsys, "buildings.json", &b), loadFrom(fsys, "troops.json", &t),
+	var ship shipFile
+	if err := errors.Join(loadFrom(fsys, "buildings.json", &b), loadFrom(fsys, "ship.json", &ship), loadFrom(fsys, "troops.json", &t),
 		loadFrom(fsys, "economy.json", &e), loadFrom(fsys, "hub.json", &h), loadFrom(fsys, "monarch.json", &m),
 		loadEnemies(fsys, &en), loadFrom(fsys, "waves.json", &w), checkPresets(m), checkWaves(w)); err != nil {
 		return err
 	}
-	buildings, troops, economy, hub, monarch, enemyData, waves = b, t, e, h, m, en, w
+	buildings, troops, economy, hub, monarch, enemyData, waves = withShip(b, ship), t, e, h, m, en, w
 	return nil
 }
 

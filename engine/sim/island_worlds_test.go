@@ -44,7 +44,7 @@ func parseTestWorld(fields string) (WorldDef, error) {
 }
 
 func TestWeltAusMapFSLaden(t *testing.T) {
-	raw := `{"id":"nordmeer","name":"Nordmeer","notes":"Entwurf","islands":[` + testIsland("island1", `,"plannedChunks":{}`) + `,` +
+	raw := `{"id":"nordmeer","name":"Nordmeer","notes":"Entwurf","islands":[` + testIsland("island1", `,"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}`) + `,` +
 		testIsland("eisinsel", `,"depths":[0,4],"chunkCounts":{"0":24},"plannedChunks":{"0":[{"slot":-3,"kind":"clearing","seed":"lichtung"}]}`) + `]}`
 	w, err := LoadWorld(fstest.MapFS{"nordmeer.json": {Data: []byte(raw)}}, "nordmeer")
 	if err != nil {
@@ -83,8 +83,8 @@ func TestEingebetteteWeltenGueltig(t *testing.T) {
 	}
 }
 
-// AC-02: Die Liste islands von standard.json ist byte-gleich zu data/islands.json auf origin/develop vor WZ18.2
-// (Hash belegt per `git show 9c54de70:data/islands.json`, Zeilenenden auf LF normiert).
+// AC-02: Die Liste islands von standard.json ist unverändert gegenüber data/islands.json vor WZ18.2 (Hash von damals,
+// Zeilenenden auf LF normiert) plus dem Hafen auf Insel 1 Tiefe 0 (BS5.1, B-637); der Hash gilt für den Stand mit Hafen.
 func TestStandardWeltGleichBisherigenInseln(t *testing.T) {
 	raw, err := fs.ReadFile(data.Files, "worlds/standard.json")
 	if err != nil {
@@ -95,12 +95,23 @@ func TestStandardWeltGleichBisherigenInseln(t *testing.T) {
 		t.Fatal(err)
 	}
 	sum := sha256.Sum256(bytes.ReplaceAll(head.Islands, []byte("\r\n"), []byte("\n")))
-	if got := hex.EncodeToString(sum[:]); got != "1c1532aced9af2edf23976472480183f2211fb060e5d82ab6fd224fb6d3812a2" {
+	if got := hex.EncodeToString(sum[:]); got != "e6769fbf9c015a49457f517b4518617037f349264e94b5d50ced75ce21b2ff8e" {
 		t.Errorf("islands geändert (sha256 %s)", got)
 	}
 }
 
 // AC-02: Jeder Fehlerfall wird abgelehnt; die Meldung nennt Datei (Welt), Insel, Tiefe und Platz, soweit vorhanden.
+// BS5.1 (B-637): Eine Insel, die nicht die letzte der Welt ist, braucht den Hafen in Tiefe 0.
+func TestWeltOhneHafenAbgelehnt(t *testing.T) {
+	raw := testWorld(testIsland("a", "") + "," + testIsland("b", ""))
+	if _, err := ParseWorld(raw, "test"); err == nil || !strings.Contains(err.Error(), "Insel a: kein Hafen") {
+		t.Errorf("Welt ohne Hafen: Fehler %v", err)
+	}
+	if _, err := ParseWorld(testWorld(testIsland("a", `,"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}`)+","+testIsland("b", "")), "test"); err != nil {
+		t.Errorf("Welt mit Hafen: %v", err)
+	}
+}
+
 func TestWeltFehlerNennenOrt(t *testing.T) {
 	const file = "data/worlds/test.json: "
 	island := func(fields string) []byte { return testWorld(testIsland("a", fields)) }

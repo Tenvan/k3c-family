@@ -66,6 +66,7 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 		w.Sites = append(w.Sites, emptySite(w, s.kind, s.x))
 	}
 	addRuinSites(w)
+	addShipSite(w)
 	for i := range hub.StartTroops.Peasant {
 		t := spawnVagrant(w, hubX, hubX+2+float64(i))
 		t.Kind, t.HP, t.MaxHP = "peasant", troops["peasant"].HP, troops["peasant"].HP

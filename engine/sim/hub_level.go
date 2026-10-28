@@ -84,7 +84,7 @@ func nextLevel(w *World, s *Site) *LevelData {
 		levels = hubOf(w).Levels
 	}
 	n := levelOf(w, s) + 1
-	if s.State != "built" || n > len(levels) || (s != w.hubSite && w.HubLevel < n) {
+	if s.State != "built" || n > len(levels) || (s != w.hubSite && s.Kind != shipKind && w.HubLevel < n) {
 		return nil
 	}
 	next := levels[n-1]
