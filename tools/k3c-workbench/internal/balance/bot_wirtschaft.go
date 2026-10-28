@@ -114,7 +114,7 @@ func hubStep(w *sim.World, p *sim.Player) (*float64, int) {
 // fighterStep: die nächste Werkstatt, die einen Bogen nimmt (Gold für den Rest plus Rücklage), solange ein Bauer ihn
 // holen kann und weniger als fighterWant Kämpfer da sind; nil sonst.
 func fighterStep(w *sim.World, p *sim.Player, reserve int) *float64 {
-	if peasants(w) == 0 || sim.EconomyOf(w).Fighters >= fighterWant {
+	if peasants(w) == 0 || sim.EconomyOf(w).Fighters >= fighterTarget(w) {
 		return nil
 	}
 	if s := nearestPayable(w, p, "workshop", "built", reserve); s != nil {
@@ -227,4 +227,15 @@ func costOf(c sim.Cost, r string) int {
 		return c.Crystal
 	}
 	return 0
+}
+
+// fighterTarget: so viele Kämpfer will der Bot in dieser Stufe; in der Stufe mit dem Bau des Endbosses sind es endbossWant, damit
+// das Heer den Endboss tragen kann (B-652), sonst fighterWant.
+func fighterTarget(w *sim.World) int {
+	for _, e := range w.Level.Entities {
+		if e.Kind == "lair" {
+			return endbossWant
+		}
+	}
+	return fighterWant
 }

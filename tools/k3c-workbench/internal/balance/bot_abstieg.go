@@ -20,11 +20,15 @@ import (
 // minDescentDay ist der früheste Tag des Abstiegs (Tag 1 gehört dem Aufbau der ersten Mauern).
 const minDescentDay = 2
 
+// descentWood ist das Holz, das im Insel-Vorrat liegen soll, bevor der Bot absteigt: Unter Tage wächst kein Holz, Mauern, Türme und
+// Werkstatt der tiefen Stufe brauchen aber welches; ohne Reserve warten sie ewig auf Material (B-652, Höhle).
+const descentWood = 400
+
 // withDescent legt den Abstieg über ein Profil.
 func withDescent(inner Bot, isl *sim.Island, deepest int) Bot {
 	return func(w *sim.World, p *sim.Player) sim.PlayerCommand {
 		if x, ok := descentX(w, deepest); ok && mayDescend(isl, w, p) && stageSafe(w) {
-			if miniDefeated(isl, w.Biome.Depth) {
+			if miniDefeated(isl, w.Biome.Depth) && (w.Stock.Wood >= descentWood || w.Biome.Depth > 0) {
 				return goTo(p, x, false)
 			}
 			// Unter Tage kommt der Miniboss mit der Welle, und die füllt der Aggressionspool. Erst die Armee: Ein Miniboss mit
