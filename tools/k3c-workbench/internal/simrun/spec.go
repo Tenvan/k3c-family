@@ -15,21 +15,23 @@ import (
 // Spec ist ein Offline-Lauf der Balancing-Seite; jedes Feld wird ein Flag der Balance-CLI (internal/balance/cmd).
 // Null bzw. leer heißt: Flag weglassen, die CLI nimmt alle Ziele aus data/balance-targets.json.
 type Spec struct {
-	Seeds   int      `json:"seeds,omitempty"`
+	Seeds int `json:"seeds,omitempty"`
 	// SeedList: genau diese Seeds (--seed-list, B-634) statt der ersten Seeds bzw. des Seed-Modus der Datei.
 	SeedList []string `json:"seedList,omitempty"`
-	Depth   *int     `json:"depth,omitempty"` // 0 ist Wald, daher Zeiger: nil = Tiefe des Ziels
-	Players int      `json:"players,omitempty"`
-	Bot     string   `json:"bot,omitempty"`
-	Grade   string   `json:"grade,omitempty"`
-	Days    int      `json:"days,omitempty"`
+	Depth    *int     `json:"depth,omitempty"` // 0 ist Wald, daher Zeiger: nil = Tiefe des Ziels
+	Players  int      `json:"players,omitempty"`
+	Bot      string   `json:"bot,omitempty"`
+	Grade    string   `json:"grade,omitempty"`
+	Days     int      `json:"days,omitempty"`
 	// World (BS11, B-642): Welt-ID aus data/worlds; der Lauf spielt die ganze erste Insel statt einer Stufe.
 	World string `json:"world,omitempty"`
 	// Helps: Dev-Hilfen wie im Stufen-Test (hilfen, voll, boss), nur mit World.
-	Helps string `json:"helps,omitempty"`
-	Vary    []string `json:"vary,omitempty"` // datei.json:pfad.zum.wert=wert
-	Label   string   `json:"label,omitempty"`
-	Tune    *Tune    `json:"tune,omitempty"` // automatisches Balancing (WZ28.6), Ergebnis tuning-*.json
+	Helps string   `json:"helps,omitempty"`
+	Vary  []string `json:"vary,omitempty"` // datei.json:pfad.zum.wert=wert
+	Label string   `json:"label,omitempty"`
+	// Baseline: Name einer gesicherten Baseline (reports/baseline/<name>/, B-640) als Vergleich statt der Baseline des Repos.
+	Baseline string `json:"baseline,omitempty"`
+	Tune     *Tune  `json:"tune,omitempty"` // automatisches Balancing (WZ28.6), Ergebnis tuning-*.json
 }
 
 // Tune wird --tune, --param, --steps und --budget der Balance-CLI; 0 heißt Vorgabe der CLI.
@@ -83,7 +85,17 @@ func (s Spec) Check() error {
 			return fmt.Errorf("lauf abgelehnt: vary %q, Form datei.json:pfad.zum.wert=wert", v)
 		}
 	}
-	return cmp.Or(s.checkWorld(), s.checkHelps(), s.Tune.check())
+	return cmp.Or(s.checkBaseline(), s.checkWorld(), s.checkHelps(), s.Tune.check())
+}
+
+func (s Spec) checkBaseline() error {
+	if s.Baseline == "" {
+		return nil
+	}
+	if err := balance.ValidBaselineName(s.Baseline); err != nil {
+		return fmt.Errorf("lauf abgelehnt: %w", err)
+	}
+	return nil
 }
 
 func (s Spec) checkHelps() error {
@@ -177,6 +189,9 @@ func (s Spec) Title() string {
 	if len(s.Vary) > 0 {
 		parts = append(parts, fmt.Sprintf("%d Varianten", len(s.Vary)))
 	}
+	if s.Baseline != "" {
+		parts = append(parts, "gegen "+s.Baseline)
+	}
 	if s.Tune != nil {
 		parts = append(parts, fmt.Sprintf("tune %s %d Parameter", s.Tune.Mode, len(s.Tune.Params)))
 	}
@@ -186,7 +201,11 @@ func (s Spec) Title() string {
 // args baut die Argumente der Balance-CLI; dir ist der Berichtsordner relativ zum Checkout. Die Baseline des Repos
 // liefert den Trend der Auswertung (B-632); fehlt sie, rechnet die CLI ohne.
 func (s Spec) args(exe, dir string) []string {
-	args := []string{exe, "--targets", "--report-dir", dir, "--progress", "--baseline", balance.BaselinePath}
+	baseline := balance.BaselinePath
+	if s.Baseline != "" {
+		baseline = balance.BaselineFile(s.Baseline)
+	}
+	args := []string{exe, "--targets", "--report-dir", dir, "--progress", "--baseline", baseline}
 	for _, f := range []struct {
 		flag string
 		n    int

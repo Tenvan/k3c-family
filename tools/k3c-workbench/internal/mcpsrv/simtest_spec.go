@@ -14,22 +14,24 @@ import (
 
 // simTestIn sind die Parameter von sim_test (B-348 › Anforderungen). Geprüft wird über Positivlisten und Grenzen.
 type simTestIn struct {
-	Action   string   `json:"action" jsonschema:"start, status, wait, stop oder list"`
-	Wait     bool     `json:"wait,omitempty" jsonschema:"bei start: wartet wie check_run auf das Ende des Laufs (mit progressToken bis zum Ende, sonst höchstens 4 min, dann Lauf-ID)"`
-	ID       string   `json:"id,omitempty" jsonschema:"Lauf-ID für status und stop, z. B. run-1"`
-	Mode     string   `json:"mode,omitempty" jsonschema:"offline (Mocks im Prozess, Standard) oder online (Spielserver des Checkouts)"`
-	Clients  int      `json:"clients,omitempty" jsonschema:"0 = headless (Standard), 1 bis 4 = laufende Clients mit Bot-Eingabe, nur online"`
-	Players  int      `json:"players,omitempty" jsonschema:"Spieler je Raum, 1 bis 4 (online); offline die Spieleranzahl aller Ziele, z. B. 1 für den Single-Player-Meilenstein"`
-	Rooms    int      `json:"rooms,omitempty" jsonschema:"Räume, 1 bis 8 (online)"`
-	Bots     string   `json:"bots,omitempty" jsonschema:"Bot-Profil des Balancing-Testers, z. B. coop2 oder saver; offline ersetzt es den Bot aller Ziele"`
-	Seeds    int      `json:"seeds,omitempty" jsonschema:"Seeds, 1 bis 200; offline ohne Angabe nach seedMode aus data/balance-targets.json (dev: nur k3c-dev)"`
-	World    string   `json:"world,omitempty" jsonschema:"nur offline: Welt aus data/worlds, z. B. standard; der Lauf spielt die ganze erste Insel (Bots steigen ab und kämpfen), Meilenstein-Lauf mit bots coop2, days 40"`
-	Days     int      `json:"days,omitempty" jsonschema:"nur offline: Tage je Lauf, 1 bis 60; ersetzt die Tage aller Ziele"`
-	Vary     string   `json:"vary,omitempty" jsonschema:"nur offline: Werte-Varianten für diesen Lauf, mit Semikolon, z. B. economy.json:purse.startGold=500;economy.json:purse.maxGold=500; data/ bleibt unverändert"`
-	SeedList string   `json:"seedList,omitempty" jsonschema:"nur offline: genau diese Seeds mit Komma, z. B. k3c-dev oder k3c-dev,7; statt seeds"`
-	Duration string   `json:"duration,omitempty" jsonschema:"Dauer online, z. B. 5m, höchstens 2h"`
-	Focus    []string `json:"focus,omitempty" jsonschema:"balance, perf, stability; offline nur balance (Standard)"`
-	Attach   string   `json:"attach,omitempty" jsonschema:"Raumcode laufender Clients (online, clients 1): kein Browser-Start, Clients mit der Feed-Adresse aus dem Status öffnen"`
+	Action       string   `json:"action" jsonschema:"start, status, wait, stop, list oder baseline"`
+	Wait         bool     `json:"wait,omitempty" jsonschema:"bei start: wartet wie check_run auf das Ende des Laufs (mit progressToken bis zum Ende, sonst höchstens 4 min, dann Lauf-ID)"`
+	ID           string   `json:"id,omitempty" jsonschema:"Lauf-ID für status und stop, z. B. run-1"`
+	Mode         string   `json:"mode,omitempty" jsonschema:"offline (Mocks im Prozess, Standard) oder online (Spielserver des Checkouts)"`
+	Clients      int      `json:"clients,omitempty" jsonschema:"0 = headless (Standard), 1 bis 4 = laufende Clients mit Bot-Eingabe, nur online"`
+	Players      int      `json:"players,omitempty" jsonschema:"Spieler je Raum, 1 bis 4 (online); offline die Spieleranzahl aller Ziele, z. B. 1 für den Single-Player-Meilenstein"`
+	Rooms        int      `json:"rooms,omitempty" jsonschema:"Räume, 1 bis 8 (online)"`
+	Bots         string   `json:"bots,omitempty" jsonschema:"Bot-Profil des Balancing-Testers, z. B. coop2 oder saver; offline ersetzt es den Bot aller Ziele"`
+	Seeds        int      `json:"seeds,omitempty" jsonschema:"Seeds, 1 bis 200; offline ohne Angabe nach seedMode aus data/balance-targets.json (dev: nur k3c-dev)"`
+	World        string   `json:"world,omitempty" jsonschema:"nur offline: Welt aus data/worlds, z. B. standard; der Lauf spielt die ganze erste Insel (Bots steigen ab und kämpfen), Meilenstein-Lauf mit bots coop2, days 40"`
+	Days         int      `json:"days,omitempty" jsonschema:"nur offline: Tage je Lauf, 1 bis 60; ersetzt die Tage aller Ziele"`
+	Vary         string   `json:"vary,omitempty" jsonschema:"nur offline: Werte-Varianten für diesen Lauf, mit Semikolon, z. B. economy.json:purse.startGold=500;economy.json:purse.maxGold=500; data/ bleibt unverändert"`
+	SeedList     string   `json:"seedList,omitempty" jsonschema:"nur offline: genau diese Seeds mit Komma, z. B. k3c-dev oder k3c-dev,7; statt seeds"`
+	Duration     string   `json:"duration,omitempty" jsonschema:"Dauer online, z. B. 5m, höchstens 2h"`
+	Focus        []string `json:"focus,omitempty" jsonschema:"balance, perf, stability; offline nur balance (Standard)"`
+	Baseline     string   `json:"baseline,omitempty" jsonschema:"nur offline, bei start: Name einer gesicherten Baseline (z. B. M1) als Vergleich; der Bericht zeigt den Delta-Vergleich je Werte-Gruppe"`
+	SaveBaseline string   `json:"saveBaseline,omitempty" jsonschema:"bei action baseline mit id: sichert den durchgelaufenen Lauf unter diesem Namen (z. B. M1) in reports/baseline/<name>/; ohne Namen listet baseline die gesicherten"`
+	Attach       string   `json:"attach,omitempty" jsonschema:"Raumcode laufender Clients (online, clients 1): kein Browser-Start, Clients mit der Feed-Adresse aus dem Status öffnen"`
 }
 
 // simSpec ist ein geprüfter Start.
@@ -38,10 +40,11 @@ type simSpec struct {
 	clients        int
 	players, rooms int
 	bots           string
-	world          string // offline: Welt der Insel-Läufe (BS11)
+	world          string   // offline: Welt der Insel-Läufe (BS11)
 	vary           []string // offline: Werte-Varianten (datei.json:pfad=wert)
-	days           int    // offline: Tage je Lauf
-	attach         string // Raumcode laufender Clients, leer = Browser starten
+	baseline       string   // offline: benannte Baseline als Vergleich (B-640)
+	days           int      // offline: Tage je Lauf
+	attach         string   // Raumcode laufender Clients, leer = Browser starten
 	seeds          int
 	seedList       []string // offline: genau diese Seeds (B-634)
 	duration       time.Duration
@@ -63,7 +66,7 @@ func (s simSpec) label() string {
 
 // spec prüft die Parameter von start; jeder Fehler ist eine Zeile mit Grund.
 func (in simTestIn) spec() (simSpec, error) {
-	s := simSpec{mode: in.Mode, clients: in.Clients, players: in.Players, rooms: in.Rooms, bots: in.Bots, world: in.World, days: in.Days, vary: splitSemi(in.Vary),
+	s := simSpec{mode: in.Mode, clients: in.Clients, players: in.Players, rooms: in.Rooms, bots: in.Bots, world: in.World, days: in.Days, vary: splitSemi(in.Vary), baseline: in.Baseline,
 		seeds: in.Seeds, seedList: splitList(in.SeedList), focus: in.Focus, attach: strings.ToUpper(in.Attach)}
 	if s.mode == "" {
 		s.mode = "offline"
@@ -82,7 +85,8 @@ func (in simTestIn) spec() (simSpec, error) {
 		{s.seeds < 0 || s.seeds > 200, "seeds 1 bis 200"},
 		{s.bots != "" && !slices.Contains(balance.BotNames(), s.bots), "bots: " + strings.Join(balance.BotNames(), ", ")},
 		{slices.ContainsFunc(s.focus, func(f string) bool { return !slices.Contains(simFocus, f) }), "focus: balance, perf, stability"},
-		{in.ID != "", "id nur bei status, wait und stop"},
+		{in.ID != "", "id nur bei status, wait, stop und baseline"},
+		{in.SaveBaseline != "", "saveBaseline nur bei action baseline"},
 		{emptyList(in.SeedList, s.seedList), "seedList: Seeds mit Komma, z. B. k3c-dev,7"},
 	}
 	for _, c := range checks {
@@ -122,8 +126,8 @@ func (s *simSpec) checkMode() error {
 		return err
 	}
 	if s.mode == "online" {
-		if s.world != "" || s.days != 0 || len(s.vary) > 0 {
-			return fmt.Errorf("sim_test start abgelehnt: world, days und vary nur offline")
+		if s.world != "" || s.days != 0 || len(s.vary) > 0 || s.baseline != "" {
+			return fmt.Errorf("sim_test start abgelehnt: world, days, vary und baseline nur offline")
 		}
 		if len(s.seedList) > 0 {
 			return fmt.Errorf("sim_test start abgelehnt: seedList nur offline")
@@ -194,7 +198,7 @@ func (s simSpec) offline() *simrun.Spec {
 	if s.mode != "offline" {
 		return nil
 	}
-	return &simrun.Spec{Seeds: s.seeds, SeedList: s.seedList, Bot: s.bots, World: s.world, Days: s.days, Players: s.players, Vary: s.vary}
+	return &simrun.Spec{Seeds: s.seeds, SeedList: s.seedList, Bot: s.bots, World: s.world, Days: s.days, Players: s.players, Vary: s.vary, Baseline: s.baseline}
 }
 
 // emptyList: Die Eingabe ist gesetzt, enthält aber keinen Eintrag (z. B. „,“).

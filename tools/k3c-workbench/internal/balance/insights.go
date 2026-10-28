@@ -34,6 +34,7 @@ type Insights struct {
 	Hints      []Hint          `json:"hints"`
 	Next       NextRun         `json:"next"`
 	Baseline   BaselineView    `json:"baseline"`
+	Delta      []GroupDelta    `json:"delta"` // Vergleich je Werte-Gruppe (delta.go), leer ohne Baseline
 	Varianten  []string        `json:"varianten"`
 	// B-648: Urteil über das Ziel, Qualität der Korridore, Spielfortschritt (Leiter mit Pfeilen) und der Lauf, mit dem verglichen wurde.
 	Goal     *GoalView    `json:"goal"`
@@ -47,6 +48,7 @@ type Insights struct {
 // Korridor, negativ außerhalb; nil ohne Messwert.
 type TargetInsight struct {
 	Name         string   `json:"name"`
+	Group        string   `json:"group"`
 	Measure      string   `json:"measure"`
 	Kind         string   `json:"kind"`
 	Unit         string   `json:"unit"`
@@ -86,6 +88,7 @@ type Meta struct {
 	Run       string
 	Generated string
 	Baseline  string
+	Frozen    []string // eingefrorene Werte-Gruppen: keine Hebel, Delta nur beim Kippen
 }
 
 // BuildInsights wertet einen Bericht aus; base == nil: ohne Trend und Vergleich.
@@ -106,11 +109,16 @@ func BuildInsights(s Summary, base *Summary, h *Hints, m Meta) Insights {
 		if b, ok := before[e.targetKey()]; ok {
 			t.Trend = trend(b, e)
 		}
+		t.Levers = freeLevers(t.Levers, m.Frozen)
 		in.Counts[t.Light]++
 		in.Targets = append(in.Targets, t)
 	}
 	in.Figures = figureInsights(s.Kennzahlen, h)
 	in.Baseline = baselineView(s, base, m.Baseline)
+	in.Delta = []GroupDelta{}
+	if base != nil {
+		in.Delta = buildDelta(in.Targets, m.Frozen)
+	}
 	in.Strengths, in.Weaknesses = strengths(in), weaknesses(in)
 	in.Goal, in.Quality = s.Goal, s.Quality
 	if s.Progress != nil {
@@ -126,9 +134,9 @@ func BuildInsights(s Summary, base *Summary, h *Hints, m Meta) Insights {
 }
 
 func targetInsight(e Entry, h *Hints) TargetInsight {
-	t := TargetInsight{Name: e.Name, Measure: e.Measure, Kind: e.Kind, Unit: unitOf(e.Kind), Grade: gradeName(e.Grade),
+	t := TargetInsight{Name: e.Name, Group: e.Group, Measure: e.Measure, Kind: e.Kind, Unit: unitOf(e.Kind), Grade: gradeName(e.Grade),
 		Scenario: fmt.Sprintf("%d Spieler · %s · Tiefe %d · %d Tage", e.Players, e.Bot, e.Depth, e.Days),
-		Value: e.Value, Lower: e.Lower, Upper: e.Upper, Status: e.Status, Light: lightOf(e.Status),
+		Value:    e.Value, Lower: e.Lower, Upper: e.Upper, Status: e.Status, Light: lightOf(e.Status),
 		FailSeeds: e.FailSeeds, InvalidSeeds: e.InvalidSeeds, Rule: e.Rule, Levers: []Lever{}, entry: e}
 	if e.Status != StatusInvalid {
 		d := distance(e)

@@ -8,6 +8,7 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
+	"k3c/tools/k3c-workbench/internal/balance"
 	"k3c/tools/k3c-workbench/internal/simrun"
 )
 
@@ -32,6 +33,7 @@ func registerSimTest(s *Server) {
 			"world (z. B. standard) und days (1–60) gelten nur offline: der Lauf spielt die ganze erste Insel. " +
 			"wait: true (bei start) oder action wait {id} wartet wie check_run auf das Ende (mit progressToken bis zum Ende, sonst höchstens 4 min). " +
 			"BAS-Standardlauf: {action: start, bots: coop2}; Meilenstein-Lauf: {action: start, bots: coop2, world: standard, days: 40}. " +
+			"Delta-Runde (B-640): action baseline {id, saveBaseline: M1} sichert einen durchgelaufenen Lauf als Baseline, start mit baseline: M1 vergleicht je Werte-Gruppe. " +
 			"Nutze es bei: jedem Balancing-, Performance- oder Stabilitätslauf. Statt: task balance, task k3c-load oder Binaries in der Shell.",
 		Annotations: &mcp.ToolAnnotations{OpenWorldHint: new(bool)},
 	}, s.simTest)
@@ -52,8 +54,10 @@ func (s *Server) simTest(ctx context.Context, in simTestIn) (string, error) {
 		return s.simStop(root, in.ID)
 	case "list":
 		return s.simList(root), nil
+	case "baseline":
+		return s.simBaseline(root, in)
 	}
-	return "", fmt.Errorf("action %q unbekannt: start, status, wait, stop oder list", in.Action)
+	return "", fmt.Errorf("action %q unbekannt: start, status, wait, stop, list oder baseline", in.Action)
 }
 
 func (s *Server) simStart(ctx context.Context, ws workspace, in simTestIn) (string, error) {
@@ -61,6 +65,9 @@ func (s *Server) simStart(ctx context.Context, ws workspace, in simTestIn) (stri
 	spec, err := in.spec()
 	if err != nil {
 		return "", err
+	}
+	if spec.baseline != "" && !balance.HasBaseline(root, spec.baseline) {
+		return "", fmt.Errorf("sim_test start abgelehnt: baseline %q gibt es nicht; sim_test {action: baseline} listet die gesicherten", spec.baseline)
 	}
 	runner, err := s.simRunner(ctx, spec)
 	if err != nil {

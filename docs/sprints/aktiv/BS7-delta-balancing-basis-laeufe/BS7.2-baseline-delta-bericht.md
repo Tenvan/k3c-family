@@ -1,6 +1,6 @@
 # BS7.2 · Benannte Baseline und Delta-Bericht über sim_test
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -54,5 +54,9 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+**⚠️ Workbench-Neustart nötig** (Go-Code in balance, simrun und mcpsrv geändert; ohne Neustart kennt sim_test weder `baseline` noch `saveBaseline`, und die Berichte haben kein Delta).
+
+- AC-02 umgesetzt und geprüft: `sim_test` nimmt `baseline` (Name; offline; der Bericht unter `reports/baseline/<name>/balance.json` ersetzt die Repo-Baseline im CLI-Aufruf) und `action: baseline` (`id` + `saveBaseline` sichert einen durchgelaufenen Lauf samt `run.json` mit Bots, Welten, Seeds, Seed-Modus und `frozen`; ohne Namen listet es die gesicherten). Gesichert wird nur bei `Pass`, ein vergebener Name wird nie überschrieben. Tests: `balance/baselines_test.go`, `simrun/spec_baseline_test.go`, `mcpsrv/simtest_baseline_test.go`. Tool-Beschreibung und `instructions.md` erklären die Delta-Runde.
+- AC-03 umgesetzt und geprüft: `Insights.Delta` (`delta.go`) je Gruppe mit Ampel, Trend und Anzahl besser/schlechter; eingefrorene Gruppen erscheinen nur bei kippendem Ziel, mit Warnung; Hebel eingefrorener Gruppen fehlen in Zielen und Hinweisen. Der Markdown-Bericht hat den Abschnitt „Delta je Werte-Gruppe“. Tests: `balance/delta_test.go` (frei, eingefroren, Hinweise, ohne Baseline).
+- Für BS7.3 bereit: `balance.ListBaselines(root)` liefert die Basis-Läufe; die RPC dafür gehört zu BS7.3.
+- `task check:diff` grün (erster Lauf: gocyclo-Befund im eigenen Test, behoben). Keine Simulation gefahren (Regel 2026-10-28); die Pfade sind nur mit Fake-Prozessen getestet.

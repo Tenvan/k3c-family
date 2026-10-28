@@ -78,6 +78,9 @@ func ReadBaseline(path string) (*Summary, error) {
 // MetaOf: Lauf = Ordner des Berichts, Zeit aus dem Dateinamen balance-JJJJMMTT-hhmmss (sonst jetzt).
 func MetaOf(stem, baseName string) Meta {
 	m := Meta{Run: filepath.Base(filepath.Dir(stem)), Baseline: baseName, Generated: time.Now().Format("02.01.2006 15:04")}
+	if ts, err := DefaultTargets(); err == nil {
+		m.Frozen = ts.Frozen
+	}
 	if t, err := time.ParseInLocation("20060102-150405", strings.TrimPrefix(filepath.Base(stem), "balance-"), time.Local); err == nil {
 		m.Generated = t.Format("02.01.2006 15:04")
 	}

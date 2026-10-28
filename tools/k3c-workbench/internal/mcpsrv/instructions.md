@@ -159,6 +159,13 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
   `days` (1 bis 60) gelten nur offline und für alle Ziele des Laufs; der Bericht zeigt je Tiefe Ankunftstag und Burgfall, je
   Boss den Tag und den Endboss (`kennzahlen.island`). Ein 40-Tage-Lauf dauert mehrere Minuten je Seed.
 - **Spieler und Varianten offline** (BS3.4): `players` (1–4) setzt die Spieleranzahl aller Ziele (Single-Player-Meilenstein: `bots: wirtschaft, players: 1, world: standard, days: 40`); `vary: "datei.json:pfad=wert;…"` ändert Werte nur für diesen Lauf (z. B. `economy.json:purse.startGold=500`), `data/` bleibt unverändert.
+- **Delta-Runde nach einem Meilenstein** (B-640, BS7): Jedes Ziel und jeder Hebel gehört zu einer Werte-Gruppe (`basis`, `holz`,
+  `schiff`; `group` in `data/balance-targets.json` und `balance-hints.json`), abgenommene Gruppen stehen in `frozen`. Ein durchgelaufener
+  Offline-Lauf wird mit `sim_test {action: baseline, id: run-N, saveBaseline: M1}` unter einem Namen gesichert (`reports/baseline/M1/`
+  mit Bericht und `run.json`; nie überschrieben, nur bei `Pass`); `sim_test {action: baseline}` listet sie. Die Delta-Runde nach einer
+  neuen Mechanik ist `sim_test {action: start, bots: coop2, baseline: M1}`: Der Bericht vergleicht je Gruppe (Ampel, Trend); nur die
+  freie Gruppe der neuen Mechanik wird justiert, eingefrorene melden sich nur, wenn sie kippen („eingefrorene Gruppe kippt“ ist ein
+  Befund: Ticket, 🧑 fragen), und Tuning-Hinweise nennen keine Hebel eingefrorener Gruppen.
 - **Warten wie `check_run`** (B-644): `sim_test {action: start, …, wait: true}` bzw. `sim_test {action: wait, id}` wartet auf das Ende
   des Laufs und liefert den Endstatus. Mit `progressToken` meldet der Aufruf alle 20 s ein Lebenszeichen und wartet bis zum Ende;
   ohne antwortet er nach 4 min mit „läuft noch“ und der ID. Der Lauf überlebt den Aufruf; `stop` bricht ihn ab.

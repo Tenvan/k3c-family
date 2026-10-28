@@ -49,9 +49,29 @@ func (in Insights) Markdown() string {
 			fmt.Fprintf(&b, "  - %s `%s` (%s%s)\n", l.Label, l.Path, l.Direction, stepText(l.Step))
 		}
 	}
+	in.deltaMarkdown(&b)
 	in.nextMarkdown(&b)
 	in.figuresMarkdown(&b)
 	return b.String()
+}
+
+// deltaMarkdown: Vergleich je Werte-Gruppe (delta.go), nur mit Baseline.
+func (in Insights) deltaMarkdown(b *strings.Builder) {
+	if len(in.Delta) == 0 {
+		return
+	}
+	fmt.Fprintf(b, "\n## Delta je Werte-Gruppe (%s)\n\n", in.Baseline.Note)
+	for _, d := range in.Delta {
+		state := "frei"
+		if d.Frozen {
+			state = "eingefroren"
+		}
+		fmt.Fprintf(b, "- %s **%s** (%s): %s, %d besser, %d schlechter von %d Zielen", lightIcon[d.Light], d.Group, state, d.Trend, d.Better, d.Worse, d.Targets)
+		if d.Warning != "" {
+			b.WriteString(" – ⚠️ " + d.Warning)
+		}
+		b.WriteString("\n")
+	}
 }
 
 func (in Insights) nextMarkdown(b *strings.Builder) {
