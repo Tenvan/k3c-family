@@ -1,13 +1,13 @@
 package sim
 
-// Plantage (B-114, Q25, Q51): Eine gebaute Farm lässt auf jedem ihrer Plätze (data/buildings.json › farm.plantation)
-// GrowSeconds nach dem Leerwerden einen Baum wachsen, gleichmäßig im Streifen ±StripUnits um die Farm. Plantage-Bäume
+// Plantage (B-114, Q25, Q51): Eine gebaute Baumschule lässt auf jedem ihrer Plätze (data/buildings.json › nursery.plantation)
+// GrowSeconds nach dem Leerwerden einen Baum wachsen, gleichmäßig im Streifen ±StripUnits um die Baumschule. Plantage-Bäume
 // brauchen keine Münze: Sie entstehen markiert und sind damit kein Zahlziel. Sie haben keine Level-Position; der
 // Spielstand speichert sie nicht, nach dem Laden wachsen sie neu.
-// ponytail: Eine zerstörte und neu gebaute Farm vergisst ihre alten Bäume (bis zu 6 weitere), Grenze bei Bedarf über
+// ponytail: Eine zerstörte und neu gebaute Baumschule vergisst ihre alten Bäume (bis zu 6 weitere), Grenze bei Bedarf über
 // die Bäume im Streifen zählen.
 
-// Plantation sind die Plantage-Werte einer Farm.
+// Plantation sind die Plantage-Werte einer Baumschule.
 type Plantation struct {
 	Slots                   int
 	GrowSeconds, StripUnits float64
@@ -19,7 +19,7 @@ type plot struct {
 	growIn float64
 }
 
-// plotX ist die Position von Platz i im Streifen um die Farm.
+// plotX ist die Position von Platz i im Streifen um die Baumschule.
 func plotX(s *Site, p Plantation, i int) float64 {
 	if p.Slots < 2 {
 		return s.X
@@ -27,7 +27,7 @@ func plotX(s *Site, p Plantation, i int) float64 {
 	return s.X - p.StripUnits + float64(float64(i)*2*p.StripUnits)/float64(p.Slots-1)
 }
 
-// stepPlantations lässt auf den Plätzen gebauter Farmen Bäume nachwachsen.
+// stepPlantations lässt auf den Plätzen gebauter Baumschulen Bäume nachwachsen.
 func stepPlantations(w *World, dt float64) {
 	for _, s := range w.Sites {
 		if s.State != "built" {

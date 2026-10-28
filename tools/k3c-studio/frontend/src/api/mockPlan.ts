@@ -14,7 +14,7 @@ export const MOCK_SIZES: IslandSize[] = [
   { name: 'groß', chunkCount: 64 }, { name: 'sehr groß', chunkCount: 100 }, { name: 'mega groß', chunkCount: 160 },
 ];
 /** Ruinen-Arten wie data/ruins.json › kinds */
-export const MOCK_RUIN_KINDS = ['workshop', 'storage', 'farm', 'barracks', 'tavern', 'healer', 'smithy', 'armory'];
+export const MOCK_RUIN_KINDS = ['workshop', 'storage', 'nursery', 'barracks', 'tavern', 'healer', 'smithy', 'armory'];
 const sign = (n: number) => (n > 0 ? `+${n}` : String(n));
 
 export function mockCheckPlan(chunks: PlannedChunk[], count = 0): PlanCheckView {

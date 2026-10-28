@@ -66,7 +66,7 @@ B-640 › Ausnahme- und Fehlerfälle.
 | BS7.2 | `BS7.2-baseline-delta-bericht.md` | Umsetzung | autonom | fertig |
 | BS7.3 | `BS7.3-basis-laeufe-editor.md` | Umsetzung | autonom | fertig |
 | BS7.4 | `BS7.4-review-baseline-m1.md` | Review | autonom | offen |
-| BS7.5 | `BS7.5-simulationen.md` | Umsetzung | autonom | offen |
+| BS7.5 | `BS7.5-simulationen.md` | Umsetzung | autonom | blockiert |
 
 ## Abnahme
 

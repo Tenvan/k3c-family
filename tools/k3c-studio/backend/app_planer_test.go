@@ -36,7 +36,7 @@ func TestHubPlanMatrixDerHeutigenDatei(t *testing.T) {
 		t.Fatalf("Stufen %d, Pfad %q", m.Levels, view.Path)
 	}
 	want := map[string]int{
-		"workshop@-16": 1, "farm@-52": 1, "farm@52": 1, "barracks@24": 2, "tavern@-32": 2, "storage@-26": 2,
+		"workshop@-16": 1, "barracks@24": 2, "tavern@-32": 2, "storage@-26": 2,
 		"stairsDown@8": 2, "stairsUp@16": 2, "smithy@28": 3, "healer@-40": 3, "armory@40": 4,
 		"zone1": 1, "merchantBuy@16": 1, "merchantSell@20": 1,
 	}

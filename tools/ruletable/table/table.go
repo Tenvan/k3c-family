@@ -66,7 +66,7 @@ type hub struct {
 }
 
 var kindNames = map[string]string{
-	"workshop": "Werkstatt", "stairsUp": "Treppe hoch", "stairsDown": "Treppe runter", "farm": "Farm", "healer": "Heilplatz",
+	"workshop": "Werkstatt", "stairsUp": "Treppe hoch", "stairsDown": "Treppe runter", "nursery": "Baumschule", "healer": "Heilplatz",
 	"tavern": "Taverne", "barracks": "Kaserne", "smithy": "Schmiede", "armory": "Rüstkammer", "storage": "Lager",
 }
 

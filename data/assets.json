@@ -57,10 +57,10 @@
       ]
     },
     {
-      "id": "farm",
+      "id": "nursery",
       "art": "grafik",
       "kategorie": "gebaeude",
-      "beschreibung": "Gebäude: farm",
+      "beschreibung": "Gebäude: nursery",
       "wahl": [
         {
           "datei": "grafik/gebaeude/farm-1-32.png"
@@ -644,7 +644,7 @@
       "id": "site:scaffold:4",
       "art": "grafik",
       "kategorie": "gebaeude",
-      "beschreibung": "Gerüst im Bau, Breite 4 (Farm, Treppen, GEB16)",
+      "beschreibung": "Gerüst im Bau, Breite 4 (Baumschule, Treppen, GEB16)",
       "wahl": [
         {
           "datei": "grafik/gebaeude/geruest-4-32.png"
@@ -1125,10 +1125,10 @@
       ]
     },
     {
-      "id": "farm:1",
+      "id": "nursery:1",
       "art": "grafik",
       "kategorie": "gebaeude",
-      "beschreibung": "Hub-Gebäude-Stufen: farm:1",
+      "beschreibung": "Hub-Gebäude-Stufen: nursery:1",
       "wahl": [
         {
           "datei": "grafik/gebaeude/farm-1-32.png"
@@ -1136,10 +1136,10 @@
       ]
     },
     {
-      "id": "farm:2",
+      "id": "nursery:2",
       "art": "grafik",
       "kategorie": "gebaeude",
-      "beschreibung": "Hub-Gebäude-Stufen: farm:2",
+      "beschreibung": "Hub-Gebäude-Stufen: nursery:2",
       "wahl": [
         {
           "datei": "grafik/gebaeude/farm-2-32.png"
@@ -1147,10 +1147,10 @@
       ]
     },
     {
-      "id": "farm:3",
+      "id": "nursery:3",
       "art": "grafik",
       "kategorie": "gebaeude",
-      "beschreibung": "Hub-Gebäude-Stufen: farm:3",
+      "beschreibung": "Hub-Gebäude-Stufen: nursery:3",
       "wahl": [
         {
           "datei": "grafik/gebaeude/farm-3-32.png"
@@ -1158,10 +1158,10 @@
       ]
     },
     {
-      "id": "farm:4",
+      "id": "nursery:4",
       "art": "grafik",
       "kategorie": "gebaeude",
-      "beschreibung": "Hub-Gebäude-Stufen: farm:4",
+      "beschreibung": "Hub-Gebäude-Stufen: nursery:4",
       "wahl": [
         {
           "datei": "grafik/gebaeude/farm-4-32.png"
@@ -1169,10 +1169,10 @@
       ]
     },
     {
-      "id": "farm:5",
+      "id": "nursery:5",
       "art": "grafik",
       "kategorie": "gebaeude",
-      "beschreibung": "Hub-Gebäude-Stufen: farm:5",
+      "beschreibung": "Hub-Gebäude-Stufen: nursery:5",
       "wahl": [
         {
           "datei": "grafik/gebaeude/farm-5-32.png"

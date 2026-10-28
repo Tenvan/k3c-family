@@ -49,12 +49,10 @@ const RulePlanned = "geplante-chunks"
 const stairsGapUnits = 8
 
 // requiredSiteKinds sind die Pflichtplätze (WZ15.3 › Pflichtplätze, Abnahme WZ9.5): ohne Werkstatt keine Kämpfer,
-// ohne Treppen kein Stufenwechsel, ohne Farm kein Holz-Nachwuchs. perSideKind steht je Seite genau einmal.
-var requiredSiteKinds = [...]string{"workshop", "stairsDown", "stairsUp", "farm"}
+// ohne Treppen kein Stufenwechsel (die Baumschule steht auf eigenen Plätzen im Wald, B-636).
+var requiredSiteKinds = [...]string{"workshop", "stairsDown", "stairsUp"}
 
-const perSideKind = "farm"
-
-// RequiredSiteKinds liefert die Pflichtplätze; perSideKind (farm) gilt je Seite.
+// RequiredSiteKinds liefert die Pflichtplätze.
 func RequiredSiteKinds() []string { return slices.Clone(requiredSiteKinds[:]) }
 
 // ParseHub liest eine Kandidaten-hub.json.
@@ -158,7 +156,7 @@ func placeableKind(kind string) bool {
 // isLineKind: Mauer und Turm gehören zu den verteilten Plätzen der Zonen, nicht zu den Hub-Plätzen.
 func isLineKind(kind string) bool { return kind == "wall" || kind == "tower" }
 
-// checkSiteKinds: nur bekannte Arten; Pflichtplätze genau einmal (farm je Seite), optionale höchstens einmal.
+// checkSiteKinds: nur bekannte Arten; Pflichtplätze genau einmal, optionale höchstens einmal.
 func checkSiteKinds(h *HubData) []HubFinding {
 	var out []HubFinding
 	count := map[string]map[int]int{}
@@ -176,11 +174,7 @@ func checkSiteKinds(h *HubData) []HubFinding {
 	}
 	for _, kind := range requiredSiteKinds {
 		c := count[kind]
-		if kind == perSideKind {
-			if c[-1] != 1 || c[1] != 1 {
-				out = append(out, HubFinding{RuleRequired, kind, fmt.Sprintf("Pflichtplatz: je Seite genau einer erwartet, links %d, rechts %d", c[-1], c[1])})
-			}
-		} else if n := c[-1] + c[1]; n != 1 {
+		if n := c[-1] + c[1]; n != 1 {
 			out = append(out, HubFinding{RuleRequired, kind, fmt.Sprintf("Pflichtplatz: genau einer erwartet, gefunden %d", n)})
 		}
 	}

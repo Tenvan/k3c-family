@@ -40,7 +40,7 @@ func wirtschaftsInsel(t *testing.T) (*sim.Island, *sim.World) {
 		switch s.Kind {
 		case "storage":
 			s.State = "built"
-		case "farm":
+		case "nursery":
 			s.State = "waitingMaterial"
 		}
 	}

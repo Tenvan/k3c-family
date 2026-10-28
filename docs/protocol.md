@@ -489,6 +489,8 @@ gerade eine Markier-Münze annimmt (sammelbar und nicht markiert: `sim.NodeMarka
 danach und rechnet nichts nach; ein älterer Server ohne Felder zeigt kein Schild. Geprüft von `TestPayableUndMinable`
 (`engine/net/payable_test.go`).
 
+**Erst roden (B-636, B-652):** `sites[].clearing` ist `true`, wenn der Platz seine Hub-Stufe erreicht hat, aber im Freiraum noch Bäume oder Felsen stehen (Baumschule, Mauer, Turm: `sim.SiteNeedsClearing`); der Platz ist dann nicht `payable`. Fehlt bei `false` (additiv, Protokoll-Version unverändert); der Client zeigt „erst roden“ statt des Bau-Schilds (Darstellung kommt mit BS6, bis dahin zeigt er kein Schild). Geprüft von `TestBaumschuleErstNachDemRoden` (`engine/sim/building_plantation_test.go`) und `TestClearingImSnapshot` (`engine/net/payable_test.go`).
+
 **Berufe:** `troops[].profession` (`miner`, `builder`, `craftsman`; fehlt = keiner) und `troops[].workSite` (Site-ID
 des Arbeitsplatzes, fehlt = keiner). Berufswahl, Tausch und Hub-Ausbau als Eingabe stehen in W5.2.
 

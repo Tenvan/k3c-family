@@ -44,7 +44,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| BS4 | SIM | BAS | Baumschule auf gerodeten Waldbauplätzen | – | Entwurf | `geplant/BS4-baumschule-waldbauplaetze/` |
 | BS5 | SIM | BAS | Hafen-Chunk, Schiff bauen und Inselwechsel am Hafen | – | Entwurf | `geplant/BS5-hafen-schiff-inselwechsel/` |
 | BS6 | CLI | BAS | Client: Baumschule, Hafen und Schiff, neue Münzskala | – | Entwurf | `geplant/BS6-client-baumschule-hafen-skala/` |
 | BS8 | DEV | BAS | Meilenstein 2: Bots und Delta-Runde Baumschule gegen Baseline M1 | – | Entwurf | `geplant/BS8-meilenstein-2-delta-baumschule/` |
@@ -259,3 +258,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BS11 | Balancing-Tester spielt die ganze Insel bis zum Endboss | `erledigt/BS11-tester-ganze-insel/` |
 | BS3 | Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch | `erledigt/BS3-werte-muenzskala-meilenstein/` |
 | BS12 | Mauern und Türme verteilt, Tor ist die äußerste Mauer | `erledigt/BS12-mauern-tuerme-verteilt-tor/` |
+| BS4 | Baumschule auf gerodeten Waldbauplätzen | `erledigt/BS4-baumschule-waldbauplaetze/` |

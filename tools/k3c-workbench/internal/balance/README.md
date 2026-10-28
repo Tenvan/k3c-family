@@ -20,7 +20,7 @@ Alle Profile spielen nur über `sim.PlayerCommand` und stehen nachts an der Burg
 | `saver` | sparsam | Erst die nächste bezahlbare Mauer, dann Landstreicher, nur mit genug Gold (BAL1). |
 | `walls` | Mauern zuerst | Zahlt erst Mauern (offene Linie) samt Ausbau, dann Türme und den Hub-Ausbau (schaltet die nächste Mauer-Stufe frei); wirbt erst an, wenn davon nichts offen ist. |
 | `economy` | Wirtschaft zuerst | Wirbt erst Landstreicher an (Arbeiter), Mauern erst ab Tag 2. |
-| `wirtschaft` | Wirtschaft (Standard) | Bot des Standardszenarios (BAL6): Mauern, Turm, Farm, Werkstatt (nur mit Material im Vorrat), Hub-Ausbau (Material markieren oder beim Händler kaufen, sonst Gold sparen), Holz bis 150 nachmarkieren, Bögen bis 8 Kämpfer, Landstreicher bis 4 Bauern (mehr als 5 bricht in Nacht 5 der Münzskala zusammen, B-645). |
+| `wirtschaft` | Wirtschaft (Standard) | Bot des Standardszenarios (BAL6): Mauern, Turm, Baumschule, Werkstatt (nur mit Material im Vorrat), Hub-Ausbau (Material markieren oder beim Händler kaufen, sonst Gold sparen), Holz bis 150 nachmarkieren, Bögen bis 8 Kämpfer, Landstreicher bis 4 Bauern (mehr als 5 bricht in Nacht 5 der Münzskala zusammen, B-645). |
 | `coop2` | Koop 2 Spieler | Rollen geteilt: Monarch 1 spielt „Mauern zuerst“, Monarch 2 „Wirtschaft zuerst“; braucht 2 Spieler. |
 | `coop4` | Koop 4 Spieler | Wie Koop 2, die Rollen wiederholen sich (1 und 3 Mauern, 2 und 4 Wirtschaft); braucht 4 Spieler. |
 

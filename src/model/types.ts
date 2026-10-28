@@ -153,6 +153,8 @@ export interface Site {
   hubLevel?: number;
   /** Nimmt jetzt Münzen für Bau oder Ausbau (Server, B-587); fehlt = nein. */
   payable?: boolean;
+  /** Hub-Stufe erreicht, aber Bäume oder Felsen im Freiraum: erst roden (Server, B-636); fehlt = nein. */
+  clearing?: boolean;
 }
 
 /** Laufender Ausbauschritt auf die nächste Hub-Stufe (docs/protocol.md › Wirtschaft), vom Server berechnet. */

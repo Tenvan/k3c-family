@@ -11,9 +11,9 @@ const hub = () => parseHub(mockHubPlan().raw);
 describe('Gebäude-Planer: Kandidat ändern', () => {
   it('ändert Felder eines Platzes, ohne das Original anzufassen', () => {
     const before = hub();
-    const next = setSiteField(setSiteField(before, 'sites', 8, 'hubLevel', 3), 'sites', 8, 'needsDeeper', true);
-    expect(next.sites[8]).toEqual({ kind: 'armory', offsetUnits: 40, hubLevel: 3, needsDeeper: true });
-    expect(before.sites[8]!.hubLevel).toBe(7);
+    const next = setSiteField(setSiteField(before, 'sites', 7, 'hubLevel', 3), 'sites', 7, 'needsDeeper', true);
+    expect(next.sites[7]).toEqual({ kind: 'armory', offsetUnits: 40, hubLevel: 3, needsDeeper: true });
+    expect(before.sites[7]!.hubLevel).toBe(7);
   });
 
   it('fromDepth 0 und needsDeeper false entfallen wie in der Datei', () => {
@@ -33,9 +33,9 @@ describe('Gebäude-Planer: Kandidat ändern', () => {
   it('Platz hinzufügen und entfernen', () => {
     const added = addSite(hub(), 'islandSites', 'healer', -60, 2);
     expect(added.islandSites.at(-1)).toEqual({ kind: 'healer', offsetUnits: -60, hubLevel: 2 });
-    const removed = removeSite(hub(), 'sites', 4);
+    const removed = removeSite(hub(), 'sites', 3);
     expect(removed.sites.map((s) => s.kind)).not.toContain('healer');
-    expect(siteOf(removed, { source: 'sites', index: 4 })!.kind).toBe('tavern');
+    expect(siteOf(removed, { source: 'sites', index: 3 })!.kind).toBe('tavern');
     expect(siteOf(removed, { source: 'merchant', index: 0 })).toBeUndefined();
   });
 

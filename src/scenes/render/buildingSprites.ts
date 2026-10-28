@@ -11,7 +11,7 @@ import { SCAFFOLD_CLASSES, scaffoldKey } from './scaffoldView';
 /** Hub-Gebäude (GEB9): Bauplatz → Grafik-Id aus `tools/buildings`; ohne eigene `levels` in `data/buildings.json` wechseln sie mit der Hub-Stufe (`World.hubLevel`), mit `levels` folgen sie der Gebäudestufe (`Site.level`, B-569) */
 const HUB_BUILDINGS: Partial<Record<SiteKind, string>> = {
   workshop: 'werkstatt', tavern: 'taverne', healer: 'heilplatz', smithy: 'schmiede',
-  armory: 'ruestkammer', storage: 'lager', farm: 'farm', barracks: 'kaserne',
+  armory: 'ruestkammer', storage: 'lager', nursery: 'farm', barracks: 'kaserne',
 };
 
 /** Textur-Schlüssel → Datei unter `public/grafik/` (nur zugeordnete Dateien; LoadScene lädt genau diese) */
@@ -28,7 +28,7 @@ export const BUILDING_TEXTURES: Record<string, string> = {
   ...Object.assign({}, ...Object.entries(HUB_BUILDINGS).map(([kind, id]) => stufen(kind, id!))),
   'grafik:stairsUp': 'gebaeude/treppe-hoch-32.png',
   'grafik:stairsDown': 'gebaeude/treppe-runter-32.png',
-  /** Plantage (GEB5, B-568): Setzling auf leerem Platz, niedrige Pappel auf gewachsenem Platz (vor der Farm) */
+  /** Plantage (GEB5, B-568): Setzling auf leerem Platz, niedrige Pappel auf gewachsenem Platz (vor der Baumschule) */
   'grafik:setzling': 'gebaeude/setzling-32.png',
   'grafik:pappel-niedrig': 'gebaeude/pappel-niedrig-32.png',
 };

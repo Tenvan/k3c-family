@@ -60,7 +60,7 @@ func TestZielMitGrad(t *testing.T) {
 	}
 }
 
-// BAL6.1 (B-347): Der Bot wirtschaft baut Turm, Farm und Werkstatt und schafft Kämpfer; der Lauf legt jeden
+// BAL6.1 (B-347): Der Bot wirtschaft baut Turm, Baumschule und Werkstatt und schafft Kämpfer; der Lauf legt jeden
 // Tagesbeginn ab (Tag 1 = Start, zuletzt der Morgen nach dem letzten Tag) mit Gold je Monarch.
 func TestWirtschaftsBotUndTagesbeginn(t *testing.T) {
 	// Mit dem reichen Beutel von vor der Münzskala: der Test prüft den Bot, die Wirtschaft der Münzskala stimmt BS3.4 ab.

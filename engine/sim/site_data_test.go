@@ -85,7 +85,7 @@ func TestSiteDataPflichtplatzFehlt(t *testing.T) {
 		if i < 0 {
 			t.Fatalf("%s steht nicht in data/hub.json", kind)
 		}
-		h.Sites = slices.Delete(h.Sites, i, i+1) // farm: nur eine Seite
+		h.Sites = slices.Delete(h.Sites, i, i+1)
 		if r := ValidateHubData(h); !hasFinding(r, RuleRequired, kind) {
 			t.Errorf("%s entfernt: Befund %q erwartet, bekommen %q", kind, RuleRequired, r.Findings)
 		}
@@ -120,7 +120,6 @@ func TestSiteDataEinPlatzJeBau(t *testing.T) {
 	}{
 		{HubSite{Kind: "healer", OffsetUnits: -140, HubLevel: 3}, RuleOnePerBau, "healer"},
 		{HubSite{Kind: "workshop", OffsetUnits: -140, HubLevel: 1}, RuleRequired, "workshop"},
-		{HubSite{Kind: "farm", OffsetUnits: -140, HubLevel: 1}, RuleRequired, "farm"},
 	} {
 		h := hubCopy(t)
 		h.Sites = append(h.Sites, c.site)
@@ -149,7 +148,7 @@ func TestSiteDataHubStufeImBereich(t *testing.T) {
 		"Stufe 0":       {func(h *HubData) { h.Sites[0].HubLevel = 0 }, "@"},
 		"Stufe n+1":     {func(h *HubData) { h.IslandSites[0].HubLevel = n + 1 }, "storage@"},
 		"ohne Stufen":   {func(h *HubData) { h.Levels = nil }, "levels"},
-		"letzte Stufe+": {func(h *HubData) { h.Sites[len(h.Sites)-1].HubLevel = n + 1 }, "farm@"},
+		"letzte Stufe+": {func(h *HubData) { h.Sites[len(h.Sites)-1].HubLevel = n + 1 }, "armory@"},
 	} {
 		h := hubCopy(t)
 		c.edit(h)

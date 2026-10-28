@@ -73,7 +73,7 @@ func TestMigrationGebautePlaetzeBleibenGebaut(t *testing.T) {
 		for i, h := range s.Stages {
 			want[i] = map[string]string{}
 			for j, site := range h.Sites {
-				if site.Kind == "wall" || site.Kind == "tower" || site.Kind == "gate" {
+				if oldLayoutKind(site.Kind) {
 					continue // Mauern und Türme stehen seit B-652 auf verteilten Plätzen, alte Stände behalten ihre Lage nicht
 				}
 				want[i][key(site.Kind, site.X)] = s.Stages[i].Sites[j].State
@@ -159,4 +159,10 @@ func TestJedeVersionHatFixture(t *testing.T) {
 			t.Errorf("testdata/saves/v%d/ fehlt oder ist leer (Spielstand-Format ändern, docs/arbeitsweise.md)", v)
 		}
 	}
+}
+
+// oldLayoutKind: Arten, deren Lage sich seit B-636/B-652 geändert hat (Mauer, Turm, Tor auf alten Linien, Farm bei ±52): alte Stände
+// behalten ihre Plätze nicht.
+func oldLayoutKind(kind string) bool {
+	return kind == "wall" || kind == "tower" || kind == "gate" || kind == "farm"
 }

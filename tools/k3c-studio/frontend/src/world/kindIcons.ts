@@ -17,7 +17,7 @@ const KINDS: Readonly<Record<string, readonly [icon: string, name: string]>> = {
   stoneVein: ['🧱', 'Stein-Ader'], copperVein: ['🟧', 'Kupfer-Ader'], ironVein: ['🔩', 'Eisen-Ader'],
   crystalVein: ['🔷', 'Kristall-Ader'], exit: ['🚪', 'Ausgang'],
   // Gebäude-Arten der Ruinen (data/ruins.json › kinds, WZ14.7)
-  workshop: ['🏹', 'Werkstatt'], storage: ['📦', 'Lager'], farm: ['🌾', 'Farm'], barracks: ['🛡', 'Kaserne'],
+  workshop: ['🏹', 'Werkstatt'], storage: ['📦', 'Lager'], nursery: ['🌾', 'Baumschule'], barracks: ['🛡', 'Kaserne'],
   tavern: ['🍺', 'Taverne'], healer: ['💚', 'Heilplatz'], smithy: ['⚒', 'Schmiede'], armory: ['🪖', 'Rüstkammer'],
 };
 

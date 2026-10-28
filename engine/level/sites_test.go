@@ -55,7 +55,7 @@ func checkSiteSpacing(t *testing.T, seed string, lay Layout, p SitePlacement) {
 	t.Helper()
 	end := p.ZoneStartUnits + float64(p.Zones)*lay.ChunkWidthUnits
 	for a, sa := range lay.Sites {
-		if d := math.Abs(sa.X - lay.HubCenterUnits); d < min(p.ZoneStartUnits, p.Zone1TowerUnits) || d >= end {
+		if d := math.Abs(sa.X - lay.HubCenterUnits); sa.Kind != "nursery" && (d < min(p.ZoneStartUnits, p.Zone1TowerUnits) || d >= end) {
 			t.Fatalf("%s: Platz %v außerhalb der Zonen", seed, sa)
 		}
 		for _, sb := range lay.Sites[a+1:] {
@@ -177,5 +177,81 @@ func TestSitesZone1JedesBiom(t *testing.T) {
 				}
 			}
 		}
+	}
+}
+
+// B-636 (AC-03): Das Wald-Biom hat je Seite einen Baumschul-Platz in einem Wald-Chunk, deterministisch; andere Biome keinen.
+func TestNurseryPlaetzeImWald(t *testing.T) {
+	p := DefaultSitePlacement()
+	for _, id := range biomeIDs(t) {
+		b := biome(t, id)
+		have := map[int]int{}
+		for i := range 100 {
+			seed := fmt.Sprintf("baumschule-%d", i)
+			lay, err := Generate(b, seed)
+			if err != nil {
+				t.Fatal(err)
+			}
+			again, _ := Generate(b, seed)
+			if fmt.Sprint(lay.Sites) != fmt.Sprint(again.Sites) {
+				t.Fatalf("%s %s: nicht deterministisch", id, seed)
+			}
+			sides := map[int]int{}
+			for _, s := range lay.Sites {
+				if s.Kind == "nursery" {
+					sides[s.Side]++
+					checkNurseryOnForest(t, id, seed, lay, s, p)
+				}
+			}
+			for side, n := range sides {
+				if n > 1 || id != "forest" {
+					t.Fatalf("%s %s: %d Baumschulen auf Seite %d", id, seed, n, side)
+				}
+				have[side] += n
+			}
+		}
+		// Ohne Wald-Chunk auf einer Seite entfällt der Platz dort (Ausnahmefall im Ticket): höchstens 10 % der Seeds.
+		if id == "forest" && (have[-1] < 90 || have[1] < 90) {
+			t.Errorf("forest: Baumschulen links %d, rechts %d von 100 Seeds", have[-1], have[1])
+		}
+	}
+}
+
+func checkNurseryOnForest(t *testing.T, id, seed string, lay Layout, s WallSite, p SitePlacement) {
+	t.Helper()
+	c := lay.Chunks[int(s.X/lay.ChunkWidthUnits)]
+	if c.Kind != "forest" {
+		t.Fatalf("%s %s: Baumschule bei %v in Chunk %q", id, seed, s.X, c.Kind)
+	}
+	if d := math.Abs(s.X - lay.HubCenterUnits); d < p.NurseryMinUnits-lay.ChunkWidthUnits/2 {
+		t.Fatalf("%s %s: Baumschule %v Units vom Hub, mindestens etwa %v", id, seed, d, p.NurseryMinUnits)
+	}
+}
+
+// B-636 (AC-03): Auf dem Baumschul-Platz stehen Bäume (der Wald-Chunk liefert sie), erst nach dem Roden wird er bezahlbar.
+func TestNurseryHatBaeumeImFreiraum(t *testing.T) {
+	p := DefaultSitePlacement()
+	b := biome(t, "forest")
+	with, total := 0, 0
+	for i := range 100 {
+		lay, err := Generate(b, fmt.Sprintf("baeume-%d", i))
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, s := range lay.Sites {
+			if s.Kind != "nursery" {
+				continue
+			}
+			total++
+			for _, e := range lay.Entities {
+				if e.Kind == "tree" && math.Abs(e.X-s.X) < p.ClearRadiusUnits {
+					with++
+					break
+				}
+			}
+		}
+	}
+	if total == 0 || float64(with) < 0.9*float64(total) {
+		t.Errorf("Baumschul-Plätze mit Bäumen im Freiraum: %d von %d", with, total)
 	}
 }

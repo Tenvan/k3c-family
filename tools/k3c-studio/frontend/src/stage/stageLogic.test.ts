@@ -14,15 +14,15 @@ describe('Hub-Stufen (B-460/AC-04)', () => {
 });
 
 describe('Gebäude-Liste aus dem Zustand (B-460/AC-04)', () => {
-  const sites = [{ kind: 'wall', x: 90 }, { kind: 'farm', x: 12.5 }, { kind: 'tower', x: 90 }];
+  const sites = [{ kind: 'wall', x: 90 }, { kind: 'nursery', x: 12.5 }, { kind: 'tower', x: 90 }];
 
   it('von links nach rechts, bei gleicher Position nach Art, Schlüssel kind@x wie in Go', () => {
     expect(buildingToggles(sites)).toEqual([
-      { key: 'farm@12.5', kind: 'farm', x: 12.5 },
+      { key: 'nursery@12.5', kind: 'nursery', x: 12.5 },
       { key: 'tower@90', kind: 'tower', x: 90 },
       { key: 'wall@90', kind: 'wall', x: 90 },
     ]);
-    expect(siteKey('farm', 12.5)).toBe('farm@12.5');
+    expect(siteKey('nursery', 12.5)).toBe('nursery@12.5');
   });
 
   it('die Liste des Mocks (vom Server erzeugter Zustand) hat zu jedem Platz einen Schalter', () => {
@@ -65,8 +65,8 @@ describe('Gebäude-Filter nach Art (B-477/AC-05)', () => {
 
 describe('previewArgsOf', () => {
   it('abgewählte Gebäude als false, sortiert; Tag mit Fortschritt 0', () => {
-    expect(previewArgsOf('k3c', 'forest', 3, new Set(['wall@90', 'farm@12.5']))).toEqual({
-      seed: 'k3c', source: { biome: 'forest' }, hubLevel: 3, phase: 'day', progress: 0, buildings: { 'farm@12.5': false, 'wall@90': false },
+    expect(previewArgsOf('k3c', 'forest', 3, new Set(['wall@90', 'nursery@12.5']))).toEqual({
+      seed: 'k3c', source: { biome: 'forest' }, hubLevel: 3, phase: 'day', progress: 0, buildings: { 'nursery@12.5': false, 'wall@90': false },
     });
     expect(previewArgsOf('k3c', 'forest', 5, new Set()).buildings).toEqual({});
   });
@@ -136,12 +136,12 @@ describe('Optionen mit Tageszeit', () => {
 });
 
 describe('focusXs (Gebäude-Planer: gewählte Zeile → Plätze der Welt)', () => {
-  const sites = [{ kind: 'farm', x: 48 }, { kind: 'farm', x: 152 }, { kind: 'armory', x: 140 }, { kind: 'armory', x: 300 }];
+  const sites = [{ kind: 'nursery', x: 48 }, { kind: 'nursery', x: 152 }, { kind: 'armory', x: 140 }, { kind: 'armory', x: 300 }];
   const f = (kind: string, offset: number | null, bothSides = false) => ({ id: 'x', kind, offset, bothSides });
 
   it('nimmt Art und Abstand zur Hub-Mitte, je Seite mit ±', () => {
     expect(focusXs(f('armory', 40), 100, sites)).toEqual([140]);
-    expect(focusXs(f('farm', 52, true), 100, sites)).toEqual([48, 152]);
+    expect(focusXs(f('nursery', 52, true), 100, sites)).toEqual([48, 152]);
   });
   it('Streuung bis 0,5 Units, sonst alle Plätze der Art', () => {
     expect(focusXs(f('armory', 40.4), 100, sites)).toEqual([140]);

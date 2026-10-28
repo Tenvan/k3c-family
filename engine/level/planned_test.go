@@ -98,14 +98,6 @@ func TestValidatePlanMineMitFreiemPlatz(t *testing.T) {
 	}
 }
 
-func TestValidatePlanAderAmFarmPlatz(t *testing.T) {
-	cave := biome(t, "cave")
-	// Hub + 52 ist der Farm-Weltplatz: Slot 1 bei 2 Units liegt bei 52.
-	if err := ValidatePlan(cave, []PlannedChunk{p(1, "cavern", obj("stoneVein", 2))}); err == nil {
-		t.Error("Ader auf dem Farm-Platz muss abgelehnt werden")
-	}
-}
-
 func TestLeereFelderSindKeinePlanung(t *testing.T) {
 	for _, raw := range []string{`null`, `[]`} {
 		var plan []PlannedChunk

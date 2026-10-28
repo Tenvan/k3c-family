@@ -19,7 +19,7 @@ type CraftSave struct {
 	Swords        int        `json:"swords,omitempty"`        // Schwerter im Regal
 	SwordPaidGold int        `json:"swordPaidGold,omitempty"` // bezahltes Gold für das nächste Schwert
 	SwordDone     float64    `json:"swordDone,omitempty"`
-	Plots         []PlotSave `json:"plots,omitempty"` // Plantage einer Farm, je Platz
+	Plots         []PlotSave `json:"plots,omitempty"` // Plantage einer Baumschule, je Platz
 }
 
 // PlotSave ist ein Platz der Plantage: ein gewachsener Baum oder die Zeit bis zum nächsten.
@@ -68,7 +68,7 @@ func siteByKey(w *World, k string) *Site {
 	return nil
 }
 
-// applyPlots stellt die Plantage gebauter Farmen wieder her; eine zerstörte Farm (nicht built) bekommt keine Bäume.
+// applyPlots stellt die Plantage gebauter Baumschulen wieder her; eine zerstörte Baumschule (nicht built) bekommt keine Bäume.
 func applyPlots(w *World, h HubSave) {
 	for _, saved := range h.Sites {
 		s := siteByKey(w, key(saved.Kind, saved.X))

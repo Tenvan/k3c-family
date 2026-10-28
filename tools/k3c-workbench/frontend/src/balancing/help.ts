@@ -39,7 +39,7 @@ export const FIELD_HELP: Record<HelpKey, FieldHelp> = {
   bot: {
     label: 'Bot',
     hint: 'Spielweise der Monarchen: ein Profil für alle oder „je Spieler“; „Ziel“ = Bot je Ziel.',
-    help: 'Der **Bot** spielt die Monarchen ohne Zufall nach einem festen Profil.\n\n| Bot | Spielweise |\n|---|---|\n| `passive` | steht am Hub, zahlt nichts (Untergrenze) |\n| `saver` | sparsam: erst Mauern, dann Landstreicher anwerben |\n| `walls` | Mauern samt Ausbau, dann Türme und Hub-Ausbau, anwerben zuletzt |\n| `economy` | Wirtschaft zuerst, Mauern ab Tag 2 |\n| `wirtschaft` | Standard: Mauern, Turm, Farm, Werkstatt, Hub-Ausbau, Bögen, anwerben |\n| `coop2`, `coop4` | Rollen nach Spieler: gerade Mauern, ungerade Wirtschaft (ab 2 bzw. 4 Spielern) |\n\n- Leer: Bot des Ziels (heute `wirtschaft`).\n- Wirkung: Die Zielkorridore sind für `wirtschaft` gedacht; andere Bots zeigen, wie robust die Werte gegen andere Spielweisen sind.',
+    help: 'Der **Bot** spielt die Monarchen ohne Zufall nach einem festen Profil.\n\n| Bot | Spielweise |\n|---|---|\n| `passive` | steht am Hub, zahlt nichts (Untergrenze) |\n| `saver` | sparsam: erst Mauern, dann Landstreicher anwerben |\n| `walls` | Mauern samt Ausbau, dann Türme und Hub-Ausbau, anwerben zuletzt |\n| `economy` | Wirtschaft zuerst, Mauern ab Tag 2 |\n| `wirtschaft` | Standard: Mauern, Turm, Baumschule, Werkstatt, Hub-Ausbau, Bögen, anwerben |\n| `coop2`, `coop4` | Rollen nach Spieler: gerade Mauern, ungerade Wirtschaft (ab 2 bzw. 4 Spielern) |\n\n- Leer: Bot des Ziels (heute `wirtschaft`).\n- Wirkung: Die Zielkorridore sind für `wirtschaft` gedacht; andere Bots zeigen, wie robust die Werte gegen andere Spielweisen sind.',
   },
   world: {
     label: 'Welt',

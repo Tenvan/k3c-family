@@ -7,16 +7,16 @@ import (
 )
 
 // Profil „Wirtschaft“ (`wirtschaft`, BAL6, B-347): der Bot des Standardszenarios. Er spielt die Wirtschaft so, dass
-// jeder Korridor aus docs/rules/zielkorridore.md › BR1 einen Messwert hat: Mauern, Turm, Farm und Werkstatt bauen, den
+// jeder Korridor aus docs/rules/zielkorridore.md › BR1 einen Messwert hat: Mauern, Turm, Baumschule und Werkstatt bauen, den
 // Hub ausbauen (Material markieren oder beim Händler kaufen), Holz nachmarkieren und Kämpfer schaffen (Bögen,
 // Landstreicher). Ob ein Platz Münzen nimmt und wie viel noch fehlt, liest er über sim.SiteGoldLeft; er zahlt nur, wenn
 // das eigene Gold den Rest deckt, sonst kämen die Münzen beim Loslassen zurück.
 
 // buildOrder: unbezahlte Plätze in dieser Reihenfolge, je Art der nächste bezahlbare.
-var buildOrder = []string{"wall", "tower", "farm", "workshop"}
+var buildOrder = []string{"wall", "tower", "nursery", "workshop"}
 
 // deepBuildOrder gilt unter Tage: die Werkstatt zuerst, ohne sie entstehen keine Bögen, und jede Welle räumt sie ab (B-652).
-var deepBuildOrder = []string{"workshop", "wall", "tower", "farm"}
+var deepBuildOrder = []string{"workshop", "wall", "tower", "nursery"}
 
 func buildOrderOf(w *sim.World) []string {
 	if w.Biome.Depth >= 1 {

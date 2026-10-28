@@ -94,9 +94,9 @@ func wantOneLine(t *testing.T, before, after, from, to string) {
 func TestHubSaveRuestkammerStufe3(t *testing.T) {
 	root := planerCopy(t, hubFile)
 	hubBefore, rulesBefore := readIn(t, root, hubFile), readIn(t, root, rulesFile)
-	_, res := saveEdit(t, root, func(m map[string]any) { site(m, "sites", 8)["hubLevel"] = 3 })
+	_, res := saveEdit(t, root, func(m map[string]any) { site(m, "sites", 7)["hubLevel"] = 3 })
 	wantSaved(t, root, rulesBefore, res)
-	wantOneLine(t, hubBefore, readIn(t, root, hubFile), armory4+",", armory3+",")
+	wantOneLine(t, hubBefore, readIn(t, root, hubFile), armory4, armory3)
 	if readIn(t, root, rulesFile) == rulesBefore {
 		t.Error("Block der Regeltabelle nicht neu geschrieben")
 	}
@@ -129,7 +129,7 @@ func TestHubSavePlatzEntfernenUndHinzufuegen(t *testing.T) {
 	hubBefore, rulesBefore := readIn(t, root, hubFile), readIn(t, root, rulesFile)
 	const healer = `{ "kind": "healer", "offsetUnits": -40, "hubLevel": 3 }`
 	_, res := saveEdit(t, root, func(m map[string]any) {
-		m["sites"] = slices.Delete(m["sites"].([]any), 4, 5)
+		m["sites"] = slices.Delete(m["sites"].([]any), 3, 4)
 	})
 	wantSaved(t, root, rulesBefore, res)
 	removed, added := lineDiff(hubBefore, readIn(t, root, hubFile))
@@ -138,19 +138,19 @@ func TestHubSavePlatzEntfernenUndHinzufuegen(t *testing.T) {
 	}
 	afterRemove, rulesBefore := readIn(t, root, hubFile), readIn(t, root, rulesFile)
 	plan := hubPlanFrom(root, hubFile)
-	const farm = `    { "kind": "farm", "offsetUnits": 52, "hubLevel": 1 }`
+	const nursery = `    { "kind": "armory", "offsetUnits": 40, "hubLevel": 4 }` // letzter Eintrag in sites
 	nl := "\n"
 	if strings.Contains(plan.Raw, "\r\n") {
 		nl = "\r\n"
 	}
-	if strings.Count(plan.Raw, farm+nl) != 1 {
-		t.Fatalf("data/hub.json enthält %s nicht genau einmal; Test an die Datei anpassen", farm)
+	if strings.Count(plan.Raw, nursery+nl) != 1 {
+		t.Fatalf("data/hub.json enthält %s nicht genau einmal; Test an die Datei anpassen", nursery)
 	}
-	cand := strings.Replace(plan.Raw, farm+nl, farm+","+nl+"    "+healer+nl, 1)
+	cand := strings.Replace(plan.Raw, nursery+nl, nursery+","+nl+"    "+healer+nl, 1)
 	res = hubSaveIn(root, []byte(cand), plan.Stand) // Reihenfolge wie im Frontend (JSON.stringify)
 	wantSaved(t, root, rulesBefore, res)
 	removed, added = lineDiff(afterRemove, readIn(t, root, hubFile))
-	if !slices.Equal(removed, []string{farm}) || !slices.Equal(added, []string{farm + ",", "    " + healer}) {
+	if !slices.Equal(removed, []string{nursery}) || !slices.Equal(added, []string{nursery + ",", "    " + healer}) {
 		t.Fatalf("Hinzufügen: -%q +%q", removed, added)
 	}
 }
@@ -158,8 +158,8 @@ func TestHubSavePlatzEntfernenUndHinzufuegen(t *testing.T) {
 // Ungültige Kandidaten (Pflichtplatz entfernt, Stufe außerhalb, Platz unbekannter Art) werden nicht geschrieben.
 func TestHubSaveUngueltigerKandidat(t *testing.T) {
 	for name, edit := range map[string]func(m map[string]any){
-		"Farm entfernt": func(m map[string]any) { m["sites"] = slices.Delete(m["sites"].([]any), 3, 4) },
-		"Stufe 9":       func(m map[string]any) { site(m, "sites", 8)["hubLevel"] = 9 },
+		"Werkstatt entfernt": func(m map[string]any) { m["sites"] = slices.Delete(m["sites"].([]any), 0, 1) },
+		"Stufe 9":       func(m map[string]any) { site(m, "sites", 7)["hubLevel"] = 9 },
 		"unbekannte Art": func(m map[string]any) {
 			m["sites"] = append(m["sites"].([]any), map[string]any{"kind": "mill", "offsetUnits": 30, "hubLevel": 1})
 		},
@@ -204,11 +204,11 @@ func TestHubSaveFehlerImTabellenschritt(t *testing.T) {
 	root := planerCopy(t, hubFile)
 	write(t, filepath.Join(root, filepath.FromSlash(rulesFile)), strings.Replace(readRepo(t, rulesFile), table.Start, "", 1))
 	hubBefore, rulesBefore := readIn(t, root, hubFile), readIn(t, root, rulesFile)
-	_, res := saveEdit(t, root, func(m map[string]any) { site(m, "sites", 8)["hubLevel"] = 3 })
+	_, res := saveEdit(t, root, func(m map[string]any) { site(m, "sites", 7)["hubLevel"] = 3 })
 	if !res.Saved || !strings.HasPrefix(res.RulesError, "Regeltabelle veraltet, task gen:rules") || res.Notice != regNotice {
 		t.Fatalf("Tabellenfehler nicht gemeldet: %+v", res)
 	}
-	wantOneLine(t, hubBefore, readIn(t, root, hubFile), armory4+",", armory3+",")
+	wantOneLine(t, hubBefore, readIn(t, root, hubFile), armory4, armory3)
 	if readIn(t, root, rulesFile) != rulesBefore {
 		t.Error("Regeltabelle trotz Fehler verändert")
 	}
@@ -232,7 +232,7 @@ func TestWriteAtomicHinterlaesstNichts(t *testing.T) {
 func TestHubSaveSiebenStufen(t *testing.T) {
 	root := planerCopy(t, "testdata/hub/hub7.json")
 	hubBefore, rulesBefore := readIn(t, root, hubFile), readIn(t, root, rulesFile)
-	plan, res := saveEdit(t, root, func(m map[string]any) { site(m, "sites", 8)["hubLevel"] = 5 })
+	plan, res := saveEdit(t, root, func(m map[string]any) { site(m, "sites", 7)["hubLevel"] = 5 })
 	if plan.Matrix.Levels != 7 {
 		t.Fatalf("%d Stufen, erwartet 7", plan.Matrix.Levels)
 	}

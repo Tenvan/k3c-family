@@ -2,7 +2,7 @@ import { BUILDINGS } from '../../model/data';
 import type { ResourceNode, Site } from '../../model/types';
 
 /**
- * Plätze der Plantage (GEB5): Die Sim legt je gebauter Farm `slots` Plätze im Streifen ±`stripUnits` an und lässt dort
+ * Plätze der Plantage (GEB5): Die Sim legt je gebauter Baumschule `slots` Plätze im Streifen ±`stripUnits` an und lässt dort
  * normale Bäume nachwachsen (`engine/sim/building_plantation.go` › `plotX`). Der Snapshot kennt keine leeren Plätze; der Client
  * rechnet sie mit derselben Formel nach. Rein, ohne Phaser.
  */
@@ -13,7 +13,7 @@ export interface PlantationData {
 }
 
 export interface Plot {
-  /** stabile Kennung je Farm und Platz */
+  /** stabile Kennung je Baumschule und Platz */
   id: number;
   x: number;
   /** Baum auf dem Platz, `null` = leer (Setzling) */
@@ -25,19 +25,19 @@ export const PLOT_TOLERANCE = 0.01;
 
 type FarmSite = Pick<Site, 'id' | 'kind' | 'x' | 'state'>;
 
-const FARM = (BUILDINGS.farm as { plantation?: PlantationData }).plantation ?? { slots: 0, stripUnits: 0 };
+const FARM = (BUILDINGS.nursery as { plantation?: PlantationData }).plantation ?? { slots: 0, stripUnits: 0 };
 
-/** Position von Platz `i` im Streifen um die Farm bei `farmX` (gleiche Formel wie `plotX` in Go) */
+/** Position von Platz `i` im Streifen um die Baumschule bei `farmX` (gleiche Formel wie `plotX` in Go) */
 export function plotX(farmX: number, i: number, p: PlantationData = FARM): number {
   if (p.slots < 2) return farmX;
   return farmX - p.stripUnits + (i * 2 * p.stripUnits) / (p.slots - 1);
 }
 
-/** Alle Plätze gebauter Farmen mit ihrem Baum (falls einer dort steht); Farm im Bau oder zerstört: keine Plätze */
+/** Alle Plätze gebauter Baumschulen mit ihrem Baum (falls einer dort steht); Baumschule im Bau oder zerstört: keine Plätze */
 export function plantationPlots(sites: readonly FarmSite[], nodes: readonly ResourceNode[], p: PlantationData = FARM): Plot[] {
   const trees = nodes.filter((n) => n.kind === 'tree');
   return sites
-    .filter((s) => s.kind === 'farm' && s.state === 'built')
+    .filter((s) => s.kind === 'nursery' && s.state === 'built')
     .flatMap((s) =>
       Array.from({ length: p.slots }, (_, i) => {
         const x = plotX(s.x, i, p);

@@ -55,7 +55,7 @@ func TestRuineGueltig(t *testing.T) {
 	cases := map[string][]PlannedChunk{
 		"Schmiede":            {withRuin(p(3, "forest"), "smithy", 10)},
 		"Schmiede am Rand":    {withRuin(p(3, "forest"), "smithy", 2)},
-		"Farm mit Plantage":   {withRuin(p(3, "forest"), "farm", 3)},
+		"Baumschule mit Plantage":   {withRuin(p(3, "forest"), "nursery", 3)},
 		"neben festem Objekt": {withRuin(p(3, "clearing", obj("tree", 10)), "barracks", 14)},
 		"mit Chunk-Seed":      {withRuin(PlannedChunk{Slot: -3, Kind: "clearing", Seed: "lichtung"}, "storage", 25)},
 		"an einer Mauerlinie": {withRuin(p(2, "forest"), "tavern", 25)},  // innerhalb der Mauern, kein Abstand zu Bauplätzen
@@ -71,7 +71,7 @@ func TestRuineGueltig(t *testing.T) {
 func TestRuineLehntAb(t *testing.T) {
 	forest, cave := biome(t, "forest"), biome(t, "cave")
 	two := p(3, "forest")
-	two.Buildings = []PlannedBuilding{{Kind: "smithy", At: 10}, {Kind: "farm", At: 30}}
+	two.Buildings = []PlannedBuilding{{Kind: "smithy", At: 10}, {Kind: "nursery", At: 30}}
 	cases := map[string]struct {
 		b    Biome
 		plan []PlannedChunk
@@ -83,10 +83,9 @@ func TestRuineLehntAb(t *testing.T) {
 		"unbekannte Art":       {forest, []PlannedChunk{withRuin(p(3, "forest"), "volcano", 10)}, "nicht erlaubt"},
 		"am Rand":              {forest, []PlannedChunk{withRuin(p(3, "forest"), "smithy", 1)}, "Chunk-Grenze"},
 		"hinter dem Chunk":     {forest, []PlannedChunk{withRuin(p(3, "forest"), "smithy", 49)}, "Chunk-Grenze"},
-		"Plantage passt nicht": {forest, []PlannedChunk{withRuin(p(3, "forest"), "farm", 2)}, "Chunk-Grenze"},
+		"Plantage passt nicht": {forest, []PlannedChunk{withRuin(p(3, "forest"), "nursery", 2)}, "Chunk-Grenze"},
 		"Portal im Nachbar":    {forest, []PlannedChunk{p(3, "portal", obj("portal", 50)), withRuin(p(4, "forest"), "smithy", 2)}, "portal auf Platz +3"},
 		"Camp im Nachbar":      {forest, []PlannedChunk{withRuin(p(-3, "forest"), "smithy", 2), p(-4, "recruitCamp", obj("recruitCamp", 50))}, "recruitCamp auf Platz -4"},
-		"am Farm-Weltplatz":    {forest, []PlannedChunk{withRuin(p(1, "forest"), "smithy", 2)}, "Farm-Weltplatz"},
 		"am festen Objekt":     {forest, []PlannedChunk{withRuin(p(3, "clearing", obj("tree", 10)), "smithy", 12)}, "tree"},
 		"an der Truhe":         {forest, []PlannedChunk{withRuin(p(3, "chest"), "smithy", 23)}, "chest"},
 		"am Portal":            {forest, []PlannedChunk{withRuin(p(4, "portal", obj("portal", 25)), "smithy", 27)}, "portal"},

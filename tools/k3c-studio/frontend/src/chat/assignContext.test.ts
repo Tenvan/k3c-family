@@ -13,11 +13,11 @@ describe('Kontext für den Zuordnungs-Auftrag', () => {
   });
 
   it('hat auf anderen Seiten keinen Kontext', () => {
-    expect(assignContext('welt', 'farm', none)).toBeNull();
+    expect(assignContext('welt', 'nursery', none)).toBeNull();
   });
 
   it('nennt alle Filter in fester Reihenfolge', () => {
-    expect(filterText({ kategorie: 'gebaeude', typ: 'farm', status: 'fehlt', suche: '' })).toBe('Kategorie gebaeude · Typ farm · Status fehlt');
+    expect(filterText({ kategorie: 'gebaeude', typ: 'nursery', status: 'fehlt', suche: '' })).toBe('Kategorie gebaeude · Typ nursery · Status fehlt');
   });
 
   it('zeigt den Kontext als Zeile', () => {

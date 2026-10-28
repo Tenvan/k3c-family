@@ -28,7 +28,7 @@ import type { Coin, Enemy, GameEvent, Pickup, Player, Projectile, ResourceNode, 
 
 const U = UNIT_PX;
 const G = GROUND_Y;
-/** Setzling steht vor der Farm (Bauplätze: Tiefe 2); der hohe Plantage-Baum steht wie der Wald dahinter (GEB10) */
+/** Setzling steht vor der Baumschule (Bauplätze: Tiefe 2); der hohe Plantage-Baum steht wie der Wald dahinter (GEB10) */
 const PLANTATION_DEPTH = 3;
 /** Bildhöhe, auf die Fahne und Balken ohne Grafik zielen (Platzhalter-Form) */
 const PLACEHOLDER_NODE_HEIGHT = 158;
@@ -239,7 +239,7 @@ export class WorldRenderer {
 
   // ---------- Ressourcen ----------
 
-  /** Setzling auf einem leeren Plantage-Platz, vor der Farm; ohne geladene Grafik bleibt der Platz leer */
+  /** Setzling auf einem leeren Plantage-Platz, vor der Baumschule; ohne geladene Grafik bleibt der Platz leer */
   private createPlot(p: Plot): View {
     const image = this.scene.textures.exists('grafik:setzling') ? [this.scene.add.image(0, 0, 'grafik:setzling').setOrigin(0.5, 1)] : [];
     return this.scene.add.container(p.x * U, G, image).setDepth(PLANTATION_DEPTH);
@@ -248,7 +248,7 @@ export class WorldRenderer {
   private createNode(n: ResourceNode): View {
     const s = this.scene;
     const parts: Phaser.GameObjects.GameObject[] = [];
-    // Plantage-Baum (steht auf einem Platz): eigene niedrige Pappel vor der Farm (B-568); Waldbäume bleiben bei der Zuordnung (GEB6)
+    // Plantage-Baum (steht auf einem Platz): eigene niedrige Pappel vor der Baumschule (B-568); Waldbäume bleiben bei der Zuordnung (GEB6)
     const pappel = isPlantationTree(n, this.world.sites) && s.textures.exists('grafik:pappel-niedrig');
     // Baumform aus der Position, Look aus dem Biom (GEB6); unbekannte Art oder fehlende Grafik: Platzhalter-Form
     const sprite = pappel ? s.add.image(0, 0, 'grafik:pappel-niedrig').setOrigin(0.5, 1) : objectImage(s, `node:${n.kind}`, 0, 0, nodeSprite(n.kind, n.x, this.world.biome.id));
@@ -269,7 +269,7 @@ export class WorldRenderer {
     const top = -Math.min(sprite ? sprite.displayHeight : PLACEHOLDER_NODE_HEIGHT, PENNANT_MAX_HEIGHT);
     const sign = createMineSign(s, n.kind, -24); // Abbau-Schild links am Fuß, nur markiert, ersetzt den Wimpel (B-653), Sichtbarkeit in updateNode
     const view = s.add.container(n.x * U, G, [...parts, sign, ...bar(s, top - 32, 50, 0xffd166)]);
-    return pappel ? view.setDepth(PLANTATION_DEPTH) : view; // vor der Farm (Tiefe 2), wie der Setzling
+    return pappel ? view.setDepth(PLANTATION_DEPTH) : view; // vor der Baumschule (Tiefe 2), wie der Setzling
   }
 
   private updateNode(v: View, n: ResourceNode): void {

@@ -8,7 +8,7 @@ Skalierung ×2 bis ×3, Nachbearbeitung nur Skalieren und Palette.
   `sprites/<ordner>` = Figur unter `public/sprites/` (Credits `public/sprites/CREDITS.md`), Zuordnung über `data/sprites.json`.
 - **Stil bei Figuren:** Frame-Größe, Figurhöhe in Frame-Pixeln und Skalierung aus `data/sprites.json`
   (`scale` des Sheets, mal `scale` der Figur, falls gesetzt).
-- **Hub-Gebäude (GEB9):** Werkstatt, Farm, Kaserne, Lager, Taverne, Schmiede, Heilplatz und Rüstkammer wechseln mit der Hub-Stufe; das Register
+- **Hub-Gebäude (GEB9):** Werkstatt, Baumschule, Kaserne, Lager, Taverne, Schmiede, Heilplatz und Rüstkammer wechseln mit der Hub-Stufe; das Register
   führt je Gebäude die Slots `<id>:1` bis `<id>:5` (z. B. `workshop:3`), der Slot ohne Stufe zeigt die Grundform (Stufe 1).
 - **Lücken** sind fett und nennen das Ticket für die Suche (B-162, GR2). `src/tools/zuordnung.test.ts` prüft Vollständigkeit,
   Credits und Lücken-Tickets.
@@ -26,7 +26,7 @@ Skalierung ×2 bis ×3, Nachbearbeitung nur Skalieren und Palette.
 | `smithy` | `data/buildings.json` | `grafik/gebaeude` | `schmiede-<n>-32.png` (n = Hub-Stufe 1–5) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB2, GEB9 | eigen | zugeordnet |
 | `armory` | `data/buildings.json` | `grafik/gebaeude` | `ruestkammer-<n>-32.png` (n = Hub-Stufe 1–5) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB2, GEB9 | eigen | zugeordnet |
 | `storage` | `data/buildings.json` | `grafik/gebaeude` | `lager-<n>-32.png` (n = Hub-Stufe 1–5) (6 × 4 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5, GEB9 | eigen | zugeordnet |
-| `farm` | `data/buildings.json` | `grafik/gebaeude` | `farm-<n>-32.png` (n = Hub-Stufe 1–5) (4 × 3 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5, GEB9 | eigen | zugeordnet |
+| `nursery` | `data/buildings.json` | `grafik/gebaeude` | `farm-<n>-32.png` (n = Hub-Stufe 1–5) (4 × 3 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5, GEB9 | eigen | zugeordnet |
 | `barracks` | `data/buildings.json` | `grafik/gebaeude` | `kaserne-<n>-32.png` (n = Hub-Stufe 1–5) (6 × 4 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5, GEB9 | eigen | zugeordnet |
 | `stairsUp` | `data/buildings.json` | `grafik/gebaeude` | `treppe-hoch-32.png` (4 × 4 Kacheln, ein Bild) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5 | eigen | zugeordnet |
 | `stairsDown` | `data/buildings.json` | `grafik/gebaeude` | `treppe-runter-32.png` (4 × 3 Kacheln) | 32 px je Kachel, eigene Grafik (`tools/buildings`), ×1; GEB5 | eigen | zugeordnet |

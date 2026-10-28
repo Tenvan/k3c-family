@@ -122,7 +122,7 @@ export const de = {
   'site.storage': 'Lager',
   'site.stairsUp': 'Treppe hoch',
   'site.stairsDown': 'Treppe runter',
-  'site.farm': 'Farm',
+  'site.nursery': 'Baumschule',
   'site.barracks': 'Kaserne',
   'site.tavern': 'Taverne',
   'site.healer': 'Heilplatz',

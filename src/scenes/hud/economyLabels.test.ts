@@ -143,7 +143,7 @@ describe('Treppen-Kosten je Tiefe (B-631/AC-02)', () => {
   it('ohne Eintrag der Tiefe oder ohne Tiefe: cost der Art', () => {
     expect(buildCost('stairsUp', 0)).toEqual({ stone: 100, gold: 10 });
     expect(buildCost('stairsDown', undefined)).toEqual({ stone: 100, gold: 10 });
-    expect(buildCost('farm', 3)).toEqual({ wood: 30, gold: 3 });
+    expect(buildCost('nursery', 3)).toEqual({ wood: 30, gold: 3 });
   });
 
   it('Wartegrund am Platz nennt das Material der Tiefe', () => {

@@ -10,11 +10,11 @@ import { showsBuildSign } from './buildSignView';
 
 export type ScaffoldClass = 1 | 2 | 3 | 4 | 6;
 
-/** Größenklasse je Platzart: Mauer 1 × 5, Tor 2 × 4, Turm 3 × 8, Farm und Treppen 4 × 3, Hub-Gebäude 6 × 4 */
+/** Größenklasse je Platzart: Mauer 1 × 5, Tor 2 × 4, Turm 3 × 8, Baumschule und Treppen 4 × 3, Hub-Gebäude 6 × 4 */
 export const SCAFFOLD_CLASS: Record<SiteKind, ScaffoldClass> = {
   wall: 1,
   tower: 3,
-  farm: 4,
+  nursery: 4,
   stairsUp: 4,
   stairsDown: 4,
   workshop: 6,

@@ -54,8 +54,8 @@ describe('Gebäude-Planer: Bearbeiten (B-462 › Bearbeitbar)', () => {
     const h = await mount();
     await select(h, 'armory@40');
     await type(field(h, 'Hub-Stufe (hubLevel)'), '5');
-    expect(lastCandidate(check).sites[8]).toEqual({ kind: 'armory', offsetUnits: 40, hubLevel: 5 });
-    expect(JSON.parse(preview.mock.lastCall![0].hubCandidate!).sites[8].hubLevel).toBe(5);
+    expect(lastCandidate(check).sites[7]).toEqual({ kind: 'armory', offsetUnits: 40, hubLevel: 5 });
+    expect(JSON.parse(preview.mock.lastCall![0].hubCandidate!).sites[7].hubLevel).toBe(5);
     expect(h.textContent).toContain('geändert, Prüfung ohne Befund');
   });
 
@@ -66,7 +66,7 @@ describe('Gebäude-Planer: Bearbeiten (B-462 › Bearbeitbar)', () => {
     await type(field(h, 'Platz (offsetUnits)'), '26');
     await type(field(h, 'ab Tiefe (fromDepth)'), '1');
     await click(h.querySelector<HTMLElement>('[role="checkbox"][aria-label="needsDeeper"]')!);
-    expect(lastCandidate(check).sites[6]).toEqual({ kind: 'barracks', offsetUnits: 26, hubLevel: 2, fromDepth: 1, needsDeeper: true });
+    expect(lastCandidate(check).sites[5]).toEqual({ kind: 'barracks', offsetUnits: 26, hubLevel: 2, fromDepth: 1, needsDeeper: true });
   });
 
   it('Baugrund der Zone 1 und Händler', async () => {
@@ -157,9 +157,9 @@ describe('Gebäude-Planer: Review WZ9.3', () => {
     const h = await mount();
     await changeArmory(h);
     await type(field(h, 'Hub-Stufe (hubLevel)'), '1.5');
-    expect(lastCandidate(check).sites[8].hubLevel).toBe(5);
+    expect(lastCandidate(check).sites[7].hubLevel).toBe(5);
     await type(field(h, 'Hub-Stufe (hubLevel)'), '1e20');
-    expect(lastCandidate(check).sites[8].hubLevel).toBe(5);
+    expect(lastCandidate(check).sites[7].hubLevel).toBe(5);
   });
 
   it('nicht lesbarer Kandidat: Fehler sichtbar, nicht speicherbar', async () => {
@@ -189,7 +189,7 @@ describe('Gebäude-Planer: Review WZ9.3', () => {
     await click(button(h, 'Speichern'));
     expect(h.querySelector<HTMLFieldSetElement>('fieldset.pl-fieldset')!.disabled).toBe(true);
     await type(field(h, 'Hub-Stufe (hubLevel)'), '3');
-    expect(lastCandidate(check).sites[8].hubLevel).toBe(5);
+    expect(lastCandidate(check).sites[7].hubLevel).toBe(5);
     await act(async () => finish(mockHubSave('', mockHubPlan().stand)));
     await flush();
     expect(h.querySelector<HTMLFieldSetElement>('fieldset.pl-fieldset')!.disabled).toBe(false);

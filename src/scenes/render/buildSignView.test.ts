@@ -10,7 +10,7 @@ describe('signVariant', () => {
     expect(signVariant('stairsDown')).toBe('stairs');
   });
   it('übrige Gebäude tragen das Siedlungs-Schild', () => {
-    for (const k of ['workshop', 'storage', 'farm', 'barracks', 'tavern', 'healer', 'smithy', 'armory'] as const) expect(signVariant(k)).toBe('settlement');
+    for (const k of ['workshop', 'storage', 'nursery', 'barracks', 'tavern', 'healer', 'smithy', 'armory'] as const) expect(signVariant(k)).toBe('settlement');
   });
 });
 

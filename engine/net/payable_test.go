@@ -72,3 +72,29 @@ func entryOf(t *testing.T, d map[string]any, key string, id int) map[string]any 
 	t.Fatalf("%s %d fehlt im Delta", key, id)
 	return nil
 }
+
+// B-636: `sites[].clearing` ist wahr für einen Platz, der seine Hub-Stufe erreicht hat, aber im Freiraum noch Bäume hat; er ist dann nicht `payable`.
+func TestClearingImSnapshot(t *testing.T) {
+	_, w := wirtschaftsInsel(t)
+	var target *sim.Site
+	for _, s := range w.Sites {
+		if _, ok := sim.SiteZone(w, s); ok && s.State == "unpaid" {
+			target = s
+			break
+		}
+	}
+	if target == nil {
+		t.Fatal("kein Mauer-, Turm- oder Baumschul-Platz in der Insel")
+	}
+	w.HubLevel = 5
+	w.Nodes = append(w.Nodes, &sim.ResourceNode{ID: 99999, Kind: "tree", X: target.X})
+	for _, raw := range stateOf(w, 0, false)["sites"].([]any) {
+		e := raw.(map[string]any)
+		if e["id"] == float64(target.ID) && (e["clearing"] != true || e["payable"] != nil) {
+			t.Fatalf("Platz %s@%v: clearing %v payable %v", target.Kind, target.X, e["clearing"], e["payable"])
+		} else if e["id"] == float64(target.ID) {
+			return
+		}
+	}
+	t.Fatal("Platz nicht im Snapshot")
+}

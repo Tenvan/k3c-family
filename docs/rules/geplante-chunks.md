@@ -78,7 +78,7 @@ Beschlossen von 🧑 im Workshop WZ14.1 am 2026-10-21 (Chat, Vorschläge von Cla
 
 | Regel | Begründung | Daten |
 |---|---|---|
-| Eine **Ruine** ist ein gebautes, stark beschädigtes **Nutzgebäude** an fester Lage eines geplanten Chunks. Erlaubte Arten: `workshop`, `storage`, `nursery` (bis BS4 `farm`), `barracks`, `tavern`, `healer`, `smithy`, `armory`. Burg, Mauer, Turm, Tor und Treppen sind keine Ruinen. | Sondergegenden mit Geschichte; Burg, Linien und Stufenwechsel gehören dem Hub. | `data/ruins.json` (WZ14.2) |
+| Eine **Ruine** ist ein gebautes, stark beschädigtes **Nutzgebäude** an fester Lage eines geplanten Chunks. Erlaubte Arten: `workshop`, `storage`, `nursery` (bis BS4 `nursery`), `barracks`, `tavern`, `healer`, `smithy`, `armory`. Burg, Mauer, Turm, Tor und Treppen sind keine Ruinen. | Sondergegenden mit Geschichte; Burg, Linien und Stufenwechsel gehören dem Hub. | `data/ruins.json` (WZ14.2) |
 | Ein geplanter Chunk trägt **höchstens eine** Ruine: `buildings: [ { "kind": "smithy", "at": 6 } ]` (Reihenfolge der Schlüssel `slot`, `kind`, `seed`, `objects`, `buildings`). `at` zählt wie bei Objekten in Units ab Chunk-Anfang. | Klein und lesbar; ein Gebäude je Chunk reicht für eine Sondergegend. | `plannedChunks` |
 | Die Ruine startet **gebaut mit 25 %** der HP ihrer Art (aufgerundet) und wirkt ab Spielbeginn wie ein gebautes Gebäude dieser Art (z. B. Kaserne → Truppenlimit, Lager → Kapazität des Vorrats, nicht der Bestand). | Vorsprung für die Spielenden, den sie verteidigen und reparieren. | `data/ruins.json` (Anteil), `data/buildings.json` (HP) |
 | Die Ruine ist **Hub-neutral**: Sie zählt nicht für die Hub-Stufe und nicht für die Freischaltung der Mauerlinien. | Die Hub-Stufe bleibt ein bezahlter Ausbau der Burg (B-462). | – |

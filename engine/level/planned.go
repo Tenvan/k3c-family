@@ -254,12 +254,12 @@ func checkPortal(p placed, b Biome) error {
 	return nil
 }
 
-// veinGapUnits ist der Mindestabstand einer festen Ader zur Farm und zum Baugrund der Zone 1 (docs/rules/geplante-chunks.md § 4, Q57); die Mauer- und
+// veinGapUnits ist der Mindestabstand einer festen Ader zum Baugrund der Zone 1 (docs/rules/geplante-chunks.md § 4, Q57); die Mauer- und
 // Turm-Plätze halten ihrerseits Abstand zu Adern (sites.go blockedXs).
 const veinGapUnits = 4
 
 func checkVein(p placed) error {
-	targets := append([]float64{sitePlacement.Zone1WallUnits, sitePlacement.Zone1TowerUnits}, farmOffsets...) // Baugrund der Zone 1 und Farm
+	targets := []float64{sitePlacement.Zone1WallUnits, sitePlacement.Zone1TowerUnits} // Baugrund der Zone 1
 	for _, site := range targets {
 		if math.Abs(p.dist-site) < veinGapUnits {
 			return fmt.Errorf("die Ader %v Units vom Hub, weniger als %d Units von einem Bauplatz (%v)", p.dist, veinGapUnits, site)

@@ -113,7 +113,7 @@ export const en: Record<TextKey, string> = {
   'site.storage': 'Storage',
   'site.stairsUp': 'Stairs up',
   'site.stairsDown': 'Stairs down',
-  'site.farm': 'Farm',
+  'site.nursery': 'Baumschule',
   'site.barracks': 'Barracks',
   'site.tavern': 'Tavern',
   'site.healer': 'Healer',

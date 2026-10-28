@@ -31,6 +31,7 @@ type SitePlacement struct {
 	ClearRadiusUnits  float64 `json:"clearRadiusUnits"`  // Freiraum von Bäumen und Felsen (Sim, BS12.2)
 	EdgeMarginUnits   float64 `json:"edgeMarginUnits"`   // Abstand zum Level-Rand und zum nächsten Portal
 	OutsideUnits      float64 `json:"outsideUnits"`      // Portale, Gegnerlager und Vorposten geplanter Chunks liegen weiter vom Hub entfernt (frühere äußerste Linie)
+	NurseryMinUnits float64 `json:"nurseryMinUnits"` // Baumschul-Plätze liegen mindestens so weit vom Hub (nur Wald, hinter Zone 2)
 }
 
 // sitePlacement ist der eingebettete Stand aus data/hub.json, nur lesen.
@@ -67,7 +68,57 @@ func (g *gen) placeSites(entities []Entity, chunks []Chunk) []WallSite {
 			out = append(out, zoneSites...)
 		}
 	}
+	return append(out, g.placeNurseries(chunks, &taken)...)
+}
+
+// placeNurseries legt je Seite einen Baumschul-Platz in einen Wald-Chunk (Art `forest`) des Wald-Bioms (Tiefe 0), mindestens
+// `nurseryMinUnits` vom Hub, aus dem eigenen Strom `<biom>:<seed>:nursery` (B-636). Gibt es keinen Wald-Chunk in Reichweite, nimmt
+// er den äußersten der Seite, sonst entfällt der Platz. Auf dem Platz stehen die Bäume des Chunks; bezahlbar wird er erst nach dem Roden.
+func (g *gen) placeNurseries(chunks []Chunk, taken *[]float64) []WallSite {
+	if g.b.Depth != 0 {
+		return nil
+	}
+	r := rng.New(g.b.ID + ":" + g.seed + ":nursery")
+	var out []WallSite
+	for _, side := range []int{-1, 1} {
+		var far, near []int
+		for i, c := range chunks {
+			d := (g.center(i) - g.hub) * float64(side)
+			if c.Kind != "forest" || d <= 0 {
+				continue
+			}
+			if d >= sitePlacement.NurseryMinUnits {
+				far = append(far, i)
+			} else {
+				near = append(near, i)
+			}
+		}
+		pool := far
+		if len(pool) == 0 && len(near) > 0 {
+			pool = near[len(near)-1:] // der äußerste Wald-Chunk der Seite
+		}
+		if len(pool) == 0 {
+			continue
+		}
+		i := pool[r.Int(0, len(pool)-1)]
+		if x, ok := g.freeNear(g.center(i), *taken); ok {
+			*taken = append(*taken, x)
+			out = append(out, WallSite{Side: side, Kind: "nursery", X: x, Zone: 1})
+		}
+	}
 	return out
+}
+
+// freeNear sucht von x aus nach außen (±1, ±2 … Units) den nächsten Ort, der payGapUnits zu allen belegten Orten hält.
+func (g *gen) freeNear(x float64, taken []float64) (float64, bool) {
+	for d := 0.0; d <= g.cw/2-2; d++ {
+		for _, c := range []float64{x + d, x - d} {
+			if !slices.ContainsFunc(taken, func(t float64) bool { return math.Abs(t-c) < payGapUnits }) {
+				return c, true
+			}
+		}
+	}
+	return 0, false
 }
 
 // zonePlacer legt die Plätze einer Zone [lo, hi) (Abstand zur Hub-Mitte) einer Seite an und trägt sie in taken ein.

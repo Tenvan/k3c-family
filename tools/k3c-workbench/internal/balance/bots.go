@@ -26,7 +26,7 @@ var bots = map[string]Bot{
 	"saver":      saver,      // sparsam: erst Mauern, dann Landstreicher anwerben, nur wenn das Gold reicht
 	"walls":      walls,      // Mauern zuerst: nur Mauern samt Ausbau, anwerben erst ohne offene Mauer
 	"economy":    economy,    // Wirtschaft zuerst: erst Landstreicher, Mauern ab Tag 2
-	"wirtschaft": wirtschaft, // Standardszenario (BAL6): Mauern, Turm, Farm, Werkstatt, Hub-Ausbau, Bögen, Anwerben
+	"wirtschaft": wirtschaft, // Standardszenario (BAL6): Mauern, Turm, Baumschule, Werkstatt, Hub-Ausbau, Bögen, Anwerben
 	"coop2":      coop,       // Rollen nach Index: gerade Mauern zuerst, ungerade Wirtschaft zuerst
 	"coop4":      coop,
 }
@@ -214,7 +214,7 @@ func economy(w *sim.World, p *sim.Player) sim.PlayerCommand {
 
 // coop (Koop 2 und 4): Rollen nach Index, gerade Monarchen spielen „Mauern zuerst“, ungerade „Wirtschaft zuerst“. Beide
 // Rollen fallen auf die Bausteine von `wirtschaft` zurück (BS3.4, B-645 A): Die Rollen setzen nur die erste Priorität,
-// danach bauen sie Turm, Farm, Werkstatt und Hub aus, markieren Holz und Stein und schaffen Kämpfer. Ohne das arbeiten
+// danach bauen sie Turm, Baumschule, Werkstatt und Hub aus, markieren Holz und Stein und schaffen Kämpfer. Ohne das arbeiten
 // die Bauern nie (nichts markiert) und es entsteht keine Wirtschaft.
 func coop(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	if p.Index%2 == 0 {

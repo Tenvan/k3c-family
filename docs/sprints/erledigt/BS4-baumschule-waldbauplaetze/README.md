@@ -1,14 +1,14 @@
 # BS4 · SIM · Baumschule auf gerodeten Waldbauplätzen
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** BAS
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-636
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-28, autonom, Claude (Auftrag 🧑: BAS autonom abschließen), Revision 1, Defaults der offenen Fragen
 
 ## Ausgangslage
 
@@ -57,14 +57,11 @@ keine (Defaults aus BS2).
 
 ## Sessions
 
-Reife Entwurf, Stichpunkte:
-- BS4.1 · SIM · Umbenennen farm → nursery in `data/` und `engine/` (AC-01)
-- BS4.2 · SIM · Generator: Baumschul-Plätze in Wald-Chunks (AC-02)
-- BS4.3 · SIM · Kauf nach Rodung, Plantage (AC-03)
-- BS4.4 · SRV · Protokoll: Platz-Zustand (AC-04)
-- BS4.5 · Review (alle)
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BS4.1 | `BS4.1-baumschule-server.md` | Umsetzung | autonom | fertig |
+| BS4.2 | `BS4.2-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-28 (Claude, autonom): AC-01 bis AC-04 nachgewiesen (BS4.1), Review ohne schwere Befunde (BS4.2). Neue Tickets: keine. Offen: Bots (BS8), Darstellung „erst roden“ (BS6).

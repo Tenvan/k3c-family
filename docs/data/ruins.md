@@ -10,7 +10,7 @@
 | Pfad | Typ | Einheit | Bedeutung | Typische Werte |
 |---|---|---|---|---|
 | `hpShare` | Zahl | Anteil | Start-HP einer Ruine als Anteil der Gebäude-HP aus `buildings.json` (aufgerundet) | 0,25 |
-| `kinds` | Liste | – | Nutzgebäude, die als Ruine geplant werden dürfen (nie Burg, Mauer, Turm, Tor, Treppen) | workshop, storage, farm, … |
+| `kinds` | Liste | – | Nutzgebäude, die als Ruine geplant werden dürfen (nie Burg, Mauer, Turm, Tor, Treppen) | workshop, storage, nursery, … |
 
 ## Wirkung auf das Balancing
 

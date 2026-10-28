@@ -1,6 +1,6 @@
 # BS7.5 · Simulationen BS7: Baseline M1 sichern und Delta-Lauf prüfen
 
-- **Status:** offen
+- **Status:** blockiert
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -52,5 +52,6 @@ sim_test {action: start, bots: coop2, world: standard, days: 40, baseline: M1, w
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+**Blockiert (2026-10-28, Claude): Die laufende Workbench ist ein älterer Build.** Ein `sim_test`-Lauf (run-1, coop2, standard, 40 Tage, `k3c-dev`) endete mit „Stufe 5 (Tag 23), Splitter-Titan nicht erreicht“, der Go-Test `task balance:milestone` mit dem aktuellen Stand besiegt den Titan an Tag 26. Die Bots der EXE stammen also von vor den BS12-Bot-Änderungen (Commits ab `e60e84e6`). Eine Baseline `M1` aus diesem Lauf wäre falsch.
+**Ralf:** Workbench neu bauen und starten (`task k3c-workbench:build` bzw. `task k3c-workbench:web`), dann diese Session erneut: `sim_test {action: start, bots: coop2, world: standard, days: 40, wait: true}`, Titan Tag ~26 erwartet; danach `baseline`/`saveBaseline M1` und Delta-Lauf (Schritte 3–6). Dauer eines Laufs 6 min (parallele Last), allein ~1 min.
+- Kein Code geändert.

@@ -3,8 +3,8 @@ import { buildView, emptyState, toggleChip } from '@webkit/lib/listFilter';
 import { describe, expect, it } from 'vitest';
 import { baumDatei, baumReihe, figureCard, gebaeudeKarten, GRAFIK_SCALE, grafikScale, hintergrundStreifen, hubWachstum, kachelAnzahl, stufenKarten, vorlageZeilen, licenseFlag, resolveSlot, sceneFilter, SCENES, slotsOf, type AssetSlot, type GebaeudeEintrag } from './scenesLogic';
 
-const farm: AssetSlot = {
-  id: 'farm', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Farm',
+const nursery: AssetSlot = {
+  id: 'nursery', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Baumschule',
   wahl: [{ datei: 'grafik/gothicvania-town/props-einzeln/well.png', ausschnitt: { x: 0, y: 0, w: 64, h: 48 } }, { datei: 'grafik/gothicvania-town/props-einzeln/wagon.png' }],
 };
 const tavern: AssetSlot = { id: 'tavern', art: 'grafik', kategorie: 'gebaeude', beschreibung: 'Taverne', wahl: [] };
@@ -18,24 +18,24 @@ describe('Szenen: Liste (B-299)', () => {
 
 describe('Asset-Vorschau: Slot → aktives Asset (B-299/AC-03)', () => {
   it('nimmt die erste Präferenz samt Ausschnitt', () => {
-    const r = resolveSlot(farm, { wahl: 1 });
-    expect(r).toMatchObject({ pref: 1, placeholder: false, choice: farm.wahl[0] });
+    const r = resolveSlot(nursery, { wahl: 1 });
+    expect(r).toMatchObject({ pref: 1, placeholder: false, choice: nursery.wahl[0] });
     expect(r.choice?.ausschnitt).toEqual({ x: 0, y: 0, w: 64, h: 48 });
   });
 
   it('wahl=n zeigt die n-te Präferenz nur für den genannten Slot', () => {
-    expect(resolveSlot(farm, { slot: 'farm', wahl: 2 }).choice).toBe(farm.wahl[1]);
-    expect(resolveSlot(farm, { slot: 'tower', wahl: 2 }).pref).toBe(1);
+    expect(resolveSlot(nursery, { slot: 'nursery', wahl: 2 }).choice).toBe(nursery.wahl[1]);
+    expect(resolveSlot(nursery, { slot: 'tower', wahl: 2 }).pref).toBe(1);
   });
 
   it('ohne Zuordnung oder ohne n-te Präferenz: Platzhalter', () => {
     expect(resolveSlot(tavern, { wahl: 1 })).toMatchObject({ placeholder: true, choice: undefined });
-    expect(resolveSlot(farm, { slot: 'farm', wahl: 3 })).toMatchObject({ placeholder: true, pref: 3 });
+    expect(resolveSlot(nursery, { slot: 'nursery', wahl: 3 })).toMatchObject({ placeholder: true, pref: 3 });
   });
 
   it('ordnet Slots ihrer Szene zu', () => {
-    expect(slotsOf([farm, tavern, coin], 'gebaeude').map((s) => s.id)).toEqual(['farm', 'tavern']);
-    expect(slotsOf([farm, tavern, coin], 'sfx')).toEqual([coin]);
+    expect(slotsOf([nursery, tavern, coin], 'gebaeude').map((s) => s.id)).toEqual(['nursery', 'tavern']);
+    expect(slotsOf([nursery, tavern, coin], 'sfx')).toEqual([coin]);
   });
 });
 

@@ -78,7 +78,7 @@ Viele dieser Objekte gibt es noch nicht im Code (B-112, B-114); dann ist die Her
 | `vein:copper` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-2-32.png` (Stufe 2 Kupfer) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 | `vein:iron` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-3-32.png` (Stufe 3 Eisen) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
 | `vein:crystal` | `docs/rules/materialien-gebaeude.md` § 1 (Adern) | `grafik/gebaeude` | `ader-4-32.png` (Stufe 4 Kristall) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB6 | eigen | zugeordnet |
-| `plantation` | `docs/rules/materialien-gebaeude.md` § 1 (Farm-Plantage) | `grafik/gebaeude` | `setzling-32.png` (1 × 1 Kachel, leerer Platz; gewachsen: `pappel-niedrig-32.png`, 2 × 5 Kacheln, vor der Farm, B-568) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB5 | eigen | zugeordnet |
+| `plantation` | `docs/rules/materialien-gebaeude.md` § 1 (Baumschule-Plantage) | `grafik/gebaeude` | `setzling-32.png` (1 × 1 Kachel, leerer Platz; gewachsen: `pappel-niedrig-32.png`, 2 × 5 Kacheln, vor der Baumschule, B-568) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB5 | eigen | zugeordnet |
 
 ## Truhen, Portale, Münzen, Ausgang
 
@@ -112,7 +112,7 @@ Level-Objekte, die `src/scenes/render/worldRenderer.ts` zeichnet (`createNode`, 
 | `site:scaffold:1` | B-586 | `grafik/gebaeude` | `geruest-1-32.png` (Gerüst im Bau, Breite 1: Mauer) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB16 | eigen | zugeordnet |
 | `site:scaffold:2` | B-586 | `grafik/gebaeude` | `geruest-2-32.png` (Gerüst im Bau, Breite 2: Tor) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB16 | eigen | zugeordnet |
 | `site:scaffold:3` | B-586 | `grafik/gebaeude` | `geruest-3-32.png` (Gerüst im Bau, Breite 3: Turm) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB16 | eigen | zugeordnet |
-| `site:scaffold:4` | B-586 | `grafik/gebaeude` | `geruest-4-32.png` (Gerüst im Bau, Breite 4: Farm, Treppen) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB16 | eigen | zugeordnet |
+| `site:scaffold:4` | B-586 | `grafik/gebaeude` | `geruest-4-32.png` (Gerüst im Bau, Breite 4: Baumschule, Treppen) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB16 | eigen | zugeordnet |
 | `site:scaffold:6` | B-586 | `grafik/gebaeude` | `geruest-6-32.png` (Gerüst im Bau, Breite 6: Werkstatt, Lager, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB16 | eigen | zugeordnet |
 | `sign:axe` | B-588 | `grafik/gebaeude` | `symbol-axt-32.png` (Abbau-Schild am Baum) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB16 | eigen | zugeordnet |
 | `sign:pickaxe` | B-588 | `grafik/gebaeude` | `symbol-spitzhacke-32.png` (Abbau-Schild an Fels, Erz und Ader) | eigene Grafik (`tools/buildings`), 32 px je Kachel, ×1; GEB16 | eigen | zugeordnet |

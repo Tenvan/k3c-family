@@ -133,13 +133,13 @@ func TestSiegAllesAbbauenOhnePlantage(t *testing.T) {
 	isl := goalIsland(t, "mineAll")
 	wantVictories(t, isl, 0, "volles Level")
 	w := isl.Stages[0]
-	farm := &Site{ID: w.newID(), Kind: "farm", State: "built"}
+	nursery := &Site{ID: w.newID(), Kind: "nursery", State: "built"}
 	tree := &ResourceNode{ID: w.newID(), Kind: "tree", Marked: true}
-	farm.plots = []plot{{tree: tree}}
+	nursery.plots = []plot{{tree: tree}}
 	for _, s := range isl.Stages {
 		s.Nodes = nil
 	}
-	w.Sites, w.Nodes = append(w.Sites, farm), []*ResourceNode{tree}
+	w.Sites, w.Nodes = append(w.Sites, nursery), []*ResourceNode{tree}
 	wantOnce(t, isl)
 }
 

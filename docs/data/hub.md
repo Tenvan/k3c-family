@@ -14,7 +14,7 @@
 | `levels.*.steps.*.cost.gold` | Zahl | Gold | Goldanteil des Schritts | 12 bis 200 |
 | `levels.*.steps.*.buildSeconds` | Zahl | s | Bauzeit des Schritts | 5 bis 25 |
 | `levels.*.steps.*.gate` | Objekt | Material | Material-Tor des letzten Schritts: 20 Material der eigenen neuen Hub-Stufe zusätzlich (Stufe 2 Stein, 3 Kupfer, 4 Eisen, 5 ohne; B-631) | 20 |
-| `sites.*.kind` | Text | – | Gebäudeart am Bauplatz | workshop, farm, tavern, … |
+| `sites.*.kind` | Text | – | Gebäudeart am Bauplatz | workshop, nursery, tavern, … |
 | `sites.*.offsetUnits` | Zahl | Units | Position relativ zur Hub-Mitte | -52 bis 52 |
 | `sites.*.hubLevel` | Ganzzahl | Hub-Stufe | Ab dieser Stufe bezahlbar | 1 bis 4 |
 | `sites.*.fromDepth` | Ganzzahl | Tiefe | Nur ab dieser Tiefe vorhanden | 1 |

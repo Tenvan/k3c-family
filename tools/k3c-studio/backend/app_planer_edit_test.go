@@ -14,7 +14,7 @@ func TestHubCheckPrueftDenKandidaten(t *testing.T) {
 	if v.Error != "" || len(v.Findings) != 0 || v.Stand != (HubStand{}) {
 		t.Fatalf("Kandidat: %+v", v)
 	}
-	if r := rowOf(t, v.Matrix, "armory@40"); r.HubLevel != 3 || r.Source != srcSites || r.Index != 8 {
+	if r := rowOf(t, v.Matrix, "armory@40"); r.HubLevel != 3 || r.Source != srcSites || r.Index != 7 {
 		t.Errorf("Rüstkammer: %+v", r)
 	}
 	bad := a.HubCheck(strings.Replace(planerArmoryFrom3(t), armory3, `{ "kind": "armory", "offsetUnits": 40, "hubLevel": 9 }`, 1))
@@ -38,7 +38,7 @@ func TestHubPlanIndexArtenUndStand(t *testing.T) {
 	if r := rowOf(t, v.Matrix, "zone1"); r.Index != 0 || r.Line != 1 || r.Source != srcPlacement {
 		t.Errorf("Baugrund Zone 1: %+v", r)
 	}
-	for _, kind := range []string{"armory", "farm", "healer", "storage", "workshop"} {
+	for _, kind := range []string{"armory", "nursery", "healer", "storage", "workshop"} {
 		if !slices.Contains(v.Kinds, kind) {
 			t.Errorf("Art %s fehlt in %v", kind, v.Kinds)
 		}

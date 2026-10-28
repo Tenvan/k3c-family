@@ -3,7 +3,6 @@ package level
 import (
 	"encoding/json"
 	"fmt"
-	"math"
 	"slices"
 
 	"k3c/data"
@@ -40,9 +39,6 @@ type hubSite struct {
 // hubSites sind alle Hub- und Insel-Plätze aus data/hub.json.
 var hubSites = loadHubSites()
 
-// farmOffsets sind die Abstände der Farm-Bauplätze zur Hub-Mitte aus data/hub.json › sites (beide Seiten, Q57).
-var farmOffsets = loadFarmOffsets()
-
 func loadHubSites() []hubSite {
 	type entry struct {
 		Kind        string  `json:"kind"`
@@ -56,16 +52,6 @@ func loadHubSites() []hubSite {
 	var out []hubSite
 	for _, s := range slices.Concat(hub.Sites, hub.IslandSites) {
 		out = append(out, hubSite{s.Kind, s.OffsetUnits})
-	}
-	return out
-}
-
-func loadFarmOffsets() []float64 {
-	var out []float64
-	for _, s := range hubSites {
-		if s.kind == "farm" {
-			out = append(out, math.Abs(s.offset))
-		}
 	}
 	return out
 }

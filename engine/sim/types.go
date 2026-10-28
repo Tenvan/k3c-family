@@ -145,7 +145,7 @@ type Site struct {
 	// Ruin: Der Platz ist eine Ruine der Planung (building_ruin.go). Dauerhafte Herkunft, immer aus dem Level per
 	// kind@x abgeleitet (isRuin), damit emptySite und destroySite sie neu setzen; nicht im Spielstand.
 	Ruin    bool       `json:"ruin,omitempty"`
-	plots   []plot     // Plantage einer gebauten Farm (building_plantation.go), ohne JSON
+	plots   []plot     // Plantage einer gebauten Baumschule (building_plantation.go), ohne JSON
 	spellIn float64    // Zaubertum: Sekunden bis zum nächsten Schuss (building_spell_tower.go), ohne JSON
 	hubW    *World     // Welt, für die hubLv gilt
 	hubLv   int        // Zwischenspeicher von siteHubLevel (0 = noch nicht berechnet), ohne JSON

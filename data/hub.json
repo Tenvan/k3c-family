@@ -35,13 +35,11 @@
     { "kind": "workshop", "offsetUnits": -16, "hubLevel": 1 },
     { "kind": "stairsUp", "offsetUnits": 16, "fromDepth": 1, "hubLevel": 2 },
     { "kind": "stairsDown", "offsetUnits": 8, "needsDeeper": true, "hubLevel": 2 },
-    { "kind": "farm", "offsetUnits": -52, "hubLevel": 1 },
     { "kind": "healer", "offsetUnits": -40, "hubLevel": 3 },
     { "kind": "tavern", "offsetUnits": -32, "hubLevel": 2 },
     { "kind": "barracks", "offsetUnits": 24, "hubLevel": 2 },
     { "kind": "smithy", "offsetUnits": 28, "hubLevel": 3 },
-    { "kind": "armory", "offsetUnits": 40, "hubLevel": 4 },
-    { "kind": "farm", "offsetUnits": 52, "hubLevel": 1 }
+    { "kind": "armory", "offsetUnits": 40, "hubLevel": 4 }
   ],
   "islandSites": [
     { "kind": "storage", "offsetUnits": -26, "hubLevel": 2 }
@@ -58,7 +56,8 @@
     "towerNearMaxUnits": 10,
     "clearRadiusUnits": 6,
     "edgeMarginUnits": 8,
-    "outsideUnits": 128
+    "outsideUnits": 128,
+    "nurseryMinUnits": 100
   },
   "merchant": { "buyOffsetUnits": 16, "sellOffsetUnits": 20, "onlyDepth": 0 },
   "islandStartStock": { "wood": 100 },

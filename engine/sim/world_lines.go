@@ -99,3 +99,10 @@ func SiteBlockers(w *World, s *Site) []*ResourceNode {
 	}
 	return blockersAt(w, s.X)
 }
+
+// SiteNeedsClearing sagt, ob ein Platz erst nach dem Roden bezahlbar wird (Baumschule, Mauer, Turm): Seine Hub-Stufe ist erreicht, aber
+// im Freiraum stehen noch Bäume oder Felsen. Das Protokoll meldet es als `clearing`, der Client zeigt „erst roden“ (B-636, B-652).
+func SiteNeedsClearing(w *World, s *Site) bool {
+	l, ok := levelSite(w, s)
+	return ok && s.State == "unpaid" && w.HubLevel >= l.Zone && !siteCleared(w, s.X)
+}

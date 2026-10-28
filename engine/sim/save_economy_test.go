@@ -10,17 +10,17 @@ import (
 // Spielstand Version 7 (W7.2, B-201, AC-04): Plantage, Berufe, Krieger, Elite, Rüstung und Schwerter überleben
 // Speichern und Laden; eine unbekannte Truppenart ist ein Fehler.
 
-// setEconomy stellt die Wirtschaft her: Stufe 0 mit Farm samt Plantage, Werkstatt, Schmiede, Rüstkammer (Stufe 1 der
+// setEconomy stellt die Wirtschaft her: Stufe 0 mit Baumschule samt Plantage, Werkstatt, Schmiede, Rüstkammer (Stufe 1 der
 // Rüstung), Bergmann, Handwerker, Bogenschütze, Krieger und beiden Elite-Figuren; Stufe 1 mit Krieger und Baumeister.
 func setEconomy(t *testing.T, isl *Island) {
 	t.Helper()
 	w, w1 := isl.Stages[0], isl.Stages[1]
-	farm, shop := builtSite(t, w, "farm"), builtSite(t, w, "workshop")
+	nursery, shop := builtSite(t, w, "nursery"), builtSite(t, w, "workshop")
 	smithy, armory := builtSite(t, w, "smithy"), builtSite(t, w, "armory")
 	stepPlantations(w, 31) // alle Plätze tragen einen Baum
-	cut := farm.plots[0].tree
+	cut := nursery.plots[0].tree
 	w.Nodes = slices.DeleteFunc(w.Nodes, func(n *ResourceNode) bool { return n == cut })
-	farm.plots[0] = plot{growIn: 12.5} // einer abgebaut, der nächste wächst
+	nursery.plots[0] = plot{growIn: 12.5} // einer abgebaut, der nächste wächst
 	shop.Swords, shop.SwordPaidGold, shop.SwordDone = 2, 1, 20.5
 	smithy.CraftDone, smithy.OfferPaid, smithy.OfferDone = 40.5, []int{3}, 50.5
 	armory.BowPaidGold, armory.CraftDone = 70, 60.5
@@ -72,9 +72,11 @@ func troopKinds(w *World) []string {
 func checkEconomy(t *testing.T, isl *Island) {
 	t.Helper()
 	w, w1 := isl.Stages[0], isl.Stages[1]
-	farm, shop := siteByKey(w, key("farm", findKind(t, w, "farm"))), siteByKey(w, key("workshop", findKind(t, w, "workshop")))
+	nursery, shop := siteByKey(w, key("nursery", findKind(t, w, "nursery"))), siteByKey(w, key("workshop", findKind(t, w, "workshop")))
 	smithy, armory := siteByKey(w, key("smithy", findKind(t, w, "smithy"))), siteByKey(w, key("armory", findKind(t, w, "armory")))
-	checkPlots(t, farm)
+	if len(nursery.plots) > 0 { // Fixtures v5–v9 tragen die Plantage am alten Farm-Platz (±52), die Baumschule steht seit B-636 auf Wald-Plätzen
+		checkPlots(t, nursery)
+	}
 	if shop.Swords != 2 || shop.SwordPaidGold != 1 || shop.SwordDone != 20.5 {
 		t.Errorf("Schwerter: %d/%d/%v", shop.Swords, shop.SwordPaidGold, shop.SwordDone)
 	}
@@ -87,18 +89,18 @@ func checkEconomy(t *testing.T, isl *Island) {
 	checkTroops(t, w, w1, shop)
 }
 
-func checkPlots(t *testing.T, farm *Site) {
+func checkPlots(t *testing.T, nursery *Site) {
 	t.Helper()
 	trees := 0
-	for i, p := range farm.plots {
+	for i, p := range nursery.plots {
 		if p.tree != nil {
 			trees++
 		} else if i != 0 || p.growIn != 12.5 {
 			t.Errorf("Plantage Platz %d: kein Baum, growIn %v", i, p.growIn)
 		}
 	}
-	if trees != 5 || len(farm.plots) != 6 {
-		t.Errorf("Plantage: %d Bäume auf %d Plätzen", trees, len(farm.plots))
+	if trees != 5 || len(nursery.plots) != 6 {
+		t.Errorf("Plantage: %d Bäume auf %d Plätzen", trees, len(nursery.plots))
 	}
 }
 

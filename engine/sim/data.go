@@ -32,7 +32,7 @@ type BuildingData struct {
 	Offers                           []Offer            // Angebots-Zahlziele am Gebäude (Q52), Berufe: unit_professions.go
 	CraftSeconds                     map[string]float64 // Herstellungszeit je Stück (Q35, unit_professions.go)
 	Levels                           []LevelData        // Ausbau-Stufen am Platz (Mauer, Turm, Tor; hub_level.go)
-	Plantation                       Plantation         // Farm: Bäume wachsen nach (building_plantation.go)
+	Plantation                       Plantation         // Baumschule: Bäume wachsen nach (building_plantation.go)
 	TroopLimit                       TroopLimit         // Kaserne: Kämpfer-Limit je Hub (building_barracks.go)
 	Vagrants                         Vagrants           // Taverne: Landstreicher je dawn (building_tavern.go)
 	Heal                             Heal               // Heilplatz (building_healer.go)
