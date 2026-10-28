@@ -53,3 +53,5 @@ Hub-Kosten und Bauzeiten bestimmen das Tempo des Gesamtfortschritts (Stein, Kupf
 - `hub.json:levels.1.steps.2.gate.stone=10` – kleineres Material-Tor zu Hub-Stufe 2.
 - `hub.json:islandStartStock.wood=140` – mehr Startholz, mehr Mauern in Nacht 1.
 - `hub.json:startTroops.archer=3` – ein Bogenschütze mehr zu Beginn.
+
+**Hinweis Planer (B-652):** Der Hub-Planer des Studios prüft einen Kandidaten mit `sitePlacement.zone1WallUnits`, `zone1TowerUnits` und `outsideUnits`; der Level-Generator und die Sim lesen `sitePlacement` aber aus den eingebetteten Daten (`data/hub.json`). Eine geänderte Lage wirkt im Spiel und in der Vorschau erst nach dem Schreiben der Datei und dem Neustart.

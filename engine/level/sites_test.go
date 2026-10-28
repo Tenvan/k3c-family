@@ -155,3 +155,27 @@ func TestSitesBaugrundZone1Frei(t *testing.T) {
 		}
 	}
 }
+
+// Untergrenze je Biom (B-652, Review BS12): Zone 1 hat in jedem Biom und Seed Mauer und Turm (fester Baugrund), auch mit 25-Units-Chunks.
+func TestSitesZone1JedesBiom(t *testing.T) {
+	for _, id := range biomeIDs(t) {
+		b := biome(t, id)
+		for i := range 100 {
+			lay, err := Generate(b, fmt.Sprintf("biom-%d", i))
+			if err != nil {
+				t.Fatal(err)
+			}
+			have := map[string]bool{}
+			for _, s := range lay.Sites {
+				if s.Zone == 1 {
+					have[fmt.Sprintf("%d/%s", s.Side, s.Kind)] = true
+				}
+			}
+			for _, k := range []string{"-1/wall", "-1/tower", "1/wall", "1/tower"} {
+				if !have[k] {
+					t.Fatalf("%s Seed %d: Zone 1 ohne %s", id, i, k)
+				}
+			}
+		}
+	}
+}

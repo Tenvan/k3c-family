@@ -25,7 +25,7 @@ Erledigt, wenn M4 erreicht ist und BS6 und BS10 am Gerät abgenommen sind.
 | BS1 | Schneller Balancing-Lauf mit Seed k3c-dev | erledigt |
 | BS2 | Regelwerk der neuen Basis: Münzskala, Baumschule, Hafen und Schiff | erledigt |
 | BS11 | Balancing-Tester spielt die ganze Insel bis zum Endboss | erledigt |
-| BS3 | Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch | aktiv |
+| BS3 | Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch | erledigt |
 | BS7 | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | aktiv |
 | BS4 | Baumschule auf gerodeten Waldbauplätzen (Server) | geplant |
 | BS8 | **Meilenstein 2:** Bots und Delta-Runde Baumschule | geplant |
@@ -33,7 +33,7 @@ Erledigt, wenn M4 erreicht ist und BS6 und BS10 am Gerät abgenommen sind.
 | BS9 | **Meilenstein 3:** Bots bauen das Schiff, Delta-Runde Schiff | geplant |
 | BS6 | Client: Baumschule, Hafen und Schiff, neue Münzskala, **Meilenstein 4** | geplant |
 | BS10 | Grafiken für Hafen und Schiff | geplant |
-| BS12 | Mauern und Türme verteilt, Tor ist die äußerste Mauer | aktiv |
+| BS12 | Mauern und Türme verteilt, Tor ist die äußerste Mauer | erledigt |
 | BS13 | Baustellen-Schilder, Bauoptionen und Holzzaun | aktiv |
 
 ## Nicht-Ziele

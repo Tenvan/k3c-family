@@ -9,9 +9,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| BS3 | REG, DEV | BAS | Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch | – | `aktiv/BS3-werte-muenzskala-meilenstein/` |
 | BS7 | DEV | BAS | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | – | `aktiv/BS7-delta-balancing-basis-laeufe/` |
-| BS12 | SIM, DEV, REG | BAS | Mauern und Türme verteilt, Tor ist die äußerste Mauer | – | `aktiv/BS12-mauern-tuerme-verteilt-tor/` |
 | BS13 | CLI | BAS | Baustellen-Schilder, Bauoptionen und Holzzaun | – | `aktiv/BS13-baustellen-fehler-holzzaun/` |
 | WZ29 | DEV | WZG | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | – | `aktiv/WZ29-sound-grafik-seiten-ausbau/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
@@ -259,3 +257,5 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BS2 | Regelwerk der neuen Basis: Münzskala, Baumschule, Hafen und Schiff | `erledigt/BS2-regelwerk-neue-basis/` |
 | BS1 | Schneller Balancing-Lauf mit Seed k3c-dev | `erledigt/BS1-balancing-seed-k3c-dev/` |
 | BS11 | Balancing-Tester spielt die ganze Insel bis zum Endboss | `erledigt/BS11-tester-ganze-insel/` |
+| BS3 | Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch | `erledigt/BS3-werte-muenzskala-meilenstein/` |
+| BS12 | Mauern und Türme verteilt, Tor ist die äußerste Mauer | `erledigt/BS12-mauern-tuerme-verteilt-tor/` |

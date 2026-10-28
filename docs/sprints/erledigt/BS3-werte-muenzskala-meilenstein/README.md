@@ -1,6 +1,6 @@
 # BS3 · REG, DEV · Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAS
 - **Domäne:** REG, DEV
 - **Reife:** bereit
@@ -66,10 +66,9 @@ keine (Defaults aus BS2).
 | BS3.2 | `BS3.2-einnahmen-schiffskosten.md` | Umsetzung | autonom | fertig |
 | BS3.3 | `BS3.3-bericht-schiff-bedarf.md` | Umsetzung | autonom | fertig |
 | BS3.4 | `BS3.4-meilenstein-lauf.md` | Umsetzung | autonom | fertig |
-| BS3.5 | `BS3.5-review.md` | Review | autonom | offen |
+| BS3.5 | `BS3.5-review.md` | Review | autonom | fertig |
 | BS3.6 | `BS3.6-simulationen.md` | Umsetzung | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-28 (Claude, autonom): AC-01 bis AC-05 nachgewiesen (BS3.1–BS3.6, Ergebnisse dort); Meilenstein 1 in der Fassung „bis Splitter-Titan“ (🧑, Revision 2) erreicht: k3c-dev Tag 26, reproduzierbar. Befunde: B-645, B-650, B-651, B-652 (alle mit Notizen). Neue Tickets: B-649 bis B-654. `check:race` lokal übersprungen (kein C-Compiler).

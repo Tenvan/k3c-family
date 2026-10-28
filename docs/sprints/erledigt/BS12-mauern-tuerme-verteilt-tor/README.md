@@ -1,6 +1,6 @@
 # BS12 · SIM, DEV, REG · Mauern und Türme verteilt, Tor ist die äußerste Mauer
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAS
 - **Domäne:** SIM, DEV, REG
 - **Reife:** bereit
@@ -62,7 +62,7 @@ keine (Defaults aus B-652).
 | BS12.2 | `BS12.2-sim-tor-freiraum.md` | Umsetzung | autonom | fertig |
 | BS12.3 | `BS12.3-bots-client-protokoll.md` | Umsetzung | autonom | fertig |
 | BS12.4 | `BS12.4-simulationen.md` | Umsetzung | autonom | fertig |
-| BS12.5 | `BS12.5-review.md` | Review | autonom | offen |
+| BS12.5 | `BS12.5-review.md` | Review | autonom | fertig |
 | BS12.6 | `BS12.6-aufraeumen-gate-linien.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -70,5 +70,4 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-28 (Claude, autonom): AC-01 bis AC-05 nachgewiesen (BS12.1–BS12.6, Ergebnisse dort), Review ohne schwere Befunde (BS12.5). Messung coop2, 4 Seeds: Titan 2/4, Lava-Golem 3/4, Endboss 0/4 (Meilenstein 1 bis Titan, BS3). Optik und Bedienung der neuen Plätze im Browser nimmt 🧑 ab (zusammen mit BS13).
