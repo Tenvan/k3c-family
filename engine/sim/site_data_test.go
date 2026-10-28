@@ -70,8 +70,8 @@ func TestSiteDataHubJSONGueltig(t *testing.T) {
 // WZ15.3/AC-03: Mehr Hub-Stufen ohne Umbau, keine feste 5.
 func TestSiteDataSiebenStufen(t *testing.T) {
 	h := readHub7(t)
-	if len(h.Levels) != 7 || len(h.WallLines.WallUnits) != 7 {
-		t.Fatalf("Fixture: %d Stufen, %d Linien, erwartet je 7", len(h.Levels), len(h.WallLines.WallUnits))
+	if len(h.Levels) != 7 {
+		t.Fatalf("Fixture: %d Stufen, erwartet 7", len(h.Levels))
 	}
 	for _, f := range ValidateHubData(h).Findings {
 		t.Errorf("hub7.json: %s", f)
@@ -148,9 +148,7 @@ func TestSiteDataHubStufeImBereich(t *testing.T) {
 	}{
 		"Stufe 0":       {func(h *HubData) { h.Sites[0].HubLevel = 0 }, "@"},
 		"Stufe n+1":     {func(h *HubData) { h.IslandSites[0].HubLevel = n + 1 }, "storage@"},
-		"Tor n+1":       {func(h *HubData) { h.WallLines.GateHubLevel = n + 1 }, "gateHubLevel"},
 		"ohne Stufen":   {func(h *HubData) { h.Levels = nil }, "levels"},
-		"Tor Stufe 0":   {func(h *HubData) { h.WallLines.GateHubLevel = 0 }, "gateHubLevel"},
 		"letzte Stufe+": {func(h *HubData) { h.Sites[len(h.Sites)-1].HubLevel = n + 1 }, "farm@"},
 	} {
 		h := hubCopy(t)
@@ -167,15 +165,13 @@ func TestSiteDataAbstandBeiVollerStreuung(t *testing.T) {
 	if r := ValidateHubData(h); !hasFinding(r, RuleGap, "workshop") {
 		t.Errorf("Platz zu nah: Befund %q erwartet, bekommen %q", RuleGap, r.Findings)
 	}
-	// Nur bei voller Streuung der Linie 2 zu nah: ungestreut 4 Units zu Turm und Mauer, gestreut auf dem Turm.
+	// Zu nah am festen Baugrund der Zone 1 (Turm bei 36): ein Platz 1 Unit daneben.
 	h = hubCopy(t)
-	l := h.WallLines
-	x := l.WallUnits[1] - l.TowerInsetUnits + l.JitterOutwardUnits
 	withoutKind(h, "barracks")
-	h.Sites = append(h.Sites, HubSite{Kind: "barracks", OffsetUnits: x, HubLevel: 2})
+	h.Sites = append(h.Sites, HubSite{Kind: "barracks", OffsetUnits: h.SitePlacement.Zone1TowerUnits + 1, HubLevel: 2})
 	r := ValidateHubData(h)
-	if !hasFinding(r, RuleGap, "tower L2@+1") {
-		t.Errorf("Streuung: Befund %q mit Turm der Linie 2 erwartet, bekommen %q", RuleGap, r.Findings)
+	if !hasFinding(r, RuleGap, "tower Z1@+1") {
+		t.Errorf("Baugrund: Befund %q mit Turm der Zone 1 erwartet, bekommen %q", RuleGap, r.Findings)
 	}
 }
 
@@ -188,29 +184,15 @@ func TestSiteDataTreppenAbstand(t *testing.T) {
 	}
 }
 
-func TestSiteDataLinien(t *testing.T) {
-	for name, edit := range map[string]func(*WallLineData){
-		"nicht steigend":     func(l *WallLineData) { l.WallUnits[1] = l.WallUnits[0] },
-		"über dem Portal":    func(l *WallLineData) { l.WallUnits[len(l.WallUnits)-1] = 200 },
-		"Linie 1 nicht fest": func(l *WallLineData) { l.FixedLines = 0 },
-		"Streuung gebrochen": func(l *WallLineData) { l.JitterOutwardUnits = 1.5 },
-		"Turm nicht innen":   func(l *WallLineData) { l.TowerInsetUnits = 0 },
-		"ohne Linien":        func(l *WallLineData) { l.WallUnits = nil },
-		"zu viele gestreut": func(l *WallLineData) {
-			l.WallUnits = nil
-			for i := 0; i < maxJitteredLines+3; i++ {
-				l.WallUnits = append(l.WallUnits, 20+4*float64(i))
-			}
-		},
-		"Turm von Linie 1 jenseits der Burg": func(l *WallLineData) { l.TowerInsetUnits = l.WallUnits[0] },
-		"Tor nicht außen":                    func(l *WallLineData) { l.GateOutsetUnits = -1 },
-		"Streuung nach innen":                func(l *WallLineData) { l.JitterOutwardUnits = -1 },
-		"Linien ohne Abstand":                func(l *WallLineData) { l.WallUnits[2] = l.WallUnits[1] - 1 },
-		"äußerste zu weit weg":               func(l *WallLineData) { l.WallUnits = append(l.WallUnits, 140) },
+func TestSiteDataBaugrund(t *testing.T) {
+	for name, edit := range map[string]func(*SitePlacementData){
+		"Turm außen vor der Mauer": func(p *SitePlacementData) { p.Zone1TowerUnits = p.Zone1WallUnits },
+		"Turm nicht positiv":       func(p *SitePlacementData) { p.Zone1TowerUnits = 0 },
+		"über dem Portal":          func(p *SitePlacementData) { p.OutsideUnits = 500 },
 	} {
 		h := hubCopy(t)
-		edit(&h.WallLines)
-		if r := ValidateHubData(h); !hasFinding(r, RuleLines, "wallLines") {
+		edit(&h.SitePlacement)
+		if r := ValidateHubData(h); !hasFinding(r, RuleLines, "sitePlacement") {
 			t.Errorf("%s: Befund %q erwartet, bekommen %q", name, RuleLines, r.Findings)
 		}
 	}
@@ -232,20 +214,6 @@ func TestValidateHubLaesstKandidatUnveraendert(t *testing.T) {
 	}
 	if embedded, _ := json.Marshal(hub); string(embedded) == string(before) {
 		t.Errorf("Fixture gleich der eingebetteten hub.json, Test sagt nichts")
-	}
-}
-
-// Mehr Linien als Hub-Stufen sind nie bezahlbar (Linie k öffnet ab Stufe k).
-func TestSiteDataMehrLinienAlsStufen(t *testing.T) {
-	h := hubCopy(t)
-	h.Levels = h.Levels[:len(h.WallLines.WallUnits)-1]
-	for i, s := range h.Sites {
-		h.Sites[i].HubLevel = min(s.HubLevel, len(h.Levels))
-	}
-	h.IslandSites[0].HubLevel = min(h.IslandSites[0].HubLevel, len(h.Levels))
-	h.WallLines.GateHubLevel = min(h.WallLines.GateHubLevel, len(h.Levels))
-	if r := ValidateHubData(h); !hasFinding(r, RuleLines, "wallLines") {
-		t.Errorf("Befund %q erwartet, bekommen %q", RuleLines, r.Findings)
 	}
 }
 

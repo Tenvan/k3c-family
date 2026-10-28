@@ -46,14 +46,6 @@
   "islandSites": [
     { "kind": "storage", "offsetUnits": -26, "hubLevel": 2 }
   ],
-  "wallLines": {
-    "wallUnits": [44, 64, 84, 104, 124],
-    "fixedLines": 1,
-    "jitterOutwardUnits": 4,
-    "towerInsetUnits": 8,
-    "gateOutsetUnits": 4,
-    "gateHubLevel": 1
-  },
   "sitePlacement": {
     "zoneStartUnits": 40,
     "zone1WallUnits": 44,
@@ -65,7 +57,8 @@
     "towerNearMinUnits": 4,
     "towerNearMaxUnits": 10,
     "clearRadiusUnits": 6,
-    "edgeMarginUnits": 8
+    "edgeMarginUnits": 8,
+    "outsideUnits": 128
   },
   "merchant": { "buyOffsetUnits": 16, "sellOffsetUnits": 20, "onlyDepth": 0 },
   "islandStartStock": { "wood": 100 },

@@ -2,10 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { depthText, levelColumns, offsetText, rowExtra, rowLabel } from './plannerLogic';
 
 describe('Anzeige der Matrix des Gebäude-Planers', () => {
-  it('benennt Bauplätze, Mauerlinien, Tore und Händler', () => {
+  it('benennt Bauplätze, den Baugrund der Zone 1 und Händler', () => {
     expect(rowLabel({ kind: 'armory', line: 0 })).toBe('Rüstkammer');
-    expect(rowLabel({ kind: 'wall', line: 3 })).toBe('Mauerlinie 3');
-    expect(rowLabel({ kind: 'gate', line: 1 })).toBe('Tor Linie 1');
+    expect(rowLabel({ kind: 'wall', line: 1 })).toBe('Baugrund Zone 1');
     expect(rowLabel({ kind: 'merchantSell', line: 0 })).toBe('Händler Verkaufen');
     expect(rowLabel({ kind: 'neu', line: 0 })).toBe('neu');
   });
@@ -20,7 +19,7 @@ describe('Anzeige der Matrix des Gebäude-Planers', () => {
     expect(depthText({ fromDepth: 0, needsDeeper: false, onlyDepth: -1 })).toBe('');
     expect(depthText({ fromDepth: 1, needsDeeper: true, onlyDepth: -1 })).toBe('ab Tiefe 1, nur mit tieferer Stufe');
     expect(depthText({ fromDepth: 0, needsDeeper: false, onlyDepth: 0 })).toBe('nur Tiefe 0');
-    expect(rowExtra({ kind: 'wall', source: 'wallLines', towerUnits: 56, jitterUnits: 4 })).toBe('Turm ±56, 0…+4 je Seed');
+    expect(rowExtra({ kind: 'wall', source: 'sitePlacement', towerUnits: 52, jitterUnits: 0 })).toBe('Turm ±52');
     expect(rowExtra({ kind: 'storage', source: 'islandSites', towerUnits: 0, jitterUnits: 0 })).toBe('je Insel');
   });
 

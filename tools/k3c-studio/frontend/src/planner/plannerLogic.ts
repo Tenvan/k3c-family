@@ -12,10 +12,9 @@ function siteText(kind: string): string | undefined {
   return (de as Record<string, string>)[`site.${kind}`];
 }
 
-/** Name der Zeile: Art mit dem Spieltext, Mauerlinie und Tor mit ihrer Linie; unbekannte Arten bleiben, wie sie sind. */
+/** Name der Zeile: Art mit dem Spieltext, der Baugrund mit seiner Zone; unbekannte Arten bleiben, wie sie sind. */
 export function rowLabel(row: Pick<HubRow, 'kind' | 'line'>): string {
-  if (row.kind === 'wall') return `Mauerlinie ${row.line}`;
-  if (row.kind === 'gate') return `${de['site.gate']} Linie ${row.line}`;
+  if (row.kind === 'wall') return `Baugrund Zone ${row.line}`;
   return MERCHANT_LABELS[row.kind] ?? siteText(row.kind) ?? row.kind;
 }
 
@@ -39,7 +38,7 @@ export function depthText(cell: Pick<HubCell, 'fromDepth' | 'needsDeeper' | 'onl
   return parts.join(', ');
 }
 
-/** Zusatz der Zeile: Turm innen bei der Mauerlinie, Streuung je Seed bei Linie und Tor, Insel-Platz. */
+/** Zusatz der Zeile: Turm innen beim Baugrund, Insel-Platz. */
 export function rowExtra(row: Pick<HubRow, 'source' | 'towerUnits' | 'jitterUnits' | 'kind'>): string {
   const parts: string[] = [];
   if (row.kind === 'wall') parts.push(`${de['site.tower']} ±${num(row.towerUnits)}`);

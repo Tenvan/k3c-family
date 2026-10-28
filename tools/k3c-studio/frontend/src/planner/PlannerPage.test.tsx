@@ -53,8 +53,8 @@ describe('Gebäude-Planer: Matrix (B-462/AC-01, AC-08)', () => {
     expect(cell(h, 'armory@40', 7).textContent).toBe('+40');
     expect(cell(h, 'stairsUp@16', 2).textContent).toBe('+16ab Tiefe 1');
     expect(cell(h, 'stairsDown@8', 3).textContent).toContain('nur mit tieferer Stufe');
-    expect(cell(h, 'gate@1', 2).textContent).toBe('±56');
-    expect(row(h, 'line@2').querySelector('th')!.textContent).toBe('Mauerlinie 2Turm ±60');
+    expect(cell(h, 'zone1', 2).textContent).toBe('±60');
+    expect(row(h, 'zone1').querySelector('th')!.textContent).toBe('Baugrund Zone 1Turm ±52');
     expect(cell(h, 'merchantBuy@16', 1).textContent).toBe('+16nur Tiefe 0');
     expect(h.textContent).toContain('Prüfung ohne Befund');
   });

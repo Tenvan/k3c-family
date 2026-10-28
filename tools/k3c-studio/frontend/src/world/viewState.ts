@@ -105,8 +105,8 @@ export interface JumpPoint {
 
 const first = (xs: readonly number[]): number | null => (xs.length > 0 ? xs[0] : null);
 
-/** Sprungpunkte: ganz links, Mitte, ganz rechts, Hub, Tor, Portale, Ausgang. `gates` sind die X-Positionen der Tore im Zustand der Live-Vorschau. */
-export function jumpPoints(model: LevelModel | null, gates: readonly number[]): JumpPoint[] {
+/** Sprungpunkte: ganz links, Mitte, ganz rechts, Hub, Mauer, Portale, Ausgang. `walls` sind die X-Positionen der Mauern im Zustand der Live-Vorschau. */
+export function jumpPoints(model: LevelModel | null, walls: readonly number[]): JumpPoint[] {
   const width = model?.widthUnits ?? 0;
   const xs = (kind: string) => (model?.objects ?? []).filter((o) => o.kind === kind).map((o) => o.x);
   const portals = xs('portal');
@@ -115,7 +115,7 @@ export function jumpPoints(model: LevelModel | null, gates: readonly number[]): 
     { id: 'mitte', label: 'Mitte', x: model ? width / 2 : null },
     { id: 'rechts', label: 'Ende', x: model ? width : null },
     { id: 'hub', label: 'Hub', x: model && model.hubCenterUnits > 0 ? model.hubCenterUnits : null },
-    { id: 'tor', label: 'Tor', x: first([...gates].sort((a, b) => a - b)) },
+    { id: 'mauer', label: 'Mauer', x: first([...walls].sort((a, b) => a - b)) },
     { id: 'portal1', label: 'Portal 1', x: first(portals) },
     { id: 'portal2', label: 'Portal 2', x: portals.length > 1 ? portals[1] : null },
     { id: 'ausgang', label: 'Ausgang', x: first(xs('exit')) },

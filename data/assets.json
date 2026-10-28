@@ -35,17 +35,6 @@
       ]
     },
     {
-      "id": "gate",
-      "art": "grafik",
-      "kategorie": "gebaeude",
-      "beschreibung": "Gebäude: gate",
-      "wahl": [
-        {
-          "datei": "grafik/gebaeude/tor-1-32.png"
-        }
-      ]
-    },
-    {
       "id": "workshop",
       "art": "grafik",
       "kategorie": "gebaeude",

@@ -3,6 +3,7 @@ package level
 import (
 	"math"
 	"slices"
+	"strings"
 
 	"k3c/engine/rng"
 )
@@ -29,6 +30,7 @@ type SitePlacement struct {
 	TowerNearMaxUnits float64 `json:"towerNearMaxUnits"` // bis
 	ClearRadiusUnits  float64 `json:"clearRadiusUnits"`  // Freiraum von Bäumen und Felsen (Sim, BS12.2)
 	EdgeMarginUnits   float64 `json:"edgeMarginUnits"`   // Abstand zum Level-Rand und zum nächsten Portal
+	OutsideUnits      float64 `json:"outsideUnits"`      // Portale, Gegnerlager und Vorposten geplanter Chunks liegen weiter vom Hub entfernt (frühere äußerste Linie)
 }
 
 // sitePlacement ist der eingebettete Stand aus data/hub.json, nur lesen.
@@ -172,6 +174,10 @@ func (g *gen) blockedXs(entities []Entity) []float64 {
 		switch e.Kind {
 		case "castle", "portal", "exit", "chest", "recruitCamp", "lair":
 			out = append(out, e.X)
+		default:
+			if strings.HasSuffix(e.Kind, "Vein") { // feste und gewürfelte Adern: die Plätze halten Abstand
+				out = append(out, e.X)
+			}
 		}
 	}
 	return out

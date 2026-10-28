@@ -28,7 +28,6 @@ export const TEXT = { stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' }
 export const SITE_SIZE: Record<Site['kind'], [number, number]> = {
   wall: [36, 150],
   tower: [70, 260],
-  gate: [40, 160],
   workshop: [150, 120],
   storage: [130, 100],
   stairsUp: [110, 110],
@@ -43,7 +42,6 @@ export const SITE_SIZE: Record<Site['kind'], [number, number]> = {
 const SITE_COLOR: Record<Site['kind'], number> = {
   wall: 0x8d99ae,
   tower: 0x9c6644,
-  gate: 0x7f5539,
   workshop: 0xbc6c25,
   storage: 0x7f5539,
   stairsUp: 0x6c757d,

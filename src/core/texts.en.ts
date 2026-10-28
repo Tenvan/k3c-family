@@ -109,7 +109,6 @@ export const en: Record<TextKey, string> = {
 
   'site.wall': 'Wall',
   'site.tower': 'Tower',
-  'site.gate': 'Gate',
   'site.workshop': 'Workshop',
   'site.storage': 'Storage',
   'site.stairsUp': 'Stairs up',

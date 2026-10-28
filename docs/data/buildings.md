@@ -2,7 +2,7 @@
 
 - **Zweck:** Werte aller Gebäude: HP, Bauzeit, Kosten und Stufen 1 bis 5 mit gleicher Platzierung.
 - **Gelesen von:** Simulation (`engine/sim/data.go`), Level-Generator (`engine/level/ruins.go`), Gebäude-Logik (`engine/sim/building_*.go`)
-- **Wichtigste Werte:** `wall.levels.0.cost.gold`, `wall.levels.0.hp`, `tower.levels.0.cost.wood`, `gate.levels.1.cost.stone`, `stairsDown.costByDepth.1.stone`, `tower.archerSlots`, `barracks.troopLimit.base`, `farm.plantation.growSeconds`
+- **Wichtigste Werte:** `wall.levels.0.cost.gold`, `wall.levels.0.hp`, `tower.levels.0.cost.wood`, `wall.levels.1.cost.stone`, `stairsDown.costByDepth.1.stone`, `tower.archerSlots`, `barracks.troopLimit.base`, `farm.plantation.growSeconds`
 - **Regeln:** `docs/rules/materialien-gebaeude.md`
 
 ## Aufbau
@@ -59,6 +59,6 @@ Mauer-, Turm- und Truppenwerte bestimmen direkt, ob die Burg die Nächte hält (
 - `buildings.json:wall.levels.0.cost.gold=8` – teurere erste Mauer.
 - `buildings.json:wall.levels.0.hp=400` – stabilere erste Mauer.
 - `buildings.json:tower.levels.0.cost.wood=40` – billigerer Turm.
-- `buildings.json:gate.levels.1.hp=600` – stabileres Stein-Tor.
+- `buildings.json:wall.levels.1.hp=600` – stabilere Steinmauer (die äußerste Mauer ist das Tor).
 - `buildings.json:stairsUp.costByDepth.1.wood=80` – billigere Treppe hoch in der Höhle.
 - `buildings.json:barracks.troopLimit.base=14` – höheres Kämpfer-Limit ohne Kaserne.

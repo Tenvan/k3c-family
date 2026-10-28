@@ -111,14 +111,12 @@ type HubSite struct {
 	HubLevel    int // ab dieser Hub-Stufe bezahlbar (§ 3 der Regeln)
 }
 
-// WallLineData sind die Mauerlinien je Seite (Q49, Q50): Linie k (ab 1) steht bei WallUnits[k-1] ab Hub-Mitte,
-// die ersten FixedLines fest, die übrigen je Seed 0 bis JitterOutwardUnits weiter außen.
-type WallLineData struct {
-	WallUnits                        []float64
-	FixedLines                       int
-	JitterOutwardUnits               float64
-	TowerInsetUnits, GateOutsetUnits float64
-	GateHubLevel                     int
+// SitePlacementData sind die Felder von data/hub.json › sitePlacement, die die Hub-Prüfung braucht (B-652): der feste
+// Baugrund der Zone 1 (Mauer, Turm je Seite) und der Abstand, ab dem Portale liegen. Der Generator liest alle Felder selbst
+// (engine/level/sites.go).
+type SitePlacementData struct {
+	Zone1WallUnits, Zone1TowerUnits float64
+	OutsideUnits                    float64
 }
 
 // HubData ist data/hub.json; eine Kandidaten-hub.json (Gebäude-Planer, B-462) hat dieselbe Form (hub_validate.go).
@@ -127,7 +125,7 @@ type HubData struct {
 	Sites            []HubSite
 	IslandSites      []HubSite // nur Insel-Stufen (island_storage.go)
 	IslandStartStock Stock     // Vorrat einer neuen Insel (B-177)
-	WallLines        WallLineData
+	SitePlacement    SitePlacementData
 	Merchant         struct {
 		BuyOffsetUnits, SellOffsetUnits float64
 		OnlyDepth                       int

@@ -33,13 +33,13 @@ describe('Gebäude-Liste aus dem Zustand (B-460/AC-04)', () => {
 
 describe('Gebäude-Filter nach Art (B-477/AC-05)', () => {
   const toggles = buildingToggles([
-    { kind: 'tower', x: 330 }, { kind: 'wall', x: 322 }, { kind: 'zelt', x: 10 }, { kind: 'wall', x: 345 }, { kind: 'gate', x: 318 }, { kind: 'altar', x: 5 },
+    { kind: 'tower', x: 330 }, { kind: 'wall', x: 322 }, { kind: 'zelt', x: 10 }, { kind: 'wall', x: 345 }, { kind: 'altar', x: 5 },
   ]);
 
-  it('Gruppen in fester Reihenfolge (Mauern, Türme, Tore), unbekannte Arten danach alphabetisch; Plätze von links nach rechts', () => {
+  it('Gruppen in fester Reihenfolge (Mauern, Türme), unbekannte Arten danach alphabetisch; Plätze von links nach rechts', () => {
     const groups = buildingGroups(toggles, new Set());
-    expect(groups.map((g) => g.kind)).toEqual(['wall', 'tower', 'gate', 'altar', 'zelt']);
-    expect(groups.map((g) => g.label)).toEqual(['Mauern', 'Türme', 'Tore', 'altar', 'zelt']);
+    expect(groups.map((g) => g.kind)).toEqual(['wall', 'tower', 'altar', 'zelt']);
+    expect(groups.map((g) => g.label)).toEqual(['Mauern', 'Türme', 'altar', 'zelt']);
     expect(groups[0]!.items.map((t) => t.key)).toEqual(['wall@322', 'wall@345']);
   });
 

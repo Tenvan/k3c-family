@@ -100,14 +100,7 @@ export interface HubSite {
 export const HUB = hubJson as {
   sites: HubSite[];
   islandSites: HubSite[];
-  wallLines: {
-    wallUnits: number[];
-    fixedLines: number;
-    jitterOutwardUnits: number;
-    towerInsetUnits: number;
-    gateOutsetUnits: number;
-    gateHubLevel: number;
-  };
+  sitePlacement: { zone1WallUnits: number; zone1TowerUnits: number; zones: number; outsideUnits: number };
   castleRadiusUnits: number;
   homeRadiusUnits: number;
   startTroops: Partial<Record<'peasant' | 'archer', number>>;

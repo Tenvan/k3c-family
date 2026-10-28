@@ -6,16 +6,12 @@ import "testing"
 
 func TestSiteHubLevelJeArt(t *testing.T) {
 	w := quietWorld(t)
-	gate := hubOf(w).WallLines.GateHubLevel
 	lines := 0
 	for _, s := range w.Sites {
 		want := siteHubLevel(w, s)
 		if l, ok := siteLine(w, s); ok {
 			lines++
 			want = l.Index
-			if s.Kind == "gate" {
-				want = max(gate, l.Index)
-			}
 		}
 		if got := SiteHubLevel(w, s); got != want {
 			t.Errorf("%s@%v: Platz-Stufe %d, erwartet %d", s.Kind, s.X, got, want)

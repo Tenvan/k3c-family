@@ -118,7 +118,6 @@ export const de = {
   // Namen (Schlüssel = ID aus den Daten, Daten bleiben unverändert)
   'site.wall': 'Mauer',
   'site.tower': 'Turm',
-  'site.gate': 'Tor',
   'site.workshop': 'Werkstatt',
   'site.storage': 'Lager',
   'site.stairsUp': 'Treppe hoch',

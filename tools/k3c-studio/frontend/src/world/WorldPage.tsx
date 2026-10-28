@@ -27,7 +27,7 @@ export function WorldPage() {
   const plan = usePlan();
   useTicketPage('welt', `${source.seed}/${source.biome}`);
   const [model, setModel] = useState<LevelModel | null>(null);
-  const [gates, setGates] = useState<number[]>([]);
+  const [walls, setWalls] = useState<number[]>([]);
   const frame = useRef<HTMLDivElement>(null);
   const [controlsHost, setControlsHost] = useState<HTMLElement | null>(null); // Hub-Stufe, Tageszeit, Schichten: unter der Seed-Zeile
   const [treeHost, setTreeHost] = useState<HTMLElement | null>(null); // Gebäude-Baum: unter den geplanten Chunks
@@ -54,7 +54,7 @@ export function WorldPage() {
     levelKey.current = key;
   };
   const onSites = useCallback((sites: readonly { kind: string; x: number }[]) => {
-    setGates(sites.filter((s) => s.kind === 'gate').map((s) => s.x));
+    setWalls(sites.filter((s) => s.kind === 'wall').map((s) => s.x));
   }, []);
 
   return (
@@ -62,7 +62,7 @@ export function WorldPage() {
       <ChunkPreview maximized={maximized} onToggle={() => setMaximized((m) => !m)} onLoaded={onLoaded} source={plan.source} view={chunkView} onWheel={(e) => onWheel(e, 'chunk')}
         hints={hints} liveSpan={ownLive ? spans.live : undefined} onChunk={jumpTo}>
         <div ref={setControlsHost} className="wd-controls-host" />
-        <ViewBar views={views} spans={spans} widthUnits={widthUnits} range={centerRange(views, widthUnits, px)} jumps={jumpPoints(model, gates)}
+        <ViewBar views={views} spans={spans} widthUnits={widthUnits} range={centerRange(views, widthUnits, px)} jumps={jumpPoints(model, walls)}
           onScale={(scale) => zoom(BOTH, () => scale)} onZoom={zoomBy} onCenter={setCenter} />
       </ChunkPreview>
       <section className="wd-live" aria-label="Live-Vorschau">

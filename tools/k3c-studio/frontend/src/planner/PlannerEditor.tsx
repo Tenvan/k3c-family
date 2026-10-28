@@ -4,7 +4,7 @@ import { ActionButton, SelectField, Text, TextField, plainOptions, type SelectOp
 import { CheckField } from '@webkit/molecules';
 import { rowLabel } from './plannerLogic';
 import {
-  addSite, integerOf, numberOf, REMOVE_HINT, removeSite, setGateHubLevel, setMerchant, setSiteField, setWallUnit, siteOf,
+  addSite, integerOf, numberOf, REMOVE_HINT, removeSite, setMerchant, setSiteField, setZone1Tower, setZone1Wall, siteOf,
   type HubJson, type SiteList,
 } from './plannerEdit';
 
@@ -62,13 +62,15 @@ function SiteFields({ hub, row, edit, onRemoved }: { hub: HubJson; row: HubRow; 
   );
 }
 
-/** Felder je Zeile: Platz, Mauerlinie (wallUnits[k]), Tor (gateHubLevel, gilt für alle Tore) oder Händler. */
+/** Felder je Zeile: Platz, Baugrund der Zone 1 (zone1WallUnits, zone1TowerUnits) oder Händler. */
 function RowFields({ hub, row, edit, onRemoved }: { hub: HubJson; row: HubRow; edit: Edit; onRemoved: () => void }) {
   if (row.kind === 'wall') {
-    return <NumberField label={`Mauer Linie ${row.line} (wallUnits[${row.index}])`} value={hub.wallLines.wallUnits[row.index] ?? 0} onValue={(v) => edit((h) => setWallUnit(h, row.index, v))} />;
-  }
-  if (row.kind === 'gate') {
-    return <NumberField label="Tore ab Hub-Stufe (gateHubLevel)" value={hub.wallLines.gateHubLevel} onValue={(v) => edit((h) => setGateHubLevel(h, v))} integer />;
+    return (
+      <>
+        <NumberField label="Mauer Zone 1 (zone1WallUnits)" value={hub.sitePlacement.zone1WallUnits} onValue={(v) => edit((h) => setZone1Wall(h, v))} />
+        <NumberField label="Turm Zone 1 (zone1TowerUnits)" value={hub.sitePlacement.zone1TowerUnits} onValue={(v) => edit((h) => setZone1Tower(h, v))} />
+      </>
+    );
   }
   if (row.source === 'merchant') {
     const field = row.kind === 'merchantBuy' ? 'buyOffsetUnits' : 'sellOffsetUnits';

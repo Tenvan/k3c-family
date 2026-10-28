@@ -39,7 +39,6 @@ func placeableKinds() []string {
 	out := []string{}
 	for _, kind := range slices.Sorted(maps.Keys(buildings)) {
 		probe := &sim.HubData{Levels: make([]sim.LevelData, 1), Sites: []sim.HubSite{{Kind: kind, OffsetUnits: 1, HubLevel: 1}}}
-		probe.WallLines.GateHubLevel = 1
 		if !slices.ContainsFunc(sim.ValidateHubData(probe).Findings, func(f sim.HubFinding) bool {
 			return f.Rule == sim.RuleKind && strings.HasPrefix(f.Site, kind+"@")
 		}) {

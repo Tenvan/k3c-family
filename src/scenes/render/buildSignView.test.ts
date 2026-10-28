@@ -3,7 +3,7 @@ import { showsBuildSign, signVariant } from './buildSignView';
 
 describe('signVariant', () => {
   it('Mauer, Turm und Tor tragen das Verteidigungs-Schild', () => {
-    for (const k of ['wall', 'tower', 'gate'] as const) expect(signVariant(k)).toBe('defense');
+    for (const k of ['wall', 'tower'] as const) expect(signVariant(k)).toBe('defense');
   });
   it('Treppen tragen das Treppen-Schild', () => {
     expect(signVariant('stairsUp')).toBe('stairs');

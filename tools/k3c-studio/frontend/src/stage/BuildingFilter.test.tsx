@@ -9,7 +9,7 @@ import { buildingToggles } from './stageLogic';
 // B-477/AC-05 im DOM: Gebäude-Filter nach Art gruppiert, Gruppenschalter, aufklappbare Plätze.
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
-const TOGGLES = buildingToggles([{ kind: 'wall', x: 322 }, { kind: 'wall', x: 345 }, { kind: 'tower', x: 330 }, { kind: 'gate', x: 318 }]);
+const TOGGLES = buildingToggles([{ kind: 'wall', x: 322 }, { kind: 'wall', x: 345 }, { kind: 'tower', x: 330 }]);
 
 let root: Root | null = null;
 let host: HTMLElement | null = null;
@@ -36,7 +36,7 @@ afterEach(() => {
 describe('Gebäude-Filter (B-477/AC-05)', () => {
   it('zeigt eine Zeile je Art mit Zähler, die Plätze sind eingeklappt', async () => {
     const h = await mount();
-    expect(heads(h).map((b) => b.textContent!.replace(/\s+/g, ' ').trim())).toEqual(['▸ Mauern 2/2', '▸ Türme 1/1', '▸ Tore 1/1']);
+    expect(heads(h).map((b) => b.textContent!.replace(/\s+/g, ' ').trim())).toEqual(['▸ Mauern 2/2', '▸ Türme 1/1']);
     expect(items(h)).toHaveLength(0);
   });
 

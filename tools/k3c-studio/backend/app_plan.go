@@ -150,7 +150,7 @@ func (a *App) checkPlan(raw []byte, island string, depth int, chunks []level.Pla
 				if err != nil {
 					return err
 				}
-				return level.ValidatePlanFor(b, chunks, level.DefaultWallLines(), count)
+				return level.ValidatePlanFor(b, chunks, count)
 			}
 		}
 		return fmt.Errorf("die Tiefe %d gehört nicht zur Insel %q", depth, island)

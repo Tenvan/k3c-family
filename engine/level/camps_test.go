@@ -27,30 +27,9 @@ func TestCampAbstandZuLinien500Seeds(t *testing.T) {
 
 func checkCamp(t *testing.T, l Layout, x float64, id string, seed int) {
 	t.Helper()
-	if !wallLines.ClearOf(x - l.HubCenterUnits) {
-		t.Errorf("Biom %s, Seed %d: Camp bei Hub %+v zu nah an einer möglichen Linie", id, seed, x-l.HubCenterUnits)
-	}
-	for _, line := range l.Lines {
-		for _, p := range []float64{line.Tower, line.Wall, line.Gate} {
-			if math.Abs(x-p) < payGapUnits {
-				t.Errorf("Biom %s, Seed %d: Camp %v, Linien-Platz %v", id, seed, x, p)
-			}
-		}
-	}
-}
-
-// TestCampClearOfLinesGrenzen: Außerhalb der äußersten Tor-Position bei voller Streuung plus payGapUnits ist frei,
-// die alten Camp-Orte ±75 und ±125 nicht.
-func TestCampClearOfLinesGrenzen(t *testing.T) {
-	d := wallLines
-	outer := d.WallUnits[len(d.WallUnits)-1] + float64(d.JitterOutwardUnits) + d.GateOutsetUnits
-	cases := []struct {
-		dx   float64
-		want bool
-	}{{75, false}, {-75, false}, {125, false}, {-125, false}, {outer + payGapUnits - 0.5, false}, {outer + payGapUnits, true}, {-175, true}}
-	for _, c := range cases {
-		if got := wallLines.ClearOf(c.dx); got != c.want {
-			t.Errorf("ClearOf(%v) = %v, erwartet %v", c.dx, got, c.want)
+	for _, site := range l.Sites {
+		if math.Abs(x-site.X) < payGapUnits {
+			t.Errorf("Biom %s, Seed %d: Camp %v, Platz %s bei %v", id, seed, x, site.Kind, site.X)
 		}
 	}
 }

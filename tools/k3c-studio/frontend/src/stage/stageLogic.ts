@@ -61,7 +61,7 @@ export interface PlanSource {
 
 /** Reihenfolge und Namen der Gruppen im Gebäude-Filter; unbekannte Arten folgen alphabetisch, mit ihrem Namen. */
 const GROUPS: readonly [kind: string, label: string][] = [
-  ['wall', 'Mauern'], ['tower', 'Türme'], ['gate', 'Tore'], ['farm', 'Farmen'], ['barracks', 'Kasernen'], ['workshop', 'Werkstätten'],
+  ['wall', 'Mauern'], ['tower', 'Türme'], ['farm', 'Farmen'], ['barracks', 'Kasernen'], ['workshop', 'Werkstätten'],
   ['tavern', 'Tavernen'], ['healer', 'Heilplätze'], ['smithy', 'Schmieden'], ['armory', 'Rüstkammern'], ['stairsDown', 'Treppen runter'],
   ['stairsUp', 'Treppen hoch'],
 ];

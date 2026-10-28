@@ -6,7 +6,6 @@ import (
 	"maps"
 	"slices"
 
-	"k3c/engine/level"
 )
 
 // Prüfung einer Kandidaten-hub.json (WZ15.3, B-462/AC-02): Der Gebäude-Planer prüft eine geänderte hub.json, bevor
@@ -42,12 +41,9 @@ const (
 	RuleGate      = "material-tor" // Material-Tor nicht aus dem Material der eigenen Hub-Stufe (B-631)
 )
 
-// RulePlanned: Eine geplante Chunk-Planung der Welt (Welt-Datei › plannedChunks) wäre mit den Linien des Kandidaten
+// RulePlanned: Eine geplante Chunk-Planung der Welt (Welt-Datei › plannedChunks) wäre mit dem Kandidaten
 // ungültig (B-479); der Befund nennt Insel, Tiefe, Platz und Grund.
 const RulePlanned = "geplante-chunks"
-
-// maxJitteredLines begrenzt die Lagen der Abstands-Prüfung (2^n Streuungen je Seite und Tiefe).
-const maxJitteredLines = 16
 
 // stairsGapUnits: Treppen brauchen Platz für Preisschild und Wartegrund (W11.1, B-409).
 const stairsGapUnits = 8
@@ -80,7 +76,7 @@ func ValidateHub(raw []byte) HubReport {
 }
 
 // ValidateHubData prüft einen Kandidaten mit allen Platz-Regeln; h wird nicht verändert. Die Abstands-Regeln laufen
-// nur bei stimmigen Mauerlinien, weil sie deren Lage voraussetzen.
+// nur bei stimmigem Baugrund der Zone 1, weil sie dessen Lage voraussetzen.
 func ValidateHubData(h *HubData) HubReport { return ValidateHubDataIn(h, StandardWorld()) }
 
 // ValidateHubDataIn wie ValidateHubData, die geplanten Chunks werden aber in der Welt world geprüft (B-479).
@@ -89,24 +85,21 @@ func ValidateHubDataIn(h *HubData, world WorldDef) HubReport {
 	out = append(out, checkHubLevels(h)...)
 	out = append(out, checkGates(h)...)
 	out = append(out, checkSiteKinds(h)...)
-	lines := checkWallLines(h.WallLines)
-	out = append(out, lines...)
-	if len(lines) == 0 {
+	placement := checkSitePlacement(h.SitePlacement)
+	out = append(out, placement...)
+	if len(placement) == 0 {
 		out = append(out, checkGaps(h)...)
-	}
-	if len(lines) == 0 {
 		out = append(out, validatePlanned(world, h)...)
 	}
 	return HubReport{Findings: out}
 }
 
-// validatePlanned prüft die geplanten Chunks aller Inseln der Welt gegen die Mauerlinien des Kandidaten (B-479): Eine
-// Änderung der Linien, die eine Planung ungültig macht, würde das Laden der Welt scheitern lassen und wird abgelehnt.
-func validatePlanned(world WorldDef, h *HubData) []HubFinding {
+// validatePlanned prüft die geplanten Chunks aller Inseln der Welt (B-479): Eine Änderung, die eine Planung ungültig macht,
+// würde das Laden der Welt scheitern lassen und wird abgelehnt.
+func validatePlanned(world WorldDef, _ *HubData) []HubFinding {
 	var out []HubFinding
-	lines := levelLines(h.WallLines)
 	for _, d := range world.Islands {
-		if err := checkPlannedChunks(d, lines); err != nil {
+		if err := checkPlannedChunks(d); err != nil {
 			out = append(out, HubFinding{RulePlanned, "Insel " + d.ID, err.Error()})
 		}
 	}
@@ -118,7 +111,7 @@ func allSites(h *HubData) []HubSite { return slices.Concat(h.Sites, h.IslandSite
 
 func siteName(s HubSite) string { return fmt.Sprintf("%s@%+.0f", s.Kind, s.OffsetUnits) }
 
-// checkHubLevels: Es gibt Hub-Stufen, und jede Stufe eines Platzes und des Tors liegt in 1 … Anzahl levels.
+// checkHubLevels: Es gibt Hub-Stufen, und jede Stufe eines Platzes liegt in 1 … Anzahl levels.
 func checkHubLevels(h *HubData) []HubFinding {
 	n := len(h.Levels)
 	if n == 0 {
@@ -129,12 +122,6 @@ func checkHubLevels(h *HubData) []HubFinding {
 		if s.HubLevel < 1 || s.HubLevel > n {
 			out = append(out, HubFinding{RuleLevels, siteName(s), fmt.Sprintf("hubLevel %d außerhalb 1…%d", s.HubLevel, n)})
 		}
-	}
-	if lines := len(h.WallLines.WallUnits); lines > n {
-		out = append(out, HubFinding{RuleLines, "wallLines", fmt.Sprintf("%d Linien, aber nur %d Hub-Stufen: Linie k öffnet ab Stufe k", lines, n)})
-	}
-	if g := h.WallLines.GateHubLevel; g < 1 || g > n {
-		out = append(out, HubFinding{RuleLevels, "wallLines.gateHubLevel", fmt.Sprintf("%d außerhalb 1…%d", g, n)})
 	}
 	return out
 }
@@ -162,14 +149,14 @@ func checkGates(h *HubData) []HubFinding {
 }
 
 // placeableKind: Arten aus data/buildings.json, die auf einem Hub- oder Insel-Platz stehen dürfen (Burg und
-// Linien-Arten kommen aus Hub-Mitte und wallLines).
+// Mauer und Turm kommen aus Hub-Mitte und sitePlacement).
 func placeableKind(kind string) bool {
 	_, ok := buildings[kind]
 	return ok && kind != "castle" && !isLineKind(kind)
 }
 
-// isLineKind: Mauer, Turm und Tor gehören zu den Linien, nicht zu den Hub-Plätzen.
-func isLineKind(kind string) bool { return kind == "wall" || kind == "tower" || kind == "gate" }
+// isLineKind: Mauer und Turm gehören zu den verteilten Plätzen der Zonen, nicht zu den Hub-Plätzen.
+func isLineKind(kind string) bool { return kind == "wall" || kind == "tower" }
 
 // checkSiteKinds: nur bekannte Arten; Pflichtplätze genau einmal (farm je Seite), optionale höchstens einmal.
 func checkSiteKinds(h *HubData) []HubFinding {
@@ -178,7 +165,7 @@ func checkSiteKinds(h *HubData) []HubFinding {
 	for _, s := range allSites(h) {
 		switch {
 		case s.Kind == "castle" || isLineKind(s.Kind):
-			out = append(out, HubFinding{RuleKind, siteName(s), "gehört nicht in sites (Hub-Mitte bzw. wallLines)"})
+			out = append(out, HubFinding{RuleKind, siteName(s), "gehört nicht in sites (Hub-Mitte bzw. sitePlacement)"})
 		case !placeableKind(s.Kind):
 			out = append(out, HubFinding{RuleKind, siteName(s), fmt.Sprintf("unbekannte Art %q", s.Kind)})
 		}
@@ -213,49 +200,21 @@ func sideOf(x float64) int {
 	return 1
 }
 
-// checkWallLines: Linie 1 fest, Werte positiv, Streuung ganzzahlig (Q56), Mauern nach außen steigend, äußerstes Tor
-// bei voller Streuung unter dem Portal-Mindestabstand jedes Bioms.
-func checkWallLines(l WallLineData) []HubFinding {
-	const site = "wallLines"
-	if len(l.WallUnits) == 0 || l.FixedLines < 1 {
-		return []HubFinding{{RuleLines, site, fmt.Sprintf("Linie 1 muss fest sein: %d Linien, %d fest", len(l.WallUnits), l.FixedLines)}}
-	}
+// checkSitePlacement: Der feste Baugrund der Zone 1 hat positive Lagen, der Turm steht innen vor der Mauer, und die Verteidigungs-
+// zone endet unter dem Portal-Mindestabstand jedes Bioms.
+func checkSitePlacement(p SitePlacementData) []HubFinding {
+	const site = "sitePlacement"
 	var out []HubFinding
-	if jittered := len(l.WallUnits) - l.FixedLines; jittered > maxJitteredLines {
-		out = append(out, HubFinding{RuleLines, site, fmt.Sprintf("%d gestreute Linien, die Prüfung deckt höchstens %d ab", jittered, maxJitteredLines)})
+	if p.Zone1TowerUnits <= 0 || p.Zone1WallUnits <= p.Zone1TowerUnits {
+		out = append(out, HubFinding{RuleLines, site, fmt.Sprintf("Zone-1-Baugrund: Turm %v muss positiv und innen vor der Mauer %v liegen", p.Zone1TowerUnits, p.Zone1WallUnits)})
 	}
-	if l.WallUnits[0]-l.TowerInsetUnits <= 0 {
-		out = append(out, HubFinding{RuleLines, site, fmt.Sprintf("Turm von Linie 1 bei %v läge nicht mehr auf derselben Seite (Mauer %v, Turm %v innen)",
-			l.WallUnits[0]-l.TowerInsetUnits, l.WallUnits[0], l.TowerInsetUnits)})
-	}
-	if l.JitterOutwardUnits < 0 || l.TowerInsetUnits <= 0 || l.GateOutsetUnits <= 0 {
-		out = append(out, HubFinding{RuleLines, site, fmt.Sprintf("Streuung %v, Turm %v innen, Tor %v außen: alle positiv erwartet",
-			l.JitterOutwardUnits, l.TowerInsetUnits, l.GateOutsetUnits)})
-	}
-	if l.JitterOutwardUnits != float64(int(l.JitterOutwardUnits)) {
-		out = append(out, HubFinding{RuleLines, site, fmt.Sprintf("Streuung %v nicht ganzzahlig", l.JitterOutwardUnits)})
-	}
-	for i := 1; i < len(l.WallUnits); i++ {
-		if l.WallUnits[i] <= l.WallUnits[i-1] {
-			out = append(out, HubFinding{RuleLines, site, fmt.Sprintf("Mauer-Offsets nicht steigend: Linie %d = %v nach %v", i+1, l.WallUnits[i], l.WallUnits[i-1])})
-		}
-	}
-	outer := l.WallUnits[len(l.WallUnits)-1] + l.JitterOutwardUnits + l.GateOutsetUnits
 	for _, b := range biomes {
-		if outer >= b.Portals.MinDistanceFromHubUnits {
-			out = append(out, HubFinding{RuleLines, site, fmt.Sprintf("%s: äußerstes Tor bei %v nicht unter dem Portal-Mindestabstand %v",
-				b.ID, outer, b.Portals.MinDistanceFromHubUnits)})
+		if p.OutsideUnits >= b.Portals.MinDistanceFromHubUnits {
+			out = append(out, HubFinding{RuleLines, site, fmt.Sprintf("%s: outsideUnits %v nicht unter dem Portal-Mindestabstand %v",
+				b.ID, p.OutsideUnits, b.Portals.MinDistanceFromHubUnits)})
 		}
 	}
 	return out
-}
-
-// levelLines: die Mauerlinien eines Kandidaten als Parameter des Level-Generators.
-func levelLines(l WallLineData) level.WallLines {
-	return level.WallLines{
-		WallUnits: slices.Clone(l.WallUnits), FixedLines: l.FixedLines, JitterOutwardUnits: int(l.JitterOutwardUnits),
-		TowerInsetUnits: l.TowerInsetUnits, GateOutsetUnits: l.GateOutsetUnits,
-	}
 }
 
 // cloneHub kopiert die veränderbaren Teile eines Kandidaten (Listen), damit die Welt unabhängig vom Aufrufer bleibt.
@@ -264,6 +223,5 @@ func cloneHub(h *HubData) *HubData {
 	c.Levels = slices.Clone(h.Levels)
 	c.Sites = slices.Clone(h.Sites)
 	c.IslandSites = slices.Clone(h.IslandSites)
-	c.WallLines.WallUnits = slices.Clone(h.WallLines.WallUnits)
 	return &c
 }

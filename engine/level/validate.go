@@ -77,19 +77,12 @@ func validateChunks(l Layout, b Biome) []string {
 	return errs
 }
 
-// validatePortalsOutsideLines meldet Portale, die nicht außerhalb des äußersten Tors ihrer Seite liegen (Q49, Q57).
+// validatePortalsOutsideLines meldet Portale, die nicht außerhalb der Verteidigungszone liegen (`sitePlacement.outsideUnits`, Q49, Q57).
 func validatePortalsOutsideLines(l Layout) []string {
 	var errs []string
 	for _, e := range l.Entities {
-		if e.Kind != "portal" {
-			continue
-		}
-		dx := e.X - l.HubCenterUnits
-		for _, line := range l.Lines {
-			if float64(line.Side)*dx > 0 && math.Abs(dx) <= math.Abs(line.Gate-l.HubCenterUnits) {
-				errs = append(errs, fmt.Sprintf("Portal innerhalb der äußersten Linie (%s Units)", strconv.FormatFloat(math.Abs(dx), 'f', -1, 64)))
-				break
-			}
+		if dx := math.Abs(e.X - l.HubCenterUnits); e.Kind == "portal" && dx <= sitePlacement.OutsideUnits {
+			errs = append(errs, fmt.Sprintf("Portal innerhalb der Verteidigungszone (%s Units)", strconv.FormatFloat(dx, 'f', -1, 64)))
 		}
 	}
 	return errs

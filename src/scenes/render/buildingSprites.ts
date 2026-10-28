@@ -25,7 +25,6 @@ export const BUILDING_TEXTURES: Record<string, string> = {
   ...stufen('wall', 'mauer'),
   ...stufen('tower', 'turm'),
   ...stufen('backwall', 'hintergrundmauer'),
-  ...stufen('gate', 'tor'),
   ...Object.assign({}, ...Object.entries(HUB_BUILDINGS).map(([kind, id]) => stufen(kind, id!))),
   'grafik:stairsUp': 'gebaeude/treppe-hoch-32.png',
   'grafik:stairsDown': 'gebaeude/treppe-runter-32.png',
@@ -44,7 +43,6 @@ const stageKeys = (kind: string): string[] => [1, 2, 3, 4, 5].map((n) => `grafik
 const STAGES: Partial<Record<SiteKind, string[]>> = {
   wall: stageKeys('wall'),
   tower: stageKeys('tower'),
-  gate: stageKeys('gate'),
   ...Object.fromEntries(Object.keys(HUB_BUILDINGS).map((kind) => [kind, stageKeys(kind)])),
 };
 

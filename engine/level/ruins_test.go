@@ -62,7 +62,7 @@ func TestRuineGueltig(t *testing.T) {
 		"links am Tor":        {withRuin(p(-1, "forest"), "healer", 10)}, // 90 Units vom Hub, im Tor-Bereich von Linie 3
 	}
 	for name, plan := range cases {
-		if err := ValidatePlan(forest, plan, DefaultWallLines()); err != nil {
+		if err := ValidatePlan(forest, plan); err != nil {
 			t.Errorf("%s: %v", name, err)
 		}
 	}
@@ -93,7 +93,7 @@ func TestRuineLehntAb(t *testing.T) {
 		"an der Ader":          {cave, []PlannedChunk{withRuin(p(3, "cavern", obj("stoneVein", 20)), "smithy", 22)}, "stoneVein"},
 	}
 	for name, c := range cases {
-		err := ValidatePlan(c.b, c.plan, DefaultWallLines())
+		err := ValidatePlan(c.b, c.plan)
 		if err == nil || !strings.Contains(err.Error(), c.want) {
 			t.Errorf("%s: Fehler %v, erwartet mit %q", name, err, c.want)
 		}
@@ -114,7 +114,7 @@ func TestMarkSpotsLehntDoppeltAb(t *testing.T) {
 }
 
 func TestRuineFehlerNenntDenPlatz(t *testing.T) {
-	err := ValidatePlan(biome(t, "forest"), []PlannedChunk{withRuin(p(-4, "forest"), "castle", 10)}, DefaultWallLines())
+	err := ValidatePlan(biome(t, "forest"), []PlannedChunk{withRuin(p(-4, "forest"), "castle", 10)})
 	if err == nil || !strings.Contains(err.Error(), "Platz -4") {
 		t.Fatalf("Fehler %v, erwartet mit Platz -4", err)
 	}

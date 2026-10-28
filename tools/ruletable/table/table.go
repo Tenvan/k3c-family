@@ -53,14 +53,11 @@ type hub struct {
 	Levels      []level `json:"levels"`
 	Sites       []site  `json:"sites"`
 	IslandSites []site  `json:"islandSites"`
-	WallLines   struct {
-		WallUnits          []float64 `json:"wallUnits"`
-		FixedLines         int       `json:"fixedLines"`
-		JitterOutwardUnits float64   `json:"jitterOutwardUnits"`
-		TowerInsetUnits    float64   `json:"towerInsetUnits"`
-		GateOutsetUnits    float64   `json:"gateOutsetUnits"`
-		GateHubLevel       int       `json:"gateHubLevel"`
-	} `json:"wallLines"`
+	SitePlacement struct {
+		Zone1WallUnits  float64 `json:"zone1WallUnits"`
+		Zone1TowerUnits float64 `json:"zone1TowerUnits"`
+		Zones           int     `json:"zones"`
+	} `json:"sitePlacement"`
 	Merchant struct {
 		BuyOffsetUnits  float64 `json:"buyOffsetUnits"`
 		SellOffsetUnits float64 `json:"sellOffsetUnits"`
@@ -84,7 +81,7 @@ func Block(hubJSON []byte) (string, error) {
 	if len(h.Levels) == 0 {
 		return "", fmt.Errorf("hub.json: keine levels")
 	}
-	rows := []string{Start, "| Hub-Stufe | Material | Hub-Plätze | Mauerlinie und Tor | Händler |", "|---|---|---|---|---|"}
+	rows := []string{Start, "| Hub-Stufe | Material | Hub-Plätze | Mauer- und Turm-Zone | Händler |", "|---|---|---|---|---|"}
 	if err := checkLevels(h); err != nil {
 		return "", err
 	}
@@ -191,29 +188,17 @@ func siteText(s site) string {
 	return t
 }
 
-// line beschreibt die Mauerlinie der Stufe (Linie k ab Stufe k): Mauer, Turm innen. Das Tor der Linie k steht in der Zeile
-// max(gateHubLevel, k): in der Zeile der Linie selbst ab `gateHubLevel`, die Tore früherer Linien in der Zeile `gateHubLevel`.
+// line beschreibt die Mauer- und Turm-Plätze der Stufe (B-652): Zone n ist ab Hub-Stufe n sichtbar; Zone 1 hat den festen
+// Baugrund (Mauer, Turm), alle weiteren Plätze der Zone würfelt der Generator.
 func line(h hub, level int) string {
-	w := h.WallLines
-	if level > len(w.WallUnits) {
+	p := h.SitePlacement
+	if level > p.Zones {
 		return "–"
 	}
-	n := w.WallUnits[level-1]
-	t := fmt.Sprintf("Linie %d: Mauer ±%s, Turm ±%s", level, num(n), num(n-w.TowerInsetUnits))
-	if level >= w.GateHubLevel {
-		t += fmt.Sprintf(", Tor ±%s", num(n+w.GateOutsetUnits))
+	if level == 1 {
+		return fmt.Sprintf("Zone 1: Baugrund Mauer ±%s, Turm ±%s, dazu 0…2 Plätze je Seed", num(p.Zone1WallUnits), num(p.Zone1TowerUnits))
 	}
-	if level <= w.FixedLines {
-		t += " (fest)"
-	} else {
-		t += fmt.Sprintf(" (0…+%s je Seed)", num(w.JitterOutwardUnits))
-	}
-	if level == w.GateHubLevel {
-		for k := 1; k < level && k <= len(w.WallUnits); k++ {
-			t += fmt.Sprintf("; Tor Linie %d ±%s", k, num(w.WallUnits[k-1]+w.GateOutsetUnits))
-		}
-	}
-	return t
+	return fmt.Sprintf("Zone %d: 1…3 Mauern, 1…3 Türme je Seed", level)
 }
 
 // merchant nennt den Händler in Stufe 1: Er hängt in der hub.json an keiner Stufe und ist von Anfang an da.

@@ -4,7 +4,7 @@
 // Biome mit `lair` bekommen zusätzlich den Bau des Endbosses vor dem Ausgang (lairX, ohne Würfel).
 // Gleicher Seed => gleiches Level wie in TypeScript; geprüft gegen testdata/golden/level-*.json.
 // Die Reihenfolge der RNG-Aufrufe ist Teil des Vertrags und darf sich nicht ändern.
-// Die Mauerlinien (lines.go) streuen aus einem eigenen Strom `<biom>:<seed>:sites` und berühren ihn nicht.
+// Mauer- und Turm-Plätze (sites.go) würfeln aus einem eigenen Strom `<biom>:<seed>:wallsites` und berühren ihn nicht.
 package level
 
 import (
@@ -38,8 +38,6 @@ type Layout struct {
 	HubCenterUnits  float64  `json:"hubCenterUnits"`
 	Chunks          []Chunk  `json:"chunks"`
 	Entities        []Entity `json:"entities"`
-	// Lines sind die Mauerlinien je Seite (links, dann rechts, je von innen); ohne JSON-Ausgabe bis B-208.
-	Lines []WallLine `json:"-"`
 	// Sites sind die verteilten Mauer- und Turm-Plätze je Seite und Zone (sites.go, B-652); nicht Teil der level-Nachricht (BS12.3).
 	Sites []WallSite `json:"-"`
 	// FreeGround sind die Orte (X) der Plätze auf freiem Baugrund: die Sim legt dort keine Bäume und Felsen an (sites.go freeGround).
@@ -69,7 +67,6 @@ type gen struct {
 	count int // eingestellte Chunk-Anzahl (Options.ChunkCount); 0 = gewürfelte Länge aus lengthUnits
 	// Geplante Chunks (planned_gen.go): hubStart und hubChunks legen die Plätze fest, planned ordnet Chunk-Index
 	// und Plan zu, fixed zählt feste Portale, Truhen, Camps und Adern, sideFixed feste Portale je Seite.
-	lines WallLines
 	hubStart, hubChunks int
 	planned             map[int]PlannedChunk
 	fixed               map[string]int
@@ -94,14 +91,13 @@ func Generate(b Biome, seed string) (Layout, error) { return GenerateWith(b, see
 // GenerateWith baut das Level mit Planung und Mauerlinien aus o; der Nullwert von Options ergibt dasselbe Level wie
 // Generate. Eine ungültige Planung wird abgelehnt (ValidatePlan).
 func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
-	lines := o.lines()
 	if err := checkCount(b, o.ChunkCount); err != nil {
 		return Layout{}, err
 	}
-	if err := ValidatePlanFor(b, o.Planned, lines, o.ChunkCount); err != nil {
+	if err := ValidatePlanFor(b, o.Planned, o.ChunkCount); err != nil {
 		return Layout{}, fmt.Errorf("geplante Chunks: %w", err)
 	}
-	g := &gen{b: b, r: rng.New(b.ID + ":" + seed), seed: seed, lines: lines, cw: b.ChunkWidthUnits, count: o.ChunkCount}
+	g := &gen{b: b, r: rng.New(b.ID + ":" + seed), seed: seed, cw: b.ChunkWidthUnits, count: o.ChunkCount}
 	g.frame()
 	g.reserve(o.Planned)
 	if err := g.placePortals(); err != nil {
@@ -114,8 +110,6 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 	for _, i := range g.free() {
 		g.kinds[i] = g.r.Weighted(w)
 	}
-	wallLines := lines.generate(b.ID, seed, g.hub)
-	g.lavaOffLines(wallLines)
 	chunks := make([]Chunk, len(g.kinds))
 	for i, k := range g.kinds {
 		chunks[i] = Chunk{Index: i, Kind: k, StartUnits: float64(i) * g.cw}
@@ -129,7 +123,7 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 	width := float64(len(chunks)) * g.cw
 	return Layout{
 		Seed: seed, BiomeID: b.ID, WidthUnits: width, ChunkWidthUnits: g.cw,
-		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: wallLines, Sites: sites, FreeGround: freeGround(sites),
+		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Sites: sites, FreeGround: freeGround(sites),
 		Ruins: g.ruinsOf(chunks), Guards: g.guardsOf(chunks), Backdrops: backdrops(b.ID, seed, b.BackdropVariants, width),
 	}, nil
 }
@@ -218,8 +212,7 @@ func (g *gen) lairX() float64 {
 	return g.cw
 }
 
-// placeEvents belegt Truhen- und Camp-Chunks; Camps bevorzugt nah am Hub, aber zuerst Chunks, deren Mitte bei jeder
-// Streuung auf Abstand zu allen Linien-Plätzen liegt (B-261). Die Würfe bleiben dieselben, nur die Sortierung ändert sich.
+// placeEvents belegt Truhen- und Camp-Chunks; Camps bevorzugt nah am Hub, aber zuerst Chunks außerhalb der Verteidigungszone (B-261). Die Würfe bleiben dieselben, nur die Sortierung ändert sich.
 func (g *gen) placeEvents(seed string) error {
 	for _, kind := range eventKinds {
 		want := g.b.EventChunks[kind]
@@ -233,8 +226,8 @@ func (g *gen) placeEvents(seed string) error {
 			// Stabil: gleich gute Slots behalten ihre Reihenfolge aus dem Mischen.
 			sort.SliceStable(slots, func(i, j int) bool {
 				di, dj := g.center(slots[i])-g.hub, g.center(slots[j])-g.hub
-				if ci, cj := g.lines.ClearOf(di), g.lines.ClearOf(dj); ci != cj {
-					return ci
+				if oi, oj := math.Abs(di) > sitePlacement.OutsideUnits, math.Abs(dj) > sitePlacement.OutsideUnits; oi != oj {
+					return oi // Camps zuerst außerhalb der Verteidigungszone (früher: Abstand zu den Linien, B-261)
 				}
 				if safe[slots[i]] != safe[slots[j]] {
 					return safe[slots[i]]
@@ -246,7 +239,6 @@ func (g *gen) placeEvents(seed string) error {
 			g.kinds[s] = kind
 		}
 	}
-	g.swapCampsWithChests()
 	return nil
 }
 
@@ -271,26 +263,6 @@ func (g *gen) safeCampSlots() map[int]bool {
 		safe[i] = !g.b.Lair || (math.Abs(x-lair) >= lairCampGapUnits && !behind)
 	}
 	return safe
-}
-
-// swapCampsWithChests: Fehlt einem Camp ein freier Chunk auf Abstand zu den Linien (kurzes Level), tauscht es den
-// Chunk mit der hub-nächsten Truhe auf Abstand; Truhen sind keine Zahlziele (B-261). Kein Wurf, nur ein Tausch.
-func (g *gen) swapCampsWithChests() {
-	dist := func(i int) float64 { return math.Abs(g.center(i) - g.hub) }
-	for i, k := range g.kinds {
-		if _, fixed := g.planned[i]; k != "recruitCamp" || fixed || g.lines.ClearOf(g.center(i)-g.hub) {
-			continue
-		}
-		best := -1
-		for j, kj := range g.kinds {
-			if _, fixed := g.planned[j]; kj == "chest" && !fixed && g.lines.ClearOf(g.center(j)-g.hub) && (best < 0 || dist(j) < dist(best)) {
-				best = j
-			}
-		}
-		if best >= 0 {
-			g.kinds[i], g.kinds[best] = "chest", "recruitCamp"
-		}
-	}
 }
 
 // entities setzt Burg, Portale, Ausgang, Ereignisse, Ressourcen und Skill-Punkte.
@@ -361,28 +333,3 @@ func weights(o Ordered[float64]) []rng.Weight {
 	return out
 }
 
-// lavaOffLines: Ein Lava-Chunk, dessen Streifen (Chunk-Mitte ± widthUnits/2, dazu payGapUnits Abstand) Mauer, Turm
-// oder Tor einer Linie trifft, wird ohne Würfel zur ersten anderen Art aus chunkWeights (B-291). Geplante Chunks bleiben.
-func (g *gen) lavaOffLines(lines []WallLine) {
-	if g.b.Lava.WidthUnits <= 0 {
-		return
-	}
-	reach := g.b.Lava.WidthUnits/2 + payGapUnits
-	other := ""
-	for _, e := range g.b.ChunkWeights {
-		if e.Key != "lava" && other == "" {
-			other = e.Key
-		}
-	}
-	for i, k := range g.kinds {
-		if _, fixed := g.planned[i]; k != "lava" || fixed || other == "" {
-			continue
-		}
-		for _, l := range lines {
-			if math.Abs(l.Wall-g.center(i)) < reach || math.Abs(l.Tower-g.center(i)) < reach || math.Abs(l.Gate-g.center(i)) < reach {
-				g.kinds[i] = other
-				break
-			}
-		}
-	}
-}

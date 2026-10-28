@@ -124,14 +124,13 @@ func TestGenerateLehntUngueltigeAnzahlAb(t *testing.T) {
 
 // AC-03: Ein geplanter Platz außerhalb der Anzahl wird mit Platz abgelehnt; die Prüfung rechnet mit der Anzahl.
 func TestPlanungGegenDieAnzahl(t *testing.T) {
-	lines := DefaultWallLines()
 	cases := []struct {
 		biome string
 		count int
 		slot  int
 	}{{"forest", 16, 7}, {"forest", 16, -7}, {"forest", 20, 9}, {"ironhold", 16, -6}, {"crystal", 16, 6}}
 	for _, c := range cases {
-		err := ValidatePlanFor(biome(t, c.biome), []PlannedChunk{p(c.slot, "chest")}, lines, c.count)
+		err := ValidatePlanFor(biome(t, c.biome), []PlannedChunk{p(c.slot, "chest")}, c.count)
 		want := "auf Platz " + strconv.FormatInt(int64(c.slot), 10)
 		if c.slot > 0 {
 			want = "auf Platz +" + strconv.Itoa(c.slot)
@@ -143,7 +142,7 @@ func TestPlanungGegenDieAnzahl(t *testing.T) {
 	// Jenseits der kürzesten Länge (Wald ±7), aber innerhalb von 48 Chunks: gültig und im Level an seinem Platz.
 	b := biome(t, "forest")
 	plan := []PlannedChunk{p(20, "clearing"), p(-6, "chest")}
-	if err := ValidatePlan(b, plan, lines); err == nil {
+	if err := ValidatePlan(b, plan); err == nil {
 		t.Error("Platz +20 ohne Anzahl angenommen")
 	}
 	o := Options{ChunkCount: 48, Planned: plan}

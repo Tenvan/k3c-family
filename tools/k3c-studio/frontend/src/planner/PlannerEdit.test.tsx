@@ -69,19 +69,18 @@ describe('Gebäude-Planer: Bearbeiten (B-462 › Bearbeitbar)', () => {
     expect(lastCandidate(check).sites[6]).toEqual({ kind: 'barracks', offsetUnits: 26, hubLevel: 2, fromDepth: 1, needsDeeper: true });
   });
 
-  it('Mauerlinie, Tor und Händler', async () => {
+  it('Baugrund der Zone 1 und Händler', async () => {
     const check = vi.spyOn(backend, 'hubCheck');
     const h = await mount();
-    await select(h, 'line@3');
-    await type(field(h, 'Mauer Linie 3 (wallUnits[2])'), '78');
-    await select(h, 'gate@1');
-    await type(field(h, 'Tore ab Hub-Stufe (gateHubLevel)'), '3');
+    await select(h, 'zone1');
+    await type(field(h, 'Mauer Zone 1 (zone1WallUnits)'), '62');
+    await type(field(h, 'Turm Zone 1 (zone1TowerUnits)'), '54');
     await select(h, 'merchantSell@20');
     await type(field(h, 'Platz (sellOffsetUnits)'), '21');
     await type(field(h, 'nur Tiefe (onlyDepth)'), '1');
     const c = lastCandidate(check);
-    expect(c.wallLines.wallUnits[2]).toBe(78);
-    expect(c.wallLines.gateHubLevel).toBe(3);
+    expect(c.sitePlacement.zone1WallUnits).toBe(62);
+    expect(c.sitePlacement.zone1TowerUnits).toBe(54);
     expect(c.merchant).toEqual({ buyOffsetUnits: 16, sellOffsetUnits: 21, onlyDepth: 1 });
   });
 

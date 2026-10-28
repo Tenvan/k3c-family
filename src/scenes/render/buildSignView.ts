@@ -11,7 +11,6 @@ export type SignVariant = 'defense' | 'settlement' | 'stairs';
 const VARIANT: Partial<Record<Site['kind'], SignVariant>> = {
   wall: 'defense',
   tower: 'defense',
-  gate: 'defense',
   stairsUp: 'stairs',
   stairsDown: 'stairs',
 };

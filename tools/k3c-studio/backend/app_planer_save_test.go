@@ -102,14 +102,6 @@ func TestHubSaveRuestkammerStufe3(t *testing.T) {
 	}
 }
 
-func TestHubSaveGateHubLevel(t *testing.T) {
-	root := planerCopy(t, hubFile)
-	hubBefore, rulesBefore := readIn(t, root, hubFile), readIn(t, root, rulesFile)
-	_, res := saveEdit(t, root, func(m map[string]any) { m["wallLines"].(map[string]any)["gateHubLevel"] = 3 })
-	wantSaved(t, root, rulesBefore, res)
-	wantOneLine(t, hubBefore, readIn(t, root, hubFile), `"gateHubLevel": 1`, `"gateHubLevel": 3`)
-}
-
 func TestHubSaveHaendler(t *testing.T) {
 	root := planerCopy(t, hubFile)
 	hubBefore, rulesBefore := readIn(t, root, hubFile), readIn(t, root, rulesFile)
@@ -123,12 +115,12 @@ func TestHubSaveHaendler(t *testing.T) {
 		`"merchant": { "buyOffsetUnits": 20, "sellOffsetUnits": 16, "onlyDepth": 0 },`)
 }
 
-func TestHubSaveWallUnits(t *testing.T) {
+func TestHubSaveBaugrundMauer(t *testing.T) {
 	root := planerCopy(t, hubFile)
 	hubBefore, rulesBefore := readIn(t, root, hubFile), readIn(t, root, rulesFile)
-	_, res := saveEdit(t, root, func(m map[string]any) { m["wallLines"].(map[string]any)["wallUnits"].([]any)[4] = 126 })
+	_, res := saveEdit(t, root, func(m map[string]any) { m["sitePlacement"].(map[string]any)["zone1WallUnits"] = 46 })
 	wantSaved(t, root, rulesBefore, res)
-	wantOneLine(t, hubBefore, readIn(t, root, hubFile), `"wallUnits": [44, 64, 84, 104, 124],`, `"wallUnits": [44, 64, 84, 104, 126],`)
+	wantOneLine(t, hubBefore, readIn(t, root, hubFile), `"zone1WallUnits": 44,`, `"zone1WallUnits": 46,`)
 }
 
 // Platz entfernen (Heilplatz, optional) und wieder hinzufügen: je nur die Zeilen des Platzes und das Komma davor.
@@ -168,11 +160,10 @@ func TestHubSaveUngueltigerKandidat(t *testing.T) {
 	for name, edit := range map[string]func(m map[string]any){
 		"Farm entfernt": func(m map[string]any) { m["sites"] = slices.Delete(m["sites"].([]any), 3, 4) },
 		"Stufe 9":       func(m map[string]any) { site(m, "sites", 8)["hubLevel"] = 9 },
-		"Tor Stufe 0":   func(m map[string]any) { m["wallLines"].(map[string]any)["gateHubLevel"] = 0 },
 		"unbekannte Art": func(m map[string]any) {
 			m["sites"] = append(m["sites"].([]any), map[string]any{"kind": "mill", "offsetUnits": 30, "hubLevel": 1})
 		},
-		"Mauer fallend": func(m map[string]any) { m["wallLines"].(map[string]any)["wallUnits"].([]any)[4] = 90 },
+		"Turm außen vor der Mauer": func(m map[string]any) { m["sitePlacement"].(map[string]any)["zone1TowerUnits"] = 70 },
 	} {
 		t.Run(name, func(t *testing.T) {
 			root := planerCopy(t, hubFile)

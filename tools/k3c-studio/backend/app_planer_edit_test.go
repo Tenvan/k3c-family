@@ -35,15 +35,15 @@ func TestHubPlanIndexArtenUndStand(t *testing.T) {
 	if r := rowOf(t, v.Matrix, "storage@-26"); r.Source != srcIslandSites || r.Index != 0 {
 		t.Errorf("Lager: %+v", r)
 	}
-	if r := rowOf(t, v.Matrix, "gate@3"); r.Index != 2 || r.Line != 3 {
-		t.Errorf("Tor 3: %+v", r)
+	if r := rowOf(t, v.Matrix, "zone1"); r.Index != 0 || r.Line != 1 || r.Source != srcPlacement {
+		t.Errorf("Baugrund Zone 1: %+v", r)
 	}
 	for _, kind := range []string{"armory", "farm", "healer", "storage", "workshop"} {
 		if !slices.Contains(v.Kinds, kind) {
 			t.Errorf("Art %s fehlt in %v", kind, v.Kinds)
 		}
 	}
-	for _, kind := range []string{"castle", "wall", "tower", "gate"} {
+	for _, kind := range []string{"castle", "wall", "tower"} {
 		if slices.Contains(v.Kinds, kind) {
 			t.Errorf("Art %s darf kein Platz sein: %v", kind, v.Kinds)
 		}

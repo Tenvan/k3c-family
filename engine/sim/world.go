@@ -36,10 +36,6 @@ func hubOf(w *World) *HubData {
 // CreateWorld baut den Startzustand einer Stufe.
 func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 	lo := level.Options{Planned: opts.Planned, ChunkCount: opts.ChunkCount}
-	if opts.hub != nil { // nur mit Kandidat: sonst bleibt der eingebettete Stand aus engine/level (Goldens)
-		lines := levelLines(opts.hub.WallLines)
-		lo.Lines = &lines
-	}
 	lv, err := level.GenerateWith(b, seed, lo)
 	if err != nil {
 		return nil, err

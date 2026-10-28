@@ -34,7 +34,7 @@ func TestValidatePlanGueltig(t *testing.T) {
 		"feste Objekte":                  {forest, []PlannedChunk{p(2, "clearing", obj("tree", 10), obj("bush", 30), obj("chest", 45))}},
 	}
 	for name, c := range cases {
-		if err := ValidatePlan(c.b, c.plan, DefaultWallLines()); err != nil {
+		if err := ValidatePlan(c.b, c.plan); err != nil {
 			t.Errorf("%s: %v", name, err)
 		}
 	}
@@ -78,7 +78,7 @@ func TestValidatePlanLehntAb(t *testing.T) {
 		"kind@x über Chunks":      {forest, []PlannedChunk{p(3, "recruitCamp", obj("recruitCamp", 50)), p(4, "recruitCamp", obj("recruitCamp", 0))}, "kind@x"},
 	}
 	for name, c := range cases {
-		err := ValidatePlan(c.b, c.plan, DefaultWallLines())
+		err := ValidatePlan(c.b, c.plan)
 		if err == nil || !strings.Contains(err.Error(), c.want) {
 			t.Errorf("%s: Fehler %v, erwartet mit %q", name, err, c.want)
 		}
@@ -86,42 +86,22 @@ func TestValidatePlanLehntAb(t *testing.T) {
 }
 
 func TestValidatePlanNenntDenPlatz(t *testing.T) {
-	err := ValidatePlan(biome(t, "forest"), []PlannedChunk{p(5, "volcano")}, DefaultWallLines())
+	err := ValidatePlan(biome(t, "forest"), []PlannedChunk{p(5, "volcano")})
 	if err == nil || !strings.Contains(err.Error(), "Platz +5") {
 		t.Fatalf("Fehler %v, erwartet mit Platz +5", err)
 	}
 }
 
 func TestValidatePlanMineMitFreiemPlatz(t *testing.T) {
-	if err := ValidatePlan(biome(t, "mine"), plain("shaft", 1), DefaultWallLines()); err != nil {
+	if err := ValidatePlan(biome(t, "mine"), plain("shaft", 1)); err != nil {
 		t.Errorf("ein geplanter Chunk in der Mine lässt Platz: %v", err)
-	}
-}
-
-func TestValidatePlanLinienAlsParameter(t *testing.T) {
-	cave := biome(t, "cave")
-	plan := []PlannedChunk{p(2, "cavern", obj("stoneVein", 36))} // Hub + 136
-	lines124, lines126 := DefaultWallLines(), DefaultWallLines()
-	lines124.WallUnits = []float64{44, 64, 84, 104, 124}
-	lines126.WallUnits = []float64{44, 64, 84, 104, 126}
-	for i, c := range []struct {
-		lines WallLines
-		ok    bool
-	}{{lines124, true}, {lines126, false}, {lines124, true}, {lines126, false}} {
-		err := ValidatePlan(cave, plan, c.lines)
-		if (err == nil) != c.ok {
-			t.Errorf("Aufruf %d: Fehler %v, gültig erwartet: %v", i, err, c.ok)
-		}
-	}
-	if err := ValidatePlan(cave, plan, lines126); err == nil || !strings.Contains(err.Error(), "Bauplatz") {
-		t.Errorf("Ablehnung nennt den Bauplatz nicht: %v", err)
 	}
 }
 
 func TestValidatePlanAderAmFarmPlatz(t *testing.T) {
 	cave := biome(t, "cave")
 	// Hub + 52 ist der Farm-Weltplatz: Slot 1 bei 2 Units liegt bei 52.
-	if err := ValidatePlan(cave, []PlannedChunk{p(1, "cavern", obj("stoneVein", 2))}, DefaultWallLines()); err == nil {
+	if err := ValidatePlan(cave, []PlannedChunk{p(1, "cavern", obj("stoneVein", 2))}); err == nil {
 		t.Error("Ader auf dem Farm-Platz muss abgelehnt werden")
 	}
 }
@@ -132,7 +112,7 @@ func TestLeereFelderSindKeinePlanung(t *testing.T) {
 		if err := json.Unmarshal([]byte(raw), &plan); err != nil {
 			t.Fatal(err)
 		}
-		if err := ValidatePlan(biome(t, "forest"), plan, DefaultWallLines()); err != nil {
+		if err := ValidatePlan(biome(t, "forest"), plan); err != nil {
 			t.Errorf("%s: %v", raw, err)
 		}
 	}

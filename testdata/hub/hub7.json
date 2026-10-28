@@ -1,6 +1,6 @@
 {
   "notes": [
-    "Fixture: 7 Hub-Stufen, nur für Tests (WZ15), nicht im Spiel. Besteht die Prüfung (sim.ValidateHub): ein Platz je Bau, Farm ±44, Linie 1 bei 52, Linien alle 12 Units, Turm 4 innen, Tor 4 außen, ohne Streuung; äußerstes Tor 128 unter dem Portal-Mindestabstand."
+    "Fixture: 7 Hub-Stufen, nur für Tests (WZ15), nicht im Spiel. Besteht die Prüfung (sim.ValidateHub): ein Platz je Bau, Farm ±44, Baugrund der Zone 1 bei Mauer 60 und Turm 52 (sitePlacement), äußerste Verteidigungszone 128 unter dem Portal-Mindestabstand."
   ],
   "levels": [
     {
@@ -111,21 +111,12 @@
       "hubLevel": 2
     }
   ],
-  "wallLines": {
-    "wallUnits": [
-      52,
-      64,
-      76,
-      88,
-      100,
-      112,
-      124
-    ],
-    "fixedLines": 1,
-    "jitterOutwardUnits": 0,
-    "towerInsetUnits": 4,
-    "gateOutsetUnits": 4,
-    "gateHubLevel": 2
+  "sitePlacement": {
+    "zoneStartUnits": 40,
+    "zone1WallUnits": 60,
+    "zone1TowerUnits": 52,
+    "zones": 7,
+    "outsideUnits": 128
   },
   "merchant": {
     "buyOffsetUnits": 16,

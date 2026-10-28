@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mockHubPlan } from '../api/mockHub';
 import {
-  addSite, candidateText, numberOf, parseHub, removeSite, setGateHubLevel, setMerchant, setSiteField, setWallUnit, siteOf,
+  addSite, candidateText, numberOf, parseHub, removeSite, setMerchant, setSiteField, setZone1Tower, setZone1Wall, siteOf,
 } from './plannerEdit';
 
 // WZ9.3: Änderungen am Kandidaten; geprüft wird im Go-Backend, hier nur geändert.
@@ -22,12 +22,12 @@ describe('Gebäude-Planer: Kandidat ändern', () => {
     expect('needsDeeper' in next.sites[2]!).toBe(false);
   });
 
-  it('Mauerlinie, Tor und Händler', () => {
-    const next = setMerchant(setGateHubLevel(setWallUnit(hub(), 4, 99), 3), 'onlyDepth', 1);
-    expect(next.wallLines.wallUnits[4]).toBe(99);
-    expect(next.wallLines.gateHubLevel).toBe(3);
+  it('Baugrund der Zone 1 und Händler', () => {
+    const next = setMerchant(setZone1Tower(setZone1Wall(hub(), 99), 98), 'onlyDepth', 1);
+    expect(next.sitePlacement.zone1WallUnits).toBe(99);
+    expect(next.sitePlacement.zone1TowerUnits).toBe(98);
     expect(next.merchant.onlyDepth).toBe(1);
-    expect(setWallUnit(hub(), 99, 1)).toEqual(hub());
+    expect(hub().sitePlacement.zone1WallUnits).toBe(60);
   });
 
   it('Platz hinzufügen und entfernen', () => {
@@ -40,7 +40,7 @@ describe('Gebäude-Planer: Kandidat ändern', () => {
   });
 
   it('Kandidat als Text behält alle übrigen Felder', () => {
-    const text = candidateText(setGateHubLevel(hub(), 3));
+    const text = candidateText(setZone1Wall(hub(), 62));
     expect(JSON.parse(text).levels).toEqual(parseHub(mockHubPlan().raw).levels);
   });
 
