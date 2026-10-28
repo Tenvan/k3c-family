@@ -42,6 +42,8 @@ type Layout struct {
 	Lines []WallLine `json:"-"`
 	// Sites sind die verteilten Mauer- und Turm-Plätze je Seite und Zone (sites.go, B-652); nicht Teil der level-Nachricht (BS12.3).
 	Sites []WallSite `json:"-"`
+	// FreeGround sind die Orte (X) der Plätze auf freiem Baugrund: die Sim legt dort keine Bäume und Felsen an (sites.go freeGround).
+	FreeGround []float64 `json:"-"`
 	// Ruins sind die Ruinen der geplanten Chunks (§ 8, B-468); Plätze der Sim, nicht Teil der level-Nachricht.
 	Ruins []Ruin `json:"-"`
 	// Guards sind die Wachen der Gegnerlager geplanter Chunks (§ 9, B-517); Gegner der Sim, nicht Teil der level-Nachricht.
@@ -127,7 +129,7 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 	width := float64(len(chunks)) * g.cw
 	return Layout{
 		Seed: seed, BiomeID: b.ID, WidthUnits: width, ChunkWidthUnits: g.cw,
-		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: wallLines, Sites: sites,
+		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Lines: wallLines, Sites: sites, FreeGround: freeGround(sites),
 		Ruins: g.ruinsOf(chunks), Guards: g.guardsOf(chunks), Backdrops: backdrops(b.ID, seed, b.BackdropVariants, width),
 	}, nil
 }

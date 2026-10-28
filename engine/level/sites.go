@@ -187,3 +187,23 @@ func (g *gen) lavaAt(chunks []Chunk, x float64) bool {
 	i := int(x / g.cw)
 	return i >= 0 && i < len(chunks) && chunks[i].Kind == "lava"
 }
+
+// freeGround liefert den Baugrund (B-652, 🧑 2026-10-28, Variante A): Je Seite liegen die erste Mauer und der erste Turm der
+// Zone 1 auf freiem Grund; die Sim legt im Freiraum dieser Plätze keine Bäume und Felsen an (World, FreeGround). Ohne das ist im
+// Wald vor der ersten Nacht kein Platz bezahlbar. Die Level-Entitäten bleiben unverändert (Vorschau, Umwandlung in feste Objekte).
+func freeGround(sites []WallSite) []float64 {
+	var free []float64
+	for _, side := range []int{-1, 1} {
+		for _, kind := range []string{"wall", "tower"} {
+			if i := slices.IndexFunc(sites, func(s WallSite) bool { return s.Side == side && s.Zone == 1 && s.Kind == kind }); i >= 0 {
+				free = append(free, sites[i].X)
+			}
+		}
+	}
+	return free
+}
+
+// OnFreeGround: x liegt im Freiraum eines Baugrund-Platzes (Layout.FreeGround).
+func (l Layout) OnFreeGround(x float64) bool {
+	return slices.ContainsFunc(l.FreeGround, func(g float64) bool { return math.Abs(x-g) < sitePlacement.ClearRadiusUnits })
+}

@@ -134,3 +134,24 @@ func TestSitesAendernNichtsAnDenEntitaeten(t *testing.T) {
 		t.Fatalf("Plätze %d, Entitäten %d", len(lay.Sites), len(lay.Entities))
 	}
 }
+
+// Baugrund (Variante A): Die erste Mauer und der erste Turm der Zone 1 liegen je Seite auf freiem Grund (FreeGround), das
+// Layout bleibt unverändert und OnFreeGround meldet genau deren Freiraum.
+func TestSitesBaugrundZone1Frei(t *testing.T) {
+	p := DefaultSitePlacement()
+	b := biome(t, "forest")
+	for i := range 200 {
+		lay, err := Generate(b, fmt.Sprintf("grund-%d", i))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(lay.FreeGround) != 4 {
+			t.Fatalf("Seed %d: %d Baugrund-Plätze, erwartet 4 (je Seite Mauer und Turm)", i, len(lay.FreeGround))
+		}
+		for _, x := range lay.FreeGround {
+			if !lay.OnFreeGround(x) || !lay.OnFreeGround(x+p.ClearRadiusUnits-1) || lay.OnFreeGround(x+p.ClearRadiusUnits+9999) {
+				t.Fatalf("Seed %d: OnFreeGround falsch bei %v", i, x)
+			}
+		}
+	}
+}

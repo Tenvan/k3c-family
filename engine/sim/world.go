@@ -105,7 +105,7 @@ func CreateWorldWith(b level.Biome, seed string, o CreateOptions, planned []leve
 func placeEntities(w *World) {
 	for _, e := range w.Level.Entities {
 		switch _, gatherable := gatherOf(e.Kind); {
-		case gatherable:
+		case gatherable && (e.Kind != "tree" && e.Kind != "rock" || !w.Level.OnFreeGround(e.X)):
 			w.Nodes = append(w.Nodes, &ResourceNode{ID: w.newID(), Kind: e.Kind, X: e.X})
 		case e.Kind == "chest" || e.Kind == "skillPoint":
 			w.Pickups = append(w.Pickups, &Pickup{ID: w.newID(), Kind: e.Kind, X: e.X})
