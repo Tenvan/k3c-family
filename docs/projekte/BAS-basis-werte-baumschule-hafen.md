@@ -26,7 +26,7 @@ Erledigt, wenn M4 erreicht ist und BS6 und BS10 am Gerät abgenommen sind.
 | BS2 | Regelwerk der neuen Basis: Münzskala, Baumschule, Hafen und Schiff | erledigt |
 | BS11 | Balancing-Tester spielt die ganze Insel bis zum Endboss | erledigt |
 | BS3 | Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch | aktiv |
-| BS7 | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | geplant |
+| BS7 | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | aktiv |
 | BS4 | Baumschule auf gerodeten Waldbauplätzen (Server) | geplant |
 | BS8 | **Meilenstein 2:** Bots und Delta-Runde Baumschule | geplant |
 | BS5 | Hafen-Chunk, Schiff bauen, Inselwechsel am Hafen (Server) | geplant |

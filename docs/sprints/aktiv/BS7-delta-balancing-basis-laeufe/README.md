@@ -1,11 +1,11 @@
 # BS7 · DEV · Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAS
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-640
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 4b78a08c
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-26, Chat, durch 🧑, Revision 1, mit den Defaults der offenen Fragen
@@ -62,7 +62,7 @@ B-640 › Ausnahme- und Fehlerfälle.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BS7.1 | `BS7.1-werte-gruppen.md` | Umsetzung | autonom | offen |
+| BS7.1 | `BS7.1-werte-gruppen.md` | Umsetzung | autonom | fertig |
 | BS7.2 | `BS7.2-baseline-delta-bericht.md` | Umsetzung | autonom | offen |
 | BS7.3 | `BS7.3-basis-laeufe-editor.md` | Umsetzung | autonom | offen |
 | BS7.4 | `BS7.4-review-baseline-m1.md` | Review | autonom | offen |

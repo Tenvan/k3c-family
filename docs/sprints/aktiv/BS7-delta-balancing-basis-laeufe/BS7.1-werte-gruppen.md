@@ -1,6 +1,6 @@
 # BS7.1 · Werte-Gruppen und Einfrieren in den Balancing-Zielen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -50,5 +50,9 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+**⚠️ Workbench-Neustart nötig** (Go-Code in `tools/k3c-workbench/internal/balance` geändert; ohne Neustart lädt die laufende Workbench `group`/`frozen` nicht).
+
+- AC-01 umgesetzt und geprüft: `groups.go` (Gruppen `basis`, `holz`, `schiff`, `Targets.Frozen`, `IsFrozen`); `group` je Ziel (Pflicht in `DefaultTargets`/`checkRoles`) und je Hebel (Pflicht in `DefaultHints`/`checkGroups`); `frozen: []` in `data/balance-targets.json`. Tests in `groups_test.go` (Gruppen vollständig, `frozen` gelesen und geprüft, Ziel ohne Gruppe scheitert), `go:test` für `internal/balance/...` grün.
+- Zuordnung: Ziel `woodAtDawnFrom3` und Hebel `markCost` → `holz`; `endbossDefeated`, `endbossDay` und Hebel `endBosses.*` → `schiff`; alles andere `basis`.
+- `task check:diff`: einziger Rot-Grund waren drei 5-s-Timeouts unter Last (`projectRules`, `planningProjects`); einzeln wiederholt grün.
+- Keine Simulation gefahren (Regel 2026-10-28).

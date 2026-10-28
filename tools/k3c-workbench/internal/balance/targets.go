@@ -76,30 +76,33 @@ type Targets struct {
 		SharePp        float64 `json:"sharePp"`        // Prozentpunkte bei Anteilen
 		MedianFraction float64 `json:"medianFraction"` // Anteil der Korridorbreite bei Medianen
 	} `json:"margin"`
-	Seeds   []string `json:"seeds"` // die festen Seeds, keine Zufallsauswahl
+	// Frozen sind die eingefrorenen Werte-Gruppen (B-640): abgenommen, nur beim Kippen gemeldet, ohne Tuning-Hinweise.
+	Frozen []string `json:"frozen"`
+	Seeds  []string `json:"seeds"` // die festen Seeds, keine Zufallsauswahl
 	// SeedMode (B-634): dev = ohne Seed-Angabe nur der erste Seed, all bzw. leer = alle (seedmode.go).
 	SeedMode string   `json:"seedMode,omitempty"`
-	Targets []Target `json:"targets"`
+	Targets  []Target `json:"targets"`
 }
 
 // Target ist ein Ziel: Kennzahl, Szenario (ohne Seed) und Korridor. Eine fehlende Grenze (null) heißt: keine in diese Richtung.
 type Target struct {
-	Measure string   `json:"measure"`
-	Name    string   `json:"name"`
-	Kind    string   `json:"kind"`
-	Players int      `json:"players"`
-	Bot     string   `json:"bot"`
-	Depth   int      `json:"depth"`
-	Days    int      `json:"days"`
-	Grade   string   `json:"grade,omitempty"` // Schwierigkeitsgrad aus data/difficulty.json, leer = normal (BAL6)
-	World   string   `json:"world,omitempty"` // leer = eine Stufe der Tiefe Depth; sonst die ganze erste Insel der Welt (BS11)
-	Helps   string   `json:"helps,omitempty"` // Dev-Hilfen (helps.go), nur mit World
+	Measure string `json:"measure"`
+	Group   string `json:"group,omitempty"` // Werte-Gruppe (groups.go); die Datei der Ziele verlangt eine
+	Name    string `json:"name"`
+	Kind    string `json:"kind"`
+	Players int    `json:"players"`
+	Bot     string `json:"bot"`
+	Depth   int    `json:"depth"`
+	Days    int    `json:"days"`
+	Grade   string `json:"grade,omitempty"` // Schwierigkeitsgrad aus data/difficulty.json, leer = normal (BAL6)
+	World   string `json:"world,omitempty"` // leer = eine Stufe der Tiefe Depth; sonst die ganze erste Insel der Welt (BS11)
+	Helps   string `json:"helps,omitempty"` // Dev-Hilfen (helps.go), nur mit World
 	// Role (B-648): goal bestimmt Erfolg oder Misserfolg des Laufs, guard warnt bei Verletzung, info ist nur Diagnose; leer = goal.
-	Role    string   `json:"role,omitempty"`
-	Lower   *float64 `json:"lower"`
-	Upper   *float64 `json:"upper"`
-	Margin  *float64 `json:"margin,omitempty"` // Breite von „knapp“ statt des Standardwerts der Datei
-	Rule    string   `json:"rule"`             // Regel-Datei und Abschnitt der Zahlen
+	Role   string   `json:"role,omitempty"`
+	Lower  *float64 `json:"lower"`
+	Upper  *float64 `json:"upper"`
+	Margin *float64 `json:"margin,omitempty"` // Breite von „knapp“ statt des Standardwerts der Datei
+	Rule   string   `json:"rule"`             // Regel-Datei und Abschnitt der Zahlen
 }
 
 // DefaultTargets lädt die eingebettete data/balance-targets.json.
@@ -142,6 +145,9 @@ func (t *Targets) validate() error {
 	if err := t.validateSeeds(); err != nil {
 		return err
 	}
+	if err := checkFrozen(t.Frozen); err != nil {
+		return err
+	}
 	for i, g := range t.Targets {
 		if err := g.validate(); err != nil {
 			return fmt.Errorf("ziel %d (%q): %w", i+1, g.Name, err)
@@ -169,6 +175,9 @@ func (g Target) role() string {
 func (t *Targets) checkRoles() error {
 	goals := 0
 	for i, g := range t.Targets {
+		if !IsGroup(g.Group) {
+			return fmt.Errorf("ziel %d (%q): group %q, erlaubt: %s", i+1, g.Name, g.Group, strings.Join(Groups, ", "))
+		}
 		switch g.Role {
 		case RoleGoal:
 			goals++

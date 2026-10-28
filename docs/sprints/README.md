@@ -10,6 +10,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | BS3 | REG, DEV | BAS | Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch | – | `aktiv/BS3-werte-muenzskala-meilenstein/` |
+| BS7 | DEV | BAS | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | – | `aktiv/BS7-delta-balancing-basis-laeufe/` |
 | WZ29 | DEV | WZG | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | – | `aktiv/WZ29-sound-grafik-seiten-ausbau/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | WZ31 | DEV | WZG | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | – | `aktiv/WZ31-web-client-first/` |
@@ -46,7 +47,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | BS4 | SIM | BAS | Baumschule auf gerodeten Waldbauplätzen | – | Entwurf | `geplant/BS4-baumschule-waldbauplaetze/` |
 | BS5 | SIM | BAS | Hafen-Chunk, Schiff bauen und Inselwechsel am Hafen | – | Entwurf | `geplant/BS5-hafen-schiff-inselwechsel/` |
 | BS6 | CLI | BAS | Client: Baumschule, Hafen und Schiff, neue Münzskala | – | Entwurf | `geplant/BS6-client-baumschule-hafen-skala/` |
-| BS7 | DEV | BAS | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | – | bereit | `geplant/BS7-delta-balancing-basis-laeufe/` |
 | BS8 | DEV | BAS | Meilenstein 2: Bots und Delta-Runde Baumschule gegen Baseline M1 | – | Entwurf | `geplant/BS8-meilenstein-2-delta-baumschule/` |
 | BS9 | DEV | BAS | Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2 | – | Entwurf | `geplant/BS9-meilenstein-3-delta-schiff/` |
 | BS10 | DEV | BAS | Grafiken für Hafen und Schiff | – | Entwurf | `geplant/BS10-grafik-hafen-schiff/` |

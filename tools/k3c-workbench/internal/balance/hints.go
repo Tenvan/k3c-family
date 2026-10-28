@@ -33,6 +33,7 @@ type Lever struct {
 	Direction string  `json:"direction"`
 	Step      float64 `json:"step"`
 	Label     string  `json:"label"`
+	Group     string  `json:"group,omitempty"` // Werte-Gruppe (groups.go); die Datei der Richtwerte verlangt eine
 }
 
 // Levers sind die Hebel eines Ziels: Low bei einem Wert unter der Untergrenze, High über der Obergrenze.
@@ -61,7 +62,14 @@ func DefaultHints() (*Hints, error) {
 	if err != nil {
 		return nil, err
 	}
-	return LoadHints(raw)
+	h, err := LoadHints(raw)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.checkGroups(); err != nil {
+		return nil, fmt.Errorf("balance-hints: %w", err)
+	}
+	return h, nil
 }
 
 // LoadHints liest und prüft eine Richtwert-Datei; unbekannte Felder, Kennzahlen und Ziele sind ein Fehler.
