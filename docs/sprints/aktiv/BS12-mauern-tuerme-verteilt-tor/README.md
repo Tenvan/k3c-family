@@ -58,7 +58,7 @@ keine (Defaults aus B-652).
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BS12.1 | `BS12.1-daten-regeln-generator.md` | Umsetzung | autonom | offen |
+| BS12.1 | `BS12.1-daten-regeln-generator.md` | Umsetzung | autonom | fertig |
 | BS12.2 | `BS12.2-sim-tor-freiraum.md` | Umsetzung | autonom | offen |
 | BS12.3 | `BS12.3-bots-client-protokoll.md` | Umsetzung | autonom | offen |
 | BS12.4 | `BS12.4-simulationen.md` | Umsetzung | autonom | offen |

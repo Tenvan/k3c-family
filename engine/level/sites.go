@@ -66,68 +66,90 @@ func (g *gen) placeSites(entities []Entity, chunks []Chunk) []WallSite {
 	return out
 }
 
-// placeZone legt Mauern und Türme einer Zone [lo, hi) (Abstand zur Hub-Mitte) an und trägt sie in taken ein.
+// zonePlacer legt die Plätze einer Zone [lo, hi) (Abstand zur Hub-Mitte) einer Seite an und trägt sie in taken ein.
+type zonePlacer struct {
+	g      *gen
+	r      *rng.Rng
+	p      SitePlacement
+	side   int
+	zone   int
+	lo, hi float64
+	taken  *[]float64
+	chunks []Chunk
+	walls  []float64
+	out    []WallSite
+}
+
 func (g *gen) placeZone(r *rng.Rng, p SitePlacement, side, zone int, lo, hi float64, taken *[]float64, chunks []Chunk) []WallSite {
-	s := float64(side)
-	free := func(d float64) bool {
-		x := g.hub + s*d
-		if g.lavaAt(chunks, x) {
-			return false
-		}
-		return !slices.ContainsFunc(*taken, func(t float64) bool { return math.Abs(t-x) < payGapUnits })
-	}
-	pick := func(from, to float64) (float64, bool) {
-		for range 40 {
-			d := math.Round(from + r.Next()*(to-from))
-			if d >= lo && d < hi && free(d) {
-				return d, true
-			}
-		}
-		for d := math.Ceil(lo); d < hi; d++ { // lückenlos zurückfallen, damit jede Zone mindestens je einen Platz bekommt
-			if free(d) {
-				return d, true
-			}
-		}
-		return 0, false
-	}
-	var out []WallSite
-	add := func(kind string, d float64) {
-		x := g.hub + s*d
-		*taken = append(*taken, x)
-		out = append(out, WallSite{Side: side, Kind: kind, X: x, Zone: zone})
-	}
-	var walls []float64
+	z := &zonePlacer{g: g, r: r, p: p, side: side, zone: zone, lo: lo, hi: hi, taken: taken, chunks: chunks}
 	for range r.Int(p.PerZoneMin, p.PerZoneMax) {
-		if d, ok := pick(lo, hi); ok {
-			add("wall", d)
-			walls = append(walls, d)
+		if d, ok := z.pick(lo, hi); ok {
+			z.add("wall", d)
+			z.walls = append(z.walls, d)
 		}
 	}
 	for range r.Int(p.PerZoneMin, p.PerZoneMax) {
-		near := len(walls) > 0 && r.Next() < p.TowerNearShare
-		var d float64
-		var ok bool
-		if near {
-			w := walls[r.Int(0, len(walls)-1)]
-			sign := 1.0
-			if r.Next() < 0.5 {
-				sign = -1
-			}
-			off := math.Round(p.TowerNearMinUnits + r.Next()*(p.TowerNearMaxUnits-p.TowerNearMinUnits))
-			if d = w + sign*off; d >= lo && d < hi && free(d) {
-				ok = true
-			} else if d = w - sign*off; d >= lo && d < hi && free(d) {
-				ok = true
-			}
-		}
+		d, ok := z.nearWall()
 		if !ok {
-			d, ok = pick(lo, hi)
+			d, ok = z.pick(lo, hi)
 		}
 		if ok {
-			add("tower", d)
+			z.add("tower", d)
 		}
 	}
-	return out
+	return z.out
+}
+
+// free: d (Abstand zur Hub-Mitte) liegt in der Zone, nicht in Lava und hält payGapUnits zu allen belegten Orten.
+func (z *zonePlacer) free(d float64) bool {
+	if d < z.lo || d >= z.hi {
+		return false
+	}
+	x := z.g.hub + float64(z.side)*d
+	if z.g.lavaAt(z.chunks, x) {
+		return false
+	}
+	return !slices.ContainsFunc(*z.taken, func(t float64) bool { return math.Abs(t-x) < payGapUnits })
+}
+
+// pick würfelt einen freien Abstand in [from, to]; findet das nichts, nimmt es lückenlos den ersten freien der Zone.
+func (z *zonePlacer) pick(from, to float64) (float64, bool) {
+	for range 40 {
+		if d := math.Round(from + z.r.Next()*(to-from)); z.free(d) {
+			return d, true
+		}
+	}
+	for d := math.Ceil(z.lo); d < z.hi; d++ {
+		if z.free(d) {
+			return d, true
+		}
+	}
+	return 0, false
+}
+
+// nearWall würfelt, ob ein Turm neben einer Mauer der Zone steht (towerNearShare), und liefert dessen Abstand.
+func (z *zonePlacer) nearWall() (float64, bool) {
+	if len(z.walls) == 0 || z.r.Next() >= z.p.TowerNearShare {
+		return 0, false
+	}
+	w := z.walls[z.r.Int(0, len(z.walls)-1)]
+	sign := 1.0
+	if z.r.Next() < 0.5 {
+		sign = -1
+	}
+	off := math.Round(z.p.TowerNearMinUnits + z.r.Next()*(z.p.TowerNearMaxUnits-z.p.TowerNearMinUnits))
+	for _, d := range []float64{w + sign*off, w - sign*off} {
+		if z.free(d) {
+			return d, true
+		}
+	}
+	return 0, false
+}
+
+func (z *zonePlacer) add(kind string, d float64) {
+	x := z.g.hub + float64(z.side)*d
+	*z.taken = append(*z.taken, x)
+	z.out = append(z.out, WallSite{Side: z.side, Kind: kind, X: x, Zone: z.zone})
 }
 
 // blockedXs sind die Orte, von denen jedes Zahlziel payGapUnits Abstand halten muss: Hub-Plätze, Burg und alle

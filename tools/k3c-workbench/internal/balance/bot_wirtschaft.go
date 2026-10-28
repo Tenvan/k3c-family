@@ -38,8 +38,8 @@ func wirtschaft(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	if x := fighterStep(w, p, reserve); x != nil { // Kämpfer vor Wiederaufbau: Unter Tage räumt jede Welle Mauern und Türme ab, die Armee trägt
 		return goTo(p, *x, true)
 	}
-	if s := nextBuild(w, p, reserve); s != nil {
-		return goTo(p, s.X, true)
+	if bx := buildX(w, p, reserve); bx != nil {
+		return goTo(p, *bx, true)
 	}
 	if x == nil && reserve == 0 {
 		if n := nodeFor(w, p, sim.Cost{Wood: woodWant}); n != nil {
@@ -56,6 +56,20 @@ func wirtschaft(w *sim.World, p *sim.Player) sim.PlayerCommand {
 		return recruitOrHub(w, p)
 	}
 	return goTo(p, w.HubX, false)
+}
+
+// buildX: der Ort des nächsten Baus (nextBuild) oder, wenn nichts bezahlbar ist und keine Rücklage nötig, des nächsten Baums
+// oder Felsens, der einen Mauer- oder Turm-Platz sperrt (B-652); nil sonst.
+func buildX(w *sim.World, p *sim.Player, reserve int) *float64 {
+	if s := nextBuild(w, p, reserve); s != nil {
+		return &s.X
+	}
+	if reserve == 0 {
+		if n := clearNode(w, p); n != nil {
+			return &n.X
+		}
+	}
+	return nil
 }
 
 // nextBuild: der nächste Bau aus buildOrder, dessen Material im Vorrat liegt und dessen Rest plus Rücklage das Gold deckt.

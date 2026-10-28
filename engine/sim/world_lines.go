@@ -1,14 +1,16 @@
 package sim
 
 import (
+	"math"
 	"sort"
 
 	"k3c/engine/level"
 )
 
-// Mauerlinien in der Sim (B-206, Q47, Q48, Q54, Q58, Q59): Mauer, Turm und Tor jeder Linie aus dem Layout der Stufe.
-// Linie und Seite eines Platzes ergeben sich aus Art und Position im Layout (`siteLine`), nicht aus Feldern am Site:
-// destroySite und castleFallen setzen den Platz neu auf und würden sie sonst verlieren.
+// Verteilte Mauer- und Turm-Plätze in der Sim (B-652, BS12.2): Mauer und Turm kommen aus `Layout.Sites` der Stufe (Zone n von
+// innen je Seite), ein Tor-Platz gibt es nicht mehr: Die äußerste gebaute Mauer je Seite ist das Tor (outerWall) und wird
+// wie jede Mauer ausgebaut. Seite und Zone eines Platzes ergeben sich aus Art und Position im Layout (`levelSite`), nicht
+// aus Feldern am Site: destroySite und castleFallen setzen den Platz neu auf und würden sie sonst verlieren.
 
 // siteSpec ist ein anzulegender Platz.
 type siteSpec struct {
@@ -16,7 +18,7 @@ type siteSpec struct {
 	x    float64
 }
 
-// worldSiteSpecs: die Hub-Plätze dieser Tiefe und Mauer, Turm und Tor jeder Linie, fest nach X sortiert (jeder Platz
+// worldSiteSpecs: die Hub-Plätze dieser Tiefe und alle Mauern und Türme der Stufe, fest nach X sortiert (jeder Platz
 // zieht beim Anlegen eine ID).
 func worldSiteSpecs(w *World) []siteSpec {
 	out := []siteSpec{}
@@ -26,52 +28,54 @@ func worldSiteSpecs(w *World) []siteSpec {
 		}
 		out = append(out, siteSpec{s.Kind, w.HubX + s.OffsetUnits})
 	}
-	for _, l := range w.Level.Lines {
-		out = append(out, siteSpec{"wall", l.Wall}, siteSpec{"tower", l.Tower}, siteSpec{"gate", l.Gate})
+	for _, l := range w.Level.Sites {
+		out = append(out, siteSpec{l.Kind, l.X})
 	}
 	sort.SliceStable(out, func(i, j int) bool { return out[i].x < out[j].x })
 	return out
 }
 
-// siteLine ist die Linie eines Platzes; false für Plätze, die zu keiner Linie gehören.
-func siteLine(w *World, s *Site) (level.WallLine, bool) {
-	for _, l := range w.Level.Lines {
-		if (s.Kind == "wall" && s.X == l.Wall) || (s.Kind == "tower" && s.X == l.Tower) || (s.Kind == "gate" && s.X == l.Gate) {
+// levelSite ist der verteilte Platz zu s; false für Plätze, die nicht aus Layout.Sites stammen.
+func levelSite(w *World, s *Site) (level.WallSite, bool) {
+	for _, l := range w.Level.Sites {
+		if l.Kind == s.Kind && l.X == s.X {
 			return l, true
 		}
 	}
-	return level.WallLine{}, false
+	return level.WallSite{}, false
 }
 
-// wallBuilt: Hat die Mauer der Linie k auf Seite side den Zustand built? (Q58)
-func wallBuilt(w *World, side, k int) bool {
-	for _, s := range w.Sites {
-		if l, ok := siteLine(w, s); ok && s.Kind == "wall" && l.Side == side && l.Index == k {
-			return s.State == "built"
-		}
-	}
-	return false
-}
-
-// lineOpen: Darf ein unbezahlter Platz bezahlt werden? Mauer und Turm der Linie k ab Hub-Stufe k, wenn alle Mauern
-// innen auf derselben Seite gebaut sind (Q48; eine zerstörte Mauer k−1 sperrt also nur neue Linien, Q58). Das Tor
-// der Linie k ab Hub-Stufe max(gateHubLevel, k) nur an der äußersten gebauten Mauer seiner Seite (Q47).
+// lineOpen: Darf ein unbezahlter Mauer- oder Turm-Platz bezahlt werden? Zone n ab Hub-Stufe n, und im Freiraum
+// (`sitePlacement.clearRadiusUnits`) steht kein Baum und kein Fels mehr (B-652, 🧑 2026-10-28). Innere Mauern müssen
+// nicht gebaut sein.
 func lineOpen(w *World, s *Site) bool {
-	l, ok := siteLine(w, s)
+	l, ok := levelSite(w, s)
 	if !ok {
 		return true
 	}
-	if s.Kind == "gate" {
-		return w.HubLevel >= max(hubOf(w).WallLines.GateHubLevel, l.Index) &&
-			wallBuilt(w, l.Side, l.Index) && !wallBuilt(w, l.Side, l.Index+1)
-	}
-	if w.HubLevel < l.Index {
-		return false
-	}
-	for k := 1; k < l.Index; k++ {
-		if !wallBuilt(w, l.Side, k) {
-			return false
+	return w.HubLevel >= l.Zone && siteCleared(w, s.X)
+}
+
+// siteCleared: Im Freiraum um x steht kein Baum und kein Fels (abgebaute Knoten sind aus Nodes entfernt).
+func siteCleared(w *World, x float64) bool { return len(blockersAt(w, x)) == 0 }
+
+// blockersAt sind die Bäume und Felsen im Freiraum um x.
+func blockersAt(w *World, x float64) []*ResourceNode {
+	radius := level.DefaultSitePlacement().ClearRadiusUnits
+	var out []*ResourceNode
+	for _, n := range w.Nodes {
+		if (n.Kind == "tree" || n.Kind == "rock") && !n.gone && math.Abs(n.X-x) < radius {
+			out = append(out, n)
 		}
 	}
-	return true
+	return out
+}
+
+// SiteBlockers sind die Bäume und Felsen, die einen Mauer- oder Turm-Platz noch sperren (leer für alle anderen Plätze);
+// Bots markieren sie zum Abbau (B-652).
+func SiteBlockers(w *World, s *Site) []*ResourceNode {
+	if _, ok := levelSite(w, s); !ok {
+		return nil
+	}
+	return blockersAt(w, s.X)
 }

@@ -164,7 +164,7 @@ func stunned(e *Enemy, dt float64) bool {
 
 // isBarrier: Eine gebaute Mauer oder ein gebautes Tor hält Gegner auf und ist ihr Angriffsziel (Q27). Spieler und
 // Truppen kennen keine Hindernisse, sie passieren beides; `outerWall` (Posten der Schützen) bleibt bei der Mauer.
-func isBarrier(s *Site) bool { return (s.Kind == "wall" || s.Kind == "gate") && s.State == "built" }
+func isBarrier(s *Site) bool { return s.Kind == "wall" && s.State == "built" }
 
 // isBuilding: übrige gebaute Gebäude (Heilplatz, Taverne, Lager, Schmiede, Rüstkammer, Werkstatt, Farm, Kaserne) sind
 // Ziele der Gegner (gegner.md § 4). Mauer und Tor halten auf, Türme sind Ziele der Fernkämpfer, Treppen Reisepunkte.

@@ -143,6 +143,9 @@ func TestRuineIstHubNeutral(t *testing.T) {
 		if s.Ruin {
 			continue
 		}
+		if _, ok := levelSite(w, s); ok {
+			continue // Mauern und Türme der Zonen hängen von den Ereignissen der Stufe ab, die Planung verschiebt sie (B-652)
+		}
 		s0 := siteAt(w0, s.Kind, s.X)
 		if s0 == nil {
 			t.Fatalf("Platz %s@%v fehlt ohne Planung", s.Kind, s.X)

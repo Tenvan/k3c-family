@@ -73,8 +73,8 @@ func TestMigrationGebautePlaetzeBleibenGebaut(t *testing.T) {
 		for i, h := range s.Stages {
 			want[i] = map[string]string{}
 			for j, site := range h.Sites {
-				if site.Kind == "wall" || site.Kind == "tower" {
-					s.Stages[i].Sites[j].State, s.Stages[i].Sites[j].HP = "built", buildings[site.Kind].HP
+				if site.Kind == "wall" || site.Kind == "tower" || site.Kind == "gate" {
+					continue // Mauern und Türme stehen seit B-652 auf verteilten Plätzen, alte Stände behalten ihre Lage nicht
 				}
 				want[i][key(site.Kind, site.X)] = s.Stages[i].Sites[j].State
 			}
@@ -111,10 +111,7 @@ func TestSpielstandStufenAusFixture(t *testing.T) {
 	if a.HubLevel != 3 || b.HubLevel != 2 || b.hubSite.Upgrade != "waitingMaterial" || b.hubSite.UpgradePaid != 100 {
 		t.Fatalf("Hub-Stufen %d/%d, Ausbau %+v", a.HubLevel, b.HubLevel, b.hubSite)
 	}
-	wall := lineSite(t, a, "wall", -1, 1)
-	if wall.State != "built" || wall.Level != 2 || wall.MaxHP != buildings["wall"].Levels[1].HP || wall.HP != wall.MaxHP-50 {
-		t.Fatalf("Mauer aus v4: %+v", wall)
-	}
+	// Die Mauer der Stufe 2 aus dem Fixture steht auf einem alten Linien-Platz; verteilte Plätze (B-652) übernehmen sie nicht.
 	for v := 1; v < 4; v++ {
 		for _, w := range loadIsland(t, readFixture(t, v)).Stages {
 			for _, s := range w.Sites {

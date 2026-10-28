@@ -41,26 +41,12 @@ func TestWarriorNimmtSchwertUndKaempftHinterDerMauer(t *testing.T) {
 		t.Errorf("Krieger-HP %v, laut Daten %v", peasant.MaxHP, troops["warrior"].HP)
 	}
 	want := wall.X + troops["warrior"].PostUnits
+	run(w, 40) // die Mauer liegt weiter draußen, der Krieger muss hinlaufen
 	if x := warriorPostOf(w, peasant); math.Abs(x-want) > arrive {
 		t.Fatalf("Krieger bei %v, Posten hinter der Mauer %v erwartet", x, want)
 	}
 	if got := firstHit(w, wall.X-8); got != troops["warrior"].Damage {
 		t.Errorf("Gegner an der Mauer nimmt %v Schaden, laut Daten %v", got, troops["warrior"].Damage)
-	}
-}
-
-func TestWarriorStehtZwischenMauerUndTor(t *testing.T) {
-	w := dayWorld(t)
-	sturdy(lineSite(t, w, "wall", -1, 1))
-	gate := sturdy(lineSite(t, w, "gate", -1, 1))
-	tr := w.Troops[0]
-	makeFighter(w, tr, "warrior")
-	want := gate.X + troops["warrior"].PostUnits
-	if x := warriorPostOf(w, tr); math.Abs(x-want) > arrive {
-		t.Fatalf("Krieger bei %v, Posten hinter dem Tor %v erwartet", x, want)
-	}
-	if got := firstHit(w, gate.X-8); got != troops["warrior"].Damage {
-		t.Errorf("Gegner am Tor nimmt %v Schaden, laut Daten %v", got, troops["warrior"].Damage)
 	}
 }
 
@@ -73,7 +59,7 @@ func TestWarriorAeussersteLinieUndBeideSeiten(t *testing.T) {
 	a, b := w.Troops[0], spawnVagrant(w, w.HubX, w.HubX)
 	makeFighter(w, a, "warrior")
 	makeFighter(w, b, "warrior")
-	run(w, 30)
+	run(w, 80)
 	left, other := a, b
 	if a.X > w.HubX {
 		left, other = b, a

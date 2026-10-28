@@ -75,6 +75,7 @@ func TestUpgradeEliteKrieger(t *testing.T) {
 		return spot
 	})
 	wall := sturdy(lineSite(t, w, "wall", 1, 1))
+	run(w, 40) // die Mauer liegt weiter draußen, der Krieger muss hinlaufen
 	if x := warriorPostOf(w, tr); math.Abs(x-(wall.X-troops["warrior"].PostUnits)) > arrive {
 		t.Fatalf("Elite-Krieger bei %v, Posten hinter der Mauer %v erwartet", x, wall.X)
 	}

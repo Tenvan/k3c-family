@@ -94,23 +94,6 @@ func TestHubGebaeudeAusDenDaten(t *testing.T) {
 	}
 }
 
-// Tor: Platz der Linie aus dem Layout, ab gateHubLevel (B-631: Hub-Stufe 1) an der gebauten Mauer, Kosten, HP und
-// Bauzeit aus buildings.json.
-func TestTorAusDenDaten(t *testing.T) {
-	w := dayWorld(t)
-	players := []*Player{AddPlayer(w), AddPlayer(w)}
-	w.HubLevel = hub.WallLines.GateHubLevel
-	gate := lineSite(t, w, "gate", -1, 1)
-	if l, _ := siteLine(w, gate); gate.X != l.Gate {
-		t.Errorf("Tor bei %v, laut Layout %v", gate.X, l.Gate)
-	}
-	if sitePayable(w, gate) {
-		t.Errorf("Tor ohne Mauer bei Hub-Stufe %d bezahlbar", w.HubLevel)
-	}
-	built(lineSite(t, w, "wall", -1, 1))
-	wantBuiltFromData(t, gate, buildNew(t, w, players, gate))
-}
-
 // W3.2 (B-116/AC-03, Sprint W3 AC-03): Schmiede und Rüstkammer lassen sich bauen (oben, ab ihrer Hub-Stufe) und
 // zerstören; ihre Wirkung prüft building_upgrades_test.go (W4.3b, B-313).
 func TestSchmiedeUndRuestkammerZerstoerbar(t *testing.T) {

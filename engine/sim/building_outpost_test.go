@@ -3,10 +3,18 @@ package sim
 import (
 	"math"
 	"testing"
+
+	"k3c/engine/level"
 )
 
 // Vorposten (WZ14.4, B-468/AC-03, docs/rules/geplante-chunks.md § 8): Plätze jenseits des äußersten Tors laut Layout,
 // mit 2 Spielern über fixtureIsland (alle drei Ruinen der Fixture liegen dort).
+
+// edgeWalls setzt die äußersten Mauer-Plätze der Fixture auf Hub ± 124 (alte Linie 5): Die Ruinen der Fixture liegen dahinter,
+// die Plätze der Werkstatt und des Lagers innerhalb (die verteilten Zonen reichen sonst bis ±290, B-652).
+func edgeWalls(w *World) {
+	w.Level.Sites = []level.WallSite{{Side: -1, Kind: "wall", X: w.HubX - 124, Zone: 5}, {Side: 1, Kind: "wall", X: w.HubX + 124, Zone: 5}}
+}
 
 // outpostPeasant ist der Bauer der Stufe, tagsüber ohne Gegner.
 func outpostPeasant(t *testing.T, w *World) *Troop {
@@ -27,26 +35,28 @@ func endanger(w *World) {
 
 func TestVorpostenLageLautLayout(t *testing.T) {
 	_, w := fixtureIsland(t)
+	edgeWalls(w)
 	left, _ := outermostGate(w, -1)
 	right, _ := outermostGate(w, 1)
 	for _, s := range w.Sites {
 		want := s.X < left || s.X > right
 		if outpost(w, s.X) != want {
-			t.Errorf("%s@%v: Vorposten %v, Tore %v/%v", s.Kind, s.X, outpost(w, s.X), left, right)
+			t.Errorf("%s@%v: Vorposten %v, äußerste Mauern %v/%v", s.Kind, s.X, outpost(w, s.X), left, right)
 		}
 		if s.Ruin && !outpost(w, s.X) {
-			t.Errorf("Ruine %s@%v liegt nicht jenseits des Tors", s.Kind, s.X)
+			t.Errorf("Ruine %s@%v liegt nicht jenseits der äußersten Mauer", s.Kind, s.X)
 		}
 	}
-	w.Level.Lines = nil
+	w.Level.Sites = nil
 	if outpost(w, 0) || outpost(w, w.WidthUnits) {
-		t.Error("ohne Mauerlinien gibt es keine Vorposten")
+		t.Error("ohne Mauer-Plätze gibt es keine Vorposten")
 	}
 }
 
 // Reparatur am Vorposten tagsüber; bei Gefahr bleibt sie liegen und der Bauer kehrt zur Burg zurück.
 func TestVorpostenReparaturNurOhneGefahr(t *testing.T) {
 	_, w := fixtureIsland(t)
+	edgeWalls(w)
 	p := outpostPeasant(t, w)
 	p.Job = repairJob(w, p)
 	if p.Job == nil {
@@ -78,6 +88,7 @@ func TestVorpostenReparaturNurOhneGefahr(t *testing.T) {
 // Bau am Vorposten nur ohne Gefahr; ein Bauplatz innerhalb der Mauern wird auch bei Gefahr gebaut.
 func TestVorpostenBauNurOhneGefahr(t *testing.T) {
 	_, w := fixtureIsland(t)
+	edgeWalls(w)
 	p := outpostPeasant(t, w)
 	ruin := ruinOf(t, w, "storage")
 	destroySite(w, ruin)
@@ -108,6 +119,7 @@ func TestVorpostenBauNurOhneGefahr(t *testing.T) {
 // Waffen holen: an einer Werkstatt jenseits des Tors nur ohne Gefahr, innerhalb der Mauern auch bei Gefahr.
 func TestVorpostenWaffenNurOhneGefahr(t *testing.T) {
 	_, w := fixtureIsland(t)
+	edgeWalls(w)
 	p := outpostPeasant(t, w)
 	right, _ := outermostGate(w, 1)
 	far := emptySite(w, "workshop", right+20)

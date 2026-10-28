@@ -192,7 +192,7 @@ func equip(w *World, t *Troop, kind string, workSite int) {
 	w.Events = append(w.Events, Event{"type": "armed"})
 }
 
-// warriorPost: innen vor der äußersten gebauten Sperre der Seite (Tor der äußersten Linie, wenn gebaut, sonst Mauer);
+// warriorPost: innen vor der äußersten gebauten Mauer der Seite (das Tor, B-652);
 // ohne Mauer wie ein Bogenschütze ohne Mauer (stepArcher).
 // front ist der Ort, von dem aus der Krieger am Posten zuschlägt: die Sperre selbst, damit er Gegner trifft, die an
 // ihr stehen (ohne Mauer der Posten).
@@ -202,14 +202,7 @@ func warriorPost(w *World, side float64) (post, front float64) {
 		post = w.HubX + float64(side*10)
 		return post, post
 	}
-	barrier := wall
-	if l, ok := siteLine(w, wall); ok {
-		for _, s := range w.Sites {
-			if s.Kind == "gate" && s.X == l.Gate && s.State == "built" {
-				barrier = s
-			}
-		}
-	}
+	barrier := wall // die äußerste gebaute Mauer ist das Tor (B-652)
 	return barrier.X - float64(side*troops["warrior"].PostUnits), barrier.X
 }
 

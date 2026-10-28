@@ -13,45 +13,19 @@ func TestSitesVerteilt500Seeds(t *testing.T) {
 	b := biome(t, "forest")
 	var towers, near int
 	for i := range 500 {
-		lay, err := Generate(b, fmt.Sprintf("sites-%d", i))
+		seed := fmt.Sprintf("sites-%d", i)
+		lay, err := Generate(b, seed)
 		if err != nil {
 			t.Fatal(err)
 		}
-		again, _ := Generate(b, fmt.Sprintf("sites-%d", i))
+		again, _ := Generate(b, seed)
 		if fmt.Sprint(lay.Sites) != fmt.Sprint(again.Sites) {
 			t.Fatalf("Seed %d: Plätze nicht deterministisch", i)
 		}
-		count := map[string]int{}
-		for _, s := range lay.Sites {
-			count[fmt.Sprintf("%d/%d/%s", s.Side, s.Zone, s.Kind)]++
-		}
-		for k, n := range count {
-			if n > p.PerZoneMax {
-				t.Fatalf("Seed %d: %s hat %d Plätze, höchstens %d", i, k, n, p.PerZoneMax)
-			}
-		}
-		for a, sa := range lay.Sites {
-			if d := math.Abs(sa.X - lay.HubCenterUnits); d < p.ZoneStartUnits || d >= p.ZoneStartUnits+float64(p.Zones)*lay.ChunkWidthUnits {
-				t.Fatalf("Seed %d: Platz %v außerhalb der Zonen", i, sa)
-			}
-			for _, sb := range lay.Sites[a+1:] {
-				if math.Abs(sa.X-sb.X) < payGapUnits {
-					t.Fatalf("Seed %d: Plätze %v und %v zu nah", i, sa, sb)
-				}
-			}
-			if sa.Kind != "tower" {
-				continue
-			}
-			towers++
-			for _, sb := range lay.Sites {
-				if sb.Kind == "wall" && sb.Side == sa.Side && sb.Zone == sa.Zone {
-					if d := math.Abs(sa.X - sb.X); d >= p.TowerNearMinUnits && d <= p.TowerNearMaxUnits {
-						near++
-						break
-					}
-				}
-			}
-		}
+		checkZoneCounts(t, seed, lay, p)
+		checkSiteSpacing(t, seed, lay, p)
+		tw, nr := countNearTowers(lay, p)
+		towers, near = towers+tw, near+nr
 	}
 	if towers == 0 {
 		t.Fatal("keine Türme")
@@ -62,9 +36,62 @@ func TestSitesVerteilt500Seeds(t *testing.T) {
 	t.Logf("Türme %d, davon nah an einer Mauer %d (%.0f %%)", towers, near, 100*float64(near)/float64(towers))
 }
 
+// checkZoneCounts: je Seite, Zone und Art höchstens PerZoneMax Plätze.
+func checkZoneCounts(t *testing.T, seed string, lay Layout, p SitePlacement) {
+	t.Helper()
+	count := map[string]int{}
+	for _, s := range lay.Sites {
+		count[fmt.Sprintf("%d/%d/%s", s.Side, s.Zone, s.Kind)]++
+	}
+	for k, n := range count {
+		if n > p.PerZoneMax {
+			t.Fatalf("%s: %s hat %d Plätze, höchstens %d", seed, k, n, p.PerZoneMax)
+		}
+	}
+}
+
+// checkSiteSpacing: jeder Platz liegt in den Zonen, und zwei Plätze halten den Zahlziel-Abstand.
+func checkSiteSpacing(t *testing.T, seed string, lay Layout, p SitePlacement) {
+	t.Helper()
+	end := p.ZoneStartUnits + float64(p.Zones)*lay.ChunkWidthUnits
+	for a, sa := range lay.Sites {
+		if d := math.Abs(sa.X - lay.HubCenterUnits); d < p.ZoneStartUnits || d >= end {
+			t.Fatalf("%s: Platz %v außerhalb der Zonen", seed, sa)
+		}
+		for _, sb := range lay.Sites[a+1:] {
+			if math.Abs(sa.X-sb.X) < payGapUnits {
+				t.Fatalf("%s: Plätze %v und %v zu nah", seed, sa, sb)
+			}
+		}
+	}
+}
+
+// countNearTowers zählt die Türme und davon die, die 4 bis 10 Units neben einer Mauer derselben Zone stehen.
+func countNearTowers(lay Layout, p SitePlacement) (towers, near int) {
+	for _, sa := range lay.Sites {
+		if sa.Kind != "tower" {
+			continue
+		}
+		towers++
+		if nearWall(lay, sa, p) {
+			near++
+		}
+	}
+	return towers, near
+}
+
+func nearWall(lay Layout, tower WallSite, p SitePlacement) bool {
+	for _, w := range lay.Sites {
+		d := math.Abs(tower.X - w.X)
+		if w.Kind == "wall" && w.Side == tower.Side && w.Zone == tower.Zone && d >= p.TowerNearMinUnits && d <= p.TowerNearMaxUnits {
+			return true
+		}
+	}
+	return false
+}
+
 // Jede Seite und Zone mit genug Platz bekommt mindestens eine Mauer und einen Turm.
 func TestSitesJedeZoneHatMauerUndTurm(t *testing.T) {
-	p := DefaultSitePlacement()
 	b := biome(t, "forest")
 	for i := range 100 {
 		lay, err := Generate(b, fmt.Sprintf("zone-%d", i))
@@ -75,16 +102,25 @@ func TestSitesJedeZoneHatMauerUndTurm(t *testing.T) {
 		for _, s := range lay.Sites {
 			have[fmt.Sprintf("%d/%d/%s", s.Side, s.Zone, s.Kind)] = true
 		}
-		for _, side := range []int{-1, 1} {
-			for zone := 1; zone <= 3 && zone <= p.Zones; zone++ {
-				for _, kind := range []string{"wall", "tower"} {
-					if !have[fmt.Sprintf("%d/%d/%s", side, zone, kind)] {
-						t.Errorf("Seed %d: Seite %d Zone %d ohne %s", i, side, zone, kind)
-					}
-				}
+		for _, key := range requiredZoneKeys(3) {
+			if !have[key] {
+				t.Errorf("Seed %d: %s fehlt", i, key)
 			}
 		}
 	}
+}
+
+// requiredZoneKeys: Seite/Zone/Art der ersten zones Zonen beider Seiten.
+func requiredZoneKeys(zones int) []string {
+	var out []string
+	for _, side := range []int{-1, 1} {
+		for zone := 1; zone <= zones; zone++ {
+			for _, kind := range []string{"wall", "tower"} {
+				out = append(out, fmt.Sprintf("%d/%d/%s", side, zone, kind))
+			}
+		}
+	}
+	return out
 }
 
 // Die Plätze ändern die übrigen Würfe nicht: Entitäten und Chunks bleiben gleich (eigener Strom).

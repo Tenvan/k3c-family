@@ -122,35 +122,41 @@ func TestLinienPlatzVorRuineBeimBezahlen(t *testing.T) {
 	}
 }
 
-// rightLine ist die Linie k rechts vom Hub.
-func rightLine(w *World, k int) level.WallLine {
-	for _, l := range w.Level.Lines {
-		if l.Side == 1 && l.Index == k {
+// rightWall ist der erste Mauer-Platz der Zone k rechts vom Hub.
+func rightWall(w *World, k int) level.WallSite {
+	for _, l := range w.Level.Sites {
+		if l.Side == 1 && l.Zone == k && l.Kind == "wall" {
 			return l
 		}
 	}
-	return level.WallLine{}
+	return level.WallSite{}
 }
 
-// linePrecedence plant eine Werkstatt-Ruine offset Units rechts der Mauer von Linie 2 und zahlt an ihr.
+// linePrecedence plant eine Werkstatt-Ruine offset Units rechts eines Mauer-Platzes der Zone 2 und zahlt an ihr. Die Planung
+// verschiebt die verteilten Plätze, deshalb legt der Test die Mauer an der Ruine selbst an.
 func linePrecedence(t *testing.T, w0 *World, offset float64) {
 	t.Helper()
-	line, first := rightLine(w0, 2), rightLine(w0, 1)
-	_, w := ruinIsland(t, []level.PlannedChunk{plannedRuinAt(w0, "workshop", line.Wall+offset)})
+	line := rightWall(w0, 2)
+	_, w := ruinIsland(t, []level.PlannedChunk{plannedRuinAt(w0, "workshop", line.X+offset)})
 	ruin := ruinOf(t, w, "workshop")
-	wall := siteAt(w, "wall", line.Wall)
-	if wall == nil || ruin.X != line.Wall+offset {
-		t.Fatalf("Versatz %v: Mauer %+v, Ruine bei %v (Mauer bei %v)", offset, wall, ruin.X, line.Wall)
+	wall := siteAt(w, "wall", line.X)
+	if wall == nil {
+		wall = emptySite(w, "wall", line.X)
+		w.Sites = append(w.Sites, wall)
+		w.Level.Sites = append(w.Level.Sites, level.WallSite{Side: 1, Kind: "wall", X: line.X, Zone: 2})
 	}
+	if ruin.X != line.X+offset {
+		t.Fatalf("Versatz %v: Ruine bei %v, Mauer bei %v", offset, ruin.X, line.X)
+	}
+	clearNodes(w)
 	p := w.Players[0]
 	p.X, p.Gold = ruin.X, 10
 	if tg := findPayTarget(w, p); tg == nil || tg.site != ruin {
-		t.Fatalf("Versatz %v: ohne offene Linie muss die Ruine (Bogen) das Ziel sein: %+v", offset, tg)
+		t.Fatalf("Versatz %v: bei Hub-Stufe 1 ist Zone 2 gesperrt, die Ruine (Bogen) muss das Ziel sein: %+v", offset, tg)
 	}
-	siteAt(w, "wall", first.Wall).State = "built"
 	w.HubLevel = 2
 	if tg := findPayTarget(w, p); tg == nil || tg.site != wall {
-		t.Fatalf("Versatz %v: Ziel %+v, erwartet die Mauer der Linie 2", offset, tg)
+		t.Fatalf("Versatz %v: Ziel %+v, erwartet die Mauer der Zone 2", offset, tg)
 	}
 	payOneCoin(w, p)
 	if wall.PaidGold != 1 || ruin.BowPaidGold != 0 || ruin.UpgradePaid != 0 || p.Gold != 9 {

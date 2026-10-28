@@ -153,6 +153,9 @@ func saver(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	if w.Cycle.Phase == "night" {
 		return goTo(p, w.HubX, false)
 	}
+	if n := clearNode(w, p); n != nil && !wallPayable(w) {
+		return goTo(p, n.X, true)
+	}
 	if wall, open := nearestWall(w, p); open {
 		if wall == nil {
 			return goTo(p, w.HubX, false)
@@ -180,6 +183,9 @@ func walls(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	case upOpen || wallPayable(w):
 		return goTo(p, w.HubX, false)
 	}
+	if n := clearNode(w, p); n != nil {
+		return goTo(p, n.X, true)
+	}
 	if s := nearestPayable(w, p, "tower", "unpaid", 0); s != nil && covers(*w.Stock, prices.cost["tower"]) {
 		return goTo(p, s.X, true)
 	}
@@ -199,6 +205,9 @@ func economy(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	}
 	if wall, _ := nearestWall(w, p); wall != nil {
 		return goTo(p, wall.X, true)
+	}
+	if n := clearNode(w, p); n != nil {
+		return goTo(p, n.X, true)
 	}
 	return goTo(p, w.HubX, false)
 }
@@ -284,8 +293,8 @@ func wallPayable(w *sim.World) bool {
 // nearestWall: die nächste unbezahlte Mauer, deren Rest das Gold deckt; open meldet, ob überhaupt eine offen ist.
 func nearestWall(w *sim.World, p *sim.Player) (best *sim.Site, open bool) {
 	for _, s := range w.Sites {
-		if s.Kind != "wall" || s.State != "unpaid" {
-			continue
+		if _, payable := sim.SiteGoldLeft(w, s); s.Kind != "wall" || s.State != "unpaid" || !payable {
+			continue // gesperrte Plätze (Freiraum, Hub-Stufe) zählen nicht als offen (B-652)
 		}
 		open = true
 		if p.Gold >= prices.wallGold-s.PaidGold && (best == nil || closer(p.X, s.X, best.X)) {

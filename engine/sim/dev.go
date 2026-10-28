@@ -157,10 +157,7 @@ func DevBuildAll(isl *Island, level int) bool {
 
 // devBuildSite baut Platz s als fertig, soweit level reicht; ein gebauter Platz bekommt nur die Ausbau-Stufe.
 func devBuildSite(w *World, s *Site, level int) {
-	if s.Kind == "gate" {
-		return
-	}
-	if l, ok := siteLine(w, s); ok && l.Index > level {
+	if l, ok := levelSite(w, s); ok && l.Zone > level {
 		return
 	}
 	if s.State != "built" && (siteHubLevel(w, s) > level || buildings[s.Kind].HP == 0) {
