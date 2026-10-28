@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** eingeplant
 - **Sprint:** BS3
 - **Projekt:** BAS
 - **Erstellt:** 2026-10-28
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-28, Chat, durch 🧑, Revision 1, Name bossHpPerExtraPlayer, Startwert 0,25
 
 ## Ausgangslage
 

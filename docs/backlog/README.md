@@ -145,7 +145,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-645](B-645-meilenstein-bots-bauen-keine-wirtschaft.md) | DEV | Problem | hoch | offen | BS3 | Der Meilenstein-Lauf coop2 scheitert an den Bots, nicht an den Werten: Es entsteht keine Wirtschaft |
 | [B-648](B-648-balancing-bericht-rahmenregeln.md) | DEV | Problem | hoch | offen | – | Balancing-Bericht urteilt nach Ziel und zeigt den Fortschritt |
 | [B-649](B-649-balancing-bericht-klartext.md) | DEV | Problem | mittel | offen | – | Balancing-Bericht in Klartext: Prozentwerte, Stellschrauben mit Bereich |
-| [B-650](B-650-boss-hp-je-spieler-eigenes-feld.md) | SIM | Idee | hoch | offen | BS3 | Boss-HP je Zusatzspieler bekommt ein eigenes Feld, getrennt von der Wellengröße |
+| [B-650](B-650-boss-hp-je-spieler-eigenes-feld.md) | SIM | Idee | hoch | eingeplant | BS3 | Boss-HP je Zusatzspieler bekommt ein eigenes Feld, getrennt von der Wellengröße |
 
 ## Archiv
 

@@ -179,8 +179,8 @@ func TestEndbossHPSkaliertMitSpielern(t *testing.T) {
 		return e.MaxHP
 	}
 	one, three := hpWith(1), hpWith(3)
-	if want := one * (1 + 2*waves.PerExtraPlayer); math.Abs(three-want) > 1 {
-		t.Fatalf("HP 1 Spieler %.0f, 3 Spieler %.0f, erwartet %.0f (1 + 2 × perExtraPlayer)", one, three, one*(1+2*waves.PerExtraPlayer))
+	if want := one * (1 + 2**waves.BossHpPerExtraPlayer); math.Abs(three-want) > 1 {
+		t.Fatalf("HP 1 Spieler %.0f, 3 Spieler %.0f, erwartet %.0f (1 + 2 × bossHpPerExtraPlayer)", one, three, one*(1+2**waves.BossHpPerExtraPlayer))
 	}
 	t.Logf("Endboss-HP: 1 Spieler %.0f, 3 Spieler %.0f", one, three)
 }

@@ -14,6 +14,7 @@
     "endbossDefeated": {
       "low": [
         { "path": "bosses.json:endBosses.0.hpFactor", "group": "schiff", "direction": "-", "step": 0.1, "label": "Endboss-HP senken" },
+        { "path": "waves.json:bossHpPerExtraPlayer", "group": "basis", "direction": "-", "step": 0.1, "label": "Boss-HP je Mitspieler senken" },
         { "path": "troops.json:archer.damage", "group": "basis", "direction": "+", "step": 0.1, "label": "Schaden der Bogenschützen erhöhen" }
       ],
       "high": []
@@ -22,6 +23,7 @@
       "low": [],
       "high": [
         { "path": "bosses.json:endBosses.0.hpFactor", "group": "schiff", "direction": "-", "step": 0.1, "label": "Endboss-HP senken" },
+        { "path": "waves.json:bossHpPerExtraPlayer", "group": "basis", "direction": "-", "step": 0.1, "label": "Boss-HP je Mitspieler senken" },
         { "path": "troops.json:archer.damage", "group": "basis", "direction": "+", "step": 0.1, "label": "Schaden der Bogenschützen erhöhen" }
       ]
     },

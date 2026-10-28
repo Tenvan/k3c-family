@@ -132,6 +132,8 @@ export interface WavesData {
   spawnSpreadSeconds: number;
   /** Zuschlag auf die Gegnerzahl je weiterem Spieler */
   perExtraPlayer: number;
+  /** Zuschlag auf die Boss-HP je weiterem Spieler (getrennt von der Wellengröße, B-650) */
+  bossHpPerExtraPlayer: number;
   depthScaling: { hp: number; damage: number; speed: number };
   stealGold: number;
 }

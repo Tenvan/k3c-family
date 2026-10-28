@@ -158,7 +158,7 @@ export const EXAMPLES: Example[] = [
   { name: 'Untergrenze: niemand zahlt', text: 'Bot passive: wie lange hält die Burg ganz ohne Bauten?', form: { seeds: '10', bot: 'passive', label: 'Passiv' } },
   { name: 'Lange Partie', text: '10 Tage statt 5: wie entwickeln sich spätere Wellen?', form: { seeds: '10', days: '10', label: '10 Tage' } },
   { name: 'Mine, ultra', text: 'Tiefe 2 mit Grad ultra als Stresstest.', form: { seeds: '10', depth: '2', grade: 'ultra', label: 'Mine ultra' } },
-  { name: 'Wellen je Mitspieler', text: 'Wellen wachsen je zusätzlichem Spieler langsamer (perExtraPlayer 0.5).', form: { seeds: '20', vary: 'waves.json:perExtraPlayer=0.5', label: 'perExtraPlayer 0.5' } },
+  { name: 'Wellen je Mitspieler', text: 'Wellen wachsen je zusätzlichem Spieler langsamer (perExtraPlayer 0.25).', form: { seeds: '20', vary: 'waves.json:perExtraPlayer=0.5', label: 'perExtraPlayer 0.5' } },
   { name: 'Startgold abstimmen', text: 'Suche nach dem Startgold (60–140), das alle Korridore trifft.', form: { seeds: '10', label: 'Startgold', tune: { mode: 'search', params: 'economy.json:purse.startGold=60..140', budget: '20' } } },
   { name: 'Morgengold × Mauer (Sweep)', text: 'Raster 3 × 3 über Gold je Spieler am Morgen und Mauerkosten.', form: { seeds: '10', label: 'Sweep Morgengold×Mauer', tune: { mode: 'sweep', params: 'economy.json:dawnGoldPerPlayer=1..6\nbuildings.json:wall.cost.gold=2..6', steps: '3' } } },
   { name: 'Startgold × Mauer (Sweep)', text: 'Raster 3 × 3 über Startgold und Mauerkosten.', form: { seeds: '10', label: 'Sweep Gold×Mauer', tune: { mode: 'sweep', params: 'economy.json:purse.startGold=60..140\nbuildings.json:wall.cost.gold=2..6', steps: '3' } } },

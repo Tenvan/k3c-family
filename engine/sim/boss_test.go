@@ -197,7 +197,7 @@ func TestBossMaterialBisZumLagerMaximum(t *testing.T) {
 	}
 }
 
-// (d) HP × (1 + perExtraPlayer je Zusatzspieler der Insel) × enemyHp des Grads, nicht × waveSize; Tiefenfaktor greift.
+// (d) HP × (1 + bossHpPerExtraPlayer je Zusatzspieler der Insel) × enemyHp des Grads, nicht × waveSize; Tiefenfaktor greift.
 func TestBossSkalierung(t *testing.T) {
 	hpOf := func(players, depth int, grade string) float64 {
 		isl := bossIsland(t, players)
@@ -206,8 +206,8 @@ func TestBossSkalierung(t *testing.T) {
 		return spawnBoss(w, miniBoss(depth), w.Portals[0]).MaxHP
 	}
 	one, two := hpOf(1, 0, "normal"), hpOf(2, 0, "normal")
-	if want := one * (1 + waves.PerExtraPlayer); math.Abs(two-want) > 1 {
-		t.Fatalf("2 Spieler: HP %.0f, erwartet (1 + perExtraPlayer) × %.0f = %.0f", two, one, want)
+	if want := one * (1 + *waves.BossHpPerExtraPlayer); math.Abs(two-want) > 1 {
+		t.Fatalf("2 Spieler: HP %.0f, erwartet (1 + bossHpPerExtraPlayer) × %.0f = %.0f", two, one, want)
 	}
 	if want := enemyData["goblin"].HP * 8; one != want {
 		t.Fatalf("Wald: HP %.0f, erwartet %.0f", one, want)
