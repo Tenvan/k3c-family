@@ -60,8 +60,8 @@ Feld fehlt oder negativ: der Datenlader meldet den Fehler (`k3c-server -check-da
 
 ## Offene Fragen
 
-Feldname `bossHpPerExtraPlayer` (Vorschlag) – 🧑 bestätigt oder nennt einen anderen. Startwert 0,25 (unverändert) oder gleich ein niedrigerer Wert für den Splitter-Titan (Vorschlag: erst unverändert, danach in BS3.6 messen).
+keine (Feldname `bossHpPerExtraPlayer` und Startwert 0,25 von 🧑 freigegeben, 2026-10-28).
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Umgesetzt 2026-10-28 (Claude), Commit 6fd5b4d6: `waves.json › bossHpPerExtraPlayer` 0,25 (Pflichtfeld, `checkWaves` in `engine/sim/data.go`), `spawnBoss` nutzt es, Hebel in `balance-hints.json`, Doku `docs/data/waves.md`, `bosse.md`; Test `waves_split_test.go` (AC-02, AC-01), Golden unverändert (AC-03). Go-Tests, Vitest und Golden grün; `task check:diff` insgesamt rot nur wegen eines Lint-Fehlers in `report-view.js` der Bericht-Session (B-649), nicht dieser Änderung. `vary` (AC-04) wirkt über den generischen Pfad `waves.json:bossHpPerExtraPlayer=…`, nicht gesondert getestet.

@@ -58,21 +58,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 ## Ergebnis
 
 **Zwischenstand 2026-10-28 (Claude), AC-05 offen, Session nicht fertig.**
-- Neu: `task balance:milestone` (Go-Test `TestMeilensteinCoop2`, `K3C_VARY`, `K3C_SEEDS`), derselbe Lauf wie `sim_test coop2 standard 40` ohne Workbench-Neubau (Commit 23141f44).
-- Regel von 🧑: Coop nur über Multiplikator-Felder justieren, Basiswerte bleiben Solo-Werte.
-- Ausgang (data/ unverändert, `perExtraPlayer` 0,5): stecken nach Stufe 2 (Tag 6), Troll-König fällt nie, Schiff Kiel T1, Rumpf T16,5, Segel T28.
-- Multiplikator-Runde `waves.json › perExtraPlayer` (wirkt auf Wellengröße und Boss-HP je Zusatzspieler), Seed k3c-dev, nur im Speicher:
-
-| perExtraPlayer | Ergebnis (coop2, 40 Tage) |
-|---|---|
-| 0 | schlechter: Burg fällt, Hub 1, 0 Kämpfer, nur Troll-König |
-| 0,1 | Stufe 3 (Tag 15), Ratten-Königin fällt nicht |
-| 0,15 | 4 Minibosse bis Tag 22, Stufe 5, Splitter-Titan fällt nicht |
-| 0,2 | Stufe 4 (Tag 21), Lava-Golem fällt nicht |
-| 0,25 | wie 0,15: Troll-König T14, Ratten-Königin T18, Lava-Golem T22, Stufe 5, Splitter-Titan fällt nicht |
-| 0,3 | Stufe 3 (Tag 15), Ratten-Königin fällt nicht |
-| 0,5 (Ist) | Stufe 2, Troll-König fällt nicht |
-
-- Befund: Die Kurve ist nicht monoton (ein Seed, Bot-Zufall durch Geometrie); 0,15 bis 0,25 tragen bis Stufe 5, der Endboss wird mit keinem Wert erreicht. Der Splitter-Titan (Stufe 5, Welle 3) räumt das Heer ab, `perExtraPlayer` allein löst das nicht.
-- Nicht übernommen: `data/` ist unverändert (Golden und Zielkorridore hängen an dem Wert, Entscheidung 🧑).
-- Nächster Schritt: Entscheidung 🧑, `perExtraPlayer` auf 0,25 (Golden neu, Begründung im Commit); danach Splitter-Titan (Bot oder getrennter Boss-Faktor je Spieler, eigenes Feld statt Wellenfaktor).
+- `task balance:milestone` (Go-Test `TestMeilensteinCoop2`, `K3C_VARY`, `K3C_SEEDS`) fährt den Meilenstein-Lauf ohne Workbench-Neubau (Commit 23141f44).
+- Regel von 🧑: Coop nur über Multiplikator-Felder, Basiswerte bleiben Solo-Werte.
+- `waves.json › perExtraPlayer` 0,5 → 0,25 (Commit 5125c425): coop2 kommt von Stufe 2 bis Stufe 5 (vier Minibosse bis Tag 22). Ausgang: hing nach Stufe 2, Troll-König fiel nie. Rundenreihe 0 / 0,1 / 0,15 / 0,2 / 0,25 / 0,3 / 0,5: nur 0,15 und 0,25 tragen bis Stufe 5.
+- Neues Feld `waves.json › bossHpPerExtraPlayer` (B-650, Commit 6fd5b4d6), Startwert 0,25, trennt Boss-HP von der Wellengröße.
+- Boss-HP-Runde (perExtraPlayer 0,25 fest): bossHpPerExtraPlayer 0,25 / 0,15 / 0,1 → gleiches Ergebnis (Stufe 5, Splitter-Titan fällt nicht); 0 → schlechter (Lava-Golem fällt nicht). **Die Boss-HP sind damit nicht die Ursache beim Splitter-Titan**; Ursache liegt bei der Welle/dem Bot (Heer wird abgeräumt, B-645).
+- Schiff im letzten Lauf: Kiel T1, Rumpf T16,5, Segel T28.
+- Nächster Schritt: Splitter-Titan-Kampf Tag für Tag diagnostizieren (Bot, ohne Werte), danach Endboss.
