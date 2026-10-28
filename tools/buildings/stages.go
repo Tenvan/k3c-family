@@ -60,6 +60,9 @@ func pruefeStufen(b building) error {
 // die fertige frühere Stufe (samt Farbtausch und Zusätzen), danach die eigenen Zusätze (GEB17.6).
 func stufeBauen(b building, n int) (building, error) {
 	if n == 1 {
+		if len(b.Stufe1) > 0 {
+			b.Bausteine = b.Stufe1
+		}
 		return b, nil
 	}
 	if n < 2 || n-2 >= len(b.Stufen) {

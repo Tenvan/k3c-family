@@ -150,3 +150,23 @@ func TestStufeBasis(t *testing.T) {
 		}
 	}
 }
+
+// TestStufe1Abweichend: `stufe1` ersetzt nur die Zeichnung der Stufe 1, Stufe 2 baut weiter auf `bausteine` (B-653 AC-03).
+func TestStufe1Abweichend(t *testing.T) {
+	src := strings.Replace(stufenQuelle, `"stufen":[`, `"stufe1":[{"art":"pfahl","rechteck":[0,0,0.25,1],"farbe":"twine"}],"stufen":[`, 1)
+	var b building
+	if err := json.Unmarshal([]byte(src), &b); err != nil {
+		t.Fatal(err)
+	}
+	_, idx := palette()
+	s1, s2 := mustRender(t, mitStufe(t, b, 1), 32), mustRender(t, mitStufe(t, b, 2), 32)
+	if s1.ColorIndexAt(2, 4) != idx["twine"] || s1.ColorIndexAt(20, 20) != 0 {
+		t.Error("Stufe 1 zeigt nicht die abweichende Zeichnung")
+	}
+	if s2.ColorIndexAt(20, 20) != idx["dim-gray"] || s2.ColorIndexAt(2, 4) != idx["smokey-ash"] {
+		t.Error("Stufe 2 baut nicht mehr auf den Bausteinen der Grundform auf")
+	}
+	if _, err := baueStufen(t, src); err != nil {
+		t.Fatal(err)
+	}
+}

@@ -3359,7 +3359,7 @@
       "h": 5
     },
     "vorlage": {
-      "motiv": "Wehrmauer, 1 Kachel breit und 5 hoch, mit drei Zinnen oben; Material wechselt je Stufe",
+      "motiv": "Stufe 1: Holzzaun aus senkrechten Pfählen mit Spitzen und zwei Querbalken; ab Stufe 2 Wehrmauer, 1 Kachel breit und 5 hoch, mit drei Zinnen oben; Material wechselt je Stufe",
       "teile": [
         "Drei Zinnen oben über die ganze Breite",
         "Mauerkörper aus waagrechten Bohlen (ab Stufe 2 Quader), Licht links, Schatten rechts",
