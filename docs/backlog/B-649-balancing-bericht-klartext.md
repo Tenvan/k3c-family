@@ -6,7 +6,7 @@
 - **Umgebung:** ?
 - **Status:** offen
 - **Sprint:** –
-- **Projekt:** –
+- **Projekt:** BAS
 - **Erstellt:** 2026-10-28
 - **Spec:** Entwurf
 - **Revision:** 1

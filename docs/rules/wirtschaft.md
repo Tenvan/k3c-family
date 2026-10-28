@@ -20,7 +20,7 @@ Jede Regel gilt für 2+ Spieler (Couch und Online gemischt).
 
 ## 2. Koop und Besitz
 
-- **Wellen wachsen mit der Spieleranzahl.** Die Gegnerzahl einer Welle wird mit `1 + 0,5 × (Spieler − 1)` multipliziert und auf ganze Zahlen gerundet. Begründung: Mehr Spieler bringen mehr Gold, Bürger und Schlagkraft; die Nacht soll mit 4 Spielern nicht trivial werden. Daten: `data/waves.json` (neuer Faktor `perExtraPlayer: 0,5`, SIM legt das Feld an). Zielkorridor: dieselbe Überlebensquote wie in Abschnitt 4, **je Spieleranzahl 1–4**.
+- **Wellen wachsen mit der Spieleranzahl.** Die Gegnerzahl einer Welle wird mit `1 + 0,25 × (Spieler − 1)` multipliziert und auf ganze Zahlen gerundet. Begründung: Mehr Spieler bringen mehr Gold, Bürger und Schlagkraft; die Nacht soll mit 4 Spielern nicht trivial werden. Daten: `data/waves.json` (neuer Faktor `perExtraPlayer: 0,5`, SIM legt das Feld an). Zielkorridor: dieselbe Überlebensquote wie in Abschnitt 4, **je Spieleranzahl 1–4**.
 - Die Stufen einer Insel laufen alle weiter und sind pro Spieler frei begehbar; die Wellenstärke zählt die Spieler der **Insel** (siehe `stufen.md`). Was zählt als Spieler? Annahme (🧑 hat nicht gesondert bestätigt): Jeder gesteuerte, nicht freie Monarch im Raum, egal ob lokal oder online; ein freier Monarch (B-059) zählt nicht.
 - Bauplätze und Bürger gehören dem Hub, das Material der Insel, nicht einem Spieler.
 

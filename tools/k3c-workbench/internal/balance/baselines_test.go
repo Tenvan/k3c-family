@@ -41,7 +41,7 @@ func TestBaselineSichernAuflistenUndLesen(t *testing.T) {
 		t.Error("HasBaseline")
 	}
 	list, err := ListBaselines(root)
-	if err == nil && len(list) == 1 && !strings.Contains(string(list[0].Spec), `"world":"standard"`) {
+	if err == nil && len(list) == 1 && !strings.Contains(strings.Join(strings.Fields(string(list[0].Spec)), ""), `"world":"standard"`) {
 		t.Errorf("Spec des Laufs fehlt in der Liste: %s", list[0].Spec)
 	}
 	if err != nil || len(list) != 1 || list[0].Name != "M1" {
