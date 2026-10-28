@@ -21,6 +21,12 @@ tasks:
     cmds:
       - go test -tags fullgame -run 'TestFullGame{{.STUFE}}' -v -count=1 -timeout 30m ./internal/balance
 
+  milestone:
+    desc: 'Meilenstein-Lauf coop2, Welt standard, 40 Tage (BS3.6) als Go-Test, ohne Workbench-Neubau; K3C_VARY="economy.json:dawnGoldPerDepth=10" (Semikolon), K3C_SEEDS=k3c-dev,7'
+    dir: '{{.DEV}}'
+    cmds:
+      - go test -tags fullgame -run 'TestMeilensteinCoop2' -v -count=1 -timeout 30m ./internal/balance
+
   targets:
     desc: 'Zielkorridore prüfen: 100 feste Seeds (seit BAL6 sechs Szenarien, geschätzt 35–40 min; zum Entwickeln `task balance -- --seeds 10`), Bericht reports/balance-<Zeit>.json und .md, Vergleich mit testdata/balance/baseline.json (kein Teil von `task check`)'
     cmds:
