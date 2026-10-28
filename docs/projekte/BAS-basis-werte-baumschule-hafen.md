@@ -33,6 +33,8 @@ Erledigt, wenn M4 erreicht ist und BS6 und BS10 am Gerät abgenommen sind.
 | BS9 | **Meilenstein 3:** Bots bauen das Schiff, Delta-Runde Schiff | geplant |
 | BS6 | Client: Baumschule, Hafen und Schiff, neue Münzskala, **Meilenstein 4** | geplant |
 | BS10 | Grafiken für Hafen und Schiff | geplant |
+| BS12 | Mauern und Türme verteilt, Tor ist die äußerste Mauer | aktiv |
+| BS13 | Baustellen-Schilder, Bauoptionen und Holzzaun | aktiv |
 
 ## Nicht-Ziele
 

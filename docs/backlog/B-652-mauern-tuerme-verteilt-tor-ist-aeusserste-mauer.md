@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** BS12
 - **Projekt:** BAS
 - **Erstellt:** 2026-10-28
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-28, Chat, durch 🧑, Revision 1, mit den Vorschlägen der offenen Fragen (Radius 6, 60 % Türme nah, Chunk n sichtbar ab Hub-Stufe n)
 
 ## Ausgangslage
 

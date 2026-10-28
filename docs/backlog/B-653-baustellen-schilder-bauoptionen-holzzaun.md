@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** BS13
 - **Projekt:** BAS
 - **Erstellt:** 2026-10-28
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-28, Chat, durch 🧑, Revision 1
 
 ## Ausgangslage
 
