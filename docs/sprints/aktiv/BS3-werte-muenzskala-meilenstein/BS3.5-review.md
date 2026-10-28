@@ -6,7 +6,7 @@
 - **Domäne:** REG
 - **Umgebung:** live
 - **Branch:** bs3/5-review
-- **Abhängig von:** BS3.4
+- **Abhängig von:** BS3.4, BS3.6
 - **Tickets:** B-635, B-638
 - **Kriterien:** alle
 
