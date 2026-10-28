@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"maps"
 	"slices"
-	"sort"
 )
 
 // Lese-Typen für data/monarch.json (docs/rules/monarch.md §§ 1–3). Wie in data.go ohne Tags (Groß-/Kleinschreibung egal).
@@ -63,6 +62,17 @@ type monarchData struct {
 // skillCatalog ist monarch.json › skills als nach ID sortierte Liste (keine Map-Iteration im Sim-Code).
 var skillCatalog = sortedSkills(monarch.Skills)
 
+// skillIndex ist die Stelle jeder ID in skillCatalog (nur lesen, nach dem Start unverändert).
+var skillIndex = indexSkills(skillCatalog)
+
+func indexSkills(list []SkillData) map[string]int {
+	m := make(map[string]int, len(list))
+	for i, s := range list {
+		m[s.ID] = i
+	}
+	return m
+}
+
 func sortedSkills(m map[string]SkillData) []SkillData {
 	out := make([]SkillData, 0, len(m))
 	for _, id := range slices.Sorted(maps.Keys(m)) {
@@ -75,11 +85,18 @@ func sortedSkills(m map[string]SkillData) []SkillData {
 
 // skillByID sucht einen Skill im Katalog.
 func skillByID(id string) (SkillData, bool) {
-	i := sort.Search(len(skillCatalog), func(i int) bool { return skillCatalog[i].ID >= id })
-	if i < len(skillCatalog) && skillCatalog[i].ID == id {
-		return skillCatalog[i], true
+	if s := skillRef(id); s != nil {
+		return *s, true
 	}
 	return SkillData{}, false
+}
+
+// skillRef: wie skillByID, ohne den Eintrag zu kopieren (nur lesen); nil, wenn es den Skill nicht gibt.
+func skillRef(id string) *SkillData {
+	if i, ok := skillIndex[id]; ok {
+		return &skillCatalog[i]
+	}
+	return nil
 }
 
 // loadMonarch liest monarch.json und prüft die Presets (B-504); ein Fehler bricht den Start ab wie jedes ungültige Datum.

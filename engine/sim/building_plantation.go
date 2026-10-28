@@ -30,8 +30,11 @@ func plotX(s *Site, p Plantation, i int) float64 {
 // stepPlantations lässt auf den Plätzen gebauter Farmen Bäume nachwachsen.
 func stepPlantations(w *World, dt float64) {
 	for _, s := range w.Sites {
+		if s.State != "built" {
+			continue
+		}
 		p := buildings[s.Kind].Plantation
-		if p.Slots == 0 || s.State != "built" {
+		if p.Slots == 0 {
 			continue
 		}
 		if s.plots == nil {

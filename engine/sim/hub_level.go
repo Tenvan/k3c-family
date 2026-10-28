@@ -38,6 +38,13 @@ func eachSite(w *World, f func(*Site)) {
 // siteHubLevel ist die Hub-Stufe, ab der ein Hub-Platz bezahlbar ist (data/hub.json › sites, islandSites); für eine
 // Ruine die Hub-Stufe ihrer Art (building_ruin.go), 1 für andere Plätze ohne Eintrag (Mauerlinien regelt lineOpen).
 func siteHubLevel(w *World, s *Site) int {
+	if s.hubLv == 0 || s.hubW != w {
+		s.hubLv, s.hubW = hubLevelOf(w, s), w
+	}
+	return s.hubLv
+}
+
+func hubLevelOf(w *World, s *Site) int {
 	if s.Ruin {
 		return kindHubLevel(w, s.Kind)
 	}
@@ -63,11 +70,10 @@ func levelOf(w *World, s *Site) int {
 // siteCost sind die Baukosten eines unbezahlten Platzes: der Eintrag der Biom-Tiefe in costByDepth (Treppen, B-631),
 // ohne Eintrag dieser Tiefe (fehlt oder leer) die Kosten cost seiner Art.
 func siteCost(w *World, s *Site) Cost {
-	b := buildings[s.Kind]
-	if d := w.Biome.Depth; d >= 0 && d < len(b.CostByDepth) && b.CostByDepth[d] != (Cost{}) {
-		return cheap(w, b.CostByDepth[d])
+	if d, by := w.Biome.Depth, buildings[s.Kind].CostByDepth; d >= 0 && d < len(by) && by[d] != (Cost{}) {
+		return cheap(w, by[d])
 	}
-	return cheap(w, b.Cost)
+	return cheap(w, buildings[s.Kind].Cost)
 }
 
 // nextLevel ist die nächste Ausbau-Stufe eines gebauten Platzes, beim Hub der nächste Ausbauschritt (Kosten samt

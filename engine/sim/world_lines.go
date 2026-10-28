@@ -35,14 +35,26 @@ func worldSiteSpecs(w *World) []siteSpec {
 	return out
 }
 
+// wallLookup merkt das Ergebnis von levelSite am Platz: Art und X eines Platzes ändern sich nie (destroySite setzt ihn
+// mit denselben Werten neu auf), das Layout einer Welt ebenso.
+type wallLookup struct {
+	w    *World // Welt, für die der Eintrag gilt
+	ok   bool
+	site level.WallSite
+}
+
 // levelSite ist der verteilte Platz zu s; false für Plätze, die nicht aus Layout.Sites stammen.
 func levelSite(w *World, s *Site) (level.WallSite, bool) {
-	for _, l := range w.Level.Sites {
-		if l.Kind == s.Kind && l.X == s.X {
-			return l, true
+	if s.wall.w != w {
+		s.wall = wallLookup{w: w}
+		for _, l := range w.Level.Sites {
+			if l.Kind == s.Kind && l.X == s.X {
+				s.wall.site, s.wall.ok = l, true
+				break
+			}
 		}
 	}
-	return level.WallSite{}, false
+	return s.wall.site, s.wall.ok
 }
 
 // lineOpen: Darf ein unbezahlter Mauer- oder Turm-Platz bezahlt werden? Zone n ab Hub-Stufe n, und im Freiraum
@@ -57,7 +69,15 @@ func lineOpen(w *World, s *Site) bool {
 }
 
 // siteCleared: Im Freiraum um x steht kein Baum und kein Fels (abgebaute Knoten sind aus Nodes entfernt).
-func siteCleared(w *World, x float64) bool { return len(blockersAt(w, x)) == 0 }
+func siteCleared(w *World, x float64) bool {
+	radius := level.DefaultSitePlacement().ClearRadiusUnits
+	for _, n := range w.Nodes {
+		if (n.Kind == "tree" || n.Kind == "rock") && !n.gone && math.Abs(n.X-x) < radius {
+			return false
+		}
+	}
+	return true
+}
 
 // blockersAt sind die Bäume und Felsen im Freiraum um x.
 func blockersAt(w *World, x float64) []*ResourceNode {

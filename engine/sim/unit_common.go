@@ -208,8 +208,11 @@ func findJob(w *World, t *Troop) *Job {
 	}
 	var node *ResourceNode
 	for _, n := range w.Nodes {
+		if !n.Marked || !nodeFree(w, n) {
+			continue
+		}
 		g, _ := gatherOf(n.Kind)
-		if n.Marked && nodeFree(w, n) && !resourceFull(w, g.Resource) && (node == nil || math.Abs(n.X-w.HubX) < math.Abs(node.X-w.HubX)) {
+		if !resourceFull(w, g.Resource) && (node == nil || math.Abs(n.X-w.HubX) < math.Abs(node.X-w.HubX)) {
 			node = n
 		}
 	}
