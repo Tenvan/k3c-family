@@ -138,6 +138,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Material-Stufe | Stufe 1–5 einer Mauer oder eines Turms nach Material (Holz bis Kristall); Ausbau am selben Platz. Bei Zerstörung geht sie verloren (neu ab Holz). | `rules/materialien-gebaeude.md` §§ 3.1, 4 |
 | Material-Tor | Zusätzliches Material der neuen Hub-Stufe selbst im letzten Ausbauschritt (20 Stein für Hub-Stufe 2, 20 Kupfer für 3, 20 Eisen für 4, Stufe 5 ohne). Fehlt bei bezahltem Gold nur noch dieser Anteil, ist der Wartegrund „Material der nächsten Insel“ (`waitingNextIsland`). | `rules/stufen.md` § 8, B-592, B-631; `data/hub.json` › `levels[].steps[].gate` |
 | Mauer | Bau auf dem Mauer-Platz einer Linie; blockiert Gegner außer `ignoresWalls`; Material-Stufen 1–5. | `rules/materialien-gebaeude.md` §§ 3.1–3.2 |
+| Mauer-Platz (verteilt) | Seit B-652 (BS12) legt der Generator je Seite und Zone 1 bis 3 Mauer-Plätze per Seed an (statt 5 fester Linien); bezahlbar, sobald im Freiraum-Radius keine Bäume und Felsen mehr stehen. Die äußerste gebaute Mauer je Seite ist das Tor. | `rules/materialien-gebaeude.md` § 3, B-652 |
 | Mauerlinie | Je Seite 5 feste Linien bei ±44/64/84/104/124 Units mit Mauer-Platz, Turm-Platz (8 innen) und Tor-Platz (4 außen). Linie k ist ab Hub-Stufe k bezahlbar, wenn die Mauer der Linie k−1 derselben Seite steht. | `rules/materialien-gebaeude.md` § 3, Q48, Q49, Q58 |
 | Meilenstein-Lauf | Balancing-Lauf über `sim_test` (Bot-Profil `coop2`, Welt `standard`, Grad Normal), der einen Meilenstein M1–M4 des Projekts BAS belegt: Er „läuft durch“, wenn die Bots den Endboss der Insel 1 besiegen. Bis zur Abnahme nur Seed `k3c-dev`. | `rules/zielkorridore.md` § 6, B-635, B-640 |
 | Messreihe | Verlauf einer Kennzahl im Server (Tick-Dauer je Raum, RTT und Warteschlange je Gerät, Heap, CPU …): ein Punkt je Sekunde in einem Ring-Puffer fester Größe (3600 = 1 h), älteste Punkte fallen raus. Ausgabe über `/api/metrics`. | B-281, `engine/room/monitor.go` |
@@ -233,6 +234,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Truppe | Kämpfer: Bogenschütze, Krieger, Elite. Ausnahme Code: `World.Troops` und `data/troops.json` umfassen alle Bürger; die Namen bleiben. | `rules/buerger.md`, Q63 |
 | Truppen-Limit | Höchstzahl Kämpfer je Hub: 10, mit Kaserne 20; geprüft beim Waffe-Holen, bei vollem Limit bleibt die Waffe im Regal. | `rules/buerger.md` § 3, Q29 |
 | Turm | Bau auf dem Turm-Platz einer Linie (8 Units innen): Posten für 2 Bogenschützen, Material-Stufen 1–5, Stufe 5 ist der Zaubertum. | `rules/materialien-gebaeude.md` § 3.1, Q45 |
+| Turm-Platz (verteilt) | Seit B-652 je Seite und Zone 1 bis 3 Plätze per Seed; ein Teil (`sitePlacement.towerNearShare`) steht 4 bis 10 Units neben einer Mauer (K2C-Stil). | `rules/materialien-gebaeude.md` § 3, B-652 |
 | Umgebung | Feld an Ticket und Session: `offline` = ohne laufende Dienste prüfbar (Code, Unit-/Mock-Tests, Werkzeuge ohne Serverzugriff), `live` = braucht laufenden Server, Browser oder Gerät, `?` = noch nicht eingeordnet. Nur `autonom` · `offline` läuft in einem Worktree. | `arbeitsweise.md` › Ablage, `vorlagen/` |
 | Unit | Längeneinheit der Welt: 1 Unit = `UNIT_PX` = 32 px (`src/core/constants.ts`). | `CLAUDE.md` › Regeln |
 | Verlust-Kaskade (Rückstufung) | Statt Tod: Ein Treffer auf 0 HP kostet einen Bürger die nächste Schicht. Mit Ausrüstung → fällt zu Boden, er wird Bauer (volle HP, nicht mehr im Truppen-Limit); Bauer → Münze fällt, er wird Landstreicher; Landstreicher werden nicht angegriffen. Wie im Vorbild Kingdom Two Crowns. | `rules/buerger.md` § 3, Q67 |
@@ -254,6 +256,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Ziel-Palette | Feste Farbliste, auf die jede Grafik umgerechnet wird; festgelegt in der Stil-Bibel. | B-331 |
 | Ziel-Ticket | Ticket eines Projekts, das das Thema als Ganzes beschreibt (Feld `Ziel-Tickets` der Projekt-Datei, z. B. B-099 bei BAL); es wird eingeplant wie jedes Ticket und gibt dem Projekt sein Ziel. | `arbeitsweise.md` › Projekte und Rang, `vorlagen/projekt.md` |
 | Zielkorridor | Kennzahl mit Unter- und Obergrenze im Standardszenario; Pass/Fail für das Balancing. | `rules/zielkorridore.md` |
+| Zone (Platz-Zone) | Streifen von einem Chunk Breite je Seite ab `sitePlacement.zoneStartUnits`, in dem Mauer- und Turm-Plätze liegen; Zone n ist ab Hub-Stufe n sichtbar (B-652). | `rules/materialien-gebaeude.md` § 3 |
 
 ## Unklar und Widersprüche
 

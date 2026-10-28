@@ -20,6 +20,15 @@
 | `sites.*.fromDepth` | Ganzzahl | Tiefe | Nur ab dieser Tiefe vorhanden | 1 |
 | `sites.*.needsDeeper` | Wahrheitswert | – | Nur wenn eine tiefere Stufe existiert | true |
 | `islandSites.*.offsetUnits` | Zahl | Units | Position der Insel-Bauplätze (Lager) | -26 |
+| `sitePlacement.zoneStartUnits` | Zahl | Units | Abstand der ersten Platz-Zone zur Hub-Mitte; Zone n spannt einen Chunk (B-652) | 40 |
+| `sitePlacement.zones` | Ganzzahl | Zonen | Zonen je Seite mit Mauer- und Turm-Plätzen; Zone n ab Hub-Stufe n sichtbar | 5 |
+| `sitePlacement.perZoneMin` | Ganzzahl | Plätze | Mindestzahl Mauern und Türme je Zone und Seite | 1 |
+| `sitePlacement.perZoneMax` | Ganzzahl | Plätze | Höchstzahl Mauern und Türme je Zone und Seite | 3 |
+| `sitePlacement.towerNearShare` | Zahl | Anteil | Anteil der Türme, die neben einer Mauer der Zone stehen | 0,6 |
+| `sitePlacement.towerNearMinUnits` | Zahl | Units | Kleinster Abstand eines nahen Turms zur Mauer (nicht unter dem Zahlziel-Abstand 4) | 4 |
+| `sitePlacement.towerNearMaxUnits` | Zahl | Units | Größter Abstand eines nahen Turms zur Mauer | 10 |
+| `sitePlacement.clearRadiusUnits` | Zahl | Units | Freiraum von Bäumen und Felsen, bevor ein Platz bezahlbar ist (Sim, BS12.2) | 6 |
+| `sitePlacement.edgeMarginUnits` | Zahl | Units | Abstand der Plätze zum Level-Rand und zum nächsten Portal | 8 |
 | `wallLines.wallUnits` | Liste | Units | Mauer-Abstand zur Hub-Mitte je Hub-Stufe | 44 bis 124 |
 | `wallLines.fixedLines` | Ganzzahl | Linien | Anzahl fest platzierter Linien | 1 |
 | `wallLines.jitterOutwardUnits` | Zahl | Units | Zufälliger Versatz nach außen je Seed | 4 |

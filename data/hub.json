@@ -54,6 +54,17 @@
     "gateOutsetUnits": 4,
     "gateHubLevel": 1
   },
+  "sitePlacement": {
+    "zoneStartUnits": 40,
+    "zones": 5,
+    "perZoneMin": 1,
+    "perZoneMax": 3,
+    "towerNearShare": 0.6,
+    "towerNearMinUnits": 4,
+    "towerNearMaxUnits": 10,
+    "clearRadiusUnits": 6,
+    "edgeMarginUnits": 8
+  },
   "merchant": { "buyOffsetUnits": 16, "sellOffsetUnits": 20, "onlyDepth": 0 },
   "islandStartStock": { "wood": 100 },
   "castleRadiusUnits": 5,
