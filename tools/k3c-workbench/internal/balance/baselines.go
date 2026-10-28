@@ -30,6 +30,8 @@ type BaselineInfo struct {
 	Worlds   []string `json:"worlds"`
 	Pass     bool     `json:"pass"`
 	Frozen   []string `json:"frozen"` // eingefrorene Gruppen zum Zeitpunkt des Sicherns
+	// Spec ist der Auftrag des Laufs (simrun.Spec als JSON); damit setzt „Übernehmen“ im Editor die Konfiguration.
+	Spec json.RawMessage `json:"spec,omitempty"`
 }
 
 // ValidBaselineName prüft einen Namen: Buchstaben, Ziffern, _ und -, höchstens 40 Zeichen.
@@ -50,8 +52,8 @@ func HasBaseline(root, name string) bool {
 }
 
 // SaveBaseline sichert den Bericht reportPath (balance-*.json) unter name. Nur ein durchgelaufener Lauf (Pass) wird
-// gesichert; ein vergebener Name wird nie überschrieben.
-func SaveBaseline(root, name, reportPath string) (BaselineInfo, error) {
+// gesichert; ein vergebener Name wird nie überschrieben. spec (darf nil sein) ist der Auftrag des Laufs.
+func SaveBaseline(root, name, reportPath string, spec json.RawMessage) (BaselineInfo, error) {
 	if err := ValidBaselineName(name); err != nil {
 		return BaselineInfo{}, err
 	}
@@ -71,6 +73,7 @@ func SaveBaseline(root, name, reportPath string) (BaselineInfo, error) {
 		return BaselineInfo{}, fmt.Errorf("baseline %s gibt es schon (%s/%s); anderer Name oder Ordner von Hand löschen", name, BaselineDir, name)
 	}
 	info := infoOf(name, filepath.Base(filepath.Dir(reportPath)), s)
+	info.Spec = spec
 	meta, err := json.MarshalIndent(info, "", "  ")
 	if err != nil {
 		return BaselineInfo{}, err

@@ -5,7 +5,7 @@ import { EMPTY_TUNE, type TuneForm } from './tune';
 // ausführliche Hilfe (Markdown) für das Popup; dazu Beispiel-Läufe zum Übernehmen. Die Beschreibungen der Dateien in
 // data/ stehen nicht hier, sondern in docs/data/*.md (Popup der Datei-Liste).
 
-export type HelpKey = 'seeds' | 'depth' | 'players' | 'bot' | 'grade' | 'world' | 'helps' | 'days' | 'vary' | 'label' | 'mode' | 'params' | 'steps' | 'budget';
+export type HelpKey = 'seeds' | 'depth' | 'players' | 'bot' | 'grade' | 'world' | 'helps' | 'days' | 'vary' | 'label' | 'baseline' | 'mode' | 'params' | 'steps' | 'budget';
 
 export interface FieldHelp {
   label: string;
@@ -70,6 +70,11 @@ export const FIELD_HELP: Record<HelpKey, FieldHelp> = {
     label: 'Label',
     hint: 'Freier Name des Laufs für Warteschlange und Bericht; leer = Lauf-ID.',
     help: 'Das **Label** ist nur ein Name für die Warteschlange (z. B. „Startgold 120“). Es ändert den Lauf nicht.',
+  },
+  baseline: {
+    label: 'Baseline',
+    hint: 'Name eines gesicherten Basis-Laufs (z. B. M1) als Vergleich; leer = Baseline des Repos.',
+    help: 'Eine **Baseline** ist ein gesicherter, durchgelaufener Lauf (`reports/baseline/<name>/`), meist der eines Meilensteins. Der Bericht vergleicht den neuen Lauf gegen sie, je Werte-Gruppe mit Ampel und Trend.\n\n- Werte: Name einer gesicherten Baseline; in „Beispiele › Basis-Läufe“ stehen alle.\n- Leer: die Baseline des Repos (`testdata/balance/baseline.json`).\n- Eingefrorene Gruppen melden sich nur, wenn sie kippen; Tuning-Hinweise nennen nur Hebel freier Gruppen.\n- Gesichert wird mit `sim_test {action: baseline, id, saveBaseline: M1}`.',
   },
   mode: {
     label: 'Abstimm-Modus',

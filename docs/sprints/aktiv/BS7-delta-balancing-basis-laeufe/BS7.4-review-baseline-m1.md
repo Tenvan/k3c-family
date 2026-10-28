@@ -6,7 +6,7 @@
 - **Domäne:** DEV
 - **Umgebung:** live
 - **Branch:** bs7/4-review-baseline-m1
-- **Abhängig von:** BS7.3, BS3.4
+- **Abhängig von:** BS3.4, BS7.5
 - **Tickets:** B-640
 - **Kriterien:** AC-01, AC-02, AC-03, AC-04, AC-05
 

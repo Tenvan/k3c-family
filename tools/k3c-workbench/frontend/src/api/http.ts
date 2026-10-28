@@ -53,6 +53,7 @@ function httpBalance(): BalanceBackend {
     balanceRuns: () => rpc('BalanceRuns'),
     balanceStop: (id) => rpc('BalanceStop', id),
     balanceReports: () => rpc('BalanceReports'),
+    balanceBaselines: () => rpc('BalanceBaselines'),
     balanceReport: (path) => rpc('BalanceReport', path),
     balanceTuning: (path) => rpc('BalanceTuning', path),
     balanceDataFiles: () => rpc('BalanceDataFiles'),

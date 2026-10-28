@@ -1,6 +1,7 @@
 package mcpsrv
 
 import (
+	"encoding/json"
 	"fmt"
 	"path/filepath"
 	"strings"
@@ -30,7 +31,11 @@ func (s *Server) simBaseline(root string, in simTestIn) (string, error) {
 	if len(reports) == 0 {
 		return "", fmt.Errorf("lauf %s hat keinen Balancing-Bericht (nur offline-Läufe mit focus balance)", in.ID)
 	}
-	bi, err := balance.SaveBaseline(root, in.SaveBaseline, reports[len(reports)-1])
+	var spec json.RawMessage
+	if info.Spec != nil {
+		spec, _ = json.Marshal(info.Spec)
+	}
+	bi, err := balance.SaveBaseline(root, in.SaveBaseline, reports[len(reports)-1], spec)
 	if err != nil {
 		return "", err
 	}

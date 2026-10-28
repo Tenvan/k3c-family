@@ -60,6 +60,9 @@ export function ConfigForm({ form, onForm, presets, onPresets, onStart, children
       <HelpField name="vary">
         <TextArea aria-label="Varianten" rows={3} placeholder="economy.json:purse.startGold=120" value={form.vary} onChange={(e) => set('vary')(e.target.value)} />
       </HelpField>
+      <HelpField name="baseline">
+        <TextField.Root aria-label="Baseline" placeholder="Baseline des Repos" value={form.baseline} onChange={(e) => set('baseline')(e.target.value)} />
+      </HelpField>
       <TuneConfig tune={form.tune} onTune={(tune) => onForm({ ...form, tune })} />
       <HelpField name="label">
         <TextField.Root aria-label="Label" value={form.label} onChange={(e) => set('label')(e.target.value)} />

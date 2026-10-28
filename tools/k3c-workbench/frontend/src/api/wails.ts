@@ -1,7 +1,7 @@
 import type {
   Backend, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, McpCall, McpOverview,
   McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData, WorktreeDiff,
-  BalanceBackend, BalanceDataFile, BalanceInsights, BalanceDataValue, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning, GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
+  BalanceBackend, BalanceBaseline, BalanceDataFile, BalanceInsights, BalanceDataValue, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning, GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
 } from './types';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
@@ -58,6 +58,7 @@ interface GoApp {
   BalanceRuns(): Promise<BalanceRun[]>;
   BalanceStop(id: string): Promise<void>;
   BalanceReports(): Promise<BalanceReportInfo[]>;
+  BalanceBaselines(): Promise<BalanceBaseline[]>;
   BalanceReport(path: string): Promise<BalanceSummary>;
   BalanceTuning(path: string): Promise<Tuning>;
   BalanceDataFiles(): Promise<BalanceDataFile[]>;
@@ -91,6 +92,7 @@ function balanceWails(app: GoApp): BalanceBackend {
     balanceRuns: () => app.BalanceRuns(),
     balanceStop: (id) => app.BalanceStop(id),
     balanceReports: () => app.BalanceReports(),
+    balanceBaselines: () => app.BalanceBaselines(),
     balanceReport: (path) => app.BalanceReport(path),
     balanceTuning: (path) => app.BalanceTuning(path),
     balanceDataFiles: () => app.BalanceDataFiles(),

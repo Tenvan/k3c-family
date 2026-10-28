@@ -15,6 +15,23 @@ export interface BalanceSpec {
   vary?: string[];
   tune?: BalanceTune;
   label?: string;
+  /** Name einer gesicherten Baseline als Vergleich (B-640). */
+  baseline?: string;
+}
+
+/** Gesicherter Basis-Lauf (Go: balance.BaselineInfo, reports/baseline/<name>/). */
+export interface BalanceBaseline {
+  name: string;
+  saved: string;
+  run: string;
+  seeds: number;
+  seedMode: string;
+  bots: string[];
+  worlds: string[];
+  pass: boolean;
+  frozen: string[];
+  /** Auftrag des Laufs; fehlt bei Baselines ohne Spec. */
+  spec?: BalanceSpec;
 }
 
 export type TuneMode = 'sweep' | 'search';
@@ -210,6 +227,8 @@ export interface BalanceBackend {
   balanceRuns(): Promise<BalanceRun[]>;
   balanceStop(id: string): Promise<void>;
   balanceReports(): Promise<BalanceReportInfo[]>;
+  /** Gesicherte Basis-Läufe (B-640), nach Name. */
+  balanceBaselines(): Promise<BalanceBaseline[]>;
   balanceReport(path: string): Promise<BalanceSummary>;
   balanceTuning(path: string): Promise<Tuning>;
   balanceDataFiles(): Promise<BalanceDataFile[]>;

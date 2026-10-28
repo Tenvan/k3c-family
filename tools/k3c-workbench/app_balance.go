@@ -43,6 +43,11 @@ func (a *App) BalanceTuning(path string) (balance.Tuning, error) {
 	return simrun.ReadTuning(a.root, path)
 }
 
+// BalanceBaselines nennt die gesicherten Basis-Läufe (reports/baseline/, B-640) für „Beispiele › Basis-Läufe“.
+func (a *App) BalanceBaselines() ([]balance.BaselineInfo, error) {
+	return balance.ListBaselines(a.root)
+}
+
 // BalanceDataFiles nennt die Dateien in data/, die das Balancing beeinflussen, mit Zweck aus docs/data/ (WZ28.10, B-610).
 func (a *App) BalanceDataFiles() []datadoc.File {
 	return datadoc.List(a.root)

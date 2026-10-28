@@ -12,7 +12,7 @@ import { ReportList } from './ReportList';
 import { ReportView } from './ReportView';
 import { RunQueue } from './RunQueue';
 import { TuningView } from './TuningView';
-import { EMPTY_FORM, formFromSpec, isPresetList, type BalanceForm, type Preset } from './spec';
+import { EMPTY_FORM, formFromBaseline, formFromSpec, isPresetList, type BalanceForm, type Preset } from './spec';
 import { useBalancing, useSummary, useTuning } from './useBalancing';
 
 /** Abstimm-Ergebnis (WZ28.6). */
@@ -61,7 +61,10 @@ export function BalancingPage({ active = true }: { active?: boolean }) {
       {data.error && <p className="svc-error" role="alert">{data.error}</p>}
       <div className="bal-col">
         <ConfigForm form={form} onForm={setForm} presets={presets} onPresets={keepPresets} onStart={data.start}>
-          <Examples onPick={(e) => setForm(formFromExample(e, EMPTY_FORM))} />
+          <Examples
+            baselines={data.baselines} onOpen={data.reloadBaselines}
+            onPick={(e) => setForm(formFromExample(e, EMPTY_FORM))} onPickBaseline={(b) => setForm(formFromBaseline(b))}
+          />
           <DataFiles
             onVary={(line) => setForm((f) => ({ ...f, vary: appendLine(f.vary, line) }))}
             onParam={(line) => setForm((f) => ({ ...f, tune: { ...f.tune, mode: f.tune.mode || 'search', params: appendLine(f.tune.params, line) } }))}

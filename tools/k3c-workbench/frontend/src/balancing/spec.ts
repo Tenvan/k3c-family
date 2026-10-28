@@ -1,4 +1,4 @@
-import type { BalanceRun, BalanceSpec } from '../api';
+import type { BalanceBaseline, BalanceRun, BalanceSpec } from '../api';
 import { EMPTY_TUNE, formFromTune, tuneFromForm, type TuneForm } from './tune';
 
 /** Eingaben des Formulars als Text; leer heißt „weglassen“ (Standard der CLI bzw. Ziel-Tiefe). */
@@ -16,10 +16,12 @@ export interface BalanceForm {
   /** Eine Variante je Zeile: `datei.json:pfad.zum.wert=wert`. */
   vary: string;
   label: string;
+  /** Name einer gesicherten Baseline als Vergleich (B-640); leer = Baseline des Repos. */
+  baseline: string;
   tune: TuneForm;
 }
 
-export const EMPTY_FORM: BalanceForm = { seeds: '', depth: '', players: '', bot: '', grade: '', world: '', helps: '', days: '', vary: '', label: '', tune: EMPTY_TUNE };
+export const EMPTY_FORM: BalanceForm = { seeds: '', depth: '', players: '', bot: '', grade: '', world: '', helps: '', days: '', vary: '', label: '', baseline: '', tune: EMPTY_TUNE };
 
 /** Gleiche Form wie in Go (simrun/spec.go: varyArg). */
 const VARY = /^[A-Za-z0-9_-]+\.json:[A-Za-z0-9_.[\]-]+=[^\s=]{1,64}$/;
@@ -41,7 +43,7 @@ export function specFromForm(form: BalanceForm): SpecResult {
     if (!Number.isInteger(n) || n < min) return { error: `${label}: ganze Zahl ab ${min} erwartet` };
     spec[key] = n;
   }
-  for (const key of ['bot', 'grade', 'world', 'helps', 'label'] as const) {
+  for (const key of ['bot', 'grade', 'world', 'helps', 'label', 'baseline'] as const) {
     const raw = (form[key] ?? '').trim(); // alte Voreinstellungen kennen `world` nicht
     if (raw !== '') spec[key] = raw;
   }
@@ -61,8 +63,14 @@ export function formFromSpec(spec: BalanceSpec | undefined): BalanceForm {
   const text = (v: number | string | undefined) => (v === undefined ? '' : String(v));
   return {
     seeds: text(s.seeds), depth: text(s.depth), players: text(s.players), bot: s.bot ?? '', grade: s.grade ?? '', world: s.world ?? '', helps: s.helps ?? '', days: text(s.days),
-    vary: (s.vary ?? []).join('\n'), label: s.label ?? '', tune: formFromTune(s.tune),
+    vary: (s.vary ?? []).join('\n'), label: s.label ?? '', baseline: s.baseline ?? '', tune: formFromTune(s.tune),
   };
+}
+
+/** Basis-Lauf → Formular (B-640): Auftrag des Laufs und die Baseline als Vergleich; ältere Baselines ohne Spec nehmen Bot und Welt aus der Konfiguration. */
+export function formFromBaseline(b: BalanceBaseline): BalanceForm {
+  const spec: BalanceSpec = b.spec ?? { bot: b.bots.length === 1 ? b.bots[0] : undefined, world: b.worlds[0] };
+  return { ...formFromSpec(spec), baseline: b.name };
 }
 
 /** Gespeicherte Voreinstellung. */
@@ -76,7 +84,7 @@ export function isPresetList(v: unknown): v is Preset[] {
     Array.isArray(v) &&
     v.every((p) => {
       const x = p as Preset | null;
-      return !!x && typeof x.name === 'string' && !!x.form && Object.keys(EMPTY_FORM).every((k) => (k === 'tune' ? typeof x.form.tune === 'object' && x.form.tune !== null : k === 'world' || k === 'helps' ? x.form[k] === undefined || typeof x.form[k] === 'string' : typeof x.form[k as keyof BalanceForm] === 'string'));
+      return !!x && typeof x.name === 'string' && !!x.form && Object.keys(EMPTY_FORM).every((k) => (k === 'tune' ? typeof x.form.tune === 'object' && x.form.tune !== null : k === 'world' || k === 'helps' || k === 'baseline' ? x.form[k] === undefined || typeof x.form[k] === 'string' : typeof x.form[k as keyof BalanceForm] === 'string'));
     })
   );
 }

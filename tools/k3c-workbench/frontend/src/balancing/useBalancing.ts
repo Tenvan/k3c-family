@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { backend, type BalanceInsights, type BalanceReportInfo, type BalanceRun, type BalanceSpec, type BalanceSummary, type ReportRating, type Tuning } from '../api';
+import { backend, type BalanceBaseline, type BalanceInsights, type BalanceReportInfo, type BalanceRun, type BalanceSpec, type BalanceSummary, type ReportRating, type Tuning } from '../api';
 import { errorText } from '@webkit/lib/errors';
 import { isActive, mergeRuns } from './spec';
 
@@ -10,11 +10,15 @@ export const POLL_MS = 1500;
 export function useBalancing(active: boolean) {
   const [runs, setRuns] = useState<BalanceRun[]>([]);
   const [reports, setReports] = useState<BalanceReportInfo[]>([]);
+  const [baselines, setBaselines] = useState<BalanceBaseline[]>([]);
   const [error, setError] = useState('');
   const busy = useRef(0);
 
   const loadReports = useCallback(() => {
     backend.balanceReports().then(setReports, (e) => setError(errorText(e)));
+  }, []);
+  const loadBaselines = useCallback(() => {
+    backend.balanceBaselines().then(setBaselines, (e) => setError(errorText(e)));
   }, []);
   const loadRuns = useCallback(() => {
     backend.balanceRuns().then((r) => setRuns((cur) => mergeRuns(cur, r)), (e) => setError(errorText(e)));
@@ -23,7 +27,8 @@ export function useBalancing(active: boolean) {
   useEffect(() => {
     loadRuns();
     loadReports();
-  }, [loadRuns, loadReports]);
+    loadBaselines();
+  }, [loadRuns, loadReports, loadBaselines]);
 
   const open = runs.filter(isActive).length;
   useEffect(() => {
@@ -60,7 +65,7 @@ export function useBalancing(active: boolean) {
   // Berichte bewerten und löschen (WZ28.13).
   const rate = (path: string, rating: ReportRating) => call(() => backend.balanceReportRate(path, rating), loadReports);
   const remove = (path: string) => call(() => backend.balanceReportDelete(path), loadReports);
-  return { runs, reports, error, start, stop, rate, remove, reloadReports: loadReports };
+  return { runs, reports, baselines, reloadBaselines: loadBaselines, error, start, stop, rate, remove, reloadReports: loadReports };
 }
 
 /** Bericht zu einem Pfad; leerer Pfad = keiner. */

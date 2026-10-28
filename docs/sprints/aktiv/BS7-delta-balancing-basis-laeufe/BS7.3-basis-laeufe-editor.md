@@ -1,6 +1,6 @@
 # BS7.3 · Basis-Läufe im Balancing-Editor unter Beispiele
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -52,5 +52,9 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+**⚠️ Workbench-Neustart nötig** (Go-Code `app_balance.go`, `internal/balance`, `internal/mcpsrv` und die eingebettete Oberfläche geändert).
+
+- AC-04 umgesetzt und geprüft: Der Dialog „Beispiele“ hat oben den Abschnitt „Basis-Läufe“ (Name, Lauf, Datum, Seeds/Modus, Bots, Welten, eingefrorene Gruppen; leer → „Noch keine Basis-Läufe“). „Übernehmen“ setzt den Auftrag des gesicherten Laufs (`spec` in `reports/baseline/<name>/run.json`) und die Baseline ins Formular; neues Feld „Baseline“ mit Hilfetext, `baseline` geht in die Spec des Laufs. Backend: `App.BalanceBaselines()`; `SaveBaseline` speichert jetzt die Spec des Laufs mit (BS7.2 nachgezogen). Tests: `BalancingBaselines.test.tsx` (Mock: Basis-Lauf erscheint, Übernehmen setzt Konfiguration und Baseline; Spec trägt `baseline`; Baseline ohne Spec), `TestBalanceBaselinesListetGesicherte`, `baselines_test.go`.
+- Geprüft: `dev:test balancing` grün, `task:lint` 0 Fehler, `go test` für `balance`, `simrun`, `mcpsrv`, App-Test grün. `task check:diff` zweimal rot durch flüchtige Fehler außerhalb der Änderung (einmal `engine/level` Build-Fehler, `go vet` danach sauber; einmal Vitest-Worker bei `grafikPacks.test.ts` abgestürzt, einzeln grün); ein vollständig grüner Gesamtlauf nach den letzten Änderungen fehlt.
+- **Keine Simulation gefahren** (Regel 2026-10-28). Vermerkt, nötig in BS7.5: echter `sim_test`-Lauf mit `baseline`/`saveBaseline` und Delta-Bericht (bisher nur Fake-Prozesse), Baseline `M1` aus dem Meilenstein-Lauf (BS3.4/BS3.6).
+- Nicht geprüft: Oberfläche im Browser/Fenster angesehen (nur Mock-Tests).

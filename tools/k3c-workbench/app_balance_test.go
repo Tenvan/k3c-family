@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"slices"
+	"strings"
 	"testing"
 	"time"
 
@@ -192,5 +193,28 @@ func TestBalanceAuswertungUndHTML(t *testing.T) {
 	}
 	if _, err := a.BalanceInsights("reports/tuning-1.json"); err == nil {
 		t.Error("tuning-*.json darf keine Auswertung liefern")
+	}
+}
+
+// B-640/AC-04: Die Oberfläche bekommt die gesicherten Basis-Läufe samt Spec des Laufs.
+func TestBalanceBaselinesListetGesicherte(t *testing.T) {
+	a := balanceApp(t, make(chan struct{}))
+	if list, err := a.BalanceBaselines(); err != nil || list == nil || len(list) != 0 {
+		t.Fatalf("leer: %#v %v", list, err)
+	}
+	dir := filepath.Join(a.root, "reports", "simtest-run-1")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	report := filepath.Join(dir, "balance-1.json")
+	if err := os.WriteFile(report, []byte(`{"version":1,"seeds":1,"pass":true,"targets":[]}`), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := balance.SaveBaseline(a.root, "M1", report, []byte(`{"bot":"coop2","days":40}`)); err != nil {
+		t.Fatal(err)
+	}
+	list, err := a.BalanceBaselines()
+	if err != nil || len(list) != 1 || list[0].Name != "M1" || !strings.Contains(string(list[0].Spec), `"coop2"`) {
+		t.Fatalf("Liste: %+v %v", list, err)
 	}
 }
