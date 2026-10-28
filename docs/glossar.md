@@ -116,6 +116,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Kaserne | Gebäude der Hub-Stufe 2: Truppen-Limit +10. | `rules/materialien-gebaeude.md` § 3.2 |
 | Kennfarbe | Farbe des Spielers aus `PLAYER_COLORS`, steht an seiner Figur. Nicht verwechseln mit Spielerfarbe (Variante des Monarchen). | B-463 |
 | `kind@x` | Schlüssel aus Art und Position, mit dem der Spielstand Plätze und Level-Objekte zuordnet; bleibt stabil, weil kein Platz wandert. | Q42, B-201, B-202 |
+| Korridor (Balancing) | Soll-Bereich eines Balancing-Ziels (`data/balance-targets.json`), z. B. 75–90 % der Läufe. Der **Abstand** im Bericht ist der Unterschied zur verletzten Grenze in Prozentpunkten bzw. in der Einheit des Werts; im Korridor steht dort die Reserve bis zur nächsten Grenze. Ein Wert über dem Korridor heißt je nach Kennzahl „zu leicht“ (z. B. Burg hält) oder „zu schwer“ (z. B. zerstörte Gebäude). | `tools/k3c-workbench/internal/balance/insights_plain.go` |
 | Krieger | Kämpfer: Bauer plus Schwert aus der Werkstatt, Nahkampf; Posten hinter der äußersten gebauten Sperre. | `rules/buerger.md` § 1, Q46 |
 | Kristall | Material der Hub-Stufe 5 aus Adern in der Kristallhöhle; für Kristallmauer und Zaubertum. | `rules/materialien-gebaeude.md` § 1 |
 | Kristallhöhle | Stufe der Tiefe 4 (Biom `crystal`, geplant) mit Kristall-Adern, Lava und 3 Portalen. | `rules/stufen.md` § 1, Q28 |
@@ -163,6 +164,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Projekt | Thema über mehrere Sprints (z. B. Grafik, Sound, Leistung & Stabilität) mit Kürzel aus drei Großbuchstaben, Status `aktiv`, `ruht` oder `erledigt` und Rang; hält seine Sprints in fester Reihenfolge. Ebenen: Projekt → Sprint → Session. | `arbeitsweise.md` › Projekte und Rang, B-355 |
 | Projekt-Filter | Filter der Planungsseite nur für die Projekte: Status, Domäne (eines ihrer Sprints oder Tickets) und die Sprint-Schnellfilter Aktive Sprints, Agent offen, Autonom (ein Projekt bleibt, wenn mindestens ein Sprint passt). Er ändert Backlog-Liste und Sprint-Liste nicht. | B-401 |
 | Protokoll | Nachrichten zwischen Gerät und Server über WebSocket `/ws`, heute Version 7 (`hello.v` = 7). Eine Änderung bekommt eine eigene Session für beide Enden. | `protocol.md`, `arbeitsweise.md` › Grenzfälle |
+| Prozentpunkt (Pkt.) | Einheit für den Unterschied zweier Prozentwerte: 100 % statt höchstens 90 % sind 10 Prozentpunkte darüber (nicht „10 %“). | `insights_plain.go` |
 | Puffer (Verzögerung) | Zeit, um die die Zeitleiste hinter der geschätzten Server-Zeit zeichnet: 1 Tick plus die doppelte Ankunfts-Schwankung, höchstens 150 ms (angenommen). Diagnose-Zeile „Puffer 33 ms“. | B-277 |
 | Rang | Reihenfolge der aktiven Projekte (1 = zuerst, lückenlos), von 🧑 gesetzt; bestimmt, welcher Sprint und welche Session als Nächstes drankommt. | `arbeitsweise.md` › Projekte und Rang, B-355 |
 | Raum | Ein laufendes Spiel auf dem Server mit genau einem Spielstand und einem Code aus 4 Buchstaben; tickt unabhängig von anderen Räumen. | `protocol.md` › Begriffe |
@@ -211,6 +213,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Startvorrat | 100 Holz im Insel-Vorrat jeder neuen Insel (`islandStartStock`), auch nach dem Inselwechsel. | `rules/materialien-gebaeude.md` § 1, `rules/stufen.md` § 1, B-177 |
 | Startwert | Vorläufiger Zahlenwert aus Beschluss oder Vorschlag; gilt, bis der Balancing-Tester (B-099) ihn bestätigt oder ändert. | Kopf jeder Datei in `rules/` |
 | Stein | Material der Hub-Stufe 2 aus Adern in der Höhle und endlichen Felsen; für Steinmauer und -turm, Tor, Kaserne, Lager, Taverne, Treppen. | `rules/materialien-gebaeude.md` § 1 |
+| Stellschraube | Ein Wert in `data/` (`datei.json:a.b.c`), der ein verletztes Balancing-Ziel verbessern soll; der Bericht nennt je Stellschraube den aktuellen Wert, einen Probierbereich (höchstens drei Schritte) und einen Startvorschlag und fasst gleiche Werte über mehrere Verletzungen zusammen. Andere Namen im Code: Hebel (`Lever`). | `insights_levers.go` |
 | Stil-Bibel | Dokument `docs/assets/stil-bibel.md`: Ziel-Palette, Pixeldichte, Outline- und Lichtregel, nach denen die Grafik-Pipeline Assets umrechnet. | B-331, GR8.2 |
 | Streuung | Seed-abhängige Verschiebung der Linien 2–5 nur nach außen um 0 bis +4 ganze Units, je Seite und Linie, über einen eigenen RNG-Strom (`…:sites`). Linie 1 und Hub-Plätze streuen nicht. | Q56 (präzisiert Q50) |
 | Stufe | Ort einer Insel in einer Tiefe (0 Wald bis 4 Kristallhöhle) mit eigenem Hub, eigenen Wellen und Biom; pro Spieler frei begehbar, alle laufen weiter. Nicht verwechseln mit Hub-Stufe oder Material-Stufe. | `rules/stufen.md` § 1 |

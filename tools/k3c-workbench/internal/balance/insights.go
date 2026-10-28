@@ -32,6 +32,7 @@ type Insights struct {
 	Targets    []TargetInsight `json:"targets"`
 	Figures    FigureInsights  `json:"figures"`
 	Hints      []Hint          `json:"hints"`
+	LeverGroups []LeverGroup   `json:"leverGroups"` // Stellschrauben nach Wirkung zusammengefasst (insights_levers.go)
 	Next       NextRun         `json:"next"`
 	Baseline   BaselineView    `json:"baseline"`
 	Delta      []GroupDelta    `json:"delta"` // Vergleich je Werte-Gruppe (delta.go), leer ohne Baseline
@@ -65,7 +66,14 @@ type TargetInsight struct {
 	InvalidSeeds []string `json:"invalidSeeds"`
 	Rule         string   `json:"rule"`
 	Levers       []Lever  `json:"levers"`
-	entry        Entry
+	// Klartext (insights_plain.go): Runs = gespielte Läufe, Plain = Messwert, Sollwert und Lage in Sätzen, Gap = Spalte
+	// „Abstand“ („10 Pkt. zu hoch“), TrendText = Vergleich mit der Baseline, Plans = Zahlen zu jedem Hebel.
+	Runs      int         `json:"runs"`
+	Plain     string      `json:"plain"`
+	Gap       string      `json:"gap"`
+	TrendText string      `json:"trendText"`
+	Plans     []LeverPlan `json:"plans"`
+	entry     Entry
 }
 
 // Trend ist der Vergleich mit der Baseline: Better, wenn der Abstand zum Korridor größer (bzw. die Verletzung kleiner) wurde.
@@ -110,6 +118,7 @@ func BuildInsights(s Summary, base *Summary, h *Hints, m Meta) Insights {
 			t.Trend = trend(b, e)
 		}
 		t.Levers = freeLevers(t.Levers, m.Frozen)
+		t.Runs, t.Plain, t.Gap, t.TrendText, t.Plans = s.Seeds, t.plain(), t.gapText(), t.trendPlain(), t.plans()
 		in.Counts[t.Light]++
 		in.Targets = append(in.Targets, t)
 	}
@@ -128,6 +137,7 @@ func BuildInsights(s Summary, base *Summary, h *Hints, m Meta) Insights {
 	}
 	in.GoalText = goalText(in)
 	in.Hints = hints(in)
+	in.LeverGroups = leverGroups(in)
 	in.Next = nextRun(in, s)
 	in.Summary = summary(in)
 	return in

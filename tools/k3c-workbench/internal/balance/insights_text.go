@@ -15,6 +15,7 @@ type Hint struct {
 	Text   string  `json:"text"`
 	Why    string  `json:"why"`
 	Levers []Lever `json:"levers"`
+	Plans  []LeverPlan `json:"plans"`
 }
 
 const maxBullets = 8
@@ -79,7 +80,7 @@ func summary(in Insights) []string {
 		}
 		out = append(out, "Am weitesten daneben: "+strings.Join(parts, "; ")+".")
 		if lv := firstLever(w); lv != nil {
-			out = append(out, fmt.Sprintf("Größter Hebel: %s (%s, Schritt %s).", lv.Label, lv.Path, stepText(lv.Step)))
+			out = append(out, fmt.Sprintf("Größter Hebel: %s (%s, je Schritt um %s ändern).", lv.Label, lv.Path, stepText(lv.Step)))
 		}
 	}
 	out = append(out, figureSentence(in))

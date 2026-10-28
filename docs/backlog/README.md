@@ -144,6 +144,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-644](B-644-sim-test-warten-wie-check-run.md) | DEV | Idee | mittel | offen | – | sim_test wartet wie check_run auf das Ende und meldet Fortschritt je Tag |
 | [B-645](B-645-meilenstein-bots-bauen-keine-wirtschaft.md) | DEV | Problem | hoch | offen | BS3 | Der Meilenstein-Lauf coop2 scheitert an den Bots, nicht an den Werten: Es entsteht keine Wirtschaft |
 | [B-648](B-648-balancing-bericht-rahmenregeln.md) | DEV | Problem | hoch | offen | – | Balancing-Bericht urteilt nach Ziel und zeigt den Fortschritt |
+| [B-649](B-649-balancing-bericht-klartext.md) | DEV | Problem | mittel | offen | – | Balancing-Bericht in Klartext: Prozentwerte, Stellschrauben mit Bereich |
 
 ## Archiv
 

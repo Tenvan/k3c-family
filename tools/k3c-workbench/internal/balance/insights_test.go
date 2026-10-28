@@ -69,7 +69,7 @@ func TestInsightsTexte(t *testing.T) {
 	if len(in.Strengths) == 0 || len(in.Weaknesses) == 0 || !strings.HasPrefix(in.Weaknesses[0], "Hub-Stufe 2") {
 		t.Errorf("Stärken %q, Schwächen %q", in.Strengths, in.Weaknesses)
 	}
-	if len(in.Hints) != 6 || in.Hints[0].Light != LightRed || !strings.Contains(in.Hints[0].Text, "zu niedrig") {
+	if len(in.Hints) != 6 || in.Hints[0].Light != LightRed || !strings.Contains(in.Hints[0].Text, "Zu niedrig") {
 		t.Errorf("Hinweise: %+v", in.Hints)
 	}
 }

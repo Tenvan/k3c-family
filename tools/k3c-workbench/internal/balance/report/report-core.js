@@ -200,7 +200,7 @@ function trendCell(t) {
 }
 
 function targetRow(t, i) {
-  const dist = t.distance === null || t.distance === undefined ? '–' : (t.distance > 0 ? '+' : '') + Math.round(t.distance) + ' %';
+  const dist = t.gap || '–';
   return el('tr', { class: 'row', 'data-i': i, title: 'Details auf-/zuklappen' },
     el('td', { 'data-v': ['green', 'yellow', 'red', 'grey'].indexOf(t.light) }, dot(t.light), t.status),
     el('td', { 'data-v': t.name }, t.name, ' ', el('span', { class: 'tag' }, t.grade)),
@@ -208,15 +208,15 @@ function targetRow(t, i) {
     el('td', { class: 'num', 'data-v': t.value }, fmt(t.value, t.unit)),
     el('td', { class: 'num', 'data-v': t.lower ?? -1e9 }, corridor(t)),
     el('td', { 'data-v': t.value }, corridorBar(t)),
-    el('td', { class: 'num', 'data-v': t.distance ?? 0, title: 'Abstand zur nächsten Grenze in % der Korridorbreite' }, dist),
+    el('td', { class: 'num', 'data-v': t.distance ?? 0, title: 'Abstand zum Korridor: außerhalb in Prozentpunkten (Pkt.) bzw. in der Einheit des Werts bis zur verletzten Grenze, im Korridor die Reserve bis zur nächsten Grenze' }, dist),
     el('td', { class: 'num', 'data-v': t.trend ? t.trend.delta : 0 }, trendCell(t)));
 }
 
-function leverList(levers) {
+function leverList(levers, plans) {
   if (!levers || !levers.length) return el('p', { class: 'empty' }, 'Keine Hebel hinterlegt.');
-  return el('div', {}, levers.map((l) => el('div', { class: 'lever' },
+  return el('div', {}, levers.map((l, i) => el('div', { class: 'lever' },
     el('b', { class: l.direction === '+' ? 'l-green' : 'l-red' }, l.direction === '+' ? '▲' : '▼'),
-    el('span', {}, l.label, ' ', el('code', {}, l.path), ' ', el('span', { class: 'tag' }, 'Schritt ' + l.step)))));
+    el('span', {}, l.label, ' ', el('code', {}, l.path), plans && plans[i] ? el('div', { class: 'why' }, plans[i].text) : null))));
 }
 
 function targetDetail(t) {
@@ -224,11 +224,12 @@ function targetDetail(t) {
     ? el('div', {}, el('b', {}, label + ' (' + list.length + ')'), el('div', { class: 'seeds' }, list.map((s) => el('span', { class: 'seed' }, s))))
     : null;
   return el('tr', { class: 'detail', hidden: true }, el('td', { colspan: 8 }, el('div', { class: 'detail-grid' },
-    el('div', {}, el('div', {}, el('span', { class: 'tag' }, t.measure), ' ', el('span', { class: 'tag' }, t.kind === 'share' ? 'Anteil' : 'Median'),
+    el('div', {}, el('p', { class: 'why' }, t.plain, t.trendText ? ' ' + t.trendText : ''),
+      el('div', {}, el('span', { class: 'tag' }, t.measure), ' ', el('span', { class: 'tag' }, t.kind === 'share' ? 'Anteil' : 'Median'),
       ' ', el('code', {}, t.rule)),
     seeds(t.failSeeds, 'Seeds zum Nachspielen'), seeds(t.invalidSeeds, 'Ungültige Seeds'),
     t.failSeeds && t.failSeeds.length ? el('button', { class: 'btn small', type: 'button', onclick: () => copy(t.failSeeds.join(',')) }, 'Seeds kopieren') : null),
-    el('div', {}, el('b', {}, 'Hebel'), leverList(t.levers)))));
+    el('div', {}, el('b', {}, 'Hebel'), leverList(t.levers, t.plans)))));
 }
 
 function renderTargets() {

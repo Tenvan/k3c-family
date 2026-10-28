@@ -3,9 +3,20 @@ function renderHints() {
   const ul = $('hints');
   const hints = R.hints || [];
   if (!hints.length) ul.append(el('li', { class: 'empty' }, 'Keine Hinweise: alle Ziele im Korridor.'));
+  const groups = R.leverGroups || [];
+  if (groups.length) {
+    ul.append(el('li', { class: 'hint' }, el('div', {}, el('b', {}, 'Stellschrauben nach Wirkung'),
+      ' – derselbe Wert taucht bei mehreren Verletzungen auf; hier je Wert einmal, mit den Verletzungen, die er verbessern soll.')));
+    for (const g of groups) {
+      ul.append(el('li', { class: 'hint h-red' }, el('div', {}, el('b', {}, g.direction === '+' ? '▲ ' : '▼ '), g.plan.label, ' ', el('code', {}, g.path)),
+        el('div', {}, 'Soll ' + g.targets.length + ' Verletzung(en) verbessern: ' + g.targets.join('; ')),
+        el('div', { class: 'why' }, g.plan.short, g.conflict ? ' ' + g.conflict : '')));
+    }
+    ul.append(el('li', { class: 'hint' }, el('div', {}, el('b', {}, 'Hinweise je Ziel'))));
+  }
   for (const h of hints) {
     ul.append(el('li', { class: 'hint h-' + h.light }, el('div', {}, dot(h.light), el('b', {}, h.target), ' – ', h.text),
-      h.why ? el('div', { class: 'why' }, h.why) : null, leverList(h.levers)));
+      h.why ? el('div', { class: 'why' }, h.why) : null, leverList(h.levers, h.plans)));
   }
 }
 

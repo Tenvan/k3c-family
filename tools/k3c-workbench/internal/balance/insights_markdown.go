@@ -13,6 +13,12 @@ var lightIcon = map[string]string{LightGreen: "🟢", LightYellow: "🟡", Light
 var whereText = map[string]string{WhereChat: "in den Chat an Claude", WhereShell: "im Terminal des Checkouts",
 	WhereWorkbench: "Workbench › Balancing-Seite › Abstimmen"}
 
+// tableLegend erklärt die Tabelle der Ziele in Klartext (steht im Markdown vor der Tabelle).
+const tableLegend = "So liest du die Tabelle: **Wert** ist das Messergebnis (bei Anteilen: in wie viel Prozent der Läufe das Ziel erreicht wurde, " +
+	"„Läufe“ sind die Seeds). **Korridor** ist der Soll-Bereich dafür. **Abstand** ist der Unterschied zur verletzten Grenze in Prozentpunkten (Pkt.) " +
+	"bzw. in der Einheit des Werts; im Korridor steht dort die Reserve bis zur nächsten Grenze. **Trend** vergleicht mit der Baseline " +
+	"(▲ näher am Korridor, ▼ weiter weg).\n\n"
+
 // Insights wertet den Bericht mit den eingebetteten Richtwerten (data/balance-hints.json) aus.
 func (s Summary) Insights(base *Summary, m Meta) (Insights, error) {
 	h, err := DefaultHints()
@@ -30,10 +36,11 @@ func (in Insights) Markdown() string {
 	bullets(&b, in.Summary, "")
 	fmt.Fprintf(&b, "\n## Ampeln\n\n🟢 %d gut · 🟡 %d knapp · 🔴 %d verletzt · ⚪ %d ungültig\n\n",
 		in.Counts[LightGreen], in.Counts[LightYellow], in.Counts[LightRed], in.Counts[LightGrey])
-	b.WriteString("| Ampel | Ziel | Grad | Wert | Korridor | Abstand | Trend |\n|---|---|---|---|---|---|---|\n")
+	b.WriteString(tableLegend)
+	b.WriteString("| Ampel | Ziel | Grad | Wert | Korridor | Abstand zum Korridor | Trend |\n|---|---|---|---|---|---|---|\n")
 	for _, t := range in.Targets {
 		fmt.Fprintf(&b, "| %s %s | %s | %s | %s | %s | %s | %s |\n", lightIcon[t.Light], t.Status, t.Name, t.Grade,
-			t.valueText(), t.boundsText(), distText(t.Distance), trendText(t.Trend))
+			t.valueText(), t.boundsText(), t.Gap, trendText(t.Trend))
 	}
 	b.WriteString("\n## Stärken\n\n")
 	bullets(&b, in.Strengths, "Keine erkannt.")
@@ -43,10 +50,20 @@ func (in Insights) Markdown() string {
 	if len(in.Hints) == 0 {
 		b.WriteString("Keine: alle Ziele im Korridor.\n")
 	}
+	if len(in.LeverGroups) > 0 {
+		b.WriteString("\n### Stellschrauben nach Wirkung\n\nDerselbe Wert in data/ taucht bei mehreren Verletzungen auf; hier je Wert einmal, mit den Verletzungen, die er verbessern soll.\n\n")
+		for _, g := range in.LeverGroups {
+			fmt.Fprintf(&b, "- %s\n", g.Text)
+		}
+		b.WriteString("\n### Hinweise je Ziel\n\n")
+	}
 	for _, h := range in.Hints {
 		fmt.Fprintf(&b, "- %s **%s** – %s %s\n", lightIcon[h.Light], h.Target, h.Text, h.Why)
-		for _, l := range h.Levers {
-			fmt.Fprintf(&b, "  - %s `%s` (%s%s)\n", l.Label, l.Path, l.Direction, stepText(l.Step))
+		for i, l := range h.Levers {
+			fmt.Fprintf(&b, "  - %s `%s`\n", l.Label, l.Path)
+			if i < len(h.Plans) {
+				fmt.Fprintf(&b, "    %s\n", h.Plans[i].Text)
+			}
 		}
 	}
 	in.deltaMarkdown(&b)
@@ -117,13 +134,6 @@ func bullets(b *strings.Builder, items []string, empty string) {
 	for _, s := range items {
 		b.WriteString("- " + s + "\n")
 	}
-}
-
-func distText(d *float64) string {
-	if d == nil {
-		return "–"
-	}
-	return signed(*d) + " %"
 }
 
 func trendText(t *Trend) string {
