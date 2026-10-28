@@ -7,8 +7,8 @@
 - **Tickets:** B-635, B-638
 - **Start-Commit:** 48e285ff
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-26, Chat, durch 🧑, Revision 1, mit den Defaults der offenen Fragen
+- **Revision:** 2
+- **Freigabe:** 2026-10-28, Chat, durch 🧑, Revision 2: Meilenstein 1 bis zum Splitter-Titan (Endboss → Stufen-Test)
 
 ## Ausgangslage
 
@@ -16,9 +16,9 @@ Nach BS1 (Seed `k3c-dev`, schnelle Läufe) und BS2 (Regeln der Münzskala) stehe
 
 ## Ziel
 
-**Meilenstein 1:** Alle regulären Preise, Einnahmen und Ziele stehen auf der Münzskala 2–30, die Schiffskosten sind in `data/`, und ein Balancing-Lauf `coop2`, Welt standard, Seed `k3c-dev` läuft mit den neuen Werten durch.
+**Meilenstein 1 (Fassung vom 2026-10-28, 🧑):** Alle regulären Preise, Einnahmen und Ziele stehen auf der Münzskala 2–30, die Schiffskosten sind in `data/`, und ein Balancing-Lauf `coop2`, Welt standard, Seed `k3c-dev` läuft mit den neuen Werten **bis zum Sieg über den Splitter-Titan** (Miniboss der Kristallhöhle) durch. Den Endboss prüft vorerst der Stufen-Test (`task balance:fullgame`, mit Hilfen), nicht der Meilenstein-Lauf.
 
-**Am Ende sichtbar:** `sim_test`-Bericht `coop2` standard mit Endboss Insel 1 besiegt und der Zeile „Schiff (Bedarf): … bezahlbar ab Tag …“.
+**Am Ende sichtbar:** `task balance:milestone`- bzw. `sim_test`-Bericht `coop2` standard mit der Boss-Leiter bis „Splitter-Titan besiegt“ und der Zeile „Schiff (Bedarf): … bezahlbar ab Tag …“.
 
 ## Beteiligte und Zielgruppen
 
@@ -52,7 +52,7 @@ Lauf scheitert (Burg fällt, Gold reicht nie) → BS3.4 justiert iterativ, höch
 - **AC-02** Einnahmen, Beute, Markieren und Ziele sind auf die Skala umgerechnet, Zielkorridore in `balance-targets.json` passen dazu.
 - **AC-03** Schiffskosten je Abschnitt stehen in `data/`, Daten-Test prüft Skala und Schema (B-638/AC-01).
 - **AC-04** Der Bericht nennt je Schiff-Abschnitt „bezahlbar ab Tag“ mit Ampel (B-638/AC-02).
-- **AC-05** Meilenstein: Lauf `coop2`, Welt standard, Seed `k3c-dev` läuft durch (Endboss Insel 1 besiegt) (B-635/AC-03).
+- **AC-05** Meilenstein (Fassung 2026-10-28): Lauf `coop2`, Welt standard, Seed `k3c-dev` besiegt den Splitter-Titan (Boss-Leiter des Berichts); gemessen mit `task balance:milestone` (B-635/AC-03). Stand: Titan fällt bei `k3c-dev` an Tag 26, bei 3 von 4 Seeds (k3c-dev, 1, 2, 3) an Tag 32 (BS12.4, B-651).
 
 ## Offene Fragen
 

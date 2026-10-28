@@ -52,7 +52,7 @@ Preis > 30 in einer regulären Kategorie → Daten-Test schlägt fehl (Ausnahme-
 
 - **AC-01** `docs/rules/wirtschaft.md` beschreibt die Skala und die Ausnahmen.
 - **AC-02** Ein Daten-Test prüft: reguläre Goldpreise in 2…30, Mauer Stufe 1 = 2, Ausnahmen nur aus der Ausnahme-Liste.
-- **AC-03** Ein Balancing-Lauf `coop2`, Welt standard, Seed `k3c-dev` läuft mit den neuen Werten bis zum Ende der Insel durch (Meilenstein 1).
+- **AC-03** Ein Balancing-Lauf `coop2`, Welt standard, Seed `k3c-dev` (und die Seeds 1 bis 3) läuft mit den neuen Werten **bis zum Sieg über den Splitter-Titan** durch (Meilenstein 1, Fassung vom 2026-10-28, 🧑: Bis Titan; den Endboss prüft vorerst der Stufen-Test `task balance:fullgame` mit Hilfen).
 
 ## Offene Fragen
 

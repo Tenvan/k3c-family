@@ -149,6 +149,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-651](B-651-kristallhoehle-titan-welle-raeumt-hub-ab.md) | SIM | Problem | hoch | offen | BS3 | Die Titan-Welle der Kristallhöhle räumt den Hub eines Einzelmonarchen in Sekunden ab (coop2) |
 | [B-652](B-652-mauern-tuerme-verteilt-tor-ist-aeusserste-mauer.md) | SIM | Idee | hoch | eingeplant | BS12 | Mauern und Türme stehen verteilt in jedem Chunk, das Tor ist die äußerste gebaute Mauer |
 | [B-653](B-653-baustellen-schilder-bauoptionen-holzzaun.md) | CLI | Problem | hoch | eingeplant | BS13 | Bauschilder an Bäumen und Felsen nur nach Markierung, keine Bauoptionen für gesperrte Gebäude, Holzmauer als Zaun |
+| [B-654](B-654-bot-performance-miniboss-json.md) | SIM | Schuld | mittel | offen | – | Bot-Performance: bosses.json je Tick neu geparst, nodeFor/wanted mit Map-Zugriffen |
 
 ## Archiv
 
