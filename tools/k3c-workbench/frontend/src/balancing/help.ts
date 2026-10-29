@@ -73,7 +73,7 @@ ${TARGETS}`,
   vary: {
     label: 'Varianten',
     hint: 'Eine je Zeile: datei.json:pfad=wert; ändert den Wert nur für diesen Lauf.',
-    help: 'Eine **Variante** setzt einen Zahlenwert aus `data/` nur im Speicher für diesen Lauf; die Dateien bleiben unverändert.\n\n- Form: `datei.json:pfad.zum.wert=wert`, eine je Zeile; Listen über den Index (`levels.0.cost`).\n- Nur Dateien, die in der Liste „Konfigurationsdateien“ den Knopf „Werte“ haben (economy, buildings, hub, troops, enemies, waves, monarch); andere Dateien lädt der Lauf nicht neu.\n- Den Pfad am einfachsten in der Liste „Konfigurationsdateien“ über „Werte“ wählen und „Als Variante“ klicken.\n\nBeispiele:\n\n```\neconomy.json:purse.startGold=120\nbuildings.json:wall.cost.gold=3\nwaves.json:perExtraPlayer=0.5\n```\n\nWirkung: Der Bericht nennt die Varianten; in der Liste „Läufe und Berichte“ lassen sich zwei bis vier Berichte anhaken und vergleichen, z. B. gegen einen Lauf ohne Variante.',
+    help: 'Eine **Variante** setzt einen Zahlenwert aus `data/` nur im Speicher für diesen Lauf; die Dateien bleiben unverändert.\n\n- Form: `datei.json:pfad.zum.wert=wert`, eine je Zeile; Listen über den Index (`levels.0.cost`).\n- Nur Dateien, die der Daten-Browser zeigt (economy, buildings, hub, troops, enemies, waves, monarch); andere Dateien lädt der Lauf nicht neu.\n- Den Pfad am einfachsten im Daten-Browser des Lauf-Editors suchen und „+ fest“ klicken; die Tabelle zeigt Basiswert und Abweichung.\n\nBeispiele:\n\n```\neconomy.json:purse.startGold=120\nbuildings.json:wall.cost.gold=3\nwaves.json:perExtraPlayer=0.5\n```\n\nWirkung: Der Bericht nennt die Varianten; in der Liste „Läufe und Berichte“ lassen sich zwei bis vier Berichte anhaken und vergleichen, z. B. gegen einen Lauf ohne Variante.',
   },
   label: {
     label: 'Label',
@@ -83,7 +83,7 @@ ${TARGETS}`,
   baseline: {
     label: 'Baseline',
     hint: 'Name eines gesicherten Basis-Laufs (z. B. M1) als Vergleich; leer = Baseline des Repos.',
-    help: 'Eine **Baseline** ist ein gesicherter, durchgelaufener Lauf (`reports/baseline/<name>/`), meist der eines Meilensteins. Der Bericht vergleicht den neuen Lauf gegen sie, je Werte-Gruppe mit Ampel und Trend.\n\n- Werte: Name einer gesicherten Baseline; in „Beispiele › Basis-Läufe“ stehen alle.\n- Leer: die Baseline des Repos (`testdata/balance/baseline.json`).\n- Eingefrorene Gruppen melden sich nur, wenn sie kippen; Tuning-Hinweise nennen nur Hebel freier Gruppen.\n- Gesichert wird mit `sim_test {action: baseline, id, saveBaseline: M1}`.',
+    help: 'Eine **Baseline** ist ein gesicherter, durchgelaufener Lauf (`reports/baseline/<name>/`), meist der eines Meilensteins. Der Bericht vergleicht den neuen Lauf gegen sie, je Werte-Gruppe mit Ampel und Trend.\n\n- Werte: Name einer gesicherten Baseline; im Lauf-Editor stehen alle unter „Basis-Lauf“ und im Vergleich.\n- Leer: die Baseline des Repos (`testdata/balance/baseline.json`).\n- Eingefrorene Gruppen melden sich nur, wenn sie kippen; Tuning-Hinweise nennen nur Hebel freier Gruppen.\n- Gesichert wird mit `sim_test {action: baseline, id, saveBaseline: M1}`.',
   },
   mode: {
     label: 'Abstimm-Modus',
@@ -93,7 +93,7 @@ ${TARGETS}`,
   params: {
     label: 'Parameter',
     hint: '1–2 Zeilen datei.json:pfad=min..max (min < max).',
-    help: 'Die **Parameter** sind die Werte, die das Abstimmen verändert.\n\n- Form: `datei.json:pfad=min..max`, eine je Zeile, höchstens zwei; min < max; Dezimalzahlen erlaubt.\n- Ganze Zahlen in der Datei bleiben ganz.\n- In der Liste „Konfigurationsdateien“ über „Werte“ wählen und „Als Parameter“ klicken (Bereich ±25 %).\n\nBeispiele:\n\n```\neconomy.json:purse.startGold=60..140\nbuildings.json:wall.cost.gold=2..6\n```',
+    help: 'Die **Parameter** sind die Werte, die das Abstimmen verändert.\n\n- Form: `datei.json:pfad=min..max`, eine je Zeile, höchstens zwei; min < max; Dezimalzahlen erlaubt.\n- Ganze Zahlen in der Datei bleiben ganz.\n- Im Daten-Browser des Lauf-Editors „+ Bereich“ klicken (Bereich ±25 %) oder eine Variante auf „Bereich“ umschalten.\n\nBeispiele:\n\n```\neconomy.json:purse.startGold=60..140\nbuildings.json:wall.cost.gold=2..6\n```',
   },
   steps: {
     label: 'Schritte',

@@ -47,6 +47,7 @@ export function useBalancing(active: boolean) {
   const [reports, setReports] = useState<BalanceReportInfo[]>([]);
   const [baselines, setBaselines] = useState<BalanceBaseline[]>([]);
   const [error, setError] = useState('');
+  const lastStartError = useRef('');
 
   const loadReports = useCallback(() => {
     backend.balanceReports().then(setReports, (e) => setError(errorText(e)));
@@ -84,17 +85,22 @@ export function useBalancing(active: boolean) {
     return () => off.forEach((f) => f());
   }, [active, reload, loadRuns, loadReports, loadBaselines]);
 
-  const start = async (spec: BalanceSpec) => {
+  /** Startet einen Lauf; true = gestartet, false = abgelehnt (der Grund steht in `error` und in `startError()`). */
+  const start = async (spec: BalanceSpec): Promise<boolean> => {
     setError('');
+    lastStartError.current = '';
     try {
       const run = await backend.balanceStart(spec);
       setRuns((cur) => mergeRuns(cur, [run]));
+      return true;
     } catch (e) {
-      setError(errorText(e));
+      lastStartError.current = errorText(e);
+      setError(lastStartError.current);
+      return false;
     }
   };
   const actions = balanceActions(setError, { loadRuns, loadReports, loadBaselines });
-  return { runs, reports, baselines, reloadBaselines: loadBaselines, error, start, reloadReports: loadReports, reload, ...actions };
+  return { runs, reports, baselines, reloadBaselines: loadBaselines, error, start, startError: () => lastStartError.current, reloadReports: loadReports, reload, ...actions };
 }
 
 /** Bericht zu einem Pfad; leerer Pfad = keiner. */

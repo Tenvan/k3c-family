@@ -2,7 +2,8 @@
 import { Theme } from '@radix-ui/themes';
 import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { backend } from '../api';
 import { BalancingPage } from './BalancingPage';
 
 // WZ28.5/AC-05: Die Seite startet mit dem Mock-Backend (Testlauf = Mock) einen Lauf, zeigt Fortschritt, öffnet den Bericht
@@ -48,18 +49,18 @@ const reports = (host: ParentNode) => [...host.querySelectorAll<HTMLElement>('.b
 const nameOf = (el: HTMLElement) => el.querySelector<HTMLElement>('.bal-item-name')!;
 
 describe('Balancing-Seite', () => {
-  it('zeigt Konfiguration und Liste, validiert die Eingabe', async () => {
+  it('zeigt den Lauf-Editor und die Liste, validiert die Eingabe', async () => {
     const host = await mount();
-    expect(host.querySelector('[aria-label="Konfiguration"]')).not.toBeNull();
+    expect(host.querySelector('[aria-label="Lauf-Editor"]')).not.toBeNull();
     expect(reports(host)).toHaveLength(5);
-    const seeds = host.querySelector<HTMLInputElement>('input[aria-label="Seeds"]')!;
+    const days = host.querySelector<HTMLInputElement>('input[aria-label="Tage"]')!;
     const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!;
     await act(async () => {
-      set.call(seeds, '0');
-      seeds.dispatchEvent(new Event('input', { bubbles: true }));
+      set.call(days, '0');
+      days.dispatchEvent(new Event('input', { bubbles: true }));
     });
-    await act(async () => button(host, 'Lauf starten').click());
-    expect(host.querySelector('[role="alert"]')?.textContent).toMatch(/Seeds/);
+    expect(host.querySelector('footer [role="alert"]')?.textContent).toMatch(/Tage/);
+    expect(button(host, 'Lauf starten').disabled).toBe(true);
     expect(runs(host)).toHaveLength(0);
   });
 
@@ -89,6 +90,9 @@ describe('Balancing-Seite', () => {
   it('bricht einen wartenden Lauf ab', async () => {
     const host = await mount();
     await act(async () => button(host, 'Lauf starten').click());
+    await flush();
+    await act(async () => button(host, 'Neuer Lauf').click()); // der Editor schließt nach dem Start
+    await flush();
     await act(async () => button(host, 'Lauf starten').click());
     await flush();
     const waiting = runs(host).find((r) => r.dataset.state === 'wartet')!;
@@ -126,31 +130,46 @@ describe('Balancing-Seite: Abstimmen', () => {
     expect(host.textContent).toContain('Kopieren fehlgeschlagen');
   });
 
-  it('startet einen Abstimm-Lauf und prüft die Parameter', async () => {
+  it('startet einen Abstimm-Lauf und prüft die Bereiche', async () => {
     const host = await mount();
-    const set = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value')!.set!;
-    const select = host.querySelector<HTMLElement>('[aria-label="Abstimm-Modus"]')!;
-    expect(select).not.toBeNull();
-    expect(host.querySelector('textarea[aria-label="Parameter"]')).toBeNull();
-    await act(async () => select.click());
+    const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!;
+    await until(host, () => host.querySelector('[aria-label="wall.cost.gold als Bereich"]') !== null);
+    await act(async () => host.querySelector<HTMLElement>('[aria-label="wall.cost.gold als Bereich"]')!.click());
     await flush();
-    const opt = [...document.querySelectorAll<HTMLElement>('[role="option"]')].find((o) => /Sweep/.test(o.textContent ?? ''));
-    await act(async () => opt?.click());
+    expect(host.querySelector('[aria-label="Abstimmung"]')).not.toBeNull();
+    await act(async () => host.querySelector<HTMLElement>('[aria-label="Abstimm-Modus"] [data-value="sweep"]')!.click());
     await flush();
-    const params = host.querySelector<HTMLTextAreaElement>('textarea[aria-label="Parameter"]')!;
+    const from = host.querySelector<HTMLInputElement>('input[aria-label="Von für wall.cost.gold"]')!;
     await act(async () => {
-      set.call(params, 'kaputt');
-      params.dispatchEvent(new Event('input', { bubbles: true }));
+      set.call(from, 'kaputt');
+      from.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    expect(host.querySelector('footer [role="alert"]')?.textContent).toMatch(/Variante 1/);
+    expect(button(host, 'Abstimmung starten').disabled).toBe(true);
+    await act(async () => {
+      set.call(from, '1');
+      from.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    await act(async () => button(host, 'Abstimmung starten').click());
+    await flush();
+    expect((await backend.balanceRuns()).at(-1)?.spec?.tune).toMatchObject({ mode: 'sweep', params: ['buildings.json:wall.cost.gold=1..3'] });
+  });
+});
+
+describe('Balancing-Seite: abgelehnter Start', () => {
+  it('der Editor bleibt offen, zeigt den Grund in der Fußleiste und behält die Eingaben', async () => {
+    const spy = vi.spyOn(backend, 'balanceStart').mockRejectedValue(new Error('lauf abgelehnt: test'));
+    const host = await mount();
+    const days = host.querySelector<HTMLInputElement>('input[aria-label="Tage"]')!;
+    await act(async () => {
+      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(days, '7');
+      days.dispatchEvent(new Event('input', { bubbles: true }));
     });
     await act(async () => button(host, 'Lauf starten').click());
-    expect(host.querySelector('[role="alert"]')?.textContent).toMatch(/Parameter/);
-    await act(async () => {
-      set.call(params, 'buildings.json:wall.cost=1..5');
-      params.dispatchEvent(new Event('input', { bubbles: true }));
-    });
-    const before = runs(host).length;
-    await act(async () => button(host, 'Lauf starten').click());
     await flush();
-    expect(runs(host)).toHaveLength(before + 1);
+    expect(spy).toHaveBeenCalled();
+    expect(host.querySelector('footer')?.textContent).toContain('lauf abgelehnt: test');
+    expect(host.querySelector<HTMLInputElement>('input[aria-label="Tage"]')!.value).toBe('7');
+    spy.mockRestore();
   });
 });

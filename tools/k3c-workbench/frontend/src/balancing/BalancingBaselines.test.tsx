@@ -3,6 +3,7 @@ import { Theme } from '@radix-ui/themes';
 import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, describe, expect, it } from 'vitest';
+import { pickValue, selectedValue } from '@webkit/testing/select';
 import { backend } from '../api';
 import { BalancingPage } from './BalancingPage';
 import { EMPTY_FORM, formFromBaseline, specFromForm } from './spec';
@@ -29,8 +30,6 @@ async function mount(): Promise<HTMLElement> {
   return host;
 }
 
-const byLabel = (host: ParentNode, label: string) => host.querySelector<HTMLElement>(`[aria-label="${label}"]`)!;
-const buttonText = (host: ParentNode, text: string) => [...host.querySelectorAll('button')].find((b) => b.textContent?.trim() === text)!;
 const field = (host: ParentNode, label: string) => host.querySelector<HTMLInputElement | HTMLTextAreaElement>(`input[aria-label="${label}"], textarea[aria-label="${label}"]`)!;
 
 async function click(el: HTMLElement) {
@@ -44,20 +43,15 @@ afterEach(() => {
   document.body.innerHTML = '';
 });
 
-describe('Basis-Läufe in den Beispielen', () => {
-  it('listet den gesicherten Lauf und setzt beim Übernehmen Konfiguration und Baseline', async () => {
+describe('Basis-Läufe im Ausgangspunkt', () => {
+  it('„Basis-Lauf“ übernimmt Konfiguration und Baseline', async () => {
     const host = await mount();
-    await click(buttonText(host, 'Beispiele …'));
-    const section = byLabel(document, 'Basis-Läufe');
-    expect(section.textContent).toContain('M1');
-    expect(section.textContent).toContain('coop2');
-    expect(section.textContent).toContain('eingefroren: basis');
-    await click(byLabel(document, 'Basis-Lauf übernehmen: M1'));
-    expect(field(host, 'Baseline').value).toBe('M1');
-    expect(field(host, 'Seeds').value).toBe('1');
+    await click(host.querySelector<HTMLElement>('[aria-label="Ausgangspunkt"] [data-value="basis"]')!);
+    await pickValue(host, 'Eintrag des Ausgangspunkts', 'M1');
+    expect(selectedValue(host, 'Baseline')).toBe('M1');
+    expect(host.querySelector('[aria-label="Seeds"] [data-value="1"]')!.getAttribute('data-state')).toBe('on');
     expect(field(host, 'Tage').value).toBe('40');
     expect(field(host, 'Label').value).toBe('Meilenstein 1');
-    expect(document.querySelector('[role="dialog"]')).toBeNull();
   });
 
   it('der Lauf trägt die Baseline als Vergleich in die Spec', async () => {

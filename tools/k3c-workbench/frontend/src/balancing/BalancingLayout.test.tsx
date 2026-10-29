@@ -98,9 +98,9 @@ describe('Balancing-Seite im Rahmen', () => {
     const detail = byLabel(host, 'Detail');
     expect(detail.textContent).toContain('Nichts gewählt');
     expect(byLabel(host, 'Läufe und Berichte').querySelectorAll('.bal-item').length).toBeGreaterThan(0);
-    expect(byLabel(host, 'Konfiguration')).toBeNull();
+    expect(byLabel(host, 'Lauf-Editor')).toBeNull();
     await click(button(detail, 'Neuer Lauf'));
-    expect(byLabel(byLabel(host, 'Detail'), 'Konfiguration')).not.toBeNull();
+    expect(byLabel(byLabel(host, 'Detail'), 'Lauf-Editor')).not.toBeNull();
     expect(body(host).dataset.view).toBe('detail');
   });
 
@@ -119,11 +119,11 @@ describe('Balancing-Seite im Rahmen', () => {
     const host = await mount(<BalancingPage />);
     await click(row(host, 'balance-1.json').querySelector<HTMLElement>('.bal-item-name')!);
     await click(button(byLabel(host, 'Werkzeugleiste'), 'Neuer Lauf'));
-    expect(byLabel(byLabel(host, 'Detail'), 'Konfiguration')).not.toBeNull();
+    expect(byLabel(byLabel(host, 'Detail'), 'Lauf-Editor')).not.toBeNull();
     expect(byLabel(host, 'Bericht')).toBeNull();
     expect(row(host, 'balance-1.json').dataset.on).toBe('true'); // die Auswahl bleibt
     await click(row(host, 'balance-1.json').querySelector<HTMLElement>('.bal-item-name')!);
-    expect(byLabel(host, 'Konfiguration')).toBeNull();
+    expect(byLabel(host, 'Lauf-Editor')).toBeNull();
     expect(byLabel(byLabel(host, 'Detail'), 'Bericht')).not.toBeNull();
   });
 
@@ -131,7 +131,7 @@ describe('Balancing-Seite im Rahmen', () => {
     const host = await mount(<BalancingPage />);
     await click(button(byLabel(host, 'Werkzeugleiste'), 'Neuer Lauf'));
     expect(body(host).dataset.view).toBe('detail');
-    await click(button(byLabel(host, 'Konfiguration'), 'Lauf starten'));
+    await click(button(byLabel(host, 'Lauf-Editor'), 'Lauf starten'));
     expect(body(host).dataset.view).toBe('list');
     expect(byLabel(host, 'Läufe und Berichte').querySelectorAll('.bal-item[data-id^="run:"]')).toHaveLength(1);
     expect(byLabel(byLabel(host, 'Werkzeugleiste'), 'Warteschlange').textContent).toMatch(/[01] läuft[01] wartet/);

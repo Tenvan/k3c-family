@@ -8,12 +8,34 @@ import { BalancingLayout, type BalancingView } from './BalancingLayout';
 import type { DetailActions } from './DetailHead';
 import { buildEntries, resolveSelection, selectionAfterRemoval } from './entries';
 import { EntryList } from './EntryList';
-import { FormEditor } from './FormEditor';
+import { DataFiles } from './DataFiles';
+import { RunEditor } from './editor/RunEditor';
+import type { Origin } from './editor/variantForm';
 import { appendLine } from './help';
 import { EMPTY_FORM, formFromSpec, isPresetList, type BalanceForm, type Preset } from './spec';
 import { useBalancing } from './useBalancing';
 
 type Mode = 'report' | 'editor' | 'compare';
+
+/** Womit der Lauf-Editor geöffnet ist; `key` baut ihn bei jedem Öffnen neu auf. */
+interface EditorTarget {
+  form: BalanceForm;
+  origin: Origin;
+  key: number;
+}
+
+/** Lauf-Editor öffnen, gefüllt mit `form`; `origin` nennt den Ausgangspunkt, `onOpen` zeigt den Editor. */
+function useEditorTarget(onOpen: () => void) {
+  const [editor, setEditor] = useState<EditorTarget>({ form: EMPTY_FORM, origin: { kind: 'leer', label: '' }, key: 0 });
+  const openEditor = (form: BalanceForm, origin: Origin) => {
+    setEditor((e) => ({ form, origin, key: e.key + 1 }));
+    onOpen();
+  };
+  return { editor, openEditor };
+}
+
+/** „Als Variante übernehmen“: die Zeile kommt als feste Variante in den Editor. */
+const withVariant = (f: BalanceForm, line?: string): BalanceForm => (line ? { ...f, vary: appendLine(f.vary, line) } : f);
 
 /** Werkzeugleiste (B-659): „Neuer Lauf“ öffnet das Formular im Detail; rechts der Zustand der Warteschlange. */
 function Toolbar({ runs, editing, onNew }: { runs: BalanceRun[]; editing: boolean; onNew: () => void }) {
@@ -22,6 +44,7 @@ function Toolbar({ runs, editing, onNew }: { runs: BalanceRun[]; editing: boolea
   return (
     <>
       <Button variant={editing ? 'solid' : 'soft'} aria-pressed={editing} onClick={onNew}>Neuer Lauf</Button>
+      <DataFiles />
       <div className="bal-queue" aria-label="Warteschlange">
         <StatusBadge tone={running > 0 ? 'info' : 'neutral'}>{running} läuft</StatusBadge>
         <StatusBadge tone="neutral">{waiting} wartet</StatusBadge>
@@ -41,11 +64,10 @@ const without = (list: string[], id: string) => list.filter((x) => x !== id);
 const toggled = (list: string[], id: string, on: boolean) => (on ? [...without(list, id), id] : without(list, id));
 
 /** Reiter `Balancing` (WZ28.5, Rahmen B-659, Liste und Detail B-660): links eine Liste für Läufe und Berichte, rechts
- *  Bericht in Reitern, Lauf, Vergleich, Abstimmung oder das Formular für einen neuen Lauf (Editor, WZ32.4).
- *  Den Editor öffnen `openEditor(form)` (Formular vorbefüllen) und `show('editor')`. */
+ *  Bericht in Reitern, Lauf, Vergleich, Abstimmung oder den Lauf-Editor (WZ32.4).
+ *  Den Editor öffnet `openEditor(form, origin)`. */
 export function BalancingPage({ active = true }: { active?: boolean }) {
   const data = useBalancing(active);
-  const [form, setForm] = useState<BalanceForm>(EMPTY_FORM);
   const [presets, keepPresets] = usePresets();
   const [picked, setPicked] = useState('');
   const [checkedRaw, setChecked] = useState<string[]>([]);
@@ -58,21 +80,20 @@ export function BalancingPage({ active = true }: { active?: boolean }) {
   useTicketPage('balancing', selected || data.runs[0]?.id || '', active);
   const show = (next: Mode) => { setMode(next); setView('detail'); };
   const open = (id: string) => { setPicked(id); show('report'); };
-  /** Formular im Editor öffnen und mit `next` füllen. */
-  const openEditor = (next: BalanceForm) => { setForm(next); show('editor'); };
-  const start = async (spec: BalanceSpec) => { await data.start(spec); setView('list'); };
+  const { editor, openEditor } = useEditorTarget(() => { data.reloadBaselines(); show('editor'); });
+  const newRun = () => openEditor(EMPTY_FORM, { kind: 'leer', label: '' });
+  /** Liste nur nach einem Start; eine Ablehnung wirft, damit der Editor offen bleibt und den Grund zeigt. */
+  const start = async (spec: BalanceSpec) => { if (!(await data.start(spec))) throw new Error(data.startError() || 'Lauf abgelehnt'); setView('list'); };
   const removeMany = async (paths: string[]) => {
     if (!(await data.removeMany(paths))) return;
     setPicked(selectionAfterRemoval(entries, paths, selected));
-    setChecked((c) => c.filter((p) => !paths.includes(p)));
-    setCompare((c) => c.filter((p) => !paths.includes(p)));
+    const keep = (c: string[]) => c.filter((p) => !paths.includes(p));
+    setChecked(keep);
+    setCompare(keep);
   };
   const actions: DetailActions = {
     onRestart: (spec) => void start(spec),
-    onEdit: (spec, variant) => {
-      const f = formFromSpec(spec);
-      openEditor(variant ? { ...f, vary: appendLine(f.vary, variant) } : f);
-    },
+    onEdit: (spec, variant) => openEditor(withVariant(formFromSpec(spec), variant), { kind: 'bericht', label: spec?.label || 'Bericht' }),
     onCompareWith: (path) => { setChecked([path]); setView('list'); },
     onRate: (path, rating) => void data.rate(path, rating),
     onDelete: (paths) => void removeMany(paths),
@@ -88,18 +109,21 @@ export function BalancingPage({ active = true }: { active?: boolean }) {
     />
   );
   const detail = mode === 'editor' ? (
-    <FormEditor form={form} onForm={setForm} presets={presets} onPresets={keepPresets} baselines={data.baselines} onReloadBaselines={data.reloadBaselines} onStart={start} />
+    <RunEditor
+      key={editor.key} initial={editor.form} origin={editor.origin} baselines={data.baselines} runs={data.runs}
+      presets={presets} onPresets={keepPresets} onStart={start} onClose={() => setMode('report')}
+    />
   ) : (
     <BalancingDetail
       compare={comparing} paths={compare} entries={entries} selected={selected} actions={actions} onStop={data.stop}
-      onNew={() => show('editor')} onOpen={open} onMakeBase={(p) => setCompare((c) => [p, ...without(c, p)])}
+      onNew={newRun} onOpen={open} onMakeBase={(p) => setCompare((c) => [p, ...without(c, p)])}
     />
   );
   return (
     <BalancingLayout
-      toolbar={<Toolbar runs={data.runs} editing={mode === 'editor'} onNew={() => show('editor')} />}
+      toolbar={<Toolbar runs={data.runs} editing={mode === 'editor'} onNew={newRun} />}
       notice={data.error ? <p className="svc-error" role="alert">{data.error}</p> : undefined}
-      list={list} detail={detail} view={view} onBack={() => setView('list')}
+      list={list} detail={detail} fill={mode === 'editor'} view={view} onBack={() => setView('list')}
     />
   );
 }

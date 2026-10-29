@@ -15,6 +15,8 @@ interface Props {
   notice?: ReactNode;
   list: ReactNode;
   detail: ReactNode;
+  /** Das Detail füllt die Fläche und scrollt selbst (Lauf-Editor mit fester Fußleiste). */
+  fill?: boolean;
   /** Unter 760 px zeigt die Seite nur diesen Bereich; darüber stehen beide nebeneinander oder untereinander. */
   view: BalancingView;
   /** Knopf „Liste“ im Detail (nur in der schmalen Ansicht sichtbar). */
@@ -25,7 +27,7 @@ interface Props {
  *  darunter Liste (links) und Detail (rechts) mit Splitter und je eigenem Scroll-Container. Unter 1.100 px Breite
  *  stehen beide untereinander, unter 760 px zeigt `view` genau einen der beiden (Container Query auf `.bal-wrap`,
  *  Regeln in styles/balancing.css). */
-export function BalancingLayout({ toolbar, notice, list, detail, view, onBack }: Props) {
+export function BalancingLayout({ toolbar, notice, list, detail, fill, view, onBack }: Props) {
   const [split, setSplit, resetSplit] = useSplit(prefsStore, 'balancing.split', SPLIT_DEFAULT);
   return (
     <div className="bal-wrap">
@@ -41,7 +43,7 @@ export function BalancingLayout({ toolbar, notice, list, detail, view, onBack }:
             <div className="bal-back">
               <Button size="1" variant="soft" onClick={onBack}>Liste</Button>
             </div>
-            <div className="bal-scroll" data-pane="detail">{detail}</div>
+            <div className={fill ? 'bal-fill' : 'bal-scroll'} data-pane="detail">{detail}</div>
           </section>
         </div>
       </div>

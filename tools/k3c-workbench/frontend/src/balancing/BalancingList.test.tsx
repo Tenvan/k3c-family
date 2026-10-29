@@ -83,7 +83,7 @@ describe('Liste (AC-01)', () => {
     const host = await mount();
     const before = items(host).length;
     await click(button(host, 'Neuer Lauf'));
-    await click(button(byLabel(host, 'Konfiguration')!, 'Lauf starten'));
+    await click(button(byLabel(host, 'Lauf-Editor')!, 'Lauf starten'));
     await until(() => items(host).some((r) => r.dataset.id?.startsWith('run:')));
     expect(items(host)).toHaveLength(before + 1);
     const run = items(host).find((r) => r.dataset.id?.startsWith('run:'))!;
@@ -190,9 +190,12 @@ describe('Detail (AC-04)', () => {
     await until(() => byLabel(host, 'Bericht')!.textContent!.includes('Kurzfazit'));
     await openTab(host, 'Hinweise');
     await click(button(host, 'Als Variante übernehmen'));
-    await until(() => byLabel(host, 'Konfiguration') !== null);
-    const vary = host.querySelector<HTMLTextAreaElement>('textarea[aria-label="Varianten"]')!;
-    expect(vary.value).toBe('bot.json:a=1\nbuildings.json:wall.levels.0.hp=360');
+    await until(() => byLabel(host, 'Lauf-Editor') !== null);
+    const rows = [...host.querySelectorAll('table[aria-label="Varianten"] tbody tr')];
+    expect(rows).toHaveLength(2);
+    expect(rows[0].textContent).toContain('bot.json');
+    expect(rows[1].textContent).toContain('wall.levels.0.hp');
+    expect(rows[1].querySelector('input')!.value).toBe('360');
   });
 
   it('der Reiter bleibt gemerkt und „Erneut starten“ ist ohne Auftrag aus', async () => {
