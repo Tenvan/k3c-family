@@ -56,4 +56,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Messwerte der Engine-Optimierung: 1 Seed 77 s → 41 s, 4 Seeds 134 s → 61 s (Commit e768e761). Vier parallele Seeds brauchen 1,5× so lang wie einer (Heap/GC-Druck, u. a. durch das JSON-Parsen je Tick).
+2026-10-29 (Claude): `miniBossID` liest `bosses.json` einmal je Prozess (`sync.OnceValue`); Meilenstein-Lauf byte-gleich (Stufe 4, Tag 36), Laufzeit 80 s. Offen bleibt der zweite Punkt (`wanted`/`nodeFor` mit Map-Zugriffen je Tick), kein Messwert dafür.

@@ -5,7 +5,7 @@ import { EMPTY_TUNE, type TuneForm } from './tune';
 // ausführliche Hilfe (Markdown) für das Popup; dazu Beispiel-Läufe zum Übernehmen. Die Beschreibungen der Dateien in
 // data/ stehen nicht hier, sondern in docs/data/*.md (Popup der Datei-Liste).
 
-export type HelpKey = 'seeds' | 'depth' | 'players' | 'bot' | 'grade' | 'world' | 'helps' | 'days' | 'vary' | 'label' | 'baseline' | 'mode' | 'params' | 'steps' | 'budget';
+export type HelpKey = 'seeds' | 'seedList' | 'depth' | 'players' | 'bot' | 'grade' | 'world' | 'helps' | 'days' | 'vary' | 'label' | 'baseline' | 'mode' | 'params' | 'steps' | 'budget';
 
 export interface FieldHelp {
   label: string;
@@ -21,6 +21,15 @@ const TARGETS = 'Die Ziele (Zielkorridore) stehen in `data/balance-targets.json`
 export const SELECT_HELP: readonly HelpKey[] = ['depth', 'players', 'bot', 'grade', 'world', 'helps', 'mode'];
 
 export const FIELD_HELP: Record<HelpKey, FieldHelp> = {
+  seedList: {
+    label: 'Seed-Liste',
+    hint: 'Genau diese Seeds mit Komma, z. B. k3c-dev,7; leer = Seeds der Ziele.',
+    help: `Statt der ersten N Seeds spielt der Lauf **genau diese Seeds**, z. B. \`k3c-dev,7\` (höchstens 200). Nicht zusammen mit „Seeds“.
+
+- Wirkung: gleiche Seeds wie eine Baseline vergleichen (Delta-Runde, B-640); „Übernehmen“ eines Basis-Laufs setzt die Liste mit.
+
+${TARGETS}`,
+  },
   seeds: {
     label: 'Seeds',
     hint: 'Wie viele Level je Ziel gespielt werden; leer = alle Seeds der Ziele.',

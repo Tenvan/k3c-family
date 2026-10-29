@@ -16,6 +16,9 @@ describe('Spec aus dem Formular', () => {
   it('meldet Fehler auf Deutsch', () => {
     expect(specFromForm({ ...EMPTY_FORM, seeds: '0' }).error).toMatch(/Seeds/);
     expect(specFromForm({ ...EMPTY_FORM, days: 'x' }).error).toMatch(/Tage/);
+    expect(specFromForm({ ...EMPTY_FORM, seedList: ' k3c-dev, 7 ,' }).spec).toEqual({ seedList: ['k3c-dev', '7'] });
+    expect(specFromForm({ ...EMPTY_FORM, seedList: 'k3c-dev', seeds: '3' }).error).toMatch(/nicht beides/);
+    expect(formFromSpec({ seedList: ['k3c-dev', '7'] }).seedList).toBe('k3c-dev,7');
     expect(specFromForm({ ...EMPTY_FORM, vary: 'kaputt' }).error).toMatch(/datei\.json:pfad/);
   });
 

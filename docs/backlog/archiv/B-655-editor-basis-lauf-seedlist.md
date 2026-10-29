@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** BAS
 - **Erstellt:** 2026-10-29
@@ -54,4 +54,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+2026-10-29 (Claude): erledigt. `BalanceSpec.seedList` und Formularfeld „Seed-Liste“ (ConfigForm, Hilfe `seedList`), „Übernehmen“ setzt die Liste; Seeds und Liste zusammen werden abgelehnt. Test in balancing.test.ts. Nicht umgesetzt: Delta-Warnung bei abweichenden Seeds (`baselineView`), dort nur die Seed-Anzahl.

@@ -132,7 +132,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-626](B-626-rg1-werte-entscheiden.md) | REG | Frage | mittel | offen | – | Wertvorschläge aus RG1.1 und BR2.1 entscheiden |
 | [B-627](B-627-rg2-regelklaerungen.md) | REG | Frage | mittel | offen | – | Regelklärungen RG2.1 (Handwerker, Verlust-Korridor, Gold-Schwelle) entscheiden |
 | [B-630](B-630-quellen-werden-nicht-uebernommen.md) | DEV | Problem | mittel | offen | – | Quellen werden nicht übernommen |
-| [B-633](B-633-wartegrund-material-tor-text.md) | CLI | Problem | niedrig | offen | – | Wartegrund des Material-Tors heißt nicht mehr „Material der nächsten Insel“ |
 | [B-635](B-635-muenzskala-2-bis-30.md) | REG | Idee | hoch | eingeplant | BS2 | Münzpreise liegen auf einer kleinen Skala von 2 bis 30 Gold |
 | [B-636](B-636-farm-heisst-baumschule.md) | SIM | Idee | hoch | eingeplant | BS4 | Die Farm heißt Baumschule und steht auf gerodeten Waldbauplätzen |
 | [B-637](B-637-hafen-chunk-boot.md) | SIM | Idee | hoch | eingeplant | BS5 | Ein Hafen-Chunk auf Inselstufe 1 baut das Boot zum Verlassen der Insel |
@@ -144,7 +143,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-652](B-652-mauern-tuerme-verteilt-tor-ist-aeusserste-mauer.md) | SIM | Idee | hoch | eingeplant | BS12 | Mauern und Türme stehen verteilt in jedem Chunk, das Tor ist die äußerste gebaute Mauer |
 | [B-653](B-653-baustellen-schilder-bauoptionen-holzzaun.md) | CLI | Problem | hoch | eingeplant | BS13 | Bauschilder an Bäumen und Felsen nur nach Markierung, keine Bauoptionen für gesperrte Gebäude, Holzmauer als Zaun |
 | [B-654](B-654-bot-performance-miniboss-json.md) | SIM | Schuld | mittel | offen | – | Bot-Performance: bosses.json je Tick neu geparst, nodeFor/wanted mit Map-Zugriffen |
-| [B-655](B-655-editor-basis-lauf-seedlist.md) | DEV | Problem | niedrig | offen | – | Balancing-Editor übernimmt seedList einer Baseline und warnt bei abweichenden Seeds im Delta |
 
 ## Archiv
 
@@ -616,3 +614,5 @@ Zeile in diesen Abschnitt.
 | [B-649](archiv/B-649-balancing-bericht-klartext.md) | DEV | Problem | mittel | verworfen | – | Balancing-Bericht in Klartext: Prozentwerte, Stellschrauben mit Bereich |
 | [B-625](archiv/B-625-balance-baseline-neu.md) | REG | Schuld | mittel | verworfen | – | Balance-Baseline nach BAL6 neu schreiben |
 | [B-651](archiv/B-651-kristallhoehle-titan-welle-raeumt-hub-ab.md) | SIM | Problem | hoch | erledigt | BS3 | Die Titan-Welle der Kristallhöhle räumt den Hub eines Einzelmonarchen in Sekunden ab (coop2) |
+| [B-655](archiv/B-655-editor-basis-lauf-seedlist.md) | DEV | Problem | niedrig | erledigt | – | Balancing-Editor übernimmt seedList einer Baseline und warnt bei abweichenden Seeds im Delta |
+| [B-633](archiv/B-633-wartegrund-material-tor-text.md) | CLI | Problem | niedrig | erledigt | – | Wartegrund des Material-Tors heißt nicht mehr „Material der nächsten Insel“ |

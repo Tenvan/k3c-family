@@ -3,6 +3,7 @@ package balance
 import (
 	"encoding/json"
 	"slices"
+	"sync"
 
 	"k3c/data"
 	"k3c/engine/sim"
@@ -58,11 +59,15 @@ func miniDefeated(isl *sim.Island, depth int) bool {
 	return id == "" || slices.Contains(isl.DefeatedBosses, id)
 }
 
-// miniBossID ist die ID des Minibosses der Tiefe aus data/bosses.json (leer: keiner).
-func miniBossID(depth int) string {
+// miniBossID ist die ID des Minibosses der Tiefe aus data/bosses.json (leer: keiner). Die Datei ist fest (data.Files, kein
+// UseData) und wird einmal je Prozess gelesen (B-654).
+func miniBossID(depth int) string { return miniBossIDs()[depth] }
+
+var miniBossIDs = sync.OnceValue(func() map[int]string {
+	ids := map[int]string{}
 	raw, err := data.Files.ReadFile("bosses.json")
 	if err != nil {
-		return ""
+		return ids
 	}
 	var f struct {
 		Bosses []struct {
@@ -72,15 +77,15 @@ func miniBossID(depth int) string {
 		} `json:"bosses"`
 	}
 	if json.Unmarshal(raw, &f) != nil {
-		return ""
+		return ids
 	}
 	for _, b := range f.Bosses {
-		if b.Kind == "mini" && b.Depth == depth {
-			return b.ID
+		if _, taken := ids[b.Depth]; b.Kind == "mini" && !taken {
+			ids[b.Depth] = b.ID
 		}
 	}
-	return ""
-}
+	return ids
+})
 
 // mayDescend: ein einzelner Monarch geht immer, bei mehreren nur die mit ungeradem Index.
 func mayDescend(isl *sim.Island, w *sim.World, p *sim.Player) bool {

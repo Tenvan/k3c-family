@@ -163,7 +163,7 @@ export interface HubUpgrade {
   gold: number;
   material: Partial<Record<ResourceKind, number>>;
   paid: number;
-  /** Fehlt, solange Gold offen ist; `waitingNextIsland` = Material-Tor fehlt, „Material der nächsten Insel“ (B-592). */
+  /** Fehlt, solange Gold offen ist; `waitingNextIsland` = Material-Tor fehlt, „Tor-Material fehlt“ (B-592, B-633). */
   state?: 'waitingMaterial' | 'waitingNextIsland' | 'waitingWorker';
   /** Zahl der Ausbauschritte auf die nächste Hub-Stufe (B-592); fehlt = älterer Server. */
   steps?: number;

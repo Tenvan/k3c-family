@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** BAS
 - **Erstellt:** 2026-10-25
@@ -54,4 +54,4 @@ keine
 
 ## Notizen
 
-Gefunden im Review von B-631 (2026-10-25).
+2026-10-29 (Claude): erledigt. Texte `wait.nextIsland` und `wait.nextIslandShort` (de/en) nennen jetzt „Tor-Material fehlt ({res})“ bzw. „Tor-Material“; Name des Wartegrunds `waitingNextIsland` bleibt (Protokoll unverändert).

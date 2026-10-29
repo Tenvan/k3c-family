@@ -3,6 +3,8 @@
 /** Auftrag eines Laufs (Go: simrun.Spec); `depth` 0 = Wald, fehlt = Ziel-Tiefe. */
 export interface BalanceSpec {
   seeds?: number;
+  /** Genau diese Seeds statt der ersten N (B-634); nicht zusammen mit `seeds`. */
+  seedList?: string[];
   depth?: number;
   players?: number;
   bot?: string;

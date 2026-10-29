@@ -113,21 +113,21 @@ describe('Ausbauschritt und Material der nächsten Insel (GEB17.5, B-592/AC-03)'
     expect(hubOfferTitle({})).toBe('Ausbauen');
   });
 
-  it('Wartegrund waitingNextIsland: „Material der nächsten Insel“, lang und kurz, Symbol Material', () => {
+  it('Wartegrund waitingNextIsland: „Tor-Material fehlt“, lang und kurz, Symbol Material', () => {
     const wait = hubWait({ hubUpgrade: { ...up, state: 'waitingNextIsland' } }, false);
-    expect(wait).toEqual({ reason: 'material', icon: 'wait-material', text: 'Material der nächsten Insel (Stein, Kupfer)' });
-    expect(hubWait({ hubUpgrade: { ...up, state: 'waitingNextIsland' } }, true)?.text).toBe('nächste Insel');
+    expect(wait).toEqual({ reason: 'material', icon: 'wait-material', text: 'Tor-Material fehlt (Stein, Kupfer)' });
+    expect(hubWait({ hubUpgrade: { ...up, state: 'waitingNextIsland' } }, true)?.text).toBe('Tor-Material');
   });
 
   it('Material-Tor nennt nur, was im Vorrat fehlt (Review GEB17)', () => {
     const wait = hubWait({ hubUpgrade: { ...up, state: 'waitingNextIsland' }, stock: { stone: 80 } as never }, false);
-    expect(wait?.text).toBe('Material der nächsten Insel (Kupfer)');
+    expect(wait?.text).toBe('Tor-Material fehlt (Kupfer)');
   });
 
   it('englisch', () => {
     setLanguage('en');
     expect(hubOfferTitle({ hubStep: 3, hubUpgrade: up })).toBe('Upgrade 3/3');
-    expect(hubWait({ hubUpgrade: { ...up, state: 'waitingNextIsland' } }, false)?.text).toBe('material from the next island (Stone, Copper)');
+    expect(hubWait({ hubUpgrade: { ...up, state: 'waitingNextIsland' } }, false)?.text).toBe('gate material missing (Stone, Copper)');
     expect(hubText({ hubLevel: 1, hubStep: 3, hubUpgrade: up }, false)).toBe('Hub level 1 → 2, step 3/3: 25/25 gold, 50 Stone, 20 Copper');
   });
 });

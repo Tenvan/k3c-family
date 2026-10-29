@@ -17,7 +17,7 @@ interface Props {
   children?: ReactNode;
 }
 
-const TEXT_FIELDS = [['seeds', 'alle'], ['days', 'Ziel']] as const;
+const TEXT_FIELDS = [['seeds', 'alle'], ['seedList', 'k3c-dev,7'], ['days', 'Ziel']] as const;
 const SELECT_FIELDS = ['depth', 'players', 'bot', 'grade', 'world', 'helps'] as const;
 type SelectKey = Exclude<(typeof SELECT_FIELDS)[number], 'bot'>;
 

@@ -4,6 +4,8 @@ import { EMPTY_TUNE, formFromTune, tuneFromForm, type TuneForm } from './tune';
 /** Eingaben des Formulars als Text; leer heißt „weglassen“ (Standard der CLI bzw. Ziel-Tiefe). */
 export interface BalanceForm {
   seeds: string;
+  /** Seeds mit Komma (B-634, B-655), z. B. `k3c-dev,7`; leer = Seeds der Ziele bzw. die ersten N. */
+  seedList: string;
   depth: string;
   players: string;
   bot: string;
@@ -21,7 +23,7 @@ export interface BalanceForm {
   tune: TuneForm;
 }
 
-export const EMPTY_FORM: BalanceForm = { seeds: '', depth: '', players: '', bot: '', grade: '', world: '', helps: '', days: '', vary: '', label: '', baseline: '', tune: EMPTY_TUNE };
+export const EMPTY_FORM: BalanceForm = { seeds: '', seedList: '', depth: '', players: '', bot: '', grade: '', world: '', helps: '', days: '', vary: '', label: '', baseline: '', tune: EMPTY_TUNE };
 
 /** Gleiche Form wie in Go (simrun/spec.go: varyArg). */
 const VARY = /^[A-Za-z0-9_-]+\.json:[A-Za-z0-9_.[\]-]+=[^\s=]{1,64}$/;
@@ -32,6 +34,9 @@ export interface SpecResult {
   spec?: BalanceSpec;
   error?: string;
 }
+
+/** Seeds mit Komma → Liste ohne Leerstellen und leere Einträge; alte Voreinstellungen kennen das Feld nicht. */
+const parseSeedList = (raw: string | undefined): string[] => (raw ?? '').split(',').map((v) => v.trim()).filter(Boolean);
 
 /** Formular → Spec; der erste Fehler kommt als deutscher Text, sonst nur gesetzte Felder (Tiefe 0 = Wald bleibt erhalten). */
 export function specFromForm(form: BalanceForm): SpecResult {
@@ -47,6 +52,9 @@ export function specFromForm(form: BalanceForm): SpecResult {
     const raw = (form[key] ?? '').trim(); // alte Voreinstellungen kennen `world` nicht
     if (raw !== '') spec[key] = raw;
   }
+  const seedList = parseSeedList(form.seedList);
+  if (seedList.length > 0 && spec.seeds !== undefined) return { error: 'Seeds oder Seed-Liste, nicht beides' };
+  if (seedList.length > 0) spec.seedList = seedList;
   const vary = form.vary.split('\n').map((l) => l.trim()).filter(Boolean);
   const bad = vary.find((v) => !VARY.test(v));
   if (bad) return { error: `Variante „${bad}“: Form datei.json:pfad.zum.wert=wert, z. B. economy.json:purse.startGold=120` };
@@ -62,7 +70,7 @@ export function formFromSpec(spec: BalanceSpec | undefined): BalanceForm {
   const s = spec ?? {};
   const text = (v: number | string | undefined) => (v === undefined ? '' : String(v));
   return {
-    seeds: text(s.seeds), depth: text(s.depth), players: text(s.players), bot: s.bot ?? '', grade: s.grade ?? '', world: s.world ?? '', helps: s.helps ?? '', days: text(s.days),
+    seeds: text(s.seeds), seedList: (s.seedList ?? []).join(','), depth: text(s.depth), players: text(s.players), bot: s.bot ?? '', grade: s.grade ?? '', world: s.world ?? '', helps: s.helps ?? '', days: text(s.days),
     vary: (s.vary ?? []).join('\n'), label: s.label ?? '', baseline: s.baseline ?? '', tune: formFromTune(s.tune),
   };
 }
