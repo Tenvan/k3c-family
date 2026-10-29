@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** BAS
 - **Erstellt:** 2026-10-27
@@ -75,4 +75,4 @@ Daten in `data/` (Rollen als Feld, nicht im Code); Datei ≤ 400 Zeilen, Funktio
 
 ## Notizen
 
-Interview 2026-10-27 mit 🧑 Ralf, 12 Vorschläge in drei Runden, alle wie vorgeschlagen bis auf E1 (Option „Zwei getrennte Urteile“). Auslöser: Lauf „Insel 1 solo" stand auf Fail, obwohl der Endboss fiel (Projekt BAS, BS3.4).
+2026-10-29 (Claude, Sichtung): erledigt in BS3. Der Bericht zeigt Ziel ja/nein und Qualität x von y, Meilenstein-Leiter, Blocker-Satz und `result.json`.

@@ -129,7 +129,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-622](B-622-fackeln-als-spielobjekt.md) | SIM | Idee | niedrig | offen | – | Fackeln gibt es als Spielobjekt mit Licht in der Nacht |
 | [B-623](B-623-hub-stufenfolge-bestaetigen.md) | REG | Frage | mittel | offen | – | Stufenfolge des Hubs (3 Schritte je Hub-Stufe, Material-Tor) bestätigen |
 | [B-624](B-624-golden-gzip-bestaetigen.md) | INF | Frage | mittel | offen | – | Golden-Daten als gzip mit lesbaren Diffs bestätigen |
-| [B-625](B-625-balance-baseline-neu.md) | REG | Schuld | mittel | offen | – | Balance-Baseline nach BAL6 neu schreiben |
 | [B-626](B-626-rg1-werte-entscheiden.md) | REG | Frage | mittel | offen | – | Wertvorschläge aus RG1.1 und BR2.1 entscheiden |
 | [B-627](B-627-rg2-regelklaerungen.md) | REG | Frage | mittel | offen | – | Regelklärungen RG2.1 (Handwerker, Verlust-Korridor, Gold-Schwelle) entscheiden |
 | [B-630](B-630-quellen-werden-nicht-uebernommen.md) | DEV | Problem | mittel | offen | – | Quellen werden nicht übernommen |
@@ -141,10 +140,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-640](B-640-balancing-delta-runden.md) | DEV | Idee | hoch | eingeplant | BS7 | Balancing nach Mechanik-Änderungen läuft als Delta-Runde gegen eine Baseline |
 | [B-641](B-641-grafik-hafen-schiff.md) | DEV | Idee | hoch | eingeplant | BS10 | Hafen und Schiff haben eigene Grafiken je Bauabschnitt |
 | [B-642](B-642-meilenstein-lauf-ganze-insel.md) | DEV | Idee | hoch | eingeplant | BS11 | Der Balancing-Tester spielt nur eine Stufe, der Meilenstein-Lauf braucht die ganze Insel |
-| [B-644](B-644-sim-test-warten-wie-check-run.md) | DEV | Idee | mittel | offen | – | sim_test wartet wie check_run auf das Ende und meldet Fortschritt je Tag |
-| [B-645](B-645-meilenstein-bots-bauen-keine-wirtschaft.md) | DEV | Problem | hoch | offen | BS3 | Der Meilenstein-Lauf coop2 scheitert an den Bots, nicht an den Werten: Es entsteht keine Wirtschaft |
-| [B-648](B-648-balancing-bericht-rahmenregeln.md) | DEV | Problem | hoch | offen | – | Balancing-Bericht urteilt nach Ziel und zeigt den Fortschritt |
-| [B-649](B-649-balancing-bericht-klartext.md) | DEV | Problem | mittel | offen | – | Balancing-Bericht in Klartext: Prozentwerte, Stellschrauben mit Bereich |
 | [B-650](B-650-boss-hp-je-spieler-eigenes-feld.md) | SIM | Idee | hoch | eingeplant | BS3 | Boss-HP je Zusatzspieler bekommt ein eigenes Feld, getrennt von der Wellengröße |
 | [B-651](B-651-kristallhoehle-titan-welle-raeumt-hub-ab.md) | SIM | Problem | hoch | offen | BS3 | Die Titan-Welle der Kristallhöhle räumt den Hub eines Einzelmonarchen in Sekunden ab (coop2) |
 | [B-652](B-652-mauern-tuerme-verteilt-tor-ist-aeusserste-mauer.md) | SIM | Idee | hoch | eingeplant | BS12 | Mauern und Türme stehen verteilt in jedem Chunk, das Tor ist die äußerste gebaute Mauer |
@@ -616,3 +611,8 @@ Zeile in diesen Abschnitt.
 | [B-643](archiv/B-643-wald-stein-fuer-hub-ausbau.md) | REG | Problem | hoch | erledigt | BS3 | Im Wald gibt es keinen Stein für den Hub-Ausbau auf Stufe 2 |
 | [B-646](archiv/B-646-aggressionspool-wellen-lawine.md) | SIM | Problem | hoch | erledigt | BS3 | Unter Tage löst jede Welle die nächste aus: Der Aggressionspool läuft in eine Lawine |
 | [B-647](archiv/B-647-endboss-fuer-einen-bot-nicht-erreichbar.md) | SIM | Problem | hoch | erledigt | BS3 | Ein einzelner Bot kann den Endboss nicht besiegen: Truppen erreichen ihn nicht, Monarch heilt nicht |
+| [B-644](archiv/B-644-sim-test-warten-wie-check-run.md) | DEV | Idee | mittel | erledigt | – | sim_test wartet wie check_run auf das Ende und meldet Fortschritt je Tag |
+| [B-645](archiv/B-645-meilenstein-bots-bauen-keine-wirtschaft.md) | DEV | Problem | hoch | verworfen | BS3 | Der Meilenstein-Lauf coop2 scheitert an den Bots, nicht an den Werten: Es entsteht keine Wirtschaft |
+| [B-648](archiv/B-648-balancing-bericht-rahmenregeln.md) | DEV | Problem | hoch | erledigt | – | Balancing-Bericht urteilt nach Ziel und zeigt den Fortschritt |
+| [B-649](archiv/B-649-balancing-bericht-klartext.md) | DEV | Problem | mittel | verworfen | – | Balancing-Bericht in Klartext: Prozentwerte, Stellschrauben mit Bereich |
+| [B-625](archiv/B-625-balance-baseline-neu.md) | REG | Schuld | mittel | verworfen | – | Balance-Baseline nach BAL6 neu schreiben |

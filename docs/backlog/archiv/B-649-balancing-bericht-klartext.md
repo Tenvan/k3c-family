@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Projekt:** BAS
 - **Erstellt:** 2026-10-28
@@ -54,4 +54,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+2026-10-29 (Claude, Sichtung): verworfen. Das Ticket ist nie über die Vorlage hinausgekommen; der Bericht nennt Prozentwerte und Stellschrauben mit Bereich bereits (Hinweise in `balance-*.md`).

@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Projekt:** BAL
 - **Erstellt:** 2026-10-25
@@ -54,4 +54,4 @@ keine
 
 ## Notizen
 
-Aus dem Review BAL6. Nach dem Merge von BAL6 (und am besten nach der Golden-Kette GEB16/W12/GEB17, die den Wald, den Zyklus und den Hub ändert) ausführen.
+2026-10-29 (Claude, Sichtung): verworfen. Die Vergleichsbasis ist jetzt die benannte Baseline `M1` (B-640), nicht mehr `testdata/balance/baseline.json`.

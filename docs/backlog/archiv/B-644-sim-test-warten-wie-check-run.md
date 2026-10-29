@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** BAS
 - **Erstellt:** 2026-10-26
@@ -55,4 +55,4 @@ keine (Default: Name `wait`, Limit wie `check_run`).
 
 ## Notizen
 
-Auslöser: Frage von Ralf nach dem Referenzlauf BS11.4. Umgesetzt nach seinem Hinweis „so wie der check_run“; `task check:diff` bis zur Klärung pausiert, nur gezielte `go test`. Workbench-Neustart nötig.
+2026-10-29 (Claude, Sichtung): erledigt, `sim_test start` kennt `wait` und `action: wait` (mcpsrv/simtest_spec.go).
