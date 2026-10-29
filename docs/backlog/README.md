@@ -149,6 +149,11 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-660](B-660-balancing-liste-und-detail.md) | DEV | Idee | hoch | eingeplant | WZ32 | Läufe und Berichte stehen in einer Liste mit Filter und Mehrfachauswahl, der Bericht in Reitern |
 | [B-661](B-661-balancing-lauf-editor-varianten.md) | DEV | Idee | hoch | eingeplant | WZ32 | Der Lauf-Editor setzt Varianten als Tabelle mit Basiswert und Daten-Browser |
 | [B-662](B-662-balancing-berichte-auftrag-sammelaktionen.md) | DEV | Idee | hoch | eingeplant | WZ32 | Die Workbench liefert Auftrag und Label je Bericht und verwaltet Berichte gesammelt |
+| [B-663](B-663-welten-editor-responsive.md) | DEV | Problem | mittel | offen | – | Der Welten Editor bricht nach der Breite seiner Seite um und zeigt keine waagrechte Scrollleiste |
+| [B-664](B-664-welten-editor-zwei-modi.md) | DEV | Idee | mittel | offen | – | Der Welten Editor trennt Welt-Struktur und Stufe bearbeiten und speichert an einer Stelle |
+| [B-665](B-665-welten-editor-buehne-inspektor.md) | DEV | Idee | mittel | offen | – | Im Modus Stufe bearbeiten stehen eine große Live-Vorschau, eine schmale Chunk-Vorschau und ein Inspektor statt vier Steuerzeilen |
+| [B-666](B-666-welten-editor-gebaeude-zustaende.md) | DEV | Idee | mittel | offen | – | Gebäude-Zustände der Live-Vorschau lassen sich je Art, per Voreinstellung und je Bauplatz schnell setzen |
+| [B-667](B-667-live-vorschau-bauplatz-klick.md) | DEV | Idee | niedrig | offen | – | Ein Klick auf einen Bauplatz in der Live-Vorschau wählt ihn im Inspektor |
 
 ## Archiv
 
