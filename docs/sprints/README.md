@@ -16,6 +16,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | BS10 | DEV, CLI | BAS | Grafiken für Hafen und Schiff | – | `aktiv/BS10-grafik-hafen-schiff/` |
 | BS13 | CLI | BAS | Baustellen-Schilder, Bauoptionen und Holzzaun | – | `aktiv/BS13-baustellen-fehler-holzzaun/` |
 | WZ29 | DEV | WZG | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | – | `aktiv/WZ29-sound-grafik-seiten-ausbau/` |
+| WZ32 | DEV | WZG | Balancing-Seite: feste Fläche, eine Liste, Lauf-Editor mit Varianten-Tabelle | – | `aktiv/WZ32-balancing-seite-bedienung/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | WZ31 | DEV | WZG | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | – | `aktiv/WZ31-web-client-first/` |
 | WZ28 | DEV | WZG | Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite | – | `aktiv/WZ28-offline-werkzeuge/` |
