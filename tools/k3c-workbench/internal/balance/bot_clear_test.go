@@ -66,4 +66,18 @@ func TestBotBautSchiff(t *testing.T) {
 	if x := shipX(w, p, 0); x != nil {
 		t.Error("Schiff vor Hub 2 und Heer gezahlt")
 	}
+	w.HubLevel = 2
+	for range fighterWant {
+		w.Troops = append(w.Troops, &sim.Troop{Kind: "archer"})
+	}
+	if x := shipX(w, p, 0); x == nil || *x != ship.X {
+		t.Errorf("Hub 2, Heer und Holz da: shipX %v, erwartet den Schiffs-Platz %v", x, ship.X)
+	}
+	*w.Stock = sim.Stock{}
+	if x := shipX(w, p, 0); x != nil {
+		t.Error("ohne Material gezahlt")
+	}
+	if n := shipNode(w, p); n == nil {
+		t.Error("ohne Material sucht der Bot keinen Knoten")
+	}
 }

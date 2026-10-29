@@ -54,6 +54,11 @@ func wirtschaft(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	if sx := shipX(w, p, reserve); sx != nil {
 		return goTo(p, *sx, true)
 	}
+	if reserve == 0 {
+		if n := shipNode(w, p); n != nil { // Material des nächsten Schiffsabschnitts markieren und sammeln (BS9)
+			return goTo(p, n.X, true)
+		}
+	}
 	if x == nil && reserve == 0 {
 		if n := nodeFor(w, p, sim.Cost{Wood: woodWant}); n != nil {
 			x = &n.X
@@ -257,7 +262,7 @@ func fighterTarget(w *sim.World) int {
 // Vorrat liegt (BS9, B-637); nil sonst. Das Material holen die Bots unter Tage und für den Hub-Ausbau, der Halter am Hub
 // zahlt, sobald es liegt.
 func shipX(w *sim.World, p *sim.Player, reserve int) *float64 {
-	if w.HubLevel < 2 || sim.EconomyOf(w).Fighters < fighterWant { // erst Heer und Hub, das Schiff ist der Schluss der Insel
+	if !shipReady(w) || waitingMaterial(w) {
 		return nil
 	}
 	for _, s := range w.Sites {
@@ -267,6 +272,25 @@ func shipX(w *sim.World, p *sim.Player, reserve int) *float64 {
 		}
 		if left, ok := sim.SiteGoldLeft(w, s); ok && left > 0 && p.Gold >= left+reserve {
 			return &s.X
+		}
+	}
+	return nil
+}
+
+// shipReady: erst Heer und Hub, das Schiff ist der Schluss der Insel.
+func shipReady(w *sim.World) bool {
+	return w.HubLevel >= 2 && sim.EconomyOf(w).Fighters >= fighterWant
+}
+
+// shipNode: der nächste Knoten, der Material für den nächsten Schiffsabschnitt liefert, solange der Vorrat ihn nicht deckt;
+// nil, wenn kein Schiff in dieser Stufe wartet oder nichts zu holen ist.
+func shipNode(w *sim.World, p *sim.Player) *sim.ResourceNode {
+	if !shipReady(w) {
+		return nil
+	}
+	for _, s := range w.Sites {
+		if cost, ok := sim.ShipNextCost(w, s); ok && !covers(*w.Stock, cost) {
+			return nodeFor(w, p, cost)
 		}
 	}
 	return nil

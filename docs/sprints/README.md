@@ -13,6 +13,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | BS8 | DEV, REG | BAS | Meilenstein 2: Bots und Delta-Runde Baumschule gegen Baseline M1 | – | `aktiv/BS8-meilenstein-2-delta-baumschule/` |
 | BS9 | DEV, REG | BAS | Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2 | – | `aktiv/BS9-meilenstein-3-delta-schiff/` |
 | BS6 | CLI, DEV | BAS | Client: Baumschule, Hafen und Schiff, neue Münzskala | – | `aktiv/BS6-client-baumschule-hafen-skala/` |
+| BS10 | DEV, CLI | BAS | Grafiken für Hafen und Schiff | – | `aktiv/BS10-grafik-hafen-schiff/` |
 | BS13 | CLI | BAS | Baustellen-Schilder, Bauoptionen und Holzzaun | – | `aktiv/BS13-baustellen-fehler-holzzaun/` |
 | WZ29 | DEV | WZG | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | – | `aktiv/WZ29-sound-grafik-seiten-ausbau/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
@@ -47,7 +48,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| BS10 | DEV | BAS | Grafiken für Hafen und Schiff | – | Entwurf | `geplant/BS10-grafik-hafen-schiff/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 | P1 | REG | BAL | Spieleabend 1 | Protokoll und Folge-Tickets | bereit | `geplant/P1-spieleabend-1/` |

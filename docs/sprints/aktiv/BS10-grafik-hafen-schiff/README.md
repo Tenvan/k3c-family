@@ -1,14 +1,14 @@
-# BS10 · DEV · Grafiken für Hafen und Schiff
+# BS10 · DEV, CLI · Grafiken für Hafen und Schiff
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAS
-- **Domäne:** DEV
-- **Reife:** Entwurf
+- **Domäne:** DEV, CLI
+- **Reife:** bereit
 - **Tickets:** B-641
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude (2026-10-29, Defaults aus B-641)
 
 ## Ausgangslage
 
@@ -56,6 +56,14 @@ B-641 › Ausnahme- und Fehlerfälle.
 keine (Zahl der Abschnitte aus BS5).
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BS10.1 | `BS10.1-hafen-grafik.md` | Umsetzung | autonom | in Arbeit |
+| BS10.2 | `BS10.2-schiff-grafik.md` | Umsetzung | autonom | offen |
+| BS10.3 | `BS10.3-asset-slots-einbau.md` | Umsetzung | autonom | offen |
+| BS10.4 | `BS10.4-review-bs10.md` | Review | autonom | offen |
+| BS10.5 | `BS10.5-abnahme-studio-geraet.md` | Workshop | Mensch | offen |
 
 Reife Entwurf, Stichpunkte:
 - BS10.1 · DEV · Hafen: Vorlage, Bausteine, Rendern (AC-01)
