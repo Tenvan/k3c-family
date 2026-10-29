@@ -51,6 +51,9 @@ func wirtschaft(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	if bx := buildX(w, p, reserve); bx != nil {
 		return goTo(p, *bx, true)
 	}
+	if sx := shipX(w, p, reserve); sx != nil {
+		return goTo(p, *sx, true)
+	}
 	if x == nil && reserve == 0 {
 		if n := nodeFor(w, p, sim.Cost{Wood: woodWant}); n != nil {
 			x = &n.X
@@ -248,4 +251,23 @@ func fighterTarget(w *sim.World) int {
 		}
 	}
 	return fighterWant
+}
+
+// shipX: der Schiffs-Platz des Hafens, wenn das Gold für den nächsten Abschnitt reicht und das Material des Abschnitts im
+// Vorrat liegt (BS9, B-637); nil sonst. Das Material holen die Bots unter Tage und für den Hub-Ausbau, der Halter am Hub
+// zahlt, sobald es liegt.
+func shipX(w *sim.World, p *sim.Player, reserve int) *float64 {
+	if w.HubLevel < 2 || sim.EconomyOf(w).Fighters < fighterWant { // erst Heer und Hub, das Schiff ist der Schluss der Insel
+		return nil
+	}
+	for _, s := range w.Sites {
+		cost, ok := sim.ShipNextCost(w, s)
+		if !ok || !covers(*w.Stock, cost) {
+			continue
+		}
+		if left, ok := sim.SiteGoldLeft(w, s); ok && left > 0 && p.Gold >= left+reserve {
+			return &s.X
+		}
+	}
+	return nil
 }

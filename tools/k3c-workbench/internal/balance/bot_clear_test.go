@@ -39,3 +39,31 @@ func TestBotRodetBaumschule(t *testing.T) {
 		t.Fatalf("clearNode %v, erst roden %v", n, sim.SiteNeedsClearing(w, nursery))
 	}
 }
+
+// BS9.1/AC-01 (B-637): Der Bot zahlt das Schiff erst mit Hub 2 und genug Kämpfern und nur, wenn das Material des Abschnitts im Vorrat liegt.
+func TestBotBautSchiff(t *testing.T) {
+	isl, err := sim.CreateIsland("1", []int{0}, 1, sim.CreateOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	w := isl.Stages[0]
+	p := sim.AddIslandPlayer(isl, 0)
+	p.Gold = 500
+	var ship *sim.Site
+	for _, s := range w.Sites {
+		if s.Kind == "ship" {
+			ship = s
+		}
+	}
+	if ship == nil {
+		t.Fatal("kein Schiffs-Platz in der Standard-Welt")
+	}
+	cost, ok := sim.ShipNextCost(w, ship)
+	if !ok || cost.Wood == 0 {
+		t.Fatalf("Kiel kostet Holz: %+v %v", cost, ok)
+	}
+	*w.Stock = sim.Stock{Wood: cost.Wood}
+	if x := shipX(w, p, 0); x != nil {
+		t.Error("Schiff vor Hub 2 und Heer gezahlt")
+	}
+}

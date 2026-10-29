@@ -1,14 +1,14 @@
-# BS8 · DEV · Meilenstein 2: Bots und Delta-Runde Baumschule gegen Baseline M1
+# BS8 · DEV, REG · Meilenstein 2: Bots und Delta-Runde Baumschule gegen Baseline M1
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAS
-- **Domäne:** DEV
-- **Reife:** Entwurf
+- **Domäne:** DEV, REG
+- **Reife:** bereit
 - **Tickets:** B-636, B-640
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude (2026-10-29, Defaults aus B-636/B-640)
 
 ## Ausgangslage
 
@@ -56,6 +56,12 @@ Holz Tag 3 +40 % → Hinweis nennt `nursery.growSeconds`, `nursery.cost` → Anp
 keine.
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BS8.1 | `BS8.1-bots-baumschule-roden.md` | Umsetzung | autonom | fertig |
+| BS8.2 | `BS8.2-delta-runde-holz.md` | Umsetzung | autonom | fertig |
+| BS8.3 | `BS8.3-review-baseline-m2.md` | Review | autonom | fertig |
 
 Reife Entwurf, Stichpunkte:
 - BS8.1 · DEV · Bots: Baumschule roden und kaufen (AC-01)

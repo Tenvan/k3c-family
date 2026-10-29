@@ -59,3 +59,18 @@ func (isl *Island) harbor() (*World, *Site) {
 func shipComplete(w *World, s *Site) bool {
 	return s.State == "built" && s.Upgrade == "" && levelOf(w, s) >= len(buildings[shipKind].Levels)
 }
+
+// ShipNextCost ist der Preis des nächsten Schiffs-Abschnitts am Platz s (Kiel am unbezahlten Platz, danach Rumpf und
+// Segel); false, wenn der Platz kein Schiff ist, nichts mehr zu bauen ist oder gerade ein Ausbau läuft. Nur gelesen, für
+// die Bots des Balancing-Testers (BS9).
+func ShipNextCost(w *World, s *Site) (Cost, bool) {
+	switch {
+	case s.Kind != shipKind:
+		return Cost{}, false
+	case s.State == "unpaid":
+		return siteCost(w, s), true
+	case upgradePayable(w, s):
+		return nextLevel(w, s).Cost, true
+	}
+	return Cost{}, false
+}

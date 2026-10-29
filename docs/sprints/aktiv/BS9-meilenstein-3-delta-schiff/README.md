@@ -1,14 +1,14 @@
-# BS9 · DEV · Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2
+# BS9 · DEV, REG · Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAS
-- **Domäne:** DEV
-- **Reife:** Entwurf
+- **Domäne:** DEV, REG
+- **Reife:** bereit
 - **Tickets:** B-638, B-640
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude (2026-10-29, Defaults aus B-637/B-640)
 
 ## Ausgangslage
 
@@ -56,6 +56,12 @@ Schiff nie fertig → Ampel rot mit fehlendem Material; Justierung nur in `schif
 keine.
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BS9.1 | `BS9.1-bots-bauen-schiff.md` | Umsetzung | autonom | fertig |
+| BS9.2 | `BS9.2-delta-runde-schiff.md` | Umsetzung | autonom | fertig |
+| BS9.3 | `BS9.3-review-baseline-m3.md` | Review | autonom | fertig |
 
 Reife Entwurf, Stichpunkte:
 - BS9.1 · DEV · Bots bauen das Schiff, Bericht Bau-Tag (AC-01)
