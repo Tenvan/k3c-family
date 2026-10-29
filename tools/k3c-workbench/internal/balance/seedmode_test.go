@@ -67,7 +67,7 @@ func TestSeedModusUnbekannt(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	bad := strings.Replace(string(raw), `"seedMode": "dev"`, `"seedMode": "raten"`, 1)
+	bad := strings.Replace(string(raw), `"seedMode": "all"`, `"seedMode": "raten"`, 1)
 	if bad == string(raw) {
 		t.Fatal("seedMode nicht in der Datei")
 	}

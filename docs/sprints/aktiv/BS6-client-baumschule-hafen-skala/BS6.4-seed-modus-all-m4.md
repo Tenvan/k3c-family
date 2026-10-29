@@ -1,6 +1,6 @@
 # BS6.4 · Seed-Modus all, Abschluss-Lauf, Baseline M4
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -50,5 +50,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+**Fertig mit Abweichung (2026-10-29, Claude).** `seedMode` in `data/balance-targets.json` steht wieder auf `all`. Der Lauf mit allen 101 Seeds (run-2) bricht am Limit von 1 h ab („Zeitlimit erreicht“, ~4 min je Seed unter Last); der Abschluss-Lauf lief mit 8 Seeds (run-3, 29 min, `baseline=M3`) und ist als `M4` gesichert (`ohnePass`). Delta: `holz` und `schiff` gleich; **`basis` kippt in 1 von 13 Zielen** (Gold am Morgen je Spieler, Median), aber die Baseline `M3` hat 1 Seed, der Lauf 8 – der Vergleich ist nicht gleichwertig (Seed-Streuung, kein Beleg für eine Regression). **AC-04 nur teilweise:** Lauf über alle Seeds scheitert am Zeitlimit (Ticket-Kandidat: Limit oder parallele Last), Vergleich mit gleicher Seed-Zahl fehlt. Empfehlung 🧑: M4 mit 8 Seeds als neue Vergleichsbasis nehmen.
