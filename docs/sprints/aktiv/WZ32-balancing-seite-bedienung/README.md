@@ -79,9 +79,8 @@ keine (Defaults der Tickets gelten, Freigabe 2026-10-29).
 | WZ32.2 | `WZ32.2-seitenrahmen.md` | Umsetzung | autonom | fertig |
 | WZ32.3 | `WZ32.3-liste-und-detail.md` | Umsetzung | autonom | fertig |
 | WZ32.4 | `WZ32.4-lauf-editor.md` | Umsetzung | autonom | fertig |
-| WZ32.5 | `WZ32.5-review.md` | Review | autonom | offen |
+| WZ32.5 | `WZ32.5-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-29: AC-01 bis AC-10 erfüllt (Ergebnisse WZ32.1 bis WZ32.5), `task check` und `task check:go` grün. 3 schwere Review-Befunde behoben (Geister-Lauf in der Liste, abgelehnter Start schloss den Editor, Textmodus verlor Zeilen). Neue Tickets: B-668, B-669. Manuelle Abnahme am PC durch 🧑 steht aus.
