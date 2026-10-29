@@ -70,5 +70,4 @@ Reife Entwurf, Stichpunkte:
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-29 (Claude, autonom): AC-01, AC-03 erfüllt (BS9.1, BS9.2), AC-04 teilweise (`M3` gesichert). **AC-02 verschoben: `schiff` wird nicht grün, Lauf steckt in Stufe 4, B-656.** Review: BS6.5. Abnahme 🧑 offen.
