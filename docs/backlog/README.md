@@ -144,6 +144,11 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-653](B-653-baustellen-schilder-bauoptionen-holzzaun.md) | CLI | Problem | hoch | eingeplant | BS13 | Bauschilder an Bäumen und Felsen nur nach Markierung, keine Bauoptionen für gesperrte Gebäude, Holzmauer als Zaun |
 | [B-654](B-654-bot-performance-miniboss-json.md) | SIM | Schuld | mittel | offen | – | Bot-Performance: bosses.json je Tick neu geparst, nodeFor/wanted mit Map-Zugriffen |
 | [B-656](B-656-meilenstein-titan-mehrseed.md) | REG | Problem | mittel | offen | – | Meilenstein 1 coop2 standard: Titan über mehrere Seeds, holz und schiff grün |
+| [B-658](B-658-balancing-umbruch-container-query.md) | DEV | Problem | hoch | offen | – | Die Balancing-Seite stellt Konfiguration und Berichte unter 1.100 px untereinander |
+| [B-659](B-659-balancing-seite-feste-flaeche.md) | DEV | Idee | mittel | offen | – | Die Balancing-Seite füllt die Fläche, nur Liste und Detail scrollen |
+| [B-660](B-660-balancing-liste-und-detail.md) | DEV | Idee | hoch | offen | – | Läufe und Berichte stehen in einer Liste mit Filter und Mehrfachauswahl, der Bericht in Reitern |
+| [B-661](B-661-balancing-lauf-editor-varianten.md) | DEV | Idee | hoch | offen | – | Der Lauf-Editor setzt Varianten als Tabelle mit Basiswert und Daten-Browser |
+| [B-662](B-662-balancing-berichte-auftrag-sammelaktionen.md) | DEV | Idee | hoch | offen | – | Die Workbench liefert Auftrag und Label je Bericht und verwaltet Berichte gesammelt |
 
 ## Archiv
 
