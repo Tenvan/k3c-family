@@ -14,6 +14,9 @@ const HUB_BUILDINGS: Partial<Record<SiteKind, string>> = {
   armory: 'ruestkammer', storage: 'lager', nursery: 'farm', barracks: 'kaserne',
 };
 
+/** Abschnitte des Schiffs aus `data/ship.json` (B-637): Kiel, Rumpf, Segel */
+const SHIP_STAGES = [1, 2, 3];
+
 /** Textur-Schlüssel → Datei unter `public/grafik/` (nur zugeordnete Dateien; LoadScene lädt genau diese) */
 export const BUILDING_TEXTURES: Record<string, string> = {
   ...stufen('hub', 'burg'),
@@ -25,6 +28,8 @@ export const BUILDING_TEXTURES: Record<string, string> = {
   ...stufen('wall', 'mauer'),
   ...stufen('tower', 'turm'),
   ...stufen('backwall', 'hintergrundmauer'),
+  /** Schiff am Hafen (BS10, B-641): ein Abschnitt je Stufe (Kiel, Rumpf, Segel = fertig), Datei `schiff-<n>` */
+  ...Object.fromEntries(SHIP_STAGES.map((n) => [`grafik:ship-${n}`, `gebaeude/schiff-${n}-32.png`])),
   ...Object.assign({}, ...Object.entries(HUB_BUILDINGS).map(([kind, id]) => stufen(kind, id!))),
   'grafik:stairsUp': 'gebaeude/treppe-hoch-32.png',
   'grafik:stairsDown': 'gebaeude/treppe-runter-32.png',
@@ -43,6 +48,7 @@ const stageKeys = (kind: string): string[] => [1, 2, 3, 4, 5].map((n) => `grafik
 const STAGES: Partial<Record<SiteKind, string[]>> = {
   wall: stageKeys('wall'),
   tower: stageKeys('tower'),
+  ship: SHIP_STAGES.map((n) => `grafik:ship-${n}`),
   ...Object.fromEntries(Object.keys(HUB_BUILDINGS).map((kind) => [kind, stageKeys(kind)])),
 };
 
@@ -74,8 +80,8 @@ export function siteTexture(kind: SiteKind, state: SiteState, stage?: number): s
   if (state !== 'built') return null;
   const stages = STAGES[kind];
   if (stage !== undefined && stages) {
-    // Hub-Gebäude (mit und ohne eigene Stufen): fehlt die Stufe, gilt die höchste vorhandene (B-458 kann die Stufenzahl ändern); Mauer, Turm, Tor: Lücke = null
-    const n = kind in HUB_BUILDINGS ? Math.min(Math.max(Math.trunc(stage) || 1, 1), stages.length) : stage;
+    // Hub-Gebäude und Schiff: fehlt die Stufe, gilt die höchste vorhandene (B-458 kann die Stufenzahl ändern); Mauer, Turm, Tor: Lücke = null
+    const n = kind in HUB_BUILDINGS || kind === 'ship' ? Math.min(Math.max(Math.trunc(stage) || 1, 1), stages.length) : stage;
     return stages[n - 1] ?? null;
   }
   return BASE[kind] ?? null;

@@ -1,6 +1,6 @@
 # BS6.5 · Review BS6
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -50,5 +50,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+**Fertig (2026-10-29, Claude), Review durch getrennten Reviewer-Agenten (Sonnet) über 34ef14d2, fb2c50bb, ba556d4e.** Client unauffällig. Behoben (9b678135): Bot sucht Material für Rumpf und Segel (`shipNode`), wartet bei `waitingMaterial` wie bei Bauten, Positivtest für `shipX`. Offen: Schiff nimmt gemeinsames Material, das der Hub-Ausbau braucht (Ping-Pong möglich, ungeprüft); JSDoc von `drawPrice` hängt über der neuen Funktion (kosmetisch); Test `TestBotRodetBaumschule` prüft den Kauf nach dem Roden nicht. Ob der Bot die Hafen-Stufe je betritt, zeigt der Lauf: Rumpf ab Tag 16 bezahlbar, Segel nie. Abnahme am Gerät: BS6.6 (🧑).

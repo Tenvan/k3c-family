@@ -86,6 +86,21 @@ describe('Gebäude-Grafik (GR3.1)', () => {
     }
   });
 
+  it('Schiff: je Abschnitt (Kiel, Rumpf, Segel) eine eigene 32-px-Grafik, Baustelle und Lücken Platzhalter (BS10 AC-03)', () => {
+    for (const n of [1, 2, 3]) {
+      const key = siteTexture('ship', 'built', n);
+      expect(key).toBe(`grafik:ship-${n}`);
+      expect(BUILDING_TEXTURES[key!]).toBe(`gebaeude/schiff-${n}-32.png`);
+      expect(textureScale(key!)).toBe(1);
+      expect(FILES).toContain(`../../../public/grafik/${BUILDING_TEXTURES[key!]}`);
+    }
+    expect(siteTexture('ship', 'built')).toBe('grafik:ship-1');
+    expect(siteTexture('ship', 'built', 4)).toBe('grafik:ship-3'); // andere Abschnittszahl später: höchster vorhandener
+    expect(siteTexture('ship', 'unpaid', 2)).toBeNull();
+    expect(isHubBuilding('ship')).toBe(false);
+    expect(BUILDINGS.ship.levels).toHaveLength(3); // Abschnitte aus data/ship.json = Grafiken
+  });
+
   it('Hintergrundmauer je Stufe eigene 32-px-Grafik, unbekannte Stufe null (GEB3 AC-08)', () => {
     for (const n of [1, 2, 3, 4, 5]) {
       const key = backWallTexture(n);

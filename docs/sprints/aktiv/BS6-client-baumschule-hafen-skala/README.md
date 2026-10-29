@@ -64,7 +64,7 @@ keine.
 | BS6.2 | `BS6.2-hafen-schiff-zeichnen.md` | Umsetzung | autonom | fertig |
 | BS6.3 | `BS6.3-kosten-anzeige-skala.md` | Umsetzung | autonom | fertig |
 | BS6.4 | `BS6.4-seed-modus-all-m4.md` | Umsetzung | autonom | fertig |
-| BS6.5 | `BS6.5-review-bs6.md` | Review | autonom | offen |
+| BS6.5 | `BS6.5-review-bs6.md` | Review | autonom | fertig |
 | BS6.6 | `BS6.6-abnahme-geraet.md` | Workshop | Mensch | offen |
 
 Reife Entwurf, Stichpunkte:

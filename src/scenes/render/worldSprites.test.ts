@@ -9,7 +9,7 @@ const ALL = ['forest', 'cave', 'mine', 'ironhold', 'crystal'];
 describe('Welt-Grafik (GR3.2)', () => {
   it('zugeordnete Objekte bekommen ihr Bild; Portal, Ausgang, Truhe und Lager aus tools/buildings stehen still im Maßstab 1 (GEB6)', () => {
     expect(objectSprite('coin')).toMatchObject({ key: 'grafik:coins', frames: 8 });
-    for (const [id, key] of [['portal', 'grafik:portal'], ['exit', 'grafik:ausgang'], ['pickup:chest', 'grafik:truhe-geschlossen'], ['camp:recruit', 'grafik:lager']]) {
+    for (const [id, key] of [['portal', 'grafik:portal'], ['exit', 'grafik:ausgang'], ['harbor', 'grafik:hafen'], ['pickup:chest', 'grafik:truhe-geschlossen'], ['camp:recruit', 'grafik:lager']]) {
       expect(objectSprite(id!), id).toMatchObject({ key, frame: 0, frames: 1, zoom: 1 });
     }
     expect(objectSprite('camp:recruit:fire')).toBeNull(); // das Bild enthält die Feuerstelle
@@ -30,7 +30,7 @@ describe('Welt-Grafik (GR3.2)', () => {
   });
 
   it('jeder Schlüssel ist geladen und jede Datei liegt unter public/grafik/', () => {
-    const keys = ['portal', 'exit', 'pickup:chest', 'pickup:skillPoint', 'coin', 'camp:recruit'].map((id) => objectSprite(id)?.key);
+    const keys = ['portal', 'exit', 'harbor', 'pickup:chest', 'pickup:skillPoint', 'coin', 'camp:recruit'].map((id) => objectSprite(id)?.key);
     for (const key of keys) expect(WORLD_TEXTURES).toHaveProperty([key!]);
     for (const { file } of Object.values(WORLD_TEXTURES)) expect(FILES).toContain(`../../../public/grafik/${file}`);
     expect(Object.keys(WORLD_TEXTURES).some((k) => k.startsWith('bg:'))).toBe(false); // Hintergründe lädt die Stufe selbst (GEB18)

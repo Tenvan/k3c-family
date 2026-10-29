@@ -38,7 +38,7 @@ export const SITE_SIZE: Record<Site['kind'], [number, number]> = {
   healer: [100, 100],
   smithy: [120, 110],
   armory: [130, 120],
-  ship: [170, 110], // vorläufig, die Grafik des Schiffs folgt mit BS10
+  ship: [190, 160], // Platzhalter-Größe wie die Grafik `schiff-*` (6 × 5 Kacheln, BS10)
 };
 const SITE_COLOR: Record<Site['kind'], number> = {
   wall: 0x8d99ae,

@@ -51,13 +51,8 @@ func wirtschaft(w *sim.World, p *sim.Player) sim.PlayerCommand {
 	if bx := buildX(w, p, reserve); bx != nil {
 		return goTo(p, *bx, true)
 	}
-	if sx := shipX(w, p, reserve); sx != nil {
+	if sx := shipStep(w, p, reserve); sx != nil {
 		return goTo(p, *sx, true)
-	}
-	if reserve == 0 {
-		if n := shipNode(w, p); n != nil { // Material des nächsten Schiffsabschnitts markieren und sammeln (BS9)
-			return goTo(p, n.X, true)
-		}
 	}
 	if x == nil && reserve == 0 {
 		if n := nodeFor(w, p, sim.Cost{Wood: woodWant}); n != nil {
@@ -291,6 +286,19 @@ func shipNode(w *sim.World, p *sim.Player) *sim.ResourceNode {
 	for _, s := range w.Sites {
 		if cost, ok := sim.ShipNextCost(w, s); ok && !covers(*w.Stock, cost) {
 			return nodeFor(w, p, cost)
+		}
+	}
+	return nil
+}
+
+// shipStep: zahlen, sobald der Abschnitt bezahlbar ist, sonst (ohne Rücklage) Material dafür sammeln (BS9).
+func shipStep(w *sim.World, p *sim.Player, reserve int) *float64 {
+	if x := shipX(w, p, reserve); x != nil {
+		return x
+	}
+	if reserve == 0 {
+		if n := shipNode(w, p); n != nil {
+			return &n.X
 		}
 	}
 	return nil

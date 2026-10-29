@@ -32,7 +32,7 @@ Erledigt, wenn M4 erreicht ist und BS6 und BS10 am Gerät abgenommen sind.
 | BS5 | Hafen-Chunk, Schiff bauen und Inselwechsel am Hafen | erledigt |
 | BS9 | Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2 | aktiv |
 | BS6 | Client: Baumschule, Hafen und Schiff, neue Münzskala | aktiv |
-| BS10 | Grafiken für Hafen und Schiff | geplant |
+| BS10 | Grafiken für Hafen und Schiff | aktiv |
 | BS12 | Mauern und Türme verteilt, Tor ist die äußerste Mauer | erledigt |
 | BS13 | Baustellen-Schilder, Bauoptionen und Holzzaun | aktiv |
 

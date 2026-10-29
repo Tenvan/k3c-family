@@ -1180,6 +1180,50 @@
       ]
     },
     {
+      "id": "harbor",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Hafen: Steg mit Kai (Level-Objekt harbor)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/hafen-32.png"
+        }
+      ]
+    },
+    {
+      "id": "ship:1",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Schiff: Abschnitt 1 (Kiel)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/schiff-1-32.png"
+        }
+      ]
+    },
+    {
+      "id": "ship:2",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Schiff: Abschnitt 2 (Rumpf)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/schiff-2-32.png"
+        }
+      ]
+    },
+    {
+      "id": "ship:3",
+      "art": "grafik",
+      "kategorie": "gebaeude",
+      "beschreibung": "Schiff: Abschnitt 3 (Segel, fertig)",
+      "wahl": [
+        {
+          "datei": "grafik/gebaeude/schiff-3-32.png"
+        }
+      ]
+    },
+    {
       "id": "barracks:1",
       "art": "grafik",
       "kategorie": "gebaeude",

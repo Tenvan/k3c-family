@@ -34,6 +34,8 @@ const PLANTATION_DEPTH = 3;
 const PLACEHOLDER_NODE_HEIGHT = 158;
 /** Abstand der Ausgang-Beschriftung über der Oberkante des Ausgangs */
 const SIGN_GAP = 24;
+/** Der Hafen-Steg steht um so viele Kacheln links vom Schiffs-Platz, damit Steg und Schiff nebeneinander liegen (BS10) */
+const HARBOR_SHIFT = 5.5;
 
 type View = Phaser.GameObjects.Container;
 type Sprite = Phaser.GameObjects.Sprite;
@@ -231,6 +233,10 @@ export class WorldRenderer {
         this.put(scene.add.text(ex, G - door.displayHeight - SIGN_GAP, deeper ? t('exit.deeper', { depth: world.biome.depth + 1 }) : t('exit.blocked'), { ...TEXT, ...fontStyle('exitSign'), align: 'center' }).setOrigin(0.5));
       } else if (e.kind === 'bush') {
         this.put(objectImage(scene, 'node:bush', ex, G, nodeSprite('bush', e.x, world.biome.id)) ?? scene.add.circle(ex, G - 14, 18, 0x40916c)); // Deko
+      } else if (e.kind === 'harbor') {
+        // Steg links vom Schiffs-Platz (der Platz liegt auf `e.x`, das Schiff ist 6 Kacheln breit); ohne Grafik ein einfacher Holzsteg
+        const x = ex - HARBOR_SHIFT * U;
+        this.put(objectImage(scene, 'harbor', x, G) ?? scene.add.rectangle(x, G - 12, 6 * U, 24, 0x8b5a2b).setStrokeStyle(3, 0x4a2f14));
       } else if (e.kind === 'recruitCamp') {
         this.put(objectImage(scene, 'camp:recruit', ex, G, campSprite(world.biome.id)) ?? scene.add.triangle(ex, G - 45, 0, 90, 60, 0, 120, 90, 0xe9c46a).setStrokeStyle(3, 0x7f5539));
       }

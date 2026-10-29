@@ -30,6 +30,7 @@ export const NATURE_TEXTURES: Record<string, string> = {
   'grafik:truhe': datei('truhe'),
   'grafik:portal': datei('portal'),
   'grafik:ausgang': datei('ausgang'),
+  'grafik:hafen': datei('hafen'), // Hafen-Steg des Chunks `harbor` (BS10, B-641)
   ...Object.fromEntries([1, 2, 3].map((look) => [look === 1 ? 'grafik:lager' : `grafik:lager-${look}`, datei(`rekrutierungslager-${look}`)])),
   ...MINE_SYMBOL_TEXTURES, // Axt und Spitzhacke am Abbau-Schild (GEB16, B-588)
 };
