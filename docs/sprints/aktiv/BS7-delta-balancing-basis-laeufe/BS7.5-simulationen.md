@@ -52,6 +52,9 @@ sim_test {action: start, bots: coop2, world: standard, days: 40, baseline: M1, w
 
 ## Ergebnis
 
-**Blockiert (2026-10-28, Claude): Die laufende Workbench ist ein älterer Build.** Ein `sim_test`-Lauf (run-1, coop2, standard, 40 Tage, `k3c-dev`) endete mit „Stufe 5 (Tag 23), Splitter-Titan nicht erreicht“, der Go-Test `task balance:milestone` mit dem aktuellen Stand besiegt den Titan an Tag 26. Die Bots der EXE stammen also von vor den BS12-Bot-Änderungen (Commits ab `e60e84e6`). Eine Baseline `M1` aus diesem Lauf wäre falsch.
-**Ralf:** Workbench neu bauen und starten (`task k3c-workbench:build` bzw. `task k3c-workbench:web`), dann diese Session erneut: `sim_test {action: start, bots: coop2, world: standard, days: 40, wait: true}`, Titan Tag ~26 erwartet; danach `baseline`/`saveBaseline M1` und Delta-Lauf (Schritte 3–6). Dauer eines Laufs 6 min (parallele Last), allein ~1 min.
+**Weiter blockiert (2026-10-29, Claude): Die Workbench ist aktuell (Dev-Modus), aber `saveBaseline` lehnt jeden Lauf ab, der nicht `Pass` ist.**
+- `sim_test` run-1 (coop2, standard, 40 Tage, `k3c-dev`, 4m22s, Bericht `reports/simtest-run-1/balance-20261029-090228.html`) und `task balance:milestone` auf HEAD liefern dasselbe (Stufe 4, Tag 24, Lava-Golem nicht besiegt, Burg gefallen). Die EXE-Hypothese vom 2026-10-28 ist damit erledigt.
+- Bisect mit dem Go-Test (Seed `k3c-dev`, nur Messung): `ecf262ec` Titan Tag 26; `b70d6535` (BS12.6) Stufe 5 Tag 23, Titan nein; `ee94ae7e` dito; `5d51f15b` (BS4) Stufe 3 Tag 16, Ratten-Königin nein; HEAD (BS5) Stufe 4 Tag 24. BS12.6 kostet den Titan bei diesem Seed (4 Seeds: Titan 2/4, siehe BS12.6), BS4 kostet weitere Stufen, weil die Bots noch nicht roden (BS8).
+- `Pass` verlangt erreichte Ziele und Korridore (12 von 16 verletzt); der Endboss fällt 0/4 (B-651). Eine Baseline `M1` ist so nicht ohne Code-Änderung am Pass-Kriterium oder ohne gelösten B-651 zu sichern. Code-Änderungen sind in dieser Session ausgeschlossen.
+**Vorschlag (🧑 entscheidet):** (a) `saveBaseline` bekommt einen Schalter `force`/`ohnePass` für offene Meilensteine (kleine Workbench-Änderung, eigene Session in BS7), dann `M1` aus run-1 sichern, oder (b) B-651 zuerst lösen. Für BS8/BS9 reicht (a): Delta gegen den Stand vor den Bot-Änderungen.
 - Kein Code geändert.
