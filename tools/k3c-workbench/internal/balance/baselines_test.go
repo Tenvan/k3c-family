@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
+	"sync/atomic"
 	"testing"
 )
 
@@ -94,5 +96,30 @@ func TestBaselineOffenerMeilenstein(t *testing.T) {
 	info, err := SaveBaseline(root, "M1", fail, nil, true)
 	if err != nil || info.Pass || !HasBaseline(root, "M1") {
 		t.Errorf("mit open: %+v %v", info, err)
+	}
+}
+
+// Ein Bericht ohne gültige Messung (Lauf abgestürzt) wird auch mit open nicht gesichert; parallele Aufrufe legen einen Namen nur einmal an.
+func TestBaselineUngueltigUndParallel(t *testing.T) {
+	root := t.TempDir()
+	bad := writeReport(t, root, "simtest-run-3", strings.Replace(strings.Replace(passReport, `"status":"ok"`, `"status":"ungültig"`, 1), `"pass":true,"targets"`, `"pass":false,"targets"`, 1))
+	if _, err := SaveBaseline(root, "M1", bad, nil, true); err == nil || !strings.Contains(err.Error(), "gültige Messung") {
+		t.Fatalf("ungültiger Bericht: %v", err)
+	}
+	ok := writeReport(t, root, "simtest-run-4", passReport)
+	var wg sync.WaitGroup
+	var wins atomic.Int32
+	for range 8 {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			if _, err := SaveBaseline(root, "P1", ok, nil, false); err == nil {
+				wins.Add(1)
+			}
+		}()
+	}
+	wg.Wait()
+	if wins.Load() != 1 {
+		t.Errorf("%d Aufrufe haben P1 angelegt, erwartet 1", wins.Load())
 	}
 }

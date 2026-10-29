@@ -3,6 +3,7 @@ package balance
 import (
 	"cmp"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -69,23 +70,32 @@ func SaveBaseline(root, name, reportPath string, spec json.RawMessage, open bool
 	if !s.Pass && !open {
 		return BaselineInfo{}, fmt.Errorf("baseline %s: der Lauf hat sein Ziel nicht erreicht (Pass fehlt); gesichert werden nur durchgelaufene Läufe, bei einem offenen Meilenstein ohnePass setzen", name)
 	}
-	dir := filepath.Join(root, filepath.FromSlash(BaselineDir), name)
-	if _, err := os.Stat(dir); err == nil {
-		return BaselineInfo{}, fmt.Errorf("baseline %s gibt es schon (%s/%s); anderer Name oder Ordner von Hand löschen", name, BaselineDir, name)
+	if s.Seeds == 0 || !slices.ContainsFunc(s.Targets, func(e Entry) bool { return e.Status != StatusInvalid }) {
+		return BaselineInfo{}, fmt.Errorf("baseline %s: der Bericht hat keine gültige Messung (Lauf abgestürzt?)", name)
 	}
+	base := filepath.Join(root, filepath.FromSlash(BaselineDir))
+	dir := filepath.Join(base, name)
 	info := infoOf(name, filepath.Base(filepath.Dir(reportPath)), s)
 	info.Spec = spec
 	meta, err := json.MarshalIndent(info, "", "  ")
 	if err != nil {
 		return BaselineInfo{}, err
 	}
-	if err := os.MkdirAll(dir, 0o755); err != nil {
+	if err := os.MkdirAll(base, 0o755); err != nil {
 		return BaselineInfo{}, err
 	}
-	if err := os.WriteFile(filepath.Join(dir, "balance.json"), raw, 0o644); err != nil {
+	if err := os.Mkdir(dir, 0o755); err != nil { // atomar: genau ein Aufruf legt den Namen an
+		if errors.Is(err, os.ErrExist) {
+			return BaselineInfo{}, fmt.Errorf("baseline %s gibt es schon (%s/%s); anderer Name oder Ordner von Hand löschen", name, BaselineDir, name)
+		}
 		return BaselineInfo{}, err
 	}
-	return info, os.WriteFile(filepath.Join(dir, "run.json"), meta, 0o644)
+	// run.json zuletzt: ein Ordner ohne run.json ist ein Fehlschlag und wird entfernt
+	if err := cmp.Or(os.WriteFile(filepath.Join(dir, "balance.json"), raw, 0o644), os.WriteFile(filepath.Join(dir, "run.json"), meta, 0o644)); err != nil {
+		_ = os.RemoveAll(dir)
+		return BaselineInfo{}, err
+	}
+	return info, nil
 }
 
 func infoOf(name, run string, s Summary) BaselineInfo {

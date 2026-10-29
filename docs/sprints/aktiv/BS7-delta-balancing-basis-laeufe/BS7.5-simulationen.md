@@ -1,6 +1,6 @@
 # BS7.5 · Simulationen BS7: Baseline M1 sichern und Delta-Lauf prüfen
 
-- **Status:** blockiert
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -52,9 +52,9 @@ sim_test {action: start, bots: coop2, world: standard, days: 40, baseline: M1, w
 
 ## Ergebnis
 
-**Weiter blockiert (2026-10-29, Claude): Die Workbench ist aktuell (Dev-Modus), aber `saveBaseline` lehnt jeden Lauf ab, der nicht `Pass` ist.**
-- `sim_test` run-1 (coop2, standard, 40 Tage, `k3c-dev`, 4m22s, Bericht `reports/simtest-run-1/balance-20261029-090228.html`) und `task balance:milestone` auf HEAD liefern dasselbe (Stufe 4, Tag 24, Lava-Golem nicht besiegt, Burg gefallen). Die EXE-Hypothese vom 2026-10-28 ist damit erledigt.
-- Bisect mit dem Go-Test (Seed `k3c-dev`, nur Messung): `ecf262ec` Titan Tag 26; `b70d6535` (BS12.6) Stufe 5 Tag 23, Titan nein; `ee94ae7e` dito; `5d51f15b` (BS4) Stufe 3 Tag 16, Ratten-Königin nein; HEAD (BS5) Stufe 4 Tag 24. BS12.6 kostet den Titan bei diesem Seed (4 Seeds: Titan 2/4, siehe BS12.6), BS4 kostet weitere Stufen, weil die Bots noch nicht roden (BS8).
-- `Pass` verlangt erreichte Ziele und Korridore (12 von 16 verletzt); der Endboss fällt 0/4 (B-651). Eine Baseline `M1` ist so nicht ohne Code-Änderung am Pass-Kriterium oder ohne gelösten B-651 zu sichern. Code-Änderungen sind in dieser Session ausgeschlossen.
-**Vorschlag (🧑 entscheidet):** (a) `saveBaseline` bekommt einen Schalter `force`/`ohnePass` für offene Meilensteine (kleine Workbench-Änderung, eigene Session in BS7), dann `M1` aus run-1 sichern, oder (b) B-651 zuerst lösen. Für BS8/BS9 reicht (a): Delta gegen den Stand vor den Bot-Änderungen.
-- Kein Code geändert.
+**Fertig (2026-10-29, Claude), AC-02/AC-03/AC-05 erfüllt; AC-04 (Sichtprüfung) bleibt bei 🧑.**
+- Workbench lief aktuell (Dev-Modus). `sim_test` run-1 (coop2, standard, 40 Tage, `k3c-dev`) = `task balance:milestone`: Stufe 4 (Tag 24), Lava-Golem nicht besiegt, Burg gefallen, Pass fehlt. Titan-Tag 26 gilt nur bis `ecf262ec`; BS12.6 (Titan 2/4 Seeds) und BS4 (Bots roden noch nicht, BS8) kosten Fortschritt.
+- `saveBaseline` lehnte Läufe ohne Pass ab. Neu: `sim_test baseline ... ohnePass: true` sichert einen gültig durchgelaufenen Lauf eines offenen Meilensteins (Commit 3902d1a6, Test `TestBaselineOffenerMeilenstein`).
+- Baseline `M1` gesichert aus simtest-run-1 (Bericht `reports/simtest-run-1/balance-20261029-092453`): Stand nach BS5, vor den Bot-Änderungen BS8/BS9, Endboss/Titan nicht besiegt (Seed k3c-dev).
+- Delta-Lauf run-2 (gleicher Code): Abschnitt „Delta je Werte-Gruppe“ zeigt basis, holz, schiff, alle „gleich“ (13/1/2 Ziele) – Determinismus bestätigt. Gruppe `basis` einfrieren in `data/balance-targets.json` › `frozen`: Vorschlag, Entscheidung 🧑 oder BS7.4.
+- Befund: Baseline M1 liegt unter `reports/baseline/` (gitignoriert); nach Neuklon neu sichern.

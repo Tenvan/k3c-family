@@ -44,8 +44,8 @@ func TestFrozenWirdGelesenUndGeprueft(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if ts.IsFrozen(GroupBasis) {
-		t.Error("basis ist ohne Eintrag nicht eingefroren")
+	if !ts.IsFrozen(GroupBasis) || ts.IsFrozen(GroupHolz) || ts.IsFrozen(GroupSchiff) {
+		t.Errorf("Daten frieren nur basis ein (Baseline M1, B-640/AC-05): %v", ts.Frozen)
 	}
 	good := strings.Replace(frozenProbe, "FROZEN", `["basis","schiff"]`, 1)
 	ft, err := LoadTargets([]byte(good))

@@ -1,6 +1,6 @@
 # BS7.4 · Review BS7 und Baseline M1 sichern
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -54,5 +54,6 @@ task check:race
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+**Fertig (2026-10-29, Claude).** AC-05: `M1` gesichert (BS7.5, `ohnePass`, Stand nach BS5, Titan nicht besiegt), `frozen: ["basis"]` gesetzt, Kontroll-Lauf run-3 ohne Abweichung (alle Gruppen „gleich“). AC-01..AC-03 durch Tests und Lauf belegt; `task check` und `task check:go` grün, `task check:diff` grün; `check:race` lokal ohne C-Compiler nicht lauffähig (übersprungen).
+**Review (Sonnet, getrennt):** keine kritischen Befunde. Behoben: atomares Anlegen der Baseline (`os.Mkdir`), Aufräumen bei Schreibfehler, Prüfung auf gültige Messung bei `ohnePass`, Existenzprüfung der Baseline im Editor-Start. Offen als B-655: `seedList` im Editor-Formular. Nicht behoben (niedrig): Delta zeigt ohne Vergleichsbasis „gleich“ statt „unbekannt“; `BaselineInfo.Frozen` wird nicht ausgewertet; reservierte Windows-Namen (CON, NUL) als Baseline-Name.
+**Ralf:** AC-04 Sichtprüfung (Editor › Beispiele › Basis-Läufe zeigt `M1`) steht aus; BS7 bleibt bis dahin aktiv. Kein PR (Arbeit im Branch feature/bas-remake).

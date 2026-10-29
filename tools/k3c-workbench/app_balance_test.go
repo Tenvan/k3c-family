@@ -207,7 +207,7 @@ func TestBalanceBaselinesListetGesicherte(t *testing.T) {
 		t.Fatal(err)
 	}
 	report := filepath.Join(dir, "balance-1.json")
-	if err := os.WriteFile(report, []byte(`{"version":1,"seeds":1,"pass":true,"targets":[]}`), 0o644); err != nil {
+	if err := os.WriteFile(report, []byte(`{"version":1,"seeds":1,"pass":true,"targets":[{"name":"Endboss","measure":"endbossDefeated","kind":"share","players":2,"bot":"coop2","depth":0,"days":40,"value":100,"status":"ok","pass":true}]}`), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := balance.SaveBaseline(a.root, "M1", report, []byte(`{"bot":"coop2","days":40}`), false); err != nil {

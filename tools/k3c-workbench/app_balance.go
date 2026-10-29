@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os/exec"
 	"path/filepath"
 
@@ -14,6 +15,9 @@ import (
 
 // BalanceStart reiht einen Offline-Lauf ein; er rechnet sofort, wenn ein Platz frei ist.
 func (a *App) BalanceStart(spec simrun.Spec) (simrun.Info, error) {
+	if spec.Baseline != "" && !balance.HasBaseline(a.root, spec.Baseline) {
+		return simrun.Info{}, fmt.Errorf("lauf abgelehnt: baseline %q gibt es nicht", spec.Baseline)
+	}
 	return a.srv.Sims().StartOffline(a.root, "Repo-Wurzel", spec)
 }
 
