@@ -23,21 +23,35 @@ function rpc<T>(method: string, ...args: unknown[]): Promise<T> {
   );
 }
 
+/** Meldet sich nach einem Abbruch des Stroms (EventSource verbindet selbst neu); die Seiten laden dann einmal neu. */
+const RECONNECT = 'ui:reconnect';
+
 /** Ein Strom für alle Ereignisse; je Name ein Listener, der die Abonnenten bedient. */
 function eventHub() {
   let source: EventSource | null = null;
   const listeners = new Map<string, Set<(data: unknown) => void>>();
+  const open = () => {
+    let opened = false;
+    const es = new EventSource(`${API}events`);
+    es.addEventListener('open', () => {
+      if (opened) listeners.get(RECONNECT)?.forEach((f) => f(null));
+      opened = true;
+    });
+    return es;
+  };
   return <E extends EventName>(event: E, fn: (data: Events[E]) => void): (() => void) => {
     let set = listeners.get(event);
     if (!set) {
       const subs = new Set<(data: unknown) => void>();
       listeners.set(event, subs);
       set = subs;
-      source ??= new EventSource(`${API}events`);
-      source.addEventListener(event, (e) => {
-        const data: unknown = JSON.parse((e as MessageEvent<string>).data);
-        subs.forEach((f) => f(data));
-      });
+      source ??= open();
+      if (event !== RECONNECT) {
+        source.addEventListener(event, (e) => {
+          const data: unknown = JSON.parse((e as MessageEvent<string>).data);
+          subs.forEach((f) => f(data));
+        });
+      }
     }
     const f = fn as (data: unknown) => void;
     set.add(f);
@@ -59,8 +73,12 @@ function httpBalance(): BalanceBackend {
     balanceDataFiles: () => rpc('BalanceDataFiles'),
     balanceDataDoc: (name) => rpc('BalanceDataDoc', name),
     balanceDataValues: (name) => rpc('BalanceDataValues', name),
+    balanceDataValuesAll: () => rpc('BalanceDataValuesAll'),
     balanceReportRate: (path, rating) => rpc('BalanceReportRate', path, rating),
     balanceReportDelete: (path) => rpc('BalanceReportDelete', path),
+    balanceReportsRate: (paths, rating) => rpc('BalanceReportsRate', paths, rating),
+    balanceReportsDelete: (paths) => rpc('BalanceReportsDelete', paths),
+    balanceSaveBaseline: (path, name) => rpc('BalanceSaveBaseline', path, name),
     balanceInsights: (path) => rpc('BalanceInsights', path),
     balanceReportHTML: (path) => rpc('BalanceReportHTML', path),
   };

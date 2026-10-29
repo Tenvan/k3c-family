@@ -131,6 +131,31 @@ func Values(root, name string) ([]Value, error) {
 	return out, err
 }
 
+// FileValue ist ein Zahlenwert mit Datei und Pfad (Suche des Daten-Browsers, B-662).
+type FileValue struct {
+	File  string  `json:"file"`
+	Path  string  `json:"path"`
+	Value float64 `json:"value"`
+}
+
+// AllValues liefert die Zahlenwerte aller variierbaren Dateien in einem Aufruf, je Datei in Dateireihenfolge.
+func AllValues(root string) ([]FileValue, error) {
+	out := []FileValue{}
+	for _, e := range files {
+		if !e.Vary {
+			continue
+		}
+		values, err := Values(root, e.Name)
+		if err != nil {
+			return nil, fmt.Errorf("%s: %w", e.Name, err)
+		}
+		for _, v := range values {
+			out = append(out, FileValue{File: e.Name, Path: v.Path, Value: v.Value})
+		}
+	}
+	return out, nil
+}
+
 // walkNumbers ruft fn für jede Zahl der JSON in Dateireihenfolge (Token-weise, damit die Reihenfolge der Schlüssel bleibt).
 func walkNumbers(raw []byte, fn func(path string, v float64)) error {
 	dec := json.NewDecoder(bytes.NewReader(raw))

@@ -1,7 +1,26 @@
-/* Balancing-Seite (WZ28.5): links Konfiguration und Läufe, rechts Berichte. Unter 1000 px untereinander. */
-.bal-page { display: grid; grid-template-columns: minmax(300px, 4fr) minmax(420px, 6fr); gap: 14px; align-items: start; container-type: inline-size; }
-@container (max-width: 1000px) { .bal-page { grid-template-columns: 1fr; } }
-.bal-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+/* Balancing-Seite (WZ28.5, B-658/B-659): feste Fläche, Werkzeugleiste oben, links Läufe und Berichte, rechts das Detail;
+   nur Liste und Detail scrollen. `.bal-wrap` ist der Container, die Regeln der Container Query zielen auf seine Kinder.
+   Unter 1100 px stehen Liste und Detail untereinander, unter 760 px zeigt `data-view` genau einen der beiden. */
+.bal-wrap { container-type: inline-size; height: calc(100vh - 104px); min-height: 420px; }
+.bal-page { display: flex; flex-direction: column; gap: 10px; height: 100%; min-height: 0; }
+.bal-toolbar { display: flex; flex: none; flex-wrap: wrap; align-items: center; gap: 8px; }
+.bal-queue { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
+.bal-body { flex: 1 1 auto; min-height: 0; display: grid; grid-template-rows: minmax(0, 1fr); grid-template-columns: minmax(280px, var(--bal-split, 30%)) 8px minmax(0, 1fr); }
+.bal-pane { display: flex; flex-direction: column; gap: 8px; min-width: 0; min-height: 0; }
+.bal-detail { padding-left: 6px; }
+.bal-scroll { display: flex; flex: 1 1 auto; flex-direction: column; gap: 12px; min-width: 0; min-height: 0; overflow: auto; padding-right: 4px; }
+.bal-scroll > * { flex-shrink: 0; }
+.bal-back { display: none; flex: none; }
+@container (max-width: 1100px) {
+  .bal-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(160px, 40%) minmax(160px, 1fr); gap: 12px; }
+  .bal-split { display: none; }
+  .bal-detail { padding-left: 0; }
+}
+@container (max-width: 760px) {
+  .bal-body { grid-template-rows: minmax(0, 1fr); }
+  .bal-body[data-view='detail'] .bal-list, .bal-body[data-view='list'] .bal-detail { display: none; }
+  .bal-back { display: block; }
+}
 .bal-card, .bal-report { display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--card-line); border-radius: 10px; background: var(--card); padding: 12px; }
 .bal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
 .bal-field { display: flex; flex-direction: column; gap: 2px; }

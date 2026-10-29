@@ -26,6 +26,9 @@ async function mount(): Promise<HTMLElement> {
   root = createRoot(host);
   act(() => root!.render(<Theme><BalancingPage /></Theme>));
   await flush();
+  // B-659: Das Formular steht im Detail und öffnet mit „Neuer Lauf“ in der Werkzeugleiste.
+  await act(async () => [...host.querySelectorAll('button')].find((b) => b.textContent?.trim() === 'Neuer Lauf')!.click());
+  await flush();
   return host;
 }
 

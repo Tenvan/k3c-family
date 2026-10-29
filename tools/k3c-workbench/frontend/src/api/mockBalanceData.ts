@@ -1,4 +1,4 @@
-import type { BalanceBackend, BalanceDataFile, BalanceDataValue } from './types';
+import type { BalanceBackend, BalanceDataFile, BalanceDataFileValue, BalanceDataValue } from './types';
 
 // Mock der Datei-Liste mit Beschreibungen (WZ28.10): dieselben 17 Dateien wie Go (internal/datadoc), Beschreibungen und
 // Zahlenwerte aus der Repo-Wurzel (docs/data/*.md, data/*.json). Die Dateien laden erst beim ersten Aufruf (eigene
@@ -59,14 +59,24 @@ async function file([name, d, readBy, vary]: (typeof LIST)[number]): Promise<Bal
   }
 }
 
-export function mockBalanceData(): Pick<BalanceBackend, 'balanceDataFiles' | 'balanceDataDoc' | 'balanceDataValues'> {
+async function values(name: string): Promise<BalanceDataValue[]> {
+  const load = LIST.some(([n, , , vary]) => n === name && vary) ? loader(DATA, name) : undefined;
+  if (!load) throw new Error(`"${name}": nur variierbare Dateien der Liste`);
+  return flattenNumbers(JSON.parse(await load()));
+}
+
+/** Werte aller variierbaren Dateien mit Datei und Pfad (wie datadoc.AllValues, B-662). */
+async function allValues(): Promise<BalanceDataFileValue[]> {
+  const names = LIST.filter(([, , , vary]) => vary).map(([n]) => n);
+  const lists = await Promise.all(names.map(values));
+  return names.flatMap((file, i) => lists[i].map((v) => ({ file, ...v })));
+}
+
+export function mockBalanceData(): Pick<BalanceBackend, 'balanceDataFiles' | 'balanceDataDoc' | 'balanceDataValues' | 'balanceDataValuesAll'> {
   return {
     balanceDataFiles: () => Promise.all(LIST.map(file)),
     balanceDataDoc: doc,
-    balanceDataValues: async (name) => {
-      const load = LIST.some(([n, , , vary]) => n === name && vary) ? loader(DATA, name) : undefined;
-      if (!load) throw new Error(`"${name}": nur variierbare Dateien der Liste`);
-      return flattenNumbers(JSON.parse(await load()));
-    },
+    balanceDataValues: values,
+    balanceDataValuesAll: allValues,
   };
 }

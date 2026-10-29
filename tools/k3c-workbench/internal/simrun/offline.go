@@ -44,16 +44,32 @@ type Result struct {
 
 var progressLine = regexp.MustCompile(`^PROGRESS (\d+)/(\d+)$`)
 
-// StartOffline prüft die Spec und reiht einen Offline-Lauf ein (wartet, wenn alle Plätze belegt sind).
+// StartOffline prüft die Spec und reiht einen Offline-Lauf ein (wartet, wenn alle Plätze belegt sind). Mit PerVariant
+// reiht es n + 1 Läufe ein (pervariant.go) und liefert den Basis-Lauf; geprüft wird jeder Lauf, bevor einer startet.
 func (g *Registry) StartOffline(root, where string, spec Spec) (Info, error) {
 	if err := spec.Check(); err != nil {
 		return Info{}, err
 	}
-	run, err := g.Start(root, where, spec.Title(), &spec, g.Offline(spec), true)
-	if err != nil {
-		return Info{}, err
+	specs := []Spec{spec}
+	if spec.PerVariant {
+		specs = spec.perVariant()
 	}
-	return g.Get(root, run.id)
+	for _, s := range specs {
+		if err := s.Check(); err != nil {
+			return Info{}, err
+		}
+	}
+	var first *Run
+	for _, s := range specs {
+		run, err := g.Start(root, where, s.Title(), &s, g.Offline(s), true)
+		if err != nil {
+			return Info{}, err
+		}
+		if first == nil {
+			first = run
+		}
+	}
+	return g.Get(root, first.id)
 }
 
 // Offline ist der Runner des Modus offline: bauen, rechnen, Bericht lesen.
@@ -91,11 +107,11 @@ func (g *Registry) Offline(spec Spec) Runner {
 				mu.Lock()
 				lines := append([]string{st.phase + ": " + failed}, tail...)
 				mu.Unlock()
-				g.finishFailed(run, lines, dir, spec.Tune != nil)
+				g.finishFailed(run, lines, dir, spec)
 				return
 			}
 		}
-		verdict, lines, err := readResult(filepath.Join(run.root, dir), run.Started(), spec.Tune != nil)
+		verdict, lines, err := g.readStamped(run, dir, spec)
 		if err != nil {
 			g.Finish(run, Failed, "", []string{err.Error()}, dir)
 			return
@@ -106,8 +122,8 @@ func (g *Registry) Offline(spec Spec) Runner {
 
 // finishFailed beendet einen gescheiterten oder abgebrochenen Lauf; steht schon ein Bericht (balance-*.json bzw.
 // tuning-*.json), gilt er als Teilbericht und liefert seine Kennzahlen.
-func (g *Registry) finishFailed(run *Run, lines []string, dir string, tune bool) {
-	verdict, part, err := readResult(filepath.Join(run.root, dir), run.Started(), tune)
+func (g *Registry) finishFailed(run *Run, lines []string, dir string, spec Spec) {
+	verdict, part, err := g.readStamped(run, dir, spec)
 	if err != nil {
 		g.Finish(run, Failed, "", lines, dir)
 		return

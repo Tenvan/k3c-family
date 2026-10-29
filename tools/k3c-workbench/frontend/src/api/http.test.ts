@@ -77,6 +77,22 @@ describe('Ereignisse', () => {
     FakeSource.last?.emit('mcp:state', { addr: '', listening: false, error: 'x' });
     expect(a).toHaveBeenCalledTimes(1);
   });
+
+  it('meldet ui:reconnect erst beim Wiederverbinden des Stroms (B-662)', () => {
+    vi.stubGlobal('EventSource', FakeSource);
+    const api = httpBackend();
+    const again = vi.fn();
+    const runs = vi.fn();
+    api.on('ui:reconnect', again);
+    api.on('balance:runs', runs);
+    expect(FakeSource.last?.listeners.has('ui:reconnect')).toBe(false);
+    FakeSource.last?.emit('open', null);
+    expect(again).not.toHaveBeenCalled();
+    FakeSource.last?.emit('open', null);
+    expect(again).toHaveBeenCalledExactlyOnceWith(null);
+    FakeSource.last?.emit('balance:runs', { id: 'run-1' });
+    expect(runs).toHaveBeenCalledWith({ id: 'run-1' });
+  });
 });
 
 it('openUrl öffnet einen neuen Tab', () => {

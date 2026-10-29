@@ -19,6 +19,8 @@ export interface BalanceSpec {
   label?: string;
   /** Name einer gesicherten Baseline als Vergleich (B-640). */
   baseline?: string;
+  /** Je feste Variante ein Lauf gegen einen gemeinsamen Basis-Lauf (B-662): n + 1 Läufe, nicht mit `tune`. */
+  perVariant?: boolean;
 }
 
 /** Gesicherter Basis-Lauf (Go: balance.BaselineInfo, reports/baseline/<name>/). */
@@ -77,6 +79,15 @@ export interface BalanceReportInfo {
   kind: 'balance' | 'tuning';
   /** Bewertung aus reports/ratings.json (WZ28.13); fehlt = keine. */
   rating?: ReportRating;
+  /** Label des Laufs (B-662); fehlt bei älteren Berichten. */
+  label?: string;
+  /** Auftrag des Laufs (B-662); fehlt bei älteren Berichten. */
+  spec?: BalanceSpec;
+  /** Lauf-ID (`run-3`, B-662); fehlt bei älteren Berichten. */
+  runId?: string;
+  /** Getroffene und alle Ziele des Berichts (`3/16 Ziele`); 0/0 bei `tuning`. */
+  targetsPass: number;
+  targetsTotal: number;
 }
 
 /** Bewertung eines Berichts (Go: simrun.Ratings); leer = keine. */
@@ -189,6 +200,13 @@ export interface BalanceDataValue {
   value: number;
 }
 
+/** Zahlenwert mit Datei und Pfad aus allen variierbaren Dateien (Go: datadoc.FileValue, B-662). */
+export interface BalanceDataFileValue {
+  file: string;
+  path: string;
+  value: number;
+}
+
 /** Ampel der Auswertung (B-632): grün ok, gelb knapp, rot verletzt, grau ungültig/ohne Messwert. */
 export type Light = 'green' | 'yellow' | 'red' | 'grey';
 
@@ -236,8 +254,16 @@ export interface BalanceBackend {
   balanceDataFiles(): Promise<BalanceDataFile[]>;
   balanceDataDoc(name: string): Promise<string>;
   balanceDataValues(name: string): Promise<BalanceDataValue[]>;
+  /** Zahlenwerte aller variierbaren Dateien in einem Aufruf (B-662). */
+  balanceDataValuesAll(): Promise<BalanceDataFileValue[]>;
   balanceReportRate(path: string, rating: ReportRating): Promise<void>;
   balanceReportDelete(path: string): Promise<void>;
+  /** Mehrere Berichte bewerten (B-662); ein Pfad außerhalb reports/ lehnt den ganzen Aufruf ab. */
+  balanceReportsRate(paths: string[], rating: ReportRating): Promise<void>;
+  /** Mehrere Berichte samt .md und Bewertung löschen (B-662); ein fremder Pfad lehnt alles ab, nichts wird gelöscht. */
+  balanceReportsDelete(paths: string[]): Promise<void>;
+  /** Durchgelaufenen Bericht reports/<lauf>/balance-*.json als Baseline sichern, wie sim_test {action: baseline}. */
+  balanceSaveBaseline(path: string, name: string): Promise<BalanceBaseline>;
   /** Auswertung eines balance-*.json (B-632). */
   balanceInsights(path: string): Promise<BalanceInsights>;
   /** Schreibt .md und .html neu und öffnet den HTML-Bericht; Ergebnis: Pfad relativ zum Checkout. */

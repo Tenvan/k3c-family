@@ -32,6 +32,8 @@ type Spec struct {
 	// Baseline: Name einer gesicherten Baseline (reports/baseline/<name>/, B-640) als Vergleich statt der Baseline des Repos.
 	Baseline string `json:"baseline,omitempty"`
 	Tune     *Tune  `json:"tune,omitempty"` // automatisches Balancing (WZ28.6), Ergebnis tuning-*.json
+	// PerVariant (B-662): je feste Variante ein eigener Lauf gegen einen gemeinsamen Basis-Lauf (StartOffline).
+	PerVariant bool `json:"perVariant,omitempty"`
 }
 
 // Tune wird --tune, --param, --steps und --budget der Balance-CLI; 0 heißt Vorgabe der CLI.
@@ -45,6 +47,7 @@ type Tune struct {
 const (
 	maxVary   = 20
 	maxBudget = 1000
+	maxLabel  = 60 // Zeichen eines Labels
 )
 
 var (
@@ -73,7 +76,7 @@ func (s Spec) Check() error {
 		{s.Bot != "" && !knownBot(s.Bot), "bot: " + strings.Join(balance.BotNames(), ", ") + " oder je Spieler a" + balance.MixSep + "b"},
 		{s.Grade != "" && !gradeName.MatchString(s.Grade), "grade: Kleinbuchstaben, Ziffern, Bindestrich"},
 		{len(s.Vary) > maxVary, fmt.Sprintf("höchstens %d Varianten", maxVary)},
-		{utf8.RuneCountInString(s.Label) > 60 || strings.ContainsAny(s.Label, "\r\n"), "label höchstens 60 Zeichen, eine Zeile"},
+		{utf8.RuneCountInString(s.Label) > maxLabel || strings.ContainsAny(s.Label, "\r\n"), fmt.Sprintf("label höchstens %d Zeichen, eine Zeile", maxLabel)},
 	}
 	for _, c := range checks {
 		if c.bad {
@@ -85,7 +88,20 @@ func (s Spec) Check() error {
 			return fmt.Errorf("lauf abgelehnt: vary %q, Form datei.json:pfad.zum.wert=wert", v)
 		}
 	}
-	return cmp.Or(s.checkBaseline(), s.checkWorld(), s.checkHelps(), s.Tune.check())
+	return cmp.Or(s.checkBaseline(), s.checkWorld(), s.checkHelps(), s.checkPerVariant(), s.Tune.check())
+}
+
+// checkPerVariant: „je Variante“ braucht feste Varianten und keine Bereiche (B-662).
+func (s Spec) checkPerVariant() error {
+	switch {
+	case !s.PerVariant:
+		return nil
+	case s.Tune != nil:
+		return fmt.Errorf("lauf abgelehnt: je Variante geht nicht mit Abstimmung")
+	case len(s.Vary) == 0:
+		return fmt.Errorf("lauf abgelehnt: je Variante braucht mindestens eine feste Variante")
+	}
+	return nil
 }
 
 func (s Spec) checkBaseline() error {

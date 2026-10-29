@@ -1,18 +1,52 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { backend, type BalanceBaseline, type BalanceInsights, type BalanceReportInfo, type BalanceRun, type BalanceSpec, type BalanceSummary, type ReportRating, type Tuning } from '../api';
 import { errorText } from '@webkit/lib/errors';
-import { isActive, mergeRuns } from './spec';
+import { mergeRuns } from './spec';
 
-/** Abfrage-Takt, solange ein Lauf wartet oder läuft (Vertrag: 1–2 s). */
-export const POLL_MS = 1500;
+interface Loaders {
+  loadRuns: () => void;
+  loadReports: () => void;
+  loadBaselines: () => void;
+}
 
-/** Läufe (mit Live-Status) und Berichtsliste der Balancing-Seite; die Seite blockiert nie, Fehler werden als Text gehalten. */
+/** Aufrufe der Seite: Fehler als Text, danach die betroffene Liste neu laden. Sammel-Aufrufe und Baseline liefern „geschafft“. */
+function balanceActions(setError: (text: string) => void, { loadRuns, loadReports, loadBaselines }: Loaders) {
+  const attempt = async (fn: () => Promise<unknown>, after: () => void): Promise<boolean> => {
+    setError('');
+    try {
+      await fn();
+      after();
+      return true;
+    } catch (e) {
+      setError(errorText(e));
+      return false;
+    }
+  };
+  const call = async (fn: () => Promise<unknown>, after: () => void) => {
+    await attempt(fn, after);
+  };
+  return {
+    stop: (id: string) => call(() => backend.balanceStop(id), loadRuns),
+    // Berichte bewerten und löschen (WZ28.13), auch gesammelt (B-662).
+    rate: (path: string, rating: ReportRating) => call(() => backend.balanceReportRate(path, rating), loadReports),
+    remove: (path: string) => call(() => backend.balanceReportDelete(path), loadReports),
+    rateMany: (paths: string[], rating: ReportRating) => attempt(() => backend.balanceReportsRate(paths, rating), loadReports),
+    removeMany: (paths: string[]) => attempt(() => backend.balanceReportsDelete(paths), loadReports),
+    /** Durchgelaufenen Bericht als Baseline sichern (B-662), wie sim_test {action: baseline}. */
+    saveBaseline: (path: string, name: string) => attempt(() => backend.balanceSaveBaseline(path, name), loadBaselines),
+  };
+}
+
+/**
+ * Läufe (mit Live-Status), Berichte und Baselines der Balancing-Seite; die Seite blockiert nie, Fehler werden als Text
+ * gehalten. Kein Abfrage-Takt (B-662): geladen wird, wenn die Seite sichtbar wird, und bei den Ereignissen
+ * `balance:runs` (Läufe), `balance:reports` (Berichte und Baselines) und `ui:reconnect` (alles); `reload` lädt von Hand.
+ */
 export function useBalancing(active: boolean) {
   const [runs, setRuns] = useState<BalanceRun[]>([]);
   const [reports, setReports] = useState<BalanceReportInfo[]>([]);
   const [baselines, setBaselines] = useState<BalanceBaseline[]>([]);
   const [error, setError] = useState('');
-  const busy = useRef(0);
 
   const loadReports = useCallback(() => {
     backend.balanceReports().then(setReports, (e) => setError(errorText(e)));
@@ -20,27 +54,35 @@ export function useBalancing(active: boolean) {
   const loadBaselines = useCallback(() => {
     backend.balanceBaselines().then(setBaselines, (e) => setError(errorText(e)));
   }, []);
+  // Die Antwort ersetzt die Liste: ein abgebrochener wartender Lauf fehlt darin und verschwindet. Eine ältere Antwort,
+  // die nach einer neueren ankommt, wird verworfen (ohne Abfrage-Takt korrigierte sie sonst erst das nächste Ereignis).
+  const runSeq = useRef(0);
   const loadRuns = useCallback(() => {
-    backend.balanceRuns().then((r) => setRuns((cur) => mergeRuns(cur, r)), (e) => setError(errorText(e)));
+    const seq = ++runSeq.current;
+    backend.balanceRuns().then((r) => {
+      if (seq === runSeq.current) setRuns(r);
+    }, (e) => setError(errorText(e)));
   }, []);
-
-  useEffect(() => {
+  const reload = useCallback(() => {
     loadRuns();
     loadReports();
     loadBaselines();
   }, [loadRuns, loadReports, loadBaselines]);
 
-  const open = runs.filter(isActive).length;
   useEffect(() => {
-    // Ein Lauf ist fertig geworden: neue Berichte holen.
-    if (open < busy.current) loadReports();
-    busy.current = open;
-  }, [open, loadReports]);
-  useEffect(() => {
-    if (!active || open === 0) return;
-    const t = setInterval(loadRuns, POLL_MS);
-    return () => clearInterval(t);
-  }, [active, open, loadRuns]);
+    // Erstes Laden und jeder Seitenwechsel; im Hintergrund hört die Seite nicht zu.
+    if (!active) return;
+    reload();
+    const off = [
+      backend.on('balance:runs', loadRuns),
+      backend.on('balance:reports', () => {
+        loadReports();
+        loadBaselines();
+      }),
+      backend.on('ui:reconnect', reload),
+    ];
+    return () => off.forEach((f) => f());
+  }, [active, reload, loadRuns, loadReports, loadBaselines]);
 
   const start = async (spec: BalanceSpec) => {
     setError('');
@@ -51,21 +93,8 @@ export function useBalancing(active: boolean) {
       setError(errorText(e));
     }
   };
-  /** Aufruf ans Backend, danach neu laden; Fehler als Text. */
-  const call = async (fn: () => Promise<unknown>, after: () => void) => {
-    setError('');
-    try {
-      await fn();
-      after();
-    } catch (e) {
-      setError(errorText(e));
-    }
-  };
-  const stop = (id: string) => call(() => backend.balanceStop(id), loadRuns);
-  // Berichte bewerten und löschen (WZ28.13).
-  const rate = (path: string, rating: ReportRating) => call(() => backend.balanceReportRate(path, rating), loadReports);
-  const remove = (path: string) => call(() => backend.balanceReportDelete(path), loadReports);
-  return { runs, reports, baselines, reloadBaselines: loadBaselines, error, start, stop, rate, remove, reloadReports: loadReports };
+  const actions = balanceActions(setError, { loadRuns, loadReports, loadBaselines });
+  return { runs, reports, baselines, reloadBaselines: loadBaselines, error, start, reloadReports: loadReports, reload, ...actions };
 }
 
 /** Bericht zu einem Pfad; leerer Pfad = keiner. */

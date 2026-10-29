@@ -1,13 +1,18 @@
 package mcpsrv
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"slices"
 	"strings"
 	"sync"
 	"testing"
+
+	"k3c/tools/k3c-workbench/internal/balance"
+	"k3c/tools/k3c-workbench/internal/simrun"
 )
 
 // B-640/AC-02: sim_test sichert durchgelaufene Läufe als Baseline und vergleicht gegen eine benannte Baseline.
@@ -93,5 +98,46 @@ func TestSimTestBaselineLehntAb(t *testing.T) {
 	}
 	if started.Load() != 0 {
 		t.Errorf("%d Prozesse gestartet", started.Load())
+	}
+}
+
+// B-662/AC-03: „Als Baseline sichern“ der Balancing-Seite (App.BalanceSaveBaseline ruft Registry.SaveBaseline mit dem
+// Berichtspfad) und sim_test {action: baseline} gehen denselben Weg und schreiben dieselben Dateien.
+func TestBaselineSeiteWieSimTest(t *testing.T) {
+	var seen [][]string
+	var mu sync.Mutex
+	s, _ := fakeServer(t, passingBalance(t, &seen, &mu))
+	root := s.cfg.Root
+	id := start(t, s, simTestIn{Bots: "coop2"})
+	waitDone(t, s, id)
+	if _, err := s.simTest(context.Background(), simTestIn{Action: "baseline", ID: id, SaveBaseline: "MCP"}); err != nil {
+		t.Fatal(err)
+	}
+	report, err := simrun.RunReport(root, id)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := s.sims.SaveBaseline(root, report, "SEITE", false); err != nil {
+		t.Fatal(err)
+	}
+	read := func(name, file string) []byte {
+		raw, err := os.ReadFile(filepath.Join(root, "reports", "baseline", name, file))
+		if err != nil {
+			t.Fatal(err)
+		}
+		return raw
+	}
+	if !bytes.Equal(read("MCP", "balance.json"), read("SEITE", "balance.json")) {
+		t.Error("balance.json unterscheidet sich")
+	}
+	var a, b balance.BaselineInfo
+	if json.Unmarshal(read("MCP", "run.json"), &a) != nil || json.Unmarshal(read("SEITE", "run.json"), &b) != nil {
+		t.Fatal("run.json unlesbar")
+	}
+	a.Name, a.Saved = b.Name, b.Saved
+	ja, _ := json.Marshal(a)
+	jb, _ := json.Marshal(b)
+	if !bytes.Equal(ja, jb) || !strings.Contains(string(b.Spec), "coop2") {
+		t.Errorf("run.json:\n%s\n%s", ja, jb)
 	}
 }

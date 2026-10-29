@@ -1,7 +1,7 @@
 import type {
   Backend, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, McpCall, McpOverview,
   McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData, WorktreeDiff,
-  BalanceBackend, BalanceBaseline, BalanceDataFile, BalanceInsights, BalanceDataValue, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning, GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
+  BalanceBackend, BalanceBaseline, BalanceDataFile, BalanceDataFileValue, BalanceInsights, BalanceDataValue, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning, GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
 } from './types';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
@@ -64,8 +64,12 @@ interface GoApp {
   BalanceDataFiles(): Promise<BalanceDataFile[]>;
   BalanceDataDoc(name: string): Promise<string>;
   BalanceDataValues(name: string): Promise<BalanceDataValue[]>;
+  BalanceDataValuesAll(): Promise<BalanceDataFileValue[]>;
   BalanceReportRate(path: string, rating: string): Promise<void>;
   BalanceReportDelete(path: string): Promise<void>;
+  BalanceReportsRate(paths: string[], rating: string): Promise<void>;
+  BalanceReportsDelete(paths: string[]): Promise<void>;
+  BalanceSaveBaseline(path: string, name: string): Promise<BalanceBaseline>;
   BalanceInsights(path: string): Promise<BalanceInsights>;
   BalanceReportHTML(path: string): Promise<string>;
 }
@@ -98,8 +102,12 @@ function balanceWails(app: GoApp): BalanceBackend {
     balanceDataFiles: () => app.BalanceDataFiles(),
     balanceDataDoc: (name) => app.BalanceDataDoc(name),
     balanceDataValues: (name) => app.BalanceDataValues(name),
+    balanceDataValuesAll: () => app.BalanceDataValuesAll(),
     balanceReportRate: (path, rating) => app.BalanceReportRate(path, rating),
     balanceReportDelete: (path) => app.BalanceReportDelete(path),
+    balanceReportsRate: (paths, rating) => app.BalanceReportsRate(paths, rating),
+    balanceReportsDelete: (paths) => app.BalanceReportsDelete(paths),
+    balanceSaveBaseline: (path, name) => app.BalanceSaveBaseline(path, name),
     balanceInsights: (path) => app.BalanceInsights(path),
     balanceReportHTML: (path) => app.BalanceReportHTML(path),
   };

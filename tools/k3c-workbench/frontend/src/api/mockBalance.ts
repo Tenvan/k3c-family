@@ -1,7 +1,9 @@
 import { mockInsights } from './mockInsights';
-import type { BalanceBackend, BalanceBaseline, BalanceEntry, BalanceFigures, BalanceReportInfo, BalanceRun, BalanceSummary, NightFigures, Tuning } from './types';
+import { mockBaselines, mockManageReports, type BalanceEvents } from './mockBalanceManage';
+import type { BalanceBackend, BalanceBaseline, BalanceEntry, BalanceFigures, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, NightFigures, Tuning } from './types';
 
 // Mock der Balancing-RPC (WZ28.5): Warteschlange mit einem rechnenden Lauf, Fortschritt per Timer, Beispielbericht.
+// Wie Go meldet er Änderungen als Ereignis (B-662): balance:runs je Änderung, balance:reports nach neuem Bericht.
 
 const TICK_MS = 250;
 
@@ -55,87 +57,60 @@ export function exampleTuning(params = 1): Tuning {
   };
 }
 
+/** Label, Auftrag und Lauf-ID, die Go in jeden neuen Bericht stempelt (B-662). */
+const stampOf = (r: BalanceRun) => ({ label: r.label, spec: r.spec, runId: r.id });
+
 function finishTuning(r: BalanceRun, n: number, reports: BalanceReportInfo[], tunings: Map<string, Tuning>) {
   const path = `reports/simtest-run-${n}/tuning-${n}.json`;
   tunings.set(path, exampleTuning(r.spec?.tune?.params.length));
-  reports.unshift({ path, run: `simtest-run-${n}`, modified: new Date().toISOString(), seeds: 0, pass: true, kind: 'tuning' });
+  reports.unshift({ path, run: `simtest-run-${n}`, modified: new Date().toISOString(), seeds: 0, pass: true, kind: 'tuning', targetsPass: 0, targetsTotal: 0, ...stampOf(r) });
   Object.assign(r, { state: 'fertig', phase: 'fertig', done: r.total, ended: new Date().toISOString(), verdict: 'Pass', report: path });
 }
 
+const RUN2_SPEC: BalanceSpec = { seeds: 8, bot: 'wirtschaft', players: 1, world: 'standard', days: 40, vary: ['bot.json:a=1'], label: 'Insel 1 solo · ohne Hilfen' };
+
+/** Startliste: zwei ältere Berichte ohne Label und Auftrag, einer mit (B-662). */
 function seedReports(): BalanceReportInfo[] {
   return [
-    { path: 'reports/tuning-1.json', run: '', modified: '2026-10-24T09:00:00Z', seeds: 0, pass: true, kind: 'tuning' },
-    { path: 'reports/balance-1.json', run: '', modified: '2026-10-23T18:00:00Z', seeds: 8, pass: true, kind: 'balance', rating: 'referenz' },
-    { path: 'reports/simtest-run-2/balance-2.json', run: 'simtest-run-2', modified: '2026-10-24T08:00:00Z', seeds: 8, pass: false, varianten: ['bot.json:a=1'], kind: 'balance' },
+    { path: 'reports/tuning-1.json', run: '', modified: '2026-10-24T09:00:00Z', seeds: 0, pass: true, kind: 'tuning', targetsPass: 0, targetsTotal: 0 },
+    { path: 'reports/balance-1.json', run: '', modified: '2026-10-23T18:00:00Z', seeds: 8, pass: true, kind: 'balance', rating: 'referenz', targetsPass: 3, targetsTotal: 3 },
+    {
+      path: 'reports/simtest-run-2/balance-2.json', run: 'simtest-run-2', modified: '2026-10-24T08:00:00Z', seeds: 8, pass: false, varianten: ['bot.json:a=1'],
+      kind: 'balance', label: RUN2_SPEC.label, spec: RUN2_SPEC, runId: 'run-2', targetsPass: 2, targetsTotal: 3,
+    },
   ];
 }
 
-/** Bewerten und Löschen im Mock (WZ28.13): ändert die Liste im Speicher. */
-function manageReports(reports: BalanceReportInfo[]): Pick<BalanceBackend, 'balanceReportRate' | 'balanceReportDelete'> {
-  const find = (path: string) => {
-    const i = reports.findIndex((r) => r.path === path);
-    if (i < 0) throw new Error(`bericht ${path} unbekannt`);
-    return i;
-  };
-  return {
-    balanceReportRate: async (path, rating) => {
-      reports[find(path)].rating = rating || undefined;
-    },
-    balanceReportDelete: async (path) => {
-      reports.splice(find(path), 1);
-    },
-  };
+/** Aufträge eines Starts: mit `perVariant` Basis-Lauf und je feste Variante einer (wie simrun.perVariant in Go). */
+function specsOf(spec: BalanceSpec): BalanceSpec[] {
+  if (!spec.perVariant) return [spec];
+  if (spec.tune) throw new Error('lauf abgelehnt: je Variante geht nicht mit Abstimmung');
+  if (!spec.vary?.length) throw new Error('lauf abgelehnt: je Variante braucht mindestens eine feste Variante');
+  const prefix = spec.label || 'je Variante';
+  const base: BalanceSpec = { ...spec, perVariant: undefined, vary: undefined, label: `${prefix} · Basis` };
+  return [base, ...spec.vary.map((v) => ({ ...base, vary: [v], label: `${prefix} · ${v}`.slice(0, 60) }))];
 }
 
-/** Mock-Backend: Läufe warten nacheinander, der vorderste läuft (Fortschritt je Tick) und schreibt dann einen Bericht. */
-export function mockBalance(): Omit<BalanceBackend, 'balanceDataFiles' | 'balanceDataDoc' | 'balanceDataValues'> {
-  const runs: BalanceRun[] = [], reports = seedReports();
-  const tunings = new Map<string, Tuning>([['reports/tuning-1.json', exampleTuning(1)]]);
-  const summaries = new Map<string, BalanceSummary>([
-    ['reports/balance-1.json', exampleSummary()],
-    ['reports/simtest-run-2/balance-2.json', exampleSummary(0.15, true, ['bot.json:a=1'])],
-  ]);
-  let n = 2, timer: ReturnType<typeof setInterval> | undefined;
-  const finish = (r: BalanceRun) => {
-    n++;
-    if (r.spec?.tune) return finishTuning(r, n, reports, tunings);
-    const path = `reports/simtest-run-${n}/balance-${n}.json`;
-    const sum = exampleSummary(0, false, r.spec?.vary);
-    summaries.set(path, sum);
-    reports.unshift({ path, run: `simtest-run-${n}`, modified: new Date().toISOString(), seeds: sum.seeds, pass: sum.pass, varianten: sum.varianten, kind: 'balance' });
-    Object.assign(r, { state: 'fertig', phase: 'fertig', done: r.total, ended: new Date().toISOString(), verdict: 'Pass', report: path });
-  };
-  const tick = () => {
-    let cur = runs.find((r) => r.state === 'läuft');
-    if (!cur) {
-      cur = runs.find((r) => r.state === 'wartet');
-      if (cur) Object.assign(cur, { state: 'läuft', phase: 'rechnen' });
-    } else if (++cur.done >= cur.total) finish(cur);
-    else cur.lines.push(`Lauf ${cur.done}/${cur.total}`);
-    if (!runs.some((r) => r.state === 'wartet' || r.state === 'läuft')) {
-      clearInterval(timer);
-      timer = undefined;
-    }
-  };
+function finishBalance(r: BalanceRun, n: number, reports: BalanceReportInfo[], summaries: Map<string, BalanceSummary>) {
+  const path = `reports/simtest-run-${n}/balance-${n}.json`;
+  const sum = exampleSummary(0, false, r.spec?.vary);
+  summaries.set(path, sum);
+  reports.unshift({
+    path, run: `simtest-run-${n}`, modified: new Date().toISOString(), seeds: sum.seeds, pass: sum.pass, varianten: sum.varianten, kind: 'balance',
+    targetsPass: sum.targets.filter((t) => t.pass).length, targetsTotal: sum.targets.length, ...stampOf(r),
+  });
+  Object.assign(r, { state: 'fertig', phase: 'fertig', done: r.total, ended: new Date().toISOString(), verdict: 'Pass', report: path });
+}
+
+/** Neuer wartender Lauf. */
+const newRun = (id: string, spec: BalanceSpec): BalanceRun => ({
+  id, label: spec.label || id, where: 'Repo-Wurzel', state: 'wartet', phase: 'wartet', done: 0, total: TOTAL,
+  started: new Date().toISOString(), verdict: '', report: '', lines: [], spec,
+});
+
+/** Bericht und Abstimm-Ergebnis zu einem Pfad. */
+function lookups(summaries: Map<string, BalanceSummary>, tunings: Map<string, Tuning>): Pick<BalanceBackend, 'balanceReport' | 'balanceTuning'> {
   return {
-    balanceStart: async (spec) => {
-      const id = `run-${runs.length + 1}`;
-      const run: BalanceRun = {
-        id, label: spec.label || id, where: 'Repo-Wurzel', state: 'wartet', phase: 'wartet', done: 0, total: TOTAL,
-        started: new Date().toISOString(), verdict: '', report: '', lines: [], spec,
-      };
-      runs.push(run);
-      timer ??= setInterval(tick, TICK_MS);
-      return structuredClone(run);
-    },
-    balanceRuns: async () => structuredClone(runs),
-    balanceStop: async (id) => {
-      const r = runs.find((x) => x.id === id);
-      if (!r) throw new Error(`lauf ${id} unbekannt`);
-      if (r.state === 'wartet' || r.state === 'läuft') Object.assign(r, { state: 'abgebrochen', phase: 'abgebrochen', ended: new Date().toISOString() });
-    },
-    balanceReports: async () => structuredClone(reports),
-    ...manageReports(reports), ...mockInsights(summaries), balanceBaselines: async () => BASELINES,
     balanceReport: async (path) => {
       const s = summaries.get(path);
       if (!s) throw new Error(`bericht ${path} unbekannt`);
@@ -146,5 +121,60 @@ export function mockBalance(): Omit<BalanceBackend, 'balanceDataFiles' | 'balanc
       if (!t) throw new Error(`tuning ${path} unbekannt`);
       return structuredClone(t);
     },
+  };
+}
+
+/** Mock-Backend: Läufe warten nacheinander, der vorderste läuft (Fortschritt je Tick) und schreibt dann einen Bericht. */
+export function mockBalance(
+  events: BalanceEvents,
+): Omit<BalanceBackend, 'balanceDataFiles' | 'balanceDataDoc' | 'balanceDataValues' | 'balanceDataValuesAll'> {
+  const runs: BalanceRun[] = [], reports = seedReports();
+  const tunings = new Map<string, Tuning>([['reports/tuning-1.json', exampleTuning(1)]]);
+  const summaries = new Map<string, BalanceSummary>([
+    ['reports/balance-1.json', exampleSummary()],
+    ['reports/simtest-run-2/balance-2.json', exampleSummary(0.15, true, ['bot.json:a=1'])],
+  ]);
+  let n = 2, timer: ReturnType<typeof setInterval> | undefined;
+  const finish = (r: BalanceRun) => {
+    n++;
+    if (r.spec?.tune) finishTuning(r, n, reports, tunings);
+    else finishBalance(r, n, reports, summaries);
+    events.reports();
+  };
+  const tick = () => {
+    let cur = runs.find((r) => r.state === 'läuft');
+    if (!cur) {
+      cur = runs.find((r) => r.state === 'wartet');
+      if (cur) Object.assign(cur, { state: 'läuft', phase: 'rechnen' });
+    } else if (++cur.done >= cur.total) finish(cur);
+    else cur.lines.push(`Lauf ${cur.done}/${cur.total}`);
+    if (cur) events.run(structuredClone(cur));
+    if (!runs.some((r) => r.state === 'wartet' || r.state === 'läuft')) {
+      clearInterval(timer);
+      timer = undefined;
+    }
+  };
+  const enqueue = (spec: BalanceSpec): BalanceRun => {
+    const run = newRun(`run-${runs.length + 1}`, spec);
+    runs.push(run);
+    events.run(structuredClone(run));
+    return run;
+  };
+  return {
+    balanceStart: async (spec) => {
+      const [first] = specsOf(spec).map(enqueue);
+      timer ??= setInterval(tick, TICK_MS);
+      return structuredClone(first);
+    },
+    balanceRuns: async () => structuredClone(runs),
+    balanceStop: async (id) => {
+      const r = runs.find((x) => x.id === id);
+      if (!r) throw new Error(`lauf ${id} unbekannt`);
+      if (r.state === 'wartet' || r.state === 'läuft') Object.assign(r, { state: 'abgebrochen', phase: 'abgebrochen', ended: new Date().toISOString() });
+      events.run(structuredClone(r));
+    },
+    balanceReports: async () => structuredClone(reports),
+    ...mockManageReports(reports, events), ...mockInsights(summaries), ...mockBaselines(structuredClone(BASELINES), reports, events),
+    ...lookups(summaries, tunings),
   };
 }

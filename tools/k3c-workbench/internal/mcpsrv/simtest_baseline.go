@@ -1,9 +1,7 @@
 package mcpsrv
 
 import (
-	"encoding/json"
 	"fmt"
-	"path/filepath"
 	"strings"
 
 	"k3c/tools/k3c-workbench/internal/balance"
@@ -27,15 +25,12 @@ func (s *Server) simBaseline(root string, in simTestIn) (string, error) {
 	case info.State != simrun.Done:
 		return "", fmt.Errorf("lauf %s ist %s; gesichert werden nur durchgelaufene Läufe", in.ID, info.State)
 	}
-	reports, _ := filepath.Glob(filepath.Join(root, "reports", "simtest-"+in.ID, "balance-*.json"))
-	if len(reports) == 0 {
-		return "", fmt.Errorf("lauf %s hat keinen Balancing-Bericht (nur offline-Läufe mit focus balance)", in.ID)
+	report, err := simrun.RunReport(root, in.ID)
+	if err != nil {
+		return "", err
 	}
-	var spec json.RawMessage
-	if info.Spec != nil {
-		spec, _ = json.Marshal(info.Spec)
-	}
-	bi, err := balance.SaveBaseline(root, in.SaveBaseline, reports[len(reports)-1], spec, in.OhnePass)
+	// derselbe Weg wie „Als Baseline sichern“ der Balancing-Seite (B-662)
+	bi, err := s.sims.SaveBaseline(root, report, in.SaveBaseline, in.OhnePass)
 	if err != nil {
 		return "", err
 	}
