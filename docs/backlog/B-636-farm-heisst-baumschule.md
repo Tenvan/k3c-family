@@ -65,3 +65,4 @@ Kein Wald-Chunk im Level → Generator erzwingt mindestens einen Baumschul-Platz
 ## Notizen
 
 Wunsch 🧑 2026-10-26.
+**2026-10-29 (Claude, BS8.1 vorgezogen):** Bots roden jetzt auch Baumschul-Plätze (`bot_clear.go`: `blockedSite` + `rank`, Reihenfolge Mauer, Turm, Baumschule; Test `TestBotRodetBaumschule`); gekauft wurde sie schon über `buildOrder`. Messung `task balance:milestone` (coop2, standard, k3c-dev, 40 Tage): vorher Stufe 4 Tag 24 (Ratten-Königin Tag 23), nachher Hub 2 schon Tag 6, Burg fällt nicht mehr früh, aber Ratten-Königin erst Tag 33, Stufe 4 Tag 35, Lava-Golem nein. Ergebnis gemischt, ein Seed; die Delta-Runde `holz` gegen `M1` (BS8.2) und mehr Seeds stehen aus.
