@@ -31,6 +31,7 @@ type simTestIn struct {
 	Focus        []string `json:"focus,omitempty" jsonschema:"balance, perf, stability; offline nur balance (Standard)"`
 	Baseline     string   `json:"baseline,omitempty" jsonschema:"nur offline, bei start: Name einer gesicherten Baseline (z. B. M1) als Vergleich; der Bericht zeigt den Delta-Vergleich je Werte-Gruppe"`
 	SaveBaseline string   `json:"saveBaseline,omitempty" jsonschema:"bei action baseline mit id: sichert den durchgelaufenen Lauf unter diesem Namen (z. B. M1) in reports/baseline/<name>/; ohne Namen listet baseline die gesicherten"`
+	OhnePass     bool     `json:"ohnePass,omitempty" jsonschema:"bei action baseline mit saveBaseline: sichert auch einen Lauf, der sein Ziel nicht erreicht hat (offener Meilenstein, z. B. Endboss nie besiegt); der Lauf muss gültig durchgelaufen sein"`
 	Attach       string   `json:"attach,omitempty" jsonschema:"Raumcode laufender Clients (online, clients 1): kein Browser-Start, Clients mit der Feed-Adresse aus dem Status öffnen"`
 }
 
@@ -87,6 +88,7 @@ func (in simTestIn) spec() (simSpec, error) {
 		{slices.ContainsFunc(s.focus, func(f string) bool { return !slices.Contains(simFocus, f) }), "focus: balance, perf, stability"},
 		{in.ID != "", "id nur bei status, wait, stop und baseline"},
 		{in.SaveBaseline != "", "saveBaseline nur bei action baseline"},
+		{in.OhnePass, "ohnePass nur bei action baseline"},
 		{emptyList(in.SeedList, s.seedList), "seedList: Seeds mit Komma, z. B. k3c-dev,7"},
 	}
 	for _, c := range checks {

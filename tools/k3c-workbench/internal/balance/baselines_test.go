@@ -30,7 +30,7 @@ const passReport = `{"version":1,"seeds":1,"seedMode":"dev","pass":true,"targets
 func TestBaselineSichernAuflistenUndLesen(t *testing.T) {
 	root := t.TempDir()
 	path := writeReport(t, root, "simtest-run-3", passReport)
-	info, err := SaveBaseline(root, "M1", path, json.RawMessage(`{"seeds":1,"bot":"coop2","world":"standard","days":40}`))
+	info, err := SaveBaseline(root, "M1", path, json.RawMessage(`{"seeds":1,"bot":"coop2","world":"standard","days":40}`), false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -57,7 +57,7 @@ func TestBaselineLehntAb(t *testing.T) {
 	root := t.TempDir()
 	pass := writeReport(t, root, "simtest-run-1", passReport)
 	fail := writeReport(t, root, "simtest-run-2", strings.Replace(passReport, `"pass":true,"targets"`, `"pass":false,"targets"`, 1))
-	if _, err := SaveBaseline(root, "M1", pass, nil); err != nil {
+	if _, err := SaveBaseline(root, "M1", pass, nil, false); err != nil {
 		t.Fatal(err)
 	}
 	for _, c := range []struct{ name, path, want string }{
@@ -67,7 +67,7 @@ func TestBaselineLehntAb(t *testing.T) {
 		{"", pass, "Buchstaben"},
 		{"M3", filepath.Join(root, "fehlt.json"), ""},
 	} {
-		_, err := SaveBaseline(root, c.name, c.path, nil)
+		_, err := SaveBaseline(root, c.name, c.path, nil, false)
 		if err == nil || !strings.Contains(err.Error(), c.want) {
 			t.Errorf("%q: Fehler %v, erwartet %q", c.name, err, c.want)
 		}
@@ -81,5 +81,18 @@ func TestListBaselinesOhneOrdnerLeer(t *testing.T) {
 	list, err := ListBaselines(t.TempDir())
 	if err != nil || list == nil || len(list) != 0 {
 		t.Errorf("%#v %v", list, err)
+	}
+}
+
+// Offener Meilenstein: ein gültiger Lauf ohne Pass wird nur mit open gesichert.
+func TestBaselineOffenerMeilenstein(t *testing.T) {
+	root := t.TempDir()
+	fail := writeReport(t, root, "simtest-run-2", strings.Replace(passReport, `"pass":true,"targets"`, `"pass":false,"targets"`, 1))
+	if _, err := SaveBaseline(root, "M1", fail, nil, false); err == nil {
+		t.Fatal("ohne open gesichert")
+	}
+	info, err := SaveBaseline(root, "M1", fail, nil, true)
+	if err != nil || info.Pass || !HasBaseline(root, "M1") {
+		t.Errorf("mit open: %+v %v", info, err)
 	}
 }

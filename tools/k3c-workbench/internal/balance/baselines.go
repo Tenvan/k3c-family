@@ -52,8 +52,9 @@ func HasBaseline(root, name string) bool {
 }
 
 // SaveBaseline sichert den Bericht reportPath (balance-*.json) unter name. Nur ein durchgelaufener Lauf (Pass) wird
-// gesichert; ein vergebener Name wird nie überschrieben. spec (darf nil sein) ist der Auftrag des Laufs.
-func SaveBaseline(root, name, reportPath string, spec json.RawMessage) (BaselineInfo, error) {
+// gesichert, außer open ist gesetzt (offener Meilenstein: der Lauf ist gültig, hat aber sein Ziel nicht erreicht);
+// ein vergebener Name wird nie überschrieben. spec (darf nil sein) ist der Auftrag des Laufs.
+func SaveBaseline(root, name, reportPath string, spec json.RawMessage, open bool) (BaselineInfo, error) {
 	if err := ValidBaselineName(name); err != nil {
 		return BaselineInfo{}, err
 	}
@@ -65,8 +66,8 @@ func SaveBaseline(root, name, reportPath string, spec json.RawMessage) (Baseline
 	if err != nil {
 		return BaselineInfo{}, fmt.Errorf("%s: %w", filepath.Base(reportPath), err)
 	}
-	if !s.Pass {
-		return BaselineInfo{}, fmt.Errorf("baseline %s: der Lauf hat sein Ziel nicht erreicht (Pass fehlt); gesichert werden nur durchgelaufene Läufe", name)
+	if !s.Pass && !open {
+		return BaselineInfo{}, fmt.Errorf("baseline %s: der Lauf hat sein Ziel nicht erreicht (Pass fehlt); gesichert werden nur durchgelaufene Läufe, bei einem offenen Meilenstein ohnePass setzen", name)
 	}
 	dir := filepath.Join(root, filepath.FromSlash(BaselineDir), name)
 	if _, err := os.Stat(dir); err == nil {

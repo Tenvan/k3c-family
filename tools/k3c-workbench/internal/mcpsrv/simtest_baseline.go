@@ -35,7 +35,7 @@ func (s *Server) simBaseline(root string, in simTestIn) (string, error) {
 	if info.Spec != nil {
 		spec, _ = json.Marshal(info.Spec)
 	}
-	bi, err := balance.SaveBaseline(root, in.SaveBaseline, reports[len(reports)-1], spec)
+	bi, err := balance.SaveBaseline(root, in.SaveBaseline, reports[len(reports)-1], spec, in.OhnePass)
 	if err != nil {
 		return "", err
 	}

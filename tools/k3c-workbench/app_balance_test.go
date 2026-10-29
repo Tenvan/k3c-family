@@ -210,7 +210,7 @@ func TestBalanceBaselinesListetGesicherte(t *testing.T) {
 	if err := os.WriteFile(report, []byte(`{"version":1,"seeds":1,"pass":true,"targets":[]}`), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := balance.SaveBaseline(a.root, "M1", report, []byte(`{"bot":"coop2","days":40}`)); err != nil {
+	if _, err := balance.SaveBaseline(a.root, "M1", report, []byte(`{"bot":"coop2","days":40}`), false); err != nil {
 		t.Fatal(err)
 	}
 	list, err := a.BalanceBaselines()
