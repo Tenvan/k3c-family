@@ -76,7 +76,7 @@ describe('Gebäude-Grafik (GR3.1)', () => {
   });
 
   it('Gebäude mit `levels` in den Daten: Stufe 1 = Grundwerte, fünf Stufen, Grafik je Gebäudestufe (B-569 AC-01)', () => {
-    const withLevels = Object.entries(BUILDINGS).filter(([, d]) => d.levels?.length);
+    const withLevels = Object.entries(BUILDINGS).filter(([k, d]) => k !== 'ship' && d.levels?.length); // das Schiff hat drei Abschnitte aus data/ship.json (B-637)
     expect(withLevels.map(([k]) => k).sort()).toEqual(['barracks', 'nursery', 'healer', 'storage', 'tavern', 'tower', 'wall'].sort());
     for (const [kind, d] of withLevels) {
       expect(d.levels).toHaveLength(5);

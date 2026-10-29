@@ -1,14 +1,14 @@
-# BS6 · CLI · Client: Baumschule, Hafen und Schiff, neue Münzskala
+# BS6 · CLI, DEV · Client: Baumschule, Hafen und Schiff, neue Münzskala
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAS
-- **Domäne:** CLI
-- **Reife:** Entwurf
+- **Domäne:** CLI, DEV
+- **Reife:** bereit
 - **Tickets:** B-634, B-636, B-637
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude (2026-10-29, Defaults aus B-634/B-636/B-637)
 
 ## Ausgangslage
 
@@ -57,6 +57,15 @@ Asset fehlt → vorhandene Farm-/Platzhalter-Grafik, Ticket an GEB.
 keine.
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BS6.1 | `BS6.1-baumschule-erst-roden.md` | Umsetzung | autonom | fertig |
+| BS6.2 | `BS6.2-hafen-schiff-zeichnen.md` | Umsetzung | autonom | fertig |
+| BS6.3 | `BS6.3-kosten-anzeige-skala.md` | Umsetzung | autonom | fertig |
+| BS6.4 | `BS6.4-seed-modus-all-m4.md` | Umsetzung | autonom | offen |
+| BS6.5 | `BS6.5-review-bs6.md` | Review | autonom | offen |
+| BS6.6 | `BS6.6-abnahme-geraet.md` | Workshop | Mensch | offen |
 
 Reife Entwurf, Stichpunkte:
 - BS6.1 · CLI · Baumschule im Client (AC-01)

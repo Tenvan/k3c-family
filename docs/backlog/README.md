@@ -141,7 +141,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-641](B-641-grafik-hafen-schiff.md) | DEV | Idee | hoch | eingeplant | BS10 | Hafen und Schiff haben eigene Grafiken je Bauabschnitt |
 | [B-642](B-642-meilenstein-lauf-ganze-insel.md) | DEV | Idee | hoch | eingeplant | BS11 | Der Balancing-Tester spielt nur eine Stufe, der Meilenstein-Lauf braucht die ganze Insel |
 | [B-650](B-650-boss-hp-je-spieler-eigenes-feld.md) | SIM | Idee | hoch | eingeplant | BS3 | Boss-HP je Zusatzspieler bekommt ein eigenes Feld, getrennt von der Wellengröße |
-| [B-651](B-651-kristallhoehle-titan-welle-raeumt-hub-ab.md) | SIM | Problem | hoch | offen | BS3 | Die Titan-Welle der Kristallhöhle räumt den Hub eines Einzelmonarchen in Sekunden ab (coop2) |
 | [B-652](B-652-mauern-tuerme-verteilt-tor-ist-aeusserste-mauer.md) | SIM | Idee | hoch | eingeplant | BS12 | Mauern und Türme stehen verteilt in jedem Chunk, das Tor ist die äußerste gebaute Mauer |
 | [B-653](B-653-baustellen-schilder-bauoptionen-holzzaun.md) | CLI | Problem | hoch | eingeplant | BS13 | Bauschilder an Bäumen und Felsen nur nach Markierung, keine Bauoptionen für gesperrte Gebäude, Holzmauer als Zaun |
 | [B-654](B-654-bot-performance-miniboss-json.md) | SIM | Schuld | mittel | offen | – | Bot-Performance: bosses.json je Tick neu geparst, nodeFor/wanted mit Map-Zugriffen |
@@ -616,3 +615,4 @@ Zeile in diesen Abschnitt.
 | [B-648](archiv/B-648-balancing-bericht-rahmenregeln.md) | DEV | Problem | hoch | erledigt | – | Balancing-Bericht urteilt nach Ziel und zeigt den Fortschritt |
 | [B-649](archiv/B-649-balancing-bericht-klartext.md) | DEV | Problem | mittel | verworfen | – | Balancing-Bericht in Klartext: Prozentwerte, Stellschrauben mit Bereich |
 | [B-625](archiv/B-625-balance-baseline-neu.md) | REG | Schuld | mittel | verworfen | – | Balance-Baseline nach BAL6 neu schreiben |
+| [B-651](archiv/B-651-kristallhoehle-titan-welle-raeumt-hub-ab.md) | SIM | Problem | hoch | erledigt | BS3 | Die Titan-Welle der Kristallhöhle räumt den Hub eines Einzelmonarchen in Sekunden ab (coop2) |

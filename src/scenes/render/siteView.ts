@@ -162,7 +162,7 @@ export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: Wor
   const wait = siteStatus(s, world.danger, world.biome.depth);
   const stage = siteStage(s, world);
   const marker = siteMarker(s); // Bauschild oder Gerüst im Bau, nie beides (B-586)
-  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, cost), currentLanguage(), statusKey(wait), stage, s.ruin === true, marker].join('|'); // stage: Mauer, Turm und Tor je Stufe (GEB3, B-631)
+  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, cost), currentLanguage(), statusKey(wait), stage, s.ruin === true, marker, s.clearing === true].join('|'); // stage: Mauer, Turm und Tor je Stufe (GEB3, B-631)
   if (v.getData('key') === key) return;
   v.setData('key', key);
 
@@ -188,7 +188,7 @@ export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: Wor
   if (marker === 'sign') drawBuildSign(g, s.kind);
   const top = marker === 'scaffold' ? showScaffold(scene, v, g, s.kind, w, h) : h;
   if (s.buildProgress > 0) drawBar(g, -top - 12, 80, s.buildProgress, 0xdda15e);
-  if (s.state === 'unpaid' && near) drawPrice(g, label, world, -h - 20, cost.gold ?? 0, s.paidGold, siteName(s.kind), cost);
+  if (s.state === 'unpaid' && near) drawPriceOrClearing(g, label, s, world, h, cost);
   if (wait) drawSiteStatus(g, label, wait, siteName(s.kind), -top - 20);
 }
 
@@ -230,6 +230,12 @@ function drawBuiltPlaceholder(g: Phaser.GameObjects.Graphics, s: Site, w: number
 }
 
 /** Münz-Slots (K2C): gefüllt = bezahlt. Baumaterial steht darüber. */
+/** Preis am unbezahlten Platz, solange Bäume oder Felsen im Freiraum stehen stattdessen „erst roden“ (B-636, B-652) */
+function drawPriceOrClearing(g: Phaser.GameObjects.Graphics, label: Phaser.GameObjects.Text, s: Site, world: World, h: number, cost: Record<string, number | undefined>): void {
+  if (s.clearing === true) label.setPosition(0, -h - 20).setText(t('site.clearing', { name: siteName(s.kind) })).setColor('#ffd166');
+  else drawPrice(g, label, world, -h - 20, cost.gold ?? 0, s.paidGold, siteName(s.kind), cost);
+}
+
 function drawPrice(g: Phaser.GameObjects.Graphics, label: Phaser.GameObjects.Text, world: Pick<World, 'stock'>, y: number, total: number, paid: number, name: string, cost: Record<string, number | undefined>): void {
   const perRow = 10;
   for (let i = 0; i < total; i++) {

@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** BS3
 - **Projekt:** BAS
 - **Erstellt:** 2026-10-28
@@ -72,10 +72,6 @@ Bleibt der Lauf nach (A) und (B) rot: Befund an 🧑, kein weiteres Justieren oh
 
 ## Notizen
 
-**Stand 2026-10-28 (Claude), B-651 ruht seit der Gebäudeänderung B-652.** Die Hebel A bis E (Bot, Pool, Boss-HP) sind in den früheren Notizen belegt (`bossHpPerExtraPlayer`, `perExtraPlayer` 0,25, Pool-Begrenzung verworfen). Mit den verteilten Plätzen (B-652, BS12) und den Bot-Anpassungen läuft coop2 deutlich weiter als zuvor.
+**2026-10-29 (Claude, Sichtung BAS):** erledigt durch Beschluss 🧑 (Meilenstein 1 reicht bis „Splitter-Titan besiegt“, der Endboss gehört dem Stufen-Test, ecf262ec). Messung HEAD: Titan fiel bis ecf262ec an Tag 26; nach BS12.6 in 2 von 4 Seeds (Seed-Streuung), `k3c-dev` allein erreicht Stufe 4 (Tag 36). Regel C (Pool nur mit Spieler) bleibt verworfen (Hebel C zurückgenommen). Die früheren Notizen unten bleiben als Beleg.
 
-**Endspiel-Bot (Commit nach `24c10e64`):** (1) Unter Tage baut der Bot die Werkstatt zuerst (`deepBuildOrder`): ohne Werkstatt keine Bögen, jede Welle räumt sie ab. (2) Knoten nahe am Bau des Endbosses werden nicht markiert (`nearLair`, 60 Units, solange < 16 Kämpfer): Kristall-Knoten am Bau weckten den Endboss, die Beschwörung räumte Tag 27/28 die Kristallhöhle ab (belegt: Endboss aktiv bis Tag 31 nicht mehr, vorher Tag 28). (3) Abstieg erst mit 400 Holz, 16 Kämpfer-Ziel in der Endboss-Stufe.
-**Mehr-Seed-Lauf (k3c-dev, 1, 2, 3; 40 Tage):** Goblin-Anführer 4/4 (Tag 5), Troll-König 4/4 (Tag 15), Ratten-Königin 4/4 (Tag 20), Lava-Golem 4/4 (Tag 22), Splitter-Titan 3/4 (Tag 32), Endboss 0/4. Vor dem Endspiel-Bot: 4/4, 4/4, 3/4, 1/4, 1/4, 0/4.
-**Befund Endboss (belegt per Zustandsspur Seed k3c-dev, Tag 26–41):** Die Kristallhöhle hält Hub 3; das Heer pendelt zwischen 0 und 10 Bögen, Gold liegt am Deckel 30 ungenutzt. Der Endboss schläft (nie 16 Kämpfer), der Bot greift ihn nicht an. Die Wellen der Kristallhöhle (Welle 5–9 an Tag 32–41, alle 1–2 Tage) räumen die 10 Bögen jeweils ab; es fehlt Verteidigung, nicht Nachschub (Anwerbe-Lager: 2 Landstreicher, 25 s Respawn, kein Deckel in `data/`).
-
-**Offen (Entscheidung 🧑):** (1) Endspiel-Plan weiter (stärkere Verteidigung in der Kristallhöhle: Türme vor Mauern, Gold vor Deckel in Elite/Hub-Ausbau investieren, Hub 4+), oder (2) Meilenstein 1 bis „Splitter-Titan besiegt“ fassen, den Endboss dem Stufen-Test (`task balance:fullgame`, Hilfen) überlassen.
+**Stand 2026-10-28 (Claude), B-651 ruht seit der Gebäudeänderung B-652.** Siehe Git-Verlauf für die Hebel A bis E.
