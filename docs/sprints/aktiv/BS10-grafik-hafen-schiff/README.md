@@ -62,7 +62,7 @@ keine (Zahl der Abschnitte aus BS5).
 | BS10.1 | `BS10.1-hafen-grafik.md` | Umsetzung | autonom | fertig |
 | BS10.2 | `BS10.2-schiff-grafik.md` | Umsetzung | autonom | fertig |
 | BS10.3 | `BS10.3-asset-slots-einbau.md` | Umsetzung | autonom | fertig |
-| BS10.4 | `BS10.4-review-bs10.md` | Review | autonom | offen |
+| BS10.4 | `BS10.4-review-bs10.md` | Review | autonom | fertig |
 | BS10.5 | `BS10.5-abnahme-studio-geraet.md` | Workshop | Mensch | offen |
 
 Reife Entwurf, Stichpunkte:
