@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** eingeplant
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-29
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-29 🧑 Chat („jetzt die Seite mit Hilfe der Tickets und Mocks umsetzen“)
 
 ## Ausgangslage
 
@@ -83,3 +83,6 @@ Wer die Welt ordnet, sieht nur die Welt; wer eine Stufe bearbeitet, sieht nur di
 
 - Mock: https://claude.ai/artifact/8EESxobV9HwKvqudPmDgbi (Tafeln „Modus Welt-Struktur“ und „Modus Stufe bearbeiten“).
 - Glossar-Eintrag „Welt-Struktur (Modus)“ am 2026-10-29 angelegt.
+- **Umgesetzt 2026-10-29** (AC-01 bis AC-06 per Vitest, Browser-Pane gesehen; AC-07 offen bei 🧑): `WorldHeader` (Umschalter, Auswahlzeile, Speichern mit Änderungszähler), `WorldGuard` (Rückfrage Speichern/Verwerfen/Abbrechen), `WorldStructure` und `WorldDraftEditor` (Inselliste, Detail, Stufenkarten), `GameLauncher` mit `<details>`-Menü.
+- Abweichungen: Biome der Insel sind Schalt-Chips (`aria-pressed`) statt Checkboxen; Ziehen zum Ordnen der Inseln entfällt (nur ↑/↓, Default der offenen Frage); der Modus Welt-Struktur zeigt keine Chunk-Vorschau je Stufe (Default).
+- Review-Befunde behoben: verwaiste Rückfrage, Chat-Antwort bei offener Planung (wird mit Hinweis nicht geladen), „Stufe bearbeiten →“ nach Änderung der Insel-ID, Auswahl folgt der Insel beim Umordnen.

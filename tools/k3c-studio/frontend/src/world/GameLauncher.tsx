@@ -65,16 +65,21 @@ export function GameLauncher({ seed, biome }: { seed: string; biome: string }) {
       <Button disabled={busy || reasonNew !== null} title={reasonNew ?? 'Neues Spiel mit diesem Seed; ein vorhandener Spielstand dieses Namens wird weitergespielt'} onClick={() => void open('new')}>
         Im Spiel öffnen
       </Button>
-      <Button variant="soft" disabled={busy || reasonFull !== null} title={reasonFull ?? 'Legt voll-<seed> mit allen Stufen und Gebäuden an (überschreibt ihn); auf dem Spielserver nur im Dev-Mode'} onClick={() => void open('full')}>
-        Voll ausgebaut öffnen
-      </Button>
-      <SelectField className="wd-base" aria-label="Spiel läuft auf" value={target} onChange={choose} options={[
-        { value: ENGINE, label: `Interne Engine des Studios (${ENGINE_BASE})` },
-        ...servers.map((s) => ({ value: s.base, label: serverLabel(s), disabled: !s.reachable })),
-      ]} />
-      <Button variant="ghost" disabled={busy} title="Spielserver erneut prüfen" onClick={() => void search()}>
-        Neu suchen
-      </Button>
+      <details className="wd-menu">
+        <summary aria-label="Weitere Startoptionen" title="Voll ausgebaut öffnen, Spiel-Ziel wählen">▾</summary>
+        <div className="wd-menu-body">
+          <Button variant="soft" disabled={busy || reasonFull !== null} title={reasonFull ?? 'Legt voll-<seed> mit allen Stufen und Gebäuden an (überschreibt ihn); auf dem Spielserver nur im Dev-Mode'} onClick={() => void open('full')}>
+            Voll ausgebaut öffnen
+          </Button>
+          <SelectField className="wd-base" aria-label="Spiel läuft auf" value={target} onChange={choose} options={[
+            { value: ENGINE, label: `Interne Engine des Studios (${ENGINE_BASE})` },
+            ...servers.map((s) => ({ value: s.base, label: serverLabel(s), disabled: !s.reachable })),
+          ]} />
+          <Button variant="ghost" disabled={busy} title="Spielserver erneut prüfen" onClick={() => void search()}>
+            Neu suchen
+          </Button>
+        </div>
+      </details>
       {(reasonNew ?? note) && <Text size="2" color={reasonNew && !note ? 'gray' : undefined} role="status">{note || `Im Spiel öffnen nicht möglich: ${reasonNew}`}</Text>}
     </div>
   );

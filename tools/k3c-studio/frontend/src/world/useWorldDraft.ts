@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { backend, type PlanSaved, type WorldCheckView, type WorldDraft } from '../api';
 import type { Notice } from './planSave';
 import type { PlanState } from './usePlan';
+import { worldChanges } from './changes';
 import { draftOf, sameDraft } from './worldDraft';
 
 const OK: WorldCheckView = { ok: true, error: '', island: -1, field: '', preview: '' };
@@ -46,19 +47,22 @@ export function useWorldDraft(plan: PlanState) {
     return () => { current = false; clearTimeout(timer); };
   }, [draft, dirty]);
 
-  const save = useCallback(async () => {
-    if (!draft || !view) return;
+  /** Speichert den Entwurf; true, wenn er gespeichert wurde (Fehler und Stale lassen ihn stehen) */
+  const save = useCallback(async (): Promise<boolean> => {
+    if (!draft || !view) return false;
     const result = await saveOrError(draft, view.stand);
-    if (result.error) { setNotice({ kind: result.stale ? 'stale' : 'error', text: result.error }); return; }
+    if (result.error) { setNotice({ kind: result.stale ? 'stale' : 'error', text: result.error }); return false; }
     // gespeichert: Herkunft der Inseln = ihre neue id, Planfelder aus dem Chat sind jetzt in der Datei (sonst bliebe der Entwurf offen und schriebe sie später zurück); Eingaben während des Speicherns bleiben stehen
     setDraft((d) => (sameDraft(d, draft) ? { ...draft, islands: draft.islands.map(({ plannedChunks: _p, chunkCounts: _c, ...i }) => ({ ...i, from: i.id })) } : d));
     await reload();
     await refreshWorlds();
     setNotice({ kind: 'hint', text: result.hint });
+    return true;
   }, [draft, view, reload, refreshWorlds]);
 
   return {
     draft, check, notice, dirty, save,
+    changes: dirty ? worldChanges(draft, saved) : 0,
     /** Grund, warum Speichern gesperrt ist: ein offener Entwurf der Planung ginge beim Neuladen verloren */
     lock: plan.dirty ? 'Erst die Planung speichern oder verwerfen' : undefined,
     edit: (next: WorldDraft) => { setDraft(next); setNotice(null); },

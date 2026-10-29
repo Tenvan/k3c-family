@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import { mockWorldLevel } from '../api/mockWorld';
 import { WorldPage } from './WorldPage';
+import { planSlot } from './worldTesting';
 
 // Klick auf einen Chunk springt dorthin (B-485, WZ17.4): Streifen, Bodenstreifen der Live-Vorschau und Planungsliste.
 // Bühne 600 × 400 px samt Rahmen, Streifen 1000 px (happy-dom misst sonst 0); Mock-Level: Chunks 30 Units, Hub = Abschnitt 5.
@@ -129,26 +130,30 @@ describe('Tippen und Ziehen (B-491)', () => {
   });
 });
 
-describe('Klick auf einen Eintrag der Planungsliste (B-485)', () => {
-  it('springt zum Chunk-Platz; ein Klick in ein Feld des Eintrags nicht', async () => {
+describe('Klick auf den Chip eines geplanten Chunks (B-485, B-665)', () => {
+  const chip = (h: HTMLElement) => [...h.querySelectorAll<HTMLButtonElement>('.wd-chunklist button')].find((b) => b.textContent!.startsWith('+1 ·'))!;
+
+  it('springt zum Chunk-Platz; ein Klick in ein Feld des Inspektors nicht', async () => {
     const h = await mount();
-    await act(async () => [...h.querySelectorAll('button')].find((b) => b.textContent === 'Chunk hinzufügen')!.click());
+    await planSlot(h, 1);
     await flush();
+    await act(async () => h.querySelectorAll<HTMLElement>('.wd-chunk')[8]!.click());
     const before = liveCenter();
-    await act(async () => h.querySelector<HTMLElement>('[aria-label="Chunk-Seed Platz +1"]')!.click());
-    expect(liveCenter()).toBeCloseTo(before);
-    await act(async () => h.querySelector<HTMLElement>('.wd-planned')!.click());
+    expect(before).toBeCloseTo(mid(8));
+    await act(async () => chip(h).click());
     expect(liveCenter()).toBeCloseTo(mid(6)); // Platz +1 = Abschnitt rechts vom Hub
     expect(chunkCenter(h)).toBeCloseTo(mid(6));
+    await act(async () => h.querySelectorAll<HTMLElement>('.wd-chunk')[8]!.click());
+    await act(async () => chip(h).click());
+    await act(async () => h.querySelector<HTMLElement>('[aria-label="Chunk-Seed Platz +1"]')!.click());
+    expect(liveCenter()).toBeCloseTo(mid(6));
   });
 
-  it('ist per Tastatur erreichbar: Eintrag fokussierbar, Enter springt (B-491/3)', async () => {
+  it('ist per Tastatur erreichbar: der Chip ist ein Knopf', async () => {
     const h = await mount();
-    await act(async () => [...h.querySelectorAll('button')].find((b) => b.textContent === 'Chunk hinzufügen')!.click());
+    await planSlot(h, 1);
     await flush();
-    const item = h.querySelector<HTMLElement>('.wd-planned')!;
-    expect(item.tabIndex).toBe(0);
-    await act(async () => item.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })));
-    expect(liveCenter()).toBeCloseTo(mid(6));
+    expect(chip(h).tagName).toBe('BUTTON');
+    expect(chip(h).disabled).toBe(false);
   });
 });

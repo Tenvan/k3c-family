@@ -5,6 +5,7 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import { WorldPage } from './WorldPage';
+import { forgetMode, planSlot, toMode } from './worldTesting';
 import { optionTexts } from '../../../../webkit/testing/options';
 import { pickOption, selectedText } from '../../../../webkit/testing/select';
 
@@ -33,13 +34,14 @@ async function type(el: HTMLInputElement, value: string) {
 }
 const click = async (el: HTMLElement) => { await act(async () => el.click()); await flush(); };
 
-/** Seite mit einer neuen, gewählten Welt „Probe“ (eine Insel). */
+/** Seite im Modus Welt-Struktur mit einer neuen, gewählten Welt „Probe“ (eine Insel). */
 async function mount(): Promise<HTMLElement> {
   host = document.createElement('div');
   document.body.append(host);
   root = createRoot(host);
   await act(async () => root!.render(<Theme><WorldPage /></Theme>));
   await flush();
+  await toMode(host, 'Welt-Struktur');
   await type(field(host, 'Name der neuen Welt'), 'Probe');
   await click(button(host, 'Welt +'));
   return host;
@@ -48,6 +50,7 @@ async function mount(): Promise<HTMLElement> {
 afterEach(async () => {
   act(() => root?.unmount());
   host?.remove();
+  forgetMode();
   for (const w of (await backend.planWorlds()).worlds) if (w.id !== 'standard') await backend.planWorldRemove(w.id);
   await backend.planWorldSelect('standard');
 });
@@ -60,7 +63,12 @@ describe('Welt-Entwurf (B-488/AC-05)', () => {
     await type(field(h, 'Notizen der Welt'), 'kalt');
     await settle();
     expect(h.querySelector('pre[aria-label="Vorschau der Welt-Datei"]')!.textContent).toContain('"name": "Nordmeer"');
-    expect(button(h, 'Welt +').disabled).toBe(true); // Welt wechseln und anlegen nur ohne offenen Entwurf
+    await type(field(h, 'Name der neuen Welt'), 'Weiter');
+    await click(button(h, 'Welt +')); // eine andere Welt anlegen fragt bei offenem Entwurf zurück (B-664/AC-04)
+    expect(h.querySelector('[role="alertdialog"]')).not.toBeNull();
+    await click(button(h, 'Abbrechen'));
+    expect(h.querySelector('[role="alertdialog"]')).toBeNull();
+    expect(field(h, 'Name der Welt').value).toBe('Nordmeer');
     await click(button(h, 'Welt speichern'));
     expect(h.querySelector('.wd-notice')!.textContent).toContain('REG-Änderung');
     expect((await backend.planWorlds()).active).toBe('probe');
@@ -72,30 +80,43 @@ describe('Welt-Entwurf (B-488/AC-05)', () => {
     const h = await mount();
     await click(button(h, 'Insel +'));
     await click(button(h, 'Insel +'));
+    await click(button(h, 'Insel 2 wählen'));
     await type(field(h, 'Name Insel 2'), 'Eisinsel');
     await type(field(h, 'ID Insel 2'), 'eisinsel');
     await click(button(h, 'Insel 2 hoch'));
+    await click(button(h, 'Insel 1 wählen'));
     expect(field(h, 'Name Insel 1').value).toBe('Eisinsel');
     expect(button(h, 'Insel 1 hoch').disabled).toBe(true);
     await click(button(h, 'Insel 3 entfernen'));
     await settle();
     await click(button(h, 'Welt speichern'));
+    await toMode(h, 'Stufe bearbeiten');
     expect(await islandOptions(h)).toEqual(['Eisinsel', 'Insel 1']);
   });
 
-  it('nach dem Speichern einer neuen id lässt sich weiter ändern und speichern; offene Planung sperrt das Speichern', async () => {
+  it('nach dem Speichern einer neuen id lässt sich weiter ändern und speichern; der Wechsel in den anderen Modus fragt zurück', async () => {
     const h = await mount();
     await type(field(h, 'ID Insel 1'), 'eis');
     await settle();
     await click(button(h, 'Welt speichern'));
     await type(field(h, 'Name Insel 1'), 'Eis');
     await settle();
-    await click(button(h, 'Chunk hinzufügen'));
-    expect(button(h, 'Welt speichern').disabled).toBe(true); // die Planung ginge beim Neuladen verloren
-    await click(button(h, 'Verwerfen'));
+    await click(button(h, 'Stufe bearbeiten')); // offener Entwurf: Rückfrage statt Wechsel (B-664/AC-04)
+    expect(h.querySelector('[role="alertdialog"]')).not.toBeNull();
+    await click(button(h, 'Speichern und wechseln'));
     await settle();
-    await click(button(h, 'Welt speichern'));
     expect(await islandOptions(h)).toEqual(['Eis']);
+  });
+
+});
+
+describe('Stufen und Skalierung (B-488/AC-05)', () => {
+  it('die Auswahl folgt der Insel beim Umordnen (Review B-664)', async () => {
+    const h = await mount();
+    await click(button(h, 'Insel +')); // die neue Insel ist gewählt
+    await type(field(h, 'Name Insel 2'), 'Zwei');
+    await click(button(h, 'Insel 2 hoch'));
+    expect(field(h, 'Name Insel 1').value).toBe('Zwei'); // dieselbe Insel, jetzt an erster Stelle
   });
 
   it('setzt Stufen und Skalierung einer Insel', async () => {
@@ -107,6 +128,7 @@ describe('Welt-Entwurf (B-488/AC-05)', () => {
     const view = await backend.planLoad();
     expect(view.islands[0]!.depths).toEqual([0, 1, 3, 4]);
     expect(view.islands[0]!.depthScaling.hp).toBe(2.5);
+    await toMode(h, 'Stufe bearbeiten');
     expect(await optionTexts(h, 'Stufe')).toHaveLength(4);
   });
 });
@@ -114,8 +136,9 @@ describe('Welt-Entwurf (B-488/AC-05)', () => {
 describe('Planung und Chunk-Anzahl in der gewählten Welt (Editor aus WZ8/WZ17)', () => {
   it('speichert Chunk und Inselgröße der Stufe in die Welt „Probe“, nicht in die Standard-Welt', async () => {
     const h = await mount();
+    await toMode(h, 'Stufe bearbeiten');
     await pickOption(h, 'Inselgröße', 'klein · 24');
-    await click(button(h, 'Chunk hinzufügen'));
+    await planSlot(h, 1);
     await settle();
     await click(button(h, 'Speichern'));
     const island = (await backend.planLoad()).islands[0]!;

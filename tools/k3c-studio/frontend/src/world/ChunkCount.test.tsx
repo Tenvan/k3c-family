@@ -5,6 +5,7 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import { WorldPage } from './WorldPage';
+import { planSlot } from './worldTesting';
 import { optionTexts, pickWhere } from '../../../../webkit/testing/options';
 import { selectedText } from '../../../../webkit/testing/select';
 
@@ -78,10 +79,11 @@ describe('Inselgröße je Stufe (B-485/AC-04)', () => {
   it('ein Platz jenseits der Anzahl zeigt den Fehler am Platz und sperrt Speichern', async () => {
     const h = await mount();
     await choose(h, '24');
-    await act(async () => button(h, 'Chunk hinzufügen').click());
-    await typeIn(h.querySelector<HTMLInputElement>('[aria-label="Platz +1"]')!, '11');
+    await planSlot(h, 1);
+    vi.spyOn(backend, 'planCheck').mockResolvedValue({ ok: false, slot: 1, error: 'Platz +1 liegt jenseits der Chunk-Anzahl 24' });
+    await typeIn(h.querySelector<HTMLInputElement>('[aria-label="Chunk-Seed Platz +1"]')!, 'x'); // löst die Prüfung aus
     await settle();
-    expect(h.querySelector('.wd-planned[data-slot="11"] .wd-error')!.textContent).toContain('Platz +11');
+    expect(h.querySelector('.wd-planned[data-slot="1"] .wd-error')!.textContent).toContain('Platz +1');
     expect(button(h, 'Speichern').disabled).toBe(true);
   });
 
@@ -90,7 +92,7 @@ describe('Inselgröße je Stufe (B-485/AC-04)', () => {
     const h = await mount();
     await choose(h, '16');
     await settle();
-    expect(h.querySelector('.wd-plan > .wd-error')!.textContent).toContain('Chunk-Anzahl 16');
+    expect(h.querySelector('.wd-plan .wd-error')!.textContent).toContain('Chunk-Anzahl 16');
     expect(button(h, 'Speichern').disabled).toBe(true);
   });
 

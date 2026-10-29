@@ -82,16 +82,17 @@ describe('Seite Welt-Betrachter: Chunk-Vorschau (B-460/AC-01, AC-02)', () => {
     expect(live(h).hidden).toBe(false);
     expect(h.querySelector('.wd-viewport')).not.toBeNull();
     expect(h.querySelector('.wd-stage')).not.toBeNull();
-    expect(button(h, 'Verkleinern')).toBeDefined();
+    expect(button(h, 'Bühne auf ganze Fläche').getAttribute('aria-pressed')).toBe('true');
+    expect(h.querySelector('[role="tab"][aria-selected="true"]')!.textContent).toBe('Chunk'); // Inspektor neben der Live-Vorschau (B-665)
   });
 
-  it('verkleinern und wieder maximieren ändert nur die Höhen, beide Vorschauen bleiben sichtbar', async () => {
+  it('Bühne auf ganze Fläche ändert nur die Höhen, beide Vorschauen bleiben sichtbar', async () => {
     const h = await mount();
-    await act(async () => button(h, 'Verkleinern').click());
+    await act(async () => button(h, 'Bühne auf ganze Fläche').click());
     expect(page(h).dataset.maximized).toBe('false');
     expect(live(h).hidden).toBe(false);
     expect(h.querySelector('.wd-viewport')).not.toBeNull();
-    await act(async () => button(h, 'Maximieren').click());
+    await act(async () => button(h, 'Bühne auf ganze Fläche').click());
     expect(page(h).dataset.maximized).toBe('true');
     expect(live(h).hidden).toBe(false);
   });
@@ -190,7 +191,7 @@ describe('Seite Welt-Betrachter: Hinweise und Warnungen (B-460/AC-01)', () => {
 });
 
 describe('Seite Welt-Betrachter: Tasten und Anfragen (B-460/AC-02)', () => {
-  it('Taste M verkleinert und maximiert wieder, nicht beim Tippen im Eingabefeld (AC-02)', async () => {
+  it('Taste M schaltet die Bühne auf ganze Fläche um und wieder zurück, nicht beim Tippen im Eingabefeld (AC-02)', async () => {
     const h = await mount();
     const press = (key: string, target: EventTarget = document.body) => act(async () => { target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true })); });
     await press('m');

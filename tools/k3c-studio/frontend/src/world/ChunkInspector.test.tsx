@@ -7,8 +7,10 @@ import { backend } from '../api';
 import { iconOf, nameOf } from './kindIcons';
 import { CHUNK_KINDS, OBJECT_KINDS } from './plan';
 import { WorldPage } from './WorldPage';
+import { forgetMode, planSlot, selectSlot, toMode } from './worldTesting';
 
-// B-461/AC-06, AC-09, AC-11, AC-12 im DOM: der Editor für geplante Chunks mit dem Mock-Backend (ohne Wails).
+// B-461/AC-06, AC-09, AC-11, AC-12, B-664, B-665 im DOM: der Reiter Chunk des Inspektors (geplante Chunks), Kopf mit Modi und
+// Rückfrage, mit dem Mock-Backend (ohne Wails).
 vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} refresh() {} setLook() {} setPosition() {} destroy() {} } }));
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -36,11 +38,8 @@ async function type(el: HTMLInputElement, value: string) {
   await act(async () => el.dispatchEvent(new Event('input', { bubbles: true })));
 }
 
-/** Entwurf am Platz +1 anlegen (Standard-Art des Bioms) */
-async function addChunk(h: HTMLElement) {
-  await act(async () => button(h, 'Chunk hinzufügen').click());
-  await flush();
-}
+/** Chunk am Platz +1 planen (Standard-Art des Bioms): Abschnitt wählen, „Chunk planen“ */
+const addChunk = (h: HTMLElement) => planSlot(h, 1);
 
 beforeEach(async () => { // der Mock hält die Planung im Speicher: jeder Test beginnt ohne gespeicherte Planung
   const view = await backend.planLoad();
@@ -48,12 +47,13 @@ beforeEach(async () => { // der Mock hält die Planung im Speicher: jeder Test b
 });
 
 afterEach(() => {
+  forgetMode();
   vi.restoreAllMocks();
   act(() => root?.unmount());
   host?.remove();
 });
 
-describe('Editor für geplante Chunks (B-461/AC-09)', () => {
+describe('Reiter Chunk: geplante Chunks (B-461/AC-09, B-665)', () => {
   it('zeigt Insel, Stufe und „keine Planung“, solange nichts geplant ist', async () => {
     const h = await mount();
     expect(field(h, 'Insel')).not.toBeNull();
@@ -68,7 +68,7 @@ describe('Editor für geplante Chunks (B-461/AC-09)', () => {
     expect(h.querySelectorAll('.wd-planned')).toHaveLength(1);
     await type(field(h, 'Art Platz +1'), 'clearing');
     await type(field(h, 'Chunk-Seed Platz +1'), 'lichtung');
-    await act(async () => button(h, 'Objekt').click());
+    await act(async () => button(h, '+ Objekt').click());
     await type(field(h, 'Lage Objekt 1 Platz +1'), '30');
     await settle();
     expect(field(h, 'Art Platz +1').value).toBe('clearing');
@@ -115,20 +115,12 @@ describe('Prüffehler am Platz (B-461/AC-06)', () => {
     expect(button(h, 'Speichern').disabled).toBe(true);
   });
 
-  it('der Fehler zu Platz 0 steht an dem Chunk mit Platz 0', async () => {
-    const h = await mount();
-    await addChunk(h);
-    await type(field(h, 'Platz +1'), '0');
-    await settle();
-    expect(h.querySelector('.wd-planned[data-slot="0"] .wd-error')!.textContent).toContain('Platz 0');
-  });
-
   it('ein Fehler ohne Platz in der Liste (Summen, kein Platz mehr) steht über der Liste', async () => {
     vi.spyOn(backend, 'planCheck').mockResolvedValue({ ok: false, slot: 0, error: 'kein Platz mehr: 5 freie Chunks, gebraucht bis zu 9' });
     const h = await mount();
     await addChunk(h);
     await settle();
-    expect(h.querySelector('.wd-plan > .wd-error')!.textContent).toContain('kein Platz mehr');
+    expect(h.querySelector('.wd-plan .wd-error')!.textContent).toContain('kein Platz mehr');
     expect(button(h, 'Speichern').disabled).toBe(true);
   });
 });
@@ -256,7 +248,7 @@ describe('Durchsuchbare Auswahlliste mit Emoji (B-485/AC-01)', () => {
     await addChunk(h);
     await type(field(h, 'Art Platz +1'), 'stream');
     expect(h.querySelector('.wd-planned .wd-pick-icon')!.textContent).toBe(iconOf('stream'));
-    await act(async () => button(h, 'Objekt').click());
+    await act(async () => button(h, '+ Objekt').click());
     const objekt = field(h, 'Objekt 1 Platz +1');
     expect(objekt.dataset.value).toBe(OBJECT_KINDS[0]);
     expect(objekt.value).toBe(nameOf(OBJECT_KINDS[0]));
@@ -297,5 +289,149 @@ describe('Hinweise am Chunk der Chunk-Vorschau (B-485)', () => {
     await act(async () => button(h, 'Verwerfen').click());
     await flush();
     expect(marked(h)).toHaveLength(0);
+  });
+});
+
+describe('Reiter Chunk: Auswahl statt Platz-Eingabe (B-665/AC-03)', () => {
+  it('ohne Auswahl ein Hinweis, ein Klick auf einen Abschnitt wählt seinen Platz; kein Feld „Neuer Platz“', async () => {
+    const h = await mount();
+    expect(h.querySelector('section[aria-label="Planung"]')!.textContent).toContain('Wähle einen Abschnitt');
+    expect(field(h, 'Neuer Platz')).toBeNull();
+    await selectSlot(h, 2);
+    expect(h.querySelector('section[aria-label="Planung"]')!.textContent).toContain('Abschnitt +2');
+    expect(h.querySelector('section[aria-label="Planung"]')!.textContent).toContain('Dieser Abschnitt ist zufällig');
+    expect(h.querySelector('.wd-chunk[data-mark]')).toBeNull();
+  });
+
+  it('der Hub-Abschnitt lässt sich nicht planen, der Grund steht dabei', async () => {
+    const h = await mount();
+    await selectSlot(h, 0);
+    expect(button(h, 'Chunk planen').disabled).toBe(true);
+    expect(h.querySelector('section[aria-label="Planung"]')!.textContent).toContain('Hub-Abschnitt lässt sich nicht planen');
+  });
+
+  it('„Planung dieses Abschnitts entfernen“ nimmt den Chunk zurück; die Chips der Stufe folgen der Planung', async () => {
+    const h = await mount();
+    await addChunk(h);
+    expect([...h.querySelectorAll('.wd-chunklist button')]).toHaveLength(1);
+    await act(async () => button(h, 'Chunk Platz +1 löschen').click());
+    expect(h.querySelector('.wd-chunklist')!.textContent).toContain('Keine Planung');
+  });
+});
+
+describe('Kopf: Modi und Änderungszähler (B-664)', () => {
+  const mode = (h: HTMLElement) => ['Welt-Struktur', 'Stufe bearbeiten'].find((m) => button(h, m).getAttribute('aria-pressed') === 'true');
+
+  it('beginnt im Modus Stufe bearbeiten; Welt-Struktur zeigt die Welt ohne Live-Vorschau, Stufe bearbeiten die Stufe ohne Welt-Entwurf', async () => {
+    const h = await mount();
+    expect(mode(h)).toBe('Stufe bearbeiten');
+    expect(h.querySelector('.wd-live')).not.toBeNull();
+    expect(field(h, 'Name der Welt')).toBeNull();
+    await toMode(h, 'Welt-Struktur');
+    expect(mode(h)).toBe('Welt-Struktur');
+    expect(h.querySelector('.wd-live')).toBeNull();
+    expect(field(h, 'Name der Welt')).not.toBeNull();
+    expect(field(h, 'Insel')).toBeNull(); // im Modus Welt-Struktur wählt die Auswahlzeile nur die Welt
+  });
+
+  it('der Modus bleibt gemerkt', async () => {
+    let h = await mount();
+    await toMode(h, 'Welt-Struktur');
+    act(() => root?.unmount());
+    host?.remove();
+    h = await mount();
+    expect(mode(h)).toBe('Welt-Struktur');
+  });
+
+  it('der Kopf zählt die Änderungen und hat genau einen Speichern- und einen Verwerfen-Knopf', async () => {
+    const h = await mount();
+    expect(h.querySelector('.wd-changes')).toBeNull();
+    await addChunk(h);
+    await settle();
+    expect(h.querySelector('.wd-changes')!.textContent).toBe('1 Änderung');
+    expect([...h.querySelectorAll('button')].filter((b) => b.textContent === 'Speichern')).toHaveLength(1);
+    expect([...h.querySelectorAll('button')].filter((b) => b.textContent === 'Verwerfen')).toHaveLength(1);
+  });
+
+});
+
+describe('Kopf: Rückfrage bei offenem Entwurf (B-664/AC-04)', () => {
+  const dialog = (h: HTMLElement) => h.querySelector('[role="alertdialog"]');
+  const mode = (h: HTMLElement) => ['Welt-Struktur', 'Stufe bearbeiten'].find((m) => button(h, m).getAttribute('aria-pressed') === 'true');
+
+  it('der Wechsel des Modus mit offenem Entwurf fragt zurück; Abbrechen lässt alles stehen', async () => {
+    const h = await mount();
+    await addChunk(h);
+    await settle();
+    await toMode(h, 'Welt-Struktur');
+    expect(dialog(h)).not.toBeNull();
+    expect(dialog(h)!.textContent).toContain('1 Änderung nicht gespeichert');
+    await act(async () => button(h, 'Abbrechen').click());
+    expect(dialog(h)).toBeNull();
+    expect(mode(h)).toBe('Stufe bearbeiten');
+    expect(h.querySelectorAll('.wd-planned')).toHaveLength(1);
+  });
+
+  it('„Verwerfen und wechseln“ wechselt ohne Speichern, „Speichern und wechseln“ speichert zuerst', async () => {
+    const h = await mount();
+    await addChunk(h);
+    await settle();
+    await toMode(h, 'Welt-Struktur');
+    await act(async () => button(h, 'Verwerfen und wechseln').click());
+    await flush();
+    expect(mode(h)).toBe('Welt-Struktur');
+    expect((await backend.planLoad()).islands[0]!.planned['0'] ?? []).toHaveLength(0);
+    await toMode(h, 'Stufe bearbeiten');
+    await addChunk(h);
+    await settle();
+    await toMode(h, 'Welt-Struktur');
+    await act(async () => button(h, 'Speichern und wechseln').click());
+    await settle();
+    expect(mode(h)).toBe('Welt-Struktur');
+    expect((await backend.planLoad()).islands[0]!.planned['0']).toHaveLength(1);
+  });
+
+  it('„Speichern und wechseln“ ist bei ungültigem Entwurf gesperrt', async () => {
+    const h = await mount();
+    await addChunk(h);
+    await type(field(h, 'Art Platz +1'), 'volcano');
+    await settle();
+    await toMode(h, 'Welt-Struktur');
+    expect(button(h, 'Speichern und wechseln').disabled).toBe(true);
+    expect(button(h, 'Verwerfen und wechseln').disabled).toBe(false);
+  });
+});
+
+describe('Inspektor: Reiter (B-665)', () => {
+  const tab = (h: HTMLElement, label: string) => [...h.querySelectorAll<HTMLElement>('[role="tab"]')].find((t) => t.textContent === label)!;
+  const panel = (h: HTMLElement, label: string) => h.querySelector<HTMLElement>(`[role="tabpanel"][aria-label="${label}"]`)!;
+
+  it('drei Reiter; jeweils nur ein Feld ist sichtbar, die Bedienung der Ansicht steht in ihrem Reiter', async () => {
+    const h = await mount();
+    expect([...h.querySelectorAll('[role="tab"]')].map((t) => t.textContent)).toEqual(['Chunk', 'Gebäude', 'Ansicht']);
+    expect(panel(h, 'Chunk').hidden).toBe(false);
+    expect(panel(h, 'Gebäude').hidden).toBe(true);
+    await act(async () => tab(h, 'Gebäude').click());
+    expect(panel(h, 'Gebäude').hidden).toBe(false);
+    expect(panel(h, 'Chunk').hidden).toBe(true);
+    await act(async () => tab(h, 'Ansicht').click());
+    expect(panel(h, 'Ansicht').hidden).toBe(false);
+    expect(panel(h, 'Ansicht').querySelector('[aria-label="Band über der Bühne"]')).not.toBeNull();
+  });
+
+  it('ein Klick auf einen Abschnitt öffnet den Reiter Chunk', async () => {
+    const h = await mount();
+    await act(async () => tab(h, 'Ansicht').click());
+    await selectSlot(h, 1);
+    expect(tab(h, 'Chunk').getAttribute('aria-selected')).toBe('true');
+  });
+
+  it('das Band über der Bühne lässt sich abschalten', async () => {
+    const h = await mount();
+    await act(async () => tab(h, 'Ansicht').click());
+    const box = () => panel(h, 'Ansicht').querySelector<HTMLElement>('[aria-label="Band über der Bühne"]')!;
+    expect(box().getAttribute('aria-checked')).toBe('true');
+    await act(async () => box().click());
+    expect(box().getAttribute('aria-checked')).toBe('false');
   });
 });

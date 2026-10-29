@@ -124,6 +124,7 @@ export function MonarchPage() {
   }, []);
   // Zwei Spalten (B-502): links die Skills, rechts die Monarchen; schmal untereinander (CSS)
   return (
+    <div className="wd-root">
     <div className="wd-page wd-monarch">
       <aside className="wd-monarch-skills"><SkillList /></aside>
       <div className="wd-monarch-main">
@@ -142,6 +143,7 @@ export function MonarchPage() {
         </div>
         <Colors m={m} />
       </div>
+    </div>
     </div>
   );
 }

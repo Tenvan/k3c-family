@@ -8,6 +8,7 @@ import { mockWorldPreview } from '../api/mockWorld';
 import { slotHints } from './chunkMarks';
 import { normalized, ruinOf, setRuin } from './plan';
 import { WorldPage } from './WorldPage';
+import { planSlot } from './worldTesting';
 
 // WZ14.7 (B-468/AC-05): Ruine je geplantem Chunk setzen, prüfen, entfernen und in der Vorschau zeigen (Mock-Backend).
 vi.mock('../stage/PreviewStage', () => ({ PreviewStage: class { show() {} refresh() {} setLook() {} setPosition() {} destroy() {} } }));
@@ -74,7 +75,7 @@ describe('Ruine im Entwurf (reine Logik)', () => {
 describe('Feld „Ruine“ im Editor (WZ14.7)', () => {
   it('setzen, Art ändern, speichern, entfernen', async () => {
     const h = await mount();
-    await click(button(h, 'Chunk hinzufügen'));
+    await planSlot(h, 1);
     await click(button(h, 'Ruine'));
     expect(field(h, 'Ruine Platz +1').value).not.toBe('');
     await type(field(h, 'Lage Ruine Platz +1'), '30');
@@ -90,7 +91,7 @@ describe('Feld „Ruine“ im Editor (WZ14.7)', () => {
 
   it('eine unerlaubte Art zeigt den Fehler des Backends am Platz, Speichern ist gesperrt', async () => {
     const h = await mount();
-    await click(button(h, 'Chunk hinzufügen'));
+    await planSlot(h, 1);
     await click(button(h, 'Ruine'));
     await type(field(h, 'Ruine Platz +1'), 'tower');
     await settle();

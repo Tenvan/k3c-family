@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** eingeplant
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-29
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-29 🧑 Chat („jetzt die Seite mit Hilfe der Tickets und Mocks umsetzen“)
 
 ## Ausgangslage
 
@@ -73,3 +73,5 @@ Ralf klickt direkt auf das Gebäude, das er ändern will, statt es in einer List
 
 - Mock: https://claude.ai/artifact/8EESxobV9HwKvqudPmDgbi (Hinweiszeile unter der Live-Vorschau in „Modus Stufe bearbeiten“).
 - Größter Brocken der Reihe, weil er in die Phaser-Bühne eingreift; deshalb eigenes Ticket mit Prio niedrig.
+- **Umgesetzt 2026-10-29** (AC-01 bis AC-04 per Vitest, im Browser-Pane mit echter Bühne gesehen: Klick auf einen Turm wählt ihn, Rahmen und Karte erscheinen; AC-05 offen bei 🧑): `siteAt`, `pickKeys`, `CLICK_SLOP`, `DOUBLE_MS` in `stageLogic.ts`, `PreviewScene.click` (optionaler Rückruf `onSite`, ohne ihn unverändert). Treffer prüft x und y (Review), Klick nur nach Drücken auf der Bühne mit linker Taste.
+- Nicht per Test abgedeckt: die Phaser-Szene selbst (`PreviewScene.click`), nur die reine Logik.

@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { backend } from '../api';
 import type { PlanCheckView, PlanIsland, PlanView, PlannedChunk } from '../api';
 import type { PlanSource } from '../stage/stageLogic';
+import { planChanges } from './changes';
 import { isDirty, normalized, savedCount, savedPlan } from './plan';
 import { useWorlds } from './useWorlds';
 import { savePlan, type Notice } from './planSave';
@@ -12,6 +13,23 @@ const OK: PlanCheckView = { ok: true, slot: 0, error: '' };
 const CHECK_DELAY = 200; // ms nach der letzten Änderung
 
 const reason = (e: unknown) => (e instanceof Error ? e.message : String(e));
+
+/** Verzögerte Prüfung des Entwurfs (`planCheck`); ein abgelehnter Aufruf wird zum Fehler am Entwurf (B-487). `done` bekommt das
+ *  Ergebnis und die geprüfte Planung, solange der Entwurf nicht inzwischen weiter geändert wurde. */
+function usePlanCheck(island: PlanIsland | undefined, depth: number | undefined, stage: number, draft: PlannedChunk[], count: number, done: (result: PlanCheckView, chunks: PlannedChunk[]) => void) {
+  const last = useRef(done);
+  last.current = done;
+  useEffect(() => {
+    if (!island || depth === undefined) return;
+    let current = true;
+    const chunks = normalized(draft);
+    const timer = setTimeout(() => {
+      const failed = (e: unknown): PlanCheckView => ({ ok: false, slot: 0, error: `Prüfung fehlgeschlagen: ${reason(e)}` });
+      void backend.planCheck(island.id, depth, chunks, count).catch(failed).then((result) => { if (current) last.current(result, chunks); });
+    }, CHECK_DELAY);
+    return () => { current = false; clearTimeout(timer); };
+  }, [draft, count, island, depth, stage]);
+}
 
 /** Zustand des Editors für geplante Chunks (B-461, WZ8.5): geladene Inseln, Auswahl von Insel und Stufe, der Entwurf der
  *  gewählten Stufe (Planung und Chunk-Anzahl, 0 = Biom-Länge, B-485/AC-04), die Prüfung des Entwurfs (verzögert) und
@@ -48,31 +66,22 @@ export function usePlan() {
   const stand = view?.stand ?? '';
   useEffect(() => { setDraft(saved); setCount(savedSize); setShown(null); setCheck(OK); }, [island?.id, stage, stand, saved, savedSize]);
 
-  useEffect(() => {
-    if (!island || depth === undefined) return;
-    let current = true;
-    const chunks = normalized(draft);
-    const timer = setTimeout(() => {
-      // abgelehnte Prüfung: Fehler am Entwurf, Speichern gesperrt, das letzte gültige Bild bleibt (B-487)
-      const failed = (e: unknown): PlanCheckView => ({ ok: false, slot: 0, error: `Prüfung fehlgeschlagen: ${reason(e)}` });
-      void backend.planCheck(island.id, depth, chunks, count).catch(failed).then((result) => {
-        if (!current) return;
-        setCheck(result);
-        if (result.ok) setShown({ island: island.id, stage, planned: chunks, chunkCount: count });
-      });
-    }, CHECK_DELAY);
-    return () => { current = false; clearTimeout(timer); };
-  }, [draft, count, island, depth, stage]);
+  usePlanCheck(island, depth, stage, draft, count, (result, chunks) => {
+    setCheck(result);
+    if (result.ok && island) setShown({ island: island.id, stage, planned: chunks, chunkCount: count });
+  });
 
   const dirty = isDirty(draft, saved) || count !== savedSize;
   const edit = (next: PlannedChunk[]) => { setDraft(next); setNotice(null); };
   const setSize = (next: number) => { setCount(next); setNotice(null); };
 
-  const save = useCallback(async () => {
-    if (!island || depth === undefined || !view) return;
+  /** Speichert den Entwurf; true, wenn er gespeichert wurde (Fehler und Stale lassen ihn stehen) */
+  const save = useCallback(async (): Promise<boolean> => {
+    if (!island || depth === undefined || !view) return false;
     const result = await savePlan(view, island.id, depth, normalized(draft), count);
     if (result.view) setView(result.view);
     setNotice(result.notice);
+    return result.view !== undefined;
   }, [draft, count, island, depth, view]);
 
   const worlds = useWorlds(async () => { await load(); setIslandId(''); setStageState(0); }, setNotice);
@@ -81,6 +90,7 @@ export function usePlan() {
   const source = island ? (shown ?? fallback) : undefined;
   return {
     view, island, stage, draft, count, sizes: view?.sizes ?? [], check, notice, dirty, source,
+    changes: dirty ? planChanges(draft, saved, count, savedSize) : 0,
     selectIsland: (id: string) => { setIslandId(id); setStageState(0); },
     selectStage: setStageState,
     edit, setSize, save, discard, reload: load, ...worlds,

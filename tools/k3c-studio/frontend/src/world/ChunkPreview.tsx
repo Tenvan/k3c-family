@@ -1,5 +1,5 @@
 import { BIOMES } from '@game/model/biome';
-import { Button, TextField } from '@webkit/atoms';
+import { Button, Text, TextField } from '@webkit/atoms';
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { backend } from '../api';
 import type { WorldSource } from '../api';
@@ -102,10 +102,10 @@ function Legend({ model }: { model: LevelModel }) {
 /** Chunk-Vorschau des Welt-Betrachters (B-460/AC-01, AC-02): Seed und Biom wählen, das Level des Spiels als Streifen
  *  ansehen, mit Legende und Warnungen der Prüfung. Das Level rechnet das Studio selbst, ohne Spielserver. Position und
  *  Zoom kommen von außen (`view`, B-477): der Streifen hat keine eigene Scrollbar, das Mausrad geht an `onWheel`.
- *  `children` stehen unter der Zeile mit der Zusammenfassung (Leiste für Zoom, Sprünge und Position). Mit `source` zeigt er
+ *  `children` stehen unter dem Streifen (Positions-Schieber). Er ist der Navigator der Seite (B-665). Mit `source` zeigt er
  *  Insel und Stufe samt Entwurf der geplanten Chunks; `hints` markieren Chunk-Plätze (geplant, Prüffehler). */
-export function ChunkPreview({ maximized, onToggle, onLoaded, source, view, onWheel, hints, liveSpan, onChunk, children }: {
-  maximized: boolean; onToggle: () => void; onLoaded: (seed: string, biome: string, model: LevelModel) => void;
+export function ChunkPreview({ onLoaded, source, view, onWheel, hints, liveSpan, onChunk, children }: {
+  onLoaded: (seed: string, biome: string, model: LevelModel) => void;
   source?: PlanSource; view: View; onWheel: (e: WheelEvent) => void; hints?: readonly SlotHint[]; liveSpan?: Span;
   onChunk?: (chunk: ModelChunk) => void; children?: ReactNode;
 }) {
@@ -139,21 +139,18 @@ export function ChunkPreview({ maximized, onToggle, onLoaded, source, view, onWh
   };
 
   return (
-    <>
-    <div className="wd-chunks" data-maximized={maximized}>
+    <section className="wd-chunks wd-card" aria-label="Chunk-Vorschau">
       <div className="wd-bar">
+        <Text size="2" weight="bold">Navigator</Text>
         <TextField.Root className="wd-seed" aria-label="Seed" value={seed} onChange={(e) => setSeed(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') void load(seed, toSource(source)); }} />
         <Button onClick={() => void load(seed, toSource(source))}>Laden</Button>
-        <Button variant="soft" onClick={random}>Zufälliger Seed</Button>
-        <span className="wd-grow" />
-        <Button variant="outline" onClick={onToggle}>{maximized ? 'Verkleinern' : 'Maximieren'}</Button>
+        <Button variant="soft" aria-label="Zufälliger Seed" title="Zufälliger Seed" onClick={random}>🎲</Button>
+        <p className="wd-note" role="status">{note}</p>
       </div>
-      <p className="wd-note" role="status">{note}</p>
-      {children}
       <div className="wd-viewport" ref={viewport}>{model && <Strip model={model} scale={view.scale} hints={hints} liveSpan={liveSpan} onChunk={onChunk} />}</div>
-    </div>
-    {model && <div className="wd-legend-block"><Legend model={model} /></div>}
-    </>
+      {children}
+      {model && <div className="wd-legend-block"><Legend model={model} /></div>}
+    </section>
   );
 }

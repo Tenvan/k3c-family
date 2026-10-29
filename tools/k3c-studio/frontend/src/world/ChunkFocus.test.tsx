@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import { mockWorldLevel } from '../api/mockWorld';
 import { WorldPage } from './WorldPage';
+import { planSlot } from './worldTesting';
 import { pickWhere } from '../../../../webkit/testing/options';
 import { pickOption } from '../../../../webkit/testing/select';
 
@@ -57,12 +58,14 @@ async function type(el: HTMLInputElement, value: string) {
   await act(async () => el.dispatchEvent(new Event('input', { bubbles: true })));
 }
 
-/** Chunk am Platz +1 (Abschnitt 6) anlegen, dann die Ansicht per Klick auf Abschnitt 8 wegbewegen */
+/** Chunk am Platz +1 (Abschnitt 6) planen, dann die Ansicht mit den Pfeiltasten wegbewegen; liefert die neue Bildmitte der Live-Vorschau */
 async function plannedAway(h: HTMLElement) {
-  await act(async () => button(h, 'Chunk hinzufügen').click());
-  await settle();
-  await act(async () => chunk(h, 8).click());
-  expect(liveCenter()).toBeCloseTo(mid(8));
+  await planSlot(h, 1);
+  expect(liveCenter()).toBeCloseTo(mid(6));
+  await act(async () => { for (let i = 0; i < 3; i++) document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); });
+  const away = liveCenter();
+  expect(Math.abs(away - mid(6))).toBeGreaterThan(5);
+  return away;
 }
 
 beforeEach(async () => {
@@ -82,9 +85,7 @@ afterEach(() => {
 describe('Beim Ändern eines Chunks zentrieren (B-485, WZ17.5)', () => {
   it('Chunk hinzufügen und Art ändern: beide Bildmitten stehen auf der Chunk-Mitte, der Zoom bleibt', async () => {
     const h = await mount();
-    await act(async () => button(h, 'Chunk hinzufügen').click());
-    expect(liveCenter()).toBeCloseTo(mid(6));
-    await act(async () => chunk(h, 8).click());
+    await plannedAway(h);
     const scale = views.at(-1)!.scale;
     await type(field(h, 'Art Platz +1'), 'clearing');
     expect(liveCenter()).toBeCloseTo(mid(6));
@@ -97,26 +98,17 @@ describe('Beim Ändern eines Chunks zentrieren (B-485, WZ17.5)', () => {
   it('Objekt hinzufügen springt ebenfalls zum Chunk', async () => {
     const h = await mount();
     await plannedAway(h);
-    await act(async () => button(h, 'Objekt').click());
+    await act(async () => button(h, '+ Objekt').click());
     expect(liveCenter()).toBeCloseTo(mid(6));
     expect(chunkCenter(h)).toBeCloseTo(mid(6));
   });
 
-  it('Platz ändern springt zum neuen Platz', async () => {
-    const h = await mount();
-    await plannedAway(h);
-    await type(field(h, 'Platz +1'), '-3');
-    expect(liveCenter()).toBeCloseTo(mid(2)); // Platz −3 = drei Abschnitte links vom Hub (5)
-    expect(chunkCenter(h)).toBeCloseTo(mid(2));
-  });
-
   it('Löschen ändert die Ansicht nicht', async () => {
     const h = await mount();
-    await plannedAway(h);
+    const away = await plannedAway(h);
     await act(async () => button(h, 'Chunk Platz +1 löschen').click());
     await settle();
-    expect(liveCenter()).toBeCloseTo(mid(8));
-    expect(chunkCenter(h)).toBeCloseTo(mid(8));
+    expect(liveCenter()).toBeCloseTo(away);
   });
 
   it('Tippen im Seed-Feld: der Fokus bleibt im Feld, ist der Chunk schon zentriert, bewegt sich nichts', async () => {
@@ -135,9 +127,9 @@ describe('Beim Ändern eines Chunks zentrieren (B-485, WZ17.5)', () => {
 
   it('eine andere Inselgröße springt nicht zum Chunk (das neue Level beginnt beim Hub)', async () => {
     const h = await mount();
-    await plannedAway(h);
+    const away = await plannedAway(h);
     await pickOption(h, 'Inselgröße', 'klein · 24');
-    expect(liveCenter()).toBeCloseTo(mid(8));
+    expect(liveCenter()).toBeCloseTo(away);
     await settle();
     expect(liveCenter()).toBeCloseTo(mid(12)); // Mock mit 24 Abschnitten: Hub = Abschnitt 12
   });
@@ -164,8 +156,8 @@ describe('Ein neues Level beginnt weiter beim Hub (WZ17.5)', () => {
   it('Objekt entfernen springt zum Chunk', async () => {
     const h = await mount();
     await plannedAway(h);
-    await act(async () => button(h, 'Objekt').click());
-    await act(async () => chunk(h, 8).click());
+    await act(async () => button(h, '+ Objekt').click());
+    await act(async () => { for (let i = 0; i < 3; i++) document.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); });
     await act(async () => button(h, 'Objekt 1 Platz +1 löschen').click());
     expect(liveCenter()).toBeCloseTo(mid(6));
   });

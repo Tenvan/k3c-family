@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** eingeplant
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-29
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-29 🧑 Chat („jetzt die Seite mit Hilfe der Tickets und Mocks umsetzen“)
 
 ## Ausgangslage
 
@@ -82,3 +82,5 @@ Typische Prüfbilder (alles ausgebaut, nach einem Angriff, nichts gebaut) gehen 
 
 - Mock: https://claude.ai/artifact/8EESxobV9HwKvqudPmDgbi (Tafel „Modus Stufe bearbeiten“, Reiter Gebäude klickbar).
 - Glossar-Eintrag „Gebäude-Zustand (Vorschau)“ am 2026-10-29 angelegt.
+- **Umgesetzt 2026-10-29** (AC-01 bis AC-04, AC-06, AC-07 per Vitest; AC-05 im Browser-Pane gesehen: Mauern aufgeklappt, 24 Chips, Inspektor wächst nur um die Chip-Zeilen): `stage/BuildingInspector.tsx`, `presetLooks`, `applyLook`, `commonOf` in `stageLogic.ts`. Der alte `BuildingFilter` bleibt für die Seite Gebäude-Planer (ohne `treeHost`).
+- Abweichung: Je Art zeigt die Zeile nur die Zusammenfassung (Stufe, Zustand); ändern lässt es sich über „<Art> wählen“ (alle Plätze der Art) und die Karte der Auswahl, nicht über eigene Auswahllisten in der Zeile.

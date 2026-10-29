@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** eingeplant
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-29
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-29 🧑 Chat („jetzt die Seite mit Hilfe der Tickets und Mocks umsetzen“)
 
 ## Ausgangslage
 
@@ -84,3 +84,7 @@ Die Live-Vorschau ist der größte Teil der Seite, ihre Steuerung sitzt an ihr, 
 
 - Mock: https://claude.ai/artifact/8EESxobV9HwKvqudPmDgbi (Tafel „Modus Stufe bearbeiten“, Reiter Chunk und Ansicht klickbar).
 - Glossar-Eintrag „Inspektor“ am 2026-10-29 angelegt.
+- **Umgesetzt 2026-10-29** (Vitest, Browser-Pane bei 1024 und 1440 gesehen; AC-07 offen bei 🧑): `StageMode`, `Inspector` (Reiter Chunk, Gebäude, Ansicht), `ChunkInspector` ersetzt `PlanEditor`, Navigator mit Seed-Zeile, `ViewBar` (Zoom, „Springe zu“-Menü) und `PositionBar`, Hintergrund-Ebenen im Reiter Ansicht (`layersHost` der `LivePreview`).
+- **Abweichungen vom Mock (offen, ggf. Folgeticket):** (1) Der Positions-Schieber bleibt unter dem Streifen, der ziehbare gelbe Rahmen mit Sprungmarken über der Leiste fehlt (AC-02 nur zur Hälfte: die Sprungknopf-Reihe ist ein Menü). (2) Hub-Stufe und Tageszeit bleiben Auswahllisten statt Segment-Knöpfen. (3) Die Bühnenhöhe folgt weiter dem Zoom (`stagePx`), kein Füllen des freien Platzes (offene Frage, Default „Einpassen“ nicht umgesetzt). (4) AC-05 „mindestens 400 px hoch“ nicht erfüllt: die Bühne ist bei 100 % ca. 283 px hoch. (5) Seed, Laden und Zufälliger Seed stehen in der Navigator-Karte statt im Kopf. (6) Der Hub-Chunk-Platz hat kein Eingabefeld mehr, „Neuer Platz“ entfällt.
+- Inspektor liegt ab 900 px Seitenbreite rechts neben der Bühne (statt 1100 px), siehe B-663.
+- Review-Befund behoben: gewählter Chunk-Platz wird beim Wechsel von Insel oder Stufe verworfen.

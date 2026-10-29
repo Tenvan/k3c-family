@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** eingeplant
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-29
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-29 🧑 Chat („jetzt die Seite mit Hilfe der Tickets und Mocks umsetzen“)
 
 ## Ausgangslage
 
@@ -71,4 +71,5 @@ Bei jeder Fensterbreite ab 800 px, mit und ohne Chat, hat der Welten Editor kein
 
 - Messung 2026-10-29 im Browser-Pane (Mock-Daten, Chat offen).
 - Mock: https://claude.ai/artifact/8EESxobV9HwKvqudPmDgbi (Tafeln „Schmale Breite“ und „Ist-Zustand“).
-- Folge-Tickets B-664 bis B-667 bauen darauf auf; dieses Ticket behebt die Scrollleiste schon im heutigen Layout.
+- **Umgesetzt 2026-10-29:** `.wd-root` ist Container (`container-type: inline-size`), `@container` statt `@media` für `.wd-columns` (1100 px) und `.wd-monarch` (900 px), Raster mit `minmax(0, …)`; Test `styles/worldCss.test.ts`. AC-01 bis AC-03: bei 1024 × 768 mit Chat `scrollWidth == clientWidth` (609/609), Messung bei 1440 × 900 ohne Scrollleiste. AC-04 (Chat ein-/ausblenden) nicht eigens gemessen, folgt aus dem Container.
+- Abweichung: Der Modus Stufe bearbeiten legt den Inspektor erst unter 900 px Seitenbreite unter die Blühne (B-665), sonst stünde er bei geöffnetem Chat und 1440 px Fenster (Seite 1040 px) unter der Blühne.

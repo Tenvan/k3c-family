@@ -11,6 +11,7 @@ import type { KampfWorld } from '@game/scenes/kampfAnzeige';
 import { hudPx } from './hudBar';
 import { KampfOverlay } from './kampfOverlay';
 import { siteBox } from './siteBox';
+import { CLICK_SLOP, DOUBLE_MS, siteAt, siteKey } from './stageLogic';
 import { refreshToParent, settleToParent } from './stageResize';
 
 // Die wiederverwendbare Phaser-Bühne des Asset-Studios (B-460, WZ7.3; WZ10/WZ11 nutzen sie wieder, eine zweite entsteht
@@ -35,6 +36,9 @@ export interface Look {
 }
 
 /** Beschriftung der Plätze: Namen über jedem Gebäude (Planer) und ein dicker blauer Rahmen um die gewählten (x in Units) */
+/** Klick auf der Bühne (B-667): Art und x-Stelle des getroffenen Bauplatzes, ob Umschalt gehalten wurde und ob es ein Doppelklick war */
+export interface SiteHit { kind: string; x: number; shift: boolean; double: boolean }
+
 export interface Marks {
   names: boolean;
   selected: readonly number[];
@@ -57,6 +61,9 @@ class PreviewScene extends Phaser.Scene {
   private markZoom = 0;
   private fx: Phaser.Filters.ColorMatrix | null = null;
   private dragX: number | null = null;
+  private pressX = 0;
+  private moved = false;
+  private lastHit: { key: string; at: number } | null = null;
   // Figuren-Modus (WZ10.1): statt der Welt zeichnet die Bühne Figuren auf einer Bodenlinie mit Unit-Skala
   private figures: FigureView[] = [];
   private figureBase = 1; // Kamera-Zoom, bei dem alle Figuren im Bild stehen; `figureFactor` (Zoom der Seite) wirkt darauf
@@ -67,7 +74,7 @@ class PreviewScene extends Phaser.Scene {
   private figureItems: readonly FigureItem[] | null = null;
   private control: Control = DEFAULT_CONTROL;
 
-  constructor(private readonly onLoadError: (files: string[]) => void, private readonly onPan: (px: number) => void) {
+  constructor(private readonly onLoadError: (files: string[]) => void, private readonly onPan: (px: number) => void, private readonly onSite: (hit: SiteHit | null) => void = () => {}) {
     super('preview');
   }
 
@@ -98,14 +105,35 @@ class PreviewScene extends Phaser.Scene {
     this.resolveReady();
     this.scale.on('resize', () => this.applyView());
     // Die Position gehört der Seite: Ziehen und Mausrad melden nur die Bewegung (Bildschirm-Pixel), die Seite setzt sie neu.
-    this.input.on('pointerdown', (p: Phaser.Input.Pointer) => { this.dragX = p.x; });
+    this.input.on('pointerdown', (p: Phaser.Input.Pointer) => { this.dragX = p.x; this.pressX = p.x; this.moved = false; });
     this.input.on('pointermove', (p: Phaser.Input.Pointer) => {
       if (this.dragX === null || !p.isDown) return;
+      if (Math.abs(p.x - this.pressX) > CLICK_SLOP) this.moved = true;
       this.onPan(this.dragX - p.x);
       this.dragX = p.x;
     });
-    this.input.on('pointerup', () => { this.dragX = null; });
+    this.input.on('pointerup', (p: Phaser.Input.Pointer) => {
+      const pressed = this.dragX !== null; // das Drücken geschah auf der Bühne
+      this.dragX = null;
+      if (pressed && !this.moved && p.leftButtonReleased()) this.click(p);
+    });
     this.show(this.pending);
+  }
+
+  /** Klick ohne Ziehen (B-667): der Bauplatz unter dem Zeiger oder null für freie Fläche; zwei Klicks auf denselben Platz kurz
+   *  hintereinander gelten als Doppelklick. */
+  private click(p: Phaser.Input.Pointer): void {
+    const world = this.pending;
+    if (!world || !this.view) return;
+    const point = this.cameras.main.getWorldPoint(p.x, p.y);
+    const boxes = world.sites.map((s) => ({ kind: s.kind, x: s.x, ...siteBox(s, this.view!.layer.list) }));
+    const hit = siteAt(boxes, point.x, 4 / (this.position.scale / UNIT_PX), point.y);
+    if (!hit) { this.lastHit = null; this.onSite(null); return; }
+    const key = siteKey(hit.kind, hit.x);
+    const now = performance.now();
+    const double = this.lastHit?.key === key && now - this.lastHit.at < DOUBLE_MS;
+    this.lastHit = double ? null : { key, at: now };
+    this.onSite({ kind: hit.kind, x: hit.x, shift: Boolean((p.event as MouseEvent | undefined)?.shiftKey), double });
   }
 
   /** Zeigt die Welt (null = leer). Vor dem Laden der Grafiken wird sie gemerkt. */
@@ -293,9 +321,9 @@ export class PreviewStage {
   private readonly wheel: (e: WheelEvent) => void;
   private readonly parent: HTMLElement;
 
-  constructor(parent: HTMLElement, onLoadError: (files: string[]) => void = () => {}, onPan: (px: number) => void = () => {}, onWheel: (e: WheelEvent) => void = () => {}) {
+  constructor(parent: HTMLElement, onLoadError: (files: string[]) => void = () => {}, onPan: (px: number) => void = () => {}, onWheel: (e: WheelEvent) => void = () => {}, onSite: (hit: SiteHit | null) => void = () => {}) {
     this.parent = parent;
-    this.scene = new PreviewScene(onLoadError, onPan);
+    this.scene = new PreviewScene(onLoadError, onPan, onSite);
     this.game = new Phaser.Game({
       type: Phaser.AUTO,
       parent,
