@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { exampleSummary } from '../api/mockBalance';
 import type { BalanceRun } from '../api';
-import { compareSummaries, tippedRows } from './compare';
+import { compareSummaries, flips, shortPath, tippedRows, variantTexts } from './compare';
 import { comparisonMarkdown, corridorText, summaryJSON, summaryMarkdown } from './export';
 import { goldSeries, resourceBars, survivalSeries } from './figures';
 import { dropPreset, EMPTY_FORM, formFromSpec, isPresetList, mergeRuns, progressOf, savePreset, specFromForm } from './spec';
@@ -66,25 +66,42 @@ describe('Voreinstellungen und Läufe', () => {
 describe('Vergleich', () => {
   const a = exampleSummary();
   const b = exampleSummary(0.15, true);
+  const c3 = exampleSummary(0.3, true);
 
   it('findet gekippte Ziele und Differenzen', () => {
-    const c = compareSummaries(a, b);
-    expect(c.passA).toBe(true);
-    expect(c.passB).toBe(false);
-    expect(tippedRows(c).map((r) => r.statusA + '>' + r.statusB)).toEqual(['knapp>verletzt']);
+    const c = compareSummaries([a, b]);
+    expect(c.passes).toEqual([true, false]);
+    expect(tippedRows(c).map((r) => `${r.cells[0].status}>${r.cells[1].status}`)).toEqual(['knapp>verletzt']);
     const surv = c.targets[0];
-    expect(surv.delta).toBeCloseTo(-0.15);
-    expect(c.figures.find((r) => r.key === 'normal|1|surv')?.delta).toBeCloseTo(-0.15);
+    expect(surv.cells[1].delta).toBeCloseTo(-0.15);
+    expect(surv.cells[0].delta).toBeNull();
+    expect(c.figures.find((r) => r.key === 'normal|1|surv')?.cells[1].delta).toBeCloseTo(-0.15);
+  });
+
+  it('vergleicht drei Berichte mit Abstand zu A', () => {
+    const c = compareSummaries([a, b, c3]);
+    expect(c.passes).toEqual([true, false, false]);
+    const surv = c.targets[0];
+    expect(surv.cells.map((x) => x.value)).toEqual([0.7, 0.55, 0.4].map((v) => expect.closeTo(v, 5)));
+    expect(surv.cells[2].delta).toBeCloseTo(-0.3);
+    expect(flips(c, 2)).toEqual({ toPass: 0, toFail: 1 });
+    expect(c.targets.every((r) => r.cells.length === 3)).toBe(true);
   });
 
   it('kennzeichnet neue und entfallene Ziele wie Go', () => {
-    const c = compareSummaries({ ...a, targets: a.targets.slice(0, 1) }, { ...a, targets: a.targets.slice(1) });
-    expect(c.targets.map((r) => `${r.statusA}>${r.statusB}`)).toEqual(['neu>ok', 'neu>knapp', 'ok>entfällt']);
+    const c = compareSummaries([{ ...a, targets: a.targets.slice(0, 1) }, { ...a, targets: a.targets.slice(1) }]);
+    expect(c.targets.map((r) => `${r.cells[0].status}>${r.cells[1].status}`)).toEqual(['neu>ok', 'neu>knapp', 'ok>entfällt']);
     expect(c.targets.map((r) => r.tipped)).toEqual([false, false, true]);
   });
 
   it('ohne Kennzahlen keine Kennzahl-Zeilen', () => {
-    expect(compareSummaries({ ...a, kennzahlen: undefined }, { ...b, kennzahlen: undefined }).figures).toEqual([]);
+    expect(compareSummaries([{ ...a, kennzahlen: undefined }, { ...b, kennzahlen: undefined }]).figures).toEqual([]);
+  });
+
+  it('zeigt Varianten gegenüber A', () => {
+    expect(shortPath('economy.json:gatherables.tree.markCost')).toBe('tree.markCost');
+    expect(variantTexts(['economy.json:gatherables.tree.markCost=1'], ['economy.json:gatherables.tree.markCost=0.5', 'economy.json:purse.startGold=20']))
+      .toEqual(['tree.markCost 1 → 0.5', 'purse.startGold = 20']);
   });
 });
 
@@ -107,9 +124,10 @@ describe('Export', () => {
   });
 
   it('Vergleichs-Markdown nennt den Statuswechsel', () => {
-    const md = comparisonMarkdown(compareSummaries(exampleSummary(), exampleSummary(0.15, true)), 'alt', 'neu');
-    expect(md).toContain('# Vergleich alt → neu');
-    expect(md).toContain('knapp → verletzt (!)');
+    const md = comparisonMarkdown(compareSummaries([exampleSummary(), exampleSummary(0.15, true)]), ['alt', 'neu']);
+    expect(md).toContain('# Vergleich A → B');
+    expect(md).toContain('[verletzt] (!)');
+    expect(md).toContain('B: neu');
   });
 
   it('Korridor ohne Ziel', () => {

@@ -31,7 +31,6 @@ async function mount(): Promise<HTMLElement> {
 
 const button = (host: HTMLElement, text: string) =>
   [...host.querySelectorAll('button')].find((b) => b.textContent?.trim() === text) as HTMLButtonElement;
-const buttons = (host: HTMLElement, text: string) => [...host.querySelectorAll('button')].filter((b) => b.textContent?.trim() === text);
 
 async function until(host: HTMLElement, ok: () => boolean, ms = 8000) {
   for (let t = 0; t < ms && !ok(); t += 100) await wait(100);
@@ -44,11 +43,15 @@ afterEach(() => {
   document.body.innerHTML = '';
 });
 
+const runs = (host: ParentNode) => [...host.querySelectorAll<HTMLElement>('.bal-item[data-id^="run:"]')];
+const reports = (host: ParentNode) => [...host.querySelectorAll<HTMLElement>('.bal-item:not([data-id^="run:"])')];
+const nameOf = (el: HTMLElement) => el.querySelector<HTMLElement>('.bal-item-name')!;
+
 describe('Balancing-Seite', () => {
-  it('zeigt Konfiguration und Berichtsliste, validiert die Eingabe', async () => {
+  it('zeigt Konfiguration und Liste, validiert die Eingabe', async () => {
     const host = await mount();
     expect(host.querySelector('[aria-label="Konfiguration"]')).not.toBeNull();
-    expect(host.querySelectorAll('[aria-label="Berichte"] .bal-report-row')).toHaveLength(3);
+    expect(reports(host)).toHaveLength(5);
     const seeds = host.querySelector<HTMLInputElement>('input[aria-label="Seeds"]')!;
     const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!;
     await act(async () => {
@@ -57,26 +60,30 @@ describe('Balancing-Seite', () => {
     });
     await act(async () => button(host, 'Lauf starten').click());
     expect(host.querySelector('[role="alert"]')?.textContent).toMatch(/Seeds/);
-    expect(host.querySelector('[aria-label="Läufe"] .bal-run')).toBeNull();
+    expect(runs(host)).toHaveLength(0);
   });
 
   it('startet einen Lauf, zeigt Fortschritt und Abbruch, danach den Bericht mit Diagrammen', async () => {
     const host = await mount();
     await act(async () => button(host, 'Lauf starten').click());
     await flush();
-    const runs = host.querySelector('[aria-label="Läufe"]')!;
-    expect(runs.querySelectorAll('.bal-run')).toHaveLength(1);
-    await until(host, () => /läuft/.test(runs.textContent ?? '') && /\d\/6/.test(runs.textContent ?? ''));
+    expect(runs(host)).toHaveLength(1);
+    await act(async () => nameOf(runs(host)[0]).click());
+    await until(host, () => /läuft/.test(runs(host)[0]?.textContent ?? '') && /\d\/6/.test(runs(host)[0]?.textContent ?? ''));
     expect(button(host, 'Abbrechen')).toBeDefined();
-    await until(host, () => runs.querySelector('.bal-run')?.getAttribute('data-state') === 'fertig', 12000);
-    expect(host.querySelectorAll('[aria-label="Berichte"] .bal-report-row')).toHaveLength(4);
-    await act(async () => button(host, 'Bericht öffnen').click());
+    await until(host, () => runs(host).length === 0, 12000);
     await flush();
-    const report = host.querySelector('[aria-label="Bericht"]')!;
-    expect(report.textContent).toContain('Überleben Nacht 3');
-    expect(report.querySelectorAll('svg').length).toBeGreaterThanOrEqual(7);
-    expect(button(host, 'Export Markdown')).toBeDefined();
-    expect(button(host, 'Export JSON')).toBeDefined();
+    expect(reports(host)).toHaveLength(6);
+    const report = host.querySelector<HTMLElement>('[aria-label="Bericht"]')!;
+    expect(report).not.toBeNull();
+    const tab = [...report.querySelectorAll<HTMLElement>('[role="tab"]')].find((t) => t.textContent?.startsWith('Diagramme'))!;
+    await act(async () => tab.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, button: 0 })));
+    await flush();
+    expect(report.querySelectorAll('svg').length).toBeGreaterThanOrEqual(4);
+    await act(async () => button(report, 'Export ▾').click());
+    await flush();
+    expect(document.body.textContent).toContain('Markdown');
+    expect(document.body.textContent).toContain('JSON');
   }, 20000);
 
   it('bricht einen wartenden Lauf ab', async () => {
@@ -84,35 +91,22 @@ describe('Balancing-Seite', () => {
     await act(async () => button(host, 'Lauf starten').click());
     await act(async () => button(host, 'Lauf starten').click());
     await flush();
-    const stops = buttons(host, 'Abbrechen');
-    expect(stops.length).toBeGreaterThanOrEqual(1);
-    await act(async () => stops[stops.length - 1].click());
+    const waiting = runs(host).find((r) => r.dataset.state === 'wartet')!;
+    expect(waiting).toBeDefined();
+    await act(async () => nameOf(waiting).click());
+    await act(async () => button(host, 'Abbrechen').click());
     await flush();
-    const states = [...host.querySelectorAll('.bal-run')].map((r) => r.getAttribute('data-state'));
-    expect(states).toContain('abgebrochen');
-  });
-
-  it('vergleicht zwei Berichte mit Differenzen', async () => {
-    const host = await mount();
-    const row = (name: string) => [...host.querySelectorAll('[aria-label="Berichte"] .bal-report-row')].find((r) => r.textContent?.includes(name))!;
-    await act(async () => [...row('simtest-run-2').querySelectorAll('button')].find((b) => b.textContent === 'Vergleichsbasis')!.click());
-    await act(async () => row('balance-1.json').querySelector('button')!.click());
-    await flush();
-    await until(host, () => host.querySelector('[aria-label="Vergleich"]') !== null || host.querySelector('[aria-label="Bericht"]') !== null);
-    const cmp = host.querySelector('[aria-label="Vergleich"]');
-    expect(cmp).not.toBeNull();
-    expect(cmp!.textContent).toContain('gekippt');
-    expect(cmp!.querySelectorAll('table tbody tr').length).toBeGreaterThan(3);
+    expect(runs(host).map((r) => r.dataset.state)).toContain('abgebrochen');
   });
 });
 
 describe('Balancing-Seite: Abstimmen', () => {
   it('zeigt ein Abstimm-Ergebnis mit Diagramm, Tabelle und kopierbarem Diff', async () => {
     const host = await mount();
-    const row = [...host.querySelectorAll('[aria-label="Berichte"] .bal-report-row')].find((r) => r.textContent?.includes('tuning-1.json'))!;
+    const row = reports(host).find((r) => r.textContent?.includes('tuning-1.json'))!;
     expect(row.textContent).toContain('Abstimmung');
     expect(row.textContent).not.toContain('Vergleichsbasis');
-    await act(async () => row.querySelector('button')!.click());
+    await act(async () => nameOf(row).click());
     await flush();
     const view = host.querySelector('[aria-label="Abstimmung"]')!;
     expect(view).not.toBeNull();
@@ -154,9 +148,9 @@ describe('Balancing-Seite: Abstimmen', () => {
       set.call(params, 'buildings.json:wall.cost=1..5');
       params.dispatchEvent(new Event('input', { bubbles: true }));
     });
-    const before = host.querySelectorAll('[aria-label="Läufe"] .bal-run').length;
+    const before = runs(host).length;
     await act(async () => button(host, 'Lauf starten').click());
     await flush();
-    expect(host.querySelectorAll('[aria-label="Läufe"] .bal-run')).toHaveLength(before + 1);
+    expect(runs(host)).toHaveLength(before + 1);
   });
 });

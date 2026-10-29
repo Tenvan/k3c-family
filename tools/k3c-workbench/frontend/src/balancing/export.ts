@@ -1,5 +1,5 @@
 import type { BalanceEntry, BalanceSummary } from '../api';
-import type { Comparison, CompareRow } from './compare';
+import type { CompareCell, CompareRow, Comparison } from './compare';
 
 export const num = (v: number | null | undefined, digits = 2) => (v === null || v === undefined ? '–' : String(Number(v.toFixed(digits))));
 
@@ -35,16 +35,21 @@ export const summaryJSON = (s: BalanceSummary): string => JSON.stringify(s, null
 
 export const signed = (d: number | null) => (d === null ? '–' : (d > 0 ? '+' : '') + num(d));
 
-const rowLine = (r: CompareRow) =>
-  `| ${cell(r.label)} | ${num(r.a)} | ${num(r.b)} | ${signed(r.delta)} | ` +
-  `${r.statusA && r.statusB ? `${r.statusA} → ${r.statusB}${r.tipped ? ' (!)' : ''}` : ''} |`;
+const status = (c: CompareCell) => (c.status ? ` [${c.status}]` : '');
+const cellText = (c: CompareCell, i: number) =>
+  i === 0 ? `${num(c.value)}${status(c)}` : `${num(c.value)} (${signed(c.delta)})${status(c)}${c.tipped ? ' (!)' : ''}`;
 
-/** Vergleich als Markdown (A = Basis, B = neu). */
-export function comparisonMarkdown(c: Comparison, nameA = 'A', nameB = 'B'): string {
-  const head = `| Wert | ${cell(nameA)} | ${cell(nameB)} | Differenz | Status |`;
-  const sep = '| --- | ---: | ---: | ---: | --- |';
-  const out = [`# Vergleich ${nameA} → ${nameB}`, '', `- Ergebnis: ${c.passA ? 'Pass' : 'Fail'} → ${c.passB ? 'Pass' : 'Fail'}`,
-    `- Seeds: ${c.seedsA} → ${c.seedsB}`, '', '## Ziele', '', head, sep, ...c.targets.map(rowLine)];
+const rowLine = (r: CompareRow) => `| ${cell(r.label)} | ${r.corridor ?? ''} | ${r.cells.map(cellText).join(' | ')} |`;
+
+const LETTERS = ['A', 'B', 'C', 'D'];
+
+/** Vergleich als Markdown (A = Basis, die übrigen Spalten mit Abstand zu A). */
+export function comparisonMarkdown(c: Comparison, names: string[] = []): string {
+  const cols = c.passes.map((_, i) => `${LETTERS[i]}: ${cell(names[i] ?? LETTERS[i])}`);
+  const head = `| Wert | Korridor | ${cols.join(' | ')} |`;
+  const sep = `| --- | --- |${' ---: |'.repeat(cols.length)}`;
+  const out = [`# Vergleich ${LETTERS.slice(0, cols.length).join(' → ')}`, '', `- Ergebnis: ${c.passes.map((p) => (p ? 'Pass' : 'Fail')).join(' → ')}`,
+    `- Seeds: ${c.seeds.join(' → ')}`, '', '## Ziele', '', head, sep, ...c.targets.map(rowLine)];
   if (c.figures.length) out.push('', '## Kennzahlen', '', head, sep, ...c.figures.map(rowLine));
   return out.join('\n') + '\n';
 }

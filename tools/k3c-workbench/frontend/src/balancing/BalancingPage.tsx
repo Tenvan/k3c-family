@@ -1,56 +1,19 @@
-import { useState } from 'react';
-import { Button, StatusBadge, Text } from '@webkit/atoms';
-import { NoticeCard } from '@webkit/molecules';
+import { useMemo, useState } from 'react';
+import { Button, StatusBadge } from '@webkit/atoms';
 import { useTicketPage } from '@webkit/lib/ticketContext';
 import { loadJSON, saveJSON } from '../lib/prefs';
 import type { BalanceRun, BalanceSpec } from '../api';
+import { BalancingDetail } from './BalancingDetail';
 import { BalancingLayout, type BalancingView } from './BalancingLayout';
-import { CompareView } from './CompareView';
-import { DataFiles } from './DataFiles';
-import { Examples } from './Examples';
-import { appendLine, formFromExample } from './help';
-import { ConfigForm } from './ConfigForm';
-import { ReportList } from './ReportList';
-import { ReportView } from './ReportView';
-import { RunQueue } from './RunQueue';
-import { TuningView } from './TuningView';
-import { EMPTY_FORM, formFromBaseline, formFromSpec, isPresetList, type BalanceForm, type Preset } from './spec';
-import { useBalancing, useSummary, useTuning } from './useBalancing';
+import type { DetailActions } from './DetailHead';
+import { buildEntries, resolveSelection, selectionAfterRemoval } from './entries';
+import { EntryList } from './EntryList';
+import { FormEditor } from './FormEditor';
+import { appendLine } from './help';
+import { EMPTY_FORM, formFromSpec, isPresetList, type BalanceForm, type Preset } from './spec';
+import { useBalancing } from './useBalancing';
 
-/** Abstimm-Ergebnis (WZ28.6). */
-function TuningDetail({ path }: { path: string }) {
-  const t = useTuning(path);
-  if (t.error) return <NoticeCard title="Ergebnis nicht lesbar" tone="error">{t.error}</NoticeCard>;
-  if (!t.tuning) return <Text color="gray">Lade Ergebnis …</Text>;
-  return <TuningView name={path} tuning={t.tuning} />;
-}
-
-/** Bericht (B) oder Vergleich (A = Basis, B = gewählt), je nach Auswahl. */
-function ReportDetail({ selected, base, onNew }: { selected: string; base: string; onNew: () => void }) {
-  const b = useSummary(selected);
-  const a = useSummary(base);
-  if (!selected) {
-    return (
-      <>
-        <NoticeCard title="Kein Bericht gewählt" tone="neutral">In der Liste einen Bericht öffnen. Mit „Vergleichsbasis“ wird ein Bericht zum Maßstab A, jeder danach geöffnete Bericht B erscheint neben ihm.</NoticeCard>
-        <div><Button onClick={onNew}>Neuer Lauf</Button></div>
-      </>
-    );
-  }
-  if (b.error) return <NoticeCard title="Bericht nicht lesbar" tone="error">{b.error}</NoticeCard>;
-  if (b.loading || !b.summary) return <Text color="gray">Lade Bericht …</Text>;
-  if (base && base !== selected) {
-    if (a.error) return <NoticeCard title="Basis nicht lesbar" tone="error">{a.error}</NoticeCard>;
-    if (!a.summary) return <Text color="gray">Lade Basis …</Text>;
-    return <CompareView nameA={base} nameB={selected} a={a.summary} b={b.summary} />;
-  }
-  return <ReportView name={selected} summary={b.summary} />;
-}
-
-function Detail({ selected, base, tuning, onNew }: { selected: string; base: string; tuning: boolean; onNew: () => void }) {
-  if (selected && tuning) return <TuningDetail path={selected} />;
-  return <ReportDetail selected={selected} base={base} onNew={onNew} />;
-}
+type Mode = 'report' | 'editor' | 'compare';
 
 /** Werkzeugleiste (B-659): „Neuer Lauf“ öffnet das Formular im Detail; rechts der Zustand der Warteschlange. */
 function Toolbar({ runs, editing, onNew }: { runs: BalanceRun[]; editing: boolean; onNew: () => void }) {
@@ -67,46 +30,70 @@ function Toolbar({ runs, editing, onNew }: { runs: BalanceRun[]; editing: boolea
   );
 }
 
-/** Reiter `Balancing` (WZ28.5, Rahmen B-659): Werkzeugleiste, links Läufe und Berichte, rechts Bericht, Vergleich,
- *  Abstimmung oder das Formular für einen neuen Lauf; Hilfen, Beispiele und Konfigurationsdateien (WZ28.10). */
+/** Voreinstellungen des Formulars, gemerkt unter `balancing.presets`. */
+function usePresets(): [Preset[], (p: Preset[]) => void] {
+  const [presets, setPresets] = useState<Preset[]>(() => loadJSON('balancing.presets', isPresetList, []));
+  return [presets, (p) => { setPresets(p); saveJSON('balancing.presets', p); }];
+}
+
+const without = (list: string[], id: string) => list.filter((x) => x !== id);
+/** Auswahl in der Reihenfolge der Wahl: ein neu Gewählter kommt ans Ende. */
+const toggled = (list: string[], id: string, on: boolean) => (on ? [...without(list, id), id] : without(list, id));
+
+/** Reiter `Balancing` (WZ28.5, Rahmen B-659, Liste und Detail B-660): links eine Liste für Läufe und Berichte, rechts
+ *  Bericht in Reitern, Lauf, Vergleich, Abstimmung oder das Formular für einen neuen Lauf (Editor, WZ32.4).
+ *  Den Editor öffnen `openEditor(form)` (Formular vorbefüllen) und `show('editor')`. */
 export function BalancingPage({ active = true }: { active?: boolean }) {
   const data = useBalancing(active);
   const [form, setForm] = useState<BalanceForm>(EMPTY_FORM);
-  const [presets, setPresets] = useState<Preset[]>(() => loadJSON('balancing.presets', isPresetList, []));
-  const [selected, setSelected] = useState('');
-  const [base, setBase] = useState('');
-  const [mode, setMode] = useState<'report' | 'editor'>('report');
+  const [presets, keepPresets] = usePresets();
+  const [picked, setPicked] = useState('');
+  const [checkedRaw, setChecked] = useState<string[]>([]);
+  const [compare, setCompare] = useState<string[]>([]);
+  const [mode, setMode] = useState<Mode>('report');
   const [view, setView] = useState<BalancingView>('list');
+  const entries = useMemo(() => buildEntries(data.runs, data.reports, data.baselines), [data.runs, data.reports, data.baselines]);
+  const selected = resolveSelection(picked, data.runs, entries);
+  const checked = checkedRaw.filter((id) => entries.some((e) => e.id === id));
   useTicketPage('balancing', selected || data.runs[0]?.id || '', active);
-  const keepPresets = (p: Preset[]) => {
-    setPresets(p);
-    saveJSON('balancing.presets', p);
-  };
-  const show = (next: 'report' | 'editor') => { setMode(next); setView('detail'); };
-  const open = (path: string) => { setSelected(path); show('report'); };
+  const show = (next: Mode) => { setMode(next); setView('detail'); };
+  const open = (id: string) => { setPicked(id); show('report'); };
+  /** Formular im Editor öffnen und mit `next` füllen. */
+  const openEditor = (next: BalanceForm) => { setForm(next); show('editor'); };
   const start = async (spec: BalanceSpec) => { await data.start(spec); setView('list'); };
+  const removeMany = async (paths: string[]) => {
+    if (!(await data.removeMany(paths))) return;
+    setPicked(selectionAfterRemoval(entries, paths, selected));
+    setChecked((c) => c.filter((p) => !paths.includes(p)));
+    setCompare((c) => c.filter((p) => !paths.includes(p)));
+  };
+  const actions: DetailActions = {
+    onRestart: (spec) => void start(spec),
+    onEdit: (spec, variant) => {
+      const f = formFromSpec(spec);
+      openEditor(variant ? { ...f, vary: appendLine(f.vary, variant) } : f);
+    },
+    onCompareWith: (path) => { setChecked([path]); setView('list'); },
+    onRate: (path, rating) => void data.rate(path, rating),
+    onDelete: (paths) => void removeMany(paths),
+    onSaveBaseline: data.saveBaseline,
+  };
+  const comparing = mode === 'compare' && compare.length >= 2;
   const list = (
-    <>
-      <RunQueue runs={data.runs} onStop={data.stop} onOpen={open} onReuse={(r) => { setForm(formFromSpec(r.spec)); show('editor'); }} />
-      <ReportList
-        reports={data.reports} selected={selected} base={base} onSelect={open} onBase={setBase} onReload={data.reloadReports}
-        onRate={data.rate} onDelete={(path) => { if (path === selected) setSelected(''); if (path === base) setBase(''); void data.remove(path); }}
-      />
-    </>
+    <EntryList
+      entries={entries} selected={selected} checked={checked} onSelect={open} onReload={data.reload}
+      onCheck={(id, on) => setChecked((c) => toggled(c, id, on))}
+      onClear={() => setChecked([])} onCompare={(paths) => { setCompare(paths); show('compare'); }}
+      onRate={(paths, rating) => void data.rateMany(paths, rating)} onDelete={(paths) => void removeMany(paths)}
+    />
   );
   const detail = mode === 'editor' ? (
-    <ConfigForm form={form} onForm={setForm} presets={presets} onPresets={keepPresets} onStart={start}>
-      <Examples
-        baselines={data.baselines} onOpen={data.reloadBaselines}
-        onPick={(e) => setForm(formFromExample(e, EMPTY_FORM))} onPickBaseline={(b) => setForm(formFromBaseline(b))}
-      />
-      <DataFiles
-        onVary={(line) => setForm((f) => ({ ...f, vary: appendLine(f.vary, line) }))}
-        onParam={(line) => setForm((f) => ({ ...f, tune: { ...f.tune, mode: f.tune.mode || 'search', params: appendLine(f.tune.params, line) } }))}
-      />
-    </ConfigForm>
+    <FormEditor form={form} onForm={setForm} presets={presets} onPresets={keepPresets} baselines={data.baselines} onReloadBaselines={data.reloadBaselines} onStart={start} />
   ) : (
-    <Detail selected={selected} base={base} tuning={data.reports.find((r) => r.path === selected)?.kind === 'tuning'} onNew={() => show('editor')} />
+    <BalancingDetail
+      compare={comparing} paths={compare} entries={entries} selected={selected} actions={actions} onStop={data.stop}
+      onNew={() => show('editor')} onOpen={open} onMakeBase={(p) => setCompare((c) => [p, ...without(c, p)])}
+    />
   );
   return (
     <BalancingLayout

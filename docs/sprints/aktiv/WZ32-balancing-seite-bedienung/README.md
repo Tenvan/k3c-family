@@ -77,7 +77,7 @@ keine (Defaults der Tickets gelten, Freigabe 2026-10-29).
 |---|---|---|---|---|
 | WZ32.1 | `WZ32.1-go-seite-berichte.md` | Umsetzung | autonom | fertig |
 | WZ32.2 | `WZ32.2-seitenrahmen.md` | Umsetzung | autonom | fertig |
-| WZ32.3 | `WZ32.3-liste-und-detail.md` | Umsetzung | autonom | offen |
+| WZ32.3 | `WZ32.3-liste-und-detail.md` | Umsetzung | autonom | fertig |
 | WZ32.4 | `WZ32.4-lauf-editor.md` | Umsetzung | autonom | offen |
 | WZ32.5 | `WZ32.5-review.md` | Review | autonom | offen |
 

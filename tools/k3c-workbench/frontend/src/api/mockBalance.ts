@@ -69,13 +69,32 @@ function finishTuning(r: BalanceRun, n: number, reports: BalanceReportInfo[], tu
 
 const RUN2_SPEC: BalanceSpec = { seeds: 8, bot: 'wirtschaft', players: 1, world: 'standard', days: 40, vary: ['bot.json:a=1'], label: 'Insel 1 solo · ohne Hilfen' };
 
-/** Startliste: zwei ältere Berichte ohne Label und Auftrag, einer mit (B-662). */
+/** Zeitpunkt vor n Tagen um h Uhr, nie in der Zukunft: so zeigt die Mock-Liste immer Heute, Gestern und Älter. */
+function ago(daysAgo: number, hour: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() - daysAgo);
+  d.setHours(hour, 0, 0, 0);
+  return new Date(Math.min(d.getTime(), Date.now() - 60_000)).toISOString();
+}
+
+const RUN4_SPEC: BalanceSpec = { seeds: 8, bot: 'wirtschaft', players: 1, world: 'standard', days: 40, vary: ['economy.json:purse.startGold=20'], label: 'Startgold 20' };
+const RUN7_SPEC: BalanceSpec = { seeds: 1, bot: 'coop2', players: 2, world: 'standard', days: 40, label: 'Meilenstein 1' };
+
+/** Startliste: ältere Berichte ohne Label und Auftrag, drei mit (B-662), einer davon die Baseline M1. */
 function seedReports(): BalanceReportInfo[] {
   return [
-    { path: 'reports/tuning-1.json', run: '', modified: '2026-10-24T09:00:00Z', seeds: 0, pass: true, kind: 'tuning', targetsPass: 0, targetsTotal: 0 },
-    { path: 'reports/balance-1.json', run: '', modified: '2026-10-23T18:00:00Z', seeds: 8, pass: true, kind: 'balance', rating: 'referenz', targetsPass: 3, targetsTotal: 3 },
+    { path: 'reports/tuning-1.json', run: '', modified: ago(4, 9), seeds: 0, pass: true, kind: 'tuning', targetsPass: 0, targetsTotal: 0 },
+    { path: 'reports/balance-1.json', run: '', modified: ago(3, 18), seeds: 8, pass: true, kind: 'balance', rating: 'referenz', targetsPass: 3, targetsTotal: 3 },
     {
-      path: 'reports/simtest-run-2/balance-2.json', run: 'simtest-run-2', modified: '2026-10-24T08:00:00Z', seeds: 8, pass: false, varianten: ['bot.json:a=1'],
+      path: 'reports/simtest-run-7/balance-7.json', run: 'simtest-run-7', modified: ago(2, 18), seeds: 1, pass: true, kind: 'balance',
+      label: RUN7_SPEC.label, spec: RUN7_SPEC, runId: 'run-7', targetsPass: 3, targetsTotal: 3,
+    },
+    {
+      path: 'reports/simtest-run-4/balance-4.json', run: 'simtest-run-4', modified: ago(1, 18), seeds: 8, pass: false, varianten: RUN4_SPEC.vary,
+      kind: 'balance', label: RUN4_SPEC.label, spec: RUN4_SPEC, runId: 'run-4', targetsPass: 1, targetsTotal: 3,
+    },
+    {
+      path: 'reports/simtest-run-2/balance-2.json', run: 'simtest-run-2', modified: ago(0, 8), seeds: 8, pass: false, varianten: ['bot.json:a=1'],
       kind: 'balance', label: RUN2_SPEC.label, spec: RUN2_SPEC, runId: 'run-2', targetsPass: 2, targetsTotal: 3,
     },
   ];
@@ -133,8 +152,10 @@ export function mockBalance(
   const summaries = new Map<string, BalanceSummary>([
     ['reports/balance-1.json', exampleSummary()],
     ['reports/simtest-run-2/balance-2.json', exampleSummary(0.15, true, ['bot.json:a=1'])],
+    ['reports/simtest-run-4/balance-4.json', exampleSummary(0.3, true, ['economy.json:purse.startGold=20'])],
+    ['reports/simtest-run-7/balance-7.json', exampleSummary()],
   ]);
-  let n = 2, timer: ReturnType<typeof setInterval> | undefined;
+  let n = 7, timer: ReturnType<typeof setInterval> | undefined;
   const finish = (r: BalanceRun) => {
     n++;
     if (r.spec?.tune) finishTuning(r, n, reports, tunings);

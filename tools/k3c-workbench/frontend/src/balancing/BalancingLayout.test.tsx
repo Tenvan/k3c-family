@@ -87,7 +87,7 @@ describe('Rahmen der Balancing-Seite', () => {
 });
 
 describe('Balancing-Seite im Rahmen', () => {
-  const row = (host: HTMLElement, name: string) => [...byLabel(host, 'Berichte').querySelectorAll<HTMLElement>('.bal-report-row')].find((r) => r.textContent?.includes(name))!;
+  const row = (host: HTMLElement, name: string) => [...byLabel(host, 'Läufe und Berichte').querySelectorAll<HTMLElement>('.bal-item')].find((r) => r.textContent?.includes(name))!;
 
   it('zeigt ohne Auswahl den Hinweis mit „Neuer Lauf“ und in der Werkzeugleiste die Warteschlange', async () => {
     const host = await mount(<BalancingPage />);
@@ -96,8 +96,8 @@ describe('Balancing-Seite im Rahmen', () => {
     expect(button(toolbar, 'Neuer Lauf')).toBeDefined();
     expect(byLabel(toolbar, 'Warteschlange').textContent).toBe('0 läuft0 wartet');
     const detail = byLabel(host, 'Detail');
-    expect(detail.textContent).toContain('Kein Bericht gewählt');
-    expect(byLabel(host, 'Läufe und Berichte').querySelectorAll('.bal-report-row').length).toBeGreaterThan(0);
+    expect(detail.textContent).toContain('Nichts gewählt');
+    expect(byLabel(host, 'Läufe und Berichte').querySelectorAll('.bal-item').length).toBeGreaterThan(0);
     expect(byLabel(host, 'Konfiguration')).toBeNull();
     await click(button(detail, 'Neuer Lauf'));
     expect(byLabel(byLabel(host, 'Detail'), 'Konfiguration')).not.toBeNull();
@@ -106,7 +106,7 @@ describe('Balancing-Seite im Rahmen', () => {
 
   it('öffnet einen Bericht im Detail, „Liste“ führt zurück und die Auswahl bleibt', async () => {
     const host = await mount(<BalancingPage />);
-    await click(row(host, 'balance-1.json').querySelector('button')!);
+    await click(row(host, 'balance-1.json').querySelector<HTMLElement>('.bal-item-name')!);
     expect(body(host).dataset.view).toBe('detail');
     expect(byLabel(byLabel(host, 'Detail'), 'Bericht')).not.toBeNull();
     await click(button(byLabel(host, 'Detail'), 'Liste'));
@@ -117,12 +117,12 @@ describe('Balancing-Seite im Rahmen', () => {
 
   it('„Neuer Lauf“ ersetzt den Bericht durch das Formular, ein Bericht in der Liste bringt ihn zurück', async () => {
     const host = await mount(<BalancingPage />);
-    await click(row(host, 'balance-1.json').querySelector('button')!);
+    await click(row(host, 'balance-1.json').querySelector<HTMLElement>('.bal-item-name')!);
     await click(button(byLabel(host, 'Werkzeugleiste'), 'Neuer Lauf'));
     expect(byLabel(byLabel(host, 'Detail'), 'Konfiguration')).not.toBeNull();
     expect(byLabel(host, 'Bericht')).toBeNull();
     expect(row(host, 'balance-1.json').dataset.on).toBe('true'); // die Auswahl bleibt
-    await click(row(host, 'balance-1.json').querySelector('button')!);
+    await click(row(host, 'balance-1.json').querySelector<HTMLElement>('.bal-item-name')!);
     expect(byLabel(host, 'Konfiguration')).toBeNull();
     expect(byLabel(byLabel(host, 'Detail'), 'Bericht')).not.toBeNull();
   });
@@ -133,7 +133,7 @@ describe('Balancing-Seite im Rahmen', () => {
     expect(body(host).dataset.view).toBe('detail');
     await click(button(byLabel(host, 'Konfiguration'), 'Lauf starten'));
     expect(body(host).dataset.view).toBe('list');
-    expect(byLabel(host, 'Läufe').querySelectorAll('.bal-run')).toHaveLength(1);
+    expect(byLabel(host, 'Läufe und Berichte').querySelectorAll('.bal-item[data-id^="run:"]')).toHaveLength(1);
     expect(byLabel(byLabel(host, 'Werkzeugleiste'), 'Warteschlange').textContent).toMatch(/[01] läuft[01] wartet/);
   });
 });
