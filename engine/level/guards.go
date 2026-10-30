@@ -58,12 +58,12 @@ func checkGuardRules(r GuardRules) error {
 }
 
 // checkGuards prüft das Gegnerlager eines Chunks: Anzahl, Art im Biom (Portal-Pool), Lage ≥ 2 Units von der Chunk-Grenze und
-// außerhalb des äußersten Tors, Abstand der Wachen untereinander (§ 9). Fehler nennen die Wache.
-func checkGuards(c PlannedChunk, b Biome, g geometry, lines WallLines) error {
+// außerhalb der Verteidigungszone, Abstand der Wachen untereinander (§ 9). Fehler nennen die Wache.
+func checkGuards(c PlannedChunk, b Biome, g geometry) error {
 	if len(c.Enemies) > guardRules.MaxPerChunk {
 		return fmt.Errorf("höchstens %d Wachen je Chunk, geplant sind %d", guardRules.MaxPerChunk, len(c.Enemies))
 	}
-	outer := lines.outermostGate()
+	outer := sitePlacement.OutsideUnits
 	for i, e := range c.Enemies {
 		switch {
 		case !slices.Contains(b.Enemies.Portal, e.Kind):
@@ -71,7 +71,7 @@ func checkGuards(c PlannedChunk, b Biome, g geometry, lines WallLines) error {
 		case e.At < edgeGapUnits || e.At > g.cw-edgeGapUnits:
 			return fmt.Errorf("die Wache %s bei %v: mindestens %d Units Abstand zur Chunk-Grenze (%d…%v)", e.Kind, e.At, edgeGapUnits, edgeGapUnits, g.cw-edgeGapUnits)
 		case g.dist(c.Slot, e.At) <= outer:
-			return fmt.Errorf("die Wache %s bei %v liegt %v Units vom Hub, innerhalb des äußersten Tors (%v)", e.Kind, e.At, g.dist(c.Slot, e.At), outer)
+			return fmt.Errorf("die Wache %s bei %v liegt %v Units vom Hub, innerhalb der Verteidigungszone (%v)", e.Kind, e.At, g.dist(c.Slot, e.At), outer)
 		}
 		for _, o := range c.Enemies[:i] {
 			if math.Abs(e.At-o.At) < guardRules.MinGapUnits {

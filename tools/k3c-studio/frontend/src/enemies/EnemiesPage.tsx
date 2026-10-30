@@ -1,108 +1,68 @@
-import { SelectField, Text, plainOptions, type SelectOption } from '@webkit/atoms';
+import { Button, SelectField } from '@webkit/atoms';
 import { useTicketPage } from '@webkit/lib/ticketContext';
-import { CheckField } from '@webkit/molecules';
-import { useEffect, useMemo, useState } from 'react';
-import { backend, type AssetSlot } from '../api';
-import { DEFAULT_CONTROL, resolveAnim, type Anim, type Control } from '../playback/figure';
+import { ChipSwitch } from '@webkit/molecules';
+import { useMemo } from 'react';
+import '../styles/figures.css';
+import type { KampfWorld } from '@game/scenes/kampfAnzeige';
 import { FigureStage } from '../playback/FigureStage';
-import { GapBadge, PlaybackControls } from '../playback/PlaybackControls';
-import { slotOptions } from '../monarch/monarchLogic';
-import type { FigureInfo } from '../stage/PreviewStage';
+import { GapChip, PlaybackControls } from '../playback/PlaybackControls';
 import { useBossDisplay } from './BossDisplay';
-import { bossCards } from './bossLogic';
-import { ENEMY_ACTIONS, ENEMY_ANIMS, cardOf, enemyItems, groups, type EnemyActionId, type EnemyCard, type Group } from './enemyLogic';
+import { EnemyInspector } from './EnemyInspector';
+import { EnemyTable } from './EnemyTable';
+import { ABILITY_MODE, ENEMY_MODES } from './enemyLogic';
+import { cardGaps, useEnemies, type Enemies } from './useEnemies';
 
-/** Gruppe der Bosse: je Tiefe einer (5 Minibosse und der Endboss), Daten aus `data/bosses.json` */
-const BOSS_GROUP_ID = 'bosse';
+/** Alle Lücken der Gruppe: je Karte, dazu die der Aktion und der gespielten Fähigkeit */
+const groupGaps = (e: Enemies) => [...e.cards.flatMap((c) => cardGaps(c, e.infoOf(c.id)?.gap)), ...(e.action?.gaps ?? []), ...(e.play?.gaps ?? [])];
 
-const ACTION_OPTIONS: SelectOption<EnemyActionId | ''>[] = [{ value: '', label: 'Keine' }, ...ENEMY_ACTIONS.map((a) => ({ value: a.id, label: a.label }))];
-
-/** Slot-Register des Studios (nur lesen): Zuordnungen der Slots je Gegner-ID als Vorschau-Auswahl */
-function useSlots(): AssetSlot[] {
-  const [slots, setSlots] = useState<AssetSlot[]>([]);
-  useEffect(() => {
-    let current = true;
-    void backend.assetsList().then((v) => { if (current && !v.error) setSlots(v.slots); });
-    return () => { current = false; };
-  }, []);
-  return slots;
-}
-
-function CardRow({ card, slots, pick, onPick, gap }: { card: EnemyCard; slots: AssetSlot[]; pick: number; onPick: (n: number) => void; gap: FigureInfo['gap'] | undefined }) {
-  const options = slotOptions(slots, card.boss ? 'boss' : card.id);
-  const d = card.def;
+/** Eine Werkzeugleiste (B-672): Gruppe, Modus als Segment (Animation, Aktion, Fähigkeit …), Chip Monarch, Wiedergabe, Chip Lücken */
+function Toolbar({ e }: { e: Enemies }) {
+  const modes = e.isBoss ? [...ENEMY_MODES, ABILITY_MODE] : ENEMY_MODES;
+  const frames = e.infoOf(e.selected?.id ?? '')?.frames ?? 1;
   return (
-    <li className="wd-card" data-enemy={card.id}>
-      <Text size="2" weight="bold">{d?.name ?? card.id}</Text>
-      <Text size="1" color="gray">{d ? (card.boss ? `${card.id} · Tiefe ${d.depth} · Tempo ${d.speed} · Reichweite ${d.range}` : `${card.id} · ${d.tier} · Tiefe ${d.depth} · ${d.hp} HP · ${d.damage} Schaden · Tempo ${d.speed} · Reichweite ${d.range}`) : card.id}</Text>
-      <span className="wd-traits">
-        {card.traits.map((t) => <span key={t.trait} className="wd-trait" data-trait={t.trait}>{t.trait}{t.gap && <GapBadge gap={t.gap} />}</span>)}
-      </span>
-      {card.extras.map((x) => <span key={x.field} className="wd-trait" data-extra={x.field}>{x.field} {x.value}{x.gap && <GapBadge gap={x.gap} />}</span>)}
-      {card.boss && (
-        <span className="wd-boss">
-          <Text size="1">{card.boss.kind === 'end' ? 'Endboss' : 'Miniboss'}{card.boss.ability ? ` · ${card.boss.ability}` : ''}</Text>
-          {card.boss.phases.map((p) => <Text key={p} size="1" color="gray">{p}</Text>)}
-          {card.boss.displays.map((g) => <GapBadge key={g.reason} gap={g} />)}
-        </span>
+    <div className="wd-figbar" role="toolbar" aria-label="Gegner">
+      <SelectField size="1" aria-label="Gruppe" value={e.group.id} options={e.all.map((g) => ({ value: g.id, label: g.title }))} onChange={e.setGroupId} />
+      <ChipSwitch label="Modus" options={modes} value={e.mode} onChange={e.setMode} />
+      {e.mode === 'ability' && e.entries.length > 0 && (
+        <SelectField size="1" aria-label="Fähigkeit" value={e.entry?.key ?? ''} options={e.entries.map((x) => ({ value: x.key, label: x.label }))}
+          onChange={(k) => { const x = e.entries.find((y) => y.key === k); if (x) e.playAbility(x); }} />
       )}
-      {card.gaps.map((g) => <GapBadge key={g.reason} gap={g} />)}
-      <GapBadge gap={gap} />
-      {options.length > 0 && (
-        <SelectField aria-label={`Grafik ${card.id}`} value={String(pick)} onChange={(v) => onPick(Number(v))}
-          options={options.map((o) => ({ value: String(o.index), label: `Präferenz ${o.index + 1}: ${o.sheet}` }))} />
-      )}
-    </li>
+      <Button size="1" variant={e.withMonarch ? 'solid' : 'soft'} aria-label="Monarch-Vergleich" aria-pressed={e.withMonarch} onClick={() => e.setWithMonarch(!e.withMonarch)}>Monarch</Button>
+      <div className="wd-figbar-end">
+        <PlaybackControls control={e.control} onChange={e.setControl} frames={frames} />
+        <GapChip gaps={groupGaps(e)} />
+      </div>
+    </div>
   );
 }
 
-/** Gegner-Seite des Asset-Studios (B-464): alle Gegnertypen nach Biom und Tiefe (Portal vor Nacht, dazu „ohne Biom“) mit
- *  den Animationen des Spiels. Karten mit Merkmalen und Lücken, Getroffen und Sterben mit den Effekten des Spiels,
- *  Monarch-Vergleich auf derselben Bodenlinie, Grafik-Auswahl je Gegner-ID als Vorschau (das Register bleibt unverändert). */
-export function EnemiesPage() {
-  const slots = useSlots();
-  const all = useMemo<Group[]>(() => [...groups(), { id: BOSS_GROUP_ID, title: 'Bosse (je Tiefe)', depth: null, ids: [] }], []);
-  const [groupId, setGroupId] = useState(all[0]!.id);
-  useTicketPage('gegner', groupId);
-  const [anim, setAnim] = useState<Anim>('idle');
-  const [actionId, setActionId] = useState<EnemyActionId | ''>('');
-  const [withMonarch, setWithMonarch] = useState(false);
-  const [control, setControl] = useState<Control>(DEFAULT_CONTROL);
-  const [infos, setInfos] = useState<FigureInfo[]>([]);
-  const [picks, setPicks] = useState<Record<string, number>>({});
-  const group = all.find((g) => g.id === groupId) ?? all[0]!;
-  const cards = useMemo(() => (group.id === BOSS_GROUP_ID ? bossCards() : group.ids.map(cardOf)), [group]);
-  const sheets: Record<string, string | undefined> = {};
-  for (const c of cards) {
-    const options = slotOptions(slots, c.boss ? 'boss' : c.id);
-    const chosen = options.find((o) => o.index === (picks[c.id] ?? 0)) ?? options[0];
-    sheets[c.id] = chosen && !chosen.gap ? chosen.sheet : undefined;
-  }
-  const action = ENEMY_ACTIONS.find((a) => a.id === actionId);
-  const key = JSON.stringify([group.id, anim, actionId, withMonarch, sheets]);
-  const items = useMemo(() => enemyItems(cards, { anim, ...(action ? { action } : {}), withMonarch, sheets }), [key]); // eslint-disable-line react-hooks/exhaustive-deps
-  const offset = withMonarch ? 1 : 0; // die Antworten der Bühne zählen den Monarch-Vergleich mit
-  // Boss-Anzeigen des Spiels (B-469) nur in der Gruppe der Bosse; die Mitte des Warnkreises ist die Lage des Boss-Bildes
-  const boss = useBossDisplay(group.id === BOSS_GROUP_ID, (id) => items.find((i) => i.id === `enemy-${id}`)?.x ?? 0);
+/** Ohne den Warnkreis des Beispielzustands: spielt eine Fähigkeit, zeichnet sie ihren eigenen (sonst stünden zwei da). */
+const withoutWarn = (w: KampfWorld | null): KampfWorld | null => (w ? { ...w, enemies: (w.enemies ?? []).map((x) => ({ ...x, warn: undefined })) } : null);
 
+/** Gegner-Seite des Asset-Studios (B-464, B-672): alle Gegnertypen nach Biom und Tiefe (Portal vor Nacht, dazu „ohne Biom“)
+ *  und die Bosse mit den Animationen des Spiels. Eine Werkzeugleiste, die Bühne über die Resthöhe mit dem Inspektor des
+ *  gewählten Gegners rechts daneben (gleich hoch), darunter die Gegner als Tabelle über die volle Breite; Klick auf Zeile oder Figur wählt. Angriffe und Boss-Fähigkeiten spielen die
+ *  Darstellung des Spiels oder zeigen ihre Lücke; Grafik-Auswahl je Gegner-ID als Vorschau (das Register bleibt unverändert). */
+export function EnemiesPage() {
+  const e = useEnemies();
+  useTicketPage('gegner', e.group.id);
+  // Boss-Anzeigen des Spiels (B-469) nur in der Gruppe der Bosse; die Mitte des Warnkreises ist die Lage des Boss-Bildes
+  const boss = useBossDisplay(e.isBoss, (id) => e.items.find((i) => i.id === `enemy-${id}`)?.x ?? 0);
+  const kampf = useMemo(() => (e.mode === 'ability' ? withoutWarn(boss.world) : boss.world), [e.mode, boss.world]);
+  const onFigure = (id: string | null) => { if (id?.startsWith('enemy-')) e.setSelectedId(id.slice('enemy-'.length)); };
   return (
-    <div className="wd-page wd-gegner">
-      <div className="wd-bar">
-        <SelectField aria-label="Gruppe" value={group.id} options={all.map((g) => ({ value: g.id, label: g.title }))} onChange={setGroupId} />
-        <SelectField aria-label="Animation" value={anim} options={plainOptions(ENEMY_ANIMS)} onChange={setAnim} />
-        <SelectField aria-label="Aktion" value={actionId} options={ACTION_OPTIONS} onChange={setActionId} />
-        <CheckField label="Monarch-Vergleich" checked={withMonarch} onCheckedChange={(c) => setWithMonarch(c === true)} aria-label="Monarch-Vergleich" />
-        {action?.gaps.map((g) => <GapBadge key={g.reason} gap={g} />)}
+    <div className="wd-root">
+      <div className="wd-page wd-gegner">
+        <Toolbar e={e} />
+        {boss.bar}
+        <div className="wd-gegner-main">
+          <div className="wd-gegner-stage">
+            <FigureStage items={e.items} control={e.control} kampf={kampf} selected={e.selected ? `enemy-${e.selected.id}` : null} onFigure={onFigure} onInfo={e.setInfos} />
+          </div>
+          <div className="wd-gegner-side"><EnemyInspector e={e} /></div>
+        </div>
+        <div className="wd-gegner-table"><EnemyTable e={e} /></div>
       </div>
-      <PlaybackControls control={control} onChange={setControl} frames={infos[offset]?.frames ?? 1} />
-      {boss.bar}
-      <FigureStage items={items} control={control} kampf={boss.world} onInfo={setInfos} />
-      <ul className="wd-cards" aria-label="Gegner">
-        {cards.map((c, i) => (
-          <CardRow key={c.id} card={c} slots={slots} pick={picks[c.id] ?? 0} onPick={(n) => setPicks({ ...picks, [c.id]: n })}
-            gap={infos[i + offset]?.gap ?? (infos[i + offset] ? undefined : resolveAnim(c.spec.sheet, anim).gap)} />
-        ))}
-      </ul>
     </div>
   );
 }

@@ -64,6 +64,9 @@ func allBuilt(isl *Island) bool {
 	n := 0
 	for _, w := range isl.Stages {
 		for _, s := range w.Sites {
+			if s.Kind == shipKind { // das Schiff dient dem Inselwechsel, nicht dem Sieg (letzte Insel: nutzlos)
+				continue
+			}
 			if s.State != "built" {
 				return false
 			}

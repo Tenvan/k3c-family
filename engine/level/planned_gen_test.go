@@ -24,7 +24,7 @@ func examplePlan(t *testing.T, b Biome) []PlannedChunk {
 		}
 		plan = append(plan, PlannedChunk{Slot: slot, Kind: first, Objects: []PlannedObject{{Kind: b.Veins.Kind, At: 10}}})
 	}
-	if err := ValidatePlan(b, plan, DefaultWallLines()); err != nil {
+	if err := ValidatePlan(b, plan); err != nil {
 		t.Fatalf("Beispiel-Planung für %s ungültig: %v", b.ID, err)
 	}
 	return plan
@@ -45,10 +45,8 @@ func TestGenerateWithNullwertIstGenerate(t *testing.T) {
 		for _, seed := range []string{"a", "7", "Käse🧀"} {
 			want, _ := Generate(b, seed)
 			got, err := GenerateWith(b, seed, Options{})
-			explicit := DefaultWallLines()
-			again, err2 := GenerateWith(b, seed, Options{Lines: &explicit})
-			if err != nil || err2 != nil || !slices.Equal(want.Entities, got.Entities) || !slices.Equal(want.Entities, again.Entities) || !slices.Equal(want.Lines, again.Lines) {
-				t.Fatalf("Biom %s, Seed %s: GenerateWith(Options{}) weicht von Generate ab (%v, %v)", id, seed, err, err2)
+			if err != nil || !slices.Equal(want.Entities, got.Entities) || !slices.Equal(want.Sites, got.Sites) {
+				t.Fatalf("Biom %s, Seed %s: GenerateWith(Options{}) weicht von Generate ab (%v)", id, seed, err)
 			}
 		}
 	}
@@ -144,21 +142,5 @@ func TestInhaltGeplanterChunksStoertDenHauptStromNicht(t *testing.T) {
 func TestGenerateWithLehntUngueltigePlanungAb(t *testing.T) {
 	if _, err := GenerateWith(biome(t, "forest"), "x", Options{Planned: []PlannedChunk{{Slot: 0, Kind: "forest"}}}); err == nil {
 		t.Error("ungültige Planung muss abgelehnt werden")
-	}
-}
-
-// AC-03: Die Linien sind ein Parameter; verschiedene Linien nacheinander liefern je ihr Layout.
-func TestGenerateWithLinienParameterWirkenBeiPlanung(t *testing.T) {
-	b := biome(t, "cave")
-	wide := DefaultWallLines()
-	wide.WallUnits = []float64{44, 64, 84, 104, 126}
-	a, _ := GenerateWith(b, "x", Options{Lines: &wide})
-	def, _ := GenerateWith(b, "x", Options{})
-	again, _ := GenerateWith(b, "x", Options{Lines: &wide})
-	if slices.Equal(a.Lines, def.Lines) || !slices.Equal(a.Lines, again.Lines) {
-		t.Error("die Linien-Parameter wirken nicht oder nicht wiederholbar")
-	}
-	if got := a.Lines[4].Wall - a.HubCenterUnits; got < -130 || got > -126 {
-		t.Errorf("Linie 5 links bei %v, erwartet −126 … −130", got)
 	}
 }

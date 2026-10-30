@@ -1,4 +1,4 @@
-import type { NetworkMode, SourceApi, SourceCleanupView, SourceInfo, SourceProgress, SourceProposal } from './sourceTypes';
+import type { NetworkMode, SourceAddView, SourceApi, SourceCleanupView, SourceInfo, SourceProgress, SourceProposal } from './sourceTypes';
 
 // Erfundene Quellen und Vorschlagsliste für den Mock (WZ30.4): Einträge in allen Status, simulierter Download mit
 // Fortschritt (je Abfrage von sourceProgress +25 %) und einem Fehlerfall (q06 scheitert bei 50 %), Offline-Schalter.
@@ -32,6 +32,15 @@ const initial = (): SourceProposal[] => [
   p('q09', { slot: 'beetle', art: 'grafik', titel: 'Käfer (Sheet)', quelle: 'OpenGameArt', lizenz: 'CC-BY 3.0', urheber: 'Beispiel-Autor', groesse: 64_000, status: 'gesperrt',
     sperrgrund: 'Quelle nennt jetzt CC BY-NC (Eintrag: CC-BY)' }),
   p('q10', { slot: 'beetle', art: 'grafik', titel: 'Käfer (einzeln)', quelle: 'OpenGameArt', groesse: 22_000, status: 'geladen', pruefsumme: 'c9d0e1f2', vorschau: 'grafik/gothicvania-town/props-einzeln/crate.png' }),
+];
+
+/** Recherche-Treffer des Mocks (B-673): `skip` ist der Grund, aus dem die Übernahme sie überspringt. */
+const RESEARCH: (Pick<SourceProposal, 'slot' | 'art' | 'titel' | 'quelle' | 'dateiUrl' | 'lizenz' | 'groesse'> & { skip?: string })[] = [
+  { slot: 'tavern', art: 'grafik', titel: 'Taverne (Medieval Pack)', quelle: 'Kenney', dateiUrl: 'https://kenney.nl/media/medieval.zip', lizenz: 'CC0 1.0', groesse: 210_000 },
+  { slot: 'portal', art: 'grafik', titel: 'Portal (Tor)', quelle: 'Kenney', dateiUrl: 'https://kenney.nl/media/tor.png', lizenz: 'CC0 1.0', groesse: 18_000 },
+  { slot: 'portal', art: 'grafik', titel: 'Portal (Rune, Seite)', quelle: 'Kenney', dateiUrl: '', lizenz: 'CC0 1.0', groesse: 0, skip: 'keine direkte Datei-URL' },
+  { slot: 'tavern', art: 'grafik', titel: 'Tavern (Commons)', quelle: 'Wikimedia Commons', dateiUrl: 'https://upload.wikimedia.org/tavern.png', lizenz: 'CC0 1.0', groesse: 0, skip: 'Quelle nicht erlaubt' },
+  { slot: 'music:abend', art: 'sound', titel: 'Abendlied (unklar)', quelle: 'OpenGameArt', dateiUrl: '', lizenz: '', groesse: 0, skip: 'Lizenz nicht geklärt (pruefen)' },
 ];
 
 let list = initial();
@@ -92,6 +101,21 @@ function cleanupView(): SourceCleanupView {
   return { dateien, groesse: dateien.reduce((a, d) => a + d.groesse, 0) };
 }
 
+/** Vorschau der Übernahme aus der Recherche: übernehmbare und übersprungene Treffer (Quelle "" = alle). */
+function researchPlan(source: string): SourceAddView {
+  if (isOffline()) throw new Error('offline: Größe per HEAD nicht möglich, bitte online erneut versuchen');
+  const view: SourceAddView = { uebernommen: [], uebersprungen: [], bytes: 0 };
+  for (const r of RESEARCH.filter((x) => !source || x.quelle === source)) {
+    const why = r.skip ?? (list.some((s) => s.dateiUrl === r.dateiUrl) ? 'Datei-URL schon in der Liste' : '');
+    if (why) view.uebersprungen.push({ titel: r.titel, dateiUrl: r.dateiUrl, grund: why });
+    else {
+      view.uebernommen.push({ id: `q${String(list.length + view.uebernommen.length + 1).padStart(2, '0')}`, slot: r.slot, art: r.art, titel: r.titel, quelle: r.quelle, dateiUrl: r.dateiUrl, lizenz: r.lizenz, groesse: r.groesse });
+      view.bytes += r.groesse;
+    }
+  }
+  return view;
+}
+
 export function mockSources(): SourceApi {
   return {
     network: async () => ({ mode, offline: isOffline() }),
@@ -117,6 +141,13 @@ export function mockSources(): SourceApi {
       const s = need(id);
       if (s.status !== 'geladen') throw new Error(`${id} ist nicht geladen`);
       update(id, { verwendet: true });
+    },
+    sourceResearchPreview: async (source) => researchPlan(source),
+    sourceResearchImport: async (source, urls) => {
+      const plan = researchPlan(source);
+      const take = plan.uebernommen.filter((n) => urls.includes(n.dateiUrl));
+      for (const n of take) list = [...list, p(n.id, { slot: n.slot, art: n.art, titel: n.titel, quelle: n.quelle, groesse: n.groesse, lizenz: n.lizenz, dateiUrl: n.dateiUrl })];
+      return { ...plan, uebernommen: take, bytes: take.reduce((a, n) => a + n.groesse, 0) };
     },
     sourceCleanupPreview: async () => cleanupView(),
     sourceCleanup: async () => {

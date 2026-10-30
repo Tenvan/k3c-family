@@ -6,18 +6,21 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { DEFAULT_CONTROL, gap, type Control } from './figure';
 import { FigureStage } from './FigureStage';
 import type { FigureItem } from './figureView';
-import { optionTexts } from '../../../../webkit/testing/options';
-import { pickOption, selectedText } from '../../../../webkit/testing/select';
-import { GapBadge, PlaybackControls } from './PlaybackControls';
+import { GapBadge, GapChip, PlaybackControls } from './PlaybackControls';
 
 // B-463 (WZ10.1) im DOM: Steuerung, Lücken-Marke und die Bühne mit einer Attrappe statt Phaser.
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
-const calls = vi.hoisted(() => ({ shown: [] as unknown[], controls: [] as unknown[], destroyed: 0, info: [{ gap: null, frames: 6 }] as unknown[] }));
+const calls = vi.hoisted(() => ({
+  shown: [] as unknown[], controls: [] as unknown[], destroyed: 0, info: [{ gap: null, frames: 6 }] as unknown[],
+  click: null as ((i: number | null) => void) | null, marks: [] as (number | null)[],
+}));
 vi.mock('../stage/PreviewStage', () => ({
   PreviewStage: class {
     async showFigures(items: unknown) { calls.shown.push(items); return items ? calls.info : []; }
     setControl(c: unknown) { calls.controls.push(c); }
+    setFigureClick(f: (i: number | null) => void) { calls.click = f; }
+    setFigureMark(i: number | null) { calls.marks.push(i); }
     destroy() { calls.destroyed++; }
   },
 }));
@@ -65,11 +68,22 @@ describe('Steuerung (B-463/AC-01)', () => {
     expect(seen.at(-1)!.frame).toBeNull();
   });
 
-  it('Tempo 0,5×, 1× und 2×', async () => {
+  it('Tempo als Segment ½×, 1× und 2× (B-671)', async () => {
     const h = await mount(<Controlled />);
-    expect(await optionTexts(h, 'Tempo')).toEqual(['0.5×', '1×', '2×']);
-    await pickOption(h, 'Tempo', '2×');
-    expect(selectedText(h, 'Tempo')).toBe('2×');
+    const chips = () => [...h.querySelectorAll('[aria-label="Tempo"] button')];
+    expect(chips().map((b) => b.textContent)).toEqual(['½×', '1×', '2×']);
+    await act(async () => button(h, '2×').click());
+    expect(chips().find((b) => b.getAttribute('aria-pressed') === 'true')!.textContent).toBe('2×');
+  });
+
+  it('Pause hält beim aktuellen Bild an, danach heißt der Knopf Weiter (B-671)', async () => {
+    const seen: Control[] = [];
+    const h = await mount(<Controlled onChange={(c) => seen.push(c)} />);
+    await act(async () => button(h, 'Pause').click());
+    expect(seen.at(-1)!.frame).toBe(0);
+    expect(button(h, 'Pause')).toBeUndefined();
+    await act(async () => button(h, 'Weiter').click());
+    expect(seen.at(-1)!.frame).toBeNull();
   });
 });
 
@@ -80,6 +94,16 @@ describe('Lücken-Marke (B-463)', () => {
     expect(badges).toHaveLength(1);
     expect(badges[0]!.textContent).toBe('Lücke: run fehlt');
     expect(badges[0]!.getAttribute('title')).toBe('Lücke: run fehlt');
+  });
+});
+
+describe('Lücken-Chip (B-671, B-672)', () => {
+  it('zeigt die Anzahl verschiedener Lücken, die Gründe im Tooltip; ohne Lücke nichts', async () => {
+    const h = await mount(<><GapChip gaps={[gap('anim', 'Lücke: run fehlt'), null, gap('anim', 'Lücke: run fehlt'), gap('sheet', 'Lücke: x')]} /><GapChip gaps={[null]} /></>);
+    const chips = h.querySelectorAll('.wd-gap-chip');
+    expect(chips).toHaveLength(1);
+    expect(chips[0]!.textContent).toBe('Lücken 2');
+    expect(chips[0]!.getAttribute('title')).toBe('run fehlt\nx');
   });
 });
 
@@ -111,5 +135,16 @@ describe('Figuren-Bühne (B-463): eine Phaser-Instanz je Seite', () => {
     act(() => root!.unmount());
     root = null;
     expect(calls.destroyed).toBe(1);
+  });
+
+  it('Klick auf eine Figur meldet ihre ID, die gewählte wird markiert (B-672/AC-03)', async () => {
+    const items = [item('a'), item('b')];
+    const onFigure = vi.fn();
+    await mount(<FigureStage items={items} control={DEFAULT_CONTROL} selected="b" onFigure={onFigure} />);
+    expect(calls.marks.at(-1)).toBe(1);
+    act(() => calls.click!(0));
+    expect(onFigure).toHaveBeenLastCalledWith('a');
+    act(() => calls.click!(null));
+    expect(onFigure).toHaveBeenLastCalledWith(null);
   });
 });

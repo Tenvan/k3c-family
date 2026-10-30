@@ -68,13 +68,22 @@ func parseWorktreePaths(porcelain, root string) []worktree {
 
 // CheckWorktrees zeigt je Worktree, was er an der Planung gegenüber der Merge-Base mit der Wurzel geändert hat
 // (Commits und Arbeitskopie); der Vorsprung der Wurzel zählt nicht mit. Nur lesend, es wird nichts geschrieben.
+//
+// Gleichzeitige Aufrufe teilen sich einen Lauf (flight), die Stände der Merge-Bases bleiben zwischen den Läufen im Cache:
+// Die Oberfläche ruft bei jedem Ereignis und jedem Fokus, ohne das würden sich die Läufe samt `git archive` stauen.
 func CheckWorktrees(root string) ([]WorktreeDiff, error) {
+	arrived := time.Now()
+	return flightFor(root).run(arrived, func(bases map[string]Data) ([]WorktreeDiff, error) {
+		return checkWorktrees(root, bases)
+	})
+}
+
+func checkWorktrees(root string, bases map[string]Data) ([]WorktreeDiff, error) {
 	list, err := worktreeList(root)
 	if err != nil {
 		return nil, err
 	}
 	diffs := []WorktreeDiff{}
-	bases := map[string]Data{} // je Merge-Base einmal geladen
 	for _, w := range list {
 		d := WorktreeDiff{Branch: w.branch, Path: w.path, Changes: []Change{}}
 		changes, err := diffWorktree(root, w, bases)

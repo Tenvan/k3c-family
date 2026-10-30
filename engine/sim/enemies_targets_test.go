@@ -28,11 +28,11 @@ func targetOf(w *World, e *Enemy) int {
 	return 0
 }
 
-// (c) Gegner mit `ignoresWalls` (auch mit Phasen) laufen am gebauten Tor vorbei, ohne es anzugreifen.
-func TestGegnerIgnoresWallsLaeuftAmTorVorbei(t *testing.T) {
+// (c) Gegner mit `ignoresWalls` (auch mit Phasen) laufen an der gebauten Mauer (dem Tor) vorbei, ohne sie anzugreifen.
+func TestGegnerIgnoresWallsLaeuftAnDerMauerVorbei(t *testing.T) {
 	for _, kind := range []string{"bat", "mineGhost"} {
 		w := dayWorld(t)
-		gate := sturdy(lineSite(t, w, "gate", -1, 1))
+		gate := sturdy(lineSite(t, w, "wall", -1, 1))
 		e := spawnEnemy(w, kind, gate.X-4)
 		run(w, 3)
 		if e.X <= gate.X || gate.HP < gate.MaxHP {
@@ -66,7 +66,7 @@ func TestGegnerGebaeudeAlsZiel(t *testing.T) {
 // (e) Nahkämpfer erreichen kein Gebäude hinter dem Tor, auch nicht mit `prefersBuildings`; sie greifen das Tor an.
 func TestGegnerNahkampfErreichtKeinGebaeudeHinterDemTor(t *testing.T) {
 	w := dayWorld(t)
-	gate := sturdy(lineSite(t, w, "gate", -1, 1))
+	gate := sturdy(lineSite(t, w, "wall", -1, 1))
 	shop := workshopAt(t, w, gate.X+0.5)
 	for _, kind := range []string{"skeleton", "caveTroll"} {
 		e := spawnEnemy(w, kind, gate.X-body)

@@ -1,5 +1,5 @@
 {
   "notes": "Ruinen in geplanten Chunks (docs/rules/geplante-chunks.md § 8, B-468, WZ14): kinds = Nutzgebäude, die als Ruine geplant werden dürfen (nie Burg, Mauer, Turm, Tor, Treppen); hpShare = Start-HP als Anteil der HP der Art aus buildings.json (aufgerundet).",
   "hpShare": 0.25,
-  "kinds": ["workshop", "storage", "farm", "barracks", "tavern", "healer", "smithy", "armory"]
+  "kinds": ["workshop", "storage", "nursery", "barracks", "tavern", "healer", "smithy", "armory"]
 }

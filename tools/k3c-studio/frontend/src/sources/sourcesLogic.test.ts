@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { mockSources, resetMockSources, setMockSourcesOffline } from '../api/mockSources';
-import { buildView, emptyState } from '@webkit/lib/listFilter';
-import { downloadable, formatBytes, percent, running, sourceFilter, summarize } from './sourcesLogic';
+import { archiveLabel, downloadable, formatBytes, percent, previewKind, running, summarize } from './sourcesLogic';
 
 // WZ30.4 (AC-04): Logik der Seite Quellen und der Mock der Vorschlagsliste.
 beforeEach(resetMockSources);
@@ -20,14 +19,6 @@ describe('Logik', () => {
     expect(sel.count).toBe(2); // q04 gesperrt, q02 schon geladen
     expect(sel.bytes).toBe(1_480_000 + 24_500);
     expect(sel.quellen.map((q) => q.name)).toEqual(['Kenney', 'OpenGameArt']);
-  });
-
-  it('filtert nach Quelle, Art und Status', async () => {
-    const { vorschlaege } = await view();
-    const by = (chips: Record<string, string[]>) => buildView(vorschlaege, sourceFilter, { ...emptyState('prio'), chips }).groups.flatMap((g) => g.items.map((i) => i.id));
-    expect(by({ quelle: ['Kenney'] })).toEqual(['q05', 'q08']);
-    expect(by({ art: ['sound'], status: ['geladen'] })).toEqual(['q01', 'q02']);
-    expect(by({ verwendet: ['unverwendet'] }).sort()).toEqual(['q02', 'q10']);
   });
 
   it('läßt nur offene Einträge mit erlaubter Lizenz laden', async () => {
@@ -81,5 +72,21 @@ describe('Mock der Quellen', () => {
     await expect(api.sourceAdopt('q03')).rejects.toThrow('nicht geladen');
     await api.sourceAdopt('q02');
     expect((await api.sources()).vorschlaege.find((s) => s.id === 'q02')?.verwendet).toBe(true);
+  });
+});
+
+describe('previewKind und archiveLabel (B-673)', () => {
+  const g = (vorschau?: string) => ({ art: 'grafik' as const, vorschau });
+  it('nur Bild-Endungen sind Bilder, auch groß und mit Query', () => {
+    for (const f of ['a.png', 'a.JPG', 'a.jpeg', 'a.gif', 'a.webp', 'x/a.png?v=1']) expect(previewKind(g(f))).toBe('bild');
+  });
+  it('Archive und Unbekanntes sind keine Bilder, Ton bleibt Ton', () => {
+    for (const f of ['a.zip', 'a.7z', 'a', '']) expect(previewKind(g(f))).toBe('archiv');
+    expect(previewKind({ art: 'sound', vorschau: 'a.ogg' })).toBe('ton');
+  });
+  it('Archiv-Text nennt die Endung', () => {
+    expect(archiveLabel('pack.zip')).toBe('Archiv (zip)');
+    expect(archiveLabel('pack.7z')).toBe('Archiv (7z)');
+    expect(archiveLabel('pack')).toBe('Archiv');
   });
 });

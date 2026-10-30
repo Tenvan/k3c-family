@@ -9,9 +9,13 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| BS1 | DEV | BAS | Schneller Balancing-Lauf mit Seed k3c-dev | – | `aktiv/BS1-balancing-seed-k3c-dev/` |
-| BS2 | REG | BAS | Regelwerk der neuen Basis: Münzskala, Baumschule, Hafen und Schiff | – | `aktiv/BS2-regelwerk-neue-basis/` |
+| BS7 | DEV | BAS | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | – | `aktiv/BS7-delta-balancing-basis-laeufe/` |
+| BS8 | DEV, REG | BAS | Meilenstein 2: Bots und Delta-Runde Baumschule gegen Baseline M1 | – | `aktiv/BS8-meilenstein-2-delta-baumschule/` |
+| BS9 | DEV, REG | BAS | Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2 | – | `aktiv/BS9-meilenstein-3-delta-schiff/` |
+| BS6 | CLI, DEV | BAS | Client: Baumschule, Hafen und Schiff, neue Münzskala | – | `aktiv/BS6-client-baumschule-hafen-skala/` |
+| BS13 | CLI | BAS | Baustellen-Schilder, Bauoptionen und Holzzaun | – | `aktiv/BS13-baustellen-fehler-holzzaun/` |
 | WZ29 | DEV | WZG | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | – | `aktiv/WZ29-sound-grafik-seiten-ausbau/` |
+| WZ32 | DEV | WZG | Balancing-Seite: feste Fläche, eine Liste, Lauf-Editor mit Varianten-Tabelle | – | `aktiv/WZ32-balancing-seite-bedienung/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | WZ31 | DEV | WZG | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | – | `aktiv/WZ31-web-client-first/` |
 | WZ28 | DEV | WZG | Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite | – | `aktiv/WZ28-offline-werkzeuge/` |
@@ -44,15 +48,8 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| BS3 | REG, DEV | BAS | Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch | – | bereit | `geplant/BS3-werte-muenzskala-meilenstein/` |
-| BS4 | SIM | BAS | Baumschule auf gerodeten Waldbauplätzen | – | Entwurf | `geplant/BS4-baumschule-waldbauplaetze/` |
-| BS5 | SIM | BAS | Hafen-Chunk, Schiff bauen und Inselwechsel am Hafen | – | Entwurf | `geplant/BS5-hafen-schiff-inselwechsel/` |
-| BS6 | CLI | BAS | Client: Baumschule, Hafen und Schiff, neue Münzskala | – | Entwurf | `geplant/BS6-client-baumschule-hafen-skala/` |
-| BS7 | DEV | BAS | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | – | bereit | `geplant/BS7-delta-balancing-basis-laeufe/` |
-| BS8 | DEV | BAS | Meilenstein 2: Bots und Delta-Runde Baumschule gegen Baseline M1 | – | Entwurf | `geplant/BS8-meilenstein-2-delta-baumschule/` |
-| BS9 | DEV | BAS | Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2 | – | Entwurf | `geplant/BS9-meilenstein-3-delta-schiff/` |
-| BS10 | DEV | BAS | Grafiken für Hafen und Schiff | – | Entwurf | `geplant/BS10-grafik-hafen-schiff/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
+| KB5 | SRV, CLI, DEV | KMP | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | – | Entwurf | `geplant/KB5-skills-wirkort-status/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 | P1 | REG | BAL | Spieleabend 1 | Protokoll und Folge-Tickets | bereit | `geplant/P1-spieleabend-1/` |
 | BR1 | REG | BAL | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
@@ -256,3 +253,11 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BAL7 | Holz-Balancing nach dem dichteren Wald | `erledigt/BAL7-holz-balancing-wald/` |
 | SV2 | Voll-Ausbau-Stand regelkonform aus der Welt-Datei, Review-Nachträge SV1 | `erledigt/SV2-voll-ausbau-regelkonform/` |
 | W12 | Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln | `erledigt/W12-morgengrauen-phase/` |
+| BS2 | Regelwerk der neuen Basis: Münzskala, Baumschule, Hafen und Schiff | `erledigt/BS2-regelwerk-neue-basis/` |
+| BS1 | Schneller Balancing-Lauf mit Seed k3c-dev | `erledigt/BS1-balancing-seed-k3c-dev/` |
+| BS11 | Balancing-Tester spielt die ganze Insel bis zum Endboss | `erledigt/BS11-tester-ganze-insel/` |
+| BS3 | Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch | `erledigt/BS3-werte-muenzskala-meilenstein/` |
+| BS12 | Mauern und Türme verteilt, Tor ist die äußerste Mauer | `erledigt/BS12-mauern-tuerme-verteilt-tor/` |
+| BS4 | Baumschule auf gerodeten Waldbauplätzen | `erledigt/BS4-baumschule-waldbauplaetze/` |
+| BS5 | Hafen-Chunk, Schiff bauen und Inselwechsel am Hafen | `erledigt/BS5-hafen-schiff-inselwechsel/` |
+| BS10 | Grafiken für Hafen und Schiff | `erledigt/BS10-grafik-hafen-schiff/` |

@@ -3,12 +3,14 @@ package sim
 import (
 	"fmt"
 	"testing"
+
+	"k3c/engine/level"
 )
 
-// W0.3 (B-206/AC-03, AC-04, Sprint W0 AC-03, AC-06): Linien-Plätze in der Sim. Positionen kommen aus dem Layout der
-// Stufe, Hub-Stufen aus data/hub.json › wallLines.
+// B-652 (BS12.2): Verteilte Mauer- und Turm-Plätze in der Sim. Positionen kommen aus `Layout.Sites` der Stufe (Zone n ab
+// Hub-Stufe n), bezahlbar erst im Freiraum von Bäumen und Felsen; ein Tor-Platz existiert nicht mehr.
 
-// lineSite ist der Platz kind der Linie k auf Seite side.
+// lineSite ist der erste Platz kind der Zone k auf Seite side (Zone = frühere Linie).
 func lineSite(t *testing.T, w *World, kind string, side, k int) *Site {
 	t.Helper()
 	for _, s := range w.Sites {
@@ -22,7 +24,7 @@ func lineSite(t *testing.T, w *World, kind string, side, k int) *Site {
 
 func built(s *Site) { s.State, s.HP = "built", s.MaxHP }
 
-// wantPayable prüft sitePayable für kind der Linie k auf Seite side.
+// wantPayable prüft sitePayable für kind der Zone k auf Seite side.
 func wantPayable(t *testing.T, w *World, kind string, side, k int, want bool) {
 	t.Helper()
 	if got := sitePayable(w, lineSite(t, w, kind, side, k)); got != want {
@@ -30,9 +32,13 @@ func wantPayable(t *testing.T, w *World, kind string, side, k int, want bool) {
 	}
 }
 
-// (a), (b): Linie k ab Hub-Stufe k nach gebauter Mauer k−1 derselben Seite, je Seite.
-func TestLineFreischaltungJeSeite(t *testing.T) {
+// clearNodes räumt alle Bäume und Felsen der Welt (Freiraum-Regel), damit ein Test nur die Zonen prüft.
+func clearNodes(w *World) { w.Nodes = []*ResourceNode{} }
+
+// Zone n ab Hub-Stufe n, je Seite; innere Mauern müssen nicht gebaut sein.
+func TestZoneFreischaltungJeSeite(t *testing.T) {
 	w := quietWorld(t)
+	clearNodes(w)
 	if w.HubLevel != 1 {
 		t.Fatalf("Start-Hub-Stufe %d, erwartet 1", w.HubLevel)
 	}
@@ -40,79 +46,65 @@ func TestLineFreischaltungJeSeite(t *testing.T) {
 		wantPayable(t, w, kind, -1, 1, true)
 		wantPayable(t, w, kind, 1, 1, true)
 		wantPayable(t, w, kind, -1, 2, false)
+		wantPayable(t, w, kind, 1, 3, false)
 	}
-	built(lineSite(t, w, "wall", -1, 1))
-	wantPayable(t, w, "wall", -1, 2, false) // Hub-Stufe 1
-	w.HubLevel = 2
+	w.HubLevel = 3
 	for _, kind := range []string{"wall", "tower"} {
-		wantPayable(t, w, kind, -1, 2, true)
-		wantPayable(t, w, kind, 1, 2, false) // rechte Linie 1 fehlt
+		for side := -1; side <= 1; side += 2 {
+			wantPayable(t, w, kind, side, 3, true) // ohne gebaute Mauern der Zonen 1 und 2
+			wantPayable(t, w, kind, side, 4, false)
+		}
 	}
-	built(lineSite(t, w, "wall", -1, 2))
-	built(lineSite(t, w, "wall", 1, 1))
-	built(lineSite(t, w, "wall", 1, 2))
-	for _, side := range []int{-1, 1} {
-		wantPayable(t, w, "wall", side, 3, false) // Hub-Stufe 3 fehlt
-		wantPayable(t, w, "tower", side, 3, false)
-	}
-	w.HubLevel = 3
-	wantPayable(t, w, "wall", -1, 3, true)
 }
 
-// Q58: Eine zerstörte Mauer k−1 lässt die gebaute Linie k gelten, nur Linie k+1 wartet auf die Reparatur.
-func TestLineZerstoerteMauerSperrtNurNeueLinien(t *testing.T) {
+// Freiraum: Ein Baum oder Fels im Radius sperrt den Platz, nach dem Abbau (gone/entfernt) ist er bezahlbar.
+func TestFreiraumSperrtPlatzBisZumAbbau(t *testing.T) {
 	w := quietWorld(t)
-	w.HubLevel = 3
-	wall1, wall2, tower2 := lineSite(t, w, "wall", -1, 1), lineSite(t, w, "wall", -1, 2), lineSite(t, w, "tower", -1, 2)
-	built(wall1)
-	built(wall2)
-	built(tower2)
-	wantPayable(t, w, "wall", -1, 3, true)
-	destroySite(w, wall1)
-	if wall2.State != "built" || tower2.State != "built" {
-		t.Fatalf("Linie 2 nach Zerstörung der Mauer 1: Mauer %s, Turm %s", wall2.State, tower2.State)
-	}
-	wantPayable(t, w, "wall", -1, 1, true) // Reparatur
-	wantPayable(t, w, "wall", -1, 3, false)
-	wantPayable(t, w, "tower", -1, 3, false)
-	wantPayable(t, w, "gate", -1, 2, true) // Linie 2 bleibt gültig, auch ihr Tor
-	built(wall1)
-	wantPayable(t, w, "wall", -1, 3, true)
+	clearNodes(w)
+	site := lineSite(t, w, "wall", -1, 1)
+	radius := level.DefaultSitePlacement().ClearRadiusUnits
+	tree := &ResourceNode{ID: w.newID(), Kind: "tree", X: site.X + radius - 1}
+	w.Nodes = append(w.Nodes, tree)
+	wantPayable(t, w, "wall", -1, 1, false)
+	tree.X = site.X + radius + 1
+	wantPayable(t, w, "wall", -1, 1, true)
+	rock := &ResourceNode{ID: w.newID(), Kind: "rock", X: site.X}
+	w.Nodes = append(w.Nodes, rock)
+	wantPayable(t, w, "wall", -1, 1, false)
+	rock.gone = true
+	wantPayable(t, w, "wall", -1, 1, true)
+	w.Nodes = append(w.Nodes, &ResourceNode{ID: w.newID(), Kind: "bush", X: site.X}) // Büsche sperren nicht
+	wantPayable(t, w, "wall", -1, 1, true)
 }
 
-// (c): Tor ab Hub-Stufe max(gateHubLevel, k) (B-631: gateHubLevel 1), nur an der äußersten gebauten Mauer; ein gebautes inneres Tor bleibt.
-func TestLineTorNurAnDerAeusserstenLinie(t *testing.T) {
+// Das Tor ist die äußerste gebaute Mauer je Seite: Es wandert nach innen, wenn sie zerstört wird, und nach außen, wenn weiter außen gebaut wird.
+func TestTorIstAeusserstGebauteMauer(t *testing.T) {
 	w := quietWorld(t)
-	if gateLevel := hub.WallLines.GateHubLevel; gateLevel != 1 {
-		t.Fatalf("gateHubLevel %d, erwartet 1 (B-631)", gateLevel)
+	inner, outer := lineSite(t, w, "wall", 1, 1), lineSite(t, w, "wall", 1, 2)
+	if outerWall(w, 1) != nil {
+		t.Fatal("ohne gebaute Mauer gibt es kein Tor")
 	}
-	w.HubLevel = 1
-	wantPayable(t, w, "gate", -1, 1, false) // Mauer 1 fehlt
-	built(lineSite(t, w, "wall", -1, 1))
-	wantPayable(t, w, "gate", -1, 1, true)
-	wantPayable(t, w, "gate", -1, 2, false) // Mauer 2 fehlt
-	wantPayable(t, w, "gate", 1, 1, false)  // rechte Mauer 1 fehlt
-	gate1 := lineSite(t, w, "gate", -1, 1)
-	built(gate1)
-	w.HubLevel = 2
-	built(lineSite(t, w, "wall", -1, 2))
-	if gate1.State != "built" {
-		t.Fatalf("inneres Tor: %s", gate1.State)
+	built(inner)
+	if outerWall(w, 1) != inner {
+		t.Fatalf("Tor %v, erwartet die innere Mauer", outerWall(w, 1))
 	}
-	wantPayable(t, w, "gate", -1, 2, true)
-	built(lineSite(t, w, "wall", 1, 1))
-	built(lineSite(t, w, "wall", 1, 2))
-	wantPayable(t, w, "gate", 1, 1, false) // nicht mehr die äußerste
-	wantPayable(t, w, "gate", 1, 2, true)
-	w.HubLevel = 3
-	built(lineSite(t, w, "wall", 1, 3))
-	w.HubLevel = 2
-	wantPayable(t, w, "gate", 1, 3, false) // Hub-Stufe max(1, 3) fehlt
-	wantPayable(t, w, "gate", 1, 2, false)
+	built(outer)
+	if outerWall(w, 1) != outer {
+		t.Fatalf("Tor %v, erwartet die äußere Mauer", outerWall(w, 1))
+	}
+	destroySite(w, outer)
+	if outerWall(w, 1) != inner {
+		t.Fatalf("Tor nach Zerstörung %v, erwartet wieder die innere Mauer", outerWall(w, 1))
+	}
+	for _, s := range w.Sites {
+		if s.Kind == "gate" {
+			t.Fatalf("Tor-Platz %+v: ein eigenes Tor gibt es nicht mehr", s)
+		}
+	}
 }
 
 // (d) Q54: Ein innerer Turm trägt weiter Schützen, Gegner bleiben an der äußersten gebauten Mauer stehen.
-func TestLineInnererTurmUndAeussersteMauer(t *testing.T) {
+func TestZoneInnererTurmUndAeussersteMauer(t *testing.T) {
 	w := quietWorld(t)
 	w.HubLevel = 2
 	inner := lineSite(t, w, "tower", -1, 1)
@@ -148,6 +140,7 @@ type payResult struct {
 func payTogether(t *testing.T, pick func(*World) (*Site, *Site), swap bool) payResult {
 	t.Helper()
 	w := quietWorld(t)
+	clearNodes(w)
 	p0, p1 := AddPlayer(w), AddPlayer(w)
 	a, b := pick(w)
 	pa, pb := p0, p1
@@ -165,8 +158,8 @@ func payTogether(t *testing.T, pick func(*World) (*Site, *Site), swap bool) payR
 	return payResult{a.State, b.State, a.PaidGold, b.PaidGold, gold - pa.Gold, gold - pb.Gold}
 }
 
-// (e) AC-06: Zwei Spieler zahlen gleichzeitig an Mauer und Turm derselben Linie bzw. an beiden Seiten.
-func TestLineZweiSpielerZahlenGleichzeitig(t *testing.T) {
+// (e) AC-06: Zwei Spieler zahlen gleichzeitig an Mauer und Turm derselben Zone bzw. an beiden Seiten.
+func TestZoneZweiSpielerZahlenGleichzeitig(t *testing.T) {
 	cases := map[string]func(*World) (*Site, *Site){
 		"Mauer und Turm links": func(w *World) (*Site, *Site) {
 			return lineSite(t, w, "wall", -1, 1), lineSite(t, w, "tower", -1, 1)
@@ -186,29 +179,25 @@ func TestLineZweiSpielerZahlenGleichzeitig(t *testing.T) {
 	}
 }
 
-// (f): Jede Stufe einer Insel hat Mauer, Turm und Tor jeder Linie ihres eigenen Layouts, fest nach X angelegt.
-func TestLineInselJedeStufeEigeneLinien(t *testing.T) {
+// Jede Stufe einer Insel hat Mauern und Türme ihres eigenen Layouts, fest nach X angelegt.
+func TestZonenInselJedeStufeEigeneSites(t *testing.T) {
 	isl := mustIsland(t, "linien", []int{0, 1})
 	for i, w := range isl.Stages {
-		lineSites := 0
+		sites := 0
 		for j, s := range w.Sites {
-			if _, ok := siteLine(w, s); ok {
-				lineSites++
+			if _, ok := levelSite(w, s); ok {
+				sites++
 			}
-			if j > 0 && s.X < w.Sites[j-1].X && s.Kind != "storage" {
+			if j > 0 && s.X < w.Sites[j-1].X && s.Kind != "storage" && s.Kind != shipKind {
 				t.Errorf("Stufe %d: Platz %s@%v vor %s@%v nicht nach X", i, s.Kind, s.X, w.Sites[j-1].Kind, w.Sites[j-1].X)
 			}
 		}
-		if want := 3 * len(w.Level.Lines); lineSites != want || len(w.Level.Lines) != 2*len(hub.WallLines.WallUnits) {
-			t.Errorf("Stufe %d: %d Linien-Plätze, erwartet %d", i, lineSites, want)
+		if sites != len(w.Level.Sites) || sites == 0 {
+			t.Errorf("Stufe %d: %d verteilte Plätze, erwartet %d", i, sites, len(w.Level.Sites))
 		}
 	}
 	a, b := isl.Stages[0], isl.Stages[1]
-	if fmt.Sprint(a.Level.Lines) == fmt.Sprint(b.Level.Lines) {
-		t.Error("beide Stufen haben dieselben Linien")
+	if fmt.Sprint(a.Level.Sites) == fmt.Sprint(b.Level.Sites) {
+		t.Error("beide Stufen haben dieselben Plätze")
 	}
-	a.HubLevel, b.HubLevel = 2, 2
-	built(lineSite(t, b, "wall", -1, 1))
-	wantPayable(t, b, "wall", -1, 2, true)
-	wantPayable(t, a, "wall", -1, 2, false) // Linie 1 der anderen Stufe zählt nicht
 }

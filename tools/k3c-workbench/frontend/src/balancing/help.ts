@@ -5,7 +5,7 @@ import { EMPTY_TUNE, type TuneForm } from './tune';
 // ausführliche Hilfe (Markdown) für das Popup; dazu Beispiel-Läufe zum Übernehmen. Die Beschreibungen der Dateien in
 // data/ stehen nicht hier, sondern in docs/data/*.md (Popup der Datei-Liste).
 
-export type HelpKey = 'seeds' | 'depth' | 'players' | 'bot' | 'grade' | 'days' | 'vary' | 'label' | 'mode' | 'params' | 'steps' | 'budget';
+export type HelpKey = 'seeds' | 'seedList' | 'depth' | 'players' | 'bot' | 'grade' | 'world' | 'helps' | 'days' | 'vary' | 'label' | 'baseline' | 'mode' | 'params' | 'steps' | 'budget';
 
 export interface FieldHelp {
   label: string;
@@ -18,9 +18,18 @@ export interface FieldHelp {
 const TARGETS = 'Die Ziele (Zielkorridore) stehen in `data/balance-targets.json` (Beschreibung: Liste „Konfigurationsdateien“).';
 
 /** Felder mit Auswahlbox: Hilfetext nur im Popup. */
-export const SELECT_HELP: readonly HelpKey[] = ['depth', 'players', 'bot', 'grade', 'mode'];
+export const SELECT_HELP: readonly HelpKey[] = ['depth', 'players', 'bot', 'grade', 'world', 'helps', 'mode'];
 
 export const FIELD_HELP: Record<HelpKey, FieldHelp> = {
+  seedList: {
+    label: 'Seed-Liste',
+    hint: 'Genau diese Seeds mit Komma, z. B. k3c-dev,7; leer = Seeds der Ziele.',
+    help: `Statt der ersten N Seeds spielt der Lauf **genau diese Seeds**, z. B. \`k3c-dev,7\` (höchstens 200). Nicht zusammen mit „Seeds“.
+
+- Wirkung: gleiche Seeds wie eine Baseline vergleichen (Delta-Runde, B-640); „Übernehmen“ eines Basis-Laufs setzt die Liste mit.
+
+${TARGETS}`,
+  },
   seeds: {
     label: 'Seeds',
     hint: 'Wie viele Level je Ziel gespielt werden; leer = alle Seeds der Ziele.',
@@ -39,7 +48,17 @@ export const FIELD_HELP: Record<HelpKey, FieldHelp> = {
   bot: {
     label: 'Bot',
     hint: 'Spielweise der Monarchen: ein Profil für alle oder „je Spieler“; „Ziel“ = Bot je Ziel.',
-    help: 'Der **Bot** spielt die Monarchen ohne Zufall nach einem festen Profil.\n\n| Bot | Spielweise |\n|---|---|\n| `passive` | steht am Hub, zahlt nichts (Untergrenze) |\n| `saver` | sparsam: erst Mauern, dann Landstreicher anwerben |\n| `walls` | Mauern samt Ausbau, dann Türme und Hub-Ausbau, anwerben zuletzt |\n| `economy` | Wirtschaft zuerst, Mauern ab Tag 2 |\n| `wirtschaft` | Standard: Mauern, Turm, Farm, Werkstatt, Hub-Ausbau, Bögen, anwerben |\n| `coop2`, `coop4` | Rollen nach Spieler: gerade Mauern, ungerade Wirtschaft (ab 2 bzw. 4 Spielern) |\n\n- Leer: Bot des Ziels (heute `wirtschaft`).\n- Wirkung: Die Zielkorridore sind für `wirtschaft` gedacht; andere Bots zeigen, wie robust die Werte gegen andere Spielweisen sind.',
+    help: 'Der **Bot** spielt die Monarchen ohne Zufall nach einem festen Profil.\n\n| Bot | Spielweise |\n|---|---|\n| `passive` | steht am Hub, zahlt nichts (Untergrenze) |\n| `saver` | sparsam: erst Mauern, dann Landstreicher anwerben |\n| `walls` | Mauern samt Ausbau, dann Türme und Hub-Ausbau, anwerben zuletzt |\n| `economy` | Wirtschaft zuerst, Mauern ab Tag 2 |\n| `wirtschaft` | Standard: Mauern, Turm, Baumschule, Werkstatt, Hub-Ausbau, Bögen, anwerben |\n| `coop2`, `coop4` | Rollen nach Spieler: gerade Mauern, ungerade Wirtschaft (ab 2 bzw. 4 Spielern) |\n\n- Leer: Bot des Ziels (heute `wirtschaft`).\n- Wirkung: Die Zielkorridore sind für `wirtschaft` gedacht; andere Bots zeigen, wie robust die Werte gegen andere Spielweisen sind.',
+  },
+  world: {
+    label: 'Welt',
+    hint: 'Ganze Insel 1 statt einer Stufe.',
+    help: 'Mit einer **Welt** spielt jeder Lauf die ganze erste Insel (alle Tiefen) statt einer einzelnen Stufe (BS11, B-642).\n\n- Werte: Welt-Dateien aus `data/worlds/` (heute `standard`: Wald, Höhle, Mine, Eisenstollen, Kristallhöhle).\n- Leer: eine Stufe in der Tiefe des Ziels (wie bisher).\n- Bots steigen ab, sobald der Miniboss ihrer Stufe besiegt ist, bauen auf jeder Stufe auf und kämpfen am Ende gegen den Endboss (Begleitschutz der Truppen); mit mehreren Spielern steigen nur Spieler 2, 4 … ab.\n- Der Bericht zeigt je Tiefe Ankunft, Burgfall, gefallene Monarchen, Hub-Stufe und Kämpfer, je Boss Erscheinen und Sieg, den Endboss und „Schiff bezahlbar ab Tag“.\n- Ein Lauf dauert Minuten (40 Tage ≈ 1–4 min je Seed). Mit der Welt gelten **alle** Ziele für die Insel; für den Meilenstein Bot `wirtschaft`, 1 Spieler, 40 Tage wählen.',
+  },
+  helps: {
+    label: 'Hilfen',
+    hint: 'Dev-Hilfen wie im Stufen-Test (nur mit Welt); leer = keine.',
+    help: 'Die **Hilfen** schalten dieselben Dev-Hilfen ein wie der Stufen-Test `task balance:fullgame` (BS3.4). Ohne Hilfen läuft der offene Meilenstein der Balance: Grad normal, nichts geschenkt.\n\n- `hilfen`: Grad `dev` (falls keiner gewählt), Dev-Baukosten, voller Insel-Vorrat.\n- `voll`: zusätzlich alle Stufen voll ausgebaut (Hub 5, Mauern, Türme). Standard des Stufen-Tests.\n- `boss`: zusätzlich Endboss mit 300 HP und jeden Tick geheilte Monarchen (Nachweis der Kette bis zum Sieg).\n- Nur mit **Welt**; ohne Welt lehnt der Lauf ab.\n- Leer: keine Hilfen. Erst dann sagt der Lauf etwas über die echte Balance.',
   },
   grade: {
     label: 'Grad',
@@ -54,12 +73,17 @@ export const FIELD_HELP: Record<HelpKey, FieldHelp> = {
   vary: {
     label: 'Varianten',
     hint: 'Eine je Zeile: datei.json:pfad=wert; ändert den Wert nur für diesen Lauf.',
-    help: 'Eine **Variante** setzt einen Zahlenwert aus `data/` nur im Speicher für diesen Lauf; die Dateien bleiben unverändert.\n\n- Form: `datei.json:pfad.zum.wert=wert`, eine je Zeile; Listen über den Index (`levels.0.cost`).\n- Nur Dateien, die in der Liste „Konfigurationsdateien“ den Knopf „Werte“ haben (economy, buildings, hub, troops, enemies, waves, monarch); andere Dateien lädt der Lauf nicht neu.\n- Den Pfad am einfachsten in der Liste „Konfigurationsdateien“ über „Werte“ wählen und „Als Variante“ klicken.\n\nBeispiele:\n\n```\neconomy.json:purse.startGold=120\nbuildings.json:wall.cost.gold=3\nwaves.json:perExtraPlayer=0.5\n```\n\nWirkung: Der Bericht nennt die Varianten; mit „Vergleichsbasis“ (Liste „Berichte“) lässt er sich gegen einen Lauf ohne Variante vergleichen.',
+    help: 'Eine **Variante** setzt einen Zahlenwert aus `data/` nur im Speicher für diesen Lauf; die Dateien bleiben unverändert.\n\n- Form: `datei.json:pfad.zum.wert=wert`, eine je Zeile; Listen über den Index (`levels.0.cost`).\n- Nur Dateien, die der Daten-Browser zeigt (economy, buildings, hub, troops, enemies, waves, monarch); andere Dateien lädt der Lauf nicht neu.\n- Den Pfad am einfachsten im Daten-Browser des Lauf-Editors suchen und „+ fest“ klicken; die Tabelle zeigt Basiswert und Abweichung.\n\nBeispiele:\n\n```\neconomy.json:purse.startGold=120\nbuildings.json:wall.cost.gold=3\nwaves.json:perExtraPlayer=0.5\n```\n\nWirkung: Der Bericht nennt die Varianten; in der Liste „Läufe und Berichte“ lassen sich zwei bis vier Berichte anhaken und vergleichen, z. B. gegen einen Lauf ohne Variante.',
   },
   label: {
     label: 'Label',
     hint: 'Freier Name des Laufs für Warteschlange und Bericht; leer = Lauf-ID.',
     help: 'Das **Label** ist nur ein Name für die Warteschlange (z. B. „Startgold 120“). Es ändert den Lauf nicht.',
+  },
+  baseline: {
+    label: 'Baseline',
+    hint: 'Name eines gesicherten Basis-Laufs (z. B. M1) als Vergleich; leer = Baseline des Repos.',
+    help: 'Eine **Baseline** ist ein gesicherter, durchgelaufener Lauf (`reports/baseline/<name>/`), meist der eines Meilensteins. Der Bericht vergleicht den neuen Lauf gegen sie, je Werte-Gruppe mit Ampel und Trend.\n\n- Werte: Name einer gesicherten Baseline; im Lauf-Editor stehen alle unter „Basis-Lauf“ und im Vergleich.\n- Leer: die Baseline des Repos (`testdata/balance/baseline.json`).\n- Eingefrorene Gruppen melden sich nur, wenn sie kippen; Tuning-Hinweise nennen nur Hebel freier Gruppen.\n- Gesichert wird mit `sim_test {action: baseline, id, saveBaseline: M1}`.',
   },
   mode: {
     label: 'Abstimm-Modus',
@@ -69,7 +93,7 @@ export const FIELD_HELP: Record<HelpKey, FieldHelp> = {
   params: {
     label: 'Parameter',
     hint: '1–2 Zeilen datei.json:pfad=min..max (min < max).',
-    help: 'Die **Parameter** sind die Werte, die das Abstimmen verändert.\n\n- Form: `datei.json:pfad=min..max`, eine je Zeile, höchstens zwei; min < max; Dezimalzahlen erlaubt.\n- Ganze Zahlen in der Datei bleiben ganz.\n- In der Liste „Konfigurationsdateien“ über „Werte“ wählen und „Als Parameter“ klicken (Bereich ±25 %).\n\nBeispiele:\n\n```\neconomy.json:purse.startGold=60..140\nbuildings.json:wall.cost.gold=2..6\n```',
+    help: 'Die **Parameter** sind die Werte, die das Abstimmen verändert.\n\n- Form: `datei.json:pfad=min..max`, eine je Zeile, höchstens zwei; min < max; Dezimalzahlen erlaubt.\n- Ganze Zahlen in der Datei bleiben ganz.\n- Im Daten-Browser des Lauf-Editors „+ Bereich“ klicken (Bereich ±25 %) oder eine Variante auf „Bereich“ umschalten.\n\nBeispiele:\n\n```\neconomy.json:purse.startGold=60..140\nbuildings.json:wall.cost.gold=2..6\n```',
   },
   steps: {
     label: 'Schritte',
@@ -86,6 +110,10 @@ export const FIELD_HELP: Record<HelpKey, FieldHelp> = {
 /** Bots und Grade wie in Go (balance.BotNames, data/difficulty.json › grades); TestAuswahlWieGo hält sie gleich. */
 export const BOTS = ['passive', 'saver', 'walls', 'economy', 'wirtschaft', 'coop2', 'coop4'] as const;
 export const GRADES = ['dev', 'easy', 'normal', 'hard', 'ultra'] as const;
+/** Welten wie in Go (balance.Worlds, data/worlds/*.json). */
+export const WORLDS = ['standard'] as const;
+/** Hilfen wie in Go (balance.HelpsNames). */
+export const HELPS = ['hilfen', 'voll', 'boss'] as const;
 
 /** Bot je Spieler (WZ28.12, B-611): Profile mit `+` verbunden, Spieler 1 zuerst; ohne coop2/coop4. */
 export const PER_PLAYER = 'je-spieler';
@@ -110,6 +138,8 @@ export const CHOICES = {
   players: [{ value: '', label: 'Ziel (je Ziel)' }, ...['1', '2', '3', '4'].map((n) => ({ value: n, label: n }))],
   bot: [{ value: '', label: 'Ziel (je Ziel)' }, ...BOTS.map((b) => ({ value: b, label: b })), { value: PER_PLAYER, label: 'je Spieler …' }],
   grade: [{ value: '', label: 'normal (Vorgabe)' }, ...GRADES.map((g) => ({ value: g, label: g }))],
+  helps: [{ value: '', label: 'keine (Vorgabe)' }, ...HELPS.map((x) => ({ value: x, label: x }))],
+  world: [{ value: '', label: 'Einzelstufe (je Ziel)' }, ...WORLDS.map((w) => ({ value: w, label: `${w} · ganze Insel 1` }))],
 };
 
 /** Beispiel-Lauf zum Übernehmen in die Konfiguration. */
@@ -120,8 +150,14 @@ export interface Example {
 }
 
 export const EXAMPLES: Example[] = [
+  { name: 'Insel 1 solo (Stufen-Test 1–4, voll)', text: 'Gleiche Konfiguration wie `task balance:fullgame` (fullgame_test.go): Seed k3c-dev, 1 Spieler, Bot wirtschaft, 40 Tage, Hilfen voll (Standard des Tests). Der Test bricht je Stufe beim Ziel ab (1 Goblin-Anführer, 2 tiefste Stufe, 3 alle Minibosse, 4 Endboss); der Lauf hier spielt bis Tag 40 und zeigt Endboss-Sieg an Tag 19.', form: { seeds: '1', players: '1', bot: 'wirtschaft', world: 'standard', helps: 'voll', days: '40', label: 'Insel 1 solo' } },
+  { name: 'Insel 1 solo, Hilfen (Stufen-Test hilfen)', text: 'Gleiche Konfiguration wie `task balance:fullgame` (fullgame_test.go): Seed k3c-dev, 1 Spieler, Bot wirtschaft, 40 Tage, Hilfen hilfen (Grad dev, Dev-Baukosten, Vorrat; K3C_FULLGAME=hilfen).', form: { seeds: '1', players: '1', bot: 'wirtschaft', world: 'standard', helps: 'hilfen', days: '40', label: 'Insel 1 hilfen' } },
+  { name: 'Insel 1 solo, Endboss schwach (Stufen-Test boss)', text: 'Gleiche Konfiguration wie `task balance:fullgame` (fullgame_test.go): Seed k3c-dev, 1 Spieler, Bot wirtschaft, 40 Tage, Hilfen boss (voll plus Endboss 300 HP, Monarch geheilt; K3C_FULLGAME=boss).', form: { seeds: '1', players: '1', bot: 'wirtschaft', world: 'standard', helps: 'boss', days: '40', label: 'Insel 1 boss' } },
+  { name: 'Insel 1 solo ohne Hilfen (Stufen-Test ohne)', text: 'Gleiche Konfiguration wie `task balance:fullgame` (fullgame_test.go): Seed k3c-dev, 1 Spieler, Bot wirtschaft, 40 Tage, keine Hilfen (K3C_FULLGAME=ohne): der offene Meilenstein B-645, schlägt heute fehl.', form: { seeds: '1', players: '1', bot: 'wirtschaft', world: 'standard', days: '40', label: 'Insel 1 ohne Hilfen' } },
+  { name: 'Insel 1 komplett, coop2', text: 'Wie „Insel 1 solo“ (Hilfen voll, Seed k3c-dev, 40 Tage), aber coop2 mit 2 Spielern. Ohne Hilfen: Hilfen leeren.', form: { seeds: '1', players: '2', bot: 'coop2', world: 'standard', helps: 'voll', days: '40', label: 'Insel 1 coop2' } },
+  { name: 'Insel 1, Startgold hoch', text: 'Wie „Insel 1 solo“ (Hilfen voll), dazu Startgold und Beutel 500: zeigt, wie viel die Münzskala bremst. Zum Vergleich mit Hilfen leer starten.', form: { seeds: '1', players: '1', bot: 'wirtschaft', world: 'standard', helps: 'voll', days: '40', vary: 'economy.json:purse.startGold=500\neconomy.json:purse.maxGold=500', label: 'Insel 1 reich' } },
   { name: 'Schneller Überblick', text: '20 Seeds im Wald mit den Zielen, Bot saver.', form: { seeds: '20', depth: '0', label: 'Überblick Wald' } },
-  { name: 'Startgold variieren', text: 'Gleicher Lauf mit 120 statt 100 Startgold; danach mit dem Überblick als Vergleichsbasis vergleichen.', form: { seeds: '20', depth: '0', vary: 'economy.json:purse.startGold=120', label: 'Startgold 120' } },
+  { name: 'Startgold variieren', text: 'Gleicher Lauf mit 120 statt 100 Startgold; danach beide Berichte in der Liste anhaken und vergleichen.', form: { seeds: '20', depth: '0', vary: 'economy.json:purse.startGold=120', label: 'Startgold 120' } },
   { name: 'Höhle, hart', text: '20 Seeds in Tiefe 1 mit Grad hard.', form: { seeds: '20', depth: '1', grade: 'hard', label: 'Höhle hart' } },
   { name: 'Mauerkosten abstimmen', text: 'Suche nach Mauerkosten 2–6 Gold, die alle Korridore treffen (10 Seeds, Budget 20).', form: { seeds: '10', label: 'Mauerkosten', tune: { mode: 'search', params: 'buildings.json:wall.cost.gold=2..6', budget: '20' } } },
   { name: 'Koop: einer baut, einer wartet', text: '2 Spieler, Spieler 1 saver, Spieler 2 passive: trägt ein Spieler das Spiel allein?', form: { seeds: '20', depth: '0', players: '2', bot: 'saver+passive', label: 'saver+passive' } },
@@ -131,7 +167,7 @@ export const EXAMPLES: Example[] = [
   { name: 'Untergrenze: niemand zahlt', text: 'Bot passive: wie lange hält die Burg ganz ohne Bauten?', form: { seeds: '10', bot: 'passive', label: 'Passiv' } },
   { name: 'Lange Partie', text: '10 Tage statt 5: wie entwickeln sich spätere Wellen?', form: { seeds: '10', days: '10', label: '10 Tage' } },
   { name: 'Mine, ultra', text: 'Tiefe 2 mit Grad ultra als Stresstest.', form: { seeds: '10', depth: '2', grade: 'ultra', label: 'Mine ultra' } },
-  { name: 'Wellen je Mitspieler', text: 'Wellen wachsen je zusätzlichem Spieler langsamer (perExtraPlayer 0.5).', form: { seeds: '20', vary: 'waves.json:perExtraPlayer=0.5', label: 'perExtraPlayer 0.5' } },
+  { name: 'Wellen je Mitspieler', text: 'Wellen wachsen je zusätzlichem Spieler langsamer (perExtraPlayer 0.25).', form: { seeds: '20', vary: 'waves.json:perExtraPlayer=0.5', label: 'perExtraPlayer 0.5' } },
   { name: 'Startgold abstimmen', text: 'Suche nach dem Startgold (60–140), das alle Korridore trifft.', form: { seeds: '10', label: 'Startgold', tune: { mode: 'search', params: 'economy.json:purse.startGold=60..140', budget: '20' } } },
   { name: 'Morgengold × Mauer (Sweep)', text: 'Raster 3 × 3 über Gold je Spieler am Morgen und Mauerkosten.', form: { seeds: '10', label: 'Sweep Morgengold×Mauer', tune: { mode: 'sweep', params: 'economy.json:dawnGoldPerPlayer=1..6\nbuildings.json:wall.cost.gold=2..6', steps: '3' } } },
   { name: 'Startgold × Mauer (Sweep)', text: 'Raster 3 × 3 über Startgold und Mauerkosten.', form: { seeds: '10', label: 'Sweep Gold×Mauer', tune: { mode: 'sweep', params: 'economy.json:purse.startGold=60..140\nbuildings.json:wall.cost.gold=2..6', steps: '3' } } },

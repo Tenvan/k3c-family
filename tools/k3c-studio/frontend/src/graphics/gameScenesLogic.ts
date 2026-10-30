@@ -51,10 +51,10 @@ export function skillRows(): SkillRow[] {
 export const SKILL_SCALES = [1, 2, 3] as const;
 
 /** Beispiel-Plätze je Schild-Variante (`signVariant` aus dem Spiel) */
-export const SIGN_SAMPLES: { kind: Site['kind']; variant: SignVariant }[] = (['wall', 'farm', 'stairsUp'] as const).map((kind) => ({ kind, variant: signVariant(kind) }));
+export const SIGN_SAMPLES: { kind: Site['kind']; variant: SignVariant }[] = (['wall', 'nursery', 'stairsUp'] as const).map((kind) => ({ kind, variant: signVariant(kind) }));
 
 /** Plätze, für die das Schild gilt (Beschriftung) */
-export const SIGN_KINDS = (v: SignVariant): string => (['wall', 'tower', 'gate', 'workshop', 'storage', 'farm', 'barracks', 'stairsUp', 'stairsDown', 'tavern', 'healer', 'smithy', 'armory'] as const).filter((k) => signVariant(k) === v).join(', ');
+export const SIGN_KINDS = (v: SignVariant): string => (['wall', 'tower', 'workshop', 'storage', 'nursery', 'barracks', 'stairsUp', 'stairsDown', 'tavern', 'healer', 'smithy', 'armory'] as const).filter((k) => signVariant(k) === v).join(', ');
 
 /** Datei des Baugerüsts (Index der Gebäude-Grafik) */
 export const GERUEST_ID = HUB_SCAFFOLD;

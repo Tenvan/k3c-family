@@ -17,7 +17,7 @@ export interface HubSiteJson {
 export interface HubJson {
   sites: HubSiteJson[];
   islandSites: HubSiteJson[];
-  wallLines: { wallUnits: number[]; gateHubLevel: number; [key: string]: unknown };
+  sitePlacement: { zone1WallUnits: number; zone1TowerUnits: number; [key: string]: unknown };
   merchant: { buyOffsetUnits: number; sellOffsetUnits: number; onlyDepth: number; [key: string]: unknown };
   [key: string]: unknown;
 }
@@ -48,17 +48,17 @@ export function setSiteField(hub: HubJson, list: SiteList, index: number, field:
   return next;
 }
 
-/** Mauerlinie k (index k − 1) auf einen neuen Abstand zur Hub-Mitte. */
-export function setWallUnit(hub: HubJson, index: number, value: number): HubJson {
+/** Baugrund der Zone 1: Mauer (Abstand zur Hub-Mitte je Seite). */
+export function setZone1Wall(hub: HubJson, value: number): HubJson {
   const next = structuredClone(hub);
-  if (index < 0 || index >= next.wallLines.wallUnits.length) return hub;
-  next.wallLines.wallUnits[index] = value;
+  next.sitePlacement.zone1WallUnits = value;
   return next;
 }
 
-export function setGateHubLevel(hub: HubJson, value: number): HubJson {
+/** Baugrund der Zone 1: Turm (Abstand zur Hub-Mitte je Seite, innen vor der Mauer). */
+export function setZone1Tower(hub: HubJson, value: number): HubJson {
   const next = structuredClone(hub);
-  next.wallLines.gateHubLevel = value;
+  next.sitePlacement.zone1TowerUnits = value;
   return next;
 }
 
@@ -98,4 +98,22 @@ export function numberOf(text: string): number | null {
 export function integerOf(text: string): number | null {
   const n = numberOf(text);
   return n !== null && Number.isSafeInteger(n) ? n : null;
+}
+
+/** Ändert die Art eines Platzes; die übrigen Felder bleiben (B-670, Inspektor). */
+export function setSiteKind(hub: HubJson, list: SiteList, index: number, kind: string): HubJson {
+  const next = structuredClone(hub);
+  const site = next[list][index];
+  if (!site) return hub;
+  site.kind = kind;
+  return next;
+}
+
+/** Verschiebt einen Platz in die andere Liste, dort hinten angehängt (neuer Index = bisherige Länge der Ziel-Liste). */
+export function moveSite(hub: HubJson, from: SiteList, index: number, to: SiteList): HubJson {
+  const site = hub[from][index];
+  if (!site || from === to) return hub;
+  const next = removeSite(hub, from, index);
+  next[to] = [...(next[to] ?? []), structuredClone(site)];
+  return next;
 }

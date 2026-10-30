@@ -5,16 +5,16 @@ import (
 	"testing"
 )
 
-// wideGold: das Testziel „Gold zur Dämmerung von Tag 1“ (goldTargets) mit weitem Korridor 105–200. Mit Startgold 100
-// liegt der Wert bei 95 (verletzt), mit 150 im Korridor, mit 250 darüber.
+// wideGold: das Testziel „Gold zur Dämmerung von Tag 1“ (goldTargets) mit weitem Korridor 10–25. Mit Startgold 5
+// liegt der Wert bei 3 (verletzt), mit 20 bei 18 im Korridor, mit 35 bei 33 darüber.
 func wideGold(t *testing.T) *Targets {
 	t.Helper()
 	ts := goldTargets(t)
-	ts.Targets[0].Lower, ts.Targets[0].Upper = f(105), f(200)
+	ts.Targets[0].Lower, ts.Targets[0].Upper = f(10), f(25)
 	return ts
 }
 
-const startGold = "economy.json:purse.startGold=50..250"
+const startGold = "economy.json:purse.startGold=5..35"
 
 // WZ28.6/AC-06: Sweep über 3 Punkte findet einen Punkt mit Score 0, der Vorschlag hat Begründung und Diff mit dem
 // neuen Wert; data/ bleibt unverändert.
@@ -29,7 +29,7 @@ func TestTuneSweepVorschlagMitDiff(t *testing.T) {
 	if len(tn.Points) != 3 || tn.Points[0].Score == 0 || tn.Points[1].Score != 0 || tn.Points[2].Score == 0 {
 		t.Fatalf("punkte: %+v", tn.Points)
 	}
-	if tn.Best.Values[0] != 150 || !tn.Best.Pass || tn.Params[0].Base != 100 || !tn.Params[0].Int {
+	if tn.Best.Values[0] != 20 || !tn.Best.Pass || tn.Params[0].Base != 14 || !tn.Params[0].Int {
 		t.Fatalf("bester: %+v, params %+v", tn.Best, tn.Params)
 	}
 	checkProposal(t, tn)
@@ -44,11 +44,11 @@ func TestTuneSweepVorschlagMitDiff(t *testing.T) {
 // checkProposal: Diff mit altem und neuem Wert, Begründung mit Treffern und Werten.
 func checkProposal(t *testing.T, tn Tuning) {
 	t.Helper()
-	if !strings.Contains(tn.Diff, `+  "purse": { "startGold": 150, "maxGold": 100 },`) ||
-		!strings.Contains(tn.Diff, `-  "purse": { "startGold": 100,`) || !strings.Contains(tn.Diff, "--- data/economy.json") {
+	if !strings.Contains(tn.Diff, `+  "purse": { "startGold": 20, "maxGold": 30 },`) ||
+		!strings.Contains(tn.Diff, `-  "purse": { "startGold": 14,`) || !strings.Contains(tn.Diff, "--- data/economy.json") {
 		t.Errorf("diff:\n%s", tn.Diff)
 	}
-	if !strings.Contains(tn.Reason, "Alle 1 Korridore getroffen") || !strings.Contains(tn.Reason, "= 150 (bisher 100)") {
+	if !strings.Contains(tn.Reason, "Alle 1 Korridore getroffen") || !strings.Contains(tn.Reason, "= 20 (bisher 14)") {
 		t.Errorf("begründung: %s", tn.Reason)
 	}
 	t.Logf("reason: %s\ndiff:\n%s", tn.Reason, tn.Diff)
@@ -63,11 +63,11 @@ func TestTuneSucheBudget(t *testing.T) {
 	if len(tn.Points) > 4 || tn.Best.Score != 0 || tn.Points[len(tn.Points)-1].Score != 0 {
 		t.Fatalf("suche: %+v", tn.Points)
 	}
-	if tn.Points[0].Values[0] != 50 || tn.Points[1].Values[0] != 250 {
+	if tn.Points[0].Values[0] != 5 || tn.Points[1].Values[0] != 35 {
 		t.Errorf("erst die Enden: %+v", tn.Points)
 	}
 	// Ohne Treffer bleibt die Begründung bei den verfehlten Korridoren.
-	tn, err = wideGold(t).Tune(TuneOptions{Mode: TuneSearch, Params: []string{"economy.json:purse.startGold=10..40"}, Budget: 2})
+	tn, err = wideGold(t).Tune(TuneOptions{Mode: TuneSearch, Params: []string{"economy.json:purse.startGold=1..2"}, Budget: 2})
 	if err != nil || len(tn.Points) != 2 || tn.Best.Pass || !strings.Contains(tn.Reason, "Verfehlt: Gold Tag 1") {
 		t.Fatalf("%v %+v", err, tn)
 	}
@@ -76,7 +76,7 @@ func TestTuneSucheBudget(t *testing.T) {
 // Zwei Parameter: Raster und Verfeinerung bleiben im Budget.
 func TestTuneZweiParameter(t *testing.T) {
 	tn, err := wideGold(t).Tune(TuneOptions{Mode: TuneSearch, Steps: 2, Budget: 6,
-		Params: []string{"economy.json:purse.startGold=10..40", "economy.json:dawnGoldPerPlayer=1..9"}})
+		Params: []string{"economy.json:purse.startGold=5..35", "economy.json:dawnGoldPerPlayer=1..9"}})
 	if err != nil || len(tn.Points) != 6 || len(tn.Best.Values) != 2 {
 		t.Fatalf("%v %+v", err, tn.Points)
 	}

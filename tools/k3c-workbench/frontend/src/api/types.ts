@@ -1,7 +1,7 @@
 export type * from './typesBalance';
 export type * from './typesGit';
 export type * from './typesResources';
-import type { BalanceBackend } from './typesBalance';
+import type { BalanceBackend, BalanceRun } from './typesBalance';
 import type { GitBackend } from './typesGit';
 import type { ResourceView } from './typesResources';
 import type { TicketCreated, TicketInput } from '@webkit/lib/ticket';
@@ -449,6 +449,12 @@ export interface Events {
   'ui:notify': Notice;
   /** Eine Datei der Planung (docs/sprints, docs/backlog, Plan, Fragenkatalog, Glossar) hat sich geändert; ohne Nutzlast. */
   'planning:changed': null;
+  /** Ein Lauf der Balancing-Seite hat Zustand, Phase oder Fortschritt geändert (höchstens etwa 2 je Sekunde je Lauf, B-662). */
+  'balance:runs': BalanceRun;
+  /** Berichte oder Baselines haben sich geändert (neu, gelöscht, bewertet, Baseline gesichert); ohne Nutzlast. */
+  'balance:reports': null;
+  /** Nur HTTP-Client: Der Ereignis-Strom ist nach einem Abbruch wieder verbunden; Seiten laden ihre Listen einmal neu. */
+  'ui:reconnect': null;
 }
 
 export type EventName = keyof Events;

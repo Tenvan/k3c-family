@@ -1,0 +1,73 @@
+# BS9 · DEV, REG · Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2
+
+- **Status:** aktiv
+- **Projekt:** BAS
+- **Domäne:** DEV, REG
+- **Reife:** bereit
+- **Tickets:** B-638, B-640
+- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Spec:** freigegeben
+- **Revision:** 1
+- **Freigabe:** autonom, Claude (2026-10-29, Defaults aus B-637/B-640)
+
+## Ausgangslage
+
+Nach BS5 kann man das Schiff bauen und am Hafen wechseln; Bots bauen es nicht, der Bericht kennt nur „Schiff bezahlbar ab Tag“ (BS3). Baseline `M2` mit `basis` und `holz` eingefroren (BS8).
+
+## Ziel
+
+**Meilenstein 3:** Bots bauen das Schiff, der Bericht nennt den Bau-Tag je Abschnitt, und eine Delta-Runde justiert nur die Gruppe `schiff` gegen `M2`, bis `coop2` standard Insel 1 per Schiff verlässt; danach `M3` sichern.
+
+**Am Ende sichtbar:** Delta-Bericht `baseline=M2`: `basis` und `holz` unverändert, `schiff` ✅, Inselwechsel im Lauf; Basis-Lauf `M3` im Editor.
+
+## Beteiligte und Zielgruppen
+
+Claude, 🧑 nimmt Meilenstein 3 ab.
+
+## Anforderungen
+
+B-638 › Anforderungen Stufe 2, B-640 › Anforderungen (Delta-Runde).
+
+## Nicht-Ziele
+
+Volle Werte-Runde; Client (BS6).
+
+## Regeln und Einschränkungen
+
+Abhängig von BS5 und BS8. Nur Hebel der Gruppe `schiff`; Kippen eingefrorener Gruppen = Befund. Alle Läufe über `sim_test`. ⚠️ Bot-/Bericht-Änderung (Go) → Workbench-Neustart deutlich melden, Delta-Lauf erst danach.
+
+## Beispiele
+
+B-638 › Beispiele.
+
+## Ausnahme- und Fehlerfälle
+
+Schiff nie fertig → Ampel rot mit fehlendem Material; Justierung nur in `schiff`.
+
+## Akzeptanzkriterien
+
+- **AC-01** Bots bauen Schiff-Abschnitte; Bericht nennt Bau-Tag je Abschnitt mit Ampel (B-638/AC-03).
+- **AC-02** Delta-Lauf `coop2` standard `baseline=M2`: `basis`, `holz` unverändert, `schiff` grün, Insel 1 wird per Schiff verlassen.
+- **AC-03** Geändert wurden nur Hebel der Gruppe `schiff`.
+- **AC-04** Baseline `M3` gesichert, alle Gruppen eingefroren, im Editor sichtbar.
+
+## Offene Fragen
+
+keine.
+
+## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BS9.1 | `BS9.1-bots-bauen-schiff.md` | Umsetzung | autonom | fertig |
+| BS9.2 | `BS9.2-delta-runde-schiff.md` | Umsetzung | autonom | fertig |
+| BS9.3 | `BS9.3-review-baseline-m3.md` | Review | autonom | fertig |
+
+Reife Entwurf, Stichpunkte:
+- BS9.1 · DEV · Bots bauen das Schiff, Bericht Bau-Tag (AC-01)
+- BS9.2 · REG · Delta-Runde `schiff` gegen `M2` (AC-02, AC-03)
+- BS9.3 · Review, Baseline `M3` sichern (alle)
+
+## Abnahme
+
+2026-10-29 (Claude, autonom): AC-01, AC-03 erfüllt (BS9.1, BS9.2), AC-04 teilweise (`M3` gesichert). **AC-02 verschoben: `schiff` wird nicht grün, Lauf steckt in Stufe 4, B-656.** Review: BS6.5. Abnahme 🧑 offen.

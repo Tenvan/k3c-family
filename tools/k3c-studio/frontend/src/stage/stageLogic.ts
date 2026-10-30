@@ -37,6 +37,8 @@ export interface RowFocus {
   kind: string;
   offset: number | null;
   bothSides: boolean;
+  /** Wahl kam aus der Bühne oder von einem Platz-Chip (B-670): die Vorschau springt nicht zur Zeile */
+  stay?: boolean;
 }
 
 /** Plätze der Welt (x in Units), die zur gewählten Zeile gehören: gleiche Art und Abstand zur Hub-Mitte gleich dem Platz
@@ -61,10 +63,39 @@ export interface PlanSource {
 
 /** Reihenfolge und Namen der Gruppen im Gebäude-Filter; unbekannte Arten folgen alphabetisch, mit ihrem Namen. */
 const GROUPS: readonly [kind: string, label: string][] = [
-  ['wall', 'Mauern'], ['tower', 'Türme'], ['gate', 'Tore'], ['farm', 'Farmen'], ['barracks', 'Kasernen'], ['workshop', 'Werkstätten'],
+  ['wall', 'Mauern'], ['tower', 'Türme'], ['nursery', 'Baumschulen'], ['barracks', 'Kasernen'], ['workshop', 'Werkstätten'],
   ['tavern', 'Tavernen'], ['healer', 'Heilplätze'], ['smithy', 'Schmieden'], ['armory', 'Rüstkammern'], ['stairsDown', 'Treppen runter'],
   ['stairsUp', 'Treppen hoch'],
 ];
+
+/** Name einer Gebäudeart im Filter (Mehrzahl); unbekannte Arten bleiben, wie sie sind. */
+export const kindLabel = (kind: string): string => GROUPS.find(([k]) => k === kind)?.[1] ?? kind;
+
+/** Farbe je Gebäudeart (Chip-Leiste und Lageleiste, B-670): fest für die bekannten Arten, sonst aus dem Namen gestreut. */
+const KIND_COLORS: Readonly<Record<string, string>> = {
+  wall: '#9aa5b1', tower: '#e76f51', nursery: '#7bd389', barracks: '#4ea8de', workshop: '#f4a261', tavern: '#c77dff',
+  healer: '#ff8fa3', smithy: '#ffd166', armory: '#2ec4b6', stairsDown: '#a0c4ff', stairsUp: '#cdb4db',
+};
+export function kindColor(kind: string): string {
+  const known = KIND_COLORS[kind];
+  if (known) return known;
+  let h = 0;
+  for (const ch of kind) h = (h * 31 + ch.charCodeAt(0)) % 360;
+  return `hsl(${h} 65% 65%)`;
+}
+
+/** Spuren der Lageleiste: Plätze (nach x sortiert), die näher als `gap` Units am Vorgänger einer Spur liegen, wandern in die
+ *  nächste Spur, damit keine Marke eine andere verdeckt. Liefert die Spur je Platz und die Zahl der Spuren (mindestens 1). */
+export function stripLanes(xs: readonly number[], gap: number): { lanes: number[]; count: number } {
+  const last: number[] = [];
+  const lanes = xs.map((x) => {
+    let lane = last.findIndex((l) => x - l >= gap);
+    if (lane < 0) lane = last.length;
+    last[lane] = x;
+    return lane;
+  });
+  return { lanes, count: Math.max(1, last.length) };
+}
 
 export interface BuildingGroup {
   kind: string;
@@ -85,7 +116,7 @@ export function buildingGroups(toggles: readonly BuildingToggle[], off: Readonly
     .sort(([a], [b]) => order(a) - order(b) || a.localeCompare(b))
     .map(([kind, items]) => {
       const on = items.filter((t) => !off.has(t.key)).length;
-      return { kind, label: GROUPS.find(([k]) => k === kind)?.[1] ?? kind, items, on, state: on === items.length ? 'all' : on === 0 ? 'none' : 'some' };
+      return { kind, label: kindLabel(kind), items, on, state: on === items.length ? 'all' : on === 0 ? 'none' : 'some' };
     });
 }
 
@@ -127,4 +158,84 @@ export function worldOf(view: WorldPreviewView | null): World | null {
   const biome = BIOMES.find((b) => b.id === view.level.biomeId);
   if (!biome) return null;
   return createViewWorld({ depth: biome.depth, layout: view.level, biome }, view.state as unknown as WorldState);
+}
+
+/** Voreinstellungen für alle Bauplätze der Live-Vorschau (B-666): „Wie Hub-Stufe“ (alles Auto, Start), „Voll ausgebaut“ (höchste
+ *  Baustufe je Art, volle Trefferpunkte), „Nach Angriff“ (feste, gemischte Trefferpunkte aus der x-Stelle, ohne Zufall) und
+ *  „Nichts gebaut“. */
+export const PRESETS = [
+  { id: 'hub', label: 'Wie Hub-Stufe' },
+  { id: 'max', label: 'Voll ausgebaut' },
+  { id: 'attack', label: 'Nach Angriff' },
+  { id: 'none', label: 'Nichts gebaut' },
+] as const;
+export type PresetId = (typeof PRESETS)[number]['id'];
+
+/** Trefferpunkte (Prozent) der Voreinstellung „Nach Angriff“, reihum nach der gerundeten x-Stelle */
+const ATTACK_HP = [100, 50, 25, 75] as const;
+
+/** Zustand je Bauplatz einer Voreinstellung (Schlüssel kind@x); Plätze im Zustand „Auto, 100 %“ haben keinen Eintrag.
+ *  `levelCount` gibt die Zahl der Baustufen einer Art (0 = keine Stufen). */
+export function presetLooks(preset: PresetId, toggles: readonly BuildingToggle[], levelCount: (kind: string) => number): Record<string, SiteLook> {
+  const looks: Record<string, SiteLook> = {};
+  for (const t of toggles) {
+    let look: SiteLook = {};
+    if (preset === 'none') look = { unbuilt: true };
+    else if (preset === 'max') { const n = levelCount(t.kind); if (n > 0) look = { level: n }; }
+    else if (preset === 'attack') { const hp = ATTACK_HP[Math.abs(Math.round(t.x)) % ATTACK_HP.length]!; if (hp < 100) look = { hpPercent: hp }; }
+    if (look.level || look.hpPercent || look.unbuilt) looks[t.key] = look;
+  }
+  return looks;
+}
+
+/** Zustand der Plätze einer Auswahl ändern: `patch` ersetzt Baustufe und Trefferpunkte (undefined = Auto bzw. 100 %); ein
+ *  leerer Zustand entfernt den Eintrag. „Nicht gebaut“ lässt die Baustufe weg. */
+export function applyLook(looks: Readonly<Record<string, SiteLook>>, keys: readonly string[], patch: Partial<SiteLook>): Record<string, SiteLook> {
+  const next = { ...looks };
+  for (const key of keys) {
+    const merged: SiteLook = patch.unbuilt ? { unbuilt: true } : { ...next[key], ...patch, unbuilt: undefined };
+    if (merged.level || merged.hpPercent || merged.unbuilt) next[key] = merged; else delete next[key];
+  }
+  return next;
+}
+
+/** Zeigt eine Auswahl von Plätzen einen gemeinsamen Wert? `undefined` = gemischt. */
+export function commonOf<T>(keys: readonly string[], valueOf: (key: string) => T): T | undefined {
+  if (keys.length === 0) return undefined;
+  const first = valueOf(keys[0]!);
+  return keys.every((k) => valueOf(k) === first) ? first : undefined;
+}
+
+/** Zustandstext eines Platzes für Zeilen und Chips: „nicht gebaut“, „50 %“ oder „100 %“ */
+export const hpOf = (look?: SiteLook): number => (look?.unbuilt ? 0 : look?.hpPercent ?? 100);
+
+/** Umriss eines Bauplatzes in Welt-Pixeln für die Treffer-Prüfung eines Klicks (B-667) */
+export interface SiteBox { kind: string; x: number; left: number; right: number; top: number; bottom: number }
+
+/** Ab so vielen Bildschirm-Pixeln Bewegung zwischen Drücken und Loslassen ist es ein Ziehen (Pan), kein Klick */
+export const CLICK_SLOP = 4;
+/** Ein zweiter Klick auf denselben Platz in dieser Zeit (ms) ist ein Doppelklick */
+export const DOUBLE_MS = 350;
+
+/** Bauplatz an der Welt-Stelle `px`, `py` (Pixel; ohne `py` zählt nur die Breite): der, dessen Umriss die Stelle (mit Rand `pad`) enthält; liegen mehrere
+ *  darunter, gewinnt der mit der nächsten Mitte. Nichts getroffen: undefined. */
+export function siteAt(boxes: readonly SiteBox[], px: number, pad = 0, py?: number): SiteBox | undefined {
+  let best: SiteBox | undefined;
+  for (const b of boxes) {
+    if (px < b.left - pad || px > b.right + pad) continue;
+    if (py !== undefined && (py < b.top - pad || py > b.bottom + pad)) continue; // Himmel und Boden zählen nicht
+    if (!best || Math.abs(px - (b.left + b.right) / 2) < Math.abs(px - (best.left + best.right) / 2)) best = b;
+  }
+  return best;
+}
+
+/** Auswahl nach einem Klick auf die Bühne (B-667): Umschalt erweitert oder entfernt einen Platz, ein Doppelklick wählt alle
+ *  sichtbaren Plätze der Art, sonst gilt nur der Platz; freie Fläche (`hit` fehlt) hebt die Auswahl auf. */
+export function pickKeys(hit: { kind: string; x: number; shift: boolean; double: boolean } | null, current: readonly string[], toggles: readonly BuildingToggle[], off: ReadonlySet<string>): string[] {
+  if (!hit) return [];
+  const key = siteKey(hit.kind, hit.x);
+  if (off.has(key)) return [...current];
+  if (hit.double) return toggles.filter((t) => t.kind === hit.kind && !off.has(t.key)).map((t) => t.key);
+  if (hit.shift) return current.includes(key) ? current.filter((k) => k !== key) : [...current, key];
+  return [key];
 }

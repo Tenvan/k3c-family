@@ -36,6 +36,19 @@ var measures = map[string]measure{
 		ok := len(m.Days) > 0 && m.Days[0].DuskTick != nil && m.FirstWallTick != nil && *m.FirstWallTick <= *m.Days[0].DuskTick
 		return []float64{b2f(ok)}
 	}},
+	// Insel-Läufe (World, BS11): Endboss besiegt, Tag des Siegs, Höhle (Tiefe 1) vor Beginn von Tag 6 erreicht.
+	"endbossDefeated": {KindShare, func(m *Metrics) []float64 { return []float64{b2f(m.EndbossTick != nil)} }},
+	// Ohne Sieg zählt der Tag nach dem Lauf (Tageslimit + 1): ein Lauf ohne Sieg liegt über jeder Obergrenze, statt ungültig zu sein.
+	"endbossDay": {KindMedian, func(m *Metrics) []float64 {
+		if m.EndbossDay == nil {
+			return []float64{float64(len(m.Days)) + 1}
+		}
+		return []float64{float64(*m.EndbossDay)}
+	}},
+	"caveBeforeDay6": {KindShare, func(m *Metrics) []float64 {
+		ok := len(m.Stages) > 1 && m.Stages[1].ArrivalDay != nil && *m.Stages[1].ArrivalDay < 6
+		return []float64{b2f(ok)}
+	}},
 	// Zerstörte Gebäude je Welle 1–5.
 	"destroyedPerWave": {KindMedian, func(m *Metrics) []float64 {
 		var v []float64
@@ -63,24 +76,33 @@ type Targets struct {
 		SharePp        float64 `json:"sharePp"`        // Prozentpunkte bei Anteilen
 		MedianFraction float64 `json:"medianFraction"` // Anteil der Korridorbreite bei Medianen
 	} `json:"margin"`
-	Seeds   []string `json:"seeds"` // die festen Seeds, keine Zufallsauswahl
-	Targets []Target `json:"targets"`
+	// Frozen sind die eingefrorenen Werte-Gruppen (B-640): abgenommen, nur beim Kippen gemeldet, ohne Tuning-Hinweise.
+	Frozen []string `json:"frozen"`
+	Seeds  []string `json:"seeds"` // die festen Seeds, keine Zufallsauswahl
+	// SeedMode (B-634): dev = ohne Seed-Angabe nur der erste Seed, all bzw. leer = alle (seedmode.go).
+	SeedMode string   `json:"seedMode,omitempty"`
+	Targets  []Target `json:"targets"`
 }
 
 // Target ist ein Ziel: Kennzahl, Szenario (ohne Seed) und Korridor. Eine fehlende Grenze (null) heißt: keine in diese Richtung.
 type Target struct {
-	Measure string   `json:"measure"`
-	Name    string   `json:"name"`
-	Kind    string   `json:"kind"`
-	Players int      `json:"players"`
-	Bot     string   `json:"bot"`
-	Depth   int      `json:"depth"`
-	Days    int      `json:"days"`
-	Grade   string   `json:"grade,omitempty"` // Schwierigkeitsgrad aus data/difficulty.json, leer = normal (BAL6)
-	Lower   *float64 `json:"lower"`
-	Upper   *float64 `json:"upper"`
-	Margin  *float64 `json:"margin,omitempty"` // Breite von „knapp“ statt des Standardwerts der Datei
-	Rule    string   `json:"rule"`             // Regel-Datei und Abschnitt der Zahlen
+	Measure string `json:"measure"`
+	Group   string `json:"group,omitempty"` // Werte-Gruppe (groups.go); die Datei der Ziele verlangt eine
+	Name    string `json:"name"`
+	Kind    string `json:"kind"`
+	Players int    `json:"players"`
+	Bot     string `json:"bot"`
+	Depth   int    `json:"depth"`
+	Days    int    `json:"days"`
+	Grade   string `json:"grade,omitempty"` // Schwierigkeitsgrad aus data/difficulty.json, leer = normal (BAL6)
+	World   string `json:"world,omitempty"` // leer = eine Stufe der Tiefe Depth; sonst die ganze erste Insel der Welt (BS11)
+	Helps   string `json:"helps,omitempty"` // Dev-Hilfen (helps.go), nur mit World
+	// Role (B-648): goal bestimmt Erfolg oder Misserfolg des Laufs, guard warnt bei Verletzung, info ist nur Diagnose; leer = goal.
+	Role   string   `json:"role,omitempty"`
+	Lower  *float64 `json:"lower"`
+	Upper  *float64 `json:"upper"`
+	Margin *float64 `json:"margin,omitempty"` // Breite von „knapp“ statt des Standardwerts der Datei
+	Rule   string   `json:"rule"`             // Regel-Datei und Abschnitt der Zahlen
 }
 
 // DefaultTargets lädt die eingebettete data/balance-targets.json.
@@ -89,7 +111,14 @@ func DefaultTargets() (*Targets, error) {
 	if err != nil {
 		return nil, err
 	}
-	return LoadTargets(raw)
+	t, err := LoadTargets(raw)
+	if err != nil {
+		return nil, err
+	}
+	if err := t.checkRoles(); err != nil {
+		return nil, fmt.Errorf("balance-targets: %w", err)
+	}
+	return t, nil
 }
 
 // LoadTargets liest und prüft eine Korridor-Datei.
@@ -113,15 +142,11 @@ func (t *Targets) validate() error {
 	if t.Margin.SharePp < 0 || t.Margin.MedianFraction < 0 {
 		return fmt.Errorf("margin darf nicht negativ sein")
 	}
-	if len(t.Seeds) == 0 {
-		return fmt.Errorf("seeds: mindestens ein Seed nötig")
+	if err := t.validateSeeds(); err != nil {
+		return err
 	}
-	seen := map[string]bool{}
-	for _, s := range t.Seeds {
-		if s == "" || seen[s] {
-			return fmt.Errorf("seeds: %q ist leer oder doppelt", s)
-		}
-		seen[s] = true
+	if err := checkFrozen(t.Frozen); err != nil {
+		return err
 	}
 	for i, g := range t.Targets {
 		if err := g.validate(); err != nil {
@@ -131,7 +156,53 @@ func (t *Targets) validate() error {
 	return nil
 }
 
+// Rollen eines Ziels (B-648).
+const (
+	RoleGoal  = "goal"
+	RoleGuard = "guard"
+	RoleInfo  = "info"
+)
+
+// role liefert die Rolle; ohne Angabe gilt das Ziel als goal (ältere Dateien und Berichte).
+func (g Target) role() string {
+	if g.Role == "" {
+		return RoleGoal
+	}
+	return g.Role
+}
+
+// checkRoles verlangt in der Datei der Ziele eine gültige Rolle je Ziel und mindestens ein goal.
+func (t *Targets) checkRoles() error {
+	goals := 0
+	for i, g := range t.Targets {
+		if !IsGroup(g.Group) {
+			return fmt.Errorf("ziel %d (%q): group %q, erlaubt: %s", i+1, g.Name, g.Group, strings.Join(Groups, ", "))
+		}
+		switch g.Role {
+		case RoleGoal:
+			goals++
+		case RoleGuard, RoleInfo:
+		default:
+			return fmt.Errorf("ziel %d (%q): role %q, erlaubt: goal, guard, info", i+1, g.Name, g.Role)
+		}
+	}
+	if goals == 0 {
+		return fmt.Errorf("mindestens ein Ziel mit role goal nötig")
+	}
+	return nil
+}
+
+func (g Target) validateRole() error {
+	if g.Role != "" && g.Role != RoleGoal && g.Role != RoleGuard && g.Role != RoleInfo {
+		return fmt.Errorf("role %q, erlaubt: goal, guard, info", g.Role)
+	}
+	return checkHelps(g.Helps, g.World)
+}
+
 func (g Target) validate() error {
+	if err := g.validateRole(); err != nil {
+		return err
+	}
 	m, ok := measures[g.Measure]
 	switch {
 	case !ok:
@@ -155,6 +226,11 @@ func (g Target) validate() error {
 	}
 	if err := checkGrade(g.Grade); err != nil {
 		return err
+	}
+	if g.World != "" {
+		if _, err := loadWorld(g.World); err != nil {
+			return fmt.Errorf("welt %q: %w", g.World, err)
+		}
 	}
 	return g.validateBounds()
 }

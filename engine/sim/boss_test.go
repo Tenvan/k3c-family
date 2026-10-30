@@ -151,7 +151,7 @@ func TestBossTrollKoenigFlaechenschlag(t *testing.T) {
 	}
 }
 
-// (c) Belohnung: 100 Gold als Münzen, 50 Material in den Insel-Vorrat, 1 Skill-Punkt für beide Spieler.
+// (c) Belohnung: 14 Gold als Münzen, 50 Material in den Insel-Vorrat, 1 Skill-Punkt für beide Spieler.
 func TestBossBelohnungFuerAlle(t *testing.T) {
 	isl := bossIsland(t, 2)
 	w := isl.Stages[0]
@@ -159,8 +159,8 @@ func TestBossBelohnungFuerAlle(t *testing.T) {
 	coins, wood, pool := len(w.Coins), isl.Stock.Wood, isl.SkillPool
 	boss.HP = 0
 	removeDeadEnemies(w)
-	if got := len(w.Coins) - coins; got != 100 {
-		t.Fatalf("%d Münzen, erwartet 100", got)
+	if got := len(w.Coins) - coins; got != 14 {
+		t.Fatalf("%d Münzen, erwartet 14", got)
 	}
 	if got := isl.Stock.Wood - wood; got != 50 {
 		t.Fatalf("%d Holz, erwartet 50", got)
@@ -197,7 +197,7 @@ func TestBossMaterialBisZumLagerMaximum(t *testing.T) {
 	}
 }
 
-// (d) HP × (1 + 0,5 je Zusatzspieler der Insel) × enemyHp des Grads, nicht × waveSize; Tiefenfaktor greift.
+// (d) HP × (1 + bossHpPerExtraPlayer je Zusatzspieler der Insel) × enemyHp des Grads, nicht × waveSize; Tiefenfaktor greift.
 func TestBossSkalierung(t *testing.T) {
 	hpOf := func(players, depth int, grade string) float64 {
 		isl := bossIsland(t, players)
@@ -206,8 +206,8 @@ func TestBossSkalierung(t *testing.T) {
 		return spawnBoss(w, miniBoss(depth), w.Portals[0]).MaxHP
 	}
 	one, two := hpOf(1, 0, "normal"), hpOf(2, 0, "normal")
-	if two != 1.5*one {
-		t.Fatalf("2 Spieler: HP %.0f, erwartet 1,5 × %.0f", two, one)
+	if want := one * (1 + *waves.BossHpPerExtraPlayer); math.Abs(two-want) > 1 {
+		t.Fatalf("2 Spieler: HP %.0f, erwartet (1 + bossHpPerExtraPlayer) × %.0f = %.0f", two, one, want)
 	}
 	if want := enemyData["goblin"].HP * 8; one != want {
 		t.Fatalf("Wald: HP %.0f, erwartet %.0f", one, want)
@@ -327,7 +327,7 @@ func TestBossDaten(t *testing.T) {
 		if err := checkBoss(b); err != nil {
 			t.Fatalf("%s: %v", b.ID, err)
 		}
-		if b.HPFactor != 8 || b.DamageFactor != 2 || b.Reward.Gold != 100 || b.Reward.Material != 50 {
+		if b.HPFactor != 8 || b.DamageFactor != 2 || b.Reward.Gold != 14 || b.Reward.Material != 50 {
 			t.Fatalf("%s: Werte weichen von bosse.md § 1 ab: %+v", b.ID, b)
 		}
 	}
@@ -339,8 +339,8 @@ func TestBossDaten(t *testing.T) {
 	if err := loadBosses(fstest.MapFS{"bosses.json": {Data: raw}}, &got); err != nil || len(got) != len(bosses) {
 		t.Fatalf("eingebettete Daten: %v, %d Bosse", err, len(got))
 	}
-	for _, bad := range []string{`"base": "goblin"`, `"wave": 5`, `"depth": 0`, `"gold": 100`, `"enemy": "goblin"`} {
-		broken := strings.Replace(string(raw), bad, strings.NewReplacer("goblin", "nope", "5", "0", "0", "9", "100", "-1").Replace(bad), 1)
+	for _, bad := range []string{`"base": "goblin"`, `"wave": 5`, `"depth": 0`, `"gold": 14`, `"enemy": "goblin"`} {
+		broken := strings.Replace(string(raw), bad, strings.NewReplacer("goblin", "nope", "5", "0", "0", "9", "100", "-1", "14", "-1").Replace(bad), 1)
 		if broken == string(raw) {
 			t.Fatalf("Testdaten: %s nicht gefunden", bad)
 		}

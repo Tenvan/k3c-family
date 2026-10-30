@@ -3,6 +3,8 @@ import { GAME_HEIGHT, UNIT_PX } from '@game/core/constants';
 import { EFFECT_CONFIG, type EffectKind } from '@game/scenes/effects/effects';
 import { objectImage } from '@game/scenes/render/objectView';
 import { createSheetAnims, face, makeSprite, playAnim, preloadSheet } from '@game/scenes/render/sprites';
+import { TimedEffects } from './effectView';
+import type { TimedEffect } from './timeline';
 import { MOUNTS, SHEETS, animInfo, inAtlas, mountPoseOf, mountsWithSheet, resolveAnim, unitTicks, type Anim, type Control, type FigureSpec, type Gap } from './figure';
 
 // Phaser-Anteil der Abspiel-Bausteine (B-463, WZ10.1): zeichnet Figuren mit den Animationen und Definitionen des Spiels
@@ -29,6 +31,10 @@ export interface FigureItem {
   fade?: { from: number; to: number };
   /** Objekt des Spiels (`objectImage`, z. B. `coin`), das neben der Figur steht */
   prop?: string;
+  /** Effekte im Takt der Wiedergabe (Skill, Geschoss, Warnkreis, Beschwörung; B-671, B-672) */
+  timed?: readonly TimedEffect[];
+  /** Blickrichtung der Figur ohne Reittier (wie `face` im Spiel); ohne Angabe die des Sheets */
+  facing?: 1 | -1;
 }
 
 /** Textur-Schlüssel eines Einzel-PNG-Sheets wie im Spiel */
@@ -63,6 +69,8 @@ export class FigureView {
   private readonly anim: Anim;
   private readonly extras: { remove?: () => void; destroy?: () => void; stop?: () => void }[] = [];
   private readonly props: Phaser.GameObjects.GameObject[] = [];
+  private readonly timed: TimedEffects | null;
+  private readonly onUpdate = (_time: number, delta: number) => this.timed?.tick(delta);
   constructor(private readonly scene: Phaser.Scene, private readonly item: FigureItem) {
     const resolved = resolveAnim(item.spec.sheet, item.anim);
     this.anim = resolved.anim;
@@ -79,15 +87,25 @@ export class FigureView {
     }
     this.gap = resolved.gap ?? mountGap;
     this.root = scene.add.container(item.x * UNIT_PX, GROUND_Y, this.mount ? [this.mount, this.rider] : [this.rider]);
+    if (item.facing && !this.mount) face(this.rider, item.facing);
     this.start(null);
     this.follow();
     this.decorate();
+    this.timed = item.timed?.length ? new TimedEffects(scene, this.root, item.timed, () => this.frames()) : null;
+    if (this.timed) scene.events.on('update', this.onUpdate);
+  }
+
+  /** Umriss der Figur in Welt-Pixeln (Treffer-Test und Markierung der Auswahl) */
+  bounds(): { left: number; right: number; top: number; bottom: number } {
+    const b = this.root.getBounds();
+    return { left: b.left, right: b.right, top: b.top, bottom: b.bottom };
   }
 
   /** Wiedergabe übernehmen: Schleife, Tempo und Einzelbild */
   apply(control: Control): void {
     this.start(control);
     this.follow();
+    this.timed?.apply(control);
   }
 
   /** Animationen starten bzw. anhalten (Einzelbild) und Tempo und Schleife setzen */
@@ -178,6 +196,8 @@ export class FigureView {
   }
 
   destroy(): void {
+    this.scene.events.off('update', this.onUpdate);
+    this.timed?.destroy();
     for (const e of this.extras) { e.stop?.(); e.remove?.(); e.destroy?.(); }
     for (const p of this.props) p.destroy();
     this.root.destroy();

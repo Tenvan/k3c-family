@@ -10,6 +10,7 @@ import './styles/planning.css';
 import './styles/planning-reader.css';
 import './styles/git.css';
 import './styles/balancing.css';
+import './styles/balancing-editor.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App';

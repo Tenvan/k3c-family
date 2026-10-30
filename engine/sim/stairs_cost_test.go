@@ -3,20 +3,20 @@ package sim
 import "testing"
 
 // B-631/AC-02: Treppe runter kostet auf Tiefe d 100 Material der Stufe d, Treppe hoch 100 Material der Stufe d−1,
-// je plus 50 Gold (data/buildings.json › costByDepth, siteCost).
+// je plus 10 Gold (Münzskala, BS3.1) (data/buildings.json › costByDepth, siteCost).
 
 func TestTreppenKostenJeTiefe(t *testing.T) {
 	material := []Cost{{Wood: 100}, {Stone: 100}, {Copper: 100}, {Iron: 100}}
 	for d := 0; d <= 4; d++ {
 		w := newWorld(d, "b631", Options{})
 		if d < 4 {
-			want := addCost(material[d], Cost{Gold: 50})
+			want := addCost(material[d], Cost{Gold: 10})
 			if got := siteCost(w, siteOfKind(w, "stairsDown")); got != want {
 				t.Errorf("Tiefe %d: Treppe runter kostet %+v, erwartet %+v", d, got, want)
 			}
 		}
 		if d > 0 {
-			want := addCost(material[d-1], Cost{Gold: 50})
+			want := addCost(material[d-1], Cost{Gold: 10})
 			if got := siteCost(w, siteOfKind(w, "stairsUp")); got != want {
 				t.Errorf("Tiefe %d: Treppe hoch kostet %+v, erwartet %+v", d, got, want)
 			}

@@ -8,6 +8,7 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
+	"k3c/tools/k3c-workbench/internal/balance"
 	"k3c/tools/k3c-workbench/internal/simrun"
 )
 
@@ -28,6 +29,11 @@ func registerSimTest(s *Server) {
 		Description: "Jeder Testlauf (Balancing, Performance, Stabilität) über ein Tool: action start (sofort zurück mit ID), " +
 			"status (≤ 10 Zeilen), stop, list. mode offline (Mocks im Prozess) oder online (Spielserver des Checkouts), " +
 			"clients 0 = headless, 1–4 = laufende Clients mit Bot-Eingabe; focus balance, perf, stability. Bericht unter reports/simtest-<id>/. " +
+			"Offline ohne seeds gilt seedMode aus data/balance-targets.json (dev: nur k3c-dev); bots (z. B. coop2) und seedList gehen auch offline. " +
+			"world (z. B. standard) und days (1–60) gelten nur offline: der Lauf spielt die ganze erste Insel. " +
+			"wait: true (bei start) oder action wait {id} wartet wie check_run auf das Ende (mit progressToken bis zum Ende, sonst höchstens 4 min). " +
+			"BAS-Standardlauf: {action: start, bots: coop2}; Meilenstein-Lauf: {action: start, bots: coop2, world: standard, days: 40}. " +
+			"Delta-Runde (B-640): action baseline {id, saveBaseline: M1} sichert einen durchgelaufenen Lauf als Baseline, start mit baseline: M1 vergleicht je Werte-Gruppe. " +
 			"Nutze es bei: jedem Balancing-, Performance- oder Stabilitätslauf. Statt: task balance, task k3c-load oder Binaries in der Shell.",
 		Annotations: &mcp.ToolAnnotations{OpenWorldHint: new(bool)},
 	}, s.simTest)
@@ -42,12 +48,16 @@ func (s *Server) simTest(ctx context.Context, in simTestIn) (string, error) {
 		return s.simStart(ctx, ws, in)
 	case "status":
 		return s.simStatus(root, in.ID)
+	case "wait":
+		return s.awaitSim(ctx, root, in.ID)
 	case "stop":
 		return s.simStop(root, in.ID)
 	case "list":
 		return s.simList(root), nil
+	case "baseline":
+		return s.simBaseline(root, in)
 	}
-	return "", fmt.Errorf("action %q unbekannt: start, status, stop oder list", in.Action)
+	return "", fmt.Errorf("action %q unbekannt: start, status, wait, stop, list oder baseline", in.Action)
 }
 
 func (s *Server) simStart(ctx context.Context, ws workspace, in simTestIn) (string, error) {
@@ -55,6 +65,9 @@ func (s *Server) simStart(ctx context.Context, ws workspace, in simTestIn) (stri
 	spec, err := in.spec()
 	if err != nil {
 		return "", err
+	}
+	if spec.baseline != "" && !balance.HasBaseline(root, spec.baseline) {
+		return "", fmt.Errorf("sim_test start abgelehnt: baseline %q gibt es nicht; sim_test {action: baseline} listet die gesicherten", spec.baseline)
 	}
 	runner, err := s.simRunner(ctx, spec)
 	if err != nil {
@@ -65,6 +78,9 @@ func (s *Server) simStart(ctx context.Context, ws workspace, in simTestIn) (stri
 		return "", fmt.Errorf("schon %d Läufe in diesem Checkout; mit sim_test stop einen beenden", simrun.MaxPerRoot)
 	}
 	id := run.ID()
+	if in.Wait {
+		return s.awaitSim(ctx, root, id)
+	}
 	return fmt.Sprintf("▶ %s %s gestartet; Fortschritt mit sim_test status %s", id, spec.label(), id), nil
 }
 

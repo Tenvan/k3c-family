@@ -92,7 +92,7 @@ func TestPlanungGegenChunkAnzahl(t *testing.T) {
 }
 
 func TestInselMitChunkAnzahl(t *testing.T) {
-	isl, err := CreateIsland("groesse", []int{0, 1, 4}, 1, CreateOptions{ChunkCounts: map[int]int{0: 16, 4: 160}})
+	isl, err := CreateIsland("groesse", []int{0, 1, 4}, 1, CreateOptions{ChunkCounts: map[int]int{0: 24, 4: 160}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -100,7 +100,7 @@ func TestInselMitChunkAnzahl(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for i, want := range []float64{16 * 50, plain.Stages[0].WidthUnits, 160 * 25} {
+	for i, want := range []float64{24 * 50, plain.Stages[0].WidthUnits, 160 * 25} {
 		if got := isl.Stages[i].WidthUnits; got != want {
 			t.Errorf("Stufe %d: Breite %v, erwartet %v", i, got, want)
 		}

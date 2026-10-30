@@ -5,6 +5,8 @@ const R = JSON.parse(document.getElementById('report-data').textContent);
 const A = JSON.parse(document.getElementById('report-assets').textContent || '{}');
 const LIGHTS = { green: 'gut', yellow: 'knapp', red: 'verletzt', grey: 'ungültig' };
 const $ = (id) => document.getElementById(id);
+// Kompakt-Ansicht (B-649): ?kompakt=1 oder data-view="kompakt"; Standard ist die vollständige Ansicht.
+const COMPACT = /[?&]kompakt=1/.test(location.search) || document.documentElement.dataset.view === 'kompakt';
 
 function el(tag, attrs, ...kids) {
   const e = document.createElement(tag);
@@ -81,11 +83,45 @@ function renderHead() {
   $('sub').textContent = [R.run, R.generated, R.seeds + ' Seeds', (R.varianten || []).length ? 'Varianten: ' + R.varianten.join(', ') : '']
     .filter(Boolean).join(' · ');
   const v = $('verdict');
-  v.textContent = R.pass ? '✔ bestanden' : '✖ nicht bestanden';
+  const goal = R.goal && R.goal.total > 0 ? R.goal : null;
+  v.textContent = goal ? (goal.reached ? '✔ Ziel erreicht' : '✖ Ziel nicht erreicht') : (R.pass ? '✔ bestanden' : '✖ nicht bestanden');
   v.className = 'verdict ' + (R.pass ? 'pass' : 'fail');
+  renderResult();
   const ul = $('summary');
   for (const s of R.summary || []) ul.append(el('li', {}, s));
   $('foot').textContent = 'Erzeugt von k3c-workbench (B-632) · Richtwerte: data/balance-hints.json · Korridore: data/balance-targets.json';
+}
+
+// Ergebnis, Meilenstein-Leiter und Blocker (B-648): steht oben, die Diagnose darunter.
+function renderResult() {
+  if (!R.goal) return;
+  $('result').hidden = false;
+  $('goal').textContent = (R.goal.reached ? '✅ ' : '❌ ') + (R.goalText || '');
+  if (R.quality) $('quality').textContent = 'Qualität: ' + R.quality.passed + ' von ' + R.quality.total + ' Korridoren im Korridor.';
+  if (R.progress) renderProgress(R.progress);
+}
+
+function configText(c) {
+  const opt = (label, v) => (v ? ' · ' + label + ' ' + v : '');
+  return 'Welt ' + c.world + ' · Bot ' + c.bot + ' · ' + c.players + ' Spieler · ' + c.days + ' Tage' + opt('Grad', c.grade) + opt('Hilfen', c.helps);
+}
+
+function ladderRow(r) {
+  const done = r.runs > 0 && r.reached === r.runs;
+  const mark = done ? '✔ ' : r.reached ? '◐ ' : '○ ';
+  const day = r.medianDay == null ? '–' : 'Tag ' + r.medianDay;
+  return el('tr', { class: done ? 'done' : (r.reached ? 'part' : 'open') },
+    el('td', { class: 'arrow' }, r.arrow || '·'), el('td', {}, mark + r.label),
+    el('td', { class: 'num' }, r.reached + '/' + r.runs), el('td', { class: 'num' }, day));
+}
+
+function renderProgress(p) {
+  $('cfg').textContent = 'Konfiguration: ' + configText(p.config) + ' – ' + p.testMatch + '.';
+  const tbl = $('ladder');
+  tbl.append(el('thead', {}, el('tr', {}, ['', 'Meilenstein', 'Seeds', 'Median-Tag'].map((h) => el('th', {}, h)))));
+  tbl.append(el('tbody', {}, p.ladder.map(ladderRow)));
+  if (R.previous) $('ladder-note').textContent = 'Pfeile (▲ besser, ▼ schlechter, = gleich) gegen den letzten Lauf gleicher Konfiguration: ' + R.previous;
+  if (p.blocker) $('blocker').textContent = 'Blocker: ' + p.blocker;
 }
 
 function renderLights() {
@@ -106,7 +142,7 @@ function renderBullets(id, items, emptyText) {
 }
 
 // ---------- Ziele: Filter, Tabelle, Details ----------
-const filter = { light: '', grade: '', scenario: '', q: '' };
+const filter = { light: '', grade: '', scenario: '', q: '', green: !COMPACT };
 
 function toggleLight(light) {
   filter.light = filter.light === light ? '' : light;
@@ -128,6 +164,10 @@ function renderFilters() {
     f.append(el('button', { class: 'chip', type: 'button', 'data-light': light, onclick: () => toggleLight(light) }, dot(light), LIGHTS[light]));
   }
   const uniq = (key) => [...new Set((R.targets || []).map((t) => t[key]))].sort();
+  if (COMPACT && (R.counts || {}).green) {
+    f.append(el('button', { class: 'chip', type: 'button', onclick: (e) => { filter.green = !filter.green; e.currentTarget.classList.toggle('on', filter.green); applyFilter(); } },
+      dot('green'), (R.counts.green) + ' im Korridor anzeigen'));
+  }
   f.append(select('grade', 'Grad', uniq('grade')), select('scenario', 'Szenario', uniq('scenario')));
   const q = el('input', { type: 'search', placeholder: 'Suche …', 'aria-label': 'Ziele durchsuchen' });
   q.addEventListener('input', () => { filter.q = q.value.toLowerCase(); applyFilter(); });
@@ -137,7 +177,7 @@ function renderFilters() {
 function applyFilter() {
   for (const tr of document.querySelectorAll('#targets tr.row')) {
     const t = R.targets[+tr.dataset.i];
-    const ok = (!filter.light || t.light === filter.light) && (!filter.grade || t.grade === filter.grade) &&
+    const ok = (filter.green || t.light !== 'green' || filter.light === 'green') && (!filter.light || t.light === filter.light) && (!filter.grade || t.grade === filter.grade) &&
       (!filter.scenario || t.scenario === filter.scenario) && (!filter.q || (t.name + ' ' + t.measure).toLowerCase().includes(filter.q));
     tr.hidden = !ok;
     if (!ok) tr.nextElementSibling.hidden = true;
@@ -166,7 +206,7 @@ function trendCell(t) {
 }
 
 function targetRow(t, i) {
-  const dist = t.distance === null || t.distance === undefined ? '–' : (t.distance > 0 ? '+' : '') + Math.round(t.distance) + ' %';
+  const dist = t.gap || '–';
   return el('tr', { class: 'row', 'data-i': i, title: 'Details auf-/zuklappen' },
     el('td', { 'data-v': ['green', 'yellow', 'red', 'grey'].indexOf(t.light) }, dot(t.light), t.status),
     el('td', { 'data-v': t.name }, t.name, ' ', el('span', { class: 'tag' }, t.grade)),
@@ -174,15 +214,15 @@ function targetRow(t, i) {
     el('td', { class: 'num', 'data-v': t.value }, fmt(t.value, t.unit)),
     el('td', { class: 'num', 'data-v': t.lower ?? -1e9 }, corridor(t)),
     el('td', { 'data-v': t.value }, corridorBar(t)),
-    el('td', { class: 'num', 'data-v': t.distance ?? 0, title: 'Abstand zur nächsten Grenze in % der Korridorbreite' }, dist),
+    el('td', { class: 'num', 'data-v': t.distance ?? 0, title: 'Abstand zum Korridor: außerhalb in Prozentpunkten (Pkt.) bzw. in der Einheit des Werts bis zur verletzten Grenze, im Korridor die Reserve bis zur nächsten Grenze' }, dist),
     el('td', { class: 'num', 'data-v': t.trend ? t.trend.delta : 0 }, trendCell(t)));
 }
 
-function leverList(levers) {
+function leverList(levers, plans) {
   if (!levers || !levers.length) return el('p', { class: 'empty' }, 'Keine Hebel hinterlegt.');
-  return el('div', {}, levers.map((l) => el('div', { class: 'lever' },
+  return el('div', {}, levers.map((l, i) => el('div', { class: 'lever' },
     el('b', { class: l.direction === '+' ? 'l-green' : 'l-red' }, l.direction === '+' ? '▲' : '▼'),
-    el('span', {}, l.label, ' ', el('code', {}, l.path), ' ', el('span', { class: 'tag' }, 'Schritt ' + l.step)))));
+    el('span', {}, l.label, ' ', el('code', {}, l.path), plans && plans[i] ? el('div', { class: 'why' }, planText(plans[i])) : null, plans && plans[i] ? rangeBar(plans[i]) : null))));
 }
 
 function targetDetail(t) {
@@ -190,11 +230,12 @@ function targetDetail(t) {
     ? el('div', {}, el('b', {}, label + ' (' + list.length + ')'), el('div', { class: 'seeds' }, list.map((s) => el('span', { class: 'seed' }, s))))
     : null;
   return el('tr', { class: 'detail', hidden: true }, el('td', { colspan: 8 }, el('div', { class: 'detail-grid' },
-    el('div', {}, el('div', {}, el('span', { class: 'tag' }, t.measure), ' ', el('span', { class: 'tag' }, t.kind === 'share' ? 'Anteil' : 'Median'),
+    el('div', {}, el('p', { class: 'why' }, t.plain, t.trendText ? ' ' + t.trendText : ''),
+      el('div', {}, el('span', { class: 'tag' }, t.measure), ' ', el('span', { class: 'tag' }, t.kind === 'share' ? 'Anteil' : 'Median'),
       ' ', el('code', {}, t.rule)),
-    seeds(t.failSeeds, 'Seeds zum Nachspielen'), seeds(t.invalidSeeds, 'Ungültige Seeds'),
+    hintLine(t), seeds(t.failSeeds, 'Seeds zum Nachspielen'), seeds(t.invalidSeeds, 'Ungültige Seeds'),
     t.failSeeds && t.failSeeds.length ? el('button', { class: 'btn small', type: 'button', onclick: () => copy(t.failSeeds.join(',')) }, 'Seeds kopieren') : null),
-    el('div', {}, el('b', {}, 'Hebel'), leverList(t.levers)))));
+    el('div', {}, el('b', {}, 'Hebel'), leverList(t.levers, t.plans)))));
 }
 
 function renderTargets() {

@@ -288,8 +288,11 @@ func collectCoins(w *World) {
 	for _, c := range w.Coins {
 		var taker *Player
 		for _, p := range w.Players {
+			if math.Abs(p.X-c.X) > economy.PickupRangeUnits {
+				continue
+			}
 			blocked := c.BlockedPlayerID != nil && *c.BlockedPlayerID == p.ID && w.Time < c.BlockedUntil
-			if isAlive(p) && p.Gold < purseMax(w) && math.Abs(p.X-c.X) <= economy.PickupRangeUnits && !blocked {
+			if isAlive(p) && p.Gold < purseMax(w) && !blocked {
 				taker = p
 				break
 			}
@@ -372,9 +375,11 @@ func spend(s *Stock, c Cost) {
 // auf (building_upgrades.go).
 func stepSites(w *World) {
 	for _, s := range w.Sites {
-		if cost := siteCost(w, s); s.State == "waitingMaterial" && canAfford(*w.Stock, cost) {
-			spend(w.Stock, cost)
-			s.State = "waitingWorker"
+		if s.State == "waitingMaterial" {
+			if cost := siteCost(w, s); canAfford(*w.Stock, cost) {
+				spend(w.Stock, cost)
+				s.State = "waitingWorker"
+			}
 		}
 		if s.Kind == "workshop" && s.State == "built" {
 			stepBowCraft(w, s)
@@ -384,13 +389,4 @@ func stepSites(w *World) {
 	eachSite(w, func(s *Site) { stepUpgrade(w, s) })
 	stepOffers(w)
 	stepCrafts(w)
-}
-
-// payDawnIncome: morgens Steuern für jeden lebenden Monarchen.
-func payDawnIncome(w *World) {
-	for _, p := range w.Players {
-		if isAlive(p) {
-			giveGold(w, p, economy.DawnGoldPerPlayer, p.X)
-		}
-	}
 }

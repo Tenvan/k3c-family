@@ -8,22 +8,13 @@ import (
 )
 
 // Options sind die optionalen Parameter des Generators. Der Nullwert erzeugt das Level wie Generate: ohne Planung und
-// mit den eingebetteten Mauerlinien. Es gibt keinen globalen Zustand zum Umschalten.
+// mit den eingebetteten Daten. Es gibt keinen globalen Zustand zum Umschalten.
 type Options struct {
-	// Lines sind die Mauerlinien (nil = eingebettete aus data/hub.json).
-	Lines *WallLines
 	// Planned sind die geplanten Chunks dieser Stufe (docs/rules/geplante-chunks.md).
 	Planned []PlannedChunk
 	// ChunkCount ist die eingestellte Chunk-Anzahl der Stufe (Inselgröße, geplante-chunks.md § 7); 0 = gewürfelte
 	// Länge aus lengthUnits wie bisher. Sie ersetzt den Wurf der Länge.
 	ChunkCount int
-}
-
-func (o Options) lines() WallLines {
-	if o.Lines != nil {
-		return *o.Lines
-	}
-	return wallLines
 }
 
 // slotIndex ist der Chunk-Index eines Platzes: +n liegt n Chunks rechts der Hub-Chunks, −n links davon.

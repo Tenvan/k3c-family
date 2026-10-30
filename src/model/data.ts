@@ -4,6 +4,7 @@ import enemiesJson from '../../data/enemies.json';
 import hubJson from '../../data/hub.json';
 import lightJson from '../../data/light.json';
 import monarchJson from '../../data/monarch.json';
+import shipJson from '../../data/ship.json';
 import troopsJson from '../../data/troops.json';
 import wavesJson from '../../data/waves.json';
 import type { Range } from './biome';
@@ -77,7 +78,9 @@ export interface WaveRow {
   elite: Range;
 }
 
-export const BUILDINGS = buildingsJson as unknown as Record<string, BuildingData>;
+/** Das Schiff des Hafens (B-637): Kosten des Kiels am Platz, die Abschnitte aus data/ship.json als Ausbau-Stufen (wie `withShip` in Go). */
+const SHIP = { ...shipJson.stages[0], levels: shipJson.stages } as unknown as BuildingData;
+export const BUILDINGS = { ...buildingsJson, ship: SHIP } as unknown as Record<string, BuildingData>;
 export const TROOPS = troopsJson as unknown as Record<'vagrant' | 'peasant' | 'archer', TroopData>;
 /**
  * Form einer JSON-Datei zum Typ T: JSON-Importe kennen keine Tupel und keine Literal-Typen. Die Zuweisung an `JsonOf<T>`
@@ -100,14 +103,7 @@ export interface HubSite {
 export const HUB = hubJson as {
   sites: HubSite[];
   islandSites: HubSite[];
-  wallLines: {
-    wallUnits: number[];
-    fixedLines: number;
-    jitterOutwardUnits: number;
-    towerInsetUnits: number;
-    gateOutsetUnits: number;
-    gateHubLevel: number;
-  };
+  sitePlacement: { zone1WallUnits: number; zone1TowerUnits: number; zones: number; outsideUnits: number };
   castleRadiusUnits: number;
   homeRadiusUnits: number;
   startTroops: Partial<Record<'peasant' | 'archer', number>>;
@@ -120,6 +116,7 @@ export const ECONOMY = economyJson as unknown as {
   pickupRangeUnits: number;
   dropPickupDelaySeconds: number;
   dawnGoldPerPlayer: number;
+  dawnGoldPerDepth: number;
   chestGold: Range;
   enemyResourceDrop: { chance: number; amount: number };
   gatherables: Record<string, GatherableData>;
@@ -131,6 +128,8 @@ export interface WavesData {
   spawnSpreadSeconds: number;
   /** Zuschlag auf die Gegnerzahl je weiterem Spieler */
   perExtraPlayer: number;
+  /** Zuschlag auf die Boss-HP je weiterem Spieler (getrennt von der Wellengröße, B-650) */
+  bossHpPerExtraPlayer: number;
   depthScaling: { hp: number; damage: number; speed: number };
   stealGold: number;
 }

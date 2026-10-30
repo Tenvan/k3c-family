@@ -7,7 +7,7 @@ import { filterBranches, sortBranches } from './BranchesCard';
 
 vi.mock('../api', () => ({ backend: {} }));
 
-// B-580/AC-03: Prompts nennen die betroffenen Branches bzw. PRs und die Regeln des Repos.
+// B-580/AC-03, B-639: Prompts nennen in einer Zeile die betroffenen Branches bzw. PRs.
 
 const br = (b: Partial<GitBranch> & Pick<GitBranch, 'name' | 'state'>): GitBranch => ({
   remote: false, upstream: '', sha: '', checked: true, pr: 0, track: 'fehlt', ahead: 0, behind: 0, baseAhead: 0, baseBehind: 0, date: 0, subject: '',
@@ -25,31 +25,23 @@ const branches = [
 
 const pr: GitPR = { number: 447, title: 'W11', url: '', head: 'sprint/w11', author: '', updated: '', state: 'offen', ci: 'rot', merge: 'Konflikt' };
 
-describe('Prompts (B-580/AC-03)', () => {
-  it('Markierte: nennt jeden Branch und verbietet Force', () => {
-    const p = cleanupMarkedPrompt(['sprint/bd2', 'sprint/gr8']);
-    expect(p).toContain('diese 2 Branches auf: sprint/bd2, sprint/gr8.');
-    expect(p).toContain('nie Force-Push');
+describe('Prompts in Kurzform (B-580/AC-03, B-639)', () => {
+  it('Markierte: eine Zeile mit jedem Branch', () => {
+    expect(cleanupMarkedPrompt(['sprint/bd2', 'sprint/gr8'])).toBe('Branches aufräumen: sprint/bd2, sprint/gr8');
   });
 
-  it('Veraltete: gemergte zum Löschen, ungemergte mit gelöschtem Remote zum Prüfen', () => {
+  it('Veraltete: gemergte und ungemergte mit gelöschtem Remote getrennt', () => {
     expect(staleBranches(branches).map((b) => b.name)).toEqual(['sprint/bd2', 'alt/arbeit']);
-    const p = cleanupStalePrompt(branches);
-    expect(p).toContain('(löschen): sprint/bd2.');
-    expect(p).toContain('sonst melden): alt/arbeit.');
-    expect(p).not.toContain('feat/x');
-    expect(cleanupStalePrompt([])).toContain('keine');
+    expect(cleanupStalePrompt(branches)).toBe('Veraltete Branches aufräumen: sprint/bd2; ungemergt: alt/arbeit');
+    expect(cleanupStalePrompt([])).toBe('Veraltete Branches aufräumen');
   });
 
   it('Beheben nennt PR, Branch und beide Probleme', () => {
-    const p = fixPrPrompt(pr);
-    expect(p).toContain('PR #447 „W11“ (Branch sprint/w11)');
-    expect(p).toContain('die CI ist rot und er hat einen Konflikt mit develop');
-    expect(p).toContain('gh pr checks 447');
+    expect(fixPrPrompt(pr)).toBe('PR #447 beheben (sprint/w11): CI rot, Konflikt');
   });
 
   it('Alle prüfen nennt jeden PR', () => {
-    expect(reviewAllPrsPrompt([pr, { ...pr, number: 452, head: 'sprint/k5' }])).toContain('#447 (sprint/w11), #452 (sprint/k5)');
+    expect(reviewAllPrsPrompt([pr, { ...pr, number: 452, head: 'sprint/k5' }])).toBe('Offene PRs prüfen und mergen: #447, #452');
   });
 });
 

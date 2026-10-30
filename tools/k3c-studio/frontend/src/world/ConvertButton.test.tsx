@@ -5,6 +5,7 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import { WorldPage } from './WorldPage';
+import { planSlot } from './worldTesting';
 
 // B-485/AC-06 (WZ17.5) im DOM: Seed-Chunk in feste Objekte umwandeln, mit dem Mock-Backend (ohne Wails). Dass das Bild
 // gleich bleibt, prüft der Go-Test TestUmwandlungAendertDasBildNicht am echten Level.
@@ -38,7 +39,7 @@ async function type(el: HTMLInputElement, value: string) {
 
 /** Chunk am Platz +1 mit Chunk-Seed anlegen und die Prüfung abwarten */
 async function seedChunk(h: HTMLElement, seed = 'lichtung') {
-  await act(async () => button(h, 'Chunk hinzufügen').click());
+  await planSlot(h, 1);
   await type(field(h, 'Art Platz +1'), 'clearing');
   if (seed) await type(field(h, 'Chunk-Seed Platz +1'), seed);
   await settle();
@@ -87,7 +88,7 @@ describe('Seed-Chunk in feste Objekte umwandeln (B-485/AC-06)', () => {
   it('mit festen Objekten gesperrt', async () => {
     const h = await mount();
     await seedChunk(h);
-    await act(async () => button(h, 'Objekt').click());
+    await act(async () => button(h, '+ Objekt').click());
     await settle();
     expect(button(h, CONVERT).disabled).toBe(true);
     expect(button(h, CONVERT).title).toContain('feste Objekte');

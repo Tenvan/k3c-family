@@ -32,7 +32,7 @@ var DefaultPaths = []string{
 
 // reloaded sind die Dateien, die sim.UseData (und loadPrices) neu laden (B-301). Eine Variation in einer anderen Datei
 // (difficulty.json, biomes/…) hätte keine Wirkung und ist ein Fehler; TestReloadedWieUseData hält die Liste gleich.
-var reloaded = []string{"buildings.json", "troops.json", "economy.json", "hub.json", "monarch.json", "enemies.json", "waves.json"}
+var reloaded = []string{"buildings.json", "troops.json", "economy.json", "hub.json", "monarch.json", "enemies.json", "waves.json", "ship.json"}
 
 // checkReloaded: Die Datei wird für einen Lauf neu geladen, sonst Fehler mit dem Dateinamen.
 func checkReloaded(file string) error {

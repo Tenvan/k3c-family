@@ -24,6 +24,10 @@ type Matrix struct {
 	// GoldThreshold: Schwelle für Metrics.GoldThresholdTick (Gold aller Monarchen zusammen); 0 = nicht messen.
 	GoldThreshold int    `json:"goldThreshold"`
 	Grade         string `json:"grade,omitempty"` // Schwierigkeitsgrad aller Läufe, leer = normal (Grad-Kurven, BAL3.3)
+	// World: ID der Welt (z. B. standard); gesetzt baut der Lauf alle Tiefen der ersten Insel (BS11, B-642), Depths gilt dann nicht.
+	World string `json:"world,omitempty"`
+	// Helps: Dev-Hilfen wie im Stufen-Test (hilfen, voll, boss; helps.go), nur mit World; leer = keine.
+	Helps string `json:"helps,omitempty"`
 }
 
 // Scenario ist ein einzelner Lauf.
@@ -34,6 +38,8 @@ type Scenario struct {
 	Depth   int    `json:"depth"`
 	Days    int    `json:"days"`
 	Grade   string `json:"grade,omitempty"` // leer = normal; steht so auch im Replay
+	World   string `json:"world,omitempty"` // leer = eine Stufe der Tiefe Depth; sonst alle Tiefen der ersten Insel der Welt (BS11)
+	Helps   string `json:"helps,omitempty"` // Dev-Hilfen (helps.go), leer = keine
 }
 
 // Result ist ein Lauf mit Kennzahlen; ein ungültiger Lauf hat Error statt Metrics.
@@ -70,12 +76,15 @@ func (m Matrix) Scenarios() ([]Scenario, error) {
 	if err := m.checkBots(); err != nil {
 		return nil, err
 	}
+	if err := checkHelps(m.Helps, m.World); err != nil {
+		return nil, fmt.Errorf("matrix: %w", err)
+	}
 	var out []Scenario
 	for _, seed := range m.Seeds {
 		for _, n := range m.Players {
 			for _, b := range m.Bots {
 				for _, d := range m.Depths {
-					out = append(out, Scenario{Seed: seed, Players: n, Bot: b, Depth: d, Days: m.Days, Grade: m.Grade})
+					out = append(out, Scenario{Seed: seed, Players: n, Bot: b, Depth: d, Days: m.Days, Grade: m.Grade, World: m.World, Helps: m.Helps})
 				}
 			}
 		}
@@ -98,17 +107,13 @@ func (m Matrix) checkBots() error {
 	return nil
 }
 
-// Run spielt alle Läufe der Matrix nacheinander. Ein abgebrochener Lauf erscheint als ungültig, der Rest läuft weiter.
+// Run spielt alle Läufe der Matrix (parallel, parallel.go). Ein abgebrochener Lauf erscheint als ungültig, der Rest läuft weiter.
 func Run(m Matrix) (Report, error) {
 	scenarios, err := m.Scenarios()
 	if err != nil {
 		return Report{}, err
 	}
-	r := Report{Matrix: m, Results: make([]Result, 0, len(scenarios))}
-	for _, sc := range scenarios {
-		r.Results = append(r.Results, runOne(sc, m.GoldThreshold))
-	}
-	return r, nil
+	return Report{Matrix: m, Results: runAll(scenarios, m.GoldThreshold, nil)}, nil
 }
 
 // JSON schreibt den Bericht eingerückt mit Zeilenende; Feldreihenfolge aus den Structs.
@@ -131,6 +136,9 @@ func runOne(sc Scenario, threshold int) (res Result) {
 		return res
 	}
 	bot, _ := BotByName(sc.Bot)
+	if sc.World != "" {
+		bot = withBossFight(withDescent(bot, isl, deepestOf(isl)), isl, deepestOf(isl))
+	}
 	c := newCollector(isl, threshold)
 	cmds := make([]sim.PlayerCommand, sc.Players)
 	rp := &Replay{Version: ReplayVersion, Scenario: sc, DataHash: dataHash}
@@ -142,6 +150,7 @@ func runOne(sc Scenario, threshold int) (res Result) {
 		}
 		rp.record(cmds)
 		sim.StepIsland(isl, cmds, 1.0/enginetools.TickHz)
+		afterStep(isl, sc, tick, enginetools.TickHz)
 		c.observe(tick)
 		res.Ticks = tick
 		if isl.Stages[0].Cycle.Day > sc.Days {
@@ -156,17 +165,18 @@ func runOne(sc Scenario, threshold int) (res Result) {
 
 // newIsland erzeugt die Insel eines Szenarios mit seinen Monarchen auf Stufe 0 (Lauf und Wiedergabe).
 func newIsland(sc Scenario) (*sim.Island, error) {
-	isl, err := sim.CreateIsland(sc.Seed, []int{sc.Depth}, 1, sim.CreateOptions{})
+	isl, err := createIsland(sc)
 	if err != nil {
 		return nil, err
 	}
-	if sc.Grade != "" {
-		if err := sim.SetGrade(isl, sc.Grade, true); err != nil {
+	if grade := gradeOf(sc); grade != "" {
+		if err := sim.SetGrade(isl, grade, true); err != nil {
 			return nil, err
 		}
 	}
 	for range sc.Players {
 		sim.AddIslandPlayer(isl, 0)
 	}
+	applyHelps(isl, sc)
 	return isl, nil
 }

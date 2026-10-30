@@ -9,7 +9,7 @@ import (
 // die HP wachsen, und die Zahl der Stufen entspricht der Hub-Stufenzahl.
 func TestGebaeudeLevelsInDenDaten(t *testing.T) {
 	_, w := fixtureIsland(t)
-	for _, kind := range []string{"storage", "farm", "barracks", "tavern", "healer"} {
+	for _, kind := range []string{"storage", "nursery", "barracks", "tavern", "healer"} {
 		b := buildings[kind]
 		if len(b.Levels) != len(hubOf(w).Levels) {
 			t.Errorf("%s: %d levels, erwartet %d (Hub-Stufen)", kind, len(b.Levels), len(hubOf(w).Levels))

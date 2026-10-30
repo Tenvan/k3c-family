@@ -93,6 +93,7 @@ const sprite = (key: string, frame: number | string = 0, frames = 1, zoom = 2): 
 const OBJECTS: Record<string, ObjectSprite> = {
   portal: sprite('grafik:portal', 0, 1, 1),
   exit: sprite('grafik:ausgang', 0, 1, 1),
+  harbor: sprite('grafik:hafen', 0, 1, 1),
   // Eine liegende Truhe ist ungeöffnet: geschlossen; die offene zeigt der Renderer kurz beim Aufheben (GEB10)
   'pickup:chest': sprite('grafik:truhe-geschlossen', 0, 1, 1),
   'pickup:skillPoint': sprite('grafik:star', 0, 4),

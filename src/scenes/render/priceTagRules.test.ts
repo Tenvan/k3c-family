@@ -9,8 +9,17 @@ import { createViewWorld } from '../../online/clientWorld';
 import { offersHubUpgrade, offersPrice, priceTagSites } from './priceTagRules';
 
 const player = (over: Partial<Player> = {}): Player => ({ id: 0, index: 0, x: 10, respawnIn: 0, ...over }) as Player;
-const site = (over: Partial<Site>): Site => ({ id: 1, kind: 'wall', x: 12, state: 'unpaid', paidGold: 0, buildProgress: 0, hp: 1, maxHp: 1, workerId: null, bows: 0, bowPaidGold: 0, ...over });
+const site = (over: Partial<Site>): Site => ({ id: 1, kind: 'wall', x: 12, state: 'unpaid', paidGold: 0, buildProgress: 0, hp: 1, maxHp: 1, workerId: null, bows: 0, bowPaidGold: 0, payable: true, ...over });
 const world = (sites: Site[], players: Player[]): World => ({ sites, players }) as unknown as World;
+
+describe('Preisschild nur an baubaren Plätzen (B-653/AC-02)', () => {
+  it('unbezahlter Platz ohne payable (Hub-Stufe oder Voraussetzung fehlt): kein Preisschild', () => {
+    expect(offersPrice(site({ payable: false }))).toBe(false);
+    expect(offersPrice(site({ payable: undefined }))).toBe(false);
+    expect(offersPrice(site({ payable: true }))).toBe(true);
+    expect(priceTagSites(world([site({ id: 1, x: 11, payable: false })], [player({ x: 10 })])).size).toBe(0);
+  });
+});
 
 describe('priceTagSites: nur das nächste Preisschild (B-395/AC-01)', () => {
   it('mehrere Preisschilder in Reichweite: nur das nächste', () => {

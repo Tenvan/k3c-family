@@ -91,3 +91,41 @@ func TestKaputteBewertungen(t *testing.T) {
 		t.Errorf("Löschen: %v", err)
 	}
 }
+
+// B-662/AC-02: Sammel-Bewerten und Sammel-Löschen in einem Aufruf; ein fremder Pfad lehnt den ganzen Aufruf ab.
+func TestSammelBewertenUndLoeschen(t *testing.T) {
+	root := t.TempDir()
+	a, b, c := "reports/simtest-run-1/balance-1.json", "reports/simtest-run-2/balance-2.json", "reports/tuning-3.json"
+	for _, p := range []string{a, b, c} {
+		writeReport(t, root, p, `{"seeds":1,"pass":true}`)
+	}
+	writeReport(t, root, "reports/simtest-run-1/balance-1.md", "# Bericht")
+	if err := RateReports(root, []string{a, b, c}, "gut"); err != nil {
+		t.Fatal(err)
+	}
+	for _, bad := range [][]string{{a, "data/economy.json"}, {b, "../x/balance-1.json"}, {a, "reports/balance-9.json"}, {}} {
+		if err := RateReports(root, bad, "schlecht"); err == nil {
+			t.Errorf("RateReports(%q): Fehler erwartet", bad)
+		}
+		if err := DeleteReports(root, bad); err == nil {
+			t.Errorf("DeleteReports(%q): Fehler erwartet", bad)
+		}
+	}
+	for _, p := range []string{a, b, c} {
+		if got := rating(t, root, p); got != "gut" {
+			t.Errorf("%s: Bewertung %q nach abgelehntem Aufruf", p, got)
+		}
+	}
+	if err := DeleteReports(root, []string{a, b, a}); err != nil {
+		t.Fatal(err)
+	}
+	for _, gone := range []string{a, "reports/simtest-run-1/balance-1.md", "reports/simtest-run-1", "reports/simtest-run-2"} {
+		if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(gone))); !os.IsNotExist(err) {
+			t.Errorf("%s bleibt: %v", gone, err)
+		}
+	}
+	r, _ := loadRatings(root)
+	if len(r) != 1 || r[c] != "gut" {
+		t.Errorf("Bewertungen nach dem Löschen: %v", r)
+	}
+}

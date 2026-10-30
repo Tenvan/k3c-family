@@ -1,147 +1,93 @@
-import { ActionButton, StatusBadge, Text } from '@webkit/atoms';
+import { Splitter, Text } from '@webkit/atoms';
+import { useSplit } from '@webkit/lib/split';
 import { useTicketPage } from '@webkit/lib/ticketContext';
-import { useMemo, useState } from 'react';
-import type { HubPlanView, HubRulesView, HubSaveResult } from '../api';
+import { NoticeCard } from '@webkit/molecules';
+import { useCallback, useMemo, useState, type CSSProperties } from 'react';
+import type { HubPlanView } from '../api';
+import * as prefs from '../lib/prefs';
 import { LivePreview, type PlanerSource } from '../stage/LivePreview';
 import type { RowFocus } from '../stage/stageLogic';
-import { NoticeCard } from '@webkit/molecules';
 import { HubMatrixView, rowId } from './HubMatrixView';
-import { AddSite, RowEditor } from './PlannerEditor';
-import { parseHub } from './plannerEdit';
+import { PlannerInspector } from './PlannerEditor';
+import { PlannerToolbar } from './PlannerToolbar';
+import { addSite, parseHub } from './plannerEdit';
+import { rowAt, rowOffset } from './plannerLogic';
 import { usePlanner } from './usePlanner';
 import { usePlannerView } from './usePlannerView';
 
 /** Seed und Biom der Live-Vorschau im Gebäude-Planer: fest, damit nur Planer-Stand und Hub-Stufe das Bild ändern. */
 const PREVIEW = { seed: 'k3c', biome: 'forest' };
 
-/** Abweichung der Regeltabelle (B-462/AC-03): berechnet im Go-Backend (tabelle.Gegenprobe), hier nur angezeigt. */
-function RulesDiff({ rules, failed }: { rules: HubRulesView | null; failed: string }) {
-  if (failed) return <NoticeCard title="Regeltabelle nicht verglichen" tone="error">{failed}</NoticeCard>;
-  if (!rules) return <Text size="2" color="gray">Regeltabelle wird verglichen …</Text>;
-  if (rules.error) return <Text size="2" color="red" role="alert">{rules.error}</Text>;
-  if (rules.same) return <StatusBadge tone="ok">Regeltabelle stimmt mit dem Planer-Stand überein</StatusBadge>;
-  return (
-    <section className="pl-diff" aria-label="Abweichung der Regeltabelle">
-      <Text size="2" color="orange" role="status">
-        Regeltabelle weicht ab ({rules.lines.length} Zeilen in <code>{rules.path}</code> § 3): <code>{rules.task}</code> ausführen
-      </Text>
-      <table className="pl-diff-table">
-        <thead><tr><th scope="col">Zeile</th><th scope="col">Regeltabelle (Ist)</th><th scope="col">aus hub.json erzeugt (Soll)</th></tr></thead>
-        <tbody>
-          {rules.lines.map((l) => (
-            <tr key={l.line}><td>{l.line}</td><td className="pl-ist">{l.ist}</td><td className="pl-soll">{l.soll}</td></tr>
-          ))}
-        </tbody>
-      </table>
-    </section>
+/** Startanteil der Matrix (Rest: Inspektor, bei etwa 1000 px Breite rund 360 px) */
+const SPLIT_DEFAULT = 64;
+
+type Planer = ReturnType<typeof usePlanner>;
+
+/** Eine Auswahl für Bühne, Matrix und Platz-Chips (B-670): gewählte Zeile (rowId) und ob die Wahl aus der Bühne oder einem
+ *  Chip kam (dann springt die Vorschau nicht zur Zeile). */
+function useRowPick(rows: HubPlanView['matrix']['rows'], hubLevel: number) {
+  const [pick, setPick] = useState({ id: '', stay: false });
+  const select = useCallback((id: string) => setPick({ id, stay: false }), []);
+  const onPick = useCallback((site: { kind: string; x: number } | null, hubX: number) => {
+    const row = site ? rowAt(rows, hubLevel, site, hubX) : undefined;
+    setPick({ id: row ? rowId(row) : '', stay: true });
+  }, [rows, hubLevel]);
+  const row = rows.find((r) => rowId(r) === pick.id) ?? null;
+  const focus = useMemo<RowFocus | undefined>(
+    () => (row ? { id: rowId(row), kind: row.kind, offset: rowOffset(row, hubLevel), bothSides: row.bothSides, stay: pick.stay } : undefined),
+    [row, hubLevel, pick.stay],
   );
+  return { selected: pick.id, row, focus, select, onPick };
 }
 
-/** Befunde und Hinweise der Prüfung (sim.ValidateHub im Go-Backend). */
-function Findings({ plan }: { plan: HubPlanView }) {
-  return (
-    <section className="pl-findings" aria-label="Prüfung">
-      {plan.findings.length === 0
-        ? <StatusBadge tone="ok">Prüfung ohne Befund</StatusBadge>
-        : <ul className="wd-warnings">{plan.findings.map((f, i) => <li key={i}>{f.rule}: {f.site}: {f.detail}</li>)}</ul>}
-      {plan.notes.map((n) => <Text key={n} size="1" color="gray">Hinweis: {n}</Text>)}
-    </section>
-  );
-}
-
-/** Ergebnis des Speicherns: Schreibregel (extern geändert, neu laden), Fehler, REG-Hinweis, veraltete Regeltabelle. */
-function SaveOutcome({ result, onReload }: { result: HubSaveResult | null; onReload: () => void }) {
-  if (!result) return null;
-  if (result.stale) {
-    return (
-      <NoticeCard title="Datei extern geändert" tone="error">
-        {result.stale} <ActionButton onClick={onReload}>Neu laden (Änderungen verwerfen)</ActionButton>
-      </NoticeCard>
-    );
-  }
-  if (result.unchanged) return <NoticeCard title="Unverändert" tone="info">Der Stand entspricht der Datei, nichts gespeichert.</NoticeCard>;
-  if (!result.saved) return <NoticeCard title="Nicht gespeichert" tone="error">{result.error}</NoticeCard>;
-  return (
-    <>
-      <NoticeCard title="Gespeichert" tone="ok">{result.notice}</NoticeCard>
-      {result.rulesError && <NoticeCard title="Regeltabelle veraltet" tone="warn">{result.rulesError}</NoticeCard>}
-    </>
-  );
-}
-
-/** Speichern: nur ein geänderter Stand ohne Befund der Prüfung im Go-Backend (B-462/AC-02). */
-function SaveBar({ planer }: { planer: ReturnType<typeof usePlanner> }) {
-  const { hub, checked, canSave, save, reload, saveResult, checkFailed, saving } = planer;
-  const state = !hub ? 'keine Änderung'
-    : checkFailed ? `Prüfung nicht erreichbar: ${checkFailed}`
-      : saving ? 'wird gespeichert …'
-        : !checked ? 'wird geprüft …'
-          : checked.findings.length > 0 || checked.error ? `nicht speicherbar: ${checked.error || `${checked.findings.length} Befunde`}` : 'geändert, Prüfung ohne Befund';
-  return (
-    <section className="pl-save" aria-label="Speichern">
-      <ActionButton disabled={!canSave} onClick={save}>Speichern</ActionButton>
-      {hub && <ActionButton variant="soft" onClick={reload}>Änderungen verwerfen</ActionButton>}
-      <Text size="2" color="gray" role="status">{state}</Text>
-      <SaveOutcome result={saveResult} onReload={reload} />
-    </section>
-  );
-}
-
-/** Hauptteil des geladenen Planers: Befunde, Abweichung, Speichern, Matrix, Bearbeiten und Live-Vorschau. */
-function PlanerBody({ planer, plan, shown }: { planer: ReturnType<typeof usePlanner>; plan: HubPlanView; shown: HubPlanView }) {
-  const { rules, rulesFailed, hub, candidate, edit, saving } = planer;
+/** Hauptteil des geladenen Planers: Live-Vorschau mit Chip-Leiste, darunter Matrix und Inspektor nebeneinander. */
+function PlanerBody({ planer, plan, shown, controlsHost }: { planer: Planer; plan: HubPlanView; shown: HubPlanView; controlsHost: HTMLElement | null }) {
+  const { hub, candidate, edit, saving } = planer;
   const [chosen, setChosen] = useState<number | null>(null);
-  const [selected, setSelected] = useState('');
-  useTicketPage('planer', selected);
+  const [lookHost, setLookHost] = useState<HTMLElement | null>(null);
+  const [layersHost, setLayersHost] = useState<HTMLElement | null>(null);
   const levels = shown.matrix.levels;
   const hubLevel = chosen !== null && chosen <= levels ? chosen : Math.max(1, levels);
+  const { selected, row, focus, select, onPick } = useRowPick(shown.matrix.rows, hubLevel);
+  useTicketPage('planer', selected);
   const view = usePlannerView();
+  const [split, setSplit, resetSplit] = useSplit(prefs, 'planer.split', SPLIT_DEFAULT);
   const current = useMemo(() => hub ?? parseHub(plan.raw), [hub, plan]);
-  const row = shown.matrix.rows.find((r) => rowId(r) === selected) ?? null;
-  const focus = useMemo<RowFocus | undefined>(() => {
-    if (!row) return undefined;
-    const cell = row.cells[hubLevel - 1]?.available ? row.cells[hubLevel - 1] : row.cells.find((c) => c.available);
-    return { id: rowId(row), kind: row.kind, offset: cell?.offsetUnits ?? null, bothSides: row.bothSides };
-  }, [row, hubLevel]);
-  const source = useMemo<PlanerSource>(() => ({ candidate, levels, hubLevel, onHubLevel: setChosen, focus }), [candidate, levels, hubLevel, focus]);
+  const source = useMemo<PlanerSource>(() => ({ candidate, levels, hubLevel, onHubLevel: setChosen, focus, onPick }), [candidate, levels, hubLevel, focus, onPick]);
+  const kind = plan.kinds[0];
+  /** „+ Platz“: neue Zeile in `sites` (Art: erste bekannte, Platz 0, höchste Hub-Stufe), gleich gewählt */
+  const add = kind && !saving ? () => { const index = current.sites.length; edit((h) => addSite(h, 'sites', kind, 0, Math.max(1, levels))); select(rowId({ source: 'sites', index, kind })); } : undefined;
   return (
     <>
-      <div className="pl-middle">
-      <Findings plan={shown} />
-      <RulesDiff rules={rules} failed={rulesFailed} />
-      <SaveBar planer={planer} />
-      <HubMatrixView matrix={shown.matrix} hubLevel={hubLevel} onHubLevel={setChosen} selected={selected} onSelect={setSelected} />
-      <fieldset className="pl-fieldset" disabled={saving} aria-label="Bearbeiten">
-        <RowEditor hub={current} row={row} edit={edit} onRemoved={() => setSelected('')} />
-        <AddSite kinds={plan.kinds} levels={levels} edit={edit} />
-      </fieldset>
-      </div>
-      <section className="wd-live" aria-label="Live-Vorschau">
-        <Text size="2" color="gray">Live-Vorschau des Planer-Stands, Seed {PREVIEW.seed}, Wald</Text>
-        <LivePreview seed={PREVIEW.seed} biome={PREVIEW.biome} position={view.position} onPan={view.onPan} onWheel={view.onWheel} planer={source} />
+      <section className="wd-live" aria-label="Live-Vorschau" title={`Live-Vorschau des Planer-Stands, Seed ${PREVIEW.seed}, Wald`}>
+        <LivePreview seed={PREVIEW.seed} biome={PREVIEW.biome} position={view.position} onPan={view.onPan} onWheel={view.onWheel} planer={source}
+          controlsHost={controlsHost} lookHost={lookHost} layersHost={layersHost} />
       </section>
+      <div className="pl-lower" style={{ '--pl-split': `${split}%` } as CSSProperties}>
+        <HubMatrixView matrix={shown.matrix} hubLevel={hubLevel} onHubLevel={setChosen} selected={selected} onSelect={select} onAdd={add} />
+        <Splitter className="pl-split" value={split} onChange={setSplit} onReset={resetSplit} />
+        <PlannerInspector hub={current} row={row} kinds={plan.kinds} edit={edit} saving={saving} onSelect={select} setLookHost={setLookHost} setLayersHost={setLayersHost} />
+      </div>
     </>
   );
 }
 
-/** Seite Gebäude-Planer des Asset-Studios (B-462, WZ9.2 und WZ9.3): Matrix Hub-Stufe × Bauplatz aus `data/hub.json`,
- *  Bearbeiten der gewählten Zeile als Kandidat, Befunde der Prüfung, Abweichung der Regeltabelle, Speichern und die
- *  Live-Vorschau des Planer-Stands (auch ungespeichert) in der gewählten Hub-Stufe. */
+/** Seite Gebäude-Planer des Asset-Studios (B-462, WZ9.2, WZ9.3, B-670): Werkzeugleiste mit Quelle, Hub-Stufe, Tageszeit,
+ *  Prüfung, Regeltabelle und Speichern; Live-Vorschau des Planer-Stands (auch ungespeichert); darunter die Matrix Hub-Stufe ×
+ *  Bauplatz aus `data/hub.json` und der Inspektor der gewählten Zeile. Die Seite scrollt nicht, Matrix und Inspektor je für sich. */
 export function PlannerPage() {
   const planer = usePlanner();
-  const { plan, failed, reload } = planer;
+  const { plan, failed } = planer;
   const shown = planer.view ?? plan;
-  const levels = shown?.matrix.levels ?? 0;
-  useTicketPage('planer', '', !(plan && !plan.error && shown)); // mit geladenem Planer meldet PlannerBody die Zeile
+  const [controlsHost, setControlsHost] = useState<HTMLElement | null>(null);
+  const ready = plan && !plan.error && shown ? shown : null;
+  useTicketPage('planer', '', !ready); // mit geladenem Planer meldet PlanerBody die Zeile
   return (
     <div className="pl-page">
-      <div className="wd-bar">
-        <Text size="2">Quelle <code>{plan?.path ?? 'data/hub.json'}</code>{levels > 0 && `, ${levels} Hub-Stufen`}</Text>
-        <ActionButton onClick={reload}>Neu laden</ActionButton>
-      </div>
+      <PlannerToolbar planer={planer} shown={ready} setControlsHost={setControlsHost} />
       {failed && <NoticeCard title="Gebäude-Planer nicht geladen" tone="error">{failed}</NoticeCard>}
       {plan?.error && <Text size="2" color="red" role="alert">{plan.error}</Text>}
-      {plan && !plan.error && shown && <PlanerBody planer={planer} plan={plan} shown={shown} />}
+      {plan && ready && <PlanerBody planer={planer} plan={plan} shown={ready} controlsHost={controlsHost} />}
     </div>
   );
 }

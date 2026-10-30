@@ -40,7 +40,7 @@ func wirtschaftsInsel(t *testing.T) (*sim.Island, *sim.World) {
 		switch s.Kind {
 		case "storage":
 			s.State = "built"
-		case "farm":
+		case "nursery":
 			s.State = "waitingMaterial"
 		}
 	}
@@ -71,7 +71,7 @@ func wantHubUpgrade(t *testing.T, s map[string]any) {
 	t.Helper()
 	up, _ := s["hubUpgrade"].(map[string]any)
 	mat, _ := up["material"].(map[string]any)
-	if up["gold"] != 13.0 || up["paid"] != 13.0 || up["state"] != "waitingMaterial" || mat["stone"] != 25.0 || up["steps"] != 3.0 {
+	if up["gold"] != 4.0 || up["paid"] != 4.0 || up["state"] != "waitingMaterial" || mat["stone"] != 25.0 || up["steps"] != 3.0 {
 		t.Errorf("hubUpgrade: %v", up)
 	}
 	if s["hubStep"] != 1.0 {

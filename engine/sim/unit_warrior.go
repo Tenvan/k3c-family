@@ -25,8 +25,11 @@ type Drop struct {
 
 // isFighter: Ist kind eine Kämpfer-Figur aus troops.json (nicht Landstreicher, Bauer oder Beruf)?
 func isFighter(kind string) bool {
+	if kind == "vagrant" || kind == "peasant" {
+		return false
+	}
 	_, ok := troops[kind]
-	return ok && kind != "vagrant" && kind != "peasant"
+	return ok
 }
 
 // swordSpot ist der Ort des Schwert-Zahlziels am Platz s; false, wenn sein Gebäude keins hat.
@@ -100,13 +103,13 @@ func stepSwordCraft(w *World, s *Site) {
 // weaponToFetch: Ausrüstung am Boden, sonst Bogen oder Schwert im Regal, die noch kein anderer Bauer holt; nil, wenn
 // es nichts gibt. Kämpfer-Waffen nur unter dem Limit (Q29, einzige Prüfstelle): sonst bleiben sie liegen.
 func weaponToFetch(w *World, t *Troop) *Job {
-	full := fighters(w)+weaponsInFlight(w, t) >= troopLimit(w)
-	for _, d := range w.Drops {
-		if (!full || !isFighter(d.Kind)) && fetching(w, t, "pickup", d.ID) == 0 {
-			return &Job{Type: "pickup", DropID: d.ID}
+	full := func() bool { return fighters(w)+weaponsInFlight(w, t) >= troopLimit(w) }
+	if len(w.Drops) > 0 {
+		if j := pickupJob(w, t, full()); j != nil {
+			return j
 		}
 	}
-	if full {
+	if !shelfStocked(w) || full() {
 		return nil
 	}
 	danger := isDangerous(w)
@@ -122,6 +125,26 @@ func weaponToFetch(w *World, t *Troop) *Job {
 		}
 	}
 	return nil
+}
+
+// pickupJob: erste Ausrüstung am Boden, die noch kein anderer Bauer holt (bei vollem Limit keine Kämpfer-Waffe).
+func pickupJob(w *World, t *Troop, full bool) *Job {
+	for _, d := range w.Drops {
+		if (!full || !isFighter(d.Kind)) && fetching(w, t, "pickup", d.ID) == 0 {
+			return &Job{Type: "pickup", DropID: d.ID}
+		}
+	}
+	return nil
+}
+
+// shelfStocked: Liegt in irgendeiner gebauten Werkstatt ein Bogen oder Schwert im Regal? Sonst holt niemand etwas.
+func shelfStocked(w *World) bool {
+	for _, s := range w.Sites {
+		if s.Kind == "workshop" && s.State == "built" && (s.Bows > 0 || s.Swords > 0) {
+			return true
+		}
+	}
+	return false
 }
 
 // fetching zählt die Bauern außer t mit Auftrag typ an id (Platz bzw. Drop).
@@ -192,7 +215,7 @@ func equip(w *World, t *Troop, kind string, workSite int) {
 	w.Events = append(w.Events, Event{"type": "armed"})
 }
 
-// warriorPost: innen vor der äußersten gebauten Sperre der Seite (Tor der äußersten Linie, wenn gebaut, sonst Mauer);
+// warriorPost: innen vor der äußersten gebauten Mauer der Seite (das Tor, B-652);
 // ohne Mauer wie ein Bogenschütze ohne Mauer (stepArcher).
 // front ist der Ort, von dem aus der Krieger am Posten zuschlägt: die Sperre selbst, damit er Gegner trifft, die an
 // ihr stehen (ohne Mauer der Posten).
@@ -202,14 +225,7 @@ func warriorPost(w *World, side float64) (post, front float64) {
 		post = w.HubX + float64(side*10)
 		return post, post
 	}
-	barrier := wall
-	if l, ok := siteLine(w, wall); ok {
-		for _, s := range w.Sites {
-			if s.Kind == "gate" && s.X == l.Gate && s.State == "built" {
-				barrier = s
-			}
-		}
-	}
+	barrier := wall // die äußerste gebaute Mauer ist das Tor (B-652)
 	return barrier.X - float64(side*troops["warrior"].PostUnits), barrier.X
 }
 
@@ -221,6 +237,9 @@ func stepWarrior(w *World, t *Troop, dt float64) {
 		side = -1
 	}
 	post, front := warriorPost(w, side)
+	if ex, ok := escortPost(w, t); ok {
+		post, front = ex, ex // Begleitschutz: der Krieger geht zum Endboss (unit_escort.go)
+	}
 	from := t.X
 	if walkTo(t, post, dt) {
 		from = front

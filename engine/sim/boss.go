@@ -35,7 +35,7 @@ func spawnBoss(w *World, b *BossData, x float64) *Enemy {
 		hp, damage, players = g.EnemyHP, g.EnemyDamage, max(len(isl.Players()), 1)
 	}
 	e := spawnScaled(w, b.Base, x, b.HPFactor*hp, b.DamageFactor*damage)
-	e.HP = math.Round(e.HP * (1 + waves.PerExtraPlayer*float64(players-1)))
+	e.HP = math.Round(e.HP * (1 + *waves.BossHpPerExtraPlayer*float64(players-1)))
 	e.MaxHP = e.HP
 	e.Kind, e.Boss, e.Traits, e.Range = b.ID, true, nil, b.Range
 	e.Speed = b.Speed * math.Pow(waves.DepthScaling.Speed, float64(w.Biome.Depth))

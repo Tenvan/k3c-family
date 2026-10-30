@@ -81,3 +81,16 @@ func totalGold(w *World) int {
 	}
 	return n
 }
+
+// B-645: Das Morgengold wächst mit der Tiefe der Stufe (Wald: Grundeinkommen, tiefer: plus dawnGoldPerDepth je Tiefe).
+func TestMorgengoldNachTiefe(t *testing.T) {
+	for depth := 0; depth <= 4; depth++ {
+		w := &World{Biome: level.Biome{Depth: depth}}
+		if got, want := dawnGold(w), economy.DawnGoldPerPlayer+economy.DawnGoldPerDepth*depth; got != want {
+			t.Errorf("Tiefe %d: %d Gold, erwartet %d", depth, got, want)
+		}
+	}
+	if economy.DawnGoldPerDepth <= 0 {
+		t.Error("dawnGoldPerDepth muss positiv sein (Option b, wirtschaft.md § 8)")
+	}
+}

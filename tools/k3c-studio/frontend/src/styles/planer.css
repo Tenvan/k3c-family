@@ -1,33 +1,89 @@
-/* Seite Gebäude-Planer (B-462, WZ9.2): Matrix Hub-Stufe × Bauplatz, Abweichung der Regeltabelle; Farben aus theme.css. */
-.pl-page { display: flex; flex-direction: column; gap: 12px; }
-/* Live-Vorschau unten fest: die Seite füllt die Fensterhöhe, nur der mittlere Bereich (Befunde, Matrix, Bearbeiten) scrollt. */
-.pl-page { height: calc(100vh - 9.5rem); min-height: 28rem; }
-.pl-page > .wd-bar, .pl-page > .wd-live { flex: none; }
-.pl-middle { flex: 1 1 0; min-height: 6rem; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding-right: 4px; }
-.pl-findings { display: flex; flex-direction: column; gap: 4px; }
-.pl-scroll { overflow-x: auto; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); }
-.pl-matrix, .pl-diff-table { border-collapse: collapse; font-size: 12px; }
-.pl-matrix th, .pl-matrix td, .pl-diff-table th, .pl-diff-table td {
-  padding: 4px 8px; border-bottom: 1px solid var(--card-line); text-align: left; vertical-align: top;
+/* Seite Gebäude-Planer (B-462, WZ9.2, B-670): Werkzeugleiste, Chip-Leiste und Bühne oben, darunter Matrix und Inspektor
+   nebeneinander; Farben aus theme.css. Die Seite füllt die Fensterhöhe und scrollt nicht, Matrix und Inspektor je für sich. */
+.pl-page { display: flex; flex-direction: column; gap: 8px; height: calc(100vh - 9.5rem); min-height: 28rem; overflow: hidden; position: relative; }
+.pl-page > *, .pl-page > .wd-live { flex: none; }
+.pl-page > .wd-live .wd-live-body { gap: 6px; }
+
+/* Werkzeugleiste in einer Zeile; Hub-Stufe und Tageszeit hängt die Live-Vorschau ein (controlsHost) */
+.pl-top { position: relative; }
+.pl-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 6px 8px; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); }
+.pl-toolbar .wd-controls-host, .pl-toolbar .wd-controls-host > .wd-bar { display: contents; }
+.pl-toolbar .wd-progress { width: 6rem; }
+.pl-path code { color: var(--dim); }
+.pl-grow { flex: 1; }
+.pl-chip { margin: 0; }
+.pl-state { max-width: 22rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Befunde und Regeltabellen-Diff erst auf Klick: Panel über der Seite, verschiebt nichts */
+.pl-panel {
+  position: absolute; z-index: 30; left: 8px; right: 8px; top: calc(100% + 4px); max-height: 60vh; overflow: auto;
+  padding: 10px; border: 1px solid var(--card-line); border-radius: 8px; background: var(--color-panel-solid, #18191b); box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
 }
+.pl-findings, .pl-diff { display: flex; flex-direction: column; gap: 6px; }
+
+/* Gebäude über der Bühne (BuildingChips): Arten-Chips mit Farbe, darunter die Lageleiste mit einer Marke je Platz */
+.pl-chipbar { display: flex; flex-direction: column; gap: 4px; }
+.pl-kinds { display: flex; flex-wrap: wrap; gap: 4px 6px; }
+.pl-kindchip { display: inline-flex; }
+.pl-kind { margin: 0; gap: 5px; }
+.pl-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--kind); flex: none; }
+.pl-count { color: var(--dim); font-variant-numeric: tabular-nums; }
+.pl-kindchip[data-state='none'] .pl-kind { text-decoration: line-through; opacity: 0.55; }
+.pl-kindchip[data-state='none'] .pl-dot { background: transparent; box-shadow: inset 0 0 0 1.5px var(--kind); }
+.pl-strip {
+  position: relative; list-style: none; margin: 0; padding: 0; height: calc(var(--lanes, 1) * 11px + 6px);
+  border: 1px solid var(--card-line); border-radius: 6px; background: var(--card);
+}
+/* Marken zwischen den Randzahlen (je 28 px): --f ist der Anteil 0…1 der Spannweite, --lane die Spur */
+.pl-strip > li { position: absolute; left: calc(28px + (100% - 56px) * var(--f, 0)); top: calc(3px + var(--lane, 0) * 11px); }
+.rt-Button.pl-site {
+  margin: 0 0 0 -4px; padding: 0; width: 8px; min-width: 0; height: 9px; border-radius: 2px; background: var(--kind); cursor: pointer;
+}
+.rt-Button.pl-site:hover { outline: 1px solid var(--gray-12); }
+.rt-Button.pl-site[data-on] { outline: 2px solid #fff; outline-offset: 1px; z-index: 1; }
+.rt-Button.pl-site:disabled { background: transparent; box-shadow: inset 0 0 0 1px var(--kind); opacity: 0.4; cursor: default; }
+.pl-strip > .pl-strip-end { top: 50%; left: 4px; transform: translateY(-50%); font-size: 10px; color: var(--dim); }
+.pl-strip > .pl-strip-max { left: auto; right: 4px; }
+
+/* Unten: Matrix links, Inspektor als feste Spalte rechts */
+.pl-page > .pl-lower { flex: 1 1 0; min-height: 8rem; display: grid; grid-template-columns: minmax(18rem, var(--pl-split, 64%)) 8px minmax(15rem, 1fr); gap: 0; }
+.pl-lower > .pl-split { margin: 0; }
+/* position: relative fängt absolut gesetzte Bausteine (versteckte Beschriftungen) ab, sonst scrollt die ganze Seite */
+.pl-scroll { position: relative; overflow: auto; min-height: 0; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); }
+.pl-matrix, .pl-diff-table { border-collapse: collapse; font-size: 12px; }
+/* feste Spaltenbreiten: erste Spalte 14rem, alle Stufen-Spalten teilen den Rest gleich (die Wahl ändert nichts an der Breite) */
+.pl-matrix { table-layout: fixed; width: 100%; }
+.pl-matrix thead th:first-child, .pl-matrix tbody th[scope='row'] { width: 14rem; overflow: hidden; text-overflow: ellipsis; }
+.pl-matrix th, .pl-matrix td, .pl-diff-table th, .pl-diff-table td {
+  padding: 3px 6px; border-bottom: 1px solid var(--card-line); text-align: left; vertical-align: middle;
+}
+.pl-matrix thead th { position: sticky; top: 0; z-index: 1; background: var(--color-panel-solid, #18191b); }
+.pl-head { white-space: nowrap; }
+.pl-add { margin: 0 0 0 8px; }
 .pl-matrix th[scope='row'] { white-space: nowrap; font-weight: 500; }
 .pl-extra, .pl-depth { display: block; color: var(--dim); font-size: 11px; font-weight: 400; }
-.pl-source code { color: var(--dim); }
-.pl-cell { min-width: 5.5rem; }
-.pl-off { color: var(--dim); }
-.pl-on { background: color-mix(in srgb, #7bd389 10%, transparent); }
-.pl-from { background: color-mix(in srgb, #7bd389 26%, transparent); }
-.pl-chosen { outline: 1px solid #ffd166; outline-offset: -1px; }
-.pl-level { margin: 0; white-space: nowrap; }
-.pl-diff { display: flex; flex-direction: column; gap: 6px; }
+.pl-level { margin: 0; min-width: 1.8rem; }
+.pl-level[data-chosen] { background: var(--accent-a4); }
+.pl-cell { text-align: center; padding: 3px 4px; }
+.pl-box { display: inline-block; width: 18px; height: 14px; border-radius: 3px; border: 1px solid var(--card-line); vertical-align: middle; box-sizing: border-box; }
+.pl-on .pl-box { border-color: transparent; background: color-mix(in srgb, #7bd389 32%, transparent); }
+.pl-on.pl-from .pl-box { background: #7bd389; }
+.pl-cond .pl-box { box-shadow: inset 0 -3px 0 #ffd166; }
+.pl-chosen { background: color-mix(in srgb, #ffd166 8%, transparent); }
+.pl-matrix thead th.pl-chosen { box-shadow: inset 0 -2px 0 #ffd166; }
 .pl-ist { color: #ff8fa3; }
 .pl-soll { color: #7bd389; }
-/* Bearbeiten (WZ9.3): Zeile wählen, Felder der Zeile, Platz hinzufügen, Speichern. */
 .pl-row { margin: 0; height: auto; padding: 2px 4px; display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+.pl-selected th[scope='row'], .pl-selected td { background: color-mix(in srgb, var(--accent-9, #3e63dd) 16%, transparent); }
 .pl-selected th[scope='row'] { outline: 1px solid var(--accent-9); outline-offset: -1px; }
-.pl-editor, .pl-add { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 16px; padding: 8px; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); }
-.pl-field { display: flex; flex-direction: column; gap: 2px; font-size: 12px; color: var(--dim); }
-.pl-field .rt-TextFieldRoot { width: 7rem; }
-.pl-remove { display: flex; flex-direction: column; gap: 2px; }
-.pl-save { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.pl-fieldset { display: flex; flex-direction: column; gap: 12px; margin: 0; padding: 0; border: 0; min-width: 0; }
+
+/* Inspektor (PlannerInspector): kurze Labels, Feld rechts daneben */
+.pl-inspector { position: relative; display: flex; flex-direction: column; gap: 10px; min-height: 0; overflow-y: auto; padding: 8px; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); }
+.pl-fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+.pl-editor { display: flex; flex-direction: column; gap: 6px; }
+.pl-field { display: grid; grid-template-columns: minmax(0, 1fr) 5.5rem; align-items: center; gap: 6px; font-size: 12px; color: var(--dim); }
+.pl-field .rt-TextFieldRoot, .pl-field .rt-SelectTrigger { width: 100%; min-width: 0; }
+.pl-check { font-size: 12px; }
+.pl-remove { display: flex; flex-direction: column; gap: 2px; align-items: flex-start; }
+.pl-look:empty { display: none; }
+.pl-look .wd-card { padding: 6px; }
+.pl-layers { display: flex; flex-direction: column; gap: 4px; }

@@ -40,15 +40,15 @@ const tuneRange = 3
 func hints(in Insights) []Hint {
 	out := []Hint{}
 	for _, t := range worst(in) {
-		out = append(out, Hint{Target: t.label(), Light: LightRed, Text: redText(t), Why: whyText(t), Levers: t.Levers})
+		out = append(out, Hint{Target: t.label(), Light: LightRed, Text: redText(t), Why: whyText(t), Levers: t.Levers, Plans: t.Plans})
 	}
 	for _, t := range in.Targets {
 		switch t.Light {
 		case LightYellow:
-			out = append(out, Hint{Target: t.label(), Light: LightYellow, Levers: t.Levers, Why: whyText(t),
+			out = append(out, Hint{Target: t.label(), Light: LightYellow, Levers: t.Levers, Plans: t.Plans, Why: whyText(t),
 				Text: "Knapp an der Grenze: beim Tunen anderer Ziele im Blick behalten, erst bei Rot drehen."})
 		case LightGrey:
-			out = append(out, Hint{Target: t.label(), Light: LightGrey, Levers: []Lever{},
+			out = append(out, Hint{Target: t.label(), Light: LightGrey, Levers: []Lever{}, Plans: []LeverPlan{},
 				Text: "Läufe abgebrochen oder ohne Messwert: Seeds " + seedList(t.InvalidSeeds, 5) + " nachspielen, Fehler mit logs_errors suchen.",
 				Why:  fmt.Sprintf("%d ungültige Seeds; der Wert ist nicht belastbar.", len(t.InvalidSeeds))})
 		}
@@ -56,30 +56,32 @@ func hints(in Insights) []Hint {
 	return out
 }
 
+// redText: Richtung als Wort und die ersten zwei Stellschrauben; Zahlen zum Eintragen stehen in Plans.
 func redText(t TargetInsight) string {
-	dir := "zu hoch"
-	if t.Lower != nil && t.Value < *t.Lower {
-		dir = "zu niedrig"
+	dir := "Außerhalb des Korridors"
+	if w := t.word(); w != "" {
+		side := "unter"
+		if t.above() {
+			side = "über"
+		}
+		dir = strings.ToUpper(w[:1]) + w[1:] + " (Wert " + side + " dem Korridor)"
 	}
 	if len(t.Levers) == 0 {
-		return dir + ": kein Hebel hinterlegt (data/balance-hints.json), Ursache im Replay suchen."
+		return dir + ": keine Stellschraube hinterlegt (data/balance-hints.json), Ursache im Replay suchen."
 	}
 	parts := make([]string, 0, 2)
 	for _, l := range t.Levers[:min(2, len(t.Levers))] {
-		parts = append(parts, fmt.Sprintf("%s (%s%s)", l.Label, l.Direction, stepText(l.Step)))
+		parts = append(parts, l.Label)
 	}
-	return dir + ": " + strings.Join(parts, " oder ") + " probieren."
+	return dir + ". Eine dieser Stellschrauben probieren: " + strings.Join(parts, " oder ") + " (Zahlen darunter)."
 }
 
+// whyText: Messwert, Sollwert und Lage in Klartext, dazu der Vergleich mit der Baseline.
 func whyText(t TargetInsight) string {
-	s := fmt.Sprintf("%s bei Korridor %s", t.valueText(), t.boundsText())
-	if t.Distance != nil {
-		s += fmt.Sprintf(", Abstand %s %% der Korridorbreite", num(*t.Distance))
+	if t.TrendText == "" {
+		return t.Plain
 	}
-	if t.Trend != nil {
-		s += fmt.Sprintf(", Trend %s zur Baseline", signed(t.Trend.Delta))
-	}
-	return s + "."
+	return t.Plain + " " + t.TrendText
 }
 
 func signed(x float64) string {
@@ -106,6 +108,9 @@ func nextRun(in Insights, s Summary) NextRun {
 	if params := tuneParams(w); len(params) > 0 {
 		n.Steps = append(n.Steps, "Hebel abstimmen: "+strings.Join(params, ", ")+" (Suche über höchstens drei Schritte).")
 		n.Commands = append(n.Commands, tuneCommands(params, s.Seeds)...)
+	}
+	if c, ok := recommendations(in.LeverGroups); ok {
+		n.Commands = append([]Command{c}, n.Commands...)
 	}
 	switch {
 	case in.Pass && in.Counts[LightYellow] == 0:

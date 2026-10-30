@@ -25,7 +25,7 @@ func TestStandLaedtMitGespeicherterPlanungUndAnzahl(t *testing.T) {
 		t.Fatal(err)
 	}
 	// Die Standard-Welt hat weder Planung noch Anzahl: wer aus den aktuellen Daten baut, bekäme eine andere Stufe 0.
-	if cur := StandardWorld().Islands[0].CreateOptions(); cur.ChunkCounts[0] != 0 || len(cur.Planned[0]) != 0 {
+	if cur := StandardWorld().Islands[0].CreateOptions(); cur.ChunkCounts[0] != 0 || len(cur.Planned[0]) != 1 || cur.Planned[0][0].Kind != level.HarborKind {
 		t.Fatalf("Voraussetzung verletzt: die Daten der Standard-Welt tragen Planung oder Anzahl: %+v", cur)
 	}
 	loaded, err := FromIslandSave(save, 1)
@@ -50,7 +50,7 @@ func TestStandLaedtMitGespeicherterPlanungUndAnzahl(t *testing.T) {
 
 // Ein Stand ohne die Felder lädt in der Länge des Bioms ohne Planung, wie ältere Stände gebaut wurden.
 func TestStandOhneFelderLaedtReinenZufall(t *testing.T) {
-	isl, err := CreateIsland("alt", []int{0}, 1, CreateOptions{})
+	isl, err := CreateIsland("alt", []int{1}, 1, CreateOptions{})
 	if err != nil {
 		t.Fatal(err)
 	}

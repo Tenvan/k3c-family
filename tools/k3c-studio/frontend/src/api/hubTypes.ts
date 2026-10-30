@@ -12,19 +12,19 @@ export interface HubCell {
 }
 
 /** Herkunft einer Zeile: Liste bzw. Block in hub.json */
-export type HubSource = 'sites' | 'islandSites' | 'wallLines' | 'merchant';
+export type HubSource = 'sites' | 'islandSites' | 'sitePlacement' | 'merchant';
 
-/** Bauplatz der Matrix (Go: HubRow): Hub-Platz, Insel-Platz, Mauerlinie mit Turm, Tor oder Händler. */
+/** Bauplatz der Matrix (Go: HubRow): Hub-Platz, Insel-Platz, Baugrund der Zone 1 (Mauer mit Turm) oder Händler. */
 export interface HubRow {
-  /** kind@offset wie room.PreviewSiteKey, Linien line@k, Tore gate@k */
+  /** kind@offset wie room.PreviewSiteKey, Baugrund der Zone 1: zone1 */
   key: string;
-  /** Art aus hub.json; wall, gate, merchantBuy, merchantSell */
+  /** Art aus hub.json; wall (Baugrund), merchantBuy, merchantSell */
   kind: string;
   source: HubSource;
-  /** Eintrag in seiner Liste (sites, islandSites, wallUnits); Händler 0 */
+  /** Eintrag in seiner Liste (sites, islandSites; Baugrund 0); Händler 0 */
   index: number;
   hubLevel: number;
-  /** Mauerlinie bzw. Tor: Linie k; sonst 0 */
+  /** Baugrund der Zone 1: 1; sonst 0 */
   line: number;
   bothSides: boolean;
   towerUnits: number;

@@ -1,5 +1,4 @@
 import type { Tone } from '@webkit/atoms';
-import type { ListFilterConfig } from '@webkit/lib/listFilter';
 import type { SourceProgress, SourceProposal, SourceStatus } from '../api';
 
 /** Größe in Bytes („1,4 MB“, „86 kB“). */
@@ -18,24 +17,6 @@ export const downloadable = (s: SourceProposal): boolean => s.status === 'offen'
 export const usage = (s: SourceProposal): string => (s.status !== 'geladen' ? '–' : s.verwendet ? 'verwendet' : 'unverwendet');
 
 const PRIO = ['', 'hoch', 'mittel', 'niedrig'];
-
-/** Filter der Vorschlagsliste nach Quelle, Art, Slot, Lizenz, Status (B-601, B-599). */
-export const sourceFilter: ListFilterConfig<SourceProposal> = {
-  searchText: (s) => `${s.titel} ${s.slot} ${s.quelle} ${s.lizenz} ${s.urheber ?? ''} ${s.hinweis ?? ''}`,
-  dimensions: [
-    { key: 'quelle', label: 'Quelle', values: (s) => s.quelle },
-    { key: 'art', label: 'Art', values: (s) => s.art, valueLabel: (v) => (v === 'sound' ? 'Ton' : 'Grafik'), order: ['sound', 'grafik'] },
-    { key: 'slot', label: 'Slot', values: (s) => s.slot },
-    { key: 'lizenz', label: 'Lizenz', values: (s) => s.lizenz },
-    { key: 'status', label: 'Status', values: (s) => s.status, order: ['offen', 'geladen', 'verworfen', 'gesperrt'] },
-    { key: 'verwendet', label: 'Verwendung', values: (s) => (s.status === 'geladen' ? usage(s) : undefined) },
-  ],
-  sorts: [
-    { key: 'prio', label: 'Priorität', compare: (a, b) => a.prioritaet - b.prioritaet || a.titel.localeCompare(b.titel) },
-    { key: 'titel', label: 'Titel', compare: (a, b) => a.titel.localeCompare(b.titel) },
-    { key: 'groesse', label: 'Größe', compare: (a, b) => b.groesse - a.groesse },
-  ],
-};
 
 export const prioLabel = (n: number): string => PRIO[n] ?? String(n);
 
@@ -62,3 +43,23 @@ export const percent = (p: SourceProgress): number => (p.gesamt <= 0 ? 0 : Math.
 
 /** Läuft noch ein Download (wartet oder lädt)? */
 export const running = (jobs: readonly SourceProgress[]): boolean => jobs.some((j) => j.status === 'wartet' || j.status === 'laedt');
+
+export type PreviewKind = 'bild' | 'archiv' | 'ton';
+
+const IMAGE_EXT = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
+const ARCHIVE_EXT = ['zip', '7z', 'rar', 'tar', 'gz', 'tgz'];
+
+/** Endung einer Datei in Kleinschreibung, ohne Query und Anker ("" ohne Endung). */
+const extOf = (file: string): string => /\.([a-z0-9]+)$/i.exec(file.split(/[?#]/)[0])?.[1].toLowerCase() ?? '';
+
+/** Art der Vorschau: Ton bleibt Ton; bei Grafik zeigen nur Bild-Endungen ein Bild, Archive (.zip, .7z …) und Unbekanntes nicht. */
+export function previewKind(s: Pick<SourceProposal, 'art' | 'vorschau'>): PreviewKind {
+  if (s.art === 'sound') return 'ton';
+  return IMAGE_EXT.includes(extOf(s.vorschau ?? '')) ? 'bild' : 'archiv';
+}
+
+/** Endung eines Archivs für den Text „Archiv (zip)“ ("Archiv" ohne bekannte Endung). */
+export function archiveLabel(file: string): string {
+  const ext = extOf(file);
+  return ARCHIVE_EXT.includes(ext) ? `Archiv (${ext})` : 'Archiv';
+}

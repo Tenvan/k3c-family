@@ -64,19 +64,24 @@ func saveRatings(root string, r map[string]string) error {
 }
 
 // RateReport setzt die Bewertung eines vorhandenen Berichts; leer löscht sie.
-func RateReport(root, rel, rating string) error {
+func RateReport(root, rel, rating string) error { return RateReports(root, []string{rel}, rating) }
+
+// RateReports setzt die Bewertung mehrerer Berichte in einem Schritt (B-662); ein ungültiger Pfad lehnt alle ab.
+func RateReports(root string, rels []string, rating string) error {
 	if rating != "" && !slices.Contains(Ratings, rating) {
 		return fmt.Errorf("bewertung %q: erlaubt sind %s oder leer", rating, strings.Join(Ratings, ", "))
 	}
-	key, err := reportKey(root, rel)
+	keys, err := reportKeys(root, rels)
 	if err != nil {
 		return err
 	}
 	return updateRatings(root, func(r map[string]string) {
-		if rating == "" {
-			delete(r, key)
-		} else {
-			r[key] = rating
+		for _, key := range keys {
+			if rating == "" {
+				delete(r, key)
+			} else {
+				r[key] = rating
+			}
 		}
 	})
 }
@@ -94,11 +99,36 @@ func updateRatings(root string, fn func(map[string]string)) error {
 
 // DeleteReport löscht einen Bericht (balance-*.json oder tuning-*.json unter reports/) samt gleichnamigem .md und
 // seiner Bewertung; der Lauf-Ordner verschwindet nur, wenn er danach leer ist.
-func DeleteReport(root, rel string) error {
-	key, err := reportKey(root, rel)
+func DeleteReport(root, rel string) error { return DeleteReports(root, []string{rel}) }
+
+// DeleteReports löscht mehrere Berichte wie DeleteReport (B-662). Erst werden alle Pfade geprüft: ein ungültiger lehnt
+// den ganzen Aufruf ab, nichts ist gelöscht.
+func DeleteReports(root string, rels []string) error {
+	keys, err := reportKeys(root, rels)
 	if err != nil {
 		return err
 	}
+	var done []string
+	defer func() {
+		// Gelöschte Berichte verlieren ihre Bewertung; eine unlesbare ratings.json hält das Löschen nicht auf (die
+		// Liste zeigt sie ohne Bewertungen).
+		_ = updateRatings(root, func(r map[string]string) {
+			for _, key := range done {
+				delete(r, key)
+			}
+		})
+	}()
+	for _, key := range keys {
+		if err := removeReport(root, key); err != nil {
+			return err
+		}
+		done = append(done, key)
+	}
+	return nil
+}
+
+// removeReport löscht .json und .md eines geprüften Berichts und den Lauf-Ordner, wenn er danach leer ist.
+func removeReport(root, key string) error {
 	path, _ := ReportPath(root, key)
 	if err := os.Remove(path); err != nil {
 		return err
@@ -109,9 +139,25 @@ func DeleteReport(root, rel string) error {
 	if dir := filepath.Dir(path); filepath.Base(dir) != "reports" {
 		_ = os.Remove(dir) // nur ein leerer Ordner lässt sich entfernen
 	}
-	// Der Bericht ist weg; eine unlesbare ratings.json hält das Löschen nicht auf (die Liste zeigt sie ohne Bewertungen).
-	_ = updateRatings(root, func(r map[string]string) { delete(r, key) })
 	return nil
+}
+
+// reportKeys prüft alle Pfade mit reportKey, bevor etwas geschieht; doppelte zählen einmal.
+func reportKeys(root string, rels []string) ([]string, error) {
+	if len(rels) == 0 {
+		return nil, errors.New("keine Berichte gewählt")
+	}
+	var keys []string
+	for _, rel := range rels {
+		key, err := reportKey(root, rel)
+		if err != nil {
+			return nil, err
+		}
+		if !slices.Contains(keys, key) {
+			keys = append(keys, key)
+		}
+	}
+	return keys, nil
 }
 
 // reportKey prüft einen vorhandenen Bericht (balance-*.json, tuning-*.json unter reports/) und liefert seinen Pfad in

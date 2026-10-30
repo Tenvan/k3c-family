@@ -2,7 +2,7 @@
 
 - **Zweck:** Werte aller Gebäude: HP, Bauzeit, Kosten und Stufen 1 bis 5 mit gleicher Platzierung.
 - **Gelesen von:** Simulation (`engine/sim/data.go`), Level-Generator (`engine/level/ruins.go`), Gebäude-Logik (`engine/sim/building_*.go`)
-- **Wichtigste Werte:** `wall.levels.0.cost.gold`, `wall.levels.0.hp`, `tower.levels.0.cost.wood`, `gate.levels.1.cost.stone`, `stairsDown.costByDepth.1.stone`, `tower.archerSlots`, `barracks.troopLimit.base`, `farm.plantation.growSeconds`
+- **Wichtigste Werte:** `wall.levels.0.cost.gold`, `wall.levels.0.hp`, `tower.levels.0.cost.wood`, `wall.levels.1.cost.stone`, `stairsDown.costByDepth.1.stone`, `tower.archerSlots`, `barracks.troopLimit.base`, `nursery.plantation.growSeconds`
 - **Regeln:** `docs/rules/materialien-gebaeude.md`
 
 ## Aufbau
@@ -34,9 +34,9 @@
 | `workshop.craftSeconds.*` | Zahl | s | Herstellungszeit je Stück (Bogen, Schwert) | 10 |
 | `workshop.offers.*.kind` | Text | – | Angebot am Zahlziel (Handwerker, Schwert, Bergmann, Baumeister) | craftsman, sword, miner, builder |
 | `workshop.offers.*.dx` | Zahl | Units | Versatz des Angebots zum Gebäude | -4 bis 12 |
-| `farm.plantation.slots` | Ganzzahl | Plätze | Baum-Plätze der Plantage | 6 |
-| `farm.plantation.growSeconds` | Zahl | s | Nachwuchszeit eines Baums | 30 |
-| `farm.plantation.stripUnits` | Zahl | Units | Breite des Streifens um die Farm | 3 |
+| `nursery.plantation.slots` | Ganzzahl | Plätze | Baum-Plätze der Plantage | 6 |
+| `nursery.plantation.growSeconds` | Zahl | s | Nachwuchszeit eines Baums | 30 |
+| `nursery.plantation.stripUnits` | Zahl | Units | Breite des Streifens um die Baumschule | 3 |
 | `barracks.troopLimit.base` | Ganzzahl | Kämpfer | Kämpfer-Limit je Hub ohne Kaserne | 10 |
 | `barracks.troopLimit.perBuilding` | Ganzzahl | Kämpfer | Zusatzlimit je Kaserne | 10 |
 | `tavern.vagrants.perDawn` | Ganzzahl | Landstreicher | Neue Landstreicher je Morgen | 1 |
@@ -59,6 +59,6 @@ Mauer-, Turm- und Truppenwerte bestimmen direkt, ob die Burg die Nächte hält (
 - `buildings.json:wall.levels.0.cost.gold=8` – teurere erste Mauer.
 - `buildings.json:wall.levels.0.hp=400` – stabilere erste Mauer.
 - `buildings.json:tower.levels.0.cost.wood=40` – billigerer Turm.
-- `buildings.json:gate.levels.1.hp=600` – stabileres Stein-Tor.
+- `buildings.json:wall.levels.1.hp=600` – stabilere Steinmauer (die äußerste Mauer ist das Tor).
 - `buildings.json:stairsUp.costByDepth.1.wood=80` – billigere Treppe hoch in der Höhle.
 - `buildings.json:barracks.troopLimit.base=14` – höheres Kämpfer-Limit ohne Kaserne.

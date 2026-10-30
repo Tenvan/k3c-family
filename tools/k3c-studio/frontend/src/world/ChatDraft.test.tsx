@@ -7,6 +7,7 @@ import { backend } from '../api';
 import { ChatPanel } from '../chat/ChatPanel';
 import { setChatOpen } from '../chat/chatBridge';
 import { WorldPage } from './WorldPage';
+import { toMode } from './worldTesting';
 
 // WZ19.3 (B-488/AC-08), WZ21.2 (B-516) im DOM mit dem Mock-Backend: Nachrichten sind Welt-Aufträge; eine Antwort wird
 // mit „Als Entwurf laden“ geprüft und als Entwurf geladen, Fehler stehen am Entwurf, gespeichert wird nichts.
@@ -75,6 +76,7 @@ describe('Welt per Prompt füllen (WZ19.3/AC-08)', () => {
     await act(async () => button(host!, 'Als Entwurf laden').click());
     await settle();
     expect(field(host!, 'Name der Welt').value).toBe('Nordmeer');
+    await act(async () => button(host!, 'Insel 2 wählen').click());
     expect(field(host!, 'Name Insel 2').value).toBe('eisinsel');
     expect(notice(host!)).toContain('als Entwurf geladen');
     expect(host!.querySelector('.wd-error')).toBeNull();
@@ -89,9 +91,12 @@ describe('Welt per Prompt füllen (WZ19.3/AC-08)', () => {
     await act(async () => button(host!, 'Welt speichern').click());
     await settle();
     expect(button(host!, 'Welt speichern').disabled).toBe(true);
-    expect(button(host!, 'Entwurf verwerfen').disabled).toBe(true);
+    expect(button(host!, 'Verwerfen').disabled).toBe(true);
   });
 
+});
+
+describe('Welt per Prompt füllen: Prüfung, Fehler und Rückfrage (WZ19.3/AC-08)', () => {
   it('zeigt den Grund am Entwurf, wenn die Welt die Prüfung nicht besteht', async () => {
     await ask(host!, world([island('island1', [0, 1, 2, 3, 4]), island('insel3', [0, 1, 2])]));
     await act(async () => button(host!, 'Als Entwurf laden').click());
@@ -106,10 +111,11 @@ describe('Welt per Prompt füllen (WZ19.3/AC-08)', () => {
     await act(async () => button(host!, 'Als Entwurf laden').click());
     await flush();
     expect(notice(host!)).toContain('Antwort nicht lesbar');
-    expect(button(host!, 'Entwurf verwerfen').disabled).toBe(true);
+    expect(button(host!, 'Verwerfen').disabled).toBe(true);
   });
 
   it('fragt nach, bevor ein ungespeicherter Entwurf ersetzt wird', async () => {
+    await toMode(host!, 'Welt-Struktur');
     await typeInto(field(host!, 'Name der Welt'), 'Mein Entwurf');
     await ask(host!, world([island('island1', [0, 1, 2, 3, 4])]));
     const confirm = vi.fn().mockReturnValueOnce(false).mockReturnValueOnce(true);

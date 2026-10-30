@@ -114,7 +114,7 @@ func TestGoldenKampagneAusbau(t *testing.T) {
 	h := save.Hubs[0]
 	built, archers := 0, 0
 	for _, s := range h.Sites {
-		if s.State == "built" {
+		if s.State != "unpaid" { // gebaut oder bezahlt und im Bau: Mit den Preisen der Münzskala ist die Werkstatt früher bezahlt als ein Bauer frei ist
 			built++
 		}
 	}
@@ -132,6 +132,7 @@ func TestGoldenKampagneAusbau(t *testing.T) {
 // runGoldenKampagne spielt die Datei ab und liefert den gespeicherten Stand.
 func runGoldenKampagne(t *testing.T, path string, wantDepth int) json.RawMessage {
 	t.Helper()
+	goldenPurse(t)
 	f := loadCampaignAt(t, path)
 	c := CreateCampaign(f.Seed, "golden", f.CycleSpeed)
 	for range f.Players {

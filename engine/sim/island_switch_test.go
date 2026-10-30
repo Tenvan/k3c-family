@@ -16,7 +16,7 @@ func testIslands() (WorldDef, IslandDef) {
 	return WorldDef{ID: "test", Name: "Test", Islands: append(StandardWorld().Islands[:1:1], two)}, two
 }
 
-// gateIsland: erste Insel der Welt w mit Wald und Höhle, n Spieler am Wechselpunkt in der Höhle (tiefste Stufe),
+// gateIsland: erste Insel der Welt w mit Wald und Höhle, fertiges Schiff, n Spieler am Steg des Hafens (Wald),
 // Endboss besiegt.
 func gateIsland(t *testing.T, w WorldDef, n int) (*Island, []*Player) {
 	t.Helper()
@@ -25,10 +25,11 @@ func gateIsland(t *testing.T, w WorldDef, n int) (*Island, []*Player) {
 		t.Fatal(err)
 	}
 	*isl.Stock = Stock{}
+	steg := completeShip(t, isl)
 	var ps []*Player
 	for range n {
-		p := AddIslandPlayer(isl, 1)
-		p.X = isl.Stages[1].HubX
+		p := AddIslandPlayer(isl, 0)
+		p.X = steg
 		ps = append(ps, p)
 	}
 	isl.EndbossDefeated = true
@@ -87,7 +88,7 @@ func TestInselwechselAlleLebendenAmPunkt(t *testing.T) {
 		{"einer fehlt", 4, func(_ *Island, ps []*Player) { ps[3].X += 20 }, false},
 		{"einer tot", 2, func(_ *Island, ps []*Player) { ps[1].X += 20; ps[1].RespawnIn = 100 }, true},
 		{"einer frei", 2, func(_ *Island, ps []*Player) { ps[1].X += 20; ps[1].Free = true }, true},
-		{"einer in anderer Stufe", 2, func(isl *Island, _ []*Player) { AddIslandPlayer(isl, 0) }, false},
+		{"einer in anderer Stufe", 2, func(isl *Island, _ []*Player) { AddIslandPlayer(isl, 1) }, false},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {

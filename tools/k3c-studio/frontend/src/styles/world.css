@@ -1,9 +1,10 @@
 /* Seite Welt-Betrachter (B-460, B-477): eine Ansicht aus Chunk-Streifen und Live-Vorschau; sie wächst mit dem Inhalt und
    scrollt senkrecht mit der Seite (keine feste Fensterhöhe, nichts wird abgeschnitten). Höhen laut maximiert/verkleinert. */
 .wd-page { --wd-strip-h: 5.5rem; --wd-stage-min: 16rem; display: flex; flex-direction: column; gap: 12px; min-height: calc(100vh - 9.5rem); }
-.wd-page[data-maximized='true'] { --wd-strip-h: 8.5rem; --wd-stage-min: 22rem; }
-.wd-chunks { display: flex; flex-direction: column; gap: 8px; }
-.wd-viewbar { display: flex; flex-direction: column; gap: 4px; }
+.wd-page[data-mode='stufe'] { --wd-strip-h: 4rem; }
+.wd-page[data-maximized='true'] { --wd-stage-min: 22rem; }
+.wd-chunks { display: flex; flex-direction: column; align-items: stretch; gap: 6px; }
+.wd-viewbar { gap: 6px; }
 .wd-jumps { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-left: 8px; }
 .wd-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .wd-grow { flex: 1; }
@@ -48,29 +49,29 @@
 .wd-colors { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
 .wd-colors li { display: flex; align-items: center; gap: 8px; }
 .wd-badge { display: inline-block; width: 14px; height: 14px; border-radius: 50%; }
-/* feste Höhe: Phaser misst den Elternknoten (Scale.RESIZE); ohne Höhe wüchse die Bühne mit ihrer Leinwand ohne Ende */
-.wd-monarch-stage { display: flex; flex-direction: column; height: 28rem; }
+/* Bühne über die Resthöhe der Seite (B-671, wie .wd-live), mindestens 28rem; Basis 0: die Leinwand vergrößert sie nie */
+.wd-monarch-stage { flex: 1 1 0; display: flex; flex-direction: column; min-height: 28rem; }
 .wd-monarch .wd-stage { flex: 1 1 0; min-height: 0; }
-/* zweispaltig: Skills links, Monarchen rechts; schmal untereinander (B-502) */
-.wd-monarch { display: grid; grid-template-columns: minmax(18rem, 26rem) minmax(0, 1fr); gap: 16px; align-items: start; }
-.wd-monarch-skills { min-width: 0; overflow-x: auto; } /* die Tabelle überlappte sonst die Monarchen-Spalte */
-.wd-monarch-main { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-@media (max-width: 900px) { .wd-monarch { grid-template-columns: minmax(0, 1fr); } .wd-monarch-main { order: -1; } }
+/* Monarchen links, Skills-Panel rechts (standardmäßig zu, B-671); schmal überlagert das Panel die Bühne */
+.wd-monarch { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; position: relative; min-height: 0; }
+.wd-monarch[data-panel='open'] { grid-template-columns: minmax(0, 1fr) auto; }
+.wd-monarch-main { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+@container (max-width: 900px) { .wd-monarch, .wd-monarch[data-panel='open'] { grid-template-columns: minmax(0, 1fr); } .wd-monarch .wd-skill-panel { position: absolute; top: 0; right: 0; bottom: 0; z-index: 2; } }
 
 .wd-skills { border-collapse: collapse; margin-top: 4px; }
-.wd-skills th, .wd-skills td { padding: 2px 10px; text-align: left; border-bottom: 1px solid var(--gray-5); font-size: 0.8rem; }
+.wd-skills th, .wd-skills td { padding: 1px 8px; text-align: left; border-bottom: 1px solid var(--gray-5); font-size: 0.8rem; }
+.wd-skills tr[aria-selected='true'] td { background: var(--accent-a3); }
 .wd-skill-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; border: 1px solid var(--gray-7); }
 
 /* Gegner-Seite (B-464, WZ11) */
-.wd-cards { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.wd-chunks > *, .wd-card > *, .wd-panel > * { min-width: 0; max-width: 100%; } /* der breite Streifen darf die Karte nie aufweiten */
 .wd-card { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; border-bottom: 1px solid var(--gray-5); padding: 2px 0; }
 .wd-traits { display: inline-flex; gap: 6px; flex-wrap: wrap; }
 .wd-trait { font-size: 0.75rem; color: var(--gray-11); }
-.wd-gegner .wd-stage { min-height: 22rem; }
 .wd-boss { display: flex; flex-direction: column; gap: 2px; }
 
 /* Editor für geplante Chunks (B-461, WZ8.5) */
-.wd-plan { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.wd-plan { display: flex; flex-direction: column; align-items: stretch; gap: 6px; }
 .wd-chunklist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .wd-planned { border: 1px solid var(--gray-6); border-radius: 6px; padding: 6px 8px; display: flex; flex-direction: column; gap: 4px; }
 .wd-object { display: flex; align-items: center; gap: 8px; margin-left: 1.5rem; }
@@ -127,12 +128,6 @@
 /* Klick auf einen Chunk oder einen Eintrag der Planungsliste springt dorthin (B-485) */
 .wd-strip .wd-chunk, .wd-planned { cursor: pointer; }
 
-/* Die Live-Vorschau schließt unmittelbar an den Chunk-Streifen an (er liegt wie die HUD-Leiste im Spiel über der Welt); Legende,
-   Planung und Start folgen darunter. */
-.wd-page > * { order: 1; }
-.wd-page > .wd-chunks, .wd-page > .wd-live { order: 0; }
-.wd-page > .wd-chunks { margin-bottom: -12px; }
-.wd-page > .wd-live { flex: none; } /* die Höhe bestimmt der Zoom, kein Auffüllen der Fensterhöhe */
 .wd-legend-block { display: flex; flex-direction: column; gap: 4px; }
 
 /* Baustufe und Zustand je Platz im Gebäude-Baum */
@@ -140,7 +135,7 @@
 .wd-group-items li { display: flex; flex-direction: column; gap: 2px; }
 
 /* Unten zwei Spalten: links Welten- und Inselstruktur, rechts der Baum aus geplanten Chunks und Gebäuden mit Zustand je Platz. */
-.wd-columns { display: grid; grid-template-columns: minmax(18rem, 1fr) minmax(24rem, 1.4fr); gap: 16px; align-items: start; }
+.wd-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 16px; align-items: start; }
 .wd-struct, .wd-tree { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .wd-tree .wd-buildings { flex-direction: column; flex-wrap: nowrap; }
 .wd-tree .wd-group-items { flex-direction: column; max-width: none; }
@@ -148,4 +143,65 @@
 .wd-structure ul { margin-left: 1.2rem; }
 .wd-node { margin: 0; justify-content: flex-start; }
 .wd-controls-host:empty { display: none; }
-@media (max-width: 900px) { .wd-columns { grid-template-columns: 1fr; } }
+/* Umbruch nach der Breite der Seite, nicht des Fensters: der Chat belegt rechts ca. 380 px (B-663) */
+.wd-root { container-type: inline-size; min-width: 0; }
+@container (max-width: 1100px) { .wd-columns { grid-template-columns: minmax(0, 1fr); } }
+
+/* Kopf und Rückfrage (B-664) */
+.wd-head { display: flex; flex-direction: column; gap: 6px; padding-bottom: 8px; border-bottom: 1px solid var(--card-line); }
+.wd-sep { color: var(--dim); }
+.wd-save { margin-left: auto; justify-content: flex-end; min-width: 0; }
+.wd-changes { white-space: nowrap; }
+.wd-guard { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--orange-8, #ffa057); border-radius: 8px; background: var(--card); }
+.wd-card { display: flex; flex-direction: column; align-items: stretch; gap: 6px; padding: 10px; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); min-width: 0; }
+.wd-menu { position: relative; display: inline-block; }
+.wd-menu > summary { cursor: pointer; list-style: none; padding: 4px 8px; border: 1px solid var(--card-line); border-radius: 6px; user-select: none; }
+.wd-menu > summary::-webkit-details-marker { display: none; }
+.wd-menu-body { position: absolute; right: 0; top: calc(100% + 4px); z-index: 20; display: flex; flex-direction: column; gap: 6px; min-width: 16rem; padding: 8px; border: 1px solid var(--card-line); border-radius: 8px; background: var(--color-panel-solid, #18191b); }
+.wd-menu-body.wd-jumps { margin: 0; flex-direction: row; flex-wrap: wrap; max-width: 22rem; }
+.wd-launch { min-width: 0; }
+
+/* Modus Stufe bearbeiten: links Navigator, Werkzeugleiste und Live-Vorschau, rechts der Inspektor (B-665) */
+.wd-stage-mode { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 24rem); gap: 12px; align-items: start; }
+.wd-stage-main { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.wd-toolbar { padding: 6px 8px; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); }
+.wd-toolbar .wd-controls-host, .wd-toolbar .wd-controls-host > .wd-bar { display: contents; }
+.wd-inspector { display: flex; flex-direction: column; align-items: stretch; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); min-width: 0; }
+.wd-tabs { display: flex; gap: 4px; padding: 0 8px; border-bottom: 1px solid var(--card-line); }
+.wd-tab { margin: 0; border-radius: 0; border-bottom: 2px solid transparent; }
+.wd-tab[data-on='true'] { border-bottom-color: var(--accent-9, #9eb1ff); }
+.wd-panel { display: flex; flex-direction: column; align-items: stretch; gap: 10px; padding: 10px; min-width: 0; }
+.wd-panel[hidden] { display: none; }
+.wd-layers { display: flex; flex-direction: column; gap: 4px; }
+.wd-chips-row { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+.wd-kindname { color: var(--dim); }
+.wd-planned { margin: 0; }
+@container (max-width: 900px) { .wd-stage-mode { grid-template-columns: minmax(0, 1fr); } }
+
+/* Modus Welt-Struktur (B-664) */
+.wd-islands { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.wd-island { display: flex; flex-direction: column; gap: 4px; padding: 6px 8px; border: 1px solid var(--card-line); border-radius: 8px; }
+.wd-island[data-selected='true'] { border-color: var(--accent-9, #3e63dd); background: color-mix(in srgb, var(--accent-9, #3e63dd) 12%, transparent); }
+.wd-pick-island { margin: 0; justify-content: flex-start; }
+.wd-chips { display: flex; gap: 3px; }
+.wd-chip { width: 22px; height: 6px; border-radius: 3px; background: var(--gray-8, #5a6169); }
+.wd-chip[data-depth='0'] { background: #3dd68c; } .wd-chip[data-depth='1'] { background: #8b8d98; } .wd-chip[data-depth='2'] { background: #ffa057; }
+.wd-chip[data-depth='3'] { background: #9eb1ff; } .wd-chip[data-depth='4'] { background: #b388ff; }
+.wd-stage-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: 8px; }
+.wd-stage-card { display: flex; flex-direction: column; gap: 4px; padding: 8px; border: 1px solid var(--card-line); border-top: 3px solid var(--gray-8, #5a6169); border-radius: 8px; }
+.wd-stage-card[data-depth='0'] { border-top-color: #3dd68c; } .wd-stage-card[data-depth='1'] { border-top-color: #8b8d98; } .wd-stage-card[data-depth='2'] { border-top-color: #ffa057; }
+.wd-stage-card[data-depth='3'] { border-top-color: #9eb1ff; } .wd-stage-card[data-depth='4'] { border-top-color: #b388ff; }
+
+/* Gebäude-Zustände im Inspektor (B-666) */
+.wd-buildings-inspector { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.wd-hint { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px; background: color-mix(in srgb, var(--accent-9, #3e63dd) 14%, transparent); }
+.wd-hint > :first-child { flex: 1; }
+.wd-buildings-inspector .wd-buildings { flex-direction: column; flex-wrap: nowrap; gap: 4px; }
+.wd-buildings-inspector .wd-group { width: 100%; box-sizing: border-box; }
+.wd-buildings-inspector .wd-group-head { flex-wrap: wrap; }
+.wd-summary { margin-left: auto; white-space: nowrap; }
+.wd-sites { list-style: none; margin: 6px 0 2px; padding: 6px 0 0; border-top: 1px solid var(--card-line); display: flex; flex-wrap: wrap; gap: 4px; }
+.wd-site { position: relative; min-width: 2.6rem; overflow: hidden; margin: 0; }
+.wd-site[data-unbuilt='true'] { border: 1px dashed var(--gray-8, #5a6169); }
+.wd-hpbar { position: absolute; left: 0; bottom: 0; height: 3px; background: var(--green-9, #3dd68c); }
+.wd-site[data-unbuilt='true'] .wd-hpbar { display: none; }

@@ -34,9 +34,8 @@ func TestCreateIslandAusSiebenStufenKandidat(t *testing.T) {
 		t.Fatal(err)
 	}
 	w := isl.Stages[0]
-	n := len(h.WallLines.WallUnits)
-	if len(w.Level.Lines) != 2*n || w.Level.Lines[n-1].Wall != w.HubX-h.WallLines.WallUnits[n-1] {
-		t.Fatalf("Linien nicht aus dem Kandidaten: %+v", w.Level.Lines)
+	if len(w.Level.Sites) == 0 {
+		t.Fatal("keine Mauer- und Turm-Plätze im Level")
 	}
 	if s := siteOfKind(w, "smithy"); s == nil || siteHubLevel(w, s) != 6 {
 		t.Errorf("Schmiede aus dem Kandidaten mit Hub-Stufe 6 erwartet: %+v", s)
@@ -69,7 +68,7 @@ func TestCreateIslandKandidatGleichEingebettet(t *testing.T) {
 	}
 	for i := range plain.Stages {
 		a, b := plain.Stages[i], cand.Stages[i]
-		if !slices.Equal(siteSpecsOf(a), siteSpecsOf(b)) || !slices.Equal(a.Level.Lines, b.Level.Lines) {
+		if !slices.Equal(siteSpecsOf(a), siteSpecsOf(b)) || !slices.Equal(a.Level.Sites, b.Level.Sites) {
 			t.Errorf("Stufe %d: Kandidat = eingebettete hub.json baut anders", i)
 		}
 	}
@@ -105,11 +104,11 @@ func TestCreateIslandKopiertDenKandidaten(t *testing.T) {
 	}
 	before := len(isl.Stages[0].Sites)
 	h.Sites = nil
-	h.WallLines.WallUnits[0] = 1
+	h.SitePlacement.Zone1WallUnits = 1
 	if got := len(isl.Stages[0].Sites); got != before {
 		t.Fatalf("Plätze der Welt: %d statt %d", got, before)
 	}
-	if hubOf(isl.Stages[0]).WallLines.WallUnits[0] == 1 || len(hubOf(isl.Stages[0]).Sites) == 0 {
+	if hubOf(isl.Stages[0]).SitePlacement.Zone1WallUnits == 1 || len(hubOf(isl.Stages[0]).Sites) == 0 {
 		t.Fatal("die Welt liest den Kandidaten des Aufrufers")
 	}
 }
@@ -148,21 +147,13 @@ func TestCreateWorldWithKandidat(t *testing.T) {
 	}
 }
 
-// WZ24.3 (B-479/AC-04): Die geplanten Chunks der Welt werden gegen die Linien des Kandidaten mitgeprüft; eine Linie, die
-// eine Ader auf einen Bauplatz rückt, wird mit Insel, Tiefe und Platz abgelehnt (Beispiel aus B-462: Linie 5 bei 126).
+// WZ24.3 (B-479/AC-04): Die geplanten Chunks der Welt werden bei der Hub-Prüfung mitgeprüft; die eingebetteten Daten sind gültig.
 func TestHubPruefungSchliesstGeplanteChunksEin(t *testing.T) {
 	world, err := parseTestWorld(`,"depths":[0,1,4],"plannedChunks":{"1":[{"slot":2,"kind":"cavern","objects":[{"kind":"stoneVein","at":36}]}]}`)
 	if err != nil {
 		t.Fatal(err)
 	}
-	h := cloneHub(&hub)
-	h.WallLines.WallUnits = []float64{44, 64, 84, 104, 124}
-	if f := validatePlanned(world, h); len(f) != 0 {
-		t.Fatalf("Linie 5 bei 124 abgelehnt: %v", f)
-	}
-	h.WallLines.WallUnits = []float64{44, 64, 84, 104, 126}
-	f := validatePlanned(world, h)
-	if len(f) != 1 || f[0].Rule != RulePlanned || f[0].Site != "Insel a" || !strings.Contains(f[0].Detail, "Tiefe 1") || !strings.Contains(f[0].Detail, "Platz +2") {
-		t.Errorf("Befund %v", f)
+	if f := validatePlanned(world, cloneHub(&hub)); len(f) != 0 {
+		t.Fatalf("gültige Planung abgelehnt: %v", f)
 	}
 }

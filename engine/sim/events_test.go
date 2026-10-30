@@ -179,6 +179,7 @@ func TestEventsMuenzeAufgehobenVonSpieler1(t *testing.T) {
 func TestEventsMuenzeGegebenAnBauplatz(t *testing.T) {
 	w := quietWorld(t)
 	p := AddPlayer(w)
+	clearNodes(w)
 	wall := leftWall(t, w)
 	wall.State, wall.HP = "unpaid", 0
 	p.X, p.Gold = wall.X, 10

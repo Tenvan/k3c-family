@@ -24,6 +24,8 @@ async function mount(): Promise<HTMLElement> {
   root = createRoot(host);
   await act(async () => root!.render(<Theme><WorldPage /></Theme>));
   await flush();
+  await act(async () => button(host!, 'Welt-Struktur').click()); // Welt anlegen und Inseln bearbeiten gehört in diesen Modus (B-664)
+  await flush();
   return host;
 }
 
@@ -31,8 +33,8 @@ const button = (h: HTMLElement, label: string) => [...h.querySelectorAll('button
 /** Angezeigte Welt und die id der gewählten Welt im Backend */
 const worldShown = (h: HTMLElement) => selectedText(h, 'Welt');
 const activeWorld = async () => (await backend.planWorlds()).active;
-/** Inseln der gewählten Welt (Baum der Weltstruktur, gleiche Quelle wie die Auswahl „Insel“) */
-const islands = (h: HTMLElement) => h.querySelectorAll('.wd-structure > li').length;
+/** Inseln der gewählten Welt (Liste des Modus Welt-Struktur) */
+const islands = (h: HTMLElement) => h.querySelectorAll('.wd-islands > li').length;
 
 async function typeIn(el: HTMLInputElement, value: string) {
   Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(el, value);
@@ -42,6 +44,7 @@ async function typeIn(el: HTMLInputElement, value: string) {
 afterEach(async () => {
   act(() => root?.unmount());
   host?.remove();
+  localStorage.removeItem('k3c-studio.world.mode');
   for (const w of (await backend.planWorlds()).worlds) if (w.id !== 'standard') await backend.planWorldRemove(w.id);
   await backend.planWorldSelect('standard');
 });

@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"regexp"
 	"slices"
+	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -153,6 +155,14 @@ func TestAuswahlWieGo(t *testing.T) {
 	if got := list("GRADES"); !slices.Equal(got, grades) {
 		t.Errorf("GRADES = %v, Go: %v", got, grades)
 	}
+	worlds, err := balance.Worlds()
+	if err != nil {
+		t.Fatal(err)
+	}
+	slices.Sort(worlds)
+	if got := list("WORLDS"); !slices.Equal(got, worlds) {
+		t.Errorf("WORLDS = %v, Go: %v", got, worlds)
+	}
 }
 
 // B-632/AC-05, AC-06: Auswertung lesen; „HTML-Bericht öffnen“ schreibt .md/.html eines alten Berichts und öffnet die Datei.
@@ -184,5 +194,122 @@ func TestBalanceAuswertungUndHTML(t *testing.T) {
 	}
 	if _, err := a.BalanceInsights("reports/tuning-1.json"); err == nil {
 		t.Error("tuning-*.json darf keine Auswertung liefern")
+	}
+}
+
+// B-640/AC-04: Die Oberfläche bekommt die gesicherten Basis-Läufe samt Spec des Laufs.
+func TestBalanceBaselinesListetGesicherte(t *testing.T) {
+	a := balanceApp(t, make(chan struct{}))
+	if list, err := a.BalanceBaselines(); err != nil || list == nil || len(list) != 0 {
+		t.Fatalf("leer: %#v %v", list, err)
+	}
+	dir := filepath.Join(a.root, "reports", "simtest-run-1")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	report := filepath.Join(dir, "balance-1.json")
+	if err := os.WriteFile(report, []byte(`{"version":1,"seeds":1,"pass":true,"targets":[{"name":"Endboss","measure":"endbossDefeated","kind":"share","players":2,"bot":"coop2","depth":0,"days":40,"value":100,"status":"ok","pass":true}]}`), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := balance.SaveBaseline(a.root, "M1", report, []byte(`{"bot":"coop2","days":40}`), false); err != nil {
+		t.Fatal(err)
+	}
+	list, err := a.BalanceBaselines()
+	if err != nil || len(list) != 1 || list[0].Name != "M1" || !strings.Contains(string(list[0].Spec), `"coop2"`) {
+		t.Fatalf("Liste: %+v %v", list, err)
+	}
+}
+
+// balanceEvents sammelt die Ereignisse der Balancing-Seite einer App.
+type balanceEvents struct {
+	mu   sync.Mutex
+	list []string // „name“ bzw. „balance:runs <id> <zustand>“
+}
+
+func (e *balanceEvents) has(want string) bool {
+	e.mu.Lock()
+	defer e.mu.Unlock()
+	return slices.Contains(e.list, want)
+}
+
+func (e *balanceEvents) wait(t *testing.T, want string) {
+	t.Helper()
+	for range 500 {
+		if e.has(want) {
+			return
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	e.mu.Lock()
+	defer e.mu.Unlock()
+	t.Fatalf("Ereignis %q fehlt: %q", want, e.list)
+}
+
+// B-662/AC-04: Lauf- und Berichts-Änderungen erzeugen die Ereignisse balance:runs und balance:reports auf dem Bus.
+func TestBalanceEreignisse(t *testing.T) {
+	hold := make(chan struct{})
+	a := balanceApp(t, hold)
+	ev := &balanceEvents{}
+	a.emit = func(_ context.Context, name string, data ...any) {
+		ev.mu.Lock()
+		defer ev.mu.Unlock()
+		if info, ok := data[0].(simrun.Info); ok && name == evBalanceRuns {
+			name += " " + info.ID + " " + info.State
+		}
+		ev.list = append(ev.list, name)
+	}
+	run, err := a.BalanceStart(simrun.Spec{Seeds: 1, Label: "Ereignis"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	ev.wait(t, evBalanceRuns+" "+run.ID+" "+simrun.Running)
+	close(hold)
+	ev.wait(t, evBalanceReports)
+	ev.wait(t, evBalanceRuns+" "+run.ID+" "+simrun.Done)
+
+	reports, err := a.BalanceReports()
+	if err != nil || len(reports) != 1 || reports[0].Label != "Ereignis" || reports[0].RunID != run.ID {
+		t.Fatalf("Berichte: %+v %v", reports, err)
+	}
+	ev.mu.Lock()
+	ev.list = nil
+	ev.mu.Unlock()
+	if err := a.BalanceReportsRate([]string{reports[0].Path}, "gut"); err != nil {
+		t.Fatal(err)
+	}
+	ev.wait(t, evBalanceReports)
+}
+
+// B-662/AC-02, AC-03: Sammel-Löschen lehnt fremde Pfade ab; „Als Baseline sichern“ nennt den Grund und sichert einen
+// durchgelaufenen Bericht unter reports/baseline/<name>/.
+func TestBalanceSammelUndBaseline(t *testing.T) {
+	a := balanceApp(t, nil)
+	rel := "reports/simtest-run-5/balance-1.json"
+	dir := filepath.Join(a.root, "reports", "simtest-run-5")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	body := `{"version":1,"seeds":1,"pass":true,"targets":[{"name":"Endboss","measure":"endbossDefeated","kind":"share","players":2,"bot":"coop2","depth":0,"days":40,"value":100,"status":"ok","pass":true}]}`
+	if err := os.WriteFile(filepath.Join(dir, "balance-1.json"), []byte(body), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := a.BalanceReportsDelete([]string{rel, "../go.mod"}); err == nil {
+		t.Error("fremder Pfad angenommen")
+	}
+	if _, err := os.Stat(filepath.Join(dir, "balance-1.json")); err != nil {
+		t.Errorf("Bericht trotz Ablehnung gelöscht: %v", err)
+	}
+	if _, err := a.BalanceSaveBaseline(rel, "../M1"); err == nil {
+		t.Error("ungültiger Name angenommen")
+	}
+	bi, err := a.BalanceSaveBaseline(rel, "M1")
+	if err != nil || bi.Name != "M1" || bi.Run != "simtest-run-5" {
+		t.Fatalf("Baseline: %+v %v", bi, err)
+	}
+	if list, _ := a.BalanceBaselines(); len(list) != 1 || list[0].Name != "M1" {
+		t.Errorf("Baselines: %+v", list)
+	}
+	if err := a.BalanceReportsDelete([]string{rel}); err != nil {
+		t.Fatal(err)
 	}
 }

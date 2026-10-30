@@ -61,6 +61,9 @@ func wiederholungenAufloesen(b *building) error {
 	if b.Bausteine, err = aufloesen(b.ID, b.Bausteine, rasterVon(*b)); err != nil {
 		return err
 	}
+	if b.Stufe1, err = aufloesen(b.ID, b.Stufe1, rasterVon(*b)); err != nil {
+		return fmt.Errorf("stufe1: %w", err)
+	}
 	for i := range b.Stufen {
 		if b.Stufen[i].Zusaetze, err = aufloesen(b.ID, b.Stufen[i].Zusaetze, rasterVon(*b)); err != nil {
 			return fmt.Errorf("stufe %d: %w", b.Stufen[i].Stufe, err)

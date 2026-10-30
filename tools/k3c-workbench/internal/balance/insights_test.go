@@ -1,6 +1,7 @@
 package balance
 
 import (
+	"encoding/json"
 	"os"
 	"slices"
 	"strings"
@@ -68,7 +69,7 @@ func TestInsightsTexte(t *testing.T) {
 	if len(in.Strengths) == 0 || len(in.Weaknesses) == 0 || !strings.HasPrefix(in.Weaknesses[0], "Hub-Stufe 2") {
 		t.Errorf("Stärken %q, Schwächen %q", in.Strengths, in.Weaknesses)
 	}
-	if len(in.Hints) != 6 || in.Hints[0].Light != LightRed || !strings.Contains(in.Hints[0].Text, "zu niedrig") {
+	if len(in.Hints) != 6 || in.Hints[0].Light != LightRed || !strings.Contains(in.Hints[0].Text, "Zu niedrig") {
 		t.Errorf("Hinweise: %+v", in.Hints)
 	}
 }
@@ -172,5 +173,22 @@ func TestHebelBereich(t *testing.T) {
 	}
 	if _, ok := (Lever{Path: "buildings.json:fehlt.hp", Direction: "-", Step: 0.1}).tuneParam(); ok {
 		t.Error("unbekannter Pfad darf keinen Bereich liefern")
+	}
+}
+
+// BS3.4: Ein Ziel ohne Eintrag in balance-hints.json (neue Kennzahl) darf keine Hebel als null melden; die Oberfläche
+// liest `levers.length` und stürzte sonst beim Öffnen des Berichts ab.
+func TestHebelNieNull(t *testing.T) {
+	s := fixture(t)
+	for i := range s.Targets {
+		s.Targets[i].Measure = "ohneHinweise" // kein Eintrag in den Hinweisen
+	}
+	in := BuildInsights(s, nil, testHints(t), Meta{})
+	raw, err := json.Marshal(in)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(raw), `"levers":null`) {
+		t.Errorf("levers:null im Bericht der Oberfläche")
 	}
 }

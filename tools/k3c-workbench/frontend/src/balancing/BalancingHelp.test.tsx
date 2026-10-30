@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { pickValue } from '@webkit/testing/select';
 import { backend } from '../api';
 import { BalancingPage } from './BalancingPage';
-import { appendLine, EXAMPLES, FIELD_HELP, formFromExample, rangeAround, resizeMix, SELECT_HELP, type HelpKey } from './help';
+import { appendLine, EXAMPLES, FIELD_HELP, formFromExample, rangeAround, resizeMix, type HelpKey } from './help';
 import { EMPTY_FORM, specFromForm } from './spec';
 
 // WZ28.10/AC-10 (B-609): jedes Feld hat Hilfetext und Hilfe-Knopf, Beispiele lassen sich übernehmen.
@@ -26,6 +26,9 @@ async function mount(): Promise<HTMLElement> {
   root = createRoot(host);
   act(() => root!.render(<Theme><BalancingPage /></Theme>));
   await flush();
+  // B-659: Das Formular steht im Detail und öffnet mit „Neuer Lauf“ in der Werkzeugleiste.
+  await act(async () => [...host.querySelectorAll('button')].find((b) => b.textContent?.trim() === 'Neuer Lauf')!.click());
+  await flush();
   return host;
 }
 
@@ -38,10 +41,10 @@ async function until(ok: () => boolean, ms = 5000) {
   expect(ok()).toBe(true);
 }
 
-/** Beispiel übernehmen: Popup „Beispiele“ öffnen, Knopf des Beispiels klicken. */
+/** Beispiel übernehmen: Ausgangspunkt „Beispiel“ wählen, dann den Eintrag. */
 async function example(host: HTMLElement, name: string) {
-  await click(buttonText(host, 'Beispiele …'));
-  await click(byLabel(document, `Beispiel übernehmen: ${name}`));
+  await click(host.querySelector<HTMLElement>('[aria-label="Ausgangspunkt"] [data-value="beispiel"]')!);
+  await pickValue(host, 'Eintrag des Ausgangspunkts', name);
 }
 
 async function click(el: HTMLElement) {
@@ -56,36 +59,38 @@ afterEach(() => {
 });
 
 describe('Balancing-Hilfen', () => {
-  it('jedes Feld hat Hilfe-Knopf, freie Felder dazu einen Hilfetext; der Knopf öffnet das Popup', async () => {
+  it('jedes Feld hat einen Hilfe-Knopf ohne Hilfetext darunter; der Knopf öffnet das Popup', async () => {
     const host = await mount();
-    await example(host, 'Mauerkosten abstimmen'); // Abstimmen an: alle Felder sichtbar
-    for (const [key, h] of Object.entries(FIELD_HELP)) {
+    await click(host.querySelector<HTMLElement>('[aria-label="Welt"] [data-value="standard"]')!);
+    await click(host.querySelector<HTMLElement>('[aria-label="Seeds"] [data-value="liste"]')!);
+    await example(host, 'Mauerkosten abstimmen'); // Abstimmen an: Modus und Budget sichtbar
+    for (const key of ['world', 'grade', 'days', 'players', 'bot', 'seeds', 'baseline', 'label', 'mode', 'budget'] as HelpKey[]) {
       const box = host.querySelector(`[data-help="${key}"]`);
       expect(box, key).not.toBeNull();
-      if (SELECT_HELP.includes(key as HelpKey)) expect(box!.textContent, key).not.toContain(h.hint);
-      else expect(box!.textContent, key).toContain(h.hint);
-      expect(box!.querySelector(`[aria-label="Hilfe: ${h.label}"]`), key).not.toBeNull();
+      expect(box!.textContent, key).not.toContain(FIELD_HELP[key].hint);
+      expect(box!.querySelector(`[aria-label="Hilfe: ${FIELD_HELP[key].label}"]`), key).not.toBeNull();
     }
     await click(byLabel(host, 'Hilfe: Varianten'));
     const dialog = document.querySelector('[role="dialog"]')!;
     expect(dialog.textContent).toContain('economy.json:purse.startGold=120');
   });
 
-  it('Beispiele übernehmen die Konfiguration und ergeben gültige Läufe', async () => {
+  it('Beispiele ergeben gültige Läufe und lassen sich übernehmen', async () => {
     for (const e of EXAMPLES) expect(specFromForm(formFromExample(e, EMPTY_FORM)).error, e.name).toBeUndefined();
     const host = await mount();
     await example(host, 'Startgold variieren');
-    expect(field(host, 'Seeds').value).toBe('20');
-    expect(field(host, 'Varianten').value).toBe('economy.json:purse.startGold=120');
-    await example(host, 'Mauerkosten abstimmen');
-    expect(field(host, 'Varianten').value).toBe('');
-    expect(field(host, 'Parameter').value).toBe('buildings.json:wall.cost.gold=2..6');
+    expect(host.querySelector('[aria-label="Seeds"] [data-value="20"]')!.getAttribute('data-state')).toBe('on');
+    expect(field(host, 'Neuer Wert für purse.startGold').value).toBe('120');
+    await example(host, 'Mauerkosten abstimmen'.replace('kk', 'k'));
+    expect(host.querySelector('table[aria-label="Varianten"] tbody tr')?.textContent).toContain('wall.cost.gold');
+    expect(field(host, 'Von für wall.cost.gold').value).toBe('2');
+    expect(field(host, 'Bis für wall.cost.gold').value).toBe('6');
+    expect(field(host, 'Budget').value).toBe('20');
   });
-
 });
 
 describe('Konfigurationsdateien und Bot je Spieler', () => {
-  it('listet die Konfigurationsdateien, zeigt die Beschreibung und übernimmt Werte', async () => {
+  it('listet die Konfigurationsdateien und zeigt die Beschreibung', async () => {
     const host = await mount();
     await click(buttonText(host, 'Konfigurationsdateien …'));
     await until(() => document.querySelector('[role="dialog"] [aria-label="Konfigurationsdateien"]') !== null);
@@ -93,29 +98,17 @@ describe('Konfigurationsdateien und Bot je Spieler', () => {
     await until(() => list.querySelectorAll('.bal-file').length === 17);
     expect(list.textContent).not.toContain('Beschreibung fehlt');
     expect(list.querySelectorAll('[data-file] button[aria-label^="Hilfe:"]')).toHaveLength(17);
+    expect(buttonText(list, 'Werte')).toBeUndefined();
     await click(byLabel(list, 'Hilfe: economy.json'));
     await until(() => document.querySelectorAll('[role="dialog"]').length === 2 && ([...document.querySelectorAll('[role="dialog"]')].at(-1)?.textContent ?? '').includes('Aufbau'));
-    const docDialog = [...document.querySelectorAll<HTMLElement>('[role="dialog"]')].at(-1)!;
-    await act(async () => docDialog.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })));
-    await flush();
-    const row = list.querySelector('[data-file="economy.json"]') as HTMLElement;
-    expect(buttonText(list.querySelector('[data-file="guards.json"]')!, 'Werte')).toBeUndefined();
-    await click(buttonText(row, 'Werte'));
-    await until(() => !!buttonText(row, 'Als Variante'));
-    await click(buttonText(row, 'Als Variante'));
-    await click(buttonText(row, 'Als Variante')); // keine doppelte Zeile
-    expect(field(host, 'Varianten').value).toMatch(/^economy\.json:[\w.]+=-?[\d.]+$/);
-    expect(row.querySelector('[role="status"]')?.textContent).toMatch(/^Übernommen: economy\.json:/);
-    await click(buttonText(row, 'Als Parameter'));
-    expect(field(host, 'Parameter').value).toMatch(/^economy\.json:[\w.]+=-?[\d.]+\.\.-?[\d.]+$/);
   });
 
   // WZ28.12/AC-13 (B-611): Bot je Spieler; die Mischung folgt der Spielerzahl.
   it('wählt je Spieler einen Bot und erzeugt die Mischung', async () => {
     const host = await mount();
-    await pickValue(host, 'Bot', 'je-spieler');
+    await click(host.querySelector<HTMLElement>('[aria-label="Bot-Zuordnung"] [data-value="je"]')!);
     await pickValue(host, 'Bot Spieler 2', 'passive');
-    await pickValue(host, 'Spieler', '3');
+    await click(byLabel(host, 'Ein Spieler mehr'));
     await pickValue(host, 'Bot Spieler 3', 'economy');
     expect(host.querySelectorAll('[role="combobox"][aria-label^="Bot Spieler"]')).toHaveLength(3);
     await click(buttonText(host, 'Lauf starten'));

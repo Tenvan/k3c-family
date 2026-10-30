@@ -38,6 +38,8 @@ nur mit Zustimmung von 🧑.
 | Niedrige Plantage-Pappel (gewachsener Platz, vor der Farm) | 2 × 5 | `pappel-niedrig.json` (`plantation`, B-568) |
 | Treppe hoch (ein Bild, Stein) | 4 × 4 | `treppe-hoch.json` (`stairsUp`, GEB5) |
 | Treppe runter (Steinbogen mit Abgang) | 4 × 3 | `treppe-runter.json` (`stairsDown`, GEB5) |
+| Hafen (Steg mit Poller, Fass, Laterne; Level-Objekt `harbor`) | 6 × 4 | `hafen.json` (BS10, B-641) |
+| Schiff (Stufen 1–3 = Kiel, Rumpf, Segel; Platz `ship`) | 6 × 5 | `schiff.json` (BS10, B-641) |
 | weitere Gebäude | legt der jeweilige GEB-Sprint fest, hier nachtragen | B-435 › Notizen |
 
 ## 2. Palette und Licht

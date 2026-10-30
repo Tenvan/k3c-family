@@ -144,9 +144,12 @@ type Site struct {
 	UpgradePaid int    `json:"upgradePaid,omitempty"`
 	// Ruin: Der Platz ist eine Ruine der Planung (building_ruin.go). Dauerhafte Herkunft, immer aus dem Level per
 	// kind@x abgeleitet (isRuin), damit emptySite und destroySite sie neu setzen; nicht im Spielstand.
-	Ruin    bool    `json:"ruin,omitempty"`
-	plots   []plot  // Plantage einer gebauten Farm (building_plantation.go), ohne JSON
-	spellIn float64 // Zaubertum: Sekunden bis zum nächsten Schuss (building_spell_tower.go), ohne JSON
+	Ruin    bool       `json:"ruin,omitempty"`
+	plots   []plot     // Plantage einer gebauten Baumschule (building_plantation.go), ohne JSON
+	spellIn float64    // Zaubertum: Sekunden bis zum nächsten Schuss (building_spell_tower.go), ohne JSON
+	hubW    *World     // Welt, für die hubLv gilt
+	hubLv   int        // Zwischenspeicher von siteHubLevel (0 = noch nicht berechnet), ohne JSON
+	wall    wallLookup // Zwischenspeicher von levelSite (Art und X ändern sich nie), ohne JSON
 }
 
 // Castle ist die Burg in der Hub-Mitte.
@@ -337,6 +340,8 @@ type World struct {
 	// island: die Insel, zu der die Stufe gehört (nil bei Campaign und einzelnen Welten: keine Optionen, Faktor 1,
 	// kein Lager-Maximum).
 	island *Island
+	// lastWaveAt: Spielzeit (Time) der letzten Welle; der Aggressionspool wächst erst nach minWaveGapSeconds wieder (B-646).
+	lastWaveAt float64
 	// castleFellNight: letzte Nacht, in der die Burg fiel (Vollmond-Belohnung, events_moon.go); nicht im Spielstand.
 	castleFellNight int
 	// guardsSpawned: Die Wachen der Planung sind aufgestellt (erster Tick); guardsCleared: geräumte Lager `kind@x`

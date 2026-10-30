@@ -120,7 +120,7 @@ func TestMauerAusbauZweiSpieler(t *testing.T) {
 
 // Stufe 1 der levels sind die bisherigen Werte (der Client liest hp, cost, buildSeconds).
 func TestStufe1GleichGrundwerte(t *testing.T) {
-	for _, kind := range []string{"wall", "tower", "gate"} {
+	for _, kind := range []string{"wall", "tower"} {
 		b := buildings[kind]
 		if len(b.Levels) != 5 || b.Levels[0].HP != b.HP || b.Levels[0].Cost != b.Cost || b.Levels[0].BuildSeconds != b.BuildSeconds {
 			t.Errorf("%s: %d Stufen, Stufe 1 %+v, Grundwerte HP %v Kosten %+v Bauzeit %v", kind, len(b.Levels), b.Levels[0], b.HP, b.Cost, b.BuildSeconds)

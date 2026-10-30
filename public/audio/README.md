@@ -78,3 +78,10 @@ Kenney-Dateien (Packs Digital Audio, RPG Audio, Impact Sounds, Interface Sounds,
 | kandidaten/selbst-erzeugt-niederlage.ogg | Niederlage (Schleife) | Claude (selbst erzeugt) | CC0 | selbst erzeugt, Rezept im Abschnitt „Selbst erzeugte Töne“ | erzeugt 2026-10-23 (B-573) |
 | kandidaten/selbst-erzeugt-ui-select.ogg | UI-Klick Auswahl | Claude (selbst erzeugt) | CC0 | selbst erzeugt, Rezept im Abschnitt „Selbst erzeugte Töne“ | erzeugt 2026-10-23 (B-575) |
 | kandidaten/selbst-erzeugt-ui-confirm.ogg | UI-Klick Bestätigen | Claude (selbst erzeugt) | CC0 | selbst erzeugt, Rezept im Abschnitt „Selbst erzeugte Töne“ | erzeugt 2026-10-23 (B-575) |
+| kandidaten/block-rpg-1.mp3 | Block - [Rpg] 1 | colorsCrimsonTears | CC0 | https://freesound.org/people/colorsCrimsonTears/sounds/641896/ | Lizenz erkannt (freesound) |
+| kandidaten/shieldhit1.mp3 | SHIELDHIT1 | fonografico | CC0 | https://freesound.org/people/fonografico/sounds/636103/ | Lizenz erkannt (freesound) |
+| kandidaten/fire-rpg.mp3 | Fire - Rpg | colorsCrimsonTears | CC0 | https://freesound.org/people/colorsCrimsonTears/sounds/563541/ | Lizenz erkannt (freesound) |
+| kandidaten/fireball.mp3 | Fireball | Aldurim | CC0 | https://freesound.org/people/Aldurim/sounds/867421/ | Lizenz erkannt (freesound) |
+| kandidaten/heal-rpg.mp3 | Heal - Rpg | colorsCrimsonTears | CC0 | https://freesound.org/people/colorsCrimsonTears/sounds/562292/ | Lizenz erkannt (freesound) |
+| kandidaten/whoosh-swipe-fight-sounds-sword-air.mp3 | Whoosh Swipe Fight Sounds Sword Air | benniknop | CC0 | https://freesound.org/people/benniknop/sounds/317849/ | Lizenz erkannt (freesound) |
+| kandidaten/status-effect-healing.mp3 | Status effect/Healing | hotpin7 | CC0 | https://freesound.org/people/hotpin7/sounds/852189/ | Lizenz erkannt (freesound) |

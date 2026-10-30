@@ -3,14 +3,39 @@
 /** Auftrag eines Laufs (Go: simrun.Spec); `depth` 0 = Wald, fehlt = Ziel-Tiefe. */
 export interface BalanceSpec {
   seeds?: number;
+  /** Genau diese Seeds statt der ersten N (B-634); nicht zusammen mit `seeds`. */
+  seedList?: string[];
   depth?: number;
   players?: number;
   bot?: string;
   grade?: string;
+  /** Welt (BS11): spielt die ganze erste Insel statt einer Stufe; leer = eine Stufe. */
+  world?: string;
+  /** Dev-Hilfen wie im Stufen-Test (hilfen, voll, boss), nur mit Welt; fehlt = keine. */
+  helps?: string;
   days?: number;
   vary?: string[];
   tune?: BalanceTune;
   label?: string;
+  /** Name einer gesicherten Baseline als Vergleich (B-640). */
+  baseline?: string;
+  /** Je feste Variante ein Lauf gegen einen gemeinsamen Basis-Lauf (B-662): n + 1 Läufe, nicht mit `tune`. */
+  perVariant?: boolean;
+}
+
+/** Gesicherter Basis-Lauf (Go: balance.BaselineInfo, reports/baseline/<name>/). */
+export interface BalanceBaseline {
+  name: string;
+  saved: string;
+  run: string;
+  seeds: number;
+  seedMode: string;
+  bots: string[];
+  worlds: string[];
+  pass: boolean;
+  frozen: string[];
+  /** Auftrag des Laufs; fehlt bei Baselines ohne Spec. */
+  spec?: BalanceSpec;
 }
 
 export type TuneMode = 'sweep' | 'search';
@@ -54,6 +79,15 @@ export interface BalanceReportInfo {
   kind: 'balance' | 'tuning';
   /** Bewertung aus reports/ratings.json (WZ28.13); fehlt = keine. */
   rating?: ReportRating;
+  /** Label des Laufs (B-662); fehlt bei älteren Berichten. */
+  label?: string;
+  /** Auftrag des Laufs (B-662); fehlt bei älteren Berichten. */
+  spec?: BalanceSpec;
+  /** Lauf-ID (`run-3`, B-662); fehlt bei älteren Berichten. */
+  runId?: string;
+  /** Getroffene und alle Ziele des Berichts (`3/16 Ziele`); 0/0 bei `tuning`. */
+  targetsPass: number;
+  targetsTotal: number;
 }
 
 /** Bewertung eines Berichts (Go: simrun.Ratings); leer = keine. */
@@ -166,6 +200,13 @@ export interface BalanceDataValue {
   value: number;
 }
 
+/** Zahlenwert mit Datei und Pfad aus allen variierbaren Dateien (Go: datadoc.FileValue, B-662). */
+export interface BalanceDataFileValue {
+  file: string;
+  path: string;
+  value: number;
+}
+
 /** Ampel der Auswertung (B-632): grün ok, gelb knapp, rot verletzt, grau ungültig/ohne Messwert. */
 export type Light = 'green' | 'yellow' | 'red' | 'grey';
 
@@ -206,13 +247,23 @@ export interface BalanceBackend {
   balanceRuns(): Promise<BalanceRun[]>;
   balanceStop(id: string): Promise<void>;
   balanceReports(): Promise<BalanceReportInfo[]>;
+  /** Gesicherte Basis-Läufe (B-640), nach Name. */
+  balanceBaselines(): Promise<BalanceBaseline[]>;
   balanceReport(path: string): Promise<BalanceSummary>;
   balanceTuning(path: string): Promise<Tuning>;
   balanceDataFiles(): Promise<BalanceDataFile[]>;
   balanceDataDoc(name: string): Promise<string>;
   balanceDataValues(name: string): Promise<BalanceDataValue[]>;
+  /** Zahlenwerte aller variierbaren Dateien in einem Aufruf (B-662). */
+  balanceDataValuesAll(): Promise<BalanceDataFileValue[]>;
   balanceReportRate(path: string, rating: ReportRating): Promise<void>;
   balanceReportDelete(path: string): Promise<void>;
+  /** Mehrere Berichte bewerten (B-662); ein Pfad außerhalb reports/ lehnt den ganzen Aufruf ab. */
+  balanceReportsRate(paths: string[], rating: ReportRating): Promise<void>;
+  /** Mehrere Berichte samt .md und Bewertung löschen (B-662); ein fremder Pfad lehnt alles ab, nichts wird gelöscht. */
+  balanceReportsDelete(paths: string[]): Promise<void>;
+  /** Durchgelaufenen Bericht reports/<lauf>/balance-*.json als Baseline sichern, wie sim_test {action: baseline}. */
+  balanceSaveBaseline(path: string, name: string): Promise<BalanceBaseline>;
   /** Auswertung eines balance-*.json (B-632). */
   balanceInsights(path: string): Promise<BalanceInsights>;
   /** Schreibt .md und .html neu und öffnet den HTML-Bericht; Ergebnis: Pfad relativ zum Checkout. */

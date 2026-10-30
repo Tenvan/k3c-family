@@ -36,10 +36,6 @@ func hubOf(w *World) *HubData {
 // CreateWorld baut den Startzustand einer Stufe.
 func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 	lo := level.Options{Planned: opts.Planned, ChunkCount: opts.ChunkCount}
-	if opts.hub != nil { // nur mit Kandidat: sonst bleibt der eingebettete Stand aus engine/level (Goldens)
-		lines := levelLines(opts.hub.WallLines)
-		lo.Lines = &lines
-	}
 	lv, err := level.GenerateWith(b, seed, lo)
 	if err != nil {
 		return nil, err
@@ -70,6 +66,7 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 		w.Sites = append(w.Sites, emptySite(w, s.kind, s.x))
 	}
 	addRuinSites(w)
+	addShipSite(w)
 	for i := range hub.StartTroops.Peasant {
 		t := spawnVagrant(w, hubX, hubX+2+float64(i))
 		t.Kind, t.HP, t.MaxHP = "peasant", troops["peasant"].HP, troops["peasant"].HP
@@ -105,7 +102,7 @@ func CreateWorldWith(b level.Biome, seed string, o CreateOptions, planned []leve
 func placeEntities(w *World) {
 	for _, e := range w.Level.Entities {
 		switch _, gatherable := gatherOf(e.Kind); {
-		case gatherable:
+		case gatherable && (e.Kind != "tree" && e.Kind != "rock" || !w.Level.OnFreeGround(e.X)):
 			w.Nodes = append(w.Nodes, &ResourceNode{ID: w.newID(), Kind: e.Kind, X: e.X})
 		case e.Kind == "chest" || e.Kind == "skillPoint":
 			w.Pickups = append(w.Pickups, &Pickup{ID: w.newID(), Kind: e.Kind, X: e.X})

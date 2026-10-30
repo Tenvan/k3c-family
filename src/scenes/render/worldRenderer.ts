@@ -9,7 +9,7 @@ import { createRider, updateRider } from './mountView';
 import { createMineSign, showsMineSign } from './mineSignView';
 import { campSprite, decoRoots, nodeSprite } from './natureSprites';
 import { objectImage } from './objectView';
-import { PENNANT_MAX_HEIGHT, markerOf, noteMarkers, pennantColor } from './pennant';
+import { PENNANT_MAX_HEIGHT, noteMarkers } from './pennant';
 import { type Plot, isPlantationTree, plantationPlots } from './plantation';
 import { priceTagSites } from './priceTagRules';
 import { LightView } from './lightView';
@@ -28,12 +28,14 @@ import type { Coin, Enemy, GameEvent, Pickup, Player, Projectile, ResourceNode, 
 
 const U = UNIT_PX;
 const G = GROUND_Y;
-/** Setzling steht vor der Farm (Bauplätze: Tiefe 2); der hohe Plantage-Baum steht wie der Wald dahinter (GEB10) */
+/** Setzling steht vor der Baumschule (Bauplätze: Tiefe 2); der hohe Plantage-Baum steht wie der Wald dahinter (GEB10) */
 const PLANTATION_DEPTH = 3;
 /** Bildhöhe, auf die Fahne und Balken ohne Grafik zielen (Platzhalter-Form) */
 const PLACEHOLDER_NODE_HEIGHT = 158;
 /** Abstand der Ausgang-Beschriftung über der Oberkante des Ausgangs */
 const SIGN_GAP = 24;
+/** Der Hafen-Steg steht um so viele Kacheln links vom Schiffs-Platz, damit Steg und Schiff nebeneinander liegen (BS10) */
+const HARBOR_SHIFT = 5.5;
 
 type View = Phaser.GameObjects.Container;
 type Sprite = Phaser.GameObjects.Sprite;
@@ -231,6 +233,10 @@ export class WorldRenderer {
         this.put(scene.add.text(ex, G - door.displayHeight - SIGN_GAP, deeper ? t('exit.deeper', { depth: world.biome.depth + 1 }) : t('exit.blocked'), { ...TEXT, ...fontStyle('exitSign'), align: 'center' }).setOrigin(0.5));
       } else if (e.kind === 'bush') {
         this.put(objectImage(scene, 'node:bush', ex, G, nodeSprite('bush', e.x, world.biome.id)) ?? scene.add.circle(ex, G - 14, 18, 0x40916c)); // Deko
+      } else if (e.kind === 'harbor') {
+        // Steg links vom Schiffs-Platz (der Platz liegt auf `e.x`, das Schiff ist 6 Kacheln breit); ohne Grafik ein einfacher Holzsteg
+        const x = ex - HARBOR_SHIFT * U;
+        this.put(objectImage(scene, 'harbor', x, G) ?? scene.add.rectangle(x, G - 12, 6 * U, 24, 0x8b5a2b).setStrokeStyle(3, 0x4a2f14));
       } else if (e.kind === 'recruitCamp') {
         this.put(objectImage(scene, 'camp:recruit', ex, G, campSprite(world.biome.id)) ?? scene.add.triangle(ex, G - 45, 0, 90, 60, 0, 120, 90, 0xe9c46a).setStrokeStyle(3, 0x7f5539));
       }
@@ -239,7 +245,7 @@ export class WorldRenderer {
 
   // ---------- Ressourcen ----------
 
-  /** Setzling auf einem leeren Plantage-Platz, vor der Farm; ohne geladene Grafik bleibt der Platz leer */
+  /** Setzling auf einem leeren Plantage-Platz, vor der Baumschule; ohne geladene Grafik bleibt der Platz leer */
   private createPlot(p: Plot): View {
     const image = this.scene.textures.exists('grafik:setzling') ? [this.scene.add.image(0, 0, 'grafik:setzling').setOrigin(0.5, 1)] : [];
     return this.scene.add.container(p.x * U, G, image).setDepth(PLANTATION_DEPTH);
@@ -248,7 +254,7 @@ export class WorldRenderer {
   private createNode(n: ResourceNode): View {
     const s = this.scene;
     const parts: Phaser.GameObjects.GameObject[] = [];
-    // Plantage-Baum (steht auf einem Platz): eigene niedrige Pappel vor der Farm (B-568); Waldbäume bleiben bei der Zuordnung (GEB6)
+    // Plantage-Baum (steht auf einem Platz): eigene niedrige Pappel vor der Baumschule (B-568); Waldbäume bleiben bei der Zuordnung (GEB6)
     const pappel = isPlantationTree(n, this.world.sites) && s.textures.exists('grafik:pappel-niedrig');
     // Baumform aus der Position, Look aus dem Biom (GEB6); unbekannte Art oder fehlende Grafik: Platzhalter-Form
     const sprite = pappel ? s.add.image(0, 0, 'grafik:pappel-niedrig').setOrigin(0.5, 1) : objectImage(s, `node:${n.kind}`, 0, 0, nodeSprite(n.kind, n.x, this.world.biome.id));
@@ -267,19 +273,15 @@ export class WorldRenderer {
     }
     // Wimpel und Balken sitzen über der Bildhöhe, höchstens auf Baumhöhe (Wurzeln reichen bis an den Bildrand, GEB10)
     const top = -Math.min(sprite ? sprite.displayHeight : PLACEHOLDER_NODE_HEIGHT, PENNANT_MAX_HEIGHT);
-    const pole = s.add.rectangle(10, top - 2, 3, 30, 0xffffff);
-    const pennant = s.add.triangle(11, top - 12, 0, 0, 26, 7, 0, 14, pennantColor(undefined)).setOrigin(0, 0.5).setStrokeStyle(1, 0x000000, 0.5);
-    const sign = createMineSign(s, n.kind, -24); // Abbau-Schild links am Fuß (B-588), Sichtbarkeit in updateNode
-    const view = s.add.container(n.x * U, G, [...parts, sign, pole, pennant, ...bar(s, top - 32, 50, 0xffd166)]);
-    return pappel ? view.setDepth(PLANTATION_DEPTH) : view; // vor der Farm (Tiefe 2), wie der Setzling
+    const sign = createMineSign(s, n.kind, -24); // Abbau-Schild links am Fuß, nur markiert, ersetzt den Wimpel (B-653), Sichtbarkeit in updateNode
+    const view = s.add.container(n.x * U, G, [...parts, sign, ...bar(s, top - 32, 50, 0xffd166)]);
+    return pappel ? view.setDepth(PLANTATION_DEPTH) : view; // vor der Baumschule (Tiefe 2), wie der Setzling
   }
 
   private updateNode(v: View, n: ResourceNode): void {
-    const i = v.length - 4;
+    const i = v.length - 2;
     (v.getAt(i - 1) as View).setVisible(showsMineSign(n));
-    (v.getAt(i) as Phaser.GameObjects.Rectangle).setVisible(n.marked);
-    (v.getAt(i + 1) as Phaser.GameObjects.Triangle).setVisible(n.marked).setFillStyle(pennantColor(markerOf(n, this.markers)));
-    setBar(v, i + 2, n.progress, n.progress > 0);
+    setBar(v, i, n.progress, n.progress > 0);
     v.setScale(1, 1 - n.progress * 0.3);
   }
 

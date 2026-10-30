@@ -1,11 +1,13 @@
 {
-  "purse": { "startGold": 100, "maxGold": 100 },
+  "notes": "Gold auf der Münzskala (BS3.2, wirtschaft.md § 8): Startgold 14, Beutel 30, Tageseinkommen 2, Truhen 3–6.",
+  "purse": { "startGold": 14, "maxGold": 30 },
   "payRangeUnits": 2,
   "payIntervalSeconds": 0.25,
   "pickupRangeUnits": 0.8,
   "dropPickupDelaySeconds": 1.5,
-  "dawnGoldPerPlayer": 5,
-  "chestGold": [10, 25],
+  "dawnGoldPerPlayer": 2,
+  "dawnGoldPerDepth": 6,
+  "chestGold": [3, 6],
   "enemyResourceDrop": { "chance": 0.1, "amount": 5 },
   "gatherables": {
     "tree":      { "resource": "wood",   "amount": 10, "workSeconds": 4, "markCost": 1 },
@@ -20,5 +22,5 @@
   },
   "storage": { "basePerHub": 300, "perStorage": 300 },
   "recruitCamp": { "maxVagrants": 2, "respawnSeconds": 25, "wanderUnits": 6 },
-  "merchant": { "hp": 100, "everyDays": 3, "everyDaysWithTavern": 2, "stayDays": 1, "material": 10, "gold": 5, "materials": ["wood", "stone", "copper", "iron", "crystal"] }
+  "merchant": { "hp": 100, "everyDays": 3, "everyDaysWithTavern": 2, "stayDays": 1, "material": 10, "gold": 2, "materials": ["wood", "stone", "copper", "iron", "crystal"] }
 }

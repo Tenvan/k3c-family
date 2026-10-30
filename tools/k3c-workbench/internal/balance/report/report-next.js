@@ -1,11 +1,21 @@
 // Balancing-Bericht (B-632), Teil 3: Tuning-Hinweise, nächster Lauf, Baseline-Vergleich, Sortierung, Thema, Start.
+// Tuning: je Stellschraube einmal mit den Verletzungen, die sie verbessern soll. Die Hinweise je Ziel stehen in der
+// aufgeklappten Tabellenzeile (hintLine); nur ohne Stellschrauben (z. B. nur knappe Ziele) bleibt die Liste je Ziel.
 function renderHints() {
   const ul = $('hints');
   const hints = R.hints || [];
+  const groups = R.leverGroups || [];
   if (!hints.length) ul.append(el('li', { class: 'empty' }, 'Keine Hinweise: alle Ziele im Korridor.'));
+  if (COMPACT && groups.length) ul.append(el('li', { class: 'foot-note' }, UNKNOWN_NOTE));
+  for (const g of groups) {
+    ul.append(el('li', { class: 'hint h-red' }, el('div', {}, el('b', {}, g.direction === '+' ? '▲ ' : '▼ '), g.plan.label, ' ', el('code', {}, g.path)),
+      el('div', {}, 'Soll ' + g.targets.length + ' Verletzung(en) verbessern: ' + g.targets.join('; ')),
+      el('div', { class: 'why' }, g.plan.short, g.conflict ? ' ' + g.conflict : ''), rangeBar(g.plan)));
+  }
+  if (groups.length) return;
   for (const h of hints) {
     ul.append(el('li', { class: 'hint h-' + h.light }, el('div', {}, dot(h.light), el('b', {}, h.target), ' – ', h.text),
-      h.why ? el('div', { class: 'why' }, h.why) : null, leverList(h.levers)));
+      h.why ? el('div', { class: 'why' }, h.why) : null, leverList(h.levers, h.plans)));
   }
 }
 
@@ -22,14 +32,20 @@ function cmdRow(c) {
     el('div', { class: 'cmd' }, el('pre', {}, c.text), el('button', { class: 'btn small', type: 'button', title: help, onclick: () => copy(c.text) }, 'Kopieren')));
 }
 
+// Kompakt: nur „Alle Empfehlungen“ und „Voller Lauf“ offen, die Wege zum Nachspielen und Abstimmen hinter „Weitere Wege“.
+const PRIMARY = /^(Alle Empfehlungen|Voller Lauf)/;
+
 function renderNext() {
   const n = R.next || {};
   const box = $('next');
+  const cmds = n.commands || [];
+  const shown = COMPACT ? cmds.filter((c) => PRIMARY.test(c.label)) : cmds;
+  const more = COMPACT ? cmds.filter((c) => !PRIMARY.test(c.label)) : [];
+  const help = () => el('p', { class: 'where-help' }, Object.values(WHERE).map(([b, h]) => el('span', {}, el('b', {}, b), ' ', h)));
   if (n.steps && n.steps.length) box.append(el('ol', { class: 'steps' }, n.steps.map((s) => el('li', {}, s))));
-  if ((n.commands || []).length) {
-    box.append(el('p', { class: 'where-help' }, Object.values(WHERE).map(([b, h]) => el('span', {}, el('b', {}, b), ' ', h))));
-  }
-  for (const c of n.commands || []) box.append(cmdRow(c));
+  if (cmds.length && !COMPACT) box.append(help());
+  for (const c of shown) box.append(cmdRow(c));
+  if (more.length) box.append(el('details', { class: 'more' }, el('summary', {}, 'Weitere Wege (' + more.length + '): Replay, Abstimmen'), help(), more.map(cmdRow)));
   if (!box.children.length) box.append(el('p', { class: 'empty' }, 'Kein Vorschlag: der Lauf ist im Korridor.'));
 }
 
@@ -104,6 +120,9 @@ function main() {
   renderNext();
   renderCompare();
   initSorting();
+  renderTodo();
+  initView();
+  applyFilter();
 }
 
 main();

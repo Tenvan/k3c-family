@@ -28,32 +28,32 @@ export const TEXT = { stroke: '#000000', strokeThickness: 4, fontStyle: 'bold' }
 export const SITE_SIZE: Record<Site['kind'], [number, number]> = {
   wall: [36, 150],
   tower: [70, 260],
-  gate: [40, 160],
   workshop: [150, 120],
   storage: [130, 100],
   stairsUp: [110, 110],
   stairsDown: [110, 110],
-  farm: [140, 90],
+  nursery: [140, 90],
   barracks: [150, 130],
   tavern: [130, 120],
   healer: [100, 100],
   smithy: [120, 110],
   armory: [130, 120],
+  ship: [190, 160], // Platzhalter-Größe wie die Grafik `schiff-*` (6 × 5 Kacheln, BS10)
 };
 const SITE_COLOR: Record<Site['kind'], number> = {
   wall: 0x8d99ae,
   tower: 0x9c6644,
-  gate: 0x7f5539,
   workshop: 0xbc6c25,
   storage: 0x7f5539,
   stairsUp: 0x6c757d,
   stairsDown: 0x343a40,
-  farm: 0xa7c957,
+  nursery: 0xa7c957,
   barracks: 0x6c584c,
   tavern: 0xb08968,
   healer: 0xe5e5e5,
   smithy: 0x495057,
   armory: 0x5c677d,
+  ship: 0x4a6fa5,
 };
 
 /** Nur die zugeordneten Gebäude-Grafiken laden (LoadScene.preload) */
@@ -162,7 +162,7 @@ export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: Wor
   const wait = siteStatus(s, world.danger, world.biome.depth);
   const stage = siteStage(s, world);
   const marker = siteMarker(s); // Bauschild oder Gerüst im Bau, nie beides (B-586)
-  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, cost), currentLanguage(), statusKey(wait), stage, s.ruin === true, marker].join('|'); // stage: Mauer, Turm und Tor je Stufe (GEB3, B-631)
+  const key = [s.state, s.paidGold, Math.round(s.buildProgress * 20), Math.round((s.hp / s.maxHp) * 20), s.bows, s.bowPaidGold, near, canAfford(world.stock, cost), currentLanguage(), statusKey(wait), stage, s.ruin === true, marker, s.clearing === true].join('|'); // stage: Mauer, Turm und Tor je Stufe (GEB3, B-631)
   if (v.getData('key') === key) return;
   v.setData('key', key);
 
@@ -188,7 +188,7 @@ export function updateSiteView(scene: Phaser.Scene, v: View, s: Site, world: Wor
   if (marker === 'sign') drawBuildSign(g, s.kind);
   const top = marker === 'scaffold' ? showScaffold(scene, v, g, s.kind, w, h) : h;
   if (s.buildProgress > 0) drawBar(g, -top - 12, 80, s.buildProgress, 0xdda15e);
-  if (s.state === 'unpaid' && near) drawPrice(g, label, world, -h - 20, cost.gold ?? 0, s.paidGold, siteName(s.kind), cost);
+  if (s.state === 'unpaid' && near) drawPriceOrClearing(g, label, s, world, h, cost);
   if (wait) drawSiteStatus(g, label, wait, siteName(s.kind), -top - 20);
 }
 
@@ -230,6 +230,12 @@ function drawBuiltPlaceholder(g: Phaser.GameObjects.Graphics, s: Site, w: number
 }
 
 /** Münz-Slots (K2C): gefüllt = bezahlt. Baumaterial steht darüber. */
+/** Preis am unbezahlten Platz, solange Bäume oder Felsen im Freiraum stehen stattdessen „erst roden“ (B-636, B-652) */
+function drawPriceOrClearing(g: Phaser.GameObjects.Graphics, label: Phaser.GameObjects.Text, s: Site, world: World, h: number, cost: Record<string, number | undefined>): void {
+  if (s.clearing === true) label.setPosition(0, -h - 20).setText(t('site.clearing', { name: siteName(s.kind) })).setColor('#ffd166');
+  else drawPrice(g, label, world, -h - 20, cost.gold ?? 0, s.paidGold, siteName(s.kind), cost);
+}
+
 function drawPrice(g: Phaser.GameObjects.Graphics, label: Phaser.GameObjects.Text, world: Pick<World, 'stock'>, y: number, total: number, paid: number, name: string, cost: Record<string, number | undefined>): void {
   const perRow = 10;
   for (let i = 0; i < total; i++) {

@@ -347,7 +347,7 @@ func TestStatusMitRaeumen(t *testing.T) {
 		!strings.Contains(body, `"tickMs":{"last":`) || s.Failures == nil {
 		t.Fatalf("Status: %s", body)
 	}
-	if code, body := get(t, srv.URL+"/api/status?room=KRNZ", "Bearer geheim"); code != 200 || !strings.Contains(body, `"gold":[100,100]`) {
+	if code, body := get(t, srv.URL+"/api/status?room=KRNZ", "Bearer geheim"); code != 200 || !strings.Contains(body, `"gold":[14,14]`) {
 		t.Fatalf("?room: %d %s", code, body)
 	}
 	if code, _ := get(t, srv.URL+"/api/status?room=QQQQ", "Bearer geheim"); code != 404 {

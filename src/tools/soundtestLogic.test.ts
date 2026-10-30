@@ -8,7 +8,7 @@ describe('Hörprobe-Logik', () => {
     const list = candidatesFromSlots([
       { id: 'sfx:coin', art: 'sound', beschreibung: 'Münze', bus: 'sfx', wahl: [{ datei: 'audio/atlas.ogg', sprite: 'coin' }, { datei: 'audio-test/test.ogg' }] },
       { id: 'music:tag', art: 'sound', beschreibung: 'Tag', bus: 'music', wahl: [{ datei: 'audio/probe-a.ogg' }] },
-      { id: 'farm', art: 'grafik', beschreibung: 'Farm', wahl: [{ datei: 'grafik/a.png' }] },
+      { id: 'nursery', art: 'grafik', beschreibung: 'Baumschule', wahl: [{ datei: 'grafik/a.png' }] },
       { id: 'amb:wind', art: 'sound', beschreibung: 'Wind', bus: 'ambient', wahl: [{ datei: 'audio/wind.ogg' }] },
     ]);
     expect(list).toEqual([

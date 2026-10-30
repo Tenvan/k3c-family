@@ -91,7 +91,7 @@ func TestDevBaukostenEins(t *testing.T) {
 		t.Fatalf("Hub-Ausbau %+v", next)
 	}
 	DevSetCheapBuild(isl, false)
-	if next := nextLevel(w, w.hubSite); next.Cost.Gold != 13 {
+	if next := nextLevel(w, w.hubSite); next.Cost.Gold != 4 {
 		t.Fatalf("Hub-Ausbau nach Aus %+v", next.Cost)
 	}
 }
@@ -103,7 +103,7 @@ func checkBuiltTo(t *testing.T, w *World, level int) int {
 	walls := 0
 	for _, s := range w.Sites {
 		l, onLine := siteLine(w, s)
-		if s.State == "built" && (s.Kind == "gate" || (onLine && l.Index > level)) {
+		if s.State == "built" && (onLine && l.Index > level) {
 			t.Fatalf("%s der Linie %d gebaut", s.Kind, l.Index)
 		}
 		if s.Kind == "wall" && onLine && l.Index <= level {
@@ -126,8 +126,14 @@ func TestDevBuildAll(t *testing.T) {
 	if !DevBuildAll(isl, 3) || w.HubLevel != 3 {
 		t.Fatalf("Hub-Stufe %d", w.HubLevel)
 	}
-	if n := checkBuiltTo(t, w, 3); n != 6 {
-		t.Fatalf("%d Mauern, erwartet 6", n)
+	want := 0
+	for _, l := range w.Level.Sites {
+		if l.Kind == "wall" && l.Zone <= 3 {
+			want++
+		}
+	}
+	if n := checkBuiltTo(t, w, 3); n != want || want == 0 {
+		t.Fatalf("%d Mauern, erwartet %d (alle Mauern der Zonen 1 bis 3)", n, want)
 	}
 }
 

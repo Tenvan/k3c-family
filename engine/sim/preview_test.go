@@ -104,7 +104,7 @@ func TestPreviewHubLevelBautNachDenRegelnDerSim(t *testing.T) {
 		}
 		for _, s := range w.Sites {
 			// Regel einzeln aus den Daten: Tor bleibt, Mauerlinie k ab Hub-Stufe k, Platz ab seiner Hub-Stufe.
-			want := s.Kind != "gate" && buildings[s.Kind].HP > 0 && siteHubLevel(w, s) <= level
+			want := buildings[s.Kind].HP > 0 && siteHubLevel(w, s) <= level
 			if l, ok := siteLine(w, s); ok && l.Index > level {
 				want = false
 			}

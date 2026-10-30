@@ -8,7 +8,6 @@ const FILES = Object.keys(import.meta.glob('../../../public/grafik/**/*.png'));
 
 describe('Gebäude-Grafik (GR3.1)', () => {
   it('gebaute Gebäude mit Zuordnung bekommen ihre Grafik', () => {
-    expect(siteTexture('gate', 'built')).toBe('grafik:gate-1');
     expect(siteTexture('wall', 'built')).toBe('grafik:wall-1');
   });
 
@@ -23,7 +22,7 @@ describe('Gebäude-Grafik (GR3.1)', () => {
   });
 
   it('Gebäude aus tools/buildings: eigene 32-px-Grafik in Maßstab 1 (GEB2 AC-02, GEB5 AC-05)', () => {
-    const neu = { workshop: 'werkstatt-1', tavern: 'taverne-1', healer: 'heilplatz-1', smithy: 'schmiede-1', armory: 'ruestkammer-1', storage: 'lager-1', barracks: 'kaserne-1', farm: 'farm-1', stairsUp: 'treppe-hoch', stairsDown: 'treppe-runter' } as const;
+    const neu = { workshop: 'werkstatt-1', tavern: 'taverne-1', healer: 'heilplatz-1', smithy: 'schmiede-1', armory: 'ruestkammer-1', storage: 'lager-1', barracks: 'kaserne-1', nursery: 'farm-1', stairsUp: 'treppe-hoch', stairsDown: 'treppe-runter' } as const;
     for (const [kind, id] of Object.entries(neu)) {
       const key = siteTexture(kind as keyof typeof neu, 'built');
       expect(key).not.toBeNull();
@@ -39,14 +38,14 @@ describe('Gebäude-Grafik (GR3.1)', () => {
   it('Adern, Plantage und Lager zeigen Figuren statt Platzhalter, die Dateien liegen vor (B-412, W11.4)', () => {
     const datei = (key: string | null | undefined) => `../../../public/grafik/${BUILDING_TEXTURES[key!] ?? NATURE_TEXTURES[key!]}`;
     const figuren = [
-      siteTexture('storage', 'built'), siteTexture('storage', 'built', 3), siteTexture('farm', 'built'), 'grafik:setzling', 'grafik:pappel-niedrig',
+      siteTexture('storage', 'built'), siteTexture('storage', 'built', 3), siteTexture('nursery', 'built'), 'grafik:setzling', 'grafik:pappel-niedrig',
       ...['stoneVein', 'copperVein', 'ironVein', 'crystalVein'].map((kind) => nodeSprite(kind, 0, 'cave')?.key),
     ];
     for (const key of figuren) expect(FILES).toContain(datei(key));
   });
 
   it('Material-Stufen wählen das Sprite je Stufe, Lücken sind null (AC-04)', () => {
-    for (const [kind, id] of [['wall', 'mauer'], ['tower', 'turm'], ['gate', 'tor']] as const) {
+    for (const [kind, id] of [['wall', 'mauer'], ['tower', 'turm']] as const) {
       for (const s of [1, 2, 3, 4, 5]) {
         const key = siteTexture(kind, 'built', s);
         expect(key).toBe(`grafik:${kind}-${s}`);
@@ -58,7 +57,7 @@ describe('Gebäude-Grafik (GR3.1)', () => {
   });
 
   it('Hub-Gebäude zeigen die Grafik der Hub-Stufe 1–5, fehlende Stufe = höchste, ohne Stufe Grundform (GEB9 AC-04)', () => {
-    const hub = { workshop: 'werkstatt', tavern: 'taverne', healer: 'heilplatz', smithy: 'schmiede', armory: 'ruestkammer', storage: 'lager', barracks: 'kaserne', farm: 'farm' } as const;
+    const hub = { workshop: 'werkstatt', tavern: 'taverne', healer: 'heilplatz', smithy: 'schmiede', armory: 'ruestkammer', storage: 'lager', barracks: 'kaserne', nursery: 'farm' } as const;
     for (const [kind, id] of Object.entries(hub)) {
       const k = kind as keyof typeof hub;
       expect(isHubBuilding(k)).toBe(!BUILDINGS[kind].levels?.length); // B-569: mit eigenen `levels` folgt die Grafik der Gebäudestufe
@@ -73,18 +72,33 @@ describe('Gebäude-Grafik (GR3.1)', () => {
       expect(siteTexture(k, 'built')).toBe(`grafik:${kind}-1`);
       expect(siteTexture(k, 'unpaid', 3)).toBeNull(); // Baustelle: Platzhalter, unabhängig von der Stufe
     }
-    for (const kind of ['wall', 'tower', 'gate', 'stairsUp', 'stairsDown'] as const) expect(isHubBuilding(kind)).toBe(false);
+    for (const kind of ['wall', 'tower', 'stairsUp', 'stairsDown'] as const) expect(isHubBuilding(kind)).toBe(false);
   });
 
   it('Gebäude mit `levels` in den Daten: Stufe 1 = Grundwerte, fünf Stufen, Grafik je Gebäudestufe (B-569 AC-01)', () => {
-    const withLevels = Object.entries(BUILDINGS).filter(([, d]) => d.levels?.length);
-    expect(withLevels.map(([k]) => k).sort()).toEqual(['barracks', 'farm', 'gate', 'healer', 'storage', 'tavern', 'tower', 'wall'].sort()); // gate: B-631
+    const withLevels = Object.entries(BUILDINGS).filter(([k, d]) => k !== 'ship' && d.levels?.length); // das Schiff hat drei Abschnitte aus data/ship.json (B-637)
+    expect(withLevels.map(([k]) => k).sort()).toEqual(['barracks', 'nursery', 'healer', 'storage', 'tavern', 'tower', 'wall'].sort());
     for (const [kind, d] of withLevels) {
       expect(d.levels).toHaveLength(5);
       expect(d.levels![0]).toEqual({ cost: d.cost, hp: d.hp, buildSeconds: d.buildSeconds });
       for (let n = 1; n < 5; n++) expect(d.levels![n].hp).toBeGreaterThan(d.levels![n - 1].hp);
       expect(siteTexture(kind as 'wall', 'built', 3)).toBe(`grafik:${kind}-3`);
     }
+  });
+
+  it('Schiff: je Abschnitt (Kiel, Rumpf, Segel) eine eigene 32-px-Grafik, Baustelle und Lücken Platzhalter (BS10 AC-03)', () => {
+    for (const n of [1, 2, 3]) {
+      const key = siteTexture('ship', 'built', n);
+      expect(key).toBe(`grafik:ship-${n}`);
+      expect(BUILDING_TEXTURES[key!]).toBe(`gebaeude/schiff-${n}-32.png`);
+      expect(textureScale(key!)).toBe(1);
+      expect(FILES).toContain(`../../../public/grafik/${BUILDING_TEXTURES[key!]}`);
+    }
+    expect(siteTexture('ship', 'built')).toBe('grafik:ship-1');
+    expect(siteTexture('ship', 'built', 4)).toBe('grafik:ship-3'); // andere Abschnittszahl später: höchster vorhandener
+    expect(siteTexture('ship', 'unpaid', 2)).toBeNull();
+    expect(isHubBuilding('ship')).toBe(false);
+    expect(BUILDINGS.ship.levels).toHaveLength(3); // Abschnitte aus data/ship.json = Grafiken
   });
 
   it('Hintergrundmauer je Stufe eigene 32-px-Grafik, unbekannte Stufe null (GEB3 AC-08)', () => {
@@ -128,7 +142,7 @@ describe('Gebäude-Grafik (GR3.1)', () => {
   });
 
   it('jeder gewählte Schlüssel ist ladbar', () => {
-    const kinds = ['wall', 'tower', 'gate', 'workshop', 'tavern', 'healer', 'smithy', 'armory', 'storage', 'farm', 'barracks', 'stairsUp', 'stairsDown'] as const;
+    const kinds = ['wall', 'tower', 'workshop', 'tavern', 'healer', 'smithy', 'armory', 'storage', 'nursery', 'barracks', 'stairsUp', 'stairsDown'] as const;
     const keys = [...kinds.map((k) => siteTexture(k, 'built')), ...[1, 2, 3, 4, 5].map((s) => siteTexture('tower', 'built', s)), ...[1, 2, 3, 4, 5].map((s) => hubTexture(s))];
     for (const key of keys.filter((k) => k !== null)) expect(BUILDING_TEXTURES).toHaveProperty([key]);
   });

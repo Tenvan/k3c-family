@@ -15,7 +15,7 @@ import (
 func nordmeer(t *testing.T) WorldDef {
 	t.Helper()
 	raw := `{"id":"nordmeer","name":"Nordmeer","islands":[` +
-		`{"id":"island1","name":"Insel 1","depths":[0,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1}},` +
+		`{"id":"island1","name":"Insel 1","depths":[0,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1},"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}},` +
 		`{"id":"eisinsel","name":"Eisinsel","depths":[0,4],"depthScaling":{"hp":1.6,"damage":1.4,"speed":1.15}}]}`
 	w, err := LoadWorld(fstest.MapFS{"nordmeer.json": {Data: []byte(raw)}}, "nordmeer")
 	if err != nil {
@@ -31,8 +31,9 @@ func nordmeerIsland(t *testing.T, w WorldDef, n int) *Island {
 	if err != nil {
 		t.Fatal(err)
 	}
+	steg := completeShip(t, isl)
 	for range n {
-		AddIslandPlayer(isl, 1).X = isl.Stages[1].HubX
+		AddIslandPlayer(isl, 0).X = steg
 	}
 	isl.EndbossDefeated = true
 	return isl

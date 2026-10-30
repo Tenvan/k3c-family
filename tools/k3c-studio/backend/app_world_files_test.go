@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -46,6 +47,7 @@ func TestWeltLeerAnlegenWaehlenEntfernen(t *testing.T) {
 	}
 	// Der Entwurf gilt für die gewählte Welt: eine Insel mehr ändert nur ihre Datei.
 	d, at := draftOf(t, a)
+	d.Islands[0].PlannedChunks = json.RawMessage(`{"0":[{"slot":-7,"kind":"harbor"}]}`) // eine Insel vor einer weiteren braucht den Hafen
 	d.Islands = append(d.Islands, IslandDraft{ID: "island2", Name: "Insel 2", Depths: []int{0, 4}, Scaling: d.Islands[0].Scaling})
 	saveDraft(t, a, d, at)
 	if got := len(a.PlanLoad().Islands); got != 2 {

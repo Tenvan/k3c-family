@@ -20,7 +20,7 @@ const hubFile = "data/hub.json"
 const (
 	srcSites       = "sites"
 	srcIslandSites = "islandSites"
-	srcWallLines   = "wallLines"
+	srcPlacement   = "sitePlacement"
 	srcMerchant    = "merchant"
 )
 
@@ -35,9 +35,9 @@ type HubCell struct {
 
 // HubRow ist ein Bauplatz der Matrix: Hub-Platz, Insel-Platz, Mauerlinie (mit Turm), Tor oder Händler.
 type HubRow struct {
-	Key         string    `json:"key"`         // kind@offset wie room.PreviewSiteKey, Linien line@k, Tore gate@k
-	Kind        string    `json:"kind"`        // Art aus hub.json; wall, gate, merchantBuy, merchantSell
-	Source      string    `json:"source"`      // sites, islandSites, wallLines, merchant
+	Key         string    `json:"key"`         // kind@offset wie room.PreviewSiteKey, Baugrund der Zone 1 zone1
+	Kind        string    `json:"kind"`        // Art aus hub.json; wall (Baugrund der Zone 1), merchantBuy, merchantSell
+	Source      string    `json:"source"`      // sites, islandSites, sitePlacement, merchant
 	Index       int       `json:"index"`       // Eintrag in seiner Liste (sites, islandSites, wallUnits); Händler 0
 	HubLevel    int       `json:"hubLevel"`    // ab dieser Hub-Stufe verfügbar
 	Line        int       `json:"line"`        // Mauerlinie bzw. Tor: Linie k; sonst 0
@@ -121,7 +121,7 @@ func hubMatrix(h *sim.HubData) HubMatrix {
 	for i, s := range h.IslandSites {
 		m.Rows = append(m.Rows, siteRow(s, i, srcIslandSites, m.Levels))
 	}
-	m.Rows = append(m.Rows, lineRows(h.WallLines, m.Levels)...)
+	m.Rows = append(m.Rows, zoneRows(h.SitePlacement, m.Levels)...)
 	return appendMerchant(m, h)
 }
 
@@ -146,25 +146,12 @@ func siteRow(s sim.HubSite, index int, source string, levels int) HubRow {
 	return HubRow{Key: room.PreviewSiteKey(s.Kind, s.OffsetUnits), Kind: s.Kind, Source: source, Index: index, HubLevel: from, Cells: cells(levels, from, place)}
 }
 
-// lineRows: Mauerlinie k (Mauer, Turm innen) ab Hub-Stufe k, ihr Tor außen ab max(k, gateHubLevel); je Seite.
-func lineRows(w sim.WallLineData, levels int) []HubRow {
-	rows := []HubRow{}
-	for i, n := range w.WallUnits {
-		k := i + 1
-		jitter := 0.0
-		if k > w.FixedLines {
-			jitter = w.JitterOutwardUnits
-		}
-		gateFrom := max(k, hubLevelOf(w.GateHubLevel))
-		wall := HubCell{OffsetUnits: n, OnlyDepth: -1}
-		gate := HubCell{OffsetUnits: n + w.GateOutsetUnits, OnlyDepth: -1}
-		rows = append(rows,
-			HubRow{Key: fmt.Sprintf("line@%d", k), Kind: "wall", Source: srcWallLines, Index: i, HubLevel: k, Line: k, BothSides: true,
-				TowerUnits: n - w.TowerInsetUnits, JitterUnits: jitter, Cells: cells(levels, k, wall)},
-			HubRow{Key: fmt.Sprintf("gate@%d", k), Kind: "gate", Source: srcWallLines, Index: i, HubLevel: gateFrom, Line: k, BothSides: true,
-				JitterUnits: jitter, Cells: cells(levels, gateFrom, gate)})
-	}
-	return rows
+// zoneRows: der feste Baugrund der Zone 1 (Mauer, Turm innen) ab Hub-Stufe 1, je Seite; die übrigen Plätze der Zonen würfelt der
+// Generator je Seed (B-652).
+func zoneRows(p sim.SitePlacementData, levels int) []HubRow {
+	wall := HubCell{OffsetUnits: p.Zone1WallUnits, OnlyDepth: -1}
+	return []HubRow{{Key: "zone1", Kind: "wall", Source: srcPlacement, Index: 0, HubLevel: 1, Line: 1, BothSides: true,
+		TowerUnits: p.Zone1TowerUnits, Cells: cells(levels, 1, wall)}}
 }
 
 // appendMerchant: Händler Kaufen und Verkaufen, von Hub-Stufe 1 an, nur in Tiefe onlyDepth.

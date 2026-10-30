@@ -123,7 +123,8 @@ export interface ResourceNode {
 }
 
 /** Jedes Gebäude aus data/buildings.json außer der Burg kann ein Bauplatz sein (der Server legt sie aus den Daten an). */
-export type SiteKind = Exclude<keyof typeof buildingsJson, 'castle'>;
+// `ship` ist der Schiffs-Platz des Hafens (B-637); seine Werte stehen in data/ship.json, nicht in buildings.json.
+export type SiteKind = Exclude<keyof typeof buildingsJson, 'castle'> | 'ship';
 export type SiteState = 'unpaid' | 'waitingMaterial' | 'waitingWorker' | 'built';
 
 export interface Site {
@@ -153,6 +154,8 @@ export interface Site {
   hubLevel?: number;
   /** Nimmt jetzt Münzen für Bau oder Ausbau (Server, B-587); fehlt = nein. */
   payable?: boolean;
+  /** Hub-Stufe erreicht, aber Bäume oder Felsen im Freiraum: erst roden (Server, B-636); fehlt = nein. */
+  clearing?: boolean;
 }
 
 /** Laufender Ausbauschritt auf die nächste Hub-Stufe (docs/protocol.md › Wirtschaft), vom Server berechnet. */
@@ -160,7 +163,7 @@ export interface HubUpgrade {
   gold: number;
   material: Partial<Record<ResourceKind, number>>;
   paid: number;
-  /** Fehlt, solange Gold offen ist; `waitingNextIsland` = Material-Tor fehlt, „Material der nächsten Insel“ (B-592). */
+  /** Fehlt, solange Gold offen ist; `waitingNextIsland` = Material-Tor fehlt, „Tor-Material fehlt“ (B-592, B-633). */
   state?: 'waitingMaterial' | 'waitingNextIsland' | 'waitingWorker';
   /** Zahl der Ausbauschritte auf die nächste Hub-Stufe (B-592); fehlt = älterer Server. */
   steps?: number;

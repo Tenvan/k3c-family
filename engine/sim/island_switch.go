@@ -6,30 +6,30 @@ import (
 	"slices"
 )
 
-// Inselwechsel (B-103, docs/rules/stufen.md § 1): Der Sieg über den Endboss öffnet den Wechselpunkt neben der Burg der
-// tiefsten Stufe, wenn es eine nächste Insel gibt. Stehen alle lebenden, gesteuerten Spieler der Insel dort
+// Inselwechsel (B-103, B-637, docs/rules/stufen.md § 1): Der Sieg über den Endboss öffnet den Wechselpunkt am Steg des
+// Hafens (Stufe mit dem fertigen Schiff, ship.go), wenn es eine nächste Insel gibt. Stehen alle lebenden, gesteuerten Spieler der Insel dort
 // hub.Travel.Seconds lang, ist der Wechsel bereit (SwitchReady); den Austausch der Insel macht der Raum (B-345) mit
 // NextIsland.
 
 // isLast: Die Insel ist die letzte ihrer Welt (kein Wechselpunkt, Kampagnensieg möglich).
 func (isl *Island) isLast() bool { return isl.Number+1 >= len(isl.world.Islands) }
 
-// gateStage ist die tiefste Stufe der Insel; dort liegt der Wechselpunkt (an der Burg).
-func (isl *Island) gateStage() *World {
-	return slices.MaxFunc(isl.Stages, func(a, b *World) int { return a.Biome.Depth - b.Biome.Depth })
-}
 
 // stepIslandSwitch: Wechselpunkt öffnen und den gemeinsamen Fortschritt rechnen (nach dem Tick aller Stufen).
 func stepIslandSwitch(isl *Island, dt float64) {
 	if !isl.EndbossDefeated || isl.isLast() || isl.SwitchReady {
 		return
 	}
-	w := isl.gateStage()
+	w, ship := isl.harbor()
+	if ship == nil || !shipComplete(w, ship) {
+		isl.GateOpen, isl.switchProgress = false, 0 // Schiff verloren (Stufenverlust): der Wechselpunkt schließt
+		return
+	}
 	if !isl.GateOpen {
 		isl.GateOpen = true
-		emit(w, "islandGateOpen", Event{"island": isl.Number + 1, "x": unitX(w.HubX)})
+		emit(w, "islandGateOpen", Event{"island": isl.Number + 1, "x": unitX(ship.X)})
 	}
-	if !allAtGate(isl, w) {
+	if !allAtGate(isl, w, ship.X) {
 		isl.switchProgress = 0
 		return
 	}
@@ -40,16 +40,16 @@ func stepIslandSwitch(isl *Island, dt float64) {
 	}
 }
 
-// allAtGate: Alle lebenden, gesteuerten Spieler der Insel stehen in der Stufe w am Wechselpunkt; tote und freie
+// allAtGate: Alle lebenden, gesteuerten Spieler der Insel stehen in der Stufe w am Steg bei x; tote und freie
 // zählen nicht, einer in einer anderen Stufe lässt den Wechsel warten. Ohne solche Spieler kein Wechsel.
-func allAtGate(isl *Island, w *World) bool {
+func allAtGate(isl *Island, w *World, x float64) bool {
 	n := 0
 	for _, s := range isl.Stages {
 		for _, p := range s.Players {
 			if !isAlive(p) || p.Free {
 				continue
 			}
-			if s != w || math.Abs(p.X-w.HubX) > hub.Travel.RangeUnits {
+			if s != w || math.Abs(p.X-x) > hub.Travel.RangeUnits {
 				return false
 			}
 			n++

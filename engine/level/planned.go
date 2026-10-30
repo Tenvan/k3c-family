@@ -9,12 +9,7 @@ import (
 )
 
 // Geplante Chunks (docs/rules/geplante-chunks.md, B-461): feste Gegenden je Insel und Tiefe. Dieses Paket prüft die
-// Planung unabhängig vom Seed gegen die kürzeste mögliche Länge des Bioms und jede Streuung der Mauerlinien.
-// Die Linien sind ein Parameter (kein globaler Zustand); DefaultWallLines liefert die eingebetteten Daten.
-
-// veinGapUnits ist der Mindestabstand einer festen Ader zu jedem Bauplatz der Mauerlinien und zur Farm
-// (docs/rules/geplante-chunks.md § 4, Q57).
-const veinGapUnits = 4
+// Planung unabhängig vom Seed gegen die kürzeste mögliche Länge des Bioms und die Verteidigungszone.
 
 // edgeGapUnits ist der Abstand von Ressourcen, Truhen und Adern zur Chunk-Grenze (wie `inside` im Generator).
 const edgeGapUnits = 2
@@ -130,13 +125,13 @@ func hasObjectKind(b Biome, kind string) bool {
 // ValidatePlan prüft die geplanten Chunks einer Tiefe unabhängig vom Seed. Ist die Planung gültig, scheitert kein Seed
 // zur Laufzeit. lines sind die Mauerlinien (DefaultWallLines für die eingebetteten). Der Fehler nennt Platz und Grund.
 // Gerechnet wird mit der kürzesten Länge des Bioms; ValidatePlanFor rechnet mit einer eingestellten Chunk-Anzahl.
-func ValidatePlan(b Biome, plan []PlannedChunk, lines WallLines) error {
-	return ValidatePlanFor(b, plan, lines, 0)
+func ValidatePlan(b Biome, plan []PlannedChunk) error {
+	return ValidatePlanFor(b, plan, 0)
 }
 
 // ValidatePlanFor prüft wie ValidatePlan, aber gegen die Chunk-Anzahl count (Options.ChunkCount, geplante-chunks.md
 // § 7) statt gegen die kürzeste Länge; count 0 ist ValidatePlan.
-func ValidatePlanFor(b Biome, plan []PlannedChunk, lines WallLines, count int) error {
+func ValidatePlanFor(b Biome, plan []PlannedChunk, count int) error {
 	if err := checkCount(b, count); err != nil {
 		return err
 	}
@@ -151,7 +146,7 @@ func ValidatePlanFor(b Biome, plan []PlannedChunk, lines WallLines, count int) e
 			return fmt.Errorf("auf Platz %+d: %w", c.Slot, err)
 		}
 		seen[c.Slot] = true
-		items, err := checkObjects(c, b, g, lines)
+		items, err := checkObjects(c, b, g)
 		if err != nil {
 			return fmt.Errorf("auf Platz %+d: %w", c.Slot, err)
 		}
@@ -159,7 +154,7 @@ func ValidatePlanFor(b Biome, plan []PlannedChunk, lines WallLines, count int) e
 		if err != nil {
 			return fmt.Errorf("auf Platz %+d: %w", c.Slot, err)
 		}
-		if err := checkGuards(c, b, g, lines); err != nil {
+		if err := checkGuards(c, b, g); err != nil {
 			return fmt.Errorf("auf Platz %+d: %w", c.Slot, err)
 		}
 		if err := markSpots(spots, items, ruins); err != nil {
@@ -205,11 +200,11 @@ func checkChunk(c PlannedChunk, b Biome, g geometry, seen map[int]bool) error {
 
 // checkObjects prüft Art, Lage und Eindeutigkeit der Objekte eines Chunks. Ein Ereignis-Chunk ohne Objektliste trägt
 // sein Objekt in der Chunk-Mitte.
-func checkObjects(c PlannedChunk, b Biome, g geometry, lines WallLines) ([]placed, error) {
+func checkObjects(c PlannedChunk, b Biome, g geometry) ([]placed, error) {
 	if len(c.Objects) == 0 {
 		if isEvent(c.Kind) || c.Kind == "portal" {
 			p := placed{kind: c.Kind, slot: c.Slot, at: g.cw / 2, dist: g.dist(c.Slot, g.cw/2)}
-			return []placed{p}, checkPlaced(p, b, g, lines)
+			return []placed{p}, checkPlaced(p, b, g)
 		}
 		return nil, nil
 	}
@@ -222,7 +217,7 @@ func checkObjects(c PlannedChunk, b Biome, g geometry, lines WallLines) ([]place
 			return nil, fmt.Errorf("%s@%v doppelt (kind@x muss eindeutig sein)", o.Kind, o.At)
 		}
 		p := placed{kind: o.Kind, slot: c.Slot, at: o.At, dist: g.dist(c.Slot, o.At), fixed: true}
-		if err := checkPlaced(p, b, g, lines); err != nil {
+		if err := checkPlaced(p, b, g); err != nil {
 			return nil, err
 		}
 		out = append(out, p)
@@ -231,67 +226,44 @@ func checkObjects(c PlannedChunk, b Biome, g geometry, lines WallLines) ([]place
 }
 
 // checkPlaced prüft die Lage-Regeln (docs/rules/geplante-chunks.md § 4) eines Objekts.
-func checkPlaced(p placed, b Biome, g geometry, lines WallLines) error {
+func checkPlaced(p placed, b Biome, g geometry) error {
 	switch {
 	case p.kind == "portal" || p.kind == "recruitCamp":
 		if p.at < 0 || p.at > g.cw {
 			return fmt.Errorf("%s bei %v liegt außerhalb des Chunks (0…%v)", p.kind, p.at, g.cw)
 		}
 		if p.kind == "portal" {
-			return checkPortal(p, b, lines)
+			return checkPortal(p, b)
 		}
 		return nil
 	case p.at < edgeGapUnits || p.at > g.cw-edgeGapUnits:
 		return fmt.Errorf("%s bei %v: mindestens %d Units Abstand zur Chunk-Grenze (%d…%v)", p.kind, p.at, edgeGapUnits, edgeGapUnits, g.cw-edgeGapUnits)
 	case b.Veins.Count > 0 && p.kind == b.Veins.Kind:
-		return checkVein(p, lines)
+		return checkVein(p)
 	}
 	return nil
 }
 
-func checkPortal(p placed, b Biome, lines WallLines) error {
+func checkPortal(p placed, b Biome) error {
 	if p.dist < b.Portals.MinDistanceFromHubUnits {
 		return fmt.Errorf("das Portal %v Units vom Hub, mindestens %v", p.dist, b.Portals.MinDistanceFromHubUnits)
 	}
-	if outer := lines.outermostGate(); p.dist <= outer {
-		return fmt.Errorf("das Portal %v Units vom Hub, innerhalb des äußersten Tors (%v)", p.dist, outer)
+	if outer := sitePlacement.OutsideUnits; p.dist <= outer {
+		return fmt.Errorf("das Portal %v Units vom Hub, innerhalb der Verteidigungszone (%v)", p.dist, outer)
 	}
 	return nil
 }
 
-func checkVein(p placed, lines WallLines) error {
-	for _, site := range lines.sites() {
+// veinGapUnits ist der Mindestabstand einer festen Ader zum Baugrund der Zone 1 (docs/rules/geplante-chunks.md § 4, Q57); die Mauer- und
+// Turm-Plätze halten ihrerseits Abstand zu Adern (sites.go blockedXs).
+const veinGapUnits = 4
+
+func checkVein(p placed) error {
+	targets := []float64{sitePlacement.Zone1WallUnits, sitePlacement.Zone1TowerUnits} // Baugrund der Zone 1
+	for _, site := range targets {
 		if math.Abs(p.dist-site) < veinGapUnits {
 			return fmt.Errorf("die Ader %v Units vom Hub, weniger als %d Units von einem Bauplatz (%v)", p.dist, veinGapUnits, site)
 		}
 	}
 	return nil
-}
-
-// sites sind alle Bauplätze der Linien (Mauer, Turm, Tor, jede ganzzahlige Streuung) und die Farm als Abstand zum Hub.
-func (d WallLines) sites() []float64 {
-	out := slices.Clone(farmOffsets)
-	for k, offset := range d.WallUnits {
-		for j := 0; j <= d.jitterOf(k); j++ {
-			wall := offset + float64(j)
-			out = append(out, wall-d.TowerInsetUnits, wall, wall+d.GateOutsetUnits)
-		}
-	}
-	return out
-}
-
-func (d WallLines) jitterOf(k int) int {
-	if k < d.FixedLines {
-		return 0
-	}
-	return d.JitterOutwardUnits
-}
-
-// outermostGate ist die größte Torlage aller Linien bei stärkster Streuung.
-func (d WallLines) outermostGate() float64 {
-	outer := 0.0
-	for k, offset := range d.WallUnits {
-		outer = math.Max(outer, offset+float64(d.jitterOf(k))+d.GateOutsetUnits)
-	}
-	return outer
 }

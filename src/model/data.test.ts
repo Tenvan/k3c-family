@@ -18,9 +18,9 @@ describe('HUB passt zu data/hub.json', () => {
     });
   }
 
-  it('Typ deckt wallLines ab', () => {
-    expect(HUB.wallLines.wallUnits.length).toBeGreaterThan(0);
-    expect(HUB.wallLines.gateHubLevel).toBeGreaterThan(0);
+  it('Typ deckt sitePlacement ab', () => {
+    expect(HUB.sitePlacement.zone1WallUnits).toBeGreaterThan(HUB.sitePlacement.zone1TowerUnits);
+    expect(HUB.sitePlacement.zones).toBeGreaterThan(0);
   });
 });
 

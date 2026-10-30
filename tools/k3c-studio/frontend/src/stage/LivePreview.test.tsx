@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import { mockWorldPreview } from '../api/mockWorld';
 import { LivePreview } from './LivePreview';
+import { buildingGroups, buildingToggles } from './stageLogic';
 
 // B-460/AC-04 im DOM: die Live-Vorschau fragt die Vorschau-Welt ab, zeigt Hub-Stufen aus levels und Gebäude-Schalter und
 // reicht die Welt an die Bühne. Die Phaser-Bühne ersetzt hier eine Attrappe (ein Canvas gibt es im Test nicht).
@@ -41,12 +42,14 @@ async function mount(seed = 'k3c', onPan: (px: number) => void = () => {}): Prom
   root = createRoot(host);
   await act(async () => root!.render(element(seed, VIEW, onPan)));
   await flush();
-  await expandAll(host);
   return host;
 }
 
-const boxes = (h: HTMLElement) => [...h.querySelectorAll<HTMLElement>('.wd-group-items button[role="checkbox"]')];
-const expandAll = (h: HTMLElement) => act(async () => { h.querySelectorAll<HTMLElement>('.wd-group-name[aria-expanded="false"]').forEach((b) => b.click()); });
+// Gebäude über der Bühne (B-670): je Art ein Chip (ein/aus), die Lageleiste zeigt jeden Platz als Marke
+const sites = (h: HTMLElement) => [...h.querySelectorAll<HTMLButtonElement>('.pl-site')];
+const kinds = (h: HTMLElement) => [...h.querySelectorAll<HTMLButtonElement>('.pl-kind')];
+/** Schlüssel der ersten Art in der Chip-Leiste (gleiche Reihenfolge wie buildingGroups) */
+const firstKindKeys = (all: { kind: string; x: number }[]) => buildingGroups(buildingToggles(all), new Set())[0]!.items.map((t) => t.key);
 
 beforeEach(() => { stages.length = 0; });
 afterEach(() => {
@@ -62,7 +65,8 @@ describe('Live-Vorschau (B-460/AC-04)', () => {
     expect(spy).toHaveBeenCalledWith(expect.objectContaining({ seed: 'k3c', source: { biome: 'forest' }, hubLevel: 5, buildings: {} }));
     expect(stages).toHaveLength(1);
     expect(lastWorld().biome.id).toBe('forest');
-    expect(boxes(h)).toHaveLength(lastWorld().sites.length);
+    expect(sites(h)).toHaveLength(lastWorld().sites.length);
+    expect(h.querySelectorAll('[role="combobox"]')).toHaveLength(2); // nur Hub-Stufe und Tageszeit, keine Auswahlliste je Platz (B-670/AC-03)
   });
 
   it('Position und Zoom kommen von außen und gehen an die Bühne; eine neue Ansicht wird nachgezogen (B-477/AC-01)', async () => {
@@ -89,18 +93,20 @@ describe('Live-Vorschau (B-460/AC-04)', () => {
     expect(seen.at(-1)).toHaveLength(lastWorld().sites.length);
   });
 
-  it('Gebäude abwählen: neue Anfrage mit dem Schlüssel, der Platz fehlt in der Welt, der Schalter bleibt', async () => {
+  it('Art abwählen per Chip: neue Anfrage mit ihren Schlüsseln, die Plätze fehlen in der Welt, die Chips bleiben (B-670/AC-03)', async () => {
     const spy = vi.spyOn(backend, 'worldPreview');
     const h = await mount();
-    const count = boxes(h).length;
-    const key = boxes(h)[0]!.getAttribute('aria-label')!;
-    await act(async () => boxes(h)[0]!.click());
+    const count = sites(h).length;
+    const keys = firstKindKeys(lastWorld().sites as { kind: string; x: number }[]);
+    await act(async () => kinds(h)[0]!.click());
     await flush();
-    expect(spy).toHaveBeenLastCalledWith(expect.objectContaining({ buildings: { [key]: false } }));
-    expect(lastWorld().sites).toHaveLength(count - 1);
-    expect(boxes(h)).toHaveLength(count);
-    expect(boxes(h)[0]!.getAttribute('aria-checked')).toBe('false');
-    await act(async () => boxes(h)[0]!.click());
+    expect(spy).toHaveBeenLastCalledWith(expect.objectContaining({ buildings: Object.fromEntries(keys.map((k) => [k, false])) }));
+    expect(lastWorld().sites).toHaveLength(count - keys.length);
+    expect(sites(h)).toHaveLength(count);
+    expect(kinds(h)[0]!.getAttribute('aria-pressed')).toBe('false');
+    expect(kinds(h)[0]!.closest('[data-state]')!.getAttribute('data-state')).toBe('none'); // durchgestrichen
+    expect(sites(h).filter((b) => b.disabled)).toHaveLength(keys.length);
+    await act(async () => kinds(h)[0]!.click());
     await flush();
     expect(lastWorld().sites).toHaveLength(count);
   });
@@ -110,14 +116,14 @@ describe('Live-Vorschau (B-460/AC-04)', () => {
 describe('Live-Vorschau: Wechsel, Fehler, Lebenszyklus (B-460/AC-04)', () => {
   it('Seed wechseln bei abgewählten Gebäuden: Auswahl beginnt neu, die Bühne zeigt das neue Level mit allen Gebäuden', async () => {
     const h = await mount();
-    const count = boxes(h).length;
-    await act(async () => boxes(h)[0]!.click());
+    const count = sites(h).length;
+    await act(async () => kinds(h)[0]!.click());
     await flush();
     await act(async () => root!.render(element('zwei')));
     await flush();
     expect(lastWorld().seed).toBe('zwei');
     expect(lastWorld().sites).toHaveLength(count);
-    expect(boxes(h).every((b) => b.getAttribute('aria-checked') === 'true')).toBe(true);
+    expect(kinds(h).every((b) => b.getAttribute('aria-pressed') === 'true')).toBe(true);
   });
 
   it('Planer-Stand wechseln bei abgewählten Gebäuden: Auswahl beginnt neu, die Anfrage trägt den neuen Kandidaten (B-462)', async () => {
@@ -127,15 +133,16 @@ describe('Live-Vorschau: Wechsel, Fehler, Lebenszyklus (B-460/AC-04)', () => {
     const h = await mount();
     await act(async () => root!.render(withPlaner('{"levels":[{},{},{},{},{}]}')));
     await flush();
-    const count = boxes(h).length;
-    await act(async () => boxes(h)[0]!.click());
+    const count = sites(h).length;
+    const keys = firstKindKeys(lastWorld().sites as { kind: string; x: number }[]);
+    await act(async () => kinds(h)[0]!.click());
     await flush();
-    expect(lastWorld().sites).toHaveLength(count - 1);
+    expect(lastWorld().sites).toHaveLength(count - keys.length);
     await act(async () => root!.render(withPlaner('{"levels":[{},{},{},{},{}],"x":1}')));
     await flush();
     expect(spy).toHaveBeenLastCalledWith(expect.objectContaining({ hubCandidate: '{"levels":[{},{},{},{},{}],"x":1}', buildings: {} }));
     expect(lastWorld().sites).toHaveLength(count);
-    expect(boxes(h).every((b) => b.getAttribute('aria-checked') === 'true')).toBe(true);
+    expect(kinds(h).every((b) => b.getAttribute('aria-pressed') === 'true')).toBe(true);
   });
 
   it('gleiche Eingaben → gleiche Welt auf der Bühne (zweimal gemountet)', async () => {
@@ -153,7 +160,7 @@ describe('Live-Vorschau: Wechsel, Fehler, Lebenszyklus (B-460/AC-04)', () => {
     vi.spyOn(backend, 'worldPreview').mockResolvedValue(mockWorldPreview({ ...ARGS, seed: 'fehler' }));
     const h = await mount();
     expect(h.textContent).toContain('Seed braucht');
-    expect(boxes(h)).toHaveLength(0);
+    expect(sites(h)).toHaveLength(0);
     expect(stages[0]!.shown.at(-1)).toBeNull();
   });
 

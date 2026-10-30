@@ -129,19 +129,41 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-622](B-622-fackeln-als-spielobjekt.md) | SIM | Idee | niedrig | offen | – | Fackeln gibt es als Spielobjekt mit Licht in der Nacht |
 | [B-623](B-623-hub-stufenfolge-bestaetigen.md) | REG | Frage | mittel | offen | – | Stufenfolge des Hubs (3 Schritte je Hub-Stufe, Material-Tor) bestätigen |
 | [B-624](B-624-golden-gzip-bestaetigen.md) | INF | Frage | mittel | offen | – | Golden-Daten als gzip mit lesbaren Diffs bestätigen |
-| [B-625](B-625-balance-baseline-neu.md) | REG | Schuld | mittel | offen | – | Balance-Baseline nach BAL6 neu schreiben |
 | [B-626](B-626-rg1-werte-entscheiden.md) | REG | Frage | mittel | offen | – | Wertvorschläge aus RG1.1 und BR2.1 entscheiden |
 | [B-627](B-627-rg2-regelklaerungen.md) | REG | Frage | mittel | offen | – | Regelklärungen RG2.1 (Handwerker, Verlust-Korridor, Gold-Schwelle) entscheiden |
 | [B-630](B-630-quellen-werden-nicht-uebernommen.md) | DEV | Problem | mittel | offen | – | Quellen werden nicht übernommen |
-| [B-633](B-633-wartegrund-material-tor-text.md) | CLI | Problem | niedrig | offen | – | Wartegrund des Material-Tors heißt nicht mehr „Material der nächsten Insel“ |
-| [B-634](B-634-balancing-seed-k3c-dev.md) | DEV | Idee | hoch | eingeplant | BS1 | Balancing läuft bis zur Abnahme nur mit Seed k3c-dev und ist schneller |
 | [B-635](B-635-muenzskala-2-bis-30.md) | REG | Idee | hoch | eingeplant | BS2 | Münzpreise liegen auf einer kleinen Skala von 2 bis 30 Gold |
 | [B-636](B-636-farm-heisst-baumschule.md) | SIM | Idee | hoch | eingeplant | BS4 | Die Farm heißt Baumschule und steht auf gerodeten Waldbauplätzen |
 | [B-637](B-637-hafen-chunk-boot.md) | SIM | Idee | hoch | eingeplant | BS5 | Ein Hafen-Chunk auf Inselstufe 1 baut das Boot zum Verlassen der Insel |
 | [B-638](B-638-boot-ressourcen-balancing.md) | DEV | Idee | hoch | eingeplant | BS3 | Das Balancing misst die Ressourcen für das Boot |
-| [B-639](B-639-prompt-buttons-einfach.md) | DEV | Idee | hoch | eingeplant | BS1 | Prompt-Buttons der Workbench schicken nur kurze Prompts ohne Anweisungen |
 | [B-640](B-640-balancing-delta-runden.md) | DEV | Idee | hoch | eingeplant | BS7 | Balancing nach Mechanik-Änderungen läuft als Delta-Runde gegen eine Baseline |
 | [B-641](B-641-grafik-hafen-schiff.md) | DEV | Idee | hoch | eingeplant | BS10 | Hafen und Schiff haben eigene Grafiken je Bauabschnitt |
+| [B-642](B-642-meilenstein-lauf-ganze-insel.md) | DEV | Idee | hoch | eingeplant | BS11 | Der Balancing-Tester spielt nur eine Stufe, der Meilenstein-Lauf braucht die ganze Insel |
+| [B-650](B-650-boss-hp-je-spieler-eigenes-feld.md) | SIM | Idee | hoch | eingeplant | BS3 | Boss-HP je Zusatzspieler bekommt ein eigenes Feld, getrennt von der Wellengröße |
+| [B-652](B-652-mauern-tuerme-verteilt-tor-ist-aeusserste-mauer.md) | SIM | Idee | hoch | eingeplant | BS12 | Mauern und Türme stehen verteilt in jedem Chunk, das Tor ist die äußerste gebaute Mauer |
+| [B-653](B-653-baustellen-schilder-bauoptionen-holzzaun.md) | CLI | Problem | hoch | eingeplant | BS13 | Bauschilder an Bäumen und Felsen nur nach Markierung, keine Bauoptionen für gesperrte Gebäude, Holzmauer als Zaun |
+| [B-654](B-654-bot-performance-miniboss-json.md) | SIM | Schuld | mittel | offen | – | Bot-Performance: bosses.json je Tick neu geparst, nodeFor/wanted mit Map-Zugriffen |
+| [B-656](B-656-meilenstein-titan-mehrseed.md) | REG | Problem | mittel | offen | – | Meilenstein 1 coop2 standard: Titan über mehrere Seeds, holz und schiff grün |
+| [B-657](B-657-castlehold-messfenster.md) | DEV | Problem | mittel | offen | – | Die Kennzahl castleHeld misst Nacht 1 bis 5 über den ganzen Lauf, nicht nur über das Fenster des Ziels |
+| [B-658](B-658-balancing-umbruch-container-query.md) | DEV | Problem | hoch | eingeplant | WZ32 | Die Balancing-Seite stellt Konfiguration und Berichte unter 1.100 px untereinander |
+| [B-659](B-659-balancing-seite-feste-flaeche.md) | DEV | Idee | mittel | eingeplant | WZ32 | Die Balancing-Seite füllt die Fläche, nur Liste und Detail scrollen |
+| [B-660](B-660-balancing-liste-und-detail.md) | DEV | Idee | hoch | eingeplant | WZ32 | Läufe und Berichte stehen in einer Liste mit Filter und Mehrfachauswahl, der Bericht in Reitern |
+| [B-661](B-661-balancing-lauf-editor-varianten.md) | DEV | Idee | hoch | eingeplant | WZ32 | Der Lauf-Editor setzt Varianten als Tabelle mit Basiswert und Daten-Browser |
+| [B-662](B-662-balancing-berichte-auftrag-sammelaktionen.md) | DEV | Idee | hoch | eingeplant | WZ32 | Die Workbench liefert Auftrag und Label je Bericht und verwaltet Berichte gesammelt |
+| [B-663](B-663-welten-editor-responsive.md) | DEV | Problem | mittel | eingeplant | – | Der Welten Editor bricht nach der Breite seiner Seite um und zeigt keine waagrechte Scrollleiste |
+| [B-664](B-664-welten-editor-zwei-modi.md) | DEV | Idee | mittel | eingeplant | – | Der Welten Editor trennt Welt-Struktur und Stufe bearbeiten und speichert an einer Stelle |
+| [B-665](B-665-welten-editor-buehne-inspektor.md) | DEV | Idee | mittel | eingeplant | – | Im Modus Stufe bearbeiten stehen eine große Live-Vorschau, eine schmale Chunk-Vorschau und ein Inspektor statt vier Steuerzeilen |
+| [B-666](B-666-welten-editor-gebaeude-zustaende.md) | DEV | Idee | mittel | eingeplant | – | Gebäude-Zustände der Live-Vorschau lassen sich je Art, per Voreinstellung und je Bauplatz schnell setzen |
+| [B-667](B-667-live-vorschau-bauplatz-klick.md) | DEV | Idee | niedrig | eingeplant | – | Ein Klick auf einen Bauplatz in der Live-Vorschau wählt ihn im Inspektor |
+| [B-668](B-668-workbench-kopf-schmal.md) | DEV | Problem | niedrig | offen | – | Der Kopf der Workbench bricht in schmalen Fenstern um, statt die Seite waagrecht zu verbreitern |
+| [B-669](B-669-insights-ziel-ohne-grenzen.md) | DEV | Problem | niedrig | offen | – | Die Auswertung eines Berichts stürzt nicht ab, wenn ein Ziel weder Unter- noch Obergrenze hat |
+| [B-670](B-670-studio-planer-kompakt.md) | DEV | Idee | mittel | eingeplant | – | Der Gebäude-Planer zeigt Bühne, Matrix und Inspektor auf einen Blick, ohne dass Filter oder Regeltabelle die Fläche schlucken |
+| [B-671](B-671-studio-monarch-kompakt.md) | DEV | Idee | mittel | eingeplant | – | Die Monarch-Seite hat eine Werkzeugleiste und eine große Bühne, die Skills liegen in einem einklappbaren Seitenpanel |
+| [B-672](B-672-studio-gegner-kompakt.md) | DEV | Idee | mittel | eingeplant | – | Die Gegner-Seite zeigt Gegner als kompakte Tabelle mit Inspektor, Lücken als Zahl statt langer Badges |
+| [B-673](B-673-studio-quellen-kompakt.md) | DEV | Idee | mittel | eingeplant | – | Die Quellen-Seite ist kompakt nach Slot gegliedert, und alle vier Quellen lassen sich mit Vorschlägen füllen |
+| [B-674](B-674-skill-effekt-am-wirkort.md) | SRV | Problem | mittel | eingeplant | KB5 | Flächenzauber erscheinen dort, wo die Simulation sie wirkt, nicht am Monarchen |
+| [B-675](B-675-status-effekte-sichtbar.md) | CLI | Idee | mittel | eingeplant | KB5 | DoTs, Buffs und Kontrolleffekte der Skills sind im Spiel sichtbar |
+| [B-676](B-676-studio-skills-ziel-und-status.md) | DEV | Idee | mittel | eingeplant | KB5 | Das Studio zeigt Skills am Wirkort und DoTs und Buffs an Gegnern und Monarchen |
 
 ## Archiv
 
@@ -602,3 +624,16 @@ Zeile in diesen Abschnitt.
 | [B-628](archiv/B-628-simtest-checkout-kurzpfad-ci.md) | DEV | Problem | hoch | erledigt | – | TestSimTestMitCheckout scheitert auf dem Windows-Runner an 8.3-Kurzpfaden |
 | [B-631](archiv/B-631-tore-treppen-material-je-stufe.md) | SIM | Idee | hoch | erledigt | – | Tore, Treppen und Material-Tor nutzen nur Material der eigenen Stufe, Bau läuft durchgängig |
 | [B-632](archiv/B-632-balancing-auswertung-ampeln-html.md) | DEV | Idee | hoch | erledigt | – | Balancing-Berichte bringen Ampeln, Kurzauswertung, Tuning-Hinweise und einen interaktiven HTML-Bericht |
+| [B-634](archiv/B-634-balancing-seed-k3c-dev.md) | DEV | Idee | hoch | erledigt | BS1 | Balancing läuft bis zur Abnahme nur mit Seed k3c-dev und ist schneller |
+| [B-639](archiv/B-639-prompt-buttons-einfach.md) | DEV | Idee | hoch | erledigt | BS1 | Prompt-Buttons der Workbench schicken nur kurze Prompts ohne Anweisungen |
+| [B-643](archiv/B-643-wald-stein-fuer-hub-ausbau.md) | REG | Problem | hoch | erledigt | BS3 | Im Wald gibt es keinen Stein für den Hub-Ausbau auf Stufe 2 |
+| [B-646](archiv/B-646-aggressionspool-wellen-lawine.md) | SIM | Problem | hoch | erledigt | BS3 | Unter Tage löst jede Welle die nächste aus: Der Aggressionspool läuft in eine Lawine |
+| [B-647](archiv/B-647-endboss-fuer-einen-bot-nicht-erreichbar.md) | SIM | Problem | hoch | erledigt | BS3 | Ein einzelner Bot kann den Endboss nicht besiegen: Truppen erreichen ihn nicht, Monarch heilt nicht |
+| [B-644](archiv/B-644-sim-test-warten-wie-check-run.md) | DEV | Idee | mittel | erledigt | – | sim_test wartet wie check_run auf das Ende und meldet Fortschritt je Tag |
+| [B-645](archiv/B-645-meilenstein-bots-bauen-keine-wirtschaft.md) | DEV | Problem | hoch | verworfen | BS3 | Der Meilenstein-Lauf coop2 scheitert an den Bots, nicht an den Werten: Es entsteht keine Wirtschaft |
+| [B-648](archiv/B-648-balancing-bericht-rahmenregeln.md) | DEV | Problem | hoch | erledigt | – | Balancing-Bericht urteilt nach Ziel und zeigt den Fortschritt |
+| [B-649](archiv/B-649-balancing-bericht-klartext.md) | DEV | Problem | mittel | verworfen | – | Balancing-Bericht in Klartext: Prozentwerte, Stellschrauben mit Bereich |
+| [B-625](archiv/B-625-balance-baseline-neu.md) | REG | Schuld | mittel | verworfen | – | Balance-Baseline nach BAL6 neu schreiben |
+| [B-651](archiv/B-651-kristallhoehle-titan-welle-raeumt-hub-ab.md) | SIM | Problem | hoch | erledigt | BS3 | Die Titan-Welle der Kristallhöhle räumt den Hub eines Einzelmonarchen in Sekunden ab (coop2) |
+| [B-655](archiv/B-655-editor-basis-lauf-seedlist.md) | DEV | Problem | niedrig | erledigt | – | Balancing-Editor übernimmt seedList einer Baseline und warnt bei abweichenden Seeds im Delta |
+| [B-633](archiv/B-633-wartegrund-material-tor-text.md) | CLI | Problem | niedrig | erledigt | – | Wartegrund des Material-Tors heißt nicht mehr „Material der nächsten Insel“ |

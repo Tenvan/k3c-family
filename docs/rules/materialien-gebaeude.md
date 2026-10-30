@@ -10,8 +10,8 @@ Fünf Materialien, eines je Hub-Stufe. Das Baumaterial gehört der **Insel** (al
 
 | Material | Hub-Stufe | Quelle | Verwendung |
 |---|---|---|---|
-| **Holz** | 1 | Wald (Bäume), **Farm-Plantage** (wächst nach) | Grundgebäude, Holzmauer und -turm, Bogen und Schwert |
-| **Stein** | 2 | Höhle (**Adern**), endliche Felsen im Wald und in der Mine | Steinmauer, -turm und -tor, Kaserne, Lager, Taverne, Treppe runter in der Höhle, Treppe hoch in der Mine, Material-Tor zu Hub-Stufe 2 |
+| **Holz** | 1 | Wald (Bäume), **Baumschul-Plantage** (wächst nach) | Grundgebäude, Holzmauer und -turm, Bogen und Schwert |
+| **Stein** | 2 | Höhle (**Adern**), endliche Felsen im Wald und in der Mine | Steinmauer und -turm, Kaserne, Lager, Taverne, Treppe runter in der Höhle, Treppe hoch in der Mine, Material-Tor zu Hub-Stufe 2 |
 | **Kupfer** | 3 | Mine (**Adern**), endliches Erz im Level | Kupfermauer und -turm, Schmiede (Elite-Upgrades), Heilplatz |
 | **Eisen** | 4 | Eisenstollen (**Adern**) | Eisenmauer und -turm, Rüstkammer |
 | **Kristall** | 5 | Kristallhöhle (**Adern**) | Kristallmauer, Zaubertum |
@@ -23,10 +23,10 @@ Fünf Materialien, eines je Hub-Stufe. Das Baumaterial gehört der **Insel** (al
 | **Startvorrat:** Eine neue Insel startet mit **100 Holz** im Insel-Vorrat (Startwert, in allen Schwierigkeitsgraden gleich); Spielstände bringen ihren eigenen Vorrat mit. Alle Gebäude der Hub-Stufe 1 kosten weiter Holz plus Gold, es gibt keine reinen Gold-Gebäude. | Ohne Vorrat ist vor dem ersten Bau ein Holzfäller-Umweg nötig; 100 Holz bezahlen beide Mauern (40) und einen Turm (50). Beschlossen von 🧑 am 2026-10-03 (B-177). | `data/hub.json` › `islandStartStock` | Erste Mauer vor Ende Tag 1 in ≥ 90 % (wie § 3.1); Höhe mit B-099/B-155 prüfen |
 | **Arbeiter bringen gesammeltes Material zum nächsten Lager oder zur Burg ihres Hubs.** Ist das Maximum voll, **bleibt das Material liegen** (der Arbeiter wartet), nichts geht verloren. | Das Tragen ist sichtbar und kostet Zeit; Lager nahe an den Ressourcen helfen. | `engine/sim/unit_common.go` (`carry`, SIM-Ticket) | – |
 | Der **Busch** bleibt Dekoration ohne Funktion. | Kein Nutzen, keine Regel nötig. | `data/biomes/forest.json` | – |
-| Nur Bauern sammeln, nur markierte Ressourcen (Markierung kostet 1–2 Gold); ein Baum oder Fels liefert 10 Einheiten in 4–8 s und ist danach verbraucht; Gegner lassen mit 10 % je 5 der Hauptressource der Stufe fallen. **Adern** werden **einmal markiert**, die Markierung bleibt; Kosten = `markCost` des Materials: Stein 1, Kupfer 2, Eisen 2, Kristall 2 Gold (Eisen und Kristall Startwert). **Plantage-Bäume** brauchen keine Markierung (Q25, 2026-10-04). | Wie `wirtschaft.md` § 1: Level-Objekte, Truhen und Drops sind der **endliche Startvorrat**. Die Ader verschwindet nie; die gebaute Farm ist schon die Entscheidung. | `data/economy.json` › `gatherables`, `veins` | – |
-| **Holz wächst über Farmen nach:** Jede Farm ist eine **Baumplantage** mit 6 Plätzen; je Platz wächst alle 30 s ein Baum (10 Holz) nach (etwa 12 Holz/min je Farm). Farm-Stufen erhöhen Plätze oder Tempo (Werte mit B-099). | Holz ist die Basis und soll nicht enden, solange eine Farm steht. | `data/buildings.json` › `farm` (SIM legt `plantation` an) | Holz am Tagesbeginn ≥ 100 ab Tag 3 in ≥ 70 % |
+| Nur Bauern sammeln, nur markierte Ressourcen (Markierung kostet 1–2 Gold); ein Baum oder Fels liefert 10 Einheiten in 4–8 s und ist danach verbraucht; Gegner lassen mit 10 % je 5 der Hauptressource der Stufe fallen. **Adern** werden **einmal markiert**, die Markierung bleibt; Kosten = `markCost` des Materials: Stein 1, Kupfer 2, Eisen 2, Kristall 2 Gold (Eisen und Kristall Startwert). **Plantage-Bäume** brauchen keine Markierung (Q25, 2026-10-04). | Wie `wirtschaft.md` § 1: Level-Objekte, Truhen und Drops sind der **endliche Startvorrat**. Die Ader verschwindet nie; die gebaute Baumschule ist schon die Entscheidung. | `data/economy.json` › `gatherables`, `veins` | – |
+| **Holz wächst über Baumschulen nach:** Jede Baumschule ist eine **Baumplantage** mit 6 Plätzen; je Platz wächst alle 30 s ein Baum (10 Holz) nach (etwa 12 Holz/min je Baumschule). Baumschul-Stufen erhöhen Plätze oder Tempo (Werte mit B-099). | Holz ist die Basis und soll nicht enden, solange eine Baumschule steht. | `data/buildings.json` › `nursery` (bis BS4 `nursery`; `plantation`) | Holz am Tagesbeginn ≥ 100 ab Tag 3 in ≥ 70 % |
 | **Adern liefern Stein, Kupfer, Eisen und Kristall unendlich** (neues Level-Objekt je Mine-Stufe; **2 Adern je Stufe**). Der Vorrat ist unendlich, die **Abbaurate** steuert: höchstens 2 Bauern gleichzeitig je Ader; Zielrate bei 2 Bauern: **Stein 60/min, Kupfer 45/min, Eisen 35/min, Kristall 25/min** je Ader. Das Lager-Maximum begrenzt das Horten. | Material soll in den tiefen Stufen sicher fließen, aber Zeit und Bauern kosten; Menge steuert die Rate, nicht die Fundmenge. | `data/economy.json` › `veins` (SIM legt an), `data/biomes/*.json` | Zeit bis Hub-Stufe 2 und 3 siehe § 2; Zeit am Lager-Maximum ≤ 20 % (Kennzahl fehlt, B-099) |
-| **Breite der Stufen: nach unten schmaler, dafür dichter.** Startwerte (Units): Wald 900–1100, Höhle 700–900, Mine 550–700, Eisenstollen 480–560, Kristallhöhle 400–480 (die beiden letzten Vorschläge, noch nicht gebaut). Gemessen (100 Seeds): Wald Mittel 1035, Höhle 832, Mine 647. | Kurze Wege, mehr Druck und weniger Rechenzeit in den tiefen Stufen, die gleichzeitig laufen (SP11, Pi 3); Material kommt aus Adern statt aus der Länge. | `data/biomes/*.json` › `lengthUnits` | Dichte unter Tage nicht abnehmend, ≥ 2,8 endliche Objekte je 100 Units (Startwert; Q28, 2026-10-04; `stufen.md` § 1) |
+| **Breite der Stufen: nach unten schmaler, dafür dichter.** Startwerte (Units): Wald 900–1100, Höhle 700–900, Mine 550–700, Eisenstollen 480–560, Kristallhöhle 600–700 (B-645: nicht mehr schmaler als Eisenstollen und Mine, damit das Camp außerhalb der Mauerlinien, vor den Portalen und fern vom Bau liegen kann, `bosse.md` § 1; Eisenstollen 480–560 ist ein Vorschlag, noch nicht gebaut). Gemessen (100 Seeds): Wald Mittel 1035, Höhle 832, Mine 647. | Kurze Wege, mehr Druck und weniger Rechenzeit in den tiefen Stufen, die gleichzeitig laufen (SP11, Pi 3); Material kommt aus Adern statt aus der Länge. | `data/biomes/*.json` › `lengthUnits` | Dichte unter Tage nicht abnehmend, ≥ 2,8 endliche Objekte je 100 Units (Startwert; Q28, 2026-10-04; `stufen.md` § 1) |
 | Die Siegvariante „alles abbauen“ (`stufen.md` § 3) zählt nur die **endlichen Objekte** (Bäume, Felsen, Erz im Level); Adern sind unendlich und zählen nicht, die Plantage auch nicht. | Folge aus Adern und Plantage. | – | – |
 
 ## 2. Hub-Ausbau (Hub-Stufen 1 bis 5)
@@ -68,35 +68,24 @@ des Snapshots (`docs/protocol.md` › Wirtschaft). Wie in Kingdom Two Crowns beg
 | Platz-Klasse | Lage | Freischaltung | Quelle |
 |---|---|---|---|
 | **Hub-Platz** | fester Offset zur Hub-Mitte (`data/hub.json`): Burg (Hub-Mitte, Zahlziel des Hub-Ausbaus), Werkstatt, Lager, Kaserne, Taverne, Heilplatz, Schmiede, Rüstkammer, Treppe runter +8, Treppe hoch +16 (ab Tiefe 1), Händler Kaufen +16 / Verkaufen +20 (nur Tiefe 0, teilt sich +16 mit der Treppe hoch); Treppen ≥ 8 Units zu jedem Zahlziel derselben Tiefe | Hub-Stufe des Gebäudes (Tabelle unten) | Q43, Q55, B-409 |
-| **Mauerlinie** | je Seite 5 Linien mit Mauer-Platz und eigenem Turm-Platz (8 Units innen) | Linie k ab Hub-Stufe k, sobald die **Mauer** der Linie k−1 derselben Seite gebaut ist (Material egal); jede Seite für sich | Q48, Q58, Q49 |
-| **Tor-Platz** | je Linie einer, Mauer +4 Units außen | bezahlbar nur an der äußersten gebauten Linie der Seite (Tor ab Hub-Stufe 1, B-631) | Q47 |
-| **Farm-Weltplatz** | ein fester Weltplatz je Seite zwischen Linie 1 und 2 | Hub-Stufe 1 | Q51 |
+| **Mauer- und Turm-Platz** (Zone) | je Seite und Zone 1 bis 3 Mauern und 1 bis 3 Türme, verteilt per Seed; Zone 1 hat festen Baugrund bei Mauer ±44 und Turm ±36 | Zone n ab Hub-Stufe n sichtbar; bezahlbar, sobald im Freiraum (6 Units) keine Bäume und Felsen stehen, innere Mauern müssen nicht gebaut sein (B-652) | B-652, Q48 (ersetzt Linien) |
+| **Baumschul-Platz** | je Seite ein Platz in einem Wald-Chunk hinter Linie 2, vom Generator deterministisch gewürfelt (nur Tiefe 0, Biom Wald); auf ihm stehen Bäume | Hub-Stufe 1, **erst nach dem Roden** (§ 3.3) | B-636 (ersetzt Q51) |
 | **Angebots-Anhang** | Zahlziel mit festem `dx` am Gebäude (`data/buildings.json`), z. B. Schwert an der Werkstatt `dx +4` | entsteht mit dem Bau des Gebäudes | Q52, Q53 |
 
-**Mauerlinien** (Startwerte; Q49, Q50, 2026-10-04): Linie 1 = heutige Mauer ±44 und Turm ±36 (alte Spielstände bleiben kompatibel), fest. Linien 2–5 liegen bei ±64/84/104/124 und **streuen je Seed nur nach außen um 0 bis +4 Units** (ganzzahlig, eigener Wurf je Seite und Linie; Q56) über einen **eigenen RNG-Strom** (z. B. `…:sites`), damit Ressourcen, Portale, Camps und Golden-Level unverändert bleiben. Alle Linien liegen unter dem Portal-Mindestabstand 150.
+**Seit B-652 (BS12) gibt es keine festen Mauerlinien und keinen Tor-Platz mehr.** Die frühere Linie 1 lebt als **Baugrund der Zone 1** weiter (Mauer ±44, Turm ±36, `data/hub.json › sitePlacement`); Hub-Plätze liegen zwischen Baugrund und den übrigen Plätzen der Zone, sie sind ungeschützt, bis dort Mauern stehen. **Zerstörung:** Wird die äußerste gebaute Mauer zerstört, ist die nächste innere das Tor. **Camps** und Truhen dürfen innerhalb der Zonen liegen, die Plätze halten ≥ 4 Units Abstand zu ihnen (Zahlziel-Regel); validiert werden nur Portale (außerhalb von `sitePlacement.outsideUnits`), Ressourcen und Truhen zwischen den Plätzen sind erlaubt. Krieger-Posten sind keine Bauplätze, sie leiten sich von der äußersten gebauten Mauer ab (Q46, `buerger.md` § 1).
 
-| Linie | Mauer | Turm (8 innen) | Tor (4 außen) | Streuung je Seed | bezahlbar ab Hub-Stufe |
-|---|---|---|---|---|---|
-| 1 | ±44 | ±36 | ±48 | fest | 1 |
-| 2 | ±64 | ±56 | ±68 | 0…+4 | 2 |
-| 3 | ±84 | ±76 | ±88 | 0…+4 | 3 |
-| 4 | ±104 | ±96 | ±108 | 0…+4 | 4 |
-| 5 | ±124 | ±116 | ±128 | 0…+4 | 5 |
-
-Farm (±52) ↔ Turm 2 und Tor k ↔ Turm k+1 bleiben dadurch immer ≥ 4 Units auseinander (Q56). **Zerstörung** (Q58): Maßgeblich ist die Mauer der Linie k−1; wird sie zerstört, bleibt eine bereits gebaute Linie k gültig (auch Tor und Turm), nur das Bezahlen neuer Linien k+1… wartet, bis die Mauer k−1 repariert ist. **Camps** (Q57) dürfen innerhalb der Linien liegen (Golden-Seeds: ±75); validiert werden nur Portale (außerhalb der äußersten Linie 5 inkl. Streuung), Ressourcen und Truhen zwischen den Linien sind erlaubt, die ≥ 4-Units-Regel gilt nur für Plätze und Zahlziele aus den Daten. Bis W1.1 führt W0 `World.HubLevel` (Start 1) nur für die Linien- und Tor-Regel ein (Q59).
-
-Hub-Plätze dürfen zwischen Linie 1 und Linie 2 liegen; sie sind ungeschützt, bis Linie 2 steht (Q51). Wird außen eine neue Linie gebaut, bleiben Turm und Tor innen stehen und wirken weiter als zweite Sperre (Q54). Krieger-Posten sind keine Bauplätze, sie leiten sich von der äußersten gebauten Sperre ab (Q46, `buerger.md` § 1).
+**Verteilte Mauer- und Turm-Plätze (B-652, BS12, 🧑 2026-10-28):** Der Generator legt je Seite und **Zone** (ein Chunk breit, ab `sitePlacement.zoneStartUnits`, 5 Zonen, Zone n ab Hub-Stufe n sichtbar) **1 bis 3 Mauer-Plätze und 1 bis 3 Turm-Plätze** per Seed an (eigener RNG-Strom `…:wallsites`, die übrigen Ströme und Golden-Level bleiben). Ein Teil der Türme (`towerNearShare` 60 %) steht **4 bis 10 Units** neben einer Mauer der Zone (Beschluss 2 bis 10; unter 4 Units unterschreitet den Mindestabstand zweier Zahlziele, Glossar › Zahlziel); Plätze liegen nie näher als 4 Units zu Hub-Plätzen, Burg, Portal, Camp, Truhe, Ausgang und Bau und nicht in Lava-Chunks. Ein Platz wird bezahlbar, sobald im `clearRadiusUnits` (6) keine Bäume und Felsen mehr stehen; innere Mauern müssen nicht gebaut sein. **Das Tor ist die äußerste gebaute Mauer je Seite** und wird wie eine Mauer ausgebaut; ein eigenes Tor-Gebäude gibt es nicht mehr.
 
 **Auswahl am Platz** (Q34, Q52, 2026-10-04): Bietet ein Gebäude mehrere Angebote (Werkstatt, Schmiede, Rüstkammer), hat jedes Angebot ein **eigenes Zahlziel** als Anhang mit festem `dx` am Gebäude, keine neue Taste; alle `dx` liegen frei (Test). Ausgebildet bzw. aufgewertet wird der nächste freie Bauer bzw. Bogenschütze/Krieger.
 
 <!-- rules:hub-levels:start -->
-| Hub-Stufe | Material | Hub-Plätze | Mauerlinie und Tor | Händler |
+| Hub-Stufe | Material | Hub-Plätze | Mauer- und Turm-Zone | Händler |
 |---|---|---|---|---|
-| 1 | Holz | Werkstatt −16; Farm −52, +52 | Linie 1: Mauer ±44, Turm ±36, Tor ±48 (fest) | Kaufen +16, Verkaufen +20 (nur Tiefe 0) |
-| 2 | Stein | Treppe hoch +16 (ab Tiefe 1); Treppe runter +8 (nur mit tieferer Stufe); Taverne −32; Kaserne +24; Lager −26 (je Insel) | Linie 2: Mauer ±64, Turm ±56, Tor ±68 (0…+4 je Seed) | – |
-| 3 | Kupfer | Heilplatz −40; Schmiede +28 | Linie 3: Mauer ±84, Turm ±76, Tor ±88 (0…+4 je Seed) | – |
-| 4 | Eisen | Rüstkammer +40 | Linie 4: Mauer ±104, Turm ±96, Tor ±108 (0…+4 je Seed) | – |
-| 5 | Kristall | – | Linie 5: Mauer ±124, Turm ±116, Tor ±128 (0…+4 je Seed) | – |
+| 1 | Holz | Werkstatt −16 | Zone 1: Baugrund Mauer ±44, Turm ±36, dazu 0…2 Plätze je Seed | Kaufen +16, Verkaufen +20 (nur Tiefe 0) |
+| 2 | Stein | Treppe hoch +16 (ab Tiefe 1); Treppe runter +8 (nur mit tieferer Stufe); Taverne −32; Kaserne +24; Lager −26 (je Insel) | Zone 2: 1…3 Mauern, 1…3 Türme je Seed | – |
+| 3 | Kupfer | Heilplatz −40; Schmiede +28 | Zone 3: 1…3 Mauern, 1…3 Türme je Seed | – |
+| 4 | Eisen | Rüstkammer +40 | Zone 4: 1…3 Mauern, 1…3 Türme je Seed | – |
+| 5 | Kristall | – | Zone 5: 1…3 Mauern, 1…3 Türme je Seed | – |
 <!-- rules:hub-levels:end -->
 
 Der Block zwischen den Marken wird aus `data/hub.json` erzeugt (`task gen:rules`, WZ15.2) und nicht von Hand geändert. Form: eine Zeile je Hub-Stufe (`levels`); Material der Stufe = das eine Material der Ausbaukosten, Stufe 1 ohne Kosten = Holz; Plätze nach Art gruppiert in der Reihenfolge der JSON (`sites`, dann `islandSites`, diese mit „(je Insel)“), Offsets mit Minuszeichen U+2212; leere Zellen „–“. Mauer und Turm der Linie k stehen in Zeile k, das Tor der Linie k in der Zeile max(`gateHubLevel`, k), mit `gateHubLevel` 1 also in der Zeile seiner Linie. Der Händler hängt in der JSON an keiner Stufe und steht in Stufe 1. Die Burg liegt in der Hub-Mitte. Hub-Stufe n schaltet außerdem Mauer-, Turm- und Tor-Stufe n frei (Ausbau am selben Platz); Stufe 5 ist der Zaubertum (Turm-Stufe 5).
@@ -116,7 +105,7 @@ Zusatzgebäude: **Lager** (Stufe 2), Taverne (Stufe 2), Heilplatz (Stufe 3).
 Turm: Kosten und Bauzeiten der Stufen 2–5 sind Startwerte (Q45, 2026-10-04), Ausbau am selben Platz; 2 Bogenplätze, +3 Reichweite. Stufe 5 ist der **Zaubertum**: Flächenschaden statt Bogen, als eigener Schuss mit den Startwerten 40 Schaden, Radius 3, Reichweite 13, alle 1,5 s; die Schützen steigen beim Ausbau ab und zählen weiter als Kämpfer (Q31, 2026-10-04). Daten: `data/buildings.json` (SIM legt Stufen an).
 Zielkorridor: Erste Mauer vor Ende Tag 1 in ≥ 90 %; erster Turm vor Ende Tag 2 in ≥ 70 %.
 
-**Eigene Stufen weiterer Gebäude (GEB13, B-569, Annahme bis 🧑 widerspricht):** Lager, Farm, Kaserne, Taverne und Heilplatz haben wie Mauer und Turm `levels` 1–5 in `data/buildings.json` (Ausbau am selben Platz, Stufe n ab Hub-Stufe n, Material je Stufe wie in § 2, Kosten, HP und Bauzeit wie beim Turm skaliert: Material ×1/1,5/2/2,5/3, Gold ×1/1,25/2,5/5/10, HP ×1/2/3,5/5,5/8,5, Bauzeit ×1/1,5/2/2,7/3,3; Startwerte, Stufe 1 = Grundwerte). Die Grafik folgt der Stufe des Platzes. Werkstatt, Schmiede und Rüstkammer haben keine `levels`: ihr Zahlziel nimmt schon Produkte an (Bogen, Elite, Rüstung), und die Grafik folgt weiter der Hub-Stufe.
+**Eigene Stufen weiterer Gebäude (GEB13, B-569, Annahme bis 🧑 widerspricht):** Lager, Baumschule, Kaserne, Taverne und Heilplatz haben wie Mauer und Turm `levels` 1–5 in `data/buildings.json` (Ausbau am selben Platz, Stufe n ab Hub-Stufe n, Material je Stufe wie in § 2, Kosten, HP und Bauzeit wie beim Turm skaliert: Material ×1/1,5/2/2,5/3, Gold ×1/1,25/2,5/5/10, HP ×1/2/3,5/5,5/8,5, Bauzeit ×1/1,5/2/2,7/3,3; Startwerte, Stufe 1 = Grundwerte). Die Grafik folgt der Stufe des Platzes. Werkstatt, Schmiede und Rüstkammer haben keine `levels`: ihr Zahlziel nimmt schon Produkte an (Bogen, Elite, Rüstung), und die Grafik folgt weiter der Hub-Stufe.
 
 ### 3.2 Wirkungen der übrigen Gebäude
 
@@ -124,9 +113,9 @@ Zielkorridor: Erste Mauer vor Ende Tag 1 in ≥ 90 %; erster Turm vor Ende Tag 2
 |---|---|---|
 | **Burg** | Hub-Kern; fällt sie, wirkt der Niederlage-Modus (`stufen.md` § 4) | HP 1000 |
 | **Mauer** | blockiert Gegner (außer `ignoresWalls`) | siehe 3.1 |
-| **Tor** | eigene Bürger und Spieler passieren, Gegner nicht; je Linie ein fester Tor-Platz 4 Units außen vor der Mauer (Linie 1: ±48), bezahlbar nur an der äußersten gebauten Linie (Q47, 2026-10-04); für Gegner wie eine Mauer (Hindernis und Angriffsziel), nicht für den Posten der Bogenschützen (`outerWall`) (Q27, 2026-10-04); ein inneres Tor bleibt stehen und wirkt weiter (Q54) | Stufen 1–5 am selben Platz, Stufe n ab Hub-Stufe n wie die Mauer, Stufe 1 ab Hub-Stufe 1 (B-631, Startwerte): 30 Holz + 10 Gold, 250 HP, 6 s · 45 Stein + 15 Gold, 500 HP, 9 s · 60 Kupfer + 30 Gold, 850 HP, 12 s · 75 Eisen + 60 Gold, 1350 HP, 16 s · 90 Kristall + 120 Gold, 2100 HP, 20 s |
+| **Tor** | Kein eigenes Gebäude (B-652, BS12): Die äußerste gebaute Mauer einer Seite ist das Tor; eigene Bürger und Spieler passieren, Gegner nicht (für Gegner wie jede Mauer: Hindernis und Angriffsziel); wandert nach innen, wenn die äußerste Mauer zerstört wird, und nach außen, wenn weiter außen gebaut wird | Ausbau wie die Mauer (Stufen 1–5, Stufe n ab Hub-Stufe n) |
 | **Werkstatt** | Bogen und Schwert, je bis 3 im Waffenregal; Schwert-Zahlziel als Anhang `dx +4` (Q53, 2026-10-04) | wie heute (40 Holz + 15 Gold, 150 HP) |
-| **Farm** | Baumplantage: 6 Plätze, je Platz alle 30 s ein Baum (10 Holz), siehe § 1; fester Weltplatz je Seite zwischen Linie 1 und 2 (Q51, 2026-10-04) | wie heute (30 Holz + 10 Gold, 100 HP) |
+| **Baumschule** (Code `nursery`) | Baumplantage: 6 Plätze, je Platz alle 30 s ein Baum (10 Holz), siehe § 1; steht auf einem Baumschul-Platz im Wald, kaufbar erst nach dem Roden (§ 3.3, B-636) | 30 Holz + Gold nach Münzskala (`wirtschaft.md` § 8), 100 HP |
 | **Kaserne** | Truppen-Limit +10 (Basis 10, einfach gebaut); Regel und Prüfung beim Waffe-Holen: `buerger.md` § 3 | wie heute (60 Stein + 30 Gold, 200 HP) |
 | **Lager** | +300 Kapazität je Rohstoff für die Insel; Arbeiter bringen Material hierher oder zur Burg | Startwert: 50 Stein + 20 Gold, HP 200, Bauzeit 8 s |
 | **Taverne** | bei jedem `dawn` ein Landstreicher an der Taverne, solange dort weniger als 2 stehen; Wanderradius 6; eigene Werte in `data/` (Q30, 2026-10-04) | Startwert: 60 Stein + 30 Gold, HP 150, Bauzeit 12 s (Q26, gilt nach Q43) |
@@ -136,6 +125,19 @@ Zielkorridor: Erste Mauer vor Ende Tag 1 in ≥ 90 %; erster Turm vor Ende Tag 2
 | **Treppen** | Verbindung zur Stufe darüber/darunter, je 1 je Hub, ab Hub-Stufe 2 | Treppe runter auf Stufe d: 100 Material der Stufe d + 50 Gold (Wald Holz, Höhle Stein, Mine Kupfer, Eisenstollen Eisen); Treppe hoch auf Stufe d: 100 Material der Stufe d−1 + 50 Gold (Höhle Holz, Mine Stein, Eisenstollen Kupfer, Kristallhöhle Eisen); HP 500, 20 s (B-631, `costByDepth`) |
 
 Die Startwerte für Taverne, Heilplatz, Schmiede und Rüstkammer sind **Vorschläge des Agenten** (🧑 hat die Wirkung beschlossen, nicht die Zahlen) und werden mit B-099 geprüft.
+
+
+### 3.3 Baumschule und Roden (BAS, B-636)
+
+Beschlossen von 🧑 am 2026-10-26 (Chat, Projekt BAS, Defaults aus B-636). Vorbild Kingdom Two Crowns: Die Baumschule
+entsteht dort, wo der Wald gerodet ist.
+
+| Regel | Begründung | Daten |
+|---|---|---|
+| **Baumschul-Plätze** legt der Level-Generator nur im **Wald** (Biom `forest`, Tiefe 0) an: je Seite **ein** Platz in einem Wald-Chunk **hinter Linie 2**, deterministisch aus dem Level-Strom (`engine/rng`). Auf dem Platz stehen Bäume. Andere Biome haben keine Baumschul-Plätze. | Holz-Nachschub als Belohnung fürs Roden; die Lage wechselt mit dem Seed, bleibt aber immer im Wald. | `data/biomes/forest.json` (Feld folgt mit BS4) |
+| **Erst roden:** Der Platz ist kaufbar, sobald **alle Bäume im Streifen** ±`stripUnits` um den Platz gefällt sind; bis dahin zeigt das Bauschild „erst roden“. Nachwachsende Plantage-Bäume sperren den Platz nicht wieder. | Roden ist der bewusste Schritt zur Baumschule. | `buildings.json` › `nursery.plantation.stripUnits` |
+| Gibt es im Level keinen passenden Wald-Chunk hinter Linie 2, setzt der Generator den Platz in den nächstgelegenen Wald-Chunk; gibt es gar keinen, entfällt der Platz auf dieser Seite. | Kein Level ohne Holz-Perspektive, kein erzwungener Wald. | – |
+| Die Baumschule bleibt eine Baumplantage (§ 1) mit Ausbaustufen (§ 3, GEB13) und gilt mit 2 Spielern wie mit einem. | Wirkung unverändert, nur Name und Ort neu. | `buildings.json` › `nursery` (bis BS4 `nursery`) |
 
 ## 4. Bau-Ablauf, Zerstörung, Reparatur
 
@@ -152,7 +154,7 @@ Die Startwerte für Taverne, Heilplatz, Schmiede und Rüstkammer sind **Vorschl�
 - Die Zahlen für **Stufen 4 und 5** (Eisen, Kristall) und die Stufen selbst werden erst messbar, wenn Insel 1 sie enthält; ihre Zielkorridore folgen mit B-099.
 - Startwerte für Taverne, Heilplatz, Schmiede, Rüstkammer (§ 3.2) sind Vorschläge ohne gesonderte Bestätigung; Turm-Kosten und -Bauzeiten (§ 3.1) und die Bauzeiten des Hub-Ausbaus (§ 2) hat 🧑 als Startwerte beschlossen (Q44, Q45, 2026-10-04).
 - Elite-Upgrades (Schmiede) und Rüstung/Waffen (Rüstkammer): Werte und Wirkung stehen in `buerger.md` (R3.3). Bürger-Fortschritt gehört zu B-110.
-- Die Wirkung „Farm: Plantage mit 6 Plätzen, je Platz alle 30 s ein Baum (10 Holz)“ (§ 1) und „Taverne: 1 Landstreicher je `dawn`, höchstens 2“ sind Startwerte (Wirtschaftsbalance, B-099).
+- Die Wirkung „Baumschule: Plantage mit 6 Plätzen, je Platz alle 30 s ein Baum (10 Holz)“ (§ 1) und „Taverne: 1 Landstreicher je `dawn`, höchstens 2“ sind Startwerte (Wirtschaftsbalance, B-099).
 - Beschlüsse vom 2026-10-04 (Fragenkatalog Q25–Q42): Bauzeiten von Taverne, Heilplatz (12 s), Schmiede und Rüstkammer (16 s) sind beschlossen; Zaubertum- und Heilplatz-Werte sind Startwerte. Das Modell „Hub wächst“ aus Q26 ist durch feste Bauplätze ersetzt (Q43–Q55, 2026-10-04, zweite Runde); Linien-Lagen und Streuung (§ 3) sind Startwerte, die Offsets der neuen Hub-Plätze legt W0 an (B-206).
 - Das Rate-Modell (Plantage, Adern, Raten) und die Breiten der Eisenstollen und Kristallhöhle sind **Startwerte** (🧑 hat Plantage + Adern beschlossen; Adernzahl 2, Raten und 6 Plätze/30 s hat er mit „Vorschlag“ übernommen). Die Kosten aus R2.2 bleiben, **jeder Hub baut die ganze Liste**.
 - Gemessene Level-Mengen (100 Seeds, Mittel): Wald 39 Bäume (≈ 390 Holz), 3 Felsen; Höhle 23 Felsen (≈ 230 Stein); Mine 6 Felsen, 3,4 Kupfererz (≈ 34 Kupfer, p10 = 0); damit tragen die Level allein die Kosten nicht, deshalb Plantage und Adern.

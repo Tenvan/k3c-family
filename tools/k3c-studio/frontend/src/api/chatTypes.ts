@@ -20,8 +20,8 @@ export interface ChatChoiceValues {
 }
 
 /** Auftragsart einer Nachricht: `welt` schickt das Grundgerüst als Instruktion mit (B-516), `zuordnung` den Seitenkontext
- *  von Sound- oder Grafik-Seite (B-600); fehlt sie, ist es ein freier Chat. */
-export type ChatTask = 'welt' | 'zuordnung';
+ *  von Sound- oder Grafik-Seite (B-600), `quellen` die Instruktion der Suche auf der Seite Quellen (B-673); fehlt sie, ist es ein freier Chat. */
+export type ChatTask = 'welt' | 'zuordnung' | 'quellen';
 
 /** Seitenkontext eines Zuordnungs-Auftrags (Go: assignContext; Aufbereitung chat/assignContext.ts). */
 export interface AssignContext {

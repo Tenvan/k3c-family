@@ -36,10 +36,9 @@ func TestHubPlanMatrixDerHeutigenDatei(t *testing.T) {
 		t.Fatalf("Stufen %d, Pfad %q", m.Levels, view.Path)
 	}
 	want := map[string]int{
-		"workshop@-16": 1, "farm@-52": 1, "farm@52": 1, "barracks@24": 2, "tavern@-32": 2, "storage@-26": 2,
+		"workshop@-16": 1, "barracks@24": 2, "tavern@-32": 2, "storage@-26": 2,
 		"stairsDown@8": 2, "stairsUp@16": 2, "smithy@28": 3, "healer@-40": 3, "armory@40": 4,
-		"line@1": 1, "line@2": 2, "line@3": 3, "line@4": 4, "line@5": 5,
-		"gate@1": 1, "gate@2": 2, "gate@3": 3, "gate@4": 4, "gate@5": 5, "merchantBuy@16": 1, "merchantSell@20": 1,
+		"zone1": 1, "merchantBuy@16": 1, "merchantSell@20": 1,
 	}
 	if len(m.Rows) != len(want) {
 		t.Errorf("Zeilen %d, erwartet %d", len(m.Rows), len(want))
@@ -73,17 +72,11 @@ func TestHubPlanPlatzUndTiefeJeZelle(t *testing.T) {
 	}
 }
 
-func TestHubPlanLinienToreUndHaendler(t *testing.T) {
+func TestHubPlanBaugrundUndHaendler(t *testing.T) {
 	m := (&App{root: repoRoot}).HubPlan().Matrix
-	line := rowOf(t, m, "line@2")
-	if !line.BothSides || line.TowerUnits != 56 || line.JitterUnits != 4 || line.Cells[1].OffsetUnits != 64 {
-		t.Errorf("Linie 2: %+v", line)
-	}
-	if fixed := rowOf(t, m, "line@1"); fixed.JitterUnits != 0 {
-		t.Errorf("Linie 1 streut %v", fixed.JitterUnits)
-	}
-	if gate := rowOf(t, m, "gate@1"); gate.Cells[1].OffsetUnits != 48 || gate.Line != 1 {
-		t.Errorf("Tor Linie 1: %+v", gate)
+	zone := rowOf(t, m, "zone1")
+	if !zone.BothSides || zone.Source != srcPlacement || zone.TowerUnits != 36 || zone.Line != 1 || zone.Cells[0].OffsetUnits != 44 {
+		t.Errorf("Baugrund Zone 1: %+v", zone)
 	}
 	if buy := rowOf(t, m, "merchantBuy@16"); buy.Cells[0].OnlyDepth != 0 || buy.Source != srcMerchant {
 		t.Errorf("Händler: %+v", buy)
@@ -107,8 +100,8 @@ func TestHubPlanSiebenStufen(t *testing.T) {
 	if r := rowOf(t, view.Matrix, "armory@40"); r.HubLevel != 7 || !r.Cells[6].Available || r.Cells[5].Available {
 		t.Errorf("Rüstkammer: %+v", r)
 	}
-	if r := rowOf(t, view.Matrix, "line@7"); r.HubLevel != 7 {
-		t.Errorf("Linie 7 ab %d", r.HubLevel)
+	if r := rowOf(t, view.Matrix, "zone1"); r.HubLevel != 1 || r.Cells[0].OffsetUnits != 60 || r.TowerUnits != 52 {
+		t.Errorf("Baugrund der Fixture: %+v", r)
 	}
 }
 

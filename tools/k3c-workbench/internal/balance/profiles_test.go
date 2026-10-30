@@ -94,6 +94,9 @@ func TestMauernZuerstBautMauerAus(t *testing.T) {
 			t.Fatalf("Vorrat %s", r)
 		}
 	}
+	for _, p := range isl.Players() {
+		p.Gold = 30 // der Test prüft den Bot, nicht die Wirtschaft: genug Gold für Ausbau und Mauer-Ausbau
+	}
 	w, cmds := isl.Stages[0], make([]sim.PlayerCommand, 2)
 	upgraded, tick := false, 0
 	for ; tick < 10*60*enginetools.TickHz && w.Cycle.Phase == "day" && !upgraded; tick++ {

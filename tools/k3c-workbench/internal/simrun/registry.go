@@ -54,6 +54,8 @@ type Run struct {
 	active         bool // Runner arbeitet und hält einen Platz
 	slot           int  // Platz 0 … MaxPerRoot-1, solange active (eigene EXE je Platz)
 	cancel         context.CancelFunc
+	noted          time.Time // letzte Meldung an Notify.Run (notify.go)
+	notePending    bool      // eine Meldung ist angesetzt
 }
 
 // Slot ist der Platz des laufenden Laufs im Checkout.
@@ -73,10 +75,11 @@ type Registry struct {
 	// Exec startet einen Prozess (Test-Naht); vor dem ersten Start setzen.
 	Exec func(context.Context, Proc) Result
 
-	log  *slog.Logger
-	mu   sync.Mutex
-	next int
-	runs []*Run
+	log    *slog.Logger
+	mu     sync.Mutex
+	next   int
+	runs   []*Run
+	notify Notify // Rückrufe für die Ereignisse der Seite (notify.go)
 }
 
 // New baut ein leeres Register; Prozesse startet runProcess.
@@ -103,6 +106,7 @@ func (g *Registry) Start(root, where, label string, spec *Spec, runner Runner, q
 		g.launch(run)
 	} else {
 		g.log.Info("⏳ testlauf wartet", "ns", "simtest", "id", run.id, "mode", label)
+		g.changed(run)
 	}
 	return run, nil
 }
@@ -113,6 +117,7 @@ func (g *Registry) launch(run *Run) {
 	run.slot = g.freeSlot(run.root)
 	run.state, run.phase, run.started, run.active, run.cancel = Running, "start", time.Now(), true, cancel
 	g.log.Info("🚀 testlauf gestartet", "ns", "simtest", "id", run.id, "mode", run.label)
+	g.changed(run)
 	go func() {
 		defer cancel()
 		func() {
@@ -131,6 +136,7 @@ func (g *Registry) launch(run *Run) {
 		}
 		g.log.Info(map[bool]string{true: "✅ testlauf beendet", false: "❌ testlauf beendet"}[run.state == Done],
 			"ns", "simtest", "id", run.id, "state", run.state, "verdict", run.verdict)
+		g.changed(run)
 		g.launchNext(run.root)
 	}()
 }
@@ -194,11 +200,13 @@ func (g *Registry) Stop(root, id string) (string, error) {
 	case Waiting:
 		g.runs = slices.DeleteFunc(g.runs, func(r *Run) bool { return r == run })
 		g.log.Info("🧹 wartender testlauf entfernt", "ns", "simtest", "id", id)
+		g.changed(run)
 		return Waiting, nil
 	case Running:
 		run.state = Canceled
 		run.cancel()
 		g.log.Info("🛑 testlauf abgebrochen", "ns", "simtest", "id", id)
+		g.changed(run)
 		return Running, nil
 	}
 	return run.state, nil
@@ -228,6 +236,7 @@ func (g *Registry) SetPhase(run *Run, phase string) {
 	g.mu.Lock()
 	defer g.mu.Unlock()
 	run.phase = phase
+	g.changed(run)
 }
 
 // SetLines setzt die Kennzahlen eines laufenden Laufs (Zwischenstand).
@@ -235,6 +244,7 @@ func (g *Registry) SetLines(run *Run, lines []string) {
 	g.mu.Lock()
 	defer g.mu.Unlock()
 	run.lines = lines
+	g.changed(run)
 }
 
 // SetProgress setzt den Fortschritt (fertige und alle Szenarien).
@@ -242,6 +252,7 @@ func (g *Registry) SetProgress(run *Run, done, total int) {
 	g.mu.Lock()
 	defer g.mu.Unlock()
 	run.done, run.total = done, total
+	g.changed(run)
 }
 
 // Finish setzt das Ende und schreibt den eigenen Bericht dir/simtest.md (dir relativ zum Checkout). Ein Abbruch über
@@ -263,8 +274,10 @@ func (g *Registry) Finish(run *Run, state, verdict string, lines []string, dir s
 		g.log.Error("❌ testlauf-bericht nicht geschrieben", "ns", "simtest", "id", run.id, "error", err.Error())
 	}
 	g.mu.Lock()
+	defer g.mu.Unlock()
 	run.report = filepath.ToSlash(filepath.Join(dir, "simtest.md"))
-	g.mu.Unlock()
+	g.changed(run)
+	g.reportsChanged(run.root)
 }
 
 // Get liefert den Stand eines Laufs.

@@ -140,3 +140,28 @@ export function mountPoseOf(
   if (!SHEETS[mount.sheet] || !SHEETS[rider.sheet]) return { pose: null, gap: gap('sheet', `Lücke: Sheet ${SHEETS[mount.sheet] ? rider.sheet : mount.sheet} fehlt in data/sprites.json`) };
   return { pose: null, gap: gap('mount', `Lücke: Reittier ${mountKey} ohne Sattelpunkt`) };
 }
+
+/** Wiedergabe anhalten: das Bild, bei dem sie gerade steht, bleibt stehen (Pause des Einzelbilds) */
+export const pause = (c: Control, current = 0): Control => (c.frame === null ? { ...c, frame: current } : c);
+
+// ---- Treffer-Test --------------------------------------------------------------------------------------------------
+
+export interface Box {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+}
+
+/** Index der Figur unter dem Punkt (Welt-Pixel; null = keine). `slop` erweitert jeden Umriss; liegen mehrere darunter,
+ *  gewinnt die, deren Mitte am nächsten liegt. Fehlende Figuren (null) zählen mit, damit der Index dem der Liste entspricht. */
+export function figureIndexAt(boxes: readonly (Box | null)[], x: number, y: number, slop = 0): number | null {
+  let best: number | null = null;
+  let bestDist = Infinity;
+  boxes.forEach((b, i) => {
+    if (!b || x < b.left - slop || x > b.right + slop || y < b.top - slop || y > b.bottom + slop) return;
+    const dist = Math.abs(x - (b.left + b.right) / 2);
+    if (dist < bestDist) { best = i; bestDist = dist; }
+  });
+  return best;
+}

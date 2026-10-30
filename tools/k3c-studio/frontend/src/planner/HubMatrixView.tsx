@@ -1,15 +1,22 @@
-import { Button } from '@webkit/atoms';
+import { Button, VisuallyHidden } from '@webkit/atoms';
 import type { HubCell, HubMatrix, HubRow } from '../api';
-import { depthText, levelColumns, offsetText, rowExtra, rowLabel } from './plannerLogic';
+import { depthText, levelColumns, offsetText, rowExtra, rowLabel, rowPlace } from './plannerLogic';
 
-/** Zelle: leer, solange der Platz noch nicht verfügbar ist; sonst Platz und Tiefe, die erste Stufe hervorgehoben. */
+/** Zelle als farbiges Kästchen (B-670): ab der Stufe des Platzes kräftig, danach hell, vorher leer; Platz und Tiefe stehen im
+ *  Tooltip und für Screenreader, eine Tiefen-Bedingung markiert das Kästchen. */
 function Cell({ row, cell, level, chosen }: { row: HubRow; cell: HubCell; level: number; chosen: boolean }) {
-  const classes = ['pl-cell', cell.available ? 'pl-on' : 'pl-off', level === row.hubLevel ? 'pl-from' : '', chosen ? 'pl-chosen' : ''];
   const depth = cell.available ? depthText(cell) : '';
+  const offset = cell.available ? offsetText(cell.offsetUnits, row.bothSides) : '';
+  const classes = ['pl-cell', cell.available ? 'pl-on' : 'pl-off', level === row.hubLevel ? 'pl-from' : '', chosen ? 'pl-chosen' : '', depth ? 'pl-cond' : ''];
   return (
-    <td className={classes.filter(Boolean).join(' ')} data-level={level}>
-      {cell.available && <span className="pl-offset">{offsetText(cell.offsetUnits, row.bothSides)}</span>}
-      {depth && <span className="pl-depth">{depth}</span>}
+    <td className={classes.filter(Boolean).join(' ')} data-level={level} title={[offset, depth].filter(Boolean).join(', ') || undefined}>
+      <span className="pl-box" aria-hidden />
+      {cell.available && (
+        <VisuallyHidden>
+          <span className="pl-offset">{offset}</span>
+          {depth && <span className="pl-depth">{depth}</span>}
+        </VisuallyHidden>
+      )}
     </td>
   );
 }
@@ -26,22 +33,26 @@ interface MatrixProps {
   /** gewählte Zeile (rowId) und ihre Wahl per Klick auf den Namen (WZ9.3) */
   selected?: string;
   onSelect?: (id: string) => void;
+  /** „+ Platz“ im Kopf (B-670); ohne gesperrt */
+  onAdd?: () => void;
 }
 
 /** Matrix Hub-Stufe × Bauplatz (B-462/AC-01): Zeilen aus dem Matrix-Modell des Backends, Spalten = Hub-Stufen (beliebig
- *  viele, AC-08). Ein Klick auf eine Spalte wählt die Hub-Stufe der Live-Vorschau, ein Klick auf den Namen die Zeile. */
-export function HubMatrixView({ matrix, hubLevel, onHubLevel, selected, onSelect }: MatrixProps) {
+ *  viele, AC-08). Ein Klick auf eine Spalte wählt die Hub-Stufe der Live-Vorschau, ein Klick auf den Namen die Zeile; unter
+ *  dem Namen stehen Platz und Liste (B-670). */
+export function HubMatrixView({ matrix, hubLevel, onHubLevel, selected, onSelect, onAdd }: MatrixProps) {
   const columns = levelColumns(matrix.levels);
   return (
     <div className="pl-scroll">
-      <table className="pl-matrix" aria-label="Matrix Hub-Stufe × Bauplatz">
+      <table className="pl-matrix" aria-label="Matrix Hub-Stufe × Bauplatz" style={{ minWidth: `calc(14rem + ${columns.length} * 2.6rem)` }}>
         <thead>
           <tr>
-            <th scope="col">Bauplatz</th>
-            <th scope="col">Herkunft</th>
+            <th scope="col" className="pl-head">
+              Bauplatz <Button size="1" variant="soft" className="pl-add" disabled={!onAdd} onClick={onAdd}>+ Platz</Button>
+            </th>
             {columns.map((n) => (
               <th key={n} scope="col" className={n === hubLevel ? 'pl-chosen' : undefined}>
-                <Button size="1" variant={n === hubLevel ? 'soft' : 'ghost'} className="pl-level" aria-pressed={n === hubLevel} onClick={() => onHubLevel(n)}>Hub-Stufe {n}</Button>
+                <Button size="1" variant="ghost" className="pl-level" data-chosen={n === hubLevel || undefined} aria-label={`Hub-Stufe ${n}`} aria-pressed={n === hubLevel} onClick={() => onHubLevel(n)}>{n}</Button>
               </th>
             ))}
           </tr>
@@ -52,10 +63,9 @@ export function HubMatrixView({ matrix, hubLevel, onHubLevel, selected, onSelect
               <th scope="row">
                 <Button variant="ghost" color="gray" highContrast className="pl-row" aria-pressed={rowId(row) === selected} onClick={() => onSelect?.(rowId(row))}>
                   {rowLabel(row)}
-                  {rowExtra(row) && <span className="pl-extra">{rowExtra(row)}</span>}
+                  <span className="pl-extra">{[rowPlace(row, hubLevel), rowExtra(row)].filter(Boolean).join(', ')}</span>
                 </Button>
               </th>
-              <td className="pl-source"><code>{row.source}</code></td>
               {row.cells.map((cell, j) => <Cell key={j} row={row} cell={cell} level={j + 1} chosen={j + 1 === hubLevel} />)}
             </tr>
           ))}

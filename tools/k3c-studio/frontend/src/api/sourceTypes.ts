@@ -83,6 +83,33 @@ export interface NetworkView {
   offline: boolean;
 }
 
+/** Ein Eintrag, der angehängt wird (oder würde): Auszug aus `SourceProposal`. */
+export interface SourceNewItem {
+  id: string;
+  slot: string;
+  art: AssetKind;
+  titel: string;
+  quelle: string;
+  dateiUrl: string;
+  lizenz: string;
+  /** Größe per HEAD in Bytes */
+  groesse: number;
+}
+
+/** Ein Kandidat, der nicht angehängt wird, mit Grund. */
+export interface SourceSkipped {
+  titel: string;
+  dateiUrl: string;
+  grund: string;
+}
+
+/** Ergebnis (oder Vorschau) der Übernahme aus der Recherche (B-673): angehängt und übersprungen samt Gesamtgröße. */
+export interface SourceAddView {
+  uebernommen: SourceNewItem[];
+  uebersprungen: SourceSkipped[];
+  bytes: number;
+}
+
 export interface SourceApi {
   /** Netz-Modus und Zustand; im Modus auto mit Probe */
   network(): Promise<NetworkView>;
@@ -95,6 +122,10 @@ export interface SourceApi {
   sourceProgress(): Promise<SourceProgress[]>;
   /** Kopiert einen geladenen Eintrag an den Platz seines Slots unter `public/` und legt Credit und Katalog-Eintrag an */
   sourceAdopt(id: string): Promise<void>;
+  /** Recherche-Treffer (Quelle "" = alle), die als Vorschlag übernommen würden, und die übersprungenen mit Grund; schreibt nichts, offline gesperrt */
+  sourceResearchPreview(source: string): Promise<SourceAddView>;
+  /** Übernimmt die Treffer mit diesen Datei-URLs (die im Dialog bestätigten) als Vorschlag „offen“ */
+  sourceResearchImport(source: string, urls: string[]): Promise<SourceAddView>;
   /** Welche geladenen, unverwendeten Dateien das Aufräumen entfernen würde */
   sourceCleanupPreview(): Promise<SourceCleanupView>;
   /** Entfernt sie aus dem Vorrat (nach Bestätigung); Einträge werden wieder „offen“ */

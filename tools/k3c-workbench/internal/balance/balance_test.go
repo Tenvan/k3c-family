@@ -8,8 +8,9 @@ import (
 	"k3c/engine/sim"
 )
 
-// oneDay ist eine kleine Matrix: zwei Seeds, 2 Spieler, beide Profile, Wald, ein Tag (bis zum zweiten Morgen).
-var oneDay = Matrix{Seeds: []string{"1", "2"}, Players: []int{2}, Bots: []string{"passive", "saver"}, Depths: []int{0}, Days: 1, GoldThreshold: 150}
+// oneDay ist eine kleine Matrix: zwei Seeds, 2 Spieler, beide Profile, Wald, drei Tage (bis zum vierten Morgen): Seit B-652 räumt
+// „sparsam“ erst den Freiraum eines Mauer-Platzes (markieren, Bauer holt die Bäume), bevor die erste Mauer steht.
+var oneDay = Matrix{Seeds: []string{"1", "2"}, Players: []int{2}, Bots: []string{"passive", "saver"}, Depths: []int{0}, Days: 3, GoldThreshold: 20}
 
 func mustRun(t *testing.T, m Matrix) Report {
 	t.Helper()
@@ -76,7 +77,7 @@ func TestSparsamZweiSpielerZahlenBeide(t *testing.T) {
 
 // BAL1/AC-02: Die Kennzahlen aus B-099 sind gefüllt (Tag, Dämmerung, Welle, Fluss, Tiefe, Gold-Schwelle).
 func TestKennzahlenGefuellt(t *testing.T) {
-	r := mustRun(t, Matrix{Seeds: []string{"1"}, Players: []int{2}, Bots: []string{"saver"}, Depths: []int{0}, Days: 1, GoldThreshold: 150})
+	r := mustRun(t, Matrix{Seeds: []string{"1"}, Players: []int{2}, Bots: []string{"saver"}, Depths: []int{0}, Days: 1, GoldThreshold: 20})
 	m := r.Results[0].Metrics
 	if len(m.Days) != 2 || m.Days[0].DuskTick == nil || m.Days[0].GoldAtDusk == nil || m.Days[0].StockAtDusk == nil {
 		t.Fatalf("Tag 1 ohne Dämmerungsstand: %+v", m.Days)

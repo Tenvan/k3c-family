@@ -114,3 +114,30 @@ func TestVaryWieUseData(t *testing.T) {
 		}
 	}
 }
+
+// B-662/AC-05: AllValues liefert die Werte aller variierbaren Dateien in einem Aufruf, mit Datei und Pfad.
+func TestAllValues(t *testing.T) {
+	got, err := AllValues(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	seen := map[string]int{}
+	for _, v := range got {
+		seen[v.File]++
+	}
+	for _, e := range files {
+		if e.Vary != (seen[e.Name] > 0) {
+			t.Errorf("%s (vary %v): %d Werte", e.Name, e.Vary, seen[e.Name])
+		}
+	}
+	eco, err := Values(root, "economy.json")
+	if err != nil || len(eco) != seen["economy.json"] {
+		t.Fatalf("economy.json: %d Werte in AllValues, %d in Values (%v)", seen["economy.json"], len(eco), err)
+	}
+	if i := slices.IndexFunc(got, func(v FileValue) bool { return v.File == "economy.json" }); got[i].Path != eco[0].Path || got[i].Value != eco[0].Value {
+		t.Errorf("erster Wert: %+v, Values: %+v", got[i], eco[0])
+	}
+	if _, err := AllValues(t.TempDir()); err == nil {
+		t.Error("fehlende Dateien ohne Fehler")
+	}
+}

@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "notes": "Schiff der Insel (BAS, B-637, B-638, docs/rules/wirtschaft.md § 8): 3 Abschnitte in dieser Reihenfolge, je Münzen (Münzskala) plus Material der Insel. Startwerte; BS3 trägt sie hier ein, BS9 stimmt sie ab. Die Simulation liest die Datei als Platz `ship` des Hafens (engine/sim/ship.go, BS5): der Kiel ist der Bau, Rumpf und Segel sind Stufe 2 und 3; hp und buildSeconds je Abschnitt.",
+  "stages": [
+    { "id": "keel",  "name": "Kiel",  "cost": { "gold": 10, "wood": 80 }, "hp": 300, "buildSeconds": 10 },
+    { "id": "hull",  "name": "Rumpf", "cost": { "gold": 20, "stone": 60, "copper": 40 }, "hp": 450, "buildSeconds": 14 },
+    { "id": "sail",  "name": "Segel", "cost": { "gold": 30, "iron": 40, "crystal": 20 }, "hp": 600, "buildSeconds": 18 }
+  ]
+}

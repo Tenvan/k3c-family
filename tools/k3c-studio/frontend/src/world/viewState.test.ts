@@ -119,15 +119,15 @@ describe('Mausrad (B-477/AC-01, AC-03)', () => {
 });
 
 describe('Sprungpunkte (B-477/AC-02)', () => {
-  const byId = (gates: number[] = [321, 300]) => Object.fromEntries(jumpPoints(model, gates).map((p) => [p.id, p.x]));
+  const byId = (walls: number[] = [321, 300]) => Object.fromEntries(jumpPoints(model, walls).map((p) => [p.id, p.x]));
 
-  it('links, Mitte, rechts, Hub, Tor, Portale und Ausgang', () => {
-    expect(byId()).toEqual({ links: 0, mitte: 450, rechts: 900, hub: 450, tor: 300, portal1: 250, portal2: 650, ausgang: 880 });
+  it('links, Mitte, rechts, Hub, Mauer, Portale und Ausgang', () => {
+    expect(byId()).toEqual({ links: 0, mitte: 450, rechts: 900, hub: 450, mauer: 300, portal1: 250, portal2: 650, ausgang: 880 });
   });
 
   it('fehlende Punkte sind null (ausgegraut)', () => {
     const none = Object.fromEntries(jumpPoints(model, []).map((p) => [p.id, p.x]));
-    expect(none.tor).toBeNull();
+    expect(none.mauer).toBeNull();
     const empty = Object.fromEntries(jumpPoints(null, []).map((p) => [p.id, p.x]));
     expect(Object.values(empty).every((x) => x === null)).toBe(true);
     const one = levelModel({ seed: 's', biomeId: 'forest', widthUnits: 100, chunkWidthUnits: 50, chunks: [], entities: [{ kind: 'portal', x: 10 }] } as never);

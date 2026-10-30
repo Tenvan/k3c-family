@@ -1,104 +1,37 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTicketPage } from '@webkit/lib/ticketContext';
-import { LivePreview } from '../stage/LivePreview';
-import { ChunkPreview } from './ChunkPreview';
-import { chunkAtSlot, slotHints } from './chunkMarks';
-import { LiveChunkBand } from './LiveChunkBand';
-import { PlanEditor } from './PlanEditor';
+import { useState } from 'react';
+import { loadPref, savePref } from '../lib/prefs';
+import { StageMode } from './StageMode';
+import { useGuard } from './WorldGuard';
+import { MODES, WorldHeader, type Mode } from './WorldHeader';
 import { WorldStructure } from './WorldStructure';
+import { useChatDraft } from './useChatDraft';
 import { usePlan } from './usePlan';
-import type { LevelModel, ModelChunk } from './levelView';
-import { ViewBar } from './ViewBar';
-import { BOTH, useBox, useViews } from './viewHooks';
-import { centerRange, centerViews, jumpPoints, paneUnits, type View } from './viewState';
+import { useWorldDraft } from './useWorldDraft';
 
-const KEY_STEP = 120; // Pixel je Pfeiltaste
-/** Sichtbarer Bereich einer Vorschau für Schieber und Streifen */
-const spanOf = (v: View, units: number) => ({ left: v.left, units });
-
-/** Seite Welt-Betrachter des Asset-Studios (B-460, B-461, B-477): Chunk-Streifen und Live-Vorschau in einer Ansicht, dazwischen
- *  der Editor für geplante Chunks. Beide zeigen dieselbe Weltposition in der Bildmitte (eine Positions-Leiste, Sprungpunkte);
- *  der Zoom gilt je Vorschau (Alt + Rad), die Leiste und Strg + Rad zoomen beide (B-485/AC-05). Beide lesen dieselbe
- *  Quelle: Insel, Stufe und der Entwurf der Planung (B-461/AC-11).
- *  „Verkleinern“ und „Maximieren“ ändern die Höhe der beiden Vorschauen, nie ihre Sichtbarkeit. */
+/** Seite Welten Editor des Asset-Studios (B-460, B-461, B-477, B-488, B-664, B-665): zwei Modi unter einem gemeinsamen Kopf.
+ *  „Welt-Struktur“ bearbeitet die Welt-Datei (Inseln, Stufen, Skalierung), „Stufe bearbeiten“ zeigt eine Stufe mit Chunk-Vorschau,
+ *  Live-Vorschau und Inspektor. Der Kopf trägt die Auswahl (Welt, Insel, Stufe), Speichern und „Im Spiel öffnen“; ein Wechsel
+ *  mit offenem Entwurf fragt zurück (`useGuard`). Der Modus bleibt gemerkt, eine Welt aus dem Chat öffnet Welt-Struktur. */
 export function WorldPage() {
-  const [maximized, setMaximized] = useState(true);
+  const [mode, setModeState] = useState<Mode>(() => loadPref('world.mode', MODES, 'stufe'));
+  const [maximized, setMaximized] = useState(true); // Bühne füllt die Fläche (M, ändert die Mindesthöhe der Live-Vorschau)
   const [source, setSource] = useState({ seed: 'k3c', biome: 'forest' });
   const plan = usePlan();
+  const world = useWorldDraft(plan);
+  const guard = useGuard(plan, world);
+  const setMode = (next: Mode) => { setModeState(next); savePref('world.mode', next); };
+  useChatDraft(world, () => setMode('welt'), () => (plan.dirty ? 'Antwort aus dem Chat nicht geladen: erst die Planung speichern oder verwerfen' : undefined));
   useTicketPage('welt', `${source.seed}/${source.biome}`);
-  const [model, setModel] = useState<LevelModel | null>(null);
-  const [gates, setGates] = useState<number[]>([]);
-  const frame = useRef<HTMLDivElement>(null);
-  const [controlsHost, setControlsHost] = useState<HTMLElement | null>(null); // Hub-Stufe, Tageszeit, Schichten: unter der Seed-Zeile
-  const [treeHost, setTreeHost] = useState<HTMLElement | null>(null); // Gebäude-Baum: unter den geplanten Chunks
-  const strip = useBox(frame, '.wd-viewport');
-  const stage = useBox(frame, '.wd-stage', true);
-  const px = useMemo(() => ({ chunk: strip.w, live: stage.w }), [strip.w, stage.w]);
-  const widthUnits = model?.widthUnits ?? 0;
-  const { views, setViews, chunkView, liveView, panBy, panLive, zoom, zoomBy, setCenter, onWheel } = useViews(widthUnits, px);
-  const spans = { chunk: spanOf(chunkView, paneUnits(views, 'chunk', px)), live: spanOf(liveView, paneUnits(views, 'live', px)) };
-  const ownLive = views.live !== views.chunk;
-  const hints = slotHints(plan.draft, plan.check);
-  const jumpTo = (c: ModelChunk) => setCenter((c.from + c.to) / 2); // Klick auf einen Chunk: Bildmitte = Chunk-Mitte, Zoom bleibt
-
-  useKeys(panBy, zoomBy, () => setMaximized((m) => !m));
-
-  // Ein neues Level (Seed, Biom, Insel, Stufe, Inselgröße) beginnt beim Hub, der Zoom bleibt; lädt nur der Entwurf der
-  // Planung neu, bleibt die Mitte (sonst spränge die Ansicht nach jeder Änderung eines Chunks zurück, WZ17.5).
-  const levelKey = useRef('');
-  const onLoaded = (seed: string, biome: string, next: LevelModel) => {
-    setSource((s) => (s.seed === seed && s.biome === biome ? s : { seed, biome }));
-    setModel(next);
-    const key = [seed, biome, plan.source?.island, plan.source?.stage, plan.source?.chunkCount].join('|');
-    if (key !== levelKey.current) setViews((v) => centerViews(v, next.hubCenterUnits, next.widthUnits, px));
-    levelKey.current = key;
-  };
-  const onSites = useCallback((sites: readonly { kind: string; x: number }[]) => {
-    setGates(sites.filter((s) => s.kind === 'gate').map((s) => s.x));
-  }, []);
 
   return (
-    <div className="wd-page" data-maximized={maximized} ref={frame}>
-      <ChunkPreview maximized={maximized} onToggle={() => setMaximized((m) => !m)} onLoaded={onLoaded} source={plan.source} view={chunkView} onWheel={(e) => onWheel(e, 'chunk')}
-        hints={hints} liveSpan={ownLive ? spans.live : undefined} onChunk={jumpTo}>
-        <div ref={setControlsHost} className="wd-controls-host" />
-        <ViewBar views={views} spans={spans} widthUnits={widthUnits} range={centerRange(views, widthUnits, px)} jumps={jumpPoints(model, gates)}
-          onScale={(scale) => zoom(BOTH, () => scale)} onZoom={zoomBy} onCenter={setCenter} />
-      </ChunkPreview>
-      <section className="wd-live" aria-label="Live-Vorschau">
-        <LivePreview seed={source.seed} biome={source.biome} position={liveView} onPan={panLive} onWheel={(e) => onWheel(e, 'live')} onSites={onSites} plan={plan.source} controlsHost={controlsHost} treeHost={treeHost} />
-        <LiveChunkBand stage={stage} view={liveView} model={model} draft={plan.draft} hints={hints} onChunk={jumpTo} />
-      </section>
-      <div className="wd-columns">
-        <WorldStructure plan={plan} seed={source.seed} biome={source.biome} />
-        <div className="wd-tree">
-          <PlanEditor plan={plan} seed={source.seed} onSlot={(slot) => { const c = model && chunkAtSlot(model.chunks, slot); if (c) jumpTo(c); }} />
-          <div ref={setTreeHost} />
-        </div>
+    <div className="wd-root">
+      <div className="wd-page" data-maximized={maximized} data-mode={mode}>
+        <WorldHeader mode={mode} onMode={setMode} plan={plan} world={world} guard={guard} seed={source.seed} biome={source.biome} />
+        {mode === 'welt'
+          ? <WorldStructure plan={plan} world={world} guard={guard} onMode={setMode} />
+          : <StageMode plan={plan} source={source} onSource={setSource} maximized={maximized} onToggleMax={() => setMaximized((m) => !m)} />}
       </div>
     </div>
   );
-}
-
-/** Bedienelemente, die ihre Tasten selbst brauchen: Eingabefelder, Auswahllisten (auch offen), Regler */
-const OWN_KEYS = 'input, textarea, [role="combobox"], [role="listbox"], [role="slider"], [role="checkbox"]';
-
-/** Pfeile scrollen, + und − zoomen, M verkleinert und maximiert (nicht, solange im Eingabefeld getippt, eine Auswahl
- *  bedient oder ein Regler geschoben wird). */
-function useKeys(panBy: (px: number) => void, zoomBy: (factor: number) => void, toggle: () => void) {
-  const keys = useRef({ panBy, zoomBy, toggle });
-  keys.current = { panBy, zoomBy, toggle };
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.target instanceof Element && e.target.closest(OWN_KEYS)) || e.ctrlKey || e.metaKey || e.altKey) return;
-      const k = keys.current;
-      if (e.key === 'ArrowLeft') k.panBy(-KEY_STEP);
-      else if (e.key === 'ArrowRight') k.panBy(KEY_STEP);
-      else if (e.key === '+' || e.key === '=') k.zoomBy(1.25);
-      else if (e.key === '-') k.zoomBy(0.8);
-      else if (e.key === 'm' || e.key === 'M') k.toggle();
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, []);
 }

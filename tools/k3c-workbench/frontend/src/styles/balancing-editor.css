@@ -1,0 +1,53 @@
+/* Lauf-Editor (B-661): links Abschnitte mit fester Fußleiste, rechts der Daten-Browser (ca. 360 px), unter 900 px Breite
+   des Editors darunter. `.bal-ed` ist der Container, die Regeln der Container Query zielen auf seine Kinder.
+   Das Elternelement gibt dem Editor eine feste Höhe; nur `.bal-ed-scroll` und `.bal-ed-bscroll` scrollen. */
+.bal-ed { container-type: inline-size; height: 100%; min-height: 0; }
+.bal-ed-body { height: 100%; min-height: 0; display: grid; grid-template-rows: minmax(0, 1fr); grid-template-columns: minmax(0, 1fr) 360px; border: 1px solid var(--card-line); border-radius: 10px; overflow: hidden; background: var(--card); }
+.bal-ed-main { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.bal-ed-top { flex: none; padding: 8px 14px; border-bottom: 1px solid var(--card-line); }
+.bal-ed-scroll { flex: 1 1 auto; min-height: 0; overflow: auto; display: flex; flex-direction: column; gap: 12px; padding: 12px 14px; }
+.bal-ed-scroll > * { flex-shrink: 0; }
+.bal-ed-foot { flex: none; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 14px; border-top: 1px solid var(--card-line); background: var(--gray-a2); }
+.bal-ed-footsum { display: flex; flex: 1 1 260px; flex-direction: column; gap: 2px; min-width: 0; }
+@container (max-width: 900px) {
+  .bal-ed-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) minmax(120px, 36%); }
+  .bal-ed-browser { border-left: 0; border-top: 1px solid var(--card-line); }
+}
+.bal-ed-card { display: flex; flex-direction: column; gap: 10px; border: 1px solid var(--card-line); border-radius: 10px; padding: 12px; min-width: 0; }
+.bal-ed-chead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 12px; }
+.bal-ed-sum { text-align: right; }
+.bal-ed-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 16px; }
+.bal-ed .bal-field { gap: 6px; min-width: 0; }
+.bal-ed-choice { max-width: 100%; flex-wrap: wrap; }
+.bal-ed-choice [data-off] { opacity: 0.45; cursor: not-allowed; }
+.bal-ed-num { width: 80px; }
+.bal-ed-count { min-width: 28px; text-align: center; font-size: var(--font-size-4); }
+.bal-ed-bot { padding: 4px 8px; border: 1px solid var(--card-line); border-radius: 8px; }
+.bal-ed-variants { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.bal-ed-vtools { display: flex; align-items: center; gap: 8px; }
+.bal-ed-tablewrap { overflow-x: auto; border: 1px solid var(--card-line); border-radius: 8px; }
+.bal-ed-table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: var(--font-size-2); }
+.bal-ed-table th { text-align: left; font-weight: 600; font-size: var(--font-size-1); color: var(--dim); padding: 6px 8px; border-bottom: 1px solid var(--card-line); background: var(--gray-a2); }
+.bal-ed-table td { padding: 6px 8px; border-bottom: 1px solid var(--card-line); vertical-align: middle; }
+.bal-ed-table tr:last-child td { border-bottom: 0; }
+.bal-ed-where { display: flex; flex-direction: column; gap: 2px; align-items: flex-start; }
+.bal-ed-base { color: var(--dim); }
+.bal-ed-dev { font-weight: 600; white-space: nowrap; }
+.bal-ed-dev[data-tone='up'] { color: var(--blue-11); }
+.bal-ed-dev[data-tone='down'] { color: var(--amber-11); }
+.bal-ed-dev[data-tone='range'] { color: var(--violet-11); }
+.bal-ed-dev[data-tone='none'], .bal-ed-dev[data-tone='same'] { color: var(--dim); }
+.bal-ed-range { display: inline-flex; align-items: center; gap: 6px; }
+.bal-ed-range .bal-ed-num { width: 64px; }
+.bal-ed-err { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: var(--font-size-1); color: var(--red-11); }
+.bal-ed-sr { position: absolute; left: -9999px; }
+.bal-ed-tune { display: flex; flex-direction: column; gap: 10px; border: 1px solid var(--violet-a6); background: var(--violet-a2); border-radius: 8px; padding: 10px 12px; }
+.bal-ed-browser { display: flex; flex-direction: column; min-width: 0; min-height: 0; border-left: 1px solid var(--card-line); background: var(--gray-a2); }
+.bal-ed-bhead { flex: none; display: flex; flex-direction: column; gap: 8px; padding: 12px; border-bottom: 1px solid var(--card-line); }
+.bal-ed-bscroll { flex: 1 1 auto; min-height: 0; overflow: auto; padding: 4px 0 12px; }
+.bal-ed-fhead { padding: 10px 12px 4px; }
+.bal-ed-val { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; align-items: center; padding: 5px 12px; }
+.bal-ed-val:hover { background: var(--gray-a3); }
+.bal-ed-vpath { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: none; }
+.bal-ed-vnum { text-align: right; }
+.bal-ed-vbtns { grid-column: 1 / -1; }

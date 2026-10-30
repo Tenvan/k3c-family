@@ -17,14 +17,14 @@ const worldFixture = `{
   "name": "Standard",
   "notes": "Fixture",
   "islands": [
-    { "id": "island1", "name": "Insel 1", "depths": [0, 1, 2, 3, 4], "depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 }, "plannedChunks": { "0": [{"slot": -3, "kind": "clearing"}] }, "chunkCounts": { "0": 24 } },
-    { "id": "island2", "name": "Insel 2", "depths": [0, 4], "depthScaling": { "hp": 1.6, "damage": 1.4, "speed": 1.15 } }
+    { "id": "island1", "name": "Insel 1", "depths": [0, 1, 2, 3, 4], "depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 }, "plannedChunks": { "0": [{"slot": -7, "kind": "harbor"}] }, "chunkCounts": { "0": 24 } },
+    { "id": "island2", "name": "Insel 2", "depths": [0, 4], "depthScaling": { "hp": 1.6, "damage": 1.4, "speed": 1.15 }, "plannedChunks": { "0": [{"slot": -7, "kind": "harbor"}] } }
   ]
 }
 `
 
 // island2Line ist die Zeile der zweiten Insel im Fixture (ohne Komma).
-const island2Line = `{ "id": "island2", "name": "Insel 2", "depths": [0, 4], "depthScaling": { "hp": 1.6, "damage": 1.4, "speed": 1.15 } }`
+const island2Line = `{ "id": "island2", "name": "Insel 2", "depths": [0, 4], "depthScaling": { "hp": 1.6, "damage": 1.4, "speed": 1.15 }, "plannedChunks": { "0": [{"slot": -7, "kind": "harbor"}] } }`
 
 func worldApp(t *testing.T) (*App, string) {
 	t.Helper()
@@ -116,7 +116,7 @@ func TestInselFelderAendernFormatStabil(t *testing.T) {
 	d, stand := draftOf(t, a)
 	d.Islands[1] = IslandDraft{From: "island2", ID: "eis", Name: "Eis", Depths: []int{0, 1, 4}, Scaling: DraftScaling{HP: 2, Damage: 1.4, Speed: 1.15}}
 	saveDraft(t, a, d, stand)
-	line := `{ "id": "eis", "name": "Eis", "depths": [0, 1, 4], "depthScaling": { "hp": 2, "damage": 1.4, "speed": 1.15 } }`
+	line := `{ "id": "eis", "name": "Eis", "depths": [0, 1, 4], "depthScaling": { "hp": 2, "damage": 1.4, "speed": 1.15 }, "plannedChunks": { "0": [{"slot": -7, "kind": "harbor"}] } }`
 	if want := strings.Replace(worldFixture, island2Line, line, 1); readFile(t, path) != want {
 		t.Errorf("Datei\n%s", readFile(t, path))
 	}

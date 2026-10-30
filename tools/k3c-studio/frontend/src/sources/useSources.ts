@@ -34,7 +34,8 @@ export function useSources(): SourcesState {
   useEffect(() => {
     const again = () => void reload();
     window.addEventListener(NETWORK_CHANGED, again);
-    return () => window.removeEventListener(NETWORK_CHANGED, again);
+    const off = backend.on('assets:changed', again); // z. B. Chat hat Vorschläge eingetragen (B-673)
+    return () => { window.removeEventListener(NETWORK_CHANGED, again); off(); };
   }, [reload]);
 
   useEffect(() => {
@@ -71,12 +72,7 @@ export function useSources(): SourcesState {
   }, [view]);
 
   const adopt = useCallback(async (id: string) => {
-    try {
-      await backend.sourceAdopt(id);
-      await reload();
-    } catch (e) {
-      setError((e as Error).message);
-    }
+    try { await backend.sourceAdopt(id); await reload(); } catch (e) { setError((e as Error).message); }
   }, [reload]);
 
   return { view, error, jobs, reload, download, adopt };

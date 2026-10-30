@@ -9,7 +9,7 @@
 
 | Pfad | Typ | Einheit | Bedeutung | Typische Werte |
 |---|---|---|---|---|
-| `gold` | Ganzzahl | Gold | Siegvariante Gold: Summe der gesammelten Münzen aller Spieler der Insel | 1000 |
+| `gold` | Ganzzahl | Gold | Siegvariante Gold: Summe der gesammelten Münzen aller Spieler der Insel | 66 (Münzskala, BS3.2) |
 | `days` | Ganzzahl | Tage | Siegvariante Tage: so viele Tage überleben (Sieg, wenn Tag days+1 beginnt) | 20 |
 
 ## Wirkung auf das Balancing

@@ -4,7 +4,10 @@ import workerSource from '@game/scenes/render/worldRenderer.ts?raw';
 import animSource from '@game/scenes/render/monarchAnim.ts?raw';
 import { EFFECT_CONFIG } from '@game/scenes/effects/effects';
 import { skillLook } from '@game/scenes/effects/skillLooks';
-import { ACTIONS, RESPAWN_ALPHA, actionOf, effectMs, skillRows } from './actions';
+import castSource from '@game/scenes/effects/skillCasts.ts?raw';
+import gameSceneSource from '@game/scenes/GameScene.ts?raw';
+import { LINE_COLORS } from '@game/scenes/effects/effects';
+import { ACTIONS, CAST_GAP, RESPAWN_ALPHA, SKILL_RING_PX, actionOf, effectMs, skillPlay, skillRows } from './actions';
 import { MOVES, monarchItems, moveOf } from './monarchLogic';
 
 // B-463 (WZ10.3): Aktionen, Skills und Lücken der Monarch-Seite.
@@ -81,5 +84,37 @@ describe('Skills (B-463/AC-06, AC-07)', () => {
     const rows = skillRows();
     expect(rows).toHaveLength(Object.keys(MONARCH.skills).length);
     expect(rows.some((r) => r.gap?.reason === 'Lücke: Skill fehlt in data/monarch.json')).toBe(false);
+  });
+});
+
+describe('Skill abspielen (B-671/AC-06)', () => {
+  it('jeder der 26 Skills spielt genau den Effekt aus skillLook (eigener Look oder Ring der Linie) oder zeigt seine Lücke', () => {
+    const ids = Object.keys(MONARCH.skills);
+    expect(ids).toHaveLength(26);
+    for (const id of ids) {
+      const play = skillPlay(id);
+      const look = skillLook(id);
+      if (!look) {
+        expect(play.timed, id).toEqual([]);
+        expect(play.gaps[0]!.reason, id).toContain('keine Darstellung');
+        continue;
+      }
+      expect(play.look, id).toBe(look);
+      expect(play.timed, id).toEqual([{ kind: 'burst', look, cycleMs: look.durationMs + 700, y: SKILL_RING_PX }]);
+    }
+  });
+
+  it('ein Skill ohne eigenes Aussehen spielt den Ring in der Farbe seiner Linie', () => {
+    const fallback = Object.keys(MONARCH.skills).find((id) => !skillPlay(id).own);
+    if (fallback) expect(Object.values(LINE_COLORS)).toContain(skillPlay(fallback).look!.color);
+    expect(skillPlay('gibtsnicht')).toMatchObject({ look: null, timed: [] });
+    expect(skillPlay('gibtsnicht').gaps[0]!.reason).toContain('fehlt in data/monarch.json');
+  });
+
+  it('Ring in der Höhe des Spiels; das Spiel spielt beim Wirken keine Animation des Monarchen (Lücke)', () => {
+    expect(castSource).toContain(`const RING_PX = ${SKILL_RING_PX};`);
+    expect(skillPlay('fireball').gaps).toEqual([CAST_GAP]);
+    const playSkill = gameSceneSource.slice(gameSceneSource.indexOf('private playSkill('), gameSceneSource.indexOf('private feedback('));
+    expect(playSkill).not.toMatch(/attack|playAnim|swing/);
   });
 });

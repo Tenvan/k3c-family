@@ -10,7 +10,7 @@ import (
 // geplanten Chunks. Dieses Paket prüft Art und Lage und gibt die Ruinen je Stufe weiter (Layout.Ruins); als Platz in
 // der Sim entstehen sie in engine/sim. Werte aus data/ruins.json.
 
-// ruinGapUnits ist der Mindestabstand einer Ruine zum Farm-Weltplatz, zu Adern, Portalen und festen Objekten. Zu den
+// ruinGapUnits ist der Mindestabstand einer Ruine zu Adern, Portalen und festen Objekten. Zu den
 // Bauplätzen der Mauerlinien gilt keiner: Ruinen dürfen überall liegen, die Lage wählt die Planung (§ 8).
 const ruinGapUnits = 4
 
@@ -121,11 +121,6 @@ func checkRuinPlace(p placed, g geometry, near []placed) error {
 		// isRuin (sim) erkennt eine Ruine an Art und Lage: ein Hub-Platz gleicher Art auf derselben Lage wäre eine (B-523).
 		if h.kind == p.kind && h.offset == p.key().x {
 			return fmt.Errorf("die Ruine %s liegt auf der Lage des Hub-Platzes gleicher Art (%v Units vom Hub)", p.kind, h.offset)
-		}
-	}
-	for _, site := range farmOffsets {
-		if math.Abs(p.dist-site) < ruinGapUnits {
-			return fmt.Errorf("die Ruine %s %v Units vom Hub, weniger als %d Units vom Farm-Weltplatz (%v)", p.kind, p.dist, ruinGapUnits, site)
 		}
 	}
 	for _, o := range near {

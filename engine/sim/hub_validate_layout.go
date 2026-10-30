@@ -9,7 +9,7 @@ import (
 )
 
 // Abstands-Regeln der Prüfung (hub_validate.go, W0.1 B-206/AC-05, W11.1 B-409): Plätze und Zahlziele allein aus der
-// Kandidaten-hub.json und data/buildings.json, ohne Welt, in jeder Tiefe und bei jeder Streuung der Linien.
+// Kandidaten-hub.json und data/buildings.json, ohne Welt, in jeder Tiefe.
 
 // hubTarget ist ein Zahlziel mit Offset zur Hub-Mitte.
 type hubTarget struct {
@@ -17,32 +17,13 @@ type hubTarget struct {
 	x    float64
 }
 
-// lineWalls liefert die Mauer-Offsets einer Seite für eine Streuung je Linie (Bit i gesetzt = Linie i+1 voll gestreut).
-func lineWalls(l WallLineData, mask int) []float64 {
-	out := make([]float64, len(l.WallUnits))
-	for i, w := range l.WallUnits {
-		out[i] = w
-		if i >= l.FixedLines && mask&(1<<i) != 0 {
-			out[i] += l.JitterOutwardUnits
-		}
-	}
-	return out
-}
-
-// lineTargets: Mauer, Turm und Tor jeder Linie beider Seiten.
-func lineTargets(l WallLineData, left, right int) []hubTarget {
+// zoneTargets: der feste Baugrund der Zone 1 (Mauer und Turm) beider Seiten; die übrigen Plätze der Zonen würfelt der Generator
+// und hält selbst Abstand (engine/level/sites.go).
+func zoneTargets(p SitePlacementData) []hubTarget {
 	var out []hubTarget
-	for _, side := range []struct {
-		dir  float64
-		mask int
-	}{{-1, left}, {1, right}} {
-		for i, w := range lineWalls(l, side.mask) {
-			k := fmt.Sprintf("L%d@%+.0f", i+1, side.dir)
-			out = append(out,
-				hubTarget{"wall " + k, side.dir * w},
-				hubTarget{"tower " + k, side.dir * (w - l.TowerInsetUnits)},
-				hubTarget{"gate " + k, side.dir * (w + l.GateOutsetUnits)})
-		}
+	for _, dir := range []float64{-1, 1} {
+		k := fmt.Sprintf("Z1@%+.0f", dir)
+		out = append(out, hubTarget{"wall " + k, dir * p.Zone1WallUnits}, hubTarget{"tower " + k, dir * p.Zone1TowerUnits})
 	}
 	return out
 }
@@ -67,16 +48,8 @@ func fixedTargets(h *HubData, depth int, deeper bool) []hubTarget {
 	return out
 }
 
-// eachLayout ruft fn für jede Tiefe der Biome (mit und ohne tiefere Stufe) bei jeder Streuung der gestreuten Linien
-// (ohne oder voll) auf. Die Burg trennt die Seiten: Jedes benachbarte Paar hängt höchstens von der Streuung einer
-// Seite ab, deshalb genügt jede Streuung einer Seite bei ungestreuter anderer Seite.
+// eachLayout ruft fn für jede Tiefe der Biome (mit und ohne tiefere Stufe) auf.
 func eachLayout(h *HubData, fn func(desc string, all []hubTarget)) {
-	l := h.WallLines
-	n, fixed := len(l.WallUnits), min(max(l.FixedLines, 0), len(l.WallUnits))
-	combos := 1 << (n - fixed)
-	if l.JitterOutwardUnits == 0 {
-		combos = 1
-	}
 	var depths []int
 	for _, b := range biomes {
 		if !slices.Contains(depths, b.Depth) {
@@ -85,17 +58,8 @@ func eachLayout(h *HubData, fn func(desc string, all []hubTarget)) {
 	}
 	for _, depth := range depths {
 		for _, deeper := range []bool{true, false} {
-			base := fixedTargets(h, depth, deeper)
-			for m := range combos {
-				masks := [][2]int{{m << fixed, 0}, {0, m << fixed}}
-				if m == 0 {
-					masks = masks[:1] // beide Seiten ungestreut: eine Lage
-				}
-				for _, lr := range masks {
-					desc := fmt.Sprintf("Tiefe %d (tiefer %v), Streuung links %0*b rechts %0*b", depth, deeper, n, lr[0], n, lr[1])
-					fn(desc, slices.Concat(base, lineTargets(l, lr[0], lr[1])))
-				}
-			}
+			desc := fmt.Sprintf("Tiefe %d (tiefer %v)", depth, deeper)
+			fn(desc, slices.Concat(fixedTargets(h, depth, deeper), zoneTargets(h.SitePlacement)))
 		}
 	}
 }

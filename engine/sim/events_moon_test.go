@@ -105,6 +105,11 @@ func TestVollmondWelleMehrWoelfeUndEinAlphaWolf(t *testing.T) {
 			alpha++
 		}
 	}
+	for _, e := range w.Enemies { // schon aus der Warteschlange gelaufen (die Welle ist mit perExtraPlayer kleiner)
+		if e.Kind == "alphaWolf" {
+			alpha++
+		}
+	}
 	if alpha != 1 {
 		t.Errorf("Welle der Vollmondnacht: genau ein Alpha-Wolf erwartet, %d", alpha)
 	}

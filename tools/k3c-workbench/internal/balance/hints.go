@@ -33,6 +33,7 @@ type Lever struct {
 	Direction string  `json:"direction"`
 	Step      float64 `json:"step"`
 	Label     string  `json:"label"`
+	Group     string  `json:"group,omitempty"` // Werte-Gruppe (groups.go); die Datei der Richtwerte verlangt eine
 }
 
 // Levers sind die Hebel eines Ziels: Low bei einem Wert unter der Untergrenze, High über der Obergrenze.
@@ -61,7 +62,14 @@ func DefaultHints() (*Hints, error) {
 	if err != nil {
 		return nil, err
 	}
-	return LoadHints(raw)
+	h, err := LoadHints(raw)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.checkGroups(); err != nil {
+		return nil, fmt.Errorf("balance-hints: %w", err)
+	}
+	return h, nil
 }
 
 // LoadHints liest und prüft eine Richtwert-Datei; unbekannte Felder, Kennzahlen und Ziele sind ein Fehler.
@@ -153,8 +161,16 @@ func (f FigureHint) Light(v float64) string {
 	return LightRed
 }
 
-// leversFor: Hebel eines Ziels in die nötige Richtung (unter der Untergrenze Low, sonst High).
+// leversFor: Hebel eines Ziels in die nötige Richtung (unter der Untergrenze Low, sonst High). Nie nil: Das JSON trägt
+// sonst null und die Oberfläche stürzt bei `.length` ab (ein Ziel ohne Eintrag in balance-hints.json, z. B. ein neues).
 func (h *Hints) leversFor(e Entry) []Lever {
+	if l := h.leversRaw(e); l != nil {
+		return l
+	}
+	return []Lever{}
+}
+
+func (h *Hints) leversRaw(e Entry) []Lever {
 	l := h.Levers[e.Measure]
 	if e.Lower != nil && e.Value < *e.Lower {
 		return l.Low

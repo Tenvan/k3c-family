@@ -3,6 +3,8 @@ package sim
 import (
 	"strings"
 	"testing"
+
+	"k3c/engine/level"
 )
 
 // islandsWithPlan liest eine Test-Welt mit einer Insel „a“ und der Planung plan (island_worlds_test.go).
@@ -45,8 +47,10 @@ func TestInselPlanungLeerIstKeinePlanung(t *testing.T) {
 		}
 	}
 	for _, d := range StandardWorld().Islands {
-		if len(d.PlannedChunks) != 0 {
-			t.Errorf("%s: eingebettete Daten enthalten eine Planung", d.ID)
+		for depth, plan := range d.PlannedChunks { // einzige Planung der Standard-Welt: der Hafen auf Tiefe 0 (BAS, B-637)
+			if depth != "0" || len(plan) != 1 || plan[0].Kind != level.HarborKind {
+				t.Errorf("%s: eingebettete Daten enthalten außer dem Hafen eine Planung (Tiefe %s)", d.ID, depth)
+			}
 		}
 	}
 }

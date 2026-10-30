@@ -1,21 +1,31 @@
-import type { BalanceRun, BalanceSpec } from '../api';
+import type { BalanceBaseline, BalanceRun, BalanceSpec } from '../api';
 import { EMPTY_TUNE, formFromTune, tuneFromForm, type TuneForm } from './tune';
 
 /** Eingaben des Formulars als Text; leer heißt „weglassen“ (Standard der CLI bzw. Ziel-Tiefe). */
 export interface BalanceForm {
   seeds: string;
+  /** Seeds mit Komma (B-634, B-655), z. B. `k3c-dev,7`; leer = Seeds der Ziele bzw. die ersten N. */
+  seedList: string;
   depth: string;
   players: string;
   bot: string;
   grade: string;
+  /** Welt aus data/worlds (BS11): ganze Insel 1 statt einer Stufe; leer = eine Stufe. */
+  world: string;
+  /** Dev-Hilfen (hilfen, voll, boss), nur mit Welt; leer = keine. */
+  helps: string;
   days: string;
   /** Eine Variante je Zeile: `datei.json:pfad.zum.wert=wert`. */
   vary: string;
   label: string;
+  /** Name einer gesicherten Baseline als Vergleich (B-640); leer = Baseline des Repos. */
+  baseline: string;
   tune: TuneForm;
+  /** Je feste Variante ein eigener Lauf gegen die Basis (B-662); fehlt = aus. */
+  perVariant?: boolean;
 }
 
-export const EMPTY_FORM: BalanceForm = { seeds: '', depth: '', players: '', bot: '', grade: '', days: '', vary: '', label: '', tune: EMPTY_TUNE };
+export const EMPTY_FORM: BalanceForm = { seeds: '', seedList: '', depth: '', players: '', bot: '', grade: '', world: '', helps: '', days: '', vary: '', label: '', baseline: '', tune: EMPTY_TUNE };
 
 /** Gleiche Form wie in Go (simrun/spec.go: varyArg). */
 const VARY = /^[A-Za-z0-9_-]+\.json:[A-Za-z0-9_.[\]-]+=[^\s=]{1,64}$/;
@@ -25,6 +35,22 @@ const NUMBERS = [['seeds', 'Seeds', 1], ['players', 'Spieler', 1], ['days', 'Tag
 export interface SpecResult {
   spec?: BalanceSpec;
   error?: string;
+}
+
+/** Seeds mit Komma → Liste ohne Leerstellen und leere Einträge; alte Voreinstellungen kennen das Feld nicht. */
+const parseSeedList = (raw: string | undefined): string[] => (raw ?? '').split(',').map((v) => v.trim()).filter(Boolean);
+
+/** Varianten, Abstimmen und „je Variante“ des Formulars in die Spec; Rückgabe ist der erste Fehler. */
+function addVariants(form: BalanceForm, spec: BalanceSpec): string | undefined {
+  const vary = form.vary.split('\n').map((l) => l.trim()).filter(Boolean);
+  const bad = vary.find((v) => !VARY.test(v));
+  if (bad) return `Variante „${bad}“: Form datei.json:pfad.zum.wert=wert, z. B. economy.json:purse.startGold=120`;
+  if (vary.length > 0) spec.vary = vary;
+  const { tune, error } = tuneFromForm(form.tune);
+  if (error) return error;
+  if (tune) spec.tune = tune;
+  if (form.perVariant) spec.perVariant = true;
+  return undefined;
 }
 
 /** Formular → Spec; der erste Fehler kommt als deutscher Text, sonst nur gesetzte Felder (Tiefe 0 = Wald bleibt erhalten). */
@@ -37,17 +63,15 @@ export function specFromForm(form: BalanceForm): SpecResult {
     if (!Number.isInteger(n) || n < min) return { error: `${label}: ganze Zahl ab ${min} erwartet` };
     spec[key] = n;
   }
-  for (const key of ['bot', 'grade', 'label'] as const) {
-    const raw = form[key].trim();
+  for (const key of ['bot', 'grade', 'world', 'helps', 'label', 'baseline'] as const) {
+    const raw = (form[key] ?? '').trim(); // alte Voreinstellungen kennen `world` nicht
     if (raw !== '') spec[key] = raw;
   }
-  const vary = form.vary.split('\n').map((l) => l.trim()).filter(Boolean);
-  const bad = vary.find((v) => !VARY.test(v));
-  if (bad) return { error: `Variante „${bad}“: Form datei.json:pfad.zum.wert=wert, z. B. economy.json:purse.startGold=120` };
-  if (vary.length > 0) spec.vary = vary;
-  const { tune, error } = tuneFromForm(form.tune);
-  if (error) return { error };
-  if (tune) spec.tune = tune;
+  const seedList = parseSeedList(form.seedList);
+  if (seedList.length > 0 && spec.seeds !== undefined) return { error: 'Seeds oder Seed-Liste, nicht beides' };
+  if (seedList.length > 0) spec.seedList = seedList;
+  const err = addVariants(form, spec);
+  if (err) return { error: err };
   return { spec };
 }
 
@@ -56,9 +80,16 @@ export function formFromSpec(spec: BalanceSpec | undefined): BalanceForm {
   const s = spec ?? {};
   const text = (v: number | string | undefined) => (v === undefined ? '' : String(v));
   return {
-    seeds: text(s.seeds), depth: text(s.depth), players: text(s.players), bot: s.bot ?? '', grade: s.grade ?? '', days: text(s.days),
-    vary: (s.vary ?? []).join('\n'), label: s.label ?? '', tune: formFromTune(s.tune),
+    seeds: text(s.seeds), seedList: (s.seedList ?? []).join(','), depth: text(s.depth), players: text(s.players), bot: s.bot ?? '', grade: s.grade ?? '', world: s.world ?? '', helps: s.helps ?? '', days: text(s.days),
+    vary: (s.vary ?? []).join('\n'), label: s.label ?? '', baseline: s.baseline ?? '', tune: formFromTune(s.tune),
+    ...(s.perVariant ? { perVariant: true } : {}),
   };
+}
+
+/** Basis-Lauf → Formular (B-640): Auftrag des Laufs und die Baseline als Vergleich; ältere Baselines ohne Spec nehmen Bot und Welt aus der Konfiguration. */
+export function formFromBaseline(b: BalanceBaseline): BalanceForm {
+  const spec: BalanceSpec = b.spec ?? { bot: b.bots.length === 1 ? b.bots[0] : undefined, world: b.worlds[0] };
+  return { ...formFromSpec(spec), baseline: b.name };
 }
 
 /** Gespeicherte Voreinstellung. */
@@ -72,7 +103,7 @@ export function isPresetList(v: unknown): v is Preset[] {
     Array.isArray(v) &&
     v.every((p) => {
       const x = p as Preset | null;
-      return !!x && typeof x.name === 'string' && !!x.form && Object.keys(EMPTY_FORM).every((k) => (k === 'tune' ? typeof x.form.tune === 'object' && x.form.tune !== null : typeof x.form[k as keyof BalanceForm] === 'string'));
+      return !!x && typeof x.name === 'string' && !!x.form && Object.keys(EMPTY_FORM).every((k) => (k === 'tune' ? typeof x.form.tune === 'object' && x.form.tune !== null : k === 'world' || k === 'helps' || k === 'baseline' ? x.form[k] === undefined || typeof x.form[k] === 'string' : typeof x.form[k as keyof BalanceForm] === 'string'));
     })
   );
 }

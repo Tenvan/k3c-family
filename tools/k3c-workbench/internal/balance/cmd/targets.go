@@ -16,7 +16,8 @@ import (
 // targetOpts sind die Optionen des Ziel-Modus `--targets` (task balance, BAL2.2).
 type targetOpts struct {
 	on       bool
-	seeds    int    // 0 = alle Seeds der Datei
+	seeds    int      // 0 = Seed-Modus der Datei (dev: nur der erste, sonst alle)
+	seedList []string // --seed-list: genau diese Seeds statt der Datei (B-634)
 	dir      string // Ordner für balance-<Zeit>.json und .md
 	baseline string // Datei zum Vergleichen oder (write) zum Schreiben
 	write    bool
@@ -26,6 +27,8 @@ type targetOpts struct {
 	depth    int
 	bot      string
 	grade    string
+	world    string
+	helps    string
 	progress bool
 	insights string // vorhandener balance-*.json: Auswertung (.md, .html) neu schreiben (B-632)
 }
@@ -38,14 +41,38 @@ func (o *targetOpts) register(fs *flag.FlagSet) {
 	fs.IntVar(&o.depth, "depth", 0, "nur mit --targets: Tiefe aller Zielläufe statt der des Ziels")
 	fs.StringVar(&o.bot, "bot", "", "nur mit --targets: Bot aller Zielläufe statt des Ziel-Bots")
 	fs.StringVar(&o.grade, "grade", "", "nur mit --targets: Schwierigkeitsgrad aller Zielläufe (leer = normal)")
+	fs.StringVar(&o.world, "world", "", "nur mit --targets: Welt aller Zielläufe, z. B. standard; die Läufe spielen die ganze erste Insel (BS11)")
+	fs.StringVar(&o.helps, "helps", "", "nur mit --targets und --world: Dev-Hilfen wie im Stufen-Test: hilfen, voll oder boss (leer = keine)")
 	fs.BoolVar(&o.progress, "progress", false, "nur mit --targets: nach jedem Lauf PROGRESS <fertig>/<gesamt> auf stdout")
 	fs.StringVar(&o.insights, "insights", "", "vorhandenen Bericht balance-<Zeit>.json auswerten: .md und .html daneben neu schreiben (Baseline: "+balance.BaselinePath+")")
+}
+
+// prepare setzt Seeds und Szenario der Zielläufe aus den Flags.
+func (o *targetOpts) prepare(fs *flag.FlagSet, n int, list, players string, days int) error {
+	if err := o.seedsFrom(fs, n, list); err != nil {
+		return err
+	}
+	return o.scopeFrom(fs, players, days)
+}
+
+// seedsFrom setzt die Seeds der Zielläufe: --seeds N (die ersten N) oder --seed-list (genau diese), sonst der
+// Seed-Modus der Datei (B-634).
+func (o *targetOpts) seedsFrom(fs *flag.FlagSet, n int, list string) error {
+	o.seeds = explicitSeeds(fs, n)
+	if list == "" {
+		return nil
+	}
+	if o.seeds > 0 {
+		return fmt.Errorf("--seeds und --seed-list schließen sich aus")
+	}
+	o.seedList = split(list)
+	return nil
 }
 
 // scopeFrom setzt das Szenario der Zielläufe aus den gesetzten Flags --depth, --players, --days, --bot, --grade
 // (--players und --days gelten ohne --targets weiter für die Matrix).
 func (o *targetOpts) scopeFrom(fs *flag.FlagSet, players string, days int) error {
-	o.scope = balance.Scope{Bot: o.bot, Grade: o.grade}
+	o.scope = balance.Scope{Bot: o.bot, Grade: o.grade, World: o.world, Helps: o.helps}
 	if isSet(fs, "depth") {
 		o.scope.Depth = &o.depth
 	}
@@ -65,11 +92,8 @@ func (o *targetOpts) scopeFrom(fs *flag.FlagSet, players string, days int) error
 // runTargets spielt die Ziele aus data/balance-targets.json, schreibt Bericht (JSON, Markdown) und vergleicht mit der
 // Baseline. Verletzte Ziele sind kein Fehler: das Pflicht-Gate gibt es nicht (BAL2).
 func runTargets(o targetOpts) error {
-	ts, err := balance.DefaultTargets()
+	ts, err := o.targets()
 	if err != nil {
-		return err
-	}
-	if ts, err = ts.Restrict(o.scope); err != nil {
 		return err
 	}
 	start := time.Now()
@@ -180,4 +204,19 @@ func onlyFailSeeds(r balance.Report, sum balance.Summary) balance.Report {
 		}
 	}
 	return r
+}
+
+// targets lädt die Ziele mit dem Szenario aus den Flags und, mit --seed-list, genau diesen Seeds.
+func (o targetOpts) targets() (*balance.Targets, error) {
+	ts, err := balance.DefaultTargets()
+	if err != nil {
+		return nil, err
+	}
+	if ts, err = ts.Restrict(o.scope); err != nil {
+		return nil, err
+	}
+	if len(o.seedList) > 0 {
+		return ts.WithSeeds(o.seedList)
+	}
+	return ts, nil
 }

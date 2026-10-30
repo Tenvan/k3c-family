@@ -51,6 +51,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ30 | Oberflächen zur Abnahme: Szenen, Filter, Quellen, Chat-Karten mit Mock-Daten | aktiv |
 | WZ29 | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | aktiv |
 | WZ31 | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | aktiv |
+| WZ32 | Balancing-Seite: feste Fläche, eine Liste, Lauf-Editor mit Varianten-Tabelle | aktiv |
 
 ## Nicht-Ziele
 

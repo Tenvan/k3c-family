@@ -55,7 +55,7 @@ func waitDone(t *testing.T, s *Server, id string) string {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if strings.Contains(out, "Bericht:") { // fertig, nach stop erst, wenn der Runner aufgeräumt hat
+		if strings.Contains(out, "\nBericht: ") { // fertig, nach stop erst, wenn der Runner aufgeräumt hat (nicht „im Bericht:“ der Auswertung)
 			return out
 		}
 		time.Sleep(10 * time.Millisecond)
@@ -135,10 +135,19 @@ func TestSimTestLehntAb(t *testing.T) {
 		{Action: "start", Clients: 5},
 		{Action: "start", Seeds: 500},
 		{Action: "start", Bots: "zauberer"},
+		{Action: "start", Seeds: 3, SeedList: "k3c-dev"},
+		{Action: "start", SeedList: "k3c dev"},
+		{Action: "start", Mode: "online", SeedList: "k3c-dev"},
+		{Action: "start", World: "nordmeer"},
+		{Action: "start", Days: 61},
+		{Action: "start", Mode: "online", World: "standard"},
+		{Action: "start", Mode: "online", Days: 40},
 		{Action: "start", Focus: []string{"spass"}},
 		{Action: "start", Clients: 2},
 		{Action: "start", Focus: []string{"perf"}},
-		{Action: "start", Players: 2},
+		{Action: "start", Players: 5},
+		{Action: "start", Vary: "economy.json:purse.startGold"},
+		{Action: "start", Mode: "online", Vary: "economy.json:purse.startGold=5"},
 		{Action: "start", Mode: "online", Duration: "3h"},
 		{Action: "start", Mode: "online"},
 		{Action: "status", ID: "run-99"},

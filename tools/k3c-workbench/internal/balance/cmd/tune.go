@@ -35,11 +35,8 @@ func (o *tuneOpts) register(fs *flag.FlagSet) {
 // runTune stimmt die Parameter gegen die Ziele ab und schreibt tuning-<Zeit>.json nach --report-dir. data/ bleibt
 // unverändert; verfehlte Ziele sind kein Fehler.
 func runTune(o targetOpts, tu tuneOpts) error {
-	ts, err := balance.DefaultTargets()
+	ts, err := o.targets()
 	if err != nil {
-		return err
-	}
-	if ts, err = ts.Restrict(o.scope); err != nil {
 		return err
 	}
 	start := time.Now()

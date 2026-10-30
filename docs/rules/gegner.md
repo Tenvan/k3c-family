@@ -52,13 +52,13 @@ Gold-Drops je Gegnerart wie in `wirtschaft.md` § 1 (Werte in `data/enemies.json
 | **Wellenzähler je Stufe**; Tag und Nacht bleiben global. | Jede Stufe hat ihre eigene Steigerung. | `World.Wave` je Stufe | – |
 | Größen laut Tabelle (Welle 1–5: 5–10 Standard; 6–10: 10–15 + 1–2 Elite; ab 11: 15–20 + 3–5 Elite), dazu Wellenfaktor je Spieleranzahl der Insel (Standard- und Elite-Zahl gleich, gerundet), Faktoren des Schwierigkeitsgrads und die Insel-Tabelle. | Bestehende Tabelle als Basis. | `waves.json` › `table` | Gegner einer Welle besiegt bis Tagesanbruch (Oberwelt) in ≥ 90 % |
 | **Tagesanbruch:** Gegner fliehen nur in der Oberwelt; unten bleiben sie bis zum Tod. | Unten bestimmen Spieler das Tempo. | `world_cycle.go` | – |
-| **Aggressionspool unverändert:** +1 %/min, +5 % je Kill, +1 % je gesammelter Ressource; bei 100 % eine Welle, Reset. Die Spieleranzahl wirkt nur über den Wellenfaktor. | Einfach; Tempo bleibt beim Spieler. | `biomes/cave.json`, `mine.json` (und neue Biome) | Wellen unten im Abstand 4–12 min Spielzeit (Startziel) |
+| **Aggressionspool unverändert:** +1 %/min, +5 % je Kill, +1 % je gesammelter Ressource; bei 100 % eine Welle, Reset; der Pool friert ein, solange Gegner der Welle leben, und 4 min nach jeder Welle (B-646). Die Spieleranzahl wirkt nur über den Wellenfaktor. | Einfach; Tempo bleibt beim Spieler. | `biomes/cave.json`, `mine.json` (und neue Biome) | Wellen unten im Abstand 4–12 min Spielzeit (Startziel) |
 | Zielkorridor Welle: letzter Gegner einer Welle tot **innerhalb 3 min nach Spawn** in ≥ 80 %. | Wellen sollen nicht ziehen. | – | ≥ 80 % (Kennzahl fehlt, B-099) |
 
 ## 4. Ziele der Gegner
 
 - Das **Tor blockiert wie die Mauer** (eigene Bürger und Spieler passieren).
-- Alle übrigen Gebäude (Heilplatz, Taverne, Lager, Schmiede, Rüstkammer, Werkstatt, Farm) sind **Ziele** für Gegner mit `prefersBuildings`; andere Gegner greifen sie nur an, wenn nichts anderes in Reichweite ist.
+- Alle übrigen Gebäude (Heilplatz, Taverne, Lager, Schmiede, Rüstkammer, Werkstatt, Baumschule) sind **Ziele** für Gegner mit `prefersBuildings`; andere Gegner greifen sie nur an, wenn nichts anderes in Reichweite ist.
 - **Landstreicher sind kein Ziel** (Q67, 2026-10-04): Bürger sterben nicht, ein Treffer auf 0 HP stuft sie zurück (`buerger.md` § 3).
 - **Aufheben** (Q67, Q68, 2026-10-04): Gegner heben am Boden liegende **Münzen** und **Ausrüstung** auf. Ausrüstung **tragen sie zum Portal**, dort ist sie verloren (Ereignis `equipmentTaken`, Q69); wird der Träger vorher getötet, fällt sie wieder zu Boden.
 - Begründung: Wirtschaft muss geschützt werden, ohne dass jeder Gegner sie sucht. Zielkorridor: zerstörte Gebäude je Welle (1–5): Median höchstens 1 (`materialien-gebaeude.md` § 4).

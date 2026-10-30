@@ -177,7 +177,7 @@ func TestBuildPreviewGebaeudeAuswahl(t *testing.T) {
 	if off == nil {
 		t.Fatal("kein gebauter Mauerplatz im Vergleichsstand")
 	}
-	o.Buildings = map[string]bool{PreviewSiteKey(off.Kind, off.X): false, "gibt@es-nicht": false, PreviewSiteKey("farm", 123456): true}
+	o.Buildings = map[string]bool{PreviewSiteKey(off.Kind, off.X): false, "gibt@es-nicht": false, PreviewSiteKey("nursery", 123456): true}
 	part := mustPreview(t, o)
 	if len(part.Sites) != len(all.Sites)-1 {
 		t.Fatalf("Plätze %d, erwartet %d (einer abgewählt, unbekannte Schlüssel ignoriert)", len(part.Sites), len(all.Sites)-1)

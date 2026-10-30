@@ -20,10 +20,10 @@ describe('Abbau-Symbol je Knotenart (B-588)', () => {
   });
 });
 
-describe('showsMineSign (B-588)', () => {
-  it('nur, wenn der Server minable meldet; ohne Feld nie', () => {
-    expect(showsMineSign({ minable: true })).toBe(true);
-    expect(showsMineSign({ minable: false })).toBe(false);
-    expect(showsMineSign({})).toBe(false);
+describe('showsMineSign (B-653/AC-01)', () => {
+  it('nur an markierten Knoten, nie an unmarkierten', () => {
+    expect(showsMineSign({ marked: true })).toBe(true);
+    expect(showsMineSign({ marked: false })).toBe(false);
+    expect(showsMineSign({ marked: false })).toBe(false);
   });
 });

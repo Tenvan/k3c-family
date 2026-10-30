@@ -38,7 +38,7 @@ func TestPromptNurTiefe4HatEndboss(t *testing.T) {
 
 const answerWorld = `{ "id": "nordmeer", "name": "Nordmeer", "notes": "Entwurf",
   "islands": [
-    { "id": "island1", "name": "Insel 1", "depths": [0, 1, 2, 3, 4], "depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 } },
+    { "id": "island1", "name": "Insel 1", "depths": [0, 1, 2, 3, 4], "depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 }, "plannedChunks": { "0": [ { "slot": -7, "kind": "harbor" } ] } },
     { "id": "eisinsel", "name": "Eisinsel", "depths": [0, 4], "depthScaling": { "hp": 1.6, "damage": 1.4, "speed": 1.15 },
       "plannedChunks": { "0": [ { "slot": -3, "kind": "clearing", "seed": "lichtung" } ] }, "chunkCounts": { "0": 24 } }
   ] }`
@@ -128,7 +128,7 @@ func TestAntwortBehaeltPlanungBestehenderInsel(t *testing.T) {
 		t.Fatal(s.Error)
 	}
 	got := string(mustRead(t, path))
-	for _, want := range []string{`"kind": "clearing"`, `"0": 24`, `"eisinsel"`} {
+	for _, want := range []string{`"kind": "harbor"`, `"0": 24`, `"eisinsel"`} {
 		if !strings.Contains(got, want) {
 			t.Errorf("Datei ohne %s:\n%s", want, got)
 		}

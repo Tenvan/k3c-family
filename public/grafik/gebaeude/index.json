@@ -823,6 +823,40 @@
     }
   },
   {
+    "id": "hafen",
+    "kacheln": {
+      "b": 6,
+      "h": 4
+    },
+    "vorlage": {
+      "motiv": "Hafen-Steg in der Vorderansicht: Steinkai mit Flaggenmast links, Holzsteg auf Pfählen über Wasser mit Pollern, Fass, Kisten und Laterne",
+      "teile": [
+        "Steinkai links (x 0 bis 1,5, Oberkante y 2,5) aus grauen Quadern, darauf ein Flaggenmast mit blauem Wimpel",
+        "Holzsteg rechts (x 1,5 bis 6) mit hellen Planken oben, dunkler Kante darunter und Plankenfugen",
+        "Vier Pfähle (x 1,75 bis 5,5) im Wasser unter dem Steg, Wasserstreifen mit hellen Wellenstrichen",
+        "Zwei eiserne Poller auf dem Steg (x 2 und 5)",
+        "Fass mit Eisenreifen (x 3 bis 3,7) und zwei gestapelte Kisten (x 3,9 bis 4,4)",
+        "Laternenmast am Stegende (x 5,75) mit leuchtender Laterne"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stein (Kamin, Esse, Sockel, Stufe)",
+        "Eisen (Rüstung, Band)",
+        "Wasser (Schale, Trog)",
+        "Fensterlicht"
+      ],
+      "stimmung": "Ruhiger Hafen am Morgen, kühles Wasser, warmes Holz, ein Licht am Stegende",
+      "fein": "Quaderfugen, Plankenfugen, Wellenstriche, Fassdauben"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/hafen-128.png",
+      "16": "grafik/gebaeude/hafen-16.png",
+      "32": "grafik/gebaeude/hafen-32.png",
+      "64": "grafik/gebaeude/hafen-64.png"
+    }
+  },
+  {
     "id": "heilplatz",
     "kacheln": {
       "b": 6,
@@ -3359,7 +3393,7 @@
       "h": 5
     },
     "vorlage": {
-      "motiv": "Wehrmauer, 1 Kachel breit und 5 hoch, mit drei Zinnen oben; Material wechselt je Stufe",
+      "motiv": "Stufe 1: Holzzaun aus senkrechten Pfählen mit Spitzen und zwei Querbalken; ab Stufe 2 Wehrmauer, 1 Kachel breit und 5 hoch, mit drei Zinnen oben; Material wechselt je Stufe",
       "teile": [
         "Drei Zinnen oben über die ganze Breite",
         "Mauerkörper aus waagrechten Bohlen (ab Stufe 2 Quader), Licht links, Schatten rechts",
@@ -3723,6 +3757,72 @@
           "16": "grafik/gebaeude/ruestkammer-5-16.png",
           "32": "grafik/gebaeude/ruestkammer-5-32.png",
           "64": "grafik/gebaeude/ruestkammer-5-64.png"
+        }
+      }
+    ]
+  },
+  {
+    "id": "schiff",
+    "kacheln": {
+      "b": 6,
+      "h": 5
+    },
+    "vorlage": {
+      "motiv": "Segelschiff im Bau in der Seitenansicht: Stufe 1 Kiel mit Steven und Spanten auf der Helling, Stufe 2 mit Holzrumpf, Schilden und Ruder, Stufe 3 fertig mit Mast und rot-hellem Segel auf dem Wasser",
+      "teile": [
+        "Kiel als lange dunkle Planke (x 1 bis 5,5, y 4,1) mit Heck- und Bugsteven, links niedrig, rechts hochgezogen",
+        "Sieben Spanten (x 1,25 bis 5,1) stehen senkrecht auf dem Kiel, ihre Oberkante folgt dem Bug nach oben",
+        "Drei Stützklötze der Helling unter dem Kiel (Stufe 3: im Wasser versunken)",
+        "Stufe 2: Rumpf aus Holzplanken (x 0,75 bis 5,75) mit roter Reling, vier Schilden an der Bordwand, Ruder am Heck und Bugfigur",
+        "Stufe 3: Mast mittig (x 3) mit Rah und großem Segel (x 1,5 bis 4,75) mit zwei roten Bahnen, Wimpel an der Mastspitze",
+        "Wasserstreifen vorn (y 4,5 bis 5) mit hellen Wellenstrichen"
+      ],
+      "materialien": [
+        "Holz (Wand, Tresen, Gestell)",
+        "Pfosten, Balken",
+        "Stoff hell",
+        "Stoff rot",
+        "Wasser (Schale, Trog)",
+        "Wappen"
+      ],
+      "stimmung": "Werft am Hafen, warmes Holz, das fertige Schiff ist hell und festlich",
+      "fein": "Plankenfugen, Wellenstriche, Segelnähte, Schildzier"
+    },
+    "dateien": {
+      "128": "grafik/gebaeude/schiff-1-128.png",
+      "16": "grafik/gebaeude/schiff-1-16.png",
+      "32": "grafik/gebaeude/schiff-1-32.png",
+      "64": "grafik/gebaeude/schiff-1-64.png"
+    },
+    "stufen": [
+      {
+        "stufe": 1,
+        "aenderung": "Grundform",
+        "dateien": {
+          "128": "grafik/gebaeude/schiff-1-128.png",
+          "16": "grafik/gebaeude/schiff-1-16.png",
+          "32": "grafik/gebaeude/schiff-1-32.png",
+          "64": "grafik/gebaeude/schiff-1-64.png"
+        }
+      },
+      {
+        "stufe": 2,
+        "aenderung": "Rumpf: Holzplanken über den Spanten, rote Reling, vier Schilde, Ruder und Bugfigur",
+        "dateien": {
+          "128": "grafik/gebaeude/schiff-2-128.png",
+          "16": "grafik/gebaeude/schiff-2-16.png",
+          "32": "grafik/gebaeude/schiff-2-32.png",
+          "64": "grafik/gebaeude/schiff-2-64.png"
+        }
+      },
+      {
+        "stufe": 3,
+        "aenderung": "Segel: Mast mit Rah, Segel und Wimpel; das Schiff ist fertig und schwimmt (Helling im Wasser versunken)",
+        "dateien": {
+          "128": "grafik/gebaeude/schiff-3-128.png",
+          "16": "grafik/gebaeude/schiff-3-16.png",
+          "32": "grafik/gebaeude/schiff-3-32.png",
+          "64": "grafik/gebaeude/schiff-3-64.png"
         }
       }
     ]

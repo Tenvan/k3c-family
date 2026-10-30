@@ -83,7 +83,7 @@ func aoeTargets(w *World, x, radius float64) []target {
 		}
 	}
 	for _, s := range w.Sites {
-		if s.State == "built" && in(s.X, 0) {
+		if s.State == "built" && s.Kind != shipKind && in(s.X, 0) {
 			out = append(out, target{s.ID, s.X, "site", nil})
 		}
 	}

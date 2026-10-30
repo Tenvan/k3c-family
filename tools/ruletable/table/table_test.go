@@ -35,9 +35,9 @@ func TestBlockInhaltFuerDieHeutigenFuenfStufen(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, want := range []string{
-		"| 1 | Holz | Werkstatt −16; Farm −52, +52 | Linie 1: Mauer ±44, Turm ±36, Tor ±48 (fest) | Kaufen +16, Verkaufen +20 (nur Tiefe 0) |",
-		"| 2 | Stein | Treppe hoch +16 (ab Tiefe 1); Treppe runter +8 (nur mit tieferer Stufe); Taverne −32; Kaserne +24; Lager −26 (je Insel) | Linie 2: Mauer ±64, Turm ±56, Tor ±68 (0…+4 je Seed) | – |", // B-631: Tor ab Hub-Stufe 1
-		"| 5 | Kristall | – | Linie 5: Mauer ±124, Turm ±116, Tor ±128 (0…+4 je Seed) | – |",
+		"| 1 | Holz | Werkstatt −16 | Zone 1: Baugrund Mauer ±44, Turm ±36, dazu 0…2 Plätze je Seed | Kaufen +16, Verkaufen +20 (nur Tiefe 0) |",
+		"| 2 | Stein | Treppe hoch +16 (ab Tiefe 1); Treppe runter +8 (nur mit tieferer Stufe); Taverne −32; Kaserne +24; Lager −26 (je Insel) | Zone 2: 1…3 Mauern, 1…3 Türme je Seed | – |",
+		"| 5 | Kristall | – | Zone 5: 1…3 Mauern, 1…3 Türme je Seed | – |",
 	} {
 		if !strings.Contains(block, want) {
 			t.Errorf("Zeile fehlt: %s\n%s", want, block)
@@ -54,7 +54,7 @@ func TestSiebenStufenFixture(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{"| 6 | Stein | Schmiede +28 | Linie 6: Mauer ±112, Turm ±108, Tor ±116 (0…+0 je Seed) | – |", "| 7 | Eisen | Rüstkammer +40 | Linie 7: Mauer ±124"} {
+	for _, want := range []string{"| 6 | Stein | Schmiede +28 | Zone 6: 1…3 Mauern, 1…3 Türme je Seed | – |", "| 7 | Eisen | Rüstkammer +40 | Zone 7: 1…3 Mauern"} {
 		if !strings.Contains(block, want) {
 			t.Errorf("Zeile fehlt: %s\n%s", want, block)
 		}
@@ -104,29 +104,29 @@ func TestBlockFehler(t *testing.T) {
 
 func TestBlockKommazahlenUndStufenGrenzen(t *testing.T) {
 	doc := func(site string, levels string) []byte {
-		return []byte(`{"levels":` + levels + `,"sites":[` + site + `],"wallLines":{"wallUnits":[44.5],"fixedLines":1,"jitterOutwardUnits":4,"towerInsetUnits":8,"gateOutsetUnits":4,"gateHubLevel":1},"merchant":{"buyOffsetUnits":16,"sellOffsetUnits":20,"onlyDepth":0}}`)
+		return []byte(`{"levels":` + levels + `,"sites":[` + site + `],"sitePlacement":{"zone1WallUnits":44.5,"zone1TowerUnits":36.5,"zones":1},"merchant":{"buyOffsetUnits":16,"sellOffsetUnits":20,"onlyDepth":0}}`)
 	}
 	one := `[{"cost":{}}]`
 	block, err := Block(doc(`{"kind":"workshop","offsetUnits":-16.5}`, one))
-	if err != nil || !strings.Contains(block, "Werkstatt −16.5") || !strings.Contains(block, "Mauer ±44.5, Turm ±36.5, Tor ±48.5") {
+	if err != nil || !strings.Contains(block, "Werkstatt −16.5") || !strings.Contains(block, "Baugrund Mauer ±44.5, Turm ±36.5") {
 		t.Fatalf("Kommazahlen: %v\n%s", err, block)
 	}
 	// ein fehlender hubLevel heißt Stufe 1 wie in der Engine
-	if block, err = Block(doc(`{"kind":"farm","offsetUnits":52}`, one)); err != nil || !strings.Contains(block, "Farm +52") {
+	if block, err = Block(doc(`{"kind":"nursery","offsetUnits":52}`, one)); err != nil || !strings.Contains(block, "Baumschule +52") {
 		t.Fatalf("hubLevel fehlt: %v\n%s", err, block)
 	}
-	if _, err = Block(doc(`{"kind":"farm","offsetUnits":52,"hubLevel":3}`, one)); err == nil {
+	if _, err = Block(doc(`{"kind":"nursery","offsetUnits":52,"hubLevel":3}`, one)); err == nil {
 		t.Error("hubLevel außerhalb von levels muss ein Fehler sein")
 	}
-	if _, err = Block(doc(`{"kind":"farm","offsetUnits":52,"hubLevel":1}`, `[{"cost":{}},{"cost":{"stone":1,"iron":2}}]`)); err == nil {
+	if _, err = Block(doc(`{"kind":"nursery","offsetUnits":52,"hubLevel":1}`, `[{"cost":{}},{"cost":{"stone":1,"iron":2}}]`)); err == nil {
 		t.Error("mehrere Materialien müssen ein Fehler sein")
 	}
-	if _, err = Block(doc(`{"kind":"farm","offsetUnits":52,"hubLevel":1}`, `[{"cost":{}},{"cost":{"mithril":1}}]`)); err == nil {
+	if _, err = Block(doc(`{"kind":"nursery","offsetUnits":52,"hubLevel":1}`, `[{"cost":{}},{"cost":{"mithril":1}}]`)); err == nil {
 		t.Error("unbekanntes Material muss ein Fehler sein")
 	}
 	// Ausbauschritte (B-592): Material aus den Kosten der Schritte, das Material-Tor zählt nicht
 	steps := `[{"steps":[]},{"steps":[{"cost":{"stone":1,"gold":1}},{"cost":{"stone":2},"gate":{"copper":3}}]}]`
-	if block, err = Block(doc(`{"kind":"farm","offsetUnits":52,"hubLevel":1}`, steps)); err != nil || !strings.Contains(block, "| 2 | Stein |") {
+	if block, err = Block(doc(`{"kind":"nursery","offsetUnits":52,"hubLevel":1}`, steps)); err != nil || !strings.Contains(block, "| 2 | Stein |") {
 		t.Fatalf("Schritte: %v\n%s", err, block)
 	}
 }

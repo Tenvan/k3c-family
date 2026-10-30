@@ -50,7 +50,7 @@ func TestGegnerlagerGueltig(t *testing.T) {
 		"Abstand genau 2": {withGuards(p(4, "forest"), guard("goblin", 2), guard("goblin", 3.5))},
 	}
 	for name, plan := range cases {
-		if err := ValidatePlan(forest, plan, DefaultWallLines()); err != nil {
+		if err := ValidatePlan(forest, plan); err != nil {
 			t.Errorf("%s: %v", name, err)
 		}
 	}
@@ -68,11 +68,11 @@ func TestGegnerlagerLehntAb(t *testing.T) {
 		"unbekannte Art":     {[]PlannedChunk{withGuards(p(4, "forest"), guard("drache", 20))}, "nicht erlaubt"},
 		"zu nah an Grenze":   {[]PlannedChunk{withGuards(p(4, "forest"), guard("goblin", 1))}, "Abstand zur Chunk-Grenze"},
 		"zu nah an Grenze 2": {[]PlannedChunk{withGuards(p(4, "forest"), guard("goblin", 49))}, "Abstand zur Chunk-Grenze"},
-		"innerhalb des Tors": {[]PlannedChunk{withGuards(p(1, "forest"), guard("goblin", 20))}, "innerhalb des äußersten Tors"},
+		"innerhalb der Verteidigungszone": {[]PlannedChunk{withGuards(p(1, "forest"), guard("goblin", 20))}, "innerhalb der Verteidigungszone"},
 		"Wachen zu nah":      {[]PlannedChunk{withGuards(p(4, "forest"), guard("goblin", 20), guard("greed", 21))}, "weniger als"},
 	}
 	for name, c := range cases {
-		err := ValidatePlan(forest, c.plan, DefaultWallLines())
+		err := ValidatePlan(forest, c.plan)
 		if err == nil || !strings.Contains(err.Error(), c.want) || !strings.Contains(err.Error(), "auf Platz") {
 			t.Errorf("%s: Fehler %v, erwartet mit Platz und %q", name, err, c.want)
 		}
@@ -108,7 +108,7 @@ func TestGegnerlagerAlleBiomeGeneriertDeterministisch(t *testing.T) {
 			continue
 		}
 		plan := []PlannedChunk{withGuards(p(-3, string(firstChunkKind(t, b))), guard(b.Enemies.Portal[0], 25))}
-		if err := ValidatePlan(b, plan, DefaultWallLines()); err != nil {
+		if err := ValidatePlan(b, plan); err != nil {
 			continue // Plätze nahe am Hub liegen in manchen Biomen innerhalb des Tors; dort gilt die Ablehnung
 		}
 		for seed := range 20 {

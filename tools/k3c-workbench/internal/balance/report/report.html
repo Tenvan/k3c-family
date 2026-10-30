@@ -21,11 +21,28 @@ __CSS__
     </div>
     <div class="top-actions">
       <span class="verdict" id="verdict"></span>
+      <button class="btn ghost" id="view" type="button" title="Zwischen vollständiger und kompakter Ansicht wechseln"></button>
       <button class="btn ghost" id="theme" type="button" title="Hell/Dunkel">☀︎ / ☾</button>
     </div>
   </header>
 
   <div class="scene" id="scene" aria-hidden="true"></div>
+
+  <section class="card todo" id="todo"></section>
+
+  <section class="card result" id="result" hidden>
+    <h2><img class="ico" data-asset="castle" alt="">Ergebnis</h2>
+    <p class="goal" id="goal"></p>
+    <p class="quality" id="quality"></p>
+    <p class="cfg" id="cfg"></p>
+    <h3>Meilensteine</h3>
+    <table class="tbl ladder" id="ladder"></table>
+    <p class="note" id="ladder-note"></p>
+    <p class="blocker" id="blocker"></p>
+  </section>
+
+  <details class="diag" open>
+  <summary>Diagnose</summary>
 
   <section class="card hero">
     <div class="hero-text">
@@ -72,6 +89,8 @@ __CSS__
     <h2>Vergleich mit der Baseline</h2>
     <div id="compare"></div>
   </section>
+
+  </details>
 
   <footer class="foot" id="foot"></footer>
 </main>

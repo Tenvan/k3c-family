@@ -56,6 +56,8 @@ type building struct {
 	Raster    int        `json:"raster,omitempty"`
 	Bausteine []baustein `json:"bausteine"`
 	Stufen    []stufe    `json:"stufen,omitempty"` // Ausbaustufen 2, 3, …; Grundform = Stufe 1 (§ 6)
+	// Stufe1 zeichnet nur die Stufe 1 anders als `bausteine`; die Stufen ab 2 bauen weiter auf `bausteine` auf (B-653)
+	Stufe1 []baustein `json:"stufe1,omitempty"`
 }
 
 type eintrag struct {

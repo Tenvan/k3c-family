@@ -26,13 +26,13 @@ type Cost struct {
 type BuildingData struct {
 	HP, BuildSeconds                 float64
 	Cost                             Cost
-	CostByDepth                      []Cost             // Treppen: Kosten je Biom-Tiefe (B-631, siteCost), leer = Cost
+	CostByDepth                      []Cost // Treppen: Kosten je Biom-Tiefe (B-631, siteCost), leer = Cost
 	ArcherSlots, RangeBonus, BowRack int
 	SwordRack                        int                // Werkstatt: Schwerter im Regal (unit_warrior.go)
 	Offers                           []Offer            // Angebots-Zahlziele am Gebäude (Q52), Berufe: unit_professions.go
 	CraftSeconds                     map[string]float64 // Herstellungszeit je Stück (Q35, unit_professions.go)
 	Levels                           []LevelData        // Ausbau-Stufen am Platz (Mauer, Turm, Tor; hub_level.go)
-	Plantation                       Plantation         // Farm: Bäume wachsen nach (building_plantation.go)
+	Plantation                       Plantation         // Baumschule: Bäume wachsen nach (building_plantation.go)
 	TroopLimit                       TroopLimit         // Kaserne: Kämpfer-Limit je Hub (building_barracks.go)
 	Vagrants                         Vagrants           // Taverne: Landstreicher je dawn (building_tavern.go)
 	Heal                             Heal               // Heilplatz (building_healer.go)
@@ -111,14 +111,12 @@ type HubSite struct {
 	HubLevel    int // ab dieser Hub-Stufe bezahlbar (§ 3 der Regeln)
 }
 
-// WallLineData sind die Mauerlinien je Seite (Q49, Q50): Linie k (ab 1) steht bei WallUnits[k-1] ab Hub-Mitte,
-// die ersten FixedLines fest, die übrigen je Seed 0 bis JitterOutwardUnits weiter außen.
-type WallLineData struct {
-	WallUnits                        []float64
-	FixedLines                       int
-	JitterOutwardUnits               float64
-	TowerInsetUnits, GateOutsetUnits float64
-	GateHubLevel                     int
+// SitePlacementData sind die Felder von data/hub.json › sitePlacement, die die Hub-Prüfung braucht (B-652): der feste
+// Baugrund der Zone 1 (Mauer, Turm je Seite) und der Abstand, ab dem Portale liegen. Der Generator liest alle Felder selbst
+// (engine/level/sites.go).
+type SitePlacementData struct {
+	Zone1WallUnits, Zone1TowerUnits float64
+	OutsideUnits                    float64
 }
 
 // HubData ist data/hub.json; eine Kandidaten-hub.json (Gebäude-Planer, B-462) hat dieselbe Form (hub_validate.go).
@@ -127,7 +125,7 @@ type HubData struct {
 	Sites            []HubSite
 	IslandSites      []HubSite // nur Insel-Stufen (island_storage.go)
 	IslandStartStock Stock     // Vorrat einer neuen Insel (B-177)
-	WallLines        WallLineData
+	SitePlacement    SitePlacementData
 	Merchant         struct {
 		BuyOffsetUnits, SellOffsetUnits float64
 		OnlyDepth                       int
@@ -138,13 +136,14 @@ type HubData struct {
 }
 
 var (
-	buildings = load[map[string]BuildingData]("buildings.json")
+	buildings = withShip(load[map[string]BuildingData]("buildings.json"), load[shipFile]("ship.json"))
 	troops    = load[map[string]TroopData]("troops.json")
 	economy   = load[struct {
 		Purse                                               struct{ StartGold, MaxGold int }
 		PayRangeUnits, PayIntervalSeconds, PickupRangeUnits float64
 		DropPickupDelaySeconds                              float64
 		DawnGoldPerPlayer                                   int
+		DawnGoldPerDepth                                    int // Zuschlag je Tiefe der Stufe auf das Morgengold (wirtschaft.md § 8, B-645)
 		ChestGold                                           [2]int
 		EnemyResourceDrop                                   struct {
 			Chance float64
@@ -162,16 +161,7 @@ var (
 	hub       = load[HubData]("hub.json")
 	monarch   = loadMonarch()
 	enemyData = loadEnemyData()
-	waves     = load[struct {
-		Table []struct {
-			FromWave        int
-			Standard, Elite [2]int
-		}
-		SpawnSpreadSeconds float64
-		PerExtraPlayer     float64 // Wellenfaktor je Zusatzspieler einer Insel
-		DepthScaling       struct{ HP, Damage, Speed float64 }
-		StealGold          int
-	}]("waves.json")
+	waves     = loadWaves()
 	// biomes in der Reihenfolge von `BIOMES` in TS (Oberwelt zuerst, dann nach Tiefe).
 	biomes         = loadBiomes()
 	globalDayNight = firstDayNight()
@@ -205,12 +195,13 @@ func loadFrom[T any](fsys fs.FS, name string, dst *T) error {
 // Nicht nebenläufig zu laufenden Simulationen aufrufen.
 func UseData(fsys fs.FS) error {
 	b, t, e, h, m, en, w := buildings, troops, economy, hub, monarch, enemyData, waves
-	if err := errors.Join(loadFrom(fsys, "buildings.json", &b), loadFrom(fsys, "troops.json", &t),
+	var ship shipFile
+	if err := errors.Join(loadFrom(fsys, "buildings.json", &b), loadFrom(fsys, "ship.json", &ship), loadFrom(fsys, "troops.json", &t),
 		loadFrom(fsys, "economy.json", &e), loadFrom(fsys, "hub.json", &h), loadFrom(fsys, "monarch.json", &m),
-		loadEnemies(fsys, &en), loadFrom(fsys, "waves.json", &w), checkPresets(m)); err != nil {
+		loadEnemies(fsys, &en), loadFrom(fsys, "waves.json", &w), checkPresets(m), checkWaves(w)); err != nil {
 		return err
 	}
-	buildings, troops, economy, hub, monarch, enemyData, waves = b, t, e, h, m, en, w
+	buildings, troops, economy, hub, monarch, enemyData, waves = withShip(b, ship), t, e, h, m, en, w
 	return nil
 }
 
@@ -277,3 +268,37 @@ type Goals struct {
 }
 
 var goals = load[Goals]("goals.json")
+
+// wavesData ist data/waves.json.
+type wavesData struct {
+	Table []struct {
+		FromWave        int
+		Standard, Elite [2]int
+	}
+	SpawnSpreadSeconds float64
+	PerExtraPlayer     float64 // Wellenfaktor je Zusatzspieler einer Insel
+	// BossHpPerExtraPlayer: HP-Faktor der Bosse je Zusatzspieler, getrennt von der Wellengröße (B-650); Pflichtfeld, ≥ 0.
+	BossHpPerExtraPlayer *float64
+	DepthScaling         struct{ HP, Damage, Speed float64 }
+	StealGold            int
+}
+
+// checkWaves: bossHpPerExtraPlayer ist Pflicht, beide Zuschläge sind nicht negativ (B-650).
+func checkWaves(w wavesData) error {
+	switch {
+	case w.BossHpPerExtraPlayer == nil:
+		return errors.New("data/waves.json: bossHpPerExtraPlayer fehlt")
+	case *w.BossHpPerExtraPlayer < 0 || w.PerExtraPlayer < 0:
+		return errors.New("data/waves.json: perExtraPlayer und bossHpPerExtraPlayer dürfen nicht negativ sein")
+	}
+	return nil
+}
+
+// loadWaves lädt data/waves.json und bricht bei einem ungültigen Stand ab (wie load).
+func loadWaves() wavesData {
+	w := load[wavesData]("waves.json")
+	if err := checkWaves(w); err != nil {
+		panic(err)
+	}
+	return w
+}

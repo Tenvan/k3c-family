@@ -57,19 +57,19 @@ func checkIsland(d IslandDef) error {
 	if err := checkChunkCounts(d); err != nil {
 		return err
 	}
-	return checkPlannedChunks(d, level.DefaultWallLines())
+	return checkPlannedChunks(d)
 }
 
 // checkPlannedChunks prüft die geplanten Chunks jeder Tiefe unabhängig vom Seed (level.ValidatePlanFor) gegen die
 // Mauerlinien lines und die Chunk-Anzahl der Tiefe; Fehler nennen Tiefe und Platz (der Aufrufer ergänzt die Insel).
-func checkPlannedChunks(d IslandDef, lines level.WallLines) error {
+func checkPlannedChunks(d IslandDef) error {
 	for _, key := range slices.Sorted(maps.Keys(d.PlannedChunks)) {
 		plan := d.PlannedChunks[key]
 		depth, err := strconv.Atoi(key)
 		if err != nil || strconv.Itoa(depth) != key || !slices.Contains(d.Depths, depth) {
 			return fmt.Errorf("plannedChunks: Tiefe %q ist keine Tiefe der Insel", key)
 		}
-		if err := level.ValidatePlanFor(biomeForDepth(depth), plan, lines, d.countAt(depth)); err != nil {
+		if err := level.ValidatePlanFor(biomeForDepth(depth), plan, d.countAt(depth)); err != nil {
 			return fmt.Errorf("plannedChunks Tiefe %d: %w", depth, err)
 		}
 	}

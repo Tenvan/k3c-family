@@ -6,8 +6,8 @@ import { SCAFFOLD_CLASS, SCAFFOLD_CLASSES, scaffoldTexture, showsScaffold, siteM
 describe('Gerüst-Größenklasse (B-586)', () => {
   it('jede Platzart hat die Breite ihres Gebäude-Sprites als Klasse', () => {
     const erwartet: Record<SiteKind, number> = {
-      wall: 1, gate: 2, tower: 3, farm: 4, stairsUp: 4, stairsDown: 4,
-      workshop: 6, storage: 6, barracks: 6, tavern: 6, healer: 6, smithy: 6, armory: 6,
+      wall: 1, tower: 3, nursery: 4, stairsUp: 4, stairsDown: 4,
+      workshop: 6, storage: 6, barracks: 6, tavern: 6, healer: 6, smithy: 6, armory: 6, ship: 6,
     };
     expect(SCAFFOLD_CLASS).toEqual(erwartet);
   });

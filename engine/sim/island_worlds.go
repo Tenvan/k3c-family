@@ -157,7 +157,17 @@ func decodeIslands(islands []json.RawMessage) ([]IslandDef, error) {
 		}
 		out = append(out, d)
 	}
+	for i, d := range out[:len(out)-1] {
+		if !hasHarbor(d) {
+			return nil, islandError{islandLabel(islands[i], i), errors.New("kein Hafen in den geplanten Chunks der Tiefe 0, die Insel ist nicht die letzte der Welt (geplante-chunks.md § 10)")}
+		}
+	}
 	return out, nil
+}
+
+// hasHarbor: Die Insel plant in Tiefe 0 einen Hafen-Chunk (BAS, B-637).
+func hasHarbor(d IslandDef) bool {
+	return slices.ContainsFunc(d.PlannedChunks["0"], func(c level.PlannedChunk) bool { return c.Kind == level.HarborKind })
 }
 
 // islandLabel nennt die Insel in Meldungen: ihre ID, außerhalb des Musters in Anführungszeichen, ohne ID ihr Platz in

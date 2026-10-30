@@ -180,6 +180,7 @@ func Play(r Replay) (Playback, error) {
 			left[i]--
 		}
 		sim.StepIsland(isl, cmds, 1.0/enginetools.TickHz)
+		afterStep(isl, r.Scenario, tick, enginetools.TickHz)
 		c.observe(tick)
 	}
 	pb.Ticks, pb.EndHash, pb.CastleFallTick = r.Ticks, endHash(isl), c.result().CastleFallTick

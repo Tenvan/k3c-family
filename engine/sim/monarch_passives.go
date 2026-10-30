@@ -14,7 +14,7 @@ func eachPassive(w *World, f func(owner *Player, e skillEffect)) {
 			continue
 		}
 		for _, id := range o.Skills {
-			if s, ok := skillByID(id); ok && s.Kind == "passive" {
+			if s := skillRef(id); s != nil && s.Kind == "passive" {
 				f(o, s.Effect)
 			}
 		}

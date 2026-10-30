@@ -41,14 +41,14 @@ func TestIslandOptionsWaveSizeByPlayers(t *testing.T) {
 		t.Fatalf("Basiswelle leer: %d", base)
 	}
 	for n := 1; n <= 4; n++ {
-		want := int(math.Round(float64(base) * (1 + 0.5*float64(n-1))))
+		want := int(math.Round(float64(base) * (1 + waves.PerExtraPlayer*float64(n-1))))
 		if got := waveCount(islandWith(t, "opt-a", "normal", n), 1); got != want {
 			t.Errorf("%d Spieler, Welle 1: %d Gegner, erwartet %d", n, got, want)
 		}
 	}
 	b6 := waveCount(islandWith(t, "opt-a", "normal", 1), 6)
-	if got := waveCount(islandWith(t, "opt-a", "normal", 4), 6); got < b6*2 {
-		t.Errorf("Welle 6 mit 4 Spielern: %d, erwartet mindestens %d", got, b6*2)
+	if got := waveCount(islandWith(t, "opt-a", "normal", 4), 6); got < int(float64(b6)*(1+3*waves.PerExtraPlayer))-1 {
+		t.Errorf("Welle 6 mit 4 Spielern: %d, erwartet mindestens %d", got, int(float64(b6)*(1+3*waves.PerExtraPlayer))-1)
 	}
 }
 

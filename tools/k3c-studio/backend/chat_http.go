@@ -138,11 +138,13 @@ func (r chatRequest) options() chatOptions {
 // taskOptions sind die Optionen samt Instruktion des Auftrags; die Zuordnung braucht dafür das Repo.
 func (a *App) taskOptions(req chatRequest) (chatOptions, error) {
 	opts := req.options()
-	if req.Task != chatTaskAssign {
-		return opts, nil
-	}
 	var err error
-	opts.instruction, err = a.assignInstruction(*req.Context)
+	switch req.Task {
+	case chatTaskAssign:
+		opts.instruction, err = a.assignInstruction(*req.Context)
+	case chatTaskSources:
+		opts.instruction, err = a.sourcesInstruction()
+	}
 	return opts, err
 }
 
@@ -157,8 +159,8 @@ func readChatRequest(r *http.Request) (chatRequest, error) {
 	if req.Chat != "" && !chatIDPattern.MatchString(req.Chat) {
 		return req, errors.New("ungültige Chat-id (nur Kleinbuchstaben, Ziffern, Bindestrich)")
 	}
-	if req.Task != "" && req.Task != chatTaskWorld && req.Task != chatTaskAssign {
-		return req, fmt.Errorf("unbekannte Auftragsart %q (erlaubt: leer, %q oder %q)", req.Task, chatTaskWorld, chatTaskAssign)
+	if req.Task != "" && req.Task != chatTaskWorld && req.Task != chatTaskAssign && req.Task != chatTaskSources {
+		return req, fmt.Errorf("unbekannte Auftragsart %q (erlaubt: leer, %q, %q oder %q)", req.Task, chatTaskWorld, chatTaskAssign, chatTaskSources)
 	}
 	if req.Task == chatTaskAssign {
 		if err := req.Context.validate(); err != nil {
@@ -218,6 +220,11 @@ func (a *App) chatSend(w http.ResponseWriter, r *http.Request) {
 	})
 	if req.Task == chatTaskAssign && out.Status == chatDone {
 		a.rememberPicks(*req.Context, out.Text) // Karten aus der Antwort; der Chat schreibt nichts
+	}
+	if req.Task == chatTaskSources && out.Status == chatDone {
+		note := a.applySourcesAnswer(out.Text) // der Chat selbst schreibt nichts; das Studio prüft und trägt ein
+		out.Text += note
+		sendEvent(w, fl, "chunk", map[string]string{"text": note})
 	}
 	sendEvent(w, fl, "done", h.record(&log, req.Text, opts, asked, out))
 }
