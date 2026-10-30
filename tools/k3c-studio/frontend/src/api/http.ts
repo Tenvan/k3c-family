@@ -2,7 +2,7 @@ import { chatStreamHttp } from './chatHttp';
 import type { ChatDetail, ChatOptionsView, ChatSummary } from './chatTypes';
 import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, GameServersView, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, TicketCreated, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
 import type { AssetSlotDetails } from './slotTypes';
-import type { NetworkMode, NetworkView, SourceCleanupView, SourceProgress, SourcesView } from './sourceTypes';
+import type { NetworkMode, NetworkView, SourceAddView, SourceCleanupView, SourceProgress, SourcesView } from './sourceTypes';
 import type { AssetSuggestionsView } from './suggestionTypes';
 import type { WorldAnswerView, WorldCheckView, WorldDraft } from './worldTypes';
 
@@ -116,6 +116,8 @@ export function httpBackend(): Backend {
     sourceDownload: (ids: string[], confirmedBytes: number) => rpc<void>('SourceDownload', ids, confirmedBytes),
     sourceProgress: () => rpc<SourceProgress[]>('SourceProgress'),
     sourceAdopt: (id: string) => rpc<void>('SourceAdopt', id),
+    sourceResearchPreview: (source: string) => rpc<SourceAddView>('SourceResearchPreview', source),
+    sourceResearchImport: (source: string, urls: string[]) => rpc<SourceAddView>('SourceResearchImport', source, urls),
     sourceCleanupPreview: () => rpc<SourceCleanupView>('SourceCleanupPreview'),
     sourceCleanup: () => rpc<SourceCleanupView>('SourceCleanup'),
     chatStream: chatStreamHttp,

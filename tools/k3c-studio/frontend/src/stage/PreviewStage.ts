@@ -5,9 +5,10 @@ import { StageView } from '@game/scenes/render/stageView';
 import { prepareWorld, preloadWorld } from '@game/scenes/render/objectView';
 import { TEXT, prepareBuildings, preloadBuildings, siteName } from '@game/scenes/render/siteView';
 import { createSpriteAnims, preloadSprites } from '@game/scenes/render/sprites';
-import { DEFAULT_CONTROL, SHEETS, resolveAnim, type Control, type Gap } from '../playback/figure';
-import { FigureView, GROUND_Y, drawScale, loadFigureSheets, type FigureItem } from '../playback/figureView';
+import { resolveAnim, type Control, type Gap } from '../playback/figure';
+import { loadFigureSheets, type FigureItem } from '../playback/figureView';
 import type { KampfWorld } from '@game/scenes/kampfAnzeige';
+import { FRAME_COLOR, FRAME_PX, FigureLayer } from './figureLayer';
 import { hudPx } from './hudBar';
 import { KampfOverlay } from './kampfOverlay';
 import { siteBox } from './siteBox';
@@ -26,9 +27,6 @@ export interface StagePosition {
 
 const DEFAULT_VIEW: StagePosition = { left: 0, scale: 12 };
 
-/** Kamera-Zoom der Figuren-Ansicht, bei dem die Spielhöhe in die Höhe der Bühne passt. */
-const stageZoom = (stageHeightPx: number): number => (stageHeightPx > 0 ? stageHeightPx / GAME_HEIGHT : 1);
-
 /** Darstellung der Bühne: Kamerahelligkeit (Tageszeit) und ausgeblendete Hintergrund-Schichten (Textur-Schlüssel) */
 export interface Look {
   brightness: number;
@@ -45,8 +43,6 @@ export interface Marks {
 }
 
 const NO_MARKS: Marks = { names: false, selected: [] };
-const FRAME_COLOR = 0x2f81f7;
-const FRAME_PX = 5;
 
 const DEFAULT_LOOK: Look = { brightness: 1, hiddenLayers: new Set() };
 
@@ -65,14 +61,10 @@ class PreviewScene extends Phaser.Scene {
   private moved = false;
   private lastHit: { key: string; at: number } | null = null;
   // Figuren-Modus (WZ10.1): statt der Welt zeichnet die Bühne Figuren auf einer Bodenlinie mit Unit-Skala
-  private figures: FigureView[] = [];
-  private figureBase = 1; // Kamera-Zoom, bei dem alle Figuren im Bild stehen; `figureFactor` (Zoom der Seite) wirkt darauf
-  private figureFactor = 1;
+  private readonly figures = new FigureLayer(this);
   private kampf: KampfOverlay | null = null;
   private kampfWorld: KampfWorld | null = null;
-  private extras: Phaser.GameObjects.GameObject[] = [];
   private figureItems: readonly FigureItem[] | null = null;
-  private control: Control = DEFAULT_CONTROL;
 
   constructor(private readonly onLoadError: (files: string[]) => void, private readonly onPan: (px: number) => void, private readonly onSite: (hit: SiteHit | null) => void = () => {}) {
     super('preview');
@@ -123,6 +115,7 @@ class PreviewScene extends Phaser.Scene {
   /** Klick ohne Ziehen (B-667): der Bauplatz unter dem Zeiger oder null für freie Fläche; zwei Klicks auf denselben Platz kurz
    *  hintereinander gelten als Doppelklick. */
   private click(p: Phaser.Input.Pointer): void {
+    if (this.figures.click(p)) return;
     const world = this.pending;
     if (!world || !this.view) return;
     const point = this.cameras.main.getWorldPoint(p.x, p.y);
@@ -212,7 +205,8 @@ class PreviewScene extends Phaser.Scene {
   async showFigures(items: readonly FigureItem[] | null): Promise<FigureInfo[]> {
     this.figureItems = items;
     if (!this.ready) return [];
-    this.clearFigures();
+    this.figures.clear();
+    this.kampf?.clear();
     if (!items) {
       this.show(this.pending);
       return [];
@@ -221,24 +215,31 @@ class PreviewScene extends Phaser.Scene {
     this.view = null;
     await loadFigureSheets(this, items);
     if (this.figureItems !== items) return [];
-    // Ein unbekanntes Sheet ist eine Lücke ohne Figur (makeSprite würde abstürzen).
-    const views = items.map((i) => (SHEETS[i.spec.sheet] ? new FigureView(this, i) : null));
-    this.figures = views.filter((v): v is FigureView => v !== null);
-    this.fitFigures(items);
-    this.setControl(this.control);
+    const views = this.figures.build(items);
     this.drawKampf();
+    this.figures.drawMark();
     return views.map((v, i) => (v ? { gap: v.gap, frames: v.frames() } : { gap: resolveAnim(items[i]!.spec.sheet, items[i]!.anim).gap, frames: 1 }));
   }
 
   /** Wiedergabe (Schleife, Tempo, Einzelbild) aller Figuren */
   setControl(control: Control): void {
-    this.control = control;
-    for (const f of this.figures) f.apply(control);
+    this.figures.setControl(control);
   }
 
   update(): void {
-    for (const f of this.figures) f.follow();
+    this.figures.follow();
     this.kampf?.place();
+  }
+
+  /** Klick auf eine Figur melden (Index in der Liste, null = daneben); null schaltet den Treffer-Test ab (B-672). */
+  setFigureClick(onFigure: ((index: number | null) => void) | null): void {
+    this.figures.setClick(onFigure);
+  }
+
+  /** Die Figur mit diesem Index in der Liste blau umrahmen (null = keine) */
+  setFigureMark(index: number | null): void {
+    this.figures.setMark(index);
+    if (this.ready) this.figures.drawMark();
   }
 
   /** Boss-Anzeigen des Spiels für den Beispielzustand `world` (null = keine, B-469); wirkt in der Figuren-Ansicht. */
@@ -249,35 +250,12 @@ class PreviewScene extends Phaser.Scene {
 
   private drawKampf(): void {
     this.kampf ??= new KampfOverlay(this);
-    this.kampf.show(this.figures.length > 0 ? this.kampfWorld : null);
-  }
-
-  private clearFigures(): void {
-    for (const f of this.figures) f.destroy();
-    for (const o of this.extras) o.destroy();
-    this.figures = [];
-    this.extras = [];
-    this.kampf?.clear();
-  }
-
-  /** Kamera: alle Figuren und die Unit-Skala im Bild, Bodenlinie unten */
-  private fitFigures(items: readonly FigureItem[]): void {
-    const xs = items.map((i) => i.x);
-    const from = Math.floor(Math.min(...xs, 0) - 6);
-    const to = Math.ceil(Math.max(...xs, 0) + 6);
-    this.extras = drawScale(this, from, to);
-    const cam = this.cameras.main;
-    const zoom = Math.min(stageZoom(this.scale.height), this.scale.width / ((to - from) * UNIT_PX));
-    this.figureBase = zoom;
-    cam.setZoom(zoom * this.figureFactor);
-    cam.removeBounds();
-    cam.centerOn(((from + to) / 2) * UNIT_PX, GROUND_Y - 140);
+    this.kampf.show(this.figures.count > 0 ? this.kampfWorld : null);
   }
 
   /** Zoom der Seite (1 = alle Figuren im Bild, B-502) auf die Figuren-Ansicht anwenden; die Mitte bleibt. */
   setFigureZoom(factor: number): void {
-    this.figureFactor = factor;
-    if (this.figures.length > 0) this.cameras.main.setZoom(this.figureBase * factor);
+    this.figures.setZoom(factor);
   }
 
   /** Position und Zoom von der Seite übernehmen (gleicher Maßstab wie der Chunk-Streifen). */
@@ -368,6 +346,16 @@ export class PreviewStage {
   /** Zoom der Figuren-Ansicht (1 = alle Figuren im Bild) */
   setFigureZoom(factor: number): void {
     this.scene.setFigureZoom(factor);
+  }
+
+  /** Klick auf eine Figur melden (Index in der Liste der Figuren, null = daneben; B-672) */
+  setFigureClick(onFigure: ((index: number | null) => void) | null): void {
+    this.scene.setFigureClick(onFigure);
+  }
+
+  /** Figur mit diesem Index markieren (null = keine) */
+  setFigureMark(index: number | null): void {
+    this.scene.setFigureMark(index);
   }
 
   /** Position und Zoom setzen */

@@ -99,3 +99,21 @@ export function integerOf(text: string): number | null {
   const n = numberOf(text);
   return n !== null && Number.isSafeInteger(n) ? n : null;
 }
+
+/** Ändert die Art eines Platzes; die übrigen Felder bleiben (B-670, Inspektor). */
+export function setSiteKind(hub: HubJson, list: SiteList, index: number, kind: string): HubJson {
+  const next = structuredClone(hub);
+  const site = next[list][index];
+  if (!site) return hub;
+  site.kind = kind;
+  return next;
+}
+
+/** Verschiebt einen Platz in die andere Liste, dort hinten angehängt (neuer Index = bisherige Länge der Ziel-Liste). */
+export function moveSite(hub: HubJson, from: SiteList, index: number, to: SiteList): HubJson {
+  const site = hub[from][index];
+  if (!site || from === to) return hub;
+  const next = removeSite(hub, from, index);
+  next[to] = [...(next[to] ?? []), structuredClone(site)];
+  return next;
+}

@@ -39,31 +39,45 @@ describe('Gebäude-Planer: Matrix (B-462/AC-01, AC-08)', () => {
   it('zeigt mit der 7-Stufen-Fixture 7 Spalten und je Bauplatz eine Zeile', async () => {
     const h = await mount();
     const plan = mockHubPlan();
-    expect(levelButtons(h).map((b) => b.textContent)).toEqual([1, 2, 3, 4, 5, 6, 7].map((n) => `Hub-Stufe ${n}`));
+    expect(levelButtons(h).map((b) => b.getAttribute('aria-label'))).toEqual([1, 2, 3, 4, 5, 6, 7].map((n) => `Hub-Stufe ${n}`));
     expect(h.querySelectorAll('.pl-matrix tbody tr')).toHaveLength(plan.matrix.rows.length);
-    expect(h.textContent).toContain('7 Hub-Stufen');
+    // Hub-Stufe als Segment-Knöpfe in der Werkzeugleiste (B-670), dieselbe Wahl wie die Spalten
+    expect([...h.querySelectorAll('.pl-toolbar [aria-label="Hub-Stufe"] button')].map((b) => b.textContent)).toEqual(['1', '2', '3', '4', '5', '6', '7']);
     expect(h.textContent).toContain('testdata/hub/hub7.json');
   });
 
   it('Zelle mit Platz und Tiefe ab der Stufe des Bauplatzes, davor leer', async () => {
     const h = await mount();
     expect(cell(h, 'armory@40', 6).classList.contains('pl-off')).toBe(true);
+    expect(cell(h, 'armory@40', 7).querySelector('.pl-box')).not.toBeNull(); // farbiges Kästchen statt Text (B-670)
+    expect(cell(h, 'stairsUp@16', 2).title).toBe('+16, ab Tiefe 1');
+    expect(cell(h, 'stairsUp@16', 2).classList.contains('pl-cond')).toBe(true);
     expect(cell(h, 'armory@40', 6).textContent).toBe('');
     expect(cell(h, 'armory@40', 7).classList.contains('pl-from')).toBe(true);
     expect(cell(h, 'armory@40', 7).textContent).toBe('+40');
     expect(cell(h, 'stairsUp@16', 2).textContent).toBe('+16ab Tiefe 1');
     expect(cell(h, 'stairsDown@8', 3).textContent).toContain('nur mit tieferer Stufe');
     expect(cell(h, 'zone1', 2).textContent).toBe('±60');
-    expect(row(h, 'zone1').querySelector('th')!.textContent).toBe('Baugrund Zone 1Turm ±52');
+    expect(row(h, 'zone1').querySelector('th')!.textContent).toBe('Baugrund Zone 1±60 · Baugrund, Turm ±52');
+    expect(row(h, 'armory@40').querySelector('th')!.textContent).toBe('Rüstkammer+40 · sites');
+    expect(row(h, 'merchantBuy@16').querySelector('th')!.textContent).toBe('Händler Kaufen+16 · Händler');
+    expect(h.querySelector('.pl-matrix thead')!.textContent).not.toContain('Herkunft');
     expect(cell(h, 'merchantBuy@16', 1).textContent).toBe('+16nur Tiefe 0');
-    expect(h.textContent).toContain('Prüfung ohne Befund');
+    expect(h.querySelector('[data-chip="checks"]')!.textContent).toBe('Prüfung ok');
   });
 
   it('nennt Befunde der Prüfung und eine nicht lesbare Datei mit Pfad', async () => {
     const plan = mockHubPlan();
     const spy = vi.spyOn(backend, 'hubPlan').mockResolvedValue({ ...plan, findings: [{ rule: 'pflichtplatz', site: 'workshop', detail: 'fehlt' }] });
     const h = await mount();
+    expect(h.querySelector('.pl-findings')).toBeNull(); // Befunde erst auf Klick (B-670/AC-02)
+    const chip = h.querySelector<HTMLButtonElement>('[data-chip="checks"]')!;
+    expect(chip.textContent).toBe('Prüfung: 1 Befunde');
+    await act(async () => chip.click());
+    expect(chip.getAttribute('aria-expanded')).toBe('true');
     expect(h.querySelector('.pl-findings li')!.textContent).toBe('pflichtplatz: workshop: fehlt');
+    await act(async () => chip.click());
+    expect(h.querySelector('.pl-findings')).toBeNull();
     spy.mockResolvedValue({ ...plan, raw: '', matrix: { levels: 0, rows: [] }, error: 'data/hub.json nicht lesbar: weg' });
     await act(async () => [...h.querySelectorAll('button')].find((b) => b.textContent === 'Neu laden')!.click());
     await flush();
@@ -84,6 +98,8 @@ describe('Gebäude-Planer: Ablehnung des Backends', () => {
   it('lehnt hubRules ab → Fehlertext an der Regeltabelle, die Matrix bleibt', async () => {
     vi.spyOn(backend, 'hubRules').mockRejectedValue(new Error('Regeltabelle: Absturz'));
     const h = await mount();
+    expect(h.querySelector('[role="note"]')).toBeNull();
+    await act(async () => h.querySelector<HTMLButtonElement>('[data-chip="rules"]')!.click());
     expect(h.querySelector('[role="note"]')!.textContent).toContain('Regeltabelle nicht verglichen');
     expect(h.textContent).toContain('Regeltabelle: Absturz');
     expect(h.querySelector('.pl-matrix')).not.toBeNull();
@@ -96,6 +112,10 @@ describe('Gebäude-Planer: Abweichung der Regeltabelle (B-462/AC-03)', () => {
     const h = await mount();
     const rules = mockHubRules('');
     expect(spy).toHaveBeenCalledWith(mockHubPlan().raw);
+    expect(h.querySelector('.pl-diff')).toBeNull(); // Diff erst auf Klick (B-670/AC-02)
+    const chip = h.querySelector<HTMLButtonElement>('[data-chip="rules"]')!;
+    expect(chip.textContent).toBe(`Regeltabelle ${rules.lines.length}`);
+    await act(async () => chip.click());
     expect(h.querySelector('.pl-diff [role="status"]')!.textContent).toContain('Regeltabelle weicht ab');
     expect(h.querySelector('.pl-diff')!.textContent).toContain('task gen:rules');
     const lines = h.querySelectorAll('.pl-diff-table tbody tr');
@@ -109,10 +129,11 @@ describe('Gebäude-Planer: Abweichung der Regeltabelle (B-462/AC-03)', () => {
     const spy = vi.spyOn(backend, 'hubRules').mockResolvedValue({ ...rules, same: true, lines: [] });
     const h = await mount();
     expect(h.querySelector('.pl-diff')).toBeNull();
-    expect(h.textContent).toContain('Regeltabelle stimmt mit dem Planer-Stand überein');
+    expect(h.querySelector('[data-chip="rules"]')).toBeNull(); // Regeltabelle stimmt: kein Chip
     spy.mockResolvedValue({ ...rules, error: 'Regeltabelle nicht vergleichbar: marken fehlen' });
     await act(async () => [...h.querySelectorAll('button')].find((b) => b.textContent === 'Neu laden')!.click());
     await flush();
+    await act(async () => h.querySelector<HTMLButtonElement>('[data-chip="rules"]')!.click());
     expect(h.querySelector('[role="alert"]')!.textContent).toContain('nicht vergleichbar');
   });
 });

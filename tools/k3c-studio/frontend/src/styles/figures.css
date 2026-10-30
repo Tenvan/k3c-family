@@ -1,0 +1,35 @@
+/* Figuren-Seiten Monarch und Gegner (B-671, B-672): eine Werkzeugleiste, große Bühne, Panel bzw. Tabelle mit Inspektor */
+
+/* Werkzeugleiste: links die Auswahl, rechts Wiedergabe, Zoom und Chips; schmal bricht sie um */
+.wd-figbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.wd-figbar-end { margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.wd-figbar .wd-playback { gap: 4px; flex-wrap: nowrap; }
+.wd-segment { display: inline-flex; align-items: center; gap: 2px; }
+.wd-gap-chip { cursor: default; }
+.wd-gap-list { margin: 0; padding-left: 1rem; }
+
+/* Monarch: Spieler als schmale Zeile unter der Bühne, Skills-Panel rechts */
+.wd-monarch-page { gap: 8px; }
+.wd-colors.wd-players { flex-direction: row; flex-wrap: wrap; gap: 4px 16px; margin: 0; }
+.wd-colors.wd-players li { gap: 6px; }
+.wd-skill-panel {
+  display: flex; flex-direction: column; gap: 6px; width: 30rem; max-width: 100%; max-height: calc(100vh - 11rem); overflow: auto;
+  padding: 8px; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card, var(--color-panel-solid));
+}
+.wd-skill-head { display: flex; align-items: center; justify-content: space-between; }
+
+/* Gegner: Bühne über die Resthöhe, darunter Tabelle links und Inspektor rechts */
+.wd-gegner { gap: 8px; }
+.wd-gegner-stage { flex: 1 1 0; display: flex; flex-direction: column; min-height: 18rem; }
+.wd-gegner-stage .wd-stage { flex: 1 1 0; min-height: 0; }
+.wd-gegner-lower { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 24rem); gap: 12px; align-items: start; }
+@container (max-width: 900px) { .wd-gegner-lower { grid-template-columns: minmax(0, 1fr); } }
+.wd-enemy-table { width: 100%; border-collapse: collapse; }
+.wd-enemy-table th, .wd-enemy-table td { padding: 2px 8px; text-align: left; border-bottom: 1px solid var(--gray-5); font-size: 0.8rem; white-space: nowrap; }
+.wd-enemy-table tbody tr { cursor: pointer; }
+.wd-enemy-table tbody tr:hover td { background: var(--gray-a3); }
+.wd-enemy-table tr[aria-selected='true'] td { background: var(--accent-a4); }
+.wd-inspector { display: flex; flex-direction: column; gap: 4px; padding: 8px; border: 1px solid var(--card-line); border-radius: 8px; min-width: 0; }
+.wd-inspector ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.wd-inspector li { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; }
+.wd-gap-line { color: var(--amber-11); font-size: 0.75rem; }

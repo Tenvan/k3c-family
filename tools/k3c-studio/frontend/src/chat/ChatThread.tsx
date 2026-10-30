@@ -5,7 +5,7 @@ import { backend } from '../api';
 import type { ChatChoiceValues } from '../api/chatTypes';
 import { createChatAdapter } from './chatAdapter';
 import { assignContextLine } from './assignContext';
-import { chatContext, chatTask, loadDraft, useAssign, useCanLoadDraft } from './chatBridge';
+import { chatContext, chatTask, clearPrefill, loadDraft, usePrefill, useAssign, useCanLoadDraft, useSourcesTask } from './chatBridge';
 
 const WHO = { user: 'Ich', assistant: 'Claude', system: 'System' } as const;
 
@@ -66,6 +66,13 @@ export function ChatThread({ chat, initial, current, onChat, onEnd, onRunning }:
     { chat, options: current, task: chatTask, context: chatContext, onNotice: setNotice, onChat, onEnd },
   ));
   const runtime = useLocalRuntime(adapter, { initialMessages: initial });
+  const quellen = useSourcesTask(); // Seite Quellen: Such-Auftrag (B-673)
+  const prefill = usePrefill();
+  useEffect(() => {
+    if (!prefill) return;
+    runtime.thread.composer.setText(prefill);
+    clearPrefill();
+  }, [prefill, runtime]);
   useEffect(() => () => runtime.thread.cancelRun(), [runtime]);
   return (
     <AssistantRuntimeProvider runtime={runtime}>
@@ -77,6 +84,7 @@ export function ChatThread({ chat, initial, current, onChat, onEnd, onRunning }:
         </ThreadPrimitive.Viewport>
         {notice && <div className="chat-note" role="status">{notice}</div>}
         {world && <div className="chat-note chat-task">Welt-Auftrag: Das Grundgerüst für Welten geht mit, schreib nur deinen Wunsch.</div>}
+        {!world && !assign && quellen && <div className="chat-note chat-task" data-testid="chat-quellen">Quellen-Suche: Claude nennt Kandidaten, das Studio prüft sie und trägt gültige als „offen“ ein; geladen wird nichts.</div>}
         {!world && assign && <div className="chat-note chat-task" data-testid="chat-assign">Zuordnung: {assignContextLine(assign)}. Vorschläge erscheinen als Karten, geschrieben wird erst nach „Übernehmen“.</div>}
         <ComposerPrimitive.Root className="chat-composer">
           <ComposerPrimitive.Input className="chat-input" placeholder={world ? 'Wunsch, z. B. „Erstelle eine Welt Nordsee“' : 'Nachricht an Claude'} rows={3} />

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { depthText, levelColumns, offsetText, rowExtra, rowLabel } from './plannerLogic';
+import { mockHubPlan } from '../api/mockHub';
+import { depthText, levelColumns, offsetText, rowAt, rowExtra, rowLabel, rowPlace } from './plannerLogic';
 
 describe('Anzeige der Matrix des Gebäude-Planers', () => {
   it('benennt Bauplätze, den Baugrund der Zone 1 und Händler', () => {
@@ -26,5 +27,26 @@ describe('Anzeige der Matrix des Gebäude-Planers', () => {
   it('Spalten für beliebig viele Hub-Stufen', () => {
     expect(levelColumns(7)).toEqual([1, 2, 3, 4, 5, 6, 7]);
     expect(levelColumns(0)).toEqual([]);
+  });
+});
+
+describe('Zeile zu einem Bauplatz der Bühne (B-670)', () => {
+  const rows = mockHubPlan().matrix.rows;
+  const at = (kind: string, x: number, level = 7) => rowAt(rows, level, { kind, x }, 450)?.key;
+
+  it('gleiche Art und Abstand zur Hub-Mitte; Turm gehört zum Baugrund; sonst keine Zeile', () => {
+    expect(at('tavern', 418)).toBe('tavern@-32');
+    expect(at('armory', 490)).toBe('armory@40');
+    expect(at('wall', 390)).toBe('zone1');
+    expect(at('wall', 510)).toBe('zone1');
+    expect(at('tower', 398)).toBe('zone1');
+    expect(at('wall', 300)).toBeUndefined();
+    expect(at('armory', 490, 6)).toBeUndefined(); // in Stufe 6 noch nicht verfügbar
+  });
+
+  it('Platz und Liste unter dem Namen', () => {
+    expect(rowPlace(rows.find((r) => r.key === 'armory@40')!, 7)).toBe('+40 · sites');
+    expect(rowPlace(rows.find((r) => r.key === 'storage@-26')!, 7)).toBe('−26 · islandSites');
+    expect(rowPlace(rows.find((r) => r.key === 'zone1')!, 7)).toBe('±60 · Baugrund');
   });
 });

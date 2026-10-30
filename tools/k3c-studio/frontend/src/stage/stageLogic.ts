@@ -37,6 +37,8 @@ export interface RowFocus {
   kind: string;
   offset: number | null;
   bothSides: boolean;
+  /** Wahl kam aus der Bühne oder von einem Platz-Chip (B-670): die Vorschau springt nicht zur Zeile */
+  stay?: boolean;
 }
 
 /** Plätze der Welt (x in Units), die zur gewählten Zeile gehören: gleiche Art und Abstand zur Hub-Mitte gleich dem Platz
@@ -66,6 +68,9 @@ const GROUPS: readonly [kind: string, label: string][] = [
   ['stairsUp', 'Treppen hoch'],
 ];
 
+/** Name einer Gebäudeart im Filter (Mehrzahl); unbekannte Arten bleiben, wie sie sind. */
+export const kindLabel = (kind: string): string => GROUPS.find(([k]) => k === kind)?.[1] ?? kind;
+
 export interface BuildingGroup {
   kind: string;
   label: string;
@@ -85,7 +90,7 @@ export function buildingGroups(toggles: readonly BuildingToggle[], off: Readonly
     .sort(([a], [b]) => order(a) - order(b) || a.localeCompare(b))
     .map(([kind, items]) => {
       const on = items.filter((t) => !off.has(t.key)).length;
-      return { kind, label: GROUPS.find(([k]) => k === kind)?.[1] ?? kind, items, on, state: on === items.length ? 'all' : on === 0 ? 'none' : 'some' };
+      return { kind, label: kindLabel(kind), items, on, state: on === items.length ? 'all' : on === 0 ? 'none' : 'some' };
     });
 }
 

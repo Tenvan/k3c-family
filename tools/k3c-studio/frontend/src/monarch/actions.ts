@@ -3,6 +3,7 @@ import { t } from '@game/core/texts';
 import { EFFECT_CONFIG, type EffectKind, type SkillLook } from '@game/scenes/effects/effects';
 import { SKILL_LOOKS, skillLook } from '@game/scenes/effects/skillLooks';
 import { gap, type Anim, type Gap } from '../playback/figure';
+import { REPEAT_PAUSE_MS, type TimedEffect } from '../playback/timeline';
 
 // Aktionen und Skills der Monarch-Seite (B-463, WZ10.3): Schlagen, Münzen, Getroffen, Tod, Respawn und die Skill-Liste mit
 // Lücken. Effekte und Deckkraft stammen aus dem Spiel (`EFFECT_CONFIG`, `worldRenderer`); was das Spiel nicht darstellt,
@@ -89,4 +90,34 @@ export function skillRows(): SkillRow[] {
     }
   }
   return rows;
+}
+
+// ---- Skill abspielen (B-671) ---------------------------------------------------------------------------------------
+
+/** Höhe des Skill-Rings über dem Boden (`RING_PX` in `src/scenes/effects/skillCasts.ts`); ein Test prüft den Wert. */
+export const SKILL_RING_PX = 50;
+
+/** Das Spiel spielt beim Wirken keine Animation des Monarchen (`GameScene.playSkill` spielt nur den Ton). */
+export const CAST_GAP = gap('anim', 'Lücke: Wirk-Animation fehlt (das Spiel zeigt beim Wirken nur den Effekt)');
+
+/** Linien der Skills in der Reihenfolge der Daten: Schlüssel und Name (Tank, Zauberer, Heiler, Dieb) */
+export const SKILL_LINES: readonly { id: string; name: string }[] = Object.entries(DATA.lines).map(([id, l]) => ({ id, name: l.name }));
+
+export interface SkillPlay {
+  id: string;
+  /** Effekt des Spiels (`skillLook`), null = keine Darstellung */
+  look: SkillLook | null;
+  own: boolean;
+  gaps: Gap[];
+  /** Effekt am Monarchen im Takt der Wiedergabe; leer ohne Darstellung (die Bühne zeigt nur den Monarchen) */
+  timed: TimedEffect[];
+}
+
+/** Ein Skill, wie das Spiel ihn zeigt (`skillCasts.ts`): Ring und Partikel aus `skillLook` am Monarchen in `SKILL_RING_PX`
+ *  Höhe, aktiv beim Wirken, passiv beim Lernen; die Schleife wiederholt ihn nach `REPEAT_PAUSE_MS`. Ohne Darstellung die Lücke. */
+export function skillPlay(id: string): SkillPlay {
+  const row = skillRows().find((r) => r.id === id);
+  if (!row?.look) return { id, look: null, own: false, gaps: [row?.gap ?? MISSING], timed: [] };
+  const timed: TimedEffect[] = [{ kind: 'burst', look: row.look, cycleMs: row.look.durationMs + REPEAT_PAUSE_MS, y: SKILL_RING_PX }];
+  return { id, look: row.look, own: row.own, gaps: [CAST_GAP], timed };
 }

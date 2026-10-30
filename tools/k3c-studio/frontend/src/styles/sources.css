@@ -1,0 +1,12 @@
+/* Seite Quellen (B-673): Zeilen der nach Slot gruppierten Liste. Raster: Auswahl | Vorschau | Titel | Lizenz | Größe | Aktion. */
+.src-group { border: 1px solid var(--gray-5); border-radius: 6px; overflow: hidden; }
+.src-head { padding: 4px 8px; background: var(--gray-3); }
+.src-row {
+  display: grid; grid-template-columns: 24px 56px minmax(160px, 1fr) 110px 64px auto; align-items: center; gap: 4px 10px;
+  padding: 3px 8px; border-top: 1px solid var(--gray-4); min-height: 40px;
+}
+.src-prev { min-width: 0; }
+.src-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.src-lic, .src-size { white-space: nowrap; }
+.src-detail { grid-column: 3 / -1; padding-bottom: 4px; }
+.src-actions { position: sticky; bottom: 0; padding: 6px 8px; background: var(--gray-2); border: 1px solid var(--gray-6); border-radius: 6px; }

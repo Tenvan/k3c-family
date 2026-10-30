@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mockHubPlan } from '../api/mockHub';
 import {
-  addSite, candidateText, numberOf, parseHub, removeSite, setMerchant, setSiteField, setZone1Tower, setZone1Wall, siteOf,
+  addSite, candidateText, moveSite, numberOf, parseHub, removeSite, setMerchant, setSiteField, setSiteKind, setZone1Tower, setZone1Wall, siteOf,
 } from './plannerEdit';
 
 // WZ9.3: Änderungen am Kandidaten; geprüft wird im Go-Backend, hier nur geändert.
@@ -48,5 +48,21 @@ describe('Gebäude-Planer: Kandidat ändern', () => {
     expect(numberOf('-40')).toBe(-40);
     expect(numberOf('')).toBeNull();
     expect(numberOf('x')).toBeNull();
+  });
+});
+
+describe('Gebäude-Planer: Art und Liste im Inspektor (B-670)', () => {
+  it('ändert die Art, die übrigen Felder bleiben', () => {
+    const before = hub();
+    expect(setSiteKind(before, 'sites', 7, 'healer').sites[7]).toEqual({ kind: 'healer', offsetUnits: 40, hubLevel: 7 });
+    expect(before.sites[7]!.kind).toBe('armory');
+  });
+
+  it('verschiebt einen Platz in die andere Liste, hinten angehängt', () => {
+    const before = hub();
+    const next = moveSite(before, 'sites', 7, 'islandSites');
+    expect(next.sites).toHaveLength(before.sites.length - 1);
+    expect(next.islandSites.at(-1)).toEqual(before.sites[7]);
+    expect(moveSite(before, 'sites', 7, 'sites')).toBe(before);
   });
 });

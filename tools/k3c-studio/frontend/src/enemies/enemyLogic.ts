@@ -4,6 +4,7 @@ import { BIOMES } from '@game/model/biome';
 import { ANIMS, SHEETS, gap, type Anim, type FigureSpec, type Gap } from '../playback/figure';
 import type { FigureItem } from '../playback/figureView';
 import { DEFAULT_MOUNT, monarchItems, moveOf } from '../monarch/monarchLogic';
+import { attackEffects, type AbilityPlay } from './abilityLogic';
 
 // Reine Logik der Gegner-Seite (B-464, WZ11.1): Gegnertypen nach Biom und Tiefe, Karten mit Merkmalen und Lücken,
 // Animationen mit den Parametern des Spiels (tint, scale, alpha, y). Werte stammen aus `data/enemies.json`,
@@ -141,6 +142,15 @@ export const ENEMY_ACTIONS: readonly EnemyAction[] = [
   { id: 'kill', label: 'Sterben', effect: { kind: 'kill' }, gaps: [gap('anim', 'Lücke: Sterbe-Animation fehlt (die Sheets haben idle, run, attack)')] },
 ];
 
+/** Modus der Gegner-Seite (B-672): Animation, Aktion oder die Fähigkeit eines Bosses, als ein Segment */
+export type EnemyMode = Anim | EnemyActionId | 'ability';
+
+/** Segment-Knöpfe des Modus; „Fähigkeit …“ nur in der Gruppe der Bosse */
+export const ENEMY_MODES: readonly { value: EnemyMode; label: string }[] = [
+  ...ANIMS.map((a) => ({ value: a, label: a })), ...ENEMY_ACTIONS.map((a) => ({ value: a.id, label: a.label })),
+];
+export const ABILITY_MODE = { value: 'ability' as const, label: 'Fähigkeit …' };
+
 /** Abstand der Gegner nebeneinander in Units */
 export const SPACING = 7;
 
@@ -151,17 +161,30 @@ export interface View {
   withMonarch?: boolean;
   /** Ersatz-Sheet je Gegner-ID (Grafik-Auswahl); fehlt ein Eintrag, gilt die Grafik des Spiels */
   sheets?: Readonly<Record<string, string | undefined>>;
+  /** Angriff wie im Spiel (B-672): Treffer, bei Fernkämpfern mit Geschoss, Richtung zum Monarchen, wenn er dabei ist */
+  attack?: boolean;
+  /** Fähigkeit eines Bosses (B-672): Effekte am Boss, beschworene Figuren dahinter */
+  ability?: { bossId: string; play: AbilityPlay };
 }
 
 /** Figuren einer Gruppe: die Karten nebeneinander mit den Parametern des Spiels (`tint`, `scale`, `alpha`, `y`). */
 export function enemyItems(cards: readonly EnemyCard[], view: View): FigureItem[] {
-  const items: FigureItem[] = cards.map((c, i) => ({
-    id: `enemy-${c.id}`,
-    x: i * SPACING,
-    spec: { ...c.spec, sheet: view.sheets?.[c.id] ?? c.spec.sheet },
-    anim: view.anim,
-    ...(view.action ? { effect: view.action.effect } : {}),
-  }));
+  const dir = view.withMonarch ? -1 : 1;
+  const items: FigureItem[] = cards.map((c, i) => {
+    const sheet = view.sheets?.[c.id] ?? c.spec.sheet;
+    const play = view.ability?.bossId === c.id ? view.ability.play : undefined;
+    const timed = play?.timed ?? (view.attack ? attackEffects(c.def, sheet, dir) : []);
+    return {
+      id: `enemy-${c.id}`,
+      x: i * SPACING,
+      spec: { ...c.spec, sheet },
+      anim: play?.anim ?? view.anim,
+      ...(view.action ? { effect: view.action.effect } : {}),
+      ...(timed.length > 0 ? { timed } : {}),
+      ...(view.attack && dir < 0 ? { facing: dir } : {}),
+    };
+  });
+  items.push(...(view.ability?.play.extra ?? []));
   if (view.withMonarch) {
     const monarch = monarchItems(DEFAULT_MOUNT, moveOf('stand'), 'idle')[0]!;
     items.unshift({ ...monarch, id: 'monarch-vergleich', x: -SPACING });

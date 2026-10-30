@@ -151,6 +151,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-662](B-662-balancing-berichte-auftrag-sammelaktionen.md) | DEV | Idee | hoch | eingeplant | WZ32 | Die Workbench liefert Auftrag und Label je Bericht und verwaltet Berichte gesammelt |
 | [B-668](B-668-workbench-kopf-schmal.md) | DEV | Problem | niedrig | offen | – | Der Kopf der Workbench bricht in schmalen Fenstern um, statt die Seite waagrecht zu verbreitern |
 | [B-669](B-669-insights-ziel-ohne-grenzen.md) | DEV | Problem | niedrig | offen | – | Die Auswertung eines Berichts stürzt nicht ab, wenn ein Ziel weder Unter- noch Obergrenze hat |
+| [B-670](B-670-studio-planer-kompakt.md) | DEV | Idee | mittel | eingeplant | – | Der Gebäude-Planer zeigt Bühne, Matrix und Inspektor auf einen Blick, ohne dass Filter oder Regeltabelle die Fläche schlucken |
+| [B-671](B-671-studio-monarch-kompakt.md) | DEV | Idee | mittel | eingeplant | – | Die Monarch-Seite hat eine Werkzeugleiste und eine große Bühne, die Skills liegen in einem einklappbaren Seitenpanel |
+| [B-672](B-672-studio-gegner-kompakt.md) | DEV | Idee | mittel | eingeplant | – | Die Gegner-Seite zeigt Gegner als kompakte Tabelle mit Inspektor, Lücken als Zahl statt langer Badges |
+| [B-673](B-673-studio-quellen-kompakt.md) | DEV | Idee | mittel | eingeplant | – | Die Quellen-Seite ist kompakt nach Slot gegliedert, und alle vier Quellen lassen sich mit Vorschlägen füllen |
 | [B-663](B-663-welten-editor-responsive.md) | DEV | Problem | mittel | eingeplant | – | Der Welten Editor bricht nach der Breite seiner Seite um und zeigt keine waagrechte Scrollleiste |
 | [B-664](B-664-welten-editor-zwei-modi.md) | DEV | Idee | mittel | eingeplant | – | Der Welten Editor trennt Welt-Struktur und Stufe bearbeiten und speichert an einer Stelle |
 | [B-665](B-665-welten-editor-buehne-inspektor.md) | DEV | Idee | mittel | eingeplant | – | Im Modus Stufe bearbeiten stehen eine große Live-Vorschau, eine schmale Chunk-Vorschau und ein Inspektor statt vier Steuerzeilen |

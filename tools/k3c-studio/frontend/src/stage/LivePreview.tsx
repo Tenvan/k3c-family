@@ -1,5 +1,5 @@
 import { Checkbox, SelectField, Slider, Text } from '@webkit/atoms';
-import { CheckField } from '@webkit/molecules';
+import { CheckField, ChipSwitch } from '@webkit/molecules';
 import { createPortal } from 'react-dom';
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from 'react';
 import type { World } from '@game/model/types';
@@ -7,9 +7,9 @@ import { backend, type SiteLook, type WorldPreviewView } from '../api';
 import { useDebounced } from '@webkit/lib/useDebounced';
 import type { Look, Marks, PreviewStage, SiteHit, StagePosition } from './PreviewStage';
 import { stagePx } from './hudBar';
-import { BuildingFilter } from './BuildingFilter';
-import { BuildingInspector } from './BuildingInspector';
-import { backgroundToggles, buildingToggles, type BuildingToggle, focusXs, hubLevelChoices, pickKeys, previewArgsOf, worldOf, type PlanSource, type RowFocus } from './stageLogic';
+import { BuildingChips } from './BuildingChips';
+import { BuildingInspector, SelectionCard } from './BuildingInspector';
+import { backgroundToggles, buildingToggles, type BuildingToggle, focusXs, hubLevelChoices, kindLabel, pickKeys, previewArgsOf, siteKey, worldOf, type PlanSource, type RowFocus } from './stageLogic';
 import { MAX_PROGRESS, TIMES_OF_DAY, brightnessOf, simTime, type TimeOfDayId } from './timeOfDay';
 
 const NONE: ReadonlySet<string> = new Set();
@@ -57,16 +57,10 @@ function usePreviewWorld(seed: string, biome: string, hubLevel: number, time: { 
     for (const name of names) { if (on) next.delete(name); else next.add(name); }
     return { ctx, off: next, looks, sel };
   });
-  /** Zustand eines Platzes setzen; ein leerer Zustand entfernt den Eintrag */
-  const setLook = (name: string, look: SiteLook) => setChosen(() => {
-    const next = { ...looks };
-    if (look.level || look.hpPercent || look.unbuilt) next[name] = look; else delete next[name];
-    return { ctx, off, looks: next, sel };
-  });
   /** Zustand aller Plätze auf einmal setzen (Voreinstellungen, Auswahl, Zurücksetzen) */
   const setLooks = (next: Looks) => setChosen(() => ({ ctx, off, looks: next, sel }));
   const setSel = (keys: readonly string[]) => setChosen(() => ({ ctx, off, looks, sel: keys }));
-  return { all: all?.view ?? null, view: shown, off, looks, sel, setMany, setLook, setLooks, setSel };
+  return { all: all?.view ?? null, view: shown, off, looks, sel, setMany, setLooks, setSel };
 }
 
 /** Phaser wird erst beim ersten Sichtbarwerden geladen (eigener Baustein, groß) und baut die Bühne im Element auf; danach
@@ -162,18 +156,23 @@ function useHiddenLayers(biome: string) {
   return { hidden, toggleLayer };
 }
 
-/** Auswahl der Bauplätze im Inspektor (B-666, B-667): x-Stellen der gewählten Plätze für den Rahmen, Sprung nach einem Klick auf
- *  einen Chip (`select`) und der Klick auf die Bühne (`onSite`, nur mit Inspektor); `onPickSite` meldet der Seite eine Wahl in der Bühne. */
-function useSiteSelection(inspector: boolean, toggles: readonly BuildingToggle[], off: ReadonlySet<string>, sel: readonly string[], setSel: (keys: readonly string[]) => void, onPickSite?: () => void) {
+/** Wie eine Wahl gilt: mit Inspektor (`inspector`, B-666, B-667) hält die Vorschau die Auswahl selbst; mit `route` (Gebäude-Planer,
+ *  B-670) geht jede Wahl an die Seite, die daraus ihre Zeile macht. `onPickSite` meldet der Seite eine Wahl in der Bühne. */
+interface Picking { inspector: boolean; onPickSite?: () => void; route?: (site: { kind: string; x: number } | null) => void }
+
+/** Auswahl der Bauplätze: x-Stellen der gewählten Plätze für den Rahmen, Sprung nach einem Klick auf einen Chip (`select`) und
+ *  der Klick auf die Bühne (`onSite`, nur mit Inspektor oder `route`). */
+function useSiteSelection(toggles: readonly BuildingToggle[], off: ReadonlySet<string>, sel: readonly string[], setSel: (keys: readonly string[]) => void, { inspector, onPickSite, route }: Picking) {
   const [pickJump, setPickJump] = useState<{ key: string; x: number } | null>(null);
   const picked = useMemo(() => sel.map((k) => toggles.find((t) => t.key === k)?.x).filter((x): x is number => x !== undefined), [sel, toggles]);
   /** Klick auf einen Bauplatz-Chip: gewählt und die Vorschau springt hin; die Auswahl aus der Gruppenzeile springt nicht */
   const select = (keys: string[], jumpThere: boolean) => {
-    setSel(keys);
-    const x = toggles.find((t) => t.key === keys[0])?.x;
-    if (jumpThere && x !== undefined) setPickJump({ key: `${keys[0]}|${Date.now()}`, x });
+    const first = toggles.find((t) => t.key === keys[0]);
+    if (route) route(first ?? null); else setSel(keys);
+    if (jumpThere && first) setPickJump({ key: `${keys[0]}|${Date.now()}`, x: first.x });
   };
-  const onSite = inspector ? (hit: SiteHit | null) => { const keys = pickKeys(hit, sel, toggles, off); setSel(keys); if (keys.length > 0) onPickSite?.(); } : undefined;
+  const onRoute = route && ((hit: SiteHit | null) => { if (!hit) route(null); else if (!off.has(siteKey(hit.kind, hit.x))) route(hit); });
+  const onSite = onRoute ?? (inspector ? (hit: SiteHit | null) => { const keys = pickKeys(hit, sel, toggles, off); setSel(keys); if (keys.length > 0) onPickSite?.(); } : undefined);
   return { picked, pickJump, select, onSite };
 }
 
@@ -186,6 +185,8 @@ export interface PlanerSource {
   onHubLevel: (level: number) => void;
   /** gewählte Zeile der Matrix: Rahmen und Sprung in der Vorschau; Namen über allen Plätzen zeigt die Vorschau immer */
   focus?: RowFocus;
+  /** Wahl in der Bühne oder auf einem Platz-Chip (B-670): Bauplatz (null = freie Fläche) und Hub-Mitte der Welt; die Seite wählt die Zeile */
+  onPick?: (site: { kind: string; x: number } | null, hubX: number) => void;
 }
 
 /** Wählbare Hub-Stufen und die gewählte: aus `data/hub.json`, mit Planer-Stand aus dessen Stufen und gesteuert von der Seite. */
@@ -202,8 +203,46 @@ function usePlanerMarks(planer: PlanerSource | undefined, world: ReturnType<type
   const selectedXs = useMemo(() => focusXs(planer?.focus, world?.hubX ?? 0, world?.sites ?? []), [planer?.focus, world]);
   const marks = useMemo<Marks>(() => ({ names: planer !== undefined, selected: [...selectedXs, ...picked] }), [planer, selectedXs, picked]);
   const jumpX = selectedXs[0];
-  const jump = useMemo(() => (jumpX === undefined ? pickJump : { key: `${planer?.focus?.id}|${jumpX}`, x: jumpX }), [jumpX, planer?.focus?.id, pickJump]);
-  return { marks, jump };
+  const stay = planer?.focus?.stay === true; // Wahl aus Bühne oder Chip: kein Sprung zur ersten Stelle der Zeile
+  const jump = useMemo(() => (jumpX === undefined || stay ? pickJump : { key: `${planer?.focus?.id}|${jumpX}`, x: jumpX }), [jumpX, stay, planer?.focus?.id, pickJump]);
+  return { marks, jump, selectedXs };
+}
+
+/** Schlüssel der Plätze der gewählten Planer-Zeile (Chips und Zustands-Karte); nur Plätze, die die Vorschau kennt */
+function useFocusKeys(focus: RowFocus | undefined, selectedXs: readonly number[], toggles: readonly BuildingToggle[]): readonly string[] {
+  const kind = focus?.kind;
+  return useMemo(() => (kind ? selectedXs.map((x) => siteKey(kind, x)).filter((k) => toggles.some((t) => t.key === k)) : NO_SEL), [kind, selectedXs, toggles]);
+}
+
+/** Auswahl, Rahmen und Sprung der Vorschau: im Planer mit `onPick` geht jede Wahl an die Seite (B-670), gewählt sind dann die
+ *  Plätze ihrer Zeile (`chosen`); sonst hält die Vorschau die Auswahl selbst (`sel`). `shown` ist die Auswahl für die Chips. */
+function useSelection(planer: PlanerSource | undefined, world: ReturnType<typeof worldOf>, toggles: readonly BuildingToggle[], off: ReadonlySet<string>,
+  sel: readonly string[], setSel: (keys: readonly string[]) => void, picking: Omit<Picking, 'route'>) {
+  const onPick = planer?.onPick;
+  const hubX = world?.hubX ?? 0;
+  const route = onPick && ((site: { kind: string; x: number } | null) => onPick(site, hubX));
+  const { picked, pickJump, select, onSite } = useSiteSelection(toggles, off, sel, setSel, { ...picking, route });
+  const { marks, jump, selectedXs } = usePlanerMarks(planer, world, picked, pickJump);
+  const chosen = useFocusKeys(planer?.focus, selectedXs, toggles);
+  return { select, onSite, marks, jump, chosen, shown: route ? chosen : sel };
+}
+
+/** Zustands-Karte (B-666) für die Plätze der gewählten Planer-Zeile im Inspektor des Planers (`host`); ohne Wahl nichts */
+function LookCard({ host, toggles, keys, looks, onLooks }: { host: HTMLElement | null | undefined; toggles: readonly BuildingToggle[]; keys: readonly string[]; looks: Looks; onLooks: (next: Looks) => void }) {
+  if (!host || keys.length === 0) return null;
+  return createPortal(<SelectionCard toggles={toggles} selected={keys} looks={looks} onLooks={onLooks} label={kindLabel} />, host);
+}
+
+/** Hub-Stufe in der Steuerzeile: im Planer als Segment-Knöpfe (B-670), sonst als Auswahlliste */
+function HubLevelControl({ segments, choices, hubLevel, setHubLevel }: { segments: boolean; choices: readonly number[]; hubLevel: number; setHubLevel: (n: number) => void }) {
+  const options = choices.map((n) => ({ value: String(n), label: String(n) }));
+  if (segments) return <ChipSwitch label="Hub-Stufe" caption="Hub-Stufe" value={String(hubLevel)} options={options} onChange={(v) => setHubLevel(Number(v))} />;
+  return (
+    <>
+      <Text size="2">Hub-Stufe</Text>
+      <SelectField aria-label="Hub-Stufe" value={String(hubLevel)} options={options} onChange={(v) => setHubLevel(Number(v))} />
+    </>
+  );
 }
 
 /** Live-Vorschau des Welt-Betrachters (B-460/AC-04, AC-05): die Welt des Spiels mit der Spielgrafik auf der Phaser-Bühne
@@ -211,13 +250,15 @@ function usePlanerMarks(planer: PlanerSource | undefined, world: ReturnType<type
  *  Tageszeit, Hintergrund-Schichten mit Parallaxe (Kamera scrollt). Position und Zoom kommen von außen (`position`, B-477,
  *  gleich wie im Chunk-Streifen); Ziehen meldet `onPan` (Pixel), das Mausrad geht an `onWheel`; `onSites` meldet die Bauplätze
  *  (für die Sprungpunkte). Mit `plan` zeigt sie den Entwurf der geplanten Chunks (B-461/AC-11). */
-export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, plan, planer, controlsHost, treeHost, layersHost, onPickSite }: {
+export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, plan, planer, controlsHost, treeHost, layersHost, lookHost, onPickSite }: {
   seed: string; biome: string; position: StagePosition; onPan: (px: number) => void; onWheel: (e: WheelEvent) => void;
   onSites?: (sites: readonly { kind: string; x: number }[]) => void; plan?: PlanSource; planer?: PlanerSource;
   /** Zielelemente der Seite: Hub-Stufe, Tageszeit und Schichten (`controlsHost`) und der Gebäude-Baum (`treeHost`) erscheinen dort statt um die Bühne */
   controlsHost?: HTMLElement | null; treeHost?: HTMLElement | null;
   /** Zielelement der Hintergrund-Schichten (Reiter Ansicht des Inspektors); ohne es stehen sie in der Steuerzeile */
   layersHost?: HTMLElement | null;
+  /** Zielelement der Zustands-Karte für die Plätze der gewählten Planer-Zeile (Inspektor des Gebäude-Planers, B-670) */
+  lookHost?: HTMLElement | null;
   /** Ein Klick wählte einen Bauplatz in der Bühne: die Seite öffnet den Reiter Gebäude (B-667) */
   onPickSite?: () => void;
 }) {
@@ -227,14 +268,13 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
   const settled = useDebounced(progress, 120);
   const time = useMemo(() => simTime(timeId, settled), [timeId, settled]);
   const { hidden, toggleLayer } = useHiddenLayers(biome);
-  const { all, view, off, looks, sel, setMany, setLook, setLooks, setSel } = usePreviewWorld(seed, biome, hubLevel, time, plan, planer?.candidate ?? '');
+  const { all, view, off, looks, sel, setMany, setLooks, setSel } = usePreviewWorld(seed, biome, hubLevel, time, plan, planer?.candidate ?? '');
   const host = useRef<HTMLDivElement>(null);
   const world = useMemo(() => worldOf(view), [view]);
   const look = useMemo<Look>(() => ({ brightness: world ? brightnessOf(world.cycle) : 1, hiddenLayers: hidden }), [world, hidden]);
   const sites = all?.state?.sites;
   const toggles = useMemo(() => buildingToggles(sites ?? []), [sites]);
-  const { picked, pickJump, select, onSite } = useSiteSelection(treeHost !== undefined, toggles, off, sel, setSel, onPickSite);
-  const { marks, jump } = usePlanerMarks(planer, world, picked, pickJump);
+  const { select, onSite, marks, jump, chosen, shown } = useSelection(planer, world, toggles, off, sel, setSel, { inspector: treeHost !== undefined, onPickSite });
   const failed = useStage(host, world, look, position, marks, jump, onPan, onWheel, onSite);
   useEffect(() => { onSites?.(sites ?? []); }, [sites, onSites]);
   const note = noteOf(view?.error, failed);
@@ -242,23 +282,22 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
   const layers = <LayerControls biome={biome} hidden={hidden} toggleLayer={toggleLayer} />;
   const controls = (
     <div className="wd-bar">
-      <Text size="2">Hub-Stufe</Text>
-      <SelectField aria-label="Hub-Stufe" value={String(hubLevel)} options={choices.map((n) => ({ value: String(n), label: String(n) }))} onChange={(v) => setHubLevel(Number(v))} />
+      <HubLevelControl segments={planer !== undefined} choices={choices} hubLevel={hubLevel} setHubLevel={setHubLevel} />
       <TimeControls timeId={timeId} setTimeId={setTimeId} progress={progress} setProgress={setProgress} />
       {layersHost === undefined && layers}
       {note && <Text size="2" color="red" role="status">{note}</Text>}
     </div>
   );
-  // Im Inspektor (treeHost) die Bedienung mit Voreinstellungen und Auswahl, sonst der Filter mit Listen je Platz
-  const tree = treeHost === undefined
-    ? <BuildingFilter toggles={toggles} off={off} onSet={setMany} looks={looks} onLook={setLook} />
-    : <BuildingInspector toggles={toggles} off={off} onSet={setMany} looks={looks} onLooks={setLooks} selected={sel} onSelect={select} />;
+  // Im Inspektor (treeHost) die Bedienung mit Voreinstellungen und Auswahl, sonst die Chip-Leiste über der Bühne (B-670)
+  const inspector = treeHost !== undefined;
   return (
     <div className="wd-live-body">
       {into(controls, controlsHost)}
+      {!inspector && <BuildingChips toggles={toggles} off={off} onSet={setMany} selected={shown} onSelect={select} />}
       <div className="wd-stage" ref={host} style={stageStyle(position.scale)} />
-      {into(tree, treeHost)}
+      {inspector && into(<BuildingInspector toggles={toggles} off={off} onSet={setMany} looks={looks} onLooks={setLooks} selected={sel} onSelect={select} />, treeHost)}
       {layersHost && createPortal(layers, layersHost)}
+      <LookCard host={lookHost} toggles={toggles} keys={chosen} looks={looks} onLooks={setLooks} />
     </div>
   );
 }

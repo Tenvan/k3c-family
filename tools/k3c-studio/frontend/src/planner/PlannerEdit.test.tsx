@@ -5,7 +5,6 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend, type HubSaveResult } from '../api';
 import { mockHubCheck, mockHubPlan, mockHubSave } from '../api/mockHub';
-import { pickOption } from '../../../../webkit/testing/select';
 import { PlannerPage } from './PlannerPage';
 
 // WZ9.3 (B-462/AC-02, AC-05, AC-06) im DOM: Bearbeiten als Kandidat, Prüfung und Speichern über das Backend (Mock).
@@ -53,7 +52,7 @@ describe('Gebäude-Planer: Bearbeiten (B-462 › Bearbeitbar)', () => {
     const preview = vi.spyOn(backend, 'worldPreview');
     const h = await mount();
     await select(h, 'armory@40');
-    await type(field(h, 'Hub-Stufe (hubLevel)'), '5');
+    await type(field(h, 'ab Hub-Stufe'), '5');
     expect(lastCandidate(check).sites[7]).toEqual({ kind: 'armory', offsetUnits: 40, hubLevel: 5 });
     expect(JSON.parse(preview.mock.lastCall![0].hubCandidate!).sites[7].hubLevel).toBe(5);
     expect(h.textContent).toContain('geändert, Prüfung ohne Befund');
@@ -63,9 +62,9 @@ describe('Gebäude-Planer: Bearbeiten (B-462 › Bearbeitbar)', () => {
     const check = vi.spyOn(backend, 'hubCheck');
     const h = await mount();
     await select(h, 'barracks@24');
-    await type(field(h, 'Platz (offsetUnits)'), '26');
-    await type(field(h, 'ab Tiefe (fromDepth)'), '1');
-    await click(h.querySelector<HTMLElement>('[role="checkbox"][aria-label="needsDeeper"]')!);
+    await type(field(h, 'Platz (Units)'), '26');
+    await type(field(h, 'ab Tiefe'), '1');
+    await click(h.querySelector<HTMLElement>('[role="checkbox"][aria-label="nur mit tieferer Stufe"]')!);
     expect(lastCandidate(check).sites[5]).toEqual({ kind: 'barracks', offsetUnits: 26, hubLevel: 2, fromDepth: 1, needsDeeper: true });
   });
 
@@ -73,35 +72,32 @@ describe('Gebäude-Planer: Bearbeiten (B-462 › Bearbeitbar)', () => {
     const check = vi.spyOn(backend, 'hubCheck');
     const h = await mount();
     await select(h, 'zone1');
-    await type(field(h, 'Mauer Zone 1 (zone1WallUnits)'), '62');
-    await type(field(h, 'Turm Zone 1 (zone1TowerUnits)'), '54');
+    await type(field(h, 'Mauer Zone 1'), '62');
+    await type(field(h, 'Turm Zone 1'), '54');
     await select(h, 'merchantSell@20');
-    await type(field(h, 'Platz (sellOffsetUnits)'), '21');
-    await type(field(h, 'nur Tiefe (onlyDepth)'), '1');
+    await type(field(h, 'Platz (Units)'), '21');
+    await type(field(h, 'nur Tiefe'), '1');
     const c = lastCandidate(check);
     expect(c.sitePlacement.zone1WallUnits).toBe(62);
     expect(c.sitePlacement.zone1TowerUnits).toBe(54);
     expect(c.merchant).toEqual({ buyOffsetUnits: 16, sellOffsetUnits: 21, onlyDepth: 1 });
   });
 
-  it('Platz entfernen mit Hinweis auf alte Spielstände, Platz hinzufügen', async () => {
+  it('Platz entfernen mit Hinweis auf alte Spielstände; danach ist nichts gewählt', async () => {
     const check = vi.spyOn(backend, 'hubCheck');
     const h = await mount();
     await select(h, 'healer@-40');
     expect(h.querySelector('.pl-editor')!.textContent).toContain('Alte Spielstände verlieren den entfernten Platz.');
-    await click(button(h, 'Platz entfernen'));
+    await click(button(h, 'Entfernen'));
     expect(lastCandidate(check).sites.map((s: { kind: string }) => s.kind)).not.toContain('healer');
-    expect(mockHubPlan().kinds).toContain('healer');
-    await type(field(h, 'neuer Platz (offsetUnits)'), '-41');
-    await pickOption(h, 'Art', 'healer');
-    await click(button(h, 'Platz hinzufügen'));
-    expect(lastCandidate(check).sites.at(-1)).toEqual({ kind: 'healer', offsetUnits: -41, hubLevel: 7 });
+    expect(h.querySelector('.pl-editor')).toBeNull();
+    expect(h.querySelector('.pl-inspector')!.textContent).toContain('Bauplatz wählen');
   });
 });
 
 const changeArmory = async (h: HTMLElement) => {
   await select(h, 'armory@40');
-  await type(field(h, 'Hub-Stufe (hubLevel)'), '5');
+  await type(field(h, 'ab Hub-Stufe'), '5');
 };
 
 describe('Gebäude-Planer: Speichern (B-462/AC-02, AC-05, AC-06)', () => {
@@ -122,6 +118,10 @@ describe('Gebäude-Planer: Speichern (B-462/AC-02, AC-05, AC-06)', () => {
     await changeArmory(h);
     expect(button(h, 'Speichern').disabled).toBe(true);
     expect(h.textContent).toContain('nicht speicherbar: 1 Befunde');
+    expect(button(h, 'Speichern').title).toBe('nicht speicherbar: 1 Befunde'); // Grund als Tooltip
+    const chip = h.querySelector<HTMLButtonElement>('[data-chip="checks"]')!;
+    expect(chip.textContent).toBe('Prüfung: 1 Befunde');
+    await click(chip);
     expect(h.querySelector('.pl-findings li')!.textContent).toBe('stufe: armory@+40: hubLevel 9 außerhalb 1…7');
     expect(save).not.toHaveBeenCalled();
   });
@@ -133,11 +133,11 @@ describe('Gebäude-Planer: Speichern (B-462/AC-02, AC-05, AC-06)', () => {
     await changeArmory(h);
     await click(button(h, 'Speichern'));
     expect(h.textContent).toContain('Datei extern geändert');
-    expect(field(h, 'Hub-Stufe (hubLevel)').value).toBe('5');
+    expect(field(h, 'ab Hub-Stufe').value).toBe('5');
     const load = vi.spyOn(backend, 'hubPlan');
     await click(button(h, 'Neu laden (Änderungen verwerfen)'));
     expect(load).toHaveBeenCalled();
-    expect(field(h, 'Hub-Stufe (hubLevel)').value).toBe('7');
+    expect(field(h, 'ab Hub-Stufe').value).toBe('7');
   });
 
   it('Fehler im Tabellenschritt: gespeichert, „Regeltabelle veraltet“', async () => {
@@ -156,9 +156,9 @@ describe('Gebäude-Planer: Review WZ9.3', () => {
     const check = vi.spyOn(backend, 'hubCheck');
     const h = await mount();
     await changeArmory(h);
-    await type(field(h, 'Hub-Stufe (hubLevel)'), '1.5');
+    await type(field(h, 'ab Hub-Stufe'), '1.5');
     expect(lastCandidate(check).sites[7].hubLevel).toBe(5);
-    await type(field(h, 'Hub-Stufe (hubLevel)'), '1e20');
+    await type(field(h, 'ab Hub-Stufe'), '1e20');
     expect(lastCandidate(check).sites[7].hubLevel).toBe(5);
   });
 
@@ -188,7 +188,7 @@ describe('Gebäude-Planer: Review WZ9.3', () => {
     await changeArmory(h);
     await click(button(h, 'Speichern'));
     expect(h.querySelector<HTMLFieldSetElement>('fieldset.pl-fieldset')!.disabled).toBe(true);
-    await type(field(h, 'Hub-Stufe (hubLevel)'), '3');
+    await type(field(h, 'ab Hub-Stufe'), '3');
     expect(lastCandidate(check).sites[7].hubLevel).toBe(5);
     await act(async () => finish(mockHubSave('', mockHubPlan().stand)));
     await flush();
@@ -207,7 +207,7 @@ describe('Gebäude-Planer: Review WZ9.3', () => {
     await changeArmory(h);
     expect(h.querySelectorAll('.pl-matrix tbody tr')).toHaveLength(12);
     await select(h, 'workshop@-16');
-    await type(field(h, 'Platz (offsetUnits)'), '-17');
+    await type(field(h, 'Platz (Units)'), '-17');
     expect(calls).toBe(2);
     expect(h.querySelectorAll('.pl-matrix tbody tr')).toHaveLength(12);
   });

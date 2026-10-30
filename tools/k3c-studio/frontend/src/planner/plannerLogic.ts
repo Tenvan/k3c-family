@@ -51,3 +51,35 @@ export function rowExtra(row: Pick<HubRow, 'source' | 'towerUnits' | 'jitterUnit
 export function levelColumns(levels: number): number[] {
   return Array.from({ length: Math.max(0, levels) }, (_, i) => i + 1);
 }
+
+/** Platz der Zeile in der Hub-Stufe: Zelle der Stufe, sonst die erste verfügbare; null = in keiner Stufe verfügbar. */
+export function rowOffset(row: Pick<HubRow, 'cells'>, hubLevel: number): number | null {
+  const cell = row.cells[hubLevel - 1]?.available ? row.cells[hubLevel - 1] : row.cells.find((c) => c.available);
+  return cell ? cell.offsetUnits : null;
+}
+
+/** Liste bzw. Block der Zeile in hub.json, kurz für die Zeile unter dem Namen. */
+const SOURCE_LABELS: Record<HubRow['source'], string> = { sites: 'sites', islandSites: 'islandSites', sitePlacement: 'Baugrund', merchant: 'Händler' };
+
+/** Platz und Liste klein unter dem Namen (B-670), z. B. „+40 · sites“. */
+export function rowPlace(row: Pick<HubRow, 'cells' | 'bothSides' | 'source'>, hubLevel: number): string {
+  const offset = rowOffset(row, hubLevel);
+  return [offset === null ? '' : offsetText(offset, row.bothSides), SOURCE_LABELS[row.source]].filter(Boolean).join(' · ');
+}
+
+/** Zeile zu einem Bauplatz der Bühne (B-670): gleiche Art (ein Turm gehört zum Baugrund mit seinem Turm-Abstand), in der
+ *  Hub-Stufe verfügbar, Abstand zur Hub-Mitte wie der Platz der Zeile (Toleranz 0,5 plus Streuung je Seed); die nächste gewinnt. */
+export function rowAt<R extends Pick<HubRow, 'kind' | 'cells' | 'bothSides' | 'towerUnits' | 'jitterUnits'>>(
+  rows: readonly R[], hubLevel: number, site: { kind: string; x: number }, hubX: number,
+): R | undefined {
+  let best: { row: R; d: number } | undefined;
+  for (const row of rows) {
+    const tower = site.kind === 'tower' && row.kind === 'wall';
+    const cell = row.cells[hubLevel - 1];
+    if ((row.kind !== site.kind && !tower) || !cell?.available) continue;
+    const want = tower ? row.towerUnits : cell.offsetUnits;
+    const d = row.bothSides ? Math.abs(Math.abs(site.x - hubX) - Math.abs(want)) : Math.abs(site.x - hubX - want);
+    if (d <= 0.5 + row.jitterUnits && (!best || d < best.d)) best = { row, d };
+  }
+  return best?.row;
+}

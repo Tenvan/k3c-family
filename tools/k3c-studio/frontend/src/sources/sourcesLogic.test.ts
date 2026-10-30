@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { mockSources, resetMockSources, setMockSourcesOffline } from '../api/mockSources';
-import { buildView, emptyState } from '@webkit/lib/listFilter';
-import { downloadable, formatBytes, percent, running, sourceFilter, summarize } from './sourcesLogic';
+import { downloadable, formatBytes, percent, running, summarize } from './sourcesLogic';
 
 // WZ30.4 (AC-04): Logik der Seite Quellen und der Mock der Vorschlagsliste.
 beforeEach(resetMockSources);
@@ -20,14 +19,6 @@ describe('Logik', () => {
     expect(sel.count).toBe(2); // q04 gesperrt, q02 schon geladen
     expect(sel.bytes).toBe(1_480_000 + 24_500);
     expect(sel.quellen.map((q) => q.name)).toEqual(['Kenney', 'OpenGameArt']);
-  });
-
-  it('filtert nach Quelle, Art und Status', async () => {
-    const { vorschlaege } = await view();
-    const by = (chips: Record<string, string[]>) => buildView(vorschlaege, sourceFilter, { ...emptyState('prio'), chips }).groups.flatMap((g) => g.items.map((i) => i.id));
-    expect(by({ quelle: ['Kenney'] })).toEqual(['q05', 'q08']);
-    expect(by({ art: ['sound'], status: ['geladen'] })).toEqual(['q01', 'q02']);
-    expect(by({ verwendet: ['unverwendet'] }).sort()).toEqual(['q02', 'q10']);
   });
 
   it('läßt nur offene Einträge mit erlaubter Lizenz laden', async () => {

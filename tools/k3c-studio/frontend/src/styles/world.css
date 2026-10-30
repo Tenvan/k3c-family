@@ -49,26 +49,25 @@
 .wd-colors { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
 .wd-colors li { display: flex; align-items: center; gap: 8px; }
 .wd-badge { display: inline-block; width: 14px; height: 14px; border-radius: 50%; }
-/* feste Höhe: Phaser misst den Elternknoten (Scale.RESIZE); ohne Höhe wüchse die Bühne mit ihrer Leinwand ohne Ende */
-.wd-monarch-stage { display: flex; flex-direction: column; height: 28rem; }
+/* Bühne über die Resthöhe der Seite (B-671, wie .wd-live), mindestens 28rem; Basis 0: die Leinwand vergrößert sie nie */
+.wd-monarch-stage { flex: 1 1 0; display: flex; flex-direction: column; min-height: 28rem; }
 .wd-monarch .wd-stage { flex: 1 1 0; min-height: 0; }
-/* zweispaltig: Skills links, Monarchen rechts; schmal untereinander (B-502) */
-.wd-monarch { display: grid; grid-template-columns: minmax(0, 26rem) minmax(0, 1fr); gap: 16px; align-items: start; }
-.wd-monarch-skills { min-width: 0; overflow-x: auto; } /* die Tabelle überlappte sonst die Monarchen-Spalte */
-.wd-monarch-main { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-@container (max-width: 900px) { .wd-monarch { grid-template-columns: minmax(0, 1fr); } .wd-monarch-main { order: -1; } }
+/* Monarchen links, Skills-Panel rechts (standardmäßig zu, B-671); schmal überlagert das Panel die Bühne */
+.wd-monarch { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; position: relative; min-height: 0; }
+.wd-monarch[data-panel='open'] { grid-template-columns: minmax(0, 1fr) auto; }
+.wd-monarch-main { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+@container (max-width: 900px) { .wd-monarch, .wd-monarch[data-panel='open'] { grid-template-columns: minmax(0, 1fr); } .wd-monarch .wd-skill-panel { position: absolute; top: 0; right: 0; bottom: 0; z-index: 2; } }
 
 .wd-skills { border-collapse: collapse; margin-top: 4px; }
-.wd-skills th, .wd-skills td { padding: 2px 10px; text-align: left; border-bottom: 1px solid var(--gray-5); font-size: 0.8rem; }
+.wd-skills th, .wd-skills td { padding: 1px 8px; text-align: left; border-bottom: 1px solid var(--gray-5); font-size: 0.8rem; }
+.wd-skills tr[aria-selected='true'] td { background: var(--accent-a3); }
 .wd-skill-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; border: 1px solid var(--gray-7); }
 
 /* Gegner-Seite (B-464, WZ11) */
-.wd-cards { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
 .wd-chunks > *, .wd-card > *, .wd-panel > * { min-width: 0; max-width: 100%; } /* der breite Streifen darf die Karte nie aufweiten */
 .wd-card { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; border-bottom: 1px solid var(--gray-5); padding: 2px 0; }
 .wd-traits { display: inline-flex; gap: 6px; flex-wrap: wrap; }
 .wd-trait { font-size: 0.75rem; color: var(--gray-11); }
-.wd-gegner .wd-stage { min-height: 22rem; }
 .wd-boss { display: flex; flex-direction: column; gap: 2px; }
 
 /* Editor für geplante Chunks (B-461, WZ8.5) */

@@ -1,5 +1,4 @@
 import type { Tone } from '@webkit/atoms';
-import type { ListFilterConfig } from '@webkit/lib/listFilter';
 import type { SourceProgress, SourceProposal, SourceStatus } from '../api';
 
 /** Größe in Bytes („1,4 MB“, „86 kB“). */
@@ -18,24 +17,6 @@ export const downloadable = (s: SourceProposal): boolean => s.status === 'offen'
 export const usage = (s: SourceProposal): string => (s.status !== 'geladen' ? '–' : s.verwendet ? 'verwendet' : 'unverwendet');
 
 const PRIO = ['', 'hoch', 'mittel', 'niedrig'];
-
-/** Filter der Vorschlagsliste nach Quelle, Art, Slot, Lizenz, Status (B-601, B-599). */
-export const sourceFilter: ListFilterConfig<SourceProposal> = {
-  searchText: (s) => `${s.titel} ${s.slot} ${s.quelle} ${s.lizenz} ${s.urheber ?? ''} ${s.hinweis ?? ''}`,
-  dimensions: [
-    { key: 'quelle', label: 'Quelle', values: (s) => s.quelle },
-    { key: 'art', label: 'Art', values: (s) => s.art, valueLabel: (v) => (v === 'sound' ? 'Ton' : 'Grafik'), order: ['sound', 'grafik'] },
-    { key: 'slot', label: 'Slot', values: (s) => s.slot },
-    { key: 'lizenz', label: 'Lizenz', values: (s) => s.lizenz },
-    { key: 'status', label: 'Status', values: (s) => s.status, order: ['offen', 'geladen', 'verworfen', 'gesperrt'] },
-    { key: 'verwendet', label: 'Verwendung', values: (s) => (s.status === 'geladen' ? usage(s) : undefined) },
-  ],
-  sorts: [
-    { key: 'prio', label: 'Priorität', compare: (a, b) => a.prioritaet - b.prioritaet || a.titel.localeCompare(b.titel) },
-    { key: 'titel', label: 'Titel', compare: (a, b) => a.titel.localeCompare(b.titel) },
-    { key: 'groesse', label: 'Größe', compare: (a, b) => b.groesse - a.groesse },
-  ],
-};
 
 export const prioLabel = (n: number): string => PRIO[n] ?? String(n);
 

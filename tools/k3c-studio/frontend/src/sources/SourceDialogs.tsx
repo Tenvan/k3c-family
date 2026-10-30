@@ -1,7 +1,7 @@
 import { ActionButton, Button, Flex, Text } from '@webkit/atoms';
 import { Dialog } from '@webkit/organisms';
 import { useEffect, useState } from 'react';
-import { backend, type SourceCleanupView } from '../api';
+import { backend, type SourceAddView, type SourceCleanupView } from '../api';
 import { formatBytes, type Selection } from './sourcesLogic';
 
 interface DownloadProps {
@@ -77,6 +77,68 @@ export function CleanupDialog({ open, onClose, onDone }: CleanupProps) {
         <Flex gap="3" justify="end" mt="4">
           <Button variant="soft" color="gray" onClick={onClose}>Abbrechen</Button>
           <ActionButton color="red" disabled={!view || view.dateien.length === 0} onClick={run}>Entfernen</ActionButton>
+        </Flex>
+      </Dialog.Content>
+    </Dialog.Root>
+  );
+}
+
+interface ResearchProps {
+  open: boolean;
+  /** Quelle des Reiters, "" = alle */
+  source: string;
+  onClose: () => void;
+  onDone: (view: SourceAddView) => void;
+}
+
+/** Übernahme aus der Recherche (B-673): zeigt, was als Vorschlag „offen“ angehängt wird (Anzahl, Größe, Liste) und was mit
+ *  Grund übersprungen wird; geschrieben wird erst nach „Übernehmen“. Geladen wird nichts. */
+export function ResearchDialog({ open, source, onClose, onDone }: ResearchProps) {
+  const [view, setView] = useState<SourceAddView | null>(null);
+  const [error, setError] = useState('');
+  useEffect(() => {
+    if (!open) return;
+    setView(null);
+    setError('');
+    backend.sourceResearchPreview(source).then(setView, (e: Error) => setError(e.message));
+  }, [open, source]);
+  const run = async () => {
+    if (!view) return;
+    try {
+      onDone(await backend.sourceResearchImport(source, view.uebernommen.map((n) => n.dateiUrl)));
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  };
+  const n = view?.uebernommen.length ?? 0;
+  return (
+    <Dialog.Root open={open} onOpenChange={(o) => !o && onClose()}>
+      <Dialog.Content maxWidth="640px" aria-describedby={undefined}>
+        <Dialog.Title>Aus Recherche übernehmen{source ? `: ${source}` : ''}</Dialog.Title>
+        <Flex direction="column" gap="2">
+          {error && <Text color="red" role="alert">{error}</Text>}
+          {!view && !error && <Text color="gray">Prüfe Treffer und frage Größen ab …</Text>}
+          {view && (
+            <>
+              <Text data-testid="research-sum">{n} {n === 1 ? 'Treffer wird' : 'Treffer werden'} als Vorschlag „offen“ übernommen, zusammen {formatBytes(view.bytes)}; {view.uebersprungen.length} übersprungen.</Text>
+              <ul data-testid="research-added">
+                {view.uebernommen.map((a) => <li key={a.dateiUrl}>{a.titel} · {a.slot} · {a.quelle} · {a.lizenz} · {formatBytes(a.groesse)}</li>)}
+              </ul>
+              {view.uebersprungen.length > 0 && (
+                <>
+                  <Text size="2" color="gray">Übersprungen:</Text>
+                  <ul data-testid="research-skipped">
+                    {view.uebersprungen.map((s, i) => <li key={`${s.dateiUrl}${i}`}>{s.titel}: {s.grund}</li>)}
+                  </ul>
+                </>
+              )}
+              <Text size="2" color="gray">Es wird nichts geladen; die Treffer bleiben in der Recherche stehen.</Text>
+            </>
+          )}
+        </Flex>
+        <Flex gap="3" justify="end" mt="4">
+          <Button variant="soft" color="gray" onClick={onClose}>Abbrechen</Button>
+          <ActionButton disabled={n === 0} onClick={run}>Übernehmen</ActionButton>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>

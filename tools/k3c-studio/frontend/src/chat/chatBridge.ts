@@ -10,6 +10,8 @@ const listeners = new Set<() => void>();
 let open = loadPref('chat.state', STATES, 'offen') === 'offen';
 let loader: ((text: string) => Promise<void>) | null = null;
 let assign: AssignContext | null = null;
+let sources = false; // Seite Quellen hat einen Such-Auftrag gestartet (B-673), bis sie verlassen wird
+let prefill = ''; // vorbereiteter Text für die Eingabe, bis der Chat ihn übernommen hat
 const notify = () => listeners.forEach((fn) => fn());
 const subscribe = (fn: () => void) => { listeners.add(fn); return () => { listeners.delete(fn); }; };
 
@@ -35,9 +37,41 @@ export function useCanLoadDraft(): boolean {
 }
 
 /** Auftragsart der nächsten Nachricht: `welt`, solange der Welten Editor einen Entwurfs-Lader angemeldet hat (B-516),
- *  `zuordnung`, solange Sound- oder Grafik-Seite ihren Kontext angemeldet haben (B-600). */
+ *  `zuordnung`, solange Sound- oder Grafik-Seite ihren Kontext angemeldet haben (B-600), `quellen` nach „Claude suchen
+ *  lassen“ auf der Seite Quellen (B-673). */
 export function chatTask(): ChatTask | undefined {
-  return loader ? 'welt' : assign ? 'zuordnung' : undefined;
+  return loader ? 'welt' : assign ? 'zuordnung' : sources ? 'quellen' : undefined;
+}
+
+/** Seite Quellen: öffnet den Chat mit vorbereitetem Auftrag (Text liegt in der Eingabe, 🧑 schickt ihn ab). */
+export function startSourcesChat(text: string): void {
+  sources = true;
+  prefill = text;
+  notify();
+  setChatOpen(true);
+}
+
+/** Seite Quellen verlassen: der Chat ist wieder frei. */
+export function endSourcesChat(): void {
+  if (!sources) return;
+  sources = false;
+  notify();
+}
+
+/** Läuft ein Quellen-Auftrag (für den Hinweis im Chat)? */
+export function useSourcesTask(): boolean {
+  return useSyncExternalStore(subscribe, () => sources, () => false);
+}
+
+/** Vorbereiteter Text für die Eingabe ("" = keiner). */
+export function usePrefill(): string {
+  return useSyncExternalStore(subscribe, () => prefill, () => '');
+}
+
+/** Der Chat hat den vorbereiteten Text übernommen. */
+export function clearPrefill(): void {
+  prefill = '';
+  notify();
 }
 
 /** Seitenkontext der nächsten Nachricht (nur bei `zuordnung`). */

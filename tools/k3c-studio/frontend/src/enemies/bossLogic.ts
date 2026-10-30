@@ -10,7 +10,7 @@ import { cardOf, FALLBACK_ID, type BossInfo, type EnemyCard } from './enemyLogic
 // `kampfView.ts`; das Studio füttert sie mit Beispielzuständen (`bossWorld`, B-469) und zeichnet nichts nach. Das
 // Event-Banner des Spiels kennt keine Boss-Ereignisse (`bossSpawned` …): dort bleibt die Lücke.
 
-interface Ability {
+export interface Ability {
   type: string;
   enemy?: string;
   count?: number;
@@ -19,8 +19,8 @@ interface Ability {
   damagePerSecond?: number;
   durationSeconds?: number;
 }
-interface Phase { belowHpPercent?: number; ability?: Ability; tempo?: number }
-interface BossData {
+export interface Phase { belowHpPercent?: number; ability?: Ability; tempo?: number }
+export interface BossData {
   id: string;
   name: string;
   kind: 'mini' | 'end';

@@ -16,8 +16,9 @@ const levelText = (level: number | undefined) => (level === undefined ? 'gemisch
 
 type Looks = Readonly<Record<string, SiteLook>>;
 
-/** Karte der gewählten Bauplätze: Baustufe und Zustand als Segment-Knöpfe (B-666); mit einer Art „Auf alle <Art> anwenden“. */
-function SelectionCard({ toggles, selected, looks, onLooks, label }: { toggles: readonly BuildingToggle[]; selected: readonly string[]; looks: Looks; onLooks: (next: Looks) => void; label: (kind: string) => string }) {
+/** Karte der gewählten Bauplätze: Baustufe und Zustand als Segment-Knöpfe (B-666); mit einer Art „Auf alle <Art> anwenden“.
+ *  Auch im Inspektor des Gebäude-Planers (B-670). */
+export function SelectionCard({ toggles, selected, looks, onLooks, label }: { toggles: readonly BuildingToggle[]; selected: readonly string[]; looks: Looks; onLooks: (next: Looks) => void; label: (kind: string) => string }) {
   const first = toggles.find((t) => t.key === selected[0])!;
   const sameKind = selected.every((k) => toggles.find((t) => t.key === k)?.kind === first.kind);
   const levels = sameKind ? levelCount(first.kind) : 0;
