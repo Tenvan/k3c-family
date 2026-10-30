@@ -3149,6 +3149,12 @@
         },
         {
           "datei": "audio/kandidaten/kenney-rpg-audio-metallatch.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/block-rpg-1.mp3"
+        },
+        {
+          "datei": "audio/kandidaten/shieldhit1.mp3"
         }
       ]
     },
@@ -3167,6 +3173,12 @@
         },
         {
           "datei": "audio/kandidaten/kenney-digital-audio-highup.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/fire-rpg.mp3"
+        },
+        {
+          "datei": "audio/kandidaten/fireball.mp3"
         }
       ]
     },
@@ -3185,6 +3197,12 @@
         },
         {
           "datei": "audio/kandidaten/kenney-digital-audio-phaserup2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/heal-rpg.mp3"
+        },
+        {
+          "datei": "audio/kandidaten/status-effect-healing.mp3"
         }
       ]
     },
@@ -3203,6 +3221,9 @@
         },
         {
           "datei": "audio/kandidaten/kenney-digital-audio-pepsound3.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/whoosh-swipe-fight-sounds-sword-air.mp3"
         }
       ]
     },

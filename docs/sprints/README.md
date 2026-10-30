@@ -13,7 +13,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | BS8 | DEV, REG | BAS | Meilenstein 2: Bots und Delta-Runde Baumschule gegen Baseline M1 | – | `aktiv/BS8-meilenstein-2-delta-baumschule/` |
 | BS9 | DEV, REG | BAS | Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2 | – | `aktiv/BS9-meilenstein-3-delta-schiff/` |
 | BS6 | CLI, DEV | BAS | Client: Baumschule, Hafen und Schiff, neue Münzskala | – | `aktiv/BS6-client-baumschule-hafen-skala/` |
-| BS10 | DEV, CLI | BAS | Grafiken für Hafen und Schiff | – | `aktiv/BS10-grafik-hafen-schiff/` |
 | BS13 | CLI | BAS | Baustellen-Schilder, Bauoptionen und Holzzaun | – | `aktiv/BS13-baustellen-fehler-holzzaun/` |
 | WZ29 | DEV | WZG | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | – | `aktiv/WZ29-sound-grafik-seiten-ausbau/` |
 | WZ32 | DEV | WZG | Balancing-Seite: feste Fläche, eine Liste, Lauf-Editor mit Varianten-Tabelle | – | `aktiv/WZ32-balancing-seite-bedienung/` |
@@ -261,3 +260,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BS12 | Mauern und Türme verteilt, Tor ist die äußerste Mauer | `erledigt/BS12-mauern-tuerme-verteilt-tor/` |
 | BS4 | Baumschule auf gerodeten Waldbauplätzen | `erledigt/BS4-baumschule-waldbauplaetze/` |
 | BS5 | Hafen-Chunk, Schiff bauen und Inselwechsel am Hafen | `erledigt/BS5-hafen-schiff-inselwechsel/` |
+| BS10 | Grafiken für Hafen und Schiff | `erledigt/BS10-grafik-hafen-schiff/` |

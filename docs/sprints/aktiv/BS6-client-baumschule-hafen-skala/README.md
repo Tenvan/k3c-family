@@ -65,7 +65,7 @@ keine.
 | BS6.3 | `BS6.3-kosten-anzeige-skala.md` | Umsetzung | autonom | fertig |
 | BS6.4 | `BS6.4-seed-modus-all-m4.md` | Umsetzung | autonom | fertig |
 | BS6.5 | `BS6.5-review-bs6.md` | Review | autonom | fertig |
-| BS6.6 | `BS6.6-abnahme-geraet.md` | Workshop | Mensch | offen |
+| BS6.6 | `BS6.6-abnahme-geraet.md` | Workshop | Mensch | fertig |
 
 Reife Entwurf, Stichpunkte:
 - BS6.1 · CLI · Baumschule im Client (AC-01)

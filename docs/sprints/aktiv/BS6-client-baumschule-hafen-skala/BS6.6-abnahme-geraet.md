@@ -1,6 +1,6 @@
 # BS6.6 · Abnahme am Gerät
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -12,43 +12,45 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Ralf prüft AC-05 am Zielgerät (Edge auf der Xbox) und hält das Ergebnis je Punkt fest. Danach ist BS6 abnahmefähig.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Stand: BS6.1 bis BS6.5 sind fertig. Der Client zeigt die Baumschule mit dem Hinweis „erst roden“ (B-636) und Hafen und Schiff je Abschnitt (B-637). Die Kosten-Anzeige nutzt die Skala 2–30 (AC-03). Der Review BS6.5 hat den Bot-Fix für Rumpf und Segel bereits eingebaut (9b678135). Fallstrick: Der Bot betritt die Hafen-Stufe nicht sicher; Segel ist nie bezahlbar (ungeprüft, Lauf offen). Prüfung nur mit dem Server-Stand, den Ralf testen will.
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-
-- `pfad/…`
+Keine Code-Änderung. Geändert werden nur der Abschnitt Ergebnis dieser Datei und der Status der Tickets B-636 und B-637, nach Ralfs Abnahme.
 
 ## Nicht-Ziele
 
-Was in dieser Session ausdrücklich **nicht** passiert.
+Kein Balancing, keine Bot-Verbesserung, keine Code-Änderung. Claude setzt keinen Abnahme-Vermerk für AC-05; das bleibt bei Ralf.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Ralf: Server mit dem zu prüfenden Stand starten.
+2. Ralf: Spiel auf dem Zielgerät öffnen, Baumschule finden, Hinweis „erst roden“ prüfen.
+3. Ralf: Hafen und Schiff je Abschnitt prüfen, Hinweis bei fehlender Bedingung prüfen.
+4. Ralf: Kosten-Anzeige und HUD auf Skala 2–30 prüfen.
+5. Ralf: Ergebnis je Punkt nennen; Claude trägt es in den Abschnitt Ergebnis ein.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-01: Baumschule zeigt „erst roden“, „Farm“ ist in der Oberfläche nicht mehr zu sehen.
+- [ ] AC-02: Hafen und Schiff je Abschnitt, Hinweis bei fehlender Bedingung sichtbar.
+- [ ] AC-03: Kosten-Anzeige und HUD passen zur Skala 2–30.
+- [ ] AC-05: Ralf hat die Abnahme am Gerät im Abschnitt Ergebnis festgehalten.
 
 ## Prüfen
 
-```bash
-task check:diff
-```
-
-Einmal vor dem Commit; während der Arbeit nur gezielte Tests (`docs/arbeitsweise.md` › Tempo im Lauf).
-Review-Session statt dessen: `task check`, `task check:go`, `task check:race` (nacheinander).
-Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑 sie für diesen Lauf freigegeben hat.
+Keine Befehle nötig. Manuelle Prüfung am Gerät durch Ralf, nicht durch Claude. Kein Commit durch diese Session.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: Ralf am Gerät, erfüllt (Baumschule mit Hinweis „erst roden“, „Farm“ nicht sichtbar).
+- AC-02 geprüft: Ralf am Gerät, erfüllt (Hafen und Schiff je Abschnitt, Hinweis bei fehlender Bedingung).
+- AC-03 geprüft: Ralf am Gerät, erfüllt (Kosten-Anzeige und HUD passen zur Skala 2–30).
+- AC-05 geprüft: Abnahme am Gerät durch Ralf abgeschlossen.
+- Manuell geprüft: Ralf.
+- Abweichungen vom Plan: keine von Ralf genannt.
+- Neue Tickets: keine von Ralf genannt.

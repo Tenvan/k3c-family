@@ -1,6 +1,6 @@
 # BS10 · DEV, CLI · Grafiken für Hafen und Schiff
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAS
 - **Domäne:** DEV, CLI
 - **Reife:** bereit
@@ -63,7 +63,7 @@ keine (Zahl der Abschnitte aus BS5).
 | BS10.2 | `BS10.2-schiff-grafik.md` | Umsetzung | autonom | fertig |
 | BS10.3 | `BS10.3-asset-slots-einbau.md` | Umsetzung | autonom | fertig |
 | BS10.4 | `BS10.4-review-bs10.md` | Review | autonom | fertig |
-| BS10.5 | `BS10.5-abnahme-studio-geraet.md` | Workshop | Mensch | offen |
+| BS10.5 | `BS10.5-abnahme-studio-geraet.md` | Workshop | Mensch | fertig |
 
 Reife Entwurf, Stichpunkte:
 - BS10.1 · DEV · Hafen: Vorlage, Bausteine, Rendern (AC-01)
@@ -74,5 +74,4 @@ Reife Entwurf, Stichpunkte:
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+Datum: 2026-10-29. AC-01 bis AC-03 in BS10.1 bis BS10.3 umgesetzt, BS10.4 Review fertig. AC-04 manuell durch Ralf im Studio und am Gerät abgenommen (BS10.5). Behobene Befunde: keine vermerkt. Neue Tickets: keine vermerkt.

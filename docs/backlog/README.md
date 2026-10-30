@@ -144,11 +144,17 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-653](B-653-baustellen-schilder-bauoptionen-holzzaun.md) | CLI | Problem | hoch | eingeplant | BS13 | Bauschilder an Bäumen und Felsen nur nach Markierung, keine Bauoptionen für gesperrte Gebäude, Holzmauer als Zaun |
 | [B-654](B-654-bot-performance-miniboss-json.md) | SIM | Schuld | mittel | offen | – | Bot-Performance: bosses.json je Tick neu geparst, nodeFor/wanted mit Map-Zugriffen |
 | [B-656](B-656-meilenstein-titan-mehrseed.md) | REG | Problem | mittel | offen | – | Meilenstein 1 coop2 standard: Titan über mehrere Seeds, holz und schiff grün |
+| [B-657](B-657-castlehold-messfenster.md) | DEV | Problem | mittel | offen | – | Die Kennzahl castleHeld misst Nacht 1 bis 5 über den ganzen Lauf, nicht nur über das Fenster des Ziels |
 | [B-658](B-658-balancing-umbruch-container-query.md) | DEV | Problem | hoch | eingeplant | WZ32 | Die Balancing-Seite stellt Konfiguration und Berichte unter 1.100 px untereinander |
 | [B-659](B-659-balancing-seite-feste-flaeche.md) | DEV | Idee | mittel | eingeplant | WZ32 | Die Balancing-Seite füllt die Fläche, nur Liste und Detail scrollen |
 | [B-660](B-660-balancing-liste-und-detail.md) | DEV | Idee | hoch | eingeplant | WZ32 | Läufe und Berichte stehen in einer Liste mit Filter und Mehrfachauswahl, der Bericht in Reitern |
 | [B-661](B-661-balancing-lauf-editor-varianten.md) | DEV | Idee | hoch | eingeplant | WZ32 | Der Lauf-Editor setzt Varianten als Tabelle mit Basiswert und Daten-Browser |
 | [B-662](B-662-balancing-berichte-auftrag-sammelaktionen.md) | DEV | Idee | hoch | eingeplant | WZ32 | Die Workbench liefert Auftrag und Label je Bericht und verwaltet Berichte gesammelt |
+| [B-663](B-663-welten-editor-responsive.md) | DEV | Problem | mittel | eingeplant | – | Der Welten Editor bricht nach der Breite seiner Seite um und zeigt keine waagrechte Scrollleiste |
+| [B-664](B-664-welten-editor-zwei-modi.md) | DEV | Idee | mittel | eingeplant | – | Der Welten Editor trennt Welt-Struktur und Stufe bearbeiten und speichert an einer Stelle |
+| [B-665](B-665-welten-editor-buehne-inspektor.md) | DEV | Idee | mittel | eingeplant | – | Im Modus Stufe bearbeiten stehen eine große Live-Vorschau, eine schmale Chunk-Vorschau und ein Inspektor statt vier Steuerzeilen |
+| [B-666](B-666-welten-editor-gebaeude-zustaende.md) | DEV | Idee | mittel | eingeplant | – | Gebäude-Zustände der Live-Vorschau lassen sich je Art, per Voreinstellung und je Bauplatz schnell setzen |
+| [B-667](B-667-live-vorschau-bauplatz-klick.md) | DEV | Idee | niedrig | eingeplant | – | Ein Klick auf einen Bauplatz in der Live-Vorschau wählt ihn im Inspektor |
 | [B-668](B-668-workbench-kopf-schmal.md) | DEV | Problem | niedrig | offen | – | Der Kopf der Workbench bricht in schmalen Fenstern um, statt die Seite waagrecht zu verbreitern |
 | [B-669](B-669-insights-ziel-ohne-grenzen.md) | DEV | Problem | niedrig | offen | – | Die Auswertung eines Berichts stürzt nicht ab, wenn ein Ziel weder Unter- noch Obergrenze hat |
 | [B-670](B-670-studio-planer-kompakt.md) | DEV | Idee | mittel | eingeplant | – | Der Gebäude-Planer zeigt Bühne, Matrix und Inspektor auf einen Blick, ohne dass Filter oder Regeltabelle die Fläche schlucken |
@@ -158,11 +164,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-674](B-674-skill-effekt-am-wirkort.md) | SRV | Problem | mittel | eingeplant | KB5 | Flächenzauber erscheinen dort, wo die Simulation sie wirkt, nicht am Monarchen |
 | [B-675](B-675-status-effekte-sichtbar.md) | CLI | Idee | mittel | eingeplant | KB5 | DoTs, Buffs und Kontrolleffekte der Skills sind im Spiel sichtbar |
 | [B-676](B-676-studio-skills-ziel-und-status.md) | DEV | Idee | mittel | eingeplant | KB5 | Das Studio zeigt Skills am Wirkort und DoTs und Buffs an Gegnern und Monarchen |
-| [B-663](B-663-welten-editor-responsive.md) | DEV | Problem | mittel | eingeplant | – | Der Welten Editor bricht nach der Breite seiner Seite um und zeigt keine waagrechte Scrollleiste |
-| [B-664](B-664-welten-editor-zwei-modi.md) | DEV | Idee | mittel | eingeplant | – | Der Welten Editor trennt Welt-Struktur und Stufe bearbeiten und speichert an einer Stelle |
-| [B-665](B-665-welten-editor-buehne-inspektor.md) | DEV | Idee | mittel | eingeplant | – | Im Modus Stufe bearbeiten stehen eine große Live-Vorschau, eine schmale Chunk-Vorschau und ein Inspektor statt vier Steuerzeilen |
-| [B-666](B-666-welten-editor-gebaeude-zustaende.md) | DEV | Idee | mittel | eingeplant | – | Gebäude-Zustände der Live-Vorschau lassen sich je Art, per Voreinstellung und je Bauplatz schnell setzen |
-| [B-667](B-667-live-vorschau-bauplatz-klick.md) | DEV | Idee | niedrig | eingeplant | – | Ein Klick auf einen Bauplatz in der Live-Vorschau wählt ihn im Inspektor |
 
 ## Archiv
 
