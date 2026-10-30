@@ -44,7 +44,7 @@ export function HubMatrixView({ matrix, hubLevel, onHubLevel, selected, onSelect
   const columns = levelColumns(matrix.levels);
   return (
     <div className="pl-scroll">
-      <table className="pl-matrix" aria-label="Matrix Hub-Stufe × Bauplatz">
+      <table className="pl-matrix" aria-label="Matrix Hub-Stufe × Bauplatz" style={{ minWidth: `calc(14rem + ${columns.length} * 2.6rem)` }}>
         <thead>
           <tr>
             <th scope="col" className="pl-head">
@@ -52,7 +52,7 @@ export function HubMatrixView({ matrix, hubLevel, onHubLevel, selected, onSelect
             </th>
             {columns.map((n) => (
               <th key={n} scope="col" className={n === hubLevel ? 'pl-chosen' : undefined}>
-                <Button size="1" variant={n === hubLevel ? 'soft' : 'ghost'} className="pl-level" aria-label={`Hub-Stufe ${n}`} aria-pressed={n === hubLevel} onClick={() => onHubLevel(n)}>{n}</Button>
+                <Button size="1" variant="ghost" className="pl-level" data-chosen={n === hubLevel || undefined} aria-label={`Hub-Stufe ${n}`} aria-pressed={n === hubLevel} onClick={() => onHubLevel(n)}>{n}</Button>
               </th>
             ))}
           </tr>

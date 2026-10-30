@@ -155,6 +155,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-671](B-671-studio-monarch-kompakt.md) | DEV | Idee | mittel | eingeplant | – | Die Monarch-Seite hat eine Werkzeugleiste und eine große Bühne, die Skills liegen in einem einklappbaren Seitenpanel |
 | [B-672](B-672-studio-gegner-kompakt.md) | DEV | Idee | mittel | eingeplant | – | Die Gegner-Seite zeigt Gegner als kompakte Tabelle mit Inspektor, Lücken als Zahl statt langer Badges |
 | [B-673](B-673-studio-quellen-kompakt.md) | DEV | Idee | mittel | eingeplant | – | Die Quellen-Seite ist kompakt nach Slot gegliedert, und alle vier Quellen lassen sich mit Vorschlägen füllen |
+| [B-674](B-674-skill-effekt-am-wirkort.md) | SRV | Problem | mittel | eingeplant | KB5 | Flächenzauber erscheinen dort, wo die Simulation sie wirkt, nicht am Monarchen |
+| [B-675](B-675-status-effekte-sichtbar.md) | CLI | Idee | mittel | eingeplant | KB5 | DoTs, Buffs und Kontrolleffekte der Skills sind im Spiel sichtbar |
+| [B-676](B-676-studio-skills-ziel-und-status.md) | DEV | Idee | mittel | eingeplant | KB5 | Das Studio zeigt Skills am Wirkort und DoTs und Buffs an Gegnern und Monarchen |
 | [B-663](B-663-welten-editor-responsive.md) | DEV | Problem | mittel | eingeplant | – | Der Welten Editor bricht nach der Breite seiner Seite um und zeigt keine waagrechte Scrollleiste |
 | [B-664](B-664-welten-editor-zwei-modi.md) | DEV | Idee | mittel | eingeplant | – | Der Welten Editor trennt Welt-Struktur und Stufe bearbeiten und speichert an einer Stelle |
 | [B-665](B-665-welten-editor-buehne-inspektor.md) | DEV | Idee | mittel | eingeplant | – | Im Modus Stufe bearbeiten stehen eine große Live-Vorschau, eine schmale Chunk-Vorschau und ein Inspektor statt vier Steuerzeilen |

@@ -3,13 +3,23 @@ import { CheckField } from '@webkit/molecules';
 import { useState } from 'react';
 import type { SourceProgress, SourceProposal } from '../api';
 import { playChoice, stopAll } from '../sound/audio';
-import { downloadable, formatBytes, percent, prioLabel, STATUS_LABEL, STATUS_TONE, usage } from './sourcesLogic';
+import { archiveLabel, downloadable, formatBytes, percent, previewKind, prioLabel, STATUS_LABEL, STATUS_TONE, usage } from './sourcesLogic';
 
-/** Vorschau eines geladenen Eintrags (läuft aus dem Vorrat, ohne Netz): kleines Bild bei Grafik, ▶ bei Ton. */
+/** Kleines Bild; lädt es nicht, steht ein neutrales Symbol statt des Fehler-Platzhalters. */
+function PreviewImage({ s }: { s: SourceProposal }) {
+  const [broken, setBroken] = useState(false);
+  if (broken) return <span className="src-noprev" role="img" aria-label="Vorschau nicht ladbar" title="Vorschau nicht ladbar">🖼</span>;
+  return <img src={s.vorschau} alt={`Vorschau ${s.titel}`} style={{ maxHeight: 28, maxWidth: 40, imageRendering: 'pixelated' }} onError={() => setBroken(true)} />;
+}
+
+/** Vorschau eines geladenen Eintrags (läuft aus dem Vorrat, ohne Netz): kleines Bild bei Grafik, bei Archiven (.zip, .7z)
+ *  ein Symbol mit Text, ▶ bei Ton. */
 function Preview({ s }: { s: SourceProposal }) {
   const [status, setStatus] = useState('');
   if (!s.vorschau) return null;
-  if (s.art === 'grafik') return <img src={s.vorschau} alt={`Vorschau ${s.titel}`} style={{ maxHeight: 28, maxWidth: 40, imageRendering: 'pixelated' }} />;
+  const kind = previewKind(s);
+  if (kind === 'bild') return <PreviewImage s={s} />;
+  if (kind === 'archiv') return <span className="src-noprev" title="Inhalt erst nach Übernahme sichtbar">🗜 {archiveLabel(s.vorschau)}</span>;
   const play = async () => setStatus((await playChoice({}, { datei: s.vorschau! })) ? 'Spielt' : 'Nicht abspielbar');
   return (
     <Flex gap="1" align="center">

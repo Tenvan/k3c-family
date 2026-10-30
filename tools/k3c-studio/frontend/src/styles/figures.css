@@ -18,12 +18,17 @@
 }
 .wd-skill-head { display: flex; align-items: center; justify-content: space-between; }
 
-/* Gegner: Bühne über die Resthöhe, darunter Tabelle links und Inspektor rechts */
+/* Gegner: Bühne über die Resthöhe mit Inspektor rechts (gleich hoch, scrollt in sich), darunter die Tabelle über die volle Breite */
 .wd-gegner { gap: 8px; }
 .wd-gegner-stage { flex: 1 1 0; display: flex; flex-direction: column; min-height: 18rem; }
 .wd-gegner-stage .wd-stage { flex: 1 1 0; min-height: 0; }
-.wd-gegner-lower { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 24rem); gap: 12px; align-items: start; }
-@container (max-width: 900px) { .wd-gegner-lower { grid-template-columns: minmax(0, 1fr); } }
+.wd-gegner-main { flex: 1 1 0; min-height: 18rem; display: grid; grid-template-columns: minmax(0, 1fr) 22rem; grid-template-rows: minmax(0, 1fr); gap: 12px; }
+.wd-gegner-main > .wd-gegner-stage { flex: none; min-height: 0; }
+.wd-gegner-side { position: relative; min-width: 0; }
+.wd-gegner-side > .wd-inspector { position: absolute; inset: 0; overflow-y: auto; }
+@container (max-width: 900px) { .wd-gegner-main { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(18rem, 1fr) 14rem; } }
+.wd-gegner-table { flex: none; max-height: 12rem; overflow: auto; }
+.wd-gegner-table thead th { position: sticky; top: 0; background: var(--color-panel-solid, var(--gray-2)); }
 .wd-enemy-table { width: 100%; border-collapse: collapse; }
 .wd-enemy-table th, .wd-enemy-table td { padding: 2px 8px; text-align: left; border-bottom: 1px solid var(--gray-5); font-size: 0.8rem; white-space: nowrap; }
 .wd-enemy-table tbody tr { cursor: pointer; }

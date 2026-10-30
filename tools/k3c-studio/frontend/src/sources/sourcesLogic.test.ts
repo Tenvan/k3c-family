@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { mockSources, resetMockSources, setMockSourcesOffline } from '../api/mockSources';
-import { downloadable, formatBytes, percent, running, summarize } from './sourcesLogic';
+import { archiveLabel, downloadable, formatBytes, percent, previewKind, running, summarize } from './sourcesLogic';
 
 // WZ30.4 (AC-04): Logik der Seite Quellen und der Mock der Vorschlagsliste.
 beforeEach(resetMockSources);
@@ -72,5 +72,21 @@ describe('Mock der Quellen', () => {
     await expect(api.sourceAdopt('q03')).rejects.toThrow('nicht geladen');
     await api.sourceAdopt('q02');
     expect((await api.sources()).vorschlaege.find((s) => s.id === 'q02')?.verwendet).toBe(true);
+  });
+});
+
+describe('previewKind und archiveLabel (B-673)', () => {
+  const g = (vorschau?: string) => ({ art: 'grafik' as const, vorschau });
+  it('nur Bild-Endungen sind Bilder, auch groß und mit Query', () => {
+    for (const f of ['a.png', 'a.JPG', 'a.jpeg', 'a.gif', 'a.webp', 'x/a.png?v=1']) expect(previewKind(g(f))).toBe('bild');
+  });
+  it('Archive und Unbekanntes sind keine Bilder, Ton bleibt Ton', () => {
+    for (const f of ['a.zip', 'a.7z', 'a', '']) expect(previewKind(g(f))).toBe('archiv');
+    expect(previewKind({ art: 'sound', vorschau: 'a.ogg' })).toBe('ton');
+  });
+  it('Archiv-Text nennt die Endung', () => {
+    expect(archiveLabel('pack.zip')).toBe('Archiv (zip)');
+    expect(archiveLabel('pack.7z')).toBe('Archiv (7z)');
+    expect(archiveLabel('pack')).toBe('Archiv');
   });
 });

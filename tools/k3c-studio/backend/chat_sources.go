@@ -44,6 +44,15 @@ func (a *App) sourcesInstruction() (string, error) {
 	for _, g := range gaps {
 		b.WriteString("- " + g + "\n")
 	}
+	b.WriteString("\n## URL-Muster je Quelle\n\n")
+	b.WriteString("- OpenGameArt: seite https://opengameart.org/content/<name>, dateiUrl https://opengameart.org/sites/default/files/<datei>.\n")
+	b.WriteString("- Kenney (CC0): kenney.nl blockt Downloads ohne Browser; nimm den Spiegel des Nutzers „Kenney“ auf OpenGameArt ")
+	b.WriteString("(sites/default/files/kenney_<pack>.zip) mit quelle \"Kenney\". Sonst die ZIP-Adresse von kenney.nl/assets/<name> ")
+	b.WriteString("(https://kenney.nl/media/pages/assets/<name>/<hash>/<datei>.zip) nur, wenn du sie von der Seite kennst, nie geraten.\n")
+	b.WriteString("- freesound: Original braucht Login; dateiUrl ist die öffentliche Vorschau https://cdn.freesound.org/previews/<id/1000>/")
+	b.WriteString("<id>_<nutzer-id>-hq.mp3, seite https://freesound.org/people/<nutzer>/sounds/<id>/, urheber = Nutzername; nur CC0 oder CC-BY.\n")
+	b.WriteString("- itch.io: Downloads laufen über einen JS-Ablauf mit zeitlich begrenzten Adressen; nur nennen, wenn eine feste https-Datei auf itch.io oder itch.zone bekannt ist.\n")
+	b.WriteString("Nenne nur URLs, die du sicher kennst; art ist \"grafik\" oder \"sound\".\n")
 	b.WriteString("\n## Antwortformat\n\nBegründe kurz auf Deutsch, dann genau ein Block mit höchstens 20 Einträgen:\n\n")
 	b.WriteString(sourcesFence + "\n{\"vorschlaege\": [{\"slot\": \"boss\", \"art\": \"grafik\", \"titel\": \"…\", \"quelle\": \"OpenGameArt\", ")
 	b.WriteString("\"seite\": \"https://…\", \"dateiUrl\": \"https://…/datei.png\", \"urheber\": \"…\", \"lizenz\": \"CC0\"}]}\n```\n\n")

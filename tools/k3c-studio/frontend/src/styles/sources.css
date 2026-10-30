@@ -10,3 +10,4 @@
 .src-lic, .src-size { white-space: nowrap; }
 .src-detail { grid-column: 3 / -1; padding-bottom: 4px; }
 .src-actions { position: sticky; bottom: 0; padding: 6px 8px; background: var(--gray-2); border: 1px solid var(--gray-6); border-radius: 6px; }
+.src-noprev { display: inline-flex; align-items: center; gap: 3px; font-size: 0.7rem; line-height: 1.1; color: var(--gray-11); cursor: default; }

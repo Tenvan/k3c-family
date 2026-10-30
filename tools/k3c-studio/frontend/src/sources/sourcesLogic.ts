@@ -43,3 +43,23 @@ export const percent = (p: SourceProgress): number => (p.gesamt <= 0 ? 0 : Math.
 
 /** Läuft noch ein Download (wartet oder lädt)? */
 export const running = (jobs: readonly SourceProgress[]): boolean => jobs.some((j) => j.status === 'wartet' || j.status === 'laedt');
+
+export type PreviewKind = 'bild' | 'archiv' | 'ton';
+
+const IMAGE_EXT = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
+const ARCHIVE_EXT = ['zip', '7z', 'rar', 'tar', 'gz', 'tgz'];
+
+/** Endung einer Datei in Kleinschreibung, ohne Query und Anker ("" ohne Endung). */
+const extOf = (file: string): string => /\.([a-z0-9]+)$/i.exec(file.split(/[?#]/)[0])?.[1].toLowerCase() ?? '';
+
+/** Art der Vorschau: Ton bleibt Ton; bei Grafik zeigen nur Bild-Endungen ein Bild, Archive (.zip, .7z …) und Unbekanntes nicht. */
+export function previewKind(s: Pick<SourceProposal, 'art' | 'vorschau'>): PreviewKind {
+  if (s.art === 'sound') return 'ton';
+  return IMAGE_EXT.includes(extOf(s.vorschau ?? '')) ? 'bild' : 'archiv';
+}
+
+/** Endung eines Archivs für den Text „Archiv (zip)“ ("Archiv" ohne bekannte Endung). */
+export function archiveLabel(file: string): string {
+  const ext = extOf(file);
+  return ARCHIVE_EXT.includes(ext) ? `Archiv (${ext})` : 'Archiv';
+}

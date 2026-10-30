@@ -40,8 +40,8 @@ function Toolbar({ e }: { e: Enemies }) {
 const withoutWarn = (w: KampfWorld | null): KampfWorld | null => (w ? { ...w, enemies: (w.enemies ?? []).map((x) => ({ ...x, warn: undefined })) } : null);
 
 /** Gegner-Seite des Asset-Studios (B-464, B-672): alle Gegnertypen nach Biom und Tiefe (Portal vor Nacht, dazu „ohne Biom“)
- *  und die Bosse mit den Animationen des Spiels. Eine Werkzeugleiste, die Bühne über die Resthöhe, darunter die Gegner als
- *  Tabelle und der gewählte im Inspektor; Klick auf Zeile oder Figur wählt. Angriffe und Boss-Fähigkeiten spielen die
+ *  und die Bosse mit den Animationen des Spiels. Eine Werkzeugleiste, die Bühne über die Resthöhe mit dem Inspektor des
+ *  gewählten Gegners rechts daneben (gleich hoch), darunter die Gegner als Tabelle über die volle Breite; Klick auf Zeile oder Figur wählt. Angriffe und Boss-Fähigkeiten spielen die
  *  Darstellung des Spiels oder zeigen ihre Lücke; Grafik-Auswahl je Gegner-ID als Vorschau (das Register bleibt unverändert). */
 export function EnemiesPage() {
   const e = useEnemies();
@@ -55,13 +55,13 @@ export function EnemiesPage() {
       <div className="wd-page wd-gegner">
         <Toolbar e={e} />
         {boss.bar}
-        <div className="wd-gegner-stage">
-          <FigureStage items={e.items} control={e.control} kampf={kampf} selected={e.selected ? `enemy-${e.selected.id}` : null} onFigure={onFigure} onInfo={e.setInfos} />
+        <div className="wd-gegner-main">
+          <div className="wd-gegner-stage">
+            <FigureStage items={e.items} control={e.control} kampf={kampf} selected={e.selected ? `enemy-${e.selected.id}` : null} onFigure={onFigure} onInfo={e.setInfos} />
+          </div>
+          <div className="wd-gegner-side"><EnemyInspector e={e} /></div>
         </div>
-        <div className="wd-gegner-lower">
-          <EnemyTable e={e} />
-          <EnemyInspector e={e} />
-        </div>
+        <div className="wd-gegner-table"><EnemyTable e={e} /></div>
       </div>
     </div>
   );
