@@ -1,6 +1,6 @@
 # BS13 · CLI · Baustellen-Schilder, Bauoptionen und Holzzaun
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAS
 - **Domäne:** CLI
 - **Reife:** bereit

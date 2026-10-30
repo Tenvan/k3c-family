@@ -1,7 +1,7 @@
 # REL · Release & Betrieb
 
 - **Status:** aktiv
-- **Rang:** 10
+- **Rang:** 8
 - **Ziel-Tickets:** –
 
 ## Ziel
@@ -17,7 +17,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RL1 | Release-Checkliste | erledigt |
 | CI1 | CI-Nachweis, Release-Image ohne Dev-Mode, Test-Abdeckung | erledigt |
 | RP1 | Repo-Hygiene: Branches aufräumen, Altlasten, Regeln | erledigt |
-| BT1 | Server im Heimnetz finden, Windows-Starter, Start mit Seed | aktiv |
+| BT1 | Server im Heimnetz finden, Windows-Starter, Start mit Seed | erledigt |
 | PG1 | Präsentationsseite mit echten Spielbildern | erledigt |
 | PB1 | Veröffentlichung auf itch.io | aktiv |
 

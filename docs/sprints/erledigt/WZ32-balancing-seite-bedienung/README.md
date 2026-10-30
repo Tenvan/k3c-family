@@ -1,6 +1,6 @@
 # WZ32 · DEV · Balancing-Seite: feste Fläche, eine Liste, Lauf-Editor mit Varianten-Tabelle
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit

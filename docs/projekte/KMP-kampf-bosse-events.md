@@ -1,7 +1,7 @@
 # KMP · Kampf, Bosse, Events
 
 - **Status:** aktiv
-- **Rang:** 9
+- **Rang:** 7
 - **Ziel-Tickets:** –
 
 ## Ziel

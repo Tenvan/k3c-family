@@ -1,6 +1,6 @@
 # BS7 · DEV · Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAS
 - **Domäne:** DEV
 - **Reife:** bereit

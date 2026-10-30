@@ -1,6 +1,6 @@
 # KR6 · REG · Kritische Fragen zu KMP
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KRT
 - **Domäne:** REG
 - **Reife:** bereit

@@ -1,6 +1,6 @@
 # KR1 · REG · Kritische Fragen zu BED
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KRT
 - **Domäne:** REG
 - **Reife:** bereit

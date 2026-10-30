@@ -1,6 +1,6 @@
 # BS8 · DEV, REG · Meilenstein 2: Bots und Delta-Runde Baumschule gegen Baseline M1
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAS
 - **Domäne:** DEV, REG
 - **Reife:** bereit

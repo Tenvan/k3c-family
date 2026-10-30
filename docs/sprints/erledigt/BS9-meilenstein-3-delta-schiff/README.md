@@ -1,6 +1,6 @@
 # BS9 · DEV, REG · Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAS
 - **Domäne:** DEV, REG
 - **Reife:** bereit

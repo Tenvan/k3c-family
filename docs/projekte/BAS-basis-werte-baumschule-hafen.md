@@ -1,7 +1,7 @@
 # BAS · Neue Basis: Münzskala, Baumschule, Hafen
 
-- **Status:** aktiv
-- **Rang:** 1
+- **Status:** erledigt
+- **Rang:** –
 - **Ziel-Tickets:** –
 
 ## Ziel
@@ -26,15 +26,15 @@ Erledigt, wenn M4 erreicht ist und BS6 und BS10 am Gerät abgenommen sind.
 | BS2 | Regelwerk der neuen Basis: Münzskala, Baumschule, Hafen und Schiff | erledigt |
 | BS11 | Balancing-Tester spielt die ganze Insel bis zum Endboss | erledigt |
 | BS3 | Werte auf der Münzskala: Meilenstein-Lauf coop2 standard läuft durch | erledigt |
-| BS7 | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | aktiv |
+| BS7 | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | erledigt |
 | BS4 | Baumschule auf gerodeten Waldbauplätzen | erledigt |
-| BS8 | Meilenstein 2: Bots und Delta-Runde Baumschule gegen Baseline M1 | aktiv |
+| BS8 | Meilenstein 2: Bots und Delta-Runde Baumschule gegen Baseline M1 | erledigt |
 | BS5 | Hafen-Chunk, Schiff bauen und Inselwechsel am Hafen | erledigt |
-| BS9 | Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2 | aktiv |
-| BS6 | Client: Baumschule, Hafen und Schiff, neue Münzskala | aktiv |
+| BS9 | Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2 | erledigt |
+| BS6 | Client: Baumschule, Hafen und Schiff, neue Münzskala | erledigt |
 | BS10 | Grafiken für Hafen und Schiff | erledigt |
 | BS12 | Mauern und Türme verteilt, Tor ist die äußerste Mauer | erledigt |
-| BS13 | Baustellen-Schilder, Bauoptionen und Holzzaun | aktiv |
+| BS13 | Baustellen-Schilder, Bauoptionen und Holzzaun | erledigt |
 
 ## Nicht-Ziele
 

@@ -1,6 +1,6 @@
 # BT1 · SRV, DEV · Server im Heimnetz finden, Windows-Starter, Start mit Seed
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** REL
 - **Domäne:** SRV, DEV
 - **Reife:** bereit

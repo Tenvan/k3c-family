@@ -1,6 +1,6 @@
 # BS6 · CLI, DEV · Client: Baumschule, Hafen und Schiff, neue Münzskala
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAS
 - **Domäne:** CLI, DEV
 - **Reife:** bereit
