@@ -71,6 +71,32 @@ const GROUPS: readonly [kind: string, label: string][] = [
 /** Name einer Gebäudeart im Filter (Mehrzahl); unbekannte Arten bleiben, wie sie sind. */
 export const kindLabel = (kind: string): string => GROUPS.find(([k]) => k === kind)?.[1] ?? kind;
 
+/** Farbe je Gebäudeart (Chip-Leiste und Lageleiste, B-670): fest für die bekannten Arten, sonst aus dem Namen gestreut. */
+const KIND_COLORS: Readonly<Record<string, string>> = {
+  wall: '#9aa5b1', tower: '#e76f51', nursery: '#7bd389', barracks: '#4ea8de', workshop: '#f4a261', tavern: '#c77dff',
+  healer: '#ff8fa3', smithy: '#ffd166', armory: '#2ec4b6', stairsDown: '#a0c4ff', stairsUp: '#cdb4db',
+};
+export function kindColor(kind: string): string {
+  const known = KIND_COLORS[kind];
+  if (known) return known;
+  let h = 0;
+  for (const ch of kind) h = (h * 31 + ch.charCodeAt(0)) % 360;
+  return `hsl(${h} 65% 65%)`;
+}
+
+/** Spuren der Lageleiste: Plätze (nach x sortiert), die näher als `gap` Units am Vorgänger einer Spur liegen, wandern in die
+ *  nächste Spur, damit keine Marke eine andere verdeckt. Liefert die Spur je Platz und die Zahl der Spuren (mindestens 1). */
+export function stripLanes(xs: readonly number[], gap: number): { lanes: number[]; count: number } {
+  const last: number[] = [];
+  const lanes = xs.map((x) => {
+    let lane = last.findIndex((l) => x - l >= gap);
+    if (lane < 0) lane = last.length;
+    last[lane] = x;
+    return lane;
+  });
+  return { lanes, count: Math.max(1, last.length) };
+}
+
 export interface BuildingGroup {
   kind: string;
   label: string;

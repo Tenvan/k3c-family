@@ -42,14 +42,12 @@ async function mount(seed = 'k3c', onPan: (px: number) => void = () => {}): Prom
   root = createRoot(host);
   await act(async () => root!.render(element(seed, VIEW, onPan)));
   await flush();
-  await expandAll(host);
   return host;
 }
 
-// Chip-Leiste über der Bühne (B-670): je Art ein Chip (ein/aus), ▾ klappt die Plätze als kleine Chips auf
+// Gebäude über der Bühne (B-670): je Art ein Chip (ein/aus), die Lageleiste zeigt jeden Platz als Marke
 const sites = (h: HTMLElement) => [...h.querySelectorAll<HTMLButtonElement>('.pl-site')];
 const kinds = (h: HTMLElement) => [...h.querySelectorAll<HTMLButtonElement>('.pl-kind')];
-const expandAll = (h: HTMLElement) => act(async () => { h.querySelectorAll<HTMLElement>('.pl-open[aria-expanded="false"]').forEach((b) => b.click()); });
 /** Schlüssel der ersten Art in der Chip-Leiste (gleiche Reihenfolge wie buildingGroups) */
 const firstKindKeys = (all: { kind: string; x: number }[]) => buildingGroups(buildingToggles(all), new Set())[0]!.items.map((t) => t.key);
 

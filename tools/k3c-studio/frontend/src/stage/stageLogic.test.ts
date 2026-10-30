@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { mockWorldPreview } from '../api/mockWorld';
-import { applyLook, backgroundToggles, buildingGroups, buildingToggles, commonOf, focusXs, hpOf, hubLevelChoices, pickKeys, presetLooks, previewArgsOf, siteAt, siteKey, worldOf } from './stageLogic';
+import { applyLook, backgroundToggles, buildingGroups, buildingToggles, commonOf, focusXs, hpOf, hubLevelChoices, kindColor, pickKeys, presetLooks, previewArgsOf, siteAt, siteKey, stripLanes, worldOf } from './stageLogic';
 
 describe('Hub-Stufen (B-460/AC-04)', () => {
   it('aus data/hub.json › levels: 1 bis Anzahl der Einträge', () => {
@@ -60,6 +60,19 @@ describe('Gebäude-Filter nach Art (B-477/AC-05)', () => {
     const state = mockWorldPreview(previewArgsOf('k3c', 'forest', 5, new Set())).state!;
     const groups = buildingGroups(buildingToggles(state.sites), new Set());
     expect(groups.reduce((n, g) => n + g.items.length, 0)).toBe(state.sites.length);
+  });
+});
+
+describe('Lageleiste der Gebäude (B-670)', () => {
+  it('jede bekannte Art hat eine eigene Farbe, unbekannte Arten eine feste aus dem Namen', () => {
+    const kinds = ['wall', 'tower', 'nursery', 'barracks', 'workshop', 'tavern', 'healer', 'smithy', 'armory', 'stairsDown', 'stairsUp'];
+    expect(new Set(kinds.map(kindColor)).size).toBe(kinds.length);
+    expect(kindColor('harbor')).toBe(kindColor('harbor'));
+  });
+
+  it('nahe Plätze wandern in die nächste Spur, ferne bleiben in Spur 0', () => {
+    expect(stripLanes([10, 12, 13, 30, 31], 4)).toEqual({ lanes: [0, 1, 2, 0, 1], count: 3 });
+    expect(stripLanes([], 4)).toEqual({ lanes: [], count: 1 });
   });
 });
 

@@ -82,13 +82,11 @@ describe('Gebäude-Planer: eine Auswahl für Bühne, Matrix und Platz-Chips (B-6
     await click(h.querySelector('tr[data-key="armory@40"] button.pl-row')!);
     expect(frame()).toEqual([490]);
     expect(stages[0]!.jumps.at(-1)).toBe(490);
-    await click(button(h, 'Rüstkammern: Plätze'));
     expect(button(h, 'Rüstkammern bei x 490').getAttribute('aria-pressed')).toBe('true');
   });
 
   it('Klick auf einen Platz-Chip wählt die Zeile und springt zum Platz', async () => {
     const h = await mount();
-    await click(button(h, 'Heilplätze: Plätze'));
     await click(button(h, 'Heilplätze bei x 410'));
     expect(chosenRow(h)).toBe('healer@-40');
     expect(frame()).toEqual([410]);
@@ -105,12 +103,10 @@ describe('Gebäude-Planer: eine Auswahl für Bühne, Matrix und Platz-Chips (B-6
 });
 
 describe('Gebäude-Planer: Chip-Leiste statt Auswahllisten je Platz (B-670/AC-03)', () => {
-  it('keine Auswahlliste je Bauplatz, auch mit aufgeklappten Mauern; der Chip blendet die Art aus und ein', async () => {
+  it('keine Auswahlliste je Bauplatz, jede Mauer als Marke in der Lageleiste; der Chip blendet die Art aus und ein', async () => {
     const preview = vi.spyOn(backend, 'worldPreview');
     const h = await mount();
-    const walls = button(h, 'Mauern: Plätze');
-    await click(walls);
-    const chips = h.querySelectorAll('[aria-label="Mauern: Bauplätze"] button');
+    const chips = [...h.querySelectorAll('.pl-strip button')].filter((b) => b.getAttribute('aria-label')!.startsWith('Mauern bei x'));
     expect(chips.length).toBeGreaterThan(10);
     expect(h.querySelectorAll('.pl-chipbar [role="combobox"]')).toHaveLength(0);
     expect(h.querySelectorAll('[role="combobox"]')).toHaveLength(1); // nur die Tageszeit
