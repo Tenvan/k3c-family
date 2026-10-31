@@ -1,11 +1,11 @@
-# BAL8 · REG · Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt
+# BAL8 · REG, SIM · Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAL
-- **Domäne:** REG
-- **Reife:** Entwurf
+- **Domäne:** REG, SIM
+- **Reife:** bereit
 - **Tickets:** B-680, B-681
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** cad8f612
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-31, Ralf im Chat (Revision 1)
@@ -52,6 +52,12 @@ Override für unbekannten Wert → Welt wird beim Laden abgelehnt mit Pfad des W
 keine. Entschieden (🧑, 2026-10-31): Eine Welt darf alle Basis-Werte laut `B-680 › Anforderungen` übersteuern (Ressourcen, Kosten, Material-Vorrat, Gegner, Truppen, Gebäude, Monarch, Coop-Multiplikatoren).
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BAL8.1 | `BAL8.1-overrides-format.md` | Umsetzung | autonom | fertig |
+| BAL8.2 | `BAL8.2-wertesatz-je-raum.md` | Umsetzung | autonom | offen |
+| BAL8.3 | `BAL8.3-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 

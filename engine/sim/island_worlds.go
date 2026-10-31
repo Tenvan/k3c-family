@@ -27,6 +27,10 @@ const StandardWorldID = "standard"
 type WorldDef struct {
 	ID, Name, Notes string
 	Islands         []IslandDef
+	// Extends ist die Eltern-Welt (leer = Basis data/), Overrides die übersteuerten Basis-Werte je Datei (Schlüssel =
+	// Dateiname ohne .json, welten.md § 1); aufgelöst von ResolveWorldValues (world_values.go).
+	Extends   string
+	Overrides map[string]json.RawMessage
 }
 
 // idPattern gilt für Welt- und Insel-IDs (welten.md § 4).
@@ -94,10 +98,12 @@ func worldPath(id string) string { return "data/worlds/" + id + ".json" }
 
 // Rohform der Datei: Zeiger erkennen fehlende Pflichtfelder, Rohdaten lassen jede Insel einzeln lesen.
 type rawWorld struct {
-	ID      *string            `json:"id"`
-	Name    *string            `json:"name"`
-	Notes   string             `json:"notes"`
-	Islands *[]json.RawMessage `json:"islands"`
+	ID        *string                    `json:"id"`
+	Name      *string                    `json:"name"`
+	Notes     string                     `json:"notes"`
+	Extends   *string                    `json:"extends"`
+	Overrides map[string]json.RawMessage `json:"overrides"`
+	Islands   *[]json.RawMessage         `json:"islands"`
 }
 
 type rawIsland struct {
@@ -118,7 +124,7 @@ type rawScaling struct {
 // decodeWorld liest den Kopf der Welt streng und prüft Pflichtfelder und die ID; die Inseln bleiben roh.
 func decodeWorld(raw []byte, id string) (WorldDef, []json.RawMessage, error) {
 	var v rawWorld
-	if err := strictDecode(raw, &v, "id", "name", "notes", "islands"); err != nil {
+	if err := strictDecode(raw, &v, "id", "name", "notes", "extends", "overrides", "islands"); err != nil {
 		return WorldDef{}, nil, err
 	}
 	switch {
@@ -135,7 +141,14 @@ func decodeWorld(raw []byte, id string) (WorldDef, []json.RawMessage, error) {
 	case len(*v.Islands) == 0:
 		return WorldDef{}, nil, errors.New("keine Insel")
 	}
-	return WorldDef{ID: *v.ID, Name: *v.Name, Notes: v.Notes}, *v.Islands, nil
+	if err := checkWorldLinks(id, v.Extends, v.Overrides); err != nil {
+		return WorldDef{}, nil, err
+	}
+	w := WorldDef{ID: *v.ID, Name: *v.Name, Notes: v.Notes, Overrides: v.Overrides}
+	if v.Extends != nil {
+		w.Extends = *v.Extends
+	}
+	return w, *v.Islands, nil
 }
 
 // decodeIslands liest und prüft die Inseln der Reihe nach; die erste verletzte Regel wird gemeldet. Ohne ID heißt die

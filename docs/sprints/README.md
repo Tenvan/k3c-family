@@ -18,6 +18,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | BR2 | REG | BAL | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | `aktiv/BR2-balancing-kampf/` |
 | HW1 | PLAT, SRV, INF, CLI | ABN | Zurückgestellte Controller-Prüfungen nachholen | – | `aktiv/HW1-controller-pruefungen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | `aktiv/PF1-splitscreen-leistung/` |
+| BAL8 | REG, SIM | BAL | Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt | – | `aktiv/BAL8-welt-werte-overrides/` |
 
 ## Offen am Gerät
 
@@ -35,7 +36,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 | P1 | REG | BAL | Spieleabend 1 | Protokoll und Folge-Tickets | bereit | `geplant/P1-spieleabend-1/` |
 | BR1 | REG | BAL | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
-| BAL8 | REG | BAL | Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt | – | Entwurf | `geplant/BAL8-welt-werte-overrides/` |
 | BAL9 | REG | BAL | Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance | – | Entwurf | `geplant/BAL9-meilenstein-1-nachtraege/` |
 | GRJ2 | DEV | GRJ | Grafik-Zielmaß und Ausschnitt-Rahmen abnehmen | – | Entwurf | `geplant/GRJ2-zielmass-ausschnitt-abnehmen/` |
 

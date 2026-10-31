@@ -14,7 +14,68 @@ WZ18.6 (Welten Editor). Bis WZ18.2 liegt die Standard-Welt noch als `data/island
 |---|---|---|
 | Eine **Welt** ist eine Sammlung von n Inseln in fester Reihenfolge; ein Raum spielt genau eine Welt, die er beim Anlegen wählt. Quelle: B-488. | Inseln lassen sich als Ganzes entwerfen, tauschen und testen, ohne die Standard-Welt zu ändern. | – |
 | Jede Welt ist **eine Datei** `data/worlds/<id>.json` (Welt-Datei). Die **Standard-Welt** hat die ID `standard`; `data/islands.json` wird zu `data/worlds/standard.json` und entfällt. Quelle: B-488 › Offene Fragen. | Ein Ort für alle Welten; die Standard-Welt ist eine Welt wie jede andere. | `data/worlds/standard.json` |
-| Jede Welt ist **für sich vollständig**: Sie verweist auf keine andere Welt und erbt nichts; was zwei Welten gemeinsam haben, steht in beiden Dateien. Entschieden von Claude (Delegation 🧑, 2026-10-19). | Eine Welt-Datei lässt sich einzeln prüfen, kopieren und löschen. | – |
+| Eine Welt **erbt die Basis-Werte** aus `data/` (Ressourcen, Kosten, Material-Vorrat, Gegner, Truppen, Gebäude, Monarch, Wellen, Ziele) und **übersteuert** mit `overrides` nur die Felder, die sie ändern will. Ohne `overrides` gilt die Basis unverändert (byte-gleich, Golden unverändert). Quelle: B-680, Entscheidung 🧑 2026-10-31. Ersetzt die Regel „für sich vollständig, erbt nichts“ (WZ18.1). | Eine Welt nennt nur ihre Abweichung; eine Änderung an der Basis gilt für alle Welten, die das Feld nicht übersteuern. | `data/*.json`, `overrides` |
+| Eine Welt kann mit **`extends: <welt-id>`** von einer anderen Welt erben (Kette Basis → A → B). Aufgelöst wird von der Basis her: erst die Overrides der ältesten Eltern-Welt, zuletzt die der Welt selbst; das Kind gewinnt. Ohne `extends` erbt die Welt direkt von der Basis. Höchstens **4 Welten** in einer Kette über der Basis (Startwert). Quelle: B-680, Entscheidung 🧑 2026-10-31. | Varianten einer Welt (z. B. „Nordmeer schwer“) teilen ihre Abweichungen, ohne sie zu kopieren. | `extends` |
+| Eine Änderung an einer Eltern-Welt wirkt **bewusst auf ihre Kinder**. Eine Welt mit Kind-Welten wird nicht gelöscht und nicht umbenannt (Meldung nennt die Kinder); eigenständig wird eine Welt über „Welt kopieren“ (flach machen: Overrides der Kette in die Kopie, ohne `extends`). Der Welten-Editor zeigt die Kind-Welten vor dem Speichern (B-682). Quelle: B-680. | Kein Kind verliert still seine Grundlage. | – |
+| **Basiswerte sind Solo.** Mehr Spieler (coop2, coop4) werden nur über die Multiplikator-Felder justiert (`waves.json` › `perExtraPlayer`, `bossHpPerExtraPlayer`); eine Welt übersteuert diese Felder wie jedes andere, aber nie die Basiswerte „für Coop“. Quelle: BAL8, 🧑. | Eine Stelle für die Spielerzahl, Solo bleibt der Maßstab. | `data/waves.json` |
+
+### 1.1 Overrides: Format und Merge
+
+`overrides` ist ein Objekt **je Basis-Datei** (Schlüssel = Dateiname ohne `.json`), erlaubt sind `buildings`, `ship`, `troops`,
+`economy`, `hub`, `monarch`, `enemies`, `waves`, `goals`. Jeder Eintrag hat **dieselbe Struktur wie die Basis-Datei** und nennt nur
+die geänderten Felder. Entschieden von Claude (autonom, B-680):
+
+| Wert in der Basis | Override | Ergebnis |
+|---|---|---|
+| Zahl, Text, true/false | gleicher Typ | ersetzt den Basiswert |
+| Objekt (z. B. `cost`) | Objekt | je Feld gemischt; nicht genannte Felder bleiben |
+| Einträge je ID (z. B. `buildings.wall`, `enemies.wolf`, `monarch.skills`) | Objekt | je Schlüssel gemischt; nur vorhandene IDs, **keine neuen Einträge** |
+| Liste von Objekten (z. B. `levels`, `table`, `ship.stages`) | Objekt `{"<Schlüssel>": {…}}` | je Eintrag gemischt; Schlüssel ist die `id` des Eintrags (z. B. `"hull"`), sonst der Index ab 0 (`"1"`); **nie als Ganzes**, keine neuen Einträge |
+| Liste von Werten (z. B. `gold: [3, 5]`, `traits`) | Liste | ersetzt die ganze Liste; eine feste Liste (`gold`, `chestGold`, `standard`) braucht genau ihre Länge |
+
+Schreibweise der Felder wie in der Basis (`hp`, nicht `HP`); ein Feld, das die Basis-Datei an dieser Stelle nicht nennt, das die
+Simulation aber kennt (z. B. `plantation` an einem Gebäude), ist erlaubt. `null` ist kein Wert: Felder lassen sich nicht löschen.
+Beispiel „Nordmeer“ (Mauer billiger in Holz, Stufe 2 der Mauer zäher, Rumpf des Schiffs teurer, mehr Gegner je Zusatzspieler):
+
+```json
+{
+  "id": "nordmeer", "name": "Nordmeer", "extends": "standard",
+  "overrides": {
+    "buildings": { "wall": { "cost": { "wood": 7 }, "levels": { "1": { "hp": 650 } } } },
+    "ship": { "stages": { "hull": { "cost": { "gold": 9 } } } },
+    "waves": { "perExtraPlayer": 0.37 }
+  },
+  "islands": [ … ]
+}
+```
+
+### 1.2 Prüfung und Fehlermeldungen
+
+Fail closed: Ein ungültiger Override oder eine ungültige Kette → die Welt wird nicht geladen, nichts wird repariert. Geprüft wird
+beim Lesen der Welt-Datei (`extends` ist eine Welt-ID nach § 4 und nicht die eigene, jeder Schlüssel in `overrides` ist eine erlaubte
+Datei) und beim Auflösen (`engine/sim` › `ResolveWorldValues`): jedes Feld gegen den Lese-Typ der Simulation, danach der gemischte
+Stand mit denselben Regeln wie die Basis (Traits bekannt, Presets nennen bekannte Skills, `waves.json`-Zuschläge ≥ 0 und
+`bossHpPerExtraPlayer` vorhanden, Gegner-Pools jedes Bioms mit Standard- und Elite-Gegner). Nach jeder Welt der Kette mit Overrides
+wird geprüft; die Meldung nennt die Welt, deren Override den Fehler auslöst. Muster `<Welt-Datei>: overrides › <Basis-Datei> › <Pfad>: <Grund>`:
+
+| Fall | Meldung (Beispiel) |
+|---|---|
+| unbekannte Datei | `data/worlds/nordmeer.json: overrides: unbekannte Datei "biomes" (erlaubt: buildings, economy, …)` |
+| unbekanntes Feld | `data/worlds/nordmeer.json: overrides › data/buildings.json › wall.size: unbekanntes Feld` |
+| unbekannte ID / unbekannter Eintrag | `… › data/buildings.json › palast: unbekannter Eintrag (neue Einträge sind nicht erlaubt)` |
+| falscher Typ | `… › data/buildings.json › wall.cost.wood: Ganzzahl erwartet, ist Text` |
+| Liste als Ganzes | `… › data/buildings.json › wall.levels: Liste von Objekten je Eintrag übersteuern ({"<id oder Index>": {…}}), ist Liste` |
+| feste Liste falsch lang | `… › data/enemies.json › wolf.gold: genau 2 Werte erwartet, sind 1` |
+| Schreibweise | `… › data/buildings.json › wall.HP: Schreibweise wie in der Basis: "hp"` |
+| Basis-Regel verletzt | `data/worlds/nordmeer.json: overrides: data/waves.json: perExtraPlayer und bossHpPerExtraPlayer dürfen nicht negativ sein` |
+| Eltern-Welt unbekannt | `data/worlds/nordmeer.json: extends: Eltern-Welt "eis" unbekannt: …` |
+| Zyklus | `data/worlds/b.json: extends: Zyklus b → a → b` |
+| Kette zu lang | `data/worlds/e.json: extends: Kette zu lang (e → d → c → b → a, höchstens 4 Welten)` |
+| erbt von sich selbst | `data/worlds/nordmeer.json: extends: Welt erbt von sich selbst` |
+| Löschen/Umbenennen mit Kindern | `data/worlds/a.json: Welt hat Kind-Welten (b, c), Löschen und Umbenennen abgelehnt` |
+
+Umsetzung: `engine/sim/world_values.go` (Auflösung, Kette, Kind-Welten), `world_values_merge.go` (Merge und Feldprüfung). Die
+Simulation rechnet bis BAL8.2 (B-681) weiter mit den globalen Basis-Werten; erst dann gilt der Wertesatz je Raum.
 
 ## 2. Format
 
@@ -27,6 +88,8 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), nach B-488 › Anforderung
 | `id` | ja | Text | Welt-ID (§ 4), **gleich dem Dateinamen** ohne `.json`. |
 | `name` | ja | Text | Anzeigename, nicht leer (z. B. „Standard“, „Nordmeer“); muss nicht eindeutig sein. |
 | `notes` | nein | Text | Freie Notiz für Entwurf und REG-Begründung; das Spiel liest sie nicht. Fehlt sie, gilt `""`. |
+| `extends` | nein | Text | Eltern-Welt (Welt-ID nach § 4, nicht die eigene); fehlt es, erbt die Welt von der Basis `data/` (§ 1). |
+| `overrides` | nein | Objekt | Übersteuerte Basis-Werte je Basis-Datei (§ 1.1); fehlt es oder `{}`, gilt die Basis (bzw. die Eltern-Welt). |
 | `islands` | ja | Liste | Inseln in Spielreihenfolge (Insel 1 zuerst), mindestens eine. |
 
 **Insel** (Eintrag in `islands`, Felder wie heute in `data/islands.json`, Reihenfolge beim Schreiben wie in der Tabelle):
@@ -112,7 +175,7 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), Empfehlung 2 der Session W
 |---|---|---|
 | **Welt-ID** und **Insel-ID** folgen dem Muster `^[a-z0-9][a-z0-9-]{0,31}$` (Kleinbuchstaben, Ziffern, Bindestrich, 1–32 Zeichen, nicht mit Bindestrich beginnend), wie im Asset-Studio (`tools/k3c-studio/backend/app_world_files.go` › `worldID`). | Die Welt-ID ist Dateiname: kein Pfadzugriff über die ID, keine Groß-/Kleinschreibungs-Falle unter Windows. | – |
 | Die Welt-ID ist eindeutig, weil sie der Dateiname ist; `standard` ist die Standard-Welt und wird nicht neu angelegt. | Eine Datei je Welt. | `data/worlds/` |
-| Die Insel-ID ist **eindeutig je Welt**, über Welten hinweg frei: `island1` darf in jeder Welt vorkommen und meint jeweils die Insel dieser Welt. | Jede Welt ist für sich vollständig (§ 1); eine Kopie der Standard-Welt behält ihre IDs. | – |
+| Die Insel-ID ist **eindeutig je Welt**, über Welten hinweg frei: `island1` darf in jeder Welt vorkommen und meint jeweils die Insel dieser Welt. | Inseln erbt eine Welt nicht (`extends` gilt nur für Basis-Werte, § 1); eine Kopie der Standard-Welt behält ihre IDs. | – |
 | IDs ändern sich nach dem ersten Spielstand nicht mehr; Umbenennen im Editor ändert nur `name`. Wer eine ID ändert, macht Spielstände dieser Insel unladbar (§ 5). | Die ID ist der Verweis im Spielstand. | – |
 
 ## 5. Spielstand-Verweis und Migration
@@ -159,7 +222,7 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), Empfehlung 6 der Session W
 ([`../glossar.md`](../glossar.md)):
 
 - **Welt** (dieses Regelwerk): Sammlung von Inseln, eine Welt-Datei. Im Go-Code Typ **`WorldDef`** in `engine/sim`
-  (`ID`, `Name`, `Notes`, `Islands []IslandDef`), Feld `world` im Spielstand und im Protokoll.
+  (`ID`, `Name`, `Notes`, `Islands []IslandDef`, `Extends`, `Overrides`); der aufgelöste Wertesatz heißt **`WorldValues`**, Feld `world` im Spielstand und im Protokoll.
 - **`World`** im Go-Code ist **eine Stufe** (bleibt so, kein Umbenennen in diesem Sprint).
 - **„in der Welt“** heißt die Spielfläche einer Stufe (Weltposition).
 
