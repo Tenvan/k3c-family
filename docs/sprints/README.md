@@ -27,7 +27,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WZ34 | DEV, INF | WZG | Prüf- und Build-Werkzeuge: Studio-Test, check:diff, buildall | – | Entwurf | `geplant/WZ34-pruef-build-werkzeuge/` |
 | WZ35 | DEV | WZG | Workbench-Nachträge: Ticket-Nummern, Lauf-IDs, schmale Fenster, Auswertung | – | Entwurf | `geplant/WZ35-workbench-nachtraege/` |
 | WZ36 | DEV | WZG | Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung | – | Entwurf | `geplant/WZ36-studio-chat-aktionen-resume/` |
 | WZ37 | DEV | WZG | Welt-Overrides im Welten-Editor und im Studio-Chat | – | Entwurf | `geplant/WZ37-overrides-editor-chat/` |
@@ -273,3 +272,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | W13 | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | `erledigt/W13-morgengrauen-licht-client/` |
 | SO8 | Skill-Sounds je Klasse | `erledigt/SO8-skill-sounds-je-klasse/` |
 | GEB17 | Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe | `erledigt/GEB17-hub-ausbau-je-inselstufe/` |
+| WZ34 | Prüf- und Build-Werkzeuge: Studio-Test, check:diff, buildall | `erledigt/WZ34-pruef-build-werkzeuge/` |

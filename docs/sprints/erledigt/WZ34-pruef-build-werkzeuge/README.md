@@ -1,11 +1,11 @@
 # WZ34 · DEV, INF · Prüf- und Build-Werkzeuge: Studio-Test, check:diff, buildall
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV, INF
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-617, B-621, B-629
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 988da968
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-31, Ralf im Chat (Revision 1)
@@ -56,9 +56,9 @@ keine.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ34.1 | `WZ34.1-studio-test-und-flake.md` | Umsetzung | autonom | offen |
-| WZ34.2 | `WZ34.2-buildall-web-exe.md` | Umsetzung | autonom | offen |
-| WZ34.3 | `WZ34.3-review.md` | Review | autonom | offen |
+| WZ34.1 | `WZ34.1-studio-test-und-flake.md` | Umsetzung | autonom | fertig |
+| WZ34.2 | `WZ34.2-buildall-web-exe.md` | Umsetzung | autonom | fertig |
+| WZ34.3 | `WZ34.3-review.md` | Review | autonom | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
