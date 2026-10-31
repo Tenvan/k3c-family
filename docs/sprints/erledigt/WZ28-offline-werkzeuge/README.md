@@ -1,6 +1,6 @@
 # WZ28 · DEV · Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -79,7 +79,7 @@ keine. Entschieden (🧑, 2026-10-24): nächste freie Ticket-Nummer genügt (Ral
 | WZ28.5 | `WZ28.5-balancing-seite.md` | Umsetzung | autonom | fertig |
 | WZ28.6 | `WZ28.6-automatisches-balancing.md` | Umsetzung | autonom | fertig |
 | WZ28.7 | `WZ28.7-review.md` | Review | autonom | fertig |
-| WZ28.8 | `WZ28.8-abnahme-notebook-offline.md` | Workshop | Mensch | offen |
+| WZ28.8 | `WZ28.8-abnahme-notebook-offline.md` | Workshop | Mensch | fertig |
 | WZ28.9 | `WZ28.9-studio-tests-gruen.md` | Umsetzung | autonom | fertig |
 | WZ28.10 | `WZ28.10-balancing-hilfe.md` | Umsetzung | autonom | fertig |
 | WZ28.11 | `WZ28.11-daten-beschreibungen.md` | Umsetzung | autonom | fertig |
@@ -105,3 +105,4 @@ keine. Entschieden (🧑, 2026-10-24): nächste freie Ticket-Nummer genügt (Ral
 - `task check` und `task check:go` grün; `check:race` nur in der CI (lokal CGO aus).
 - Behoben im Review: unlesbare `reports/ratings.json` blockiert Liste und Löschen nicht mehr; vorher `findAssignment` (TestGoNestingDepth).
 - Neue Tickets: B-615, B-616. Balancing-Seite (Hilfen, Dateien, Bot je Spieler, Berichte) hat Ralf im Mock abgenommen.
+- 2026-10-31, WZ28.8: AC-08 von Ralf (🧑) am Notebook ohne Internet abgenommen, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen. Alle Kriterien erfüllt, Sprint erledigt.

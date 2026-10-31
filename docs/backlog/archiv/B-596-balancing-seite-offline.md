@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ28
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
@@ -68,3 +68,4 @@ keine. Entschieden (🧑, 2026-10-24): Seite in der Workbench; Kennzahlen nach B
 ## Notizen
 
 Aus Ralfs Wunsch 2026-10-24; Ergänzung 2026-10-24: **Die Wirtschaft gehört ausdrücklich dazu** (Rohstoff-Fluss, Gold-Bilanz, Kosten und Bauzeiten, Hub-Ausbau, Lager, Bürger und Berufe, Händler). Kennzahlen und Korridore der Wirtschaft aus `docs/rules/wirtschaft.md` und `zielkorridore.md`; Sweep und automatische Suche gelten für Wirtschafts-Werte (z. B. Kosten in `data/buildings.json`, `data/hub.json`, Holz je Baum) genauso wie für Kampf-Werte. Spec: Entwurf. Sprint WZ28. Zusammenhang: B-589 (BAL7), B-348.
+- **Abgenommen 2026-10-31:** Ralf (🧑) hat Ticket-Button und Balancing-Seite am Notebook ohne Internet abgenommen (WZ28.8, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen).

@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ28
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
@@ -61,3 +61,4 @@ keine. Default (Claude, 2026-10-24, zur Freigabe): Das Backend liest die Tabelle
 ## Notizen
 
 Aus Ralfs Wunsch 2026-10-24. Spec: Entwurf. Sprint WZ28.
+- **Abgenommen 2026-10-31:** Ralf (🧑) hat Ticket-Button und Balancing-Seite am Notebook ohne Internet abgenommen (WZ28.8, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen).

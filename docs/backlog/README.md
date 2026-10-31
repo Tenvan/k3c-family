@@ -100,9 +100,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-590](B-590-wachstumsreihe-unterscheidbar.md) | DEV | Problem | hoch | eingeplant | GEB17 | Die Wachstumsreihe der Burg zeigt echte Unterschiede statt derselben Burg in Farben |
 | [B-591](B-591-burg-ausbau-angebot-fehlt.md) | CLI | Problem | hoch | eingeplant | GEB17 | Vor der Burg erscheint kein Ausbau-Angebot, wenn der Spieler davor steht |
 | [B-592](B-592-hub-ausbaustufen-je-inselstufe.md) | REG | Idee | hoch | eingeplant | GEB17 | Der Hub hat zwei bis drei Ausbaustufen je Inselstufe, weiter mit dem Material der nächsten Inselstufe |
-| [B-594](B-594-grafik-seite-slot-details.md) | DEV | Idee | hoch | eingeplant | WZ28 | Die Grafik-Seite zeigt je Slot Name, Atlas-Definition und alles für die Zuordnung |
-| [B-595](B-595-ticket-button-ohne-ki.md) | DEV | Idee | hoch | eingeplant | WZ28 | Jede Seite hat einen Button, der ohne KI ein Ticket zur Seite anlegt |
-| [B-596](B-596-balancing-seite-offline.md) | DEV | Idee | hoch | eingeplant | WZ28 | Eine Balancing-Seite fährt Simulationen und Berichte ohne Internet und ohne Claude |
 | [B-597](B-597-sound-hoerproben-differenziert.md) | DEV | Idee | hoch | eingeplant | WZ29 | Die Sound-Seite hat differenzierte Hörproben, auch für Skills |
 | [B-598](B-598-grafik-vorschauen-differenziert.md) | DEV | Idee | hoch | eingeplant | WZ29 | Die Grafik-Seite hat differenzierte Vorschauen, auch für Skill-Effekte |
 | [B-599](B-599-szenen-sortieren-filtern.md) | DEV | Idee | hoch | eingeplant | WZ29 | Szenen auf Sound- und Grafik-Seite sind sortier- und filterbar |
@@ -115,11 +112,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-613](B-613-http-origin-pruefen.md) | SRV | Problem | niedrig | offen | – | Schreibende HTTP-Endpunkte des Spielservers lehnen fremde Webseiten ab |
 | [B-614](B-614-workbench-studio-web-client.md) | DEV | Idee | hoch | offen | WZ31 | Workbench und Studio starten als Server, gearbeitet wird im Browser |
 | [B-617](B-617-studio-levelview-test-golden.md) | DEV | Problem | hoch | offen | – | Der Studio-Test levelView passt wieder zur Golden-Datei level-forest.json |
-| [B-608](B-608-daten-beschreibungen.md) | DEV | Idee | hoch | offen | WZ28 | Jede balancing-relevante Datei in data/ hat eine Beschreibung mit Aufbau und Werten |
-| [B-609](B-609-balancing-hilfe-eingaben.md) | DEV | Idee | hoch | offen | WZ28 | Die Balancing-Konfiguration erklärt jedes Eingabefeld |
-| [B-610](B-610-balancing-konfigurationsdateien.md) | DEV | Idee | hoch | offen | WZ28 | Die Balancing-Seite listet die Konfigurationsdateien, die das Balancing beeinflussen |
-| [B-611](B-611-balancing-bot-je-spieler.md) | DEV | Idee | hoch | offen | WZ28 | Ein Balancing-Lauf kann für jeden Spieler einen eigenen Bot wählen |
-| [B-612](B-612-balancing-berichte-verwalten.md) | DEV | Idee | hoch | offen | WZ28 | Balancing-Berichte lassen sich einzeln löschen und bewerten, der Vergleich erklärt sich selbst |
 | [B-615](B-615-ticket-nummer-gleichzeitig.md) | DEV | Problem | mittel | offen | – | Gleichzeitiges Anlegen von Tickets vergibt nie dieselbe Nummer |
 | [B-616](B-616-lauf-id-nach-neustart.md) | DEV | Problem | niedrig | offen | – | Lauf-IDs der Balancing-Seite bleiben über einen Neustart der Workbench eindeutig |
 | [B-618](B-618-hintergruende-detail-varianten.md) | DEV | Problem | hoch | eingeplant | GEB18 | Die Hintergründe der fünf Stufen sind detailreich (vierfache Auflösung) und wechseln je Seed zwischen fünf Varianten |
@@ -647,3 +639,11 @@ Zeile in diesen Abschnitt.
 | [B-651](archiv/B-651-kristallhoehle-titan-welle-raeumt-hub-ab.md) | SIM | Problem | hoch | erledigt | BS3 | Die Titan-Welle der Kristallhöhle räumt den Hub eines Einzelmonarchen in Sekunden ab (coop2) |
 | [B-655](archiv/B-655-editor-basis-lauf-seedlist.md) | DEV | Problem | niedrig | erledigt | – | Balancing-Editor übernimmt seedList einer Baseline und warnt bei abweichenden Seeds im Delta |
 | [B-633](archiv/B-633-wartegrund-material-tor-text.md) | CLI | Problem | niedrig | erledigt | – | Wartegrund des Material-Tors heißt nicht mehr „Material der nächsten Insel“ |
+| [B-594](archiv/B-594-grafik-seite-slot-details.md) | DEV | Idee | hoch | erledigt | WZ28 | Die Grafik-Seite zeigt je Slot Name, Atlas-Definition und alles für die Zuordnung |
+| [B-595](archiv/B-595-ticket-button-ohne-ki.md) | DEV | Idee | hoch | erledigt | WZ28 | Jede Seite hat einen Button, der ohne KI ein Ticket zur Seite anlegt |
+| [B-596](archiv/B-596-balancing-seite-offline.md) | DEV | Idee | hoch | erledigt | WZ28 | Eine Balancing-Seite fährt Simulationen und Berichte ohne Internet und ohne Claude |
+| [B-608](archiv/B-608-daten-beschreibungen.md) | DEV | Idee | hoch | erledigt | WZ28 | Jede balancing-relevante Datei in data/ hat eine Beschreibung mit Aufbau und Werten |
+| [B-609](archiv/B-609-balancing-hilfe-eingaben.md) | DEV | Idee | hoch | erledigt | WZ28 | Die Balancing-Konfiguration erklärt jedes Eingabefeld |
+| [B-610](archiv/B-610-balancing-konfigurationsdateien.md) | DEV | Idee | hoch | erledigt | WZ28 | Die Balancing-Seite listet die Konfigurationsdateien, die das Balancing beeinflussen |
+| [B-611](archiv/B-611-balancing-bot-je-spieler.md) | DEV | Idee | hoch | erledigt | WZ28 | Ein Balancing-Lauf kann für jeden Spieler einen eigenen Bot wählen |
+| [B-612](archiv/B-612-balancing-berichte-verwalten.md) | DEV | Idee | hoch | erledigt | WZ28 | Balancing-Berichte lassen sich einzeln löschen und bewerten, der Vergleich erklärt sich selbst |
