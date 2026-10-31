@@ -171,6 +171,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-681](B-681-sim-werte-je-raum.md) | SIM | Idee | hoch | offen | – | Die Simulation rechnet mit den Werten ihrer Welt statt mit globalen Datei-Variablen |
 | [B-682](B-682-welten-editor-overrides.md) | DEV | Idee | mittel | offen | – | Der Welten-Editor bearbeitet Werte-Overrides einer Welt und zeigt Basiswert gegen Override |
 | [B-683](B-683-chat-welt-overrides.md) | DEV | Idee | mittel | offen | – | Der Studio-Chat kann Welt-Overrides lesen, setzen und zurücksetzen |
+| [B-684](B-684-studio-ausschnitt-rahmen-und-einpassen.md) | DEV | Idee | mittel | offen | – | Die Ausschnitt-Bearbeitung zeigt wahlweise einen Rahmen und passt die Grafik in die Kachel ein |
+| [B-685](B-685-zielmass-grafiken-skalieren.md) | CLI | Idee | hoch | offen | – | Grafiken bekommen ein Zielmaß in der Ausgabe und werden dort passend skaliert |
 
 ## Archiv
 
