@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ33
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-30
@@ -157,7 +157,8 @@ keine. Entschieden von 🧑 am 2026-10-30 im Chat:
 - Die Quellen-Oberfläche aus B-673 (Reiter, Filterzeile, Gruppen nach Slot, Schreibwerkzeuge in `assetkit`) geht hier auf. Ihre Backend-Funktionen (`AddSuggestions`, `PlanSuggestions`, `research_add.go`) bleiben.
 - B-673/AC-08 (manuelle Abnahme) vor WZ33 abschließen oder in AC-12 aufgehen lassen.
 - Ungeprüft: wie viele Recherche-Treffer und Vorschläge heute auf dieselbe Datei-URL zeigen.
-- **Umgesetzt 2026-10-30 (WZ33):** Backend 	ools/assetkit/candidates*.go, ackend/app_candidates.go (RPC AssetCandidates, AssetCandidateAssign); Frontend src/assetpage/, pi/candidateTypes.ts, webkit FocusBar, FacetRail, TransportBar. Alte Seiten Grafik, Sound, Quellen entfernt; die Tests mit Wert sind übertragen.
+- **Umgesetzt 2026-10-30 (WZ33):** Backend `tools/assetkit/candidates*.go`, `backend/app_candidates.go` (RPC AssetCandidates, AssetCandidateAssign); Frontend `src/assetpage/`, `api/candidateTypes.ts`, webkit FocusBar, FacetRail, TransportBar. Alte Seiten Grafik, Sound, Quellen entfernt; die Tests mit Wert sind übertragen.
 - **Auslegung AC-04:** Ein fester Chip ersetzt die Facetten, behält aber Suche, Sicht und Gruppierung; ein eigener Chip setzt auch diese.
 - **Abweichungen:** Sicht Szene übernimmt die Fokus-Filter nicht (eigene Filter der Szenen); die Proben behalten ihren eigenen Stopp; NC-Treffer und -Katalogdateien sind nicht zuordenbar (strenger als zuvor), ebenso Pakete (zip, 7z).
-- **Offen:** AC-12 (Abnahme durch 🧑 am Gerät, WZ33.8); Wikimedia-Downloads mit Weiterleitung scheitern im Studio-Client möglicherweise (ungeprüft); SourceAdopt ist ohne Stand und Sperre aufrufbar (nur die Seite Assets ruft es seriell).
+- **Abgenommen 2026-10-31:** AC-12 bestanden (🧑 Ralf, WZ33.8).
+- **Offen (jetzt B-678):** Wikimedia-Downloads mit Weiterleitung scheitern im Studio-Client möglicherweise (ungeprüft); SourceAdopt ist ohne Stand und Sperre aufrufbar (nur die Seite Assets ruft es seriell).

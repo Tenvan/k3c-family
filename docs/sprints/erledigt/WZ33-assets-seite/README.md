@@ -1,6 +1,6 @@
 # WZ33 · DEV · Eine Seite Assets statt Grafik, Sound und Quellen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -85,7 +85,9 @@ keine. Die vier Fragen aus dem Mock hat 🧑 am 2026-10-30 entschieden (B-677 �
 | WZ33.5 | `WZ33.5-szene-werkzeuge.md` | Umsetzung | autonom | fertig |
 | WZ33.6 | `WZ33.6-umschalten-aufraeumen.md` | Umsetzung | autonom | fertig |
 | WZ33.7 | `WZ33.7-review.md` | Review | autonom | fertig |
-| WZ33.8 | `WZ33.8-abnahme-pc.md` | Workshop | Mensch | offen |
+| WZ33.8 | `WZ33.8-abnahme-pc.md` | Workshop | Mensch | fertig |
 ## Abnahme
 
-2026-10-30: AC-01 bis AC-11 in WZ33.1–WZ33.7 belegt (Vitest, Go-Tests, Browser-Pane mit Mock), Review-Befunde behoben (WZ33.7). Neues Ticket B-678. Offen ist AC-12: die Abnahme am PC durch Ralf in WZ33.8.
+2026-10-30: AC-01 bis AC-11 in WZ33.1–WZ33.7 belegt (Vitest, Go-Tests, Browser-Pane mit Mock), Review-Befunde behoben (WZ33.7). Neues Ticket B-678.
+
+2026-10-31: AC-12 in WZ33.8 von 🧑 Ralf am PC abgenommen. Alle Kriterien erfüllt, Sprint erledigt.

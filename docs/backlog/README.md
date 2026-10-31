@@ -8,6 +8,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
+| [B-677](archiv/B-677-studio-assets-seite.md) | DEV | Idee | mittel | erledigt | WZ33 | Grafik, Sound und Quellen sind im Studio eine Seite Assets mit Fokus-Chips, Inspektor und einer Abspielleiste |
 | [B-008](B-008-spieleabend.md) | REG | Frage | niedrig | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
 | [B-015](B-015-gebaeude-werte.md) | REG | Problem | niedrig | eingeplant | BR1 | Gebäude-HP und -Kosten sind gebalanced |
 | [B-023](B-023-itch-io.md) | INF | Idee | niedrig | eingeplant | PB1 | Spiel ist auf itch.io veröffentlicht |
@@ -164,7 +165,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-674](B-674-skill-effekt-am-wirkort.md) | SRV | Problem | mittel | eingeplant | KB5 | Flächenzauber erscheinen dort, wo die Simulation sie wirkt, nicht am Monarchen |
 | [B-675](B-675-status-effekte-sichtbar.md) | CLI | Idee | mittel | eingeplant | KB5 | DoTs, Buffs und Kontrolleffekte der Skills sind im Spiel sichtbar |
 | [B-676](B-676-studio-skills-ziel-und-status.md) | DEV | Idee | mittel | eingeplant | KB5 | Das Studio zeigt Skills am Wirkort und DoTs und Buffs an Gegnern und Monarchen |
-| [B-677](B-677-studio-assets-seite.md) | DEV | Idee | mittel | eingeplant | WZ33 | Grafik, Sound und Quellen sind im Studio eine Seite Assets mit Fokus-Chips, Inspektor und einer Abspielleiste |
 | [B-678](B-678-vorrat-adopt-parallel-und-eine-stimme.md) | DEV | Schuld | niedrig | offen | – | Übernehmen aus dem Vorrat ist gegen parallele Aufrufe gesichert, und Vorschauen spielen nie zwei Töne zugleich |
 
 ## Archiv

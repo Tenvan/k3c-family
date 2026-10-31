@@ -52,7 +52,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ29 | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | aktiv |
 | WZ31 | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | aktiv |
 | WZ32 | Balancing-Seite: feste Fläche, eine Liste, Lauf-Editor mit Varianten-Tabelle | erledigt |
-| WZ33 | Eine Seite Assets statt Grafik, Sound und Quellen | aktiv |
+| WZ33 | Eine Seite Assets statt Grafik, Sound und Quellen | erledigt |
 
 ## Nicht-Ziele
 
