@@ -104,7 +104,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-604](B-604-welt-anzeige-pausenmenue-lobby.md) | CLI | Problem | mittel | eingeplant | BD9 | Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby |
 | [B-605](B-605-schutzplatz-stabil-bei-truppenwechsel.md) | SIM | Schuld | niedrig | offen | – | Schutzplatz bleibt stabil, wenn Truppen sterben oder hinzukommen |
 | [B-613](B-613-http-origin-pruefen.md) | SRV | Problem | niedrig | offen | – | Schreibende HTTP-Endpunkte des Spielservers lehnen fremde Webseiten ab |
-| [B-614](B-614-workbench-studio-web-client.md) | DEV | Idee | hoch | offen | WZ31 | Workbench und Studio starten als Server, gearbeitet wird im Browser |
 | [B-617](B-617-studio-levelview-test-golden.md) | DEV | Problem | hoch | offen | – | Der Studio-Test levelView passt wieder zur Golden-Datei level-forest.json |
 | [B-615](B-615-ticket-nummer-gleichzeitig.md) | DEV | Problem | mittel | offen | – | Gleichzeitiges Anlegen von Tickets vergibt nie dieselbe Nummer |
 | [B-616](B-616-lauf-id-nach-neustart.md) | DEV | Problem | niedrig | offen | – | Lauf-IDs der Balancing-Seite bleiben über einen Neustart der Workbench eindeutig |
@@ -647,3 +646,4 @@ Zeile in diesen Abschnitt.
 | [B-600](archiv/B-600-chat-unterstuetzung-sound-grafik.md) | DEV | Idee | hoch | erledigt | WZ29 | Der AI-Chat unterstützt die Zuordnung auf Sound- und Grafik-Seite |
 | [B-601](archiv/B-601-download-vorschlagsliste-offline-vorrat.md) | DEV | Idee | hoch | erledigt | WZ29 | Eine Download-Vorschlagsliste für empfohlene Assets ermöglicht Offline-Tests |
 | [B-602](archiv/B-602-studio-szene-kampf-anzeigen.md) | DEV | Idee | hoch | erledigt | WZ29 | Das Studio zeigt Boss-Leiste, Phasen, Warnkreis und Event-Banner mit Mock-Zuständen |
+| [B-614](archiv/B-614-workbench-studio-web-client.md) | DEV | Idee | hoch | erledigt | WZ31 | Workbench und Studio starten als Server, gearbeitet wird im Browser |

@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** WZ31
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
@@ -70,3 +70,4 @@ keine (Ports 8181/8182 und MCP 5180 als Default gesetzt; änderbar über Task-Va
 ## Notizen
 
 Auftrag aus dem Chat mit Ralf am 2026-10-24 (Session „Web-Client first“).
+- **Abgenommen 2026-10-31:** Ralf (🧑) hat beide Web-Starts im Review und im Alltag abgenommen (WZ31.2, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen).

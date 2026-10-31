@@ -10,7 +10,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
-| WZ31 | DEV | WZG | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | – | `aktiv/WZ31-web-client-first/` |
 | GEB18 | DEV, SIM, CLI | GEB | Hintergründe der fünf Stufen: vierfache Auflösung, fünf Varianten je Stufe nach Seed | – | `aktiv/GEB18-hintergruende-detail-varianten/` |
 | GEB15 | DEV | GEB | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | – | `aktiv/GEB15-hoehle-fels-varianten/` |
 | GEB16 | SRV, CLI, DEV, REG | GEB | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | – | `aktiv/GEB16-bauschilder-wald-geruest/` |
@@ -262,3 +261,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ28 | Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite | `erledigt/WZ28-offline-werkzeuge/` |
 | WZ30 | Oberflächen zur Abnahme: Szenen, Filter, Quellen, Chat-Karten mit Mock-Daten | `erledigt/WZ30-oberflaechen-abnahme/` |
 | WZ29 | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | `erledigt/WZ29-sound-grafik-seiten-ausbau/` |
+| WZ31 | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | `erledigt/WZ31-web-client-first/` |

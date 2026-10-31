@@ -1,6 +1,6 @@
 # WZ31 · DEV · Workbench und Studio als Web-Client: Server starten, im Browser arbeiten
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -59,12 +59,12 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ31.1 | `WZ31.1-web-tasks.md` | Umsetzung | autonom | fertig |
-| WZ31.2 | `WZ31.2-review.md` | Review | Mensch | offen |
+| WZ31.2 | `WZ31.2-review.md` | Review | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-31: AC-01 bis AC-05 von Ralf (🧑) abgenommen (Review und Alltagsnutzung beider Web-Starts), im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen. Nachweise der Umsetzung: WZ31.1 › Ergebnis.
+Keine Befunde genannt, keine neuen Tickets. Sprint erledigt.
