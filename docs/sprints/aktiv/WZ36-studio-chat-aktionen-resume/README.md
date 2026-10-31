@@ -1,9 +1,9 @@
 # WZ36 · DEV · Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-679, B-687, B-686
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** freigegeben
@@ -53,6 +53,13 @@ Resume schlägt fehl → Rückfall auf den Verlauf als Text (`B-687`). Ungültig
 keine.
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ36.1 | `WZ36.1-aktionskarten-alle.md` | Umsetzung | autonom | fertig |
+| WZ36.2 | `WZ36.2-resume-rueckfall.md` | Umsetzung | autonom | fertig |
+| WZ36.3 | `WZ36.3-review.md` | Review | autonom | fertig |
+| WZ36.4 | `WZ36.4-abnahme-pc.md` | Umsetzung | Mensch | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 

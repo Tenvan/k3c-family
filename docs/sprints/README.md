@@ -9,6 +9,8 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| WZ35 | DEV | WZG | Workbench-Nachträge: Ticket-Nummern, Lauf-IDs, schmale Fenster, Auswertung | – | `aktiv/WZ35-workbench-nachtraege/` |
+| WZ36 | DEV | WZG | Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung | – | `aktiv/WZ36-studio-chat-aktionen-resume/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | `aktiv/PM1-leistung-messen/` |
 | KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | `aktiv/KB4-dev-aktionen-boss-event/` |
@@ -27,8 +29,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WZ35 | DEV | WZG | Workbench-Nachträge: Ticket-Nummern, Lauf-IDs, schmale Fenster, Auswertung | – | Entwurf | `geplant/WZ35-workbench-nachtraege/` |
-| WZ36 | DEV | WZG | Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung | – | Entwurf | `geplant/WZ36-studio-chat-aktionen-resume/` |
 | WZ37 | DEV | WZG | Welt-Overrides im Welten-Editor und im Studio-Chat | – | Entwurf | `geplant/WZ37-overrides-editor-chat/` |
 | WZ38 | DEV | WZG | Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff | – | Entwurf | `geplant/WZ38-umgesetzte-werkzeuge-abnehmen/` |
 | BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | Entwurf | `geplant/BD10-schreibende-endpunkte-schutz/` |

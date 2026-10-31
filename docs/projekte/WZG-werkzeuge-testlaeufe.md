@@ -54,8 +54,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ32 | Balancing-Seite: feste Fläche, eine Liste, Lauf-Editor mit Varianten-Tabelle | erledigt |
 | WZ33 | Eine Seite Assets statt Grafik, Sound und Quellen | erledigt |
 | WZ34 | Prüf- und Build-Werkzeuge: Studio-Test, check:diff, buildall | erledigt |
-| WZ35 | Workbench-Nachträge: Ticket-Nummern, Lauf-IDs, schmale Fenster, Auswertung | geplant |
-| WZ36 | Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung | geplant |
+| WZ35 | Workbench-Nachträge: Ticket-Nummern, Lauf-IDs, schmale Fenster, Auswertung | aktiv |
+| WZ36 | Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung | aktiv |
 | WZ37 | Welt-Overrides im Welten-Editor und im Studio-Chat | geplant |
 | WZ38 | Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff | geplant |
 

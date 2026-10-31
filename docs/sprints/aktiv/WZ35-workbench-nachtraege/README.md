@@ -1,9 +1,9 @@
 # WZ35 · DEV · Workbench-Nachträge: Ticket-Nummern, Lauf-IDs, schmale Fenster, Auswertung
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-615, B-616, B-668, B-669, B-678
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** freigegeben
@@ -55,6 +55,13 @@ Bericht mit Ziel ohne Unter- und Obergrenze → Auswertung zeigt das Ziel ohne B
 keine.
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ35.1 | `WZ35.1-nummern-lauf-ids.md` | Umsetzung | autonom | fertig |
+| WZ35.2 | `WZ35.2-schmale-fenster-auswertung.md` | Umsetzung | autonom | offen |
+| WZ35.3 | `WZ35.3-uebernehmen-abspielleiste.md` | Umsetzung | autonom | fertig |
+| WZ35.4 | `WZ35.4-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
