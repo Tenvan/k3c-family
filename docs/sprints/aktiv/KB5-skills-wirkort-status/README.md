@@ -1,9 +1,9 @@
 # KB5 · SRV, CLI, DEV · Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio
 
-- **Status:** in Arbeit
+- **Status:** aktiv
 - **Projekt:** KMP
 - **Domäne:** SRV, CLI, DEV
-- **Reife:** Sessions
+- **Reife:** bereit
 - **Tickets:** B-674, B-675, B-676
 - **Start-Commit:** 88ea604b
 - **Spec:** freigegeben
@@ -56,7 +56,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| KB5.1 | `KB5.1-wirkort-ereignis.md` | Umsetzung | autonom | offen |
+| KB5.1 | `KB5.1-wirkort-ereignis.md` | Umsetzung | autonom | fertig |
 | KB5.2 | `KB5.2-status-snapshot.md` | Umsetzung | autonom | offen |
 | KB5.3 | `KB5.3-status-darstellung.md` | Umsetzung | autonom | offen |
 | KB5.4 | `KB5.4-studio-ziel-und-status.md` | Umsetzung | autonom | offen |

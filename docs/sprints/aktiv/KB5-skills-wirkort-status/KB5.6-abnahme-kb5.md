@@ -8,7 +8,7 @@
 - **Branch:** kb5/6-abnahme-kb5
 - **Abhängig von:** KB5.5
 - **Tickets:** B-674, B-675, B-676
-- **Kriterien:** B-674 AC-04, B-675 AC-04, B-676 AC-03
+- **Kriterien:** –
 
 ## Ziel
 

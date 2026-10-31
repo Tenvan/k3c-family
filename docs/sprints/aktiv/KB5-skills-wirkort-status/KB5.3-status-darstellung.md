@@ -8,7 +8,7 @@
 - **Branch:** kb5/3-status-darstellung
 - **Abhängig von:** KB5.2
 - **Tickets:** B-675
-- **Kriterien:** B-675 AC-03
+- **Kriterien:** AC-02
 
 ## Ziel
 

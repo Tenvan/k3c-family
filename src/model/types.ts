@@ -277,6 +277,8 @@ export type GameEvent = (
   | { type: 'arrow'; from: number; to: number; x: number; team: 'player' | 'enemy' }
   | { type: 'strike'; from: number; x: number; hit?: boolean }
   | { type: 'castFailed'; from: number; slot: number; x: number }
+  /** Aktiver Skill gewirkt (B-674, v10): `x` Wirkort, `radius` in Units (0 = ohne Fläche, am Monarchen) */
+  | { type: 'skillCast'; from: number; skill: string; x: number; radius: number }
   | { type: 'coinPickup'; player: number; x: number }
   | { type: 'coinGive'; player: number; x: number; to: 'site' | 'recruit' | 'mark' }
   | { type: 'buildProgress'; site: number; kind: SiteKind; x: number; percent: 25 | 50 | 75 }

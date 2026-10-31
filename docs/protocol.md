@@ -1,4 +1,11 @@
-# Protokoll v9
+# Protokoll v10
+
+**Änderungen gegenüber v9 (KB5.1, Version 10, B-674):** Neues Ereignis `skillCast` (`from` Spieler-ID, `skill`
+Skill-ID, `x` Wirkort, `radius` in Units) bei jedem Wirken eines aktiven Skills. Flächenzauber (fireball, iceWall,
+lightningStorm, meteor) melden den Ort ihres Ziels und ihren Radius, alle anderen Skills den Ort des Monarchen mit
+`radius` 0; ohne Ziel bleibt es bei `castFailed`. Der Client zeichnet Skill-Effekte nur noch aus diesem Ereignis (nicht
+mehr aus dem Anstieg von `cooldowns`), deshalb lehnt der Server einen v9-Client mit `version` ab. `hello.v` muss 10
+sein. Beispiel: `s2c-snapshot-rueckmeldung.json`.
 
 **Änderungen gegenüber v8 (BD9.1, Version 9, B-604, B-581):** Jeder Eintrag von `rooms[]` nennt zusätzlich `world`
 (Welt-ID des Raums, wie `joined.world`). Neu ist `POST /api/room/close?slot=NAME` (siehe *HTTP: Raum schließen*): Der
@@ -605,6 +612,7 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 | `arrow` | `from`, `to` (IDs), `x`, `team` (`player`, `enemy`) | Geschoss abgeschossen |
 | `strike` | `from`, `x`, beim Monarchen `hit` (`false` = ins Leere, setzt trotzdem die Abklingzeit; B-321) | Nahkampf-Schlag eines Gegners (ohne `hit`) oder eines Monarchen (`from` = Spieler-ID) |
 | `castFailed` | `from` (Spieler-ID), `slot` (0 bis 3), `x` | Bereiter Skill ohne Ziel: nichts geschieht, keine Abklingzeit (B-321, B-318) |
+| `skillCast` | `from` (Spieler-ID), `skill` (Skill-ID), `x` (Wirkort), `radius` (Units, 0 = ohne Fläche) | Aktiver Skill gewirkt; Flächenzauber am Ziel mit ihrem Radius, sonst am Monarchen (B-674, ab v10); Spell Echo meldet einmal |
 | `coinPickup` | `player`, `x` | Münze aufgehoben |
 | `coinGive` | `player`, `x`, `to` (`site`, `recruit`, `mark`) | Münze bezahlt ein Ziel (nur zu Boden: kein Ereignis) |
 | `buildProgress` | `site`, `kind`, `x`, `percent` (25, 50, 75) | Bau fortgeschritten, fertig = `built` |

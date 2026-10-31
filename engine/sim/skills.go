@@ -63,12 +63,14 @@ func castSkill(w *World, p *Player, slot int, announce bool) {
 	if !ok || cast == nil {
 		return
 	}
+	at, radius := castPlace(w, p, e)
 	if !cast(w, p, e) {
 		if announce {
 			emit(w, "castFailed", Event{"from": p.ID, "slot": slot, "x": unitX(p.X)}) // kein Ziel: keine Abklingzeit (B-321)
 		}
 		return
 	}
+	emit(w, "skillCast", Event{"from": p.ID, "skill": s.ID, "x": unitX(at), "radius": radius}) // Wirkort (B-674)
 	if e.Type != "stealth" {
 		p.StealthFor = 0 // jeder andere Skill beendet die Unsichtbarkeit (B-577, Annahme)
 	}

@@ -8,7 +8,7 @@
 - **Branch:** kb5/2-status-snapshot
 - **Abhängig von:** KB5.1
 - **Tickets:** B-675
-- **Kriterien:** B-675 AC-01, AC-02
+- **Kriterien:** AC-02
 
 ## Ziel
 

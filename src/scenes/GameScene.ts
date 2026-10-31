@@ -299,7 +299,7 @@ export class GameScene extends Phaser.Scene {
       if (this.world_) musicDirector().update(musicViewOf(this.world_), frame.state.events); // Musik: Ereignisse wie castleFallen
       audioCore().onHubLevel(this.world_?.hubLevel); // Hub-Ausbau-Ton (SO6.4)
       this.spawnEffects(frame.state.events);
-      for (const fx of this.skillCasts.diff(frame.state.players)) this.stages.get(this.level?.depth ?? -1)?.spawn(fx); // Skill-Ringe (SK2.3)
+      for (const fx of this.skillCasts.diff(frame.state.players, frame.state.events)) this.stages.get(this.level?.depth ?? -1)?.spawn(fx); // Skill-Ringe am Wirkort (B-674)
     }
   }
 

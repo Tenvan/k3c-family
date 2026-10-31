@@ -11,6 +11,8 @@ import "math"
 //	                getroffenem Ziel ein `hit`). Flächen der Flammenspur melden nur ihre `hit` (boss_abilities.go)
 //	strike        – Nahkampf-Schlag: from, x; beim Monarchen zusätzlich hit (false = ins Leere, B-321), beim Gegner kein hit
 //	castFailed    – bereiter Skill ohne Ziel (skills.go; B-321): from, slot (0 bis 3), x; ohne Abklingzeit
+//	skillCast     – aktiver Skill gewirkt (skills.go; B-674): from, skill (ID), x (Wirkort), radius (Units; 0 = am
+//	                Wirkenden ohne Fläche); Flächenzauber am Ziel, je Tastendruck mit Wirkung einmal (Spell Echo nicht doppelt)
 //	coinPickup    – Münze aufgehoben: player (Index), x
 //	coinGive      – Münze gegeben: player, x, to (site, recruit, mark, offer, merchant); fällt sie nur zu Boden, kein Ereignis
 //	buildProgress – Bau fortgeschritten: site (ID), kind, x, percent (25, 50, 75; fertig = built)

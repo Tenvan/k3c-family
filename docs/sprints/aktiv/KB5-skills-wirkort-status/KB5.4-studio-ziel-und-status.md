@@ -8,7 +8,7 @@
 - **Branch:** kb5/4-studio-ziel-und-status
 - **Abhängig von:** KB5.1, KB5.3
 - **Tickets:** B-676
-- **Kriterien:** B-676 AC-01, AC-02
+- **Kriterien:** AC-03
 
 ## Ziel
 
