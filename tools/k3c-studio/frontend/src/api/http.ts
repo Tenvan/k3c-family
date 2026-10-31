@@ -1,5 +1,5 @@
 import { chatStreamHttp } from './chatHttp';
-import type { ChatDetail, ChatOptionsView, ChatSummary } from './chatTypes';
+import type { ChatAction, ChatDetail, ChatOptionsView, ChatSummary } from './chatTypes';
 import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, GameServersView, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, TicketCreated, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
 import type { AssetCandidatesView } from './candidateTypes';
 import type { AssetSlotDetails } from './slotTypes';
@@ -128,6 +128,9 @@ export function httpBackend(): Backend {
     chatGet: (id: string) => rpc<ChatDetail>('ChatGet', id),
     chatDelete: (id: string) => rpc<void>('ChatDelete', id),
     chatOptions: () => rpc<ChatOptionsView>('ChatOptions'),
+    chatActions: (chat: string) => rpc<ChatAction[]>('ChatActions', chat),
+    chatActionRun: (chat: string, id: string) => rpc<ChatAction>('ChatActionRun', chat, id),
+    chatActionDrop: (chat: string, id: string) => rpc<ChatAction>('ChatActionDrop', chat, id),
     on: subscribe,
   };
 }

@@ -74,6 +74,18 @@ export function clearPrefill(): void {
   notify();
 }
 
+let page = ''; // offene Seite des Studios: mit ihr geht der Aktionskatalog mit (B-679)
+
+/** Die Oberfläche meldet die offene Seite (assets, sound, grafik, welt, planer, monarch, gegner). */
+export function setChatPage(next: string): void {
+  page = next;
+}
+
+/** Offene Seite der nächsten Nachricht ("" = keine). */
+export function chatPage(): string {
+  return page;
+}
+
 /** Seitenkontext der nächsten Nachricht (nur bei `zuordnung`). */
 export function chatContext(): AssignContext | undefined {
   return assign ?? undefined;

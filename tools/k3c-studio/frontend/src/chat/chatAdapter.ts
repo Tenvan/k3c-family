@@ -41,6 +41,8 @@ export interface ChatAdapterHooks {
   task?: () => ChatTask | undefined;
   /** Seitenkontext des Auftrags `zuordnung` (B-600), bei jeder Nachricht neu gelesen */
   context?: () => AssignContext | undefined;
+  /** offene Seite (B-679), bei jeder Nachricht neu gelesen; "" = keine */
+  page?: () => string;
   /** z. B. „Verlauf nicht gespeichert“ */
   onNotice?: (notice: string) => void;
   /** der Server hat dem Chat eine Kennung gegeben (neuer Chat); leer, wenn der Chat nicht mehr existiert */
@@ -52,7 +54,8 @@ export interface ChatAdapterHooks {
 const NO_CHOICE: ChatChoiceValues = { provider: '', model: '', effort: '' };
 
 function sendOptions(hooks: ChatAdapterHooks): ChatSendOptions {
-  const choice = hooks.options?.() ?? NO_CHOICE;
+  const seite = hooks.page?.() ?? '';
+  const choice: ChatSendOptions = seite ? { ...(hooks.options?.() ?? NO_CHOICE), seite } : hooks.options?.() ?? NO_CHOICE;
   const task = hooks.task?.();
   const kontext = task === 'zuordnung' ? hooks.context?.() : undefined;
   if (kontext) return { ...choice, task, kontext };

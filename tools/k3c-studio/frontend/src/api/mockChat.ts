@@ -1,4 +1,4 @@
-import { ChatGoneError, type ChatApi, type ChatDetail, type ChatOptionsView, type ChatStatus, type ChatStream, type ChatSummary } from './chatTypes';
+import { ChatGoneError, type ChatAction, type ChatActionApi, type ChatApi, type ChatDetail, type ChatOptionsView, type ChatStatus, type ChatStream, type ChatSummary } from './chatTypes';
 
 const wait = (ms: number, signal: AbortSignal) =>
   new Promise<void>((resolve) => {
@@ -17,10 +17,40 @@ const OPTIONS: ChatOptionsView = {
 
 const titleOf = (text: string) => (text.length > 40 ? `${text.slice(0, 40)}…` : text);
 
+/** Aktionskarten ohne Server (B-679): „!aktion“ legt eine ausführbare und eine gesperrte Karte an. */
+function mockActions(): ChatActionApi & { propose: (chat: string) => string } {
+  const actions = new Map<string, ChatAction[]>();
+  let seq = 0;
+  const take = (chat: string, id: string) => {
+    const card = actions.get(chat)?.find((a) => a.id === id);
+    if (!card) throw new Error(`keine Aktion ${id} in diesem Chat`);
+    if (card.status !== 'offen') throw new Error(`aktion ${id} ist schon ${card.status}`);
+    return card;
+  };
+  return {
+    propose: (chat) => {
+      const list = actions.get(chat) ?? [];
+      list.push({ id: `a${++seq}`, art: 'welt_anlegen', titel: 'Welt anlegen: Nordsee', details: ['Vorlage: standard'], status: 'offen' },
+        { id: `a${++seq}`, art: 'zaubern', titel: 'zaubern', details: [], gesperrt: 'unbekannte Art "zaubern"', status: 'offen' });
+      actions.set(chat, list);
+      return '\n\n(Studio: 2 Aktionen als Karten vorbereitet, 1 gesperrt; ausgeführt wird nur per Knopf.)';
+    },
+    chatActions: async (chat) => structuredClone(actions.get(chat) ?? []),
+    chatActionRun: async (chat, id) => {
+      const card = take(chat, id);
+      if (card.gesperrt) throw new Error(`aktion gesperrt: ${card.gesperrt}`);
+      Object.assign(card, { status: 'ausgefuehrt', ergebnis: 'gewählt: nordsee' });
+      return structuredClone(card);
+    },
+    chatActionDrop: async (chat, id) => structuredClone(Object.assign(take(chat, id), { status: 'verworfen' as const })),
+  };
+}
+
 /** Chat ohne Server (Test, ?mock=1): Chats nur im Speicher; antwortet in Stücken mit der Nachricht. „!fehler“ scheitert wie
  *  eine fehlende CLI, „!lang“ antwortet, bis jemand abbricht. */
 export function mockChats(): ChatApi {
   const chats = new Map<string, ChatDetail>();
+  const actions = mockActions();
   let counter = 0;
 
   const chatStream: ChatStream = async function* (chat, text, options, signal) {
@@ -54,11 +84,19 @@ export function mockChats(): ChatApi {
       acc += `${word} `;
       yield { kind: 'chunk', text: `${word} ` };
     }
+    if (text.startsWith('!aktion')) {
+      const note = actions.propose(id);
+      acc += note;
+      yield { kind: 'chunk', text: note };
+    }
     finish(acc.trim(), 'fertig');
     yield { kind: 'done', status: 'fertig' };
   };
 
   return {
+    chatActions: actions.chatActions,
+    chatActionRun: actions.chatActionRun,
+    chatActionDrop: actions.chatActionDrop,
     chatStream,
     chatList: async () => [...chats.values()].map((c): ChatSummary => ({
       id: c.id, title: titleOf(c.messages[0]?.text ?? ''), updated: c.updated, count: c.messages.length,
