@@ -1,6 +1,6 @@
 # WZ36 · DEV · Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -59,7 +59,7 @@ keine.
 | WZ36.1 | `WZ36.1-aktionskarten-alle.md` | Umsetzung | autonom | fertig |
 | WZ36.2 | `WZ36.2-resume-rueckfall.md` | Umsetzung | autonom | fertig |
 | WZ36.3 | `WZ36.3-review.md` | Review | autonom | fertig |
-| WZ36.4 | `WZ36.4-abnahme-pc.md` | Umsetzung | Mensch | offen |
+| WZ36.4 | `WZ36.4-abnahme-pc.md` | Umsetzung | Mensch | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
@@ -70,5 +70,4 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-31: AC-01 bis AC-03 durch Go-Tests und Vitest belegt (WZ36.1 bis WZ36.3), Abnahme am PC durch Ralf (WZ36.4). Review-Rest LOW: Glob in `chat_session.go:52` sucht in allen `projects/*` (UUIDs, geringes Risiko), kein Ticket.

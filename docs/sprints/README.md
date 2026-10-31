@@ -9,9 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| WZ35 | DEV | WZG | Workbench-Nachträge: Ticket-Nummern, Lauf-IDs, schmale Fenster, Auswertung | – | `aktiv/WZ35-workbench-nachtraege/` |
-| WZ36 | DEV | WZG | Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung | – | `aktiv/WZ36-studio-chat-aktionen-resume/` |
-| WZ38 | DEV | WZG | Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff | – | `aktiv/WZ38-umgesetzte-werkzeuge-abnehmen/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | `aktiv/PM1-leistung-messen/` |
 | KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | `aktiv/KB4-dev-aktionen-boss-event/` |
@@ -273,3 +270,6 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SO8 | Skill-Sounds je Klasse | `erledigt/SO8-skill-sounds-je-klasse/` |
 | GEB17 | Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe | `erledigt/GEB17-hub-ausbau-je-inselstufe/` |
 | WZ34 | Prüf- und Build-Werkzeuge: Studio-Test, check:diff, buildall | `erledigt/WZ34-pruef-build-werkzeuge/` |
+| WZ35 | Workbench-Nachträge: Ticket-Nummern, Lauf-IDs, schmale Fenster, Auswertung | `erledigt/WZ35-workbench-nachtraege/` |
+| WZ36 | Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung | `erledigt/WZ36-studio-chat-aktionen-resume/` |
+| WZ38 | Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff | `erledigt/WZ38-umgesetzte-werkzeuge-abnehmen/` |

@@ -1,6 +1,6 @@
 # WZ38 · DEV · Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -59,7 +59,7 @@ keine.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ38.1 | `WZ38.1-kriterien-belegen.md` | Umsetzung | autonom | fertig |
-| WZ38.2 | `WZ38.2-abnahme-am-pc.md` | Workshop | Mensch | offen |
+| WZ38.2 | `WZ38.2-abnahme-am-pc.md` | Workshop | Mensch | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
@@ -68,5 +68,4 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-31: Kriterien gegen Code und Tests belegt (WZ38.1), Abnahme am PC durch Ralf (WZ38.2). Neue Tickets aus den Befunden: B-689 (Inspektor scrollt nicht in sich), B-690 (Testlücken), B-691 (Doku Norton, codemap).

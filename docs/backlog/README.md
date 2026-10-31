@@ -70,16 +70,12 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-570](B-570-camp-stufen-look.md) | DEV | Idee | mittel | eingeplant | GEB13 | Das Camp bekommt einen Stufen-Look statt der Grundform |
 | [B-571](B-571-heilplatz-stufen-deutlicher.md) | DEV | Idee | mittel | eingeplant | GEB13 | Heilplatz-Stufen sind deutlicher sichtbar (Zelt, Brunnen) |
 | [B-579](B-579-wellenabstand-adern-korridor.md) | REG | Problem | mittel | eingeplant | KB6 | Wellenabstand unter Tage mit besetzten Adern liegt über dem Korridor 4–12 Minuten |
-| [B-580](B-580-workbench-git-seite.md) | DEV | Idee | mittel | eingeplant | WZ38 | Die Workbench hat eine Git-Seite für dieses Repo |
 | [B-581](B-581-offenen-raum-schliessen.md) | CLI | Idee | mittel | eingeplant | BD9 | Ein offener Raum lässt sich in der Lobby über Entfernen schließen |
 | [B-603](B-603-dev-aktionen-boss-event.md) | SRV | Idee | hoch | eingeplant | KB4 | Dev-Aktionen lösen Boss, Phasenwechsel und Events (Vollmond, Blutmond, Händler) sofort aus |
 | [B-604](B-604-welt-anzeige-pausenmenue-lobby.md) | CLI | Problem | mittel | eingeplant | BD9 | Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby |
 | [B-605](B-605-schutzplatz-stabil-bei-truppenwechsel.md) | SIM | Schuld | niedrig | eingeplant | KB6 | Schutzplatz bleibt stabil, wenn Truppen sterben oder hinzukommen |
 | [B-613](B-613-http-origin-pruefen.md) | SRV | Problem | niedrig | eingeplant | BD10 | Schreibende HTTP-Endpunkte des Spielservers lehnen fremde Webseiten ab |
 | [B-617](B-617-studio-levelview-test-golden.md) | DEV | Problem | hoch | eingeplant | WZ34 | Der Studio-Test levelView passt wieder zur Golden-Datei level-forest.json |
-| [B-615](B-615-ticket-nummer-gleichzeitig.md) | DEV | Problem | mittel | eingeplant | WZ35 | Gleichzeitiges Anlegen von Tickets vergibt nie dieselbe Nummer |
-| [B-616](B-616-lauf-id-nach-neustart.md) | DEV | Problem | niedrig | eingeplant | WZ35 | Lauf-IDs der Balancing-Seite bleiben über einen Neustart der Workbench eindeutig |
-| [B-619](B-619-check-diff-cache-und-short.md) | INF | Problem | hoch | eingeplant | WZ38 | check:diff nutzt den Go-Testcache und lässt lange Tests aus |
 | [B-629](B-629-buildall-web-exe.md) | INF | Problem | hoch | eingeplant | WZ34 | task buildall baut die Web-EXEs von Studio und Workbench nicht mit |
 | [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | eingeplant | WZ34 | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
 | [B-622](B-622-fackeln-als-spielobjekt.md) | SIM | Idee | niedrig | eingeplant | W15 | Fackeln gibt es als Spielobjekt mit Licht in der Nacht |
@@ -100,29 +96,15 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-659](B-659-balancing-seite-feste-flaeche.md) | DEV | Idee | mittel | eingeplant | WZ32 | Die Balancing-Seite füllt die Fläche, nur Liste und Detail scrollen |
 | [B-660](B-660-balancing-liste-und-detail.md) | DEV | Idee | hoch | eingeplant | WZ32 | Läufe und Berichte stehen in einer Liste mit Filter und Mehrfachauswahl, der Bericht in Reitern |
 | [B-661](B-661-balancing-lauf-editor-varianten.md) | DEV | Idee | hoch | eingeplant | WZ32 | Der Lauf-Editor setzt Varianten als Tabelle mit Basiswert und Daten-Browser |
-| [B-663](B-663-welten-editor-responsive.md) | DEV | Problem | mittel | eingeplant | WZ38 | Der Welten Editor bricht nach der Breite seiner Seite um und zeigt keine waagrechte Scrollleiste |
-| [B-664](B-664-welten-editor-zwei-modi.md) | DEV | Idee | mittel | eingeplant | WZ38 | Der Welten Editor trennt Welt-Struktur und Stufe bearbeiten und speichert an einer Stelle |
-| [B-665](B-665-welten-editor-buehne-inspektor.md) | DEV | Idee | mittel | eingeplant | WZ38 | Im Modus Stufe bearbeiten stehen eine große Live-Vorschau, eine schmale Chunk-Vorschau und ein Inspektor statt vier Steuerzeilen |
-| [B-666](B-666-welten-editor-gebaeude-zustaende.md) | DEV | Idee | mittel | eingeplant | WZ38 | Gebäude-Zustände der Live-Vorschau lassen sich je Art, per Voreinstellung und je Bauplatz schnell setzen |
-| [B-667](B-667-live-vorschau-bauplatz-klick.md) | DEV | Idee | niedrig | eingeplant | WZ38 | Ein Klick auf einen Bauplatz in der Live-Vorschau wählt ihn im Inspektor |
-| [B-668](B-668-workbench-kopf-schmal.md) | DEV | Problem | niedrig | eingeplant | WZ35 | Der Kopf der Workbench bricht in schmalen Fenstern um, statt die Seite waagrecht zu verbreitern |
-| [B-669](B-669-insights-ziel-ohne-grenzen.md) | DEV | Problem | niedrig | eingeplant | WZ35 | Die Auswertung eines Berichts stürzt nicht ab, wenn ein Ziel weder Unter- noch Obergrenze hat |
-| [B-670](B-670-studio-planer-kompakt.md) | DEV | Idee | mittel | eingeplant | WZ38 | Der Gebäude-Planer zeigt Bühne, Matrix und Inspektor auf einen Blick, ohne dass Filter oder Regeltabelle die Fläche schlucken |
-| [B-671](B-671-studio-monarch-kompakt.md) | DEV | Idee | mittel | eingeplant | WZ38 | Die Monarch-Seite hat eine Werkzeugleiste und eine große Bühne, die Skills liegen in einem einklappbaren Seitenpanel |
-| [B-672](B-672-studio-gegner-kompakt.md) | DEV | Idee | mittel | eingeplant | WZ38 | Die Gegner-Seite zeigt Gegner als kompakte Tabelle mit Inspektor, Lücken als Zahl statt langer Badges |
 | [B-674](B-674-skill-effekt-am-wirkort.md) | SRV | Problem | mittel | eingeplant | KB5 | Flächenzauber erscheinen dort, wo die Simulation sie wirkt, nicht am Monarchen |
 | [B-675](B-675-status-effekte-sichtbar.md) | CLI | Idee | mittel | eingeplant | KB5 | DoTs, Buffs und Kontrolleffekte der Skills sind im Spiel sichtbar |
 | [B-676](B-676-studio-skills-ziel-und-status.md) | DEV | Idee | mittel | eingeplant | KB5 | Das Studio zeigt Skills am Wirkort und DoTs und Buffs an Gegnern und Monarchen |
-| [B-678](B-678-vorrat-adopt-parallel-und-eine-stimme.md) | DEV | Schuld | niedrig | eingeplant | WZ35 | Übernehmen aus dem Vorrat ist gegen parallele Aufrufe gesichert, und Vorschauen spielen nie zwei Töne zugleich |
-| [B-679](B-679-studio-chat-alle-aktionen.md) | DEV | Idee | mittel | eingeplant | WZ36 | Der Chat des Asset-Studios kann jede Bearbeitung des Studios als Aktionskarte auslösen |
 | [B-680](B-680-welt-werte-ueberschreiben.md) | REG | Idee | hoch | eingeplant | BAL8 | Eine Welt-Datei erbt die Basis-Werte und übersteuert nur, was sie ändern will |
 | [B-681](B-681-sim-werte-je-raum.md) | SIM | Idee | hoch | eingeplant | BAL8 | Die Simulation rechnet mit den Werten ihrer Welt statt mit globalen Datei-Variablen |
 | [B-682](B-682-welten-editor-overrides.md) | DEV | Idee | mittel | eingeplant | WZ37 | Der Welten-Editor bearbeitet Werte-Overrides einer Welt und zeigt Basiswert gegen Override |
 | [B-683](B-683-chat-welt-overrides.md) | DEV | Idee | mittel | eingeplant | WZ37 | Der Studio-Chat kann Welt-Overrides lesen, setzen und zurücksetzen |
 | [B-684](B-684-studio-ausschnitt-rahmen-und-einpassen.md) | DEV | Idee | mittel | eingeplant | GRJ2 | Die Ausschnitt-Bearbeitung zeigt wahlweise einen Rahmen und passt die Grafik in die Kachel ein |
 | [B-685](B-685-zielmass-grafiken-skalieren.md) | CLI | Idee | hoch | eingeplant | GRJ2 | Grafiken bekommen ein Zielmaß in der Ausgabe und werden dort passend skaliert |
-| [B-686](B-686-studio-chat-welt-pruefung.md) | DEV | Problem | hoch | eingeplant | WZ36 | Der Studio-Chat liefert nur Welten, die die Prüfung bestehen, und korrigiert Fehler Schritt für Schritt |
-| [B-687](B-687-studio-chat-resume.md) | DEV | Idee | niedrig | eingeplant | WZ36 | Der Studio-Chat setzt die Claude-Sitzung per Resume fort und fällt auf den Verlauf als Text zurück |
 | [B-688](B-688-download-weiterleitung-fremde-hosts.md) | DEV | Problem | mittel | offen | – | Downloads folgen Weiterleitungen nur zu erlaubten Hosts |
 | [B-689](B-689-welten-inspektor-scrollt-in-sich.md) | DEV | Problem | niedrig | offen | – | Welten-Editor: Inspektor scrollt in sich, Höhe mit 24 Chips messen |
 | [B-690](B-690-studio-welt-testluecken.md) | DEV | Problem | niedrig | offen | – | Studio-Welt: Testlücken Klick-Schwelle, Bühnen-Verdrahtung, Werkzeugleiste, Merge-Dialog |
@@ -651,3 +633,21 @@ Zeile in diesen Abschnitt.
 | [B-626](archiv/B-626-rg1-werte-entscheiden.md) | REG | Frage | mittel | erledigt | – | Wertvorschläge aus RG1.1 und BR2.1 entscheiden |
 | [B-627](archiv/B-627-rg2-regelklaerungen.md) | REG | Frage | mittel | erledigt | – | Regelklärungen RG2.1 (Handwerker, Verlust-Korridor, Gold-Schwelle) entscheiden |
 | [B-673](archiv/B-673-studio-quellen-kompakt.md) | DEV | Idee | mittel | erledigt | WZ38 | Die Quellen-Seite ist kompakt nach Slot gegliedert, und alle vier Quellen lassen sich mit Vorschlägen füllen |
+| [B-615](archiv/B-615-ticket-nummer-gleichzeitig.md) | DEV | Problem | mittel | erledigt | WZ35 | Gleichzeitiges Anlegen von Tickets vergibt nie dieselbe Nummer |
+| [B-616](archiv/B-616-lauf-id-nach-neustart.md) | DEV | Problem | niedrig | erledigt | WZ35 | Lauf-IDs der Balancing-Seite bleiben über einen Neustart der Workbench eindeutig |
+| [B-668](archiv/B-668-workbench-kopf-schmal.md) | DEV | Problem | niedrig | erledigt | WZ35 | Der Kopf der Workbench bricht in schmalen Fenstern um, statt die Seite waagrecht zu verbreitern |
+| [B-669](archiv/B-669-insights-ziel-ohne-grenzen.md) | DEV | Problem | niedrig | erledigt | WZ35 | Die Auswertung eines Berichts stürzt nicht ab, wenn ein Ziel weder Unter- noch Obergrenze hat |
+| [B-678](archiv/B-678-vorrat-adopt-parallel-und-eine-stimme.md) | DEV | Schuld | niedrig | erledigt | WZ35 | Übernehmen aus dem Vorrat ist gegen parallele Aufrufe gesichert, und Vorschauen spielen nie zwei Töne zugleich |
+| [B-679](archiv/B-679-studio-chat-alle-aktionen.md) | DEV | Idee | mittel | erledigt | WZ36 | Der Chat des Asset-Studios kann jede Bearbeitung des Studios als Aktionskarte auslösen |
+| [B-686](archiv/B-686-studio-chat-welt-pruefung.md) | DEV | Problem | hoch | erledigt | WZ36 | Der Studio-Chat liefert nur Welten, die die Prüfung bestehen, und korrigiert Fehler Schritt für Schritt |
+| [B-687](archiv/B-687-studio-chat-resume.md) | DEV | Idee | niedrig | erledigt | WZ36 | Der Studio-Chat setzt die Claude-Sitzung per Resume fort und fällt auf den Verlauf als Text zurück |
+| [B-663](archiv/B-663-welten-editor-responsive.md) | DEV | Problem | mittel | erledigt | WZ38 | Der Welten Editor bricht nach der Breite seiner Seite um und zeigt keine waagrechte Scrollleiste |
+| [B-664](archiv/B-664-welten-editor-zwei-modi.md) | DEV | Idee | mittel | erledigt | WZ38 | Der Welten Editor trennt Welt-Struktur und Stufe bearbeiten und speichert an einer Stelle |
+| [B-665](archiv/B-665-welten-editor-buehne-inspektor.md) | DEV | Idee | mittel | erledigt | WZ38 | Im Modus Stufe bearbeiten stehen eine große Live-Vorschau, eine schmale Chunk-Vorschau und ein Inspektor statt vier Steuerzeilen |
+| [B-666](archiv/B-666-welten-editor-gebaeude-zustaende.md) | DEV | Idee | mittel | erledigt | WZ38 | Gebäude-Zustände der Live-Vorschau lassen sich je Art, per Voreinstellung und je Bauplatz schnell setzen |
+| [B-667](archiv/B-667-live-vorschau-bauplatz-klick.md) | DEV | Idee | niedrig | erledigt | WZ38 | Ein Klick auf einen Bauplatz in der Live-Vorschau wählt ihn im Inspektor |
+| [B-670](archiv/B-670-studio-planer-kompakt.md) | DEV | Idee | mittel | erledigt | WZ38 | Der Gebäude-Planer zeigt Bühne, Matrix und Inspektor auf einen Blick, ohne dass Filter oder Regeltabelle die Fläche schlucken |
+| [B-671](archiv/B-671-studio-monarch-kompakt.md) | DEV | Idee | mittel | erledigt | WZ38 | Die Monarch-Seite hat eine Werkzeugleiste und eine große Bühne, die Skills liegen in einem einklappbaren Seitenpanel |
+| [B-672](archiv/B-672-studio-gegner-kompakt.md) | DEV | Idee | mittel | erledigt | WZ38 | Die Gegner-Seite zeigt Gegner als kompakte Tabelle mit Inspektor, Lücken als Zahl statt langer Badges |
+| [B-580](archiv/B-580-workbench-git-seite.md) | DEV | Idee | mittel | erledigt | WZ38 | Die Workbench hat eine Git-Seite für dieses Repo |
+| [B-619](archiv/B-619-check-diff-cache-und-short.md) | INF | Problem | hoch | erledigt | WZ38 | check:diff nutzt den Go-Testcache und lässt lange Tests aus |

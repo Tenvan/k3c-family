@@ -1,6 +1,6 @@
 # WZ35 · DEV · Workbench-Nachträge: Ticket-Nummern, Lauf-IDs, schmale Fenster, Auswertung
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -59,7 +59,7 @@ keine.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ35.1 | `WZ35.1-nummern-lauf-ids.md` | Umsetzung | autonom | fertig |
-| WZ35.2 | `WZ35.2-schmale-fenster-auswertung.md` | Umsetzung | autonom | offen |
+| WZ35.2 | `WZ35.2-schmale-fenster-auswertung.md` | Umsetzung | autonom | fertig |
 | WZ35.3 | `WZ35.3-uebernehmen-abspielleiste.md` | Umsetzung | autonom | fertig |
 | WZ35.4 | `WZ35.4-review.md` | Review | autonom | fertig |
 
@@ -72,5 +72,4 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-10-31: AC-01 bis AC-05 belegt (WZ35.1 bis WZ35.3), `task check` und `task check:go` grün, `check:race` lokal ohne gcc übersprungen. Messung bei 600 px beobachtet, Ralf hat abgenommen. Keine neuen Tickets.
