@@ -46,7 +46,7 @@ func extractJSON(text string) (string, bool) {
 
 // PlanWorldAnswer prüft die Antwort des Modells und liefert sie als Entwurf (Binding); schreibt nichts.
 func (a *App) PlanWorldAnswer(text string) WorldAnswerView {
-	raw, ok := extractJSON(text)
+	raw, ok := extractJSON(withoutFence(text, actionsFence)) // ein Aktionsblock (B-679) ist nicht die Welt
 	if !ok {
 		return WorldAnswerView{Error: answerUnreadable + ": kein JSON gefunden"}
 	}

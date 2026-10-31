@@ -111,6 +111,9 @@ func store(root, file, text string, textCRLF bool, index string, indexCRLF bool)
 	return nil
 }
 
+// Validate prüft die Eingabe wie Create, ohne zu schreiben (Vorabprüfung der Chat-Aktion ticket, B-679).
+func Validate(root string, in Input) error { return validate(root, in) }
+
 func validate(root string, in Input) error {
 	if in.Titel == "" || strings.ContainsAny(in.Titel, "|\r\n") {
 		return fmt.Errorf("titel fehlt oder enthält `|` bzw. einen Zeilenumbruch")

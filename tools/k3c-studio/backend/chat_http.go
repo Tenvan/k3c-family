@@ -125,6 +125,7 @@ type chatRequest struct {
 	Effort   string         `json:"effort"`
 	Task     string         `json:"task"`              // leer = freier Chat, chatTaskWorld = Welt-Auftrag, chatTaskAssign = Zuordnung
 	Context  *assignContext `json:"kontext,omitempty"` // nur bei chatTaskAssign
+	Page     string         `json:"seite,omitempty"`   // offene Seite: Aktionskatalog mit Kontext (B-679)
 }
 
 func (r chatRequest) options() chatOptions {
@@ -144,6 +145,13 @@ func (a *App) taskOptions(req chatRequest) (chatOptions, error) {
 		opts.instruction, err = a.assignInstruction(*req.Context)
 	case chatTaskSources:
 		opts.instruction, err = a.sourcesInstruction()
+	}
+	if err == nil && req.Page != "" {
+		slot := ""
+		if req.Context != nil {
+			slot = req.Context.Slot
+		}
+		opts.instruction += a.actionsInstruction(req.Page, slot)
 	}
 	return opts, err
 }
@@ -166,6 +174,9 @@ func readChatRequest(r *http.Request) (chatRequest, error) {
 		if err := req.Context.validate(); err != nil {
 			return req, err
 		}
+	}
+	if err := validPage(req.Page); err != nil {
+		return req, err
 	}
 	return req, req.options().validate()
 }
@@ -215,18 +226,29 @@ func (a *App) chatSend(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Cache-Control", "no-store")
 	sendEvent(w, fl, "start", map[string]string{"chat": log.ID})
 	asked := h.store.now()
-	out := h.cli.run(ctx, chatPrompt(log.Messages, req.Text), opts, func(s string) {
-		sendEvent(w, fl, "chunk", map[string]string{"text": s})
-	})
-	if req.Task == chatTaskAssign && out.Status == chatDone {
-		a.rememberPicks(*req.Context, out.Text) // Karten aus der Antwort; der Chat schreibt nichts
-	}
-	if req.Task == chatTaskSources && out.Status == chatDone {
-		note := a.applySourcesAnswer(out.Text) // der Chat selbst schreibt nichts; das Studio prüft und trägt ein
-		out.Text += note
-		sendEvent(w, fl, "chunk", map[string]string{"text": note})
+	emit := func(s string) { sendEvent(w, fl, "chunk", map[string]string{"text": s}) }
+	out := h.cli.run(ctx, chatPrompt(log.Messages, req.Text), opts, emit)
+	if out.Status == chatDone {
+		a.afterAnswer(req, log.ID, &out, emit)
 	}
 	sendEvent(w, fl, "done", h.record(&log, req.Text, opts, asked, out))
+}
+
+// afterAnswer wertet eine fertige Antwort aus: Vorschlagskarten, Quellen, Aktionskarten. Der Chat selbst schreibt nie;
+// Hinweise des Studios kommen an die Antwort.
+func (a *App) afterAnswer(req chatRequest, chat string, out *chatOutcome, emit func(string)) {
+	note := ""
+	switch req.Task {
+	case chatTaskAssign:
+		a.rememberPicks(*req.Context, out.Text)
+	case chatTaskSources:
+		note = a.applySourcesAnswer(out.Text) // das Studio prüft und trägt ein
+	}
+	note += a.applyActions(chat, out.Text) // Karten; ausgeführt wird nur per Knopf (B-679)
+	if note != "" {
+		out.Text += note
+		emit(note)
+	}
 }
 
 // record hängt Frage und Antwort an den Verlauf, merkt die Einstellungen und speichert; scheitert das, läuft der Chat
@@ -301,6 +323,7 @@ func (a *App) ChatDelete(id string) error {
 		return err
 	}
 	h.deleted[id] = struct{}{}
+	a.actions().forget(id)
 	slog.Info("🧹 Chat gelöscht", "ns", "main", "chat", id)
 	return nil
 }
