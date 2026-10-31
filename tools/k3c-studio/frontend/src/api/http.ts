@@ -123,6 +123,13 @@ export function httpBackend(): Backend {
     sourceResearchImport: (source: string, urls: string[]) => rpc<SourceAddView>('SourceResearchImport', source, urls),
     sourceCleanupPreview: () => rpc<SourceCleanupView>('SourceCleanupPreview'),
     sourceCleanup: () => rpc<SourceCleanupView>('SourceCleanup'),
+    ...chatRpc(),
+    on: subscribe,
+  };
+}
+
+function chatRpc() {
+  return {
     chatStream: chatStreamHttp,
     chatList: () => rpc<ChatSummary[]>('ChatList'),
     chatGet: (id: string) => rpc<ChatDetail>('ChatGet', id),
@@ -131,7 +138,6 @@ export function httpBackend(): Backend {
     chatActions: (chat: string) => rpc<ChatAction[]>('ChatActions', chat),
     chatActionRun: (chat: string, id: string) => rpc<ChatAction>('ChatActionRun', chat, id),
     chatActionDrop: (chat: string, id: string) => rpc<ChatAction>('ChatActionDrop', chat, id),
-    on: subscribe,
   };
 }
 

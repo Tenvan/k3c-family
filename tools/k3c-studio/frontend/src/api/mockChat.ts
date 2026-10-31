@@ -98,6 +98,12 @@ export function mockChats(): ChatApi {
     chatActionRun: actions.chatActionRun,
     chatActionDrop: actions.chatActionDrop,
     chatStream,
+    ...mockChatStore(chats),
+  };
+}
+
+function mockChatStore(chats: Map<string, ChatDetail>): Pick<ChatApi, 'chatList' | 'chatGet' | 'chatDelete' | 'chatOptions'> {
+  return {
     chatList: async () => [...chats.values()].map((c): ChatSummary => ({
       id: c.id, title: titleOf(c.messages[0]?.text ?? ''), updated: c.updated, count: c.messages.length,
       provider: c.provider, model: c.model, effort: c.effort,
