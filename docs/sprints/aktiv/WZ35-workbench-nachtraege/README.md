@@ -61,7 +61,7 @@ keine.
 | WZ35.1 | `WZ35.1-nummern-lauf-ids.md` | Umsetzung | autonom | fertig |
 | WZ35.2 | `WZ35.2-schmale-fenster-auswertung.md` | Umsetzung | autonom | offen |
 | WZ35.3 | `WZ35.3-uebernehmen-abspielleiste.md` | Umsetzung | autonom | fertig |
-| WZ35.4 | `WZ35.4-review.md` | Review | autonom | offen |
+| WZ35.4 | `WZ35.4-review.md` | Review | autonom | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 

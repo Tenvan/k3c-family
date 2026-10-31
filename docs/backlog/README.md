@@ -124,6 +124,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-686](B-686-studio-chat-welt-pruefung.md) | DEV | Problem | hoch | eingeplant | WZ36 | Der Studio-Chat liefert nur Welten, die die Prüfung bestehen, und korrigiert Fehler Schritt für Schritt |
 | [B-687](B-687-studio-chat-resume.md) | DEV | Idee | niedrig | eingeplant | WZ36 | Der Studio-Chat setzt die Claude-Sitzung per Resume fort und fällt auf den Verlauf als Text zurück |
 | [B-688](B-688-download-weiterleitung-fremde-hosts.md) | DEV | Problem | mittel | offen | – | Downloads folgen Weiterleitungen nur zu erlaubten Hosts |
+| [B-689](B-689-welten-inspektor-scrollt-in-sich.md) | DEV | Problem | niedrig | offen | – | Welten-Editor: Inspektor scrollt in sich, Höhe mit 24 Chips messen |
+| [B-690](B-690-studio-welt-testluecken.md) | DEV | Problem | niedrig | offen | – | Studio-Welt: Testlücken Klick-Schwelle, Bühnen-Verdrahtung, Werkzeugleiste, Merge-Dialog |
+| [B-691](B-691-doku-norton-codemap.md) | DEV | Problem | niedrig | offen | – | Doku: Norton-Ausnahme in arbeitsweise.md, veraltete world/codemap.md |
 
 ## Archiv
 

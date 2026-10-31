@@ -1,11 +1,11 @@
 # WZ38 · DEV · Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-663, B-664, B-665, B-666, B-667, B-670, B-671, B-672, B-580, B-619
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 07033a26
 - **Spec:** freigegeben
 - **Revision:** 2
 - **Freigabe:** 2026-10-31, Ralf im Chat (Revision 2: B-673 entfernt)
@@ -58,7 +58,7 @@ keine.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ38.1 | `WZ38.1-kriterien-belegen.md` | Umsetzung | autonom | offen |
+| WZ38.1 | `WZ38.1-kriterien-belegen.md` | Umsetzung | autonom | fertig |
 | WZ38.2 | `WZ38.2-abnahme-am-pc.md` | Workshop | Mensch | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
