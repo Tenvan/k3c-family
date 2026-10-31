@@ -16,13 +16,13 @@ Jedes Projekt ist eine Datei `XXX-name.md` nach [`../vorlagen/projekt.md`](../vo
 | 6 | LST · Leistung & Stabilität | Flüssig und stabil: Leistung messbar, Split-Screen flüssig, Tests stabil, Speichern robust | [LST-leistung-stabilitaet.md](LST-leistung-stabilitaet.md) |
 | 7 | KMP · Kampf, Bosse, Events | Bosse, Siege, Events und Level-Elemente durchgängig | [KMP-kampf-bosse-events.md](KMP-kampf-bosse-events.md) |
 | 8 | REL · Release & Betrieb | Belegte Releases, Start im Heimnetz, Veröffentlichung | [REL-release-betrieb.md](REL-release-betrieb.md) |
+| 9 | BAL · Balancing & Spieleabende | – | [BAL-balancing-spieleabende.md](BAL-balancing-spieleabende.md) |
 | – | ABN · Abnahmen am Gerät | Prüfungen am Gerät gesammelt | [ABN-abnahmen-geraet.md](ABN-abnahmen-geraet.md) |
 
 ## Ruht
 
 | Projekt | Grund | Datei |
 |---|---|---|
-| BAL · Balancing & Spieleabende | Seit 2026-10-07 zurückgestellt: Spieleabende und Werte-Runden später (B-359) | [BAL-balancing-spieleabende.md](BAL-balancing-spieleabende.md) |
 | GRJ · Grafik-Justierung | – | [GRJ-grafik-justierung.md](GRJ-grafik-justierung.md) |
 
 ## Erledigt

@@ -47,7 +47,7 @@ func merchantDawn(w *World) {
 	if w.Biome.Depth != hubOf(w).Merchant.OnlyDepth {
 		return
 	}
-	m, day := economy.Merchant, w.Cycle.Day
+	m, day := w.values().Economy.Merchant, w.Cycle.Day
 	if w.Merchant != nil && day >= w.Merchant.Leaves {
 		merchantLeaves(w, "merchantLeft")
 	}
@@ -64,7 +64,7 @@ func merchantDawn(w *World) {
 
 // merchantArrive: Der Händler kommt an (Material per w.rng, Besuch zählt); auch für die Dev-Aktion event (dev_combat.go).
 func merchantArrive(w *World) {
-	m := economy.Merchant
+	m := w.values().Economy.Merchant
 	mats := m.Materials[:min(len(m.Materials), max(1, w.HubLevel))]
 	w.Merchant = &Merchant{Resource: mats[w.rng.Int(0, len(mats)-1)], Leaves: w.Cycle.Day + m.StayDays, HP: m.HP, MaxHP: m.HP}
 	if w.island != nil {
@@ -120,7 +120,7 @@ func merchantAt(w *World, x float64) string {
 		return ""
 	}
 	for _, side := range []string{"buy", "sell"} {
-		if math.Abs(merchantX(w, side)-x) <= economy.PayRangeUnits {
+		if math.Abs(merchantX(w, side)-x) <= w.values().Economy.PayRangeUnits {
 			return side
 		}
 	}
@@ -131,7 +131,7 @@ func merchantAt(w *World, x float64) string {
 // material in den Vorrat; Verkaufen tauscht material aus dem Vorrat gegen gold. Geht nichts (Vorrat leer oder voll),
 // fällt keine Münze.
 func payMerchant(w *World, p *Player, side string) {
-	m, mer := economy.Merchant, w.Merchant
+	m, mer := w.values().Economy.Merchant, w.Merchant
 	if side == "sell" {
 		if f := stockField(w.Stock, mer.Resource); f != nil && *f >= m.Material {
 			*f -= m.Material

@@ -47,13 +47,13 @@ func craftSave(s *Site) *CraftSave {
 }
 
 // applyCraft legt die Herstellung auf den gebauten Platz s (die Plantage in applyPlots).
-func applyCraft(s *Site, c *CraftSave) {
+func applyCraft(w *World, s *Site, c *CraftSave) {
 	if c == nil {
 		return
 	}
 	s.CraftDone, s.OfferDone = c.Done, c.OfferDone
 	s.Swords, s.SwordPaidGold, s.SwordDone = c.Swords, c.SwordPaidGold, c.SwordDone
-	if len(c.OfferPaid) <= len(buildings[s.Kind].Offers) {
+	if len(c.OfferPaid) <= len(w.values().Buildings[s.Kind].Offers) {
 		s.OfferPaid = slices.Clone(c.OfferPaid)
 	}
 }
@@ -72,10 +72,10 @@ func siteByKey(w *World, k string) *Site {
 func applyPlots(w *World, h HubSave) {
 	for _, saved := range h.Sites {
 		s := siteByKey(w, key(saved.Kind, saved.X))
-		if s == nil || s.State != "built" || saved.Craft == nil || len(saved.Craft.Plots) != buildings[s.Kind].Plantation.Slots {
+		if s == nil || s.State != "built" || saved.Craft == nil || len(saved.Craft.Plots) != w.values().Buildings[s.Kind].Plantation.Slots {
 			continue
 		}
-		p := buildings[s.Kind].Plantation
+		p := w.values().Buildings[s.Kind].Plantation
 		s.plots = make([]plot, p.Slots)
 		for i, ps := range saved.Craft.Plots {
 			s.plots[i].growIn = ps.GrowIn
@@ -109,7 +109,8 @@ func applyTroops(w *World, h HubSave) {
 	for _, t := range h.Troops {
 		troop := spawnVagrant(w, w.HubX, t.X)
 		if t.Kind == "peasant" {
-			troop.Kind, troop.HP, troop.MaxHP, troop.AnchorX = "peasant", troops["peasant"].HP, troops["peasant"].HP, w.HubX
+			hp := w.values().Troops["peasant"].HP
+			troop.Kind, troop.HP, troop.MaxHP, troop.AnchorX = "peasant", hp, hp, w.HubX
 			troop.Profession = t.Profession
 			if s := siteByKey(w, t.WorkSite); s != nil {
 				troop.WorkSite = s.ID
@@ -122,13 +123,13 @@ func applyTroops(w *World, h HubSave) {
 }
 
 // validateEconomy prüft einen Hub: bekannte Truppenart (nie stillschweigend Landstreicher), bekannter Beruf, Rüstungsstufe
-// im Bereich der Daten.
+// im Bereich der Daten. Geprüft wird gegen die Basis: Arten, Berufe und die Zahl der Rüstungsstufen ändert keine Welt.
 func validateEconomy(h HubSave) error {
 	for _, t := range h.Troops {
-		if t.Kind != "peasant" && !isFighter(t.Kind) {
+		if t.Kind != "peasant" && !isFighter(troops, t.Kind) {
 			return fmt.Errorf("spielstand: Truppenart %q unbekannt", t.Kind)
 		}
-		if _, ok := professionOf(t.Profession); t.Profession != "" && (!ok || t.Kind != "peasant") {
+		if _, ok := professionOf(troops, t.Profession); t.Profession != "" && (!ok || t.Kind != "peasant") {
 			return fmt.Errorf("spielstand: Beruf %q unbekannt oder nicht für %s", t.Profession, t.Kind)
 		}
 	}

@@ -1,6 +1,6 @@
 # BAL8.2 · Wertesatz je Raum statt globaler Variablen, Go-Tests, Golden
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -53,5 +53,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 (B-681/AC-01, AC-02): `TestWertesatzJeWeltParallelUnabhaengig` (vier nebenläufige Läufe byte-gleich zum Einzellauf, 2 Spieler), `TestWertesatzZweiRaeumeEigeneKosten` (room), `TestWertesatzOhneOverridesByteGleich`, Golden unverändert. Review (Sonnet, getrennt) fand 7 Stellen mit gemischter Quelle (HP/MaxHP, chestGold, dawnGold); behoben, `TestWertesatzEineQuelleJeWert` ergaenzt. `task check:diff` grün (3 min 36 s), `check:go` grün (2 min 20 s). B-681/AC-03: `check:race` lokal ohne gcc nicht lauffähig, in CI nachzuweisen. Mittlere Befunde als B-692 eingeplant. Abweichung: `engine/net/actions.go`, `payable.go` je eine Zeile (Stufe als Parameter), Protokoll unverändert.

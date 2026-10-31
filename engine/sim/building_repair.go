@@ -8,10 +8,10 @@ import "math"
 
 // levelSeconds ist die Bauzeit der aktuellen Stufe eines gebauten Platzes.
 func levelSeconds(w *World, s *Site) float64 {
-	if levels := buildings[s.Kind].Levels; len(levels) > 0 {
+	if levels := w.values().Buildings[s.Kind].Levels; len(levels) > 0 {
 		return levels[levelOf(w, s)-1].BuildSeconds
 	}
-	return buildings[s.Kind].BuildSeconds
+	return w.values().Buildings[s.Kind].BuildSeconds
 }
 
 // damaged: gebaut, beschädigt, nicht im Ausbau und ohne lebenden Bauer.
@@ -44,10 +44,10 @@ func repair(w *World, t *Troop, dt float64) {
 		releaseJob(w, t)
 		return
 	}
-	if !walkTo(t, site.X, dt) {
+	if !walkTo(w, t, site.X, dt) {
 		return
 	}
-	site.HP = math.Min(site.MaxHP, site.HP+float64(site.MaxHP*dt*workFactor(t, "builder"))/math.Max(0.1, levelSeconds(w, site)))
+	site.HP = math.Min(site.MaxHP, site.HP+float64(site.MaxHP*dt*workFactor(w, t, "builder"))/math.Max(0.1, levelSeconds(w, site)))
 	if site.HP >= site.MaxHP {
 		releaseJob(w, t)
 		w.Events = append(w.Events, Event{"type": "repaired", "kind": site.Kind})

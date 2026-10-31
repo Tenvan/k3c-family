@@ -14,9 +14,23 @@ import (
 // nur im Dev-Mode frisch aus Manager.Worlds (<K3C_WORLDS_DIR>/<id>.json), bei jedem Anlegen und Laden eines Raums. Der
 // Raum behält die geladene Welt, solange er läuft (sie steckt in seiner Insel).
 
-// world liefert die Welt id (leer = standard). Fehler nennen die Welt: ErrForbidden ohne Dev-Mode, ErrWorldUnknown für
-// fehlende Datei, ungültige ID oder ungültige Welt-Datei (Meldung aus sim.LoadWorld, welten.md § 3).
+// world liefert die Welt id (leer = standard) mit ihrem aufgelösten Wertesatz (sim.ResolveWorld, welten.md § 1, B-681),
+// einmal je Anlegen oder Laden des Raums. Fehler nennen die Welt: ErrForbidden ohne Dev-Mode, ErrWorldUnknown für
+// fehlende Datei, ungültige ID, ungültige Welt-Datei (Meldung aus sim.LoadWorld, welten.md § 3) oder ungültige Overrides
+// und `extends`-Kette (Meldung aus sim.ResolveWorld, § 1.2).
 func (m *Manager) world(id string) (sim.WorldDef, error) {
+	w, err := m.loadWorld(id)
+	if err != nil {
+		return sim.WorldDef{}, err
+	}
+	if w, err = sim.ResolveWorld(w, m.loadWorld); err != nil { // Eltern-Welten wie die Welt selbst (extends)
+		return sim.WorldDef{}, fmt.Errorf("%w (%w)", err, ErrWorldUnknown)
+	}
+	return w, nil
+}
+
+// loadWorld liest die Welt id ohne Auflösung: standard aus der Einbettung, weitere nur im Dev-Mode aus Manager.Worlds.
+func (m *Manager) loadWorld(id string) (sim.WorldDef, error) {
 	switch {
 	case id == "" || id == sim.StandardWorldID:
 		return sim.StandardWorld(), nil

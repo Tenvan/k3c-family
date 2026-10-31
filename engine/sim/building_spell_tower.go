@@ -8,11 +8,11 @@ import "math"
 
 // isSpellTower: Ist der Platz ein gebauter Turm ab der Zaubertum-Stufe?
 func isSpellTower(w *World, s *Site) bool {
-	return s.Kind == "tower" && s.State == "built" && levelOf(w, s) >= buildings["tower"].Spell.FromLevel
+	return s.Kind == "tower" && s.State == "built" && levelOf(w, s) >= w.values().Buildings["tower"].Spell.FromLevel
 }
 
 func stepSpellTowers(w *World, dt float64) {
-	sp := buildings["tower"].Spell
+	sp := w.values().Buildings["tower"].Spell
 	for _, s := range w.Sites {
 		if !isSpellTower(w, s) {
 			continue

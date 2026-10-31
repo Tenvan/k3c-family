@@ -65,7 +65,7 @@ func PreviewHubLevel(w *World, level int) error {
 	}
 	seen := map[string]int{}
 	for _, s := range w.Sites {
-		levels := buildings[s.Kind].Levels
+		levels := w.values().Buildings[s.Kind].Levels
 		if s.State != "built" || len(levels) == 0 {
 			continue
 		}
@@ -86,15 +86,15 @@ type SiteLook struct {
 
 // PreviewSetSite setzt einen Platz der Vorschau-Welt auf look. Eine Baustufe oder Trefferpunkte an einem nicht
 // gebauten Platz werden ignoriert; eine Stufe außerhalb der Stufen der Art ist ein Fehler.
-func PreviewSetSite(s *Site, look SiteLook) error {
+func PreviewSetSite(w *World, s *Site, look SiteLook) error {
 	if look.Unbuilt {
-		*s = Site{ID: s.ID, Kind: s.Kind, X: s.X, State: "unpaid", MaxHP: buildings[s.Kind].HP, Ruin: s.Ruin} // eine Ruine behält ihre Kennung wie bei destroySite
+		*s = Site{ID: s.ID, Kind: s.Kind, X: s.X, State: "unpaid", MaxHP: w.values().Buildings[s.Kind].HP, Ruin: s.Ruin} // eine Ruine behält ihre Kennung wie bei destroySite
 		return nil
 	}
 	if s.State != "built" {
 		return nil
 	}
-	levels := buildings[s.Kind].Levels
+	levels := w.values().Buildings[s.Kind].Levels
 	if look.Level != 0 {
 		if look.Level < 1 || look.Level > len(levels) {
 			return fmt.Errorf("vorschau: Baustufe %d außerhalb von 1 bis %d (%s)", look.Level, len(levels), s.Kind)

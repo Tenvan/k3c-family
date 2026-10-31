@@ -118,7 +118,7 @@ func TestSiegAllesAbbauen(t *testing.T) {
 	}
 	wantVictories(t, isl, 0, "volles Level")
 	cave := isl.Stages[1]
-	last := slices.IndexFunc(cave.Nodes, func(n *ResourceNode) bool { return !isVein(n) })
+	last := slices.IndexFunc(cave.Nodes, func(n *ResourceNode) bool { return !isVein(defaultValues(), n) })
 	if last < 0 {
 		t.Fatal("Höhle ohne endliches Ressourcenobjekt")
 	}
@@ -165,7 +165,7 @@ func veinKind(t *testing.T) string {
 func onlyVeins(nodes []*ResourceNode) []*ResourceNode {
 	var out []*ResourceNode
 	for _, n := range nodes {
-		if isVein(n) {
+		if isVein(defaultValues(), n) {
 			out = append(out, n)
 		}
 	}

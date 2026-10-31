@@ -11,7 +11,7 @@ import (
 
 func profession(t *testing.T, kind string) ProfessionData {
 	t.Helper()
-	p, ok := professionOf(kind)
+	p, ok := professionOf(troops, kind)
 	if !ok {
 		t.Fatalf("Beruf %s fehlt in den Daten", kind)
 	}
@@ -45,7 +45,7 @@ func aboutDt(got, want float64) bool { return math.Abs(got-want) <= dt+1e-9 }
 func TestProfessionBergmannBautSchnellerAb(t *testing.T) {
 	miner := profession(t, "miner")
 	for _, kind := range []string{"rock", "copperOre", "stoneVein", "copperVein", "tree"} {
-		g, _ := gatherOf(kind)
+		g, _ := gatherOf(defaultValues(), kind)
 		factor := 1.0
 		if kind != "tree" {
 			factor = miner.WorkFactor
@@ -103,7 +103,7 @@ func offerOf(t *testing.T, w *World, kind string) *offerTarget {
 	s := buildSite(t, w, "workshop")
 	for i, o := range buildings["workshop"].Offers {
 		if o.Kind == kind {
-			return &offerTarget{s, i}
+			return &offerTarget{s, i, buildings["workshop"].Offers}
 		}
 	}
 	t.Fatalf("kein Angebot %s an der Werkstatt", kind)

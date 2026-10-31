@@ -22,19 +22,21 @@ type ProfessionData struct {
 	MaxPerBuilding int      // Handwerker: höchstens so viele je Gebäude (0 = ohne Grenze und ohne Gebäude-Bindung)
 }
 
-// offerTarget ist das Angebot Nummer idx (buildings[site.Kind].Offers) am Platz site.
+// offerTarget ist das Angebot Nummer idx (offers = Offers des Gebäudes im Wertesatz der Welt) am Platz site.
 type offerTarget struct {
-	site *Site
-	idx  int
+	site   *Site
+	idx    int
+	offers []Offer
 }
 
-func professionOf(kind string) (ProfessionData, bool) {
+// professionOf: der Beruf kind des Bauern laut troops (Wertesatz der Welt); false, wenn es ihn nicht gibt.
+func professionOf(troops map[string]TroopData, kind string) (ProfessionData, bool) {
 	p, ok := troops["peasant"].Professions[kind]
 	return p, ok
 }
 
-func (o *offerTarget) kind() string { return buildings[o.site.Kind].Offers[o.idx].Kind }
-func (o *offerTarget) x() float64   { return o.site.X + buildings[o.site.Kind].Offers[o.idx].DX }
+func (o *offerTarget) kind() string { return o.offers[o.idx].Kind }
+func (o *offerTarget) x() float64   { return o.site.X + o.offers[o.idx].DX }
 
 func (o *offerTarget) paid() int {
 	if o.idx < len(o.site.OfferPaid) {
@@ -51,10 +53,10 @@ func (o *offerTarget) key() string {
 func findOffer(w *World, x float64) *offerTarget {
 	var best *offerTarget
 	for _, s := range w.Sites {
-		for i := range buildings[s.Kind].Offers {
-			o := &offerTarget{s, i}
+		for i := range w.values().Buildings[s.Kind].Offers {
+			o := &offerTarget{s, i, w.values().Buildings[s.Kind].Offers}
 			d := math.Abs(o.x() - x)
-			if d <= economy.PayRangeUnits && offerPayable(w, o) && (best == nil || d < math.Abs(best.x()-x)) {
+			if d <= w.values().Economy.PayRangeUnits && offerPayable(w, o) && (best == nil || d < math.Abs(best.x()-x)) {
 				best = o
 			}
 		}
@@ -65,8 +67,8 @@ func findOffer(w *World, x float64) *offerTarget {
 // nearOffer: Liegt x in Zahl-Reichweite eines Berufs-Angebots an einem gebauten Gebäude (auch voll oder ohne Platz)?
 func nearOffer(w *World, x float64) bool {
 	for _, s := range w.Sites {
-		for _, o := range buildings[s.Kind].Offers {
-			if _, ok := professionOf(o.Kind); ok && s.State == "built" && math.Abs(s.X+o.DX-x) <= economy.PayRangeUnits {
+		for _, o := range w.values().Buildings[s.Kind].Offers {
+			if _, ok := professionOf(w.values().Troops, o.Kind); ok && s.State == "built" && math.Abs(s.X+o.DX-x) <= w.values().Economy.PayRangeUnits {
 				return true
 			}
 		}
@@ -76,7 +78,7 @@ func nearOffer(w *World, x float64) bool {
 
 // offerPayable:Das Gebäude steht, das Angebot ist ein Beruf, noch nicht voll bezahlt und (Handwerker) hat Platz.
 func offerPayable(w *World, o *offerTarget) bool {
-	prof, ok := professionOf(o.kind())
+	prof, ok := professionOf(w.values().Troops, o.kind())
 	if !ok || o.site.State != "built" || o.paid() >= cheap(w, prof.Cost).Gold {
 		return false
 	}
@@ -86,7 +88,7 @@ func offerPayable(w *World, o *offerTarget) bool {
 func payOffer(w *World, p *Player, o *offerTarget) {
 	emit(w, "coinGive", Event{"player": p.Index, "x": unitX(p.X), "to": "offer"})
 	s := o.site
-	if n := len(buildings[s.Kind].Offers); len(s.OfferPaid) < n {
+	if n := len(w.values().Buildings[s.Kind].Offers); len(s.OfferPaid) < n {
 		s.OfferPaid = append(s.OfferPaid, make([]int, n-len(s.OfferPaid))...)
 	}
 	s.OfferPaid[o.idx]++
@@ -113,8 +115,8 @@ func refundOffer(w *World, ref string, amount int) int {
 func stepOffers(w *World) {
 	for _, s := range w.Sites {
 		for i := range s.OfferPaid {
-			o := &offerTarget{s, i}
-			prof, ok := professionOf(o.kind())
+			o := &offerTarget{s, i, w.values().Buildings[s.Kind].Offers}
+			prof, ok := professionOf(w.values().Troops, o.kind())
 			if !ok || s.State != "built" || o.paid() < cheap(w, prof.Cost).Gold {
 				continue
 			}
@@ -148,26 +150,26 @@ func workersAt(w *World, s *Site, kind string) int {
 }
 
 // workFactor ist das Arbeitstempo von t für Arbeit, die der Beruf kind beschleunigt (1 ohne diesen Beruf).
-func workFactor(t *Troop, kind string) float64 {
-	if prof, ok := professionOf(kind); ok && t.Kind == "peasant" && t.Profession == kind {
+func workFactor(w *World, t *Troop, kind string) float64 {
+	if prof, ok := professionOf(w.values().Troops, kind); ok && t.Kind == "peasant" && t.Profession == kind {
 		return prof.WorkFactor
 	}
 	return 1
 }
 
 // mineFactor: Abbautempo von t an einer Ressource, die resource liefert (Bergmann nur für seine resources).
-func mineFactor(t *Troop, resource string) float64 {
-	if prof, _ := professionOf("miner"); slices.Contains(prof.Resources, resource) {
-		return workFactor(t, "miner")
+func mineFactor(w *World, t *Troop, resource string) float64 {
+	if prof, _ := professionOf(w.values().Troops, "miner"); slices.Contains(prof.Resources, resource) {
+		return workFactor(w, t, "miner")
 	}
 	return 1
 }
 
 // craftSeconds ist die Herstellungszeit von product im Gebäude s: Wert aus den Daten, je Handwerker schneller.
 func craftSeconds(w *World, s *Site, product string) float64 {
-	prof, _ := professionOf("craftsman")
+	prof, _ := professionOf(w.values().Troops, "craftsman")
 	n := min(workersAt(w, s, "craftsman"), prof.MaxPerBuilding)
-	return buildings[s.Kind].CraftSeconds[product] / (1 + (prof.WorkFactor-1)*float64(n))
+	return w.values().Buildings[s.Kind].CraftSeconds[product] / (1 + (prof.WorkFactor-1)*float64(n))
 }
 
 // bowsCrafting ist 1, solange in der Werkstatt ein Bogen entsteht.
@@ -186,7 +188,7 @@ func stepBowCraft(w *World, s *Site) {
 		s.Bows++
 		s.CraftDone = 0
 	}
-	bow := cheap(w, troops["archer"].Cost)
+	bow := cheap(w, w.values().Troops["archer"].Cost)
 	if s.CraftDone == 0 && s.BowPaidGold >= bow.Gold && canAfford(*w.Stock, bow) {
 		spend(w.Stock, bow)
 		s.BowPaidGold = 0

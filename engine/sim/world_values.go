@@ -14,8 +14,8 @@ import (
 
 // Welt-Werte (docs/rules/welten.md § 1, B-680): Eine Welt erbt die Basis-Werte aus data/ und übersteuert mit `overrides`
 // nur einzelne Felder; mit `extends` erbt sie von einer anderen Welt (Kette Basis → A → B, höchstens maxWorldChain
-// Welten). ResolveWorldValues löst eine Welt zu ihrem Wertesatz auf, ohne globalen Zustand zu ändern; die Sim rechnet
-// bis BAL8.2 weiter mit den Paket-Variablen aus data.go. Merge und Prüfung je Feld: world_values_merge.go.
+// Welten). ResolveWorldValues löst eine Welt zu ihrem Wertesatz auf, ohne globalen Zustand zu ändern; jede Insel
+// rechnet mit dem Wertesatz ihrer Welt (world_values_room.go, BAL8.2). Merge und Prüfung je Feld: world_values_merge.go.
 
 // maxWorldChain ist die größte Zahl Welten in einer Kette über der Basis (Basis → A → B → C → D).
 const maxWorldChain = 4
@@ -47,27 +47,26 @@ type WorldValues struct {
 	Goals     Goals
 }
 
-// economyData ist der Lese-Typ von data/economy.json, gleich der Variablen economy in data.go (der Test
-// TestWorldValuesOhneOverrides vergleicht beide; BAL8.2 stellt economy auf diesen Typ um).
+// economyData ist der Lese-Typ von data/economy.json (Variable economy in data.go, WorldValues.Economy).
 type economyData struct {
 	Purse                                               struct{ StartGold, MaxGold int }
 	PayRangeUnits, PayIntervalSeconds, PickupRangeUnits float64
 	DropPickupDelaySeconds                              float64
 	DawnGoldPerPlayer                                   int
-	DawnGoldPerDepth                                    int
+	DawnGoldPerDepth                                    int // Zuschlag je Tiefe der Stufe auf das Morgengold (wirtschaft.md § 8, B-645)
 	ChestGold                                           [2]int
 	EnemyResourceDrop                                   struct {
 		Chance float64
 		Amount int
 	}
 	Gatherables map[string]Gatherable
-	Veins       map[string]VeinData
+	Veins       map[string]VeinData // Adern (world_vein.go), nicht in Gatherables
 	Storage     struct{ BasePerHub, PerStorage int }
 	RecruitCamp struct {
 		MaxVagrants                 int
 		RespawnSeconds, WanderUnits float64
 	}
-	Merchant MerchantData
+	Merchant MerchantData // Händler (merchant.go)
 }
 
 // ResolveWorldValues löst die Welt id zu ihrem Wertesatz auf: Basis-Dateien aus base (Aufbau wie data/), darüber die

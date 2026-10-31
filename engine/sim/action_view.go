@@ -10,7 +10,7 @@ func TrainAt(w *World, p *Player) string {
 	if p.Gold <= 0 || t == nil || t.offer == nil {
 		return ""
 	}
-	if _, ok := professionOf(t.offer.kind()); !ok {
+	if _, ok := professionOf(w.values().Troops, t.offer.kind()); !ok {
 		return "" // Elite-Angebot der Schmiede: kein Beruf
 	}
 	return t.offer.kind()
@@ -24,7 +24,7 @@ func TradeAt(w *World, p *Player) (side, resource string) {
 	if t == nil || t.merchant == "" {
 		return "", ""
 	}
-	m, mer := economy.Merchant, w.Merchant
+	m, mer := w.values().Economy.Merchant, w.Merchant
 	switch t.merchant {
 	case "sell":
 		if f := stockField(w.Stock, mer.Resource); f == nil || *f < m.Material {

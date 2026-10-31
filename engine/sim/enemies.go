@@ -27,9 +27,9 @@ func spawnEnemy(w *World, kind string, x float64) *Enemy {
 
 // spawnScaled wie spawnEnemy, mit den Grad-Faktoren der Insel für HP und Schaden.
 func spawnScaled(w *World, kind string, x, hpFactor, damageFactor float64) *Enemy {
-	d := enemyData[kind]
+	d := w.values().Enemies[kind]
 	depth := float64(w.Biome.Depth)
-	s := waves.DepthScaling
+	s := w.values().Waves.DepthScaling
 	if w.island != nil {
 		s = w.island.Scaling // Tabelle der Insel (island_data.go)
 	}
@@ -135,7 +135,7 @@ func leaveThroughPortal(w *World) {
 // advance: geradeaus Richtung Burg, höchstens bis zur Mauer oder zum Burgrand.
 func advance(w *World, e *Enemy, dir float64, wall *Site, step float64) {
 	x := e.X + float64(dir*step)
-	stop := w.HubX - float64(dir*hub.CastleRadiusUnits)
+	stop := w.HubX - float64(dir*w.values().Hub.CastleRadiusUnits)
 	if wall != nil {
 		stop = wall.X - float64(dir*body)
 	}
@@ -240,7 +240,7 @@ func buildingTargets(w *World, r reach) []target {
 			out = append(out, target{s.ID, s.X, "building", nil})
 		}
 	}
-	if math.Abs(w.Castle.X-r.e.X) <= r.e.Range+hub.CastleRadiusUnits+0.1 && r.reachable(w.Castle.X) {
+	if math.Abs(w.Castle.X-r.e.X) <= r.e.Range+w.values().Hub.CastleRadiusUnits+0.1 && r.reachable(w.Castle.X) {
 		out = append(out, target{w.Castle.ID, w.Castle.X, "castle", nil})
 	}
 	return out
@@ -293,9 +293,9 @@ func chooseTarget(w *World, e *Enemy, dir float64, wall *Site) *target {
 }
 
 func attack(w *World, e *Enemy, t *target) {
-	e.Cooldown = 1 / attackRate(e.Kind)
+	e.Cooldown = 1 / attackRate(w.values(), e.Kind)
 	if p := t.player; p != nil && e.has("stealsGold") && !e.Guard && p.Gold > 0 && !w.protectedNight() {
-		amount := min(p.Gold, waves.StealGold)
+		amount := min(p.Gold, w.values().Waves.StealGold)
 		p.Gold -= amount
 		e.CarriedGold += amount
 		e.Fleeing = true

@@ -31,6 +31,8 @@ type WorldDef struct {
 	// Dateiname ohne .json, welten.md § 1); aufgelöst von ResolveWorldValues (world_values.go).
 	Extends   string
 	Overrides map[string]json.RawMessage
+	// values: der aufgelöste Wertesatz aus ResolveWorld (world_values_room.go); nil = beim Anlegen auflösen (valuesOf).
+	values *WorldValues
 }
 
 // idPattern gilt für Welt- und Insel-IDs (welten.md § 4).

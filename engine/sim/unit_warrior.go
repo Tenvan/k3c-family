@@ -23,8 +23,8 @@ type Drop struct {
 	WorkSite int     `json:"workSite,omitempty"`
 }
 
-// isFighter: Ist kind eine Kämpfer-Figur aus troops.json (nicht Landstreicher, Bauer oder Beruf)?
-func isFighter(kind string) bool {
+// isFighter: Ist kind eine Kämpfer-Figur aus troops (troops.json im Wertesatz der Welt; nicht Landstreicher, Bauer oder Beruf)?
+func isFighter(troops map[string]TroopData, kind string) bool {
 	if kind == "vagrant" || kind == "peasant" {
 		return false
 	}
@@ -33,8 +33,8 @@ func isFighter(kind string) bool {
 }
 
 // swordSpot ist der Ort des Schwert-Zahlziels am Platz s; false, wenn sein Gebäude keins hat.
-func swordSpot(s *Site) (float64, bool) {
-	for _, o := range buildings[s.Kind].Offers {
+func swordSpot(w *World, s *Site) (float64, bool) {
+	for _, o := range w.values().Buildings[s.Kind].Offers {
 		if o.Kind == "sword" {
 			return s.X + o.DX, true
 		}
@@ -46,8 +46,8 @@ func swordSpot(s *Site) (float64, bool) {
 // gerade Münzen nimmt.
 func swordAt(w *World, x float64, payable bool) *Site {
 	for _, s := range w.Sites {
-		spot, ok := swordSpot(s)
-		if ok && s.State == "built" && math.Abs(spot-x) <= economy.PayRangeUnits && (!payable || swordPayable(w, s)) {
+		spot, ok := swordSpot(w, s)
+		if ok && s.State == "built" && math.Abs(spot-x) <= w.values().Economy.PayRangeUnits && (!payable || swordPayable(w, s)) {
 			return s
 		}
 	}
@@ -59,13 +59,13 @@ func swordPayable(w *World, s *Site) bool {
 	if s.SwordDone > 0 {
 		inWork = 1
 	}
-	return s.Swords+inWork < buildings[s.Kind].SwordRack && s.SwordPaidGold < cheap(w, troops["warrior"].Cost).Gold
+	return s.Swords+inWork < w.values().Buildings[s.Kind].SwordRack && s.SwordPaidGold < cheap(w, w.values().Troops["warrior"].Cost).Gold
 }
 
 // nearFullTarget: Liegt x an einem Bauplatz, Angebot oder Schwert-Zahlziel, das gerade nichts nimmt (payOneCoin)?
 func nearFullTarget(w *World, x float64) bool {
 	return nearOffer(w, x) || swordAt(w, x, false) != nil ||
-		nearest(w.Sites, func(s *Site) float64 { return s.X }, x, economy.PayRangeUnits, func(*Site) bool { return true }) != nil
+		nearest(w.Sites, func(s *Site) float64 { return s.X }, x, w.values().Economy.PayRangeUnits, func(*Site) bool { return true }) != nil
 }
 
 func paySword(w *World, p *Player, s *Site) {
@@ -92,7 +92,7 @@ func stepSwordCraft(w *World, s *Site) {
 		s.Swords++
 		s.SwordDone = 0
 	}
-	cost := cheap(w, troops["warrior"].Cost)
+	cost := cheap(w, w.values().Troops["warrior"].Cost)
 	if s.SwordDone == 0 && s.SwordPaidGold >= cost.Gold && canAfford(*w.Stock, cost) {
 		spend(w.Stock, cost)
 		s.SwordPaidGold = 0
@@ -130,7 +130,7 @@ func weaponToFetch(w *World, t *Troop) *Job {
 // pickupJob: erste Ausrüstung am Boden, die noch kein anderer Bauer holt (bei vollem Limit keine Kämpfer-Waffe).
 func pickupJob(w *World, t *Troop, full bool) *Job {
 	for _, d := range w.Drops {
-		if (!full || !isFighter(d.Kind)) && fetching(w, t, "pickup", d.ID) == 0 {
+		if (!full || !isFighter(w.values().Troops, d.Kind)) && fetching(w, t, "pickup", d.ID) == 0 {
 			return &Job{Type: "pickup", DropID: d.ID}
 		}
 	}
@@ -162,7 +162,7 @@ func fetching(w *World, t *Troop, typ string, id int) int {
 func fetchesFighterWeapon(w *World, j *Job) bool {
 	if j.Type == "pickup" {
 		d := dropByID(w, j.DropID)
-		return d != nil && isFighter(d.Kind)
+		return d != nil && isFighter(w.values().Troops, d.Kind)
 	}
 	return j.Type == "fetchBow" || j.Type == "fetchSword"
 }
@@ -189,7 +189,7 @@ func fetchWeapon(w *World, t *Troop, dt float64) {
 		t.Job = nil
 		return
 	}
-	if !walkTo(t, x, dt) {
+	if !walkTo(w, t, x, dt) {
 		return
 	}
 	t.Job = nil
@@ -207,7 +207,7 @@ func fetchWeapon(w *World, t *Troop, dt float64) {
 }
 
 func equip(w *World, t *Troop, kind string, workSite int) {
-	if !isFighter(kind) {
+	if !isFighter(w.values().Troops, kind) {
 		t.Profession, t.WorkSite = kind, workSite
 		return
 	}
@@ -226,7 +226,7 @@ func warriorPost(w *World, side float64) (post, front float64) {
 		return post, post
 	}
 	barrier := wall // die äußerste gebaute Mauer ist das Tor (B-652)
-	return barrier.X - float64(side*troops["warrior"].PostUnits), barrier.X
+	return barrier.X - float64(side*w.values().Troops["warrior"].PostUnits), barrier.X
 }
 
 // stepWarrior: zum Posten, dann den nächsten Gegner in Reichweite schlagen. Gemessen wird wie bei Gegnern an einer
@@ -241,11 +241,11 @@ func stepWarrior(w *World, t *Troop, dt float64) {
 		post, front = ex, ex // Begleitschutz: der Krieger geht zum Endboss (unit_escort.go)
 	}
 	from := t.X
-	if walkTo(t, post, dt) {
+	if walkTo(w, t, post, dt) {
 		from = front
 	}
 	t.Cooldown = math.Max(0, t.Cooldown-dt)
-	d := troops[t.Kind]
+	d := w.values().Troops[t.Kind]
 	if t.Cooldown > 0 {
 		return
 	}
@@ -263,7 +263,7 @@ func loseLayer(w *World, t *Troop) {
 	releaseJob(w, t)
 	t.TowerID, t.Cooldown = nil, 0
 	kind := t.Profession // Ausrüstung: Figur eines Kämpfers, sonst Beruf ("" = keine)
-	if isFighter(t.Kind) {
+	if isFighter(w.values().Troops, t.Kind) {
 		kind = t.Kind
 	}
 	switch {
@@ -275,7 +275,8 @@ func loseLayer(w *World, t *Troop) {
 		w.Coins = append(w.Coins, &Coin{ID: w.newID(), X: t.X})
 		t.Kind, t.AnchorX, t.TargetX, t.PaidGold = "vagrant", campNear(w, t.X), t.X, 0
 	}
-	t.HP, t.MaxHP = troops[t.Kind].HP, troops[t.Kind].HP
+	t.HP = w.values().Troops[t.Kind].HP
+	t.MaxHP = t.HP
 }
 
 // campNear ist das Camp nächst an x; ohne Camp x selbst.

@@ -7,7 +7,7 @@ package sim
 func fighters(w *World) int {
 	n := 0
 	for _, t := range w.Troops {
-		if isFighter(t.Kind) {
+		if isFighter(w.values().Troops, t.Kind) {
 			n++
 		}
 	}
@@ -28,7 +28,7 @@ func weaponsInFlight(w *World, t *Troop) int {
 
 // troopLimit ist das Kämpfer-Limit der Welt: Basis plus Zuschlag je gebauter Kaserne; eine zerstörte zählt nicht.
 func troopLimit(w *World) int {
-	l := buildings["barracks"].TroopLimit
+	l := w.values().Buildings["barracks"].TroopLimit
 	n := l.Base
 	for _, s := range w.Sites {
 		if s.Kind == "barracks" && s.State == "built" {

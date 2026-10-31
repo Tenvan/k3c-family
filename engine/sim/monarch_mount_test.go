@@ -15,9 +15,10 @@ func TestMountBeimBeitritt(t *testing.T) {
 	w := quietWorld(t)
 	isl := mustIsland(t, "reittier-a", []int{0, 1})
 	players := []*Player{AddPlayer(w), AddPlayer(w), AddIslandPlayer(isl, 0), AddIslandPlayer(isl, 1)}
-	for _, p := range players {
-		if MountOf(p) != monarch.Mount {
-			t.Errorf("Spieler %d: Reittier %+v, erwartet %+v", p.Index, MountOf(p), monarch.Mount)
+	stages := []*World{w, w, isl.Stages[0], isl.Stages[1]}
+	for i, p := range players {
+		if MountOf(stages[i], p) != monarch.Mount {
+			t.Errorf("Spieler %d: Reittier %+v, erwartet %+v", p.Index, MountOf(stages[i], p), monarch.Mount)
 		}
 	}
 	if monarch.Mount.ID == "" || monarch.Mount.SpeedFactor <= 0 || monarch.Mount.SprintFactor <= 0 {
@@ -106,12 +107,12 @@ func TestMountSpriteBekannt(t *testing.T) {
 func TestMountNachStufenwechsel(t *testing.T) {
 	isl := mustIsland(t, "reittier-f", []int{0, 1})
 	a := AddIslandPlayer(isl, 0)
-	before := MountOf(a)
+	before := MountOf(isl.Stages[0], a)
 	standFor(isl, 2.5, map[*Player]float64{a: exitX(t, isl.Stages[0])})
 	if isl.StageOf(0) != 1 {
 		t.Fatalf("Spieler 0 muss in Stufe 1 sein, ist in %d", isl.StageOf(0))
 	}
-	if got := MountOf(isl.Stages[1].Players[0]); got != before || got != monarch.Mount {
+	if got := MountOf(isl.Stages[1], isl.Stages[1].Players[0]); got != before || got != monarch.Mount {
 		t.Fatalf("Reittier nach Wechsel %+v, vorher %+v", got, before)
 	}
 }

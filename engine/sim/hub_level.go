@@ -70,16 +70,16 @@ func levelOf(w *World, s *Site) int {
 // siteCost sind die Baukosten eines unbezahlten Platzes: der Eintrag der Biom-Tiefe in costByDepth (Treppen, B-631),
 // ohne Eintrag dieser Tiefe (fehlt oder leer) die Kosten cost seiner Art.
 func siteCost(w *World, s *Site) Cost {
-	if d, by := w.Biome.Depth, buildings[s.Kind].CostByDepth; d >= 0 && d < len(by) && by[d] != (Cost{}) {
+	if d, by := w.Biome.Depth, w.values().Buildings[s.Kind].CostByDepth; d >= 0 && d < len(by) && by[d] != (Cost{}) {
 		return cheap(w, by[d])
 	}
-	return cheap(w, buildings[s.Kind].Cost)
+	return cheap(w, w.values().Buildings[s.Kind].Cost)
 }
 
 // nextLevel ist die nächste Ausbau-Stufe eines gebauten Platzes, beim Hub der nächste Ausbauschritt (Kosten samt
 // Material-Tor); nil, wenn er keine hat oder die Hub-Stufe fehlt (Stufe n von Mauer, Turm und Tor erst ab Hub-Stufe n).
 func nextLevel(w *World, s *Site) *LevelData {
-	levels := buildings[s.Kind].Levels
+	levels := w.values().Buildings[s.Kind].Levels
 	if s == w.hubSite {
 		levels = hubOf(w).Levels
 	}

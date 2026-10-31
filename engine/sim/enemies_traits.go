@@ -43,8 +43,8 @@ func loadEnemies(fsys fs.FS, dst *map[string]EnemyData) error {
 }
 
 // attackRate: Angriffe je Sekunde laut Daten, ohne Eintrag 1.
-func attackRate(kind string) float64 {
-	if r := enemyData[kind].AttacksPerSecond; r > 0 {
+func attackRate(v *WorldValues, kind string) float64 {
+	if r := v.Enemies[kind].AttacksPerSecond; r > 0 {
 		return r
 	}
 	return 1
@@ -57,8 +57,8 @@ func strike(w *World, e *Enemy, t *target) {
 		attack(w, e, t)
 		return
 	}
-	a := enemyData[e.Kind].Aoe
-	e.Cooldown, e.AoeIn = 1/attackRate(e.Kind), a.IntervalSeconds
+	a := w.values().Enemies[e.Kind].Aoe
+	e.Cooldown, e.AoeIn = 1/attackRate(w.values(), e.Kind), a.IntervalSeconds
 	emit(w, "strike", Event{"from": e.ID, "x": unitX(e.X)})
 	for _, c := range aoeTargets(w, t.x, a.Radius) {
 		applyDamageBy(w, c.id, e.Damage, e.Kind)
@@ -87,7 +87,7 @@ func aoeTargets(w *World, x, radius float64) []target {
 			out = append(out, target{s.ID, s.X, "site", nil})
 		}
 	}
-	if in(w.Castle.X, hub.CastleRadiusUnits) {
+	if in(w.Castle.X, w.values().Hub.CastleRadiusUnits) {
 		out = append(out, target{w.Castle.ID, w.Castle.X, "castle", nil})
 	}
 	return out
@@ -95,7 +95,7 @@ func aoeTargets(w *World, x, radius float64) []target {
 
 // invulnerable: Ein Gegner mit `phases` ist ab Spawn alle everySeconds für durationSeconds unverwundbar.
 func invulnerable(w *World, e *Enemy) bool {
-	p := enemyData[e.Kind].Phases
+	p := w.values().Enemies[e.Kind].Phases
 	if !e.has("phases") || p.EverySeconds <= 0 {
 		return false
 	}
@@ -111,7 +111,7 @@ func kite(w *World, e *Enemy, dt float64) bool {
 		return false
 	}
 	threat, ok := nearestThreat(w, e)
-	if !ok || math.Abs(threat-e.X) >= enemyData[e.Kind].KiteDistance {
+	if !ok || math.Abs(threat-e.X) >= w.values().Enemies[e.Kind].KiteDistance {
 		return false
 	}
 	back := sign(e.HomeX - e.X)

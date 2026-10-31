@@ -33,7 +33,7 @@ func stepPlantations(w *World, dt float64) {
 		if s.State != "built" {
 			continue
 		}
-		p := buildings[s.Kind].Plantation
+		p := w.values().Buildings[s.Kind].Plantation
 		if p.Slots == 0 {
 			continue
 		}

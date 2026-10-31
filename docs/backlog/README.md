@@ -109,6 +109,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-689](B-689-welten-inspektor-scrollt-in-sich.md) | DEV | Problem | niedrig | offen | – | Welten-Editor: Inspektor scrollt in sich, Höhe mit 24 Chips messen |
 | [B-690](B-690-studio-welt-testluecken.md) | DEV | Problem | niedrig | offen | – | Studio-Welt: Testlücken Klick-Schwelle, Bühnen-Verdrahtung, Werkzeugleiste, Merge-Dialog |
 | [B-691](B-691-doku-norton-codemap.md) | DEV | Problem | niedrig | offen | – | Doku: Norton-Ausnahme in arbeitsweise.md, veraltete world/codemap.md |
+| [B-692](B-692-wertesatz-nachtraege.md) | SIM | Problem | mittel | offen | – | Welt-Wertesatz: Nachträge aus dem Review BAL8.2 |
 
 ## Archiv
 

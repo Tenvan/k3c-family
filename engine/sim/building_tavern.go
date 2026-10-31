@@ -5,7 +5,7 @@ package sim
 // (data/buildings.json › tavern.vagrants).
 
 func tavernDawn(w *World) {
-	v := buildings["tavern"].Vagrants
+	v := w.values().Buildings["tavern"].Vagrants
 	for _, s := range w.Sites {
 		if s.Kind != "tavern" || s.State != "built" {
 			continue
@@ -34,8 +34,8 @@ func vagrantsAt(w *World, x float64) int {
 func wanderRadius(w *World, t *Troop) float64 {
 	for _, s := range w.Sites {
 		if s.Kind == "tavern" && s.X == t.AnchorX {
-			return buildings["tavern"].Vagrants.WanderUnits
+			return w.values().Buildings["tavern"].Vagrants.WanderUnits
 		}
 	}
-	return economy.RecruitCamp.WanderUnits
+	return w.values().Economy.RecruitCamp.WanderUnits
 }

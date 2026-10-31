@@ -17,7 +17,7 @@ const (
 
 func spawnVagrant(w *World, campX, x float64) *Troop {
 	t := &Troop{
-		ID: w.newID(), Kind: "vagrant", X: x, HP: troops["vagrant"].HP, MaxHP: troops["vagrant"].HP,
+		ID: w.newID(), Kind: "vagrant", X: x, HP: w.values().Troops["vagrant"].HP, MaxHP: w.values().Troops["vagrant"].HP,
 		AnchorX: campX, TargetX: x,
 	}
 	w.Troops = append(w.Troops, t)
@@ -25,7 +25,7 @@ func spawnVagrant(w *World, campX, x float64) *Troop {
 }
 
 func stepCamps(w *World, dt float64) {
-	c := economy.RecruitCamp
+	c := w.values().Economy.RecruitCamp
 	for _, camp := range w.Camps {
 		if vagrantsAt(w, camp.X) >= c.MaxVagrants {
 			camp.RespawnIn = c.RespawnSeconds
@@ -55,7 +55,7 @@ func stepTroops(w *World, dt float64) {
 }
 
 func wander(w *World, t *Troop, center, radius, dt float64) {
-	speed := troops[t.Kind].Speed * 0.5
+	speed := w.values().Troops[t.Kind].Speed * 0.5
 	if math.Abs(t.TargetX-center) > radius {
 		t.TargetX = center
 	}
@@ -70,8 +70,8 @@ func wander(w *World, t *Troop, center, radius, dt float64) {
 	t.X = approach(t.X, t.TargetX, speed, dt)
 }
 
-func walkTo(t *Troop, x, dt float64) bool {
-	t.X = approach(t.X, x, troops[t.Kind].Speed, dt)
+func walkTo(w *World, t *Troop, x, dt float64) bool {
+	t.X = approach(t.X, x, w.values().Troops[t.Kind].Speed, dt)
 	return math.Abs(t.X-x) < arrive
 }
 
@@ -89,9 +89,9 @@ func stepPeasant(w *World, t *Troop, dt float64) {
 	}
 	if t.Job == nil {
 		if danger {
-			walkTo(t, shelterX(w, t), dt)
+			walkTo(w, t, shelterX(w, t), dt)
 		} else {
-			wander(w, t, w.HubX, hub.HomeRadiusUnits, dt)
+			wander(w, t, w.HubX, w.values().Hub.HomeRadiusUnits, dt)
 		}
 		return
 	}
@@ -129,16 +129,16 @@ func build(w *World, t *Troop, dt float64) {
 		t.Job = nil
 		return
 	}
-	if !walkTo(t, site.X, dt) {
+	if !walkTo(w, t, site.X, dt) {
 		return
 	}
-	b := buildings[site.Kind]
+	b := w.values().Buildings[site.Kind]
 	seconds := b.BuildSeconds
 	if upgrading {
 		seconds = nextLevel(w, site).BuildSeconds
 	}
 	before := site.BuildProgress
-	site.BuildProgress += dt * workFactor(t, "builder") / math.Max(0.1, seconds)
+	site.BuildProgress += dt * workFactor(w, t, "builder") / math.Max(0.1, seconds)
 	buildProgressEvent(w, site, before)
 	if site.BuildProgress >= 1 && upgrading {
 		finishUpgrade(w, site)
@@ -156,15 +156,15 @@ func gather(w *World, t *Troop, dt float64) {
 		t.Job = nil
 		return
 	}
-	if !walkTo(t, node.X, dt) {
+	if !walkTo(w, t, node.X, dt) {
 		return
 	}
-	g, _ := gatherOf(node.Kind)
-	if isVein(node) {
-		gatherVein(t, g, dt*mineFactor(t, g.Resource))
+	g, _ := gatherOf(w.values(), node.Kind)
+	if isVein(w.values(), node) {
+		gatherVein(t, g, dt*mineFactor(w, t, g.Resource))
 		return
 	}
-	node.Progress += dt * mineFactor(t, g.Resource) / g.WorkSeconds
+	node.Progress += dt * mineFactor(w, t, g.Resource) / g.WorkSeconds
 	if node.Progress >= 1 {
 		nodes := w.Nodes[:0]
 		for _, n := range w.Nodes {
@@ -183,7 +183,7 @@ func carry(w *World, t *Troop, dt float64) {
 		carryToStock(w, t, dt)
 		return
 	}
-	if !walkTo(t, w.HubX, dt) {
+	if !walkTo(w, t, w.HubX, dt) {
 		return
 	}
 	addStock(w, t.Job.Resource, t.Job.Amount)
@@ -211,13 +211,13 @@ func findJob(w *World, t *Troop) *Job {
 		if !n.Marked || !nodeFree(w, n) {
 			continue
 		}
-		g, _ := gatherOf(n.Kind)
+		g, _ := gatherOf(w.values(), n.Kind)
 		if !resourceFull(w, g.Resource) && (node == nil || math.Abs(n.X-w.HubX) < math.Abs(node.X-w.HubX)) {
 			node = n
 		}
 	}
 	if node != nil {
-		if !isVein(node) {
+		if !isVein(w.values(), node) {
 			node.WorkerID = intPtr(t.ID)
 		}
 		return &Job{Type: "gather", NodeID: node.ID}

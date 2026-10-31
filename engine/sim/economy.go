@@ -44,7 +44,7 @@ func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
 		p.Paying = cmd.Pay
 		if cmd.Pay && !p.reviving && p.PayCooldown <= 0 && (p.Gold > 0 || merchantAt(w, p.X) == "sell") {
 			payOneCoin(w, p)
-			p.PayCooldown = economy.PayIntervalSeconds
+			p.PayCooldown = w.values().Economy.PayIntervalSeconds
 		}
 		// Aufgehört zu halten (oder das Ziel gewechselt), bevor der Betrag voll war: Münzen kommen zurück.
 		if p.PayKey != nil && (!cmd.Pay || keyOf(findPayTarget(w, p)) != *p.PayKey) {
@@ -58,10 +58,10 @@ func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
 func movePlayer(w *World, p *Player, cmd PlayerCommand, dt float64) {
 	mult := 1.0
 	if cmd.Sprint {
-		mult = float64(monarch.SprintMultiplier * MountOf(p).SprintFactor) // Sprint auf dem Reittier
+		mult = float64(w.values().Monarch.SprintMultiplier * MountOf(w, p).SprintFactor) // Sprint auf dem Reittier
 	}
 	target := float64(cmd.MoveX * speedOf(w, p) * mult)
-	p.VX += float64((target - p.VX) * (1 - math.Exp(-monarch.Acceleration*dt)))
+	p.VX += float64((target - p.VX) * (1 - math.Exp(-w.values().Monarch.Acceleration*dt)))
 	p.X = math.Min(w.WidthUnits, math.Max(0, p.X+float64(p.VX*dt)))
 	if math.Abs(p.VX) > 0.05 {
 		p.Facing = int(sign(p.VX))
@@ -92,7 +92,7 @@ func nearest[T any](items []*T, pos func(*T) float64, x, r float64, ok func(*T) 
 
 // findPayTarget: Was würde eine Münze gerade bezahlen? Bauplatz vor Landstreicher vor Ressource.
 func findPayTarget(w *World, p *Player) *payTarget {
-	r := economy.PayRangeUnits
+	r := w.values().Economy.PayRangeUnits
 	s := nearest(w.Sites, func(s *Site) float64 { return s.X }, p.X, r, func(s *Site) bool { return sitePayable(w, s) })
 	s = lineBeforeRuin(w, s, p.X) // Linien-Platz vor Ruine (building_ruin.go)
 	if h := w.hubSite; h != nil && math.Abs(h.X-p.X) <= r && sitePayable(w, h) && (s == nil || math.Abs(h.X-p.X) < math.Abs(s.X-p.X)) {
@@ -113,7 +113,7 @@ func findPayTarget(w *World, p *Player) *payTarget {
 	if t := nearest(w.Troops, func(t *Troop) float64 { return t.X }, p.X, r, func(t *Troop) bool { return t.Kind == "vagrant" }); t != nil {
 		return &payTarget{troop: t}
 	}
-	if n := nearest(w.Nodes, func(n *ResourceNode) float64 { return n.X }, p.X, r, nodeMarkable); n != nil {
+	if n := nearest(w.Nodes, func(n *ResourceNode) float64 { return n.X }, p.X, r, func(n *ResourceNode) bool { return nodeMarkable(w, n) }); n != nil {
 		return &payTarget{node: n}
 	}
 	return nil
@@ -219,7 +219,7 @@ func payOneCoin(w *World, p *Player) {
 	}
 	p.Gold--
 	if target == nil {
-		w.Coins = append(w.Coins, &Coin{ID: w.newID(), X: p.X, BlockedPlayerID: intPtr(p.ID), BlockedUntil: w.Time + economy.DropPickupDelaySeconds})
+		w.Coins = append(w.Coins, &Coin{ID: w.newID(), X: p.X, BlockedPlayerID: intPtr(p.ID), BlockedUntil: w.Time + w.values().Economy.DropPickupDelaySeconds})
 		return
 	}
 	if target.offer == nil { // payOffer meldet selbst (to: offer)
@@ -243,7 +243,7 @@ func payOneCoin(w *World, p *Player) {
 	default:
 		n := target.node
 		n.PaidGold++
-		if g, _ := gatherOf(n.Kind); n.PaidGold >= g.MarkCost {
+		if g, _ := gatherOf(w.values(), n.Kind); n.PaidGold >= g.MarkCost {
 			markNode(n, p)
 			clearPending(p)
 		}
@@ -270,14 +270,15 @@ func paySite(w *World, p *Player, s *Site) {
 func payVagrant(w *World, p *Player, t *Troop) {
 	t.PaidGold++
 	// ponytail: `recruitCost?.gold ?? 1` in TS; ein ausdrückliches gold: 0 in data/troops.json würde hier 1 kosten.
-	cost := troops["vagrant"].RecruitCost.Gold
+	cost := w.values().Troops["vagrant"].RecruitCost.Gold
 	if cost == 0 {
 		cost = 1
 	}
 	if t.PaidGold < cost {
 		return
 	}
-	t.Kind, t.HP, t.MaxHP = "peasant", troops["peasant"].HP, troops["peasant"].HP
+	hp := w.values().Troops["peasant"].HP
+	t.Kind, t.HP, t.MaxHP = "peasant", hp, hp
 	t.AnchorX, t.TargetX, t.Job, t.PaidGold = w.HubX, t.X, nil, 0
 	w.Events = append(w.Events, Event{"type": "recruited", "player": p.Index})
 	clearPending(p)
@@ -288,7 +289,7 @@ func collectCoins(w *World) {
 	for _, c := range w.Coins {
 		var taker *Player
 		for _, p := range w.Players {
-			if math.Abs(p.X-c.X) > economy.PickupRangeUnits {
+			if math.Abs(p.X-c.X) > w.values().Economy.PickupRangeUnits {
 				continue
 			}
 			blocked := c.BlockedPlayerID != nil && *c.BlockedPlayerID == p.ID && w.Time < c.BlockedUntil
@@ -311,7 +312,7 @@ func collectCoins(w *World) {
 }
 
 func collectPickups(w *World) {
-	r := economy.PickupRangeUnits * 1.5
+	r := w.values().Economy.PickupRangeUnits * 1.5
 	kept := w.Pickups[:0]
 	for _, pk := range w.Pickups {
 		var p *Player
@@ -325,12 +326,12 @@ func collectPickups(w *World) {
 		case p == nil:
 			kept = append(kept, pk)
 		case pk.Kind == "chest":
-			gold := w.rng.Int(economy.ChestGold[0], economy.ChestGold[1])
+			gold := w.rng.Int(w.values().Economy.ChestGold[0], w.values().Economy.ChestGold[1])
 			giveGold(w, p, gold, pk.X)
 			w.Events = append(w.Events, Event{"type": "chest", "player": p.Index, "gold": gold})
 			chestSkillPoint(w, p)
 		default:
-			addPoolPoints(w, monarch.SkillPointSources.Hidden)
+			addPoolPoints(w, w.values().Monarch.SkillPointSources.Hidden)
 			w.Events = append(w.Events, Event{"type": "skillPoint", "player": p.Index, "total": w.SkillPoints})
 		}
 	}

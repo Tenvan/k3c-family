@@ -13,7 +13,7 @@ func TestAggressionspoolMitAdernNichtVorVierMinuten(t *testing.T) {
 	}
 	var veins []*ResourceNode
 	for _, n := range w.Nodes {
-		if isVein(n) && len(veins) < 2 {
+		if isVein(defaultValues(), n) && len(veins) < 2 {
 			n.X, n.Marked = w.HubX+1+float64(len(veins)), true
 			veins = append(veins, n)
 		}

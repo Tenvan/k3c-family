@@ -212,9 +212,10 @@ func fieldFold(t reflect.Type, key string) (reflect.StructField, bool) {
 	return reflect.StructField{}, false
 }
 
-// keyFold liefert den Schlüssel aus b, der key ohne Rücksicht auf Groß-/Kleinschreibung entspricht, sonst "".
+// keyFold liefert den Schlüssel aus b, der key ohne Rücksicht auf Groß-/Kleinschreibung entspricht, sonst "" (sortiert
+// gesucht: bei mehreren Treffern immer derselbe).
 func keyFold(b map[string]any, key string) string {
-	for k := range b {
+	for _, k := range slices.Sorted(maps.Keys(b)) {
 		if strings.EqualFold(k, key) {
 			return k
 		}

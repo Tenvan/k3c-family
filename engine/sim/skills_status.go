@@ -15,7 +15,7 @@ type Aura struct {
 // AurasOf: die sichtbaren Passive des lebenden Monarchen p in Lernreihenfolge (Auren mit Radius, Guardian,
 // Regeneration, Holy Ground, Frost Armor); reine Werte-Passive ohne Wirkort (Thick Skin, Arcane Power …) fehlen. nil,
 // wenn keins wirkt oder p tot ist.
-func AurasOf(p *Player) []Aura {
+func AurasOf(w *World, p *Player) []Aura {
 	if !isAlive(p) {
 		return nil
 	}
@@ -25,7 +25,7 @@ func AurasOf(p *Player) []Aura {
 		if s == nil || s.Kind != "passive" {
 			continue
 		}
-		if a, ok := auraOf(s.Effect); ok {
+		if a, ok := auraOf(w, s.Effect); ok {
 			a.Skill = id
 			out = append(out, a)
 		}
@@ -34,10 +34,10 @@ func AurasOf(p *Player) []Aura {
 }
 
 // auraOf: Wirkort eines passiven Effekts; ok false bei Passiven ohne Wirkort.
-func auraOf(e skillEffect) (Aura, bool) {
+func auraOf(w *World, e skillEffect) (Aura, bool) {
 	switch {
 	case e.Type == "regen" && e.Castle:
-		return Aura{Radius: hub.CastleRadiusUnits, Castle: true}, true
+		return Aura{Radius: w.values().Hub.CastleRadiusUnits, Castle: true}, true
 	case e.Type == "regen", e.Type == "stat" && e.Aura > 0:
 		return Aura{Radius: e.Aura}, true
 	case e.Type == "guardian":

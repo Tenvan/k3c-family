@@ -20,9 +20,9 @@ func goalReached(isl *Island) bool {
 	case "endboss":
 		return isl.EndbossDefeated
 	case "gold":
-		return isl.GoldCollected >= goals.Gold
+		return isl.GoldCollected >= isl.values().Goals.Gold
 	case "days":
-		return isl.Stages[0].Cycle.Day > goals.Days
+		return isl.Stages[0].Cycle.Day > isl.values().Goals.Days
 	case "mineAll":
 		return allMined(isl)
 	case "buildAll":
@@ -37,7 +37,7 @@ func allMined(isl *Island) bool {
 	for _, w := range isl.Stages {
 		planted := plantedTrees(w)
 		for _, n := range w.Nodes {
-			if !isVein(n) && !planted[n] {
+			if !isVein(w.values(), n) && !planted[n] {
 				isl.hadFinite = true
 				return false
 			}

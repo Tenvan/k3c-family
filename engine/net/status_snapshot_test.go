@@ -69,12 +69,13 @@ func statusWorld(t *testing.T) *sim.World {
 
 // Ein toter Monarch zeigt keine Auren (Passive wirken nur lebend).
 func TestStatusAurenNurLebend(t *testing.T) {
+	w := statusWorld(t)
 	p := &sim.Player{HP: 0, RespawnIn: 3, Skills: []string{"armorAura"}}
-	if a := sim.AurasOf(p); a != nil {
+	if a := sim.AurasOf(w, p); a != nil {
 		t.Fatalf("tot: %v", a)
 	}
 	p.HP, p.RespawnIn = 10, 0
-	if a := sim.AurasOf(p); len(a) != 1 {
+	if a := sim.AurasOf(w, p); len(a) != 1 {
 		t.Fatalf("lebend: %v", a)
 	}
 }

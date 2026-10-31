@@ -14,7 +14,7 @@ func addActions(w *sim.World, players []any) {
 		s := raw.(map[string]any)
 		s["points"] = sim.AvailablePoints(w, p)
 		s["actions"] = actionsOf(w, p)
-		if auras := sim.AurasOf(p); len(auras) > 0 { // wirkende Passive mit Radius (B-675), fehlt ohne
+		if auras := sim.AurasOf(w, p); len(auras) > 0 { // wirkende Passive mit Radius (B-675), fehlt ohne
 			s["auras"] = aurasOf(auras)
 		}
 	}

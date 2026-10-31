@@ -25,7 +25,7 @@ func freeTower(w *World, t *Troop) *Site {
 				used++
 			}
 		}
-		if used < buildings["tower"].ArcherSlots && (best == nil || math.Abs(s.X-t.X) < math.Abs(best.X-t.X)) {
+		if used < w.values().Buildings["tower"].ArcherSlots && (best == nil || math.Abs(s.X-t.X) < math.Abs(best.X-t.X)) {
 			best = s
 		}
 	}
@@ -67,13 +67,13 @@ func stepArcher(w *World, t *Troop, dt float64) {
 	if ex, ok := escortPost(w, t); ok {
 		post, tower = ex, nil // Begleitschutz: der Schütze verlässt Turm und Mauer (unit_escort.go)
 	}
-	walkTo(t, post, dt)
+	walkTo(w, t, post, dt)
 
 	t.Cooldown = math.Max(0, t.Cooldown-dt)
-	a := troops[t.Kind]
+	a := w.values().Troops[t.Kind]
 	reach := a.Range
 	if isOnTower(w, t) {
-		reach += float64(buildings["tower"].RangeBonus)
+		reach += float64(w.values().Buildings["tower"].RangeBonus)
 	}
 	if t.Cooldown > 0 {
 		return

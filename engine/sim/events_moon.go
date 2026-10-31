@@ -57,7 +57,7 @@ func checkNightEvents(events []NightEvent) error {
 }
 
 func knownEnemy(kind string) bool {
-	_, ok := enemyData[kind]
+	_, ok := enemyData[kind] // events.json wird einmal gegen die Basis geprüft
 	return ok
 }
 
@@ -146,7 +146,7 @@ func fullMoonExtra(w *World, plan []spawnOrder) []spawnOrder {
 	for range int(math.Ceil(float64(n) * full.WolfShare)) {
 		picks = append(picks, full.Kind)
 	}
-	return spawnOrders(picks, w.Portals, w.rng)
+	return spawnOrders(w.values(), picks, w.Portals, w.rng)
 }
 
 // moonDamage ist der Schaden eines Gegnerangriffs, im Blutmond mit dem Faktor der Daten (attack, Flächenangriff und

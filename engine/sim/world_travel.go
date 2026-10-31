@@ -37,9 +37,9 @@ func travelPoints(w *World) []travelPoint {
 }
 
 // readyAt: Stehen alle Entscheider am Punkt? Ohne Entscheider gibt es keinen Wechsel.
-func readyAt(deciders []*Player, x float64) bool {
+func readyAt(deciders []*Player, x, rangeUnits float64) bool {
 	for _, p := range deciders {
-		if math.Abs(p.X-x) > hub.Travel.RangeUnits {
+		if math.Abs(p.X-x) > rangeUnits {
 			return false
 		}
 	}
@@ -58,7 +58,7 @@ func stepTravel(w *World, dt float64) {
 	}
 	var point *travelPoint
 	for _, pt := range travelPoints(w) {
-		if readyAt(deciders, pt.x) {
+		if readyAt(deciders, pt.x, w.values().Hub.Travel.RangeUnits) {
 			point = &pt
 			break
 		}
@@ -70,5 +70,5 @@ func stepTravel(w *World, dt float64) {
 	if w.Travel == nil || w.Travel.X != point.x {
 		w.Travel = &Travel{X: point.x, ToDepth: point.toDepth, Via: point.via}
 	}
-	w.Travel.Progress = math.Min(1, w.Travel.Progress+dt/hub.Travel.Seconds)
+	w.Travel.Progress = math.Min(1, w.Travel.Progress+dt/w.values().Hub.Travel.Seconds)
 }

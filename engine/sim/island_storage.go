@@ -28,11 +28,11 @@ func capacity(w *World) (limit int, ok bool) {
 	if isl == nil {
 		return 0, false
 	}
-	limit = economy.Storage.BasePerHub*len(isl.Stages) + isl.Dev.StockBonus
+	limit = w.values().Economy.Storage.BasePerHub*len(isl.Stages) + isl.Dev.StockBonus
 	for _, st := range isl.Stages {
 		for _, s := range st.Sites {
 			if s.Kind == "storage" && s.State == "built" {
-				limit += economy.Storage.PerStorage
+				limit += w.values().Economy.Storage.PerStorage
 			}
 		}
 	}
@@ -42,9 +42,9 @@ func capacity(w *World) (limit int, ok bool) {
 // purseMax ist das Gold-Maximum eines Spielers (Börse): der Grundwert plus der Dev-Bonus der Insel (devMaxStock).
 func purseMax(w *World) int {
 	if w.island == nil {
-		return economy.Purse.MaxGold
+		return w.values().Economy.Purse.MaxGold
 	}
-	return economy.Purse.MaxGold + w.island.Dev.StockBonus
+	return w.values().Economy.Purse.MaxGold + w.island.Dev.StockBonus
 }
 
 // depositPoint ist die Abgabestelle für einen Träger bei x: die Burg oder das nächste gebaute Lager. Bei Gleichstand
@@ -66,7 +66,7 @@ func carryToStock(w *World, t *Troop, dt float64) {
 	if !isDangerous(w) {
 		x = depositPoint(w, t.X)
 	}
-	if !walkTo(t, x, dt) {
+	if !walkTo(w, t, x, dt) {
 		return
 	}
 	taken, ok := addStockCapped(w, t.Job.Resource, t.Job.Amount)

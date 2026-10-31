@@ -1,8 +1,8 @@
 package sim
 
 // nodeMarkable: Nimmt der Knoten gerade eine Markier-Münze? Sammelbar (Baum, Fels, Erz, Ader) und noch nicht markiert.
-func nodeMarkable(n *ResourceNode) bool {
-	_, ok := gatherOf(n.Kind)
+func nodeMarkable(w *World, n *ResourceNode) bool {
+	_, ok := gatherOf(w.values(), n.Kind)
 	return !n.Marked && ok
 }
 

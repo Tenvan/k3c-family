@@ -18,7 +18,7 @@ func addPayable(w *sim.World, s map[string]any) {
 	}
 	nodes, _ := s["nodes"].([]any)
 	for i, raw := range nodes {
-		if sim.NodeMarkable(w.Nodes[i]) {
+		if sim.NodeMarkable(w, w.Nodes[i]) {
 			raw.(map[string]any)["minable"] = true
 		}
 	}

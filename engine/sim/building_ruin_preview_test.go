@@ -20,7 +20,7 @@ func TestRuineBleibtNachAusbauBeschaedigt(t *testing.T) {
 		}
 	}
 	s := ruinOf(t, w, "smithy")
-	if err := PreviewSetSite(s, SiteLook{Unbuilt: true}); err != nil || !s.Ruin || s.State != "unpaid" {
+	if err := PreviewSetSite(w, s, SiteLook{Unbuilt: true}); err != nil || !s.Ruin || s.State != "unpaid" {
 		t.Errorf("nicht gebaut in der Vorschau: %+v, %v", s, err)
 	}
 }
