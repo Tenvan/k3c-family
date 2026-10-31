@@ -52,13 +52,15 @@ afterEach(() => {
 });
 
 describe('Fokus-Chips, Suche und Sichten (B-677)', () => {
-  it('zeigt die festen Chips mit Zähler, Inspektor ohne Auswahl und die Abspielleiste', async () => {
+  it('zeigt die festen Chips mit Zähler und den Inspektor ohne Auswahl; die Abspielleiste nur bei Sound', async () => {
     const h = await mount();
     for (const name of ['Alles', 'Grafik', 'Sound', 'Lücken', 'Aus dem Netz', 'Lizenz prüfen', 'Vorrat']) expect(chip(h, name), name).toBeTruthy();
     expect(chip(h, 'Alles').getAttribute('aria-pressed')).toBe('true');
     expect(chip(h, 'Sound').textContent).toMatch(/\d/);
-    expect(h.querySelector('[role="toolbar"][aria-label="Abspielleiste"]')?.textContent).toContain('Stille');
+    expect(h.querySelector('[role="toolbar"][aria-label="Abspielleiste"]')).toBeNull();
     expect(h.textContent).toContain('Kein Asset-Slot gewählt');
+    await click(chip(h, 'Sound'));
+    expect(h.querySelector('[role="toolbar"][aria-label="Abspielleiste"]')?.textContent).toContain('Stille');
   });
 
   it('Chip Sound blendet Grafik-Slots aus; Suche und Sicht bleiben beim Chip-Wechsel (AC-04)', async () => {

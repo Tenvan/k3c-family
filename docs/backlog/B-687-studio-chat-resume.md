@@ -8,9 +8,9 @@
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-31
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** – (offene Fragen, entscheidet 🧑)
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-10-31 🧑 Ralf im Chat (Q1 Ja), Q2 geprüft
 
 ## Ausgangslage
 
@@ -59,8 +59,10 @@ Resume scheitert → Fallback; CLI ohne Resume-Unterstützung → dauerhaft Fall
 
 ## Offene Fragen
 
-- Q1 (🧑): Darf das Studio Sitzungsdateien der CLI im Profil der CLI ablegen (außerhalb von `.chats`)? Wenn nicht, ist Resume nicht umsetzbar.
-- Q2: Funktioniert `--resume` zusammen mit `-p`, `--safe-mode` und `--tools ""` in der verwendeten CLI-Version (2.1.304 laut Code)? Ungeprüft, zuerst mit einer kleinen Probe klären.
+keine.
+
+- Q1 entschieden von 🧑 am 2026-10-31: Ja, das Studio darf Sitzungsdateien der CLI im Profil der CLI ablegen (`~/.claude/projects/<Arbeitsordner>/<id>.jsonl`); sie werden beim Löschen eines Chats und beim Aufräumen mit entfernt.
+- Q2 geprüft am 2026-10-31 (CLI 2.1.304): Eine Probe mit `-p --output-format json --tools "" --permission-mode dontAsk --strict-mcp-config --safe-mode --session-id <id>` und danach `--resume <id>` liefert das zuvor genannte Codewort zurück, ohne Fehler. Resume ist mit der Härtung des Chats vereinbar; die Sitzungsdatei liegt unter dem Arbeitsordner des Chats.
 
 ## Notizen
 
