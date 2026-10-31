@@ -38,9 +38,17 @@ export interface AssetSlot {
   art: AssetKind;
   kategorie: string;
   beschreibung: string;
+  /** Zielmaß in Units (Go: assets.Units, B-685); fehlt = heutiges Maß der Datei */
+  ziel?: AssetTarget;
   bus?: string;
   wahl: AssetChoice[];
   status: AssetStatus;
+}
+
+/** Zielmaß einer Grafik in Units (1 Unit = 32 Spiel-Pixel, B-685) */
+export interface AssetTarget {
+  w: number;
+  h: number;
 }
 
 /** Slot-Register; preview = Basis der Bild- und Sound-Adressen ("/" im Studio), stand = Hash von data/assets.json beim
@@ -287,6 +295,8 @@ export interface Backend extends WorldDraftApi, ChatApi, TicketBackend, Suggesti
   assetsList(): Promise<AssetsView>;
   assetsSet(id: string, wahl: AssetChoice[], stand: string): Promise<AssetSaved>;
   assetsSlotDetails(id: string): Promise<AssetSlotDetails>;
+  /** Zielmaß setzen (null = entfernen), Schreibregel wie assetsSet (B-685) */
+  assetsTargetSet(id: string, ziel: AssetTarget | null, stand: string): Promise<AssetSaved>;
   assetsCatalog(query: string, art: string, limit: number): Promise<CatalogAsset[]>;
   assetsHits(id: string): Promise<AssetHit[]>;
   assetsResearch(id: string, query: string): Promise<ResearchResult>;

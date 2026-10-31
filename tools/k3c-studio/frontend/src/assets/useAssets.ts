@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { backend, isStale, STALE, type AssetChoice, type AssetsView } from '../api';
+import { backend, isStale, STALE, type AssetChoice, type AssetSaved, type AssetsView, type AssetTarget } from '../api';
 import { errorText } from '@webkit/lib/errors';
 import { applySaved } from './assets';
 
@@ -36,11 +36,11 @@ export function useAssets() {
     return backend.on('assets:changed', () => void reload());
   }, [reload]);
 
-  /** Speichert die Zuordnungen eines Slots. Ablehnung aus Go steht in error; auf veraltetem Stand wird neu geladen und
+  /** Schreibt einen Slot (Zuordnungen oder Zielmaß). Ablehnung aus Go steht in error; auf veraltetem Stand wird neu geladen und
    *  „Register geändert, bitte erneut speichern“ gemeldet, die Eingaben der Seite bleiben. */
-  const save = useCallback(async (id: string, wahl: AssetChoice[]) => {
+  const write = useCallback(async (id: string, call: (stand: string) => Promise<AssetSaved>) => {
     try {
-      const saved = await backend.assetsSet(id, wahl, stand.current);
+      const saved = await call(stand.current);
       stand.current = saved.stand;
       setView((v) => (v ? applySaved(v, id, saved) : v));
       setError('');
@@ -54,6 +54,9 @@ export function useAssets() {
       return false;
     }
   }, [reload]);
+  const save = useCallback((id: string, wahl: AssetChoice[]) => write(id, (s) => backend.assetsSet(id, wahl, s)), [write]);
+  /** Zielmaß eines Grafik-Slots (null = heutiges Maß), gleiche Schreibregel wie `save` (B-685) */
+  const saveTarget = useCallback((id: string, ziel: AssetTarget | null) => write(id, (s) => backend.assetsTargetSet(id, ziel, s)), [write]);
 
-  return { view, error, reload, save };
+  return { view, error, reload, save, saveTarget };
 }

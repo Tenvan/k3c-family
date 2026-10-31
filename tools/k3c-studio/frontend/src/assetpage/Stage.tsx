@@ -22,7 +22,7 @@ interface Props {
 function StageBody({ slot, active, zoom, onSize }: Props & { zoom: number; onSize: (w: number, h: number) => void }) {
   if (!slot) return <Text size="2" color="gray">Ein Grafik-Slot zeigt hier seine Präferenzen im Spielmaßstab.</Text>;
   if (slot.art !== 'grafik') return <Text size="2" color="gray">Sound-Slot: keine Bühne. ▶ in der Belegung oder in der Abspielleiste.</Text>;
-  return <MiniScene wahl={slot.wahl} active={active} zoom={zoom} caption={false} onSize={onSize} />;
+  return <MiniScene wahl={slot.wahl} active={active} zoom={zoom} caption={false} ziel={slot.ziel} onSize={onSize} />;
 }
 
 /** Bühne der Assets-Seite (Variante „Bühne“): die Mini-Szene des gewählten Slots unter dem Raster über die volle Breite, mit Zoom

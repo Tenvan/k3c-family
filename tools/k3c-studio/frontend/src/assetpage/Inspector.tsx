@@ -1,9 +1,10 @@
 import { Button, Flex, StatusBadge, Text } from '@webkit/atoms';
 import { Tabs } from '@webkit/organisms';
 import { useRef, useState } from 'react';
-import type { AssetChoice, AssetSlot } from '../api';
+import type { AssetChoice, AssetSlot, AssetTarget } from '../api';
 import { fileUrl } from '../assets/assets';
 import { SlotInfo } from '../assets/SlotInfo';
+import { TargetField } from '../assets/TargetField';
 import { loadPref, loadText, savePref } from '../lib/prefs';
 import '../styles/assets.css'; // CutEditor und SlotInfo gestalten sich darüber (as-*)
 import '../styles/assetInspector.css';
@@ -24,6 +25,8 @@ export interface InspectorProps {
   /** gewählte Präferenz (geteilt mit der Bühne); ohne Angabe hält Belegung sie selbst */
   active?: number;
   onActive?: (i: number) => void;
+  /** Zielmaß speichern (B-685); ohne Angabe kein Zielmaß-Feld */
+  onTarget?: (id: string, ziel: AssetTarget | null) => Promise<boolean>;
 }
 
 /** Kopf der Leiste: Vorschau der aktiven Zuordnung, Slot-Name, Status und die Hauptaktion „Datei zuordnen …“. */
@@ -50,7 +53,7 @@ function SlotHead({ slot, onAssign }: { slot: AssetSlot; onAssign: () => void })
 
 /** Inspektor der Assets-Seite (B-677, Variante „Bühne“): Kopf mit Hauptaktion, Reiter Belegung | Kandidaten (gemerkt als
  *  `assets.inspector`), darunter Details zum Aufklappen (gemerkt als `assets.details`). Die Leiste scrollt als Ganzes. */
-export function Inspector({ slot, onSave, onReload, active, onActive }: InspectorProps) {
+export function Inspector({ slot, onSave, onReload, active, onActive, onTarget }: InspectorProps) {
   const [tab, setTab] = useState<Tab>(() => loadPref('assets.inspector', TABS, 'belegung'));
   const [details, setDetails] = useState(() => loadText('assets.details', '') === '1');
   const root = useRef<HTMLDivElement>(null);
@@ -67,6 +70,7 @@ export function Inspector({ slot, onSave, onReload, active, onActive }: Inspecto
   return (
     <div className="ap-inspector" ref={root}>
       <SlotHead slot={slot} onAssign={assign} />
+      {onTarget && slot.art === 'grafik' && slot.kategorie === 'gebaeude' && <TargetField slot={slot} onTarget={onTarget} />}
       <Tabs.Root value={tab} onValueChange={choose}>
         <Tabs.List size="1">
           <Tabs.Trigger value="belegung">Belegung</Tabs.Trigger>

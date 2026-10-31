@@ -1,6 +1,7 @@
 import { Text } from '@webkit/atoms';
 import { useEffect, useRef, useState } from 'react';
-import type { AssetChoice } from '../api';
+import { fitTarget } from '@game/scenes/render/targetFit';
+import type { AssetChoice, AssetTarget } from '../api';
 import { fileUrl, GAME_SCALE, sceneLayout, SCENE, UNIT_PX } from './assets';
 
 interface Props {
@@ -11,6 +12,8 @@ interface Props {
   zoom?: number;
   /** Bildunterschrift über der Szene (Vorgabe an); die Bühne der Assets-Seite zeigt sie in ihrer Leiste */
   caption?: boolean;
+  /** Zielmaß des Slots in Units (B-685): jede Präferenz wird wie im Spiel eingepasst (`fitTarget`) statt Quellmaß ×GAME_SCALE */
+  ziel?: AssetTarget;
   /** meldet die Größe der gezeichneten Szene in Pixeln (für „Anpassen“) */
   onSize?: (w: number, h: number) => void;
 }
@@ -22,10 +25,16 @@ const load = (src: string) => new Promise<HTMLImageElement | null>((ok) => {
   img.src = src;
 });
 
+/** Mit Zielmaß: Spielgröße aus `fitTarget`, zurückgerechnet auf das Maß, das `sceneLayout` mit GAME_SCALE vergrößert */
+export function fittedSource(cut: { w: number; h: number }, ziel: AssetTarget): { w: number; h: number } {
+  const fit = fitTarget(cut, ziel);
+  return { w: fit.w / GAME_SCALE, h: fit.h / GAME_SCALE };
+}
+
 /** Zeichnet Himmel, Boden mit Unit-Raster und alle Präferenzen; liefert die Größe der Szene. */
-function draw(c: HTMLCanvasElement, g: CanvasRenderingContext2D, wahl: readonly AssetChoice[], imgs: (HTMLImageElement | null)[], active: number) {
+function draw(c: HTMLCanvasElement, g: CanvasRenderingContext2D, wahl: readonly AssetChoice[], imgs: (HTMLImageElement | null)[], active: number, ziel?: AssetTarget) {
   const cuts = wahl.map((w, i) => w.ausschnitt ?? { x: 0, y: 0, w: imgs[i]?.width ?? 16, h: imgs[i]?.height ?? 16 });
-  const lay = sceneLayout(cuts);
+  const lay = sceneLayout(ziel ? cuts.map((cut) => fittedSource(cut, ziel)) : cuts);
   c.width = lay.w;
   c.height = lay.h;
   const sky = g.createLinearGradient(0, 0, 0, lay.floor);
@@ -42,6 +51,7 @@ function draw(c: HTMLCanvasElement, g: CanvasRenderingContext2D, wahl: readonly 
   imgs.forEach((img, i) => {
     const it = lay.items[i]!;
     const cut = cuts[i]!;
+    g.imageSmoothingEnabled = ziel ? fitTarget(cut, ziel).smooth : false; // wie im Spiel: ganzzahlig vergrößert scharf, sonst weich
     if (img) g.drawImage(img, cut.x, cut.y, cut.w, cut.h, it.x, it.y, it.w, it.h);
     else {
       g.strokeStyle = '#ff8fa3';
@@ -59,7 +69,7 @@ function draw(c: HTMLCanvasElement, g: CanvasRenderingContext2D, wahl: readonly 
 
 /** Mini-Szene: alle Zuordnungen eines Slots im Spielmaßstab (×2) nebeneinander auf einer Bodenlinie mit Unit-Raster; Präferenz 1 ist
  *  die im Spiel aktive. `zoom` vergrößert nur die Anzeige (die Pixel bleiben scharf). */
-export function MiniScene({ wahl, active, zoom = 1, caption = true, onSize }: Props) {
+export function MiniScene({ wahl, active, zoom = 1, caption = true, ziel, onSize }: Props) {
   const ref = useRef<HTMLCanvasElement>(null);
   const [missing, setMissing] = useState<string[]>([]);
   const [size, setSize] = useState({ w: 0, h: 0 });
@@ -71,7 +81,7 @@ export function MiniScene({ wahl, active, zoom = 1, caption = true, onSize }: Pr
       const c = ref.current;
       const g = c?.getContext('2d');
       if (!live || !c || !g) return;
-      const s = draw(c, g, wahl, imgs, active);
+      const s = draw(c, g, wahl, imgs, active, ziel);
       setSize(s);
       sized.current?.(s.w, s.h);
       setMissing(wahl.filter((_, i) => !imgs[i]).map((w) => w.datei));
@@ -79,7 +89,7 @@ export function MiniScene({ wahl, active, zoom = 1, caption = true, onSize }: Pr
     return () => {
       live = false;
     };
-  }, [wahl, active]);
+  }, [wahl, active, ziel]);
   if (wahl.length === 0) return <Text size="2" color="gray">Mini-Szene: noch keine Zuordnung.</Text>;
   return (
     <div className="as-scene">

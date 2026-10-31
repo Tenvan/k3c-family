@@ -15,6 +15,8 @@ func assetActions() []actionSpec {
 	return []actionSpec{
 		{"zuordnung_setzen", `slot, wahl: [{"datei": "audio/x.ogg", "sheet"?, "sprite"?}] (Reihenfolge = Präferenz, leer = Zuordnung leeren)`,
 			"Zuordnung eines Slots setzen", prepareChoices},
+		{"zielmass_setzen", `slot, ziel: {"w": 6, "h": 4} in Units (1 Unit = 32 px; null oder eine Seite 0 = heutiges Maß)`,
+			"Zielmaß einer Grafik setzen (Gebäude je Stufe, B-685)", prepareTarget},
 		{"kandidat_zuordnen", "slot, id (aus „Kandidaten“)", "Kandidaten zuordnen, lädt bei Bedarf", prepareCandidate},
 		{"vorschlag_uebernehmen", "slot, id (Vorschlagsliste, im Vorrat geladen)", "Vorschlag übernehmen", prepareAdopt},
 		{"vorschlag_verwerfen", "slot, id", "Vorschlag verwerfen", prepareDrop},
@@ -79,6 +81,46 @@ func prepareChoices(a *App, raw json.RawMessage) (actionPlan, error) {
 		}
 		a.publish(evAssetsChanged)
 		return fmt.Sprintf("%s: Status %s", f.Slot, saved.Slot.Status), nil
+	}
+	return p, nil
+}
+
+// prepareTarget setzt das Zielmaß eines Grafik-Slots über AssetsTargetSet (B-685); Stand bei der Prüfung gemerkt.
+func prepareTarget(a *App, raw json.RawMessage) (actionPlan, error) {
+	var f struct {
+		Slot string        `json:"slot"`
+		Ziel *assets.Units `json:"ziel"`
+	}
+	if err := fields(raw, &f); err != nil {
+		return actionPlan{}, err
+	}
+	p := actionPlan{title: "Zielmaß " + f.Slot, details: []string{"heutiges Maß (Zielmaß entfernen)"}}
+	stand, err := assets.Stamp(a.root)
+	if err != nil {
+		return p, err
+	}
+	s, err := slotOf(a, f.Slot)
+	if err != nil {
+		return p, err
+	}
+	if s.Kind != assets.KindGraphic {
+		return p, fmt.Errorf("slot %s ist keine Grafik", f.Slot)
+	}
+	if f.Ziel != nil && f.Ziel.W > 0 && f.Ziel.H > 0 {
+		if f.Ziel.W > assets.MaxTargetUnits || f.Ziel.H > assets.MaxTargetUnits {
+			return p, fmt.Errorf("ziel %gx%g größer als %d Units", f.Ziel.W, f.Ziel.H, assets.MaxTargetUnits)
+		}
+		p.details = []string{fmt.Sprintf("%g × %g Units (%g × %g px)", f.Ziel.W, f.Ziel.H, f.Ziel.W*32, f.Ziel.H*32)}
+	} else if f.Ziel != nil && (f.Ziel.W < 0 || f.Ziel.H < 0) {
+		return p, fmt.Errorf("ziel %gx%g negativ", f.Ziel.W, f.Ziel.H)
+	}
+	p.run = func() (string, error) {
+		saved, err := a.AssetsTargetSet(f.Slot, f.Ziel, stand)
+		if err != nil {
+			return "", err
+		}
+		a.publish(evAssetsChanged)
+		return f.Slot + ": " + p.details[0] + ", Status " + saved.Slot.Status, nil
 	}
 	return p, nil
 }

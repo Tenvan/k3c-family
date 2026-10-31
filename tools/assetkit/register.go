@@ -45,7 +45,7 @@ type Rect struct {
 	H int `json:"h"`
 }
 
-// Size ist ein Maß in Pixeln (Zielmaß, Frame-Raster).
+// Size ist ein Maß in Pixeln (Frame-Raster).
 type Size struct {
 	W int `json:"w"`
 	H int `json:"h"`
@@ -67,7 +67,7 @@ type Slot struct {
 	Kind        string   `json:"art"`
 	Category    string   `json:"kategorie"`
 	Description string   `json:"beschreibung"`
-	Target      *Size    `json:"ziel,omitempty"`
+	Target      *Units   `json:"ziel,omitempty"`
 	Bus         string   `json:"bus,omitempty"`
 	Choices     []Choice `json:"wahl"`
 }
@@ -90,6 +90,11 @@ func Load(root string) (*Register, error) {
 	var reg Register
 	if err := json.Unmarshal(b, &reg); err != nil {
 		return nil, fmt.Errorf("%s ungültig, nichts geschrieben: %w", RegisterPath, err)
+	}
+	for _, s := range reg.Slots {
+		if err := checkTarget(s.Target); err != nil {
+			return nil, fmt.Errorf("%s ungültig, nichts geschrieben: Slot %s: %w", RegisterPath, s.ID, err)
+		}
 	}
 	return &reg, nil
 }
