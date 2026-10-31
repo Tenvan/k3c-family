@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** GEB18
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-24
@@ -64,3 +64,4 @@ keine blockierende. Defaults (Claude, autonom): Dichte 128 als vierfache Auflös
 ## Notizen
 
 Aus dem Chat mit Ralf (2026-10-24, während WZ29). Zusammenhang: GEB7 (Hintergründe je Biom), B-526 (Hintergrund-Höhe), B-334 (Performance-Modus). B-453 betrifft die Pack-Hintergründe vor GEB7, nicht diese Schichten. Sprint GEB18.
+- **Abgenommen 2026-10-31:** Ralf (🧑) hat die Hintergründe am Gerät abgenommen (GEB18.7, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen).

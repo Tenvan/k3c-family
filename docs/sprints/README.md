@@ -10,7 +10,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
-| GEB18 | DEV, SIM, CLI | GEB | Hintergründe der fünf Stufen: vierfache Auflösung, fünf Varianten je Stufe nach Seed | – | `aktiv/GEB18-hintergruende-detail-varianten/` |
 | W13 | CLI, DEV | WRT | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | – | `aktiv/W13-morgengrauen-licht-client/` |
 | GEB17 | CLI, REG, SIM, DEV | GEB | Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe | – | `aktiv/GEB17-hub-ausbau-je-inselstufe/` |
 | SO8 | DEV, CLI | SND | Skill-Sounds je Klasse | – | `aktiv/SO8-skill-sounds-je-klasse/` |
@@ -262,3 +261,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ31 | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | `erledigt/WZ31-web-client-first/` |
 | GEB15 | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | `erledigt/GEB15-hoehle-fels-varianten/` |
 | GEB16 | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | `erledigt/GEB16-bauschilder-wald-geruest/` |
+| GEB18 | Hintergründe der fünf Stufen: vierfache Auflösung, fünf Varianten je Stufe nach Seed | `erledigt/GEB18-hintergruende-detail-varianten/` |

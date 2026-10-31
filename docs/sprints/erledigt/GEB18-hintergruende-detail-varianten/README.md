@@ -1,6 +1,6 @@
 # GEB18 · DEV, SIM, CLI · Hintergründe der fünf Stufen: vierfache Auflösung, fünf Varianten je Stufe nach Seed
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GEB
 - **Domäne:** DEV, SIM, CLI
 - **Reife:** bereit
@@ -65,7 +65,7 @@ keine blockierende. Defaults (Claude, autonom, 2026-10-24): Dichte 128; Auswahl 
 | GEB18.4 | `GEB18.4-auswahl-nach-seed.md` | Umsetzung | autonom | fertig |
 | GEB18.5 | `GEB18.5-protokoll-client-varianten.md` | Umsetzung | autonom | fertig |
 | GEB18.6 | `GEB18.6-review.md` | Review | autonom | fertig |
-| GEB18.7 | `GEB18.7-abnahme-geraet.md` | Workshop | Mensch | offen |
+| GEB18.7 | `GEB18.7-abnahme-geraet.md` | Workshop | Mensch | fertig |
 
 - GEB18.1 (DEV) `tools/buildings`: Dichte 128 erlauben, Vorlagen-Format und Ablage je Variante, Go-Tests (AC-01).
 - GEB18.2 (DEV) Vorlagen Wald, Höhle, Mine: je fünf detailreiche Varianten, drei Schichten (AC-02).
@@ -79,4 +79,4 @@ keine blockierende. Defaults (Claude, autonom, 2026-10-24): Dichte 128; Auswahl 
 
 2026-10-24, Claude (GEB18.6): `task check` und `task check:go` grün; `task check:race` lokal übersprungen (kein C-Compiler), die CI prüft `-race`.
 AC-01 bis AC-04 und AC-06 sind laut den Ergebnissen von GEB18.1 bis GEB18.5 erfüllt. Claude hat den Diff gelesen (backdrop.go, objectView/stageView) und keine schweren Befunde gefunden.
-AC-05 fehlt noch, das ist die Geräte-Abnahme durch Ralf in GEB18.7. Der Sprint bleibt aktiv, bis sie erledigt ist.
+2026-10-31: AC-05 von Ralf (🧑) am Gerät abgenommen, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen. Alle Kriterien erfüllt, Sprint erledigt.

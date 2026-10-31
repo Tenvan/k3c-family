@@ -100,7 +100,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-617](B-617-studio-levelview-test-golden.md) | DEV | Problem | hoch | offen | – | Der Studio-Test levelView passt wieder zur Golden-Datei level-forest.json |
 | [B-615](B-615-ticket-nummer-gleichzeitig.md) | DEV | Problem | mittel | offen | – | Gleichzeitiges Anlegen von Tickets vergibt nie dieselbe Nummer |
 | [B-616](B-616-lauf-id-nach-neustart.md) | DEV | Problem | niedrig | offen | – | Lauf-IDs der Balancing-Seite bleiben über einen Neustart der Workbench eindeutig |
-| [B-618](B-618-hintergruende-detail-varianten.md) | DEV | Problem | hoch | eingeplant | GEB18 | Die Hintergründe der fünf Stufen sind detailreich (vierfache Auflösung) und wechseln je Seed zwischen fünf Varianten |
 | [B-619](B-619-check-diff-cache-und-short.md) | INF | Problem | hoch | offen | – | check:diff nutzt den Go-Testcache und lässt lange Tests aus |
 | [B-629](B-629-buildall-web-exe.md) | INF | Problem | hoch | offen | – | task buildall baut die Web-EXEs von Studio und Workbench nicht mit |
 | [B-620](B-620-golden-grenze-20-mb.md) | INF | Frage | mittel | offen | – | Golden-Grenze 20 MB nach dem dichteren Wald bestätigen |
@@ -647,3 +646,4 @@ Zeile in diesen Abschnitt.
 | [B-586](archiv/B-586-baugeruest-in-gebaeudeform.md) | CLI | Idee | mittel | erledigt | GEB16 | Im Bau zeigt der Platz ein Gerüst in der Form des neuen Gebäudes |
 | [B-587](archiv/B-587-snapshot-site-payable.md) | SRV | Idee | mittel | erledigt | GEB16 | Der Server meldet je Bauplatz, ob er jetzt Münzen annimmt |
 | [B-588](archiv/B-588-abbau-symbole-axt-spitzhacke.md) | CLI | Idee | niedrig | erledigt | GEB16 | Abbau-Schilder zeigen eine Axt für Bäume und eine Spitzhacke für Felsen |
+| [B-618](archiv/B-618-hintergruende-detail-varianten.md) | DEV | Problem | hoch | erledigt | GEB18 | Die Hintergründe der fünf Stufen sind detailreich (vierfache Auflösung) und wechseln je Seed zwischen fünf Varianten |

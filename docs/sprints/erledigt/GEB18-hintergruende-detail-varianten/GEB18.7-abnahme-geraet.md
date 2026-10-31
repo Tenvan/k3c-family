@@ -1,6 +1,6 @@
 # GEB18.7 · Abnahme am Gerät: Hintergründe, Abwechslung, Speicher auf der Xbox
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -35,8 +35,7 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [x] AC-05: Ralf nimmt am Gerät ab, Xbox-Speicher und Ladezeit im Budget.
 
 ## Prüfen
 
@@ -50,5 +49,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Abnahme durch Ralf (🧑), bestätigt im Chat am 2026-10-31; Claude hat die Prüfung nicht selbst gesehen.
+
+- AC-05 abgenommen (Ralf, am Gerät): detailreichere, abwechselnde Hintergründe; Xbox-Speicher und Ladezeit laut Ralfs Bestätigung im Budget. Ob Ralf die Defaults (Dichte 128, Auswahl im Go-Level-Generator, Abschnittslänge = Kachelbreite der Schicht mitte) gesondert bestätigt hat, ist nicht festgehalten; sie gelten unverändert.
+- Befunde: Claude wurden keine genannt, es entstehen keine neuen Tickets.
