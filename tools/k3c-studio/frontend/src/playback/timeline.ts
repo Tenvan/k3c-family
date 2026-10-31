@@ -24,7 +24,7 @@ export type TimedEffect =
   | { kind: 'frame'; cycleMs: number; at: number }
   /** Status-Effekt des Spiels (B-675, B-676) an der Figur für `durationMs`, `delayMs` nach der Auslösung: Radius in Units
    *  (Sturm, Aura), `skill` färbt die Aura, `share` füllt den Schild-Balken (0..1) */
-  | { kind: 'status'; status: StatusKind; cycleMs: number; durationMs: number; delayMs?: number; radius?: number; skill?: string; share?: number };
+  | { kind: 'status'; status: StatusKind; cycleMs: number; durationMs: number; delayMs?: number; radius?: number; skill?: string; share?: number; castleAt?: number };
 
 /** Geschoss des Spiels (`worldRenderer`: `scene.add.rectangle(0, 0, 26, 3, …)` in `G - 70`, Farbe des Gegner-Teams) und
  *  sein Tempo (`engine/sim`: 20 Units/s für Fernkämpfer und Splitter); ein Test prüft die Werte an den Quellen. */
@@ -96,7 +96,7 @@ type StatusEffect = Extract<TimedEffect, { kind: 'status' }>;
 /** Zustand, in dem das Spiel genau diesen Status-Effekt an einer Figur bei x 0 zeigt (Gegner bzw. Monarch, lebend). */
 function statusWorld(e: StatusEffect): StatusWorld {
   const enemy = (over: Partial<Enemy>) => ({ enemies: [{ id: 1, x: 0, hp: 1, ...over } as Enemy] });
-  const player = (over: Partial<Player>) => ({ players: [{ id: 1, x: 0, respawnIn: 0, ...over } as Player] });
+  const player = (over: Partial<Player>, castle?: { x: number }): StatusWorld => ({ players: [{ id: 1, x: 0, respawnIn: 0, ...over } as Player], ...(castle ? { castle } : {}) });
   switch (e.status) {
     case 'stun': return enemy({ stun: 1 });
     case 'slow': return enemy({ slow: 0.5, slowFor: 1 });
@@ -104,7 +104,11 @@ function statusWorld(e: StatusEffect): StatusWorld {
     case 'storm': return { storms: [{ x: 0, radius: e.radius ?? 0, perSecond: 0, left: 1, owner: 1 }] };
     case 'shield': return player({ shield: (e.share ?? 1) * SHIELD_MAX, shieldFor: 1 });
     case 'lastStand': return player({ lastStandFor: 1 });
-    default: return player({ auras: [{ skill: e.skill ?? '', radius: e.radius ?? 0 }] });
+    default: {
+      // Holy Ground (castleAt gesetzt) wirkt im Spiel an der Burg, nicht am Monarchen
+      const castle = e.castleAt !== undefined;
+      return player({ auras: [{ skill: e.skill ?? '', radius: e.radius ?? 0, ...(castle ? { castle: true } : {}) }] }, castle ? { x: e.castleAt! } : undefined);
+    }
   }
 }
 

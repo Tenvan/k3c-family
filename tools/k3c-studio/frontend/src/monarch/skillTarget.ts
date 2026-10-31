@@ -2,7 +2,7 @@ import hubJson from '@data/hub.json';
 import monarchJson from '@data/monarch.json';
 import { UNIT_PX } from '@game/core/constants';
 import { SHIELD_MAX, type StatusKind } from '@game/scenes/effects/statusLooks';
-import { gap, type Gap } from '../playback/figure';
+import type { Gap } from '../playback/figure';
 import { REPEAT_PAUSE_MS, type TimedEffect } from '../playback/timeline';
 
 // Ziel-Gegner und Status-Effekte der Monarch-Seite (B-676): Flächenzauber wirken am Ziel mit ihrem Radius (Ereignis
@@ -61,7 +61,8 @@ const status = (s: Omit<Extract<TimedEffect, { kind: 'status' }>, 'kind' | 'cycl
 /** Burgradius des Spiels (`data/hub.json` › `castleRadiusUnits`), Radius von Holy Ground */
 const CASTLE_RADIUS = (hubJson as unknown as { castleRadiusUnits: number }).castleRadiusUnits;
 
-const HOLY_GAP = gap('display', 'Lücke: Holy Ground wirkt im Spiel im Burgradius; das Studio zeigt den Ring am Monarchen');
+/** Abstand der Burg zum Monarchen in Units (Monarch steht im Burgradius, der Ring sitzt wie im Spiel an der Burg) */
+export const CASTLE_OFFSET = 3;
 
 /** Wirkort eines Passivs wie `AurasOf` der Simulation: Radius in Units, oder nichts (Passiv ohne Wirkort). */
 function auraRadius(e: SkillEffect): number | null {
@@ -74,12 +75,11 @@ function auraRadius(e: SkillEffect): number | null {
 
 type Status = { onTarget: TimedEffect[]; onMonarch: TimedEffect[]; gaps: Gap[] };
 
-/** Status eines Passivs am Monarchen: Aura-Ring mit Radius (Holy Ground mit Burgradius und Lücke) */
+/** Status eines Passivs am Monarchen: Aura-Ring mit Radius (Holy Ground im Burgradius an der Burg) */
 function passiveStatus(id: string, e: SkillEffect, out: Status): Status {
   const holy = e.type === 'regen' && e.castle;
   const r = holy ? CASTLE_RADIUS : auraRadius(e);
-  if (r !== null) out.onMonarch.push(status({ status: 'aura', durationMs: 2000, radius: r, skill: id }));
-  if (holy) out.gaps.push(HOLY_GAP);
+  if (r !== null) out.onMonarch.push(status({ status: 'aura', durationMs: 2000, radius: r, skill: id, ...(holy ? { castleAt: CASTLE_OFFSET } : {}) }));
   return out;
 }
 

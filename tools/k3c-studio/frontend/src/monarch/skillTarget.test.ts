@@ -9,7 +9,7 @@ import { enemyItems, cardOf } from '../enemies/enemyLogic';
 import { SKILL_RING_PX, skillPlay } from './actions';
 import { DEFAULT_MOUNT, monarchItems, moveOf } from './monarchLogic';
 import { skillItems } from './skillItems';
-import { TARGET_DISTANCE, skillStatus } from './skillTarget';
+import { CASTLE_OFFSET, TARGET_DISTANCE, skillStatus } from './skillTarget';
 
 // B-676/AC-01, AC-02: Flächenzauber am Ziel-Gegner mit dem Radius des Skills, Status-Effekte des Spiels über ihre Dauer.
 
@@ -60,10 +60,14 @@ describe('Status-Effekte abspielbar (B-676/AC-02)', () => {
     expect([...shown].sort()).toEqual([...STATUS_KINDS].sort());
   });
 
-  it('Holy Ground zeigt seinen Ring mit Lücke (wirkt im Spiel um die Burg); Shield Bash ohne Ziel in 2 Units keine Betäubung', () => {
+  it('Holy Ground sitzt als Ring an der Burg (Burgradius, nicht am Monarchen); Shield Bash ohne Ziel in 2 Units keine Betäubung', () => {
     const holy = skillStatus('holyGround', null);
     expect(statusOf(holy.onMonarch)).toEqual(['aura']);
-    expect(holy.gaps[0]?.reason).toContain('Burgradius');
+    expect(holy.gaps).toEqual([]);
+    const ring = statusAt(holy.onMonarch[0] as Extract<TimedEffect, { kind: 'status' }>, 0)[0]!;
+    expect(ring).toMatchObject({ kind: 'aura', x: CASTLE_OFFSET * UNIT_PX, radius: 5 * UNIT_PX });
+    const regen = statusAt(skillStatus('regeneration', null).onMonarch[0] as Extract<TimedEffect, { kind: 'status' }>, 0)[0]!;
+    expect(regen.x).toBe(0);
     expect(skillStatus('shieldBash', goblin).onTarget).toEqual([]);
   });
 
