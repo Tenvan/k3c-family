@@ -90,8 +90,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-579](B-579-wellenabstand-adern-korridor.md) | REG | Problem | mittel | offen | – | Wellenabstand unter Tage mit besetzten Adern liegt über dem Korridor 4–12 Minuten |
 | [B-580](B-580-workbench-git-seite.md) | DEV | Idee | mittel | offen | – | Die Workbench hat eine Git-Seite für dieses Repo |
 | [B-581](B-581-offenen-raum-schliessen.md) | CLI | Idee | mittel | eingeplant | BD9 | Ein offener Raum lässt sich in der Lobby über Entfernen schließen |
-| [B-582](B-582-hoehlen-flora-variation.md) | DEV | Idee | mittel | eingeplant | GEB15 | Höhlen-Wurzeln sind zahlreicher und unterscheiden sich in Form und Größe |
-| [B-583](B-583-minen-felsen-groesser-varianten.md) | DEV | Idee | mittel | eingeplant | GEB15 | Minen und Felsen sind größer und haben zwei bis drei Varianten mehr |
 | [B-584](B-584-bauschilder-statt-rahmen.md) | CLI | Idee | mittel | eingeplant | GEB16 | Bauplätze zeigen kleine Bauschilder statt grauer Rahmen |
 | [B-585](B-585-wald-chunks-voller-baeume.md) | REG | Problem | mittel | eingeplant | GEB16 | Wald-Chunks stehen voller Bäume |
 | [B-586](B-586-baugeruest-in-gebaeudeform.md) | CLI | Idee | mittel | eingeplant | GEB16 | Im Bau zeigt der Platz ein Gerüst in der Form des neuen Gebäudes |
@@ -647,3 +645,5 @@ Zeile in diesen Abschnitt.
 | [B-601](archiv/B-601-download-vorschlagsliste-offline-vorrat.md) | DEV | Idee | hoch | erledigt | WZ29 | Eine Download-Vorschlagsliste für empfohlene Assets ermöglicht Offline-Tests |
 | [B-602](archiv/B-602-studio-szene-kampf-anzeigen.md) | DEV | Idee | hoch | erledigt | WZ29 | Das Studio zeigt Boss-Leiste, Phasen, Warnkreis und Event-Banner mit Mock-Zuständen |
 | [B-614](archiv/B-614-workbench-studio-web-client.md) | DEV | Idee | hoch | erledigt | WZ31 | Workbench und Studio starten als Server, gearbeitet wird im Browser |
+| [B-582](archiv/B-582-hoehlen-flora-variation.md) | DEV | Idee | mittel | erledigt | GEB15 | Höhlen-Wurzeln sind zahlreicher und unterscheiden sich in Form und Größe |
+| [B-583](archiv/B-583-minen-felsen-groesser-varianten.md) | DEV | Idee | mittel | erledigt | GEB15 | Minen und Felsen sind größer und haben zwei bis drei Varianten mehr |

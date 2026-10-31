@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** GEB15
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-24
@@ -57,3 +57,4 @@ Konkrete Dichte und Anzahl der Varianten: Default 3 Varianten, Dichte etwa verdo
 ## Notizen
 
 Aus GEB10.5. Spec: Entwurf. Gemeinsamer Sprint mit B-583.
+- **Abgenommen 2026-10-31:** Ralf (🧑) hat Wurzeln, Felsen und Minen am Gerät abgenommen (GEB15.4, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen).

@@ -1,6 +1,6 @@
 # GEB15 · DEV · Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GEB
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -59,7 +59,7 @@ Dichte, Größenfaktor und Variantenzahl: Defaults in B-582 und B-583; 🧑 best
 | GEB15.1 | `GEB15.1-hoehlen-wurzeln.md` | Umsetzung | autonom | fertig |
 | GEB15.2 | `GEB15.2-felsen-minen.md` | Umsetzung | autonom | fertig |
 | GEB15.3 | `GEB15.3-review.md` | Review | autonom | fertig |
-| GEB15.4 | `GEB15.4-abnahme-geraet.md` | Workshop | Mensch | offen |
+| GEB15.4 | `GEB15.4-abnahme-geraet.md` | Workshop | Mensch | fertig |
 
 - GEB15.1 (DEV) Höhlen-Wurzeln: Varianten und Dichte (AC-01).
 - GEB15.2 (DEV) Felsen und Minen: größer, neue Varianten (AC-02).
@@ -70,5 +70,5 @@ Dichte, Größenfaktor und Variantenzahl: Defaults in B-582 und B-583; 🧑 best
 
 2026-10-25, Claude (GEB15.3): `task check` und `task check:go` grün; `check:race` lokal übersprungen (kein C-Compiler), die CI prüft es.
 AC-01 erfüllt mit GEB15.1 (fünf Wurzel-Formen, Deko-Dichte `rootsPerNode`), AC-02 mit GEB15.2 (Fels 1,5 × 1,5, drei Formen je Look). Simulation und Golden sind unverändert.
-Offen ist AC-03, die Abnahme am Gerät durch Ralf in GEB15.4. Dabei bestätigt Ralf die Defaults: Dichte 2 in der Höhle, Faktor 1,5.
+2026-10-31: AC-03 von Ralf (🧑) am Gerät abgenommen, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen. Die Defaults (Dichte 2, Faktor 1,5) gelten unverändert, eine Änderung wurde nicht gemeldet. Alle Kriterien erfüllt, Sprint erledigt.
 Keine neuen Tickets.

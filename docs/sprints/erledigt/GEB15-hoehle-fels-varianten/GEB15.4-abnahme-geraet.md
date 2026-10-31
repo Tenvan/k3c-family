@@ -1,6 +1,6 @@
 # GEB15.4 · Abnahme am Gerät: Wurzeln, Felsen, Minen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** DEV
@@ -35,8 +35,7 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [x] AC-03: Ralf hat AC-01 und AC-02 am Gerät abgenommen.
 
 ## Prüfen
 
@@ -50,5 +49,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Abnahme durch Ralf (🧑), bestätigt im Chat am 2026-10-31; Claude hat die Prüfung nicht selbst gesehen.
+
+- AC-03 abgenommen (Ralf, am Gerät): mehrere Wurzel-Varianten und dichtere Höhle (AC-01), größere Felsen und Minen mit neuen Varianten (AC-02). Die Defaults (Dichte 2 in der Höhle, Faktor 1,5) gelten unverändert; eine Änderung wurde nicht gemeldet.
+- Befunde: Claude wurden keine genannt, es entstehen keine neuen Tickets.
