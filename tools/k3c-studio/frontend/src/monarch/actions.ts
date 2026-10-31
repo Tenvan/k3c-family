@@ -4,6 +4,7 @@ import { EFFECT_CONFIG, type EffectKind, type SkillLook } from '@game/scenes/eff
 import { SKILL_LOOKS, skillLook } from '@game/scenes/effects/skillLooks';
 import { gap, type Anim, type Gap } from '../playback/figure';
 import { REPEAT_PAUSE_MS, type TimedEffect } from '../playback/timeline';
+import { areaRadiusPx, isArea, reaches, skillStatus, type Target } from './skillTarget';
 
 // Aktionen und Skills der Monarch-Seite (B-463, WZ10.3): Schlagen, Münzen, Getroffen, Tod, Respawn und die Skill-Liste mit
 // Lücken. Effekte und Deckkraft stammen aus dem Spiel (`EFFECT_CONFIG`, `worldRenderer`); was das Spiel nicht darstellt,
@@ -111,13 +112,27 @@ export interface SkillPlay {
   gaps: Gap[];
   /** Effekt am Monarchen im Takt der Wiedergabe; leer ohne Darstellung (die Bühne zeigt nur den Monarchen) */
   timed: TimedEffect[];
+  /** Effekte am Ziel-Gegner (B-676): Flächenzauber mit Radius, Kontrolleffekte, Sturm */
+  onTarget: TimedEffect[];
+  /** Kein Ziel in Reichweite: das Spiel meldet `castFailed` („Skill ohne Ziel“), kein Effekt */
+  noTarget: boolean;
 }
 
-/** Ein Skill, wie das Spiel ihn zeigt (`skillCasts.ts`): Ring und Partikel aus `skillLook` am Monarchen in `SKILL_RING_PX`
- *  Höhe, aktiv beim Wirken, passiv beim Lernen; die Schleife wiederholt ihn nach `REPEAT_PAUSE_MS`. Ohne Darstellung die Lücke. */
-export function skillPlay(id: string): SkillPlay {
+/** Ein Skill, wie das Spiel ihn zeigt (`skillCasts.ts`, B-674): Ring und Partikel aus `skillLook` in `SKILL_RING_PX` Höhe,
+ *  ein Flächenzauber am Ziel-Gegner mit dem Radius des Skills, alle anderen am Monarchen; braucht der Skill ein Ziel und es
+ *  fehlt oder ist außer Reichweite, „Skill ohne Ziel“. Dazu die Status-Effekte über ihre Dauer (B-675). Die Schleife
+ *  wiederholt nach `REPEAT_PAUSE_MS`. Ohne Darstellung die Lücke. */
+export function skillPlay(id: string, target: Target | null = null): SkillPlay {
   const row = skillRows().find((r) => r.id === id);
-  if (!row?.look) return { id, look: null, own: false, gaps: [row?.gap ?? MISSING], timed: [] };
-  const timed: TimedEffect[] = [{ kind: 'burst', look: row.look, cycleMs: row.look.durationMs + REPEAT_PAUSE_MS, y: SKILL_RING_PX }];
-  return { id, look: row.look, own: row.own, gaps: [CAST_GAP], timed };
+  const st = skillStatus(id, target);
+  const none = { onTarget: st.onTarget, noTarget: false };
+  if (!row?.look) return { id, look: null, own: false, gaps: [row?.gap ?? MISSING, ...st.gaps], timed: st.onMonarch, ...none };
+  if (row.kind === 'active' && !reaches(id, target)) return { id, look: row.look, own: row.own, gaps: [CAST_GAP], timed: [], onTarget: [], noTarget: true };
+  const area = isArea(id);
+  const look = area ? { ...row.look, radius: areaRadiusPx(id) } : row.look;
+  const burst: TimedEffect = { kind: 'burst', look, cycleMs: look.durationMs + REPEAT_PAUSE_MS, y: SKILL_RING_PX };
+  return {
+    id, look: row.look, own: row.own, gaps: [CAST_GAP, ...st.gaps],
+    timed: area ? st.onMonarch : [burst, ...st.onMonarch], onTarget: area ? [burst, ...st.onTarget] : st.onTarget, noTarget: false,
+  };
 }

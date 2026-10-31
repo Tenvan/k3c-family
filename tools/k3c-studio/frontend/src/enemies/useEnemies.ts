@@ -5,6 +5,7 @@ import { DEFAULT_CONTROL, type Anim, type Control, type Gap } from '../playback/
 import type { FigureInfo } from '../stage/PreviewStage';
 import { abilityEntries, abilityPlay, type AbilityEntry } from './abilityLogic';
 import { bossCards } from './bossLogic';
+import { enemyStatusEffects } from './statusLogic';
 import { ENEMY_ACTIONS, SPACING, cardOf, enemyItems, groups, type EnemyCard, type EnemyMode, type Group } from './enemyLogic';
 
 /** Gruppe der Bosse: je Tiefe einer (5 Minibosse und der Endboss), Daten aus `data/bosses.json` */
@@ -61,7 +62,7 @@ export function useEnemies() {
   }, [entry, cards, withMonarch]);
   const key = JSON.stringify([group.id, mode, entry?.key, withMonarch, sheets]);
   const items = useMemo(() => enemyItems(cards, {
-    anim, withMonarch, sheets, attack: mode === 'attack',
+    anim, withMonarch, sheets, attack: mode === 'attack', ...(mode === 'status' ? { status: enemyStatusEffects() } : {}),
     ...(action ? { action } : {}), ...(entry && play ? { ability: { bossId: entry.bossId, play } } : {}),
   }), [key]); // eslint-disable-line react-hooks/exhaustive-deps
   const selected = cards.find((c) => c.id === selectedId) ?? cards[0];

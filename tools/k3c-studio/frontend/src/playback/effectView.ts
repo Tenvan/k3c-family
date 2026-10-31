@@ -2,9 +2,10 @@ import Phaser from 'phaser';
 import { GROUND_Y as GAME_GROUND_Y, UNIT_PX } from '@game/core/constants';
 import type { KampfWorld } from '@game/scenes/kampfAnzeige';
 import { WarnView } from '@game/scenes/kampfView';
+import { drawMark } from '@game/scenes/effects/statusLooks';
 import type { Enemy } from '@game/model/types';
 import type { Control } from './figure';
-import { PROJECTILE, advance, appearAlpha, burstPieces, cycleTime, projectileOffset, warnIn, type TimedEffect } from './timeline';
+import { PROJECTILE, advance, appearAlpha, burstPieces, cycleTime, projectileOffset, statusAt, warnIn, type TimedEffect } from './timeline';
 
 // Zeichnet die Zeitachsen-Effekte einer Figur (B-671, B-672) mit den Darstellungen des Spiels: Ring und Partikel nach
 // `skillFrame`, das Geschoss wie `worldRenderer` (Rechteck 26 × 3 in 70 px Höhe), den Warnkreis mit `WarnView`. Die Zeit
@@ -13,6 +14,9 @@ import { PROJECTILE, advance, appearAlpha, burstPieces, cycleTime, projectileOff
 
 export class TimedEffects {
   private readonly g: Phaser.GameObjects.Graphics;
+  /** Status-Effekte (B-676) mit `drawMark` des Spiels: Boden unter, Symbole über der Figur, auf die Spiel-Bodenlinie verschoben */
+  private readonly statusGround: Phaser.GameObjects.Graphics;
+  private readonly statusOver: Phaser.GameObjects.Graphics;
   private readonly warnLayer: Phaser.GameObjects.Layer | null;
   private readonly warn: WarnView | null;
   private elapsed = 0;
@@ -23,6 +27,8 @@ export class TimedEffects {
     scene: Phaser.Scene, private readonly root: Phaser.GameObjects.Container, private readonly effects: readonly TimedEffect[], private readonly frames: () => number,
   ) {
     this.g = scene.add.graphics().setDepth(1000);
+    this.statusGround = scene.add.graphics().setDepth(-1);
+    this.statusOver = scene.add.graphics().setDepth(999);
     const warns = effects.some((e) => e.kind === 'warn');
     this.warnLayer = warns ? scene.add.layer().setDepth(5) : null;
     this.warn = this.warnLayer ? new WarnView(scene, this.warnLayer) : null;
@@ -47,6 +53,7 @@ export class TimedEffects {
     const c = this.control;
     if (!c) return;
     this.g.clear();
+    for (const s of [this.statusGround.clear(), this.statusOver.clear()]) s.setPosition(this.root.x, this.root.y - GAME_GROUND_Y);
     let alpha = 1;
     for (const e of this.effects) {
       const t = cycleTime(e, c, this.elapsed, this.frames());
@@ -78,6 +85,10 @@ export class TimedEffects {
         this.warn?.sync(world);
         return;
       }
+      case 'status': {
+        for (const m of statusAt(e, t)) drawMark(m.kind === 'aura' || m.kind === 'storm' ? this.statusGround : this.statusOver, m, t);
+        return;
+      }
       case 'frame': {
         const a = appearAlpha(e.cycleMs, t);
         this.g.lineStyle(3, 0xffd166, a).strokeRect(x + e.at * UNIT_PX - 24, ground - 96, 48, 96);
@@ -89,6 +100,8 @@ export class TimedEffects {
 
   destroy(): void {
     this.g.destroy();
+    this.statusGround.destroy();
+    this.statusOver.destroy();
     this.warnLayer?.destroy(true);
   }
 }

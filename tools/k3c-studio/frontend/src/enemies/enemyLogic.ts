@@ -3,6 +3,7 @@ import spritesJson from '@data/sprites.json';
 import { BIOMES } from '@game/model/biome';
 import { ANIMS, SHEETS, gap, type Anim, type FigureSpec, type Gap } from '../playback/figure';
 import type { FigureItem } from '../playback/figureView';
+import type { TimedEffect } from '../playback/timeline';
 import { DEFAULT_MOUNT, monarchItems, moveOf } from '../monarch/monarchLogic';
 import { attackEffects, type AbilityPlay } from './abilityLogic';
 
@@ -143,11 +144,11 @@ export const ENEMY_ACTIONS: readonly EnemyAction[] = [
 ];
 
 /** Modus der Gegner-Seite (B-672): Animation, Aktion oder die Fähigkeit eines Bosses, als ein Segment */
-export type EnemyMode = Anim | EnemyActionId | 'ability';
+export type EnemyMode = Anim | EnemyActionId | 'ability' | 'status';
 
 /** Segment-Knöpfe des Modus; „Fähigkeit …“ nur in der Gruppe der Bosse */
 export const ENEMY_MODES: readonly { value: EnemyMode; label: string }[] = [
-  ...ANIMS.map((a) => ({ value: a, label: a })), ...ENEMY_ACTIONS.map((a) => ({ value: a.id, label: a.label })),
+  ...ANIMS.map((a) => ({ value: a, label: a })), ...ENEMY_ACTIONS.map((a) => ({ value: a.id, label: a.label })), { value: 'status' as const, label: 'Status' },
 ];
 export const ABILITY_MODE = { value: 'ability' as const, label: 'Fähigkeit …' };
 
@@ -163,6 +164,8 @@ export interface View {
   sheets?: Readonly<Record<string, string | undefined>>;
   /** Angriff wie im Spiel (B-672): Treffer, bei Fernkämpfern mit Geschoss, Richtung zum Monarchen, wenn er dabei ist */
   attack?: boolean;
+  /** Status-Effekte des Spiels an jedem Gegner nacheinander (B-676, `enemyStatusEffects`) */
+  status?: readonly TimedEffect[];
   /** Fähigkeit eines Bosses (B-672): Effekte am Boss, beschworene Figuren dahinter */
   ability?: { bossId: string; play: AbilityPlay };
 }
@@ -173,7 +176,7 @@ export function enemyItems(cards: readonly EnemyCard[], view: View): FigureItem[
   const items: FigureItem[] = cards.map((c, i) => {
     const sheet = view.sheets?.[c.id] ?? c.spec.sheet;
     const play = view.ability?.bossId === c.id ? view.ability.play : undefined;
-    const timed = play?.timed ?? (view.attack ? attackEffects(c.def, sheet, dir) : []);
+    const timed = play?.timed ?? view.status ?? (view.attack ? attackEffects(c.def, sheet, dir) : []);
     return {
       id: `enemy-${c.id}`,
       x: i * SPACING,

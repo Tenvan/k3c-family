@@ -9,6 +9,7 @@ import gameSceneSource from '@game/scenes/GameScene.ts?raw';
 import { LINE_COLORS } from '@game/scenes/effects/effects';
 import { ACTIONS, CAST_GAP, RESPAWN_ALPHA, SKILL_RING_PX, actionOf, effectMs, skillPlay, skillRows } from './actions';
 import { MOVES, monarchItems, moveOf } from './monarchLogic';
+import { needsTarget } from './skillTarget';
 
 // B-463 (WZ10.3): Aktionen, Skills und Lücken der Monarch-Seite.
 
@@ -100,7 +101,12 @@ describe('Skill abspielen (B-671/AC-06)', () => {
         continue;
       }
       expect(play.look, id).toBe(look);
-      expect(play.timed, id).toEqual([{ kind: 'burst', look, cycleMs: look.durationMs + 700, y: SKILL_RING_PX }]);
+      if (needsTarget(id)) { // ohne Ziel-Gegner wie im Spiel „Skill ohne Ziel“ (B-676)
+        expect(play, id).toMatchObject({ noTarget: true, timed: [], onTarget: [] });
+        continue;
+      }
+      expect(play.timed[0], id).toEqual({ kind: 'burst', look, cycleMs: look.durationMs + 700, y: SKILL_RING_PX });
+      expect(play.timed.slice(1).every((e) => e.kind === 'status'), id).toBe(true);
     }
   });
 

@@ -4,17 +4,32 @@ import { useMemo } from 'react';
 import { GapChip, PlaybackControls } from '../playback/PlaybackControls';
 import type { FigureInfo } from '../stage/PreviewStage';
 import { ACTIONS, SKILL_LINES, skillRows, type ActionId } from './actions';
+import { ENEMY_IDS } from '../enemies/enemyLogic';
 import { MONARCH_ANIMS, MOUNT_KEYS } from './monarchLogic';
+import { NO_TARGET } from './skillTarget';
 import { stepZoom } from './monarchZoom';
 import { MODES, type Monarch } from './useMonarch';
 
 const ACTION_OPTIONS: SelectOption<ActionId>[] = ACTIONS.map((a) => ({ value: a.id, label: a.label }));
+
+/** Ziel-Gegner (B-676): ohne oder ein Gegner aus `data/enemies.json` */
+const TARGET_OPTIONS: SelectOption<string>[] = [{ value: NO_TARGET, label: 'ohne Ziel' }, ...ENEMY_IDS.map((id) => ({ value: id, label: `Ziel ${id}` }))];
 
 /** Skills nach Linie gruppiert (Reihenfolge der Linien aus den Daten), Anzeige „Linie · Skill“ */
 function skillOptions(): SelectOption<string>[] {
   const order = new Map(SKILL_LINES.map((l, i) => [l.name, i]));
   const rows = [...skillRows()].sort((a, b) => (order.get(a.line) ?? 99) - (order.get(b.line) ?? 99));
   return rows.map((r) => ({ value: r.id, label: `${r.line || '–'} · ${r.id}` }));
+}
+
+/** Skill und Ziel-Gegner (B-676) im Modus „Skill“ */
+function SkillFields({ m, skills }: { m: Monarch; skills: SelectOption<string>[] }) {
+  return (
+    <>
+      <SelectField size="1" aria-label="Skill" value={m.skillId} options={skills} onChange={m.setSkillId} />
+      <SelectField size="1" aria-label="Ziel-Gegner" value={m.targetKind} options={TARGET_OPTIONS} onChange={m.setTargetKind} />
+    </>
+  );
 }
 
 /** Zoom als Segment: − Wert +; ein Klick auf den Wert stellt den Spielmaßstab her (Alt + Mausrad zoomt ebenfalls). */
@@ -42,7 +57,7 @@ export function MonarchToolbar({ m, info, zoom, onZoom, panelOpen, onPanel, miss
       <ChipSwitch label="Modus" options={MODES} value={m.mode} onChange={m.setMode} />
       {moving && <SelectField size="1" aria-label="Animation" value={m.anim} options={plainOptions(MONARCH_ANIMS)} onChange={m.setAnim} />}
       {m.mode === 'action' && <SelectField size="1" aria-label="Aktion" value={m.actionId} options={ACTION_OPTIONS} onChange={m.setActionId} />}
-      {m.mode === 'skill' && <SelectField size="1" aria-label="Skill" value={m.skillId} options={skills} onChange={m.setSkillId} />}
+      {m.mode === 'skill' && <SkillFields m={m} skills={skills} />}
       {missing.length > 0 && <Text size="1" color="red" role="status">Grafiken nicht geladen: {missing.join(', ')}</Text>}
       <div className="wd-figbar-end">
         <PlaybackControls control={m.control} onChange={m.setControl} frames={info?.frames ?? 1} />

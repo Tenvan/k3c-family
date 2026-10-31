@@ -1,6 +1,6 @@
 # KB5.4 · Studio zeigt Skills am Ziel-Gegner und Status-Effekte (B-676)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -35,8 +35,8 @@ Spec: `docs/backlog/B-676-studio-skills-ziel-und-status.md`. Studio: `tools/k3c-
 
 ## Fertig, wenn
 
-- [ ] B-676 AC-01: Vitest Flächenzauber am Ziel.
-- [ ] B-676 AC-02: Vitest Status-Effekte abspielbar oder Lücke.
+- [x] B-676 AC-01: Vitest Flächenzauber am Ziel.
+- [x] B-676 AC-02: Vitest Status-Effekte abspielbar oder Lücke.
 
 ## Prüfen
 
@@ -50,5 +50,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- B-676 AC-01 geprüft: `monarch/skillTarget.test.ts` – fireball, meteor, iceWall, lightningStorm mit Ziel-Gegner Goblin in 8 Units: Ring am Goblin mit dem Radius des Skills (× `UNIT_PX`), nicht am Monarchen; außer Reichweite oder ohne Ziel „Skill ohne Ziel“ wie im Spiel; taunt bleibt am Monarchen. `MonarchPage.test.tsx` prüft die Auswahl „Ziel-Gegner“ (Standard goblin, „ohne Ziel“ zeigt die vier Monarchen).
+- B-676 AC-02 geprüft: jede Effektart aus B-675 (stun, slow, taunt, storm, shield, lastStand, aura) entsteht aus einem Skill an Gegner bzw. Monarch, über ihre Dauer aus `data/monarch.json` sichtbar, danach leer; Schleife und Einzelbild wirken; Zeichnung mit `statusMarks`/`drawMark` des Spiels (`playback/timeline.ts` `statusAt`, `effectView.ts`). Lücke: Holy Ground wirkt im Spiel im Burgradius, das Studio zeigt den Ring am Monarchen. Gegner-Seite: Modus „Status“ spielt Betäubung, Verlangsamung, Spott und Sturm nacheinander an jedem Gegner der Gruppe (`enemies/statusLogic.ts`).
+- Offene Frage B-676 mit Default entschieden: Ziel-Gegner frei aus der Gegnerliste (Standard goblin), Abstand fest 8 Units. Mit Ziel zeigt die Bühne nur Monarch 1 und den Gegner (vier Monarchen im Abstand 8 würden den Gegner verdecken).
+- Prüfung: Studio-Vitest `monarch`, `playback`, `enemies` grün (12 Dateien), `tsc` ohne Befunde in diesen Ordnern, oxlint ohne Fehler, Wurzel-Vitest `tests` grün. `task check:diff` rot nur durch fremde Studio-Chat-Änderungen (worker-2). Sichtprüfung im Fenster: AC-03 bei 🧑 (KB5.6).

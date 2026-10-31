@@ -1,6 +1,8 @@
 import { UNIT_PX } from '@game/core/constants';
 import { EFFECT_CONFIG, type EffectKind, type SkillLook } from '@game/scenes/effects/effects';
 import { skillFrame, type SkillPiece } from '@game/scenes/effects/skillLooks';
+import { SHIELD_MAX, statusMarks, type StatusKind, type StatusMark, type StatusWorld } from '@game/scenes/effects/statusLooks';
+import type { Enemy, Player } from '@game/model/types';
 import type { Control } from './figure';
 
 // Zeitachse der abgespielten Effekte (B-671, B-672): Skill-Effekte, Geschosse, Warnkreis und Beschwörung laufen in einem
@@ -19,7 +21,10 @@ export type TimedEffect =
   /** Die Figur selbst erscheint mit jeder Auslösung (Beschwörung) */
   | { kind: 'appear'; cycleMs: number }
   /** Platzhalter-Rahmen an der Stelle einer Figur ohne Grafik (Lücke), erscheint wie `appear` */
-  | { kind: 'frame'; cycleMs: number; at: number };
+  | { kind: 'frame'; cycleMs: number; at: number }
+  /** Status-Effekt des Spiels (B-675, B-676) an der Figur für `durationMs`, `delayMs` nach der Auslösung: Radius in Units
+   *  (Sturm, Aura), `skill` färbt die Aura, `share` füllt den Schild-Balken (0..1) */
+  | { kind: 'status'; status: StatusKind; cycleMs: number; durationMs: number; delayMs?: number; radius?: number; skill?: string; share?: number };
 
 /** Geschoss des Spiels (`worldRenderer`: `scene.add.rectangle(0, 0, 26, 3, …)` in `G - 70`, Farbe des Gegner-Teams) und
  *  sein Tempo (`engine/sim`: 20 Units/s für Fernkämpfer und Splitter); ein Test prüft die Werte an den Quellen. */
@@ -38,6 +43,7 @@ export function durationOf(e: TimedEffect): number {
   switch (e.kind) {
     case 'burst': return (e.delayMs ?? 0) + e.look.durationMs;
     case 'projectile': return projectileMs(e.range, e.speed);
+    case 'status': return (e.delayMs ?? 0) + e.durationMs;
     default: return e.cycleMs;
   }
 }
@@ -83,4 +89,29 @@ export function appearAlpha(cycleMs: number, t: number): number {
   const fade = Math.min(APPEAR_MS, cycleMs / 4);
   if (fade <= 0) return 1;
   return Math.max(0, Math.min(1, t / fade, (cycleMs - t) / fade));
+}
+
+type StatusEffect = Extract<TimedEffect, { kind: 'status' }>;
+
+/** Zustand, in dem das Spiel genau diesen Status-Effekt an einer Figur bei x 0 zeigt (Gegner bzw. Monarch, lebend). */
+function statusWorld(e: StatusEffect): StatusWorld {
+  const enemy = (over: Partial<Enemy>) => ({ enemies: [{ id: 1, x: 0, hp: 1, ...over } as Enemy] });
+  const player = (over: Partial<Player>) => ({ players: [{ id: 1, x: 0, respawnIn: 0, ...over } as Player] });
+  switch (e.status) {
+    case 'stun': return enemy({ stun: 1 });
+    case 'slow': return enemy({ slow: 0.5, slowFor: 1 });
+    case 'taunt': return enemy({ tauntId: 1, tauntFor: 1 });
+    case 'storm': return { storms: [{ x: 0, radius: e.radius ?? 0, perSecond: 0, left: 1, owner: 1 }] };
+    case 'shield': return player({ shield: (e.share ?? 1) * SHIELD_MAX, shieldFor: 1 });
+    case 'lastStand': return player({ lastStandFor: 1 });
+    default: return player({ auras: [{ skill: e.skill ?? '', radius: e.radius ?? 0 }] });
+  }
+}
+
+/** Markierungen eines Status-Effekts zur Zeit `t` im Zyklus, wie `statusMarks` des Spiels sie für die Figur bei x 0 liefert
+ *  (Pixel der Spiel-Ebene); leer vor der Verzögerung und nach der Dauer. */
+export function statusAt(e: StatusEffect, t: number): StatusMark[] {
+  const local = t - (e.delayMs ?? 0);
+  if (local < 0 || local >= e.durationMs) return [];
+  return statusMarks(statusWorld(e));
 }

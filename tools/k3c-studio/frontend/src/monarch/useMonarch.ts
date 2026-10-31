@@ -3,6 +3,8 @@ import { backend, type AssetSlot } from '../api';
 import { loadPref, savePref } from '../lib/prefs';
 import { DEFAULT_CONTROL, type Anim, type Control } from '../playback/figure';
 import { actionOf, skillPlay, skillRows, type ActionId } from './actions';
+import { skillItems } from './skillItems';
+import { DEFAULT_TARGET, NO_TARGET, TARGET_DISTANCE } from './skillTarget';
 import { DEFAULT_MOUNT, PLAYERS, monarchItems, monarchSlotId, moveOf, mountSlotId, slotOptions, type Choice, type MoveId, type SlotOption } from './monarchLogic';
 
 /** Modus der Monarch-Seite (B-671): eine Bewegung, eine Aktion oder ein Skill */
@@ -70,17 +72,19 @@ export function useMonarch() {
   const [anim, setAnim] = useState<Anim>('idle');
   const [actionId, setActionId] = useState<ActionId>('swing');
   const [skillId, setSkillId] = useState(DEFAULT_SKILL);
+  const [targetKind, setTargetKind] = useState(DEFAULT_TARGET);
+  const target = mode === 'skill' && targetKind !== NO_TARGET ? { kind: targetKind, distance: TARGET_DISTANCE } : null;
   const [control, setControl] = useState<Control>(DEFAULT_CONTROL);
   const c = useChoice(mount);
   const action = mode === 'action' ? actionOf(actionId) : undefined;
-  const skill = useMemo(() => (mode === 'skill' ? skillPlay(skillId) : undefined), [mode, skillId]);
-  const key = JSON.stringify([mount, mode, anim, c.choice, actionId, skillId]);
+  const skill = useMemo(() => (mode === 'skill' ? skillPlay(skillId, target) : undefined), [mode, skillId, targetKind]); // eslint-disable-line react-hooks/exhaustive-deps
+  const key = JSON.stringify([mount, mode, anim, c.choice, actionId, skillId, targetKind]);
   const items = useMemo(() => {
     const figures = monarchItems(mount, moveOf(isMove(mode) ? mode : 'stand'), skill ? 'idle' : anim, c.choice, action);
-    return skill ? figures.map((f) => ({ ...f, timed: skill.timed })) : figures;
+    return skill ? skillItems(figures, skill, target) : figures;
   }, [key]); // eslint-disable-line react-hooks/exhaustive-deps
   return {
-    ...c, mount, setMount, mode, setMode, anim, setAnim, actionId, setActionId, action, skillId, skill, control, setControl, items,
+    ...c, mount, setMount, mode, setMode, anim, setAnim, actionId, setActionId, action, skillId, skill, targetKind, setTargetKind, control, setControl, items,
     /** Skill abspielen (▶ im Panel): Modus springt auf „Skill“ */
     playSkill: (id: string) => { setSkillId(id); setMode('skill'); },
     setSkillId,
