@@ -266,8 +266,8 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Zeitleiste | Puffer der empfangenen Zustände im Client: gezeichnet wird zur geschätzten Server-Zeit minus der Verzögerung, zwischen zwei Zuständen interpoliert; Stufenwechsel leert sie. | B-277, `src/online/clientTimeline.ts` |
 | Ziel-Palette | Feste Farbliste, auf die jede Grafik umgerechnet wird; festgelegt in der Stil-Bibel. | B-331 |
 | Ziel-Ticket | Ticket eines Projekts, das das Thema als Ganzes beschreibt (Feld `Ziel-Tickets` der Projekt-Datei, z. B. B-099 bei BAL); es wird eingeplant wie jedes Ticket und gibt dem Projekt sein Ziel. | `arbeitsweise.md` › Projekte und Rang, `vorlagen/projekt.md` |
-| Zielmaß | Breite × Höhe in Units, die eine Grafik im Spiel belegt (Feld `ziel` eines Slots im Slot-Register); die aktive Zuordnung wird nach Ausschnitt ohne Verzerrung eingepasst, unten am Boden. Fehlt es, gilt das Maß der Datei. Vorerst nur Gebäude je Stufe. | `rules/materialien-gebaeude.md` § 3.4, B-685 |
 | Zielkorridor | Kennzahl mit Unter- und Obergrenze im Standardszenario; Pass/Fail für das Balancing. | `rules/zielkorridore.md` |
+| Zielmaß | Breite × Höhe in Units, die eine Grafik im Spiel belegt (Feld `ziel` eines Slots im Slot-Register); die aktive Zuordnung wird nach Ausschnitt ohne Verzerrung eingepasst, unten am Boden. Fehlt es, gilt das Maß der Datei. Vorerst nur Gebäude je Stufe. | `rules/materialien-gebaeude.md` § 3.4, B-685 |
 | Zone (Platz-Zone) | Streifen von einem Chunk Breite je Seite ab `sitePlacement.zoneStartUnits`, in dem Mauer- und Turm-Plätze liegen; Zone n ist ab Hub-Stufe n sichtbar (B-652). | `rules/materialien-gebaeude.md` § 3 |
 
 ## Unklar und Widersprüche
