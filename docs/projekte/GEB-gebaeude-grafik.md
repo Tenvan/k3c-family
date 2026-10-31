@@ -30,7 +30,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | GEB14 | Wald und Höhle dichter, Gerüst bei Wartenden, Knoten-Markierer im Snapshot | erledigt |
 | GEB18 | Hintergründe der fünf Stufen: vierfache Auflösung, fünf Varianten je Stufe nach Seed | aktiv |
 | GEB15 | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | erledigt |
-| GEB16 | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | aktiv |
+| GEB16 | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | erledigt |
 | GEB17 | Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe | aktiv |
 
 ## Nicht-Ziele

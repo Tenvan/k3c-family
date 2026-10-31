@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** GEB16
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-24
@@ -58,3 +58,4 @@ keine (Entscheidung: Pixel-Grafik aus dem Asset-Studio, 2026-10-24). Offen bleib
 ## Notizen
 
 Aus der Abnahme am 2026-10-24, Folge von B-584. Spec: Entwurf.
+- **Abgenommen 2026-10-31:** Ralf (🧑) hat Schilder, Wald, Gerüst und Abbau-Symbole am Gerät abgenommen (GEB16.7, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen).

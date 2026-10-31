@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** GEB16
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-24
@@ -59,3 +59,4 @@ Endwert der Dichte: Default `[22, 30]`, 🧑 bestätigt am Gerät.
 ## Notizen
 
 Aus der Abnahme am 2026-10-24. Spec: Entwurf. Verweis: B-531, B-540.
+- **Abgenommen 2026-10-31:** Ralf (🧑) hat Schilder, Wald, Gerüst und Abbau-Symbole am Gerät abgenommen (GEB16.7, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen).

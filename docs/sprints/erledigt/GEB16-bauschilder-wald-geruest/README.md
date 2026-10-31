@@ -1,6 +1,6 @@
 # GEB16 · SRV, CLI, DEV, REG · Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GEB
 - **Domäne:** SRV, CLI, DEV, REG
 - **Reife:** bereit
@@ -64,7 +64,7 @@ Entschieden: Gerüst-Grafiken je Größenklasse; Abbau-Schild je abbaubarem Baum
 | GEB16.4 | `GEB16.4-geruest-abbauschild-spiel.md` | Umsetzung | autonom | fertig |
 | GEB16.5 | `GEB16.5-wald-dichter.md` | Umsetzung | autonom | fertig |
 | GEB16.6 | `GEB16.6-review.md` | Review | autonom | fertig |
-| GEB16.7 | `GEB16.7-abnahme-geraet.md` | Workshop | Mensch | offen |
+| GEB16.7 | `GEB16.7-abnahme-geraet.md` | Workshop | Mensch | fertig |
 
 - GEB16.1 (SRV) Feld `payable` je Bauplatz im Snapshot und in `docs/protocol.md` (AC-01).
 - GEB16.2 (CLI) Client zeigt das Schild nur bei `payable`, `buildableRules.ts` löschen (AC-01).
@@ -79,4 +79,4 @@ Entschieden: Gerüst-Grafiken je Größenklasse; Abbau-Schild je abbaubarem Baum
 2026-10-25, Claude (GEB16.6): `task check` und `task check:go` grün; `check:race` lokal übersprungen (kein C-Compiler), die CI prüft es.
 AC-01: GEB16.1 und .2 (`payable` und `minable` im Snapshot, Review ohne schwere Befunde). AC-02: GEB16.5 (Wald [22, 30], Golden neu). AC-03 und AC-04: GEB16.3 und .4 (Gerüste je Breite, Axt und Spitzhacke).
 Neues Ticket B-620 (KRT): Die Golden-Grenze steigt von 16 auf 20 MB, Ralf bestätigt.
-Offen ist AC-05, die Abnahme am Gerät durch Ralf in GEB16.7.
+2026-10-31: AC-05 von Ralf (🧑) am Gerät abgenommen, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen. Alle Kriterien erfüllt, Sprint erledigt.
