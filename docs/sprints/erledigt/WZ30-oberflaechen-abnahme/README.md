@@ -1,6 +1,6 @@
 # WZ30 · DEV · Oberflächen zur Abnahme: Szenen, Filter, Quellen, Chat-Karten mit Mock-Daten
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -65,7 +65,7 @@ keine. Default (Claude): Die Oberflächen nutzen die endgültigen API-Typen; WZ2
 | WZ30.4 | `WZ30.4-quellen-seite.md` | Umsetzung | autonom | fertig |
 | WZ30.5 | `WZ30.5-chat-karten.md` | Umsetzung | autonom | fertig |
 | WZ30.6 | `WZ30.6-review.md` | Review | autonom | fertig |
-| WZ30.7 | `WZ30.7-abnahme-oberflaechen.md` | Workshop | Mensch | offen |
+| WZ30.7 | `WZ30.7-abnahme-oberflaechen.md` | Workshop | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
@@ -73,3 +73,5 @@ wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 ## Abnahme
 
 2026-10-24: AC-01 bis AC-05 erfüllt (WZ30.1–WZ30.5 › Ergebnis), AC-06 offen (WZ30.7, Ralf). Behoben im Review: Szenenleiste, Dateigrenze `api/types.ts`. Bekannt: `engine/devrun`-Uhrzeit-Test unter Last (B-284). Keine neuen Tickets.
+
+2026-10-31: AC-06 von Ralf (🧑) abgenommen, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen. Alle Kriterien erfüllt, Sprint erledigt.
