@@ -30,7 +30,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WZ37 | DEV | WZG | Welt-Overrides im Welten-Editor und im Studio-Chat | – | Entwurf | `geplant/WZ37-overrides-editor-chat/` |
+| WZ37 | DEV | WZG | Welt-Overrides im Welten-Editor und im Studio-Chat | – | bereit | `geplant/WZ37-overrides-editor-chat/` |
 | BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | Entwurf | `geplant/BD10-schreibende-endpunkte-schutz/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | Entwurf | `geplant/W15-fackeln-spielobjekt/` |
