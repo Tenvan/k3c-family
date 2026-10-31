@@ -56,6 +56,11 @@ keine.
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ38.1 | `WZ38.1-kriterien-belegen.md` | Umsetzung | autonom | offen |
+| WZ38.2 | `WZ38.2-abnahme-am-pc.md` | Workshop | Mensch | offen |
+
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - WZ38.1 (DEV) Kriterien je Ticket gegen Code und Tests belegen, Prüfliste für 🧑 (AC-01 bis AC-04).
