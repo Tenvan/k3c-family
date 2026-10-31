@@ -1,7 +1,9 @@
 import { ActionButton, Button, Flex, Text, TextField } from '@webkit/atoms';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { backend, type AssetChoice, type AssetRect, type CatalogAsset } from '../api';
-import { fileUrl, GAME_SCALE, previewSize } from './assets';
+import { loadPref, savePref } from '../lib/prefs';
+import { CUT_VIEWS, fileUrl, GAME_SCALE, previewSize, type CutView } from './assets';
+import { CutStage } from './CutStage';
 
 interface Props {
   choice: AssetChoice;
@@ -18,12 +20,19 @@ export function CutEditor({ choice, onCut }: Props) {
   useEffect(() => {
     if (!choice.ausschnitt && asset?.w && asset.h) setCut({ x: 0, y: 0, w: asset.w, h: asset.h });
   }, [asset, choice.ausschnitt]);
+  const [view, setView] = useState<CutView>(() => loadPref('assets.cutview', CUT_VIEWS, 'rahmen'));
+  const pick = (v: CutView) => { setView(v); savePref('assets.cutview', v); };
   const size = previewSize(cut);
   const set = (k: (typeof FIELDS)[number], v: string) => setCut((c) => ({ ...c, [k]: Math.max(0, Math.floor(Number(v)) || 0) }));
   return (
     <div className="as-cut">
       <Flex gap="2" align="center" wrap="wrap">
         <Text size="2" weight="bold">Ausschnitt</Text>
+        <Flex gap="1" role="group" aria-label="Ansicht">
+          {CUT_VIEWS.map((v) => (
+            <Button key={v} size="1" variant={view === v ? 'solid' : 'soft'} aria-pressed={view === v} onClick={() => pick(v)}>{v === 'rahmen' ? 'Rahmen' : 'Ausschnitt'}</Button>
+          ))}
+        </Flex>
         {FIELDS.map((k) => (
           <label key={k} className="as-num">{k}
             <TextField.Root size="1" type="number" min="0" value={String(cut[k])} onChange={(e) => set(k, e.target.value)} />
@@ -36,7 +45,7 @@ export function CutEditor({ choice, onCut }: Props) {
       {asset?.kennzeichen === 'SA' && <p className="as-warn">CC-BY-SA: ein Ausschnitt bleibt unter CC-BY-SA, Credit nennt den Ausschnitt (Q70).</p>}
       {asset?.kennzeichen === 'NC' && <p className="as-warn">CC-BY-NC: nur als markierter Lückenfüller (Q70).</p>}
       <Text size="1" color="gray">Spielmaßstab ×{GAME_SCALE}: {size.w}×{size.h} px = {size.unitsW}×{size.unitsH} Units</Text>
-      <CutCanvas src={fileUrl(choice.datei)} cut={cut} />
+      <CutStage src={fileUrl(choice.datei)} cut={cut} view={view} size={asset?.w && asset.h ? { w: asset.w, h: asset.h } : undefined} onCut={setCut} />
     </div>
   );
 }
@@ -52,27 +61,4 @@ function useCatalogEntry(datei: string): CatalogAsset | undefined {
     };
   }, [datei]);
   return asset;
-}
-
-function CutCanvas({ src, cut }: { src: string; cut: AssetRect }) {
-  const ref = useRef<HTMLCanvasElement>(null);
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    const img = new Image();
-    img.onload = () => {
-      const c = ref.current;
-      if (!c || cut.w <= 0 || cut.h <= 0) return;
-      c.width = cut.w * GAME_SCALE;
-      c.height = cut.h * GAME_SCALE;
-      const g = c.getContext('2d');
-      if (!g) return;
-      g.imageSmoothingEnabled = false;
-      g.drawImage(img, cut.x, cut.y, cut.w, cut.h, 0, 0, c.width, c.height);
-      setFailed(false);
-    };
-    img.onerror = () => setFailed(true);
-    img.src = src;
-  }, [src, cut]);
-  if (failed) return <p className="as-warn">Bild lädt nicht: {src}</p>;
-  return <div className="as-canvas"><canvas ref={ref} /></div>;
 }

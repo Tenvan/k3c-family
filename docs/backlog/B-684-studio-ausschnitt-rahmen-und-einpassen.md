@@ -59,4 +59,4 @@ keine
 
 ## Notizen
 
-–
+- 2026-10-31 Claude: umgesetzt, Abnahme AC-03 offen. `assets/CutStage.tsx` (neu: Einpassen per `fitScale` und ResizeObserver, Rahmen mit Maske, Ziehen und Anfasser unten rechts, Pfeile verschieben, Shift+Pfeile ändern die Größe), Umschalter in `CutEditor.tsx` (Wahl gemerkt unter `k3c-studio.assets.cutview`, Standard Rahmen), Logik `fitScale`/`clampRect`/`nudgeRect` in `assets.ts`, Test `assets/CutEditor.test.tsx` (AC-01, AC-02). Kachelhöhe höchstens 360 px, Breite folgt dem Platz. Sichtprüfung im Browser-Pane mit Mock (Port 5196): Rahmen und Einpassen sichtbar; Ziehen mit der Maus dort nicht von Hand geprüft.

@@ -81,6 +81,30 @@ export function previewSize(cut: AssetRect): { w: number; h: number; unitsW: num
   return { w, h, unitsW: Math.round((w / UNIT_PX) * 10) / 10, unitsH: Math.round((h / UNIT_PX) * 10) / 10 };
 }
 
+/** Ansicht der Ausschnitt-Bearbeitung: Rahmen über der ganzen Grafik oder nur das Ausgeschnittene (B-684) */
+export type CutView = 'rahmen' | 'ausschnitt';
+export const CUT_VIEWS: readonly CutView[] = ['rahmen', 'ausschnitt'];
+
+/** Maßstab, der `inner` in `box` einpasst (strecken oder schrumpfen, nie verzerren); ohne Platz oder Maße 0. */
+export function fitScale(box: { w: number; h: number }, inner: { w: number; h: number }): number {
+  if (box.w <= 0 || box.h <= 0 || inner.w <= 0 || inner.h <= 0) return 0;
+  return Math.min(box.w / inner.w, box.h / inner.h);
+}
+
+/** Rahmen auf ganze Pixel und innerhalb der Grafik halten (mindestens 1×1). */
+export function clampRect(r: AssetRect, img: { w: number; h: number }): AssetRect {
+  const w = Math.min(Math.max(1, Math.round(r.w)), img.w);
+  const h = Math.min(Math.max(1, Math.round(r.h)), img.h);
+  return { x: Math.min(Math.max(0, Math.round(r.x)), img.w - w), y: Math.min(Math.max(0, Math.round(r.y)), img.h - h), w, h };
+}
+
+/** Pfeiltaste: Rahmen verschieben, mit Shift die Größe ändern; andere Tasten → undefined. */
+export function nudgeRect(r: AssetRect, key: string, resize: boolean, img: { w: number; h: number }): AssetRect | undefined {
+  const d = ({ ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] } as Record<string, [number, number]>)[key];
+  if (!d) return undefined;
+  return clampRect(resize ? { ...r, w: r.w + d[0], h: r.h + d[1] } : { ...r, x: r.x + d[0], y: r.y + d[1] }, img);
+}
+
 /** Anordnung der Mini-Szene: Zuordnungen nebeneinander auf einer Bodenlinie im Spielmaßstab (Quellmaße in px). */
 export const SCENE = { pad: 16, gap: 24, ground: 28, label: 22 } as const;
 export function sceneLayout(sizes: readonly { w: number; h: number }[]): { items: { x: number; y: number; w: number; h: number }[]; w: number; h: number; floor: number } {
