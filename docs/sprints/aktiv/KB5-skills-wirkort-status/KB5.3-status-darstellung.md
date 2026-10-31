@@ -1,6 +1,6 @@
 # KB5.3 · Client zeichnet DoTs, Buffs und Kontrolleffekte (B-675)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -35,7 +35,7 @@ Spec: `docs/backlog/B-675-status-effekte-sichtbar.md`. Snapshot-Felder aus KB5.2
 
 ## Fertig, wenn
 
-- [ ] B-675 AC-03: Vitest jede Effektart gezeichnet und entfernt.
+- [x] B-675 AC-03: Vitest jede Effektart gezeichnet und entfernt.
 
 ## Prüfen
 
@@ -49,5 +49,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- B-675 AC-03 geprüft: `src/scenes/effects/statusLooks.test.ts` – je Effektart (stun, slow, taunt, storm, shield, lastStand, aura) gezeichnet und ohne Effekt wieder leer; Sturm mit Radius am Boden, Aura in der Farbe ihres Skills, Holy Ground an der Burg, Schild-Balken nach Schild-HP, Boss-Symbole höher, tote Gegner und gefallene Monarchen ohne Anzeige; `StatusView` leert beide Flächen je Bild.
+- Umsetzung: Werte und Zeichnung in `statusLooks.ts` (`STATUS_LOOKS`, `statusMarks`, `drawMark`, Zeichenfläche `StatusPainter`, damit das Studio sie nutzt), Phaser-Anteil `statusView.ts` mit zwei Graphics je Stufe (Boden unter, Symbole über den Figuren), je Bild geleert, keine neuen Phaser-Objekte je Takt; Split-Screen über die Ebene der Stufe. Eingebaut in `StageView` und `GameScene.draw` (`storms` direkt aus dem Zustand, da `applyState` ein verschwundenes Feld sonst stehen ließe).
+- Offene Frage B-675 (Symbole gezeichnet oder Grafik-Slots) mit Default entschieden: gezeichnet. Regeneration und Frost Armor erscheinen als Aura-Ring (Radius 0 → eine Unit).
+- Prüfung: `tsc` grün, oxlint `src` ohne Fehler, Vitest `src` und `tests` grün (123 Dateien). `task check:diff` rot nur durch fremde Studio-Chat-Änderungen (worker-2). Keine Prüfung im Browser oder mit `perfProbe` (manuell, AC-04 bei 🧑 in KB5.6).

@@ -4,6 +4,7 @@ import { t } from '../../core/texts';
 import type { World } from '../../model/types';
 import type { Effect } from '../effects/effects';
 import { StageEffects } from '../effects/effectsView';
+import { StatusView } from '../effects/statusView';
 import { fontStyle, OUTLINE_COLOR } from './fontRules';
 import { backgroundLayers, loadBackground, type BackgroundView } from './objectView';
 import { BACKGROUND_ZOOM, backgroundPlan, type BackgroundLayerPlan } from './worldSprites';
@@ -26,6 +27,8 @@ export class StageView {
   readonly layer: Phaser.GameObjects.Layer;
   readonly renderer: WorldRenderer;
   readonly effects: StageEffects;
+  /** Status-Effekte der Skills (B-675), je Bild aus dem Zustand */
+  readonly status: StatusView;
   /** Endlos laufende Tweens des Flusses; enden mit der Stufe */
   private river: Phaser.Tweens.Tween[] = [];
   /** Hintergrund (Silhouetten oder Bilder) samt Spiegelung und Drift; die Bilder ersetzen die Silhouetten, sobald geladen */
@@ -49,6 +52,7 @@ export class StageView {
     this.backdrop = { objects: ridges, mirrors, tweens: [] };
     this.renderer = new WorldRenderer(scene, world, this.layer);
     this.effects = new StageEffects(scene, this.layer);
+    this.status = new StatusView(scene, this.layer);
     const plan = backgroundPlan(world.biome.id, widthPx, GAME_WIDTH, world.level.backdrops);
     if (plan) loadBackground(scene, plan, () => this.alive && this.useImages(scene, plan));
   }
@@ -104,6 +108,7 @@ export class StageView {
     this.river.forEach((t) => t.stop());
     this.backdrop.tweens.forEach((t) => t.stop());
     this.effects.destroy();
+    this.status.destroy();
     this.layer.destroy();
   }
 }

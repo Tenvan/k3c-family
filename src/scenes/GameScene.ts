@@ -370,6 +370,8 @@ export class GameScene extends Phaser.Scene {
     this.client.monarchs.forEach((m, i) => m !== 'taken' && unattended.add(i));
     const stage = this.stages.get(level.depth);
     stage?.renderer.sync(this.world_, unattended);
+    // Status-Effekte (B-675); `storms` aus dem Zustand, applyState lässt ein verschwundenes Feld sonst stehen
+    stage?.status.sync({ players: this.world_.players, enemies: this.world_.enemies, storms: state.storms, castle: this.world_.castle }, now);
     // Schrift in der Welt: Zoom der kleinsten Zelle ausgleichen, damit sie nie unter ihre Größe fällt; die Mitspieler-Zelle zählt nicht (Texte dort ausgeblendet, B-197)
     const textCells = this.cells.filter((c) => c.kind !== 'partner');
     if (stage && textCells.length > 0) stage.scaleTexts(1 / Math.min(...textCells.map((c) => viewZoom(c.h))), this.partnerCamId);
