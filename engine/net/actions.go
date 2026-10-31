@@ -14,6 +14,9 @@ func addActions(w *sim.World, players []any) {
 		s := raw.(map[string]any)
 		s["points"] = sim.AvailablePoints(w, p)
 		s["actions"] = actionsOf(w, p)
+		if auras := sim.AurasOf(p); len(auras) > 0 { // wirkende Passive mit Radius (B-675), fehlt ohne
+			s["auras"] = aurasOf(auras)
+		}
 	}
 }
 
@@ -54,4 +57,17 @@ func payActions(w *sim.World, p *sim.Player) []map[string]any {
 		return []map[string]any{{"action": "trade", "side": side, "resource": res}}
 	}
 	return nil
+}
+
+// aurasOf: die Auren als JSON-Objekte wie der übrige Zustand (Delta vergleicht Werte aus json.Unmarshal).
+func aurasOf(auras []sim.Aura) []any {
+	out := make([]any, len(auras))
+	for i, a := range auras {
+		m := map[string]any{"skill": a.Skill, "radius": a.Radius}
+		if a.Castle {
+			m["castle"] = true
+		}
+		out[i] = m
+	}
+	return out
 }

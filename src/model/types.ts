@@ -48,6 +48,13 @@ export interface Player {
   attackCooldown?: number;
   /** Sekunden unsichtbar (Smoke Bomb, B-577), fehlt = sichtbar. */
   stealthFor?: number;
+  /** Schild-HP (Iron Wall, Divine Shield) für `shieldFor` Sekunden, fehlt = keiner (B-675). */
+  shield?: number;
+  shieldFor?: number;
+  /** Sekunden Last Stand (tödlicher Treffer lässt 1 HP), fehlt = keiner (B-675). */
+  lastStandFor?: number;
+  /** Wirkende Passive mit Radius in Units (0 = nur der Monarch, `castle` = Burgradius), fehlt = keine (B-675). */
+  auras?: readonly Aura[];
   /** Verfügbare Skill-Punkte (Pool der Insel minus gelernte Skills), vom Server berechnet. */
   points: number;
   /** Gültige Aktionen am Ort des Spielers, vom Server berechnet. */
@@ -217,6 +224,28 @@ export interface Enemy {
   warn?: WarnZone;
   /** Wache eines Gegnerlagers (docs/rules/geplante-chunks.md § 9): steht an `homeX`, gehört zu keiner Welle. */
   guard?: boolean;
+  /** Kontrolleffekte (B-675), fehlen = keiner: Sekunden betäubt; Spott auf Spieler-ID `tauntId` für `tauntFor` Sekunden; Tempo × `slow` für `slowFor` Sekunden. */
+  stun?: number;
+  tauntId?: number;
+  tauntFor?: number;
+  slow?: number;
+  slowFor?: number;
+}
+
+/** Wirkendes Passiv eines Monarchen (B-675): Radius in Units um ihn, `castle` = wirkt im Burgradius (Holy Ground). */
+export interface Aura {
+  skill: string;
+  radius: number;
+  castle?: boolean;
+}
+
+/** Laufender Lightning Storm (B-675): Schaden `perSecond` im Radius um `x` (Units), noch `left` Sekunden; `owner` = Spieler-ID. */
+export interface Storm {
+  x: number;
+  radius: number;
+  perSecond: number;
+  left: number;
+  owner: number;
 }
 
 /** Nächster Flächenschlag eines Bosses: Mitte `x` und Radius `r` in Units, `in` Sekunden bis zum Schlag. */
@@ -319,6 +348,8 @@ export interface World {
   camps: Camp[];
   portals: number[];
   spawnQueue: QueuedSpawn[];
+  /** Laufende Lightning Storms in Wirk-Reihenfolge, fehlt = keiner (B-675). */
+  storms?: Storm[];
 
   /** Baumaterial gehört allen gemeinsam (Hub-Vorrat), Gold hat jeder Spieler selbst. */
   stock: Stock;

@@ -1,6 +1,6 @@
 # KB5.2 · Snapshot trägt Kontrolleffekte, Schild, Auren und Stürme (B-675)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -37,8 +37,8 @@ Spec: `docs/backlog/B-675-status-effekte-sichtbar.md`. Simulation hat die Werte 
 
 ## Fertig, wenn
 
-- [ ] B-675 AC-01: Go-Test Snapshot mit Kontrolleffekten, Schild und Stürmen.
-- [ ] B-675 AC-02: Protokoll und Golden nachgezogen.
+- [x] B-675 AC-01: Go-Test Snapshot mit Kontrolleffekten, Schild und Stürmen.
+- [x] B-675 AC-02: Protokoll und Golden nachgezogen.
 
 ## Prüfen
 
@@ -52,5 +52,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- B-675 AC-01 geprüft: `TestStatusEffekteImZustand` und `TestStatusAurenNurLebend` (`engine/net/status_snapshot_test.go`): Zustand mit `enemies[].stun/slow/slowFor/tauntId/tauntFor`, `players[].shield/shieldFor/lastStandFor/auras` und `storms` mit Restdauer, Schlüssel wie im Beispiel; zweiter Spieler ohne Effekte ohne Felder.
+- Befund: Kontrolleffekte, Schild, Last Stand und Stürme standen schon im Zustand (JSON der Welt), nur undokumentiert und ohne Client-Typ. Neu ist allein `players[].auras` (`sim.AurasOf`, `engine/sim/skills_status.go`, nur lesen): Auren, guardian, regeneration, holyGround (`castle`), frostArmor (Radius 0); Werte-Passive ohne Wirkort fehlen, tote Monarchen ohne.
+- B-675 AC-02 geprüft: Protokoll v11 (`docs/protocol.md` › Status-Effekte, Beispiel `s2c-snapshot-status.json`), Client-Typen `Player`, `Enemy`, `Aura`, `Storm`, `World.storms` (`src/model/types.ts`). `task go:golden` ohne Änderung (`auras` entsteht erst im Protokoll, nicht im Sim-JSON).
+- Abweichung: Version 11 braucht wie in KB5.1 `src/online/clientSkills.test.ts` und `testdata/protocol/c2s-hello.json`, `s2c-welcome.json`.
+- Prüfung: go test sim/net/room grün, `golangci-lint` engine 0 Befunde, `tsc` grün, Vitest `src/online`, `src/model`, `src/scenes`, `tests/planning` grün; `task check:diff` rot nur durch fremde Studio-Chat-Änderungen (worker-2) und `tools/cleanup` (Git-sh).

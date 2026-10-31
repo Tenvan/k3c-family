@@ -1,4 +1,9 @@
-# Protokoll v10
+# Protokoll v11
+
+**Änderungen gegenüber v10 (KB5.2, Version 11, B-675):** Status-Effekte im Zustand (siehe *Status-Effekte*): Spieler
+tragen `auras` (wirkende Passive mit Radius); die schon vorhandenen Felder `enemies[].stun`, `slow`, `slowFor`, `tauntId`,
+`tauntFor`, `players[].shield`, `shieldFor`, `lastStandFor` und die Liste `storms` sind jetzt Vertrag. Der Client zeichnet
+sie ab KB5.3. `hello.v` muss 11 sein; ein v10-Client erhält `version`. Beispiel: `s2c-snapshot-status.json`.
 
 **Änderungen gegenüber v9 (KB5.1, Version 10, B-674):** Neues Ereignis `skillCast` (`from` Spieler-ID, `skill`
 Skill-ID, `x` Wirkort, `radius` in Units) bei jedem Wirken eines aktiven Skills. Flächenzauber (fireball, iceWall,
@@ -598,6 +603,24 @@ Phasen-Text und Zeitanzeige entstehen aus den Feldern. Zeiten in Sekunden, Orte 
 Beispiele: `s2c-snapshot-boss.json` (Endboss in Phase 2 mit Warnkreis) und `s2c-snapshot-event.json` (Vollmond-Nacht,
 Wechselpunkt halb gefüllt), auf dem Zustand von `s2c-snapshot-full.json` aufgebaut. Geprüft von `TestKampfZustand`,
 `TestKampfDelta`, `TestKampfBeispiele` und `src/online/clientCombat.test.ts`. Der Wechsel entsteht durch Anwesenheit (keine Eingabe), siehe Strom-Regel „Inselwechsel“; das Ereignis `islandSwitch` kommt mit dem letzten `delta` der alten Insel (B-385, `TestKampfInselwechselEreignisErreichtGeraete`).
+
+### Status-Effekte
+
+Laufende Wirkungen der Skills (B-675), Zeiten in Sekunden (Restdauer), Orte und Radien in Units. **Fehlt ein Feld, wirkt
+nichts**; im Delta fehlt ein abgelaufenes Feld eines Gegners oder Spielers im geänderten Eintrag, `storms` steht bei jeder
+Änderung ganz und in `unset`, wenn kein Sturm mehr läuft.
+
+| Feld | Inhalt | Fehlt, wenn |
+|---|---|---|
+| `enemies[].stun` | Restdauer der Betäubung (Shield Bash) | nicht betäubt |
+| `enemies[].slow`, `slowFor` | Faktor der Geschwindigkeit und Restdauer (Ice Wall, Frost Armor) | nicht verlangsamt |
+| `enemies[].tauntId`, `tauntFor` | Spieler-ID, auf die der Gegner zielt, und Restdauer (Taunt) | kein Spott |
+| `players[].shield`, `shieldFor` | Schild-HP und Restdauer (Iron Wall, Divine Shield) | kein Schild |
+| `players[].lastStandFor` | Restdauer von Last Stand | kein Last Stand |
+| `players[].auras` | wirkende Passive in Lernreihenfolge: `skill`, `radius` (0 = nur der Monarch), `castle: true` = wirkt im Burgradius statt um den Monarchen (Holy Ground). Auren (armorAura, healingAura, blessings), guardian, regeneration, holyGround, frostArmor; Passive ohne Wirkort fehlen | Monarch tot oder kein solches Passiv |
+| `storms` | laufende Lightning Storms: `x`, `radius`, `perSecond`, `left` (Restdauer), `owner` (Spieler-ID) | kein Sturm |
+
+Beispiel: `s2c-snapshot-status.json`, geprüft von `TestStatusEffekteImZustand` (`engine/net/status_snapshot_test.go`).
 
 ### Ereignisse
 
