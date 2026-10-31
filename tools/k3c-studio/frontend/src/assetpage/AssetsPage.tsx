@@ -14,6 +14,7 @@ import { ListPane } from './ListPane';
 import { PageHeader } from './PageHeader';
 import { PageLayout } from './PageLayout';
 import { pageArt, stepSlot } from './pageLogic';
+import { Stage, useChoiceIndex } from './Stage';
 import { ToolsPanel } from './ToolsPanel';
 import { changeVolume, stopPlayback, useTransport } from './transport';
 import { useAssetData } from './useAssetData';
@@ -38,19 +39,21 @@ function DownloadBar({ count, bytes, blocked, onAsk, onClear }: { count: number;
   );
 }
 
-/** Rechte Spalte: Werkzeuge, sonst der Inspektor des gewählten Slots, sonst ein Hinweis. */
-function SidePane({ tools, slot, used, offline, onCloseTools, onSave, onReload }: { tools: boolean; slot: AssetSlot | undefined; used: ReadonlySet<string>; offline: boolean; onCloseTools: () => void; onSave: InspectorProps['onSave']; onReload: () => void }) {
+type SideProps = Pick<InspectorProps, 'used' | 'onSave' | 'onReload' | 'active' | 'onActive'> & { tools: boolean; slot: AssetSlot | undefined; offline: boolean; onCloseTools: () => void };
+
+/** Rechte Leiste: Werkzeuge, sonst der Inspektor des gewählten Slots, sonst ein Hinweis. */
+function SidePane({ tools, slot, offline, onCloseTools, onReload, ...rest }: SideProps) {
   return (
     <section className="ap-side" aria-label={tools ? 'Werkzeuge' : 'Inspektor'}>
       {tools ? <ToolsPanel onClose={onCloseTools} onChanged={onReload} offline={offline} />
-        : slot ? <Inspector key={slot.id} slot={slot} used={used} onSave={onSave} onReload={onReload} />
-        : <NoticeCard title="Kein Asset-Slot gewählt" tone="neutral">Links einen Slot wählen: Belegung, Kandidaten und Details erscheinen hier.</NoticeCard>}
+        : slot ? <Inspector key={slot.id} slot={slot} onReload={onReload} {...rest} />
+        : <NoticeCard title="Kein Asset-Slot gewählt" tone="neutral">Links einen Slot wählen: Belegung, Kandidaten und Details erscheinen hier, die Bühne darunter zeigt ihn im Spielmaßstab.</NoticeCard>}
     </section>
   );
 }
 
 /** Seite Assets (B-677): ersetzt Grafik, Sound und Quellen. Fokus-Chips, Sichten Slots, Dateien und Szene, Facetten links,
- *  Inspektor oder Werkzeuge rechts, eine Abspielleiste unten. `onArt` meldet dem Rahmen die Art für die Vorschlagskarten des Chats. */
+ *  Inspektor oder Werkzeuge als schmale Leiste rechts, die Bühne unter dem Raster, eine Abspielleiste unten. `onArt` meldet dem Rahmen die Art für die Vorschlagskarten des Chats. */
 export function AssetsPage({ onArt }: { onArt?: (art: AssetKind | undefined) => void }) {
   const d = useAssetData();
   const [view, patch] = useViewState();
@@ -64,6 +67,7 @@ export function AssetsPage({ onArt }: { onArt?: (art: AssetKind | undefined) => 
   const transport = useTransport();
   const slot = d.rows.slots.find((r) => r.slot.id === selected)?.slot;
   const art = pageArt(slot, view.facets);
+  const [choice, setChoice] = useChoiceIndex(selected);
 
   usePageEffects({ jump, view, patch, loaded: d.loaded, quellen: m.quellen, slot, art, onArt, onNotice: setNotice });
 
@@ -87,7 +91,8 @@ export function AssetsPage({ onArt }: { onArt?: (art: AssetKind | undefined) => 
         rail={<FacetRail facets={m.facets} selected={view.facets} onToggle={actions.toggle} onClear={actions.clear} />}
         list={<ListPane sicht={view.sicht} art={art} slotGroups={m.slotGroups} fileGroups={m.fileGroups} selected={selected} picked={dl.picked} offline={d.offline} netFocus={m.chip === 'netz'}
           onSelect={pick} onPlaySlot={playSlot} onPlayFile={playFileRow} onPick={dl.toggle} onTools={() => setTools(true)} />}
-        side={<SidePane tools={tools} slot={slot} used={d.used} offline={d.offline} onCloseTools={() => setTools(false)} onSave={d.assets.save} onReload={d.reload} />}
+        side={<SidePane tools={tools} slot={slot} used={d.used} offline={d.offline} onCloseTools={() => setTools(false)} onSave={d.assets.save} onReload={d.reload} active={choice} onActive={setChoice} />}
+        stage={<Stage slot={slot} active={choice} />}
       />
       <TransportBar playing={transport.playing} status={transport.status} volume={transport.volume} onStop={stopPlayback} onFade={() => playSelected(selected)} onVolume={(dir) => void changeVolume(dir)} />
       <DownloadDialog open={dl.confirm !== null} selection={dl.selection} onClose={() => dl.ask(null)} onConfirm={dl.start} />

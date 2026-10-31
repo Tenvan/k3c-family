@@ -1,40 +1,35 @@
-import { Button, Flex, Heading, IconButton, Splitter, Text } from '@webkit/atoms';
-import { useSplit } from '@webkit/lib/split';
-import { useState, type CSSProperties } from 'react';
+import { Button, Flex, IconButton, Text } from '@webkit/atoms';
+import { useState } from 'react';
 import type { AssetChoice, AssetSlot } from '../api';
 import { move, removeChoice, withCut } from '../assets/assets';
 import { CutEditor } from '../assets/CutEditor';
-import { MiniScene } from '../assets/MiniScene';
-import * as prefs from '../lib/prefs';
 import '../styles/assetInspector.css';
 import { playOn } from './transport';
 
 interface Props {
   slot: AssetSlot;
   onSave: (id: string, wahl: AssetChoice[]) => Promise<boolean>;
+  /** gewählte Präferenz; ohne Angabe hält Belegung sie selbst (die Bühne der Seite hebt sie hervor) */
+  active?: number;
+  onActive?: (i: number) => void;
 }
 
-/** Reiter Belegung (B-677): Präferenzen mit Ziehen, ↑ und ✕, bei Sound je Zeile ▶; bei Grafik Ausschnitt und darunter
- *  (Splitter) die Mini-Szene. Setze `key={slot.id}`, damit die gewählte Präferenz nicht in den nächsten Slot wandert. */
-export function Belegung({ slot, onSave }: Props) {
-  const [chosen, setActive] = useState(0);
+/** Reiter Belegung (B-677): Präferenzen mit Ziehen, ↑ und ✕, bei Sound je Zeile ▶; bei Grafik der Ausschnitt. Die Mini-Szene steht
+ *  als Bühne unter dem Raster der Seite. Setze `key={slot.id}`, damit die gewählte Präferenz nicht in den nächsten Slot wandert. */
+export function Belegung({ slot, onSave, active: given, onActive }: Props) {
+  const [own, setOwn] = useState(0);
+  const chosen = given ?? own;
+  const setActive = (i: number) => { setOwn(i); onActive?.(i); };
   const active = Math.min(chosen, Math.max(0, slot.wahl.length - 1));
   const choice = slot.wahl[active];
-  const [split, setSplit, resetSplit] = useSplit(prefs, `${slot.art}.scene`, 40);
   const save = (wahl: AssetChoice[]) => onSave(slot.id, wahl);
-  const scene = slot.art === 'grafik';
   return (
-    <div className="ap-belegung" style={{ '--ap-scene': `${split}%` } as CSSProperties}>
-      <div className="ap-belegung-body">
-        <Heading size="4">{slot.id} <Text size="2" color="gray">{slot.beschreibung} · {slot.art}/{slot.kategorie}{slot.bus ? ` · Bus ${slot.bus}` : ''}</Text></Heading>
-        <Text size="2" color="gray">Präferenz 1 ist im Spiel aktiv, die weiteren sind Reserve und Vergleich. Reihenfolge per Ziehen.</Text>
-        <ChoiceList slot={slot} active={active} onActive={setActive}
-          onMove={(from, to) => void save(move(slot.wahl, from, to)).then((ok) => ok && setActive(to))}
-          onRemove={(i) => void save(removeChoice(slot.wahl, i)).then(() => setActive(0))} />
-        {choice && scene && <CutEditor key={`${active}:${choice.datei}`} choice={choice} onCut={(cut) => save(withCut(slot.wahl, active, cut))} />}
-      </div>
-      {scene && <Splitter horizontal value={split} onChange={setSplit} onReset={resetSplit} />}
-      {scene && <div className="ap-scene-pane"><MiniScene wahl={slot.wahl} active={active} /></div>}
+    <div className="ap-belegung">
+      <Text size="2" color="gray">Präferenz 1 ist im Spiel aktiv, die weiteren sind Reserve und Vergleich. Reihenfolge per Ziehen.</Text>
+      <ChoiceList slot={slot} active={active} onActive={setActive}
+        onMove={(from, to) => void save(move(slot.wahl, from, to)).then((ok) => ok && setActive(to))}
+        onRemove={(i) => void save(removeChoice(slot.wahl, i)).then(() => setActive(0))} />
+      {choice && slot.art === 'grafik' && <CutEditor key={`${active}:${choice.datei}`} choice={choice} onCut={(cut) => save(withCut(slot.wahl, active, cut))} />}
     </div>
   );
 }

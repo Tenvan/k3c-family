@@ -9,7 +9,7 @@ import { canAssign, confirmText, hitId, markTone, needsConfirm, originTip, previ
 import { Inspector } from './Inspector';
 import { playFile, playOn } from './transport';
 
-// B-677 (AC-06, Inspektor): Reiter Belegung, Kandidaten und Details im DOM mit dem Mock; Abspielen läuft über transport.ts (hier ersetzt).
+// B-677 (AC-06, Inspektor): Kopf, Reiter Belegung und Kandidaten, Details zum Aufklappen im DOM mit dem Mock; Abspielen läuft über transport.ts (hier ersetzt).
 vi.mock('./transport', () => ({ playOn: vi.fn(async () => true), playFile: vi.fn(async () => true) }));
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -114,26 +114,59 @@ describe('candidateLogic', () => {
 });
 
 describe('Inspektor', () => {
-  it('hat drei Reiter und merkt den gewählten', async () => {
+  it('hat nur die Reiter Belegung und Kandidaten und merkt den gewählten', async () => {
     await mount('farm');
-    const tabs = [...host!.querySelectorAll('[role="tab"]')];
-    expect(tabs.length).toBe(3);
-    expect(tabs.map((t) => ['Belegung', 'Kandidaten', 'Details'].some((n) => t.textContent?.includes(n)))).toEqual([true, true, true]);
+    const tabs = [...host!.querySelectorAll('[role="tab"]')].map((t) => t.textContent?.replace(/^(.+)\1$/, '$1')); // Radix doppelt den Text (fette Breite)
+    expect(tabs).toEqual(['Belegung', 'Kandidaten']);
     const pick = (name: string) => act(async () => { byText('[role="tab"]', name)!.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, button: 0 })); }); // Radix wählt bei mousedown
     await pick('Kandidaten');
     await flush();
     expect(localStorage.getItem('k3c-studio.assets.inspector')).toContain('kandidaten');
     expect(host!.querySelector('.ap-cands')).not.toBeNull();
-    await pick('Details');
-    await flush();
-    expect(localStorage.getItem('k3c-studio.assets.inspector')).toContain('details');
   });
 
-  it('Belegung: Präferenzen, Hinweis, bei Grafik Ausschnitt und Mini-Szene, kein ▶', async () => {
+  it('ein gemerkter alter Reiter Details fällt auf Belegung zurück', async () => {
+    await mount('farm', 'details');
+    expect(host!.querySelector('[role="tab"][aria-selected="true"]')?.textContent).toMatch(/^Belegung/);
+  });
+
+});
+
+describe('Inspektor: Kopf und Details', () => {
+  it('Kopf: Slot-Name, Status und „Datei zuordnen …“ öffnet Kandidaten mit Fokus in der Suche', async () => {
+    await mount('farm');
+    const head = host!.querySelector('.ap-head-slot')!;
+    expect(head.textContent).toContain('farm');
+    expect(head.querySelector('.wk-status')).not.toBeNull();
+    await click([...head.querySelectorAll('button')].find((b) => b.textContent?.startsWith('Datei zuordnen')));
+    await flush();
+    expect(host!.querySelector('[role="tab"][aria-selected="true"]')?.textContent).toMatch(/^Kandidaten/);
+    expect(document.activeElement?.getAttribute('aria-label')).toBe('Katalog durchsuchen');
+  });
+
+  it('Details klappt auf und zu und merkt sich den Zustand', async () => {
+    await mount('mount:horse');
+    const details = host!.querySelector<HTMLDetailsElement>('details.ap-details')!;
+    expect(details.open).toBe(false);
+    expect(host!.querySelector('.as-info')).toBeNull();
+    await act(async () => { details.open = true; details.dispatchEvent(new Event('toggle')); });
+    await flush();
+    expect(host!.querySelector('.as-info')).not.toBeNull();
+    expect(host!.textContent).toContain('Pferd');
+    expect(localStorage.getItem('k3c-studio.assets.details')).toContain('1');
+    await act(async () => { details.open = false; details.dispatchEvent(new Event('toggle')); });
+    expect(host!.querySelector('.as-info')).toBeNull();
+    expect(localStorage.getItem('k3c-studio.assets.details')).toContain('0');
+  });
+});
+
+describe('Inspektor: Belegung', () => {
+  it('Belegung: Präferenzen, Hinweis, bei Grafik Ausschnitt (Mini-Szene steht auf der Bühne), kein ▶', async () => {
     await mount('farm');
     expect(host!.textContent).toContain('Präferenz 1 ist im Spiel aktiv');
     expect(host!.querySelectorAll('.ap-choice').length).toBe(2);
     expect(host!.querySelector('.as-cut')).not.toBeNull();
+    expect(host!.querySelector('.as-scene')).toBeNull();
     expect(host!.querySelector('[aria-label="Abspielen"]')).toBeNull();
   });
 
@@ -156,10 +189,6 @@ describe('Inspektor', () => {
     expect(host!.textContent).toContain('Lücke');
   });
 
-  it('Details zeigt SlotInfo', async () => {
-    await mount('mount:horse', 'details');
-    expect(host!.textContent).toContain('Pferd');
-  });
 });
 
 describe('Kandidaten: Liste und Zuordnen', () => {

@@ -77,7 +77,8 @@ html { scrollbar-width: thin; scrollbar-color: rgb(128 128 128 / 0.45) transpare
 .wk-split { flex: 0 0 8px; border-radius: 999px; touch-action: none; transition: background 120ms ease-out; }
 .wk-split-v { margin: 0 -2px; cursor: col-resize; background: linear-gradient(to right, transparent 3px, var(--gray-a5) 3px 5px, transparent 5px); }
 .wk-split-h { margin: -2px 0; cursor: row-resize; background: linear-gradient(to bottom, transparent 3px, var(--gray-a5) 3px 5px, transparent 5px); }
-.wk-split:hover, .wk-split:active { background: var(--accent-a8); }
+.wk-split:hover, .wk-split:active, .wk-split:focus-visible { background: var(--accent-a8); }
+.wk-split:focus-visible { outline: 2px solid var(--accent-8); outline-offset: 1px; }
 
 /* molecules/NoticeCard */
 .wk-notice { max-width: 720px; }

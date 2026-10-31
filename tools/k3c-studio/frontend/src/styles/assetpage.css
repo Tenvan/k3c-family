@@ -1,23 +1,46 @@
-/* Seite Assets (B-677): Kopf mit Fokus-Chips, Facetten | Liste | Splitter | Inspektor, Abspielleiste unten. */
-.ap-page { container-type: inline-size; display: flex; flex-direction: column; gap: 8px; height: calc(100vh - 140px); min-height: 0; }
+/* Seite Assets (B-677, Variante „Bühne“): Kopf mit Fokus-Chips, Facetten | (Raster über Bühne) | Splitter | Leiste, Abspielleiste unten. */
+.ap-page { container-type: inline-size; position: relative; display: flex; flex-direction: column; gap: 8px; height: calc(100vh - 140px); min-height: 0; }
 .ap-head { flex: 0 0 auto; }
-.ap-body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(140px, var(--ap-fs, 22%)) 8px minmax(0, 1fr); gap: 0 4px; }
+/* Facetten: schmale Spalte ohne Mindestbreite, Richtwert 12 % (112–184 px); lange Texte enden mit „…“, das Raster bekommt den Platz */
+.ap-body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, clamp(112px, 12%, 184px)) minmax(0, 1fr); gap: 0 8px; }
 .ap-rail { overflow: auto; min-height: 0; min-width: 0; padding-right: 4px; }
-.ap-main { min-height: 0; min-width: 0; display: grid; gap: 4px; grid-template-columns: minmax(260px, var(--ap-sp, 60%)) 8px minmax(0, 1fr); }
+.ap-rail .wk-facets label { display: block; min-width: 0; }
+.ap-rail .wk-facets label > span { min-width: 0; }
+.ap-rail .wk-facet-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Links Raster über der Bühne (Splitter dazwischen, Höhe der Bühne --ap-stg, beide mit Mindesthöhe), rechts die Leiste über die
+   volle Höhe bis zur Abspielleiste (Anteil der linken Spalte --ap-sp, Leiste mindestens 260 px) */
+.ap-main { min-height: 0; min-width: 0; display: grid; gap: 0 4px;
+  grid-template-columns: minmax(0, 1fr) 8px minmax(260px, calc(100% - var(--ap-sp, 70%) - 12px));
+  grid-template-rows: minmax(120px, 1fr) 8px minmax(140px, var(--ap-stg, 38%)); }
+.ap-list { grid-column: 1; grid-row: 1; }
+.ap-stagesplit { grid-column: 1; grid-row: 2; }
+.ap-stage { grid-column: 1; grid-row: 3; }
+.ap-split { grid-column: 2; grid-row: 1 / -1; }
+.ap-side { grid-column: 3; grid-row: 1 / -1; }
 .ap-fstack, .ap-stack { display: none; }
 .ap-list { overflow: auto; min-height: 0; min-width: 0; border: 1px solid var(--card-line); border-radius: 10px; background: var(--card); padding: 8px; }
 .ap-side { overflow: auto; min-height: 0; min-width: 0; }
 .ap-empty { color: var(--dim); }
 .wk-transport { flex: 0 0 auto; padding: 6px 10px; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); }
-/* Schmale Seite: Facetten, Liste und Inspektor untereinander, die Trennlinien werden waagerecht (Anteil des unteren Bereichs: --ap-fk, --ap-st) */
-@container (max-width: 1100px) {
+/* Bühne: Leiste mit Zoom und Vollbild, darunter eine Fläche, die für sich scrollt; Vollbild deckt die ganze Seite ab, auch über die Rasterbreite hinaus (nur Layout) */
+.ap-stage { min-height: 0; min-width: 0; display: flex; flex-direction: column; border: 1px solid var(--card-line); border-radius: 10px; background: #11151c; overflow: hidden; }
+.ap-stage-bar { flex: 0 0 auto; padding: 4px 8px; background: var(--card); border-bottom: 1px solid var(--card-line); }
+.ap-stage-caption { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ap-stage-zoom { min-width: 44px; text-align: center; font-variant-numeric: tabular-nums; }
+.ap-stage-body { flex: 1 1 0; min-height: 0; overflow: auto; padding: 8px; }
+.ap-stage-body > .rt-Text { color: var(--gray-9); }
+.ap-stage .as-scene-view { overflow: visible; border: 0; border-radius: 0; background: none; width: max-content; }
+.ap-stage-full { position: absolute; inset: 0; z-index: 5; }
+/* Schmale Seite: Facetten, Raster, Leiste und Bühne untereinander, die Trennlinien werden waagerecht (Anteil des unteren Bereichs: --ap-fk, --ap-st) */
+@container (max-width: 860px) {
   .ap-page .ap-body { display: flex; flex-direction: column; gap: 4px; }
-  .ap-page .ap-fsplit, .ap-page .ap-split { display: none; }
+  .ap-page .ap-split, .ap-page .ap-stagesplit { display: none; }
   .ap-page .ap-fstack, .ap-page .ap-stack { display: block; flex: 0 0 auto; }
   .ap-page .ap-rail { flex: 0 0 calc((100% - 8px) * (100 - var(--ap-fk, 70)) / 100); padding-right: 0; }
   .ap-page .ap-main { flex: 1 1 0; display: flex; flex-direction: column; gap: 4px; }
   .ap-page .ap-list { flex: 0 0 calc((100% - 8px) * (100 - var(--ap-st, 55)) / 100); }
   .ap-page .ap-side { flex: 1 1 0; }
+  .ap-page .ap-stage:not(.ap-stage-full) { flex: 0 0 34%; }
 }
 .ap-group { margin-bottom: 14px; }
 .ap-group-title { margin: 0 0 6px; color: var(--title); }

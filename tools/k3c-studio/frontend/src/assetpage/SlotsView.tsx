@@ -4,8 +4,9 @@ import { fileUrl, typOf } from '../assets/assets';
 import type { Group } from './filter';
 import { stageCounts, type SlotRow } from './model';
 
-const TONE: Record<AssetStatus, Tone> = { zugeordnet: 'ok', luecke: 'warn', fehlt: 'error' };
-const LABEL: Record<AssetStatus, string> = { zugeordnet: 'aktiv', luecke: 'Lücke', fehlt: 'Datei fehlt' };
+/** Ton und Text des Slot-Status (auch Kopf des Inspektors). */
+export const TONE: Record<AssetStatus, Tone> = { zugeordnet: 'ok', luecke: 'warn', fehlt: 'error' };
+export const LABEL: Record<AssetStatus, string> = { zugeordnet: 'aktiv', luecke: 'Lücke', fehlt: 'Datei fehlt' };
 
 interface Props {
   groups: readonly Group<SlotRow>[];

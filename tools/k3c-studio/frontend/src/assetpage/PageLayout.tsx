@@ -8,27 +8,31 @@ interface Props {
   rail: ReactNode;
   /** Inhalt der Liste (Sichten) */
   list: ReactNode;
-  /** rechte Spalte: Inspektor oder Werkzeuge (bringt ihr eigenes `<section className="ap-side">` mit) */
+  /** rechte Leiste: Inspektor oder Werkzeuge (bringt ihr eigenes `<section className="ap-side">` mit) */
   side: ReactNode;
+  /** Bühne unter dem Raster (bringt ihr eigenes `<section className="ap-stage">` mit) */
+  stage: ReactNode;
 }
 
-/** Aufbau der Assets-Seite mit zwei einstellbaren Trennlinien (B-677): Facetten | Liste und Liste | Inspektor. Breit stehen die Spalten
- *  nebeneinander (senkrechte Splitter), unter 1100 px Breite untereinander (waagerechte Splitter); Anteile werden gemerkt,
- *  Doppelklick setzt sie zurück. */
-export function PageLayout({ rail, list, side }: Props) {
-  const [fs, setFs, resetFs] = useSplit(prefs, 'assets.fsplit', 22);
+/** Aufbau der Assets-Seite (B-677, Variante „Bühne“): Facetten als schmale Spalte ohne Mindestbreite; links das Raster über der
+ *  Bühne (Splitter dazwischen, Höhe der Bühne gemerkt als `assets.stage`), rechts die Leiste über die volle Höhe (Breite gemerkt als
+ *  `assets.lsplit`). Die DOM-Reihenfolge (Raster, Bühne, Leiste) ist die Tab-Reihenfolge. Unter 860 px Breite stehen Facetten,
+ *  Raster, Bühne und Leiste untereinander (waagerechte Splitter); Doppelklick oder Pos1 setzt einen Splitter zurück. */
+export function PageLayout({ rail, list, side, stage }: Props) {
   const [fk, setFk, resetFk] = useSplit(prefs, 'assets.fstack', 70);
-  const [sp, setSp, resetSp] = useSplit(prefs, 'assets.split', 60);
+  const [sp, setSp, resetSp] = useSplit(prefs, 'assets.lsplit', 70);
   const [st, setSt, resetSt] = useSplit(prefs, 'assets.stack', 55);
-  const vars = { '--ap-fs': `${fs}%`, '--ap-fk': fk, '--ap-sp': `${sp}%`, '--ap-st': st } as CSSProperties;
+  const [sg, setSg, resetSg] = useSplit(prefs, 'assets.stage', 38);
+  const vars = { '--ap-fk': fk, '--ap-sp': `${sp}%`, '--ap-st': st, '--ap-stg': `${sg}%` } as CSSProperties;
   return (
     <div className="ap-body" style={vars}>
       <div className="ap-rail">{rail}</div>
-      <Splitter className="ap-fsplit" value={fs} onChange={setFs} onReset={resetFs} />
       <Splitter horizontal className="ap-fstack" value={fk} onChange={setFk} onReset={resetFk} />
       <div className="ap-main">
         <div className="ap-list">{list}</div>
-        <Splitter className="ap-split" value={sp} onChange={setSp} onReset={resetSp} />
+        <Splitter horizontal className="ap-stagesplit" label="Höhe der Bühne" value={sg} onChange={setSg} onReset={resetSg} />
+        {stage}
+        <Splitter className="ap-split" label="Breite der Leiste" value={sp} onChange={setSp} onReset={resetSp} />
         <Splitter horizontal className="ap-stack" value={st} onChange={setSt} onReset={resetSt} />
         {side}
       </div>

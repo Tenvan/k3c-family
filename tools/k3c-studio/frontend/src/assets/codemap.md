@@ -7,7 +7,7 @@ Gemeinsame Bausteine der Zuordnung von Slots: Logik der Zuordnungen, Laden und S
 - `assets.ts`: reine Logik ohne React: `filterSlots`, `countStatus`, `typOf`/`typen`, `CATEGORIES`, Zuordnungen ändern (`move`, `addChoice`, `removeChoice`, `withCut`), Maße (`previewSize`, `sceneLayout`, `UNIT_PX`, `GAME_SCALE`), `applySaved`, `selectionOf`, `fileUrl`.
 - `useAssets.ts`: Hook; lädt `backend.assetsList()`, lädt bei `assets:changed` neu, speichert mit `assetsSet(id, wahl, stand)`; bei Ablehnung (`isStale`) neu laden und Meldung zeigen.
 - `CutEditor.tsx`: Ausschnitt einer Grafik-Zuordnung.
-- `MiniScene.tsx`: Slot im Spielmaßstab.
+- `MiniScene.tsx`: Slot im Spielmaßstab, optional mit Zoom der Anzeige (Bühne der Assets-Seite).
 - `SlotInfo.tsx`, `slotRows.ts`: Reiter Details des Inspektors (`infoGroups` aus den Slot-Details).
 - Tests: `assets.test.ts`, `slotRows.test.ts`, `SlotInfo.test.tsx`.
 

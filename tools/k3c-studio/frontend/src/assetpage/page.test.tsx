@@ -149,3 +149,69 @@ describe('Neuladen und Schreibregel (B-459/AC-07)', () => {
     expect(search(h).value).toBe('farm');
   });
 });
+
+describe('Bühne (Variante „Bühne“)', () => {
+  const stage = (h: HTMLElement) => h.querySelector<HTMLElement>('[data-testid="stage"]')!;
+  const zoom = (h: HTMLElement) => h.querySelector('[data-testid="stage-zoom"]')?.textContent;
+
+  it('steht unter dem Raster und zeigt die Szene des gewählten Slots', async () => {
+    let h = await mount();
+    expect(stage(h).dataset.slot).toBe('');
+    expect(stage(h).querySelector('.as-scene')).toBeNull();
+    await click(h.querySelector('.ap-card'));
+    const first = h.querySelector('.ap-card[aria-pressed="true"] .ap-card-id')!.textContent;
+    expect(stage(h).dataset.slot).toBe(first);
+    expect(stage(h).querySelector('.as-scene-view canvas')).not.toBeNull();
+    act(() => root!.unmount());
+    host!.remove();
+    h = await mount({ 'assets.selected': 'farm' });
+    expect(stage(h).dataset.slot).toBe('farm');
+    expect(h.querySelector('.ap-side .as-scene')).toBeNull(); // die Leiste rechts hat keine zweite Szene mehr
+  });
+
+  it('Zoom ändert den Maßstab der Szene und wird gemerkt', async () => {
+    const h = await mount({ 'assets.selected': 'farm' });
+    expect(zoom(h)).toBe('100 %');
+    await click(h.querySelector('[aria-label="Vergrößern"]'));
+    expect(zoom(h)).toBe('150 %');
+    expect(stage(h).querySelector('.as-scene-view')?.getAttribute('data-zoom')).toBe('1.5');
+    await click(h.querySelector('[aria-label="Verkleinern"]'));
+    await click(h.querySelector('[aria-label="Verkleinern"]'));
+    expect(zoom(h)).toBe('75 %');
+    expect(localStorage.getItem('k3c-studio.assets.stagezoom')).toContain('0.75');
+  });
+
+  it('Vollbild schaltet nur die Layout-Klasse, Esc verlässt es', async () => {
+    const h = await mount({ 'assets.selected': 'farm' });
+    const full = button(stage(h), 'Vollbild')!;
+    await click(full);
+    expect(stage(h).classList.contains('ap-stage-full')).toBe(true);
+    expect(full.getAttribute('aria-pressed')).toBe('true');
+    await act(async () => { window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })); });
+    expect(stage(h).classList.contains('ap-stage-full')).toBe(false);
+  });
+
+  it('Splitter zwischen Raster und Bühne: Pfeiltasten ändern die Höhe, gemerkt pro Viewer', async () => {
+    let h = await mount();
+    const split = () => h.querySelector<HTMLElement>('.ap-stagesplit')!;
+    expect(split().getAttribute('role')).toBe('separator');
+    expect(split().getAttribute('aria-valuenow')).toBe('38');
+    await act(async () => { split().dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true })); });
+    expect(split().getAttribute('aria-valuenow')).toBe('40');
+    expect((h.querySelector('.ap-body .ap-main')!.parentElement as HTMLElement).style.getPropertyValue('--ap-stg')).toBe('40%');
+    expect(localStorage.getItem('k3c-studio.assets.stage')).toBe('40');
+    act(() => root!.unmount());
+    host!.remove();
+    h = await mount();
+    expect(split().getAttribute('aria-valuenow')).toBe('40');
+    expect([...h.querySelector('.ap-main')!.children].map((c) => c.className.split(' ').find((n) => n.startsWith('ap-')))).toEqual(
+      ['ap-list', 'ap-stagesplit', 'ap-stage', 'ap-split', 'ap-stack', 'ap-side']); // Tab-Reihenfolge: Raster, Bühne, Leiste
+  });
+
+  it('Präferenz in der Belegung wählen hebt sie auf der Bühne hervor (geteilter Zustand)', async () => {
+    const h = await mount({ 'assets.selected': 'farm' });
+    await click(h.querySelector('[aria-label="Präferenz 2 wählen"]'));
+    expect(h.querySelectorAll('.ap-choice')[1]?.classList.contains('ap-choice-on')).toBe(true);
+    expect(stage(h).dataset.slot).toBe('farm');
+  });
+});

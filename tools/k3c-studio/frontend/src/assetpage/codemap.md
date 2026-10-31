@@ -1,7 +1,7 @@
 # tools/k3c-studio/frontend/src/assetpage/
 
 ## Responsibility
-Seite Assets des Asset-Studios (B-677, WZ33): ersetzt die Seiten Grafik, Sound und Quellen. Eine Seite für Slots und Dateien beider Arten: Kopf mit Fokus-Chips und Suche, Facetten links, Sichten Slots, Dateien und Szene, rechts Inspektor oder Werkzeuge, unten eine Abspielleiste.
+Seite Assets des Asset-Studios (B-677, WZ33): ersetzt die Seiten Grafik, Sound und Quellen. Eine Seite für Slots und Dateien beider Arten: Kopf mit Fokus-Chips und Suche, Facetten als schmale Spalte links, Sichten Slots, Dateien und Szene, rechts eine schmale Leiste (Inspektor oder Werkzeuge), darunter die Bühne über die volle Breite, unten eine Abspielleiste.
 
 ## Design
 - `AssetsPage.tsx`: Seite; hält Auswahl, Werkzeug-Umschalter und Teilung (`useSplit`, gemerkt als `assets.split`); verbindet Daten, Filter und Sichten, meldet die Art an den Rahmen (`onArt`) und an den Chat.
@@ -9,8 +9,10 @@ Seite Assets des Asset-Studios (B-677, WZ33): ersetzt die Seiten Grafik, Sound u
 - `SlotsView.tsx`: Sicht Slots; Grafik als Raster von Karten, Sound als Liste mit ▶.
 - `FilesView.tsx`: Sicht Dateien mit Stufe (Netz, Vorrat, Spiel, Präf. n), Lizenz-Marke und Größe; Netz-Dateien sind wählbar.
 - `SceneView.tsx`: Sicht Szene; bindet `ScenesView` (Grafik) bzw. `SoundScenes` (Sound) ein.
-- `Inspector.tsx`: Reiter Belegung | Kandidaten | Details (Reiter gemerkt als `assets.inspector`).
-- `Belegung.tsx`: Präferenzen eines Slots mit Ziehen, ↑, ✕ und ▶; bei Grafik Ausschnitt (`CutEditor`) und Mini-Szene (`MiniScene`).
+- `PageLayout.tsx`: Facetten als schmale Spalte ohne Mindestbreite | links Raster über der Bühne (Splitter, Höhe `assets.stage`, Vorgabe 38 %) | rechts die Leiste über die volle Höhe (Breite `assets.lsplit`); unter 860 px untereinander.
+- `Stage.tsx`, `stageLogic.ts`: Bühne mit der Mini-Szene des gewählten Slots, Zoom (− / + / Anpassen, gemerkt als `assets.stagezoom`) und Vollbild als Layout-Klasse `ap-stage-full` (Esc verlässt); `useChoiceIndex` teilt die gewählte Präferenz zwischen Belegung und Bühne.
+- `Inspector.tsx`: Kopf (Vorschau, Slot, Status, „Datei zuordnen …“ öffnet Kandidaten), Reiter Belegung | Kandidaten (gemerkt als `assets.inspector`), Details zum Aufklappen (`assets.details`).
+- `Belegung.tsx`: Präferenzen eines Slots mit Ziehen, ↑, ✕ und ▶; bei Grafik Ausschnitt (`CutEditor`); die Mini-Szene steht auf der Bühne.
 - `CandidatesTab.tsx`, `CandidateRow.tsx`: Kandidaten eines Slots (Zuordnungen, Spiel, Vorrat, Netz) mit Vorschau, Lizenz-Marke und „Zuordnen“; Netz-Dateien brauchen eine Bestätigung der Größe.
 - `candidateLogic.ts`: reine Logik der Kandidaten (Stufe, Ton, Tooltips, Bestätigungstext, Fehlertext).
 - `useCandidates.ts`: lädt Kandidaten bei Slot- und Suchwechsel und bei `assets:changed` neu.

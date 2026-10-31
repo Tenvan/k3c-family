@@ -27,10 +27,14 @@ function FacetGroup({ facet, chosen, limit, onToggle }: { facet: Facet; chosen: 
   return (
     <Flex direction="column" gap="1" role="group" aria-label={facet.title}>
       <Text size="1" color="gray" weight="bold">{facet.title}</Text>
-      {shown.map((o) => (
-        <CheckField key={o.value} size="1" label={o.count === undefined ? o.label : `${o.label} (${o.count})`}
-          checked={chosen.includes(o.value)} onCheckedChange={(c) => onToggle(facet.id, o.value, c === true)} />
-      ))}
+      {shown.map((o) => {
+        const text = o.count === undefined ? o.label : `${o.label} (${o.count})`;
+        // eigener Span: eine schmale Spalte kann den Text mit „…“ kürzen (`.wk-facet-label`), der Tooltip zeigt ihn ganz
+        return (
+          <CheckField key={o.value} size="1" title={text} label={<span className="wk-facet-label">{text}</span>}
+            checked={chosen.includes(o.value)} onCheckedChange={(c) => onToggle(facet.id, o.value, c === true)} />
+        );
+      })}
       {hidden.length > 0 && <Button size="1" variant="ghost" color="gray" onClick={() => setAll(true)}>{hidden.length} weitere anzeigen</Button>}
       {all && facet.options.length > limit && <Button size="1" variant="ghost" color="gray" onClick={() => setAll(false)}>weniger anzeigen</Button>}
     </Flex>
