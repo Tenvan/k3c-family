@@ -8,9 +8,9 @@
 - **Sprint:** WZ33
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-30
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-30 🧑 Chat („dann jetzt umsetzen“)
 
 ## Ausgangslage
 
@@ -137,7 +137,7 @@ Die Sprünge aus anderen Seiten, aus Chat und Ticket mit Slot (`takePendingSlot`
 - **AC-06** „Zuordnen“ eines Netz-Kandidaten erledigt Laden, Übernehmen und Zuordnen als letzte Präferenz in einem Aufruf mit Stand-Prüfung. Scheitert ein Schritt, wird nichts zugeordnet, und der Fehler steht in der Zeile (Go-Test, Vitest für die Bestätigung in der Zeile).
 - **AC-07** Auf der ganzen Seite spielt höchstens ein Ton. Abspielleiste und Tastatur (↑↓, Enter, S, X, +/−) funktionieren. Der Reiter Hörprobe existiert nicht mehr, und `soundtest.html` läuft weiter (Vitest).
 - **AC-08** Mischprobe, Lautheit, Abstand, Vorrat aufräumen und „Aus Recherche übernehmen“ sind über die Werkzeuge-Fläche erreichbar. Ihre bisherigen Tests sind grün oder ohne Verlust an geprüftem Verhalten übertragen.
-- **AC-09** Sprünge mit Slot aus Planer, Monarch, Gegner, Chat und Ticket öffnen Assets mit diesem Slot. Der Chat-Kontext nutzt die Seiten-ID `assets` (Vitest).
+- **AC-09** Sprünge mit Slot aus Planer, Monarch, Gegner, Chat und Ticket öffnen Assets mit diesem Slot. Der Ticket- und Rahmen-Kontext nutzt die Seiten-ID `assets`; der Zuordnungs-Kontext des Chats trägt weiter `seite` = `sound` oder `grafik` (Art des gewählten Slots), weil das Backend danach unterscheidet (Vitest).
 - **AC-10** Die alten Seiten Grafik, Sound und Quellen sind entfernt, ohne tote Importe. `task check:studio` und `tests/atomicDesign.test.ts` sind grün, und keine Datei ist länger als 400 Zeilen.
 - **AC-11** Browser-Pane (Port 5196, `?mock=1`, 1600×1000): Kopf, Fokus-Chips, Facetten, Liste und Inspektor sind ohne Scrollen sichtbar, die Abspielleiste steht fest unten.
 - **AC-12** Manuelle Abnahme durch 🧑 im Studio-Fenster mit echten Daten: Eine Lücke wird aus dem Netz in zwei Schritten gefüllt, und eine eigene Ansicht bleibt nach dem Neustart erhalten.
@@ -157,3 +157,7 @@ keine. Entschieden von 🧑 am 2026-10-30 im Chat:
 - Die Quellen-Oberfläche aus B-673 (Reiter, Filterzeile, Gruppen nach Slot, Schreibwerkzeuge in `assetkit`) geht hier auf. Ihre Backend-Funktionen (`AddSuggestions`, `PlanSuggestions`, `research_add.go`) bleiben.
 - B-673/AC-08 (manuelle Abnahme) vor WZ33 abschließen oder in AC-12 aufgehen lassen.
 - Ungeprüft: wie viele Recherche-Treffer und Vorschläge heute auf dieselbe Datei-URL zeigen.
+- **Umgesetzt 2026-10-30 (WZ33):** Backend 	ools/assetkit/candidates*.go, ackend/app_candidates.go (RPC AssetCandidates, AssetCandidateAssign); Frontend src/assetpage/, pi/candidateTypes.ts, webkit FocusBar, FacetRail, TransportBar. Alte Seiten Grafik, Sound, Quellen entfernt; die Tests mit Wert sind übertragen.
+- **Auslegung AC-04:** Ein fester Chip ersetzt die Facetten, behält aber Suche, Sicht und Gruppierung; ein eigener Chip setzt auch diese.
+- **Abweichungen:** Sicht Szene übernimmt die Fokus-Filter nicht (eigene Filter der Szenen); die Proben behalten ihren eigenen Stopp; NC-Treffer und -Katalogdateien sind nicht zuordenbar (strenger als zuvor), ebenso Pakete (zip, 7z).
+- **Offen:** AC-12 (Abnahme durch 🧑 am Gerät, WZ33.8); Wikimedia-Downloads mit Weiterleitung scheitern im Studio-Client möglicherweise (ungeprüft); SourceAdopt ist ohne Stand und Sperre aufrufbar (nur die Seite Assets ruft es seriell).

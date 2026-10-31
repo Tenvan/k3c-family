@@ -1,0 +1,39 @@
+/* Seite Assets (B-677): Kopf mit Fokus-Chips, Facetten | Liste | Splitter | Inspektor, Abspielleiste unten. */
+.ap-page { container-type: inline-size; display: flex; flex-direction: column; gap: 8px; height: calc(100vh - 140px); min-height: 0; }
+.ap-head { flex: 0 0 auto; }
+.ap-body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(140px, var(--ap-fs, 22%)) 8px minmax(0, 1fr); gap: 0 4px; }
+.ap-rail { overflow: auto; min-height: 0; min-width: 0; padding-right: 4px; }
+.ap-main { min-height: 0; min-width: 0; display: grid; gap: 4px; grid-template-columns: minmax(260px, var(--ap-sp, 60%)) 8px minmax(0, 1fr); }
+.ap-fstack, .ap-stack { display: none; }
+.ap-list { overflow: auto; min-height: 0; min-width: 0; border: 1px solid var(--card-line); border-radius: 10px; background: var(--card); padding: 8px; }
+.ap-side { overflow: auto; min-height: 0; min-width: 0; }
+.ap-empty { color: var(--dim); }
+.wk-transport { flex: 0 0 auto; padding: 6px 10px; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); }
+/* Schmale Seite: Facetten, Liste und Inspektor untereinander, die Trennlinien werden waagerecht (Anteil des unteren Bereichs: --ap-fk, --ap-st) */
+@container (max-width: 1100px) {
+  .ap-page .ap-body { display: flex; flex-direction: column; gap: 4px; }
+  .ap-page .ap-fsplit, .ap-page .ap-split { display: none; }
+  .ap-page .ap-fstack, .ap-page .ap-stack { display: block; flex: 0 0 auto; }
+  .ap-page .ap-rail { flex: 0 0 calc((100% - 8px) * (100 - var(--ap-fk, 70)) / 100); padding-right: 0; }
+  .ap-page .ap-main { flex: 1 1 0; display: flex; flex-direction: column; gap: 4px; }
+  .ap-page .ap-list { flex: 0 0 calc((100% - 8px) * (100 - var(--ap-st, 55)) / 100); }
+  .ap-page .ap-side { flex: 1 1 0; }
+}
+.ap-group { margin-bottom: 14px; }
+.ap-group-title { margin: 0 0 6px; color: var(--title); }
+.ap-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
+.ap-card { height: auto; margin: 0; padding: 6px; display: flex; flex-direction: column; align-items: stretch; gap: 4px; text-align: left; white-space: normal; }
+.ap-card-id { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; word-break: break-all; }
+.ap-thumb { height: 64px; display: grid; place-items: center; background: var(--gray-a3); border-radius: 6px; overflow: hidden; }
+.ap-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; image-rendering: pixelated; }
+.ap-thumb-s { width: 40px; height: 32px; flex: 0 0 40px; }
+.ap-gap { color: var(--amber-11); font-size: 11px; }
+.ap-stages { white-space: nowrap; }
+.ap-lines { display: flex; flex-direction: column; gap: 2px; }
+.ap-line-main { flex: 1; min-width: 0; height: auto; margin: 0; padding: 3px 8px; display: grid; grid-template-columns: 10px minmax(0, auto) minmax(0, 1fr) auto; align-items: center; gap: 8px; text-align: left; }
+
+.ap-file { display: grid; grid-template-columns: 24px 40px minmax(160px, 1fr) auto auto 64px; align-items: center; gap: 4px 10px; padding: 3px 6px; border-top: 1px solid var(--gray-4); min-height: 40px; }
+.ap-file-on { background: var(--accent-a3); }
+.ap-file-main { height: auto; margin: 0; padding: 2px 4px; display: flex; flex-direction: column; align-items: flex-start; min-width: 0; text-align: left; }
+.ap-file-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+.ap-size { white-space: nowrap; text-align: right; }

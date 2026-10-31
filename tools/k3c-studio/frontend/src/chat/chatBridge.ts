@@ -37,10 +37,10 @@ export function useCanLoadDraft(): boolean {
 }
 
 /** Auftragsart der nächsten Nachricht: `welt`, solange der Welten Editor einen Entwurfs-Lader angemeldet hat (B-516),
- *  `zuordnung`, solange Sound- oder Grafik-Seite ihren Kontext angemeldet haben (B-600), `quellen` nach „Claude suchen
- *  lassen“ auf der Seite Quellen (B-673). */
+ *  `quellen` nach „Claude suchen lassen“ auf der Seite Assets (B-673), bis dort ein Slot oder Fokus-Chip gewählt wird,
+ *  sonst `zuordnung`, solange die Seite Assets ihren Kontext angemeldet hat (B-600, B-677). */
 export function chatTask(): ChatTask | undefined {
-  return loader ? 'welt' : assign ? 'zuordnung' : sources ? 'quellen' : undefined;
+  return loader ? 'welt' : sources ? 'quellen' : assign ? 'zuordnung' : undefined;
 }
 
 /** Seite Quellen: öffnet den Chat mit vorbereitetem Auftrag (Text liegt in der Eingabe, 🧑 schickt ihn ab). */

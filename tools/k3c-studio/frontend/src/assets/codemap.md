@@ -1,19 +1,21 @@
 # tools/k3c-studio/frontend/src/assets/
 
 ## Responsibility
-Gemeinsame Seitenstruktur für Grafik und Sound: Slot-Liste mit Filter, Detailansicht mit Zuordnungen, Katalog-Auswahl, Recherche, Ausschnitt-Editor und Mini-Szene, dazu das Laden und Speichern des Slot-Registers mit Stand.
+Gemeinsame Bausteine der Zuordnung von Slots: Logik der Zuordnungen, Laden und Speichern des Slot-Registers mit Stand, Ausschnitt-Editor, Mini-Szene und Detailinfo. Die Seite selbst liegt seit B-677 in `../assetpage/`.
 
 ## Design
-- `assets.ts`: reine Logik ohne React: `filterSlots`, `countStatus`, Zuordnungen ändern (`move`, `addChoice`, `removeChoice`, `withCut`), Maße (`previewSize`, `sceneLayout`, `UNIT_PX`, `GAME_SCALE`), `applySaved`, `selectionOf`, `fileUrl`.
+- `assets.ts`: reine Logik ohne React: `filterSlots`, `countStatus`, `typOf`/`typen`, `CATEGORIES`, Zuordnungen ändern (`move`, `addChoice`, `removeChoice`, `withCut`), Maße (`previewSize`, `sceneLayout`, `UNIT_PX`, `GAME_SCALE`), `applySaved`, `selectionOf`, `fileUrl`.
 - `useAssets.ts`: Hook; lädt `backend.assetsList()`, lädt bei `assets:changed` neu, speichert mit `assetsSet(id, wahl, stand)`; bei Ablehnung (`isStale`) neu laden und Meldung zeigen.
-- `AssetsPage.tsx`: Seite mit fester Art (Grafik oder Sound), Liste (Zeilen als Radix `Button`), Filter und `Splitter` (`@webkit/atoms`, Anteil über `useSplit` aus `@webkit/lib/split`); `SlotDetail.tsx` Detail eines Slots; `CatalogPicker.tsx` Katalogsuche; `ResearchPanel.tsx` Recherche mit Treffern, Import, Download und Lizenzfreigabe; `CutEditor.tsx` Ausschnitt; `MiniScene.tsx` Slot im Spielmaßstab.
-- Tests: `assets.test.ts`, `reload.test.tsx` (happy-dom, Neuladen und Schreibregel).
+- `CutEditor.tsx`: Ausschnitt einer Grafik-Zuordnung.
+- `MiniScene.tsx`: Slot im Spielmaßstab.
+- `SlotInfo.tsx`, `slotRows.ts`: Reiter Details des Inspektors (`infoGroups` aus den Slot-Details).
+- Tests: `assets.test.ts`, `slotRows.test.ts`, `SlotInfo.test.tsx`.
 
 ## Flow
-1. `useAssets` lädt Register und `stand`; die Liste zeigt Slots nach Filter.
-2. Auswahl öffnet `SlotDetail`; eine Änderung der Zuordnung ruft `assetsSet(id, wahl, stand)`.
+1. `useAssets` lädt Register und `stand`; `../assetpage/useAssetData` nutzt den Hook.
+2. Eine Änderung der Zuordnung (`../assetpage/Belegung.tsx`) ruft `assetsSet(id, wahl, stand)`.
 3. Neuer Stand → `applySaved`; Ablehnung → Neuladen mit Hinweis; fremder Schreiber → `assets:changed` → Neuladen.
 
 ## Integration
-- Konsumenten: `../graphics/GraphicsPage` und `../sound/SoundPage` (je mit eigener Art und eigenen Vorschau-Bausteinen).
-- Abhängigkeiten: `../api` (`backend`, `isStale`), `../lib/prefs`, `@webkit/atoms` (u. a. `Splitter`, `StatusBadge`, `ActionButton`), `@webkit/molecules` (`NoticeCard`), `@webkit/lib/split`, `@webkit/lib/errors`, `@webkit/lib/useDebounced`.
+- Konsumenten: `../assetpage/` (Seite, Belegung, Inspektor), `../graphics/ScenesView` und `../sound/` (`SoundScenes`, `Proben`) über `useAssets` und `fileUrl`.
+- Abhängigkeiten: `../api` (`backend`, `isStale`, `STALE`), `@webkit/atoms`, `@webkit/molecules`, `@webkit/lib/errors`.

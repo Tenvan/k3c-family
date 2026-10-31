@@ -2,6 +2,7 @@ import { mockChats } from './mockChat';
 import { mockSources } from './mockSources';
 import { mockSuggestions } from './mockSuggestions';
 import { mockAssets } from './mockAssets';
+import { mockCandidates } from './mockCandidates';
 import { mockTickets } from './mockTickets';
 import { mockPlan } from './mockPlan';
 import { mockHubCheck, mockHubPlan, mockHubRules, mockHubSave } from './mockHub';
@@ -13,9 +14,12 @@ export function mockBackend(): Backend & { external: (id: string, wahl: AssetCho
   const subs = new Map<EventName, Set<(data: never) => void>>();
   const emit = <E extends EventName>(event: E, data: Events[E]) => subs.get(event)?.forEach((fn) => (fn as (d: Events[E]) => void)(data));
   const plan = mockPlan();
+  const assets = mockAssets(() => emit('assets:changed', null));
+  const sources = mockSources();
   return {
     mock: true,
-    ...mockAssets(() => emit('assets:changed', null)),
+    ...assets,
+    ...mockCandidates(assets, sources),
     worldLevel: async (seed, source) => mockWorldLevel(seed, source),
     worldPreview: async (args) => mockWorldPreview(args),
     worldOpenGame: async (base, seed, biome, mode) => mockOpenGame(base, seed, biome, mode, plan.active()),
@@ -30,7 +34,7 @@ export function mockBackend(): Backend & { external: (id: string, wahl: AssetCho
     openUrl: (url) => window.open(url, '_blank', 'noopener'),
     ...mockChats(),
     ...mockSuggestions(),
-    ...mockSources(),
+    ...sources,
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) => {
       const set = subs.get(event) ?? new Set();
       set.add(fn as (data: never) => void);

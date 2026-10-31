@@ -2,6 +2,7 @@ import { httpBackend, useMock } from './http';
 import { mockBackend } from './mock';
 import type { Backend } from './types';
 
+export type * from './candidateTypes';
 export type * from './slotTypes';
 export type * from './sourceTypes';
 export type * from './suggestionTypes';

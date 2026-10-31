@@ -8,16 +8,18 @@ Frontend des Asset-Studios (B-459): React-Oberfläche in `frontend/`, Build nach
 ## Design
 - `frontend/`: Vite/React/Radix; Details in [`frontend/codemap.md`](frontend/codemap.md). Spiel-Code nur lesend über die Aliase `@game` (`src/`) und `@data` (`data/`), festgelegt in `frontend/paths.ts` für `vite.config.ts` (publicDir = `public/` nur im Dev-Modus, `server.fs.allow` auf die Repo-Wurzel) und `vitest.config.ts`. Gemeinsame UI-Teile (Fehlertext, Entprellen, Bausteine, Theme, Prefs-Fabrik) liegen in [`tools/webkit/`](../webkit/) (Alias `@webkit/...`, geteilt mit k3c-workbench).
 - Seiten und Bausteine unter `frontend/src/` (Detail je Ordner in `frontend/src/*/codemap.md`):
-  - `App.tsx`: Rahmen mit Navigation Grafik/Sound/Welten Editor/Gebäude-Planer/Monarch/Gegner (gemerkt unter `k3c-studio.app.page`), Mock-Hinweis.
+  - `App.tsx`: Rahmen mit Navigation Assets/Welten Editor/Gebäude-Planer/Monarch/Gegner (gemerkt unter `k3c-studio.app.page`), Mock-Hinweis.
   - `api/`: Typen mit `stand`, Aufrufe an `/api/studio/` (`http.ts`), Mock im Test und mit `?mock=1`.
-  - `assets/`: gemeinsame Seitenstruktur für Grafik und Sound (Slots, Katalog, Recherche, `useAssets` mit Neuladen bei `assets:changed`).
-  - `graphics/`: Seite Grafik (Slots, Szenen, Packs; `GraphicsPage`).
-  - `sound/`: Seite Sound (Slots, Szenen, Hörprobe).
+  - `assetpage/`: Seite Assets (B-677, ersetzt Grafik, Sound und Quellen): Slots, Dateien, Szene, Inspektor mit Kandidaten und Zuordnen, Abspielleiste.
+  - `assets/`: Bausteine der Zuordnung (Logik, `useAssets` mit Neuladen bei `assets:changed`, Ausschnitt-Editor, Mini-Szene, Detailinfo).
+  - `graphics/`: Szenen-Bausteine der Grafik (`ScenesView`, Karten, Gebäude-Streifen, Hintergründe); die Seite Grafik ist entfallen.
+  - `sound/`: Sound-Bausteine (Szenen, Mischproben, Audio-Kern, Abspiel-Zuordnung); die Seite Sound ist entfallen.
+  - `sources/`: nur noch Dialoge (Recherche, Aufräumen), `useSources` und `sourcesLogic` für die Seite Assets.
   - `world/`: Welten Editor mit Chunk-Streifen, Live-Vorschau, Planung geplanter Chunks, Inselgrößen, Seed-Chunk umwandeln, „Im Spiel öffnen“.
   - `planner/`: Gebäude-Planer (Matrix der Hub-Stufen, Bearbeiten und Speichern; `PlannerPage`).
   - `stage/`: wiederverwendbare Phaser-Bühne mit `LivePreview`; Phaser kommt aus der Wurzel-`node_modules`.
   - `playback/`, `monarch/`, `enemies/`: Abspiel-Bausteine für Figuren und die Seiten Monarch und Gegner (`EnemiesPage`, nur lesend).
-  - `lib/`, `ui/`, `styles/`: `lib/prefs.ts` bindet die Prefs-Fabrik aus `@webkit/prefs` an das Präfix `k3c-studio.`, `ui/Splitter.tsx` und die eigenen Styles (ohne `theme.css`, das kommt aus `@webkit/theme.css`).
+  - `lib/`, `ui/`, `styles/`: `lib/prefs.ts` bindet die Prefs-Fabrik aus `@webkit/prefs` an das Präfix `k3c-studio.`, `lib/license.ts` die Lizenz-Marke; `ui/` ist leer (Splitter und Bausteine kommen aus `@webkit/atoms`), die eigenen Styles liegen in `styles/` (ohne `theme.css`, das kommt aus `@webkit/theme.css`).
 
 ## Flow
 1. `task k3c-studio:frontend` baut nach `tools/k3c-studio/frontend/dist/`; das Fenster (`main.go`, `server.go`) liefert es auf Loopback unter `/studio/` aus.

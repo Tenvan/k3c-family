@@ -3,6 +3,7 @@ package assets
 import (
 	"errors"
 	"fmt"
+	"log/slog"
 	"os"
 	"path"
 	"strings"
@@ -44,33 +45,30 @@ func VorratAdoptIf(root, id, stand string, now time.Time) (string, string, error
 	return rel, next, err
 }
 
-// vorratAdopt übernimmt; stand ≠ "" prüft beim Zuordnen den Stand des Registers (unter mu).
+// vorratAdopt übernimmt; stand ≠ "" verlangt diesen Stand des Registers: geprüft unter mu vor dem ersten Schreiben, mu
+// bleibt bis nach dem Anhängen gehalten, damit bei ErrStale weder Datei noch Credit-Zeile übrig bleiben.
 func vorratAdopt(root, id, stand string, now time.Time) (string, error) {
 	s, e, err := vorratAdoptTarget(root, id)
 	if err != nil {
 		return "", err
 	}
+	attach := appendChoice
+	if stand != "" {
+		mu.Lock()
+		defer mu.Unlock()
+		if err := checkStand(root, stand); err != nil {
+			return "", err
+		}
+		attach = appendChoiceLocked
+	}
 	if e.Public != "" && fileExists(publicPath(root, e.Public)) {
 		if stand == "" {
 			return e.Public, nil
 		}
-		return e.Public, appendChoice(root, s.Slot, e.Public, stand)
+		return e.Public, attach(root, s.Slot, e.Public, stand)
 	}
-	ext := strings.ToLower(path.Ext(e.File))
-	if ext == ".zip" || ext == ".7z" {
-		return "", ErrVorratPackage
-	}
-	if !contains(importExt[s.Kind], ext) {
-		return "", fmt.Errorf("%s: %s passt nicht zur Art %s", id, ext, s.Kind)
-	}
-	if err := checkAdoptSlot(root, s); err != nil {
-		return "", err
-	}
-	data, err := os.ReadFile(vorratPath(root, e.File))
+	data, ext, err := readAdoptFile(root, s, e)
 	if err != nil {
-		return "", err
-	}
-	if err := checkSignature(data, ext); err != nil {
 		return "", err
 	}
 	rel, err := storeImport(root, s.Kind, s.Title, ext, data)
@@ -81,15 +79,44 @@ func vorratAdopt(root, id, stand string, now time.Time) (string, error) {
 	if err := addCredit(root, s.Kind, rel, hit, now); err != nil {
 		return "", err
 	}
-	if err := appendChoice(root, s.Slot, rel, stand); err != nil {
+	if err := attach(root, s.Slot, rel, stand); err != nil {
 		return "", err
 	}
-	return rel, changeVorrat(root, func(v *VorratIndex) error {
+	markAdopted(root, id, rel)
+	return rel, nil
+}
+
+// readAdoptFile liest die Vorrat-Datei des Eintrags und prüft vor dem Schreiben Endung, Slot und Signatur.
+func readAdoptFile(root string, s Suggestion, e VorratEntry) ([]byte, string, error) {
+	ext := strings.ToLower(path.Ext(e.File))
+	if ext == ".zip" || ext == ".7z" {
+		return nil, "", ErrVorratPackage
+	}
+	if !contains(importExt[s.Kind], ext) {
+		return nil, "", fmt.Errorf("%s: %s passt nicht zur Art %s", s.ID, ext, s.Kind)
+	}
+	if err := checkAdoptSlot(root, s); err != nil {
+		return nil, "", err
+	}
+	data, err := os.ReadFile(vorratPath(root, e.File))
+	if err != nil {
+		return nil, "", err
+	}
+	return data, ext, checkSignature(data, ext)
+}
+
+// markAdopted vermerkt die übernommene Datei am Index-Eintrag. Die Zuordnung steht dann schon: scheitert nur der Index,
+// gilt die Übernahme trotzdem (eine erneute Übernahme legt dann eine zweite Kopie an, statt die erste zu erkennen).
+func markAdopted(root, id, rel string) {
+	err := changeVorrat(root, func(v *VorratIndex) error {
 		if x := v.find(id); x != nil {
 			x.Public = rel
 		}
 		return nil
 	})
+	if err != nil {
+		slog.Warn("❌ Vorrat-Index nicht aktualisiert", "id", id, "datei", rel, "fehler", err)
+	}
 }
 
 // vorratAdoptTarget sucht den Eintrag in Liste und Index; er muss geladen sein.
@@ -140,18 +167,31 @@ func checkAdoptSlot(root string, s Suggestion) error {
 // appendChoice hängt rel als letzte Präferenz an den Slot, wenn er sie noch nicht hat; Gruppen bekommen keine
 // Zuordnung. stand ≠ "" verlangt diesen Stand des Registers (sonst ErrStale, nichts geschrieben).
 func appendChoice(root, slotID, rel, stand string) error {
+	mu.Lock()
+	defer mu.Unlock()
+	return appendChoiceLocked(root, slotID, rel, stand)
+}
+
+// checkStand liefert ErrStale, wenn das Register nicht mehr den Stand stand hat; der Aufrufer hält mu.
+func checkStand(root, stand string) error {
+	cur, err := Stamp(root)
+	if err != nil {
+		return err
+	}
+	if cur != stand {
+		return ErrStale
+	}
+	return nil
+}
+
+// appendChoiceLocked ist appendChoice, der Aufrufer hält mu.
+func appendChoiceLocked(root, slotID, rel, stand string) error {
 	if strings.HasPrefix(slotID, groupPrefix) {
 		return nil
 	}
-	mu.Lock()
-	defer mu.Unlock()
 	if stand != "" {
-		cur, err := Stamp(root)
-		if err != nil {
+		if err := checkStand(root, stand); err != nil {
 			return err
-		}
-		if cur != stand {
-			return ErrStale
 		}
 	}
 	reg, err := Load(root)

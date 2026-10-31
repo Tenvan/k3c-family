@@ -1,5 +1,6 @@
 import type { LevelLayout } from '@game/model/types';
 import type { ChatApi } from './chatTypes';
+import type { CandidateApi } from './candidateTypes';
 import type { SourceApi } from './sourceTypes';
 import type { HubPlanView, HubSaveResult, HubStand } from './hubTypes';
 import type { SuggestionApi } from './suggestionTypes';
@@ -281,7 +282,7 @@ export interface TicketBackend {
 }
 
 /** Bindings des Asset-Studios (Wails) bzw. ihr Mock im Browser */
-export interface Backend extends WorldDraftApi, ChatApi, TicketBackend, SuggestionApi, SourceApi {
+export interface Backend extends WorldDraftApi, ChatApi, TicketBackend, SuggestionApi, SourceApi, CandidateApi {
   mock: boolean;
   assetsList(): Promise<AssetsView>;
   assetsSet(id: string, wahl: AssetChoice[], stand: string): Promise<AssetSaved>;

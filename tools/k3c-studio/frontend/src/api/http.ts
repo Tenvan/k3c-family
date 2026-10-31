@@ -1,6 +1,7 @@
 import { chatStreamHttp } from './chatHttp';
 import type { ChatDetail, ChatOptionsView, ChatSummary } from './chatTypes';
 import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, GameServersView, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, TicketCreated, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
+import type { AssetCandidatesView } from './candidateTypes';
 import type { AssetSlotDetails } from './slotTypes';
 import type { NetworkMode, NetworkView, SourceAddView, SourceCleanupView, SourceProgress, SourcesView } from './sourceTypes';
 import type { AssetSuggestionsView } from './suggestionTypes';
@@ -110,6 +111,8 @@ export function httpBackend(): Backend {
     assetSuggestions: (slotId: string) => rpc<AssetSuggestionsView>('AssetSuggestions', slotId),
     assetSuggestionAdopt: (slotId: string, id: string, stand: string) => rpc<string>('AssetSuggestionAdopt', slotId, id, stand),
     assetSuggestionDrop: (slotId: string, id: string) => rpc<void>('AssetSuggestionDrop', slotId, id),
+    assetCandidates: (slotId: string, query: string, limit: number) => rpc<AssetCandidatesView>('AssetCandidates', slotId, query, limit),
+    assetCandidateAssign: (slotId: string, id: string, stand: string, confirmedBytes: number) => rpc<AssetSaved>('AssetCandidateAssign', slotId, id, stand, confirmedBytes),
     network: () => rpc<NetworkView>('SourceNetwork'),
     setNetwork: (mode: NetworkMode) => rpc<NetworkView>('SourceSetNetwork', mode),
     sources: () => rpc<SourcesView>('Sources'),
