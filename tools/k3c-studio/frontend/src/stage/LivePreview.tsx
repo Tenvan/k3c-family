@@ -10,7 +10,7 @@ import { stagePx } from './hudBar';
 import { BuildingChips } from './BuildingChips';
 import { BuildingInspector, SelectionCard } from './BuildingInspector';
 import { backgroundToggles, buildingToggles, type BuildingToggle, focusXs, hubLevelChoices, kindLabel, pickKeys, previewArgsOf, siteKey, worldOf, type PlanSource, type RowFocus } from './stageLogic';
-import { MAX_PROGRESS, TIMES_OF_DAY, brightnessOf, simTime, type TimeOfDayId } from './timeOfDay';
+import { MAX_PROGRESS, TIMES_OF_DAY, simTime, type TimeOfDayId } from './timeOfDay';
 
 const NONE: ReadonlySet<string> = new Set();
 type Looks = Readonly<Record<string, SiteLook>>;
@@ -273,7 +273,7 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
   const { all, view, off, looks, sel, setMany, setLooks, setSel } = usePreviewWorld(seed, biome, hubLevel, time, plan, planer?.candidate ?? '');
   const host = useRef<HTMLDivElement>(null);
   const world = useMemo(() => worldOf(view), [view]);
-  const look = useMemo<Look>(() => ({ brightness: world ? brightnessOf(world.cycle) : 1, hiddenLayers: hidden }), [world, hidden]);
+  const look = useMemo<Look>(() => ({ brightness: 1, hiddenLayers: hidden }), [hidden]); // die Nacht dunkelt die Lichtkarte der LightView ab, die Kamera nicht zusätzlich
   const sites = all?.state?.sites;
   const toggles = useMemo(() => buildingToggles(sites ?? []), [sites]);
   const { select, onSite, marks, jump, chosen, shown } = useSelection(planer, world, toggles, off, sel, setSel, { inspector: treeHost !== undefined, onPickSite });
