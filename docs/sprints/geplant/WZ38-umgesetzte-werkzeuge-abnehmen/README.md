@@ -3,16 +3,16 @@
 - **Status:** geplant
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
-- **Tickets:** B-663, B-664, B-665, B-666, B-667, B-670, B-671, B-672, B-673, B-580, B-619
+- **Reife:** bereit
+- **Tickets:** B-663, B-664, B-665, B-666, B-667, B-670, B-671, B-672, B-580, B-619
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-10-31, Ralf im Chat (Revision 1)
+- **Revision:** 2
+- **Freigabe:** 2026-10-31, Ralf im Chat (Revision 2: B-673 entfernt)
 
 ## Ausgangslage
 
-Elf Tickets sind umgesetzt, stehen aber ohne Sprint auf `offen`/`eingeplant`, weil 🧑 die Beobachtung noch nicht gemacht hat: Welten-Editor (B-663 bis B-667), Studio-Seiten (B-670 bis B-673), Git-Seite (B-580) und Tempo von `check:diff` (B-619, Norton-Ausnahme und Workbench-Neustart offen).
+Zehn Tickets sind umgesetzt, stehen aber ohne Sprint auf `offen`/`eingeplant`, weil 🧑 die Beobachtung noch nicht gemacht hat: Welten-Editor (B-663 bis B-667), Studio-Seiten (B-670 bis B-672), Git-Seite (B-580) und Tempo von `check:diff` (B-619, Norton-Ausnahme und Workbench-Neustart offen). B-673 (Studio-Quellen) ist bereits erledigt und nicht Teil dieses Sprints (Revision 2).
 
 ## Ziel
 
@@ -24,7 +24,7 @@ Elf Tickets sind umgesetzt, stehen aber ohne Sprint auf `offen`/`eingeplant`, we
 
 ## Anforderungen
 
-Kriterien der Tickets B-663 bis B-667, B-670 bis B-673, B-580, B-619.
+Kriterien der Tickets B-663 bis B-667, B-670 bis B-672, B-580, B-619.
 
 ## Nicht-Ziele
 
@@ -45,7 +45,7 @@ Abnahme findet einen Fehler → Ticket bleibt offen, neues Ticket.
 ## Akzeptanzkriterien
 
 - **AC-01** Welten-Editor erfüllt `B-663/AC-01` bis `B-667/AC-05`.
-- **AC-02** Studio-Seiten Planer, Monarch, Gegner, Quellen erfüllen `B-670` bis `B-673`.
+- **AC-02** Studio-Seiten Planer, Monarch, Gegner erfüllen `B-670` bis `B-672`.
 - **AC-03** Git-Seite erfüllt `B-580/AC-01` bis `AC-05`.
 - **AC-04** `check:diff` ist wie in `B-619` beschrieben schnell (Norton-Ausnahme gesetzt, Workbench neu gestartet).
 - **AC-05** 🧑 hat AC-01 bis AC-04 abgenommen.

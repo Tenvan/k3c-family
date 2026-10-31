@@ -30,7 +30,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
 | WZ37 | DEV | WZG | Welt-Overrides im Welten-Editor und im Studio-Chat | – | Entwurf | `geplant/WZ37-overrides-editor-chat/` |
-| WZ38 | DEV | WZG | Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff | – | Entwurf | `geplant/WZ38-umgesetzte-werkzeuge-abnehmen/` |
+| WZ38 | DEV | WZG | Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff | – | bereit | `geplant/WZ38-umgesetzte-werkzeuge-abnehmen/` |
 | BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | Entwurf | `geplant/BD10-schreibende-endpunkte-schutz/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | Entwurf | `geplant/W15-fackeln-spielobjekt/` |
