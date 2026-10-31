@@ -60,9 +60,12 @@ keine
 | KB5.2 | `KB5.2-status-snapshot.md` | Umsetzung | autonom | fertig |
 | KB5.3 | `KB5.3-status-darstellung.md` | Umsetzung | autonom | fertig |
 | KB5.4 | `KB5.4-studio-ziel-und-status.md` | Umsetzung | autonom | fertig |
-| KB5.5 | `KB5.5-review-kb5.md` | Review | autonom | offen |
+| KB5.5 | `KB5.5-review-kb5.md` | Review | autonom | fertig |
 | KB5.6 | `KB5.6-abnahme-kb5.md` | Workshop | Mensch | offen |
 
 ## Abnahme
 
-–
+- Review KB5.5 (Claude, 2026-10-31): AC-01 bis AC-03 mit Tests belegt (Go: `skills_cast_event_test.go`, `status_snapshot_test.go`; Vitest: `skillCasts`, `statusLooks`, Studio `skillTarget`).
+- Prüfsatz: Client-Typecheck und Vitest, Studio-Vitest, Go engine/cmd und golangci-lint grün; rot nur fremd (Studio-Chat-Lint aus B-679, `tools/cleanup` wegen Git-sh); `check:race` lokal übersprungen.
+- Protokoll v11 (v10 `skillCast`, v11 `auras` und Status-Felder), Golden unverändert.
+- Offen bei 🧑 (KB5.6): B-674 AC-04, B-675 AC-04 mit zwei Spielern, B-676 AC-03 im Studio.

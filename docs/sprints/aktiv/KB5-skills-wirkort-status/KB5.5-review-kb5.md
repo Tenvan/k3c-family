@@ -1,6 +1,6 @@
 # KB5.5 · Review KB5
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -34,7 +34,7 @@ Sessions KB5.1 bis KB5.4; Protokolländerungen (Wirk-Ereignis, Status im Snapsho
 
 ## Fertig, wenn
 
-- [ ] Prüfsatz grün, jedes Kriterium mit Nachweis.
+- [x] Prüfsatz grün, jedes Kriterium mit Nachweis.
 
 ## Prüfen
 
@@ -48,5 +48,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- `task check`: Typecheck und Vitest grün (123 Dateien, 2905 Tests); Lint rot nur durch `tools/k3c-studio/frontend/src/api/mockChat.ts` und `api/http.ts` (max-lines-per-function, aus B-679 von worker-2, nicht KB5). Studio-Vitest komplett grün (86 Dateien), Studio-`tsc` grün.
+- `task check:go`: engine/cmd grün, `golangci-lint` 0 Befunde; rot nur `tools/cleanup` (Git-sh im Lauf defekt, ohne Bezug zu KB5). `task check:race` übersprungen (lokal ohne C-Compiler, läuft in der CI).
+- Diff gelesen: Determinismus ok (`castPlace` und `AurasOf` lesen nur, kein rng; Golden unverändert), zwei Spieler je Ereignis bzw. je Spieler getrennt (Go-Tests mit zwei Spielern), Protokoll v10/v11 dokumentiert mit Beispielen. Keine schweren Befunde, keine Korrekturen nötig.
+- Kriterien: AC-01 (B-674 AC-01–03) KB5.1, AC-02 (B-675 AC-01–03) KB5.2/KB5.3, AC-03 (B-676 AC-01–02) KB5.4, je mit Test-Nachweis. Offen: manuelle Abnahmen B-674 AC-04, B-675 AC-04, B-676 AC-03 (🧑, KB5.6).
