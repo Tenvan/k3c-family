@@ -4,13 +4,13 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** KRT
 - **Erstellt:** 2026-10-25
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-31, Ralf im Chat (Antwort an Claude delegiert)
 
 ## Ausgangslage
 
@@ -55,8 +55,10 @@ nicht relevant
 
 ## Offene Fragen
 
-- Passen 3 Schritte je Hub-Stufe und das Material-Tor? Entscheidet 🧑.
+keine. Entschieden: 3 Schritte je Hub-Stufe und das Material-Tor (Wartegrund „Material der nächsten Insel“) bleiben wie vorentschieden. Begründung: GEB17 ist umgesetzt und von Ralf am Gerät abgenommen (AC-06, 2026-10-31); die Kosten werden im Balancing (BAL9, KB6, BR2) nachgezogen, nicht hier.
 
 ## Notizen
 
 Herkunft: GEB17.2, Sprint GEB17 (2026-10-25).
+
+2026-10-31: Beantwortet im Auftrag von Ralf (Chat), Entscheidung Claude: Vorentscheidung bestätigt. `docs/rules/stufen.md` spiegelt sie seit GEB17.3. Ralf kann die Entscheidung ändern.

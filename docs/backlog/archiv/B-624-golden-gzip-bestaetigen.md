@@ -4,13 +4,13 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** KRT
 - **Erstellt:** 2026-10-25
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-31, Ralf im Chat (Antwort an Claude delegiert)
 
 ## Ausgangslage
 
@@ -53,8 +53,10 @@ Ohne textconv-Konfiguration zeigt git „Binary files differ“; `task go:golden
 
 ## Offene Fragen
 
-- Passt gzip mit textconv? Entscheidet 🧑.
+keine. Entschieden: gzip mit `textconv` passt und ist seit GD1 umgesetzt (`*.json.gz diff=gzip`, `task go:golden-setup`, `docs/arbeitsweise.md` › Golden). Prüfschärfe unverändert, Inhalt byte-gleich.
 
 ## Notizen
 
 Herkunft: GD1.1, Sprint GD1 (2026-10-25).
+
+2026-10-31: Beantwortet im Auftrag von Ralf (Chat), Entscheidung Claude: Vorentscheidung bestätigt, B-620 damit erledigt. Ralf kann die Entscheidung ändern.

@@ -81,13 +81,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-616](B-616-lauf-id-nach-neustart.md) | DEV | Problem | niedrig | eingeplant | WZ35 | Lauf-IDs der Balancing-Seite bleiben über einen Neustart der Workbench eindeutig |
 | [B-619](B-619-check-diff-cache-und-short.md) | INF | Problem | hoch | eingeplant | WZ38 | check:diff nutzt den Go-Testcache und lässt lange Tests aus |
 | [B-629](B-629-buildall-web-exe.md) | INF | Problem | hoch | eingeplant | WZ34 | task buildall baut die Web-EXEs von Studio und Workbench nicht mit |
-| [B-620](B-620-golden-grenze-20-mb.md) | INF | Frage | mittel | offen | – | Golden-Grenze 20 MB nach dem dichteren Wald bestätigen |
 | [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | eingeplant | WZ34 | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
 | [B-622](B-622-fackeln-als-spielobjekt.md) | SIM | Idee | niedrig | eingeplant | W15 | Fackeln gibt es als Spielobjekt mit Licht in der Nacht |
-| [B-623](B-623-hub-stufenfolge-bestaetigen.md) | REG | Frage | mittel | offen | – | Stufenfolge des Hubs (3 Schritte je Hub-Stufe, Material-Tor) bestätigen |
-| [B-624](B-624-golden-gzip-bestaetigen.md) | INF | Frage | mittel | offen | – | Golden-Daten als gzip mit lesbaren Diffs bestätigen |
-| [B-626](B-626-rg1-werte-entscheiden.md) | REG | Frage | mittel | offen | – | Wertvorschläge aus RG1.1 und BR2.1 entscheiden |
-| [B-627](B-627-rg2-regelklaerungen.md) | REG | Frage | mittel | offen | – | Regelklärungen RG2.1 (Handwerker, Verlust-Korridor, Gold-Schwelle) entscheiden |
 | [B-630](B-630-quellen-werden-nicht-uebernommen.md) | DEV | Problem | mittel | offen | – | Quellen werden nicht übernommen |
 | [B-635](B-635-muenzskala-2-bis-30.md) | REG | Idee | hoch | eingeplant | BS2 | Münzpreise liegen auf einer kleinen Skala von 2 bis 30 Gold |
 | [B-636](B-636-farm-heisst-baumschule.md) | SIM | Idee | hoch | eingeplant | BS4 | Die Farm heißt Baumschule und steht auf gerodeten Waldbauplätzen |
@@ -648,3 +643,7 @@ Zeile in diesen Abschnitt.
 | [B-568](archiv/B-568-plantage-pappel-niedrig.md) | DEV | Idee | mittel | erledigt | GEB13 | Plantage bekommt eine eigene niedrige Pappel vor der Farm |
 | [B-642](archiv/B-642-meilenstein-lauf-ganze-insel.md) | DEV | Idee | hoch | erledigt | BS11 | Der Balancing-Tester spielt nur eine Stufe, der Meilenstein-Lauf braucht die ganze Insel |
 | [B-662](archiv/B-662-balancing-berichte-auftrag-sammelaktionen.md) | DEV | Idee | hoch | erledigt | WZ32 | Die Workbench liefert Auftrag und Label je Bericht und verwaltet Berichte gesammelt |
+| [B-624](archiv/B-624-golden-gzip-bestaetigen.md) | INF | Frage | mittel | erledigt | – | Golden-Daten als gzip mit lesbaren Diffs bestätigen |
+| [B-623](archiv/B-623-hub-stufenfolge-bestaetigen.md) | REG | Frage | mittel | erledigt | – | Stufenfolge des Hubs (3 Schritte je Hub-Stufe, Material-Tor) bestätigen |
+| [B-626](archiv/B-626-rg1-werte-entscheiden.md) | REG | Frage | mittel | erledigt | – | Wertvorschläge aus RG1.1 und BR2.1 entscheiden |
+| [B-627](archiv/B-627-rg2-regelklaerungen.md) | REG | Frage | mittel | erledigt | – | Regelklärungen RG2.1 (Handwerker, Verlust-Korridor, Gold-Schwelle) entscheiden |

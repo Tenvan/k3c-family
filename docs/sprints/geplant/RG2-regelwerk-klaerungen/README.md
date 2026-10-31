@@ -52,7 +52,7 @@ Frage bleibt offen → Ticket bleibt offen, Sprint nimmt es heraus.
 
 ## Offene Fragen
 
-- B-295, B-185, B-203: entscheidet 🧑 im Workshop.
+B-295, B-185, B-203 sind in B-627 › Notizen entschieden (2026-10-31, Claude im Auftrag von Ralf): Handwerker nur in der Werkstatt, Verlust-Korridor höchstens 25 % der Kämpfer, Kennzahl „erste Gold-Schwelle“ entfällt. RG2.1 (Workshop) entfällt damit, RG2.2 setzt die Doku um.
 
 ## Sessions
 
