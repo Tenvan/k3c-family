@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** GEB17
 - **Projekt:** GEB
 - **Erstellt:** 2026-10-24

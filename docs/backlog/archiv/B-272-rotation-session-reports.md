@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** ST1
 - **Projekt:** LST
 - **Erstellt:** 2026-10-04

@@ -24,10 +24,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-155](B-155-balancing-runde-wirtschaft.md) | REG | Idee | niedrig | eingeplant | BR1 | Die Wirtschaft ist in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
 | [B-156](B-156-balancing-runde-kampf-bosse.md) | REG | Idee | niedrig | eingeplant | BR2 | Kampf, Gegner und Bosse sind in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
 | [B-160](B-160-abgleich-spielmetrik-simulator.md) | REG | Idee | mittel | eingeplant | BAL4 | Spielmetrik echter Abende und Simulatorwerte sind abgeglichen |
-| [B-272](B-272-rotation-session-reports.md) | SRV | Schuld | mittel | eingeplant | ST1 | Die Rotation in reports/ erfasst auch die Spielmetrik-Reports |
 | [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | eingeplant | RG2 | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
 | [B-186](B-186-autospeichern-takt.md) | SRV | Idee | mittel | eingeplant | ST1 | Der Server speichert alle 60 s und bei Tagesanbruch, das HUD zeigt „gesichert“ |
-| [B-187](B-187-speichern-windows-rename.md) | SRV | Problem | mittel | eingeplant | ST1 | Speichern übersteht unter Windows eine kurz gesperrte Zieldatei |
 | [B-191](B-191-debug-overlay-links-unten.md) | CLI | Problem | mittel | eingeplant | U5 | Debug-Overlay und Aktionsliste verdecken das HUD nicht |
 | [B-194](B-194-splitscreen-ruckelt-xbox.md) | CLI | Problem | hoch | eingeplant | PF1 | Der Split-Screen läuft auf der Xbox flüssig |
 | [B-195](B-195-debug-overlay-xbox.md) | PLAT | Problem | mittel | eingeplant | PL1 | Das Debug-Overlay lässt sich auf der Xbox öffnen |
@@ -35,12 +33,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-159](archiv/B-159-replay-repro-format.md) | SIM | Idee | mittel | erledigt | BAL1 | Ein Lauf ist als Datei aus Seed und Eingaben wiederholbar |
 | [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | eingeplant | RG2 | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
 | [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | eingeplant | W11 | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
-| [B-208](B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | eingeplant | W11 | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
 | [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | eingeplant | RG1 | Burg hält Nacht 1–5 nur in 47 % der Seeds, Ziel 75–90 % |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | eingeplant | RG2 | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
 | [B-287](B-287-hub-ausbau-beutel-maximum.md) | REG | Problem | mittel | eingeplant | RG1 | Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar |
 | [B-289](B-289-aggressionspool-mit-adern.md) | REG | Problem | mittel | eingeplant | RG1 | Der Aggressionspool steigt mit Adern nicht zu schnell |
-| [B-293](B-293-spiel-im-menue-verlassen.md) | CLI | Idee | hoch | eingeplant | S8 | Das Spielmenü hat neben „Weiter“ einen Eintrag „Spiel verlassen“ |
 | [B-294](B-294-hinweis-glyph-muenze-nacht.md) | CLI | Frage | mittel | eingeplant | S8 | Münze und „Nacht naht“ zeigen in der geführten ersten Nacht keine Glyph |
 | [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | eingeplant | RG2 | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
 | [B-314](B-314-controller-pruefungen-zurueckgestellt.md) | PLAT | Schuld | niedrig | eingeplant | HW1 | Alle Controller-Prüfungen sind gesammelt nachgeholt |
@@ -48,20 +44,11 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-317](B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | eingeplant | U5 | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
 | [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
 | [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | HW1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
-| [B-341](B-341-header-ursache-live-messen.md) | DEV | Problem | mittel | eingeplant | WZ2 | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
 | [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | eingeplant | RG1 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
 | [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
 | [B-352](B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | offen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
-| [B-360](B-360-plan-set-fehlendes-feld.md) | DEV | Problem | niedrig | eingeplant | WZ2 | plan_set lehnt ein Feld ab, das in der Datei fehlt, statt es still zu übergehen |
 | [B-363](B-363-planung-flags-bearbeiten.md) | DEV | Idee | mittel | eingeplant | WZ2 | Die Planungsseite ändert Prio, Umgebung, Agent und Projekt direkt im Detail |
-| [B-366](B-366-fahrplan-spalte-projekt.md) | DEV | Schuld | mittel | eingeplant | WZ2 | k3c-workbench füllt im Fahrplan die Spalte Projekt und ordnet nach Rang |
-| [B-367](B-367-doku-nachzug-projekte.md) | INF | Schuld | niedrig | eingeplant | WZ2 | Begriffe aus den alten Bahnen und Spuren sind nach PJ3 ersetzt und neue Projekt-Begriffe im Glossar |
 | [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | eingeplant | GL1 | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
-| [B-372](B-372-check-run-timeout-go.md) | SRV | Problem | mittel | eingeplant | WZ2 | check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab |
-| [B-377](B-377-beispiel-rueckmeldung-servertest.md) | SRV | Schuld | niedrig | eingeplant | BD2 | Ein Server-Test prüft das Beispiel der Rückmeldungs-Ereignisse gegen die Simulation |
-| [B-378](B-378-castfailed-einmal-je-druck.md) | SIM | Problem | mittel | eingeplant | BD2 | Eine gehaltene Skill-Taste ohne Ziel meldet castFailed einmal je Tastendruck |
-| [B-382](B-382-lobby-neuversuch-nur-spielen.md) | CLI | Problem | niedrig | eingeplant | BD2 | Ein gewählter Spielstand startet nie leer neu |
-| [B-387](B-387-ticketnummern-parallele-worktrees.md) | DEV | Problem | mittel | eingeplant | WZ2 | Ticket-Nummern bleiben zwischen parallelen Worktrees eindeutig |
 | [B-394](B-394-xbox-overlay-gesten-abnahme.md) | PLAT | Frage | niedrig | eingeplant | HW1 | Overlay-Gesten (RB, LB + RB) sind an der Xbox abgenommen (B-195/AC-02) |
 | [B-400](B-400-planung-splitter-merken.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Die Planungsseite trennt Backlog und Details mit einem Splitter, dessen Stellung gemerkt wird |
 | [B-401](B-401-planung-filter-getrennt.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Der Backlog-Filter wirkt nur auf den Backlog, der Projekt-Filter nur auf die Projekte |
@@ -74,23 +61,17 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | eingeplant | BD4 | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
 | [B-422](B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | eingeplant | W11 | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
 | [B-435](B-435-gebaeude-grafik-per-prompt.md) | DEV | Idee | mittel | eingeplant | GEB1 | Gebäude und Strukturen entstehen im Asset-Manager aus Beschreibung und Prompt |
-| [B-438](B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | eingeplant | GEB6 | Werkstatt und Bäume aus tools/buildings erscheinen im Spiel |
 | [B-454](B-454-baeume-hoeher-dichter-hoehle-wurzeln.md) | DEV | Problem | hoch | eingeplant | GEB10 | Bäume höher und dichter, Höhle mit eigener Unterwelt-Flora (Wurzeln) |
-| [B-455](B-455-truhe-geschlossen.md) | DEV | Idee | mittel | eingeplant | GEB10 | Truhe gibt es auch geschlossen |
 | [B-456](B-456-fahne-spielerfarbe-wimpel.md) | CLI | Idee | mittel | eingeplant | GEB10 | Markierungsfahne als Wimpel in Spielerfarbe |
 | [B-457](B-457-geb6-abnahme-splitscreen-ausgang-geschmack.md) | CLI | Frage | mittel | eingeplant | GEB10 | GEB6: Split-Screen, Ausgang-Beschriftung und Geschmacksfragen später prüfen |
 | [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | eingeplant | GEB11 | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
 | [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
 | [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | eingeplant | BD5 | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
-| [B-568](B-568-plantage-pappel-niedrig.md) | DEV | Idee | mittel | eingeplant | GEB13 | Plantage bekommt eine eigene niedrige Pappel vor der Farm |
 | [B-570](B-570-camp-stufen-look.md) | DEV | Idee | mittel | eingeplant | GEB13 | Das Camp bekommt einen Stufen-Look statt der Grundform |
 | [B-571](B-571-heilplatz-stufen-deutlicher.md) | DEV | Idee | mittel | eingeplant | GEB13 | Heilplatz-Stufen sind deutlicher sichtbar (Zelt, Brunnen) |
 | [B-579](B-579-wellenabstand-adern-korridor.md) | REG | Problem | mittel | offen | – | Wellenabstand unter Tage mit besetzten Adern liegt über dem Korridor 4–12 Minuten |
 | [B-580](B-580-workbench-git-seite.md) | DEV | Idee | mittel | offen | – | Die Workbench hat eine Git-Seite für dieses Repo |
 | [B-581](B-581-offenen-raum-schliessen.md) | CLI | Idee | mittel | eingeplant | BD9 | Ein offener Raum lässt sich in der Lobby über Entfernen schließen |
-| [B-590](B-590-wachstumsreihe-unterscheidbar.md) | DEV | Problem | hoch | eingeplant | GEB17 | Die Wachstumsreihe der Burg zeigt echte Unterschiede statt derselben Burg in Farben |
-| [B-591](B-591-burg-ausbau-angebot-fehlt.md) | CLI | Problem | hoch | eingeplant | GEB17 | Vor der Burg erscheint kein Ausbau-Angebot, wenn der Spieler davor steht |
-| [B-592](B-592-hub-ausbaustufen-je-inselstufe.md) | REG | Idee | hoch | eingeplant | GEB17 | Der Hub hat zwei bis drei Ausbaustufen je Inselstufe, weiter mit dem Material der nächsten Inselstufe |
 | [B-603](B-603-dev-aktionen-boss-event.md) | SRV | Idee | hoch | eingeplant | KB4 | Dev-Aktionen lösen Boss, Phasenwechsel und Events (Vollmond, Blutmond, Händler) sofort aus |
 | [B-604](B-604-welt-anzeige-pausenmenue-lobby.md) | CLI | Problem | mittel | eingeplant | BD9 | Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby |
 | [B-605](B-605-schutzplatz-stabil-bei-truppenwechsel.md) | SIM | Schuld | niedrig | offen | – | Schutzplatz bleibt stabil, wenn Truppen sterben oder hinzukommen |
@@ -114,7 +95,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-638](B-638-boot-ressourcen-balancing.md) | DEV | Idee | hoch | eingeplant | BS3 | Das Balancing misst die Ressourcen für das Boot |
 | [B-640](B-640-balancing-delta-runden.md) | DEV | Idee | hoch | eingeplant | BS7 | Balancing nach Mechanik-Änderungen läuft als Delta-Runde gegen eine Baseline |
 | [B-641](B-641-grafik-hafen-schiff.md) | DEV | Idee | hoch | eingeplant | BS10 | Hafen und Schiff haben eigene Grafiken je Bauabschnitt |
-| [B-642](B-642-meilenstein-lauf-ganze-insel.md) | DEV | Idee | hoch | eingeplant | BS11 | Der Balancing-Tester spielt nur eine Stufe, der Meilenstein-Lauf braucht die ganze Insel |
 | [B-650](B-650-boss-hp-je-spieler-eigenes-feld.md) | SIM | Idee | hoch | eingeplant | BS3 | Boss-HP je Zusatzspieler bekommt ein eigenes Feld, getrennt von der Wellengröße |
 | [B-652](B-652-mauern-tuerme-verteilt-tor-ist-aeusserste-mauer.md) | SIM | Idee | hoch | eingeplant | BS12 | Mauern und Türme stehen verteilt in jedem Chunk, das Tor ist die äußerste gebaute Mauer |
 | [B-653](B-653-baustellen-schilder-bauoptionen-holzzaun.md) | CLI | Problem | hoch | eingeplant | BS13 | Bauschilder an Bäumen und Felsen nur nach Markierung, keine Bauoptionen für gesperrte Gebäude, Holzmauer als Zaun |
@@ -125,7 +105,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-659](B-659-balancing-seite-feste-flaeche.md) | DEV | Idee | mittel | eingeplant | WZ32 | Die Balancing-Seite füllt die Fläche, nur Liste und Detail scrollen |
 | [B-660](B-660-balancing-liste-und-detail.md) | DEV | Idee | hoch | eingeplant | WZ32 | Läufe und Berichte stehen in einer Liste mit Filter und Mehrfachauswahl, der Bericht in Reitern |
 | [B-661](B-661-balancing-lauf-editor-varianten.md) | DEV | Idee | hoch | eingeplant | WZ32 | Der Lauf-Editor setzt Varianten als Tabelle mit Basiswert und Daten-Browser |
-| [B-662](B-662-balancing-berichte-auftrag-sammelaktionen.md) | DEV | Idee | hoch | eingeplant | WZ32 | Die Workbench liefert Auftrag und Label je Bericht und verwaltet Berichte gesammelt |
 | [B-663](B-663-welten-editor-responsive.md) | DEV | Problem | mittel | eingeplant | – | Der Welten Editor bricht nach der Breite seiner Seite um und zeigt keine waagrechte Scrollleiste |
 | [B-664](B-664-welten-editor-zwei-modi.md) | DEV | Idee | mittel | eingeplant | – | Der Welten Editor trennt Welt-Struktur und Stufe bearbeiten und speichert an einer Stelle |
 | [B-665](B-665-welten-editor-buehne-inspektor.md) | DEV | Idee | mittel | eingeplant | – | Im Modus Stufe bearbeiten stehen eine große Live-Vorschau, eine schmale Chunk-Vorschau und ein Inspektor statt vier Steuerzeilen |
@@ -648,3 +627,24 @@ Zeile in diesen Abschnitt.
 | [B-618](archiv/B-618-hintergruende-detail-varianten.md) | DEV | Problem | hoch | erledigt | GEB18 | Die Hintergründe der fünf Stufen sind detailreich (vierfache Auflösung) und wechseln je Seed zwischen fünf Varianten |
 | [B-472](archiv/B-472-nacht-dunkler-fackeln-lagerfeuer-licht.md) | CLI | Idee | niedrig | erledigt | W13 | Nacht und Morgengrauen sind dunkler, Fackeln und Lagerfeuer machen Licht |
 | [B-576](archiv/B-576-sound-skill-je-klasse.md) | CLI | Idee | niedrig | erledigt | SO8 | Jede Klasse hat einen eigenen Skill-Sound |
+| [B-590](archiv/B-590-wachstumsreihe-unterscheidbar.md) | DEV | Problem | hoch | erledigt | GEB17 | Die Wachstumsreihe der Burg zeigt echte Unterschiede statt derselben Burg in Farben |
+| [B-591](archiv/B-591-burg-ausbau-angebot-fehlt.md) | CLI | Problem | hoch | erledigt | GEB17 | Vor der Burg erscheint kein Ausbau-Angebot, wenn der Spieler davor steht |
+| [B-592](archiv/B-592-hub-ausbaustufen-je-inselstufe.md) | REG | Idee | hoch | erledigt | GEB17 | Der Hub hat zwei bis drei Ausbaustufen je Inselstufe, weiter mit dem Material der nächsten Inselstufe |
+| [B-187](archiv/B-187-speichern-windows-rename.md) | SRV | Problem | mittel | erledigt | ST1 | Speichern übersteht unter Windows eine kurz gesperrte Zieldatei |
+| [B-272](archiv/B-272-rotation-session-reports.md) | SRV | Schuld | mittel | erledigt | ST1 | Die Rotation in reports/ erfasst auch die Spielmetrik-Reports |
+| [B-208](archiv/B-208-protokoll-bauplaetze.md) | SRV | Idee | mittel | erledigt | W11 | Das Protokoll trägt die Bauplätze des Layouts sowie Platz- und Hub-Stufe zum Client |
+| [B-293](archiv/B-293-spiel-im-menue-verlassen.md) | CLI | Idee | hoch | erledigt | S8 | Das Spielmenü hat neben „Weiter“ einen Eintrag „Spiel verlassen“ |
+| [B-341](archiv/B-341-header-ursache-live-messen.md) | DEV | Problem | mittel | erledigt | WZ2 | Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen |
+| [B-360](archiv/B-360-plan-set-fehlendes-feld.md) | DEV | Problem | niedrig | erledigt | WZ2 | plan_set lehnt ein Feld ab, das in der Datei fehlt, statt es still zu übergehen |
+| [B-366](archiv/B-366-fahrplan-spalte-projekt.md) | DEV | Schuld | mittel | erledigt | WZ2 | k3c-workbench füllt im Fahrplan die Spalte Projekt und ordnet nach Rang |
+| [B-367](archiv/B-367-doku-nachzug-projekte.md) | INF | Schuld | niedrig | erledigt | WZ2 | Begriffe aus den alten Bahnen und Spuren sind nach PJ3 ersetzt und neue Projekt-Begriffe im Glossar |
+| [B-372](archiv/B-372-check-run-timeout-go.md) | SRV | Problem | mittel | erledigt | WZ2 | check_run go:test und task:check:go brechen im MCP-Aufruf mit Timeout ab |
+| [B-387](archiv/B-387-ticketnummern-parallele-worktrees.md) | DEV | Problem | mittel | erledigt | WZ2 | Ticket-Nummern bleiben zwischen parallelen Worktrees eindeutig |
+| [B-377](archiv/B-377-beispiel-rueckmeldung-servertest.md) | SRV | Schuld | niedrig | erledigt | BD2 | Ein Server-Test prüft das Beispiel der Rückmeldungs-Ereignisse gegen die Simulation |
+| [B-378](archiv/B-378-castfailed-einmal-je-druck.md) | SIM | Problem | mittel | erledigt | BD2 | Eine gehaltene Skill-Taste ohne Ziel meldet castFailed einmal je Tastendruck |
+| [B-382](archiv/B-382-lobby-neuversuch-nur-spielen.md) | CLI | Problem | niedrig | erledigt | BD2 | Ein gewählter Spielstand startet nie leer neu |
+| [B-438](archiv/B-438-werkstatt-baeume-ins-spiel.md) | CLI | Idee | mittel | erledigt | GEB6 | Werkstatt und Bäume aus tools/buildings erscheinen im Spiel |
+| [B-455](archiv/B-455-truhe-geschlossen.md) | DEV | Idee | mittel | erledigt | GEB10 | Truhe gibt es auch geschlossen |
+| [B-568](archiv/B-568-plantage-pappel-niedrig.md) | DEV | Idee | mittel | erledigt | GEB13 | Plantage bekommt eine eigene niedrige Pappel vor der Farm |
+| [B-642](archiv/B-642-meilenstein-lauf-ganze-insel.md) | DEV | Idee | hoch | erledigt | BS11 | Der Balancing-Tester spielt nur eine Stufe, der Meilenstein-Lauf braucht die ganze Insel |
+| [B-662](archiv/B-662-balancing-berichte-auftrag-sammelaktionen.md) | DEV | Idee | hoch | erledigt | WZ32 | Die Workbench liefert Auftrag und Label je Bericht und verwaltet Berichte gesammelt |

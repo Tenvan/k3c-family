@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** BD2
 - **Projekt:** BED
 - **Erstellt:** 2026-10-09

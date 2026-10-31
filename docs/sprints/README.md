@@ -10,7 +10,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
-| GEB17 | CLI, REG, SIM, DEV | GEB | Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe | – | `aktiv/GEB17-hub-ausbau-je-inselstufe/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | `aktiv/PM1-leistung-messen/` |
 | KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | `aktiv/KB4-dev-aktionen-boss-event/` |
 | KB5 | SRV, CLI, DEV | KMP | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | fireball am Gegner, Betäubung, Schild und Sturm als Zeichnung | `aktiv/KB5-skills-wirkort-status/` |
@@ -262,3 +261,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GEB18 | Hintergründe der fünf Stufen: vierfache Auflösung, fünf Varianten je Stufe nach Seed | `erledigt/GEB18-hintergruende-detail-varianten/` |
 | W13 | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | `erledigt/W13-morgengrauen-licht-client/` |
 | SO8 | Skill-Sounds je Klasse | `erledigt/SO8-skill-sounds-je-klasse/` |
+| GEB17 | Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe | `erledigt/GEB17-hub-ausbau-je-inselstufe/` |

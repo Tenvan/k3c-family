@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** S8
 - **Projekt:** BED
 - **Erstellt:** 2026-10-05

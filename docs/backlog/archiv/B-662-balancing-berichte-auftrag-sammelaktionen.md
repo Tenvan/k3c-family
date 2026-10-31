@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ32
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-29

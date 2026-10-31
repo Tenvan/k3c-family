@@ -1,6 +1,6 @@
 # GEB17 · CLI, REG, SIM, DEV · Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** GEB
 - **Domäne:** CLI, REG, SIM, DEV
 - **Reife:** bereit
@@ -83,3 +83,5 @@ Zahl der Schritte je Inselstufe (2 oder 3), Kosten und Bauzeit je Schritt, Zahl 
 AC-01: GEB17.1 (Angebot vor der Burg). AC-02: GEB17.3, vorentschieden über B-623 (KRT). AC-03: GEB17.4 (hubStep, Material-Tor; Review Opus APPROVE, kein Deadlock). AC-04: GEB17.5. AC-05: GEB17.6 (15 Ansichten).
 Gestapelt auf KB1 (#481), Golden unverändert.
 2026-10-31: AC-06 von Ralf (🧑) am Gerät abgenommen, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen. Offen: Bestätigung der Stufenfolge (AC-02) über B-623, deshalb bleibt der Sprint aktiv.
+
+2026-10-31: Sprint auf Wunsch von Ralf abgeschlossen; Bestätigung der Stufenfolge (B-623, KRT) bleibt dort offen und blockiert den Sprint nicht.
