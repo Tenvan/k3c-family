@@ -148,6 +148,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-683](B-683-chat-welt-overrides.md) | DEV | Idee | mittel | offen | – | Der Studio-Chat kann Welt-Overrides lesen, setzen und zurücksetzen |
 | [B-684](B-684-studio-ausschnitt-rahmen-und-einpassen.md) | DEV | Idee | mittel | offen | – | Die Ausschnitt-Bearbeitung zeigt wahlweise einen Rahmen und passt die Grafik in die Kachel ein |
 | [B-685](B-685-zielmass-grafiken-skalieren.md) | CLI | Idee | hoch | offen | – | Grafiken bekommen ein Zielmaß in der Ausgabe und werden dort passend skaliert |
+| [B-686](B-686-studio-chat-welt-pruefung.md) | DEV | Problem | hoch | offen | – | Der Studio-Chat liefert nur Welten, die die Prüfung bestehen, und korrigiert Fehler Schritt für Schritt |
 | [B-687](B-687-studio-chat-resume.md) | DEV | Idee | niedrig | offen | – | Der Studio-Chat setzt die Claude-Sitzung per Resume fort und fällt auf den Verlauf als Text zurück |
 
 ## Archiv

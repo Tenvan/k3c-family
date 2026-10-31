@@ -1,5 +1,6 @@
 // Chat des Studios (B-488, WZ19): Ereignisse des Antwort-Stroms von POST /api/studio/chat (Go: backend/chat_http.go)
 // und die gespeicherten Chats (RPC ChatList, ChatGet, ChatDelete, ChatOptions).
+import type { WorldDraft } from './worldTypes';
 
 /** Ausgang einer Antwort: `fertig`, `abgebrochen` (Zeitlimit oder Abbruch, der Text bis dahin bleibt) oder `fehler`. */
 export type ChatStatus = 'fertig' | 'abgebrochen' | 'fehler';
@@ -34,7 +35,7 @@ export interface AssignContext {
 
 /** Wahl, Auftragsart, (nur bei `zuordnung`) Seitenkontext und offene Seite einer Nachricht; mit `seite` geht der
  *  Aktionskatalog mit (B-679). */
-export type ChatSendOptions = ChatChoiceValues & { task?: ChatTask; kontext?: AssignContext; seite?: string };
+export type ChatSendOptions = ChatChoiceValues & { task?: ChatTask; kontext?: AssignContext; seite?: string; entwurf?: WorldDraft };
 
 /** Zustand einer Aktionskarte (Go: chat_actions.go). */
 export type ChatActionStatus = 'offen' | 'laeuft' | 'ausgefuehrt' | 'fehler' | 'verworfen';

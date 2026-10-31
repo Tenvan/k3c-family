@@ -41,6 +41,8 @@ type PlanView struct {
 	RuinKinds []string `json:"ruinKinds"`
 	Stand     string   `json:"stand"`
 	Error     string   `json:"error"`
+	// Problems sind alle Fehler der Prüfung des Ladens für die gespeicherte Datei (leer = gültig, B-686).
+	Problems []string `json:"problems"`
 }
 
 // PlanCheckView ist das Ergebnis der Prüfung eines Entwurfs: Slot nennt den Platz des Fehlers (0 = ohne Platz).
@@ -122,6 +124,7 @@ func (a *App) PlanLoad() PlanView {
 		view.Islands = append(view.Islands, isl)
 	}
 	view.Name, view.Notes, view.Stand = f.Name, f.Notes, planStand(raw)
+	view.Problems = append([]string{}, worldProblems(raw, a.activeWorld())...)
 	return view
 }
 

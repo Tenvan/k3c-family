@@ -5,7 +5,7 @@ import { backend } from '../api';
 import type { ChatChoiceValues } from '../api/chatTypes';
 import { createChatAdapter } from './chatAdapter';
 import { assignContextLine } from './assignContext';
-import { chatContext, chatPage, chatTask, clearPrefill, loadDraft, usePrefill, useAssign, useCanLoadDraft, useSourcesTask } from './chatBridge';
+import { chatContext, chatPage, chatTask, chatWorldDraft, clearPrefill, loadDraft, usePrefill, useAssign, useCanLoadDraft, useSourcesTask } from './chatBridge';
 
 const WHO = { user: 'Ich', assistant: 'Claude', system: 'System' } as const;
 
@@ -63,7 +63,7 @@ export function ChatThread({ chat, initial, current, onChat, onEnd, onRunning }:
   // einmal je Einhängen: Chat, Auswahl und Rückrufe ändern sich für diesen Verlauf nicht
   const [adapter] = useState(() => createChatAdapter(
     (c, text, options, signal) => backend.chatStream(c, text, options, signal),
-    { chat, options: current, task: chatTask, context: chatContext, page: chatPage, onNotice: setNotice, onChat, onEnd },
+    { chat, options: current, task: chatTask, context: chatContext, page: chatPage, draft: chatWorldDraft, onNotice: setNotice, onChat, onEnd },
   ));
   const runtime = useLocalRuntime(adapter, { initialMessages: initial });
   const quellen = useSourcesTask(); // Seite Quellen: Such-Auftrag (B-673)

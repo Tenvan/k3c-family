@@ -244,7 +244,7 @@ func TestChatWeltAuftragSchicktGeruestMit(t *testing.T) {
 		t.Fatalf("Argumente ohne %s am Ende: %v", chatSystemFlag, args)
 	}
 	stdin, system := fakeInput(t, argsFile)
-	if system != worldInstruction() || strings.Contains(system, "MEINE WÜNSCHE") {
+	if !strings.HasPrefix(system, worldInstruction()+"\n\n## Aktuelle Welt") || strings.Contains(system, "MEINE WÜNSCHE") {
 		t.Errorf("Instruktion ist nicht das Grundgerüst: %.80q", system)
 	}
 	if stdin != "Erstelle eine Welt Nordsee" {

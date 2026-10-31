@@ -126,6 +126,7 @@ type chatRequest struct {
 	Task     string         `json:"task"`              // leer = freier Chat, chatTaskWorld = Welt-Auftrag, chatTaskAssign = Zuordnung
 	Context  *assignContext `json:"kontext,omitempty"` // nur bei chatTaskAssign
 	Page     string         `json:"seite,omitempty"`   // offene Seite: Aktionskatalog mit Kontext (B-679)
+	Draft    *WorldDraft    `json:"entwurf,omitempty"` // ungespeicherter Entwurf des Welten Editors (B-686)
 }
 
 func (r chatRequest) options() chatOptions {
@@ -152,6 +153,9 @@ func (a *App) taskOptions(req chatRequest) (chatOptions, error) {
 			slot = req.Context.Slot
 		}
 		opts.instruction += a.actionsInstruction(req.Page, slot)
+	}
+	if err == nil && (req.Task == chatTaskWorld || req.Page == "welt") {
+		opts.instruction += a.currentWorldText(req.Draft, req.Chat) // Welt Schritt für Schritt (B-686)
 	}
 	return opts, err
 }
@@ -228,7 +232,8 @@ func (a *App) chatSend(w http.ResponseWriter, r *http.Request) {
 	asked := h.store.now()
 	emit := func(s string) { sendEvent(w, fl, "chunk", map[string]string{"text": s}) }
 	out := h.cli.run(ctx, chatPrompt(log.Messages, req.Text), opts, emit)
-	if out.Status == chatDone {
+	// ungültige Vorschläge gehen zurück an den Chat; bleiben sie ungültig, gibt es keine Karten (B-686)
+	if out.Status == chatDone && a.correctAnswer(ctx, req, log, &out, opts, emit) {
 		a.afterAnswer(req, log.ID, &out, emit)
 	}
 	sendEvent(w, fl, "done", h.record(&log, req.Text, opts, asked, out))
@@ -238,13 +243,14 @@ func (a *App) chatSend(w http.ResponseWriter, r *http.Request) {
 // Hinweise des Studios kommen an die Antwort.
 func (a *App) afterAnswer(req chatRequest, chat string, out *chatOutcome, emit func(string)) {
 	note := ""
+	answer := effectiveAnswer(out.Text) // nach Korrekturversuchen nur der letzte Vorschlag (B-686)
 	switch req.Task {
 	case chatTaskAssign:
-		a.rememberPicks(*req.Context, out.Text)
+		a.rememberPicks(*req.Context, answer)
 	case chatTaskSources:
-		note = a.applySourcesAnswer(out.Text) // das Studio prüft und trägt ein
+		note = a.applySourcesAnswer(answer) // das Studio prüft und trägt ein
 	}
-	note += a.applyActions(chat, out.Text) // Karten; ausgeführt wird nur per Knopf (B-679)
+	note += a.applyActions(chat, answer) // Karten; ausgeführt wird nur per Knopf (B-679)
 	if note != "" {
 		out.Text += note
 		emit(note)
@@ -324,6 +330,7 @@ func (a *App) ChatDelete(id string) error {
 	}
 	h.deleted[id] = struct{}{}
 	a.actions().forget(id)
+	a.forgetProposal(id)
 	slog.Info("🧹 Chat gelöscht", "ns", "main", "chat", id)
 	return nil
 }

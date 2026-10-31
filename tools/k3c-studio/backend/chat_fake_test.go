@@ -17,6 +17,8 @@ const (
 	fakeMode = "K3C_CHAT_FAKE"      // echo, hang, login, oldcli
 	fakeArgs = "K3C_CHAT_FAKE_ARGS" // Datei: Argumente und Arbeitsordner, wie der Prozess sie bekam
 	fakePids = "K3C_CHAT_FAKE_PIDS" // Datei: PIDs von Kind und Enkel (Modus tree)
+	// fakeScript ist die Datei mit den Antworten (JSON-Liste) im Modus script (B-686).
+	fakeScript = "K3C_CHAT_FAKE_SCRIPT"
 )
 
 func TestMain(m *testing.M) {
@@ -58,6 +60,10 @@ func fakeClaude(mode string) int {
 		}
 		_ = os.WriteFile(os.Getenv(fakePids), []byte(fmt.Sprintf("%d %d", os.Getpid(), grand.Process.Pid)), 0o644)
 		time.Sleep(time.Minute)
+	case "script": // B-686: Antworten der Reihe nach aus fakeScript, jeder Aufruf steht als Zeile in fakeScript+".log"
+		text := fakeScriptAnswer(string(prompt), fakeSystem(os.Args[1:]))
+		fakeDelta(text)
+		fakeLine(map[string]any{"type": "result", "subtype": "success", "is_error": false, "result": text})
 	case "hang":
 		fakeDelta("Ich denke ")
 		time.Sleep(time.Minute)
@@ -67,6 +73,46 @@ func fakeClaude(mode string) int {
 		return 1
 	}
 	return 0
+}
+
+// fakeScriptAnswer liefert die n-te Antwort des Skripts (n = Zahl der bisherigen Aufrufe, danach die letzte) und hängt
+// stdin und Instruktion an das Protokoll.
+func fakeScriptAnswer(stdin, system string) string {
+	path := os.Getenv(fakeScript)
+	var answers []string
+	raw, _ := os.ReadFile(path)
+	_ = json.Unmarshal(raw, &answers)
+	logRaw, _ := os.ReadFile(path + ".log")
+	n := strings.Count(string(logRaw), "\n")
+	line, _ := json.Marshal(map[string]string{"stdin": stdin, "system": system})
+	_ = os.WriteFile(path+".log", append(logRaw, append(line, '\n')...), 0o644)
+	if len(answers) == 0 {
+		return ""
+	}
+	return answers[min(n, len(answers)-1)]
+}
+
+// scriptCLI startet den Ersatz im Modus script mit den Antworten answers; calls liest danach alle Aufrufe.
+func scriptCLI(t *testing.T, answers ...string) (cli chatCLI, calls func() []struct{ Stdin, System string }) {
+	t.Helper()
+	cli, _ = fakeCLI(t, "script", 10*time.Second)
+	path := t.TempDir() + string(os.PathSeparator) + "script.json"
+	raw, _ := json.Marshal(answers)
+	if err := os.WriteFile(path, raw, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	cli.env = append(cli.env, fakeScript+"="+path)
+	return cli, func() []struct{ Stdin, System string } {
+		raw, _ := os.ReadFile(path + ".log")
+		var out []struct{ Stdin, System string }
+		for _, line := range strings.Split(strings.TrimSpace(string(raw)), "\n") {
+			var c struct{ Stdin, System string }
+			if json.Unmarshal([]byte(line), &c) == nil {
+				out = append(out, c)
+			}
+		}
+		return out
+	}
 }
 
 // fakeSystem liest die Instruktions-Datei hinter chatSystemFlag, solange sie während des Laufs noch da ist.

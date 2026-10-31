@@ -67,9 +67,9 @@ export function useWorldDraft(plan: PlanState) {
     lock: plan.dirty ? 'Erst die Planung speichern oder verwerfen' : undefined,
     edit: (next: WorldDraft) => { setDraft(next); setNotice(null); },
     /** Entwurf aus dem Chat (WZ19.3): ersetzt den Entwurf, nichts wird gespeichert; ein Prüffehler steht als Meldung am Entwurf */
-    load: (next: WorldDraft, error: string) => {
+    load: (next: WorldDraft, error: string, hint = '') => {
       setDraft(next);
-      setNotice(error ? { kind: 'error', text: error } : { kind: 'hint', text: 'Antwort aus dem Chat als Entwurf geladen, nichts gespeichert' });
+      setNotice(error ? { kind: 'error', text: error } : { kind: 'hint', text: `Antwort aus dem Chat als Entwurf geladen, nichts gespeichert${hint ? ` (${hint})` : ''}` });
     },
     /** Meldung am Entwurf, ohne ihn zu ändern (z. B. „Antwort nicht lesbar“) */
     report: (text: string) => setNotice({ kind: 'error', text }),

@@ -21,6 +21,7 @@ type WorldAnswerView struct {
 	OK    bool        `json:"ok"`
 	Error string      `json:"error"`
 	Draft *WorldDraft `json:"draft"`
+	Hint  string      `json:"hint,omitempty"` // was das Studio ergänzt hat (Hafen, B-686)
 }
 
 const answerUnreadable = "Antwort nicht lesbar"
@@ -46,7 +47,7 @@ func extractJSON(text string) (string, bool) {
 
 // PlanWorldAnswer prüft die Antwort des Modells und liefert sie als Entwurf (Binding); schreibt nichts.
 func (a *App) PlanWorldAnswer(text string) WorldAnswerView {
-	raw, ok := extractJSON(withoutFence(text, actionsFence)) // ein Aktionsblock (B-679) ist nicht die Welt
+	raw, ok := extractJSON(withoutFence(effectiveAnswer(text), actionsFence)) // ein Aktionsblock (B-679) ist nicht die Welt
 	if !ok {
 		return WorldAnswerView{Error: answerUnreadable + ": kein JSON gefunden"}
 	}
@@ -60,23 +61,30 @@ func (a *App) PlanWorldAnswer(text string) WorldAnswerView {
 	if id == "" {
 		id = "antwort"
 	}
-	_, err := sim.ParseWorld([]byte(raw), id)
-	if err == nil {
-		d, derr := draftOfAnswer(raw, a.fileIslandIDs())
-		if derr != nil {
-			return WorldAnswerView{Error: answerUnreadable + ": " + derr.Error()}
+	if _, err := sim.ParseWorld([]byte(raw), id); err != nil {
+		if msg := err.Error(); strings.Contains(msg, "unbekanntes Feld") || strings.Contains(msg, "kein gültiges JSON") {
+			return WorldAnswerView{Error: answerUnreadable + ": " + msg}
 		}
-		return WorldAnswerView{OK: true, Draft: d}
-	}
-	msg := err.Error()
-	if strings.Contains(msg, "unbekanntes Feld") || strings.Contains(msg, "kein gültiges JSON") {
-		return WorldAnswerView{Error: answerUnreadable + ": " + msg}
 	}
 	d, derr := draftOfAnswer(raw, a.fileIslandIDs())
 	if derr != nil {
 		return WorldAnswerView{Error: answerUnreadable + ": " + derr.Error()}
 	}
-	return WorldAnswerView{Error: msg, Draft: d}
+	// geprüft wird, was Speichern in die gewählte Welt schreiben würde (Meldung mit deren Datei, B-686), mit ergänztem Hafen
+	full, notes := a.withHarbors(*d)
+	chk := a.PlanWorldCheck(full)
+	return WorldAnswerView{OK: chk.OK, Error: chk.Error, Draft: &full, Hint: strings.Join(notes, "; ")}
+}
+
+// chatFixEnd schließt den Hinweis eines Korrekturversuchs (chat_world.go); danach folgt der neue Vorschlag.
+const chatFixEnd = "(neuer Vorschlag folgt)"
+
+// effectiveAnswer ist der Teil der Antwort nach dem letzten Korrekturversuch des Studios (die ganze Antwort ohne einen).
+func effectiveAnswer(text string) string {
+	if i := strings.LastIndex(text, chatFixEnd); i >= 0 {
+		return text[i+len(chatFixEnd):]
+	}
+	return text
 }
 
 // fileIslandIDs liefert die Insel-ids der gewählten Welt-Datei (leer, wenn sie nicht lesbar ist).

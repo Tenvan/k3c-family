@@ -216,25 +216,35 @@ func (a *App) addWorld(name string, content func(id string) ([]byte, error)) Wor
 
 // PlanWorldAdd legt eine leere Welt mit dem Namen name an (Binding, siehe newWorldFile); sie ist danach gewählt.
 func (a *App) PlanWorldAdd(name string) WorldsView {
-	return a.addWorld(name, func(id string) ([]byte, error) {
+	return a.addWorld(name, a.newWorldContent(name))
+}
+
+// newWorldContent liefert den Inhalt der neuen, leeren Welt name (für Anlegen und die Vorabprüfung des Chats, B-686).
+func (a *App) newWorldContent(name string) func(id string) ([]byte, error) {
+	return func(id string) ([]byte, error) {
 		standard, err := os.ReadFile(a.worldFile(standardWorld))
 		if err != nil {
 			return nil, err
 		}
 		return newWorldFile(standard, id, strings.TrimSpace(name))
-	})
+	}
 }
 
 // PlanWorldCopy legt eine Kopie der gewählten Welt mit dem Namen name an (Binding): alle Inseln mit Planung und
 // Inselgrößen; die Kopie ist danach gewählt.
 func (a *App) PlanWorldCopy(name string) WorldsView {
-	return a.addWorld(name, func(id string) ([]byte, error) {
+	return a.addWorld(name, a.copyWorldContent(name))
+}
+
+// copyWorldContent liefert den Inhalt der Kopie der gewählten Welt unter dem Namen name.
+func (a *App) copyWorldContent(name string) func(id string) ([]byte, error) {
+	return func(id string) ([]byte, error) {
 		raw, err := a.readIslands()
 		if err != nil {
 			return nil, err
 		}
 		return copyWorldFile(raw, id, strings.TrimSpace(name))
-	})
+	}
 }
 
 // PlanWorldRemove löscht die Welt id (Binding); „standard“ bleibt. Danach ist die Standard-Welt gewählt.

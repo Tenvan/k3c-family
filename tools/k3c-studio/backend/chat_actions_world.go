@@ -72,14 +72,16 @@ func prepareWorldSelect(a *App, raw json.RawMessage) (actionPlan, error) {
 }
 
 func prepareWorldAdd(a *App, raw json.RawMessage) (actionPlan, error) {
-	return prepareWorldName(a, raw, "Welt anlegen: ", a.PlanWorldAdd)
+	return prepareWorldName(a, raw, "Welt anlegen: ", a.PlanWorldAdd, a.newWorldContent)
 }
 
 func prepareWorldCopy(a *App, raw json.RawMessage) (actionPlan, error) {
-	return prepareWorldName(a, raw, "Welt kopieren als ", a.PlanWorldCopy)
+	return prepareWorldName(a, raw, "Welt kopieren als ", a.PlanWorldCopy, a.copyWorldContent)
 }
 
-func prepareWorldName(a *App, raw json.RawMessage, title string, do func(string) WorldsView) (actionPlan, error) {
+// prepareWorldName prüft die neue Welt vorab wie beim Anlegen (Prüfung des Ladens, B-686): eine Kopie einer ungültigen
+// Welt wird keine ausführbare Karte.
+func prepareWorldName(a *App, raw json.RawMessage, title string, do func(string) WorldsView, content func(string) func(string) ([]byte, error)) (actionPlan, error) {
 	var f nameField
 	if err := fields(raw, &f); err != nil {
 		return actionPlan{}, err
@@ -88,8 +90,16 @@ func prepareWorldName(a *App, raw json.RawMessage, title string, do func(string)
 	if err := need("name", f.Name); err != nil {
 		return p, err
 	}
-	if _, err := a.newWorldID(f.Name); err != nil {
+	id, err := a.newWorldID(strings.TrimSpace(f.Name))
+	if err != nil {
 		return p, err
+	}
+	file, err := content(f.Name)(id)
+	if err != nil {
+		return p, err
+	}
+	if list := worldProblems(file, id); len(list) > 0 {
+		return p, errors.New(strings.Join(list, "; "))
 	}
 	p.run = func() (string, error) { return worldsResult(do(f.Name)) }
 	return p, nil
@@ -146,8 +156,11 @@ func prepareWorldSave(a *App, raw json.RawMessage) (actionPlan, error) {
 	for _, isl := range d.Islands {
 		p.details = append(p.details, fmt.Sprintf("Insel %s (%s): Tiefen %v", isl.ID, orNone(isl.Name), isl.Depths))
 	}
+	if ans.Hint != "" {
+		p.details = append(p.details, ans.Hint)
+	}
 	if chk := a.PlanWorldCheck(d); !chk.OK {
-		return p, errors.New(chk.Error)
+		return p, errors.New(strings.Join(a.draftProblems(d, chk.Error), "; "))
 	}
 	if view.Error != "" {
 		return p, errors.New(view.Error)
@@ -175,8 +188,14 @@ func prepareChunks(a *App, raw json.RawMessage) (actionPlan, error) {
 	if view.Error != "" {
 		return p, errors.New(view.Error)
 	}
+	if note := a.chunksHarbor(view, f.Island, f.Depth, &f.Chunks, f.Count); note != "" {
+		p.details = append(p.details, note)
+	}
 	if chk := a.PlanCheck(f.Island, f.Depth, f.Chunks, f.Count); !chk.OK {
 		return p, errors.New(chk.Error)
+	}
+	if err := a.planWorldError(f.Island, f.Depth, f.Chunks, f.Count); err != nil {
+		return p, err
 	}
 	p.run = func() (string, error) {
 		return onWorld(a, world, func() PlanSaved { return a.PlanSave(f.Island, f.Depth, f.Chunks, f.Count, view.Stand) })

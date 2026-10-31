@@ -170,6 +170,8 @@ export interface PlanView {
   ruinKinds?: string[];
   stand: string;
   error: string;
+  /** alle Fehler der Prüfung des Ladens für die gespeicherte Datei (leer = gültig, B-686); fehlt beim Mock */
+  problems?: string[];
 }
 
 /** Ergebnis der Prüfung eines Entwurfs (Go: PlanCheckView); slot nennt den Platz des Fehlers (0 = ohne Platz) */

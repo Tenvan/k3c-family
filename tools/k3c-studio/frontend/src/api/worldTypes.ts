@@ -47,6 +47,8 @@ export interface WorldAnswerView {
   ok: boolean;
   error: string;
   draft: WorldDraft | null;
+  /** was das Studio ergänzt hat, z. B. „Hafen ergänzt: …“ (B-686) */
+  hint?: string;
 }
 
 /** Aufrufe für Welten und Inseln (Go: PlanWorldCheck, PlanWorldSave, PlanWorldCopy) */

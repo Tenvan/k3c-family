@@ -1,5 +1,6 @@
 import { useEffect, useSyncExternalStore } from 'react';
 import type { AssignContext, ChatTask } from '../api/chatTypes';
+import type { WorldDraft } from '../api/worldTypes';
 import { loadPref, savePref } from '../lib/prefs';
 
 // Zustand des Chats außerhalb der Oberfläche: ein- und ausgeblendet (gemerkt) und der Entwurfs-Lader einer Seite
@@ -106,6 +107,26 @@ export function useAssignContext(ctx: AssignContext | null): void {
 /** Aktueller Seitenkontext für die Anzeige (Vorschlagskarten, Hinweis im Chat). */
 export function useAssign(): AssignContext | null {
   return useSyncExternalStore(subscribe, () => assign, () => null);
+}
+
+let worldDraft: (() => WorldDraft | undefined) | null = null; // ungespeicherter Entwurf des Welten Editors (B-686)
+
+/** Der Welten Editor meldet, wie der Chat an den aktuellen ungespeicherten Entwurf kommt (undefined = keiner). */
+export function registerWorldDraft(fn: () => WorldDraft | undefined): () => void {
+  worldDraft = fn;
+  return () => { if (worldDraft === fn) worldDraft = null; };
+}
+
+/** Ungespeicherter Entwurf des Welten Editors für die nächste Nachricht (undefined = keiner). */
+export function chatWorldDraft(): WorldDraft | undefined {
+  return worldDraft?.() ?? undefined;
+}
+
+/** Öffnet den Chat mit vorbereitetem Text in der Eingabe (🧑 schickt ihn ab), z. B. „Im Chat korrigieren“ (B-686). */
+export function askChat(text: string): void {
+  prefill = text;
+  notify();
+  setChatOpen(true);
 }
 
 /** Lädt die Antwort `text` als Entwurf (prüft sie vorher); false, wenn keine Seite sie annimmt. */

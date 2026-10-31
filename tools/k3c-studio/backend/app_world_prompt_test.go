@@ -74,8 +74,9 @@ func TestAntwortMitFehlerBleibtEntwurfMitGrund(t *testing.T) {
 	if v.OK || v.Draft == nil {
 		t.Fatalf("erwartet Entwurf mit Fehler: %+v", v)
 	}
-	if !strings.Contains(v.Error, "Insel eisinsel: kein Endboss in der tiefsten Stufe 2") || !strings.Contains(v.Error, "nordmeer.json") {
-		t.Errorf("Grund nennt Welt, Insel und Tiefe nicht: %q", v.Error)
+	// B-686: die Meldung nennt die Datei der gewählten Welt (dorthin schriebe Speichern), nicht die id der Antwort
+	if !strings.Contains(v.Error, "Insel eisinsel: kein Endboss in der tiefsten Stufe 2") || !strings.HasPrefix(v.Error, "data/worlds/standard.json: ") {
+		t.Errorf("Grund nennt Datei, Insel und Tiefe nicht: %q", v.Error)
 	}
 }
 

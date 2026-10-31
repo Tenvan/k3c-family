@@ -3,6 +3,7 @@ import { Button, SelectField, Text, TextField } from '@webkit/atoms';
 import { ChipSwitch } from '@webkit/molecules';
 import { useState } from 'react';
 import { changesText } from './changes';
+import { FixInChat, worldErrors } from './FixInChat';
 import { GameLauncher } from './GameLauncher';
 import { SizePicker } from './SizePicker';
 import type { Guard } from './WorldGuard';
@@ -98,6 +99,7 @@ export function WorldHeader({ mode, onMode, plan, world, guard, seed, biome }: {
       </div>
       {guard.prompt}
       {notice && <Text as="p" size="2" role="status" color={notice.kind === 'hint' ? 'green' : 'red'} className="wd-notice">{notice.text}{notice.kind === 'stale' ? ' (Entwurf bleibt)' : ''}</Text>}
+      <FixInChat errors={worldErrors(mode === 'welt', plan, world, notice)} problems={plan.view?.problems ?? []} />
     </header>
   );
 }

@@ -1,5 +1,6 @@
 import type { ChatModelAdapter, ChatModelRunResult } from '@assistant-ui/react';
 import { ChatGoneError, type AssignContext, type ChatChoiceValues, type ChatSendOptions, type ChatStatus, type ChatStream, type ChatTask } from '../api/chatTypes';
+import type { WorldDraft } from '../api/worldTypes';
 
 /** Text der letzten Nachricht von 🧑 (die CLI kennt den Verlauf nur über den Chat des Servers). */
 function lastUserText(messages: readonly { role: string; content: readonly { type: string; text?: string }[] }[]): string {
@@ -43,6 +44,8 @@ export interface ChatAdapterHooks {
   context?: () => AssignContext | undefined;
   /** offene Seite (B-679), bei jeder Nachricht neu gelesen; "" = keine */
   page?: () => string;
+  /** ungespeicherter Entwurf des Welten Editors (B-686), geht bei Welt-Aufträgen und auf der Seite welt mit */
+  draft?: () => WorldDraft | undefined;
   /** z. B. „Verlauf nicht gespeichert“ */
   onNotice?: (notice: string) => void;
   /** der Server hat dem Chat eine Kennung gegeben (neuer Chat); leer, wenn der Chat nicht mehr existiert */
@@ -59,7 +62,14 @@ function sendOptions(hooks: ChatAdapterHooks): ChatSendOptions {
   const task = hooks.task?.();
   const kontext = task === 'zuordnung' ? hooks.context?.() : undefined;
   if (kontext) return { ...choice, task, kontext };
-  return task && task !== 'zuordnung' ? { ...choice, task } : choice;
+  const base = withDraft(choice, hooks, task === 'welt' || seite === 'welt');
+  return task && task !== 'zuordnung' ? { ...base, task } : base;
+}
+
+/** Hängt den ungespeicherten Entwurf des Welten Editors an (B-686), wenn es um die Welt geht und einer da ist. */
+function withDraft(choice: ChatSendOptions, hooks: ChatAdapterHooks, world: boolean): ChatSendOptions {
+  const entwurf = world ? hooks.draft?.() : undefined;
+  return entwurf ? { ...choice, entwurf } : choice;
 }
 
 /** Bindet den Antwort-Strom des Studios an assistant-ui: Stücke wachsen zu einer Antwort, `done` setzt den Ausgang
