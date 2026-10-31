@@ -36,6 +36,7 @@ Inventar (Seite · Bearbeitung · Aufruf · Datei → Chat heute):
 | Gebäude-Planer | Plätze, Stufen, Kosten, Mauerlinien ändern | `HubSave` | `data/hub.json`, Regeltabelle | **Lücke L2** |
 | alle | Ticket anlegen | `TicketCreate` | `docs/backlog/` | **Lücke L10** |
 | Planer, Monarch, Gegner | Seitenkontext im Chat | – | – | **Lücke L1** (nur Assets und Welt) |
+| Welten Editor (geplant) | Welt-Overrides (Vererbung) | – | – | **Lücke L11**, Nachfolge-Ticket B-683 nach B-680 |
 
 Monarch und Gegner sind reine Ansichten (Slot-Register nur lesend), Truppen, Biome und Gegnerwerte haben im Studio
 keine Bearbeitung: dort gibt es nichts, was der Chat auslösen müsste.
@@ -65,6 +66,8 @@ vorab und zeigt sie als Karte, Ralf führt sie per Knopf aus. Der Chat bekommt k
 - „Im Spiel öffnen“ (öffnet ein Browserfenster) und Datei-Import per Upload bleiben Knöpfe der Seiten.
 - Neue Bearbeitungen für Monarch, Gegner, Truppen oder Biome (gibt es im Studio nicht).
 - Werkzeuge oder Schreibrechte für die CLI.
+- Welt-Overrides (Vererbung: Basisdaten, je Welt Ressourcen, Kosten und Werte optional übersteuert): Der Chat muss sie
+  bearbeiten können, sobald es sie gibt: Nachfolge-Ticket B-683 nach Umsetzung des Welt-Vererbungs-Tickets B-680.
 
 ## Regeln und Einschränkungen
 
