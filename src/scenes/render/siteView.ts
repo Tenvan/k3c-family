@@ -4,7 +4,8 @@ import { currentLanguage, nameOf, t } from '../../core/texts';
 import { BUILDINGS, TROOPS } from '../../model/data';
 import type { Site, World } from '../../model/types';
 import { drawBuildSign } from './buildSignView';
-import { BUILDING_TEXTURES, HUB_SCAFFOLD_TEXTURE, hubLookTexture, hubTexture, isHubBuilding, siteTexture, textureScale } from './buildingSprites';
+import { HUB_SCAFFOLD_TEXTURE, hubLookTexture, hubTexture, isHubBuilding, siteTexture } from './buildingSprites';
+import { prepareBuildingLooks, preloadBuildingLooks, showBuildingLook } from './buildingLook';
 import { damageStage, showRubble } from './damageRules';
 import { damageTint, drawDamage, drawRubble } from './damageView';
 import { fontStyle } from './fontRules';
@@ -56,14 +57,14 @@ const SITE_COLOR: Record<Site['kind'], number> = {
   ship: 0x4a6fa5,
 };
 
-/** Nur die zugeordneten Gebäude-Grafiken laden (LoadScene.preload) */
+/** Nur die zugeordneten Gebäude-Grafiken laden (LoadScene.preload): aktive Zuordnung aus `data/assets.json` (B-685) */
 export function preloadBuildings(scene: Phaser.Scene): void {
-  for (const [key, file] of Object.entries(BUILDING_TEXTURES)) scene.load.image(key, `grafik/${file}`);
+  preloadBuildingLooks(scene);
 }
 
-/** Nach dem Laden: Pixel-Art scharf */
+/** Nach dem Laden: Ausschnitt, Zielmaß und Filter je Grafik einmal festlegen (B-685; ganzzahlig vergrößert = Pixel scharf) */
 export function prepareBuildings(scene: Phaser.Scene): void {
-  for (const key of Object.keys(BUILDING_TEXTURES)) if (scene.textures.exists(key)) scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
+  prepareBuildingLooks(scene);
 }
 
 const has = (scene: Phaser.Scene, key: string | null): key is string => key !== null && scene.textures.exists(key);
@@ -116,12 +117,12 @@ function drawCastle(scene: Phaser.Scene, v: View, world: CastleWorld): void {
   const picture = v.getAt(0) as Phaser.GameObjects.Image;
   const g = (v.getAt(1) as Phaser.GameObjects.Graphics).clear();
   const scaffold = v.getAt(2) as Phaser.GameObjects.Image;
-  if (look.scaffold && has(scene, HUB_SCAFFOLD_TEXTURE)) scaffold.setTexture(HUB_SCAFFOLD_TEXTURE).setScale(textureScale(HUB_SCAFFOLD_TEXTURE)).setVisible(true);
+  if (look.scaffold && has(scene, HUB_SCAFFOLD_TEXTURE)) showBuildingLook(scaffold, HUB_SCAFFOLD_TEXTURE);
   else scaffold.setVisible(false);
   let key = hubLookTexture(look);
   if (!has(scene, key)) key = hubTexture(look.level);
   if (has(scene, key)) {
-    picture.setTexture(key).setScale(textureScale(key)).setVisible(true);
+    showBuildingLook(picture, key);
     return;
   }
   picture.setVisible(false);
@@ -147,7 +148,7 @@ function showPicture(scene: Phaser.Scene, v: View, s: Site, stage: number): numb
     picture.setVisible(false);
     return null;
   }
-  picture.setTexture(key).setScale(textureScale(key)).setVisible(true);
+  showBuildingLook(picture, key);
   return picture.displayHeight;
 }
 
@@ -199,7 +200,7 @@ function showScaffold(scene: Phaser.Scene, v: View, g: Phaser.GameObjects.Graphi
     drawScaffoldShape(g, w, h);
     return h;
   }
-  const picture = (v.getAt(0) as Phaser.GameObjects.Image).setTexture(key).setScale(textureScale(key)).setVisible(true);
+  const picture = showBuildingLook(v.getAt(0) as Phaser.GameObjects.Image, key);
   return picture.displayHeight;
 }
 
