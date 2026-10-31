@@ -259,18 +259,17 @@ describe('Seite Welt-Betrachter: getrennter Zoom, gemeinsame Mitte (B-485/AC-05)
     expect(chunkCenter(h)).toBeCloseTo(liveCenter());
   });
 
-  it('der Griff ist so breit wie der Sichtbereich; bei verschiedenem Zoom zeigt ein zweiter Griff die Live-Vorschau (B-485/AC-05)', async () => {
+  it('der gelbe Rahmen ist so breit wie der Sichtbereich der Live-Vorschau und folgt auch ihrem eigenen Zoom (B-485/AC-05, B-665)', async () => {
     const h = await mount();
     const units = Number(h.querySelector('.wd-note')!.textContent!.match(/(\d+) Units/)![1]);
     const width = () => parseFloat(position(h).style.width);
     expect(width()).toBeCloseTo((1000 / DEFAULT_SCALE / units) * 100);
-    expect(h.querySelector('.wd-range-second')).toBeNull();
     await act(async () => button(h, 'Hineinzoomen').click());
     expect(width()).toBeCloseTo((1000 / (DEFAULT_SCALE * 1.25) / units) * 100);
+    const before = width();
     altWheel(stage.wheel, -100);
-    const second = h.querySelector<HTMLElement>('.wd-range-second')!;
-    expect(parseFloat(second.style.width)).toBeCloseTo((1000 / views.at(-1)!.scale / units) * 100);
-    expect(parseFloat(second.style.width)).toBeLessThan(width());
+    expect(width()).toBeCloseTo((1000 / views.at(-1)!.scale / units) * 100);
+    expect(width()).toBeLessThan(before);
   });
 
   it('bei verschiedenem Zoom verschiebt der Bildlauf beide um dieselbe Welt-Strecke (B-485/AC-05)', async () => {
@@ -309,7 +308,7 @@ describe('Live-Bereich mit der Breite der Bühne (B-485/AC-05, Fehler aus der Ab
     return () => props.forEach((p, i) => Object.defineProperty(HTMLElement.prototype, p, originals[i]));
   }
 
-  it('die Bühne zeigt dieselbe Mitte wie der Streifen; gelber Griff und Rahmen im Streifen zeigen genau ihren Bereich', async () => {
+  it('die Bühne zeigt dieselbe Mitte wie der Streifen; der gelbe Rahmen im Streifen zeigt genau ihren Bereich (B-665)', async () => {
     const restore = stubWidths();
     try {
       const h = await mount();
@@ -317,12 +316,9 @@ describe('Live-Bereich mit der Breite der Bühne (B-485/AC-05, Fehler aus der Ab
       const live = views.at(-1)!;
       expect(live.left + 600 / live.scale / 2).toBeCloseTo(chunkCenter(h)); // PreviewStage zentriert auf left + Bühnenbreite / Zoom / 2
       const units = Number(h.querySelector('.wd-note')!.textContent!.match(/(\d+) Units/)![1]);
-      const second = h.querySelector<HTMLElement>('.wd-range-second')!;
-      expect(parseFloat(second.style.width)).toBeCloseTo((600 / live.scale / units) * 100);
-      expect(parseFloat(second.style.left)).toBeCloseTo((live.left / units) * 100);
-      const frame = h.querySelector<HTMLElement>('.wd-live-range')!; // Rahmen im Streifen über den Chunks der Live-Vorschau
-      expect(parseFloat(frame.style.left)).toBeCloseTo(live.left * stripScale(h));
-      expect(parseFloat(frame.style.width)).toBeCloseTo((600 / live.scale) * stripScale(h));
+      const frame = h.querySelector<HTMLElement>('.wd-strip [role="slider"][aria-label="Position"]')!; // Rahmen über den Chunks der Live-Vorschau
+      expect(parseFloat(frame.style.width)).toBeCloseTo((600 / live.scale / units) * 100);
+      expect(parseFloat(frame.style.left)).toBeCloseTo((live.left / units) * 100);
     } finally {
       restore();
     }

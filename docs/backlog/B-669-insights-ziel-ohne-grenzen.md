@@ -56,3 +56,5 @@ keine
 ## Notizen
 
 Gefunden vom Agenten der Session WZ32.1 (B-662).
+
+2026-10-31 (Claude, Team WZG): AC-01 maschinell erfüllt. `TestZielOhneGrenzenStuerztNichtAb` (`insights_plain_test.go`) war rot (nil pointer), Fix in `insights_plain.go` (`target()`, Text "Kein Sollwert hinterlegt."). Gesamtlauf `go test ./internal/balance` ohne Filter dauert über 120 s, nur gefiltert (`Insight|Ziel|Plain|Report`) grün belegt.

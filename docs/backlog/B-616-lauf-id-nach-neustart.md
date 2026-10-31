@@ -54,4 +54,4 @@ keine
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+2026-10-31 (Claude, Team WZG): AC-01 maschinell erfüllt. `TestLaufIDNachNeustartHinterHoechstemOrdner` (`internal/simrun/registry_test.go`); Fix `highestRunDir` in `registry.go` hebt den Zähler in `Start` über den höchsten vorhandenen Ordner. Der Test wurde nicht gesondert rot belegt.

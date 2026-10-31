@@ -82,4 +82,4 @@ keine
 
 ## Notizen
 
-–
+2026-10-31 (Claude, Team WZG): Prüfung ergab: bereits umgesetzt (Commit d28b817d). AC-01 `chat_world_test.go` `TestChatAktionenWeltVorabGeprueft`, `TestChatWeltKorrekturHoechstensZweimal`; AC-02 `TestAntwortDateinameUndHafen`; AC-04 `TestChatWeltSchrittFuerSchritt`; AC-05 `TestWeltFehlerlisteVollstaendig`; AC-06 `FixInChat.test.tsx`, `ChatDraft.test.tsx`. AC-07 manuell, 🧑 steht aus.

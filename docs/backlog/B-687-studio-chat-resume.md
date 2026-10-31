@@ -67,3 +67,5 @@ keine.
 ## Notizen
 
 Entstanden aus der Frage im Chat am 2026-10-31, ob Resume effektiver wäre. Empfehlung Claude: erst den Zustand sauber machen (aktueller Entwurf und Fehlerliste im Prompt, Hafen vom Studio ergänzt), danach Resume als Beschleuniger.
+
+2026-10-31 (Claude, Team WZG): AC-01 bis AC-04 maschinell erfüllt (`chat_session_test.go`: `TestChatSitzungFortgesetzt`, `TestChatSitzungFehltVerlaufAlsText`, `TestChatSitzungOhneResumeDauerhaftText`, `TestChatSitzungGeloescht`; `chat_cli_test.go` `TestChatArgsOhneRechte`). AC-05 manuell mit der echten CLI, 🧑 steht aus. Ungeprüft: ob `--append-system-prompt-file` in der Sitzung gespeichert wird. Offen (Review LOW): Der Glob zum Löschen sucht in allen `~/.claude/projects/*`, sollte auf den Ordner des Arbeitsverzeichnisses beschränkt werden.

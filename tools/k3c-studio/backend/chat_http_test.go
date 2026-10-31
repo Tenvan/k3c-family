@@ -73,8 +73,9 @@ func TestChatStromUndVerlauf(t *testing.T) {
 	}
 	body := `{"chat":"` + id + `","text":"Zweite Frage"}`
 	rec, _ = call(t, h, "POST", Prefix+"chat", body, "[::1]:5000", true)
-	if !strings.Contains(rec.Body.String(), "Erste Frage") { // der Verlauf geht mit in den Prompt
-		t.Errorf("Verlauf fehlt im Prompt: %s", rec.Body)
+	// die Sitzung wird fortgesetzt: nur die neue Nachricht geht in den Prompt (B-687, chat_session_test.go)
+	if !strings.Contains(rec.Body.String(), "Frage") || strings.Contains(rec.Body.String(), "Erste Frage") {
+		t.Errorf("Prompt der Folgenachricht: %s", rec.Body)
 	}
 	_, a := call(t, h, "POST", Prefix+"rpc/ChatGet", `["`+id+`"]`, "127.0.0.1:5000", true)
 	var log ChatLog
@@ -208,7 +209,7 @@ func TestChatEinstellungen(t *testing.T) {
 		t.Fatalf("Ende: %+v", end)
 	}
 	args, _ := fakeRecord(t, argsFile)
-	if !slices.Equal(args, chatArgs(chatOptions{Model: "sonnet", Effort: "high"})) {
+	if !slices.Equal(args, chatArgs(chatOptions{Model: "sonnet", Effort: "high", session: argAfter(args, "--session-id")})) {
 		t.Errorf("Argumente %v", args)
 	}
 	_, a := call(t, h, "POST", Prefix+"rpc/ChatList", `[]`, "127.0.0.1:5000", true)
@@ -240,7 +241,7 @@ func TestChatWeltAuftragSchicktGeruestMit(t *testing.T) {
 	}
 	args, _ := fakeRecord(t, argsFile)
 	i := slices.Index(args, chatSystemFlag)
-	if i < 0 || i+1 >= len(args) || !slices.Equal(args[:i], chatArgs(chatOptions{})) {
+	if i < 0 || i+1 >= len(args) || !slices.Equal(args[:i], chatArgs(chatOptions{session: argAfter(args, "--session-id")})) {
 		t.Fatalf("Argumente ohne %s am Ende: %v", chatSystemFlag, args)
 	}
 	stdin, system := fakeInput(t, argsFile)

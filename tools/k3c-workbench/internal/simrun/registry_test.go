@@ -172,3 +172,23 @@ func TestPlaetzeBekommenEigeneEXE(t *testing.T) {
 		t.Errorf("freier Platz in x: %d, erwartet 0", s)
 	}
 }
+
+// B-616 AC-01: Nach einem neuen Register im selben Checkout beginnt die nächste ID hinter dem höchsten Ordner.
+func TestLaufIDNachNeustartHinterHoechstemOrdner(t *testing.T) {
+	root := t.TempDir()
+	for _, d := range []string{"simtest-run-2", "simtest-run-7", "simtest-run-x"} {
+		if err := os.MkdirAll(filepath.Join(root, "reports", d), 0o755); err != nil {
+			t.Fatal(err)
+		}
+	}
+	g := New(nil)
+	release := make(chan struct{})
+	defer close(release)
+	run, err := g.Start(root, "Repo-Wurzel", "x", nil, blocking(g, release), true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if run.ID() != "run-8" {
+		t.Fatalf("ID %q, erwartet run-8", run.ID())
+	}
+}

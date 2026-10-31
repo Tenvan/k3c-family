@@ -142,7 +142,11 @@ func TestChatWeltSchrittFuerSchritt(t *testing.T) {
 		t.Fatalf("%d Aufrufe, erwartet Wunsch und eine Korrektur", len(c))
 	}
 	wantAll(t, "Instruktion", c[0].System, "## Aktuelle Welt", "gespeicherte Datei data/worlds/standard.json", "Hafen (Pflicht)", "Änderungsmodus")
-	wantAll(t, "Korrektur", c[1].Stdin, "Insel insel3: kein Endboss in der tiefsten Stufe 2", `"depths": [0, 1, 2]`)
+	// die Korrektur setzt die Sitzung fort (B-687): der abgelehnte Vorschlag steht dort und in der Instruktion, nicht im Prompt
+	wantAll(t, "Korrektur", c[1].Stdin, "Insel insel3: kein Endboss in der tiefsten Stufe 2")
+	if strings.Contains(c[1].Stdin, "Bisheriger Verlauf") {
+		t.Errorf("Korrektur schickt den Verlauf trotz Sitzung:\n%s", c[1].Stdin)
+	}
 	wantAll(t, "Instruktion der Korrektur", c[1].System, "letzter Vorschlag dieses Chats", "Prüfung: ungültig")
 	v := a.PlanWorldAnswer(answer)
 	if !strings.Contains(answer, chatFixMark+"1 von 2") || !v.OK || len(v.Draft.Islands[2].Depths) != 4 || !strings.Contains(v.Hint, "Hafen ergänzt") {

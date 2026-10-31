@@ -107,4 +107,4 @@ keine (Default: Karten statt Sofort-Ausführung, wie bei den Vorschlagskarten).
 
 ## Notizen
 
-–
+2026-10-31 (Claude, Team WZG): Prüfung ergab: bereits umgesetzt (Commits 3025a8fd, 5e0ecf39). AC-02 `TestChatStromAktionen`, AC-03 `TestChatAktionenLesenUndSperren`, `TestChatAktionTicketVorab`, AC-04 `TestChatAktionGebaeude`/`Zuordnung`/`Welten`, AC-05 `TestChatAktionenKatalog` (20 Arten), AC-06 `ChatActions.test.tsx`; AC-01 Inventar im Ticket. AC-07 manuell, 🧑 steht aus.

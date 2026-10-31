@@ -7,8 +7,13 @@ import (
 	"os"
 	"path"
 	"strings"
+	"sync"
 	"time"
 )
+
+// adoptMu reiht Übernahmen hintereinander (B-678): der zweite Aufruf für denselben Eintrag sieht dann die Datei des ersten
+// und legt keine zweite Kopie an.
+var adoptMu sync.Mutex
 
 // groupPrefix kennzeichnet Gruppen der Vorschlagsliste ohne eigenen Slot (Skill-Effekt-Grafiken je Linie).
 const groupPrefix = "skill-effekt:"
@@ -48,6 +53,8 @@ func VorratAdoptIf(root, id, stand string, now time.Time) (string, string, error
 // vorratAdopt übernimmt; stand ≠ "" verlangt diesen Stand des Registers: geprüft unter mu vor dem ersten Schreiben, mu
 // bleibt bis nach dem Anhängen gehalten, damit bei ErrStale weder Datei noch Credit-Zeile übrig bleiben.
 func vorratAdopt(root, id, stand string, now time.Time) (string, error) {
+	adoptMu.Lock()
+	defer adoptMu.Unlock()
 	s, e, err := vorratAdoptTarget(root, id)
 	if err != nil {
 		return "", err

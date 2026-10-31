@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ38
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-30
@@ -99,10 +99,6 @@ Daneben gibt es die Recherche-Treffer der Workbench (`data/assets-recherche.json
 
 - Mock aus dem Chat vom 2026-10-30 (Widget „studio_quellen_mock“).
 - Geschwister-Tickets der Studio-Bedienung: B-670 (Gebäude-Planer), B-671 (Monarch), B-672 (Gegner).
-- Zählung am 2026-10-30: `assets-vorschlaege.json` 41 Einträge (OpenGameArt), `assets-recherche.json` 128 Treffer (OpenGameArt 65, Kenney 33, Wikimedia Commons 30).
-- **Umgesetzt 2026-10-30:** assetkit `suggestions_add.go` (`AddSuggestions`, `PlanSuggestions`, `HeadSize` mit 10 s Frist), `research_add.go`; Backend `app_sources_add.go`, `chat_sources.go`, `chat_http.go`; Frontend `sources/` (`SourceTabs`, `SourcesFilterBar`, `SourceList`, `sourcesFilter`), `chat/chatBridge.ts`, `chat/ChatThread.tsx` (Vorbelegung der Chat-Eingabe), `styles/sources.css`.
-- AC-01 Browser-Pane 5196 `?mock=1` 1600×1000: Reiter, eine Filterzeile, Gruppen sichtbar, Aktionsleiste „1 gewählt · 25 kB“. AC-02, AC-03, AC-06, AC-07 Vitest; AC-04, AC-05 Go-Tests (`suggestions_add_test.go`, `app_sources_add_test.go`); `check:diff` grün. Review ohne schwere Befunde (HEAD nur https auf erlaubte Hosts, Weiterleitungen geprüft).
-- Abweichung: Der Studio-Chat hat keine Websuche (`--tools ""`). „Claude suchen lassen“ schlägt aus dem Modellwissen vor; das Backend prüft jeden Eintrag (Lizenz, Quelle, Slot, HEAD) und markiert ihn mit „Lizenz vor dem Laden auf der Quellseite prüfen (Q70)“. Websuche wäre eine Sicherheitsänderung, nicht gemacht.
-- Befund: Mit den echten Daten bringt „Aus Recherche übernehmen“ nichts; nur die 30 Wikimedia-Treffer haben eine Datei-URL, und Wikimedia ist nicht erlaubt.
-- Entschieden nach Default: Wikimedia bleibt draußen; Treffer bleiben in der Recherche; MCP-Tool der Workbench nicht gebaut (die gemeinsame Funktion steht in assetkit). Grenze: Die Sperre beim Schreiben gilt nur im eigenen Prozess (Kommentar in `AddSuggestions`).
-- Offen: AC-08 manuelle Abnahme durch 🧑 mit echten Daten.
+- **Umgesetzt 2026-10-30:** assetkit `suggestions_add.go` (`AddSuggestions`, `PlanSuggestions`, `HeadSize` mit 10 s Frist), `research_add.go`; Backend `app_sources_add.go`, `chat_sources.go`, `chat_http.go`. Backend-Kriterien AC-04, AC-05, AC-07: Go-Tests grün (`suggestions_add_test.go`, `app_sources_add_test.go`), `check:diff` grün (2026-10-31).
+- Entschieden nach Default: Wikimedia bleibt draußen; Treffer bleiben in der Recherche; MCP-Tool nicht gebaut. Grenze: Die Sperre beim Schreiben gilt nur im eigenen Prozess.
+- **Geschlossen 2026-10-31 (Ralf im Chat: „als erledigt durch B-677 schließen“):** Die Quellen-Seite wurde mit B-677 (WZ33, Commit 242143f9) durch die Assets-Seite ersetzt; AC-01, 02, 03 und 06 beschreiben die gelöschte Seite und entfallen. „Aus Recherche übernehmen“ und „Claude suchen lassen“ leben im `ToolsPanel` der Assets-Seite. AC-08 (echte Daten: eine weitere Quelle außer OpenGameArt mit übernommenem Vorschlag) geht in die Abnahme WZ33.8 (Ralf). Befund dort: Mit den echten Daten bringt die Übernahme nichts, nur Wikimedia-Treffer haben eine Datei-URL und Wikimedia ist nicht erlaubt.

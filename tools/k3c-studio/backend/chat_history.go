@@ -45,6 +45,7 @@ type ChatLog struct {
 	Provider string        `json:"provider,omitempty"`
 	Model    string        `json:"model,omitempty"`
 	Effort   string        `json:"effort,omitempty"`
+	Session  string        `json:"session,omitempty"` // Sitzungs-ID der CLI, fortgesetzt per Resume (B-687)
 	Created  time.Time     `json:"created"`
 	Updated  time.Time     `json:"updated"`
 	Messages []ChatMessage `json:"messages"`
@@ -61,10 +62,12 @@ type ChatSummary struct {
 	Effort   string    `json:"effort,omitempty"`
 }
 
-// chatStore liest und schreibt den Verlauf; now ist die Uhr (Test-Naht).
+// chatStore liest und schreibt den Verlauf; now ist die Uhr (Test-Naht), dropSession entfernt beim Aufräumen die
+// Sitzungsdatei der CLI eines Chats (B-687, nil = keine).
 type chatStore struct {
-	dir string
-	now func() time.Time
+	dir         string
+	now         func() time.Time
+	dropSession func(id string)
 }
 
 func newChatID(now time.Time) string {
@@ -92,6 +95,9 @@ func (s chatStore) cleanup() (int, error) {
 		info, ierr := e.Info()
 		if e.IsDir() || filepath.Ext(e.Name()) != ".json" || ierr != nil || s.now().Sub(info.ModTime()) <= chatKeep {
 			continue
+		}
+		if c, lerr := s.load(strings.TrimSuffix(e.Name(), ".json")); lerr == nil && c.Session != "" && s.dropSession != nil {
+			s.dropSession(c.Session)
 		}
 		if rerr := os.Remove(filepath.Join(s.dir, e.Name())); rerr != nil {
 			err = rerr

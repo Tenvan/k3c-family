@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -26,7 +27,7 @@ const (
 	chatTaskWorld   = "welt" // Auftragsart: das Grundgerüst geht als Instruktion mit (B-516)
 )
 
-// chatHistoryMax begrenzt die Nachrichten des Verlaufs, die mit in den Prompt gehen (die CLI kennt keinen Verlauf).
+// chatHistoryMax begrenzt die Nachrichten des Verlaufs, die ohne fortgesetzte Sitzung mit in den Prompt gehen (B-687).
 const chatHistoryMax = 20
 
 // chatHub hält CLI, Verlauf und die laufenden Antworten (je Chat höchstens eine).
@@ -36,11 +37,15 @@ type chatHub struct {
 	mu      sync.Mutex
 	running map[string]context.CancelFunc
 	deleted map[string]struct{} // gelöschte Chats dieses Laufs: eine spät eintreffende Nachricht legt sie nicht neu an
+	// noResume: die CLI kennt keine Sitzungen, der Verlauf geht bis zum Neustart als Text mit (B-687).
+	noResume atomic.Bool
 }
 
 func newChatHub(root string) *chatHub {
-	return &chatHub{cli: defaultCLI(), store: chatStore{dir: filepath.Join(root, chatDirName), now: time.Now},
+	h := &chatHub{cli: defaultCLI(), store: chatStore{dir: filepath.Join(root, chatDirName), now: time.Now},
 		running: map[string]context.CancelFunc{}, deleted: map[string]struct{}{}}
+	h.store.dropSession = func(id string) { h.cli.removeSession(id) } // Aufräumen nimmt die Sitzungsdatei mit
+	return h
 }
 
 // chats liefert den Chat des Studios (Tests setzen a.chat vorher).
@@ -231,11 +236,12 @@ func (a *App) chatSend(w http.ResponseWriter, r *http.Request) {
 	sendEvent(w, fl, "start", map[string]string{"chat": log.ID})
 	asked := h.store.now()
 	emit := func(s string) { sendEvent(w, fl, "chunk", map[string]string{"text": s}) }
-	out := h.cli.run(ctx, chatPrompt(log.Messages, req.Text), opts, emit)
+	out, session := h.ask(ctx, log.Session, log.Messages, req.Text, opts, emit) // Sitzung fortsetzen (B-687)
 	// ungültige Vorschläge gehen zurück an den Chat; bleiben sie ungültig, gibt es keine Karten (B-686)
-	if out.Status == chatDone && a.correctAnswer(ctx, req, log, &out, opts, emit) {
+	if out.Status == chatDone && a.correctAnswer(ctx, req, log, &out, &session, opts, emit) {
 		a.afterAnswer(req, log.ID, &out, emit)
 	}
+	h.keepSession(&log, session, out)
 	sendEvent(w, fl, "done", h.record(&log, req.Text, opts, asked, out))
 }
 
@@ -321,6 +327,7 @@ func (a *App) ChatDelete(id string) error {
 	if _, busy := h.running[id]; busy {
 		return errors.New(chatBusyMsg) //nolint:staticcheck // Meldung der Oberfläche, ein ganzer Satz
 	}
+	c, _ := h.store.load(id) // für die Sitzungsdatei (B-687)
 	err := h.store.remove(id)
 	if errors.Is(err, os.ErrNotExist) {
 		return errors.New("kein Chat mit der id " + id)
@@ -329,6 +336,7 @@ func (a *App) ChatDelete(id string) error {
 		return err
 	}
 	h.deleted[id] = struct{}{}
+	h.cli.removeSession(c.Session)
 	a.actions().forget(id)
 	a.forgetProposal(id)
 	slog.Info("🧹 Chat gelöscht", "ns", "main", "chat", id)

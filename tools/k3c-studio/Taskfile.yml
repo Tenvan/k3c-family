@@ -45,13 +45,32 @@ tasks:
 
   web:
     desc: "Web-Client: Studio als Server ohne Fenster, Oberfläche im Browser unter http://127.0.0.1:8182/studio/ (Port K3C_STUDIO_WEB_PORT; Oberfläche wird nur bei Änderungen neu gebaut)"
-    deps: [':tmp', frontend]
+    deps: [':tmp', frontend, web:build]
     env:
       K3C_STUDIO_PORT: '{{.WEB_PORT}}'
     cmds:
-      # feste EXE (keine Firewall-Abfrage wie bei go run), go build statt wails build: Strg+C beendet sauber
-      - cd {{.STUDIO}} && go build -o ../../bin/k3c-studio-web{{exeExt}} .
       - ./bin/k3c-studio-web{{exeExt}} -headless{{if ne .WEB_OPEN "0"}} -open{{end}}
+
+  web:build:
+    desc: "Feste EXE bin/k3c-studio-web bauen (go build, Konsole, kein wails; nur bei geänderten Go-Quellen, `--force` erzwingt; laufenden Web-Client vorher schließen)"
+    deps: [':tmp']
+    sources:
+      - tools/k3c-studio/*.go
+      - tools/k3c-studio/backend/**/*.go
+      - tools/k3c-studio/go.mod
+      - tools/k3c-studio/go.sum
+      - tools/assetkit/**/*.go
+      - tools/assetkit/go.mod
+      - tools/ruletable/**/*.go
+      - engine/**/*.go
+      - data/**/*
+      - go.mod
+      - go.sum
+      - exclude: '**/*_test.go'
+    generates:
+      - bin/k3c-studio-web{{exeExt}}
+    cmds:
+      - cd {{.STUDIO}} && go build -o ../../bin/k3c-studio-web{{exeExt}} .
 
   window:
     desc: "Echtes Fenster prüfen (wails dev, Backend 8091, Seiten aus frontend/dist ohne Hot Reload; Oberfläche entwickeln mit dev)"

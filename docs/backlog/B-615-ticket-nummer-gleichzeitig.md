@@ -55,4 +55,4 @@ keine
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+2026-10-31 (Claude, Team WZG): AC-01 maschinell erfüllt. `TestCreateParallelVergibtVerschiedeneNummern` (8 Goroutinen) war rot, jetzt grün. Fix: `lockBacklog` in `tools/assetkit/ticket/ticket.go` (Sperrdatei `docs/backlog/.ticket.lock`, O_EXCL, Token, Übernahme verwaister Sperren per Umbenennen, in `.gitignore`). Die Workbench-Planung hat zusätzlich ihre prozessinterne Sperre. Review-Befund (Race beim Aufräumen) behoben.

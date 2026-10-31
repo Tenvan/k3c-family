@@ -1,6 +1,8 @@
 package ticket
 
 import (
+	"fmt"
+	"sync"
 	"os"
 	"path/filepath"
 	"strings"
@@ -193,6 +195,42 @@ func TestSlug(t *testing.T) {
 	} {
 		if got := Slug(in); got != want {
 			t.Errorf("Slug(%q) = %q, erwartet %q", in, got, want)
+		}
+	}
+}
+
+// B-615 AC-01: parallele Create-Aufrufe (auch aus mehreren Prozessen) vergeben verschiedene Nummern und Index-Zeilen.
+func TestCreateParallelVergibtVerschiedeneNummern(t *testing.T) {
+	root := tempRepo(t)
+	const n = 8
+	ids := make([]string, n)
+	errs := make([]error, n)
+	var wg sync.WaitGroup
+	for i := range n {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			in := input()
+			in.Titel = fmt.Sprintf("Paralleles Ticket %d", i)
+			c, err := Create(root, in)
+			ids[i], errs[i] = c.ID, err
+		}()
+	}
+	wg.Wait()
+	seen := map[string]bool{}
+	for i, id := range ids {
+		if errs[i] != nil {
+			t.Fatalf("Create %d: %v", i, errs[i])
+		}
+		if seen[id] {
+			t.Fatalf("Nummer %s doppelt vergeben: %v", id, ids)
+		}
+		seen[id] = true
+	}
+	index := read(t, root, "backlog/README.md")
+	for id := range seen {
+		if c := strings.Count(index, "| ["+id+"]"); c != 1 {
+			t.Errorf("%s steht %d-mal im Index, erwartet 1", id, c)
 		}
 	}
 }

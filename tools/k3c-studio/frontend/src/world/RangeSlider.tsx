@@ -18,8 +18,10 @@ export function thumbBox(span: Span, widthUnits: number): { left: number; width:
  *  Chunk-Vorschau (`main`), seine Breite folgt dem Zoom. Ein dünner zweiter Griff zeigt den Bereich der Live-Vorschau
  *  (`second`), wenn ihr Zoom abweicht. Ziehen verschiebt die Mitte, ein Klick auf die Spur springt dorthin, Pfeile
  *  verschieben um ein Zehntel des Sichtbereichs, Pos1 und Ende gehen an die Grenzen `range`. Die Seite begrenzt die Mitte. */
-export function RangeSlider({ label, widthUnits, center, range, main, second, onCenter }: {
+export function RangeSlider({ label, widthUnits, center, range, main, second, onCenter, className }: {
   label: string; widthUnits: number; center: number; range: [number, number]; main: Span; second?: Span; onCenter: (x: number) => void;
+  /** zusätzliche Klasse der Spur, z. B. der gelbe Rahmen über dem Streifen (B-665) */
+  className?: string;
 }) {
   const track = useRef<HTMLDivElement>(null);
   const stopDrag = useRef<(() => void) | null>(null);
@@ -59,7 +61,7 @@ export function RangeSlider({ label, widthUnits, center, range, main, second, on
   };
 
   return (
-    <div className="wd-range" ref={track} onPointerDown={jump}>
+    <div className={className ? `wd-range ${className}` : 'wd-range'} ref={track} onPointerDown={jump}>
       <div className="wd-range-thumb" role="slider" tabIndex={0} aria-label={label} aria-orientation="horizontal"
         aria-valuemin={Math.round(range[0])} aria-valuemax={Math.round(range[1])} aria-valuenow={Math.round(center)}
         aria-valuetext={`Mitte bei ${Math.round(center)} von ${Math.round(widthUnits)} Units`}

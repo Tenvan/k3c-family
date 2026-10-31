@@ -55,3 +55,5 @@ keine
 ## Notizen
 
 Gefunden in W12.4.
+
+2026-10-31 (Claude, Team WZG): Nicht mehr reproduzierbar. `go test . -run TestSourcesUndConsoleTail -count=50` in `tools/k3c-workbench`: ok (5,1 s), nichts geändert.

@@ -107,8 +107,19 @@
 .wd-mark { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: var(--wd-mark); pointer-events: none; }
 .wd-mark-planned { --wd-mark: var(--blue-9, #0090ff); }
 .wd-mark-error { --wd-mark: var(--red-9, #e5484d); }
-/* Rahmen im Streifen: die Chunks, die die Live-Vorschau gerade zeigt (gleiche Farbe wie ihr Griff im Schieber) */
-.wd-live-range { position: absolute; top: 0; bottom: 0; box-sizing: border-box; border: 2px solid #ffd166; border-radius: 4px; pointer-events: none; }
+/* Gelber Rahmen im Streifen (B-665/AC-02): der Bereich der Live-Vorschau. Die Spur liegt über dem ganzen Streifen und lässt
+   Klicks zu den Chunks durch; nur die Griffleiste oben am Rahmen ist greifbar (Ziehen verschiebt die Ansicht). */
+.wd-range.wd-frame { position: absolute; inset: 0; height: auto; border: none; border-radius: 0; background: transparent; pointer-events: none; cursor: default; }
+.wd-frame .wd-range-thumb {
+  top: 0; bottom: 0; height: auto; pointer-events: none; border: 2px solid #ffd166; border-radius: 4px;
+  background: color-mix(in srgb, #ffd166 8%, transparent);
+}
+.wd-frame .wd-range-thumb::before { content: ''; position: absolute; left: -2px; right: -2px; top: -2px; height: 10px; border-radius: 4px 4px 0 0; background: #ffd166; pointer-events: auto; cursor: grab; }
+.wd-frame .wd-range-thumb:active::before { cursor: grabbing; }
+/* Sprungmarken über dem Streifen (B-665/AC-02), im Maßstab des Streifens */
+.wd-jumprow { position: relative; height: 20px; margin-top: 4px; }
+.wd-jumprow + .wd-strip { margin-top: 2px; }
+.wd-jumpmark { position: absolute; top: 0; height: 18px; padding: 0 5px; font-size: 10px; transform: translateX(-50%); white-space: nowrap; }
 
 /* Chunk-Infos im Bodenstreifen der Live-Vorschau (B-485): Overlay über der Bühne, zwischen Boden-Oberfläche und Fluss */
 .wd-live .wd-stage { position: relative; }
@@ -128,7 +139,8 @@
 /* Klick auf einen Chunk oder einen Eintrag der Planungsliste springt dorthin (B-485) */
 .wd-strip .wd-chunk, .wd-planned { cursor: pointer; }
 
-.wd-legend-block { display: flex; flex-direction: column; gap: 4px; }
+.wd-legend-block { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+.wd-legend-block .wd-legend { flex-wrap: nowrap; overflow: hidden; gap: 4px 10px; font-size: 11px; color: var(--dim); }
 
 /* Baustufe und Zustand je Platz im Gebäude-Baum */
 .wd-look { display: inline-flex; gap: 6px; margin-left: 1.6rem; }
@@ -176,6 +188,16 @@
 .wd-chips-row { flex-direction: row; flex-wrap: wrap; gap: 6px; }
 .wd-kindname { color: var(--dim); }
 .wd-planned { margin: 0; }
+/* Die Live-Vorschau füllt den freien Platz der Seite, mindestens 400 px (B-665/AC-05); der Inspektor behält seine Höhe.
+   Seite = Fensterhöhe ohne Kopf der App (61 px) und Rand des Inhalts (32 px), aufgerundet auf 6rem. */
+.wd-page[data-mode='stufe'] { min-height: calc(100vh - 6rem); }
+.wd-page[data-mode='stufe'] .wd-stage-mode { flex: 1 1 auto; align-items: stretch; }
+.wd-stage-mode .wd-inspector { align-self: start; }
+.wd-stage-main .wd-live { flex: 1 1 auto; }
+.wd-stage-main .wd-stage { min-height: 400px; }
+/* Navigator: die Zusammenfassung steht in der Zeile von Seed und Laden und kürzt sich */
+.wd-chunks > .wd-bar { flex-wrap: nowrap; }
+.wd-chunks > .wd-bar .wd-note { flex: 1 1 0; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 @container (max-width: 900px) { .wd-stage-mode { grid-template-columns: minmax(0, 1fr); } }
 
 /* Modus Welt-Struktur (B-664) */

@@ -64,3 +64,5 @@ keine
 ## Notizen
 
 Quelle: Review WZ33.7 vom 2026-10-30, Befunde 3, 6 und 10.
+
+2026-10-31 (Claude, Team WZG): AC-01 erfüllt: `adoptMu` in `tools/assetkit/vorrat_adopt.go`, Test `TestVorratAdoptParallelEineKopie` (ohne Sperre rot). AC-02 erfüllt: `transport.test.ts` (Audio-Spion, echter Audio-Kern ungeprüft). AC-03 geklärt: Treffer-Downloads laufen über `http.DefaultClient`, `VorratRedirect` gilt nur für Vorrat-Downloads, Wikimedia steht nicht in `VorratHosts`; keine Host-Liste zu erweitern (`TestDownloadHitFolgtWeiterleitung`). Nebenbefund: siehe Ticket zur Weiterleitung auf beliebige Hosts.

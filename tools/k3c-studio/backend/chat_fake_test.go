@@ -6,6 +6,8 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -19,6 +21,8 @@ const (
 	fakePids = "K3C_CHAT_FAKE_PIDS" // Datei: PIDs von Kind und Enkel (Modus tree)
 	// fakeScript ist die Datei mit den Antworten (JSON-Liste) im Modus script (B-686).
 	fakeScript = "K3C_CHAT_FAKE_SCRIPT"
+	// fakeSessions ist der Ordner der Sitzungsdateien des Ersatzes (B-687).
+	fakeSessions = "K3C_CHAT_FAKE_SESSIONS"
 )
 
 func TestMain(m *testing.M) {
@@ -26,7 +30,15 @@ func TestMain(m *testing.M) {
 		os.Exit(fakeClaude(mode))
 	}
 	chatProgram = "k3c-claude-im-test-gesperrt" // Riegel: defaultCLI() findet nie das echte claude (B-514)
-	os.Exit(m.Run())
+	// Riegel: defaultCLI() sucht und löscht Sitzungsdateien nie im echten Profil der CLI (B-687)
+	profile, err := os.MkdirTemp("", "k3c-claude-profil-")
+	if err != nil {
+		os.Exit(1)
+	}
+	_ = os.Setenv("CLAUDE_CONFIG_DIR", profile)
+	code := m.Run()
+	_ = os.RemoveAll(profile)
+	os.Exit(code)
 }
 
 func fakeClaude(mode string) int {
@@ -41,9 +53,12 @@ func fakeClaude(mode string) int {
 		fmt.Fprintln(os.Stderr, "error: unknown option '"+chatSystemFlag+"'")
 		return 1
 	}
+	if code, end := fakeSession(mode, os.Args[1:]); end {
+		return code
+	}
 	fakeLine(map[string]any{"type": "system", "subtype": "init"})
 	switch mode {
-	case "echo":
+	case "echo", "noresume": // noresume: wie echo, kennt aber --resume nicht (B-687)
 		text := "Echo: " + string(prompt)
 		half := len(text) / 2
 		fakeDelta(text[:half])
@@ -73,6 +88,33 @@ func fakeClaude(mode string) int {
 		return 1
 	}
 	return 0
+}
+
+// fakeSession spielt die Sitzungen der CLI nach (B-687): --session-id legt die Datei unter fakeSessions an, --resume
+// verlangt sie (sonst Fehler wie die CLI); im Modus noresume kennt die CLI --resume nicht. end = Prozess endet hier.
+func fakeSession(mode string, args []string) (code int, end bool) {
+	dir := os.Getenv(fakeSessions)
+	arg := func(name string) string {
+		if i := slices.Index(args, name); i >= 0 && i+1 < len(args) {
+			return args[i+1]
+		}
+		return ""
+	}
+	if id := arg("--resume"); id != "" {
+		if mode == "noresume" {
+			fmt.Fprintln(os.Stderr, "error: unknown option '--resume'")
+			return 1, true
+		}
+		if _, err := os.Stat(filepath.Join(dir, "fake-projekt", id+".jsonl")); err != nil {
+			fmt.Fprintln(os.Stderr, "No conversation found with session ID: "+id)
+			return 1, true
+		}
+	}
+	if id := arg("--session-id"); id != "" && dir != "" {
+		_ = os.MkdirAll(filepath.Join(dir, "fake-projekt"), 0o755)
+		_ = os.WriteFile(filepath.Join(dir, "fake-projekt", id+".jsonl"), []byte("{}\n"), 0o644)
+	}
+	return 0, false
 }
 
 // fakeScriptAnswer liefert die n-te Antwort des Skripts (n = Zahl der bisherigen Aufrufe, danach die letzte) und hängt
@@ -145,8 +187,9 @@ func fakeCLI(t *testing.T, mode string, timeout time.Duration) (chatCLI, string)
 	}
 	dir := t.TempDir()
 	argsFile := dir + string(os.PathSeparator) + "args.json"
-	return chatCLI{program: exe, timeout: timeout, workDir: dir + string(os.PathSeparator) + "leer",
-		env: []string{fakeMode + "=" + mode, fakeArgs + "=" + argsFile}}, argsFile
+	sessions := filepath.Join(dir, "sitzungen")
+	return chatCLI{program: exe, timeout: timeout, workDir: dir + string(os.PathSeparator) + "leer", sessions: sessions,
+		env: []string{fakeMode + "=" + mode, fakeArgs + "=" + argsFile, fakeSessions + "=" + sessions}}, argsFile
 }
 
 // fakeRecord liest, was der Ersatz-Prozess bekam.

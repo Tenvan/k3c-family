@@ -110,7 +110,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-670](B-670-studio-planer-kompakt.md) | DEV | Idee | mittel | eingeplant | WZ38 | Der Gebäude-Planer zeigt Bühne, Matrix und Inspektor auf einen Blick, ohne dass Filter oder Regeltabelle die Fläche schlucken |
 | [B-671](B-671-studio-monarch-kompakt.md) | DEV | Idee | mittel | eingeplant | WZ38 | Die Monarch-Seite hat eine Werkzeugleiste und eine große Bühne, die Skills liegen in einem einklappbaren Seitenpanel |
 | [B-672](B-672-studio-gegner-kompakt.md) | DEV | Idee | mittel | eingeplant | WZ38 | Die Gegner-Seite zeigt Gegner als kompakte Tabelle mit Inspektor, Lücken als Zahl statt langer Badges |
-| [B-673](B-673-studio-quellen-kompakt.md) | DEV | Idee | mittel | eingeplant | WZ38 | Die Quellen-Seite ist kompakt nach Slot gegliedert, und alle vier Quellen lassen sich mit Vorschlägen füllen |
 | [B-674](B-674-skill-effekt-am-wirkort.md) | SRV | Problem | mittel | eingeplant | KB5 | Flächenzauber erscheinen dort, wo die Simulation sie wirkt, nicht am Monarchen |
 | [B-675](B-675-status-effekte-sichtbar.md) | CLI | Idee | mittel | eingeplant | KB5 | DoTs, Buffs und Kontrolleffekte der Skills sind im Spiel sichtbar |
 | [B-676](B-676-studio-skills-ziel-und-status.md) | DEV | Idee | mittel | eingeplant | KB5 | Das Studio zeigt Skills am Wirkort und DoTs und Buffs an Gegnern und Monarchen |
@@ -124,6 +123,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-685](B-685-zielmass-grafiken-skalieren.md) | CLI | Idee | hoch | eingeplant | GRJ2 | Grafiken bekommen ein Zielmaß in der Ausgabe und werden dort passend skaliert |
 | [B-686](B-686-studio-chat-welt-pruefung.md) | DEV | Problem | hoch | eingeplant | WZ36 | Der Studio-Chat liefert nur Welten, die die Prüfung bestehen, und korrigiert Fehler Schritt für Schritt |
 | [B-687](B-687-studio-chat-resume.md) | DEV | Idee | niedrig | eingeplant | WZ36 | Der Studio-Chat setzt die Claude-Sitzung per Resume fort und fällt auf den Verlauf als Text zurück |
+| [B-688](B-688-download-weiterleitung-fremde-hosts.md) | DEV | Problem | mittel | offen | – | Downloads folgen Weiterleitungen nur zu erlaubten Hosts |
 
 ## Archiv
 
@@ -647,3 +647,4 @@ Zeile in diesen Abschnitt.
 | [B-623](archiv/B-623-hub-stufenfolge-bestaetigen.md) | REG | Frage | mittel | erledigt | – | Stufenfolge des Hubs (3 Schritte je Hub-Stufe, Material-Tor) bestätigen |
 | [B-626](archiv/B-626-rg1-werte-entscheiden.md) | REG | Frage | mittel | erledigt | – | Wertvorschläge aus RG1.1 und BR2.1 entscheiden |
 | [B-627](archiv/B-627-rg2-regelklaerungen.md) | REG | Frage | mittel | erledigt | – | Regelklärungen RG2.1 (Handwerker, Verlust-Korridor, Gold-Schwelle) entscheiden |
+| [B-673](archiv/B-673-studio-quellen-kompakt.md) | DEV | Idee | mittel | erledigt | WZ38 | Die Quellen-Seite ist kompakt nach Slot gegliedert, und alle vier Quellen lassen sich mit Vorschlägen füllen |

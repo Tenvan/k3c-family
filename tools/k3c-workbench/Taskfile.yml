@@ -61,15 +61,36 @@ tasks:
 
   web:
     desc: "Web-Client: Workbench als Server ohne Fenster, Oberfläche im Browser unter http://127.0.0.1:8181/ (MCP 5180, laufende Workbench-EXE vorher schließen; Ports K3C_WEB_UI_PORT, K3C_WEB_MCP_PORT)"
-    deps: [':tmp', frontend]
+    deps: [':tmp', web:build]
     dir: '{{.DEV}}'
     env:
       K3C_DEV_PORT: '{{.WEB_MCP_PORT}}'
       K3C_DEV_UI_API_PORT: '{{.WEB_UI_PORT}}'
     cmds:
-      # feste EXE (keine Firewall-Abfrage wie bei go run), go build statt wails build: Strg+C beendet sauber
-      - go build -o ../../bin/k3c-workbench-web{{exeExt}} .
       - ../../bin/k3c-workbench-web{{exeExt}} -headless{{if ne .WEB_OPEN "0"}} -open{{end}}
+
+  web:build:
+    desc: "Feste EXE bin/k3c-workbench-web bauen (go build, Konsole, kein wails; nur bei geänderten Quellen, `--force` erzwingt; laufenden Web-Client vorher schließen)"
+    deps: [':tmp', frontend]
+    dir: '{{.DEV}}'
+    sources:
+      - '*.go'
+      - internal/**/*.go
+      - go.mod
+      - go.sum
+      - frontend/dist/**/*
+      - ../assetkit/**/*.go
+      - ../assetkit/go.mod
+      - ../ruletable/**/*.go
+      - ../../engine/**/*.go
+      - ../../data/**/*
+      - ../../go.mod
+      - ../../go.sum
+      - exclude: '**/*_test.go'
+    generates:
+      - ../../bin/k3c-workbench-web{{exeExt}}
+    cmds:
+      - go build -o ../../bin/k3c-workbench-web{{exeExt}} .
 
   window:
     desc: "Workbench als Fenster im Entwicklungsmodus (wails dev): Hot Reload der Oberfläche, Neubau bei Go-Änderungen in tools/k3c-workbench"

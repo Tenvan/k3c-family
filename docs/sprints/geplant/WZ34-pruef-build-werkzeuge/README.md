@@ -1,8 +1,8 @@
-# WZ34 · DEV · Prüf- und Build-Werkzeuge: Studio-Test, check:diff, buildall
+# WZ34 · DEV, INF · Prüf- und Build-Werkzeuge: Studio-Test, check:diff, buildall
 
 - **Status:** geplant
 - **Projekt:** WZG
-- **Domäne:** DEV
+- **Domäne:** DEV, INF
 - **Reife:** Entwurf
 - **Tickets:** B-617, B-621, B-629
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
@@ -53,6 +53,12 @@ Eine laufende EXE sperrt das Ziel → `task buildall` nennt den Grund statt stil
 keine.
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ34.1 | `WZ34.1-studio-test-und-flake.md` | Umsetzung | autonom | offen |
+| WZ34.2 | `WZ34.2-buildall-web-exe.md` | Umsetzung | autonom | offen |
+| WZ34.3 | `WZ34.3-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 

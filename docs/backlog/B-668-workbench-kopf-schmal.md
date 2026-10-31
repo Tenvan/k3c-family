@@ -57,3 +57,5 @@ keine
 ## Notizen
 
 Gefunden bei der Prüfung von WZ32.2 (Seitenrahmen der Balancing-Seite).
+
+2026-10-31 (Claude, Team WZG): AC-02 erfüllt (Vitest `App.test.tsx`: `wk-header-tabs`, Reiter im Scroll-Container in `tools/webkit/theme.css`). AC-01 nicht gemessen: Messung bei 600 px (`?mock=1`, `scrollWidth` = `innerWidth` auf Balancing, Planung, Tasks) steht aus, durch 🧑 oder Browser-Pane.

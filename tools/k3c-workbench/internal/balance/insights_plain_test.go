@@ -169,3 +169,15 @@ func TestRecommendationsEinBlock(t *testing.T) {
 		t.Error("ohne Stellschrauben kein Block")
 	}
 }
+
+// B-669: Ein Ziel ohne Unter- und Obergrenze stürzt die Auswertung nicht ab.
+func TestZielOhneGrenzenStuerztNichtAb(t *testing.T) {
+	ti := TargetInsight{Name: "Ohne Grenzen", Value: 5, Status: StatusOK}
+	if got := ti.target(); got != "Kein Sollwert hinterlegt." {
+		t.Fatalf("target() = %q", got)
+	}
+	if s := ti.plain(); !strings.Contains(s, "Kein Sollwert hinterlegt.") {
+		t.Fatalf("plain() = %q", s)
+	}
+	_ = ti.gapText()
+}

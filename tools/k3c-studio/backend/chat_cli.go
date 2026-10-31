@@ -42,12 +42,22 @@ const (
 // xhigh, max): -p nicht-interaktiv mit dem Prompt über stdin,
 // stream-json mit Teil-Nachrichten für die fortlaufende Antwort (--verbose verlangt die CLI dazu), --tools "" ohne
 // Werkzeuge, dontAsk und keine Rückfragen (alles nicht Erlaubte wird abgelehnt), keine MCP-Server, --safe-mode ohne
-// CLAUDE.md, Hooks, Plugins und Skills, kein gespeicherter Verlauf der CLI. Modell und Denkstufe kommen nur dazu,
-// wenn gewählt (--model, --effort); die Sicherheits-Argumente bleiben gleich.
+// CLAUDE.md, Hooks, Plugins und Skills. Sitzung (B-687): mit Sitzungs-ID setzt --resume <id> sie fort oder legt
+// --session-id <id> sie an, ohne ID speichert die CLI nichts (--no-session-persistence); --continue nie. Modell und
+// Denkstufe kommen nur dazu, wenn gewählt (--model, --effort); die Sicherheits-Argumente bleiben gleich.
 func chatArgs(o chatOptions) []string {
-	return append([]string{"-p", "--output-format", "stream-json", "--verbose", "--include-partial-messages",
+	args := []string{"-p", "--output-format", "stream-json", "--verbose", "--include-partial-messages",
 		"--tools", "", "--permission-mode", "dontAsk", "--permission-prompts", "none",
-		"--strict-mcp-config", "--safe-mode", "--no-session-persistence"}, o.args()...)
+		"--strict-mcp-config", "--safe-mode"}
+	switch {
+	case o.session != "" && o.resume:
+		args = append(args, "--resume", o.session)
+	case o.session != "":
+		args = append(args, "--session-id", o.session)
+	default:
+		args = append(args, "--no-session-persistence")
+	}
+	return append(args, o.args()...)
 }
 
 // chatKeepEnv sind Einstellungen von 🧑 mit dem Präfix CLAUDE_CODE_, die an die CLI durchgehen (Anmeldung, Anbieter,
@@ -78,11 +88,14 @@ type chatCLI struct {
 	timeout time.Duration
 	workDir string   // fester leerer Arbeitsordner (kein CLAUDE.md, keine Dateien als Kontext)
 	env     []string // zusätzliche Umgebung (Test-Ersatz)
-	log     *slog.Logger
+	// sessions ist der Ordner der Sitzungsdateien der CLI (<Profil>/projects, B-687); leer = ohne Sitzungen.
+	sessions string
+	log      *slog.Logger
 }
 
 func defaultCLI() chatCLI {
-	return chatCLI{program: chatProgram, timeout: chatTimeout, workDir: filepath.Join(os.TempDir(), chatWorkDir)}
+	return chatCLI{program: chatProgram, timeout: chatTimeout, workDir: filepath.Join(os.TempDir(), chatWorkDir),
+		sessions: claudeSessionRoot()}
 }
 
 // chatOutcome ist das Ergebnis einer Antwort.

@@ -149,3 +149,26 @@ func TestDownloadHit(t *testing.T) {
 		t.Errorf("ohne Download: %v", err)
 	}
 }
+
+// B-678 AC-03: Ein Treffer-Download von einem erlaubten Host folgt Weiterleitungen (Client ohne Vorrat-Host-Prüfung).
+func TestDownloadHitFolgtWeiterleitung(t *testing.T) {
+	root, _, _ := importRepo(t)
+	srv := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/alt.png" {
+			http.Redirect(w, r, "/neu.png", http.StatusFound)
+			return
+		}
+		_, _ = w.Write(pngBytes(t))
+	}))
+	defer srv.Close()
+	DownloadHosts["127.0.0.1"] = true
+	defer delete(DownloadHosts, "127.0.0.1")
+	if _, err := AddHits(root, "farm", []Hit{{Title: "Weiter.png", Link: "https://commons.wikimedia.org/w", Source: "Wikimedia Commons",
+		License: "CC0 1.0", Download: srv.URL + "/alt.png"}}, day); err != nil {
+		t.Fatal(err)
+	}
+	hits, _ := HitsOf(root, "farm")
+	if _, err := DownloadHit(context.Background(), root, "farm", hits[len(hits)-1].ID, tlsClient(srv), day); err != nil {
+		t.Fatalf("Weiterleitung: %v", err)
+	}
+}

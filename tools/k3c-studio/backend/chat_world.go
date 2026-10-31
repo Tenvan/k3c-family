@@ -216,7 +216,9 @@ func bullets(list []string) string {
 
 // correctAnswer lässt den Chat Befunde seiner Antwort korrigieren (höchstens chatFixMax Mal); jeder Versuch steht mit
 // Hinweis in der Antwort, danach der neue Vorschlag. Bleiben Befunde, stehen sie am Ende für 🧑 (false: nichts anbieten).
-func (a *App) correctAnswer(ctx context.Context, req chatRequest, log ChatLog, out *chatOutcome, opts chatOptions, emit func(string)) bool {
+// Korrekturen laufen in der Sitzung session der Antwort weiter (B-687), die danach die aktuelle ist.
+func (a *App) correctAnswer(ctx context.Context, req chatRequest, log ChatLog, out *chatOutcome, session *string, opts chatOptions,
+	emit func(string)) bool {
 	history, text, answer := log.Messages, req.Text, out.Text
 	for try := 1; ; try++ {
 		problems, proposed := a.checkAnswer(req, log.ID, answer)
@@ -239,7 +241,8 @@ func (a *App) correctAnswer(ctx context.Context, req chatRequest, log ChatLog, o
 		slog.Info("🔁 Chat-Antwort zur Korrektur zurück", "ns", "main", "chat", log.ID, "versuch", try, "befunde", len(problems))
 		history = append(slices.Clone(history), ChatMessage{Role: chatUser, Text: text}, ChatMessage{Role: chatModel, Text: answer})
 		text = fixRequest(problems)
-		next := a.chats().cli.run(ctx, chatPrompt(history, text), a.retryOptions(opts, req, log.ID, proposed), emit)
+		next, s := a.chats().ask(ctx, *session, history, text, a.retryOptions(opts, req, log.ID, proposed), emit)
+		*session = s
 		out.Text += next.Text
 		out.Status, out.Error = next.Status, next.Error
 		if next.Status != chatDone {

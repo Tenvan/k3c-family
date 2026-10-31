@@ -27,7 +27,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WZ34 | DEV | WZG | Prüf- und Build-Werkzeuge: Studio-Test, check:diff, buildall | – | Entwurf | `geplant/WZ34-pruef-build-werkzeuge/` |
+| WZ34 | DEV, INF | WZG | Prüf- und Build-Werkzeuge: Studio-Test, check:diff, buildall | – | Entwurf | `geplant/WZ34-pruef-build-werkzeuge/` |
 | WZ35 | DEV | WZG | Workbench-Nachträge: Ticket-Nummern, Lauf-IDs, schmale Fenster, Auswertung | – | Entwurf | `geplant/WZ35-workbench-nachtraege/` |
 | WZ36 | DEV | WZG | Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung | – | Entwurf | `geplant/WZ36-studio-chat-aktionen-resume/` |
 | WZ37 | DEV | WZG | Welt-Overrides im Welten-Editor und im Studio-Chat | – | Entwurf | `geplant/WZ37-overrides-editor-chat/` |

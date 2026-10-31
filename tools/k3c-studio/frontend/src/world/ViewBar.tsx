@@ -1,5 +1,4 @@
 import { Button, SelectField, Slider } from '@webkit/atoms';
-import { RangeSlider, type Span } from './RangeSlider';
 import { MAX_SCALE, MIN_SCALE, ZOOM_PERCENTS, scaleOfPercent, type JumpPoint, type Views } from './viewState';
 
 const ZOOM_STEP = 1.25;
@@ -33,13 +32,3 @@ export function ViewBar({ views, jumps, onScale, onZoom, onCenter }: {
   );
 }
 
-/** Der eine Bereichs-Schieber für die Weltposition der Bildmitte im Bereich `range`, unter der Chunk-Vorschau. Hat die
- *  Live-Vorschau einen eigenen Zoom (Alt + Rad), erscheint ihr Bereich als zweiter, dünner Griff. */
-export function PositionBar({ views, spans, widthUnits, range, onCenter }: {
-  views: Views; spans: { chunk: Span; live: Span }; widthUnits: number; range: [number, number]; onCenter: (x: number) => void;
-}) {
-  return (
-    <RangeSlider label="Position" widthUnits={widthUnits} center={views.center} range={range} main={spans.chunk}
-      second={views.live !== views.chunk ? spans.live : undefined} onCenter={onCenter} />
-  );
-}

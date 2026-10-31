@@ -250,7 +250,7 @@ function HubLevelControl({ segments, choices, hubLevel, setHubLevel }: { segment
  *  Tageszeit, Hintergrund-Schichten mit Parallaxe (Kamera scrollt). Position und Zoom kommen von außen (`position`, B-477,
  *  gleich wie im Chunk-Streifen); Ziehen meldet `onPan` (Pixel), das Mausrad geht an `onWheel`; `onSites` meldet die Bauplätze
  *  (für die Sprungpunkte). Mit `plan` zeigt sie den Entwurf der geplanten Chunks (B-461/AC-11). */
-export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, plan, planer, controlsHost, treeHost, layersHost, lookHost, onPickSite }: {
+export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, plan, planer, controlsHost, treeHost, layersHost, lookHost, onPickSite, fill }: {
   seed: string; biome: string; position: StagePosition; onPan: (px: number) => void; onWheel: (e: WheelEvent) => void;
   onSites?: (sites: readonly { kind: string; x: number }[]) => void; plan?: PlanSource; planer?: PlanerSource;
   /** Zielelemente der Seite: Hub-Stufe, Tageszeit und Schichten (`controlsHost`) und der Gebäude-Baum (`treeHost`) erscheinen dort statt um die Bühne */
@@ -261,6 +261,8 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
   lookHost?: HTMLElement | null;
   /** Ein Klick wählte einen Bauplatz in der Bühne: die Seite öffnet den Reiter Gebäude (B-667) */
   onPickSite?: () => void;
+  /** Höhe aus dem Layout der Seite (füllt den freien Platz, Modus Stufe bearbeiten, B-665/AC-05) statt aus dem Zoom (`stageStyle`) */
+  fill?: boolean;
 }) {
   const { choices, hubLevel, setHubLevel } = useHubLevel(planer);
   const [timeId, setTimeId] = useState<TimeOfDayId>('day');
@@ -294,7 +296,7 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
     <div className="wd-live-body">
       {into(controls, controlsHost)}
       {!inspector && <BuildingChips toggles={toggles} off={off} onSet={setMany} selected={shown} onSelect={select} />}
-      <div className="wd-stage" ref={host} style={stageStyle(position.scale)} />
+      <div className="wd-stage" ref={host} style={fill ? undefined : stageStyle(position.scale)} />
       {inspector && into(<BuildingInspector toggles={toggles} off={off} onSet={setMany} looks={looks} onLooks={setLooks} selected={sel} onSelect={select} />, treeHost)}
       {layersHost && createPortal(layers, layersHost)}
       <LookCard host={lookHost} toggles={toggles} keys={chosen} looks={looks} onLooks={setLooks} />

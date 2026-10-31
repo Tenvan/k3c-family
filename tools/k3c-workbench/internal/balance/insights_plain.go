@@ -169,6 +169,8 @@ func (t TargetInsight) target() string {
 		return fmt.Sprintf("Sollwert: %s%s.", t.boundsText(), of)
 	case t.Lower != nil:
 		return fmt.Sprintf("Sollwert: mindestens %s%s.", num(*t.Lower)+t.entry.unit(), of)
+	case t.Upper == nil:
+		return "Kein Sollwert hinterlegt."
 	}
 	return fmt.Sprintf("Sollwert: höchstens %s%s.", num(*t.Upper)+t.entry.unit(), of)
 }

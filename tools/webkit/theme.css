@@ -64,8 +64,10 @@ html { scrollbar-width: thin; scrollbar-color: rgb(128 128 128 / 0.45) transpare
   backdrop-filter: blur(6px);
 }
 .wk-header-title { color: var(--title); letter-spacing: 0.04em; white-space: nowrap; }
-.wk-header-tabs { flex: 1; }
-.wk-header-right { white-space: nowrap; }
+/* B-668: schmale Fenster: die Reiter rollen in sich, die rechte Leiste bricht um, die Seite wird nie breiter. */
+.wk-header-tabs { flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.wk-header-right { flex-wrap: wrap; justify-content: flex-end; min-width: 0; }
+.wk-header-right > * { white-space: nowrap; }
 .wk-body { flex: 1; min-height: 0; display: flex; }
 .wk-page { flex: 1; min-width: 0; padding: 20px; }
 .wk-shell-fixed .wk-page { overflow: auto; padding: 12px 20px 20px; }
