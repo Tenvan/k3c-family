@@ -1,6 +1,6 @@
 # BAL8.3 · Review BAL8
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** REG
@@ -49,5 +49,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-10-31: `task check:go` grün (1 min 46 s), `task check:diff` grün (3 min 36 s), `task check` zuletzt grün (WZ35.4). `check:race` lokal ohne gcc nicht lauffähig, B-681/AC-03 in CI nachzuweisen. Unabhängiges Review (Sonnet) zu BAL8.2: 7 Befunde hoch (gemischte Quelle), behoben mit `TestWertesatzEineQuelleJeWert`; mittlere Befunde in B-692. AC-02 belegt. AC-01 (`docs/rules/welten.md` § 1): Regeldatei liegt vor, Bestätigung durch Ralf steht aus.

@@ -33,10 +33,13 @@ type PlanIsland struct {
 // PlanView ist die Welt-Datei der gewählten Welt für den Editor. Stand ist der Hash der Datei beim Lesen; PlanSave und
 // PlanWorldSave brauchen ihn.
 type PlanView struct {
-	Name    string           `json:"name"`  // Name der Welt (WZ18.6)
-	Notes   string           `json:"notes"` // Notizen der Welt
-	Islands []PlanIsland     `json:"islands"`
-	Sizes   []sim.IslandSize `json:"sizes"` // Inselgrößen zur Auswahl im Editor (data/island-sizes.json)
+	Name  string `json:"name"`  // Name der Welt (WZ18.6)
+	Notes string `json:"notes"` // Notizen der Welt
+	// Extends ist die Eltern-Welt, Overrides die übersteuerten Basis-Werte der Datei (B-682; leer = keine)
+	Extends   string                     `json:"extends"`
+	Overrides map[string]json.RawMessage `json:"overrides"`
+	Islands   []PlanIsland               `json:"islands"`
+	Sizes     []sim.IslandSize           `json:"sizes"` // Inselgrößen zur Auswahl im Editor (data/island-sizes.json)
 	// RuinKinds sind die Arten, die als Ruine geplant werden dürfen (data/ruins.json › kinds, WZ14.7); geprüft wird im Go-Generator.
 	RuinKinds []string `json:"ruinKinds"`
 	Stand     string   `json:"stand"`
@@ -90,9 +93,11 @@ func (a *App) PlanLoad() PlanView {
 		return view
 	}
 	var f struct {
-		Name    string `json:"name"`
-		Notes   string `json:"notes"`
-		Islands []struct {
+		Name      string                     `json:"name"`
+		Notes     string                     `json:"notes"`
+		Extends   string                     `json:"extends"`
+		Overrides map[string]json.RawMessage `json:"overrides"`
+		Islands   []struct {
 			ID      string                          `json:"id"`
 			Name    string                          `json:"name"`
 			Depths  []int                           `json:"depths"`
@@ -124,6 +129,10 @@ func (a *App) PlanLoad() PlanView {
 		view.Islands = append(view.Islands, isl)
 	}
 	view.Name, view.Notes, view.Stand = f.Name, f.Notes, planStand(raw)
+	view.Extends, view.Overrides = f.Extends, f.Overrides
+	if view.Overrides == nil {
+		view.Overrides = map[string]json.RawMessage{}
+	}
 	view.Problems = append([]string{}, worldProblems(raw, a.activeWorld())...)
 	return view
 }

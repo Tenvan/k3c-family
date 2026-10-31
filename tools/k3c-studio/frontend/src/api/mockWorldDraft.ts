@@ -1,5 +1,6 @@
 import type { MockIsland, MockWorld } from './mockWorlds';
 import type { PlanSaved } from './types';
+import { mockOverrideFault, mockValues } from './mockWorldValues';
 import type { DraftField, WorldAnswerView, WorldCheckView, WorldDraft, WorldDraftApi } from './worldTypes';
 
 // Entwurf einer Welt im Mock (Browser, Tests): Die Prüfung kennt die Fälle der Prüfung des Ladens, die die Oberfläche
@@ -35,6 +36,8 @@ export function mockCheckWorld(id: string, d: WorldDraft): WorldCheckView {
     const fault = islandFault(d, i);
     if (fault) return fail(i, ...fault);
   }
+  const values = mockOverrideFault(id, d.overrides);
+  if (values) return { ok: false, island: -1, field: 'overrides', error: values, preview };
   return { ok: true, island: -1, field: '', error: '', preview };
 }
 
@@ -50,7 +53,7 @@ function applyDraft(w: MockWorld, d: WorldDraft): MockWorld {
     const old = w.islands.find((o) => isl.from !== '' && o.id === isl.from);
     return { id: isl.id, name: isl.name, depths: [...isl.depths], depthScaling: { ...isl.depthScaling }, planned: old?.planned ?? {}, counts: old?.counts ?? {} };
   });
-  return { name: d.name, notes: d.notes, islands };
+  return { name: d.name, notes: d.notes, islands, overrides: d.overrides ?? w.overrides };
 }
 
 /** Entwurfs-Teil des Mock-Plans: prüfen und speichern auf dem Stand (`stand`), danach `bump` (neuer Stand). */
@@ -58,6 +61,7 @@ export function mockWorldDraft(active: () => string, world: () => MockWorld, rep
   return {
     planWorldAnswer: async (text) => mockAnswer(active(), text, world().islands.map((i) => i.id)),
     planWorldCheck: async (d) => mockCheckWorld(active(), d),
+    planWorldValues: async () => mockValues(active(), world().overrides, []),
     planWorldSave: async (d, at): Promise<PlanSaved> => {
       if (at !== stand()) return { stand: '', hint: '', error: staleText(active()), stale: true };
       const check = mockCheckWorld(active(), d);

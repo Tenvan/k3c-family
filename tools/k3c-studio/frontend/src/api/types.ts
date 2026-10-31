@@ -172,6 +172,9 @@ export interface PlanView {
   error: string;
   /** alle Fehler der Prüfung des Ladens für die gespeicherte Datei (leer = gültig, B-686); fehlt beim Mock */
   problems?: string[];
+  /** Eltern-Welt (leer = Basis) und übersteuerte Basis-Werte der Datei (B-682) */
+  extends?: string;
+  overrides?: Record<string, unknown>;
 }
 
 /** Ergebnis der Prüfung eines Entwurfs (Go: PlanCheckView); slot nennt den Platz des Fehlers (0 = ohne Platz) */

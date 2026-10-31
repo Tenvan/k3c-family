@@ -5,7 +5,7 @@ import type { AssetCandidatesView } from './candidateTypes';
 import type { AssetSlotDetails } from './slotTypes';
 import type { NetworkMode, NetworkView, SourceAddView, SourceCleanupView, SourceProgress, SourcesView } from './sourceTypes';
 import type { AssetSuggestionsView } from './suggestionTypes';
-import type { WorldAnswerView, WorldCheckView, WorldDraft } from './worldTypes';
+import type { WorldAnswerView, WorldCheckView, WorldDraft, WorldValuesView } from './worldTypes';
 
 // Das Studio ist eine Seite des Go-Servers (Backend tools/k3c-studio/backend): jede Methode von App ist ein POST auf /api/studio/rpc/<Methode>
 // mit den Argumenten als JSON-Array, die Antwort ist {result} oder {error}. Die Kopfzeile hält fremde Seiten fern (CORS-Preflight).
@@ -101,6 +101,7 @@ export function httpBackend(): Backend {
     planWorldCheck: (draft: WorldDraft) => rpc<WorldCheckView>('PlanWorldCheck', draft),
     planWorldSave: (draft: WorldDraft, stand: string) => rpc<PlanSaved>('PlanWorldSave', draft, stand),
     planWorldAnswer: (text: string) => rpc<WorldAnswerView>('PlanWorldAnswer', text),
+    planWorldValues: () => rpc<WorldValuesView>('PlanWorldValues'),
     planChunkObjects: (seed: string, src: WorldSource, slot: number) => rpc<PlanObjectsView>('PlanChunkObjects', seed, src, slot),
     hubPlan: () => rpc<HubPlanView>('HubPlan'),
     hubRules: (hubJSON: string) => rpc<HubRulesView>('HubRules', hubJSON),

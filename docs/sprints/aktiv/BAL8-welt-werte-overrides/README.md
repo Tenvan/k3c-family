@@ -57,7 +57,7 @@ keine. Entschieden (🧑, 2026-10-31): Eine Welt darf alle Basis-Werte laut `B-6
 |---|---|---|---|---|
 | BAL8.1 | `BAL8.1-overrides-format.md` | Umsetzung | autonom | fertig |
 | BAL8.2 | `BAL8.2-wertesatz-je-raum.md` | Umsetzung | autonom | fertig |
-| BAL8.3 | `BAL8.3-review.md` | Review | autonom | offen |
+| BAL8.3 | `BAL8.3-review.md` | Review | autonom | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 

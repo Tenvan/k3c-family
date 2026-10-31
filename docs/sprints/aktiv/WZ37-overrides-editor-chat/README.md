@@ -1,11 +1,11 @@
 # WZ37 · DEV · Welt-Overrides im Welten-Editor und im Studio-Chat
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-682, B-683
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** dc31130a
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-31, Ralf im Chat (Revision 1)
@@ -55,7 +55,7 @@ keine.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ37.1 | `WZ37.1-editor-overrides.md` | Umsetzung | autonom | offen |
+| WZ37.1 | `WZ37.1-editor-overrides.md` | Umsetzung | autonom | fertig |
 | WZ37.2 | `WZ37.2-chat-overrides.md` | Umsetzung | autonom | offen |
 | WZ37.3 | `WZ37.3-review.md` | Review | autonom | offen |
 

@@ -10,9 +10,11 @@ import type { Guard } from './WorldGuard';
 import type { PlanState } from './usePlan';
 import type { WorldDraftState } from './useWorldDraft';
 
-export type Mode = 'welt' | 'stufe';
-export const MODES: readonly Mode[] = ['welt', 'stufe'];
-const MODE_OPTIONS = [{ value: 'welt' as const, label: 'Welt-Struktur' }, { value: 'stufe' as const, label: 'Stufe bearbeiten' }];
+export type Mode = 'welt' | 'werte' | 'stufe';
+export const MODES: readonly Mode[] = ['welt', 'werte', 'stufe'];
+const MODE_OPTIONS = [{ value: 'welt' as const, label: 'Welt-Struktur' }, { value: 'werte' as const, label: 'Werte' }, { value: 'stufe' as const, label: 'Stufe bearbeiten' }];
+/** Welt-Struktur und Werte bearbeiten denselben Welt-Entwurf (B-682); ein Wechsel zwischen ihnen fragt nicht zurück. */
+export const isWorldMode = (mode: Mode) => mode !== 'stufe';
 
 const biomeName = (id: string) => BIOMES.find((b) => b.id === id)?.name ?? id;
 
@@ -65,14 +67,21 @@ function StagePick({ plan, guard }: { plan: PlanState; guard: Guard }) {
   );
 }
 
+/** Kind-Welten, auf die ein offener Welt-Entwurf wirkt (B-682): der Editor nennt sie vor dem Speichern. */
+function ChildWorlds({ kids }: { kids: string[] }) {
+  if (kids.length === 0) return null;
+  return <Text size="1" color="orange" aria-label="Wirkt auf Kind-Welten" title="Diese Welten erben von der gewählten (extends)">wirkt auch auf: {kids.join(', ')}</Text>;
+}
+
 /** Speichern und Verwerfen des Entwurfs im aktiven Modus, mit der Zahl der Änderungen (B-664/AC-03). */
 function SaveArea({ mode, plan, world }: { mode: Mode; plan: PlanState; world: WorldDraftState }) {
-  const welt = mode === 'welt';
+  const welt = isWorldMode(mode);
   const state = welt ? world : plan;
   const lock = welt ? world.lock : undefined;
   return (
     <div className="wd-bar wd-save">
       {state.dirty && <Text size="2" color="orange" role="status" className="wd-changes">{changesText(state.changes)}</Text>}
+      <ChildWorlds kids={welt && world.dirty ? (world.values?.children ?? []) : []} />
       {!state.check.ok && state.dirty && <Text size="2" color="red">ungültig</Text>}
       <Button variant="outline" disabled={!state.dirty} onClick={state.discard}>Verwerfen</Button>
       <Button disabled={!state.dirty || !state.check.ok || lock !== undefined} title={lock} onClick={() => void state.save()}>{welt ? 'Welt speichern' : 'Speichern'}</Button>
@@ -86,11 +95,11 @@ function SaveArea({ mode, plan, world }: { mode: Mode; plan: PlanState; world: W
 export function WorldHeader({ mode, onMode, plan, world, guard, seed, biome }: {
   mode: Mode; onMode: (mode: Mode) => void; plan: PlanState; world: WorldDraftState; guard: Guard; seed: string; biome: string;
 }) {
-  const notice = mode === 'welt' ? world.notice : (plan.notice ?? (plan.dirty ? world.notice : null)); // Chat-Meldung auch bei offener Planung
+  const notice = isWorldMode(mode) ? world.notice : (plan.notice ?? (plan.dirty ? world.notice : null)); // Chat-Meldung auch bei offener Planung
   return (
     <header className="wd-head">
       <div className="wd-bar">
-        <ChipSwitch label="Modus" options={MODE_OPTIONS} value={mode} onChange={(m) => { if (m !== mode) guard.run(() => onMode(m)); }} />
+        <ChipSwitch label="Modus" options={MODE_OPTIONS} value={mode} onChange={(m) => { if (m === mode) return; if (isWorldMode(m) && isWorldMode(mode)) onMode(m); else guard.run(() => onMode(m)); }} />
         <WorldPick plan={plan} guard={guard} manage={mode === 'welt'} />
         {mode === 'stufe' && <StagePick plan={plan} guard={guard} />}
         <span className="wd-grow" />
@@ -99,7 +108,7 @@ export function WorldHeader({ mode, onMode, plan, world, guard, seed, biome }: {
       </div>
       {guard.prompt}
       {notice && <Text as="p" size="2" role="status" color={notice.kind === 'hint' ? 'green' : 'red'} className="wd-notice">{notice.text}{notice.kind === 'stale' ? ' (Entwurf bleibt)' : ''}</Text>}
-      <FixInChat errors={worldErrors(mode === 'welt', plan, world, notice)} problems={plan.view?.problems ?? []} />
+      <FixInChat errors={worldErrors(isWorldMode(mode), plan, world, notice)} problems={plan.view?.problems ?? []} />
     </header>
   );
 }

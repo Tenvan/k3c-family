@@ -74,9 +74,40 @@ type economyData struct {
 // LoadWorld). Jede Welt mit Overrides wird nach ihrem Schritt mit den Basis-Regeln geprüft; ein Fehler nennt die Welt,
 // deren Override ihn auslöst. Ohne Overrides ist das Ergebnis gleich dem Laden der Basis.
 func ResolveWorldValues(base fs.FS, lookup func(id string) (WorldDef, error), id string) (WorldValues, error) {
-	chain, err := worldChain(lookup, id)
+	files, err := resolveFiles(base, lookup, id)
 	if err != nil {
 		return WorldValues{}, err
+	}
+	return valuesFrom(overlay(base, files))
+}
+
+// ResolveWorldFiles liefert die übersteuerbaren Basis-Dateien (Schlüssel wie in `overrides`) als JSON, wie sie für die
+// Welt id nach den Overrides ihrer Kette gelten, geprüft wie ResolveWorldValues; id leer = die Basis selbst. Für
+// Werkzeuge, die Basiswerte neben Overrides zeigen (Welten-Editor, B-682).
+func ResolveWorldFiles(base fs.FS, lookup func(id string) (WorldDef, error), id string) (map[string][]byte, error) {
+	files := fstest.MapFS{}
+	if id != "" {
+		var err error
+		if files, err = resolveFiles(base, lookup, id); err != nil {
+			return nil, err
+		}
+	}
+	out := map[string][]byte{}
+	for name := range overrideFiles {
+		raw, err := fs.ReadFile(overlay(base, files), name+".json")
+		if err != nil {
+			return nil, fmt.Errorf("data/%s.json: %w", name, err)
+		}
+		out[name] = raw
+	}
+	return out, nil
+}
+
+// resolveFiles legt die Overrides der Kette von id über base und prüft nach jeder Welt mit Overrides den Stand.
+func resolveFiles(base fs.FS, lookup func(id string) (WorldDef, error), id string) (fstest.MapFS, error) {
+	chain, err := worldChain(lookup, id)
+	if err != nil {
+		return nil, err
 	}
 	files := fstest.MapFS{}
 	for _, w := range chain {
@@ -84,13 +115,13 @@ func ResolveWorldValues(base fs.FS, lookup func(id string) (WorldDef, error), id
 			continue
 		}
 		if err := applyOverrides(base, files, w.Overrides); err != nil {
-			return WorldValues{}, fmt.Errorf("%s: %w", worldPath(w.ID), err)
+			return nil, fmt.Errorf("%s: %w", worldPath(w.ID), err)
 		}
 		if _, err := valuesFrom(overlay(base, files)); err != nil {
-			return WorldValues{}, fmt.Errorf("%s: overrides: %w", worldPath(w.ID), err)
+			return nil, fmt.Errorf("%s: overrides: %w", worldPath(w.ID), err)
 		}
 	}
-	return valuesFrom(overlay(base, files))
+	return files, nil
 }
 
 // worldChain liefert die Kette der Welt id mit ihren Eltern, die älteste zuerst. Abgelehnt: unbekannte Eltern-Welt,

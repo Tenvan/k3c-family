@@ -227,3 +227,11 @@
 .wd-site[data-unbuilt='true'] { border: 1px dashed var(--gray-8, #5a6169); }
 .wd-hpbar { position: absolute; left: 0; bottom: 0; height: 3px; background: var(--green-9, #3dd68c); }
 .wd-site[data-unbuilt='true'] .wd-hpbar { display: none; }
+
+/* Ansicht „Werte“ (WZ37.1, B-682): je Feld Pfad, Basiswert, Wert der Welt, Status, Zurücksetzen */
+.wv-root { max-width: 960px; }
+.wv-kin { gap: 12px; }
+.wv-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; max-height: 70vh; }
+.wv-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) 7em auto; align-items: center; gap: 8px; padding: 2px 4px; border-radius: 4px; }
+.wv-row[data-status="überschrieben"] { background: var(--orange-a3); }
+.wv-path, .wv-base { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

@@ -246,3 +246,25 @@ func TestParseWorldExtendsOverrides(t *testing.T) {
 		t.Errorf("Standard-Welt: %v", err)
 	}
 }
+
+// B-682: ResolveWorldFiles liefert die Basis-Dateien nach der Kette (Kind sieht den Override der Eltern-Welt), leer = Basis.
+func TestResolveWorldFiles(t *testing.T) {
+	a := WorldDef{ID: "a", Overrides: ov(map[string]string{"waves": `{"perExtraPlayer": 0.37}`})}
+	b := WorldDef{ID: "b", Extends: "a"}
+	files, err := ResolveWorldFiles(data.Files, testWorlds(a, b), "b")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var w struct{ PerExtraPlayer float64 }
+	if err := json.Unmarshal(files["waves"], &w); err != nil || w.PerExtraPlayer != 0.37 {
+		t.Errorf("waves nach der Kette: %v, %v", w.PerExtraPlayer, err)
+	}
+	basis, err := ResolveWorldFiles(data.Files, nil, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, _ := fs.ReadFile(data.Files, "buildings.json")
+	if len(basis) != len(overrideFiles) || string(basis["buildings"]) != string(raw) {
+		t.Errorf("Basis: %d Dateien, buildings gleich: %v", len(basis), string(basis["buildings"]) == string(raw))
+	}
+}

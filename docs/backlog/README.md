@@ -110,6 +110,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-690](B-690-studio-welt-testluecken.md) | DEV | Problem | niedrig | offen | – | Studio-Welt: Testlücken Klick-Schwelle, Bühnen-Verdrahtung, Werkzeugleiste, Merge-Dialog |
 | [B-691](B-691-doku-norton-codemap.md) | DEV | Problem | niedrig | offen | – | Doku: Norton-Ausnahme in arbeitsweise.md, veraltete world/codemap.md |
 | [B-692](B-692-wertesatz-nachtraege.md) | SIM | Problem | mittel | offen | – | Welt-Wertesatz: Nachträge aus dem Review BAL8.2 |
+| [B-693](B-693-overrides-editor-nachtraege.md) | DEV | Problem | niedrig | offen | – | Overrides-Editor: Nachträge aus dem Review WZ37.1 |
 
 ## Archiv
 
