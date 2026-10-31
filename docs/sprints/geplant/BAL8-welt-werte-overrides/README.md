@@ -6,9 +6,9 @@
 - **Reife:** Entwurf
 - **Tickets:** B-680, B-681
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-31, Ralf im Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -49,7 +49,7 @@ Override für unbekannten Wert → Welt wird beim Laden abgelehnt mit Pfad des W
 
 ## Offene Fragen
 
-Welche Basis-Werte sind übersteuerbar (Umfang laut `B-680`)? Entscheidet 🧑 mit der Freigabe.
+keine. Entschieden (🧑, 2026-10-31): Eine Welt darf alle Basis-Werte laut `B-680 › Anforderungen` übersteuern (Ressourcen, Kosten, Material-Vorrat, Gegner, Truppen, Gebäude, Monarch, Coop-Multiplikatoren).
 
 ## Sessions
 

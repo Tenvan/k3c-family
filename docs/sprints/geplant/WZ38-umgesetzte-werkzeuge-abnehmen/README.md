@@ -6,9 +6,9 @@
 - **Reife:** Entwurf
 - **Tickets:** B-663, B-664, B-665, B-666, B-667, B-670, B-671, B-672, B-673, B-580, B-619
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-31, Ralf im Chat (Revision 1)
 
 ## Ausgangslage
 

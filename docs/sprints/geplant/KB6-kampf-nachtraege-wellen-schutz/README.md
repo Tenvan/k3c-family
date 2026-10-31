@@ -6,9 +6,9 @@
 - **Reife:** Entwurf
 - **Tickets:** B-579, B-605
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-31, Ralf im Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -49,7 +49,7 @@ Truppe stirbt während der Gefahr → übrige Truppen behalten ihren Platz.
 
 ## Offene Fragen
 
-B-579 hat Spec Entwurf: Welcher Hebel (Adern-Takt, Pool) gilt? Entscheidet 🧑 vor der Freigabe.
+keine. Entschieden (🧑, 2026-10-31): Hebel für B-579 ist Adern `percentPerGather` 1 → 2 (B-626). Der Messtest `K3C_MESSUNG=1` prüft den Korridor 4–12 min; weitere Hebel nur, wenn er rot bleibt.
 
 ## Sessions
 

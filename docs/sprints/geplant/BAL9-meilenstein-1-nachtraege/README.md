@@ -6,9 +6,9 @@
 - **Reife:** Entwurf
 - **Tickets:** B-656, B-657, B-654
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-31, Ralf im Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -50,7 +50,7 @@ Ziel nicht erreichbar → Ziel begründet neu fassen statt Wert blind drehen.
 
 ## Offene Fragen
 
-Welche Ziele fasst 🧑 neu, falls `holz` oder `schiff` rot bleibt?
+keine. Entschieden (🧑, 2026-10-31): Bleibt `holz` oder `schiff` rot, fasst der Sprint das Ziel mit Begründung neu, die Werte bleiben; 🧑 bestätigt die neue Fassung im Bericht.
 
 ## Sessions
 
