@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** W13
 - **Projekt:** WRT
 - **Erstellt:** 2026-10-17
@@ -69,3 +69,4 @@ Entscheidet 🧑:
 ## Notizen
 
 Herkunft: Ralf, 2026-10-17, Chat zu `B-460 › Offene Fragen` 13. Verwandt: B-460 (Welt-Betrachter), B-470 (Morgengrauen als echte Phase).
+- **Abgenommen 2026-10-31:** Ralf (🧑) hat Helligkeit und Licht am TV mit zwei Spielern abgenommen (W13.4, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen).

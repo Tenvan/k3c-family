@@ -1,6 +1,6 @@
 # W13 · CLI, DEV · Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WRT
 - **Domäne:** CLI, DEV
 - **Reife:** bereit
@@ -59,7 +59,7 @@ Nacht am Lagerfeuer → Umgebung im Radius heller, außerhalb dunkel. Welt-Betra
 | W13.1 | `W13.1-nacht-licht-client.md` | Umsetzung | autonom | fertig |
 | W13.2 | `W13.2-welt-betrachter-dawn.md` | Umsetzung | autonom | fertig |
 | W13.3 | `W13.3-review.md` | Review | autonom | fertig |
-| W13.4 | `W13.4-abnahme-tv.md` | Workshop | Mensch | offen |
+| W13.4 | `W13.4-abnahme-tv.md` | Workshop | Mensch | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
@@ -73,4 +73,4 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 2026-10-25, Claude (W13.3): `task check`, `task check:go` und das Studio-Vitest grün; `check:race` lokal übersprungen (kein C-Compiler).
 AC-01 erfüllt durch W13.1 (Nacht 0,3, Morgengrauen linear, Lagerfeuer leuchtet), AC-02 durch W13.2 (eine Darstellung für Spiel und Studio).
 Neues Ticket B-622: Fackeln als Spielobjekt.
-Offen ist AC-03, Helligkeit und Licht am TV mit zwei Spielern durch Ralf (W13.4). Gestapelt auf W12 (#479).
+2026-10-31: AC-03 von Ralf (🧑) am TV abgenommen (Helligkeit und Licht mit zwei Spielern), im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen. Alle Kriterien erfüllt, Sprint erledigt. Gestapelt auf W12 (#479).
