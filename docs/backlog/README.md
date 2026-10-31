@@ -166,6 +166,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-675](B-675-status-effekte-sichtbar.md) | CLI | Idee | mittel | eingeplant | KB5 | DoTs, Buffs und Kontrolleffekte der Skills sind im Spiel sichtbar |
 | [B-676](B-676-studio-skills-ziel-und-status.md) | DEV | Idee | mittel | eingeplant | KB5 | Das Studio zeigt Skills am Wirkort und DoTs und Buffs an Gegnern und Monarchen |
 | [B-678](B-678-vorrat-adopt-parallel-und-eine-stimme.md) | DEV | Schuld | niedrig | offen | – | Übernehmen aus dem Vorrat ist gegen parallele Aufrufe gesichert, und Vorschauen spielen nie zwei Töne zugleich |
+| [B-679](B-679-studio-chat-alle-aktionen.md) | DEV | Idee | mittel | offen | – | Der Chat des Asset-Studios kann jede Bearbeitung des Studios als Aktionskarte auslösen |
 
 ## Archiv
 
