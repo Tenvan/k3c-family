@@ -1,55 +1,56 @@
 # KB5 · SRV, CLI, DEV · Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio
 
-- **Status:** geplant
+- **Status:** in Arbeit
 - **Projekt:** KMP
 - **Domäne:** SRV, CLI, DEV
-- **Reife:** Entwurf
-- **Tickets:** –
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Reife:** Sessions
+- **Tickets:** B-674, B-675, B-676
+- **Start-Commit:** 88ea604b
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude
 
 ## Ausgangslage
 
-Stand vor dem Sprint, kurz. Details stehen in den Tickets.
+Flächenzauber werden am Monarchen gezeichnet statt am Wirkort (B-674), Status-Effekte über die Dauer sind weder im Snapshot noch im Client sichtbar (B-675), das Studio zeigt beides nicht (B-676).
 
 ## Ziel
 
-Ein Satz: Was kann man nach diesem Sprint, was vorher nicht ging? Dazu „Am Ende sichtbar“: was man am TV,
-in der CI oder im Terminal sieht.
+Skills erscheinen dort, wo sie wirken; DoTs, Buffs und Kontrolleffekte sind im Spiel und im Studio sichtbar. Am Ende sichtbar: fireball am Gegner, Betäubung, Schild und Sturm als Zeichnung.
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+🧑 Ralf und Familie spielen und prüfen; Sessions der Domänen SRV, CLI, DEV setzen um.
 
 ## Anforderungen
 
-Verweise auf die Ticket-Specs (`B-009 › Anforderungen`) statt Kopien, dazu nur sprint-eigene Anforderungen.
+Siehe `B-674`, `B-675`, `B-676` › Anforderungen.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, falls es später kommt.
+Neue Skill-Looks oder Werte. Abnahmen B-674 AC-04, B-675 AC-04, B-676 AC-03 (🧑, Session KB5.6).
 
 ## Regeln und Einschränkungen
 
-Entscheidungen, Domänen-Grenzen, Budget, Verträge, die für den ganzen Sprint gelten.
+Protokoll-Version steigt je Änderung; Golden nur mit `task go:golden` samt Begründung; Datei ≤ 400 Zeilen, Funktion ≤ 60.
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis.
+Fireball ohne Gegner in Reichweite → `castFailed`, kein Effekt; mit Gegner → Ring am Gegner mit Skill-Radius.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten.
+Unbekannter Skill im Ereignis → Client ignoriert ihn.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** B-674/AC-01 bis AC-03
+- **AC-02** B-675/AC-01 bis AC-03
+- **AC-03** B-676/AC-01, AC-02
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
+keine
 
 ## Sessions
 
@@ -62,10 +63,6 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockie
 | KB5.5 | `KB5.5-review-kb5.md` | Review | autonom | offen |
 | KB5.6 | `KB5.6-abnahme-kb5.md` | Workshop | Mensch | offen |
 
-Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
-wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
-
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+–
