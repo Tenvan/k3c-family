@@ -1,6 +1,6 @@
 # SO8.4 · Hörprobe der vier Klassen-Töne
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -33,7 +33,7 @@ Töne für passive Skills (später mit dem AI-Chat).
 
 ## Fertig, wenn
 
-- [ ] AC-04: Vier Töne bestätigt oder geändert (Ergebnis mit Datum und Gerät).
+- [x] AC-04: Vier Töne bestätigt oder geändert (Ergebnis mit Datum und Gerät).
 
 ## Prüfen
 
@@ -41,4 +41,7 @@ Manuell durch 🧑.
 
 ## Ergebnis
 
-–
+Abnahme durch Ralf (🧑), bestätigt im Chat am 2026-10-31; Claude hat die Prüfung nicht selbst gesehen.
+
+- AC-04 abgenommen (Ralf, Hörprobe): die vier Klassen-Töne (Tank, Zauberer, Heiler, Dieb) gehört und bestätigt. Eine Änderung eines Tons wurde nicht gemeldet, daher keine Änderung an Katalog und Atlas durch diese Session.
+- Befunde: Claude wurden keine genannt, es entstehen keine neuen Tickets.

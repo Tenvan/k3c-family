@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** SO8
 - **Projekt:** SND
 - **Erstellt:** 2026-10-23
@@ -62,3 +62,4 @@ keine. Die Auswahl trifft der Agent als Default (CC0, kindgerecht, passend: Tank
 ## Notizen
 
 SO7.1 (2026-10-23): Voraussetzung war ein Skill-Ereignis oder Klassenfeld im Protokoll. Neu 2026-10-24: Der Client kennt die Linie über `MONARCH.skills[id].line` und erkennt das Wirken in `SkillCasts` (SK2.3, B-578); ein Protokollfeld ist nicht nötig. Spec: Entwurf. Sprint SO8.
+- **Abgenommen 2026-10-31:** Ralf (🧑) hat die vier Klassen-Töne gehört und bestätigt (SO8.4, im Chat bestätigt; Claude hat nicht mitgehört).
