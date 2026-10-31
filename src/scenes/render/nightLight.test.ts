@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { LIGHT } from '../../model/data';
 import type { CycleInfo, World } from '../../model/types';
-import { NIGHT_BRIGHTNESS, brightnessOf, glowAlpha, lightSources } from './nightLight';
+import { NIGHT_BRIGHTNESS, backdropBrightnessOf, brightnessOf, glowAlpha, lightLevelAt, lightSources, shade, type LitSource } from './nightLight';
 
 const cycle = (phase: CycleInfo['phase'], progress: number) => ({ phase, progress });
 /** Burg auf Hub-Stufe 1, Gold offen und nichts bezahlt: Look `lagerfeuer` (hubLookOf) */
@@ -21,6 +21,34 @@ describe('Nacht-Helligkeit (W13.1, B-472/AC-01)', () => {
     expect(brightnessOf(cycle('dawn', 0.5))).toBeCloseTo((NIGHT_BRIGHTNESS + 1) / 2, 10);
     expect(brightnessOf(cycle('dusk', 0.5))).toBeCloseTo((NIGHT_BRIGHTNESS + 1) / 2, 10);
     expect(brightnessOf(cycle('night', 0), 0.2)).toBe(0.2);
+  });
+});
+
+describe('Hintergrund und Lichtkarte (Nacht ausleuchten)', () => {
+  it('Hintergrund ist nachts dunkler als der Vordergrund, am Tag beide hell', () => {
+    expect(backdropBrightnessOf(cycle('night', 0))).toBeCloseTo(LIGHT.backgroundBrightness, 10);
+    expect(backdropBrightnessOf(cycle('night', 0))).toBeLessThan(brightnessOf(cycle('night', 0)));
+    expect(backdropBrightnessOf(cycle('day', 0))).toBe(1);
+  });
+
+  it('Lichtkarte: außen Nacht-Helligkeit, in der Mitte volle Helligkeit, dazwischen linear, am Tag überall 1', () => {
+    const fire: LitSource[] = [{ kind: 'campfire', x: 10, radius: 12, strength: 1 }];
+    const night = cycle('night', 0);
+    expect(lightLevelAt(40, fire, night)).toBeCloseTo(NIGHT_BRIGHTNESS, 10);
+    expect(lightLevelAt(10, fire, night)).toBe(1);
+    expect(lightLevelAt(16, fire, night)).toBeCloseTo((NIGHT_BRIGHTNESS + 1) / 2, 10);
+    expect(lightLevelAt(10, fire, cycle('day', 0))).toBe(1);
+  });
+
+  it('shade dunkelt Farben ab und begrenzt den Faktor', () => {
+    expect(shade('#80c0ff', 0.5)).toBe('#406080');
+    expect(shade('#80c0ff', 1)).toBe('#80c0ff');
+    expect(shade('#80c0ff', -1)).toBe('#000000');
+  });
+
+  it('Reichweite aus data/ ist die verdoppelte (Lagerfeuer 12, Fackel 6 Units)', () => {
+    expect(LIGHT.sources.campfire!.radius).toBe(12);
+    expect(LIGHT.sources.torch!.radius).toBe(6);
   });
 });
 

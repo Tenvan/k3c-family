@@ -1,41 +1,35 @@
 import Phaser from 'phaser';
-import { GROUND_Y, UNIT_PX } from '../../core/constants';
+import { GAME_HEIGHT, GAME_WIDTH, GROUND_Y, UNIT_PX } from '../../core/constants';
 import { clientLog } from '../../core/clientLog';
 import { LIGHT } from '../../model/data';
 import type { World } from '../../model/types';
-import { glowAlpha, lightSources } from './nightLight';
+import { brightnessOf, glowAlpha, lightSources } from './nightLight';
 
-const GLOW_KEY = 'light-glow';
-/** Kantenlänge der erzeugten Licht-Textur; gezeichnet wird sie auf den Radius der Quelle skaliert */
-const GLOW_PX = 128;
-/** Mitte des Lichtscheins über dem Boden (Höhe der Flammen) */
-const GLOW_LIFT_PX = 40;
-/** Über Figuren und Gebäuden, damit das Licht sie mit aufhellt */
-const GLOW_DEPTH = 12;
+/** Pixel der Welt je Pixel der Lichtkarte; die Karte wird weich hochskaliert, das gibt den weichen Rand ohne Shader je Pixel */
+const MAP_SCALE = 8;
+/** Mitte der Lichter über dem Boden (Höhe der Flammen) */
+const LIFT_PX = 40;
+/** Über Figuren und Gebäuden, damit die Karte sie abdunkelt bzw. im Licht wieder zeigt */
+const MAP_DEPTH = 12;
+/** Rand der Karte links und rechts der Welt, damit die Kamera am Weltende nicht über sie hinausschaut */
+const PAD_PX = GAME_WIDTH;
+/** Helligkeit wird auf Stufen gerundet, die Karte zeichnet nur bei Änderung neu */
+const STEPS = 64;
 
-/** Weicher, runder Lichtschein als kleine Textur (einmal erzeugt): Mitte voll, zum Rand auf 0, kein Shader je Pixel */
-function glowTexture(scene: Phaser.Scene): string {
-  if (scene.textures.exists(GLOW_KEY)) return GLOW_KEY;
-  const tex = scene.textures.createCanvas(GLOW_KEY, GLOW_PX, GLOW_PX)!;
-  const c = tex.getContext();
-  const r = GLOW_PX / 2;
-  const g = c.createRadialGradient(r, r, 0, r, r, r);
-  g.addColorStop(0, 'rgba(255,255,255,1)');
-  g.addColorStop(0.5, 'rgba(255,255,255,0.45)');
-  g.addColorStop(1, 'rgba(255,255,255,0)');
-  c.fillStyle = g;
-  c.fillRect(0, 0, GLOW_PX, GLOW_PX);
-  tex.refresh();
-  return GLOW_KEY;
-}
+let counter = 0;
 
 /**
- * Licht der Quellen in Nacht und Morgengrauen (B-472, W13.1): je Quelle ein Sprite mit Mischmodus ADD über der Welt, Deckkraft
- * nach `glowAlpha` (am Tag unsichtbar). Die Abdunklung der Kamera (Farbmatrix) liegt danach darüber, jede Kamera zeichnet ihr
- * Licht so selbst (Split-Screen). Liegt in der Ebene der Stufe, Spiel und Welt-Betrachter zeichnen es gleich.
+ * Licht und Dunkelheit der Nacht (B-472, W13.1): eine Lichtkarte in Weltkoordinaten mit Mischmodus MULTIPLY über der Welt. Sie ist
+ * außerhalb des Lichts so dunkel wie `nightBrightness` (Farben und Kontrast bleiben, nur dunkler) und wird um jede Quelle hell bis
+ * Weiß, dort erscheinen die normalen Farben. Der Hintergrund wird zusätzlich in `StageView` getönt. Jede Kamera sieht die Karte
+ * als Weltobjekt, Split-Screen und Welt-Betrachter des Studios zeichnen sie gleich.
  */
 export class LightView {
-  private readonly glows = new Map<string, Phaser.GameObjects.Image>();
+  private readonly key = `light-map-${counter++}`;
+  private image: Phaser.GameObjects.Image | null = null;
+  private ctx: CanvasRenderingContext2D | null = null;
+  private tex: Phaser.Textures.CanvasTexture | null = null;
+  private last = '';
   private warned = false;
 
   constructor(
@@ -49,30 +43,66 @@ export class LightView {
       this.warned = true;
       clientLog('warn', '🤒 Licht-Werte fehlen in data/light.json, Quelle bleibt dunkel', { missing });
     }
-    const seen = new Set<string>();
-    for (const s of lit) {
-      const key = `${s.kind}:${s.x}`;
-      seen.add(key);
-      const glow = this.glows.get(key) ?? this.create(key, s.x, s.radius);
-      const alpha = glowAlpha(s.strength, world.cycle);
-      glow.setAlpha(alpha).setVisible(alpha > 0);
+    const base = Math.round(brightnessOf(world.cycle) * STEPS);
+    const glows = lit.map((s) => ({ x: s.x, radius: s.radius, a: Math.round(glowAlpha(s.strength, world.cycle) * STEPS) }));
+    const stamp = `${world.widthUnits}|${base}|${glows.map((g) => `${g.x}:${g.radius}:${g.a}`).join(',')}`;
+    if (stamp === this.last) return;
+    this.last = stamp;
+    if (base >= STEPS) {
+      this.image?.setVisible(false); // Tag: nichts zu multiplizieren
+      return;
     }
-    for (const [key, glow] of this.glows) {
-      if (seen.has(key)) continue;
-      glow.destroy();
-      this.glows.delete(key);
-    }
+    this.ensure(world.widthUnits);
+    this.paint(base / STEPS, glows.map((g) => ({ ...g, a: g.a / STEPS })));
+    this.image?.setVisible(true);
   }
 
-  private create(key: string, x: number, radius: number): Phaser.GameObjects.Image {
-    const glow = this.scene.add
-      .image(x * UNIT_PX, GROUND_Y - GLOW_LIFT_PX, glowTexture(this.scene))
-      .setScale((2 * radius * UNIT_PX) / GLOW_PX)
-      .setTint(Phaser.Display.Color.HexStringToColor(LIGHT.glowColor).color)
-      .setBlendMode(Phaser.BlendModes.ADD)
-      .setDepth(GLOW_DEPTH);
-    this.root.add(glow);
-    this.glows.set(key, glow);
-    return glow;
+  private ensure(widthUnits: number): void {
+    const w = Math.ceil((widthUnits * UNIT_PX + 2 * PAD_PX) / MAP_SCALE);
+    if (this.tex && this.tex.width === w) return;
+    this.image?.destroy();
+    if (this.scene.textures.exists(this.key)) this.scene.textures.remove(this.key);
+    this.tex = this.scene.textures.createCanvas(this.key, w, Math.ceil(GAME_HEIGHT / MAP_SCALE))!;
+    this.tex.setFilter(Phaser.Textures.FilterMode.LINEAR);
+    this.ctx = this.tex.getContext();
+    this.image = this.scene.add
+      .image(-PAD_PX, 0, this.key)
+      .setOrigin(0, 0)
+      .setScale(MAP_SCALE)
+      .setBlendMode(Phaser.BlendModes.MULTIPLY)
+      .setDepth(MAP_DEPTH);
+    this.root.add(this.image);
+  }
+
+  private paint(base: number, glows: { x: number; radius: number; a: number }[]): void {
+    const c = this.ctx;
+    const tex = this.tex;
+    if (!c || !tex) return;
+    const grey = Math.round(base * 255);
+    c.globalCompositeOperation = 'source-over';
+    c.fillStyle = `rgb(${grey},${grey},${grey})`;
+    c.fillRect(0, 0, tex.width, tex.height);
+    c.globalCompositeOperation = 'lighter';
+    const glow = Phaser.Display.Color.HexStringToColor(LIGHT.glowColor);
+    const { red: r, green: g, blue: b } = glow;
+    for (const s of glows) {
+      if (s.a <= 0) continue;
+      const cx = (s.x * UNIT_PX + PAD_PX) / MAP_SCALE;
+      const cy = (GROUND_Y - LIFT_PX) / MAP_SCALE;
+      const rad = (s.radius * UNIT_PX) / MAP_SCALE;
+      // Anhebung (1 − base) × a in der Mitte, linear auf 0 am Rand; Farbe warm nach glowColor, die Mitte erreicht Weiß-nah
+      const lift = (1 - base) * s.a;
+      const grad = c.createRadialGradient(cx, cy, 0, cx, cy, rad);
+      grad.addColorStop(0, `rgba(${r},${g},${b},${lift})`);
+      grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+      c.fillStyle = grad;
+      c.fillRect(cx - rad, cy - rad, 2 * rad, 2 * rad);
+    }
+    tex.refresh();
+  }
+
+  destroy(): void {
+    this.image?.destroy();
+    if (this.scene.textures.exists(this.key)) this.scene.textures.remove(this.key);
   }
 }

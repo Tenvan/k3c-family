@@ -77,6 +77,16 @@ export class StageView {
     this.onBackground?.();
   }
 
+  /** Hintergrund-Bilder (Parallax) auf eine Helligkeit tönen (1 = unverändert); die Lichtkarte dunkelt den Rest ab, der Hintergrund bleibt zusätzlich schwärzer */
+  setBackdropBrightness(level: number): void {
+    const v = Math.round(Math.min(1, Math.max(0, level)) * 255);
+    const tint = (v << 16) | (v << 8) | v;
+    for (const o of this.backdrop.objects) {
+      if (!(o instanceof Phaser.GameObjects.Container)) continue;
+      for (const i of o.list) if (i instanceof Phaser.GameObjects.Image) level >= 1 ? i.clearTint() : i.setTint(tint);
+    }
+  }
+
   /** Wird gerufen, wenn die Hintergrund-Bilder die Silhouetten ersetzt haben (Studio: Sichtbarkeit der Schichten neu setzen) */
   onBackground?: () => void;
 
