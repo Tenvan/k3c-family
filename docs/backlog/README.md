@@ -167,6 +167,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-676](B-676-studio-skills-ziel-und-status.md) | DEV | Idee | mittel | eingeplant | KB5 | Das Studio zeigt Skills am Wirkort und DoTs und Buffs an Gegnern und Monarchen |
 | [B-678](B-678-vorrat-adopt-parallel-und-eine-stimme.md) | DEV | Schuld | niedrig | offen | – | Übernehmen aus dem Vorrat ist gegen parallele Aufrufe gesichert, und Vorschauen spielen nie zwei Töne zugleich |
 | [B-679](B-679-studio-chat-alle-aktionen.md) | DEV | Idee | mittel | offen | – | Der Chat des Asset-Studios kann jede Bearbeitung des Studios als Aktionskarte auslösen |
+| [B-680](B-680-welt-werte-ueberschreiben.md) | REG | Idee | hoch | offen | – | Eine Welt-Datei erbt die Basis-Werte und übersteuert nur, was sie ändern will |
+| [B-681](B-681-sim-werte-je-raum.md) | SIM | Idee | hoch | offen | – | Die Simulation rechnet mit den Werten ihrer Welt statt mit globalen Datei-Variablen |
+| [B-682](B-682-welten-editor-overrides.md) | DEV | Idee | mittel | offen | – | Der Welten-Editor bearbeitet Werte-Overrides einer Welt und zeigt Basiswert gegen Override |
+| [B-683](B-683-chat-welt-overrides.md) | DEV | Idee | mittel | offen | – | Der Studio-Chat kann Welt-Overrides lesen, setzen und zurücksetzen |
 
 ## Archiv
 
