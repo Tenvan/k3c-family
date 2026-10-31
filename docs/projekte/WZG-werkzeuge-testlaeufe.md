@@ -49,7 +49,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ27 | Geplante Chunks: Gegnerlager, Ruinen-Kollision, Dateigrenze | erledigt |
 | WZ28 | Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite | erledigt |
 | WZ30 | Oberflächen zur Abnahme: Szenen, Filter, Quellen, Chat-Karten mit Mock-Daten | erledigt |
-| WZ29 | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | aktiv |
+| WZ29 | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | erledigt |
 | WZ31 | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | aktiv |
 | WZ32 | Balancing-Seite: feste Fläche, eine Liste, Lauf-Editor mit Varianten-Tabelle | erledigt |
 | WZ33 | Eine Seite Assets statt Grafik, Sound und Quellen | erledigt |

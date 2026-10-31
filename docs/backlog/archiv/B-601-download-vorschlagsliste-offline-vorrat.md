@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ29
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
@@ -64,3 +64,4 @@ keine. Entschieden (🧑, 2026-10-24): Der Vorrat bleibt nur lokal und wird in `
 ## Notizen
 
 Aus Ralfs Wunsch 2026-10-24. Spec: Entwurf. Sprint WZ29. Zusammenhang: B-600 (Chat), B-599 (Filter), B-554 (Aufräumen), WZ28 (Offline).
+- **Abgenommen 2026-10-31:** Ralf (🧑) hat Szenen, Filter, Chat-Vorschlag, Offline-Vorrat und Kampf-Anzeigen am PC abgenommen (WZ29.9 und WZ30.7, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen).

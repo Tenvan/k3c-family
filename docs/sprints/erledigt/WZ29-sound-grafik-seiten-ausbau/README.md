@@ -1,6 +1,6 @@
 # WZ29 · DEV · Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -67,7 +67,7 @@ keine blockierende; Pflicht-Szenen und Chat-Aktionen laut Tickets als Default, R
 | WZ29.6 | `WZ29.6-quellen-seite.md` | Umsetzung | autonom | fertig |
 | WZ29.7 | `WZ29.7-chat-zuordnung.md` | Umsetzung | autonom | fertig |
 | WZ29.8 | `WZ29.8-review.md` | Review | autonom | fertig |
-| WZ29.9 | `WZ29.9-abnahme-pc.md` | Workshop | Mensch | offen |
+| WZ29.9 | `WZ29.9-abnahme-pc.md` | Workshop | Mensch | fertig |
 
 - WZ29.1 verworfen: durch WZ30.1 erfüllt (`@webkit` `ListFilter`).
 - WZ29.2 (DEV) Sound-Szenen an echte Daten: vorläufiges `skillSlot` des Studios durch `src/audio/skills.ts` (SO8.2) ersetzen, Mock-Slots durch den Katalog, Filter-Dimension Linie/Klasse (AC-01, AC-02).
@@ -85,4 +85,4 @@ keine blockierende; Pflicht-Szenen und Chat-Aktionen laut Tickets als Default, R
 - Prüfläufe: `task check`, `task check:go` und `task check:studio` sind grün. Zuvor hat Claude einen Lint-Fehler behoben: `describe` mit mehr als 60 Zeilen in `SuggestionList.test.tsx`, jetzt aufgeteilt. `check:race` wurde lokal übersprungen (kein C-Compiler), die CI prüft es.
 - Kriterien: AC-01 erfüllt durch WZ30.1 und WZ29.2/.4, AC-02 durch WZ29.2, AC-03 durch WZ29.4, AC-04 durch WZ29.7, AC-05 durch WZ29.5 und .6. Die Reviews zu WZ29.6 (SSRF, Bestätigung im Backend) und WZ29.7 (Q70 im Backend) sind behoben.
 - Offline: Die gebaute Studio-Oberfläche lädt keine externen Ressourcen. Chat und Download melden „offline“.
-- Offen ist AC-06, die Abnahme am PC durch Ralf in WZ29.9. Keine neuen Tickets.
+- 2026-10-31: AC-06 von Ralf (🧑) am PC abgenommen, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen. Alle Kriterien erfüllt, Sprint erledigt. Keine neuen Tickets.

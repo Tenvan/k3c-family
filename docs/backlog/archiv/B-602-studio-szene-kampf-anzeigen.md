@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ29
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
@@ -60,3 +60,4 @@ keine
 ## Notizen
 
 Aus K5.4, Entscheidung 2026-10-24. Spec: Entwurf. Sprint WZ29 (an B-598 anhängen). Zusammenhang: B-132, B-603.
+- **Abgenommen 2026-10-31:** Ralf (🧑) hat Szenen, Filter, Chat-Vorschlag, Offline-Vorrat und Kampf-Anzeigen am PC abgenommen (WZ29.9 und WZ30.7, im Chat bestätigt; Claude hat die Prüfung nicht selbst gesehen).

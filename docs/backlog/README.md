@@ -100,12 +100,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-590](B-590-wachstumsreihe-unterscheidbar.md) | DEV | Problem | hoch | eingeplant | GEB17 | Die Wachstumsreihe der Burg zeigt echte Unterschiede statt derselben Burg in Farben |
 | [B-591](B-591-burg-ausbau-angebot-fehlt.md) | CLI | Problem | hoch | eingeplant | GEB17 | Vor der Burg erscheint kein Ausbau-Angebot, wenn der Spieler davor steht |
 | [B-592](B-592-hub-ausbaustufen-je-inselstufe.md) | REG | Idee | hoch | eingeplant | GEB17 | Der Hub hat zwei bis drei Ausbaustufen je Inselstufe, weiter mit dem Material der nächsten Inselstufe |
-| [B-597](B-597-sound-hoerproben-differenziert.md) | DEV | Idee | hoch | eingeplant | WZ29 | Die Sound-Seite hat differenzierte Hörproben, auch für Skills |
-| [B-598](B-598-grafik-vorschauen-differenziert.md) | DEV | Idee | hoch | eingeplant | WZ29 | Die Grafik-Seite hat differenzierte Vorschauen, auch für Skill-Effekte |
-| [B-599](B-599-szenen-sortieren-filtern.md) | DEV | Idee | hoch | eingeplant | WZ29 | Szenen auf Sound- und Grafik-Seite sind sortier- und filterbar |
-| [B-600](B-600-chat-unterstuetzung-sound-grafik.md) | DEV | Idee | hoch | eingeplant | WZ29 | Der AI-Chat unterstützt die Zuordnung auf Sound- und Grafik-Seite |
-| [B-601](B-601-download-vorschlagsliste-offline-vorrat.md) | DEV | Idee | hoch | eingeplant | WZ29 | Eine Download-Vorschlagsliste für empfohlene Assets ermöglicht Offline-Tests |
-| [B-602](B-602-studio-szene-kampf-anzeigen.md) | DEV | Idee | hoch | eingeplant | WZ29 | Das Studio zeigt Boss-Leiste, Phasen, Warnkreis und Event-Banner mit Mock-Zuständen |
 | [B-603](B-603-dev-aktionen-boss-event.md) | SRV | Idee | hoch | eingeplant | KB4 | Dev-Aktionen lösen Boss, Phasenwechsel und Events (Vollmond, Blutmond, Händler) sofort aus |
 | [B-604](B-604-welt-anzeige-pausenmenue-lobby.md) | CLI | Problem | mittel | eingeplant | BD9 | Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby |
 | [B-605](B-605-schutzplatz-stabil-bei-truppenwechsel.md) | SIM | Schuld | niedrig | offen | – | Schutzplatz bleibt stabil, wenn Truppen sterben oder hinzukommen |
@@ -647,3 +641,9 @@ Zeile in diesen Abschnitt.
 | [B-610](archiv/B-610-balancing-konfigurationsdateien.md) | DEV | Idee | hoch | erledigt | WZ28 | Die Balancing-Seite listet die Konfigurationsdateien, die das Balancing beeinflussen |
 | [B-611](archiv/B-611-balancing-bot-je-spieler.md) | DEV | Idee | hoch | erledigt | WZ28 | Ein Balancing-Lauf kann für jeden Spieler einen eigenen Bot wählen |
 | [B-612](archiv/B-612-balancing-berichte-verwalten.md) | DEV | Idee | hoch | erledigt | WZ28 | Balancing-Berichte lassen sich einzeln löschen und bewerten, der Vergleich erklärt sich selbst |
+| [B-597](archiv/B-597-sound-hoerproben-differenziert.md) | DEV | Idee | hoch | erledigt | WZ29 | Die Sound-Seite hat differenzierte Hörproben, auch für Skills |
+| [B-598](archiv/B-598-grafik-vorschauen-differenziert.md) | DEV | Idee | hoch | erledigt | WZ29 | Die Grafik-Seite hat differenzierte Vorschauen, auch für Skill-Effekte |
+| [B-599](archiv/B-599-szenen-sortieren-filtern.md) | DEV | Idee | hoch | erledigt | WZ29 | Szenen auf Sound- und Grafik-Seite sind sortier- und filterbar |
+| [B-600](archiv/B-600-chat-unterstuetzung-sound-grafik.md) | DEV | Idee | hoch | erledigt | WZ29 | Der AI-Chat unterstützt die Zuordnung auf Sound- und Grafik-Seite |
+| [B-601](archiv/B-601-download-vorschlagsliste-offline-vorrat.md) | DEV | Idee | hoch | erledigt | WZ29 | Eine Download-Vorschlagsliste für empfohlene Assets ermöglicht Offline-Tests |
+| [B-602](archiv/B-602-studio-szene-kampf-anzeigen.md) | DEV | Idee | hoch | erledigt | WZ29 | Das Studio zeigt Boss-Leiste, Phasen, Warnkreis und Event-Banner mit Mock-Zuständen |
