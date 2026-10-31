@@ -4,9 +4,9 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
-- **Projekt:** BAS
+- **Status:** eingeplant
+- **Sprint:** BAL9
+- **Projekt:** BAL
 - **Erstellt:** 2026-10-28
 - **Spec:** Entwurf
 - **Revision:** 1

@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ38
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
 - **Spec:** freigegeben

@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** GRJ2
 - **Projekt:** GRJ
 - **Erstellt:** 2026-10-31
 - **Spec:** freigegeben

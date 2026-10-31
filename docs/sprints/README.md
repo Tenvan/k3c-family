@@ -27,10 +27,21 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| WZ34 | DEV | WZG | Prüf- und Build-Werkzeuge: Studio-Test, check:diff, buildall | – | Entwurf | `geplant/WZ34-pruef-build-werkzeuge/` |
+| WZ35 | DEV | WZG | Workbench-Nachträge: Ticket-Nummern, Lauf-IDs, schmale Fenster, Auswertung | – | Entwurf | `geplant/WZ35-workbench-nachtraege/` |
+| WZ36 | DEV | WZG | Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung | – | Entwurf | `geplant/WZ36-studio-chat-aktionen-resume/` |
+| WZ37 | DEV | WZG | Welt-Overrides im Welten-Editor und im Studio-Chat | – | Entwurf | `geplant/WZ37-overrides-editor-chat/` |
+| WZ38 | DEV | WZG | Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff | – | Entwurf | `geplant/WZ38-umgesetzte-werkzeuge-abnehmen/` |
+| BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | Entwurf | `geplant/BD10-schreibende-endpunkte-schutz/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
+| W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | Entwurf | `geplant/W15-fackeln-spielobjekt/` |
+| KB6 | REG | KMP | Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz | – | Entwurf | `geplant/KB6-kampf-nachtraege-wellen-schutz/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 | P1 | REG | BAL | Spieleabend 1 | Protokoll und Folge-Tickets | bereit | `geplant/P1-spieleabend-1/` |
 | BR1 | REG | BAL | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
+| BAL8 | REG | BAL | Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt | – | Entwurf | `geplant/BAL8-welt-werte-overrides/` |
+| BAL9 | REG | BAL | Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance | – | Entwurf | `geplant/BAL9-meilenstein-1-nachtraege/` |
+| GRJ2 | DEV | GRJ | Grafik-Zielmaß und Ausschnitt-Rahmen abnehmen | – | Entwurf | `geplant/GRJ2-zielmass-ausschnitt-abnehmen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 

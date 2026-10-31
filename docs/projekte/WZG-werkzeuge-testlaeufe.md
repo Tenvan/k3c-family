@@ -53,6 +53,11 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ31 | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | erledigt |
 | WZ32 | Balancing-Seite: feste Fläche, eine Liste, Lauf-Editor mit Varianten-Tabelle | erledigt |
 | WZ33 | Eine Seite Assets statt Grafik, Sound und Quellen | erledigt |
+| WZ34 | Prüf- und Build-Werkzeuge: Studio-Test, check:diff, buildall | geplant |
+| WZ35 | Workbench-Nachträge: Ticket-Nummern, Lauf-IDs, schmale Fenster, Auswertung | geplant |
+| WZ36 | Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung | geplant |
+| WZ37 | Welt-Overrides im Welten-Editor und im Studio-Chat | geplant |
+| WZ38 | Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff | geplant |
 
 ## Nicht-Ziele
 

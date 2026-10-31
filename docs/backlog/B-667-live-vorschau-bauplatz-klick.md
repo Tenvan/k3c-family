@@ -5,7 +5,7 @@
 - **Prio:** niedrig
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** –
+- **Sprint:** WZ38
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-29
 - **Spec:** freigegeben
