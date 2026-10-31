@@ -39,7 +39,7 @@ function DownloadBar({ count, bytes, blocked, onAsk, onClear }: { count: number;
   );
 }
 
-type SideProps = Pick<InspectorProps, 'used' | 'onSave' | 'onReload' | 'active' | 'onActive'> & { tools: boolean; slot: AssetSlot | undefined; offline: boolean; onCloseTools: () => void };
+type SideProps = Pick<InspectorProps, 'used' | 'onSave' | 'onTarget' | 'onReload' | 'active' | 'onActive'> & { tools: boolean; slot: AssetSlot | undefined; offline: boolean; onCloseTools: () => void };
 
 /** Rechte Leiste: Werkzeuge, sonst der Inspektor des gewählten Slots, sonst ein Hinweis. */
 function SidePane({ tools, slot, offline, onCloseTools, onReload, ...rest }: SideProps) {
@@ -91,10 +91,12 @@ export function AssetsPage({ onArt }: { onArt?: (art: AssetKind | undefined) => 
         rail={<FacetRail facets={m.facets} selected={view.facets} onToggle={actions.toggle} onClear={actions.clear} />}
         list={<ListPane sicht={view.sicht} art={art} slotGroups={m.slotGroups} fileGroups={m.fileGroups} selected={selected} picked={dl.picked} offline={d.offline} netFocus={m.chip === 'netz'}
           onSelect={pick} onPlaySlot={playSlot} onPlayFile={playFileRow} onPick={dl.toggle} onTools={() => setTools(true)} />}
-        side={<SidePane tools={tools} slot={slot} used={d.used} offline={d.offline} onCloseTools={() => setTools(false)} onSave={d.assets.save} onReload={d.reload} active={choice} onActive={setChoice} />}
+        side={<SidePane tools={tools} slot={slot} used={d.used} offline={d.offline} onCloseTools={() => setTools(false)} onSave={d.assets.save} onTarget={d.assets.saveTarget} onReload={d.reload} active={choice} onActive={setChoice} />}
         stage={<Stage slot={slot} active={choice} />}
       />
-      <TransportBar playing={transport.playing} status={transport.status} volume={transport.volume} onStop={stopPlayback} onFade={() => playSelected(selected)} onVolume={(dir) => void changeVolume(dir)} />
+      {(art === 'sound' || transport.playing) && (
+        <TransportBar playing={transport.playing} status={transport.status} volume={transport.volume} onStop={stopPlayback} onFade={() => playSelected(selected)} onVolume={(dir) => void changeVolume(dir)} />
+      )}
       <DownloadDialog open={dl.confirm !== null} selection={dl.selection} onClose={() => dl.ask(null)} onConfirm={dl.start} />
     </div>
   );
