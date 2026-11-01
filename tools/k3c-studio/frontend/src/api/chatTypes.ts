@@ -50,6 +50,16 @@ export interface ChatAction {
   gesperrt?: string;
   status: ChatActionStatus;
   ergebnis?: string;
+  /** Vorschau je Feld (Overrides, WZ37.2): Basiswert → neuer Wert */
+  vorschau?: ActionPreview[];
+}
+
+/** Feld der Vorschau einer Karte: Basiswert, bisheriger Override („–“ = geerbt) und neuer Wert. */
+export interface ActionPreview {
+  feld: string;
+  basis: string;
+  alt?: string;
+  neu: string;
 }
 
 /** Aktionskarten eines Chats (Go: ChatActions, ChatActionRun, ChatActionDrop). */

@@ -51,7 +51,7 @@ func TestChatAktionenKatalog(t *testing.T) {
 	want := []string{"gebaeude_aendern", "zuordnung_setzen", "kandidat_zuordnen", "recherche", "lizenz_bestaetigen", "laden",
 		"vorrat_uebernehmen", "aufraeumen", "netz", "welt_waehlen", "welt_anlegen", "welt_kopieren", "welt_loeschen",
 		"welt_speichern", "chunks_planen", "testspielstand_anlegen", "testspielstand_loeschen", "ticket",
-		"vorschlag_uebernehmen", "vorschlag_verwerfen"}
+		"vorschlag_uebernehmen", "vorschlag_verwerfen", "override_lesen", "override_setzen", "override_entfernen"}
 	var arts []string
 	for _, s := range actionCatalog() {
 		if s.art == "" || s.fields == "" || s.help == "" || s.prepare == nil || slices.Contains(arts, s.art) {

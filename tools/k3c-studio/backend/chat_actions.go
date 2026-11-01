@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"slices"
 	"strings"
 	"sync"
 )
@@ -39,12 +40,23 @@ type ChatAction struct {
 	Block   string   `json:"gesperrt,omitempty"` // Grund, warum sie nicht ausführbar ist (Prüfung vorab)
 	Status  string   `json:"status"`
 	Result  string   `json:"ergebnis,omitempty"`
+	// Preview ist die Vorschau je Feld (Basiswert → neuer Wert, Overrides WZ37.2); leer bei anderen Arten.
+	Preview []ActionPreview `json:"vorschau,omitempty"`
+}
+
+// ActionPreview ist ein Feld der Vorschau: Basiswert, bisheriger Override (– = geerbt) und neuer Wert.
+type ActionPreview struct {
+	Field string `json:"feld"`
+	Base  string `json:"basis"`
+	Old   string `json:"alt,omitempty"`
+	New   string `json:"neu"`
 }
 
 // actionPlan ist eine geprüfte Aktion: Anzeige und der Aufruf mit dem Stand zur Zeit der Prüfung.
 type actionPlan struct {
 	title   string
 	details []string
+	preview []ActionPreview
 	run     func() (string, error)
 }
 
@@ -58,7 +70,7 @@ type actionSpec struct {
 
 // actionCatalog sind alle Arten; die Teile stehen bei ihren Seiten (chat_actions_assets.go, chat_actions_world.go).
 func actionCatalog() []actionSpec {
-	return append(append(assetActions(), worldActions()...), hubActions()...)
+	return slices.Concat(assetActions(), worldActions(), overrideActions(), hubActions())
 }
 
 func findSpec(art string) (actionSpec, bool) {
@@ -152,6 +164,7 @@ func (a *App) prepareAction(raw json.RawMessage) (ChatAction, func() (string, er
 	if plan.details != nil {
 		card.Details = plan.details
 	}
+	card.Preview = plan.preview
 	if err != nil {
 		card.Block = err.Error()
 		return card, nil

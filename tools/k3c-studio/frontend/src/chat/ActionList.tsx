@@ -23,6 +23,11 @@ export function ActionCard({ action: a, onRun, onDrop }: { action: ChatAction; o
         <StatusBadge tone={tone(a)}>{a.gesperrt ? 'gesperrt' : STATUS_TEXT[a.status]}</StatusBadge>
       </Flex>
       {a.details.filter((d) => d !== '').map((d, i) => <Text key={i} size="1" color="gray">{d}</Text>)}
+      {a.vorschau?.map((p) => (
+        <Text key={p.feld} size="1" data-testid="action-preview">
+          {p.feld}: Basis {p.basis}{p.alt && p.alt !== '–' ? ` (bisher ${p.alt})` : ''} → {p.neu}
+        </Text>
+      ))}
       {a.gesperrt && <div className="chat-note chat-sug-block" role="status">Gesperrt: {a.gesperrt}</div>}
       {a.ergebnis && <div className="chat-note" role="status">{a.ergebnis}</div>}
       {open && (
