@@ -48,7 +48,7 @@ jobs:
       - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
-      - uses: go-task/setup-task@v1
+      - uses: go-task/setup-task@v2
       # Wie lokal: Client und Frontends von k3c-workbench, Asset-Studio und Starter, deren Komponententests (React, Radix) laufen in task test mit.
       - run: task install
       - run: task lint
@@ -75,7 +75,7 @@ jobs:
       - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
-      - uses: go-task/setup-task@v1
+      - uses: go-task/setup-task@v2
       - run: task go:test
       - name: Race-Detector für engine/ (B-077)
         run: task go:race
@@ -116,7 +116,7 @@ jobs:
       - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
-      - uses: go-task/setup-task@v1
+      - uses: go-task/setup-task@v2
       - run: go env GOARCH
       - run: task go:test
 
@@ -179,7 +179,7 @@ jobs:
           bun-version: 1.4.2
       # Der Typecheck des Frontends prüft auch die Tests; vitest kommt aus dem Hauptprojekt, die Konfiguration
       # (Alias @webkit) aus tools/k3c-workbench/frontend/vitest.config.ts.
-      - uses: go-task/setup-task@v1
+      - uses: go-task/setup-task@v2
       - run: bun install --frozen-lockfile
         working-directory: .
       # go:embed braucht frontend/dist, deshalb zuerst das Frontend (mit Typecheck).
@@ -217,7 +217,7 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.2
-      - uses: go-task/setup-task@v1
+      - uses: go-task/setup-task@v2
       - run: bun install --frozen-lockfile
       - run: bun install --frozen-lockfile
         working-directory: tools/k3c-studio/frontend
@@ -260,7 +260,7 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.2
-      - uses: go-task/setup-task@v1
+      - uses: go-task/setup-task@v2
       - run: bun install --frozen-lockfile
         working-directory: .
       # go:embed braucht frontend/dist, deshalb zuerst das Frontend (mit Typecheck); vitest kommt aus dem Hauptprojekt,
