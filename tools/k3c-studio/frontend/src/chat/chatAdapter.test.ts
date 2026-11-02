@@ -22,7 +22,7 @@ async function collect(adapter: ReturnType<typeof createChatAdapter>, text: stri
   return out;
 }
 
-const textOf = (r: ChatModelRunResult) => (r.content?.[0] as { text: string }).text;
+const textOf = (r: ChatModelRunResult) => (r.content?.[0] as { text?: string } | undefined)?.text;
 
 describe('Chat-Adapter (WZ19.2)', () => {
   it('zeigt die Antwort fortlaufend und schließt sie als fertig ab', async () => {
