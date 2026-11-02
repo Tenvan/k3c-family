@@ -1,6 +1,6 @@
 # BAL8 · REG, SIM · Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAL
 - **Domäne:** REG, SIM
 - **Reife:** bereit

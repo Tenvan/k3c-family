@@ -26,6 +26,8 @@ type Verdict struct {
 	Status       string   `json:"status"`
 	FailSeeds    []string `json:"failSeeds,omitempty"`
 	InvalidSeeds []string `json:"invalidSeeds,omitempty"`
+	// Counted: Zahl der gewerteten Werte (Läufe ohne Wert, z. B. castleHeld ohne Fenster, zählen nicht; B-657)
+	Counted int `json:"counted,omitempty"`
 }
 
 // Evaluate bewertet alle Ziele gegen die Läufe eines Berichts (nur Seeds aus der Datei, nur das Szenario des Ziels).
@@ -62,7 +64,7 @@ func (g Target) evaluate(t *Targets, results []Result) Verdict {
 		v.Status = StatusInvalid
 		return v
 	}
-	v.Value = g.value(vals)
+	v.Value, v.Counted = g.value(vals), len(vals)
 	v.Status = g.rate(v.Value, t)
 	if v.Status == StatusViolated {
 		v.FailSeeds = g.failSeeds(v.Value, vals, owner)

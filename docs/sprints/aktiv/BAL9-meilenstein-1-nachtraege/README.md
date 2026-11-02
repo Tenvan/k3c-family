@@ -1,11 +1,11 @@
-# BAL9 · REG · Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance
+# BAL9 · DEV, SIM, REG · Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAL
-- **Domäne:** REG
-- **Reife:** Entwurf
+- **Domäne:** DEV, SIM, REG
+- **Reife:** bereit
 - **Tickets:** B-656, B-657, B-654
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 29493645
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-31, Ralf im Chat (Revision 1)
@@ -53,6 +53,13 @@ Ziel nicht erreichbar → Ziel begründet neu fassen statt Wert blind drehen.
 keine. Entschieden (🧑, 2026-10-31): Bleibt `holz` oder `schiff` rot, fasst der Sprint das Ziel mit Begründung neu, die Werte bleiben; 🧑 bestätigt die neue Fassung im Bericht.
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BAL9.1 | `BAL9.1-castleheld-fenster.md` | Umsetzung | autonom | fertig |
+| BAL9.2 | `BAL9.2-bot-performance.md` | Umsetzung | autonom | fertig |
+| BAL9.3 | `BAL9.3-meilenstein-acht-seeds.md` | Umsetzung | autonom | offen |
+| BAL9.4 | `BAL9.4-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 

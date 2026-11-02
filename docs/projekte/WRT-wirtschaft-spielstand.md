@@ -23,7 +23,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | W12 | Morgengrauen als eigene Phase in Simulation, Protokoll und Regeln | erledigt |
 | W13 | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | erledigt |
 | W14 | Spielstand-Kommentare nach W7.2 nachziehen | erledigt |
-| W15 | Fackeln als Spielobjekt mit Licht in der Nacht | geplant |
+| W15 | Fackeln als Spielobjekt mit Licht in der Nacht | aktiv |
 
 ## Nicht-Ziele
 

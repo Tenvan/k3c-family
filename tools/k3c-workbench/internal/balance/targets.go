@@ -29,8 +29,8 @@ type measure struct {
 
 // measures sind die Kennzahl-IDs, die Ziele benutzen dürfen.
 var measures = map[string]measure{
-	// Kein castleFallen bis zum Morgen nach dem letzten Tag des Szenarios.
-	"castleHeld": {KindShare, func(m *Metrics) []float64 { return []float64{b2f(m.CastleFallTick == nil)} }},
+	// Kein castleFallen in Nacht 1 bis 5, unabhängig von der Länge des Laufs (B-657).
+	"castleHeld": {KindShare, castleHeld},
 	// Erste Mauer spätestens zu Dämmerungsbeginn von Tag 1 (Ende der hellen Phase).
 	"firstWallBeforeDusk1": {KindShare, func(m *Metrics) []float64 {
 		ok := len(m.Days) > 0 && m.Days[0].DuskTick != nil && m.FirstWallTick != nil && *m.FirstWallTick <= *m.Days[0].DuskTick
@@ -59,6 +59,27 @@ var measures = map[string]measure{
 		}
 		return v
 	}},
+}
+
+// castleHeldNights ist das Fenster der Kennzahl castleHeld: Nacht 1 bis 5 (Ziel „Burg hält Nacht 1–5“). Es hängt nicht an
+// Target.Days, weil ein Lauf über 40 Tage (sim_test days=40) die Tage aller Ziele überschreibt.
+const castleHeldNights = 5
+
+// castleHeld (B-657): 1, wenn die Burg bis zum Morgen nach Nacht castleHeldNights nicht fiel; 0 bei einem Fall davor.
+// Ein Lauf, der diesen Morgen ohne Burgfall nicht erreicht, ist nicht auswertbar (kein Wert statt „verletzt“).
+func castleHeld(m *Metrics) []float64 {
+	end := -1 // Tick des Morgens nach dem Fenster
+	for _, d := range m.Dawns {
+		if d.Day == castleHeldNights+1 {
+			end = d.Tick
+			break
+		}
+	}
+	fell := m.CastleFallTick != nil && (end < 0 || *m.CastleFallTick < end)
+	if !fell && end < 0 {
+		return nil
+	}
+	return []float64{b2f(!fell)}
 }
 
 func b2f(b bool) float64 {

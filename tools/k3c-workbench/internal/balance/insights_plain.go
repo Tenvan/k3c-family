@@ -17,7 +17,7 @@ var highMeans = map[string]string{
 
 // measureClause: was bei einem Anteil „eingetreten“ ist (Satzteil nach „In 5 von 5 Läufen …“).
 var measureClause = map[string]string{
-	"castleHeld":           "hielt die Burg bis zum Ende",
+	"castleHeld":           "hielt die Burg Nacht 1 bis 5",
 	"firstWallBeforeDusk1": "stand die erste Mauer vor der Dämmerung von Tag 1",
 	"endbossDefeated":      "wurde der Endboss besiegt",
 	"caveBeforeDay6":       "wurde die Höhle vor Tag 6 erreicht",

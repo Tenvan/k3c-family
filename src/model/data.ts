@@ -143,4 +143,11 @@ export interface LightSource {
 }
 export type LightSourceKind = 'torch' | 'campfire';
 /** `nightBrightness`: Helligkeit des Vordergrunds, `backgroundBrightness`: des Hintergrunds in tiefster Nacht (W13); `glowColor`: Farbe des Lichtscheins (`#rrggbb`) */
-export const LIGHT = lightJson as { nightBrightness: number; backgroundBrightness: number; glowColor: string; sources: Partial<Record<LightSourceKind, LightSource>> };
+/** `torches`: je Platz-Art die Versätze der Fackeln in Units, positiv = von der Hub-Mitte weg (B-622; Regel wie `engine/sim/torches.go`) */
+export const LIGHT = lightJson as {
+  nightBrightness: number;
+  backgroundBrightness: number;
+  glowColor: string;
+  sources: Partial<Record<LightSourceKind, LightSource>>;
+  torches: Partial<Record<string, number[]>>;
+};

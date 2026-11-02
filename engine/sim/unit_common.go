@@ -87,6 +87,9 @@ func stepPeasant(w *World, t *Troop, dt float64) {
 	if danger && leaveOnDanger(w, t.Job) {
 		releaseJob(w, t)
 	}
+	if !danger {
+		t.shelter = 0 // nächste Gefahr legt den Platz neu fest
+	}
 	if t.Job == nil {
 		if danger {
 			walkTo(w, t, shelterX(w, t), dt)
@@ -110,10 +113,15 @@ func stepPeasant(w *World, t *Troop, dt float64) {
 }
 
 // shelterX: Schutzplatz bei Gefahr, über 5 Plätze um den Hub gestreut. Maßgeblich ist der Index der Truppe in
-// w.Troops, nicht ihre Entity-ID: Neue Bauplätze oder andere Entities verschieben so keine Schutzplätze (B-260).
+// w.Troops, nicht ihre Entity-ID: Neue Bauplätze oder andere Entities verschieben so keine Schutzplätze (B-260). Der
+// Platz wird beim ersten Aufruf je Gefahr gemerkt (Troop.shelter): Sterben andere Truppen oder kommen welche hinzu,
+// bleibt er bis zum Ende der Gefahr (B-605).
 func shelterX(w *World, t *Troop) float64 {
-	// Suche nur bei Gefahr und ohne Auftrag; bei wenigen Dutzend Truppen billiger als ein durchgereichter Index.
-	return w.HubX + float64(max(0, slices.Index(w.Troops, t))%5-2)
+	if t.shelter == 0 {
+		// Suche nur bei Gefahr und ohne Auftrag; bei wenigen Dutzend Truppen billiger als ein durchgereichter Index.
+		t.shelter = max(0, slices.Index(w.Troops, t))%5 + 1
+	}
+	return w.HubX + float64(t.shelter-3)
 }
 
 // leaveOnDanger: Sammeln, Reparatur, Ausbau und jeder Auftrag an einem Vorposten (building_outpost.go) bleiben bei

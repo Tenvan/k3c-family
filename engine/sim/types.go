@@ -99,6 +99,8 @@ type Troop struct {
 	hitBy      string // Gegnerart des letzten Treffers für disarmed (unit_warrior.go), ohne JSON
 	// carried: Material, das ein Träger in einer Insel bei vollem Maximum behält, während er einen Bauauftrag übernimmt.
 	carried *Job
+	// shelter: Schutzplatz der laufenden Gefahr, 1 bis 5 (0 = keiner gemerkt; unit_common.go › shelterX, B-605).
+	shelter int
 }
 
 // ResourceNode ist ein Baum, Fels oder Kupfererz.

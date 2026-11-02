@@ -92,7 +92,7 @@ func NewHandler(cfg Config) http.Handler {
 	// Unbekannte API-Adressen (auch das frühere /api/studio, B-507) sind 404 für jede Methode, nicht 405 aus static.
 	mux.HandleFunc("/api/", http.NotFound)
 	mux.HandleFunc("/", s.static)
-	return s.accessLog(mux)
+	return s.accessLog(s.originGuard(mux))
 }
 
 func writeJSON(w http.ResponseWriter, status int, body any) {

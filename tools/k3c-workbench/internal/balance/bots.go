@@ -282,8 +282,12 @@ func nearestUpgrade(w *sim.World, p *sim.Player) (best *sim.Site, open bool) {
 // wallPayable: Eine unbezahlte Mauer nimmt gerade Münzen (ihre Linie ist offen). Anders als nearestWall zählen Mauern
 // späterer Linien nicht, die erst mit höherer Hub-Stufe bezahlbar sind (B-300: sonst wartet walls auf sie für immer).
 func wallPayable(w *sim.World) bool {
+	want := wantSet{w: w}
 	for _, s := range w.Sites {
-		if _, ok := sim.SiteGoldLeft(w, s); ok && s.Kind == "wall" && s.State == "unpaid" && wanted(w, s) {
+		if s.Kind != "wall" || s.State != "unpaid" {
+			continue
+		}
+		if _, ok := sim.SiteGoldLeft(w, s); ok && want.wanted(s) {
 			return true
 		}
 	}
@@ -292,8 +296,12 @@ func wallPayable(w *sim.World) bool {
 
 // nearestWall: die nächste unbezahlte Mauer, deren Rest das Gold deckt; open meldet, ob überhaupt eine offen ist.
 func nearestWall(w *sim.World, p *sim.Player) (best *sim.Site, open bool) {
+	want := wantSet{w: w}
 	for _, s := range w.Sites {
-		if _, payable := sim.SiteGoldLeft(w, s); s.Kind != "wall" || s.State != "unpaid" || !payable || !wanted(w, s) {
+		if s.Kind != "wall" || s.State != "unpaid" {
+			continue
+		}
+		if _, payable := sim.SiteGoldLeft(w, s); !payable || !want.wanted(s) {
 			continue // gesperrte Plätze (Freiraum, Hub-Stufe) zählen nicht als offen (B-652)
 		}
 		open = true

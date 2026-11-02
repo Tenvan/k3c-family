@@ -15,6 +15,10 @@ const MAP_DEPTH = 12;
 const PAD_PX = GAME_WIDTH;
 /** Helligkeit wird auf Stufen gerundet, die Karte zeichnet nur bei Änderung neu */
 const STEPS = 64;
+/** Fackeln (B-622) über der Lichtkarte: Halter aus Holz, die Flamme in `glowColor` leuchtet nur mit ihrem Schein */
+const TORCH_DEPTH = MAP_DEPTH + 1;
+const TORCH_STICK = { w: 4, h: 16, color: 0x5a3a22 };
+const TORCH_FLAME_R = 5;
 
 let counter = 0;
 
@@ -30,6 +34,8 @@ export class LightView {
   private ctx: CanvasRenderingContext2D | null = null;
   private tex: Phaser.Textures.CanvasTexture | null = null;
   private last = '';
+  private lastTorches = '';
+  private torches: Phaser.GameObjects.Graphics | null = null;
   private warned = false;
 
   constructor(
@@ -45,6 +51,7 @@ export class LightView {
     }
     const base = Math.round(brightnessOf(world.cycle) * STEPS);
     const glows = lit.map((s) => ({ x: s.x, radius: s.radius, a: Math.round(glowAlpha(s.strength, world.cycle) * STEPS) }));
+    this.drawTorches(glows.filter((_, i) => lit[i]!.kind === 'torch'));
     const stamp = `${world.widthUnits}|${base}|${glows.map((g) => `${g.x}:${g.radius}:${g.a}`).join(',')}`;
     if (stamp === this.last) return;
     this.last = stamp;
@@ -101,7 +108,27 @@ export class LightView {
     tex.refresh();
   }
 
+  /** Fackeln als Objekte an Mauer und Turm: der Halter immer, die Flamme mit der Deckkraft ihres Scheins (am Tag aus) */
+  private drawTorches(torches: { x: number; a: number }[]): void {
+    const stamp = torches.map((t) => `${t.x}:${t.a}`).join(',');
+    if (stamp === this.lastTorches) return;
+    this.lastTorches = stamp;
+    if (!this.torches) {
+      this.torches = this.scene.add.graphics().setDepth(TORCH_DEPTH);
+      this.root.add(this.torches);
+    }
+    const g = this.torches.clear();
+    const flame = Phaser.Display.Color.HexStringToColor(LIGHT.glowColor).color;
+    const top = GROUND_Y - LIFT_PX;
+    for (const t of torches) {
+      const px = t.x * UNIT_PX;
+      g.fillStyle(TORCH_STICK.color, 1).fillRect(px - TORCH_STICK.w / 2, top, TORCH_STICK.w, TORCH_STICK.h);
+      if (t.a > 0) g.fillStyle(flame, t.a / STEPS).fillCircle(px, top - TORCH_FLAME_R / 2, TORCH_FLAME_R);
+    }
+  }
+
   destroy(): void {
+    this.torches?.destroy();
     this.image?.destroy();
     if (this.scene.textures.exists(this.key)) this.scene.textures.remove(this.key);
   }

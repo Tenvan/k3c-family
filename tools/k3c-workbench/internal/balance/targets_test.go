@@ -36,7 +36,8 @@ func TestZielkorridoreLaden(t *testing.T) {
 
 // metricsWith baut Metrics für feste Werte: gehalten oder gefallen, Tick der ersten Mauer, zerstörte Gebäude je Welle.
 func metricsWith(fallen bool, wallTick int, destroyed ...int) *Metrics {
-	m := &Metrics{Days: []DayMetrics{{Day: 1, DuskTick: ptr(100)}}, FirstWallTick: ptr(wallTick)}
+	m := &Metrics{Days: []DayMetrics{{Day: 1, DuskTick: ptr(100)}}, FirstWallTick: ptr(wallTick),
+		Dawns: []DawnMetrics{{Day: 1}, {Day: 6, Tick: 1000}}}
 	if fallen {
 		m.CastleFallTick = ptr(500)
 	}
@@ -125,6 +126,41 @@ func TestBewertungUngueltig(t *testing.T) {
 	v := ts.Evaluate(Report{Results: results(metricsWith(false, 1), nil)})[0]
 	if v.Status != StatusInvalid || !slices.Equal(v.InvalidSeeds, []string{"2"}) {
 		t.Errorf("%s %v", v.Status, v.InvalidSeeds)
+	}
+}
+
+// B-657: castleHeld wertet nur Nacht 1 bis 5 (bis zum Morgen von Tag 6), auch in einem Lauf über 40 Tage.
+func TestCastleHeldFenster(t *testing.T) {
+	const dawn6 = 1000 // Tick des Morgens nach Nacht 5
+	long := func(fall *int) *Metrics {
+		return &Metrics{CastleFallTick: fall, Dawns: []DawnMetrics{{Day: 1}, {Day: 6, Tick: dawn6}, {Day: 41, Tick: 9000}}}
+	}
+	for _, c := range []struct {
+		name string
+		m    *Metrics
+		want []float64
+	}{
+		{"AC-01 Burgfall nach Tag 5 (Tag 41)", long(ptr(9500)), []float64{1}},
+		{"AC-02 Burgfall an Tag 3", long(ptr(500)), []float64{0}},
+		{"gehalten über den ganzen Lauf", long(nil), []float64{1}},
+		{"Lauf endet mit Burgfall vor Tag 6", &Metrics{CastleFallTick: ptr(500), Dawns: []DawnMetrics{{Day: 1}, {Day: 3, Tick: 400}}}, []float64{0}},
+		{"Lauf kürzer als 5 Tage ohne Burgfall: nicht auswertbar", &Metrics{Dawns: []DawnMetrics{{Day: 1}, {Day: 4, Tick: 600}}}, nil},
+	} {
+		if got := measures["castleHeld"].values(c.m); !slices.Equal(got, c.want) {
+			t.Errorf("%s: %v, erwartet %v", c.name, got, c.want)
+		}
+	}
+	// Ein kurzer Lauf ohne Wert zählt nicht als verletzt, sondern bleibt aus dem Anteil heraus.
+	short := &Metrics{Dawns: []DawnMetrics{{Day: 1}}}
+	ts := &Targets{Seeds: seeds(2), Targets: []Target{shareTarget()}}
+	v := ts.Evaluate(Report{Results: results(long(ptr(9500)), short)})[0]
+	if v.Value != 100 || v.Counted != 1 {
+		t.Errorf("kurzer Lauf verfälscht den Anteil: %v %%, gewertet %d", v.Value, v.Counted)
+	}
+	// Der Klartext nennt nur die gewerteten Läufe (Review BAL9).
+	in := TargetInsight{Measure: "castleHeld", Kind: KindShare, Name: "castleHeld", Value: v.Value, Runs: v.Counted}
+	if got := in.what(); !strings.Contains(got, "In 1 von 1 Läufen") {
+		t.Errorf("Klartext: %q", got)
 	}
 }
 

@@ -1,10 +1,14 @@
 {
-  "notes": "Licht in Nacht und Morgengrauen (B-472, gezeichnet ab W13, nur im Client). nightBrightness = Helligkeit des Vordergrunds (Boden, Gebäude, Figuren) in tiefster Nacht, backgroundBrightness = Helligkeit des Hintergrunds (Parallax) in tiefster Nacht (0 = schwarz, 1 = Tag), darüber nach daylight(); beide gelten außerhalb des Lichts, im Licht kehren die normalen Farben zurück (Lichtkarte, Multiply). sources: Lichtquellen je Art; radius in Units um die Quelle (Reichweite verdoppelt, nur Darstellung), strength = Aufhellung in der Mitte (0 = keine, 1 = volle Tageshelligkeit), nach außen fällt sie bis zum Radius auf 0; sie wirkt mit (1 − daylight), am Tag also nicht. glowColor = Farbe des Lichtscheins. Werte vorläufig, Dunkelstufe und Lichtwerte legt Ralf fest.",
+  "notes": "Licht in Nacht und Morgengrauen (B-472, gezeichnet ab W13, nur im Client). nightBrightness = Helligkeit des Vordergrunds (Boden, Gebäude, Figuren) in tiefster Nacht, backgroundBrightness = Helligkeit des Hintergrunds (Parallax) in tiefster Nacht (0 = schwarz, 1 = Tag), darüber nach daylight(); beide gelten außerhalb des Lichts, im Licht kehren die normalen Farben zurück (Lichtkarte, Multiply). sources: Lichtquellen je Art; radius in Units um die Quelle (Reichweite verdoppelt, nur Darstellung), strength = Aufhellung in der Mitte (0 = keine, 1 = volle Tageshelligkeit), nach außen fällt sie bis zum Radius auf 0; sie wirkt mit (1 − daylight), am Tag also nicht. glowColor = Farbe des Lichtscheins. Werte vorläufig, Dunkelstufe und Lichtwerte legt Ralf fest. torches (B-622, W15): Fackeln gehören zu gebauter Mauer und gebautem Turm (kein Kauf, keine Bauoption; 🧑 2026-10-31), je Art die Versätze in Units zur Mitte des Platzes, positiv = von der Hub-Mitte weg (links gespiegelt). Zerstört (nicht gebaut) = keine Fackel. Die Sim rechnet die Plätze (engine/sim/torches.go), der Client zeichnet sie mit dem Licht torch (src/scenes/render/nightLight.ts); beide prüfen testdata/torches.json.",
   "nightBrightness": 0.2,
   "backgroundBrightness": 0.05,
   "glowColor": "#ffc982",
   "sources": {
     "torch": { "radius": 6, "strength": 0.8 },
     "campfire": { "radius": 12, "strength": 1 }
+  },
+  "torches": {
+    "wall": [0],
+    "tower": [-0.75, 0.75]
   }
 }

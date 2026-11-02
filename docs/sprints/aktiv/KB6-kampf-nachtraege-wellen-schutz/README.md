@@ -1,11 +1,11 @@
-# KB6 · REG · Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz
+# KB6 · SIM, REG · Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** KMP
-- **Domäne:** REG
-- **Reife:** Entwurf
+- **Domäne:** SIM, REG
+- **Reife:** bereit
 - **Tickets:** B-579, B-605
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 29493645
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-31, Ralf im Chat (Revision 1)
@@ -52,6 +52,12 @@ Truppe stirbt während der Gefahr → übrige Truppen behalten ihren Platz.
 keine. Entschieden (🧑, 2026-10-31): Hebel für B-579 ist Adern `percentPerGather` 1 → 2 (B-626). Der Messtest `K3C_MESSUNG=1` prüft den Korridor 4–12 min; weitere Hebel nur, wenn er rot bleibt.
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| KB6.1 | `KB6.1-schutzplatz-stabil.md` | Umsetzung | autonom | fertig |
+| KB6.2 | `KB6.2-wellenabstand-messen.md` | Umsetzung | autonom | offen |
+| KB6.3 | `KB6.3-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 

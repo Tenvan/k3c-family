@@ -1,11 +1,11 @@
 # BD10 · SRV · Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BED
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-613
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 29493645
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-31, Ralf im Chat (Revision 1)
@@ -53,6 +53,12 @@ keine.
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| BD10.1 | `BD10.1-herkunft-pruefen.md` | Umsetzung | autonom | fertig |
+| BD10.2 | `BD10.2-review.md` | Review | autonom | fertig |
+| BD10.3 | `BD10.3-abnahme-geraet.md` | Workshop | Mensch | offen |
+
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - BD10.1 (SRV) Herkunft prüfen, Tests, Protokoll-Doku (AC-01, AC-02).
@@ -60,5 +66,6 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-11-02 Review BD10.2: AC-01 belegt (Go-Tests inkl. WebSocket, `go:test`/`go:lint` grün), siehe BD10.2 › Ergebnis.
+- AC-02: Go-Tests grün, Geräteprüfung offen in BD10.3 (Mensch); Sprint bleibt aktiv.
+- Befunde: keine schweren; DNS-Rebinding als bekannte Grenze (Nicht-Ziel). Neue Tickets: keine.

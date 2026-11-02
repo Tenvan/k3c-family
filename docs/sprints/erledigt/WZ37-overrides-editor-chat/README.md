@@ -1,6 +1,6 @@
 # WZ37 · DEV · Welt-Overrides im Welten-Editor und im Studio-Chat
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -57,7 +57,7 @@ keine.
 |---|---|---|---|---|
 | WZ37.1 | `WZ37.1-editor-overrides.md` | Umsetzung | autonom | fertig |
 | WZ37.2 | `WZ37.2-chat-overrides.md` | Umsetzung | autonom | fertig |
-| WZ37.3 | `WZ37.3-review.md` | Review | autonom | offen |
+| WZ37.3 | `WZ37.3-review.md` | Review | autonom | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
@@ -67,5 +67,6 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-11-02, Review WZ37.3: AC-01 und AC-02 belegt (Details in `WZ37.1` und `WZ37.2` › Ergebnis, Gegenprobe in `WZ37.3` › Ergebnis).
+- Studio-Go-Tests und Vitest grün; ein Lastflake in `ChunkCount.test.tsx` (isoliert grün, nicht aus WZ37).
+- Offen bei Ralf: B-682/AC-03 (Abnahme im Studio am PC). Keine Befunde, keine neuen Tickets.

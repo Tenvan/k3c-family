@@ -32,7 +32,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | BD7 | Pause-Client, Skill-Reset beim Tod, Schutz wartender Monarchen | erledigt |
 | BD8 | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl | erledigt |
 | BD9 | Welt-Anzeige größer und je Spielstand, offene Räume schließen | aktiv |
-| BD10 | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | geplant |
+| BD10 | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | aktiv |
 
 ## Nicht-Ziele
 

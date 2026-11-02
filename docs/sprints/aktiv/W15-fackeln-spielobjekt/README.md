@@ -1,11 +1,11 @@
 # W15 · SIM · Fackeln als Spielobjekt mit Licht in der Nacht
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WRT
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-622
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 29493645
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-10-31, Ralf im Chat (Revision 1)
@@ -52,6 +52,12 @@ keine. Entschieden (🧑, 2026-10-31): Fackeln sind Teil von Mauer und Turm, kei
 
 ## Sessions
 
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| W15.1 | `W15.1-fackeln-an-mauer-und-turm.md` | Umsetzung | autonom | fertig |
+| W15.2 | `W15.2-review.md` | Review | autonom | fertig |
+| W15.3 | `W15.3-abnahme-am-geraet.md` | Workshop | Mensch | offen |
+
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
 - W15.1 (SIM) Fackel als Objekt (AC-01).
@@ -59,5 +65,6 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-02, Review W15.2: AC-01 geprüft (go:test Fackel, nightLight, noSim, projectRules grün; Sim und Client teilen testdata/torches.json).
+Befund niedrig: TorchXs in der Sim nur von Tests genutzt, kein Fix. Keine neuen Tickets.
+Offen: Abnahme am Gerät (W15.3, Mensch), B-622 bleibt bis dahin offen; check, check:go, check:race stehen vor dem Commit aus.

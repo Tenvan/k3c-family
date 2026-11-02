@@ -799,6 +799,17 @@ bekommt `room_closed` und danach die Raumliste, seine Verbindung bleibt. Der Cod
 `DELETE /api/save` löschbar. Antworten: `200` `{"ok": true, "slot": NAME}`; `404` `{"error": "Kein Raum offen"}`, wenn
 kein Raum diesen Stand offen hat; `400` bei fehlendem oder ungültigem Namen; andere Methoden → `405`.
 
+## HTTP: Herkunft schreibender Anfragen
+
+**Nachgetragen ohne neue Version (BD10.1, B-613):** Jede Anfrage unter `/api/` mit einer anderen Methode als `GET`,
+`HEAD` oder `OPTIONS` (Raum schließen, Spielstand speichern/löschen/wiederherstellen, Bericht, Client-Log, Status-Aktionen,
+Dev-Aktionen …) prüft den Header `Origin`: Ist er gesetzt, muss sein Host samt Port gleich dem `Host` der Anfrage sein
+(Schema und Groß-/Kleinschreibung zählen nicht), sonst `403` `{"error": "Fremde Herkunft"}`, der Endpunkt läuft nicht
+und der Server loggt 🚫. `Origin: null` ist fremd. Ohne `Origin` (Werkzeuge, curl) bleibt alles wie bisher. Die eigene
+Seite sendet immer den eigenen Host, also auch über IP oder Namen im Heimnetz (Xbox-Edge) und über den Vite-Dev-Proxy
+(5183, reicht `Host` unverändert weiter). Ein Proxy vor dem Server, der `Host` umschreibt, muss das lassen. Lesende
+Anfragen prüfen keinen `Origin`; der WebSocket `/ws` prüft die Herkunft beim Handshake selbst.
+
 ## HTTP: Dungeon-Master-Seite (B-232)
 
 `/api/dev` dient der Seite `/dm` (der Server liefert `/dm` als `dm.html`). Kein Token, kein Gerät; Lesen geht immer,

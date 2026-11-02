@@ -73,7 +73,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-603](B-603-dev-aktionen-boss-event.md) | SRV | Idee | hoch | eingeplant | KB4 | Dev-Aktionen lösen Boss, Phasenwechsel und Events (Vollmond, Blutmond, Händler) sofort aus |
 | [B-604](B-604-welt-anzeige-pausenmenue-lobby.md) | CLI | Problem | mittel | eingeplant | BD9 | Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby |
 | [B-605](B-605-schutzplatz-stabil-bei-truppenwechsel.md) | SIM | Schuld | niedrig | eingeplant | KB6 | Schutzplatz bleibt stabil, wenn Truppen sterben oder hinzukommen |
-| [B-613](B-613-http-origin-pruefen.md) | SRV | Problem | niedrig | eingeplant | BD10 | Schreibende HTTP-Endpunkte des Spielservers lehnen fremde Webseiten ab |
 | [B-617](B-617-studio-levelview-test-golden.md) | DEV | Problem | hoch | eingeplant | WZ34 | Der Studio-Test levelView passt wieder zur Golden-Datei level-forest.json |
 | [B-629](B-629-buildall-web-exe.md) | INF | Problem | hoch | eingeplant | WZ34 | task buildall baut die Web-EXEs von Studio und Workbench nicht mit |
 | [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | eingeplant | WZ34 | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
@@ -99,10 +98,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-676](B-676-studio-skills-ziel-und-status.md) | DEV | Idee | mittel | eingeplant | KB5 | Das Studio zeigt Skills am Wirkort und DoTs und Buffs an Gegnern und Monarchen |
 | [B-680](B-680-welt-werte-ueberschreiben.md) | REG | Idee | hoch | eingeplant | BAL8 | Eine Welt-Datei erbt die Basis-Werte und übersteuert nur, was sie ändern will |
 | [B-681](B-681-sim-werte-je-raum.md) | SIM | Idee | hoch | eingeplant | BAL8 | Die Simulation rechnet mit den Werten ihrer Welt statt mit globalen Datei-Variablen |
-| [B-682](B-682-welten-editor-overrides.md) | DEV | Idee | mittel | eingeplant | WZ37 | Der Welten-Editor bearbeitet Werte-Overrides einer Welt und zeigt Basiswert gegen Override |
-| [B-683](B-683-chat-welt-overrides.md) | DEV | Idee | mittel | eingeplant | WZ37 | Der Studio-Chat kann Welt-Overrides lesen, setzen und zurücksetzen |
 | [B-684](B-684-studio-ausschnitt-rahmen-und-einpassen.md) | DEV | Idee | mittel | eingeplant | GRJ2 | Die Ausschnitt-Bearbeitung zeigt wahlweise einen Rahmen und passt die Grafik in die Kachel ein |
 | [B-685](B-685-zielmass-grafiken-skalieren.md) | CLI | Idee | hoch | eingeplant | GRJ2 | Grafiken bekommen ein Zielmaß in der Ausgabe und werden dort passend skaliert |
+| [B-695](B-695-flaky-simrun-tempdir-balancing-abbruch.md) | DEV | Problem | niedrig | offen | – | Zwei Tests flackern: simrun-TempDir-Cleanup und Abbruch eines wartenden Laufs |
 
 ## Archiv
 
@@ -654,3 +652,6 @@ Zeile in diesen Abschnitt.
 | [B-694](archiv/B-694-review-wz39-bal10-nachtraege.md) | SIM | Problem | niedrig | erledigt | – | Nachträge aus dem Review WZ39/BAL10 (niedrig) |
 | [B-630](archiv/B-630-quellen-werden-nicht-uebernommen.md) | DEV | Problem | mittel | erledigt | – | Quellen werden nicht übernommen |
 | [B-352](archiv/B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | verworfen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
+| [B-682](archiv/B-682-welten-editor-overrides.md) | DEV | Idee | mittel | erledigt | WZ37 | Der Welten-Editor bearbeitet Werte-Overrides einer Welt und zeigt Basiswert gegen Override |
+| [B-683](archiv/B-683-chat-welt-overrides.md) | DEV | Idee | mittel | erledigt | WZ37 | Der Studio-Chat kann Welt-Overrides lesen, setzen und zurücksetzen |
+| [B-613](archiv/B-613-http-origin-pruefen.md) | SRV | Problem | niedrig | erledigt | BD10 | Schreibende HTTP-Endpunkte des Spielservers lehnen fremde Webseiten ab |
