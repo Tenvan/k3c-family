@@ -15,9 +15,9 @@ import "math"
 func placePayable(w *World, s *Site) bool {
 	switch s.Kind {
 	case "workshop":
-		return s.Bows+bowsCrafting(s) < buildings["workshop"].BowRack && s.BowPaidGold < cheap(w, troops["archer"].Cost).Gold
+		return s.Bows+bowsCrafting(s) < w.values().Buildings["workshop"].BowRack && s.BowPaidGold < cheap(w, w.values().Troops["archer"].Cost).Gold
 	case "smithy":
-		return s.BowPaidGold < cheap(w, troops["eliteArcher"].Cost).Gold
+		return s.BowPaidGold < cheap(w, w.values().Troops["eliteArcher"].Cost).Gold
 	case "armory":
 		stage, ok := armorStage(w)
 		return ok && s.CraftDone == 0 && w.HubLevel >= stage.HubLevel && s.BowPaidGold < stage.Cost.Gold
@@ -37,10 +37,10 @@ func offerAt(w *World, x float64) *offerTarget {
 // Preis nicht voll bezahlt ist.
 func eliteOfferAt(w *World, x float64, payable bool) *offerTarget {
 	for _, s := range w.Sites {
-		for i, of := range buildings[s.Kind].Offers {
-			o := &offerTarget{s, i}
-			near := isFighter(of.Kind) && s.State == "built" && math.Abs(o.x()-x) <= economy.PayRangeUnits
-			if near && (!payable || o.paid() < cheap(w, troops[of.Kind].Cost).Gold) {
+		for i, of := range w.values().Buildings[s.Kind].Offers {
+			o := &offerTarget{s, i, w.values().Buildings[s.Kind].Offers}
+			near := isFighter(w.values().Troops, of.Kind) && s.State == "built" && math.Abs(o.x()-x) <= w.values().Economy.PayRangeUnits
+			if near && (!payable || o.paid() < cheap(w, w.values().Troops[of.Kind].Cost).Gold) {
 				return o
 			}
 		}
@@ -53,7 +53,7 @@ func eliteOfferAt(w *World, x float64, payable bool) *offerTarget {
 func payAnyOffer(w *World, p *Player, o *offerTarget) {
 	key, amount := p.PayKey, p.PayAmount
 	payOffer(w, p, o)
-	if isFighter(o.kind()) && o.paid() < cheap(w, troops[o.kind()].Cost).Gold {
+	if isFighter(w.values().Troops, o.kind()) && o.paid() < cheap(w, w.values().Troops[o.kind()].Cost).Gold {
 		p.PayKey, p.PayAmount = key, amount
 	}
 }
@@ -67,8 +67,8 @@ func stepCrafts(w *World) {
 		switch s.Kind {
 		case "smithy":
 			stepElite(w, s, "eliteArcher", &s.BowPaidGold, &s.CraftDone)
-			for i, o := range buildings[s.Kind].Offers {
-				if isFighter(o.Kind) && i < len(s.OfferPaid) {
+			for i, o := range w.values().Buildings[s.Kind].Offers {
+				if isFighter(w.values().Troops, o.Kind) && i < len(s.OfferPaid) {
 					stepElite(w, s, o.Kind, &s.OfferPaid[i], &s.OfferDone)
 				}
 			}
@@ -91,10 +91,10 @@ func craft(w *World, s *Site, product string, cost Cost, paid *int, done *float6
 // stepElite wertet nach der Herstellung den nächsten Kämpfer der Ausgangsfigur (troops.json › upgradeFrom) zum Platz
 // zur Figur kind auf: volle HP der neuen Figur mit Rüstung, Schaden und Reichweite liest sein Verhalten aus kind.
 func stepElite(w *World, s *Site, kind string, paid *int, done *float64) {
-	if !craft(w, s, kind, cheap(w, troops[kind].Cost), paid, done) {
+	if !craft(w, s, kind, cheap(w, w.values().Troops[kind].Cost), paid, done) {
 		return
 	}
-	from := troops[kind].UpgradeFrom
+	from := w.values().Troops[kind].UpgradeFrom
 	t := nearest(w.Troops, func(t *Troop) float64 { return t.X }, s.X, math.Inf(1), func(t *Troop) bool { return t.Kind == from })
 	if t == nil {
 		return
@@ -114,8 +114,8 @@ func stepArmor(w *World, s *Site) {
 	before := armorBonus(w)
 	w.ArmorLevel++
 	for _, t := range w.Troops {
-		if isFighter(t.Kind) {
-			gain := troops[t.Kind].HP * (armorBonus(w) - before)
+		if isFighter(w.values().Troops, t.Kind) {
+			gain := w.values().Troops[t.Kind].HP * (armorBonus(w) - before)
 			t.MaxHP += gain
 			t.HP += gain
 		}
@@ -124,7 +124,7 @@ func stepArmor(w *World, s *Site) {
 
 // armorStage ist die nächste Rüstungsstufe; false, wenn alle erreicht sind.
 func armorStage(w *World) (ArmorStage, bool) {
-	stages := buildings["armory"].Armor
+	stages := w.values().Buildings["armory"].Armor
 	if w.ArmorLevel >= len(stages) {
 		return ArmorStage{}, false
 	}
@@ -138,10 +138,10 @@ func armorBonus(w *World) float64 {
 	if w.ArmorLevel == 0 {
 		return 0
 	}
-	return buildings["armory"].Armor[w.ArmorLevel-1].HPBonus
+	return w.values().Buildings["armory"].Armor[w.ArmorLevel-1].HPBonus
 }
 
 // armoredHP sind die vollen HP der Kämpfer-Figur kind mit der Rüstung des Hubs.
 func armoredHP(w *World, kind string) float64 {
-	return troops[kind].HP * (1 + armorBonus(w))
+	return w.values().Troops[kind].HP * (1 + armorBonus(w))
 }

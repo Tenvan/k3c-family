@@ -1,7 +1,7 @@
 # BAL · Balancing & Spieleabende
 
-- **Status:** ruht
-- **Rang:** –
+- **Status:** aktiv
+- **Rang:** 9
 - **Ziel-Tickets:** B-099
 
 ## Ziel
@@ -22,6 +22,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | BR1 | Balancing-Runde Wirtschaft und Spieleabend 2 | geplant |
 | BR2 | Balancing-Runde Kampf und Bosse und Spieleabend 3 | aktiv |
 | BAL7 | Holz-Balancing nach dem dichteren Wald | erledigt |
+| BAL8 | Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt | aktiv |
+| BAL9 | Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance | geplant |
 
 ## Nicht-Ziele
 

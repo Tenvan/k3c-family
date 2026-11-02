@@ -16,6 +16,8 @@ export interface MockWorld {
   name: string;
   notes: string;
   islands: MockIsland[];
+  /** übersteuerte Basis-Werte (B-682), fehlt = keine */
+  overrides?: Record<string, unknown>;
 }
 
 export const newIsland = (n: number): MockIsland => ({

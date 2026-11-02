@@ -135,29 +135,12 @@ type HubData struct {
 	Travel                             struct{ RangeUnits, Seconds float64 }
 }
 
+// Basis-Wertesatz (welten.md § 1): Jede Stufe rechnet mit dem Wertesatz ihrer Welt (World.vals, world_values_room.go);
+// diese Variablen sind die Basis, aus der defaultValues ihn für Welten ohne Overrides baut, und Lese-Stand der Prüfungen.
 var (
 	buildings = withShip(load[map[string]BuildingData]("buildings.json"), load[shipFile]("ship.json"))
 	troops    = load[map[string]TroopData]("troops.json")
-	economy   = load[struct {
-		Purse                                               struct{ StartGold, MaxGold int }
-		PayRangeUnits, PayIntervalSeconds, PickupRangeUnits float64
-		DropPickupDelaySeconds                              float64
-		DawnGoldPerPlayer                                   int
-		DawnGoldPerDepth                                    int // Zuschlag je Tiefe der Stufe auf das Morgengold (wirtschaft.md § 8, B-645)
-		ChestGold                                           [2]int
-		EnemyResourceDrop                                   struct {
-			Chance float64
-			Amount int
-		}
-		Gatherables map[string]Gatherable
-		Veins       map[string]VeinData // Adern (world_vein.go), nicht in Gatherables
-		Storage     struct{ BasePerHub, PerStorage int }
-		RecruitCamp struct {
-			MaxVagrants                 int
-			RespawnSeconds, WanderUnits float64
-		}
-		Merchant MerchantData // Händler (merchant.go)
-	}]("economy.json")
+	economy   = load[economyData]("economy.json")
 	hub       = load[HubData]("hub.json")
 	monarch   = loadMonarch()
 	enemyData = loadEnemyData()
@@ -192,7 +175,8 @@ func loadFrom[T any](fsys fs.FS, name string, dst *T) error {
 // UseData lädt buildings, troops, economy, hub, monarch, enemies und waves aus fsys neu (Sensitivitäts-Lauf des
 // Balancing-Testers, BAL3.3); `UseData(data.Files)` stellt den eingebetteten Stand wieder her. Nicht neu geladen
 // werden difficulty, biomes und daraus abgeleitete Werte (skillCatalog). Bei einem Fehler bleibt alles unverändert.
-// Nicht nebenläufig zu laufenden Simulationen aufrufen.
+// Nicht nebenläufig zu laufenden Simulationen aufrufen. Wirkt auf Inseln, die danach angelegt oder geladen werden: Welten
+// ohne Overrides rechnen mit diesem Stand, Welten mit Overrides lösen ihn als Basis auf (dataFS).
 func UseData(fsys fs.FS) error {
 	b, t, e, h, m, en, w := buildings, troops, economy, hub, monarch, enemyData, waves
 	var ship shipFile
@@ -202,6 +186,7 @@ func UseData(fsys fs.FS) error {
 		return err
 	}
 	buildings, troops, economy, hub, monarch, enemyData, waves = withShip(b, ship), t, e, h, m, en, w
+	dataFS = fsys
 	return nil
 }
 

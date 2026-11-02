@@ -223,5 +223,9 @@ func applyDraft(raw []byte, d WorldDraft) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return patchHead(spliceIslands(raw, list, items, texts, inPlace), d)
+	out, err := patchHead(spliceIslands(raw, list, items, texts, inPlace), d)
+	if err != nil {
+		return nil, err
+	}
+	return patchOverrides(out, d.Overrides)
 }

@@ -8,9 +8,9 @@
 - **Sprint:** –
 - **Projekt:** KRT
 - **Erstellt:** 2026-10-25
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-10-31, Ralf im Chat (Antwort an Claude delegiert)
 
 ## Ausgangslage
 
@@ -50,10 +50,10 @@ nicht relevant
 
 ## Offene Fragen
 
-- Bleibt die Grenze bei 20 MB (Variante A)? Entscheidet 🧑.
+keine. Entschieden: Variante B in der Wirkung. GD1 hat die Golden-Daten gepackt (18 756 751 → 760 737 B, B-624), die Grenze liegt wieder bei 16 MB (`tests/projectRules.test.ts`). Die 20 MB aus Variante A sind hinfällig.
 
 ## Notizen
 
 Herkunft: GEB16.5, Sprint GEB16 (2026-10-25).
 
-Nachtrag (GD1, 2026-10-25): Die Golden-Daten liegen jetzt gzip-komprimiert bei 0,73 MiB, die Grenze steht wieder auf 16 MB. Die Frage nach 20 MB ist damit hinfällig; offen bleibt nur die Bestätigung des Wegs (B-624).
+2026-10-31: Beantwortet im Auftrag von Ralf (Chat), Entscheidung Claude, belegt am Stand von `tests/projectRules.test.ts` (16 MB) und GD1 › Abnahme. Ralf kann die Entscheidung ändern.

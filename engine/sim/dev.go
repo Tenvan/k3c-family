@@ -160,11 +160,11 @@ func devBuildSite(w *World, s *Site, level int) {
 	if l, ok := levelSite(w, s); ok && l.Zone > level {
 		return
 	}
-	if s.State != "built" && (siteHubLevel(w, s) > level || buildings[s.Kind].HP == 0) {
+	if s.State != "built" && (siteHubLevel(w, s) > level || w.values().Buildings[s.Kind].HP == 0) {
 		return
 	}
-	hp := buildings[s.Kind].HP
-	if levels := buildings[s.Kind].Levels; len(levels) > 0 {
+	hp := w.values().Buildings[s.Kind].HP
+	if levels := w.values().Buildings[s.Kind].Levels; len(levels) > 0 {
 		s.Level = min(level, len(levels))
 		hp = levels[s.Level-1].HP
 	}

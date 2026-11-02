@@ -40,7 +40,7 @@ func TestPoolTiefeStufenLaden(t *testing.T) {
 // (b) Welle 6 zieht nur Gegner aus dem Pool, darunter mindestens einen Elite.
 func TestPoolWellePlantAusDemPool(t *testing.T) {
 	for depth, pool := range deepPools {
-		plan := planWave(biomeForDepth(depth), 6, rng.New("k1-pool"), []float64{10, 50, 90}, false, 1)
+		plan := planWave(defaultValues(), biomeForDepth(depth), 6, rng.New("k1-pool"), []float64{10, 50, 90}, false, 1)
 		elites := 0
 		for _, s := range plan {
 			if !slices.Contains(pool, s.kind) {
@@ -89,7 +89,7 @@ func TestPoolDreiPortale(t *testing.T) {
 func TestGegnerSplitterwichtSchwarm(t *testing.T) {
 	b := biomeForDepth(4)
 	b.Enemies.Portal = []string{"shardling"}
-	plan := planWave(b, 1, rng.New("splitter"), []float64{10, 50, 90}, false, 1)
+	plan := planWave(defaultValues(), b, 1, rng.New("splitter"), []float64{10, 50, 90}, false, 1)
 	if enemyData["shardling"].SwarmSize != 4 || len(plan) < 20 || len(plan)%4 != 0 {
 		t.Fatalf("%d Splitterwichte", len(plan))
 	}

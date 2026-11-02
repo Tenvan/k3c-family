@@ -10,8 +10,8 @@ const named = (h: HTMLElement, label: string) => [...h.querySelectorAll('button'
 /** Abschnitt des Levels in der Chunk-Vorschau (nach Index) */
 export const chunkAt = (h: HTMLElement, index: number) => [...h.querySelectorAll<HTMLElement>('.wd-chunk')][index]!;
 
-/** Modus des Welten Editors wählen: „Welt-Struktur“ oder „Stufe bearbeiten“ (Umschalter im Kopf) */
-export async function toMode(h: HTMLElement, label: 'Welt-Struktur' | 'Stufe bearbeiten'): Promise<void> {
+/** Modus des Welten Editors wählen: „Welt-Struktur“, „Werte“ oder „Stufe bearbeiten“ (Umschalter im Kopf) */
+export async function toMode(h: HTMLElement, label: 'Welt-Struktur' | 'Werte' | 'Stufe bearbeiten'): Promise<void> {
   await act(async () => named(h, label)!.click());
   await flush();
 }

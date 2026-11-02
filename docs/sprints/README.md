@@ -9,36 +9,17 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| BS7 | DEV | BAS | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | – | `aktiv/BS7-delta-balancing-basis-laeufe/` |
-| BS8 | DEV, REG | BAS | Meilenstein 2: Bots und Delta-Runde Baumschule gegen Baseline M1 | – | `aktiv/BS8-meilenstein-2-delta-baumschule/` |
-| BS9 | DEV, REG | BAS | Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2 | – | `aktiv/BS9-meilenstein-3-delta-schiff/` |
-| BS6 | CLI, DEV | BAS | Client: Baumschule, Hafen und Schiff, neue Münzskala | – | `aktiv/BS6-client-baumschule-hafen-skala/` |
-| BS13 | CLI | BAS | Baustellen-Schilder, Bauoptionen und Holzzaun | – | `aktiv/BS13-baustellen-fehler-holzzaun/` |
-| WZ29 | DEV | WZG | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | – | `aktiv/WZ29-sound-grafik-seiten-ausbau/` |
-| WZ32 | DEV | WZG | Balancing-Seite: feste Fläche, eine Liste, Lauf-Editor mit Varianten-Tabelle | – | `aktiv/WZ32-balancing-seite-bedienung/` |
+| WZ37 | DEV | WZG | Welt-Overrides im Welten-Editor und im Studio-Chat | – | `aktiv/WZ37-overrides-editor-chat/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
-| WZ31 | DEV | WZG | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | – | `aktiv/WZ31-web-client-first/` |
-| WZ28 | DEV | WZG | Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite | – | `aktiv/WZ28-offline-werkzeuge/` |
-| WZ30 | DEV | WZG | Oberflächen zur Abnahme: Szenen, Filter, Quellen, Chat-Karten mit Mock-Daten | – | `aktiv/WZ30-oberflaechen-abnahme/` |
-| GEB18 | DEV, SIM, CLI | GEB | Hintergründe der fünf Stufen: vierfache Auflösung, fünf Varianten je Stufe nach Seed | – | `aktiv/GEB18-hintergruende-detail-varianten/` |
-| GEB15 | DEV | GEB | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | – | `aktiv/GEB15-hoehle-fels-varianten/` |
-| GEB16 | SRV, CLI, DEV, REG | GEB | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | – | `aktiv/GEB16-bauschilder-wald-geruest/` |
-| W11 | REG, SRV, CLI | WRT | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | – | `aktiv/W11-bauplaetze-protokoll-abstand/` |
-| W13 | CLI, DEV | WRT | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | – | `aktiv/W13-morgengrauen-licht-client/` |
-| GEB17 | CLI, REG, SIM, DEV | GEB | Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe | – | `aktiv/GEB17-hub-ausbau-je-inselstufe/` |
-| SO8 | DEV, CLI | SND | Skill-Sounds je Klasse | – | `aktiv/SO8-skill-sounds-je-klasse/` |
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | `aktiv/PM1-leistung-messen/` |
-| ST1 | SRV | LST | Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik | HUD zeigt „gesichert“, Spielstände überstehen gesperrte Dateien, `reports/` bleibt begrenzt | `aktiv/ST1-speichern-robust/` |
 | KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | `aktiv/KB4-dev-aktionen-boss-event/` |
-| BT1 | SRV, DEV | REL | Server im Heimnetz finden, Windows-Starter, Start mit Seed | – | `aktiv/BT1-heimnetz-start/` |
+| KB5 | SRV, CLI, DEV | KMP | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | fireball am Gegner, Betäubung, Schild und Sturm als Zeichnung | `aktiv/KB5-skills-wirkort-status/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | `aktiv/PB1-itch-io/` |
-| KR1 | REG | KRT | Kritische Fragen zu BED | – | `aktiv/KR1-fragen-bed/` |
-| KR5 | REG | KRT | Kritische Fragen zu SKL | – | `aktiv/KR5-fragen-skl/` |
-| KR6 | REG | KRT | Kritische Fragen zu KMP | – | `aktiv/KR6-fragen-kmp/` |
 | RG1 | REG | BAL | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | Beschlüsse in `docs/rules/`, geänderte Werte in `data/`, `task balance` grün | `aktiv/RG1-werte-burg-hub-adern/` |
 | BR2 | REG | BAL | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | `aktiv/BR2-balancing-kampf/` |
 | HW1 | PLAT, SRV, INF, CLI | ABN | Zurückgestellte Controller-Prüfungen nachholen | – | `aktiv/HW1-controller-pruefungen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | `aktiv/PF1-splitscreen-leistung/` |
+| BAL8 | REG, SIM | BAL | Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt | – | `aktiv/BAL8-welt-werte-overrides/` |
 
 ## Offen am Gerät
 
@@ -48,11 +29,15 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | Entwurf | `geplant/BD10-schreibende-endpunkte-schutz/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
-| KB5 | SRV, CLI, DEV | KMP | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | – | Entwurf | `geplant/KB5-skills-wirkort-status/` |
+| W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | Entwurf | `geplant/W15-fackeln-spielobjekt/` |
+| KB6 | REG | KMP | Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz | – | Entwurf | `geplant/KB6-kampf-nachtraege-wellen-schutz/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 | P1 | REG | BAL | Spieleabend 1 | Protokoll und Folge-Tickets | bereit | `geplant/P1-spieleabend-1/` |
 | BR1 | REG | BAL | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
+| BAL9 | REG | BAL | Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance | – | Entwurf | `geplant/BAL9-meilenstein-1-nachtraege/` |
+| GRJ2 | DEV | GRJ | Grafik-Zielmaß und Ausschnitt-Rahmen abnehmen | – | Entwurf | `geplant/GRJ2-zielmass-ausschnitt-abnehmen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
@@ -261,3 +246,30 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BS4 | Baumschule auf gerodeten Waldbauplätzen | `erledigt/BS4-baumschule-waldbauplaetze/` |
 | BS5 | Hafen-Chunk, Schiff bauen und Inselwechsel am Hafen | `erledigt/BS5-hafen-schiff-inselwechsel/` |
 | BS10 | Grafiken für Hafen und Schiff | `erledigt/BS10-grafik-hafen-schiff/` |
+| BS7 | Delta-Balancing: Werte-Gruppen, Baseline je Meilenstein, Basis-Läufe im Editor | `erledigt/BS7-delta-balancing-basis-laeufe/` |
+| BS8 | Meilenstein 2: Bots und Delta-Runde Baumschule gegen Baseline M1 | `erledigt/BS8-meilenstein-2-delta-baumschule/` |
+| BS9 | Meilenstein 3: Bots bauen das Schiff, Delta-Runde Schiff gegen Baseline M2 | `erledigt/BS9-meilenstein-3-delta-schiff/` |
+| BS6 | Client: Baumschule, Hafen und Schiff, neue Münzskala | `erledigt/BS6-client-baumschule-hafen-skala/` |
+| BS13 | Baustellen-Schilder, Bauoptionen und Holzzaun | `erledigt/BS13-baustellen-fehler-holzzaun/` |
+| W11 | Bauplätze im Protokoll, Abstand der Treppen, Ausbilden und Tauschen, Figuren | `erledigt/W11-bauplaetze-protokoll-abstand/` |
+| WZ32 | Balancing-Seite: feste Fläche, eine Liste, Lauf-Editor mit Varianten-Tabelle | `erledigt/WZ32-balancing-seite-bedienung/` |
+| WZ33 | Eine Seite Assets statt Grafik, Sound und Quellen (B-677) | `erledigt/WZ33-assets-seite/` |
+| ST1 | Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik | `erledigt/ST1-speichern-robust/` |
+| BT1 | Server im Heimnetz finden, Windows-Starter, Start mit Seed | `erledigt/BT1-heimnetz-start/` |
+| KR1 | Kritische Fragen zu BED | `erledigt/KR1-fragen-bed/` |
+| KR5 | Kritische Fragen zu SKL | `erledigt/KR5-fragen-skl/` |
+| KR6 | Kritische Fragen zu KMP | `erledigt/KR6-fragen-kmp/` |
+| WZ28 | Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite | `erledigt/WZ28-offline-werkzeuge/` |
+| WZ30 | Oberflächen zur Abnahme: Szenen, Filter, Quellen, Chat-Karten mit Mock-Daten | `erledigt/WZ30-oberflaechen-abnahme/` |
+| WZ29 | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | `erledigt/WZ29-sound-grafik-seiten-ausbau/` |
+| WZ31 | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | `erledigt/WZ31-web-client-first/` |
+| GEB15 | Höhlen-Wurzeln, Felsen und Minen: mehr Varianten, größer | `erledigt/GEB15-hoehle-fels-varianten/` |
+| GEB16 | Bauschilder, dichter Wald und Baugerüst als Pixel-Grafik | `erledigt/GEB16-bauschilder-wald-geruest/` |
+| GEB18 | Hintergründe der fünf Stufen: vierfache Auflösung, fünf Varianten je Stufe nach Seed | `erledigt/GEB18-hintergruende-detail-varianten/` |
+| W13 | Morgengrauen im Client und Welt-Betrachter, dunklere Nacht mit Fackeln und Lagerfeuer als Licht | `erledigt/W13-morgengrauen-licht-client/` |
+| SO8 | Skill-Sounds je Klasse | `erledigt/SO8-skill-sounds-je-klasse/` |
+| GEB17 | Hub-Ausbau: Angebot vor der Burg, Ausbaustufen je Inselstufe, unterscheidbare Wachstumsreihe | `erledigt/GEB17-hub-ausbau-je-inselstufe/` |
+| WZ34 | Prüf- und Build-Werkzeuge: Studio-Test, check:diff, buildall | `erledigt/WZ34-pruef-build-werkzeuge/` |
+| WZ35 | Workbench-Nachträge: Ticket-Nummern, Lauf-IDs, schmale Fenster, Auswertung | `erledigt/WZ35-workbench-nachtraege/` |
+| WZ36 | Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung | `erledigt/WZ36-studio-chat-aktionen-resume/` |
+| WZ38 | Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff | `erledigt/WZ38-umgesetzte-werkzeuge-abnehmen/` |

@@ -173,7 +173,7 @@ func damagePlayer(w *World, p *Player, damage float64, cause string) {
 		p.HP = 1
 	}
 	if p.HP <= 0 {
-		p.HP, p.RespawnIn, p.VX = 0, monarch.RespawnSeconds, 0
+		p.HP, p.RespawnIn, p.VX = 0, w.values().Monarch.RespawnSeconds, 0
 		if cause == "" {
 			cause = causeOther
 		}
@@ -184,7 +184,7 @@ func damagePlayer(w *World, p *Player, damage float64, cause string) {
 // destroySite: Der Bauplatz ist wieder leer und muss neu bezahlt werden; eine Ruine bleibt Ruine (building_ruin.go).
 func destroySite(w *World, s *Site) {
 	wasBuilt := s.State == "built"
-	*s = Site{ID: s.ID, Kind: s.Kind, X: s.X, State: "unpaid", MaxHP: buildings[s.Kind].HP, Ruin: isRuin(w, s.Kind, s.X)}
+	*s = Site{ID: s.ID, Kind: s.Kind, X: s.X, State: "unpaid", MaxHP: w.values().Buildings[s.Kind].HP, Ruin: isRuin(w, s.Kind, s.X)}
 	for _, t := range w.Troops {
 		if t.TowerID != nil && *t.TowerID == s.ID {
 			t.TowerID = nil

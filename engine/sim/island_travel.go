@@ -12,10 +12,10 @@ type islandTravel struct {
 	progress float64
 }
 
-// pointNear ist der erste Reisepunkt in Reichweite von x (Reihenfolge wie `travelPoints`).
-func pointNear(points []travelPoint, x float64) *travelPoint {
+// pointNear ist der erste Reisepunkt in Reichweite rangeUnits von x (Reihenfolge wie `travelPoints`).
+func pointNear(points []travelPoint, x, rangeUnits float64) *travelPoint {
 	for i := range points {
-		if math.Abs(x-points[i].x) <= hub.Travel.RangeUnits {
+		if math.Abs(x-points[i].x) <= rangeUnits {
 			return &points[i]
 		}
 	}
@@ -36,7 +36,7 @@ func stepIslandTravel(isl *Island, dt float64) {
 		for _, p := range w.Players {
 			var pt *travelPoint
 			if isAlive(p) && !p.Free {
-				pt = pointNear(points, p.X)
+				pt = pointNear(points, p.X, isl.values().Hub.Travel.RangeUnits)
 			}
 			if pt == nil {
 				delete(isl.travel, p.Index)
@@ -47,7 +47,7 @@ func stepIslandTravel(isl *Island, dt float64) {
 				st = &islandTravel{x: pt.x}
 				isl.travel[p.Index] = st
 			}
-			st.progress += dt / hub.Travel.Seconds
+			st.progress += dt / isl.values().Hub.Travel.Seconds
 			if st.progress >= 1 {
 				moves = append(moves, islandMove{p, si, pt.toDepth})
 			}

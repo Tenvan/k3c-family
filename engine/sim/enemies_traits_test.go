@@ -80,7 +80,7 @@ func TestGegnerSchwarmPlatz(t *testing.T) {
 	b := biomeForDepth(2)
 	b.Enemies.Portal, b.Enemies.Night = []string{"ratSwarm"}, nil
 	size := enemyData["ratSwarm"].SwarmSize
-	plan := planWave(b, 1, rng.New("schwarm"), []float64{10, 90}, false, 1)
+	plan := planWave(defaultValues(), b, 1, rng.New("schwarm"), []float64{10, 90}, false, 1)
 	if size != 4 || len(plan) < 5*size || len(plan)%size != 0 {
 		t.Fatalf("Schwarmgröße %d, %d Gegner", size, len(plan))
 	}

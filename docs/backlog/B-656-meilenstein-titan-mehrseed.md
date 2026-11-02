@@ -4,9 +4,9 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
-- **Projekt:** BAS
+- **Status:** eingeplant
+- **Sprint:** BAL9
+- **Projekt:** BAL
 - **Erstellt:** 2026-10-29
 - **Spec:** freigegeben
 - **Revision:** 1

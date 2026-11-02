@@ -106,7 +106,7 @@ func BuildPreview(o PreviewOptions) (*sim.World, error) {
 func applySites(w *sim.World, o PreviewOptions) error {
 	for _, s := range w.Sites {
 		if look, ok := o.Sites[PreviewSiteKey(s.Kind, s.X)]; ok {
-			if err := sim.PreviewSetSite(s, look); err != nil {
+			if err := sim.PreviewSetSite(w, s, look); err != nil {
 				return err
 			}
 		}

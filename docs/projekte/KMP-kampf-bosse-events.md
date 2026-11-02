@@ -1,7 +1,7 @@
 # KMP · Kampf, Bosse, Events
 
 - **Status:** aktiv
-- **Rang:** 9
+- **Rang:** 7
 - **Ziel-Tickets:** –
 
 ## Ziel
@@ -23,7 +23,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | KB2 | Protokoll-Nachträge Kampf: Inselwechsel, Game Over, Händler, Client-Typen | erledigt |
 | KB3 | Endboss-Auslöser anzeigen, Dev-Overlay-Link, Wellenabstand unter Tage messen | erledigt |
 | KB4 | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | aktiv |
-| KB5 | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | geplant |
+| KB5 | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | aktiv |
+| KB6 | Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz | geplant |
 
 ## Nicht-Ziele
 

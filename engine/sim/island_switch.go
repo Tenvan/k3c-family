@@ -33,7 +33,7 @@ func stepIslandSwitch(isl *Island, dt float64) {
 		isl.switchProgress = 0
 		return
 	}
-	isl.switchProgress += dt / hub.Travel.Seconds
+	isl.switchProgress += dt / isl.values().Hub.Travel.Seconds
 	if isl.switchProgress >= 1 {
 		isl.SwitchReady = true
 		emit(w, "islandSwitch", Event{"island": isl.Number + 1})
@@ -49,7 +49,7 @@ func allAtGate(isl *Island, w *World, x float64) bool {
 			if !isAlive(p) || p.Free {
 				continue
 			}
-			if s != w || math.Abs(p.X-x) > hub.Travel.RangeUnits {
+			if s != w || math.Abs(p.X-x) > w.values().Hub.Travel.RangeUnits {
 				return false
 			}
 			n++
@@ -78,7 +78,7 @@ func NextIsland(cur *Island, def IslandDef) (*Island, error) {
 	if err != nil {
 		return nil, err
 	}
-	*next.Stock = hub.IslandStartStock
+	*next.Stock = next.values().Hub.IslandStartStock
 	next.ID, next.Number, next.islandID, next.Scaling = cur.ID, number, def.ID, def.DepthScaling
 	next.Options, next.nextPlayer = cur.Options, cur.nextPlayer
 	first := next.Stages[0]

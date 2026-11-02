@@ -57,7 +57,7 @@ func (isl *Island) harbor() (*World, *Site) {
 
 // shipComplete: Alle Abschnitte des Schiffs sind gebaut.
 func shipComplete(w *World, s *Site) bool {
-	return s.State == "built" && s.Upgrade == "" && levelOf(w, s) >= len(buildings[shipKind].Levels)
+	return s.State == "built" && s.Upgrade == "" && levelOf(w, s) >= len(w.values().Buildings[shipKind].Levels)
 }
 
 // ShipNextCost ist der Preis des nächsten Schiffs-Abschnitts am Platz s (Kiel am unbezahlten Platz, danach Rumpf und

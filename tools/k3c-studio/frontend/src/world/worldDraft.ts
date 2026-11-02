@@ -1,4 +1,5 @@
 import type { IslandDraft, PlanView, WorldDraft } from '../api';
+import { overrideChanges } from './worldOverrides';
 
 // Reine Logik des Welt-Entwurfs (WZ18.6, B-488/AC-05): Welt-Kopf und Inseln (anlegen, umordnen, entfernen, Felder);
 // Planung und Chunk-Anzahl bleiben beim Editor für geplante Chunks. Geprüft wird im Backend (planWorldCheck).
@@ -9,10 +10,16 @@ export function draftOf(view: PlanView): WorldDraft {
     name: view.name,
     notes: view.notes,
     islands: view.islands.map((i) => ({ from: i.id, id: i.id, name: i.name, depths: [...i.depths], depthScaling: { ...i.depthScaling } })),
+    overrides: structuredClone(view.overrides ?? {}),
   };
 }
 
-export const sameDraft = (a: WorldDraft | null, b: WorldDraft | null): boolean => JSON.stringify(a) === JSON.stringify(b);
+/** Gleicher Entwurf: Kopf und Inseln gleich, Overrides inhaltlich gleich (Reihenfolge der Schlüssel egal). */
+export const sameDraft = (a: WorldDraft | null, b: WorldDraft | null): boolean => {
+  if (!a || !b) return a === b;
+  const head = (d: WorldDraft) => JSON.stringify({ ...d, overrides: undefined });
+  return head(a) === head(b) && overrideChanges(a.overrides, b.overrides) === 0;
+};
 
 /** Neue Insel am Ende als Kopie der letzten (Tiefen, Skalierung) mit freier id `islandN` und Name „Insel N“. */
 export function addIsland(d: WorldDraft): WorldDraft {

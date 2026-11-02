@@ -1,4 +1,16 @@
-# Protokoll v9
+# Protokoll v11
+
+**Änderungen gegenüber v10 (KB5.2, Version 11, B-675):** Status-Effekte im Zustand (siehe *Status-Effekte*): Spieler
+tragen `auras` (wirkende Passive mit Radius); die schon vorhandenen Felder `enemies[].stun`, `slow`, `slowFor`, `tauntId`,
+`tauntFor`, `players[].shield`, `shieldFor`, `lastStandFor` und die Liste `storms` sind jetzt Vertrag. Der Client zeichnet
+sie ab KB5.3. `hello.v` muss 11 sein; ein v10-Client erhält `version`. Beispiel: `s2c-snapshot-status.json`.
+
+**Änderungen gegenüber v9 (KB5.1, Version 10, B-674):** Neues Ereignis `skillCast` (`from` Spieler-ID, `skill`
+Skill-ID, `x` Wirkort, `radius` in Units) bei jedem Wirken eines aktiven Skills. Flächenzauber (fireball, iceWall,
+lightningStorm, meteor) melden den Ort ihres Ziels und ihren Radius, alle anderen Skills den Ort des Monarchen mit
+`radius` 0; ohne Ziel bleibt es bei `castFailed`. Der Client zeichnet Skill-Effekte nur noch aus diesem Ereignis (nicht
+mehr aus dem Anstieg von `cooldowns`), deshalb lehnt der Server einen v9-Client mit `version` ab. `hello.v` muss 10
+sein. Beispiel: `s2c-snapshot-rueckmeldung.json`.
 
 **Änderungen gegenüber v8 (BD9.1, Version 9, B-604, B-581):** Jeder Eintrag von `rooms[]` nennt zusätzlich `world`
 (Welt-ID des Raums, wie `joined.world`). Neu ist `POST /api/room/close?slot=NAME` (siehe *HTTP: Raum schließen*): Der
@@ -592,6 +604,24 @@ Beispiele: `s2c-snapshot-boss.json` (Endboss in Phase 2 mit Warnkreis) und `s2c-
 Wechselpunkt halb gefüllt), auf dem Zustand von `s2c-snapshot-full.json` aufgebaut. Geprüft von `TestKampfZustand`,
 `TestKampfDelta`, `TestKampfBeispiele` und `src/online/clientCombat.test.ts`. Der Wechsel entsteht durch Anwesenheit (keine Eingabe), siehe Strom-Regel „Inselwechsel“; das Ereignis `islandSwitch` kommt mit dem letzten `delta` der alten Insel (B-385, `TestKampfInselwechselEreignisErreichtGeraete`).
 
+### Status-Effekte
+
+Laufende Wirkungen der Skills (B-675), Zeiten in Sekunden (Restdauer), Orte und Radien in Units. **Fehlt ein Feld, wirkt
+nichts**; im Delta fehlt ein abgelaufenes Feld eines Gegners oder Spielers im geänderten Eintrag, `storms` steht bei jeder
+Änderung ganz und in `unset`, wenn kein Sturm mehr läuft.
+
+| Feld | Inhalt | Fehlt, wenn |
+|---|---|---|
+| `enemies[].stun` | Restdauer der Betäubung (Shield Bash) | nicht betäubt |
+| `enemies[].slow`, `slowFor` | Faktor der Geschwindigkeit und Restdauer (Ice Wall, Frost Armor) | nicht verlangsamt |
+| `enemies[].tauntId`, `tauntFor` | Spieler-ID, auf die der Gegner zielt, und Restdauer (Taunt) | kein Spott |
+| `players[].shield`, `shieldFor` | Schild-HP und Restdauer (Iron Wall, Divine Shield) | kein Schild |
+| `players[].lastStandFor` | Restdauer von Last Stand | kein Last Stand |
+| `players[].auras` | wirkende Passive in Lernreihenfolge: `skill`, `radius` (0 = nur der Monarch), `castle: true` = wirkt im Burgradius statt um den Monarchen (Holy Ground). Auren (armorAura, healingAura, blessings), guardian, regeneration, holyGround, frostArmor; Passive ohne Wirkort fehlen | Monarch tot oder kein solches Passiv |
+| `storms` | laufende Lightning Storms: `x`, `radius`, `perSecond`, `left` (Restdauer), `owner` (Spieler-ID) | kein Sturm |
+
+Beispiel: `s2c-snapshot-status.json`, geprüft von `TestStatusEffekteImZustand` (`engine/net/status_snapshot_test.go`).
+
 ### Ereignisse
 
 `events` in `s` von `snap` und `delta` sind die Ereignisse des letzten Ticks **der Stufe des Geräts**; Ereignisse
@@ -605,6 +635,7 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 | `arrow` | `from`, `to` (IDs), `x`, `team` (`player`, `enemy`) | Geschoss abgeschossen |
 | `strike` | `from`, `x`, beim Monarchen `hit` (`false` = ins Leere, setzt trotzdem die Abklingzeit; B-321) | Nahkampf-Schlag eines Gegners (ohne `hit`) oder eines Monarchen (`from` = Spieler-ID) |
 | `castFailed` | `from` (Spieler-ID), `slot` (0 bis 3), `x` | Bereiter Skill ohne Ziel: nichts geschieht, keine Abklingzeit (B-321, B-318) |
+| `skillCast` | `from` (Spieler-ID), `skill` (Skill-ID), `x` (Wirkort), `radius` (Units, 0 = ohne Fläche) | Aktiver Skill gewirkt; Flächenzauber am Ziel mit ihrem Radius, sonst am Monarchen (B-674, ab v10); Spell Echo meldet einmal |
 | `coinPickup` | `player`, `x` | Münze aufgehoben |
 | `coinGive` | `player`, `x`, `to` (`site`, `recruit`, `mark`) | Münze bezahlt ein Ziel (nur zu Boden: kein Ereignis) |
 | `buildProgress` | `site`, `kind`, `x`, `percent` (25, 50, 75) | Bau fortgeschritten, fertig = `built` |

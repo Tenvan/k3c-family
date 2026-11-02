@@ -59,7 +59,7 @@ func lineBeforeRuin(w *World, s *Site, x float64) *Site {
 		_, ok := levelSite(w, o)
 		return ok && o.State == "unpaid" && sitePayable(w, o)
 	}
-	if l := nearest(w.Sites, func(o *Site) float64 { return o.X }, x, economy.PayRangeUnits, line); l != nil {
+	if l := nearest(w.Sites, func(o *Site) float64 { return o.X }, x, w.values().Economy.PayRangeUnits, line); l != nil {
 		return l
 	}
 	return s

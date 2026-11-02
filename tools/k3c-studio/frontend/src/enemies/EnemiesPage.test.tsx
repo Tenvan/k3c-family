@@ -65,7 +65,7 @@ describe('Gegner-Seite (B-464/AC-01 bis AC-06, AC-13)', () => {
 
   it('Gruppe „ohne Biom“ zeigt alphaWolf; Animation, Getroffen und Sterben als ein Segment gehen an die Bühne', async () => {
     const h = await mount();
-    expect([...h.querySelectorAll('[aria-label="Modus"] button')].map((b) => b.textContent)).toEqual(['idle', 'run', 'attack', 'Getroffen', 'Sterben']);
+    expect([...h.querySelectorAll('[aria-label="Modus"] button')].map((b) => b.textContent)).toEqual(['idle', 'run', 'attack', 'Getroffen', 'Sterben', 'Status']);
     await choose(h, 'Gruppe', 'ohne Biom');
     expect(lastItems().some((i) => i.id === 'enemy-alphaWolf')).toBe(true);
     await click(h, 'attack');

@@ -18,12 +18,12 @@ type spawnOrder struct {
 
 // planWave stellt eine Welle zusammen: Anzahl laut Tabelle, Gegnertypen aus dem Biom (nachts mit Nacht-Gegnern),
 // gleichmäßig auf die Portale verteilt und über `spawnSpreadSeconds` gestaffelt.
-func planWave(b level.Biome, wave int, r *rng.Rng, portals []float64, night bool, size float64) []spawnOrder {
+func planWave(v *WorldValues, b level.Biome, wave int, r *rng.Rng, portals []float64, night bool, size float64) []spawnOrder {
 	if len(portals) == 0 {
 		return nil
 	}
-	row := waves.Table[0]
-	for _, t := range waves.Table {
+	row := v.Waves.Table[0]
+	for _, t := range v.Waves.Table {
 		if wave >= t.FromWave {
 			row = t
 		}
@@ -34,7 +34,7 @@ func planWave(b level.Biome, wave int, r *rng.Rng, portals []float64, night bool
 	}
 	var standard, elite []string
 	for _, k := range kinds {
-		if d, ok := enemyData[k]; ok && d.Tier == "standard" {
+		if d, ok := v.Enemies[k]; ok && d.Tier == "standard" {
 			standard = append(standard, k)
 		} else if ok && d.Tier == "elite" {
 			elite = append(elite, k)
@@ -51,18 +51,18 @@ func planWave(b level.Biome, wave int, r *rng.Rng, portals []float64, night bool
 			picks = append(picks, rng.Pick(r, elite))
 		}
 	}
-	return spawnOrders(picks, portals, r)
+	return spawnOrders(v, picks, portals, r)
 }
 
 // spawnOrders verteilt die Plätze reihum auf die Portale und staffelt sie über `spawnSpreadSeconds`.
-func spawnOrders(picks []string, portals []float64, r *rng.Rng) []spawnOrder {
+func spawnOrders(v *WorldValues, picks []string, portals []float64, r *rng.Rng) []spawnOrder {
 	out := make([]spawnOrder, 0, len(picks))
 	for i, kind := range picks {
-		delay := float64(float64(i)/math.Max(1, float64(len(picks)))*waves.SpawnSpreadSeconds) + r.Next()
+		delay := float64(float64(i)/math.Max(1, float64(len(picks)))*v.Waves.SpawnSpreadSeconds) + r.Next()
 		x := portals[i%len(portals)]
 		out = append(out, spawnOrder{kind, x, delay})
 		// Schwarm-Platz (`swarm`): swarmSize Gegner am selben Portal, die übrigen je eine Zufalls-Sekunde später.
-		for n := 1; slices.Contains(enemyData[kind].Traits, "swarm") && n < enemyData[kind].SwarmSize; n++ {
+		for n := 1; slices.Contains(v.Enemies[kind].Traits, "swarm") && n < v.Enemies[kind].SwarmSize; n++ {
 			out = append(out, spawnOrder{kind, x, delay + r.Next()})
 		}
 	}
@@ -76,7 +76,7 @@ func startWave(w *World) {
 	if w.island != nil {
 		size, hp, damage = w.island.waveFactors()
 	}
-	plan := planWave(w.Biome, w.Wave, w.rng, w.Portals, w.Cycle.Phase == "night", size)
+	plan := planWave(w.values(), w.Biome, w.Wave, w.rng, w.Portals, w.Cycle.Phase == "night", size)
 	plan = append(plan, fullMoonExtra(w, plan)...) // Vollmond (events_moon.go)
 	queueWave(w, plan, hp, damage)
 	w.Events = append(w.Events, Event{"type": "wave", "wave": w.Wave, "count": len(plan)})
@@ -160,12 +160,12 @@ func removeDeadEnemies(w *World) {
 
 // enemyDrop: Gold laut Daten plus geklautes Gold als Münzen, mit Chance die Stufen-Ressource in den Vorrat.
 func enemyDrop(w *World, e *Enemy) {
-	gold := enemyData[e.Kind].Gold
+	gold := w.values().Enemies[e.Kind].Gold
 	dropped := moonDrop(w, w.rng.Int(gold[0], gold[1])) + e.CarriedGold // Blutmond: Drop × Faktor, geklautes Gold nicht
 	scatterCoins(w, e.X, dropped)
 	dropCarried(w, e)
 	emit(w, "kill", Event{"kind": e.Kind, "x": unitX(e.X), "gold": dropped})
-	drop := economy.EnemyResourceDrop
+	drop := w.values().Economy.EnemyResourceDrop
 	if w.rng.Next() < drop.Chance && addStock(w, w.Biome.PrimaryResource, drop.Amount) {
 		w.Events = append(w.Events, Event{"type": "gathered", "resource": w.Biome.PrimaryResource, "amount": drop.Amount})
 	}

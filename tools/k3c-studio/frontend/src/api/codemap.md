@@ -4,10 +4,12 @@
 Schnittstelle der Oberfläche zum Studio-Backend (`tools/k3c-studio/backend`): Typen, HTTP-Backend und ein Mock für Browser ohne Server und Tests; wählt das Backend je nach Laufzeit.
 
 ## Design
-- `types.ts`: Typen der Antworten wie Go sie liefert (Slot-Register mit `stand`, Katalog, Recherche, `WorldSource`, `PlanView`/`PlannedChunk`/`IslandSize`/`WorldsView`, `WorldPreviewArgs` mit `SiteLook` und `hubCandidate`, Planer `HubPlanView`/`HubMatrix`/`HubSaveResult`/`HubRulesView`, `OpenGameResult`, Ereignisse `Events`) und das Interface `Backend` (`mock`, `assets*`, `worldLevel`, `worldPreview`, `worldOpenGame`, `plan*` inkl. Welten und Inseln, `hub*`, `openUrl`, `chatStream`, `on`).
-- `http.ts`: `httpBackend()` ruft jede Methode als `POST /api/studio/rpc/<Methode>` (Argumente als JSON-Array, Antwort `{result}` oder `{error}`, Fehler werden zu `Error`); Kopfzeile `X-K3C-Studio` hält fremde Seiten fern. `assetsImport` öffnet die Dateiwahl des Browsers und lädt per `POST import?id&hit&name` hoch; `worldOpenGame` öffnet die vom Server gelieferte Adresse per `window.open`; `on` abonniert Server-Sent Events (`GET events`, ein gemeinsamer `EventSource`). `useMock()` ist wahr im Test (`MODE === 'test'`) und mit `?mock=1`.
-- `mock.ts`: `mockBackend()` setzt `mockAssets.ts`, `mockWorld.ts`, `mockPlan.ts` und `mockHub.ts` zusammen; `external` spielt einen fremden Schreiber nach.
+- `types.ts`: Typen der Antworten wie Go sie liefert (Slot-Register mit `stand`, Katalog, Recherche, `WorldSource`, `PlanView`/`PlannedChunk`/`IslandSize`/`WorldsView`, `WorldPreviewArgs` mit `SiteLook` und `hubCandidate`, Planer `HubPlanView`/`HubMatrix`/`HubSaveResult`/`HubRulesView`, `OpenGameResult`, Ereignisse `Events`) und das Interface `Backend` (`mock`, `assets*`, `worldLevel`, `worldPreview`, `worldOpenGame`, `plan*` inkl. Welten und Inseln, `hub*`, `openUrl`, `chatStream`, `on`; dazu `CandidateApi`).
+- `candidateTypes.ts`: Kandidaten der Assets-Seite (WZ33): `AssetCandidate` (Stufe netz/vorrat/spiel, Lizenz-Marke, `zuordenbar`), `AssetCandidatesView` mit `stand`, Interface `CandidateApi` (`assetCandidates`, `assetCandidateAssign`).
+- `http.ts`: `httpBackend()` ruft jede Methode als `POST /api/studio/rpc/<Methode>` (Argumente als JSON-Array, Antwort `{result}` oder `{error}`, Fehler werden zu `Error`); Kopfzeile `X-K3C-Studio` hält fremde Seiten fern. `assetsImport` öffnet die Dateiwahl des Browsers und lädt per `POST import?id&hit&name` hoch; `worldOpenGame` öffnet die vom Server gelieferte Adresse per `window.open`; `on` abonniert Server-Sent Events (`GET events`, ein gemeinsamer `EventSource`). `useMock()` ist wahr im Test (`MODE === 'test'`) und mit `?mock=1`. Test `httpRpc.test.ts` prüft den Aufruf als JSON-Array.
+- `mock.ts`: `mockBackend()` setzt `mockAssets.ts`, `mockCandidates.ts`, `mockWorld.ts`, `mockPlan.ts` und `mockHub.ts` zusammen; `external` spielt einen fremden Schreiber nach.
 - `mockAssets.ts`: erfundenes Slot-Register und Katalog, Stand zählt jede Änderung hoch, Schreibregel (`STALE`), `external` mit `quiet` (Fenster vor `assets:changed`).
+- `mockCandidates.ts`: Kandidatenliste aus Zuordnungen, Katalog, Vorschlägen und Recherche-Treffern; `assetCandidateAssign` führt Laden, Übernehmen und Zuordnen als einen Aufruf aus wie das Go-Backend.
 - `mockWorld.ts`: erfundenes Level je Seed (`kindsOf` nach Chunk-Anzahl, Seeds `fehler`/`warnung`), Vorschau-Welt aus `previewFixture.json` (Hub-Stufe, Phase, Gebäude-Auswahl, Kandidat), `mockOpenGame` (prüft den Seed wie Go, öffnet nichts).
 - `mockPlan.ts`: Plan-Teil im Speicher (Welten mit Inseln, Tiefen 0–4, Planung je Insel, `MOCK_SIZES` gleich `data/island-sizes.json`, `mockCheckPlan` mit wenigen Fehlern, Stand `mock-<n>`, `touch` simuliert Änderung von außen, Seed-Inhalt für die Umwandlung).
 - `mockWorlds.ts`: Welten-Teil des Mock-Plans (`MockWorld`, `MockIsland`, `newWorld`, `mockWorlds`: wählen, anlegen leer oder als Kopie, entfernen; Standard bleibt).
@@ -27,7 +29,7 @@ Schnittstelle der Oberfläche zum Studio-Backend (`tools/k3c-studio/backend`): T
 3. Ereignisse (`assets:changed`) laufen über `backend.on` (SSE bzw. Mock-Bus) und liefern die Abmeldung.
 
 ## Integration
-- Gegenstück: `tools/k3c-studio/backend/` (`rpc.go` Routen unter `/api/studio/`, `app*.go` die aufrufbaren Methoden mit Präfix Assets/World/Plan/Hub) und `tools/assetkit`.
+- Gegenstück: `tools/k3c-studio/backend/` (`rpc.go` Routen unter `/api/studio/`, `app*.go` die aufrufbaren Methoden mit Präfix Assets/World/Plan/Hub, `app_candidates.go` für die Kandidatenliste) und `tools/assetkit`.
 - Dev-Server: Vite (Port 5192) reicht `/api` an den Server des Studios (8091, B-507) weiter, siehe `../../vite.config.ts`; ohne Server hilft `?mock=1`.
-- Konsumenten: alle Seiten (`assets/`, `graphics/`, `sound/`, `world/`, `planner/`, `monarch/`, `enemies/`, `stage/`).
+- Konsumenten: `assetpage/` (Seite Assets), `assets/`, `graphics/`, `sound/`, `world/`, `planner/`, `monarch/`, `enemies/`, `stage/`.
 - Typimport `@game/model/types` (Welt für die Vorschau); `mockWorld.ts` nutzt `../stage/stageLogic`.

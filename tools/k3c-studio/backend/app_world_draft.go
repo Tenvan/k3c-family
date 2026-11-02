@@ -41,6 +41,9 @@ type WorldDraft struct {
 	Name    string        `json:"name"`
 	Notes   string        `json:"notes"`
 	Islands []IslandDraft `json:"islands"`
+	// Overrides sind die übersteuerten Basis-Werte der Welt (B-682, welten.md § 1.1), nur Abweichungen; fehlen sie
+	// (null), bleibt `overrides` der Datei, wie es ist, ein leeres Objekt entfernt es.
+	Overrides json.RawMessage `json:"overrides,omitempty"`
 }
 
 // WorldCheckView ist die Prüfung eines Entwurfs: Island ist der Platz der Insel im Entwurf (-1 = die Welt), Field das
@@ -54,13 +57,17 @@ type WorldCheckView struct {
 	Preview string `json:"preview"`
 }
 
-// draftFile liefert den Inhalt der Datei mit dem Entwurf und prüft ihn wie beim Laden.
-func draftFile(raw []byte, id string, d WorldDraft) ([]byte, error) {
+// draftFile liefert den Inhalt der Datei mit dem Entwurf und prüft ihn wie beim Laden, dazu die Werte wie der Server
+// (Overrides der Welt und ihrer Kind-Welten, checkWorldValues).
+func (a *App) draftFile(raw []byte, id string, d WorldDraft) ([]byte, error) {
 	out, err := applyDraft(raw, d)
 	if err != nil {
 		return nil, err
 	}
-	_, err = sim.ParseWorld(out, id)
+	def, err := sim.ParseWorld(out, id)
+	if err == nil {
+		err = a.checkWorldValues(def)
+	}
 	return out, err
 }
 
@@ -71,7 +78,7 @@ func (a *App) PlanWorldCheck(d WorldDraft) WorldCheckView {
 	if err != nil {
 		return WorldCheckView{Island: -1, Error: err.Error()}
 	}
-	out, err := draftFile(raw, id, d)
+	out, err := a.draftFile(raw, id, d)
 	view := WorldCheckView{OK: err == nil, Island: -1, Preview: string(out)}
 	if err != nil {
 		view.Error = err.Error()
@@ -94,7 +101,7 @@ func (a *App) PlanWorldSave(d WorldDraft, stand string) PlanSaved {
 	if planStand(raw) != stand {
 		return PlanSaved{Error: staleError(id), Stale: true}
 	}
-	out, err := draftFile(raw, id, d)
+	out, err := a.draftFile(raw, id, d)
 	if err != nil {
 		return PlanSaved{Error: err.Error()}
 	}
@@ -112,6 +119,8 @@ func fieldOf(msg string, d WorldDraft) (int, string) {
 	label, reason, ok := strings.Cut(strings.TrimPrefix(rest, "Insel "), ": ")
 	if !strings.HasPrefix(rest, "Insel ") || !ok {
 		switch {
+		case strings.HasPrefix(rest, "overrides") || strings.HasPrefix(rest, "extends"):
+			return -1, "overrides"
 		case strings.HasPrefix(rest, "name"):
 			return -1, "name"
 		case rest == "keine Insel" || strings.HasPrefix(rest, "islands"):

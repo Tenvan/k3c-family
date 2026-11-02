@@ -119,10 +119,12 @@ tasks:
       - bunx vite build
 
   buildall:
-    desc: Alle EXE bauen und nach bin/ legen (Spielserver, Lasttest, TUI, Workbench, Asset-Studio, Starter samt Web-Build dist/); laufende EXE vorher schließen, sonst scheitert die Kopie
+    desc: Alle EXE bauen und nach bin/ legen (Spielserver, Lasttest, TUI, Workbench, Asset-Studio, Starter samt Web-Build dist/, dazu die Web-EXE bin/k3c-workbench-web und bin/k3c-studio-web); laufende EXE vorher schließen, sonst scheitert die Kopie
     cmds:
       - task: k3c-workbench:build
       - task: k3c-studio:build
+      - task: k3c-workbench:web:build
+      - task: k3c-studio:web:build
       - task: k3c-server:build
       - task: k3c-load:build
       - task: k3c-tui:build

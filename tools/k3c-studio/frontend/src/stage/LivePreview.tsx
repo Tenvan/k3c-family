@@ -10,7 +10,7 @@ import { stagePx } from './hudBar';
 import { BuildingChips } from './BuildingChips';
 import { BuildingInspector, SelectionCard } from './BuildingInspector';
 import { backgroundToggles, buildingToggles, type BuildingToggle, focusXs, hubLevelChoices, kindLabel, pickKeys, previewArgsOf, siteKey, worldOf, type PlanSource, type RowFocus } from './stageLogic';
-import { MAX_PROGRESS, TIMES_OF_DAY, brightnessOf, simTime, type TimeOfDayId } from './timeOfDay';
+import { MAX_PROGRESS, TIMES_OF_DAY, simTime, type TimeOfDayId } from './timeOfDay';
 
 const NONE: ReadonlySet<string> = new Set();
 type Looks = Readonly<Record<string, SiteLook>>;
@@ -250,7 +250,7 @@ function HubLevelControl({ segments, choices, hubLevel, setHubLevel }: { segment
  *  Tageszeit, Hintergrund-Schichten mit Parallaxe (Kamera scrollt). Position und Zoom kommen von außen (`position`, B-477,
  *  gleich wie im Chunk-Streifen); Ziehen meldet `onPan` (Pixel), das Mausrad geht an `onWheel`; `onSites` meldet die Bauplätze
  *  (für die Sprungpunkte). Mit `plan` zeigt sie den Entwurf der geplanten Chunks (B-461/AC-11). */
-export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, plan, planer, controlsHost, treeHost, layersHost, lookHost, onPickSite }: {
+export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, plan, planer, controlsHost, treeHost, layersHost, lookHost, onPickSite, fill }: {
   seed: string; biome: string; position: StagePosition; onPan: (px: number) => void; onWheel: (e: WheelEvent) => void;
   onSites?: (sites: readonly { kind: string; x: number }[]) => void; plan?: PlanSource; planer?: PlanerSource;
   /** Zielelemente der Seite: Hub-Stufe, Tageszeit und Schichten (`controlsHost`) und der Gebäude-Baum (`treeHost`) erscheinen dort statt um die Bühne */
@@ -261,6 +261,8 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
   lookHost?: HTMLElement | null;
   /** Ein Klick wählte einen Bauplatz in der Bühne: die Seite öffnet den Reiter Gebäude (B-667) */
   onPickSite?: () => void;
+  /** Höhe aus dem Layout der Seite (füllt den freien Platz, Modus Stufe bearbeiten, B-665/AC-05) statt aus dem Zoom (`stageStyle`) */
+  fill?: boolean;
 }) {
   const { choices, hubLevel, setHubLevel } = useHubLevel(planer);
   const [timeId, setTimeId] = useState<TimeOfDayId>('day');
@@ -271,7 +273,7 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
   const { all, view, off, looks, sel, setMany, setLooks, setSel } = usePreviewWorld(seed, biome, hubLevel, time, plan, planer?.candidate ?? '');
   const host = useRef<HTMLDivElement>(null);
   const world = useMemo(() => worldOf(view), [view]);
-  const look = useMemo<Look>(() => ({ brightness: world ? brightnessOf(world.cycle) : 1, hiddenLayers: hidden }), [world, hidden]);
+  const look = useMemo<Look>(() => ({ brightness: 1, hiddenLayers: hidden }), [hidden]); // die Nacht dunkelt die Lichtkarte der LightView ab, die Kamera nicht zusätzlich
   const sites = all?.state?.sites;
   const toggles = useMemo(() => buildingToggles(sites ?? []), [sites]);
   const { select, onSite, marks, jump, chosen, shown } = useSelection(planer, world, toggles, off, sel, setSel, { inspector: treeHost !== undefined, onPickSite });
@@ -294,7 +296,7 @@ export function LivePreview({ seed, biome, position, onPan, onWheel, onSites, pl
     <div className="wd-live-body">
       {into(controls, controlsHost)}
       {!inspector && <BuildingChips toggles={toggles} off={off} onSet={setMany} selected={shown} onSelect={select} />}
-      <div className="wd-stage" ref={host} style={stageStyle(position.scale)} />
+      <div className="wd-stage" ref={host} style={fill ? undefined : stageStyle(position.scale)} />
       {inspector && into(<BuildingInspector toggles={toggles} off={off} onSet={setMany} looks={looks} onLooks={setLooks} selected={sel} onSelect={select} />, treeHost)}
       {layersHost && createPortal(layers, layersHost)}
       <LookCard host={lookHost} toggles={toggles} keys={chosen} looks={looks} onLooks={setLooks} />

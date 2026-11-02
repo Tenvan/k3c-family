@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ34
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-25
 - **Spec:** Entwurf
@@ -58,3 +58,5 @@ keine
 ## Notizen
 
 Gefunden beim Fortsetzen von WZ29; der Stub-Text stammt aus `tools/k3c-studio/frontend/src/api/http.ts` auf `develop` (vor dem Merge von WZ29).
+
+2026-10-31 (Claude, Team WZG): Umgesetzt. `web:build` je Projekt (`tools/k3c-studio/Taskfile.yml`, `tools/k3c-workbench/Taskfile.yml`, `go build` nach `bin/*-web`, `sources`/`generates`), `<app>:web` hängt per `deps` daran, `buildall` baut beide Web-EXE, `CLAUDE.md` angepasst. Belegt per `task --list` und `task --dry buildall`; ein echtes `buildall` lief nicht (EXE evtl. gesperrt). Review: `internal/**/*.go` in `sources` ergänzt.

@@ -41,8 +41,10 @@
 .as-num { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--dim); }
 .as-num .rt-TextFieldRoot { width: 72px; }
 .as-warn { color: var(--red-11); margin: 0; font-size: 13px; }
-.as-canvas { overflow: auto; max-height: 420px; background: linear-gradient(#2c3350, #4a3a5c); border-radius: 8px; padding: 8px; }
-.as-canvas canvas { display: block; image-rendering: pixelated; }
+.as-stage { display: flex; justify-content: center; overflow: hidden; background: linear-gradient(#2c3350, #4a3a5c); border-radius: 8px; padding: 0; }
+.as-stage canvas { display: block; image-rendering: pixelated; touch-action: none; }
+.as-stage[data-view='rahmen'] canvas { cursor: crosshair; }
+.as-stage canvas:focus-visible { outline: 2px solid #ffd24a; outline-offset: -2px; }
 .as-audio { width: 100%; }
 .as-catalog { display: flex; flex-direction: column; gap: 6px; }
 .as-hits { list-style: none; margin: 0; padding: 0; max-height: 260px; overflow: auto; border: 1px solid var(--card-line); border-radius: 8px; }

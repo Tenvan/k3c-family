@@ -1,5 +1,6 @@
 import type { PlannedChunk, WorldDraft } from '../api';
 import { normalized } from './plan';
+import { overrideChanges } from './worldOverrides';
 
 /** Zahl der Änderungen am Entwurf einer Stufe gegenüber dem gespeicherten Stand (B-664/AC-03): geänderte, neue und
  *  entfernte Chunks je Platz, dazu eine geänderte Inselgröße. */
@@ -13,10 +14,11 @@ export function planChanges(draft: readonly PlannedChunk[], saved: readonly Plan
   return n;
 }
 
-/** Zahl der Änderungen am Welt-Entwurf: Name, Notizen und je Insel (Stelle in der Liste) ein Eintrag; fehlende oder neue Inseln zählen einzeln. */
+/** Zahl der Änderungen am Welt-Entwurf: Name, Notizen, je Insel (Stelle in der Liste) ein Eintrag und je geändertem
+ *  Override ein Eintrag (B-682); fehlende oder neue Inseln zählen einzeln. */
 export function worldChanges(draft: WorldDraft | null, saved: WorldDraft | null): number {
   if (!draft || !saved) return 0;
-  let n = (draft.name !== saved.name ? 1 : 0) + (draft.notes !== saved.notes ? 1 : 0);
+  let n = (draft.name !== saved.name ? 1 : 0) + (draft.notes !== saved.notes ? 1 : 0) + overrideChanges(draft.overrides, saved.overrides);
   const len = Math.max(draft.islands.length, saved.islands.length);
   for (let i = 0; i < len; i++) if (JSON.stringify(draft.islands[i]) !== JSON.stringify(saved.islands[i])) n++;
   return n;

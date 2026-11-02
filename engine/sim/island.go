@@ -119,19 +119,17 @@ func CreateIsland(seed string, depths []int, cycleSpeed float64, opts CreateOpti
 // Stufenindex). CycleSpeed 0 bedeutet 1. Eine neue Insel startet mit dem Vorrat aus hub.json › islandStartStock;
 // Spielstände setzen ihren eigenen (FromIslandSaveIn).
 func CreateIslandIn(world WorldDef, seed string, depths []int, cycleSpeed float64, opts CreateOptions) (*Island, error) {
-	h := &hub
 	if opts.Candidate != nil {
 		if r := ValidateHubDataIn(opts.Candidate, world); len(r.Findings) > 0 {
 			return nil, fmt.Errorf("insel: Kandidaten-hub.json abgelehnt: %s", r.Findings[0])
 		}
-		h = cloneHub(opts.Candidate) // geprüft wird die Kopie, die die Welt behält: spätere Änderungen des Aufrufers wirken nicht
-		opts.Candidate = h
+		opts.Candidate = cloneHub(opts.Candidate) // geprüft wird die Kopie, die die Welt behält: spätere Änderungen des Aufrufers wirken nicht
 	}
 	isl, err := createIsland(seed, depths, cycleSpeed, 0, opts, world)
 	if err != nil {
 		return nil, err
 	}
-	*isl.Stock = h.IslandStartStock
+	*isl.Stock = hubOf(isl.Stages[0]).IslandStartStock // Kandidat oder hub.json der Welt
 	return isl, nil
 }
 
@@ -144,8 +142,13 @@ func createIsland(seed string, depths []int, cycleSpeed, startTime float64, opts
 	case len(world.Islands) == 0:
 		return nil, fmt.Errorf("insel: Welt %q ohne Insel", world.ID)
 	}
+	vals, err := valuesOf(world)
+	if err != nil {
+		return nil, fmt.Errorf("insel: %w", err)
+	}
 	first := world.Islands[0]
 	isl := &Island{ID: seed, Seed: seed, CycleSpeed: cycleSpeed, Stock: &Stock{}, Options: DefaultOptions(), travel: map[int]*islandTravel{}}
+	world.values = vals // Inselwechsel (NextIsland) übernimmt den Wertesatz
 	isl.world, isl.islandID, isl.Scaling = world, first.ID, first.DepthScaling
 	for _, d := range depths {
 		if !hasDepth(d) {
@@ -157,7 +160,7 @@ func createIsland(seed string, depths []int, cycleSpeed, startTime float64, opts
 				return nil, fmt.Errorf("insel: Stufe mit Tiefe %d: %w", d, err)
 			}
 		}
-		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed, Time: startTime, Planned: opts.plannedFor(d, first), ChunkCount: count, hub: opts.Candidate})
+		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed, Time: startTime, Planned: opts.plannedFor(d, first), ChunkCount: count, hub: opts.Candidate, vals: vals})
 		if err != nil {
 			return nil, fmt.Errorf("insel: Stufe mit Tiefe %d: %w", d, err)
 		}

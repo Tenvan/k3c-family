@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -26,7 +27,7 @@ const (
 	chatTaskWorld   = "welt" // Auftragsart: das Grundgerüst geht als Instruktion mit (B-516)
 )
 
-// chatHistoryMax begrenzt die Nachrichten des Verlaufs, die mit in den Prompt gehen (die CLI kennt keinen Verlauf).
+// chatHistoryMax begrenzt die Nachrichten des Verlaufs, die ohne fortgesetzte Sitzung mit in den Prompt gehen (B-687).
 const chatHistoryMax = 20
 
 // chatHub hält CLI, Verlauf und die laufenden Antworten (je Chat höchstens eine).
@@ -36,11 +37,15 @@ type chatHub struct {
 	mu      sync.Mutex
 	running map[string]context.CancelFunc
 	deleted map[string]struct{} // gelöschte Chats dieses Laufs: eine spät eintreffende Nachricht legt sie nicht neu an
+	// noResume: die CLI kennt keine Sitzungen, der Verlauf geht bis zum Neustart als Text mit (B-687).
+	noResume atomic.Bool
 }
 
 func newChatHub(root string) *chatHub {
-	return &chatHub{cli: defaultCLI(), store: chatStore{dir: filepath.Join(root, chatDirName), now: time.Now},
+	h := &chatHub{cli: defaultCLI(), store: chatStore{dir: filepath.Join(root, chatDirName), now: time.Now},
 		running: map[string]context.CancelFunc{}, deleted: map[string]struct{}{}}
+	h.store.dropSession = func(id string) { h.cli.removeSession(id) } // Aufräumen nimmt die Sitzungsdatei mit
+	return h
 }
 
 // chats liefert den Chat des Studios (Tests setzen a.chat vorher).
@@ -125,6 +130,8 @@ type chatRequest struct {
 	Effort   string         `json:"effort"`
 	Task     string         `json:"task"`              // leer = freier Chat, chatTaskWorld = Welt-Auftrag, chatTaskAssign = Zuordnung
 	Context  *assignContext `json:"kontext,omitempty"` // nur bei chatTaskAssign
+	Page     string         `json:"seite,omitempty"`   // offene Seite: Aktionskatalog mit Kontext (B-679)
+	Draft    *WorldDraft    `json:"entwurf,omitempty"` // ungespeicherter Entwurf des Welten Editors (B-686)
 }
 
 func (r chatRequest) options() chatOptions {
@@ -144,6 +151,16 @@ func (a *App) taskOptions(req chatRequest) (chatOptions, error) {
 		opts.instruction, err = a.assignInstruction(*req.Context)
 	case chatTaskSources:
 		opts.instruction, err = a.sourcesInstruction()
+	}
+	if err == nil && req.Page != "" {
+		slot := ""
+		if req.Context != nil {
+			slot = req.Context.Slot
+		}
+		opts.instruction += a.actionsInstruction(req.Page, slot)
+	}
+	if err == nil && (req.Task == chatTaskWorld || req.Page == "welt") {
+		opts.instruction += a.currentWorldText(req.Draft, req.Chat) // Welt Schritt für Schritt (B-686)
 	}
 	return opts, err
 }
@@ -166,6 +183,9 @@ func readChatRequest(r *http.Request) (chatRequest, error) {
 		if err := req.Context.validate(); err != nil {
 			return req, err
 		}
+	}
+	if err := validPage(req.Page); err != nil {
+		return req, err
 	}
 	return req, req.options().validate()
 }
@@ -215,18 +235,32 @@ func (a *App) chatSend(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Cache-Control", "no-store")
 	sendEvent(w, fl, "start", map[string]string{"chat": log.ID})
 	asked := h.store.now()
-	out := h.cli.run(ctx, chatPrompt(log.Messages, req.Text), opts, func(s string) {
-		sendEvent(w, fl, "chunk", map[string]string{"text": s})
-	})
-	if req.Task == chatTaskAssign && out.Status == chatDone {
-		a.rememberPicks(*req.Context, out.Text) // Karten aus der Antwort; der Chat schreibt nichts
+	emit := func(s string) { sendEvent(w, fl, "chunk", map[string]string{"text": s}) }
+	out, session := h.ask(ctx, log.Session, log.Messages, req.Text, opts, emit) // Sitzung fortsetzen (B-687)
+	// ungültige Vorschläge gehen zurück an den Chat; bleiben sie ungültig, gibt es keine Karten (B-686)
+	if out.Status == chatDone && a.correctAnswer(ctx, req, log, &out, &session, opts, emit) {
+		a.afterAnswer(req, log.ID, &out, emit)
 	}
-	if req.Task == chatTaskSources && out.Status == chatDone {
-		note := a.applySourcesAnswer(out.Text) // der Chat selbst schreibt nichts; das Studio prüft und trägt ein
-		out.Text += note
-		sendEvent(w, fl, "chunk", map[string]string{"text": note})
-	}
+	h.keepSession(&log, session, out)
 	sendEvent(w, fl, "done", h.record(&log, req.Text, opts, asked, out))
+}
+
+// afterAnswer wertet eine fertige Antwort aus: Vorschlagskarten, Quellen, Aktionskarten. Der Chat selbst schreibt nie;
+// Hinweise des Studios kommen an die Antwort.
+func (a *App) afterAnswer(req chatRequest, chat string, out *chatOutcome, emit func(string)) {
+	note := ""
+	answer := effectiveAnswer(out.Text) // nach Korrekturversuchen nur der letzte Vorschlag (B-686)
+	switch req.Task {
+	case chatTaskAssign:
+		a.rememberPicks(*req.Context, answer)
+	case chatTaskSources:
+		note = a.applySourcesAnswer(answer) // das Studio prüft und trägt ein
+	}
+	note += a.applyActions(chat, answer) // Karten; ausgeführt wird nur per Knopf (B-679)
+	if note != "" {
+		out.Text += note
+		emit(note)
+	}
 }
 
 // record hängt Frage und Antwort an den Verlauf, merkt die Einstellungen und speichert; scheitert das, läuft der Chat
@@ -293,6 +327,7 @@ func (a *App) ChatDelete(id string) error {
 	if _, busy := h.running[id]; busy {
 		return errors.New(chatBusyMsg) //nolint:staticcheck // Meldung der Oberfläche, ein ganzer Satz
 	}
+	c, _ := h.store.load(id) // für die Sitzungsdatei (B-687)
 	err := h.store.remove(id)
 	if errors.Is(err, os.ErrNotExist) {
 		return errors.New("kein Chat mit der id " + id)
@@ -301,6 +336,9 @@ func (a *App) ChatDelete(id string) error {
 		return err
 	}
 	h.deleted[id] = struct{}{}
+	h.cli.removeSession(c.Session)
+	a.actions().forget(id)
+	a.forgetProposal(id)
 	slog.Info("🧹 Chat gelöscht", "ns", "main", "chat", id)
 	return nil
 }

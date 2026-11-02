@@ -97,13 +97,25 @@ describe('Welt per Prompt füllen (WZ19.3/AC-08)', () => {
 });
 
 describe('Welt per Prompt füllen: Prüfung, Fehler und Rückfrage (WZ19.3/AC-08)', () => {
-  it('zeigt den Grund am Entwurf, wenn die Welt die Prüfung nicht besteht', async () => {
+  it('lädt eine ungültige Antwort nicht, nennt den Grund und bietet „Im Chat korrigieren“ an (B-686)', async () => {
     await ask(host!, world([island('island1', [0, 1, 2, 3, 4]), island('insel3', [0, 1, 2])]));
     await act(async () => button(host!, 'Als Entwurf laden').click());
     await settle();
+    expect(notice(host!)).toContain('besteht die Prüfung nicht');
     expect(notice(host!)).toContain('Insel insel3: kein Endboss in der tiefsten Stufe 2');
-    expect(host!.querySelector('.wd-error[data-island="1"][data-field="depths"]')?.textContent).toContain('kein Endboss in der tiefsten Stufe 2');
-    expect(button(host!, 'Welt speichern').disabled).toBe(true);
+    expect(button(host!, 'Verwerfen').disabled).toBe(true); // nichts geladen
+    await act(async () => button(host!, 'Im Chat korrigieren').click());
+    await flush();
+    expect(chatInput(host!).value).toContain('Korrigiere die Fehler der Welt');
+    expect(chatInput(host!).value).toContain('data/worlds/standard.json: Insel insel3: kein Endboss in der tiefsten Stufe 2');
+  });
+
+  it('schickt den ungespeicherten Entwurf mit dem Welt-Auftrag (B-686)', async () => {
+    await toMode(host!, 'Welt-Struktur');
+    await typeInto(field(host!, 'Name der Welt'), 'Mein Entwurf');
+    const stream = vi.spyOn(backend, 'chatStream');
+    await ask(host!, 'Eine Insel mehr');
+    expect(stream.mock.calls.at(-1)?.[2]).toEqual(expect.objectContaining({ task: 'welt', entwurf: expect.objectContaining({ name: 'Mein Entwurf' }) }));
   });
 
   it('meldet „Antwort nicht lesbar“, wenn kein JSON da ist, und lädt nichts', async () => {

@@ -35,10 +35,10 @@ func spawnBoss(w *World, b *BossData, x float64) *Enemy {
 		hp, damage, players = g.EnemyHP, g.EnemyDamage, max(len(isl.Players()), 1)
 	}
 	e := spawnScaled(w, b.Base, x, b.HPFactor*hp, b.DamageFactor*damage)
-	e.HP = math.Round(e.HP * (1 + *waves.BossHpPerExtraPlayer*float64(players-1)))
+	e.HP = math.Round(e.HP * (1 + *w.values().Waves.BossHpPerExtraPlayer*float64(players-1)))
 	e.MaxHP = e.HP
 	e.Kind, e.Boss, e.Traits, e.Range = b.ID, true, nil, b.Range
-	e.Speed = b.Speed * math.Pow(waves.DepthScaling.Speed, float64(w.Biome.Depth))
+	e.Speed = b.Speed * math.Pow(w.values().Waves.DepthScaling.Speed, float64(w.Biome.Depth))
 	armBoss(e, b.Ability)
 	emit(w, "bossSpawned", Event{"boss": b.ID, "x": unitX(x)})
 	return e
@@ -88,7 +88,7 @@ func summon(w *World, boss *Enemy, a BossAbility) {
 		_, hp, damage = w.island.waveFactors()
 	}
 	n := a.Count
-	if d := enemyData[a.Enemy]; slices.Contains(d.Traits, "swarm") {
+	if d := w.values().Enemies[a.Enemy]; slices.Contains(d.Traits, "swarm") {
 		n *= max(d.SwarmSize, 1)
 	}
 	for range n {
@@ -105,9 +105,9 @@ func bossDefeated(w *World, e *Enemy) {
 	if taken, ok := addStockCapped(w, res, b.Reward.Material); ok && taken > 0 {
 		emit(w, "gathered", Event{"resource": res, "amount": taken})
 	}
-	points := monarch.SkillPointSources.Miniboss
+	points := w.values().Monarch.SkillPointSources.Miniboss
 	if b.Kind == "end" {
-		points = monarch.SkillPointSources.Endboss
+		points = w.values().Monarch.SkillPointSources.Endboss
 	}
 	addPoolPoints(w, points)
 	if isl := w.island; isl != nil && !slices.Contains(isl.DefeatedBosses, b.ID) {

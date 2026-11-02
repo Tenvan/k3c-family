@@ -87,7 +87,7 @@ func SetGrade(isl *Island, grade string, devMode bool) error {
 func (isl *Island) waveFactors() (size, hp, damage float64) {
 	g := difficulty[isl.Options.Grade]
 	extra := float64(max(len(isl.Players()), 1) - 1)
-	return float64((1 + waves.PerExtraPlayer*extra) * g.WaveSize), g.EnemyHP, g.EnemyDamage
+	return float64((1 + isl.values().Waves.PerExtraPlayer*extra) * g.WaveSize), g.EnemyHP, g.EnemyDamage
 }
 
 // protectedNight: Die Stufe gehört zu einer Insel, deren Grad die laufende Nacht schützt (protectedNights, S6.1):

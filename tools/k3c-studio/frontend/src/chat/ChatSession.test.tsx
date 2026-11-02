@@ -129,11 +129,11 @@ describe('Anbieter, Modell und Denkstufe', () => {
     await choose(h, 'Denkstufe', 'high');
     const stream = vi.spyOn(backend, 'chatStream');
     await send(h, 'mit Wahl', true);
-    expect(stream.mock.calls[0][2]).toEqual({ provider: 'claude-cli', model: 'opus', effort: 'high' });
+    expect(stream.mock.calls[0][2]).toEqual({ provider: 'claude-cli', model: 'opus', effort: 'high', seite: 'assets' }); // Seite: B-679
     expect(['chat.provider', 'chat.model', 'chat.effort'].map((k) => localStorage.getItem(`k3c-studio.${k}`))).toEqual(['claude-cli', 'opus', 'high']);
     await choose(h, 'Modell', '');
     await send(h, 'ohne Modell', true);
-    expect(stream.mock.calls[1][2]).toEqual({ provider: 'claude-cli', model: '', effort: 'high' });
+    expect(stream.mock.calls[1][2]).toEqual({ provider: 'claude-cli', model: '', effort: 'high', seite: 'assets' });
   });
 
   it('stellt die gemerkte Wahl beim nächsten Start wieder her, unbekannte Werte fallen auf Standard', async () => {

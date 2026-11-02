@@ -1,10 +1,11 @@
 import { chatStreamHttp } from './chatHttp';
-import type { ChatDetail, ChatOptionsView, ChatSummary } from './chatTypes';
-import type { AssetChoice, AssetHit, AssetSaved, AssetsView, Backend, CatalogAsset, EventName, Events, GameServersView, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, TicketCreated, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
+import type { ChatAction, ChatDetail, ChatOptionsView, ChatSummary } from './chatTypes';
+import type { AssetChoice, AssetHit, AssetSaved, AssetTarget, AssetsView, Backend, CatalogAsset, EventName, Events, GameServersView, HubPlanView, HubRulesView, HubSaveResult, HubStand, OpenGameResult, PlanCheckView, PlanObjectsView, PlanSaved, PlanView, PlannedChunk, TicketCreated, ResearchResult, WorldLevelView, WorldPreviewArgs, WorldPreviewView, WorldSource, WorldsView } from './types';
+import type { AssetCandidatesView } from './candidateTypes';
 import type { AssetSlotDetails } from './slotTypes';
 import type { NetworkMode, NetworkView, SourceAddView, SourceCleanupView, SourceProgress, SourcesView } from './sourceTypes';
 import type { AssetSuggestionsView } from './suggestionTypes';
-import type { WorldAnswerView, WorldCheckView, WorldDraft } from './worldTypes';
+import type { WorldAnswerView, WorldCheckView, WorldDraft, WorldValuesView } from './worldTypes';
 
 // Das Studio ist eine Seite des Go-Servers (Backend tools/k3c-studio/backend): jede Methode von App ist ein POST auf /api/studio/rpc/<Methode>
 // mit den Argumenten als JSON-Array, die Antwort ist {result} oder {error}. Die Kopfzeile hält fremde Seiten fern (CORS-Preflight).
@@ -76,6 +77,7 @@ export function httpBackend(): Backend {
     assetsList: () => rpc<AssetsView>('AssetsList'),
     assetsSet: (id: string, wahl: AssetChoice[], stand: string) => rpc<AssetSaved>('AssetsSet', id, wahl, stand),
     assetsSlotDetails: (id: string) => rpc<AssetSlotDetails>('AssetsSlotDetails', id),
+    assetsTargetSet: (id: string, ziel: AssetTarget | null, stand: string) => rpc<AssetSaved>('AssetsTargetSet', id, ziel, stand),
     assetsCatalog: (query: string, art: string, limit: number) => rpc<CatalogAsset[]>('AssetsCatalog', query, art, limit),
     assetsHits: (id: string) => rpc<AssetHit[]>('AssetsHits', id),
     assetsResearch: (id: string, query: string) => rpc<ResearchResult>('AssetsResearch', id, query),
@@ -99,6 +101,7 @@ export function httpBackend(): Backend {
     planWorldCheck: (draft: WorldDraft) => rpc<WorldCheckView>('PlanWorldCheck', draft),
     planWorldSave: (draft: WorldDraft, stand: string) => rpc<PlanSaved>('PlanWorldSave', draft, stand),
     planWorldAnswer: (text: string) => rpc<WorldAnswerView>('PlanWorldAnswer', text),
+    planWorldValues: () => rpc<WorldValuesView>('PlanWorldValues'),
     planChunkObjects: (seed: string, src: WorldSource, slot: number) => rpc<PlanObjectsView>('PlanChunkObjects', seed, src, slot),
     hubPlan: () => rpc<HubPlanView>('HubPlan'),
     hubRules: (hubJSON: string) => rpc<HubRulesView>('HubRules', hubJSON),
@@ -110,6 +113,8 @@ export function httpBackend(): Backend {
     assetSuggestions: (slotId: string) => rpc<AssetSuggestionsView>('AssetSuggestions', slotId),
     assetSuggestionAdopt: (slotId: string, id: string, stand: string) => rpc<string>('AssetSuggestionAdopt', slotId, id, stand),
     assetSuggestionDrop: (slotId: string, id: string) => rpc<void>('AssetSuggestionDrop', slotId, id),
+    assetCandidates: (slotId: string, query: string, limit: number) => rpc<AssetCandidatesView>('AssetCandidates', slotId, query, limit),
+    assetCandidateAssign: (slotId: string, id: string, stand: string, confirmedBytes: number) => rpc<AssetSaved>('AssetCandidateAssign', slotId, id, stand, confirmedBytes),
     network: () => rpc<NetworkView>('SourceNetwork'),
     setNetwork: (mode: NetworkMode) => rpc<NetworkView>('SourceSetNetwork', mode),
     sources: () => rpc<SourcesView>('Sources'),
@@ -120,12 +125,21 @@ export function httpBackend(): Backend {
     sourceResearchImport: (source: string, urls: string[]) => rpc<SourceAddView>('SourceResearchImport', source, urls),
     sourceCleanupPreview: () => rpc<SourceCleanupView>('SourceCleanupPreview'),
     sourceCleanup: () => rpc<SourceCleanupView>('SourceCleanup'),
+    ...chatRpc(),
+    on: subscribe,
+  };
+}
+
+function chatRpc() {
+  return {
     chatStream: chatStreamHttp,
     chatList: () => rpc<ChatSummary[]>('ChatList'),
     chatGet: (id: string) => rpc<ChatDetail>('ChatGet', id),
     chatDelete: (id: string) => rpc<void>('ChatDelete', id),
     chatOptions: () => rpc<ChatOptionsView>('ChatOptions'),
-    on: subscribe,
+    chatActions: (chat: string) => rpc<ChatAction[]>('ChatActions', chat),
+    chatActionRun: (chat: string, id: string) => rpc<ChatAction>('ChatActionRun', chat, id),
+    chatActionDrop: (chat: string, id: string) => rpc<ChatAction>('ChatActionDrop', chat, id),
   };
 }
 

@@ -5,16 +5,15 @@ import { App, PAGES } from './App';
 vi.mock('./api', () => ({ backend: { mock: true } }));
 
 describe('Asset-Studio-Rahmen (B-459)', () => {
-  it('zeigt Titel, die Navigation Grafik und Sound und den Mock-Hinweis', () => {
-    const html = renderToStaticMarkup(<App initial="grafik" />);
+  it('zeigt Titel, die Seite Assets (WZ33) und den Mock-Hinweis', () => {
+    const html = renderToStaticMarkup(<App initial="assets" />);
     expect(html).toContain('>Asset-Studio<');
-    expect(html).toMatch(/role="tab"[^>]*aria-selected="true"[^>]*>.*?Grafik/);
-    expect(html).toContain('Sound');
+    expect(html).toMatch(/role="tab"[^>]*aria-selected="true"[^>]*>.*?Assets/);
     expect(html).toContain('Mock');
   });
 
-  it('öffnet die gewählte Seite', () => {
-    expect(renderToStaticMarkup(<App initial="sound" />)).toMatch(/aria-selected="true"[^>]*>.*?Sound/);
+  it('kennt die alten Seiten Grafik, Sound und Quellen nicht mehr (WZ33/AC-01)', () => {
+    expect(PAGES).toEqual(['assets', 'welt', 'planer', 'monarch', 'gegner']);
   });
 
   it('bietet die Seite Welten Editor an (B-460) und öffnet sie', () => {
@@ -28,18 +27,13 @@ describe('Asset-Studio-Rahmen (B-459)', () => {
     expect(html).toMatch(/aria-selected="true"[^>]*>.*?Monarch/);
     expect(html).toContain('Reittier');
     const tabs = [...html.matchAll(/role="tab"[^>]*>(?:<[^>]+>)*([^<]+)/g)].map((m) => m[1]);
-    expect(tabs).toEqual(['Grafik', 'Sound', 'Welten Editor', 'Gebäude-Planer', 'Monarch', 'Gegner', 'Quellen']);
+    expect(tabs).toEqual(['Assets', 'Welten Editor', 'Gebäude-Planer', 'Monarch', 'Gegner']);
   });
 
   it('bietet die Seite Gebäude-Planer an (B-462) und öffnet sie', () => {
     const html = renderToStaticMarkup(<App initial="planer" />);
     expect(html).toMatch(/aria-selected="true"[^>]*>.*?Gebäude-Planer/);
     expect(html).toContain('class="pl-page"');
-  });
-
-  it('bietet die Seite Quellen an (WZ30.4/AC-04) und öffnet sie', () => {
-    const html = renderToStaticMarkup(<App initial="quellen" />);
-    expect(html).toMatch(/aria-selected="true"[^>]*>.*?Quellen/);
   });
 
   it('zeigt den Chat rechts auf jeder Seite mit Knopf zum Ein- und Ausblenden (WZ19.2/AC-03)', () => {

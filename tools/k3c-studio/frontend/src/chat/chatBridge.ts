@@ -1,5 +1,6 @@
 import { useEffect, useSyncExternalStore } from 'react';
 import type { AssignContext, ChatTask } from '../api/chatTypes';
+import type { WorldDraft } from '../api/worldTypes';
 import { loadPref, savePref } from '../lib/prefs';
 
 // Zustand des Chats außerhalb der Oberfläche: ein- und ausgeblendet (gemerkt) und der Entwurfs-Lader einer Seite
@@ -37,10 +38,10 @@ export function useCanLoadDraft(): boolean {
 }
 
 /** Auftragsart der nächsten Nachricht: `welt`, solange der Welten Editor einen Entwurfs-Lader angemeldet hat (B-516),
- *  `zuordnung`, solange Sound- oder Grafik-Seite ihren Kontext angemeldet haben (B-600), `quellen` nach „Claude suchen
- *  lassen“ auf der Seite Quellen (B-673). */
+ *  `quellen` nach „Claude suchen lassen“ auf der Seite Assets (B-673), bis dort ein Slot oder Fokus-Chip gewählt wird,
+ *  sonst `zuordnung`, solange die Seite Assets ihren Kontext angemeldet hat (B-600, B-677). */
 export function chatTask(): ChatTask | undefined {
-  return loader ? 'welt' : assign ? 'zuordnung' : sources ? 'quellen' : undefined;
+  return loader ? 'welt' : sources ? 'quellen' : assign ? 'zuordnung' : undefined;
 }
 
 /** Seite Quellen: öffnet den Chat mit vorbereitetem Auftrag (Text liegt in der Eingabe, 🧑 schickt ihn ab). */
@@ -74,6 +75,18 @@ export function clearPrefill(): void {
   notify();
 }
 
+let page = ''; // offene Seite des Studios: mit ihr geht der Aktionskatalog mit (B-679)
+
+/** Die Oberfläche meldet die offene Seite (assets, sound, grafik, welt, planer, monarch, gegner). */
+export function setChatPage(next: string): void {
+  page = next;
+}
+
+/** Offene Seite der nächsten Nachricht ("" = keine). */
+export function chatPage(): string {
+  return page;
+}
+
 /** Seitenkontext der nächsten Nachricht (nur bei `zuordnung`). */
 export function chatContext(): AssignContext | undefined {
   return assign ?? undefined;
@@ -94,6 +107,26 @@ export function useAssignContext(ctx: AssignContext | null): void {
 /** Aktueller Seitenkontext für die Anzeige (Vorschlagskarten, Hinweis im Chat). */
 export function useAssign(): AssignContext | null {
   return useSyncExternalStore(subscribe, () => assign, () => null);
+}
+
+let worldDraft: (() => WorldDraft | undefined) | null = null; // ungespeicherter Entwurf des Welten Editors (B-686)
+
+/** Der Welten Editor meldet, wie der Chat an den aktuellen ungespeicherten Entwurf kommt (undefined = keiner). */
+export function registerWorldDraft(fn: () => WorldDraft | undefined): () => void {
+  worldDraft = fn;
+  return () => { if (worldDraft === fn) worldDraft = null; };
+}
+
+/** Ungespeicherter Entwurf des Welten Editors für die nächste Nachricht (undefined = keiner). */
+export function chatWorldDraft(): WorldDraft | undefined {
+  return worldDraft?.() ?? undefined;
+}
+
+/** Öffnet den Chat mit vorbereitetem Text in der Eingabe (🧑 schickt ihn ab), z. B. „Im Chat korrigieren“ (B-686). */
+export function askChat(text: string): void {
+  prefill = text;
+  notify();
+  setChatOpen(true);
 }
 
 /** Lädt die Antwort `text` als Entwurf (prüft sie vorher); false, wenn keine Seite sie annimmt. */

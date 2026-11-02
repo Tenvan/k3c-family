@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ34
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-24
 - **Spec:** Entwurf
@@ -55,3 +55,5 @@ keine
 ## Notizen
 
 Gefunden in WZ31.1 (`task check:diff`, 2026-10-24).
+
+2026-10-31 (Claude, Team WZG): Kein Fehler mehr. `vitest run src/world/levelView.test.ts` in `tools/k3c-studio/frontend`: 14 Tests grün, Test und Golden unverändert.

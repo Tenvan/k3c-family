@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { backend, type PlanSaved, type WorldCheckView, type WorldDraft } from '../api';
+import { backend, type PlanSaved, type WorldCheckView, type WorldDraft, type WorldValuesView } from '../api';
 import type { Notice } from './planSave';
 import type { PlanState } from './usePlan';
 import { worldChanges } from './changes';
@@ -29,6 +29,15 @@ export function useWorldDraft(plan: PlanState) {
   const prev = useRef(saved);
   const active = plan.worlds?.active;
   const dirty = draft !== null && !sameDraft(draft, saved);
+  const [values, setValues] = useState<WorldValuesView | null>(null);
+  const stand = view?.stand;
+
+  // Basiswerte, Overrides und Kind-Welten der gewählten Welt (B-682), neu je Stand der Datei
+  useEffect(() => {
+    let current = true;
+    void backend.planWorldValues().then((v) => { if (current) setValues(v); });
+    return () => { current = false; };
+  }, [stand, active]);
 
   useEffect(() => {
     setDraft((d) => (d === null || sameDraft(d, prev.current) ? null : d));
@@ -61,15 +70,15 @@ export function useWorldDraft(plan: PlanState) {
   }, [draft, view, reload, refreshWorlds]);
 
   return {
-    draft, check, notice, dirty, save,
+    draft, check, notice, dirty, save, values,
     changes: dirty ? worldChanges(draft, saved) : 0,
     /** Grund, warum Speichern gesperrt ist: ein offener Entwurf der Planung ginge beim Neuladen verloren */
     lock: plan.dirty ? 'Erst die Planung speichern oder verwerfen' : undefined,
     edit: (next: WorldDraft) => { setDraft(next); setNotice(null); },
     /** Entwurf aus dem Chat (WZ19.3): ersetzt den Entwurf, nichts wird gespeichert; ein Prüffehler steht als Meldung am Entwurf */
-    load: (next: WorldDraft, error: string) => {
-      setDraft(next);
-      setNotice(error ? { kind: 'error', text: error } : { kind: 'hint', text: 'Antwort aus dem Chat als Entwurf geladen, nichts gespeichert' });
+    load: (next: WorldDraft, error: string, hint = '') => {
+      setDraft({ ...next, overrides: next.overrides ?? draft?.overrides }); // Antworten ohne Overrides lassen sie stehen
+      setNotice(error ? { kind: 'error', text: error } : { kind: 'hint', text: `Antwort aus dem Chat als Entwurf geladen, nichts gespeichert${hint ? ` (${hint})` : ''}` });
     },
     /** Meldung am Entwurf, ohne ihn zu ändern (z. B. „Antwort nicht lesbar“) */
     report: (text: string) => setNotice({ kind: 'error', text }),

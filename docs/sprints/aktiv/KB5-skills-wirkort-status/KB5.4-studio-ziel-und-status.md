@@ -1,0 +1,56 @@
+# KB5.4 · Studio zeigt Skills am Ziel-Gegner und Status-Effekte (B-676)
+
+- **Status:** fertig
+- **Typ:** Umsetzung
+- **Agent:** autonom
+- **Domäne:** DEV
+- **Umgebung:** offline
+- **Branch:** kb5/4-studio-ziel-und-status
+- **Abhängig von:** KB5.1, KB5.3
+- **Tickets:** B-676
+- **Kriterien:** AC-03
+
+## Ziel
+
+Die Monarch-Seite des Studios zeigt Flächenzauber am Ziel-Gegner und Status-Effekte über ihre Dauer, die Gegner-Seite den Modus „Status“.
+
+## Kontext
+
+Spec: `docs/backlog/B-676-studio-skills-ziel-und-status.md`. Studio: `tools/k3c-studio/frontend/src/monarch/` (`actions.ts` `skillPlay`, `useMonarch.ts`), `enemies/`, `playback/timeline.ts` und `effectView.ts` (Zeitachse mit Schleife, Tempo, Einzelbild). Darstellung aus dem Spiel importieren (`src/scenes/effects/`, KB5.1, KB5.3).
+
+## Erlaubte Dateien
+
+- `tools/k3c-studio/frontend/src/monarch/**`, `enemies/**`, `playback/**`, `styles/figures.css`
+
+## Nicht-Ziele
+
+- Eigene Darstellungen ohne Gegenstück im Spiel.
+
+## Schritte
+
+1. Option Ziel-Gegner auf der Monarch-Seite, Flächenzauber am Ziel mit Radius.
+2. Status-Effekte als Zeitachsen-Effekte an Gegner und Monarch.
+3. Modus „Status“ auf der Gegner-Seite.
+4. Vitest, `task check:diff`.
+
+## Fertig, wenn
+
+- [x] B-676 AC-01: Vitest Flächenzauber am Ziel.
+- [x] B-676 AC-02: Vitest Status-Effekte abspielbar oder Lücke.
+
+## Prüfen
+
+```bash
+task check:diff
+```
+
+Einmal vor dem Commit; während der Arbeit nur gezielte Tests (`docs/arbeitsweise.md` › Tempo im Lauf).
+Review-Session statt dessen: `task check`, `task check:go`, `task check:race` (nacheinander).
+Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑 sie für diesen Lauf freigegeben hat.
+
+## Ergebnis
+
+- B-676 AC-01 geprüft: `monarch/skillTarget.test.ts` – fireball, meteor, iceWall, lightningStorm mit Ziel-Gegner Goblin in 8 Units: Ring am Goblin mit dem Radius des Skills (× `UNIT_PX`), nicht am Monarchen; außer Reichweite oder ohne Ziel „Skill ohne Ziel“ wie im Spiel; taunt bleibt am Monarchen. `MonarchPage.test.tsx` prüft die Auswahl „Ziel-Gegner“ (Standard goblin, „ohne Ziel“ zeigt die vier Monarchen).
+- B-676 AC-02 geprüft: jede Effektart aus B-675 (stun, slow, taunt, storm, shield, lastStand, aura) entsteht aus einem Skill an Gegner bzw. Monarch, über ihre Dauer aus `data/monarch.json` sichtbar, danach leer; Schleife und Einzelbild wirken; Zeichnung mit `statusMarks`/`drawMark` des Spiels (`playback/timeline.ts` `statusAt`, `effectView.ts`). Holy Ground: Ring an der Burg im Burgradius (`castleAt` in `statusWorld`, wie `auraMarks` des Spiels), Lücke geschlossen. Gegner-Seite: Modus „Status“ spielt Betäubung, Verlangsamung, Spott und Sturm nacheinander an jedem Gegner der Gruppe (`enemies/statusLogic.ts`).
+- Offene Frage B-676 mit Default entschieden: Ziel-Gegner frei aus der Gegnerliste (Standard goblin), Abstand fest 8 Units. Mit Ziel zeigt die Bühne nur Monarch 1 und den Gegner (vier Monarchen im Abstand 8 würden den Gegner verdecken).
+- Prüfung: Studio-Vitest `monarch`, `playback`, `enemies` grün (12 Dateien), `tsc` ohne Befunde in diesen Ordnern, oxlint ohne Fehler, Wurzel-Vitest `tests` grün. `task check:diff` rot nur durch fremde Studio-Chat-Änderungen (worker-2). Sichtprüfung im Fenster: AC-03 bei 🧑 (KB5.6).

@@ -13,7 +13,7 @@ func TestPayableUndMinable(t *testing.T) {
 	prev := stateOf(w, 0, false)
 	paid := checkPayable(t, w, prev)
 	node := w.Nodes[0]
-	if prev["nodes"].([]any)[0].(map[string]any)["minable"] != sim.NodeMarkable(node) || !sim.NodeMarkable(node) {
+	if prev["nodes"].([]any)[0].(map[string]any)["minable"] != sim.NodeMarkable(w, node) || !sim.NodeMarkable(w, node) {
 		t.Fatalf("erster Knoten (%s) soll abbaubar sein", node.Kind)
 	}
 

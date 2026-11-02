@@ -1,7 +1,7 @@
 # WZG · Werkzeuge
 
 - **Status:** aktiv
-- **Rang:** 2
+- **Rang:** 1
 - **Ziel-Tickets:** –
 
 ## Ziel
@@ -47,11 +47,17 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ25 | Nachträge zum Server-Neustart: Räume bleiben offen, Assets ohne Build, Werkzeuge passen dazu | erledigt |
 | WZ26 | CI rot beheben, Prüf- und Planungswerkzeuge härten | erledigt |
 | WZ27 | Geplante Chunks: Gegnerlager, Ruinen-Kollision, Dateigrenze | erledigt |
-| WZ28 | Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite | aktiv |
-| WZ30 | Oberflächen zur Abnahme: Szenen, Filter, Quellen, Chat-Karten mit Mock-Daten | aktiv |
-| WZ29 | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | aktiv |
-| WZ31 | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | aktiv |
-| WZ32 | Balancing-Seite: feste Fläche, eine Liste, Lauf-Editor mit Varianten-Tabelle | aktiv |
+| WZ28 | Offline-Werkzeuge: Slot-Details, Ticket-Button ohne KI, Balancing-Seite | erledigt |
+| WZ30 | Oberflächen zur Abnahme: Szenen, Filter, Quellen, Chat-Karten mit Mock-Daten | erledigt |
+| WZ29 | Ausbau der Sound- und Grafik-Seite: Hörproben, Vorschauen, Filter, AI-Chat | erledigt |
+| WZ31 | Workbench und Studio als Web-Client: Server starten, im Browser arbeiten | erledigt |
+| WZ32 | Balancing-Seite: feste Fläche, eine Liste, Lauf-Editor mit Varianten-Tabelle | erledigt |
+| WZ33 | Eine Seite Assets statt Grafik, Sound und Quellen | erledigt |
+| WZ34 | Prüf- und Build-Werkzeuge: Studio-Test, check:diff, buildall | erledigt |
+| WZ35 | Workbench-Nachträge: Ticket-Nummern, Lauf-IDs, schmale Fenster, Auswertung | erledigt |
+| WZ36 | Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung | erledigt |
+| WZ37 | Welt-Overrides im Welten-Editor und im Studio-Chat | aktiv |
+| WZ38 | Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff | erledigt |
 
 ## Nicht-Ziele
 

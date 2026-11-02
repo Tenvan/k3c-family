@@ -1,0 +1,21 @@
+{
+  "t": "delta",
+  "stage": 0,
+  "tick": 302,
+  "ack": 43,
+  "s": {
+    "players": {
+      "set": [
+        { "id": 1, "index": 0, "x": 414, "shield": 480, "shieldFor": 9.5, "lastStandFor": 8, "auras": [{ "skill": "armorAura", "radius": 8 }, { "skill": "holyGround", "radius": 5, "castle": true }] }
+      ],
+      "del": []
+    },
+    "enemies": {
+      "set": [
+        { "id": 42, "kind": "goblin", "x": 420, "stun": 1.5, "slow": 0.5, "slowFor": 4.2, "tauntId": 1, "tauntFor": 3 }
+      ],
+      "del": []
+    },
+    "storms": [{ "x": 420, "radius": 5, "perSecond": 10, "left": 4.5, "owner": 1 }]
+  }
+}

@@ -301,12 +301,12 @@ func applySite(w *World, saved SiteSave) {
 		}
 		s.State, s.PaidGold, s.BuildProgress, s.HP = state, saved.PaidGold, saved.BuildProgress, saved.HP
 		s.Bows, s.BowPaidGold, s.WorkerID = saved.Bows, saved.BowPaidGold, nil
-		if levels := buildings[s.Kind].Levels; state == "built" && saved.Level > 1 && saved.Level <= len(levels) {
+		if levels := w.values().Buildings[s.Kind].Levels; state == "built" && saved.Level > 1 && saved.Level <= len(levels) {
 			s.Level, s.MaxHP = saved.Level, levels[saved.Level-1].HP
 		}
 		if state == "built" {
 			applyUpgrade(s, saved)
-			applyCraft(s, saved.Craft)
+			applyCraft(w, s, saved.Craft)
 		}
 		return
 	}

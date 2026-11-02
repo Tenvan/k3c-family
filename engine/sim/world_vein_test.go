@@ -12,7 +12,7 @@ func veinWorld(t *testing.T, peasants int) (*World, *ResourceNode) {
 	w.Troops, w.Camps, w.Pickups, w.CycleSpeed = []*Troop{}, []*Camp{}, []*Pickup{}, 1e-6
 	var vein *ResourceNode
 	for _, n := range w.Nodes {
-		if isVein(n) && vein == nil {
+		if isVein(defaultValues(), n) && vein == nil {
 			vein = n
 		}
 	}

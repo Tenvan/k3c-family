@@ -1,7 +1,7 @@
 # LST · Leistung & Stabilität
 
 - **Status:** aktiv
-- **Rang:** 7
+- **Rang:** 6
 - **Ziel-Tickets:** –
 
 ## Ziel
@@ -17,7 +17,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | PM1 | Leistung messen: Diagnose-Zeile und Performance-Modus | aktiv |
 | PF1 | Split-Screen flüssig auf der Xbox | aktiv |
 | NT1 | Stabile Tests, Warteschlange und Snapshot-Budget | erledigt |
-| ST1 | Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik | aktiv |
+| ST1 | Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik | erledigt |
 
 ## Nicht-Ziele
 

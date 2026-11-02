@@ -139,6 +139,19 @@ entsteht dort, wo der Wald gerodet ist.
 | Gibt es im Level keinen passenden Wald-Chunk hinter Linie 2, setzt der Generator den Platz in den nächstgelegenen Wald-Chunk; gibt es gar keinen, entfällt der Platz auf dieser Seite. | Kein Level ohne Holz-Perspektive, kein erzwungener Wald. | – |
 | Die Baumschule bleibt eine Baumplantage (§ 1) mit Ausbaustufen (§ 3, GEB13) und gilt mit 2 Spielern wie mit einem. | Wirkung unverändert, nur Name und Ort neu. | `buildings.json` › `nursery` (bis BS4 `nursery`) |
 
+### 3.4 Zielmaß der Grafik (B-685)
+
+Beschlossen von 🧑 am 2026-10-31 (Chat, Projekt GRJ). Reine Darstellung: Hitboxen, Bauplatz-Breite und Spiellogik bleiben unberührt,
+Protokoll und Spielstand ändern sich nicht.
+
+| Regel | Begründung | Daten |
+|---|---|---|
+| Jeder Gebäude-Slot je Stufe (`wall:3`, `tavern:2`, `hub:4`, `hub:2:3`, `hub:camp:1`, `ship:1`, `stairsUp` …) hat ein **Zielmaß** Breite × Höhe in **Units** (1 Unit = 32 Spiel-Pixel). | Die Größe im Spiel hängt nicht mehr an der Auflösung der Datei: eine 32- und eine 128-px-Quelle belegen dieselbe Fläche, die 128er wirkt feiner. | `data/assets.json` › Slot › `ziel` |
+| Der Client passt die aktive Zuordnung (Präferenz 1, nach Ausschnitt) **ein**: Maßstab = kleineres Verhältnis von Zielbreite/Quellbreite und Zielhöhe/Quellhöhe, nie verzerrt, unten mittig am Boden. | Fremdes Seitenverhältnis bleibt erkennbar, nichts schwebt. | `src/scenes/render/targetFit.ts` (Spiel und Studio-Bühne) |
+| **Filter:** ganzzahlige Vergrößerung (×1, ×2 …) bleibt Pixel-scharf (Nearest), Verkleinern und krumme Faktoren werden weich skaliert (Linear). Maßstab und Filter stehen nach dem Laden je Grafik fest, nicht je Frame. | Pixelgrafik bleibt scharf, wo sie es kann. | – |
+| Fehlt das Zielmaß oder ist eine Seite 0, gilt das heutige Maß der Datei. Die Vorbelegung entspricht den heutigen 32-px-Dateien (z. B. Burg 8 × 9, Turm 3 × 8, Mauer 1 × 5, Hub-Gebäude 6 × 4); beim Laden prüft das Register jede Seite auf 0 bis 100 Units. | Ohne Änderung bleibt die Darstellung gleich. | `tools/assetkit/target.go` |
+| Gerüste, Hintergrundmauer, Figuren, Umgebung und HUD haben noch kein Zielmaß (eigenes Ticket). | Umfang zuerst nur Gebäude je Stufe. | – |
+
 ## 4. Bau-Ablauf, Zerstörung, Reparatur
 
 | Regel | Begründung | Zielkorridor |

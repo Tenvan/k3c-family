@@ -1,0 +1,73 @@
+# B-341 · Die Ursache für den fehlenden Header `X-K3C-Root` aus Worktrees ist live gemessen
+
+- **Domäne:** DEV
+- **Typ:** Problem
+- **Prio:** mittel
+- **Umgebung:** live
+- **Status:** erledigt
+- **Sprint:** WZ2
+- **Projekt:** WZG
+- **Erstellt:** 2026-10-07
+- **Spec:** freigegeben
+- **Revision:** 1
+- **Freigabe:** 2026-10-11, 🧑 im Chat (Sprint WZ2, Revision 2)
+
+## Ausgangslage
+
+Aus Worktrees unter `.claude/worktrees/` (Desktop-App) landeten `plan_set` und `workbench_status` in der Repo-Wurzel (B-275). M9.1 hat offline gemessen: Der `headersHelper` aus `.mcp.json` liefert im Worktree den Worktree-Pfad, k3c-workbench ordnet einen Aufruf mit Header richtig zu (Test `TestWorkspaceAusHeader`), und die betroffenen Worktrees (`k3c-workbench-adjustments-1af643`, `sprint-rl1-continue-091347`) haben `hasTrustDialogAccepted: true` in `~/.claude.json`. Die Ursache liegt damit vermutet im Client oder im damals laufenden k3c-workbench, nicht in `.mcp.json` oder im heutigen Code; live ist das ungeprüft.
+
+## Ziel
+
+Klar ist, warum der Header aus einem Desktop-App-Worktree nicht ankommt, und ob es eine Abhilfe im Repo oder in der Client-Konfiguration gibt.
+
+## Beteiligte und Zielgruppen
+
+🧑 (Desktop-App, startet k3c-workbench), Agenten-Sessions in Worktrees.
+
+## Anforderungen
+
+- Eine Session in einem Desktop-App-Worktree ruft ein Tool von k3c-workbench auf; die Log-Zeile `✅ <tool>: ok` (`ns=mcp`, Felder `header`, `checkout`, seit M9.1) entscheidet zwischen den Vermutungen:
+  - V1 `header=true`, `checkout=Repo-Wurzel …`: Der Client führt den Helper mit der Wurzel als cwd aus. Laut Claude-Code-Doku (MCP › headersHelper) läuft er im „Project directory the server is declared in“; vermutet nimmt der Client aus dem Worktree die `.mcp.json` der Wurzel (beide deklarieren `k3c-workbench`).
+  - V2 `header=false`: Der Helper läuft nicht oder der Header wird nicht geschickt.
+  - V3 Alter Stand: k3c-workbench lief zum Zeitpunkt der Beobachtung (GR2.3 2026-10-04, W3 2026-10-05) mit einer EXE vor #114 (Header-Auswertung, 2026-10-04 14:44); dann tritt der Fehler heute nicht mehr auf.
+- Ergebnis und Abhilfe stehen hier unter Notizen; liegt die Abhilfe im Repo, wird sie ein eigenes Ticket.
+
+## Nicht-Ziele
+
+Ablehnen ohne Header (Beschluss 🧑 2026-10-06, B-275); neue MCP-Tools.
+
+## Regeln und Einschränkungen
+
+Domäne SRV; k3c-workbench vorher mit `task k3c-workbench:build` neu bauen, damit das Log die Felder `header` und `checkout` hat. Firewall-Regel: Proben nur auf Loopback.
+
+## Beispiele
+
+Session im Worktree `x` ruft `workbench_status` → Log `"header":true,"checkout":"Worktree x (…)"`: kein Fehler mehr (V3).
+
+## Ausnahme- und Fehlerfälle
+
+k3c-workbench läuft nicht → keine Messung, Ticket bleibt offen.
+
+## Akzeptanzkriterien
+
+- **AC-01** Je eine Log-Zeile aus einer Desktop-App-Session in der Wurzel und in einem Worktree steht unter Notizen, mit der zutreffenden Vermutung (V1, V2, V3 oder eine neue).
+- **AC-02** Die Abhilfe ist benannt: Ticket im Repo, Einstellung beim Client oder „kein Fehler mehr“.
+
+## Offene Fragen
+
+keine
+
+## Notizen
+
+Offline-Messung M9.1 (2026-10-07): `node -p "JSON.stringify({'X-K3C-Root': process.cwd()})"` gibt im Worktree `sprint-m9` dessen Pfad, in der Wurzel `C:/WORKSPACE/k3c`; `claude mcp get k3c-workbench` im Worktree meldet `Scope: Project config (shared via .mcp.json)`, aber nicht, aus welcher Datei. Die EXE der Wurzel (`tools/k3c-workbench/build/bin/k3c-workbench.exe`, gebaut 2026-10-06 14:13) enthält die Header-Auswertung. `logs/k3c-workbench.jsonl` der Wurzel zeigt bis 2026-10-07 keine Konsolen-Quelle `check:<worktree>/…`, also keinen Prüflauf, der einem Worktree zugeordnet wurde.
+
+Messung aus dem Log (2026-10-10, Agent, Wurzel-Session): Alle 356 `ns=mcp`-Zeilen mit den Feldern `header`/`checkout` haben `header=true` und `checkout=Repo-Wurzel C:\WORKSPACE\K3C`, keine nennt einen Worktree. Der Helper liefert im Worktree dessen Pfad (geprüft), also schickt der Client den Header, führt den Helper aber mit der Wurzel als cwd aus: **V1**. Einschränkung: Das Log trägt den Header-Wert nicht und keine Kennung der Session.
+Abhilfe: im Client nicht änderbar vom Repo aus; Ticket B-388 (explizites Argument `checkout`). Zusammenhängendes Problem: B-387 (Ticket-Nummern kollidieren zwischen Worktrees).
+
+**Abschluss WZ2.6 (2026-10-11, Agent):** Neue Auswertung von `logs/k3c-workbench.jsonl` (1044 `ns=mcp`-Zeilen mit `checkout`):
+
+- Alle 1044 Zeilen haben `header=true`; V2 (Header kommt nicht an) ist damit ausgeschlossen.
+- Aus der Wurzel ohne Argument: `{"time":"2026-10-11T13:25:46+02:00","msg":"✅ plan_section: ok","tool":"plan_section","header":true,"checkout_arg":false,"checkout":"Repo-Wurzel C:\\WORKSPACE\\K3C"}`.
+- Aus einem Worktree mit dem Argument: `{"time":"2026-10-10T18:25:41+02:00","msg":"✅ check_run: ok","tool":"check_run","header":true,"checkout_arg":true,"checkout":"Worktree K3C-gl1 (C:\\WORKSPACE\\K3C-gl1)"}`.
+- Alle 33 Zeilen mit `checkout=Worktree …` haben `checkout_arg=true`; keine einzige Worktree-Zeile entstand allein über den Header, und keine der Zeilen mit `Repo-Wurzel` hat `checkout_arg=true`. Der Header trägt also im Desktop-App-Worktree weiter die Wurzel: **V1 bestätigt**.
+- Abhilfe: B-388 (erledigt) liefert das Argument `checkout`; seit damit laufen Worktree-Sessions korrekt (33 Zeilen). Im Client ist nichts änderbar. Offen bleibt nur, dass Aufrufe ohne `checkout` aus einem Worktree weiter in der Wurzel landen; die Tool-Antwort nennt den Checkout in der letzten Zeile.

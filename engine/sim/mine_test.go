@@ -59,7 +59,7 @@ func TestMineKupferBisInDenVorrat(t *testing.T) {
 	ore.X, vein.X = w.HubX-30, w.HubX+30 // nah an der Burg, außer Reichweite anderer Zahlziele
 	for _, n := range []*ResourceNode{ore, vein} {
 		gold := p0.Gold + p1.Gold
-		g, _ := gatherOf(n.Kind)
+		g, _ := gatherOf(defaultValues(), n.Kind)
 		payAt(w, []*Player{p0, p1}, n.X, 10, func() bool { return n.Marked })
 		if !n.Marked || gold-p0.Gold-p1.Gold != g.MarkCost {
 			t.Fatalf("%s: markiert %v, bezahlt %d, markCost %d", n.Kind, n.Marked, gold-p0.Gold-p1.Gold, g.MarkCost)

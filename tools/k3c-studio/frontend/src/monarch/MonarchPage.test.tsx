@@ -236,15 +236,20 @@ describe('Skills-Panel und Skill abspielen (B-671)', () => {
     expect([...h.querySelectorAll('.wd-skills tbody tr')].map((r) => (r as HTMLElement).dataset.skill)).toEqual(['backstab', 'smokeBomb']);
   });
 
-  it('Modus „Skill“: Auswahl nach Linie, alle vier Monarchen spielen den Effekt aus skillLook; Bewegung und Animation entfallen (AC-03, AC-06)', async () => {
+  it('Modus „Skill“: Auswahl nach Linie, Ziel-Gegner Goblin zeigt den Flächenzauber am Ziel, ohne Ziel spielen alle vier Monarchen „Skill ohne Ziel“; Bewegung und Animation entfallen (AC-03, AC-06, B-676)', async () => {
     const h = await mount();
     await click(h, 'Skill …');
     expect(hasField(h, 'Skill')).toBe(true);
     expect(hasField(h, 'Animation')).toBe(false);
     expect(hasField(h, 'Aktion')).toBe(false);
     expect(selectedText(h, 'Skill')).toBe('Zauberer · fireball');
+    expect(selectedText(h, 'Ziel-Gegner')).toBe('Ziel goblin');
+    expect(lastItems().map((i) => i.id)).toEqual(['monarch-0', 'ziel-goblin']);
+    expect(lastItems()[1]!.timed?.[0]?.kind).toBe('burst');
+    expect(lastItems()[0]!.anim === 'idle' && lastItems()[0]!.mount!.speed === 0).toBe(true);
+    await choose(h, 'Ziel-Gegner', 'ohne Ziel');
     expect(lastItems()).toHaveLength(4);
-    expect(lastItems().every((i) => i.timed?.[0]?.kind === 'burst' && i.anim === 'idle' && i.mount!.speed === 0)).toBe(true);
+    expect(lastItems().every((i) => i.effect?.kind === 'noTarget' && i.anim === 'idle' && i.mount!.speed === 0)).toBe(true);
     expect(toolbar(h).querySelector('.wd-gap-chip')!.getAttribute('title')).toContain('Wirk-Animation fehlt');
   });
 
@@ -253,7 +258,7 @@ describe('Skills-Panel und Skill abspielen (B-671)', () => {
     await click(h, 'Skills 26');
     await click(h, 'Skill meteor abspielen');
     expect(selectedText(h, 'Skill')).toBe('Zauberer · meteor');
-    const fx = lastItems()[0]!.timed![0]!;
+    const fx = lastItems()[1]!.timed![0]!; // Flächenzauber am Ziel-Gegner (B-676)
     expect(fx.kind === 'burst' && fx.look.motion).toBe('fall');
     expect(h.querySelector('[data-skill="meteor"]')!.getAttribute('aria-selected')).toBe('true');
   });

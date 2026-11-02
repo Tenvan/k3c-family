@@ -34,6 +34,29 @@ func TestChatArgsOhneRechte(t *testing.T) {
 	if m := slices.Index(args, "--permission-mode"); m < 0 || args[m+1] != "dontAsk" {
 		t.Errorf("--permission-mode dontAsk fehlt: %v", args)
 	}
+	sessionArgsOnly(t, args)
+}
+
+// sessionArgsOnly (B-687/AC-04): mit Sitzung kommt nur --resume <id> bzw. --session-id <id> statt
+// --no-session-persistence dazu, sonst gleiche Härtung; --continue und Resume ohne ID nie.
+func sessionArgsOnly(t *testing.T, args []string) {
+	t.Helper()
+	id := newSessionID()
+	for _, o := range []chatOptions{{session: id, resume: true}, {session: id}, {resume: true}} {
+		got := chatArgs(o)
+		extra := slices.DeleteFunc(slices.Clone(got), func(s string) bool { return slices.Contains(args, s) })
+		want := map[bool][]string{true: {"--resume", id}, false: {"--session-id", id}}[o.resume]
+		if o.session == "" {
+			want = nil // Resume ohne ID gibt es nicht
+		}
+		if !slices.Equal(extra, want) || slices.Contains(got, "--continue") {
+			t.Errorf("Sitzung %+v: zusätzlich %v, erwartet %v", o, extra, want)
+		}
+		if lost := slices.DeleteFunc(slices.Clone(args), func(s string) bool { return slices.Contains(got, s) }); o.session != "" &&
+			!slices.Equal(lost, []string{"--no-session-persistence"}) {
+			t.Errorf("Sitzung %+v verliert %v", o, lost)
+		}
+	}
 }
 
 func TestChatSendetPromptUndStreamt(t *testing.T) {

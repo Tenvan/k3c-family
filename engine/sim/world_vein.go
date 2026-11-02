@@ -12,16 +12,16 @@ type VeinData struct {
 }
 
 // gatherOf sind die Abbau-Werte einer Knoten-Art (Ader oder endliche Ressource); false, wenn sie keine hat.
-func gatherOf(kind string) (Gatherable, bool) {
-	if v, ok := economy.Veins[kind]; ok {
+func gatherOf(vals *WorldValues, kind string) (Gatherable, bool) {
+	if v, ok := vals.Economy.Veins[kind]; ok {
 		return v.Gatherable, true
 	}
-	g, ok := economy.Gatherables[kind]
+	g, ok := vals.Economy.Gatherables[kind]
 	return g, ok
 }
 
-func isVein(n *ResourceNode) bool {
-	_, ok := economy.Veins[n.Kind]
+func isVein(v *WorldValues, n *ResourceNode) bool {
+	_, ok := v.Economy.Veins[n.Kind]
 	return ok
 }
 
@@ -38,8 +38,8 @@ func veinWorkers(w *World, n *ResourceNode) int {
 
 // nodeFree: Nimmt der Knoten noch einen Bauern? Endliche Ressourcen einen, Adern bis MaxWorkers.
 func nodeFree(w *World, n *ResourceNode) bool {
-	if isVein(n) {
-		return veinWorkers(w, n) < economy.Veins[n.Kind].MaxWorkers
+	if isVein(w.values(), n) {
+		return veinWorkers(w, n) < w.values().Economy.Veins[n.Kind].MaxWorkers
 	}
 	return !isWorker(w, n.WorkerID)
 }

@@ -11,7 +11,7 @@ import (
 
 // takeEquipment lässt e einen Drop in Reichweite aufheben; nicht fliehende Gegner ohne Last, keine Bosse.
 func takeEquipment(w *World, e *Enemy) {
-	grab := enemyData[e.Kind].GrabRange
+	grab := w.values().Enemies[e.Kind].GrabRange
 	if grab <= 0 || e.Boss || e.Fleeing || e.Carried != nil {
 		return
 	}

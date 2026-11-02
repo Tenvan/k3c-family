@@ -91,7 +91,7 @@ func validateLearned(p IslandPlayerSave) error {
 			return fmt.Errorf("spielstand: Spieler %d: Skill %q unbekannt", p.Index, id)
 		case slices.Contains(p.Skills[:i], id):
 			return fmt.Errorf("spielstand: Spieler %d: Skill %q doppelt", p.Index, id)
-		case lineCount(&Player{Skills: p.Skills[:i]}, sk.Line) < tierNeed(sk.Tier):
+		case lineCount(&Player{Skills: p.Skills[:i]}, sk.Line) < tierNeed(monarch.TierPoints, sk.Tier): // Spielstand-Prüfung gegen die Basis
 			return fmt.Errorf("spielstand: Spieler %d: Skill %q verletzt das Tier-Gating", p.Index, id)
 		}
 	}

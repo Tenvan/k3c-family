@@ -13,7 +13,8 @@ Zeichnet die `World` des Servers je Stufe: ein Phaser-Objekt je Entity, Grafik-Z
 - **Reittier:** `mountPose.ts` (`mountPose`: reine Pose aus `vx`, `facing`, Frame und `MountContext`, `timeScale` begrenzt) + `mountView.ts` (`createRider`/`updateRider`, Container je Monarch).
 - **Bürger:** `citizenView.ts` (`BuergerView`: Berufssymbol, Händler, Heilreichweite; Texte aus `hud/citizenLabels.ts`).
 - **Kamera und Schrift:** `cameraFollow.ts` (`refollow`, `FollowCam`: Kamera-Nachführung), `fontRules.ts` (`FONTS`-Katalog, `fontStyle`, Mindestgrößen `minFontPx`, `contrastRatio`).
-- Tests: `backWallRules`, `buildingSprites`, `cameraFollow`, `fontRules`, `mountPose`, `natureSprites`, `pennant`, `plantation`, `priceTagRules`, `siteStatusView`, `worldSprites` (`*.test.ts`).
+- **Zielmaß (B-685):** `targetFit.ts` (`fitTarget`: einpassen in Units, Filter scharf nur bei ganzzahliger Vergrößerung; auch Studio-Bühne), `buildingSize.ts` (Textur-Schlüssel → Slot in `data/assets.json`, aktive Zuordnung mit Ausschnitt, `ziel`), `buildingLook.ts` (Phaser: laden, Frame und Maßstab einmal je Grafik, `showBuildingLook`).
+- Tests: `backWallRules`, `buildingSize`, `buildingSprites`, `cameraFollow`, `fontRules`, `mountPose`, `natureSprites`, `pennant`, `plantation`, `priceTagRules`, `siteStatusView`, `worldSprites` (`*.test.ts`).
 
 ## Flow
 

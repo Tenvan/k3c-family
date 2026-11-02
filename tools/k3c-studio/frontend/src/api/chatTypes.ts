@@ -1,5 +1,6 @@
 // Chat des Studios (B-488, WZ19): Ereignisse des Antwort-Stroms von POST /api/studio/chat (Go: backend/chat_http.go)
 // und die gespeicherten Chats (RPC ChatList, ChatGet, ChatDelete, ChatOptions).
+import type { WorldDraft } from './worldTypes';
 
 /** Ausgang einer Antwort: `fertig`, `abgebrochen` (Zeitlimit oder Abbruch, der Text bis dahin bleibt) oder `fehler`. */
 export type ChatStatus = 'fertig' | 'abgebrochen' | 'fehler';
@@ -32,8 +33,42 @@ export interface AssignContext {
   filter: string;
 }
 
-/** Wahl, Auftragsart und (nur bei `zuordnung`) Seitenkontext einer Nachricht. */
-export type ChatSendOptions = ChatChoiceValues & { task?: ChatTask; kontext?: AssignContext };
+/** Wahl, Auftragsart, (nur bei `zuordnung`) Seitenkontext und offene Seite einer Nachricht; mit `seite` geht der
+ *  Aktionskatalog mit (B-679). */
+export type ChatSendOptions = ChatChoiceValues & { task?: ChatTask; kontext?: AssignContext; seite?: string; entwurf?: WorldDraft };
+
+/** Zustand einer Aktionskarte (Go: chat_actions.go). */
+export type ChatActionStatus = 'offen' | 'laeuft' | 'ausgefuehrt' | 'fehler' | 'verworfen';
+
+/** Aktionskarte des Chats (B-679): vom Studio vorab geprüft, ausgeführt nur per Knopf. */
+export interface ChatAction {
+  id: string;
+  art: string;
+  titel: string;
+  details: string[];
+  /** Grund, warum sie nicht ausführbar ist */
+  gesperrt?: string;
+  status: ChatActionStatus;
+  ergebnis?: string;
+  /** Vorschau je Feld (Overrides, WZ37.2): Basiswert → neuer Wert */
+  vorschau?: ActionPreview[];
+}
+
+/** Feld der Vorschau einer Karte: Basiswert, bisheriger Override („–“ = geerbt) und neuer Wert. */
+export interface ActionPreview {
+  feld: string;
+  basis: string;
+  alt?: string;
+  neu: string;
+}
+
+/** Aktionskarten eines Chats (Go: ChatActions, ChatActionRun, ChatActionDrop). */
+export interface ChatActionApi {
+  chatActions(chat: string): Promise<ChatAction[]>;
+  /** führt die Karte aus (höchstens einmal); Ergebnis oder Fehler stehen an der Karte */
+  chatActionRun(chat: string, id: string): Promise<ChatAction>;
+  chatActionDrop(chat: string, id: string): Promise<ChatAction>;
+}
 
 /** Schickt `text` an den Chat `chat` (leer = neuer Chat) mit der Wahl `options` und liefert die Ereignisse der Antwort; `signal` bricht ab. */
 export type ChatStream = (chat: string, text: string, options: ChatSendOptions, signal: AbortSignal) => AsyncGenerator<ChatEvent, void>;
@@ -82,7 +117,7 @@ export interface ChatOptionsView {
 }
 
 /** Die Chat-Methoden des Backends (Teil von Backend). */
-export interface ChatApi {
+export interface ChatApi extends ChatActionApi {
   /** Chat: schickt eine Nachricht an die Claude Code CLI und liefert die Antwort als Strom (WZ19) */
   chatStream: ChatStream;
   /** Chat: gespeicherte Chats, beliebige Reihenfolge */

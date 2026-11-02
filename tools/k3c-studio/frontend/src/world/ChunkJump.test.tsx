@@ -5,6 +5,7 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import { mockWorldLevel } from '../api/mockWorld';
+import { levelModel } from './levelView';
 import { WorldPage } from './WorldPage';
 import { planSlot } from './worldTesting';
 
@@ -127,6 +128,46 @@ describe('Tippen und Ziehen (B-491)', () => {
     const before = liveCenter();
     await gesture(h, [{ type: 'pointerdown', x: 100 }, { type: 'pointercancel', x: 100 }, { type: 'pointerup', x: 100 }]);
     expect(liveCenter()).toBeCloseTo(before);
+  });
+});
+
+describe('Rahmen und Sprungmarken in der Chunk-Vorschau (B-665/AC-02)', () => {
+  const frame = (h: HTMLElement) => h.querySelector<HTMLElement>('.wd-strip [role="slider"][aria-label="Position"]')!;
+  const pointer = (target: EventTarget, type: string, clientX: number) => act(async () => {
+    target.dispatchEvent(Object.assign(new MouseEvent(type, { bubbles: true, clientX, button: 0 }), { pointerId: 1 }));
+  });
+
+  it('der gelbe Rahmen im Streifen ersetzt den Positions-Schieber und zeigt den Bereich der Live-Vorschau', async () => {
+    const h = await mount();
+    expect(h.querySelectorAll('[role="slider"][aria-label="Position"]')).toHaveLength(1); // kein Schieber unter dem Streifen
+    const { left, scale } = views.at(-1)!;
+    expect(parseFloat(frame(h).style.left)).toBeCloseTo((left / level.widthUnits) * 100);
+    expect(parseFloat(frame(h).style.width)).toBeCloseTo((600 / scale / level.widthUnits) * 100);
+  });
+
+  it('Ziehen am Rahmen verschiebt beide Vorschauen um die Welt-Strecke unter dem Zeiger', async () => {
+    const h = await mount();
+    await act(async () => chunk(h, 8).click()); // weg vom Rand
+    const stripPx = parseFloat(h.querySelector<HTMLElement>('.wd-strip')!.style.width);
+    const track = h.querySelector<HTMLElement>('.wd-strip .wd-range')!;
+    track.getBoundingClientRect = () => ({ left: 0, width: stripPx, top: 0, height: 60, right: stripPx, bottom: 60, x: 0, y: 0, toJSON: () => ({}) });
+    const before = liveCenter();
+    await pointer(frame(h), 'pointerdown', 100);
+    await pointer(window, 'pointermove', 100 + (30 * stripPx) / level.widthUnits); // 30 Units nach rechts
+    await pointer(window, 'pointerup', 100);
+    expect(liveCenter()).toBeCloseTo(before + 30);
+    expect(chunkCenter(h)).toBeCloseTo(before + 30);
+  });
+
+  it('Sprungmarken über der Leiste (Hub, Mauer, Portale, Ausgang) springen hin; Anfang, Mitte, Ende bleiben im Menü', async () => {
+    const h = await mount();
+    await act(async () => chunk(h, 8).click());
+    const marks = [...h.querySelectorAll<HTMLButtonElement>('[aria-label="Sprungmarken"] button')];
+    expect(marks.map((b) => b.textContent)).toContain('Hub');
+    expect(marks.map((b) => b.textContent)).not.toContain('Anfang');
+    await act(async () => marks.find((b) => b.textContent === 'Hub')!.click());
+    expect(liveCenter()).toBeCloseTo(levelModel(level).hubCenterUnits);
+    expect(chunkCenter(h)).toBeCloseTo(levelModel(level).hubCenterUnits);
   });
 });
 

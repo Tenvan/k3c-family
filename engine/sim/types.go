@@ -300,7 +300,9 @@ type World struct {
 	// hubSite ist der Zahlplatz für den Hub-Ausbau an der Burg (nicht in Sites, hub_level.go).
 	hubSite *Site
 	// hubData: Kandidaten-hub.json, aus der die Stufe gebaut ist (CreateOptions); nil = eingebettete (hubOf).
-	hubData    *HubData
+	hubData *HubData
+	// vals: der Wertesatz der Welt dieser Stufe (world_values_room.go), aus Options beim Anlegen; nie je Tick neu.
+	vals       *WorldValues
 	Cycle      CycleInfo `json:"cycle"`
 	Aggression *float64  `json:"aggression"` // nur unter Tage (0..100), sonst null
 	Wave       int       `json:"wave"`

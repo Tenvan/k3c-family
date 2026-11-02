@@ -59,6 +59,16 @@ func (a *App) AssetsSet(id string, wahl []assets.Choice, stand string) (AssetSav
 	return AssetSaved{Slot: AssetSlotView{Slot: *slot, Status: assets.Status(a.root, *slot)}, Stand: next}, nil
 }
 
+// AssetsTargetSet setzt das Zielmaß (Units) eines Grafik-Slots, nil oder eine Seite 0 entfernt es; Schreibregel wie
+// AssetsSet (Binding, B-685).
+func (a *App) AssetsTargetSet(id string, ziel *assets.Units, stand string) (AssetSaved, error) {
+	slot, next, err := assets.SetTargetIf(a.root, id, ziel, stand)
+	if err != nil {
+		return AssetSaved{}, err
+	}
+	return AssetSaved{Slot: AssetSlotView{Slot: *slot, Status: assets.Status(a.root, *slot)}, Stand: next}, nil
+}
+
 // AssetsCatalog sucht im Asset-Katalog wie assets_catalog (Binding); limit ≤ 0 = 200.
 func (a *App) AssetsCatalog(query, art string, limit int) ([]assets.Asset, error) {
 	list, err := assets.Catalog(a.root)

@@ -81,7 +81,7 @@ func SitePayable(w *World, s *Site) bool { return sitePayable(w, s) }
 
 // NodeMarkable: Nimmt der Knoten gerade eine Markier-Münze? Dieselbe Regel wie für `input.pay` (nodeMarkable), für
 // `nodes[].minable` im Zustand (B-588).
-func NodeMarkable(n *ResourceNode) bool { return nodeMarkable(n) }
+func NodeMarkable(w *World, n *ResourceNode) bool { return nodeMarkable(w, n) }
 
 // materialOf sind die Materialkosten ohne Gold.
 func materialOf(c Cost) Stock {
@@ -104,9 +104,9 @@ func SiteGoldLeft(w *World, s *Site) (int, bool) {
 	price := 0
 	switch s.Kind {
 	case "workshop":
-		price = cheap(w, troops["archer"].Cost).Gold
+		price = cheap(w, w.values().Troops["archer"].Cost).Gold
 	case "smithy":
-		price = cheap(w, troops["eliteArcher"].Cost).Gold
+		price = cheap(w, w.values().Troops["eliteArcher"].Cost).Gold
 	case "armory":
 		stage, _ := armorStage(w)
 		price = stage.Cost.Gold

@@ -16,7 +16,7 @@ import { LEAVE_KEY, MenuPress, REMOVE_PLAYER_KEY, idleCommands, type OptionsScen
 import { findOpener, removeTargets, type OpenSignal } from './menuOpener';
 import { LocalSlots, pageBots } from './localSlots';
 import type { RadarCell } from './hud/radarView';
-import { brightnessOf } from './render/nightLight';
+import { backdropBrightnessOf, shade } from './render/nightLight';
 import { refollow } from './render/cameraFollow';
 import type { JoinCandidate } from './hud/joinHint';
 import { cellStages } from './cellStages';
@@ -72,11 +72,12 @@ export class GameScene extends Phaser.Scene {
   /** Kamera-ID der Mitspieler-Zelle: dort sind die Texte der Stufe ausgeblendet (B-197), 0 = keine */
   private partnerCamId = 0;
   /** Kameras mit Figur-Ziel; die Nachführung holt eine später entstehende View nach (B-392). */
+  /** Kameras mit Himmelfarbe ihrer Stufe; der Himmel dunkelt nachts mit dem Hintergrund */
+  private skyCams: { cam: Phaser.Cameras.Scene2D.Camera; sky: string }[] = [];
   private follows: { cam: Phaser.Cameras.Scene2D.Camera; stage: StageView; monarch: number; target?: object }[] = [];
   keyboards!: [KeyboardInput, KeyboardInput]; // Spieler 1 und 2 an einer Tastatur (B-316)
   private touch: TouchInput | undefined;
   private pads: GamepadInput[] = [];
-  private nightFx: Phaser.Filters.ColorMatrix[] = [];
   /** Eingabe je lokalem Slot (die HudScene liest das Gerät für die Tasten der Skill-Leiste) */
   slots!: LocalSlots<PlayerInput>;
   private level: LevelInfo | null = null;
@@ -114,7 +115,6 @@ export class GameScene extends Phaser.Scene {
     this.data_ = data;
     this.pendingEvents.length = 0;
     this.pads = [];
-    this.nightFx = [];
     this.touch = undefined;
     this.slots = new LocalSlots<PlayerInput>(data.mock, pageBots()); // Bots (`?botfeed`) sind fest an ihre Slots gebunden
     this.world_ = undefined;
@@ -299,7 +299,7 @@ export class GameScene extends Phaser.Scene {
       if (this.world_) musicDirector().update(musicViewOf(this.world_), frame.state.events); // Musik: Ereignisse wie castleFallen
       audioCore().onHubLevel(this.world_?.hubLevel); // Hub-Ausbau-Ton (SO6.4)
       this.spawnEffects(frame.state.events);
-      for (const fx of this.skillCasts.diff(frame.state.players)) this.stages.get(this.level?.depth ?? -1)?.spawn(fx); // Skill-Ringe (SK2.3)
+      for (const fx of this.skillCasts.diff(frame.state.players, frame.state.events)) this.stages.get(this.level?.depth ?? -1)?.spawn(fx); // Skill-Ringe am Wirkort (B-674)
     }
   }
 
@@ -370,11 +370,14 @@ export class GameScene extends Phaser.Scene {
     this.client.monarchs.forEach((m, i) => m !== 'taken' && unattended.add(i));
     const stage = this.stages.get(level.depth);
     stage?.renderer.sync(this.world_, unattended);
+    const back = backdropBrightnessOf(this.world_.cycle); // Hintergrund und Himmel in der Nacht schwärzer (data/light.json)
+    stage?.setBackdropBrightness(back);
+    for (const s of this.skyCams) s.cam.setBackgroundColor(shade(s.sky, back));
+    // Status-Effekte (B-675); `storms` aus dem Zustand, applyState lässt ein verschwundenes Feld sonst stehen
+    stage?.status.sync({ players: this.world_.players, enemies: this.world_.enemies, storms: state.storms, castle: this.world_.castle }, now);
     // Schrift in der Welt: Zoom der kleinsten Zelle ausgleichen, damit sie nie unter ihre Größe fällt; die Mitspieler-Zelle zählt nicht (Texte dort ausgeblendet, B-197)
     const textCells = this.cells.filter((c) => c.kind !== 'partner');
     if (stage && textCells.length > 0) stage.scaleTexts(1 / Math.min(...textCells.map((c) => viewZoom(c.h))), this.partnerCamId);
-    const brightness = brightnessOf(this.world_.cycle); // Nacht-Untergrenze aus data/light.json (W13.1)
-    for (const fx of this.nightFx) fx.colorMatrix.brightness(brightness);
     this.updateLayout(this.world_);
     this.follows.forEach((f) => (f.target = refollow(f.cam, f.target, f.stage.renderer.playerView(f.monarch))));
     if (stage) cullLayer(stage.layer, this.cameras.cameras); // nur zeichnen, was eine Kamera sieht (PF1.2)
@@ -422,8 +425,8 @@ export class GameScene extends Phaser.Scene {
   private layoutCameras(world: World): void {
     const main = this.cameras.main;
     this.cameras.cameras.filter((c) => c !== main).forEach((c) => this.cameras.remove(c));
-    this.nightFx = [];
     this.follows = [];
+    this.skyCams = [];
     this.holders.forEach((h) => h.destroy());
     this.holders = [];
     const seats = [...this.client.you].sort((a, b) => a.slot - b.slot);
@@ -457,6 +460,7 @@ export class GameScene extends Phaser.Scene {
     const { world } = stage;
     cam.setBounds(0, WORLD_TOP, world.widthUnits * UNIT_PX, GAME_HEIGHT - WORLD_TOP); // ohne Himmel
     cam.setBackgroundColor(world.biome.palette.sky);
+    this.skyCams.push({ cam, sky: world.biome.palette.sky });
     cam.centerOn(world.hubX * UNIT_PX, (WORLD_TOP + GAME_HEIGHT) / 2);
     if (monarch === null) return;
     const view = stage.renderer.playerView(monarch);
@@ -464,9 +468,8 @@ export class GameScene extends Phaser.Scene {
     this.follows.push({ cam, stage, monarch, target: view });
   }
 
-  /** Nacht = Kamera abdunkeln. Nur mit WebGL (Filter), im Canvas-Modus bleibt es hell. */
+  /** Die Nacht dunkelt keine Kamera mehr ab (Lichtkarte der `LightView`); alte Filter der überlebenden Hauptkamera entfernen. */
   private addNightFx(cam: Phaser.Cameras.Scene2D.Camera): void {
-    cam.filters.internal.clear(); // die Hauptkamera überlebt einen Szenen-Neustart, sonst stapelt sich die Abdunklung
-    this.nightFx.push(cam.filters.internal.addColorMatrix());
+    cam.filters.internal.clear();
   }
 }

@@ -36,6 +36,9 @@ type chatOptions struct {
 	// instruction ist die System-Instruktion des Auftrags (Welt-Auftrag: Grundgerüst, B-516); geht als Datei an die
 	// CLI (--append-system-prompt-file), nicht in den Verlauf. Leer = freier Chat.
 	instruction string
+	// session ist die Sitzungs-ID der CLI (B-687): resume setzt sie fort, sonst legt der Aufruf sie an; leer = ohne Sitzung.
+	session string
+	resume  bool
 }
 
 func inChoices(list []ChatChoice, id string) bool {

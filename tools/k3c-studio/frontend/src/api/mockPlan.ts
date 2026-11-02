@@ -43,7 +43,7 @@ function mockChunkObjects(planned: PlannedChunk[], slot: number): PlanObjectsVie
   return { objects: [{ kind: 'tree', at: 4 + c.seed.length }, { kind: 'rock', at: 20 }], error: '' };
 }
 
-type PlanPart = Pick<Backend, 'planLoad' | 'planCheck' | 'planSave' | 'planChunkObjects' | 'planWorlds' | 'planWorldSelect' | 'planWorldAdd' | 'planWorldCopy' | 'planWorldRemove' | 'planWorldCheck' | 'planWorldSave' | 'planWorldAnswer'>;
+type PlanPart = Pick<Backend, 'planLoad' | 'planCheck' | 'planSave' | 'planChunkObjects' | 'planWorlds' | 'planWorldSelect' | 'planWorldAdd' | 'planWorldCopy' | 'planWorldRemove' | 'planWorldCheck' | 'planWorldSave' | 'planWorldAnswer' | 'planWorldValues'>;
 
 const islandView = (i: MockIsland): PlanIsland => ({
   id: i.id, name: i.name, depths: [...i.depths], biomes: i.depths.map((d) => BIOMES[d] ?? ''), planned: structuredClone(i.planned), chunkCounts: { ...i.counts }, depthScaling: { ...i.depthScaling },
@@ -57,7 +57,7 @@ export function mockPlan(): PlanPart & { touch: () => void; active: () => string
   let version = 1;
   const cur = () => worlds[active]!;
   const stand = () => `mock-${version}`;
-  const view = (): PlanView => ({ name: cur().name, notes: cur().notes, islands: cur().islands.map(islandView), sizes: MOCK_SIZES, ruinKinds: MOCK_RUIN_KINDS, stand: stand(), error: '' });
+  const view = (): PlanView => ({ name: cur().name, notes: cur().notes, extends: '', overrides: structuredClone(cur().overrides ?? {}), islands: cur().islands.map(islandView), sizes: MOCK_SIZES, ruinKinds: MOCK_RUIN_KINDS, stand: stand(), error: '' });
   const islandOf = (id?: string) => cur().islands.find((i) => i.id === id) ?? cur().islands[0]!;
   const plannedOf = (source: WorldSource) => source.planned ?? islandOf(source.island).planned[String(islandOf(source.island).depths[source.stage ?? 0])] ?? [];
   const refused = (error: string, stale = false): PlanSaved => ({ stand: '', hint: '', error, stale });

@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -98,7 +99,7 @@ func (g *Registry) Start(root, where, label string, spec *Spec, runner Runner, q
 	if !free && !queue {
 		return nil, ErrFull
 	}
-	g.next++
+	g.next = max(g.next, highestRunDir(root)) + 1
 	run := &Run{id: fmt.Sprintf("run-%d", g.next), root: root, where: where, label: label, spec: spec, runner: runner,
 		started: time.Now(), state: Waiting, phase: "wartet"}
 	g.runs = append(g.runs, run)
@@ -109,6 +110,21 @@ func (g *Registry) Start(root, where, label string, spec *Spec, runner Runner, q
 		g.changed(run)
 	}
 	return run, nil
+}
+
+// highestRunDir ist die höchste Nummer N der Ordner reports/simtest-run-N im Checkout (0 ohne), damit IDs nach einem
+// Neustart der Workbench keinen vorhandenen Ordner wiederverwenden (B-616).
+func highestRunDir(root string) int {
+	entries, _ := os.ReadDir(filepath.Join(root, "reports"))
+	top := 0
+	for _, e := range entries {
+		if n, ok := strings.CutPrefix(e.Name(), "simtest-run-"); ok {
+			if v, err := strconv.Atoi(n); err == nil && v > top {
+				top = v
+			}
+		}
+	}
+	return top
 }
 
 // launch startet den Runner; unter g.mu.

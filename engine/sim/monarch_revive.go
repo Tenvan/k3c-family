@@ -28,8 +28,8 @@ func stepRevive(w *World, commands []PlayerCommand, dt float64) {
 			continue
 		}
 		down.ReviveProgress += dt
-		if down.ReviveProgress >= monarch.Revive.Seconds {
-			down.RespawnIn, down.HP, down.VX, down.ReviveProgress = 0, down.MaxHP*monarch.Revive.HPFraction, 0, 0
+		if down.ReviveProgress >= w.values().Monarch.Revive.Seconds {
+			down.RespawnIn, down.HP, down.VX, down.ReviveProgress = 0, down.MaxHP*w.values().Monarch.Revive.HPFraction, 0, 0
 			emit(w, "revived", Event{"player": down.Index, "x": unitX(down.X)})
 		}
 	}
@@ -43,5 +43,5 @@ func helpsRevive(w *World, h, down *Player, commands []PlayerCommand) bool {
 	if h == down || !isAlive(h) || h.hit || h.Index >= len(commands) || !commands[h.Index].Pay {
 		return false
 	}
-	return math.Abs(h.X-down.X) <= monarch.Revive.RangeUnits && findPayTarget(w, h) == nil
+	return math.Abs(h.X-down.X) <= w.values().Monarch.Revive.RangeUnits && findPayTarget(w, h) == nil
 }

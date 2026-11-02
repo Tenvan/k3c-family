@@ -5,37 +5,37 @@ import { Tabs } from '@webkit/organisms';
 import { AppFrame } from '@webkit/templates';
 import { backend } from './api';
 import { ChatPanel, ChatToggle } from './chat/ChatPanel';
-import { GraphicsPage } from './graphics/GraphicsPage';
+import type { AssetKind } from './api';
+import { AssetsPage } from './assetpage/AssetsPage';
+import { GOTO_ASSETS } from './assetpage/jump';
 import { loadPref, savePref } from './lib/prefs';
 import { EnemiesPage } from './enemies/EnemiesPage';
 import { MonarchPage } from './monarch/MonarchPage';
 import { PlannerPage } from './planner/PlannerPage';
-import { SoundPage } from './sound/SoundPage';
-import { GOTO_SOURCES } from './sources/jump';
 import { NetworkSwitch } from './sources/NetworkSwitch';
-import { SourcesPage } from './sources/SourcesPage';
 import { WorldPage } from './world/WorldPage';
 
 const createTicket = (input: Parameters<typeof backend.ticketCreate>[0]) => backend.ticketCreate(input);
 const recentTickets = () => backend.ticketRecent(5);
 
-export const PAGES = ['grafik', 'sound', 'welt', 'planer', 'monarch', 'gegner', 'quellen'] as const;
+export const PAGES = ['assets', 'welt', 'planer', 'monarch', 'gegner'] as const;
 export type Page = (typeof PAGES)[number];
 
-const LABELS: Record<Page, string> = { grafik: 'Grafik', sound: 'Sound', welt: 'Welten Editor', planer: 'Gebäude-Planer', monarch: 'Monarch', gegner: 'Gegner', quellen: 'Quellen' };
+const LABELS: Record<Page, string> = { assets: 'Assets', welt: 'Welten Editor', planer: 'Gebäude-Planer', monarch: 'Monarch', gegner: 'Gegner' };
 
-/** Rahmen des Asset-Studios (B-459): Kopfzeile mit Navigation Grafik/Sound/Welt-Betrachter/Gebäude-Planer/Monarch/Gegner. Nur die offene Seite ist eingehängt, das
- *  Verlassen der Seite Sound stoppt deshalb alle Busse. Der Chat (B-488) steht rechts neben jeder Seite. */
+/** Rahmen des Asset-Studios (B-459): Kopfzeile mit Navigation Assets/Welt-Betrachter/Gebäude-Planer/Monarch/Gegner. Nur die offene Seite ist eingehängt, das
+ *  Verlassen der Seite Assets stoppt deshalb alle Busse. Der Chat (B-488) steht rechts neben jeder Seite. */
 export function App({ initial }: { initial?: Page }) {
-  const [page, setPage] = useState<Page>(() => initial ?? loadPref('app.page', PAGES, 'grafik'));
+  const [page, setPage] = useState<Page>(() => initial ?? loadPref('app.page', PAGES, 'assets'));
+  const [assetArt, setAssetArt] = useState<AssetKind | undefined>();
   const choose = (next: Page) => {
     setPage(next);
     savePref('app.page', next);
   };
   useEffect(() => {
-    const open = () => choose('quellen');
-    window.addEventListener(GOTO_SOURCES, open);
-    return () => window.removeEventListener(GOTO_SOURCES, open);
+    const open = () => choose('assets');
+    window.addEventListener(GOTO_ASSETS, open);
+    return () => window.removeEventListener(GOTO_ASSETS, open);
   }, []);
   const right = (
     <>
@@ -46,14 +46,12 @@ export function App({ initial }: { initial?: Page }) {
   );
   return (
     <TicketProvider app="k3c-studio" defaultDomain="DEV" defaultProject="WZG" create={createTicket} recent={recentTickets}>
-    <AppFrame title="Asset-Studio" appearance="dark" tabs={{ pages: PAGES, labels: LABELS, value: page, onChange: choose }} right={right} aside={<ChatPanel page={page} />} fixed>
-      <Tabs.Content value="grafik"><GraphicsPage /></Tabs.Content>
-      <Tabs.Content value="sound"><SoundPage /></Tabs.Content>
+    <AppFrame title="Asset-Studio" appearance="dark" tabs={{ pages: PAGES, labels: LABELS, value: page, onChange: choose }} right={right} aside={<ChatPanel page={page === 'assets' ? assetArt : page} />} fixed>
+      <Tabs.Content value="assets"><AssetsPage onArt={setAssetArt} /></Tabs.Content>
       <Tabs.Content value="welt"><WorldPage /></Tabs.Content>
       <Tabs.Content value="planer"><PlannerPage /></Tabs.Content>
       <Tabs.Content value="monarch"><MonarchPage /></Tabs.Content>
       <Tabs.Content value="gegner"><EnemiesPage /></Tabs.Content>
-      <Tabs.Content value="quellen"><SourcesPage /></Tabs.Content>
     </AppFrame>
     </TicketProvider>
   );

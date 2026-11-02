@@ -5,6 +5,7 @@ import { StageMode } from './StageMode';
 import { useGuard } from './WorldGuard';
 import { MODES, WorldHeader, type Mode } from './WorldHeader';
 import { WorldStructure } from './WorldStructure';
+import { WorldValues } from './WorldValues';
 import { useChatDraft } from './useChatDraft';
 import { usePlan } from './usePlan';
 import { useWorldDraft } from './useWorldDraft';
@@ -28,9 +29,9 @@ export function WorldPage() {
     <div className="wd-root">
       <div className="wd-page" data-maximized={maximized} data-mode={mode}>
         <WorldHeader mode={mode} onMode={setMode} plan={plan} world={world} guard={guard} seed={source.seed} biome={source.biome} />
-        {mode === 'welt'
-          ? <WorldStructure plan={plan} world={world} guard={guard} onMode={setMode} />
-          : <StageMode plan={plan} source={source} onSource={setSource} maximized={maximized} onToggleMax={() => setMaximized((m) => !m)} />}
+        {mode === 'welt' && <WorldStructure plan={plan} world={world} guard={guard} onMode={setMode} />}
+        {mode === 'werte' && <WorldValues world={world} />}
+        {mode === 'stufe' && <StageMode plan={plan} source={source} onSource={setSource} maximized={maximized} onToggleMax={() => setMaximized((m) => !m)} />}
       </div>
     </div>
   );

@@ -13,6 +13,12 @@ import (
 	"time"
 )
 
+// Wartezeit auf die Backlog-Sperre und Alter, ab dem eine Sperrdatei als verwaist gilt.
+const (
+	lockWait  = 10 * time.Second
+	lockStale = 30 * time.Second
+)
+
 // Auswahllisten der Eingabe; Typ und Prio sind die Teilmenge der Vorlage, die ein Mensch im Dialog wählt.
 var (
 	Types   = []string{"Idee", "Problem", "Frage"}
@@ -55,6 +61,11 @@ func Create(root string, in Input) (Created, error) {
 	if err := validate(root, in); err != nil {
 		return Created{}, err
 	}
+	unlock, err := lockBacklog(root)
+	if err != nil {
+		return Created{}, err
+	}
+	defer unlock()
 	top, err := LocalHighest(root)
 	if err != nil {
 		return Created{}, fmt.Errorf("backlog nicht lesbar: %w", err)
@@ -80,6 +91,45 @@ func Create(root string, in Input) (Created, error) {
 		return Created{}, err
 	}
 	return Created{ID: id, Pfad: "docs/backlog/" + file, Titel: in.Titel}, store(root, file, text, tplCRLF, index, indexCRLF)
+}
+
+// lockBacklog sperrt das Anlegen über Prozesse hinweg (B-615): exklusives Anlegen einer Sperrdatei im Backlog, solange
+// Nummer vergeben und Ticket samt Index geschrieben werden. Eine Sperre älter als lockStale gilt als verwaist.
+func lockBacklog(root string) (func(), error) {
+	p := filepath.Join(root, "docs", "backlog", ".ticket.lock")
+	token := fmt.Sprintf("%d-%d", os.Getpid(), time.Now().UnixNano())
+	deadline := time.Now().Add(lockWait)
+	for {
+		f, err := os.OpenFile(p, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0o644)
+		if err == nil {
+			_, _ = f.WriteString(token)
+			_ = f.Close()
+			return func() { releaseLock(p, token) }, nil
+		}
+		// Windows meldet eine gerade zum Löschen markierte Datei als ErrPermission: wie belegt behandeln.
+		if !errors.Is(err, os.ErrExist) && !errors.Is(err, os.ErrPermission) {
+			return nil, fmt.Errorf("backlog nicht beschreibbar: %w", err)
+		}
+		if st, serr := os.Stat(p); serr == nil && time.Since(st.ModTime()) > lockStale {
+			// Übernahme per Umbenennen: nur ein Prozess gewinnt, eine frische Sperre eines anderen bleibt unberührt.
+			grave := p + "." + token
+			if os.Rename(p, grave) == nil {
+				_ = os.Remove(grave)
+			}
+			continue
+		}
+		if time.Now().After(deadline) {
+			return nil, errors.New("backlog gesperrt, bitte erneut senden")
+		}
+		time.Sleep(5 * time.Millisecond)
+	}
+}
+
+// releaseLock löscht die Sperre nur, wenn sie noch die eigene ist.
+func releaseLock(p, token string) {
+	if b, err := os.ReadFile(p); err == nil && string(b) == token {
+		_ = os.Remove(p)
+	}
 }
 
 // fill füllt die Vorlage: Kopf wie plan_create, Felder der Eingabe, Ausgangslage mit Beschreibung und Kontext.
@@ -110,6 +160,9 @@ func store(root, file, text string, textCRLF bool, index string, indexCRLF bool)
 	}
 	return nil
 }
+
+// Validate prüft die Eingabe wie Create, ohne zu schreiben (Vorabprüfung der Chat-Aktion ticket, B-679).
+func Validate(root string, in Input) error { return validate(root, in) }
 
 func validate(root string, in Input) error {
 	if in.Titel == "" || strings.ContainsAny(in.Titel, "|\r\n") {

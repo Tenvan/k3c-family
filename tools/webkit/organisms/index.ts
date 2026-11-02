@@ -5,3 +5,5 @@ export { AlertDialog, ContextMenu, Dialog, DropdownMenu, TabNav, Table, Tabs } f
 export { AppHeader, type HeaderTabs } from './AppHeader';
 export { TicketButton } from './TicketButton';
 export { TicketDialog } from './TicketDialog';
+export { FacetRail, type Facet, type FacetRailProps } from './FacetRail';
+export { TransportBar, type TransportBarProps } from './TransportBar';

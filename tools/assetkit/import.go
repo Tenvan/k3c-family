@@ -35,6 +35,12 @@ var (
 // ImportFile legt eine (manuell geladene) Datei zu einem Recherche-Treffer ab: Ablage, Credit-Zeile, Zuordnung als letzte
 // Präferenz. Nicht übernehmbare Lizenzen (Q70) werden abgelehnt; die Lizenz bleibt „prüfen“, bis 🧑 bestätigt.
 func ImportFile(root, slotID, hitID, src string, now time.Time) (string, error) {
+	return importFile(root, slotID, hitID, src, "", now)
+}
+
+// importFile ist ImportFile; stand ≠ "" hängt die Zuordnung nur auf diesem Stand des Registers an (sonst ErrStale, die
+// Datei samt Credit bleibt dann als Katalog-Eintrag liegen).
+func importFile(root, slotID, hitID, src, stand string, now time.Time) (string, error) {
 	slot, hit, err := importTarget(root, slotID, hitID)
 	if err != nil {
 		return "", err
@@ -52,6 +58,9 @@ func ImportFile(root, slotID, hitID, src string, now time.Time) (string, error) 
 	}
 	if err := markImported(root, slotID, hitID, rel); err != nil {
 		return "", err
+	}
+	if stand != "" {
+		return rel, appendChoice(root, slotID, rel, stand)
 	}
 	reg, err := Load(root)
 	if err != nil {
@@ -238,6 +247,11 @@ func hostList() string {
 
 // DownloadHit übernimmt einen Treffer mit direktem Download und erkannter Lizenz ohne Handarbeit (nur https, Limit, Signatur).
 func DownloadHit(ctx context.Context, root, slotID, hitID string, client *http.Client, now time.Time) (string, error) {
+	return downloadHit(ctx, root, slotID, hitID, "", client, now)
+}
+
+// downloadHit ist DownloadHit mit der Stand-Regel von importFile.
+func downloadHit(ctx context.Context, root, slotID, hitID, stand string, client *http.Client, now time.Time) (string, error) {
 	_, hit, err := importTarget(root, slotID, hitID)
 	if err != nil {
 		return "", err
@@ -257,7 +271,7 @@ func DownloadHit(ctx context.Context, root, slotID, hitID string, client *http.C
 		return "", err
 	}
 	defer func() { _ = os.Remove(tmp) }()
-	return ImportFile(root, slotID, hitID, tmp, now)
+	return importFile(root, slotID, hitID, tmp, stand, now)
 }
 
 func fetchToTemp(ctx context.Context, client *http.Client, u *url.URL, ext string) (string, error) {

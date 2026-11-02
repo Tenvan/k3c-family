@@ -142,5 +142,5 @@ export interface LightSource {
   strength: number;
 }
 export type LightSourceKind = 'torch' | 'campfire';
-/** `nightBrightness`: Kamerahelligkeit in tiefster Nacht (W13); `glowColor`: Farbe des Lichtscheins (`#rrggbb`) */
-export const LIGHT = lightJson as { nightBrightness: number; glowColor: string; sources: Partial<Record<LightSourceKind, LightSource>> };
+/** `nightBrightness`: Helligkeit des Vordergrunds, `backgroundBrightness`: des Hintergrunds in tiefster Nacht (W13); `glowColor`: Farbe des Lichtscheins (`#rrggbb`) */
+export const LIGHT = lightJson as { nightBrightness: number; backgroundBrightness: number; glowColor: string; sources: Partial<Record<LightSourceKind, LightSource>> };

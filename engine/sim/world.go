@@ -16,21 +16,22 @@ import (
 
 // Options für CreateWorld. CycleSpeed 0 bedeutet 1 (wie `?? 1` in TS).
 type Options struct {
-	CycleSpeed float64  // beschleunigt den Tag/Nacht-Zyklus (Tests, Dev)
-	Time       float64  // Startzeit in Sekunden, damit der globale Zyklus beim Stufenwechsel weiterläuft
+	CycleSpeed float64 // beschleunigt den Tag/Nacht-Zyklus (Tests, Dev)
+	Time       float64 // Startzeit in Sekunden, damit der globale Zyklus beim Stufenwechsel weiterläuft
 	// Planned sind die geplanten Chunks dieser Stufe (docs/rules/geplante-chunks.md); leer = reiner Zufall.
 	Planned []level.PlannedChunk
 	// ChunkCount ist die Chunk-Anzahl dieser Stufe (Inselgröße, geplante-chunks.md § 7); 0 = Länge des Bioms.
 	ChunkCount int
-	hub        *HubData // Kandidaten-hub.json (CreateOptions.Candidate); nil = eingebettete data/hub.json
+	hub        *HubData     // Kandidaten-hub.json (CreateOptions.Candidate); nil = eingebettete data/hub.json
+	vals       *WorldValues // Wertesatz der Welt (world_values_room.go); nil = Basis-Wertesatz (defaultValues)
 }
 
-// hubOf ist die hub.json, aus der die Stufe gebaut ist: der Kandidat aus CreateOptions oder die eingebettete.
+// hubOf ist die hub.json, aus der die Stufe gebaut ist: der Kandidat aus CreateOptions oder die der Welt.
 func hubOf(w *World) *HubData {
 	if w.hubData != nil {
 		return w.hubData
 	}
-	return &hub
+	return &w.values().Hub
 }
 
 // CreateWorld baut den Startzustand einer Stufe.
@@ -45,16 +46,21 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 		speed = 1
 	}
 	hubX := lv.HubCenterUnits
+	vals := opts.vals
+	if vals == nil {
+		vals = defaultValues()
+	}
+	castleHP := vals.Buildings["castle"].HP
 	w := &World{
 		Seed: seed, Biome: b, Level: lv, rng: rng.New(b.ID + ":" + seed + ":sim"),
 		Time: opts.Time, CycleSpeed: speed, NextID: 1, WidthUnits: lv.WidthUnits, HubX: hubX, HubLevel: 1, HubStep: 1,
 		Cycle:   cycleAt(globalDayNight, float64(opts.Time*speed)),
 		Players: []*Player{}, Coins: []*Coin{}, Troops: []*Troop{}, Nodes: []*ResourceNode{}, Sites: []*Site{},
-		Castle:  Castle{X: hubX, HP: buildings["castle"].HP, MaxHP: buildings["castle"].HP},
+		Castle:  Castle{X: hubX, HP: castleHP, MaxHP: castleHP},
 		Stock:   &Stock{},
 		Enemies: []*Enemy{}, Projectiles: []*Projectile{}, Pickups: []*Pickup{}, Camps: []*Camp{},
 		Portals: []float64{}, SpawnQueue: []QueuedSpawn{}, Events: []Event{}, hubData: opts.hub,
-		planned: slices.Clone(opts.Planned), chunkCount: opts.ChunkCount,
+		planned: slices.Clone(opts.Planned), chunkCount: opts.ChunkCount, vals: vals,
 	}
 	if b.Cycle.Type == "aggressionPool" {
 		w.Aggression = new(float64)
@@ -67,11 +73,11 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 	}
 	addRuinSites(w)
 	addShipSite(w)
-	for i := range hub.StartTroops.Peasant {
+	for i := range vals.Hub.StartTroops.Peasant {
 		t := spawnVagrant(w, hubX, hubX+2+float64(i))
-		t.Kind, t.HP, t.MaxHP = "peasant", troops["peasant"].HP, troops["peasant"].HP
+		t.Kind, t.HP, t.MaxHP = "peasant", vals.Troops["peasant"].HP, vals.Troops["peasant"].HP
 	}
-	for range hub.StartTroops.Archer {
+	for range vals.Hub.StartTroops.Archer {
 		makeArcher(w, spawnVagrant(w, hubX, hubX))
 	}
 	return w, nil
@@ -101,14 +107,14 @@ func CreateWorldWith(b level.Biome, seed string, o CreateOptions, planned []leve
 // placeEntities legt Ressourcen, Truhen, Skill-Punkte, Camps und Portale aus dem Level an.
 func placeEntities(w *World) {
 	for _, e := range w.Level.Entities {
-		switch _, gatherable := gatherOf(e.Kind); {
+		switch _, gatherable := gatherOf(w.values(), e.Kind); {
 		case gatherable && (e.Kind != "tree" && e.Kind != "rock" || !w.Level.OnFreeGround(e.X)):
 			w.Nodes = append(w.Nodes, &ResourceNode{ID: w.newID(), Kind: e.Kind, X: e.X})
 		case e.Kind == "chest" || e.Kind == "skillPoint":
 			w.Pickups = append(w.Pickups, &Pickup{ID: w.newID(), Kind: e.Kind, X: e.X})
 		case e.Kind == "recruitCamp":
-			w.Camps = append(w.Camps, &Camp{X: e.X, RespawnIn: economy.RecruitCamp.RespawnSeconds})
-			for i := range economy.RecruitCamp.MaxVagrants {
+			w.Camps = append(w.Camps, &Camp{X: e.X, RespawnIn: w.values().Economy.RecruitCamp.RespawnSeconds})
+			for i := range w.values().Economy.RecruitCamp.MaxVagrants {
 				spawnVagrant(w, e.X, e.X+float64((float64(i)-0.5)*3))
 			}
 		case e.Kind == "portal":
@@ -118,7 +124,7 @@ func placeEntities(w *World) {
 }
 
 func emptySite(w *World, kind string, x float64) *Site {
-	return &Site{ID: w.newID(), Kind: kind, X: x, State: "unpaid", MaxHP: buildings[kind].HP, Ruin: isRuin(w, kind, x)}
+	return &Site{ID: w.newID(), Kind: kind, X: x, State: "unpaid", MaxHP: w.values().Buildings[kind].HP, Ruin: isRuin(w, kind, x)}
 }
 
 // AddPlayer stellt einen neuen Monarchen an die Burg (Couch-Koop).
@@ -131,8 +137,8 @@ func addPlayerAt(w *World, index int) *Player {
 		offset, facing = 3, 1
 	}
 	p := &Player{
-		ID: w.newID(), Index: index, X: w.HubX + offset, Facing: facing, Gold: economy.Purse.StartGold,
-		HP: monarch.Base.HP, MaxHP: monarch.Base.HP,
+		ID: w.newID(), Index: index, X: w.HubX + offset, Facing: facing, Gold: w.values().Economy.Purse.StartGold,
+		HP: w.values().Monarch.Base.HP, MaxHP: w.values().Monarch.Base.HP,
 		PayCooldown: 0.5, // der Beitritts-Tastendruck soll nicht gleich eine Münze ausgeben
 	}
 	w.Players = append(w.Players, p)

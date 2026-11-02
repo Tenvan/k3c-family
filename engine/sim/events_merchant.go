@@ -21,7 +21,7 @@ func raidMerchant(w *World) {
 	raid := merchantRaid()
 	w.Merchant.Raid = true
 	size, hp, damage := w.island.waveFactors()
-	queueWave(w, planWave(w.Biome, max(w.Wave, 1), w.rng, w.Portals, w.Cycle.Phase == "night", size), hp, damage)
+	queueWave(w, planWave(w.values(), w.Biome, max(w.Wave, 1), w.rng, w.Portals, w.Cycle.Phase == "night", size), hp, damage)
 	emit(w, "eventStarted", Event{"event": raid.ID, "day": w.Cycle.Day, "visit": w.island.MerchantVisits})
 }
 

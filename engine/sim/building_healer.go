@@ -6,7 +6,7 @@ import "math"
 // Kampf, bis MaxHP (data/buildings.json › healer.heal). Sonst gibt es keine Regeneration (buerger.md § 3).
 
 func stepHealing(w *World, dt float64) {
-	h := buildings["healer"].Heal
+	h := w.values().Buildings["healer"].Heal
 	amount := h.HPPerSecond * dt
 	for _, s := range w.Sites {
 		if s.Kind != "healer" || s.State != "built" {

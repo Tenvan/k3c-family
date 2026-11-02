@@ -96,7 +96,7 @@ func TestWarriorZweiSpielerZahlenBogenUndSchwert(t *testing.T) {
 	w := quietWorld(t)
 	p1, p2 := AddPlayer(w), AddPlayer(w)
 	s := buildSite(t, w, "workshop")
-	spot, ok := swordSpot(s)
+	spot, ok := swordSpot(w, s)
 	if !ok {
 		t.Fatal("Werkstatt ohne Schwert-Zahlziel")
 	}

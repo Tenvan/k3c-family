@@ -17,7 +17,7 @@ func stepAttack(w *World, p *Player, cmd PlayerCommand, dt float64) {
 	if !cmd.Attack || p.AttackCooldown > 0 {
 		return
 	}
-	a := monarch.Attack
+	a := w.values().Monarch.Attack
 	e := nearest(w.Enemies, func(e *Enemy) float64 { return e.X }, p.X, a.Range, func(e *Enemy) bool { return e.HP > 0 })
 	p.AttackCooldown = a.Cooldown
 	p.StealthFor = 0 // ein eigener Schlag beendet die Unsichtbarkeit (Smoke Bomb, B-577)
@@ -52,7 +52,7 @@ func addPoolPoints(w *World, n int) {
 
 // chestSkillPoint zählt eine geöffnete Truhe der Insel; jede n-te (skillPointSources.chestEvery) gibt einen Punkt.
 func chestSkillPoint(w *World, p *Player) {
-	isl, every := w.island, monarch.SkillPointSources.ChestEvery
+	isl, every := w.island, w.values().Monarch.SkillPointSources.ChestEvery
 	if isl == nil || every <= 0 {
 		return
 	}
@@ -78,12 +78,12 @@ func lineCount(p *Player, line string) int {
 	return n
 }
 
-// tierNeed: gelernte Skills der Linie, die Tier `tier` verlangt.
-func tierNeed(tier int) int {
-	if tier < 1 || tier > len(monarch.TierPoints) {
+// tierNeed: gelernte Skills der Linie, die Tier `tier` verlangt (points = monarch.json › tierPoints).
+func tierNeed(points []int, tier int) int {
+	if tier < 1 || tier > len(points) {
 		return math.MaxInt
 	}
-	return monarch.TierPoints[tier-1]
+	return points[tier-1]
 }
 
 // CanLearn prüft, ob der Spieler den Skill jetzt lernen darf, ohne etwas zu ändern (B-270). LearnSkill nutzt sie selbst.
@@ -96,8 +96,8 @@ func CanLearn(w *World, p *Player, id string) error {
 		return fmt.Errorf("skill %q schon gelernt", id)
 	case AvailablePoints(w, p) <= 0:
 		return fmt.Errorf("skill %q: keine Punkte frei", id)
-	case lineCount(p, s.Line) < tierNeed(s.Tier):
-		return fmt.Errorf("skill %q: Tier %d verlangt %d gelernte Skills der Linie %s", id, s.Tier, tierNeed(s.Tier), s.Line)
+	case lineCount(p, s.Line) < tierNeed(w.values().Monarch.TierPoints, s.Tier):
+		return fmt.Errorf("skill %q: Tier %d verlangt %d gelernte Skills der Linie %s", id, s.Tier, tierNeed(w.values().Monarch.TierPoints, s.Tier), s.Line)
 	}
 	return nil
 }
@@ -137,7 +137,7 @@ func CanRespec(w *World, p *Player) error {
 	if w.Cycle.Phase != "day" {
 		return fmt.Errorf("respec nur am Tag (jetzt %s)", w.Cycle.Phase)
 	}
-	if math.Abs(p.X-w.Castle.X) > hub.CastleRadiusUnits {
+	if math.Abs(p.X-w.Castle.X) > w.values().Hub.CastleRadiusUnits {
 		return fmt.Errorf("respec nur an der Burg")
 	}
 	return nil
@@ -155,7 +155,7 @@ func Respec(w *World, p *Player) error {
 // ApplyPreset lernt die activeSkills eines Presets in ihrer Reihenfolge, soweit Pool-Punkte frei sind. Skills, die
 // nicht lernbar sind (keine Punkte, Tier-Gating), werden übersprungen; unbekannte Skills lehnt schon das Laden ab (B-504).
 func ApplyPreset(w *World, p *Player, id string) error {
-	pr, ok := monarch.Presets[id]
+	pr, ok := w.values().Monarch.Presets[id]
 	if !ok {
 		return fmt.Errorf("preset %q unbekannt", id)
 	}

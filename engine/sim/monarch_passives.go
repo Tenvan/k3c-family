@@ -35,17 +35,17 @@ func statSum(w *World, p *Player, field func(skillEffect) float64) float64 {
 
 // defenseOf: Verteidigung des Monarchen (Basis + Armor Aura, Fortified).
 func defenseOf(w *World, p *Player) float64 {
-	return monarch.Base.Defense + statSum(w, p, func(e skillEffect) float64 { return e.Defense })
+	return w.values().Monarch.Base.Defense + statSum(w, p, func(e skillEffect) float64 { return e.Defense })
 }
 
 // maxHPOf: maximale HP des Monarchen (Basis × (1 + Thick Skin)).
 func maxHPOf(w *World, p *Player) float64 {
-	return float64(monarch.Base.HP * (1 + statSum(w, p, func(e skillEffect) float64 { return e.MaxHPBonus })))
+	return float64(w.values().Monarch.Base.HP * (1 + statSum(w, p, func(e skillEffect) float64 { return e.MaxHPBonus })))
 }
 
 // speedOf: Grundtempo des Monarchen (Basis × Reittier-Faktor × (1 + Blessings)).
 func speedOf(w *World, p *Player) float64 {
-	ridden := float64(monarch.Base.Speed * MountOf(p).SpeedFactor)
+	ridden := float64(w.values().Monarch.Base.Speed * MountOf(w, p).SpeedFactor)
 	return float64(ridden * (1 + statSum(w, p, func(e skillEffect) float64 { return e.SpeedBonus })))
 }
 
@@ -113,7 +113,7 @@ func stepPassives(w *World, dt float64) {
 func regenReaches(w *World, o *Player, e skillEffect, x float64, self bool) bool {
 	switch {
 	case e.Castle:
-		return math.Abs(x-w.Castle.X) <= hub.CastleRadiusUnits
+		return math.Abs(x-w.Castle.X) <= w.values().Hub.CastleRadiusUnits
 	case e.Aura > 0:
 		return math.Abs(x-o.X) <= e.Aura
 	}

@@ -1,5 +1,5 @@
 {
-  "_comment": "Slot-Register (B-298, M10): einzige Quelle aller Asset-Slots; schreibt k3c-workbench (Reiter Assets, MCP assets_set), liest das Asset-Studio (B-459). Je Slot: id, art (grafik|sound), kategorie (grafik: figuren, gebaeude, umgebung, objekte, hud; sound: sfx, musik, ambient), beschreibung, optional ziel {w,h} bzw. bus (sfx|music|ambient), wahl = Zuordnungen nach Präferenz (nur die erste ist im Spiel aktiv): datei relativ zu public/, optional sheet (data/sprites.json), ausschnitt {x,y,w,h} in Bild-Pixeln, raster {w,h}, sprite (Name im Audio-Atlas). Erstbefüllung aus docs/assets/zuordnung*.md (Präferenz 1, erste Datei je Zeile) und public/audio/kandidaten.json (M10.1).",
+  "_comment": "Slot-Register (B-298, M10): einzige Quelle aller Asset-Slots; schreibt k3c-workbench (Reiter Assets, MCP assets_set), liest das Asset-Studio (B-459). Je Slot: id, art (grafik|sound), kategorie (grafik: figuren, gebaeude, umgebung, objekte, hud; sound: sfx, musik, ambient), beschreibung, optional ziel {w,h} = Zielmaß in Units (B-685, Gebäude je Stufe; Client passt die aktive Zuordnung ein) bzw. bus (sfx|music|ambient), wahl = Zuordnungen nach Präferenz (nur die erste ist im Spiel aktiv): datei relativ zu public/, optional sheet (data/sprites.json), ausschnitt {x,y,w,h} in Bild-Pixeln, raster {w,h}, sprite (Name im Audio-Atlas). Erstbefüllung aus docs/assets/zuordnung*.md (Präferenz 1, erste Datei je Zeile) und public/audio/kandidaten.json (M10.1).",
   "slots": [
     {
       "id": "castle",
@@ -83,6 +83,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Gebäude: stairsUp",
+      "ziel": {
+        "w": 4,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/treppe-hoch-32.png"
@@ -94,6 +98,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Gebäude: stairsDown",
+      "ziel": {
+        "w": 4,
+        "h": 3
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/treppe-runter-32.png"
@@ -425,6 +433,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Stufen: hub:1",
+      "ziel": {
+        "w": 8,
+        "h": 9
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/burg-1-32.png"
@@ -436,6 +448,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Stufen: hub:2",
+      "ziel": {
+        "w": 8,
+        "h": 9
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/burg-2-32.png"
@@ -447,6 +463,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Stufen: hub:3",
+      "ziel": {
+        "w": 8,
+        "h": 9
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/burg-3-32.png"
@@ -458,6 +478,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Stufen: hub:4",
+      "ziel": {
+        "w": 8,
+        "h": 9
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/burg-4-32.png"
@@ -469,6 +493,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Stufen: hub:5",
+      "ziel": {
+        "w": 8,
+        "h": 9
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/burg-5-32.png"
@@ -480,6 +508,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Wachstum: Lagerfeuer mit Grill, Hub-Stufe 1, Ausbauschritt 1 (GEB11, GEB17.6)",
+      "ziel": {
+        "w": 8,
+        "h": 5
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/lagerfeuer-1-32.png"
@@ -491,6 +523,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Wachstum: Zelt am Feuer, Hub-Stufe 1, Ausbauschritt 2 (GEB11, GEB17.6)",
+      "ziel": {
+        "w": 8,
+        "h": 5
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/lagerfeuer-2-32.png"
@@ -502,6 +538,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Wachstum: Holzhütte am Feuer, Hub-Stufe 1, Ausbauschritt 3 (GEB11, GEB17.6)",
+      "ziel": {
+        "w": 8,
+        "h": 5
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/lagerfeuer-3-32.png"
@@ -513,6 +553,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Wachstum: Steinburg mit Bannern, Hub-Stufe 2, Ausbauschritt 2 (GEB17.6)",
+      "ziel": {
+        "w": 8,
+        "h": 9
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/burg-6-32.png"
@@ -524,6 +568,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Wachstum: Steinburg mit Türmchen, Hub-Stufe 2, Ausbauschritt 3 (GEB17.6)",
+      "ziel": {
+        "w": 8,
+        "h": 9
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/burg-7-32.png"
@@ -535,6 +583,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Wachstum: Kupferburg mit Bannern, Hub-Stufe 3, Ausbauschritt 2 (GEB17.6)",
+      "ziel": {
+        "w": 8,
+        "h": 9
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/burg-8-32.png"
@@ -546,6 +598,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Wachstum: Kupferburg mit Türmchen, Hub-Stufe 3, Ausbauschritt 3 (GEB17.6)",
+      "ziel": {
+        "w": 8,
+        "h": 9
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/burg-9-32.png"
@@ -557,6 +613,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Wachstum: Eisenburg mit Bannern, Hub-Stufe 4, Ausbauschritt 2 (GEB17.6)",
+      "ziel": {
+        "w": 8,
+        "h": 9
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/burg-10-32.png"
@@ -568,6 +628,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Wachstum: Eisenburg mit Türmchen, Hub-Stufe 4, Ausbauschritt 3 (GEB17.6)",
+      "ziel": {
+        "w": 8,
+        "h": 9
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/burg-11-32.png"
@@ -579,6 +643,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Wachstum: Kristallburg mit Bannern, Hub-Stufe 5, Ausbauschritt 2 (GEB17.6)",
+      "ziel": {
+        "w": 8,
+        "h": 9
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/burg-12-32.png"
@@ -590,6 +658,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Wachstum: Kristallburg mit Türmchen, Hub-Stufe 5, Ausbauschritt 3 (GEB17.6)",
+      "ziel": {
+        "w": 8,
+        "h": 9
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/burg-13-32.png"
@@ -689,6 +761,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Mauer-Stufen: wall:1",
+      "ziel": {
+        "w": 1,
+        "h": 5
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/mauer-1-32.png"
@@ -700,6 +776,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Mauer-Stufen: wall:2",
+      "ziel": {
+        "w": 1,
+        "h": 5
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/mauer-2-32.png"
@@ -711,6 +791,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Mauer-Stufen: wall:3",
+      "ziel": {
+        "w": 1,
+        "h": 5
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/mauer-3-32.png"
@@ -722,6 +806,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Mauer-Stufen: wall:4",
+      "ziel": {
+        "w": 1,
+        "h": 5
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/mauer-4-32.png"
@@ -733,6 +821,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Mauer-Stufen: wall:5",
+      "ziel": {
+        "w": 1,
+        "h": 5
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/mauer-5-32.png"
@@ -744,6 +836,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Turm-Stufen: tower:1",
+      "ziel": {
+        "w": 3,
+        "h": 8
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/turm-1-32.png"
@@ -755,6 +851,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Turm-Stufen: tower:2",
+      "ziel": {
+        "w": 3,
+        "h": 8
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/turm-2-32.png"
@@ -766,6 +866,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Turm-Stufen: tower:3",
+      "ziel": {
+        "w": 3,
+        "h": 8
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/turm-3-32.png"
@@ -777,6 +881,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Turm-Stufen: tower:4",
+      "ziel": {
+        "w": 3,
+        "h": 8
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/turm-4-32.png"
@@ -788,6 +896,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Turm-Stufen: tower:5",
+      "ziel": {
+        "w": 3,
+        "h": 8
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/turm-5-32.png"
@@ -799,6 +911,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: workshop:1",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/werkstatt-1-32.png"
@@ -810,6 +926,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: workshop:2",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/werkstatt-2-32.png"
@@ -821,6 +941,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: workshop:3",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/werkstatt-3-32.png"
@@ -832,6 +956,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: workshop:4",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/werkstatt-4-32.png"
@@ -843,6 +971,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: workshop:5",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/werkstatt-5-32.png"
@@ -854,6 +986,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: tavern:1",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/taverne-1-32.png"
@@ -865,6 +1001,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: tavern:2",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/taverne-2-32.png"
@@ -876,6 +1016,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: tavern:3",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/taverne-3-32.png"
@@ -887,6 +1031,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: tavern:4",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/taverne-4-32.png"
@@ -898,6 +1046,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: tavern:5",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/taverne-5-32.png"
@@ -909,6 +1061,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: healer:1",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/heilplatz-1-32.png"
@@ -920,6 +1076,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: healer:2",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/heilplatz-2-32.png"
@@ -931,6 +1091,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: healer:3",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/heilplatz-3-32.png"
@@ -942,6 +1106,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: healer:4",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/heilplatz-4-32.png"
@@ -953,6 +1121,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: healer:5",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/heilplatz-5-32.png"
@@ -964,6 +1136,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: smithy:1",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/schmiede-1-32.png"
@@ -975,6 +1151,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: smithy:2",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/schmiede-2-32.png"
@@ -986,6 +1166,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: smithy:3",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/schmiede-3-32.png"
@@ -997,6 +1181,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: smithy:4",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/schmiede-4-32.png"
@@ -1008,6 +1196,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: smithy:5",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/schmiede-5-32.png"
@@ -1019,6 +1211,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: armory:1",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/ruestkammer-1-32.png"
@@ -1030,6 +1226,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: armory:2",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/ruestkammer-2-32.png"
@@ -1041,6 +1241,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: armory:3",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/ruestkammer-3-32.png"
@@ -1052,6 +1256,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: armory:4",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/ruestkammer-4-32.png"
@@ -1063,6 +1271,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: armory:5",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/ruestkammer-5-32.png"
@@ -1074,6 +1286,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: storage:1",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/lager-1-32.png"
@@ -1085,6 +1301,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: storage:2",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/lager-2-32.png"
@@ -1096,6 +1316,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: storage:3",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/lager-3-32.png"
@@ -1107,6 +1331,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: storage:4",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/lager-4-32.png"
@@ -1118,6 +1346,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: storage:5",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/lager-5-32.png"
@@ -1129,6 +1361,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: nursery:1",
+      "ziel": {
+        "w": 4,
+        "h": 3
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/farm-1-32.png"
@@ -1140,6 +1376,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: nursery:2",
+      "ziel": {
+        "w": 4,
+        "h": 3
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/farm-2-32.png"
@@ -1151,6 +1391,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: nursery:3",
+      "ziel": {
+        "w": 4,
+        "h": 3
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/farm-3-32.png"
@@ -1162,6 +1406,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: nursery:4",
+      "ziel": {
+        "w": 4,
+        "h": 3
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/farm-4-32.png"
@@ -1173,6 +1421,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: nursery:5",
+      "ziel": {
+        "w": 4,
+        "h": 3
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/farm-5-32.png"
@@ -1195,6 +1447,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Schiff: Abschnitt 1 (Kiel)",
+      "ziel": {
+        "w": 6,
+        "h": 5
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/schiff-1-32.png"
@@ -1206,6 +1462,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Schiff: Abschnitt 2 (Rumpf)",
+      "ziel": {
+        "w": 6,
+        "h": 5
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/schiff-2-32.png"
@@ -1217,6 +1477,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Schiff: Abschnitt 3 (Segel, fertig)",
+      "ziel": {
+        "w": 6,
+        "h": 5
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/schiff-3-32.png"
@@ -1228,6 +1492,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: barracks:1",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/kaserne-1-32.png"
@@ -1239,6 +1507,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: barracks:2",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/kaserne-2-32.png"
@@ -1250,6 +1522,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: barracks:3",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/kaserne-3-32.png"
@@ -1261,6 +1537,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: barracks:4",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/kaserne-4-32.png"
@@ -1272,6 +1552,10 @@
       "art": "grafik",
       "kategorie": "gebaeude",
       "beschreibung": "Hub-Gebäude-Stufen: barracks:5",
+      "ziel": {
+        "w": 6,
+        "h": 4
+      },
       "wahl": [
         {
           "datei": "grafik/gebaeude/kaserne-5-32.png"

@@ -15,6 +15,20 @@ func spellCenter(w *World, p *Player, e skillEffect) (float64, bool) {
 	return en.X, true
 }
 
+// areaEffects: effect.type der Flächenzauber, die um spellCenter wirken (Ort und Radius im Ereignis skillCast, B-674).
+var areaEffects = map[string]bool{"areaDamage": true, "slow": true, "damageOverTime": true}
+
+// castPlace: Wirkort (Units) und Radius für das Ereignis skillCast, vor dem Wirken bestimmt (stirbt das Ziel im selben
+// Takt, bleibt der Ort). Flächenzauber am Ziel mit ihrem Radius, alle anderen Skills am Wirkenden mit Radius 0.
+func castPlace(w *World, p *Player, e skillEffect) (float64, float64) {
+	if areaEffects[e.Type] {
+		if x, ok := spellCenter(w, p, e); ok {
+			return x, e.Radius
+		}
+	}
+	return p.X, 0
+}
+
 // enemiesAround ruft f für jeden lebenden Gegner im Radius r um x auf (Reihenfolge von w.Enemies).
 func enemiesAround(w *World, x, r float64, f func(*Enemy)) {
 	for _, en := range w.Enemies {

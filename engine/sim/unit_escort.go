@@ -31,5 +31,5 @@ func escortPost(w *World, t *Troop) (float64, bool) {
 	if w.HubX < boss.X {
 		side = -1
 	}
-	return boss.X + side*math.Max(troops[t.Kind].Range*0.8, 1), true
+	return boss.X + side*math.Max(w.values().Troops[t.Kind].Range*0.8, 1), true
 }

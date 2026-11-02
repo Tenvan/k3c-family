@@ -26,10 +26,33 @@ export interface WorldDraft {
   name: string;
   notes: string;
   islands: IslandDraft[];
+  /** übersteuerte Basis-Werte je Basis-Datei, nur Abweichungen (B-682, welten.md § 1.1); fehlt = Datei bleibt, {} entfernt sie */
+  overrides?: Overrides;
+}
+
+/** `overrides` einer Welt-Datei: Schlüssel = Basis-Datei ohne .json (buildings, waves …), darin dieselbe Struktur wie die Basis */
+export type Overrides = Record<string, unknown>;
+
+/** Ein Feld einer Basis-Datei (Go: WorldValueEntry): path wie im Override (Listen von Objekten je id bzw. Index); base ist
+ *  null, wenn die Basis das Feld nicht nennt; override fehlt, wenn die gespeicherte Welt es erbt. */
+export interface WorldValueEntry {
+  file: string;
+  path: string[];
+  base: unknown;
+  override?: unknown;
+}
+
+/** Werte der gewählten Welt (Go: WorldValuesView): Eltern-Welt (leer = Basis data/), Kind-Welten und Felder. */
+export interface WorldValuesView {
+  world: string;
+  extends: string;
+  children: string[];
+  entries: WorldValueEntry[];
+  error: string;
 }
 
 /** Feld eines Prüffehlers: an einer Insel id, name, depths, depthScaling, plan; an der Welt name, islands; leer = ohne Feld */
-export type DraftField = 'id' | 'name' | 'depths' | 'depthScaling' | 'plan' | 'islands' | '';
+export type DraftField = 'id' | 'name' | 'depths' | 'depthScaling' | 'plan' | 'islands' | 'overrides' | '';
 
 /** Prüfung eines Entwurfs (Go: WorldCheckView): island ist der Platz im Entwurf (-1 = Welt), preview der Inhalt der Datei,
  *  wie Speichern ihn schreiben würde. */
@@ -47,6 +70,8 @@ export interface WorldAnswerView {
   ok: boolean;
   error: string;
   draft: WorldDraft | null;
+  /** was das Studio ergänzt hat, z. B. „Hafen ergänzt: …“ (B-686) */
+  hint?: string;
 }
 
 /** Aufrufe für Welten und Inseln (Go: PlanWorldCheck, PlanWorldSave, PlanWorldCopy) */
@@ -57,6 +82,8 @@ export interface WorldDraftApi {
   planWorldSave(draft: WorldDraft, stand: string): Promise<PlanSaved>;
   /** Kopie der gewählten Welt mit neuem Namen anlegen (wird gewählt) */
   planWorldCopy(name: string): Promise<WorldsView>;
+  /** Werte der gewählten Welt: Basiswert (Basis und Eltern-Welten), Override, Kind-Welten (B-682) */
+  planWorldValues(): Promise<WorldValuesView>;
   /** Antwort des Modells prüfen und als Entwurf liefern; schreibt nichts */
   planWorldAnswer(text: string): Promise<WorldAnswerView>;
 }

@@ -1,7 +1,7 @@
 import { soundSlots } from './mockSounds';
 import { STALE } from './stale';
 import type { AssetSlotDetails } from './slotTypes';
-import type { AssetChoice, AssetHit, AssetSlot, AssetsView, Backend, CatalogAsset } from './types';
+import type { AssetChoice, AssetHit, AssetSlot, AssetTarget, AssetsView, Backend, CatalogAsset } from './types';
 
 // Erfundenes Slot-Register und Katalog für den Mock (Kopie aus k3c-workbench, B-459). Bilder liefert der Studio-Vite aus
 // public/ (publicDir nur im Dev-Modus). Der Stand zählt jede Änderung hoch; `external` spielt einen fremden Schreiber
@@ -97,7 +97,22 @@ function mockDetails(s: AssetSlot): AssetSlotDetails {
   };
 }
 
-type AssetCalls = Pick<Backend, 'assetsList' | 'assetsSet' | 'assetsSlotDetails' | 'assetsCatalog' | 'assetsHits' | 'assetsResearch' | 'assetsHitDrop' | 'assetsImport' | 'assetsDownload' | 'assetsLicenseOk'>;
+/** Slot nach ID, sonst Fehler wie in Go */
+function slotIn(slots: readonly AssetSlot[], id: string): AssetSlot {
+  const s = slots.find((x) => x.id === id);
+  if (!s) throw new Error(`unbekannter Asset-Slot "${id}"`);
+  return s;
+}
+
+/** Zielmaß wie Go `SetTargetIf`: nur auf aktuellem Stand (`fresh`), eine Seite 0 oder null entfernt es (B-685) */
+function setTarget(s: AssetSlot, ziel: AssetTarget | null, fresh: boolean): AssetSlot {
+  if (!fresh) throw new Error(STALE);
+  if (ziel && ziel.w > 0 && ziel.h > 0) s.ziel = { ...ziel };
+  else delete s.ziel;
+  return s;
+}
+
+type AssetCalls = Pick<Backend, 'assetsList' | 'assetsSet' | 'assetsTargetSet' | 'assetsSlotDetails' | 'assetsCatalog' | 'assetsHits' | 'assetsResearch' | 'assetsHitDrop' | 'assetsImport' | 'assetsDownload' | 'assetsLicenseOk'>;
 
 /** Mock der Asset-Bindings; onChange meldet jede Änderung des Registers (wie Watch in Go), external schreibt als Fremder. */
 export function mockAssets(onChange: () => void): AssetCalls & { external: (id: string, wahl: AssetChoice[], quiet?: boolean) => void } {
@@ -125,18 +140,18 @@ export function mockAssets(onChange: () => void): AssetCalls & { external: (id: 
     },
     assetsList: async (): Promise<AssetsView> => ({ slots: slots.map((s) => ({ ...s, wahl: [...s.wahl] })), error: '', preview: '/', stand: String(stand) }),
     assetsSet: async (id, wahl, seen) => {
-      const s = slots.find((x) => x.id === id);
-      if (!s) throw new Error(`unbekannter Asset-Slot "${id}"`);
+      const s = slotIn(slots, id);
       if (seen !== String(stand)) throw new Error(STALE);
       check(s, wahl);
       write(s, wahl);
       return { slot: { ...s, wahl: [...s.wahl] }, stand: String(stand) };
     },
-    assetsSlotDetails: async (id) => {
-      const s = slots.find((x) => x.id === id);
-      if (!s) throw new Error(`unbekannter Asset-Slot "${id}"`);
-      return mockDetails(s);
+    assetsTargetSet: async (id, ziel, seen) => {
+      const s = setTarget(slotIn(slots, id), ziel, seen === String(stand));
+      changed();
+      return { slot: { ...s, wahl: [...s.wahl] }, stand: String(stand) };
     },
+    assetsSlotDetails: async (id) => mockDetails(slotIn(slots, id)),
     assetsHits: async (id) => [...(hits.get(id) ?? [])],
     assetsResearch: async (id, query) => {
       await new Promise((r) => setTimeout(r, 400));
@@ -145,9 +160,7 @@ export function mockAssets(onChange: () => void): AssetCalls & { external: (id: 
       hits.set(id, [...old, ...fresh]);
       return { treffer: [...(hits.get(id) ?? [])], neu: fresh.length, hinweise: ['freesound: token fehlt (Mock)'] };
     },
-    assetsHitDrop: async (id, hit) => {
-      hits.set(id, (hits.get(id) ?? []).filter((h) => h.id !== hit));
-    },
+    assetsHitDrop: async (id, hit) => { hits.set(id, (hits.get(id) ?? []).filter((h) => h.id !== hit)); },
     // Import und Download legen im Mock nur einen Katalog-Eintrag an und hängen ihn als letzte Präferenz an.
     assetsImport: async (id, hit) => imported(id, hit),
     assetsDownload: async (id, hit) => imported(id, hit),
