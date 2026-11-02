@@ -129,7 +129,7 @@ Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und
 - **Lange Tests (B-619):** Ein Go-Test, der über etwa 3 s braucht (echte Git-Repos, `go build`, lange Lauf-Simulationen,
   Repo-Scans), beginnt mit `if testing.Short() { t.Skip(…) }`. `check:diff` lässt ihn aus, `check:go`, die
   Review-Session und die CI fahren ihn. Unveränderte Pakete liefert der Go-Testcache; er greift nur, weil das Go-Temp
-  außerhalb des Repos liegt (`%USERPROFILE%\.k3c\tmp`, `requirements.md`).
+  außerhalb des Repos liegt (`%USERPROFILE%\.k3c\tmp`, `requirements.md`). Für diesen Ordner braucht der Virenscanner (Norton) einmal eine Ausnahme, sonst prüft er jede Test-EXE (Einrichtung: `requirements.md`).
 - **Review in der Umsetzung:** nur bei Domäne SIM oder SRV, bei Protokoll- oder Spielstand-Änderungen, bei Code mit
   Shell-Aufrufen, Pfaden oder Eingaben von außen oder ab etwa 150 geänderten Code-Zeilen. Ein Reviewer (Sonnet; Opus nur bei Protokoll, Spielstand oder Nebenläufigkeit), Maßstab wie in
   der Review-Session (nur schwere Befunde). Er startet im Hintergrund **parallel** zu `task check:diff`. Ein Fix unter

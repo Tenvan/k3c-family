@@ -203,6 +203,8 @@ export interface PlanSaved {
   hint: string;
   error: string;
   stale: boolean;
+  /** Nachfolger-Welten, die schon vorher ungültig waren (B-693) */
+  warnings?: string[];
 }
 
 /** Zustand eines Platzes in der Vorschau; fehlende Felder lassen den Platz, wie die Hub-Stufe ihn ausbaut. */

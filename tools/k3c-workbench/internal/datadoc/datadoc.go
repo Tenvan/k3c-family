@@ -45,7 +45,7 @@ var files = []entry{
 	{"bosses.json", "bosses", []string{BySim}, false},
 	{"guards.json", "guards", []string{ByLevel}, false},
 	{"events.json", "events", []string{BySim}, false},
-	{"goals.json", "goals", []string{BySim}, false},
+	{"goals.json", "goals", []string{BySim}, true},
 	{"island-sizes.json", "island-sizes", []string{BySim}, false},
 	{"ruins.json", "ruins", []string{ByLevel}, false},
 	{"monarch.json", "monarch", []string{BySim}, true},

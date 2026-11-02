@@ -65,7 +65,7 @@ func (a *App) loadOverrideState(id string) (overrideState, error) {
 		return overrideState{}, err
 	}
 	st := overrideState{id: id, raw: raw, entries: valueEntries(base, def.Overrides),
-		children: sim.WorldChildren(a.allWorldDefs(), id)}
+		children: a.snapshotWorlds().descendants(id)}
 	if keys, vals := objectItems(raw); slices.Contains(keys, "overrides") {
 		st.overrides = vals[slices.Index(keys, "overrides")]
 	}
@@ -167,10 +167,11 @@ func (a *App) planOverride(p actionPlan, st overrideState, file string, path []s
 	if ov == nil {
 		ov = json.RawMessage("{}")
 	}
-	out, err := a.overridesFile(st.raw, st.id, ov)
+	out, warns, err := a.overridesFile(st.raw, st.id, ov)
 	if err != nil {
 		return p, err
 	}
+	p.details = append(p.details, warns...)
 	if bytes.Equal(out, st.raw) {
 		return p, fmt.Errorf("keine Änderung an %s › %s", st.id, field)
 	}
@@ -180,16 +181,17 @@ func (a *App) planOverride(p actionPlan, st overrideState, file string, path []s
 }
 
 // overridesFile setzt `overrides` der Welt-Datei und prüft wie draftFile (Laden, Werte der Welt und ihrer Kinder).
-func (a *App) overridesFile(raw []byte, id string, ov json.RawMessage) ([]byte, error) {
+func (a *App) overridesFile(raw []byte, id string, ov json.RawMessage) ([]byte, []string, error) {
 	out, err := patchOverrides(raw, ov)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	def, err := sim.ParseWorld(out, id)
-	if err == nil {
-		err = a.checkWorldValues(def)
+	if err != nil {
+		return out, nil, err
 	}
-	return out, err
+	warns, err := a.checkWorldValues(def)
+	return out, warns, err
 }
 
 // saveOverrides schreibt die Overrides der Welt id, nur auf dem Stand stand (sonst nichts) und nur gültig, atomar.
@@ -204,14 +206,18 @@ func (a *App) saveOverrides(id string, ov json.RawMessage, stand string) (string
 	if planStand(raw) != stand {
 		return "", errors.New(staleError(id))
 	}
-	out, err := a.overridesFile(raw, id, ov)
+	out, warns, err := a.overridesFile(raw, id, ov)
 	if err != nil {
 		return "", err
 	}
 	if err := writeAtomic(path, out); err != nil {
 		return "", err
 	}
-	return strings.TrimSpace("gespeichert: Welt " + id + ". " + planRegHint), nil
+	msg := "gespeichert: Welt " + id + ". " + planRegHint
+	if len(warns) > 0 {
+		msg += " Warnung: " + strings.Join(warns, "; ")
+	}
+	return strings.TrimSpace(msg), nil
 }
 
 // withLeaf liefert das Objekt node mit value am Pfad (nil entfernt das Blatt); leere Objekte entfallen (nil), die

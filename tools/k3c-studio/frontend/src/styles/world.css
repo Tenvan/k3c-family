@@ -192,7 +192,7 @@
    Seite = Fensterhöhe ohne Kopf der App (61 px) und Rand des Inhalts (32 px), aufgerundet auf 6rem. */
 .wd-page[data-mode='stufe'] { min-height: calc(100vh - 6rem); }
 .wd-page[data-mode='stufe'] .wd-stage-mode { flex: 1 1 auto; align-items: stretch; }
-.wd-stage-mode .wd-inspector { align-self: start; }
+.wd-stage-mode .wd-inspector { align-self: start; max-height: calc(100vh - 6rem); overflow-y: auto; } /* scrollt in sich, die Seite wächst nicht mit seinen Chips (B-689) */
 .wd-stage-main .wd-live { flex: 1 1 auto; }
 .wd-stage-main .wd-stage { min-height: 400px; }
 /* Navigator: die Zusammenfassung steht in der Zeile von Seed und Laden und kürzt sich */

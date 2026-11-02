@@ -167,11 +167,11 @@ async function sendReport(): Promise<void> {
     const res = await fetch('/api/report', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(report) });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     statusEl.textContent = t('pad.sent', { time: new Date().toLocaleTimeString() });
-    statusEl.classList.replace('bad', 'ok') || statusEl.classList.add('ok');
+    if (!statusEl.classList.replace('bad', 'ok')) statusEl.classList.add('ok');
     log(t('pad.log.reportSent'));
   } catch (err) {
     statusEl.textContent = t('pad.sendFailed', { error: String(err) });
-    statusEl.classList.replace('ok', 'bad') || statusEl.classList.add('bad');
+    if (!statusEl.classList.replace('ok', 'bad')) statusEl.classList.add('bad');
   }
 }
 

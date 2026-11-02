@@ -221,7 +221,7 @@ func ParseSave(raw []byte) (SaveGame, error) {
 		return SaveGame{}, errors.New("spielstand: unbekannte Tiefe")
 	}
 	for _, h := range s.Hubs {
-		if err := validateEconomy(h); err != nil {
+		if err := validateEconomy(defaultValues(), h); err != nil { // Kampagne: nur die Standard-Welt
 			return SaveGame{}, err
 		}
 	}

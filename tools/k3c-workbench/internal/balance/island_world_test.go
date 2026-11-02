@@ -1,6 +1,7 @@
 package balance
 
 import (
+	"encoding/json"
 	"strings"
 	"testing"
 
@@ -136,5 +137,23 @@ func TestInselLaufDeterministisch(t *testing.T) {
 	b, _ := mustRun(t, m).JSON()
 	if string(a) != string(b) {
 		t.Error("zweiter Insel-Lauf liefert andere Bytes")
+	}
+}
+
+// B-692: Der Balancing-Lauf löst `extends` und `overrides` der Welt auf (sim.ResolveWorld), Eltern aus data/worlds.
+func TestWeltMitOverridesImLauf(t *testing.T) {
+	w := sim.StandardWorld()
+	w.ID, w.Extends = "teuer", sim.StandardWorldID
+	w.Overrides = map[string]json.RawMessage{"economy": json.RawMessage(`{"purse": {"startGold": 27, "maxGold": 40}}`)}
+	isl, err := createIn(w, "1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if p := sim.AddIslandPlayer(isl, 0); p.Gold != 27 {
+		t.Errorf("Startgold %d, erwartet 27 aus den Overrides", p.Gold)
+	}
+	w.Extends = "fehlt"
+	if _, err := createIn(w, "1"); err == nil || !strings.Contains(err.Error(), "extends") {
+		t.Errorf("unbekannte Eltern-Welt: Fehler erwartet, war %v", err)
 	}
 }

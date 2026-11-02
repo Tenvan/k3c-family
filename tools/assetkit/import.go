@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"os"
@@ -266,12 +267,26 @@ func downloadHit(ctx context.Context, root, slotID, hitID, stand string, client 
 	if !DownloadHosts[strings.ToLower(u.Hostname())] {
 		return "", fmt.Errorf("download nur von %s, nicht von %q: bitte manuell laden und importieren", hostList(), u.Hostname())
 	}
-	tmp, err := fetchToTemp(ctx, client, u, path.Ext(u.Path))
+	c := *client
+	c.CheckRedirect = downloadRedirect
+	tmp, err := fetchToTemp(ctx, &c, u, path.Ext(u.Path))
 	if err != nil {
 		return "", err
 	}
 	defer func() { _ = os.Remove(tmp) }()
 	return importFile(root, slotID, hitID, tmp, stand, now)
+}
+
+// downloadRedirect prüft jedes Weiterleitungsziel wie die Start-URL (https, Host aus DownloadHosts), höchstens 5 Sprünge (SSRF, B-688).
+func downloadRedirect(req *http.Request, via []*http.Request) error {
+	if len(via) >= 5 {
+		return errors.New("zu viele Weiterleitungen")
+	}
+	if req.URL.Scheme != "https" || !DownloadHosts[strings.ToLower(req.URL.Hostname())] {
+		slog.Warn("🚫 Weiterleitung auf nicht erlaubten Host abgelehnt", "host", req.URL.Hostname())
+		return fmt.Errorf("weiterleitung auf %q abgelehnt: nur https und %s", req.URL.Hostname(), hostList())
+	}
+	return nil
 }
 
 func fetchToTemp(ctx context.Context, client *http.Client, u *url.URL, ext string) (string, error) {

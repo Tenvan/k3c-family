@@ -143,6 +143,7 @@ export function WorldDraftEditor({ world, plan, onEditStage }: { world: WorldDra
       </section>
       <div className="wd-tree">
         <IslandDetail world={world} i={sel} saved={saved} onEditStage={onEditStage} />
+        {dirty && check.warnings?.map((w) => <Text key={w} as="p" size="1" color="orange" role="status" className="wd-warning">{w}</Text>)}
         {dirty && check.preview && (
           <details>
             <summary>Vorschau der Welt-Datei</summary>

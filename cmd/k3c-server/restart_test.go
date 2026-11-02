@@ -266,3 +266,43 @@ func TestSupervisorSignalInPause(t *testing.T) {
 		t.Errorf("Code %d, Starts %d", code, starts)
 	}
 }
+
+// B-692: -check-data löst `extends` und `overrides` auf (sim.ResolveWorld); eine kaputte Kette ergibt Exit 1 mit Grund.
+func TestPruefungWeltenKette(t *testing.T) {
+	dir := t.TempDir()
+	std, err := data.Files.ReadFile("worlds/standard.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	write := func(name string, raw []byte) {
+		t.Helper()
+		if err := os.WriteFile(filepath.Join(dir, name), raw, 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	kind := func(extra string) []byte { // standard.json als Welt "kind" mit zusätzlichen Feldern
+		return bytes.Replace(std, []byte(`"id": "standard",`), []byte(`"id": "kind", `+extra+`,`), 1)
+	}
+	write("standard.json", std)
+	cfg := config{worlds: dir, dev: true}
+	cases := []struct {
+		extra, want string
+	}{
+		{`"extends": "fehlt"`, "extends"},
+		{`"extends": "standard", "overrides": {"economy": {"payRangeUnits": 3}}`, "nicht übersteuerbar"},
+		{`"extends": "standard", "overrides": {"waves": {"perExtraPlayer": -1}}`, "nicht negativ"},
+		{`"extends": "standard", "overrides": {"economy": {"purse": {"startGold": 20}}}`, ""},
+	}
+	for _, c := range cases {
+		raw := kind(c.extra)
+		if bytes.Equal(raw, std) {
+			t.Fatal(`"id": "standard" fehlt in worlds/standard.json`)
+		}
+		write("kind.json", raw)
+		var out bytes.Buffer
+		code := checkData(cfg, &out)
+		if c.want == "" && code != 0 || c.want != "" && (code != 1 || !strings.Contains(out.String(), c.want)) {
+			t.Errorf("%s: Exit %d, %s", c.extra, code, out.String())
+		}
+	}
+}

@@ -273,3 +273,5 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ35 | Workbench-Nachträge: Ticket-Nummern, Lauf-IDs, schmale Fenster, Auswertung | `erledigt/WZ35-workbench-nachtraege/` |
 | WZ36 | Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung | `erledigt/WZ36-studio-chat-aktionen-resume/` |
 | WZ38 | Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff | `erledigt/WZ38-umgesetzte-werkzeuge-abnehmen/` |
+| WZ39 | Studio-Nachträge: Downloads, Overrides-Editor, Inspektor, Testlücken, Quellen | `erledigt/WZ39-studio-nachtraege/` |
+| BAL10 | Welt-Wertesatz: Nachträge aus dem Review BAL8.2 | `erledigt/BAL10-wertesatz-nachtraege/` |

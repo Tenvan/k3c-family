@@ -45,6 +45,7 @@ type WorldValues struct {
 	Enemies   map[string]EnemyData
 	Waves     wavesData
 	Goals     Goals
+	skills    skillTable // Monarch.Skills als sortierte Liste mit Index (monarch_data.go)
 }
 
 // economyData ist der Lese-Typ von data/economy.json (Variable economy in data.go, WorldValues.Economy).
@@ -82,18 +83,21 @@ func ResolveWorldValues(base fs.FS, lookup func(id string) (WorldDef, error), id
 }
 
 // ResolveWorldFiles liefert die übersteuerbaren Basis-Dateien (Schlüssel wie in `overrides`) als JSON, wie sie für die
-// Welt id nach den Overrides ihrer Kette gelten, geprüft wie ResolveWorldValues; id leer = die Basis selbst. Für
-// Werkzeuge, die Basiswerte neben Overrides zeigen (Welten-Editor, B-682).
+// Welt id nach den Overrides ihrer Kette gelten, geprüft wie ResolveWorldValues; id leer = die Basis selbst, ebenso mit
+// den Basis-Regeln geprüft. Für Werkzeuge, die Basiswerte neben Overrides zeigen (Welten-Editor, B-682).
 func ResolveWorldFiles(base fs.FS, lookup func(id string) (WorldDef, error), id string) (map[string][]byte, error) {
 	files := fstest.MapFS{}
-	if id != "" {
-		var err error
-		if files, err = resolveFiles(base, lookup, id); err != nil {
-			return nil, err
-		}
+	var err error
+	if id == "" {
+		_, err = valuesFrom(base)
+	} else {
+		files, err = resolveFiles(base, lookup, id)
+	}
+	if err != nil {
+		return nil, err
 	}
 	out := map[string][]byte{}
-	for name := range overrideFiles {
+	for _, name := range slices.Sorted(maps.Keys(overrideFiles)) {
 		raw, err := fs.ReadFile(overlay(base, files), name+".json")
 		if err != nil {
 			return nil, fmt.Errorf("data/%s.json: %w", name, err)
@@ -173,6 +177,9 @@ func applyOverrides(base fs.FS, files fstest.MapFS, overrides map[string]json.Ra
 			return fmt.Errorf("data/%s: %w", file, err)
 		}
 		merged, err := mergeFile(raw, overrides[name], t)
+		if err == nil {
+			err = checkLocked(name, overrides[name]) // welten.md § 1.3
+		}
 		if err != nil {
 			return fmt.Errorf("overrides › data/%s › %w", file, err)
 		}
@@ -219,7 +226,7 @@ func valuesFrom(fsys fs.FS) (WorldValues, error) {
 	if err != nil {
 		return WorldValues{}, err
 	}
-	v.Buildings = withShip(v.Buildings, ship)
+	v.Buildings, v.skills = withShip(v.Buildings, ship), newSkillTable(v.Monarch.Skills)
 	return v, nil
 }
 

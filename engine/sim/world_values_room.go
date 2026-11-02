@@ -17,10 +17,11 @@ import (
 var dataFS fs.FS = data.Files
 
 // defaultValues ist der Basis-Wertesatz: die Paket-Variablen aus data.go zum Zeitpunkt des Aufrufs (folgt UseData). Die
-// Maps teilt er sich mit den Paket-Variablen: nur lesen.
+// Maps teilt er sich mit den Paket-Variablen: nur lesen. Er wird je Aufruf neu gebaut (kleine Struktur, die Maps und der
+// Skill-Katalog baseSkills werden geteilt), damit Tests, die eine Paket-Variable kurz ändern, den Stand sehen.
 func defaultValues() *WorldValues {
 	return &WorldValues{Buildings: buildings, Troops: troops, Economy: economy, Hub: hub, Monarch: monarch,
-		Enemies: enemyData, Waves: waves, Goals: goals}
+		Enemies: enemyData, Waves: waves, Goals: goals, skills: baseSkills}
 }
 
 // ResolveWorld liefert world mit ihrem aufgelösten Wertesatz, den CreateIslandIn, FromIslandSaveIn und NextIsland
@@ -69,10 +70,11 @@ func valuesOf(world WorldDef) (*WorldValues, error) {
 	return resolved.values, nil
 }
 
-// values ist der Wertesatz der Stufe; eine Stufe ohne CreateWorld (Test-Gerüst `&World{}`) rechnet mit der Basis.
+// values ist der Wertesatz der Stufe; eine Stufe ohne CreateWorld (Test-Gerüst `&World{}`) rechnet mit der Basis, beim
+// ersten Aufruf gemerkt (keine Allokation je Aufruf, B-692).
 func (w *World) values() *WorldValues {
 	if w.vals == nil {
-		return defaultValues()
+		w.vals = defaultValues()
 	}
 	return w.vals
 }

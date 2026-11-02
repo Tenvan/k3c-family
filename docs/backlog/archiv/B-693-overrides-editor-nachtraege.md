@@ -3,14 +3,14 @@
 - **Domäne:** DEV
 - **Typ:** Problem
 - **Prio:** niedrig
-- **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Umgebung:** offline
+- **Status:** erledigt
+- **Sprint:** WZ39
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-01
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-02
 
 ## Ausgangslage
 

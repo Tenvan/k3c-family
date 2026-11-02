@@ -58,6 +58,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ36 | Studio-Chat: Aktionskarten für jede Bearbeitung, Resume, Welt-Prüfung | erledigt |
 | WZ37 | Welt-Overrides im Welten-Editor und im Studio-Chat | aktiv |
 | WZ38 | Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff | erledigt |
+| WZ39 | Studio-Nachträge: Downloads, Overrides-Editor, Inspektor, Testlücken, Quellen | erledigt |
 
 ## Nicht-Ziele
 

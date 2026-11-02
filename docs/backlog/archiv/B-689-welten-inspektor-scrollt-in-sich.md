@@ -3,14 +3,14 @@
 - **Domäne:** DEV
 - **Typ:** Problem
 - **Prio:** niedrig
-- **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Umgebung:** live
+- **Status:** erledigt
+- **Sprint:** WZ39
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-31
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-02
 
 ## Ausgangslage
 
@@ -55,4 +55,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+2026-11-02 (Claude, WZ39): `.wd-stage-mode .wd-inspector { align-self: start; max-height: calc(100vh - 6rem); overflow-y: auto; }`. Messung im Browser-Pane, Port 5196, `?mock=1`, Viewport 1600×1000, Modus „Stufe bearbeiten“, Reiter Gebäude, Mauern aufgeklappt: 24 Chips, Seitenhöhe vorher 1000 px, nachher 1000 px (+0 px); Inspektor 902 px hoch, Inhalt 1162 px, scrollt in sich.

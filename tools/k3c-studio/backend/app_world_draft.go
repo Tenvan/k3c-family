@@ -55,20 +55,23 @@ type WorldCheckView struct {
 	Island  int    `json:"island"`
 	Field   string `json:"field"`
 	Preview string `json:"preview"`
+	// Warnings nennt Nachfolger-Welten, die schon vorher ungültig waren oder nicht laden (blockieren das Speichern nicht).
+	Warnings []string `json:"warnings,omitempty"`
 }
 
 // draftFile liefert den Inhalt der Datei mit dem Entwurf und prüft ihn wie beim Laden, dazu die Werte wie der Server
 // (Overrides der Welt und ihrer Kind-Welten, checkWorldValues).
-func (a *App) draftFile(raw []byte, id string, d WorldDraft) ([]byte, error) {
+func (a *App) draftFile(raw []byte, id string, d WorldDraft) ([]byte, []string, error) {
 	out, err := applyDraft(raw, d)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	def, err := sim.ParseWorld(out, id)
-	if err == nil {
-		err = a.checkWorldValues(def)
+	if err != nil {
+		return out, nil, err
 	}
-	return out, err
+	warns, err := a.checkWorldValues(def)
+	return out, warns, err
 }
 
 // PlanWorldCheck prüft den Entwurf der gewählten Welt, ohne zu schreiben (Binding).
@@ -78,8 +81,8 @@ func (a *App) PlanWorldCheck(d WorldDraft) WorldCheckView {
 	if err != nil {
 		return WorldCheckView{Island: -1, Error: err.Error()}
 	}
-	out, err := a.draftFile(raw, id, d)
-	view := WorldCheckView{OK: err == nil, Island: -1, Preview: string(out)}
+	out, warns, err := a.draftFile(raw, id, d)
+	view := WorldCheckView{OK: err == nil, Island: -1, Preview: string(out), Warnings: warns}
 	if err != nil {
 		view.Error = err.Error()
 		view.Island, view.Field = fieldOf(view.Error, d)
@@ -101,7 +104,7 @@ func (a *App) PlanWorldSave(d WorldDraft, stand string) PlanSaved {
 	if planStand(raw) != stand {
 		return PlanSaved{Error: staleError(id), Stale: true}
 	}
-	out, err := a.draftFile(raw, id, d)
+	out, warns, err := a.draftFile(raw, id, d)
 	if err != nil {
 		return PlanSaved{Error: err.Error()}
 	}
@@ -110,7 +113,7 @@ func (a *App) PlanWorldSave(d WorldDraft, stand string) PlanSaved {
 			return PlanSaved{Error: err.Error()}
 		}
 	}
-	return PlanSaved{Stand: planStand(out), Hint: planRegHint}
+	return PlanSaved{Stand: planStand(out), Hint: planRegHint, Warnings: warns}
 }
 
 // fieldOf ordnet eine Meldung der Prüfung (`<Datei>: Insel <insel>: <Grund>` bzw. `<Datei>: <Grund>`) Insel und Feld zu.

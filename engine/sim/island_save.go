@@ -112,7 +112,10 @@ func ParseIslandSave(raw []byte) (IslandSave, error) {
 	return migrateWorld(s, head.Island)
 }
 
-func validateIslandSave(s IslandSave) error {
+// validateIslandSave prüft einen Stand. Mit dem Wertesatz v seiner Welt (FromIslandSaveIn) auch alles, was eine Welt
+// übersteuern kann (Truppenarten, Berufe, Rüstungsstufen, Tier-Gating, B-692); v nil (beim Parsen,
+// die Welt ist noch nicht bekannt) lässt diese Prüfungen aus.
+func validateIslandSave(s IslandSave, v *WorldValues) error {
 	if err := validateOptions(s.Options); err != nil {
 		return err
 	}
@@ -125,7 +128,10 @@ func validateIslandSave(s IslandSave) error {
 			return fmt.Errorf("spielstand: unbekannte oder doppelte Tiefe %d", h.Depth)
 		}
 		depths[h.Depth] = true
-		if err := validateEconomy(h); err != nil {
+		if v == nil {
+			continue
+		}
+		if err := validateEconomy(v, h); err != nil {
 			return err
 		}
 	}
@@ -139,7 +145,7 @@ func validateIslandSave(s IslandSave) error {
 	if err := validateProgress(s); err != nil {
 		return err
 	}
-	return validateSkills(s)
+	return validateSkills(s, v)
 }
 
 // islandFromV1 überführt einen Stand der Campaign: die Hubs werden Stufen, alle Spieler stehen in der gespeicherten
@@ -185,7 +191,12 @@ func FromIslandSave(s IslandSave, cycleSpeed float64) (*Island, error) {
 // Stands müssen zu ihr passen (islandIn). Gespeicherte Spieler stehen wieder in ihrer Stufe, mit ihrer gespeicherten
 // Verteilung (das Beitritts-Preset gilt beim Laden nicht).
 func FromIslandSaveIn(s IslandSave, cycleSpeed float64, world WorldDef) (*Island, error) {
-	if err := validateIslandSave(s); err != nil {
+	vals, err := valuesOf(world)
+	if err != nil {
+		return nil, fmt.Errorf("insel: %w", err)
+	}
+	world.values = vals
+	if err := validateIslandSave(s, vals); err != nil {
 		return nil, err
 	}
 	number, err := islandIn(world, s)

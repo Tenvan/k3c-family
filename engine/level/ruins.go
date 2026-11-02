@@ -83,10 +83,10 @@ func checkRuinRules(r RuinRules, buildings map[string]buildingInfo) error {
 	return nil
 }
 
-// RuinHP ist die Start-HP einer Ruine der Art kind: HPShare × HP der Art, aufgerundet. Nur für erlaubte Arten
-// (die Prüfung der Planung lässt keine anderen durch); eine unbekannte Art ergibt 0.
-func RuinHP(kind string) float64 {
-	return math.Ceil(ruinRules.HPShare * ruinBuildings[kind].HP)
+// RuinHP ist die Start-HP einer Ruine, deren Art hp HP hat: HPShare × hp, aufgerundet. hp kommt aus dem Wertesatz der
+// Welt (sim), damit Overrides auf die HP eines Gebäudes auch seine Ruine treffen (B-692).
+func RuinHP(hp float64) float64 {
+	return math.Ceil(ruinRules.HPShare * hp)
 }
 
 // checkBuildings prüft die Ruine eines Chunks (höchstens eine) gegen die Lage-Regeln aus § 8. near sind die festen

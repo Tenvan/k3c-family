@@ -22,8 +22,18 @@ func createIsland(sc Scenario) (*sim.Island, error) {
 	if len(world.Islands) == 0 {
 		return nil, fmt.Errorf("welt %q hat keine Insel", sc.World)
 	}
+	return createIn(world, sc.Seed)
+}
+
+// createIn löst die Welt samt `extends`-Kette und Overrides auf (sim.ResolveWorld, Eltern aus data/worlds) und baut ihre
+// erste Insel; ein Fehler der Kette nennt die Welt (welten.md § 1.2).
+func createIn(world sim.WorldDef, seed string) (*sim.Island, error) {
+	world, err := sim.ResolveWorld(world, loadWorld)
+	if err != nil {
+		return nil, err
+	}
 	first := world.Islands[0]
-	return sim.CreateIslandIn(world, sc.Seed, first.Depths, 1, first.CreateOptions())
+	return sim.CreateIslandIn(world, seed, first.Depths, 1, first.CreateOptions())
 }
 
 // Worlds liefert die IDs der Welt-Dateien in data/worlds (sortiert), die ein Lauf als World nehmen darf.

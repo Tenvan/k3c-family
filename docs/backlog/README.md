@@ -105,12 +105,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-683](B-683-chat-welt-overrides.md) | DEV | Idee | mittel | eingeplant | WZ37 | Der Studio-Chat kann Welt-Overrides lesen, setzen und zurücksetzen |
 | [B-684](B-684-studio-ausschnitt-rahmen-und-einpassen.md) | DEV | Idee | mittel | eingeplant | GRJ2 | Die Ausschnitt-Bearbeitung zeigt wahlweise einen Rahmen und passt die Grafik in die Kachel ein |
 | [B-685](B-685-zielmass-grafiken-skalieren.md) | CLI | Idee | hoch | eingeplant | GRJ2 | Grafiken bekommen ein Zielmaß in der Ausgabe und werden dort passend skaliert |
-| [B-688](B-688-download-weiterleitung-fremde-hosts.md) | DEV | Problem | mittel | offen | – | Downloads folgen Weiterleitungen nur zu erlaubten Hosts |
-| [B-689](B-689-welten-inspektor-scrollt-in-sich.md) | DEV | Problem | niedrig | offen | – | Welten-Editor: Inspektor scrollt in sich, Höhe mit 24 Chips messen |
-| [B-690](B-690-studio-welt-testluecken.md) | DEV | Problem | niedrig | offen | – | Studio-Welt: Testlücken Klick-Schwelle, Bühnen-Verdrahtung, Werkzeugleiste, Merge-Dialog |
-| [B-691](B-691-doku-norton-codemap.md) | DEV | Problem | niedrig | offen | – | Doku: Norton-Ausnahme in arbeitsweise.md, veraltete world/codemap.md |
-| [B-692](B-692-wertesatz-nachtraege.md) | SIM | Problem | mittel | offen | – | Welt-Wertesatz: Nachträge aus dem Review BAL8.2 |
-| [B-693](B-693-overrides-editor-nachtraege.md) | DEV | Problem | niedrig | offen | – | Overrides-Editor: Nachträge aus dem Review WZ37.1 |
+| [B-694](B-694-review-wz39-bal10-nachtraege.md) | SIM | Problem | niedrig | offen | – | Nachträge aus dem Review WZ39/BAL10 (niedrig) |
 
 ## Archiv
 
@@ -653,3 +648,9 @@ Zeile in diesen Abschnitt.
 | [B-672](archiv/B-672-studio-gegner-kompakt.md) | DEV | Idee | mittel | erledigt | WZ38 | Die Gegner-Seite zeigt Gegner als kompakte Tabelle mit Inspektor, Lücken als Zahl statt langer Badges |
 | [B-580](archiv/B-580-workbench-git-seite.md) | DEV | Idee | mittel | erledigt | WZ38 | Die Workbench hat eine Git-Seite für dieses Repo |
 | [B-619](archiv/B-619-check-diff-cache-und-short.md) | INF | Problem | hoch | erledigt | WZ38 | check:diff nutzt den Go-Testcache und lässt lange Tests aus |
+| [B-688](archiv/B-688-download-weiterleitung-fremde-hosts.md) | DEV | Problem | mittel | erledigt | WZ39 | Downloads folgen Weiterleitungen nur zu erlaubten Hosts |
+| [B-689](archiv/B-689-welten-inspektor-scrollt-in-sich.md) | DEV | Problem | niedrig | erledigt | WZ39 | Welten-Editor: Inspektor scrollt in sich, Höhe mit 24 Chips messen |
+| [B-690](archiv/B-690-studio-welt-testluecken.md) | DEV | Problem | niedrig | erledigt | WZ39 | Studio-Welt: Testlücken Klick-Schwelle, Bühnen-Verdrahtung, Werkzeugleiste, Merge-Dialog |
+| [B-691](archiv/B-691-doku-norton-codemap.md) | DEV | Problem | niedrig | erledigt | WZ39 | Doku: Norton-Ausnahme in arbeitsweise.md, veraltete world/codemap.md |
+| [B-692](archiv/B-692-wertesatz-nachtraege.md) | SIM | Problem | mittel | erledigt | BAL10 | Welt-Wertesatz: Nachträge aus dem Review BAL8.2 |
+| [B-693](archiv/B-693-overrides-editor-nachtraege.md) | DEV | Problem | niedrig | erledigt | WZ39 | Overrides-Editor: Nachträge aus dem Review WZ37.1 |

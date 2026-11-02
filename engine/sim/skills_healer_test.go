@@ -90,7 +90,7 @@ func TestHealerAbklingzeit(t *testing.T) {
 		w := quietWorld(t)
 		p := healerPlayer(t, w)
 		tr := troopAt(w, p.X+1, 1)
-		s, _ := skillByID(p.Slots[slot-1])
+		s, _ := defaultValues().skillByID(p.Slots[slot-1])
 		reset := func() { p.HP, p.Shield, p.ShieldFor, tr.HP = 10, 0, 0, 1 }
 		effect := func() float64 { return p.HP + p.Shield + tr.HP }
 		reset()

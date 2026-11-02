@@ -1,24 +1,24 @@
-# B-691 · Doku: Norton-Ausnahme in arbeitsweise.md, veraltete world/codemap.md
+# B-690 · Studio-Welt: Testlücken Klick-Schwelle, Bühnen-Verdrahtung, Werkzeugleiste, Merge-Dialog
 
 - **Domäne:** DEV
 - **Typ:** Problem
 - **Prio:** niedrig
-- **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Umgebung:** offline
+- **Status:** erledigt
+- **Sprint:** WZ39
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-31
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-02
 
 ## Ausgangslage
 
-Gefunden in WZ38.1: `docs/arbeitsweise.md` (Tempo im Lauf) nennt die Norton-Ausnahme für `%USERPROFILE%\.k3c\tmp` nicht, nur `requirements.md` (B-619/AC-04 verlangt beide). `tools/k3c-studio/frontend/src/world/codemap.md` nennt noch `IslandBar` und `StructureTree`, die es nicht mehr gibt.
+Gefunden in WZ38.1: Verhalten ist im Code, aber nicht per Test belegt. (1) `CLICK_SLOP` in `stageLogic.ts:216` hat keinen Vitest (B-667/AC-02); Vorschlag `isClick(dx)` als reine Funktion auslagern. (2) Weltmodus-Bühne: `focusX`/`setMarks` in `LivePreview.tsx:97,99` ohne Attrappen-Test (B-666/AC-04); Verdrahtung `onSite` → `pickKeys` → `setSel`/`onPickSite` (B-667). (3) Lage der Werkzeugleiste (B-665/AC-01). (4) Reiner Merge-Dialog der Git-Seite (B-580/AC-04).
 
 ## Ziel
 
-Doku stimmt mit dem Stand überein.
+Die vier Verhaltensweisen sind per Vitest belegt.
 
 ## Beteiligte und Zielgruppen
 
@@ -46,8 +46,10 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** `docs/arbeitsweise.md` nennt die Norton-Ausnahme oder verweist auf `requirements.md`.
-- **AC-02** `world/codemap.md` nennt keine entfernten Komponenten mehr.
+- **AC-01** Test auf die Klick/Pan-Schwelle.
+- **AC-02** Test mit Bühnen-Attrappe für `focusX`, `setMarks` und die `onSite`-Verdrahtung im Weltmodus.
+- **AC-03** Test zur Lage der Werkzeugleiste.
+- **AC-04** Test für den Merge-Dialog der Git-Seite.
 
 ## Offene Fragen
 

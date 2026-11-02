@@ -5,10 +5,11 @@ Seite Welten Editor (B-460/B-461/B-477/B-485): Welten, Inseln und Stufen wählen
 
 ## Design
 Seite und Ansicht
-- `WorldPage.tsx`: Wurzel; Chunk-Streifen oben, Live-Vorschau (`../stage/LivePreview`) mit Chunk-Band, darunter zwei Spalten (`WorldStructure` links, `PlanEditor` + Gebäude-Baum rechts); Tasten Pfeile, +/−, M (kompakt/maximiert; nicht in Feldern, Auswahllisten und Reglern, `OWN_KEYS`); neues Level zentriert auf den Hub, Entwurf-Reload behält die Mitte.
+- `WorldPage.tsx`: Wurzel; Kopf (`WorldHeader`: Welt wählen, anlegen, kopieren, löschen und Modus-Umschalter) und drei Modi: Welt-Struktur (`WorldStructure` → `WorldDraftEditor`), Werte (`WorldValues`) und Stufe bearbeiten (`StageMode`); Tasten Pfeile, +/−, M (kompakt/maximiert; nicht in Feldern, Auswahllisten und Reglern, `OWN_KEYS`); neues Level zentriert auf den Hub, Entwurf-Reload behält die Mitte.
+- `StageMode.tsx`: Modus Stufe bearbeiten (B-665): links Chunk-Vorschau, Werkzeugleiste (Hub-Stufe, Tageszeit, Zoom, „Springe zu“) und Live-Vorschau mit Chunk-Band, rechts der Inspektor (`Inspector.tsx` mit den Reitern Chunk, Gebäude und Ansicht; Reiter Chunk = `ChunkInspector.tsx`; der Inspektor scrollt in sich, B-689).
 - `viewState.ts`: reine Funktionen der Ansicht: `Views` (gemeinsame Mitte, Zoom je Vorschau), `paneView`, `zoomPanes`, `panViews`, `centerViews`, `clampLeft`, `centerRange`, `wheelAction` (Strg zoomt beide, Alt eine, Umschalt scrollt), `jumpPoints` (Anfang, Mitte, Ende, Hub, Tor, Portale, Ausgang).
 - `viewHooks.ts`: `useBox` misst Streifen und Bühne (ResizeObserver), `useViews` hält `Views` und liefert Pan, Zoom, `setCenter`, `onWheel`.
-- `ViewBar.tsx`: Zoomknöpfe, Regler (Radix `Slider`), Zoomstufen (`SelectField`), Sprungpunkte und Positions-Schieber.
+- `ViewBar.tsx`: Zoomknöpfe, Regler (Radix `Slider`), Zoomstufen (`SelectField`) und Sprungpunkte in der Werkzeugleiste; der Positions-Schieber ist der `RangeSlider` über der Chunk-Vorschau.
 - `RangeSlider.tsx`: Bereichs-Schieber (Ziehen, Klick, Pfeile, Pos1/Ende), zweiter Griff für den Bereich der Live-Vorschau; `thumbBox`, `Span`.
 
 Vorschauen
@@ -33,10 +34,10 @@ Planung
 - `SizePicker.tsx`: Inselgröße der Stufe (Biom-Länge oder Eintrag aus `data/island-sizes.json`).
 - `convert.ts`: reine Logik und ein Aufruf (`planChunkObjects`): Seed-Chunk in feste Objekte umwandeln (`convertLock`, `inSync`, `convertChunk`, `seedObjects`).
 - `ConvertButton.tsx`: Knopf „In feste Objekte umwandeln“ je geplantem Chunk, gesperrt mit Grund, verwirft veraltete Ergebnisse.
-- `WorldStructure.tsx`: linke Spalte: Welt wählen, anlegen (leer, Kopie), löschen (`WorldBar`, `AddWorld`), Welt-Entwurf (`WorldDraftEditor`), Insel und Stufe (`IslandBar`), Baum der Inseln und Stufen (`StructureTree`), `GameLauncher`; Wechsel nur ohne offenen Entwurf.
+- `WorldStructure.tsx`: Modus Welt-Struktur: reicht den Welt-Entwurf an `WorldDraftEditor` (Inseln, Stufen, Skalierung); „Stufe bearbeiten →“ wählt die Stufe und wechselt den Modus (`WorldGuard` fragt bei offenem Entwurf nach). Welt wählen, anlegen und löschen steht im Kopf (`WorldHeader`).
 - `GameLauncher.tsx`: „Im Spiel öffnen“ und „Voll ausgebaut öffnen“; Liste „Spiel läuft auf“: interne Engine des Studios (`worldOpenGame`) oder erkannter Spielserver (`worldGameServers`, `worldOpenGameServer`, nicht erreichbare ausgegraut, „Neu suchen“), Wahl gemerkt (`../lib/prefs`, Schlüssel `k3c-studio.world.gameTarget`; B-513).
 
-Tests (je neben der Quelle): `levelView`, `viewState`, `plan`, `chunkMarks`, `bandLayout`, `kindIcons`, `convert`, `worldDraft` (`.test.ts`); `PlanEditor`, `GameLauncher`, `WorldPage`, `LiveChunkBand`, `RangeSlider`, `ConvertButton`, `ChunkCount`, `ChunkFocus`, `ChunkJump`, `WorldFiles`, `WorldDraft` (`.test.tsx`).
+Tests (je neben der Quelle): `levelView`, `viewState`, `plan`, `chunkMarks`, `bandLayout`, `kindIcons`, `convert`, `worldDraft` (`.test.ts`); `PlanEditor`, `GameLauncher`, `WorldPage`, `LiveChunkBand`, `RangeSlider`, `ConvertButton`, `ChunkCount`, `ChunkFocus`, `ChunkJump`, `WorldFiles`, `WorldDraft`, `StageToolbar` (`.test.tsx`).
 
 ## Flow
 1. `usePlan` lädt die Welt (`planLoad`) → `source` (Insel, Stufe, Entwurf, Chunk-Anzahl) → `ChunkPreview` holt das Level (`worldLevel`) und meldet das Modell an `WorldPage`; dieselbe `source` speist die Live-Vorschau (`worldPreview`).

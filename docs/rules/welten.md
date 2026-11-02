@@ -77,6 +77,24 @@ wird geprüft; die Meldung nennt die Welt, deren Override den Fehler auslöst. M
 Umsetzung: `engine/sim/world_values.go` (Auflösung, Kette, Kind-Welten), `world_values_merge.go` (Merge und Feldprüfung). Die
 Simulation rechnet bis BAL8.2 (B-681) weiter mit den globalen Basis-Werten; erst dann gilt der Wertesatz je Raum.
 
+### 1.3 Nicht übersteuerbare Felder
+
+Der Level-Generator (`engine/level`) liest einige Werte aus den eingebetteten Basis-Dateien, nicht aus dem Wertesatz der Welt.
+Ein Override darauf ließe Level (Lage der Plätze, Zahlziele, Ruinen-Planung) und Simulation auseinanderlaufen; deshalb lehnt
+die Prüfung (§ 1.2) es beim Laden mit Pfad ab, Meldung `… › data/economy.json › payRangeUnits: nicht übersteuerbar (der
+Level-Generator liest die Basis, welten.md § 1.3)`. Entschieden von Claude (B-692): sperren statt durchreichen, weil das
+Durchreichen den Level-Generator und seine Planungsprüfung je Welt umbauen würde.
+
+| Feld | Leser in der Basis |
+|---|---|
+| `economy.payRangeUnits` | Abstand der Zahlziele (`level/lines.go`) |
+| `hub.sites`, `hub.islandSites` | Hub- und Insel-Plätze (`level/lines.go`, Ruinen-Lage `level/ruins.go`) |
+| `hub.sitePlacement` | Mauer- und Turmplätze, Freiraum (`level/sites.go`, `sim/world_lines.go`, `level/guards.go`, `level/planned.go`) |
+| `buildings.<id>.plantation.stripUnits` | Randabstand einer Ruine (`level/ruins.go`) |
+
+Die **HP einer Ruine** folgen dagegen dem Wertesatz: Start-HP = `hpShare` (`data/ruins.json`) × HP der Art in der Welt.
+Umsetzung: `engine/sim/world_values_locked.go`.
+
 ## 2. Format
 
 Entschieden von Claude (Delegation 🧑, 2026-10-19), nach B-488 › Anforderungen und Empfehlung 1 der Session WZ18.1.

@@ -310,7 +310,7 @@ func attack(w *World, e *Enemy, t *target) {
 		emit(w, "strike", Event{"from": e.ID, "x": unitX(e.X)})
 		applyDamageBy(w, t.id, moonDamage(w, e.Damage), e.Kind) // Blutmond (events_moon.go)
 		if t.player != nil {
-			frostArmorHit(t.player, e)
+			frostArmorHit(w, t.player, e)
 		}
 	}
 }

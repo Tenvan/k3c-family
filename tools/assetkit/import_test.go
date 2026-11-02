@@ -172,3 +172,28 @@ func TestDownloadHitFolgtWeiterleitung(t *testing.T) {
 		t.Fatalf("Weiterleitung: %v", err)
 	}
 }
+
+// B-688 AC-01: Weiterleitung auf einen nicht erlaubten Host oder eine lokale Adresse bricht ab, es entsteht keine Datei.
+func TestDownloadHitWeiterleitungAufFremdenHostAbgelehnt(t *testing.T) {
+	for _, ziel := range []string{"https://localhost:1/x.png", "https://192.168.0.5/x.png", "http://127.0.0.1/x.png"} {
+		root, _, _ := importRepo(t)
+		srv := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			http.Redirect(w, r, ziel, http.StatusFound)
+		}))
+		DownloadHosts["127.0.0.1"] = true
+		if _, err := AddHits(root, "farm", []Hit{{Title: "Weg.png", Link: "https://commons.wikimedia.org/w", Source: "Wikimedia Commons",
+			License: "CC0 1.0", Download: srv.URL + "/alt.png"}}, day); err != nil {
+			t.Fatal(err)
+		}
+		hits, _ := HitsOf(root, "farm")
+		_, err := DownloadHit(context.Background(), root, "farm", hits[len(hits)-1].ID, tlsClient(srv), day)
+		delete(DownloadHosts, "127.0.0.1")
+		srv.Close()
+		if err == nil || !strings.Contains(err.Error(), "abgelehnt") {
+			t.Errorf("%s: %v", ziel, err)
+		}
+		if files, _ := filepath.Glob(filepath.Join(root, "public", "grafik", "kandidaten", "*")); len(files) != 0 {
+			t.Errorf("%s: Datei entstanden: %v", ziel, files)
+		}
+	}
+}

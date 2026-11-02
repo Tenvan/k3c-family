@@ -185,12 +185,12 @@ func TestMonarchPresetBeimBeitritt(t *testing.T) {
 func TestMonarchDatenKatalog(t *testing.T) {
 	for _, id := range []string{"tank", "mage", "healer"} { // Dieb-Linie ist Nicht-Ziel (keine Skills im Katalog)
 		for _, s := range monarch.Presets[id].ActiveSkills {
-			if _, ok := skillByID(s); !ok {
+			if _, ok := defaultValues().skillByID(s); !ok {
 				t.Errorf("Preset %s: Skill %s fehlt in skills", id, s)
 			}
 		}
 	}
-	for _, s := range skillCatalog {
+	for _, s := range defaultValues().skills.list {
 		if _, ok := monarch.Lines[s.Line]; !ok || (s.Kind != "active" && s.Kind != "passive") {
 			t.Errorf("Skill %s: Linie %q oder Art %q ungültig", s.ID, s.Line, s.Kind)
 		}
@@ -206,9 +206,9 @@ func TestMonarchJederTierErreichbar(t *testing.T) {
 	for _, line := range []string{"tank", "mage", "healer"} {
 		w := quietWorld(t)
 		p := AddPlayer(w)
-		addPoolPoints(w, len(skillCatalog))
+		addPoolPoints(w, len(defaultValues().skills.list))
 		for tier := 1; tier <= 4; tier++ {
-			for _, s := range skillCatalog {
+			for _, s := range defaultValues().skills.list {
 				if s.Line == line && s.Tier == tier {
 					mustLearn(t, w, p, s.ID)
 				}

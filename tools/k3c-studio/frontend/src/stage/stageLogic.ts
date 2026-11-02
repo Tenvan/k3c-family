@@ -214,6 +214,8 @@ export interface SiteBox { kind: string; x: number; left: number; right: number;
 
 /** Ab so vielen Bildschirm-Pixeln Bewegung zwischen Drücken und Loslassen ist es ein Ziehen (Pan), kein Klick */
 export const CLICK_SLOP = 4;
+/** Bewegung `dx` (Bildschirm-Pixel) zwischen Drücken und Loslassen: bis zur Schwelle ein Klick, darüber ein Ziehen */
+export const isClick = (dx: number): boolean => Math.abs(dx) <= CLICK_SLOP;
 /** Ein zweiter Klick auf denselben Platz in dieser Zeit (ms) ist ein Doppelklick */
 export const DOUBLE_MS = 350;
 

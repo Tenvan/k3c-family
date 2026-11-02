@@ -142,20 +142,25 @@ func firstLine(out []byte) string {
 	return ""
 }
 
-// checkData prüft im Dev-Mode jede Welt-Datei in cfg.worlds (ohne Dev-Mode liest der Server keine); die übrigen
-// Daten hat der Prozess beim Start schon geladen. Exit-Code 0 = gültig, 1 = Fehler (Gründe nach w).
+// checkData prüft im Dev-Mode jede Welt-Datei in cfg.worlds (ohne Dev-Mode liest der Server keine) samt `extends`-Kette
+// und Overrides (sim.ResolveWorld, welten.md § 1.2); die übrigen Daten hat der Prozess beim Start schon geladen. Exit-Code 0 = gültig, 1 = Fehler (Gründe nach w).
 func checkData(cfg config, w io.Writer) int {
 	entries, err := os.ReadDir(cfg.worlds)
 	if !cfg.dev || err != nil {
 		return 0
 	}
 	code, fsys := 0, os.DirFS(cfg.worlds)
+	lookup := func(id string) (sim.WorldDef, error) { return sim.LoadWorld(fsys, id) }
 	for _, e := range entries {
 		id, ok := strings.CutSuffix(e.Name(), ".json")
 		if e.IsDir() || !ok {
 			continue
 		}
-		if _, err := sim.LoadWorld(fsys, id); err != nil {
+		world, err := lookup(id)
+		if err == nil {
+			_, err = sim.ResolveWorld(world, lookup)
+		}
+		if err != nil {
 			_, _ = fmt.Fprintln(w, err)
 			code = 1
 		}

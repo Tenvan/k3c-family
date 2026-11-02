@@ -104,7 +104,7 @@ func TestCasterAbklingzeitUndOhneZiel(t *testing.T) {
 	for slot := 1; slot <= 4; slot++ {
 		w := quietWorld(t)
 		p := casterPlayer(t, w)
-		s, _ := skillByID(p.Slots[slot-1])
+		s, _ := defaultValues().skillByID(p.Slots[slot-1])
 		cd := s.Cooldown * cooldownMult // mit Elemental Mastery
 		far := toughEnemy(w, p.X+s.Effect.Range+0.5)
 		effect := func() float64 { return lost(far) + far.SlowFor + float64(len(w.Storms)) }

@@ -92,7 +92,7 @@ func TestRuineStartetGebautMitKennung(t *testing.T) {
 		if s == nil || !s.Ruin || s.State != "built" || s.BuildProgress != 1 || s.Level != 0 {
 			t.Fatalf("Ruine %s@%v: %+v", r.Kind, r.X, s)
 		}
-		if s.HP != ruinStartHP(r.Kind) || s.HP != level.RuinHP(r.Kind) || s.MaxHP != buildings[r.Kind].HP {
+		if s.HP != ruinStartHP(r.Kind) || s.HP != level.RuinHP(buildings[r.Kind].HP) || s.MaxHP != buildings[r.Kind].HP {
 			t.Errorf("Ruine %s: HP %v/%v, erwartet %v/%v", r.Kind, s.HP, s.MaxHP, ruinStartHP(r.Kind), buildings[r.Kind].HP)
 		}
 	}

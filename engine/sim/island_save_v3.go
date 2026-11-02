@@ -48,7 +48,7 @@ func parseIslandV2(raw []byte) (IslandSave, error) {
 	for _, n := range v.StageSkillPoints { // Annahme: jeder Zähler zählte eigene Funde
 		s.SkillPool += n
 	}
-	return s, validateIslandSave(s)
+	return s, validateIslandSave(s, nil)
 }
 
 // parseIslandV3 liest Version 3 bis 8: Version 4 hat zusätzlich `day` und `phase`, Version 5 Bosse, Insel und Zähler,
@@ -60,12 +60,12 @@ func parseIslandV3(raw []byte, extra ...string) (IslandSave, error) {
 		return IslandSave{}, err
 	}
 	s.Version = IslandSaveVersion
-	return s, validateIslandSave(s)
+	return s, validateIslandSave(s, nil)
 }
 
 // validateSkills prüft Pool und Verteilung: bekannte Skills, jeder einmal, nicht mehr als der Pool, Tier-Gating in
-// Lernreihenfolge und Slots nur mit gelernten aktiven Skills.
-func validateSkills(s IslandSave) error {
+// Lernreihenfolge und Slots nur mit gelernten aktiven Skills; Tier-Gating nur mit dem Wertesatz v der Welt.
+func validateSkills(s IslandSave, v *WorldValues) error {
 	if s.SkillPool < 0 {
 		return fmt.Errorf("spielstand: Pool %d negativ", s.SkillPool)
 	}
@@ -73,32 +73,41 @@ func validateSkills(s IslandSave) error {
 		if len(p.Skills)-p.SkillBase > s.SkillPool { // mitgebrachte Skills zählen nicht (SkillBase)
 			return fmt.Errorf("spielstand: Spieler %d hat %d Skills, Pool %d", p.Index, len(p.Skills), s.SkillPool)
 		}
-		if err := validateLearned(p); err != nil {
+		if err := validateLearned(v, p); err != nil {
 			return err
 		}
-		if err := validateSlots(p); err != nil {
+		if err := validateSlots(v, p); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func validateLearned(p IslandPlayerSave) error {
+// skillsOf ist der Katalog für die Prüfung: der der Welt, ohne Welt die Basis (die Skill-IDs sind in jeder Welt gleich,
+// Overrides legen keine Einträge an).
+func skillsOf(v *WorldValues) *WorldValues {
+	if v == nil {
+		return defaultValues()
+	}
+	return v
+}
+
+func validateLearned(v *WorldValues, p IslandPlayerSave) error {
 	for i, id := range p.Skills {
-		sk, ok := skillByID(id)
+		sk, ok := skillsOf(v).skillByID(id)
 		switch {
 		case !ok:
 			return fmt.Errorf("spielstand: Spieler %d: Skill %q unbekannt", p.Index, id)
 		case slices.Contains(p.Skills[:i], id):
 			return fmt.Errorf("spielstand: Spieler %d: Skill %q doppelt", p.Index, id)
-		case lineCount(&Player{Skills: p.Skills[:i]}, sk.Line) < tierNeed(monarch.TierPoints, sk.Tier): // Spielstand-Prüfung gegen die Basis
+		case v != nil && lineCount(v, &Player{Skills: p.Skills[:i]}, sk.Line) < tierNeed(v.Monarch.TierPoints, sk.Tier):
 			return fmt.Errorf("spielstand: Spieler %d: Skill %q verletzt das Tier-Gating", p.Index, id)
 		}
 	}
 	return nil
 }
 
-func validateSlots(p IslandPlayerSave) error {
+func validateSlots(v *WorldValues, p IslandPlayerSave) error {
 	if len(p.Slots) > 4 {
 		return fmt.Errorf("spielstand: Spieler %d hat %d Slots", p.Index, len(p.Slots))
 	}
@@ -106,7 +115,7 @@ func validateSlots(p IslandPlayerSave) error {
 		if id == "" {
 			continue
 		}
-		sk, ok := skillByID(id)
+		sk, ok := skillsOf(v).skillByID(id)
 		if !ok || sk.Kind != "active" || !slices.Contains(p.Skills, id) || slices.Contains(p.Slots[:i], id) {
 			return fmt.Errorf("spielstand: Spieler %d: Slot %d (%q) passt nicht zu den gelernten aktiven Skills", p.Index, i+1, id)
 		}
