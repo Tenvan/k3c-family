@@ -22,8 +22,9 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | BR1 | Balancing-Runde Wirtschaft und Spieleabend 2 | geplant |
 | BR2 | Balancing-Runde Kampf und Bosse und Spieleabend 3 | aktiv |
 | BAL7 | Holz-Balancing nach dem dichteren Wald | erledigt |
-| BAL8 | Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt | aktiv |
-| BAL9 | Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance | geplant |
+| BAL8 | Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt | erledigt |
+| BAL9 | Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance | aktiv |
+| BAL10 | Welt-Wertesatz: Nachträge aus dem Review BAL8.2 | erledigt |
 
 ## Nicht-Ziele
 

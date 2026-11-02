@@ -3,7 +3,7 @@ package sim
 import "k3c/engine/level"
 
 // Ruinen als Plätze (docs/rules/geplante-chunks.md § 8, B-468): Jede Ruine der Planung (Layout.Ruins) ist ein
-// zusätzlicher Platz der Stufe, gebaut mit dem HP-Anteil ihrer Art (level.RuinHP), und wirkt wie ein gebautes Gebäude
+// zusätzlicher Platz der Stufe, gebaut mit dem HP-Anteil ihrer Art im Wertesatz der Welt (level.RuinHP), und wirkt wie ein gebautes Gebäude
 // dieser Art. Sie ist Hub-neutral (Hub-Stufe und Mauerlinien zählen sie nicht; für „alles gebaut“ zählt sie wie jeder
 // Platz), wird wie jedes Gebäude repariert und zerstört, ist danach erst ab der Hub-Stufe ihrer Art bezahlbar und
 // kehrt beim Burgfall (castleLosses) in den Ausgangszustand zurück. Die Herkunft kommt immer aus dem Level (kind@x wie siteLine), damit
@@ -23,7 +23,7 @@ func isRuin(w *World, kind string, x float64) bool {
 // eine ID.
 func ruinSite(w *World, kind string, x float64) *Site {
 	s := emptySite(w, kind, x)
-	s.State, s.BuildProgress, s.HP = "built", 1, level.RuinHP(kind)
+	s.State, s.BuildProgress, s.HP = "built", 1, level.RuinHP(w.values().Buildings[kind].HP)
 	return s
 }
 

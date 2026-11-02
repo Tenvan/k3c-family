@@ -12,7 +12,7 @@ import { FRAME_COLOR, FRAME_PX, FigureLayer } from './figureLayer';
 import { hudPx } from './hudBar';
 import { KampfOverlay } from './kampfOverlay';
 import { siteBox } from './siteBox';
-import { CLICK_SLOP, DOUBLE_MS, siteAt, siteKey } from './stageLogic';
+import { DOUBLE_MS, isClick, siteAt, siteKey } from './stageLogic';
 import { refreshToParent, settleToParent } from './stageResize';
 
 // Die wiederverwendbare Phaser-Bühne des Asset-Studios (B-460, WZ7.3; WZ10/WZ11 nutzen sie wieder, eine zweite entsteht
@@ -100,7 +100,7 @@ class PreviewScene extends Phaser.Scene {
     this.input.on('pointerdown', (p: Phaser.Input.Pointer) => { this.dragX = p.x; this.pressX = p.x; this.moved = false; });
     this.input.on('pointermove', (p: Phaser.Input.Pointer) => {
       if (this.dragX === null || !p.isDown) return;
-      if (Math.abs(p.x - this.pressX) > CLICK_SLOP) this.moved = true;
+      if (!isClick(p.x - this.pressX)) this.moved = true;
       this.onPan(this.dragX - p.x);
       this.dragX = p.x;
     });

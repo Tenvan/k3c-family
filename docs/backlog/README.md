@@ -46,7 +46,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | HW1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
 | [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | eingeplant | RG1 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
 | [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
-| [B-352](B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | offen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
 | [B-363](B-363-planung-flags-bearbeiten.md) | DEV | Idee | mittel | eingeplant | WZ2 | Die Planungsseite ändert Prio, Umgebung, Agent und Projekt direkt im Detail |
 | [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | eingeplant | GL1 | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
 | [B-394](B-394-xbox-overlay-gesten-abnahme.md) | PLAT | Frage | niedrig | eingeplant | HW1 | Overlay-Gesten (RB, LB + RB) sind an der Xbox abgenommen (B-195/AC-02) |
@@ -74,12 +73,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-603](B-603-dev-aktionen-boss-event.md) | SRV | Idee | hoch | eingeplant | KB4 | Dev-Aktionen lösen Boss, Phasenwechsel und Events (Vollmond, Blutmond, Händler) sofort aus |
 | [B-604](B-604-welt-anzeige-pausenmenue-lobby.md) | CLI | Problem | mittel | eingeplant | BD9 | Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby |
 | [B-605](B-605-schutzplatz-stabil-bei-truppenwechsel.md) | SIM | Schuld | niedrig | eingeplant | KB6 | Schutzplatz bleibt stabil, wenn Truppen sterben oder hinzukommen |
-| [B-613](B-613-http-origin-pruefen.md) | SRV | Problem | niedrig | eingeplant | BD10 | Schreibende HTTP-Endpunkte des Spielservers lehnen fremde Webseiten ab |
 | [B-617](B-617-studio-levelview-test-golden.md) | DEV | Problem | hoch | eingeplant | WZ34 | Der Studio-Test levelView passt wieder zur Golden-Datei level-forest.json |
 | [B-629](B-629-buildall-web-exe.md) | INF | Problem | hoch | eingeplant | WZ34 | task buildall baut die Web-EXEs von Studio und Workbench nicht mit |
 | [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | eingeplant | WZ34 | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
 | [B-622](B-622-fackeln-als-spielobjekt.md) | SIM | Idee | niedrig | eingeplant | W15 | Fackeln gibt es als Spielobjekt mit Licht in der Nacht |
-| [B-630](B-630-quellen-werden-nicht-uebernommen.md) | DEV | Problem | mittel | offen | – | Quellen werden nicht übernommen |
 | [B-635](B-635-muenzskala-2-bis-30.md) | REG | Idee | hoch | eingeplant | BS2 | Münzpreise liegen auf einer kleinen Skala von 2 bis 30 Gold |
 | [B-636](B-636-farm-heisst-baumschule.md) | SIM | Idee | hoch | eingeplant | BS4 | Die Farm heißt Baumschule und steht auf gerodeten Waldbauplätzen |
 | [B-637](B-637-hafen-chunk-boot.md) | SIM | Idee | hoch | eingeplant | BS5 | Ein Hafen-Chunk auf Inselstufe 1 baut das Boot zum Verlassen der Insel |
@@ -101,16 +98,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-676](B-676-studio-skills-ziel-und-status.md) | DEV | Idee | mittel | eingeplant | KB5 | Das Studio zeigt Skills am Wirkort und DoTs und Buffs an Gegnern und Monarchen |
 | [B-680](B-680-welt-werte-ueberschreiben.md) | REG | Idee | hoch | eingeplant | BAL8 | Eine Welt-Datei erbt die Basis-Werte und übersteuert nur, was sie ändern will |
 | [B-681](B-681-sim-werte-je-raum.md) | SIM | Idee | hoch | eingeplant | BAL8 | Die Simulation rechnet mit den Werten ihrer Welt statt mit globalen Datei-Variablen |
-| [B-682](B-682-welten-editor-overrides.md) | DEV | Idee | mittel | eingeplant | WZ37 | Der Welten-Editor bearbeitet Werte-Overrides einer Welt und zeigt Basiswert gegen Override |
-| [B-683](B-683-chat-welt-overrides.md) | DEV | Idee | mittel | eingeplant | WZ37 | Der Studio-Chat kann Welt-Overrides lesen, setzen und zurücksetzen |
 | [B-684](B-684-studio-ausschnitt-rahmen-und-einpassen.md) | DEV | Idee | mittel | eingeplant | GRJ2 | Die Ausschnitt-Bearbeitung zeigt wahlweise einen Rahmen und passt die Grafik in die Kachel ein |
 | [B-685](B-685-zielmass-grafiken-skalieren.md) | CLI | Idee | hoch | eingeplant | GRJ2 | Grafiken bekommen ein Zielmaß in der Ausgabe und werden dort passend skaliert |
-| [B-688](B-688-download-weiterleitung-fremde-hosts.md) | DEV | Problem | mittel | offen | – | Downloads folgen Weiterleitungen nur zu erlaubten Hosts |
-| [B-689](B-689-welten-inspektor-scrollt-in-sich.md) | DEV | Problem | niedrig | offen | – | Welten-Editor: Inspektor scrollt in sich, Höhe mit 24 Chips messen |
-| [B-690](B-690-studio-welt-testluecken.md) | DEV | Problem | niedrig | offen | – | Studio-Welt: Testlücken Klick-Schwelle, Bühnen-Verdrahtung, Werkzeugleiste, Merge-Dialog |
-| [B-691](B-691-doku-norton-codemap.md) | DEV | Problem | niedrig | offen | – | Doku: Norton-Ausnahme in arbeitsweise.md, veraltete world/codemap.md |
-| [B-692](B-692-wertesatz-nachtraege.md) | SIM | Problem | mittel | offen | – | Welt-Wertesatz: Nachträge aus dem Review BAL8.2 |
-| [B-693](B-693-overrides-editor-nachtraege.md) | DEV | Problem | niedrig | offen | – | Overrides-Editor: Nachträge aus dem Review WZ37.1 |
+| [B-695](B-695-flaky-simrun-tempdir-balancing-abbruch.md) | DEV | Problem | niedrig | offen | – | Zwei Tests flackern: simrun-TempDir-Cleanup und Abbruch eines wartenden Laufs |
 
 ## Archiv
 
@@ -653,3 +643,15 @@ Zeile in diesen Abschnitt.
 | [B-672](archiv/B-672-studio-gegner-kompakt.md) | DEV | Idee | mittel | erledigt | WZ38 | Die Gegner-Seite zeigt Gegner als kompakte Tabelle mit Inspektor, Lücken als Zahl statt langer Badges |
 | [B-580](archiv/B-580-workbench-git-seite.md) | DEV | Idee | mittel | erledigt | WZ38 | Die Workbench hat eine Git-Seite für dieses Repo |
 | [B-619](archiv/B-619-check-diff-cache-und-short.md) | INF | Problem | hoch | erledigt | WZ38 | check:diff nutzt den Go-Testcache und lässt lange Tests aus |
+| [B-688](archiv/B-688-download-weiterleitung-fremde-hosts.md) | DEV | Problem | mittel | erledigt | WZ39 | Downloads folgen Weiterleitungen nur zu erlaubten Hosts |
+| [B-689](archiv/B-689-welten-inspektor-scrollt-in-sich.md) | DEV | Problem | niedrig | erledigt | WZ39 | Welten-Editor: Inspektor scrollt in sich, Höhe mit 24 Chips messen |
+| [B-690](archiv/B-690-studio-welt-testluecken.md) | DEV | Problem | niedrig | erledigt | WZ39 | Studio-Welt: Testlücken Klick-Schwelle, Bühnen-Verdrahtung, Werkzeugleiste, Merge-Dialog |
+| [B-691](archiv/B-691-doku-norton-codemap.md) | DEV | Problem | niedrig | erledigt | WZ39 | Doku: Norton-Ausnahme in arbeitsweise.md, veraltete world/codemap.md |
+| [B-692](archiv/B-692-wertesatz-nachtraege.md) | SIM | Problem | mittel | erledigt | BAL10 | Welt-Wertesatz: Nachträge aus dem Review BAL8.2 |
+| [B-693](archiv/B-693-overrides-editor-nachtraege.md) | DEV | Problem | niedrig | erledigt | WZ39 | Overrides-Editor: Nachträge aus dem Review WZ37.1 |
+| [B-694](archiv/B-694-review-wz39-bal10-nachtraege.md) | SIM | Problem | niedrig | erledigt | – | Nachträge aus dem Review WZ39/BAL10 (niedrig) |
+| [B-630](archiv/B-630-quellen-werden-nicht-uebernommen.md) | DEV | Problem | mittel | erledigt | – | Quellen werden nicht übernommen |
+| [B-352](archiv/B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | verworfen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
+| [B-682](archiv/B-682-welten-editor-overrides.md) | DEV | Idee | mittel | erledigt | WZ37 | Der Welten-Editor bearbeitet Werte-Overrides einer Welt und zeigt Basiswert gegen Override |
+| [B-683](archiv/B-683-chat-welt-overrides.md) | DEV | Idee | mittel | erledigt | WZ37 | Der Studio-Chat kann Welt-Overrides lesen, setzen und zurücksetzen |
+| [B-613](archiv/B-613-http-origin-pruefen.md) | SRV | Problem | niedrig | erledigt | BD10 | Schreibende HTTP-Endpunkte des Spielservers lehnen fremde Webseiten ab |

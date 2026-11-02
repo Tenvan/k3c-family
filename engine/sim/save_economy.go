@@ -123,18 +123,18 @@ func applyTroops(w *World, h HubSave) {
 }
 
 // validateEconomy prüft einen Hub: bekannte Truppenart (nie stillschweigend Landstreicher), bekannter Beruf, Rüstungsstufe
-// im Bereich der Daten. Geprüft wird gegen die Basis: Arten, Berufe und die Zahl der Rüstungsstufen ändert keine Welt.
-func validateEconomy(h HubSave) error {
+// im Bereich der Daten, geprüft gegen den Wertesatz v der Welt (B-692).
+func validateEconomy(v *WorldValues, h HubSave) error {
 	for _, t := range h.Troops {
-		if t.Kind != "peasant" && !isFighter(troops, t.Kind) {
+		if t.Kind != "peasant" && !isFighter(v.Troops, t.Kind) {
 			return fmt.Errorf("spielstand: Truppenart %q unbekannt", t.Kind)
 		}
-		if _, ok := professionOf(troops, t.Profession); t.Profession != "" && (!ok || t.Kind != "peasant") {
+		if _, ok := professionOf(v.Troops, t.Profession); t.Profession != "" && (!ok || t.Kind != "peasant") {
 			return fmt.Errorf("spielstand: Beruf %q unbekannt oder nicht für %s", t.Profession, t.Kind)
 		}
 	}
-	if h.ArmorLevel < 0 || h.ArmorLevel > len(buildings["armory"].Armor) {
-		return fmt.Errorf("spielstand: Rüstungsstufe %d außerhalb 0..%d", h.ArmorLevel, len(buildings["armory"].Armor))
+	if armor := v.Buildings["armory"].Armor; h.ArmorLevel < 0 || h.ArmorLevel > len(armor) {
+		return fmt.Errorf("spielstand: Rüstungsstufe %d außerhalb 0..%d", h.ArmorLevel, len(armor))
 	}
 	return nil
 }

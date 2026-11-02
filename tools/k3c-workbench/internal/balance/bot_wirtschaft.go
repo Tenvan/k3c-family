@@ -139,8 +139,9 @@ func fighterStep(w *sim.World, p *sim.Player, reserve int) *float64 {
 // nearestPayable: der nächste Platz der Art im Zustand state, der Münzen nimmt und dessen Rest plus Rücklage das Gold deckt.
 func nearestPayable(w *sim.World, p *sim.Player, kind, state string, reserve int) *sim.Site {
 	var best *sim.Site
+	want := wantSet{w: w}
 	for _, s := range w.Sites {
-		if s.Kind != kind || s.State != state || (state == "unpaid" && !wanted(w, s)) {
+		if s.Kind != kind || s.State != state || (state == "unpaid" && !want.wanted(s)) {
 			continue
 		}
 		if left, ok := sim.SiteGoldLeft(w, s); ok && left > 0 && p.Gold >= left+reserve && (best == nil || closer(p.X, s.X, best.X)) {
@@ -172,27 +173,55 @@ func peasants(w *sim.World) int {
 }
 
 // nodeFor: der nächste unmarkierte Knoten eines Rohstoffs, der für need fehlt (Vorrat plus markierte Knoten reichen
-// nicht), mit bezahlbarem Rest und ohne zahlbaren Platz in Reichweite (der ginge beim Zahlen vor).
+// nicht), mit bezahlbarem Rest und ohne zahlbaren Platz in Reichweite (der ginge beim Zahlen vor). B-654: ohne Map je
+// Aufruf; ein Knoten, der nicht näher als der beste liegt, kostet keinen Preis-Zugriff, die teuren Prüfungen (zahlbare
+// Plätze, Bau des Endbosses) laufen nur für Kandidaten, die zahlbaren Plätze höchstens einmal. Das Ergebnis ist dasselbe.
 func nodeFor(w *sim.World, p *sim.Player, need sim.Cost) *sim.ResourceNode {
-	pending := map[string]int{}
+	var pending sim.Cost // markierte Knoten je Rohstoff
 	for _, n := range w.Nodes {
-		if np, ok := prices.nodes[n.Kind]; ok && n.Marked {
-			pending[np.Resource] += np.Amount
-		}
-	}
-	blocked := payableSitesX(w)
-	var best *sim.ResourceNode
-	for _, n := range w.Nodes {
-		np, ok := prices.nodes[n.Kind]
-		if !ok || n.Marked || p.Gold < np.MarkCost-n.PaidGold || nearAny(n.X, blocked) || nearLair(w, n.X) ||
-			amountOf(*w.Stock, np.Resource)+pending[np.Resource] >= costOf(need, np.Resource) {
+		if !n.Marked {
 			continue
 		}
-		if best == nil || closer(p.X, n.X, best.X) {
+		if np, ok := prices.nodes[n.Kind]; ok {
+			addRes(&pending, np.Resource, np.Amount)
+		}
+	}
+	var best *sim.ResourceNode
+	var blocked []float64
+	blockedDone := false
+	for _, n := range w.Nodes {
+		if n.Marked || (best != nil && !closer(p.X, n.X, best.X)) {
+			continue
+		}
+		np, ok := prices.nodes[n.Kind]
+		if !ok || p.Gold < np.MarkCost-n.PaidGold ||
+			amountOf(*w.Stock, np.Resource)+costOf(pending, np.Resource) >= costOf(need, np.Resource) {
+			continue
+		}
+		if !blockedDone {
+			blocked, blockedDone = payableSitesX(w), true
+		}
+		if !nearAny(n.X, blocked) && !nearLair(w, n.X) {
 			best = n
 		}
 	}
 	return best
+}
+
+// addRes zählt amount zum Rohstoff r (Name wie in economy.json) in c.
+func addRes(c *sim.Cost, r string, amount int) {
+	switch r {
+	case "wood":
+		c.Wood += amount
+	case "stone":
+		c.Stone += amount
+	case "copper":
+		c.Copper += amount
+	case "iron":
+		c.Iron += amount
+	case "crystal":
+		c.Crystal += amount
+	}
 }
 
 // payableSitesX: Orte aller Plätze, die gerade Münzen nehmen.

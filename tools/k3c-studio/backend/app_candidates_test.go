@@ -2,6 +2,8 @@ package backend
 
 import (
 	"errors"
+	"net/http/httptest"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -20,9 +22,10 @@ const candidateCredits = "# Audio\n\n| Ordner | Pack | Urheber | Lizenz | Quelle
 // Katalog-Dateien extra (frei), gesperrt (ND) und nc; Treffer dürfen von 127.0.0.1 laden.
 func candidatesApp(t *testing.T, probe string) *App {
 	t.Helper()
-	a, _ := sourcesApp(t, probe)
+	a, srv := sourcesApp(t, probe)
 	assets.DownloadHosts["127.0.0.1"] = true
 	t.Cleanup(func() { delete(assets.DownloadHosts, "127.0.0.1") })
+	allowTestPort(t, srv)
 	for _, name := range []string{"alt", "extra", "gesperrt", "nc", "sampling"} {
 		write(t, filepath.Join(a.root, "public", "audio", name+".ogg"), string(testOgg))
 	}
@@ -382,4 +385,12 @@ func TestAssetCandidateAssignVorratOhneDownloadPlatz(t *testing.T) {
 	if !st.busy {
 		t.Error("fremder download-platz freigegeben")
 	}
+}
+
+// allowTestPort erlaubt den Port des TLS-Testservers bis zum Testende (B-694).
+func allowTestPort(t *testing.T, srv *httptest.Server) {
+	t.Helper()
+	u, _ := url.Parse(srv.URL)
+	assets.DownloadPorts[u.Port()] = true
+	t.Cleanup(func() { delete(assets.DownloadPorts, u.Port()) })
 }

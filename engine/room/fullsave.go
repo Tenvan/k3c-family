@@ -97,6 +97,7 @@ func fullIsland(seed, savedAt string) (sim.IslandSave, error) {
 		}
 	}
 	s := isl.ToSave(savedAt)
+	// Der Vollausbau baut immer einen Stand der Standard-Welt (Tiefen oben), daher die Probe gegen sie (B-694).
 	if _, err := sim.FromIslandSave(s, 1); err != nil {
 		return sim.IslandSave{}, err
 	}

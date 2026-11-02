@@ -1,0 +1,14 @@
+{
+  "notes": "Fackel-Plätze (B-622, W15.1): gemeinsamer Fall für engine/sim/torches_test.go und src/scenes/render/nightLight.test.ts. offsets wie data/light.json › torches (eigene Werte, damit Lichtwerte den Fall nicht ändern); torches = erwartete Orte in Units, in der Reihenfolge der Plätze. Links der Hub-Mitte gespiegelt, nur gebaute Plätze, die Werkstatt hat keine Fackeln.",
+  "hubX": 100,
+  "offsets": { "wall": [0], "tower": [-0.75, 0.75] },
+  "sites": [
+    { "kind": "wall", "x": 56, "state": "built" },
+    { "kind": "tower", "x": 64, "state": "built" },
+    { "kind": "workshop", "x": 84, "state": "built" },
+    { "kind": "wall", "x": 144, "state": "unpaid" },
+    { "kind": "tower", "x": 136, "state": "built" },
+    { "kind": "wall", "x": 150, "state": "waitingWorker" }
+  ],
+  "torches": [56, 64.75, 63.25, 135.25, 136.75]
+}

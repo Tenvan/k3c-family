@@ -118,7 +118,11 @@ func BuildInsights(s Summary, base *Summary, h *Hints, m Meta) Insights {
 			t.Trend = trend(b, e)
 		}
 		t.Levers = freeLevers(t.Levers, m.Frozen)
-		t.Runs, t.Plain, t.Gap, t.TrendText, t.Plans = s.Seeds, t.plain(), t.gapText(), t.trendPlain(), t.plans()
+		t.Runs = s.Seeds
+		if e.Counted > 0 {
+			t.Runs = e.Counted // nur gewertete Läufe (B-657)
+		}
+		t.Plain, t.Gap, t.TrendText, t.Plans = t.plain(), t.gapText(), t.trendPlain(), t.plans()
 		in.Counts[t.Light]++
 		in.Targets = append(in.Targets, t)
 	}

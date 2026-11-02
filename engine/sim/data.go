@@ -172,20 +172,34 @@ func loadFrom[T any](fsys fs.FS, name string, dst *T) error {
 	return nil
 }
 
-// UseData lädt buildings, troops, economy, hub, monarch, enemies und waves aus fsys neu (Sensitivitäts-Lauf des
-// Balancing-Testers, BAL3.3); `UseData(data.Files)` stellt den eingebetteten Stand wieder her. Nicht neu geladen
-// werden difficulty, biomes und daraus abgeleitete Werte (skillCatalog). Bei einem Fehler bleibt alles unverändert.
+// UseData lädt buildings, troops, economy, hub, monarch (samt Skill-Katalog), enemies, waves und goals aus fsys neu
+// (Sensitivitäts-Lauf des Balancing-Testers, BAL3.3); `UseData(data.Files)` stellt den eingebetteten Stand wieder her.
+// Nicht neu geladen werden difficulty und biomes. Jede Datei landet in einem frischen Wert (loadFrom), die Maps eines
+// vorher geholten Wertesatzes (defaultValues) bleiben unverändert. Bei einem Fehler bleibt alles unverändert.
 // Nicht nebenläufig zu laufenden Simulationen aufrufen. Wirkt auf Inseln, die danach angelegt oder geladen werden: Welten
 // ohne Overrides rechnen mit diesem Stand, Welten mit Overrides lösen ihn als Basis auf (dataFS).
 func UseData(fsys fs.FS) error {
-	b, t, e, h, m, en, w := buildings, troops, economy, hub, monarch, enemyData, waves
-	var ship shipFile
+	var (
+		b    map[string]BuildingData
+		t    map[string]TroopData
+		e    economyData
+		h    HubData
+		m    monarchData
+		en   map[string]EnemyData
+		w    wavesData
+		g    Goals
+		ship shipFile
+	)
 	if err := errors.Join(loadFrom(fsys, "buildings.json", &b), loadFrom(fsys, "ship.json", &ship), loadFrom(fsys, "troops.json", &t),
 		loadFrom(fsys, "economy.json", &e), loadFrom(fsys, "hub.json", &h), loadFrom(fsys, "monarch.json", &m),
-		loadEnemies(fsys, &en), loadFrom(fsys, "waves.json", &w), checkPresets(m), checkWaves(w)); err != nil {
+		loadEnemies(fsys, &en), loadFrom(fsys, "waves.json", &w), loadFrom(fsys, "goals.json", &g)); err != nil {
 		return err
 	}
-	buildings, troops, economy, hub, monarch, enemyData, waves = withShip(b, ship), t, e, h, m, en, w
+	if err := errors.Join(checkPresets(m), checkWaves(w), checkPools(en)); err != nil {
+		return err
+	}
+	buildings, troops, economy, hub, monarch, enemyData, waves, goals = withShip(b, ship), t, e, h, m, en, w, g
+	baseSkills = newSkillTable(m.Skills)
 	dataFS = fsys
 	return nil
 }

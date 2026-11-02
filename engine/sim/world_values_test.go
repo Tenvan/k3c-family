@@ -35,8 +35,7 @@ func ov(files map[string]string) map[string]json.RawMessage {
 }
 
 func baseValues() WorldValues {
-	return WorldValues{Buildings: buildings, Troops: troops, Economy: economyData(economy), Hub: hub, Monarch: monarch,
-		Enemies: enemyData, Waves: waves, Goals: goals}
+	return *defaultValues()
 }
 
 func mustMarshal(t *testing.T, v any) string {

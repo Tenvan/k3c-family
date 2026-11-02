@@ -206,7 +206,7 @@ func TestPassivesOhneBasiswerte(t *testing.T) {
 // Alle zwölf Passive stehen mit Wirkung und als vorläufig markiert in monarch.json.
 func TestPassivesDaten(t *testing.T) {
 	n := 0
-	for _, s := range skillCatalog {
+	for _, s := range defaultValues().skills.list {
 		if s.Kind != "passive" || s.Line == "thief" {
 			continue
 		}

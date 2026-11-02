@@ -55,7 +55,7 @@ func castSkill(w *World, p *Player, slot int, announce bool) {
 	if slot < len(p.Cooldowns) && p.Cooldowns[slot] > 0 {
 		return
 	}
-	s, ok := skillByID(p.Slots[slot])
+	s, ok := w.values().skillByID(p.Slots[slot])
 	cast := skillEffects[s.Effect.Type]
 	e, cd := s.Effect, s.Cooldown
 	mult := damageMultOf(w, p, true) // Passive (monarch_passives.go): Zauberschaden, Abklingzeit, Spell Echo

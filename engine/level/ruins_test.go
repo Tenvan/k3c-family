@@ -22,7 +22,7 @@ func TestRuinenWerteAusDaten(t *testing.T) {
 	if r.HPShare != 0.25 || len(r.Kinds) != 8 {
 		t.Fatalf("data/ruins.json: Anteil %v, %d Arten", r.HPShare, len(r.Kinds))
 	}
-	if got := RuinHP("smithy"); got != 63 {
+	if got := RuinHP(ruinBuildings["smithy"].HP); got != 63 {
 		t.Errorf("Schmiede: %v HP, erwartet 63 (25 %% von 250, aufgerundet)", got)
 	}
 }

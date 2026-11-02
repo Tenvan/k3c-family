@@ -61,6 +61,8 @@ type PlanSaved struct {
 	Hint  string `json:"hint"`
 	Error string `json:"error"`
 	Stale bool   `json:"stale"`
+	// Warnings: Nachfolger-Welten, die schon vorher ungültig waren oder nicht laden (Welten Editor).
+	Warnings []string `json:"warnings,omitempty"`
 }
 
 var planSlot = regexp.MustCompile(`auf Platz ([+-]\d+)`)

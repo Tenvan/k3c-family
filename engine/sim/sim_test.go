@@ -77,14 +77,14 @@ func compare(t *testing.T, run goldenRun, tick int, want map[string]any, w *Worl
 	}
 }
 
-// replay rechnet einen Golden-Lauf mit seinen Eingaben nach und vergleicht jeden Snapshot.
-func replay(t *testing.T, run goldenRun) {
-	goldenPurse(t)
+// goldenWorld baut die Startwelt eines Golden-Laufs; h ist eine abweichende hub.json (nil = eingebettete).
+func goldenWorld(t *testing.T, run goldenRun, h *HubData) *World {
+	t.Helper()
 	b, err := level.LoadBiome(run.Biome)
 	if err != nil {
 		t.Fatal(err)
 	}
-	w, err := CreateWorld(b, run.Seed, Options{CycleSpeed: run.CycleSpeed})
+	w, err := CreateWorld(b, run.Seed, Options{CycleSpeed: run.CycleSpeed, hub: h})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -97,6 +97,13 @@ func replay(t *testing.T, run goldenRun) {
 	if run.Aggression > 0 && w.Aggression != nil {
 		*w.Aggression = run.Aggression
 	}
+	return w
+}
+
+// replay rechnet einen Golden-Lauf mit seinen Eingaben nach und vergleicht jeden Snapshot.
+func replay(t *testing.T, run goldenRun) {
+	goldenPurse(t)
+	w := goldenWorld(t, run, nil)
 	snap, tick := 0, 0
 	var got []snapshot
 	compare(t, run, 0, wantAt(t, run, 0, 0), w, &got)

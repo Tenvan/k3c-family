@@ -45,23 +45,42 @@ export interface LitSource extends LightSource {
 }
 
 /**
- * Lichtquellen der Welt: das Lagerfeuer ist die Burg im Look `lagerfeuer` (Hub-Stufe 1 vor dem Ausbau, `hubLookOf`). Fackeln gibt es
- * als Spielobjekt noch nicht (B-472 › Nicht-Ziele), sie leuchten erst mit eigenem Ticket. Arten ohne Werte in `data/` geben kein
- * Licht und stehen in `missing` (der Aufrufer warnt).
+ * Fackeln (B-622, W15.1): Orte in Units an gebauten Mauern und Türmen nach `data/light.json` › `torches`, links der Hub-Mitte gespiegelt;
+ * an zerstörten oder unfertigen Plätzen keine. Dieselbe Regel wie `engine/sim/torches.go` (gemeinsamer Fall `testdata/torches.json`),
+ * gerechnet aus dem gemeldeten Zustand, nichts eigenes.
+ */
+export function torchXs(
+  sites: readonly { kind: string; x: number; state: string }[],
+  hubX: number,
+  offsets: Partial<Record<string, readonly number[]>> = LIGHT.torches,
+): number[] {
+  const out: number[] = [];
+  for (const s of sites) {
+    if (s.state !== 'built') continue;
+    const side = s.x < hubX ? -1 : 1;
+    for (const o of offsets[s.kind] ?? []) out.push(s.x + side * o);
+  }
+  return out;
+}
+
+/**
+ * Lichtquellen der Welt: das Lagerfeuer ist die Burg im Look `lagerfeuer` (Hub-Stufe 1 vor dem Ausbau, `hubLookOf`), Fackeln stehen an
+ * gebauten Mauern und Türmen (`torchXs`). Arten ohne Werte in `data/` geben kein Licht und stehen in `missing` (der Aufrufer warnt).
  */
 export function lightSources(
-  world: Pick<World, 'castle' | 'hubLevel' | 'hubUpgrade' | 'danger'>,
+  world: Pick<World, 'castle' | 'hubX' | 'hubLevel' | 'hubUpgrade' | 'danger' | 'sites'>,
   data: Partial<Record<LightSourceKind, LightSource>> = LIGHT.sources,
 ): { lit: LitSource[]; missing: LightSourceKind[] } {
   const wanted: { kind: LightSourceKind; x: number }[] = hubLookOf(world).id === 'lagerfeuer' ? [{ kind: 'campfire', x: world.castle.x }] : [];
+  for (const x of torchXs(world.sites, world.hubX)) wanted.push({ kind: 'torch', x });
   const lit: LitSource[] = [];
-  const missing: LightSourceKind[] = [];
+  const missing = new Set<LightSourceKind>();
   for (const w of wanted) {
     const d = data[w.kind];
     if (d && d.radius > 0 && d.strength > 0) lit.push({ ...w, radius: d.radius, strength: d.strength });
-    else missing.push(w.kind);
+    else missing.add(w.kind);
   }
-  return { lit, missing };
+  return { lit, missing: [...missing] };
 }
 
 /** Deckkraft des Lichtscheins: Stärke × (1 − daylight), am Tag 0, in tiefster Nacht die volle Stärke (höchstens 1) */

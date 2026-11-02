@@ -157,6 +157,22 @@ describe('Squash-Prüfung auf Knopfdruck', () => {
   });
 });
 
+describe('Merge-Dialog (B-580/AC-04, B-690/AC-04)', () => {
+  it('reiner Merge läuft erst nach „Mergen“ im Dialog (B-690/AC-04)', async () => {
+    const spy = vi.spyOn(backend, 'gitPRAction').mockResolvedValue('PR #452 gemergt'); // der Mock wüsste #452 danach nicht mehr offen: Squash-Test folgt
+    const host = await mount();
+    const row = [...host.querySelectorAll('tr')].find((r) => r.textContent?.includes('#452'))!;
+    act(() => button('Merge', row).click());
+    await flush();
+    expect(dialog()?.textContent).toContain('PR #452 mergen?');
+    expect(dialog()?.textContent).not.toContain('Squash');
+    expect(spy).not.toHaveBeenCalled();
+    act(() => button('Mergen').click());
+    await flush();
+    expect(spy).toHaveBeenCalledWith(452, 'merge');
+  });
+});
+
 describe('Bestätigung vor Zerstörendem (B-580/AC-04)', () => {
   it('Squash-Merge läuft erst nach „Squash-Merge“ im Dialog', async () => {
     const spy = vi.spyOn(backend, 'gitPRAction');

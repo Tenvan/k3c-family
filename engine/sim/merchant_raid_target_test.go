@@ -107,11 +107,11 @@ func TestHaendlerSpielstandPrueft(t *testing.T) {
 		t.Fatal(err)
 	}
 	s.Merchant.HP = 0
-	if validateIslandSave(s) == nil {
+	if validateIslandSave(s, nil) == nil {
 		t.Error("Händler mit 0 HP im Stand wird abgelehnt")
 	}
 	s.Merchant, s.MerchantVisits = nil, -1
-	if validateIslandSave(s) == nil {
+	if validateIslandSave(s, nil) == nil {
 		t.Error("negativer Besuchszähler wird abgelehnt")
 	}
 }

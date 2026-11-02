@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { mockWorldPreview } from '../api/mockWorld';
-import { applyLook, backgroundToggles, buildingGroups, buildingToggles, commonOf, focusXs, hpOf, hubLevelChoices, kindColor, pickKeys, presetLooks, previewArgsOf, siteAt, siteKey, stripLanes, worldOf } from './stageLogic';
+import { applyLook, backgroundToggles, buildingGroups, buildingToggles, commonOf, focusXs, hpOf, hubLevelChoices, isClick, kindColor, pickKeys, presetLooks, previewArgsOf, siteAt, siteKey, stripLanes, worldOf } from './stageLogic';
 
 describe('Hub-Stufen (B-460/AC-04)', () => {
   it('aus data/hub.json › levels: 1 bis Anzahl der Einträge', () => {
@@ -240,5 +240,12 @@ describe('Klick auf einen Bauplatz der Bühne (B-667/AC-01 bis AC-03)', () => {
   it('ausgeblendete Plätze sind nicht wählbar', () => {
     expect(pickKeys(hit(), ['tower@11'], toggles, new Set(['wall@10']))).toEqual(['tower@11']);
     expect(pickKeys(hit({ double: true }), [], toggles, new Set(['wall@20']))).toEqual(['wall@10']);
+  });
+});
+
+describe('Klick oder Ziehen (B-667/AC-02, B-690/AC-01)', () => {
+  it('bis 4 Pixel Bewegung in beide Richtungen ist es ein Klick, ab 5 ein Ziehen', () => {
+    expect([0, 1, -1, 4, -4].map(isClick)).toEqual([true, true, true, true, true]);
+    expect([5, -5, 40].map(isClick)).toEqual([false, false, false]);
   });
 });

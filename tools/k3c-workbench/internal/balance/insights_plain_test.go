@@ -27,7 +27,7 @@ func plainTarget(measure, name, kind string, lo, hi *float64, value float64, run
 // Das Beispiel aus der Beschwerde: Burg hält 100 % bei Korridor 75–90 %.
 func TestPlainAnteilZuHoch(t *testing.T) {
 	g := plainTarget("castleHeld", "Burg hält Nacht 1–5", KindShare, fp(75), fp(90), 100, 5)
-	want := "In 5 von 5 Läufen hielt die Burg bis zum Ende (100 %). Sollwert: 75–90 % der Läufe. Damit 10 Prozentpunkte über dem Korridor, also zu leicht."
+	want := "In 5 von 5 Läufen hielt die Burg Nacht 1 bis 5 (100 %). Sollwert: 75–90 % der Läufe. Damit 10 Prozentpunkte über dem Korridor, also zu leicht."
 	if got := g.plain(); got != want {
 		t.Errorf("plain:\n%s\nwill:\n%s", got, want)
 	}

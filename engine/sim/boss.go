@@ -74,7 +74,7 @@ func bossAbility(w *World, e *Enemy) {
 		for _, c := range targets {
 			applyDamageBy(w, c.id, moonDamage(w, e.Damage), e.Kind) // Blutmond (events_moon.go)
 			if c.player != nil {
-				frostArmorHit(c.player, e)
+				frostArmorHit(w, c.player, e)
 			}
 		}
 	}

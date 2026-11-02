@@ -9,12 +9,13 @@ import "math"
 
 // eachPassive ruft f für jedes gelernte Passiv jedes lebenden Spielers: Spieler nach Index, Skills in Lernreihenfolge.
 func eachPassive(w *World, f func(owner *Player, e skillEffect)) {
+	v := w.values()
 	for _, o := range w.Players {
 		if !isAlive(o) {
 			continue
 		}
 		for _, id := range o.Skills {
-			if s := skillRef(id); s != nil && s.Kind == "passive" {
+			if s := v.skillRef(id); s != nil && s.Kind == "passive" {
 				f(o, s.Effect)
 			}
 		}
@@ -122,9 +123,9 @@ func regenReaches(w *World, o *Player, e skillEffect, x float64, self bool) bool
 
 // frostArmorHit: Trifft Gegner en den Monarchen p im Nahkampf, verlangsamt Frost Armor ihn (Feld wie Ice Wall). Eine
 // stärkere laufende Verlangsamung bleibt.
-func frostArmorHit(p *Player, en *Enemy) {
+func frostArmorHit(w *World, p *Player, en *Enemy) {
 	for _, id := range p.Skills {
-		s, ok := skillByID(id)
+		s, ok := w.values().skillByID(id)
 		if !ok || s.Kind != "passive" || s.Effect.Type != "frostArmor" {
 			continue
 		}
@@ -139,7 +140,7 @@ func frostArmorHit(p *Player, en *Enemy) {
 func spellEchoes(w *World, p *Player) bool {
 	chance := 0.0
 	for _, id := range p.Skills {
-		if s, ok := skillByID(id); ok && s.Kind == "passive" && s.Effect.Type == "spellEcho" {
+		if s, ok := w.values().skillByID(id); ok && s.Kind == "passive" && s.Effect.Type == "spellEcho" {
 			chance += s.Effect.Chance
 		}
 	}

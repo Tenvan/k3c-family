@@ -20,8 +20,9 @@ func AurasOf(w *World, p *Player) []Aura {
 		return nil
 	}
 	var out []Aura
+	v := w.values()
 	for _, id := range p.Skills {
-		s := skillRef(id)
+		s := v.skillRef(id)
 		if s == nil || s.Kind != "passive" {
 			continue
 		}

@@ -34,11 +34,12 @@ func clearNode(w *sim.World, p *sim.Player) *sim.ResourceNode {
 // niedrigsten rank; nil, wenn keiner gesperrt ist.
 func blockedSite(w *sim.World) *sim.Site {
 	var site *sim.Site
+	want := wantSet{w: w}
 	for _, s := range w.Sites {
 		if (s.Kind != "wall" && s.Kind != "tower" && s.Kind != "nursery") || s.State != "unpaid" || sim.SiteHubLevel(w, s) > w.HubLevel {
 			continue
 		}
-		if len(sim.SiteBlockers(w, s)) > 0 && wanted(w, s) && (site == nil || rank(w, s) < rank(w, site)) {
+		if len(sim.SiteBlockers(w, s)) > 0 && want.wanted(s) && (site == nil || rank(w, s) < rank(w, site)) {
 			site = s
 		}
 	}
@@ -60,20 +61,50 @@ func rank(w *sim.World, s *sim.Site) float64 {
 
 // wanted: Der Bot baut je Seite, Zone und Art (Mauer, Turm) nur einen Platz, den billigsten (innersten); weitere Plätze der
 // Zone lässt er stehen, sonst verbrennt er das Startgold an verstreuten Mauern statt an Bauern und Bögen (B-652). Plätze,
-// die nicht aus den Zonen stammen, sind immer gewollt.
-func wanted(w *sim.World, s *sim.Site) bool {
-	z, ok := sim.SiteZone(w, s)
+// die nicht aus den Zonen stammen, sind immer gewollt. wantSet sammelt die belegten Zonen einmal je Durchlauf über die
+// Plätze, statt je Platz erneut alle Plätze zu prüfen (B-654); das Ergebnis ist dasselbe.
+type wantSet struct {
+	w     *sim.World
+	taken []takenZone
+	done  bool
+}
+
+// takenZone: Art, Seite und Zone eines Platzes, der nicht mehr unbezahlt ist.
+type takenZone struct {
+	site *sim.Site
+	kind string
+	left bool
+	zone int
+}
+
+func (ws *wantSet) wanted(s *sim.Site) bool {
+	z, ok := sim.SiteZone(ws.w, s)
 	if !ok {
 		return true
 	}
-	for _, o := range w.Sites {
-		if o != s && o.Kind == s.Kind && o.State != "unpaid" && (o.X < w.HubX) == (s.X < w.HubX) {
-			if oz, ok := sim.SiteZone(w, o); ok && oz == z {
-				return false
-			}
+	if !ws.done {
+		ws.taken, ws.done = takenZones(ws.w), true
+	}
+	left := s.X < ws.w.HubX
+	for _, t := range ws.taken {
+		if t.site != s && t.kind == s.Kind && t.left == left && t.zone == z {
+			return false
 		}
 	}
 	return true
+}
+
+func takenZones(w *sim.World) []takenZone {
+	var out []takenZone
+	for _, o := range w.Sites {
+		if o.State == "unpaid" {
+			continue
+		}
+		if z, ok := sim.SiteZone(w, o); ok {
+			out = append(out, takenZone{site: o, kind: o.Kind, left: o.X < w.HubX, zone: z})
+		}
+	}
+	return out
 }
 
 // lairSafeUnits ist der Abstand zum Bau des Endbosses, den der Bot beim Markieren und Sammeln hält: Wer dort hinläuft, weckt den

@@ -68,10 +68,10 @@ func chestSkillPoint(w *World, p *Player) {
 func AvailablePoints(w *World, p *Player) int { return poolOf(w) - (len(p.Skills) - p.SkillBase) }
 
 // lineCount zählt die gelernten Skills einer Linie.
-func lineCount(p *Player, line string) int {
+func lineCount(v *WorldValues, p *Player, line string) int {
 	n := 0
 	for _, id := range p.Skills {
-		if s, ok := skillByID(id); ok && s.Line == line {
+		if s, ok := v.skillByID(id); ok && s.Line == line {
 			n++
 		}
 	}
@@ -88,7 +88,8 @@ func tierNeed(points []int, tier int) int {
 
 // CanLearn prüft, ob der Spieler den Skill jetzt lernen darf, ohne etwas zu ändern (B-270). LearnSkill nutzt sie selbst.
 func CanLearn(w *World, p *Player, id string) error {
-	s, ok := skillByID(id)
+	v := w.values()
+	s, ok := v.skillByID(id)
 	switch {
 	case !ok:
 		return fmt.Errorf("skill %q unbekannt", id)
@@ -96,8 +97,8 @@ func CanLearn(w *World, p *Player, id string) error {
 		return fmt.Errorf("skill %q schon gelernt", id)
 	case AvailablePoints(w, p) <= 0:
 		return fmt.Errorf("skill %q: keine Punkte frei", id)
-	case lineCount(p, s.Line) < tierNeed(w.values().Monarch.TierPoints, s.Tier):
-		return fmt.Errorf("skill %q: Tier %d verlangt %d gelernte Skills der Linie %s", id, s.Tier, tierNeed(w.values().Monarch.TierPoints, s.Tier), s.Line)
+	case lineCount(v, p, s.Line) < tierNeed(v.Monarch.TierPoints, s.Tier):
+		return fmt.Errorf("skill %q: Tier %d verlangt %d gelernte Skills der Linie %s", id, s.Tier, tierNeed(v.Monarch.TierPoints, s.Tier), s.Line)
 	}
 	return nil
 }
@@ -105,7 +106,7 @@ func CanLearn(w *World, p *Player, id string) error {
 // LearnableSkills nennt die Skills, die der Spieler jetzt lernen darf (CanLearn ohne Fehler), nach ID sortiert (B-285).
 func LearnableSkills(w *World, p *Player) []string {
 	out := []string{}
-	for _, s := range skillCatalog {
+	for _, s := range w.values().skills.list {
 		if CanLearn(w, p, s.ID) == nil {
 			out = append(out, s.ID)
 		}
@@ -119,7 +120,7 @@ func LearnSkill(w *World, p *Player, id string) error {
 	if err := CanLearn(w, p, id); err != nil {
 		return err
 	}
-	s, _ := skillByID(id)
+	s, _ := w.values().skillByID(id)
 	p.Skills = append(p.Skills, id)
 	if s.Kind != "active" {
 		return nil

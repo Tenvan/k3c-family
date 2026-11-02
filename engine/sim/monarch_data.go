@@ -59,42 +59,39 @@ type monarchData struct {
 	Presets           map[string]presetData
 }
 
-// skillCatalog ist monarch.json › skills als nach ID sortierte Liste (keine Map-Iteration im Sim-Code).
-var skillCatalog = sortedSkills(monarch.Skills)
-
-// skillIndex ist die Stelle jeder ID in skillCatalog (nur lesen, nach dem Start unverändert).
-var skillIndex = indexSkills(skillCatalog)
-
-func indexSkills(list []SkillData) map[string]int {
-	m := make(map[string]int, len(list))
-	for i, s := range list {
-		m[s.ID] = i
-	}
-	return m
+// skillTable ist monarch.json › skills als nach ID sortierte Liste (keine Map-Iteration im Sim-Code) mit der Stelle jeder
+// ID. Jeder Wertesatz hat seine eigene (WorldValues.skills): Overrides auf `monarch.skills.*` wirken je Welt (B-692).
+type skillTable struct {
+	list  []SkillData
+	index map[string]int
 }
 
-func sortedSkills(m map[string]SkillData) []SkillData {
-	out := make([]SkillData, 0, len(m))
+// baseSkills ist die Tabelle der Basis (Paket-Variable monarch); UseData baut sie neu.
+var baseSkills = newSkillTable(monarch.Skills)
+
+func newSkillTable(m map[string]SkillData) skillTable {
+	t := skillTable{list: make([]SkillData, 0, len(m)), index: make(map[string]int, len(m))}
 	for _, id := range slices.Sorted(maps.Keys(m)) {
 		s := m[id]
 		s.ID = id
-		out = append(out, s)
+		t.index[id] = len(t.list)
+		t.list = append(t.list, s)
 	}
-	return out
+	return t
 }
 
-// skillByID sucht einen Skill im Katalog.
-func skillByID(id string) (SkillData, bool) {
-	if s := skillRef(id); s != nil {
+// skillByID sucht einen Skill im Katalog des Wertesatzes.
+func (v *WorldValues) skillByID(id string) (SkillData, bool) {
+	if s := v.skillRef(id); s != nil {
 		return *s, true
 	}
 	return SkillData{}, false
 }
 
 // skillRef: wie skillByID, ohne den Eintrag zu kopieren (nur lesen); nil, wenn es den Skill nicht gibt.
-func skillRef(id string) *SkillData {
-	if i, ok := skillIndex[id]; ok {
-		return &skillCatalog[i]
+func (v *WorldValues) skillRef(id string) *SkillData {
+	if i, ok := v.skills.index[id]; ok {
+		return &v.skills.list[i]
 	}
 	return nil
 }

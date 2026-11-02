@@ -63,7 +63,7 @@ func strike(w *World, e *Enemy, t *target) {
 	for _, c := range aoeTargets(w, t.x, a.Radius) {
 		applyDamageBy(w, c.id, e.Damage, e.Kind)
 		if c.player != nil {
-			frostArmorHit(c.player, e)
+			frostArmorHit(w, c.player, e)
 		}
 	}
 }

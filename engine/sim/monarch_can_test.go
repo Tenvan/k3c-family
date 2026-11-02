@@ -107,7 +107,7 @@ func TestLearnableSkillsTierGating(t *testing.T) {
 		t.Fatalf("1 Punkt: %v", got)
 	}
 	for _, id := range got {
-		if s, _ := skillByID(id); s.Tier != 1 {
+		if s, _ := defaultValues().skillByID(id); s.Tier != 1 {
 			t.Fatalf("%s ist Tier %d", id, s.Tier)
 		}
 	}

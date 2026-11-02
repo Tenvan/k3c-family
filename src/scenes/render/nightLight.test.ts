@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { LIGHT } from '../../model/data';
 import type { CycleInfo, World } from '../../model/types';
-import { NIGHT_BRIGHTNESS, backdropBrightnessOf, brightnessOf, glowAlpha, lightLevelAt, lightSources, shade, type LitSource } from './nightLight';
+import torchCase from '../../../testdata/torches.json';
+import { NIGHT_BRIGHTNESS, backdropBrightnessOf, brightnessOf, glowAlpha, lightLevelAt, lightSources, shade, torchXs, type LitSource } from './nightLight';
 
 const cycle = (phase: CycleInfo['phase'], progress: number) => ({ phase, progress });
 /** Burg auf Hub-Stufe 1, Gold offen und nichts bezahlt: Look `lagerfeuer` (hubLookOf) */
-const camp = { castle: { x: 40 }, hubLevel: 1, hubUpgrade: { gold: 10, paid: 0 }, danger: false } as unknown as World;
-const castle = { castle: { x: 40 }, hubLevel: 2, hubUpgrade: null, danger: false } as unknown as World;
+const camp = { castle: { x: 40 }, hubX: 40, sites: [], hubLevel: 1, hubUpgrade: { gold: 10, paid: 0 }, danger: false } as unknown as World;
+const castle = { castle: { x: 40 }, hubX: 40, sites: [], hubLevel: 2, hubUpgrade: null, danger: false } as unknown as World;
 
 describe('Nacht-Helligkeit (W13.1, B-472/AC-01)', () => {
   it('Untergrenze kommt aus data/light.json und ist dunkler als vor W13 (0,45)', () => {
@@ -59,7 +60,7 @@ describe('Lichtquellen (W13.1, B-472/AC-02)', () => {
     expect(lit).toEqual([{ kind: 'campfire', x: 40, ...LIGHT.sources.campfire! }]);
   });
 
-  it('ausgebaute Burg ist kein Lagerfeuer, Fackeln gibt es als Spielobjekt noch nicht', () => {
+  it('ausgebaute Burg ohne gebaute Mauer und Turm gibt kein Licht', () => {
     expect(lightSources(castle).lit).toEqual([]);
   });
 
@@ -76,5 +77,28 @@ describe('Lichtquellen (W13.1, B-472/AC-02)', () => {
     expect(dawn[1]).toBeGreaterThan(dawn[2]!);
     expect(glowAlpha(3, cycle('night', 0))).toBe(1);
     expect(glowAlpha(-1, cycle('night', 0))).toBe(0);
+  });
+});
+
+describe('Fackeln an Mauer und Turm (W15.1, B-622/AC-01)', () => {
+  it('gleiche Plätze wie die Sim (testdata/torches.json, engine/sim/torches_test.go)', () => {
+    expect(torchXs(torchCase.sites, torchCase.hubX, torchCase.offsets)).toEqual(torchCase.torches);
+  });
+
+  it('gebauter Turm leuchtet mit dem Licht `torch` aus data/, zerstörte Mauer nicht', () => {
+    const sites = [
+      { kind: 'tower', x: 60, state: 'built' },
+      { kind: 'wall', x: 20, state: 'unpaid' },
+    ];
+    const { lit, missing } = lightSources({ ...castle, sites } as unknown as World);
+    expect(missing).toEqual([]);
+    expect(lit).toHaveLength(LIGHT.torches.tower!.length);
+    expect(lit.every((s) => s.kind === 'torch' && s.radius === LIGHT.sources.torch!.radius)).toBe(true);
+  });
+
+  it('am Tag ohne Schein, nachts mit (Deckkraft der Fackel)', () => {
+    const strength = LIGHT.sources.torch!.strength;
+    expect(glowAlpha(strength, cycle('day', 0.5))).toBe(0);
+    expect(glowAlpha(strength, cycle('night', 0.5))).toBeGreaterThan(0);
   });
 });

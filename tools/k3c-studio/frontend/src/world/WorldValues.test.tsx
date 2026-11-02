@@ -102,4 +102,14 @@ describe('Ansicht „Werte“ (B-682)', () => {
     await enter(h, 'wall.cost.wood', '7');
     expect(labeled(h, 'Wirkt auf Kind-Welten').textContent).toBe('wirkt auch auf: nordmeer, eis');
   });
+
+  it('markiert ungültige Nachfolger und nennt den Grund (B-693)', async () => {
+    const real = backend.planWorldValues.bind(backend);
+    vi.spyOn(backend, 'planWorldValues').mockImplementation(async () => ({ ...(await real()), children: ['nordmeer', 'eis'], childErrors: { eis: 'lädt nicht' } }));
+    const h = await mount();
+    await enter(h, 'wall.cost.wood', '7');
+    const kids = labeled(h, 'Wirkt auf Kind-Welten');
+    expect(kids.textContent).toBe('wirkt auch auf: nordmeer, eis (ungültig)');
+    expect(kids.getAttribute('title')).toContain('eis: lädt nicht');
+  });
 });

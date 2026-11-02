@@ -68,9 +68,14 @@ function StagePick({ plan, guard }: { plan: PlanState; guard: Guard }) {
 }
 
 /** Kind-Welten, auf die ein offener Welt-Entwurf wirkt (B-682): der Editor nennt sie vor dem Speichern. */
-function ChildWorlds({ kids }: { kids: string[] }) {
+function ChildWorlds({ world, on }: { world: WorldDraftState; on: boolean }) {
+  const kids = on && world.dirty ? (world.values?.children ?? []) : [];
+  const errors = world.values?.childErrors ?? {};
   if (kids.length === 0) return null;
-  return <Text size="1" color="orange" aria-label="Wirkt auf Kind-Welten" title="Diese Welten erben von der gewählten (extends)">wirkt auch auf: {kids.join(', ')}</Text>;
+  const names = kids.map((k) => (errors[k] ? `${k} (ungültig)` : k));
+  const why = Object.entries(errors).map(([k, e]) => `${k}: ${e}`);
+  const title = ['Diese Welten erben von der gewählten (extends, auch über Zwischenwelten)', ...why].join('\n');
+  return <Text size="1" color="orange" aria-label="Wirkt auf Kind-Welten" title={title}>wirkt auch auf: {names.join(', ')}</Text>;
 }
 
 /** Speichern und Verwerfen des Entwurfs im aktiven Modus, mit der Zahl der Änderungen (B-664/AC-03). */
@@ -81,7 +86,7 @@ function SaveArea({ mode, plan, world }: { mode: Mode; plan: PlanState; world: W
   return (
     <div className="wd-bar wd-save">
       {state.dirty && <Text size="2" color="orange" role="status" className="wd-changes">{changesText(state.changes)}</Text>}
-      <ChildWorlds kids={welt && world.dirty ? (world.values?.children ?? []) : []} />
+      <ChildWorlds world={world} on={welt} />
       {!state.check.ok && state.dirty && <Text size="2" color="red">ungültig</Text>}
       <Button variant="outline" disabled={!state.dirty} onClick={state.discard}>Verwerfen</Button>
       <Button disabled={!state.dirty || !state.check.ok || lock !== undefined} title={lock} onClick={() => void state.save()}>{welt ? 'Welt speichern' : 'Speichern'}</Button>

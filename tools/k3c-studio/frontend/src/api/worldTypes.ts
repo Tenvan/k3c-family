@@ -47,6 +47,8 @@ export interface WorldValuesView {
   world: string;
   extends: string;
   children: string[];
+  /** je Nachfolger, der nicht lädt oder ungültig ist, der Grund (B-693) */
+  childErrors?: Record<string, string>;
   entries: WorldValueEntry[];
   error: string;
 }
@@ -62,6 +64,8 @@ export interface WorldCheckView {
   island: number;
   field: DraftField;
   preview: string;
+  /** Nachfolger, die schon vorher ungültig waren oder nicht laden; blockieren das Speichern nicht (B-693) */
+  warnings?: string[];
 }
 
 /** Prüfung einer Antwort des Modells (Go: WorldAnswerView): draft ist gesetzt, wenn die Welt lesbar ist (auch mit Prüffehler);
