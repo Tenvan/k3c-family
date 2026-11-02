@@ -27,7 +27,7 @@ Bis auf Titel und Ordner/Branch ist jede Anzeige im Band abschaltbar (Gruppe „
 
 **Fußzeile unter dem Prompt:** „Tenvan“ öffnet das Panel (einziger Einstieg neben `/cockpit`).
 
-**Panel rechts** (`/cockpit`, „Tenvan“ oder ein Link im Band): ein Panel, sieben Reiter, je Reiter höchstens vier Karten
+**Panel rechts** (`/cockpit`, „Tenvan“ oder ein Link im Band): ein Panel, acht Reiter, je Reiter höchstens vier Karten
 
 | Reiter | Inhalt |
 | --- | --- |
@@ -36,10 +36,11 @@ Bis auf Titel und Ordner/Branch ist jede Anzeige im Band abschaltbar (Gruppe „
 | Verbrauch | Übersicht (Kontext, Limits mit Takt und Reset, Kosten, Cache), Kontextfenster mit Kontext-Diät, Kontext-Inspektor |
 | Diagnose | Unterreiter **Hinweise** (alle Meldungen mit Ampel, Tipps, Nutzungswächter), **Protokoll** (Log, Fehler-Eingang, Tool-Freigaben und Zeitreise in einer Liste, Filter Alle · Fehler · Freigaben · Snapshots), **Profil**, **Blast-Radius** |
 | Git | Repo-Label mit Ordner, auf den sich der Stand bezieht, Ablauf Commit → MR → Merge → Aufräumen, Branches, MR-Karten |
+| CI/CD | GitLab-Pipelines des Projekts (Status, Branch, Commit, Alter, Dauer) und die Jobs der gewählten Pipeline je Stage; Steuerung (Job wiederholen/abbrechen/starten, Log ansehen, Pipeline neu/abbrechen, neue Pipeline für den Branch), siehe Abschnitt CI/CD |
 | Rückblick | **Diese Session** (Zusammenfassung) und **Verlauf** (Aufgaben je Tag, Tages- und Wochenbericht) |
 | ⚙ Einstellungen | alle Schalter, Funktionsübersicht im Chat, Skin-Demo, Version |
 
-Die Befehle bleiben und öffnen den passenden Reiter: `/cockpit-zusammenfassung`, `/cockpit-verlauf`, `/cockpit-einstellungen`, `/cockpit-git`, `/cockpit-sessions`, `/cockpit-profiling`, `/cockpit-kontext`, `/cockpit-profil`, `/cockpit-fehler`, `/cockpit-zeitreise`.
+Die Befehle bleiben und öffnen den passenden Reiter: `/cockpit-zusammenfassung`, `/cockpit-verlauf`, `/cockpit-einstellungen`, `/cockpit-git`, `/cockpit-sessions`, `/cockpit-ci`, `/cockpit-profiling`, `/cockpit-kontext`, `/cockpit-profil`, `/cockpit-fehler`, `/cockpit-zeitreise`.
 
 **Sitzungsleiste der Desktop-App** (Einstellungen → „Sitzungsleiste (Desktop)“, alle Schalter standardmäßig aus)
 
@@ -117,6 +118,20 @@ Reiter Git des Cockpit-Panels (`/cockpit-git` oder der MR-Link im Band). Führt 
 
 ✦-Knöpfe schreiben einen Auftrag ins Eingabefeld, gesendet wird erst mit Enter. git läuft ohne Rückfragen (kein Passwort-Dialog, kein Editor) und ohne Repo-Hooks; hat das Repo `pre-commit` oder `commit-msg`, schlägt das Panel den Commit über Claude vor, direkte Knöpfe tragen „(ohne Hooks)“. Netzwerk nur auf Knopfdruck (Fetch, Pull, Push, Aufräumen). In Repos mit riskanter Git-Konfiguration bleibt das Panel gesperrt, bis das Repo entsperrt ist. Schalter unter „Git“ in `/cockpit-einstellungen`: Git-Panel, Commit-Nachricht vorschlagen. Knöpfe nach Priorität: die Hauptaktion in voller Akzentfarbe, gewöhnliche gedämpft, Nebensachen ohne Fläche.
 
+## CI/CD
+
+Reiter CI/CD (`/cockpit-ci` oder der Link „CI/CD“ in der Karte Merge Request des Git-Reiters). Nur für GitLab-Remotes (z. B. `gitlab.deltra.de`); bei anderen Plattformen sagt der Reiter das und bleibt leer.
+
+| Karte | Inhalt |
+| --- | --- |
+| Pipelines | Neueste 15 Pipelines des Projekts: Nummer (Klick wählt sie), Status-Badge, Branch und Kurz-SHA (Branch des Checkouts fett), Alter, Dauer. „↻ Aktualisieren“, „Neue Pipeline“ (für den ausgecheckten Branch, mit Rückfrage), Ladefehler im Klartext (der letzte Stand bleibt stehen) |
+| Pipeline #n | Status, Commit-Titel, Branch, SHA, Alter, Dauer, Auslöser; „Pipeline neu“ (fehlgeschlagen/abgebrochen), „Pipeline abbrechen“ (laufend, mit Rückfrage), Link nach GitLab; darunter die Jobs je Stage mit Status, Dauer und den Aktionen **Log**, **Starten** (manuell), **Wiederholen**, **Abbrechen** |
+| Log | Die letzten 60 Zeilen eines Jobs, ANSI-Farben und GitLab-Abschnittsmarker entfernt; ein zweiter Klick auf „Log“ oder „Schließen“ blendet es aus |
+
+**Aufrufwege:** (1) per Hand über den Git-Reiter, den Reiter selbst oder `/cockpit-ci`; (2) automatisch: das Cockpit fragt GitLab im Takt ab (alle 15 s, solange eine Pipeline läuft oder wartet, sonst jede Minute) und meldet Statuswechsel der Pipelines des Branches als Toast und Protokollzeile: grün, fehlgeschlagen, abgebrochen, wartet auf einen manuellen Job, dazu fehlgeschlagene Jobs (ohne `allow_failure`). Bei Fehlschlag öffnet es den Reiter CI/CD von selbst, ohne den Eingabefokus zu nehmen. Der erste Abruf einer Session meldet nichts. Beide Wege sind in den Einstellungen (Gruppe Merge Request · CI/CD) abschaltbar: „CI/CD-Hinweise“ und „CI/CD-Reiter bei Fehlschlag öffnen“; sind beide aus, fragt das Cockpit GitLab nur ab, solange der Reiter offen ist. Grün/rot der MR-Pipeline meldet bei eingeschalteten MR-Hinweisen nur der MR-Hinweis (kein Doppel).
+
+**Mechanik und Entscheidung (Polling statt Webhook):** Ein GitLab-Webhook bräuchte einen vom Server erreichbaren Empfänger auf dem Arbeitsplatz (NAT, Firewall, wechselnde Netze) und ein Secret im Server; das ist für ein lokales Mod nicht zumutbar. `glab ci` ist auf interaktive Ansichten ausgelegt. Das Cockpit ruft deshalb `glab api` auf (gleiche Anbindung wie die MR-Karten, Projekt über `:id` aus dem Remote): Die Authentifizierung läuft vollständig über die vorhandene glab-Anmeldung, das Cockpit sieht, speichert und loggt kein Token. Lesend: `projects/:id/pipelines`, `…/pipelines/<id>`, `…/pipelines/<id>/jobs`, `…/jobs/<id>/trace`. Schreibend, nur per Klick: `POST …/jobs/<id>/retry|cancel|play`, `POST …/pipelines/<id>/retry|cancel`, `POST projects/:id/pipeline -f ref=<Branch>`.
+
 ## Grenzen
 
 - Zeichnet auf Desktop und im Terminal. Im Terminal gibt es kein Svg: Ringe werden Textbalken, Turn-Bilanz Blockzeichen, Formeln Unicode-Text; Tooltips, Atemkreis, Logo, Tool-Symbole und Diff-Karte entfallen dort (Mermaid und Diffs zeichnet die Engine).
@@ -153,14 +168,15 @@ Mod-API: Claude Code Function Hooks (Engine ≥ 2.1.295, Early Access). Struktur
 | --- | --- |
 | `hooks/register.tsx` | Hooks, Band und Panel |
 | `hooks/core.ts` | Reine Rechen- und Formatfunktionen |
+| `hooks/ci.ts`, `hooks/ci-ui.tsx` | CI/CD: Übersetzung der GitLab-Antworten, Ereignisse, Log-Aufbereitung (rein) bzw. Zeichnung des Reiters |
 | `types/index.d.ts` | `$.state`-Vertrag |
 | `hooks/register.test.ts` | Tests |
 
 ```shell
-claude plugin validate plugins/tenvan-cc
-claude plugin test plugins/tenvan-cc
+claude plugin validate tools/cockpit
+claude plugin test tools/cockpit
 ```
 
-Live ausprobieren ohne Installation: `claude --plugin-dir plugins/tenvan-cc`, oder den Pfad in `CLAUDE_CODE_PLUGIN_DIRS` (env-Block der `~/.claude/settings.json`) eintragen, damit die Desktop-App das Mod lädt.
+Live ausprobieren ohne Installation: `claude --plugin-dir tools/cockpit`, oder den Pfad in `CLAUDE_CODE_PLUGIN_DIRS` (env-Block der `~/.claude/settings.json`) eintragen, damit die Desktop-App das Mod lädt.
 
 Weitere Community-Mods werden als zusätzliche Abschnitte in Band oder Panel ergänzt, nicht als eigene Plugins.

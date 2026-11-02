@@ -1,5 +1,20 @@
 # Release Notes – Tenvan CC
 
+## 2.2.0 – 2026-11-02
+
+### Neu
+
+- **Reiter CI/CD** (`/cockpit-ci`, achter Reiter nach Git): zeigt die letzten 15 GitLab-Pipelines des Projekts (Status, Branch, SHA, Alter, Dauer) und die Jobs der gewählten Pipeline je Stage mit Status und Dauer. Nur für GitLab-Remotes; sonst steht dort ein Hinweis.
+  - **Steuerung:** Job wiederholen, abbrechen, manuellen Job starten, Job-Log ansehen (letzte 60 Zeilen, ohne ANSI-Farben); Pipeline neu starten, abbrechen (mit Rückfrage), neue Pipeline für den ausgecheckten Branch (mit Rückfrage). Schreibend nur per Klick.
+  - **Einstieg aus dem Git-Panel:** Link „CI/CD“ in der Karte Merge Request.
+  - **Automatisch:** Das Cockpit fragt GitLab im Takt ab (15 s bei laufender Pipeline, sonst 1 min) und meldet Statuswechsel der Pipelines des Branches (grün, fehlgeschlagen, abgebrochen, wartet auf manuellen Job) und fehlgeschlagene Jobs als Toast; bei Fehlschlag öffnet es den Reiter von selbst, ohne den Eingabefokus zu nehmen. Neue Einstellungen „CI/CD-Hinweise“ und „CI/CD-Reiter bei Fehlschlag öffnen“ (beide an).
+  - **Mechanik:** Polling über `glab api` statt Webhook (kein erreichbarer Empfänger nötig); Anmeldung vollständig über die vorhandene glab-Konfiguration, kein Token im Cockpit. Begründung in der README (Abschnitt CI/CD) und in SPEC.md.
+  - **Hinweis:** gegen `gitlab.deltra.de` noch nicht live geprüft; die Tests laufen gegen simulierte `glab`-Antworten.
+
+### Behoben
+
+- **Abschluss-Box:** Rückblick und Frage der Desktop-Abschlussbox (`wrap_up`) brechen um, statt am rechten Rand abgeschnitten zu werden.
+
 ## 2.1.2 – 2026-11-02
 
 ### Geändert

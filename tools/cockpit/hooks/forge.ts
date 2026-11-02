@@ -2,7 +2,8 @@
 // `$.http.fetch`. Liefert nur Daten und Ergebnisse (`Done`); Zustand, Hinweise und Anzeige bleiben in register.tsx,
 // das Übersetzen der Antworten in `Mr` in mr.ts.
 
-import type { Forge, Mr, MrDraft, MrMine } from '../types'
+import type { CiJobs, CiPipeline, Forge, Mr, MrDraft, MrMine } from '../types'
+import { clean, commitTitle, PIPELINES_MAX, toJobs, toPipelines, withDetail } from './ci'
 import { bitbucketMine, fromBitbucket, fromGithub, githubMine, openThreads, toMine, toMr } from './mr'
 
 export type Remote = { kind: Forge; host: string; project: string }
@@ -14,7 +15,7 @@ export type Io = {
 export type Done = { ok: boolean; err: string }
 type Thread = Mr['threadList'][number]
 
-const firstLine = (s: string): string => (s.trim().split('\n')[0] ?? '').slice(0, 160)
+const firstLine = (s: string): string => clean(s.trim().split('\n')[0] ?? '').slice(0, 160)
 
 async function cli(io: Io, argv: readonly string[], stdin?: string): Promise<Done & { out: string }> {
   const r = await io.run(argv, stdin === undefined ? { timeoutMs: 60_000 } : { timeoutMs: 60_000, stdin }).catch(() => null)
@@ -254,4 +255,49 @@ export async function forgeCreate(io: Io, r: Remote, d: MrDraft, asDraft: boolea
       toRef: { id: `refs/heads/${d.target}`, repository: repo },
     }),
   )
+}
+
+// ── CI/CD (nur GitLab, über `glab api` und damit die vorhandene glab-Anmeldung; das Cockpit sieht nie ein Token) ──
+
+export const ciSupported = (r: Remote | null): r is Remote => r !== null && r.kind === 'gitlab'
+
+// Neueste Pipelines des Projekts. Ein fehlgeschlagener Abruf wirft, damit das Panel „nicht erreichbar“ statt „keine Pipelines“ zeigt.
+export async function ciPipelines(io: Io, r: Remote): Promise<CiPipeline[]> {
+  const x = await cli(io, ['glab', 'api', `projects/:id/pipelines?per_page=${PIPELINES_MAX}&order_by=id&sort=desc`])
+  if (!x.ok) throw new Error(x.err || 'glab')
+  try {
+    return toPipelines(JSON.parse(x.out) as unknown)
+  } catch {
+    throw new Error('glab: ungültige Antwort')
+  }
+}
+
+// Jobs einer Pipeline samt Detail (Dauer, Auslöser) und Commit-Titel; null, wenn die Jobs nicht ladbar waren.
+export async function ciPipelineJobs(io: Io, r: Remote, p: CiPipeline): Promise<CiJobs | null> {
+  const [detail, jobs] = await Promise.all([
+    cliJson(io, ['glab', 'api', `projects/:id/pipelines/${p.id}`]),
+    cliJson(io, ['glab', 'api', `projects/:id/pipelines/${p.id}/jobs?per_page=100`]),
+  ])
+  if (!Array.isArray(jobs)) return null
+  return { pipeline: { ...withDetail(p, detail), title: commitTitle(jobs) }, jobs: toJobs(jobs) }
+}
+
+// Rohes Job-Log; die Aufbereitung (letzte Zeilen, ANSI) macht ci.ts.
+export async function ciJobLog(io: Io, r: Remote, job: number): Promise<{ ok: boolean; err: string; text: string }> {
+  const x = await cli(io, ['glab', 'api', `projects/:id/jobs/${job}/trace`])
+  return { ok: x.ok, err: x.err, text: x.out }
+}
+
+// Schreibend, nur per Klick: Job wiederholen, abbrechen oder (manuell) starten.
+export async function ciJobAction(io: Io, r: Remote, job: number, action: 'retry' | 'cancel' | 'play'): Promise<Done> {
+  return cli(io, ['glab', 'api', '-X', 'POST', `projects/:id/jobs/${job}/${action}`])
+}
+
+export async function ciPipelineAction(io: Io, r: Remote, id: number, action: 'retry' | 'cancel'): Promise<Done> {
+  return cli(io, ['glab', 'api', '-X', 'POST', `projects/:id/pipelines/${id}/${action}`])
+}
+
+// Neue Pipeline für einen Branch (Ref) anstoßen.
+export async function ciNewPipeline(io: Io, r: Remote, ref: string): Promise<Done> {
+  return cli(io, ['glab', 'api', '-X', 'POST', 'projects/:id/pipeline', '-f', `ref=${ref}`])
 }

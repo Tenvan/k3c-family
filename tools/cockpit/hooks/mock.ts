@@ -1,6 +1,6 @@
 // Dev-Mode (`/cockpit-dev`): Mockdaten für das Panel, damit jede Karte in allen Zuständen sichtbar ist,
 // ohne dass eine Session sie erst erzeugen muss. Rein, nur von `now` abhängig; echte Atome bleiben unberührt.
-import type { Agent, BgTask, Breakdown, Decision, Gate, GitState, Job, LogEntry, McpSchema, Mr, MrMine, Repo, LinkedSession, SessionsState, Turn, TurnRecord, Usage } from '../types'
+import type { Agent, BgTask, Breakdown, CiJobs, CiList, Decision, Gate, GitState, Job, LogEntry, McpSchema, Mr, MrMine, Repo, LinkedSession, SessionsState, Turn, TurnRecord, Usage } from '../types'
 
 export type Mock = {
   usage: Usage
@@ -26,10 +26,23 @@ export type Mock = {
   mrDetails: Record<string, Mr>
   // Checkliste: laufender Job mit Plan (Plan-Karte)
   job: Job
+  // Reiter CI/CD: laufende, fehlgeschlagene und grüne Pipeline, Jobs der laufenden mit einem manuellen Job
+  ci: { list: CiList; jobs: CiJobs }
 }
 
 const MIN = 60_000
 const TRAIL: Decision[] = ['allow', 'allow', 'you', 'allow', 'you', 'deny', 'allow', 'you', 'allow', 'ask', 'allow', 'you', 'you', 'allow', 'allow', 'you', 'allow', 'ask']
+
+function ciMock(now: number): Mock['ci'] {
+  const at = (min: number) => new Date(now - min * MIN).toISOString()
+  const p = (id: number, status: string, ref: string, ago: number, durationS: number) => ({ id, status, ref, sha: `${id}a1b2c3d`.slice(0, 8), url: `https://gitlab.deltra.de/consulting/demo/-/pipelines/${id}`, source: 'push', createdAt: at(ago), updatedAt: at(ago), durationS, user: 'ralf', title: 'Export vereinfachen' })
+  const j = (id: number, name: string, stage: string, status: string, durationS: number, manual = false) => ({ id, name, stage, status, url: '', durationS, allowFailure: false, manual, startedAt: at(3) })
+  const pipelines = [p(202, 'running', 'feature/dev-mock', 4, 0), p(201, 'failed', 'main', 95, 312), p(200, 'success', 'feature/dev-mock', 300, 287)]
+  return {
+    list: { pipelines, error: '', branch: 'feature/dev-mock' },
+    jobs: { pipeline: pipelines[0]!, jobs: [j(1, 'build', 'build', 'success', 74), j(2, 'test:unit', 'test', 'running', 41), j(3, 'test:lint', 'test', 'success', 19), j(4, 'deploy:staging', 'deploy', 'manual', 0, true)] },
+  }
+}
 
 export function mockData(now: number): Mock {
   const b = mockBase(now)
@@ -123,6 +136,7 @@ function mockBase(now: number): Omit<Mock, 'mrDetails'> {
       { id: 'local_a1', title: 'Cockpit: Sitzungsleiste anbinden', name: 'cockpit-sitzungsleiste', branch: 'claude/sitzungsleiste-a1', cwd: 'C:/WORKSPACE/demo/.claude/worktrees/a1', running: true, archived: false },
       { id: 'local_b2', title: 'Tests für Hintergrundaufgaben', name: 'bg-tests', branch: 'claude/bg-tests-b2', cwd: 'C:/WORKSPACE/demo/.claude/worktrees/b2', running: false, archived: false },
     ],
+    ci: ciMock(now),
     // Reiter Sessions: eine wartende, eine laufende, eine fertige und eine archivierte Session, Freigaben mit allen Aktionen.
     sessions: {
       view: {

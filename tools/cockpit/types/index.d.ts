@@ -51,8 +51,8 @@ export type Gate = { allow: number; you: number; ask: number; deny: number; file
 
 export type LogSrc = 'you' | 'main' | 'gate' | 'agent'
 
-// Reiter des Cockpit-Panels (ein Panel statt sechs): Jetzt, Verbrauch, Diagnose, Git, Rückblick, Einstellungen
-export type PaneTab = 'now' | 'sessions' | 'usage' | 'diag' | 'git' | 'back' | 'set'
+// Reiter des Cockpit-Panels (ein Panel statt sechs): Jetzt, Sessions, Verbrauch, Diagnose, Git, CI/CD, Rückblick, Einstellungen
+export type PaneTab = 'now' | 'sessions' | 'usage' | 'diag' | 'git' | 'ci' | 'back' | 'set'
 // Unterreiter der Diagnose: Hinweise (Tipps, Wächter, Meldungen), Protokoll (Log, Fehler, Freigaben, Zeitreise), Profil, Blast-Radius
 export type DiagTab = 'hints' | 'log' | 'profile' | 'blast'
 // Unterreiter des Rückblicks: Zusammenfassung dieser Session oder Verlauf der Aufgaben nach Tagen
@@ -88,6 +88,16 @@ export type ApprovalRow = { id: string; action: ApprovalAction; actionRaw: strin
 export type SessionsView = { updated: string; sessions: SessionRow[]; approvals: ApprovalRow[]; issues: string[] }
 // Ergebnis des letzten Lesens: Stand oder Fehler (Datei fehlt, leer, kaputtes JSON, falsche Form)
 export type SessionsState = { view: SessionsView | null; error: { kind: 'missing' | 'empty' | 'json' | 'shape'; detail: string } | null; sig: string }
+
+// Reiter CI/CD (GitLab, über `glab api`): Pipelines des Projekts und die Jobs der gewählten Pipeline. Status im GitLab-Vokabular
+// (created, pending, running, success, failed, canceled, skipped, manual, scheduled …).
+export type CiPipeline = { id: number; status: string; ref: string; sha: string; url: string; source: string; createdAt: string; updatedAt: string; durationS: number; user: string; title: string }
+export type CiJob = { id: number; name: string; stage: string; status: string; url: string; durationS: number; allowFailure: boolean; manual: boolean; startedAt: string }
+// `error`: Grund, warum nichts geladen werden konnte (leer = in Ordnung); die letzten Pipelines bleiben dann stehen.
+// `branch`: ausgecheckter Branch beim Abruf (für „neueste Pipeline des Branches“ und „Neue Pipeline“)
+export type CiList = { pipelines: CiPipeline[]; error: string; branch: string }
+export type CiJobs = { pipeline: CiPipeline; jobs: CiJob[] }
+export type CiLog = { job: number; name: string; lines: string[]; truncated: boolean; error: string; loading: boolean }
 
 export type Repo = {
   name: string
@@ -231,6 +241,9 @@ export type ModSettings = {
   breath: boolean
   mrBand: boolean
   mrNotify: boolean
+  // CI/CD-Reiter: Hinweise bei Pipeline-/Job-Wechseln des Branches und Reiter bei Fehlschlag von selbst öffnen
+  ciNotify: boolean
+  ciAutoOpen: boolean
   breathKey: 'hrv' | 'sigh' | 'box' | '478'
   // Anzahl der Subagent-Kacheln im Hauptpanel (gerade, 2 bis 12)
   agentTiles: number
@@ -407,6 +420,13 @@ declare module 'claude-code' {
       gitSel: string
       // Ein Panel mit Reitern: gewählter Reiter, Unterreiter von Diagnose und Rückblick, Filter des Protokolls
       paneTab: PaneTab
+      // CI/CD: Pipeline-Liste, Jobs der gewählten Pipeline, gewählte Pipeline (0 = automatisch), geöffnetes Job-Log, laufende Aktion, Rückfrage
+      ciList: CiList | null
+      ciJobs: CiJobs | null
+      ciSel: number
+      ciLog: CiLog | null
+      ciBusy: string
+      ciConfirm: string
       sessionsFile: SessionsState | null
       diagTab: DiagTab
       backTab: BackTab

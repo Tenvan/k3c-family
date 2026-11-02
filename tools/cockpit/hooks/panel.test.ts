@@ -40,14 +40,14 @@ const settle = async (done: () => Promise<boolean>) => {
   for (let i = 0; i < 3000 && !(await done()); i++) await Promise.resolve()
 }
 
-test('Panel: ein Panel mit sieben Reitern, der gewählte als Text, die anderen als Links', async ($, on) => {
+test('Panel: ein Panel mit acht Reitern, der gewählte als Text, die anderen als Links', async ($, on) => {
   mock.clock(on, { now: 1 })
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
   on('store.set', () => ({ value: undefined }) as never)
   const pane = await openPane($)
   expect(await pane.find({ type: 'Text', text: 'Jetzt' })).not.toBe(undefined)
-  for (const tab of ['sessions', 'usage', 'diag', 'git', 'back', 'set']) expect(await pane.find({ type: 'Button', key: `pane-tabs-${tab}` })).not.toBe(undefined)
+  for (const tab of ['sessions', 'usage', 'diag', 'git', 'ci', 'back', 'set']) expect(await pane.find({ type: 'Button', key: `pane-tabs-${tab}` })).not.toBe(undefined)
   // Jetzt: Letzter Turn; die Übersicht steht unter Verbrauch.
   expect(await pane.find({ type: 'Text', text: 'Letzter Turn' })).not.toBe(undefined)
   expect(await pane.find({ type: 'Text', text: 'Übersicht' })).toBe(undefined)
