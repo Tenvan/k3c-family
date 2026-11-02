@@ -79,7 +79,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-629](B-629-buildall-web-exe.md) | INF | Problem | hoch | eingeplant | WZ34 | task buildall baut die Web-EXEs von Studio und Workbench nicht mit |
 | [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | eingeplant | WZ34 | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
 | [B-622](B-622-fackeln-als-spielobjekt.md) | SIM | Idee | niedrig | eingeplant | W15 | Fackeln gibt es als Spielobjekt mit Licht in der Nacht |
-| [B-630](B-630-quellen-werden-nicht-uebernommen.md) | DEV | Problem | mittel | offen | – | Quellen werden nicht übernommen |
 | [B-635](B-635-muenzskala-2-bis-30.md) | REG | Idee | hoch | eingeplant | BS2 | Münzpreise liegen auf einer kleinen Skala von 2 bis 30 Gold |
 | [B-636](B-636-farm-heisst-baumschule.md) | SIM | Idee | hoch | eingeplant | BS4 | Die Farm heißt Baumschule und steht auf gerodeten Waldbauplätzen |
 | [B-637](B-637-hafen-chunk-boot.md) | SIM | Idee | hoch | eingeplant | BS5 | Ein Hafen-Chunk auf Inselstufe 1 baut das Boot zum Verlassen der Insel |
@@ -654,3 +653,4 @@ Zeile in diesen Abschnitt.
 | [B-692](archiv/B-692-wertesatz-nachtraege.md) | SIM | Problem | mittel | erledigt | BAL10 | Welt-Wertesatz: Nachträge aus dem Review BAL8.2 |
 | [B-693](archiv/B-693-overrides-editor-nachtraege.md) | DEV | Problem | niedrig | erledigt | WZ39 | Overrides-Editor: Nachträge aus dem Review WZ37.1 |
 | [B-694](archiv/B-694-review-wz39-bal10-nachtraege.md) | SIM | Problem | niedrig | erledigt | – | Nachträge aus dem Review WZ39/BAL10 (niedrig) |
+| [B-630](archiv/B-630-quellen-werden-nicht-uebernommen.md) | DEV | Problem | mittel | erledigt | – | Quellen werden nicht übernommen |

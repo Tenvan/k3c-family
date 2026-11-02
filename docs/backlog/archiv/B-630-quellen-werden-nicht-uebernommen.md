@@ -3,8 +3,8 @@
 - **Domäne:** DEV
 - **Typ:** Problem
 - **Prio:** mittel
-- **Umgebung:** offline
-- **Status:** offen
+- **Umgebung:** live
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-25
@@ -56,4 +56,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-2026-11-02 (Claude, WZ39): Nicht reproduzierbar. Die Seite „Quellen“ gibt es seit 88ea604b (B-677/WZ33) nicht mehr, sie ging in der Seite „Assets“ auf. „Übernehmen“ lebt dort als „Aus Recherche übernehmen“ (`sources/SourceDialogs.tsx` → `sourceResearchPreview`/`sourceResearchImport`, Backend `app_sources_add.go`; erreichbar über `assetpage/ToolsPanel.tsx`) und als `SourceAdopt` (`app_sources.go`). RPC-Präfix `Source` steht in `backend/rpc.go`. Vermutet (ungeprüft): Fehler lag im Stand vor dem Umbau. Offen: 🧑 prüft einmal im Studio, ob „Aus Recherche übernehmen“ Treffer anlegt; dann verwerfen als überholt durch B-677.
+2026-11-02 (Claude, WZ39): Nicht reproduzierbar. Die Seite „Quellen“ gibt es seit 88ea604b (B-677/WZ33) nicht mehr, sie ging in der Seite „Assets“ auf. „Übernehmen“ lebt dort als „Aus Recherche übernehmen“ (`sources/SourceDialogs.tsx`, Backend `app_sources_add.go`) und als `SourceAdopt` (`app_sources.go`). 2026-11-02: 🧑 hat im Studio geprüft und abgenommen.
