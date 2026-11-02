@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
-      - uses: go-task/setup-task@v1
+      - uses: go-task/setup-task@v2
       # Client und Frontend von k3c-workbench: dessen Komponententests laufen in task test mit (wie in ci.yml).
       - run: task install
       - run: task typecheck
