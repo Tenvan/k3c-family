@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Projekt:** TST
 - **Erstellt:** 2026-10-07
@@ -52,8 +52,10 @@ Feed von einer fremden Adresse ohne laufenden Lauf → abgelehnt.
 
 ## Offene Fragen
 
-Wie der Feed im LAN abgesichert wird (Token je Lauf?) und ob die Firewall-Abfrage hinnehmbar ist, entscheidet 🧑.
+keine. Entschieden (🧑, 2026-11-02): verworfen, siehe Notizen.
 
 ## Notizen
 
-TR4.2 (2026-10-25, Claude): Beobachter ohne Platz und `sim_test` mit Clients bis 4 Spieler sind umgesetzt (B-352/AC-02 erfüllt). Offen bleibt der Bot-Feed im LAN mit der Frage an 🧑, deshalb ist das Ticket wieder `offen`.
+TR4.2 (2026-10-25, Claude): Beobachter ohne Platz und `sim_test` mit Clients bis 4 Spieler sind umgesetzt (B-352/AC-02 erfüllt). Offen blieb der Bot-Feed im Heimnetz.
+
+2026-11-02 (🧑): Der Bot-Feed für die Xbox wird verworfen. Xbox-Tests bleiben manuell, Bot-Läufe mit Clients laufen nur mit Browsern auf dem PC (Feed bleibt Loopback). Geprüfte Wege: A eigener LAN-Port mit Token je Lauf (Firewall-Abfrage), B Weiterleitung über den Spielserver (Protokoll-Änderung).

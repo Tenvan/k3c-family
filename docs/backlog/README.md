@@ -46,7 +46,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | HW1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
 | [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | eingeplant | RG1 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
 | [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
-| [B-352](B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | offen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
 | [B-363](B-363-planung-flags-bearbeiten.md) | DEV | Idee | mittel | eingeplant | WZ2 | Die Planungsseite ändert Prio, Umgebung, Agent und Projekt direkt im Detail |
 | [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | eingeplant | GL1 | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
 | [B-394](B-394-xbox-overlay-gesten-abnahme.md) | PLAT | Frage | niedrig | eingeplant | HW1 | Overlay-Gesten (RB, LB + RB) sind an der Xbox abgenommen (B-195/AC-02) |
@@ -654,3 +653,4 @@ Zeile in diesen Abschnitt.
 | [B-693](archiv/B-693-overrides-editor-nachtraege.md) | DEV | Problem | niedrig | erledigt | WZ39 | Overrides-Editor: Nachträge aus dem Review WZ37.1 |
 | [B-694](archiv/B-694-review-wz39-bal10-nachtraege.md) | SIM | Problem | niedrig | erledigt | – | Nachträge aus dem Review WZ39/BAL10 (niedrig) |
 | [B-630](archiv/B-630-quellen-werden-nicht-uebernommen.md) | DEV | Problem | mittel | erledigt | – | Quellen werden nicht übernommen |
+| [B-352](archiv/B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | verworfen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
