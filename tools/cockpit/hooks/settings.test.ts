@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { splitTool, toolText, parseTaskNotifications, notificationText, backgroundOf, todosOf, wrapupOf, resetLeft, parseLinkedSessions, questionsOf, dirTarget, isForeignDir, nativeDir, withClaude, modelLabel, timelineSvg, summaryLines, summarySections, topRows, resetLabel, agentStats, agentFlags, DEFAULT_SETTINGS, SETTING_DEFS, settingHint, settingLabel, catchUpPrompt, catchUpSystem, fingerprint, formatMessage, nextChunk, settingsOf, startIndex } from './core'
+import { splitTool, toolText, parseTaskNotifications, notificationText, backgroundOf, todosOf, wrapupOf, resetLeft, parseLinkedSessions, questionsOf, dirTarget, isForeignDir, nativeDir, withClaude, modelLabel, timelineSvg, summaryLines, summarySections, topRows, resetLabel, agentStats, agentFlags, DEFAULT_SETTINGS, SETTING_DEFS, settingHint, settingLabel, catchUpPrompt, catchUpSystem, fingerprint, formatMessage, nextChunk, settingsOf, splitLive, startIndex } from './core'
 import { STRINGS, t, type Key } from './i18n'
 
 type Msg = Parameters<typeof fingerprint>[0]
@@ -21,7 +21,7 @@ test('settingsOf: Standard, Teileingabe und leere Altzustände', () => {
 test('SETTING_DEFS: deckt alle Schalter außer lang, breathKey und agentTiles genau einmal ab', () => {
   const keys = SETTING_DEFS.map(d => d.key as string).sort()
   expect(keys).toEqual(Object.keys(DEFAULT_SETTINGS).filter(k => k !== 'lang' && k !== 'breathKey' && k !== 'agentTiles').sort())
-  const groups = ['band', 'glance', 'work', 'effort', 'panel', 'summary', 'mr', 'skins', 'tools', 'input', 'marks', 'diag']
+  const groups = ['band', 'glance', 'work', 'effort', 'panel', 'summary', 'mr', 'git', 'skins', 'tools', 'input', 'marks', 'diag']
   for (const d of SETTING_DEFS) {
     for (const lang of ['de', 'en'] as const) {
       expect(settingLabel(d.key, lang).trim()).not.toBe('')
@@ -155,6 +155,21 @@ test('timelineSvg: Balken an Start und Dauer auf der gemeinsamen Achse, mindeste
   expect(timelineSvg(0, 0, 0, 100, '#0f0', 100)).toContain('width="3.0"')
 })
 
+test('splitLive: Kachel nur für Laufendes (die neuesten bis max), der Rest im Verlauf, Nummern aus der Gesamtliste', () => {
+  const all = ['done', 'run', 'fail', 'run', 'run'].map((s, i) => ({ id: `x${i}`, s }))
+  const live = (x: { s: string }) => x.s === 'run'
+  const ids = (xs: readonly { item: { id: string }; n: number }[]) => xs.map(x => `${x.item.id}#${x.n}`)
+  const open = splitLive(all, live)
+  expect(ids(open.tiles)).toEqual(['x1#2', 'x3#4', 'x4#5'])
+  expect(ids(open.past)).toEqual(['x0#1', 'x2#3'])
+  // Mehr Laufende als Kacheln: die ältesten Laufenden rutschen in den Verlauf, die Reihenfolge bleibt.
+  const capped = splitLive(all, live, 2)
+  expect(ids(capped.tiles)).toEqual(['x3#4', 'x4#5'])
+  expect(ids(capped.past)).toEqual(['x0#1', 'x1#2', 'x2#3'])
+  expect(splitLive(all, live, 0).tiles).toEqual([])
+  expect(splitLive([], live)).toEqual({ tiles: [], past: [] })
+})
+
 test('modelLabel: lesbarer Name aus der Modell-ID, Unbekanntes bleibt', () => {
   expect(modelLabel('claude-opus-5-5')).toBe('Opus 5.5')
   expect(modelLabel('claude-sonnet-5-5[1m]')).toBe('Sonnet 5.5')
@@ -267,7 +282,7 @@ test('resetLeft: Minuten, Stunden, Tage; abgelaufen 0m', () => {
 test('Verzeichniswächter: Haupt-Repo eines Worktrees zählt als innen; Anzeige in Windows-Schreibweise', () => {
   const wt = 'C:\\WORKSPACE\\k3c\\.claude\\worktrees\\sprint-geb6-plan-9824bd'
   const home = 'C:\\Users\\r'
-  expect(isForeignDir('/c/WORKSPACE/k3c/tools/k3c-workbench', wt, home)).toBe(false)
+  expect(isForeignDir('/c/WORKSPACE/k3c/tools/k3c-dev', wt, home)).toBe(false)
   expect(isForeignDir('C:/WORKSPACE/k3c/.claude/worktrees/other', wt, home)).toBe(false)
   expect(isForeignDir('/c/WORKSPACE/ErpApi', wt, home)).toBe(true)
   expect(nativeDir('/c/WORKSPACE/ErpApi/src/../x', wt)).toBe('C:\\WORKSPACE\\ErpApi\\x')

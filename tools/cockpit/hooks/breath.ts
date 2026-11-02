@@ -112,3 +112,15 @@ export function breathSvg(b: Breath, labels: Record<BreathPhase, string>, name: 
     `</svg>`
   )
 }
+
+// Statusring der Checkliste im Band, solange Claude arbeitet: außen der Fortschritt, innen ein Punkt, der mit der Übung
+// wächst und schrumpft (`fill` 0..1 aus `fillAt`). Ersetzt die 56-px-Zeile im Band; die ganze Übung steht im Reiter Jetzt.
+export function breathRingSvg(percent: number, fill: number, color: string, size = 16): string {
+  const mid = size / 2
+  const r = size / 2 - 2
+  const c = 2 * Math.PI * r
+  const p = Math.min(100, Math.max(0, percent))
+  const dot = Math.max(1, (r - 2) * (0.3 + 0.7 * Math.min(1, Math.max(0, fill))))
+  const arc = p > 0 ? `<circle cx="${mid}" cy="${mid}" r="${r}" fill="none" stroke="${color}" stroke-width="2" stroke-dasharray="${((c * p) / 100).toFixed(2)} ${c.toFixed(2)}" transform="rotate(-90 ${mid} ${mid})"/>` : ''
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${mid}" cy="${mid}" r="${r}" fill="none" stroke="#888888" stroke-opacity="0.3" stroke-width="2"/>${arc}<circle cx="${mid}" cy="${mid}" r="${dot.toFixed(2)}" fill="${color}" fill-opacity="0.6"/></svg>`
+}

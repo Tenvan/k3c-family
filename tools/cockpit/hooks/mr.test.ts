@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { bitbucketMine, canMergeNow, forgeRemote, fromBitbucket, fromGithub, githubChecks, githubMine, mrBadge, mrRef, mrEvents, openThreads, parseDraft, pipelineTone, pollDelayMs, conflictPrompt, inRepo, refOf, threadsPrompt, toMine, toMr } from './mr'
+import { mergeAllPrompt, openMrs, bitbucketMine, canMergeNow, forgeRemote, fromBitbucket, fromGithub, githubChecks, githubMine, mrBadge, mrRef, mrEvents, openThreads, parseDraft, pipelineTone, pollDelayMs, conflictPrompt, inRepo, refOf, threadsPrompt, toMine, toMr } from './mr'
 
 const DETAIL = {
   iid: 7,
@@ -21,6 +21,28 @@ const DISCUSSIONS = [
   { notes: [{ resolvable: true, resolved: true, body: 'erledigt' }] },
   { notes: [{ resolvable: false, body: 'Systemnotiz' }] },
 ]
+
+test('openMrs und mergeAllPrompt: Branch-MR und eigene ohne Doppelte, Status nur im Repo, Auftrag nennt alle', () => {
+  const cur = toMr(DETAIL, null, [])!
+  const mine = [
+    { ref: 'consulting/x!7', title: 'Export vereinfachen', url: 'u7', draft: false },
+    { ref: 'consulting/x!9', title: 'Konflikt', url: 'u9', draft: false },
+    { ref: 'andere/y!3', title: 'Fremd', url: 'u3', draft: true },
+  ]
+  const nine = toMr({ ...DETAIL, iid: 9, has_conflicts: true, source_branch: 'feature/k' }, null, [])!
+  const items = openMrs(cur, mine, { 'consulting/x!9': nine }, 'consulting/x')
+  expect(items.map(i => i.ref)).toEqual(['consulting/x!7', 'consulting/x!9', 'andere/y!3'])
+  expect(openMrs(cur, [], {}, 'consulting/x').length).toBe(1)
+  expect(openMrs(null, mine, { 'consulting/x!9': { ...nine, state: 'merged' } }, 'consulting/x').map(i => i.ref)).toEqual(['consulting/x!7', 'andere/y!3'])
+  const de = mergeAllPrompt(items, 'de')
+  expect(de).toContain('alle 3 offenen')
+  expect(de).toContain('KONFLIKT')
+  expect(de).toContain('[Draft]')
+  // Nur Aufzählung mit einer allgemeinen Anweisung: kein Regelwerk, keine Plattform-CLI.
+  expect(de.split(String.fromCharCode(10)).length).toBe(items.length + 1)
+  expect(de).not.toMatch(/Worktree|Force|glab/)
+  expect(mergeAllPrompt(items, 'en').split(String.fromCharCode(10))[0]).toBe('Merge all 3 open merge requests, including any conflict resolutions needed:')
+})
 
 test('forgeRemote: GitLab, GitHub und Bitbucket Server aus ssh/https, sonst null', () => {
   expect(forgeRemote('git@gitlab.deltra.de:consulting/erp-consulting.git')).toEqual({ kind: 'gitlab', host: 'gitlab.deltra.de', project: 'consulting/erp-consulting' })

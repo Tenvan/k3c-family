@@ -1,5 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
+import { rt } from './rating'
 import {
   INSPECT_TEXT, IMAGE_TOKENS, MAX_ITEMS, TARGET_MAX,
   bandText, clipTarget, contentHash, editLines, hamming, ingestAppend, ingestCompaction, ingestToolCall, ingestToolResult, inputOf,
@@ -249,7 +250,7 @@ test('bandText und paneView in beiden Sprachen, höchstens 8 Zeilen je Abschnitt
   expect(bandText({ ...s, waste: 0 }, undefined, 'en')).toBe('waste≈0')
   for (const L of ['de', 'en'] as const) {
     const v = paneView(s, L)
-    expect(v.map(x => x.title)).toEqual(['overview', 'occupancy', 'rereads', 'similar', 'compactions', 'efficiency', 'advice'].map(k => tx(L, `inspect.sec.${k}` as never)))
+    expect(v.map(x => x.title)).toEqual(['overview', 'occupancy', 'rereads', 'similar', 'compactions', 'efficiency', 'advice'].map(k => tx(L, `inspect.sec.${k}` as never)).concat(rt(L, 'rate.sec')))
     expect(v.every(x => x.rows.length >= 1 && x.rows.length <= 8)).toBe(true)
     const report = reportText(s, L)
     expect(report.includes(tx(L, 'inspect.report.title'))).toBe(true)

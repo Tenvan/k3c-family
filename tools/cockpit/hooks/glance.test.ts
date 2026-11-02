@@ -2,7 +2,7 @@ import { expect, test } from 'claude-code/testing'
 
 import type { Job, JobRecord, JobStep } from '../types'
 import {
-  jobTitle,
+  jobTitle, PROMPT_MAX,
   FOLD_AT, HISTORY_DAYS, HISTORY_PREFIX, STUCK_MS,
   actOf, addRecord, avgStepMs, continuePrompt, dayKey, dayReport, etaOf, finishJob, isStuck, isWorthShowing, lastQuestion, newJob,
   completeAll, noteAct, noteFile, planUpdate, progressOf, recordsOf, shiftDay, shownPhase, staleKeys, storeKey, toRecord, touch, visibleSteps, weekReport,
@@ -16,8 +16,16 @@ const names = (j: Job | null) => j?.steps.map(s => `${s.name}:${s.status}`)
 
 test('Checkliste: newJob startet arbeitend und leer', () => {
   const j = newJob('a', 'Mach\n  bitte   das', '/x', 5)
-  expect(j).toEqual({ id: 'a', title: 'Mach bitte das', cwd: '/x', startedAt: 5, phase: 'working', question: '', ask: '', steps: [], act: null, signAt: 5, tools: 0, files: [] })
+  expect(j).toEqual({ id: 'a', title: 'Mach bitte das', cwd: '/x', startedAt: 5, phase: 'working', question: '', ask: '', steps: [], act: null, signAt: 5, tools: 0, files: [], prompt: 'Mach\n  bitte   das' })
   expect(newJob('a', 'x'.repeat(100), '/x', 0).title.length).toBe(70)
+})
+
+test('Verlauf: getippter Prompt zum Kopieren, gekappt; Nachrichten von Agents und Sessions ohne', () => {
+  expect(newJob('a', 'x'.repeat(100), '/x', 0).prompt).toBe('x'.repeat(100))
+  expect(newJob('a', 'y'.repeat(PROMPT_MAX + 5), '/x', 0).prompt).toBe(`${'y'.repeat(PROMPT_MAX)} […]`)
+  expect(newJob('a', '<agent-message from="w">hi</agent-message>', '/x', 0).prompt).toBe(undefined)
+  expect(newJob('a', '<task-notification><summary>s</summary></task-notification>', '/x', 0).prompt).toBe(undefined)
+  expect(toRecord(newJob('a', 'Baue das', '/x', 0), 1).prompt).toBe('Baue das')
 })
 
 test('Plan: TodoWrite ersetzt die Liste, Zeiten bleiben je Name erhalten', () => {
@@ -358,7 +366,7 @@ test('Verlauf: toRecord macht aus dem Job einen Eintrag, Laufendes und Pausierte
   })
   const rec = toRecord({ ...job, phase: 'done', endedAt: 5_000 }, 9_999)
   expect(rec).toEqual({
-    id: 'j1', title: 'Titel', cwd: 'C:\\work\\proj', startedAt: 1_000, endedAt: 5_000, outcome: 'done', question: '', tools: 4,
+    id: 'j1', title: 'Titel', ...(job.prompt === undefined ? {} : { prompt: job.prompt }), cwd: 'C:\\work\\proj', startedAt: 1_000, endedAt: 5_000, outcome: 'done', question: '', tools: 4,
     steps: [{ name: 's1', done: true, ms: 300 }, { name: 's2', done: false }, { name: 's3', done: false }], files: ['a/b.ts'],
   })
   expect(toRecord({ ...job, phase: 'needsYou', question: 'Frage?', endedAt: 5_000 }, 9_999)).toMatchObject({ outcome: 'needsYou', question: 'Frage?' })

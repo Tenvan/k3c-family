@@ -1,6 +1,6 @@
 // Dev-Mode (`/cockpit-dev`): Mockdaten für das Panel, damit jede Karte in allen Zuständen sichtbar ist,
 // ohne dass eine Session sie erst erzeugen muss. Rein, nur von `now` abhängig; echte Atome bleiben unberührt.
-import type { Agent, BgTask, Breakdown, Decision, Gate, Job, LogEntry, McpSchema, Mr, MrMine, Repo, LinkedSession, Turn, TurnRecord, Usage } from '../types'
+import type { Agent, BgTask, Breakdown, CiJobs, CiList, Decision, Gate, GitState, Job, LogEntry, McpSchema, Mr, MrMine, Repo, LinkedSession, SessionsState, Turn, TurnRecord, Usage } from '../types'
 
 export type Mock = {
   usage: Usage
@@ -14,20 +14,35 @@ export type Mock = {
   turnLog: TurnRecord[]
   repo: Repo
   linked: LinkedSession[]
+  sessions: SessionsState
   breakdown: Breakdown
   mcpTools: McpSchema[]
   usedMcp: string[]
   summary: string
   mr: Mr
   mrMine: MrMine[]
+  git: GitState
   // Status je eigenem MR im selben Repo, Schlüssel = `ref` aus mrMine
   mrDetails: Record<string, Mr>
   // Checkliste: laufender Job mit Plan (Plan-Karte)
   job: Job
+  // Reiter CI/CD: laufende, fehlgeschlagene und grüne Pipeline, Jobs der laufenden mit einem manuellen Job
+  ci: { list: CiList; jobs: CiJobs }
 }
 
 const MIN = 60_000
 const TRAIL: Decision[] = ['allow', 'allow', 'you', 'allow', 'you', 'deny', 'allow', 'you', 'allow', 'ask', 'allow', 'you', 'you', 'allow', 'allow', 'you', 'allow', 'ask']
+
+function ciMock(now: number): Mock['ci'] {
+  const at = (min: number) => new Date(now - min * MIN).toISOString()
+  const p = (id: number, status: string, ref: string, ago: number, durationS: number) => ({ id, status, ref, sha: `${id}a1b2c3d`.slice(0, 8), url: `https://gitlab.deltra.de/consulting/demo/-/pipelines/${id}`, source: 'push', createdAt: at(ago), updatedAt: at(ago), durationS, user: 'ralf', title: 'Export vereinfachen' })
+  const j = (id: number, name: string, stage: string, status: string, durationS: number, manual = false) => ({ id, name, stage, status, url: '', durationS, allowFailure: false, manual, startedAt: at(3) })
+  const pipelines = [p(202, 'running', 'feature/dev-mock', 4, 0), p(201, 'failed', 'main', 95, 312), p(200, 'success', 'feature/dev-mock', 300, 287)]
+  return {
+    list: { pipelines, error: '', branch: 'feature/dev-mock' },
+    jobs: { pipeline: pipelines[0]!, jobs: [j(1, 'build', 'build', 'success', 74), j(2, 'test:unit', 'test', 'running', 41), j(3, 'test:lint', 'test', 'success', 19), j(4, 'deploy:staging', 'deploy', 'manual', 0, true)] },
+  }
+}
 
 export function mockData(now: number): Mock {
   const b = mockBase(now)
@@ -100,14 +115,13 @@ function mockBase(now: number): Omit<Mock, 'mrDetails'> {
       {
         id: 'b3',
         description: 'Build und Release-Check',
-        // Zehn Zeilen Befehl plus Ergebnis: zeigt die Kappung auf TASK_LINES.
+        // Neun Zeilen Befehl in einer laufenden Kachel: zeigt die Kappung auf TASK_LINES.
         command: ['npm ci', 'npm run build', 'claude plugin validate .', 'claude plugin test .', 'node scripts/build-registry.js', 'git status --short', 'git diff --stat', 'towncrier build --draft', 'npm pack --dry-run'].join('\n'),
-        status: 'failed',
+        status: 'running',
         since: now - 3 * MIN,
-        durationMs: 52_000,
-        summary: 'claude plugin test: 1 fail',
       },
-      { id: 'b2', description: 'Typecheck', command: 'tsc -p . --noEmit', status: 'completed', since: now - 12 * MIN, durationMs: 18_000, summary: '0 Fehler' },
+      // Beendete Aufgaben stehen nur im Verlauf, mit erster Ergebniszeile.
+      { id: 'b2', description: 'Typecheck', command: 'tsc -p . --noEmit', status: 'failed', since: now - 12 * MIN, durationMs: 18_000, summary: '2 Fehler in hooks/register.tsx' },
     ],
     turnLog: [
       { usd: 0.08, tools: 3, edits: 1, durationMs: 21_000 },
@@ -122,6 +136,29 @@ function mockBase(now: number): Omit<Mock, 'mrDetails'> {
       { id: 'local_a1', title: 'Cockpit: Sitzungsleiste anbinden', name: 'cockpit-sitzungsleiste', branch: 'claude/sitzungsleiste-a1', cwd: 'C:/WORKSPACE/demo/.claude/worktrees/a1', running: true, archived: false },
       { id: 'local_b2', title: 'Tests für Hintergrundaufgaben', name: 'bg-tests', branch: 'claude/bg-tests-b2', cwd: 'C:/WORKSPACE/demo/.claude/worktrees/b2', running: false, archived: false },
     ],
+    ci: ciMock(now),
+    // Reiter Sessions: eine wartende, eine laufende, eine fertige und eine archivierte Session, Freigaben mit allen Aktionen.
+    sessions: {
+      view: {
+        updated: '2026-11-02',
+        sessions: [
+          { id: 'qs-01', title: 'EXE neu bauen', repo: 'qs-automation', branch: 'main', state: 'wartet', stateRaw: 'wartet', waitingFor: 'Ralf', note: 'build_runtime.py uncommittet' },
+          { id: 'om-01', title: 'Cockpit: Sessions-Panel', repo: 'orga-marketplace', branch: 'feature/cockpit-sessions-panel', state: 'läuft', stateRaw: 'läuft', waitingFor: '-', note: 'baut das Panel' },
+          { id: 'cc-01', title: 'Regeln', repo: 'orga-marketplace', branch: 'main', state: 'fertig', stateRaw: 'fertig', waitingFor: '-', note: '' },
+          { id: 'qs-00', title: 'Altlast', repo: 'qs-automation', branch: 'main', state: 'archiviert', stateRaw: 'archiviert', waitingFor: '-', note: '' },
+        ],
+        approvals: [
+          { id: 'qs-01', action: 'commit', actionRaw: 'commit', detail: 'build_runtime.py committen', since: '2026-11-02' },
+          { id: 'om-00', action: 'push', actionRaw: 'push', detail: '3 lokale Commits auf main', since: '2026-11-02' },
+          { id: 'cc-00', action: 'löschen', actionRaw: 'löschen', detail: 'alten Branch entfernen', since: '2026-11-01' },
+          { id: 'om-02', action: 'archivieren', actionRaw: 'archivieren', detail: 'Session om-01 archivieren', since: '2026-11-02' },
+          { id: 'om-03', action: 'sonstiges', actionRaw: 'sonstiges', detail: 'Skill entfernen', since: '2026-11-02' },
+        ],
+        issues: [],
+      },
+      error: null,
+      sig: 'mock',
+    },
     breakdown: {
       total: 412_000,
       window: 1_000_000,
@@ -159,7 +196,7 @@ function mockBase(now: number): Omit<Mock, 'mrDetails'> {
       threads: 2,
       pipeline: { id: 9001, status: 'running', url: 'https://gitlab.example/consulting/demo/-/pipelines/9001' },
       approvals: { required: 2, left: 1, by: ['kollegin'] },
-      description: '## Was\n- MR-Zeile im Band, eigenes Panel, Knopf unter dem Prompt\n\n## Prüfen\n- `/cockpit-dev` und `/cockpit-mr`',
+      description: '## Was\n- MR-Zeile im Band, eigenes Panel, Knopf unter dem Prompt\n\n## Prüfen\n- `/cockpit-dev` und `/cockpit-git`',
       author: 'rstich',
       updatedAt: new Date(now - 25 * MIN).toISOString(),
       changes: '9',
@@ -167,6 +204,43 @@ function mockBase(now: number): Omit<Mock, 'mrDetails'> {
         { path: 'hooks/mr.ts', line: 42, author: 'kollegin', body: 'Bitte auch geschlossene MRs im Watch berücksichtigen.' },
         { path: 'hooks/register.tsx', line: 815, author: 'kollegin', body: 'Polling bei inaktiver Session aussetzen?' },
       ],
+    },
+    // Git-Panel: Branch des Mock-MR mit gestagten, geänderten und neuen Dateien, ein Branch-Stapel und ein gemergter Branch.
+    git: {
+      top: 'C:/WORKSPACE/demo/orga-marketplace',
+      branch: 'feature/mr-cockpit',
+      detached: false,
+      upstream: 'origin/feature/mr-cockpit',
+      ahead: 1,
+      behind: 0,
+      localOnly: 1,
+      upstreamOnly: 0,
+      hooks: [],
+      staged: [{ path: 'hooks/git.ts', code: 'A' }],
+      changed: [{ path: 'hooks/register.tsx', code: 'M' }, { path: 'hooks/i18n.ts', code: 'M' }],
+      untracked: ['hooks/git.test.ts'],
+      conflicts: [],
+      op: '',
+      main: 'main',
+      remote: 'origin',
+      branches: [
+        { name: 'main', parent: null, upstream: 'origin/main', gone: false, ahead: 0, behind: 0, merged: false },
+        { name: 'feature/mr-cockpit', parent: 'main', upstream: 'origin/feature/mr-cockpit', gone: false, ahead: 4, behind: 1, merged: false },
+        { name: 'feature/mr-cockpit-tests', parent: 'feature/mr-cockpit', upstream: '', gone: false, ahead: 1, behind: 0, merged: false },
+        { name: 'feature/band-ringe', parent: 'main', upstream: 'origin/feature/band-ringe', gone: false, ahead: 2, behind: 3, merged: false },
+        { name: 'fix/mr-bitbucket', parent: 'main', upstream: 'origin/fix/mr-bitbucket', gone: true, ahead: 0, behind: 0, merged: true },
+      ],
+      incoming: [],
+      history: [
+        { sha: 'a41c2e0', subject: '✨ feat(mods): MR-Zeile im Band', author: 'rstich', at: now - 40 * MIN },
+        { sha: '6b70716', subject: '♻️ refactor(mods): Prompt „Alle mergen (AI)“ gekürzt', author: 'rstich', at: now - 130 * MIN },
+        { sha: 'ef125c5', subject: '✨ feat(mods): Stopp- und Öffnen-Knöpfe', author: 'rstich', at: now - 26 * 60 * MIN },
+      ],
+      stashes: 1,
+      fetchedAt: now - 6 * MIN,
+      town: true,
+      elsewhere: [],
+      readAt: now,
     },
     mrMine: [
       { ref: 'consulting/demo!42', title: 'Cockpit: Merge Requests im Band und Panel', url: 'https://gitlab.example/consulting/demo/-/merge_requests/42', draft: false },

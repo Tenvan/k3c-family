@@ -20,7 +20,17 @@ const FILES_PER_JOB = 50
 export const MAX_STEPS = 100
 
 export function newJob(id: string, prompt: string, cwd: string, now: number): Job {
-  return { id, title: jobTitle(prompt), cwd, startedAt: now, phase: 'working', question: '', ask: '', steps: [], act: null, signAt: now, tools: 0, files: [] }
+  const typed = jobPrompt(prompt)
+  return { id, title: jobTitle(prompt), cwd, startedAt: now, phase: 'working', question: '', ask: '', steps: [], act: null, signAt: now, tools: 0, files: [], ...(typed === '' ? {} : { prompt: typed }) }
+}
+
+// Für den Kopier-Knopf im Verlauf: der getippte Prompt, gekappt; Nachrichten von Subagents, Sessions und Hintergrundaufgaben
+// (XML-Hülle) nicht, dort reicht der Titel.
+export const PROMPT_MAX = 2000
+export function jobPrompt(prompt: string): string {
+  const text = prompt.trim()
+  if (/^<(agent-message|cross-session-message|task-notification)[\s>]/.test(text)) return ''
+  return text.length > PROMPT_MAX ? `${text.slice(0, PROMPT_MAX)} […]` : text
 }
 
 // Erste aussagekräftige Zeile eines Berichts: Anrede („Ok Boss 🤠“), Überschriften-Zeichen und Markdown weg.
@@ -321,6 +331,7 @@ export function toRecord(job: Job, now: number): JobRecord {
   return {
     id: job.id,
     title: job.title,
+    ...(job.prompt === undefined ? {} : { prompt: job.prompt }),
     cwd: job.cwd,
     startedAt: job.startedAt,
     endedAt: job.endedAt ?? now,

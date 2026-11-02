@@ -49,10 +49,12 @@ test('Checkliste: TodoWrite zeigt die Schritte ganz oben im Band, auch ohne Mess
   expect(await band.find({ key: 'glance-pause' })).not.toBe(undefined)
   // Fortschrittsring nur auf dem Desktop.
   expect(JSON.stringify(await band.findAll({ type: 'Svg' }))).toContain('1 von 3 erledigt')
-  // Ganz oben: die Checkliste steht vor der Titelzeile (Knopf „Features“).
+  // Ganz oben: die Checkliste steht vor Kopf und Messwerten; Aktionen sind Links (Plan öffnet den Reiter Jetzt).
   const tree = JSON.stringify(await band.find({ type: 'Box' }))
   expect(tree.indexOf('glance-head')).toBeGreaterThan(-1)
-  expect(tree.indexOf('glance-head')).toBeLessThan(tree.indexOf('"features"'))
+  expect(tree.indexOf('glance-head')).toBeLessThan(tree.indexOf('"band-main"'))
+  expect(await band.find({ type: 'Button', key: 'glance-plan' })).not.toBe(undefined)
+  expect(await band.find({ key: 'glance-pause-pill' })).toBe(undefined)
 })
 
 test('Checkliste: im Terminal dieselben Schritte als Text, ohne Svg', async ($, on) => {
@@ -164,9 +166,12 @@ test('Plan-Karte und Verlauf zeichnen auf Desktop und Terminal', async ($, on) =
     await settle(async () => (await pane.find({ key: 'card-cardPlan' })) !== undefined)
     expect(await pane.find({ text: /▸ Band zeichnen/ })).not.toBe(undefined)
     expect(await pane.find({ text: /Dateien: hooks\/register\.tsx/ })).not.toBe(undefined)
-    const history = await $.ui.mount({ plugin: 'tenvan-cc', surface, component: 'Pane', requestId: 'tenvan-cc-history', props: PANE_PROPS })
-    await settle(async () => (await history.find({ key: 'hist-none' })) !== undefined)
-    expect(await history.find({ key: 'hist-prev' })).not.toBe(undefined)
-    expect(await history.find({ key: 'hist-day-report' })).not.toBe(undefined)
+    // Verlauf: Link in der Plan-Karte, öffnet Rückblick → Verlauf im selben Panel.
+    await pane.press({ key: 'glance-history' })
+    await settle(async () => (await pane.find({ key: 'hist-none' })) !== undefined)
+    expect(await pane.find({ key: 'hist-prev' })).not.toBe(undefined)
+    expect(await pane.find({ key: 'hist-day-report' })).not.toBe(undefined)
+    await pane.press({ key: 'pane-tabs-now' })
+    await settle(async () => (await pane.find({ key: 'card-cardPlan' })) !== undefined)
   }
 })

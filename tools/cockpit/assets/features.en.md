@@ -1,35 +1,25 @@
 🛩️ Tenvan CC · Features
 
-Band above the prompt
-• Context – shows how full the context window is; turns amber at 85 %.
-• Compact – puts /compact with your goal, files and open steps into the prompt box.
-• Limits 5h/7d – shows usage and whether you're burning faster than time passes.
-• Cache – time left and hit rate; when it's cold, how much gets read again.
-• Cost – what the session has cost so far.
-• Loop warning – fires when the same call keeps failing or one file gets edited over and over.
-• Effort – level and model; “Auto” lets Haiku pick Low/Medium/High per prompt.
-• Handoff – with a large, cold context: write and copy HANDOFF.md instead of paying to carry on.
-• Save mode – from 80 % on 5h or 7d a button at the limits caps auto effort at Low.
-• Breathing exercise – while Claude works, a circle breathes in the band; the working line counts the phase (exercise in the settings).
-• Merge requests – on GitLab, GitHub and Bitbucket repos the branch MR/PR in the band (pipeline, approvals, threads), notices on changes, and in the panel rebase, merge, retry pipeline, comments to Claude and “Create MR” with a draft.
-• Follow-up steps – three suggestions side by side after each answer, keys 1–3.
-• Checklist – Claude’s task list at the very top with status (working, needs you, stuck?, done), progress, time left, pause/continue and a plan card; /cockpit-verlauf with a day and week report to copy.
-• Diagnostics – three short infos in the band, one “Profiling” panel (/cockpit-profiling) with a card per mod: context inspector (/cockpit-kontext: window occupancy, files read twice, similar outputs, losses through compaction, advice), agent profiler (/cockpit-profil: time in model, tools, subagents, overhead) and blast radius (/cockpit-blast: files and test candidates affected by your changes). Only observe, no network.
+One cockpit: band above the prompt (links only), “Tenvan” below the prompt, one panel with six tabs.
 
-Panel on the right (/cockpit)
-• Agent working – run time, tool calls and edits while a turn runs.
-• Working directory – session folder, process folder and linked sessions.
-• Git – branch, commit, changes and distance to upstream.
-• Context window – where your context is going right now.
-• Context diet – MCP servers that eat tokens but were never used.
-• Turn balance – cost per turn; expensive turns without edits show in amber.
-• Tool approvals – what was allowed, asked about or denied.
-• Subagents – one tile per agent with tokens, steps and run time.
-• Agent brake – blocks further tool calls once a subagent gets too expensive.
-• Background tasks – shell jobs in the background with their status.
-• Log – the latest events.
+Band above the prompt
+• Checklist – Claude's task list with status (working, needs you, stuck?, done), progress, time left; Pause, Continue, Plan as links; answers to Claude's questions right below the question (keys 4–6).
+• Breathing exercise – while Claude works, the checklist's status ring breathes; the full exercise is in the Now tab.
+• Metrics – 5h/7d limits with reset, effort and model with “Auto”, context with “Compact” (yellow from 85 %), cache with hit rate, cost. Each value leads to the Usage tab.
+• Handoff – with a large, cold context: write HANDOFF.md and copy it instead of continuing at high cost.
+• Save mode – from 80 % on 5h or 7d a link next to the limits caps auto effort at Low.
+• Merge request – the branch's MR in the header (pipeline, approvals, threads), links “Comments → Claude”, “Resolve conflict”, “Create MR”.
+• Notice – only when yellow or red: the most important notice (loop, directory change, errors, guard, tips, diagnostics), followed by “+n notices”.
+• Next steps – three suggestions after each answer, keys 1–3.
+
+Panel (/cockpit or “Tenvan”)
+• Now – agent working, plan with times and files, subagents with brake, background tasks, last turn with turn chart.
+• Usage – overview with pace and reset, context window with context diet, context inspector (/cockpit-kontext).
+• Diagnostics – notices (all notices, tips, usage guard), log (log, error inbox, tool approvals, time travel with diff and restore), profile (/cockpit-profil), blast radius (/cockpit-blast).
+• Git – working directory, flow commit → MR → merge → clean up, branches, MR cards (/cockpit-git).
+• Review – summary of this session and history with day and week report (/cockpit-verlauf).
+• Settings – every switch, language, skin demo (/cockpit-einstellungen).
 
 In the background
-• Cache guard – suggests a prompt shortly before expiry so the cache stays warm.
-• Summary – sums up the session in its own panel.
-• Chat skins – icons plus cards for diffs, code, tables, Mermaid and formulas.
+• Cache keeper – suggests a prompt shortly before the cache expires to keep it warm.
+• Chat skins – icons and cards for diffs, code, tables, Mermaid and formulas.

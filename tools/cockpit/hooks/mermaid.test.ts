@@ -2,7 +2,7 @@ import { expect, test } from 'claude-code/testing'
 
 import { THEME } from './core'
 import { diagramType, flowRanks, mermaidSvg, parseMermaid } from './mermaid'
-import { askSummary, mathSvg, splitMessage, texToText } from './skins'
+import { askContext, askInfos, askSummary, mathSvg, splitMessage, texToText } from './skins'
 
 const F = '```'
 const ALL = { cards: true, inline: false, mermaid: true, math: true }
@@ -125,6 +125,23 @@ test('AskUserQuestion: Kopfband über dem unveränderten Dialog', async ($, on) 
     err = String(x)
   }
   expect(err).toContain('AskUserQuestion is drawn by exactly one')
+})
+
+test('Rückfrage-Kopf: je Frage Kopf, Auswahlart, Optionen, Empfehlung; Kontext aus der Checkliste', () => {
+  const infos = askInfos([
+    { header: 'Auth', question: 'Welche Methode?', multiSelect: false, options: [{ label: 'OAuth (Recommended)' }, { label: 'Token' }] },
+    { question: 'Welche Features sollen rein, auch wenn die Frage sehr lang ist und gekürzt werden muss?', multiSelect: true, options: [{ label: 'A' }, { label: 'B' }, { label: 'C' }] },
+    null,
+  ])
+  expect(infos[0]).toEqual({ head: 'Auth', multi: false, options: 2, recommended: 'OAuth' })
+  expect(infos[1]?.multi).toBe(true)
+  expect(infos[1]?.recommended).toBe('')
+  expect((infos[1]?.head.length ?? 0) <= 41).toBe(true)
+  expect(infos[2]).toEqual({ head: '', multi: false, options: 0, recommended: '' })
+  const steps = [{ name: 'Lesen', status: 'done' as const, files: [] }, { name: 'Bauen', status: 'active' as const, files: [] }, { name: 'Testen', status: 'upcoming' as const, files: [] }]
+  expect(askContext({ title: 'Git-Panel umsetzen', steps }, 'de')).toBe('Aufgabe: Git-Panel umsetzen · Schritt 2/3: Bauen')
+  expect(askContext({ title: 'Fix', steps: [] }, 'en')).toBe('Task: Fix')
+  expect(askContext(null, 'de')).toBe('')
 })
 
 test('SessionMode: Labels in Akzentfarbe; leer bleibt die Engine', async ($, on) => {

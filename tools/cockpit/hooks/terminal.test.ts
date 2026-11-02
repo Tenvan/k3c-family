@@ -52,24 +52,38 @@ test('Terminal: alle Panels zeichnen im Dev-Mode ohne Svg', async ($, on) => {
     for (let i = 0; i < 100 && !(await done()); i++) await Promise.resolve()
   }
 
+  // Ein Panel mit Reitern: jeder Reiter einmal im Terminal, nirgends Svg.
   const main = await $.ui.mount({ ...T, component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  const tab = async (key: string, until: () => Promise<boolean>) => {
+    await main.press({ key })
+    await settle(until)
+    expect(await main.find({ type: 'Svg' })).toBe(undefined)
+  }
   await settle(async () => (await main.find({ type: 'Text', text: ' DEV · Mockdaten ' })) !== undefined)
+  // Jetzt: Arbeitsverzeichnis als erste Karte, Turn-Bilanz und Verlauf der Subagents ohne Svg, Blockzeichen bzw. Dauer als Text.
   expect(await main.find({ type: 'Text', text: 'Arbeitsverzeichnis' })).not.toBe(undefined)
-  expect(await main.find({ type: 'Text', text: 'GATE · Freigaben' })).not.toBe(undefined)
-  // Turn-Bilanz und Verlauf der Subagents ohne Svg: Blockzeichen bzw. Dauer als Text.
   expect(await main.find({ type: 'Text', text: /^[▁▂▃▄▅▆▇█]$/ })).not.toBe(undefined)
   expect(await main.find({ type: 'Svg' })).toBe(undefined)
-  // Übersicht als Raster: Bezeichnung eigene Spalte, Balken und dreistellige Prozente fluchten.
+  // Verbrauch: Übersicht als Raster, Bezeichnung eigene Spalte, Balken und dreistellige Prozente fluchten.
+  await tab('pane-tabs-usage', async () => (await main.find({ type: 'Text', text: /^[▰▱]{10}  62% · / })) !== undefined)
   expect(await main.find({ type: 'Text', text: /^[▰▱]{10}  62% · / })).not.toBe(undefined)
   expect(await main.find({ type: 'Text', text: /^[▰▱]{10}  41% · / })).not.toBe(undefined)
-
-  const summary = await $.ui.mount({ ...T, component: 'Pane', requestId: 'tenvan-cc-summary', props: PANE_PROPS })
-  expect(await summary.find({ type: 'Button', key: 'cu-refresh' })).not.toBe(undefined)
-
-  const settings = await $.ui.mount({ ...T, component: 'Pane', requestId: 'tenvan-cc-settings', props: PANE_PROPS })
-  expect(await settings.find({ type: 'Button', key: 'set-cardLog' })).not.toBe(undefined)
-
-  const mr = await $.ui.mount({ ...T, component: 'Pane', requestId: 'tenvan-cc-mr', props: PANE_PROPS })
+  // Diagnose → Protokoll: Freigaben-Übersicht.
+  await tab('pane-tabs-diag', async () => (await main.find({ type: 'Button', key: 'diag-sub-log' })) !== undefined)
+  await tab('diag-sub-log', async () => (await main.find({ type: 'Text', text: 'GATE · Freigaben' })) !== undefined)
+  expect(await main.find({ type: 'Text', text: 'GATE · Freigaben' })).not.toBe(undefined)
+  // Rückblick: Zusammenfassung.
+  await tab('pane-tabs-back', async () => (await main.find({ type: 'Button', key: 'cu-refresh' })) !== undefined)
+  expect(await main.find({ type: 'Button', key: 'cu-refresh' })).not.toBe(undefined)
+  // Einstellungen.
+  await tab('pane-tabs-set', async () => (await main.find({ type: 'Button', key: 'set-cardTurn' })) !== undefined)
+  expect(await main.find({ type: 'Button', key: 'set-cardTurn' })).not.toBe(undefined)
+  // Git: Repo-Label (Name und Wurzelordner) und MR-Karten; das Arbeitsverzeichnis steht im Reiter Jetzt.
+  await tab('pane-tabs-git', async () => (await main.find({ type: 'Button', key: 'mr-a-rebase' })) !== undefined)
+  expect(await main.find({ type: 'Text', text: 'Arbeitsverzeichnis' })).toBe(undefined)
+  expect(await main.find({ type: 'Text', text: 'orga-marketplace' })).not.toBe(undefined)
+  expect(await main.find({ type: 'Text', text: 'C:/WORKSPACE/demo/orga-marketplace' })).not.toBe(undefined)
+  const mr = main
   expect(await mr.find({ type: 'Button', key: 'mr-a-rebase' })).not.toBe(undefined)
   // Eigene MRs im selben Repo: Status je MR; !42 lässt sich (auto-)mergen, !17 hat einen Konflikt und nur Rebase.
   expect(await mr.find({ type: 'Button', key: 'mine-merge-42' })).not.toBe(undefined)
@@ -77,8 +91,10 @@ test('Terminal: alle Panels zeichnen im Dev-Mode ohne Svg', async ($, on) => {
   expect(await mr.find({ type: 'Button', key: 'mine-merge-17' })).toBe(undefined)
   expect(await mr.findAll({ type: 'Text', text: 'Konflikt' })).toHaveLength(1)
 
+  // Fußzeile: nur noch „Tenvan“, der MR steht im Band.
   const foot = await $.ui.mount({ ...T, component: 'SessionMode', props: { modes: [] } as never })
-  expect(JSON.stringify(await foot.find({ type: 'Button', key: 'mr-foot' }))).toContain('!42')
+  expect(await foot.find({ type: 'Button', key: 'mr-foot' })).toBe(undefined)
+  expect(await foot.find({ type: 'Button', key: 'details' })).not.toBe(undefined)
 })
 
 test('Terminal: Formel als Unicode-Text, Mermaid bleibt der Markdown-Block der Engine', async ($, on) => {

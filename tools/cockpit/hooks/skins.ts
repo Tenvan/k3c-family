@@ -1,8 +1,8 @@
 // Chat-Skins: reine Funktionen ohne `$` und ohne UI – Klassifizierung, Parsen, Formatieren und Svg-Quellen.
 // Die Zeichnung je Oberfläche liegt in register.tsx; eine spätere Terminal-Version nutzt dieselben Funktionen.
 // Ideen aus claude-skins und prismantis (beide MIT), eigener Code.
-import type { UiLang } from '../types'
-import { THEME, oneLine, toolText } from './core'
+import type { Job, UiLang } from '../types'
+import { THEME, themed, oneLine, toolText } from './core'
 import { t } from './i18n'
 import { parseMermaid } from './mermaid'
 import type { Diagram } from './mermaid'
@@ -245,7 +245,7 @@ export type Segment =
 // `mermaid`: unterstützte Diagramme als Karte; `math`: $$…$$ und math/latex-Fences als Formelkarte.
 export type SplitOptions = { cards: boolean; inline: boolean; mermaid?: boolean; math?: boolean }
 
-export const ALERT_COLOR: Record<AlertKind, string> = { note: THEME.info, tip: THEME.success, important: THEME.violet, warning: THEME.warning, caution: THEME.error }
+export const ALERT_COLOR: Record<AlertKind, string> = themed(() => ({ note: THEME.info, tip: THEME.success, important: THEME.violet, warning: THEME.warning, caution: THEME.error }))
 
 // Fences, die die Oberfläche selbst besonders zeichnet (Diagramme, Formeln), bleiben im Markdown.
 const NATIVE_FENCE = new Set(['mermaid', 'math', 'latex', 'katex'])
@@ -399,8 +399,7 @@ export const isStyled = (segs: readonly Segment[]): boolean =>
   segs.some(s => (s.kind === 'plain' ? inlineTokens(s.text).some(p => p.tone !== undefined) : s.kind !== 'md' && s.kind !== 'rich'))
 
 // Inline-Code wie in der Antwort der Engine: rote Schrift auf dunklem Chip.
-export const CODE_FG = THEME.error
-export const CODE_BG = '#2b2e35'
+export const CODE = themed(() => ({ fg: THEME.error, bg: THEME.codeBg }))
 
 // Dateipfad eines Tool-Aufrufs aus dem tool.call-Event, für „in diesem Turn geändert“.
 export function inputPath(e: unknown): string {
@@ -411,7 +410,7 @@ export function inputPath(e: unknown): string {
 }
 
 export type Tone = 'path' | 'touched' | 'version' | 'number'
-export const TONE_COLOR: Record<Tone, string> = { path: THEME.accent, touched: THEME.success, version: THEME.max, number: THEME.warning }
+export const TONE_COLOR: Record<Tone, string> = themed(() => ({ path: THEME.accent, touched: THEME.success, version: THEME.max, number: THEME.warning }))
 
 const TOKEN = /((?:[A-Za-z]:)?(?:[\w.-]+[\\/])+[\w.-]+|\b[\w-]+\.(?:tsx?|jsx?|json|md|py|cs|sql|ya?ml|toml|css|html|sh|ps1|txt)\b)|(\b[A-Z][A-Z0-9]*-\d+\b)|(\bv?\d+\.\d+\.\d+(?:-[\w.]+)?\b)|(\b\d+(?:[.,]\d+)?\s?%?)/g
 
@@ -442,6 +441,30 @@ export function askSummary(questions: readonly unknown[], lang: UiLang): string 
   const heads = questions.map(q => (q as { header?: unknown } | null)?.header).filter((h): h is string => typeof h === 'string' && h.trim() !== '')
   const base = t(lang, questions.length === 1 ? 'skin.askOne' : 'skin.askMany', { n: questions.length })
   return heads.length === 0 ? base : `${base} · ${oneLine(heads.join(', '), 80)}`
+}
+
+// Je Frage für den Kopfbalken: Kopf (sonst die Frage gekürzt), Auswahlart, Zahl der Optionen und die empfohlene Option
+// (Label endet auf „(Recommended)“ bzw. „(Empfohlen)“, ohne diesen Zusatz).
+export type AskInfo = { head: string; multi: boolean; options: number; recommended: string }
+const RECOMMENDED = /\s*\((recommended|empfohlen)\)\s*$/i
+export function askInfos(questions: readonly unknown[]): AskInfo[] {
+  return questions.map(q => {
+    const o = (typeof q === 'object' && q !== null ? q : {}) as { header?: unknown; question?: unknown; multiSelect?: unknown; options?: unknown }
+    const labels = Array.isArray(o.options) ? o.options.map(x => (typeof x === 'object' && x !== null ? (x as { label?: unknown }).label : undefined)).filter((l): l is string => typeof l === 'string') : []
+    const rec = labels.find(l => RECOMMENDED.test(l))
+    const head = typeof o.header === 'string' && o.header.trim() !== '' ? o.header.trim() : typeof o.question === 'string' ? oneLine(o.question, 40) : ''
+    return { head, multi: o.multiSelect === true, options: labels.length, recommended: rec === undefined ? '' : rec.replace(RECOMMENDED, '').trim() }
+  })
+}
+
+// Kontextzeile: Aufgabe aus der Checkliste und ihr laufender Schritt („Schritt 3/5: …“); leer ohne Job.
+export function askContext(job: Pick<Job, 'title' | 'steps'> | null, lang: UiLang): string {
+  if (job === null || job.title.trim() === '') return ''
+  const parts = [t(lang, 'skin.askTask', { title: oneLine(job.title, 50) })]
+  const i = job.steps.findIndex(s => s.status === 'active')
+  const step = job.steps[i]
+  if (step !== undefined) parts.push(t(lang, 'skin.askStep', { n: i + 1, m: job.steps.length, name: oneLine(step.name, 40) }))
+  return parts.join(' · ')
 }
 
 // ── 8 · Formeln ($$…$$) ───────────────────────────────────────────────────────

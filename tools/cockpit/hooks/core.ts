@@ -1,57 +1,22 @@
 // Reine Rechen- und Formatfunktionen, ohne `$` – direkt testbar.
 import type { About, Agent, Breakdown, BreakdownRow, CallMark, CatchUp, LoopAlert, UiLang, Limit, McpSchema, Repo, LinkedSession, ModSettings, Step, TurnRecord } from '../types'
 import { t, type Key } from './i18n'
+import { THEME, themed, type Tone } from './theme'
 
 // Alle Farben des Mods, fest eingetragen (kein Lesen von ErpApi zur Laufzeit). Primitive aus
-// ErpApi/design-system/tokens/artifact-snapshot.json (Artifact „orgaMAX Design System Product“, Snapshot 1790238895-8d9a,
+// ErpApi/design-system/tokens/artifact-snapshot.json (Artifact „Tenvan Design System Product“, Snapshot 1790238895-8d9a,
 // `om-*`, nur hell); die dunklen Rollen (--text-*, --status-*-fg, --border-default) nach design-system/tokens/README.md
 // aus apps/frontend/src/themes/mobile-tokens.scss (`.radix-themes.dark`). Keine Theme-Schlüssel des Hosts ('claude',
 // 'success' …): die färben in dessen Farben. Ein Muster für Ladezustände hat das Design-System noch nicht.
 // Buttons haben keine Farb-Eigenschaft; sie folgen dem Host-Theme (nur `variant="primary"` hebt hervor).
-export const THEME = {
-  accent: '#8eadfd', // om-blue-400 · --text-link / --border-focus: Akzent für Text und Rahmen
-  accentFill: '#4277fc', // om-blue-500 · --action-primary: Akzent für Flächen (Ringbögen, Balken)
-  info: '#8eadfd', // om-blue-400 · = accent
-  success: '#89c958', // om-green-500 · --status-success-fg
-  warning: '#e8b641', // om-amber-500 · --status-warning
-  error: '#fa6e6e', // om-red-400 · --status-error-fg
-  textSecondary: '#aeb2ba', // om-ink-300 · --text-secondary
-  textMuted: '#8c929c', // om-ink-400 · --text-muted
-  border: '#4a5565', // om-ink-600 · --border-default / --divider
-  chip: '#2f3a59', // om-navy-700: Grund der Nummern- und Typ-Chips
-  max: '#82b1ff', // Akzent hell (om-blue-300), u. a. Suche und Versionen
-  orga: '#ffffff', // Weiß auf dunklem Grund (Diagrammtext)
-  surface: '#222222', // Grund schwebender Hinweise
-  violet: '#aa8ed6', // Agent-Symbol, Hinweis „Wichtig“; wie die fünfte Kategorie-Farbe
-} as const
+// Auftrag an Claude, eine Hintergrundaufgabe zu beenden: TaskStop ist ein Tool des Modells, das Cockpit kann es nicht selbst aufrufen.
+export const stopTaskPrompt = (id: string, description: string, lang: 'de' | 'en'): string =>
+  lang === 'de'
+    ? `Beende die Hintergrundaufgabe ${id} („${description.replace(/\s+/g, ' ').slice(0, 120)}“) mit dem Tool TaskStop und sag mir kurz, ob sie gestoppt ist.`
+    : `Stop the background task ${id} ("${description.replace(/\s+/g, ' ').slice(0, 120)}") with the TaskStop tool and tell me briefly whether it stopped.`
 
-// Farbrolle → Farbe; die Rechenfunktionen liefern Rollen, gezeichnet wird mit THEME[rolle].
-export type Tone = 'accent' | 'success' | 'warning' | 'error'
-
-// Gedimmte Kartengründe im Panel statt Rahmen: je Rolle ein dunkler Ton, neutral für gewöhnliche Karten.
-export const TINT: Record<Tone | 'neutral', string> = {
-  neutral: '#262b33',
-  accent: '#1f2a44',
-  success: '#1f2c1c',
-  warning: '#33290f',
-  error: '#3a1f22',
-}
-
-// Gedimmte Gründe je Panel-Karte, im Wechsel kühl/warm, damit benachbarte Karten sich absetzen.
-export const CARD_TINT: Record<string, string> = {
-  cardWorkdir: '#232a3a', // Navy
-  cardGit: '#1f2a40', // Nachtblau: gehört zum Arbeitsverzeichnis darüber
-  cardContext: '#1e2e33', // Petrol
-  cardOverview: '#2a2538', // Indigo-Violett
-  cardTurn: '#1f2e2a', // Tannengrün
-  cardAgents: '#2d2733', // Pflaume
-  cardTasks: '#1f2b36', // Stahlblau
-  cardPlan: '#33261e', // Kupfer: warm, setzt sich vom blauen Arbeitsblock darüber ab
-  cardLog: '#2e2a24', // Sand
-}
-// Dieselben Töne als Folge für Seiten mit gleichartigen Karten (Einstellungen, Zusammenfassung): Karte i nimmt CARD_CYCLE[i % n].
-export const CARD_CYCLE: readonly string[] = ['#232a3a', '#1e2e33', '#2a2538', '#1f2e2a', '#2d2733', '#1f2b36', '#2e2a24']
-export const cycleTint = (i: number): string => CARD_CYCLE[i % CARD_CYCLE.length] as string
+export { THEME, TINT, CARD_TINT, CARD_CYCLE, cycleTint, applyScheme, isLightScheme, isLightTheme, themed, wantsLight, desktopModeLight } from './theme'
+export type { Tone, Appearance, ThemeColors } from './theme'
 
 const WINDOW_MS: Record<string, number> = {
   five_hour: 5 * 3600_000,
@@ -114,7 +79,7 @@ export function toolKind(tool: string): 'file' | 'shell' | 'other' {
   return FILE_TOOLS.has(tool) ? 'file' : SHELL_TOOLS.has(tool) ? 'shell' : 'other'
 }
 
-export const DECISION_COLOR = { allow: THEME.success, you: THEME.accent, ask: THEME.warning, deny: THEME.error } as const
+export const DECISION_COLOR: Record<'allow' | 'you' | 'ask' | 'deny', string> = themed(() => ({ allow: THEME.success, you: THEME.accent, ask: THEME.warning, deny: THEME.error }))
 
 export function bar(percent: number, width = 10): string {
   const full = Math.round((Math.min(100, Math.max(0, percent)) / 100) * width)
@@ -165,7 +130,7 @@ export function titleText(about: About | null): string {
   return about ? `Tenvan CC (Version ${about.version})` : 'Tenvan CC'
 }
 
-export const title = (about: About | null): string => titleText(about)
+export const title = titleText
 
 // Svg-Quelle aus einer Logo-Datei: ohne XML-Kopf und Kommentare; null, wenn es kein <svg> ist.
 export function svgSource(text: string): string | null {
@@ -249,7 +214,7 @@ export const repoPathRows = (r: Repo, lang: UiLang = 'de'): [label: string, valu
 
 // Protokoll im Flightdeck-Stil: nur die letzten LOG_MAX Einträge, je mit Quelle.
 export const LOG_MAX = 10
-export const SRC_COLOR = { you: undefined, main: THEME.accent, gate: THEME.error, agent: THEME.warning } as const
+export const SRC_COLOR: Record<'you' | 'main' | 'gate' | 'agent', string | undefined> = themed(() => ({ you: undefined, main: THEME.accent, gate: THEME.error, agent: THEME.warning }))
 
 // Einzeilig und auf `max` Zeichen gekürzt.
 export function oneLine(text: string, max = 80): string {
@@ -294,7 +259,7 @@ const SPINNER = '⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
 export const spinner = (frame: number): string => SPINNER[frame % SPINNER.length] ?? ''
 
 // Ringdiagramm für das Band: Bogen-Farbe je Rolle; der Akzent als Fläche in der kräftigeren Füllfarbe.
-export const RING_HEX: Record<Tone, string> = { success: THEME.success, warning: THEME.warning, error: THEME.error, accent: THEME.accentFill }
+export const RING_HEX: Record<Tone, string> = themed(() => ({ success: THEME.success, warning: THEME.warning, error: THEME.error, accent: THEME.accentFill }))
 
 // Farbrolle des Kontext-Rings: knapp ab 90 %, voll ab COMPACT_AT, sonst Akzent.
 // Ampel nach Füllgrad für Ring, Text und Kompaktieren-Knopf: bis 50 % grün, bis 70 % neutral, bis COMPACT_AT gelb, darüber rot.
@@ -408,12 +373,17 @@ export function breakdownBarSvg(b: Breakdown, width = 600, height = 14): string 
 // Einstellungen: Gruppe je Schalter; Beschriftung und Erklärung liegen in i18n.ts unter `settings.<key>` und `settings.<key>.hint`.
 // Die Reihenfolge ist die der Einstellungsseite, Gruppen in der Reihenfolge ihres ersten Schalters.
 export type SettingKey = Exclude<keyof ModSettings, 'lang' | 'breathKey' | 'agentTiles'>
-export type SettingGroup = 'band' | 'glance' | 'work' | 'effort' | 'panel' | 'summary' | 'mr' | 'skins' | 'tools' | 'input' | 'marks' | 'diag'
+export type SettingGroup = 'band' | 'glance' | 'work' | 'effort' | 'panel' | 'summary' | 'mr' | 'git' | 'skins' | 'tools' | 'input' | 'marks' | 'diag'
 
 export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] = [
   { key: 'rings', group: 'band' },
   { key: 'limits', group: 'band' },
+  { key: 'bandEffort', group: 'band' },
+  { key: 'bandContext', group: 'band' },
   { key: 'cache', group: 'band' },
+  { key: 'bandCost', group: 'band' },
+  { key: 'bandAgents', group: 'band' },
+  { key: 'bandAlerts', group: 'band' },
   { key: 'ctxTip', group: 'band' },
   { key: 'legend', group: 'band' },
   { key: 'branch', group: 'band' },
@@ -428,21 +398,22 @@ export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] =
   { key: 'autoEffort', group: 'effort' },
   { key: 'saveMode', group: 'effort' },
   { key: 'cardWorkdir', group: 'panel' },
-  { key: 'cardGit', group: 'panel' },
   { key: 'cardOverview', group: 'panel' },
   { key: 'cardContext', group: 'panel' },
   { key: 'cardTurn', group: 'panel' },
   { key: 'cardGate', group: 'panel' },
   { key: 'cardAgents', group: 'panel' },
   { key: 'cardTasks', group: 'panel' },
-  { key: 'cardLog', group: 'panel' },
   { key: 'paneMargins', group: 'panel' },
   { key: 'cardCatchUp', group: 'summary' },
   { key: 'catchUp', group: 'summary' },
   { key: 'mrBand', group: 'mr' },
   { key: 'mrNotify', group: 'mr' },
-  { key: 'mrFooter', group: 'mr' },
   { key: 'mrPane', group: 'mr' },
+  { key: 'ciNotify', group: 'mr' },
+  { key: 'ciAutoOpen', group: 'mr' },
+  { key: 'gitPane', group: 'git' },
+  { key: 'gitSuggest', group: 'git' },
   { key: 'skinPrompt', group: 'skins' },
   { key: 'skinCards', group: 'skins' },
   { key: 'skinInline', group: 'skins' },
@@ -462,6 +433,11 @@ export const SETTING_DEFS: readonly { key: SettingKey; group: SettingGroup }[] =
   { key: 'inspectBand', group: 'diag' },
   { key: 'profileBand', group: 'diag' },
   { key: 'blastBand', group: 'diag' },
+  { key: 'errorsBand', group: 'diag' },
+  { key: 'guardBand', group: 'diag' },
+  { key: 'guardHold', group: 'diag' },
+  { key: 'tipsBand', group: 'diag' },
+  { key: 'timelineSnap', group: 'diag' },
 ]
 
 export const settingLabel = (key: SettingKey, lang: UiLang): string => t(lang, `settings.${key}`)
@@ -469,7 +445,8 @@ export const settingHint = (key: SettingKey, lang: UiLang): string => t(lang, `s
 
 export const DEFAULT_SETTINGS: ModSettings = {
   rings: true, legend: true, branch: true, limits: true, cache: true, ctxTip: true, steps: true, animation: true,
-  cardWorkdir: true, cardGit: true, cardCatchUp: true, cardOverview: true, cardContext: true, cardTurn: true, cardGate: true, cardAgents: true, cardTasks: true, mrPane: true, cardLog: true,
+  bandEffort: true, bandContext: true, bandCost: true, bandAgents: true, bandAlerts: true,
+  cardWorkdir: true, cardCatchUp: true, cardOverview: true, cardContext: true, cardTurn: true, cardGate: true, cardAgents: true, cardTasks: true, mrPane: true, gitPane: true, gitSuggest: true,
   paneMargins: true,
   chatInfo: true, chatLines: true, catchUp: false, lang: 'de',
   // Hervorhebungen zeichnen Antworten selbst und sind deshalb standardmäßig aus.
@@ -479,9 +456,10 @@ export const DEFAULT_SETTINGS: ModSettings = {
   autoEffort: false, saveMode: false,
   breath: true, breathKey: 'hrv',
   agentTiles: 6,
-  mrBand: true, mrNotify: true, mrFooter: true,
+  mrBand: true, mrNotify: true, ciNotify: true, ciAutoOpen: true,
   glance: true, cardPlan: true, glanceHistory: true,
   inspectBand: true, profileBand: true, blastBand: true,
+  errorsBand: true, guardBand: true, guardHold: false, tipsBand: true, timelineSnap: true,
 }
 
 // Kachelzahl der Subagents: gerade Werte von 2 bis 12.
@@ -489,6 +467,16 @@ export const TILES = { min: 2, max: 12, step: 2 } as const
 export const clampTiles = (n: unknown): number => {
   const v = typeof n === 'number' && Number.isFinite(n) ? Math.round(n / TILES.step) * TILES.step : DEFAULT_SETTINGS.agentTiles
   return Math.min(TILES.max, Math.max(TILES.min, v))
+}
+
+// Subagents und Hintergrundaufgaben: Kachel nur für Laufendes (die neuesten `max`), alles andere in den Verlauf.
+// `n` ist die Nummer in der Gesamtliste, damit Kachel, Verlauf und Zeitachse dieselbe Zählung tragen.
+export function splitLive<T>(all: readonly T[], isLive: (x: T) => boolean, max = Infinity): { tiles: { item: T; n: number }[]; past: { item: T; n: number }[] } {
+  const numbered = all.map((item, i) => ({ item, n: i + 1 }))
+  const live = numbered.filter(x => isLive(x.item))
+  const tiles = max > 0 ? live.slice(-max) : []
+  const shown = new Set(tiles)
+  return { tiles, past: numbered.filter(x => !shown.has(x)) }
 }
 
 // $.store kann Einstellungen aus älteren Versionen liefern: fehlende Felder werden mit den Standardwerten aufgefüllt.
@@ -519,6 +507,23 @@ export function formatMessage(m: CatchMessage, lang: UiLang): string {
     lines.push(`  [${lang === 'de' ? 'Tool' : 'tool'} ${t.tool}] ${clipText(JSON.stringify(t.input) ?? '', 300)}${t.text ? ` → ${clipText(t.text, 300)}` : ''}`)
   }
   return lines.join('\n')
+}
+
+// Verlauf eines Subagents für die Karte im Panel (Rückfall, wenn `$.ui.view` nicht umschalten kann, etwa auf dem Desktop):
+// Auftrag, Antworten und Tool-Aufrufe als einfache Zeilen, die letzten `max`. Kein Markdown, damit nichts nachgeladen wird.
+export type AgentLine = { kind: 'user' | 'assistant' | 'tool' | 'error'; text: string }
+export const AGENT_LINES = 40
+export function agentTranscript(messages: readonly CatchMessage[], max = AGENT_LINES): AgentLine[] {
+  const out: AgentLine[] = []
+  for (const m of messages) {
+    const text = unremind(m.text)
+    if (text !== '') out.push({ kind: m.role, text: clipText(text, 1500) })
+    for (const u of m.toolUses as readonly { tool: string; input: unknown; isError?: true }[]) {
+      const target = toolTarget(u.input)
+      out.push({ kind: u.isError ? 'error' : 'tool', text: `${u.isError ? '✗ ' : ''}${u.tool}${target === '' ? '' : ` → ${target}`}` })
+    }
+  }
+  return out.slice(-max)
 }
 
 // Ab welcher Nachricht noch nichts zusammengefasst ist; nach Kompaktierung oder verschobenem Fenster über den Fingerabdruck, sonst 0.
@@ -684,6 +689,9 @@ export function questionsOf(text: string, max = 3): string[] {
   return found.slice(-max)
 }
 
+// Längste Knopf-Beschriftung eines Vorschlags; der ausführliche Auftrag steht im Prompt, der volle Text im Tooltip.
+export const STEP_LABEL_MAX = 28
+
 // Liest bis zu `max` Vorschläge aus einer Modellantwort, die ein JSON-Array enthalten soll.
 export function parseSteps(text: string, max = 3): Step[] {
   const match = /\[[\s\S]*\]/.exec(text)
@@ -699,10 +707,11 @@ export function parseSteps(text: string, max = 3): Step[] {
     .filter((x): x is { label: string; prompt?: unknown; why?: unknown } => typeof x?.label === 'string' && x.label.trim() !== '')
     .slice(0, max)
     .map(x => {
-      // Kürzen erst beim Zeichnen nach Bandbreite; hier nur eine Obergrenze gegen ausufernde Antworten.
-      const label = x.label.trim().length > 80 ? `${x.label.trim().slice(0, 79)}…` : x.label.trim()
-      const prompt = typeof x.prompt === 'string' && x.prompt.trim() ? x.prompt.trim() : x.label.trim()
-      const why = typeof x.why === 'string' ? oneLine(x.why).slice(0, 90) : ''
+      // Knopftext höchstens STEP_LABEL_MAX Zeichen (kein Umbruch im Band); der volle Text bleibt Prompt-Ersatz und Tooltip.
+      const full = x.label.trim()
+      const label = full.length > STEP_LABEL_MAX ? `${full.slice(0, STEP_LABEL_MAX - 1).trimEnd()}…` : full
+      const prompt = typeof x.prompt === 'string' && x.prompt.trim() ? x.prompt.trim() : full
+      const why = [label === full ? '' : full, typeof x.why === 'string' ? oneLine(x.why).slice(0, 90) : ''].filter(v => v !== '').join('\n')
       return why === '' ? { label, prompt } : { label, prompt, why }
     })
 }

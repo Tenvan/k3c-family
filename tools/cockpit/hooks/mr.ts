@@ -328,6 +328,41 @@ export function conflictPrompt(m: Mr, lang: 'de' | 'en', elsewhere = false): str
       ].join('\n')
 }
 
+export type OpenMr = { ref: string; title: string; url: string; draft: boolean; detail: Mr | null }
+
+// Alle offenen MRs für den Sammelauftrag: der MR des Branches plus „meine“ MRs, ohne Doppelte (im Repo zählt die Nummer).
+// Status kennt nur, wer im Repo liegt; MRs anderer Projekte bleiben bei Referenz, Titel und Link.
+export function openMrs(cur: Mr | null, mine: readonly MrMine[], details: Record<string, Mr>, project: string): OpenMr[] {
+  const out: OpenMr[] = []
+  if (cur !== null && cur.state === 'opened') out.push({ ref: `${project}${mrRef(cur)}`, title: cur.title, url: cur.url, draft: cur.draft, detail: cur })
+  for (const x of mine) {
+    const d = details[x.ref] ?? null
+    const iid = inRepo(x.ref, project) ? refOf(x.ref)?.iid : undefined
+    if (iid !== undefined && out.some(o => inRepo(o.ref, project) && refOf(o.ref)?.iid === iid)) continue
+    if (d !== null && d.state !== 'opened') continue
+    out.push({ ref: x.ref, title: x.title, url: x.url, draft: x.draft, detail: d })
+  }
+  return out
+}
+
+// Sammelauftrag: Aufzählung der offenen MRs mit einer allgemeinen Anweisung, sie samt nötiger Konfliktlösungen zu mergen.
+const NEWLINE = String.fromCharCode(10)
+
+export function mergeAllPrompt(items: readonly OpenMr[], lang: 'de' | 'en'): string {
+  const de = lang === 'de'
+  const rows = items.map((x, i) => {
+    const d = x.detail
+    const facts = d === null
+      ? ''
+      : ` – ${[`\`${d.source}\` → \`${d.target}\``, d.conflicts ? (de ? 'KONFLIKT' : 'CONFLICT') : '', d.pipeline === null ? '' : `Pipeline ${d.pipeline.status}`, d.threads > 0 ? `${d.threads} ${de ? 'offene Threads' : 'open threads'}` : ''].filter(Boolean).join(' · ')}`
+    return `${i + 1}. ${x.ref} („${x.title}“)${x.draft ? ' [Draft]' : ''}${facts} – ${x.url}`
+  })
+  const head = de
+    ? `Merge alle ${items.length} offenen Merge Requests inklusive der nötigen Konfliktlösungen:`
+    : `Merge all ${items.length} open merge requests, including any conflict resolutions needed:`
+  return [head, ...rows].join(NEWLINE)
+}
+
 // Offene Review-Anmerkungen als Auftrag an Claude.
 export function threadsPrompt(m: Mr, threads: ReturnType<typeof openThreads>, lang: 'de' | 'en'): string {
   const head = lang === 'de'

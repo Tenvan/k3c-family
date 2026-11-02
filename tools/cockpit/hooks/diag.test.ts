@@ -1,6 +1,6 @@
 import { expect, mock, test } from 'claude-code/testing'
 
-// Profiling (Kontext-Inspektor, Agent-Profiler, Blast-Radius): Verdrahtung in register.tsx – Band-Kurzinfos, ein Panel mit drei Karten auf
+// Diagnose (Kontext-Inspektor, Agent-Profiler, Blast-Radius): Verdrahtung in register.tsx – Meldungen, Reiter mit Unterreitern auf
 // Desktop und Terminal, Befehle, Schalter. Die Logik der Module testen inspect.test.ts, profiler.test.ts und blast.test.ts.
 
 const H = Date.UTC(2026, 9, 20, 10)
@@ -22,30 +22,57 @@ const stubs = (on: Parameters<typeof mock.clock>[0]) => {
   on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
 }
 
+// Warten, bis das Panel nach einem Klick neu gezeichnet hat (Bedingung erfüllt oder 200 Mikroschritte).
+const settle = async (done: () => Promise<boolean>) => {
+  for (let i = 0; i < 200 && !(await done()); i++) await Promise.resolve()
+}
+
 for (const surface of ['desktop', 'terminal'] as const) {
-  test(`Profiling (${surface}): ein Panel mit drei Karten, Knöpfe und Falten`, async ($, on) => {
+  test(`Diagnose (${surface}): Reiter mit Unterreitern Hinweise, Profil, Blast-Radius; Inspektor unter Verbrauch`, async ($, on) => {
     stubs(on)
-    const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface, component: 'Pane', requestId: 'tenvan-cc-profiling', props: PANE_PROPS })
-    for (const title of ['Kontext-Inspektor', 'Agent-Profiler', 'Blast-Radius']) expect(await pane.find({ type: 'Text', text: title })).not.toBe(undefined)
-    expect(await pane.find({ type: 'Text', text: /^(Zeitverteilung|Überblick|Ziele)/ })).not.toBe(undefined)
-    for (const key of ['diag-agents', 'diag-refresh', 'card-fold-diag-profile']) expect(await pane.find({ type: 'Button', key })).not.toBe(undefined)
+    await $.command.run({ command: 'cockpit-profiling', args: '' } as never)
+    const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface, component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+    // Hinweise (Standard-Unterreiter): Meldungen, Tipps, Wächter und die Ampel-Legende.
+    expect(await pane.find({ type: 'Text', text: 'Meldungen' })).not.toBe(undefined)
+    expect(await pane.find({ type: 'Text', text: 'Ampel:' })).not.toBe(undefined)
+    for (const key of ['diag-sub-log', 'diag-sub-profile', 'diag-sub-blast']) expect(await pane.find({ type: 'Button', key })).not.toBe(undefined)
     if (surface === 'terminal') expect(await pane.find({ type: 'Svg' })).toBe(undefined)
+    // Profil als eigener Unterreiter.
+    await pane.press({ key: 'diag-sub-profile' })
+    await settle(async () => (await pane.find({ type: 'Button', key: 'card-fold-diag-profile' })) !== undefined)
+    expect(await pane.find({ type: 'Text', text: /^(Zeitverteilung|Überblick|Ziele)/ })).not.toBe(undefined)
+    // Blast-Radius: Neu berechnen im Kartenkopf, zugeklappt verschwindet er.
+    await pane.press({ key: 'diag-sub-blast' })
+    await settle(async () => (await pane.find({ type: 'Button', key: 'diag-refresh' })) !== undefined)
+    expect(await pane.find({ type: 'Button', key: 'diag-refresh' })).not.toBe(undefined)
     await pane.press({ key: 'card-fold-diag-blast' })
-    for (let i = 0; i < 200 && (await pane.find({ type: 'Button', key: 'diag-refresh' })) !== undefined; i++) await Promise.resolve()
+    await settle(async () => (await pane.find({ type: 'Button', key: 'diag-refresh' })) === undefined)
     expect(await pane.find({ type: 'Button', key: 'diag-refresh' })).toBe(undefined)
+    // Kontext-Inspektor gehört zum Verbrauch.
+    await pane.press({ key: 'pane-tabs-usage' })
+    await settle(async () => (await pane.find({ type: 'Button', key: 'diag-agents' })) !== undefined)
+    expect(await pane.find({ type: 'Text', text: 'Kontext-Inspektor' })).not.toBe(undefined)
   })
 
-  test(`Diagnose (${surface}): Band zeigt Kurzinfos als Knöpfe, Einstellung blendet sie aus`, async ($, on) => {
+  test(`Diagnose (${surface}): Kurzinfos unter Hinweise, im Band nur Gelb und Rot; Band-Schalter wirkt nur aufs Band`, async ($, on) => {
     stubs(on)
     await $.session.measure(MEASURE)
     const band = await $.ui.mount({ plugin: 'tenvan-cc', surface, component: 'AbovePrompt', props: BAND_PROPS })
-    expect(await band.find({ type: 'Button', key: 'diag-inspect' })).not.toBe(undefined)
-    expect(JSON.stringify(await band.find({ key: 'diag-inspect-pill' }))).toContain('Kontext')
-
-    const page = await $.ui.mount({ plugin: 'tenvan-cc', surface, component: 'Pane', requestId: 'tenvan-cc-settings', props: PANE_PROPS })
-    await page.press({ key: 'set-inspectBand' })
-    for (let i = 0; i < 200 && (await band.find({ type: 'Button', key: 'diag-inspect' })) !== undefined; i++) await Promise.resolve()
+    // 25 % Kontext ist grün: keine Meldungszeile, keine Knöpfe.
+    expect(await band.find({ key: 'alerts' })).toBe(undefined)
     expect(await band.find({ type: 'Button', key: 'diag-inspect' })).toBe(undefined)
+    await $.command.run({ command: 'cockpit-profiling', args: '' } as never)
+    const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface, component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+    expect(JSON.stringify(await pane.find({ key: 'hint-diag-inspect' }))).toContain('Kontext')
+    await pane.press({ key: 'pane-tabs-set' })
+    await settle(async () => (await pane.find({ type: 'Button', key: 'set-inspectBand' })) !== undefined)
+    await pane.press({ key: 'set-inspectBand' })
+    await settle(async () => JSON.stringify(await pane.find({ type: 'Button', key: 'set-inspectBand' })).includes('○'))
+    expect(JSON.stringify(await pane.find({ type: 'Button', key: 'set-inspectBand' }))).toContain('○ Aus')
+    // Der Schalter „Kontext-Inspektor im Band“ gilt nur fürs Band; Diagnose → Hinweise zeigt jede Meldung.
+    await pane.press({ key: 'pane-tabs-diag' })
+    await settle(async () => (await pane.find({ key: 'card-hints' })) !== undefined)
+    expect(JSON.stringify(await pane.find({ key: 'hint-diag-inspect' }))).toContain('Kontext')
   })
 }
 
@@ -75,4 +102,26 @@ test('Diagnose: Ereignisse laufen durch die Hooks, Band und Befehle zeigen das E
   expect(JSON.stringify(help)).toContain('cockpit-blast')
   const bad = await $.command.run({ command: 'cockpit-blast', args: 'watch ../../etc/passwd' } as never)
   expect(JSON.stringify(bad)).toContain('Ungültiger Pfad')
+})
+
+test('Profiler: Subagent aus agent.spawn und turn.complete statt classic.* (sec-default leitet die an uns vorbei)', async ($, on) => {
+  stubs(on)
+  on('agent.spawn', () => ({ model: 'm', agentId: 'a1' }) as never)
+  on('agent.list', () => ({ value: [] }) as never)
+  on('turn.start', () => ({ turnId: 't1' }))
+  on('turn.complete', () => ({ text: '' }))
+  on('turn.step', async function* () {
+    return { turnId: 't1', index: 0, answer: '', toolUses: [], stopReason: 'end_turn', usage: { ...USAGE0, input_tokens: 4, model: 'm' } }
+  })
+  on('prompt.submit', ($, e) => ({ text: e.text }))
+  await $.session.measure(MEASURE)
+  await $.turn.start({ turnId: 't1' } as never)
+  for await (const _ of $.turn.step({ turnId: 't1', index: 0, model: 'm', messageCount: 1 })) {
+    // Stream leer durchlaufen
+  }
+  await $.agent.spawn({ subagentType: 'planner', description: 'Plan', tool_use_id: 'u9', background: false, fork: false } as never)
+  await $.turn.complete({ answer: '', reason: 'answer', durationMs: 500, isAborted: false, turnId: 's1', agentId: 'a1' } as never)
+  await $.turn.complete({ answer: '', reason: 'answer', durationMs: 1000, isAborted: false, turnId: 't1' } as never)
+  const report = await $.command.run({ command: 'cockpit-profil', args: 'text' } as never)
+  expect(JSON.stringify(report)).toContain('planner')
 })
