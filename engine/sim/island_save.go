@@ -81,6 +81,8 @@ func (isl *Island) ToSave(savedAt string) IslandSave {
 // ParseIslandSave liest einen Spielstand der Version 9 oder, überführt, der Version 8 (ohne geräumte Lager), 7 (Insel als Index), 6 (ohne
 // Wirtschaft), 5 (ohne Händler), 4 (ohne Bosse und Insel), 3 (ohne Tag und Phase), 2 oder 1 (Campaign). Stände bis
 // Version 7 kommen in die Standard-Welt (migrateWorld). Tag und Phase wirken beim Laden nicht, die Zeit kommt aus `time`.
+// Geprüft wird hier nur, was ohne Welt geht (Form, Tiefen, Skill-IDs gegen die Basis); Tier-Gating und Wirtschaft prüft
+// erst FromIslandSaveIn gegen den Wertesatz der Welt. Ein Ergebnis ohne FromIslandSaveIn gilt nicht als geprüft (B-694).
 func ParseIslandSave(raw []byte) (IslandSave, error) {
 	var head struct {
 		Version int `json:"version"`

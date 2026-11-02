@@ -7,6 +7,7 @@ import (
 	"image/png"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -130,8 +131,7 @@ func TestDownloadHit(t *testing.T) {
 	if _, err := DownloadHit(context.Background(), root, "farm", intern[2].ID, tlsClient(srv), day); err == nil || !strings.Contains(err.Error(), "download nur von upload.wikimedia.org") {
 		t.Fatalf("fremder Host nicht abgelehnt: %v", err)
 	}
-	DownloadHosts["127.0.0.1"] = true // Testserver
-	defer delete(DownloadHosts, "127.0.0.1")
+	allowTestServer(t, srv)
 	if _, err := AddHits(root, "farm", []Hit{{Title: "Coin video game.png", Link: "https://commons.wikimedia.org/c", Source: "Wikimedia Commons",
 		License: "CC BY-SA 3.0", Download: srv.URL + "/coin.png"}}, day); err != nil {
 		t.Fatal(err)
@@ -161,8 +161,7 @@ func TestDownloadHitFolgtWeiterleitung(t *testing.T) {
 		_, _ = w.Write(pngBytes(t))
 	}))
 	defer srv.Close()
-	DownloadHosts["127.0.0.1"] = true
-	defer delete(DownloadHosts, "127.0.0.1")
+	allowTestServer(t, srv)
 	if _, err := AddHits(root, "farm", []Hit{{Title: "Weiter.png", Link: "https://commons.wikimedia.org/w", Source: "Wikimedia Commons",
 		License: "CC0 1.0", Download: srv.URL + "/alt.png"}}, day); err != nil {
 		t.Fatal(err)
@@ -180,20 +179,43 @@ func TestDownloadHitWeiterleitungAufFremdenHostAbgelehnt(t *testing.T) {
 		srv := httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, ziel, http.StatusFound)
 		}))
-		DownloadHosts["127.0.0.1"] = true
+		allowTestServer(t, srv)
 		if _, err := AddHits(root, "farm", []Hit{{Title: "Weg.png", Link: "https://commons.wikimedia.org/w", Source: "Wikimedia Commons",
 			License: "CC0 1.0", Download: srv.URL + "/alt.png"}}, day); err != nil {
 			t.Fatal(err)
 		}
 		hits, _ := HitsOf(root, "farm")
 		_, err := DownloadHit(context.Background(), root, "farm", hits[len(hits)-1].ID, tlsClient(srv), day)
-		delete(DownloadHosts, "127.0.0.1")
 		srv.Close()
 		if err == nil || !strings.Contains(err.Error(), "abgelehnt") {
 			t.Errorf("%s: %v", ziel, err)
 		}
 		if files, _ := filepath.Glob(filepath.Join(root, "public", "grafik", "kandidaten", "*")); len(files) != 0 {
 			t.Errorf("%s: Datei entstanden: %v", ziel, files)
+		}
+	}
+}
+
+// allowTestServer erlaubt Host und Port des Testservers bis zum Testende.
+func allowTestServer(t *testing.T, srv *httptest.Server) {
+	t.Helper()
+	u, _ := url.Parse(srv.URL)
+	DownloadHosts[u.Hostname()], DownloadPorts[u.Port()] = true, true
+	t.Cleanup(func() { delete(DownloadHosts, u.Hostname()); delete(DownloadPorts, u.Port()) })
+}
+
+// B-694: Fremder Port und Zugangsdaten in der URL gelten auch auf einem erlaubten Host nicht.
+func TestDownloadAllowedPortUndUserinfo(t *testing.T) {
+	for raw, want := range map[string]bool{
+		"https://upload.wikimedia.org/a.png":         true,
+		"https://upload.wikimedia.org:443/a.png":     true,
+		"https://upload.wikimedia.org:8443/a.png":    false,
+		"https://user:pw@upload.wikimedia.org/a.png": false,
+		"https://localhost/a.png":                    false,
+	} {
+		u, _ := url.Parse(raw)
+		if got := downloadAllowed(u); got != want {
+			t.Errorf("%s: %v, erwartet %v", raw, got, want)
 		}
 	}
 }

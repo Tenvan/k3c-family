@@ -304,7 +304,7 @@ func hitMark(h Hit) string {
 // hitDownloadable: direkter Download über https von einem Host aus DownloadHosts (wie DownloadHit).
 func hitDownloadable(h Hit) bool {
 	u, err := url.Parse(h.Download)
-	return h.Download != "" && err == nil && u.Scheme == "https" && DownloadHosts[strings.ToLower(u.Hostname())]
+	return h.Download != "" && err == nil && u.Scheme == "https" && downloadAllowed(u)
 }
 
 func hitFileName(h Hit) string {

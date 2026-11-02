@@ -105,7 +105,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-683](B-683-chat-welt-overrides.md) | DEV | Idee | mittel | eingeplant | WZ37 | Der Studio-Chat kann Welt-Overrides lesen, setzen und zurücksetzen |
 | [B-684](B-684-studio-ausschnitt-rahmen-und-einpassen.md) | DEV | Idee | mittel | eingeplant | GRJ2 | Die Ausschnitt-Bearbeitung zeigt wahlweise einen Rahmen und passt die Grafik in die Kachel ein |
 | [B-685](B-685-zielmass-grafiken-skalieren.md) | CLI | Idee | hoch | eingeplant | GRJ2 | Grafiken bekommen ein Zielmaß in der Ausgabe und werden dort passend skaliert |
-| [B-694](B-694-review-wz39-bal10-nachtraege.md) | SIM | Problem | niedrig | offen | – | Nachträge aus dem Review WZ39/BAL10 (niedrig) |
 
 ## Archiv
 
@@ -654,3 +653,4 @@ Zeile in diesen Abschnitt.
 | [B-691](archiv/B-691-doku-norton-codemap.md) | DEV | Problem | niedrig | erledigt | WZ39 | Doku: Norton-Ausnahme in arbeitsweise.md, veraltete world/codemap.md |
 | [B-692](archiv/B-692-wertesatz-nachtraege.md) | SIM | Problem | mittel | erledigt | BAL10 | Welt-Wertesatz: Nachträge aus dem Review BAL8.2 |
 | [B-693](archiv/B-693-overrides-editor-nachtraege.md) | DEV | Problem | niedrig | erledigt | WZ39 | Overrides-Editor: Nachträge aus dem Review WZ37.1 |
+| [B-694](archiv/B-694-review-wz39-bal10-nachtraege.md) | SIM | Problem | niedrig | erledigt | – | Nachträge aus dem Review WZ39/BAL10 (niedrig) |

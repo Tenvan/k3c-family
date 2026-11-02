@@ -264,8 +264,8 @@ func downloadHit(ctx context.Context, root, slotID, hitID, stand string, client 
 	if err != nil || u.Scheme != "https" {
 		return "", fmt.Errorf("download nur über https: %q", hit.Download)
 	}
-	if !DownloadHosts[strings.ToLower(u.Hostname())] {
-		return "", fmt.Errorf("download nur von %s, nicht von %q: bitte manuell laden und importieren", hostList(), u.Hostname())
+	if !downloadAllowed(u) {
+		return "", fmt.Errorf("download nur von %s, nicht von %q: bitte manuell laden und importieren", hostList(), u.Host)
 	}
 	c := *client
 	c.CheckRedirect = downloadRedirect
@@ -282,11 +282,19 @@ func downloadRedirect(req *http.Request, via []*http.Request) error {
 	if len(via) >= 5 {
 		return errors.New("zu viele Weiterleitungen")
 	}
-	if req.URL.Scheme != "https" || !DownloadHosts[strings.ToLower(req.URL.Hostname())] {
-		slog.Warn("🚫 Weiterleitung auf nicht erlaubten Host abgelehnt", "host", req.URL.Hostname())
-		return fmt.Errorf("weiterleitung auf %q abgelehnt: nur https und %s", req.URL.Hostname(), hostList())
+	if req.URL.Scheme != "https" || !downloadAllowed(req.URL) {
+		slog.Warn("🚫 Weiterleitung auf nicht erlaubten Host abgelehnt", "host", req.URL.Host)
+		return fmt.Errorf("weiterleitung auf %q abgelehnt: nur https und %s", req.URL.Host, hostList())
 	}
 	return nil
+}
+
+// DownloadPorts sind die erlaubten Ports einer Download-URL: keiner (443) oder 443; Tests ergänzen den Port des Testservers.
+var DownloadPorts = map[string]bool{"": true, "443": true}
+
+// downloadAllowed: Host aus DownloadHosts, erlaubter Port, keine Zugangsdaten in der URL (B-694).
+func downloadAllowed(u *url.URL) bool {
+	return u.User == nil && DownloadPorts[u.Port()] && DownloadHosts[strings.ToLower(u.Hostname())]
 }
 
 func fetchToTemp(ctx context.Context, client *http.Client, u *url.URL, ext string) (string, error) {

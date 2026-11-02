@@ -67,6 +67,8 @@ type worldSnapshot struct {
 }
 
 // snapshotWorlds liest jede Welt genau einmal von der Platte.
+// Die Liste kommt aus listWorlds: jede data/worlds/*.json mit gültiger Welt-ID; andere Dateien lädt auch der Server
+// nicht als Welt, sie können also nicht erben (B-694).
 func (a *App) snapshotWorlds() worldSnapshot {
 	s := worldSnapshot{defs: map[string]sim.WorldDef{}, errs: map[string]error{}, extends: map[string]string{}}
 	for _, w := range a.listWorlds() {
@@ -258,7 +260,8 @@ func objectItems(raw []byte) ([]string, []json.RawMessage) {
 // checkWorldValues prüft den Entwurf def wie der Server (sim.ResolveWorldValues): die Welt selbst und jeden Nachfolger
 // (direkt oder über Zwischenwelten, eine Änderung wirkt auf sie, welten.md § 1). Ein Nachfolger blockiert nur, wenn der
 // Entwurf ihn neu oder anders ungültig macht; war er mit dem Stand der Platte schon gleich ungültig oder lädt er nicht,
-// kommt eine Warnung zurück. Alle Welten werden dafür einmal gelesen (Snapshot).
+// kommt eine Warnung zurück. Alle Welten werden dafür einmal gelesen (Snapshot). „Gleich ungültig“ heißt gleiche erste
+// Meldung: Ein zusätzlicher, später gemeldeter Verstoß in einem schon kaputten Nachfolger warnt nur (bewusst, B-694).
 func (a *App) checkWorldValues(def sim.WorldDef) (warnings []string, err error) {
 	snap := a.snapshotWorlds()
 	draft := func(id string) (sim.WorldDef, error) {

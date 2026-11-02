@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** BAL
 - **Erstellt:** 2026-11-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-02
 
 ## Ausgangslage
 
@@ -60,4 +60,4 @@ keine
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+2026-11-02 (Claude): 1 Kommentar an `ParseIslandSave` (`engine/sim/island_save.go`). 2 Kommentar in `engine/room/fullsave.go` (Vollausbau baut immer Standard-Welt-Stände). 3 Kommentar an `checkWorldValues` (gleiche erste Meldung = bewusst nur Warnung). 4 Kommentar an `snapshotWorlds`: `listWorlds` liefert jede `data/worlds/*.json` mit gültiger ID, dasselbe Muster wie `engine/sim/island_worlds.go` `idPattern`. 5 `assetkit.downloadAllowed` prüft Host, Port (`DownloadPorts`: keiner oder 443) und Userinfo für Start-URL, Weiterleitung und `hitDownloadable`; Test `TestDownloadAllowedPortUndUserinfo`, Testserver erlauben ihren Port gezielt. `task check:diff` grün.
