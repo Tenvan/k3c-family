@@ -29,6 +29,7 @@
 //   bleiben zusätzlich über `tool_use_id` zuordenbar.
 import type { UiLang } from '../types'
 import { oneLine } from './core'
+import { rate, rateTag, ratingSection, worst, type Rate } from './rating'
 
 // ── Grenzen ──────────────────────────────────────────────────────────────────────────────────────────────────────────
 export const MAX_ITEMS = 20_000
@@ -934,8 +935,17 @@ export function num(n: number, L: UiLang): string {
 }
 
 // ── Anzeige ──────────────────────────────────────────────────────────────────────────────────────────────────────────
-export type InspectRow = { label: string; value: string; tone?: 'ok' | 'warn' | 'bad' | 'dim' }
+export type InspectRow = { label: string; value: string; tone?: 'ok' | 'warn' | 'bad' | 'dim'; rate?: Rate }
 export type InspectSection = { title: string; rows: InspectRow[]; note?: string }
+
+// Verschwendung im Verhältnis zum belegten Fenster; ohne Verschwendung immer „sehr gut“.
+const wasteRate = (sum: InspectSummary): Rate => (sum.waste <= 0 ? 'great' : rate('waste', (sum.waste / Math.max(sum.liveEst, 1)) * 100))
+
+/** Schlechteste Stufe aus Kontextfüllung und Verschwendung für die Kurzinfo im Band. */
+export function bandRate(sum: InspectSummary, percent: number | undefined): Rate {
+  const ctx = percent === undefined || !Number.isFinite(percent) ? undefined : rate('context', percent)
+  return worst(ctx, wasteRate(sum)) ?? 'great'
+}
 
 /** Kurzinfo fürs Band: `Kontext 62 % · Verschwendung ≈8,1k` / `ctx 62% · waste≈8.1k`. */
 export function bandText(sum: InspectSummary, percent: number | undefined, L: UiLang): string {
@@ -954,7 +964,7 @@ function sections(sum: InspectSummary, L: UiLang, max: number): InspectSection[]
     rows: [
       { label: tx(L, 'inspect.ov.window'), value: tx(L, 'inspect.ov.windowValue', { n: n(sum.liveEst), items: sum.liveItems }) },
       ...(sum.measured === undefined ? [] : [{ label: tx(L, 'inspect.ov.measured'), value: n(sum.measured) }]),
-      { label: tx(L, 'inspect.ov.waste'), value: `≈${n(sum.waste)}`, tone: sum.waste > 0 ? 'warn' : 'ok' },
+      { label: tx(L, 'inspect.ov.waste'), value: `≈${n(sum.waste)}`, rate: wasteRate(sum) },
       { label: tx(L, 'inspect.ov.session'), value: `≈${n(sum.rereads.wasteSession)}`, tone: 'dim' },
       {
         label: tx(L, 'inspect.ov.k'),
@@ -977,7 +987,7 @@ function sections(sum: InspectSummary, L: UiLang, max: number): InspectSection[]
   const kinds = REREAD_KINDS.filter(x => sum.rereads.counts[x] > 0).map(x => ({
     label: tx(L, `inspect.rr.${x}`),
     value: tx(L, 'inspect.rr.value', { count: sum.rereads.counts[x], n: n(sum.rereads.est[x]) }),
-    ...(x === 'unchanged-live' ? { tone: 'bad' as const } : x === 'engine-deduped' ? { tone: 'dim' as const } : {}),
+    ...(x === 'unchanged-live' ? { tone: 'bad' as const, rate: 'bad' as const } : x === 'engine-deduped' ? { tone: 'dim' as const } : {}),
   }))
   const wasteFiles = share(sum.rereads.rows.filter(r => r.wasteNow), r => r.path, r => r.est).map(s => ({ label: tx(L, 'inspect.rr.waste', { file: shortPath(s.name) }), value: `${s.count}× · ≈${n(s.est)}`, tone: 'warn' as const }))
   const rereadSec: InspectSection = {
@@ -991,7 +1001,7 @@ function sections(sum: InspectSummary, L: UiLang, max: number): InspectSection[]
     rows: orEmpty(sum.similar.groups.map(g => ({
       label: g.label,
       value: tx(L, 'inspect.sim.value', { count: g.count, kind: tx(L, g.kind === 'exact' ? 'inspect.sim.exact' : 'inspect.sim.near'), n: n(g.wasteNow) }),
-      ...(g.wasteNow > 0 ? { tone: 'warn' as const } : { tone: 'dim' as const }),
+      ...(g.wasteNow > 0 ? { rate: rate('waste', (g.wasteNow / Math.max(sum.liveEst, 1)) * 100) } : { tone: 'dim' as const }),
     }))),
     note: tx(L, 'inspect.sim.note'),
   }
@@ -1009,8 +1019,8 @@ function sections(sum: InspectSummary, L: UiLang, max: number): InspectSection[]
       value: tx(L, 'inspect.cmp.entities', { ek: kept(c.edited), et: c.edited.all.length, rk: kept(c.read), rt: c.read.all.length, xk: kept(c.errors), xt: c.errors.all.length }),
       tone: 'dim',
     })
-    if (c.edited.lost.length > 0) cmpRows.push({ label: '', value: tx(L, 'inspect.cmp.lost', { files: c.edited.lost.slice(0, 3).map(shortPath).join(', ') }), tone: 'bad' })
-    else if (c.reflow > 0) cmpRows.push({ label: '', value: tx(L, 'inspect.cmp.reflow', { n: n(c.reflow) }), tone: 'warn' })
+    if (c.edited.lost.length > 0) cmpRows.push({ label: '', value: tx(L, 'inspect.cmp.lost', { files: c.edited.lost.slice(0, 3).map(shortPath).join(', ') }), tone: 'bad', rate: 'bad' })
+    else if (c.reflow > 0) cmpRows.push({ label: '', value: tx(L, 'inspect.cmp.reflow', { n: n(c.reflow) }), tone: 'warn', rate: 'poor' })
   })
   const compSec: InspectSection = { title: tx(L, 'inspect.sec.compactions'), rows: orEmpty(cmpRows.slice(-max)), note: tx(L, 'inspect.cmp.note') }
 
@@ -1031,13 +1041,13 @@ function sections(sum: InspectSummary, L: UiLang, max: number): InspectSection[]
   const advRows: InspectRow[] = sum.advice.slice(0, Math.max(1, Math.floor(max / 2))).flatMap(a => {
     const vars = Object.fromEntries(Object.entries(a.vars).map(([key, v]) => [key, key === 'est' && typeof v === 'number' ? n(v) : v]))
     return [
-      { label: tx(L, `inspect.adv.${a.key}`, vars), value: a.saving > 0 ? tx(L, 'inspect.adv.saving', { n: n(a.saving) }) : '', tone: a.key === 'lostEdits' ? 'bad' as const : 'warn' as const },
+      { label: tx(L, `inspect.adv.${a.key}`, vars), value: a.saving > 0 ? tx(L, 'inspect.adv.saving', { n: n(a.saving) }) : '', tone: a.key === 'lostEdits' ? 'bad' as const : 'warn' as const, rate: a.key === 'lostEdits' ? 'bad' as const : 'poor' as const },
       { label: '', value: tx(L, `inspect.adv.${a.key}.ev`, vars), tone: 'dim' as const },
     ]
   })
-  const advSec: InspectSection = { title: tx(L, 'inspect.sec.advice'), rows: advRows.length === 0 ? [{ label: tx(L, 'inspect.adv.none'), value: '', tone: 'ok' }] : advRows }
+  const advSec: InspectSection = { title: tx(L, 'inspect.sec.advice'), rows: advRows.length === 0 ? [{ label: tx(L, 'inspect.adv.none'), value: '', tone: 'ok', rate: 'great' }] : advRows }
 
-  return [overview, occupancy, rereadSec, similarSec, compSec, effSec, advSec]
+  return [overview, occupancy, rereadSec, similarSec, compSec, effSec, advSec, ratingSection(L, ['context', 'waste'])]
 }
 
 /** Abschnitte fürs Panel (Desktop und Terminal, nur Text), je höchstens 8 Zeilen. */
@@ -1049,7 +1059,7 @@ export function reportText(sum: InspectSummary, L: UiLang): string {
   for (const s of sections(sum, L, 20)) {
     out.push('', s.title, '─'.repeat(s.title.length))
     const width = Math.min(40, Math.max(0, ...s.rows.map(r => r.label.length)))
-    for (const r of s.rows) out.push(r.label === '' ? `  ${' '.repeat(width)}  ${r.value}` : `  ${r.label.padEnd(width)}  ${r.value}`.trimEnd())
+    for (const r of s.rows) out.push(r.label === '' ? `  ${' '.repeat(width)}  ${r.value}${rateTag(L, r.rate)}` : `  ${r.label.padEnd(width)}  ${r.value}${rateTag(L, r.rate)}`.trimEnd())
     if (s.note !== undefined) out.push(`  (${s.note})`)
   }
   return out.join('\n')

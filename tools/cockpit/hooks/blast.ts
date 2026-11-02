@@ -18,6 +18,7 @@
 // Block-Kommentare über mehrere Zeilen werden nur erkannt, wenn die Folgezeilen mit `*` beginnen.
 
 import type { UiLang } from '../types'
+import { rate, rateTag, ratingSection, worst, type Rate } from './rating'
 
 export type BlastIo = {
   cwd: string
@@ -25,7 +26,7 @@ export type BlastIo = {
   run(argv: readonly string[]): Promise<{ exitCode: number; stdout: string; stderr: string }>
 }
 export type BlastResult = { targets: string[]; affected: string[]; tests: string[]; unresolved: string[]; incomplete: boolean; at?: never }
-export type BlastSection = { title: string; rows: { label: string; value: string; tone?: 'ok' | 'warn' | 'bad' | 'dim' }[]; note?: string }
+export type BlastSection = { title: string; rows: { label: string; value: string; tone?: 'ok' | 'warn' | 'bad' | 'dim'; rate?: Rate }[]; note?: string }
 export type BlastCommand =
   | { kind: 'help' } | { kind: 'reset' } | { kind: 'auto' }
   | { kind: 'watch'; path: string } | { kind: 'unwatch'; path: string } | { kind: 'target'; path: string }
@@ -297,11 +298,25 @@ const de = {
   'blast.label.watched': 'beobachtet',
   'blast.label.status': 'Status',
   'blast.label.none': 'keine',
+  'blast.label.count': 'Anzahl',
   'blast.value.notScanned': 'noch nicht gescannt',
   'blast.value.incomplete': 'unvollständig (Grenzen erreicht oder Git-Fehler)',
   'blast.value.noTargets': 'keine Ziele: nichts geändert, nichts beobachtet',
   'blast.more': '… +{n}',
   'blast.hint': 'Nur statische relative Importe; Aliase, Laufzeit-Importe, Framework-Auflösung manuell prüfen.',
+  'blast.title.verdict': 'Bewertung',
+  'blast.note.targets': 'Von hier aus wird gesucht: deine geänderten Dateien (gelb) und per „/cockpit-blast watch <pfad>“ beobachtete.',
+  'blast.note.affected': 'Diese Dateien binden ein Ziel per relativem Import ein, direkt oder über Zwischenstufen. Sie können durch deine Änderung brechen.',
+  'blast.note.tests': 'Testdateien unter den betroffenen: diese zuerst laufen lassen.',
+  'blast.note.unresolved': 'Relative Importe, zu denen keine Datei gefunden wurde. Dahinter kann weiterer Code hängen, den die Auswertung nicht sieht.',
+  'blast.why.affected': 'Reichweite: Änderungen an {k} Datei(en) wirken auf {n} weitere, die sie importieren.',
+  'blast.why.affectedBig': 'Große Reichweite: {n} Dateien importieren deine {k} geänderte(n). Vor dem Commit die Aufrufer prüfen.',
+  'blast.why.noTests': 'Keine Tests: keine Testdatei importiert die betroffenen Dateien. Änderung von Hand prüfen oder einen Test ergänzen.',
+  'blast.why.fewTests': 'Wenige Tests: {t} Testkandidat(en) für {n} betroffene Dateien. Nicht abgedeckte Stellen von Hand prüfen.',
+  'blast.why.tests': 'Tests vorhanden: {t} Testkandidat(en) für {n} betroffene Dateien. Diese laufen lassen.',
+  'blast.why.unresolved': 'Unvollständiges Bild: {u} Import(e) ließen sich nicht auflösen (Alias, Paket, dynamischer Import). Die Reichweite kann größer sein.',
+  'blast.why.incomplete': 'Auswertung unvollständig: zu viele Dateien oder ein Git-Fehler. Ergebnis nur als Untergrenze lesen.',
+  'blast.why.none': 'Keine Reichweite: keine andere Datei importiert deine Änderungen.',
   'blast.report.head': 'Blast-Radius: {n} betroffen, {t} Testkandidaten',
   'blast.help': 'Verwendung: /cockpit-blast [watch <pfad> | unwatch <pfad> | <pfad> | reset]\n  (ohne Argument)  geänderte und beobachtete Dateien auswerten\n  <pfad>           eine einzelne Datei auswerten\n  watch <pfad>     Datei dauerhaft beobachten\n  unwatch <pfad>   Beobachtung beenden\n  reset            Beobachtungen und Ergebnis löschen',
 } as const
@@ -317,11 +332,25 @@ const en = {
   'blast.label.watched': 'watched',
   'blast.label.status': 'Status',
   'blast.label.none': 'none',
+  'blast.label.count': 'Count',
   'blast.value.notScanned': 'not scanned yet',
   'blast.value.incomplete': 'incomplete (limits reached or Git error)',
   'blast.value.noTargets': 'no targets: nothing changed, nothing watched',
   'blast.more': '… +{n}',
   'blast.hint': 'Static relative imports only; check aliases, runtime imports and framework resolution manually.',
+  'blast.title.verdict': 'Verdict',
+  'blast.note.targets': 'The search starts here: your changed files (yellow) and files watched with “/cockpit-blast watch <path>”.',
+  'blast.note.affected': 'These files pull in a target through a relative import, directly or via other files. Your change can break them.',
+  'blast.note.tests': 'Test files among the affected ones: run these first.',
+  'blast.note.unresolved': 'Relative imports with no matching file. More code may hang off them that the analysis cannot see.',
+  'blast.why.affected': 'Reach: changes to {k} file(s) affect {n} more that import them.',
+  'blast.why.affectedBig': 'Wide reach: {n} files import your {k} changed one(s). Check the callers before committing.',
+  'blast.why.noTests': 'No tests: no test file imports the affected files. Check the change by hand or add a test.',
+  'blast.why.fewTests': 'Few tests: {t} test candidate(s) for {n} affected files. Check uncovered parts by hand.',
+  'blast.why.tests': 'Tests found: {t} test candidate(s) for {n} affected files. Run them.',
+  'blast.why.unresolved': 'Incomplete picture: {u} import(s) could not be resolved (alias, package, dynamic import). The reach may be larger.',
+  'blast.why.incomplete': 'Analysis incomplete: too many files or a Git error. Read the result as a lower bound.',
+  'blast.why.none': 'No reach: no other file imports your changes.',
   'blast.report.head': 'Blast radius: {n} affected, {t} test candidates',
   'blast.help': 'Usage: /cockpit-blast [watch <path> | unwatch <path> | <path> | reset]\n  (no argument)    analyse changed and watched files\n  <path>           analyse a single file\n  watch <path>     watch a file permanently\n  unwatch <path>   stop watching\n  reset            clear watches and result',
 } as const satisfies Record<keyof typeof de, string>
@@ -335,9 +364,37 @@ export function tx(L: UiLang, key: Key, vars?: Record<string, string | number>):
 
 // ── Anzeige ──
 
+// Testabdeckung: Anteil der betroffenen Dateien, für die es Testkandidaten gibt; ohne betroffene Dateien nichts zu testen (sehr gut).
+const testsRate = (r: BlastResult): Rate => (r.affected.length === 0 ? 'great' : rate('tests', (r.tests.length / r.affected.length) * 100))
+const unresolvedRate = (r: BlastResult): Rate => rate('unresolved', r.unresolved.length)
+
+/** Schlechteste Stufe aus Reichweite, Testabdeckung und Unaufgelöstem für die Kurzinfo im Band. */
+export function bandRate(r: BlastResult | null): Rate | undefined {
+  if (r === null || r.targets.length === 0) return undefined
+  return worst(rate('affected', r.affected.length), testsRate(r), unresolvedRate(r), r.incomplete ? 'poor' : undefined)
+}
+
 export function bandText(r: BlastResult | null, L: UiLang): string {
   if (r === null || r.targets.length === 0) return ''
   return tx(L, 'blast.band', { n: r.affected.length, t: r.tests.length }) + (r.incomplete ? tx(L, 'blast.incomplete') : '')
+}
+
+/** Was die Ampeln bedeuten, in Sätzen: je bewertetem Aspekt Stufe und Begründung, die schlechtesten zuerst. */
+export function advice(r: BlastResult | null, L: UiLang): { rate: Rate; text: string }[] {
+  if (r === null || r.targets.length === 0) return []
+  const n = r.affected.length
+  const out: { rate: Rate; text: string }[] = []
+  const reach = rate('affected', n)
+  out.push({ rate: reach, text: tx(L, n === 0 ? 'blast.why.none' : reach === 'poor' || reach === 'bad' ? 'blast.why.affectedBig' : 'blast.why.affected', { n, k: r.targets.length }) })
+  if (n > 0) {
+    const tr = testsRate(r)
+    const key = r.tests.length === 0 ? 'blast.why.noTests' : tr === 'poor' || tr === 'bad' ? 'blast.why.fewTests' : 'blast.why.tests'
+    out.push({ rate: tr, text: tx(L, key, { t: r.tests.length, n }) })
+  }
+  if (r.unresolved.length > 0) out.push({ rate: unresolvedRate(r), text: tx(L, 'blast.why.unresolved', { u: r.unresolved.length }) })
+  if (r.incomplete) out.push({ rate: 'poor', text: tx(L, 'blast.why.incomplete') })
+  const order: Record<Rate, number> = { bad: 0, poor: 1, good: 2, great: 3 }
+  return out.sort((a, b) => order[a.rate] - order[b.rate])
 }
 
 type Row = BlastSection['rows'][number]
@@ -357,12 +414,36 @@ export function paneView(r: BlastResult | null, watched: readonly string[], L: U
   if (r === null) targetRows.push({ label: tx(L, 'blast.label.status'), value: tx(L, 'blast.value.notScanned'), tone: 'dim' })
   else if (r.targets.length === 0) targetRows.push({ label: tx(L, 'blast.label.status'), value: tx(L, 'blast.value.noTargets'), tone: 'dim' })
   if (r?.incomplete) targetRows.push({ label: tx(L, 'blast.label.status'), value: tx(L, 'blast.value.incomplete'), tone: 'warn' })
-  const sections: BlastSection[] = [{ title: tx(L, 'blast.title.targets'), rows: targetRows }]
+  // Bewertung zuerst: jede Ampel mit einem Satz, was sie bedeutet und was zu tun ist (Wunsch Ralf, 2026-10-31).
+  const why = advice(r, L)
+  const sections: BlastSection[] = [
+    ...(why.length === 0 ? [] : [{ title: tx(L, 'blast.title.verdict'), rows: why.map(w => ({ label: '', value: w.text, rate: w.rate })) }]),
+    { title: tx(L, 'blast.title.targets'), rows: targetRows, note: tx(L, 'blast.note.targets') },
+  ]
   if (r !== null && r.targets.length > 0) {
-    sections.push({ title: tx(L, 'blast.title.affected'), rows: r.affected.length === 0 ? [{ label: tx(L, 'blast.label.none'), value: '', tone: 'dim' }] : listRows(r.affected, L) })
-    sections.push({ title: tx(L, 'blast.title.tests'), rows: r.tests.length === 0 ? [{ label: tx(L, 'blast.label.none'), value: '', tone: 'dim' }] : listRows(r.tests, L) })
-    if (r.unresolved.length > 0) sections.push({ title: tx(L, 'blast.title.unresolved'), rows: listRows(r.unresolved, L).map(x => ({ ...x, tone: x.tone ?? 'warn' })) })
+    sections.push({
+      title: tx(L, 'blast.title.affected'),
+      rows: r.affected.length === 0
+        ? [{ label: tx(L, 'blast.label.none'), value: '', tone: 'dim', rate: 'great' }]
+        : [{ label: tx(L, 'blast.label.count'), value: String(r.affected.length), rate: rate('affected', r.affected.length) }, ...listRows(r.affected, L)],
+      note: tx(L, 'blast.note.affected'),
+    })
+    sections.push({
+      title: tx(L, 'blast.title.tests'),
+      rows: r.tests.length === 0
+        ? [{ label: tx(L, 'blast.label.none'), value: '', tone: 'dim', ...(r.affected.length > 0 ? { rate: 'bad' as const } : {}) }]
+        : [{ label: tx(L, 'blast.label.count'), value: String(r.tests.length), rate: testsRate(r) }, ...listRows(r.tests, L)],
+      note: tx(L, 'blast.note.tests'),
+    })
+    if (r.unresolved.length > 0) {
+      sections.push({
+        title: tx(L, 'blast.title.unresolved'),
+        rows: [{ label: tx(L, 'blast.label.count'), value: String(r.unresolved.length), rate: unresolvedRate(r) }, ...listRows(r.unresolved, L).map(x => ({ ...x, tone: x.tone ?? 'warn' }))],
+        note: tx(L, 'blast.note.unresolved'),
+      })
+    }
   }
+  if (r !== null && r.targets.length > 0) sections.push(ratingSection(L, ['affected', 'tests', 'unresolved']))
   sections.push({ title: tx(L, 'blast.title.hint'), rows: [], note: tx(L, 'blast.hint') })
   return sections
 }
@@ -373,7 +454,7 @@ export function reportText(r: BlastResult | null, watched: readonly string[], L:
   else lines.push(tx(L, 'blast.report.head', { n: r.affected.length, t: r.tests.length }) + (r.incomplete ? tx(L, 'blast.incomplete') : ''))
   for (const s of paneView(r, watched, L)) {
     lines.push('', s.title)
-    for (const x of s.rows) lines.push(`  ${x.label}${x.label !== '' && x.value !== '' ? ' ' : ''}${x.value}`.trimEnd())
+    for (const x of s.rows) lines.push(`  ${x.label}${x.label !== '' && x.value !== '' ? ' ' : ''}${x.value}${rateTag(L, x.rate)}`.trimEnd())
     if (s.note !== undefined) lines.push(`  ${s.note}`)
   }
   const text = lines.join('\n')

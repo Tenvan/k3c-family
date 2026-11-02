@@ -1,14 +1,60 @@
 import { expect, mock, test } from 'claude-code/testing'
+import type { TestBody } from 'claude-code/testing'
 
 import { THEME, clampTiles } from './core'
 
 const PANE_PROPS = { title: 'Cockpit', isFocused: false, bodyColumns: 144, placement: 'dock', scroll: { offset: 0, bodyRows: 40 }, view: {} } as const
-const SETTINGS_PROPS = { ...PANE_PROPS, title: 'Cockpit · Einstellungen' } as const
 
 const MESSAGES = [
   { role: 'user' as const, text: 'Baue die Einstellungsseite', toolUses: [] },
   { role: 'assistant' as const, text: 'Ich lege die Seite an.', toolUses: [{ tool_use_id: 't1', tool: 'Write', input: { file_path: 'a/b.ts' }, text: 'ok' }] },
 ]
+
+type Engine = Parameters<TestBody>[0]
+type Tab = 'now' | 'sessions' | 'usage' | 'diag' | 'git' | 'back' | 'set'
+type Pressable = { press(t: { key: string }): Promise<unknown>; find(q: { type: 'Button'; key: string }): Promise<unknown> }
+
+// Ein Panel mit Reitern: Reiter per Klick auf den Link wählen und warten, bis er gezeichnet ist (der gewählte Reiter ist
+// Text statt Link, sein Button verschwindet).
+async function toTab(pane: Pressable, tab: Tab) {
+  if ((await pane.find({ type: 'Button', key: `pane-tabs-${tab}` })) === undefined) return
+  await pane.press({ key: `pane-tabs-${tab}` })
+  for (let i = 0; i < 3000 && (await pane.find({ type: 'Button', key: `pane-tabs-${tab}` })) !== undefined; i++) await Promise.resolve()
+}
+async function openPane($: Engine, tab: Tab = 'now') {
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  await toTab(pane, tab)
+  return pane
+}
+
+// Gemountete Instanzen zeichnen bei Zustandsänderung neu; Suche wartet, bis der Text erscheint (oder aufgibt).
+async function waitFind(view: { find(q: { type: 'Text'; text: string | RegExp }): Promise<unknown> }, text: string | RegExp) {
+  for (let i = 0; i < 3000; i++) {
+    const hit = await view.find({ type: 'Text', text })
+    if (hit !== undefined) return hit
+    await Promise.resolve()
+  }
+  return undefined
+}
+const settle = async (done: () => Promise<boolean>) => {
+  for (let i = 0; i < 3000 && !(await done()); i++) await Promise.resolve()
+}
+
+test('Panel: ein Panel mit sieben Reitern, der gewählte als Text, die anderen als Links', async ($, on) => {
+  mock.clock(on, { now: 1 })
+  on('session.measure', () => ({ changed: [] }))
+  on('store.get', () => ({ value: undefined }) as never)
+  on('store.set', () => ({ value: undefined }) as never)
+  const pane = await openPane($)
+  expect(await pane.find({ type: 'Text', text: 'Jetzt' })).not.toBe(undefined)
+  for (const tab of ['sessions', 'usage', 'diag', 'git', 'back', 'set']) expect(await pane.find({ type: 'Button', key: `pane-tabs-${tab}` })).not.toBe(undefined)
+  // Jetzt: Letzter Turn; die Übersicht steht unter Verbrauch.
+  expect(await pane.find({ type: 'Text', text: 'Letzter Turn' })).not.toBe(undefined)
+  expect(await pane.find({ type: 'Text', text: 'Übersicht' })).toBe(undefined)
+  await toTab(pane, 'usage')
+  expect(await pane.find({ type: 'Text', text: 'Übersicht' })).not.toBe(undefined)
+  expect(await pane.find({ type: 'Text', text: 'Letzter Turn' })).toBe(undefined)
+})
 
 test('Einstellungsseite: Schalter blendet Karte im Panel aus', async ($, on) => {
   mock.clock(on, { now: 1 })
@@ -16,12 +62,13 @@ test('Einstellungsseite: Schalter blendet Karte im Panel aus', async ($, on) => 
   on('store.get', () => ({ value: undefined }) as never)
   on('store.set', () => ({ value: undefined }) as never)
 
-  const settings = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
-  expect(await settings.find({ type: 'Text', text: 'Panel' })).not.toBe(undefined)
-  await settings.press({ key: 'set-cardLog' })
-
-  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
-  expect(await pane.find({ type: 'Text', text: 'Log' })).toBe(undefined)
+  const pane = await openPane($, 'set')
+  expect(await pane.find({ type: 'Text', text: 'Panel' })).not.toBe(undefined)
+  await pane.press({ key: 'set-cardTurn' })
+  await toTab(pane, 'now')
+  await settle(async () => (await pane.find({ type: 'Text', text: 'Letzter Turn' })) === undefined)
+  expect(await pane.find({ type: 'Text', text: 'Letzter Turn' })).toBe(undefined)
+  await toTab(pane, 'usage')
   expect(await pane.find({ type: 'Text', text: 'Übersicht' })).not.toBe(undefined)
 })
 
@@ -30,25 +77,22 @@ test('Panel-Karten: ▾/▸ klappt zu und auf, ✕ schaltet die Karte in den Ein
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
   on('store.set', () => ({ value: undefined }) as never)
-  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
-  const settle = async (done: () => Promise<boolean>) => {
-    for (let i = 0; i < 100 && !(await done()); i++) await Promise.resolve()
-  }
-  expect(await pane.find({ type: 'Text', text: 'Leer.' })).not.toBe(undefined)
-  expect(await pane.find({ type: 'Button', key: 'card-close-cardGate' })).not.toBe(undefined)
-  await pane.press({ key: 'card-fold-cardLog' })
-  await settle(async () => (await pane.find({ type: 'Text', text: 'Leer.' })) === undefined)
-  expect(await pane.find({ type: 'Text', text: 'Leer.' })).toBe(undefined)
-  expect(await pane.find({ type: 'Text', text: 'Log' })).not.toBe(undefined)
-  expect(JSON.stringify(await pane.find({ type: 'Button', key: 'card-fold-cardLog' }))).toContain('▸')
-  await pane.press({ key: 'card-fold-cardLog' })
-  await settle(async () => (await pane.find({ type: 'Text', text: 'Leer.' })) !== undefined)
-  expect(await pane.find({ type: 'Text', text: 'Leer.' })).not.toBe(undefined)
-  await pane.press({ key: 'card-close-cardLog' })
-  await settle(async () => (await pane.find({ type: 'Text', text: 'Log' })) === undefined)
-  expect(await pane.find({ type: 'Text', text: 'Log' })).toBe(undefined)
-  const settings = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
-  expect(JSON.stringify(await settings.find({ type: 'Button', key: 'set-cardLog' }))).toContain('○ Aus')
+  const pane = await openPane($)
+  expect(await pane.find({ type: 'Text', text: 'Noch kein Turn.' })).not.toBe(undefined)
+  expect(await pane.find({ type: 'Button', key: 'card-close-cardAgents' })).not.toBe(undefined)
+  await pane.press({ key: 'card-fold-cardTurn' })
+  await settle(async () => (await pane.find({ type: 'Text', text: 'Noch kein Turn.' })) === undefined)
+  expect(await pane.find({ type: 'Text', text: 'Noch kein Turn.' })).toBe(undefined)
+  expect(await pane.find({ type: 'Text', text: 'Letzter Turn' })).not.toBe(undefined)
+  expect(JSON.stringify(await pane.find({ type: 'Button', key: 'card-fold-cardTurn' }))).toContain('▸')
+  await pane.press({ key: 'card-fold-cardTurn' })
+  await settle(async () => (await pane.find({ type: 'Text', text: 'Noch kein Turn.' })) !== undefined)
+  expect(await pane.find({ type: 'Text', text: 'Noch kein Turn.' })).not.toBe(undefined)
+  await pane.press({ key: 'card-close-cardTurn' })
+  await settle(async () => (await pane.find({ type: 'Text', text: 'Letzter Turn' })) === undefined)
+  expect(await pane.find({ type: 'Text', text: 'Letzter Turn' })).toBe(undefined)
+  await toTab(pane, 'set')
+  expect(JSON.stringify(await pane.find({ type: 'Button', key: 'set-cardTurn' }))).toContain('○ Aus')
 })
 
 test('Band: Claudes eigener Vorschlag trägt den Chip „CC“', async ($, on) => {
@@ -86,8 +130,10 @@ test('Zusammenfassung: Aktualisieren sendet deutschen Prompt und zeigt das Ergeb
     return { value: { isAnswered: true, text: '## Warum diese Session\n- Einstellungsseite bauen', usage: {} } } as never
   })
 
-  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-summary', props: SETTINGS_PROPS })
+  // Rückblick → Diese Session (Standard-Unterreiter).
+  const pane = await openPane($, 'back')
   expect(await pane.find({ type: 'Text', text: /Die Zusammenfassung erscheint/ })).not.toBe(undefined)
+  expect(await pane.find({ type: 'Button', key: 'back-sub-history' })).not.toBe(undefined)
   await pane.press({ key: 'cu-refresh' })
   for (let i = 0; i < 200 && sent.length === 0; i++) await Promise.resolve()
 
@@ -111,16 +157,6 @@ test('Demo: /cockpit-demo gibt Markdown mit allen skinbaren Elementen aus', asyn
 const BAND = { plugin: 'tenvan-cc', component: 'AbovePrompt', props: { hasSurvey: false, isWorking: false, maxRows: 3, bodyColumns: 120, scroll: { offset: 0, bodyRows: 3 }, view: {} } } as const
 const MEASURE = { context: { tokens: 50_000, window: 200_000, percent: 25 }, rateLimits: [], cost: { usd: 1.5 }, changed: [] }
 
-// Gemountete Instanzen zeichnen bei Zustandsänderung neu; Suche wartet, bis der Text erscheint (oder aufgibt).
-async function waitFind(view: { find(q: { type: 'Text'; text: string | RegExp }): Promise<unknown> }, text: string | RegExp) {
-  for (let i = 0; i < 3000; i++) {
-    const hit = await view.find({ type: 'Text', text })
-    if (hit !== undefined) return hit
-    await Promise.resolve()
-  }
-  return undefined
-}
-
 test('Sprache: lang-en schaltet Band und Panel auf Englisch', async ($, on) => {
   mock.clock(on, { now: 1 })
   on('session.measure', () => ({ changed: [] }))
@@ -129,17 +165,20 @@ test('Sprache: lang-en schaltet Band und Panel auf Englisch', async ($, on) => {
   on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
   await $.session.measure(MEASURE)
 
-  const settings = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
-  expect(await settings.find({ type: 'Text', text: 'Band über der Eingabe' })).not.toBe(undefined)
-  await settings.press({ key: 'lang-en' })
-  expect(await waitFind(settings, 'Band above the prompt')).not.toBe(undefined)
+  const pane = await openPane($, 'set')
+  expect(await pane.find({ type: 'Text', text: 'Band über der Eingabe' })).not.toBe(undefined)
+  await pane.press({ key: 'lang-en' })
+  expect(await waitFind(pane, 'Band above the prompt')).not.toBe(undefined)
 
-  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  await toTab(pane, 'usage')
   expect(await pane.find({ type: 'Text', text: 'Overview' })).not.toBe(undefined)
   expect(await pane.find({ type: 'Text', text: 'Übersicht' })).toBe(undefined)
+  expect(await pane.find({ type: 'Text', text: 'Usage' })).not.toBe(undefined)
+  // Im Band ist der Kontext ein Link (Button-Label, der Desktop zeichnet keine farbigen Kinder).
   const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
-  expect(await band.find({ type: 'Text', text: /^Context/ })).not.toBe(undefined)
-  expect(await band.find({ type: 'Text', text: /^Kontext/ })).toBe(undefined)
+  const ctx = JSON.stringify(await band.find({ type: 'Button', key: 'ctx-link' }))
+  expect(ctx).toContain('Context 25%')
+  expect(ctx).not.toContain('Kontext')
 })
 
 test('Einstellungsseite: „Alle aus” einer Gruppe und Zurücksetzen', async ($, on) => {
@@ -147,21 +186,26 @@ test('Einstellungsseite: „Alle aus” einer Gruppe und Zurücksetzen', async (
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
   on('store.set', () => ({ value: undefined }) as never)
-  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
-  const main = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
-  expect(await main.find({ type: 'Text', text: 'Übersicht' })).not.toBe(undefined)
+  const pane = await openPane($, 'usage')
+  expect(await pane.find({ type: 'Text', text: 'Übersicht' })).not.toBe(undefined)
 
   // Gruppen in Reihenfolge des ersten Schalters: Band, Checkliste, Während Claude arbeitet, Effort & Kosten, Panel …
-  await page.press({ key: 'grp-off-4' })
-  for (let i = 0; i < 3000 && (await main.find({ type: 'Text', text: 'Übersicht' })) !== undefined; i++) await Promise.resolve()
-  expect(await waitFind(page, /^0\/\d+ an$/)).not.toBe(undefined)
-  for (const card of ['Übersicht', 'Log', 'Letzter Turn']) expect(await main.find({ type: 'Text', text: card })).toBe(undefined)
+  await toTab(pane, 'set')
+  await pane.press({ key: 'grp-off-4' })
+  expect(await waitFind(pane, /^0\/\d+ an$/)).not.toBe(undefined)
+  await toTab(pane, 'usage')
+  await settle(async () => (await pane.find({ type: 'Text', text: 'Übersicht' })) === undefined)
+  expect(await pane.find({ type: 'Text', text: 'Übersicht' })).toBe(undefined)
+  await toTab(pane, 'now')
+  for (const card of ['Letzter Turn', 'Subagents · 0 laufend · 0 gesamt']) expect(await pane.find({ type: 'Text', text: card })).toBe(undefined)
 
-  await page.press({ key: 'set-reset' })
-  expect(await waitFind(page, /^\d+\/\d+ an$/)).not.toBe(undefined)
+  await toTab(pane, 'set')
+  await pane.press({ key: 'set-reset' })
+  expect(await waitFind(pane, /^\d+\/\d+ an$/)).not.toBe(undefined)
   // Effort & Kosten: Auto-Effort und Sparmodus sind standardmäßig aus
-  expect(await page.find({ type: 'Text', text: '0/2 an' })).not.toBe(undefined)
-  expect(await waitFind(main, 'Übersicht')).not.toBe(undefined)
+  expect(await waitFind(pane, '0/2 an')).not.toBe(undefined)
+  await toTab(pane, 'usage')
+  expect(await waitFind(pane, 'Übersicht')).not.toBe(undefined)
 })
 
 test('Panel: Modellzeile unter dem Titel mit Modell und Claude-Code-Version', async ($, on) => {
@@ -176,7 +220,7 @@ test('Panel: Modellzeile unter dem Titel mit Modell und Claude-Code-Version', as
   on('fs.read', () => ({ value: '{ "version": "1" }' }) as never)
   await $.session.start({ cwd: '.', surface: 'desktop', isInteractive: true })
   for (let i = 0; i < 200; i++) await Promise.resolve()
-  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  const pane = await openPane($)
   expect(await pane.find({ type: 'Text', text: /Opus 5\.5 \(claude-opus-5-5\).*Claude Code 2\.1\.295/ })).not.toBe(undefined)
 })
 
@@ -186,40 +230,66 @@ test('Dev-Mode: /cockpit-dev füllt das Panel mit Mockdaten und schaltet zurück
   on('store.get', () => ({ value: undefined }) as never)
   on('store.set', () => ({ value: undefined }) as never)
   on('ui.open', () => ({ value: { isPlaced: true as const } }))
-  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
-  const settle = async (done: () => Promise<boolean>) => {
-    for (let i = 0; i < 100 && !(await done()); i++) await Promise.resolve()
-  }
+  const filled: string[] = []
+  on('prompt.fill', ($, e) => {
+    filled.push(e.text)
+    return { isFilled: true, box: { text: e.text, cursor: 0 } }
+  })
+  const pane = await openPane($)
   const badge = () => pane.find({ type: 'Text', text: ' DEV · Mockdaten ' })
   expect(await badge()).toBe(undefined)
   expect(JSON.stringify(await $.command.run({ command: 'cockpit-dev', args: '' } as never))).toContain('Dev-Mode an')
   await settle(async () => (await badge()) !== undefined)
   expect(await badge()).not.toBe(undefined)
-  expect(await pane.find({ type: 'Text', text: 'feature/dev-mock' })).not.toBe(undefined)
-  expect(JSON.stringify(await pane.find({ type: 'Button', key: 'wd-mr-open' }))).toContain('!42')
-  // Kachel „Build und Release-Check“: 10 Zeilen Befehl + Ergebnis, 7 sichtbar, Rest als Hinweis.
-  expect(await pane.find({ type: 'Text', text: '… +3 Zeilen' })).not.toBe(undefined)
+  // Laufende Kachel „Build und Release-Check“: 9 Zeilen Befehl, 7 sichtbar, Rest als Hinweis.
+  // Kacheln (ag-/bg-) nur für Laufendes; Beendetes steht als Zeile im Verlauf (ago-/bgo-), bei Aufgaben mit erster
+  // Ergebniszeile. Beendete Subagents behalten Öffnen (↗), aber keinen Stopp. Gesammelt geprüft, damit ein Fehlschlag zeigt, was fehlt.
+  const seen: string[] = []
+  const probes: [string, Parameters<typeof pane.find>[0]][] = [
+    ['+2', { type: 'Text', text: '… +2 Zeilen' }],
+    ...['ag-m1', 'ag-m2', 'ag-m3', 'ago-m1', 'ago-m2', 'ago-m3', 'bg-b0', 'bg-b1', 'bg-b2', 'bg-b3', 'bgo-b0', 'bgo-b1', 'bgo-b2', 'bgo-b3'].map(key => [key, { key }] as [string, Parameters<typeof pane.find>[0]]),
+    ['fertig', { type: 'Text', text: /✓ fertig/ }],
+    ['abgebrochen', { type: 'Text', text: /✗ abgebrochen/ }],
+    ['ergebnis', { type: 'Text', text: / · 2 Fehler in hooks\/register\.tsx/ }],
+    ['ag-open-m1', { type: 'Button', key: 'ag-open-m1' }],
+    ['brake-m1', { type: 'Button', key: 'brake-m1' }],
+  ]
+  for (const [name, q] of probes) if ((await pane.find(q)) !== undefined) seen.push(name)
+  expect(seen).toEqual(['+2', 'ag-m2', 'ago-m1', 'ago-m3', 'bg-b1', 'bg-b3', 'bgo-b0', 'bgo-b2', 'fertig', 'abgebrochen', 'ergebnis', 'ag-open-m1'])
+  // Hintergrundaufgaben tragen nur Stopp (■), solange sie laufen, und nie Öffnen; beendete haben keinen Knopf.
+  expect(await pane.find({ type: 'Button', key: 'bg-open-b1' })).toBe(undefined)
+  expect(await pane.find({ type: 'Button', key: 'bg-stop-b0' })).toBe(undefined)
+  expect(await pane.find({ type: 'Button', key: 'bg-stop-b1' })).not.toBe(undefined)
+  await pane.press({ key: 'bg-stop-b1' })
+  await settle(async () => filled.length > 0)
+  expect(filled[0]).toContain('TaskStop')
+  expect(filled[0]).toContain('b1')
+  // Reiter Git: Arbeitsverzeichnis des Mock-Repos und die MR-Karten.
+  await toTab(pane, 'git')
+  expect(await waitFind(pane, 'C:/WORKSPACE/demo/orga-marketplace')).not.toBe(undefined)
+  expect(JSON.stringify(await pane.findAll({ type: 'Text' }))).toContain('!42')
   await $.command.run({ command: 'cockpit-dev', args: '' } as never)
   await settle(async () => (await badge()) === undefined)
   expect(await badge()).toBe(undefined)
 })
 
-test('MR-Panel und Fußzeilen-Knopf im Dev-Mode', async ($, on) => {
+test('MR-Karten im Reiter Git; die Fußzeile trägt nur noch „Tenvan“', async ($, on) => {
   mock.clock(on, { now: Date.UTC(2026, 9, 13, 10) })
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
   on('store.set', () => ({ value: undefined }) as never)
   on('ui.open', () => ({ value: { isPlaced: true as const } }))
   await $.command.run({ command: 'cockpit-dev', args: '' } as never)
-  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-mr', props: { ...PANE_PROPS, title: 'Cockpit · Merge Requests' } })
-  expect(await pane.find({ type: 'Text', text: 'Offene Threads' })).not.toBe(undefined)
+  await $.command.run({ command: 'cockpit-git', args: '' } as never)
+  const pane = await openPane($, 'git')
+  expect(await waitFind(pane, 'Offene Threads')).not.toBe(undefined)
   expect(await pane.find({ type: 'Button', key: 'mr-a-rebase' })).not.toBe(undefined)
   // Klick-Rückmeldung: der gedrückte Knopf zeigt „◌ … …“, solange seine Aktion läuft (mindestens 600 ms).
   await pane.press({ key: 'mr-a-refresh' })
   for (let i = 0; i < 100 && !JSON.stringify(await pane.find({ type: 'Button', key: 'mr-a-refresh' })).includes('◌'); i++) await Promise.resolve()
   expect(JSON.stringify(await pane.find({ type: 'Button', key: 'mr-a-refresh' }))).toContain('◌')
   const foot = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'SessionMode', props: { modes: [] } as never })
-  expect(JSON.stringify(await foot.find({ type: 'Button', key: 'mr-foot' }))).toContain('!42')
+  expect(await foot.find({ type: 'Button', key: 'mr-foot' })).toBe(undefined)
   expect(await foot.find({ type: 'Button', key: 'details' })).not.toBe(undefined)
 })
 
@@ -229,7 +299,7 @@ test('Subagent-Kacheln: Standard 6, Stepper in Zweierschritten mit Grenzen 2 bis
   on('store.get', () => ({ value: undefined }) as never)
   on('store.set', () => ({ value: undefined }) as never)
   expect([clampTiles(undefined), clampTiles(5), clampTiles(0), clampTiles(99)]).toEqual([6, 6, 2, 12])
-  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
+  const page = await openPane($, 'set')
   expect(await waitFind(page, '6')).not.toBe(undefined)
   await page.press({ key: 'tiles-plus' })
   expect(await waitFind(page, '8')).not.toBe(undefined)
@@ -243,13 +313,14 @@ test('Einstellungen: „Neu laden“ übernimmt, was eine andere Session gespeic
   let saved: unknown
   on('store.get', () => ({ value: saved }) as never)
   on('store.set', () => ({ value: undefined }) as never)
-  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
-  const main = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
-  expect(await waitFind(main, 'Log')).not.toBe(undefined)
-  saved = { cardLog: false }
-  await page.press({ key: 'set-reload' })
-  for (let i = 0; i < 3000 && (await main.find({ type: 'Text', text: 'Log' })) !== undefined; i++) await Promise.resolve()
-  expect(await main.find({ type: 'Text', text: 'Log' })).toBe(undefined)
+  const pane = await openPane($)
+  expect(await waitFind(pane, 'Letzter Turn')).not.toBe(undefined)
+  saved = { cardTurn: false }
+  await toTab(pane, 'set')
+  await pane.press({ key: 'set-reload' })
+  await toTab(pane, 'now')
+  await settle(async () => (await pane.find({ type: 'Text', text: 'Letzter Turn' })) === undefined)
+  expect(await pane.find({ type: 'Text', text: 'Letzter Turn' })).toBe(undefined)
 })
 
 test('Klapp-Status: Einklappen wird im Speicher abgelegt und beim Start gelesen', async ($, on) => {
@@ -261,11 +332,11 @@ test('Klapp-Status: Einklappen wird im Speicher abgelegt und beim Start gelesen'
     stored.set((e as { key: string }).key, (e as { value: unknown }).value)
     return { value: undefined } as never
   })
-  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
-  expect(await waitFind(pane, 'Leer.')).not.toBe(undefined)
-  await pane.press({ key: 'card-fold-cardLog' })
+  const pane = await openPane($)
+  expect(await waitFind(pane, 'Noch kein Turn.')).not.toBe(undefined)
+  await pane.press({ key: 'card-fold-cardTurn' })
   for (let i = 0; i < 100 && !stored.has('collapsed'); i++) await Promise.resolve()
-  expect(stored.get('collapsed')).toEqual(['cardLog'])
+  expect(stored.get('collapsed')).toEqual(['cardTurn'])
 })
 
 test('Einstellungen: „Neu laden“ meldet das Ergebnis als Toast', async ($, on) => {
@@ -279,11 +350,11 @@ test('Einstellungen: „Neu laden“ meldet das Ergebnis als Toast', async ($, o
     toasts.push((e as { text: string }).text)
     return { value: undefined } as never
   })
-  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
+  const page = await openPane($, 'set')
   await page.press({ key: 'set-reload' })
   for (let i = 0; i < 200 && toasts.length < 1; i++) await Promise.resolve()
   expect(toasts).toEqual(['Einstellungen sind aktuell'])
-  saved = { cardLog: false }
+  saved = { cardTurn: false }
   await page.press({ key: 'set-reload' })
   for (let i = 0; i < 200 && toasts.length < 2; i++) await Promise.resolve()
   expect(toasts[1]).toBe('Einstellungen neu geladen')
@@ -310,7 +381,8 @@ test('Arbeitsverzeichnis: ein Git-Fehler lässt die Kachel stehen, nur „kein R
   on('fs.read', () => ({ value: '{ "version": "1" }' }) as never)
   on('http.fetch', () => ({ value: { status: 404, headers: {}, text: '' } }) as never)
   await $.session.start({ cwd: '.', surface: 'desktop', isInteractive: true })
-  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  // Das Arbeitsverzeichnis steht ganz oben im Reiter Jetzt.
+  const pane = await openPane($, 'now')
   expect(await waitFind(pane, 'Arbeitsverzeichnis')).not.toBe(undefined)
   mode = 'broken'
   await clock.advance(30_000)
@@ -326,15 +398,15 @@ test('Einstellungen: ▾/▸ klappt jede Gruppe zu und auf', async ($, on) => {
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
   on('store.set', () => ({ value: undefined }) as never)
-  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
-  expect(await page.find({ type: 'Button', key: 'set-cardLog' })).not.toBe(undefined)
+  const page = await openPane($, 'set')
+  expect(await page.find({ type: 'Button', key: 'set-cardTurn' })).not.toBe(undefined)
   await page.press({ key: 'set-fold-panel' })
-  for (let i = 0; i < 100 && (await page.find({ type: 'Button', key: 'set-cardLog' })); i++) await Promise.resolve()
-  expect(await page.find({ type: 'Button', key: 'set-cardLog' })).toBe(undefined)
+  for (let i = 0; i < 100 && (await page.find({ type: 'Button', key: 'set-cardTurn' })); i++) await Promise.resolve()
+  expect(await page.find({ type: 'Button', key: 'set-cardTurn' })).toBe(undefined)
   expect(JSON.stringify(await page.find({ type: 'Button', key: 'set-fold-panel' }))).toContain('▸')
   await page.press({ key: 'set-fold-panel' })
-  for (let i = 0; i < 100 && !(await page.find({ type: 'Button', key: 'set-cardLog' })); i++) await Promise.resolve()
-  expect(await page.find({ type: 'Button', key: 'set-cardLog' })).not.toBe(undefined)
+  for (let i = 0; i < 100 && !(await page.find({ type: 'Button', key: 'set-cardTurn' })); i++) await Promise.resolve()
+  expect(await page.find({ type: 'Button', key: 'set-cardTurn' })).not.toBe(undefined)
 })
 
 test('Einstellungen: „Alle einklappen“ und „Alle ausklappen“ schalten alle Karten', async ($, on) => {
@@ -342,13 +414,13 @@ test('Einstellungen: „Alle einklappen“ und „Alle ausklappen“ schalten al
   on('session.measure', () => ({ changed: [] }))
   on('store.get', () => ({ value: undefined }) as never)
   on('store.set', () => ({ value: undefined }) as never)
-  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: SETTINGS_PROPS })
+  const page = await openPane($, 'set')
   await page.press({ key: 'set-fold-all' })
-  for (let i = 0; i < 100 && (await page.find({ type: 'Button', key: 'set-cardLog' })); i++) await Promise.resolve()
-  expect(await page.find({ type: 'Button', key: 'set-cardLog' })).toBe(undefined)
+  for (let i = 0; i < 100 && (await page.find({ type: 'Button', key: 'set-cardTurn' })); i++) await Promise.resolve()
+  expect(await page.find({ type: 'Button', key: 'set-cardTurn' })).toBe(undefined)
   expect(await page.find({ type: 'Button', key: 'lang-de' })).toBe(undefined)
   await page.press({ key: 'set-unfold-all' })
-  for (let i = 0; i < 100 && !(await page.find({ type: 'Button', key: 'set-cardLog' })); i++) await Promise.resolve()
+  for (let i = 0; i < 100 && !(await page.find({ type: 'Button', key: 'set-cardTurn' })); i++) await Promise.resolve()
   expect(await page.find({ type: 'Button', key: 'lang-de' })).not.toBe(undefined)
 })
 
@@ -373,7 +445,7 @@ test('Arbeitsverzeichnis: verknüpfte Sessions aus der Desktop-App mit Status un
   on('fs.read', () => ({ value: '{ "version": "1" }' }) as never)
   on('http.fetch', () => ({ value: { status: 404, headers: {}, text: '' } }) as never)
   await $.session.start({ cwd: '.', surface: 'desktop', isInteractive: true })
-  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  const pane = await openPane($, 'now')
   await clock.advance(30_000)
   expect(await waitFind(pane, 'Verknüpfte Sessions · 1')).not.toBe(undefined)
   expect(await pane.find({ type: 'Text', text: 'Sitzungsleiste anbinden' })).not.toBe(undefined)

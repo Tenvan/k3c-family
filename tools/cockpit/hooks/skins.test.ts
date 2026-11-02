@@ -1,5 +1,5 @@
 import { MODES } from './ui'
-import { expect, test } from 'claude-code/testing'
+import { expect, mock, test } from 'claude-code/testing'
 
 import { DEFAULT_SETTINGS, THEME, demoTable } from './core'
 import { detailInput, detailOutput, diffCardSvg, diffOf, firstErrorLine, iconKind, inlineTokens, isReadOnlyShell, isStyled, mdLiteral, richBlock, quietLine, splitMessage, toolIconSvg } from './skins'
@@ -221,8 +221,13 @@ test('Hervorhebungen eingeschaltet: Hinweis als Karte, geänderte Datei in Erfol
   on('store.set', () => ({ value: undefined }) as never)
   on('tool.call', () => ({ result: {} }) as never)
   on('ui.render', { component: 'AssistantMessage' }, () => ({ type: 'Box' as const }))
+  // Das Cockpit-Panel liest die Uhr (Messwerte, Reiter Jetzt).
+  mock.clock(on, { now: 1 })
   const props = { title: 'x', isFocused: false, bodyColumns: 144, placement: 'dock', scroll: { offset: 0, bodyRows: 40 }, view: {} } as const
-  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props })
+  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props })
+  // Einstellungen sind ein Reiter des Cockpit-Panels.
+  await page.press({ key: 'pane-tabs-set' })
+  for (let i = 0; i < 3000 && !(await page.find({ type: 'Button', key: 'set-skinInline' })); i++) await Promise.resolve()
   await page.press({ key: 'set-skinInline' })
   await $.tool.call({ tool: 'Edit', tool_use_id: 'e1', input: { file_path: 'C:/p/hooks/core.ts', old_string: 'a', new_string: 'b' } } as never)
   const text = 'Geändert: core.ts auf 0.7.0\n\n> [!TIP]\n> Gut\n\n- [x] a\n- [x] b'
@@ -244,8 +249,12 @@ test('Style-Kennzeichen: Name neben dem Symbol, über die Einstellungen abschalt
   on('store.set', () => ({ value: undefined }) as never)
   const props = { tool_use_id: 'b2', tool: 'Bash', isErrored: true, output: 'Exit code 1\nerror: kaputt' }
   const base = { plugin: 'tenvan-cc', surface: 'desktop', component: 'ToolResult', props } as const
+  mock.clock(on, { now: 1 })
   expect(await (await $.ui.mount(base)).find({ type: 'Text', text: 'Fehlerzeile' })).not.toBe(undefined)
-  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc-settings', props: { title: 'S', isFocused: false, bodyColumns: 100, placement: 'dock', scroll: { offset: 0, bodyRows: 40 }, view: {} } })
+  const page = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: { title: 'S', isFocused: false, bodyColumns: 100, placement: 'dock', scroll: { offset: 0, bodyRows: 40 }, view: {} } })
+  // Einstellungen sind ein Reiter des Cockpit-Panels.
+  await page.press({ key: 'pane-tabs-set' })
+  for (let i = 0; i < 3000 && !(await page.find({ type: 'Button', key: 'set-skinMarkLabel' })); i++) await Promise.resolve()
   await page.press({ key: 'set-skinMarkLabel' })
   for (let i = 0; i < 50; i++) await Promise.resolve()
   expect(await (await $.ui.mount(base)).find({ type: 'Text', text: 'Fehlerzeile' })).toBe(undefined)

@@ -51,8 +51,19 @@ export type Gate = { allow: number; you: number; ask: number; deny: number; file
 
 export type LogSrc = 'you' | 'main' | 'gate' | 'agent'
 
+// Reiter des Cockpit-Panels (ein Panel statt sechs): Jetzt, Verbrauch, Diagnose, Git, Rückblick, Einstellungen
+export type PaneTab = 'now' | 'sessions' | 'usage' | 'diag' | 'git' | 'back' | 'set'
+// Unterreiter der Diagnose: Hinweise (Tipps, Wächter, Meldungen), Protokoll (Log, Fehler, Freigaben, Zeitreise), Profil, Blast-Radius
+export type DiagTab = 'hints' | 'log' | 'profile' | 'blast'
+// Unterreiter des Rückblicks: Zusammenfassung dieser Session oder Verlauf der Aufgaben nach Tagen
+export type BackTab = 'session' | 'history'
+// Filter des Protokolls
+export type LogFilter = 'all' | 'errors' | 'gate' | 'snaps'
+// Verlauf eines Subagents im Panel: Zeilen aus $.session.messages({ agentId }), `note` erklärt, warum nichts zu lesen ist
+export type AgentView = { id: string; title: string; lines: { kind: 'user' | 'assistant' | 'tool' | 'error'; text: string }[]; note: string; at: number }
+
 // `tool`/`target`/`isError`: strukturierter Tool-Eintrag, damit Server und Tool getrennt und farbig gezeichnet werden.
-export type LogEntry = { at: number; src: LogSrc; text: string; tool?: string; target?: string; action?: string; isError?: boolean }
+export type LogEntry = { at: number; src: LogSrc; text: string; tool?: string; target?: string; action?: string; isError?: boolean; id?: string }
 
 // `why`: kurze Begründung; fehlt bei Vorschlägen aus älteren Versionen im State.
 // `fromClaude`: Claudes eigener Vorschlag (prompt.suggest), im Band mit Chip „CC“ markiert.
@@ -66,6 +77,17 @@ export type Breakdown = { total: number; window: number; percent: number; rows: 
 // Git-Stand des Arbeitsverzeichnisses für die Infozeile unter dem Titel.
 // Verknüpfte Session der Desktop-App (aus dieser gestartet oder ihr Starter), aus ccd_session_mgmt.list_sessions.
 export type LinkedSession = { id: string; title: string; name: string; branch: string; cwd: string; running: boolean; archived: boolean }
+
+// Reiter Sessions: Zeilen aus der Status-Datei der Schaltzentrale (`<Benutzerordner>/.deltra/claude/sessions.json`), nur gelesen.
+export type SessionStand = 'läuft' | 'wartet' | 'fertig' | 'archiviert'
+export type ApprovalAction = 'commit' | 'push' | 'löschen' | 'archivieren' | 'sonstiges'
+// `state` ist leer bei unbekanntem Wert; `stateRaw` hält den Text aus der Datei.
+export type SessionRow = { id: string; title: string; repo: string; branch: string; state: SessionStand | ''; stateRaw: string; waitingFor: string; note: string }
+export type ApprovalRow = { id: string; action: ApprovalAction; actionRaw: string; detail: string; since: string }
+// `issues`: fehlende oder unbekannte Felder, die das Panel als Hinweis zeigt, ohne die Zeilen zu verwerfen.
+export type SessionsView = { updated: string; sessions: SessionRow[]; approvals: ApprovalRow[]; issues: string[] }
+// Ergebnis des letzten Lesens: Stand oder Fehler (Datei fehlt, leer, kaputtes JSON, falsche Form)
+export type SessionsState = { view: SessionsView | null; error: { kind: 'missing' | 'empty' | 'json' | 'shape'; detail: string } | null; sig: string }
 
 export type Repo = {
   name: string
@@ -108,6 +130,49 @@ export type Mr = {
   threadList: { path: string; line: number | null; author: string; body: string }[]
 }
 export type MrMine = { ref: string; title: string; url: string; draft: boolean }
+
+// Git-Panel: eine Datei mit Kurzcode (M, A, D, R, C, T), ein Commit, ein lokaler Branch im Abhängigkeitsbaum
+export type GitFile = { path: string; code: string }
+export type GitCommit = { sha: string; subject: string; author: string; at: number }
+// `ahead`/`behind` gegenüber dem Eltern-Branch, nicht gegenüber dem Upstream
+export type GitBranch = { name: string; parent: string | null; upstream: string; gone: boolean; ahead: number; behind: number; merged: boolean }
+export type GitOp = '' | 'merge' | 'rebase' | 'cherry-pick' | 'revert'
+export type GitState = {
+  // Wurzel des Repos, auf das sich der Stand bezieht (git rev-parse --show-toplevel)
+  top: string
+  branch: string
+  detached: boolean
+  // Upstream des Branches und Abstand dazu
+  upstream: string
+  ahead: number
+  behind: number
+  // Commits auf HEAD, die auf keinem Remote liegen (0 = HEAD ist veröffentlicht)
+  localOnly: number
+  // Upstream-Commits ohne patch-gleiches Gegenstück lokal (0 nach eigenem Rebase/Amend = Force-Push genügt)
+  upstreamOnly: number
+  // Repo-Hooks (pre-commit, commit-msg, pre-push), die Befehle aus dem Panel nicht ausführen
+  hooks: string[]
+  staged: GitFile[]
+  changed: GitFile[]
+  untracked: string[]
+  conflicts: string[]
+  op: GitOp
+  main: string
+  remote: string
+  branches: GitBranch[]
+  // Commits auf dem Upstream, die lokal fehlen, und die letzten eigenen
+  incoming: GitCommit[]
+  history: GitCommit[]
+  stashes: number
+  // letzter Fetch (Änderungszeit von FETCH_HEAD), 0 = unbekannt
+  fetchedAt: number
+  // Git Town konfiguriert (Eltern aus git-town-branch.*.parent)
+  town: boolean
+  // Branches, die in einem anderen Worktree ausgecheckt sind
+  elsewhere: string[]
+  readAt: number
+}
+export type GitError = { cmd: string; out: string; at: number }
 export type MrDraft = { title: string; description: string; source: string; target: string }
 
 // Einstellungen: jedes Detail von Band, Panel und Chat lässt sich ein- und ausblenden.
@@ -119,9 +184,14 @@ export type ModSettings = {
   cache: boolean
   ctxTip: boolean
   steps: boolean
+  // Band: Effort/Modell, Kontext mit Kompaktieren, Kosten, Agent-Zahl, Meldungszeile (Titel und Ordner/Branch bleiben)
+  bandEffort: boolean
+  bandContext: boolean
+  bandCost: boolean
+  bandAgents: boolean
+  bandAlerts: boolean
   animation: boolean
   cardWorkdir: boolean
-  cardGit: boolean
   cardCatchUp: boolean
   cardOverview: boolean
   cardContext: boolean
@@ -130,7 +200,9 @@ export type ModSettings = {
   cardAgents: boolean
   cardTasks: boolean
   mrPane: boolean
-  cardLog: boolean
+  // Git-Panel (/cockpit-git) und Haiku-Vorschlag für die Commit-Nachricht
+  gitPane: boolean
+  gitSuggest: boolean
   paneMargins: boolean
   chatInfo: boolean
   chatLines: boolean
@@ -159,7 +231,6 @@ export type ModSettings = {
   breath: boolean
   mrBand: boolean
   mrNotify: boolean
-  mrFooter: boolean
   breathKey: 'hrv' | 'sigh' | 'box' | '478'
   // Anzahl der Subagent-Kacheln im Hauptpanel (gerade, 2 bis 12)
   agentTiles: number
@@ -171,6 +242,12 @@ export type ModSettings = {
   inspectBand: boolean
   profileBand: boolean
   blastBand: boolean
+  // Fehler-Eingang, Nutzungswächter (warnt; hält mit guardHold Subagents an), Tipps und Zeitreise (Snapshots als git-Objekte)
+  errorsBand: boolean
+  guardBand: boolean
+  guardHold: boolean
+  tipsBand: boolean
+  timelineSnap: boolean
   lang: UiLang
 }
 
@@ -215,11 +292,14 @@ export type Job = {
   files: string[]
   // Slash-Befehl (`/name args`): sichtbar auch ohne Tools; geht ein Turn daraus hervor, gehört er zu diesem Job
   cmd?: boolean
+  // getippter Prompt (gekappt, glance.ts PROMPT_MAX) für den Kopier-Knopf im Verlauf; fehlt bei Nachrichten von Agents/Sessions
+  prompt?: string
 }
 // Verlaufseintrag im $.store unter `glance:<JJJJ-MM-TT>` (30 Tage, über alle Projekte)
 export type JobRecord = {
   id: string
   title: string
+  prompt?: string
   cwd: string
   startedAt: number
   endedAt: number
@@ -310,6 +390,28 @@ declare module 'claude-code' {
       historyDay: string
       historyList: JobRecord[]
       stepAvg: number | null
+      // Git-Panel: gelesener Stand, laufende Aktion (Beschriftung), Rückfrage (Schlüssel), letzter Fehler,
+      // Commit-Nachricht (Vorschlag oder getippt) mit Fingerabdruck des gestagten Stands, Eingabe für neue Branches, Schalter
+      gitState: GitState | null
+      // warum kein Stand da ist: '' (lädt oder da), 'noRepo', 'risky'
+      gitNote: string
+      gitBusy: string
+      gitConfirm: string
+      gitError: GitError | null
+      gitMsg: string
+      gitMsgFor: string
+      gitNewBranch: string
+      gitRebase: boolean
+      gitAmend: boolean
+      // im Branch-Baum ausgewählter Branch (Optionen aufgeklappt), leer ohne
+      gitSel: string
+      // Ein Panel mit Reitern: gewählter Reiter, Unterreiter von Diagnose und Rückblick, Filter des Protokolls
+      paneTab: PaneTab
+      sessionsFile: SessionsState | null
+      diagTab: DiagTab
+      backTab: BackTab
+      logFilter: LogFilter
+      agentView: AgentView | null
     }
   }
 }

@@ -252,14 +252,14 @@ test('Profiler: bandText auf Deutsch und Englisch, mit und ohne laufende Aktivit
 test('Profiler: paneView mit Abschnitten und Balkenanteilen in beiden Sprachen', () => {
   const sum = summarize(running(), 20_100)
   const de = paneView(sum, 20_100, 'de')
-  expect(de.map(s => s.title)).toEqual(['Zeitverteilung', 'Läuft gerade', 'Langsamste Tools', 'Modell-Requests'])
+  expect(de.map(s => s.title)).toEqual(['Zeitverteilung', 'Läuft gerade', 'Langsamste Tools', 'Modell-Requests', 'Ampel-Schwellen'])
   expect(de[0]?.rows.map(r => [r.label, r.pct])).toEqual([['Modell', 30], ['Tools', 70], ['Subagents', 0], ['Engine-Overhead', 0]])
   expect(de[0]?.note).toBe('1 Turns · Agentenzeit 20s · Leerlauf ausgeschlossen')
   expect(de[1]?.rows).toEqual([{ label: 'Bash npm test', value: '14s' }])
-  expect(de[2]?.rows[0]).toEqual({ label: 'Bash npm test', value: '14s · läuft' })
+  expect(de[2]?.rows[0]).toEqual({ label: 'Bash npm test', value: '14s · läuft', rate: 'good' })
   expect(de[3]?.note).toContain('keine Inferenzzeit')
   const en = paneView(sum, 20_100, 'en')
-  expect(en.map(s => s.title)).toEqual(['Time split', 'Running now', 'Slowest tools', 'Model requests'])
+  expect(en.map(s => s.title)).toEqual(['Time split', 'Running now', 'Slowest tools', 'Model requests', 'Rating thresholds'])
   expect(en[0]?.rows[0]?.value).toBe('6s · 30%')
   // Subagents und Funde erscheinen nur mit Inhalt
   const st = newProfiler()
@@ -303,4 +303,72 @@ test('Profiler: Texte de/en mit identischen Schlüsseln, Präfix profile., echte
   expect(all).toContain('läuft')
   expect(all).toContain('Läuft gerade')
   expect(all).not.toMatch(/laeuft|Laeuft|pruefen|aeltere/)
+})
+
+// Randfälle von Ampel und Fund: die Ampel rechnet mit ≤ (Grenze gehört zur besseren Stufe), die Funde mit ≥ und eigenen Schwellen.
+const rowOf = (st: ProfilerState, section: string, label: RegExp) =>
+  paneView(summarize(st, 1_000_000), 1_000_000, 'de').find(s => s.title === section)?.rows.find(r => label.test(r.label))
+
+function overheadSession(toolMs: number, totalMs = 100_000): ProfilerState {
+  const st = newProfiler()
+  turnStart(st, 't1', undefined, 0)
+  toolBegin(st, 'tu1', 'Bash', undefined, { tool: 'Bash', tool_use_id: 'tu1', command: 'npm run build' }, 0)
+  toolEnd(st, 'tu1', toolMs, true)
+  turnComplete(st, 't1', totalMs)
+  return st
+}
+
+test('Overhead 20–25 %: Ampel „schlecht“ ab 21 %, Fund erst ab 25 %', () => {
+  const find = (st: ProfilerState) => summarize(st, 1_000_000).session.findings.some(f => f.key === 'overhead')
+  const at20 = overheadSession(80_000)
+  expect(rowOf(at20, 'Zeitverteilung', /Overhead/)?.rate).toBe('good')
+  expect(find(at20)).toBe(false)
+  const at22 = overheadSession(78_000)
+  expect(rowOf(at22, 'Zeitverteilung', /Overhead/)?.rate).toBe('poor')
+  expect(find(at22)).toBe(false)
+  const at25 = overheadSession(75_000)
+  expect(rowOf(at25, 'Zeitverteilung', /Overhead/)?.rate).toBe('poor')
+  expect(find(at25)).toBe(true)
+  expect(rowOf(overheadSession(64_000), 'Zeitverteilung', /Overhead/)?.rate).toBe('bad')
+})
+
+function ttftSession(ttftMs: number): ProfilerState {
+  const st = newProfiler()
+  turnStart(st, 't1', undefined, 0)
+  for (let i = 0; i < 3; i++) {
+    const start = i * 100_000
+    stepBegin(st, 't1', i, 'opus', undefined, start)
+    stepChunk(st, 't1', i, { kind: 'engine' }, start + ttftMs)
+    stepEnd(st, 't1', i, start + ttftMs + 1_000, usage(10, 20))
+  }
+  turnComplete(st, 't1', 300_000)
+  return st
+}
+
+test('TTFT genau 15 s: Ampel noch „schlecht“, der Fund löst schon aus; 15,001 s ist „sehr schlecht“', () => {
+  const at15 = ttftSession(15_000)
+  expect(rowOf(at15, 'Modell-Requests', /TTFT/)?.rate).toBe('poor')
+  expect(summarize(at15, 1_000_000).session.findings.some(f => f.key === 'ttft')).toBe(true)
+  expect(rowOf(ttftSession(15_001), 'Modell-Requests', /TTFT/)?.rate).toBe('bad')
+  expect(rowOf(ttftSession(14_999), 'Modell-Requests', /TTFT/)?.rate).toBe('poor')
+  expect(summarize(ttftSession(14_999), 1_000_000).session.findings.some(f => f.key === 'ttft')).toBe(false)
+})
+
+function slowToolSession(ms: number): ProfilerState {
+  const st = newProfiler()
+  turnStart(st, 't1', undefined, 0)
+  toolBegin(st, 'tu1', 'Bash', undefined, { tool: 'Bash', tool_use_id: 'tu1', command: 'npm run build' }, 0)
+  toolEnd(st, 'tu1', ms, true)
+  turnComplete(st, 't1', ms + 1_000)
+  return st
+}
+
+test('Tool genau 120 s: Ampel noch „schlecht“, der Fund löst schon aus; 120,001 s ist „sehr schlecht“', () => {
+  const at120 = slowToolSession(120_000)
+  expect(rowOf(at120, 'Langsamste Tools', /npm run build/)?.rate).toBe('poor')
+  expect(summarize(at120, 1_000_000).session.findings.some(f => f.key === 'slowTool')).toBe(true)
+  expect(rowOf(slowToolSession(120_001), 'Langsamste Tools', /npm run build/)?.rate).toBe('bad')
+  expect(rowOf(slowToolSession(119_999), 'Langsamste Tools', /npm run build/)?.rate).toBe('poor')
+  expect(summarize(slowToolSession(119_999), 1_000_000).session.findings.some(f => f.key === 'slowTool')).toBe(false)
+  expect(rowOf(slowToolSession(60_000), 'Langsamste Tools', /npm run build/)?.rate).toBe('good')
 })

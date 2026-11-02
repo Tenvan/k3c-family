@@ -1,39 +1,53 @@
 import { atom, read, update } from 'claude-code'
-import type { EngineInterface, PressedLink, Register, RenderChildren, RenderElement, RenderSurface, ResolveInput, SessionUsage } from 'claude-code'
+import type { EngineInterface, HookOf, PressedLink, Register, RenderChildren, RenderElement, RenderSurface, ResolveInput, SessionUsage } from 'claude-code'
 
-import type { BgTask, LinkedSession, About, ModelInfo, Agent, Breakdown, CallMark, CatchUp, Decision, LoopAlert, McpSchema, UiLang, Repo, Gate, LogEntry, LogSrc, ModSettings, Step, Turn, TurnRecord, Usage } from '../types'
+import type { BgTask, LinkedSession, About, ModelInfo, Agent, Breakdown, CallMark, CatchUp, Decision, LoopAlert, McpSchema, UiLang, Repo, Gate, LogEntry, LogSrc, ModSettings, Step, Turn, TurnRecord, Usage, PaneTab, DiagTab, BackTab, LogFilter, AgentView, SessionsState } from '../types'
 import { mockData } from './mock'
-import { BREATHS, breathFrameSvg, breathOf, breathSvg, phaseAt } from './breath'
+import { BREATHS, breathOf, breathRingSvg, breathSvg, fillAt, phaseAt } from './breath'
 import type { BreathKey } from './breath'
 // Jede Atemübung in eigener Farbe aus dem Design-System, damit der Wechsel auf einen Blick erkennbar ist.
 const BREATH_COLOR: Record<BreathKey, string> = { hrv: THEME.accent, sigh: THEME.success, box: THEME.violet, '478': THEME.warning }
-import { canMergeNow, conflictPrompt, draftPrompt, inRepo, refOf, forgeRemote, mrBadge, mrRef, isPipelineRunning, mrEvents, parseDraft, pipelineTone, pollDelayMs, threadsPrompt } from './mr'
+import { canMergeNow, conflictPrompt, mergeAllPrompt, openMrs, draftPrompt, inRepo, refOf, forgeRemote, mrBadge, mrRef, isPipelineRunning, mrEvents, parseDraft, pipelineTone, pollDelayMs, threadsPrompt } from './mr'
 import { authMissing, canAutoMerge, forgeCreate, forgeDefault, forgeFind, forgeLists, forgeLoad, forgeMerge, forgeRebase, forgeRetry, forgeThreads } from './forge'
 import type { Io, Remote } from './forge'
 import type { Mr, MrDraft, MrMine } from '../types'
-import { THEME, TINT, CARD_TINT, cycleTint, summarySections, splitTool, toolText, withClaude, parseTaskNotifications, notificationText, backgroundOf, NEW_STYLES, todosOf, wrapupOf, resetLeft, dirTarget, isForeignDir, nativeDir, parseLinkedSessions, infoSvg, legendSvg, modelLabel, SPIN_MODE, spinnerText, timelineSvg, demoTable, agentStats, agentFlags, breakdownBarSvg, contextTip, limitTip, cacheTip, summaryLines, topRows, resetLabel, CATCH0, CATCH_KEEP, DEFAULT_SETTINGS, SETTING_DEFS, settingLabel, settingHint, catchUpPrompt, catchUpSystem, nextChunk, settingsOf, startIndex, fingerprint } from './core'
+import { RATE_SYMBOL, rateLabel, rt, type Rate } from './rating'
+import { applyScheme, desktopModeLight, wantsLight, stopTaskPrompt, THEME, TINT, CARD_TINT, cycleTint, summarySections, splitTool, toolText, withClaude, parseTaskNotifications, notificationText, backgroundOf, NEW_STYLES, todosOf, wrapupOf, resetLeft, dirTarget, isForeignDir, nativeDir, parseLinkedSessions, infoSvg, STEP_LABEL_MAX, legendSvg, modelLabel, SPIN_MODE, spinnerText, timelineSvg, demoTable, agentStats, agentFlags, breakdownBarSvg, contextTip, limitTip, cacheTip, summaryLines, topRows, resetLabel, CATCH0, CATCH_KEEP, DEFAULT_SETTINGS, SETTING_DEFS, settingLabel, settingHint, catchUpPrompt, catchUpSystem, nextChunk, settingsOf, startIndex, fingerprint } from './core'
 import type { SettingGroup, SettingKey, Tone } from './core'
-import { TILES, EFFORT_LEVELS, effortColor, effectiveEffort, effortJudgeText, handoffMarkdown, handoffPays, isTrivialPrompt, limitAlert } from './core'
+import { TILES, splitLive, EFFORT_LEVELS, effortColor, effectiveEffort, effortJudgeText, handoffMarkdown, handoffPays, isTrivialPrompt, limitAlert } from './core'
 import type { EffortLevel } from './core'
-import { CACHE_WARN_MS, WASTE_USD, compactFocus, detectLoop, isAgentHeavy, isWasteful, mcpDiet, mcpKey, turnBarsSvg, turnBarsText } from './core'
+import { agentTranscript, CACHE_WARN_MS, WASTE_USD, compactFocus, detectLoop, isAgentHeavy, isWasteful, mcpDiet, mcpKey, turnBarsSvg, turnBarsText } from './core'
 import { RISKY_GIT_CONFIG, COMPACT_AT, DECISION_COLOR, RING_HEX, contextColor, LEGEND, LEGEND_NOTE, paceText, LIMIT_LABEL, LOG_MAX, SRC_COLOR, bar, cacheHitPct, cacheLeftMs, clockTime, duration, limitColor, pace, parseSteps, questionsOf, pushCapped, markdownStats, shortHash, statsLines, toolInfoLines, oneLine, parseRepo, trustText, trustEntry, isTrusted, isSafeTrustEntry, repoGitRows, repoPathRows, repoShort, ringSvg, svgSource, titleText, toBreakdown, breakdownTitle, categoryColor, spinner, title, toolTarget, toolAction, toolKind, tokens, usd } from './core'
 import { t } from './i18n'
+import { parseSessions, sessionsFilePath } from './sessions'
+import { sessionsBody } from './sessions-ui'
 import type { Key } from './i18n'
-import { ALERT_COLOR, CODE_BG, CODE_FG, ICON_COLOR, TONE_COLOR, detailInput, detailOutput, diffCardSvg, diffOf, errorText, firstErrorLine, iconKind, inlineTokens, inputPath, isReadOnlyShell, isShell, isStyled, lineCountOf, mdLiteral, QUIET_TOOLS, quietLine, shellCommand, splitMessage, toolIconSvg } from './skins'
-import { askSummary, mathSvg } from './skins'
+import { ALERT_COLOR, CODE, ICON_COLOR, TONE_COLOR, detailInput, detailOutput, diffCardSvg, diffOf, errorText, firstErrorLine, iconKind, inlineTokens, inputPath, isReadOnlyShell, isShell, isStyled, lineCountOf, mdLiteral, QUIET_TOOLS, quietLine, shellCommand, splitMessage, toolIconSvg } from './skins'
+import { askContext, askInfos, askSummary, mathSvg } from './skins'
 import type { RichPart, Segment, SplitOptions } from './skins'
 import { diagramType, mermaidSvg } from './mermaid'
-import { chip, labelRow, pill, tile } from './ui'
-import type { Ui } from './ui'
+import { chip, labelRow, link, pill, tabs, tile } from './ui'
+import type { LinkTone, Ui } from './ui'
 import { addRecord, avgStepMs, completeAll, continuePrompt, dayKey, dayReport, etaOf, finishJob, isWorthShowing, newJob, noteAct, noteFile, planUpdate, progressOf, recordsOf, shiftDay, shownPhase, staleKeys, stepGuessMs, storeKey, toRecord, touch, visibleSteps, weekReport } from './glance'
 import type { ShownPhase } from './glance'
 import type { Job, JobRecord, JobStep } from '../types'
-import { bandText as inspectBand, ingestAppend, ingestCompaction, ingestToolCall, ingestToolResult, inputOf, newInspect, paneView as inspectView, reportText as inspectReport, sampleInput, summarize as summarizeInspect } from './inspect'
+import { bandRate as inspectRate, bandText as inspectBand, ingestAppend, ingestCompaction, ingestToolCall, ingestToolResult, inputOf, newInspect, paneView as inspectView, reportText as inspectReport, sampleInput, summarize as summarizeInspect } from './inspect'
 import type { InspectSummary } from './inspect'
-import { bandText as profileBand, newProfiler, paneView as profileView, reportText as profileReport, stepBegin, stepChunk, stepEnd, stopFailure, subagentStart, subagentStop, summarize as summarizeProfile, toolApproval, toolBegin, toolEnd, toolExec, turnComplete, turnStart } from './profiler'
+import { bandRate as profileRate, bandText as profileBand, newProfiler, paneView as profileView, reportText as profileReport, stepBegin, stepChunk, stepEnd, stopFailure, subagentStart, subagentStop, summarize as summarizeProfile, toolApproval, toolBegin, toolEnd, turnComplete, turnStart } from './profiler'
 import type { ProfileSummary } from './profiler'
-import { bandText as blastBand, blastScan, normalizeTarget, paneView as blastView, parseCommand, reportText as blastReport } from './blast'
+import { advice as blastAdvice, bandRate as blastRate, bandText as blastBand, blastScan, normalizeTarget, paneView as blastView, parseCommand, reportText as blastReport } from './blast'
 import type { BlastIo, BlastResult } from './blast'
+import { bandRate as errRate, bandText as errBand, errorText as inboxErrorText, newErrors, noteCall as errCall, noteError, paneView as errView, reportText as errReport, tx as errTx } from './errors'
+import { LIMITS as GUARD_LIMITS, alertAdvice, alertText, bandRate as guardRate, bandText as guardBand, newGuard, noteCall as guardCall, notePrompt as guardPrompt, noteSpawn as guardSpawn, paneView as guardView, resetCalls as guardReset, shouldHold, tx as guardTx } from './guard'
+import type { GuardAlert } from './guard'
+import { bandRate as tipRate, bandText as tipBand, paneView as tipView, tipsOf, tx as tipTx } from './tips'
+import type { Tip } from './tips'
+import { addStep, noFilterArgs, parseNameStatus, newTimeline, reportText as tlReport, restorePlan, shownSteps, snapOf, stepClock, stepLine, tx as tlTx, MAX_RESTORE } from './timeline'
+import { protocolCounts, protocolRows } from './protocol'
+import type { Step as TlStep } from './timeline'
+import { GIT_SAFE_ARGS, PHASES, RISKY_ACTION_CONFIG, ageText, cleanupPlan, isProtected, commitAsk, errorPrompt, fileLine, incomingPrompt, inferParents, isBranchName, isMerged, mrPrompt, onMain, opOf, parseLog, parseRefs, parseStatus, parseSuggestion, parseTownParents, parseWorktrees, phaseOf, primaryAction, resolvePrompt, reviewPrompt, splitPrompt, commitPrompt, cleanupPrompt, tidyPrompt, treeRows } from './git'
+import type { GitAction } from './git'
+import type { GitBranch, GitError, GitState } from '../types'
 
 const PLUGIN = 'tenvan-cc'
 // Slash-Command des Hauptpanels: kurz statt der Plugin-ID.
@@ -41,13 +55,9 @@ const COMMAND = 'cockpit'
 // Panels mit Titel in der eingestellten Sprache. Geöffnet wird mit `focus`: der erste Klick in ein Panel ohne Fokus holt erst
 // den Fokus, der Host zeichnet dabei neu und tauscht den Button unter dem Zeiger aus; der Klick verpufft. Der Host gewährt den
 // Fokus nur bei leerem Eingabefeld mit Tastatur, nicht aus einem Knopf in Band oder Panel heraus.
+// Ein Panel mit Reitern (Atom `paneTab`) statt früher sechs Panels; die Befehle öffnen es am passenden Reiter (`openTab`).
 const panes = (lang: UiLang) => ({
   main: { id: PLUGIN, title: t(lang, 'common.paneMain') },
-  summary: { id: 'tenvan-cc-summary', title: t(lang, 'common.paneSummary') },
-  settings: { id: 'tenvan-cc-settings', title: t(lang, 'common.paneSettings') },
-  mr: { id: 'tenvan-cc-mr', title: t(lang, 'common.paneMr') },
-  history: { id: 'tenvan-cc-history', title: t(lang, 'common.paneHistory') },
-  profiling: { id: 'tenvan-cc-profiling', title: t(lang, 'common.paneProfiling') },
 })
 const EDIT_TOOLS = new Set(['Edit', 'Write', 'NotebookEdit'])
 const LIVE = new Set(['pending', 'running', 'waiting'])
@@ -90,6 +100,8 @@ const logo = atom({ plugin: 'tenvan-cc', key: 'logo' } as const, null)
 const modelInfo = atom({ plugin: 'tenvan-cc', key: 'modelInfo' } as const, null)
 const repo = atom({ plugin: 'tenvan-cc', key: 'repo' } as const, null)
 const linked = atom({ plugin: 'tenvan-cc', key: 'linked' } as const, [] as LinkedSession[])
+// Reiter Sessions: zuletzt gelesene Status-Datei der Schaltzentrale (nur lesen); `sig` = Pfad, Änderungszeit und Größe.
+const sessionsFile = atom({ plugin: 'tenvan-cc', key: 'sessionsFile' } as const, null as SessionsState | null)
 const settings = atom({ plugin: 'tenvan-cc', key: 'settings' } as const, DEFAULT_SETTINGS)
 const catchUp = atom({ plugin: 'tenvan-cc', key: 'catchUp' } as const, CATCH0)
 const expanded = atom({ plugin: 'tenvan-cc', key: 'expanded' } as const, [] as string[])
@@ -142,6 +154,25 @@ const glanceJob = atom({ plugin: 'tenvan-cc', key: 'job' } as const, null as Job
 const glanceDay = atom({ plugin: 'tenvan-cc', key: 'historyDay' } as const, '')
 const glanceList = atom({ plugin: 'tenvan-cc', key: 'historyList' } as const, [] as JobRecord[])
 const glanceAvg = atom({ plugin: 'tenvan-cc', key: 'stepAvg' } as const, null as number | null)
+// Git-Panel
+const gitState = atom({ plugin: 'tenvan-cc', key: 'gitState' } as const, null as GitState | null)
+const gitNote = atom({ plugin: 'tenvan-cc', key: 'gitNote' } as const, '')
+const gitBusy = atom({ plugin: 'tenvan-cc', key: 'gitBusy' } as const, '')
+const gitConfirm = atom({ plugin: 'tenvan-cc', key: 'gitConfirm' } as const, '')
+const gitError = atom({ plugin: 'tenvan-cc', key: 'gitError' } as const, null as GitError | null)
+const gitMsg = atom({ plugin: 'tenvan-cc', key: 'gitMsg' } as const, '')
+const gitMsgFor = atom({ plugin: 'tenvan-cc', key: 'gitMsgFor' } as const, '')
+const gitNewBranch = atom({ plugin: 'tenvan-cc', key: 'gitNewBranch' } as const, '')
+const gitRebase = atom({ plugin: 'tenvan-cc', key: 'gitRebase' } as const, true)
+const gitAmend = atom({ plugin: 'tenvan-cc', key: 'gitAmend' } as const, false)
+const gitSel = atom({ plugin: 'tenvan-cc', key: 'gitSel' } as const, '')
+// Ein Panel mit Reitern: gewählter Reiter, Unterreiter von Diagnose und Rückblick, Filter des Protokolls
+const paneTab = atom({ plugin: 'tenvan-cc', key: 'paneTab' } as const, 'now' as PaneTab)
+const diagTab = atom({ plugin: 'tenvan-cc', key: 'diagTab' } as const, 'hints' as DiagTab)
+const backTab = atom({ plugin: 'tenvan-cc', key: 'backTab' } as const, 'session' as BackTab)
+const logFilter = atom({ plugin: 'tenvan-cc', key: 'logFilter' } as const, 'all' as LogFilter)
+// Verlauf eines Subagents im Reiter Jetzt (↗, wenn die Engine die Hauptansicht nicht umschalten kann)
+const agentView = atom({ plugin: 'tenvan-cc', key: 'agentView' } as const, null as AgentView | null)
 
 const EFFORT_STEPS = 10
 const EFFORT_FRAME_MS = 140
@@ -151,10 +182,10 @@ const STEPS_SYSTEM =
   'Du schlägst die nächsten sinnvollen Schritte in einer Coding-Session vor. ' +
   'Antworte nur mit einem JSON-Array aus genau 3 Objekten {"label": string, "why": string, "prompt": string}, das wichtigste zuerst. ' +
   '"prompt": der nächste Prompt, den der Nutzer an Claude schickt, also immer ein Auftrag AN CLAUDE: ' +
-  'Imperativ in der Du-Form an Claude gerichtet (z. B. "Führe die Tests aus", "Committe die Änderungen"), knapp (meist unter 15 Wörtern), ' +
-  'konkret, ohne Höflichkeitsfloskeln und ohne Erklärung. Nie eine Anweisung an den Nutzer selbst ("Prüfe im Browser", "Starte die App neu"); ' +
+  'Imperativ in der Du-Form an Claude gerichtet (z. B. "Führe die Tests aus", "Committe die Änderungen"), konkret und ausführlich genug, ' +
+  'dass Claude ohne Rückfrage loslegen kann (Ziel, Umfang, Prüfkriterium; ein bis drei Sätze), ohne Höflichkeitsfloskeln. Nie eine Anweisung an den Nutzer selbst ("Prüfe im Browser", "Starte die App neu"); ' +
   'braucht es seine Mitwirkung, formuliere den Auftrag an Claude, der sie vorbereitet oder abfragt. ' +
-  '"label": Kurzfassung dieses Auftrags an Claude im selben Imperativ, höchstens 6 Wörter. ' +
+  `"label": sehr kurze Beschriftung des Auftrags im selben Imperativ für einen schmalen Knopf, höchstens ${STEP_LABEL_MAX} Zeichen (2 bis 4 Wörter, z. B. "Tests ausführen"), nie ein ganzer Satz. ` +
   '"why": kurze Begründung aus Sicht des Nutzers, höchstens 10 Wörter. ' +
   'Schlage nur vor, was sich direkt aus dem letzten Austausch ergibt; nichts wiederholen, was schon erledigt ist. ' +
   'Sprache der Unterhaltung verwenden. Gibt es nichts Sinnvolles, antworte mit [].'
@@ -199,7 +230,7 @@ const langOf = async ($: EngineInterface): Promise<UiLang> => (await read($, set
 const same = (a: unknown, b: unknown): boolean => JSON.stringify(a) === JSON.stringify(b)
 
 // ponytail: Log-Einträge speichern fertigen Text in der Sprache beim Schreiben; nach einem Sprachwechsel bleiben alte Einträge so, bis sie aus dem Log fallen
-async function note($: EngineInterface, src: LogSrc, text: string, tool?: { tool: string; target: string; action?: string; isError: boolean }) {
+async function note($: EngineInterface, src: LogSrc, text: string, tool?: { tool: string; target: string; action?: string; isError: boolean; id?: string }) {
   const at = await $.clock.now()
   await update($, log, list => pushCapped(list, { at, src, text, ...tool }, LOG_MAX))
 }
@@ -529,7 +560,7 @@ function segmentsView($: EngineInterface, ui: Ui, segs: readonly Segment[], base
           const runs = (parts: RichPart[]) =>
             parts.map(p =>
               p.code ? (
-                <Text color={CODE_FG} backgroundColor={CODE_BG}> {p.text} </Text>
+                <Text color={CODE.fg} backgroundColor={CODE.bg}> {p.text} </Text>
               ) : (
                 <Text bold={p.bold === true}>{inlineTokens(p.text, changed).map(x => (x.tone === undefined ? x.text : <Text color={TONE_COLOR[x.tone]}>{x.text}</Text>))}</Text>
               ),
@@ -611,21 +642,28 @@ async function paneHead($: EngineInterface, ui: Ui, lang: UiLang, extra: RenderE
   )
 }
 
-// Titelzeile: Logo links, Text daneben; ohne Logo oder Svg bleibt „Tenvan CC …“ als Text.
-function titleRow(ui: Ui, info: About | null, mark: string | null) {
+// Titelzeile: Logo links, Text daneben; ohne Logo oder Svg steht nur der Text.
+// `versioned` false (Band): ohne Versionsangabe, die steht im Panel rechts.
+function titleRow(ui: Ui, info: About | null, mark: string | null, versioned = true) {
   const { Box, Text } = ui
   const Svg = 'Svg' in ui ? ui.Svg : undefined
-  if (mark === null || !Svg) return <Text bold color={THEME.accent}>{title(info)}</Text>
+  const shownInfo = versioned ? info : null
+  if (mark === null || !Svg) return <Text bold color={THEME.accent}>{title(shownInfo)}</Text>
   return (
     <Box flexDirection="row" columnGap={1} alignItems="center">
       <Svg source={mark} alt="Tenvan" width={16} height={20} />
-      <Text bold color={THEME.accent}>{titleText(info)}</Text>
+      {/* Wortmarke als Text in den Markenfarben für dunklen Grund: „orga“ weiß, „MAX“ #82b1ff (brand/README.md) */}
+      <Text italic>
+        <Text color={THEME.orga}>orga</Text>
+        <Text bold color={THEME.max}>MAX</Text>
+      </Text>
+      <Text bold color={THEME.accent}>{titleText(shownInfo)}</Text>
     </Box>
   )
 }
 
 function repoRow({ Text }: Ui, r: Repo | null) {
-  return r === null ? null : <Text dimColor>{repoShort(r)}</Text>
+  return r === null ? null : <Text dimColor wrap="truncate-end">{repoShort(r)}</Text>
 }
 
 // ponytail: höchstens alle 5 s (nach einem Turn immer); 'summary' schätzt lokal und kostet keinen Request
@@ -1133,9 +1171,22 @@ async function loadHistory($: EngineInterface, day: string) {
 }
 
 async function openHistory($: EngineInterface) {
-  const L = await langOf($)
   await loadHistory($, dayKey(await $.clock.now())).catch(() => undefined)
-  await $.ui.open({ ...panes(L).history, focus: true })
+  await openTab($, 'back', 'history')
+}
+
+// Reiter (und Unterreiter) wählen; `open` (Standard) öffnet dazu das Cockpit-Panel. Git liest beim Wechsel sofort neu (früher
+// beim Öffnen des Git-Panels); `refresh` false spart das, wenn der Aufrufer selbst gerade gelesen hat.
+async function openTab($: EngineInterface, tab: PaneTab, sub?: DiagTab | BackTab, o: { open?: boolean; refresh?: boolean } = {}) {
+  if ((await read($, paneTab)) !== tab) await update($, paneTab, () => tab)
+  if (tab === 'sessions') void refreshSessions($, true).catch(() => undefined)
+  if (tab === 'diag' && sub !== undefined) await update($, diagTab, () => sub as DiagTab)
+  if (tab === 'back' && sub !== undefined) await update($, backTab, () => sub as BackTab)
+  if (tab === 'git' && o.refresh !== false) {
+    void refreshGit($, true).catch(() => undefined)
+    void refreshMr($, true).then(() => loadMineDetails($, true)).catch(() => undefined)
+  }
+  if (o.open !== false) await $.ui.open({ ...panes(await langOf($)).main, focus: true })
 }
 
 async function copyReport($: EngineInterface, kind: 'day' | 'week', surface: RenderSurface) {
@@ -1192,9 +1243,10 @@ const PHASE_COLOR: Record<ShownPhase, string> = { working: THEME.accent, needsYo
 const actText = (j: Job, L: UiLang): string => (j.act === null ? '' : `${t(L, `glance.act.${j.act.kind}`)}${j.act.n > 1 ? ` (${j.act.n})` : ''}`)
 const stepMs = (s: JobStep, now: number): number | null => (s.startedAt === undefined ? null : (s.doneAt ?? now) - s.startedAt)
 
-// Checkliste ganz oben im Band: Kopfzeile mit Status, Titel, Fortschritt, Restzeit und Knöpfen, darunter die Schritte.
-// Nur Text (im Terminal identisch); auf dem Desktop zusätzlich ein kleiner Fortschrittsring.
-function glanceBand($: EngineInterface, ui: Ui, j: Job, o: { L: UiLang; now: number; avg: number | null; asking: number; live: readonly Agent[] }): RenderElement {
+// Checkliste im Band: Kopfzeile (Status, Titel, Fortschritt, Restzeit, Links), Rückfrage samt Antworten, Schritte.
+// `breath` (0..1, nur während der Arbeit) lässt den Statusring atmen (ersetzt die frühere 56-px-Zeile der Atemübung);
+// `answers` sind Claudes Rückfragen als Aufträge (Tasten 4–6), direkt unter der Frage statt in einer eigenen Zeile.
+function glanceBand($: EngineInterface, ui: Ui, j: Job, o: { L: UiLang; now: number; avg: number | null; asking: number; live: readonly Agent[]; breath: number | null; answers: readonly Step[] }): RenderElement {
   const { Box, Text } = ui
   const Svg = 'Svg' in ui ? ui.Svg : undefined
   const { L, now } = o
@@ -1226,26 +1278,43 @@ function glanceBand($: EngineInterface, ui: Ui, j: Job, o: { L: UiLang; now: num
     const text = [now, helpers === '' ? '' : `↳ ${helpers}`].filter(x => x !== '').join(' · ')
     return text === '' ? null : <Text key={key} color={muted} wrap="truncate-end">{'    '}{text}</Text>
   }
-  const hasActive = j.steps.some(s => s.status === 'active')
+  // Laufender Schritt nur, wenn er sichtbar ist: beim Falten (ab 5 Schritten) kann er in „… n weitere“ stecken, dann gehören
+  // Tätigkeit und Helfer unter die Kopfzeile.
+  const rowsShown = visibleSteps(j.steps)
+  const hasActive = rowsShown.some(r => r.kind !== 'fold' && r.step.status === 'active')
+  const pct = total > 0 ? (100 * done) / total : 0
+  const ring = !Svg ? null
+    : o.breath !== null ? <Svg key="glance-ring" source={breathRingSvg(pct, o.breath, PHASE_COLOR[shown], 16)} alt={t(L, 'glance.progress', { done, total })} width={16} height={16} />
+    : total > 0 ? <Svg key="glance-ring" source={ringSvg(pct, PHASE_COLOR[shown], 14)} alt={t(L, 'glance.progress', { done, total })} width={14} height={14} />
+    : null
+  const answers = waiting || o.answers.length === 0 ? null : (
+    <Box key="glance-answers" flexDirection="row" flexWrap="wrap" columnGap={2}>
+      <Text color={muted}>{'  '}</Text>
+      {o.answers.map((a, i) =>
+        link(ui, `ask-${i}`, clip(a.label, 40), () => void $.prompt.fill({ text: a.prompt }).catch(() => undefined), { hotkey: String(i + 4) }),
+      )}
+    </Box>
+  )
   return (
     <Box key="glance" flexDirection="column">
       <Box key="glance-head" flexDirection="row" justifyContent="space-between" alignItems="center" columnGap={2}>
         <Box flexDirection="row" columnGap={1} alignItems="center" flexShrink={1}>
-          {Svg && total > 0 && <Svg key="glance-ring" source={ringSvg((100 * done) / total, PHASE_COLOR[shown], 14)} alt={t(L, 'glance.progress', { done, total })} width={14} height={14} />}
+          {ring}
           <Text key="glance-phase" bold color={PHASE_COLOR[shown]}>{t(L, `glance.${shown}`)}</Text>
           <Box flexShrink={1}><Text key="glance-title" bold wrap="truncate-end">{j.title}</Text></Box>
-          <Text key="glance-progress" color={muted}>{total > 0 ? `· ${t(L, 'glance.progress', { done, total })}` : `· ${t(L, 'glance.noSteps')}`}{when !== '' ? ` · ${when}` : ''}</Text>
+          <Box flexShrink={0}><Text key="glance-progress" color={muted}>{total > 0 ? `· ${t(L, 'glance.progress', { done, total })}` : `· ${t(L, 'glance.noSteps')}`}{when !== '' ? ` · ${when}` : ''}</Text></Box>
         </Box>
-        <Box flexDirection="row" columnGap={1} alignItems="center" flexShrink={0}>
-          {pill(ui, 'band', 'glance-history', t(L, 'glance.history'), () => void openHistory($).catch(() => undefined))}
-          {shown === 'working' && pill(ui, 'band', 'glance-pause', t(L, 'glance.pause'), () => void pauseJob($).catch(() => undefined))}
-          {canContinue && pill(ui, 'band', 'glance-continue', t(L, 'glance.continue'), () => void continueJob($).catch(() => undefined))}
+        <Box flexDirection="row" columnGap={2} alignItems="center" flexShrink={0}>
+          {shown === 'working' && link(ui, 'glance-pause', t(L, 'glance.pause'), () => void pauseJob($).catch(() => undefined), { tone: 'muted' })}
+          {canContinue && link(ui, 'glance-continue', t(L, 'glance.continue'), () => void continueJob($).catch(() => undefined), { tone: 'strong' })}
+          {link(ui, 'glance-plan', t(L, 'glance.plan'), () => void openTab($, 'now').catch(() => undefined), { tone: 'muted' })}
         </Box>
       </Box>
       {shown === 'stuck' && <Text key="glance-stuck" color={THEME.warning} wrap="truncate-end">{t(L, 'glance.stuckNote', { d: duration(now - j.signAt) })}</Text>}
       {waiting && <Text key="glance-perm" color={THEME.warning} wrap="truncate-end">? {t(L, 'glance.permission')}</Text>}
       {!waiting && shown === 'needsYou' && j.question !== '' && <Text key="glance-question" color={THEME.warning} wrap="truncate-end">? {j.question}</Text>}
-      {visibleSteps(j.steps).map(r => {
+      {answers}
+      {rowsShown.map(r => {
         if (r.kind === 'fold') return <Text key={`glance-fold-${r.isDone ? 'done' : 'more'}`} color={r.isDone ? THEME.success : muted} dimColor={r.isDone}>{t(L, r.isDone ? 'glance.foldDone' : 'glance.foldMore', { n: r.n })}</Text>
         const s = r.step
         const ms = stepMs(s, now)
@@ -1304,7 +1373,7 @@ function forgeIo($: EngineInterface): Io {
 async function refreshMr($: EngineInterface, force = false) {
   if (force && mrInflight !== null) await mrInflight.catch(() => undefined)
   const s = await read($, settings)
-  if (!s.mrBand && !s.mrPane && !s.mrNotify && !s.mrFooter) return
+  if (!s.mrBand && !s.mrPane && !s.mrNotify) return
   const prev = await read($, mrCur)
   const now = await $.clock.now()
   if (mrInflight !== null || (!force && now - mrPolledAt < pollDelayMs(prev))) return
@@ -1323,6 +1392,31 @@ async function refreshLinked($: EngineInterface) {
   const block = r.content.find(b => b.type === 'text')
   const list = parseLinkedSessions(block !== undefined && 'text' in block ? block.text : undefined)
   if (!same(await read($, linked), list)) await update($, linked, () => list)
+}
+
+// Status-Datei der Schaltzentrale lesen (nie schreiben). Gelesen wird nur bei geänderter Zeit/Größe oder mit `force`; ein Fehler
+// (Datei fehlt, leer, kaputtes JSON) behält den letzten lesbaren Stand und meldet den Grund. Pfad: Einstellung `sessionsFile`.
+let sessionsOverride: unknown = ''
+let sessionsPath = sessionsFilePath('', '')
+async function refreshSessions($: EngineInterface, force = false) {
+  const home = (await $.env.get('USERPROFILE').then(v => v ?? $.env.get('HOME')).catch(() => undefined)) ?? ''
+  const path = (sessionsPath = sessionsFilePath(sessionsOverride, home))
+  const st = await $.fs.stat(path).catch(() => null)
+  const sig = `${path}|${st === null ? 'missing' : `${st.mtimeMs}:${st.size}`}`
+  const prev = await read($, sessionsFile)
+  if (!force && prev !== null && prev.sig === sig) return
+  let raw: string | null = null
+  let why = 'ENOENT'
+  if (st !== null) {
+    try {
+      raw = await $.fs.read(path)
+    } catch (err) {
+      why = err instanceof Error ? err.message : String(err)
+    }
+  }
+  const r = parseSessions(raw, why)
+  const next: SessionsState = r.ok ? { view: r.view, error: null, sig } : { view: prev?.view ?? null, error: { kind: r.kind, detail: r.detail }, sig }
+  if (!same(prev, next)) await update($, sessionsFile, () => next)
 }
 
 async function pollMr($: EngineInterface, s: ModSettings, prev: Mr | null) {
@@ -1483,7 +1577,7 @@ async function draftMr($: EngineInterface) {
     await update($, mrBusy, () => '')
     mrRunning = false
   }
-  await $.ui.open({ ...panes(L).mr, focus: true }).catch(() => undefined)
+  await openTab($, 'git', undefined, { refresh: false }).catch(() => undefined)
 }
 
 // Branch pushen, dann den MR/PR aus dem Entwurf anlegen (Beschreibung über stdin bzw. REST, kein Editor).
@@ -1534,6 +1628,18 @@ async function conflictToClaude($: EngineInterface, ref?: string) {
   $.ui.toast(t(L, 'mr.filled'))
 }
 
+// Sammelauftrag für alle offenen MRs (Branch-MR und eigene) ins Eingabefeld; gesendet wird erst mit Enter.
+async function mergeAllToClaude($: EngineInterface, mock: { mr: Mr; mrMine: MrMine[]; mrDetails: Record<string, Mr> } | null = null) {
+  const L = (await read($, settings)).lang
+  const project = mrRemote?.project ?? ''
+  const items = mock !== null
+    ? openMrs(mock.mr, mock.mrMine, mock.mrDetails, project)
+    : openMrs(await read($, mrCur), await read($, mrMine), await read($, mrDetails), project)
+  if (items.length < 2) return
+  await $.prompt.fill({ text: mergeAllPrompt(items, L) })
+  $.ui.toast(t(L, 'mr.filled'))
+}
+
 // Statusteile eines MR für Band und Panel: Nummer, Zustand, Pipeline, Approvals, Threads, Konflikt.
 function mrParts(ui: Ui, m: Mr, L: UiLang): RenderElement[] {
   const { Text } = ui
@@ -1564,10 +1670,10 @@ const withDots = (ui: Ui, parts: readonly RenderElement[], base: string): Render
 async function mrBandRow($: EngineInterface, ui: Ui, L: UiLang, devMr: Mr | null = null): Promise<RenderElement | null> {
   const { Box, Text, Button } = ui
   const [cur, ahead, draft, busy, down] = await Promise.all([read($, mrCur), read($, mrAhead), read($, mrDraft), read($, mrBusy), read($, pressed)])
-  const btn = (key: string, label: string, run: () => Promise<unknown>) => pill(ui, 'band', key, label, () => void act($, key, run).catch(() => undefined), down === key)
+  const btn = (key: string, label: string, run: () => Promise<unknown>, tone: LinkTone = 'link') => link(ui, key, label, () => void act($, key, run).catch(() => undefined), { busy: down === key, tone })
   // Im Dev-Mode der Mock-MR, damit die Zeile auch ohne GitLab-Repo sichtbar ist.
   const m = devMr ?? cur
-  const details = btn('mr-details', t(L, 'mr.details'), () => $.ui.open({ ...panes(L).mr, focus: true }))
+  const details = btn('mr-details', t(L, 'mr.details'), () => openTab($, 'git'), 'muted')
   if (busy !== '') return <Box key="mr" flexDirection="row" columnGap={1}><Text color={THEME.accent}>⇄ {busy}</Text></Box>
   if (m !== null) {
     return (
@@ -1575,7 +1681,7 @@ async function mrBandRow($: EngineInterface, ui: Ui, L: UiLang, devMr: Mr | null
         <Text color={THEME.textMuted}>⇄</Text>
         {withDots(ui, mrParts(ui, m, L), 'mr-b')}
         {m.state === 'opened' && m.threads > 0 && btn('mr-claude', t(L, 'mr.toClaude'), () => threadsToClaude($))}
-        {m.state === 'opened' && m.conflicts && btn('mr-fix', t(L, 'mr.fixConflict'), () => conflictToClaude($))}
+        {m.state === 'opened' && m.conflicts && btn('mr-fix', t(L, 'mr.fixConflict'), () => conflictToClaude($), 'warn')}
         {details}
       </Box>
     )
@@ -1590,8 +1696,8 @@ async function mrBandRow($: EngineInterface, ui: Ui, L: UiLang, devMr: Mr | null
   }
   if (ahead === 0) return null
   return (
-    <Box key="mr" flexDirection="row" columnGap={1} alignItems="center">
-      <Text color={THEME.textMuted}>⇄ {t(L, 'mr.ahead', { n: ahead })}</Text>
+    <Box key="mr" flexDirection="row" columnGap={1} alignItems="center" flexWrap="wrap">
+      <Box flexShrink={0}><Text color={THEME.textMuted}>⇄ {t(L, 'mr.ahead', { n: ahead })}</Text></Box>
       {btn('mr-create', t(L, 'mr.create'), () => draftMr($))}
     </Box>
   )
@@ -1629,6 +1735,813 @@ async function openExternal($: EngineInterface, href: string) {
 
 // Das MR-Panel: je Abschnitt eine Karte (Branch-MR mit Beschreibung, Threads und Aktionen, Entwurf, eigene MRs, Reviews).
 // `mock` füllt es im Dev-Mode.
+// Zeilen der Unterhaltung für Kontext-Inspektor und Hintergrundaufgaben (registriert je Tür, siehe `session.append` in register).
+const onAppend: HookOf<'session.append'> = async ($, e, next) => {
+  observeInspect(() => ingestAppend(inspectSt, e as never))
+  const text = notificationText(e.door, e.message.content)
+  if (text.includes('<task-notification>')) await finishBackground($, text).catch(() => undefined)
+  return next(e)
+}
+
+// Ausgabestil für die Modellzeile aus den Einstellungen (früher aus `prompt.compose`, das sec-default an uns vorbeileitet).
+// Ungeprüft: ob ein in der Desktop-App gewählter Stil dort steht; sonst bleibt die Anzeige leer.
+async function refreshStyle($: EngineInterface) {
+  const raw: unknown = await $.settings.read({ key: 'outputStyle' }).catch(() => undefined)
+  const style = typeof raw === 'string' && raw.trim() !== '' && raw !== 'default' ? raw : null
+  const mi = await read($, modelInfo)
+  if (mi !== null && mi.style !== style) await update($, modelInfo, () => ({ ...mi, style }))
+}
+
+// ---- Git-Panel ----
+// Ablauf Commit → MR → Merge → Aufräumen: Stand lesen (`loadGit`), Befehle der Reihe nach ausführen (`gitStep`), zeichnen
+// (`gitPaneBody`); was ansteht, entscheidet git.ts. Netzwerk nur auf Knopfdruck (fetch, pull, push), git fragt nie interaktiv.
+
+// Pfade wörtlich (Next.js-Routen wie `app/[id]/page.tsx` sind sonst Globs).
+const GIT_ENV = { GIT_TERMINAL_PROMPT: '0', GIT_EDITOR: 'true', GCM_INTERACTIVE: 'never', GIT_LITERAL_PATHSPECS: '1' }
+const GIT_NET_MS = 120_000
+// Branches mit eigener Eltern-Schätzung (je drei git-Aufrufe); weitere hängen an main.
+// ponytail: feste Obergrenze; bei sehr vielen Branches wäre ein einziges `git log --simplify-by-decoration` billiger.
+const GIT_BRANCH_MAX = 15
+const GIT_FILES_MAX = 8
+const GIT_LOG = '--format=%h%x00%an%x00%ct%x00%s'
+let gitInflight: Promise<void> | null = null
+let gitPaneAt = 0
+let gitRunning = false
+// Wurzel des Repos: Status-Pfade sind wurzelrelativ, deshalb laufen Aktionen dort, nicht im (Unter-)Ordner der Session.
+let gitTop = ''
+
+type GitOut = { code: number; out: string; err: string }
+type GitCmd = { argv: string[]; optional?: boolean; timeoutMs?: number }
+
+// git an der Repo-Wurzel (vor dem ersten Lesen im Session-Ordner), ohne Rückfragen (Zugangsdaten, Editor) und, wie jeder
+// git-Aufruf über `$.process.run`, ohne Repo-Hooks; ein abgebrochener Lauf zählt als Fehler mit Meldung.
+async function gitRun($: EngineInterface, args: readonly string[], timeoutMs = 30_000, root = false, extraEnv: Record<string, string> = {}): Promise<GitOut> {
+  const cwd = gitTop !== '' && !root ? gitTop : await $.session.root().catch(() => undefined)
+  const r = await $.process
+    .run([...GIT_BASE, ...GIT_SAFE_ARGS, ...args], { ...(cwd === undefined ? {} : { cwd }), env: { ...GIT_ENV, ...extraEnv }, timeoutMs })
+    .catch((err: unknown) => ({ exitCode: -1, stdout: '', stderr: err instanceof Error ? err.message : String(err) }))
+  return { code: r.exitCode, out: r.stdout, err: r.stderr }
+}
+
+const gitLines = (r: GitOut | undefined): string[] => (r !== undefined && r.code === 0 ? r.out.split(/\r?\n/).map(l => l.trim()).filter(Boolean) : [])
+
+// Änderungszeit einer Datei im Git-Ordner, null, wenn es sie nicht gibt.
+async function gitPathAt($: EngineInterface, name: string): Promise<{ path: string; at: number } | null> {
+  const path = (await gitRun($, ['rev-parse', '--path-format=absolute', '--git-path', name])).out.trim()
+  if (path === '') return null
+  const st = await $.fs.stat(path).catch(() => null)
+  return st === null ? null : { path, at: st.mtimeMs }
+}
+
+// Ganzer Stand fürs Panel. 'noRepo' außerhalb eines Repos, 'risky' bei Repo-Konfiguration mit Befehlen (dann läuft nichts
+// weiter), undefined bei vorübergehenden Fehlern (der letzte Stand bleibt stehen).
+async function loadGit($: EngineInterface): Promise<GitState | 'noRepo' | 'risky' | undefined> {
+  const top = await gitRun($, ['rev-parse', '--show-toplevel'], 30_000, true)
+  if (top.code !== 0) {
+    const none = /not a git repository/i.test(top.err)
+    if (none) gitTop = ''
+    return none ? 'noRepo' : undefined
+  }
+  gitTop = top.out.trim()
+  if (await isRiskyRepo($, gitTop).catch(() => true)) return 'risky'
+  const [st, refs, townCfg, townMain, stash, wt, remote, fetchHead, rebaseMerge, rebaseApply, merge, pick, revert, recent, localOnly, hooksPath] = await Promise.all([
+    gitRun($, ['status', '--porcelain=v2', '--branch', '-z', '--ignore-submodules=all']),
+    gitRun($, ['for-each-ref', 'refs/heads', '--format=%(refname:short)%00%(upstream:short)%00%(upstream:track,nobracket)']),
+    gitRun($, ['config', '--get-regexp', '^git-town-branch\\..*\\.parent$']),
+    gitRun($, ['config', '--get', 'git-town.main-branch']),
+    gitRun($, ['stash', 'list']),
+    gitRun($, ['worktree', 'list', '--porcelain']),
+    gitRemote($),
+    gitPathAt($, 'FETCH_HEAD'),
+    gitPathAt($, 'rebase-merge'),
+    gitPathAt($, 'rebase-apply'),
+    gitRun($, ['rev-parse', '-q', '--verify', 'MERGE_HEAD']),
+    gitRun($, ['rev-parse', '-q', '--verify', 'CHERRY_PICK_HEAD']),
+    gitRun($, ['rev-parse', '-q', '--verify', 'REVERT_HEAD']),
+    gitRun($, ['log', '-n', '5', GIT_LOG]),
+    gitRun($, ['rev-list', '--count', 'HEAD', '--not', '--remotes']),
+    gitRun($, ['config', '--get', 'core.hooksPath']),
+  ])
+  if (st.code !== 0) return undefined
+  // Hooks, die ein Commit oder Push im Terminal ausführen würde (core.hooksPath relativ zur Wurzel, sonst .git/hooks).
+  const hp = hooksPath.out.trim()
+  const hookDir = hp === '' ? (await gitRun($, ['rev-parse', '--path-format=absolute', '--git-path', 'hooks'])).out.trim() : /^([a-z]:)?[\\/]/i.test(hp) ? hp : `${gitTop}/${hp}`
+  const hooks = (
+    await Promise.all(['pre-commit', 'commit-msg', 'pre-push'].map(async h => (hookDir !== '' && (await $.fs.stat(`${hookDir}/${h}`).catch(() => null)) !== null ? h : '')))
+  ).filter(Boolean)
+  const s = parseStatus(st.out)
+  const op = opOf({ rebase: rebaseMerge !== null || rebaseApply !== null, merge: merge.code === 0, pick: pick.code === 0, revert: revert.code === 0 })
+  // Im Rebase steht HEAD lose; welcher Branch gerade umgebaut wird, steht in head-name.
+  let branch = s.branch
+  const rb = rebaseMerge ?? rebaseApply
+  if (op === 'rebase' && s.detached && rb !== null) {
+    const head = await $.fs.read(`${rb.path}/head-name`).catch(() => '')
+    branch = String(head).trim().replace(/^refs\/heads\//, '')
+  }
+  const detached = s.detached && branch === ''
+  const refList = parseRefs(refs.out)
+  const names = refList.map(r => r.name)
+  const town = parseTownParents(townCfg.out)
+  const remoteHead = await gitRun($, ['symbolic-ref', '--short', `refs/remotes/${remote}/HEAD`])
+  const main =
+    townMain.out.trim() ||
+    (remoteHead.code === 0 ? remoteHead.out.trim().slice(remote.length + 1) : '') ||
+    (names.includes('master') && !names.includes('main') ? 'master' : 'main')
+  const base = names.includes(main) ? main : `${remote}/${main}`
+  const own = names.filter(n => n !== main).slice(0, GIT_BRANCH_MAX)
+  const [depthOut, mergedOut] = await Promise.all([
+    Promise.all(own.map(n => gitRun($, ['rev-list', '--count', `${base}..${n}`]))),
+    Promise.all(own.map(n => gitRun($, ['for-each-ref', 'refs/heads', '--merged', n, '--format=%(refname:short)']))),
+  ])
+  const depth: Record<string, number> = {}
+  const mergedInto: Record<string, string[]> = {}
+  own.forEach((n, i) => {
+    // Ohne Basis (kein main, kein origin/HEAD) keine Tiefe: sonst gälte jeder gepushte Branch als gemergt.
+    const d = depthOut[i]
+    if (d !== undefined && d.code === 0) depth[n] = Number(d.out.trim()) || 0
+    mergedInto[n] = gitLines(mergedOut[i])
+  })
+  const parents = inferParents(names, main, town, mergedInto, depth)
+  const ab = await Promise.all(names.map(n => (parents[n] ? gitRun($, ['rev-list', '--left-right', '--count', `${parents[n]}...${n}`]) : Promise.resolve(null))))
+  const branches: GitBranch[] = refList.map((r, i) => {
+    const m = /^(\d+)\s+(\d+)$/.exec(ab[i]?.out.trim() ?? '')
+    return { ...r, parent: parents[r.name] ?? null, behind: Number(m?.[1] ?? 0), ahead: Number(m?.[2] ?? 0), merged: isMerged(r, main, depth[r.name] ?? 1) }
+  })
+  const [incoming, upstreamOnly] =
+    s.upstream !== '' && s.behind > 0
+      ? await Promise.all([
+          gitRun($, ['log', '-n', '10', GIT_LOG, 'HEAD..@{upstream}']).then(r => parseLog(r.out)),
+          gitRun($, ['rev-list', '--cherry-pick', '--right-only', '--count', 'HEAD...@{upstream}']).then(r => (r.code === 0 ? Number(r.out.trim()) || 0 : s.behind)),
+        ])
+      : [[], 0]
+  return {
+    ...s,
+    top: top.out.trim(),
+    branch,
+    detached,
+    op,
+    localOnly: localOnly.code === 0 ? Number(localOnly.out.trim()) || 0 : s.ahead,
+    upstreamOnly,
+    hooks,
+    main,
+    remote,
+    branches,
+    incoming,
+    history: parseLog(recent.out),
+    stashes: gitLines(stash).length,
+    fetchedAt: fetchHead?.at ?? 0,
+    town: Object.keys(town).length > 0 || townMain.out.trim() !== '',
+    elsewhere: parseWorktrees(wt.out, top.out.trim()),
+    readAt: await $.clock.now(),
+  }
+}
+
+// Stand neu lesen; eine laufende Abfrage wird mitgenutzt, `force` wartet sie ab und liest danach selbst.
+async function refreshGit($: EngineInterface, force = false) {
+  if (gitInflight !== null) {
+    if (!force) return gitInflight
+    await gitInflight.catch(() => undefined)
+  }
+  const run = (async () => {
+    const r = await loadGit($)
+    if (r === undefined) return
+    if (r === 'noRepo' || r === 'risky') {
+      await update($, gitState, () => null)
+      await update($, gitNote, () => r)
+      return
+    }
+    await update($, gitNote, () => '')
+    await update($, gitState, () => r)
+    void suggestCommit($, r).catch(() => undefined)
+  })().finally(() => {
+    gitInflight = null
+  })
+  gitInflight = run
+  return run
+}
+
+// Gestagter Stand als Schlüssel: ein neuer Vorschlag nur, wenn sich Dateien oder der letzte Commit ändern.
+// ponytail: geänderter Inhalt einer schon gestagten Datei zählt nicht; dafür gibt es „Neu vorschlagen“.
+const stagedKey = (s: GitState): string => `${s.history[0]?.sha ?? ''}|${s.staged.map(fileLine).join('|')}`
+
+// Commit-Zeile von Haiku aus dem gestagten Diff. Automatisch nur mit Einstellung `gitSuggest` und nie über Getipptes
+// (`gitMsgFor` = 'typed'); `force` (Knopf) überschreibt beides.
+async function suggestCommit($: EngineInterface, s: GitState, force = false) {
+  const set = await read($, settings)
+  if (s.staged.length === 0 || (!force && !set.gitSuggest)) return
+  const key = stagedKey(s)
+  const was = await read($, gitMsgFor)
+  if (!force && (was === key || was === 'busy' || was === 'typed')) return
+  await update($, gitMsgFor, () => 'busy')
+  let line = ''
+  try {
+    const [stat, diff, recent] = await Promise.all([
+      gitRun($, ['diff', '--cached', '--stat', '--no-color']),
+      gitRun($, ['diff', '--cached', '--no-color', '--no-ext-diff', '--no-textconv']),
+      gitRun($, ['log', '-n', '10', '--format=%s']),
+    ])
+    const r = await $.model.complete({ model: 'haiku', prompt: commitAsk(stat.out, diff.out, recent.out, set.lang), maxTokens: 200, effort: 'low', timeoutMs: 30_000 }).catch(() => null)
+    line = parseSuggestion(r !== null && r.isAnswered ? r.text : '')
+    // Wurde währenddessen getippt, bleibt der getippte Text stehen.
+    if (line !== '' && (await read($, gitMsgFor)) === 'busy') await update($, gitMsg, () => line)
+  } finally {
+    await update($, gitMsgFor, v => (v === 'busy' ? key : v))
+  }
+}
+
+// Vor jeder Aktion neu geprüft (nicht nur beim Lesen): riskante Repo-Konfiguration fürs Lesen und für schreibende Befehle.
+// Liefert die gefundenen Schlüssel, leer = frei. Ein Fehler beim Prüfen sperrt.
+async function gitActionBlock($: EngineInterface): Promise<string[]> {
+  if (await isRiskyRepo($, gitTop || undefined).catch(() => true)) return ['(Repo-Konfiguration gesperrt)']
+  const found: string[] = []
+  for (const scope of ['--local', '--worktree']) {
+    const r = await gitRun($, ['config', scope, '--includes', '--name-only', '--get-regexp', RISKY_ACTION_CONFIG])
+    if (r.code === 0) found.push(...gitLines(r))
+    // Exit 1 = kein Treffer; --worktree ohne extensions.worktreeConfig meldet einen Fehler, der dann nichts sperrt.
+    else if (r.code !== 1 && scope === '--local') return ['(Repo-Konfiguration nicht lesbar)']
+  }
+  return found
+}
+
+// Befehle nacheinander mit Sperre und Statuszeile; Fehler landen in der Fehlerkarte (`gitError`), Ergebnis als Toast.
+// `keepGoing`: nach einem Fehler weitermachen (Löschen mehrerer Branches). Danach immer neu lesen.
+async function gitStep($: EngineInterface, what: string, cmds: readonly GitCmd[], o: { keepGoing?: boolean; after?: () => Promise<unknown> } = {}): Promise<boolean> {
+  if (gitRunning) return false
+  gitRunning = true
+  const L = (await read($, settings)).lang
+  await update($, gitBusy, () => what)
+  const fails: { cmd: string; out: string }[] = []
+  try {
+    const blocked = await gitActionBlock($)
+    if (blocked.length > 0) fails.push({ cmd: what, out: t(L, 'git.blocked', { keys: blocked.join(', ') }) })
+    for (const c of blocked.length > 0 ? [] : cmds) {
+      const r = await gitRun($, c.argv, c.timeoutMs)
+      if (r.code === 0 || c.optional) continue
+      fails.push({ cmd: `git ${c.argv.join(' ')}`, out: (r.err.trim() || r.out.trim() || `exit ${r.code}`).slice(-4000) })
+      if (!o.keepGoing) break
+    }
+    const at = await $.clock.now()
+    const first = fails[0]
+    await update($, gitError, () => (first === undefined ? null : { cmd: first.cmd, out: fails.map(f => (fails.length > 1 ? `$ ${f.cmd}\n${f.out}` : f.out)).join('\n\n'), at }))
+    const text = t(L, first === undefined ? 'git.done' : 'git.failed', { what })
+    $.ui.toast(text)
+    await note($, 'main', text)
+    if (first === undefined && o.after) await o.after()
+  } finally {
+    await update($, gitBusy, () => '')
+    gitRunning = false
+    await refreshGit($, true).catch(() => undefined)
+    void refreshRepo($).catch(() => undefined)
+  }
+  return fails.length === 0
+}
+
+// Rückfrage für Knöpfe, die etwas verwerfen oder überschreiben: erster Klick fragt (6 s gültig), zweiter führt aus.
+async function gitAsk($: EngineInterface, key: string): Promise<boolean> {
+  if ((await read($, gitConfirm)) === key) {
+    await update($, gitConfirm, () => '')
+    return true
+  }
+  await update($, gitConfirm, () => key)
+  $.clock.after(6_000, () => void update($, gitConfirm, c => (c === key ? '' : c)).catch(() => undefined))
+  return false
+}
+
+// Auftrag an Claude ins Eingabefeld; gesendet wird erst mit Enter.
+async function gitFill($: EngineInterface, text: string) {
+  await $.prompt.fill({ text })
+  $.ui.toast(t((await read($, settings)).lang, 'mr.filled'))
+}
+
+async function gitCommit($: EngineInterface) {
+  const s = await read($, gitState)
+  if (s === null) return
+  const L = (await read($, settings)).lang
+  const msg = (await read($, gitMsg)).trim()
+  const amend = await read($, gitAmend)
+  if (!amend && s.staged.length === 0) return $.ui.toast(t(L, 'git.nothingStaged'))
+  if (!amend && msg === '') return $.ui.toast(t(L, 'git.msgMissing'))
+  const argv = ['commit', ...(amend ? ['--amend'] : []), ...(msg === '' ? ['--no-edit'] : ['-m', msg])]
+  // Läuft ohne Repo-Hooks (`$.process.run`); mit Hooks bietet das Panel den Commit über Claude an (Bash mit Hooks).
+  if (await gitStep($, t(L, amend ? 'git.a.amend' : 'git.a.commit'), [{ argv, timeoutMs: 300_000 }])) {
+    await update($, gitMsg, () => '')
+    await update($, gitMsgFor, () => '')
+    await update($, gitAmend, () => false)
+  }
+}
+
+// Neuer Branch vom aktuellen Stand; offene Änderungen wandern mit (auf main: „Branch anlegen und mitnehmen“).
+// Mit Git Town wird der aktuelle Branch als Eltern eingetragen.
+async function gitCreate($: EngineInterface) {
+  const s = await read($, gitState)
+  if (s === null) return
+  const L = (await read($, settings)).lang
+  const name = (await read($, gitNewBranch)).trim()
+  if (!isBranchName(name)) return $.ui.toast(t(L, 'git.badName', { name: name || '–' }))
+  const from = s.detached ? s.main : s.branch
+  const cmds: GitCmd[] = [{ argv: ['switch', '-c', name] }]
+  if (s.town) cmds.push({ argv: ['config', `git-town-branch.${name}.parent`, from], optional: true })
+  if (await gitStep($, `${t(L, 'git.newBranch')} ${name}`, cmds)) await update($, gitNewBranch, () => '')
+}
+
+// Alle übrigen Aktionen; die Rückfrage-Schlüssel heißen `git-<Aktion>`, damit der Knopf seine Frage zeigen kann.
+type GitAct = GitAction | 'fetch' | 'stage' | 'unstage' | 'stageAll' | 'unstageAll' | 'stash' | 'stashPop' | 'discard' | 'abort' | 'switch' | 'deleteMerged' | 'undo' | 'rebaseOnto' | 'mergeIn' | 'pushBranch' | 'setParent' | 'deleteBranch'
+
+async function gitAction($: EngineInterface, a: GitAct, arg = ''): Promise<unknown> {
+  const s = await read($, gitState)
+  if (s === null || gitRunning) return
+  const L = (await read($, settings)).lang
+  const net = (argv: string[]): GitCmd => ({ argv, timeoutMs: GIT_NET_MS })
+  const me = s.branches.find(b => b.name === s.branch)
+  const parent = me?.parent ?? s.main
+  const asked = () => gitAsk($, `git-${a}`)
+  // Branch-Namen aus Refs nie ungeprüft in argv: ein von Hand angelegter Ref „-x“ wäre sonst eine Option.
+  if (['switch', 'rebaseOnto', 'mergeIn', 'pushBranch', 'setParent', 'deleteBranch'].includes(a) && !isBranchName(arg)) return $.ui.toast(t(L, 'git.badName', { name: arg }))
+  if (['cleanup', 'syncParent', 'push'].includes(a) && !(isBranchName(s.branch) && isBranchName(parent))) return $.ui.toast(t(L, 'git.badName', { name: `${s.branch} / ${parent}` }))
+  switch (a) {
+    case 'fetch':
+      return gitStep($, t(L, 'git.fetch'), [net(['fetch', '--prune', s.remote])])
+    case 'pull':
+      return gitStep($, t(L, 'git.a.pull'), [net(['pull', ...((await read($, gitRebase)) ? ['--rebase', '--autostash'] : ['--ff-only'])])])
+    case 'pullRebase':
+      return gitStep($, t(L, 'git.a.pullRebase'), [net(['pull', '--rebase', '--autostash'])])
+    case 'push': {
+      // Zeigt der Upstream auf einen anderen Branch (z. B. origin/main nach `switch -c x origin/main`), gezielt auf den eigenen.
+      const own = s.upstream === `${s.remote}/${s.branch}`
+      return gitStep($, t(L, 'git.a.push'), [net(own ? ['push'] : ['push', '-u', s.remote, `HEAD:refs/heads/${s.branch}`])], { after: () => refreshMr($, true) })
+    }
+    case 'force':
+      // `--force-if-includes`: fremde Commits, die nur geholt, aber nicht eingearbeitet sind, verhindern den Push.
+      return (await asked()) ? gitStep($, t(L, 'git.a.force'), [net(['push', '--force-with-lease', '--force-if-includes'])], { after: () => refreshMr($, true) }) : undefined
+    case 'commitClaude':
+      return gitFill($, commitPrompt(L))
+    case 'stage':
+      return gitStep($, `git add ${arg}`, [{ argv: ['add', '--', arg] }])
+    case 'unstage':
+      return gitStep($, `git restore --staged ${arg}`, [{ argv: ['restore', '--staged', '--', arg] }])
+    case 'stageAll':
+      return gitStep($, t(L, 'git.stageAll'), [{ argv: ['add', '-A'] }])
+    case 'unstageAll':
+      return gitStep($, t(L, 'git.unstageAll'), [{ argv: ['restore', '--staged', '--', '.'] }])
+    case 'stash':
+      return gitStep($, t(L, 'git.stash'), [{ argv: ['stash', 'push', '-u'] }])
+    case 'stashPop':
+      return gitStep($, t(L, 'git.stashPop', { n: s.stashes }), [{ argv: ['stash', 'pop'] }])
+    case 'discard':
+      // Nur Änderungen an versionierten Dateien im Arbeitsbaum; Gestagtes und neue Dateien bleiben.
+      return (await asked()) ? gitStep($, t(L, 'git.discard'), [{ argv: ['restore', '--worktree', '--', '.'] }]) : undefined
+    case 'commit':
+      return gitCommit($)
+    case 'branchOff':
+      return gitCreate($)
+    case 'continue': {
+      const argv = s.op === 'merge' ? ['commit', '--no-edit'] : [s.op === '' ? 'rebase' : s.op, '--continue']
+      return gitStep($, `${t(L, 'git.a.continue')} (${s.op})`, [{ argv, timeoutMs: 300_000 }])
+    }
+    case 'abort':
+      return s.op !== '' && (await asked()) ? gitStep($, `${t(L, 'git.a.abort')} (${s.op})`, [{ argv: [s.op, '--abort'] }]) : undefined
+    case 'syncParent': {
+      // Auf den Remote-Stand des Eltern-Branches rebasen (lokal, wenn er keinen Upstream hat).
+      const p = s.branches.find(b => b.name === parent)
+      return gitStep($, t(L, 'git.a.syncParent'), [net(['fetch', s.remote]), { argv: ['rebase', '--autostash', p !== undefined && !p.gone && p.upstream !== '' ? p.upstream : parent], timeoutMs: 300_000 }])
+    }
+    case 'switch':
+      return gitStep($, `git switch ${arg}`, [{ argv: ['switch', arg] }], { after: () => update($, gitSel, () => '') })
+    case 'deleteMerged': {
+      const gone = s.branches.filter(b => b.merged && b.name !== s.branch && !isProtected(b.name, s.main) && !s.elsewhere.includes(b.name))
+      // `-d` löscht nur, was git selbst als gemergt kennt; Squash-Merges bleiben mit Fehler stehen (dafür „Branches aufräumen“).
+      return gone.length > 0 && (await asked()) ? gitStep($, t(L, 'git.deleteMerged', { n: gone.length }), gone.map(b => ({ argv: ['branch', '-d', b.name] })), { keepGoing: true }) : undefined
+    }
+    case 'undo':
+      return (await asked()) ? gitStep($, t(L, 'git.undo'), [{ argv: ['reset', '--soft', 'HEAD~1'] }]) : undefined
+    case 'cleanup': {
+      if (!(await asked())) return
+      const mr = await read($, mrCur)
+      const plan = cleanupPlan(s, { parent, mrMerged: mr !== null && mr.state === 'merged' && mr.source === s.branch, parentElsewhere: s.elsewhere.includes(parent) })
+      return gitStep($, t(L, 'git.a.cleanup'), plan.map(p => ({ ...p, ...(p.argv[0] === 'fetch' ? { timeoutMs: GIT_NET_MS } : {}) })), { after: () => refreshMr($, true) })
+    }
+    case 'mrDraft':
+      return draftMr($)
+    case 'merge':
+      return mergeMr($)
+    case 'rebaseOnto':
+      return gitStep($, `git rebase ${arg}`, [{ argv: ['rebase', '--autostash', arg], timeoutMs: 300_000 }], { after: () => update($, gitSel, () => '') })
+    case 'mergeIn':
+      return gitStep($, `git merge ${arg}`, [{ argv: ['merge', '--no-edit', arg], timeoutMs: 300_000 }], { after: () => update($, gitSel, () => '') })
+    case 'pushBranch':
+      return gitStep($, `git push -u ${s.remote} ${arg}`, [net(['push', '-u', s.remote, arg])], { after: () => update($, gitSel, () => '') })
+    case 'setParent':
+      return gitStep($, t(L, 'git.o.parent', { cur: s.branch }), [{ argv: ['config', `git-town-branch.${s.branch}.parent`, arg] }], { after: () => update($, gitSel, () => '') })
+    case 'deleteBranch':
+      // Nur `-d`: ein nicht gemergter Branch bleibt mit Fehlermeldung stehen. main, master, develop nie.
+      if (isProtected(arg, s.main) || arg === s.branch) return
+      return (await asked()) ? gitStep($, `git branch -d ${arg}`, [{ argv: ['branch', '-d', arg] }], { after: () => update($, gitSel, () => '') }) : undefined
+    case 'resolve':
+      return gitFill($, resolvePrompt(s.op, s.conflicts, L))
+  }
+}
+
+// Inhalt des Git-Panels. `mock` (Dev-Mode): Stand und MR aus mock.ts, Knöpfe führen nichts aus.
+async function gitPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { git: GitState; mr: Mr; mrMine: MrMine[]; mrDetails: Record<string, Mr> } | null, now: number, marg: number): Promise<RenderElement[]> {
+  const { Box, Text, Button } = ui
+  // Eingabefelder hat nicht jede Oberfläche; ohne sie bleiben Vorschlag und Claude-Aufträge.
+  const Input = 'Input' in ui ? ui.Input : undefined
+  const section = (key: string, tint: string, ...children: RenderChildren[]) => tile(ui, 'pane', { key, tint, marg }, ...children)
+  const note0 = await read($, gitNote)
+  const s = mock !== null ? mock.git : await read($, gitState)
+  if (mock === null) {
+    gitPaneAt = now
+    if (gitInflight === null && !gitRunning && (s === null ? note0 === '' : now - s.readAt > 20_000)) void refreshGit($).catch(() => undefined)
+  }
+  if (s === null) {
+    if (note0 === 'risky')
+      return [
+        section(
+          'git-s-risky',
+          TINT.warning,
+          <Text key="git-risky" color={THEME.warning}>{t(L, 'git.risky')}</Text>,
+          <Box key="git-trust-row" marginTop={1}>
+            {pill(ui, 'pane', 'git-trust', ` ${t(L, 'repo.trust')} `, () => void trustPrompt($, L).then(async text => {
+              if (text === null) $.ui.toast(t(L, 'repo.trustFail'))
+              else await $.prompt.fill({ text })
+            }).catch(() => undefined))}
+          </Box>,
+        ),
+      ]
+    return [section('git-s-none', TINT.neutral, <Text key="git-none" color={THEME.textMuted}>{t(L, note0 === 'noRepo' ? 'git.noRepo' : 'git.loading')}</Text>)]
+  }
+  const mr = mock !== null ? mock.mr : await read($, mrCur)
+  const [busy, confirm, down, err, msg, msgFor, newName, rebase, amend, sel, mrAsk] = await Promise.all([
+    read($, gitBusy), read($, gitConfirm), read($, pressed), read($, gitError), read($, gitMsg), read($, gitMsgFor), read($, gitNewBranch), read($, gitRebase), read($, gitAmend), read($, gitSel), read($, mrConfirm),
+  ])
+  const lock = busy !== ''
+  const run = (key: string, label: string, f: () => Promise<unknown>) =>
+    pill(ui, 'pane', key, label, () => void (mock !== null ? Promise.resolve($.ui.toast(t(L, 'dev.badge'))) : act($, key, f)).catch(() => undefined), down === key ? true : lock ? 'locked' : false)
+  type Act = Parameters<typeof gitAction>[1]
+  const git = (key: string, label: string, a: Act, arg = '') => run(key, label, () => gitAction($, a, arg))
+  // Knopf mit Rückfrage: zeigt seine Frage, solange `git-<Aktion>` offen ist.
+  const ask = (key: string, label: string, q: Key, a: Act, arg = '', vars?: Record<string, string | number>) => git(key, confirm === `git-${a}` ? t(L, q, vars) : label, a, arg)
+  const ai = (key: string, label: string, text: string) => run(key, `✦ ${label}`, () => gitFill($, text))
+  const row = (key: string, ...items: RenderChildren[]) => <Box key={key} flexDirection="row" columnGap={1} rowGap={0} flexWrap="wrap" marginTop={1}>{items}</Box>
+  const phase = phaseOf(s, mr)
+  const primary = primaryAction(s, mr)
+  const me = s.branches.find(b => b.name === s.branch)
+  const parent = me?.parent ?? s.main
+  const dirty = s.staged.length + s.changed.length + s.untracked.length
+  const own = mr !== null && mr.source === s.branch ? mr : null
+  const unpushed = s.upstream === '' ? s.localOnly : s.ahead
+  const noHooks = (h: string) => (s.hooks.includes(h) ? t(L, 'git.noHooks') : '')
+  // Enter im Eingabefeld: im Dev-Mode wie die Knöpfe nur ein Hinweis.
+  const submit = (key: string, f: () => Promise<unknown>) => () => void (mock !== null ? Promise.resolve($.ui.toast(t(L, 'dev.badge'))) : act($, key, f)).catch(() => undefined)
+  const out: RenderElement[] = []
+
+  // Kopf: Branch, Abstand zum Upstream, letzter Fetch, Ablauf-Leiste, Fetch und Neu lesen.
+  const idx = phase === 'done' ? PHASES.length : PHASES.indexOf(phase)
+  const bad = s.op !== '' || err !== null
+  out.push(
+    <Box key="git-head" flexDirection="column" marginX={marg}>
+      {/* Repo, auf das sich der Stand bezieht: Name und Wurzelordner (die Karte Arbeitsverzeichnis steht im Reiter Jetzt). */}
+      {s.top !== '' && (
+        <Box key="git-repo" flexDirection="row" columnGap={1}>
+          <Text dimColor>{t(L, 'git.repo')}</Text>
+          <Text bold>{s.top.replace(/[\\/]+$/, '').split(/[\\/]/).pop()}</Text>
+          <Text color={THEME.textMuted} wrap="truncate-end">{s.top}</Text>
+        </Box>
+      )}
+      <Box flexDirection="row" columnGap={1} flexWrap="wrap">
+        <Text bold color={THEME.accent} wrap="truncate-end">⎇ {s.branch || 'HEAD'}</Text>
+        {s.upstream !== '' ? chip(ui, 'pane', 'git-ab', `↑${s.ahead} ↓${s.behind}`) : chip(ui, 'pane', 'git-noup', t(L, 'git.noUpstream'), THEME.warning)}
+        <Text dimColor>{s.fetchedAt > 0 ? t(L, 'git.fetched', { age: ageText(now - s.fetchedAt) }) : t(L, 'git.fetchedNever')}</Text>
+      </Box>
+      <Box flexDirection="row" columnGap={1} flexWrap="wrap" marginTop={1}>
+        {PHASES.flatMap((p, i) => {
+          const done = i < idx
+          const cur = i === idx
+          const color = cur && bad ? THEME.error : done ? THEME.success : cur ? THEME.accent : THEME.textMuted
+          const mark = cur && bad ? '✗' : done ? '✓' : cur ? '●' : '○'
+          const step = <Text key={`git-ph-${p}`} bold={cur} color={color}>{mark} {t(L, `git.phase.${p}`)}</Text>
+          return i === 0 ? [step] : [<Text key={`git-ph-a-${p}`} dimColor>→</Text>, step]
+        })}
+      </Box>
+      {row('git-head-btns', git('git-fetch', t(L, 'git.fetch'), 'fetch'), run('git-reload', t(L, 'git.reload'), () => refreshGit($, true)))}
+      {lock && <Text key="git-busy" color={THEME.accent}>◌ {busy} …</Text>}
+    </Box>,
+  )
+
+  // Status: Lage in einer Zeile, Upstream, MR, Hauptaktion.
+  const st: [string, Tone] =
+    s.op !== ''
+      ? [s.conflicts.length > 0 ? t(L, 'git.st.op', { op: s.op, n: s.conflicts.length }) : t(L, 'git.st.opDone', { op: s.op }), s.conflicts.length > 0 ? 'error' : 'warning']
+      : s.detached
+        ? [t(L, 'git.st.detached'), 'warning']
+        : onMain(s) && dirty > 0
+          ? [t(L, 'git.st.onMain', { main: s.main }), 'warning']
+          : phase === 'cleanup'
+            ? [t(L, 'git.st.merged', { mr: own === null ? '' : mrRef(own) }), 'success']
+            : s.upstream !== '' && s.ahead > 0 && s.behind > 0
+              ? [t(L, 'git.st.diverged', { a: s.ahead, b: s.behind }), 'warning']
+              : s.upstream !== '' && s.behind > 0
+                ? [t(L, 'git.st.behind', { n: s.behind, up: s.upstream }), 'warning']
+                : phase === 'mr' && (me?.behind ?? 0) > 0
+                  ? [t(L, 'git.st.parentAhead', { parent, n: me?.behind ?? 0 }), 'warning']
+                  : dirty > 0
+                    ? [t(L, 'git.st.dirty', { n: dirty }), 'accent']
+                    : phase === 'mr'
+                      ? [t(L, 'git.st.ready', { n: me?.ahead || s.ahead }), 'success']
+                      : phase === 'merge'
+                        ? [t(L, 'git.st.mrOpen'), 'accent']
+                        : [t(L, 'git.st.clean'), 'success']
+  const newBranchRow = (key: string, label: string) =>
+    Input === undefined ? null : row(
+      key,
+      <Box key={`${key}-in`} flexGrow={1} flexShrink={1} minWidth={16}>
+        <Input key="git-newname" value={newName} placeholder={t(L, 'git.newPlaceholder')} onInput={(v: string) => void update($, gitNewBranch, () => v).catch(() => undefined)} onSubmit={submit(`${key}-go`, () => gitCreate($))} />
+      </Box>,
+      run(`${key}-go`, label, () => gitCreate($)),
+    )
+  const mainBtn: Record<GitAction, () => RenderChildren> = {
+    resolve: () => ai('git-m-resolve', t(L, 'git.ai.resolve'), resolvePrompt(s.op, s.conflicts, L)),
+    continue: () => git('git-m-continue', `${t(L, 'git.a.continue')} (${s.op})`, 'continue'),
+    branchOff: () => newBranchRow('git-m-branch', t(L, 'git.a.branchOff')),
+    cleanup: () => ask('git-m-cleanup', t(L, 'git.a.cleanup'), 'git.a.cleanupAsk', 'cleanup'),
+    pullRebase: () => git('git-m-pullRebase', t(L, 'git.a.pullRebase'), 'pullRebase'),
+    force: () => ask('git-m-force', `${t(L, 'git.a.force')}${noHooks('pre-push')}`, 'git.a.forceAsk', 'force'),
+    commitClaude: () => ai('git-m-commitClaude', t(L, 'git.ai.commit'), commitPrompt(L)),
+    pull: () => git('git-m-pull', t(L, 'git.a.pull'), 'pull'),
+    commit: () => git('git-m-commit', t(L, 'git.a.commit'), 'commit'),
+    syncParent: () => git('git-m-sync', t(L, 'git.a.syncParent'), 'syncParent'),
+    mrDraft: () => git('git-m-mr', t(L, 'git.a.mrDraft'), 'mrDraft'),
+    push: () => git('git-m-push', `${t(L, 'git.a.push')}${unpushed > 0 ? ` (${unpushed})` : ''}${noHooks('pre-push')}`, 'push'),
+    merge: () => {
+      // Gemergt wird über die Plattform wie in der MR-Karte: erster Klick fragt, läuft die Pipeline, „Mergen, wenn grün“.
+      if (own === null || !(canMergeNow(own) || (isPipelineRunning(own) && canAutoMerge(own)))) return null
+      const label = mrAsk === `merge-${own.iid}` ? t(L, 'mr.confirm') : t(L, canMergeNow(own) || !canAutoMerge(own) ? 'mr.merge' : 'mr.mergeAuto')
+      return git('git-m-merge', label, 'merge')
+    },
+  }
+  const mrValue: RenderChildren =
+    own !== null ? (
+      <Box flexDirection="row" columnGap={1} flexShrink={1}>
+        {chip(ui, 'pane', 'git-mr-chip', mrBadge(own).replace(/ · /g, ' '))}
+        {own.title !== '' && <Text color={THEME.textMuted} wrap="truncate-end">{own.title}</Text>}
+      </Box>
+    ) : onMain(s) ? (
+      t(L, 'git.mrMain', { main: s.main })
+    ) : (
+      t(L, 'git.mrNone', { n: me?.ahead ?? unpushed })
+    )
+  out.push(
+    section(
+      'git-s-status',
+      TINT[st[1]],
+      <Text key="git-st-h" bold>{t(L, 'git.c.status')}</Text>,
+      <Text key="git-st" color={THEME[st[1]]} wrap="truncate-end">{st[0]}</Text>,
+      labelRow(ui, 'pane', 'git-up', t(L, 'git.upstream'), s.upstream || t(L, 'git.noUpstream')),
+      labelRow(ui, 'pane', 'git-mr', t(L, 'git.mr'), mrValue),
+      primary === null ? null : primary === 'branchOff' ? mainBtn.branchOff() : row('git-main', mainBtn[primary]()),
+    ),
+  )
+
+  // Fehler des letzten Befehls mit Ausgabe (letzte 12 Zeilen) und Auftrag an Claude.
+  if (err !== null)
+    out.push(
+      section(
+        'git-s-err',
+        TINT.error,
+        <Text key="git-err-h" bold>{t(L, 'git.c.error')}</Text>,
+        <Text key="git-err-cmd" dimColor wrap="truncate-end">$ {err.cmd}</Text>,
+        <Text key="git-err-out" color={THEME.error}>{err.out.split(/\r?\n/).slice(-12).join('\n')}</Text>,
+        row(
+          'git-err-btns',
+          ai('git-err-ai', t(L, 'git.ai.error'), errorPrompt(err.cmd, err.out, L)),
+          run('git-err-copy', t(L, 'git.copy'), () => $.ui.copy({ text: err.out }).then(() => $.ui.toast(t(L, 'git.copied')))),
+          run('git-err-dismiss', t(L, 'git.dismiss'), () => update($, gitError, () => null)),
+        ),
+      ),
+    )
+
+  // Laufende Operation mit Konflikten.
+  if (s.op !== '')
+    out.push(
+      section(
+        'git-s-conf',
+        TINT.error,
+        <Text key="git-conf-h" bold>{t(L, 'git.c.conflicts')}</Text>,
+        ...s.conflicts.map(f => (
+          <Box key={`git-conf-${f}`} flexDirection="row" columnGap={1}>
+            <Text color={THEME.error}>UU</Text>
+            <Text wrap="truncate-end">{f}</Text>
+          </Box>
+        )),
+        row(
+          'git-conf-btns',
+          s.conflicts.length > 0 && ai('git-conf-ai', t(L, 'git.ai.resolve'), resolvePrompt(s.op, s.conflicts, L)),
+          git('git-conf-continue', t(L, 'git.a.continue'), 'continue'),
+          ask('git-conf-abort', t(L, 'git.a.abort'), 'git.a.abortAsk', 'abort'),
+        ),
+      ),
+    )
+
+  // Merge Request des Branches (Beschreibung, Threads, Aktionen, Entwurf), eigene offene MRs und Reviews.
+  if ((await read($, settings)).mrPane && (mock !== null || (await read($, mrHost)) !== ''))
+    out.push(...(await mrPaneBody($, ui, L, mock === null ? null : { mr: mock.mr, mrMine: mock.mrMine, mrDetails: mock.mrDetails }, now, marg)))
+
+  // Aufräumen nach dem Merge: die Schritte, die der Hauptknopf ausführt.
+  if (phase === 'cleanup') {
+    const plan = cleanupPlan(s, { parent, mrMerged: own?.state === 'merged', parentElsewhere: s.elsewhere.includes(parent) })
+    out.push(
+      section(
+        'git-s-clean',
+        TINT.success,
+        <Text key="git-clean-h" bold>{t(L, 'git.c.cleanup')}</Text>,
+        ...plan.map((p, i) => (
+          <Box key={`git-clean-${i}`} flexDirection="row" columnGap={1}>
+            <Text color={THEME.success}>○</Text>
+            <Text wrap="truncate-end" dimColor={p.optional}>git {p.argv.join(' ')}</Text>
+          </Box>
+        )),
+        <Text key="git-clean-note" dimColor>{t(L, 'git.cleanupNote')}</Text>,
+        row('git-clean-btns', ai('git-clean-ai', t(L, 'git.ai.cleanup'), cleanupPrompt(s.branch, parent, own === null ? s.branch : mrRef(own), L))),
+      ),
+    )
+  }
+
+  // Änderungen: je Datei stagen/entstagen, dazu Sammelknöpfe.
+  if (dirty > 0 || s.stashes > 0) {
+    const fileRow = (prefix: string, key: string, code: string, path: string, label: string, a: Act) => (
+      <Box key={`${prefix}-${key}`} flexDirection="row" columnGap={1}>
+        <Box width={2} flexShrink={0}><Text color={code === 'D' ? THEME.error : code === 'A' || code === '?' ? THEME.success : THEME.warning}>{code}</Text></Box>
+        <Box flexGrow={1} flexShrink={1}><Text wrap="truncate-start">{path}</Text></Box>
+        {git(`${prefix}-b-${key}`, label, a, path)}
+      </Box>
+    )
+    const group = (head: string, items: RenderElement[], total: number, key: string) =>
+      total === 0 ? [] : [<Text key={`${key}-h`} dimColor>{head}</Text>, ...items, ...(total > items.length ? [<Text key={`${key}-more`} dimColor>{t(L, 'git.more', { n: total - items.length })}</Text>] : [])]
+    out.push(
+      section(
+        'git-s-changes',
+        cycleTint(0),
+        <Text key="git-ch-h" bold>{t(L, 'git.c.changes')}</Text>,
+        ...group(t(L, 'git.staged', { n: s.staged.length }), s.staged.slice(0, GIT_FILES_MAX).map((f, i) => fileRow('git-st', String(i), f.code, f.path, '−', 'unstage')), s.staged.length, 'git-st'),
+        ...group(t(L, 'git.changed', { n: s.changed.length }), s.changed.slice(0, GIT_FILES_MAX).map((f, i) => fileRow('git-wt', String(i), f.code, f.path, '+', 'stage')), s.changed.length, 'git-wt'),
+        ...group(t(L, 'git.untracked', { n: s.untracked.length }), s.untracked.slice(0, GIT_FILES_MAX).map((p, i) => fileRow('git-un', String(i), '?', p, '+', 'stage')), s.untracked.length, 'git-un'),
+        row(
+          'git-ch-btns',
+          s.changed.length + s.untracked.length > 0 && git('git-stageAll', t(L, 'git.stageAll'), 'stageAll'),
+          s.staged.length > 0 && git('git-unstageAll', t(L, 'git.unstageAll'), 'unstageAll'),
+          dirty > 0 && git('git-stash', t(L, 'git.stash'), 'stash'),
+          s.stashes > 0 && git('git-stashPop', t(L, 'git.stashPop', { n: s.stashes }), 'stashPop'),
+          s.changed.length > 0 && ask('git-discard', t(L, 'git.discard'), 'git.discardAsk', 'discard'),
+          s.staged.length > 0 && ai('git-ai-review', t(L, 'git.ai.review'), reviewPrompt(L)),
+        ),
+      ),
+    )
+  }
+
+  // Commit: Nachricht (Vorschlag von Haiku oder getippt), Amend, Aufträge an Claude. Auf main führt der Weg über einen Branch.
+  if (dirty > 0 && !onMain(s) && s.op === '')
+    out.push(
+      section(
+        'git-s-commit',
+        cycleTint(1),
+        <Text key="git-c-h" bold>{t(L, 'git.c.commit')}</Text>,
+        Input === undefined ? (
+          <Text key="git-msg-text" color={THEME.violet} wrap="truncate-end">{msg || '–'}</Text>
+        ) : (
+        <Input
+          key="git-msg"
+          value={msg}
+          placeholder={t(L, 'git.msgPlaceholder')}
+          onInput={(v: string) => void update($, gitMsg, () => v).then(() => update($, gitMsgFor, () => 'typed')).catch(() => undefined)}
+          onSubmit={submit('git-c-commit', () => gitCommit($))}
+        />
+        ),
+        <Text key="git-c-note" dimColor>{msgFor === 'busy' ? t(L, 'git.suggesting') : t(L, 'git.suggestNote')}</Text>,
+        row(
+          'git-c-btns',
+          git('git-c-commit', `${t(L, amend ? 'git.a.amend' : 'git.a.commit')}${noHooks('pre-commit') || noHooks('commit-msg')}`, 'commit'),
+          run('git-c-amend', `${amend ? '☑' : '☐'} ${t(L, 'git.a.amend')}`, () => update($, gitAmend, v => !v)),
+          s.staged.length > 0 && run('git-c-suggest', t(L, 'git.suggest'), () => suggestCommit($, s, true)),
+          ai('git-c-ai', t(L, 'git.ai.commit'), commitPrompt(L)),
+          ai('git-c-split', t(L, 'git.ai.split'), splitPrompt(L)),
+        ),
+      ),
+    )
+
+  // Eingehende Commits vom Upstream.
+  if (s.incoming.length > 0)
+    out.push(
+      section(
+        'git-s-in',
+        cycleTint(2),
+        <Text key="git-in-h" bold>{t(L, 'git.c.incoming', { n: s.behind })}</Text>,
+        ...s.incoming.map(c => (
+          <Box key={`git-in-${c.sha}`} flexDirection="row" columnGap={1}>
+            <Text color={THEME.accent}>{c.sha}</Text>
+            <Box flexGrow={1} flexShrink={1}><Text wrap="truncate-end">{c.subject}</Text></Box>
+            <Text dimColor>{c.author} · {ageText(now - c.at)}</Text>
+          </Box>
+        )),
+        row('git-in-btns', ai('git-in-ai', t(L, 'git.ai.incoming'), incomingPrompt(s.behind, s.upstream, L))),
+      ),
+    )
+
+  // Sync: Pull (wahlweise mit Rebase), Push, Force nur bei Divergenz; vor dem MR der Hinweis auf den Eltern-Branch.
+  if (phase !== 'cleanup' && !s.detached && s.op === '')
+    out.push(
+      section(
+        'git-s-sync',
+        cycleTint(3),
+        <Text key="git-sy-h" bold>{t(L, 'git.c.sync')}</Text>,
+        phase === 'mr' && (me?.behind ?? 0) > 0 ? <Text key="git-sy-hint" color={THEME.warning}>{t(L, 'git.syncHint', { parent, n: me?.behind ?? 0 })}</Text> : null,
+        row(
+          'git-sy-btns',
+          s.upstream !== '' && git('git-sy-pull', t(L, 'git.a.pull'), 'pull'),
+          s.upstream !== '' && run('git-sy-rebase', `${rebase ? '☑' : '☐'} ${t(L, 'git.rebase')}`, () => update($, gitRebase, v => !v)),
+          (unpushed > 0 || s.upstream === '') && git('git-sy-push', `${t(L, 'git.a.push')}${unpushed > 0 ? ` (${unpushed})` : ''}${noHooks('pre-push')}`, 'push'),
+          s.ahead > 0 && s.behind > 0 && primary !== 'force' && ask('git-sy-force', `${t(L, 'git.a.force')}${noHooks('pre-push')}`, 'git.a.forceAsk', 'force'),
+          phase === 'mr' && own === null && ai('git-sy-ai', t(L, 'git.ai.mr'), mrPrompt(s.branch, parent, L)),
+        ),
+      ),
+    )
+
+  // Branches als Baum: nur Abhängigkeiten, keine Commits. Klick auf einen Namen klappt darunter seine Optionen auf.
+  const rows = treeRows(s.branches, s.main)
+  const free = s.op === '' && !s.detached
+  const options = (b: GitBranch, indent: number): RenderElement => {
+    const cur = b.name === s.branch
+    const away = s.elsewhere.includes(b.name)
+    return (
+      <Box key={`git-bo-${b.name}`} marginLeft={indent}>
+        {row(
+          `git-bo-row-${b.name}`,
+          !cur && !away && git('git-o-switch', t(L, 'git.o.switch'), 'switch', b.name),
+          !cur && free && git('git-o-rebase', t(L, 'git.o.rebase', { b: b.name }), 'rebaseOnto', b.name),
+          !cur && free && git('git-o-merge', t(L, 'git.o.merge', { b: b.name, cur: s.branch }), 'mergeIn', b.name),
+          b.upstream === '' && !b.merged && git('git-o-push', t(L, 'git.o.push'), 'pushBranch', b.name),
+          s.town && free && !cur && b.name !== me?.parent && git('git-o-parent', t(L, 'git.o.parent', { cur: s.branch }), 'setParent', b.name),
+          !cur && !away && !isProtected(b.name, s.main) && ask('git-o-delete', t(L, 'git.o.delete'), 'git.o.deleteAsk', 'deleteBranch', b.name, { b: b.name }),
+          ai('git-o-ai', t(L, 'git.ai.compare'), t(L, 'git.p.compare', { b: b.name, base: b.parent ?? s.main, cur: s.branch })),
+          run('git-o-close', '✕', () => update($, gitSel, () => '')),
+        )}
+      </Box>
+    )
+  }
+  const mergedN = s.branches.filter(b => b.merged && b.name !== s.branch && !isProtected(b.name, s.main) && !s.elsewhere.includes(b.name)).length
+  out.push(
+    section(
+      'git-s-br',
+      cycleTint(4),
+      <Text key="git-br-h" bold>{t(L, 'git.c.branches', { n: s.branches.length })}</Text>,
+      ...rows.flatMap(({ b, prefix }) => {
+        const cur = b.name === s.branch
+        const away = s.elsewhere.includes(b.name)
+        const open = sel === b.name
+        const line = (
+          <Box key={`git-br-${b.name}`} flexDirection="row" columnGap={1} {...(open ? { backgroundColor: TINT.accent } : {})}>
+            {prefix !== '' && <Text color={THEME.border}>{prefix}</Text>}
+            <Text color={cur ? THEME.accent : b.merged ? THEME.textMuted : THEME.textSecondary}>{open ? '▾' : cur ? '●' : b.merged ? '○' : '•'}</Text>
+            <Button key={`git-sel-${b.name}`} plain label={b.name} hover={{ color: THEME.accent }} onPress={() => void update($, gitSel, v => (v === b.name ? '' : b.name)).catch(() => undefined)} />
+            {away && <Text dimColor>(worktree)</Text>}
+            {b.parent !== null && !b.merged && (b.ahead > 0 || b.behind > 0) && chip(ui, 'pane', '', `↑${b.ahead} ↓${b.behind}`, b.behind > 2 ? THEME.warning : undefined)}
+            {b.merged && chip(ui, 'pane', '', t(L, 'git.tag.merged'), THEME.success)}
+            {!b.merged && b.upstream === '' && b.name !== s.main && chip(ui, 'pane', '', t(L, 'git.tag.noUp'), THEME.warning)}
+            {cur && chip(ui, 'pane', '', 'HEAD', THEME.accent)}
+          </Box>
+        )
+        return open ? [line, options(b, prefix.length + 2)] : [line]
+      }),
+      s.branches.length > rows.length ? <Text key="git-br-more" dimColor>{t(L, 'git.more', { n: s.branches.length - rows.length })}</Text> : null,
+      <Text key="git-br-note" dimColor>{t(L, 'git.treeNote')}</Text>,
+      primary === 'branchOff' ? null : newBranchRow('git-br-new', t(L, 'git.create')),
+      row(
+        'git-br-btns',
+        mergedN > 0 && ask('git-br-del', t(L, 'git.deleteMerged', { n: mergedN }), 'git.deleteAsk', 'deleteMerged', '', { n: mergedN }),
+        ai('git-br-ai', t(L, 'git.ai.tidy'), tidyPrompt(L)),
+      ),
+    ),
+  )
+
+  // Verlauf: letzte Commits, noch nicht gepushte mit ↑; „Letzten Commit zurück“ nur für einen ungepushten.
+  if (s.history.length > 0)
+    out.push(
+      section(
+        'git-s-log',
+        cycleTint(5),
+        <Text key="git-log-h" bold>{t(L, 'git.c.history')}</Text>,
+        ...s.history.map((c, i) => (
+          <Box key={`git-log-${c.sha}`} flexDirection="row" columnGap={1}>
+            <Text color={i < unpushed ? THEME.success : THEME.accent}>{i < unpushed ? '↑' : ' '} {c.sha}</Text>
+            <Box flexGrow={1} flexShrink={1}><Text wrap="truncate-end">{c.subject}</Text></Box>
+            <Text dimColor>{ageText(now - c.at)}</Text>
+          </Box>
+        )),
+        s.localOnly > 0 && s.op === '' ? row('git-log-btns', ask('git-log-undo', t(L, 'git.undo'), 'git.undoAsk', 'undo')) : null,
+      ),
+    )
+  return out
+}
+
 async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr; mrMine: MrMine[]; mrDetails: Record<string, Mr> } | null, now: number, marg: number): Promise<RenderElement[]> {
   const { Box, Text, Button, Markdown } = ui
   // Links im externen Standard-Browser, nicht im Browser der App.
@@ -1676,7 +2589,7 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
               btn('mr-a-merge', mergeLabel, () => mergeMr($))
             ))}
           {(canMergeNow(m) || (isPipelineRunning(m) && canAutoMerge(m))) &&
-            pill(ui, 'pane', 'mr-a-squash', t(L, squashed.includes(`merge-${m.iid}`) ? 'mr.squashOn' : 'mr.squashOff'), () => { if (!lock) void toggleSquash($, m.iid).catch(() => undefined) }, lock ? 'locked' : false)}
+            pill(ui, 'pane', 'mr-a-squash', t(L, squashed.includes(`merge-${m.iid}`) ? 'mr.squashOn' : 'mr.squashOff'), () => { if (!lock) void toggleSquash($, m.iid).catch(() => undefined) }, lock ? 'locked' : false, false, 'low')}
           {m.pipeline !== null && m.pipeline.status === 'failed' && m.pipeline.id > 0 && btn('mr-a-retry', t(L, 'mr.retry'), () => retryPipeline($))}
           {refreshBtn}
         </Box>,
@@ -1753,13 +2666,29 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
                 btn(`mine-merge-${d.iid}`, asking ? t(L, 'mr.confirm') : t(L, canMergeNow(d) || !canAutoMerge(d) ? 'mr.merge' : 'mr.mergeAuto'), () => mergeMr($, x.ref))
               ))}
             {mergeable && d !== undefined &&
-              pill(ui, 'pane', `mine-squash-${d.iid}`, t(L, squashed.includes(`merge-${d.iid}`) ? 'mr.squashOn' : 'mr.squashOff'), () => { if (!lock) void toggleSquash($, d.iid).catch(() => undefined) }, lock ? 'locked' : false)}
+              pill(ui, 'pane', `mine-squash-${d.iid}`, t(L, squashed.includes(`merge-${d.iid}`) ? 'mr.squashOn' : 'mr.squashOff'), () => { if (!lock) void toggleSquash($, d.iid).catch(() => undefined) }, lock ? 'locked' : false, false, 'low')}
           </Box>
         )}
       </Box>
     )
   })
-  if (mine.length > 0) out.push(section(4, 'mr-s-mine', <Text key="mr-mine-h" bold>{t(L, 'mr.mine')}</Text>, ...mineRows))
+  // Ab zwei offenen MRs (Branch-MR und eigene ohne Doppelte) der AI-Knopf für den Sammelauftrag.
+  const openCount = openMrs(m, mine, details, mrRemote?.project ?? '').length
+  if (mine.length > 0) {
+    out.push(
+      section(
+        4,
+        'mr-s-mine',
+        <Text key="mr-mine-h" bold>{t(L, 'mr.mine')}</Text>,
+        ...mineRows,
+        openCount >= 2 && (
+          <Box key="mr-mine-all" flexDirection="row" marginTop={1}>
+            {btn('mr-a-mergeall', t(L, 'mr.mergeAll'), () => mergeAllToClaude($, mock))}
+          </Box>
+        ),
+      ),
+    )
+  }
   if (reviews.length > 0) out.push(section(5, 'mr-s-review', <Text key="mr-rev-h" bold>{t(L, 'mr.review')}</Text>, <Markdown onLinkPress={ext} key="mr-rev" text={list(reviews)} />))
   return out
 }
@@ -1779,6 +2708,17 @@ let blastWatched: string[] = []
 let blastRun: Promise<void> | null = null
 let blastLocked = false
 let lastRepaint = 0
+// Fehler-Eingang, Nutzungswächter und Zeitreise: Zustand im Speicher, beginnt mit jeder Session von vorn.
+let errSt = newErrors()
+let guardSt = newGuard()
+let tlSt = newTimeline()
+// Tokens, die die letzte Hauptantwort in den Cache geschrieben hat (für die Cache-Tipps).
+let lastCacheWrite = 0
+// Snapshots laufen nacheinander (ein gemeinsamer Index); `tlResult` ist die Antwort auf einen Knopf (Diff, Zurück).
+let tlChain: Promise<unknown> = Promise.resolve()
+let tlResult: { n: number; lines: string[]; ok: boolean } | null = null
+let tlUsable: { at: number; ok: boolean } | null = null
+let tlIndexReady = false
 
 // Eine Beobachtung stört die Session nie: jeder Eintrag läuft hierdurch und zählt die Version hoch (Cache der Auswertung).
 const observeInspect = (fn: () => void): void => {
@@ -1892,7 +2832,7 @@ async function blastCommand($: EngineInterface, args: string): Promise<string> {
     return blastReport(blastRes, blastWatched, L)
   }
   if (cmd.kind === 'auto') {
-    await $.ui.open({ ...panes(L).profiling, focus: true })
+    await openTab($, 'diag', 'blast')
     void refreshBlast($).catch(() => undefined)
     return ''
   }
@@ -1909,7 +2849,10 @@ async function blastCommand($: EngineInterface, args: string): Promise<string> {
   return blastReport(blastRes, blastWatched, L)
 }
 
-type DiagSection = { title: string; rows: readonly { label: string; value: string; pct?: number; tone?: 'ok' | 'warn' | 'bad' | 'dim' }[]; note?: string }
+type DiagSection = { title: string; rows: readonly { label: string; value: string; pct?: number; tone?: 'ok' | 'warn' | 'bad' | 'dim'; rate?: Rate }[]; note?: string }
+
+// Ampelfarben der vier Stufen; die Stufe steht zusätzlich als Wort in der Legende und in den Berichten (nicht nur als Farbe).
+const RATE_COLOR: Record<Rate, string> = { great: THEME.success, good: THEME.ratingGood, poor: THEME.warning, bad: THEME.error }
 
 // Zeilen eines Moduls im Profiling-Panel: Abschnittsüberschrift gedimmt, Zeilen als Bezeichnung und Wert (kurze Bezeichnungen
 // im Raster, lange – Dateipfade – gedimmt davor), Anteile als Textbalken, zwischen den Abschnitten eine Leerzeile.
@@ -1919,18 +2862,24 @@ function diagRows(ui: Ui, key: string, sections: readonly DiagSection[]): Render
   return sections.flatMap((sec, i) => [
     <Text key={`${key}-${i}-h`} bold color={THEME.textMuted}>{sec.title}</Text>,
     ...sec.rows.map((r, j) => {
+      // Hinweise umbrechen statt abschneiden (Wunsch Ralf, 2026-10-31); der Wert schrumpft, die Beschriftung bleibt stehen.
       const value = (
-        <Text key={`${key}-${i}-${j}-v`} wrap="truncate-end" color={r.tone === undefined ? undefined : TONE[r.tone]}>
-          {r.pct === undefined ? '' : `${bar(r.pct, 12)} `}
-          {r.value}
-        </Text>
+        <Box key={`${key}-${i}-${j}-v`} flexShrink={1}>
+          <Text wrap="wrap" color={r.tone === undefined ? undefined : TONE[r.tone]}>
+            {r.rate === undefined ? null : <Text color={RATE_COLOR[r.rate]}>{RATE_SYMBOL} </Text>}
+            {r.pct === undefined ? '' : `${bar(r.pct, 12)} `}
+            {r.value}
+          </Text>
+        </Box>
       )
+      // Ohne Beschriftung (Sätze der Bewertung) volle Breite; lange Beschriftung: eigene Zeile, der Wert darunter.
+      if (r.label === '') return <Box key={`${key}-${i}-${j}`} flexDirection="row">{value}</Box>
       return r.label.length <= 12 ? (
         labelRow(ui, 'pane', `${key}-${i}-${j}`, r.label, value)
       ) : (
-        <Box key={`${key}-${i}-${j}`} flexDirection="row" columnGap={1}>
-          <Text dimColor wrap="truncate-end">{r.label}</Text>
-          {value}
+        <Box key={`${key}-${i}-${j}`} flexDirection="column">
+          <Text dimColor wrap="wrap">{r.label}</Text>
+          <Box flexDirection="row" paddingLeft={2}>{value}</Box>
         </Box>
       )
     }),
@@ -1940,102 +2889,657 @@ function diagRows(ui: Ui, key: string, sections: readonly DiagSection[]): Render
 }
 
 // Profiling-Panel im Schema des Cockpit-Panels: Kopf mit Modellzeile, darunter je Modul eine Karte mit ▾/▸ (Atom `collapsed`).
-async function profilingPane($: EngineInterface, e: ResolveInput): Promise<RenderElement> {
+// ── Zeitreise: Snapshots als git-Tree-Objekte ──
+
+// Darf das Cockpit hier Snapshots anlegen? Nur in einem Git-Repo ohne riskante Konfiguration; die Antwort gilt eine Minute und
+// ist nur die schnelle Vorprüfung. Maßgeblich ist `tlSafeArgs` direkt vor jedem `add` und `restore`.
+async function tlGitOk($: EngineInterface): Promise<boolean> {
+  const now = await $.clock.now()
+  if (tlUsable !== null && now - tlUsable.at < 60_000) return tlUsable.ok
+  const cwd = await $.session.root().catch(() => undefined)
+  const inside = (await gitRun($, ['rev-parse', '--is-inside-work-tree'], 15_000, true)).out.trim() === 'true'
+  const ok = inside && !(await isRiskyRepo($, cwd).catch(() => true))
+  tlUsable = { at: now, ok }
+  return ok
+}
+
+// Direkt vor `git add` bzw. `git restore` der Zeitreise, ohne Cache und im selben Ordner wie `gitRun`: Risiko-Prüfung der
+// Repo-Konfiguration und git-Optionen, die jeden Filter abschalten (`noFilterArgs`). Sonst könnte eine eben geänderte
+// `.git/config` samt `.gitattributes` oder `.git/info/attributes` über einen Clean- oder Smudge-Filter Befehle ohne Freigabe
+// starten (Security-Review 2026-10-28). null = nicht ausführen.
+async function tlSafeArgs($: EngineInterface): Promise<string[] | null> {
+  const cwd = gitTop !== '' ? gitTop : await $.session.root().catch(() => undefined)
+  if (await isRiskyRepo($, cwd).catch(() => true)) return null
+  const r = await gitRun($, ['config', '--name-only', '--get-regexp', '^filter\\.'])
+  if (r.code !== 0 && r.code !== 1) return null
+  return noFilterArgs(r.code === 0 ? r.out.split(/\r?\n/) : [])
+}
+
+// Stand des Arbeitsbaums (samt neuer Dateien, ohne Ignoriertes) als Tree-Hash; '' ohne Repo oder bei einem Fehler.
+// Eigener Index in `<git-dir>/cockpit-tm.index`: Index, Branch und Arbeitsbaum des Nutzers bleiben unberührt.
+async function snapshotTree($: EngineInterface): Promise<string> {
+  if (!(await tlGitOk($))) return ''
+  const dir = (await gitRun($, ['rev-parse', '--path-format=absolute', '--git-dir'], 15_000, true)).out.trim()
+  if (dir === '') return ''
+  const env = { GIT_INDEX_FILE: `${dir}/cockpit-tm.index` }
+  if (!tlIndexReady) {
+    const head = await gitRun($, ['read-tree', 'HEAD'], 30_000, false, env)
+    if (head.code !== 0 && (await gitRun($, ['read-tree', '--empty'], 30_000, false, env)).code !== 0) return ''
+    tlIndexReady = true
+  }
+  const safe = await tlSafeArgs($)
+  if (safe === null) return ''
+  if ((await gitRun($, [...safe, 'add', '-A'], 60_000, false, env)).code !== 0) return ''
+  const tree = await gitRun($, ['write-tree'], 30_000, false, env)
+  const sha = tree.out.trim()
+  return tree.code === 0 && /^[0-9a-f]{40,64}$/.test(sha) ? sha : ''
+}
+
+// In die Warteschlange der Snapshots einreihen (ein Index, Reihenfolge = Reihenfolge der Aufrufe).
+function inTimeline<T>(fn: () => Promise<T>): Promise<T> {
+  const run = tlChain.then(fn, fn)
+  tlChain = run.catch(() => undefined)
+  return run
+}
+
+// Kann dieser Aufruf Dateien ändern? Datei-Werkzeuge ja, Shell nur, wenn sie nicht erkennbar nur liest.
+const mayChange = (tool: string, e: unknown): boolean => EDIT_TOOLS.has(tool) || (isShell(tool) && !isReadOnlyShell(shellCommand(e)))
+
+// Vor dem ersten ändernden Aufruf: der Stand davor (Schritt 0).
+async function tlBase($: EngineInterface): Promise<void> {
+  if (tlSt.base !== '' || !(await read($, settings)).timelineSnap) return
+  await inTimeline(async () => {
+    if (tlSt.base === '') tlSt.base = await snapshotTree($)
+  }).catch(() => undefined)
+}
+
+function tlSnap($: EngineInterface, step: TlStep): void {
+  void read($, settings)
+    .then(s => (s.timelineSnap ? inTimeline(() => snapshotTree($)) : ''))
+    .then(sha => {
+      if (sha !== '') {
+        step.snap = sha
+        $.ui.invalidate('ui.render')
+      }
+    })
+    .catch(() => undefined)
+}
+
+function tlShow($: EngineInterface, n: number, ok: boolean, lines: string[]): void {
+  tlResult = { n, ok, lines }
+  $.ui.invalidate('ui.render')
+}
+
+// „Diff“: was hat sich seit diesem Schritt geändert? (Snapshot von jetzt gegen den Snapshot des Schritts.)
+async function tlDiff($: EngineInterface, n: number): Promise<void> {
+  const L = (await read($, settings)).lang
+  const from = snapOf(tlSt, n)
+  const now = from === '' ? '' : await inTimeline(() => snapshotTree($))
+  if (from === '' || now === '') return tlShow($, n, false, [tlTx(L, 'tl.noRepo')])
+  const d = await gitRun($, ['diff', '--name-status', '-z', '--no-renames', from, now])
+  if (d.code !== 0) return tlShow($, n, false, [tlTx(L, 'tl.diffFail', { why: oneLine(d.err, 120) })])
+  const changes = parseNameStatus(d.out)
+  const lines = changes.slice(0, 40).map(c => `${c.status}  ${c.path}`)
+  if (changes.length > 40) lines.push(`… +${changes.length - 40}`)
+  tlShow($, n, true, changes.length === 0 ? [tlTx(L, 'tl.diffNone')] : lines)
+}
+
+// „Zurück“: Sicherung des jetzigen Standes, dann geänderte und gelöschte Dateien auf den Stand des Schritts setzen.
+// Seit damals neue Dateien bleiben liegen. Zweistufig (Rückfrage), Claude bekommt den Hinweis als Auftrag ins Eingabefeld.
+async function tlBack($: EngineInterface, n: number): Promise<void> {
+  if (!(await gitAsk($, `tl-back-${n}`))) return
+  const L = (await read($, settings)).lang
+  const target = snapOf(tlSt, n)
+  const safety = target === '' ? '' : await inTimeline(() => snapshotTree($))
+  if (target === '' || safety === '') return tlShow($, n, false, [tlTx(L, 'tl.noRepo')])
+  const d = await gitRun($, ['diff', '--name-status', '-z', '--no-renames', target, safety])
+  if (d.code !== 0) return tlShow($, n, false, [tlTx(L, 'tl.restoreFail', { why: oneLine(d.err, 120) })])
+  const plan = restorePlan(parseNameStatus(d.out))
+  if (plan.tooMany) return tlShow($, n, false, [tlTx(L, 'tl.tooMany', { max: MAX_RESTORE })])
+  const keep = plan.keep.length > 0 ? [tlTx(L, 'tl.restoredKeep', { k: plan.keep.length })] : []
+  if (plan.restore.length === 0) return tlShow($, n, true, [tlTx(L, 'tl.diffNone'), ...keep])
+  const guard = addStep(tlSt, { at: await $.clock.now(), tool: 'cockpit', target: tlTx(L, 'tl.safety'), ok: true })
+  guard.snap = safety
+  const safe = await tlSafeArgs($)
+  if (safe === null) return tlShow($, n, false, [tlTx(L, 'tl.noRepo')])
+  const r = await gitRun($, [...safe, 'restore', `--source=${target}`, '--worktree', '--', ...plan.restore])
+  if (r.code !== 0) return tlShow($, n, false, [tlTx(L, 'tl.restoreFail', { why: oneLine(r.err, 160) })])
+  tlSnap($, addStep(tlSt, { at: await $.clock.now(), tool: 'cockpit', target: `← #${n}`, ok: true }))
+  tlShow($, n, true, [tlTx(L, 'tl.restored', { n, k: plan.restore.length, s: guard.n }), ...keep])
+  await $.prompt.fill({ text: tlTx(L, 'tl.fill', { n, files: plan.restore.slice(0, 5).join(', ') + (plan.restore.length > 5 ? ', …' : '') }) })
+}
+
+// ── Nutzungswächter ──
+
+// Neue Meldung: Hinweis und Eintrag im Log (nur wenn der Wächter eingeschaltet ist).
+async function guardNotify($: EngineInterface, alerts: readonly GuardAlert[]): Promise<void> {
+  const s = await read($, settings)
+  if (alerts.length === 0 || !s.guardBand) return
+  for (const a of alerts) {
+    $.ui.toast(guardTx(s.lang, 'guard.toast', { text: alertText(a, s.lang) }))
+    await note($, 'main', `${alertText(a, s.lang)} – ${alertAdvice(a, s.lang)}`)
+  }
+}
+
+// ── Cache- und Kontext-Tipps ──
+
+function tipsNow(u: Usage | null, lastAt: number | null, now: number): Tip[] {
+  if (u === null) return []
+  return tipsOf({
+    now,
+    isSubscription: u.limits.length > 0,
+    lastAt,
+    ...(u.contextTokens === undefined ? {} : { contextTokens: u.contextTokens }),
+    ...(u.contextPercent === undefined ? {} : { contextPercent: u.contextPercent }),
+    lastWrite: lastCacheWrite,
+    limits: u.limits,
+  })
+}
+
+// Karten der Diagnose (früher alle untereinander im Panel „Profiling“): jetzt je Reiter nur die passenden. Der
+// Kontext-Inspektor steht im Reiter Verbrauch, Tipps und Wächter unter Diagnose → Hinweise, Profil und Blast-Radius je
+// als eigener Unterreiter; die Zeitreise ist Teil des Protokolls.
+type DiagId = 'inspect' | 'profile' | 'blast' | 'tips' | 'guard'
+async function diagCards($: EngineInterface, ui: Ui, ids: readonly DiagId[]): Promise<RenderElement[]> {
   const s = await read($, settings)
   const L = s.lang
   const marg = s.paneMargins ? 1 : 0
-  const ui = elementsOf($, e)
   const { Box, Text } = ui
   const now = await $.clock.now()
   await read($, tick)
   const folded = await read($, collapsed)
-  const cards = [
+  const tips = tipsNow(await read($, usage), await read($, lastTurnAt), now)
+  const all: { id: DiagId; title: string; sections: () => readonly DiagSection[]; action: RenderElement | null }[] = [
     {
       id: 'inspect',
       title: t(L, 'diag.cardInspect'),
       sections: () => inspectView(inspectSum(), L),
-      action: pill(ui, 'pane', 'diag-agents', t(L, inspectAll ? 'diag.mainOnly' : 'diag.withAgents'), () => {
+      action: link(ui, 'diag-agents', t(L, inspectAll ? 'diag.mainOnly' : 'diag.withAgents'), () => {
         inspectAll = !inspectAll
         $.ui.invalidate('ui.render')
-      }),
+      }, { tone: 'muted' }),
     },
     { id: 'profile', title: t(L, 'diag.cardProfile'), sections: () => profileView(profileSum(now), now, L), action: null },
     {
       id: 'blast',
       title: t(L, 'diag.cardBlast'),
       sections: () => blastView(blastRes, blastWatched, L),
-      action: pill(ui, 'pane', 'diag-refresh', t(L, 'diag.refresh'), () => void refreshBlast($, true).catch(() => undefined), blastRun !== null),
+      action: link(ui, 'diag-refresh', t(L, 'diag.refresh'), () => void refreshBlast($, true).catch(() => undefined), { busy: blastRun !== null }),
     },
+    { id: 'tips', title: tipTx(L, 'tip.cardTitle'), sections: () => tipView(tips, L), action: null },
+    { id: 'guard', title: guardTx(L, 'guard.cardTitle'), sections: () => guardView(guardSt, now, L), action: null },
   ]
-  const tiles = cards.map((c, i) => {
-    const key = `diag-${c.id}`
-    const open = !folded.includes(key)
-    let rows: RenderElement[]
-    try {
-      rows = diagRows(ui, key, c.sections())
-    } catch (error) {
-      rows = [<Text key={`${key}-fail`} color={THEME.error} wrap="wrap">{t(L, 'diag.failed', { why: String(error) })}</Text>]
-    }
-    return tile(
-      ui,
-      'pane',
-      {
-        key: `card-${key}`,
-        tint: cycleTint(i + 1),
-        marg,
-        grow: true,
-        open,
-        head: (
-          <Box flexDirection="row" justifyContent="space-between">
-            <Text bold>{c.title}</Text>
-            <Box flexDirection="row" columnGap={1}>
-              {open && c.action}
-              {pill(ui, 'pane', `card-fold-${key}`, open ? '▾' : '▸', () => void toggleCard($, key).catch(() => undefined))}
+  return all
+    .filter(c => ids.includes(c.id))
+    .map((c, i) => {
+      const key = `diag-${c.id}`
+      const open = !folded.includes(key)
+      let rows: RenderElement[]
+      try {
+        rows = diagRows(ui, key, c.sections())
+      } catch (error) {
+        rows = [<Text key={`${key}-fail`} color={THEME.error} wrap="wrap">{t(L, 'diag.failed', { why: String(error) })}</Text>]
+      }
+      return tile(
+        ui,
+        'pane',
+        {
+          key: `card-${key}`,
+          tint: cycleTint(i + 1),
+          marg,
+          grow: true,
+          open,
+          head: (
+            <Box flexDirection="row" justifyContent="space-between">
+              <Text bold>{c.title}</Text>
+              <Box flexDirection="row" columnGap={2}>
+                {open && c.action}
+                {pill(ui, 'pane', `card-fold-${key}`, open ? '▾' : '▸', () => void toggleCard($, key).catch(() => undefined))}
+              </Box>
             </Box>
-          </Box>
-        ),
-      },
-      ...(c.id === 'blast' && blastLocked ? [<Text key="diag-locked" color={THEME.warning} wrap="wrap">{t(L, 'diag.blastLocked')}</Text>] : []),
-      ...rows,
-    )
-  })
+          ),
+        },
+        ...(c.id === 'blast' && blastLocked ? [<Text key="diag-locked" color={THEME.warning} wrap="wrap">{t(L, 'diag.blastLocked')}</Text>] : []),
+        ...rows,
+      )
+    })
+}
+
+// Legende der Ampelpunkte (Diagnose).
+function diagLegend(ui: Ui, L: UiLang, marg: number): RenderElement {
+  const { Box, Text } = ui
   return (
-    <Box flexDirection="column">
-      {await paneHead($, ui, L)}
-      {...tiles}
+    <Box key="diag-legend" flexDirection="row" columnGap={1} flexWrap="wrap" paddingX={marg}>
+      <Text dimColor>{rt(L, 'rate.legend')}:</Text>
+      {(['great', 'good', 'poor', 'bad'] as const).map(r => (
+        <Text key={`diag-legend-${r}`} color={RATE_COLOR[r]}>{RATE_SYMBOL} {rateLabel(L, r)}</Text>
+      ))}
     </Box>
   )
 }
 
-// Kurzinfos im Band: je ein Knopf, der das zugehörige Panel öffnet; leere Kurzinfos (noch keine Daten) fehlen.
-function diagChips($: EngineInterface, ui: Ui, s: ModSettings, percent: number | undefined, now: number): RenderElement | null {
+// Meldungen: Verzeichniswechsel, Schleifen-Warnung und die Kurzinfos der Diagnose mit ihrer Ampel. Das Band zeigt davon nur
+// gelbe und rote (die wichtigste, dahinter „+n Hinweise“), der Reiter Diagnose → Hinweise alle.
+// `detail`: Erklärung in Sätzen, nur unter Diagnose → Hinweise (das Band bleibt einzeilig).
+type Signal = { key: string; rate: Rate | undefined; text: string; actions: RenderElement[]; detail?: string[] }
+// `forBand`: die Schalter „… im Band“ gelten nur fürs Band; Diagnose → Hinweise zeigt jede Meldung.
+function signalsOf($: EngineInterface, ui: Ui, s: ModSettings, o: { percent: number | undefined; now: number; tips: readonly Tip[]; loop: LoopAlert | null; dir: { dir: string } | null; forBand: boolean }): Signal[] {
   const L = s.lang
-  const open = (p: { id: string; title: string }) => () => void $.ui.open({ ...p, focus: true }).catch(() => undefined)
-  const safe = (fn: () => string): string => {
+  const { now, percent, tips } = o
+  const safe = <T,>(fn: () => T, fallback: T): T => {
     try {
       return fn()
     } catch {
-      return ''
+      return fallback
     }
   }
-  const items = [
-    { key: 'diag-inspect', on: s.inspectBand, text: () => inspectBand(inspectSum(now, true), percent, L), pane: panes(L).profiling },
-    { key: 'diag-profile', on: s.profileBand, text: () => profileBand(profileSum(now, true), now, L), pane: panes(L).profiling },
-    { key: 'diag-blast', on: s.blastBand, text: () => blastBand(blastRes, L), pane: panes(L).profiling },
+  const out: Signal[] = []
+  if (o.dir !== null) out.push({ key: 'dir', rate: 'bad', text: t(L, 'dir.alert', { dir: o.dir.dir }), actions: [] })
+  const loop = o.loop
+  if (loop !== null) {
+    const loopText = t(L, loop.kind === 'error' ? 'loop.error' : 'loop.edit', { target: loop.target, n: loop.n })
+    out.push({
+      key: 'loop',
+      rate: 'poor',
+      text: loopText,
+      actions: [
+        link(ui, 'loop-fix', t(L, 'loop.action'), () => void $.prompt.fill({ text: t(L, 'loop.prompt', { what: loopText }) }).catch(() => undefined)),
+        link(ui, 'loop-ignore', t(L, 'loop.ignore'), () => void update($, loopIgnored, l => [...l, loopKey(loop)]).then(() => update($, loopAlert, () => null)).catch(() => undefined), { tone: 'muted' }),
+      ],
+    })
+  }
+  const diag: { key: string; on: boolean; text: () => string; rate: () => Rate | undefined; detail?: () => string[] }[] = [
+    { key: 'diag-errors', on: s.errorsBand, text: () => errBand(errSt, now, L), rate: () => errRate(errSt, now) },
+    { key: 'diag-guard', on: s.guardBand, text: () => guardBand(guardSt, now, L), rate: () => guardRate(guardSt, now) },
+    { key: 'diag-tips', on: s.tipsBand, text: () => tipBand(tips, L), rate: () => tipRate(tips) },
+    { key: 'diag-inspect', on: s.inspectBand, text: () => inspectBand(inspectSum(now, true), percent, L), rate: () => inspectRate(inspectSum(now, true), percent) },
+    { key: 'diag-profile', on: s.profileBand, text: () => profileBand(profileSum(now, true), now, L), rate: () => profileRate(profileSum(now, true)) },
+    // Blast: die Sätze der Bewertung, außer den grünen, damit klar ist, was Gelb und Rot meinen.
+    { key: 'diag-blast', on: s.blastBand, text: () => blastBand(blastRes, L), rate: () => blastRate(blastRes), detail: () => blastAdvice(blastRes, L).filter(w => isAlarm(w.rate)).map(w => w.text) },
   ]
-  const chips = items.flatMap(i => {
-    const text = i.on ? safe(i.text) : ''
-    return text === '' ? [] : [pill(ui, 'band', i.key, text, open(i.pane), false, true)]
-  })
-  if (chips.length === 0) return null
+  for (const d of diag) {
+    const text = d.on || !o.forBand ? safe(d.text, '') : ''
+    const detail = o.forBand || d.detail === undefined ? [] : safe(d.detail, [])
+    if (text !== '') out.push({ key: d.key, rate: safe(d.rate, undefined), text, actions: [], ...(detail.length > 0 ? { detail } : {}) })
+  }
+  return out
+}
+
+const isAlarm = (r: Rate | undefined): r is 'poor' | 'bad' => r === 'poor' || r === 'bad'
+
+// Meldungszeile im Band: nur gelbe und rote Meldungen, rote zuerst; die wichtigste mit ihren Links, dahinter der Weg zu allen.
+function bandAlerts($: EngineInterface, ui: Ui, s: ModSettings, sig: readonly Signal[]): RenderElement | null {
+  const { Box, Text } = ui
+  const L = s.lang
+  const hot = sig.filter(x => isAlarm(x.rate)).sort((a, b) => (a.rate === b.rate ? 0 : a.rate === 'bad' ? -1 : 1))
+  const top = hot[0]
+  if (top === undefined) return null
+  const bad = top.rate === 'bad'
   return (
-    <ui.Box key="diag-row" flexDirection="row" flexWrap="wrap" columnGap={2} alignItems="center">
-      {chips}
-    </ui.Box>
+    <Box key="alerts" flexDirection="row" columnGap={2} alignItems="center" flexWrap="wrap">
+      <Box flexShrink={1}><Text key={`alert-${top.key}`} color={bad ? THEME.error : THEME.warning} bold={bad} wrap="truncate-end">{bad ? '✗' : '▲'} {top.text}</Text></Box>
+      {...top.actions}
+      {link(ui, 'alerts-more', hot.length > 1 ? t(L, 'band.moreHints', { n: hot.length - 1 }) : t(L, 'band.hints'), () => void openTab($, 'diag', 'hints').catch(() => undefined), { tone: 'muted' })}
+    </Box>
+  )
+}
+
+// Hinweise im Reiter Diagnose: jede Meldung mit Ampelpunkt, auch die grünen (die früheren Kurzinfos im Band).
+function signalsCard(ui: Ui, L: UiLang, marg: number, sig: readonly Signal[]): RenderElement {
+  const { Box, Text } = ui
+  return tile(
+    ui,
+    'pane',
+    { key: 'card-hints', tint: cycleTint(0), marg, grow: true, head: <Text bold>{t(L, 'hints.title')}</Text> },
+    sig.length === 0 && <Text key="hints-none" dimColor>{t(L, 'hints.none')}</Text>,
+    ...sig.map(x => (
+      <Box key={`hint-${x.key}`} flexDirection="column">
+        <Box flexDirection="row" columnGap={1} alignItems="center" flexWrap="wrap">
+          <Text color={x.rate === undefined ? THEME.textMuted : RATE_COLOR[x.rate]}>{RATE_SYMBOL}</Text>
+          <Box flexShrink={1}><Text wrap="wrap">{x.text}</Text></Box>
+          {...x.actions}
+        </Box>
+        {(x.detail ?? []).map((d, i) => (
+          <Box key={`hint-${x.key}-d${i}`} paddingLeft={2}><Text dimColor wrap="wrap">{d}</Text></Box>
+        ))}
+      </Box>
+    )),
+  )
+}
+
+// Tool-Freigaben (früher eigene Karte im Panel): Zähler, Kachelzeile der letzten Entscheidungen, Datei/Shell/Sonstige.
+function gateBlock(ui: Ui, L: UiLang, g: Gate, marg: number): RenderElement {
+  const { Box, Text } = ui
+  const tone = g.deny > 0 ? 'error' : g.ask > 0 ? 'warning' : 'success'
+  return (
+    <Box key="gate-block" flexDirection="column" backgroundColor={TINT[tone]} marginX={marg} paddingX={1} paddingY={1} marginBottom={1}>
+      <Box flexDirection="row" justifyContent="space-between">
+        <Text bold color={THEME[tone]}>{t(L, 'gate.title')}</Text>
+        <Text dimColor>{t(L, 'gate.checks', { n: g.allow + g.you + g.ask + g.deny })}</Text>
+      </Box>
+      <Text>{g.trail.length === 0 ? <Text dimColor>{t(L, 'gate.none')}</Text> : g.trail.map((d, i) => <Text key={`gt-${i}`} color={DECISION_COLOR[d]}>■</Text>)}</Text>
+      <Box flexDirection="row" flexWrap="wrap" columnGap={1}>
+        <Text><Text color={DECISION_COLOR.allow}>■</Text> {t(L, 'gate.allow', { n: g.allow })}</Text>
+        <Text><Text color={DECISION_COLOR.you}>■</Text> {t(L, 'gate.you', { n: g.you })}</Text>
+        <Text color={g.ask > 0 ? THEME.warning : undefined}><Text color={DECISION_COLOR.ask}>■</Text> {t(L, 'gate.ask', { n: g.ask })}</Text>
+        <Text color={g.deny > 0 ? THEME.error : undefined}><Text color={DECISION_COLOR.deny}>✗</Text> {t(L, 'gate.deny', { n: g.deny })}</Text>
+      </Box>
+      <Box flexDirection="row" flexWrap="wrap" columnGap={2}>
+        {([['file', t(L, 'gate.chipFile'), t(L, 'common.file'), g.file], ['shell', t(L, 'gate.chipShell'), t(L, 'common.shell'), g.shell], ['other', t(L, 'gate.chipOther'), t(L, 'gate.other'), g.other]] as const).map(([id, k, label, n]) => (
+          <Text key={`gk-${id}`}>
+            {chip(ui, 'pane', '', String(k))} <Text bold>{label} {n}</Text>
+          </Text>
+        ))}
+      </Box>
+    </Box>
+  )
+}
+
+// Protokoll (Diagnose → Protokoll): Log, Fehler-Eingang, Tool-Freigaben und Zeitreise in einer Liste, neueste zuerst.
+// Snapshot-Einträge tragen Diff und Zurück (zweistufig), Fehler ihre erste Fehlerzeile.
+async function protocolBody($: EngineInterface, ui: Ui, s: ModSettings, entries: readonly LogEntry[], g: Gate): Promise<RenderElement[]> {
+  const { Box, Text } = ui
+  const L = s.lang
+  const marg = s.paneMargins ? 1 : 0
+  const filter = await read($, logFilter)
+  const confirm = await read($, gitConfirm)
+  const base = tlSt.base !== ''
+  const counts = protocolCounts(entries, errSt.list, tlSt.steps, base)
+  const rows = protocolRows(entries, errSt.list, tlSt.steps, base, filter)
+  const items = (['all', 'errors', 'gate', 'snaps'] as const).map(id => ({ id, label: `${t(L, `log.filter.${id}`)} ${counts[id]}` }))
+  const out: RenderElement[] = [
+    <Box key="log-filter-row" paddingX={marg} marginBottom={1}>{tabs(ui, 'log-filter', items, filter, f => void update($, logFilter, () => f).catch(() => undefined))}</Box>,
+  ]
+  if (s.cardGate && (filter === 'all' || filter === 'gate')) out.push(gateBlock(ui, L, g, marg))
+  // Filter Fehler: die Bilanz des Fehler-Eingangs (gesamt, letzte 10 min, Aufrufe, häufigstes Tool) über der Liste.
+  if (filter === 'errors') out.push(<Box key="log-err-sum" flexDirection="column" paddingX={marg} marginBottom={1}>{...diagRows(ui, 'log-err', errView(errSt, await $.clock.now(), L).slice(0, 1))}</Box>)
+  if (tlResult !== null) {
+    const res = tlResult
+    out.push(
+      <Box key="tl-res" flexDirection="column" paddingX={marg} marginBottom={1}>
+        <Text bold color={THEME.textMuted}>{res.n === 0 ? tlTx(L, 'tl.title.result') : tlTx(L, 'tl.title.diff', { n: res.n })}</Text>
+        {res.lines.map((line, i) => <Text key={`tl-res-${i}`} wrap="truncate-end" color={res.ok ? undefined : THEME.warning}>{line}</Text>)}
+      </Box>,
+    )
+  }
+  if (rows.length === 0) out.push(<Text key="log-none" dimColor>{filter === 'snaps' ? tlTx(L, 'tl.none') : t(L, 'log.empty')}</Text>)
+  out.push(
+    ...rows.map((r, i) => (
+      <Box key={`pr-${i}`} flexDirection="column" paddingX={marg}>
+        <Box flexDirection="row" columnGap={1} alignItems="center">
+          <Box flexShrink={0}><Text dimColor>{r.at > 0 ? clockTime(new Date(r.at).toISOString()) : '  #0 '}</Text></Box>
+          <Box width={6} flexShrink={0}><Text bold color={SRC_COLOR[r.src]}>{r.src}</Text></Box>
+          <Box flexShrink={1}>
+            {r.tool !== undefined ? toolLabel(ui, r.tool, r.target ?? '', r.isError, r.action ?? '') : r.snap === 0 ? <Text>{tlTx(L, 'tl.start')}</Text> : <Text bold={r.src === 'you'} dimColor={r.src !== 'you'} wrap="truncate-end">{r.text}</Text>}
+          </Box>
+          {r.times !== undefined && r.times > 1 && <Text color={THEME.error}>×{r.times}</Text>}
+          {r.snap !== undefined && (
+            <Box flexShrink={0} flexDirection="row" columnGap={2}>
+              {link(ui, `tl-diff-${r.snap}`, tlTx(L, 'tl.diff'), () => void tlDiff($, r.snap ?? 0).catch(() => undefined), { tone: 'muted' })}
+              {link(ui, `tl-back-${r.snap}`, confirm === `tl-back-${r.snap}` ? tlTx(L, 'tl.backAsk') : tlTx(L, 'tl.back'), () => void tlBack($, r.snap ?? 0).catch(() => undefined), { tone: confirm === `tl-back-${r.snap}` ? 'warn' : 'muted' })}
+            </Box>
+          )}
+        </Box>
+        {r.errText !== undefined && r.errText !== '' && <Text color={r.denied ? THEME.warning : THEME.error} wrap="truncate-end">{'       '}{r.agent ? '↳ ' : ''}{r.errText}</Text>}
+      </Box>
+    )),
+  )
+  if (filter === 'all' || filter === 'snaps') out.push(<Text key="tl-note" dimColor wrap="wrap">{tlTx(L, 'tl.hint')}</Text>)
+  return out
+}
+
+// Host-Theme (`/config` → theme) lesen und die Cockpit-Palette danach hell oder dunkel setzen; true, wenn sie wechselte.
+async function syncScheme($: EngineInterface, appearance: unknown): Promise<boolean> {
+  const row = (await $.config.list()).find(r => r.key === 'theme')
+  return applyScheme(wantsLight(appearance, row?.value))
+}
+
+// auto in der Desktop-App: deren eigenes Theme (das CLI-Theme gilt dort nicht). Läuft nach dem Start im Hintergrund,
+// damit der Registry-Aufruf den Session-Start nicht aufhält; zeichnet neu, wenn das Schema wechselt.
+// `surfaces()` ist beim Session-Start oft noch leer (die Desktop-App meldet sich erst danach, ungeprüft): der Start-Sync
+// verwirft sich dann still, und die Palette bliebe bis `/reload-plugins` beim CLI-Theme. Darum prüft auch das erste
+// Zeichnen auf dem Desktop (`desktopKnown`) und danach höchstens alle 15 s, so folgt das Cockpit auch einem Wechsel
+// von Windows oder Claude zur Laufzeit.
+let schemeCheckedAt = 0
+const SCHEME_EVERY_MS = 15_000
+
+async function syncDesktopScheme($: EngineInterface, appearance: unknown, desktopKnown = false): Promise<void> {
+  if (appearance === 'hell' || appearance === 'dunkel') return
+  if (!desktopKnown && !(await $.session.surfaces()).includes('desktop')) return
+  const home = (await $.env.get('USERPROFILE').catch(() => undefined)) ?? ''
+  const cfg = await $.fs.read(`${home}/AppData/Roaming/Claude/config.json`).catch(() => '')
+  const reg = await $.process
+    .run(['reg', 'query', String.raw`HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize`, '/v', 'AppsUseLightTheme'])
+    .then(r => r.stdout)
+    .catch(() => undefined)
+  const light = desktopModeLight(cfg, reg)
+  if (light !== undefined && applyScheme(light)) await update($, about, a => (a === null ? null : { ...a }))
+}
+
+// Reiter Rückblick → Session: Zusammenfassung (Knöpfe oben, darunter die Abschnitte als einfacher Text, kein Markdown).
+async function summaryBody($: EngineInterface, ui: Ui): Promise<RenderElement> {
+  const s = await read($, settings)
+  const realCu = await read($, catchUp)
+  // Dev-Mode: Mock-Zusammenfassung, damit die Optik ohne Haiku-Lauf sichtbar ist.
+  const cu = (await read($, devMock)) ? { ...realCu, summary: mockData(await $.clock.now()).summary } : realCu
+  const L = s.lang
+  const marg = s.paneMargins ? 1 : 0
+  const { Box, Text, Button } = ui
+
+  return (
+    <Box flexDirection="column" gap={1}>
+      <Box flexDirection="row" columnGap={2} alignItems="center">
+        {pill(ui, 'pane', 'cu-refresh', t(L, 'summary.refresh'), () => void runCatchUp($, false).catch(() => undefined))}
+        {pill(ui, 'pane', 'cu-rebuild', t(L, 'summary.rebuild'), () => void rebuildCatchUp($).catch(() => undefined))}
+        <Text dimColor>{cu.status !== '' ? cu.status : cu.updatedAt > 0 ? t(L, 'summary.updated', { time: clockTime(new Date(cu.updatedAt).toISOString()) }) : t(L, 'summary.none')}</Text>
+      </Box>
+      <Text dimColor>{t(L, 'summary.status', { auto: t(L, s.catchUp ? 'common.on' : 'common.off'), lang: t(L, L === 'de' ? 'common.langDe' : 'common.langEn') })}</Text>
+      {cu.summary === '' && <Text dimColor>{t(L, 'summary.empty')}</Text>}
+      {/* Je Überschrift eine Karte im Wechsel der Kartentöne; Aufzählungen mit hängendem Einzug, Absätze mit Luft dazwischen. */}
+      {summarySections(summaryLines(cu.summary)).map((sec, i) => (
+        <Box key={`cu-sec-${i}`} flexDirection="column" rowGap={1} backgroundColor={cycleTint(i)} marginX={marg} paddingX={2} paddingY={1}>
+          {sec.heading !== undefined && <Text bold color={THEME.accent}>{sec.heading}</Text>}
+          {sec.lines.map((l, j) =>
+            l.kind === 'bullet' ? (
+              <Box key={`cu-l-${i}-${j}`} flexDirection="row">
+                <Box width={2} flexShrink={0}>
+                  <Text color={THEME.accent}>•</Text>
+                </Box>
+                <Text wrap="wrap">{l.text}</Text>
+              </Box>
+            ) : (
+              <Text key={`cu-l-${i}-${j}`} wrap="wrap">{l.text}</Text>
+            ),
+          )}
+        </Box>
+      ))}
+    </Box>
+  )
+}
+
+// Reiter Rückblick → Verlauf: Aufgaben eines Tages in diesem Projekt, Blättern nach Tagen, Tages- und Wochenbericht.
+async function historyBody($: EngineInterface, ui: Ui, surface: RenderSurface): Promise<RenderElement> {
+  const s = await read($, settings)
+  const L = s.lang
+  const marg = s.paneMargins ? 1 : 0
+  const { Box, Text } = ui
+  const today = dayKey(await $.clock.now())
+  const picked = await read($, glanceDay)
+  // Nach einem Reload ist noch kein Tag geladen: heute nachladen, das Atom zeichnet dann neu.
+  if (picked === '') void loadHistory($, today).catch(() => undefined)
+  const day = picked || today
+  const cwd = await projectCwd($)
+  const list = (await read($, glanceList)).filter(r => r.cwd === cwd && (r.steps.length > 0 || r.tools > 0))
+  const go = (d: string) => () => void loadHistory($, d).catch(() => undefined)
+  const at = (ms: number) => clockTime(new Date(ms).toISOString())
+  const OUTCOME_COLOR = { done: THEME.success, needsYou: THEME.warning, stopped: THEME.textMuted } as const
+  const spent = list.reduce((a, r) => a + Math.max(0, r.endedAt - r.startedAt), 0)
+  const stepsDone = list.reduce((a, r) => a + r.steps.filter(x => x.done).length, 0)
+  return (
+    <Box flexDirection="column">
+      <Box key="hist-nav" flexDirection="row" columnGap={2} alignItems="center">
+        {pill(ui, 'pane', 'hist-prev', t(L, 'glance.prevDay'), go(shiftDay(day, -1)))}
+        {day !== today && pill(ui, 'pane', 'hist-today', t(L, 'glance.today'), go(today))}
+        {day < today && pill(ui, 'pane', 'hist-next', t(L, 'glance.nextDay'), go(shiftDay(day, 1)))}
+        <Text bold>{day === today ? `${t(L, 'glance.today')} · ${day}` : day}</Text>
+      </Box>
+      {!s.glanceHistory && <Text key="hist-off" color={THEME.warning} wrap="wrap">{t(L, 'glance.historyOff')}</Text>}
+      {tile(
+        ui,
+        'pane',
+        { key: 'hist-card', tint: CARD_TINT.cardPlan ?? TINT.neutral, marg },
+        list.length === 0 && <Text key="hist-none" dimColor>{t(L, 'glance.noJobs')}</Text>,
+        ...list.map(r => (
+          <Box key={`hist-${r.id}`} flexDirection="column" marginBottom={1}>
+            <Box flexDirection="row" columnGap={1}>
+              <Text dimColor>{at(r.startedAt)}</Text>
+              <Box width={10} flexShrink={0}><Text color={OUTCOME_COLOR[r.outcome]}>{t(L, `glance.outcome.${r.outcome}`)}</Text></Box>
+              {/* Kopiert den getippten Prompt (ältere Einträge ohne: den Titel) in die Zwischenablage. */}
+              {pill(ui, 'pane', `hist-copy-${r.id}`, '⧉', () => void $.ui.copy({ text: r.prompt ?? r.title, surface }).then(() => $.ui.toast(t(L, 'glance.promptCopied'))).catch(() => undefined))}
+              <Text bold wrap="truncate-end">{r.title}</Text>
+            </Box>
+            <Text dimColor wrap="truncate-end">
+              {'      '}
+              {[r.steps.length > 0 ? t(L, 'glance.stepsOf', { done: r.steps.filter(x => x.done).length, total: r.steps.length }) : '', duration(Math.max(0, r.endedAt - r.startedAt)), r.files.length > 0 ? t(L, 'glance.files', { list: r.files.slice(0, 6).join(', ') + (r.files.length > 6 ? ' …' : '') }) : '']
+                .filter(x => x !== '')
+                .join(' · ')}
+            </Text>
+            {r.outcome === 'needsYou' && r.question !== '' && <Text color={THEME.warning} wrap="truncate-end">{'      '}? {r.question}</Text>}
+          </Box>
+        )),
+        list.length > 0 && <Text key="hist-total" bold>{t(L, 'glance.total', { n: list.length, steps: stepsDone, d: duration(spent) })}</Text>,
+      )}
+      <Box key="hist-copy" flexDirection="row" columnGap={2} marginTop={1}>
+        {pill(ui, 'pane', 'hist-day-report', t(L, 'glance.dayReport'), () => void copyReport($, 'day', surface).catch(() => undefined))}
+        {pill(ui, 'pane', 'hist-week-report', t(L, 'glance.weekReport'), () => void copyReport($, 'week', surface).catch(() => undefined))}
+      </Box>
+    </Box>
+  )
+}
+
+// Reiter Einstellungen: jedes Detail von Band, Panel und Chat ein- oder ausblenden; gilt sofort und für alle Sessions.
+async function settingsBody($: EngineInterface, ui: Ui): Promise<RenderElement> {
+  const s = await read($, settings)
+  const L = s.lang
+  const marg = s.paneMargins ? 1 : 0
+  const { Box, Text, Button } = ui
+  const groups = [...new Set(SETTING_DEFS.map(d => d.group))]
+  // Karten wie im Hauptpanel: Leerzeile davor, Grund im Wechsel der Kartentöne; ▾/▸ im Kopf klappt zu (gleicher Speicher
+  // `collapsed` wie das Hauptpanel, Schlüssel mit Präfix `set:`).
+  const folded = await read($, collapsed)
+  const card = (i: number, id: string, head: RenderElement, ...children: RenderChildren[]) => {
+    const key = `set:${id}`
+    const fold = { id: `set-fold-${id}`, open: !folded.includes(key), onToggle: () => void toggleCard($, key).catch(() => undefined) }
+    return tile(ui, 'pane', { key: `set-card-${id}`, tint: cycleTint(i), marg, head, fold }, ...children)
+  }
+  const cardKeys = ['lang', 'tiles', 'breath', ...groups].map(id => `set:${id}`)
+  const keysOf = (group: SettingGroup): SettingKey[] => SETTING_DEFS.filter(d => d.group === group).map(d => d.key)
+  const setAll = (group: SettingGroup, value: boolean) =>
+    void setSettings($, Object.fromEntries(keysOf(group).map(k => [k, value])) as Partial<ModSettings>).catch(() => undefined)
+  // Segment-Paar: die gewählte Sprache als Hauptknopf, die andere gedimmt.
+  const langButton = (lang: UiLang, name: string) =>
+    L === lang ? (
+      <Button key={`lang-${lang}`} label={`● ${name}`} variant="primary" onPress={() => void setSettings($, { lang }).catch(() => undefined)} />
+    ) : (
+      <Button key={`lang-${lang}`} label={`○ ${name}`} dimColor onPress={() => void setSettings($, { lang }).catch(() => undefined)} />
+    )
+
+  return (
+    <Box flexDirection="column">
+      <Text dimColor>{t(L, 'settings.intro')}</Text>
+      <Box flexDirection="row" columnGap={2} marginTop={1} marginBottom={marg ? 0 : 1}>
+        {pill(ui, 'pane', 'set-fold-all', t(L, 'settings.foldAll'), () => void foldCards($, cardKeys, true).catch(() => undefined))}
+        {pill(ui, 'pane', 'set-unfold-all', t(L, 'settings.unfoldAll'), () => void foldCards($, cardKeys, false).catch(() => undefined))}
+      </Box>
+      {card(
+        0,
+        'lang',
+        <Text bold>{t(L, 'settings.langTitle')}</Text>,
+        <Text dimColor wrap="wrap">{t(L, 'settings.langHint')}</Text>,
+        // Je Sprache eine Zeile im selben Zwei-Spalten-Raster wie die Schalter darunter.
+        ...([['de', t(L, 'common.langDe')], ['en', t(L, 'common.langEn')]] as const).map(([lang, name]) => (
+          <Box key={`lang-row-${lang}`} flexDirection="row" columnGap={1} marginTop={1}>
+            <Box width={SWITCH_COLS} flexShrink={0}>
+              {langButton(lang, L === lang ? t(L, 'settings.on') : t(L, 'settings.off'))}
+            </Box>
+            <Text bold>{name}</Text>
+          </Box>
+        )),
+      )}
+      {card(
+        1,
+        'tiles',
+        <Text bold>{t(L, 'settings.agentTilesTitle')}</Text>,
+        <Text dimColor wrap="wrap">{t(L, 'settings.agentTilesHint')}</Text>,
+        <Box key="tiles-row" flexDirection="row" columnGap={1} marginTop={1} alignItems="center">
+          {pill(ui, 'pane', 'tiles-minus', ' − ', () => void setSettings($, { agentTiles: s.agentTiles - TILES.step }).catch(() => undefined))}
+          <Box width={4} justifyContent="center"><Text bold>{s.agentTiles}</Text></Box>
+          {pill(ui, 'pane', 'tiles-plus', ' + ', () => void setSettings($, { agentTiles: s.agentTiles + TILES.step }).catch(() => undefined))}
+        </Box>,
+      )}
+      {card(
+        1,
+        'breath',
+        <Text bold>{t(L, 'settings.breathTitle')}</Text>,
+        <Text dimColor wrap="wrap">{t(L, 'settings.breathHint')}</Text>,
+        ...BREATHS.map(b => (
+          <Box key={`breath-row-${b.key}`} flexDirection="row" columnGap={1} marginTop={1}>
+            <Box width={SWITCH_COLS} flexShrink={0}>
+              {s.breathKey === b.key ? (
+                <Button key={`breath-${b.key}`} label={`● ${t(L, 'settings.on')}`} variant="primary" onPress={() => undefined} />
+              ) : (
+                <Button key={`breath-${b.key}`} label={`○ ${t(L, 'settings.off')}`} dimColor onPress={() => void setSettings($, { breathKey: b.key }).catch(() => undefined)} />
+              )}
+            </Box>
+            <Text bold color={BREATH_COLOR[b.key]}>{t(L, `breath.name.${b.key}`)}</Text>
+          </Box>
+        )),
+      )}
+      {groups.map((group, i) => {
+        const keys = keysOf(group)
+        return card(
+          i + 2,
+          group,
+          <Box flexGrow={1} flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="center" columnGap={2}>
+            <Text bold>{t(L, `settings.group.${group}`)}</Text>
+            <Box flexDirection="row" flexWrap="wrap" columnGap={2} alignItems="center">
+              <Text dimColor>{t(L, 'settings.count', { n: keys.filter(k => s[k]).length, m: keys.length })}</Text>
+              {pill(ui, 'pane', `grp-on-${i}`, t(L, 'settings.allOn'), () => setAll(group, true))}
+              {pill(ui, 'pane', `grp-off-${i}`, t(L, 'settings.allOff'), () => setAll(group, false))}
+            </Box>
+          </Box>,
+          ...keys.map(k => {
+            const flip = () => void setSettings($, { [k]: !s[k] } as Partial<ModSettings>).catch(() => undefined)
+            // Der Desktop zeichnet keine Text-Kinder eines Buttons, nur das Label: der Schalterzustand steht deshalb im Label.
+            return (
+              // Zwei Spalten: Schalter in fester Breite links, Label und Hinweis bündig rechts daneben.
+              <Box key={`row-${k}`} flexDirection="row" columnGap={1} marginTop={1}>
+                <Box width={SWITCH_COLS} flexShrink={0}>
+                  {s[k] ? (
+                    <Button key={`set-${k}`} label={`● ${t(L, 'settings.on')}`} variant="primary" onPress={flip} />
+                  ) : (
+                    <Button key={`set-${k}`} label={`○ ${t(L, 'settings.off')}`} dimColor onPress={flip} />
+                  )}
+                </Box>
+                <Box flexDirection="column" flexShrink={1}>
+                  <Text bold wrap="truncate-end">{settingLabel(k, L)}</Text>
+                  <Text dimColor wrap="wrap">{settingHint(k, L)}</Text>
+                </Box>
+              </Box>
+            )
+          }),
+        )
+      })}
+      <Box flexDirection="row" paddingTop={1} columnGap={2}>
+        <Button key="set-reset" label={t(L, 'settings.reset')} onPress={() => void resetSettings($).catch(() => undefined)} />
+        {pill(ui, 'pane', 'set-reload', t(L, 'settings.reload'), () => void reloadSettings($).catch(() => undefined))}
+      </Box>
+    </Box>
   )
 }
 
 export const register: Register = (on, options) => {
+  sessionsOverride = options.sessionsFile
   // Checkliste: jeder Slash-Befehl wird ein Job (nur beobachten, Ausgabe unverändert). Als erster Hook registriert, damit er
   // auch die eigenen Befehle sieht, die ohne next antworten.
   on('command.run', async ($, e, next) => {
@@ -2047,7 +3551,17 @@ export const register: Register = (on, options) => {
     return out
   }).catch(($, e, next) => next(e))
 
+  // Themenwechsel zur Laufzeit: Palette neu setzen und die Anzeigen neu zeichnen lassen.
+  on('config.set', { key: 'theme' }, async ($, e, next) => {
+    const out = await next(e)
+    if (!('deny' in out && out.deny) && applyScheme(wantsLight(options.appearance, e.value))) await update($, about, a => (a === null ? null : { ...a }))
+    return out
+  }).catch(($, e, next) => next(e))
+
   on('session.start', async ($, e, next) => {
+    await syncScheme($, options.appearance).catch(() => false)
+    schemeCheckedAt = 0
+    void syncDesktopScheme($, options.appearance).catch(() => undefined)
     const info = await loadAbout($)
     await update($, about, () => info)
     // Diagnose: neue Session, neue Messung (der Zustand liegt in Modul-Variablen und überlebt keinen Reload).
@@ -2056,12 +3570,21 @@ export const register: Register = (on, options) => {
     inspectVer++
     profileVer++
     blastRes = null
+    errSt = newErrors()
+    guardSt = newGuard()
+    tlSt = newTimeline()
+    lastCacheWrite = 0
+    tlResult = null
+    tlUsable = null
+    tlIndexReady = false
+    tlChain = Promise.resolve()
     await loadSettings($, { steps: options.nextSteps !== false, chatInfo: options.chatInfo !== false })
     void $.store.get('collapsed').then(v => update($, collapsed, () => foldedOf(v))).catch(() => undefined)
     void loadCatchUp($).catch(() => undefined)
     await update($, logo, () => null)
     void Promise.all([$.session.model(), $.session.version()])
       .then(([model, v]) => update($, modelInfo, mi => ({ ...mi, model, cc: v.version })))
+      .then(() => refreshStyle($))
       .catch(() => undefined)
     void Promise.all([loadLogo($).then(l => update($, logo, () => l)), refreshRepo($), refreshLinked($), refreshDirs($)]).catch(() => undefined)
     // ponytail: Beschreibungen in der Sprache beim Session-Start; nach einem Sprachwechsel erst mit dem nächsten Start/Reload
@@ -2071,13 +3594,16 @@ export const register: Register = (on, options) => {
     await $.command.register({ name: 'cockpit-einstellungen', description: t(lang, 'common.cmdSettings') })
     await $.command.register({ name: 'cockpit-demo', description: t(lang, 'common.cmdDemo') })
     await $.command.register({ name: 'cockpit-dev', description: t(lang, 'common.cmdDev') })
-    await $.command.register({ name: 'cockpit-mr', description: t(lang, 'common.cmdMr') })
+    await $.command.register({ name: 'cockpit-git', description: t(lang, 'common.cmdGit') })
+    await $.command.register({ name: 'cockpit-sessions', description: t(lang, 'common.cmdSessions') })
     await $.command.register({ name: 'cockpit-features', description: t(lang, 'common.cmdFeatures') })
     await $.command.register({ name: 'cockpit-verlauf', description: t(lang, 'common.cmdHistory') })
     await $.command.register({ name: 'cockpit-profiling', description: t(lang, 'common.cmdProfiling') })
     await $.command.register({ name: 'cockpit-kontext', description: t(lang, 'common.cmdInspect') })
     await $.command.register({ name: 'cockpit-profil', description: t(lang, 'common.cmdProfile') })
     await $.command.register({ name: 'cockpit-blast', description: t(lang, 'common.cmdBlast') })
+    await $.command.register({ name: 'cockpit-fehler', description: t(lang, 'common.cmdErrors') })
+    await $.command.register({ name: 'cockpit-zeitreise', description: t(lang, 'common.cmdTimeline') })
     void refreshDirs($).then(() => loadBlast($)).catch(() => undefined)
     // Checkliste: mittlere Schrittdauer aus dem Verlauf, sobald der Session-Ordner bekannt ist.
     void refreshDirs($).then(() => projectCwd($)).then(async cwd => loadAvg($, cwd, await $.clock.now())).catch(() => undefined)
@@ -2086,6 +3612,8 @@ export const register: Register = (on, options) => {
     void $.clock.every(30_000, () => void Promise.all([update($, tick, n => n + 1), syncAgents($), watchCache($), refreshRepo($), refreshLinked($), refreshDirs($)]).catch(() => undefined))
     void $.clock.every(15_000, () => void refreshMr($).then(() => loadMineDetails($)).catch(() => undefined))
     void $.clock.every(10_000, () => void syncSettings($).catch(() => undefined))
+    // Sessions-Reiter: Status-Datei alle 5 s auf Änderung prüfen, solange der Reiter gewählt ist (stat statt lesen).
+    void $.clock.every(5_000, () => void (async () => { if ((await read($, paneTab)) === 'sessions') await refreshSessions($) })().catch(() => undefined))
     void refreshMr($, true).catch(() => undefined)
     // Jede Speicherung im Plugin-Ordner lädt das Mod in allen Sessions neu; ein Band, das dabei nichts zeichnete, hat keine
     // Atome abonniert und bliebe leer, bis ein neuer Prompt neu zeichnet.
@@ -2316,7 +3844,9 @@ export const register: Register = (on, options) => {
     )
   })
 
-  // Rückfrage: nur ein Kopfband über dem Dialog der Engine; Fragen, Optionen und Eingabe bleiben unberührt (`theirs`).
+  // Rückfrage: ein Kopfbalken über dem Dialog der Engine; Fragen, Optionen und Eingabe bleiben unberührt (`theirs`).
+  // Kopf: Zahl und Themen der Fragen, darunter Aufgabe und laufender Schritt aus der Checkliste; auf dem Desktop je Frage
+  // Auswahlart, Zahl der Optionen und die empfohlene Option. Das Terminal bekommt nur Kopf und Kontext (Zeilenbudget 12).
   on('ui.render', { component: 'AskUserQuestion' }, async ($, e, next) => {
     const theirs = await next(e)
     if (!drawsOn(e.surface)) return theirs
@@ -2324,12 +3854,26 @@ export const register: Register = (on, options) => {
     if (!s.skinAsk) return theirs
     const ui = elementsOf($, e)
     const { Box, Text } = ui
+    const L = s.lang
     const key = `om-ask-${shortHash(JSON.stringify(e.props.questions))}`
+    const ctx = askContext(s.glance ? await read($, glanceJob) : null, L)
+    const infos = 'Svg' in ui ? askInfos(e.props.questions).slice(0, 4) : []
     return (
       <Box key={key} flexDirection="column">
-        <Box flexDirection="row" columnGap={1} alignItems="center" borderStyle="round" borderColor={THEME.accent} paddingX={1}>
-          {skinMark(ui, await markerOf($), `${key}-m`, 'style.ask')}
-          <Text color={THEME.accent} bold wrap="truncate-end">{askSummary(e.props.questions, s.lang)}</Text>
+        <Box flexDirection="column" borderStyle="round" borderColor={THEME.accent} paddingX={1}>
+          <Box flexDirection="row" columnGap={1} alignItems="center">
+            {skinMark(ui, await markerOf($), `${key}-m`, 'style.ask')}
+            <Text color={THEME.accent} bold wrap="truncate-end">{askSummary(e.props.questions, L)}</Text>
+          </Box>
+          {ctx !== '' && <Text key={`${key}-ctx`} dimColor wrap="truncate-end">{ctx}</Text>}
+          {infos.map((q, i) => (
+            <Box key={`${key}-q${i}`} flexDirection="row" columnGap={1}>
+              <Text color={THEME.accent}>{i + 1}.</Text>
+              {q.head !== '' && <Text bold wrap="truncate-end">{q.head}</Text>}
+              <Text dimColor>{t(L, q.multi ? 'skin.askMulti' : 'skin.askSingle')}{q.options > 0 ? ` · ${t(L, 'skin.askOptions', { n: q.options })}` : ''}</Text>
+              {q.recommended !== '' && <Text color={THEME.success} wrap="truncate-end">{t(L, 'skin.askRec', { label: q.recommended })}</Text>}
+            </Box>
+          ))}
         </Box>
         {theirs}
       </Box>
@@ -2346,18 +3890,13 @@ export const register: Register = (on, options) => {
     const L = s.lang
     const P = panes(L)
     const modes = e.props.modes
-    // MR des Branches als kleiner Statusknopf (wie der PR-Knopf der Desktop-App); im Dev-Mode der Mock-MR.
-    const footMr = s.mrFooter ? ((await read($, devMock)) ? mockData(await $.clock.now()).mr : await read($, mrCur)) : null
-    // Fußzeilen-Muster aus effortless: mehrere sehr kurze Knöpfe, Leerzeichen als Innenrand, Hover-Hintergrund wie die
-    // Pillen der App. Lange Labels sprengen die schmale Fußzeile, dann landet der Rest hinter „…“ (so war es mit
-    // „Tenvan · Details“). Svg zeichnet die Fußzeile nicht; Text-Kinder eines Buttons lehnt die Engine ab.
-    const mrFoot = footMr !== null ? ` ${mrBadge(footMr).replace(/ · /g, ' ')} ` : null
+    // Einziger Einstieg ins Cockpit-Panel unter dem Prompt (Muster effortless: kurzes Label, Leerzeichen als Innenrand,
+    // Hover-Hintergrund wie die Pillen der App). Der MR-Status steht nur noch im Band (Link auf den Reiter Git).
     const pill = (scope: string) => ({ scope, backgroundColor: THEME.chip })
     return (
       <Box key="om-mode" flexDirection="row" gap={1} alignItems="center">
         {modes.length > 0 && s.skinMode && skinMark(ui, await markerOf($), 'om-mode-m', 'style.mode')}
         {modes.length > 0 && (s.skinMode ? <Text color={THEME.accent}>{modes.join(' & ')}</Text> : <Text dimColor>{modes.join(' & ')}</Text>)}
-        {mrFoot !== null && <Button key="mr-foot" plain label={mrFoot} hover={pill('om-mr')} onPress={() => void $.ui.open({ ...P.mr, focus: true })} />}
         <Button key="details" plain dimColor label=" Tenvan " hover={pill('om-details')} onPress={() => void $.ui.open({ ...P.main, focus: true })} />
       </Box>
     )
@@ -2421,13 +3960,13 @@ export const register: Register = (on, options) => {
 
   on('command.run', { command: 'cockpit-zusammenfassung' }, async $ => {
     const lang = await langOf($)
-    await $.ui.open({ ...panes(lang).summary, focus: true })
+    await openTab($, 'back', 'session')
     return { text: t(lang, 'common.openedSummary') }
   })
 
   on('command.run', { command: 'cockpit-einstellungen' }, async $ => {
     const lang = await langOf($)
-    await $.ui.open({ ...panes(lang).settings, focus: true })
+    await openTab($, 'set')
     return { text: t(lang, 'common.openedSettings') }
   })
 
@@ -2472,18 +4011,28 @@ export const register: Register = (on, options) => {
     return done
   })
 
-  // Mitten im Turn kommt das Ende einer Hintergrundaufgabe als Anhang in die Unterhaltung, nicht als Prompt.
-  on('session.append', async ($, e, next) => {
-    observeInspect(() => ingestAppend(inspectSt, e as never))
-    const text = notificationText(e.door, e.message.content)
-    if (text.includes('<task-notification>')) await finishBackground($, text).catch(() => undefined)
-    return next(e)
-  })
+  // Zeilen der Unterhaltung für den Kontext-Inspektor und Benachrichtigungen von Hintergrundaufgaben. Nur die Türen, die
+  // `cc-plugin-sec-default` an Plugins der Nutzer-Ebene durchlässt: Anhänge, Hook-Kontext, Kompaktierung und Skill-Texte
+  // gehen an ihnen vorbei, ein Hook darauf liefe nie und hinterließe je Zeile einen Hinweis im Chat.
+  // ponytail: Endet eine Hintergrundaufgabe mitten im Turn (Anhang), merkt das Cockpit es erst beim nächsten Prompt.
+  // Matcher als Literale und ein Hook auf Modulebene, sonst kann `claude plugin validate` sie nicht auflösen.
+  on('session.append', { door: 'prompt' }, onAppend)
+  on('session.append', { door: 'command' }, onAppend)
+  on('session.append', { door: 'response' }, onAppend)
+  on('session.append', { door: 'tool-result' }, onAppend)
+  on('session.append', { door: 'delivery' }, onAppend)
+  on('session.append', { door: 'note' }, onAppend)
+  on('session.append', { door: 'notice' }, onAppend)
+  on('session.append', { door: 'queue' }, onAppend)
 
   on('prompt.submit', async ($, e, next) => {
     // Benachrichtigungen kommen auch gebündelt oder mit einem getippten Prompt zusammen: jeden Prompt danach absuchen.
     await finishBackground($, e.text)
     await update($, dirAlert, () => null)
+    if (e.origin?.kind !== 'task-notification') {
+      const heavy = guardPrompt(guardSt, await stamp($), (await read($, usage))?.contextPercent)
+      if (heavy !== null) await guardNotify($, [heavy])
+    }
     if (e.origin?.kind !== 'task-notification') await judgeEffort($, e.text)
     // Checkliste: jeder eigene Prompt ist ein neuer Job; eine Benachrichtigung eines Hintergrund-Tasks nicht.
     if (e.origin?.kind !== 'task-notification') await startJob($, e.text)
@@ -2508,6 +4057,7 @@ export const register: Register = (on, options) => {
     const isMain = e.agentId === undefined
     if (isMain) toolsInFlight++
     const startedAt = await stamp($)
+    if (isMain && mayChange(e.tool, e)) await tlBase($)
     observeInspect(() => ingestToolCall(inspectSt, e.tool_use_id, e.tool, e.agentId, args))
     observeProfile(() => toolBegin(profileSt, e.tool_use_id, e.tool, e.agentId, args, startedAt))
     void repaint($).catch(() => undefined)
@@ -2524,6 +4074,21 @@ export const register: Register = (on, options) => {
     observeInspect(() => ingestToolResult(inspectSt, e.tool_use_id, ran))
     const isEdit = EDIT_TOOLS.has(e.tool)
     const isError = ran.isError === true
+    // Fehler-Eingang, Nutzungswächter (gleicher Aufruf in Folge) und Zeitreise: nur beobachten, nie die Session stören.
+    try {
+      const target = toolTarget(args)
+      const denied = ran.deny !== undefined
+      errCall(errSt)
+      if (denied || isError) noteError(errSt, { at: startedAt, tool: e.tool, target, kind: denied ? 'denied' : 'error', text: inboxErrorText(ran), agent: !isMain, id: e.tool_use_id })
+      if (isMain) {
+        const repeat = guardCall(guardSt, startedAt, e.tool, args, target)
+        if (repeat !== null) await guardNotify($, [repeat])
+        const step = addStep(tlSt, { at: startedAt, tool: e.tool, target, ok: ranOk, id: e.tool_use_id })
+        if (mayChange(e.tool, e)) tlSnap($, step)
+      }
+    } catch {
+      // verworfen
+    }
     const path = isEdit && !isError ? inputPath(e) : ''
     if (path !== '') await update($, touched, list => (list.includes(path) ? list : pushCapped(list, path, 100)))
     {
@@ -2555,7 +4120,8 @@ export const register: Register = (on, options) => {
       // Eine ignorierte Warnung (gleiche Art, gleiches Ziel) kommt in dieser Session nicht wieder.
       if (alert !== null && !(await read($, loopIgnored)).includes(loopKey(alert))) await update($, loopAlert, () => alert)
     }
-    await note($, 'main', `${toolText(e.tool)}${target === '' ? '' : ` → ${target}`}${isError ? ' ✗' : ''}`, { tool: e.tool, target, action: toolAction(e), isError })
+    // Aufrufe eines Subagents mit Quelle `agent`; die tool_use_id verbindet die Zeile im Protokoll mit Fehler und Snapshot.
+    await note($, isMain ? 'main' : 'agent', `${toolText(e.tool)}${target === '' ? '' : ` → ${target}`}${isError ? ' ✗' : ''}`, { tool: e.tool, target, action: toolAction(e), isError, id: e.tool_use_id })
     await settleAsk($, e.tool_use_id, ran.deny !== undefined)
     if (e.agentId !== undefined) await update($, agents, list => list.map(a => (a.id === e.agentId ? { ...a, steps: (a.steps ?? 0) + 1 } : a)))
     await trackBackground($, e, ran)
@@ -2609,15 +4175,6 @@ export const register: Register = (on, options) => {
     return shown
   })
 
-  on('prompt.compose', async ($, e, next) => {
-    const mi = await read($, modelInfo)
-    if (mi !== null) {
-      const v = { ...mi, style: e.outputStyle?.name ?? null }
-      if (!same(await read($, modelInfo), v)) await update($, modelInfo, () => v)
-    }
-    return next(e)
-  })
-
   on('turn.step', async function* ($, e, next) {
     // Auto-Effort nur für die Hauptschleife; Subagents behalten ihren Effort.
     const want = e.agentId ? undefined : await effortFor($, e.effort)
@@ -2659,6 +4216,7 @@ export const register: Register = (on, options) => {
     }
     if (!e.agentId && result.usage) {
       const hit = cacheHitPct(result.usage)
+      lastCacheWrite = result.usage.cache_creation_input_tokens
       const now = await $.clock.now()
       {
         const v = hit
@@ -2670,8 +4228,23 @@ export const register: Register = (on, options) => {
   })
 
   on('agent.spawn', async ($, e, next) => {
+    {
+      const s = await read($, settings)
+      const live = (await read($, agents)).filter(a => LIVE.has(a.status)).length
+      const at = await stamp($)
+      if (shouldHold(guardSt, live, s.guardHold)) {
+        const why = guardTx(s.lang, 'guard.deny', { n: live, max: GUARD_LIMITS.hold })
+        noteError(errSt, { at, tool: 'Agent', target: e.subagentType, kind: 'denied', text: why, agent: false })
+        await guardNotify($, [{ rule: 'agents', at, n: live, detail: '' }])
+        return { deny: why }
+      }
+      await guardNotify($, guardSpawn(guardSt, at, live))
+    }
     const spawned = await next(e)
     if (spawned.agentId) {
+      const id = spawned.agentId
+      const at = await stamp($)
+      observeProfile(() => subagentStart(profileSt, id, e.subagentType, at, e.tool_use_id))
       const agent: Agent = {
         id: spawned.agentId,
         type: e.subagentType,
@@ -2700,6 +4273,7 @@ export const register: Register = (on, options) => {
     if (e.agentId === undefined) {
       mainTurnId = e.turnId
       cmdTurnStarted = true
+      guardReset(guardSt)
     }
     else await touchJob($)
     return started
@@ -2709,7 +4283,14 @@ export const register: Register = (on, options) => {
     const done = await next(e)
     const doneAt = await stamp($)
     observeProfile(() => turnComplete(profileSt, e.turnId, doneAt, e.reason))
+    // Ende eines Subagents und Abbruch durch einen API-Fehler (früher `classic.SubagentStop`/`classic.StopFailure`).
+    const sub = e.agentId
+    if (sub !== undefined) observeProfile(() => subagentStop(profileSt, sub, doneAt))
+    if (e.reason === 'error') observeProfile(() => stopFailure(profileSt, sub, doneAt, 'error'))
+    if (!e.agentId) void refreshStyle($).catch(() => undefined)
     if (!e.agentId) void refreshMr($, true).catch(() => undefined)
+    // Git-Panel nur nachziehen, wenn es kürzlich gezeichnet wurde (offen); sonst kostet jeder Turn ein Dutzend git-Aufrufe.
+    if (!e.agentId && (await $.clock.now()) - gitPaneAt < 90_000) void refreshGit($, true).catch(() => undefined)
     if (!e.agentId && (await read($, settings)).blastBand) void refreshBlast($).catch(() => undefined)
     void repaint($).catch(() => undefined)
     if (e.agentId) {
@@ -2756,50 +4337,40 @@ export const register: Register = (on, options) => {
     return done
   })
 
-  // Diagnose (Profiler): gemessene Ausführungszeit der Tools und Lebenslauf der Subagents aus den klassischen Hook-Events.
-  on('classic.PostToolUse', async ($, e, next) => {
-    if (e.duration_ms !== undefined) observeProfile(() => toolExec(profileSt, e.tool_use_id, e.duration_ms ?? 0))
-    return next(e)
-  }).catch(($, e, next) => (next.called ? undefined : next(e)))
-  on('classic.PostToolUseFailure', async ($, e, next) => {
-    if (e.duration_ms !== undefined) observeProfile(() => toolExec(profileSt, e.tool_use_id, e.duration_ms ?? 0))
-    return next(e)
-  }).catch(($, e, next) => (next.called ? undefined : next(e)))
-  on('classic.SubagentStart', async ($, e, next) => {
-    const at = await stamp($)
-    observeProfile(() => subagentStart(profileSt, e.agent_id, e.agent_type, at))
-    return next(e)
-  }).catch(($, e, next) => (next.called ? undefined : next(e)))
-  on('classic.SubagentStop', async ($, e, next) => {
-    const at = await stamp($)
-    observeProfile(() => subagentStop(profileSt, e.agent_id, at))
-    return next(e)
-  }).catch(($, e, next) => (next.called ? undefined : next(e)))
-  on('classic.StopFailure', async ($, e, next) => {
-    const at = await stamp($)
-    observeProfile(() => stopFailure(profileSt, e.agent_id, at, String(e.error)))
-    return next(e)
-  }).catch(($, e, next) => (next.called ? undefined : next(e)))
+  // Kein Hook auf `classic.*`, `prompt.compose` und die Engine-Zeilen von `session.append`: das eingebaute Mod
+  // `cc-plugin-sec-default` lässt Plugins der Nutzer-Ebene dort nicht mitreden, jeder Versuch wäre eine Hinweiszeile im Chat.
+  // Subagents kommen aus `agent.spawn` und `turn.complete`, der Ausgabestil aus `$.settings.read`.
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
+    if (e.surface === 'desktop') {
+      const at = await stamp($)
+      if (at - schemeCheckedAt >= SCHEME_EVERY_MS) {
+        schemeCheckedAt = at
+        void syncDesktopScheme($, options.appearance, true).catch(() => undefined)
+      }
+    }
     const s = await read($, settings)
     const u = await read($, usage)
     // Kappung auch hier: $.state überlebt Reloads und kann noch Listen älterer Versionen (fünf Schritte) halten.
     const next3 = e.props.isWorking || !s.steps ? [] : (await read($, steps)).slice(0, 3)
     const asks3 = e.props.isWorking || !s.steps ? [] : (await read($, asks)).slice(0, 3)
-    // Die Zeile mit „↻ Neue“ steht immer, wenn Folge-Schritte an sind und Claude nicht arbeitet, auch ohne Vorschläge.
+    // Die Zeile „Weiter“ steht immer, wenn Folge-Schritte an sind und Claude nicht arbeitet, auch ohne Vorschläge.
     const showSteps = s.steps && !e.props.isWorking
     const busySteps = await read($, stepsBusy)
     // Checkliste: zeigt sich auch ohne Messung, sobald der Job Plan, Tool-Arbeit oder eine Rückfrage hat.
     const job = s.glance ? await read($, glanceJob) : null
     const showJob = job !== null && isWorthShowing(job)
-    if (!drawsOn(e.surface) || e.props.hasSurvey || (u === null && !showJob && next3.length === 0 && (await read($, loopAlert)) === null && (await read($, dirAlert)) === null)) return next(e)
+    const alert = await read($, loopAlert)
+    const dirWarn = await read($, dirAlert)
+    if (!drawsOn(e.surface) || e.props.hasSurvey || (u === null && !showJob && next3.length === 0 && alert === null && dirWarn === null)) return next(e)
     await read($, tick)
     const now = await $.clock.now()
+    const lastAt = await read($, lastTurnAt)
+    const bandTips = s.tipsBand ? tipsNow(u, lastAt, now) : []
     const liveAgents = (await read($, agents)).filter(a => LIVE.has(a.status))
     const running = liveAgents.length
     const ui = elementsOf($, e)
-    const { Box, Text, Button } = ui
+    const { Box, Text } = ui
     // Ringe nur, wo die Oberfläche Svg zeichnet; sonst bleibt der Textbalken.
     const Svg = 'Svg' in ui ? ui.Svg : undefined
     // Mit Tooltip ist das Ring-Svg interaktiv (Sandbox-Frame, `<title>` wird schwebend angezeigt). Der Frame flackert bei jedem
@@ -2813,30 +4384,38 @@ export const register: Register = (on, options) => {
       ) : (
         <Svg source={ringSvg(percent, RING_HEX[color], 20)} alt={`${Math.round(percent)} %`} width={20} height={20} />
       )
-    const head = titleRow(ui, await read($, about), await read($, logo))
+    const head = titleRow(ui, await read($, about), await read($, logo), false)
     const where = s.branch ? repoRow(ui, await read($, repo)) : null
-    const alert = await read($, loopAlert)
-    const dirWarn = await read($, dirAlert)
-    const loopText = alert === null ? '' : t(L, alert.kind === 'error' ? 'loop.error' : 'loop.edit', { target: alert.target, n: alert.n })
+    const mrRow = s.mrBand ? await mrBandRow($, ui, L, (await read($, devMock)) ? mockData(now).mr : null) : null
     const fillCompact = async () => {
       const focus = compactFocus(await read($, lastPrompt), await read($, touched), await read($, steps), L)
       await $.prompt.fill({ text: focus === '' ? '/compact' : `/compact ${focus}` })
     }
-    // Gruppen ohne Rahmen, getrennt durch einen gedimmten Strich (kompakter als Karten).
-    const card = (...children: RenderChildren[]) => (
-      <Box flexDirection="row" columnGap={2} alignItems="center">
+    // Gruppen ohne Rahmen, getrennt durch einen gedimmten Strich; jede Gruppe bricht als Ganzes um.
+    // Trennstriche merken, damit ausgeblendete Gruppen keine doppelten oder hängenden Striche hinterlassen.
+    const seps = new Set<RenderElement>()
+    const sep = (key: string) => {
+      const el = <Text key={key} color={THEME.border}>│</Text>
+      seps.add(el)
+      return el
+    }
+    const group = (key: string, ...children: RenderChildren[]) => (
+      <Box key={key} flexDirection="row" columnGap={1} alignItems="center" flexShrink={0}>
         {children}
       </Box>
     )
-    const sep = (key: string) => <Text key={key} color={THEME.border}>│</Text>
-    // Waagerechte Trennlinie als Text: der Desktop zeichnet das Svg-Band nicht zuverlässig, Text schon.
-    const sepLine = (key: string) => <Text key={key} color={THEME.border} wrap="truncate-end">{'─'.repeat(Math.max(10, e.props.bodyColumns - 2))}</Text>
-    const mini = (key: string, label: string, onPress: () => void) => pill(ui, 'band', key, label, onPress)
+    // Werte sind Links auf den passenden Reiter des Panels; Aktionen sind Links ohne Fläche (keine Knöpfe im Band).
+    const toUsage = () => void openTab($, 'usage').catch(() => undefined)
     const mi = await read($, modelInfo)
     const pick = await read($, effortPick)
     const lim = u === null ? null : limitAlert(u.limits)
     const handoffMsg = await read($, handoffNote)
     const stepCols = Math.max(20, Math.floor((e.props.bodyColumns - (e.surface === 'terminal' ? 8 : 4)) / 3))
+    // Weiter-Zeile ohne Umbruch: Breite abzüglich „Weiter:“, Refresh-Icon und Abständen teilen sich die Vorschläge; wird es eng,
+    // fallen die hinteren Vorschläge weg statt in eine zweite Zeile zu rutschen.
+    const stepsAvail = e.props.bodyColumns - (e.surface === 'terminal' ? 8 : 4) - 23
+    const stepsShown = Math.max(1, Math.min(3, Math.floor(stepsAvail / 24)))
+    const stepsCol = Math.max(16, Math.floor(stepsAvail / stepsShown))
     const effortMsg = await read($, effortNote)
     const shift = await read($, effortShift)
     // Auto-Effort-Status: nach einem Urteil „Haiku: alt ─→ neu“ als kurze Animation in Stufenfarben, danach „Haiku: neu“.
@@ -2858,7 +4437,7 @@ export const register: Register = (on, options) => {
         </Text>
       )
     }
-    // Sparmodus: Punkt in Statusfarbe (an grün, aus rot) mit Erklärung als Tooltip, daneben der Knopf mit dem Zustand im Label.
+    // Sparmodus: Punkt in Statusfarbe (an grün, aus rot) mit Erklärung als Tooltip, daneben der Link mit dem Zustand.
     // Interaktiv (Tooltip) nur im Leerlauf, wie die Ringe: interaktive Svg flackern beim Neuzeichnen.
     const saveToggle = () => {
       const tip = t(L, 'alert.saveTip', { state: t(L, s.saveMode ? 'alert.saveState.on' : 'alert.saveState.off') })
@@ -2871,117 +4450,82 @@ export const register: Register = (on, options) => {
           ) : (
             <Svg key="save-dot" source={ringSvg(100, color, 12)} alt={tip.split(NL)[0] ?? ''} width={12} height={12} />
           ))}
-          {mini('save-mode', t(L, s.saveMode ? 'alert.saveOn' : 'alert.saveOff'), () => void setSettings($, { saveMode: !s.saveMode }).catch(() => undefined))}
+          {link(ui, 'save-mode', t(L, s.saveMode ? 'alert.saveOn' : 'alert.saveOff'), () => void setSettings($, { saveMode: !s.saveMode }).catch(() => undefined), { tone: s.saveMode ? 'ok' : 'muted' })}
         </Box>
       )
     }
     const toggleAuto = () => void update($, effortBase, () => null).then(() => setSettings($, { autoEffort: !s.autoEffort })).catch(() => undefined)
+    // Atemübung: solange Claude arbeitet, atmet der Statusring der Checkliste (Einzelbilder im 250-ms-Takt, Atom `frame`);
+    // die ganze Übung mit Phasen steht im Reiter Jetzt.
+    const tn = await read($, turn)
+    const working = e.props.isWorking && tn !== null && tn.durationMs === undefined
+    const breathes = working && s.breath && s.animation && Svg !== undefined && showJob
+    if (breathes) await read($, frame)
+    const breath = breathes ? fillAt(breathOf(s.breathKey), now - (tn?.startedAt ?? now)) : null
+    const asking = gateOf(await read($, gate)).ask
+    const phase = showJob && job !== null ? glancePhase(job, now, asking) : null
+    // Claudes Rückfragen stehen direkt unter der Frage in der Checkliste; ohne sichtbare Frage in einer eigenen Zeile.
+    const answersInGlance = job !== null && phase === 'needsYou' && !(asking > 0 && job.phase === 'working') && job.question !== ''
+    const sig = signalsOf($, ui, s, { percent: u?.contextPercent, now, tips: bandTips, loop: alert, dir: dirWarn, forBand: true })
+    // Folge-Schritt oder Antwort als Link mit Taste 1–3 bzw. 4–6 (auch im leeren Eingabefeld; das Terminal zeigt „1: …“).
+    // Nur ins Eingabefeld: Enter sendet als Eingabe der Person, damit andere Mods (effortless) ihn wie getippt bewerten.
+    const stepLink = (key: string, n: number, label: string, prompt: string, max: number) =>
+      link(ui, key, clip(label, max), () => void $.prompt.fill({ text: prompt }).catch(() => undefined), { hotkey: String(n) })
+    // Ampel eines Werts als Linkton (Gelb/Rot als getönter Grund); ohne Ring (Terminal, Ringe aus) zusätzlich ein farbiger Punkt.
+    const toneOf = (c: string): LinkTone => (c === 'error' ? 'bad' : c === 'warning' ? 'warn' : 'link')
+    const dot = (key: string, c: keyof typeof RING_HEX) => (Svg && s.rings ? null : <Text key={key} color={THEME[c]}>●</Text>)
 
-    // Im Terminal setzt ein Rahmen in orgaMAX-Blau (om-blue-500) auf dunkelblauem Grund das Band vom Transcript ab;
+    // Im Terminal setzt ein Rahmen in Markenblau (om-blue-500) auf dunkelblauem Grund das Band vom Transcript ab;
     // der Desktop rahmt es selbst. Voller blauer Grund wäre für die Statusfarben (grün, gelb) zu kontrastarm.
     const term = e.surface === 'terminal'
     const body = (
       <Box flexDirection="column" {...(term ? { borderStyle: 'round', borderColor: THEME.accentFill, backgroundColor: TINT.accent, paddingX: 1 } : {})}>
-        {/* Checkliste ganz oben, über der Titelzeile. */}
-        {showJob && job !== null && glanceBand($, ui, job, { L, now, avg: await read($, glanceAvg), asking: gateOf(await read($, gate)).ask, live: liveAgents })}
-        {showJob && sepLine('glance-sep')}
-        <Box flexDirection="row" justifyContent="space-between" alignItems="center">
-          <Box flexDirection="row" columnGap={2} alignItems="center">
-            {head}
-            {where}
-            {/* MR-Status in der Kopfzeile hinter dem Branch, mit etwas Abstand. */}
-            {s.mrBand && <Box key="mr-head" marginLeft={2}>{await mrBandRow($, ui, L, (await read($, devMock)) ? mockData(now).mr : null)}</Box>}
-          </Box>
-          {/* Features rechts; Details steht in der Fußzeile unter dem Prompt, die Legende im Tooltip der Limit-Ringe. */}
-          <Box flexDirection="row" columnGap={1} alignItems="center">
-          {s.cardCatchUp && mini('summary', t(L, 'common.summary'), () => void $.ui.open({ ...panes(L).summary, focus: true }).catch(() => undefined))}
-          {/* $.command.run aus dem Knopf kam im Desktop nicht an: Befehl ins Eingabefeld, Enter führt ihn aus. */}
-          {mini('features', t(L, 'common.features'), () => void $.prompt.fill({ text: '/cockpit-features' }).catch(() => undefined))}
-          </Box>
+        {/* Checkliste ganz oben. */}
+        {showJob && job !== null && glanceBand($, ui, job, { L, now, avg: await read($, glanceAvg), asking, live: liveAgents, breath, answers: answersInGlance ? asks3 : [] })}
+        {/* Kopf und Messwerte in einer Zeile; sie bricht in Gruppen um, nur der Branch kürzt sich. */}
+        <Box key="band-main" flexDirection="row" flexWrap="wrap" columnGap={2} alignItems="center">
+          <Box flexShrink={0}>{head}</Box>
+          {where !== null && <Box flexShrink={1}>{where}</Box>}
+          {mrRow !== null && <Box key="mr-head" flexShrink={0}>{mrRow}</Box>}
+          {...(u !== null ? metrics(u, lastAt, await read($, cacheHit), await read($, breakdown)) : [])}
         </Box>
-        {u !== null && metrics(u, await read($, lastTurnAt), await read($, cacheHit), await read($, breakdown))}
-        {diagChips($, ui, s, u?.contextPercent, now)}
-        {s.breath && Svg && (await (async () => {
-          const tn = await read($, turn)
-          const labels = { in: t(L, 'breath.in'), sip: t(L, 'breath.sip'), hold: t(L, 'breath.hold'), out: t(L, 'breath.out') }
-          const name = t(L, `breath.name.${s.breathKey}`)
-          // Während eines Turns zeichnet das Band ständig neu und startete SMIL dabei von vorn: dann Einzelbilder im 250-ms-Takt
-          // (Atom `frame`), synchron zur Arbeitszeile. Nur im Leerlauf des Dev-Modes animiert SMIL selbst.
-          const working = e.props.isWorking && tn !== null && tn.durationMs === undefined
-          if (!working && !(await read($, devMock))) return null
-          if (working) await read($, frame)
-          const img = working
-            ? <Svg key="breath" source={breathFrameSvg(breathOf(s.breathKey), now - (tn?.startedAt ?? now), labels, name, BREATH_COLOR[breathOf(s.breathKey).key], THEME.textMuted)} alt={t(L, 'settings.breath')} height={56} />
-            : <Svg key="breath" source={breathSvg(breathOf(s.breathKey), labels, name, BREATH_COLOR[breathOf(s.breathKey).key], THEME.textMuted)} alt={t(L, 'settings.breath')} height={56} />
-          // Durchschalten: nächste Übung der Reihe nach, gilt sofort und bleibt gespeichert.
-          const idx = BREATHS.findIndex(b => b.key === s.breathKey)
-          const nextKey = (BREATHS[(idx + 1) % BREATHS.length] ?? BREATHS[0])!.key
-          return (
-            <Box key="breath-block" flexDirection="column">
-              {sepLine('breath-sep')}
-              <Box key="breath-row" flexDirection="row" columnGap={1} alignItems="center" justifyContent="center">
-                {img}
-                {pill(ui, 'band', 'breath-next', t(L, 'breath.next'), () => void setSettings($, { breathKey: nextKey }).catch(() => undefined))}
-              </Box>
-            </Box>
-          )
-        })())}
-        {dirWarn !== null && (
-          <Box key="dir-warn" flexDirection="row" columnGap={2} alignItems="center" backgroundColor={TINT.error} paddingX={1}>
-            <Text color={THEME.error} bold wrap="truncate-end">⚠ {t(L, 'dir.alert', { dir: dirWarn.dir })}</Text>
-          </Box>
-        )}
-        {alert !== null && (
-          <Box key="loop" flexDirection="row" columnGap={2} alignItems="center">
-            <Text color={THEME.warning} wrap="truncate-end">⚠ {loopText}</Text>
-            {pill(ui, 'band', 'loop-fix', t(L, 'loop.action'), () => void $.prompt.fill({ text: t(L, 'loop.prompt', { what: loopText }) }).catch(() => undefined))}
-            {pill(ui, 'band', 'loop-ignore', t(L, 'loop.ignore'), () => void update($, loopIgnored, l => [...l, loopKey(alert)]).then(() => update($, loopAlert, () => null)).catch(() => undefined))}
-          </Box>
-        )}
+        {/* Eine Meldungszeile statt Warnzeilen und Kurzinfos: nur Gelb und Rot, der Rest im Reiter Diagnose. */}
+        {s.bandAlerts && bandAlerts($, ui, s, sig)}
         {showSteps && (
-          // Drei Spalten gleicher Breite: „1: Label“ (Taste 1–3, auch im leeren Eingabefeld), die Begründung als Tooltip am ⓘ
-          // dahinter; ohne Svg (Terminal) als Zeile darunter.
-          <Box flexDirection="column">
-            {sepLine('steps-sep')}
-            <Box flexDirection="row" columnGap={2} alignItems="flex-start">
-            <Text color={THEME.warning} bold>{t(L, 'band.next')}</Text>
+          // Drei Spalten gleicher Breite: Ziffer und Vorschlag als Link, die Begründung als Tooltip am ⓘ dahinter;
+          // ohne Svg (Terminal) als Zeile darunter. Hellgelb hinterlegt (TINT.warning, folgt hell/dunkel), damit sich der
+          // Vorschlagsblock von den Messwerten absetzt.
+          <Box key="steps" flexDirection="row" columnGap={2} alignItems="flex-start" flexWrap="nowrap" backgroundColor={TINT.warning} paddingX={1}>
+            <Box flexShrink={0}><Text color={THEME.textMuted} wrap="truncate-end">{t(L, 'band.next')}</Text></Box>
             {next3.length === 0 && <Text key="steps-none" color={THEME.textMuted}>{t(L, 'band.noSteps')}</Text>}
-            {next3.map((s, i) => (
-              <Box key={`step-col-${i}`} flexDirection="column" width={stepCols}>
-              <Box key={`step-row-${i}`} flexDirection="row" columnGap={1} alignItems="center">
-                {s.fromClaude && chip(ui, 'band', `step-cc-${i}`, 'CC')}
-                <Button
-                  key={`step-${i}`}
-                  label={clip(s.label, Math.max(12, stepCols - (s.fromClaude ? 8 : 4)))}
-                  hotkey={String(i + 1)}
-                  plain
-                  // Nur ins Eingabefeld: Enter sendet ihn als Eingabe der Person, damit andere Mods (effortless) ihn wie getippt bewerten; startTurn läuft dann im eigenen prompt.submit-Hook.
-                  onPress={() => void $.prompt.fill({ text: s.prompt }).catch(() => undefined)}
-                />
-                {Svg && s.why !== undefined && <Svg key={`step-why-${i}`} source={infoSvg(s.why, THEME.textMuted)} alt={s.why} width={14} height={14} isInteractive />}
-              </Box>
-                {!Svg && s.why !== undefined && <Text color={THEME.textMuted} wrap="truncate-end">{s.why}</Text>}
+            {next3.slice(0, stepsShown).map((st, i) => {
+              const max = Math.min(STEP_LABEL_MAX, Math.max(10, stepsCol - (st.fromClaude ? 10 : 6)))
+              // Tooltip: bei gekürztem Knopftext zuerst der volle Text, dann die Begründung.
+              const tip = [st.label.length > max ? st.label : '', st.why ?? ''].filter(x => x !== '').join('\n')
+              return (
+                <Box key={`step-col-${i}`} flexDirection="column" width={stepsCol} flexShrink={1}>
+                  <Box key={`step-row-${i}`} flexDirection="row" columnGap={1} alignItems="center" flexWrap="nowrap">
+                    {st.fromClaude && chip(ui, 'band', `step-cc-${i}`, 'CC')}
+                    {stepLink(`step-${i}`, i + 1, st.label, st.prompt, max)}
+                    {Svg && tip !== '' && <Svg key={`step-why-${i}`} source={infoSvg(tip, THEME.textMuted)} alt={tip} width={14} height={14} isInteractive />}
+                  </Box>
+                  {!Svg && st.why !== undefined && <Text color={THEME.textMuted} wrap="truncate-end">{st.why}</Text>}
+                </Box>
+              )
+            })}
+            <Box flexShrink={0}>
+              {link(ui, 'steps-refresh', busySteps ? '◌' : '↻', () => void refreshSteps($).catch(() => undefined), { tone: 'muted', busy: busySteps ? 'locked' : false })}
+            </Box>
+          </Box>
+        )}
+        {!answersInGlance && asks3.length > 0 && (
+          <Box key="asks-row" flexDirection="row" columnGap={2} alignItems="flex-start" flexWrap="wrap" backgroundColor={TINT.warning} paddingX={1}>
+            <Text color={THEME.warning}>{t(L, 'band.asks')}</Text>
+            {asks3.map((a, i) => (
+              <Box key={`ask-col-${i}`} width={stepCols}>
+                {stepLink(`ask-${i}`, i + 4, a.label, a.prompt, Math.max(12, stepCols - 6))}
               </Box>
             ))}
-            {pill(ui, 'band', 'steps-refresh', t(L, 'band.moreSteps'), () => void refreshSteps($).catch(() => undefined), busySteps)}
-            </Box>
-            {/* Zweite Zeile: Claudes Rückfragen aus der letzten Antwort als Aufträge (Tasten 4–6), nur ins Eingabefeld. */}
-            {asks3.length > 0 && (
-              <Box key="asks-row" flexDirection="row" columnGap={2} alignItems="flex-start">
-                <Text color={THEME.warning} bold>{t(L, 'band.asks')}</Text>
-                {asks3.map((a, i) => (
-                  <Box key={`ask-col-${i}`} width={stepCols}>
-                    <Button
-                      key={`ask-${i}`}
-                      label={clip(a.label, Math.max(12, stepCols - 4))}
-                      hotkey={String(i + 4)}
-                      plain
-                      onPress={() => void $.prompt.fill({ text: a.prompt }).catch(() => undefined)}
-                    />
-                  </Box>
-                ))}
-              </Box>
-            )}
           </Box>
         )}
       </Box>
@@ -2992,7 +4536,8 @@ export const register: Register = (on, options) => {
     const theirs = await next(e)
     return <Box key="band-stack" flexDirection="column">{ours}{theirs}</Box>
 
-    function metrics(u: Usage, lastAt: number | null, hit: number | null, bd: Breakdown | null) {
+    // Messwerte als Gruppen: Limits, Effort, Kontext, Cache/Kosten/Agents. Werte sind Links auf den Reiter Verbrauch.
+    function metrics(u: Usage, lastAt: number | null, hit: number | null, bd: Breakdown | null): RenderElement[] {
       const ttl = u.limits.length > 0 ? 3600_000 : 300_000
       const cache = cacheLeftMs(lastAt, u.limits.length > 0, now)
       const isFull = (u.contextPercent ?? 0) >= COMPACT_AT
@@ -3001,80 +4546,114 @@ export const register: Register = (on, options) => {
       const pays = lastAt !== null && handoffPays(u.contextPercent, cache)
       const level = mi?.effort ?? pick
       const levelText = level === undefined || level === null ? '' : `${String(level).charAt(0).toUpperCase()}${String(level).slice(1)} · `
-      return (
-        <Box flexDirection="row" flexWrap="wrap" columnGap={2} alignItems="center">
-          {/* Reihenfolge: Limits (Usage), Effort, Kontext, Cache/Kosten. */}
-          {s.limits && u.limits.length > 0 &&
-            card(
-              ...u.limits.map(l => (
+      const out: RenderElement[] = [sep('sep-head')]
+      if (s.limits && u.limits.length > 0) {
+        out.push(
+          group(
+            'g-lim',
+            ...u.limits.map(l => {
+              const label = `${LIMIT_LABEL[l.kind] ?? l.kind} ${Math.round(l.percentUsed)}%`
+              // Restzeit bis zum Reset immer dahinter; ohne Svg (kein Ring-Tooltip) zusätzlich die Uhrzeit.
+              const rest = l.resetsAt ? ` · ↻ ${resetLeft(l.resetsAt, now)}${Svg ? '' : ` (${resetLabel(l.resetsAt, now, L)})`}` : ''
+              const c = limitColor(l, now)
+              return (
                 <Box key={`lim-${l.kind}`} flexDirection="row" columnGap={1} alignItems="center">
-                  {ring(l.percentUsed, limitColor(l, now), s.legend ? `${limitTip(l, tipNow, L)}${NL}${NL}${legendTip(L)}` : limitTip(l, tipNow, L))}
-                  <Text color={THEME[limitColor(l, now)]}>
-                    {LIMIT_LABEL[l.kind] ?? l.kind} {Math.round(l.percentUsed)}%
-                    {/* Restzeit bis zum Reset immer dahinter; ohne Svg (kein Ring-Tooltip) zusätzlich die Uhrzeit. */}
-                    {l.resetsAt ? <Text color={THEME.textMuted}> · ↻ {resetLeft(l.resetsAt, now)}{Svg ? '' : ` (${resetLabel(l.resetsAt, now, L)})`}</Text> : null}
-                  </Text>
+                  {ring(l.percentUsed, c, s.legend ? `${limitTip(l, tipNow, L)}${NL}${NL}${legendTip(L)}` : limitTip(l, tipNow, L))}
+                  {dot(`lim-dot-${l.kind}`, c)}
+                  {link(ui, `lim-link-${l.kind}`, `${label}${rest}`, toUsage, { tone: toneOf(c) })}
                 </Box>
-              )),
-              // Ab 80 % und mit Auto-Effort: Sparmodus direkt an der Limit-Anzeige statt in einer eigenen Warnzeile.
-              lim !== null && s.autoEffort && saveToggle(),
-            )}
-          {s.limits && u.limits.length > 0 && sep('sep-lim')}
-          {mi !== null && card(
+              )
+            }),
+            // Ab 80 % und mit Auto-Effort: Sparmodus direkt an der Limit-Anzeige.
+            lim !== null && s.autoEffort && saveToggle(),
+          ),
+          sep('sep-lim'),
+        )
+      }
+      if (mi !== null && s.bandEffort) {
+        out.push(
+          group(
+            'g-effort',
             <Text key="effort" color={effortColor(level)}>◆ {levelText}{modelLabel(mi.model)}</Text>,
-            mini('auto', t(L, s.autoEffort ? 'effort.autoOn' : 'effort.auto'), toggleAuto),
+            link(ui, 'auto', t(L, s.autoEffort ? 'effort.autoOn' : 'effort.auto'), toggleAuto, { tone: s.autoEffort ? 'link' : 'muted' }),
             s.autoEffort && effortMsg !== '' && effortView(),
-          )}
-          {mi !== null && sep('sep-effort')}
-          {card(
-            <Box key="ctx" flexDirection="row" columnGap={1} alignItems="center">
-              {ring(u.contextPercent ?? 0, ctxTone, contextTip(u, bd, L))}
-              <Text color={THEME[ctxTone]} bold={isFull}>{t(L, 'common.context')} {Svg && s.rings ? '' : `${bar(u.contextPercent ?? 0, 8)} `}{Math.round(u.contextPercent ?? 0)}%</Text>
-            </Box>,
-            // Wenn ein frischer Chat günstiger wäre, wird Handoff die Hauptaktion; Kompaktieren bleibt daneben.
-            pays && <Button key="handoff" label={t(L, 'handoff.action')} variant="primary" onPress={() => void writeHandoff($).catch(() => undefined)} />,
-            // Schreibt /compact mit dem, was erhalten bleiben muss, ins Eingabefeld; Enter startet es (anpassbar vor dem Senden).
-            // Button nimmt (Engine 2.1.295) keine farbigen Text-Kinder: die Ampel trägt der getönte Grund, der Hover die Schriftfarbe.
-            <Box key="compact-pill" backgroundColor={TINT[ctxTone === 'accent' ? 'warning' : ctxTone]} paddingX={1}>
-              <Button key="compact" label={t(L, 'band.compact')} plain hover={{ color: THEME[ctxTone === 'accent' ? 'warning' : ctxTone] }} onPress={() => void fillCompact().catch(() => undefined)} />
-            </Box>,
-            handoffMsg !== '' && <Text key="handoff-note" color={THEME.textMuted}>{handoffMsg}</Text>,
-          )}
-          {s.cache && sep('sep-cache')}
-          {s.cache && card(
-            <Box key="cache" flexDirection="row" columnGap={1} alignItems="center">
-              {ring((100 * cache) / ttl, 'accent', cacheTip(cacheLeftMs(lastAt, u.limits.length > 0, tipNow), ttl, hit, lastAt, tipNow, L))}
-              <Text dimColor={cache === 0 && u.contextTokens === undefined} color={cache === 0 && u.contextTokens !== undefined ? THEME.warning : cache > 0 && cache <= CACHE_WARN_MS ? THEME.warning : undefined}>
-                {t(L, 'band.cache')} {cache === 0 ? (u.contextTokens !== undefined ? t(L, 'band.coldCost', { n: tokens(u.contextTokens) }) : t(L, 'band.cold')) : duration(cache)}
-                {cache > 0 && hit !== null ? ` · ${hit}%` : ''}
-              </Text>
-            </Box>,
-            u.usd !== undefined && <Text>{usd(u.usd)}</Text>,
-            running > 0 && <Text color={THEME.accent}>{t(L, 'band.agents', { n: running })}</Text>,
-          )}
-        </Box>
+          ),
+          sep('sep-effort'),
+        )
+      }
+      const ctxLabel = `${t(L, 'common.context')} ${Svg && s.rings ? '' : `${bar(u.contextPercent ?? 0, 8)} `}${Math.round(u.contextPercent ?? 0)}%`
+      if (s.bandContext) out.push(
+        group(
+          'g-ctx',
+          <Box key="ctx" flexDirection="row" columnGap={1} alignItems="center">
+            {ring(u.contextPercent ?? 0, ctxTone, contextTip(u, bd, L))}
+            {dot('ctx-dot', ctxTone)}
+            {link(ui, 'ctx-link', ctxLabel, toUsage, { tone: toneOf(ctxTone) })}
+          </Box>,
+          // Wenn ein frischer Chat günstiger wäre, wird Handoff die Hauptaktion; Kompaktieren bleibt daneben.
+          pays && link(ui, 'handoff', t(L, 'handoff.action'), () => void writeHandoff($).catch(() => undefined), { tone: 'strong' }),
+          // Schreibt /compact mit dem, was erhalten bleiben muss, ins Eingabefeld; ab 85 % auf gelbem Grund.
+          link(ui, 'compact', t(L, 'band.compact'), () => void fillCompact().catch(() => undefined), { tone: isFull ? 'warn' : 'muted' }),
+          handoffMsg !== '' && <Text key="handoff-note" color={THEME.textMuted}>{handoffMsg}</Text>,
+        ),
       )
+      // Cache, Kosten und Agent-Zahl teilen sich eine Gruppe; jeder Teil hat seinen eigenen Schalter.
+      const showUsd = s.bandCost && u.usd !== undefined
+      const showAgents = s.bandAgents && running > 0 && !showJob
+      if (s.cache || showUsd || showAgents) {
+        const cacheLabel = `${t(L, 'band.cache')} ${cache === 0 ? (u.contextTokens !== undefined ? t(L, 'band.coldCost', { n: tokens(u.contextTokens) }) : t(L, 'band.cold')) : duration(cache)}${cache > 0 && hit !== null ? ` · ${hit}%` : ''}`
+        const cacheTone: LinkTone = (cache === 0 && u.contextTokens !== undefined) || (cache > 0 && cache <= CACHE_WARN_MS) ? 'warn' : cache === 0 ? 'muted' : 'link'
+        out.push(
+          sep('sep-cache'),
+          group(
+            'g-cache',
+            s.cache && (
+              <Box key="cache" flexDirection="row" columnGap={1} alignItems="center">
+                {ring((100 * cache) / ttl, 'accent', cacheTip(cacheLeftMs(lastAt, u.limits.length > 0, tipNow), ttl, hit, lastAt, tipNow, L))}
+                {link(ui, 'cache-link', cacheLabel, toUsage, { tone: cacheTone })}
+              </Box>
+            ),
+            showUsd && u.usd !== undefined && <Text key="usd">{usd(u.usd)}</Text>,
+            // Laufende Helfer nennt die Checkliste („↳ 2× executor“); ohne sichtbare Checkliste steht die Zahl hier.
+            showAgents && link(ui, 'agents', t(L, 'band.agents', { n: running }), () => void openTab($, 'now').catch(() => undefined)),
+          ),
+        )
+      }
+      // Ausgeblendete Gruppen hinterlassen sonst doppelte oder hängende Trennstriche.
+      const isSep = (x: RenderElement | undefined) => x !== undefined && seps.has(x)
+      return out.filter((x, i) => !isSep(x) || (i < out.length - 1 && !isSep(out[i + 1])))
     }
   })
 
-  // Profiling: Kontext-Inspektor, Agent-Profiler und Blast-Radius in einem Panel; die drei Befehle liefern Berichte als Text.
-  on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-profiling' }, async ($, e, next) => (drawsOn(e.surface) ? profilingPane($, e) : next(e)))
-
   on('command.run', { command: 'cockpit-profiling' }, async $ => {
-    await $.ui.open({ ...panes(await langOf($)).profiling, focus: true })
+    await openTab($, 'diag')
+    return {}
+  })
+  on('command.run', { command: 'cockpit-fehler' }, async ($, e) => {
+    const L = await langOf($)
+    if ((e.args ?? '').trim() === 'text') return { text: errReport(errSt, await $.clock.now(), L) }
+    await update($, logFilter, () => 'errors' as LogFilter)
+    await openTab($, 'diag', 'log')
+    return {}
+  })
+  on('command.run', { command: 'cockpit-zeitreise' }, async ($, e) => {
+    const L = await langOf($)
+    if ((e.args ?? '').trim() === 'text') return { text: tlReport(tlSt, L) }
+    await update($, logFilter, () => 'snaps' as LogFilter)
+    await openTab($, 'diag', 'log')
     return {}
   })
   on('command.run', { command: 'cockpit-kontext' }, async ($, e) => {
     const L = await langOf($)
     if ((e.args ?? '').trim() === 'text') return { text: inspectReport(inspectSum(), L) }
-    await $.ui.open({ ...panes(L).profiling, focus: true })
+    await openTab($, 'usage')
     return {}
   })
   on('command.run', { command: 'cockpit-profil' }, async ($, e) => {
     const L = await langOf($)
     const arg = (e.args ?? '').trim()
     if (arg === 'text' || arg === 'turn') return { text: profileReport(profileSum(await $.clock.now()), await $.clock.now(), L, arg === 'turn' ? 'turn' : 'session') }
-    await $.ui.open({ ...panes(L).profiling, focus: true })
+    await openTab($, 'diag', 'profile')
     return {}
   })
   on('command.run', { command: 'cockpit-blast' }, async ($, e) => {
@@ -3082,275 +4661,44 @@ export const register: Register = (on, options) => {
     return text === '' ? {} : { text }
   })
 
-  // Zusammenfassung in eigenem Panel rechts: Knöpfe oben, darunter die Abschnitte als einfacher Text (kein Markdown-Rendering).
-  on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-summary' }, async ($, e, next) => {
-    if (!drawsOn(e.surface)) return next(e)
-    const s = await read($, settings)
-    const realCu = await read($, catchUp)
-    // Dev-Mode: Mock-Zusammenfassung, damit die Optik ohne Haiku-Lauf sichtbar ist.
-    const cu = (await read($, devMock)) ? { ...realCu, summary: mockData(await $.clock.now()).summary } : realCu
-    const L = s.lang
-    const marg = s.paneMargins ? 1 : 0
-    const ui = elementsOf($, e)
-    const { Box, Text, Button } = ui
-
-    return (
-      <Box flexDirection="column" gap={1}>
-        {await paneHead($, ui, L)}
-        <Box flexDirection="row" columnGap={2} alignItems="center">
-          <Button key="cu-refresh" label={t(L, 'summary.refresh')} variant="primary" onPress={() => void runCatchUp($, false).catch(() => undefined)} />
-          {pill(ui, 'pane', 'cu-rebuild', t(L, 'summary.rebuild'), () => void rebuildCatchUp($).catch(() => undefined))}
-          <Text dimColor>{cu.status !== '' ? cu.status : cu.updatedAt > 0 ? t(L, 'summary.updated', { time: clockTime(new Date(cu.updatedAt).toISOString()) }) : t(L, 'summary.none')}</Text>
-        </Box>
-        <Text dimColor>{t(L, 'summary.status', { auto: t(L, s.catchUp ? 'common.on' : 'common.off'), lang: t(L, L === 'de' ? 'common.langDe' : 'common.langEn') })}</Text>
-        {cu.summary === '' && <Text dimColor>{t(L, 'summary.empty')}</Text>}
-        {/* Je Überschrift eine Karte im Wechsel der Kartentöne; Aufzählungen mit hängendem Einzug, Absätze mit Luft dazwischen. */}
-        {summarySections(summaryLines(cu.summary)).map((sec, i) => (
-          <Box key={`cu-sec-${i}`} flexDirection="column" rowGap={1} backgroundColor={cycleTint(i)} marginX={marg} paddingX={2} paddingY={1}>
-            {sec.heading !== undefined && <Text bold color={THEME.accent}>{sec.heading}</Text>}
-            {sec.lines.map((l, j) =>
-              l.kind === 'bullet' ? (
-                <Box key={`cu-l-${i}-${j}`} flexDirection="row">
-                  <Box width={2} flexShrink={0}>
-                    <Text color={THEME.accent}>•</Text>
-                  </Box>
-                  <Text wrap="wrap">{l.text}</Text>
-                </Box>
-              ) : (
-                <Text key={`cu-l-${i}-${j}`} wrap="wrap">{l.text}</Text>
-              ),
-            )}
-          </Box>
-        ))}
-      </Box>
-    )
-  })
-
-  // Merge-Request-Panel (GitLab): ausführlich, eigenes Fenster; im Dev-Mode mit Mock-MR.
-  on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-mr' }, async ($, e, next) => {
-    if (!drawsOn(e.surface)) return next(e)
-    const s = await read($, settings)
-    const L = s.lang
-    const marg = s.paneMargins ? 1 : 0
-    const ui = elementsOf($, e)
-    const now = await $.clock.now()
-    await read($, tick)
-    const m = (await read($, devMock)) ? mockData(now) : null
-    return (
-      <ui.Box flexDirection="column">
-        {await paneHead($, ui, L)}
-        {...(await mrPaneBody($, ui, L, m === null ? null : { mr: m.mr, mrMine: m.mrMine, mrDetails: m.mrDetails }, now, marg))}
-      </ui.Box>
-    )
-  })
-
-  on('command.run', { command: 'cockpit-mr' }, async $ => {
-    const L = (await read($, settings)).lang
-    await $.ui.open({ ...panes(L).mr, focus: true })
-    void refreshMr($, true).then(() => loadMineDetails($, true)).catch(() => undefined)
+  on('command.run', { command: 'cockpit-git' }, async $ => {
+    await openTab($, 'git')
     return {}
   })
 
-  // Verlauf der Checkliste: Aufgaben eines Tages in diesem Projekt, Blättern nach Tagen, Tages- und Wochenbericht zum Kopieren.
-  on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-history' }, async ($, e, next) => {
-    if (!drawsOn(e.surface)) return next(e)
-    const s = await read($, settings)
-    const L = s.lang
-    const marg = s.paneMargins ? 1 : 0
-    const ui = elementsOf($, e)
-    const { Box, Text } = ui
-    const today = dayKey(await $.clock.now())
-    const picked = await read($, glanceDay)
-    // Nach einem Reload ist noch kein Tag geladen: heute nachladen, das Atom zeichnet dann neu.
-    if (picked === '') void loadHistory($, today).catch(() => undefined)
-    const day = picked || today
-    const cwd = await projectCwd($)
-    const list = (await read($, glanceList)).filter(r => r.cwd === cwd && (r.steps.length > 0 || r.tools > 0))
-    const go = (d: string) => () => void loadHistory($, d).catch(() => undefined)
-    const at = (ms: number) => clockTime(new Date(ms).toISOString())
-    const OUTCOME_COLOR = { done: THEME.success, needsYou: THEME.warning, stopped: THEME.textMuted } as const
-    const spent = list.reduce((a, r) => a + Math.max(0, r.endedAt - r.startedAt), 0)
-    const stepsDone = list.reduce((a, r) => a + r.steps.filter(x => x.done).length, 0)
-    return (
-      <Box flexDirection="column">
-        {await paneHead($, ui, L)}
-        <Box key="hist-nav" flexDirection="row" columnGap={2} alignItems="center">
-          {pill(ui, 'pane', 'hist-prev', t(L, 'glance.prevDay'), go(shiftDay(day, -1)))}
-          {day !== today && pill(ui, 'pane', 'hist-today', t(L, 'glance.today'), go(today))}
-          {day < today && pill(ui, 'pane', 'hist-next', t(L, 'glance.nextDay'), go(shiftDay(day, 1)))}
-          <Text bold>{day === today ? `${t(L, 'glance.today')} · ${day}` : day}</Text>
-        </Box>
-        {!s.glanceHistory && <Text key="hist-off" color={THEME.warning} wrap="wrap">{t(L, 'glance.historyOff')}</Text>}
-        {tile(
-          ui,
-          'pane',
-          { key: 'hist-card', tint: CARD_TINT.cardPlan ?? TINT.neutral, marg },
-          list.length === 0 && <Text key="hist-none" dimColor>{t(L, 'glance.noJobs')}</Text>,
-          ...list.map(r => (
-            <Box key={`hist-${r.id}`} flexDirection="column" marginBottom={1}>
-              <Box flexDirection="row" columnGap={1}>
-                <Text dimColor>{at(r.startedAt)}</Text>
-                <Box width={10} flexShrink={0}><Text color={OUTCOME_COLOR[r.outcome]}>{t(L, `glance.outcome.${r.outcome}`)}</Text></Box>
-                <Text bold wrap="truncate-end">{r.title}</Text>
-              </Box>
-              <Text dimColor wrap="truncate-end">
-                {'      '}
-                {[r.steps.length > 0 ? t(L, 'glance.stepsOf', { done: r.steps.filter(x => x.done).length, total: r.steps.length }) : '', duration(Math.max(0, r.endedAt - r.startedAt)), r.files.length > 0 ? t(L, 'glance.files', { list: r.files.slice(0, 6).join(', ') + (r.files.length > 6 ? ' …' : '') }) : '']
-                  .filter(x => x !== '')
-                  .join(' · ')}
-              </Text>
-              {r.outcome === 'needsYou' && r.question !== '' && <Text color={THEME.warning} wrap="truncate-end">{'      '}? {r.question}</Text>}
-            </Box>
-          )),
-          list.length > 0 && <Text key="hist-total" bold>{t(L, 'glance.total', { n: list.length, steps: stepsDone, d: duration(spent) })}</Text>,
-        )}
-        <Box key="hist-copy" flexDirection="row" columnGap={2} marginTop={1}>
-          {pill(ui, 'pane', 'hist-day-report', t(L, 'glance.dayReport'), () => void copyReport($, 'day', e.surface).catch(() => undefined))}
-          {pill(ui, 'pane', 'hist-week-report', t(L, 'glance.weekReport'), () => void copyReport($, 'week', e.surface).catch(() => undefined))}
-        </Box>
-      </Box>
-    )
+  on('command.run', { command: 'cockpit-sessions' }, async $ => {
+    await openTab($, 'sessions')
+    return {}
   })
 
-  // Einstellungsseite: jedes Detail von Band, Panel und Chat ein- oder ausblenden; gilt sofort und für alle Sessions.
-  on('ui.render', { component: 'Pane', requestId: 'tenvan-cc-settings' }, async ($, e, next) => {
-    if (!drawsOn(e.surface)) return next(e)
-    const s = await read($, settings)
-    const L = s.lang
-    const marg = s.paneMargins ? 1 : 0
-    const ui = elementsOf($, e)
-    const { Box, Text, Button } = ui
-    const groups = [...new Set(SETTING_DEFS.map(d => d.group))]
-    // Karten wie im Hauptpanel: Leerzeile davor, Grund im Wechsel der Kartentöne; ▾/▸ im Kopf klappt zu (gleicher Speicher
-    // `collapsed` wie das Hauptpanel, Schlüssel mit Präfix `set:`).
-    const folded = await read($, collapsed)
-    const card = (i: number, id: string, head: RenderElement, ...children: RenderChildren[]) => {
-      const key = `set:${id}`
-      const fold = { id: `set-fold-${id}`, open: !folded.includes(key), onToggle: () => void toggleCard($, key).catch(() => undefined) }
-      return tile(ui, 'pane', { key: `set-card-${id}`, tint: cycleTint(i), marg, head, fold }, ...children)
-    }
-    const cardKeys = ['lang', 'tiles', 'breath', ...groups].map(id => `set:${id}`)
-    const keysOf = (group: SettingGroup): SettingKey[] => SETTING_DEFS.filter(d => d.group === group).map(d => d.key)
-    const setAll = (group: SettingGroup, value: boolean) =>
-      void setSettings($, Object.fromEntries(keysOf(group).map(k => [k, value])) as Partial<ModSettings>).catch(() => undefined)
-    // Segment-Paar: die gewählte Sprache als Hauptknopf, die andere gedimmt.
-    const langButton = (lang: UiLang, name: string) =>
-      L === lang ? (
-        <Button key={`lang-${lang}`} label={`● ${name}`} variant="primary" onPress={() => void setSettings($, { lang }).catch(() => undefined)} />
-      ) : (
-        <Button key={`lang-${lang}`} label={`○ ${name}`} dimColor onPress={() => void setSettings($, { lang }).catch(() => undefined)} />
-      )
-
-    return (
-      <Box flexDirection="column">
-        {await paneHead($, ui, L)}
-        <Text dimColor>{t(L, 'settings.intro')}</Text>
-        <Box flexDirection="row" columnGap={2} marginTop={1} marginBottom={marg ? 0 : 1}>
-          {pill(ui, 'pane', 'set-fold-all', t(L, 'settings.foldAll'), () => void foldCards($, cardKeys, true).catch(() => undefined))}
-          {pill(ui, 'pane', 'set-unfold-all', t(L, 'settings.unfoldAll'), () => void foldCards($, cardKeys, false).catch(() => undefined))}
-        </Box>
-        {card(
-          0,
-          'lang',
-          <Text bold>{t(L, 'settings.langTitle')}</Text>,
-          <Text dimColor wrap="wrap">{t(L, 'settings.langHint')}</Text>,
-          // Je Sprache eine Zeile im selben Zwei-Spalten-Raster wie die Schalter darunter.
-          ...([['de', t(L, 'common.langDe')], ['en', t(L, 'common.langEn')]] as const).map(([lang, name]) => (
-            <Box key={`lang-row-${lang}`} flexDirection="row" columnGap={1} marginTop={1}>
-              <Box width={SWITCH_COLS} flexShrink={0}>
-                {langButton(lang, L === lang ? t(L, 'settings.on') : t(L, 'settings.off'))}
-              </Box>
-              <Text bold>{name}</Text>
-            </Box>
-          )),
-        )}
-        {card(
-          1,
-          'tiles',
-          <Text bold>{t(L, 'settings.agentTilesTitle')}</Text>,
-          <Text dimColor wrap="wrap">{t(L, 'settings.agentTilesHint')}</Text>,
-          <Box key="tiles-row" flexDirection="row" columnGap={1} marginTop={1} alignItems="center">
-            {pill(ui, 'pane', 'tiles-minus', ' − ', () => void setSettings($, { agentTiles: s.agentTiles - TILES.step }).catch(() => undefined))}
-            <Box width={4} justifyContent="center"><Text bold>{s.agentTiles}</Text></Box>
-            {pill(ui, 'pane', 'tiles-plus', ' + ', () => void setSettings($, { agentTiles: s.agentTiles + TILES.step }).catch(() => undefined))}
-          </Box>,
-        )}
-        {card(
-          1,
-          'breath',
-          <Text bold>{t(L, 'settings.breathTitle')}</Text>,
-          <Text dimColor wrap="wrap">{t(L, 'settings.breathHint')}</Text>,
-          ...BREATHS.map(b => (
-            <Box key={`breath-row-${b.key}`} flexDirection="row" columnGap={1} marginTop={1}>
-              <Box width={SWITCH_COLS} flexShrink={0}>
-                {s.breathKey === b.key ? (
-                  <Button key={`breath-${b.key}`} label={`● ${t(L, 'settings.on')}`} variant="primary" onPress={() => undefined} />
-                ) : (
-                  <Button key={`breath-${b.key}`} label={`○ ${t(L, 'settings.off')}`} dimColor onPress={() => void setSettings($, { breathKey: b.key }).catch(() => undefined)} />
-                )}
-              </Box>
-              <Text bold color={BREATH_COLOR[b.key]}>{t(L, `breath.name.${b.key}`)}</Text>
-            </Box>
-          )),
-        )}
-        {groups.map((group, i) => {
-          const keys = keysOf(group)
-          return card(
-            i + 2,
-            group,
-            <Box flexGrow={1} flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="center" columnGap={2}>
-              <Text bold>{t(L, `settings.group.${group}`)}</Text>
-              <Box flexDirection="row" flexWrap="wrap" columnGap={2} alignItems="center">
-                <Text dimColor>{t(L, 'settings.count', { n: keys.filter(k => s[k]).length, m: keys.length })}</Text>
-                {pill(ui, 'pane', `grp-on-${i}`, t(L, 'settings.allOn'), () => setAll(group, true))}
-                {pill(ui, 'pane', `grp-off-${i}`, t(L, 'settings.allOff'), () => setAll(group, false))}
-              </Box>
-            </Box>,
-            ...keys.map(k => {
-              const flip = () => void setSettings($, { [k]: !s[k] } as Partial<ModSettings>).catch(() => undefined)
-              // Der Desktop zeichnet keine Text-Kinder eines Buttons, nur das Label: der Schalterzustand steht deshalb im Label.
-              return (
-                // Zwei Spalten: Schalter in fester Breite links, Label und Hinweis bündig rechts daneben.
-                <Box key={`row-${k}`} flexDirection="row" columnGap={1} marginTop={1}>
-                  <Box width={SWITCH_COLS} flexShrink={0}>
-                    {s[k] ? (
-                      <Button key={`set-${k}`} label={`● ${t(L, 'settings.on')}`} variant="primary" onPress={flip} />
-                    ) : (
-                      <Button key={`set-${k}`} label={`○ ${t(L, 'settings.off')}`} dimColor onPress={flip} />
-                    )}
-                  </Box>
-                  <Box flexDirection="column" flexShrink={1}>
-                    <Text bold wrap="truncate-end">{settingLabel(k, L)}</Text>
-                    <Text dimColor wrap="wrap">{settingHint(k, L)}</Text>
-                  </Box>
-                </Box>
-              )
-            }),
-          )
-        })}
-        <Box flexDirection="row" paddingTop={1} columnGap={2}>
-          <Button key="set-reset" label={t(L, 'settings.reset')} onPress={() => void resetSettings($).catch(() => undefined)} />
-          {pill(ui, 'pane', 'set-reload', t(L, 'settings.reload'), () => void reloadSettings($).catch(() => undefined))}
-        </Box>
-      </Box>
-    )
-  })
-
+  // Das eine Cockpit-Panel: Kopf mit Titel, Modellzeile und Reitern, darunter nur der gewählte Reiter (Atom `paneTab`).
+  // Jetzt: Arbeit, Plan, Helfer, letzter Turn · Verbrauch: Limits, Kontext, Kosten · Diagnose: Hinweise, Protokoll, Profil,
+  // Blast-Radius · Git: Stand und Ablauf · Rückblick: Zusammenfassung und Verlauf · Einstellungen.
   on('ui.render', { component: 'Pane', requestId: 'tenvan-cc' }, async ($, e, next) => {
     if (!drawsOn(e.surface)) return next(e)
     await read($, tick)
     const now = await $.clock.now()
     const s = await read($, settings)
-    const realBd = await read($, breakdown)
-    const bdNote = await read($, breakdownNote)
-    const [mark, realPlace] = await Promise.all([read($, logo), read($, repo)])
-    const [realU, realTn, realGate, realList, realEntries, realLast, realHit, info] = await Promise.all([
-      read($, usage), read($, turn), read($, gate), read($, agents), read($, log), read($, lastTurnAt), read($, cacheHit), read($, about),
-    ])
+    // Nur lesen, was der gewählte Reiter zeigt: jedes gelesene Atom zeichnet das Panel bei Änderung neu (Einstellungen, Rückblick
+    // und Git zeichnen so nicht bei jedem Tool-Aufruf; Git liest dort sonst alle 20 s neu).
+    const tab = await read($, paneTab)
+    const needs = (...tabs: PaneTab[]) => tabs.includes(tab)
+    const realBd = needs('usage') ? await read($, breakdown) : null
+    const bdNote = needs('usage') ? await read($, breakdownNote) : ''
+    const realSessions = needs('sessions') ? await read($, sessionsFile) : null
+    const realPlace = needs('now', 'git') ? await read($, repo) : null
+    const realU = needs('usage', 'diag') ? await read($, usage) : null
+    const realTn = needs('now') ? await read($, turn) : null
+    const realGate = needs('now', 'diag') ? await read($, gate) : GATE0
+    const realList = needs('now') ? await read($, agents) : []
+    const realEntries = needs('now', 'diag') ? await read($, log) : []
+    const realLast = needs('usage', 'diag') ? await read($, lastTurnAt) : null
+    const realHit = needs('usage') ? await read($, cacheHit) : null
     // Dev-Mode: alle Panel-Werte aus mockData, die echten Atome bleiben unberührt.
     const dev = await read($, devMock)
     const m = dev ? mockData(now) : null
     const place = m?.repo ?? realPlace
+    const sess = m?.sessions ?? realSessions
     const u = m?.usage ?? realU
     const tn = m?.turn ?? realTn
     const g = gateOf(m?.gate ?? realGate)
@@ -3361,10 +4709,10 @@ export const register: Register = (on, options) => {
     const cache = u ? cacheLeftMs(last, u.limits.length > 0, now) : 0
     const bdPanel = m?.breakdown ?? realBd
     const L = s.lang
-    const P = panes(L)
     const ui = elementsOf($, e)
-    const { Box, Text, Button } = ui
+    const { Box, Text } = ui
     const Svg = 'Svg' in ui ? ui.Svg : undefined
+    const marg = s.paneMargins ? 1 : 0
     // Kopf jeder Karte: ▾/▸ klappt zu (nur Session, Atom `collapsed`), ✕ schaltet die Karte in den Einstellungen ab.
     const folded = await read($, collapsed)
     const isOpen = (key: SettingKey) => !folded.includes(key)
@@ -3375,8 +4723,7 @@ export const register: Register = (on, options) => {
       </Box>
     )
     // Eine leere Zeile zwischen den Karten: mit gedimmtem Grund braucht es eine sichtbare Lücke, Box rechnet nur in ganzen Zeilen.
-    const gap = () => marg ? <Box height={1} /> : null
-    // Jede Karte trägt ihren Abstand nach oben selbst: abgeschaltete Karten hinterlassen keine doppelte Lücke.
+    const gap = () => (marg ? <Box height={1} /> : null)
     const spaced = (inner: RenderElement) => (
       <Box flexDirection="column" flexGrow={1}>
         {gap()}
@@ -3391,7 +4738,6 @@ export const register: Register = (on, options) => {
       </Box>
     )
     const pct = (n: number) => `${String(Math.round(n)).padStart(3)}%`
-    const marg = s.paneMargins ? 1 : 0
     const card = (key: SettingKey, name: string, ...children: RenderChildren[]) =>
       tile(
         ui,
@@ -3411,6 +4757,12 @@ export const register: Register = (on, options) => {
         },
         ...children,
       )
+    // Unterreiter (Diagnose, Rückblick) und Filter: eine Link-Zeile mit Abstand nach unten.
+    const subRow = (key: string, row: RenderElement) => (
+      <Box key={key} paddingX={marg} marginTop={marg} marginBottom={marg ? 0 : 1}>
+        {row}
+      </Box>
+    )
 
     // Verlauf der Subagents wie in Flightdeck: Name links, Balken auf der gemeinsamen Zeitachse (ältester Start bis jetzt).
     const timeline = (all: readonly Pick<Agent, 'id' | 'description' | 'since' | 'status' | 'durationMs'>[]) => {
@@ -3427,342 +4779,437 @@ export const register: Register = (on, options) => {
         )
       })
     }
-    const tasks = m?.bgTasks ?? (await read($, bgTasks))
-    // Kontext-Diät: nie aufgerufene MCP-Server mit ihren Schema-Tokens; der Knopf schreibt /mcp ins Eingabefeld zum Abschalten.
-    const dietRows = () =>
-      diet.length === 0
-        ? []
-        : [
-            <Box key="diet-head" flexDirection="row" columnGap={2} marginTop={1}>
-              <Text color={THEME.warning}>{t(L, 'diet.title', { tokens: tokens(diet.reduce((n, r) => n + r.tokens, 0)) })}</Text>
-              {pill(ui, 'pane', 'diet-mcp', t(L, 'diet.action'), () => void $.prompt.fill({ text: '/mcp' }).catch(() => undefined))}
-            </Box>,
-            ...diet.slice(0, 6).map(r => <Text key={`diet-${r.server}`} dimColor wrap="truncate-end">  {t(L, 'diet.row', { server: r.server, tokens: tokens(r.tokens), n: r.tools })}</Text>),
-          ]
-    const diet = m ? mcpDiet(m.mcpTools, m.usedMcp) : mcpDiet(await read($, mcpTools), await read($, usedMcp))
-    const turns = m?.turnLog ?? (await read($, turnLog))
     const brakedIds = await read($, braked)
     const brake = async (a: Agent) => {
       await update($, braked, ids => (ids.includes(a.id) ? ids : [...ids, a.id]))
       await note($, 'agent', t(L, 'log.braked', { name: a.description }))
     }
-    const working = s.animation && tn !== null && tn.durationMs === undefined
     const taskState = (x: BgTask) => {
       const bad = x.status === 'failed' || x.status === 'killed'
       const d = duration(x.status === 'running' || x.durationMs === undefined ? now - x.since : x.durationMs)
       return x.status === 'running' ? `● ${t(L, 'agents.running', { d })}` : `${bad ? '✗' : '✓'} ${x.status} ${d}`
     }
+    // Öffnen: das Transcript des Subagents in der Hauptansicht (nur auf Klick der Person). Das kann nur das Terminal; der Desktop
+    // antwortet „no main view here“, ein beendeter Subagent „that agent has ended“. Dann zeigt eine Karte im Reiter Jetzt seinen
+    // Verlauf aus `$.session.messages({ agentId })`; ein zweiter Klick auf denselben schließt sie.
+    const openView = async (id: string) => {
+      const shown = await read($, agentView)
+      if (shown?.id === id) return update($, agentView, () => null)
+      const r = await $.ui.view({ agentId: id })
+      if ('deny' in r && typeof r.deny === 'string') await loadView(id)
+    }
+    const loadView = async (id: string) => {
+      const got = await $.session.messages({ agentId: id })
+      const at = await $.clock.now()
+      const title = list.find(a => a.id === id)?.description ?? id
+      const v: AgentView = Array.isArray(got) ? { id, title, lines: agentTranscript(got), note: '', at } : { id, title, lines: [], note: got.deny, at }
+      await update($, agentView, () => v)
+    }
+    // Stopp einer Hintergrundaufgabe: TaskStop ist Sache des Modells, darum steht der Auftrag im Eingabefeld.
+    const stopTask = async (x: BgTask) => {
+      await $.prompt.fill({ text: stopTaskPrompt(x.id, x.description, L) })
+      $.ui.toast(t(L, 'tasks.stopFilled'))
+    }
+    // Symbolknöpfe vor jedem Eintrag, nur was geht: Stopp (■) solange er läuft (Subagent: bremsen, Aufgabe: Auftrag an Claude),
+    // Öffnen (↗) nur bei Subagents. Geht nichts, fehlt die Zeile.
+    const rowButtons = (key: string, id: string, stop: (() => Promise<unknown>) | null) => {
+      if (stop === null && key !== 'ag') return null
+      return (
+        <Box key={`${key}-btns`} flexDirection="row" columnGap={1}>
+          {stop !== null && pill(ui, 'pane', key === 'ag' ? `brake-${id}` : `${key}-stop-${id}`, t(L, 'agents.stop'), () => void stop().catch(() => undefined))}
+          {key === 'ag' && pill(ui, 'pane', `ag-open-${id}`, t(L, 'agents.open'), () => void openView(id).catch(() => undefined))}
+        </Box>
+      )
+    }
+
+    // ── Karten ──────────────────────────────────────────────────────────────────────────────────────────────────────
+    // Lade-Karte, solange ein Turn läuft; mit Atemübung (früher als 56-px-Zeile im Band) und dem letzten Log-Eintrag. Die Übung
+    // animiert sich selbst (SMIL): das Panel liest `frame` nicht, sonst zeichnete es 4×/s neu und der erste Klick verpuffte
+    // (Entscheidungslog 2026-10-12).
+    const workingCard = async () => {
+      if (!s.animation || tn === null || tn.durationMs !== undefined) return null
+      const b = breathOf(s.breathKey)
+      let breathRow: RenderElement | null = null
+      if (s.breath && Svg) {
+        const labels = { in: t(L, 'breath.in'), sip: t(L, 'breath.sip'), hold: t(L, 'breath.hold'), out: t(L, 'breath.out') }
+        const idx = BREATHS.findIndex(x => x.key === b.key)
+        const nextKey = (BREATHS[(idx + 1) % BREATHS.length] ?? BREATHS[0])!.key
+        breathRow = (
+          <Box key="breath-row" flexDirection="row" columnGap={2} alignItems="center" marginTop={1}>
+            <Svg key="breath" source={breathSvg(b, labels, t(L, `breath.name.${b.key}`), BREATH_COLOR[b.key], THEME.textMuted)} alt={t(L, 'settings.breath')} height={56} />
+            {link(ui, 'breath-next', t(L, 'breath.next'), () => void setSettings($, { breathKey: nextKey }).catch(() => undefined), { tone: 'muted' })}
+          </Box>
+        )
+      }
+      return spaced(
+        <Box flexDirection="column" backgroundColor={TINT.accent} marginX={marg} paddingX={1} paddingY={1}>
+          <Text bold color={THEME.accent}>● {t(L, 'panel.working', { d: duration(now - tn.startedAt), tools: tn.tools, edits: tn.edits })}</Text>
+          {entries.length > 0 && (
+            <Text wrap="truncate-end">
+              <Text dimColor>{t(L, 'panel.lastEvent', { text: '' })}</Text>
+              {entryView(ui, entries[entries.length - 1] as LogEntry, true)}
+            </Text>
+          )}
+          {breathRow}
+        </Box>,
+      )
+    }
+
+    // Plan-Karte: ganzer Plan des aktuellen Jobs mit Start, voraussichtlichem Ende, Dauer je Schritt und Dateien.
+    const planCard = async () => {
+      if (!s.cardPlan) return null
+      const j = m?.job ?? (await read($, glanceJob))
+      if (j === null) return card('cardPlan', t(L, 'glance.cardTitle'), <Text dimColor>{t(L, 'glance.noJob')}</Text>)
+      const avg = await read($, glanceAvg)
+      // Im Dev-Mode zählt die Mock-Freigabe nicht, sonst stünde der Mock-Job immer auf „braucht dich“.
+      const asking = m === null ? g.ask : 0
+      const shown = glancePhase(j, now, asking)
+      const eta = etaOf(j, now, avg)
+      const guess = stepGuessMs(j, avg)
+      const { done, total } = progressOf(j)
+      const at = (ms: number) => clockTime(new Date(ms).toISOString())
+      const when = [
+        t(L, 'glance.started', { at: at(j.startedAt) }),
+        eta !== null && !eta.longer ? t(L, 'glance.until', { at: at(now + eta.ms) }) : eta?.longer ? t(L, 'glance.longer') : '',
+        j.endedAt !== undefined && shown !== 'working' && shown !== 'stuck' ? t(L, 'glance.took', { d: duration(j.endedAt - j.startedAt) }) : '',
+      ].filter(x => x !== '')
+      const icon = (st: JobStep) => (st.status === 'done' ? '✓' : st.status === 'active' ? '▸' : '○')
+      const tone = (st: JobStep) => (st.status === 'done' ? THEME.success : st.status === 'active' ? THEME.accent : THEME.textMuted)
+      const timeOf = (st: JobStep) => {
+        const ms = stepMs(st, now)
+        if (st.status === 'done') return ms === null ? '' : duration(ms)
+        const exp = guess === null ? '' : t(L, 'glance.expected', { d: duration(guess) })
+        if (st.status === 'active') return [ms === null ? '' : duration(ms), exp].filter(x => x !== '').join(' / ')
+        return exp
+      }
+      return card(
+        'cardPlan',
+        t(L, 'glance.cardTitle'),
+        <Box key="plan-head" flexDirection="row" columnGap={1}>
+          <Text bold color={PHASE_COLOR[shown]}>{t(L, `glance.${shown}`)}</Text>
+          <Text bold wrap="truncate-end">{j.title}</Text>
+        </Box>,
+        <Text key="plan-when" dimColor wrap="truncate-end">{[...when, ...(total > 0 ? [t(L, 'glance.progress', { done, total })] : [])].join(' · ')}</Text>,
+        shown === 'needsYou' && (asking > 0 && j.phase === 'working' ? t(L, 'glance.permission') : j.question) !== '' && (
+          <Text key="plan-q" color={THEME.warning} wrap="wrap">? {asking > 0 && j.phase === 'working' ? t(L, 'glance.permission') : j.question}</Text>
+        ),
+        j.steps.length === 0 && <Text key="plan-none" dimColor>{t(L, 'glance.noPlan')}</Text>,
+        j.steps.length === 0 && j.files.length > 0 && <Text key="plan-files" color={THEME.textMuted} wrap="truncate-end">{t(L, 'glance.files', { list: j.files.join(', ') })}</Text>,
+        ...j.steps.map((st, i) => (
+          <Box key={`plan-s-${i}`} flexDirection="column" marginTop={i === 0 ? 1 : 0}>
+            <Box flexDirection="row" justifyContent="space-between" columnGap={2}>
+              <Text color={tone(st)} bold={st.status === 'active'} wrap="truncate-end">{icon(st)} {st.name}</Text>
+              <Text dimColor>{timeOf(st)}</Text>
+            </Box>
+            {st.files.length > 0 && <Text color={THEME.textMuted} wrap="truncate-end">{'  '}{t(L, 'glance.files', { list: st.files.join(', ') })}</Text>}
+          </Box>
+        )),
+        j.act !== null && j.phase === 'working' && <Text key="plan-act" color={THEME.textMuted} wrap="truncate-end">{t(L, 'glance.now', { what: actText(j, L) })}</Text>,
+        // Verlauf früherer Aufgaben steht im Reiter Rückblick.
+        s.glanceHistory && <Box key="plan-hist" marginTop={1}>{link(ui, 'glance-history', t(L, 'glance.history'), () => void openHistory($).catch(() => undefined), { tone: 'muted' })}</Box>,
+      )
+    }
+
+    // Arbeitsverzeichnis: Session- und Prozess-Ordner, Worktree, verknüpfte Sessions. Ohne Git-Teil (Schalter „Git-Panel“ aus)
+    // stehen hier auch Branch, Commit, Änderungen und Upstream (früher eigene Karte „Git“).
+    const workdirCard = async () => {
+      const d = await read($, dirs)
+      if (!s.cardWorkdir || (place === null && d.root === '')) return null
+      const out = await read($, dirAlert)
+      const ls = m?.linked ?? (await read($, linked))
+      return card(
+        'cardWorkdir',
+        t(L, 'panel.workdir'),
+        <Box key="wd-dirs" flexDirection="column" marginBottom={1}>
+          {labelRow(ui, 'pane', 'wd-root', t(L, 'dir.session'), <Text color={THEME.accent} bold wrap="truncate-end">{d.root || place?.path}</Text>)}
+          {d.cwd !== '' && d.cwd !== d.root && labelRow(ui, 'pane', 'wd-cwd', t(L, 'dir.process'), d.cwd)}
+          {out !== null && labelRow(ui, 'pane', 'wd-out', t(L, 'dir.outside'), <Text color={THEME.error} bold wrap="truncate-end">⚠ {out.dir}</Text>)}
+        </Box>,
+        ...(place === null ? [] : repoPathRows(place, L)).map(([label, value]) => labelRow(ui, 'pane', `wd-row-${label}`, label, value)),
+        ...(place === null || s.gitPane ? [] : repoGitRows(place, L)).map(([label, value]) =>
+          labelRow(ui, 'pane', `git-row-${label}`, label, place?.dirty === null && label === t(L, 'panel.repoChanges') ? (
+            <Box flexDirection="row" columnGap={2} flexShrink={1}>
+              <Text wrap="truncate-end">{value}</Text>
+              {link(ui, 'git-trust', t(L, 'repo.trust'), () => void trustPrompt($, L).then(async text => { if (text === null) $.ui.toast(t(L, 'repo.trustFail')); else await $.prompt.fill({ text }) }).catch(() => undefined))}
+            </Box>
+          ) : value),
+        ),
+        // Verknüpfte Sessions (nur Desktop): Status, Name, Branch; neueste zuerst wie die App sie liefert.
+        ls.length > 0 && (
+          <Box key="wd-linked" flexDirection="column" marginTop={1}>
+            <Text dimColor>{t(L, 'panel.linked', { n: ls.length })}</Text>
+            {ls.map(x => (
+              <Box key={`wd-l-${x.id}`} flexDirection="row" columnGap={1}>
+                <Text color={x.archived ? THEME.textMuted : x.running ? THEME.success : THEME.accent}>{x.archived ? '◌' : x.running ? '●' : '○'}</Text>
+                <Box width={10} flexShrink={0}><Text dimColor>{t(L, x.archived ? 'panel.linkedArchived' : x.running ? 'panel.linkedRunning' : 'panel.linkedIdle')}</Text></Box>
+                <Text bold={!x.archived} dimColor={x.archived} wrap="truncate-end">{x.title || x.name}</Text>
+                {x.branch !== '' && <Text color={THEME.textMuted} wrap="truncate-end">⎇ {x.branch}</Text>}
+              </Box>
+            ))}
+          </Box>
+        ),
+      )
+    }
+
+    // Kontextfenster: Kategorien mit Balken, dazu die Kontext-Diät (nie aufgerufene MCP-Server mit ihren Schema-Tokens).
+    const contextCard = async () => {
+      if (!s.cardContext) return null
+      if (bdPanel === null) return card('cardContext', t(L, 'panel.context'), <Text dimColor>{bdNote !== '' ? bdNote : t(L, 'panel.contextPending')}</Text>)
+      const diet = m ? mcpDiet(m.mcpTools, m.usedMcp) : mcpDiet(await read($, mcpTools), await read($, usedMcp))
+      return card(
+        'cardContext',
+        t(L, 'panel.context'),
+        <Text dimColor>{breakdownTitle(bdPanel, L)}</Text>,
+        Svg && <Svg source={breakdownBarSvg(bdPanel)} alt={breakdownTitle(bdPanel, L)} height={14} />,
+        ...bdPanel.rows.map((r, i) => (
+          <Box key={`bd-${i}`} flexDirection="row" columnGap={1}>
+            <Text color={categoryColor(r, i)}>■</Text>
+            <Box width={24}><Text>{r.name}</Text></Box>
+            <Box width={7} justifyContent="flex-end"><Text dimColor>{tokens(r.tokens)}</Text></Box>
+            <Box width={7} justifyContent="flex-end"><Text bold>{r.percent.toFixed(1)}%</Text></Box>
+            <Text color={categoryColor(r, i)}>{bar(r.percent, 12)}</Text>
+          </Box>
+        )),
+        ...(diet.length === 0
+          ? []
+          : [
+              <Box key="diet-head" flexDirection="row" columnGap={2} marginTop={1}>
+                <Text color={THEME.warning}>{t(L, 'diet.title', { tokens: tokens(diet.reduce((n, r) => n + r.tokens, 0)) })}</Text>
+                {link(ui, 'diet-mcp', t(L, 'diet.action'), () => void $.prompt.fill({ text: '/mcp' }).catch(() => undefined))}
+              </Box>,
+              ...diet.slice(0, 6).map(r => <Text key={`diet-${r.server}`} dimColor wrap="truncate-end">  {t(L, 'diet.row', { server: r.server, tokens: tokens(r.tokens), n: r.tools })}</Text>),
+            ]),
+      )
+    }
+
+    // Übersicht: Kontext in Tokens, Limits mit Takt und Reset, Kosten, Prompt-Cache.
+    const overviewCard = () =>
+      s.cardOverview &&
+      card(
+        'cardOverview',
+        t(L, 'panel.overview'),
+        u === null && <Text dimColor>{t(L, 'panel.noMeasure')}</Text>,
+        u !== null && overviewRow('ov-ctx', t(L, 'common.context'), THEME[contextColor(u.contextPercent ?? 0)], `${bar(u.contextPercent ?? 0)} ${pct(u.contextPercent ?? 0)} · ${tokens(u.contextTokens ?? 0)} / ${tokens(u.contextWindow)}`),
+        ...(u?.limits.map(l => {
+          const p = pace(l, now)
+          const rest = [p !== undefined ? paceText(p, L) : '', l.resetsAt ? t(L, 'panel.reset', { at: resetLabel(l.resetsAt, now, L) }) : ''].filter(x => x !== '')
+          return overviewRow(`ov-${l.kind}`, LIMIT_LABEL[l.kind] ?? l.kind, THEME[limitColor(l, now)], [`${bar(l.percentUsed)} ${pct(l.percentUsed)}`, ...rest].join(' · '))
+        }) ?? []),
+        u?.usd !== undefined && overviewRow('ov-usd', t(L, 'panel.costLabel'), undefined, usd(u.usd)),
+        u !== null && overviewRow('ov-cache', t(L, 'band.cache'), cache === 0 ? THEME.textMuted : undefined, `${cache === 0 ? t(L, 'band.cold') : duration(cache)}${hit !== null ? ` · ${t(L, 'panel.cacheHit', { n: hit })}` : ''}`),
+      )
+
+    // Letzter Turn mit Turn-Bilanz (Kosten je Turn, teure Turns ohne Edit gelb).
+    const turnCard = async () => {
+      if (!s.cardTurn) return null
+      const turns = m?.turnLog ?? (await read($, turnLog))
+      return card(
+        'cardTurn',
+        t(L, 'panel.turn'),
+        tn === null && <Text dimColor>{t(L, 'panel.noTurn')}</Text>,
+        tn !== null && (
+          <Text>
+            {tn.durationMs === undefined ? t(L, 'panel.runningSince', { d: duration(now - tn.startedAt) }) : duration(tn.durationMs)} ·{' '}
+            {t(L, 'panel.turnStats', { tools: tn.tools, edits: tn.edits, errors: tn.errors })}
+            {tn.usdDelta !== undefined ? ` · +${usd(tn.usdDelta)}` : ''}
+          </Text>
+        ),
+        turns.length > 1 && <Text dimColor>{t(L, 'turn.bars', { usd: usd(WASTE_USD) })}</Text>,
+        turns.length > 1 &&
+          (Svg ? (
+            <Svg source={turnBarsSvg(turns)} alt={t(L, 'turn.bars', { usd: usd(WASTE_USD) })} height={24} />
+          ) : (
+            <Text key="turn-bars">{turnBarsText(turns).map((x, i) => <Text key={`tb-${i}`} color={x.isWaste ? THEME.warning : THEME.accentFill}>{x.glyph}</Text>)}</Text>
+          )),
+        turns.some(isWasteful) && <Text color={THEME.warning}>{t(L, 'turn.waste', { n: turns.filter(isWasteful).length })}</Text>,
+      )
+    }
+
+    // Subagents: nur laufende als Kachel (die neuesten `agentTiles`); beendete und weitere als Zeile im Verlauf, darunter die
+    // gemeinsame Zeitachse aller Subagents.
+    const agentsCard = () => {
+      if (!s.cardAgents) return null
+      const { tiles, past } = splitLive(list, a => LIVE.has(a.status), s.agentTiles)
+      return card(
+        'cardAgents',
+        t(L, 'agents.title', { live: list.filter(a => LIVE.has(a.status)).length, all: list.length }),
+        list.length === 0 && <Text dimColor>{t(L, 'agents.none')}</Text>,
+        tiles.length > 0 && <Box flexDirection="row" flexWrap="wrap" columnGap={1}>
+          {tiles.map(({ item: a, n }) => {
+            const isBraked = brakedIds.includes(a.id)
+            const heavy = isAgentHeavy(a, now)
+            const tone: Tone = heavy || isBraked ? 'warning' : 'accent'
+            return (
+              <Box key={`ag-${a.id}`} flexDirection="column" width={42} backgroundColor={TINT[tone]} marginX={marg} paddingX={1} paddingY={1}>
+                <Box flexDirection="row" columnGap={1}>
+                  {rowButtons('ag', a.id, isBraked ? null : () => brake(a))}
+                  <Text wrap="truncate-end">
+                    {chip(ui, 'pane', '', String(n))} <Text bold>{a.description}</Text>
+                  </Text>
+                </Box>
+                <Text wrap="truncate-end">{a.type}{a.model !== undefined ? ` · ${a.model}` : ''}</Text>
+                <Text dimColor wrap="truncate-end">{agentStats(a, L)}</Text>
+                {agentFlags(a, L) !== '' && <Text dimColor wrap="truncate-end">{agentFlags(a, L)}</Text>}
+                {heavy && <Text color={THEME.warning} wrap="truncate-end">{t(L, 'agents.heavy', { steps: a.steps ?? 0, d: duration(now - a.since) })}</Text>}
+                {isBraked && <Text color={THEME.warning}>{t(L, 'agents.braked')}</Text>}
+                <Text color={THEME.accent}>{t(L, 'agents.running', { d: duration(now - a.since) })}</Text>
+              </Box>
+            )
+          })}
+        </Box>,
+        list.length > 0 && <Text dimColor>{t(L, 'agents.timeline')}</Text>,
+        // Verlauf: beendete Subagents (und laufende über der Kachelzahl) als Zeile mit Öffnen (↗), laufende zusätzlich mit Stopp.
+        ...past.map(({ item: a, n }) => {
+          const live = LIVE.has(a.status)
+          const isKilled = a.status === 'killed' || a.status === 'failed'
+          const d = duration(live || a.durationMs === undefined ? now - a.since : a.durationMs)
+          return (
+            <Box key={`ago-${a.id}`} flexDirection="row" columnGap={1}>
+              {rowButtons('ag', a.id, live && !brakedIds.includes(a.id) ? () => brake(a) : null)}
+              <Text wrap="truncate-end">
+                <Text dimColor={!live}>{chip(ui, 'pane', '', String(n))} {a.description} · {a.type}{a.model !== undefined ? ` · ${a.model}` : ''} · </Text>
+                <Text color={live ? THEME.accent : isKilled ? THEME.error : THEME.success}>{t(L, live ? 'agents.running' : isKilled ? 'agents.killed' : 'agents.done', { d })}</Text>
+              </Text>
+            </Box>
+          )
+        }),
+        ...timeline(list),
+      )
+    }
+
+    // Verlauf eines Subagents (↗ in der Subagent-Karte), solange die Karte Subagents an ist.
+    const agentViewCard = async () => {
+      const v = s.cardAgents ? await read($, agentView) : null
+      if (v === null) return null
+      const tone = (k: AgentView['lines'][number]['kind']) => (k === 'error' ? THEME.error : k === 'tool' ? THEME.textMuted : k === 'user' ? THEME.accent : undefined)
+      return card(
+        'cardAgents',
+        t(L, 'agents.viewTitle', { name: v.title }),
+        <Box key="agv-links" flexDirection="row" columnGap={2}>
+          {link(ui, 'agv-reload', t(L, 'agents.viewReload'), () => void loadView(v.id).catch(() => undefined), { tone: 'muted' })}
+          {link(ui, 'agv-close', t(L, 'agents.viewClose'), () => void update($, agentView, () => null).catch(() => undefined), { tone: 'muted' })}
+        </Box>,
+        v.note !== '' && <Text key="agv-note" color={THEME.warning} wrap="wrap">{t(L, 'agents.viewDeny', { why: v.note })}</Text>,
+        v.note === '' && v.lines.length === 0 && <Text key="agv-none" dimColor>{t(L, 'agents.viewEmpty')}</Text>,
+        ...v.lines.map((l, i) => (
+          <Text key={`agv-${i}`} color={tone(l.kind)} dimColor={l.kind === 'tool'} wrap="wrap">
+            {l.kind === 'user' ? '› ' : l.kind === 'assistant' ? '◆ ' : '  '}{l.text}
+          </Text>
+        )),
+      )
+    }
+
+    // Hintergrundaufgaben (Shell-Jobs): wie die Subagents, nur laufende als Kachel, beendete als Zeile im Verlauf.
+    const tasksCard = async () => {
+      if (!s.cardTasks) return null
+      const tasks = m?.bgTasks ?? (await read($, bgTasks))
+      const { tiles, past } = splitLive(tasks, x => x.status === 'running')
+      return card(
+        'cardTasks',
+        t(L, 'tasks.title', { live: tiles.length, all: tasks.length }),
+        tasks.length === 0 && <Text dimColor>{t(L, 'tasks.none')}</Text>,
+        tiles.length > 0 && <Box flexDirection="row" flexWrap="wrap" columnGap={1}>
+          {tiles.map(({ item: x, n }) => {
+            // Befehl und Ergebnis zusammen höchstens TASK_LINES Zeilen; der Rest als „+n“.
+            const body = [
+              ...(x.command !== undefined && x.command !== x.description ? x.command.split(/\r?\n/).map((l, j) => `${j === 0 ? '$ ' : '  '}${l}`) : []),
+              ...(x.summary !== undefined && x.summary !== '' ? x.summary.split(/\r?\n/) : []),
+            ]
+            const shown = body.slice(0, body.length > TASK_LINES ? TASK_LINES - 1 : TASK_LINES)
+            return (
+              <Box key={`bg-${x.id}`} flexDirection="column" width={42} backgroundColor={TINT.accent} marginX={marg} paddingX={1} paddingY={1}>
+                <Box flexDirection="row" columnGap={1}>
+                  {rowButtons('bg', x.id, () => stopTask(x))}
+                  <Text wrap="truncate-end">
+                    {chip(ui, 'pane', '', String(n))} <Text bold>{x.description}</Text>
+                  </Text>
+                </Box>
+                {shown.map((l, j) => <Text key={`bgl-${x.id}-${j}`} color={THEME.textMuted} wrap="truncate-end">{l}</Text>)}
+                {body.length > shown.length && <Text dimColor>{t(L, 'tasks.more', { n: body.length - shown.length })}</Text>}
+                <Text color={THEME.accent}>{taskState(x)}</Text>
+              </Box>
+            )
+          })}
+        </Box>,
+        tasks.length > 0 && <Text dimColor>{t(L, 'agents.timeline')}</Text>,
+        // Verlauf: beendete Aufgaben als Zeile mit Status und erster Ergebniszeile; ohne Knöpfe, denn Stopp gibt es nur, solange sie läuft.
+        ...past.map(({ item: x, n }) => {
+          const bad = x.status === 'failed' || x.status === 'killed'
+          const result = x.summary?.split(/\r?\n/).find(l => l.trim() !== '')
+          return (
+            <Box key={`bgo-${x.id}`} flexDirection="row">
+              <Text wrap="truncate-end">
+                <Text dimColor>{chip(ui, 'pane', '', String(n))} {x.description} · </Text>
+                <Text color={bad ? THEME.error : THEME.success}>{taskState(x)}</Text>
+                {result !== undefined && <Text dimColor> · {result}</Text>}
+              </Text>
+            </Box>
+          )
+        }),
+        ...timeline(tasks),
+      )
+    }
+
+    // Über das Cockpit: Version und Build, Funktionsübersicht (früher Knopf „Features“ im Band) und Skin-Demo.
+    const aboutCard = async () =>
+      tile(
+        ui,
+        'pane',
+        { key: 'card-about', tint: cycleTint(1), marg, grow: true, head: <Text bold>{t(L, 'about.title')}</Text> },
+        <Text key="about-ver" dimColor wrap="truncate-end">{title(await read($, about))}</Text>,
+        <Box key="about-links" flexDirection="row" columnGap={2} flexWrap="wrap">
+          {/* $.command.run aus einem Klick kam im Desktop nicht an: Befehl ins Eingabefeld, Enter führt ihn aus. */}
+          {link(ui, 'features', t(L, 'about.features'), () => void $.prompt.fill({ text: '/cockpit-features' }).catch(() => undefined))}
+          {link(ui, 'about-demo', t(L, 'about.demo'), () => void $.prompt.fill({ text: '/cockpit-demo' }).catch(() => undefined))}
+        </Box>,
+      )
+
+    // ── Reiter ──────────────────────────────────────────────────────────────────────────────────────────────────────
+    const TABS = (['now', 'sessions', 'usage', 'diag', 'git', 'back', 'set'] as const).map(id => ({ id, label: t(L, `tab.${id}`) }))
+    const body: RenderChildren[] = []
+    if (tab === 'now') {
+      body.push(await workdirCard(), await workingCard(), await planCard(), agentsCard(), await agentViewCard(), await tasksCard(), await turnCard())
+    } else if (tab === 'sessions') {
+      body.push(...sessionsBody({ ui, L, marg, st: sess, path: sessionsPath, onReload: () => void refreshSessions($, true).catch(() => undefined) }))
+    } else if (tab === 'usage') {
+      body.push(overviewCard(), await contextCard(), ...(await diagCards($, ui, ['inspect'])))
+    } else if (tab === 'diag') {
+      const dTab = await read($, diagTab)
+      const subs = (['hints', 'log', 'profile', 'blast'] as const).map(id => ({ id, label: t(L, `diag.sub.${id}`) }))
+      body.push(subRow('diag-sub', tabs(ui, 'diag-sub', subs, dTab, id => void openTab($, 'diag', id, { open: false }).catch(() => undefined))))
+      if (dTab === 'hints') {
+        const sig = signalsOf($, ui, s, { percent: u?.contextPercent, now, tips: tipsNow(u, last, now), loop: await read($, loopAlert), dir: await read($, dirAlert), forBand: false })
+        body.push(diagLegend(ui, L, marg), signalsCard(ui, L, marg, sig), ...(await diagCards($, ui, ['tips', 'guard'])))
+      } else if (dTab === 'log') {
+        body.push(...(await protocolBody($, ui, s, entries, g)))
+      } else {
+        body.push(diagLegend(ui, L, marg), ...(await diagCards($, ui, [dTab])))
+      }
+    } else if (tab === 'git') {
+      // Ohne Git-Teil zeigt die Karte Arbeitsverzeichnis Branch und Änderungen auch hier.
+      if (!s.gitPane) body.push(await workdirCard())
+      else body.push(...(await gitPaneBody($, ui, L, m === null ? null : { git: m.git, mr: m.mr, mrMine: m.mrMine, mrDetails: m.mrDetails }, now, marg)))
+    } else if (tab === 'back') {
+      // Ohne Zusammenfassung (Schalter aus) bleibt nur der Verlauf.
+      const bTab = s.cardCatchUp ? await read($, backTab) : 'history'
+      if (s.cardCatchUp) {
+        const subs = (['session', 'history'] as const).map(id => ({ id, label: t(L, `back.${id}`) }))
+        body.push(subRow('back-sub', tabs(ui, 'back-sub', subs, bTab, id => void openTab($, 'back', id, { open: false }).catch(() => undefined))))
+      }
+      body.push(bTab === 'session' ? await summaryBody($, ui) : await historyBody($, ui, e.surface))
+    } else {
+      body.push(await settingsBody($, ui), await aboutCard())
+    }
 
     return (
       <Box flexDirection="column">
         {await paneHead($, ui, L, (
-          // Zusammenfassung und Einstellungen direkt unter der Modellzeile.
-          <Box flexDirection="row" columnGap={2}>
-            {s.cardCatchUp && pill(ui, 'pane', 'open-summary', t(L, 'common.summary'), () => void $.ui.open({ ...P.summary, focus: true }))}
-            {pill(ui, 'pane', 'open-settings', t(L, 'common.settings'), () => void $.ui.open({ ...P.settings, focus: true }))}
+          <Box flexDirection="row" columnGap={2} flexWrap="wrap" alignItems="center" marginTop={1}>
+            {tabs(ui, 'pane-tabs', TABS, tab, id => void openTab($, id, undefined, { open: false }).catch(() => undefined))}
             {dev && <Text backgroundColor={TINT.warning} color={THEME.warning} bold> {t(L, 'dev.badge')} </Text>}
           </Box>
         ))}
-        {working && tn !== null && spaced(
-          <Box flexDirection="column" backgroundColor={TINT.accent} marginX={marg} paddingX={1} paddingY={1}>
-            <Text bold color={THEME.accent}>● {t(L, 'panel.working', { d: duration(now - tn.startedAt), tools: tn.tools, edits: tn.edits })}</Text>
-            {entries.length > 0 && (
-              <Text wrap="truncate-end">
-                <Text dimColor>{t(L, 'panel.lastEvent', { text: '' })}</Text>
-                {entryView(ui, entries[entries.length - 1] as LogEntry, true)}
-              </Text>
-            )}
-          </Box>
-        )}
-        {s.cardPlan && (await (async () => {
-          // Plan-Karte: ganzer Plan des aktuellen Jobs mit Start, voraussichtlichem Ende, Dauer je Schritt und Dateien.
-          const j = m?.job ?? (await read($, glanceJob))
-          if (j === null) return card('cardPlan', t(L, 'glance.cardTitle'), <Text dimColor>{t(L, 'glance.noJob')}</Text>)
-          const avg = await read($, glanceAvg)
-          // Im Dev-Mode zählt die Mock-Freigabe nicht, sonst stünde der Mock-Job immer auf „braucht dich“.
-          const asking = m === null ? g.ask : 0
-          const shown = glancePhase(j, now, asking)
-          const eta = etaOf(j, now, avg)
-          const guess = stepGuessMs(j, avg)
-          const { done, total } = progressOf(j)
-          const at = (ms: number) => clockTime(new Date(ms).toISOString())
-          const when = [
-            t(L, 'glance.started', { at: at(j.startedAt) }),
-            eta !== null && !eta.longer ? t(L, 'glance.until', { at: at(now + eta.ms) }) : eta?.longer ? t(L, 'glance.longer') : '',
-            j.endedAt !== undefined && shown !== 'working' && shown !== 'stuck' ? t(L, 'glance.took', { d: duration(j.endedAt - j.startedAt) }) : '',
-          ].filter(x => x !== '')
-          const icon = (st: JobStep) => (st.status === 'done' ? '✓' : st.status === 'active' ? '▸' : '○')
-          const tone = (st: JobStep) => (st.status === 'done' ? THEME.success : st.status === 'active' ? THEME.accent : THEME.textMuted)
-          const timeOf = (st: JobStep) => {
-            const ms = stepMs(st, now)
-            if (st.status === 'done') return ms === null ? '' : duration(ms)
-            const exp = guess === null ? '' : t(L, 'glance.expected', { d: duration(guess) })
-            if (st.status === 'active') return [ms === null ? '' : duration(ms), exp].filter(x => x !== '').join(' / ')
-            return exp
-          }
-          return card(
-            'cardPlan',
-            t(L, 'glance.cardTitle'),
-            <Box key="plan-head" flexDirection="row" columnGap={1}>
-              <Text bold color={PHASE_COLOR[shown]}>{t(L, `glance.${shown}`)}</Text>
-              <Text bold wrap="truncate-end">{j.title}</Text>
-            </Box>,
-            <Text key="plan-when" dimColor wrap="truncate-end">{[...when, ...(total > 0 ? [t(L, 'glance.progress', { done, total })] : [])].join(' · ')}</Text>,
-            shown === 'needsYou' && (asking > 0 && j.phase === 'working' ? t(L, 'glance.permission') : j.question) !== '' && (
-              <Text key="plan-q" color={THEME.warning} wrap="wrap">? {asking > 0 && j.phase === 'working' ? t(L, 'glance.permission') : j.question}</Text>
-            ),
-            j.steps.length === 0 && <Text key="plan-none" dimColor>{t(L, 'glance.noPlan')}</Text>,
-            j.steps.length === 0 && j.files.length > 0 && <Text key="plan-files" color={THEME.textMuted} wrap="truncate-end">{t(L, 'glance.files', { list: j.files.join(', ') })}</Text>,
-            ...j.steps.map((st, i) => (
-              <Box key={`plan-s-${i}`} flexDirection="column" marginTop={i === 0 ? 1 : 0}>
-                <Box flexDirection="row" justifyContent="space-between" columnGap={2}>
-                  <Text color={tone(st)} bold={st.status === 'active'} wrap="truncate-end">{icon(st)} {st.name}</Text>
-                  <Text dimColor>{timeOf(st)}</Text>
-                </Box>
-                {st.files.length > 0 && <Text color={THEME.textMuted} wrap="truncate-end">{'  '}{t(L, 'glance.files', { list: st.files.join(', ') })}</Text>}
-              </Box>
-            )),
-            j.act !== null && j.phase === 'working' && <Text key="plan-act" color={THEME.textMuted} wrap="truncate-end">{t(L, 'glance.now', { what: actText(j, L) })}</Text>,
-          )
-        })())}
-        {s.cardWorkdir && (place !== null || (await read($, dirs)).root !== '') &&
-          card(
-            'cardWorkdir',
-            t(L, 'panel.workdir'),
-            await (async () => {
-              const d = await read($, dirs)
-              const out = await read($, dirAlert)
-              return (
-                <Box key="wd-dirs" flexDirection="column" marginBottom={1}>
-                  {labelRow(ui, 'pane', 'wd-root', t(L, 'dir.session'), <Text color={THEME.accent} bold wrap="truncate-end">{d.root || place?.path}</Text>)}
-                  {d.cwd !== '' && d.cwd !== d.root && labelRow(ui, 'pane', 'wd-cwd', t(L, 'dir.process'), d.cwd)}
-                  {out !== null && labelRow(ui, 'pane', 'wd-out', t(L, 'dir.outside'), <Text color={THEME.error} bold wrap="truncate-end">⚠ {out.dir}</Text>)}
-                </Box>
-              )
-            })(),
-            ...(place === null ? [] : repoPathRows(place, L)).map(([label, value]) => labelRow(ui, 'pane', `wd-row-${label}`, label, value)),
-            // Verknüpfte Sessions (nur Desktop): Status, Name, Branch; neueste zuerst wie die App sie liefert.
-            await (async () => {
-              const ls = m?.linked ?? (await read($, linked))
-              if (ls.length === 0) return null
-              return (
-                <Box key="wd-linked" flexDirection="column" marginTop={1}>
-                  <Text dimColor>{t(L, 'panel.linked', { n: ls.length })}</Text>
-                  {ls.map(x => (
-                    <Box key={`wd-l-${x.id}`} flexDirection="row" columnGap={1}>
-                      <Text color={x.archived ? THEME.textMuted : x.running ? THEME.success : THEME.accent}>{x.archived ? '◌' : x.running ? '●' : '○'}</Text>
-                      <Box width={10} flexShrink={0}><Text dimColor>{t(L, x.archived ? 'panel.linkedArchived' : x.running ? 'panel.linkedRunning' : 'panel.linkedIdle')}</Text></Box>
-                      <Text bold={!x.archived} dimColor={x.archived} wrap="truncate-end">{x.title || x.name}</Text>
-                      {x.branch !== '' && <Text color={THEME.textMuted} wrap="truncate-end">⎇ {x.branch}</Text>}
-                    </Box>
-                  ))}
-                </Box>
-              )
-            })(),
-          )}
-        {s.cardGit && place !== null &&
-          card(
-            'cardGit',
-            t(L, 'panel.git'),
-            ...(place === null ? [] : repoGitRows(place, L)).map(([label, value]) =>
-              labelRow(ui, 'pane', `git-row-${label}`, label, place.dirty === null && label === t(L, 'panel.repoChanges') ? (
-                <Box flexDirection="row" columnGap={1} flexShrink={1}>
-                  <Text wrap="truncate-end">{value}</Text>
-                  {pill(ui, 'pane', 'git-trust', ` ${t(L, 'repo.trust')} `, () => void trustPrompt($, L).then(text => (text === null ? $.ui.toast(t(L, 'repo.trustFail')) : $.prompt.fill({ text }))).catch(() => undefined))}
-                </Box>
-              ) : value),
-            ),
-            // Kurzer MR-Status unter Upstream (nur GitLab): Knopf öffnet das MR-Panel, ohne MR „n Commits ohne MR“.
-            await (async () => {
-              const wm = m?.mr ?? (await read($, mrCur))
-              const ahead = m !== null ? 0 : await read($, mrAhead)
-              if (wm === null && ahead === 0) return null
-              const label = wm !== null ? ` ${mrBadge(wm).replace(/ · /g, ' ')} ` : ` ${t(L, 'mr.ahead', { n: ahead })} `
-              return (
-                labelRow(ui, 'pane', 'wd-mr', t(L, 'mr.short'), (
-                  <Box flexDirection="row" columnGap={1} flexShrink={1}>
-                    {pill(ui, 'pane', 'wd-mr-open', label, () => void $.ui.open({ ...P.mr, focus: true }).catch(() => undefined))}
-                    {wm !== null && wm.title !== '' && <Text color={THEME.textMuted} wrap="truncate-end">{wm.title}</Text>}
-                  </Box>
-                ))
-              )
-            })(),
-          )}
-        {s.cardContext && bdPanel === null && card('cardContext', t(L, 'panel.context'), <Text dimColor>{bdNote !== '' ? bdNote : t(L, 'panel.contextPending')}</Text>)}
-        {s.cardContext && bdPanel !== null &&
-          card(
-            'cardContext',
-            t(L, 'panel.context'),
-            <Text dimColor>{breakdownTitle(bdPanel, L)}</Text>,
-            Svg && <Svg source={breakdownBarSvg(bdPanel)} alt={breakdownTitle(bdPanel, L)} height={14} />,
-            ...bdPanel.rows.map((r, i) => (
-              <Box flexDirection="row" columnGap={1}>
-                <Text color={categoryColor(r, i)}>■</Text>
-                <Box width={24}><Text>{r.name}</Text></Box>
-                <Box width={7} justifyContent="flex-end"><Text dimColor>{tokens(r.tokens)}</Text></Box>
-                <Box width={7} justifyContent="flex-end"><Text bold>{r.percent.toFixed(1)}%</Text></Box>
-                <Text color={categoryColor(r, i)}>{bar(r.percent, 12)}</Text>
-              </Box>
-            )),
-            ...dietRows(),
-          )}
-        {s.cardOverview && card(
-          'cardOverview',
-          t(L, 'panel.overview'),
-          u === null && <Text dimColor>{t(L, 'panel.noMeasure')}</Text>,
-          // Raster: Bezeichnung in fester Spalte, Balken und rechtsbündige Prozente untereinander.
-          u !== null && overviewRow('ov-ctx', t(L, 'common.context'), THEME[contextColor(u.contextPercent ?? 0)], `${bar(u.contextPercent ?? 0)} ${pct(u.contextPercent ?? 0)} · ${tokens(u.contextTokens ?? 0)} / ${tokens(u.contextWindow)}`),
-          ...(u?.limits.map(l => {
-            const p = pace(l, now)
-            const rest = [p !== undefined ? paceText(p, L) : '', l.resetsAt ? t(L, 'panel.reset', { at: resetLabel(l.resetsAt, now, L) }) : ''].filter(x => x !== '')
-            return overviewRow(`ov-${l.kind}`, LIMIT_LABEL[l.kind] ?? l.kind, THEME[limitColor(l, now)], [`${bar(l.percentUsed)} ${pct(l.percentUsed)}`, ...rest].join(' · '))
-          }) ?? []),
-          u?.usd !== undefined && overviewRow('ov-usd', t(L, 'panel.costLabel'), undefined, usd(u.usd)),
-          u !== null && overviewRow('ov-cache', t(L, 'band.cache'), cache === 0 ? THEME.textMuted : undefined, `${cache === 0 ? t(L, 'band.cold') : duration(cache)}${hit !== null ? ` · ${t(L, 'panel.cacheHit', { n: hit })}` : ''}`),
-        )}
-        <Box flexDirection="row">
-          {s.cardTurn && card(
-            'cardTurn',
-            t(L, 'panel.turn'),
-            tn === null && <Text dimColor>{t(L, 'panel.noTurn')}</Text>,
-            tn !== null && (
-              <Text>
-                {tn.durationMs === undefined ? t(L, 'panel.runningSince', { d: duration(now - tn.startedAt) }) : duration(tn.durationMs)} ·{' '}
-                {t(L, 'panel.turnStats', { tools: tn.tools, edits: tn.edits, errors: tn.errors })}
-                {tn.usdDelta !== undefined ? ` · +${usd(tn.usdDelta)}` : ''}
-              </Text>
-            ),
-            turns.length > 1 && <Text dimColor>{t(L, 'turn.bars', { usd: usd(WASTE_USD) })}</Text>,
-            turns.length > 1 &&
-              (Svg ? (
-                <Svg source={turnBarsSvg(turns)} alt={t(L, 'turn.bars', { usd: usd(WASTE_USD) })} height={24} />
-              ) : (
-                <Text key="turn-bars">{turnBarsText(turns).map(x => <Text color={x.isWaste ? THEME.warning : THEME.accentFill}>{x.glyph}</Text>)}</Text>
-              )),
-            turns.some(isWasteful) && <Text color={THEME.warning}>{t(L, 'turn.waste', { n: turns.filter(isWasteful).length })}</Text>,
-          )}
-          {s.cardGate && spaced(
-            <Box flexDirection="column" flexGrow={1} backgroundColor={TINT[g.deny > 0 ? 'error' : g.ask > 0 ? 'warning' : 'success']} marginX={marg} paddingX={1} paddingY={1}>
-              <Box flexDirection="row" justifyContent="space-between">
-                <Text bold color={THEME[g.deny > 0 ? 'error' : g.ask > 0 ? 'warning' : 'success']}>{t(L, 'gate.title')}</Text>
-                <Box flexDirection="row" columnGap={1}>
-                  <Text dimColor>{t(L, 'gate.checks', { n: g.allow + g.you + g.ask + g.deny })}</Text>
-                  {headButtons('cardGate')}
-                </Box>
-              </Box>
-              {isOpen('cardGate') && (
-                <Box flexDirection="column">
-                  <Text>{g.trail.length === 0 ? <Text dimColor>{t(L, 'gate.none')}</Text> : g.trail.map(d => <Text color={DECISION_COLOR[d]}>■</Text>)}</Text>
-                  <Box flexDirection="row" flexWrap="wrap" columnGap={1}>
-                    <Text><Text color={DECISION_COLOR.allow}>■</Text> {t(L, 'gate.allow', { n: g.allow })}</Text>
-                    <Text><Text color={DECISION_COLOR.you}>■</Text> {t(L, 'gate.you', { n: g.you })}</Text>
-                    <Text color={g.ask > 0 ? THEME.warning : undefined}><Text color={DECISION_COLOR.ask}>■</Text> {t(L, 'gate.ask', { n: g.ask })}</Text>
-                    <Text color={g.deny > 0 ? THEME.error : undefined}><Text color={DECISION_COLOR.deny}>✗</Text> {t(L, 'gate.deny', { n: g.deny })}</Text>
-                  </Box>
-                  <Box flexDirection="row" flexWrap="wrap" columnGap={2}>
-                    {([['file', t(L, 'gate.chipFile'), t(L, 'common.file'), g.file], ['shell', t(L, 'gate.chipShell'), t(L, 'common.shell'), g.shell], ['other', t(L, 'gate.chipOther'), t(L, 'gate.other'), g.other]] as const).map(([id, k, label, n]) => (
-                      <Text key={`gk-${id}`}>
-                        {chip(ui, 'pane', '', String(k))} <Text bold>{label} {n}</Text>
-                      </Text>
-                    ))}
-                  </Box>
-                </Box>
-              )}
-            </Box>
-          )}
-        </Box>
-        {s.cardAgents && card(
-          'cardAgents',
-          t(L, 'agents.title', { live: list.filter(a => LIVE.has(a.status)).length, all: list.length }),
-          list.length === 0 && <Text dimColor>{t(L, 'agents.none')}</Text>,
-          // Ältere als kompakte Liste, nur die letzten `agentTiles` als Kachel.
-          ...list.slice(0, -s.agentTiles).map((a, i) => (
-            <Text key={`ago-${a.id}`} wrap="truncate-end" dimColor={!LIVE.has(a.status)}>
-              {chip(ui, 'pane', '', String(i + 1))} {a.description} · {a.type}{a.model !== undefined ? ` · ${a.model}` : ''} ·{' '}
-              {LIVE.has(a.status) ? t(L, 'agents.running', { d: duration(now - a.since) }) : `${a.status === 'killed' || a.status === 'failed' ? '✗' : '✓'} ${a.durationMs !== undefined ? duration(a.durationMs) : ''}`}
-            </Text>
-          )),
-          <Box flexDirection="row" flexWrap="wrap" columnGap={1}>
-            {list.slice(-s.agentTiles).map((a, k) => {
-              const i = Math.max(0, list.length - s.agentTiles) + k
-              const live = LIVE.has(a.status)
-              const isKilled = a.status === 'killed' || a.status === 'failed'
-              const isBraked = brakedIds.includes(a.id)
-              const heavy = live && isAgentHeavy(a, now)
-              const tone: Tone = heavy || (live && isBraked) ? 'warning' : live ? 'accent' : isKilled ? 'error' : 'success'
-              return (
-                <Box key={`ag-${a.id}`} flexDirection="column" width={42} backgroundColor={TINT[tone]} marginX={marg} paddingX={1} paddingY={1}>
-                  <Text wrap="truncate-end">
-                    {chip(ui, 'pane', '', String(i + 1))} <Text bold>{a.description}</Text>
-                  </Text>
-                  <Text wrap="truncate-end">{a.type}{a.model !== undefined ? ` · ${a.model}` : ''}</Text>
-                  <Text dimColor wrap="truncate-end">{agentStats(a, L)}</Text>
-                  {agentFlags(a, L) !== '' && <Text dimColor wrap="truncate-end">{agentFlags(a, L)}</Text>}
-                  {heavy && <Text color={THEME.warning} wrap="truncate-end">{t(L, 'agents.heavy', { steps: a.steps ?? 0, d: duration(now - a.since) })}</Text>}
-                  {live && isBraked && <Text color={THEME.warning}>{t(L, 'agents.braked')}</Text>}
-                  {heavy && !isBraked && pill(ui, 'pane', `brake-${a.id}`, t(L, 'agents.brake'), () => void brake(a))}
-                  <Text color={live ? THEME.accent : isKilled ? THEME.error : THEME.success}>
-                    {live
-                      ? t(L, 'agents.running', { d: duration(now - a.since) })
-                      : t(L, isKilled ? 'agents.killed' : 'agents.done', { d: a.durationMs !== undefined ? duration(a.durationMs) : '' })}
-                  </Text>
-                </Box>
-              )
-            })}
-          </Box>,
-          list.length > 0 && <Text dimColor>{t(L, 'agents.timeline')}</Text>,
-          ...timeline(list),
-        )}
-        {s.cardTasks && card(
-          'cardTasks',
-          t(L, 'tasks.title', { live: tasks.filter(x => x.status === 'running').length, all: tasks.length }),
-          tasks.length === 0 && <Text dimColor>{t(L, 'tasks.none')}</Text>,
-          // Wie bei den Subagents: ältere als kompakte Liste, die letzten beiden als Kachel mit Grund nach Status.
-          ...tasks.slice(0, -2).map((x, i) => (
-            <Text key={`bgo-${x.id}`} wrap="truncate-end" dimColor={x.status !== 'running'}>
-              {chip(ui, 'pane', '', String(i + 1))} {x.description} · {taskState(x)}
-            </Text>
-          )),
-          <Box flexDirection="row" flexWrap="wrap" columnGap={1}>
-            {tasks.slice(-2).map((x, k) => {
-              const i = Math.max(0, tasks.length - 2) + k
-              const live = x.status === 'running'
-              const bad = x.status === 'failed' || x.status === 'killed'
-              const tone: Tone = live ? 'accent' : bad ? 'error' : 'success'
-              // Befehl und Ergebnis zusammen höchstens TASK_LINES Zeilen; der Rest als „+n“.
-              const body = [
-                ...(x.command !== undefined && x.command !== x.description ? x.command.split(/\r?\n/).map((l, j) => `${j === 0 ? '$ ' : '  '}${l}`) : []),
-                ...(x.summary !== undefined && x.summary !== '' ? x.summary.split(/\r?\n/) : []),
-              ]
-              const shown = body.slice(0, body.length > TASK_LINES ? TASK_LINES - 1 : TASK_LINES)
-              return (
-                <Box key={`bg-${x.id}`} flexDirection="column" width={42} backgroundColor={TINT[tone]} marginX={marg} paddingX={1} paddingY={1}>
-                  <Text wrap="truncate-end">
-                    {chip(ui, 'pane', '', String(i + 1))} <Text bold>{x.description}</Text>
-                  </Text>
-                  {shown.map((l, j) => <Text key={`bgl-${x.id}-${j}`} color={THEME.textMuted} wrap="truncate-end">{l}</Text>)}
-                  {body.length > shown.length && <Text dimColor>{t(L, 'tasks.more', { n: body.length - shown.length })}</Text>}
-                  <Text color={THEME[tone]}>{taskState(x)}</Text>
-                </Box>
-              )
-            })}
-          </Box>,
-          tasks.length > 0 && <Text dimColor>{t(L, 'agents.timeline')}</Text>,
-          ...timeline(tasks),
-        )}
-        {s.cardLog && card(
-          'cardLog',
-          t(L, 'log.title'),
-          entries.length === 0 && <Text dimColor>{t(L, 'log.empty')}</Text>,
-          ...entries.slice(-LOG_MAX).map(l => {
-            const src = l.src ?? 'main'
-            return (
-              <Text wrap="truncate-end">
-                <Text dimColor>{clockTime(new Date(l.at).toISOString())}</Text> <Text bold color={SRC_COLOR[src]}>{src.padEnd(5)}</Text> {l.tool !== undefined ? entryView(ui, l, false) : <Text bold={src === 'you'} dimColor={src !== 'you'}>{l.text}</Text>}
-              </Text>
-            )
-          }),
-        )}
+        {...body}
       </Box>
     )
   })

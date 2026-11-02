@@ -1,5 +1,112 @@
 # Release Notes – Tenvan CC
 
+## 2.1.2 – 2026-11-02
+
+### Geändert
+
+- **Weiter-Zeile bricht nicht mehr um:** Die Knopftexte der Vorschläge sind auf höchstens 28 Zeichen begrenzt (Ellipsis); der volle Text steht im Tooltip am ⓘ. Die ausführliche Fassung bleibt der Prompt, der beim Klick ins Eingabefeld geschrieben wird – der Vorschlags-Prompt an Haiku verlangt jetzt kurze Labels und separate, ausführlichere Aufträge. Bei schmalem Band entfallen die hinteren Vorschläge, statt in eine zweite Zeile zu rutschen.
+- **Neue Vorschläge als Icon-Knopf:** „↻ Neue“ ist jetzt ein reiner ↻-Knopf (beim Laden ◌) in der Höhe der Vorschläge.
+
+## 2.1.1 – 2026-11-02
+
+### Geändert
+
+- **Reiter Sessions: neuer Standardpfad.** Das Cockpit liest die Status-Datei jetzt aus `<Benutzerordner>/.deltra/claude/sessions.json` (unter Windows `C:/Users/<Name>/.deltra/claude/sessions.json`). Der Benutzerordner wird zur Laufzeit aus `USERPROFILE`, sonst `HOME` aufgelöst, nichts ist hartcodiert. Das Schema der Datei ändert sich nicht.
+- **Einstellung „Status-Datei der Sessions“ (`sessionsFile`):** Standard ist jetzt leer (= Standardpfad); ein eingetragener Pfad hat Vorrang. Wer in 2.1.0 einen Pfad in den Einstellungen gespeichert hatte (auch den früheren Standard), muss ihn dort leeren, sonst gilt er weiter als Override.
+
+## 2.1.0 – 2026-11-02
+
+### Neu
+
+- **Reiter Sessions** (`/cockpit-sessions`, zweiter Reiter nach Jetzt): zeigt die Status-Datei der Schaltzentrale (`sessions.json`) als zwei Karten, nur lesend.
+  - **Sessions-Übersicht:** eine Zeile je Session mit ID, Repo, Branch, Stand (Badge `läuft`, `wartet`, `fertig`, `archiviert`), „wartet auf“ und Notiz. Wer auf dich wartet, liegt gelb hinterlegt und steht oben.
+  - **Freigabe-Inbox:** offene Freigaben mit ID, Aktion (Badge `commit`, `push`, `löschen`, `archivieren`, `sonstiges`), Detail und „seit“; ohne offene Freigaben steht dort eine klare Meldung.
+  - **Robust:** fehlende oder leere Datei, kaputtes JSON und falsche Form zeigen eine lesbare Meldung samt Pfad; fehlende Felder erscheinen als Hinweis, die übrigen Zeilen bleiben sichtbar. Nach einem Lesefehler bleibt der letzte lesbare Stand stehen.
+  - **Aktuell:** Solange der Reiter offen ist, prüft das Cockpit alle 5 s Änderungszeit und Größe der Datei und liest nur bei Änderung neu; „↻ Neu lesen“ erzwingt es. Oben steht das Feld `updated` der Datei.
+  - **Pfad einstellbar:** Mod-Einstellung „Status-Datei der Sessions“ (`sessionsFile`), Standard ab 2.1.1 `<Benutzerordner>/.deltra/claude/sessions.json`.
+
+## 2.0.1 – 2026-11-02
+
+### Geändert
+
+- **Arbeitsverzeichnis ganz oben:** Die Karte „Arbeitsverzeichnis“ steht als erste Karte im Reiter Jetzt statt im Reiter Git. Ohne Git-Teil zeigt der Reiter Git sie weiterhin mit Branch und Änderungen.
+- **Repo-Label im Reiter Git:** Über dem Branch stehen Name und Wurzelordner des Repos, auf das sich der Git-Stand bezieht.
+
+## 2.0.0 – 2026-11-02
+
+### Behoben
+
+- **Subagent öffnen (↗):** Auf dem Desktop passierte nichts, weil die Engine die Hauptansicht nur im Terminal umschalten kann (`no main view here`). Jetzt zeigt ↗ dort den Verlauf des Subagents (Auftrag, Antworten, Tool-Aufrufe) als Karte im Reiter Jetzt; ein zweiter Klick schließt sie, ist kein Verlauf lesbar, nennt die Karte den Grund.
+- **Diagnose-Hinweise:** Lange Werte in Tipps, Wächter, Profil, Blast und Inspektor brechen um, statt abgeschnitten zu werden; lange Beschriftungen stehen in eigener Zeile.
+
+### Geändert
+
+- **Kacheln nur für Laufendes:** Subagents und Hintergrundaufgaben erscheinen im Reiter Jetzt nur noch als Kachel, solange sie laufen. Beendete stehen als Zeile unter „Verlauf“ (Status, Dauer, bei Aufgaben die erste Ergebniszeile); Subagents lassen sich dort weiter mit ↗ öffnen. Die Einstellung „Subagent-Kacheln“ begrenzt jetzt die laufenden Kacheln.
+- **Ein Cockpit statt einer Sammlung:** Jede Information steht an genau einer Stelle.
+  - **Band nur mit Links:** Alle Knöpfe im Band sind Links; Gelb und Rot liegen als getönter Grund darunter (hell und dunkel). Der Block mit den Folge-Schritten ist hellgelb hinterlegt. Kopf und Messwerte teilen sich eine Zeile; die Werte (Limits, Kontext, Cache) führen zum Reiter Verbrauch, der MR zum Reiter Git. Die Knöpfe „Zusammenfassung“ und „Features“ entfallen im Band.
+  - **Eine Meldungszeile:** Schleifen-Warnung, Verzeichniswechsel und die sechs Kurzinfos der Diagnose zeigt das Band nur noch bei Gelb oder Rot, und dann nur die wichtigste mit „+n Hinweise“. Alles andere steht unter Diagnose → Hinweise.
+  - **Checkliste:** Pause, Weiter und Plan als Links; Claudes Rückfragen stehen als Antworten (Tasten 4–6) direkt unter der Frage. Die Atemübung belegt keine eigene 56-px-Zeile mehr: der Statusring atmet, die ganze Übung steht im Reiter Jetzt.
+  - **Ein Panel mit Reitern statt sechs Panels:** Jetzt · Verbrauch · Diagnose · Git · Rückblick · Einstellungen; Diagnose und Rückblick mit Unterreitern. Die Befehle `/cockpit-zusammenfassung`, `/cockpit-verlauf`, `/cockpit-einstellungen`, `/cockpit-git`, `/cockpit-profiling`, `/cockpit-kontext`, `/cockpit-profil`, `/cockpit-fehler`, `/cockpit-zeitreise` öffnen den passenden Reiter.
+  - **Protokoll:** Log, Fehler-Eingang, Tool-Freigaben und Zeitreise sind eine Liste (neueste zuerst) mit Filter Alle · Fehler · Freigaben · Snapshots, über die `tool_use_id` verknüpft; Diff und Zurück stehen am Eintrag, die Fehlerzeile unter dem Aufruf. Aufrufe von Subagents stehen mit Quelle `agent`.
+  - **Fußzeile:** nur noch „Tenvan“; der MR-Knopf entfällt, der MR steht im Band. Die Git-Karte des Panels ist im Reiter Git aufgegangen (ohne Git-Teil zeigt das Arbeitsverzeichnis Branch, Commit und Upstream).
+  - **Einstellungen:** Die Schalter „Git“ (Karte), „Log“ (Karte) und „MR-Knopf unter dem Prompt“ entfallen mit ihren Anzeigen.
+
+### Sicherheit
+
+- **Zeitreise ohne Filter:** Snapshots (`git add`) und Zurücksetzen (`git restore`) prüfen die Repo-Konfiguration direkt davor ohne Zwischenspeicher, leeren jeden konfigurierten Filter und lesen Attribute aus dem leeren Baum. Eine eben geänderte `.git/config` mit `.gitattributes` oder `.git/info/attributes` kann so keinen Clean- oder Smudge-Filter mehr ohne Freigabe starten.
+
+### Neu
+
+- **Band ganz abschaltbar:** Neue Schalter für Effort und Modell, Kontext (mit Kompaktieren/Handoff), Kosten, laufende Agents und die Meldungszeile; „Cache“ schaltet nur noch den Cache. Titel und Ordner/Branch bleiben.
+- **Blast-Radius erklärt sich:** Abschnitt „Bewertung“ mit einem Satz je Ampel (Reichweite, Tests, Unaufgelöstes, Vollständigkeit), was sie bedeutet und was zu tun ist; jeder Abschnitt hat eine Erklärzeile. Unter Diagnose → Hinweise stehen die gelben und roten Sätze unter der Blast-Meldung.
+- **Prompt kopieren:** Im Verlauf (Rückblick → Verlauf) kopiert ⧉ den getippten Prompt einer Aufgabe (ältere Einträge: den Titel).
+- **Fehler-Eingang:** Teil des Protokolls (Filter Fehler, mit Bilanz), Meldung im Band ab Gelb und `/cockpit-fehler [text]`: die letzten 30 fehlgeschlagenen oder abgelehnten Tool-Aufrufe mit Ziel und erster Fehlerzeile, Wiederholungen als `×n`.
+- **Nutzungswächter:** warnt bei 8+ gleichzeitigen Subagents, 10+ neuen je Minute, einem Prompt ab 85 % Kontext und demselben Aufruf 3× hintereinander. Neue Einstellung „Wächter hält Agents an“ (Standard aus) lehnt ab 12 laufenden Subagents den Start eines weiteren ab.
+- **Tipps zu Cache, Kontext und Limits:** als Meldung im Band ab Gelb, alle unter Diagnose → Hinweise, mit der Zahl dahinter (Cache neu geschrieben, abgelaufen, vor Ablauf kompaktieren, Kontext, Limit).
+- **Zeitreise:** Zeitleiste der Tool-Schritte mit Snapshots des Arbeitsbaums als git-Objekte (eigener Index, kein Branch, kein Commit). „Diff“ zeigt Änderungen seit einem Schritt, „Zurück“ (mit Rückfrage und Sicherung davor) setzt Dateien auf den Stand des Schritts; neue Dateien bleiben liegen. `/cockpit-zeitreise [text]`. Neue Einstellung „Zeitreise: Snapshots anlegen“.
+
+## 1.9.1 – 2026-10-24
+
+### Geändert
+
+- **Rückfrage-Kopf ausgebaut:** Über dem unveränderten Dialog stehen jetzt die Aufgabe und der laufende Schritt aus der Checkliste, auf dem Desktop je Frage Kopf, Auswahlart (eine Wahl oder Mehrfachauswahl), Zahl der Optionen und die empfohlene Option (★). Im Terminal nur Kopf und Aufgabe.
+
+### Sicherheit
+
+- **Git-Panel:** Auch `core.gitProxy`, `core.alternateRefsCommand` und `remote.*.vcs` in der lokalen Repo-Konfiguration sperren Aktionen.
+
+## 1.9.0 – 2026-10-24
+
+### Neu
+
+- **Git-Panel (`/cockpit-git`, Knopf in der Git-Karte):** führt durch den Ablauf Commit → MR → Merge → Aufräumen. Oben eine Ablauf-Leiste, darunter die Status-Karte mit genau einer Hauptaktion je Lage: auf main mit Änderungen „Branch anlegen und mitnehmen“, sonst Committen, Pull bzw. Pull --rebase bei Divergenz, „Erst syncen“, wenn der Eltern-Branch vor dem MR weitergelaufen ist, MR entwerfen (Entwurf im MR-Panel), Push, und nach dem Merge „Aufräumen“ (fetch --prune, Wechsel auf den Eltern-Branch, Kinder in Git Town umhängen, Branch löschen). Karten für Fehler (Ausgabe des gescheiterten Befehls), Konflikte, Änderungen (je Datei stagen), Commit (Eingabefeld, Vorschlag von Haiku im Stil der letzten Commits), Eingehend, Sync, Branches (Baum nur mit Abhängigkeiten, Klick wechselt) und Verlauf. Verwerfen, Abbrechen, Force-with-lease, Löschen und „Letzten Commit zurück“ fragen beim ersten Klick nach. ✦-Knöpfe schreiben Aufträge an Claude ins Eingabefeld (committen, aufteilen, Review, eingehende Commits, Konflikte, MR, Aufräumen, Fehler). Neue Einstellungsgruppe „Git“. Das Panel startet git ohne Repo-Hooks; hat das Repo `pre-commit` oder `commit-msg`, ist die Hauptaktion „Mit Claude committen“, direkte Knöpfe tragen „(ohne Hooks)“. Force-Push nur mit `--force-with-lease --force-if-includes`.
+
+### Geändert
+
+- **MR-Panel im Git-Panel aufgegangen:** `/cockpit-mr` und das eigene MR-Panel entfallen; alle MR-Karten stehen im Git-Panel, Band, Fußzeile und Git-Karte öffnen es. Der Schalter „MR-Karten im Git-Panel“ blendet sie aus.
+- **Branch-Klick zeigt Optionen** statt sofort zu wechseln. main, master und develop löscht das Panel nie.
+- **Knöpfe nach Priorität:** Im Panel trägt nur die Hauptaktion die volle Akzentfläche, gewöhnliche Knöpfe sind gedämpft, Nebensachen ohne Fläche und gedimmt.
+
+## 1.8.1 – 2026-10-22
+
+### Geändert
+
+- **„✦ Alle mergen (AI)“:** Der Auftrag besteht nur noch aus einer allgemeinen Anweisung („Merge alle n offenen Merge Requests inklusive der nötigen Konfliktlösungen“) und der Aufzählung der MRs mit ihrem bekannten Status. Das Regelwerk (Worktrees, Reihenfolge, Pipeline abwarten, Stopp-Bedingungen, CLI je Plattform) ist entfallen; wie Claude vorgeht, entscheidet Claude.
+
+## 1.8.0 – 2026-10-22
+
+### Neu
+
+- **Subagents und Hintergrundaufgaben: Symbolknöpfe vor jedem Eintrag** (Kachel und kompakte Liste), nur was geht. **Stopp (■)** steht, solange der Eintrag läuft: beim Subagent bremst er ihn sofort (keine weiteren Tool-Aufrufe, wie bisher „Bremsen“, jetzt für jeden laufenden Subagent statt nur für teure); bei einer Hintergrundaufgabe schreibt er den Auftrag „TaskStop“ ins Eingabefeld, weil nur das Modell dieses Tool aufrufen kann (gesendet wird mit Enter). **Öffnen (↗)** gibt es nur bei Subagents und zeigt ihr Transcript in der Hauptansicht; Hintergrundaufgaben (Shells, Monitore) haben keinen. Ist nichts möglich, fehlt die Knopfzeile.
+
+## 1.7.0 – 2026-10-21
+
+### Neu
+
+- **MR-Panel: „✦ Alle mergen (AI)“:** Ab zwei offenen MRs (Branch-MR und eigene, ohne Doppelte) steht in der Karte „Meine offenen MRs“ ein Knopf, der einen Sammelauftrag ins Eingabefeld schreibt (gesendet wird erst mit Enter). Claude arbeitet je MR in einem eigenen Worktree, löst Konflikte, pusht ohne Force-Push, wartet auf die Pipeline und mergt; nach jedem Merge prüft er die übrigen neu, weil sich der Ziel-Branch geändert hat. Drafts, rote Pipelines, fehlende Freigaben und echte inhaltliche Entscheidungen führen zum Stopp bei diesem MR; am Ende steht eine Ergebnistabelle. Die CLI (`glab`, `gh`, Bitbucket REST) richtet sich nach der Plattform.
+
+- **Profiling: Ampel in vier Stufen** (sehr gut, gut, schlecht, sehr schlecht) überall, wo eine Aussage trägt: Engine-Overhead, Freigabe-Wartezeit, TTFT, Cache-Trefferquote und Tool-Dauer im Agent-Profiler; Verschwendung, Re-Reads, Kompaktier-Verluste und Hinweise im Kontext-Inspektor; Reichweite, Testabdeckung und Unaufgelöstes im Blast-Radius. Ein farbiger Punkt steht vor dem Wert, dazu eine Legende oben im Panel und je Karte der Abschnitt „Ampel-Schwellen“ mit den Grenzen (kommen aus derselben Tabelle wie die Bewertung). Die Kurzinfos im Band tragen den Punkt der schlechtesten Stufe, die Berichte (`/cockpit-kontext`, `/cockpit-profil`, `/cockpit-blast`) hängen die Stufe als Wort an. Rein beschreibende Werte (Anteile Modell/Tools, Tokenzahlen) bleiben ohne Ampel. Die Grenzen sind Startwerte (`hooks/rating.ts`), keine Messwahrheit.
+
 ## 1.6.0 – 2026-10-20
 
 ### Neu

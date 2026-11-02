@@ -4,7 +4,7 @@ Mod für Claude Desktop und die Claude-Code-CLI (Claude Code Function Hooks, Ear
 
 ## Session-Start
 
-1. Ort prüfen: `git status --short --branch`. Das Mod liegt in `tools/cockpit` des k3c-Repos und wird zum Entwickeln per `claude --plugin-dir tools/cockpit` geladen (`/reload-plugins` nach Änderungen). Nicht zusätzlich per Junction oder Marketplace installieren, sonst lädt es doppelt und das Panel bleibt leer.
+1. Ort prüfen: `git status --short --branch`. Entwickelt wird in `tools/cockpit` des Hauptcheckouts; die globale Junction `~/.claude/skills/tenvan-cc` lädt genau diesen Ordner in jeder Claude-Code-Session (`/reload-plugins` nach Änderungen). Keine zweite Junction im Projekt und keine Marketplace-Installation daneben, sonst lädt das Mod doppelt und das Panel bleibt leer. Prüfen: `claude plugin list` zeigt `tenvan-cc@skills-dir` genau einmal mit Scope `user`.
 2. [SPEC.md](SPEC.md) lesen: Leitplanken, offene Akzeptanzkriterien, Backlog.
 3. Skill `plugin-authoring` laden. Er nennt den Pfad zur aktuellen API-Typdatei `claude-code.d.ts` (rund 21.000 Zeilen). Gezielt danach greppen, nie ganz lesen, z. B. `'tool.check'`, `export type SessionUsage =`, `AbovePrompt: {`.
 
@@ -13,14 +13,16 @@ Mod für Claude Desktop und die Claude-Code-CLI (Claude Code Function Hooks, Ear
 | Datei | Inhalt | Regel |
 | --- | --- | --- |
 | `hooks/register.tsx` | alle Hooks, Band, Panel | Einstiegspunkt laut `hooks/hooks.json` |
-| `hooks/ui.tsx` | Design-System: Tokens je Bereich (`MODES`: pane, skin, sidebar, band), Atome `pill`, `chip`, Moleküle `labelRow`, `tile` | Knöpfe, Chips, Raster-Zeilen und Karten nur hierüber, mit dem Bereich als `mode`; Style-Änderungen in `MODES`, nie an der Aufrufstelle. Kein `$` (Engine 2.1.295 lädt keine `$`-Funktionen aus anderen Dateien) |
+| `hooks/ui.tsx` | Design-System: Tokens je Bereich (`MODES`: pane, skin, sidebar, band), Atome `pill`, `chip`, `link` (Aktion als Text, Ton über `dimColor` bzw. getönten Grund `LINK_TINT`), Moleküle `labelRow`, `tile`, `tabs` (Reiter) | Knöpfe, Links, Chips, Raster-Zeilen, Karten und Reiter nur hierüber, mit dem Bereich als `mode`; Style-Änderungen in `MODES`/`LINK_TINT`, nie an der Aufrufstelle. Im Band nur `link`, nie `pill`. Kein `$` (Engine 2.1.295 lädt keine `$`-Funktionen aus anderen Dateien) |
 | `hooks/core.ts` | reine Funktionen ohne `$` | neue Rechen-/Formatlogik hierher, damit sie direkt testbar ist |
 | `hooks/mr.ts`, `hooks/forge.ts` | MR/PR: Übersetzung der Plattform-Antworten (rein) bzw. Aufrufe von glab, gh, Bitbucket-REST (über `io`, ohne `$`) | neue Plattform: Konverter in `mr.ts`, Aufrufe in `forge.ts` |
+| `hooks/protocol.ts` | Protokoll: Log, Fehler-Eingang, Tool-Freigaben und Zeitreise als eine Liste (`protocolRows`, `protocolCounts`), rein ohne `$` | neue Quellen von Tool-Ereignissen hier zusammenführen, nicht als eigene Liste im Panel |
+| `hooks/sessions.ts`, `hooks/sessions-ui.tsx` | Reiter Sessions: Parser der Status-Datei der Schaltzentrale (`parseSessions`, Sortierung, Fehlerarten) rein ohne `$`; Zeichnung (`sessionsBody`) mit Callbacks statt `$`; Lesen und 5-s-Takt in `register.tsx` (`refreshSessions`) | Das Mod liest die Datei nur, schreibt nie; neue Felder im Schema hier und in `SessionRow`/`ApprovalRow` (`types/index.d.ts`) ergänzen, Texte unter `sessions.*` in `i18n.ts`, Tests in `sessions.test.ts` (Parser) und `sessions-panel.test.ts` (Panel) |
 | `hooks/glance.ts` | Checkliste: Plan aus Claudes Aufgabenliste (`planUpdate`), Status (`finishJob`, `isStuck`), Restzeit (`etaOf`), Verlauf (`toRecord`, `dayKey`) und Berichte (`dayReport`, `weekReport`), rein ohne `$` | Rein beobachtend (kein `deny`, kein Prompt-Einschub, keine eigenen Tools); neue Auswertung hierher, Texte unter `glance.*` in `i18n.ts`, Typen `Job`/`JobRecord` in `types/index.d.ts` |
 | `hooks/mock.ts` | Mockdaten für den Dev-Mode (`/cockpit-dev`) | neue Panel-Werte hier mitpflegen |
 | `types/index.d.ts` | `$.state`-Vertrag `PluginState['tenvan-cc']` | jedes neue Atom hier deklarieren, sonst schlägt `validate` fehl |
 | `hooks/register.test.ts` | Tests (`claude-code/testing`) | pro Akzeptanzkriterium ein Test |
-| `.claude-plugin/plugin.json` | Manifest, `userConfig` | Version synchron mit `.claude-plugin/marketplace.json` im Repo-Root |
+| `.claude-plugin/plugin.json` | Manifest, `userConfig` | Version (K3C hat keinen Marketplace-Eintrag) |
 | `README.MD` | Nutzerdoku | bei sichtbaren Änderungen nachziehen |
 
 ## Prüfen (vor jedem Abschluss alle drei)
@@ -60,6 +62,8 @@ Nach Änderungen am Manifest zusätzlich im Repo-Root `npm run validate` und `np
 - **Op-Stubs im Test** antworten immer mit `{ value: … }`, auch ohne Ergebnis: `on('store.set', () => ({ value: undefined }) as never)`. `{}` lehnt Engine 2.1.295 ab.
 - **CLI-Version**: `claude` im PATH kann älter sein als die Engine der Desktop-App. Prüfen mit der Desktop-Engine: `"$APPDATA/Claude/claude-code/<version>/<hash>/claude.exe" plugin test tools/cockpit`.
 - **Elemente**: `Box`, `Text`, `Button`, `Input`, `Select`, `Code`, `Markdown` auf Desktop und Terminal, `Svg` nur auf dem Desktop. Farben über Theme-Keys (`success`, `warning`, `error`, `claude`).
+- **Ein Panel, Reiter statt Panels**: neue Anzeigen werden eine Karte in einem Reiter (`paneTab`) oder ein Unterreiter, nie ein weiteres `Pane`. Öffnen über `openTab($, tab, sub?)`. Tests wählen Reiter per Klick auf `pane-tabs-<id>` bzw. `diag-sub-<id>`/`back-sub-<id>` und warten, bis der Button verschwindet (der gewählte Reiter ist Text).
+- **Button ohne Farbe**: Engine 2.1.304/2.1.309 nehmen `Text`-Kinder im `Button` zwar an (Probe 2026-10-28), der Desktop zeichnet aber seinen nativen Button in Host-Schrift und ignoriert deren Farbe (Ralf, 2026-10-27, Variante B). `link` nutzt deshalb nur `label`, `dimColor` und einen getönten Grund; Ampelfarben eines Werts trägt der Ring oder ein farbiges `●` davor.
 
 ## Offizielle Quelle: anthropics/claude-code
 
@@ -107,7 +111,7 @@ Referenz-Mods (MIT) im Cache: `~/.deltra/repo-cache/github.com/ray-amjad/claude-
 3. In SPEC.md eintragen: Quellen-Tabelle, Features, Akzeptanzkriterien (zunächst offen).
 4. Umsetzen: Logik nach `core.ts`, State als Atom plus Eintrag in `types/index.d.ts`, Anzeige als Abschnitt in Band oder Panel.
 5. Tests je Kriterium, dann alle Prüfungen.
-6. Bei Bedarf eine Option in `userConfig`, README-Tabellen ergänzen, `version` in `plugin.json` und `marketplace.json` gleich anheben (Minor bei neuem Feature).
+6. Bei Bedarf eine Option in `userConfig`, README-Tabellen ergänzen, `version` in `plugin.json` anheben (Minor bei neuem Feature).
 
 ## Konventionen
 

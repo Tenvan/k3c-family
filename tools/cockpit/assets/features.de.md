@@ -1,35 +1,25 @@
 🛩️ Tenvan CC · Features
 
-Band über der Eingabe
-• Kontext – zeigt, wie voll das Kontextfenster ist; ab 85 % wird es gelb.
-• Kompaktieren – legt /compact samt Ziel, Dateien und offenen Schritten ins Eingabefeld.
-• Limits 5h/7d – zeigt den Verbrauch und ob du schneller bist als die Zeit.
-• Cache – Restzeit und Trefferquote; ist er kalt, steht da, wie viel neu gelesen wird.
-• Kosten – was die Session bisher gekostet hat.
-• Schleifen-Warnung – schlägt an, wenn derselbe Aufruf mehrmals scheitert oder eine Datei ständig geändert wird.
-• Effort – Stufe und Modell; „Auto“ lässt Haiku je Prompt Low/Medium/High wählen.
-• Handoff – bei großem, kaltem Kontext: HANDOFF.md schreiben und kopieren statt teuer weiterzumachen.
-• Sparmodus – ab 80 % bei 5h oder 7d deckelt ein Knopf an den Limits den Auto-Effort auf Low.
-• Atemübung – solange Claude arbeitet, atmet ein Kreis im Band; die Arbeitszeile zählt die Phase mit (Übung in den Einstellungen).
-• Merge Requests – auf GitLab-, GitHub- und Bitbucket-Repos MR/PR des Branches im Band (Pipeline, Freigaben, Threads), Hinweise bei Änderungen, im Panel Rebase, Mergen, Pipeline neu, Anmerkungen an Claude und „MR anlegen“ mit Entwurf.
-• Folge-Schritte – drei Vorschläge nebeneinander nach jeder Antwort, Tasten 1–3.
-• Checkliste – ganz oben Claudes Aufgabenliste mit Status (arbeitet, braucht dich, hängt?, fertig), Fortschritt, Restzeit, Pause/Weiter und Plan-Karte; /cockpit-verlauf mit Tages- und Wochenbericht zum Kopieren.
-• Diagnose – drei Kurzinfos im Band, ein Panel „Profiling“ (/cockpit-profiling) mit einer Karte je Mod: Kontext-Inspektor (/cockpit-kontext: Belegung des Fensters, doppelt gelesene Dateien, ähnliche Ausgaben, Verluste durch Kompaktieren, Hinweise), Agent-Profiler (/cockpit-profil: Zeit in Modell, Tools, Subagents, Overhead) und Blast-Radius (/cockpit-blast: betroffene Dateien und Testkandidaten deiner Änderungen). Lesen nur mit, ohne Netzwerk.
+Ein Cockpit: Band über der Eingabe (nur Links), „Tenvan“ unter dem Prompt, ein Panel mit sechs Reitern.
 
-Panel rechts (/cockpit)
-• Agent arbeitet – Laufzeit, Tool-Calls und Edits, solange ein Turn läuft.
-• Arbeitsverzeichnis – Session-Ordner, Prozess-Ordner und verknüpfte Sessions.
-• Git – Branch, Commit, Änderungen und Abstand zum Upstream.
-• Kontextfenster – wofür der Kontext gerade draufgeht.
-• Kontext-Diät – MCP-Server, die Tokens fressen, aber nie benutzt wurden.
-• Turn-Bilanz – Kosten je Turn; teure Turns ohne Edit sind gelb.
-• Tool-Freigaben – was erlaubt, nachgefragt oder abgelehnt wurde.
-• Subagents – eine Kachel je Agent mit Tokens, Schritten und Laufzeit.
-• Agent-Bremse – sperrt weitere Tool-Calls, wenn ein Subagent zu teuer wird.
-• Hintergrundaufgaben – Shell-Jobs im Hintergrund mit Status.
-• Log – die letzten Ereignisse.
+Band über der Eingabe
+• Checkliste – Claudes Aufgabenliste mit Status (arbeitet, braucht dich, hängt?, fertig), Fortschritt, Restzeit; Pause, Weiter, Plan als Links; Antworten auf Rückfragen direkt unter der Frage (Tasten 4–6).
+• Atemübung – solange Claude arbeitet, atmet der Statusring der Checkliste; die ganze Übung steht im Reiter Jetzt.
+• Messwerte – Limits 5h/7d mit Reset, Effort und Modell mit „Auto“, Kontext mit „Kompaktieren“ (ab 85 % gelb), Cache mit Trefferquote, Kosten. Jeder Wert führt zum Reiter Verbrauch.
+• Handoff – bei großem, kaltem Kontext: HANDOFF.md schreiben und kopieren statt teuer weiterzumachen.
+• Sparmodus – ab 80 % bei 5h oder 7d deckelt ein Link an den Limits den Auto-Effort auf Low.
+• Merge Request – MR des Branches im Kopf (Pipeline, Freigaben, Threads), Links „Anmerkungen → Claude“, „Konflikt lösen“, „MR anlegen“.
+• Meldung – nur bei Gelb oder Rot die wichtigste Meldung (Schleife, Verzeichniswechsel, Fehler, Wächter, Tipps, Diagnose), dahinter „+n Hinweise“.
+• Folge-Schritte – drei Vorschläge nach jeder Antwort, Tasten 1–3.
+
+Panel (/cockpit oder „Tenvan“)
+• Jetzt – Agent arbeitet, Plan mit Zeiten und Dateien, Subagents mit Bremse, Hintergrundaufgaben, Letzter Turn mit Turn-Bilanz.
+• Verbrauch – Übersicht mit Takt und Reset, Kontextfenster mit Kontext-Diät, Kontext-Inspektor (/cockpit-kontext).
+• Diagnose – Hinweise (alle Meldungen, Tipps, Nutzungswächter), Protokoll (Log, Fehler-Eingang, Tool-Freigaben, Zeitreise mit Diff und Zurück), Profil (/cockpit-profil), Blast-Radius (/cockpit-blast).
+• Git – Arbeitsverzeichnis, Ablauf Commit → MR → Merge → Aufräumen, Branches, MR-Karten (/cockpit-git).
+• Rückblick – Zusammenfassung dieser Session und Verlauf mit Tages- und Wochenbericht (/cockpit-verlauf).
+• Einstellungen – jeder Schalter, Sprache, Skin-Demo (/cockpit-einstellungen).
 
 Im Hintergrund
 • Cache-Wächter – schlägt kurz vor Ablauf einen Prompt vor, damit der Cache warm bleibt.
-• Zusammenfassung – fasst die Session in einem eigenen Panel zusammen.
 • Chat-Skins – Symbole sowie Karten für Diffs, Code, Tabellen, Mermaid und Formeln.

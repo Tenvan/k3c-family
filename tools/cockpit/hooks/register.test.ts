@@ -13,6 +13,17 @@ const BAND = { plugin: 'tenvan-cc', component: 'AbovePrompt', props: { hasSurvey
 
 const SUMMARY = { role: 'user' as const, text: 'Zusammenfassung', toolUses: [] }
 
+// Ein Panel mit Reitern: Reiter und Unterreiter per Klick wählen und warten, bis sie gezeichnet sind (der gewählte ist Text
+// statt Link, sein Button verschwindet).
+type Pressable = { press(t: { key: string }): Promise<unknown>; find(q: { type: 'Button'; key: string }): Promise<unknown> }
+async function pick(pane: Pressable, ...keys: string[]) {
+  for (const key of keys) {
+    if ((await pane.find({ type: 'Button', key })) === undefined) continue
+    await pane.press({ key })
+    for (let i = 0; i < 3000 && (await pane.find({ type: 'Button', key })) !== undefined; i++) await Promise.resolve()
+  }
+}
+
 test('Nach /compact liest das Band den Kontext neu, ohne auf die nächste Messung zu warten', async ($, on) => {
   mock.clock(on, { now: H })
   on('session.measure', () => ({ changed: [] }))
@@ -22,8 +33,10 @@ test('Nach /compact liest das Band den Kontext neu, ohne auf die nächste Messun
   await $.session.measure({ ...MEASURE, context: { tokens: 180_000, window: 200_000, percent: 90 } })
   await $.session.compact({ trigger: 'manual', messages: [SUMMARY, SUMMARY] })
   const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
-  for (let i = 0; i < 100 && !JSON.stringify(await band.find({ key: 'compact-pill' })).includes(TINT.success); i++) await Promise.resolve()
-  expect(JSON.stringify(await band.find({ key: 'compact-pill' }))).toContain(`"backgroundColor":"${TINT.success}"`)
+  // Der Kontext-Wert ist ein Link; nach /compact (10 %) steht dort der neue Wert ohne getönten Grund (grün, der Ring trägt die Farbe).
+  for (let i = 0; i < 100 && !JSON.stringify(await band.find({ key: 'ctx-link' })).includes('10%'); i++) await Promise.resolve()
+  expect(JSON.stringify(await band.find({ key: 'ctx-link' }))).toContain('Kontext 10%')
+  expect(await band.find({ key: 'ctx-link-tone' })).toBe(undefined)
 })
 
 test('Takt: 80 % nach 1 von 5 Stunden liegt 60 Punkte vor', () => {
@@ -82,20 +95,61 @@ test('Panel zeichnet alle Abschnitte auf desktop', async ($, on) => {
     requestId: 'tenvan-cc',
     props: { title: 'Cockpit', isFocused: false, bodyColumns: 60, placement: 'dock', scroll: { offset: 0, bodyRows: 40 }, view: {} },
   })
-  for (const title of ['Übersicht', 'Letzter Turn', 'GATE · Freigaben', 'Subagents', 'Log']) {
-    expect(await pane.find({ text: title })).toBeDefined()
-  }
+  // Jetzt: Letzter Turn und Subagents.
+  expect(await pane.find({ text: 'Letzter Turn' })).not.toBe(undefined)
+  expect(await pane.find({ text: /^Subagents/ })).not.toBe(undefined)
+  // Verbrauch: Übersicht mit Takt und Reset.
+  await pick(pane, 'pane-tabs-usage')
+  expect(await pane.find({ text: 'Übersicht' })).not.toBe(undefined)
   expect((await pane.find({ text: /40 Punkte schneller als die Zeit/ }))?.text).toContain('Reset')
+  // Diagnose → Protokoll: Freigaben und Filter.
+  await pick(pane, 'pane-tabs-diag', 'diag-sub-log')
+  expect(await pane.find({ text: 'GATE · Freigaben' })).not.toBe(undefined)
+  expect(await pane.find({ type: 'Button', key: 'log-filter-errors' })).not.toBe(undefined)
 })
 
-test('parseSteps: JSON aus Freitext, max. 3, Label erst ab 80 Zeichen gekürzt, prompt-Fallback, Begründung', () => {
+test('parseSteps: JSON aus Freitext, max. 3, Label ab 28 Zeichen gekürzt, prompt-Fallback, Begründung', () => {
   const steps = parseSteps('Hier: [{"label":"Tests schreiben","why":"sichert den Parser ab"},{"label":"Eine sehr lange Beschriftung über dreißig Zeichen","prompt":"x"},{"label":""},{"label":"C"},{"label":"D"},{"label":"E"},{"label":"F"}]')
   expect(steps).toHaveLength(3)
   expect(steps[0]?.why).toBe('sichert den Parser ab')
-  expect(steps[1]?.why).toBe(undefined)
-  expect(steps[0]).toEqual({ label: 'Tests schreiben', prompt: 'Tests schreiben', why: 'sichert den Parser ab' })
-  expect(steps[1]?.label).toBe('Eine sehr lange Beschriftung über dreißig Zeichen')
+    expect(steps[0]).toEqual({ label: 'Tests schreiben', prompt: 'Tests schreiben', why: 'sichert den Parser ab' })
+  // Knopftext höchstens 28 Zeichen mit Ellipsis; der volle Text bleibt im Tooltip (why) stehen, der Prompt-Ersatz ist ungekürzt.
+  expect(steps[1]?.label).toBe('Eine sehr lange Beschriftun…')
+  expect(steps[1]?.label.length).toBeLessThanOrEqual(28)
+  expect(steps[1]?.why).toBe('Eine sehr lange Beschriftung über dreißig Zeichen')
+  expect(parseSteps('[{"label":"Eine sehr lange Beschriftung über dreißig Zeichen","why":"darum"}]')[0]).toEqual({ label: 'Eine sehr lange Beschriftun…', prompt: 'Eine sehr lange Beschriftung über dreißig Zeichen', why: 'Eine sehr lange Beschriftung über dreißig Zeichen\ndarum' })
   expect(parseSteps('kein json')).toEqual([])
+})
+
+const LONG_REPLY = JSON.stringify([
+  { label: 'Ergänze Unit-Tests für den Parser der Vorschläge', why: 'Parser ist ungetestet', prompt: 'Ergänze Unit-Tests für parseSteps, inklusive Randfälle.' },
+  { label: 'Tests ausführen', why: 'Absichern', prompt: 'Führe die Tests aus.' },
+  { label: 'Änderungen committen und pushen', why: 'Abschluss', prompt: 'Committe die Änderungen.' },
+])
+
+test('Weiter-Zeile: kurze Knöpfe ohne Umbruch, Tooltip mit vollem Text, Refresh als reines Icon', async ($, on) => {
+  mock.clock(on, { now: H })
+  on('model.complete', () => ({ value: { isAnswered: true, text: LONG_REPLY, usage: { input_tokens: 1, output_tokens: 1, cache_read_input_tokens: 0, cache_creation_input_tokens: 0 } } }))
+  on('session.usage', () => ({ value: { startedAt: 0, context: { window: 200_000 }, rateLimits: [] } }))
+  on('turn.complete', () => ({ text: 'Fertig.' }))
+  on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
+  const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
+  await $.turn.complete(TURN)
+  for (let i = 0; i < 100 && !(await band.find({ key: 'step-2' })); i++) await Promise.resolve()
+  for (let i = 0; i < 3; i++) {
+    const label = JSON.stringify(await band.find({ type: 'Button', key: `step-${i}` })).match(/"label":"([^"]*)"/)?.[1] ?? ''
+    expect(label.length).toBeGreaterThan(0)
+    expect(label.length).toBeLessThanOrEqual(28)
+  }
+  expect(JSON.stringify(await band.findAll({ type: 'Svg' }))).toContain('Ergänze Unit-Tests für den Parser der Vorschläge')
+  // Eine Zeile: kein Umbruch der Vorschlagsleiste.
+  const row = JSON.stringify(await band.find({ type: 'Box', key: 'steps' }))
+  expect(row).toContain('"flexWrap":"nowrap"')
+  expect(row).not.toContain('"flexWrap":"wrap"')
+  // Refresh: nur das Symbol, kein Text „Neue“.
+  const refresh = JSON.stringify(await band.find({ type: 'Button', key: 'steps-refresh' }))
+  expect(refresh).toContain('"label":"↻"')
+  expect(refresh).not.toContain('Neue')
 })
 
 const STEP_REPLY = '[{"label":"Tests ergänzen","why":"Parser ist ungetestet","prompt":"Ergänze Tests für parseSteps."}]'
@@ -132,7 +186,7 @@ test('Folge-Schritt: Button füllt das Eingabefeld, erst Enter sendet und leert 
   // Enter der Person: prompt.submit aus dem Eingabefeld startet den Turn.
   await $.prompt.submit({ text: filled[0] } as never)
   expect(await band.find({ key: 'step-0' })).toBe(undefined)
-  // Ohne Vorschläge bleibt die Zeile mit „↻ Neue“ stehen.
+  // Ohne Vorschläge bleibt die Zeile mit dem ↻-Knopf stehen.
   expect(await band.find({ type: 'Text', text: 'keine Vorschläge' })).not.toBe(undefined)
   expect(await band.find({ type: 'Button', key: 'steps-refresh' })).not.toBe(undefined)
   const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
@@ -159,7 +213,7 @@ test('cacheHitPct: Anteil Cache-Lesen an der Eingabe', () => {
   expect(cacheHitPct(USAGE0)).toBe(null)
 })
 
-test('Ab 85 % Kontext tönt das Band Kompaktieren rot; der Knopf schreibt /compact ins Eingabefeld', async ($, on) => {
+test('Ab 85 % Kontext: Wert rot, Link Kompaktieren gelb und fett; er schreibt /compact ins Eingabefeld', async ($, on) => {
   mock.clock(on, { now: H })
   const filled: string[] = []
   on('session.measure', () => ({ changed: [] }))
@@ -170,7 +224,11 @@ test('Ab 85 % Kontext tönt das Band Kompaktieren rot; der Knopf schreibt /compa
   on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
   await $.session.measure({ ...MEASURE, context: { tokens: 180_000, window: 200_000, percent: 90 } })
   const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
-  expect(JSON.stringify(await band.find({ key: 'compact-pill' }))).toContain(`"backgroundColor":"${TINT.error}"`)
+  // Der Desktop ignoriert Schriftfarben im Button: die Ampel kommt als getönter Grund (rot bzw. gelb) unter den Link.
+  expect(JSON.stringify(await band.find({ key: 'ctx-link-tone' }))).toContain(`"backgroundColor":"${TINT.error}"`)
+  expect(JSON.stringify(await band.find({ key: 'compact-tone' }))).toContain(`"backgroundColor":"${TINT.warning}"`)
+  // Links statt Knöpfe: keine Pillen-Fläche mehr im Band.
+  expect(await band.find({ key: 'compact-pill' })).toBe(undefined)
   await band.press({ key: 'compact' })
   for (let i = 0; i < 100 && filled.length === 0; i++) await Promise.resolve()
   expect(filled).toEqual(['/compact'])
@@ -187,6 +245,7 @@ test('turn.step: Trefferquote des Haupt-Requests erscheint im Panel', async ($, 
     // Stream leer durchlaufen
   }
   const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  await pick(pane, 'pane-tabs-usage')
   expect((await pane.find({ text: /Trefferquote 96 %/ }))?.text).toContain('Trefferquote 96 %')
 })
 
@@ -214,7 +273,7 @@ test('title: Version ohne Build-Stempel', () => {
   expect(title({ version: '0.3.0', builtAt: new Date(2026, 9, 12, 9, 5).getTime() })).toBe('Tenvan CC (Version 0.3.0)')
 })
 
-test('Titelleiste in Band und Panel mit Version aus plugin.json', async ($, on) => {
+test('Titelleiste: Panel mit Version aus plugin.json, Band ohne Version', async ($, on) => {
   mock.clock(on, { now: H })
   on('session.start', ($, e) => ({ cwd: e.cwd }))
   on('command.register', ($, e) => ({ value: { command: e.name } }))
@@ -226,7 +285,8 @@ test('Titelleiste in Band und Panel mit Version aus plugin.json', async ($, on) 
   await $.session.measure(MEASURE)
   const expected = 'Tenvan CC (Version 9.9.9)'
   const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
-  expect((await band.find({ type: 'Text', text: expected }))?.text).toBe(expected)
+  expect((await band.find({ type: 'Text', text: 'Tenvan CC' }))?.text).toBe('Tenvan CC')
+  expect(await band.find({ type: 'Text', text: /Version 9\.9\.9/ })).toBe(undefined)
   const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect((await pane.find({ type: 'Text', text: expected }))?.text).toBe(expected)
 })
@@ -301,6 +361,8 @@ test('Log: nur die letzten 10 Einträge, Prompt auf 80 Zeichen gekürzt, Quelle 
   for (let i = 1; i <= 12; i++) await $.prompt.submit({ text: `prompt-${String(i).padStart(2, '0')}` } as never)
   await $.prompt.submit({ text: `lang-${'x'.repeat(200)}` } as never)
   const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  // Das Log ist Teil des Protokolls (Diagnose → Protokoll).
+  await pick(pane, 'pane-tabs-diag', 'diag-sub-log')
   expect(await pane.find({ type: 'Text', text: /prompt-03/ })).toBe(undefined)
   expect(await pane.find({ type: 'Text', text: /prompt-04/ })).not.toBe(undefined)
   expect(await pane.find({ type: 'Text', text: /prompt-12/ })).not.toBe(undefined)
@@ -450,6 +512,7 @@ test('Panel: Karte Kontextfenster nennt den Grund, wenn die Engine keine Aufteil
   on('session.usage', () => ({ value: { startedAt: 0, context: { window: 1_000_000, tokens: 1, percent: 1 }, rateLimits: [] } }) as never)
   await $.session.measure(MEASURE)
   const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  await pick(pane, 'pane-tabs-usage')
   for (let i = 0; i < 3000 && !(await pane.find({ type: 'Text', text: /keine Aufteilung/ })); i++) await Promise.resolve()
   expect(await pane.find({ type: 'Text', text: /keine Aufteilung/ })).not.toBe(undefined)
 })
@@ -558,4 +621,23 @@ test('Freigabe-Prompt: Git-Ordner mit Shell-Zeichen und Hashes ohne Hex-Form wer
   expect(isSafeTrustEntry('C:/Users/Max Muster/repo/.git', 'a'.repeat(64))).toBe(true)
   for (const bad of ['C:/x"; rm -rf ~; "/.git', 'C:/x`id`/.git', 'C:/$HOME/.git', 'C:/a&b/.git', 'C:/a|b/.git', 'C:/a%PATH%/.git', 'C:/a'+String.fromCharCode(10)+'b/.git', '']) expect(isSafeTrustEntry(bad, sha1)).toBe(false)
   for (const bad of ['', 'xyz', sha1.toUpperCase(), sha1.slice(1), `${sha1}; id`]) expect(isSafeTrustEntry('C:/ok/.git', bad)).toBe(false)
+})
+
+test('Darstellung auto: das Desktop-Theme gilt auch, wenn surfaces() beim Start noch leer war (kein /reload-plugins nötig)', async ($, on) => {
+  mock.clock(on, { now: H })
+  on('session.measure', () => ({ changed: [] }))
+  on('session.surfaces', () => ({ value: [] }) as never)
+  on('config.list', () => ({ value: [{ key: 'theme', value: 'dark' }] }) as never)
+  on('env.get', () => ({ value: 'C:\\Users\\r' }) as never)
+  on('fs.read', () => ({ value: '{"userThemeMode":"light"}' }) as never)
+  on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
+  await $.session.measure(MEASURE)
+  await $.ui.mount({ ...BAND, surface: 'desktop' })
+  const LIGHT_ACCENT = '#1f4fc4'
+  let drawn = ''
+  for (let i = 0; i < 50 && !drawn.includes(LIGHT_ACCENT); i++) {
+    await new Promise(r => setTimeout(r, 20))
+    drawn = JSON.stringify(await (await $.ui.mount({ ...BAND, surface: 'desktop' })).findAll({ type: 'Text' }))
+  }
+  expect(drawn).toContain(LIGHT_ACCENT)
 })

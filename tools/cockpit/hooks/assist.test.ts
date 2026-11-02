@@ -113,6 +113,7 @@ test('Agent-Bremse: teurer Subagent bekommt den Knopf, danach werden seine Tool-
   for (let i = 0; i < AGENT_STEPS_WARN; i++) await $.tool.call({ tool: 'Read', tool_use_id: `r${i}`, input: { file_path: 'a.ts' }, agentId: 'a1' } as never)
   const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
   expect(await pane.find({ text: /teuer: 40 Tool-Calls/ })).not.toBe(undefined)
+  expect(await pane.find({ type: 'Button', key: 'ag-open-a1' })).not.toBe(undefined)
   await pane.press({ key: 'brake-a1' })
   for (let i = 0; i < 100 && !(await pane.find({ text: 'gebremst' })); i++) await Promise.resolve()
   const ran = (await $.tool.call({ tool: 'Read', tool_use_id: 'r-x', input: { file_path: 'a.ts' }, agentId: 'a1' } as never)) as { deny?: string }
@@ -122,7 +123,66 @@ test('Agent-Bremse: teurer Subagent bekommt den Knopf, danach werden seine Tool-
   expect(main.deny).toBe(undefined)
 })
 
-test('Features: Minibutton in der Band-Kopfzeile schreibt /cockpit-features ins Eingabefeld', async ($, on) => {
+test('Band: Kontext, Cache und Kosten lassen sich einzeln ausblenden, der Titel bleibt', async ($, on) => {
+  mock.clock(on, { now: H })
+  on('session.measure', () => ({ changed: [] }))
+  on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
+  on('store.get', () => ({ value: undefined }) as never)
+  on('store.set', () => ({ value: undefined }) as never)
+  await $.session.measure(MEASURE)
+  const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
+  for (let i = 0; i < 200 && !(await band.find({ key: 'ctx-link' })); i++) await Promise.resolve()
+  expect(await band.find({ key: 'ctx-link' })).not.toBe(undefined)
+  expect(await band.find({ key: 'cache-link' })).not.toBe(undefined)
+  expect(await band.find({ type: 'Text', text: '$1.50' })).not.toBe(undefined)
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  await pane.press({ key: 'pane-tabs-set' })
+  for (const key of ['set-bandContext', 'set-cache', 'set-bandCost', 'set-bandAlerts']) {
+    for (let i = 0; i < 3000 && !(await pane.find({ type: 'Button', key })); i++) await Promise.resolve()
+    await pane.press({ key })
+  }
+  for (let i = 0; i < 3000 && (await band.find({ key: 'ctx-link' })); i++) await Promise.resolve()
+  expect(await band.find({ key: 'ctx-link' })).toBe(undefined)
+  expect(await band.find({ key: 'compact' })).toBe(undefined)
+  expect(await band.find({ key: 'cache-link' })).toBe(undefined)
+  expect(await band.find({ type: 'Text', text: '$1.50' })).toBe(undefined)
+  expect(JSON.stringify(await band.find({ key: 'band-main' }))).toContain('Tenvan')
+})
+
+test('Subagent öffnen: ohne Hauptansicht (Desktop) zeigt ↗ den Verlauf im Panel, ein zweiter Klick schließt ihn', async ($, on) => {
+  mock.clock(on, { now: H })
+  on('agent.spawn', () => ({ model: 'm', agentId: 'a1' }))
+  on('ui.view', () => ({ value: { deny: 'no main view here' } }) as never)
+  on('session.messages', () => ({
+    value: [
+      { role: 'user', text: 'Finde den Fehler', toolUses: [] },
+      { role: 'assistant', text: 'Ich lese die Datei.', toolUses: [{ tool_use_id: 't1', tool: 'Read', input: { file_path: 'src/app/a.ts' } }] },
+    ],
+  }) as never)
+  await $.agent.spawn(SPAWN)
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  await pane.press({ key: 'ag-open-a1' })
+  for (let i = 0; i < 200 && !(await pane.find({ text: /Finde den Fehler/ })); i++) await Promise.resolve()
+  expect(await pane.find({ text: /Finde den Fehler/ })).not.toBe(undefined)
+  expect(await pane.find({ text: /Read → app\/a\.ts/ })).not.toBe(undefined)
+  await pane.press({ key: 'ag-open-a1' })
+  for (let i = 0; i < 200 && (await pane.find({ text: /Finde den Fehler/ })); i++) await Promise.resolve()
+  expect(await pane.find({ text: /Finde den Fehler/ })).toBe(undefined)
+})
+
+test('Subagent öffnen: ohne lesbaren Verlauf nennt die Karte den Grund', async ($, on) => {
+  mock.clock(on, { now: H })
+  on('agent.spawn', () => ({ model: 'm', agentId: 'a1' }))
+  on('ui.view', () => ({ value: { deny: 'that agent has ended' } }) as never)
+  on('session.messages', () => ({ value: { deny: 'no transcript for a1' } }) as never)
+  await $.agent.spawn(SPAWN)
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  await pane.press({ key: 'ag-open-a1' })
+  for (let i = 0; i < 200 && !(await pane.find({ text: /Kein Verlauf lesbar/ })); i++) await Promise.resolve()
+  expect(await pane.find({ text: /Kein Verlauf lesbar: no transcript for a1/ })).not.toBe(undefined)
+})
+
+test('Features: Link im Reiter Einstellungen schreibt /cockpit-features ins Eingabefeld', async ($, on) => {
   mock.clock(on, { now: H })
   on('session.measure', () => ({ changed: [] }))
   on('ui.render', { component: 'AbovePrompt' }, () => ({ type: 'Box' as const }))
@@ -133,8 +193,13 @@ test('Features: Minibutton in der Band-Kopfzeile schreibt /cockpit-features ins 
     return { isFilled: true, box: { text: e.text, cursor: 0 } }
   })
   await $.session.measure(MEASURE)
+  // Im Band gibt es keinen Knopf Features mehr; der Link steht im Reiter Einstellungen (Karte Über das Cockpit).
   const band = await $.ui.mount({ ...BAND, surface: 'desktop' })
-  await band.press({ key: 'features' })
+  expect(await band.find({ type: 'Button', key: 'features' })).toBe(undefined)
+  const pane = await $.ui.mount({ plugin: 'tenvan-cc', surface: 'desktop', component: 'Pane', requestId: 'tenvan-cc', props: PANE_PROPS })
+  await pane.press({ key: 'pane-tabs-set' })
+  for (let i = 0; i < 3000 && !(await pane.find({ type: 'Button', key: 'features' })); i++) await Promise.resolve()
+  await pane.press({ key: 'features' })
   for (let i = 0; i < 100 && filled.length === 0; i++) await Promise.resolve()
   expect(filled).toEqual(['/cockpit-features'])
 })

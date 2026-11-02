@@ -179,15 +179,15 @@ test('bandText: beide Sprachen, leer ohne Ziele, unvollständig', () => {
 test('paneView: Abschnitte, Töne, Kappung auf 20 sichtbar', () => {
   const many = Array.from({ length: 25 }, (_, i) => `src/f${i}.ts`)
   const v = paneView(res({ targets: ['src/a.ts', 'src/w.ts'], affected: many, unresolved: ['src/x.ts → a'] }), ['src/w.ts'], 'de')
-  expect(v.map(s => s.title)).toEqual(['Ziele', 'Betroffene Dateien', 'Testkandidaten', 'Unaufgelöst', 'Hinweis'])
-  expect(v[0]?.rows).toEqual([{ label: 'geändert', value: 'src/a.ts', tone: 'warn' }, { label: 'beobachtet', value: 'src/w.ts' }])
-  expect(v[1]?.rows.length).toBe(21)
-  expect(v[1]?.rows[20]).toEqual({ label: '', value: '… +5', tone: 'dim' })
-  expect(v[3]?.rows[0]?.tone).toBe('warn')
-  expect(v[4]?.note).toBe('Nur statische relative Importe; Aliase, Laufzeit-Importe, Framework-Auflösung manuell prüfen.')
+  expect(v.map(s => s.title)).toEqual(['Bewertung', 'Ziele', 'Betroffene Dateien', 'Testkandidaten', 'Unaufgelöst', 'Ampel-Schwellen', 'Hinweis'])
+  expect(v[1]?.rows).toEqual([{ label: 'geändert', value: 'src/a.ts', tone: 'warn' }, { label: 'beobachtet', value: 'src/w.ts' }])
+  expect(v[2]?.rows.length).toBe(22)
+  expect(v[2]?.rows[21]).toEqual({ label: '', value: '… +5', tone: 'dim' })
+  expect(v[4]?.rows[1]?.tone).toBe('warn')
+  expect(v[6]?.note).toBe('Nur statische relative Importe; Aliase, Laufzeit-Importe, Framework-Auflösung manuell prüfen.')
   const en = paneView(res(), [], 'en')
-  expect(en.map(s => s.title)).toEqual(['Targets', 'Affected files', 'Test candidates', 'Note'])
-  expect(en[0]?.rows[0]?.label).toBe('changed')
+  expect(en.map(s => s.title)).toEqual(['Verdict', 'Targets', 'Affected files', 'Test candidates', 'Rating thresholds', 'Note'])
+  expect(en[1]?.rows[0]?.label).toBe('changed')
 })
 
 test('paneView: ohne Ergebnis, ohne Ziele und unvollständig', () => {
@@ -198,9 +198,9 @@ test('paneView: ohne Ergebnis, ohne Ziele und unvollständig', () => {
   expect(empty.map(s => s.title)).toEqual(['Ziele', 'Hinweis'])
   expect(empty[0]?.rows[0]?.tone).toBe('dim')
   const inc = paneView(res({ incomplete: true }), [], 'de')
-  expect(inc[0]?.rows.some(x => x.tone === 'warn' && x.label === 'Status')).toBe(true)
+  expect(inc.find(s => s.title === 'Ziele')?.rows.some(x => x.tone === 'warn' && x.label === 'Status')).toBe(true)
   const zero = paneView(res({ affected: [], tests: [] }), [], 'de')
-  expect(zero[1]?.rows).toEqual([{ label: 'keine', value: '', tone: 'dim' }])
+  expect(zero[2]?.rows).toEqual([{ label: 'keine', value: '', tone: 'dim', rate: 'great' }])
 })
 
 test('reportText: Klartext in beiden Sprachen, höchstens 32 KiB', () => {

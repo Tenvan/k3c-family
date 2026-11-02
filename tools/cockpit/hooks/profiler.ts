@@ -44,18 +44,18 @@
 //                                              wirft `next(e)`, dann `ok = false`.
 // - toolApproval(st, id, decision)           ← `tool.check` nach `await next(e)`: `e.tool_use_id`, `r.decision`
 //                                              ('allow' | 'ask' | 'deny'). Darf vor oder nach toolBegin kommen.
-// - toolExec(st, id, durationMs)             ← `classic.PostToolUse` (und `classic.PostToolUseFailure`): `e.tool_use_id`,
-//                                              `e.duration_ms` (optional; ohne Freigabe- und Hook-Zeit).
+// - toolExec(st, id, durationMs)             ← zurzeit ohne Quelle: `classic.PostToolUse` leitet `cc-plugin-sec-default` an
+//                                              Plugins der Nutzer-Ebene vorbei. Ohne Messung bleibt die Wandzeit stehen.
+//                                              ponytail: Ausbaupfad, sobald ein Event die reine Ausführungszeit liefert.
 // - subagentStart(st, agentId, type, at, toolUseId)
-//                                            ← `classic.SubagentStart`: `e.agent_id`, `e.agent_type`. `toolUseId` verknüpft
-//                                              mit dem Agent-Aufruf: `agent.spawn` liefert `e.tool_use_id` und im Ergebnis
-//                                              `r.agentId`; der Adapter merkt sich agentId → tool_use_id.
-// - subagentStop(st, agentId, at)            ← `classic.SubagentStop`: `e.agent_id`.
-// - stopFailure(st, agentId, at, error)      ← `classic.StopFailure`: `e.agent_id` (fehlt = Hauptschleife), `e.error`
-//                                              (SDKAssistantMessageError, z. B. 'rate_limit'). Schließt nur diesen Kontext;
+//                                            ← `agent.spawn` nach `await next(e)`: `r.agentId`, `e.subagentType`, `e.tool_use_id`.
+// - subagentStop(st, agentId, at)            ← `turn.complete` mit `e.agentId`.
+// - stopFailure(st, agentId, at, error)      ← `turn.complete` mit `e.reason === 'error'`: `e.agentId` (fehlt = Hauptschleife).
+//                                              Schließt nur diesen Kontext;
 //                                              das Warten auf ein Limit-Reset zählt danach als Leerlauf.
 import type { UiLang } from '../types'
 import { duration, oneLine } from './core'
+import { rate, rateTag, ratingSection, worst, type Metric, type Rate } from './rating'
 
 // Speicherdeckel: Requests + Tools zusammen. Darüber fallen die ältesten fertigen Turns samt Datensätzen weg.
 export const MAX_RECORDS = 20_000
@@ -546,6 +546,7 @@ const DE = {
   'profile.cat.tools': 'Tools',
   'profile.cat.subagents': 'Subagents',
   'profile.cat.overhead': 'Engine-Overhead',
+  'profile.cat.approval': 'Freigabe-Wartezeit',
   'profile.band.running': 'läuft: {what} {time}',
   'profile.req.wait': 'Modell wartet',
   'profile.req.think': 'Modell denkt',
@@ -604,6 +605,7 @@ const EN: Record<ProfileKey, string> = {
   'profile.cat.tools': 'Tools',
   'profile.cat.subagents': 'Subagents',
   'profile.cat.overhead': 'Engine overhead',
+  'profile.cat.approval': 'Approval wait',
   'profile.band.running': 'running: {what} {time}',
   'profile.req.wait': 'Model waiting',
   'profile.req.think': 'Model thinking',
@@ -689,21 +691,35 @@ export function bandText(sum: ProfileSummary, now: number, L: UiLang): string {
   return parts.join(' · ')
 }
 
-export type ProfileRow = { label: string; value: string; pct?: number; tone?: 'ok' | 'warn' | 'bad' | 'dim' }
+export type ProfileRow = { label: string; value: string; pct?: number; tone?: 'ok' | 'warn' | 'bad' | 'dim'; rate?: Rate }
 export type ProfileSection = { title: string; rows: ProfileRow[]; note?: string }
 
 const gradeOf = (L: UiLang, g: Grade): string => tx(L, `profile.grade.${g}`)
 
-function splitRows(s: Share, L: UiLang): ProfileRow[] {
-  const row = (key: ProfileKey, ms: number, tone?: ProfileRow['tone']): ProfileRow => ({
-    label: tx(L, key), value: `${duration(ms)} · ${pctText(L, pctOf(ms, s.total))}`, pct: pctOf(ms, s.total), ...(tone ? { tone } : {}),
+// Ampel erst ab 10 s Agentenzeit: bei wenigen Sekunden sagt ein Anteil nichts.
+const RATE_MIN_MS = 10_000
+const overheadRate = (s: Share): Rate | undefined => (s.total >= RATE_MIN_MS ? rate('overhead', (s.overhead / s.total) * 100) : undefined)
+const approvalRate = (s: Share, approvalMs: number): Rate | undefined => (s.total >= RATE_MIN_MS ? rate('approval', (approvalMs / s.total) * 100) : undefined)
+
+function splitRows(s: Share, approvalMs: number, L: UiLang): ProfileRow[] {
+  const row = (key: ProfileKey, ms: number, extra: Pick<ProfileRow, 'tone' | 'rate'> = {}): ProfileRow => ({
+    label: tx(L, key), value: `${duration(ms)} · ${pctText(L, pctOf(ms, s.total))}`, pct: pctOf(ms, s.total), ...extra,
   })
+  const oRate = overheadRate(s)
+  const aRate = approvalRate(s, approvalMs)
   return [
     row('profile.cat.model', s.model),
     row('profile.cat.tools', s.tools),
     row('profile.cat.subagents', s.subagents),
-    row('profile.cat.overhead', s.overhead, s.total > 0 && s.overhead / s.total >= 0.25 ? 'warn' : 'dim'),
+    row('profile.cat.overhead', s.overhead, oRate === undefined ? { tone: 'dim' } : { rate: oRate }),
+    ...(approvalMs > 0 ? [{ ...row('profile.cat.approval', approvalMs, aRate === undefined ? { tone: 'dim' } : { rate: aRate }), pct: pctOf(approvalMs, s.total) }] : []),
   ]
+}
+
+// Die schlechteste Stufe der Zeitverteilung, des TTFT und der Cache-Trefferquote für die Kurzinfo im Band.
+export function bandRate(sum: ProfileSummary): Rate | undefined {
+  const s = sum.session
+  return worst(overheadRate(s.share), approvalRate(s.share, s.approvalMs), ttftRate(s.requests), cacheRate(s.requests))
 }
 
 function toolValue(t: SlowTool, L: UiLang): string {
@@ -715,16 +731,22 @@ function toolValue(t: SlowTool, L: UiLang): string {
   return parts.join(' · ')
 }
 
+const ttftRate = (r: RequestStats): Rate | undefined => (r.ttftAvg > 0 ? rate('ttft', r.ttftAvg) : undefined)
+const cacheRate = (r: RequestStats): Rate | undefined => (r.cacheHit === null ? undefined : rate('cache', r.cacheHit * 100))
+const toolRate = (t: SlowTool): Rate => (t.ok === false ? 'bad' : rate('tool', t.wallMs))
+
 function requestRows(r: RequestStats, L: UiLang): ProfileRow[] {
+  const tr = ttftRate(r)
+  const cr = cacheRate(r)
   return [
     { label: tx(L, 'profile.req.count'), value: String(r.count) },
-    { label: tx(L, 'profile.req.ttft'), value: `${duration(r.ttftAvg)} / ${duration(r.ttftMax)}` },
+    { label: tx(L, 'profile.req.ttft'), value: `${duration(r.ttftAvg)} / ${duration(r.ttftMax)}`, ...(tr === undefined ? {} : { rate: tr }) },
     { label: tx(L, 'profile.req.streams'), value: `${duration(r.thinkMs)} / ${duration(r.outMs)}` },
     { label: tx(L, 'profile.req.tokens'), value: `${tokens(r.tokensIn, L)} / ${tokens(r.tokensOut, L)}` },
     {
       label: tx(L, 'profile.req.cache'),
       value: `${tokens(r.cacheRead, L)} / ${tokens(r.cacheWrite, L)}${r.cacheHit === null ? '' : ` · ${tx(L, 'profile.req.hit', { pct: pctText(L, Math.round(r.cacheHit * 100)) })}`}`,
-      ...(r.cacheHit !== null && r.cacheHit < 0.5 ? { tone: 'warn' as const } : {}),
+      ...(cr === undefined ? {} : { rate: cr }),
     },
   ]
 }
@@ -752,7 +774,7 @@ export function paneView(sum: ProfileSummary, now: number, L: UiLang): ProfileSe
   const dropped = droppedNote(sum, L)
   const out: ProfileSection[] = [{
     title: tx(L, 'profile.sec.split'),
-    rows: splitRows(s.share, L),
+    rows: splitRows(s.share, s.approvalMs, L),
     note: [tx(L, 'profile.split.note', { turns: s.turns, time: duration(s.share.total) }), dropped].filter(Boolean).join(' · '),
   }]
   if (sum.inflight.length > 0) {
@@ -767,13 +789,22 @@ export function paneView(sum: ProfileSummary, now: number, L: UiLang): ProfileSe
   if (s.slowTools.length > 0) {
     out.push({
       title: tx(L, 'profile.sec.slow'),
-      rows: s.slowTools.map(t => ({ label: t.label, value: toolValue(t, L), ...(t.ok === false ? { tone: 'bad' as const } : {}) })),
+      rows: s.slowTools.map(t => ({ label: t.label, value: toolValue(t, L), rate: toolRate(t) })),
       note: tx(L, 'profile.slow.note', { exec: gradeOf(L, GRADE.exec), wait: gradeOf(L, GRADE.wait) }),
     })
   }
   if (s.requests.count > 0) out.push({ title: tx(L, 'profile.sec.requests'), rows: requestRows(s.requests, L), note: tx(L, 'profile.req.note') })
   if (s.subagents.length > 0) out.push({ title: tx(L, 'profile.sec.subagents'), rows: s.subagents.map(x => subagentRow(x, L)) })
   if (s.findings.length > 0) out.push({ title: tx(L, 'profile.sec.findings'), rows: s.findings.map(f => ({ label: findingText(f, L), value: '', tone: 'warn' as const })) })
+  // Schwellen nur für die Messgrößen, die oben tatsächlich bewertet wurden.
+  const used: Metric[] = [
+    ...(overheadRate(s.share) !== undefined ? ['overhead' as const] : []),
+    ...(s.approvalMs > 0 && approvalRate(s.share, s.approvalMs) !== undefined ? ['approval' as const] : []),
+    ...(ttftRate(s.requests) !== undefined ? ['ttft' as const] : []),
+    ...(cacheRate(s.requests) !== undefined ? ['cache' as const] : []),
+    ...(s.slowTools.length > 0 ? ['tool' as const] : []),
+  ]
+  if (used.length > 0) out.push(ratingSection(L, used))
   return out
 }
 
@@ -793,7 +824,7 @@ export function reportText(sum: ProfileSummary, now: number, L: UiLang, scope: '
     ['profile.cat.subagents', s.share.subagents, GRADE.subagent],
     ['profile.cat.overhead', s.share.overhead, GRADE.overhead],
   ]
-  for (const [key, ms, grade] of split) lines.push(`- ${tx(L, key)}: ${pctText(L, pctOf(ms, s.share.total))} (${duration(ms)})${g(grade)}`)
+  for (const [key, ms, grade] of split) lines.push(`- ${tx(L, key)}: ${pctText(L, pctOf(ms, s.share.total))} (${duration(ms)})${g(grade)}${key === 'profile.cat.overhead' ? rateTag(L, overheadRate(s.share)) : ''}`)
   const section = (key: ProfileKey, rows: string[]) => {
     if (rows.length > 0) lines.push('', `### ${tx(L, key)}`, ...rows.map(r => `- ${r}`))
   }
@@ -804,10 +835,10 @@ export function reportText(sum: ProfileSummary, now: number, L: UiLang, scope: '
     const r = s.requests
     section('profile.sec.requests', [
       `${tx(L, 'profile.req.count')}: ${r.count}`,
-      `${tx(L, 'profile.req.ttft')}: ${duration(r.ttftAvg)} / ${duration(r.ttftMax)}${g(GRADE.ttft)}`,
+      `${tx(L, 'profile.req.ttft')}: ${duration(r.ttftAvg)} / ${duration(r.ttftMax)}${g(GRADE.ttft)}${rateTag(L, ttftRate(r))}`,
       `${tx(L, 'profile.req.streams')}: ${duration(r.thinkMs)} / ${duration(r.outMs)}${g(GRADE.stream)}`,
       `${tx(L, 'profile.req.tokens')}: ${tokens(r.tokensIn, L)} / ${tokens(r.tokensOut, L)}${g(GRADE.tokens)}`,
-      ...requestRows(r, L).slice(4).map(row => `${row.label}: ${row.value}${g(GRADE.tokens)}`),
+      ...requestRows(r, L).slice(4).map(row => `${row.label}: ${row.value}${g(GRADE.tokens)}${rateTag(L, row.rate)}`),
     ])
   }
   section('profile.sec.subagents', s.subagents.map(x => {
