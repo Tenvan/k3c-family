@@ -18,14 +18,14 @@ const job = (id: number, name: string, stage: string, status: string, extra: Rec
   id, name, stage, status, web_url: `j${id}`, duration: 65, allow_failure: false, commit: { title: 'Export vereinfachen' }, ...extra,
 })
 
-type World = { pipelines: unknown[]; jobs: Record<number, unknown[]>; traces: Record<number, string>; calls: string[][]; toasts: string[]; opens: number; fail: boolean }
+type World = { pipelines: unknown[]; jobs: Record<number, unknown[]>; traces: Record<number, string>; calls: string[][]; toasts: string[]; opens: number; fail: boolean; remote: string }
 const ESC = String.fromCharCode(27)
 
 function world(): World {
   return {
     pipelines: [pipe(202, 'running', 'feature/x'), pipe(201, 'failed', 'main'), pipe(200, 'success', 'feature/x')],
     jobs: {
-      202: [job(1, 'build', 'build', 'success'), job(2, 'test', 'test', 'running'), job(3, 'deploy', 'deploy', 'manual')],
+      202: [job(1, 'build', 'build', 'success', { started_at: '2026-11-02T10:00:00Z', finished_at: '2026-11-02T10:01:05Z', artifacts_file: { filename: 'artifacts.zip', size: 3_407_872 }, artifacts_expire_at: '2999-01-01T00:00:00Z', web_url: 'https://gitlab.deltra.de/consulting/x/-/jobs/1' }), job(2, 'test', 'test', 'running'), job(3, 'deploy', 'deploy', 'manual')],
       201: [job(9, 'test', 'test', 'failed')],
       200: [job(7, 'build', 'build', 'success')],
     },
@@ -34,6 +34,7 @@ function world(): World {
     toasts: [],
     opens: 0,
     fail: false,
+    remote: 'git@gitlab.deltra.de:consulting/x.git\n',
   }
 }
 
@@ -55,7 +56,7 @@ function wire(on: On, w: World, saved?: Record<string, unknown>) {
   on('process.run', (_$, e) => {
     const argv = (e as { argv: readonly string[] }).argv
     if (argv[0] === 'git') {
-      if (argv.includes('get-url')) return out('git@gitlab.deltra.de:consulting/x.git\n')
+      if (argv.includes('get-url')) return out(w.remote)
       if (argv.includes('--show-current')) return out('feature/x\n')
       return out('')
     }
@@ -68,7 +69,7 @@ function wire(on: On, w: World, saved?: Record<string, unknown>) {
     const jobs = /^projects\/:id\/pipelines\/(\d+)\/jobs/.exec(path)
     if (jobs) return out(JSON.stringify(w.jobs[Number(jobs[1])] ?? []))
     const detail = /^projects\/:id\/pipelines\/(\d+)$/.exec(path)
-    if (detail) return out(JSON.stringify({ ...(w.pipelines as { id: number }[]).find(p => p.id === Number(detail[1])), duration: 125, user: { username: 'ralf' } }))
+    if (detail) return out(JSON.stringify({ ...(w.pipelines as { id: number }[]).find(p => p.id === Number(detail[1])), duration: 125, started_at: '2026-11-02T10:00:00Z', finished_at: '2026-11-02T10:02:05Z', user: { username: 'ralf', name: 'Ralf Stich' } }))
     const trace = /^projects\/:id\/jobs\/(\d+)\/trace$/.exec(path)
     if (trace) return out(w.traces[Number(trace[1])] ?? '')
     return out(path === 'projects/:id' ? '{}' : '[]')
@@ -227,4 +228,43 @@ test('CI/CD: Git-Panel bietet den Einstieg in den Reiter', async ($, on) => {
   await waitFor(async () => (await pane.find({ type: 'Button', key: 'pane-tabs-ci' })) === undefined)
   expect(await pane.find({ type: 'Button', key: 'pane-tabs-ci' })).toBe(undefined)
   expect(await waitText(pane, /Pipeline #202/)).not.toBe(undefined)
+})
+
+test('CI/CD: Kopfzeile nennt GitLab, Host und Projekt; Zeitraum, Auslöser und Ersteller mit Anzeigename; Job mit Start – Ende', async ($, on) => {
+  const w = world()
+  wire(on, w)
+  const pane = await openCi($)
+  await waitText(pane, /Pipeline #202/)
+  expect(await waitText(pane, 'gitlab.deltra.de/consulting/x')).not.toBe(undefined)
+  expect(await pane.find({ type: 'Text', text: 'GitLab' })).not.toBe(undefined)
+  expect(await waitText(pane, /02\.11\.2026 \d\d:\d\d – \d\d:\d\d · Auslöser: Push · von Ralf Stich \(@ralf\)/)).not.toBe(undefined)
+  expect(await waitText(pane, /02\.11\.2026 \d\d:\d\d – \d\d:\d\d/)).not.toBe(undefined)
+})
+
+test('CI/CD: Artefakte je Job mit Größe und Job-Name; geladen wird im Browser, keine Download- oder Schreibaufrufe', async ($, on) => {
+  const w = world()
+  wire(on, w)
+  const pane = await openCi($)
+  expect(await waitText(pane, /Artefakte \(1\)/)).not.toBe(undefined)
+  expect(await waitText(pane, /artifacts\.zip/)).not.toBe(undefined)
+  expect(await pane.find({ type: 'Text', text: /3,3 MB · build/ })).not.toBe(undefined)
+  expect(w.calls.some(c => c.some(a => a.includes('/artifacts') || a === 'job' || a === 'download'))).toBe(false)
+  expect(posts(w)).toEqual([])
+  // Pipeline ohne Artefakte: kein Abschnitt.
+  await pane.press({ key: 'ci-pick-201' })
+  await waitText(pane, /Pipeline #201/)
+  await waitFor(async () => (await pane.find({ type: 'Text', text: /Artefakte/ })) === undefined)
+  expect(await pane.find({ type: 'Text', text: /Artefakte/ })).toBe(undefined)
+})
+
+test('CI/CD: Bitbucket-Remote zeigt Backend und den Hinweis „keine CI-Anzeige“, ruft weder glab noch gh', async ($, on) => {
+  const w = world()
+  w.remote = 'https://git.deltra.de/scm/cor/orga-marketplace.git\n'
+  wire(on, w)
+  const pane = await openCi($)
+  await waitText(pane, /Bitbucket Server hat kein eigenes CI/)
+  const missing: string[] = []
+  for (const text of [/Bitbucket Server hat kein eigenes CI/, 'Bitbucket', 'git.deltra.de/cor/orga-marketplace']) if ((await pane.find({ type: 'Text', text })) === undefined) missing.push(String(text))
+  expect(missing).toEqual([])
+  expect(w.calls).toEqual([])
 })

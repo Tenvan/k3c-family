@@ -1,8 +1,8 @@
 import { expect, test } from 'claude-code/testing'
 
-import { ago, byStage, clean, ciEvents, ciPollDelayMs, ciTone, clock, commitTitle, jobCan, jobEvents, pickPipeline, pipelineCan, tailLog, toJobs, toPipelines, withDetail } from './ci'
+import { ago, byStage, clean, ciEvents, ciPollDelayMs, ciTone, clock, commitTitle, jobCan, jobEvents, liveSeconds, pickPipeline, pipelineCan, sizeText, sourceKey, span, stamp, tailLog, toArtifacts, toJobs, toPipelines, withDetail } from './ci'
 
-const P = (id: number, status: string, ref = 'feature/x'): ReturnType<typeof toPipelines>[number] => ({ id, status, ref, sha: 'abcdef12', url: `u${id}`, source: 'push', createdAt: '2026-11-02T10:00:00Z', updatedAt: '', durationS: 0, user: '', title: '' })
+const P = (id: number, status: string, ref = 'feature/x'): ReturnType<typeof toPipelines>[number] => ({ id, status, ref, sha: 'abcdef12', url: `u${id}`, source: 'push', createdAt: '2026-11-02T10:00:00Z', updatedAt: '', startedAt: '', finishedAt: '', durationS: 0, user: '', userName: '', tag: false, title: '' })
 
 const RAW_PIPE = { id: 201, status: 'failed', ref: 'main', sha: '0123456789abcdef', web_url: 'https://gitlab.deltra.de/p/-/pipelines/201', source: 'push', created_at: '2026-11-02T10:00:00Z', updated_at: '2026-11-02T10:05:00Z', user: { username: 'ralf' } }
 const RAW_JOB = (id: number, name: string, stage: string, status: string, extra: Record<string, unknown> = {}) => ({ id, name, stage, status, web_url: `j${id}`, duration: 12.4, allow_failure: false, started_at: '2026-11-02T10:01:00Z', commit: { title: 'Export vereinfachen' }, ...extra })
@@ -110,4 +110,52 @@ test('clean: OSC (Titel, Link), DCS, CSI und Steuerzeichen aus fremdem Text entf
   expect(clean('Prüfung\tok')).toBe('Prüfung\tok')
   expect(toJobs([{ id: 1, name: `build${ESC}]0;x${BEL}`, stage: 's', status: 'failed' }])[0]?.name).toBe('build')
   expect(tailLog(`zeile${ESC}]0;titel${BEL}1\n`).lines).toEqual(['zeile1'])
+})
+
+const local = (h: number, m: number, day = 2) => new Date(2026, 10, day, h, m).toISOString()
+
+test('stamp und span: lokales Format je Sprache, Ende mit Datum nur an einem anderen Tag, ohne Ende nur der Start', () => {
+  expect(stamp(local(10, 5), 'de')).toBe('02.11.2026 10:05')
+  expect(stamp(local(10, 5), 'en')).toBe('2026-11-02 10:05')
+  expect(stamp('', 'de')).toBe('–')
+  expect(span(local(10, 0), local(10, 7), 'de')).toBe('02.11.2026 10:00 – 10:07')
+  expect(span(local(23, 50), local(0, 10, 3), 'de')).toBe('02.11.2026 23:50 – 03.11.2026 00:10')
+  expect(span(local(10, 0), '', 'de')).toBe('02.11.2026 10:00')
+  expect(span('', '', 'de')).toBe('–')
+})
+
+test('liveSeconds: laufende Einträge zählen von Start bis jetzt, beendete behalten die gemeldete Dauer', () => {
+  const start = '2026-11-02T10:00:00Z'
+  const now = Date.parse('2026-11-02T10:05:30Z')
+  expect(liveSeconds('running', start, 0, now)).toBe(330)
+  expect(liveSeconds('pending', start, 7, now)).toBe(330)
+  expect(liveSeconds('success', start, 95, now)).toBe(95)
+  expect(liveSeconds('running', '', 12, now)).toBe(12)
+  expect(liveSeconds('running', start, 12, Date.parse('2026-11-02T09:00:00Z'))).toBe(12)
+})
+
+test('sizeText und sourceKey: Größen mit Dezimalzeichen der Sprache, Auslöser auf wenige Begriffe', () => {
+  expect([sizeText(0, 'de'), sizeText(812, 'de'), sizeText(3_500_000, 'de'), sizeText(3_500_000, 'en'), sizeText(5 * 1024 ** 3, 'en')]).toEqual(['–', '812 B', '3,3 MB', '3.3 MB', '5.0 GB'])
+  expect([sourceKey('push', false), sourceKey('push', true), sourceKey('merge_request_event', false), sourceKey('pull_request', false), sourceKey('web', false), sourceKey('workflow_dispatch', false), sourceKey('schedule', false), sourceKey('trigger', false), sourceKey('chat', false)]).toEqual(['push', 'tag', 'mr', 'mr', 'manual', 'manual', 'schedule', 'api', ''])
+})
+
+test('toPipelines/withDetail: Start, Ende, Anzeigename und Tag aus der Detail-Antwort', () => {
+  const base = toPipelines([RAW_PIPE])[0]!
+  expect(base).toMatchObject({ startedAt: '', finishedAt: '', userName: '', tag: false })
+  const d = withDetail(base, { ...RAW_PIPE, started_at: '2026-11-02T10:00:10Z', finished_at: '2026-11-02T10:05:00Z', tag: true, user: { username: 'ralf', name: 'Ralf Stich' } })
+  expect(d).toMatchObject({ startedAt: '2026-11-02T10:00:10Z', finishedAt: '2026-11-02T10:05:00Z', userName: 'Ralf Stich', user: 'ralf', tag: true })
+})
+
+test('toArtifacts: Archiv je Job mit Größe, abgelaufene markiert, Browser-Link, fremder Text bereinigt, Jobs ohne Archiv fehlen', () => {
+  const ESC = String.fromCharCode(27)
+  const now = Date.parse('2026-11-02T12:00:00Z')
+  const raw = [
+    RAW_JOB(1, 'build', 'build', 'success', { artifacts_file: { filename: `artifacts${ESC}]0;x${String.fromCharCode(7)}.zip`, size: 2048 }, artifacts: [{ file_type: 'trace', size: 5 }], artifacts_expire_at: '2026-11-09T12:00:00Z' }),
+    RAW_JOB(2, 'test', 'test', 'success', { artifacts_file: { filename: 'report.zip', size: 10 }, artifacts_expire_at: '2026-11-01T12:00:00Z', web_url: 'https://gitlab.deltra.de/p/-/jobs/2' }),
+    RAW_JOB(3, 'lint', 'test', 'success'),
+  ]
+  const a = toArtifacts(raw, now)
+  expect(a.map(x => [x.job, x.name, x.size, x.expired])).toEqual([[1, 'artifacts.zip', 2048, false], [2, 'report.zip', 10, true]])
+  expect(a[1]?.url).toBe('https://gitlab.deltra.de/p/-/jobs/2/artifacts/download')
+  expect(toArtifacts(null, now)).toEqual([])
 })

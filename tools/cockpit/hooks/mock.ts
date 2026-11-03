@@ -35,12 +35,12 @@ const TRAIL: Decision[] = ['allow', 'allow', 'you', 'allow', 'you', 'deny', 'all
 
 function ciMock(now: number): Mock['ci'] {
   const at = (min: number) => new Date(now - min * MIN).toISOString()
-  const p = (id: number, status: string, ref: string, ago: number, durationS: number) => ({ id, status, ref, sha: `${id}a1b2c3d`.slice(0, 8), url: `https://gitlab.deltra.de/consulting/demo/-/pipelines/${id}`, source: 'push', createdAt: at(ago), updatedAt: at(ago), durationS, user: 'ralf', title: 'Export vereinfachen' })
-  const j = (id: number, name: string, stage: string, status: string, durationS: number, manual = false) => ({ id, name, stage, status, url: '', durationS, allowFailure: false, manual, startedAt: at(3) })
+  const p = (id: number, status: string, ref: string, ago: number, durationS: number) => ({ id, status, ref, sha: `${id}a1b2c3d`.slice(0, 8), url: `https://gitlab.deltra.de/consulting/demo/-/pipelines/${id}`, source: 'push', createdAt: at(ago), updatedAt: at(ago), startedAt: at(ago), finishedAt: status === 'running' ? '' : at(ago - durationS / 60), durationS, user: 'ralf', userName: 'Ralf Stich', tag: false, title: 'Export vereinfachen' })
+  const j = (id: number, name: string, stage: string, status: string, durationS: number, manual = false) => ({ id, name, stage, status, url: '', durationS, allowFailure: false, manual, startedAt: at(3), finishedAt: status === 'running' || manual ? '' : at(2) })
   const pipelines = [p(202, 'running', 'feature/dev-mock', 4, 0), p(201, 'failed', 'main', 95, 312), p(200, 'success', 'feature/dev-mock', 300, 287)]
   return {
     list: { pipelines, error: '', branch: 'feature/dev-mock' },
-    jobs: { pipeline: pipelines[0]!, jobs: [j(1, 'build', 'build', 'success', 74), j(2, 'test:unit', 'test', 'running', 41), j(3, 'test:lint', 'test', 'success', 19), j(4, 'deploy:staging', 'deploy', 'manual', 0, true)] },
+    jobs: { pipeline: pipelines[0]!, jobs: [j(1, 'build', 'build', 'success', 74), j(2, 'test:unit', 'test', 'running', 41), j(3, 'test:lint', 'test', 'success', 19), j(4, 'deploy:staging', 'deploy', 'manual', 0, true)], artifacts: [{ id: 1, job: 1, name: 'artifacts.zip', size: 3_407_872, expired: false, url: 'https://gitlab.deltra.de/consulting/demo/-/jobs/1/artifacts/download' }] },
   }
 }
 

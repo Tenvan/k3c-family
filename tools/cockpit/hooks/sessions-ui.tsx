@@ -6,7 +6,7 @@ import type { ApprovalAction, SessionStand, SessionsState } from '../types'
 import { CARD_TINT, THEME, TINT } from './core'
 import { t } from './i18n'
 import type { Key } from './i18n'
-import { isWaiting } from './sessions'
+import { isWaiting, sessionsFindings, sessionsPromptKind } from './sessions'
 import { badge, link, tile } from './ui'
 import type { BadgeTone, Ui } from './ui'
 import type { UiLang } from '../types'
@@ -17,9 +17,9 @@ const ACTION_TONE: Record<ApprovalAction, BadgeTone> = { commit: 'accent', push:
 // Spaltenbreiten in Zeichen; Branch und Notiz teilen sich den Rest und werden gekürzt.
 const W = { id: 7, repo: 18, state: 12, waiting: 11, since: 12 } as const
 
-export type SessionsProps = { ui: Ui; L: UiLang; marg: number; st: SessionsState | null; path: string; onReload: () => void }
+export type SessionsProps = { ui: Ui; L: UiLang; marg: number; st: SessionsState | null; path: string; onReload: () => void; onPrompt: (text: string) => void }
 
-export function sessionsBody({ ui, L, marg, st, path, onReload }: SessionsProps): RenderElement[] {
+export function sessionsBody({ ui, L, marg, st, path, onReload, onPrompt }: SessionsProps): RenderElement[] {
   const { Box, Text } = ui
   const cell = (key: string, width: number, child: RenderElement | string, dim = false) => (
     <Box key={key} width={width} flexShrink={0}>{typeof child === 'string' ? <Text dimColor={dim} wrap="truncate-end">{child}</Text> : child}</Box>
@@ -34,6 +34,8 @@ export function sessionsBody({ ui, L, marg, st, path, onReload }: SessionsProps)
   // Kopfkarte: Stand der Datei, Pfad, Neu lesen und Lesefehler als lesbare Meldung (der letzte gute Stand bleibt darunter).
   const err = st?.error ?? null
   const view = st?.view ?? null
+  // Angebot: Datei fehlt oder leer → Schaltzentrale einrichten; unlesbar oder mit Hinweisen → Datei anpassen (Claude schreibt, das Cockpit nie).
+  const offer = st === null ? null : sessionsPromptKind(err, view?.issues ?? [])
   out.push(
     tile(
       ui,
@@ -49,6 +51,11 @@ export function sessionsBody({ ui, L, marg, st, path, onReload }: SessionsProps)
         <Text color={THEME.textMuted} wrap="truncate-end">{path}</Text>
       </Box>,
       st === null && <Text key="sf-load" dimColor>{t(L, 'sessions.loading')}</Text>,
+      offer !== null && (
+        <Box key="sf-offer" marginTop={1}>
+          {link(ui, 'sessions-prompt', t(L, `sessions.prompt.${offer}.btn` as Key), () => onPrompt(t(L, `sessions.prompt.${offer}` as Key, { path, why: sessionsFindings(err, view?.issues ?? []).join('; '), schema: t(L, 'sessions.prompt.schema') })), { tone: 'link' })}
+        </Box>
+      ),
       err !== null && (
         <Box key="sf-err" flexDirection="column" marginTop={1}>
           <Text color={THEME.error} bold>{t(L, `sessions.err.${err.kind}` as Key, { path, detail: err.detail })}</Text>

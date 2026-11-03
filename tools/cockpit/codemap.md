@@ -9,6 +9,7 @@ Claude-Code-Plugin `tenvan-cc` („Tenvan CC“, Version laut `.claude-plugin/pl
 - `hooks/register.tsx`: alle Hooks, Atome (`$.state`), Band, Panel und Befehle; einziger Ort mit `$`. Reicht Prozess und HTTP als `io` an `forge.ts` weiter.
 - Reine Module ohne `$`: `core.ts` (Rechen-/Formatfunktionen, Farbtabelle `THEME`), `i18n.ts` (alle Texte Deutsch/Englisch, gleiche Schlüssel), `glance.ts` (Checkliste: Job, Schritte, Restzeit, Verlauf, Tages- und Wochenbericht), `mr.ts` (Remote erkennen, API-Antworten von GitLab/GitHub/Bitbucket Server in `Mr` übersetzen, Ereignisse, Prompts), `skins.ts` und `mermaid.ts` (Chat-Skins, Mermaid-Parser und Layout), `breath.ts` (Atemübungen), `mock.ts` (Dev-Mode-Mockdaten für `/cockpit-dev`).
 - `hooks/forge.ts`: Aufrufe von `glab`, `gh` und Bitbucket-REST über das hereingereichte `io`.
+- CI/CD-Reiter: `hooks/ci.ts` (GitLab, gemeinsame Typen), `ci-github.ts` (GitHub Actions, in K3C der zentrale Teil, Repo `Tenvan/k3c-family`), `ci-bitbucket.ts` (Bitbucket-Panel), `ci-ui.tsx` (Oberfläche).
 - `hooks/ui.tsx`: Design-System (Tokens je Bereich `pane`, `skin`, `sidebar`, `band`; Atome und Moleküle), bekommt die Elementtabelle statt `$`.
 - `types/index.d.ts`: Vertrag des `$.state` (`PluginState['tenvan-cc']`).
 - Doku: `README.MD`, `SPEC.md`, `DEVELOPMENT.md`, `RELEASE_NOTES.md`, `THIRD_PARTY.md`; `assets/` mit Logo und Texten für Features, Catch-up und Skin-Demo (de/en).

@@ -91,12 +91,23 @@ export type SessionsState = { view: SessionsView | null; error: { kind: 'missing
 
 // Reiter CI/CD (GitLab, über `glab api`): Pipelines des Projekts und die Jobs der gewählten Pipeline. Status im GitLab-Vokabular
 // (created, pending, running, success, failed, canceled, skipped, manual, scheduled …).
-export type CiPipeline = { id: number; status: string; ref: string; sha: string; url: string; source: string; createdAt: string; updatedAt: string; durationS: number; user: string; title: string }
-export type CiJob = { id: number; name: string; stage: string; status: string; url: string; durationS: number; allowFailure: boolean; manual: boolean; startedAt: string }
+// `user`: Login des Auslösers, `userName`: Anzeigename (nur GitLab); `source`: Auslöser im Vokabular der Plattform (push, merge_request_event,
+// pull_request, web, workflow_dispatch, schedule …); `tag`: Pipeline eines Tags (nur GitLab); `startedAt`/`finishedAt`: ISO-Zeitpunkte, leer = unbekannt bzw. läuft noch.
+export type CiPipeline = { id: number; status: string; ref: string; sha: string; url: string; source: string; createdAt: string; updatedAt: string; startedAt: string; finishedAt: string; durationS: number; user: string; userName: string; tag: boolean; title: string }
+// `steps`: nur GitHub Actions (Schritte des Jobs); GitLab-Jobs haben keine.
+export type CiStep = { name: string; status: string; durationS: number }
+export type CiJob = { id: number; name: string; stage: string; status: string; url: string; durationS: number; allowFailure: boolean; manual: boolean; startedAt: string; finishedAt: string; steps?: CiStep[] }
+// Artefakt eines Jobs (GitLab, `job` = Job-Id) oder eines Runs (GitHub, `job` = 0). `url`: Seite im Browser, auf der es sich laden lässt; das Cockpit lädt selbst nichts.
+export type CiArtifact = { id: number; job: number; name: string; size: number; expired: boolean; url: string }
 // `error`: Grund, warum nichts geladen werden konnte (leer = in Ordnung); die letzten Pipelines bleiben dann stehen.
 // `branch`: ausgecheckter Branch beim Abruf (für „neueste Pipeline des Branches“ und „Neue Pipeline“)
 export type CiList = { pipelines: CiPipeline[]; error: string; branch: string }
-export type CiJobs = { pipeline: CiPipeline; jobs: CiJob[] }
+export type CiJobs = { pipeline: CiPipeline; jobs: CiJob[]; artifacts: CiArtifact[] }
+// Bitbucket Server (nur lesen): Commits des Branches mit dem Build-Status, den Bamboo/Jenkins an sie melden. `state` im Vokabular von
+// Bitbucket (SUCCESSFUL, FAILED, INPROGRESS); `error`: leer in Ordnung, `auth` = kein Zugang im Git-Credential-Store, sonst Klartext.
+export type BbBuild = { state: string; key: string; name: string; url: string; description: string; at: string; durationS: number }
+export type BbCommit = { sha: string; short: string; title: string; author: string; at: string; builds: BbBuild[] }
+export type BbList = { commits: BbCommit[]; error: string; branch: string }
 export type CiLog = { job: number; name: string; lines: string[]; truncated: boolean; error: string; loading: boolean }
 
 export type Repo = {
@@ -425,6 +436,8 @@ declare module 'claude-code' {
       ciJobs: CiJobs | null
       ciSel: number
       ciLog: CiLog | null
+      bbList: BbList | null
+      bbSel: string
       ciBusy: string
       ciConfirm: string
       sessionsFile: SessionsState | null

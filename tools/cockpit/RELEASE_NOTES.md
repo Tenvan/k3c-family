@@ -1,5 +1,27 @@
 # Release Notes – Tenvan CC
 
+## 2.4.0 – 2026-11-03
+
+### Neu
+
+- **CI/CD: Backend in der Kopfzeile.** Der Reiter nennt, gegen welches Backend er läuft: Badge GitLab, GitHub oder Bitbucket plus `Host/Projekt` aus dem Remote-URL. Der Reiter ist auch bei Bitbucket über den Git-Reiter erreichbar.
+- **CI/CD: Zeiten wie im Browser.** Pipeline/Run und Jobs zeigen Start und Ende im lokalen Format (`02.11.2026 10:00 – 10:07`, Ende mit Datum nur an einem anderen Tag), laufende Pipelines und Jobs eine mitlaufende Dauer (jetzt − Start), dazu weiter „vor 5 min“.
+- **CI/CD: Auslöser und Ersteller.** Die Pipeline-Karte nennt den Auslöser (Push, Tag, Merge/Pull Request, manuell, Zeitplan, API/Trigger) und den Ersteller (GitLab mit Anzeigename: `Ralf Stich (@ralf)`, GitHub mit Login); die Liste zeigt `@login` je Zeile.
+- **CI/CD: Artefakte.** GitLab-Job-Artefakte (Archiv je Job) und GitHub-Actions-Artefakte (je Run): Name, Größe, abgelaufen markiert, Link „Im Browser laden“. **Das Cockpit lädt selbst nichts herunter** (Begründung in der SPEC: Mod-API ist textbasiert, `gh run download`/`glab job artifact` entpacken, ein Token-Weg widerspricht der Regel „kein Token im Cockpit“).
+- **Sessions: Prompt-Angebote.** Fehlt die Status-Datei (`sessions.json`) oder ist sie leer, bietet der Reiter „Schaltzentrale einrichten (Prompt)“: ein Prompt, der Claude eine Schaltzentrale samt Datei einrichten lässt. Ist die Datei unlesbar (kein JSON, falsche Form) oder hat sie Hinweise, bietet er „Status-Datei anpassen (Prompt)“. Der Prompt landet in der Eingabezeile (nichts wird gesendet), das Cockpit schreibt nie selbst in die Datei.
+- **Bitbucket-Panel im Reiter CI/CD (nur lesen).** Bitbucket Server/Data Center hat kein eigenes CI; das Panel zeigt deshalb die letzten 15 Commits des ausgecheckten Branches mit dem Gesamtstand (grün, rot, läuft, kein Build) und zu dem gewählten Commit die Builds, die Bamboo/Jenkins gemeldet haben: Status, Name und Key, Beschreibung, Zeitpunkt, Dauer (wo die Instanz sie meldet) und der Link ins Build-System. Erkannt wird Bitbucket am https-Pfad `/scm/`, am SSH-Port 7999 oder am Hostnamen (`git.deltra.de`). Zugang aus dem Git-Credential-Store wie bei den MR-Funktionen (nie angezeigt, nie geloggt); ohne Zugang steht ein Hinweis im Reiter. Aktualisierung jede Minute, solange der Reiter offen ist, und per „↻ Aktualisieren“. Was Bitbucket nicht hergibt, fehlt bewusst: Wiederholen und Abbrechen, Logs, Artefakte, Ersteller des Builds, Hinweise bei Statuswechseln (Begründung in der SPEC).
+
+## 2.3.0 – 2026-11-02
+
+### Neu
+
+- **CI/CD auch für GitHub:** Der Reiter CI/CD erkennt die Plattform aus dem Remote-URL des Repos (`gitlab.deltra.de` → GitLab, `github.com` → GitHub) und zeigt auf GitHub dieselbe Oberfläche für GitHub-Actions-Workflow-Runs: Status, Branch, Commit-Titel, Alter und Dauer, die Jobs unter dem Workflow, bei laufenden und fehlgeschlagenen Jobs die Schritte, dazu das Job-Log (letzte 60 Zeilen, ohne Zeitstempel und Workflow-Befehle).
+  - **Steuerung:** Job wiederholen, fehlgeschlagene Jobs eines Runs neu starten (fällt auf alle Jobs zurück, wenn GitHub das ablehnt), Run abbrechen (mit Rückfrage). „Starten“ manueller Jobs, Abbrechen einzelner Jobs und „Neue Pipeline“ gibt es bei GitHub nicht und erscheinen dort nicht.
+  - **Aufruf und Takt wie bei GitLab:** Git-Reiter, `/cockpit-ci`, Polling (15 s bei laufendem Run, sonst 1 min), Toasts bei Statuswechseln und fehlgeschlagenen Jobs, Reiter öffnet sich bei Fehlschlag.
+  - **Anmeldung:** über die vorhandene `gh`-Konfiguration, kein Token im Cockpit. Escape-Folgen und Steuerzeichen aus GitHub-Text werden wie bei GitLab entfernt.
+  - **Intern:** gemeinsame Datenform, ein Adapter je Plattform (`forge.ts`), Übersetzung in `ci-github.ts`; das GitLab-Verhalten ist unverändert.
+  - **Hinweis:** gegen GitHub noch nicht live geprüft; die Tests laufen gegen simulierte `gh`-Antworten.
+
 ## 2.2.0 – 2026-11-02
 
 ### Neu
