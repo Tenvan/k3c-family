@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { actionOf, isWaiting, parseSessions, sessionsFilePath, standOf } from './sessions'
+import { actionOf, isWaiting, parseSessions, sessionsFilePath, sessionsFindings, sessionsPromptKind, standOf } from './sessions'
 
 // Reiter Sessions: Parser der Status-Datei der Schaltzentrale, Sortierung und Fehlerfälle.
 
@@ -118,4 +118,16 @@ test('Sessions: Standardpfad liegt im Benutzerordner, der Override hat Vorrang',
   expect(sessionsFilePath(42, 'C:/Users/x')).toBe('C:/Users/x/.deltra/claude/sessions.json')
   // Ohne Benutzerordner bleibt der relative Rest stehen und der Lesefehler wird als fehlende Datei gemeldet.
   expect(sessionsFilePath('', '')).toBe('.deltra/claude/sessions.json')
+})
+
+test('sessionsPromptKind/sessionsFindings: fehlt oder leer → einrichten, kaputt oder mit Hinweisen → anpassen, sonst kein Angebot', () => {
+  expect(sessionsPromptKind({ kind: 'missing' }, [])).toBe('create')
+  expect(sessionsPromptKind({ kind: 'empty' }, [])).toBe('create')
+  expect(sessionsPromptKind({ kind: 'json' }, [])).toBe('fix')
+  expect(sessionsPromptKind({ kind: 'shape' }, [])).toBe('fix')
+  expect(sessionsPromptKind(null, ['sessions[0]: id fehlt'])).toBe('fix')
+  expect(sessionsPromptKind(null, [])).toBe(null)
+  expect(sessionsFindings({ kind: 'missing', detail: 'ENOENT' }, ['x'])).toEqual(['missing: ENOENT'])
+  expect(sessionsFindings({ kind: 'empty', detail: '' }, [])).toEqual(['empty'])
+  expect(sessionsFindings(null, Array.from({ length: 15 }, (_, i) => `h${i}`))).toHaveLength(10)
 })

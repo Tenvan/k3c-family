@@ -2,8 +2,10 @@
 // `$.http.fetch`. Liefert nur Daten und Ergebnisse (`Done`); Zustand, Hinweise und Anzeige bleiben in register.tsx,
 // das Übersetzen der Antworten in `Mr` in mr.ts.
 
-import type { CiJobs, CiPipeline, Forge, Mr, MrDraft, MrMine } from '../types'
-import { clean, commitTitle, PIPELINES_MAX, toJobs, toPipelines, withDetail } from './ci'
+import type { BbList, CiJobs, CiPipeline, Forge, Mr, MrDraft, MrMine } from '../types'
+import { clean, commitTitle, PIPELINES_MAX, toArtifacts, toJobs, toPipelines, withDetail } from './ci'
+import { COMMITS_MAX, toBbBuilds, toBbCommits } from './ci-bitbucket'
+import { ghLogText, ghWithDetail, ghWorkflowName, toGhArtifacts, toGhJobs, toGhRuns } from './ci-github'
 import { bitbucketMine, fromBitbucket, fromGithub, githubMine, openThreads, toMine, toMr } from './mr'
 
 export type Remote = { kind: Forge; host: string; project: string }
@@ -257,47 +259,127 @@ export async function forgeCreate(io: Io, r: Remote, d: MrDraft, asDraft: boolea
   )
 }
 
-// ── CI/CD (nur GitLab, über `glab api` und damit die vorhandene glab-Anmeldung; das Cockpit sieht nie ein Token) ──
+// ── CI/CD: ein Adapter je Plattform (GitLab über `glab api`, GitHub Actions über `gh api`), beide liefern dieselbe Form
+// (`CiPipeline`, `CiJobs`, Roh-Log). Die vorhandene glab- bzw. gh-Anmeldung trägt den Zugang; das Cockpit sieht nie ein Token. ──
 
-export const ciSupported = (r: Remote | null): r is Remote => r !== null && r.kind === 'gitlab'
+export const ciSupported = (r: Remote | null): r is Remote => r !== null && (r.kind === 'gitlab' || r.kind === 'github')
 
-// Neueste Pipelines des Projekts. Ein fehlgeschlagener Abruf wirft, damit das Panel „nicht erreichbar“ statt „keine Pipelines“ zeigt.
-export async function ciPipelines(io: Io, r: Remote): Promise<CiPipeline[]> {
-  const x = await cli(io, ['glab', 'api', `projects/:id/pipelines?per_page=${PIPELINES_MAX}&order_by=id&sort=desc`])
-  if (!x.ok) throw new Error(x.err || 'glab')
-  try {
-    return toPipelines(JSON.parse(x.out) as unknown)
-  } catch {
-    throw new Error('glab: ungültige Antwort')
-  }
+// Bitbucket Server (nur lesen): die letzten Commits des Branches und der Build-Status, den Bamboo/Jenkins je Commit melden
+// (`/rest/build-status/1.0/commits/<sha>`). Zugang wie bei den MR-Funktionen aus dem Git-Credential-Store (`bbHeader`), nie ein Token
+// in Datei oder Log. Fehler stehen im Ergebnis (`error`: `auth` ohne Zugang, sonst HTTP-Status), nie als Wurf.
+export async function bitbucketBuilds(io: Io, r: Remote, branch: string): Promise<BbList> {
+  const at = branch === '' ? '' : `&until=${encodeURIComponent(`refs/heads/${branch}`)}`
+  const x = await bb(io, r, 'GET', `${bbRepo(r)}/commits?limit=${COMMITS_MAX}${at}`)
+  if (x.status === 401 || x.status === 403) return { commits: [], error: 'auth', branch }
+  if (x.status < 200 || x.status >= 300) return { commits: [], error: x.status === 0 ? 'net' : `HTTP ${x.status}`, branch }
+  const commits = toBbCommits(x.data)
+  const builds = await Promise.all(commits.map(c => bbGet(io, r, `https://${r.host}/rest/build-status/1.0/commits/${c.sha}`)))
+  return { commits: commits.map((c, i) => ({ ...c, builds: toBbBuilds(builds[i]) })), error: '', branch }
 }
 
-// Jobs einer Pipeline samt Detail (Dauer, Auslöser) und Commit-Titel; null, wenn die Jobs nicht ladbar waren.
-export async function ciPipelineJobs(io: Io, r: Remote, p: CiPipeline): Promise<CiJobs | null> {
-  const [detail, jobs] = await Promise.all([
-    cliJson(io, ['glab', 'api', `projects/:id/pipelines/${p.id}`]),
-    cliJson(io, ['glab', 'api', `projects/:id/pipelines/${p.id}/jobs?per_page=100`]),
-  ])
-  if (!Array.isArray(jobs)) return null
-  return { pipeline: { ...withDetail(p, detail), title: commitTitle(jobs) }, jobs: toJobs(jobs) }
+// Artefakte: nur Anzeige (Name, Größe, Link zur Browser-Seite). Ein Download durch das Cockpit entfällt: `$.process.run`/`$.fs.write`/`$.http.fetch`
+// sind textbasiert (Binärdaten gingen kaputt), `gh run download` und `glab job artifact` entpacken das Archiv, und der Weg über ein Token
+// (`gh auth token`) widerspricht der Regel, dass das Cockpit nie ein Token sieht. Siehe SPEC.md, Abschnitt CI/CD.
+
+type CiAdapter = {
+  pipelines: (io: Io, r: Remote) => Promise<CiPipeline[]>
+  jobs: (io: Io, r: Remote, p: CiPipeline) => Promise<CiJobs | null>
+  log: (io: Io, r: Remote, job: number) => Promise<{ ok: boolean; err: string; text: string }>
+  jobAction: (io: Io, r: Remote, job: number, action: 'retry' | 'cancel' | 'play') => Promise<Done>
+  pipelineAction: (io: Io, r: Remote, id: number, action: 'retry' | 'cancel') => Promise<Done>
+  newPipeline: (io: Io, r: Remote, ref: string) => Promise<Done>
 }
+
+const gitlabCi: CiAdapter = {
+  async pipelines(io) {
+    const x = await cli(io, ['glab', 'api', `projects/:id/pipelines?per_page=${PIPELINES_MAX}&order_by=id&sort=desc`])
+    if (!x.ok) throw new Error(x.err || 'glab')
+    try {
+      return toPipelines(JSON.parse(x.out) as unknown)
+    } catch {
+      throw new Error('glab: ungültige Antwort')
+    }
+  },
+  async jobs(io, _r, p) {
+    const [detail, jobs] = await Promise.all([
+      cliJson(io, ['glab', 'api', `projects/:id/pipelines/${p.id}`]),
+      cliJson(io, ['glab', 'api', `projects/:id/pipelines/${p.id}/jobs?per_page=100`]),
+    ])
+    if (!Array.isArray(jobs)) return null
+    return { pipeline: { ...withDetail(p, detail), title: commitTitle(jobs) }, jobs: toJobs(jobs), artifacts: toArtifacts(jobs, Date.now()) }
+  },
+  async log(io, _r, job) {
+    const x = await cli(io, ['glab', 'api', `projects/:id/jobs/${job}/trace`])
+    return { ok: x.ok, err: x.err, text: x.out }
+  },
+  jobAction: (io, _r, job, action) => cli(io, ['glab', 'api', '-X', 'POST', `projects/:id/jobs/${job}/${action}`]),
+  pipelineAction: (io, _r, id, action) => cli(io, ['glab', 'api', '-X', 'POST', `projects/:id/pipelines/${id}/${action}`]),
+  newPipeline: (io, _r, ref) => cli(io, ['glab', 'api', '-X', 'POST', 'projects/:id/pipeline', '-f', `ref=${ref}`]),
+}
+
+// GitHub: `owner/name` kommt aus dem Remote-URL und landet als ein Argument im API-Pfad (nie in einer Shell); trotzdem nur
+// die übliche Form zulassen. Kein Äquivalent gibt es für „play“ (manuelle Jobs), das Abbrechen einzelner Jobs und einen Run ohne
+// Workflow-Wahl; ciCaps (ci.ts) blendet sie aus, die Funktionen hier verweigern sie zusätzlich.
+const ghBase = (r: Remote): string => {
+  if (!/^[\w.-]+\/[\w.-]+$/.test(r.project)) throw new Error('gh: ungültiger Repo-Name')
+  return `repos/${r.project}`
+}
+const ghApi = (r: Remote, path: string, post = false): string[] => ['gh', 'api', '--hostname', r.host, ...(post ? ['-X', 'POST'] : []), path]
+const NOT_ON_GITHUB: Done = { ok: false, err: 'GitHub Actions' }
+
+const githubCi: CiAdapter = {
+  async pipelines(io, r) {
+    const x = await cli(io, ghApi(r, `${ghBase(r)}/actions/runs?per_page=${PIPELINES_MAX}`))
+    if (!x.ok) throw new Error(x.err || 'gh')
+    try {
+      return toGhRuns(JSON.parse(x.out) as unknown)
+    } catch {
+      throw new Error('gh: ungültige Antwort')
+    }
+  },
+  async jobs(io, r, p) {
+    const base = ghBase(r)
+    const [detail, jobs, artifacts] = await Promise.all([
+      cliJson(io, ghApi(r, `${base}/actions/runs/${p.id}`)),
+      cliJson(io, ghApi(r, `${base}/actions/runs/${p.id}/jobs?per_page=100`)),
+      cliJson(io, ghApi(r, `${base}/actions/runs/${p.id}/artifacts?per_page=100`)),
+    ])
+    if (jobs === null || !Array.isArray((jobs as { jobs?: unknown }).jobs)) return null
+    return { pipeline: ghWithDetail(p, detail), jobs: toGhJobs(jobs, ghWorkflowName(detail)), artifacts: toGhArtifacts(artifacts, p.url) }
+  },
+  // `…/logs` antwortet mit einem Redirect auf das Log; `gh api` folgt ihm.
+  async log(io, r, job) {
+    const x = await cli(io, ghApi(r, `${ghBase(r)}/actions/jobs/${job}/logs`))
+    return { ok: x.ok, err: x.err, text: x.ok ? ghLogText(x.out) : '' }
+  },
+  async jobAction(io, r, job, action) {
+    return action === 'retry' ? cli(io, ghApi(r, `${ghBase(r)}/actions/jobs/${job}/rerun`, true)) : NOT_ON_GITHUB
+  },
+  // retry = nur die fehlgeschlagenen Jobs (und ihre Abhängigen); lehnt GitHub das ab (z. B. abgebrochener Run), alle Jobs neu.
+  async pipelineAction(io, r, id, action) {
+    const base = `${ghBase(r)}/actions/runs/${id}`
+    if (action === 'cancel') return cli(io, ghApi(r, `${base}/cancel`, true))
+    const failed = await cli(io, ghApi(r, `${base}/rerun-failed-jobs`, true))
+    return failed.ok ? failed : cli(io, ghApi(r, `${base}/rerun`, true))
+  },
+  newPipeline: () => Promise.resolve(NOT_ON_GITHUB),
+}
+
+const ciAdapter = (r: Remote): CiAdapter => (r.kind === 'github' ? githubCi : gitlabCi)
+
+// Neueste Pipelines bzw. Workflow-Runs. Ein fehlgeschlagener Abruf wirft, damit das Panel „nicht erreichbar“ statt „keine Pipelines“ zeigt.
+export const ciPipelines = (io: Io, r: Remote): Promise<CiPipeline[]> => ciAdapter(r).pipelines(io, r)
+
+// Jobs einer Pipeline samt Detail (Dauer, Auslöser) und Titel; null, wenn die Jobs nicht ladbar waren.
+export const ciPipelineJobs = (io: Io, r: Remote, p: CiPipeline): Promise<CiJobs | null> => ciAdapter(r).jobs(io, r, p)
 
 // Rohes Job-Log; die Aufbereitung (letzte Zeilen, ANSI) macht ci.ts.
-export async function ciJobLog(io: Io, r: Remote, job: number): Promise<{ ok: boolean; err: string; text: string }> {
-  const x = await cli(io, ['glab', 'api', `projects/:id/jobs/${job}/trace`])
-  return { ok: x.ok, err: x.err, text: x.out }
-}
+export const ciJobLog = (io: Io, r: Remote, job: number): Promise<{ ok: boolean; err: string; text: string }> => ciAdapter(r).log(io, r, job)
 
 // Schreibend, nur per Klick: Job wiederholen, abbrechen oder (manuell) starten.
-export async function ciJobAction(io: Io, r: Remote, job: number, action: 'retry' | 'cancel' | 'play'): Promise<Done> {
-  return cli(io, ['glab', 'api', '-X', 'POST', `projects/:id/jobs/${job}/${action}`])
-}
+export const ciJobAction = (io: Io, r: Remote, job: number, action: 'retry' | 'cancel' | 'play'): Promise<Done> => ciAdapter(r).jobAction(io, r, job, action)
 
-export async function ciPipelineAction(io: Io, r: Remote, id: number, action: 'retry' | 'cancel'): Promise<Done> {
-  return cli(io, ['glab', 'api', '-X', 'POST', `projects/:id/pipelines/${id}/${action}`])
-}
+export const ciPipelineAction = (io: Io, r: Remote, id: number, action: 'retry' | 'cancel'): Promise<Done> => ciAdapter(r).pipelineAction(io, r, id, action)
 
-// Neue Pipeline für einen Branch (Ref) anstoßen.
-export async function ciNewPipeline(io: Io, r: Remote, ref: string): Promise<Done> {
-  return cli(io, ['glab', 'api', '-X', 'POST', 'projects/:id/pipeline', '-f', `ref=${ref}`])
-}
+// Neue Pipeline für einen Branch (Ref) anstoßen (nur GitLab).
+export const ciNewPipeline = (io: Io, r: Remote, ref: string): Promise<Done> => ciAdapter(r).newPipeline(io, r, ref)

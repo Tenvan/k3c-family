@@ -8,12 +8,12 @@ import type { BreathKey } from './breath'
 // Jede Atemübung in eigener Farbe aus dem Design-System, damit der Wechsel auf einen Blick erkennbar ist.
 const BREATH_COLOR: Record<BreathKey, string> = { hrv: THEME.accent, sigh: THEME.success, box: THEME.violet, '478': THEME.warning }
 import { canMergeNow, conflictPrompt, mergeAllPrompt, openMrs, draftPrompt, inRepo, refOf, forgeRemote, mrBadge, mrRef, isPipelineRunning, mrEvents, parseDraft, pipelineTone, pollDelayMs, threadsPrompt } from './mr'
-import { authMissing, canAutoMerge, ciJobAction, ciJobLog, ciNewPipeline, ciPipelineAction, ciPipelineJobs, ciPipelines, ciSupported, forgeCreate, forgeDefault, forgeFind, forgeLists, forgeLoad, forgeMerge, forgeRebase, forgeRetry, forgeThreads } from './forge'
+import { authMissing, bitbucketBuilds, canAutoMerge, ciJobAction, ciJobLog, ciNewPipeline, ciPipelineAction, ciPipelineJobs, ciPipelines, ciSupported, forgeCreate, forgeDefault, forgeFind, forgeLists, forgeLoad, forgeMerge, forgeRebase, forgeRetry, forgeThreads } from './forge'
 import type { Done, Io, Remote } from './forge'
-import { ciEvents, ciPollDelayMs, isActive, jobEvents, pickPipeline, tailLog } from './ci'
-import { ciBody } from './ci-ui'
+import { ciCaps, ciEvents, ciPollDelayMs, isActive, jobEvents, pickPipeline, tailLog } from './ci'
+import { ciBody, ciT } from './ci-ui'
 import type { CiJobAct, CiPipeAct } from './ci-ui'
-import type { CiJobs, CiList, CiLog, CiPipeline, Mr, MrDraft, MrMine } from '../types'
+import type { BbList, CiJobs, CiList, CiLog, CiPipeline, Mr, MrDraft, MrMine } from '../types'
 import { RATE_SYMBOL, rateLabel, rt, type Rate } from './rating'
 import { applyScheme, desktopModeLight, wantsLight, stopTaskPrompt, THEME, TINT, CARD_TINT, cycleTint, summarySections, splitTool, toolText, withClaude, parseTaskNotifications, notificationText, backgroundOf, NEW_STYLES, todosOf, wrapupOf, resetLeft, dirTarget, isForeignDir, nativeDir, parseLinkedSessions, infoSvg, STEP_LABEL_MAX, legendSvg, modelLabel, SPIN_MODE, spinnerText, timelineSvg, demoTable, agentStats, agentFlags, breakdownBarSvg, contextTip, limitTip, cacheTip, summaryLines, topRows, resetLabel, CATCH0, CATCH_KEEP, DEFAULT_SETTINGS, SETTING_DEFS, settingLabel, settingHint, catchUpPrompt, catchUpSystem, nextChunk, settingsOf, startIndex, fingerprint } from './core'
 import type { SettingGroup, SettingKey, Tone } from './core'
@@ -178,6 +178,8 @@ const ciSel = atom({ plugin: 'tenvan-cc', key: 'ciSel' } as const, 0)
 const ciLog = atom({ plugin: 'tenvan-cc', key: 'ciLog' } as const, null as CiLog | null)
 const ciBusy = atom({ plugin: 'tenvan-cc', key: 'ciBusy' } as const, '')
 const ciConfirm = atom({ plugin: 'tenvan-cc', key: 'ciConfirm' } as const, '')
+const bbList = atom({ plugin: 'tenvan-cc', key: 'bbList' } as const, null as BbList | null)
+const bbSel = atom({ plugin: 'tenvan-cc', key: 'bbSel' } as const, '')
 const diagTab = atom({ plugin: 'tenvan-cc', key: 'diagTab' } as const, 'hints' as DiagTab)
 const backTab = atom({ plugin: 'tenvan-cc', key: 'backTab' } as const, 'session' as BackTab)
 const logFilter = atom({ plugin: 'tenvan-cc', key: 'logFilter' } as const, 'all' as LogFilter)
@@ -1542,16 +1544,19 @@ async function mrStep($: EngineInterface, what: string, run: (r: Remote, m: Mr) 
 const rebaseMr = async ($: EngineInterface, ref?: string) => mrStep($, t((await read($, settings)).lang, 'mr.rebase'), (r, m) => forgeRebase(forgeIo($), r, m), ref)
 const retryPipeline = async ($: EngineInterface) => mrStep($, t((await read($, settings)).lang, 'mr.retry'), (r, m) => forgeRetry(forgeIo($), r, m))
 
-// ── CI/CD (GitLab über `glab api`; Ein-/Ausgabe in forge.ts, Übersetzung in ci.ts, Anzeige in ci-ui.tsx) ──
+// ── CI/CD (GitLab über `glab api`, GitHub Actions über `gh api`; Ein-/Ausgabe in forge.ts, Übersetzung in ci.ts, Anzeige in ci-ui.tsx) ──
 // Mechanik: Polling statt Webhook (siehe ci.ts). Lesend im Takt (15 s bei laufender Pipeline, sonst 1 min, solange Hinweise oder
 // der Reiter es brauchen); schreibend nur per Klick.
 let ciPolledAt = 0
 let ciInflight: Promise<void> | null = null
 let ciRunning = false
 
+// Zuletzt ermitteltes Remote für den Reiter (Kopfzeile, Hinweis „kein CI“), auch wenn die MR-Abfrage es noch nicht kennt.
+let ciSeen: Remote | null = null
+
 async function ciRemote($: EngineInterface): Promise<Remote | null> {
-  if (mrRemote !== null) return mrRemote
-  return forgeRemote(await gitText($, ['remote', 'get-url', await gitRemote($)]))
+  ciSeen = mrRemote ?? forgeRemote(await gitText($, ['remote', 'get-url', await gitRemote($)]))
+  return ciSeen
 }
 
 async function refreshCi($: EngineInterface, force = false) {
@@ -1560,12 +1565,39 @@ async function refreshCi($: EngineInterface, force = false) {
   const onTab = (await read($, paneTab)) === 'ci'
   if (!force && !onTab && !s.ciNotify && !s.ciAutoOpen) return
   const r = await ciRemote($)
-  if (!ciSupported(r)) return
+  const seen: Remote | null = r
+  if (!ciSupported(r)) {
+    // Bitbucket: kein CI, nur der Build-Status je Commit (nur lesen, nur im Reiter, jede Minute); sonst einmal neu zeichnen,
+    // damit der Reiter Backend und Hinweis zeigt.
+    if (seen?.kind === 'bitbucket' && (onTab || force)) await pollBb($, seen, force)
+    else if (seen !== null && onTab && (await read($, ciList)) === null) await update($, ciList, () => ({ pipelines: [], error: '', branch: '' }))
+    return
+  }
   const prev = await read($, ciList)
   const now = await $.clock.now()
   if (ciInflight !== null || (!force && now - ciPolledAt < ciPollDelayMs(prev?.pipelines ?? []))) return
   ciPolledAt = now
   const run = pollCi($, s, r, prev, onTab).finally(() => {
+    ciInflight = null
+  })
+  ciInflight = run
+  await run
+}
+
+// Bitbucket Server: Commits des Branches mit dem gemeldeten Build-Status laden. Ein Fehler behält die letzten Commits und meldet den Grund.
+async function pollBb($: EngineInterface, r: Remote, force: boolean) {
+  const now = await $.clock.now()
+  if (ciInflight !== null || (!force && now - ciPolledAt < 60_000)) return
+  ciPolledAt = now
+  const run = (async () => {
+    const prev = await read($, bbList)
+    const branch = await gitText($, ['branch', '--show-current'])
+    const got = await bitbucketBuilds(forgeIo($), r, branch)
+    const next: BbList = got.error === '' ? got : { commits: prev?.commits ?? [], error: got.error, branch }
+    if (!same(prev, next)) await update($, bbList, () => next)
+    // Einmal neu zeichnen, auch wenn ciList noch leer ist (der Reiter zeigt Hinweis und Liste je nach bbList).
+    if ((await read($, ciList)) === null) await update($, ciList, () => ({ pipelines: [], error: '', branch }))
+  })().finally(() => {
     ciInflight = null
   })
   ciInflight = run
@@ -1615,9 +1647,9 @@ async function pollCi($: EngineInterface, s: ModSettings, r: Remote, prev: CiLis
   for (const { event, pipeline } of events) {
     // Die MR-Hinweise melden grün/rot der MR-Pipeline schon; doppelt wäre Lärm.
     const dup = s.mrNotify && pipeline.id === mrPid && (event === 'pipelineSuccess' || event === 'pipelineFailed')
-    await say(dup ? '' : t(s.lang, `ci.ev.${event}`, { id: pipeline.id, ref: pipeline.ref }), event === 'pipelineFailed')
+    await say(dup ? '' : ciT(s.lang, `ci.ev.${event}`, r.kind, { id: pipeline.id, ref: pipeline.ref }), event === 'pipelineFailed')
   }
-  for (const j of failedJobs) await say(t(s.lang, 'ci.ev.jobFailed', { name: j.name, id: tracked?.id ?? 0 }), true)
+  for (const j of failedJobs) await say(ciT(s.lang, 'ci.ev.jobFailed', r.kind, { name: j.name, id: tracked?.id ?? 0 }), true)
 }
 
 // Globale Sperre wie bei den MR-Aktionen: solange eine schreibende CI-Aktion läuft, nimmt keine zweite einen Klick an.
@@ -1663,15 +1695,16 @@ async function ciPick($: EngineInterface, id: number) {
 
 async function ciPipe($: EngineInterface, act: CiPipeAct, branch: string) {
   const L = (await read($, settings)).lang
+  const forge = (await ciRemote($))?.kind ?? 'gitlab'
   if (act === 'new') {
-    if (branch === '' || !(await ciAsk($, 'ci-new'))) return
+    if (branch === '' || !ciCaps(forge).newRun || !(await ciAsk($, 'ci-new'))) return
     return ciStep($, t(L, 'ci.act.pipeNew', { ref: branch }), r => ciNewPipeline(forgeIo($), r, branch))
   }
   const list = await read($, ciList)
   const p = list === null ? null : pickPipeline(list.pipelines, await read($, ciSel), branch)
   if (p === null) return
   if (act === 'cancel' && !(await ciAsk($, `ci-cancel-${p.id}`))) return
-  return ciStep($, t(L, act === 'retry' ? 'ci.act.pipeRetry' : 'ci.act.pipeCancel', { id: p.id }), r => ciPipelineAction(forgeIo($), r, p.id, act))
+  return ciStep($, ciT(L, act === 'retry' ? 'ci.act.pipeRetry' : 'ci.act.pipeCancel', forge, { id: p.id }), r => ciPipelineAction(forgeIo($), r, p.id, act))
 }
 
 async function ciJob($: EngineInterface, id: number, act: CiJobAct) {
@@ -1694,7 +1727,7 @@ async function ciOpenLog($: EngineInterface, id: number) {
   await update($, ciLog, () => ({ job: id, name: j.name, lines: [], truncated: false, error: '', loading: true }))
   const x = await ciJobLog(forgeIo($), r, id).catch(() => null)
   if ((await read($, ciLog))?.job !== id) return
-  const next: CiLog = x === null || !x.ok ? { job: id, name: j.name, lines: [], truncated: false, error: x?.err || 'glab', loading: false } : { job: id, name: j.name, ...tailLog(x.text), error: '', loading: false }
+  const next: CiLog = x === null || !x.ok ? { job: id, name: j.name, lines: [], truncated: false, error: x?.err || (r.kind === 'github' ? 'gh' : 'glab'), loading: false } : { job: id, name: j.name, ...tailLog(x.text), error: '', loading: false }
   await update($, ciLog, () => next)
 }
 
@@ -2729,7 +2762,8 @@ async function mrPaneBody($: EngineInterface, ui: Ui, L: UiLang, mock: { mr: Mr;
   const out: RenderElement[] = []
   const branch: RenderChildren[] = [<Text key="mr-bh" bold>{t(L, 'mr.branchHead')}</Text>]
   const refreshBtn = btn('mr-a-refresh', t(L, 'mr.refresh'), () => reloadMrPane($))
-  const ciBtn = mock !== null || ciSupported(mrRemote) ? btn('mr-a-ci', t(L, 'ci.git'), () => openTab($, 'ci')) : null
+  // Auch bei Bitbucket erreichbar: der Reiter nennt dort das Backend und warum es keine CI-Anzeige gibt.
+  const ciBtn = mock !== null || mrRemote !== null ? btn('mr-a-ci', t(L, 'ci.git'), () => openTab($, 'ci')) : null
   if (busy !== '') branch.push(<Text key="mr-busy" color={THEME.accent}>◌ {busy}</Text>)
   if (m !== null) {
     branch.push(<Markdown onLinkPress={ext} key="mr-link" text={`[${mrRef(m)} ${mdText(m.title)}](${m.url})`} />)
@@ -5349,7 +5383,7 @@ export const register: Register = (on, options) => {
     if (tab === 'now') {
       body.push(await workdirCard(), await workingCard(), await planCard(), agentsCard(), await agentViewCard(), await tasksCard(), await turnCard())
     } else if (tab === 'sessions') {
-      body.push(...sessionsBody({ ui, L, marg, st: sess, path: sessionsPath, onReload: () => void refreshSessions($, true).catch(() => undefined) }))
+      body.push(...sessionsBody({ ui, L, marg, st: sess, path: sessionsPath, onReload: () => void refreshSessions($, true).catch(() => undefined), onPrompt: text => void $.prompt.fill({ text }).catch(() => undefined) }))
     } else if (tab === 'usage') {
       body.push(overviewCard(), await contextCard(), ...(await diagCards($, ui, ['inspect'])))
     } else if (tab === 'diag') {
@@ -5378,7 +5412,12 @@ export const register: Register = (on, options) => {
         ...ciBody({
           ui, L, marg, now, branch, list, jobs, log: await read($, ciLog), busy: await read($, ciBusy), confirm: await read($, ciConfirm), down: await read($, pressed),
           // Vor dem ersten Abruf ist das Remote unbekannt: dann lädt der Reiter, statt „kein GitLab“ zu melden.
-          supported: mrRemote === null ? host === '' || list !== null : ciSupported(mrRemote),
+          supported: (mrRemote ?? ciSeen) === null ? host === '' || list !== null : ciSupported(mrRemote ?? ciSeen),
+          forge: (mrRemote ?? ciSeen)?.kind ?? 'gitlab',
+          backend: mrRemote ?? ciSeen,
+          bb: await read($, bbList),
+          bbSel: await read($, bbSel),
+          onBbPick: sha => void update($, bbSel, () => sha).catch(() => undefined),
           shown: list === null ? null : pickPipeline(list.pipelines, await read($, ciSel), branch),
           ext: link => void openExternal($, link.href).catch(() => undefined),
           onPick: id => void ciPick($, id).catch(() => undefined),

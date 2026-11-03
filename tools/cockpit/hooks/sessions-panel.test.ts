@@ -7,7 +7,7 @@ import type { TestBody } from 'claude-code/testing'
 const PROPS = { title: 'Cockpit', isFocused: false, bodyColumns: 160, placement: 'dock', scroll: { offset: 0, bodyRows: 60 }, view: {} } as const
 type Engine = Parameters<TestBody>[0]
 type On = Parameters<TestBody>[1]
-type View = { find(q: { type: 'Text'; text: string | RegExp }): Promise<unknown> }
+type View = { find(q: { type: 'Text'; text: string | RegExp } | { type: 'Button'; key: string }): Promise<unknown>; press(t: { key: string }): Promise<unknown> }
 
 const SAMPLE = {
   updated: '2026-11-02',
@@ -168,4 +168,56 @@ test('Sessions: Terminal zeichnet dieselben Zeilen ohne Svg', async ($, on) => {
   const pane = await openSessions($, 'terminal')
   expect(await waitFind(pane, '1 warten auf dich')).not.toBe(undefined)
   expect(await pane.find({ type: 'Svg' })).toBe(undefined)
+})
+
+// Prompt-Angebot: `prompt.fill` sammelt den Text, geschrieben wird nie (kein fs.write).
+function wirePrompt(on: On): string[] {
+  const filled: string[] = []
+  on('prompt.fill', (_$, e) => {
+    filled.push(e.text)
+    return { isFilled: true, box: { text: e.text, cursor: e.text.length } } as never
+  })
+  return filled
+}
+const waitPress = async (pane: View, key: string) => {
+  for (let i = 0; i < 3000 && (await pane.find({ type: 'Button', key })) === undefined; i++) await Promise.resolve()
+  await pane.press({ key })
+}
+
+test('Sessions: fehlt die Datei, bietet der Reiter einen Prompt zum Einrichten einer Schaltzentrale mit dem Pfad', async ($, on) => {
+  const filled = wirePrompt(on)
+  wireFile(on, { text: null, mtime: 1 }, 'C:\\Users\\anna')
+  const pane = await openSessions($)
+  await waitPress(pane, 'sessions-prompt')
+  for (let i = 0; i < 3000 && filled.length === 0; i++) await Promise.resolve()
+  expect(filled).toHaveLength(1)
+  expect(filled[0]).toContain('C:/Users/anna/.deltra/claude/sessions.json')
+  expect(filled[0]).toMatch(/Richte auf diesem Rechner eine Schaltzentrale ein/)
+  expect(filled[0]).toContain('"updated"')
+  expect(filled[0]).toContain('ENOENT')
+})
+
+test('Sessions: kaputtes JSON oder Hinweise des Parsers bieten einen Prompt zum Anpassen; eine gültige Datei ohne Hinweise keinen', async ($, on) => {
+  const filled = wirePrompt(on)
+  const file = { text: '{ "updated": ' as string | null, mtime: 1 }
+  wireFile(on, file)
+  const pane = await openSessions($)
+  await waitPress(pane, 'sessions-prompt')
+  for (let i = 0; i < 3000 && filled.length === 0; i++) await Promise.resolve()
+  expect(filled[0]).toMatch(/passt nicht zum Schema/)
+  expect(filled[0]).toContain('json:')
+  expect(filled[0]).not.toMatch(/Richte auf diesem Rechner/)
+  // Gültig, aber mit Hinweis (Session ohne Branch): weiter Anpassen.
+  file.text = JSON.stringify({ updated: '2026-11-02', sessions: [{ id: 'a', repo: 'r', state: 'läuft' }], approvals: [] })
+  file.mtime = 2
+  await pane.press({ key: 'sessions-reload' })
+  expect(await waitFind(pane, /Hinweise zur Datei \(1\)/)).not.toBe(undefined)
+  expect(await pane.find({ type: 'Button', key: 'sessions-prompt' })).not.toBe(undefined)
+  // Sauber: kein Angebot mehr.
+  file.text = JSON.stringify(SAMPLE)
+  file.mtime = 3
+  await pane.press({ key: 'sessions-reload' })
+  expect(await waitFind(pane, 'Stand der Datei: 2026-11-02')).not.toBe(undefined)
+  for (let i = 0; i < 300 && (await pane.find({ type: 'Button', key: 'sessions-prompt' })) !== undefined; i++) await Promise.resolve()
+  expect(await pane.find({ type: 'Button', key: 'sessions-prompt' })).toBe(undefined)
 })

@@ -32,11 +32,11 @@ Bis auf Titel und Ordner/Branch ist jede Anzeige im Band abschaltbar (Gruppe „
 | Reiter | Inhalt |
 | --- | --- |
 | Jetzt | Arbeitsverzeichnis mit verknüpften Sessions (ganz oben), Agent arbeitet (mit Atemübung), Plan mit Zeiten und Dateien, Subagents mit Bremse und Zeitachse (↗ öffnet den Verlauf: im Terminal in der Hauptansicht, auf dem Desktop als Karte im Panel), Hintergrundaufgaben, Letzter Turn mit Turn-Bilanz |
-| Sessions | Sessions-Übersicht (ID, Repo, Branch, Stand, wartet auf, Notiz; wer auf dich wartet, steht oben und ist hervorgehoben) und Freigabe-Inbox (ID, Aktion, Detail, seit) aus der Status-Datei der Schaltzentrale (`sessions.json`, nur gelesen; Standardpfad `<Benutzerordner>/.deltra/claude/sessions.json`, änderbar in der Mod-Einstellung „Status-Datei der Sessions“). Aktualisiert sich bei Änderung der Datei, meldet fehlende oder kaputte Dateien im Klartext |
+| Sessions | Sessions-Übersicht (ID, Repo, Branch, Stand, wartet auf, Notiz; wer auf dich wartet, steht oben und ist hervorgehoben) und Freigabe-Inbox (ID, Aktion, Detail, seit) aus der Status-Datei der Schaltzentrale (`sessions.json`, nur gelesen; Standardpfad `<Benutzerordner>/.deltra/claude/sessions.json`, änderbar in der Mod-Einstellung „Status-Datei der Sessions“). Aktualisiert sich bei Änderung der Datei, meldet fehlende oder kaputte Dateien im Klartext Fehlt die Datei oder ist sie leer, bietet der Reiter „Schaltzentrale einrichten (Prompt)“, ist sie unlesbar oder beanstandet, „Status-Datei anpassen (Prompt)“; der Prompt landet nur in der Eingabezeile. |
 | Verbrauch | Übersicht (Kontext, Limits mit Takt und Reset, Kosten, Cache), Kontextfenster mit Kontext-Diät, Kontext-Inspektor |
 | Diagnose | Unterreiter **Hinweise** (alle Meldungen mit Ampel, Tipps, Nutzungswächter), **Protokoll** (Log, Fehler-Eingang, Tool-Freigaben und Zeitreise in einer Liste, Filter Alle · Fehler · Freigaben · Snapshots), **Profil**, **Blast-Radius** |
 | Git | Repo-Label mit Ordner, auf den sich der Stand bezieht, Ablauf Commit → MR → Merge → Aufräumen, Branches, MR-Karten |
-| CI/CD | GitLab-Pipelines des Projekts (Status, Branch, Commit, Alter, Dauer) und die Jobs der gewählten Pipeline je Stage; Steuerung (Job wiederholen/abbrechen/starten, Log ansehen, Pipeline neu/abbrechen, neue Pipeline für den Branch), siehe Abschnitt CI/CD |
+| CI/CD | GitLab-Pipelines und GitHub-Actions-Runs des Projekts (Status, Branch, Commit, Alter, Dauer) und die Jobs der gewählten Pipeline bzw. des Runs je Stage/Workflow; Steuerung (Job wiederholen/abbrechen/starten, Log ansehen, Pipeline neu/abbrechen, neue Pipeline für den Branch; auf GitHub nur, was GitHub hergibt), siehe Abschnitt CI/CD |
 | Rückblick | **Diese Session** (Zusammenfassung) und **Verlauf** (Aufgaben je Tag, Tages- und Wochenbericht) |
 | ⚙ Einstellungen | alle Schalter, Funktionsübersicht im Chat, Skin-Demo, Version |
 
@@ -120,7 +120,7 @@ Reiter Git des Cockpit-Panels (`/cockpit-git` oder der MR-Link im Band). Führt 
 
 ## CI/CD
 
-Reiter CI/CD (`/cockpit-ci` oder der Link „CI/CD“ in der Karte Merge Request des Git-Reiters). Nur für GitLab-Remotes (z. B. `gitlab.deltra.de`); bei anderen Plattformen sagt der Reiter das und bleibt leer.
+Reiter CI/CD (`/cockpit-ci` oder der Link „CI/CD“ in der Karte Merge Request des Git-Reiters). Für GitLab-Remotes (z. B. `gitlab.deltra.de`, über `glab`) und GitHub-Remotes (`github.com`, über `gh`); bei anderen Plattformen (Bitbucket) sagt der Reiter das und bleibt leer. Die Plattform erkennt das Cockpit selbst aus dem Remote-URL des Repos, die Oberfläche ist dieselbe; Unterschiede stehen im Absatz „GitHub Actions“ weiter unten.
 
 | Karte | Inhalt |
 | --- | --- |
@@ -128,9 +128,23 @@ Reiter CI/CD (`/cockpit-ci` oder der Link „CI/CD“ in der Karte Merge Request
 | Pipeline #n | Status, Commit-Titel, Branch, SHA, Alter, Dauer, Auslöser; „Pipeline neu“ (fehlgeschlagen/abgebrochen), „Pipeline abbrechen“ (laufend, mit Rückfrage), Link nach GitLab; darunter die Jobs je Stage mit Status, Dauer und den Aktionen **Log**, **Starten** (manuell), **Wiederholen**, **Abbrechen** |
 | Log | Die letzten 60 Zeilen eines Jobs, ANSI-Farben und GitLab-Abschnittsmarker entfernt; ein zweiter Klick auf „Log“ oder „Schließen“ blendet es aus |
 
+**Backend, Zeiten, Ersteller, Artefakte (2.4.0):** Die Kopfzeile zeigt Plattform und `Host/Projekt` als Badge. Pipeline/Run und Jobs tragen Start und Ende im lokalen Format, laufende Einträge eine mitlaufende Dauer. Die Pipeline-Karte nennt zusätzlich Auslöser (Push, Tag, Merge/Pull Request, manuell, Zeitplan, API) und Ersteller. Unter den Jobs stehen die **Artefakte** (GitLab je Job, GitHub je Run) mit Name, Größe und dem Link „Im Browser laden“; das Cockpit lädt nichts herunter und entpackt nichts. **Bitbucket Server** (z. B. `git.deltra.de`) hat kein eigenes CI: statt Pipelines und Jobs zeigt der Reiter ein eigenes, **nur lesendes** Panel mit den letzten 15 Commits des Branches (Gesamtstand je Commit, Autor, Alter) und für den gewählten Commit die Builds, die Bamboo/Jenkins gemeldet haben (Status, Name, Beschreibung, Zeitpunkt, Dauer wo gemeldet, Link ins Build-System). Der Zugang kommt aus dem Git-Credential-Store (wie bei den MR-Funktionen); ohne ihn steht ein Hinweis im Reiter. Wiederholen, Logs, Artefakte und Hinweise bei Statuswechseln gibt es dort nicht, weil die Build-Status-API sie nicht hergibt.
+
 **Aufrufwege:** (1) per Hand über den Git-Reiter, den Reiter selbst oder `/cockpit-ci`; (2) automatisch: das Cockpit fragt GitLab im Takt ab (alle 15 s, solange eine Pipeline läuft oder wartet, sonst jede Minute) und meldet Statuswechsel der Pipelines des Branches als Toast und Protokollzeile: grün, fehlgeschlagen, abgebrochen, wartet auf einen manuellen Job, dazu fehlgeschlagene Jobs (ohne `allow_failure`). Bei Fehlschlag öffnet es den Reiter CI/CD von selbst, ohne den Eingabefokus zu nehmen. Der erste Abruf einer Session meldet nichts. Beide Wege sind in den Einstellungen (Gruppe Merge Request · CI/CD) abschaltbar: „CI/CD-Hinweise“ und „CI/CD-Reiter bei Fehlschlag öffnen“; sind beide aus, fragt das Cockpit GitLab nur ab, solange der Reiter offen ist. Grün/rot der MR-Pipeline meldet bei eingeschalteten MR-Hinweisen nur der MR-Hinweis (kein Doppel).
 
 **Mechanik und Entscheidung (Polling statt Webhook):** Ein GitLab-Webhook bräuchte einen vom Server erreichbaren Empfänger auf dem Arbeitsplatz (NAT, Firewall, wechselnde Netze) und ein Secret im Server; das ist für ein lokales Mod nicht zumutbar. `glab ci` ist auf interaktive Ansichten ausgelegt. Das Cockpit ruft deshalb `glab api` auf (gleiche Anbindung wie die MR-Karten, Projekt über `:id` aus dem Remote): Die Authentifizierung läuft vollständig über die vorhandene glab-Anmeldung, das Cockpit sieht, speichert und loggt kein Token. Lesend: `projects/:id/pipelines`, `…/pipelines/<id>`, `…/pipelines/<id>/jobs`, `…/jobs/<id>/trace`. Schreibend, nur per Klick: `POST …/jobs/<id>/retry|cancel|play`, `POST …/pipelines/<id>/retry|cancel`, `POST projects/:id/pipeline -f ref=<Branch>`.
+
+**GitHub Actions:** Auf GitHub-Remotes (`github.com` oder GitHub Enterprise Server) zeigt derselbe Reiter die Workflow-Runs (Kopfkarte „Workflow-Runs“, Karte „Run #n“). Die Anmeldung läuft über die vorhandene `gh`-Konfiguration (`gh auth login`): Das Cockpit ruft `gh api --hostname <Host> repos/<owner>/<name>/…` auf, sieht, speichert und loggt kein Token. Aufruf und Takt sind identisch zu GitLab (Git-Reiter, `/cockpit-ci`, Polling 15 s/1 min, Hinweise, Reiter bei Fehlschlag); Hinweise gelten für die Runs des ausgecheckten Branches.
+
+| Ansicht | GitHub |
+| --- | --- |
+| Run | Status aus `status` + `conclusion` auf dasselbe Vokabular wie bei GitLab abgebildet (`in_progress` → running, `queued` → pending, `failure`/`timed_out` → failed, `cancelled` → canceled, `action_required` → manual); Titel = PR-Titel bzw. Commit-Zeile, Branch, SHA, Auslöser, Dauer aus den Zeitstempeln |
+| Jobs | gruppiert unter dem Workflow-Namen (GitHub hat keine Stages); laufende und fehlgeschlagene Jobs zeigen darunter ihre Schritte (✓ ✗ ◌ –) mit Dauer |
+| Log | letzte 60 Zeilen; Zeitstempel, BOM und Workflow-Befehle bereinigt (`##[group]` → „▸ Titel“, `##[error]` → „✗ …“) |
+| Steuerung | **Wiederholen** eines Jobs (`POST …/actions/jobs/<id>/rerun`), **Fehlgeschlagene neu** (`POST …/actions/runs/<id>/rerun-failed-jobs`; lehnt GitHub das ab, etwa bei einem abgebrochenen Run, folgt `POST …/rerun` für alle Jobs), **Run abbrechen** (`POST …/actions/runs/<id>/cancel`, mit Rückfrage) |
+| Ausgeblendet | „Starten“ manueller Jobs, Abbrechen einzelner Jobs und „Neue Pipeline“: GitHub hat kein Äquivalent (ein neuer Run braucht einen Workflow mit `workflow_dispatch` und Eingaben); das Cockpit zeigt die Elemente nicht, statt sie zu simulieren |
+
+Text aus beiden Plattformen (Titel, Branches, Namen, Logs) läuft durch dieselbe Bereinigung: Escape-Folgen (CSI, OSC, DCS, APC, PM, SOS) und Steuerzeichen werden entfernt, bevor etwas angezeigt oder als Toast gemeldet wird. Schreibende Aufrufe gibt es nur per Klick; das Cockpit löst nie von sich aus einen Run aus.
 
 ## Grenzen
 
@@ -168,7 +182,7 @@ Mod-API: Claude Code Function Hooks (Engine ≥ 2.1.295, Early Access). Struktur
 | --- | --- |
 | `hooks/register.tsx` | Hooks, Band und Panel |
 | `hooks/core.ts` | Reine Rechen- und Formatfunktionen |
-| `hooks/ci.ts`, `hooks/ci-ui.tsx` | CI/CD: Übersetzung der GitLab-Antworten, Ereignisse, Log-Aufbereitung (rein) bzw. Zeichnung des Reiters |
+| `hooks/ci.ts`, `hooks/ci-github.ts`, `hooks/ci-ui.tsx` | CI/CD: Übersetzung der GitLab- bzw. GitHub-Antworten in die gemeinsame Form, Ereignisse, Log-Aufbereitung (rein) bzw. Zeichnung des Reiters |
 | `types/index.d.ts` | `$.state`-Vertrag |
 | `hooks/register.test.ts` | Tests |
 

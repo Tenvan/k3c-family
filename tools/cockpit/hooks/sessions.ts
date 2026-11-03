@@ -83,3 +83,15 @@ export function parseSessions(raw: string | null, detail = ''): SessionsResult {
   const ordered = sessions.map((s, i) => ({ s, i })).sort((a, b) => rank(a.s) - rank(b.s) || a.i - b.i).map(x => x.s)
   return { ok: true, view: { updated, sessions: ordered, approvals, issues } }
 }
+
+// Prompt-Angebot im Reiter: fehlt die Datei oder ist sie leer, richtet Claude eine Schaltzentrale samt Datei ein; ist sie vorhanden,
+// aber unlesbar (kein JSON, falsche Form) oder mit Hinweisen behaftet, passt Claude sie an das Schema an. Ohne Befund kein Angebot.
+export type SessionsPromptKind = 'create' | 'fix'
+export function sessionsPromptKind(err: { kind: SessionsErrorKind } | null, issues: readonly string[]): SessionsPromptKind | null {
+  if (err !== null) return err.kind === 'missing' || err.kind === 'empty' ? 'create' : 'fix'
+  return issues.length > 0 ? 'fix' : null
+}
+
+// Befund als Liste für den Prompt: Lesefehler samt Grund, sonst die Hinweise des Parsers (höchstens zehn).
+export const sessionsFindings = (err: { kind: SessionsErrorKind; detail: string } | null, issues: readonly string[]): string[] =>
+  err !== null ? [err.detail === '' ? err.kind : `${err.kind}: ${err.detail}`] : issues.slice(0, 10)

@@ -1,14 +1,14 @@
-// CI/CD auf GitLab: API-Antworten (`glab api`) in kleine Zustände übersetzen, Statuswechsel als Ereignisse melden, Job-Logs
-// aufbereiten. Rein, ohne `$`; die Aufrufe stehen in forge.ts, Zustand und Anzeige in register.tsx und ci-ui.tsx.
+// CI/CD: GitLab-Antworten (`glab api`) in die gemeinsame Form (`CiPipeline`, `CiJob`) übersetzen; die GitHub-Entsprechung steht in
+// ci-github.ts. Statuswechsel als Ereignisse melden, Job-Logs aufbereiten (beides für beide Plattformen). Rein, ohne `$`; die Aufrufe stehen in forge.ts, Zustand und Anzeige in register.tsx und ci-ui.tsx.
 // Mechanik (Entscheidung): Polling statt Webhook. Ein Webhook bräuchte einen vom GitLab-Server erreichbaren Empfänger auf dem
 // Arbeitsplatz (NAT/Firewall); `glab api` nutzt die vorhandene glab-Anmeldung, das Cockpit sieht nie ein Token.
 
-import type { CiJob, CiPipeline } from '../types'
+import type { CiArtifact, CiJob, CiPipeline, Forge, UiLang } from '../types'
 
 export type CiEvent = 'pipelineSuccess' | 'pipelineFailed' | 'pipelineCanceled' | 'pipelineManual' | 'jobFailed'
 
-type Obj = Record<string, unknown>
-const obj = (v: unknown): Obj => (typeof v === 'object' && v !== null ? (v as Obj) : {})
+export type Obj = Record<string, unknown>
+export const obj = (v: unknown): Obj => (typeof v === 'object' && v !== null ? (v as Obj) : {})
 // Alles aus der GitLab-API (Namen, Refs, Titel, Logs) ist fremder Text: Steuerzeichen und Escape-Folgen (CSI, OSC, DCS, APC, PM,
 // SOS) fliegen raus, bevor er in Text oder Toasts landet, damit er das Terminal nicht umschalten oder Titel/Links setzen kann.
 const ESC = String.fromCharCode(27)
@@ -18,8 +18,8 @@ const CSI_SEQ = new RegExp(`${ESC}\\[[0-?]*[ -/]*[@-~]`, 'g')
 const OTHER_ESC = new RegExp(`${ESC}[\\s\\S]?`, 'g')
 const CONTROL = new RegExp('[\\u0000-\\u0008\\u000b-\\u001f\\u007f-\\u009f]', 'g')
 export const clean = (v: string): string => v.replace(STRING_SEQ, '').replace(CSI_SEQ, '').replace(OTHER_ESC, '').replace(CONTROL, '')
-const str = (v: unknown): string => (typeof v === 'string' ? clean(v) : '')
-const num = (v: unknown): number => (typeof v === 'number' && Number.isFinite(v) ? v : 0)
+export const str = (v: unknown): string => (typeof v === 'string' ? clean(v) : '')
+export const num = (v: unknown): number => (typeof v === 'number' && Number.isFinite(v) ? v : 0)
 
 export const PIPELINES_MAX = 15
 export const LOG_LINES = 60
@@ -27,6 +27,11 @@ export const LOG_LINES = 60
 const ACTIVE = new Set(['created', 'waiting_for_resource', 'preparing', 'pending', 'running', 'scheduled'])
 export const isActive = (status: string): boolean => ACTIVE.has(status)
 export const isFinished = (status: string): boolean => !ACTIVE.has(status) && status !== 'manual'
+
+// Was der Provider an Steuerung hergibt: GitHub Actions kennt weder manuelle Jobs („play“) noch das Abbrechen einzelner Jobs noch
+// einen Run ohne Workflow-Auswahl; die Elemente erscheinen dort nicht (statt simuliert zu werden).
+export type CiCaps = { play: boolean; jobCancel: boolean; newRun: boolean }
+export const ciCaps = (forge: Forge): CiCaps => (forge === 'github' ? { play: false, jobCancel: false, newRun: false } : { play: true, jobCancel: true, newRun: true })
 
 // Ton eines Status für Farbe und Badge.
 export const ciTone = (status: string): 'success' | 'error' | 'warning' | 'accent' | 'neutral' =>
@@ -47,16 +52,35 @@ export function toPipelines(list: unknown): CiPipeline[] {
     source: str(x.source),
     createdAt: str(x.created_at),
     updatedAt: str(x.updated_at),
+    startedAt: str(x.started_at),
+    finishedAt: str(x.finished_at),
     durationS: Math.round(num(x.duration)),
     user: str(obj(x.user).username),
+    userName: str(obj(x.user).name),
+    tag: x.tag === true,
     title: '',
   }))
 }
 
-// Detail einer Pipeline (Dauer, Auslöser) über die Listenwerte legen.
+// Detail einer Pipeline (Dauer, Zeitpunkte, Auslöser) über die Listenwerte legen; die Liste kennt weder Start noch Ende noch Auslöser.
 export const withDetail = (p: CiPipeline, detail: unknown): CiPipeline => {
   const d = toPipelines([detail])[0]
-  return d === undefined ? p : { ...p, durationS: d.durationS, user: d.user || p.user, status: d.status || p.status }
+  return d === undefined ? p : { ...p, durationS: d.durationS, startedAt: d.startedAt, finishedAt: d.finishedAt, user: d.user || p.user, userName: d.userName || p.userName, tag: d.tag || p.tag, status: d.status || p.status }
+}
+
+// Artefakt-Archiv der Jobs (`artifacts_file`; die übrigen Einträge in `artifacts` sind Trace und Metadaten). Ohne Archiv oder abgelaufen
+// (`artifacts_expire_at` in der Vergangenheit) zählt es nicht als ladbar; der Download-Link ist die Browser-Seite des Jobs.
+export function toArtifacts(list: unknown, now: number): CiArtifact[] {
+  if (!Array.isArray(list)) return []
+  const out: CiArtifact[] = []
+  for (const x of list.map(obj)) {
+    const file = obj(x.artifacts_file)
+    const name = str(file.filename)
+    if (typeof x.id !== 'number' || name === '') continue
+    const exp = Date.parse(str(x.artifacts_expire_at))
+    out.push({ id: x.id, job: x.id, name, size: Math.max(0, num(file.size)), expired: Number.isFinite(exp) && exp < now, url: str(x.web_url) === '' ? '' : `${str(x.web_url)}/artifacts/download` })
+  }
+  return out
 }
 
 export function toJobs(list: unknown): CiJob[] {
@@ -71,6 +95,7 @@ export function toJobs(list: unknown): CiJob[] {
     allowFailure: x.allow_failure === true,
     manual: str(x.status) === 'manual',
     startedAt: str(x.started_at),
+    finishedAt: str(x.finished_at),
   }))
 }
 
@@ -140,6 +165,56 @@ export function ago(iso: string, now: number): string {
   if (!Number.isFinite(t)) return '–'
   const s = Math.max(0, Math.round((now - t) / 1000))
   return s < 90 ? `${s} s` : s < 5400 ? `${Math.round(s / 60)} min` : s < 129_600 ? `${Math.round(s / 3600)} h` : `${Math.round(s / 86_400)} d`
+}
+
+// Zeitpunkt im lokalen Format: „02.11.2026 10:00“ (de) bzw. „2026-11-02 10:00“ (en); ohne gültigen Zeitpunkt „–“.
+const p2 = (n: number): string => String(n).padStart(2, '0')
+export function stamp(iso: string, lang: UiLang, withDate = true): string {
+  const d = new Date(Date.parse(iso))
+  if (Number.isNaN(d.getTime())) return '–'
+  const time = `${p2(d.getHours())}:${p2(d.getMinutes())}`
+  if (!withDate) return time
+  const day = lang === 'de' ? `${p2(d.getDate())}.${p2(d.getMonth() + 1)}.${d.getFullYear()}` : `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}`
+  return `${day} ${time}`
+}
+
+// „Start – Ende“; das Ende trägt das Datum nur, wenn es auf einen anderen Tag fällt; ohne Ende (läuft noch) bleibt nur der Start.
+export function span(start: string, end: string, lang: UiLang): string {
+  if (!Number.isFinite(Date.parse(start))) return '–'
+  if (!Number.isFinite(Date.parse(end))) return stamp(start, lang)
+  const sameDay = new Date(Date.parse(start)).toDateString() === new Date(Date.parse(end)).toDateString()
+  return `${stamp(start, lang)} – ${stamp(end, lang, !sameDay)}`
+}
+
+// Dauer: bei laufenden Pipelines und Jobs die mitlaufende (jetzt − Start), sonst die gemeldete; fehlt der Start, bleibt die gemeldete.
+export function liveSeconds(status: string, startIso: string, reported: number, now: number): number {
+  const t = Date.parse(startIso)
+  return ACTIVE.has(status) && Number.isFinite(t) && now > t ? Math.round((now - t) / 1000) : reported
+}
+
+// Größe als „812 B“, „3,4 KB“, „12,0 MB“ (Dezimalzeichen je Sprache); unbekannt (0) = „–“.
+export function sizeText(bytes: number, lang: UiLang): string {
+  if (!(bytes > 0)) return '–'
+  const u = ['B', 'KB', 'MB', 'GB']
+  let n = bytes
+  let i = 0
+  while (n >= 1024 && i < u.length - 1) {
+    n /= 1024
+    i++
+  }
+  const v = i === 0 ? String(Math.round(n)) : n.toFixed(1)
+  return `${lang === 'de' ? v.replace('.', ',') : v} ${u[i]}`
+}
+
+// Schlüssel (unter `ci.src.*`) des Auslösers: GitLab-`source` und GitHub-`event` auf wenige Begriffe abgebildet; Tags zuerst, Unbekanntes bleibt roh.
+export function sourceKey(source: string, tag: boolean): string {
+  if (tag) return 'tag'
+  if (source === 'push') return 'push'
+  if (source === 'merge_request_event' || source === 'external_pull_request_event' || source === 'pull_request' || source === 'pull_request_target') return 'mr'
+  if (source === 'web' || source === 'workflow_dispatch' || source === 'repository_dispatch') return 'manual'
+  if (source === 'schedule') return 'schedule'
+  if (source === 'api' || source === 'trigger') return 'api'
+  return ''
 }
 
 // Dauer in Sekunden als „1:05“ oder „1:02:03“; 0 = unbekannt.
