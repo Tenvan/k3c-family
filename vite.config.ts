@@ -48,7 +48,7 @@ export default defineConfig({
   // .claude/worktrees enthält komplette Checkouts anderer Branches; deren Tests gehören nicht zu diesem Lauf.
   // tools/k3c-studio, tools/k3c-workbench/frontend und tools/k3c-starter/frontend prüfen ihr eigenes Vitest (Aliase @game/@data/@webkit,
   // task check:studio, check:dev, check:starter); die Tests von tools/webkit laufen im Vitest von k3c-workbench.
-  test: { exclude: [...configDefaults.exclude, '.claude/**', 'tools/cockpit/**', 'tools/k3c-studio/**', 'tools/k3c-workbench/frontend/**', 'tools/k3c-starter/frontend/**', 'tools/webkit/**'] },
+  test: { exclude: [...configDefaults.exclude, '.claude/**', 'tools/k3c-studio/**', 'tools/k3c-workbench/frontend/**', 'tools/k3c-starter/frontend/**', 'tools/webkit/**'] },
   build: {
     target: 'es2022',
     chunkSizeWarningLimit: 2000,

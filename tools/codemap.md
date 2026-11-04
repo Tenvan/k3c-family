@@ -12,7 +12,6 @@ Entwickler-Werkzeuge außerhalb des Spiels (Build-Time-CLIs, Desktop-Tools, Clau
 | [`k3c-starter/`](k3c-starter/codemap.md) | Windows-Starter (Wails-Fenster): startet `bin/k3c-server`, zeigt Status und Adressen im Heimnetz (B-041) |
 | [`assetkit/`](assetkit/codemap.md) | Gemeinsame Asset-Logik (Go-Modul) von k3c-workbench und Asset-Studio |
 | [`cleanup/`](cleanup/codemap.md) | CLI (`task ops:aufraeumen`): löscht lokale Branches und Worktrees nur in sicheren Fällen |
-| [`cockpit/`](cockpit/codemap.md) | Claude-Code-Plugin `tenvan-cc` mit Band, Panels und Chat-Skins |
 | [`buildings/`](buildings/codemap.md) | CLI (`task gen:gebaeude`): Gebäude-JSON → PNGs (Dichten 16/32/64/128) |
 | [`ruletable/`](ruletable/codemap.md) | CLI (`task gen:rules`): Block Hub-Stufe → Gebäude in der Regeldoku |
 | [`webkit/`](webkit/codemap.md) | Gemeinsame Oberflächen-Bausteine von k3c-workbench und Asset-Studio (`@webkit/…`: Fehlertext, Prefs, Debounce, Radix-Bausteine, Theme) |
