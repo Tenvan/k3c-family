@@ -58,7 +58,7 @@ keine. Entschieden (🧑, 2026-10-31): Bleibt `holz` oder `schiff` rot, fasst de
 |---|---|---|---|---|
 | BAL9.1 | `BAL9.1-castleheld-fenster.md` | Umsetzung | autonom | fertig |
 | BAL9.2 | `BAL9.2-bot-performance.md` | Umsetzung | autonom | fertig |
-| BAL9.3 | `BAL9.3-meilenstein-acht-seeds.md` | Umsetzung | autonom | offen |
+| BAL9.3 | `BAL9.3-meilenstein-acht-seeds.md` | Umsetzung | autonom | in Arbeit |
 | BAL9.4 | `BAL9.4-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.

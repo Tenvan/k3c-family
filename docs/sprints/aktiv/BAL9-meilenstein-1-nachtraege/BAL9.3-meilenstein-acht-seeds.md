@@ -1,6 +1,6 @@
 # BAL9.3 · Meilenstein-Lauf mit 8 Seeds gegen M4, holz und schiff
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
