@@ -102,7 +102,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-685](B-685-zielmass-grafiken-skalieren.md) | CLI | Idee | hoch | eingeplant | GRJ2 | Grafiken bekommen ein Zielmaß in der Ausgabe und werden dort passend skaliert |
 | [B-695](B-695-flaky-simrun-tempdir-balancing-abbruch.md) | DEV | Problem | niedrig | offen | – | Zwei Tests flackern: simrun-TempDir-Cleanup und Abbruch eines wartenden Laufs |
 | [B-696](B-696-gebaeude-in-allen-aufloesungen-rendern.md) | DEV | Idee | mittel | offen | – | Gebäude liegen in allen vorgesehenen Auflösungen als Grafik vor |
-| [B-697](B-697-datadoc-liste-kennt-light-json.md) | DEV | Problem | mittel | offen | – | Datei-Liste der Workbench kennt `light.json` nicht (TestListeWieLoader rot) |
 | [B-698](B-698-balancing-tests-vorlaeufig-mit-cheats.md) | REG | Schuld | niedrig | offen | – | Balancing-Tests und Simulationen laufen vorläufig mit Cheats und bestehen spätestens im dritten Lauf |
 
 ## Archiv
@@ -656,5 +655,6 @@ Zeile in diesen Abschnitt.
 | [B-630](archiv/B-630-quellen-werden-nicht-uebernommen.md) | DEV | Problem | mittel | erledigt | – | Quellen werden nicht übernommen |
 | [B-352](archiv/B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | verworfen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
 | [B-682](archiv/B-682-welten-editor-overrides.md) | DEV | Idee | mittel | erledigt | WZ37 | Der Welten-Editor bearbeitet Werte-Overrides einer Welt und zeigt Basiswert gegen Override |
+| [B-697](archiv/B-697-datadoc-liste-kennt-light-json.md) | DEV | Problem | mittel | erledigt | – | Datei-Liste der Workbench kennt `light.json` nicht (TestListeWieLoader rot) |
 | [B-683](archiv/B-683-chat-welt-overrides.md) | DEV | Idee | mittel | erledigt | WZ37 | Der Studio-Chat kann Welt-Overrides lesen, setzen und zurücksetzen |
 | [B-613](archiv/B-613-http-origin-pruefen.md) | SRV | Problem | niedrig | erledigt | BD10 | Schreibende HTTP-Endpunkte des Spielservers lehnen fremde Webseiten ab |
