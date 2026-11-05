@@ -68,11 +68,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | eingeplant | BD5 | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
 | [B-570](B-570-camp-stufen-look.md) | DEV | Idee | mittel | eingeplant | GEB13 | Das Camp bekommt einen Stufen-Look statt der Grundform |
 | [B-571](B-571-heilplatz-stufen-deutlicher.md) | DEV | Idee | mittel | eingeplant | GEB13 | Heilplatz-Stufen sind deutlicher sichtbar (Zelt, Brunnen) |
-| [B-579](B-579-wellenabstand-adern-korridor.md) | REG | Problem | mittel | eingeplant | KB6 | Wellenabstand unter Tage mit besetzten Adern liegt über dem Korridor 4–12 Minuten |
 | [B-581](B-581-offenen-raum-schliessen.md) | CLI | Idee | mittel | eingeplant | BD9 | Ein offener Raum lässt sich in der Lobby über Entfernen schließen |
 | [B-603](B-603-dev-aktionen-boss-event.md) | SRV | Idee | hoch | eingeplant | KB4 | Dev-Aktionen lösen Boss, Phasenwechsel und Events (Vollmond, Blutmond, Händler) sofort aus |
 | [B-604](B-604-welt-anzeige-pausenmenue-lobby.md) | CLI | Problem | mittel | eingeplant | BD9 | Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby |
-| [B-605](B-605-schutzplatz-stabil-bei-truppenwechsel.md) | SIM | Schuld | niedrig | eingeplant | KB6 | Schutzplatz bleibt stabil, wenn Truppen sterben oder hinzukommen |
 | [B-617](B-617-studio-levelview-test-golden.md) | DEV | Problem | hoch | eingeplant | WZ34 | Der Studio-Test levelView passt wieder zur Golden-Datei level-forest.json |
 | [B-629](B-629-buildall-web-exe.md) | INF | Problem | hoch | eingeplant | WZ34 | task buildall baut die Web-EXEs von Studio und Workbench nicht mit |
 | [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | eingeplant | WZ34 | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
@@ -656,5 +654,7 @@ Zeile in diesen Abschnitt.
 | [B-352](archiv/B-352-botfeed-lan-zuschauer.md) | SRV | Idee | niedrig | verworfen | – | `sim_test` hängt sich an Clients auf der Xbox an, ohne einen Platz im Raum zu belegen |
 | [B-682](archiv/B-682-welten-editor-overrides.md) | DEV | Idee | mittel | erledigt | WZ37 | Der Welten-Editor bearbeitet Werte-Overrides einer Welt und zeigt Basiswert gegen Override |
 | [B-697](archiv/B-697-datadoc-liste-kennt-light-json.md) | DEV | Problem | mittel | erledigt | – | Datei-Liste der Workbench kennt `light.json` nicht (TestListeWieLoader rot) |
+| [B-579](archiv/B-579-wellenabstand-adern-korridor.md) | REG | Problem | mittel | erledigt | KB6 | Wellenabstand unter Tage mit besetzten Adern liegt über dem Korridor 4–12 Minuten |
+| [B-605](archiv/B-605-schutzplatz-stabil-bei-truppenwechsel.md) | SIM | Schuld | niedrig | erledigt | KB6 | Schutzplatz bleibt stabil, wenn Truppen sterben oder hinzukommen |
 | [B-683](archiv/B-683-chat-welt-overrides.md) | DEV | Idee | mittel | erledigt | WZ37 | Der Studio-Chat kann Welt-Overrides lesen, setzen und zurücksetzen |
 | [B-613](archiv/B-613-http-origin-pruefen.md) | SRV | Problem | niedrig | erledigt | BD10 | Schreibende HTTP-Endpunkte des Spielservers lehnen fremde Webseiten ab |

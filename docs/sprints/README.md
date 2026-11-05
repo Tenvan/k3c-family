@@ -15,7 +15,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | `aktiv/PM1-leistung-messen/` |
 | KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | `aktiv/KB4-dev-aktionen-boss-event/` |
 | KB5 | SRV, CLI, DEV | KMP | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | fireball am Gegner, Betäubung, Schild und Sturm als Zeichnung | `aktiv/KB5-skills-wirkort-status/` |
-| KB6 | SIM, REG | KMP | Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz | – | `aktiv/KB6-kampf-nachtraege-wellen-schutz/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | `aktiv/PB1-itch-io/` |
 | RG1 | REG | BAL | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | Beschlüsse in `docs/rules/`, geänderte Werte in `data/`, `task balance` grün | `aktiv/RG1-werte-burg-hub-adern/` |
 | BR2 | REG | BAL | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | `aktiv/BR2-balancing-kampf/` |
@@ -43,6 +42,7 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 
 | Sprint | Thema | Ordner |
 |---|---|---|
+| KB6 | SIM, REG | KMP | Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz | – | `erledigt/KB6-kampf-nachtraege-wellen-schutz/` |
 | ALT | Vorgeschichte vor der Sprint-Einteilung | `erledigt/ALT-vorgeschichte/` |
 | SP00 | Arbeitsweise einführen | `erledigt/SP00-arbeitsweise/` |
 | SP01 | Leitplanken + Go-Gerüst | `erledigt/SP01-leitplanken/` |

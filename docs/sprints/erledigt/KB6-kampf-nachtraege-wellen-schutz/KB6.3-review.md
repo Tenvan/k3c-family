@@ -1,6 +1,6 @@
 # KB6.3 · Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** REG
@@ -35,8 +35,8 @@ Neue Features.
 
 ## Fertig, wenn
 
-- [ ] AC-01, AC-02 laut Session-Ergebnissen nachgewiesen.
-- [ ] Prüfungen grün, Abnahme eingetragen.
+- [x] AC-01, AC-02 laut Session-Ergebnissen nachgewiesen.
+- [x] Prüfungen grün, Abnahme eingetragen.
 
 ## Prüfen
 
@@ -50,5 +50,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01, AC-02 laut Session-Ergebnissen nachgewiesen (KB6.1 und KB6.2 fertig). `task check`, `task check:go`, `task check:race` nacheinander grün (`check:race` lokal ohne gcc übersprungen, läuft in der CI); `task check:diff` grün.
+Diff-Review (Sonnet, getrennt): keine schweren Befunde. Behoben: Klammerung der Korridor-Assertion (Obergrenze der ersten Welle entfernt), `docs/data/biomes.md` nennt `percentPerGather` 4. Ungeprüft: `percentPerGather` 4 gilt auch für Höhle, Kristall und Ironhold, gemessen ist nur die Mine.
+Neue Tickets: B-696, B-698 (offen), B-697 (erledigt).

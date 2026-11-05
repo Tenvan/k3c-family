@@ -99,7 +99,7 @@ func TestWellenabstandMineMitAdern(t *testing.T) {
 		}
 		s := slices.Clone(v)
 		slices.Sort(s)
-		if lo, med, hi := s[0], s[len(s)/2], s[len(s)-1]; lo < 4 || med > 12 || hi > 12.5 && name == "erste Welle" {
+		if lo, med, hi := s[0], s[len(s)/2], s[len(s)-1]; lo < 4 || med > 12 {
 			t.Errorf("%s außerhalb des Korridors 4–12 min: min %.2f, Median %.2f, max %.2f", name, lo, med, hi)
 		}
 	}

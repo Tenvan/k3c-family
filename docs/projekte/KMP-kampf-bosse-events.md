@@ -24,7 +24,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | KB3 | Endboss-Auslöser anzeigen, Dev-Overlay-Link, Wellenabstand unter Tage messen | erledigt |
 | KB4 | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | aktiv |
 | KB5 | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | aktiv |
-| KB6 | Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz | aktiv |
+| KB6 | Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz | erledigt |
 
 ## Nicht-Ziele
 

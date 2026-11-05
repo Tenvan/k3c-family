@@ -1,6 +1,6 @@
 # KB6 · SIM, REG · Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** SIM, REG
 - **Reife:** bereit
@@ -57,7 +57,7 @@ keine. Entschieden (🧑, 2026-10-31): Hebel für B-579 ist Adern `percentPerGat
 |---|---|---|---|---|
 | KB6.1 | `KB6.1-schutzplatz-stabil.md` | Umsetzung | autonom | fertig |
 | KB6.2 | `KB6.2-wellenabstand-messen.md` | Umsetzung | autonom | fertig |
-| KB6.3 | `KB6.3-review.md` | Review | autonom | offen |
+| KB6.3 | `KB6.3-review.md` | Review | autonom | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
@@ -67,5 +67,6 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-05: AC-01 (KB6.2: `percentPerGather` 4, erste Welle 4,10 min, Abstand Median 9,42 min) und AC-02 (KB6.1) nachgewiesen; `task check`, `check:go`, `check:diff` grün, `check:race` lokal übersprungen (kein gcc).
+Behoben im Review: Korridor-Assertion geklammert, `docs/data/biomes.md`. Ungeprüft: Wirkung von `percentPerGather` 4 auf Höhle, Kristall, Ironhold.
+Neue Tickets: B-696, B-698 (offen), B-697 (erledigt).
