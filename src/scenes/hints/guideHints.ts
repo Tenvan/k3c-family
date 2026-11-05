@@ -63,7 +63,7 @@ function candidate(id: GuideId, w: GuideWorld, x: number): GuideHint | null {
     case 'coin':
       return at(nearest(w.coins, x, () => true));
     case 'pay':
-      return at(nearest(w.sites, x, (s) => s.state === 'unpaid'));
+      return null; // kein Hinweis mehr an der Baustelle, nur Münz-Slots und Ressourcen (🧑, 2026-11-05); `at`/Bauplatz-Logik bleibt für `guideDone`
     case 'dusk':
       return w.cycle.phase === 'dusk' ? { id, x, target: null } : null;
     case 'recruit':

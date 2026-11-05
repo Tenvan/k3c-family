@@ -14,8 +14,23 @@ import (
 
 const (
 	veinSeeds   = 100
-	veinHorizon = 60 * 60.0 // Sekunden Spielzeit je Lauf
+	veinHorizon = 120 * 60.0 // Sekunden Spielzeit je Lauf
 )
+
+// topUpPeasants hält `n` lebende Bauern am Hub: Die Wellen töten sie sonst, danach sammelt niemand mehr und der Pool
+// wächst nur noch mit der Zeit (Messartefakt, B-579).
+func topUpPeasants(w *World, n int) {
+	alive := 0
+	for _, t := range w.Troops {
+		if t.Kind == "peasant" && t.HP > 0 {
+			alive++
+		}
+	}
+	for ; alive < n; alive++ {
+		p := spawnVagrant(w, w.HubX, w.HubX)
+		p.Kind, p.HP, p.MaxHP = "peasant", troops["peasant"].HP, troops["peasant"].HP
+	}
+}
 
 // poolWaves: Zeitpunkte (Minuten) der Wellen aus dem Pool in `veinHorizon`; ok false: die Mine hat keine zwei Adern.
 func poolWaves(seed string, occupied bool) (waves []float64, ok bool) {
@@ -35,14 +50,13 @@ func poolWaves(seed string, occupied bool) (waves []float64, ok bool) {
 		if len(veins) < 2 {
 			return nil, false
 		}
-		for range 4 {
-			p := spawnVagrant(w, w.HubX, w.HubX)
-			p.Kind, p.HP, p.MaxHP = "peasant", troops["peasant"].HP, troops["peasant"].HP
-		}
 	}
 	*w.Aggression = 0
 	prev := 0.0
 	for tm := 0.0; tm < veinHorizon; tm += dt {
+		if occupied {
+			topUpPeasants(w, 4)
+		}
 		Step(w, nil, dt)
 		if prev > 90 && *w.Aggression < 1 {
 			waves = append(waves, (tm+dt)/60)
@@ -77,6 +91,17 @@ func TestWellenabstandMineMitAdern(t *testing.T) {
 		skipped, noWave, veinHorizon/60, summary(first), summary(gaps))
 	if len(first) == 0 {
 		t.Fatal("mit besetzten Adern keine Welle aus dem Pool")
+	}
+	// B-579/AC-01: Korridor 4–12 min (docs/rules/zielkorridore.md) für die erste Welle und den Abstand folgender Wellen.
+	for name, v := range map[string][]float64{"erste Welle": first, "Abstand": gaps} {
+		if len(v) == 0 {
+			continue
+		}
+		s := slices.Clone(v)
+		slices.Sort(s)
+		if lo, med, hi := s[0], s[len(s)/2], s[len(s)-1]; lo < 4 || med > 12 {
+			t.Errorf("%s außerhalb des Korridors 4–12 min: min %.2f, Median %.2f, max %.2f", name, lo, med, hi)
+		}
 	}
 	base, _ := poolWaves("1", false)
 	t.Logf("ohne Adern (Seed 1, deterministisch, Horizont %.0f min): Wellen %v", veinHorizon/60, base)

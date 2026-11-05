@@ -39,7 +39,7 @@
 | `cycle.dawnMinutes` | Zahl | min | Länge des Morgengrauens (dayNight); bei seinem Beginn fällt `dawn`. Jede Dauer muss positiv sein, sonst lehnt das Laden ab | 2 |
 | `cycle.percentPerMinute` | Zahl | % je min | Zuwachs des Aggro-Pools nach Zeit (aggressionPool) | 1 |
 | `cycle.percentPerKill` | Zahl | % je Kill | Zuwachs je Kill | 5 |
-| `cycle.percentPerGather` | Zahl | % je Abbau | Zuwachs je Abbau | 1 |
+| `cycle.percentPerGather` | Zahl | % je Abbau | Zuwachs je Abbau | 4 (Biome unter Tage) |
 | `palette.*` | Text | Farbe | Farben der Darstellung (sky, far, near, ground) | #8ecae6, … |
 
 ## Wirkung auf das Balancing

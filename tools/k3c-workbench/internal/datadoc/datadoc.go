@@ -48,6 +48,7 @@ var files = []entry{
 	{"goals.json", "goals", []string{BySim}, true},
 	{"island-sizes.json", "island-sizes", []string{BySim}, false},
 	{"ruins.json", "ruins", []string{ByLevel}, false},
+	{"light.json", "light", []string{BySim}, false},
 	{"monarch.json", "monarch", []string{BySim}, true},
 	{"biomes/*.json", "biomes", []string{BySim, ByLevel}, false},
 	{"worlds/*.json", "worlds", []string{BySim}, false},

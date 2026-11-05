@@ -10,6 +10,7 @@ func veinWorld(t *testing.T, peasants int) (*World, *ResourceNode) {
 	t.Helper()
 	w := newWorld(1, "adern", Options{})
 	w.Troops, w.Camps, w.Pickups, w.CycleSpeed = []*Troop{}, []*Camp{}, []*Pickup{}, 1e-6
+	w.Aggression = nil // ohne Aggressionspool: Wellen stören die Abbau-Rate nicht
 	var vein *ResourceNode
 	for _, n := range w.Nodes {
 		if isVein(defaultValues(), n) && vein == nil {
