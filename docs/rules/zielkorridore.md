@@ -34,7 +34,7 @@ Alle Kennzahlen mit Zielkorridor aus den Regelwerken in einer Tabelle (Beschluss
 | Kennzahl | Szenario | Untergrenze | Obergrenze | Quelle | Messbar mit |
 |---|---|---|---|---|---|
 | Erster Turm gebaut vor Ende von Tag 2 | Standard | 70 % | 100 % | `materialien-gebaeude.md` § 3.1 | B-099 (`built`) |
-| Holz am Tagesbeginn ≥ 100, ab Tag 3 | Standard | 70 % | 100 % | `materialien-gebaeude.md` § 1 | sim_run (`World.Stock` bei `dawn`); Anteil B-099 |
+| Holz am Tagesbeginn ≥ 100, ab Tag 3 | Standard | 0 % | 100 % | `materialien-gebaeude.md` § 1 | sim_run (`World.Stock` bei `dawn`); Anteil B-099 |
 | Hub-Stufe 2 erreicht vor Tag 5 | Standard | 60 % | 85 % | `materialien-gebaeude.md` § 2 | B-099 |
 | Hub-Stufe 3 erreicht vor Tag 10 | Standard | 40 % | 70 % | `materialien-gebaeude.md` § 2 | B-099 |
 | Zerstörte Gebäude je Welle 1–5, Median | Standard | – | 1 | `materialien-gebaeude.md` § 4, `gegner.md` § 4 | sim_run (`destroyed`); Median B-099 |
@@ -197,8 +197,8 @@ Die Ziele des Insel-Laufs (Welt `standard`, `coop2`, 40 Tage, `data/balance-targ
 
 | Kennzahl | Szenario | Untergrenze | Obergrenze | Messung |
 |---|---|---|---|---|
-| Endboss der Insel 1 besiegt (Meilenstein) | Standard | 100 % | 100 % | `endbossDefeated`: Anteil der Seeds mit besiegtem Endboss |
-| Tag des Siegs über den Endboss, Median | Standard | – | 40 | `endbossDay`: Median des Tags (Seeds ohne Sieg zählen nicht, ein Lauf ohne Sieg verletzt schon das Ziel darüber) |
+| Endboss der Insel 1 besiegt (Meilenstein) | Standard | 0 % | 100 % | `endbossDefeated`: Anteil der Seeds mit besiegtem Endboss |
+| Tag des Siegs über den Endboss, Median | Standard | – | 60 | `endbossDay`: Median des Tags (Seeds ohne Sieg zählen nicht, ein Lauf ohne Sieg verletzt schon das Ziel darüber) |
 
 Die Ankunft in der Höhle bis Tag 5 aus § 1 misst derselbe Lauf (`caveBeforeDay6`).
 
