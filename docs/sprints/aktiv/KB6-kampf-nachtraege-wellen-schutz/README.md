@@ -56,7 +56,7 @@ keine. Entschieden (🧑, 2026-10-31): Hebel für B-579 ist Adern `percentPerGat
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | KB6.1 | `KB6.1-schutzplatz-stabil.md` | Umsetzung | autonom | fertig |
-| KB6.2 | `KB6.2-wellenabstand-messen.md` | Umsetzung | autonom | offen |
+| KB6.2 | `KB6.2-wellenabstand-messen.md` | Umsetzung | autonom | fertig |
 | KB6.3 | `KB6.3-review.md` | Review | autonom | offen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
