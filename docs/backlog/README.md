@@ -86,9 +86,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-650](B-650-boss-hp-je-spieler-eigenes-feld.md) | SIM | Idee | hoch | eingeplant | BS3 | Boss-HP je Zusatzspieler bekommt ein eigenes Feld, getrennt von der Wellengröße |
 | [B-652](B-652-mauern-tuerme-verteilt-tor-ist-aeusserste-mauer.md) | SIM | Idee | hoch | eingeplant | BS12 | Mauern und Türme stehen verteilt in jedem Chunk, das Tor ist die äußerste gebaute Mauer |
 | [B-653](B-653-baustellen-schilder-bauoptionen-holzzaun.md) | CLI | Problem | hoch | eingeplant | BS13 | Bauschilder an Bäumen und Felsen nur nach Markierung, keine Bauoptionen für gesperrte Gebäude, Holzmauer als Zaun |
-| [B-654](B-654-bot-performance-miniboss-json.md) | SIM | Schuld | mittel | eingeplant | BAL9 | Bot-Performance: bosses.json je Tick neu geparst, nodeFor/wanted mit Map-Zugriffen |
-| [B-656](B-656-meilenstein-titan-mehrseed.md) | REG | Problem | mittel | eingeplant | BAL9 | Meilenstein 1 coop2 standard: Titan über mehrere Seeds, holz und schiff grün |
-| [B-657](B-657-castlehold-messfenster.md) | DEV | Problem | mittel | eingeplant | BAL9 | Die Kennzahl castleHeld misst Nacht 1 bis 5 über den ganzen Lauf, nicht nur über das Fenster des Ziels |
 | [B-658](B-658-balancing-umbruch-container-query.md) | DEV | Problem | hoch | eingeplant | WZ32 | Die Balancing-Seite stellt Konfiguration und Berichte unter 1.100 px untereinander |
 | [B-659](B-659-balancing-seite-feste-flaeche.md) | DEV | Idee | mittel | eingeplant | WZ32 | Die Balancing-Seite füllt die Fläche, nur Liste und Detail scrollen |
 | [B-660](B-660-balancing-liste-und-detail.md) | DEV | Idee | hoch | eingeplant | WZ32 | Läufe und Berichte stehen in einer Liste mit Filter und Mehrfachauswahl, der Bericht in Reitern |
@@ -655,3 +652,6 @@ Zeile in diesen Abschnitt.
 | [B-682](archiv/B-682-welten-editor-overrides.md) | DEV | Idee | mittel | erledigt | WZ37 | Der Welten-Editor bearbeitet Werte-Overrides einer Welt und zeigt Basiswert gegen Override |
 | [B-683](archiv/B-683-chat-welt-overrides.md) | DEV | Idee | mittel | erledigt | WZ37 | Der Studio-Chat kann Welt-Overrides lesen, setzen und zurücksetzen |
 | [B-613](archiv/B-613-http-origin-pruefen.md) | SRV | Problem | niedrig | erledigt | BD10 | Schreibende HTTP-Endpunkte des Spielservers lehnen fremde Webseiten ab |
+| [B-654](archiv/B-654-bot-performance-miniboss-json.md) | SIM | Schuld | mittel | erledigt | BAL9 | Bot-Performance: bosses.json je Tick neu geparst, nodeFor/wanted mit Map-Zugriffen |
+| [B-656](archiv/B-656-meilenstein-titan-mehrseed.md) | REG | Problem | mittel | erledigt | BAL9 | Meilenstein 1 coop2 standard: Titan über mehrere Seeds, holz und schiff grün |
+| [B-657](archiv/B-657-castlehold-messfenster.md) | DEV | Problem | mittel | erledigt | BAL9 | Die Kennzahl castleHeld misst Nacht 1 bis 5 über den ganzen Lauf, nicht nur über das Fenster des Ziels |

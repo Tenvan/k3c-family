@@ -19,7 +19,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | `aktiv/PB1-itch-io/` |
 | RG1 | REG | BAL | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | Beschlüsse in `docs/rules/`, geänderte Werte in `data/`, `task balance` grün | `aktiv/RG1-werte-burg-hub-adern/` |
 | BR2 | REG | BAL | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | `aktiv/BR2-balancing-kampf/` |
-| BAL9 | DEV, SIM, REG | BAL | Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance | – | `aktiv/BAL9-meilenstein-1-nachtraege/` |
 | HW1 | PLAT, SRV, INF, CLI | ABN | Zurückgestellte Controller-Prüfungen nachholen | – | `aktiv/HW1-controller-pruefungen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | `aktiv/PF1-splitscreen-leistung/` |
 
@@ -275,3 +274,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BAL10 | Welt-Wertesatz: Nachträge aus dem Review BAL8.2 | `erledigt/BAL10-wertesatz-nachtraege/` |
 | BAL8 | Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt | `erledigt/BAL8-welt-werte-overrides/` |
 | WZ37 | Welt-Overrides im Welten-Editor und im Studio-Chat | `erledigt/WZ37-overrides-editor-chat/` |
+| BAL9 | Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance | `erledigt/BAL9-meilenstein-1-nachtraege/` |

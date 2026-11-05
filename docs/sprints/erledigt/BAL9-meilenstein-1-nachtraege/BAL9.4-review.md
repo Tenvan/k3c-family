@@ -1,6 +1,6 @@
 # BAL9.4 · Review BAL9
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** REG
@@ -49,5 +49,8 @@ task check:race
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01, AC-02, AC-03 laut Ergebnissen von BAL9.3, BAL9.1 und BAL9.2 nachgewiesen (Meilenstein-Lauf run-18 mit 8 Seeds, `castleHeld` im 5-Nächte-Fenster, Bot byte-gleich). `task check`, `task check:go`, `task check:dev`, `task check:race` nacheinander grün (`check:race` lokal ohne gcc übersprungen, läuft in der CI).
+
+Kein getrenntes Diff-Review: Diff der Review-Session ist klein (Ziele, Tabelle, ein Test), Domäne REG, keine Risiko-Trigger. Ungeprüft: Bot-Anteil in Prozent nach BAL9.2 nicht neu gemessen (steht schon im Ergebnis von BAL9.2); der Bericht von run-18 hat keine eigene Delta-Zeile gegen M4.
+
+Tickets B-654, B-656, B-657 geschlossen. Keine neuen Tickets.

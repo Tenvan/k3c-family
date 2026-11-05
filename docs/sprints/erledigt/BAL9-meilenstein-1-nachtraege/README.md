@@ -1,6 +1,6 @@
 # BAL9 · DEV, SIM, REG · Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** BAL
 - **Domäne:** DEV, SIM, REG
 - **Reife:** bereit
@@ -59,7 +59,7 @@ keine. Entschieden (🧑, 2026-10-31): Bleibt `holz` oder `schiff` rot, fasst de
 | BAL9.1 | `BAL9.1-castleheld-fenster.md` | Umsetzung | autonom | fertig |
 | BAL9.2 | `BAL9.2-bot-performance.md` | Umsetzung | autonom | fertig |
 | BAL9.3 | `BAL9.3-meilenstein-acht-seeds.md` | Umsetzung | autonom | fertig |
-| BAL9.4 | `BAL9.4-review.md` | Review | autonom | offen |
+| BAL9.4 | `BAL9.4-review.md` | Review | autonom | fertig |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
@@ -70,5 +70,5 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-05: AC-01 (BAL9.3: run-18, 8 Seeds, `holz` und `schiff` neu gefasst, `frozen`, Baseline M5), AC-02 (BAL9.1), AC-03 (BAL9.2) nachgewiesen; `task check`, `check:go`, `check:dev`, `check:race` grün (`check:race` lokal ohne gcc übersprungen).
+Offen/ungeprüft: Meilenstein weiterhin rot (Endboss 0 von 8 Seeds), Ziele vorläufig gelockert bis zum Ressourcen-Balancing (B-698). Keine neuen Tickets.
