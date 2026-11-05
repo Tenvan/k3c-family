@@ -103,7 +103,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-695](B-695-flaky-simrun-tempdir-balancing-abbruch.md) | DEV | Problem | niedrig | offen | – | Zwei Tests flackern: simrun-TempDir-Cleanup und Abbruch eines wartenden Laufs |
 | [B-696](B-696-gebaeude-in-allen-aufloesungen-rendern.md) | DEV | Idee | mittel | offen | – | Gebäude liegen in allen vorgesehenen Auflösungen als Grafik vor |
 | [B-697](B-697-datadoc-liste-kennt-light-json.md) | DEV | Problem | mittel | offen | – | Datei-Liste der Workbench kennt `light.json` nicht (TestListeWieLoader rot) |
-| [B-698](B-698-balancing-tests-vorlaeufig-mit-cheats.md) | REG | Schuld | niedrig | offen | – | Balancing-Tests und Simulationen laufen vorläufig mit Cheats und enden nach höchstens drei Runden |
+| [B-698](B-698-balancing-tests-vorlaeufig-mit-cheats.md) | REG | Schuld | niedrig | offen | – | Balancing-Tests und Simulationen laufen vorläufig mit Cheats und bestehen spätestens im dritten Lauf |
 
 ## Archiv
 

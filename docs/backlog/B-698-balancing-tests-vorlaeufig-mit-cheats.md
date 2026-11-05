@@ -1,4 +1,4 @@
-# B-698 · Balancing-Tests und Simulationen laufen vorläufig mit Cheats und enden nach höchstens drei Runden
+# B-698 · Balancing-Tests und Simulationen laufen vorläufig mit Cheats und bestehen spätestens im dritten Lauf
 
 - **Domäne:** REG
 - **Typ:** Schuld
@@ -29,7 +29,7 @@ Bis zu den finalen Tests genügt es, dass die Funktion gegeben ist. Die Strenge 
 Vorläufige Regel für **alle** Tests und Simulationen, die ab jetzt angepasst werden sollen oder müssen:
 
 - Sie laufen mit Ressourcen- und Gold-Cheats.
-- Sie müssen in **höchstens drei Runden** fertig werden (Sieg oder Spielende des Laufs).
+- Eine **Runde** ist ein kompletter Simulations- oder Balancing-Lauf (Entscheidung 🧑, 2026-11-05). Der Test muss spätestens im **dritten Lauf** bestehen; dafür dürfen Cheats und Werte-Hilfen nachgelegt werden.
 - Geprüft wird die Funktion, nicht die Ressourcen-Werte.
 
 Jeder gelockerte Test bekommt einen Verweis auf B-698, damit er am Ende auffindbar ist.
@@ -44,7 +44,7 @@ Niedrigste Priorität im Projekt BAL. Testläufe nur über `sim_test`. Coop-Wert
 
 ## Beispiele
 
-Simulation der Mine mit Gold-Cheat → Spiel endet nach drei Runden; Zielraten-Test prüft nur, dass Adern liefern.
+Simulation der Mine mit Gold-Cheat besteht im ersten bis dritten Lauf; Zielraten-Test prüft nur, dass Adern liefern.
 
 ## Ausnahme- und Fehlerfälle
 
@@ -52,12 +52,12 @@ nicht relevant: vorläufige Regel.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Jeder angepasste Test und jede Simulation nennt B-698 und läuft mit Cheats in höchstens drei Runden.
+- **AC-01** Jeder angepasste Test und jede Simulation nennt B-698 und läuft mit Cheats und besteht spätestens im dritten Lauf.
 - **AC-02** Mit den finalen Tests entfernt 🧑 die Regel; die Lockerungen werden zurückgenommen (Suche nach `B-698`).
 
 ## Offene Fragen
 
-Was zählt als „Runde“ (Nacht, Welle, Tag)? Entscheidet 🧑.
+keine (Runde = kompletter Lauf, entschieden)
 
 ## Notizen
 
