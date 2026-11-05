@@ -15,13 +15,13 @@ const at = (x: number) => ({ x, respawnIn: 0 });
 const none = new Set<string>();
 
 describe('nextGuide', () => {
-  it('Reihenfolge: Münze vor Bauplatz vor Nacht vor Bauer', () => {
+  it('Reihenfolge: Münze vor Nacht vor Bauer; am Bauplatz steht kein Hinweis mehr (🧑, 2026-11-05)', () => {
     const w = world({ coins: [coin(1, 12)], sites: [site(2, 8)], troops: [troop(3, 11)], cycle: cycle('dusk') });
     expect(nextGuide(w, at(10), none)).toEqual({ id: 'coin', x: 12, target: 1 });
-    expect(nextGuide(w, at(10), new Set(['coin']))).toEqual({ id: 'pay', x: 8, target: 2 });
-    expect(nextGuide(w, at(10), new Set(['coin', 'pay']))).toEqual({ id: 'dusk', x: 10, target: null });
-    expect(nextGuide(w, at(10), new Set(['coin', 'pay', 'dusk']))).toEqual({ id: 'recruit', x: 11, target: 3 });
-    expect(nextGuide(w, at(10), new Set(['coin', 'pay', 'dusk', 'recruit']))).toBeNull();
+    expect(nextGuide(w, at(10), new Set(['coin']))).toEqual({ id: 'dusk', x: 10, target: null });
+    expect(nextGuide(w, at(10), new Set(['coin', 'dusk']))).toEqual({ id: 'recruit', x: 11, target: 3 });
+    expect(nextGuide(w, at(10), new Set(['coin', 'dusk', 'recruit']))).toBeNull();
+    expect(nextGuide(world({ sites: [site(2, 8)] }), at(10), none)).toBeNull();
   });
 
   it('nur Objekte in Reichweite des Preisschilds, das nächste zuerst; gebaute Plätze und Bauern nicht', () => {
@@ -53,20 +53,18 @@ describe('stepGuide', () => {
     expect(run(null, world({ coins: [coin(5, 10)] }), seen)).toBeNull(); // neue Münze: kein zweites Mal
   });
 
-  it('Bauplatz bezahlt, Nacht da, Landstreicher ist Bauer → erledigt', () => {
+  it('Nacht da, Landstreicher ist Bauer → erledigt', () => {
     const seen = new Set<string>();
-    const pay = run(null, world({ sites: [site(2, 9)] }), seen);
-    expect(run(pay, world({ sites: [site(2, 9, 'waitingWorker')] }), seen)).toBeNull();
     const dusk = run(null, world({ cycle: cycle('dusk') }), seen);
     expect(run(dusk, world({ cycle: cycle('night') }), seen)).toBeNull();
     const hire = run(null, world({ troops: [troop(3, 12)] }), seen);
     expect(run(hire, world({ troops: [troop(3, 12, 'peasant')] }), seen)).toBeNull();
-    expect([...seen]).toEqual(['pay', 'dusk', 'recruit']);
+    expect([...seen]).toEqual(['dusk', 'recruit']);
   });
 
   it('ignorierter Hinweis bleibt stehen', () => {
     const seen = new Set<string>();
-    const w = world({ sites: [site(2, 9)] });
+    const w = world({ coins: [coin(1, 9)] });
     const shown = run(null, w, seen);
     expect(run(shown, w, seen)).toEqual(shown);
     expect(seen.size).toBe(0);
@@ -74,11 +72,11 @@ describe('stepGuide', () => {
 
   it('2 Spieler: je Zelle ein eigener Hinweis, die Merkung gilt fürs Gerät', () => {
     const seen = new Set<string>();
-    const w = world({ coins: [coin(1, 5)], sites: [site(2, 50)] });
+    const w = world({ coins: [coin(1, 5)], troops: [troop(3, 50)] });
     const p1 = stepGuide(null, w, at(4), seen, (id) => seen.add(id));
     const p2 = stepGuide(null, w, at(51), seen, (id) => seen.add(id));
-    expect([p1?.id, p2?.id]).toEqual(['coin', 'pay']);
-    const after = world({ coins: [], sites: [site(2, 50)] });
+    expect([p1?.id, p2?.id]).toEqual(['coin', 'recruit']);
+    const after = world({ coins: [], troops: [troop(3, 50)] });
     expect(stepGuide(p1, after, at(4), seen, (id) => seen.add(id))).toBeNull();
     expect(stepGuide(p2, after, at(51), seen, (id) => seen.add(id))).toEqual(p2);
   });
