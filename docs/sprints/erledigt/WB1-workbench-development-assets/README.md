@@ -1,6 +1,6 @@
 # WB1 · DEV, INF · Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** DEV, INF
 - **Reife:** bereit
@@ -80,7 +80,7 @@ Keine offenen. Entschieden mit Default (Planung WB1, 2026-11-06, Claude; Einspru
 | WB1.3 | `WB1.3-prompt-buttons.md` | Umsetzung | autonom | fertig |
 | WB1.4 | `WB1.4-studioview-studio-loeschen.md` | Umsetzung | autonom | fertig |
 | WB1.5 | `WB1.5-studio-aus-ci-taskfile-doku.md` | Umsetzung | autonom | fertig |
-| WB1.6 | `WB1.6-review.md` | Review | autonom | offen |
+| WB1.6 | `WB1.6-review.md` | Review | autonom | fertig |
 
 Lane `ui` (WB1.5: INF). Reihenfolge WB1.1 → WB1.2 → WB1.3; WB1.5 nach WB1.1 (parallel zu WB1.2/WB1.3 möglich, andere Domäne); WB1.4 nach WB1.2 und WB1.5; WB1.6 zuletzt.
 
@@ -93,5 +93,4 @@ Lane `ui` (WB1.5: INF). Reihenfolge WB1.1 → WB1.2 → WB1.3; WB1.5 nach WB1.1 
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-06, Claude (Review WB1.6, autonom). AC-01–AC-04 erfüllt laut WB1.1–WB1.5; `task check`, `task buildall` grün, `check:race` mangels gcc übersprungen. Behoben im Review: `Game.Close`/`Open` (Raum-Takt, Fristen, nach Close abgelehnt). Rot ohne WB1-Bezug: lastabhängige Go-Tests und `simrun`-TempDir → B-704. Neue Defaults D-18–D-22 in B-701.

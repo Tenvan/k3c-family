@@ -101,6 +101,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | – | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
 | [B-700](B-700-alte-pixel-grafik-aufraeumen.md) | CLI | Schuld | mittel | eingeplant | CU1 | Alte Pixel-Grafiken, Register und Gebäude-Renderer werden nach der Papierschnitt-Umstellung entfernt |
 | [B-701](B-701-pap-gesammelte-fragen.md) | DEV | Frage | hoch | eingeplant | PS1 | PAP: kritische Fragen und vorab getroffene Entscheidungen werden gesammelt von Ralf bestätigt |
+| [B-704](B-704-go-tests-unter-last-flaky.md) | DEV | Problem | mittel | offen | – | Lastabhängige Go-Tests scheitern bei parallelen Agenten |
 
 ## Archiv
 

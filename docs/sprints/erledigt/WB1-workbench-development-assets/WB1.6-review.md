@@ -1,6 +1,6 @@
 # WB1.6 · Review WB1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -56,5 +56,7 @@ task buildall
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01–AC-04 belegt über die Ergebnisse WB1.1–WB1.5. `readonly.test.tsx` gegengeprüft: ein eingeschmuggelter `taskGateSave` in Sound macht den Test rot (nicht committet).
+- Prüfläufe: `task check` grün; `task check:race` übersprungen (kein gcc, CI prüft); `task check:go` rot nur `cmd/k3c-load` (lastabhängig, einzeln grün); `task check:dev` rot in `internal/botdev` (lastabhängig) und `internal/simrun` `TestLaufIDNachNeustartHinterHoechstemOrdner` (Windows-TempDir, reproduzierbar, Paket von WB1 unberührt) → B-704. `task buildall` grün (WB1.4).
+- Lane-Grenzen: Diff seit `8b0e2f18` ohne `internal/assetsui`, `assets/review/`, `mcpsrv`, `tools/paper`.
+- Offene Defaults D-18–D-22 in B-701; Kommentare mit Studio-Verweisen bleiben für CU1.

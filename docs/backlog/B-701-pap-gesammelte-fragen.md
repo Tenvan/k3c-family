@@ -75,3 +75,8 @@ Siehe Notizen; keine blockiert die Umsetzung (Defaults gelten bis PS1.1).
 | D-15 | Dateinamen der Gebäude-Stufen | `<animation>.s<n>.png` (Stufe 1 ohne Zusatz), CLI `frame --stufe` | eigener Ordner je Stufe | PV1, RD1, MG6, US1 | offen |
 | D-16 | Typecheck `tools/paper` | im Programm `tests/tsconfig.json` (Node-Typen), nicht im Client-Programm `src/` | eigene `tools/paper/tsconfig.json` mit eigenem Task | PV1 | offen |
 | D-17 | Fixture-Pferd und Purpur-Umhang | `pferd-galopp-0` ohne Reiter, Zügel **und** Umhang; Purpur setzt auch die Lichtkante `#a865b8` | Umhang am Pferd lassen | PV1 | offen |
+| D-18 | Typen und Prompt-Füllung der Asset-Oberfläche | WB1 besitzt `frontend/src/api/typesAssets.ts`, `assets/api.ts` und `assets/prompts/fill.ts`; RV1 importiert nur | RV1 typisiert in `assets/review/` selbst | WB1, RV1 | offen |
+| D-19 | Sound und Quellen im Bereich Assets | reine Listen (Status, Hörprobe als Data-URL ≤ 10 MB, Lizenz, Treffer mit „Öffnen“); Zuordnen, Recherche, Import bleiben MCP | Zuordnen in der Oberfläche | WB1 | offen |
+| D-20 | „Im Spiel ansehen“ | Engine in `internal/studioview` auf `127.0.0.1:0`, fester Seed `ansicht` (`voll-ansicht`), Spielstände unter `UserCacheDir`; im Web-Client öffnet der Link nur auf diesem Rechner | Seed-Eingabe, fester Port | WB1 | offen |
+| D-21 | Teil-Auswahl per Klick | kleinste Box gewinnt, bei Gleichstand das spätere Teil in `Spec.teile` | Auswahl-Liste der Teile | WB1 | offen |
+| D-22 | Prüfung von `tools/assetkit` | in `k3c-workbench:gotest`/`lint` und im CI-Job k3c-workbench (bisher Studio) | eigener Task `assetkit:*` | WB1 | offen |
