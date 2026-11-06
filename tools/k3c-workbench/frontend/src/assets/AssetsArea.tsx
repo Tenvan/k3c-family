@@ -1,7 +1,8 @@
-import { Flex, Heading, Text } from '@webkit/atoms';
 import { Tabs } from '@webkit/organisms';
 import { CatalogPage } from './catalog/CatalogPage';
 import { ReviewPage } from './review';
+import { SoundPage } from './sound/SoundPage';
+import { SourcesPage } from './sources/SourcesPage';
 import { StylePage } from './style/StylePage';
 
 /** Bereich Assets (Entscheidung 005 › 5): Review (RV1), Katalog, Styleguide, Sound, Quellen – nur Ansehen; Änderungen
@@ -19,20 +20,12 @@ export function AssetsArea() {
         <StylePage />
       </Tabs.Content>
       <Tabs.Content value="sound">
-        <Placeholder title="Sound" />
+        <SoundPage />
       </Tabs.Content>
       <Tabs.Content value="quellen">
-        <Placeholder title="Quellen" />
+        <SourcesPage />
       </Tabs.Content>
     </>
   );
 }
 
-function Placeholder({ title }: { title: string }) {
-  return (
-    <Flex direction="column" gap="2" p="4">
-      <Heading size="4">{title}</Heading>
-      <Text color="gray">Folgt in WB1</Text>
-    </Flex>
-  );
-}

@@ -94,6 +94,10 @@ function httpAssets(): AssetsBackend {
     assetsReview: (basis) => rpc('AssetsReview', basis),
     assetsFrame: (id, animation, frame, variante, basis) => rpc('AssetsFrame', id, animation, frame, variante, basis),
     assetsPixelDiff: (id, animation, frame, basis) => rpc('AssetsPixelDiff', id, animation, frame, basis),
+    studioSounds: () => rpc('StudioSounds'),
+    studioSoundData: (pfad) => rpc('StudioSoundData', pfad),
+    studioSources: () => rpc('StudioSources'),
+    studioGameOpen: (seed) => rpc('StudioGameOpen', seed),
   };
 }
 

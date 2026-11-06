@@ -21,6 +21,7 @@ import (
 	"k3c/tools/k3c-workbench/internal/planning"
 	"k3c/tools/k3c-workbench/internal/resmon"
 	"k3c/tools/k3c-workbench/internal/services"
+	"k3c/tools/k3c-workbench/internal/studioview"
 	"k3c/tools/k3c-workbench/internal/taskgate"
 	"k3c/tools/k3c-workbench/internal/taskrun"
 	"k3c/tools/k3c-workbench/internal/usage"
@@ -61,7 +62,6 @@ type App struct {
 	window bool                                                // läuft im Wails-Fenster (nicht -headless/-dev)
 	bus    *eventBus                                           // Ereignisse für die HTTP-Oberfläche (uiapi_events.go)
 	usage  string                                              // Datei der Nutzungsstatistik (Test-Naht)
-	launch func(exe, dir string) error                         // startet ein Programm losgelöst (Test-Naht; Produktion: exec.Command.Start)
 	// ready schließt startup: Wails ruft OnStartup in einer eigenen Goroutine, Bindings können davor kommen.
 	ready chan struct{}
 
@@ -77,9 +77,10 @@ type App struct {
 	srv        *mcpsrv.Server
 	tasks      taskState
 	taskRunner *taskrun.Runner
-	taskGate   *taskgate.Gate // Freigabe-Schloss der Tasks (task_start)
-	gh         *github.Client // GitHub-Stand der Planungsseite (B-212), PRs der Seite Git
-	git        *gitops.Repo   // Seite Git (B-580)
+	taskGate   *taskgate.Gate   // Freigabe-Schloss der Tasks (task_start)
+	gh         *github.Client   // GitHub-Stand der Planungsseite (B-212), PRs der Seite Git
+	git        *gitops.Repo     // Seite Git (B-580)
+	game       *studioview.Game // „Im Spiel ansehen“ im Bereich Assets (WB1.4), angelegt beim ersten Aufruf
 
 	mu  sync.Mutex
 	mcp MCPState
@@ -154,6 +155,7 @@ func (a *App) shutdown(context.Context) {
 	a.wait()
 	a.log.Info("🛑 k3c-workbench beendet", "ns", "main")
 	a.cancel()
+	a.closeStudio() // Räume von „Im Spiel ansehen“ speichern
 	// Ein halb gelaufener Testlauf darf die Anwendung nicht überleben, unabhängig von den Diensten.
 	stopCtx, stop := context.WithTimeout(context.Background(), taskStopTimeout)
 	if err := a.taskRunner.StopAll(stopCtx); err != nil {

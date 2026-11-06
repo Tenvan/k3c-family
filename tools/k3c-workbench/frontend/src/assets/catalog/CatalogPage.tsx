@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Flex, Text } from '@webkit/atoms';
 import type { AssetEintrag, Spec, Vorlage } from '../api';
+import { GameOpen } from '../game/GameOpen';
 import { zustandVon } from '../prompts/fill';
 import { PromptButtons } from '../prompts/PromptButtons';
 import { TeilLayer } from '../prompts/TeilLayer';
@@ -23,6 +24,7 @@ export function CatalogPage() {
     <Flex gap="4" p="4" className="as-page">
       <AssetList list={list} inDiff={inDiff} selected={selected} onSelect={choose} />
       <Flex direction="column" gap="2" className="as-detail">
+        <GameOpen />
         {error && <Text color="red">{error}</Text>}
         {selected ? (
           <Preview key={selected} id={selected}

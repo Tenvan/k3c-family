@@ -78,7 +78,7 @@ Keine offenen. Entschieden mit Default (Planung WB1, 2026-11-06, Claude; Einspru
 | WB1.1 | `WB1.1-navigation-bereiche.md` | Umsetzung | autonom | fertig |
 | WB1.2 | `WB1.2-katalog-styleguide.md` | Umsetzung | autonom | fertig |
 | WB1.3 | `WB1.3-prompt-buttons.md` | Umsetzung | autonom | fertig |
-| WB1.4 | `WB1.4-studioview-studio-loeschen.md` | Umsetzung | autonom | offen |
+| WB1.4 | `WB1.4-studioview-studio-loeschen.md` | Umsetzung | autonom | fertig |
 | WB1.5 | `WB1.5-studio-aus-ci-taskfile-doku.md` | Umsetzung | autonom | fertig |
 | WB1.6 | `WB1.6-review.md` | Review | autonom | offen |
 

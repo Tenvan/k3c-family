@@ -3,7 +3,7 @@ import type {
   McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData, WorktreeDiff,
   BalanceBackend, BalanceBaseline, BalanceDataFile, BalanceDataFileValue, BalanceInsights, BalanceDataValue, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning, GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
 } from './types';
-import type { AssetEintrag, AssetsBackend, Frame, PixelDiff, Review, Spec, Stil, Vorlage } from './typesAssets';
+import type { AssetEintrag, AssetsBackend, Frame, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
 // frontend/wailsjs/ bindet die Oberfläche bewusst nicht ein: so braucht der Typecheck keine Wails-CLI.
@@ -43,8 +43,6 @@ interface GoApp {
   GitHubStatus(force: boolean): Promise<GitHubData>;
   WorktreeCheck(): Promise<WorktreeDiff[]>;
   OpenInClaude(prompt: string): Promise<void>;
-  // Bleibt bis WB1.4 (uiMethods in Go); die Oberfläche ruft es nicht mehr.
-  StudioOpen(): Promise<void>;
   GitOverview(): Promise<GitView>;
   GitAction(action: string): Promise<string>;
   GitDeleteBranches(names: string[], remote: boolean): Promise<string>;
@@ -82,6 +80,11 @@ interface GoApp {
   AssetsReview(basis: string): Promise<Review>;
   AssetsFrame(id: string, animation: string, frame: number, variante: string, basis: string): Promise<Frame>;
   AssetsPixelDiff(id: string, animation: string, frame: number, basis: string): Promise<PixelDiff>;
+  // Lesende Teile des früheren Asset-Studios (WB1.4, internal/studioview)
+  StudioSounds(): Promise<SoundEintrag[]>;
+  StudioSoundData(pfad: string): Promise<string>;
+  StudioSources(): Promise<Quellen>;
+  StudioGameOpen(seed: string): Promise<string>;
 }
 
 interface WailsRuntime {
@@ -132,6 +135,10 @@ function assetsWails(app: GoApp): AssetsBackend {
     assetsReview: (basis) => app.AssetsReview(basis),
     assetsFrame: (id, animation, frame, variante, basis) => app.AssetsFrame(id, animation, frame, variante, basis),
     assetsPixelDiff: (id, animation, frame, basis) => app.AssetsPixelDiff(id, animation, frame, basis),
+    studioSounds: () => app.StudioSounds(),
+    studioSoundData: (pfad) => app.StudioSoundData(pfad),
+    studioSources: () => app.StudioSources(),
+    studioGameOpen: (seed) => app.StudioGameOpen(seed),
   };
 }
 

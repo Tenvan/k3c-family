@@ -1,6 +1,6 @@
 # WB1.4 · Lesende Studio-Teile nach internal/studioview, tools/k3c-studio löschen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -72,5 +72,8 @@ Während der Arbeit nur gezielt: `go test ./internal/studioview/` in `tools/k3c-
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 (Sound, Quellen) geprüft: `bunx vitest run --config tools/k3c-workbench/frontend/vitest.config.ts assets/` 36/36 (Sound mit Status und Hörprobe, Quellen mit Lizenz-Kennzeichen und Treffern, „Im Spiel ansehen“, `readonly.test.tsx` inkl. sound/quellen).
+- AC-04 geprüft: `tools/k3c-studio/` gelöscht (`git ls-files tools/k3c-studio` leer); `task buildall` exit 0, `bin/` ohne `k3c-studio*`; `go test ./internal/studioview/ ./` grün; `tools/assetkit` go test grün; `task check:diff`: Vitest 3028 + 406, Go grün; `k3c-workbench:lint` (samt assetkit) einzeln wiederholt 0 Befunde (erster Lauf scheiterte an einem parallelen golangci-lint einer anderen Session).
+- Umsetzung: `internal/studioview` (`Sounds`, `SoundData` über `os.Root`, ≤ 10 MB, `Sources`, `Game` mit Engine auf `127.0.0.1:0`, Spielstände unter `UserCacheDir`), Bindings `app_studio.go`, `uiMethods` (StudioOpen raus), `app.go` (Feld `game`, `closeStudio` im Shutdown, `launch` entfernt), Frontend `assets/sound`, `sources`, `game`, Mock, `writepaths_test.go` ohne Studio.
+- Review (Sonnet): keine kritischen; behoben: `Close` beendet Raum-Takt selbst, eigene Frist fürs Herunterfahren, `Open` nach `Close` abgelehnt (`TestOpenNachCloseAbgelehnt`), Herkunftsprüfung getestet; Limit 25 → 10 MB. Offen (gering): Kommentare mit Studio-Verweisen (`uiapi.go`, `go.mod`, `engine/devrun`, Testdaten) für CU1; `-race` lokal ohne gcc nicht lauffähig.
+- Abweichung: `app.go` zusätzlich geändert (Feld, Shutdown).

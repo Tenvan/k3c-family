@@ -9,7 +9,7 @@ import { click, mount, unmount } from './testing';
 // allen Buttons durchgeklickt; dabei darf nur die Lese-Allowlist aufgerufen werden. Neue Seiten in PAGES eintragen
 // (Wert: hat die Seite Buttons?), neue Lesemethoden in READ.
 
-const PAGES: Record<string, boolean> = { katalog: true, styleguide: false };
+const PAGES: Record<string, boolean> = { katalog: true, styleguide: false, sound: true, quellen: true };
 
 /** Lesen, Ansehen, Kopieren und „In Claude öffnen“ (B-701 D-12); alles andere gilt als schreibend. */
 const READ = new Set([

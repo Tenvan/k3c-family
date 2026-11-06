@@ -1,36 +1,66 @@
 package main
 
 import (
-	"log/slog"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
-
-	"k3c/tools/k3c-workbench/internal/applog"
 )
 
-// B-459: „Asset-Studio öffnen“ startet bin/k3c-studio im Checkout; fehlt die EXE, kommt der Hinweis und nichts startet.
-func TestStudioOpen(t *testing.T) {
+// WB1.4: Was vom Asset-Studio blieb, ist lesend – Sound, Quellen und „Im Spiel ansehen“ über internal/studioview;
+// „Asset-Studio öffnen“ (StudioOpen) gibt es nicht mehr.
+
+func studioRoot(t *testing.T) string {
+	t.Helper()
 	root := t.TempDir()
-	app := &App{root: root, log: &applog.Log{Logger: slog.Default()}}
-	exe := app.studioExe()
-	if err := os.MkdirAll(filepath.Dir(exe), 0o750); err != nil {
-		t.Fatal(err)
+	files := map[string]string{
+		"data/assets.json":     `{"_comment": "", "slots": [{"id": "music:tag", "art": "sound", "kategorie": "musik", "beschreibung": "Tag", "wahl": [{"datei": "audio/tag.ogg"}]}]}`,
+		"public/audio/tag.ogg": "OggS",
 	}
-	if err := os.WriteFile(exe, nil, 0o600); err != nil {
-		t.Fatal(err)
+	for rel, content := range files {
+		full := filepath.Join(root, filepath.FromSlash(rel))
+		if err := os.MkdirAll(filepath.Dir(full), 0o750); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(full, []byte(content), 0o600); err != nil {
+			t.Fatal(err)
+		}
 	}
-	var started []string
-	app.launch = func(e, dir string) error { started = append(started, e, dir); return nil }
-	if err := app.StudioOpen(); err != nil || len(started) != 2 || started[0] != exe || started[1] != root {
-		t.Fatalf("gestartet %v, Fehler %v", started, err)
+	return root
+}
+
+func TestStudioLeseBindings(t *testing.T) {
+	app := &App{root: studioRoot(t)}
+	sounds, err := app.StudioSounds()
+	if err != nil || len(sounds) != 1 || sounds[0].ID != "music:tag" || sounds[0].Status != "zugeordnet" {
+		t.Fatalf("Sounds %+v, %v", sounds, err)
+	}
+	if data, err := app.StudioSoundData("audio/tag.ogg"); err != nil || !strings.HasPrefix(data, "data:audio/ogg;base64,") {
+		t.Errorf("Hörprobe %q, %v", data, err)
+	}
+	if _, err := app.StudioSoundData("../data/assets.json"); err == nil {
+		t.Error("Pfad außerhalb von public/ angenommen")
+	}
+	if q, err := app.StudioSources(); err != nil || q.Katalog == nil {
+		t.Errorf("Quellen %+v, %v", q, err)
 	}
 }
 
-func TestStudioOpenOhneExe(t *testing.T) {
-	app := &App{root: t.TempDir()}
-	app.launch = func(string, string) error { t.Fatal("trotz fehlender EXE gestartet"); return nil }
-	if err := app.StudioOpen(); err != errStudioNotBuilt {
-		t.Fatalf("Fehler %v, erwartet %v", err, errStudioNotBuilt)
+func TestStudioGameOpenOhneClientNenntBuild(t *testing.T) {
+	app := &App{root: studioRoot(t)}
+	t.Cleanup(app.closeStudio)
+	if _, err := app.StudioGameOpen("abc"); err == nil || !strings.Contains(err.Error(), "task build") {
+		t.Fatalf("ohne dist/: %v", err)
+	}
+}
+
+func TestStudioOpenEntfernt(t *testing.T) {
+	if uiMethods["StudioOpen"] {
+		t.Error("StudioOpen steht noch in uiMethods")
+	}
+	for _, m := range []string{"StudioSounds", "StudioSoundData", "StudioSources", "StudioGameOpen"} {
+		if !uiMethods[m] {
+			t.Errorf("%s fehlt in uiMethods", m)
+		}
 	}
 }

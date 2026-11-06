@@ -103,6 +103,49 @@ export interface PixelDiff {
   overlay: string;
 }
 
+/** Sound-Slot aus data/assets.json (Go: studioview.SoundEintrag, WB1.4). */
+export interface SoundEintrag {
+  id: string;
+  kategorie: string;
+  beschreibung: string;
+  bus?: string;
+  status: 'zugeordnet' | 'luecke' | 'fehlt';
+  dateien: string[];
+}
+
+/** Datei des Katalogs unter public/ (Go: assetkit.Asset). */
+export interface KatalogDatei {
+  datei: string;
+  art: string;
+  pack: string;
+  gruppe?: string;
+  titel?: string;
+  urheber?: string;
+  lizenz: string;
+  quelle?: string;
+  kennzeichen?: string;
+}
+
+/** Recherche-Treffer eines Slots (Go: assetkit.Hit). */
+export interface Treffer {
+  id: string;
+  titel: string;
+  link: string;
+  quelle: string;
+  urheber?: string;
+  lizenz?: string;
+  lizenzStatus: string;
+  kennzeichen?: string;
+  erstellt: string;
+  datei?: string;
+}
+
+/** Quellen: Katalog und Recherche-Treffer je Slot (Go: studioview.Quellen). */
+export interface Quellen {
+  katalog: KatalogDatei[];
+  treffer: Record<string, Treffer[]>;
+}
+
 /** RPC-Methoden der Asset-Oberfläche (Wails-Bindings bzw. /api/dev/rpc/Assets…). */
 export interface AssetsBackend {
   assetsList(): Promise<AssetEintrag[]>;
@@ -114,4 +157,10 @@ export interface AssetsBackend {
   /** `variante` und `basis` dürfen leer sein (leere Basis = Arbeitsstand). */
   assetsFrame(id: string, animation: string, frame: number, variante: string, basis: string): Promise<Frame>;
   assetsPixelDiff(id: string, animation: string, frame: number, basis: string): Promise<PixelDiff>;
+  /** Lesende Teile des früheren Asset-Studios (WB1.4): Sound-Slots, Hörprobe als Data-URL, Quellen. */
+  studioSounds(): Promise<SoundEintrag[]>;
+  studioSoundData(pfad: string): Promise<string>;
+  studioSources(): Promise<Quellen>;
+  /** Legt den Testspielstand voll-<seed> an; Antwort ist die Adresse zum Öffnen im Browser. */
+  studioGameOpen(seed: string): Promise<string>;
 }
