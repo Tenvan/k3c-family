@@ -19,7 +19,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | MC1 | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | aktiv |
 | WB1 | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | erledigt |
 | RV1 | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | aktiv |
-| MG1 | Papierschnitt-Migration: Monarch und Spielerfarben | geplant |
+| MG1 | Papierschnitt-Migration: Monarch und Spielerfarben | aktiv |
 | MG2 | Papierschnitt-Migration: Reittiere | geplant |
 | MG3 | Papierschnitt-Migration: Truppen | geplant |
 | MG4 | Papierschnitt-Migration: Gegner | geplant |
