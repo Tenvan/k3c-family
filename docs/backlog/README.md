@@ -105,6 +105,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-703](B-703-review-auf-wb1-backend.md) | DEV | Schuld | mittel | offen | – | Die Review-Seite nutzt backend.assets* und fillPrompt aus WB1 statt eigener Kopien |
 | [B-705](B-705-paper-frame-stil-der-basis.md) | DEV | Problem | mittel | offen | – | Das Vorher-Bild im Review rendert mit dem Stil der Basis |
 | [B-702](B-702-test-runprocess-wackelt.md) | DEV | Problem | mittel | offen | – | TestRunProcessExitUndAusgabe wackelt: fehlendes Programm ohne Fehler |
+| [B-706](B-706-asset-tools-nachzug-review-mc1.md) | DEV | Schuld | mittel | offen | – | Asset-MCP-Tools: Restbefunde aus dem Review MC1 nachziehen |
 
 ## Archiv
 

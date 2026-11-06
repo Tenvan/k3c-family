@@ -12,6 +12,7 @@ import (
 	"sort"
 	"strings"
 	"testing"
+	"time"
 )
 
 // repoWurzel ist die Wurzel des eigenen Checkouts (Paketordner tools/k3c-workbench/internal/paperassets).
@@ -168,5 +169,20 @@ func TestCLIAbbruch(t *testing.T) {
 	err := cli.Validate(ctx, filepath.Join(root, "public/grafik/figuren/monarch.paper.json"))
 	if !errors.Is(err, context.Canceled) {
 		t.Errorf("Abbruch: %v", err)
+	}
+}
+
+// Review MC1.5: eine hängende CLI endet nach dem Zeitlimit (sonst hält sie die Asset-Sperre für immer).
+func TestCLIZeitlimit(t *testing.T) {
+	root, cli := testRepo(t)
+	cli.Skript = filepath.Join(t.TempDir(), "haengt.ts")
+	schreibe(t, filepath.Dir(cli.Skript), "haengt.ts", "await Bun.sleep(30000);\n")
+	alt := cliZeit
+	cliZeit = 300 * time.Millisecond
+	t.Cleanup(func() { cliZeit = alt })
+	start := time.Now()
+	err := cli.Validate(context.Background(), filepath.Join(root, "public/grafik/figuren/monarch.paper.json"))
+	if err == nil || !strings.Contains(err.Error(), "Zeitlimit") || time.Since(start) > 15*time.Second {
+		t.Errorf("Zeitlimit: %v nach %s", err, time.Since(start))
 	}
 }

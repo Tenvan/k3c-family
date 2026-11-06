@@ -114,3 +114,23 @@ func TestAnlegenIndexReserviert(t *testing.T) {
 		t.Error("id index angenommen")
 	}
 }
+
+// Review MC1.5: ein gerendertes Asset steht im Gruppen-Index (das Spiel liest nur die Indizes).
+func TestAnlegenSchreibtIndex(t *testing.T) {
+	t.Parallel()
+	root, cli := testRepo(t)
+	if _, err := Anlegen(context.Background(), cli, "fass", "requisite", "Ein Fass", "requisiten"); err != nil {
+		t.Fatal(err)
+	}
+	b, err := os.ReadFile(filepath.Join(root, "public/grafik/requisiten/index.paper.json"))
+	if err != nil || !strings.Contains(string(b), `"id": "fass"`) || !strings.Contains(string(b), `"manifest": "fass/manifest.json"`) {
+		t.Errorf("Index: %s %v", b, err)
+	}
+	if _, err := Set(context.Background(), cli, "monarch", []byte(`{"version":2}`)); err != nil {
+		t.Fatal(err)
+	}
+	b, _ = os.ReadFile(filepath.Join(root, "public/grafik/figuren/index.paper.json"))
+	if !strings.Contains(string(b), `"id": "monarch"`) {
+		t.Errorf("Index nach Set: %s", b)
+	}
+}

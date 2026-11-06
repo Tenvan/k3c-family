@@ -65,21 +65,16 @@ Nur `tools/k3c-workbench/internal/mcpsrv/tools_assets*.go` (ohne `tools_assets_r
 
 ## Offene Fragen
 
-Keine offenen Fragen; Defaults beim Bereitmachen gesetzt (Format wie B-701, Bestätigung durch 🧑 oder in MC1.5):
+Keine offenen Fragen. Die Defaults stehen ab MC1.5 als D-MC1-01 bis D-MC1-15 in B-701 › Notizen (Status `offen` bis 🧑 bestätigt). Gegenüber der Planung geändert:
 
-| D | Thema | Default | Alternative | Sprints | Status |
-|---|---|---|---|---|---|
-| D-MC1-01 | Checkout für lesende Asset-Tools | `checkout.go` (`takesCheckout`) und `workspace.go` (`writeTools`) gehören zu den erlaubten Dateien | Vertrag „jedes Tool nimmt `checkout`“ nur für schreibende Tools | MC1 | offen |
-| D-MC1-02 | Reihenfolge Ersetzen/Entfernen | MC1.2 ersetzt `assets_list/get/set` direkt (gleiche Namen sind nicht doppelt registrierbar); MC1.4 entfernt nur `assets_catalog` und Reste | Register-Tools bis MC1.4 umbenennen | MC1 | offen |
-| D-MC1-03 | `assets_review` und `assets_preview {basis}` | über Schnittstelle `assetReview` auf `assetsui.Stubs` (PV1.8); Umstellung auf die echte RV1-Implementierung ist eine Zeile (Prüfpunkt MC1.5) | eigene Review-Logik in MC1 | MC1, RV1 | offen |
-| D-MC1-04 | Bilder im Review-Text | Data-URLs der RPC-Methoden als PNG nach `.cache/paper/mcp/`, Pfad im Text; fehlt ein Bild, entfällt der Teil | nur Pixel-Anteil ohne Bild | MC1 | offen |
-| D-MC1-05 | Temp-Ordner für atomares Schreiben | `.cache/paper/tmp/` im Checkout (gleiches Laufwerk, Rename atomar) | System-Temp | MC1 | offen |
-| D-MC1-06 | Ablehnung als Fehler-Ergebnis | `isError: true` mit Text wie `assets_set-abgelehnt.txt` | normales Ergebnis mit Text „abgelehnt“ | MC1 | offen |
-| D-MC1-07 | `assets_style_set` nur Lane `stil` | Hinweis in der Beschreibung, keine technische Sperre | Sperre über Session-Datei | MC1 | offen |
-| D-MC1-08 | Prompts registrieren | Liste beim Start aus der Repo-Wurzel, Text bei jedem Abruf neu aus dem Checkout | Liste je Aufruf (go-sdk kennt keine Prompts je Checkout) | MC1 | offen |
-| D-MC1-09 | Rig-Pflicht-Teile in Go | Tabelle `paperassets/rigs.go`, gegen die echte Prüfung (`validate` der Attrappe) getestet | aus `check.ts` lesen | MC1 | offen |
-| D-MC1-10 | `assets_delete` und Gruppen-Index | `paperassets` entfernt den Eintrag aus `index.paper.json` selbst (Attrappe schreibt keinen Index) | Index über `render <ordner>` neu schreiben lassen (nach RD1) | MC1 | offen |
-| D-MC1-11 | bun in Go-Tests | Pflicht, Test bricht ohne bun ab (CI-Job `k3c-workbench` hat bun) | `t.Skip` ohne bun | MC1 | offen |
+| D | Änderung in der Umsetzung |
+|---|---|
+| D-MC1-01 | alle `assets_*` nehmen `checkout` (Präfix in `takesCheckout`) |
+| D-MC1-03 | Review-Quelle ist `assetsui.Dienst` (RV1 vor MC1.5 gemergt), Tests mit Fixture-Quelle |
+| D-MC1-05 | Temp-Ordner spiegelt die Nachbar-Specs (Reittier-Suche der echten CLI), Rollback der Spec |
+| D-MC1-09 | Vierbeiner-Vorlage mit Beinteilen, `eltern` und `bein` (echte CLI verlangt sie) |
+| D-MC1-10 | Gruppen-Index wird bei create/set/render eingetragen, bei delete ausgetragen |
+| D-MC1-12 bis -15 | neu: Gültigkeits-Cache, Hashes in voller Länge, zweite CLI-Anbindung (→ B-706), Asset ohne Animation |
 
 ## Sessions
 
@@ -89,7 +84,7 @@ Keine offenen Fragen; Defaults beim Bereitmachen gesetzt (Format wie B-701, Best
 | MC1.2 | `MC1.2-asset-tools.md` | Umsetzung | autonom | fertig |
 | MC1.3 | `MC1.3-preview-review-prompts.md` | Umsetzung | autonom | fertig |
 | MC1.4 | `MC1.4-register-tools-entfernen.md` | Umsetzung | autonom | fertig |
-| MC1.5 | `MC1.5-review.md` | Review | autonom | in Arbeit |
+| MC1.5 | `MC1.5-review.md` | Review | autonom | fertig |
 
 Lane `mcp`, nacheinander (gleiche Dateien), Kette MC1.1 → MC1.2 → MC1.3 → MC1.4 → MC1.5; MC1.1 wartet auf das Vertrags-Review PV1.5.
 
@@ -101,5 +96,7 @@ Lane `mcp`, nacheinander (gleiche Dateien), Kette MC1.1 → MC1.2 → MC1.3 → 
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-06 · AC-01 bis AC-06 erfüllt laut Ergebnissen MC1.1–MC1.5 (In-Process-Tests, dazu zwei Tests gegen die echte CLI aus RD1; `task check:diff` exit 0 nach Merge von `feature/pap`; `task check:race` übersprungen, kein gcc).
+Behoben im Review: Gruppen-Index bei create/set/render, Vierbeiner-Vorlage für die echte CLI, CLI-Zeitlimit, Gruppe „alt“, Temp-Ordner mit Nachbar-Specs (Reittier), Review-Quelle auf `assetsui.Dienst` (RV1).
+Neue Tickets: B-702 (wackelnder mcpsrv-Test), B-706 (Restbefunde). D-Zeilen D-MC1-01 bis D-MC1-15 in B-701.
+Offen bei 🧑: Live-Prüfung nach Merge und Neustart der Workbench (`assets_preview {id: monarch}` als Bild, Prompt `asset-material-aendern`).

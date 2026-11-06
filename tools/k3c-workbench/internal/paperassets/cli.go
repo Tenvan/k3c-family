@@ -13,6 +13,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"k3c/tools/k3c-workbench/internal/assetsui"
 	"k3c/tools/k3c-workbench/internal/proc"
@@ -50,15 +51,23 @@ func NewCLI(root string) CLI {
 	return CLI{Root: root, Skript: filepath.Join(root, "tools", "paper", "bin", "paper.ts")}
 }
 
+// cliZeit begrenzt jeden Aufruf (wie review.CLI): eine hängende CLI hielte sonst die Asset-Sperre für immer.
+var cliZeit = 2 * time.Minute
+
 // run führt einen Befehl aus: Exit 0 → stdout, Exit 1 → *Abgelehnt, sonst Fehler mit stderr.
-func (c CLI) run(ctx context.Context, args ...string) (json.RawMessage, error) {
+func (c CLI) run(eltern context.Context, args ...string) (json.RawMessage, error) {
+	ctx, cancel := context.WithTimeout(eltern, cliZeit)
+	defer cancel()
 	cmd := proc.Command(ctx, append([]string{"bun", c.Skript}, args...))
 	cmd.Dir = c.Root
 	var out, errOut bytes.Buffer
 	cmd.Stdout, cmd.Stderr = &out, &errOut
 	err := cmd.Run()
+	if eltern.Err() != nil {
+		return nil, eltern.Err()
+	}
 	if ctx.Err() != nil {
-		return nil, ctx.Err()
+		return nil, fmt.Errorf("Render-CLI %s: Zeitlimit %s überschritten", args[0], cliZeit) //nolint:staticcheck // Satz für die Antwort
 	}
 	code := 0
 	if err != nil {

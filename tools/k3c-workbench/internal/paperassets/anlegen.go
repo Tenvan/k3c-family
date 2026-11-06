@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 )
 
@@ -106,6 +107,48 @@ func Loesche(root, id string) (LoeschErgebnis, error) {
 	}
 	index, err := ausIndexEntfernen(filepath.Join(filepath.Dir(a.Abs(root)), indexName), id)
 	return LoeschErgebnis{Asset: a, PNGs: n, Index: index}, err
+}
+
+// inIndexAufnehmen trägt das Asset in den Gruppen-Index ein ({id, rig, manifest}, nach id sortiert wie die CLI bei
+// render <ordner>): render <spec> schreibt den Index nicht, das Spiel liest aber nur die Gruppen-Indizes.
+func inIndexAufnehmen(root string, a Asset) error {
+	pfad := filepath.Join(root, filepath.FromSlash(Grafik), a.Gruppe, indexName)
+	var eintraege []json.RawMessage
+	if b, err := os.ReadFile(pfad); err == nil {
+		if err := json.Unmarshal(b, &eintraege); err != nil {
+			return fmt.Errorf("%s: %w", indexName, err)
+		}
+	}
+	neu, _ := json.Marshal(struct {
+		ID       string `json:"id"`
+		Rig      string `json:"rig"`
+		Manifest string `json:"manifest"`
+	}{a.ID, a.Rig, a.ID + "/manifest.json"})
+	ids := make([]string, len(eintraege))
+	ersetzt := false
+	for i, e := range eintraege {
+		var kopf struct {
+			ID string `json:"id"`
+		}
+		_ = json.Unmarshal(e, &kopf)
+		ids[i] = kopf.ID
+		if kopf.ID == a.ID {
+			eintraege[i], ersetzt = neu, true
+		}
+	}
+	if !ersetzt {
+		i := sort.SearchStrings(ids, a.ID)
+		eintraege = append(eintraege[:i], append([]json.RawMessage{neu}, eintraege[i:]...)...)
+	}
+	teile := make([][]byte, len(eintraege))
+	for i, e := range eintraege {
+		teile[i] = e
+	}
+	text, err := Format(append(append([]byte("["), bytes.Join(teile, []byte(","))...), ']'))
+	if err != nil {
+		return err
+	}
+	return ersetzeText(pfad, text)
 }
 
 // ausIndexEntfernen schreibt den Gruppen-Index ohne den Eintrag id; false, wenn es keinen Index gibt.

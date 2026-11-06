@@ -61,6 +61,10 @@ func RenderEins(ctx context.Context, cli CLI, a Asset) AssetErgebnis {
 		e.Fehler = err.Error()
 		return e
 	}
+	if err := inIndexAufnehmen(cli.Root, a); err != nil {
+		e.Fehler = err.Error()
+		return e
+	}
 	e.Dateien = r.Dateien
 	for _, d := range r.Dateien {
 		if strings.HasSuffix(d, ".png") {

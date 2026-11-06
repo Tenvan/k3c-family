@@ -7,11 +7,12 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strings"
 
-	"k3c/tools/k3c-workbench/internal/assetsui"
 	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/k3c-workbench/internal/review"
 )
 
 // Grafik ist der Ordner der Specs relativ zum Checkout (paper-spec.md › Dateien und Ablage).
@@ -24,8 +25,16 @@ const (
 	StilPfad = Grafik + "/stil.paper.json"
 )
 
-// CheckBasis lehnt eine unbekannte Basis mit den erlaubten Werten ab (Vertrag paper-mcp.md › 1).
-func CheckBasis(basis string) error { return assetsui.CheckBasis(basis) }
+// reBasis: HEAD, HEAD~1, origin/develop oder Commit-SHA mit 7–40 Hex-Zeichen (paper-mcp.md › 1).
+var reBasis = regexp.MustCompile(`^(HEAD|HEAD~1|origin/develop|[0-9a-fA-F]{7,40})$`)
+
+// CheckBasis lehnt eine unbekannte Basis mit den erlaubten Werten ab (Vertragstext aus internal/review).
+func CheckBasis(basis string) error {
+	if !reBasis.MatchString(basis) {
+		return review.FehlerBasis(basis)
+	}
+	return nil
+}
 
 // Asset ist eine Spec unter public/grafik/<gruppe>/<id>.paper.json; Pfad relativ zum Checkout mit /.
 type Asset struct {

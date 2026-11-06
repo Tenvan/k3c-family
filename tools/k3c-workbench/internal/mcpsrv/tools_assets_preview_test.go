@@ -3,6 +3,8 @@ package mcpsrv
 import (
 	"bytes"
 	"context"
+	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -10,20 +12,47 @@ import (
 	"testing"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
+
+	"k3c/tools/k3c-workbench/internal/assetsui"
 )
 
-// paperRepoMitUI ist paperRepo plus die Beispielantworten der Oberfläche (PV1.8-Stubs lesen sie aus dem Checkout).
-func paperRepoMitUI(t *testing.T) string {
+// fixtureReview beantwortet die Review-Methoden mit den Beispielantworten tools/paper/fixtures/ui/ (Basis HEAD~1);
+// den echten Vergleich prüft RV1 (internal/review, internal/assetsui), MC1 nur die Formatierung.
+type fixtureReview struct{ wurzel string }
+
+func ladeFixture[T any](f fixtureReview, name string) (T, error) {
+	var v T
+	b, err := os.ReadFile(filepath.Join(f.wurzel, "tools", "paper", "fixtures", "ui", name+".json"))
+	if err != nil {
+		return v, err
+	}
+	return v, json.Unmarshal(b, &v)
+}
+
+func (f fixtureReview) AssetsReview(string) (assetsui.Review, error) {
+	return ladeFixture[assetsui.Review](f, "AssetsReview")
+}
+
+func (f fixtureReview) AssetsFrame(id, _ string, _ int, _, _ string) (assetsui.Frame, error) {
+	if id != "monarch" {
+		return assetsui.Frame{}, fmt.Errorf("Asset „%s“ fehlt", id)
+	}
+	return ladeFixture[assetsui.Frame](f, "AssetsFrame")
+}
+
+func (f fixtureReview) AssetsPixelDiff(id, _ string, _ int, _ string) (assetsui.PixelDiff, error) {
+	if id != "monarch" {
+		return assetsui.PixelDiff{}, fmt.Errorf("Asset „%s“ fehlt", id)
+	}
+	return ladeFixture[assetsui.PixelDiff](f, "AssetsPixelDiff")
+}
+
+// mitFixtureReview setzt die Fixture-Quelle für die Dauer des Tests ein.
+func mitFixtureReview(t *testing.T) {
 	t.Helper()
-	root := paperRepo(t)
-	dateien, err := filepath.Glob(filepath.Join(repoWurzel(t), "tools", "paper", "fixtures", "ui", "*.json"))
-	if err != nil || len(dateien) == 0 {
-		t.Fatalf("fixtures/ui: %v", err)
-	}
-	for _, d := range dateien {
-		kopiereAusRepo(t, root, "tools/paper/fixtures/ui/"+filepath.Base(d), "tools/paper/fixtures/ui/"+filepath.Base(d))
-	}
-	return root
+	alt := newAssetReview
+	newAssetReview = func(string) assetReview { return fixtureReview{wurzel: repoWurzel(t)} }
+	t.Cleanup(func() { newAssetReview = alt })
 }
 
 func callResult(t *testing.T, cs *mcp.ClientSession, name string, args any) *mcp.CallToolResult {
@@ -79,7 +108,8 @@ func TestAssetsPreviewFehler(t *testing.T) {
 }
 
 func TestAssetsPreviewBasis(t *testing.T) {
-	cs := connect(t, New(Config{Version: "test", Root: paperRepoMitUI(t)}))
+	mitFixtureReview(t)
+	cs := connect(t, New(Config{Version: "test", Root: paperRepo(t)}))
 	res := callResult(t, cs, "assets_preview", map[string]any{"id": "monarch", "basis": "HEAD~1"})
 	if res.IsError || len(res.Content) < 2 {
 		t.Fatalf("%v", resultText(res))

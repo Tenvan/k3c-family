@@ -90,6 +90,9 @@ func schreibeSpec(ctx context.Context, cli CLI, a Asset, alt, text []byte) (SetE
 	}
 	defer func() { _ = os.RemoveAll(tmp) }()
 	spec := filepath.Join(tmp, a.Gruppe, a.ID+endung)
+	if err := spiegeleNachbarn(cli.Root, tmp, a.ID); err != nil {
+		return SetErgebnis{}, err
+	}
 	if err := schreibeDatei(spec, text); err != nil {
 		return SetErgebnis{}, err
 	}
@@ -98,7 +101,7 @@ func schreibeSpec(ctx context.Context, cli CLI, a Asset, alt, text []byte) (SetE
 	}
 	r := SetErgebnis{Asset: a, Animationen: animationen(text)}
 	if len(alt) > 0 {
-		altSpec := filepath.Join(tmp, "alt", a.ID+endung)
+		altSpec := filepath.Join(tmp, ".alt", a.ID+endung) // .alt ist kein gültiger Gruppenname
 		if err := schreibeDatei(altSpec, alt); err != nil {
 			return r, err
 		}
@@ -123,6 +126,9 @@ func schreibeSpec(ctx context.Context, cli CLI, a Asset, alt, text []byte) (SetE
 			return r, err
 		}
 	}
+	if err := inIndexAufnehmen(cli.Root, a); err != nil {
+		return r, err
+	}
 	vorher, nachher := cli.rel(tmpAus)+"/", cli.rel(a.Ausgabe(cli.Root))+"/"
 	for _, d := range render.Dateien {
 		r.Dateien = append(r.Dateien, strings.Replace(d, vorher, nachher, 1))
@@ -141,6 +147,28 @@ func zurueck(spec string, alt []byte) {
 	}
 	_ = os.WriteFile(spec+".zurueck", alt, 0o644)
 	_ = os.Rename(spec+".zurueck", spec)
+}
+
+// spiegeleNachbarn kopiert die übrigen Specs in den Temp-Ordner (<tmp>/<gruppe>/<id>.paper.json): Die Render-CLI
+// sucht z. B. das Reittier neben der Spec und in den Nachbar-Gruppen (RD1, tools/paper/rig/reiten.ts).
+func spiegeleNachbarn(root, tmp, ohne string) error {
+	alle, err := Assets(root)
+	if err != nil {
+		return err
+	}
+	for _, n := range alle {
+		if n.ID == ohne {
+			continue
+		}
+		b, err := os.ReadFile(n.Abs(root))
+		if err != nil {
+			return err
+		}
+		if err := schreibeDatei(filepath.Join(tmp, n.Gruppe, n.ID+endung), b); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // TempOrdner legt .cache/paper/tmp/<zufall>/ im Checkout an (gleiches Laufwerk, Umbenennen bleibt atomar).

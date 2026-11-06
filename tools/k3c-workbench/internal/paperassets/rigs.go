@@ -11,6 +11,8 @@ import (
 type Rig struct {
 	Pflicht     []string
 	Pivots      map[string][2]float64
+	Eltern      map[string]string // Kette der Vorlage (Vierbeiner: Beinpfad braucht eltern an oberbein-*)
+	Bein        json.RawMessage   // Vorgabe für bein (nur Vierbeiner, aus der Fixture pferd)
 	PivotText   string
 	Platzhalter string
 	HoehePx     int
@@ -33,11 +35,21 @@ var Rigs = map[string]Rig{
 		HoehePx: 192, Rahmen: [4]float64{-60, -145, 85, 151},
 	},
 	"vierbeiner": {
-		Pflicht: []string{"rumpf-vorn", "rumpf-hinten", "hals", "schweif"},
-		Pivots:  map[string][2]float64{"rumpf-hinten": {0, -66}, "rumpf-vorn": {0, -66}, "hals": {26, -66}, "schweif": {-26, -66}},
+		// Schema-Pflicht (paper-spec.md › 4) plus Beinteile und bein, die der Renderer verlangt (RD1, pruefeVierbeiner).
+		Pflicht: []string{"oberbein-hf", "unterbein-hf", "huf-hf", "oberbein-vf", "unterbein-vf", "huf-vf", "schweif",
+			"rumpf-hinten", "rumpf-vorn", "oberbein-hn", "unterbein-hn", "huf-hn", "oberbein-vn", "unterbein-vn", "huf-vn", "hals"},
+		Pivots: map[string][2]float64{"oberbein-hf": {-26, -56}, "unterbein-hf": {-26, -31}, "huf-hf": {-26, -9},
+			"oberbein-vf": {30, -56}, "unterbein-vf": {30, -31}, "huf-vf": {30, -9}, "schweif": {-38, -68}, "rumpf-hinten": {0, -66},
+			"rumpf-vorn": {0, -80}, "oberbein-hn": {-30, -56}, "unterbein-hn": {-30, -31}, "huf-hn": {-30, -9},
+			"oberbein-vn": {26, -56}, "unterbein-vn": {26, -31}, "huf-vn": {26, -9}, "hals": {30, -70}},
+		Eltern: map[string]string{"oberbein-hf": "rumpf-hinten", "unterbein-hf": "oberbein-hf", "huf-hf": "unterbein-hf",
+			"oberbein-vf": "rumpf-vorn", "unterbein-vf": "oberbein-vf", "huf-vf": "unterbein-vf", "schweif": "rumpf-hinten",
+			"rumpf-hinten": "rumpf-vorn", "oberbein-hn": "rumpf-hinten", "unterbein-hn": "oberbein-hn", "huf-hn": "unterbein-hn",
+			"oberbein-vn": "rumpf-vorn", "unterbein-vn": "oberbein-vn", "huf-vn": "unterbein-vn", "hals": "rumpf-vorn"},
+		Bein: json.RawMessage(`{"breiten_vorn":[16,14,11.5,8.2,5.4,6.8],"breiten_hinten":[19,17,12.5,8,5.4,6.8]}`),
 		PivotText: "Hüfte (-26/-30 hinten, 26/30 vorn; -56) oberbein-*; Knie -31 unterbein-*; Fessel -9 huf-*; " +
 			"Rückengelenk (0,-66) rumpf-hinten",
-		HoehePx: 192, Rahmen: [4]float64{-80, -130, 160, 130},
+		HoehePx: 192, Rahmen: [4]float64{-68, -122, 145, 126},
 	},
 	"gebaeude":    {Pflicht: []string{"korpus"}, PivotText: "frei; Stufen-Zusätze hängen an Teilen der Basis", HoehePx: 192, Rahmen: [4]float64{-64, -128, 128, 128}},
 	"requisite":   {Platzhalter: "korpus", PivotText: "frei", HoehePx: 64, Rahmen: [4]float64{-16, -32, 32, 32}},
@@ -71,26 +83,28 @@ func Vorlage(rig, id, beschreibung string) ([]byte, error) {
 		return nil, err
 	}
 	type teil struct {
-		ID    string     `json:"id"`
-		Pivot [2]float64 `json:"pivot"`
-		Lagen []any      `json:"lagen"`
+		ID     string     `json:"id"`
+		Eltern string     `json:"eltern,omitempty"`
+		Pivot  [2]float64 `json:"pivot"`
+		Lagen  []any      `json:"lagen"`
 	}
 	var teile []teil
 	for _, name := range r.VorlageTeile() {
-		teile = append(teile, teil{ID: name, Pivot: r.Pivots[name], Lagen: []any{}})
+		teile = append(teile, teil{ID: name, Eltern: r.Eltern[name], Pivot: r.Pivots[name], Lagen: []any{}})
 	}
 	spec := struct {
-		Schema       string `json:"$schema"`
-		ID           string `json:"id"`
-		Rig          string `json:"rig"`
-		Version      int    `json:"version"`
-		Beschreibung string `json:"beschreibung"`
-		Teile        []teil `json:"teile"`
+		Schema       string          `json:"$schema"`
+		ID           string          `json:"id"`
+		Rig          string          `json:"rig"`
+		Version      int             `json:"version"`
+		Beschreibung string          `json:"beschreibung"`
+		Teile        []teil          `json:"teile"`
+		Bein         json.RawMessage `json:"bein,omitempty"`
 		Ausgabe      struct {
 			HoehePx int        `json:"hoehe_px"`
 			Rahmen  [4]float64 `json:"rahmen"`
 		} `json:"ausgabe"`
-	}{Schema: "../../../tools/paper/schema/paper-spec.schema.json", ID: id, Rig: rig, Version: 1, Beschreibung: beschreibung, Teile: teile}
+	}{Schema: "../../../tools/paper/schema/paper-spec.schema.json", ID: id, Rig: rig, Version: 1, Beschreibung: beschreibung, Teile: teile, Bein: r.Bein}
 	spec.Ausgabe.HoehePx, spec.Ausgabe.Rahmen = r.HoehePx, r.Rahmen
 	raw, err := json.Marshal(spec)
 	if err != nil {

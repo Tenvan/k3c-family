@@ -21,9 +21,9 @@ type assetReview interface {
 	AssetsPixelDiff(id, animation string, frame int, basis string) (assetsui.PixelDiff, error)
 }
 
-// newAssetReview liefert die Review-Quelle des Checkouts: bis RV1.2 die PV1.8-Stubs (Daten aus tools/paper/fixtures/ui/),
-// danach die echte Implementierung (B-701 D-MC1-03).
-var newAssetReview = func(root string) assetReview { return assetsui.Stubs{Root: root} }
+// newAssetReview liefert die Review-Quelle des Checkouts: assetsui.Dienst (RV1, Vergleich über internal/review);
+// Tests setzen eine Quelle mit den Beispielantworten aus tools/paper/fixtures/ui/ ein.
+var newAssetReview = func(root string) assetReview { return assetsui.Dienst{Root: root} }
 
 type assetsReviewIn struct {
 	Basis string `json:"basis,omitempty" jsonschema:"HEAD (Standard), HEAD~1, Commit-SHA oder origin/develop"`

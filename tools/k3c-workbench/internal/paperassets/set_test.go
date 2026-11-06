@@ -171,3 +171,37 @@ func TestSchreibePrueftNamen(t *testing.T) {
 	}
 	leer(t, filepath.Join(root, ".cache", "paper", "tmp"))
 }
+
+// MC1.5: gegen die echte Render-CLI (RD1) findet monarch sein Reittier in der Nachbar-Gruppe auch im Temp-Ordner.
+func TestSetMitEchterCLI(t *testing.T) {
+	t.Parallel()
+	root, cli := testRepo(t)
+	cli.Skript = filepath.Join(repoWurzel(t), "tools", "paper", "bin", "paper.ts")
+	r, err := Set(context.Background(), cli, "monarch", []byte(`{"umhang":{"material":"purpur"}}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(r.Felder) != 1 || r.PNGs == 0 {
+		t.Errorf("Ergebnis: %+v", r)
+	}
+	if _, err := os.Stat(filepath.Join(root, "public/grafik/figuren/monarch/manifest.json")); err != nil {
+		t.Errorf("Ausgabe nicht übernommen: %v", err)
+	}
+	leer(t, filepath.Join(root, ".cache", "paper", "tmp"))
+}
+
+// Review MC1.5: in der Gruppe „alt“ geht die Änderung nicht verloren (Temp-Pfad der alten Spec kollidierte).
+func TestSetGruppeAlt(t *testing.T) {
+	t.Parallel()
+	root, cli := testRepo(t)
+	kopiere(t, root, "tools/paper/fixtures/specs/mauer.paper.json", "public/grafik/alt/mauer.paper.json")
+	_ = os.Remove(filepath.Join(root, "public/grafik/gebaeude/mauer.paper.json"))
+	r, err := Set(context.Background(), cli, "mauer", []byte(`{"version":2}`))
+	if err != nil || len(r.Felder) != 1 {
+		t.Fatalf("Set: %+v %v", r.Felder, err)
+	}
+	b, _ := os.ReadFile(filepath.Join(root, "public/grafik/alt/mauer.paper.json"))
+	if !strings.Contains(string(b), `"version": 2`) {
+		t.Error("Änderung verloren")
+	}
+}

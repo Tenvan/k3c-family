@@ -11,13 +11,23 @@ import (
 	"testing"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
+
+	"k3c/tools/k3c-workbench/internal/assetsui"
 )
 
 func jsonRoh(s string) json.RawMessage { return json.RawMessage(s) }
 
+// MC1.5: ohne Testquelle antwortet assets_review über assetsui.Dienst (RV1) aus dem Checkout.
+func TestAssetsReviewNutztDienst(t *testing.T) {
+	if _, ok := newAssetReview("x").(assetsui.Dienst); !ok {
+		t.Errorf("newAssetReview: %T", newAssetReview("x"))
+	}
+}
+
 // MC1/AC-01: assets_review gegen die Stubs (Fixture fixtures/ui/AssetsReview.json, Basis HEAD~1).
 func TestAssetsReview(t *testing.T) {
-	root := paperRepoMitUI(t)
+	mitFixtureReview(t)
+	root := paperRepo(t)
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 	text, isErr := callText(t, cs, "assets_review", map[string]any{"basis": "HEAD~1"})
 	for _, want := range []string{
