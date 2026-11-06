@@ -12,7 +12,6 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	assets "k3c/tools/assetkit"
 	pa "k3c/tools/k3c-workbench/internal/paperassets"
 )
 
@@ -49,13 +48,7 @@ type assetsIDIn struct {
 	ID string `json:"id" jsonschema:"Asset-Slot, z. B. farm, mount:horse, sfx:coin"`
 }
 
-type assetsCatalogIn struct {
-	Query string `json:"query,omitempty" jsonschema:"Wörter, die alle in Datei, Pack, Gruppe, Titel oder Lizenz vorkommen"`
-	Art   string `json:"art,omitempty" jsonschema:"grafik oder sound; leer = beide"`
-	Limit int    `json:"limit,omitempty" jsonschema:"höchstens so viele Treffer (Vorgabe 50)"`
-}
-
-// registerAssets registriert die Asset-Tools auf Spec-Basis und (bis MC1.4) assets_catalog.
+// registerAssets registriert die Asset-Tools auf Spec-Basis (die Recherche-Tools: tools_assets_research.go).
 func registerAssets(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "assets_guide",
@@ -63,13 +56,17 @@ func registerAssets(s *Server) {
 			"des Rig-Typs, Proportion, Lagen-Arten, Vorlage, Ablauf. Nutze es bei: bevor du ein Asset anlegst oder änderst. " +
 			"Statt: paper-spec.md und Stil-Datei lesen.",
 		Annotations: readOnly(),
-	}, func(ctx context.Context, in assetsGuideIn) (string, error) { return assetsGuide(s.ws(ctx).root, in.Rig) })
+	}, func(ctx context.Context, in assetsGuideIn) (string, error) {
+		return assetsGuide(s.ws(ctx).root, in.Rig)
+	})
 	add(s, &mcp.Tool{
 		Name: "assets_list",
 		Description: "Alle Assets (Paper-Specs unter public/grafik) je Zeile: id · rig · pfad · gültig|ungültig[ · geändert]. " +
 			"Nutze es bei: Überblick, ungültige oder geänderte Assets finden. Statt: public/grafik durchsuchen.",
 		Annotations: readOnly(),
-	}, func(ctx context.Context, in assetsListIn) (string, error) { return assetsListText(ctx, s.ws(ctx).root, in) })
+	}, func(ctx context.Context, in assetsListIn) (string, error) {
+		return assetsListText(ctx, s.ws(ctx).root, in)
+	})
 	add(s, &mcp.Tool{
 		Name: "assets_get",
 		Description: "Pfad und Paper-Spec eines Assets als JSON; felder kürzt auf oberste Schlüssel. " +
@@ -82,20 +79,14 @@ func registerAssets(s *Server) {
 		Description: "Legt public/grafik/<gruppe>/<id>.paper.json aus der Rig-Vorlage an (Pflicht-Teile mit leeren Lagen), prüft und rendert. " +
 			"Nutze es bei: neues Asset. Statt: Spec-Datei von Hand anlegen.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &notDestructive, OpenWorldHint: &closed},
-	}, func(ctx context.Context, in assetsCreateIn) (string, error) { return assetsCreateText(ctx, s.ws(ctx).root, in) })
+	}, func(ctx context.Context, in assetsCreateIn) (string, error) {
+		return assetsCreateText(ctx, s.ws(ctx).root, in)
+	})
 	registerAssetsSet(s)
 	registerAssetsRender(s)
 	registerAssetsPreview(s)
 	registerAssetsReview(s)
 	registerAssetPrompts(s)
-	add(s, &mcp.Tool{
-		Name: "assets_catalog",
-		Description: "Sucht im Asset-Katalog (public/grafik, public/sprites, public/audio): Datei, Pack, Gruppe, Maße, Lizenz mit Kennzeichen NC/SA/ND (Q70). " +
-			"Nutze es bei: passende Datei für einen Slot finden. Statt: public/ durchsuchen und CREDITS lesen.",
-		Annotations: readOnly(),
-	}, func(ctx context.Context, in assetsCatalogIn) (string, error) {
-		return assetsCatalog(s.ws(ctx).root, in)
-	})
 }
 
 // stilKurz sind die Teile der Stil-Datei, die guide und style_get zeigen (Feldnamen ohne Tag: json ignoriert Groß-/Kleinschreibung).
@@ -312,33 +303,4 @@ func fehlerZeilen(fehler []pa.Fehler) string {
 		z[i] = f.Feld + " · " + f.Regel + " · " + f.Text
 	}
 	return strings.Join(z, "\n")
-}
-
-func assetsCatalog(root string, in assetsCatalogIn) (string, error) {
-	list, err := assets.Catalog(root)
-	if err != nil {
-		return "", err
-	}
-	limit := in.Limit
-	if limit <= 0 {
-		limit = 50
-	}
-	hits := assets.Search(list, in.Query, in.Art, limit)
-	if len(hits) == 0 {
-		return "keine Treffer im Asset-Katalog", nil
-	}
-	var b strings.Builder
-	fmt.Fprintf(&b, "%d Treffer (höchstens %d)\n", len(hits), limit)
-	for _, a := range hits {
-		size := ""
-		if a.W > 0 {
-			size = fmt.Sprintf(" · %d×%d", a.W, a.H)
-		}
-		flag := ""
-		if a.Flag != "" {
-			flag = " [" + a.Flag + "]"
-		}
-		fmt.Fprintf(&b, "%s · %s %s%s · %s%s\n", a.File, a.Pack, a.Group, size, a.License, flag)
-	}
-	return b.String(), nil
 }

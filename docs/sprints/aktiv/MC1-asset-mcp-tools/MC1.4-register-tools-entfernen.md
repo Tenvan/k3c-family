@@ -1,6 +1,6 @@
 # MC1.4 · Alte Register-Tools entfernen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -61,5 +61,6 @@ Kein Review-Agent nötig (Entfernen, unter 150 Zeilen), außer der Diff wächst 
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-06 geprüft: `TestAlteRegisterToolsEntfernt` grün (kein `assets_catalog`, keine Register-Felder `art`/`kategorie`/`status`/`wahl`, Recherche-Tools bleiben, `instructions.md` ohne `assets_catalog`); `grep assets_catalog` in `internal/mcpsrv` nur noch im Test.
+- AC-06 geprüft: `task check:dev` exit 0 (zweiter Lauf; der erste scheiterte unter Last an `botdev`, `simrun` und B-702, alle ohne MC1-Bezug); `task check:diff` exit 0.
+- Entfernt: `assets_catalog`, `assetsCatalogIn`, Import `tools/assetkit` aus `tools_assets.go`; `instructions.md` (Abschnitt „Recherche für Grafik- und Sound-Slots“, Register eingefroren) und `codemap.md` nachgezogen. Kein Review-Agent (Entfernen, unter 150 Zeilen).

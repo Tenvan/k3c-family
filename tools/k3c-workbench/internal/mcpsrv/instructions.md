@@ -125,14 +125,10 @@ Repo-Wurzel (B-701 D-10).
   wartet bis zum Ende (eigener Mechanismus, nicht `task_*`).
 - Prompts: jede Vorlage aus `data/asset-prompts.json` ist der MCP-Prompt `asset-<id>`, Argumente = Platzhalter.
 
-### Grafik- und Sound-Slots
+### Recherche für Grafik- und Sound-Slots
 
-- `assets_list {art?, kategorie?, status?}` zeigt die Asset-Slots des Slot-Registers `data/assets.json` (je Zeile ID,
-  Kategorie, Status `zugeordnet`/`luecke`/`fehlt`, aktive Zuordnung); `assets_get {id}` einen Slot mit allen Präferenzen.
-- `assets_catalog {query?, art?, limit?}` sucht Dateien unter `public/grafik`, `public/sprites`, `public/audio` mit Pack,
-  Gruppe, Maßen und Lizenz; Kennzeichen `[NC]`, `[SA]`, `[ND]` nach Q70.
-- `assets_set {id, wahl}` ersetzt die Zuordnungen (Reihenfolge = Präferenz, nur die erste ist im Spiel aktiv); jede
-  `datei` relativ zu `public/`, Ausschnitt `{x,y,w,h}` innerhalb des Bildes. Ein ungültiges Register wird nie überschrieben.
+Das Slot-Register `data/assets.json` ist seit MC1 eingefroren (Entfernung B-700); `id` ist hier weiter ein Slot daraus.
+
 - Recherche (Treffer in `data/assets-recherche.json`): `assets_research {id, query?}` fragt freesound (Token in
   `K3C_FREESOUND_TOKEN` oder `.work/freesound-token`), Wikimedia Commons und OpenGameArt; `assets_hits {id}` liest,
   `assets_hit_add {id, titel, link, …}` legt einen eigenen Fund ab (z. B. itch.io, Kenney), `assets_hit_drop {id, hit}`

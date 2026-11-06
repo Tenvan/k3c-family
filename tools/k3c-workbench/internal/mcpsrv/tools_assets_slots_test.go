@@ -1,6 +1,7 @@
 package mcpsrv
 
 import (
+	"context"
 	"image"
 	"image/png"
 	"os"
@@ -43,11 +44,37 @@ func assetRepo(t *testing.T) string {
 	return root
 }
 
-// B-298: assets_catalog sucht Dateien mit Lizenz-Kennzeichen (bleibt bis MC1.4).
-func TestAssetsCatalog(t *testing.T) {
+// MC1/AC-06: Register-Varianten von assets_list/get/set und assets_catalog sind entfernt; die Recherche bleibt.
+func TestAlteRegisterToolsEntfernt(t *testing.T) {
 	cs := connect(t, New(Config{Version: "test", Root: assetRepo(t)}))
-	text, isErr := callText(t, cs, "assets_catalog", map[string]any{"query": "town"})
-	if isErr || !strings.Contains(text, "grafik/town/well.png · town  · 64×48 · CC BY-NC 4.0 [NC]") {
-		t.Errorf("assets_catalog: %q", text)
+	res, err := cs.ListTools(context.Background(), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	da := map[string]bool{}
+	for _, tool := range res.Tools {
+		da[tool.Name] = true
+		if tool.Name == "assets_list" || tool.Name == "assets_get" || tool.Name == "assets_set" {
+			if strings.Contains(tool.Description, "data/assets.json") || strings.Contains(tool.Description, "Slot") {
+				t.Errorf("%s beschreibt noch das Register", tool.Name)
+			}
+			props, _ := tool.InputSchema.(map[string]any)["properties"].(map[string]any)
+			for _, alt := range []string{"art", "kategorie", "status", "wahl"} {
+				if _, ok := props[alt]; ok {
+					t.Errorf("%s hat noch das Feld %s", tool.Name, alt)
+				}
+			}
+		}
+	}
+	if da["assets_catalog"] {
+		t.Error("assets_catalog ist noch registriert")
+	}
+	for _, bleibt := range []string{"assets_research", "assets_hits", "assets_hit_add", "assets_hit_drop", "assets_import"} {
+		if !da[bleibt] {
+			t.Errorf("%s fehlt", bleibt)
+		}
+	}
+	if strings.Contains(Instructions(), "assets_catalog") {
+		t.Error("instructions.md nennt assets_catalog")
 	}
 }
