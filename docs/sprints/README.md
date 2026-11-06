@@ -12,6 +12,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RD1 | PAP | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | `aktiv/RD1-papierschnitt-renderer/` |
 | MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
 | RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
+| MG6 | PAP | PAP | Papierschnitt-Migration: Gebäude mit Ausbaustufen | – | `aktiv/MG6-papier-gebaeude/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | `aktiv/BD10-schreibende-endpunkte-schutz/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
@@ -38,7 +39,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | MG3 | CLI | PAP | Papierschnitt-Migration: Truppen | – | Entwurf | `geplant/MG3-papier-truppen/` |
 | MG4 | CLI | PAP | Papierschnitt-Migration: Gegner | – | Entwurf | `geplant/MG4-papier-gegner/` |
 | MG5 | CLI | PAP | Papierschnitt-Migration: Bosse | – | Entwurf | `geplant/MG5-papier-bosse/` |
-| MG6 | CLI | PAP | Papierschnitt-Migration: Gebäude mit Ausbaustufen | – | Entwurf | `geplant/MG6-papier-gebaeude/` |
 | MG7 | CLI | PAP | Papierschnitt-Migration: Hintergründe je Biom | – | Entwurf | `geplant/MG7-papier-hintergruende/` |
 | MG8 | CLI | PAP | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | – | Entwurf | `geplant/MG8-papier-natur-objekte-icons/` |
 | PS1 | CLI | PAP | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | – | Entwurf | `geplant/PS1-papierschnitt-sichtpruefungen/` |
