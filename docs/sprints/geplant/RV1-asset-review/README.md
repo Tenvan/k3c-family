@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Welle 1, Lane **RV1** (DEV, Lane `review`, parallel zu RD1, MC1, WB1). Vertrag: `docs/standards/paper-mcp.md` › Oberfläche (RPC); die Methoden liegen seit PV1.8 als Stubs in `internal/assetsui` und sind in `uiMethods`/`wails.ts` verdrahtet. CLI `diff`, `pixeldiff`, `frame` aus `paper-spec.md`; bis RD1 die Attrappe. Test-Repo: `tools/paper/fixtures/review-repo/`.
+Welle 1, Lane **RV1** (DEV, Lane `review`, parallel zu RD1, MC1, WB1). Vertrag: `docs/standards/paper-mcp.md` › Oberfläche (RPC); die Methoden liegen seit PV1.8 als Stubs in `internal/assetsui` (`Stubs{Root}` liest `tools/paper/fixtures/ui/<Methode>.json`) und sind in `uiMethods`/`wails.ts` (Typen `unknown`) und `app_assets.go` verdrahtet; `frontend/src/assets/review/index.tsx` ist ein Platzhalter `ReviewPage`. Hash-Regel: `tools/paper/schema/hash.ts` (nur TypeScript, Go portiert). CLI `validate`, `diff`, `pixeldiff`, `frame` aus `paper-spec.md` › 8; bis RD1 die Attrappe `tools/paper/fixtures/cli-stub.ts` (`frame` mit festen PNGs). Test-Repo: `tools/paper/fixtures/review-repo/erzeuge.ts` (`HEAD~1` = `32eb7a7`).
 
 ## Ziel
 
@@ -22,7 +22,10 @@ Am Ende sichtbar: Nach einer Änderung am Umhang-Material zeigt die Review-Seite
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+- **Profitiert:** Ralf als Gestalter der Assets (sieht jede Asset-Änderung eines Agenten auf einen Blick) und Agenten, die per Prompt-Button einen fertigen Auftrag bekommen.
+- **Arbeitet:** autonome Agenten der Lane `review` (RV1.1–RV1.5).
+- **Entscheidet und prüft:** 🧑 Ralf (Freigabe der Spec, manuelle Abnahme der Seite).
+- **Nachbarn:** WB1 (hängt `ReviewPage` in die Navigation, nutzt `AssetsList`/`AssetsGet`), MC1 (`assets_review` und `assets_preview` mit derselben Basis-Regel), RD1 (echte CLI).
 
 ## Anforderungen
 
@@ -34,15 +37,23 @@ Navigation und Katalog (WB1), MCP (MC1).
 
 ## Regeln und Einschränkungen
 
-Nur `tools/k3c-workbench/internal/assetsui/` (Besitzer aller Asset-RPC-Methoden), `tools/k3c-workbench/internal/review/` (neu: Basis, `git show`, Cache `.cache/paper/<renderKey>/`, Diff) und `tools/k3c-workbench/frontend/src/assets/review/`. Signaturen der RPC-Methoden nur laut Vertrag (sonst Ticket). Specs aus `git show` kanonisch hashen (PV1.3 `hash.ts`); `origin/develop` ohne Fetch → `basisStand: lokal`. `ValueSlider` aus `@webkit/atoms` (PV1.8; der rohe Radix-`Slider` bleibt daneben). Typen der Asset-Methoden in `frontend/src/assets/review/types.ts`; `frontend/src/api/wails.ts` gehört WB1 und bleibt bei `unknown`.
+Nur `tools/k3c-workbench/internal/assetsui/` (Besitzer aller Asset-RPC-Methoden), `tools/k3c-workbench/app_assets.go` (nur `assets()` auf den echten Dienst umstellen), `tools/k3c-workbench/internal/review/` (neu: Basis, `git show`, Cache `.cache/paper/<renderKey>/`, Diff) und `tools/k3c-workbench/frontend/src/assets/review/`. Signaturen der RPC-Methoden nur laut Vertrag (sonst Ticket); `frontend/src/api/wails.ts` gehört WB1 und bleibt bei `unknown`, Typen in `frontend/src/assets/review/types.ts`. Specs aus `git show` kanonisch hashen (Go-Port von `hash.ts`, gegen bun geprüft); `origin/develop` ohne Fetch → `basisStand: lokal`. Bilder, Diffs und Prüfungen nur über die CLI, kein Renderer in Go. Go-Tests rufen bun (CI-Job `k3c-workbench` hat bun), ohne bun scheitern sie, kein Skip. `ValueSlider` aus `@webkit/atoms` (PV1.8; der rohe Radix-`Slider` bleibt daneben).
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis.
+- Test-Repo, Basis `HEAD~1` → `AssetsReview` liefert monarch `geaendert` (`umhang.material: koenigsrot → purpur`, `pixelAnteil` 0.015326), pferd `neu`, fass `geloescht`, banner `ungueltig` (Material `scharlach`), mauer `geaendert` mit `stil: true` (0.170654).
+- Gleiches Repo, Basis `HEAD` → nur monarch und banner.
+- Review-Seite, Eintrag monarch → Vorher (rot) und Nachher (purpur) nebeneinander, Überblendregler, Schalter „Unterschiede“ legt das Overlay mit einer Box um den Umhang.
+- Prompt-Button „Nachbessern …“ mit Eingabe „etwas dunkler“ → Zwischenablage enthält den Prompt mit `monarch`, Pfad, Basis, Feldänderung und Eingabe.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten.
+- Basis `main`, `HEAD~2` oder unbekannter Commit → `Basis „x“ ungültig: HEAD, HEAD~1, Commit-SHA oder origin/develop`, die Seite zeigt den Text statt der Liste.
+- `origin/develop` ohne erreichbares Remote → lokaler Stand, `basisStand: lokal`, Hinweis auf der Seite.
+- Nur Zeilenenden (CRLF) oder Schlüsselreihenfolge geändert → kein Eintrag.
+- Unbekannte `id` → `Asset „x“ fehlt`; unbekannte Animation → Text mit den vorhandenen Animationen; leere Animation = erste Animation.
+- CLI-Systemfehler (Exit 2) → Fehler mit stderr, kein halber Cache-Eintrag (atomar schreiben).
+- Frame-Index außerhalb der Basis-Animation → Vorher zeigt „Frame fehlt in der Basis“, Nachher läuft weiter.
 
 ## Akzeptanzkriterien
 
@@ -56,17 +67,32 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Offene Fragen
 
-keine
+Alle mit Default entschieden (gilt bis zur Freigabe durch 🧑):
+
+- **Stil der Basis beim Rendern:** `frame` hat keinen Stil-Parameter. Default: Basis als Mini-Baum im Cache (`basis/public/grafik/…`); reicht das der echten CLI nicht, Ticket PAP für `--stil <datei>` (RV1.1).
+- **Fixture `AssetsList.json`:** meldet pferd und mauer `geaendert: true`, laut Vertrag gilt `HEAD` (dort unverändert). Default: Test erwartet `false`, Ticket PAP zum Nachziehen der Fixture (RV1.2).
+- **Reihenfolge der Review-Einträge:** Vertrag offen. Default: `ungueltig`, `geaendert`, `neu`, `geloescht`, je Status nach `id`; Tests vergleichen nach `id` sortiert.
+- **Leere Animation:** Default = erste Animation der Spec (wie MCP), nötig für gelöschte Assets.
+- **`app_assets.go`:** Default: RV1.2 darf `assets()` umstellen (sonst bliebe der Typname `Stubs` für echte Daten).
+- **Umhang-Markierung:** Der Umhang ist kein Teil; Default: er wird über die Pixel-Diff-Box umrandet, die Teil-Markierung gilt nur für Ids aus `teile`.
 
 ## Sessions
 
-Reife Entwurf, Lane `review`:
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| RV1.1 | `RV1.1-review-basis-diff.md` | Umsetzung | autonom | offen |
+| RV1.2 | `RV1.2-assetsui-echte-daten.md` | Umsetzung | autonom | offen |
+| RV1.3 | `RV1.3-review-seite-vergleich.md` | Umsetzung | autonom | offen |
+| RV1.4 | `RV1.4-animation-prompts.md` | Umsetzung | autonom | offen |
+| RV1.5 | `RV1.5-review.md` | Review | autonom | offen |
 
-- RV1.1 Opus: `internal/review` Basis, `git show`, Cache, Diff je Asset und Stil (AC-01, AC-02)
-- RV1.2 Sonnet: `internal/assetsui` echte Daten, Pixel-Diff, Frame (AC-05, AC-07)
-- RV1.3 Opus: `ReviewPage` Liste, Vergleich, Overlay, Teil-Markierung (AC-03)
-- RV1.4 Sonnet: Animationen synchron, Prompt-Buttons am Eintrag (AC-04, AC-06)
-- RV1.5 Review · Opus
+Lane `review`, nacheinander; RV1.3 braucht nur PV1.8 (Vitest gegen Fixtures) und darf vor RV1.2 laufen:
+
+- RV1.1 Opus: `internal/review` Basis, `git show`, Hash-Port, Cache, Diff je Asset und Stil (AC-01, AC-02)
+- RV1.2 Sonnet: `internal/assetsui` echte Daten, Pixel-Diff, Frame (AC-05, AC-07) – nach RV1.1
+- RV1.3 Opus: `ReviewPage` Liste, Basis-Auswahl, Vergleich, Overlay, Teil-Markierung (AC-03, AC-05)
+- RV1.4 Sonnet: Animationen synchron, Prompt-Buttons am Eintrag (AC-04, AC-06) – nach RV1.3
+- RV1.5 Review · Opus – nach allen
 
 ## Abnahme
 
