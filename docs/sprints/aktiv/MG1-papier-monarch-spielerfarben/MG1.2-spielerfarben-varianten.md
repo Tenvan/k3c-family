@@ -1,6 +1,6 @@
 # MG1.2 · Spielerfarben als Varianten spieler1 bis spieler4
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -56,5 +56,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `assets_list figuren` → monarch gültig, Varianten spieler1–spieler4 (Rock blau, smaragd, purpur, rot; D-MG1-03).
+- AC-02 geprüft: `task gen:paper` → `golden.json` mit 25 Dateien (5 Animationen × Basis + 4 Varianten); `spieler2` unverändert gegenüber HEAD.
+- AC-03 geprüft: Preview spieler1 idle 0, spieler2 galopp 2 und schritt 4, spieler3 lauf 3 und galopp 6, spieler4 idle 3, lauf 6 und trab 5; `assets_review` → `geaendert`, kein roter Eintrag.
+- Befunde: erster Versuch mit Umhang-Tausch färbte Nase und Krone mit (gleiches Material `koenigsrot`) → verworfen, B-710 (Teil-Patch in `assets_set`); Satteldecke bleibt blau → B-711; `assets_review` zeigt Pixel-Anteil nur der Basis, nicht der Varianten (Ergänzung zu B-709).

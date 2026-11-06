@@ -1,10 +1,10 @@
 {
   "id": "monarch",
   "version": 1,
-  "specHash": "768870faa9441cdfed1d0a3fea55735864345b7047e5947d42556162acfd17f3",
+  "specHash": "7f7ac6dea9d8a25733abfd9ba3dff235be557eb3aa3098d9e766605561b8811b",
   "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "9ed0050452828b0ff56c3e0e2095b25b1b0e3efe63d308735294dc4eaef8dae2",
+  "renderKey": "a8371d5f2e2f05b434f6dcd4172a9f025c7768ea3539f4883c5180308f2a0d26",
   "rahmen": [
     -60,
     -145,
@@ -18,6 +18,29 @@
       "frames": 8,
       "fps": 8,
       "datei": "galopp.png",
+      "hashes": [
+        "8f5754628a68138b0525c0a00b87304a7d3ad533e3613dddccefb7624a9a66ec",
+        "9de51257d00f04583b859b25679ee74200ed4359918c0f7b9e768564b833a2ba",
+        "868f16ff44d58d4a30183382c08746965faf542116337f37ff30f177bdc8ad59",
+        "5e8865189924b0e39f00faf49cd1168845bf4c733be455ea1da291eb797fdb9a",
+        "9247ef46a5d355b8edf1dce518777a9a9efb33088c610b928c633014cda47290",
+        "531646fe98ec0bac1ee78c00cbae3ad4bd8c2a71e109798a26211d8160e45ab6",
+        "a30513680968cae5f24cf538bff6a26562d8393e7020b41fd91fe332ecd0050a",
+        "f84bf8384b098ff9d7345cc1c6769042966af376ebcd4e248952d96d0496a318"
+      ],
+      "rahmen": [
+        -89,
+        -199,
+        190,
+        205
+      ],
+      "frameW": 242,
+      "frameH": 261
+    },
+    "galopp@spieler1": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "galopp@spieler1.png",
       "hashes": [
         "8f5754628a68138b0525c0a00b87304a7d3ad533e3613dddccefb7624a9a66ec",
         "9de51257d00f04583b859b25679ee74200ed4359918c0f7b9e768564b833a2ba",
@@ -60,10 +83,71 @@
       "frameW": 242,
       "frameH": 261
     },
+    "galopp@spieler3": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "galopp@spieler3.png",
+      "hashes": [
+        "7a61a23ca62f86a69067c97024de28f31dd89f2252a7d45e66e6d592ff7f154c",
+        "5aeb7689d6792e5e652c029cabf6f29ecdd5801e179dd15c334bd95ef10b7e85",
+        "362ad96213dbe6261a5fcb77d593bead5f367477b9fde975d645cbe4597cad75",
+        "c781304778f51060c42d1e0c924d23dd6213bd454884bd80bc0c3bdde9ac9657",
+        "6da8fbc18e8ae9c78e8615a7033945818d57fe52460c4aaa37b3c8f56e8812b1",
+        "c43c2ba3f51bfd9a3209942d5a82b206f32718890e0e0d493b90a4fac2371fb9",
+        "59ed39f23e9cb0ba027bbcf8e0d8c93528ec6f7c61c465073960a5e1f72431bd",
+        "fbca89f6838743f565648727c7bbbcc62ba9a608e8bae0076ff304a3866ee4bd"
+      ],
+      "rahmen": [
+        -89,
+        -199,
+        190,
+        205
+      ],
+      "frameW": 242,
+      "frameH": 261
+    },
+    "galopp@spieler4": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "galopp@spieler4.png",
+      "hashes": [
+        "4976dde8741de8fca857409d646ae9b66c403203e09ee861148d173e10d370fe",
+        "c1aa921b6e1529cccfa9c66455cb91c4573ddf49585f4e34dce56144e2a13810",
+        "bf9220dfd28f725fb2dc045ac54bf7f28e09441839a3838bf1086171df0ffb98",
+        "486416d35e606a2a88fee1b342725df5476b336c70fe29cea227050f31f4d93e",
+        "e73ed07c8364ed9a5488afc31d63108c7711123657c2d2640e7a02b8a5f60997",
+        "1ec5523fccce1cc28141ae390f1385e2cfa835f23d1c0ecb29fa8a43cc4bee3e",
+        "c4c92e4d5211aacfe7c49462e5beb680092bea4c127b0cde60e692da571274b4",
+        "be3eaa6ff3db31fb5d9899ececc4665a1e27cdd064caa0354868d85b8e20a3b4"
+      ],
+      "rahmen": [
+        -89,
+        -199,
+        190,
+        205
+      ],
+      "frameW": 242,
+      "frameH": 261
+    },
     "idle": {
       "frames": 8,
       "fps": 8,
       "datei": "idle.png",
+      "hashes": [
+        "5dec0a0035a836f0432fe330b3acc1040a9c5da92ea08a643c4ac8317716276b",
+        "4162122a754be7413a292c6ef1c3f08afb2d17be855ad2d9251068356d1d080c",
+        "4ef167465d090c3b12ebda1c44281176ebbcdabbda23ba7b9e0674ed9e1ebf58",
+        "23af806c632ed7e5671b558c301294d540a98cc2df70823ca9f4e85ba63dec78",
+        "e13298b66f94da91e51ead5a7aec76aca3b9b0f7803054a33db3597af15749e5",
+        "92ec760f76fe914f8a61a1657e4eb103056feea8e34523dd63b53c83fb2e0772",
+        "2fb63f2a0c5225f871e828431daadffd9c5922589e046fc643524a8eaa14fb34",
+        "6fc8658d52b0586d2a5e37a9e2ac431aaa0832e012c8f0104dcf31450dfb9db4"
+      ]
+    },
+    "idle@spieler1": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "idle@spieler1.png",
       "hashes": [
         "5dec0a0035a836f0432fe330b3acc1040a9c5da92ea08a643c4ac8317716276b",
         "4162122a754be7413a292c6ef1c3f08afb2d17be855ad2d9251068356d1d080c",
@@ -90,10 +174,55 @@
         "c8d74bbca786be1fb77ffd35e29f2168239277c92d332aaa116a9b6ae38809c4"
       ]
     },
+    "idle@spieler3": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "idle@spieler3.png",
+      "hashes": [
+        "242f343952b5f502631aa5043ef424d663074e88d4646a7a153f3b6930dcb84e",
+        "eade9975f969acd2360ab8243d8337b4da396cec54e39f1888a4067169f9413f",
+        "0514759153df033aa944b96631236d3d3c5e25d6141709488d57d84e27e56ebe",
+        "a66ef7465c8c1d787345ad464d3326f48727dc322882163b01278676b856f6e1",
+        "6de4cb692a55fd4dc000d18c5aee5371a03bf97d126cad3173b53d09ee3f3e08",
+        "8df54bfdd1e678f97be79577cde45b93e93223225d3359e2cff3a21546cf9806",
+        "67af98b25c3d1d8165873cfb5ea41f5ffa13a667c9c19d4e1933ec44baa83e11",
+        "609cb2ce6e6838f050bb64237a817872d428e79d47bd4a32113511b0c3eb63fd"
+      ]
+    },
+    "idle@spieler4": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "idle@spieler4.png",
+      "hashes": [
+        "a1c0b810446f7ad33b1cf9c684b4fa36fae79bc8ef6dd54c48f7cb45b92155fa",
+        "ae8fc2269e96076960a2ee9e916ebc6ab66e72ba575516bcd2267f678e7f0998",
+        "e775800eaf0e04c1fb0b7763676a23ecbd97f4958c0ccd15de8ec3c0f718a9f7",
+        "886fc3f761d1c5d9dbdac38541d4045a30df8e7be6a3250751ebdde08576c4c9",
+        "7061e272ce1af5a1d96e375b19c23113ee79390248eca418d404450fd3fa1d0e",
+        "f04db9a8bfe8f21aa34f683a1c0a99aeeff97e8493d5d3b8ba180da13674007e",
+        "8e8f9a5cd55c9624e6a9200c9bac3ff013972a70868b16f3700dab99ff50e19b",
+        "03a5aa23a19e48a347886ef1d7b60ffff32724a40b0b0db945db6761de0b7392"
+      ]
+    },
     "lauf": {
       "frames": 8,
       "fps": 8,
       "datei": "lauf.png",
+      "hashes": [
+        "1a489a69b31bf85792c6193683a7f3abafe59478a4bd0606b7abceefd4cb6955",
+        "07486cc9af16020c05f390b36cbba0cdfa8bf759f8cacf95deb520447f7f96bd",
+        "2850f0acd0636ef57c1c53e6235cdbfe9e48b6206303e8909830caa8ec5e9562",
+        "15eb68f115133f782c2886f9cf9e1435f1766810ee4588fc8d80d359e39245a2",
+        "42ff5310629814e1345a437c759bcc7acbee9da6bcb3e452b9ef762193d70f81",
+        "663f1eafbf66b6b78fcafe134bc346c6f7ba66897884c0b5c3e0fe58af75664d",
+        "0561a66f551c39b7e69b1dfc4a2c0a5104c2c50267e56895360dfaf67074186f",
+        "2d4bbfa4e3130d5f3fe5e8f6ae364fd3335fbedbbb8e470142442d32a51b9f40"
+      ]
+    },
+    "lauf@spieler1": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "lauf@spieler1.png",
       "hashes": [
         "1a489a69b31bf85792c6193683a7f3abafe59478a4bd0606b7abceefd4cb6955",
         "07486cc9af16020c05f390b36cbba0cdfa8bf759f8cacf95deb520447f7f96bd",
@@ -120,10 +249,63 @@
         "5014199afe69f1bd5ae65c369510756ffd1ae7a6378854dcba12638871a3eeff"
       ]
     },
+    "lauf@spieler3": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "lauf@spieler3.png",
+      "hashes": [
+        "1ca9978a9d418d7835af9a17293ba5df1616e9ad41ed70e7cacbe47bbd38a60b",
+        "3fff92888116faf6eeb3c8812878451b6b6adfb5948f2ef2c6de80349f098b25",
+        "2566734025d194aa638a0b07651ef3ff39ed5c4d94a19548b8ff61519721ba28",
+        "b2c217478cb863bee6be23c5ffaeac819afb3e28d5d18a10d74446e32a022a08",
+        "58fd00542c0e3984b531f7879c26ef92ac2d0727084de3c342045dc23cdb1bf2",
+        "691ae714531bfc4f0a14f177d1ec3a1d54694aa84d0b4287d39d994ef01edcc3",
+        "c0c3fef382632aef316da46edd8d0a53a3e346fe9b79bea94db0b9b66165f4e9",
+        "13978ad759631a333afae1e6dc6ec2b664acd2f3eed3e0cee063476fa328df33"
+      ]
+    },
+    "lauf@spieler4": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "lauf@spieler4.png",
+      "hashes": [
+        "4539882eb584a2400ffe1acb05171147a9baaaf2c68abcacdce9054505c16849",
+        "1eae77ab6e920845b87e7f8019b18959b4af6623686f65012801571c11fbce28",
+        "7157b490163710b25cba85749d5cc751afe3d2354793bb920c68a699ac4af6de",
+        "984d1da663cf878c78e3b82733b9165459d544b0be15bb50ae750107c29149f2",
+        "d26e254f86ee1f17af0b5f4a11315f36c6451eb6c7269f879fc3ff0238d0027e",
+        "b9de70cf435bb2e93c04cafc509fa88026bd1b3c17d0fb3b286a65260f32eeb6",
+        "acdccca0aaf652e4f544997bd5e8ad9f45c2a24e18b6967d020408d20db15007",
+        "f92a0a153a86bfd8e470b6e0d1336f336c302f77454a3277448f105d0b582adc"
+      ]
+    },
     "schritt": {
       "frames": 8,
       "fps": 8,
       "datei": "schritt.png",
+      "hashes": [
+        "072afe325f96fa0f9056fed5dd6cda5dcc4f13b62d4def5721541f82c6d84f06",
+        "221cfe88e90d4d4beb2ce60174b1b83a2d6cef72a049e8c22718b88e6d5b6ca7",
+        "4b3936197445c47818b88d2d2fb56d15cdcd7ee483b7cb2a9aff4b9516ea9d89",
+        "f541e5929ad219e9c83db923d04b4db387ca926510f17467301912abd7459d8e",
+        "30202d0ec0d2a82fac50e236abad68277b577e1aaa4ba49de6e5eb5d42b2f070",
+        "b5bf1760e12636c8c71641112d58a0f625eeb97c641900fb9bd22b2e21fe8883",
+        "70460f048ec4e384a9fa4f598e500a449eec5b5194e29d4fafe44dd5ce3df5d2",
+        "4a0a06deebb4fd24dea225907232e63e3e4bf049acebf637ea263cc5c5ca7698"
+      ],
+      "rahmen": [
+        -89,
+        -199,
+        190,
+        205
+      ],
+      "frameW": 242,
+      "frameH": 261
+    },
+    "schritt@spieler1": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "schritt@spieler1.png",
       "hashes": [
         "072afe325f96fa0f9056fed5dd6cda5dcc4f13b62d4def5721541f82c6d84f06",
         "221cfe88e90d4d4beb2ce60174b1b83a2d6cef72a049e8c22718b88e6d5b6ca7",
@@ -166,10 +348,79 @@
       "frameW": 242,
       "frameH": 261
     },
+    "schritt@spieler3": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "schritt@spieler3.png",
+      "hashes": [
+        "babd0b0c17b00682e00cdea7bf72b9a060f6578ef2c306cecc7426c580f881c3",
+        "f95be4b4ad803a1e297710c54b9bea313083002f68d38519a29e32caf94e0fa5",
+        "63009dc52e5aff79ab585c3d1247767afc979f41bff6416b1860b4379e045df1",
+        "c1b217b2c4aab2a55593cab3312ae193044e7819a5036550b8512c625609ab65",
+        "f1723f1d9e39967d67ef0c4c8ba6d28f769445b0c1b73e7de5fd8cff9b2fda45",
+        "b9e6b419945de530609c3b55acc4abafb7c3b575e2b2c0a786fe5bf3d58375e5",
+        "56db1b7bada37229a82e2b6e7e2848b8916f296d3ded0ab8c92af054f6b57c17",
+        "9cd41e8eb8ce04285c9567b9b83965c22b42ec5c86e4c62ff923049f65b3d4e3"
+      ],
+      "rahmen": [
+        -89,
+        -199,
+        190,
+        205
+      ],
+      "frameW": 242,
+      "frameH": 261
+    },
+    "schritt@spieler4": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "schritt@spieler4.png",
+      "hashes": [
+        "a0a6fb618ce286dd27ea81e59e4a1ddf43ad5d6505884d0fdd5fbae9333d33ea",
+        "c8b70c15b57cec74c442e2a509f646638626a658ee79ae7c5bb9abfb4565ca07",
+        "ceb15dee921fb0e790c081db2e242d820e4d8108c0cb3fce396a914b06528eeb",
+        "cd00bd91130f87b80a20b383076a89707004a405edbe421eff77d505013b0159",
+        "fe78fddf6ecc9e1a9c764d6d83b92de396e983f758faaa196f8875c7218f227b",
+        "e117b72a019ba984fe02486beefe59b5f6434659530b8d92e1b1c144a4f21a25",
+        "1aa24103218b38b5a71f5f81a531281c76225326ea8681c2080db2badd09e44b",
+        "a3b81eeb869c93cca5aa348af6db81a1297cab7907cbc1172d4bc240ebd27b4e"
+      ],
+      "rahmen": [
+        -89,
+        -199,
+        190,
+        205
+      ],
+      "frameW": 242,
+      "frameH": 261
+    },
     "trab": {
       "frames": 8,
       "fps": 8,
       "datei": "trab.png",
+      "hashes": [
+        "238c8affe1073acc9892e1822d89b4aad818f612cbe8212c54514b04d5835820",
+        "05cc95cf67dda2be2de330fbe56ffaabb8ca63040c9e02756f7b44adb6540887",
+        "5a5c6b089c89c2cf904bf8f7beeb06bc9a843c289d23bfaf118144803a603eb6",
+        "d10cb49f0ce57aabfbd4861654ee0eee403f00b6d62253e187f1b912e8297091",
+        "755472bdf09fdce4204b1f24ea5b2f56f9f59fa628db2d21d3577ee1bd95b453",
+        "ce71d7fc158efc7ba94b93784f15caaab86fdf0374896c03cdbf7bdfd1721b8e",
+        "ba6c7142f30a15dec527ddf82cbccac62c7d73cb1cc8d63d02ccfb6b16a12e87",
+        "cb8d436d2420503643a5fab53d3269a5b9a63211635af75e4da3d5a2e1f7b027"
+      ],
+      "rahmen": [
+        -89,
+        -199,
+        190,
+        205
+      ],
+      "frameW": 242,
+      "frameH": 261
+    },
+    "trab@spieler1": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "trab@spieler1.png",
       "hashes": [
         "238c8affe1073acc9892e1822d89b4aad818f612cbe8212c54514b04d5835820",
         "05cc95cf67dda2be2de330fbe56ffaabb8ca63040c9e02756f7b44adb6540887",
@@ -211,9 +462,58 @@
       ],
       "frameW": 242,
       "frameH": 261
+    },
+    "trab@spieler3": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "trab@spieler3.png",
+      "hashes": [
+        "fa8a99f8bd25ad2e702858a49af115ae338fe273d131f14e15010e4b510b1e85",
+        "3b43ae1ec8e7ef8676c7023541319b246c756f05fd8b33d5df89d00ac5018c62",
+        "19e72142469d6f94cf258f998d0870786ca1b6332308bffa960381fecfb22f2e",
+        "8c65e9aa0df2e2f0ba9fc09da9edb5d0c33a777e517e9299356953fbf25692a5",
+        "de34d70cde92614a554f4b528870b7d13d908748317d06464355bf308e836a6c",
+        "083b45b69147a848eac3d81ca74c99a2095aa174f0e59e2a8256f17557e7a3fb",
+        "3057dc8afe59f6afb2c8935784b9e4f596c9ce654d8d29b8f7aea8b7545c02ae",
+        "2467cb6b8e6c43be5980d8b929541951549a977d2915178afac57ec39e22f5ca"
+      ],
+      "rahmen": [
+        -89,
+        -199,
+        190,
+        205
+      ],
+      "frameW": 242,
+      "frameH": 261
+    },
+    "trab@spieler4": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "trab@spieler4.png",
+      "hashes": [
+        "791a5bfc6d5afb3a8707f4069c320c25c33c57a36e7e97373ecab0897cdce4ea",
+        "a9952a28fa6ea7840cb472e04da180811c20af7d9d875b7e291d993c5c5e63d7",
+        "144c03cbeaa52ace544a45b288e7e04a21395de0a28bb35cd7eb8d0a9bed0b2e",
+        "b51792905a916cc363dac841e5590c8f918da3662085e5bc1ed2b1d7aea15a95",
+        "1f04cc44091ed157960d43dd50f7880eb516d4b040a5298508add3b7c54a97d1",
+        "b2612053d0aea26a57e516d2d2dd36365758be266aa7d55b46f48f865e814d96",
+        "fba221b469527623e9c6e68b25ce1317a5733d1745c966cf32ae75a26d2dd638",
+        "5bff67206c0277112295dd5e52ccb0bda0920f0cba572886839f3bc069065ffd"
+      ],
+      "rahmen": [
+        -89,
+        -199,
+        190,
+        205
+      ],
+      "frameW": 242,
+      "frameH": 261
     }
   },
   "varianten": [
-    "spieler2"
+    "spieler1",
+    "spieler2",
+    "spieler3",
+    "spieler4"
   ]
 }

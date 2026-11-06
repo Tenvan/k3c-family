@@ -65,7 +65,7 @@ keine (Defaults als D-MG1-Zeilen in B-701)
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | MG1.1 | `MG1.1-integration-monarch-mcp.md` | Umsetzung | autonom | fertig |
-| MG1.2 | `MG1.2-spielerfarben-varianten.md` | Umsetzung | autonom | offen |
+| MG1.2 | `MG1.2-spielerfarben-varianten.md` | Umsetzung | autonom | fertig |
 | MG1.3 | `MG1.3-review.md` | Review | autonom | offen |
 
 Lane `monarch`, Umsetzung Sonnet, Review Opus; keine Mensch-Session (Sichtprüfung in PS1). Nur ein Asset in der Gruppe, daher statt 3–6 Assets je Session:

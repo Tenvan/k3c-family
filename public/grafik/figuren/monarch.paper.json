@@ -813,6 +813,21 @@
       "tausch": {
         "koenigsblau": "smaragd"
       }
+    },
+    "spieler1": {
+      "tausch": {
+        "koenigsblau": "koenigsblau"
+      }
+    },
+    "spieler3": {
+      "tausch": {
+        "koenigsblau": "purpur"
+      }
+    },
+    "spieler4": {
+      "tausch": {
+        "koenigsblau": "koenigsrot"
+      }
     }
   },
   "ausgabe": {
