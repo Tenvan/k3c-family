@@ -92,5 +92,5 @@ describe('Beispielantworten', () => {
     expect(lies(join(FIX, 'ui/AssetsReview.json')).basisCommit).toMatch(/^[0-9a-f]{7,}$/);
     const status = execFileSync('git', ['status', '--short'], { cwd: dir, encoding: 'utf8' });
     expect(status.trimEnd().split('\n').sort()).toEqual([' M public/grafik/figuren/monarch.paper.json', ' M public/grafik/requisiten/banner.paper.json']);
-  });
+  }, 20_000); // echte Git-Aufrufe, im vollen Lauf unter Last langsamer als 5 s
 });

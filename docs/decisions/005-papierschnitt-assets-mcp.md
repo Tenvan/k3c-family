@@ -91,8 +91,8 @@ Beispiel gekürzt (`…` steht für ausgelassene Pfaddaten):
 | Tool | Zweck |
 |---|---|
 | `assets_guide {rig?}` | Anleitung: Styleguide, Materialien, Pflicht-Teile, Proportionen, Beispiel-Spec; Einstieg jeder Asset-Arbeit |
-| `assets_list {rig?, ordner?, geaendert?}`, `assets_get {id, felder?}` | lesen |
-| `assets_create {id, rig, beschreibung, ordner}` | neue Spec aus der Rig-Vorlage |
+| `assets_list {rig?, gruppe?, geaendert?}`, `assets_get {id, felder?}` | lesen |
+| `assets_create {id, rig, beschreibung, gruppe}` | neue Spec aus der Rig-Vorlage |
 | `assets_set {id, patch}` | JSON-Merge-Patch; atomar: validieren, rendern, erst dann schreiben |
 | `assets_style_get`, `assets_style_set {patch}` | Styleguide |
 | `assets_render {id \| alle \| job}` | rendern; `alle` und Stil-Render als Job mit Abfrage |

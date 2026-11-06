@@ -34,7 +34,7 @@ Navigation und Katalog (WB1), MCP (MC1).
 
 ## Regeln und Einschränkungen
 
-Nur `tools/k3c-workbench/internal/assetsui/` (Besitzer aller Asset-RPC-Methoden), `tools/k3c-workbench/internal/review/` (neu: Basis, `git show`, Cache `.cache/paper/<renderKey>/`, Diff) und `tools/k3c-workbench/frontend/src/assets/review/`. Signaturen der RPC-Methoden nur laut Vertrag (sonst Ticket). Specs aus `git show` kanonisch hashen (PV1.3 `hash.ts`); `origin/develop` ohne Fetch → `basisStand: lokal`. Slider aus `@webkit/atoms` (PV1.8).
+Nur `tools/k3c-workbench/internal/assetsui/` (Besitzer aller Asset-RPC-Methoden), `tools/k3c-workbench/internal/review/` (neu: Basis, `git show`, Cache `.cache/paper/<renderKey>/`, Diff) und `tools/k3c-workbench/frontend/src/assets/review/`. Signaturen der RPC-Methoden nur laut Vertrag (sonst Ticket). Specs aus `git show` kanonisch hashen (PV1.3 `hash.ts`); `origin/develop` ohne Fetch → `basisStand: lokal`. `ValueSlider` aus `@webkit/atoms` (PV1.8; der rohe Radix-`Slider` bleibt daneben). Typen der Asset-Methoden in `frontend/src/assets/review/types.ts`; `frontend/src/api/wails.ts` gehört WB1 und bleibt bei `unknown`.
 
 ## Beispiele
 

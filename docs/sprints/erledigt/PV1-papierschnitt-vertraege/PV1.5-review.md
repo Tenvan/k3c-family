@@ -1,6 +1,6 @@
 # PV1.5 · Review PV1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -53,5 +53,8 @@ task check:race
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01–AC-07 belegt (Nachweise in den Session-Ergebnissen PV1.1–PV1.8). `task check` grün (3022 Tests), `task check:go` grün (7 min 41 s), `task check:race` lokal übersprungen (kein C-Compiler, läuft still durch).
+- Linux: CI-Lauf `workflow_dispatch` auf `sprint/pv1` (Run 42259675603) komplett grün; `tools/paper/probe/probe.test.ts` 7/7 auf `ubuntu-latest`, Hashes byte-gleich mit Windows → Golden-Regel **exakt** in `docs/standards/paper-spec.md` › 6 eingetragen.
+- Verträge konsistent: Felder und Regeln Standard ↔ Schema/`check.ts` (Review PV1.3), CLI-Befehle ↔ Attrappe, RPC-Methoden ↔ `internal/assetsui`, `uiMethods`, `wails.ts` (`TestUIMethodsWieWailsTS`), Prompt-Platzhalter (`prompts.test.ts`).
+- Lane-Pfade RD1, MC1, WB1, RV1 disjunkt; korrigiert: 005 `ordner` → `gruppe`, RV1 nutzt `ValueSlider` und eigene Typdatei statt `wails.ts` (gehört WB1).
+- Befund behoben: Git-Test des Review-Repos im vollen Lauf über 5 s → Timeout 20 s. Keine neuen Tickets.

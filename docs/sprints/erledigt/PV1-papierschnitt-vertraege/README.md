@@ -1,6 +1,6 @@
 # PV1 · INF, DEV, PAP · Papierschnitt-Verträge: Domäne, Spec-Schema, Styleguide, Render-, MCP- und Review-Vertrag
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** INF, DEV, PAP
 - **Reife:** bereit
@@ -68,11 +68,13 @@ keine blockierende; vorab getroffene Entscheidungen (u. a. neue Abhängigkeiten 
 | PV1.3 | `PV1.3-spec-schema-stil-fixtures.md` | Umsetzung | autonom | fertig |
 | PV1.4 | `PV1.4-mcp-und-review-vertrag.md` | Umsetzung | autonom | fertig |
 | PV1.8 | `PV1.8-workbench-stubs.md` | Umsetzung | autonom | fertig |
-| PV1.5 | `PV1.5-review.md` | Review | autonom | offen |
+| PV1.5 | `PV1.5-review.md` | Review | autonom | fertig |
 
 Reihenfolge auf dem Sprint-Branch (nacheinander): PV1.1 → PV1.2 → PV1.6 → PV1.3 → PV1.4 → PV1.8 → PV1.5. Modelle: PV1.1 Sonnet, PV1.2 Sonnet, PV1.6 Sonnet (Browser), PV1.3 Opus, PV1.4 Opus, PV1.8 Sonnet, PV1.5 Opus.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-06, Review PV1.5 (Claude, autonom): AC-01–AC-07 erfüllt, Nachweise in PV1.1, PV1.2, PV1.6, PV1.3, PV1.4, PV1.8.
+AC-05: resvg-Probe auf Windows und Linux (CI-Run 42259675603) byte-gleich → Golden-Regel exakt; Sichtprüfung gegen den Browser folgt in PS1.
+Behoben: Slider-Atom brach das Studio (jetzt `ValueSlider`), Timeout des Git-Fixture-Tests, Pfade in 005 und RV1.
+Vorab-Entscheidungen D-13–D-17 in B-701 (Bestätigung in PS1.1); `check:race` lokal übersprungen (kein C-Compiler). Keine neuen Tickets.

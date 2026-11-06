@@ -123,9 +123,10 @@ Fehler `{feld, regel, text}`; `feld` als Pfad wie `teile[2].lagen[0].material`. 
 - **Determinismus:** kein Zufall in Spec oder Renderer; Seed der Papierstruktur aus der Asset-ID; Physik mit festem
   Zeitschritt 1/120 s und 240 Schritten Einschwingen vor Frame 0.
 - **Golden-Regel:** Golden ist der SHA-256 jeder PNG-Datei (`golden.json` je Gruppe, Manifest je Asset). Ein Render ist
-  gleich, wenn die Hashes **exakt** gleich sind. Stand 2026-11-06: Windows rendert zweimal byte-gleich (resvg-Probe,
-  PV1.3); der Abgleich Linux ↔ Windows folgt im CI-Lauf von PV1.5. **Weicht Linux ab**, gilt stattdessen die Toleranz:
-  gleich, wenn höchstens 0,1 % der Pixel eine Kanal-Differenz > 2 haben; PV1.5 trägt das Ergebnis hier ein.
+  gleich, wenn die Hashes **exakt** gleich sind. **Festgelegt in PV1.5 (2026-11-06): exakt.** Windows rendert
+  zweimal byte-gleich (resvg-Probe, PV1.3), und der CI-Lauf auf Linux (`ubuntu-latest`, Run 42259675603) liefert dieselben
+  SHA-256 wie `fixtures/render/hashes.json`. Rückfall, falls eine Plattform später abweicht (neues Ticket): gleich, wenn
+  höchstens 0,1 % der Pixel eine Kanal-Differenz > 2 haben.
 - Golden neu schreiben nur bei gewollter Änderung (neue `version` der Spec, Stil- oder Renderer-Änderung) mit Begründung im Commit.
 
 `golden.json` = `{"<id>": {"renderKey": "…", "dateien": {"<datei>.png": "<sha256>"}}}`.
