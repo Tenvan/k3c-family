@@ -1,14 +1,14 @@
 # WB1 · DEV, INF · Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** PAP
 - **Domäne:** DEV, INF
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-699
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 8b0e2f18
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-11-06, Chat (🧑: „alles bis zur Abnahme abarbeiten“; Defaults in B-701)
 
 ## Ausgangslage
 

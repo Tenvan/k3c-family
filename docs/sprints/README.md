@@ -9,6 +9,10 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| RD1 | PAP | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | `aktiv/RD1-papierschnitt-renderer/` |
+| MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
+| WB1 | DEV, INF | PAP | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | – | `aktiv/WB1-workbench-development-assets/` |
+| RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | `aktiv/BD10-schreibende-endpunkte-schutz/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
@@ -29,10 +33,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| RD1 | INF | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | Entwurf | `geplant/RD1-papierschnitt-renderer/` |
-| MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | Entwurf | `geplant/MC1-asset-mcp-tools/` |
-| WB1 | DEV, INF | PAP | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | – | Entwurf | `geplant/WB1-workbench-development-assets/` |
-| RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | Entwurf | `geplant/RV1-asset-review/` |
 | US1 | CLI | PAP | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | – | Entwurf | `geplant/US1-spiel-auf-papierschnitt/` |
 | MG1 | CLI | PAP | Papierschnitt-Migration: Monarch und Spielerfarben | – | Entwurf | `geplant/MG1-papier-monarch-spielerfarben/` |
 | MG2 | CLI | PAP | Papierschnitt-Migration: Reittiere | – | Entwurf | `geplant/MG2-papier-reittiere/` |
