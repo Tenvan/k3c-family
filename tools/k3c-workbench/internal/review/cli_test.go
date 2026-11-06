@@ -2,6 +2,7 @@ package review
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"os"
 	"path/filepath"
@@ -25,25 +26,23 @@ var fakeBilder = map[string][2]string{
 
 func (f *fakeFrames) Frame(ctx context.Context, spec, animation string, frame int, variante, out string) (FrameAntwort, error) {
 	f.aufrufe.Add(1)
-	a, err := f.CLI.Frame(ctx, spec, animation, frame, variante, out)
-	if err != nil {
-		return a, err
-	}
-	id := strings.TrimSuffix(filepath.Base(spec), endung)
-	if bilder, ok := fakeBilder[id]; ok {
+	// Die echte CLI (RD1) lehnt die Basis HEAD~1 ab (Reittier fehlt dort); die Attrappe rendert ohne CLI.
+	if bilder, ok := fakeBilder[strings.TrimSuffix(filepath.Base(spec), ".paper.json")]; ok {
 		i := 1
 		if strings.Contains(filepath.ToSlash(spec), "/basis/") {
 			i = 0
 		}
-		raw, err := os.ReadFile(fixture(filepath.Join("render", bilder[i])))
+		raw, err := os.ReadFile(filepath.Join(repoRoot, "tools/paper/fixtures/render", bilder[i]))
 		if err != nil {
-			return a, err
+			return FrameAntwort{}, err
 		}
-		if err := os.WriteFile(out, raw, 0o644); err != nil {
-			return a, err
+		var fx struct{ Teile map[string][]int }
+		if err := json.Unmarshal(lies(nil, fixture("ui/AssetsFrame.json")), &fx); err != nil {
+			return FrameAntwort{}, err
 		}
+		return FrameAntwort{Datei: out, Teile: fx.Teile}, os.WriteFile(out, raw, 0o644)
 	}
-	return a, nil
+	return f.CLI.Frame(ctx, spec, animation, frame, variante, out)
 }
 
 func cli() CLI { return CLI{Root: repoRoot} }
