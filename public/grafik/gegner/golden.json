@@ -7,6 +7,22 @@
       "lauf.png": "c6538dc2f461324200066d98fbdc82bc6000ce95c52a93e88f23e7295032901a"
     }
   },
+  "eisenkaefer": {
+    "renderKey": "2a17589a6cd4014dada35ed0c86789d4f0799ffdaaeb05628c19c96367178f3b",
+    "dateien": {
+      "angriff.png": "0c5036a0a50f172c104f57bb219f3e95dd06a6dae13d8ebffaa6d03697b5ad98",
+      "idle.png": "427f68fd8cad562f003ed8f4187aa0fa5a1426eb890ccca8f1188bfc3ebdf4c3",
+      "lauf.png": "9d52cf7897621278a4dba2baa9389c6cc3f8a9432c703e59e0b1069577eb43e5"
+    }
+  },
+  "feuergeist": {
+    "renderKey": "3589f8fc0d466771a2995068aa390cdba7afde2601f4f1909a8d2766b6e2be00",
+    "dateien": {
+      "angriff.png": "96a5eecc3ccc10386e9cc518307127ce0cf7f1f84aebe1414ffd3bb437c48a38",
+      "idle.png": "b03d18468e2398e22010cc5beb205703176c19cc92608f4de0313abe7a7f439e",
+      "lauf.png": "80768cfb73a7f8831d1012ec40ac1616e927de2e13fc3a6a853958b1253f08de"
+    }
+  },
   "fledermaus": {
     "renderKey": "962be63e2530011239e4d3cf192ab91cc48118a5b1734ed45e6cd075a7ac6a3b",
     "dateien": {
@@ -55,6 +71,14 @@
       "lauf.png": "622abd52e4f20ab41a25a8d2e72a7f18ec176a4029e21c93d3951ac262bb3c23"
     }
   },
+  "kristallspinne": {
+    "renderKey": "6ec0827970b6d5d5f7e7045dc7b39ade5c8259d3e68a6c2d20005802bc54c01e",
+    "dateien": {
+      "angriff.png": "e5adbc7ee981dcd1c63d9afb7e30a4a4a91730224c391c0c2e3ea3893daa4620",
+      "idle.png": "b0c2e6e31eaa3c9c10bbd7ae8830449e2c1a15d44c6af36c9542f1c592552943",
+      "lauf.png": "f64bce8d8cc5ccd33ed08d0e8803bcde03ff295358334618e779f1f69e6277dd"
+    }
+  },
   "kristallwaechter": {
     "renderKey": "b7af9e042450b28afeff67019b91b9bce4cbd03fad2c91b78fc0a947aa21ec58",
     "dateien": {
@@ -85,6 +109,14 @@
       "angriff.png": "5aef9f47f1e9445abec04397079c8822ff9378e76b494b5bec8c0239f6b095ce",
       "idle.png": "99570ac74c5f1a612b1a110a10f8c2fb4524168890b63b6d528d3bc22708be25",
       "lauf.png": "40fb515832e43419f269bfe35941588c328e97adf7b0b3fd46b366fb7c760524"
+    }
+  },
+  "splitterling": {
+    "renderKey": "55ae175abf095cb173eacada8e6a106046ddf415b51fd9e1d1cf76179cad9df3",
+    "dateien": {
+      "angriff.png": "7f80fed43e5fd95af4456eaaa5a3b79d4ed829a94ce436c88025f763d786da53",
+      "idle.png": "93d4bfe7e368c62df1bd1fd77d0d9498c721f3efb7be25a05b42c523a7b530f3",
+      "lauf.png": "c4f443134a109d60835591f317fef891f7cda4dfd6f16b5708b4438e622f4bc6"
     }
   },
   "wolf": {

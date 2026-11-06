@@ -5,6 +5,16 @@
     "manifest": "alphawolf/manifest.json"
   },
   {
+    "id": "eisenkaefer",
+    "rig": "requisite",
+    "manifest": "eisenkaefer/manifest.json"
+  },
+  {
+    "id": "feuergeist",
+    "rig": "requisite",
+    "manifest": "feuergeist/manifest.json"
+  },
+  {
     "id": "fledermaus",
     "rig": "requisite",
     "manifest": "fledermaus/manifest.json"
@@ -35,6 +45,11 @@
     "manifest": "hoehlentroll/manifest.json"
   },
   {
+    "id": "kristallspinne",
+    "rig": "requisite",
+    "manifest": "kristallspinne/manifest.json"
+  },
+  {
     "id": "kristallwaechter",
     "rig": "figur",
     "manifest": "kristallwaechter/manifest.json"
@@ -53,6 +68,11 @@
     "id": "skelett",
     "rig": "figur",
     "manifest": "skelett/manifest.json"
+  },
+  {
+    "id": "splitterling",
+    "rig": "requisite",
+    "manifest": "splitterling/manifest.json"
   },
   {
     "id": "wolf",

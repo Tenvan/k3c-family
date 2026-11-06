@@ -1,6 +1,6 @@
 # MG4.4 · Eisenkäfer, Feuergeist, Kristallspinne, Splitterling
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -41,9 +41,9 @@ Keine neuen Rig-Typen, kein `assets_style_set`.
 
 ## Fertig, wenn
 
-- [ ] AC-01: alle 17 Assets der Gruppe gültig.
-- [ ] AC-02: Golden vollständig, `tools/paper` grün.
-- [ ] AC-03: jede Animation geprüft; Review ohne roten Eintrag.
+- [x] AC-01: vier Assets gültig.
+- [x] AC-02: `golden.json` eingetragen, `tools/paper`-Tests grün.
+- [x] AC-03: jede Animation mit `assets_preview` geprüft; `assets_review` ohne roten Eintrag.
 
 ## Prüfen
 
@@ -57,5 +57,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `assets_list {gruppe: gegner}` meldet eisenkaefer, feuergeist, kristallspinne, splitterling (requisite) gültig, die Gruppe hat 17 gültige Gegner.
+- AC-02 geprüft: `task gen:paper` trägt sie in `public/grafik/gegner/golden.json` ein; fremde Gruppen zurückgesetzt; `bunx vitest run tools/paper tests/planning.test.ts` 1110/1110 grün.
+- AC-03 geprüft: alle Animationen mit `assets_preview` angesehen. Befunde behoben: Kristallspinne hob im Angriff die Hinterbeine (bein-1 ist hinten) → jetzt bein-3/-4; Rahmen der Spinne auf `[-46,-50,92,56]` verbreitert. Feuergeist trug die Feuerball-Hand dauerhaft wie eine Pfeife → Hand liegt in idle/lauf hinter dem Körper.
+- B-701: D-MG4-01 bis -06 eingetragen (Rigs, Vierbeiner-Animationen, Größe, Platzhalter-Sheets, Farben, Teile nur im Angriff).
+- Manuell geprüft: niemand. Neue Tickets: keine.
