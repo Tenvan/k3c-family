@@ -64,7 +64,7 @@ keine (Defaults als D-MG2-Zeilen in B-701)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| MG2.1 | `MG2.1-pferde.md` | Umsetzung | autonom | offen |
+| MG2.1 | `MG2.1-pferde.md` | Umsetzung | autonom | fertig |
 | MG2.2 | `MG2.2-fabelwesen-hirsch.md` | Umsetzung | autonom | offen |
 | MG2.3 | `MG2.3-woelfe-elefant.md` | Umsetzung | autonom | offen |
 | MG2.4 | `MG2.4-review.md` | Review | autonom | offen |

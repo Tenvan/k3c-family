@@ -1,7 +1,22 @@
 [
   {
+    "id": "albtraum",
+    "rig": "vierbeiner",
+    "manifest": "albtraum/manifest.json"
+  },
+  {
     "id": "pferd",
     "rig": "vierbeiner",
     "manifest": "pferd/manifest.json"
+  },
+  {
+    "id": "rappe",
+    "rig": "vierbeiner",
+    "manifest": "rappe/manifest.json"
+  },
+  {
+    "id": "schimmel",
+    "rig": "vierbeiner",
+    "manifest": "schimmel/manifest.json"
   }
 ]

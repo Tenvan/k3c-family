@@ -1,6 +1,6 @@
 # MG2.1 · Pferde: pferd prüfen, rappe, schimmel, albtraum
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -60,5 +60,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `assets_list {gruppe: reittiere}` → 4 Assets, 0 ungültig (pferd, rappe, schimmel, albtraum).
+- AC-02 geprüft: `task gen:paper` ok, `golden.json` und `index.paper.json` der Gruppe mit allen vier; Zeilenend-Änderungen an `figuren/` und `pferd/manifest.json` zurückgenommen (fremde Gruppe, kein Inhalt).
+- AC-03 geprüft: Preview pferd galopp 4, schritt 0, trab 4; rappe galopp 4, schritt 0, trab 2; schimmel trab 4, galopp 0, schritt 6; albtraum schritt 4, galopp 2, trab 0 – Form wie pferd, Farben laut D-MG2-01, Beine folgen dem Rumpf-Material. `assets_review` (HEAD): 3× `neu`, kein `ungueltig`.
+- Befunde (D-MG2-02 bis -05 in B-701): Schweif ragt in `galopp` links aus dem Rahmen (alle Pferde, aus RD1); `assets_set` sortiert die Schlüssel des Patches (Animationen alphabetisch, erste ist jetzt `galopp`); `assets_set` wiederholt jedes geänderte Feld in der Antwort (sehr lang bei ganzen Teilen); `assets_create` mit Rig `vierbeiner` rendert nicht (Vorlage ohne Gangart).
+- Arbeit nur über MCP (`assets_create`, `assets_set`, `assets_preview`, `assets_review`, `assets_list`); `task gen:paper` wegen B-707.
