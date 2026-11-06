@@ -1,0 +1,32 @@
+[
+  {
+    "id": "bauer",
+    "rig": "figur",
+    "manifest": "bauer/manifest.json"
+  },
+  {
+    "id": "bogenschuetze",
+    "rig": "figur",
+    "manifest": "bogenschuetze/manifest.json"
+  },
+  {
+    "id": "elite-bogenschuetze",
+    "rig": "figur",
+    "manifest": "elite-bogenschuetze/manifest.json"
+  },
+  {
+    "id": "elite-krieger",
+    "rig": "figur",
+    "manifest": "elite-krieger/manifest.json"
+  },
+  {
+    "id": "krieger",
+    "rig": "figur",
+    "manifest": "krieger/manifest.json"
+  },
+  {
+    "id": "landstreicher",
+    "rig": "figur",
+    "manifest": "landstreicher/manifest.json"
+  }
+]
