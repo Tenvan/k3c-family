@@ -19,6 +19,14 @@ import { umhangSvg } from './umhang';
 import { rideMatrix, rideText, vierbeinerMatrizen } from './vierbeiner';
 import { gangartVon, pferdTeile, pruefeVierbeiner } from './vierbeinerBild';
 
+/** Ordner? Nicht lesbare Einträge (fremde Rechte) zählen nicht. */
+const istOrdner = (p: string) => {
+  try {
+    return statSync(p).isDirectory();
+  } catch {
+    return false;
+  }
+};
 const abgelehnt = (text: string) => new Abgelehnt([{ feld: 'animationen.reittier', regel: 'reittier-unbekannt', text }]);
 
 /** Spec des Reittiers: erst im Ordner der Spec, dann in Geschwister-Gruppen (../<gruppe>/<id>.paper.json). */
@@ -27,7 +35,7 @@ export function findeReittier(specPfad: string, id: string): string {
   const ordner = dirname(specPfad), eltern = dirname(ordner), name = `${id}.paper.json`;
   if (existsSync(join(ordner, name))) return join(ordner, name);
   const gruppen = existsSync(eltern) ? readdirSync(eltern).sort().map((g) => join(eltern, g)) : [];
-  const treffer = gruppen.find((g) => g !== ordner && statSync(g).isDirectory() && existsSync(join(g, name)));
+  const treffer = gruppen.find((g) => g !== ordner && existsSync(join(g, name)) && istOrdner(g));
   if (!treffer) throw abgelehnt(`Reittier „${id}“ fehlt neben ${basename(specPfad)} und in den Nachbar-Gruppen`);
   return join(treffer, name);
 }

@@ -8,6 +8,7 @@ import type { Spec, Stil } from '../schema/types';
 import { diffSpecs } from '../cli/diff';
 import { frameRendern } from '../cli/frame';
 import { pixeldiff } from '../cli/pixeldiff';
+import { pruefeRenderRegeln } from '../rig/pruefen';
 import { rel, renderOrdner, renderSpec } from '../render/ausgabe';
 import { Abgelehnt, Aufruf } from '../render/fehler';
 import { ladeStil } from '../render/stil';
@@ -34,9 +35,12 @@ export function datei(p: string | undefined, was: string): string {
   return p;
 }
 
+/** Schema- und Fachregeln (check.ts), danach die Render-Regeln der Rigs als Trockenprüfung. */
 const validate: Befehl = (pos, _opt, o) => {
-  const fehler = checkSpecFile(datei(pos[0], 'Spec'), o.stil ?? ladeStil());
+  const pfad = datei(pos[0], 'Spec'), stil = o.stil ?? ladeStil(), fehler = checkSpecFile(pfad, stil);
   if (fehler.length) throw new Abgelehnt(fehler);
+  const render = pruefeRenderRegeln(JSON.parse(readFileSync(pfad, 'utf8')) as Spec, pfad, stil);
+  if (render.length) throw new Abgelehnt(render);
   return { fehler: [] };
 };
 

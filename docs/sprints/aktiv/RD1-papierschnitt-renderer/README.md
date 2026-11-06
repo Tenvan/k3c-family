@@ -85,11 +85,13 @@ keine (Defaults unter Regeln › Festlegungen; D-08, D-10, D-12 brauchen einen V
 | RD1.2 | `RD1.2-rig-figur-umhang.md` | Umsetzung | autonom | fertig |
 | RD1.3 | `RD1.3-rig-vierbeiner-reiten.md` | Umsetzung | autonom | fertig |
 | RD1.4 | `RD1.4-frame-diff-gen-vertrag.md` | Umsetzung | autonom | fertig |
-| RD1.5 | `RD1.5-review.md` | Review | autonom | offen |
+| RD1.5 | `RD1.5-review.md` | Review | autonom | fertig |
 
 Reihenfolge auf dem Sprint-Branch (nacheinander, Lane `renderer`): RD1.1 → RD1.2 → RD1.3 → RD1.4 → RD1.5. Modelle: RD1.1 Opus, RD1.2 Opus, RD1.3 Opus, RD1.4 Sonnet, RD1.5 Opus.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-06 (RD1.5, Claude): AC-01–AC-05 erfüllt, Nachweise in RD1.1–RD1.4 (Golden auf Linux bestätigt, CI-Run 42279806963 grün).
+Sprint-Review (Opus): drei wichtige Befunde behoben (Golden-Regel im Vergleich, `validate` mit Render-Regeln, Aufräumen nur toter Prozesse); leichte Befunde als offene Punkte im Ergebnis von RD1.5.
+Entscheidungen: B-701 D-RD1-01 bis D-RD1-08; Vertrags-Nachträge nötig für Reit-Rahmen, renderKey beim Reiten, Saum, neue CLI-Regeln.
+Offen für 🧑: Sichtvergleich mit dem Prototyp (Monarch idle/lauf/galopp, Pferd) beurteilen.

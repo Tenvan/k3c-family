@@ -1,5 +1,5 @@
 // RD1.1: Render-CLI validate und render nach dem Vertrag (paper-spec.md › 8), in-process über run().
-import { copyFileSync, mkdtempSync, readdirSync } from 'node:fs';
+import { copyFileSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -45,5 +45,41 @@ describe('paper-CLI', { timeout: 60_000 }, () => {
     expect(run(['validate', join(SPECS, 'gibts-nicht.paper.json')])).toMatchObject({ code: 2, stdout: '' });
     expect(run(['render', '--animation'])).toMatchObject({ code: 2, stdout: '' });
     expect(run(['validate']).stderr).not.toBe('');
+  });
+});
+
+describe('validate prüft auch die Render-Regeln (Sprint-Review RD1.5)', { timeout: 60_000 }, () => {
+  const mit = (id: string, aendern: (s: Record<string, any>) => void, extra: string[] = []) => {
+    // Eigene Gruppen-Ebene: die Reittier-Suche schaut auch in Nachbar-Ordner (sonst fände sie andere Temp-Tests).
+    const dir = join(mkdtempSync(join(tmpdir(), 'paper-validate-')), 'gruppe');
+    mkdirSync(dir);
+    const s = JSON.parse(readFileSync(join(SPECS, `${id}.paper.json`), 'utf8'));
+    aendern(s);
+    writeFileSync(join(dir, `${id}.paper.json`), JSON.stringify(s));
+    for (const e of extra) copyFileSync(join(SPECS, `${e}.paper.json`), join(dir, `${e}.paper.json`));
+    return antwort(['validate', join(dir, `${id}.paper.json`)]);
+  };
+  const regeln = (r: { json: { fehler: { regel: string }[] } }) => r.json.fehler.map((f) => f.regel);
+
+  it('figur-Animation ohne Keyframes außer idle/lauf: Exit 1 animation-unbekannt', () => {
+    const r = mit('monarch', (s) => { s.animationen.winken = { frames: 4 }; }, ['pferd']);
+    expect(r.code).toBe(1);
+    expect(regeln(r)).toEqual(['animation-unbekannt']);
+  });
+
+  it('Reittier fehlt: Exit 1 reittier-unbekannt', () => {
+    const r = mit('monarch', () => {});
+    expect(r.code).toBe(1);
+    expect(regeln(r)).toEqual(['reittier-unbekannt']);
+  });
+
+  it('vierbeiner ohne gangart oder ohne bein: Exit 1', () => {
+    expect(regeln(mit('pferd', (s) => { s.animationen.stand = { frames: 1 }; }))).toEqual(['animation-unbekannt']);
+    expect(regeln(mit('pferd', (s) => { delete s.bein; }))).toEqual(['pflicht-teil-fehlt']);
+  });
+
+  it('gültige Specs bleiben gültig', () => {
+    expect(mit('monarch', () => {}, ['pferd']).code).toBe(0);
+    expect(mit('mauer', () => {}).code).toBe(0);
   });
 });

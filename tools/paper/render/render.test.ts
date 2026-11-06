@@ -95,9 +95,16 @@ describe('render: Fehlerfälle beim Schreiben (Review RD1.1)', { timeout: 60_000
 
   it('Reste früherer Läufe (.id.tmp-*, .id.alt-*) werden beim nächsten Render aufgeräumt', () => {
     const dir = mitMauer();
-    mkdirSync(join(dir, '.mauer.tmp-999'));
-    mkdirSync(join(dir, '.mauer.alt-999'));
+    mkdirSync(join(dir, '.mauer.tmp-99999999'));
+    mkdirSync(join(dir, '.mauer.alt-99999999'));
     renderSpec(join(dir, 'mauer.paper.json'), { stil });
     expect(readdirSync(dir).filter((f) => f.startsWith('.'))).toEqual([]);
+  });
+
+  it('Temp-Ordner laufender Prozesse bleiben stehen (paralleler Render)', () => {
+    const dir = mitMauer(), fremd = `.mauer.tmp-${process.ppid}`;
+    mkdirSync(join(dir, fremd));
+    renderSpec(join(dir, 'mauer.paper.json'), { stil });
+    expect(readdirSync(dir).filter((f) => f.startsWith('.'))).toEqual([fremd]);
   });
 });

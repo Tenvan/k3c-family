@@ -1,6 +1,6 @@
 # RD1.5 · Review: Sprint RD1 abnehmen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -70,4 +70,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-01 bis AC-05: Nachweise je Kriterium in RD1.1–RD1.4 geprüft, die Tests messen die Kriterien (AC-01 `bin/paper.test.ts`, AC-02 `golden/golden.test.ts` + `golden/public.test.ts`, AC-03 `rig/*.test.ts` + Sichtvergleich, AC-04 `golden/stil.test.ts`, AC-05 `vertrag/cli.vertrag.test.ts`).
+- Prüfungen: `task check` grün; `task check:go` grün bis auf `cmd/k3c-load` › `TestGleicherSeedGleicheEingaben` (zeitabhängig unter Last, einzeln grün, RD1 ändert keinen Go-Code); `task check:race` lokal übersprungen (kein gcc). CI per `workflow_dispatch` auf `sprint/rd1` (Run 42279806963, `77960eac`): alle Jobs grün – Golden auf Linux byte-gleich zu Windows, Regel `exakt` bestätigt.
+- Sprint-Review (Opus, ganzer Branch): nichts Kritisches; drei wichtige Befunde behoben: (1) Golden-Vergleich folgt jetzt `GOLDEN_REGEL` (`goldenAbweichungen`, Test „anderer Hash: exakt meldet …, toleranz vergleicht die Pixel“); (2) `validate` prüft auch die Render-Regeln (`rig/pruefen.ts`: Figur-Animationen, Reittier, Gangart, Beinteile; vier Tests); (3) Aufräumen löscht nur Reste beendeter Prozesse (Test „Temp-Ordner laufender Prozesse bleiben stehen“). Dazu: Reittier-Suche überspringt nicht lesbare Nachbarordner.
+- Leichte Befunde, offen (für Folge-Tickets der Haupt-Session): Register-Import hängt an `render/ausgabe.ts` (render → rig); `render <ordner>` ohne Specs schreibt `index.paper.json = []`; `pixeldiff` prüft die PNG-Signatur nicht; kein Test über den echten Prozess-Einstieg (`bun …/paper.ts`); Pferd-Geometrie (Hüfte −56, HL1/HL2, Zügelpunkte, Boden −103) fest im Code statt aus Spec-Pivots (relevant für weitere Reittiere, MG*); Toleranzen in `gangarten.test.ts` grob; Task `paper` ohne `package.json`/`bun.lock` in `sources`; bun (JSC) vs. node (V8) bei `Math.sin` unter Linux ungeprüft (CI prüft node).
+- Sichtvergleich mit dem Prototyp (Claude, Read-Tool): Idle, Lauf, Pferd-Galopp und Reiten stimmen in Form, Farben und Bewegung; Unterschiede: Saum fehlt (D-RD1-03), Zügel blasser; endgültige Beurteilung durch 🧑.

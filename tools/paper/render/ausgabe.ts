@@ -59,11 +59,22 @@ const weg = (p: string) => {
   }
 };
 
+/** Läuft der Prozess noch? Reste laufender Prozesse (paralleler Render) bleiben stehen. */
+function laeuft(pid: number): boolean {
+  if (pid === process.pid) return false;
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (e) {
+    return (e as NodeJS.ErrnoException).code === 'EPERM';
+  }
+}
+
 /** Reste abgebrochener Läufe (.<id>.tmp-*, .<id>.alt-*) neben den Zielordnern löschen. */
 function aufraeumen(ordner: string[]) {
   for (const o of ordner) {
     const praefixe = [`.${basename(o)}.tmp-`, `.${basename(o)}.alt-`];
-    const rest = (f: string) => praefixe.some((p) => f.startsWith(p) && /^\d+$/.test(f.slice(p.length)));
+    const rest = (f: string) => praefixe.some((p) => f.startsWith(p) && /^\d+$/.test(f.slice(p.length)) && !laeuft(Number(f.slice(p.length))));
     for (const f of readdirSync(dirname(o))) if (rest(f)) weg(join(dirname(o), f));
   }
 }
