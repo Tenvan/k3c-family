@@ -1,6 +1,6 @@
 # PV1.6 · Fixture-SVGs aus dem Prototyp exportieren
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -49,5 +49,7 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-05 (Teil Quell-SVGs) geprüft: sechs Dateien unter `tools/paper/fixtures/svg/` (`monarch-idle-0`, `monarch-galopp-0`, `monarch-galopp-0-purpur`, `pferd-galopp-0`, `mauer-1`, `mauer-2`), keine enthält `class="pv"`, `#ground` oder `#shadow`; viewBox `-120 -205 240 220`, 240×220.
+- Export im Browser-Pane aus dem Prototyp (Loopback 5197): je Datei 240 Schritte zu 1/120 s Einschwingen bei Zeit 0, dann `cloth.draw()` und Klon wie `snapshot()`; ausgeblendete Gruppen (`display: none`) entfernt. Gespeichert über einen Loopback-Empfänger (5198, nur `*.svg`-Namen), danach alle Server beendet.
+- Screenshots (Browser-Pane, je Datei geprüft): Notizordner der Sitzung, `pv1.6-screenshots/` (`monarch-idle-0.jpg`, `monarch-galopp-0.jpg`, `monarch-galopp-0-purpur.png`, `pferd-galopp-0.png`, `mauer-1.png`, `mauer-2.png`). Sichtprüfung durch 🧑 folgt in PS1.
+- Abweichungen: `pferd-galopp-0` ohne `#mon`, Zügel **und** Umhang (`#capeG`, gehört zum Reiter); Purpur-Variante setzt auch die Lichtkante `#capeHi` auf `#a865b8`. Mauern per kleinem Generator im Stil des Prototyps (Quader mit Schatten-Lage und Licht-Falz, Stufe 2 mit Zinnen), Töne `stein` = `#c2bdb1/#9a9386/#6b6559` (gehen in PV1.3 in die Stil-Datei, B-701 D-07).
