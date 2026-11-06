@@ -1,0 +1,64 @@
+{
+  "id": "elite-bogenschuetze",
+  "version": 1,
+  "specHash": "efa20e79c6c497365382b27c7b5530cd6275a3353a8d291ff493a667af0db704",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "3c5700947afde5266e1469ef821bbb86654e563b1186dd741be05b15606c0a95",
+  "rahmen": [
+    -60,
+    -175,
+    160,
+    181
+  ],
+  "frameW": 170,
+  "frameH": 192,
+  "animationen": {
+    "angriff": {
+      "frames": 8,
+      "fps": 14,
+      "datei": "angriff.png",
+      "hashes": [
+        "b7eb55661808071ab022d15b0c1c4b164f79914a01ff0c26fce68f8e00d7ad76",
+        "6e3f3db22add6d7d88602346fe824a34e43a42bb47d49623f759b2b283f24659",
+        "77e8dede8b535aafcea31d074b0e453e3b13a66a2988d12d01e2759673672223",
+        "73d2423116518b2d4c0a3d2478c631d86fbb30218e18664e6ef6ac4029f23b7c",
+        "511aa06fece774969ba8843afe08e379ef4ccaac238f1a811a5b1630fbc6fb8d",
+        "8335cac9bc6d0e0547033f1d8c5d97e13ba327999bd91c12f33f9cf21a4360ed",
+        "751bd481b08ae67e72271f5fdb42e6d4afe43a827493dd2f9265df634478f68d",
+        "32526723670497b6c150f392c71ec4d2fc0438aa497caa25e7171594698452ab"
+      ]
+    },
+    "idle": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "idle.png",
+      "hashes": [
+        "f8bbe6dd127931335497d646e974f2b01dabca8ee59675bbd6bf99483ee38fa6",
+        "441c4f35ab07eda0ef37b22cf019ab9ccaf6035f2050aefc7a59c7b72139428a",
+        "1c99336f5c7563059a854ed36658d033eb521a43b97a166796c1a424040bae34",
+        "441c4f35ab07eda0ef37b22cf019ab9ccaf6035f2050aefc7a59c7b72139428a",
+        "f8bbe6dd127931335497d646e974f2b01dabca8ee59675bbd6bf99483ee38fa6",
+        "bab2f6840dafc2b744fa69971899e312687f26d38aad645b12dc558604b65c3a",
+        "ca12f735937f9c083931cbdcd897b54e67bc96175e8d6313ecbccca05351dcc3",
+        "bab2f6840dafc2b744fa69971899e312687f26d38aad645b12dc558604b65c3a"
+      ]
+    },
+    "lauf": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "lauf.png",
+      "hashes": [
+        "5c8df303b097de502089301f287b1f7f0ea009540d49ea5bd2308830224a445d",
+        "26d2d1654f332d8747c7ea6d42cb6dd66e68b3e227904d9fa43e69510b690d0f",
+        "2251e70a08efc73c0ddae17660b2c96e534728845ffa441d24aa05613cf602ee",
+        "ccda13e6521e8f232213910da332aeb94de95361c93ff22c10473d8cab2644c0",
+        "7072596887189c683aef6ac10ed166538eb62200db0e14a8d9c7141d422fd01a",
+        "dc52561be4bdc389fff8de6d4e3cc4041445acfc1c91ac444b33a3f8f1ff8522",
+        "07f23ece581dec5c1e387aa3e4458f0f57ea1c89cad2a41ea303b39858848ca7",
+        "1bfe18b8e1500664ac4b242a1345c02ea7a6ac41892681055689915a82350fc9"
+      ]
+    }
+  },
+  "varianten": []
+}

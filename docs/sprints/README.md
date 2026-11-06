@@ -13,6 +13,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
 | RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
 | MG1 | PAP | PAP | Papierschnitt-Migration: Monarch und Spielerfarben | – | `aktiv/MG1-papier-monarch-spielerfarben/` |
+| MG3 | PAP | PAP | Papierschnitt-Migration: Truppen | – | `aktiv/MG3-papier-truppen/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | `aktiv/BD10-schreibende-endpunkte-schutz/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
@@ -35,7 +36,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 |---|---|---|---|---|---|---|
 | US1 | CLI | PAP | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | – | Entwurf | `geplant/US1-spiel-auf-papierschnitt/` |
 | MG2 | CLI | PAP | Papierschnitt-Migration: Reittiere | – | Entwurf | `geplant/MG2-papier-reittiere/` |
-| MG3 | CLI | PAP | Papierschnitt-Migration: Truppen | – | Entwurf | `geplant/MG3-papier-truppen/` |
 | MG4 | CLI | PAP | Papierschnitt-Migration: Gegner | – | Entwurf | `geplant/MG4-papier-gegner/` |
 | MG5 | CLI | PAP | Papierschnitt-Migration: Bosse | – | Entwurf | `geplant/MG5-papier-bosse/` |
 | MG6 | CLI | PAP | Papierschnitt-Migration: Gebäude mit Ausbaustufen | – | Entwurf | `geplant/MG6-papier-gebaeude/` |
