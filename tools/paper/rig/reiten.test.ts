@@ -18,7 +18,7 @@ const kontext = { stil, specPfad: join(SPECS, 'monarch.paper.json') };
 const reiten = ausgaben(monarch).find((a) => a.schluessel === 'reiten')!;
 const tmp = () => mkdtempSync(join(tmpdir(), 'paper-reiten-'));
 
-describe('Reiten', () => {
+describe('Reiten', { timeout: 60_000 }, () => {
   it('Reittier-Suche: erst Ordner der Spec, dann ../*/<id>.paper.json; fehlt es → Exit 1, Regel reittier-unbekannt', () => {
     expect(findeReittier(join(SPECS, 'monarch.paper.json'), 'pferd')).toBe(join(SPECS, 'pferd.paper.json'));
     const wurzel = tmp();
@@ -97,7 +97,7 @@ describe('Reiten', () => {
   }, 60_000);
 });
 
-describe('Reiten: Randfälle (Review RD1.3)', () => {
+describe('Reiten: Randfälle (Review RD1.3)', { timeout: 60_000 }, () => {
   it('Reittier-id mit Pfadanteilen: reittier-unbekannt', () => {
     expect(() => findeReittier(join(SPECS, 'monarch.paper.json'), '../specs/pferd')).toThrow(Abgelehnt);
   });

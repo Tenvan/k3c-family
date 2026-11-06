@@ -84,7 +84,7 @@ keine (Defaults unter Regeln › Festlegungen; D-08, D-10, D-12 brauchen einen V
 | RD1.1 | `RD1.1-kern-validate-render.md` | Umsetzung | autonom | fertig |
 | RD1.2 | `RD1.2-rig-figur-umhang.md` | Umsetzung | autonom | fertig |
 | RD1.3 | `RD1.3-rig-vierbeiner-reiten.md` | Umsetzung | autonom | fertig |
-| RD1.4 | `RD1.4-frame-diff-gen-vertrag.md` | Umsetzung | autonom | offen |
+| RD1.4 | `RD1.4-frame-diff-gen-vertrag.md` | Umsetzung | autonom | fertig |
 | RD1.5 | `RD1.5-review.md` | Review | autonom | offen |
 
 Reihenfolge auf dem Sprint-Branch (nacheinander, Lane `renderer`): RD1.1 → RD1.2 → RD1.3 → RD1.4 → RD1.5. Modelle: RD1.1 Opus, RD1.2 Opus, RD1.3 Opus, RD1.4 Sonnet, RD1.5 Opus.

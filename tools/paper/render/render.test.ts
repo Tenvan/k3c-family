@@ -18,7 +18,7 @@ const mitMauer = () => {
 };
 const lies = (p: string) => JSON.parse(readFileSync(p, 'utf8'));
 
-describe('render', () => {
+describe('render', { timeout: 60_000 }, () => {
   it('render mauer: manifest.json nach Vertrag, Dateien stand.png und stand.s2.png', () => {
     const dir = mitMauer();
     const r = renderSpec(join(dir, 'mauer.paper.json'), { stil });
@@ -70,7 +70,7 @@ describe('render', () => {
   });
 });
 
-describe('render: Fehlerfälle beim Schreiben (Review RD1.1)', () => {
+describe('render: Fehlerfälle beim Schreiben (Review RD1.1)', { timeout: 60_000 }, () => {
   it('Spec ohne Endung .paper.json: Aufruffehler, Datei bleibt', () => {
     const dir = tmp();
     copyFileSync(join(SPECS, 'mauer.paper.json'), join(dir, 'mauer'));

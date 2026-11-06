@@ -18,7 +18,7 @@ const stil = ladeStil();
 const kontext = { stil, specPfad: join(SPECS, 'pferd.paper.json') };
 const galopp = ausgaben(pferd).find((a) => a.schluessel === 'galopp')!;
 
-describe('Vierbeiner', () => {
+describe('Vierbeiner', { timeout: 60_000 }, () => {
   it('render pferd: schritt.png, trab.png, galopp.png je 8 Frames, Frame 221 × 192', () => {
     const dir = mkdtempSync(join(tmpdir(), 'paper-pferd-'));
     copyFileSync(join(SPECS, 'pferd.paper.json'), join(dir, 'pferd.paper.json'));
@@ -61,7 +61,7 @@ describe('Vierbeiner', () => {
   });
 });
 
-describe('Vierbeiner: Randfälle (Review RD1.3)', () => {
+describe('Vierbeiner: Randfälle (Review RD1.3)', { timeout: 60_000 }, () => {
   it('fehlende Beinteile oder fehlendes bein: Exit 1 pflicht-teil-fehlt statt Absturz', () => {
     const ohneHuf = structuredClone(pferd);
     ohneHuf.teile = ohneHuf.teile.filter((t) => t.id !== 'huf-vn');

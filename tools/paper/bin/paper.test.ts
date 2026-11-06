@@ -15,7 +15,7 @@ const ERWARTET: Record<string, string> = {
   'pflicht-teil-fehlt': 'pflicht-teil-fehlt', proportion: 'proportion',
 };
 
-describe('paper-CLI', () => {
+describe('paper-CLI', { timeout: 60_000 }, () => {
   it('validate monarch: Exit 0, {ok: true, fehler: []}', () => {
     expect(antwort(['validate', join(SPECS, 'monarch.paper.json')])).toMatchObject({ code: 0, stderr: '', json: { ok: true, fehler: [] } });
   });

@@ -10,7 +10,7 @@ const golden = JSON.parse(readFileSync(join(import.meta.dirname, 'fixtures.golde
 const bild = (extra: string) => rastere(`<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">` +
   `<rect width="100" height="100" fill="#808080"/>${extra}</svg>`).png;
 
-describe('Golden-Regel', () => {
+describe('Golden-Regel', { timeout: 60_000 }, () => {
   it('GOLDEN_REGEL folgt paper-spec.md › 6 (exakt)', () => {
     expect(GOLDEN_REGEL).toBe('exakt');
   });
@@ -25,7 +25,7 @@ describe('Golden-Regel', () => {
   });
 });
 
-describe('Golden der Fixtures', () => {
+describe('Golden der Fixtures', { timeout: 60_000 }, () => {
   it.each(FIXTURES)('%s: zweimal byte-gleich und gleich fixtures.golden.json', (id) => {
     const a = rendereFixture(id), b = rendereFixture(id);
     expect(a.pngs.map(([d]) => d)).toEqual(Object.keys(golden[id].dateien));

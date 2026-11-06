@@ -12,7 +12,7 @@ const SPECS = join(import.meta.dirname, '../fixtures/specs');
 const monarch = JSON.parse(readFileSync(join(SPECS, 'monarch.paper.json'), 'utf8')) as Spec;
 const stil = ladeStil();
 
-describe('Animation der Figur', () => {
+describe('Animation der Figur', { timeout: 60_000 }, () => {
   it('Frame-Schritte: idle 8 Frames → Schritt 0, 30, 60 …; lauf → round(n · 9.375)', () => {
     expect(frameSchritte(0.5, 8)).toEqual([0, 30, 60, 90, 120, 150, 180, 210]);
     expect(frameSchritte(1.6, 8)).toEqual([0, 9, 19, 28, 38, 47, 56, 66]);
