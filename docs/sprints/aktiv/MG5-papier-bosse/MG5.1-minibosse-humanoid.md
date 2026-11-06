@@ -1,6 +1,6 @@
 # MG5.1 · Minibosse goblin-anfuehrer, troll-koenig, ratten-koenigin
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -59,5 +59,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `assets_list {gruppe: bosse}` → goblin-anfuehrer, troll-koenig, ratten-koenigin gültig (Rig `figur`, `hoehe_px` 288).
+- AC-02 geprüft: `task gen:paper` ok (erster Lauf brach ohne Meldung ab, zweiter grün), `golden.json`/`index.paper.json` der neuen Gruppe `bosse`; fremde Gruppen zurückgesetzt.
+- AC-03 geprüft: goblin idle 0, lauf 4, angriff 4; troll idle 0, lauf 2, angriff 3; ratten-koenigin idle 4, lauf 6, angriff 5. Grundform Krieger mit getauschten Materialien; Zusatzteile `ohren` (goblin, ratten-koenigin), Krone statt Helm (troll, ratten-koenigin), `hauer` (troll), `schwanz` (ratten-koenigin). Befund: Schwanz ragte im `angriff` links aus dem Rahmen → Rahmen links erweitert (−68/158). `assets_review` (HEAD): 3× `neu`, kein `ungueltig`.
+- `task check:diff`: Client 3173/3173; rot nur Workbench-Frontend `AnimationSync` (D-MG2-07, nicht MG5).
+- Hinweis: Bosse wirken wie verkleidete Krieger (gleiche Silhouette, nur Kopf und Farben anders); Sichtprüfung in PS1.

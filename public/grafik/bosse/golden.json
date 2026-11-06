@@ -1,0 +1,26 @@
+{
+  "goblin-anfuehrer": {
+    "renderKey": "c63e08be7b895aabd8045141e494b9e4bedbad57659f4fefe8642243b647f541",
+    "dateien": {
+      "angriff.png": "caaa40cd2db6a368d280db79003db0da5ec165e4260ee4d9e41451d70218abf8",
+      "idle.png": "ef70209b0806f9bfeb331ca0c34b39d61e7a24771425103c2c69632cb99fb3e6",
+      "lauf.png": "fb3694d0cc2ac52d709bd99402bda315f6788292ce0b51b4212e2a7882812a82"
+    }
+  },
+  "ratten-koenigin": {
+    "renderKey": "43f693cdb7e455807e524477774d35660a61c984c259fd037593ba4807196146",
+    "dateien": {
+      "angriff.png": "45da5586e17d46a6357d84bd828724164aa2b3a2c37318c6f956f4f746c16086",
+      "idle.png": "6385a41e873810ff5e04164b9c9964acb21d5c2b817e1dc47008678c18f638e1",
+      "lauf.png": "95902b10666d072af820506d405e185ecd5c91d336832752d80ef4af78df8f60"
+    }
+  },
+  "troll-koenig": {
+    "renderKey": "02a633e68514fa3e4c08ee5d9d10d0ffa69502c868f8c84c425c3619fa29b067",
+    "dateien": {
+      "angriff.png": "63940e415bcc2aeda5046f3cc108bdf0a0b650336e195ec2a80925f6a7112570",
+      "idle.png": "85987aab63a5ecf0a9ada64ad3705f1ffb4a29dcedcff0fa4f8703725d12cf2e",
+      "lauf.png": "746af4e929c90a0b77e94181cdbd6ccabded1c038ee6e083eac320ad58901847"
+    }
+  }
+}

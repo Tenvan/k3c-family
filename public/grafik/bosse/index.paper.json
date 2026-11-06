@@ -1,0 +1,17 @@
+[
+  {
+    "id": "goblin-anfuehrer",
+    "rig": "figur",
+    "manifest": "goblin-anfuehrer/manifest.json"
+  },
+  {
+    "id": "ratten-koenigin",
+    "rig": "figur",
+    "manifest": "ratten-koenigin/manifest.json"
+  },
+  {
+    "id": "troll-koenig",
+    "rig": "figur",
+    "manifest": "troll-koenig/manifest.json"
+  }
+]
