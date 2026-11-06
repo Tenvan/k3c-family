@@ -146,6 +146,17 @@ Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und
 - **Lesen nach Bedarf:** Session und Kriterien liefert `plan_next`; das Glossar beim Schreiben von Specs und Texten,
   `codemap.md` nur für unbekannte Bereiche.
 
+### Ausführung mit Superpowers
+
+Verbindlich ab PV1 für jeden Sprint (Vorgabe 🧑, 2026-11-06): Agenten arbeiten mit den Superpowers-Skills.
+
+- **Sprint:** `superpowers:executing-plans`; der Plan sind Sprint-README und Session-Dateien.
+- **Session:** `superpowers:test-driven-development` (Red → Green → Refactor): erst der fehlschlagende Test, dann der Code.
+- **Vor jedem Commit:** `superpowers:verification-before-completion` – die Befehle unter **Prüfen** frisch laufen lassen
+  und das Ergebnis belegen; keine Erfolgsmeldung ohne Nachweis.
+- **Review vor dem Commit:** `superpowers:requesting-code-review` statt eines freien Reviewer-Agenten. Wann reviewt wird,
+  regelt weiter „Review in der Umsetzung“ oben (Risiko-Regel aus `CLAUDE.md`).
+
 ## Domänen
 
 Jede **Session** gehört zu **genau einer Domäne** (Feld `Domäne`) und ändert nur deren Dateien (plus Tests und Doku dazu).
