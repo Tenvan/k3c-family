@@ -46,8 +46,8 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- AC-01: `paper frame` und `paper render` nehmen `--stil <datei>`; ohne Option gilt `public/grafik/stil.paper.json`.
-- AC-02: Das Review übergibt beim Vorher-Bild die Stil-Datei des Schnappschusses; ein Test mit reinem Stilwechsel zeigt `pixelAnteil > 0`.
+- **AC-01** `paper frame` und `paper render` nehmen `--stil <datei>`; ohne Option gilt `public/grafik/stil.paper.json`.
+- **AC-02** Das Review übergibt beim Vorher-Bild die Stil-Datei des Schnappschusses; ein Test mit reinem Stilwechsel zeigt `pixelAnteil > 0`.
 
 ## Offene Fragen
 
