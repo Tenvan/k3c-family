@@ -67,7 +67,7 @@ keine blockierende; vorab getroffene Entscheidungen (u. a. neue Abhängigkeiten 
 | PV1.6 | `PV1.6-fixture-svg-export.md` | Umsetzung | autonom | fertig |
 | PV1.3 | `PV1.3-spec-schema-stil-fixtures.md` | Umsetzung | autonom | fertig |
 | PV1.4 | `PV1.4-mcp-und-review-vertrag.md` | Umsetzung | autonom | fertig |
-| PV1.8 | `PV1.8-workbench-stubs.md` | Umsetzung | autonom | offen |
+| PV1.8 | `PV1.8-workbench-stubs.md` | Umsetzung | autonom | fertig |
 | PV1.5 | `PV1.5-review.md` | Review | autonom | offen |
 
 Reihenfolge auf dem Sprint-Branch (nacheinander): PV1.1 → PV1.2 → PV1.6 → PV1.3 → PV1.4 → PV1.8 → PV1.5. Modelle: PV1.1 Sonnet, PV1.2 Sonnet, PV1.6 Sonnet (Browser), PV1.3 Opus, PV1.4 Opus, PV1.8 Sonnet, PV1.5 Opus.

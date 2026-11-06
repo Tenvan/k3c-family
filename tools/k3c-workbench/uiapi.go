@@ -44,6 +44,9 @@ var uiMethods = map[string]bool{
 	"BalanceReportRate": true, "BalanceReportDelete": true, "BalanceInsights": true, "BalanceReportHTML": true,
 	"BalanceBaselines": true, "BalanceReportsRate": true, "BalanceReportsDelete": true, "BalanceSaveBaseline": true,
 	"BalanceDataValuesAll": true,
+	// Asset-Oberfläche (docs/standards/paper-mcp.md › Oberfläche; Stubs bis RV1)
+	"AssetsList": true, "AssetsGet": true, "AssetsStyle": true, "AssetsPrompts": true, "AssetsReview": true,
+	"AssetsFrame": true, "AssetsPixelDiff": true,
 }
 
 // uiHandler beantwortet alle Adressen unter uiPrefix, alle anderen GET liefern die eingebettete Oberfläche (web.go).

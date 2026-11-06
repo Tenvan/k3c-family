@@ -72,6 +72,14 @@ interface GoApp {
   BalanceSaveBaseline(path: string, name: string): Promise<BalanceBaseline>;
   BalanceInsights(path: string): Promise<BalanceInsights>;
   BalanceReportHTML(path: string): Promise<string>;
+  // Asset-Oberfläche (docs/standards/paper-mcp.md › Oberfläche; Stubs bis RV1, Typen dort)
+  AssetsList(): Promise<unknown[]>;
+  AssetsGet(id: string): Promise<Record<string, unknown>>;
+  AssetsStyle(): Promise<Record<string, unknown>>;
+  AssetsPrompts(): Promise<unknown[]>;
+  AssetsReview(basis: string): Promise<unknown>;
+  AssetsFrame(id: string, animation: string, frame: number, variante: string, basis: string): Promise<unknown>;
+  AssetsPixelDiff(id: string, animation: string, frame: number, basis: string): Promise<unknown>;
 }
 
 interface WailsRuntime {

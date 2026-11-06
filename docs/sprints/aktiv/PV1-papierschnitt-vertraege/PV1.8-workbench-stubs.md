@@ -1,6 +1,6 @@
 # PV1.8 · Workbench-Stubs: RPC-Methoden Assets, Review-Platzhalter, Slider-Atom
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -54,5 +54,7 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-07 geprüft: `TestAssetsUIStubs` (sieben Methoden = Fixture-Antworten aus `tools/paper/fixtures/ui/`, Roundtrip über JSON), `TestAssetsUIBasis`, `TestAssetsUIUnbekanntesAsset`, `TestUIMethodsWieWailsTS` grün; Vitest `ValueSlider` 3/3; `task check:diff` grün; `task check:dev` und `task check:studio` grün (Nachweis siehe Commit).
+- Umsetzung: `internal/assetsui` (Typen laut paper-mcp.md › 4, Basis-Prüfung: leer = HEAD beim Review, = Arbeitsstand beim Frame, beim PixelDiff Pflicht; SHA 7–40 Hex), Bindings `app_assets.go`, `uiMethods`, `GoApp` in `wails.ts`, Platzhalter `ReviewPage`.
+- Review (superpowers:requesting-code-review): kritischer Befund behoben – das Atom heißt `ValueSlider`, der rohe Radix-`Slider` bleibt (Studio nutzt dessen Listen-API). Außerdem übernommen: Vertragsfehler „Asset „x“ fehlt“, Groß-/Kleinschreibung der SHA.
+- Abweichung: Der Stub kennt nur die Fixture `monarch`; Typen in `wails.ts` vorerst `unknown` (RV1 typisiert).
