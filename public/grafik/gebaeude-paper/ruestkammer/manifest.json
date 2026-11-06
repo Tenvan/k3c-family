@@ -1,0 +1,59 @@
+{
+  "id": "ruestkammer",
+  "version": 1,
+  "specHash": "d4aaf1ed982b0dc86ed88b0fa96b02769f747ec9c504339a8607fad3bbf698eb",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "e3ae522ec4ea25505f565fb4417d292ee755afef8024271d0a22adc36460ecde",
+  "rahmen": [
+    -96,
+    -128,
+    192,
+    128
+  ],
+  "frameW": 192,
+  "frameH": 128,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "0f9a917ba3215d5230192785dafb7bcc2edba8045453668eb6c6ef713a4fbf5c"
+      ]
+    },
+    "stand.s2": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s2.png",
+      "hashes": [
+        "6b50b7b20bdbf18b1728f6f95816205cce5f1330794c5b4fc8efdd6cb41b4f2f"
+      ]
+    },
+    "stand.s3": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s3.png",
+      "hashes": [
+        "d06389ccadbb59825a59282c4c3a69384b749afe7c7ad081f4defddb21b8e097"
+      ]
+    },
+    "stand.s4": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s4.png",
+      "hashes": [
+        "87477dfdb88777177801de96b3cf4880d66427524c5b59e200632c4e5c852e15"
+      ]
+    },
+    "stand.s5": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s5.png",
+      "hashes": [
+        "7bdd0cace6cd37560bfb1a38cac15ea399c6095962f11f47863f27327b7d926d"
+      ]
+    }
+  },
+  "varianten": []
+}

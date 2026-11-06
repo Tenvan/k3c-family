@@ -10,9 +10,29 @@
     "manifest": "hintergrundmauer/manifest.json"
   },
   {
+    "id": "kaserne",
+    "rig": "gebaeude",
+    "manifest": "kaserne/manifest.json"
+  },
+  {
+    "id": "lager",
+    "rig": "gebaeude",
+    "manifest": "lager/manifest.json"
+  },
+  {
     "id": "mauer",
     "rig": "gebaeude",
     "manifest": "mauer/manifest.json"
+  },
+  {
+    "id": "ruestkammer",
+    "rig": "gebaeude",
+    "manifest": "ruestkammer/manifest.json"
+  },
+  {
+    "id": "schmiede",
+    "rig": "gebaeude",
+    "manifest": "schmiede/manifest.json"
   },
   {
     "id": "taverne",

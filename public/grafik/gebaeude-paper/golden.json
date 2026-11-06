@@ -19,6 +19,26 @@
       "stand.s5.png": "1fca0418ec3f453216b329376c22fe4dfb7a06bf875748a51fb0e46b1cc22baf"
     }
   },
+  "kaserne": {
+    "renderKey": "527f2d3482b261b3d14f9812ebfbf804b4c825a7e94b6637f53d6bcfbb60d8d7",
+    "dateien": {
+      "stand.png": "8099b1e17a98466ed0ae738528cb51764d4924444c48e2f35583ccfd29bb8761",
+      "stand.s2.png": "f652e86adbf78e4529bfd8e32db69c076d87dbf19aaabab6bfa97d6af361c415",
+      "stand.s3.png": "1c6346258843a1efedec86ee4da0f98552806c3544344212b5db02c9f93323f2",
+      "stand.s4.png": "4f00a625264e21c25597584f7f633404ca2fbca9f76d65763beada5de11e6fdf",
+      "stand.s5.png": "d291e6d822470c9b940410c4b9d9313af9a00cceea56831433bc5dffd32c4847"
+    }
+  },
+  "lager": {
+    "renderKey": "a492f9d9f54899d64114ba8b32941d87b794257b12ea494b924f75e407c87f2c",
+    "dateien": {
+      "stand.png": "d5b5a332bcd9cb1f4b8c564b07290557cf74b662ea6042b127598d9dae56acfd",
+      "stand.s2.png": "9d8bab25915520457740dc0bb07e62a2921bd13174ce06e7be34589927fc2bab",
+      "stand.s3.png": "009044e6eff943a68be32de5cea429b8d8eeef7ce0ac95c5b4d3c1e709ca5f2c",
+      "stand.s4.png": "dabc0e860b28cdbd7532c07218be343555446bf405a736a317665589f34bf237",
+      "stand.s5.png": "4339db1455ebd08220feea1a6dda105499f463ed270161b684f332332d760f02"
+    }
+  },
   "mauer": {
     "renderKey": "2c5383feee5084517c0c19fefccbad365b5937f4db6dd05dd070debc74a986db",
     "dateien": {
@@ -27,6 +47,26 @@
       "stand.s3.png": "6932dd9dbd5000f7ad8517b03297f23fab75f42b882c306f35a033be195e9f28",
       "stand.s4.png": "08c6ca82b685ce8528f12157c960464bfd84a95ba3c8a1cf77e9d4aee8adf547",
       "stand.s5.png": "f3d0688eb1666a07bc9ffb5ed509d79f0ef77bb948ae73f649f0c29608f1feea"
+    }
+  },
+  "ruestkammer": {
+    "renderKey": "e3ae522ec4ea25505f565fb4417d292ee755afef8024271d0a22adc36460ecde",
+    "dateien": {
+      "stand.png": "609d57770e2c7ecd1a32cef6fd88495c6f05542406e0b364fe83cf9d1747cea5",
+      "stand.s2.png": "f2e6fa6973af0618f8d0cfa16cefa2c8307ce05c07beb33497d327824ca1ec79",
+      "stand.s3.png": "850d2b80a6db5b26d659934892a029e4a89981b302fdb26ffd56a0b15a5ce75b",
+      "stand.s4.png": "70d8167df9c5074c0bcedc2a895d9c9a5e99ded066a6d8ba7ff2cd3bc4d6419b",
+      "stand.s5.png": "1d13ec6161eaa3a306e7f6bbf9a797335a80b2cb6530957e2c99ffe711288ef3"
+    }
+  },
+  "schmiede": {
+    "renderKey": "9f3723e16cc9037892ba4512c411b8ba30ca6a3ee685cd79da380b81854cb111",
+    "dateien": {
+      "stand.png": "6ec0c5a8249bfb500e34eee35063b799d201c77609d4b5d92e7e44d504cd5fb0",
+      "stand.s2.png": "1b192247c0ffe0d83635d7d52ad3c13aaea448a0e4077bfe70747f1aed97913a",
+      "stand.s3.png": "d80fdbc50dcf0be3ac2b6a9c5e4fe011213bfbe909870b26106999c9a08503a0",
+      "stand.s4.png": "c02ce7eebcfcdaba0f4ed202c4214a0f87a6a6928add33be494e1f47f58bb999",
+      "stand.s5.png": "eba1ae9b657abe594f7f98feda298991549fbe4bec66cd05c5a072f6be441ba4"
     }
   },
   "taverne": {

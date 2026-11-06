@@ -1,6 +1,6 @@
 # MG6.3 · Hub-Stände B: Schmiede, Rüstkammer, Lager, Kaserne
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -57,5 +57,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft:** `assets_list {gruppe: gebaeude-paper}` meldet schmiede, ruestkammer, lager, kaserne gültig (11 Assets, 0 ungültig).
+- **AC-02 geprüft:** `task gen:paper` (gen.ts) trägt alle vier mit je 5 Stufen in `golden.json` ein; Vitest `tools/paper`, `src/tools`, Planung 1669/1669, `go test ./tools/buildings` grün.
+- **AC-03 geprüft:** Stufe 1 aller vier mit `assets_preview`, Stufen 2–5 über die Ausgabe (D-MG6-03); `assets_review` gegen HEAD: 4 × `neu`, kein roter Eintrag.
+- **Befunde, behoben:** Amboss war `stoff` (Materialkette, wäre in Stufe 5 blau) → `maehne`; Sockelband der Kaserne (Stufe 2) lief über das Tor → links und rechts davon geteilt; doppelter Wimpel der Kaserne entfernt.
+- **Materialien (D-MG6-02):** Rüstkammer-Schiefer ist `stoff` und wird in Stufe 2 mit `holz` zu `stein`; Kaserne beginnt in Stein (Stufe 2 nur Eisenband, Kette ab Stufe 3, Holztor bleibt); Kamin, Esse und Sockel bleiben in Stufe 2 Stein und folgen ab Stufe 3 der Kette.
+- `check:diff` rot nur im Frontend der Workbench (2 zeitabhängige Tests unter Last, wie MG6.2). Keine neuen Tickets.
