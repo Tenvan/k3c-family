@@ -85,6 +85,9 @@ func registerAssets(s *Server) {
 	}, func(ctx context.Context, in assetsCreateIn) (string, error) { return assetsCreateText(ctx, s.ws(ctx).root, in) })
 	registerAssetsSet(s)
 	registerAssetsRender(s)
+	registerAssetsPreview(s)
+	registerAssetsReview(s)
+	registerAssetPrompts(s)
 	add(s, &mcp.Tool{
 		Name: "assets_catalog",
 		Description: "Sucht im Asset-Katalog (public/grafik, public/sprites, public/audio): Datei, Pack, Gruppe, Maße, Lizenz mit Kennzeichen NC/SA/ND (Q70). " +

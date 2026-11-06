@@ -87,7 +87,7 @@ Keine offenen Fragen; Defaults beim Bereitmachen gesetzt (Format wie B-701, Best
 |---|---|---|---|---|
 | MC1.1 | `MC1.1-paperassets.md` | Umsetzung | autonom | fertig |
 | MC1.2 | `MC1.2-asset-tools.md` | Umsetzung | autonom | fertig |
-| MC1.3 | `MC1.3-preview-review-prompts.md` | Umsetzung | autonom | offen |
+| MC1.3 | `MC1.3-preview-review-prompts.md` | Umsetzung | autonom | fertig |
 | MC1.4 | `MC1.4-register-tools-entfernen.md` | Umsetzung | autonom | offen |
 | MC1.5 | `MC1.5-review.md` | Review | autonom | offen |
 
