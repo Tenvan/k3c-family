@@ -14,7 +14,7 @@ const lies = (p: string) => JSON.parse(readFileSync(p, 'utf8'));
 
 describe('Golden public/grafik', { timeout: 60_000 }, () => {
   it('Gruppen mit Specs: figuren und reittiere', () => {
-    expect(gruppen).toEqual(['figuren', 'reittiere']);
+    expect(gruppen).toEqual(expect.arrayContaining(['figuren', 'reittiere'])); // weitere Gruppen kommen mit MG2–MG8
   });
 
   it('monarch hat idle, lauf, schritt, trab, galopp; pferd hat schritt, trab, galopp', () => {
