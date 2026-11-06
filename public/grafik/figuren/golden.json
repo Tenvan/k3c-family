@@ -1,0 +1,17 @@
+{
+  "monarch": {
+    "renderKey": "8d8cf297ed144f101518c636f181bfd60f874ee42c410f09d37ca955a0236fe3",
+    "dateien": {
+      "galopp.png": "b128963c482178b2230a5dc3c009411a70d534da6485c90b4ef1350e6d50e619",
+      "galopp@spieler2.png": "c1db33b1ccec94d4a3a8155b2c380fa3f738d4a57931f44ab867d05ed690ad07",
+      "idle.png": "566ee838a58c70832f7b1d484bd6fbb96f910f117bb77e6e37c56f3d7fd9870b",
+      "idle@spieler2.png": "094486e2ed03572943c51e61dcc2cdd8c63726263014b332fd7652b746050043",
+      "lauf.png": "7493de022becd559efa5ab43fe0cdb119af8b2a0d3411faa04876d3b5f79684f",
+      "lauf@spieler2.png": "c1b72b9ba27a0a350234674e32d787850404e6db7296d269b45e965956674deb",
+      "schritt.png": "aed9414cee5722894c6f7e9962f15e954f7bd9fb5c8c23f2136e73d5215fe1b2",
+      "schritt@spieler2.png": "40e4090962bc32cbd3067125583f56c64916b4c1501e5f7bbfa05aa4e5824197",
+      "trab.png": "fa64bded1b8c6d13473ad5e11095131caf28e4fdc4cd6415f03ff223a738e12f",
+      "trab@spieler2.png": "1a6db2ac543c4484e68943048b094d2a7206b32f94d141e99e1fda3129bc3dee"
+    }
+  }
+}

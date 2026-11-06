@@ -2,6 +2,7 @@ export type * from './typesBalance';
 export type * from './typesGit';
 export type * from './typesResources';
 import type { BalanceBackend, BalanceRun } from './typesBalance';
+import type { AssetsBackend } from './typesAssets';
 import type { GitBackend } from './typesGit';
 import type { ResourceView } from './typesResources';
 import type { TicketCreated, TicketInput } from '@webkit/lib/ticket';
@@ -467,7 +468,7 @@ export interface TicketBackend {
   ticketRecent(n: number): Promise<TicketCreated[]>;
 }
 
-export interface Backend extends GitBackend, TicketBackend, BalanceBackend {
+export interface Backend extends GitBackend, TicketBackend, BalanceBackend, AssetsBackend {
   /** true ohne Wails-Laufzeit: erfundene Daten, Badge `Mock`. */
   readonly mock: boolean;
   info(): Promise<Info>;
@@ -526,8 +527,6 @@ export interface Backend extends GitBackend, TicketBackend, BalanceBackend {
   planningDoc(name: PlanDoc): Promise<string>;
   /** Ticket, Sprint-README, Session oder Projekt als Markdown, erste Zeile der Pfad (wie plan_get); Lesemodus. */
   planningGet(id: string): Promise<string>;
-  /** Startet das Asset-Studio (bin/k3c-studio.exe, B-459); fehlt es: „Asset-Studio nicht gebaut (`task k3c-studio:build`)“. */
-  studioOpen(): Promise<void>;
   /** Abonniert ein Ereignis; die Rückgabe meldet wieder ab. */
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;
 }

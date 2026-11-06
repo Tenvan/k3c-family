@@ -76,8 +76,8 @@ describe('Atomic Design: tools/webkit', () => {
 });
 
 describe('Atomic Design: Frontends der Wails-Programme', () => {
-  it('es gibt die drei Frontends', () => {
-    expect(APPS.map((a) => a.split('/')[1])).toEqual(expect.arrayContaining(['k3c-workbench', 'k3c-starter', 'k3c-studio']));
+  it('es gibt die Frontends von Workbench und Starter (das Asset-Studio ist entfallen, WB1)', () => {
+    expect(APPS.map((a) => a.split('/')[1])).toEqual(expect.arrayContaining(['k3c-workbench', 'k3c-starter']));
   });
 
   it('rohe <button>, <select>, <input>, <textarea> nur in tools/webkit/atoms', () => {

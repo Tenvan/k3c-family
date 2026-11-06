@@ -1,6 +1,6 @@
 # RV1.1 · internal/review: Basis, git show, Cache, Diff je Asset und Stil
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -66,5 +66,8 @@ Einmal vor dem Commit; während der Arbeit nur gezielte Tests (`docs/arbeitsweis
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `TestReviewHEAD1WieFixture` grün – alle Felder gleich `AssetsReview.json` (nach `id`), inklusive `pixelAnteil` 0.015326/0.170654; Reihenfolge ungueltig, geaendert, neu, geloescht.
+- AC-02 geprüft: `TestBasisAufloesen`, `TestBasisOriginDevelopLokal`, `TestBasisUngueltig`, `TestSpecHashCRLF`, `TestReviewNurCRLF` grün; `TestSpecHashWieBun` (Go-Hash = `hash.ts`).
+- Prüfung: `go test ./...` in `tools/k3c-workbench` grün (simrun-TempDir-Cleanup einmal flakig, Wiederholung grün), `golangci-lint run ./internal/review/` 0 Befunde. `task check:diff` lief über 10 min (Diff gegen develop enthält ganz `feature/pap`), daher Gate wie genannt.
+- Review (Sonnet): Befunde 1–8, 10, 12 behoben mit `haertung_test.go` (Animation `idle@spieler2`, eindeutige Temp-Dateien, Render aus Schnappschuss im Cache, kaputte Spec = `ungueltig`, Git-Fehler nicht verschluckt, Pfad-Härtung, eigene Cache-Kennung der Attrappe, `GIT_TERMINAL_PROMPT=0`, `ls-tree -z`).
+- Abweichungen: `stil` gilt je Asset (genutztes Material/Einzelton, sonst Papier/Licht = alle), weil die Fixture `monarch` mit `stil: false` verlangt; zusätzlich `Geaendert()` für `AssetsList`. Beides als D-Zeile in B-701.

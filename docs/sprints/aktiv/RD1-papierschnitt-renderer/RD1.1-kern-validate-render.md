@@ -1,6 +1,6 @@
 # RD1.1 · Renderer-Kern: Stil, Teile-Baum, Lagen, SVG, validate und render für requisite und gebaeude
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -161,4 +161,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-01 geprüft: `bin/paper.test.ts` – `validate monarch` Exit 0 `{ok: true, fehler: []}`; die fünf Fixtures unter `specs/ungueltig/` liefern Exit 1 mit genau `hex-farbe`, `schema`, `material-unbekannt`, `pflicht-teil-fehlt`, `proportion`; Aufruffehler Exit 2 ohne stdout. In der Shell: `bun tools/paper/bin/paper.ts validate …/monarch.paper.json` → Exit 0.
+- AC-02 (Mauer) geprüft: `golden/golden.test.ts` – zwei Läufe byte-gleich, `golden/fixtures.golden.json`: `stand.png` `c8bc3946…`, `stand.s2.png` `f5a46847…` (renderKey `34a12ac8…`). Sichtvergleich mit `fixtures/render/mauer/mauer-2.png`: gleiche Form und Zinnen.
+- `render` schreibt `<temp>/mauer/{stand.png, stand.s2.png, manifest.json}`; `task test` 3073/3073 grün, `task typecheck` und `task lint` grün.
+- Review (Sonnet): schwere Befunde behoben – Tausch mit Rückbau bei Fehler (Test „Tausch scheitert“), Spec ohne `.paper.json` jetzt Exit 2 statt Datenverlust; dazu Aufräumen alter `.tmp`/`.alt`-Reste, Gruppen-Index per Temp-Datei, `process.exitCode` statt `exit`.
+- Abweichungen: Transformationen als `rotate(…)`-Kette statt `matrix(…)` (2-Nachkommastellen-Regel ohne Verzerrung); ohne `animationen` gilt `stand` mit 1 Frame; zusätzliche Module `render/{bild,fehler,png}.ts`, Golden-Helfer `golden/fixtures.ts`. `task check:diff` lief in den Go-Tests (`engine/net`, nicht von RD1 berührt, Diff von `feature/pap` zu `develop`) zweimal in Timeouts; Client-Teile einzeln grün.

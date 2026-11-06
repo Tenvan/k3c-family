@@ -1,52 +1,67 @@
 package main
 
-// „Asset-Studio öffnen“ (B-459): startet die eigenständige EXE bin/k3c-studio (tools/k3c-studio) wie ein Doppelklick;
-// sie bedient das Studio selbst und öffnet ein eigenes Fenster, ein zweiter Start holt nur ein Fenster auf das laufende
-// Studio. Die MCP-Tools assets_* bleiben hier.
+// Lesende Teile des früheren Asset-Studios im Bereich Assets (Entscheidung 005 › 5, Sprint WB1): Sound, Quellen und
+// „Im Spiel ansehen“ über internal/studioview. Ändern bleibt Sache der MCP-Tools assets_*.
 
 import (
-	"errors"
-	"os"
-	"os/exec"
-	"path/filepath"
-	"runtime"
+	"context"
+	"log/slog"
+	"time"
+
+	"k3c/tools/k3c-workbench/internal/studioview"
 )
 
-// errStudioNotBuilt ist der Hinweis, wenn die EXE fehlt; der Text geht so an die Oberfläche.
-var errStudioNotBuilt = errors.New("bin/k3c-studio fehlt – erst bauen: task k3c-studio:build")
+// studioCloseWait ist die Frist, in der „Im Spiel ansehen“ beim Beenden seine Räume speichert.
+const studioCloseWait = 5 * time.Second
 
-// studioExe ist der Pfad der Studio-EXE im Checkout.
-func (a *App) studioExe() string {
-	name := "k3c-studio"
-	if runtime.GOOS == "windows" {
-		name += ".exe"
-	}
-	return filepath.Join(a.root, "bin", name)
-}
-
-// StudioOpen startet das Asset-Studio als eigenes Fenster (Binding). Keine Pfadteile oder Argumente aus der Oberfläche.
-func (a *App) StudioOpen() error {
+// StudioSounds listet die Sound-Slots mit Status und Dateien (Binding).
+func (a *App) StudioSounds() ([]studioview.SoundEintrag, error) {
 	a.wait()
-	exe := a.studioExe()
-	if _, err := os.Stat(exe); err != nil {
-		return errStudioNotBuilt
-	}
-	if err := a.startProgram(exe, a.root); err != nil {
-		return err
-	}
-	a.log.Info("🚀 Asset-Studio gestartet", "ns", "main", "exe", exe)
-	return nil
+	return studioview.Sounds(a.root)
 }
 
-// startProgram startet exe im Ordner dir und wartet nicht auf das Ende (Test-Naht `launch`).
-func (a *App) startProgram(exe, dir string) error {
-	if a.launch != nil {
-		return a.launch(exe, dir)
+// StudioSoundData liefert eine Audiodatei unter public/ als Data-URL zum Anhören (Binding).
+func (a *App) StudioSoundData(pfad string) (string, error) {
+	a.wait()
+	return studioview.SoundData(a.root, pfad)
+}
+
+// StudioSources liefert Katalog und Recherche-Treffer (Binding).
+func (a *App) StudioSources() (studioview.Quellen, error) {
+	a.wait()
+	return studioview.Sources(a.root)
+}
+
+// StudioGameOpen legt den Testspielstand voll-<seed> an und liefert die Adresse zum Ansehen im Spiel (Binding).
+func (a *App) StudioGameOpen(seed string) (string, error) {
+	a.wait()
+	return a.studioGame().Open(seed)
+}
+
+// studioGame legt „Im Spiel ansehen“ beim ersten Aufruf an; es lebt so lange wie die Befehle der Oberfläche.
+func (a *App) studioGame() *studioview.Game {
+	a.mu.Lock()
+	defer a.mu.Unlock()
+	if a.game == nil {
+		ctx := a.svcCtx
+		if ctx == nil {
+			ctx = context.Background()
+		}
+		var log *slog.Logger
+		if a.log != nil {
+			log = a.log.Logger
+		}
+		a.game = studioview.NewGame(ctx, a.root, "", log)
 	}
-	cmd := exec.Command(exe)
-	cmd.Dir = dir
-	if err := cmd.Start(); err != nil {
-		return err
+	return a.game
+}
+
+// closeStudio beendet den Listener von „Im Spiel ansehen“ und wartet auf das Speichern der Räume.
+func (a *App) closeStudio() {
+	a.mu.Lock()
+	g := a.game
+	a.mu.Unlock()
+	if g != nil {
+		g.Close(studioCloseWait)
 	}
-	return cmd.Process.Release()
 }

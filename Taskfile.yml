@@ -10,15 +10,14 @@
 #   k3c-load     cmd/k3c-load/Taskfile.yml      Lasttest
 #   k3c-tui      cmd/k3c-tui/Taskfile.yml       Diagnose-Oberfläche
 #   k3c-workbench      tools/k3c-workbench/Taskfile.yml     Workbench: dev (Client/Server), window (wails dev), build, frontend, test, lint
-#   k3c-studio   tools/k3c-studio/Taskfile.yml  Asset-Studio: dev (Client/Server), window (wails dev), build, frontend, test, lint
 #   k3c-starter  tools/k3c-starter/Taskfile.yml Windows-Starter: dev (Client/Server), window (wails dev), build, test, lint
 #   balance      tools/k3c-workbench/internal/balance/Taskfile.yml  Balancing-Tester
 #   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Grafik-Pipeline, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
 #
 # Gruppen dieses Taskfiles (in dieser Reihenfolge): Einrichten (install) · Client (dev, lint, typecheck, test) · Bauen und Ausliefern
-# (build, buildall, pages) · Spielserver (start, serve) · Prüfen (check, check:go, check:race, check:diff, check:dev, check:studio,
-# check:starter, check:all).
+# (build, buildall, pages) · Spielserver (start, serve) · Prüfen (check, check:go, check:race, check:diff, check:dev, check:starter,
+# check:all).
 #
 # Jedes EXE-Projekt kennt dieselben Verben: `build` (EXE bauen), `run` (bauen und starten), `dev` (Backend mit `-dev` baut und startet sich
 # bei jeder Go-Änderung selbst neu, engine/devrun; Wails-Apps zeigen die Oberfläche über Vite im Browser). Der Name des Projekts allein (`task k3c-workbench`) startet `dev`.
@@ -42,7 +41,6 @@ includes:
   k3c-load: cmd/k3c-load/Taskfile.yml
   k3c-tui: cmd/k3c-tui/Taskfile.yml
   k3c-workbench: tools/k3c-workbench/Taskfile.yml
-  k3c-studio: tools/k3c-studio/Taskfile.yml
   k3c-starter: tools/k3c-starter/Taskfile.yml
   balance: tools/k3c-workbench/internal/balance/Taskfile.yml
   gen: tools/Taskfile.yml
@@ -66,12 +64,11 @@ tasks:
   # --- Einrichten ---------------------------------------------------------------------------------------------------
 
   install:
-    desc: Abhängigkeiten holen (Client, Frontends von k3c-workbench, Asset-Studio und Starter)
+    desc: Abhängigkeiten holen (Client, Frontends von k3c-workbench und Starter)
     cmds:
       - mkdir -p '{{.K3C_TMP}}'
       - bun install --frozen-lockfile
       - bun install --frozen-lockfile --cwd tools/k3c-workbench/frontend
-      - bun install --frozen-lockfile --cwd tools/k3c-studio/frontend
       - bun install --frozen-lockfile --cwd tools/k3c-starter/frontend
 
   # --- Client (Phaser, Vite): entwickeln und prüfen -----------------------------------------------------------------
@@ -119,12 +116,10 @@ tasks:
       - bunx vite build
 
   buildall:
-    desc: Alle EXE bauen und nach bin/ legen (Spielserver, Lasttest, TUI, Workbench, Asset-Studio, Starter samt Web-Build dist/, dazu die Web-EXE bin/k3c-workbench-web und bin/k3c-studio-web); laufende EXE vorher schließen, sonst scheitert die Kopie
+    desc: Alle EXE bauen und nach bin/ legen (Spielserver, Lasttest, TUI, Workbench, Starter samt Web-Build dist/, dazu die Web-EXE bin/k3c-workbench-web); laufende EXE vorher schließen, sonst scheitert die Kopie
     cmds:
       - task: k3c-workbench:build
-      - task: k3c-studio:build
       - task: k3c-workbench:web:build
-      - task: k3c-studio:web:build
       - task: k3c-server:build
       - task: k3c-load:build
       - task: k3c-tui:build
@@ -175,17 +170,15 @@ tasks:
           # Je Tool getrennt: Go-Tests (…g), Lint (…l), Vitest (…v). Die Engine zieht nur die Go-Tests der Tools nach,
           # ihre Frontends kennen die Engine nicht. Lange Go-Tests überspringt -short; voll prüfen check:go und die CI.
           base=$(git merge-base origin/develop HEAD)
-          g=; dg=; dl=; dv=; sg=; sl=; sv=; pg=; pl=; pv=
+          g=; dg=; dl=; dv=; pg=; pl=; pv=
           for f in $(git diff --name-only "$base"; git ls-files --others --exclude-standard); do
             case "$f" in
-              engine/*|data/*|go.mod|go.sum) g=1; dg=1; sg=1; pg=1 ;;
+              engine/*|data/*|go.mod|go.sum) g=1; dg=1; pg=1 ;;
               cmd/*|testdata/*|.golangci*|tools/atlas/*|tools/buildings/*|tools/pipeline/*|tools/cleanup/*|tools/ruletable/*|Taskfile.yml|.github/*) g=1 ;;
-              tools/webkit/*) dv=1; sv=1; pv=1 ;;
-              tools/assetkit/*) dg=1; dl=1; sg=1; sl=1 ;;
+              tools/webkit/*) dv=1; pv=1 ;;
+              tools/assetkit/*) dg=1; dl=1 ;;
               tools/k3c-workbench/frontend/*) dv=1 ;;
               tools/k3c-workbench/*) dg=1; dl=1 ;;
-              tools/k3c-studio/frontend/*) sv=1 ;;
-              tools/k3c-studio/*) sg=1; sl=1 ;;
               tools/k3c-starter/frontend/*) pv=1 ;;
               tools/k3c-starter/*) pg=1; pl=1 ;;
             esac
@@ -196,9 +189,6 @@ tasks:
           [ -z "$dv" ] || run="$run k3c-workbench:vitest"
           [ -z "$dg" ] || run="$run k3c-workbench:gotest"
           [ -z "$dl" ] || run="$run k3c-workbench:lint"
-          [ -z "$sv" ] || run="$run k3c-studio:vitest"
-          [ -z "$sg" ] || run="$run k3c-studio:gotest"
-          [ -z "$sl" ] || run="$run k3c-studio:lint"
           [ -z "$pv" ] || run="$run k3c-starter:vitest"
           [ -z "$pg" ] || run="$run k3c-starter:gotest"
           [ -z "$pl" ] || run="$run k3c-starter:lint"
@@ -212,13 +202,6 @@ tasks:
       - task: k3c-workbench:test
       - task: k3c-workbench:lint
 
-  check:studio:
-    desc: Asset-Studio prüfen (Frontend-Vitest; go test und golangci-lint für die Asset-Logik und das Modul tools/k3c-studio samt Backend; B-459, B-507)
-    cmds:
-      - task: k3c-studio:frontend
-      - task: k3c-studio:test
-      - task: k3c-studio:lint
-
   check:starter:
     desc: Windows-Starter prüfen (Frontend-Vitest, go test, golangci-lint; B-041)
     cmds:
@@ -226,12 +209,11 @@ tasks:
       - task: k3c-starter:lint
 
   check:all:
-    desc: Alles prüfen (Client, Go, k3c-workbench, Asset-Studio, Starter, Build)
+    desc: Alles prüfen (Client, Go, k3c-workbench, Starter, Build)
     cmds:
       - task: check
       - task: build
       - task: check:go
       - task: check:race
       - task: check:dev
-      - task: check:studio
       - task: check:starter
