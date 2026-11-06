@@ -1,6 +1,6 @@
 # MG4.2 · Höhlentroll, Kristallwächter und Wölfe
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -42,9 +42,9 @@ Keine neuen Rig-Typen, kein `assets_style_set`.
 
 ## Fertig, wenn
 
-- [ ] AC-01: die vier Assets gültig.
-- [ ] AC-02: Golden eingetragen, `tools/paper` grün.
-- [ ] AC-03: jede Animation geprüft; Review ohne roten Eintrag.
+- [x] AC-01: vier Assets gültig.
+- [x] AC-02: `golden.json` eingetragen, `tools/paper`-Tests grün.
+- [x] AC-03: jede Animation mit `assets_preview` geprüft; `assets_review` ohne roten Eintrag.
 
 ## Prüfen
 
@@ -58,5 +58,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `assets_list` meldet hoehlentroll, kristallwaechter (figur) sowie wolf, alphawolf (vierbeiner) gültig.
+- AC-02 geprüft: `task gen:paper` trägt die vier in `public/grafik/gegner/golden.json` ein; fremde Gruppen zurückgesetzt; `bunx vitest run tools/paper tests/planning.test.ts` 1110/1110 grün.
+- AC-03 geprüft: alle Animationen mit `assets_preview` angesehen; Wolf-Schweif im Galopp lief links aus dem Rahmen → Rahmen beider Wölfe auf `[-80,-118,168,122]` verbreitert.
+- Abweichungen: Troll und Wächter sind der Monarch-Körper, in x gestreckt (Rumpf 1,55, Arme 1,6, Beine 1,35–1,45), Ausgabe 240 px statt 192; Kristallwächter als `figur` statt `requisite` (Abweichung von B-701 D-08). Wölfe: `idle` = Gangart schritt, `lauf` = trab, `angriff` = galopp (Vierbeiner kennen keine Keyframes); Alpha-Wolf weiß mit roten Augen und Narbe, 155 px statt 124 px (`massstab` vergrößert das PNG nicht). D-Zeilen D-MG4-01 bis -04 trägt MG4.4 gesammelt in B-701 ein.
+- `task check:diff` nicht einzeln gefahren (Diff zu develop umfasst ganz feature/pap); `task check` in MG4.5.
+- Manuell geprüft: niemand. Neue Tickets: keine.

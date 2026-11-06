@@ -1,4 +1,12 @@
 {
+  "alphawolf": {
+    "renderKey": "f418d25b5a3b60318a078ec915eade2e5b8a6c8a7748286b44ea15bb4a20c034",
+    "dateien": {
+      "angriff.png": "2e53e7127f3c916a4daaee965e341c9dd05dc50aed31c54ed6763d8152fcb9e7",
+      "idle.png": "2023df284ba1e695b6a5ea89789c615da0b4f8aae14c03c76e922a85bd28a4ae",
+      "lauf.png": "c6538dc2f461324200066d98fbdc82bc6000ce95c52a93e88f23e7295032901a"
+    }
+  },
   "gier": {
     "renderKey": "f5b7d5c942386cf5a6da5b7854bd5e8a477e72966eef4b5fb7847b5b6b9e20be",
     "dateien": {
@@ -23,12 +31,36 @@
       "lauf.png": "f08fd465eec2a3dffadef8695cc2aa94f957287bade857fdef5d03040d3055be"
     }
   },
+  "hoehlentroll": {
+    "renderKey": "fb665150cc76942b470286e93e0671fe6865188f4eb94fd7729813ca478757ab",
+    "dateien": {
+      "angriff.png": "57c1310870b25e713bb6d7a9b878294639a7ce9eb14820f571dab1aa3b77a862",
+      "idle.png": "1df9f7bc8cce82810e64a915d580c09db89083ed62f4b1af1523b96916f6432e",
+      "lauf.png": "622abd52e4f20ab41a25a8d2e72a7f18ec176a4029e21c93d3951ac262bb3c23"
+    }
+  },
+  "kristallwaechter": {
+    "renderKey": "b7af9e042450b28afeff67019b91b9bce4cbd03fad2c91b78fc0a947aa21ec58",
+    "dateien": {
+      "angriff.png": "1244a001cf1582a10242dba44e02df994ae17f60ae4c19d15731263f6c8fabc0",
+      "idle.png": "c9bc370b34476075cd0ebfcb17a3c02fbb2b3ee8acdf42a43a6edb76659bf272",
+      "lauf.png": "a60f8d8f6ae1fa1a3e971c31eaec039fd513616adea1a4102a9e53f3f7a6edb0"
+    }
+  },
   "skelett": {
     "renderKey": "0bd8991aff234ffa4777fd063efa9e6a4cdf7e00919ffde80659b6f8f55a9a06",
     "dateien": {
       "angriff.png": "5aef9f47f1e9445abec04397079c8822ff9378e76b494b5bec8c0239f6b095ce",
       "idle.png": "99570ac74c5f1a612b1a110a10f8c2fb4524168890b63b6d528d3bc22708be25",
       "lauf.png": "40fb515832e43419f269bfe35941588c328e97adf7b0b3fd46b366fb7c760524"
+    }
+  },
+  "wolf": {
+    "renderKey": "da68bab21c0c471adc8fd2e145bf69f0606147a3eb8b7e87e4e8d4ce1f531a47",
+    "dateien": {
+      "angriff.png": "a9cd1969b47f3fe67e47e33a39a874d2f2c59f3f4c74a10e2d9e346fde0c3574",
+      "idle.png": "2ac37f428c07c7bbe844373862679f8a1d4d56fb365085d64b13b5a1a9d9df4a",
+      "lauf.png": "d6745795f07beb431878148ccd3e0c162ed79bb8d7474ebacb759318bfa56d4d"
     }
   },
   "zombie": {

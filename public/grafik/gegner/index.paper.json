@@ -1,5 +1,10 @@
 [
   {
+    "id": "alphawolf",
+    "rig": "vierbeiner",
+    "manifest": "alphawolf/manifest.json"
+  },
+  {
     "id": "gier",
     "rig": "figur",
     "manifest": "gier/manifest.json"
@@ -15,9 +20,24 @@
     "manifest": "goblin/manifest.json"
   },
   {
+    "id": "hoehlentroll",
+    "rig": "figur",
+    "manifest": "hoehlentroll/manifest.json"
+  },
+  {
+    "id": "kristallwaechter",
+    "rig": "figur",
+    "manifest": "kristallwaechter/manifest.json"
+  },
+  {
     "id": "skelett",
     "rig": "figur",
     "manifest": "skelett/manifest.json"
+  },
+  {
+    "id": "wolf",
+    "rig": "vierbeiner",
+    "manifest": "wolf/manifest.json"
   },
   {
     "id": "zombie",

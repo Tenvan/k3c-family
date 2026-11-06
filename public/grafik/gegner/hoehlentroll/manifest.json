@@ -1,0 +1,64 @@
+{
+  "id": "hoehlentroll",
+  "version": 1,
+  "specHash": "6afc2caa9d0a03ee72dc495bb72ee7adef02d01fa6ad846114388a0474e1929d",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "fb665150cc76942b470286e93e0671fe6865188f4eb94fd7729813ca478757ab",
+  "rahmen": [
+    -75,
+    -180,
+    185,
+    186
+  ],
+  "frameW": 239,
+  "frameH": 240,
+  "animationen": {
+    "angriff": {
+      "frames": 8,
+      "fps": 14,
+      "datei": "angriff.png",
+      "hashes": [
+        "f11e716a8ae59e4becdc75eb5f45c34a527a7ae4318669110df9beef316ec34b",
+        "7a5df3b7c8414bbfa04ee606f1d0fa28f6c90c9054efcd913761662263186744",
+        "c2d313359e210089892c1ea3e74ddcf3271ea75ab36b47794f4e24b32c0af79b",
+        "2ecf5ab1d3632ce4304afb983b39f91daa798612f55113a510816b5bdd5ed1c5",
+        "772429fe0539648a8d9b401648f37978207b3425fa7ccd004608a89eda735a07",
+        "19e1f535434c6055dbca03c1e0bad78c300ca164fcc8899857e09711f4848bbf",
+        "a9b29d1b2d10fd409bc0ccc7bb3c78b59abc3d2fe18cac5ae55d8963d72981d9",
+        "6ba9bbd64416b394110ce627b11523f5d504d06c54bb7e7e463e74fe6b8ecae3"
+      ]
+    },
+    "idle": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "idle.png",
+      "hashes": [
+        "c8f5690231ee851d037008a66d1ed8ceafc2e9bdf24c970dda54452b396ccc78",
+        "391b2d90c3d0398e6aad3fdfac80e77e2c4d95bc1765f4cc4450fab703bc13c3",
+        "949d5841881e27e477126e8ceff2b0cb54a058ece4e8f182e1d80426f6532b5b",
+        "391b2d90c3d0398e6aad3fdfac80e77e2c4d95bc1765f4cc4450fab703bc13c3",
+        "59137ea5591e03f7058cac43b2cacc147fdb38d993361e4a781eef487b0f17e5",
+        "8b1b8d3e2506399c1b6014b00a2f99b87c3f395963395a3c4b7774c95a7061d8",
+        "c39fd48492d3e1396eb2e7400ba20d5e079f78429ae0ab805df9fd6c7de884e7",
+        "8b1b8d3e2506399c1b6014b00a2f99b87c3f395963395a3c4b7774c95a7061d8"
+      ]
+    },
+    "lauf": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "lauf.png",
+      "hashes": [
+        "c23f2ab2593f0834253a46b3484d4acd49b749187eb09c20e8c1ca32355a6d20",
+        "6c8ef5a673f80b26b0f53076c5e3ea45ba3630ac1c03130b2b798092eda5d4b5",
+        "7febba2cded97687fa13afb9e0f473f1066adda67634917445d006806b01f2d7",
+        "5c6379949c718112ebc5f0f983db4ef70091c188590689e1a29bb49e3db1381d",
+        "8b920941d40b9fd65a7ff7c5619f8a3948c36e0c63a1ed109063d5f033008204",
+        "0e20fd79ae563f67969498b36472b9ede77cc89f8d9e1324dc8a7ffc3a32817f",
+        "a352b1a541cc23626a63870b9a4fb8e0ccdfe1fe892bab390493cb4a8e106d09",
+        "89e30e27388db07455748ae09e1a2755060356a2b947f0692bce8d8d98d69e72"
+      ]
+    }
+  },
+  "varianten": []
+}

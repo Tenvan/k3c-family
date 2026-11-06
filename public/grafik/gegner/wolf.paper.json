@@ -1,0 +1,380 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "wolf",
+  "rig": "vierbeiner",
+  "version": 1,
+  "beschreibung": "Wolf: grauer Wolf mit hellem Brustlatz, gelben Augen und buschigem Schwanz; schleicht, trabt, springt an",
+  "teile": [
+    {
+      "eltern": "rumpf-hinten",
+      "id": "oberbein-hf",
+      "lagen": [],
+      "pivot": [-26, -56]
+    },
+    {
+      "eltern": "oberbein-hf",
+      "id": "unterbein-hf",
+      "lagen": [],
+      "pivot": [-26, -31]
+    },
+    {
+      "eltern": "unterbein-hf",
+      "id": "huf-hf",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-29.2 -10.5L-22.8 -10.5L-20.5 -2.5C-19 -0.5 -20 1 -22 1L-30 1C-31 1 -31 -1 -30 -3Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-25 -2L-24.5 0.6",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-22.6 -2L-22.2 0.6",
+          "material": "linie"
+        }
+      ],
+      "pivot": [-26, -9]
+    },
+    {
+      "eltern": "rumpf-vorn",
+      "id": "oberbein-vf",
+      "lagen": [],
+      "pivot": [30, -56]
+    },
+    {
+      "eltern": "oberbein-vf",
+      "id": "unterbein-vf",
+      "lagen": [],
+      "pivot": [30, -31]
+    },
+    {
+      "eltern": "unterbein-vf",
+      "id": "huf-vf",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M26.8 -10.5L33.2 -10.5L35.5 -2.5C37 -0.5 36 1 34 1L26 1C25 1 25 -1 26 -3Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M31 -2L31.5 0.6",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M33.4 -2L33.8 0.6",
+          "material": "linie"
+        }
+      ],
+      "pivot": [30, -9]
+    },
+    {
+      "eltern": "rumpf-hinten",
+      "id": "schweif",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-36 -76C-48 -78 -58 -70 -62 -58C-64 -50 -62 -42 -58 -38C-56 -46 -54 -52 -50 -56C-50 -50 -48 -46 -46 -44C-46 -54 -42 -64 -34 -70Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-36 -76C-48 -78 -58 -70 -62 -58C-64 -50 -62 -42 -58 -38C-60 -50 -56 -64 -44 -72Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-62 -50C-64 -46 -62 -41 -58 -38C-57 -42 -56 -45 -55 -47Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-44 -72C-52 -66 -55 -58 -54 -50",
+          "material": "stein",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [-38, -70]
+    },
+    {
+      "eltern": "rumpf-vorn",
+      "id": "rumpf-hinten",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-34 -80C-43 -79 -46 -71 -45 -63C-44 -56 -39 -52 -33 -51C-24 -51 -14 -54 -2 -54L6 -52L6 -80C-8 -81 -22 -81 -34 -80Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-43 -60C-38 -55 -26 -53 -14 -55L6 -54L6 -56C-10 -57 -26 -56 -43 -60Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-36 -77C-26 -78 -14 -77 -2 -77C-14 -75 -26 -75 -38 -75Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-27 -74C-33 -68 -33 -60 -29 -54",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -66]
+    },
+    {
+      "id": "rumpf-vorn",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -80C6 -80 18 -84 28 -84C38 -83 47 -76 47 -66C46 -56 38 -47 27 -45C16 -45 6 -49 -6 -52Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-6 -55C8 -53 20 -50 36 -51C32 -47 26 -45 22 -45C12 -46 4 -49 -6 -52Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M22 -80C32 -81 39 -77 43 -70C38 -74 32 -77 22 -78Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M34 -78C43 -76 48 -66 46 -56C44 -50 40 -47 35 -46C39 -54 39 -68 34 -78Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M28 -76C23 -69 23 -60 27 -53",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -80]
+    },
+    {
+      "eltern": "rumpf-hinten",
+      "id": "oberbein-hn",
+      "lagen": [],
+      "pivot": [-30, -56]
+    },
+    {
+      "eltern": "oberbein-hn",
+      "id": "unterbein-hn",
+      "lagen": [],
+      "pivot": [-30, -31]
+    },
+    {
+      "eltern": "unterbein-hn",
+      "id": "huf-hn",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-33.2 -10.5L-26.8 -10.5L-24.5 -2.5C-23 -0.5 -24 1 -26 1L-34 1C-35 1 -35 -1 -34 -3Z",
+          "material": "stein"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-29 -2L-28.5 0.6",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-26.6 -2L-26.2 0.6",
+          "material": "linie"
+        }
+      ],
+      "pivot": [-30, -9]
+    },
+    {
+      "eltern": "rumpf-vorn",
+      "id": "oberbein-vn",
+      "lagen": [],
+      "pivot": [26, -56]
+    },
+    {
+      "eltern": "oberbein-vn",
+      "id": "unterbein-vn",
+      "lagen": [],
+      "pivot": [26, -31]
+    },
+    {
+      "eltern": "unterbein-vn",
+      "id": "huf-vn",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M22.8 -10.5L29.2 -10.5L31.5 -2.5C33 -0.5 32 1 30 1L22 1C21 1 21 -1 22 -3Z",
+          "material": "stein"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M27 -2L27.5 0.6",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M29.4 -2L29.8 0.6",
+          "material": "linie"
+        }
+      ],
+      "pivot": [26, -9]
+    },
+    {
+      "eltern": "rumpf-vorn",
+      "id": "hals",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M30 -80C34 -88 42 -94 52 -95L60 -80C52 -72 44 -66 38 -60Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M44 -76C48 -70 52 -66 56 -66C50 -64 44 -62 38 -60Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M36 -86C34 -82 34 -76 36 -70",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M38 -84C42 -88 46 -90 50 -91",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M49 -96L51 -112L59 -100Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M51 -98L52 -108L56 -100Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M47 -92C50 -101 59 -103 65 -99C69 -96 74 -94 81 -92C85 -90 85 -86 82 -85C75 -83 67 -82 61 -81C53 -80 47 -84 47 -92Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M61 -81C67 -82 75 -83 82 -85C80 -83 74 -81 66 -80C64 -80 62 -80 61 -81Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M47 -92C49 -96 52 -99 56 -100C52 -96 50 -90 52 -84C49 -85 47 -88 47 -92Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M66 -98C72 -96 78 -94 81 -92C76 -93 70 -94 66 -96Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M60 -95C61.5 -97 64.5 -97 65.5 -95C64 -94 61.5 -94 60 -95Z",
+          "material": "gold"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [63.6, -95.4],
+          "radius": 0.5
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M59.6 -96C61.5 -98.2 64.6 -98.2 66 -95.8",
+          "material": "linie"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [83, -89.6],
+          "radius": 1.8
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M70 -84.6C74 -84.6 78 -85.4 81 -86.4",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M74 -84.8L75.4 -82.4L76.6 -85.2Z",
+          "material": "weiss"
+        }
+      ],
+      "pivot": [30, -72]
+    }
+  ],
+  "bein": {
+    "breiten_vorn": [15, 13, 10, 7, 5, 6],
+    "breiten_hinten": [18, 15, 11, 7.2, 5, 6]
+  },
+  "ausgabe": {
+    "hoehe_px": 124,
+    "rahmen": [-80, -118, 168, 122]
+  },
+  "animationen": {
+    "angriff": {
+      "fps": 14,
+      "frames": 8,
+      "gangart": "galopp"
+    },
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "gangart": "schritt"
+    },
+    "lauf": {
+      "fps": 12,
+      "frames": 8,
+      "gangart": "trab"
+    }
+  }
+}
