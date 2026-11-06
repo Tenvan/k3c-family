@@ -89,7 +89,7 @@ Keine offenen Fragen; Defaults beim Bereitmachen gesetzt (Format wie B-701, Best
 | MC1.2 | `MC1.2-asset-tools.md` | Umsetzung | autonom | fertig |
 | MC1.3 | `MC1.3-preview-review-prompts.md` | Umsetzung | autonom | fertig |
 | MC1.4 | `MC1.4-register-tools-entfernen.md` | Umsetzung | autonom | fertig |
-| MC1.5 | `MC1.5-review.md` | Review | autonom | offen |
+| MC1.5 | `MC1.5-review.md` | Review | autonom | in Arbeit |
 
 Lane `mcp`, nacheinander (gleiche Dateien), Kette MC1.1 → MC1.2 → MC1.3 → MC1.4 → MC1.5; MC1.1 wartet auf das Vertrags-Review PV1.5.
 
