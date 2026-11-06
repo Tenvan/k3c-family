@@ -1,10 +1,90 @@
 {
+  "albtraum": {
+    "renderKey": "7a43caadd972920e73c1a380b17ccf482c63d7195e09bd73dfdc030e5db05340",
+    "dateien": {
+      "galopp.png": "6c55ca0f7b24aa096cc8ee26589e79944fd2b0cc18f0b556fdf3619c5e36def6",
+      "schritt.png": "a21fddcc33b3f8adb147523874dd5ae266cfcc28fa9357484dbf98bfd7ea1e7c",
+      "trab.png": "7dbc24a06d811aedf164b0c9580f8552737c4b195a2dbafffee2dfbc0766bdbd"
+    }
+  },
+  "einhorn": {
+    "renderKey": "77d45ef09c68e8d2c35cb4f5c43db2420756d9247aa4fd7f1f791c5034adafc9",
+    "dateien": {
+      "galopp.png": "a416486e88795cfb7878037bb18a2901d378b45ba7c44bebfadf86249b5f7fca",
+      "schritt.png": "c55ae93a0e75ffd3fd69bbd29deb6c9073422b33860d19947f8d33acc75a79b4",
+      "trab.png": "90c620a8596bbd897a9eedd32e496d05ff1e0f44eb1f6eebd5818247e2875caf"
+    }
+  },
+  "elefant": {
+    "renderKey": "ab1e691ef9a970e12659ba4d6e52b72da72e31bb83b4a6679fe162b5378c0fe7",
+    "dateien": {
+      "galopp.png": "a9a949404c8a6f1ca7ce9cefb127ddcdf8793f16aea8ba659220e799af412a5d",
+      "schritt.png": "7a03f338fa6f74b02124f7432529d619e82257350233bd92acd9d59beae41835",
+      "trab.png": "69d59ead149c4c493432169c048fa8e652922f5c6ad041c87110b10881689ebc"
+    }
+  },
+  "hirsch": {
+    "renderKey": "cd6c9ab370ab822ddc77054520b2ab2f21d0d5c3f62dab161c46ccdd74366500",
+    "dateien": {
+      "galopp.png": "a334966dd4e7b607b9ecba5ebb3b34bbe22ed879410a78123f00464dbf915864",
+      "schritt.png": "85bc76b404695a13fef7d3afcf7257abfb70c873bf6d7a2e463f5d38bde15597",
+      "trab.png": "b833b219b348fd9eddf7c28965e4c8240fbaf301424a368dc45a57d865c35fc6"
+    }
+  },
+  "hoellenhund": {
+    "renderKey": "5566a4ca5328c142f13feae0d8f60988356d0b2146e2f0040283ef994a1d0e8c",
+    "dateien": {
+      "galopp.png": "6a2f1b640394ff31edf82cf12c50c87cdaa8d4cee5defe8a1b376e4b699963a8",
+      "schritt.png": "d7913b733cce4697ad4ad6a68e9ad613f8b6d9ee7c107c01e868cbaa4e74dc63",
+      "trab.png": "4d4f4452ba2c140c1b87ceba835535442cd2a32ca42af86a5539ab99192fcc8c"
+    }
+  },
+  "pegasus": {
+    "renderKey": "afc4b19cfa4782c104d26d30e809e2295ee003df2234b9104fab9d75e09a6286",
+    "dateien": {
+      "galopp.png": "65733b03902c4dd0fc9e1ed6992595eb91fbd917f8e14a280f970ca65bd60957",
+      "schritt.png": "a1fd7d8177922eb9a551bab24dfdc77a677b827b265b54e5780647f8528cf373",
+      "trab.png": "520660e3d6d72f7a07ed77dfa17d74901023163814545900e7add9bb6cc86b2a"
+    }
+  },
   "pferd": {
     "renderKey": "6a50b148e4b11d74243efb4b96e6fabc5d4d46df9123928e86469e48b8a0c997",
     "dateien": {
       "galopp.png": "91be7bce99bb6d0a7995a92d18381fced5b673bcd5b0098cee3f4128ea805c86",
       "schritt.png": "dffb3d544574d5865a770a25abaf3f88542e7841c55c27baa94022c54a8efa6c",
       "trab.png": "98b451a351f08296c98309bb54af37d919204c95bced5991ccc2fe2e8de65477"
+    }
+  },
+  "rappe": {
+    "renderKey": "794782e1ceea9294b37145b1618bb807981b78efcdaafe453dba5f42b8833812",
+    "dateien": {
+      "galopp.png": "e37a2a6bd9721f6b6a62879ce6607e0cb222060503b0c458a42f459480beee5b",
+      "schritt.png": "cd8e09e3a5413bc70d9b2e421f0c6f8927cbe97e435819f20ae2b8fe53b0c241",
+      "trab.png": "ed9883f47975bb0af1cf1baf28b108a330af4fd66b5b77cf37896918be714888"
+    }
+  },
+  "schimmel": {
+    "renderKey": "422ddccb888e9467c43fbbbaf157994aa7a0cb9c43cf5613a18c89a23a301e6d",
+    "dateien": {
+      "galopp.png": "c0d4eb8494bc0234d25b0580be87b1d646b24e2c49723fba4e839fb96b8dd5e6",
+      "schritt.png": "81c26b795fa100ec7839ab5af9e7fc45929d04b8c2172e685ae14b395e6fe969",
+      "trab.png": "b30163c7bb380712730d0babed8f116e02c1f0dc497540bb6c6cdd3c108e3fa6"
+    }
+  },
+  "weisser-wolf": {
+    "renderKey": "a428f186a28462d59014d431ffd534d8e47348b6bb27a1538956d1dd8f9f8a2b",
+    "dateien": {
+      "galopp.png": "136559880707091dadf93f657d63a08fecd1a26439cbf1cff7800913128eca73",
+      "schritt.png": "2baba0bdb90cf394e1285699e08a26884452c59ff1508821186f3561545e24c3",
+      "trab.png": "f371510f3644ef1e48fb62e99e7343557e9cca19a25704cd1bf8034007030fe5"
+    }
+  },
+  "wolf": {
+    "renderKey": "96ce8275185a3b8f3a28f59b1795817a6d1409bf05ef69b11bbf208c0bc8f4a5",
+    "dateien": {
+      "galopp.png": "4163ec3e166e9234b2e16445ab131afec0eaf83e62a003c81c1327542fc085b9",
+      "schritt.png": "7a0d2aa88669f52d3a24030c6c7508e3ef253911c0b3c58853470aae727522c0",
+      "trab.png": "70c5dd3797707557eccad7466284eee3d04ef4e7a99a0c1243b00e4ad8973532"
     }
   }
 }
