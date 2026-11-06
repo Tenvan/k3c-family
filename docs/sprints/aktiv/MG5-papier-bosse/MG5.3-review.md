@@ -1,6 +1,6 @@
 # MG5.3 · Review MG5
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -53,5 +53,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Getrennter Reviewer (Opus, nur lesend über MCP mit `checkout`): `assets_list`, `assets_review` gegen a4f66f28, 21 `assets_preview` (alle 17 Animationen, Frame 0 und Mitte).
+- **AC-01 geprüft:** `assets_list {gruppe: bosse}` 6/6 gültig (5× figur, kristallherz-waechter requisite), `hoehe_px` überall 288.
+- **AC-02 geprüft:** `task gen:paper` grün; `golden.json` 6 Einträge mit 17 Dateien, `index.paper.json` 6 Einträge; `task test -- paper` 29/29 Dateien, 187/187 Tests grün.
+- **AC-03 geprüft:** jede Animation per Preview (MG5.1/MG5.2 selbst, MG5.3 Reviewer); `assets_review` 6× neu, kein roter Eintrag. Sichtprüfung durch 🧑 in PS1 steht aus.
+- Befunde behoben: kristallherz-waechter-Sockel kippte im angriff mit (`korpus` ±3° entfernt, Box endet jetzt bei y 284 statt am Rand); troll-koenig-Beschreibung „Holzkeule“ → „Holzschwert“ (passt zum Render).
+- Befunde offen als D-MG5-04 (PS1): lava-golem-Glut zu dünn, Wangenpunkt der Golems, lava-golem-Arme in idle verdeckt, Ratten-Schwanz hell und dünn, Holzschwert kontrastarm. Splitter des Kristallherzens schweben gewollt; Gesicht im angriff vom Arm verdeckt (Erbe der Krieger-Vorlage).
+- `task check:diff`: 2 Workbench-Frontend-Tests (u. a. `CatalogPrompts.test.tsx`) rot unter Parallellast; `k3c-workbench:vitest` einzeln 432/432 grün, der Branch ändert unter `tools/` nichts gegenüber feature/pap (Wackel-Tests wie D-MG2-07).

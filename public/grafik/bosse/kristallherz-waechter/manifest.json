@@ -1,10 +1,10 @@
 {
   "id": "kristallherz-waechter",
   "version": 1,
-  "specHash": "ecaa98912a27a070336190c0089fc3c4e59718afdee7ad704b40d4389c218134",
+  "specHash": "e8eb4be4c6ddb7f49730f8b8fa3c55d9bef40c0a8a26864831d898232be65fd2",
   "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "b83f12ff35a0bc95922e19efa885ed3e2d7ee3c60f0348716ce890bc247b5aab",
+  "renderKey": "419afbde66d63804f77467db6a0977f932b6fc3e07e93a3e0b64a64a6c960ca2",
   "rahmen": [
     -82,
     -134,
@@ -20,13 +20,13 @@
       "datei": "angriff.png",
       "hashes": [
         "4a96ffe9627ef3a6a0458d53cf8a5bb23cdee63f566ee9eb7ff7f5c57548da96",
-        "df1301e49fc9dcfc4545dcae79fb62f07511cc7a715279bd8edb9b12a70fa839",
-        "d0b28744f207ee97332a7274784d8d653599821c35aa36edc239b62f49427a03",
-        "fb1b2662364c661f509de1d6a7000d618e7bc95a7c75bf017db9ad7840a89400",
+        "af0b317ee26771c15236cf8a5f49aa795dce0bd62fd6b8015c11833c5af777ec",
+        "360536cbf8188781a08c232b1f2fe0e07041424891ad77f4537b2f0a83bab958",
+        "f5455e730b2add6ec59aebc85e14a59668504da435fd7f00f4d55cfd3b5e0f7b",
         "0af0fe188d727fedbfdfb0a5b08b235f9fd8a5cd44d5747b001c4b592f1f2820",
-        "11f6d70156a821e83416133c338d75fc2b444ec26a1b6afbfdc1b16a3f27c22b",
-        "0593d1a30c18f700957b7a85f8cce87525fe3d615d1a5421cefe9976e5faff0b",
-        "92f2cc34a41d043811a8631420aa69f4d6986aa59d7e3e46553f2eb3edd6bd37"
+        "aa2bd828a1fd46ea23e63763f5602eeb7d27675a786a73bb04b264dfe8dbbcc0",
+        "663e3a47c67987ea46c49108ad085946ed600ae0cb41c1e9a6633d28872ae68a",
+        "a265d5039e3806b5fbdf54296d5fada55f0eb2e74584058125393a7d6528fe12"
       ]
     },
     "idle": {

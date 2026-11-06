@@ -148,7 +148,6 @@
         {
           "t": 0,
           "winkel": {
-            "korpus": 0,
             "splitter-l": 0,
             "splitter-o": 0,
             "splitter-r": 0
@@ -157,7 +156,6 @@
         {
           "t": 0.4,
           "winkel": {
-            "korpus": -3,
             "splitter-l": -35,
             "splitter-o": -10,
             "splitter-r": 35
@@ -166,7 +164,6 @@
         {
           "t": 0.6,
           "winkel": {
-            "korpus": 3,
             "splitter-l": 20,
             "splitter-o": 10,
             "splitter-r": -20

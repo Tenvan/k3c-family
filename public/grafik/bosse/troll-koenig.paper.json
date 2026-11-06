@@ -3,7 +3,7 @@
   "id": "troll-koenig",
   "rig": "figur",
   "version": 1,
-  "beschreibung": "Troll-König: grauhäutiger Troll mit goldener Krone, Hauer, Fellrüstung, Holzkeule und Schild (Miniboss Stufe 1).",
+  "beschreibung": "Troll-König: grauhäutiger Troll mit goldener Krone, Hauer, Fellrüstung, Holzschwert und Schild (Miniboss Stufe 1).",
   "teile": [
     {
       "eltern": "rumpf",

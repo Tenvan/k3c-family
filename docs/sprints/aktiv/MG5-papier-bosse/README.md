@@ -65,7 +65,7 @@ keine (Defaults als D-MG5-Zeilen in B-701)
 |---|---|---|---|---|
 | MG5.1 | `MG5.1-minibosse-humanoid.md` | Umsetzung | autonom | fertig |
 | MG5.2 | `MG5.2-golems-kristall.md` | Umsetzung | autonom | fertig |
-| MG5.3 | `MG5.3-review.md` | Review | autonom | offen |
+| MG5.3 | `MG5.3-review.md` | Review | autonom | fertig |
 
 Lane `bosse`, nacheinander; Umsetzung Sonnet, Review Opus; keine Mensch-Session (Sichtprüfung in PS1).
 
@@ -75,5 +75,7 @@ Lane `bosse`, nacheinander; Umsetzung Sonnet, Review Opus; keine Mensch-Session 
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-11-07, Review MG5.3 (Opus-Reviewer, Claude): AC-01, AC-02, AC-03 erfüllt (Nachweise in MG5.1–MG5.3); Sichtprüfung durch 🧑 in PS1 offen.
+- Behoben: Sockel des kristallherz-waechter kippte im angriff mit; Beschreibung troll-koenig (Holzschwert).
+- Offen als D-MG5-01 bis D-MG5-04 in B-701 (Größe, Farben, Rig der Golems, Lesbarkeit). Keine neuen Tickets.
+- `task check:diff`: nur Workbench-Frontend-Wackel-Tests unter Last rot, einzeln 432/432 grün (D-MG2-07).
