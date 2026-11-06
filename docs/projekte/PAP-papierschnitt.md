@@ -17,7 +17,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | PV1 | Papierschnitt-Verträge: Domäne, Spec-Schema, Styleguide, Render-, MCP- und Review-Vertrag | erledigt |
 | RD1 | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | aktiv |
 | MC1 | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | aktiv |
-| WB1 | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | aktiv |
+| WB1 | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | erledigt |
 | RV1 | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | aktiv |
 | MG1 | Papierschnitt-Migration: Monarch und Spielerfarben | geplant |
 | MG2 | Papierschnitt-Migration: Reittiere | geplant |

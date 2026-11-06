@@ -8,12 +8,11 @@ import (
 	"testing"
 )
 
-// WZ25.4 (B-511/AC-05): Jede Datei, die das Studio in data/ oder public/ schreibt, entsteht per Temp-Datei und Umbenennen
+// WZ25.4 (B-511/AC-05): Jede Datei, die die Asset-Logik in data/ oder public/ schreibt, entsteht per Temp-Datei und Umbenennen
 // (bzw. Link). Der Server beobachtet beide Ordner und prüft nach 2 s Ruhe; eine halbe Datei darf nie dort liegen.
 
 // Schreibwege ohne Atomarität sind nur für Ziele außerhalb der beobachteten Ordner erlaubt (Datei → Grund).
 var nonAtomicAllowed = map[string]string{
-	"k3c-studio/backend/rpc.go":  "saveBody schreibt den Upload in ein Temp-Verzeichnis außerhalb des Repos",
 	"ticket/ticket.go":           "lockBacklog legt die Sperrdatei exklusiv an (O_EXCL), kein Dateiinhalt",
 	"windowstate/windowstate.go": "Fensterzustand unter <UserConfigDir>/k3c",
 }
@@ -44,8 +43,10 @@ func goFiles(t *testing.T, dirs ...string) map[string]string {
 	return out
 }
 
-func TestSchreibwegeDesStudiosSindAtomar(t *testing.T) {
-	files := goFiles(t, ".", "../k3c-studio")
+// Das Asset-Studio (tools/k3c-studio) ist entfallen (WB1); seine lesenden Teile in k3c-workbench/internal/studioview
+// schreiben nur Testspielstände außerhalb des Repos.
+func TestSchreibwegeSindAtomar(t *testing.T) {
+	files := goFiles(t, ".", "../k3c-workbench/internal/studioview")
 	if len(files) < 10 {
 		t.Fatalf("nur %d Dateien gelesen: Pfade stimmen nicht", len(files))
 	}

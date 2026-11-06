@@ -139,18 +139,20 @@ tasks:
       - bunx vitest run --config vitest.config.ts
 
   gotest:
-    desc: go test für k3c-workbench (GO_TEST_FLAGS=-short lässt lange Tests aus, B-619)
+    desc: go test für k3c-workbench und die Asset-Logik tools/assetkit (GO_TEST_FLAGS=-short lässt lange Tests aus, B-619)
     deps: [':tmp', frontend]
     dir: '{{.DEV}}'
     cmds:
       - go test {{.GO_TEST_FLAGS}} ./...
+      - cd ../assetkit && go test {{.GO_TEST_FLAGS}} ./...
 
   lint:
-    desc: golangci-lint für k3c-workbench
+    desc: golangci-lint für k3c-workbench und tools/assetkit
     deps: [':tmp', frontend]
     dir: '{{.DEV}}'
     cmds:
       - golangci-lint run
+      - cd ../assetkit && golangci-lint run
 
   build:
     desc: "EXE von k3c-workbench bauen, feste EXE bin/k3c-workbench (wails build; nur bei geänderten Quellen, `--force` erzwingt; laufende Workbench vorher schließen, sonst scheitert die Kopie)"

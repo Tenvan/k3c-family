@@ -122,8 +122,8 @@ Eine Session pro Lauf. Eine Review-Session nie im selben Lauf wie eine Umsetzung
 Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und Freigaben. Deshalb:
 
 - **Prüfstufen:** Während der Arbeit nur gezielte Tests (`go test ./engine/sim/ -run TestX`, `check_run go:test` oder
-  `task:test` mit `pattern`). Vor dem Commit **genau einmal** `task check:diff`: Es wählt Client, Go, k3c-workbench, Studio und
-  Starter nach dem Diff zu `origin/develop`, je Tool getrennt nach Go-Tests, Lint und Vitest, und ruft `go test -short`.
+  `task:test` mit `pattern`). Vor dem Commit **genau einmal** `task check:diff`: Es wählt Client, Go, k3c-workbench (samt `tools/assetkit`)
+  und Starter nach dem Diff zu `origin/develop`, je Tool getrennt nach Go-Tests, Lint und Vitest, und ruft `go test -short`.
   Den vollen Satz (`task check`, `task check:go`, `task check:race`) fährt nur
   die Review-Session, `task check:all` nur der Release. Ein roter Lauf wird behoben und einmal wiederholt, nicht
   mehrfach „zur Sicherheit“.
@@ -176,7 +176,7 @@ Sessions **eines** Sprints laufen immer nacheinander (ein Sprint-Branch). Siehe 
 | **PLAT** | Plattform: Eingabe, Shell, Seiten | `src/input/`, `src/core/shell.ts`, `src/core/fullscreen.ts`, `src/landing/`, `*.html`, Pages-Präsentation `site/` |
 | **INF** | Frameworks, Tooling, CI, Repo-Aufbau, Arbeitsweise | `package.json`, `go.mod`, `vite*.ts`, `tsconfig.json`, Lint-Konfiguration, `.github/`, `tests/projectRules.test.ts`, `tests/planning.test.ts`, `docs/arbeitsweise.md`, `docs/vorlagen/` |
 | **PAP** | Papierschnitt-Grafik (Entscheidung 005) | `tools/paper/`, `public/grafik/stil.paper.json`, `public/grafik/**/*.paper.json` samt den daneben gerenderten Ausgaben (PNG, `manifest.json`, Gruppen-Index), `data/asset-prompts.json`, `docs/standards/paper-*.md` |
-| **DEV** | Entwickler-Werkzeug | `tools/k3c-workbench/` (eigenes Go-Modul mit Oberfläche, MCP-Server), `tools/k3c-studio/` (Asset-Studio als eigenes Fenster: Backend in `tools/k3c-studio/backend`, Frontend in `tools/k3c-studio/frontend`; keine Seite des Spielservers, Entscheidung 004), `tools/assetkit/` (gemeinsame Asset-Logik von k3c-workbench und Asset-Studio), `cmd/k3c-load/`, `cmd/k3c-tui/`, Werkzeug-Seiten `src/tools/` |
+| **DEV** | Entwickler-Werkzeug | `tools/k3c-workbench/` (eigenes Go-Modul mit Oberfläche – Bereiche Development und Assets, Entscheidung 005 › 5 – und MCP-Server), `tools/assetkit/` (Asset-Logik der Workbench, eigenes Modul), `cmd/k3c-load/`, `cmd/k3c-tui/`, Werkzeug-Seiten `src/tools/` |
 
 **Modell-Wahl** (Feld `Modell` der Session, Empfehlung für den ausführenden Agenten): `haiku` für reine Nachschlage-
 und Doku-Sessions, `sonnet` Standard für Umsetzung und Migration, `opus` für Verträge, Rig-Mathematik, Bild-Diff und
@@ -319,7 +319,7 @@ Niedrige Komplexität ist in **jeder** Session Pflicht, nicht erst im Review.
 
 ### Oberflächen der Wails-Programme (Atomic Design)
 
-Gilt verbindlich für jedes Wails-Programm mit Oberfläche (`tools/*/frontend`: k3c-workbench, Asset-Studio, Starter) und jedes neue.
+Gilt verbindlich für jedes Wails-Programm mit Oberfläche (`tools/*/frontend`: k3c-workbench, Starter) und jedes neue.
 Die Oberfläche ist React mit **Radix Themes**, aufgebaut nach Atomic Design; die gemeinsamen Ebenen liegen in `tools/webkit`:
 
 | Ebene | Ort | Inhalt |
