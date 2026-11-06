@@ -5,8 +5,8 @@
 - **Agent:** autonom
 - **Domäne:** PAP
 - **Lane:** monarch
-- **Modell:** Sonnet
-- **Umgebung:** lokal (Worktree, Workbench-MCP)
+- **Modell:** sonnet
+- **Umgebung:** offline
 - **Branch:** mg1/2-spielerfarben-varianten
 - **Abhängig von:** MG1.1
 - **Tickets:** B-699

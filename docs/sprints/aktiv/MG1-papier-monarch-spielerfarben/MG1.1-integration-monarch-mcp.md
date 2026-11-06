@@ -1,12 +1,12 @@
 # MG1.1 · Integration: Monarch durchgängig über MCP
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
 - **Lane:** monarch
-- **Modell:** Sonnet
-- **Umgebung:** lokal (Worktree, Workbench-MCP)
+- **Modell:** sonnet
+- **Umgebung:** offline
 - **Branch:** mg1/1-integration-monarch-mcp
 - **Abhängig von:** RD1, MC1
 - **Tickets:** B-699
@@ -59,5 +59,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `assets_list` → monarch gültig.
+- AC-02 geprüft: `task gen:paper` grün, `golden.json` nachgezogen (nur `renderKey`, PNG-Hashes unverändert); `task test -- paper` 187/187 (ein Timeout im fremden `fixtures/stub.test.ts` unter Last, einzeln grün).
+- AC-03 geprüft: Preview idle 0/7 (auch `spieler2`), lauf 4, schritt 0, trab 2, galopp 4 – Figur, Umhang, Reiten und Pferd sauber, keine Bildfehler. Fehlerfälle: unbekannte Animation, Frame 99, Material `rosa`, Reittier `esel` sauber abgelehnt, nichts geändert. Änderung per `assets_set` (Beschreibung) mit `assets_review` → `geaendert`, Pixel 0,00 %.
+- Durchgängig nur über MCP möglich; einzige Ausnahme `task gen:paper` für `golden.json` (B-707, D-MG1-02).
+- Neue Tickets: B-707 (golden.json veraltet nach assets_set), B-708 (Fehlerfeld ohne Animationsnamen), B-709 (Preview ohne Reittier-Boxen, Guide-Rundung).
+- Nebenbefund: `assets_set` formatiert die Spec einmalig kompakt (Zahlen-Listen einzeilig), harmlos.

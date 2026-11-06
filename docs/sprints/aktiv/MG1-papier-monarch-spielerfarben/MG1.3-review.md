@@ -5,8 +5,8 @@
 - **Agent:** autonom
 - **Domäne:** PAP
 - **Lane:** monarch
-- **Modell:** Opus
-- **Umgebung:** lokal (Worktree, Workbench-MCP)
+- **Modell:** opus
+- **Umgebung:** offline
 - **Branch:** mg1/3-review
 - **Abhängig von:** MG1.2
 - **Tickets:** B-699

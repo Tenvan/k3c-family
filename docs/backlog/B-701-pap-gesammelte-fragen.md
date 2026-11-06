@@ -112,3 +112,5 @@ Siehe Notizen; keine blockiert die Umsetzung (Defaults gelten bis PS1.1).
 | D-MC1-13 | Hashes in Antworten | `renderKey` und `stilHash` in voller Länge statt `9c…(64 Zeichen)` | gekürzt | MC1 | offen |
 | D-MC1-14 | Zweite CLI-Anbindung | `paperassets.CLI` (Zeitlimit 2 min, `K3C_PAPER_CLI`) neben `review.CLI`; Zusammenführung B-706 | sofort gemeinsamer Runner | MC1, RV1 | offen |
 | D-MC1-15 | Asset ohne Animation in `assets_preview` | Fehler mit leerer Animationsliste (RD1 kennt implizit `stand`, D-RD1-07) | `stand` als Standard | MC1, RD1 | offen |
+| D-MG1-01 | Zuschnitt MG1 | Gruppe `figuren` hat nur den Monarch; Spielerfarben als Varianten, Sessions MG1.1 Integration, MG1.2 Varianten, MG1.3 Review statt 3–6 Assets je Session | je Spieler ein eigenes Asset | MG1 | offen |
+| D-MG1-02 | `golden.json` nach `assets_set` | Nach jeder Asset-Änderung `task gen:paper`, bis B-707 behoben ist | Golden von Hand | MG1, MC1 | offen |

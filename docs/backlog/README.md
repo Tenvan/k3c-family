@@ -106,6 +106,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-705](B-705-paper-frame-stil-der-basis.md) | DEV | Problem | mittel | offen | – | Das Vorher-Bild im Review rendert mit dem Stil der Basis |
 | [B-702](B-702-test-runprocess-wackelt.md) | DEV | Problem | mittel | offen | – | TestRunProcessExitUndAusgabe wackelt: fehlendes Programm ohne Fehler |
 | [B-706](B-706-asset-tools-nachzug-review-mc1.md) | DEV | Schuld | mittel | offen | – | Asset-MCP-Tools: Restbefunde aus dem Review MC1 nachziehen |
+| [B-707](B-707-assets-set-golden-veraltet.md) | PAP | Problem | mittel | offen | – | assets_set und assets_render lassen golden.json der Gruppe veraltet |
+| [B-708](B-708-paper-fehlerfeld-reittier.md) | PAP | Problem | niedrig | offen | – | Ablehnung reittier-unbekannt nennt das Feld ohne Animationsnamen |
+| [B-709](B-709-assets-preview-reittier-boxen.md) | PAP | Idee | niedrig | offen | – | assets_preview nennt bei Reit-Animationen keine Teil-Boxen des Reittiers |
 
 ## Archiv
 

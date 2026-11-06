@@ -1,10 +1,10 @@
 {
   "id": "monarch",
   "version": 1,
-  "specHash": "8d991e392498c6283d63c184f47ebd9f4f3880c020feab290e791ce0baad9788",
+  "specHash": "768870faa9441cdfed1d0a3fea55735864345b7047e5947d42556162acfd17f3",
   "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "8d8cf297ed144f101518c636f181bfd60f874ee42c410f09d37ca955a0236fe3",
+  "renderKey": "9ed0050452828b0ff56c3e0e2095b25b1b0e3efe63d308735294dc4eaef8dae2",
   "rahmen": [
     -60,
     -145,
