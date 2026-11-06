@@ -1,6 +1,6 @@
 # MC1.2 · Asset-Tools guide, list, get, create, set, style, render, delete
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -78,5 +78,9 @@ Review-Agent (Sonnet) vor dem Commit: Eingabe- und Pfad-Code, über 150 Zeilen.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 (Teil MC1.2) geprüft: `TestAssetsToolsNehmenCheckout`, `TestAssetsGuide`, `TestAssetsListPaper`, `TestAssetsGetFelder`, `TestAssetsCreate`, `TestAssetsSetMaterial`, `TestAssetsStyle`, `TestAssetsDelete`, `TestAssetsRender`, `TestAssetsRenderFehler` grün (In-Process gegen die Attrappe).
+- AC-02 geprüft: `TestAssetsSetAbgelehnt` (Text wie `assets_set-abgelehnt.txt`, Hash von Spec und Ausgabe unverändert), dazu `TestStilSetAbgelehnt`.
+- AC-05 geprüft: `TestAssetsRender` (`{alle}` sofort `Job j-n gestartet`, `{job, wait}` liefert `fertig: 3/3 Assets`).
+- `task check:diff`: Client 3023/3023, Lint `0 issues`, Workbench-Frontend 367/367, `paperassets` ok; einziger Fehler `TestRunProcessExitUndAusgabe` (B-702, nicht MC1). Planning-Fehler durch B-702 ohne Projekt und Verschachtelungstiefe in `sammle` (TestGoNestingDepth) unterwegs behoben.
+- Review (Sonnet): Critical (gleichzeitiges Map-Schreiben in `Gueltigkeit.Pruefe`) und 3 Important (CLI-Fehler nicht cachen, `id: index` reserviert, `StilSet` ohne Abbruchfehler nach dem Schreiben) behoben, Tests `TestGueltigkeitGemischterCache`, `TestGueltigkeitCachtKeineCLIFehler`, `TestAnlegenIndexReserviert`. Minor offen (Ledger): `assets_delete` nennt `manifest.json` nicht, `assets_get` mehrzeilig, Jobs global und ohne Abbruch.
+- Abweichungen: `paperassets` um `Anlegen`, `Loesche`, `StilSet` (Schema über jsonschema-go), `Gueltigkeit` (Cache für `assets_list`), `Schluessel`/`Felder` erweitert; `assets_catalog` bleibt bis MC1.4; renderKey/stilHash in voller Länge.

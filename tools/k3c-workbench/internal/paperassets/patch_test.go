@@ -51,3 +51,23 @@ func TestFormat(t *testing.T) {
 		}
 	}
 }
+
+func TestSchluesselUndFelder(t *testing.T) {
+	raw := []byte(`{"$schema":"x","id":"m","umhang":{"material":"rot"},"ausgabe":{"hoehe_px":1},"animationen":{"idle":{},"lauf":{}}}`)
+	if got := Schluessel(raw, "animationen"); len(got) != 2 || got[0] != "idle" || got[1] != "lauf" {
+		t.Errorf("Schluessel: %v", got)
+	}
+	if got := Schluessel(raw); len(got) != 5 || got[0] != "$schema" {
+		t.Errorf("Schluessel oben: %v", got)
+	}
+	got, err := Felder(raw, []string{"ausgabe", "umhang"})
+	if err != nil || string(got) != `{"umhang":{"material":"rot"},"ausgabe":{"hoehe_px":1}}` {
+		t.Errorf("Felder: %s %v", got, err)
+	}
+	if got, err := Felder(raw, nil); err != nil || bytes.Contains(got, []byte("$schema")) || !bytes.Contains(got, []byte(`"animationen"`)) {
+		t.Errorf("Felder alle: %s %v", got, err)
+	}
+	if _, err := Felder(raw, []string{"farbe"}); err == nil || err.Error() != "Feld „farbe“ fehlt; vorhanden: id, umhang, ausgabe, animationen" {
+		t.Errorf("unbekannt: %v", err)
+	}
+}

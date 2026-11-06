@@ -12,6 +12,7 @@ import (
 type AssetErgebnis struct {
 	ID            string
 	PNGs          int
+	Dateien       []string
 	Manifest      string
 	Uebersprungen string
 	Fehler        string
@@ -60,6 +61,7 @@ func RenderEins(ctx context.Context, cli CLI, a Asset) AssetErgebnis {
 		e.Fehler = err.Error()
 		return e
 	}
+	e.Dateien = r.Dateien
 	for _, d := range r.Dateien {
 		if strings.HasSuffix(d, ".png") {
 			e.PNGs++

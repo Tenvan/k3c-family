@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"regexp"
+	"slices"
+	"strings"
 )
 
 // feld ist ein Schlüssel eines JSON-Objekts mit rohem Wert; die Reihenfolge bleibt erhalten.
@@ -137,4 +139,50 @@ func Format(raw json.RawMessage) ([]byte, error) {
 		return append(append([]byte("["), trenner.ReplaceAll(inner, []byte(", "))...), ']')
 	})
 	return append(out, '\n'), nil
+}
+
+// Schluessel sind die Schlüssel des Objekts unter pfad (leer = oberste Ebene) in Reihenfolge des Dokuments.
+func Schluessel(raw json.RawMessage, pfad ...string) []string {
+	for _, p := range pfad {
+		f, _, _ := objekt(raw)
+		i := index(f, p)
+		if i < 0 {
+			return nil
+		}
+		raw = f[i].val
+	}
+	f, _, _ := objekt(raw)
+	out := make([]string, len(f))
+	for i, x := range f {
+		out[i] = x.key
+	}
+	return out
+}
+
+// Felder kürzt ein Objekt auf die genannten obersten Schlüssel (Reihenfolge des Dokuments); ohne Liste alle außer
+// $schema. Ein unbekannter Schlüssel ist ein Fehler mit den vorhandenen.
+func Felder(raw json.RawMessage, keys []string) (json.RawMessage, error) {
+	f, ok, err := objekt(raw)
+	if err != nil || !ok {
+		return nil, fmt.Errorf("Spec ist kein JSON-Objekt") //nolint:staticcheck // Satz für die Antwort
+	}
+	var vorhanden []string
+	for _, x := range f {
+		if x.key != "$schema" {
+			vorhanden = append(vorhanden, x.key)
+		}
+	}
+	for _, k := range keys {
+		if index(f, k) < 0 || k == "$schema" {
+			return nil, fmt.Errorf("Feld „%s“ fehlt; vorhanden: %s", k, strings.Join(vorhanden, ", ")) //nolint:staticcheck // Satz für die Antwort
+		}
+	}
+	var out []feld
+	for _, x := range f {
+		if x.key == "$schema" || (len(keys) > 0 && !slices.Contains(keys, x.key)) {
+			continue
+		}
+		out = append(out, x)
+	}
+	return schreibeObjekt(out)
 }

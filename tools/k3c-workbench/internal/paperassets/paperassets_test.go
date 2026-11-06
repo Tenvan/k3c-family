@@ -70,6 +70,7 @@ func testRepo(t *testing.T) (string, CLI) {
 	t.Helper()
 	root := t.TempDir()
 	kopiere(t, root, "public/grafik/stil.paper.json", "public/grafik/stil.paper.json")
+	kopiere(t, root, "tools/paper/schema/stil.schema.json", "tools/paper/schema/stil.schema.json")
 	kopiere(t, root, "tools/paper/fixtures/specs/monarch.paper.json", "public/grafik/figuren/monarch.paper.json")
 	kopiere(t, root, "tools/paper/fixtures/specs/pferd.paper.json", "public/grafik/reittiere/pferd.paper.json")
 	kopiere(t, root, "tools/paper/fixtures/specs/mauer.paper.json", "public/grafik/gebaeude/mauer.paper.json")

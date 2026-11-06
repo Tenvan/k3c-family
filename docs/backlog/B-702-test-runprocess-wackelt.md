@@ -6,7 +6,7 @@
 - **Umgebung:** ?
 - **Status:** offen
 - **Sprint:** –
-- **Projekt:** –
+- **Projekt:** PAP
 - **Erstellt:** 2026-11-06
 - **Spec:** Entwurf
 - **Revision:** 1
