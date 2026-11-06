@@ -70,3 +70,8 @@ Siehe Notizen; keine blockiert die Umsetzung (Defaults gelten bis PS1.1).
 | D-10 | Workbench während der Umsetzung | eine Workbench aus der Repo-Wurzel im Dev-Modus; Agenten bauen keine eigene; neue MCP-Tools gelten erst nach Merge | eigene Instanz je Worktree | alle | offen |
 | D-11 | Datei-Watch | Server ignoriert `*.paper.json`, Neustart nur bei geänderten PNGs | alles beobachten | US1 | offen |
 | D-12 | Chat und „In Claude öffnen“ | Studio-Chat entfällt, „In Claude öffnen“ bleibt und wird zusätzlich Prompt-Button | beides weg | WB1 | offen |
+| D-13 | Spec-Felder über das 005-Beispiel hinaus | `art` Pflicht je Lage; `flaeche.auflage` (kleiner Schatten); `ausgabe.massstab` (Pferd 1.3 wie im Prototyp); Einzeltöne `linie`, `edelstein` | Renderer leitet Lagen-Art und Maßstab selbst ab | PV1, RD1, MG* | offen |
+| D-14 | Proportions-Toleranz | absolut: Kopfhöhe/Rahmenhöhe = 0,286 ± 0,15 | relativ ± 15 % | PV1, RD1, MG* | offen |
+| D-15 | Dateinamen der Gebäude-Stufen | `<animation>.s<n>.png` (Stufe 1 ohne Zusatz), CLI `frame --stufe` | eigener Ordner je Stufe | PV1, RD1, MG6, US1 | offen |
+| D-16 | Typecheck `tools/paper` | im Programm `tests/tsconfig.json` (Node-Typen), nicht im Client-Programm `src/` | eigene `tools/paper/tsconfig.json` mit eigenem Task | PV1 | offen |
+| D-17 | Fixture-Pferd und Purpur-Umhang | `pferd-galopp-0` ohne Reiter, Zügel **und** Umhang; Purpur setzt auch die Lichtkante `#a865b8` | Umhang am Pferd lassen | PV1 | offen |

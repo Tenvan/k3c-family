@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../schema/paper-spec.schema.json",
+  "id": "pflicht-teil-fehlt",
+  "rig": "figur",
+  "version": 1,
+  "beschreibung": "Negativ-Fixture pflicht-teil-fehlt",
+  "teile": [
+    {
+      "id": "rumpf",
+      "pivot": [0, -50],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -50V-100H6V-50Z",
+          "material": "holz"
+        }
+      ]
+    },
+    {
+      "id": "kopf",
+      "eltern": "rumpf",
+      "pivot": [0, -100],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -100V-143H6V-100Z",
+          "material": "holz"
+        }
+      ]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 192,
+    "rahmen": [-20, -148, 40, 150]
+  }
+}

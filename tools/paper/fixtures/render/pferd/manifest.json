@@ -1,0 +1,27 @@
+{
+  "id": "pferd",
+  "version": 1,
+  "specHash": "03a1d15e797b146b3d1f79dfbcb033e0860f8e747d4bf1eceb6fe66795d3e75e",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "6a50b148e4b11d74243efb4b96e6fabc5d4d46df9123928e86469e48b8a0c997",
+  "rahmen": [
+    -68,
+    -122,
+    145,
+    126
+  ],
+  "frameW": 209,
+  "frameH": 192,
+  "animationen": {
+    "galopp": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "pferd-galopp-0.png",
+      "hashes": [
+        "104ab0a0d32dfc5fd850a194789259770e78711d736cbfc339b5b125f1211d48"
+      ]
+    }
+  },
+  "varianten": []
+}

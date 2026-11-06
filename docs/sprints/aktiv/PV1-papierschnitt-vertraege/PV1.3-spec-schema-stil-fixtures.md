@@ -1,6 +1,6 @@
 # PV1.3 · paper-spec v1: Schema, Styleguide, Render-CLI-Vertrag, Fixtures, resvg-Probe
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -64,5 +64,7 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 geprüft: `task test -- paper` grün (27 Tests): `monarch`, `pferd`, `mauer` gültig; die fünf Negativ-Fixtures liefern genau `hex-farbe`, `schema`, `material-unbekannt`, `pflicht-teil-fehlt`, `proportion`; Stil-Datei gültig; Hash-Tests (LF/CRLF, umsortierte Schlüssel, renderKey). Review (Sonnet): keine schweren Befunde; Nebenbefund `hex-farbe` bei „#12“ behoben.
+- AC-04 geprüft: `docs/standards/paper-spec.md` mit Ablage, Stil-Datei, Feldern, Lagen-Arten, Rig-Typen mit Pflicht-Teilen und Pivots, 13 Regeln, Hash- und Golden-Regel, Ausgabe-Layout/Manifest und den fünf CLI-Befehlen mit JSON-Antworten.
+- AC-05 lokal geprüft: `probe.test.ts` – sechs Quell-SVGs zweimal byte-gleich, Hashes = `fixtures/render/hashes.json` (Windows). resvg zeigt `feDropShadow` und `feTurbulence` sichtbar richtig (Kontrolle der PNGs), kein Fallback nötig. Golden-Regel: exakt; Linux-Lauf in PV1.5, bei Abweichung Toleranz 0,1 % Pixel > 2.
+- Abweichungen: Specs erzeugt der Generator `tools/paper/fixtures/aus-prototyp.ts` (+ `mauer.ts`, `negativ.ts`) aus dem Prototyp; Fixture-Manifeste nur mit Frame 0. Zusätzliche Felder `flaeche.auflage`, `ausgabe.massstab`, Einzeltöne `linie`/`edelstein`, Stufen-Dateinamen `.s<n>` (B-701 D-13–D-15). Außerhalb der Erlaubten Dateien: `tsconfig.json`/`tests/tsconfig.json` (Typecheck von `tools/paper` mit Node-Typen ohne `src/`, D-16) und `src/tools/grafikPacks.test.ts` (Stil-Datei ist kein Fremd-Pack, eine Zeile).

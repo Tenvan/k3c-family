@@ -1,0 +1,35 @@
+{
+  "id": "mauer",
+  "version": 1,
+  "specHash": "783710147ffed53440584954a48f97072966d13f78c0951734badf46d964f5e7",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "34a12ac80b9ab33dfa21cd1af1e0913739a7d147c84e516a24989a5a3d10d409",
+  "rahmen": [
+    -66,
+    -112,
+    132,
+    116
+  ],
+  "frameW": 209,
+  "frameH": 192,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "mauer-1.png",
+      "hashes": [
+        "b3cb3391dced5645c52069d2e3c3e0cb6e50916473424fa292f2e4a39786d1b2"
+      ]
+    },
+    "stand.s2": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "mauer-2.png",
+      "hashes": [
+        "30895b00092018be6c5fa92ee97439b37c0e7734151f56018719b5a932fc80fe"
+      ]
+    }
+  },
+  "varianten": []
+}
