@@ -97,3 +97,18 @@ Siehe Notizen; keine blockiert die Umsetzung (Defaults gelten bis PS1.1).
 | D-RV1-7 | Cache der Attrappe | eigene Renderer-Kennung (`+attrappe`), damit Stub-Bilder nach RD1 nicht aus `.cache/paper/` kommen | gleicher Schlüssel, Cache beim Wechsel leeren | RV1, RD1 | offen |
 | D-RV1-8 | Frontend-Transport und Prompt-Füllung | eigener Transport `assets/review/api.ts` und `prompt.ts`, gleich benannt wie WB1 (`api/typesAssets.ts`, `assets/prompts/fill.ts`); nach Merge von WB1 auf `backend.assets*`/`fillPrompt` umstellen | RV1 auf WB1 rebasen | RV1, WB1 | offen |
 | D-RV1-9 | `origin/develop` als Basis | Fetch höchstens einmal je Minute und Checkout, danach gilt das Ergebnis (aktuell/lokal) weiter | Fetch bei jedem Aufruf | RV1 | offen |
+| D-MC1-01 | Checkout für lesende Asset-Tools | alle `assets_*` nehmen `checkout` (`takesCheckout` per Präfix), schreibende in `writeTools` | nur schreibende | MC1 | offen |
+| D-MC1-02 | Register-Tools ersetzen | `assets_list/get/set` direkt ersetzt (MC1.2), `assets_catalog` in MC1.4 entfernt | Umbenennen bis MC1.4 | MC1 | offen |
+| D-MC1-03 | Review-Quelle | `assets_review` und `assets_preview {basis}` über `assetsui.Dienst` (RV1); Tests mit Fixture-Quelle `fixtures/ui/` | eigene Review-Logik in MC1 | MC1, RV1 | offen |
+| D-MC1-04 | Bilder im Review-Text | PNG aus den Data-URLs nach `.cache/paper/mcp/`, Namen bereinigt; Stil-Zeile ohne Stil-Pfad und vorher/nachher (Review-Struktur liefert sie nicht) | Struktur um Stil-Pfad/Bilder erweitern | MC1, RV1 | offen |
+| D-MC1-05 | Atomares Schreiben | Temp-Ordner `.cache/paper/tmp/<zufall>/` mit gespiegelten Nachbar-Specs (Reittier-Suche der CLI), Rollback der Spec, Sperre je Asset | System-Temp | MC1, RD1 | offen |
+| D-MC1-06 | Ablehnung | Fehler-Ergebnis (`isError`) mit `abgelehnt, nichts geändert: n Fehler` und `feld · regel · text` | normales Ergebnis | MC1 | offen |
+| D-MC1-07 | `assets_style_set` | nur Hinweis „Lane: stil“; Prüfung in Go (Schema über jsonschema-go, `material-doppelt`, `material-unbekannt` je Spec); Render nur der betroffenen Assets als Job (Fixture) | alle Assets rendern (Vertragstext), Klärung B-706 | MC1 | offen |
+| D-MC1-08 | MCP-Prompts | Liste beim Start aus `data/asset-prompts.json` der Repo-Wurzel, Text bei jedem Abruf neu | Prompts je Checkout | MC1 | offen |
+| D-MC1-09 | Rig-Vorlagen | Go-Tabelle `paperassets/rigs.go`; Vierbeiner mit Beinteilen, `eltern` und `bein` aus der Fixture pferd (echte CLI verlangt sie), gegen Attrappe und RD1-CLI getestet | aus `check.ts` lesen | MC1, RD1 | offen |
+| D-MC1-10 | Gruppen-Index | `paperassets` trägt bei create/set/render ein und bei delete aus (CLI schreibt den Index nur bei `render <ordner>`); `golden.json` offen (B-706) | `render <ordner>` je Änderung | MC1, US1 | offen |
+| D-MC1-11 | bun in Go-Tests | Pflicht, kein Skip | `t.Skip` | MC1 | offen |
+| D-MC1-12 | `assets_list` | `validate` je Asset parallel (8) mit Cache nach Datei-Stand von Spec und Stil | `validate` mehrerer Specs in der CLI | MC1, RD1 | offen |
+| D-MC1-13 | Hashes in Antworten | `renderKey` und `stilHash` in voller Länge statt `9c…(64 Zeichen)` | gekürzt | MC1 | offen |
+| D-MC1-14 | Zweite CLI-Anbindung | `paperassets.CLI` (Zeitlimit 2 min, `K3C_PAPER_CLI`) neben `review.CLI`; Zusammenführung B-706 | sofort gemeinsamer Runner | MC1, RV1 | offen |
+| D-MC1-15 | Asset ohne Animation in `assets_preview` | Fehler mit leerer Animationsliste (RD1 kennt implizit `stand`, D-RD1-07) | `stand` als Standard | MC1, RD1 | offen |

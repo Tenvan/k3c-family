@@ -1,6 +1,6 @@
 # MC1.3 · assets_preview als Bild, assets_review, MCP-Prompts, instructions.md
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -72,5 +72,9 @@ Review-Agent (Sonnet) vor dem Commit: Pfad-Code (Cache-Dateien), über 150 Zeile
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 geprüft: `TestAssetsPreviewBild` grün (`ImageContent` `image/png`, Bytes = `monarch-idle-0.png` bzw. `monarch-galopp-0.png`, Text mit Teil-Boxen `rumpf 53,58,47,78`).
+- AC-04 geprüft: `TestAssetsPromptsAlle` (alle 10 Vorlagen als `asset-<id>`, Argumente = Platzhalter, `zustand`/`basis` optional) und `TestAssetsPromptEinsetzen` grün.
+- AC-01 (Teil MC1.3) geprüft: `TestAssetsPreviewFehler`, `TestAssetsPreviewBasis`, `TestAssetsReview`, `TestAssetsReviewKopfLokal`, `TestInstructionsNennenAssetTools` grün.
+- `task check:diff` exit 0 (Client 3023/3023, Workbench mcpsrv/paperassets ok, Lint 0 issues, Studio 876/876, Starter ok).
+- Review (Sonnet): 2 Important behoben (Cache-Dateinamen über `cacheName` bereinigt, `TestCacheNameBleibtImOrdner`; Präfix „Bild “ entfernt wie Fixture). Minor offen: Bild-Fehler ohne Hinweis, `preview {basis}` prüft gegen Arbeitsstand, Prompt-Parsefehler ohne Log.
+- Abweichungen: Stil-Zeile ohne Stil-Pfad und ohne vorher/nachher-Bilder (Review-Struktur liefert sie nicht, mit RV1 nachziehen); Prompts aus der Repo-Wurzel; `task install` im Worktree nötig.

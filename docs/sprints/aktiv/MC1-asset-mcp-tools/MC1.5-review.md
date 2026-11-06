@@ -1,6 +1,6 @@
 # MC1.5 · Review MC1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -61,5 +61,10 @@ Nacheinander. Manuelle Live-Prüfung nur durch 🧑 nach dem Merge.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01: In-Process-Tests für alle 11 Vertrags-Tools (guide, list, get, create, set, style_get, style_set, render, delete, preview, review) grün; dazu gegen die echte CLI (RD1) `TestSetMitEchterCLI`, `TestRigVorlagenEchteCLI`.
+- AC-02: `TestSetUngueltigAendertNichts`, `TestSetRenderFehlerAendertNichts`, `TestSetRollbackBeiAusgabeFehler`, `TestSetGruppeAlt`, `TestAssetsSetAbgelehnt` grün.
+- AC-03: `TestAssetsPreviewBild` grün. AC-04: `TestAssetsPromptsAlle`, `TestAssetsPromptEinsetzen` grün. AC-05: `TestAssetsRender`, `TestJobAlle`, `TestJobWaitAbbruch` grün.
+- AC-06: `TestAlteRegisterToolsEntfernt` grün; `task check:dev` siehe Abnahme; `task check:diff` exit 0 nach Merge von `origin/feature/pap` (RD1, RV1): Client 3173/3173, Lint 0 issues, mcpsrv/paperassets/review/assetsui ok. `task check:race` übersprungen (kein gcc).
+- Review (Opus, getrennt): 3 Important + 1 hochgestuft behoben mit Tests RED→GREEN: Gruppen-Index bei create/set/render (`TestAnlegenSchreibtIndex`), Vierbeiner-Vorlage passend zur echten CLI (`TestRigVorlagenEchteCLI`), CLI-Zeitlimit 2 min (`TestCLIZeitlimit`), Gruppe „alt“ (`TestSetGruppeAlt`). Integration RD1: Temp-Ordner spiegelt Nachbar-Specs (Reittier). Integration RV1: `newAssetReview` = `assetsui.Dienst`.
+- Minor zurückgestellt → B-706. D-Zeilen D-MC1-01 bis -15 in B-701 › Notizen. B-702 (wackelnder Test) überschneidet sich mit B-704.
+- Live-Prüfung (`assets_preview {id: monarch}` als Bild in Claude Code, Prompt `asset-material-aendern`) erst nach Merge und Neustart der Workbench aus der Repo-Wurzel (B-701 D-10), durch 🧑.
