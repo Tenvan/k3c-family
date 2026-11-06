@@ -64,7 +64,7 @@ keine (Defaults als D-MG5-Zeilen in B-701)
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | MG5.1 | `MG5.1-minibosse-humanoid.md` | Umsetzung | autonom | fertig |
-| MG5.2 | `MG5.2-golems-kristall.md` | Umsetzung | autonom | offen |
+| MG5.2 | `MG5.2-golems-kristall.md` | Umsetzung | autonom | fertig |
 | MG5.3 | `MG5.3-review.md` | Review | autonom | offen |
 
 Lane `bosse`, nacheinander; Umsetzung Sonnet, Review Opus; keine Mensch-Session (Sichtprüfung in PS1).

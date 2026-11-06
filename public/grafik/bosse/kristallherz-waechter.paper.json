@@ -1,0 +1,200 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "kristallherz-waechter",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Kristallherz-Wächter: großes purpurnes Kristallherz auf Steinsockel mit drei schwebenden Splittern (Endboss, steht still).",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -20C-30 -40 -44 -62 -36 -82C-28 -100 -8 -98 0 -82C8 -98 28 -100 36 -82C44 -62 30 -40 0 -20Z",
+          "material": "purpur"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -20C-30 -40 -44 -62 -36 -82C-30 -95 -18 -97 -10 -90C-24 -80 -26 -56 0 -20Z",
+          "material": "purpur",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M14 -90C22 -92 30 -88 32 -80C26 -84 20 -86 14 -90Z",
+          "material": "purpur",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M0 -82L-6 -64L4 -50L-2 -34",
+          "material": "edelstein"
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [0, -60],
+          "radius": 4
+        },
+        {
+          "art": "flaeche",
+          "form": "M-30 -6L-20 -22L20 -22L30 -6Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-30 -6L-20 -22L-8 -22L-14 -6Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-40 0L-30 -8L30 -8L40 0Z",
+          "material": "stein",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -60]
+    },
+    {
+      "eltern": "korpus",
+      "id": "splitter-l",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-44 -70L-62 -96L-50 -64Z",
+          "material": "purpur"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-44 -70L-62 -96L-50 -64Z",
+          "material": "purpur",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [-46, -70],
+          "radius": 1.2
+        }
+      ],
+      "pivot": [-46, -70]
+    },
+    {
+      "eltern": "korpus",
+      "id": "splitter-r",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M44 -70L62 -100L50 -64Z",
+          "material": "purpur"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M44 -70L62 -100L50 -64Z",
+          "material": "purpur",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [46, -70],
+          "radius": 1.2
+        }
+      ],
+      "pivot": [46, -70]
+    },
+    {
+      "eltern": "korpus",
+      "id": "splitter-o",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-4 -96L0 -124L6 -96Z",
+          "material": "purpur"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-4 -96L0 -124L6 -96Z",
+          "material": "purpur",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [0, -96],
+          "radius": 1.2
+        }
+      ],
+      "pivot": [0, -96]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 288,
+    "rahmen": [-82, -134, 164, 136]
+  },
+  "animationen": {
+    "angriff": {
+      "fps": 12,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0,
+            "splitter-l": 0,
+            "splitter-o": 0,
+            "splitter-r": 0
+          }
+        },
+        {
+          "t": 0.4,
+          "winkel": {
+            "korpus": -3,
+            "splitter-l": -35,
+            "splitter-o": -10,
+            "splitter-r": 35
+          }
+        },
+        {
+          "t": 0.6,
+          "winkel": {
+            "korpus": 3,
+            "splitter-l": 20,
+            "splitter-o": 10,
+            "splitter-r": -20
+          }
+        }
+      ]
+    },
+    "idle": {
+      "fps": 8,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "splitter-l": 0,
+            "splitter-o": 0,
+            "splitter-r": 0
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "splitter-l": -8,
+            "splitter-o": 4,
+            "splitter-r": 8
+          }
+        }
+      ]
+    }
+  }
+}

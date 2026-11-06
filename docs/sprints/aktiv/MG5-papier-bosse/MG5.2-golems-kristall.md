@@ -1,6 +1,6 @@
 # MG5.2 · lava-golem, splitter-titan, kristallherz-waechter
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -58,5 +58,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- `lava-golem` (figur): Steinkörper mit koenigsroter Glut in Fugen und Augen, Schulterblöcke, ohne Waffe, Schild und Helm; idle, lauf, angriff (Faustschlag).
+- `splitter-titan` (figur): gleicher Steinkörper mit purpurner Glut, Teil `kristalle` an der Schulter, purpurne Kristallklinge; idle, lauf, angriff.
+- `kristallherz-waechter` (requisite): purpurnes Herz mit Riss und Kern auf Steinsockel, drei Splitter als Kinder von `korpus`; idle (Splitter pendeln), angriff (Splitter spreizen und schlagen zurück). Rahmen [-82,-134,164,136], 347×288 px.
+- Alle drei mit `hoehe_px` 288 (D-MG5-01); Rig-Wahl in D-MG5-03.
+- Prüfung: assets_preview je Asset und Animation (8 Previews), nichts ragt aus dem Rahmen; assets_list `bosse` 6/6 gültig; `task gen:paper` grün, fremde Gruppen zurückgesetzt.
+- `task check:diff`: 3 Workbench-Frontend-Tests rot unter Parallellast; `k3c-workbench:vitest` einzeln 432/432 grün, `task test` grün (Wackel-Tests wie D-MG2-07).
+- Offen für PS1: Golems teilen die Krieger-Silhouette; ob sie als Bosse lesbar genug sind, entscheidet die Sichtprüfung.

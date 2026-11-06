@@ -7,12 +7,35 @@
       "lauf.png": "fb3694d0cc2ac52d709bd99402bda315f6788292ce0b51b4212e2a7882812a82"
     }
   },
+  "kristallherz-waechter": {
+    "renderKey": "b83f12ff35a0bc95922e19efa885ed3e2d7ee3c60f0348716ce890bc247b5aab",
+    "dateien": {
+      "angriff.png": "d7a806d9dc7eb6be6ee6ef9ea34c19c1e29c0ba0a7a7c9b81cc6d60c734abc8c",
+      "idle.png": "e70f43afdb10b1a7781ee160d7486eb2913f2befc8ada37d43ee9c49cd8183be"
+    }
+  },
+  "lava-golem": {
+    "renderKey": "769cf69662244e9c3538df7b21decdd04bd4fe5293b00a18ba12d64845de3b8b",
+    "dateien": {
+      "angriff.png": "c46d7ce9cd62adf1c99509e02d24d2e6856075edd52793246e7a2acb03b289b0",
+      "idle.png": "d6d73f1b7e328398731d16315936a2a2f3c52d8fe89d1fe51036b6ee0712f22b",
+      "lauf.png": "f1630c3767e0cdf387b04b45e1c3f87f2e52debb090256384880f7e1b83a5ea3"
+    }
+  },
   "ratten-koenigin": {
     "renderKey": "43f693cdb7e455807e524477774d35660a61c984c259fd037593ba4807196146",
     "dateien": {
       "angriff.png": "45da5586e17d46a6357d84bd828724164aa2b3a2c37318c6f956f4f746c16086",
       "idle.png": "6385a41e873810ff5e04164b9c9964acb21d5c2b817e1dc47008678c18f638e1",
       "lauf.png": "95902b10666d072af820506d405e185ecd5c91d336832752d80ef4af78df8f60"
+    }
+  },
+  "splitter-titan": {
+    "renderKey": "11f1931f8ac3ba7d7ed6afba745514533b08971d1c940849df1057253f4de445",
+    "dateien": {
+      "angriff.png": "842991daace74f1f50a05eb78c1afd5ce20601be121538efe307832d549df39a",
+      "idle.png": "0f3e75f2575fe7b735d5c298e7206e077d769d424e2731c52d2723edcc2e2764",
+      "lauf.png": "1144f3ccb6a1e5fc3b9b41780f4fcd981089e67f378bd715f6611a41b56a959b"
     }
   },
   "troll-koenig": {

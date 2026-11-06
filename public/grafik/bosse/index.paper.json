@@ -5,9 +5,24 @@
     "manifest": "goblin-anfuehrer/manifest.json"
   },
   {
+    "id": "kristallherz-waechter",
+    "rig": "requisite",
+    "manifest": "kristallherz-waechter/manifest.json"
+  },
+  {
+    "id": "lava-golem",
+    "rig": "figur",
+    "manifest": "lava-golem/manifest.json"
+  },
+  {
     "id": "ratten-koenigin",
     "rig": "figur",
     "manifest": "ratten-koenigin/manifest.json"
+  },
+  {
+    "id": "splitter-titan",
+    "rig": "figur",
+    "manifest": "splitter-titan/manifest.json"
   },
   {
     "id": "troll-koenig",
