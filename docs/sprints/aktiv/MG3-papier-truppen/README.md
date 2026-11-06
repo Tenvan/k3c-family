@@ -66,11 +66,13 @@ keine (Defaults als D-MG3-Zeilen in B-701)
 |---|---|---|---|---|
 | MG3.1 | `MG3.1-landvolk-krieger.md` | Umsetzung | autonom | fertig |
 | MG3.2 | `MG3.2-bogen-elite.md` | Umsetzung | autonom | fertig |
-| MG3.3 | `MG3.3-review.md` | Review | autonom | offen |
+| MG3.3 | `MG3.3-review.md` | Review | autonom | fertig |
 
 Reife Entwurf, Lane `truppen`; Zuschnitt beim Bereitmachen (je Session 3–6 Assets), dazu ein Review (Opus); keine Mensch-Session (Sichtprüfung in PS1). Umsetzung Sonnet.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-11-07, autonom (Claude): AC-01 bis AC-03 belegt (Ergebnisse MG3.1–MG3.3); sechs Truppen unter `public/grafik/truppen/`, nur über die Asset-MCP-Tools geschrieben.
+- Behoben aus dem Review (Opus): Bogen-Angriff mit Auszug und Pfeil, Elite-Bogenschütze mit Feder und goldenem Bogen, Heugabel aus dem Gesicht.
+- Defaults und Kleinbefunde: D-MG3-01 bis D-MG3-08 in B-701; keine neuen Tickets.
+- Offen: Sichtprüfung durch 🧑 Ralf in PS1.

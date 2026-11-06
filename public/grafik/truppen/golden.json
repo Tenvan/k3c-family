@@ -1,26 +1,26 @@
 {
   "bauer": {
-    "renderKey": "8efff045fd4bab434496ed1cc74ebd7ad3630d232d20723f3d7a701c9b60fa27",
+    "renderKey": "19d78da6111726a0acac4b397971f9ae9f4c627b6eaa9fea889858964d1217aa",
     "dateien": {
-      "angriff.png": "6bfc4d5eb972ab076eae8669535efac0261a012b1e96aa522af2276b4d8abb72",
-      "idle.png": "1d27a29c9962c2d3a1ac583bb97fb936068d62d1d139482660cd6422e3a932cb",
-      "lauf.png": "d1eeaddd9976f8508a8d509b5f4322d7c6286954d6630a215272dd2a281be9a6"
+      "angriff.png": "bf1c47aaa705799cf400f0c10240cd0214738a0fb5473e35d01a3fe5de6abd6f",
+      "idle.png": "2c5257d7a07c6807f20e4b510a01712bd59a7a79d144df53f1013640ec75743e",
+      "lauf.png": "17369ecf8c1184582ecd6873b981fd7e0692043ca244465764ff3b0444e0f40a"
     }
   },
   "bogenschuetze": {
-    "renderKey": "72cd0a1fbfdda89301b0a0b3661181a76a69b2dbad59ae0f10c484e0d9c6640f",
+    "renderKey": "e18bac9f3508c8c9a56ecaf4797fc745fd5d1f5e733d3696a3cc21ab860f3f71",
     "dateien": {
-      "angriff.png": "1fea2648429afd4072d00c0a25b490a697048e3f8e7d79fbd7b074fa8a921026",
-      "idle.png": "adc708a26b4262d5e843a8d294d2a29c665d12ebd6a372cea0f1fb6ace5f2a52",
-      "lauf.png": "d27f60cdd668d8a57635fbf8648f3845ee73fe75271300bef967b7912725d129"
+      "angriff.png": "297b6eebc082527a76a7c9b1154f0937a6c47062a03d540894d189c368a48444",
+      "idle.png": "6b38223b41c433846c1e6cfded8cd5f90e6187f5a225d5b14cabf2bc8d7e1df7",
+      "lauf.png": "d60c20d8088509e2751240dfcf911928c5a66e0ffe9e5d9276da427742d334b1"
     }
   },
   "elite-bogenschuetze": {
-    "renderKey": "bced3317a9c8a51035a403c42c49ce827b772f0619fcb317b6105736d0422664",
+    "renderKey": "3c5700947afde5266e1469ef821bbb86654e563b1186dd741be05b15606c0a95",
     "dateien": {
-      "angriff.png": "54c9a80756339042186bf3f71763416920d39e4a979011280a5ce1dda20c7874",
-      "idle.png": "583518b1f4ebbf039aa0b32e00fa71d314d3c8416f24edb7724422bdf2105694",
-      "lauf.png": "08d849821f41a2937960ca07aafe05da64513124f69cad6649a0079beb90c58d"
+      "angriff.png": "753211d156764c2c091a6c90b172e9786a14b0daa77b349001a35b28b07ec349",
+      "idle.png": "de2f8e3092655d4fbd5138a03496acf9cd33a75b633f0e379e141d46d5c377e1",
+      "lauf.png": "0aaaafd89edce0240783c9e05c83010230ed238c47f1284dc35b3d2acca045db"
     }
   },
   "elite-krieger": {

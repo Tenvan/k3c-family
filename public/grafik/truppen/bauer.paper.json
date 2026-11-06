@@ -529,41 +529,41 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M15.76 -101.71L18.23 -100.91L-12.05 -7.7L-14.52 -8.51Z",
+          "form": "M32.84 -93.14L34.89 -91.54L-25.45 -14.32L-27.5 -15.92Z",
           "material": "holz"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M15.76 -101.71L17 -101.31L-13.29 -8.1L-14.52 -8.51Z",
+          "form": "M32.84 -93.14L33.86 -92.34L-26.47 -15.12L-27.5 -15.92Z",
           "material": "holz",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "form": "M10.96 -105.37L24.27 -101.05L23.04 -97.24L9.72 -101.57Z",
+          "form": "M29.58 -98.23L40.61 -89.61L38.15 -86.45L27.11 -95.07Z",
           "material": "stein"
         },
         {
           "art": "flaeche",
-          "form": "M10.96 -105.37L12.86 -104.76L19.04 -123.78L18.71 -125.99L17.14 -124.39Z",
+          "form": "M29.58 -98.23L31.15 -96.99L43.47 -112.76L43.91 -114.95L41.89 -113.99Z",
           "material": "stein"
         },
         {
           "art": "flaeche",
-          "form": "M16.66 -103.52L18.57 -102.9L25.98 -125.73L25.65 -127.94L24.08 -126.34Z",
+          "form": "M34.3 -94.53L35.88 -93.3L50.66 -112.21L51.1 -114.4L49.08 -113.44Z",
           "material": "stein"
         },
         {
           "art": "flaeche",
-          "form": "M22.37 -101.67L24.27 -101.05L30.45 -120.07L30.12 -122.28L28.55 -120.69Z",
+          "form": "M39.03 -90.84L40.61 -89.61L52.92 -105.37L53.37 -107.56L51.35 -106.6Z",
           "material": "stein",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M10.34 -103.47L23.65 -99.14L23.04 -97.24L9.72 -101.57Z",
+          "form": "M28.35 -96.65L39.38 -88.03L38.15 -86.45L27.11 -95.07Z",
           "material": "stein",
           "ton": "schatten"
         }
@@ -583,7 +583,7 @@
         {
           "t": 0,
           "winkel": {
-            "heugabel": 152,
+            "heugabel": 132,
             "oberarm-v": -40,
             "unterarm-v": -40
           }
@@ -591,7 +591,7 @@
         {
           "t": 0.4,
           "winkel": {
-            "heugabel": 162,
+            "heugabel": 142,
             "oberarm-v": -20,
             "rumpf": -5,
             "unterarm-v": -70
@@ -600,7 +600,7 @@
         {
           "t": 0.6,
           "winkel": {
-            "heugabel": 159,
+            "heugabel": 139,
             "oberarm-v": -90,
             "rumpf": 8,
             "unterarm-v": 0
@@ -609,7 +609,7 @@
         {
           "t": 0.8,
           "winkel": {
-            "heugabel": 151,
+            "heugabel": 131,
             "oberarm-v": -60,
             "rumpf": 3,
             "unterarm-v": -20
