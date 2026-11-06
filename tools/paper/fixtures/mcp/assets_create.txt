@@ -1,0 +1,5 @@
+fass angelegt: public/grafik/requisiten/fass.paper.json (Rig requisite, Vorlage mit Teil korpus)
+validate: ok
+Render: 1 PNG · tools/paper/fixtures/render/platzhalter.png (Attrappe bis RD1)
+Nächster Schritt: assets_set {id: "fass", patch: …}, dann assets_preview
+Checkout: Worktree pv1 (C:\WORKSPACE\k3c\.claude\worktrees\pv1)

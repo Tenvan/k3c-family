@@ -1,0 +1,5 @@
+public/grafik/stil.paper.json · stilHash 3f…(64 Zeichen)
+Materialien (14): haut, haar, gold, koenigsblau, koenigsrot, hermelin, leder, stoff, fell-fuchs, maehne, smaragd, purpur, stein, holz
+Einzeltöne (5): huf, auge, weiss, linie, edelstein
+papier: lage 0.5/0.9/0.45/0.55 #1a0f14 · auflage 0.3/0.5/0.3/0.35 · struktur 1.3/2/0.18 · falz 0.25 · licht rechts-oben
+Vollständig als JSON: tools/paper/fixtures/ui/AssetsStyle.json

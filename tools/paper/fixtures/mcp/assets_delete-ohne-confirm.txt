@@ -1,0 +1,1 @@
+nicht gelöscht: assets_delete braucht confirm=true (fass, 2 PNGs)

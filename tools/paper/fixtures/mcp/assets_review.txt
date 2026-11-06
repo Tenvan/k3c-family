@@ -1,0 +1,6 @@
+Review gegen HEAD~1 (32eb7a7, Basis-Stand aktuell): 5 Assets
+geaendert · monarch · umhang.material koenigsrot → purpur · Pixel 1,53 % · Overlay tools/paper/fixtures/render/monarch/pixeldiff-umhang.png
+neu · pferd · public/grafik/reittiere/pferd.paper.json · tools/paper/fixtures/render/pferd/pferd-galopp-0.png
+geloescht · fass · public/grafik/requisiten/fass.paper.json
+ungueltig · banner · teile[0].lagen[0].material · material-unbekannt · Material „scharlach“ fehlt in der Stil-Datei
+geaendert · mauer · stil: true (materialien.stein) · Pixel 17,07 % · vorher tools/paper/fixtures/render/mauer/mauer-1.png, nachher tools/paper/fixtures/render/mauer/mauer-1-stil.png

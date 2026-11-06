@@ -1,0 +1,4 @@
+Stil geändert: materialien.stein.basis #9a9386 → #a8a294, materialien.stein.schatten #6b6559 → #77716a
+Betroffen: 1 Asset (mauer) · Render als Job j-7 gestartet
+Weiter: assets_render {job: "j-7", wait: true}
+Checkout: Worktree pv1-stil (C:\WORKSPACE\k3c\.claude\worktrees\pv1-stil)

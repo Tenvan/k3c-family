@@ -1,0 +1,5 @@
+Job j-8 fertig: 4/4 Assets, 9 PNGs, 0 Fehler, 3,2 s
+monarch · 3 PNGs · tools/paper/fixtures/render/monarch/manifest.json
+pferd · 3 PNGs · tools/paper/fixtures/render/pferd/manifest.json
+mauer · 2 PNGs · tools/paper/fixtures/render/mauer/manifest.json
+banner · übersprungen (ungültig: material-unbekannt)

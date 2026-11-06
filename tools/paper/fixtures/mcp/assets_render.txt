@@ -1,0 +1,3 @@
+monarch gerendert: 3 PNGs, manifest.json · renderKey 9c…(64 Zeichen)
+tools/paper/fixtures/render/monarch/manifest.json
+Checkout: Worktree pv1 (C:\WORKSPACE\k3c\.claude\worktrees\pv1)

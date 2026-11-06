@@ -1,0 +1,78 @@
+{
+  "basis": "HEAD~1",
+  "basisCommit": "32eb7a7",
+  "basisStand": "aktuell",
+  "assets": [
+    {
+      "id": "monarch",
+      "rig": "figur",
+      "pfad": "public/grafik/figuren/monarch.paper.json",
+      "status": "geaendert",
+      "felder": [
+        {
+          "pfad": "umhang.material",
+          "alt": "koenigsrot",
+          "neu": "purpur"
+        }
+      ],
+      "teile": [],
+      "stil": false,
+      "pixelAnteil": 0.015326
+    },
+    {
+      "id": "pferd",
+      "rig": "vierbeiner",
+      "pfad": "public/grafik/reittiere/pferd.paper.json",
+      "status": "neu",
+      "felder": [],
+      "teile": [],
+      "stil": false,
+      "pixelAnteil": 1
+    },
+    {
+      "id": "fass",
+      "rig": "requisite",
+      "pfad": "public/grafik/requisiten/fass.paper.json",
+      "status": "geloescht",
+      "felder": [],
+      "teile": [],
+      "stil": false,
+      "pixelAnteil": 1
+    },
+    {
+      "id": "banner",
+      "rig": "requisite",
+      "pfad": "public/grafik/requisiten/banner.paper.json",
+      "status": "ungueltig",
+      "fehler": [
+        {
+          "feld": "teile[0].lagen[0].material",
+          "regel": "material-unbekannt",
+          "text": "Material „scharlach“ fehlt in der Stil-Datei"
+        }
+      ],
+      "felder": [
+        {
+          "pfad": "teile[0].lagen[0].material",
+          "alt": "koenigsrot",
+          "neu": "scharlach"
+        }
+      ],
+      "teile": [
+        "tuch"
+      ],
+      "stil": false,
+      "pixelAnteil": 0
+    },
+    {
+      "id": "mauer",
+      "rig": "gebaeude",
+      "pfad": "public/grafik/gebaeude/mauer.paper.json",
+      "status": "geaendert",
+      "felder": [],
+      "teile": [],
+      "stil": true,
+      "pixelAnteil": 0.170654
+    }
+  ]
+}

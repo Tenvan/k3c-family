@@ -1,6 +1,6 @@
 # PV1.4 · MCP-Vertrag, Review-API und Prompt-Vorlagen festschreiben
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -68,5 +68,7 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-06 geprüft: `docs/standards/paper-mcp.md` mit allen Asset-Tools (jedes mit `checkout`, `basis`-Regel, Job-Mechanismus, ersetzte und bleibende Tools, MCP-Prompts `asset-<id>`), den sieben RPC-Methoden mit Typen und Fehlern und dem Format der Prompt-Vorlagen. `task test -- paper` grün (47 Tests, neu `prompts.test.ts` und `stub.test.ts`).
+- `data/asset-prompts.json`: zehn Vorlagen (6 × asset, 2 × teil, 2 × review), Schema `prompts.schema.json`.
+- Attrappen: `fixtures/cli-stub.ts` (alle fünf CLI-Befehle, Exit 0/1/2, in-process `run()`), `fixtures/ui/*.json` je RPC-Methode (Review mit neu, geaendert = Umhang purpur, geloescht, ungueltig, stil), `fixtures/mcp/*.txt` (17 Beispiele), `fixtures/review-repo/erzeuge.ts` (reproduzierbarer Basis-Commit `32eb7a7`). Jede Beispielantwort verweist nur auf vorhandene PNGs (Test).
+- Abweichungen: neue Fixture-PNGs `render/platzhalter.png`, `render/monarch/pixeldiff-umhang.png`, `render/mauer/mauer-1-stil.png`; Generator `fixtures/beispiele.ts`. In 005 heißt der Parameter noch `ordner`, im Vertrag `gruppe` (Korrektur in PV1.5).

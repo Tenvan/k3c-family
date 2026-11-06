@@ -1,0 +1,2 @@
+Job j-8 gestartet: 4 Assets (alle)
+Weiter: assets_render {job: "j-8"} oder {job: "j-8", wait: true}
