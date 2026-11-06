@@ -67,7 +67,7 @@ keine (Defaults als D-MG2-Zeilen in B-701)
 | MG2.1 | `MG2.1-pferde.md` | Umsetzung | autonom | fertig |
 | MG2.2 | `MG2.2-fabelwesen-hirsch.md` | Umsetzung | autonom | fertig |
 | MG2.3 | `MG2.3-woelfe-elefant.md` | Umsetzung | autonom | fertig |
-| MG2.4 | `MG2.4-review.md` | Review | autonom | offen |
+| MG2.4 | `MG2.4-review.md` | Review | autonom | fertig |
 
 Lane `reittiere`, nacheinander; Umsetzung Sonnet, Review Opus; keine Mensch-Session (Sichtprüfung in PS1).
 
@@ -78,5 +78,7 @@ Lane `reittiere`, nacheinander; Umsetzung Sonnet, Review Opus; keine Mensch-Sess
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-06 · AC-01 bis AC-03 laut Ergebnissen MG2.1–MG2.4 erfüllt: 11 Reittiere als `vierbeiner` nur über MCP angelegt, je Gangart geprüft, Golden über `gen:paper` (B-707).
+Behoben im Review: Schweif im Galopp abgeschnitten (Rahmen links erweitert), D-Zeilen an den Stand angepasst.
+Keine neuen Tickets; Befunde als D-MG2-01 bis D-MG2-08 in B-701 (u. a. Rig-Grenzen an RD1, `pferd`-Rahmen an MG1, wackelnde Workbench-Frontend-Tests).
+Offen bei 🧑: Sichtprüfung in PS1.

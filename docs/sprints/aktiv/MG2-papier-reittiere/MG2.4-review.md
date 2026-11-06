@@ -1,6 +1,6 @@
 # MG2.4 · Review MG2
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -54,5 +54,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Review (Opus, getrennt, nur über MCP): AC-01 erfüllt (11/11 gültig, keines aus `mounts` fehlt), AC-02 erfüllt (33 PNGs hash-gleich mit `golden.json`, Index vollständig), AC-03 erfüllt bis auf die Sichtprüfung durch 🧑 in PS1; `assets_review` gegen 44f2d30c: 10× `neu`, kein `ungueltig`, `pferd` unverändert; Monarch reitet sauber (`galopp` 2/3).
+- Behoben: Schweif im Galopp links abgeschnitten → Rahmen der zehn neuen Reittiere links um 10 Einheiten erweitert (D-MG2-02; `pferd` gehört MG1, offen). D-MG2-01 und -06 an den tatsächlichen Stand angepasst.
+- Hingenommen (Minor): Wölfe/Höllenhund/Elefant pferdeartig (D-MG2-08, Wunsch an RD1); rappe/albtraum/hoellenhund dunkelbraun statt schwarz (D-MG2-01, Lane `stil`).
+- `task test -- paper` grün; `task check:diff`: Client 3173/3173, Lint grün, rot nur Frontend-Tests der Workbench (`AnimationSync`, Prompt-Buttons; D-MG2-07, nicht MG2).
