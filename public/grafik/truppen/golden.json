@@ -1,0 +1,26 @@
+{
+  "bauer": {
+    "renderKey": "8efff045fd4bab434496ed1cc74ebd7ad3630d232d20723f3d7a701c9b60fa27",
+    "dateien": {
+      "angriff.png": "6bfc4d5eb972ab076eae8669535efac0261a012b1e96aa522af2276b4d8abb72",
+      "idle.png": "1d27a29c9962c2d3a1ac583bb97fb936068d62d1d139482660cd6422e3a932cb",
+      "lauf.png": "d1eeaddd9976f8508a8d509b5f4322d7c6286954d6630a215272dd2a281be9a6"
+    }
+  },
+  "krieger": {
+    "renderKey": "150f43f406a0821089db1722e55431fbda1cdbd1b850684963272e2e3de6f74d",
+    "dateien": {
+      "angriff.png": "aebcd37de61acc0e58db8f098e7535ee2cc9f601fcd53079001fe7303a7f9aec",
+      "idle.png": "60287a0aec7510b7ba1ac674f6cac333e39ed52fb5b2d7b8edd1d533a7a6ff5f",
+      "lauf.png": "452d857eaf8b58701a3eef588a182bf08245858d6aa2f6ccb63747b94e1f04ee"
+    }
+  },
+  "landstreicher": {
+    "renderKey": "66b9006a3b90506a1e0ab9a68297aaab10e954ccdc6526c904236c6072f90875",
+    "dateien": {
+      "angriff.png": "cced54098d96b622ca5e91d4efdca4935bbd8931790d97b36234bf1cf4ffa59b",
+      "idle.png": "dcdb471491c794d2d7a1f3f4a8436123010b7c19df4a5c05993ab1029875c404",
+      "lauf.png": "40f37111282a08051f41a1c4e3cc3bc8542d458e3872cf157b6b63fb58b30600"
+    }
+  }
+}

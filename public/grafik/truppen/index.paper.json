@@ -1,0 +1,17 @@
+[
+  {
+    "id": "bauer",
+    "rig": "figur",
+    "manifest": "bauer/manifest.json"
+  },
+  {
+    "id": "krieger",
+    "rig": "figur",
+    "manifest": "krieger/manifest.json"
+  },
+  {
+    "id": "landstreicher",
+    "rig": "figur",
+    "manifest": "landstreicher/manifest.json"
+  }
+]

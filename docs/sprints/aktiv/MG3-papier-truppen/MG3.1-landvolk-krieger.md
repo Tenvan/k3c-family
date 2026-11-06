@@ -1,6 +1,6 @@
 # MG3.1 · Landstreicher, Bauer und Krieger als figur
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -59,5 +59,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `assets_list {gruppe: truppen}` → landstreicher, bauer, krieger gültig.
+- AC-02 geprüft: `task gen:paper` grün, `golden.json` und `index.paper.json` der Gruppe `truppen` eingetragen; `bunx vitest run tools/paper` 187/187 (Golden-Render der Truppen inklusive).
+- AC-03 geprüft: `assets_preview` je Asset idle, lauf und angriff (Frames 0–6 quer verteilt); Körper, Kleidung, Waffe und Bewegung lesbar. Befund: Stock und Heugabel ragten beim Angriff rechts aus dem Frame → Rahmen für landstreicher (150) und bauer (185) verbreitert, krieger 130. Fehlerfälle: Frame 99 (`frame-unbekannt`) und Material `rosa` (`material-unbekannt`) sauber abgelehnt, nichts geändert. `assets_review` → drei `neu`, kein roter Eintrag.
+- Weg: Specs mit einem Baukasten (Körper nach dem Monarchen, Waffe um die Hand gedreht, Angriffs-Keyframes aus Zielrichtung der Waffe) erzeugt und nur über `assets_create`/`assets_set` geschrieben; Probe-Renders vorher im Scratch-Ordner.
+- Abweichungen: `task gen:paper` schreibt alle Gruppen neu (in `figuren`/`reittiere` nur Zeilenenden) → dort zurückgesetzt. `tools/paper/golden/public.test.ts` erwartete fest nur figuren/reittiere → auf „enthält“ gelockert (eine Zeile, D-Zeile in B-701). `task check:diff` nicht gefahren (Diff gegen develop enthält ganz `feature/pap`, > 10 min), Gate: `tools/paper`-Tests und Planungs-Test.
