@@ -31,7 +31,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 |---|---|---|---|---|---|---|
 | RD1 | INF | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | Entwurf | `geplant/RD1-papierschnitt-renderer/` |
 | MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | Entwurf | `geplant/MC1-asset-mcp-tools/` |
-| WB1 | DEV | PAP | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | – | Entwurf | `geplant/WB1-workbench-development-assets/` |
+| WB1 | DEV, INF | PAP | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | – | Entwurf | `geplant/WB1-workbench-development-assets/` |
 | RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | Entwurf | `geplant/RV1-asset-review/` |
 | US1 | CLI | PAP | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | – | Entwurf | `geplant/US1-spiel-auf-papierschnitt/` |
 | MG1 | CLI | PAP | Papierschnitt-Migration: Monarch und Spielerfarben | – | Entwurf | `geplant/MG1-papier-monarch-spielerfarben/` |
