@@ -1,0 +1,64 @@
+{
+  "id": "fledermaus",
+  "version": 1,
+  "specHash": "4405fc666785e751181916ca3e140a57fb3fd2084389bcf6c936a3d9e426c34b",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "962be63e2530011239e4d3cf192ab91cc48118a5b1734ed45e6cd075a7ac6a3b",
+  "rahmen": [
+    -46,
+    -84,
+    82,
+    86
+  ],
+  "frameW": 87,
+  "frameH": 91,
+  "animationen": {
+    "angriff": {
+      "frames": 8,
+      "fps": 14,
+      "datei": "angriff.png",
+      "hashes": [
+        "17eedaa5a6a3ce7c109e2453d462e3086857bca478286643ba85326b45635e8a",
+        "64277c602740479091cd51878d6a05fe69d5c7e654516fc1733c3d33b800c2a6",
+        "32792f0e190c4f435c98d433931451031653166f649aab949def0a550026ef6c",
+        "4126769fb08b90d13703e97ee96dc9586ba920c62fa3ded508d7cd0c3b05ec9d",
+        "686a2230d6ce4898c2bfc375a8de02c1992970c41fee37430ea9e6711c874e88",
+        "c4daa99684d0fb6451d1bb91d33dfe79f59d864e8e4d261b1a3fccee1871da0e",
+        "74bf6a2bc4ec2537c0b7b72fe3c6adac363e4a762c277e7a8e25ab3b60418369",
+        "be888ff78f6c77c8d0ddbe54b79a51badf43da6e2d8a9b10e45a90797bf6cee2"
+      ]
+    },
+    "idle": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "idle.png",
+      "hashes": [
+        "235d770d0431e4d54e6e409d231d2dd043a85f0667fcc0165326d2b6a99f360b",
+        "8336101b7a76b04fb3d3be920f98d58666b60ff9d12ac56716e02986c84ab9cb",
+        "2f34c1dcff310395c438f261b77cee580e093f7ddc40b4b84ba909d5d598f7bf",
+        "cc215350e3046c7d462fce7deb652be250f94a660fa6cad4a490c40cb726f9a8",
+        "b2525a1977691f268c3ac2572422158aa67d4790716a4ae6586066e1faee70cb",
+        "cc215350e3046c7d462fce7deb652be250f94a660fa6cad4a490c40cb726f9a8",
+        "2f34c1dcff310395c438f261b77cee580e093f7ddc40b4b84ba909d5d598f7bf",
+        "8336101b7a76b04fb3d3be920f98d58666b60ff9d12ac56716e02986c84ab9cb"
+      ]
+    },
+    "lauf": {
+      "frames": 8,
+      "fps": 14,
+      "datei": "lauf.png",
+      "hashes": [
+        "26c0f5e6151ab3c9453d3db4628aa7bebf99180f26dcc34755d180226b240cbe",
+        "ad954d5e6dc3c25cc41fd49c3141ef617fee1005d51da52d3196cccd11f78f4c",
+        "bb28b4b4111f7b5c4a657fb615debf700455c86fdabcbc92d2aef752029566e8",
+        "56ba17956a03ddf2dd5a884bcbcf7989d9f69d2133489825d5f12edb86ebda09",
+        "59089b861861f88ec2217dc4ca9c4a55bf39434bab885d3171c8b9e12144201c",
+        "56ba17956a03ddf2dd5a884bcbcf7989d9f69d2133489825d5f12edb86ebda09",
+        "bb28b4b4111f7b5c4a657fb615debf700455c86fdabcbc92d2aef752029566e8",
+        "ad954d5e6dc3c25cc41fd49c3141ef617fee1005d51da52d3196cccd11f78f4c"
+      ]
+    }
+  },
+  "varianten": []
+}

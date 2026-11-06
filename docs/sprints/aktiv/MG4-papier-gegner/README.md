@@ -66,7 +66,7 @@ keine (Defaults als D-MG4-Zeilen in B-701)
 |---|---|---|---|---|
 | MG4.1 | `MG4.1-goblins-untote.md` | Umsetzung | autonom | fertig |
 | MG4.2 | `MG4.2-grosse-woelfe.md` | Umsetzung | autonom | fertig |
-| MG4.3 | `MG4.3-kreaturen-a.md` | Umsetzung | autonom | offen |
+| MG4.3 | `MG4.3-kreaturen-a.md` | Umsetzung | autonom | fertig |
 | MG4.4 | `MG4.4-kreaturen-b.md` | Umsetzung | autonom | offen |
 | MG4.5 | `MG4.5-review.md` | Review | autonom | offen |
 

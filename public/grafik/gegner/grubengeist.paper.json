@@ -1,0 +1,250 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "grubengeist",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Grubengeist: bleicher schwebender Bergmannsgeist mit Helm und Grubenlampe, hohlen Augen und wehendem Schweif; greift nach vorn",
+  "teile": [
+    {
+      "eltern": "korpus",
+      "id": "schweif",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12 -44C-14 -30 -18 -18 -26 -10C-18 -12 -14 -16 -10 -22C-10 -14 -12 -8 -16 -2C-8 -6 -2 -14 0 -24C2 -16 6 -12 10 -10C6 -18 6 -30 10 -44Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-6 -38C-8 -28 -12 -18 -18 -10",
+          "material": "hermelin",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -40]
+    },
+    {
+      "eltern": "korpus",
+      "id": "arm-h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -68C-12 -62 -14 -54 -12 -46C-10 -50 -8 -52 -6 -52C-6 -56 -4 -60 -2 -64Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [-4, -66]
+    },
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12 -68C-14 -80 -8 -90 0 -91C9 -91 14 -82 14 -70C14 -60 12 -50 10 -42L-12 -42C-13 -50 -12 -60 -12 -68Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 -68C-14 -80 -8 -90 0 -91C-5 -84 -7 -70 -5 -42L-12 -42C-13 -50 -12 -60 -12 -68Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M8 -86C12 -82 13 -74 13 -66C11 -72 10 -80 8 -86Z",
+          "material": "hermelin",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-14 -80C-12 -90 -4 -96 4 -96C12 -96 17 -90 17 -82L17 -79H-14Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-14 -80C-12 -90 -4 -96 4 -96C-2 -92 -6 -86 -6 -79H-14Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-16 -80H19V-77H-16Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M10 -94C13 -94 15 -92 15 -89C15 -86 13 -85 10 -85Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [12.5, -89.5],
+          "radius": 1.6
+        },
+        {
+          "art": "flaeche",
+          "form": "M2 -75C3 -78 7 -78 8 -75C7 -72 3 -72 2 -75Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M10 -75C11 -77.5 13.5 -77.5 14 -75C13.5 -72.5 11 -72.5 10 -75Z",
+          "material": "linie"
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [5, -75],
+          "radius": 0.8
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [12, -75],
+          "radius": 0.7
+        },
+        {
+          "art": "flaeche",
+          "form": "M6 -66C7 -69 11 -69 12 -66C11 -62 7 -62 6 -66Z",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -90]
+    },
+    {
+      "eltern": "korpus",
+      "id": "arm-v",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -68C6 -64 8 -56 6 -48C4 -46 0 -46 -1 -48C1 -54 0 -60 -2 -64Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -68C2 -62 2 -54 -1 -48C1 -54 0 -60 -2 -64Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M2 -48L1 -44",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M4.5 -48L4.5 -44.5",
+          "material": "hermelin",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [2, -66]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 112,
+    "rahmen": [-40, -102, 76, 106]
+  },
+  "animationen": {
+    "angriff": {
+      "fps": 12,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "arm-h": 0,
+            "arm-v": 0,
+            "korpus": -4
+          }
+        },
+        {
+          "t": 0.35,
+          "winkel": {
+            "arm-h": 30,
+            "arm-v": 40,
+            "korpus": 6,
+            "schweif": -10
+          }
+        },
+        {
+          "t": 0.6,
+          "winkel": {
+            "arm-h": -80,
+            "arm-v": -95,
+            "korpus": -14,
+            "schweif": 25
+          }
+        },
+        {
+          "t": 0.8,
+          "winkel": {
+            "arm-h": -50,
+            "arm-v": -60,
+            "korpus": -8,
+            "schweif": 15
+          }
+        }
+      ]
+    },
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "arm-v": 5,
+            "korpus": -4,
+            "schweif": 8
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "arm-v": -5,
+            "korpus": 4,
+            "schweif": -8
+          }
+        }
+      ]
+    },
+    "lauf": {
+      "fps": 10,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "arm-h": 15,
+            "arm-v": 20,
+            "korpus": -10,
+            "schweif": 20
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "arm-h": 25,
+            "arm-v": 10,
+            "korpus": -6,
+            "schweif": 8
+          }
+        }
+      ]
+    }
+  }
+}

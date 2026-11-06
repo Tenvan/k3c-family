@@ -1,6 +1,6 @@
 # MG4.3 · Fledermaus, Rattenschwarm, Grubengeist, Lavaschleim
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -42,9 +42,9 @@ Keine neuen Rig-Typen, kein `assets_style_set`.
 
 ## Fertig, wenn
 
-- [ ] AC-01: die vier Assets gültig.
-- [ ] AC-02: Golden eingetragen, `tools/paper` grün.
-- [ ] AC-03: jede Animation geprüft; Review ohne roten Eintrag.
+- [x] AC-01: vier Assets gültig.
+- [x] AC-02: `golden.json` eingetragen, `tools/paper`-Tests grün.
+- [x] AC-03: jede Animation mit `assets_preview` geprüft; `assets_review` ohne roten Eintrag.
 
 ## Prüfen
 
@@ -58,5 +58,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `assets_list` meldet fledermaus, rattenschwarm, grubengeist, lavaschleim (requisite) gültig.
+- AC-02 geprüft: `task gen:paper` trägt sie in `public/grafik/gegner/golden.json` ein; fremde Gruppen zurückgesetzt; `bunx vitest run tools/paper tests/planning.test.ts` 1110/1110 grün.
+- AC-03 geprüft: idle, lauf, angriff je Kreatur mit `assets_preview` angesehen; `assets_review` ohne roten Eintrag.
+- Umsetzung: Fledermaus mit zwei Flügel-Teilen (Flügelschlag, Sturzflug im Angriff), Rattenschwarm als drei Ratten-Teile mit versetztem Wippen (Angriff: vordere Ratte bäumt sich auf), Grubengeist mit Helm und Grubenlampe, pendelt am Kopf-Pivot, Arme greifen nach vorn; Lavaschleim aus `koenigsrot`/`gold`/`fell-fuchs` (kein neues Material), Zunge liegt in idle/lauf verdeckt hinter dem Körper. Größe 1,06 px je Einheit wie die Figuren.
+- Abweichung: ein `assets_set` brach einmal mit EPERM beim Umbenennen im Render-Cache ab (zwei Aufrufe parallel); einzeln wiederholt, ohne Folgen. D-Zeilen trägt MG4.4 gesammelt ein.
+- Manuell geprüft: niemand. Neue Tickets: keine.

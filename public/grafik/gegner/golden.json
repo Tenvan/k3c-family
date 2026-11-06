@@ -7,6 +7,14 @@
       "lauf.png": "c6538dc2f461324200066d98fbdc82bc6000ce95c52a93e88f23e7295032901a"
     }
   },
+  "fledermaus": {
+    "renderKey": "962be63e2530011239e4d3cf192ab91cc48118a5b1734ed45e6cd075a7ac6a3b",
+    "dateien": {
+      "angriff.png": "347b20893ed74f23b20514346b950060bae904e962539d232aeddb79a6a9cbc6",
+      "idle.png": "041df6dbabe261a5939d12e9325038bfd3c0a4e0512213f59987d58444caf603",
+      "lauf.png": "903ab8f38d72756a2fd3f810191fd9b295c39e3799b1c74e65d7d83c13ccd8f1"
+    }
+  },
   "gier": {
     "renderKey": "f5b7d5c942386cf5a6da5b7854bd5e8a477e72966eef4b5fb7847b5b6b9e20be",
     "dateien": {
@@ -31,6 +39,14 @@
       "lauf.png": "f08fd465eec2a3dffadef8695cc2aa94f957287bade857fdef5d03040d3055be"
     }
   },
+  "grubengeist": {
+    "renderKey": "1b15356b3b584827564fe0a1df4486f9163d62e2683557422bfad3b4675fdd58",
+    "dateien": {
+      "angriff.png": "ce03e031168fef4132a49a7f851056e2681f2dec57013f7d2b112e4815d58f32",
+      "idle.png": "29931843c3cbba8431792cb9ef14e32b8ab014e24fc7457463aa39262f761a49",
+      "lauf.png": "783eb6afc58dda60efe278e72cdd0b9c2c6faae51c7692d2e3c43e0d0ab2623b"
+    }
+  },
   "hoehlentroll": {
     "renderKey": "fb665150cc76942b470286e93e0671fe6865188f4eb94fd7729813ca478757ab",
     "dateien": {
@@ -45,6 +61,22 @@
       "angriff.png": "1244a001cf1582a10242dba44e02df994ae17f60ae4c19d15731263f6c8fabc0",
       "idle.png": "c9bc370b34476075cd0ebfcb17a3c02fbb2b3ee8acdf42a43a6edb76659bf272",
       "lauf.png": "a60f8d8f6ae1fa1a3e971c31eaec039fd513616adea1a4102a9e53f3f7a6edb0"
+    }
+  },
+  "lavaschleim": {
+    "renderKey": "91e020c771e67394e26afe3dbbaf8d8ea5676344ff290b935e54ab12a985e7be",
+    "dateien": {
+      "angriff.png": "366f04b6afb09d9010e8f187159b3061b81935bdcdddd1fcf59ff20e6e518367",
+      "idle.png": "9486b28bd015774784e0dc9a4dd7aad27d954d6909f62dfcc8b70164d8edbf0b",
+      "lauf.png": "13454eedbda24085db62d97f14b262b864110ff67592c8aa0690602120e6e0a3"
+    }
+  },
+  "rattenschwarm": {
+    "renderKey": "7d4d9cb7146f66f899ddd137811f1b67d9f080762c52143ce063b05a986547ad",
+    "dateien": {
+      "angriff.png": "15b07a598989516ab382b59b92cc2764c60b73f2a3edc43e4fcf9d5252860ae0",
+      "idle.png": "6ef79e5a46d56888dcdfd109fb8d8913b1b9b9769bb2adb8f1ce38ee2d15058d",
+      "lauf.png": "7e71893a5d01fb01820d11ce165d75449d53ee727b5a62b04f9fdd7139e1d4b7"
     }
   },
   "skelett": {

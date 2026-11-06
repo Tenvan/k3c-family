@@ -5,6 +5,11 @@
     "manifest": "alphawolf/manifest.json"
   },
   {
+    "id": "fledermaus",
+    "rig": "requisite",
+    "manifest": "fledermaus/manifest.json"
+  },
+  {
     "id": "gier",
     "rig": "figur",
     "manifest": "gier/manifest.json"
@@ -20,6 +25,11 @@
     "manifest": "goblin/manifest.json"
   },
   {
+    "id": "grubengeist",
+    "rig": "requisite",
+    "manifest": "grubengeist/manifest.json"
+  },
+  {
     "id": "hoehlentroll",
     "rig": "figur",
     "manifest": "hoehlentroll/manifest.json"
@@ -28,6 +38,16 @@
     "id": "kristallwaechter",
     "rig": "figur",
     "manifest": "kristallwaechter/manifest.json"
+  },
+  {
+    "id": "lavaschleim",
+    "rig": "requisite",
+    "manifest": "lavaschleim/manifest.json"
+  },
+  {
+    "id": "rattenschwarm",
+    "rig": "requisite",
+    "manifest": "rattenschwarm/manifest.json"
   },
   {
     "id": "skelett",

@@ -1,0 +1,280 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "lavaschleim",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Lavaschleim: glühend roter Schleimklumpen mit goldenen Glutflecken, Kruste und Glotzaugen; schwappt, schlägt mit einer Zunge zu",
+  "teile": [
+    {
+      "id": "pfuetze",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-26 0C-26 -3 -18 -5 -6 -5C8 -5 22 -4 26 -1C26 1 18 2 0 2C-16 2 -26 2 -26 0Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [-14, -1],
+          "radius": 1.6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [16, -1],
+          "radius": 1.2
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "korpus",
+      "id": "zunge",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M8 -16C16 -18 24 -16 30 -12C34 -10 34 -6 30 -5C24 -6 18 -8 10 -8Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M10 -8C18 -8 24 -6 30 -5C34 -6 34 -8 33 -9C26 -9 18 -10 10 -11Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [28, -10],
+          "radius": 1.4,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [12, -12]
+    },
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-22 -2C-24 -12 -20 -22 -12 -28C-4 -32 6 -32 14 -27C21 -22 24 -12 22 -2Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-22 -2C-24 -12 -20 -22 -12 -28C-14 -20 -14 -10 -10 -2Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M4 -31C12 -30 18 -25 21 -17C16 -22 10 -26 4 -28Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [-12, -10],
+          "radius": 2.4
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [-4, -6],
+          "radius": 1.6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [12, -8],
+          "radius": 2
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-16 -18C-14 -14 -12 -12 -8 -12",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M2 -20C2 -23 6 -24 7.5 -21C7 -18 3 -17 2 -20Z",
+          "material": "weiss"
+        },
+        {
+          "art": "flaeche",
+          "form": "M10 -20C10 -23 13.5 -24 15 -21C14.5 -18 11 -17 10 -20Z",
+          "material": "weiss"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [5.6, -20.6],
+          "radius": 1
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [13.2, -20.6],
+          "radius": 1
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M4 -13C7 -11 11 -11 14 -13",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "korpus",
+      "id": "kuppe",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12 -26C-10 -34 -2 -38 6 -36C12 -34 15 -30 14 -26Z",
+          "material": "fell-fuchs"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 -26C-10 -34 -2 -38 6 -36C0 -34 -4 -30 -4 -26Z",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-2 -34L2 -28L6 -32",
+          "material": "linie"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [8, -33],
+          "radius": 1.2,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [-2, -26]
+    },
+    {
+      "eltern": "korpus",
+      "id": "blase",
+      "lagen": [
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [-13, -27],
+          "radius": 2.6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [-12.2, -27.8],
+          "radius": 0.8,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [-6, -20]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 49,
+    "rahmen": [-34, -42, 74, 46]
+  },
+  "animationen": {
+    "angriff": {
+      "fps": 12,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": -4,
+            "zunge": -190
+          }
+        },
+        {
+          "t": 0.35,
+          "winkel": {
+            "korpus": -10,
+            "kuppe": 10,
+            "zunge": -110
+          }
+        },
+        {
+          "t": 0.55,
+          "winkel": {
+            "korpus": 10,
+            "kuppe": -10,
+            "zunge": 0
+          }
+        },
+        {
+          "t": 0.8,
+          "winkel": {
+            "korpus": 2,
+            "zunge": -150
+          }
+        }
+      ]
+    },
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "blase": -10,
+            "korpus": -3,
+            "kuppe": 6,
+            "zunge": -190
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "blase": 10,
+            "korpus": 3,
+            "kuppe": -6,
+            "zunge": -190
+          }
+        }
+      ]
+    },
+    "lauf": {
+      "fps": 10,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": -7,
+            "kuppe": 10,
+            "zunge": -190
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "korpus": 5,
+            "kuppe": -8,
+            "zunge": -190
+          }
+        }
+      ]
+    }
+  }
+}
