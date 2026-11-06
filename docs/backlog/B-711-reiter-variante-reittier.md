@@ -2,7 +2,7 @@
 
 - **Domäne:** PAP
 - **Typ:** Frage
-- **Prio:** niedrig
+- **Prio:** mittel
 - **Umgebung:** ?
 - **Status:** offen
 - **Sprint:** –

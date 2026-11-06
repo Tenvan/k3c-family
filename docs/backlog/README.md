@@ -110,7 +110,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-708](B-708-paper-fehlerfeld-reittier.md) | PAP | Problem | niedrig | offen | – | Ablehnung reittier-unbekannt nennt das Feld ohne Animationsnamen |
 | [B-709](B-709-assets-preview-reittier-boxen.md) | PAP | Idee | niedrig | offen | – | assets_preview nennt bei Reit-Animationen keine Teil-Boxen des Reittiers |
 | [B-710](B-710-assets-set-teil-patch.md) | PAP | Problem | mittel | offen | – | assets_set kann einzelne Teile nicht ändern, ohne die ganze Teile-Liste zu senden |
-| [B-711](B-711-reiter-variante-reittier.md) | PAP | Frage | niedrig | offen | – | Variante des Reiters tauscht die Materialien des Reittiers nicht |
+| [B-711](B-711-reiter-variante-reittier.md) | PAP | Frage | mittel | offen | – | Variante des Reiters tauscht die Materialien des Reittiers nicht |
 
 ## Archiv
 

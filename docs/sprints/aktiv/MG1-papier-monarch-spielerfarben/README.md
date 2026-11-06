@@ -41,7 +41,7 @@ Nur `public/grafik/figuren/` (Specs, gerenderte PNGs, Manifeste, `index.paper.js
 
 ## Beispiele
 
-- `assets_set monarch {varianten: {spieler2: {tausch: {koenigsblau: smaragd, koenigsrot: purpur}}}}` → gültig, `idle@spieler2.png` … entstehen, Golden aktualisiert.
+- `assets_set monarch {varianten: {spieler2: {tausch: {koenigsblau: koenigsrot}}}}` → gültig, `idle@spieler2.png` … entstehen; Golden nach `task gen:paper` (B-707).
 - `assets_preview monarch {animation: galopp, frame: 3, variante: spieler3}` → Bild mit Reiter auf dem Pferd in den Farben von Spieler 3.
 
 ## Ausnahme- und Fehlerfälle
@@ -66,7 +66,7 @@ keine (Defaults als D-MG1-Zeilen in B-701)
 |---|---|---|---|---|
 | MG1.1 | `MG1.1-integration-monarch-mcp.md` | Umsetzung | autonom | fertig |
 | MG1.2 | `MG1.2-spielerfarben-varianten.md` | Umsetzung | autonom | fertig |
-| MG1.3 | `MG1.3-review.md` | Review | autonom | offen |
+| MG1.3 | `MG1.3-review.md` | Review | autonom | fertig |
 
 Lane `monarch`, Umsetzung Sonnet, Review Opus; keine Mensch-Session (Sichtprüfung in PS1). Nur ein Asset in der Gruppe, daher statt 3–6 Assets je Session:
 
@@ -76,5 +76,6 @@ Lane `monarch`, Umsetzung Sonnet, Review Opus; keine Mensch-Session (Sichtprüfu
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-06, Review MG1.3 (Opus): AC-01–AC-03 erfüllt (MG1.1, MG1.2, MG1.3 › Ergebnis).
+Behoben: Doku-Lücken aus dem Review; Vorgabe Ralf für den Umhang (D-MG1-05) umgesetzt.
+Neue Tickets: B-707–B-711 (Projekt PAP). Offen: Sichtprüfung der Spielerfarben durch 🧑 in PS1.

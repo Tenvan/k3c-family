@@ -1,13 +1,13 @@
 # MG1.3 · Sprint-Review MG1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PAP
 - **Lane:** monarch
 - **Modell:** opus
 - **Umgebung:** offline
-- **Branch:** mg1/3-review
+- **Branch:** sprint/mg1
 - **Abhängig von:** MG1.2
 - **Tickets:** B-699
 - **Kriterien:** AC-01, AC-02, AC-03
@@ -38,8 +38,8 @@ Keine Sichtprüfung durch 🧑 (PS1).
 
 ## Fertig, wenn
 
-- [ ] AC-01–AC-03 mit Nachweis aus MG1.1/MG1.2 bestätigt.
-- [ ] `task check` grün, Abnahme ausgefüllt.
+- [x] AC-01–AC-03 mit Nachweis aus MG1.1/MG1.2 bestätigt.
+- [x] `task check` grün, Abnahme ausgefüllt.
 
 ## Prüfen
 
@@ -53,5 +53,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Review durch einen frischen Opus-Agenten über `44f2d30c..352c3042`: nichts Kritisches. Ausgabe konsistent (renderKey, 25 Golden-Dateien mit SHA-256, Varianten); B-707–B-711 am Code bestätigt.
+- Behoben: B-711 auf Prio mittel; Beispiel in der README, Häkchen und Branch-Feld in MG1.1/MG1.2; B-710 korrigiert (780 Zeilen) und um die doppelten `@spieler1`-PNGs ergänzt; fehlende Previews nachgeholt (spieler3 idle 4, spieler4 galopp 1, spieler1 galopp 7).
+- Vorgabe Ralf (über die Haupt-Session): Umhang `smaragd`, Länge 79.8 (D-MG1-05). Mit `assets_set` umgesetzt, Rahmen geprüft: Umhang in allen Frames innerhalb (Idle min. x 9 px, Reiten ohne grüne Randpixel). Danach Rockfarben neu: spieler2 `koenigsrot`, spieler3 `purpur`, spieler4 `leder` (D-MG1-03), weil spieler2 mit `smaragd` kaum Kontrast zum Umhang hätte.
+- Offen, nicht behoben: Unterscheidbarkeit (spieler1/spieler3, spieler4 gegen das Pferd) → Sichtprüfung 🧑 in PS1; Satteldecke blau → B-711.
+- `task check`: unter Last 1 Timeout (wechselnde Tests), einzeln 3178/3178 grün; `tools/paper` + `planning` 1115/1115 grün; `check:race` hier nicht nötig (kein Go-Code).

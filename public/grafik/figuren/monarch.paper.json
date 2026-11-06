@@ -780,8 +780,8 @@
   "umhang": {
     "anker": "rumpf",
     "punkt": [-4, -91],
-    "material": "koenigsrot",
-    "laenge": 53.2,
+    "material": "smaragd",
+    "laenge": 79.8,
     "breite": [4, 17.3],
     "segmente": 8
   },
@@ -811,7 +811,7 @@
   "varianten": {
     "spieler2": {
       "tausch": {
-        "koenigsblau": "smaragd"
+        "koenigsblau": "koenigsrot"
       }
     },
     "spieler1": {
@@ -826,7 +826,7 @@
     },
     "spieler4": {
       "tausch": {
-        "koenigsblau": "koenigsrot"
+        "koenigsblau": "leder"
       }
     }
   },

@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-MG1.2: Die Nase des Monarchen (`kopf`, Lage `punkt`) und die Kronen-Füllung nutzen `koenigsrot` wie der Umhang. Um die Nase auf `haut` umzustellen, müsste `assets_set` per JSON-Merge-Patch die ganze Liste `teile` (rund 600 Zeilen) neu senden, weil Listen ersetzt werden (RFC 7396). Für MG2–MG8 ist das die häufigste Art von Änderung.
+MG1.2: Die Nase des Monarchen (`kopf`, Lage `punkt`) und die Kronen-Füllung nutzen `koenigsrot` wie der Umhang. Um die Nase auf `haut` umzustellen, müsste `assets_set` per JSON-Merge-Patch die ganze Liste `teile` (rund 780 Zeilen) neu senden, weil Listen ersetzt werden (RFC 7396). Für MG2–MG8 ist das die häufigste Art von Änderung.
 
 ## Ziel
 
@@ -55,3 +55,5 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 ## Notizen
 
 Folge-Änderung danach: Nase des Monarchen auf `haut`/`schatten`, damit Varianten den Umhang tauschen können (D-MG1-03).
+
+Verwandt (Schema, Lane renderer): `tausch` verlangt mindestens einen Eintrag, daher ist `spieler1` ein Tausch auf sich selbst und die fünf `@spieler1`-PNGs sind byte-gleiche Kopien der Basis (rund 1,2 MB doppelt); ein leerer Tausch oder ein Alias würde das vermeiden.

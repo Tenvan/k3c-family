@@ -7,7 +7,7 @@
 - **Lane:** monarch
 - **Modell:** sonnet
 - **Umgebung:** offline
-- **Branch:** mg1/1-integration-monarch-mcp
+- **Branch:** sprint/mg1
 - **Abhängig von:** RD1, MC1
 - **Tickets:** B-699
 - **Kriterien:** AC-01, AC-02, AC-03
@@ -43,9 +43,9 @@ Kein Code im Renderer oder in der Workbench; kein `assets_style_set`; keine Spie
 
 ## Fertig, wenn
 
-- [ ] AC-01: `assets_list` meldet monarch gültig.
-- [ ] AC-02: `golden.json` der Gruppe passt zur Ausgabe (`task test -- paper` grün).
-- [ ] AC-03: alle Animationen mit `assets_preview` geprüft, Befunde im Ergebnis; `assets_review` ohne roten Eintrag.
+- [x] AC-01: `assets_list` meldet monarch gültig.
+- [x] AC-02: `golden.json` der Gruppe passt zur Ausgabe (`task test -- paper` grün).
+- [x] AC-03: alle Animationen mit `assets_preview` geprüft, Befunde im Ergebnis; `assets_review` ohne roten Eintrag.
 
 ## Prüfen
 
