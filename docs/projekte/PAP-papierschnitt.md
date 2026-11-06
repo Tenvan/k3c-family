@@ -22,7 +22,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | MG1 | Papierschnitt-Migration: Monarch und Spielerfarben | geplant |
 | MG2 | Papierschnitt-Migration: Reittiere | geplant |
 | MG3 | Papierschnitt-Migration: Truppen | aktiv |
-| MG4 | Papierschnitt-Migration: Gegner | geplant |
+| MG4 | Papierschnitt-Migration: Gegner | aktiv |
 | MG5 | Papierschnitt-Migration: Bosse | geplant |
 | MG6 | Papierschnitt-Migration: Gebäude mit Ausbaustufen | geplant |
 | MG7 | Papierschnitt-Migration: Hintergründe je Biom | geplant |
