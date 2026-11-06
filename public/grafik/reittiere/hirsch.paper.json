@@ -1,0 +1,440 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "hirsch",
+  "rig": "vierbeiner",
+  "version": 1,
+  "beschreibung": "Hirsch: rotbrauner Hirsch mit Geweih, schlanken Beinen und kurzem Schwanz.",
+  "teile": [
+    {
+      "eltern": "rumpf-hinten",
+      "id": "oberbein-hf",
+      "lagen": [],
+      "pivot": [-26, -56]
+    },
+    {
+      "eltern": "oberbein-hf",
+      "id": "unterbein-hf",
+      "lagen": [],
+      "pivot": [-26, -31]
+    },
+    {
+      "eltern": "unterbein-hf",
+      "id": "huf-hf",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-29.3 -10.5L-22.7 -10.5L-21.4 -5H-29.6Z",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-30.2 -5.2H-21L-19.6 0H-30.2Z",
+          "material": "huf"
+        }
+      ],
+      "pivot": [-26, -9]
+    },
+    {
+      "eltern": "rumpf-vorn",
+      "id": "oberbein-vf",
+      "lagen": [],
+      "pivot": [30, -56]
+    },
+    {
+      "eltern": "oberbein-vf",
+      "id": "unterbein-vf",
+      "lagen": [],
+      "pivot": [30, -31]
+    },
+    {
+      "eltern": "unterbein-vf",
+      "id": "huf-vf",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M26.7 -10.5L33.3 -10.5L34.6 -5H26.4Z",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M25.8 -5.2H35L36.4 0H25.8Z",
+          "material": "huf"
+        }
+      ],
+      "pivot": [30, -9]
+    },
+    {
+      "eltern": "rumpf-hinten",
+      "id": "schweif",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-42 -76C-50 -78 -54 -72 -52 -66C-48 -68 -45 -70 -42 -71Z",
+          "material": "fell-fuchs"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-52 -66C-48 -68 -45 -70 -42 -71L-43 -73C-47 -72 -50 -70 -52 -66Z",
+          "material": "hermelin",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [-38, -68]
+    },
+    {
+      "eltern": "rumpf-vorn",
+      "id": "rumpf-hinten",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-34 -81C-42 -80 -46.5 -72 -45.5 -64C-44.5 -56 -40.5 -51 -34 -48.8C-24 -45.6 -10 -45 6 -46L6 -79C-8 -78.5 -22 -80.5 -34 -81Z",
+          "material": "fell-fuchs"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-44 -58C-36 -52 -20 -49 6 -50L6 -46C-10 -45 -24 -45.6 -34 -48.8C-39 -50.6 -42.6 -54 -44 -58Z",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-36 -79C-28 -79 -16 -77.5 -4 -77.8C-16 -74.5 -28 -75 -38 -76.6Z",
+          "material": "fell-fuchs",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-26 -76C-33.5 -70 -34 -59 -28.5 -51",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -66]
+    },
+    {
+      "id": "rumpf-vorn",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -79C4 -79 12 -81 20 -83.5C30 -85 38 -81 43 -73C46.4 -66 45.4 -58 40.4 -53C34 -48.6 22 -46.6 10 -46L-6 -46Z",
+          "material": "fell-fuchs"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-6 -50C10 -50 26 -51 38 -55C34 -49.5 22 -46.6 10 -46L-6 -46Z",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M22 -82C30 -83 37 -79 41 -72C36 -76 30 -79 22 -80Z",
+          "material": "fell-fuchs",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M30.5 -78C24.5 -70 24.5 -60 30 -52.5",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-7.5 -62H-2.5V-46.5H-7.5Z",
+          "material": "leder"
+        }
+      ],
+      "pivot": [0, -80]
+    },
+    {
+      "eltern": "rumpf-hinten",
+      "id": "oberbein-hn",
+      "lagen": [],
+      "pivot": [-30, -56]
+    },
+    {
+      "eltern": "oberbein-hn",
+      "id": "unterbein-hn",
+      "lagen": [],
+      "pivot": [-30, -31]
+    },
+    {
+      "eltern": "unterbein-hn",
+      "id": "huf-hn",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-33.3 -10.5L-26.7 -10.5L-25.4 -5H-33.6Z",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-34.2 -5.2H-25L-23.6 0H-34.2Z",
+          "material": "huf"
+        }
+      ],
+      "pivot": [-30, -9]
+    },
+    {
+      "eltern": "rumpf-vorn",
+      "id": "oberbein-vn",
+      "lagen": [],
+      "pivot": [26, -56]
+    },
+    {
+      "eltern": "oberbein-vn",
+      "id": "unterbein-vn",
+      "lagen": [],
+      "pivot": [26, -31]
+    },
+    {
+      "eltern": "unterbein-vn",
+      "id": "huf-vn",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M22.7 -10.5L29.3 -10.5L30.6 -5H22.4Z",
+          "material": "fell-fuchs"
+        },
+        {
+          "art": "flaeche",
+          "form": "M21.8 -5.2H31L32.4 0H21.8Z",
+          "material": "huf"
+        }
+      ],
+      "pivot": [26, -9]
+    },
+    {
+      "eltern": "rumpf-vorn",
+      "id": "sattel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-18 -78H18L18.6 -55.5Q14.1 -51.5 9.6 -55.5Q5.1 -51.5 0.6 -55.5Q-3.9 -51.5 -8.4 -55.5Q-12.9 -51.5 -17.4 -55.5Q-18 -60 -18 -78Z",
+          "material": "koenigsblau"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-18 -78H-8V-54.5Q-12.9 -51.5 -17.4 -55.5Q-18 -60 -18 -78Z",
+          "material": "koenigsblau",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M-16 -58.5Q-12.9 -55 -8.4 -58.5Q-3.9 -55 0.6 -58.5Q5.1 -55 9.6 -58.5Q14.1 -55 16.6 -58.5",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3 -70L-2 -74L0 -71.5L2 -75L4 -71.5L6 -74L7 -70Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3 -70H7V-67.5H-3Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-15 -79C-12 -85 -6 -85 -2 -81.5C4 -82.5 10 -86.5 14.5 -84C15.5 -80 14.5 -77 13 -75H-13C-14.5 -76 -15.5 -77.5 -15 -79Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-15 -79C-12 -85 -6 -85 -2 -81.5L-2 -75H-13C-14.5 -76 -15.5 -77.5 -15 -79Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-10 -78H10",
+          "material": "leder",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -78]
+    },
+    {
+      "eltern": "rumpf-vorn",
+      "id": "hals",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M16 -76C18 -88 28 -100 38 -106C44 -104.5 50 -100.5 52.5 -96.5C47.5 -88 45 -76 44 -62Z",
+          "material": "fell-fuchs"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M40 -97C44.5 -87 45.5 -76 44 -63L37.5 -65.5C41 -76 41.5 -87 40 -97Z",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M36 -96C33 -86 33 -76 35 -68",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M36 -107.5C42 -113.5 50 -112.5 55 -107.5C59 -102.5 65 -97.5 69 -94.5C72.4 -91.5 71.4 -87 67.4 -86C63 -85 58 -86 55 -87C50 -88.5 46 -92 43 -95Z",
+          "material": "fell-fuchs"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M55 -87C50 -88.5 46 -92 43 -95L44.5 -98C49 -94 54 -91.5 60 -90.5C63 -90 66 -88.5 67.4 -86C63 -85 58 -86 55 -87Z",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M62 -98C65.4 -96 68.6 -94.6 69.8 -92.6C70.8 -90.4 70 -87.6 67.4 -86.4C66.4 -89.6 64.4 -93.6 62 -98Z",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M44 -110C48 -112 52 -111 55 -107.5C51 -109 47.5 -109.5 44 -110Z",
+          "material": "fell-fuchs",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M41.5 -107L44.5 -118C46.5 -115 48.5 -111.5 48.5 -107.5Z",
+          "material": "fell-fuchs"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M43.2 -108L45 -114.6C46 -112.6 46.8 -110.4 46.8 -108.4Z",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M48.6 -102.4C50.6 -104.6 53.6 -104.6 54.8 -102C52.8 -100.6 50.2 -100.6 48.6 -102.4Z",
+          "material": "auge"
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [52.6, -103],
+          "radius": 0.6,
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.3,
+          "form": "M48.2 -103.2C50.4 -105.8 54 -105.6 55.2 -102.6",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 1.3,
+          "form": "M66.6 -92.6C68 -91.6 68.4 -90.2 67.6 -89.2",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M62 -87.6C64 -87 66 -87 67.4 -87.4",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M44 -104.5L47.5 -97.5L58 -91.5",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M45.5 -106C48 -105 49.6 -104 51 -102.5",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M57.5 -96.5L61 -88.5",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [57.6, -96.2],
+          "radius": 1.4
+        }
+      ],
+      "pivot": [30, -70]
+    },
+    {
+      "eltern": "hals",
+      "id": "geweih",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 2.2,
+          "form": "M44 -110C42 -114 38 -116 34 -116M40 -115L38 -120M36 -116L32 -119",
+          "material": "holz"
+        },
+        {
+          "art": "falz",
+          "breite": 2.2,
+          "form": "M48 -111C48 -115 50 -117 54 -118M51 -116L52 -121M53 -118L57 -120",
+          "material": "holz"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M44 -110C42 -114 38 -116 34 -116",
+          "material": "holz",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [44, -110]
+    }
+  ],
+  "bein": {
+    "breiten_vorn": [12.8, 11.2, 9.2, 6.6, 4.3, 5.4],
+    "breiten_hinten": [15.2, 13.6, 10, 6.4, 4.3, 5.4]
+  },
+  "ausgabe": {
+    "hoehe_px": 192,
+    "rahmen": [-68, -128, 145, 132],
+    "massstab": 1.3
+  },
+  "animationen": {
+    "galopp": {
+      "frames": 8,
+      "gangart": "galopp"
+    },
+    "schritt": {
+      "frames": 8,
+      "gangart": "schritt"
+    },
+    "trab": {
+      "frames": 8,
+      "gangart": "trab"
+    }
+  }
+}

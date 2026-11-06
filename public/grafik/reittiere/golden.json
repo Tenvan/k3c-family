@@ -7,6 +7,30 @@
       "trab.png": "4b9393eaa489ed21fa7b801cb618457e315864c9601aaa779d47294d0e5010aa"
     }
   },
+  "einhorn": {
+    "renderKey": "e3a6b1cb15bc7fa9ae76e8ad9f2496510e07a210585d5483447a345f166d6ad6",
+    "dateien": {
+      "galopp.png": "82702cf3d4761f8203d82250bafdd7a5d39e0fd9a8e19b23a6b58775884193dc",
+      "schritt.png": "f3408d48c8bdcf630dd22ae03536b73af61ecaee5f307e013963aa11134d4453",
+      "trab.png": "d91e93f913200683619f5125903d0a88d12108ba1422281dba8c107db996c03f"
+    }
+  },
+  "hirsch": {
+    "renderKey": "9645dd00c6483d50bd64a1c21fd6182da7d054d97730b043f016a25da848b129",
+    "dateien": {
+      "galopp.png": "fb11e38b33129702c29d1c84cabc8d115a8e634a5b7eb1332c0fdb037b40069a",
+      "schritt.png": "0421a224ac649b6e3fe4733c9ab3ad197639b6b20e6f8e5d9f605fe2bf47807b",
+      "trab.png": "d5f49302ae73d8c13eec19f04e2bd9405aab88ca60dca025166e4adbde3462ad"
+    }
+  },
+  "pegasus": {
+    "renderKey": "eb5c84cbdc5aa12e02c4988311bf4b53129e47ee89bb04fc309f20c3545c3872",
+    "dateien": {
+      "galopp.png": "f5410c363361d4c3cf6c5432ed273492b1af5c83f62347b146e0d36141ed13a5",
+      "schritt.png": "bf684518234a2e1ec75e1081637c523515556a5774239e1ec87b8d098f95454c",
+      "trab.png": "e2915794cc1598946791057e7a26967e6e26c5d072951e430f6563f6ff406db1"
+    }
+  },
   "pferd": {
     "renderKey": "6a50b148e4b11d74243efb4b96e6fabc5d4d46df9123928e86469e48b8a0c997",
     "dateien": {

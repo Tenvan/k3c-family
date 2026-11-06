@@ -1,6 +1,6 @@
 # MG2.2 · Fabelwesen und Hirsch: einhorn, pegasus, hirsch
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -58,5 +58,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `assets_list {gruppe: reittiere}` → 7 Assets, 0 ungültig (neu: einhorn, pegasus, hirsch).
+- AC-02 geprüft: `task gen:paper` ok, `golden.json`/`index.paper.json` der Gruppe nachgezogen; Zeilenend-Änderungen an `figuren/` und unveränderten Dateien zurückgenommen.
+- AC-03 geprüft: einhorn schritt 4, trab 4, galopp 2; pegasus trab 2, galopp 4, schritt 0; hirsch galopp 4, schritt 0, trab 2. Zusatzteile `horn` (am `hals`), `fluegel` (hinter dem Rumpf, vor `rumpf-hinten` gezeichnet) und `geweih` (am `hals`) laufen mit. Befund: Horn und Geweih ragten im `schritt` oben aus dem Rahmen → `ausgabe.rahmen` beider Assets oben um 6 Einheiten erweitert (D-MG2-06). `assets_review` (HEAD): 3× `neu`, kein `ungueltig`.
+- Hirsch: Pferdekopf ohne Mähne, schlankere Beine (`bein` × 0,8), kurzer Schwanz; eigene Kopfform wäre besser, Sichtprüfung in PS1.

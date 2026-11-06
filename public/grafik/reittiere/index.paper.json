@@ -5,6 +5,21 @@
     "manifest": "albtraum/manifest.json"
   },
   {
+    "id": "einhorn",
+    "rig": "vierbeiner",
+    "manifest": "einhorn/manifest.json"
+  },
+  {
+    "id": "hirsch",
+    "rig": "vierbeiner",
+    "manifest": "hirsch/manifest.json"
+  },
+  {
+    "id": "pegasus",
+    "rig": "vierbeiner",
+    "manifest": "pegasus/manifest.json"
+  },
+  {
     "id": "pferd",
     "rig": "vierbeiner",
     "manifest": "pferd/manifest.json"

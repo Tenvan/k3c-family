@@ -117,3 +117,5 @@ Siehe Notizen; keine blockiert die Umsetzung (Defaults gelten bis PS1.1).
 | D-MG2-03 | Reihenfolge nach `assets_set` | Patch-Schlüssel kommen sortiert an (Animationen `galopp, schritt, trab`, erste Animation = `galopp`); hingenommen, Nachzug in MC1-Folge (B-706) | Reihenfolge des Patches erhalten | MG2, MC1 | offen |
 | D-MG2-04 | Antwort von `assets_set` | wiederholt jedes geänderte Feld vollständig (bei ganzen `teile` mehrere KB); hingenommen, kürzen in B-706 | nur Pfade und Anzahl | MG2, MC1 | offen |
 | D-MG2-05 | `assets_create` für `vierbeiner` | Vorlage ohne Animation rendert nicht (`animation-unbekannt`), erst `assets_set` mit Gangarten; hingenommen | Vorlage mit `schritt` | MG2, MC1 | offen |
+| D-MG2-06 | Zusatzteile über dem Kopf | Horn (einhorn) und Geweih (hirsch) ragen im `schritt` aus dem Rahmen; `ausgabe.rahmen` oben um 6 Einheiten erweitert (−128/132), Tier dadurch ~4 % kleiner in Pixeln | Horn/Geweih kleiner zeichnen | MG2, US1 | offen |
+| D-MG2-07 | Wackelnder Frontend-Test RV1 | `AnimationSync.test.tsx` (Cache, Pixel-Diff einmal) im Gesamtlauf `check:diff` zweimal rot, einzeln grün; nicht MG2, an RV1/B-704 | eigenes Ticket | RV1 | offen |
