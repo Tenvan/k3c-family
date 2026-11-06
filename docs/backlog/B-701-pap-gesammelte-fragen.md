@@ -112,3 +112,4 @@ Siehe Notizen; keine blockiert die Umsetzung (Defaults gelten bis PS1.1).
 | D-MC1-13 | Hashes in Antworten | `renderKey` und `stilHash` in voller Länge statt `9c…(64 Zeichen)` | gekürzt | MC1 | offen |
 | D-MC1-14 | Zweite CLI-Anbindung | `paperassets.CLI` (Zeitlimit 2 min, `K3C_PAPER_CLI`) neben `review.CLI`; Zusammenführung B-706 | sofort gemeinsamer Runner | MC1, RV1 | offen |
 | D-MC1-15 | Asset ohne Animation in `assets_preview` | Fehler mit leerer Animationsliste (RD1 kennt implizit `stand`, D-RD1-07) | `stand` als Standard | MC1, RD1 | offen |
+| D-MG2-01 | Farben der Reittiere ohne eigenes Material | rappe/hoellenhund/albtraum Körper `maehne`, Mähne `linie` bzw. `purpur`, Auge rot `koenigsrot`; schimmel/einhorn/pegasus/weisser-wolf `hermelin`, Mähne `stoff`/`purpur`; wolf `stoff`; elefant `stein`; hirsch `fell-fuchs`, Geweih `holz`; Horn `gold` | neue Materialien `fell-schwarz`, `fell-grau` (Lane `stil`) | MG2 | offen |

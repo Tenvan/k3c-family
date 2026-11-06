@@ -20,7 +20,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WB1 | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | erledigt |
 | RV1 | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | aktiv |
 | MG1 | Papierschnitt-Migration: Monarch und Spielerfarben | geplant |
-| MG2 | Papierschnitt-Migration: Reittiere | geplant |
+| MG2 | Papierschnitt-Migration: Reittiere | aktiv |
 | MG3 | Papierschnitt-Migration: Truppen | geplant |
 | MG4 | Papierschnitt-Migration: Gegner | geplant |
 | MG5 | Papierschnitt-Migration: Bosse | geplant |
