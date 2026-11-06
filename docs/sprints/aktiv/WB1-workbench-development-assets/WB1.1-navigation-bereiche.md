@@ -1,6 +1,6 @@
 # WB1.1 · Navigation Development/Assets, Routen inkl. ReviewPage
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -65,5 +65,6 @@ Während der Arbeit nur gezielt: `bunx vitest run --config tools/k3c-workbench/f
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `bunx vitest run --config tools/k3c-workbench/frontend/vitest.config.ts App mockAssets` 8/8 grün (Umschalter „Bereich“ Development/Assets, alle sieben Seiten unter Development, Assets startet mit `ReviewPage`, Seite je Bereich gemerkt; Mock = Fixtures, nur `monarch`).
+- Umsetzung: Typen laut Vertrag in `api/typesAssets.ts` (`AssetsBackend`, in `Backend` eingehängt; `types.ts` hat schon über 400 Zeilen), Zugriff `assets/api.ts`, Mock `api/mockAssets.ts` (`import.meta.glob` auf `tools/paper/fixtures/ui`, `MOCK_DATA` ergänzt), Navigation als Hook `useNavigation` in `Header.tsx` (Lint: `App` ≤ 60 Zeilen), `AssetsArea.tsx` mit Platzhaltern; `StudioLink*` gelöscht, `studioOpen` aus `Backend` entfernt. `StudioOpen` bleibt im `GoApp` (wails.ts), bis WB1.4 `uiMethods` ändert.
+- Prüfen: Typecheck und oxlint des Frontends grün; `task check:diff`: Vitest 3022/3022, Lint, Typecheck grün; `go test -short` rot nur in `cmd/k3c-load` `TestTickReiheJeRaum` (15–16 statt 20 Ticks in 2 s, auch einzeln; Last der vier parallelen Agenten, WB1.1 ändert kein Go) – im Review erneut prüfen.

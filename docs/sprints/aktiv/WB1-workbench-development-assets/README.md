@@ -75,7 +75,7 @@ Keine offenen. Entschieden mit Default (Planung WB1, 2026-11-06, Claude; Einspru
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WB1.1 | `WB1.1-navigation-bereiche.md` | Umsetzung | autonom | offen |
+| WB1.1 | `WB1.1-navigation-bereiche.md` | Umsetzung | autonom | fertig |
 | WB1.2 | `WB1.2-katalog-styleguide.md` | Umsetzung | autonom | offen |
 | WB1.3 | `WB1.3-prompt-buttons.md` | Umsetzung | autonom | offen |
 | WB1.4 | `WB1.4-studioview-studio-loeschen.md` | Umsetzung | autonom | offen |

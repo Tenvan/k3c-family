@@ -3,6 +3,7 @@ import type {
   McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData, WorktreeDiff,
   BalanceBackend, BalanceBaseline, BalanceDataFile, BalanceDataFileValue, BalanceInsights, BalanceDataValue, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning, GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
 } from './types';
+import type { AssetEintrag, AssetsBackend, Frame, PixelDiff, Review, Spec, Stil, Vorlage } from './typesAssets';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
 // frontend/wailsjs/ bindet die Oberfläche bewusst nicht ein: so braucht der Typecheck keine Wails-CLI.
@@ -42,6 +43,7 @@ interface GoApp {
   GitHubStatus(force: boolean): Promise<GitHubData>;
   WorktreeCheck(): Promise<WorktreeDiff[]>;
   OpenInClaude(prompt: string): Promise<void>;
+  // Bleibt bis WB1.4 (uiMethods in Go); die Oberfläche ruft es nicht mehr.
   StudioOpen(): Promise<void>;
   GitOverview(): Promise<GitView>;
   GitAction(action: string): Promise<string>;
@@ -72,14 +74,14 @@ interface GoApp {
   BalanceSaveBaseline(path: string, name: string): Promise<BalanceBaseline>;
   BalanceInsights(path: string): Promise<BalanceInsights>;
   BalanceReportHTML(path: string): Promise<string>;
-  // Asset-Oberfläche (docs/standards/paper-mcp.md › Oberfläche; Stubs bis RV1, Typen dort)
-  AssetsList(): Promise<unknown[]>;
-  AssetsGet(id: string): Promise<Record<string, unknown>>;
-  AssetsStyle(): Promise<Record<string, unknown>>;
-  AssetsPrompts(): Promise<unknown[]>;
-  AssetsReview(basis: string): Promise<unknown>;
-  AssetsFrame(id: string, animation: string, frame: number, variante: string, basis: string): Promise<unknown>;
-  AssetsPixelDiff(id: string, animation: string, frame: number, basis: string): Promise<unknown>;
+  // Asset-Oberfläche (docs/standards/paper-mcp.md › Oberfläche; Typen in typesAssets.ts)
+  AssetsList(): Promise<AssetEintrag[]>;
+  AssetsGet(id: string): Promise<Spec>;
+  AssetsStyle(): Promise<Stil>;
+  AssetsPrompts(): Promise<Vorlage[]>;
+  AssetsReview(basis: string): Promise<Review>;
+  AssetsFrame(id: string, animation: string, frame: number, variante: string, basis: string): Promise<Frame>;
+  AssetsPixelDiff(id: string, animation: string, frame: number, basis: string): Promise<PixelDiff>;
 }
 
 interface WailsRuntime {
@@ -118,6 +120,18 @@ function balanceWails(app: GoApp): BalanceBackend {
     balanceSaveBaseline: (path, name) => app.BalanceSaveBaseline(path, name),
     balanceInsights: (path) => app.BalanceInsights(path),
     balanceReportHTML: (path) => app.BalanceReportHTML(path),
+  };
+}
+
+function assetsWails(app: GoApp): AssetsBackend {
+  return {
+    assetsList: () => app.AssetsList(),
+    assetsGet: (id) => app.AssetsGet(id),
+    assetsStyle: () => app.AssetsStyle(),
+    assetsPrompts: () => app.AssetsPrompts(),
+    assetsReview: (basis) => app.AssetsReview(basis),
+    assetsFrame: (id, animation, frame, variante, basis) => app.AssetsFrame(id, animation, frame, variante, basis),
+    assetsPixelDiff: (id, animation, frame, basis) => app.AssetsPixelDiff(id, animation, frame, basis),
   };
 }
 
@@ -161,7 +175,6 @@ export function wailsBackend(): Backend {
     githubStatus: (force) => app.GitHubStatus(force),
     worktreeCheck: () => app.WorktreeCheck(),
     openInClaude: (prompt) => app.OpenInClaude(prompt),
-    studioOpen: () => app.StudioOpen(),
     gitOverview: () => app.GitOverview(),
     gitAction: (action) => app.GitAction(action),
     gitDeleteBranches: (names, remote) => app.GitDeleteBranches(names, remote),
@@ -173,6 +186,7 @@ export function wailsBackend(): Backend {
     ticketCreate: (input) => app.TicketCreate(input),
     ticketRecent: (n) => app.TicketRecent(n),
     ...balanceWails(app),
+    ...assetsWails(app),
     openUrl: (url) => runtime.BrowserOpenURL(url),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),

@@ -1,4 +1,5 @@
 import type { Backend, BalanceBackend, EventName, Events } from './types';
+import type { AssetsBackend } from './typesAssets';
 
 // Client-Server-Betrieb (k3c-workbench -headless/-dev, Go: uiapi.go): jede Methode von App ist ein POST auf
 // /api/dev/rpc/<Methode> mit den Argumenten als JSON-Array, die Antwort ist {result} oder {error}. Ereignisse kommen
@@ -84,6 +85,18 @@ function httpBalance(): BalanceBackend {
   };
 }
 
+function httpAssets(): AssetsBackend {
+  return {
+    assetsList: () => rpc('AssetsList'),
+    assetsGet: (id) => rpc('AssetsGet', id),
+    assetsStyle: () => rpc('AssetsStyle'),
+    assetsPrompts: () => rpc('AssetsPrompts'),
+    assetsReview: (basis) => rpc('AssetsReview', basis),
+    assetsFrame: (id, animation, frame, variante, basis) => rpc('AssetsFrame', id, animation, frame, variante, basis),
+    assetsPixelDiff: (id, animation, frame, basis) => rpc('AssetsPixelDiff', id, animation, frame, basis),
+  };
+}
+
 export function httpBackend(): Backend {
   return {
     mock: false,
@@ -122,7 +135,6 @@ export function httpBackend(): Backend {
     githubStatus: (force) => rpc('GitHubStatus', force),
     worktreeCheck: () => rpc('WorktreeCheck'),
     openInClaude: (prompt) => rpc('OpenInClaude', prompt),
-    studioOpen: () => rpc('StudioOpen'),
     gitOverview: () => rpc('GitOverview'),
     gitAction: (action) => rpc('GitAction', action),
     gitDeleteBranches: (names, remote) => rpc('GitDeleteBranches', names, remote),
@@ -134,6 +146,7 @@ export function httpBackend(): Backend {
     ticketCreate: (input) => rpc('TicketCreate', input),
     ticketRecent: (n) => rpc('TicketRecent', n),
     ...httpBalance(),
+    ...httpAssets(),
     openUrl: (url) => {
       window.open(url, '_blank', 'noopener');
     },
