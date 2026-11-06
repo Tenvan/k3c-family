@@ -131,8 +131,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 40,
-    "rahmen": [-16, -36, 32, 38]
+    "hoehe_px": 44,
+    "rahmen": [-16, -36, 32, 41]
   },
   "animationen": {
     "angriff": {

@@ -220,8 +220,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 36,
-    "rahmen": [-30, -32, 66, 34]
+    "hoehe_px": 40,
+    "rahmen": [-30, -32, 66, 37]
   },
   "animationen": {
     "angriff": {
@@ -231,29 +231,33 @@
         {
           "t": 0,
           "winkel": {
-            "panzer": 0
+            "panzer": 0,
+            "zange-h": -10,
+            "zange-v": 10
           }
         },
         {
           "t": 0.35,
           "winkel": {
             "panzer": -8,
-            "zange-h": 15,
-            "zange-v": -25
+            "zange-h": -25,
+            "zange-v": 25
           }
         },
         {
           "t": 0.55,
           "winkel": {
             "panzer": 6,
-            "zange-h": -15,
-            "zange-v": 20
+            "zange-h": 8,
+            "zange-v": -8
           }
         },
         {
           "t": 0.8,
           "winkel": {
-            "panzer": 2
+            "panzer": 2,
+            "zange-h": -10,
+            "zange-v": 10
           }
         }
       ]

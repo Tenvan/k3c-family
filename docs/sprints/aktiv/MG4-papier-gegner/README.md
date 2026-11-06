@@ -68,11 +68,12 @@ keine (Defaults als D-MG4-Zeilen in B-701)
 | MG4.2 | `MG4.2-grosse-woelfe.md` | Umsetzung | autonom | fertig |
 | MG4.3 | `MG4.3-kreaturen-a.md` | Umsetzung | autonom | fertig |
 | MG4.4 | `MG4.4-kreaturen-b.md` | Umsetzung | autonom | fertig |
-| MG4.5 | `MG4.5-review.md` | Review | autonom | offen |
+| MG4.5 | `MG4.5-review.md` | Review | autonom | fertig |
 
 Reife Entwurf, Lane `gegner`; Zuschnitt beim Bereitmachen (je Session 3–6 Assets), dazu ein Review (Opus); keine Mensch-Session (Sichtprüfung in PS1). Umsetzung Sonnet.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-07 (autonom, Claude): 17 Gegner unter `public/grafik/gegner/`, alle gültig, gerendert, in `golden.json` (MG4.1–MG4.4). Rigs: 7 `figur`, 2 `vierbeiner`, 8 `requisite`.
+Review MG4.5 (Opus): 6 wichtige Befunde behoben (Größe der Elite-Gegner, Wächter-Schlag, Fledermaus-Angriff, Lavaschleim-Form, Rahmen); Rest D-MG4-07.
+`task check` grün; `tools/paper`-Tests 1110/1110. Entscheidungen D-MG4-01 bis -07 in B-701. Sichtprüfung durch Ralf in PS1 offen. Neue Tickets: keine.

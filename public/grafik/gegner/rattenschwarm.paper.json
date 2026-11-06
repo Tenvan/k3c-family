@@ -226,7 +226,7 @@
           "t": 0.55,
           "winkel": {
             "ratte-mitte": -4,
-            "ratte-vorn": 10
+            "ratte-vorn": 3
           }
         },
         {
@@ -269,32 +269,32 @@
         {
           "t": 0,
           "winkel": {
-            "ratte-hinten": -6,
+            "ratte-hinten": -12,
             "ratte-mitte": 0,
-            "ratte-vorn": -6
+            "ratte-vorn": -12
           }
         },
         {
           "t": 0.25,
           "winkel": {
             "ratte-hinten": 0,
-            "ratte-mitte": -6,
+            "ratte-mitte": -12,
             "ratte-vorn": 0
           }
         },
         {
           "t": 0.5,
           "winkel": {
-            "ratte-hinten": -6,
+            "ratte-hinten": -12,
             "ratte-mitte": 0,
-            "ratte-vorn": -6
+            "ratte-vorn": -12
           }
         },
         {
           "t": 0.75,
           "winkel": {
             "ratte-hinten": 0,
-            "ratte-mitte": -6,
+            "ratte-mitte": -12,
             "ratte-vorn": 0
           }
         }

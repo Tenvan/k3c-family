@@ -551,7 +551,7 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 240,
+    "hoehe_px": 300,
     "rahmen": [-65, -180, 140, 186]
   },
   "animationen": {
@@ -572,20 +572,20 @@
           "t": 0.4,
           "winkel": {
             "kopf": 4,
-            "oberarm-h": -160,
-            "oberarm-v": -170,
-            "rumpf": -8,
-            "unterarm-h": -20,
-            "unterarm-v": -20
+            "oberarm-h": -180,
+            "oberarm-v": -190,
+            "rumpf": -10,
+            "unterarm-h": -10,
+            "unterarm-v": -10
           }
         },
         {
           "t": 0.6,
           "winkel": {
             "kopf": 6,
-            "oberarm-h": -50,
-            "oberarm-v": -60,
-            "rumpf": 14,
+            "oberarm-h": 5,
+            "oberarm-v": -5,
+            "rumpf": 22,
             "unterarm-h": 0,
             "unterarm-v": 0
           }
@@ -593,9 +593,9 @@
         {
           "t": 0.8,
           "winkel": {
-            "oberarm-h": -20,
-            "oberarm-v": -30,
-            "rumpf": 8,
+            "oberarm-h": -5,
+            "oberarm-v": -15,
+            "rumpf": 14,
             "unterarm-h": -10,
             "unterarm-v": -10
           }

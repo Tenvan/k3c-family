@@ -155,7 +155,7 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 112,
+    "hoehe_px": 150,
     "rahmen": [-40, -102, 76, 106]
   },
   "animationen": {
@@ -183,18 +183,18 @@
         {
           "t": 0.6,
           "winkel": {
-            "arm-h": -80,
-            "arm-v": -95,
-            "korpus": -14,
-            "schweif": 25
+            "arm-h": -95,
+            "arm-v": -110,
+            "korpus": -20,
+            "schweif": 30
           }
         },
         {
           "t": 0.8,
           "winkel": {
-            "arm-h": -50,
-            "arm-v": -60,
-            "korpus": -8,
+            "arm-h": -60,
+            "arm-v": -70,
+            "korpus": -12,
             "schweif": 15
           }
         }

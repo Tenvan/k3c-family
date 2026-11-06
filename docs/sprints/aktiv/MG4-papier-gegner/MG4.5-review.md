@@ -1,6 +1,6 @@
 # MG4.5 · Review des Sprints MG4
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -39,8 +39,8 @@ Keine neuen Assets; Sichtprüfung durch 🧑 in PS1.
 
 ## Fertig, wenn
 
-- [ ] AC-01 bis AC-03 mit Nachweis.
-- [ ] `task check` grün.
+- [x] AC-01 bis AC-03 mit Nachweis.
+- [x] `task check` grün.
 
 ## Prüfen
 
@@ -54,5 +54,16 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `assets_list {gruppe: gegner}` meldet 17 Assets, 0 ungültig.
+- AC-02 geprüft: `task gen:paper` (fremde Gruppen zurückgesetzt), `bunx vitest run tools/paper tests/planning.test.ts` 1110/1110, `task check` grün (42,9 s).
+- AC-03 geprüft: Ein Opus-Reviewer hat alle 51 Sheets angesehen, dazu Randprüfung und Größen-Aufreihung, und 6 wichtige sowie 9 kleine Befunde gemeldet. Behoben über `assets_set`:
+  - Troll und Kristallwächter 300 px (größer als der Monarch), Grubengeist 150 px.
+  - Wächter-Angriff mit Ausholen über den Kopf und Schlag nach unten.
+  - Fledermaus mit weiterem Flügelschlag und Sturzflug (Korpus +50°).
+  - Lavaschleim mit tropfender Kontur und glühender Kruste statt Braun.
+  - Eisenkäfer-Zangen öffnen sichtbar.
+  - Ratten wippen ±12° und tauchen im Angriff nicht mehr unter den Boden.
+  - Rahmen unten erweitert (Wölfe, Käfer, Splitterwicht).
+- Rest als D-MG4-07 zurückgestellt bis PS1. Vor allem: Wächter dem Troll zu ähnlich, Bogen/Pfeil des Goblin-Bogenschützen, Feuerball und Flammenkrone.
+- `task check:go`/`check:race` nicht gefahren: keine Go-Änderung im Sprint.
+- Manuell geprüft: niemand. Sichtprüfung durch Ralf in PS1. Neue Tickets: keine.
