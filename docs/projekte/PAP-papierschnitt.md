@@ -21,7 +21,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RV1 | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | aktiv |
 | MG1 | Papierschnitt-Migration: Monarch und Spielerfarben | geplant |
 | MG2 | Papierschnitt-Migration: Reittiere | geplant |
-| MG3 | Papierschnitt-Migration: Truppen | geplant |
+| MG3 | Papierschnitt-Migration: Truppen | aktiv |
 | MG4 | Papierschnitt-Migration: Gegner | geplant |
 | MG5 | Papierschnitt-Migration: Bosse | geplant |
 | MG6 | Papierschnitt-Migration: Gebäude mit Ausbaustufen | geplant |
