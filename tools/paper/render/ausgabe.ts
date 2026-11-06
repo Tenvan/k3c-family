@@ -6,6 +6,7 @@ import { basename, dirname, join, relative, resolve } from 'node:path';
 import { checkSpecFile } from '../schema/check';
 import { RENDERER_VERSION, renderKey, specHash, stilHash } from '../schema/hash';
 import type { Spec, Stil } from '../schema/types';
+import '../rig/register';
 import { bildVon, type Kontext } from './bild';
 import { Abgelehnt, Aufruf } from './fehler';
 import { animationen, ausgaben } from './stufen';

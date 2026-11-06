@@ -5,5 +5,14 @@
       "stand.png": "c8bc3946dc0342fea8f4f1392926f5ef2be365a596800cfce1dba1fcf0a3f80b",
       "stand.s2.png": "f5a468475d16392871fc7e2ceef48bf40561266348515877d484ade95f43edea"
     }
+  },
+  "monarch": {
+    "renderKey": "e555460552490c078e62d57fc5a557f9662ff85327b065a6b841434ff3f12c74",
+    "dateien": {
+      "idle.png": "566ee838a58c70832f7b1d484bd6fbb96f910f117bb77e6e37c56f3d7fd9870b",
+      "idle@spieler2.png": "094486e2ed03572943c51e61dcc2cdd8c63726263014b332fd7652b746050043",
+      "lauf.png": "7493de022becd559efa5ab43fe0cdb119af8b2a0d3411faa04876d3b5f79684f",
+      "lauf@spieler2.png": "c1b72b9ba27a0a350234674e32d787850404e6db7296d269b45e965956674deb"
+    }
   }
 }

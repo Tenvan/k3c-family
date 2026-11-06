@@ -26,6 +26,9 @@ export function einfachesBild(spec: Spec, a: Ausgabe, k: Kontext): Bild {
   return { groesse: frameGroesse(spec.ausgabe), frames };
 }
 
+/** Rigs mit eigener Bewegung tragen sich hier ein (rig/register.ts), damit render/ nicht von rig/ abhängt. */
+export const RIG_BILDER: Partial<Record<Spec['rig'], (spec: Spec, a: Ausgabe, k: Kontext) => Bild>> = {};
+
 export function bildVon(spec: Spec, a: Ausgabe, k: Kontext): Bild {
-  return einfachesBild(spec, a, k);
+  return (RIG_BILDER[spec.rig] ?? einfachesBild)(spec, a, k);
 }
