@@ -10,6 +10,16 @@
     "manifest": "burg/manifest.json"
   },
   {
+    "id": "farm",
+    "rig": "gebaeude",
+    "manifest": "farm/manifest.json"
+  },
+  {
+    "id": "hafen",
+    "rig": "gebaeude",
+    "manifest": "hafen/manifest.json"
+  },
+  {
     "id": "heilplatz",
     "rig": "gebaeude",
     "manifest": "heilplatz/manifest.json"
@@ -50,6 +60,11 @@
     "manifest": "ruestkammer/manifest.json"
   },
   {
+    "id": "schiff",
+    "rig": "gebaeude",
+    "manifest": "schiff/manifest.json"
+  },
+  {
     "id": "schmiede",
     "rig": "gebaeude",
     "manifest": "schmiede/manifest.json"
@@ -63,6 +78,16 @@
     "id": "tor",
     "rig": "gebaeude",
     "manifest": "tor/manifest.json"
+  },
+  {
+    "id": "treppe-hoch",
+    "rig": "gebaeude",
+    "manifest": "treppe-hoch/manifest.json"
+  },
+  {
+    "id": "treppe-runter",
+    "rig": "gebaeude",
+    "manifest": "treppe-runter/manifest.json"
   },
   {
     "id": "turm",

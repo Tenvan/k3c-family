@@ -1,0 +1,27 @@
+{
+  "id": "hafen",
+  "version": 1,
+  "specHash": "43993b52d824409b1a96cad1c27f111840cbb7c49e05c51186cc957e1bf678d2",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "4020da3ea13154c04d47162a2da41dc446155ecf6915917dba7f7e5376185b22",
+  "rahmen": [
+    -96,
+    -128,
+    192,
+    128
+  ],
+  "frameW": 192,
+  "frameH": 128,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "62fa660e02f67851375151d8771878927d03553a63d052da1898cc6d2ce85c55"
+      ]
+    }
+  },
+  "varianten": []
+}

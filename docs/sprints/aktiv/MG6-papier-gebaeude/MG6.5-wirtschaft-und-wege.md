@@ -1,6 +1,6 @@
 # MG6.5 · Wirtschaft und Wege: Farm, Treppen, Hafen, Schiff
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -57,5 +57,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft:** `assets_list {gruppe: gebaeude-paper}` meldet farm, treppe-hoch, treppe-runter, hafen, schiff gültig (20 Assets, 0 ungültig).
+- **AC-02 geprüft:** `task gen:paper` (gen.ts) trägt alle fünf ein (Farm 5 Stufen, Schiff 3, Treppen und Hafen statisch); Vitest `tools/paper`, `src/tools`, Planung 1669/1669, `go test ./tools/buildings` grün.
+- **AC-03 geprüft:** alle fünf mit `assets_preview`, Stufen von Farm und Schiff über die Ausgabe (D-MG6-03); `assets_review` gegen HEAD: 5 × `neu`, kein roter Eintrag.
+- **Befunde, behoben:** Spanten des Schiffs ragten ab Stufe 2 über die Reling (gekürzt); Farmdach lief 4 px über den linken Rand (eingeschoben); Bugfigur lag außerhalb des Rahmens (eingezogen); gekreuzte Torstreben als Flächen statt Falz (Falz 25 % Deckkraft).
+- `check:diff` lief unter Last ins Zeitlimit (10 min, bis dahin grün); MG6.5 ändert nur Specs und Ausgabe. Keine neuen Tickets.

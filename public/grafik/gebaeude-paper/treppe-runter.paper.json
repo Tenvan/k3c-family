@@ -1,0 +1,233 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "treppe-runter",
+  "rig": "gebaeude",
+  "version": 1,
+  "beschreibung": "Treppe runter (4 × 3 Kacheln, statisch): Steinwand mit vier Zinnen und Schattenkante, Pfeiler mit versetzten Fugen, heller Bogenring mit Schlussstein um eine schwarze Öffnung, darin drei Stufen nach unten (vorn hell, hinten schwarz), dunkle Fußlinie.",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-64 -84L64 -84L64 0L-64 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-63.5 -70L63.5 -70",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-63.5 -56L63.5 -56",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-63.5 -42L63.5 -42",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-63.5 -28L63.5 -28",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-63.5 -14L63.5 -14",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-48 -83.2L-48 -70.8",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-16 -83.2L-16 -70.8",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M16 -83.2L16 -70.8",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M48 -83.2L48 -70.8",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-56 -69.2L-56 -56.8",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M56 -69.2L56 -56.8",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-48 -55.2L-48 -42.8",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M48 -55.2L48 -42.8",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-56 -41.2L-56 -28.8",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M56 -41.2L56 -28.8",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-48 -27.2L-48 -14.8",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M48 -27.2L48 -14.8",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-56 -13.2L-56 -0.8",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M56 -13.2L56 -0.8",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-64 -96L-44 -96L-44 -84L-64 -84Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-30 -96L-10 -96L-10 -84L-30 -84Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M6 -96L26 -96L26 -84L6 -84Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M44 -96L64 -96L64 -84L44 -84Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-64 -84L64 -84L64 -81L-64 -81Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-46 0L-46 -50L-40 -68L-22 -76L0 -80L22 -76L40 -68L46 -50L46 0Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-40 0L-40 -50L-34 -62L-22 -70L0 -74L22 -70L34 -62L40 -50L40 0Z",
+          "material": "maehne",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-5 -86L5 -86L5 -76L-5 -76Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-30 -24L30 -24L30 -18L-30 -18Z",
+          "material": "maehne"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-34 -16L34 -16L34 -8L-34 -8Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-38 -8L38 -8L38 0L-38 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-64 -3L-46 -3L-46 0L-64 0Z",
+          "material": "maehne"
+        },
+        {
+          "art": "flaeche",
+          "form": "M46 -3L64 -3L64 0L46 0Z",
+          "material": "maehne"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 96,
+    "rahmen": [-64, -96, 128, 96]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

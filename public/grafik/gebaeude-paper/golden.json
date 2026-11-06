@@ -17,6 +17,22 @@
       "stand.s5.png": "71327500dab01f16942fa6adb9ce94664c2be3a6fa6f3b9f0a93661fd4f159f1"
     }
   },
+  "farm": {
+    "renderKey": "8d1b9499416f361948bd6a8f70acc7001813b37f8c2b015cb16d131a4b37dc66",
+    "dateien": {
+      "stand.png": "548023847bb55071c1c2699ffcb5a442c19b33e7bceaf0555e7dd4ae1b7aea2a",
+      "stand.s2.png": "b06aa7adb7ac2adbc0c4de2fedd12bd08f76573b2f438b390a3273a6ef63904f",
+      "stand.s3.png": "16da55a11dc8e2de7c3b8fca0c1282f3214feb897dd05e5eb40cdf7684686dbb",
+      "stand.s4.png": "757ae22538d884c34c6892fb51932397d35fa00d806b9eec7bff097a92e592b6",
+      "stand.s5.png": "926371f9b92289577f1c1ccbd8e8d38e3c64034f06665c7714c577b377e47f09"
+    }
+  },
+  "hafen": {
+    "renderKey": "4020da3ea13154c04d47162a2da41dc446155ecf6915917dba7f7e5376185b22",
+    "dateien": {
+      "stand.png": "f01637ccea083698f4b0cf117d2795fb336301e9b5b29721b09199c9dfdbd7e2"
+    }
+  },
   "heilplatz": {
     "renderKey": "eda8c035c8d7a00615d3aa0ae8b17c70feaa3a7944b6b6e4fd936df559920ab4",
     "dateien": {
@@ -93,6 +109,14 @@
       "stand.s5.png": "1d13ec6161eaa3a306e7f6bbf9a797335a80b2cb6530957e2c99ffe711288ef3"
     }
   },
+  "schiff": {
+    "renderKey": "96f4944ba3dd1991101bc63c7cca31543fbd8c580fe37769c141d7434146d001",
+    "dateien": {
+      "stand.png": "0720a446ffd7641ae1caf6308460cf5645c548e33ba82354afd8a8c354ec5110",
+      "stand.s2.png": "ac838f38f78abad84fdd84deb28561efff1fefbf4abb1cff985a96990ef31a5f",
+      "stand.s3.png": "48394de23a25e98d86b199815b71d7de09a1932ad9f63386127318d162bf1d05"
+    }
+  },
   "schmiede": {
     "renderKey": "9f3723e16cc9037892ba4512c411b8ba30ca6a3ee685cd79da380b81854cb111",
     "dateien": {
@@ -121,6 +145,18 @@
       "stand.s3.png": "19443e426e31d3d3401551883f7566f8704dc3c94cfec75b99b4888d2d196cfc",
       "stand.s4.png": "d50b015216e44f14abbc42a0a1dc7464e1ecd4d6cee04797804d0992db17bd24",
       "stand.s5.png": "6ce673b55dca4da12cebe08ee3b66ca9f50b0bbbfd7593ce134c99755a199fb2"
+    }
+  },
+  "treppe-hoch": {
+    "renderKey": "905cc9124e4fd4b09edd0da136dd7ff9d7e81febdc2fcbe1f4ad8b898d1c3a8f",
+    "dateien": {
+      "stand.png": "4427de473c9b11571cc178c6b1536be80fa7337b766ad5f99def96f3a463653a"
+    }
+  },
+  "treppe-runter": {
+    "renderKey": "111f9518b93289d8704f1e873e67a0100355005f9b130974b9b0da81d7ea3f6e",
+    "dateien": {
+      "stand.png": "1ca2a47fa8f7dd11647cd784532018d8b3feddfaafb86d5cb54723150e85e577"
     }
   },
   "turm": {

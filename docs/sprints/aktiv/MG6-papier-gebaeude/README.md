@@ -70,7 +70,7 @@ keine (Defaults als D-MG6-Zeilen in B-701)
 | MG6.2 | `MG6.2-hub-staende-a.md` | Umsetzung | autonom | fertig |
 | MG6.3 | `MG6.3-hub-staende-b.md` | Umsetzung | autonom | fertig |
 | MG6.4 | `MG6.4-burg-und-lager.md` | Umsetzung | autonom | fertig |
-| MG6.5 | `MG6.5-wirtschaft-und-wege.md` | Umsetzung | autonom | offen |
+| MG6.5 | `MG6.5-wirtschaft-und-wege.md` | Umsetzung | autonom | fertig |
 | MG6.6 | `MG6.6-review.md` | Review | autonom | offen |
 
 Lane `gebaeude`, Umsetzung Sonnet, Review Opus; keine Mensch-Session (Sichtprüfung in PS1). MG6.1 legt Materialkette und Maß fest, danach sind MG6.2–MG6.5 unabhängig.
