@@ -1,0 +1,215 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "burg-ausbau",
+  "rig": "gebaeude",
+  "version": 1,
+  "beschreibung": "Überlage der Burg-Ausbauschritte je Hub-Stufe 2–5 (8 × 9 Kacheln, gleicher Rahmen wie burg): Stufe 1 leer, Stufe 2 zwei rote Wappenbanner an der Mauer und Fackeln am Tor, Stufe 3 dazu zwei hölzerne Wehrtürmchen mit Wimpeln auf der Mauerkrone (D-MG6-05).",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 288,
+    "rahmen": [-128, -288, 256, 288]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  },
+  "stufen": [
+    {
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "schmuck",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-78 -142L-54 -142L-54 -139L-78 -139Z",
+              "material": "maehne"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-76 -139L-56 -139L-56 -104L-66 -96L-76 -104Z",
+              "material": "koenigsrot"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-70 -128L-66 -122L-62 -128L-62 -116L-70 -116Z",
+              "material": "gold"
+            },
+            {
+              "art": "flaeche",
+              "form": "M54 -142L78 -142L78 -139L54 -139Z",
+              "material": "maehne"
+            },
+            {
+              "art": "flaeche",
+              "form": "M56 -139L76 -139L76 -104L66 -96L56 -104Z",
+              "material": "koenigsrot"
+            },
+            {
+              "art": "flaeche",
+              "form": "M62 -128L66 -122L70 -128L70 -116L62 -116Z",
+              "material": "gold"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-43.5 -86L-40.5 -86L-40.5 -68L-43.5 -68Z",
+              "material": "leder"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-45 -88L-39 -88L-39 -85L-45 -85Z",
+              "material": "maehne"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-46.5 -88L-45 -94L-43 -92L-42 -98L-40.5 -92.5L-38.5 -95L-37.5 -88Z",
+              "material": "koenigsrot",
+              "ton": "licht"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-44.5 -88L-43 -92.5L-42 -94.5L-40.5 -91L-39.5 -88Z",
+              "material": "gold",
+              "ton": "licht"
+            },
+            {
+              "art": "flaeche",
+              "form": "M40.5 -86L43.5 -86L43.5 -68L40.5 -68Z",
+              "material": "leder"
+            },
+            {
+              "art": "flaeche",
+              "form": "M39 -88L45 -88L45 -85L39 -85Z",
+              "material": "maehne"
+            },
+            {
+              "art": "flaeche",
+              "form": "M37.5 -88L39 -94L41 -92L42 -98L43.5 -92.5L45.5 -95L46.5 -88Z",
+              "material": "koenigsrot",
+              "ton": "licht"
+            },
+            {
+              "art": "flaeche",
+              "form": "M39.5 -88L41 -92.5L42 -94.5L43.5 -91L44.5 -88Z",
+              "material": "gold",
+              "ton": "licht"
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    },
+    {
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "tuermchen",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-84 -190L-60 -190L-60 -150L-84 -150Z",
+              "material": "holz"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-83.5 -180L-60.5 -180",
+              "material": "holz",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-83.5 -170L-60.5 -170",
+              "material": "holz",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-83.5 -160L-60.5 -160",
+              "material": "holz",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-87 -190L-72 -212L-57 -190Z",
+              "material": "koenigsrot"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-73 -226L-71 -226L-71 -210L-73 -210Z",
+              "material": "maehne"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-71 -226L-58 -222L-71 -218Z",
+              "material": "koenigsrot"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-74 -178L-70 -178L-70 -168L-74 -168Z",
+              "material": "maehne",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M60 -190L84 -190L84 -150L60 -150Z",
+              "material": "holz"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M60.5 -180L83.5 -180",
+              "material": "holz",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M60.5 -170L83.5 -170",
+              "material": "holz",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M60.5 -160L83.5 -160",
+              "material": "holz",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M57 -190L72 -212L87 -190Z",
+              "material": "koenigsrot"
+            },
+            {
+              "art": "flaeche",
+              "form": "M71 -226L73 -226L73 -210L71 -210Z",
+              "material": "maehne"
+            },
+            {
+              "art": "flaeche",
+              "form": "M73 -226L86 -222L73 -218Z",
+              "material": "koenigsrot"
+            },
+            {
+              "art": "flaeche",
+              "form": "M70 -178L74 -178L74 -168L70 -168Z",
+              "material": "maehne",
+              "ton": "schatten"
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    }
+  ]
+}

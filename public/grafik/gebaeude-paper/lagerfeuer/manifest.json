@@ -1,0 +1,43 @@
+{
+  "id": "lagerfeuer",
+  "version": 1,
+  "specHash": "fdca5e5c3d628d1acfe570f6f4699505cb20788ff40aa75593062a0d1652de0f",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "6623877c56053a55f289b8739054147b0125a2ca75fee4366b327282e08a403f",
+  "rahmen": [
+    -128,
+    -160,
+    256,
+    160
+  ],
+  "frameW": 256,
+  "frameH": 160,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "e9fbda0880635320e7a1ac72d7db1537f9a24de5dbf5ec3cae119c920b1095f8"
+      ]
+    },
+    "stand.s2": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s2.png",
+      "hashes": [
+        "52a445b581d78ce85f3becdb5a741e3255bf6614564f94722a5d54e7d8e6062c"
+      ]
+    },
+    "stand.s3": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s3.png",
+      "hashes": [
+        "54a4234310000fc6c42910527d989b9c1254a975d748fab0ddd5840edaf7e531"
+      ]
+    }
+  },
+  "varianten": []
+}

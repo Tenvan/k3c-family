@@ -1,6 +1,6 @@
 # MG6.4 · Burg und Lager: Lagerfeuer, Burg, Rekrutierungslager
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -57,5 +57,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft:** `assets_list {gruppe: gebaeude-paper}` meldet lagerfeuer, burg, burg-ausbau, rekrutierungslager gültig (15 Assets, 0 ungültig).
+- **AC-02 geprüft:** `task gen:paper` (gen.ts) trägt alle vier ein (Burg 5, Lagerfeuer, Burg-Ausbau und Rekrutierungslager je 3 Stufen); Vitest `tools/paper`, `src/tools`, Planung 1669/1669 grün.
+- **AC-03 geprüft:** Stufe 1 aller vier mit `assets_preview` (Burg-Ausbau Stufe 1 gewollt leer), weitere Stufen über die Ausgabe (D-MG6-03), dazu Burg-Stufen 2–5 mit Burg-Ausbau Stufe 3 übereinander gelegt; `assets_review` gegen HEAD: 4 × `neu`, kein roter Eintrag.
+- **D-MG6-05 umgesetzt:** `burg` hat die Hub-Stufen 1–5, `burg-ausbau` ist eine Überlage im gleichen Rahmen (Stufe 2 Wappenbanner und Fackeln, Stufe 3 dazu Wehrtürmchen); die Türmchen sind aus Holz, weil die Überlage das Material der Burg-Stufe nicht kennt.
+- **Befund für PS1 (nicht geändert):** In Burg-Stufe 5 ragen die Banner der Stufe 4 seitlich aus den Kristallspitzen (Stufen sind kumulativ, ein Zusatz lässt sich nicht entfernen).
+- Rekrutierungslager: Stufen sind die Looks je Biom (Wald, Höhle, Mine), nicht Ausbau. `check:diff` rot nur im Frontend der Workbench (6 zeitabhängige Tests unter Last, wie MG6.2). Keine neuen Tickets.

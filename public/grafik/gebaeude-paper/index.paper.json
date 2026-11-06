@@ -1,5 +1,15 @@
 [
   {
+    "id": "burg-ausbau",
+    "rig": "gebaeude",
+    "manifest": "burg-ausbau/manifest.json"
+  },
+  {
+    "id": "burg",
+    "rig": "gebaeude",
+    "manifest": "burg/manifest.json"
+  },
+  {
     "id": "heilplatz",
     "rig": "gebaeude",
     "manifest": "heilplatz/manifest.json"
@@ -20,9 +30,19 @@
     "manifest": "lager/manifest.json"
   },
   {
+    "id": "lagerfeuer",
+    "rig": "gebaeude",
+    "manifest": "lagerfeuer/manifest.json"
+  },
+  {
     "id": "mauer",
     "rig": "gebaeude",
     "manifest": "mauer/manifest.json"
+  },
+  {
+    "id": "rekrutierungslager",
+    "rig": "gebaeude",
+    "manifest": "rekrutierungslager/manifest.json"
   },
   {
     "id": "ruestkammer",

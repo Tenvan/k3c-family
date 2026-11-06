@@ -1,4 +1,22 @@
 {
+  "burg-ausbau": {
+    "renderKey": "c0a1df9b8da28fb401e40b62c1ddee574d2e0aa79c1c61899fbd3404119d0288",
+    "dateien": {
+      "stand.png": "35a406988b87cee35c2a7c220b4ccf52f01621db90b3a1340da6bc930c1ad107",
+      "stand.s2.png": "506f1b9c95e6213e48531b43c6cfa6e3b2c886eb7b94fe21b507e99a8f8de8fc",
+      "stand.s3.png": "414e211c07d6a28f100bcacd6891a35f2da3da4321d8a6323113aabdaedccfb0"
+    }
+  },
+  "burg": {
+    "renderKey": "8990b6af20ebe2be9852527cc889c03868300204c3d42a3fc4cf23521671f110",
+    "dateien": {
+      "stand.png": "9b2b14e470d1c330b0b80a502c9c424b6fe7497d8a1a61c9d193d571a6edf8a0",
+      "stand.s2.png": "67ac9a8df0fd706e875d7f62ec2101f2222229f39900bba83bec5a6e3bdbdf7c",
+      "stand.s3.png": "023da208f70692954f4ebd900da47112ed7ff0721b14d57821295230cc8f4d48",
+      "stand.s4.png": "b10fd5e44d56157e47feee8c45ca2462f70e0d3874f0249026258b419cf4ca50",
+      "stand.s5.png": "71327500dab01f16942fa6adb9ce94664c2be3a6fa6f3b9f0a93661fd4f159f1"
+    }
+  },
   "heilplatz": {
     "renderKey": "eda8c035c8d7a00615d3aa0ae8b17c70feaa3a7944b6b6e4fd936df559920ab4",
     "dateien": {
@@ -39,6 +57,14 @@
       "stand.s5.png": "4339db1455ebd08220feea1a6dda105499f463ed270161b684f332332d760f02"
     }
   },
+  "lagerfeuer": {
+    "renderKey": "6623877c56053a55f289b8739054147b0125a2ca75fee4366b327282e08a403f",
+    "dateien": {
+      "stand.png": "75802308220d3b8e6e70a9b3ac40edb82e3df418ff62d1a7db5a442567300e0d",
+      "stand.s2.png": "81545c358343eb70eec60ab8455ecacd22f7cb1037436244611c5738a4236145",
+      "stand.s3.png": "1760a59b6650acaba1e57af7a43562bbac5724ba0bdf16a25ffc1d61bbbbc224"
+    }
+  },
   "mauer": {
     "renderKey": "2c5383feee5084517c0c19fefccbad365b5937f4db6dd05dd070debc74a986db",
     "dateien": {
@@ -47,6 +73,14 @@
       "stand.s3.png": "6932dd9dbd5000f7ad8517b03297f23fab75f42b882c306f35a033be195e9f28",
       "stand.s4.png": "08c6ca82b685ce8528f12157c960464bfd84a95ba3c8a1cf77e9d4aee8adf547",
       "stand.s5.png": "f3d0688eb1666a07bc9ffb5ed509d79f0ef77bb948ae73f649f0c29608f1feea"
+    }
+  },
+  "rekrutierungslager": {
+    "renderKey": "b70a4f565ca7864b2c747049bc54b6ba94ace3705b2a5b74dc239dfb669b9a6d",
+    "dateien": {
+      "stand.png": "7cf84ba162b92fb5603a05dbd8ba69342f5d58a4a02da6f595bdf0f34c922141",
+      "stand.s2.png": "a5dffff1b2564de7b40e918cdb7e415e4e4109a07c2dbcfb1b18ee9521b715d7",
+      "stand.s3.png": "3ca8b34b6c1e281d795a2ff2326704d3eedc83f55a0d9276b8af4a7761a50f72"
     }
   },
   "ruestkammer": {
