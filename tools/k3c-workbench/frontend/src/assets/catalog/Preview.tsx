@@ -9,7 +9,7 @@ interface Props {
   /** Unter dem Bild, z. B. Prompt-Buttons (WB1.3); bekommt Spec und Frame. */
   footer?: (spec: Spec, frame: Frame | null) => ReactNode;
   /** Über dem Bild liegende Ebene (Teil-Markierung, WB1.3). */
-  overlay?: (frame: Frame) => ReactNode;
+  overlay?: (frame: Frame, spec: Spec) => ReactNode;
 }
 
 /** Vorschau eines Assets: Animation wählen, Frame-Schieber, Abspielen (nur Ansehen). */
@@ -49,7 +49,7 @@ function SpecPreview({ spec, footer, overlay }: { spec: Spec } & Omit<Props, 'id
       )}
       <div className="as-stage">
         {shown.frame && <img src={shown.frame.bild} alt={`${spec.id} ${a.anim} Frame ${a.frame + 1}`} className="as-frame" />}
-        {shown.frame && overlay?.(shown.frame)}
+        {shown.frame && overlay?.(shown.frame, spec)}
         {shown.error && <Text color="red">{shown.error}</Text>}
       </div>
       {a.frames > 1 && (

@@ -1,6 +1,6 @@
 # WB1.3 · Prompt-Buttons, Teil-Auswahl per Klick
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -60,5 +60,7 @@ Während der Arbeit nur gezielt: `bunx vitest run --config tools/k3c-workbench/f
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 geprüft: `bunx vitest run --config tools/k3c-workbench/frontend/vitest.config.ts assets/` 24/24 grün – `fill.test.ts` (alle sieben Platzhalter, alle zehn Fixture-Vorlagen ohne Rest-Platzhalter, Pflichtwerte `teil`/`eingabe`, fehlender Wert, unbekannter Platzhalter, `zustandVon`), `hit.test.ts` (Kopf vor Rumpf, gleiche Box → `oberarm-v`, daneben keins, Umrechnung), `CatalogPrompts.test.tsx` (sechs Asset-Buttons, Kopieren mit ID/Pfad/Zustand, Teil per Klick → Rahmen und zwei Teil-Buttons, Klick daneben hebt auf).
+- AC-02 bleibt: `readonly.test.tsx` grün (Kopieren und `openInClaude` erlaubt).
+- Umsetzung: `assets/prompts/` (`fill.ts`, `hit.ts`, `TeilLayer.tsx`, `PromptButtons.tsx` mit Titel = Kopieren, ✦ = In Claude öffnen), Vorlagen über `useCatalog`, Overlay und Footer in `Preview`/`CatalogPage`, Stile `as-hit`, `as-mark`.
+- Prüfen: Typecheck, oxlint grün; `task check:diff`: Vitest Wurzel 3022, Workbench 394 grün; rot nur `k3c-studio:vitest` (2 Tests im Welten-Editor `ChunkCount`, `WorldDraft`, ohne Bezug zu WB1.3; das Studio fällt in WB1.4 weg). Im Worktree fehlten `node_modules` von Studio und Starter (nachinstalliert).

@@ -12,8 +12,9 @@ Nur Ansehen – kein schreibendes Control; Assets ändern nur die MCP-Tools `ass
 - `api.ts`: Zugriff auf die sieben Asset-Methoden (`assetsList` … `assetsPixelDiff`) samt Typen (`api/typesAssets.ts`);
   gemeinsam mit RV1 (Sprint-README WB1 › D-02).
 - `catalog/`: `CatalogPage` (Liste + Vorschau), `AssetList` (Filter, Gruppen, Abzeichen „im Diff“ aus `assetsReview('HEAD')`,
-  roter Eintrag mit `feld · regel: text` für ungültige Specs), `Preview` (Animation per `ChipSwitch`, Frame-Schieber
+  roter Eintrag mit `feld · regel: text` für ungültige Specs), Prompt-Buttons am Asset und am gewählten Teil (WB1.3), `Preview` (Animation per `ChipSwitch`, Frame-Schieber
   `ValueSlider`, Abspielen mit `fps`; Fehler je Asset statt Abbruch), Hooks in `useCatalog.ts`.
+- `prompts/`: `fill.ts` (`fillPrompt`: alle Platzhalter aus `paper-mcp.md` › 3, Pflicht `{teil}` bzw. `{eingabe}`, nie halb gefüllt; `zustandVon`), `hit.ts` (`teilAn`: kleinste Box, bei Gleichstand späteres Teil, D-05; `bildPunkt`), `TeilLayer.tsx` (Klickfläche über dem Bild, Rahmen des Teils), `PromptButtons.tsx` (Titel kopiert, ✦ öffnet in Claude). RV1 importiert `fill.ts` (D-02).
 - `style/StylePage.tsx`: Materialtafel (`licht`, `basis`, `schatten` mit Hex), Einzeltöne, Papier.
 - `review/`: gehört RV1.
 - Tests: `readonly.test.tsx` klickt jede Seite durch und erlaubt nur Lesemethoden (AC-02); Helfer `testing.tsx`.

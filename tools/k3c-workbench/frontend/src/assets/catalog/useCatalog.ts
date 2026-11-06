@@ -1,22 +1,24 @@
 import { useEffect, useState } from 'react';
 import { errorText } from '@webkit/lib/errors';
-import { assetsFrame, assetsGet, assetsList, assetsReview, type AssetEintrag, type Frame, type Spec } from '../api';
+import { assetsFrame, assetsGet, assetsList, assetsPrompts, assetsReview, type AssetEintrag, type Frame, type Spec, type Vorlage } from '../api';
 
-/** Katalog: alle Specs und die IDs im aktuellen Diff (Review gegen HEAD, Entscheidung 005 › 6). Ein Fehler des Reviews
+/** Katalog: alle Specs, Prompt-Vorlagen und die IDs im aktuellen Diff (Review gegen HEAD, Entscheidung 005 › 6). Ein Fehler des Reviews
  *  lässt die Liste stehen, nur ohne Abzeichen. */
 export function useCatalog() {
   const [list, setList] = useState<AssetEintrag[]>([]);
   const [inDiff, setInDiff] = useState<Set<string>>(new Set());
+  const [prompts, setPrompts] = useState<Vorlage[]>([]);
   const [error, setError] = useState('');
   useEffect(() => {
     let live = true;
     assetsList().then((l) => live && setList(l), (e) => live && setError(errorText(e)));
+    assetsPrompts().then((p) => live && setPrompts(p), (e) => live && setError(errorText(e)));
     assetsReview('HEAD').then((r) => live && setInDiff(new Set(r.assets.map((a) => a.id))), () => undefined);
     return () => {
       live = false;
     };
   }, []);
-  return { list, inDiff, error };
+  return { list, inDiff, prompts, error };
 }
 
 /** Spec des gewählten Assets; `error` statt Abbruch (005 › 7: die übrigen Assets bleiben bedienbar). */
