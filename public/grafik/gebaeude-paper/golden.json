@@ -1,0 +1,42 @@
+{
+  "hintergrundmauer": {
+    "renderKey": "e6a9602a571b8e06a82d5c8e644c4725d365bd7bb1e7d044d0061d3432fbc8dc",
+    "dateien": {
+      "stand.png": "cb6af5659850edf968d7d4feb4894c15ba64d3bea8051d81c800d3347266a702",
+      "stand.s2.png": "f67305d29c0b95ec5dee98d5775890fbe8ea19e0d81539195790ba563f15f71f",
+      "stand.s3.png": "f9b7ca75aee05c1b92877223fdd2d4c2a97eb0789a4abbe4468c58be03164696",
+      "stand.s4.png": "ad9b0e3a84b26aa3fb976f2401c0c685040bddd160f3eac8f998abb8464d3fce",
+      "stand.s5.png": "1fca0418ec3f453216b329376c22fe4dfb7a06bf875748a51fb0e46b1cc22baf"
+    }
+  },
+  "mauer": {
+    "renderKey": "2c5383feee5084517c0c19fefccbad365b5937f4db6dd05dd070debc74a986db",
+    "dateien": {
+      "stand.png": "1f43733d8a1320ff5e0ab69ef42e9139f9b98cb4f4cbaef5643c2b20859080c1",
+      "stand.s2.png": "a2edd00feb5f088b05886b3dea55f1950f6a7f2b7e0eb58a413001441f13e4e7",
+      "stand.s3.png": "6932dd9dbd5000f7ad8517b03297f23fab75f42b882c306f35a033be195e9f28",
+      "stand.s4.png": "08c6ca82b685ce8528f12157c960464bfd84a95ba3c8a1cf77e9d4aee8adf547",
+      "stand.s5.png": "f3d0688eb1666a07bc9ffb5ed509d79f0ef77bb948ae73f649f0c29608f1feea"
+    }
+  },
+  "tor": {
+    "renderKey": "f4d7aaf6a5d76c45269e32f13ff4e74a85050157d6370f66a25c26523091401b",
+    "dateien": {
+      "stand.png": "2cba2b2e4770409d4072b6761c751edabca3be48e13aa059b6bda72b551d6424",
+      "stand.s2.png": "87137b485a7f0afd04d7de8d0b51eadb54cf525e07518f2220e5424d8d689608",
+      "stand.s3.png": "19443e426e31d3d3401551883f7566f8704dc3c94cfec75b99b4888d2d196cfc",
+      "stand.s4.png": "d50b015216e44f14abbc42a0a1dc7464e1ecd4d6cee04797804d0992db17bd24",
+      "stand.s5.png": "6ce673b55dca4da12cebe08ee3b66ca9f50b0bbbfd7593ce134c99755a199fb2"
+    }
+  },
+  "turm": {
+    "renderKey": "efd4817219b3059f80bd92a4f7eb655ff22a0ab5d3968f10a9efe36e6b5481c0",
+    "dateien": {
+      "stand.png": "6069e8d723b2cdb3775f15922a80ed233cde4ce5615fc380bfc322501b287d0d",
+      "stand.s2.png": "1c5cafa8ecf25602b9c611584c8533c1497aad4531a392dd6e9ee058ccc81765",
+      "stand.s3.png": "77dbfcc2f6f354abd6778e792bdb2b237669be9e425540c408f301a2c6dbad13",
+      "stand.s4.png": "d8dd18cb4251c545acd3ee217dcf4d3a715ef52dfc123886506e059b6f99c9e2",
+      "stand.s5.png": "1c293af1ae0068ebaae3901e072bc41b4779affb93299fce9d11262356c5b38c"
+    }
+  }
+}

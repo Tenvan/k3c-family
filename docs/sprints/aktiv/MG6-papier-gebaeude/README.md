@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Welle 2, Lane `gebaeude`, Domäne PAP. RD1 (Renderer) und MC1 (Asset-MCP-Tools) sind in `feature/pap` (44f2d30c); MG1.1 hat den Weg über MCP mit dem echten Renderer bestätigt. Die alten Gebäude liegen als `tools/buildings`-JSONs mit PNGs unter `public/grafik/gebaeude/` (`gen:gebaeude`, Maße und Stufen in `docs/standards/gebaeude-grafik.md`); sie bleiben bis CU1 liegen. Die Paper-Specs kommen in denselben Ordner (`<id>.paper.json`, Ausgabe in `<id>/`). Muster: `tools/paper/fixtures/specs/mauer.paper.json`.
+Welle 2, Lane `gebaeude`, Domäne PAP. RD1 (Renderer) und MC1 (Asset-MCP-Tools) sind in `feature/pap` (44f2d30c); MG1.1 hat den Weg über MCP mit dem echten Renderer bestätigt. Die alten Gebäude liegen als `tools/buildings`-JSONs mit PNGs unter `public/grafik/gebaeude/` (`gen:gebaeude`, Maße und Stufen in `docs/standards/gebaeude-grafik.md`); sie bleiben bis CU1 liegen. Die Paper-Specs kommen in die eigene Gruppe `public/grafik/gebaeude-paper/` (`<id>.paper.json`, Ausgabe in `<id>/`; D-MG6-01). Muster: `tools/paper/fixtures/specs/mauer.paper.json`.
 
 ## Ziel
 
@@ -39,7 +39,7 @@ Spiel lädt die neuen Grafiken noch nicht (US1); `tools/buildings` und die alten
 
 ## Regeln und Einschränkungen
 
-Nur `public/grafik/gebaeude/`: neue `*.paper.json`, ihre Ausgabe-Ordner, `index.paper.json` und `golden.json` der Gruppe; die alten JSONs und PNGs nicht anfassen. Kein `assets_style_set`: fehlende Papier-Materialien als Abbildung auf vorhandene (D-MG6-02). Jede Session prüft jedes Gebäude in jeder Stufe: Stufe 1 mit `assets_preview`, Stufen ab 2 über die gerenderte Ausgabe, solange `assets_preview` keine Stufe kennt (D-MG6-03).
+Nur `public/grafik/gebaeude-paper/`: neue `*.paper.json`, ihre Ausgabe-Ordner, `index.paper.json` und `golden.json` der Gruppe; die alten JSONs und PNGs nicht anfassen. Kein `assets_style_set`: fehlende Papier-Materialien als Abbildung auf vorhandene (D-MG6-02). Jede Session prüft jedes Gebäude in jeder Stufe: Stufe 1 mit `assets_preview`, Stufen ab 2 über die gerenderte Ausgabe, solange `assets_preview` keine Stufe kennt (D-MG6-03).
 
 ## Beispiele
 
@@ -66,7 +66,7 @@ keine (Defaults als D-MG6-Zeilen in B-701)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| MG6.1 | `MG6.1-mauerlinie.md` | Umsetzung | autonom | offen |
+| MG6.1 | `MG6.1-mauerlinie.md` | Umsetzung | autonom | fertig |
 | MG6.2 | `MG6.2-hub-staende-a.md` | Umsetzung | autonom | offen |
 | MG6.3 | `MG6.3-hub-staende-b.md` | Umsetzung | autonom | offen |
 | MG6.4 | `MG6.4-burg-und-lager.md` | Umsetzung | autonom | offen |

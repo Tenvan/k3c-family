@@ -18,11 +18,11 @@ Sprint MG6 ist reviewt (frischer Reviewer, Opus), Befunde behoben oder als D-Zei
 
 ## Kontext
 
-Diff `origin/feature/pap..sprint/mg6`: nur `public/grafik/gebaeude/` (neue `*.paper.json`, Ausgabe-Ordner, `index.paper.json`, `golden.json`) und Planung. Kriterien AC-01–AC-03 der README.
+Diff `origin/feature/pap..sprint/mg6`: nur `public/grafik/gebaeude-paper/` (neue `*.paper.json`, Ausgabe-Ordner, `index.paper.json`, `golden.json`) und Planung. Kriterien AC-01–AC-03 der README.
 
 ## Erlaubte Dateien
 
-- `public/grafik/gebaeude/*.paper.json` der Sprint-Gebäude, ihre Ausgabe-Ordner, `index.paper.json`, `golden.json`
+- `public/grafik/gebaeude-paper/*.paper.json` der Sprint-Gebäude, ihre Ausgabe-Ordner, `index.paper.json`, `golden.json`
 - `docs/sprints/aktiv/MG6-papier-gebaeude/**`
 - `docs/backlog/B-701-pap-gesammelte-fragen.md`
 

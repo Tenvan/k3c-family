@@ -14,7 +14,7 @@
 
 ## Ziel
 
-Werkstatt, Taverne und Heilplatz (Handelsstände 6 × 4 Kacheln) liegen als Paper-Specs unter `public/grafik/gebaeude/` mit den Stufen 1–5 als Delta: Wand, Pfosten und Balken folgen der Materialkette, Tresen, Tuchdach und Ware bleiben, ab Stufe 3 ein Wimpel am rechten Pfosten.
+Werkstatt, Taverne und Heilplatz (Handelsstände 6 × 4 Kacheln) liegen als Paper-Specs unter `public/grafik/gebaeude-paper/` mit den Stufen 1–5 als Delta: Wand, Pfosten und Balken folgen der Materialkette, Tresen, Tuchdach und Ware bleiben, ab Stufe 3 ein Wimpel am rechten Pfosten.
 
 ## Kontext
 
@@ -24,7 +24,7 @@ Werkstatt, Taverne und Heilplatz (Handelsstände 6 × 4 Kacheln) liegen als Pape
 
 ## Erlaubte Dateien
 
-- `public/grafik/gebaeude/{werkstatt,taverne,heilplatz}.paper.json`, ihre Ausgabe-Ordner, `index.paper.json`, `golden.json` der Gruppe
+- `public/grafik/gebaeude-paper/{werkstatt,taverne,heilplatz}.paper.json`, ihre Ausgabe-Ordner, `index.paper.json`, `golden.json` der Gruppe
 - `docs/sprints/aktiv/MG6-papier-gebaeude/**`
 - `docs/backlog/B-701-pap-gesammelte-fragen.md` (D-MG6-Zeilen)
 

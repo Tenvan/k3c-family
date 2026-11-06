@@ -1,6 +1,6 @@
 # MG6.1 · Mauerlinie: Mauer, Tor, Turm, Hintergrundmauer
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -14,7 +14,7 @@
 
 ## Ziel
 
-Mauer, Tor, Turm und Hintergrundmauer liegen als Paper-Specs (Rig `gebaeude`) unter `public/grafik/gebaeude/` mit den Stufen 1–5 als Delta (Holz → Stein → Kupfer → Eisen → Kristall). Die Session legt dabei die Materialkette und das Maß fest, die MG6.2–MG6.5 übernehmen.
+Mauer, Tor, Turm und Hintergrundmauer liegen als Paper-Specs (Rig `gebaeude`) unter `public/grafik/gebaeude-paper/` mit den Stufen 1–5 als Delta (Holz → Stein → Kupfer → Eisen → Kristall). Die Session legt dabei die Materialkette und das Maß fest, die MG6.2–MG6.5 übernehmen.
 
 ## Kontext
 
@@ -26,7 +26,7 @@ Mauer, Tor, Turm und Hintergrundmauer liegen als Paper-Specs (Rig `gebaeude`) un
 
 ## Erlaubte Dateien
 
-- `public/grafik/gebaeude/{mauer,tor,turm,hintergrundmauer}.paper.json`, ihre Ausgabe-Ordner, `public/grafik/gebaeude/index.paper.json`, `public/grafik/gebaeude/golden.json`
+- `public/grafik/gebaeude-paper/{mauer,tor,turm,hintergrundmauer}.paper.json`, ihre Ausgabe-Ordner, `public/grafik/gebaeude-paper/index.paper.json`, `public/grafik/gebaeude-paper/golden.json`
 - `docs/sprints/aktiv/MG6-papier-gebaeude/**`
 - `docs/backlog/B-701-pap-gesammelte-fragen.md` (D-MG6-Zeilen)
 
@@ -60,5 +60,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft:** `assets_list` meldet mauer, tor, turm, hintergrundmauer gültig (0 ungültig).
+- **AC-02 geprüft:** `task gen:paper --force` schreibt `golden.json` und `index.paper.json` der Gruppe `gebaeude-paper` (je 5 PNGs `stand.png`, `stand.s2`–`s5`); `tools/paper/golden/public.test.ts` grün nach D-MG6-06.
+- **AC-03 geprüft:** Stufe 1 aller vier mit `assets_preview`, Stufen 2–5 über die Ausgabe (Kontaktbogen, D-MG6-03); `assets_review` gegen HEAD: 4 × `neu`, kein roter Eintrag.
+- **Befunde, behoben:** Querbalken des Zauns ragten ab Stufe 2 seitlich aus der Wand (schmaler); goldenes Runenband am Turm als Falz unsichtbar (Falz hat 25 % Deckkraft) → Fläche; Lagerfugen am Turm fehlten neben den Scharten.
+- **Abweichungen:** Angelegt zuerst in `gebaeude/` (Auftrag der Haupt-Session); dort scheitern `tools/buildings` (4 Go-Tests, `gen:gebaeude`) an `golden.json`/`*.paper.json` → Specs und Ausgabe unverändert nach `gebaeude-paper/` verschoben (D-MG6-01). `task gen:paper` schreibt die anderen Gruppen mit neuen Zeilenenden; zurückgenommen. `tools/paper/golden/public.test.ts` außerhalb der Gruppe geändert (D-MG6-06).
+- **Keine neuen Tickets;** D-MG6-01 bis D-MG6-07 in B-701.

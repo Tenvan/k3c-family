@@ -14,7 +14,7 @@
 
 ## Ziel
 
-Farm (Stufen 1–5), Treppe hoch, Treppe runter, Hafen (statisch) und Schiff (Stufen 1–3: Kiel, Rumpf, Segel) liegen als Paper-Specs unter `public/grafik/gebaeude/`.
+Farm (Stufen 1–5), Treppe hoch, Treppe runter, Hafen (statisch) und Schiff (Stufen 1–3: Kiel, Rumpf, Segel) liegen als Paper-Specs unter `public/grafik/gebaeude-paper/`.
 
 ## Kontext
 
@@ -24,7 +24,7 @@ Farm (Stufen 1–5), Treppe hoch, Treppe runter, Hafen (statisch) und Schiff (St
 
 ## Erlaubte Dateien
 
-- `public/grafik/gebaeude/{farm,treppe-hoch,treppe-runter,hafen,schiff}.paper.json`, ihre Ausgabe-Ordner, `index.paper.json`, `golden.json` der Gruppe
+- `public/grafik/gebaeude-paper/{farm,treppe-hoch,treppe-runter,hafen,schiff}.paper.json`, ihre Ausgabe-Ordner, `index.paper.json`, `golden.json` der Gruppe
 - `docs/sprints/aktiv/MG6-papier-gebaeude/**`
 - `docs/backlog/B-701-pap-gesammelte-fragen.md` (D-MG6-Zeilen)
 

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "hintergrundmauer",
+    "rig": "gebaeude",
+    "manifest": "hintergrundmauer/manifest.json"
+  },
+  {
+    "id": "mauer",
+    "rig": "gebaeude",
+    "manifest": "mauer/manifest.json"
+  },
+  {
+    "id": "tor",
+    "rig": "gebaeude",
+    "manifest": "tor/manifest.json"
+  },
+  {
+    "id": "turm",
+    "rig": "gebaeude",
+    "manifest": "turm/manifest.json"
+  }
+]

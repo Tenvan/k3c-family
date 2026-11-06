@@ -13,8 +13,8 @@ const gruppen = readdirSync(GRAFIK).filter((g) => statSync(join(GRAFIK, g)).isDi
 const lies = (p: string) => JSON.parse(readFileSync(p, 'utf8'));
 
 describe('Golden public/grafik', { timeout: 60_000 }, () => {
-  it('Gruppen mit Specs: figuren und reittiere', () => {
-    expect(gruppen).toEqual(['figuren', 'reittiere']);
+  it('Gruppen mit Specs: mindestens figuren und reittiere (MG-Sprints ergänzen eigene)', () => {
+    expect(gruppen).toEqual(expect.arrayContaining(['figuren', 'reittiere']));
   });
 
   it('monarch hat idle, lauf, schritt, trab, galopp; pferd hat schritt, trab, galopp', () => {

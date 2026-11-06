@@ -1,0 +1,59 @@
+{
+  "id": "tor",
+  "version": 1,
+  "specHash": "c47767e445e34033833e48ba126879d6be95a261d565102a763504d798a200d7",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "f4d7aaf6a5d76c45269e32f13ff4e74a85050157d6370f66a25c26523091401b",
+  "rahmen": [
+    -32,
+    -128,
+    64,
+    128
+  ],
+  "frameW": 64,
+  "frameH": 128,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "638b5d3301053ffb1dcb6fa8e1b38cd84980ff7ddee4b3bd9f606f734869a773"
+      ]
+    },
+    "stand.s2": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s2.png",
+      "hashes": [
+        "49a408ebd7f3c5fff2032717fc2f28460f6c3c8c7d8450dca71c232ad0f1d08a"
+      ]
+    },
+    "stand.s3": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s3.png",
+      "hashes": [
+        "2cc96586d1c3a838271ce5ee3ec05c5490925a4f271e5e3c0fe9ccac2c65bd03"
+      ]
+    },
+    "stand.s4": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s4.png",
+      "hashes": [
+        "322ad53514563f5994aedf02ebfb450a5a9b4e18edde6aa055c17289e918b701"
+      ]
+    },
+    "stand.s5": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s5.png",
+      "hashes": [
+        "de1e0f18710979f16d58df21b43a61a53f787510f31d11207cb626651d147f1e"
+      ]
+    }
+  },
+  "varianten": []
+}

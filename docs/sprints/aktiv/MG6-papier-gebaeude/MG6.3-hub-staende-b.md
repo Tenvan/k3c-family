@@ -14,7 +14,7 @@
 
 ## Ziel
 
-Schmiede, Rüstkammer, Lager und Kaserne (6 × 4 Kacheln) liegen als Paper-Specs unter `public/grafik/gebaeude/` mit den Stufen 1–5 als Delta nach der Materialkette.
+Schmiede, Rüstkammer, Lager und Kaserne (6 × 4 Kacheln) liegen als Paper-Specs unter `public/grafik/gebaeude-paper/` mit den Stufen 1–5 als Delta nach der Materialkette.
 
 ## Kontext
 
@@ -24,7 +24,7 @@ Schmiede, Rüstkammer, Lager und Kaserne (6 × 4 Kacheln) liegen als Paper-Specs
 
 ## Erlaubte Dateien
 
-- `public/grafik/gebaeude/{schmiede,ruestkammer,lager,kaserne}.paper.json`, ihre Ausgabe-Ordner, `index.paper.json`, `golden.json` der Gruppe
+- `public/grafik/gebaeude-paper/{schmiede,ruestkammer,lager,kaserne}.paper.json`, ihre Ausgabe-Ordner, `index.paper.json`, `golden.json` der Gruppe
 - `docs/sprints/aktiv/MG6-papier-gebaeude/**`
 - `docs/backlog/B-701-pap-gesammelte-fragen.md` (D-MG6-Zeilen)
 

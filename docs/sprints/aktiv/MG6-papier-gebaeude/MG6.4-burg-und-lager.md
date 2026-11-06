@@ -14,7 +14,7 @@
 
 ## Ziel
 
-Lagerfeuer (Stufen 1–3: Feuer, Zelt, Holzhütte), Burg (Hub-Stufen 1–5), Burg-Ausbau (Überlage der Ausbauschritte 1–3: leer, Banner und Fackeln, dazu Wehrtürmchen; D-MG6-05) und Rekrutierungslager (Looks 1–3 je Biom als Stufen) liegen als Paper-Specs unter `public/grafik/gebaeude/`.
+Lagerfeuer (Stufen 1–3: Feuer, Zelt, Holzhütte), Burg (Hub-Stufen 1–5), Burg-Ausbau (Überlage der Ausbauschritte 1–3: leer, Banner und Fackeln, dazu Wehrtürmchen; D-MG6-05) und Rekrutierungslager (Looks 1–3 je Biom als Stufen) liegen als Paper-Specs unter `public/grafik/gebaeude-paper/`.
 
 ## Kontext
 
@@ -24,7 +24,7 @@ Lagerfeuer (Stufen 1–3: Feuer, Zelt, Holzhütte), Burg (Hub-Stufen 1–5), Bur
 
 ## Erlaubte Dateien
 
-- `public/grafik/gebaeude/{lagerfeuer,burg,burg-ausbau,rekrutierungslager}.paper.json`, ihre Ausgabe-Ordner, `index.paper.json`, `golden.json` der Gruppe
+- `public/grafik/gebaeude-paper/{lagerfeuer,burg,burg-ausbau,rekrutierungslager}.paper.json`, ihre Ausgabe-Ordner, `index.paper.json`, `golden.json` der Gruppe
 - `docs/sprints/aktiv/MG6-papier-gebaeude/**`
 - `docs/backlog/B-701-pap-gesammelte-fragen.md` (D-MG6-Zeilen)
 

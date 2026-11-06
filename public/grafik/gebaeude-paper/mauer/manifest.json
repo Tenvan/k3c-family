@@ -1,0 +1,59 @@
+{
+  "id": "mauer",
+  "version": 1,
+  "specHash": "2dca41953bb3583eff827309f5f916e75c018456a0d2c6110a672798b391a8ce",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "2c5383feee5084517c0c19fefccbad365b5937f4db6dd05dd070debc74a986db",
+  "rahmen": [
+    -16,
+    -160,
+    32,
+    160
+  ],
+  "frameW": 32,
+  "frameH": 160,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "a3d72c93844268ddac8440e7b8aafdc6a1432acc28fad148b1f261eb12fc198e"
+      ]
+    },
+    "stand.s2": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s2.png",
+      "hashes": [
+        "fcfe6c5d83559c1a917b95936385662f032f17fb69539982a7556ebb873e3553"
+      ]
+    },
+    "stand.s3": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s3.png",
+      "hashes": [
+        "5ae6a864e24356b07eeaf4652c2c81dd613c40c5276eadb7c8576e4edbae6dc3"
+      ]
+    },
+    "stand.s4": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s4.png",
+      "hashes": [
+        "188ee63a1f650b570e157c880997bd6c9ac59ef689f22f4d68be97c83795d198"
+      ]
+    },
+    "stand.s5": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s5.png",
+      "hashes": [
+        "752157e20be544dbe08ebd8ed0d015f7122ffd86c676e68f27a95379dd2b84c3"
+      ]
+    }
+  },
+  "varianten": []
+}
