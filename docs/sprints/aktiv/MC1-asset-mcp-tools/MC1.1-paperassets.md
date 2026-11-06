@@ -1,6 +1,6 @@
 # MC1.1 · paperassets: CLI-Aufruf, Merge-Patch, atomares Schreiben, Git-Basis, Render-Jobs
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -71,5 +71,8 @@ Review-Agent (Sonnet) vor dem Commit: Pfad- und Datei-Code (atomares Schreiben).
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 geprüft: `TestSetUngueltigAendertNichts`, `TestSetRenderFehlerAendertNichts`, dazu aus dem Review `TestSetRollbackBeiAusgabeFehler` und `TestSetParallelOhneVerlust` grün (`go test ./internal/paperassets/` ok, 79 s).
+- AC-05 geprüft: `TestJobAlle` (Start vor dem ersten Render zurück, Wait liefert alle), `TestJobUeberspringtUngueltige`, `TestJobWaitAbbruch`, `TestJobPanic` grün.
+- `task check:diff`: Lint `0 issues`, alle Workbench-Pakete grün bis auf `TestRunProcessExitUndAusgabe` (mcpsrv, nicht von MC1.1 berührt, wackelt auch einzeln 1/3) → B-702.
+- Review (Sonnet): 4 Important behoben (Rollback der Spec, Sperre je Asset, Kontext-Abbruch, Panic im Job), Namensprüfung in `Schreibe`; Minor offen: Format-Regex auf Freitext, Parallelitäts-Limit in `pixelJeAnimation`, Job-Tabelle ohne Obergrenze.
+- Abweichungen: Rig-Vorlagen, `Format` (Spec-Layout der Fixtures, Byte-gleich geprüft) und `Schreibe` (für `assets_create`) zusätzlich; `bun install` im Worktree nötig (fehlende `node_modules`). Kein `task check:race` (kein gcc).
