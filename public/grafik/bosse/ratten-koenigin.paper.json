@@ -1,0 +1,737 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "ratten-koenigin",
+  "rig": "figur",
+  "version": 1,
+  "beschreibung": "Ratten-Königin: graue Rattenfrau mit runden Ohren, langem Schwanz, goldener Krone, Purpurrobe und goldenem Zepterschwert (Miniboss Stufe 2).",
+  "teile": [
+    {
+      "eltern": "rumpf",
+      "id": "schwanz",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 3.2,
+          "form": "M-8 -52C-24 -48 -34 -36 -36 -22C-38 -10 -48 -4 -58 -8",
+          "material": "haut"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-8 -52C-24 -48 -34 -36 -36 -22C-38 -10 -48 -4 -58 -8",
+          "material": "haut",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [-8, -52]
+    },
+    {
+      "eltern": "rumpf",
+      "id": "oberarm-h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6.2 -90C-8 -84 -6.5 -74 -4.6 -68L4.6 -68C6.5 -74 8 -84 6.2 -90C2 -93.5 -2 -93.5 -6.2 -90Z",
+          "material": "purpur",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-6.2 -90C-8 -84 -6.5 -74 -4.6 -68L-1 -68C-2.5 -75 -3.5 -84 -2.5 -92Z",
+          "material": "purpur",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.3,
+          "form": "M4 -87C5 -81 4.5 -75 3.2 -71",
+          "material": "purpur"
+        }
+      ],
+      "pivot": [0, -84]
+    },
+    {
+      "eltern": "oberarm-h",
+      "id": "unterarm-h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-4.9 -72.5C-4.7 -66 -4.1 -60 -3.9 -56L3.9 -56C4.1 -60 4.7 -66 4.9 -72.5Z",
+          "material": "purpur",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-4.9 -72.5C-4.7 -66 -4.1 -60 -3.9 -56L-1 -56L-1.3 -72.5Z",
+          "material": "purpur",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-5.6 -58.5H5.6L5.2 -53.5H-5.2Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-5.6 -58.5H-2L-2.2 -53.5H-5.2Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [2, -55.5],
+          "radius": 1
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4.2 -53.8C-5.4 -50 -4.4 -45.8 0 -45.2C4.2 -45.6 5.4 -49 4.3 -53.8Z",
+          "material": "stoff",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-4.2 -53.8C-5.4 -50 -4.4 -45.8 0 -45.2L-1 -53.8Z",
+          "material": "stoff",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M3.6 -52.2C6.6 -52.4 7 -49 4.4 -48",
+          "material": "stoff",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-1.6 -49.5H2.2",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -70]
+    },
+    {
+      "eltern": "unterarm-h",
+      "id": "schild",
+      "lagen": [],
+      "pivot": [0, -49]
+    },
+    {
+      "eltern": "rumpf",
+      "id": "oberschenkel-h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-7 -55C-8 -45 -7 -35 -5 -27L5 -27C7 -35 8 -45 7 -55Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-7 -55C-8 -45 -7 -35 -5 -27L-1.5 -27C-3 -36 -3.5 -46 -3 -55Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M4.5 -50C5.5 -42 5 -35 3.5 -29",
+          "material": "leder"
+        }
+      ],
+      "pivot": [0, -50]
+    },
+    {
+      "eltern": "oberschenkel-h",
+      "id": "unterschenkel-h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-5.2 -31L5.2 -31L5.2 -24L-5.2 -24Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-5.6 -24C-5.6 -17 -5.2 -11 -5.2 -6L-6.2 -1C-6.4 1 -5.2 1.6 -3 1.6L11 1.6C14 1.6 14.6 -1.6 12 -3.2L5.2 -6.2C5.2 -12 5.6 -18 5.6 -24Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-5.6 -24C-5.6 -17 -5.2 -11 -5.2 -6L-6.2 -1C-6.4 1 -5.2 1.6 -3 1.6L0 1.6L-1.5 -6C-1.8 -12 -2 -18 -2 -24Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M3.8 -21C4 -15 4 -10 3.6 -7",
+          "material": "leder"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-6 -0.2H12.8",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6.6 -27L6.6 -27L6.1 -21.5L-6.1 -21.5Z",
+          "material": "leder"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-5 -23.5H5",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -28]
+    },
+    {
+      "eltern": "rumpf",
+      "id": "oberschenkel-v",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-7 -55C-8 -45 -7 -35 -5 -27L5 -27C7 -35 8 -45 7 -55Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-7 -55C-8 -45 -7 -35 -5 -27L-1.5 -27C-3 -36 -3.5 -46 -3 -55Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M4.5 -50C5.5 -42 5 -35 3.5 -29",
+          "material": "leder",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -50]
+    },
+    {
+      "eltern": "oberschenkel-v",
+      "id": "unterschenkel-v",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-5.2 -31L5.2 -31L5.2 -24L-5.2 -24Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-5.6 -24C-5.6 -17 -5.2 -11 -5.2 -6L-6.2 -1C-6.4 1 -5.2 1.6 -3 1.6L11 1.6C14 1.6 14.6 -1.6 12 -3.2L5.2 -6.2C5.2 -12 5.6 -18 5.6 -24Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-5.6 -24C-5.6 -17 -5.2 -11 -5.2 -6L-6.2 -1C-6.4 1 -5.2 1.6 -3 1.6L0 1.6L-1.5 -6C-1.8 -12 -2 -18 -2 -24Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M3.8 -21C4 -15 4 -10 3.6 -7",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-6 -0.2H12.8",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6.6 -27L6.6 -27L6.1 -21.5L-6.1 -21.5Z",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-5 -23.5H5",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -28]
+    },
+    {
+      "id": "rumpf",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12 -91C-15 -80 -16 -60 -16 -43L16 -43C16 -59 15 -78 12 -91C4 -94.5 -4 -94.5 -12 -91Z",
+          "material": "purpur"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 -91C-15 -80 -16 -60 -16 -43L-5 -43C-6 -60 -6 -78 -4 -93Z",
+          "material": "purpur",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M8 -89C11 -78 12.5 -62 13 -46L14.6 -46C14.5 -62 13.6 -78 11 -90Z",
+          "material": "purpur",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-15.5 -58.5H15.5V-53H-15.5Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-15.5 -55.2H15.5V-53H-15.5Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-15.5 -52H15.5L16.5 -40H-16.5Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-15.5 -52H-5L-5 -40H-16.5Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-13 -47H14",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-14 -43.5H15",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-8 -90H8L10 -42H-10Z",
+          "material": "purpur"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-8 -90H-2L-3 -42H-10Z",
+          "material": "purpur",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-10 -45H10L10.4 -42H-10.4Z",
+          "material": "gold"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M0 -86V-46",
+          "material": "gold",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -50]
+    },
+    {
+      "eltern": "kopf",
+      "id": "ohren",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-13.5 -117.0C-23.5 -127.0 -21.5 -139.0 -9.5 -131.0Z",
+          "material": "stoff"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-13.5 -119.0C-19.5 -126.0 -18.5 -134.0 -10.5 -129.0Z",
+          "material": "haut",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M11.0 -121.0C15.0 -135.0 25.0 -133.0 21.0 -119.0Z",
+          "material": "stoff",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -100]
+    },
+    {
+      "eltern": "rumpf",
+      "id": "kopf",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-4.5 -98H5.5V-89H-4.5Z",
+          "material": "stoff",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-12 -104C-13 -116 -6 -123 3 -122.5C12 -122 17 -115 17.2 -107.5C17.4 -100 13 -95 6 -94.2C-2 -93.5 -11 -97 -12 -104Z",
+          "material": "stoff"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 -104C-13 -116 -6 -123 3 -122.5C-2 -118 -4 -110 -2 -95C-7 -96 -11 -99 -12 -104Z",
+          "material": "stoff",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M10 -119C14 -116 16 -112 16.4 -108C14.6 -110 12.8 -114 10 -119Z",
+          "material": "stoff",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-12 -104.5C-15.5 -112 -12.5 -121 -3.5 -123.5C3.5 -125 10 -123 13.5 -119.5C6.5 -118.5 0.5 -116.5 -3.5 -112.5C-6 -108.5 -6 -103 -4 -99C-8 -99 -11 -101 -12 -104.5Z",
+          "material": "stoff"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 -104.5C-15.5 -112 -12.5 -121 -3.5 -123.5C-7 -118 -8 -110 -6.5 -101C-9 -101 -11 -102 -12 -104.5Z",
+          "material": "stoff",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-8 -118C-6 -114 -5 -110 -5 -106",
+          "material": "stoff",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-2 -121C0 -119 2 -118.5 6 -118.5",
+          "material": "stoff",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6 -106.5C-9 -107.5 -9.5 -101.5 -6 -101.5Z",
+          "material": "stoff"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-7.2 -105.2C-6.4 -104.4 -6.4 -103.4 -7.2 -102.6",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M14.6 -109.5C17.2 -106.4 19 -104.2 17.6 -102.4C16.6 -101.6 15.2 -102 14.4 -102.8Z",
+          "material": "stoff"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M14.6 -103.4C15.4 -102.6 16.4 -102.2 17.4 -102.6L17 -103.6Z",
+          "material": "stoff",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M6.8 -111C8.8 -113.4 12.2 -113.6 13.8 -110.8C11.8 -109.2 8.8 -109 6.8 -111Z",
+          "material": "hermelin",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "auge",
+          "mitte": [10.9, -111],
+          "radius": 1.5
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [11.4, -111.5],
+          "radius": 0.5,
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.5,
+          "form": "M6.6 -111.2C8.8 -113.8 12.4 -114 14 -111",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 2,
+          "form": "M5.8 -115.8C8.8 -117.4 12 -117 14.4 -115.2",
+          "material": "stoff",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [11.5, -105.5],
+          "radius": 2.6,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -90]
+    },
+    {
+      "eltern": "kopf",
+      "id": "helm",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12.5 -114.0L-12.5 -122.0L-5.375 -117.0L1.75 -126.0L8.875 -117.0L16.0 -122.0L16.0 -114.0Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12.5 -114.0L-12.5 -117.0L16.0 -117.0L16.0 -114.0Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [1.75, -119],
+          "radius": 1.4
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [-5.375, -115.5],
+          "radius": 1,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [8.875, -115.5],
+          "radius": 1,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [2, -120]
+    },
+    {
+      "eltern": "rumpf",
+      "id": "oberarm-v",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6.2 -90C-8 -84 -6.5 -74 -4.6 -68L4.6 -68C6.5 -74 8 -84 6.2 -90C2 -93.5 -2 -93.5 -6.2 -90Z",
+          "material": "purpur"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-6.2 -90C-8 -84 -6.5 -74 -4.6 -68L-1 -68C-2.5 -75 -3.5 -84 -2.5 -92Z",
+          "material": "purpur",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.3,
+          "form": "M4 -87C5 -81 4.5 -75 3.2 -71",
+          "material": "purpur",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -84]
+    },
+    {
+      "eltern": "oberarm-v",
+      "id": "unterarm-v",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-4.9 -72.5C-4.7 -66 -4.1 -60 -3.9 -56L3.9 -56C4.1 -60 4.7 -66 4.9 -72.5Z",
+          "material": "purpur"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-4.9 -72.5C-4.7 -66 -4.1 -60 -3.9 -56L-1 -56L-1.3 -72.5Z",
+          "material": "purpur",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-5.6 -58.5H5.6L5.2 -53.5H-5.2Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-5.6 -58.5H-2L-2.2 -53.5H-5.2Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [2, -55.5],
+          "radius": 1
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4.2 -53.8C-5.4 -50 -4.4 -45.8 0 -45.2C4.2 -45.6 5.4 -49 4.3 -53.8Z",
+          "material": "stoff"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-4.2 -53.8C-5.4 -50 -4.4 -45.8 0 -45.2L-1 -53.8Z",
+          "material": "stoff",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M3.6 -52.2C6.6 -52.4 7 -49 4.4 -48",
+          "material": "stoff"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-1.6 -49.5H2.2",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -70]
+    },
+    {
+      "eltern": "unterarm-v",
+      "id": "schwert",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-3.25 -48.01L-0.99 -45.75L-5.23 -41.5L-7.5 -43.77Z",
+          "material": "leder"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [-7.07, -41.93],
+          "radius": 2.2
+        },
+        {
+          "art": "flaeche",
+          "form": "M0.35 -58.55L9.55 -49.35L7.42 -47.23L-1.77 -56.42Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3.25 -55.65L6.65 -52.25L33.09 -79.55L35.36 -84.36L30.55 -82.09Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M3.25 -55.65L4.95 -53.95L35.36 -84.36L30.55 -82.09Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M8.13 -56.42L30.76 -79.05",
+          "material": "gold"
+        }
+      ],
+      "pivot": [0, -49]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 288,
+    "rahmen": [-68, -175, 158, 181]
+  },
+  "animationen": {
+    "angriff": {
+      "fps": 14,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "oberarm-h": 10,
+            "oberarm-v": -50,
+            "schwert": 75,
+            "unterarm-v": -40
+          }
+        },
+        {
+          "t": 0.35,
+          "winkel": {
+            "kopf": 4,
+            "oberarm-h": 25,
+            "oberarm-v": -165,
+            "rumpf": -6,
+            "schwert": 26,
+            "unterarm-v": -10
+          }
+        },
+        {
+          "t": 0.55,
+          "winkel": {
+            "kopf": -3,
+            "oberarm-h": -10,
+            "oberarm-v": -85,
+            "rumpf": 8,
+            "schwert": 142,
+            "unterarm-v": 0
+          }
+        },
+        {
+          "t": 0.75,
+          "winkel": {
+            "oberarm-h": 0,
+            "oberarm-v": -55,
+            "rumpf": 4,
+            "schwert": 146,
+            "unterarm-v": -10
+          }
+        }
+      ]
+    },
+    "idle": {
+      "frames": 8
+    },
+    "lauf": {
+      "frames": 8
+    }
+  }
+}

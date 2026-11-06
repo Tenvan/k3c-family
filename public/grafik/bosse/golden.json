@@ -1,0 +1,49 @@
+{
+  "goblin-anfuehrer": {
+    "renderKey": "c63e08be7b895aabd8045141e494b9e4bedbad57659f4fefe8642243b647f541",
+    "dateien": {
+      "angriff.png": "caaa40cd2db6a368d280db79003db0da5ec165e4260ee4d9e41451d70218abf8",
+      "idle.png": "ef70209b0806f9bfeb331ca0c34b39d61e7a24771425103c2c69632cb99fb3e6",
+      "lauf.png": "fb3694d0cc2ac52d709bd99402bda315f6788292ce0b51b4212e2a7882812a82"
+    }
+  },
+  "kristallherz-waechter": {
+    "renderKey": "419afbde66d63804f77467db6a0977f932b6fc3e07e93a3e0b64a64a6c960ca2",
+    "dateien": {
+      "angriff.png": "3772ae5882b7ce62aebc6454820614ca9cd6bb23560421c74e3b7d62f8283953",
+      "idle.png": "e70f43afdb10b1a7781ee160d7486eb2913f2befc8ada37d43ee9c49cd8183be"
+    }
+  },
+  "lava-golem": {
+    "renderKey": "769cf69662244e9c3538df7b21decdd04bd4fe5293b00a18ba12d64845de3b8b",
+    "dateien": {
+      "angriff.png": "c46d7ce9cd62adf1c99509e02d24d2e6856075edd52793246e7a2acb03b289b0",
+      "idle.png": "d6d73f1b7e328398731d16315936a2a2f3c52d8fe89d1fe51036b6ee0712f22b",
+      "lauf.png": "f1630c3767e0cdf387b04b45e1c3f87f2e52debb090256384880f7e1b83a5ea3"
+    }
+  },
+  "ratten-koenigin": {
+    "renderKey": "43f693cdb7e455807e524477774d35660a61c984c259fd037593ba4807196146",
+    "dateien": {
+      "angriff.png": "45da5586e17d46a6357d84bd828724164aa2b3a2c37318c6f956f4f746c16086",
+      "idle.png": "6385a41e873810ff5e04164b9c9964acb21d5c2b817e1dc47008678c18f638e1",
+      "lauf.png": "95902b10666d072af820506d405e185ecd5c91d336832752d80ef4af78df8f60"
+    }
+  },
+  "splitter-titan": {
+    "renderKey": "11f1931f8ac3ba7d7ed6afba745514533b08971d1c940849df1057253f4de445",
+    "dateien": {
+      "angriff.png": "842991daace74f1f50a05eb78c1afd5ce20601be121538efe307832d549df39a",
+      "idle.png": "0f3e75f2575fe7b735d5c298e7206e077d769d424e2731c52d2723edcc2e2764",
+      "lauf.png": "1144f3ccb6a1e5fc3b9b41780f4fcd981089e67f378bd715f6611a41b56a959b"
+    }
+  },
+  "troll-koenig": {
+    "renderKey": "357f0253ba03b8fdcf44c0fbd62b594f7ef51d62b40b57fe1dff0459f60fdf98",
+    "dateien": {
+      "angriff.png": "63940e415bcc2aeda5046f3cc108bdf0a0b650336e195ec2a80925f6a7112570",
+      "idle.png": "85987aab63a5ecf0a9ada64ad3705f1ffb4a29dcedcff0fa4f8703725d12cf2e",
+      "lauf.png": "746af4e929c90a0b77e94181cdbd6ccabded1c038ee6e083eac320ad58901847"
+    }
+  }
+}
