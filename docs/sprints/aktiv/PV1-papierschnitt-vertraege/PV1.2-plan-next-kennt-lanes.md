@@ -1,6 +1,6 @@
 # PV1.2 · plan_next und plan_* kennen Domäne PAP und sperren nach Lane
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -57,5 +57,7 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 geprüft: `next_lanes_test.go` mit den sechs Tests (`TestNextLanesParallel`, `TestNextSameLaneLocked`, `TestNextNoLaneLocksDomain`, `TestNextShowsModel`, `TestNextMaxFourParallel`, `TestDomainPAPValid`) grün; `task check:diff` grün. Review (Sonnet): keine schweren Befunde.
+- `plan_next` auf dem echten Repo (lokaler Lauf des Pakets): „Nächste Session: PV1.2 … · Domäne: DEV · Umgebung: offline · Modell: sonnet“ – bisherige Auswahl plus Modell.
+- Umsetzung: Sperre in `next_lanes.go` (Schlüssel Domäne bzw. Domäne/Lane, Kollision bei gleicher oder fehlender Lane), Parallel-Liste höchstens drei; `plan_set` fügt `Lane`/`Modell` in ältere Session-Dateien hinter `Domäne` ein; `plan_create` setzt beide auf `–`. Lane erscheint in der Kopfzeile nur, wenn gesetzt.
+- Hinweis: Die laufende Workbench (Repo-Wurzel) kennt PAP erst nach Merge und Neubau; bis dahin setzt jeder `plan_set` die Sprint-Domäne von PV1 auf `INF, DEV` zurück (von Hand korrigiert).

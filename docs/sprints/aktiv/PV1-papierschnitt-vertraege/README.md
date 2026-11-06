@@ -63,7 +63,7 @@ keine blockierende; vorab getroffene Entscheidungen (u. a. neue Abhängigkeiten 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | PV1.1 | `PV1.1-domaene-pap-und-lanes.md` | Umsetzung | autonom | fertig |
-| PV1.2 | `PV1.2-plan-next-kennt-lanes.md` | Umsetzung | autonom | offen |
+| PV1.2 | `PV1.2-plan-next-kennt-lanes.md` | Umsetzung | autonom | fertig |
 | PV1.6 | `PV1.6-fixture-svg-export.md` | Umsetzung | autonom | offen |
 | PV1.3 | `PV1.3-spec-schema-stil-fixtures.md` | Umsetzung | autonom | offen |
 | PV1.4 | `PV1.4-mcp-und-review-vertrag.md` | Umsetzung | autonom | offen |

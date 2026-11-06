@@ -144,9 +144,15 @@ func createSession(c *changeSet, in NewDoc, tpl string) error {
 	if findEntry(docsPath(c.root, sp.dir), in.ID+"-", false) != "" {
 		return fmt.Errorf("Session %s gibt es schon", in.ID)
 	}
-	text, err := fromTemplate(c, "session", tpl, in.ID+" · "+in.Title, map[string]string{"Status": "offen",
+	defaults := map[string]string{"Status": "offen",
 		"Typ": "Umsetzung", "Agent": "autonom", "Umgebung": "?", "Branch": strings.ToLower(m[1]) + "/" + m[2] + "-" + in.Slug,
-		"Abhängig von": "–", "Tickets": "–", "Kriterien": "–"}, in.Fields)
+		"Abhängig von": "–", "Tickets": "–", "Kriterien": "–"}
+	for _, opt := range []string{"Lane", "Modell"} { // optionale Felder (PV1.1), nur wenn die Vorlage sie hat
+		if _, ok := headFields(tpl)[opt]; ok {
+			defaults[opt] = "–"
+		}
+	}
+	text, err := fromTemplate(c, "session", tpl, in.ID+" · "+in.Title, defaults, in.Fields)
 	if err != nil {
 		return err
 	}

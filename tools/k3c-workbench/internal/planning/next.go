@@ -14,7 +14,7 @@ import (
 
 // NextFilter ist die Eingabe von plan_next; leer = alle Domänen.
 type NextFilter struct {
-	Domain string `json:"domain,omitempty" jsonschema:"nur Sessions dieser Domäne: REG, SIM, SRV, CLI, PLAT, INF, DEV"`
+	Domain string `json:"domain,omitempty" jsonschema:"nur Sessions dieser Domäne: REG, SIM, SRV, CLI, PLAT, INF, DEV, PAP"`
 }
 
 var (
@@ -46,12 +46,12 @@ type nextState struct {
 	root    string
 	status  map[string]string // Session-ID → Status aus der Session-Tabelle, alle Sprints
 	tickets map[string]string // Ticket-Nr → Status (Backlog ohne Archiv)
-	locked  map[string]string // Domäne → Session in Arbeit eines aktiven Sprints
+	locked  locks             // Sessions in Arbeit aktiver Sprints je Domäne und Lane (next_lanes.go)
 	readmes map[string]string // Sprint-ID → README von origin/sprint/<präfix> (B-519), sonst lokal
 }
 
 // Next liefert die nächste Session als verdichteten Text: Kopf, Session-Datei, ihre Kriterien aus der Sprint-README
-// und parallel mögliche Sessions anderer Domänen; ohne freie Session den Grund je Projekt.
+// und parallel mögliche Sessions (andere Domäne oder andere Lane, höchstens drei); ohne freie Session den Grund je Projekt.
 func Next(root string, f NextFilter) (string, error) {
 	want := strings.ToUpper(strings.TrimSpace(f.Domain))
 	if want != "" && !slices.Contains(domains, want) {
@@ -87,12 +87,12 @@ func withNotes(text string, notes []string) string {
 }
 
 func newNextState(root string, d Data) nextState {
-	st := nextState{root: root, status: map[string]string{}, tickets: map[string]string{}, locked: map[string]string{}}
+	st := nextState{root: root, status: map[string]string{}, tickets: map[string]string{}, locked: newLocks()}
 	for _, s := range d.Sprints {
 		for _, x := range s.Sessions {
 			st.status[x.Nr] = x.Status
-			if _, ok := st.locked[x.Domain]; s.Status == "aktiv" && x.Status == "in Arbeit" && x.Domain != "" && !ok {
-				st.locked[x.Domain] = x.Nr
+			if s.Status == "aktiv" && x.Status == "in Arbeit" && x.Domain != "" {
+				st.locked.add(x)
 			}
 		}
 	}
@@ -150,10 +150,7 @@ func (st nextState) blocked(x Session) string {
 	if open := st.openDeps(x); len(open) > 0 {
 		return "wartet auf " + strings.Join(open, ", ")
 	}
-	if by, ok := st.locked[x.Domain]; ok {
-		return "Domäne " + x.Domain + " gesperrt (" + by + " in Arbeit)"
-	}
-	return ""
+	return st.locked.why(x)
 }
 
 // openDeps sind die unerledigten Einträge aus „Abhängig von“: Sessions nicht fertig oder verworfen, Tickets weder
@@ -189,19 +186,6 @@ func sessionHead(x Session) map[string]string {
 	return headFields(strings.ReplaceAll(x.Text, "\r\n", "\n"))
 }
 
-// parallel sind weitere freie Sessions in anderen Domänen als pick, je Domäne die erste.
-func parallel(cands []candidate, pick candidate) []candidate {
-	seen := map[string]bool{pick.session.Domain: true}
-	var out []candidate
-	for _, c := range cands {
-		if c.why == "" && !seen[c.session.Domain] {
-			seen[c.session.Domain] = true
-			out = append(out, c)
-		}
-	}
-	return out
-}
-
 // pickText: Kopf, Session-Datei, Kriterien aus der Sprint-README und die parallel möglichen Sessions.
 func (st nextState) pickText(c candidate, more []candidate) (string, error) {
 	r, ok := findSprint(st.root, c.sprint.ID)
@@ -225,7 +209,7 @@ func (st nextState) pickText(c candidate, more []candidate) (string, error) {
 		"Nächste Session: " + x.Nr + " · " + x.Titel,
 		"Pfad: docs/" + r.dir + "/" + x.File,
 		fmt.Sprintf("Sprint: %s · %s (Projekt %s, Rang %s)", c.sprint.ID, c.sprint.Title, c.project.ID, c.project.Rang),
-		"Domäne: " + x.Domain + " · Umgebung: " + firstOf(x.Env, "?"),
+		domainLine(x),
 		"Branch: sprint/" + prefix,
 		"Kriterien: " + crit,
 		"Hinweis: Stand je Sprint (origin oder lokal) siehe unten; Branches, die lokal noch nicht bekannt sind, prüft der " +
@@ -269,18 +253,6 @@ func criteria(readme, want string) []string {
 		if keep {
 			out = append(out, l)
 		}
-	}
-	return out
-}
-
-func parallelLines(cs []candidate) []string {
-	if len(cs) == 0 {
-		return []string{"keine (in anderen Domänen ist keine Session frei)"}
-	}
-	out := make([]string, 0, len(cs))
-	for _, c := range cs {
-		out = append(out, fmt.Sprintf("- %s · %s · %s (Sprint %s, %s)", c.session.Domain, c.session.Nr, c.session.Titel,
-			c.sprint.ID, firstOf(c.session.Env, "?")))
 	}
 	return out
 }

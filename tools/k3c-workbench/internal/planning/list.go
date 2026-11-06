@@ -12,7 +12,7 @@ import (
 type Filter struct {
 	Kind    string `json:"kind,omitempty" jsonschema:"ticket, sprint, projekt oder leer für Sprints und Tickets"`
 	Status  string `json:"status,omitempty" jsonschema:"Status, z. B. aktiv, geplant, offen, eingeplant, erledigt"`
-	Domain  string `json:"domain,omitempty" jsonschema:"Domäne: REG, SIM, SRV, CLI, PLAT, INF, DEV"`
+	Domain  string `json:"domain,omitempty" jsonschema:"Domäne: REG, SIM, SRV, CLI, PLAT, INF, DEV, PAP"`
 	Sprint  string `json:"sprint,omitempty" jsonschema:"Sprint-ID: nur dieser Sprint und seine Tickets"`
 	Projekt string `json:"projekt,omitempty" jsonschema:"Projekt-Kürzel: nur dieses Projekt, seine Sprints und Tickets"`
 	Archive bool   `json:"archive,omitempty" jsonschema:"auch erledigte und verworfene Tickets aus backlog/archiv"`
