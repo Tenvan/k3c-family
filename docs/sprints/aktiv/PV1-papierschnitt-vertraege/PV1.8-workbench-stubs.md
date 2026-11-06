@@ -4,6 +4,7 @@
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
+- **Modell:** sonnet
 - **Umgebung:** offline
 - **Branch:** pv1/8-workbench-stubs
 - **Abhängig von:** PV1.4

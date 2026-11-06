@@ -4,6 +4,7 @@
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
+- **Modell:** opus
 - **Umgebung:** offline
 - **Branch:** pv1/5-review
 - **Abhängig von:** PV1.8

@@ -1,9 +1,10 @@
 # PV1.1 · Domäne PAP, Feld Lane für parallele Sessions, Glossar, resvg-Abhängigkeit
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
+- **Modell:** sonnet
 - **Umgebung:** offline
 - **Branch:** pv1/1-domaene-pap-und-lanes
 - **Abhängig von:** –
@@ -63,5 +64,6 @@ task check:diff
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `task test -- planning` grün (946 Tests, neu: optionale Felder `Lane`/`Modell` in `planning.test.ts`, Sperre je Domäne und Lane in `planningProjects.test.ts`); Domäne PAP, Sperr-Regel und Modell-Wahl in `docs/arbeitsweise.md` › Domänen und › Autonomer Ablauf Schritt 1.
+- `bun -e "require('@resvg/resvg-js')"` läuft; Lockfile enthält die Linux-Binaries; `task check:diff` grün. Glossar: neun Begriffe (Lage, Lane, Papier-Material, Paper-Spec, Papierschnitt, Rig-Typ, Stil-Datei, Teil, Ton) ohne Dublette.
+- Abweichung: Felder `Modell`/Domäne der PV1-Sessions von Hand gesetzt, weil die laufende Workbench das Feld erst nach PV1.2 kennt (plan_set lehnt ab: „Feld Modell fehlt in der Datei“). Sprint-Domäne jetzt `INF, DEV, PAP`. `tsconfig.json` nimmt `tools/paper` auf; Node-Typen dort klärt PV1.3.

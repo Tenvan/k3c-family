@@ -4,6 +4,7 @@
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
+- **Modell:** sonnet
 - **Umgebung:** offline
 - **Branch:** pv1/2-plan-next-kennt-lanes
 - **Abhängig von:** PV1.1

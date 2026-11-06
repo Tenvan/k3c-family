@@ -3,7 +3,8 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
-- **Domäne:** INF
+- **Domäne:** PAP
+- **Modell:** opus
 - **Umgebung:** offline
 - **Branch:** pv1/3-spec-schema-stil-fixtures
 - **Abhängig von:** PV1.1, PV1.6

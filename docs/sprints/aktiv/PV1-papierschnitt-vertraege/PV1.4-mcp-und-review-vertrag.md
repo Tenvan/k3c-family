@@ -3,7 +3,8 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
-- **Domäne:** INF
+- **Domäne:** PAP
+- **Modell:** opus
 - **Umgebung:** offline
 - **Branch:** pv1/4-mcp-und-review-vertrag
 - **Abhängig von:** PV1.3

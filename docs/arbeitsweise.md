@@ -86,9 +86,10 @@ Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten 
    sprint/<präfix>`), gilt der Stand der Sprint-Dateien dort (`git show origin/sprint/<präfix>:<Pfad>`), sonst der von
    `develop`. Die nächste Session ergibt sich aus dem **Rang** (`projekte/README.md`): aktives Projekt mit dem kleinsten
    Rang → seine aktiven Sprints in der Reihenfolge der Projekt-Tabelle → erste Session mit `Status: offen`,
-   `Agent: autonom` und erledigten Abhängigkeiten. Gibt es dort keine, kommt das Projekt mit dem nächsten Rang. Die **Domäne** der Session darf nicht gesperrt sein:
+   `Agent: autonom` und erledigten Abhängigkeiten. Gibt es dort keine, kommt das Projekt mit dem nächsten Rang. Die **Domäne** (bei gesetzter `Lane`: Domäne und Lane) der Session darf nicht gesperrt sein:
    Steht auf einem anderen Sprint-Branch (`git ls-remote --heads origin 'sprint/*'`) eine Session derselben Domäne auf
-   `in Arbeit`, die nächste passende Session nehmen. Gibt es keine: **nichts tun** und das melden.
+   `in Arbeit` und gleicher Lane oder ohne Lane (oder ist die eigene Session ohne Lane), die nächste passende Session nehmen
+   (Sperr-Regel: Abschnitt „Domänen“). Gibt es keine: **nichts tun** und das melden.
    **Kurzweg:** `plan_next` (k3c-workbench) trifft diese Auswahl aus den lokalen Dateien und liefert Session, Kriterien und
    „Parallel möglich“; je aktivem Sprint überlagert es den Stand von `origin/sprint/<präfix>` (lokaler Ref nach `git fetch`,
    Schritt 1 oben; fehlt der Ref, gilt der lokale Stand und die Antwort sagt das, B-519). Sprint-Branches, die lokal noch nicht
@@ -150,8 +151,10 @@ Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und
 Jede **Session** gehört zu **genau einer Domäne** (Feld `Domäne`) und ändert nur deren Dateien (plus Tests und Doku dazu).
 Ein Sprint darf Sessions mehrerer Domänen **nacheinander** enthalten (z. B. SIM → SRV → CLI); sein Feld `Domäne` nennt
 sie in der Reihenfolge der Sessions. Was eine Domäne außerhalb des Sprints braucht, wird ein Ticket.
-**Sperre:** Eine Session `in Arbeit` sperrt ihre Domäne; parallele Läufe arbeiten nur in verschiedenen Domänen
-(siehe Autonomer Ablauf, Schritt 1).
+**Sperre:** Eine Session `in Arbeit` **ohne** `Lane` sperrt ihre ganze Domäne; eine Session **mit** `Lane` sperrt nur
+Domäne **und** Lane (PV1.1). Eine Session ohne Lane ist gesperrt, sobald irgendeine Session derselben Domäne in Arbeit
+ist. Parallele Läufe derselben Domäne brauchen also verschiedene Lanes **und** disjunkte **Erlaubte Dateien**.
+Sessions **eines** Sprints laufen immer nacheinander (ein Sprint-Branch). Siehe Autonomer Ablauf, Schritt 1.
 
 | Kürzel | Domäne | Dateien |
 |---|---|---|
@@ -161,7 +164,13 @@ sie in der Reihenfolge der Sessions. Was eine Domäne außerhalb des Sprints bra
 | **CLI** | Client: Darstellung, HUD, Grafik, Audio, Verbindung | `src/scenes/`, `public/`, `src/online/client.ts`, `src/core/saveStore.ts` |
 | **PLAT** | Plattform: Eingabe, Shell, Seiten | `src/input/`, `src/core/shell.ts`, `src/core/fullscreen.ts`, `src/landing/`, `*.html`, Pages-Präsentation `site/` |
 | **INF** | Frameworks, Tooling, CI, Repo-Aufbau, Arbeitsweise | `package.json`, `go.mod`, `vite*.ts`, `tsconfig.json`, Lint-Konfiguration, `.github/`, `tests/projectRules.test.ts`, `tests/planning.test.ts`, `docs/arbeitsweise.md`, `docs/vorlagen/` |
+| **PAP** | Papierschnitt-Grafik (Entscheidung 005) | `tools/paper/`, `public/grafik/stil.paper.json`, `public/grafik/**/*.paper.json` samt den daneben gerenderten Ausgaben (PNG, `manifest.json`, Gruppen-Index), `data/asset-prompts.json`, `docs/standards/paper-*.md` |
 | **DEV** | Entwickler-Werkzeug | `tools/k3c-workbench/` (eigenes Go-Modul mit Oberfläche, MCP-Server), `tools/k3c-studio/` (Asset-Studio als eigenes Fenster: Backend in `tools/k3c-studio/backend`, Frontend in `tools/k3c-studio/frontend`; keine Seite des Spielservers, Entscheidung 004), `tools/assetkit/` (gemeinsame Asset-Logik von k3c-workbench und Asset-Studio), `cmd/k3c-load/`, `cmd/k3c-tui/`, Werkzeug-Seiten `src/tools/` |
+
+**Modell-Wahl** (Feld `Modell` der Session, Empfehlung für den ausführenden Agenten): `haiku` für reine Nachschlage-
+und Doku-Sessions, `sonnet` Standard für Umsetzung und Migration, `opus` für Verträge, Rig-Mathematik, Bild-Diff und
+Sprint-Reviews, `fable` nur auf Anweisung 🧑. Ohne Feld (oder `–`) gilt `sonnet`. Höchstens **vier Agenten** arbeiten
+gleichzeitig; `plan_next` schlägt neben der gewählten Session höchstens drei parallele vor.
 
 Grenzfälle:
 

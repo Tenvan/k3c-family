@@ -110,6 +110,7 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   öffnen“ ohne Spielserver, eigene Testspielstände); Frontend `tools/k3c-studio/frontend` (Build nach
   `tools/k3c-studio/frontend/dist/`, `task k3c-studio:frontend`); `task k3c-studio` bzw. `task k3c-studio:build` → `bin/k3c-studio.exe`,
   wie k3c-workbench mit gemerkter Größe und Position. Das Studio schreibt `data/**` und `public/`, der Server liest sie nur.
+  `tools/paper/` – Papierschnitt-Renderer und Verträge (Entscheidung 005), Aufruf `bun tools/paper/bin/paper.ts`.
   `tools/assetkit` – gemeinsame Asset-Logik von k3c-workbench und Studio (eigenes Go-Modul, per `replace` eingebunden). `tools/k3c-starter` – Windows-Starter für den Server (Wails-Fenster
   startet `bin/k3c-server`, zeigt Status und Adresse, EXE `bin/k3c-starter.exe`, `task k3c-starter:build`, B-041).
   `tools/webkit` – gemeinsame Oberflächen-Bausteine aller Wails-Frontends (k3c-workbench, Studio, Starter) als **Atomic Design** auf

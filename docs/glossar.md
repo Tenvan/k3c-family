@@ -128,9 +128,11 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Kristall | Material der Hub-Stufe 5 aus Adern in der Kristallhöhle; für Kristallmauer und Zaubertum. | `rules/materialien-gebaeude.md` § 1 |
 | Kristallhöhle | Stufe der Tiefe 4 (Biom `crystal`, geplant) mit Kristall-Adern, Lava und 3 Portalen. | `rules/stufen.md` § 1, Q28 |
 | Kupfer | Material der Hub-Stufe 3 aus Adern in der Mine und endlichem Kupfererz; für Kupfermauer und -turm, Schmiede, Heilplatz. | `rules/materialien-gebaeude.md` § 1 |
+| Lage | Eine Schicht eines Teils in der Paper-Spec: `flaeche` (Papierfläche), `falz` (Falzlinie) oder `punkt` (Tupfer); jede Lage nennt ein Papier-Material und optional einen Ton. | `standards/paper-spec.md`, PV1.3 |
 | Lager | Gebäude der Hub-Stufe 2: +300 Kapazität je Rohstoff für die Insel; Arbeiter bringen Material hierher oder zur Burg. | `rules/materialien-gebaeude.md` § 3.2 |
 | Landingpage | `index.html`: bleibt dauerhaft offen und zeigt alle anderen Seiten im Vollflächen-iframe, damit Vollbild auf der Xbox erhalten bleibt. | `CLAUDE.md` › Seiten & Navigation |
 | Landstreicher | Nicht rekrutierte Figur aus Camp oder Taverne; eine Münze (1 Gold) macht ihn zum Bauern. Wird nicht angegriffen; ein Bauer, der seine Münze verliert, wird Landstreicher und läuft zum Camp. | `rules/buerger.md` §§ 1, 3, Q67 |
+| Lane | Optionales Session-Feld: Kurzname eines Arbeitsstrangs in einer Domäne (z. B. `mcp`, `ui`). Sessions derselben Domäne mit verschiedener Lane und disjunkten Erlaubten Dateien laufen parallel; eine Session ohne Lane sperrt die ganze Domäne. | `arbeitsweise.md` › Domänen, PV1.1 |
 | Latenz | Zeit von einer gesendeten Eingabe (`seq`) bis zum ersten Zustand mit `ack` ≥ `seq`, Mittel und p95 über 60 s. Diagnose-Zeile „Latenz 62 ms (p95 110 ms)“, ohne Messung „Latenz –“. | B-181, `src/online/clientLatency.ts` |
 | Lauf-Editor | Bereich der Balancing-Seite, in dem ein Balancing-Lauf entsteht: Ausgangspunkt (leer, Beispiel, Basis-Lauf, Voreinstellung, Bericht), Szenario, Spieler und Bots, Umfang, Varianten, Vergleich und Name. Öffnet im Detailbereich, ersetzt das bisherige Formular. | B-661 |
 | Lauf-ID | Kennung `L<n>` eines Prüflaufs von `check_run`, der länger als ca. 45 s dauert und im Hintergrund weiterläuft; `check_run {run}` liefert Exit-Code und Fehlerzeilen. (Beim Testlauf `sim_test` heißt die Kennung des Laufs ebenfalls Lauf-ID.) | B-372, `tools/k3c-workbench/internal/mcpsrv/check_job.go` |
@@ -162,6 +164,9 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Nacht | Phase des Tageszyklus zwischen Dämmerung und Morgengrauen, Startwert 4 min; in der Oberwelt kommt eine Welle je Nacht. | `rules/wirtschaft.md` § 3, Q65 |
 | Niederlage-Modus | Raum-Option für den Fall einer Burg: Gold/Material-Verlust, Stufenverlust oder Komplett verloren (`defeat`: `resources`, `stage`, `lost`). | `rules/stufen.md` § 4 |
 | Oberwelt | Die Stufe der Tiefe 0, der Wald. | `rules/stufen.md` § 1 |
+| Paper-Spec | JSON-Datei `*.paper.json` je Asset: Rig-Typ, Teile mit Lagen, Animationen, Varianten, Ausgabe. Einzige Quelle der Papierschnitt-Grafik; geändert nur über MCP. | `docs/decisions/005-papierschnitt-assets-mcp.md`, B-699 |
+| Papier-Material | Benannte Papierfarbe der Stil-Datei mit drei Tönen (licht, basis, schatten), z. B. `koenigsrot`, `stein`. Nicht zu verwechseln mit dem Baumaterial der Insel (Material). | `public/grafik/stil.paper.json`, PV1.3 |
+| Papierschnitt | Grafikstil von K3C ab Entscheidung 005: Figuren und Gebäude aus flachen, leicht schattierten Papierteilen mit Falzen und Papierstruktur, gerendert aus Paper-Specs. | `docs/decisions/005-papierschnitt-assets-mcp.md`, B-699 |
 | Pixeldichte | Größe eines Quell-Pixels im Spiel, gemessen am 16-px-Raster (Q13). Assets mit gröberen oder feineren Pixeln wirken fremd, auch bei gleicher Palette. | B-331 |
 | Plantage | Wirkung der Baumschule: 6 Plätze, je Platz alle 30 s ein Baum mit 10 Holz, ohne Markierung; zählt nicht für „Alles abbauen“. | `rules/materialien-gebaeude.md` § 1, Q25 |
 | Platz-Stufe | Gespeicherte Stufe eines Bauplatzes im Spielstand v3 (`SiteSave`). | B-202, Q42 |
@@ -189,6 +194,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Revision | Zähler der Spec-Fassung; jede Änderung erhöht ihn und setzt die Spec auf `Entwurf` zurück. | `arbeitsweise.md` › SDD |
 | `revive` | Ereignis: Monarch steht nach der Wartezeit an der Burg wieder (Respawn). | `protocol.md` › Ereignisse, Q62 |
 | `revived` | Ereignis (geplant, B-120/W4.1, Protokoll mit W5): Monarch wurde von einem Mitspieler wiederbelebt. | Q62, B-120 |
+| Rig-Typ | Bauplan einer Paper-Spec mit Pflicht-Teilen und Pivots: `figur`, `vierbeiner`, `gebaeude`, `requisite`, `hintergrund`. | `standards/paper-spec.md`, PV1.3 |
 | Roden | Alle Bäume im Streifen eines Baumschul-Platzes fällen; erst danach ist die Baumschule kaufbar („erst roden“). Nachwachsende Plantage-Bäume zählen nicht. | `rules/materialien-gebaeude.md` § 3.3, B-636 |
 | RTT (Ping) | Umlaufzeit eines WebSocket-Pings vom Server zum Gerät und zurück, vom Server einmal je Sekunde gemessen (Messreihe je Gerät). Nicht die Latenz (die misst der Client über `ack`). | B-281, `engine/net/ping.go` |
 | Ruine | Gebautes, stark beschädigtes Nutzgebäude (25 % HP) an fester Lage eines geplanten Chunks, höchstens eine je Chunk; wirkt wie ein gebautes Gebäude seiner Art, ist Hub-neutral, wird von Bauern repariert und kehrt nach dem Burgfall zurück. Umsetzung WZ14. | `rules/geplante-chunks.md` § 8, B-468 |
@@ -225,17 +231,20 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Stein | Material der Hub-Stufe 2 aus Adern in der Höhle und endlichen Felsen; für Steinmauer und -turm, Tor, Kaserne, Lager, Taverne, Treppen. | `rules/materialien-gebaeude.md` § 1 |
 | Stellschraube | Ein Wert in `data/` (`datei.json:a.b.c`), der ein verletztes Balancing-Ziel verbessern soll; der Bericht nennt je Stellschraube den aktuellen Wert, einen Probierbereich (höchstens drei Schritte) und einen Startvorschlag und fasst gleiche Werte über mehrere Verletzungen zusammen. Andere Namen im Code: Hebel (`Lever`). | `insights_levers.go` |
 | Stil-Bibel | Dokument `docs/assets/stil-bibel.md`: Ziel-Palette, Pixeldichte, Outline- und Lichtregel, nach denen die Grafik-Pipeline Assets umrechnet. | B-331, GR8.2 |
+| Stil-Datei | Datei `public/grafik/stil.paper.json`: Papier-Materialien, Einzeltöne, Papier-Effekte (Schatten, Struktur, Falz), Licht und Proportionen; gilt für alle Paper-Specs. | `standards/paper-spec.md`, PV1.3 |
 | Streuung | Seed-abhängige Verschiebung der Linien 2–5 nur nach außen um 0 bis +4 ganze Units, je Seite und Linie, über einen eigenen RNG-Strom (`…:sites`). Linie 1 und Hub-Plätze streuen nicht. | Q56 (präzisiert Q50) |
 | Stufe | Ort einer Insel in einer Tiefe (0 Wald bis 4 Kristallhöhle) mit eigenem Hub, eigenen Wellen und Biom; pro Spieler frei begehbar, alle laufen weiter. Nicht verwechseln mit Hub-Stufe oder Material-Stufe. | `rules/stufen.md` § 1 |
 | Tag | Erste Phase des Tageszyklus, Startwert 6 min; Respec nur am Tag. Der Tageszähler springt schon mit dem Morgengrauen davor. | `rules/wirtschaft.md` § 3, Q65 |
 | Tagesanbruch (`dawn`) | Ende der Nacht bei Beginn des Morgengrauens: Ereignis `dawn` mit +5 Gold je lebendem Spieler, Taverne und Händler, Ende der Nacht-Events; kein Speichern (B-186); Gegner ziehen ab (fliehen nur in der Oberwelt). | `rules/wirtschaft.md` §§ 1, 3, `rules/gegner.md` § 3, Q10, Q65 |
 | Tageszyklus | Globaler Zyklus aus Tag, Dämmerung, Nacht, Morgengrauen (`day`, `dusk`, `night`, `dawn`) im Verhältnis 3:1:2:1, Startwert 6/2/4/2 min (14 min); läuft in allen Stufen. | `rules/wirtschaft.md` § 3, `data/biomes/forest.json` › `cycle`, `engine/sim/world_cycle.go`, Q65 |
 | Taverne | Gebäude der Hub-Stufe 2: bei jedem `dawn` ein Landstreicher, solange dort weniger als 2 stehen. | `rules/materialien-gebaeude.md` § 3.2, Q30 |
+| Teil | Bewegliches Stück einer Paper-Spec mit `id`, optionalem `eltern`, Pivot und Lagen (z. B. `oberarm-v`, `kopf`). | `standards/paper-spec.md`, PV1.3 |
 | Testlauf (`sim_test`) | Lauf über das MCP-Tool `sim_test` der Workbench für Balancing, Performance oder Stabilität, mit Lauf-ID, Status und Bericht unter `reports/`; jeder autonome Testlauf geht darüber. | B-348 |
 | Tick (Takt) | Ein Rechenschritt eines Raums; ein Raum tickt mit 30 Hz und schickt je Tick einen Zustand an jedes Gerät. | `protocol.md` › Nachrichten |
 | Ticket | Idee, Problem, Schuld oder Frage als Datei `docs/backlog/B-NNN-name.md` nach Vorlage, mit eigener Spec. | `arbeitsweise.md` › Ablage |
 | Tiefe | Index einer Stufe auf der Insel (0 = Wald); Gegner skalieren je Tiefe (`depthScaling`), im Protokoll `depth`. | `rules/stufen.md` § 1, `protocol.md` |
 | Tiefen-Eingang | Eingang am Ende einer Stufe zur nächsttieferen (2 s stehen); nach oben geht es nur über Treppen. | `rules/stufen.md` § 1, `game-design.md` |
+| Ton | Helligkeitsstufe eines Papier-Materials: `licht`, `basis` oder `schatten`; ohne Angabe gilt `basis`. | `standards/paper-spec.md`, PV1.3 |
 | Tor | Kein eigenes Gebäude mehr (B-652, BS12): Die äußerste gebaute Mauer einer Seite ist das Tor und wird wie jede Mauer ausgebaut; eigene Bürger und Spieler passieren, Gegner nicht. | Q27, Q54, B-652 |
 | Treppe | Hub-Platz (+16/+24) ab Hub-Stufe 2, verbindet mit der Stufe darüber bzw. darunter. Kosten je Tiefe: runter 100 Material der eigenen Stufe, hoch 100 Material der Stufe darüber, je + 50 Gold. | `rules/materialien-gebaeude.md` § 3.2, Q55, B-631 |
 | `troopLost` | Entfällt (Q69): Bürger sterben nicht; ersetzt durch `disarmed` und `equipmentTaken`. Früher geplant für fallende Kämpfer (Q39, Q64). | `rules/buerger.md` § 3, Q69 |

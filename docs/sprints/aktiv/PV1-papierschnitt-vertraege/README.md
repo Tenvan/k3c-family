@@ -1,8 +1,8 @@
-# PV1 · INF, DEV · Papierschnitt-Verträge: Domäne, Spec-Schema, Styleguide, Render-, MCP- und Review-Vertrag
+# PV1 · INF, DEV, PAP · Papierschnitt-Verträge: Domäne, Spec-Schema, Styleguide, Render-, MCP- und Review-Vertrag
 
 - **Status:** aktiv
 - **Projekt:** PAP
-- **Domäne:** INF, DEV
+- **Domäne:** INF, DEV, PAP
 - **Reife:** bereit
 - **Tickets:** B-699
 - **Start-Commit:** c81160d4
@@ -34,7 +34,7 @@ Kein Renderer-Code außer der resvg-Probe (RD1), keine MCP-Tools (MC1), keine Ob
 
 ## Regeln und Einschränkungen
 
-Verträge sind nach PV1 nur über ein Ticket änderbar. Feldnamen deutsch und ohne Umlaute in JSON-Schlüsseln (`hoehe_px`, `geaendert`). Domäne PAP gibt es erst nach PV1.1; PV1.3 läuft deshalb als INF und zählt ab Merge zu PAP.
+Verträge sind nach PV1 nur über ein Ticket änderbar. Feldnamen deutsch und ohne Umlaute in JSON-Schlüsseln (`hoehe_px`, `geaendert`). Domäne PAP gibt es seit PV1.1; PV1.6, PV1.3 und PV1.4 laufen als PAP.
 
 ## Beispiele
 
@@ -62,7 +62,7 @@ keine blockierende; vorab getroffene Entscheidungen (u. a. neue Abhängigkeiten 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| PV1.1 | `PV1.1-domaene-pap-und-lanes.md` | Umsetzung | autonom | offen |
+| PV1.1 | `PV1.1-domaene-pap-und-lanes.md` | Umsetzung | autonom | fertig |
 | PV1.2 | `PV1.2-plan-next-kennt-lanes.md` | Umsetzung | autonom | offen |
 | PV1.6 | `PV1.6-fixture-svg-export.md` | Umsetzung | autonom | offen |
 | PV1.3 | `PV1.3-spec-schema-stil-fixtures.md` | Umsetzung | autonom | offen |

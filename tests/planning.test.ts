@@ -4,7 +4,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  checkTemplate, DOCS, DOMAINS, ids, meta, none, read, sessionRows, sprints, title,
+  checkTemplate, DOCS, DOMAINS, ids, laneOk, meta, none, read, sessionRows, sprints, title,
 } from './planningDocs';
 
 /** Akzeptanzkriterien `- **AC-01** …` im gleichnamigen Abschnitt. */
@@ -111,6 +111,31 @@ describe('Sprints', () => {
   it('Fahrplan nennt jeden Sprint-Ordner', () => {
     const overview = read('sprints/README.md');
     for (const { state, dir } of sprints) expect(overview, `${state}/${dir}`).toContain(`${state}/${dir}/`);
+  });
+});
+
+describe('Optionale Session-Felder Lane und Modell (PV1.1)', () => {
+  /** Session nach Vorlage mit gültigen Werten; `extra` steht zwischen Domäne und Umgebung wie in der Vorlage. */
+  const session = (extra: string[]) => {
+    const head = ['Status: offen', 'Typ: Umsetzung', 'Agent: autonom', 'Domäne: PAP', ...extra,
+      'Umgebung: offline', 'Branch: x1/1-a', 'Abhängig von: –', 'Tickets: B-699', 'Kriterien: AC-01'];
+    const body = read('vorlagen/session.md').split(/^## /m).slice(1).map((s) => '## ' + s).join('');
+    const fields = head.map((f) => `- **${f.replace(': ', ':** ')}`).join('\n');
+    return `# X1.1 · Titel\n\n${fields}\n\n${body}`;
+  };
+
+  it('dürfen fehlen und sind einzeln oder gemeinsam gültig', () => {
+    expect(checkTemplate('session', session([]), 'ohne').Domäne).toBe('PAP');
+    expect(checkTemplate('session', session(['Lane: mcp', 'Modell: opus']), 'beide').Lane).toBe('mcp');
+    expect(checkTemplate('session', session(['Modell: sonnet']), 'nur Modell').Modell).toBe('sonnet');
+    expect(checkTemplate('session', session(['Lane: –']), 'Lane leer').Lane).toBe('–');
+  });
+
+  it('lehnen ungültige Werte und falsche Reihenfolge ab', () => {
+    expect(() => checkTemplate('session', session(['Lane: MCP!']), 'Lane')).toThrow();
+    expect(() => checkTemplate('session', session(['Modell: gpt']), 'Modell')).toThrow();
+    expect(() => checkTemplate('session', session(['Modell: opus', 'Lane: mcp']), 'Reihenfolge')).toThrow();
+    expect([laneOk('mcp'), laneOk('renderer-2'), laneOk('–'), laneOk('Ui'), laneOk('')]).toEqual([true, true, true, false, false]);
   });
 });
 

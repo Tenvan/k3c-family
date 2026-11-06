@@ -3,7 +3,8 @@
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
-- **Domäne:** INF
+- **Domäne:** PAP
+- **Modell:** sonnet
 - **Umgebung:** live
 - **Branch:** pv1/6-fixture-svg-export
 - **Abhängig von:** PV1.2
