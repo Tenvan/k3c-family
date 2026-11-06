@@ -660,7 +660,7 @@
   ],
   "ausgabe": {
     "hoehe_px": 192,
-    "rahmen": [-60, -175, 130, 181]
+    "rahmen": [-60, -175, 150, 181]
   },
   "animationen": {
     "angriff": {

@@ -112,3 +112,9 @@ Siehe Notizen; keine blockiert die Umsetzung (Defaults gelten bis PS1.1).
 | D-MC1-13 | Hashes in Antworten | `renderKey` und `stilHash` in voller Länge statt `9c…(64 Zeichen)` | gekürzt | MC1 | offen |
 | D-MC1-14 | Zweite CLI-Anbindung | `paperassets.CLI` (Zeitlimit 2 min, `K3C_PAPER_CLI`) neben `review.CLI`; Zusammenführung B-706 | sofort gemeinsamer Runner | MC1, RV1 | offen |
 | D-MC1-15 | Asset ohne Animation in `assets_preview` | Fehler mit leerer Animationsliste (RD1 kennt implizit `stand`, D-RD1-07) | `stand` als Standard | MC1, RD1 | offen |
+| D-MG3-01 | Animationen der Truppen | `idle` und `lauf` als Rig-Posen, `angriff` mit Keyframes (8 Frames, fps 14) für alle sechs Truppen | Frame-Zahlen der alten Sheets (4–7) | MG3, US1 | offen |
+| D-MG3-02 | Frame-Breite je Truppe | Rahmen nach Waffenreichweite: Bogenschützen 130, Landstreicher/Krieger/Elite-Krieger 150, Bauer (Heugabel) 185; Höhe einheitlich 181 | ein Rahmen für alle (Waffe wird abgeschnitten) | MG3, US1 | offen |
+| D-MG3-03 | Elite-Truppen | eigene Assets mit edleren Materialien (gold, koenigsrot), keine Varianten des Grundtyps | Variante mit Material-Tausch | MG3 | offen |
+| D-MG3-04 | Fehlende Materialien | Leinen als `haar` (Bauer), grauer Stoff als `stoff` (Landstreicher), Eisen als `stein`; kein neues Material | Lane `stil`: `leinen`, `eisen` | MG3, Lane stil | offen |
+| D-MG3-05 | Golden-Test der Gruppen | `tools/paper/golden/public.test.ts` erwartet „enthält figuren und reittiere“ statt genau diese zwei (jede MG-Gruppe brach den Test) | Liste je Sprint erweitern | MG3, MG* | offen |
+| D-MG3-06 | `task gen:paper` | schreibt alle Gruppen; fremde Gruppen (nur Zeilenenden) zurückgesetzt, nur `truppen` committet | `gen:paper <gruppe>` | MG3, MG* | offen |

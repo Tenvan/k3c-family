@@ -7,12 +7,36 @@
       "lauf.png": "d1eeaddd9976f8508a8d509b5f4322d7c6286954d6630a215272dd2a281be9a6"
     }
   },
-  "krieger": {
-    "renderKey": "150f43f406a0821089db1722e55431fbda1cdbd1b850684963272e2e3de6f74d",
+  "bogenschuetze": {
+    "renderKey": "72cd0a1fbfdda89301b0a0b3661181a76a69b2dbad59ae0f10c484e0d9c6640f",
     "dateien": {
-      "angriff.png": "aebcd37de61acc0e58db8f098e7535ee2cc9f601fcd53079001fe7303a7f9aec",
-      "idle.png": "60287a0aec7510b7ba1ac674f6cac333e39ed52fb5b2d7b8edd1d533a7a6ff5f",
-      "lauf.png": "452d857eaf8b58701a3eef588a182bf08245858d6aa2f6ccb63747b94e1f04ee"
+      "angriff.png": "1fea2648429afd4072d00c0a25b490a697048e3f8e7d79fbd7b074fa8a921026",
+      "idle.png": "adc708a26b4262d5e843a8d294d2a29c665d12ebd6a372cea0f1fb6ace5f2a52",
+      "lauf.png": "d27f60cdd668d8a57635fbf8648f3845ee73fe75271300bef967b7912725d129"
+    }
+  },
+  "elite-bogenschuetze": {
+    "renderKey": "bced3317a9c8a51035a403c42c49ce827b772f0619fcb317b6105736d0422664",
+    "dateien": {
+      "angriff.png": "54c9a80756339042186bf3f71763416920d39e4a979011280a5ce1dda20c7874",
+      "idle.png": "583518b1f4ebbf039aa0b32e00fa71d314d3c8416f24edb7724422bdf2105694",
+      "lauf.png": "08d849821f41a2937960ca07aafe05da64513124f69cad6649a0079beb90c58d"
+    }
+  },
+  "elite-krieger": {
+    "renderKey": "4cc70a659a5621cdec62fcbb5238c639809ce93517bea8b032341e9c9a7ba7b2",
+    "dateien": {
+      "angriff.png": "16d500bcd38370a2febde30ec63c9f2bb330c7f84811dbe845cc8c0b1929a05d",
+      "idle.png": "d2e8f515adec59346dc9482405dd4ab98f3d12f061681a53438fd0b5c0fbc739",
+      "lauf.png": "0b9c3bd10559ea58fb1032245f1cd9f39ea801d67433cba14ca5c3d6ff3d74ed"
+    }
+  },
+  "krieger": {
+    "renderKey": "80d60219c25ac9e58c83811736c358d35aab3f061592a5c21ca363015b1d7a5f",
+    "dateien": {
+      "angriff.png": "e9a79ec142fea582a984fdbadaee5d81a4df52d11a191b9fe0ca68bdee6950bb",
+      "idle.png": "9ffd9d30a86a79a5bc8add4957a96219dd146b1734f765cd67cfba5b022a0e6b",
+      "lauf.png": "158823d68837c9fa6ff5cddd25f7684044cf6925f499d185dd868ae01e310e9a"
     }
   },
   "landstreicher": {

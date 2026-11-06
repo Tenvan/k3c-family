@@ -65,7 +65,7 @@ keine (Defaults als D-MG3-Zeilen in B-701)
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | MG3.1 | `MG3.1-landvolk-krieger.md` | Umsetzung | autonom | fertig |
-| MG3.2 | `MG3.2-bogen-elite.md` | Umsetzung | autonom | offen |
+| MG3.2 | `MG3.2-bogen-elite.md` | Umsetzung | autonom | fertig |
 | MG3.3 | `MG3.3-review.md` | Review | autonom | offen |
 
 Reife Entwurf, Lane `truppen`; Zuschnitt beim Bereitmachen (je Session 3–6 Assets), dazu ein Review (Opus); keine Mensch-Session (Sichtprüfung in PS1). Umsetzung Sonnet.

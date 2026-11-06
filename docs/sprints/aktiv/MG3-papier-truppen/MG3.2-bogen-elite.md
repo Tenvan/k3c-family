@@ -1,6 +1,6 @@
 # MG3.2 · Bogenschütze, Elite-Bogenschütze und Elite-Krieger als figur
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -58,5 +58,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `assets_list {gruppe: truppen}` → alle sechs Assets gültig.
+- AC-02 geprüft: `task gen:paper` grün, `golden.json` mit allen sechs Truppen, `index.paper.json` vollständig; `bunx vitest run tools/paper` 187/187.
+- AC-03 geprüft: `assets_preview` je Asset idle, lauf und angriff; Bogen sitzt in der Hand und steht beim Spannen senkrecht, Köcher am Rücken, Elite an Gold und Rot erkennbar. Befund: Schwert von Krieger und Elite-Krieger ragte beim Zuschlag aus dem Frame → Rahmen 150 (Krieger mit erneutem Preview geprüft). `assets_review` → drei `neu`, krieger `geaendert` (nur Rahmen), kein roter Eintrag.
+- D-Zeilen: D-MG3-01 bis D-MG3-06 in B-701.
