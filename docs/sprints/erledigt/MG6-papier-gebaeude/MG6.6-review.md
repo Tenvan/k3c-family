@@ -1,6 +1,6 @@
 # MG6.6 · Sprint-Review MG6
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -53,5 +53,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **Review:** frischer Reviewer (Opus) über den Sprint-Diff: kein kritischer, 3 wichtige, 9 kleine Befunde.
+- **Behoben (wichtig):** Eisenbänder der Stufe 4 blieben in Stufe 5 sichtbar → Bänder in `stoff/schatten`, werden in Stufe 5 dunkler Kristall (mauer, tor, turm, werkstatt, schmiede, lager, ruestkammer, farm); Runenband am Tor als Falz unsichtbar → Fläche; Lagerfeuer nicht mittig → Feuerstelle und Grill mittig (Zahlziel), Zelt und Hütte links verkleinert, Holzstapel rechts. Alle mit Kontaktbogen geprüft.
+- **Zurückgestellt (klein):** D-MG6-08 in B-701 (u. a. leuchtende Fugen der Kristallstufe, 1–2 px über dem Rahmen, Taverne-Schild, Burg-Banner-Reste). D-MG6-07 neu bewertet (ungeprüft). MG6.1-Kriterien auf `gebaeude-paper` korrigiert.
+- **AC-01–AC-03 bestätigt:** 20 Assets gültig, `golden.json` und `index.paper.json` mit 20 Einträgen (Reviewer: SHA-256 gleich den PNGs); `assets_review` gegen HEAD ohne roten Eintrag.
+- **Prüfungen:** `task check` unter Last 2 rote Vitest-Tests, einzeln 3173/3173 grün; `task check:go` grün; `task check:race` lokal übersprungen (kein C-Compiler, 0,4 s).
+- **Merge:** `origin/feature/pap` (MG2, MG3) eingemergt; Golden-Test-Lockerung aus MG3 übernommen (D-MG6-06).

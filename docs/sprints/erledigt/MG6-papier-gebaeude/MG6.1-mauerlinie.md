@@ -37,14 +37,14 @@ Die alten Gebäude-JSONs (`gen:gebaeude`) bleiben bis CU1; kein Code in Renderer
 ## Schritte
 
 1. `assets_guide {rig: gebaeude}` lesen.
-2. Je Gebäude `assets_create` (Gruppe `gebaeude`), dann `assets_set` mit Basis-Teilen und `stufen` (4 Deltas).
+2. Je Gebäude `assets_create` (Gruppe `gebaeude-paper`), dann `assets_set` mit Basis-Teilen und `stufen` (4 Deltas).
 3. Jedes Gebäude mit `assets_preview` (Stufe 1) und jede weitere Stufe über die gerenderte Ausgabe ansehen; Befunde notieren und per `assets_set` beheben.
 4. `task gen:paper` (Golden, D-MG1-02), `assets_list`, `assets_review` gegen `HEAD`.
 5. `task check:diff`, Commit.
 
 ## Fertig, wenn
 
-- [ ] AC-01: `assets_list --gruppe gebaeude` meldet alle vier gültig.
+- [ ] AC-01: `assets_list --gruppe gebaeude-paper` meldet alle vier gültig.
 - [ ] AC-02: `golden.json` der Gruppe passt zur Ausgabe (`task test -- paper` grün).
 - [ ] AC-03: alle vier in allen Stufen angesehen, Befunde im Ergebnis; `assets_review` ohne roten Eintrag.
 

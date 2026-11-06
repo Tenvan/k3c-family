@@ -427,12 +427,14 @@
             {
               "art": "flaeche",
               "form": "M-90 -60L-82 -60L-82 -56L-90 -56Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "flaeche",
               "form": "M82 -60L90 -60L90 -56L82 -56Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "punkt",

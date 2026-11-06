@@ -1,6 +1,6 @@
 # MG6 · PAP · Papierschnitt-Migration: Gebäude mit Ausbaustufen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
@@ -71,11 +71,12 @@ keine (Defaults als D-MG6-Zeilen in B-701)
 | MG6.3 | `MG6.3-hub-staende-b.md` | Umsetzung | autonom | fertig |
 | MG6.4 | `MG6.4-burg-und-lager.md` | Umsetzung | autonom | fertig |
 | MG6.5 | `MG6.5-wirtschaft-und-wege.md` | Umsetzung | autonom | fertig |
-| MG6.6 | `MG6.6-review.md` | Review | autonom | offen |
+| MG6.6 | `MG6.6-review.md` | Review | autonom | fertig |
 
 Lane `gebaeude`, Umsetzung Sonnet, Review Opus; keine Mensch-Session (Sichtprüfung in PS1). MG6.1 legt Materialkette und Maß fest, danach sind MG6.2–MG6.5 unabhängig.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-07: AC-01–AC-03 erfüllt (MG6.1–MG6.5, Review MG6.6): 20 Gebäude als Papierschnitt in `public/grafik/gebaeude-paper/`, Golden eingetragen, `assets_review` ohne roten Eintrag.
+Behoben im Review: Eisenbänder in Stufe 5, Runenband Tor, Lagerfeuer mittig. Kleinbefunde zurückgestellt: D-MG6-08.
+Defaults D-MG6-01–D-MG6-08 in B-701; keine neuen Tickets. Sichtprüfung durch 🧑 in PS1.

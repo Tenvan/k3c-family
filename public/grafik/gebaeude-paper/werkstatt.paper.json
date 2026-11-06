@@ -454,12 +454,14 @@
             {
               "art": "flaeche",
               "form": "M-90 -70L-82 -70L-82 -66L-90 -66Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "flaeche",
               "form": "M30 -70L38 -70L38 -66L30 -66Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "punkt",

@@ -468,12 +468,14 @@
             {
               "art": "flaeche",
               "form": "M-20 -62L20 -62L20 -58L-20 -58Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "flaeche",
               "form": "M-20 -16L20 -16L20 -12L-20 -12Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "punkt",
@@ -558,9 +560,8 @@
               "ton": "licht"
             },
             {
-              "art": "falz",
-              "breite": 1.6,
-              "form": "M-28 -104L28 -104",
+              "art": "flaeche",
+              "form": "M-28 -105L28 -105L28 -103L-28 -103Z",
               "material": "gold",
               "ton": "licht"
             },

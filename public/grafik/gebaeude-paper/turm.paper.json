@@ -658,17 +658,20 @@
             {
               "art": "flaeche",
               "form": "M-36 -160L36 -160L36 -155L-36 -155Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "flaeche",
               "form": "M-36 -90L36 -90L36 -85L-36 -85Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "flaeche",
               "form": "M-48 -218L48 -218L48 -215L-48 -215Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "punkt",

@@ -1,10 +1,10 @@
 {
   "id": "tor",
   "version": 1,
-  "specHash": "c47767e445e34033833e48ba126879d6be95a261d565102a763504d798a200d7",
+  "specHash": "c7eb77861e08d680f6aa9037b498b811fedc08907ac34f67af3f9f4bb6113a5d",
   "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "f4d7aaf6a5d76c45269e32f13ff4e74a85050157d6370f66a25c26523091401b",
+  "renderKey": "3709816563dbf8b9db1339599cc1f5c0b4278b02ae50bf48c82c8f730301925d",
   "rahmen": [
     -32,
     -128,
@@ -43,7 +43,7 @@
       "fps": 8,
       "datei": "stand.s4.png",
       "hashes": [
-        "322ad53514563f5994aedf02ebfb450a5a9b4e18edde6aa055c17289e918b701"
+        "dccb3f8b0e870a5ace2d2b7580f47999522727a864bd8d708a3442ab203c8bc0"
       ]
     },
     "stand.s5": {
@@ -51,7 +51,7 @@
       "fps": 8,
       "datei": "stand.s5.png",
       "hashes": [
-        "de1e0f18710979f16d58df21b43a61a53f787510f31d11207cb626651d147f1e"
+        "82c16fabb52a8929e766893df3943364573fbc139f825eba0a3d49a5ad95ba66"
       ]
     }
   },

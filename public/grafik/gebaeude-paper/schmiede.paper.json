@@ -456,17 +456,20 @@
             {
               "art": "flaeche",
               "form": "M-84 -60L-77 -60L-77 -56L-84 -56Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "flaeche",
               "form": "M78 -60L85 -60L85 -56L78 -56Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "flaeche",
               "form": "M-78 -96L-60 -96L-60 -93L-78 -93Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "punkt",

@@ -1,10 +1,10 @@
 {
   "id": "ruestkammer",
   "version": 1,
-  "specHash": "d4aaf1ed982b0dc86ed88b0fa96b02769f747ec9c504339a8607fad3bbf698eb",
+  "specHash": "22aeda49bfc58ac0e6b772ebadb7ac0d167a6747b033896f1ef1de0b806ae578",
   "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "e3ae522ec4ea25505f565fb4417d292ee755afef8024271d0a22adc36460ecde",
+  "renderKey": "e823c0d5e2d85899cd3415c0eb9adc1111d1039c7a1b942b1b2dc70396aca94d",
   "rahmen": [
     -96,
     -128,
@@ -43,7 +43,7 @@
       "fps": 8,
       "datei": "stand.s4.png",
       "hashes": [
-        "87477dfdb88777177801de96b3cf4880d66427524c5b59e200632c4e5c852e15"
+        "b339de0898dd3a682b48ce9e19ee8b94cc43aec7b82192f36060274220bddc32"
       ]
     },
     "stand.s5": {
@@ -51,7 +51,7 @@
       "fps": 8,
       "datei": "stand.s5.png",
       "hashes": [
-        "7bdd0cace6cd37560bfb1a38cac15ea399c6095962f11f47863f27327b7d926d"
+        "0b9ed84eec476bf64ec389001f8280c38582196f80edd0dfabb53f09ffda4870"
       ]
     }
   },

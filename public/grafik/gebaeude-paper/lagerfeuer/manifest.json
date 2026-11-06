@@ -1,10 +1,10 @@
 {
   "id": "lagerfeuer",
   "version": 1,
-  "specHash": "fdca5e5c3d628d1acfe570f6f4699505cb20788ff40aa75593062a0d1652de0f",
+  "specHash": "b13c6661c3be7390453542db301796eb56e82b7652ddb0b5bf1b365f6b7ce1dd",
   "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "6623877c56053a55f289b8739054147b0125a2ca75fee4366b327282e08a403f",
+  "renderKey": "432e088471fc9af383eaac0cc52a9e2e56f6dc31b03ab42483d9eb13cdfca659",
   "rahmen": [
     -128,
     -160,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "e9fbda0880635320e7a1ac72d7db1537f9a24de5dbf5ec3cae119c920b1095f8"
+        "9346bcfd795792ba1f53671db6084068f5a605676b382368ac937b1bff0099c9"
       ]
     },
     "stand.s2": {
@@ -27,7 +27,7 @@
       "fps": 8,
       "datei": "stand.s2.png",
       "hashes": [
-        "52a445b581d78ce85f3becdb5a741e3255bf6614564f94722a5d54e7d8e6062c"
+        "e42bf53855f804d8ffcd80c4069340dbe48c604c36981bd0ee0a916fa0e3a1f6"
       ]
     },
     "stand.s3": {
@@ -35,7 +35,7 @@
       "fps": 8,
       "datei": "stand.s3.png",
       "hashes": [
-        "54a4234310000fc6c42910527d989b9c1254a975d748fab0ddd5840edaf7e531"
+        "46ab2eb9713ede86e403d68688a9407866b8c61d871518de77a9a27eff043537"
       ]
     }
   },

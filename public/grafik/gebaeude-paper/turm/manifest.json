@@ -1,10 +1,10 @@
 {
   "id": "turm",
   "version": 1,
-  "specHash": "d91b0e619848069e6cd8042363517f5590b778253e07f5580535855dd83ce145",
+  "specHash": "7baf2be4a0e031b5121d5935b507012602829cdf90adc6ac3f11f1e2ed8b1744",
   "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "efd4817219b3059f80bd92a4f7eb655ff22a0ab5d3968f10a9efe36e6b5481c0",
+  "renderKey": "0dafb0b2f7e95a48e0adbd52d04aa03b181053b955cf1b19008e937f7488a860",
   "rahmen": [
     -48,
     -256,
@@ -43,7 +43,7 @@
       "fps": 8,
       "datei": "stand.s4.png",
       "hashes": [
-        "75d4ac3024a07fa8cc80cd3a19a2061253b148c5b0ed010c30e06b34ce282c2d"
+        "f66ddf8f5dbac6a40a73b5a5c73e3db4bbde54033b9e3308c5778afb1b84a5ea"
       ]
     },
     "stand.s5": {
@@ -51,7 +51,7 @@
       "fps": 8,
       "datei": "stand.s5.png",
       "hashes": [
-        "dad506c89f03453d060806bc4b9857a7f6beb2b237d17d2277e62a7bdf0ad570"
+        "42f88dd669dce3760ced8f443f60873893119538aa88cff13bdc83b6a0de33d8"
       ]
     }
   },

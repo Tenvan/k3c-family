@@ -18,13 +18,13 @@
     }
   },
   "farm": {
-    "renderKey": "8d1b9499416f361948bd6a8f70acc7001813b37f8c2b015cb16d131a4b37dc66",
+    "renderKey": "68cc4a94d94d1c3f46720194221624a2f2c64d5b29402a250a135d04a24aa1bc",
     "dateien": {
       "stand.png": "548023847bb55071c1c2699ffcb5a442c19b33e7bceaf0555e7dd4ae1b7aea2a",
       "stand.s2.png": "b06aa7adb7ac2adbc0c4de2fedd12bd08f76573b2f438b390a3273a6ef63904f",
       "stand.s3.png": "16da55a11dc8e2de7c3b8fca0c1282f3214feb897dd05e5eb40cdf7684686dbb",
-      "stand.s4.png": "757ae22538d884c34c6892fb51932397d35fa00d806b9eec7bff097a92e592b6",
-      "stand.s5.png": "926371f9b92289577f1c1ccbd8e8d38e3c64034f06665c7714c577b377e47f09"
+      "stand.s4.png": "c9888a46cccfb6dc23605856ea695d81bb0280c4d93e5b3ddd89363c12f5a0a0",
+      "stand.s5.png": "554cca4d7d53b893af05886449a47ac6300889b5aab63191e69d5b1f5fcec840"
     }
   },
   "hafen": {
@@ -64,31 +64,31 @@
     }
   },
   "lager": {
-    "renderKey": "a492f9d9f54899d64114ba8b32941d87b794257b12ea494b924f75e407c87f2c",
+    "renderKey": "9d5b26eefab50423d7d5ad47f586cc73ff431fb8e86f1f334d7888c15200e82e",
     "dateien": {
       "stand.png": "d5b5a332bcd9cb1f4b8c564b07290557cf74b662ea6042b127598d9dae56acfd",
       "stand.s2.png": "9d8bab25915520457740dc0bb07e62a2921bd13174ce06e7be34589927fc2bab",
       "stand.s3.png": "009044e6eff943a68be32de5cea429b8d8eeef7ce0ac95c5b4d3c1e709ca5f2c",
-      "stand.s4.png": "dabc0e860b28cdbd7532c07218be343555446bf405a736a317665589f34bf237",
-      "stand.s5.png": "4339db1455ebd08220feea1a6dda105499f463ed270161b684f332332d760f02"
+      "stand.s4.png": "0bf6ca734994e5e28151bc897fa90a1b4749dd2348100dff3f9dc9ebb6fd817b",
+      "stand.s5.png": "179c2aaa3b5cab5319955fbcff61298e0128c8449a36781835049a945972e80d"
     }
   },
   "lagerfeuer": {
-    "renderKey": "6623877c56053a55f289b8739054147b0125a2ca75fee4366b327282e08a403f",
+    "renderKey": "432e088471fc9af383eaac0cc52a9e2e56f6dc31b03ab42483d9eb13cdfca659",
     "dateien": {
-      "stand.png": "75802308220d3b8e6e70a9b3ac40edb82e3df418ff62d1a7db5a442567300e0d",
-      "stand.s2.png": "81545c358343eb70eec60ab8455ecacd22f7cb1037436244611c5738a4236145",
-      "stand.s3.png": "1760a59b6650acaba1e57af7a43562bbac5724ba0bdf16a25ffc1d61bbbbc224"
+      "stand.png": "7ed5466d583aa58fa15ffe652d2d60079913a7acbee65bb3f030aa5f5912817a",
+      "stand.s2.png": "63f1cce5621ae5645823913758f5d01ab288ac33e0dd8a13e64e0918a1ac6985",
+      "stand.s3.png": "efc2547aa44dea55666021ca68b1540fe0babfa02a2988165166359e63f7826e"
     }
   },
   "mauer": {
-    "renderKey": "2c5383feee5084517c0c19fefccbad365b5937f4db6dd05dd070debc74a986db",
+    "renderKey": "bbb0467df8b72bd09f288d855ca731071422e2712685832a2f99cb46dee6e8bb",
     "dateien": {
       "stand.png": "1f43733d8a1320ff5e0ab69ef42e9139f9b98cb4f4cbaef5643c2b20859080c1",
       "stand.s2.png": "a2edd00feb5f088b05886b3dea55f1950f6a7f2b7e0eb58a413001441f13e4e7",
       "stand.s3.png": "6932dd9dbd5000f7ad8517b03297f23fab75f42b882c306f35a033be195e9f28",
-      "stand.s4.png": "08c6ca82b685ce8528f12157c960464bfd84a95ba3c8a1cf77e9d4aee8adf547",
-      "stand.s5.png": "f3d0688eb1666a07bc9ffb5ed509d79f0ef77bb948ae73f649f0c29608f1feea"
+      "stand.s4.png": "f5a4bbc0f66a7968c8ac6496fd9387ca4edc049a38d6a628b4a8f12c95d9fe20",
+      "stand.s5.png": "e18f150de6a771591a58a9b0b257d1135fcf1b923f99953278f5b78da5fe530d"
     }
   },
   "rekrutierungslager": {
@@ -100,13 +100,13 @@
     }
   },
   "ruestkammer": {
-    "renderKey": "e3ae522ec4ea25505f565fb4417d292ee755afef8024271d0a22adc36460ecde",
+    "renderKey": "e823c0d5e2d85899cd3415c0eb9adc1111d1039c7a1b942b1b2dc70396aca94d",
     "dateien": {
       "stand.png": "609d57770e2c7ecd1a32cef6fd88495c6f05542406e0b364fe83cf9d1747cea5",
       "stand.s2.png": "f2e6fa6973af0618f8d0cfa16cefa2c8307ce05c07beb33497d327824ca1ec79",
       "stand.s3.png": "850d2b80a6db5b26d659934892a029e4a89981b302fdb26ffd56a0b15a5ce75b",
-      "stand.s4.png": "70d8167df9c5074c0bcedc2a895d9c9a5e99ded066a6d8ba7ff2cd3bc4d6419b",
-      "stand.s5.png": "1d13ec6161eaa3a306e7f6bbf9a797335a80b2cb6530957e2c99ffe711288ef3"
+      "stand.s4.png": "35f8e3e77ea548ec84f2861fdd87da930572c2d2f9449cc4fc5b81a1893d2c39",
+      "stand.s5.png": "c226cb296329234e12e439f63d883bc2e9640301d0d4748b2f0d326bc2da8947"
     }
   },
   "schiff": {
@@ -118,13 +118,13 @@
     }
   },
   "schmiede": {
-    "renderKey": "9f3723e16cc9037892ba4512c411b8ba30ca6a3ee685cd79da380b81854cb111",
+    "renderKey": "fca4dbaf0bbfbdfa3dce5b036154362f4d4597779af8bb52b186e703a030b6b5",
     "dateien": {
       "stand.png": "6ec0c5a8249bfb500e34eee35063b799d201c77609d4b5d92e7e44d504cd5fb0",
       "stand.s2.png": "1b192247c0ffe0d83635d7d52ad3c13aaea448a0e4077bfe70747f1aed97913a",
       "stand.s3.png": "d80fdbc50dcf0be3ac2b6a9c5e4fe011213bfbe909870b26106999c9a08503a0",
-      "stand.s4.png": "c02ce7eebcfcdaba0f4ed202c4214a0f87a6a6928add33be494e1f47f58bb999",
-      "stand.s5.png": "eba1ae9b657abe594f7f98feda298991549fbe4bec66cd05c5a072f6be441ba4"
+      "stand.s4.png": "03c0b14a1041ac2f78f4af06727aa6af85f0d928ef9c915184e5fa148206ed48",
+      "stand.s5.png": "61beadf310e1934f10bad2997c01b47a2cbb6d7474ebc237267ac075d6146510"
     }
   },
   "taverne": {
@@ -138,13 +138,13 @@
     }
   },
   "tor": {
-    "renderKey": "f4d7aaf6a5d76c45269e32f13ff4e74a85050157d6370f66a25c26523091401b",
+    "renderKey": "3709816563dbf8b9db1339599cc1f5c0b4278b02ae50bf48c82c8f730301925d",
     "dateien": {
       "stand.png": "2cba2b2e4770409d4072b6761c751edabca3be48e13aa059b6bda72b551d6424",
       "stand.s2.png": "87137b485a7f0afd04d7de8d0b51eadb54cf525e07518f2220e5424d8d689608",
       "stand.s3.png": "19443e426e31d3d3401551883f7566f8704dc3c94cfec75b99b4888d2d196cfc",
-      "stand.s4.png": "d50b015216e44f14abbc42a0a1dc7464e1ecd4d6cee04797804d0992db17bd24",
-      "stand.s5.png": "6ce673b55dca4da12cebe08ee3b66ca9f50b0bbbfd7593ce134c99755a199fb2"
+      "stand.s4.png": "986a26b2e778b556fc907bad21be695d9fac52ff9520b037d6da9a36e3c67f64",
+      "stand.s5.png": "aba42060bbc2c9bd0381db0bcbbeafe4ec0052f2c2e211252364c44ea9b212ea"
     }
   },
   "treppe-hoch": {
@@ -160,23 +160,23 @@
     }
   },
   "turm": {
-    "renderKey": "efd4817219b3059f80bd92a4f7eb655ff22a0ab5d3968f10a9efe36e6b5481c0",
+    "renderKey": "0dafb0b2f7e95a48e0adbd52d04aa03b181053b955cf1b19008e937f7488a860",
     "dateien": {
       "stand.png": "6069e8d723b2cdb3775f15922a80ed233cde4ce5615fc380bfc322501b287d0d",
       "stand.s2.png": "1c5cafa8ecf25602b9c611584c8533c1497aad4531a392dd6e9ee058ccc81765",
       "stand.s3.png": "77dbfcc2f6f354abd6778e792bdb2b237669be9e425540c408f301a2c6dbad13",
-      "stand.s4.png": "d8dd18cb4251c545acd3ee217dcf4d3a715ef52dfc123886506e059b6f99c9e2",
-      "stand.s5.png": "1c293af1ae0068ebaae3901e072bc41b4779affb93299fce9d11262356c5b38c"
+      "stand.s4.png": "ba619e908718461f059307530908163a1e7deb54d1e31afdea42187522909a19",
+      "stand.s5.png": "b92d21a7848ca24070162b2aa37fe5201efdf3025b9a21f1a2a9feeb7ee5d8c0"
     }
   },
   "werkstatt": {
-    "renderKey": "8c06f6700cae3eba516a7a058e4951fae5b6aa5f66b56dab462062b117d7c25d",
+    "renderKey": "dea76ad06ad5f108e66fd4bcd8ebea4c0bf7824c58eed98ddc9793e48808f42e",
     "dateien": {
       "stand.png": "ef465f81c949e4ee6349adf3aa9f0d2d6cb32da9fb3392ba447c7b27ff055d88",
       "stand.s2.png": "9a76fa50e2b5373ebc996269d4d6a517d8f5ca0376dda596dca7e0ae601e35e3",
       "stand.s3.png": "7bcd38a88b7cc1f415a43711854d2414362c51072fe4aead2b34aa590ca14fbd",
-      "stand.s4.png": "983906e58415483f3cd8d72496e8056360cba00a66c02cdece3101a7a0096d6e",
-      "stand.s5.png": "3c5d5ab6861558778edf0605703ed9e2637756c07f03c75409faa5ca48161731"
+      "stand.s4.png": "7ec86b38a35e2caa360371f646f60e30268252f1eb7d3d50e65c71384192f300",
+      "stand.s5.png": "464e36c5d122bdf6187f7b153ccdf7a0fc80227d0b348be1bc704e1d6f40443e"
     }
   }
 }

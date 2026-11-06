@@ -304,12 +304,14 @@
             {
               "art": "flaeche",
               "form": "M-64 -34L-58 -34L-58 -31L-64 -31Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "flaeche",
               "form": "M26 -34L32 -34L32 -31L26 -31Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "punkt",

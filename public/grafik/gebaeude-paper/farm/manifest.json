@@ -1,10 +1,10 @@
 {
   "id": "farm",
   "version": 1,
-  "specHash": "7aab77a8ef92c2019f77e3583bae5b84ec6d2af3b12b4be0f85f065224ae797c",
+  "specHash": "dd87f260aad397229ccf3543ce15acd5fcc4fcc80cf06606dc6d0da5aceca224",
   "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "8d1b9499416f361948bd6a8f70acc7001813b37f8c2b015cb16d131a4b37dc66",
+  "renderKey": "68cc4a94d94d1c3f46720194221624a2f2c64d5b29402a250a135d04a24aa1bc",
   "rahmen": [
     -64,
     -96,
@@ -43,7 +43,7 @@
       "fps": 8,
       "datei": "stand.s4.png",
       "hashes": [
-        "2ac9ffa2f7b7e3d6d40260b0e633e90504feebc0e9784dbc78d7ecdf1b49b2ce"
+        "8354515374e7c4a0be28bbe3f3d7b6c1cc61e45f72099a342a7cf47b2ff4efa8"
       ]
     },
     "stand.s5": {
@@ -51,7 +51,7 @@
       "fps": 8,
       "datei": "stand.s5.png",
       "hashes": [
-        "333c6af2119c52d693396aef5825025bde4d326816d04dd9ca1d327046b58051"
+        "f114861c5a2501a789763e1c1766453bc205419715fa0cbf3f0da790d51bf2c4"
       ]
     }
   },

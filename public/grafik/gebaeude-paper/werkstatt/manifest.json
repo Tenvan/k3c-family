@@ -1,10 +1,10 @@
 {
   "id": "werkstatt",
   "version": 1,
-  "specHash": "c543ec202f9e5c4b699129d18db84f5297166adda059f4aea561fd582d8769ae",
+  "specHash": "f7d31d35ecf152bd5f21b1e8ca1f65bcce19d50cfe5d707379949b893d89685b",
   "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "8c06f6700cae3eba516a7a058e4951fae5b6aa5f66b56dab462062b117d7c25d",
+  "renderKey": "dea76ad06ad5f108e66fd4bcd8ebea4c0bf7824c58eed98ddc9793e48808f42e",
   "rahmen": [
     -96,
     -128,
@@ -43,7 +43,7 @@
       "fps": 8,
       "datei": "stand.s4.png",
       "hashes": [
-        "21daf079f2a72e0c887c313c50f4cfefc213cc01a896d68a160eb5a8d86d9ed1"
+        "817ae2bb541661f7c930bd1542397354ba1466a5ef931c0950c19b5cd41a28fa"
       ]
     },
     "stand.s5": {
@@ -51,7 +51,7 @@
       "fps": 8,
       "datei": "stand.s5.png",
       "hashes": [
-        "c41753baaea4be14268cc1c59ccf6ca99da617d685ab3156484d36c3c611607e"
+        "0d42b50d5b1a1752c05612edbbb4c2a3920a770d507fe9177870562116721053"
       ]
     }
   },

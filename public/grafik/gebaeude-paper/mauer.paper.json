@@ -387,12 +387,14 @@
             {
               "art": "flaeche",
               "form": "M-15 -112L15 -112L15 -107L-15 -107Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "flaeche",
               "form": "M-15 -56L15 -56L15 -51L-15 -51Z",
-              "material": "maehne"
+              "material": "stoff",
+              "ton": "schatten"
             },
             {
               "art": "punkt",

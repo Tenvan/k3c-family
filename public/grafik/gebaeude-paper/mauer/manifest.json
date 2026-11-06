@@ -1,10 +1,10 @@
 {
   "id": "mauer",
   "version": 1,
-  "specHash": "2dca41953bb3583eff827309f5f916e75c018456a0d2c6110a672798b391a8ce",
+  "specHash": "4a83b5b16e5284351002c0e4ddff0b95c24abaa5368b5e4cdfd9bc7b3e006c40",
   "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "2c5383feee5084517c0c19fefccbad365b5937f4db6dd05dd070debc74a986db",
+  "renderKey": "bbb0467df8b72bd09f288d855ca731071422e2712685832a2f99cb46dee6e8bb",
   "rahmen": [
     -16,
     -160,
@@ -43,7 +43,7 @@
       "fps": 8,
       "datei": "stand.s4.png",
       "hashes": [
-        "188ee63a1f650b570e157c880997bd6c9ac59ef689f22f4d68be97c83795d198"
+        "25c4e339c698734bb52ea2960285e14aed0bc0bbcb998d408d9d53195cb7d676"
       ]
     },
     "stand.s5": {
@@ -51,7 +51,7 @@
       "fps": 8,
       "datei": "stand.s5.png",
       "hashes": [
-        "752157e20be544dbe08ebd8ed0d015f7122ffd86c676e68f27a95379dd2b84c3"
+        "b977825074d0d341892d0f848692b7119f8069b03fa970ccf3ef9f98e515c7fa"
       ]
     }
   },
