@@ -4,6 +4,7 @@ import { reviewApi } from './api';
 import { text } from './fehlertext';
 import { BasisSelect } from './BasisSelect';
 import { Compare } from './Compare';
+import { PromptButtons } from './PromptButtons';
 import { ReviewList } from './ReviewList';
 import type { Review } from './types';
 
@@ -48,7 +49,12 @@ export function ReviewPage() {
       {review && (
         <Flex gap="4" align="start">
           <ReviewList assets={review.assets} auswahl={auswahl} onSelect={setAuswahl} />
-          {eintrag && <Compare key={`${eintrag.id}@${review.basis}`} asset={eintrag} basis={review.basis} />}
+          {eintrag && (
+            <Flex key={`${eintrag.id}@${review.basis}`} direction="column" gap="4">
+              <Compare asset={eintrag} basis={review.basis} />
+              <PromptButtons asset={eintrag} basis={review.basis} />
+            </Flex>
+          )}
         </Flex>
       )}
     </Flex>

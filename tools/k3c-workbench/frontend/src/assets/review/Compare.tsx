@@ -1,8 +1,9 @@
 import { Box, Button, Flex, Text, ValueSlider } from '@webkit/atoms';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { type Animation, AnimationSync } from './AnimationSync';
 import { reviewApi } from './api';
-import { text } from './fehlertext';
 import { Boxes, pngGroesse } from './Boxes';
+import { text } from './fehlertext';
 import type { Box as Rahmen, Frame, PixelDiff, ReviewAsset } from './types';
 
 interface Stand {
@@ -10,32 +11,40 @@ interface Stand {
   fehler?: string;
 }
 
-/** Erste Animation der Spec im Arbeitsstand; gelöschte Assets gibt es dort nicht (leer = erste der Basis, RV1.2). */
-function useAnimation(asset: ReviewAsset): string | undefined {
-  const [anim, setAnim] = useState<string>();
+/** Animationen der Spec im Arbeitsstand; gelöschte Assets gibt es dort nicht (leer = erste der Basis, RV1.2). */
+function useAnimationen(asset: ReviewAsset): Animation[] | undefined {
+  const [liste, setListe] = useState<Animation[]>();
   useEffect(() => {
     let aktiv = true;
-    setAnim(undefined);
-    if (asset.status === 'geloescht') setAnim('');
-    else reviewApi.get(asset.id).then((s) => aktiv && setAnim(Object.keys(s.animationen ?? {})[0] ?? ''), () => aktiv && setAnim(''));
+    setListe(undefined);
+    const leer = [{ name: '', frames: 1, fps: 8 }];
+    if (asset.status === 'geloescht') setListe(leer);
+    else
+      reviewApi.get(asset.id).then(
+        (s) => aktiv && setListe(Object.entries(s.animationen ?? {}).map(([name, a]) => ({ name, frames: a.frames, fps: a.fps ?? 8 }))),
+        () => aktiv && setListe(leer),
+      );
     return () => {
       aktiv = false;
     };
   }, [asset.id, asset.status]);
-  return anim;
+  return liste;
 }
 
-/** Lädt einen Frame (Basis oder Arbeitsstand) und merkt den Fehlertext. */
-function useFrame(id: string, anim: string | undefined, nr: number, basis: string | null): Stand {
+/** Lädt einen Frame (Basis oder Arbeitsstand) über den Cache der Ansicht; das alte Bild bleibt bis zum neuen stehen. */
+function useFrame(cache: Map<string, Promise<Frame>>, id: string, anim: string | undefined, nr: number, basis: string | null): Stand {
   const [stand, setStand] = useState<Stand>({});
   useEffect(() => {
     if (anim === undefined || basis === null) return setStand({});
+    const key = `${id}|${anim}|${nr}|${basis}`;
+    let p = cache.get(key);
+    if (!p) cache.set(key, (p = reviewApi.frame(id, anim, nr, '', basis)));
     let aktiv = true;
-    reviewApi.frame(id, anim, nr, '', basis).then((frame) => aktiv && setStand({ frame }), (e) => aktiv && setStand({ fehler: text(e) }));
+    p.then((frame) => aktiv && setStand({ frame }), (e) => aktiv && setStand({ fehler: text(e) }));
     return () => {
       aktiv = false;
     };
-  }, [id, anim, nr, basis]);
+  }, [cache, id, anim, nr, basis]);
   return stand;
 }
 
@@ -44,7 +53,7 @@ function Seite({ titel, stand }: { titel: 'Vorher' | 'Nachher'; stand: Stand }) 
     <Flex direction="column" gap="1" align="center">
       <Text size="1" color="gray">{titel}</Text>
       {stand.frame && <img alt={titel} src={stand.frame.bild} style={{ maxHeight: 240, imageRendering: 'pixelated' }} />}
-      {stand.fehler && <Text size="1" color="red">{stand.fehler}</Text>}
+      {stand.fehler && <Text size="1" color="red">{titel === 'Vorher' ? `Frame fehlt in der Basis: ${stand.fehler}` : stand.fehler}</Text>}
     </Flex>
   );
 }
@@ -66,25 +75,34 @@ function Stapel({ vorher, nachher, blend, diff, teile }: { vorher?: Frame; nachh
   );
 }
 
-/** Vorher/Nachher eines Review-Eintrags mit Überblendregler, Pixel-Diff-Overlay und markierten geänderten Teilen. */
-export function Compare({ asset, basis, frame = 0 }: { asset: ReviewAsset; basis: string; frame?: number }) {
-  const anim = useAnimation(asset);
-  const vorher = useFrame(asset.id, anim, frame, asset.status === 'neu' ? null : basis);
-  const nachher = useFrame(asset.id, anim, frame, asset.status === 'geloescht' ? null : '');
-  const [blend, setBlend] = useState(50);
-  const [zeigeDiff, setZeigeDiff] = useState(false);
-  const [diff, setDiff] = useState<PixelDiff>();
-  const [diffFehler, setDiffFehler] = useState('');
+/** Pixel-Diff des aktuellen Frames, nur bei geänderten Assets und eingeschaltetem Schalter. */
+function useDiff(asset: ReviewAsset, anim: string | undefined, nr: number, basis: string, an: boolean) {
+  const [diff, setDiff] = useState<{ wert?: PixelDiff; fehler?: string }>({});
   useEffect(() => {
-    setDiff(undefined);
-    setDiffFehler('');
-    if (!zeigeDiff || anim === undefined || asset.status !== 'geaendert') return;
+    setDiff({});
+    if (!an || anim === undefined || asset.status !== 'geaendert') return;
     let aktiv = true;
-    reviewApi.pixelDiff(asset.id, anim, frame, basis).then((d) => aktiv && setDiff(d), (e) => aktiv && setDiffFehler(text(e)));
+    reviewApi.pixelDiff(asset.id, anim, nr, basis).then((wert) => aktiv && setDiff({ wert }), (e) => aktiv && setDiff({ fehler: text(e) }));
     return () => {
       aktiv = false;
     };
-  }, [zeigeDiff, asset.id, asset.status, anim, frame, basis]);
+  }, [an, asset.id, asset.status, anim, nr, basis]);
+  return diff;
+}
+
+/** Vorher/Nachher eines Review-Eintrags: synchron abspielbar, mit Überblendregler, Pixel-Diff-Overlay und markierten Teilen. */
+export function Compare({ asset, basis }: { asset: ReviewAsset; basis: string }) {
+  const animationen = useAnimationen(asset);
+  const [gewaehlt, setAnim] = useState<string>();
+  const anim = animationen === undefined ? undefined : (gewaehlt ?? animationen[0]?.name ?? '');
+  const [nr, setNr] = useState(0);
+  const [spielt, setSpielt] = useState(false);
+  const cache = useRef(new Map<string, Promise<Frame>>()).current;
+  const vorher = useFrame(cache, asset.id, anim, nr, asset.status === 'neu' ? null : basis);
+  const nachher = useFrame(cache, asset.id, anim, nr, asset.status === 'geloescht' ? null : '');
+  const [blend, setBlend] = useState(50);
+  const [zeigeDiff, setZeigeDiff] = useState(false);
+  const diff = useDiff(asset, anim, nr, basis, zeigeDiff);
   const rahmen = (nachher.frame ?? vorher.frame)?.teile ?? {};
   const teile = asset.teile.filter((t) => rahmen[t]).map((t): [string, Rahmen] => [t, rahmen[t]!]);
   return (
@@ -93,7 +111,8 @@ export function Compare({ asset, basis, frame = 0 }: { asset: ReviewAsset; basis
         {asset.status !== 'neu' && <Seite titel="Vorher" stand={vorher} />}
         {asset.status !== 'geloescht' && <Seite titel="Nachher" stand={nachher} />}
       </Flex>
-      <Stapel vorher={vorher.frame} nachher={nachher.frame} blend={blend} diff={zeigeDiff ? diff : undefined} teile={teile} />
+      {animationen && anim && <AnimationSync animationen={animationen} anim={anim} nr={nr} spielt={spielt} onAnim={setAnim} onNr={setNr} onSpielt={setSpielt} />}
+      <Stapel vorher={vorher.frame} nachher={nachher.frame} blend={blend} diff={zeigeDiff ? diff.wert : undefined} teile={teile} />
       <Flex gap="3" align="center">
         <Box style={{ width: 200 }}>
           <ValueSlider aria-label="Überblendung" value={blend} min={0} max={100} step={5} onChange={setBlend} />
@@ -101,8 +120,8 @@ export function Compare({ asset, basis, frame = 0 }: { asset: ReviewAsset; basis
         <Button size="1" variant={zeigeDiff ? 'solid' : 'soft'} aria-pressed={zeigeDiff} disabled={asset.status !== 'geaendert'} onClick={() => setZeigeDiff((z) => !z)}>
           Unterschiede
         </Button>
-        {diff && <Text size="1" color="gray">{Math.round(diff.anteil * 1000) / 10} % der Pixel</Text>}
-        {diffFehler && <Text size="1" color="red">{diffFehler}</Text>}
+        {diff.wert && <Text size="1" color="gray">{Math.round(diff.wert.anteil * 1000) / 10} % der Pixel</Text>}
+        {diff.fehler && <Text size="1" color="red">{diff.fehler}</Text>}
       </Flex>
     </Flex>
   );

@@ -1,4 +1,5 @@
 import { Badge, CardButton, Flex, Strong, Text } from '@webkit/atoms';
+import { felderText } from './prompt';
 import type { ReviewAsset, ReviewStatus } from './types';
 
 const STATUS: Record<ReviewStatus, { text: string; farbe: 'red' | 'amber' | 'green' | 'gray' }> = {
@@ -8,10 +9,6 @@ const STATUS: Record<ReviewStatus, { text: string; farbe: 'red' | 'amber' | 'gre
   geloescht: { text: 'gelöscht', farbe: 'gray' },
 };
 
-const wert = (v: unknown) => (typeof v === 'string' ? v : JSON.stringify(v));
-
-/** Feldänderungen kurz: `pfad: alt → neu`. */
-export const felderText = (a: ReviewAsset) => a.felder.map((f) => `${f.pfad}: ${wert(f.alt)} → ${wert(f.neu)}`).join('; ');
 
 function Eintrag({ asset, aktiv, onSelect }: { asset: ReviewAsset; aktiv: boolean; onSelect: () => void }) {
   const s = STATUS[asset.status];

@@ -1,6 +1,6 @@
 # RV1.4 · Animationen synchron, Prompt-Buttons am Review-Eintrag
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -61,5 +61,7 @@ Einmal vor dem Commit; während der Arbeit nur gezielte Tests (`docs/arbeitsweis
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04 geprüft: `AnimationSync.test.tsx` grün (Schieber setzt Basis und Arbeitsstand auf denselben Frame, Wiedergabe mit fps 8 synchron und zurück auf Frame 0, Animation wechseln → beide auf Frame 0, Hinweis „Frame fehlt in der Basis“ ohne Abbruch, zweiter Durchlauf aus dem Frame-Cache: 16 Aufrufe für 8 Frames × 2 Seiten).
+- AC-06 geprüft: `prompt.test.ts` (alle Platzhalter gefüllt, Zustand mit Feldänderung, Stil, Fehlertext; ohne Eingabe kein Prompt) und `PromptButtons.test.tsx` (nur Vorlagen `ort: review`, gesperrt ohne Eingabe, `writeText` mit dem gefüllten Prompt und „Kopiert.“, Fehler sichtbar) grün.
+- Prüfung: Vitest k3c-workbench 63 Dateien / 390 Tests grün, `tsc --noEmit` grün, `tests/atomicDesign.test.ts` und `tests/projectRules.test.ts` grün.
+- Abweichungen: `prompt.ts` hält dieselben Regeln wie `assets/prompts/fill.ts` aus WB1 (dort noch nicht auf `feature/pap`); nach dem Zusammenführen auf eine Funktion umstellen (B-701). Prompt-Buttons stehen unter dem Vergleich in `index.tsx` statt in `ReviewList.tsx`.
