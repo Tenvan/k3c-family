@@ -6,7 +6,8 @@ import { num } from '../schema/hash';
 import type { Spec } from '../schema/types';
 
 export type Rahmen = [number, number, number, number];
-export type FrameGroesse = { rahmen: Rahmen; frameW: number; frameH: number };
+/** eigen = eigener Rahmen einer Animation (Reiten), steht dann je Animation im Manifest. */
+export type FrameGroesse = { rahmen: Rahmen; frameW: number; frameH: number; eigen?: boolean };
 export type Raster = { png: Buffer; rgba: Uint8Array; breite: number; hoehe: number };
 
 export function frameGroesse(ausgabe: Spec['ausgabe']): FrameGroesse {

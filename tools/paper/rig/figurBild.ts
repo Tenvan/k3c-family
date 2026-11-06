@@ -8,9 +8,12 @@ import { frameGroesse } from '../render/raster';
 import { type Ausgabe, ausgabeSpec } from '../render/stufen';
 import { teileSvg } from '../render/svg';
 import { simuliere } from './animation';
+import { animationVon } from '../render/pose';
+import { reitBild } from './reiten';
 import { umhangSvg } from './umhang';
 
 export function figurBild(spec: Spec, a: Ausgabe, k: Kontext): Bild {
+  if (animationVon(spec, a.animation).reittier) return reitBild(spec, a, k);
   const s = ausgabeSpec(spec, a);
   const frames = simuliere(s, a.animation).map((f) => {
     const [vx, vy] = f.versatz;

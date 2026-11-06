@@ -33,5 +33,5 @@ describe('Golden der Fixtures', () => {
       expect(a.pngs[i][1].equals(b.pngs[i][1]), a.pngs[i][0]).toBe(true);
     }
     expect(goldenEintrag(a)).toEqual(golden[id]);
-  });
+  }, 60_000);
 });

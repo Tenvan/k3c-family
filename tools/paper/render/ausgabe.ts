@@ -35,7 +35,7 @@ export function rendereAsset(spec: Spec, k: Kontext): Asset {
     const r = rastere(streifenSvg(bild.frames.map((f) => f.svg), g, defs(k.stil, spec.id)));
     const datei = `${a.schluessel}.png`;
     pngs.push([datei, r.png]);
-    const eigen = g.frameW !== basis.frameW || g.frameH !== basis.frameH ? { rahmen: g.rahmen, frameW: g.frameW, frameH: g.frameH } : {};
+    const eigen = g.eigen || g.frameW !== basis.frameW || g.frameH !== basis.frameH ? { rahmen: g.rahmen, frameW: g.frameW, frameH: g.frameH } : {};
     anim[a.schluessel] = { frames: bild.frames.length, fps: animationen(spec)[a.animation].fps ?? 8, datei,
       hashes: frameHashes(r.rgba, r.breite, g.frameW, g.frameH, bild.frames.length), ...eigen };
   }

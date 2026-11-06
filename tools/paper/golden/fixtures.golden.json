@@ -7,12 +7,22 @@
     }
   },
   "monarch": {
-    "renderKey": "e555460552490c078e62d57fc5a557f9662ff85327b065a6b841434ff3f12c74",
+    "renderKey": "a418c9492b1e986d8884d05cac86986f4620e2a276b2d2ae2cdc41212f5debad",
     "dateien": {
       "idle.png": "566ee838a58c70832f7b1d484bd6fbb96f910f117bb77e6e37c56f3d7fd9870b",
       "idle@spieler2.png": "094486e2ed03572943c51e61dcc2cdd8c63726263014b332fd7652b746050043",
       "lauf.png": "7493de022becd559efa5ab43fe0cdb119af8b2a0d3411faa04876d3b5f79684f",
-      "lauf@spieler2.png": "c1b72b9ba27a0a350234674e32d787850404e6db7296d269b45e965956674deb"
+      "lauf@spieler2.png": "c1b72b9ba27a0a350234674e32d787850404e6db7296d269b45e965956674deb",
+      "reiten.png": "b128963c482178b2230a5dc3c009411a70d534da6485c90b4ef1350e6d50e619",
+      "reiten@spieler2.png": "c1db33b1ccec94d4a3a8155b2c380fa3f738d4a57931f44ab867d05ed690ad07"
+    }
+  },
+  "pferd": {
+    "renderKey": "6a50b148e4b11d74243efb4b96e6fabc5d4d46df9123928e86469e48b8a0c997",
+    "dateien": {
+      "galopp.png": "91be7bce99bb6d0a7995a92d18381fced5b673bcd5b0098cee3f4128ea805c86",
+      "schritt.png": "dffb3d544574d5865a770a25abaf3f88542e7841c55c27baa94022c54a8efa6c",
+      "trab.png": "98b451a351f08296c98309bb54af37d919204c95bced5991ccc2fe2e8de65477"
     }
   }
 }

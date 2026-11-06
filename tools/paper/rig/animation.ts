@@ -22,6 +22,22 @@ export function umhangAnker(spec: Spec, pose: FigurPose, basis: M = verschiebe(.
   return anwenden(weltMatrizen(spec, pose.winkel, basis).get(u.anker)!, u.punkt);
 }
 
+export type UmhangSpec = NonNullable<Spec['umhang']>;
+
+/** Umhang-Kette je Frame: Physik ab Schritt −240 bis zum letzten Frame; zustand(k) liefert Anker und Wind bei Schritt k. */
+export function umhangLauf(u: UmhangSpec, schritte: number[], zustand: (k: number) => { anker: Punkt; wind: number }, boden: number): Punkt[][] {
+  const kette = new Umhang(u, zustand(-EINSCHWINGEN).anker), out: Punkt[][] = [];
+  for (let k = -EINSCHWINGEN + 1, n = 0; n < schritte.length; k++) {
+    const z = zustand(k);
+    kette.schritt(z.anker, z.wind, boden);
+    while (n < schritte.length && schritte[n] === k) {
+      out.push(kette.punkte());
+      n++;
+    }
+  }
+  return out;
+}
+
 /** Posen aller Frames einer figur-Animation samt Umhang-Kette. */
 export function simuliere(spec: Spec, name: string): FigurFrame[] {
   const anim = animationVon(spec, name);
@@ -29,17 +45,10 @@ export function simuliere(spec: Spec, name: string): FigurFrame[] {
   const freq = figurFreq(spec, name), schritte = frameSchritte(freq, anim.frames);
   const posen = schritte.map((_, n) => figurPose(spec, name, n / (freq * anim.frames)));
   if (!spec.umhang) return posen;
-  const zuZeit = (k: number) => figurPose(spec, name, k / SCHRITTE_JE_S);
-  const start = zuZeit(-EINSCHWINGEN);
-  const kette = new Umhang(spec.umhang, umhangAnker(spec, start));
-  const out: FigurFrame[] = [];
-  for (let k = -EINSCHWINGEN + 1, n = 0; n < posen.length; k++) {
-    const p = zuZeit(k);
-    kette.schritt(umhangAnker(spec, p), p.wind, 0);
-    while (n < posen.length && schritte[n] === k) {
-      out.push({ ...posen[n], umhang: kette.punkte() });
-      n++;
-    }
-  }
-  return out;
+  const zustand = (k: number) => {
+    const p = figurPose(spec, name, k / SCHRITTE_JE_S);
+    return { anker: umhangAnker(spec, p), wind: p.wind };
+  };
+  const ketten = umhangLauf(spec.umhang, schritte, zustand, 0);
+  return posen.map((p, n) => ({ ...p, umhang: ketten[n] }));
 }
