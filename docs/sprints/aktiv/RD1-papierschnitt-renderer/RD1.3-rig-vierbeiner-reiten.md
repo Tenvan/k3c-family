@@ -1,6 +1,6 @@
 # RD1.3 · Rig vierbeiner: IK, Gangarten, Rückengelenk, Beinpfad; Reiten als Kombination
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -125,4 +125,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-03 geprüft: `rig/ik.test.ts`, `gangarten.test.ts`, `beinpfad.test.ts`, `vierbeiner.test.ts`, `reiten.test.ts` grün (`task test` grün, `task typecheck` grün). Monarch rendert Idle, Lauf und Reiten in Schritt, Trab, Galopp (Test „Monarch mit schritt, trab, galopp …“).
+- AC-02 (Pferd, Monarch-Fixture) geprüft: `golden.test.ts` – `fixtures.golden.json` mit `pferd` (`galopp.png` `91be7bce…`, `schritt.png` `dffb3d54…`, `trab.png` `98b451a3…`) und `monarch` komplett (6 Dateien, neu `reiten.png` `b128963c…`, `reiten@spieler2.png` `c1db33b1…`; idle/lauf unverändert). Golden neu geschrieben, weil die Fixture jetzt mit `reiten` gerendert wird.
+- Sichtvergleich: Pferd-Galopp gegen `pferd-galopp-0.png` – gleiche Silhouette, gesammelte Beine in der Schwebephase, Satteldecke, Schweif; Reiten gegen `monarch-galopp-0.png` – Reiter im Sattel, Umhang weht im Galopp waagerecht nach hinten, Zügel zur Hand; Zügel als `falz` blasser als im Prototyp (Deckkraft 0.25), Saum fehlt (D-08).
+- Befund (Prototyp-Verhalten): im Trab hebt der Körper bis `dy = −1.5`, das gestreckte Bein erreicht den Boden nicht ganz (IK kappt bei 55.99), der Huf schwebt bis 3.5 Einheiten; Test mit dieser Toleranz.
+- Review (Sonnet): keine schweren Befunde; behoben: Vierbeiner ohne Beinteile oder `bein` → Exit 1 `pflicht-teil-fehlt` statt Absturz, Reittier-id nur `[a-z0-9-]` (sonst `reittier-unbekannt`), eigener Reit-Rahmen per Flag `eigen` im Manifest. Leicht, belassen: Reiter-`massstab` ≠ 1 wird ignoriert, Zügel-Material `leder` fest (D-09).
+- Abweichungen: zusätzliche Module `rig/vierbeiner.ts` (Ride-Matrix), `rig/vierbeinerBild.ts`; Vierbeiner zeichnet in Welt-Einheiten mit `viewBox = rahmen · massstab` (gleiche Pixel wie der Spec-Rahmen); Reit-Animation ohne `gangart` reitet `schritt`, eine Vierbeiner-Animation ohne `gangart` wird mit `animation-unbekannt` abgelehnt; Laufzeit Monarch komplett ≈ 4 s (resvg-Filter).

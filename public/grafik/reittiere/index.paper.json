@@ -1,0 +1,7 @@
+[
+  {
+    "id": "pferd",
+    "rig": "vierbeiner",
+    "manifest": "pferd/manifest.json"
+  }
+]

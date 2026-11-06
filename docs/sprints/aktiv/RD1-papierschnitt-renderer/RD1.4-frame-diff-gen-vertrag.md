@@ -1,6 +1,6 @@
 # RD1.4 · frame, diff, pixeldiff, gen:paper und Vertragstest gegen die Attrappe
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -126,4 +126,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-05 geprüft: `vertrag/cli.vertrag.test.ts` läuft per `describe.each` gegen Attrappe **und** Renderer, beide grün (validate, render, frame, diff, pixeldiff, Aufruffehler); `pixeldiff` liefert genau `anteil` 0.015326 und `boxen` aus `fixtures/ui/AssetsPixelDiff.json`; `fixtures/stub.test.ts` unverändert grün. Detailtests `cli/cli.test.ts`.
+- AC-04 geprüft: `golden/stil.test.ts` – `stein.basis` ändert renderKey und PNGs der Mauer, `purpur` nur den renderKey, `koenigsrot` Monarch-PNGs (idle, reiten), Pferd unverändert; Spec-Dateien unberührt. (Läuft direkt grün: die Eigenschaft entstand in RD1.1–RD1.3, der Test sichert sie ab.)
+- AC-02 geprüft: `golden/public.test.ts` – Gruppen `figuren` und `reittiere` rendern im Temp-Ordner gleich `golden.json` und gleich den eingecheckten PNGs; `public/grafik/figuren/monarch/galopp.png` und `public/grafik/reittiere/pferd/galopp.png` vorhanden. `task gen:paper` (≈ 13 s) schreibt je Gruppe `index.paper.json` und `golden.json`.
+- `task check` grün (3155 Tests, Lint, Typecheck).
+- Review (Sonnet): keine schweren Befunde; behoben: `--frame`/`--stufe` ohne ganze Zahl ≥ 0 → Exit 2 (Test), Task `paper` mit `generates` und `schema/*.json` in `sources`, Pack-Ausnahme eng (nur Gruppen mit `index.paper.json` **und** `golden.json`, nur Specs und Ausgaben; Nachweis: fremde Datei in `figuren/` lässt `grafikPacks.test.ts` scheitern). Leicht, belassen: Teil-Boxen nicht auf den Frame beschnitten, `frame --out` nicht atomar, `diff` mit nur einer `--stil-*`-Option ignoriert den Stil (wie Attrappe).
+- Abweichungen: außerhalb der erlaubten Dateien `src/tools/grafikPacks.test.ts` und `src/tools/credits.test.ts` (Papierschnitt-Gruppen sind eigene Grafik, B-701 D-RD1-08); render-lastige Testdateien mit 60 s Zeitlimit (Monarch komplett ≈ 4 s, unter Last über 5 s); neue CLI-Regeln `variante-unbekannt`, `stufe-unbekannt`, `frame-unbekannt` (B-701 D-RD1-07). Risiko (ungeprüft): `tools/assetkit/catalog.go` gibt nur `gebaeude` die eigene Lizenz – die PNGs in `figuren/` und `reittiere/` könnten im alten Asset-Katalog als „Lizenz unbekannt“ erscheinen.

@@ -1,6 +1,6 @@
 # RD1.2 · Rig figur: Posen Idle und Lauf, Keyframes, Umhang-Physik
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -119,4 +119,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-03 (teilweise) geprüft: `rig/figur.test.ts` (idle/lauf-Winkel, Versatz, Keyframes addieren sich, `animation-unbekannt`), `rig/umhang.test.ts` (Startkette 7.6, Schrittformel, Klemmen x ≤ Anker + 2 und Boden, Wind, Determinismus, Zeichnung, Varianten-Tausch), `rig/animation.test.ts` (Frame-Schritte idle 0/30/…, lauf round(n · 9.375), 240 Schritte Einschwingen, Anker mit Versatz, Render idle/lauf mit `spieler2`, Frame 108 × 192) grün; `task test` und `task typecheck` grün.
+- Golden: `fixtures.golden.json` enthält jetzt Monarch `idle.png` `566ee838…`, `idle@spieler2.png` `094486e2…`, `lauf.png` `7493de02…`, `lauf@spieler2.png` `c1b72b9b…` – gerendert aus der Fixture **ohne** `reiten` (renderKey gilt für diese reduzierte Spec; RD1.3 schreibt das Golden mit der vollen Fixture neu).
+- Sichtvergleich: Idle-Frames gegen `fixtures/render/monarch/monarch-idle-0.png` – gleiche Figur, Krone, Bart, Schwert hinten; der Umhang weht wie im Prototyp nach hinten, der Hermelin-Saum fehlt (D-08). Lauf: Beine und Arme schwingen gegenläufig. Befund für die Spec (MG*): im Lauf ragt der vordere Fuß über den Fixture-Rahmen `[-60, -145, 85, 151]` hinaus.
+- Review (Sonnet): kein schwerer Befund; behoben: Absturz bei `umhang.segmente = 2` (Test „segmente = 2 zeichnet ohne Absturz“), Test für die Rig-Registrierung. Leicht, belassen: Umhang-Anker aus ganzzahligem Physik-Schritt (≤ 1/240 s Versatz zur Frame-Pose, gemäß D-04).
+- Abweichungen: zusätzliche Module `rig/figurBild.ts` (Frames der Figur) und `rig/register.ts` (Rigs tragen sich in `render/bild.ts` › `RIG_BILDER` ein, damit `render/` nicht von `rig/` abhängt); Animationen nur mit Keyframes laufen mit `freq = fps / frames`.
