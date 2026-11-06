@@ -1,0 +1,59 @@
+{
+  "id": "werkstatt",
+  "version": 1,
+  "specHash": "c543ec202f9e5c4b699129d18db84f5297166adda059f4aea561fd582d8769ae",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "8c06f6700cae3eba516a7a058e4951fae5b6aa5f66b56dab462062b117d7c25d",
+  "rahmen": [
+    -96,
+    -128,
+    192,
+    128
+  ],
+  "frameW": 192,
+  "frameH": 128,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "dcfd18ae6b146b76f134518784c87def1530f80a740bf1775644a98e11087832"
+      ]
+    },
+    "stand.s2": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s2.png",
+      "hashes": [
+        "90c5cf89e8dcfbd0d5377c5a7426f9a017d91a73faf7da704b232b474d5c22e7"
+      ]
+    },
+    "stand.s3": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s3.png",
+      "hashes": [
+        "917f23efc38fcc8e4e042417db38030a046a04f4bcba191ceccc3473158687c7"
+      ]
+    },
+    "stand.s4": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s4.png",
+      "hashes": [
+        "21daf079f2a72e0c887c313c50f4cfefc213cc01a896d68a160eb5a8d86d9ed1"
+      ]
+    },
+    "stand.s5": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s5.png",
+      "hashes": [
+        "c41753baaea4be14268cc1c59ccf6ca99da617d685ab3156484d36c3c611607e"
+      ]
+    }
+  },
+  "varianten": []
+}

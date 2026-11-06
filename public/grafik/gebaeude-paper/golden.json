@@ -1,4 +1,14 @@
 {
+  "heilplatz": {
+    "renderKey": "eda8c035c8d7a00615d3aa0ae8b17c70feaa3a7944b6b6e4fd936df559920ab4",
+    "dateien": {
+      "stand.png": "27750d906013fcf8f1599ab37f555e0845abf73b23f2b4f3d85ea9453d6dc21d",
+      "stand.s2.png": "eaf626754550de9ed16c305324db03c69e0e61b91b48d9ce3d4e6c81069c3ba0",
+      "stand.s3.png": "22b0af509edeab1d3d5606a655e37dc1d25f6a10aee3d332bf422cd57c66c58c",
+      "stand.s4.png": "aed638482e9bb8a36e199a257e4636ee786c915499172b62c4e03453c6308b09",
+      "stand.s5.png": "9da3ae452d2201e3b8b61724b4f458bd844d0a86b914f66f6e5be29e0d86cced"
+    }
+  },
   "hintergrundmauer": {
     "renderKey": "e6a9602a571b8e06a82d5c8e644c4725d365bd7bb1e7d044d0061d3432fbc8dc",
     "dateien": {
@@ -19,6 +29,16 @@
       "stand.s5.png": "f3d0688eb1666a07bc9ffb5ed509d79f0ef77bb948ae73f649f0c29608f1feea"
     }
   },
+  "taverne": {
+    "renderKey": "867511b89846d125b8c90201be954cf4d17a7b067aa887c0149090aae7bfcae8",
+    "dateien": {
+      "stand.png": "fd95d042c65999d70d0391787a257a8e67c783c100352eb7c2f6421ec501c9c1",
+      "stand.s2.png": "273f90b966b502ec308c02e7960cd7f79391db626449ce17a2236cef5afcf256",
+      "stand.s3.png": "9eb291b2496b38a52fd2f44286a28d9574741015905dad8456eee87abc2d2cea",
+      "stand.s4.png": "217fcc61f1c44b83668b427c28a65e8d47a1c4d9d9a37fe9bc080c12caf5c9a3",
+      "stand.s5.png": "933e78e4e87a768b0ac22cd3101287a9e4d93aa1b3e0347311043098ee90e2a8"
+    }
+  },
   "tor": {
     "renderKey": "f4d7aaf6a5d76c45269e32f13ff4e74a85050157d6370f66a25c26523091401b",
     "dateien": {
@@ -37,6 +57,16 @@
       "stand.s3.png": "77dbfcc2f6f354abd6778e792bdb2b237669be9e425540c408f301a2c6dbad13",
       "stand.s4.png": "d8dd18cb4251c545acd3ee217dcf4d3a715ef52dfc123886506e059b6f99c9e2",
       "stand.s5.png": "1c293af1ae0068ebaae3901e072bc41b4779affb93299fce9d11262356c5b38c"
+    }
+  },
+  "werkstatt": {
+    "renderKey": "8c06f6700cae3eba516a7a058e4951fae5b6aa5f66b56dab462062b117d7c25d",
+    "dateien": {
+      "stand.png": "ef465f81c949e4ee6349adf3aa9f0d2d6cb32da9fb3392ba447c7b27ff055d88",
+      "stand.s2.png": "9a76fa50e2b5373ebc996269d4d6a517d8f5ca0376dda596dca7e0ae601e35e3",
+      "stand.s3.png": "7bcd38a88b7cc1f415a43711854d2414362c51072fe4aead2b34aa590ca14fbd",
+      "stand.s4.png": "983906e58415483f3cd8d72496e8056360cba00a66c02cdece3101a7a0096d6e",
+      "stand.s5.png": "3c5d5ab6861558778edf0605703ed9e2637756c07f03c75409faa5ca48161731"
     }
   }
 }

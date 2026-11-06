@@ -1,6 +1,6 @@
 # MG6.2 · Hub-Stände A: Werkstatt, Taverne, Heilplatz
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -57,5 +57,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft:** `assets_list {gruppe: gebaeude-paper}` meldet werkstatt, taverne, heilplatz gültig (7 Assets, 0 ungültig).
+- **AC-02 geprüft:** `bun tools/paper/bin/gen.ts public/grafik` (= `task gen:paper`) trägt alle drei mit je 5 Stufen in `golden.json` ein; Vitest `tools/paper`, `src/tools`, Planung 1669/1669 grün.
+- **AC-03 geprüft:** Stufe 1 aller drei mit `assets_preview`, Stufen 2–5 über die Ausgabe (D-MG6-03); `assets_review` gegen HEAD: 3 × `neu`, kein roter Eintrag.
+- **Befunde, behoben:** Hammerkopf im Werkstatt-Schild war `stoff` (Teil der Materialkette, wäre ab Stufe 5 blau) → `hermelin`.
+- **Materialien je Gebäude (D-MG6-02):** Taverne tauscht in Stufe 2 zusätzlich Dach (`koenigsrot`) und Putz (`hermelin`) nach `stein`; Heilplatz ohne Patina, damit das grüne Kreuz `smaragd` bleibt.
+- **Abweichungen:** `task gen:paper` scheiterte einmal parallel zu `assets_review` (vermutet: gleichzeitiger Schreibzugriff), allein grün. `check:diff` rot nur im Frontend der Workbench (9 zeitabhängige Tests unter Last, Klasse B-704; MG6 ändert dort nichts). Keine neuen Tickets.

@@ -67,7 +67,7 @@ keine (Defaults als D-MG6-Zeilen in B-701)
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | MG6.1 | `MG6.1-mauerlinie.md` | Umsetzung | autonom | fertig |
-| MG6.2 | `MG6.2-hub-staende-a.md` | Umsetzung | autonom | offen |
+| MG6.2 | `MG6.2-hub-staende-a.md` | Umsetzung | autonom | fertig |
 | MG6.3 | `MG6.3-hub-staende-b.md` | Umsetzung | autonom | offen |
 | MG6.4 | `MG6.4-burg-und-lager.md` | Umsetzung | autonom | offen |
 | MG6.5 | `MG6.5-wirtschaft-und-wege.md` | Umsetzung | autonom | offen |

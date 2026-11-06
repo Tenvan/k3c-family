@@ -1,5 +1,10 @@
 [
   {
+    "id": "heilplatz",
+    "rig": "gebaeude",
+    "manifest": "heilplatz/manifest.json"
+  },
+  {
     "id": "hintergrundmauer",
     "rig": "gebaeude",
     "manifest": "hintergrundmauer/manifest.json"
@@ -10,6 +15,11 @@
     "manifest": "mauer/manifest.json"
   },
   {
+    "id": "taverne",
+    "rig": "gebaeude",
+    "manifest": "taverne/manifest.json"
+  },
+  {
     "id": "tor",
     "rig": "gebaeude",
     "manifest": "tor/manifest.json"
@@ -18,5 +28,10 @@
     "id": "turm",
     "rig": "gebaeude",
     "manifest": "turm/manifest.json"
+  },
+  {
+    "id": "werkstatt",
+    "rig": "gebaeude",
+    "manifest": "werkstatt/manifest.json"
   }
 ]
