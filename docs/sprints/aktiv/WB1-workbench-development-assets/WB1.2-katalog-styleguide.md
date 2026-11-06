@@ -1,6 +1,6 @@
 # WB1.2 · Katalog und Styleguide gegen die Stubs
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -62,5 +62,7 @@ Während der Arbeit nur gezielt: `bunx vitest run --config tools/k3c-workbench/f
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 (Katalog, Styleguide) geprüft: `bunx vitest run --config tools/k3c-workbench/frontend/vitest.config.ts assets/` 11/11 grün – Liste nach Gruppe, Abzeichen „im Diff“ (Review `HEAD`), `banner` rot mit `teile[0].lagen[0].material · material-unbekannt: …`, Animationen `idle`/`lauf`/`reiten`, Bild aus `AssetsFrame('monarch','idle',0,'','')`, Abspielen/Anhalten, Fehlertext für `pferd` (Stub) bei bedienbarer Liste; Materialtafel mit Hex, Einzeltöne, Papier.
+- AC-02 (kein schreibendes Control) geprüft: `readonly.test.tsx` klickt Katalog und Styleguide durch, alle Nicht-Lesemethoden des Backends sind Spies ohne Aufruf; Eingabefelder nur „Filter“.
+- Umsetzung: `assets/catalog/` (`CatalogPage`, `AssetList`, `Preview`, `useCatalog.ts`), `assets/style/StylePage.tsx`, Helfer `assets/testing.tsx`, Stile `styles/assets.css` (Import in `main.tsx`, nicht in der Liste der erlaubten Dateien, aber Teil von `frontend/`), Codemap `assets/codemap.md`.
+- Prüfen: Typecheck, oxlint, `tests/atomicDesign.test.ts` grün; `task check:diff`: Vitest 3022 + Workbench 381 grün, Lint grün; Go rot nur in lastabhängigen Tests ohne WB1-Bezug (`internal/botdev` `TestBotGeraeteSteuernMonarchen`, `internal/mcpsrv` `TestRunProcessExitUndAusgabe`: einzeln grün; Ticket im Review WB1.6).

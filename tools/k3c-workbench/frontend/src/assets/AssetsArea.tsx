@@ -1,6 +1,8 @@
 import { Flex, Heading, Text } from '@webkit/atoms';
 import { Tabs } from '@webkit/organisms';
+import { CatalogPage } from './catalog/CatalogPage';
 import { ReviewPage } from './review';
+import { StylePage } from './style/StylePage';
 
 /** Bereich Assets (Entscheidung 005 › 5): Review (RV1), Katalog, Styleguide, Sound, Quellen – nur Ansehen; Änderungen
  *  laufen über die MCP-Tools assets_*. Die Seiten stehen als Tabs.Content im Tabs.Root von AppFrame (App.tsx). */
@@ -11,10 +13,10 @@ export function AssetsArea() {
         <ReviewPage />
       </Tabs.Content>
       <Tabs.Content value="katalog">
-        <Placeholder title="Katalog" />
+        <CatalogPage />
       </Tabs.Content>
       <Tabs.Content value="styleguide">
-        <Placeholder title="Styleguide" />
+        <StylePage />
       </Tabs.Content>
       <Tabs.Content value="sound">
         <Placeholder title="Sound" />
