@@ -80,11 +80,11 @@ Alle mit Default entschieden (gilt bis zur Freigabe durch 🧑):
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RV1.1 | `RV1.1-review-basis-diff.md` | Umsetzung | autonom | offen |
-| RV1.2 | `RV1.2-assetsui-echte-daten.md` | Umsetzung | autonom | offen |
-| RV1.3 | `RV1.3-review-seite-vergleich.md` | Umsetzung | autonom | offen |
-| RV1.4 | `RV1.4-animation-prompts.md` | Umsetzung | autonom | offen |
-| RV1.5 | `RV1.5-review.md` | Review | autonom | offen |
+| RV1.1 | `RV1.1-review-basis-diff.md` | Umsetzung | autonom | fertig |
+| RV1.2 | `RV1.2-assetsui-echte-daten.md` | Umsetzung | autonom | fertig |
+| RV1.3 | `RV1.3-review-seite-vergleich.md` | Umsetzung | autonom | fertig |
+| RV1.4 | `RV1.4-animation-prompts.md` | Umsetzung | autonom | fertig |
+| RV1.5 | `RV1.5-review.md` | Review | autonom | fertig |
 
 Lane `review`, nacheinander; RV1.3 braucht nur PV1.8 (Vitest gegen Fixtures) und darf vor RV1.2 laufen:
 
@@ -96,5 +96,7 @@ Lane `review`, nacheinander; RV1.3 braucht nur PV1.8 (Vitest gegen Fixtures) und
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-11-06, autonom (Claude): AC-01 bis AC-07 mit Tests belegt (Ergebnisse RV1.1–RV1.4, Nachweis RV1.5); `task check`, `task check:go`, `task lint` grün, `check:race` lokal ohne C-Compiler übersprungen.
+- Behoben: 3 Sonnet-Reviews (RV1.1, RV1.2) und Gesamt-Review Opus (4 Important: Basis-Commit, Neu laden, Frame-Grenze, Diff-Cache).
+- Neue Tickets: B-703; Defaults D-RV1-1 bis D-RV1-9 in B-701.
+- Offen: manuelle Abnahme durch 🧑 Ralf (Monarch mit umrandetem Umhang), sobald RD1 und eine Monarch-Spec im Checkout liegen; bis dahin bleibt der Sprint aktiv.

@@ -1,6 +1,6 @@
 # RV1.3 · ReviewPage: Liste, Vergleich, Overlay, Teil-Markierung
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -60,5 +60,7 @@ Einmal vor dem Commit; während der Arbeit nur gezielte Tests (`docs/arbeitsweis
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 geprüft: `Compare.test.tsx` grün (Vorher/Nachher mit Basis bzw. Arbeitsstand, neu nur Nachher, gelöscht nur Vorher, Überblendregler `Home`/`End` → Deckkraft 0/1, Overlay mit Boxen in Prozent der Frame-Größe aus dem PNG-Kopf, Teil-Markierung `data-teil` nur für `teile` mit Box).
+- AC-05 geprüft: `ReviewPage.test.tsx` › „ungültige Spec rot mit Fehlertext“ grün; dazu Status-Liste, Basis-Auswahl (HEAD~1, origin/develop, SHA), Fehlertext der Basis, Hinweis „Basis-Stand: lokal“.
+- Prüfung: Vitest k3c-workbench 60 Dateien / 377 Tests grün, `tsc --noEmit` grün, `tests/atomicDesign.test.ts` grün.
+- Abweichungen: Transport in `assets/review/api.ts` (WB1 liefert `backend.assets*` erst nach dem Merge; Typen gleich benannt wie `api/typesAssets.ts`). Überblendregler im Test über Tastatur `Home`/`End` statt Wert 25. Code-Review der Oberfläche gebündelt in RV1.5.

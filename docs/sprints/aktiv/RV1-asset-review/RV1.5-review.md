@@ -1,6 +1,6 @@
 # RV1.5 · Review des Sprints RV1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -63,5 +63,8 @@ Nacheinander; manuelle Prüfung im Browser nur nach Freigabe durch 🧑 für die
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01: `TestReviewHEAD1WieFixture` (RV1.1) · AC-02: `TestBasis*`, `TestSpecHashCRLF`, `TestReviewNurCRLF` (RV1.1) · AC-03: `Compare.test.tsx` (RV1.3) · AC-04: `AnimationSync.test.tsx` (RV1.4) · AC-05: `TestAssetsReviewTestRepo`, `ReviewPage.test.tsx` (RV1.2, RV1.3) · AC-06: `prompt.test.ts`, `PromptButtons.test.tsx` (RV1.4) · AC-07: `TestAssetsList*`, `TestAssetsGet`, `TestAssetsStyle`, `TestAssetsPrompts` (RV1.2). Alle in diesem Lauf erneut grün.
+- Gesamt-Review (Opus, frischer Kontext): kein Critical; 4 Important behoben mit Test (RED→GREEN): Frames und Pixel-Diff fragen `basisCommit` statt Basis-Namen an; „Neu laden“ mit frischem Frame-Cache; Frame jenseits der Animation des jeweiligen Stands abgelehnt (`TestAssetsFrameAusserhalb`); Pixel-Diff-Cache beim Abspielen. Dazu Komplexität von `Compare` unter 15 (Lint).
+- Minor zurückgestellt (B-701/B-703 bzw. Abnahme): Fehler bleiben im Frame-Cache; kaputte Spec ohne `rig` sperrt Prompts; Teil-Markierung nur aus Nachher; Vorher bei anderer Frame-Größe gestreckt; kein Ladezustand; `AssetsGet` liefert Animationen alphabetisch.
+- Prüfung: `task check:go` grün, `task check:race` lokal übersprungen (kein C-Compiler, die CI prüft -race), `task lint` 0 Fehler, Vitest k3c-workbench 393/393, `go test` assetsui/review/Wurzel grün, `golangci-lint` 0; `task check:dev`: zwei fremde Tests (`mcpsrv` TestRunProcessExitUndAusgabe, `simrun` TempDir) einmal rot, einzeln wiederholt grün (Last durch parallele Sessions).
+- Offen: manuelle Abnahme durch 🧑 Ralf (braucht RD1 und eine Monarch-Spec im Checkout; Stapel-Geometrie nur im echten WebView prüfbar). Neues Ticket: B-703 (Umstellung auf `backend.assets*`/`fillPrompt` nach WB1-Merge).

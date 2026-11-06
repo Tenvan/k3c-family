@@ -88,3 +88,12 @@ Siehe Notizen; keine blockiert die Umsetzung (Defaults gelten bis PS1.1).
 | D-20 | „Im Spiel ansehen“ | Engine in `internal/studioview` auf `127.0.0.1:0`, fester Seed `ansicht` (`voll-ansicht`), Spielstände unter `UserCacheDir`; im Web-Client öffnet der Link nur auf diesem Rechner | Seed-Eingabe, fester Port | WB1 | offen |
 | D-21 | Teil-Auswahl per Klick | kleinste Box gewinnt, bei Gleichstand das spätere Teil in `Spec.teile` | Auswahl-Liste der Teile | WB1 | offen |
 | D-22 | Prüfung von `tools/assetkit` | in `k3c-workbench:gotest`/`lint` und im CI-Job k3c-workbench (bisher Studio) | eigener Task `assetkit:*` | WB1 | offen |
+| D-RV1-1 | `stil` im Review | je Asset: wahr, wenn ein genutztes Material/Einzelton geändert ist oder Papier/Licht (alle); Fixture verlangt monarch `stil: false` | global: jeder geänderte `stilHash` (Vertragstext paper-mcp.md › 4) | RV1 | offen |
+| D-RV1-2 | Reihenfolge der Review-Einträge | `ungueltig`, `geaendert`, `neu`, `geloescht`, je Status nach `id` | Reihenfolge der Fixture | RV1 | offen |
+| D-RV1-3 | Stil der Basis beim Rendern | Basis und Arbeitsstand als Schnappschuss-Baum im Cache (`<renderKey>/basis|stand/public/grafik/…`); echte CLI muss den Stil relativ zur Spec finden, sonst `frame --stil <datei>` im Vertrag | Vertrag sofort um `--stil` erweitern | RV1, RD1 | offen |
+| D-RV1-4 | Fixture `ui/AssetsList.json` | pferd und mauer `geaendert: true` sind veraltet (gegen `HEAD` unverändert); Tests erwarten `false`, Fixture nachziehen | Vertrag „gegen HEAD“ ändern | RV1, PV1 | offen |
+| D-RV1-5 | Assets ohne Animation | kein Frame: `Asset „x“ hat keine Animation`; `pixelAnteil` 0 | Vertrag: implizite Animation (z. B. `stand`, 1 Frame) für die CLI | RV1, RD1 | offen |
+| D-RV1-6 | Leere Animation in `AssetsFrame` | = erste Animation der Spec (wie MCP) | Pflichtfeld | RV1 | offen |
+| D-RV1-7 | Cache der Attrappe | eigene Renderer-Kennung (`+attrappe`), damit Stub-Bilder nach RD1 nicht aus `.cache/paper/` kommen | gleicher Schlüssel, Cache beim Wechsel leeren | RV1, RD1 | offen |
+| D-RV1-8 | Frontend-Transport und Prompt-Füllung | eigener Transport `assets/review/api.ts` und `prompt.ts`, gleich benannt wie WB1 (`api/typesAssets.ts`, `assets/prompts/fill.ts`); nach Merge von WB1 auf `backend.assets*`/`fillPrompt` umstellen | RV1 auf WB1 rebasen | RV1, WB1 | offen |
+| D-RV1-9 | `origin/develop` als Basis | Fetch höchstens einmal je Minute und Checkout, danach gilt das Ergebnis (aktuell/lokal) weiter | Fetch bei jedem Aufruf | RV1 | offen |

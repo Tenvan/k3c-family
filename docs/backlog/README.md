@@ -102,6 +102,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-700](B-700-alte-pixel-grafik-aufraeumen.md) | CLI | Schuld | mittel | eingeplant | CU1 | Alte Pixel-Grafiken, Register und Gebäude-Renderer werden nach der Papierschnitt-Umstellung entfernt |
 | [B-701](B-701-pap-gesammelte-fragen.md) | DEV | Frage | hoch | eingeplant | PS1 | PAP: kritische Fragen und vorab getroffene Entscheidungen werden gesammelt von Ralf bestätigt |
 | [B-704](B-704-go-tests-unter-last-flaky.md) | DEV | Problem | mittel | offen | – | Lastabhängige Go-Tests scheitern bei parallelen Agenten |
+| [B-703](B-703-review-auf-wb1-backend.md) | DEV | Schuld | mittel | offen | – | Die Review-Seite nutzt backend.assets* und fillPrompt aus WB1 statt eigener Kopien |
 
 ## Archiv
 

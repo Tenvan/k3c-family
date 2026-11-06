@@ -1,6 +1,6 @@
 # RV1.2 · internal/assetsui: echte Daten, Frame und Pixel-Diff
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -62,5 +62,8 @@ Einmal vor dem Commit; während der Arbeit nur gezielte Tests (`docs/arbeitsweis
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-07 geprüft: `TestAssetsListTestRepo`, `TestAssetsGet`, `TestAssetsGetFehlt`, `TestAssetsStyle`, `TestAssetsPrompts` grün (`go test ./internal/assetsui/`).
+- AC-05 geprüft: `TestAssetsReviewTestRepo` grün (banner `ungueltig` mit Fehlertext, die vier anderen vollständig wie `AssetsReview.json`).
+- Weitere Tests grün: `TestAssetsFrame*`, `TestAssetsPixelDiff` (gleich `AssetsPixelDiff.json`), `TestAssetsBasisUngueltig`, `TestAssetsReviewOhneAenderung`, `TestAssetsListCLIFehler`, `TestPfadZuExakt`, `TestBasisFetchNurEinmal`; `TestUIMethodsWieWailsTS` grün; `golangci-lint` 0 Befunde. `stubs.go` und `stubs_test.go` entfernt, kein `fixtures/ui` im Produktionscode.
+- Review (Sonnet): `assets: []` statt `null`, CLI-Absturz trifft nur den Eintrag (Regel `cli`), Prüf-Memo je Hash, `origin/develop` höchstens ein Fetch je Minute, exakte id-Suche, Render-Semaphor (4), leere Boxen/Teile als `[]`/`{}`.
+- Abweichungen: Assets ohne Animation (fass) liefern keinen Frame (`Asset „fass“ hat keine Animation`, Vertragslücke); Fixture `AssetsList.json` meldet pferd/mauer `geaendert: true`, gegen `HEAD` sind sie unverändert (Test erwartet `false`). Beide als D-Zeile in B-701.
