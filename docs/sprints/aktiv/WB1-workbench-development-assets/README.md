@@ -79,7 +79,7 @@ Keine offenen. Entschieden mit Default (Planung WB1, 2026-11-06, Claude; Einspru
 | WB1.2 | `WB1.2-katalog-styleguide.md` | Umsetzung | autonom | fertig |
 | WB1.3 | `WB1.3-prompt-buttons.md` | Umsetzung | autonom | fertig |
 | WB1.4 | `WB1.4-studioview-studio-loeschen.md` | Umsetzung | autonom | offen |
-| WB1.5 | `WB1.5-studio-aus-ci-taskfile-doku.md` | Umsetzung | autonom | offen |
+| WB1.5 | `WB1.5-studio-aus-ci-taskfile-doku.md` | Umsetzung | autonom | fertig |
 | WB1.6 | `WB1.6-review.md` | Review | autonom | offen |
 
 Lane `ui` (WB1.5: INF). Reihenfolge WB1.1 → WB1.2 → WB1.3; WB1.5 nach WB1.1 (parallel zu WB1.2/WB1.3 möglich, andere Domäne); WB1.4 nach WB1.2 und WB1.5; WB1.6 zuletzt.

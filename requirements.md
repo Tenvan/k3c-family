@@ -11,8 +11,8 @@ holt `bun install --frozen-lockfile` aus `bun.lock`. Versionen gelten, solange d
 | Bun | 1.4.2 | Pakete installieren (`bun install`), Werkzeuge starten (`bunx`) | `.github/workflows/ci.yml` | `bun --version` |
 | Go | 1.27 | Go-Server, `data/embed.go`, `task check:go` | `go.mod` | `go version` |
 | golangci-lint | 2.14 | Go-Lint mit Komplexitäts-Budget | `.github/workflows/ci.yml` | `golangci-lint --version` |
-| Wails-CLI | 2.16.0 | Fenster von `tools/k3c-workbench` bauen (`task k3c-workbench`, `task k3c-workbench:build`); auch Asset-Studio und Starter | `tools/k3c-workbench/go.mod` | `wails version` |
-| WebView2-Laufzeit | aktuell (in Windows 11 enthalten) | Fenster von `k3c-workbench` und Asset-Studio | – | `wails doctor` |
+| Wails-CLI | 2.16.0 | Fenster von `tools/k3c-workbench` bauen (`task k3c-workbench`, `task k3c-workbench:build`); auch der Starter | `tools/k3c-workbench/go.mod` | `wails version` |
+| WebView2-Laufzeit | aktuell (in Windows 11 enthalten) | Fenster von `k3c-workbench` und Starter | – | `wails doctor` |
 | Go Task | 3.53 (so getestet; der Aufruf `task <projekt>` für den Task `default` eines Namensraums braucht eine neuere 3.x) | Alle Befehle (`Taskfile.yml`, `task --list`) | `Taskfile.yml` | `task --version` |
 | C-Compiler (optional) | `gcc` oder `clang` | Race-Detector `go test -race` in `task go:race`; ohne Compiler nur ein Hinweis, die CI prüft es (B-077) | – | `gcc --version` |
 | Docker (optional) | aktuell, mit `buildx` | Image des Heimnetz-Servers (`Dockerfile`, `compose.yaml`); sonst prüft es die CI | – | `docker buildx version` |
@@ -56,12 +56,11 @@ Hinweise:
 ```bash
 bun install --frozen-lockfile
 bun install --frozen-lockfile --cwd tools/k3c-workbench/frontend
-bun install --frozen-lockfile --cwd tools/k3c-studio/frontend
 bun install --frozen-lockfile --cwd tools/k3c-starter/frontend
 ```
 
-Die zweite Zeile nur für `tools/k3c-workbench` (Frontend der Oberfläche, `task check:dev`), die dritte für das Asset-Studio
-(`task check:studio`), die vierte für den Windows-Starter (`task check:starter`); `task install` macht alle vier.
+Die zweite Zeile nur für `tools/k3c-workbench` (Frontend der Oberfläche, `task check:dev`), die dritte für den Windows-Starter
+(`task check:starter`); `task install` macht alle drei.
 
 Go-Temp (`go-build`, Test-EXEs, `t.TempDir`): Jeder `task`-Aufruf setzt `GOTMPDIR`, `TMP` und `TEMP` auf
 `%USERPROFILE%\.k3c\tmp` (ohne `USERPROFILE`, etwa in der CI: `.work/tmp`; nicht unter AppData, dorthin leitet die Claude-App als MSIX-Paket Schreibzugriffe um). Für diesen Ordner einmal eine Ausnahme im

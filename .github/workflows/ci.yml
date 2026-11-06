@@ -1,4 +1,4 @@
-# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; k3c-workbench, Asset-Studio und Windows-Starter: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf develop/main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
+# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; k3c-workbench und Windows-Starter: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf develop/main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
 name: CI
 
 on:
@@ -49,7 +49,7 @@ jobs:
         with:
           go-version-file: go.mod
       - uses: go-task/setup-task@v2
-      # Wie lokal: Client und Frontends von k3c-workbench, Asset-Studio und Starter, deren Komponententests (React, Radix) laufen in task test mit.
+      # Wie lokal: Client und Frontends von k3c-workbench und Starter, deren Komponententests (React, Radix) laufen in task test mit.
       - run: task install
       - run: task lint
       - run: task typecheck
@@ -194,49 +194,15 @@ jobs:
         with:
           version: v2.14
           working-directory: tools/k3c-workbench
-      - run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
-      - run: wails build -s
-
-  # Asset-Studio (B-459, B-507): eigenes Fenster mit eigenem Server, keine Seite des Spielservers. Frontend (Typecheck,
-  # Build nach tools/k3c-studio/frontend/dist, Vitest), die Asset-Logik tools/assetkit und das Modul tools/k3c-studio
-  # samt Backend (go test, Lint). Windows wie k3c-workbench: das Modul bindet Wails ein.
-  k3c-studio:
-    if: github.event_name != 'pull_request'
-    name: Asset-Studio · Frontend · Tests · Lint (Windows)
-    runs-on: windows-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
-        with:
-          go-version-file: tools/k3c-studio/go.mod
-          cache-dependency-path: tools/k3c-studio/go.sum
-      - uses: actions/setup-node@v7
-        with:
-          node-version-file: .nvmrc
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.4.2
-      - uses: go-task/setup-task@v2
-      - run: bun install --frozen-lockfile
-      - run: bun install --frozen-lockfile
-        working-directory: tools/k3c-studio/frontend
-      - run: task k3c-studio:frontend
-      # Komponententests des Studios mit dessen Vitest-Konfiguration (Aliase @game/@data); das Vitest der Wurzel nimmt
-      # tools/k3c-studio aus.
-      - run: bunx vitest run --config tools/k3c-studio/frontend/vitest.config.ts
+      # Gemeinsame Asset-Logik (eigenes Modul, bis WB1 im Job des Asset-Studios geprüft).
       - run: go test ./...
         working-directory: tools/assetkit
       - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.14
           working-directory: tools/assetkit
-      - run: go test ./...
-        working-directory: tools/k3c-studio
-      - uses: golangci/golangci-lint-action@v9
-        with:
-          version: v2.14
-          working-directory: tools/k3c-studio
+      - run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
+      - run: wails build -s
 
   # Windows-Starter (B-041, BT1.2): Frontend (React auf Radix Themes; Typecheck, Build nach tools/k3c-starter/frontend/dist, Vitest),
   # Go-Tests, Lint, Wails-Build. Windows wie k3c-workbench: das Modul bindet Wails ein.

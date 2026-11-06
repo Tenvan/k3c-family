@@ -1,6 +1,6 @@
 # WB1.5 · Studio aus CI, Taskfile, Repo-Regeln und Doku
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -75,5 +75,6 @@ Während der Arbeit nur gezielt: `task test -- projectRules`, `task --list`. Die
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04 (Tasks, CI, Ports) geprüft: `task --list` ohne Studio-Einträge und fehlerfrei; `bunx vitest run tests/projectRules.test.ts tests/atomicDesign.test.ts tests/offlineTools.test.ts` 46/46 (neu: „Asset-Studio entfernt“ prüft Taskfile, CI, Vite, launch.json, oxlint, services.json, task-freigaben.json auf `k3c-studio`, `check:studio`, 8091/8182/5192); `go test ./internal/services/` grün; `task check:diff` exit 0 (Wurzel 3028, Workbench 394, Starter 15, Go grün).
+- Umsetzung: Include, install, buildall, check:diff-Zuordnung, `check:studio`, `check:all` im `Taskfile.yml`; `tools/k3c-studio/Taskfile.yml` gelöscht; CI-Job `k3c-studio` entfernt; Dienst „Asset-Studio“, Freigaben, `launch.json`-Eintrag, oxlint-Ignore entfernt; Doku `requirements.md`, `CLAUDE.md` (Befehle, Web-Client, Struktur, Entscheidung 005), `docs/arbeitsweise.md` (DEV-Zeile, Prüfstufen, Wails-Programme), Glossar (Asset-Studio = entfallen, neu: Bereich Assets).
+- Abweichungen: `tools/assetkit` wurde bisher nur von `check:studio`/CI-Job Studio geprüft – jetzt in `k3c-workbench:gotest`/`lint` (`tools/k3c-workbench/Taskfile.yml`) und im CI-Job k3c-workbench. Vitest der Wurzel schließt generisch `tools/*/frontend/**` aus (sonst liefe das bis WB1.4 noch vorhandene Studio-Frontend ohne seine Aliase mit). Codemaps bleiben für US1.
