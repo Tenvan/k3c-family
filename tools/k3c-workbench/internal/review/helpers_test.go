@@ -84,10 +84,13 @@ func gitIn(t *testing.T, dir string, args ...string) string {
 	return strings.TrimSpace(string(out))
 }
 
+// lies liest eine Datei; ohne t (Attrappe) panic statt Fatal.
 func lies(t *testing.T, pfad string) []byte {
-	t.Helper()
 	raw, err := os.ReadFile(pfad)
 	if err != nil {
+		if t == nil {
+			panic(err)
+		}
 		t.Fatal(err)
 	}
 	return raw

@@ -150,7 +150,16 @@ func (v *vergleich) quelleAlt(pfad string) (Quelle, bool, error) {
 	if !ok {
 		return Quelle{}, false, nil
 	}
-	q, err := neueQuelle(pfad, spec, v.stilAlt, true)
+	var specs []string
+	for p := range v.alt {
+		if istSpec(p) {
+			specs = append(specs, p)
+		}
+	}
+	q, err := neueQuelle(pfad, spec, v.stilAlt, true, specs, func(p string) ([]byte, bool, error) {
+		raw, ok := v.alt[p]
+		return raw, ok, nil
+	})
 	return q, err == nil, err
 }
 

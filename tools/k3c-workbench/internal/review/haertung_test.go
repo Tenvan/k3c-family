@@ -110,13 +110,45 @@ func TestIstSpecHaertung(t *testing.T) {
 	}
 }
 
-// TestCacheKennungStub: die Attrappe rendert in andere Cache-Ordner als die echte CLI (Befund 7).
-func TestCacheKennungStub(t *testing.T) {
+// TestCacheKennung: die echte CLI (RD1) rendert unter RendererVersion, ohne Renderer ebenso (Befund 7).
+func TestCacheKennung(t *testing.T) {
 	t.Parallel()
-	if k := kennung(cli()); k == RendererVersion {
-		t.Fatalf("Attrappe hat die Kennung der echten CLI: %s", k)
+	if k := kennung(cli()); k != RendererVersion {
+		t.Fatalf("echte CLI: %s", k)
 	}
 	if k := kennung(nil); k != RendererVersion {
 		t.Fatalf("ohne Renderer: %s", k)
+	}
+}
+
+// TestSchnappschussMitReittier: der Schnappschuss enthält das Reittier der Spec, damit die echte CLI (RD1, Regel
+// reittier-unbekannt) es neben der Spec findet; im Arbeitsstand aus dem Checkout, in der Basis aus dem Commit.
+func TestSchnappschussMitReittier(t *testing.T) {
+	t.Parallel()
+	repo := testRepo(t)
+	q, _, err := QuelleArbeitsstand(repo, "public/grafik/figuren/monarch.paper.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, ok := q.Beilagen["public/grafik/reittiere/pferd.paper.json"]; !ok {
+		t.Fatalf("Beilagen = %v", q.Beilagen)
+	}
+	spec, err := q.SpecDatei(repo, cli())
+	if err != nil {
+		t.Fatal(err)
+	}
+	pferd := filepath.Join(filepath.Dir(filepath.Dir(spec)), "reittiere", "pferd.paper.json")
+	if _, err := os.Stat(pferd); err != nil {
+		t.Fatalf("Reittier fehlt im Schnappschuss: %v", err)
+	}
+	b, ok, err := QuelleBasis(context.Background(), repo, "HEAD", "public/grafik/figuren/monarch.paper.json")
+	if err != nil || !ok {
+		t.Fatal(err)
+	}
+	if _, ok := b.Beilagen["public/grafik/reittiere/pferd.paper.json"]; !ok {
+		t.Fatalf("Basis-Beilagen = %v", b.Beilagen)
+	}
+	if b.ordner(repo, cli()) == q.ordner(repo, cli()) {
+		t.Fatal("Basis und Arbeitsstand teilen den Cache-Ordner")
 	}
 }
