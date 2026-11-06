@@ -115,6 +115,21 @@ func blobs(ctx context.Context, root string, pfade, shas []string) (map[string][
 	return dateien, nil
 }
 
+// SpecsInCommit listet die Spec-Pfade eines Commits (ohne Inhalt).
+func SpecsInCommit(ctx context.Context, root, commit string) ([]string, error) {
+	out, err := git(ctx, root, "ls-tree", "-r", "-z", "--name-only", commit, "--", grafik)
+	if err != nil {
+		return nil, err
+	}
+	var pfade []string
+	for p := range strings.SplitSeq(strings.TrimRight(string(out), "\x00"), "\x00") {
+		if istSpec(p) {
+			pfade = append(pfade, p)
+		}
+	}
+	return pfade, nil
+}
+
 // SpecsImArbeitsstand listet die Spec-Pfade im Dateisystem, auch unversionierte.
 func SpecsImArbeitsstand(root string) ([]string, error) {
 	treffer, err := filepath.Glob(filepath.Join(root, filepath.FromSlash(grafik), "*", "*"+endung))

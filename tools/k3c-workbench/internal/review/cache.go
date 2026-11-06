@@ -5,8 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -33,6 +35,9 @@ type Quelle struct {
 	SpecHash string
 	StilHash string
 	Basis    bool
+	// Beilagen sind Specs, die die CLI neben dieser braucht (Reittiere, Regel reittier-unbekannt): Pfad → Inhalt.
+	Beilagen     map[string][]byte
+	beilagenHash string
 }
 
 // Gerendert ist ein Frame im Cache mit den Teil-Boxen.
@@ -41,7 +46,10 @@ type Gerendert struct {
 	Teile map[string][]int
 }
 
-func neueQuelle(pfad string, spec, stil []byte, basis bool) (Quelle, error) {
+// leser liefert eine Datei eines Stands; ok false, wenn sie fehlt.
+type leser func(pfad string) ([]byte, bool, error)
+
+func neueQuelle(pfad string, spec, stil []byte, basis bool, specs []string, lies leser) (Quelle, error) {
 	sh, err := SpecHash(spec)
 	if err != nil {
 		return Quelle{}, &SpecUnlesbar{Pfad: pfad, Err: err}
@@ -50,7 +58,52 @@ func neueQuelle(pfad string, spec, stil []byte, basis bool) (Quelle, error) {
 	if err != nil {
 		return Quelle{}, fmt.Errorf("%s: %w", stilPfad, err)
 	}
-	return Quelle{Pfad: pfad, Spec: spec, Stil: stil, SpecHash: sh, StilHash: th, Basis: basis}, nil
+	q := Quelle{Pfad: pfad, Spec: spec, Stil: stil, SpecHash: sh, StilHash: th, Basis: basis}
+	q.Beilagen, q.beilagenHash, err = beilagen(spec, specs, lies)
+	return q, err
+}
+
+// reittiere liefert die Reittier-IDs aus animationen[*].reittier.
+func reittiere(spec []byte) []string {
+	var s struct {
+		Animationen map[string]struct{ Reittier string } `json:"animationen"`
+	}
+	_ = json.Unmarshal(spec, &s)
+	var ids []string
+	for _, a := range s.Animationen {
+		if a.Reittier != "" && !slices.Contains(ids, a.Reittier) {
+			ids = append(ids, a.Reittier)
+		}
+	}
+	slices.Sort(ids)
+	return ids
+}
+
+// beilagen sucht je Reittier <id>.paper.json unter den Specs des Stands; ein fehlendes bleibt fehlend (die CLI meldet es).
+func beilagen(spec []byte, specs []string, lies leser) (map[string][]byte, string, error) {
+	ids := reittiere(spec)
+	if len(ids) == 0 || lies == nil {
+		return nil, "", nil
+	}
+	out := map[string][]byte{}
+	var schluessel strings.Builder
+	for _, id := range ids {
+		for _, p := range specs {
+			if path.Base(p) != id+endung {
+				continue
+			}
+			raw, ok, err := lies(p)
+			if err != nil {
+				return nil, "", err
+			}
+			if ok {
+				out[p] = raw
+				schluessel.WriteString(p + ":" + sha(string(raw)) + ";")
+			}
+			break
+		}
+	}
+	return out, sha(schluessel.String()), nil
 }
 
 // QuelleBasis liest Spec und Stil-Datei aus dem Commit; fehlt die Spec dort, ist ok false.
@@ -69,7 +122,13 @@ func QuelleBasis(ctx context.Context, root, commit, pfad string) (Quelle, bool, 
 	if !ok {
 		return Quelle{}, false, fmt.Errorf("%s fehlt in %s", stilPfad, commit)
 	}
-	q, err := neueQuelle(pfad, spec, stil, true)
+	var specs []string
+	if len(reittiere(spec)) > 0 {
+		if specs, err = SpecsInCommit(ctx, root, commit); err != nil {
+			return Quelle{}, false, err
+		}
+	}
+	q, err := neueQuelle(pfad, spec, stil, true, specs, func(p string) ([]byte, bool, error) { return Show(ctx, root, commit, p) })
 	return q, err == nil, err
 }
 
@@ -89,7 +148,13 @@ func QuelleArbeitsstand(root, pfad string) (Quelle, bool, error) {
 	if !ok {
 		return Quelle{}, false, fmt.Errorf("%s fehlt", stilPfad)
 	}
-	q, err := neueQuelle(pfad, spec, stil, false)
+	var specs []string
+	if len(reittiere(spec)) > 0 {
+		if specs, err = SpecsImArbeitsstand(root); err != nil {
+			return Quelle{}, false, err
+		}
+	}
+	q, err := neueQuelle(pfad, spec, stil, false, specs, func(p string) ([]byte, bool, error) { return leseArbeitsstand(root, p) })
 	return q, err == nil, err
 }
 
@@ -107,7 +172,11 @@ func Kennung(r Renderer) string { return kennung(r) }
 
 // ordner ist .cache/paper/<renderKey>/ (renderKey mit der Kennung des Renderers).
 func (q Quelle) ordner(root string, r Renderer) string {
-	return filepath.Join(root, ".cache", "paper", renderKeyMit(q.SpecHash, q.StilHash, kennung(r)))
+	spec := q.SpecHash
+	if q.beilagenHash != "" {
+		spec = sha(spec + "+" + q.beilagenHash) // ein geändertes Reittier ändert den Render des Reiters
+	}
+	return filepath.Join(root, ".cache", "paper", renderKeyMit(spec, q.StilHash, kennung(r)))
 }
 
 // schnappschuss legt Spec und Stil-Datei als Mini-Baum in den Cache (<ordner>/basis|stand/public/grafik/…): die CLI
@@ -122,6 +191,11 @@ func (q Quelle) schnappschuss(root string, r Renderer) (spec, stil string, err e
 	stil = filepath.Join(baum, filepath.FromSlash(stilPfad))
 	if err := schreibeWennNeu(spec, q.Spec); err != nil {
 		return "", "", err
+	}
+	for p, raw := range q.Beilagen {
+		if err := schreibeWennNeu(filepath.Join(baum, filepath.FromSlash(p)), raw); err != nil {
+			return "", "", err
+		}
 	}
 	return spec, stil, schreibeWennNeu(stil, q.Stil)
 }
