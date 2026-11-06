@@ -57,3 +57,18 @@ func TestBasisUngueltig(t *testing.T) {
 		}
 	}
 }
+
+// TestBasisFetchNurEinmal: origin/develop holt höchstens einmal je Minute (Review-Befund RV1.2/5).
+func TestBasisFetchNurEinmal(t *testing.T) {
+	repo := testRepo(t)
+	gitIn(t, repo, "update-ref", "refs/remotes/origin/develop", "HEAD~1")
+	vorher := fetchAufrufe.Load()
+	for range 3 {
+		if _, err := Aufloesen(context.Background(), repo, "origin/develop"); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if n := fetchAufrufe.Load() - vorher; n != 1 {
+		t.Fatalf("%d Fetches, will 1", n)
+	}
+}

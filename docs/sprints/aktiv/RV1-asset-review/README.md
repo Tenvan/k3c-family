@@ -81,7 +81,7 @@ Alle mit Default entschieden (gilt bis zur Freigabe durch 🧑):
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RV1.1 | `RV1.1-review-basis-diff.md` | Umsetzung | autonom | fertig |
-| RV1.2 | `RV1.2-assetsui-echte-daten.md` | Umsetzung | autonom | offen |
+| RV1.2 | `RV1.2-assetsui-echte-daten.md` | Umsetzung | autonom | fertig |
 | RV1.3 | `RV1.3-review-seite-vergleich.md` | Umsetzung | autonom | offen |
 | RV1.4 | `RV1.4-animation-prompts.md` | Umsetzung | autonom | offen |
 | RV1.5 | `RV1.5-review.md` | Review | autonom | offen |

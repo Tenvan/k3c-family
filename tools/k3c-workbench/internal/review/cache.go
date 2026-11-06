@@ -102,6 +102,9 @@ func kennung(r Renderer) string {
 	return RendererVersion
 }
 
+// Kennung ist die Renderer-Version, unter der der Cache Ergebnisse dieses Renderers ablegt.
+func Kennung(r Renderer) string { return kennung(r) }
+
 // ordner ist .cache/paper/<renderKey>/ (renderKey mit der Kennung des Renderers).
 func (q Quelle) ordner(root string, r Renderer) string {
 	return filepath.Join(root, ".cache", "paper", renderKeyMit(q.SpecHash, q.StilHash, kennung(r)))

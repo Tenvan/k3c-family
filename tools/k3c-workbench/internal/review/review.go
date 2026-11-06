@@ -101,7 +101,7 @@ func (v *vergleich) alleEintraege(ctx context.Context, pfade []string) ([]Asset,
 	if err := errors.Join(fehler...); err != nil {
 		return nil, err
 	}
-	var assets []Asset
+	assets := []Asset{}
 	for _, a := range ergebnisse {
 		if a != nil {
 			assets = append(assets, *a)

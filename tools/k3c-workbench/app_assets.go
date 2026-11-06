@@ -2,12 +2,11 @@ package main
 
 import "k3c/tools/k3c-workbench/internal/assetsui"
 
-// Asset-Oberfläche (Bindings, docs/standards/paper-mcp.md › Oberfläche). Bis RV1 antworten die Stubs mit den
-// Beispielantworten aus tools/paper/fixtures/ui/ (PV1.8); WB1 und RV1 bauen parallel dagegen.
+// Asset-Oberfläche (Bindings, docs/standards/paper-mcp.md › Oberfläche): echte Daten aus dem Checkout (RV1).
 
-func (a *App) assets() assetsui.Stubs {
+func (a *App) assets() assetsui.Dienst {
 	a.wait()
-	return assetsui.Stubs{Root: a.root}
+	return assetsui.Dienst{Root: a.root}
 }
 
 // AssetsList liefert den Katalog: je Asset ID, Rig, Gruppe, Pfad, gültig und geändert (Binding).
@@ -23,7 +22,9 @@ func (a *App) AssetsStyle() (map[string]any, error) { return a.assets().AssetsSt
 func (a *App) AssetsPrompts() ([]assetsui.Vorlage, error) { return a.assets().AssetsPrompts() }
 
 // AssetsReview vergleicht den Arbeitsstand mit der Basis HEAD, HEAD~1, Commit-SHA oder origin/develop (Binding).
-func (a *App) AssetsReview(basis string) (assetsui.Review, error) { return a.assets().AssetsReview(basis) }
+func (a *App) AssetsReview(basis string) (assetsui.Review, error) {
+	return a.assets().AssetsReview(basis)
+}
 
 // AssetsFrame liefert einen Frame als Data-URL mit Teil-Boxen; leere Basis = Arbeitsstand (Binding).
 func (a *App) AssetsFrame(id, animation string, frame int, variante, basis string) (assetsui.Frame, error) {
