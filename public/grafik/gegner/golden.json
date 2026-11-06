@@ -1,0 +1,42 @@
+{
+  "gier": {
+    "renderKey": "f5b7d5c942386cf5a6da5b7854bd5e8a477e72966eef4b5fb7847b5b6b9e20be",
+    "dateien": {
+      "angriff.png": "4f1f5292b05841c973939092a5eab5a8321fc95f9a5d50fd77bc6b309513d02c",
+      "idle.png": "699822879b4be646804f9a974922d9964902fb97c7c0d6a2a2a5eb0e04557528",
+      "lauf.png": "78dc3c2abe4cd871dd30fc56ac0fc8d6025dee1c9389cd4aa61ee61055f47c0b"
+    }
+  },
+  "goblin-bogenschuetze": {
+    "renderKey": "44fc287064ff920e9e233ea5b1bd86a262859634348603f2474126e9818422e3",
+    "dateien": {
+      "angriff.png": "99044cde3e3e3a4820867250d3cc49f37e6bc1fef11ab015a185d3557a614d7a",
+      "idle.png": "8615ecf1eb28b8c3ac13c9d1072ccfd7a17f1e36a3f3768774b5abe5df8bc75a",
+      "lauf.png": "7bf9577ce85ce55aec5686c2f722f6807cee699568967df817b46de7d1807507"
+    }
+  },
+  "goblin": {
+    "renderKey": "48110e48c8278ee4a860f55f1d0db3d26422f8de5ef7c03d4c6b64decd95e435",
+    "dateien": {
+      "angriff.png": "e054d4f423eb1c6bc80b97329cfa327f5e5fe21d965123a41f4f2b918bfc29bc",
+      "idle.png": "e1ef49f9383c3c75027cb6885342a546d4aa05d6ce87a9edc685ef24bd3dbfb7",
+      "lauf.png": "f08fd465eec2a3dffadef8695cc2aa94f957287bade857fdef5d03040d3055be"
+    }
+  },
+  "skelett": {
+    "renderKey": "0bd8991aff234ffa4777fd063efa9e6a4cdf7e00919ffde80659b6f8f55a9a06",
+    "dateien": {
+      "angriff.png": "5aef9f47f1e9445abec04397079c8822ff9378e76b494b5bec8c0239f6b095ce",
+      "idle.png": "99570ac74c5f1a612b1a110a10f8c2fb4524168890b63b6d528d3bc22708be25",
+      "lauf.png": "40fb515832e43419f269bfe35941588c328e97adf7b0b3fd46b366fb7c760524"
+    }
+  },
+  "zombie": {
+    "renderKey": "6acc33f4d17b696c4e0915025821824231460db3e57431088cc082d170d75cb6",
+    "dateien": {
+      "angriff.png": "a17e51c408c92830ba47810027ac25745ae38b1cfbdcbbab8fceb2ebeeeeeca1",
+      "idle.png": "99dab7afecc8f3788fe6db1c44810a7f93ebe5b647507f406e6aed76c52f1467",
+      "lauf.png": "74cdfae3043d04f807ec2aadea78da0fe74352282eac43d6ff4caf867774f9f2"
+    }
+  }
+}

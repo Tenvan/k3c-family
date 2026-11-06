@@ -1,6 +1,6 @@
 # MG4.1 · Goblins und Untote als figur
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -42,9 +42,9 @@ Kein `assets_style_set`, keine Änderung an Renderer, Workbench oder anderen Gru
 
 ## Fertig, wenn
 
-- [ ] AC-01: `assets_list {gruppe: gegner}` meldet die fünf Assets gültig.
-- [ ] AC-02: `golden.json` der Gruppe eingetragen, `tools/paper`-Tests grün.
-- [ ] AC-03: jede Animation mit `assets_preview` geprüft; `assets_review` ohne roten Eintrag.
+- [x] AC-01: `assets_list {gruppe: gegner}` meldet die fünf Assets gültig.
+- [x] AC-02: `golden.json` der Gruppe eingetragen, `tools/paper`-Tests grün.
+- [x] AC-03: jede Animation mit `assets_preview` geprüft; `assets_review` ohne roten Eintrag.
 
 ## Prüfen
 
@@ -58,5 +58,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `assets_list {gruppe: gegner}` meldet goblin, gier, goblin-bogenschuetze, skelett, zombie gültig (Rig `figur`).
+- AC-02 geprüft: `task gen:paper` schreibt `public/grafik/gegner/golden.json` und `index.paper.json`; fremde Gruppen (figuren, reittiere) danach zurückgesetzt; `bunx vitest run tools/paper tests/planning.test.ts` 1110/1110 grün.
+- AC-03 geprüft: idle, lauf und angriff je Gegner mit `assets_preview` angesehen; `assets_review` gegen HEAD: fünf Einträge „neu“, kein roter.
+- Abweichungen: Zombie trägt die Arme auch in `idle`/`lauf` per Keyframe nach vorn (Pose plus Keyframe); Goblins kahl mit spitzen Ohren in `smaragd`, Gier in `purpur` mit Goldsack, Bogenschütze mit Kapuze `fell-fuchs`. Rahmen je Waffenreichweite (130–160 px breit).
+- `task check:diff` nicht einzeln gefahren (Diff zu develop umfasst ganz feature/pap, Laufzeit > 10 min); Gate sind die gezielten Tests, `task check` folgt in MG4.5.
+- Manuell geprüft: niemand. Neue Tickets: keine.

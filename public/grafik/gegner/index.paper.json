@@ -1,0 +1,27 @@
+[
+  {
+    "id": "gier",
+    "rig": "figur",
+    "manifest": "gier/manifest.json"
+  },
+  {
+    "id": "goblin-bogenschuetze",
+    "rig": "figur",
+    "manifest": "goblin-bogenschuetze/manifest.json"
+  },
+  {
+    "id": "goblin",
+    "rig": "figur",
+    "manifest": "goblin/manifest.json"
+  },
+  {
+    "id": "skelett",
+    "rig": "figur",
+    "manifest": "skelett/manifest.json"
+  },
+  {
+    "id": "zombie",
+    "rig": "figur",
+    "manifest": "zombie/manifest.json"
+  }
+]
