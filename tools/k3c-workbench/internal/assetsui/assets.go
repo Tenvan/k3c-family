@@ -276,6 +276,20 @@ func animation(q review.Quelle, name string) (string, error) {
 	return name, nil
 }
 
+// pruefeFrame lehnt einen Frame jenseits der Animation dieses Stands ab (Basis kann kürzer sein als der Arbeitsstand).
+func pruefeFrame(q review.Quelle, anim string, frame int) error {
+	var s struct {
+		Animationen map[string]struct{ Frames int } `json:"animationen"`
+	}
+	if err := json.Unmarshal(q.Spec, &s); err != nil {
+		return err
+	}
+	if n := s.Animationen[anim].Frames; frame >= n {
+		return fmt.Errorf("Frame %d fehlt: Animation „%s“ hat %d Frames", frame, anim, n) //nolint:staticcheck // Text der Oberfläche
+	}
+	return nil
+}
+
 // AssetsFrame liefert einen Frame als Data-URL mit Teil-Boxen; leere Basis = Arbeitsstand.
 func (d Dienst) AssetsFrame(id, anim string, frame int, variante, basis string) (Frame, error) {
 	ctx, cancel := kontext()
@@ -285,6 +299,9 @@ func (d Dienst) AssetsFrame(id, anim string, frame int, variante, basis string) 
 		return Frame{}, err
 	}
 	if anim, err = animation(q, anim); err != nil {
+		return Frame{}, err
+	}
+	if err := pruefeFrame(q, anim, frame); err != nil {
 		return Frame{}, err
 	}
 	renderPlatz <- struct{}{}
@@ -316,6 +333,9 @@ func (d Dienst) AssetsPixelDiff(id, anim string, frame int, basis string) (Pixel
 		return PixelDiff{}, err
 	}
 	if anim, err = animation(qn, anim); err != nil {
+		return PixelDiff{}, err
+	}
+	if err := errors.Join(pruefeFrame(qa, anim, frame), pruefeFrame(qn, anim, frame)); err != nil {
 		return PixelDiff{}, err
 	}
 	renderPlatz <- struct{}{}

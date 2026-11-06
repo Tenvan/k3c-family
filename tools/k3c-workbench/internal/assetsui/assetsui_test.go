@@ -295,3 +295,16 @@ func TestPfadZuExakt(t *testing.T) {
 		t.Fatal("id mit Gruppe angenommen")
 	}
 }
+
+// TestAssetsFrameAusserhalb: ein Frame jenseits der Animation ist ein Fehler, kein beliebiges Bild (Gesamt-Review 3).
+func TestAssetsFrameAusserhalb(t *testing.T) {
+	t.Parallel()
+	d := dienst(testRepo(t), false)
+	_, err := d.AssetsFrame("monarch", "idle", 8, "", "")
+	if err == nil || err.Error() != "Frame 8 fehlt: Animation „idle“ hat 8 Frames" {
+		t.Fatalf("err = %v", err)
+	}
+	if _, err := d.AssetsPixelDiff("monarch", "idle", 8, "HEAD~1"); err == nil {
+		t.Fatal("Pixel-Diff jenseits der Animation angenommen")
+	}
+}

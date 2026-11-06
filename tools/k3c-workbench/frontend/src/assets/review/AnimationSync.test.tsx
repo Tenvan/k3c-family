@@ -88,3 +88,14 @@ describe('AnimationSync', () => {
     expect(nachEinemDurchlauf).toBe(16);
   });
 });
+
+describe('Pixel-Diff beim Abspielen (Befund 4)', () => {
+  it('fragt jeden Diff nur einmal an', async () => {
+    vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] });
+    const host = await mount(<Compare asset={monarch} basis="HEAD~1" />);
+    await click(button(host, 'Unterschiede'));
+    await act(async () => button(host, 'Abspielen')!.click());
+    await tick(125 * 16);
+    expect(fake.api.pixelDiff.mock.calls.length).toBe(8);
+  });
+});

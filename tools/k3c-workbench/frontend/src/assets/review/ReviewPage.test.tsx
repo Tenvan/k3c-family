@@ -66,3 +66,18 @@ describe('ReviewPage', () => {
     expect(host.textContent).toContain('Basis-Stand: lokal');
   });
 });
+
+describe('ReviewPage nach dem Gesamt-Review', () => {
+  it('Frames fragen den aufgelösten Basis-Commit an, nicht den Namen (Befund 1)', async () => {
+    const host = await mount(<ReviewPage />);
+    await click(host.querySelector('[data-asset="monarch"]'));
+    const basen = new Set(fake.api.frame.mock.calls.map((c) => c[4]));
+    expect(basen).toEqual(new Set(['32eb7a7', '']));
+  });
+
+  it('Neu laden fragt das Review erneut an (Befund 2)', async () => {
+    const host = await mount(<ReviewPage />);
+    await click(button(host, 'Neu laden'));
+    expect(fake.api.review.mock.calls.map((c) => c[0])).toEqual(['HEAD', 'HEAD']);
+  });
+});

@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from '@webkit/atoms';
+import { Button, Flex, Heading, Text } from '@webkit/atoms';
 import { useEffect, useState } from 'react';
 import { reviewApi } from './api';
 import { text } from './fehlertext';
@@ -15,6 +15,7 @@ export function ReviewPage() {
   const [review, setReview] = useState<Review | null>(null);
   const [fehler, setFehler] = useState('');
   const [auswahl, setAuswahl] = useState<string | null>(null);
+  const [stand, setStand] = useState(0);
   useEffect(() => {
     let aktiv = true;
     setFehler('');
@@ -29,12 +30,17 @@ export function ReviewPage() {
     return () => {
       aktiv = false;
     };
-  }, [basis]);
+  }, [basis, stand]);
   const eintrag = review?.assets.find((a) => a.id === auswahl);
   return (
     <Flex direction="column" gap="3" p="4">
       <Heading size="4">Asset-Review</Heading>
-      <BasisSelect basis={basis} onChange={setBasis} />
+      <Flex gap="3" align="center" wrap="wrap">
+        <BasisSelect basis={basis} onChange={setBasis} />
+        <Button size="1" variant="soft" onClick={() => setStand((s) => s + 1)}>
+          Neu laden
+        </Button>
+      </Flex>
       {review && (
         <Text size="2" color="gray">
           Basis {review.basis} ({review.basisCommit}) · {review.assets.length} Assets geändert
@@ -50,8 +56,8 @@ export function ReviewPage() {
         <Flex gap="4" align="start">
           <ReviewList assets={review.assets} auswahl={auswahl} onSelect={setAuswahl} />
           {eintrag && (
-            <Flex key={`${eintrag.id}@${review.basis}`} direction="column" gap="4">
-              <Compare asset={eintrag} basis={review.basis} />
+            <Flex key={`${eintrag.id}@${review.basisCommit}#${stand}`} direction="column" gap="4">
+              <Compare asset={eintrag} basis={review.basisCommit} />
               <PromptButtons asset={eintrag} basis={review.basis} />
             </Flex>
           )}

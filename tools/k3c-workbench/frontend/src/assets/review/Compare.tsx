@@ -76,22 +76,25 @@ function Stapel({ vorher, nachher, blend, diff, teile }: { vorher?: Frame; nachh
 }
 
 /** Pixel-Diff des aktuellen Frames, nur bei geänderten Assets und eingeschaltetem Schalter. */
-function useDiff(asset: ReviewAsset, anim: string | undefined, nr: number, basis: string, an: boolean) {
+function useDiff(cache: Map<string, Promise<PixelDiff>>, asset: ReviewAsset, anim: string | undefined, nr: number, basis: string, an: boolean) {
   const [diff, setDiff] = useState<{ wert?: PixelDiff; fehler?: string }>({});
   useEffect(() => {
-    setDiff({});
-    if (!an || anim === undefined || asset.status !== 'geaendert') return;
+    if (!an || anim === undefined || asset.status !== 'geaendert') return setDiff({});
+    const key = `${asset.id}|${anim}|${nr}|${basis}`;
+    let p = cache.get(key);
+    if (!p) cache.set(key, (p = reviewApi.pixelDiff(asset.id, anim, nr, basis)));
     let aktiv = true;
-    reviewApi.pixelDiff(asset.id, anim, nr, basis).then((wert) => aktiv && setDiff({ wert }), (e) => aktiv && setDiff({ fehler: text(e) }));
+    // das alte Overlay bleibt stehen, bis das neue da ist
+    p.then((wert) => aktiv && setDiff({ wert }), (e) => aktiv && setDiff({ fehler: text(e) }));
     return () => {
       aktiv = false;
     };
-  }, [an, asset.id, asset.status, anim, nr, basis]);
+  }, [cache, an, asset.id, asset.status, anim, nr, basis]);
   return diff;
 }
 
-/** Vorher/Nachher eines Review-Eintrags: synchron abspielbar, mit Überblendregler, Pixel-Diff-Overlay und markierten Teilen. */
-export function Compare({ asset, basis }: { asset: ReviewAsset; basis: string }) {
+/** Zustand der Ansicht: Animation, Frame, Wiedergabe und die beiden Frames aus dem Cache. */
+function useAnsicht(asset: ReviewAsset, basis: string) {
   const animationen = useAnimationen(asset);
   const [gewaehlt, setAnim] = useState<string>();
   const anim = animationen === undefined ? undefined : (gewaehlt ?? animationen[0]?.name ?? '');
@@ -100,29 +103,58 @@ export function Compare({ asset, basis }: { asset: ReviewAsset; basis: string })
   const cache = useRef(new Map<string, Promise<Frame>>()).current;
   const vorher = useFrame(cache, asset.id, anim, nr, asset.status === 'neu' ? null : basis);
   const nachher = useFrame(cache, asset.id, anim, nr, asset.status === 'geloescht' ? null : '');
+  return { animationen, anim, setAnim, nr, setNr, spielt, setSpielt, vorher, nachher };
+}
+
+/** Ids aus `teile`, die im gezeigten Frame eine Box haben. */
+function markierteTeile(asset: ReviewAsset, frame?: Frame): [string, Rahmen][] {
+  const rahmen = frame?.teile ?? {};
+  return asset.teile.filter((t) => rahmen[t]).map((t): [string, Rahmen] => [t, rahmen[t]!]);
+}
+
+interface Steuerung {
+  blend: number;
+  onBlend: (v: number) => void;
+  zeigeDiff: boolean;
+  onDiff: () => void;
+  diffMoeglich: boolean;
+  diff: { wert?: PixelDiff; fehler?: string };
+}
+
+function Regler({ blend, onBlend, zeigeDiff, onDiff, diffMoeglich, diff }: Steuerung) {
+  return (
+    <Flex gap="3" align="center">
+      <Box style={{ width: 200 }}>
+        <ValueSlider aria-label="Überblendung" value={blend} min={0} max={100} step={5} onChange={onBlend} />
+      </Box>
+      <Button size="1" variant={zeigeDiff ? 'solid' : 'soft'} aria-pressed={zeigeDiff} disabled={!diffMoeglich} onClick={onDiff}>
+        Unterschiede
+      </Button>
+      {diff.wert && <Text size="1" color="gray">{Math.round(diff.wert.anteil * 1000) / 10} % der Pixel</Text>}
+      {diff.fehler && <Text size="1" color="red">{diff.fehler}</Text>}
+    </Flex>
+  );
+}
+
+/** Vorher/Nachher eines Review-Eintrags: synchron abspielbar, mit Überblendregler, Pixel-Diff-Overlay und markierten Teilen. */
+export function Compare({ asset, basis }: { asset: ReviewAsset; basis: string }) {
+  const a = useAnsicht(asset, basis);
   const [blend, setBlend] = useState(50);
   const [zeigeDiff, setZeigeDiff] = useState(false);
-  const diff = useDiff(asset, anim, nr, basis, zeigeDiff);
-  const rahmen = (nachher.frame ?? vorher.frame)?.teile ?? {};
-  const teile = asset.teile.filter((t) => rahmen[t]).map((t): [string, Rahmen] => [t, rahmen[t]!]);
+  const diffs = useRef(new Map<string, Promise<PixelDiff>>()).current;
+  const diff = useDiff(diffs, asset, a.anim, a.nr, basis, zeigeDiff);
   return (
     <Flex direction="column" gap="3">
       <Flex gap="4" align="end">
-        {asset.status !== 'neu' && <Seite titel="Vorher" stand={vorher} />}
-        {asset.status !== 'geloescht' && <Seite titel="Nachher" stand={nachher} />}
+        {asset.status !== 'neu' && <Seite titel="Vorher" stand={a.vorher} />}
+        {asset.status !== 'geloescht' && <Seite titel="Nachher" stand={a.nachher} />}
       </Flex>
-      {animationen && anim && <AnimationSync animationen={animationen} anim={anim} nr={nr} spielt={spielt} onAnim={setAnim} onNr={setNr} onSpielt={setSpielt} />}
-      <Stapel vorher={vorher.frame} nachher={nachher.frame} blend={blend} diff={zeigeDiff ? diff.wert : undefined} teile={teile} />
-      <Flex gap="3" align="center">
-        <Box style={{ width: 200 }}>
-          <ValueSlider aria-label="Überblendung" value={blend} min={0} max={100} step={5} onChange={setBlend} />
-        </Box>
-        <Button size="1" variant={zeigeDiff ? 'solid' : 'soft'} aria-pressed={zeigeDiff} disabled={asset.status !== 'geaendert'} onClick={() => setZeigeDiff((z) => !z)}>
-          Unterschiede
-        </Button>
-        {diff.wert && <Text size="1" color="gray">{Math.round(diff.wert.anteil * 1000) / 10} % der Pixel</Text>}
-        {diff.fehler && <Text size="1" color="red">{diff.fehler}</Text>}
-      </Flex>
+      {a.animationen && a.anim && (
+        <AnimationSync animationen={a.animationen} anim={a.anim} nr={a.nr} spielt={a.spielt} onAnim={a.setAnim} onNr={a.setNr} onSpielt={a.setSpielt} />
+      )}
+      <Stapel vorher={a.vorher.frame} nachher={a.nachher.frame} blend={blend} diff={zeigeDiff ? diff.wert : undefined}
+        teile={markierteTeile(asset, a.nachher.frame ?? a.vorher.frame)} />
+      <Regler blend={blend} onBlend={setBlend} zeigeDiff={zeigeDiff} onDiff={() => setZeigeDiff((z) => !z)} diffMoeglich={asset.status === 'geaendert'} diff={diff} />
     </Flex>
   );
 }
