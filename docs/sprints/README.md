@@ -9,6 +9,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| PV1 | INF, DEV | PAP | Papierschnitt-Verträge: Domäne, Spec-Schema, Styleguide, Render-, MCP- und Review-Vertrag | – | `aktiv/PV1-papierschnitt-vertraege/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | `aktiv/BD10-schreibende-endpunkte-schutz/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
@@ -29,6 +30,21 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| RD1 | INF | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | Entwurf | `geplant/RD1-papierschnitt-renderer/` |
+| MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | Entwurf | `geplant/MC1-asset-mcp-tools/` |
+| WB1 | DEV | PAP | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | – | Entwurf | `geplant/WB1-workbench-development-assets/` |
+| RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | Entwurf | `geplant/RV1-asset-review/` |
+| US1 | CLI | PAP | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | – | Entwurf | `geplant/US1-spiel-auf-papierschnitt/` |
+| MG1 | CLI | PAP | Papierschnitt-Migration: Monarch und Spielerfarben | – | Entwurf | `geplant/MG1-papier-monarch-spielerfarben/` |
+| MG2 | CLI | PAP | Papierschnitt-Migration: Reittiere | – | Entwurf | `geplant/MG2-papier-reittiere/` |
+| MG3 | CLI | PAP | Papierschnitt-Migration: Truppen | – | Entwurf | `geplant/MG3-papier-truppen/` |
+| MG4 | CLI | PAP | Papierschnitt-Migration: Gegner | – | Entwurf | `geplant/MG4-papier-gegner/` |
+| MG5 | CLI | PAP | Papierschnitt-Migration: Bosse | – | Entwurf | `geplant/MG5-papier-bosse/` |
+| MG6 | CLI | PAP | Papierschnitt-Migration: Gebäude mit Ausbaustufen | – | Entwurf | `geplant/MG6-papier-gebaeude/` |
+| MG7 | CLI | PAP | Papierschnitt-Migration: Hintergründe je Biom | – | Entwurf | `geplant/MG7-papier-hintergruende/` |
+| MG8 | CLI | PAP | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | – | Entwurf | `geplant/MG8-papier-natur-objekte-icons/` |
+| PS1 | CLI | PAP | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | – | Entwurf | `geplant/PS1-papierschnitt-sichtpruefungen/` |
+| CU1 | CLI | PAP | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | – | Entwurf | `geplant/CU1-alte-grafik-aufraeumen/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 | P1 | REG | BAL | Spieleabend 1 | Protokoll und Folge-Tickets | bereit | `geplant/P1-spieleabend-1/` |
