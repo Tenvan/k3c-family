@@ -10,9 +10,19 @@
     "manifest": "einhorn/manifest.json"
   },
   {
+    "id": "elefant",
+    "rig": "vierbeiner",
+    "manifest": "elefant/manifest.json"
+  },
+  {
     "id": "hirsch",
     "rig": "vierbeiner",
     "manifest": "hirsch/manifest.json"
+  },
+  {
+    "id": "hoellenhund",
+    "rig": "vierbeiner",
+    "manifest": "hoellenhund/manifest.json"
   },
   {
     "id": "pegasus",
@@ -33,5 +43,15 @@
     "id": "schimmel",
     "rig": "vierbeiner",
     "manifest": "schimmel/manifest.json"
+  },
+  {
+    "id": "weisser-wolf",
+    "rig": "vierbeiner",
+    "manifest": "weisser-wolf/manifest.json"
+  },
+  {
+    "id": "wolf",
+    "rig": "vierbeiner",
+    "manifest": "wolf/manifest.json"
   }
 ]

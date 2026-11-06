@@ -1,6 +1,6 @@
 # MG2.3 · Wölfe, Höllenhund und Elefant: wolf, weisser-wolf, hoellenhund, elefant
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -57,5 +57,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `assets_list {gruppe: reittiere}` → 11 Assets, 0 ungültig (neu: wolf, weisser-wolf, hoellenhund, elefant).
+- AC-02 geprüft: `task gen:paper` ok, Golden und Gruppen-Index nachgezogen; fremde bzw. nur umformatierte Dateien zurückgenommen.
+- AC-03 geprüft: wolf galopp 4, schritt 2, trab 6; weisser-wolf schritt 0, galopp 2, trab 0; hoellenhund trab 4, galopp 6, schritt 0; elefant schritt 4, galopp 2, trab 0. Eigene Köpfe (Wolfskopf mit Spitzohren; Elefantenkopf mit Ohr, Rüssel, Stoßzahn), buschiger Schwanz bzw. Quaste, Elefant mit `bein` × 1,6. Wölfe mit Rahmen −128/132 wegen der Ohren. `assets_review` (HEAD): 4× `neu`, kein `ungueltig`.
+- Befund D-MG2-08: Rig `vierbeiner` hat Pferderumpf und feste Beinlänge, Wölfe und Elefant wirken pferdeartig (Elefant im Galopp unnatürlich); Wunsch an RD1 statt neuem Rig-Typ. Schweif des Wolfs ragt im Galopp 1–2 px links aus dem Rahmen (wie D-MG2-02).

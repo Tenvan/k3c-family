@@ -15,12 +15,28 @@
       "trab.png": "d91e93f913200683619f5125903d0a88d12108ba1422281dba8c107db996c03f"
     }
   },
+  "elefant": {
+    "renderKey": "eeee97119a346e757d98fdb315b442e8f8feae1dbff5dfb66fd216d18011c989",
+    "dateien": {
+      "galopp.png": "77aabc628568f2786a4eb3287a17d0f277124065b0db5afeadff1aad33a55fd7",
+      "schritt.png": "1538707d0edcf5e9eb171bd9b204e5c7bcd8adf77e3cd1cc406e1202c2fba0e1",
+      "trab.png": "3df7f2b49158c75460f9ae029daee38e58616a252c318c05621367e88b7ec185"
+    }
+  },
   "hirsch": {
     "renderKey": "9645dd00c6483d50bd64a1c21fd6182da7d054d97730b043f016a25da848b129",
     "dateien": {
       "galopp.png": "fb11e38b33129702c29d1c84cabc8d115a8e634a5b7eb1332c0fdb037b40069a",
       "schritt.png": "0421a224ac649b6e3fe4733c9ab3ad197639b6b20e6f8e5d9f605fe2bf47807b",
       "trab.png": "d5f49302ae73d8c13eec19f04e2bd9405aab88ca60dca025166e4adbde3462ad"
+    }
+  },
+  "hoellenhund": {
+    "renderKey": "4091c9c7789d04ea7d39b1c566998bf3dc963432847bc7334df19916279f810a",
+    "dateien": {
+      "galopp.png": "dfb5aead0a5d64b13a444542eab24b9a0547c297f573b009aead22f8ff13ed8d",
+      "schritt.png": "c07c2e915c6819b18ec8b6fd0702fd1e6d24da700c19bfa31d061283caa5f8d4",
+      "trab.png": "f0f53e707e4d0985d8c0d951cfdf99105fcee7899e885960a420fd9aff242c6c"
     }
   },
   "pegasus": {
@@ -53,6 +69,22 @@
       "galopp.png": "314965e03d9262d90c5c934040837c1d6382b1e2625dd6aacbe28445a58ac54b",
       "schritt.png": "977efed94ea438e85c8881bf125cd3be99fca626800023ac8335fe16aa14d7c2",
       "trab.png": "139c1a9a20922103b7b33b36b6963c525c590086f427a331d4d9e77f97b067ef"
+    }
+  },
+  "weisser-wolf": {
+    "renderKey": "ff47ecf004efa17d0f2b16d21a82ebaf70a2b22a25784dcaea28103035dc3047",
+    "dateien": {
+      "galopp.png": "83b96af9e020ab05f46771842dedf25af00a4e579c26d9c2c787a5243f1b631a",
+      "schritt.png": "41dc6ba5197ab1ea3dbbfafb0a0fbbb17cead97a9d2883f361a4ad770a0d86f8",
+      "trab.png": "e18c6f68c3756943feb92de1c3a36beefe2f3d7d78f5c09d77fdf08cd7b1985c"
+    }
+  },
+  "wolf": {
+    "renderKey": "e112bb5bcd8726c334ace6a192b4cebafd49b5ef64e8845fb80edbef9c37c21b",
+    "dateien": {
+      "galopp.png": "6e324182cb6fdb05ac8db8acf181ce1282a0f62769793d2d243d37ed49febe11",
+      "schritt.png": "549c7213e0338b2e7fe6bf40c520fe6e36cf5eabb41d6b8fa800e05cdf03fa65",
+      "trab.png": "2501a3ec15790511e8f9f9fc647547943bdf185872f070944bd24bdf6e38c3db"
     }
   }
 }
