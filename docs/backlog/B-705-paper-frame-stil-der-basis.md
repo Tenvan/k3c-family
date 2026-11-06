@@ -34,15 +34,17 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Vertrag: `docs/standards/paper-spec.md` › 8 (CLI) bekommt `--stil <datei>` für `frame` und `render`; Änderung nur über dieses Ticket (Projekt PAP). Der Schnappschuss-Baum der Basis liegt unter `.cache/paper/<renderKey>/basis/public/grafik/` und enthält schon `stil.paper.json` sowie die Reittier-Specs (`internal/review/cache.go`, `Quelle.schnappschuss`); das Review muss nur den Pfad übergeben (`Renderer.Frame` um den Stil erweitern, Attrappen in `review/cli_test.go` und `assetsui/helpers_test.go` nachziehen). Der Cache-Schlüssel enthält den `stilHash` der Basis bereits.
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+Test-Repo (`tools/paper/fixtures/review-repo/erzeuge.ts`), Basis `HEAD~1`: Commit 2 macht Material `stein` heller, die Mauer-Spec bleibt gleich → Review meldet `mauer` mit `stil: true` und `pixelAnteil > 0` (Fixture: 0,170654 aus handgemachten PNGs).
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+- `--stil` zeigt auf eine fehlende Datei → Exit 2 mit Text auf stderr, kein Bild.
+- Stil-Datei der Basis verletzt das Schema → Exit 1 (`fehler` je Regel); das Review zeigt beim Vorher-Bild den Fehlertext, Nachher bleibt.
+- Fehlt in der Basis ein im Arbeitsstand genutztes Material, rendert Vorher mit dem Stil der Basis (Spec der Basis nutzt es ja nicht).
 
 ## Akzeptanzkriterien
 
