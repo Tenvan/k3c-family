@@ -20,7 +20,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | MG7 | PAP | PAP | Papierschnitt-Migration: Hintergründe je Biom | – | `aktiv/MG7-papier-hintergruende/` |
 | MG8 | PAP | PAP | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | – | `aktiv/MG8-papier-natur-objekte-icons/` |
 | PS1 | CLI | PAP | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | – | `aktiv/PS1-papierschnitt-sichtpruefungen/` |
-| US2 | CLI | PAP | Spiel lädt Natur, Objekte, Münzen, Icons und Reittiere als Papierschnitt | – | `aktiv/US2-spiel-natur-reittiere-papier/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | `aktiv/BD10-schreibende-endpunkte-schutz/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
@@ -292,3 +291,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WB1 | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | `erledigt/WB1-workbench-development-assets/` |
 | MG6 | Papierschnitt-Migration: Gebäude mit Ausbaustufen | `erledigt/MG6-papier-gebaeude/` |
 | US1 | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | `erledigt/US1-spiel-auf-papierschnitt/` |
+| US2 | Spiel lädt Natur, Objekte, Münzen, Icons und Reittiere als Papierschnitt | `erledigt/US2-spiel-natur-reittiere-papier/` |

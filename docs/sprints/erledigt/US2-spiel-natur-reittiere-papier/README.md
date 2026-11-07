@@ -1,6 +1,6 @@
 # US2 · CLI · Spiel lädt Natur, Objekte, Münzen, Icons und Reittiere als Papierschnitt
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -61,9 +61,10 @@ keine (Defaults in B-701 als D-US2-xx)
 |---|---|---|---|---|
 | US2.1 | `US2.1-natur-objekte-icons.md` | Umsetzung | autonom | fertig |
 | US2.2 | `US2.2-reittier.md` | Umsetzung | autonom | fertig |
-| US2.3 | `US2.3-review.md` | Review | autonom | offen |
+| US2.3 | `US2.3-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-07, autonom (Claude). AC-01 US2.1 und US2.3, AC-02 US2.2, AC-03 US2.3 (`task check:diff` grün, Review ohne offene wichtige Befunde).
+Behoben aus dem Review: Befunde 1, 2, 3, 5, 7; zurückgestellt D-US2-04. Defaults D-US2-01 bis D-US2-04 in B-701.
+Neue Tickets: keine. Sichtprüfung in PS1; weitere Reittiere brauchen Gangarten im Monarch-Asset (MG1, D-US2-03).

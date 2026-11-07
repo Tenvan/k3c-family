@@ -1,6 +1,6 @@
 # US2.3 · Review US2
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -50,5 +50,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Review Opus über `bb688941..HEAD`: 0 kritisch, 1 wichtig, 6 klein.
+- Behoben: Befund 1 Phase je Objekt aus der Weltposition (`animPhase`, Test RED→GREEN; im Browser 97 Bäume/Büsche über alle 8 Frames gestreut), 2 Deko-Wurzeln und 3 Schild mit Rahmen-Ursprung, Zoom und Animation, 5 Tests exakt (Zoom, Lauf mit Rückfall plus Variante, alte Gebäude-Dateien nur für die Lücken), 7 Emoji 🤒.
+- Zurückgestellt: 4 und 6 als D-US2-04.
+- `origin/feature/pap` gemergt (schon aktuell); `task check:diff` grün, Vitest `tests` + `src/scenes` 1850/1850.
