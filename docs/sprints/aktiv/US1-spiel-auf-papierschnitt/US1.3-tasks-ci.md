@@ -1,6 +1,6 @@
 # US1.3 · Tasks und CI kennen die Papierschnitt-Grafik
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -51,5 +51,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 geprüft: `task check:all` Exit 0 im ersten Lauf (Typecheck, Oxlint, Vitest, Build, go test, golangci-lint, Workbench, Starter); keine Flakes zu wiederholen. `go:race` lokal übersprungen (kein gcc), läuft in der CI.
+- `dev` und `build` hängen nicht mehr an `gen:atlas` (das Spiel lädt keinen Atlas); CI unverändert, die PNGs sind committet (D-04). `gen:atlas` selbst entfällt in CU1.

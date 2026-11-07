@@ -75,7 +75,6 @@ tasks:
 
   dev:
     desc: Dev-Server (LAN, Port 5183); /api und /ws gehen an den Go-Server (Port 8080, `task start`)
-    deps: [gen:atlas]
     cmds:
       - bunx vite --host {{.CLI_ARGS}}
 
@@ -109,8 +108,7 @@ tasks:
   # `build` ist der Web-Build (dist/), `buildall` baut dazu alle EXE nach bin/, `pages` die statische Präsentationsseite.
 
   build:
-    desc: Atlas, Typecheck und Produktions-Build nach dist/
-    deps: [gen:atlas]
+    desc: Typecheck und Produktions-Build nach dist/ (Grafik liegt als Papierschnitt-PNGs in public/grafik/, US1)
     cmds:
       - bunx tsc --noEmit
       - bunx vite build
