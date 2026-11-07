@@ -17,6 +17,7 @@ Jedes Projekt ist eine Datei `XXX-name.md` nach [`../vorlagen/projekt.md`](../vo
 | 7 | KMP · Kampf, Bosse, Events | Bosse, Siege, Events und Level-Elemente durchgängig | [KMP-kampf-bosse-events.md](KMP-kampf-bosse-events.md) |
 | 8 | REL · Release & Betrieb | Belegte Releases, Start im Heimnetz, Veröffentlichung | [REL-release-betrieb.md](REL-release-betrieb.md) |
 | 9 | BAL · Balancing & Spieleabende | – | [BAL-balancing-spieleabende.md](BAL-balancing-spieleabende.md) |
+| 10 | RST · Rust-Engine | – | [RST-rust-engine.md](RST-rust-engine.md) |
 | – | ABN · Abnahmen am Gerät | Prüfungen am Gerät gesammelt | [ABN-abnahmen-geraet.md](ABN-abnahmen-geraet.md) |
 
 ## Ruht
@@ -24,7 +25,6 @@ Jedes Projekt ist eine Datei `XXX-name.md` nach [`../vorlagen/projekt.md`](../vo
 | Projekt | Grund | Datei |
 |---|---|---|
 | GRJ · Grafik-Justierung | – | [GRJ-grafik-justierung.md](GRJ-grafik-justierung.md) |
-| RST · Rust-Engine | – | [RST-rust-engine.md](RST-rust-engine.md) |
 
 ## Erledigt
 

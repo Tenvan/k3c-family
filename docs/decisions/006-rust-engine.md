@@ -1,6 +1,6 @@
 # 006 · Rust-Engine: Simulationskern zuerst, Server bleibt vorerst Go
 
-- **Status:** Entwurf (Entscheidung durch Ralf offen)
+- **Status:** angenommen (Ralf, 2026-11-07, vorläufig: „erstmal“)
 - **Datum:** 2026-11-07
 - **Projekt:** RST · Ticket: B-725
 - **Vorgänger:** 001 (Engine auf Go-Server)
@@ -9,6 +9,11 @@
 
 Ralf will die Engine nach Rust bringen. Gründe: Timing-Probleme schon auf einem schnellen PC ohne Spiellast,
 Simulationen und Balancing dauern zu lange, die Welten werden größer.
+
+**Hauptgrund laut Ralf (2026-11-07): der Raspberry Pi.** Ziel aus B-042: Pi 3 (64-Bit, 4× Cortex-A53, 1 GB),
+2 Räume × 3 Spieler, Tick-Dauer p99 < 10 ms. Die Handmessung vom 2026-10-03 lag schon bei 8,0–10,3 ms, also am Ziel,
+und die Welten wachsen weiter. Gleich wichtig sind Balancing- und Simulationsläufe; deshalb kommt Variante 1 auf jeden
+Fall in Frage.
 
 Ralf hat am 2026-11-07 entschieden: Die Timing-Messung läuft **nicht jetzt**, sondern im Lauf der Umsetzung
 (Session RST-M1 unten). Die Befunde unten sind deshalb eine kurze Erstmessung, kein vollständiges Profil.
@@ -93,17 +98,31 @@ Reine Funktionen mit Golden-Abdeckung und ohne Rückwirkung auf Laufzeit oder We
 Nicht gefahrlos: `engine/sim` (Zustand fließt in Snapshot, Spielstand, Workbench), alles in `engine/net`/`room`
 (Nebenläufigkeit, Neustart-Supervisor), die Workbench.
 
+## Entscheidung (angenommen 2026-11-07)
+
+- **Zielrichtung ist Variante 1:** Simulationskern (`engine/sim`, `level`, `rng`) in Rust, Server, Workbench und CLIs
+  bleiben Go. Treiber: Pi 3 (Tick p99 < 10 ms bei wachsenden Welten) und die Dauer von Balancing und `sim_test`.
+- **Varianten 2–4 sind zurückgestellt.** Sie verdoppeln die Engine wegen der Workbench und lösen weder Pi noch Timing
+  besser als Variante 1.
+- **Reihenfolge wie unten:** Messen (RST-M1, auch auf dem Pi), billige Go-Fixes (RST-M2), Spike (RST-S1/S2), dann
+  die volle Umstellung des Kerns. Der Spike bleibt als Sicherung, weil die Brücke Go↔Rust je Tick auf dem Pi
+  teurer ist als auf dem PC (ungeprüft).
+- **Pluspunkt für Rust auf dem Pi:** Rust fusioniert `x*y + z` nicht von selbst zu FMA. Go tut das auf arm64
+  (deshalb der CI-Job `go-arm64`, B-071). Ein Rust-Kern rechnet auf PC und Pi gleich, wenn die Golden-Dateien
+  auf beiden Plattformen bitgleich bleiben.
+
 ## Empfehlung
 
 1. **Jetzt kein Server- oder Komplett-Umbau (Varianten 2–4).** Sie lösen das Timing nicht und verdoppeln die Engine
    wegen der Workbench.
 2. **Zuerst Go optimieren, im Projekt RST als Sprint RST-M:** Datei-Watch auf Ereignisse oder nur Dev umstellen,
    Prozess-Priorität und EcoQoS-Abschaltung für den Server, dann die verschobene Messung (pprof, gctrace,
-   mutex-Profil, `sim_test` perf online, `sim_run`-Durchsatz) als Baseline.
-3. **Danach Variante 1 als Spike, nicht als Umbau:** `engine/rng` + `engine/level` in Rust (gefahrlos, Golden als
-   Orakel), angebunden als DLL ohne cgo; dazu ein heißer Sim-Pfad aus dem Profil. Abbruchkriterium: weniger als 2×
-   Durchsatz gegenüber optimiertem Go oder Brückenkosten > 20 % der Tick-Dauer → Rust verwerfen, Go behalten.
-4. Erst bei bestandenem Spike Variante 1 voll (Sim in Rust, Server bleibt Go). Variante 4 nur, wenn Go danach
+   mutex-Profil, `sim_test` perf online, `sim_run`-Durchsatz) als Baseline, dazu Tick p99 auf dem Pi 3.
+3. **Danach Variante 1 als Spike:** `engine/rng` + `engine/level` in Rust (gefahrlos, Golden als Orakel),
+   angebunden als Bibliothek ohne cgo (Windows-DLL, auf dem Pi `.so`); dazu ein heißer Sim-Pfad aus dem Profil.
+   Abbruchkriterium: weniger als 2× Durchsatz gegenüber optimiertem Go auf PC **und** Pi, oder Brückenkosten > 20 %
+   der Tick-Dauer → Rust verwerfen, Go behalten.
+4. Bei bestandenem Spike Variante 1 voll (Sim in Rust, Server bleibt Go). Variante 4 nur, wenn Go danach
    nirgends mehr gebraucht wird – heute nicht absehbar.
 
 Vorgeschlagene Sessions (noch nicht angelegt, Spec-Freigabe durch Ralf):
@@ -117,5 +136,6 @@ Vorgeschlagene Sessions (noch nicht angelegt, Spec-Freigabe durch Ralf):
 
 ## Folgen
 
-- Bei Annahme: 006 wird „angenommen“ mit Variante „Go optimieren, Rust-Spike“; 001 bleibt gültig.
-- Bei Ablehnung des Spikes: B-725 verworfen, Projekt RST endet nach RST-M2.
+- 001 bleibt gültig: Die Engine läuft im Go-Server, der Kern darin wird Rust.
+- Projekt RST wird aktiv; Sprints und Sessions werden über `plan_*` angelegt, die Spec B-725 gibt Ralf frei.
+- Scheitert der Spike: 006 wird mit Zahlen auf „Go optimieren“ geändert, Projekt RST endet nach RST-M2.

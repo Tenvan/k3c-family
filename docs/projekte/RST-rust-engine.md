@@ -1,12 +1,12 @@
 # RST · Rust-Engine
 
-- **Status:** ruht
-- **Rang:** –
+- **Status:** aktiv
+- **Rang:** 10
 - **Ziel-Tickets:** –
 
 ## Ziel
 
-Simulation, Balancing und Raum-Takt werden messbar schneller und stabiler. Erst Go optimieren und messen, dann ein Rust-Spike für den Simulationskern; Rust nur bei ≥ 2× Durchsatz gegen optimiertes Go. Analyse: `docs/decisions/006-rust-engine.md`, Spec: B-725.
+Der Simulationskern läuft in Rust, der Server bleibt Go (Entscheidung 006, Variante 1). Treiber: Pi 3 hält Tick p99 < 10 ms bei wachsenden Welten (B-042), Balancing und `sim_test` laufen messbar schneller. Reihenfolge: messen, Go-Fixes, Spike mit Abbruchkriterium, dann volle Umstellung. Spec: B-725.
 
 ## Sprints
 
@@ -21,4 +21,4 @@ Server, Lasttest, TUI und Workbench in Rust (006, Varianten 2–4), bis der Spik
 
 ## Notizen
 
-2026-11-07: angelegt. Timing-Messung auf Ralfs Wunsch in die Umsetzung verschoben (Session RST-M1 in 006). Status ruht bis zur Freigabe von 006; erst dann Sprints anlegen.
+2026-11-07: angelegt; 006 von Ralf angenommen („erstmal“), Pi bleibt Zielplattform und ist der Hauptgrund. Timing-Messung auf Ralfs Wunsch in die Umsetzung verschoben (RST-M1). Sprints folgen nach Freigabe der Spec B-725.
