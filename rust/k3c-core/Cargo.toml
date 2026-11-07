@@ -8,3 +8,7 @@ license.workspace = true
 [lib]
 name = "k3c_core"
 crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order", "float_roundtrip"] }

@@ -146,7 +146,8 @@ jobs:
       - run: task rust:lint
       - run: task rust:test
       - run: task rust:build
-      - run: go test -tags k3ccore ./engine/core # Linux: dlopen über purego; unter Windows ignoriert Go den Tag
+      # Brücke, rng und Level: Rust gegen die Golden-Dateien (RS1.5, AC-06) auf windows amd64 und linux arm64; Linux: dlopen über purego, unter Windows ignoriert Go den Tag
+      - run: go test -tags k3ccore ./engine/core ./engine/rng ./engine/level
         env:
           CGO_ENABLED: '0'
 

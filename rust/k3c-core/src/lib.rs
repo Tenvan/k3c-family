@@ -2,6 +2,12 @@
 //! Bibliothek zur Laufzeit (`engine/core`) ohne cgo. Jede Funktion ist `extern "C"`, nimmt nur einfache Werte
 //! oder (Zeiger, Länge) und panikt nie über die Grenze (Profil `panic = "abort"`).
 
+pub mod coins;
+pub mod ffi_level;
+pub mod ffi_rng;
+pub mod level;
+pub mod rng;
+
 /// ABI-Version: wird erhöht, wenn sich eine Signatur ändert; Go prüft sie beim Laden.
 pub const ABI_VERSION: u32 = 1;
 

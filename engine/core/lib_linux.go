@@ -12,6 +12,13 @@ func open(l *Lib, path string) error {
 	if err != nil {
 		return err
 	}
+	l.proc = func(name string) (Proc, error) {
+		sym, err := purego.Dlsym(h, name)
+		if err != nil {
+			return nil, err
+		}
+		return func(args ...uintptr) uintptr { r, _, _ := purego.SyscallN(sym, args...); return r }, nil
+	}
 	for name, fn := range map[string]any{
 		"k3c_abi_version": &l.abi,
 		"k3c_add":         &l.add,

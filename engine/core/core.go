@@ -25,9 +25,30 @@ const EnvLib = "K3C_CORE_LIB"
 // Lib ist die geladene Bibliothek. Aufrufe sind nebenläufig sicher (der Rust-Teil hält keinen Zustand).
 type Lib struct {
 	path string
+	proc func(name string) (Proc, error) // plattformabhängig (lib_*.go): Symbol als Aufruf mit Zahlen-Argumenten
 	abi  func() uint32
 	add  func(a, b int64) int64
 	sum  func(p *byte, n int) uint64
+}
+
+// Proc ruft eine C-Funktion der Bibliothek mit bis zu sechs Zahlen- oder Zeiger-Argumenten (als uintptr) und liefert
+// den Rückgabewert. Zeiger müssen bis zum Rückkehr des Aufrufs gültig sein (runtime.KeepAlive beim Aufrufer).
+type Proc func(args ...uintptr) uintptr
+
+// Proc liefert das Symbol name der Bibliothek als Aufruf; Fehler, wenn es fehlt.
+func (l *Lib) Proc(name string) (Proc, error) { return l.proc(name) }
+
+// escapeSink zwingt Puffer auf den Heap: Zeiger, die als uintptr über Proc gehen, sieht die Escape-Analyse nicht; ein
+// Puffer auf dem Go-Stack würde bei Stack-Wachstum verschoben, während Rust noch darauf zeigt.
+var escapeSink unsafe.Pointer
+
+// escape markiert p als entkommend (die Allokation des Aufrufers landet auf dem Heap, der GC verschiebt nie).
+//
+//go:noinline
+func escape(p unsafe.Pointer) {
+	escapeSink = p
+	_ = escapeSink
+	escapeSink = nil
 }
 
 // Path ist der Ort, von dem die Bibliothek geladen wurde.

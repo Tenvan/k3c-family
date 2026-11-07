@@ -32,6 +32,13 @@ func open(l *Lib, path string) error {
 	if err != nil {
 		return err
 	}
+	l.proc = func(name string) (Proc, error) {
+		a, err := addr(name)
+		if err != nil {
+			return nil, err
+		}
+		return func(args ...uintptr) uintptr { r, _, _ := syscall.SyscallN(a, args...); return r }, nil
+	}
 	l.abi = func() uint32 { r, _, _ := syscall.SyscallN(abi); return uint32(r) }
 	l.add = func(a, b int64) int64 { r, _, _ := syscall.SyscallN(add, uintptr(a), uintptr(b)); return int64(r) }
 	l.sum = func(p *byte, n int) uint64 {
