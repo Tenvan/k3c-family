@@ -129,6 +129,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-733](B-733-assets-groessenvergleich.md) | DEV | Idee | mittel | offen | – | Katalog und Review zeigen ein Asset im Größenvergleich mit dem Monarch vor einem Biom |
 | [B-734](B-734-katalog-teil-ausblenden.md) | DEV | Idee | mittel | offen | – | Im Katalog lässt sich das gewählte Teil in der Vorschau aus- und einblenden |
 | [B-735](B-735-weitere-materialien-stroh-lava-geisterweiss.md) | PAP | Schuld | niedrig | offen | – | Weitere Ersatz-Materialien (stroh, lava, geisterweiss, fell-grau) in der Stil-Datei |
+| [B-738](B-738-workbench-go-tests-rot-style-vorlage-review.md) | DEV | Problem | mittel | offen | – | Workbench-Go-Tests rot: Style-Fixture, Rig-Vorlage vierbeiner ohne Gangarten, Review-Tests mit festen Commit-Hashes |
 
 ## Archiv
 
@@ -696,3 +697,4 @@ Zeile in diesen Abschnitt.
 | [B-713](archiv/B-713-renderkey-reiter-reittier.md) | PAP | Schuld | mittel | erledigt | RD2 | renderKey des Reiters enthält den Hash der Reittier-Spec |
 | [B-714](archiv/B-714-keyframe-sichtbar.md) | PAP | Idee | hoch | erledigt | RD2 | Keyframes schalten Teile mit dem Feld sichtbar ein und aus |
 | [B-715](archiv/B-715-rig-proportionen-je-figur.md) | PAP | Idee | hoch | erledigt | RD2 | Rigs vierbeiner und figur erlauben Proportionen, Füße und Gangarten je Tier oder Figur |
+| [B-737](archiv/B-737-gerenderte-bilder-nicht-im-repo.md) | PAP | Idee | hoch | erledigt | MG9 | Gerenderte Papierschnitt-PNGs aus dem Repo nehmen, beim Build bzw. nach Änderung erzeugen |

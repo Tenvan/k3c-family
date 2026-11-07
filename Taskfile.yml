@@ -76,7 +76,8 @@ tasks:
   # --- Client (Phaser, Vite): entwickeln und prüfen -----------------------------------------------------------------
 
   dev:
-    desc: Dev-Server (LAN, Port 5183); /api und /ws gehen an den Go-Server (Port 8080, `task start`)
+    desc: Dev-Server (LAN, Port 5183); /api und /ws gehen an den Go-Server (Port 8080, `task start`); rendert vorher die Papierschnitt-Grafik (gen:paper, B-737)
+    deps: [gen:paper]
     cmds:
       - bunx vite --host {{.CLI_ARGS}}
 
@@ -97,7 +98,8 @@ tasks:
       - bunx tsc --noEmit -p tests
 
   test:
-    desc: Vitest (Filter optional, z. B. `task test -- planning`)
+    desc: Vitest (Filter optional, z. B. `task test -- planning`); rendert vorher die Papierschnitt-Grafik (gen:paper, B-737)
+    deps: [gen:paper]
     cmds:
       - bunx vitest run {{.CLI_ARGS}}
 
@@ -110,7 +112,8 @@ tasks:
   # `build` ist der Web-Build (dist/), `buildall` baut dazu alle EXE nach bin/, `pages` die statische Präsentationsseite.
 
   build:
-    desc: Typecheck und Produktions-Build nach dist/ (Grafik liegt als Papierschnitt-PNGs in public/grafik/, US1)
+    desc: Typecheck und Produktions-Build nach dist/ (die Papierschnitt-PNGs in public/grafik/ rendert vorher gen:paper, sie sind nicht eingecheckt, US1, B-737)
+    deps: [gen:paper]
     cmds:
       - bunx tsc --noEmit
       - bunx vite build
@@ -223,6 +226,8 @@ tasks:
           echo "🚦 Client: ${c:+Lint Typecheck Vitest-changed} Scan · Go: $([ -n "$gf" ] && echo voll || echo "${gp:-–}") · Workbench: $([ -n "$wf" ] && echo voll || echo "${wp:-–}")${wv:+ Vitest}${wa:+ assetkit} · Starter: ${sg}${sl}${sv}"
           # JS und Go laufen parallel; innerhalb nacheinander.
           (
+            # Papierschnitt-Bilder sind nicht eingecheckt (B-737): rendern, bei unveränderten Quellen sofort fertig.
+            task gen:paper || exit 1
             bunx vitest run $scan || exit 1
             if [ -n "$c" ]; then
               task lint && task typecheck && bunx vitest run --changed "$base" --passWithNoTests || exit 1
