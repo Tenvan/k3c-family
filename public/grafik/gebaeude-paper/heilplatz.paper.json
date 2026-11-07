@@ -1,0 +1,425 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "heilplatz",
+  "rig": "gebaeude",
+  "version": 1,
+  "beschreibung": "Offener Heilplatz (6 × 4 Kacheln) unter hellem Stoff-Vordach mit Volant und grünem Kreuz: Stoff-Rückwand zwischen zwei Pfosten, Kräuterbündel unter dem Dach, Liege mit Kissen und blauer Decke, Wasserschale, Kräuterkorb und Trockengestell; ab Stufe 2 Zeltbahnen an den Dachenden, ab 3 Saum und Brunnen in der Materialkette.",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-62 -88L62 -88L62 0L-62 0Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-42 -87L-42 -1",
+          "material": "hermelin",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-22 -87L-22 -1",
+          "material": "hermelin",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-2 -87L-2 -1",
+          "material": "hermelin",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M18 -87L18 -1",
+          "material": "hermelin",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M38 -87L38 -1",
+          "material": "hermelin",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M58 -87L58 -1",
+          "material": "hermelin",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-66 -94L-59 -94L-59 0L-66 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-60.6 -93L-60.6 -2",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M59 -94L66 -94L66 0L59 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M64.4 -93L64.4 -2",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-70 -100L-64 -118L64 -118L70 -100Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M-64 -116L64 -116",
+          "material": "hermelin",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-66 -100L-50 -100L-58 -94Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-50 -100L-34 -100L-42 -94Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-34 -100L-18 -100L-26 -94Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-18 -100L-2 -100L-10 -94Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-2 -100L14 -100L6 -94Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M14 -100L30 -100L22 -94Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M30 -100L46 -100L38 -94Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M46 -100L62 -100L54 -94Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3 -116L3 -116L3 -102L-3 -102Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-7 -112L7 -112L7 -106L-7 -106Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-44 -94L-43 -94L-43 -86L-44 -86Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-47 -86L-40 -86L-43.5 -74Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-24 -94L-23 -94L-23 -86L-24 -86Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-27 -86L-20 -86L-23.5 -74Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "form": "M20 -94L21 -94L21 -86L20 -86Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M17 -86L24 -86L20.5 -74Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "form": "M40 -94L41 -94L41 -86L40 -86Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M37 -86L44 -86L40.5 -74Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-58 -22L-14 -22L-14 -14L-58 -14Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-58 -14L-55 -14L-55 0L-58 0Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-17 -14L-14 -14L-14 0L-17 0Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-56 -28L-44 -28L-44 -22L-56 -22Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-44 -26L-16 -26L-16 -21L-44 -21Z",
+          "material": "koenigsblau"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-43 -25L-17 -25",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M22 -10L42 -10L38 0L26 0Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M24 -12L40 -12L40 -9L24 -9Z",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M68 -18L84 -18L82 0L70 0Z",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "smaragd",
+          "mitte": [71, -20],
+          "radius": 2.2
+        },
+        {
+          "art": "punkt",
+          "material": "smaragd",
+          "mitte": [75, -20],
+          "radius": 2.2
+        },
+        {
+          "art": "punkt",
+          "material": "smaragd",
+          "mitte": [79, -20],
+          "radius": 2.2
+        },
+        {
+          "art": "flaeche",
+          "form": "M86 -66L89 -66L89 0L86 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M84 -68L94 -68L94 -65L84 -65Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M86 -65L91 -65L88.5 -52Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M90 -65L95 -65L92.5 -52Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 128,
+    "rahmen": [-96, -128, 192, 128]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  },
+  "stufen": [
+    {
+      "tausch": {
+        "holz": "stein"
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "bahnen",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-70 -100L-62 -100L-66 -56L-74 -60Z",
+              "material": "hermelin",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M62 -100L70 -100L74 -60L66 -56Z",
+              "material": "hermelin",
+              "ton": "schatten"
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    },
+    {
+      "tausch": {
+        "stein": "fell-fuchs"
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "brunnen",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-70 -101L70 -101L70 -98L-70 -98Z",
+              "material": "stein"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-10 -26L12 -26L12 0L-10 0Z",
+              "material": "stein"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-9 -14L11 -14",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-12 -28L14 -28L14 -24L-12 -24Z",
+              "material": "stein",
+              "ton": "licht"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-8 -27L10 -27L10 -24L-8 -24Z",
+              "material": "koenigsblau"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-2 -48L0 -48L0 -26L-2 -26Z",
+              "material": "leder"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-6 -50L4 -50L4 -48L-6 -48Z",
+              "material": "leder"
+            },
+            {
+              "art": "flaeche",
+              "form": "M14 -12L22 -12L21 0L15 0Z",
+              "material": "leder"
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    },
+    {
+      "tausch": {
+        "fell-fuchs": "stoff"
+      }
+    },
+    {
+      "tausch": {
+        "stoff": "koenigsblau"
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "leuchten",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-7 -27L9 -27L9 -25L-7 -25Z",
+              "material": "hermelin",
+              "ton": "licht"
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [1, -30],
+              "radius": 1.4
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [-62, -60],
+              "radius": 1.1
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [62, -40],
+              "radius": 1.1
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    }
+  ]
+}

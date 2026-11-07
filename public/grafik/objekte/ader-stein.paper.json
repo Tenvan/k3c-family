@@ -1,0 +1,84 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "ader-stein",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Steinader (Stufe 1): Felswand mit hellen Steinbändern, abbaubar",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-30 0L-32 -24L-24 -50L-6 -60L14 -58L28 -44L32 -18L30 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-30 0L-32 -24L-24 -50L-6 -60L-2.1 -58L-4.2 -44L-4.8 -18L-4.5 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M-6 -59L31 -18",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-20 -40L-8 -48L-6 -30L-18 -26Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-26 -20L-10 -14L8 -22",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-24 -36C-14 -40 -2 -34 8 -38C16 -41 22 -36 26 -32L24 -28C18 -32 12 -34 6 -31C-4 -27 -14 -32 -24 -30Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-20 -14C-10 -18 0 -12 12 -16C18 -18 24 -14 28 -12L26 -8C20 -10 14 -12 8 -10C-2 -6 -12 -10 -22 -8Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-20 -33L20 -33",
+          "material": "stein",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 70,
+    "rahmen": [-36, -64, 72, 66]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

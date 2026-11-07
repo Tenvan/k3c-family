@@ -1,74 +1,123 @@
 package mcpsrv
 
 import (
-	"image"
-	"image/png"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 )
 
-// assetRepo ist ein Mini-Repo mit Slot-Register, einem Bild und einer Credit-Zeile.
-func assetRepo(t *testing.T) string {
-	t.Helper()
-	root := t.TempDir()
-	files := map[string]string{
-		"data/assets.json": `{"_comment": "Test", "slots": [
-  {"id": "farm", "art": "grafik", "kategorie": "gebaeude", "beschreibung": "Farm", "wahl": []},
-  {"id": "sfx:coin", "art": "sound", "kategorie": "sfx", "beschreibung": "Münze", "bus": "sfx", "wahl": []}]}`,
-		"public/grafik/CREDITS.md": "| Ordner | Pack | Urheber | Lizenz | Quelle |\n|---|---|---|---|---|\n| town | Town | Zuno | CC BY-NC 4.0 | https://example.org |\n",
-	}
-	for rel, text := range files {
-		p := filepath.Join(root, filepath.FromSlash(rel))
-		if err := os.MkdirAll(filepath.Dir(p), 0o755); err != nil {
-			t.Fatal(err)
-		}
-		if err := os.WriteFile(p, []byte(text), 0o644); err != nil {
-			t.Fatal(err)
+// Werkzeuge des Vertrags (paper-mcp.md › 2).
+var vertragTools = []string{"assets_guide", "assets_list", "assets_get", "assets_create", "assets_set", "assets_style_get",
+	"assets_style_set", "assets_render", "assets_delete"}
+
+// MC1/AC-01 · paper-mcp.md › 1: jedes Asset-Tool nimmt checkout; schreibende nennen den Checkout.
+func TestAssetsToolsNehmenCheckout(t *testing.T) {
+	root := paperRepo(t)
+	cs := connect(t, New(Config{Version: "test", Root: root}))
+	schemas := toolSchemas(t, cs)
+	for _, name := range vertragTools {
+		props, _ := schemas[name]["properties"].(map[string]any)
+		if _, ok := props["checkout"]; !ok {
+			t.Errorf("%s: kein checkout im Schema (%v)", name, props)
 		}
 	}
-	img := filepath.Join(root, "public", "grafik", "town", "well.png")
-	if err := os.MkdirAll(filepath.Dir(img), 0o755); err != nil {
-		t.Fatal(err)
+	for _, w := range []string{"assets_create", "assets_set", "assets_style_set", "assets_render", "assets_delete"} {
+		if !writeTools[w] {
+			t.Errorf("%s fehlt in writeTools", w)
+		}
 	}
-	f, err := os.Create(img)
-	if err != nil {
-		t.Fatal(err)
+	text, _ := callText(t, cs, "assets_render", map[string]any{"id": "monarch"})
+	if !strings.Contains(text, "\nCheckout: ") {
+		t.Errorf("assets_render ohne Checkout-Zeile: %q", text)
 	}
-	defer func() { _ = f.Close() }()
-	if err := png.Encode(f, image.NewNRGBA(image.Rect(0, 0, 64, 48))); err != nil {
-		t.Fatal(err)
-	}
-	return root
 }
 
-// B-298/AC-06: Tools für Slots und Zuordnung antworten; assets_set schreibt Reihenfolge und Ausschnitt.
-func TestAssetsTools(t *testing.T) {
-	cs := connect(t, New(Config{Version: "test", Root: assetRepo(t)}))
-	steps := []struct {
-		tool string
-		args map[string]any
-		want string
-	}{
-		{"assets_list", map[string]any{}, "farm gebaeude luecke · Farm → –"},
-		{"assets_list", map[string]any{"art": "sound"}, "1 Asset-Slots\nsfx:coin sfx luecke"},
-		{"assets_catalog", map[string]any{"query": "town"}, "grafik/town/well.png · town  · 64×48 · CC BY-NC 4.0 [NC]"},
-		{"assets_set", map[string]any{"id": "farm", "wahl": []map[string]any{
-			{"datei": "grafik/town/well.png", "ausschnitt": map[string]int{"x": 0, "y": 0, "w": 32, "h": 48}},
-			{"datei": "grafik/town/well.png"},
-		}}, "farm gespeichert: 2 Zuordnung(en)"},
-		{"assets_get", map[string]any{"id": "farm"}, "1. grafik/town/well.png [0,0,32,48]\n2. grafik/town/well.png"},
-		{"assets_list", map[string]any{"status": "zugeordnet"}, "farm gebaeude zugeordnet · Farm → grafik/town/well.png [0,0,32,48] (+1)"},
-	}
-	for _, st := range steps {
-		text, isErr := callText(t, cs, st.tool, st.args)
-		if isErr || !strings.Contains(text, st.want) {
-			t.Errorf("%s %v: %q", st.tool, st.args, text)
+func TestAssetsGuide(t *testing.T) {
+	cs := connect(t, New(Config{Version: "test", Root: paperRepo(t)}))
+	text, isErr := callText(t, cs, "assets_guide", map[string]any{"rig": "figur"})
+	for _, want := range []string{"Papierschnitt · Rig figur · Standard docs/standards/paper-spec.md",
+		"Papier-Materialien (licht/basis/schatten): haut, haar, gold, koenigsblau",
+		"Einzeltöne (ohne Ton): huf, auge, weiss, linie, edelstein",
+		"Pflicht-Teile figur: rumpf, kopf, oberarm-v", "Pivots: Hüfte (0,-50)",
+		"Proportion: Kopfhöhe / Rahmenhöhe = 0.286 ± 0.15", "Lagen: flaeche {form, material, ton?, auflage?}",
+		"Ablauf: assets_get → assets_set (Merge-Patch) → assets_preview → assets_review"} {
+		if isErr || !strings.Contains(text, want) {
+			t.Errorf("guide figur ohne %q:\n%s", want, text)
 		}
 	}
-	text, isErr := callText(t, cs, "assets_set", map[string]any{"id": "farm", "wahl": []map[string]any{{"datei": "../geheim.png"}}})
-	if !isErr || !strings.Contains(text, "nicht unter public/") {
-		t.Errorf("Pfad außerhalb: %q", text)
+	alle, _ := callText(t, cs, "assets_guide", map[string]any{})
+	for _, rig := range []string{"figur", "vierbeiner", "gebaeude", "requisite", "hintergrund"} {
+		if !strings.Contains(alle, "Pflicht-Teile "+rig+": ") {
+			t.Errorf("guide ohne rig: %s fehlt", rig)
+		}
+	}
+	if text, isErr := callText(t, cs, "assets_guide", map[string]any{"rig": "drache"}); !isErr || !strings.Contains(text, "figur, vierbeiner") {
+		t.Errorf("unbekannter Rig: %q", text)
+	}
+}
+
+func TestAssetsListPaper(t *testing.T) {
+	root := paperRepo(t)
+	cs := connect(t, New(Config{Version: "test", Root: root}))
+	text, isErr := callText(t, cs, "assets_list", map[string]any{})
+	if isErr || !strings.HasPrefix(text, "3 Assets · 0 ungültig · 0 geändert gegen HEAD\n") ||
+		!strings.Contains(text, "monarch · figur · public/grafik/figuren/monarch.paper.json · gültig\n") {
+		t.Errorf("assets_list:\n%s", text)
+	}
+	schreibeDatei(t, root, "public/grafik/figuren/monarch/idle.png", "neu")
+	text, _ = callText(t, cs, "assets_list", map[string]any{"geaendert": true})
+	if !strings.HasPrefix(text, "1 Asset · 0 ungültig · 1 geändert gegen HEAD\n") || !strings.Contains(text, "monarch · figur · public/grafik/figuren/monarch.paper.json · gültig · geändert") {
+		t.Errorf("geaendert:\n%s", text)
+	}
+	text, _ = callText(t, cs, "assets_list", map[string]any{"rig": "gebaeude"})
+	if !strings.Contains(text, "mauer · gebaeude") || strings.Contains(text, "monarch") {
+		t.Errorf("rig:\n%s", text)
+	}
+	text, _ = callText(t, cs, "assets_list", map[string]any{"gruppe": "reittiere"})
+	if !strings.Contains(text, "pferd · vierbeiner") || strings.Contains(text, "mauer") {
+		t.Errorf("gruppe:\n%s", text)
+	}
+}
+
+func TestAssetsGetFelder(t *testing.T) {
+	cs := connect(t, New(Config{Version: "test", Root: paperRepo(t)}))
+	text, isErr := callText(t, cs, "assets_get", map[string]any{"id": "monarch", "felder": []string{"umhang", "ausgabe"}})
+	if isErr || !strings.HasPrefix(text, "public/grafik/figuren/monarch.paper.json · Felder umhang, ausgabe\n{\n  \"umhang\": {") ||
+		!strings.Contains(text, `"ausgabe": {`) || strings.Contains(text, `"teile"`) {
+		t.Errorf("felder:\n%s", text)
+	}
+	text, _ = callText(t, cs, "assets_get", map[string]any{"id": "monarch"})
+	if !strings.HasPrefix(text, "public/grafik/figuren/monarch.paper.json\n{") || strings.Contains(text, "$schema") || !strings.Contains(text, `"teile"`) {
+		t.Errorf("ganz:\n%.300s", text)
+	}
+	if text, isErr := callText(t, cs, "assets_get", map[string]any{"id": "x"}); !isErr || text != "Asset „x“ fehlt" {
+		t.Errorf("unbekannt: %q", text)
+	}
+	if text, isErr := callText(t, cs, "assets_get", map[string]any{"id": "monarch", "felder": []string{"farbe"}}); !isErr || !strings.Contains(text, "umhang") {
+		t.Errorf("unbekanntes Feld: %q", text)
+	}
+}
+
+func TestAssetsCreate(t *testing.T) {
+	root := paperRepo(t)
+	cs := connect(t, New(Config{Version: "test", Root: root}))
+	args := map[string]any{"id": "fass", "rig": "requisite", "beschreibung": "Ein Fass", "gruppe": "requisiten"}
+	text, isErr := callText(t, cs, "assets_create", args)
+	for _, want := range []string{"fass angelegt: public/grafik/requisiten/fass.paper.json (Rig requisite, Vorlage mit Teil korpus)\n",
+		"validate: ok\n", "Render: 1 PNG · ", "Nächster Schritt: assets_set {id: \"fass\", patch: …}, dann assets_preview"} {
+		if isErr || !strings.Contains(text, want) {
+			t.Errorf("create ohne %q:\n%s", want, text)
+		}
+	}
+	vorher, _ := os.ReadFile(filepath.Join(root, "public/grafik/requisiten/fass.paper.json"))
+	if text, isErr := callText(t, cs, "assets_create", args); !isErr || !strings.Contains(text, "fass gibt es schon") {
+		t.Errorf("doppelt: %q", text)
+	}
+	if nachher, _ := os.ReadFile(filepath.Join(root, "public/grafik/requisiten/fass.paper.json")); string(nachher) != string(vorher) {
+		t.Error("vorhandene Datei geändert")
+	}
+	if _, isErr := callText(t, cs, "assets_create", map[string]any{"id": "Fass!", "rig": "requisite", "beschreibung": "x", "gruppe": "g"}); !isErr {
+		t.Error("ungültige id angenommen")
 	}
 }

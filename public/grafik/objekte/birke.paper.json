@@ -1,0 +1,148 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "birke",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Birke: weißer Stamm mit schwarzen Kerben und lockere hellgrüne Blattballen; Krone wiegt",
+  "teile": [
+    {
+      "id": "stamm",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 0L-4 -6L-3 -80L3 -80L4 -6L6 0Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-6 0L-4 -6L-3 -80L-1 -80L-1 0Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3.5 -12L0.5 -13.5L1 -10.8Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3.5 -26L-0.5 -27.5L-1 -24.8Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3.5 -38L0.5 -39.5L1 -36.8Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3.5 -52L-0.5 -53.5L-1 -50.8Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3.5 -66L0.5 -67.5L1 -64.8Z",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "stamm",
+      "id": "krone",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -86C0 -94.84 -7.16 -102 -16 -102C-24.84 -102 -32 -94.84 -32 -86C-32 -77.16 -24.84 -70 -16 -70C-7.16 -70 0 -77.16 0 -86Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-16 -102C-24.8 -102 -32 -94.8 -32 -86C-32 -77.2 -24.8 -70 -16 -70C-20.8 -78 -20.8 -94 -16 -102Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M32 -90C32 -99.39 24.39 -107 15 -107C5.61 -107 -2 -99.39 -2 -90C-2 -80.61 5.61 -73 15 -73C24.39 -73 32 -80.61 32 -90Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M15 -107C5.65 -107 -2 -99.35 -2 -90C-2 -80.65 5.65 -73 15 -73C9.9 -81.5 9.9 -98.5 15 -107Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M20 -108C20 -119.05 11.05 -128 0 -128C-11.05 -128 -20 -119.05 -20 -108C-20 -96.95 -11.05 -88 0 -88C11.05 -88 20 -96.95 20 -108Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -128C-11 -128 -20 -119 -20 -108C-20 -97 -11 -88 0 -88C-6 -98 -6 -118 0 -128Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M7 -78C7 -85.18 1.18 -91 -6 -91C-13.18 -91 -19 -85.18 -19 -78C-19 -70.82 -13.18 -65 -6 -65C1.18 -65 7 -70.82 7 -78Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-6 -91C-13.15 -91 -19 -85.15 -19 -78C-19 -70.85 -13.15 -65 -6 -65C-9.9 -71.5 -9.9 -84.5 -6 -91Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M22 -74C22 -80.63 16.63 -86 10 -86C3.37 -86 -2 -80.63 -2 -74C-2 -67.37 3.37 -62 10 -62C16.63 -62 22 -67.37 22 -74Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M10 -86C3.4 -86 -2 -80.6 -2 -74C-2 -67.4 3.4 -62 10 -62C6.4 -68 6.4 -80 10 -86Z",
+          "material": "smaragd",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, -70]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 144,
+    "rahmen": [-36, -132, 72, 136]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "krone": 2
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "krone": -2
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "felsen-c",
+  "version": 1,
+  "specHash": "0fc58801465ce6bb0bdf616063e45e07a958bffcad2a0790ea69ce59fa2de6c1",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "31683ebd30172beeeded0575d305cd3df8a9018b32285a2f5d7e6666c8bb1bf2",
+  "rahmen": [
+    -32,
+    -24,
+    64,
+    26
+  ],
+  "frameW": 69,
+  "frameH": 28,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 1,
+      "datei": "idle.png",
+      "hashes": [
+        "860fffc7427ffc2891a1690bd43656d7e3c82b9ae8fa43471eaf3f4057b7cd2c"
+      ]
+    }
+  },
+  "varianten": []
+}

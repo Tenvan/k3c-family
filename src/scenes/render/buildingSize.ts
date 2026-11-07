@@ -1,5 +1,6 @@
 import register from '../../../data/assets.json';
 import { BUILDING_TEXTURES, hubLookTexture, textureScale } from './buildingSprites';
+import { isPaperFile } from './paperAssets';
 import { HUB_GROWTH, HUB_STEPS } from './hubGrowth';
 import { fitTarget, validTarget, type PxSize, type TargetFit } from './targetFit';
 
@@ -41,6 +42,8 @@ export function buildingSlot(key: string): string | null {
 
 /** Datei unter `public/grafik/` und Ausschnitt der aktiven Zuordnung; ohne Slot oder Zuordnung die Datei aus `BUILDING_TEXTURES` */
 export function buildingSource(key: string): { file: string; cut?: CutRect } | null {
+  const paper = BUILDING_TEXTURES[key];
+  if (paper && isPaperFile(paper)) return { file: paper }; // Papierschnitt vor dem alten Slot-Register (US1)
   const first = SLOTS.get(buildingSlot(key) ?? '')?.wahl[0];
   if (first?.datei.startsWith('grafik/')) return { file: first.datei.slice('grafik/'.length), cut: first.ausschnitt };
   const file = BUILDING_TEXTURES[key];
@@ -54,5 +57,7 @@ export function buildingTarget(key: string): PxSize | null {
 
 /** Darstellung eines Schlüssels bei Quellgröße `source` (Ausschnitt oder ganzes Bild): eingepasst ins Zielmaß, sonst heutiger Maßstab */
 export function buildingFit(key: string, source: PxSize): TargetFit {
+  const f = BUILDING_TEXTURES[key];
+  if (f && isPaperFile(f)) return { scale: 1, w: source.w, h: source.h, smooth: true }; // 32 Einheiten je Kachel = 32 px (D-MG6-04), weich gezeichnet
   return fitTarget(source, buildingTarget(key), textureScale(key));
 }

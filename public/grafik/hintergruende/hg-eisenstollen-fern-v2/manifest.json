@@ -1,0 +1,27 @@
+{
+  "id": "hg-eisenstollen-fern-v2",
+  "version": 1,
+  "specHash": "52b5fdf5b6a95efe5931317a1acb2e81b83b260d10852d63c302f9f042e35d05",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "05c99ff0adca3507d7c40cc44926c39b66a1c95c2ac86fbf7383fef4d23429d9",
+  "rahmen": [
+    0,
+    -480,
+    768,
+    480
+  ],
+  "frameW": 768,
+  "frameH": 480,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "4b09331db030df30c12df023e98df0bc13da09e017ff1dd589950fdacdb9f767"
+      ]
+    }
+  },
+  "varianten": []
+}

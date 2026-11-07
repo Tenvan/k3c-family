@@ -1,0 +1,86 @@
+{
+  "icon-eisen": {
+    "renderKey": "43263844436eda55ec81ff7739422b25e898e3c19b16f69f2d719ea3699981f0",
+    "dateien": {
+      "idle.png": "9b3fabac00a1864f04235e152c3877e6b18b158844b2bc2d905461a65e53e68d"
+    }
+  },
+  "icon-goldbarren": {
+    "renderKey": "56fda0fdc26f6e3d8ac03adc35d7bd3d60e15ebe6b1ad14ccc30f7f01bbfb2d8",
+    "dateien": {
+      "idle.png": "a774f78352141ab09f65cb2783f11ccca2e25b724317aa69803dd34badea9c8e"
+    }
+  },
+  "icon-holz": {
+    "renderKey": "eb88fcc501488ae84dde23ea78284436e5f1752a033ec6b247f147b842690260",
+    "dateien": {
+      "idle.png": "e40e5a9c212027ce12503c8ebe78a669acdfa324c92676f7353357f808f0724b"
+    }
+  },
+  "icon-kristall": {
+    "renderKey": "e8d794663dee45b7138c14de0862f6515852348b658219114ead81ca7a4deed9",
+    "dateien": {
+      "idle.png": "09ac410d670b2ff0729c6bad750bcfbee3c50a58fd61fa377b90a9028b0739ad"
+    }
+  },
+  "icon-krone": {
+    "renderKey": "efb3bcd74d6055421053c7f10f46767f0c0bd9317ee3475ae1587e51a133857e",
+    "dateien": {
+      "idle.png": "e48fae0c7a3bc79785448d48f2808af728dd935eb30f47e5b9ef301fce59894d"
+    }
+  },
+  "icon-kupfer": {
+    "renderKey": "056accf7b549976c3f249ff61270503d83e99d51b76031cfb68b74d1f164e770",
+    "dateien": {
+      "idle.png": "d23afacb90d69e2b0be04aa45085d9c74147869e414a385d984151d9c1238e9e"
+    }
+  },
+  "icon-muenze": {
+    "renderKey": "d45bf32a5fd0f49163e448f698958df713782e8f588b5313e20247526fcd1ddc",
+    "dateien": {
+      "idle.png": "4db04d4c4fc1e455640ffaabfecbf22776fd2d9ddd868f55ccd96dd29991f1d8"
+    }
+  },
+  "icon-muenzhaufen": {
+    "renderKey": "ac855e8b42acb8d2bd384e4634e3263e5da3f2baa3dc2b6e889fa70ae304ce3a",
+    "dateien": {
+      "idle.png": "3647b156419e5f908782f125005106febf28792b87c38cb2e1781562721407b8"
+    }
+  },
+  "icon-muenzstapel": {
+    "renderKey": "a08cb460d3e1166b32af0c4cd3575d5387742689f65584545db5e66c04c74042",
+    "dateien": {
+      "idle.png": "0de948e7f061f8c069e867f81fc6a66bb135e1649dbc4b94335a0de4bca9984c"
+    }
+  },
+  "icon-pokal": {
+    "renderKey": "28841dcbfb533327e9e4debc8f54946943c68defa9ebbe5fbe978e00804ec932",
+    "dateien": {
+      "idle.png": "fd1db3b894e7767be054e08ec97a488418e335411db78a2d12734de76bcec46c"
+    }
+  },
+  "icon-schwerter": {
+    "renderKey": "4ac6f4ab9365c4d8910e728aedbb8f903e40c7efc58bb54cf35d4844175b121e",
+    "dateien": {
+      "idle.png": "0c06e2b00d780b4d5b1e7b61a12b8ee9b1096bb543ec7d1d80b2277c16bb2f64"
+    }
+  },
+  "icon-stein": {
+    "renderKey": "ee13a34bf8e4dca328b1f19214886a1647e89827ae24f5ba94a8c3ae1d4d574d",
+    "dateien": {
+      "idle.png": "e9af1bfc5c01ae29a62c6d87ccc9197b1de97b0d7912cff2ba936e742457e9ad"
+    }
+  },
+  "icon-truhe": {
+    "renderKey": "8fe8bf3d9c83fc3641a46d403c0b438f465d8c7089f726ca1e23767dcc7beb1a",
+    "dateien": {
+      "idle.png": "d7e31a070d1bfb77a29d57382a9122021b4d27a431ddcb78db4148bb0a2cf6ec"
+    }
+  },
+  "muenze": {
+    "renderKey": "39dfc1c4785ca9c0586965fec7b50be761126d318908fc6120de426c7224eb1f",
+    "dateien": {
+      "idle.png": "69246402c3dca7566d7014930d69f3fce9bc2067f8b5c628060c9d83340ac9b2"
+    }
+  }
+}

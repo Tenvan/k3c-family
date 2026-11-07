@@ -1,0 +1,123 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "hg-mine-fern-v2",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Hintergrund Schachtwand mit Gerüst, ferne Ebene, Variante 2: periodisches Profil, kachelt waagrecht.",
+  "teile": [
+    {
+      "id": "grund",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 0l0 -367 32 10 32 12 32 7 32 5 32 8 32 4 32 -7 32 -12 32 -4 32 11 32 16 32 5 32 -4 32 -4 32 3 32 3 32 -3 32 -4 32 2 32 4 32 -6 32 -20 32 -21 32 -5 0 367ZM0 0l0 -117 32 3 32 8 32 7 32 3 32 6 32 10 32 5 32 -5 32 -11 32 -6 32 2 32 1 32 -4 32 -7 32 -2 32 2 32 1 32 -6 32 -3 32 4 32 7 32 0 32 -8 32 -7 0 117Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 0l0 -206 32 -10 32 -6 32 6 32 8 32 -4 32 -8 32 1 32 14 32 7 32 -13 32 -21 32 -8 32 9 32 12 32 6 32 7 32 16 32 16 32 -1 32 -19 32 -19 32 -1 32 8 32 0 0 206Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M0 -327l32 10 32 12 32 7 32 5 32 8 32 4 32 -7 32 -12 32 -4 32 11 32 16 32 5 32 -4 32 -4 32 3 32 3 32 -3 32 -4 32 2 32 4 32 -6 32 -20 32 -21 32 -5",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M0 -176l32 -10 32 -6 32 6 32 8 32 -4 32 -8 32 1 32 14 32 7 32 -13 32 -21 32 -8 32 9 32 12 32 6 32 7 32 16 32 16 32 -1 32 -19 32 -19 32 -1 32 8 32 0",
+          "material": "stein",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [384, -240]
+    },
+    {
+      "id": "stollen",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M196 -79L196 -115C196 -126 206 -136 217 -136C229 -136 238 -126 238 -115L238 -79ZM397 -103L397 -149C397 -161 407 -171 419 -171C432 -171 442 -161 442 -149L442 -103ZM528 -109L528 -151C528 -161 536 -170 546 -170C556 -170 564 -161 564 -151L564 -109Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M154 -216l0 -66 6 0 0 66ZM218 -216l0 -66 6 0 0 66ZM150 -282l0 -6 78 0 0 6ZM159 -278l63 53 -3 3 -63 -53ZM227 -197l0 -65 6 0 0 65ZM304 -197l0 -65 6 0 0 65ZM223 -262l0 -6 91 0 0 6ZM231 -257l77 51 -2 3 -77 -51ZM428 -211l0 -62 6 0 0 62ZM494 -211l0 -62 6 0 0 62ZM424 -273l0 -6 80 0 0 6ZM432 -268l66 47 -2 3 -66 -47ZM551 -167l0 -82 6 0 0 82ZM621 -167l0 -82 6 0 0 82ZM547 -249l0 -6 84 0 0 6ZM555 -244l70 67 -3 3 -70 -67Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [61, -189],
+          "radius": 1.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [158, -181],
+          "radius": 1.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [263, -146],
+          "radius": 1.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [331, -159],
+          "radius": 1.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [412, -208],
+          "radius": 1.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [518, -182],
+          "radius": 1.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [582, -121],
+          "radius": 1.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [721, -183],
+          "radius": 1.4,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [384, -240]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 480,
+    "rahmen": [0, -480, 768, 480]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

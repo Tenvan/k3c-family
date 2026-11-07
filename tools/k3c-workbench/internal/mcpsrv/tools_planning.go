@@ -59,7 +59,8 @@ func registerPlanning(s *Server) {
 		Name: "plan_set",
 		Description: "Setzt Kopf-Felder (Status, Prio, Sprint, Projekt, Reife, Spec, Revision, Freigabe …; Sprints haben keine Prio) und zieht nach: Index, " +
 			"Session-Tabelle, Fahrplan, Archiv bei erledigt/verworfen, Sprint-Ordner beim Status, Sprint-Tabelle des Projekts. " +
-			"Session: Status (auch verworfen), Domäne (Feld, Überschrift und Fahrplan des Sprints folgen; am Sprint nicht setzbar). " +
+			"Session: Status (auch verworfen), Domäne (REG, SIM, SRV, CLI, PLAT, INF, DEV, PAP; Feld, Überschrift und Fahrplan des Sprints folgen; am Sprint nicht setzbar), " +
+			"Lane (– oder Kurzname a-z, 0-9, -) und Modell (–, haiku, sonnet, opus, fable), beide auch in älteren Dateien ohne das Feld. " +
 			"Projekt: Status, Rang (die anderen rücken lückenlos), Sprints (neue Reihenfolge, kommagetrennt). " +
 			"Nutze es bei: Status, Prio oder andere Kopf-Felder ändern. Statt: Datei, Index und Fahrplan von Hand bearbeiten.",
 		Annotations: write,
@@ -115,8 +116,9 @@ func registerPlanRead(s *Server) {
 		Name: "plan_next",
 		Description: "Nächste Session nach docs/arbeitsweise.md › Autonomer Ablauf, Schritt 1, aus den lokalen Dateien: aktive Projekte " +
 			"nach Rang, ihre aktiven Sprints in Tabellen-Reihenfolge, erste Session offen und autonom mit erledigten Abhängigkeiten " +
-			"und freier Domäne; domain grenzt ein. Antwort: Kopf (ID, Pfad, Sprint, Domäne, Umgebung, Branch, Kriterien), " +
-			"Session-Datei, ihre Kriterien aus der Sprint-README und parallel mögliche Sessions anderer Domänen; sonst der Grund je " +
+			"und freier Domäne bzw. Lane (ohne Lane sperrt eine Session in Arbeit die ganze Domäne); domain grenzt ein. Antwort: Kopf " +
+			"(ID, Pfad, Sprint, Domäne, Lane, Umgebung, Modell, Branch, Kriterien), Session-Datei, ihre Kriterien aus der Sprint-README " +
+			"und höchstens drei parallel mögliche Sessions (andere Domäne oder andere Lane, je mit Modell); sonst der Grund je " +
 			"Projekt. Je aktivem Sprint gilt der Stand von refs/remotes/origin/sprint/<präfix> (README, Sessions; kein fetch), " +
 			"sonst der lokale Stand; die Antwort nennt das je Sprint. " +
 			"Nutze es bei: Start einer autonomen Session. Statt: Projekte, Sprint-READMEs und Session-Dateien einzeln lesen.",

@@ -1,0 +1,27 @@
+{
+  "id": "icon-truhe",
+  "version": 1,
+  "specHash": "909e1f0ff64d89833a11de484acc955a2dd794be33415c2ae9af9aa8f2420ebb",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "8fe8bf3d9c83fc3641a46d403c0b438f465d8c7089f726ca1e23767dcc7beb1a",
+  "rahmen": [
+    -16,
+    -32,
+    32,
+    32
+  ],
+  "frameW": 32,
+  "frameH": 32,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 1,
+      "datei": "idle.png",
+      "hashes": [
+        "b00da07723b7c06c786ea49466b28e245ff7796f5fd780c60a6781c1dfa1d995"
+      ]
+    }
+  },
+  "varianten": []
+}

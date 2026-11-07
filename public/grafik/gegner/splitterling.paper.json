@@ -1,0 +1,218 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "splitterling",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Splitterwicht: kleiner blauer Kristallsplitter auf Steinbeinchen mit Glotzaugen; trippelt, sticht mit der Splitterhand",
+  "teile": [
+    {
+      "eltern": "korpus",
+      "id": "bein-h",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 2.2,
+          "form": "M-2 -8L-2 -1",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4 -1L2 -1L2 0.6L-4 0.6Z",
+          "material": "stein",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [-2, -8]
+    },
+    {
+      "eltern": "korpus",
+      "id": "arm-h",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M-3 -16L-8 -10",
+          "material": "stein",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [-3, -16]
+    },
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-7 -8L-9 -18L-4 -30L1 -24L5 -32L8 -20L7 -8Z",
+          "material": "edelstein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-7 -8L-9 -18L-4 -30L-2 -18L0 -8Z",
+          "material": "koenigsblau",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M1 -24L5 -32L6 -22L2 -18Z",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M1 -17C1.5 -19 4 -19 4.5 -17C4 -15.5 1.5 -15.5 1 -17Z",
+          "material": "weiss"
+        },
+        {
+          "art": "flaeche",
+          "form": "M5.5 -17.2C6 -19 7.8 -19 8 -17.4C7.6 -16 6 -16 5.5 -17.2Z",
+          "material": "weiss"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [3, -17.2],
+          "radius": 0.7
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [6.9, -17.4],
+          "radius": 0.6
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M2 -12.5L4 -11.5L6 -12.5",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -8]
+    },
+    {
+      "eltern": "korpus",
+      "id": "arm-v",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M3 -16L8 -10",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M7 -11L11 -14L10 -9Z",
+          "material": "edelstein"
+        }
+      ],
+      "pivot": [3, -16]
+    },
+    {
+      "eltern": "korpus",
+      "id": "bein-v",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 2.2,
+          "form": "M3 -8L3 -1",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M1 -1L7 -1L7 0.6L1 0.6Z",
+          "material": "stein"
+        }
+      ],
+      "pivot": [3, -8]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 44,
+    "rahmen": [-16, -36, 32, 41]
+  },
+  "animationen": {
+    "angriff": {
+      "fps": 14,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        },
+        {
+          "t": 0.35,
+          "winkel": {
+            "arm-v": 60,
+            "korpus": -12
+          }
+        },
+        {
+          "t": 0.55,
+          "winkel": {
+            "arm-v": -90,
+            "korpus": 18
+          }
+        },
+        {
+          "t": 0.8,
+          "winkel": {
+            "arm-v": -30,
+            "korpus": 4
+          }
+        }
+      ]
+    },
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "arm-v": 5,
+            "korpus": -3
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "arm-v": -5,
+            "korpus": 3
+          }
+        }
+      ]
+    },
+    "lauf": {
+      "fps": 14,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "arm-h": 20,
+            "arm-v": -20,
+            "bein-h": -25,
+            "bein-v": 25,
+            "korpus": -4
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "arm-h": -20,
+            "arm-v": 20,
+            "bein-h": 25,
+            "bein-v": -25,
+            "korpus": 4
+          }
+        }
+      ]
+    }
+  }
+}

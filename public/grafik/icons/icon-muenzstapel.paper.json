@@ -1,0 +1,92 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "icon-muenzstapel",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Münzstapel: kleiner Stapel aus vier Goldmünzen",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-10 -5L-10 -8L10 -8L10 -5Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M10 -8C10 -9.44 5.52 -10.6 0 -10.6C-5.52 -10.6 -10 -9.44 -10 -8C-10 -6.56 -5.52 -5.4 0 -5.4C5.52 -5.4 10 -6.56 10 -8Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-10 -9L-10 -12L10 -12L10 -9Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M10 -12C10 -13.44 5.52 -14.6 0 -14.6C-5.52 -14.6 -10 -13.44 -10 -12C-10 -10.56 -5.52 -9.4 0 -9.4C5.52 -9.4 10 -10.56 10 -12Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-10 -13L-10 -16L10 -16L10 -13Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M10 -16C10 -17.44 5.52 -18.6 0 -18.6C-5.52 -18.6 -10 -17.44 -10 -16C-10 -14.56 -5.52 -13.4 0 -13.4C5.52 -13.4 10 -14.56 10 -16Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-10 -17L-10 -20L10 -20L10 -17Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M10 -20C10 -21.44 5.52 -22.6 0 -22.6C-5.52 -22.6 -10 -21.44 -10 -20C-10 -18.56 -5.52 -17.4 0 -17.4C5.52 -17.4 10 -18.56 10 -20Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-10 -6L-10 -19",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [5, -21],
+          "radius": 1
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

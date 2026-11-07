@@ -22,7 +22,7 @@ export const none = (value: string | undefined) => !value || value.startsWith('�
 /** Abschnitt `## Name` bis zur nächsten Unterüberschrift. */
 export const section = (text: string, name: string) => text.split(new RegExp(`^## ${name}$`, 'm'))[1]?.split(/^## /m)[0] ?? '';
 
-export const DOMAINS = ['REG', 'SIM', 'SRV', 'CLI', 'PLAT', 'INF', 'DEV'];
+export const DOMAINS = ['REG', 'SIM', 'SRV', 'CLI', 'PLAT', 'INF', 'DEV', 'PAP'];
 export const SPEC = ['Entwurf', 'freigegeben', 'rückwirkend'];
 export const PRIO = ['hoch', 'mittel', 'niedrig', '?']; // Rangfolge: hoch zuerst
 const ENV = ['offline', 'live', '?']; // Umgebung: offline ist worktree-tauglich
@@ -31,20 +31,29 @@ const ALLOWED = {
     Status: ['offen', 'eingeplant', 'erledigt', 'verworfen'], Spec: SPEC },
   sprint: { Status: ['geplant', 'aktiv', 'erledigt'], Reife: ['Entwurf', 'bereit'], Spec: SPEC },
   session: { Status: ['offen', 'in Arbeit', 'fertig', 'blockiert', 'verworfen'], Typ: ['Umsetzung', 'Review', 'Workshop'],
-    Agent: ['autonom', 'Mensch'], Domäne: DOMAINS, Umgebung: ENV },
+    Agent: ['autonom', 'Mensch'], Domäne: DOMAINS, Umgebung: ENV, Modell: ['–', 'haiku', 'sonnet', 'opus', 'fable'] },
   projekt: { Status: ['aktiv', 'ruht', 'erledigt'] },
 } as const;
 type Kind = keyof typeof ALLOWED;
 
-/** Gleiche Felder und Überschriften wie die Vorlage, erlaubte Werte in den Auswahlfeldern. */
+/** Felder, die in einer Datei fehlen dürfen (ältere Sessions ohne Lane und Modell, PV1.1); die Reihenfolge bleibt die der Vorlage. */
+const OPTIONAL: Partial<Record<Kind, readonly string[]>> = { session: ['Lane', 'Modell'] };
+/** Lane einer Session: `–` oder Kurzname aus a-z, 0-9 und `-`. */
+export const laneOk = (value: string) => value === '–' || /^[a-z0-9-]+$/.test(value);
+
+/** Gleiche Felder und Überschriften wie die Vorlage (optionale dürfen fehlen), erlaubte Werte in den Auswahlfeldern. */
 export function checkTemplate(kind: Kind, text: string, where: string): Record<string, string> {
   const template = read(`vorlagen/${kind}.md`);
   const fields = meta(text);
-  expect(Object.keys(fields), `${where}: Felder`).toEqual(Object.keys(meta(template)));
+  const optional = OPTIONAL[kind] ?? [];
+  const expected = Object.keys(meta(template)).filter((f) => !optional.includes(f) || f in fields);
+  expect(Object.keys(fields), `${where}: Felder`).toEqual(expected);
   expect(headings(text), `${where}: Überschriften`).toEqual(headings(template));
   for (const [field, values] of Object.entries(ALLOWED[kind])) {
+    if (optional.includes(field) && !(field in fields)) continue;
     expect(values as readonly string[], `${where}: ${field} = "${fields[field]}"`).toContain(fields[field]);
   }
+  if ('Lane' in fields && optional.includes('Lane')) expect(laneOk(fields.Lane), `${where}: Lane = "${fields.Lane}"`).toBe(true);
   return fields;
 }
 

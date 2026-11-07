@@ -1,0 +1,34 @@
+{
+  "id": "pappel",
+  "version": 1,
+  "specHash": "e565ff8d05a311637f2278abd8c1cbcea034aa9c10f57427b1360ac6b700e76d",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "b82bbea5c7c8fa21bdfe9fad433db852f8871c68ac257eb287eda85cfe2534b8",
+  "rahmen": [
+    -24,
+    -146,
+    48,
+    150
+  ],
+  "frameW": 51,
+  "frameH": 159,
+  "animationen": {
+    "idle": {
+      "frames": 8,
+      "fps": 6,
+      "datei": "idle.png",
+      "hashes": [
+        "25aa5d11d0f64a32e60c4e510c44bb9f2a525e471feec0a4f4300512e60ea898",
+        "651919801ee13ffdbb152d30ce53934131304a5ba23f7dc23adf67640655c8db",
+        "8b57a9f5113b200e8237f06efedb27a5179aab80e5b9757e7b7aaa5c88743303",
+        "bc1ee679fc2bb98bda5ab76565549fc5b66b0c6836a0969fe106484d8d198195",
+        "6c59c80f5cc30d514fc8ff4f81108f3f595b4c68083edf95e25cec90f00689f6",
+        "bc1ee679fc2bb98bda5ab76565549fc5b66b0c6836a0969fe106484d8d198195",
+        "8b57a9f5113b200e8237f06efedb27a5179aab80e5b9757e7b7aaa5c88743303",
+        "651919801ee13ffdbb152d30ce53934131304a5ba23f7dc23adf67640655c8db"
+      ]
+    }
+  },
+  "varianten": []
+}

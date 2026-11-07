@@ -1,0 +1,57 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "icon-kupfer",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Kupfer: rotbrauner Kupfer-Nugget mit Glanz",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12 -6C-14 -12 -10 -20 -2 -22C6 -24 12 -18 12 -12C12 -6 6 -3 0 -4C-4 -4 -10 -3 -12 -6Z",
+          "material": "fell-fuchs"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 -6C-14 -12 -10 -20 -2 -22C-6 -16 -6 -10 -2 -4C-6 -4 -10 -3 -12 -6Z",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M8 -15C8 -16.93 5.76 -18.5 3 -18.5C0.24 -18.5 -2 -16.93 -2 -15C-2 -13.07 0.24 -11.5 3 -11.5C5.76 -11.5 8 -13.07 8 -15Z",
+          "material": "fell-fuchs",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [5, -17],
+          "radius": 1.1
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

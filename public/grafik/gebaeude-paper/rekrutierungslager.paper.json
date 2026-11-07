@@ -1,0 +1,186 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "rekrutierungslager",
+  "rig": "gebaeude",
+  "version": 1,
+  "beschreibung": "Rekrutierungslager (3 × 2 Kacheln): Spitzzelt mit dunklem Eingang und Feuerstelle mit Steinring und Flammen; die Stufen sind die Looks je Biom: 1 Wald (warmes Zelttuch), 2 Höhle (Stahlgrau, dunklerer Steinring, Laterne an Stange), 3 Mine (dunkles Tuch, Steinring mit Eisenrand, Laterne an Eisenstange).",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-44 0L-16 -56L12 0Z",
+          "material": "fell-fuchs"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-16 -56L12 0L-4 0Z",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-17 -53L-41 -2",
+          "material": "fell-fuchs",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-24 0L-16 -24L-8 0Z",
+          "material": "maehne",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-17 -62L-15 -62L-15 -54L-17 -54Z",
+          "material": "leder"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [18, -3],
+          "radius": 3.2
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [25, -3],
+          "radius": 3.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [32, -3],
+          "radius": 3.2
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [39, -3],
+          "radius": 3.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [46, -3],
+          "radius": 3.2
+        },
+        {
+          "art": "flaeche",
+          "form": "M20 -3L44 -7L45 -4L21 0Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M24.8 -5L27.2 -14.6L30.4 -11.4L32 -21L34.4 -12.2L37.6 -16.2L39.2 -5Z",
+          "material": "koenigsrot",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M28 -5L30.4 -12.2L32 -15.4L34.4 -9.8L36 -5Z",
+          "material": "gold",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 64,
+    "rahmen": [-48, -64, 96, 64]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  },
+  "stufen": [
+    {
+      "tausch": {
+        "fell-fuchs": "stoff"
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "laterne",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M6 -40L8 -40L8 0L6 0Z",
+              "material": "leder"
+            },
+            {
+              "art": "flaeche",
+              "form": "M4 -42L12 -42L12 -40L4 -40Z",
+              "material": "leder"
+            },
+            {
+              "art": "flaeche",
+              "form": "M8 -40L14 -40L14 -32L8 -32Z",
+              "material": "gold",
+              "ton": "licht"
+            },
+            {
+              "art": "flaeche",
+              "form": "M7 -41L15 -41L15 -39L7 -39Z",
+              "material": "maehne"
+            },
+            {
+              "art": "punkt",
+              "material": "stein",
+              "mitte": [18, -3],
+              "radius": 2.4,
+              "ton": "schatten"
+            },
+            {
+              "art": "punkt",
+              "material": "stein",
+              "mitte": [32, -3],
+              "radius": 2.4,
+              "ton": "schatten"
+            },
+            {
+              "art": "punkt",
+              "material": "stein",
+              "mitte": [46, -3],
+              "radius": 2.4,
+              "ton": "schatten"
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    },
+    {
+      "tausch": {
+        "stoff": "maehne"
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "eisen",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M14 -7L50 -7L50 -5L14 -5Z",
+              "material": "hermelin",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M6 -40L8 -40L8 0L6 0Z",
+              "material": "maehne"
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    }
+  ]
+}

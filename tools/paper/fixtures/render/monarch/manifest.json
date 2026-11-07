@@ -1,0 +1,37 @@
+{
+  "id": "monarch",
+  "version": 1,
+  "specHash": "d3b880918a2bab363cd4067289d9d7ce56e1d797e22a20629a6035becca88226",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "a418c9492b1e986d8884d05cac86986f4620e2a276b2d2ae2cdc41212f5debad",
+  "rahmen": [
+    -60,
+    -145,
+    85,
+    151
+  ],
+  "frameW": 209,
+  "frameH": 192,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "monarch-idle-0.png",
+      "hashes": [
+        "80b86d4f02fb761ff5baf428dcdefe7561d21a1a51d68e4f479ad2cfc1bb58c4"
+      ]
+    },
+    "reiten": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "monarch-galopp-0.png",
+      "hashes": [
+        "e42cda7e6d2ec611adc38f05f148d7b3924b0788d81b148d8bc5ba25f9fa5c81"
+      ]
+    }
+  },
+  "varianten": [
+    "spieler2"
+  ]
+}

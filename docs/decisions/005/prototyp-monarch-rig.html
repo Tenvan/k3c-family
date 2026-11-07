@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monarch-Rig</title>
+<style>
+  :root { --bg:#1b1a26; --panel:#252336; --fg:#e8e6f0; --mut:#9a97ad; --acc:#fbf236; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.4 system-ui, sans-serif; }
+  .wrap { display:flex; flex-wrap:wrap; gap:16px; padding:16px; }
+  .stage { flex:1 1 480px; background:#2b2a3d; border-radius:10px; padding:8px; }
+  .stage svg { width:100%; height:auto; display:block; }
+  .side { flex:0 1 340px; display:flex; flex-direction:column; gap:12px; }
+  .box { background:var(--panel); border-radius:10px; padding:12px; }
+  h1 { font-size:16px; margin:0 0 8px; } h2 { font-size:13px; margin:0 0 8px; color:var(--mut); font-weight:600; }
+  .btns { display:flex; gap:6px; flex-wrap:wrap; }
+  button { background:#3a3852; color:var(--fg); border:1px solid #4b4968; border-radius:6px; padding:6px 12px; cursor:pointer; font:inherit; }
+  button.on { background:var(--acc); color:#222034; border-color:var(--acc); font-weight:600; }
+  label { display:flex; align-items:center; gap:8px; margin-top:8px; color:var(--mut); }
+  input[type=range] { flex:1; }
+  canvas { background:repeating-conic-gradient(#33314a 0 25%, #2a2840 0 50%) 0 0/16px 16px; border-radius:4px; max-width:100%; }
+  .pv { display:none; fill:#fbf236; }
+  svg.showpv .pv { display:inline; }
+  .hint { color:var(--mut); font-size:12px; margin-top:6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="stage" style="flex-basis:720px"><svg id="svg" viewBox="-120 -205 240 220" xmlns="http://www.w3.org/2000/svg"></svg></div>
+  <div class="side">
+    <div class="box">
+      <h1>👑 Monarch-Rig</h1>
+      <div class="btns" id="poses">
+        <button data-p="idle" class="on">Idle</button><button data-p="walk">Lauf</button><button data-p="rideWalk">Schritt</button><button data-p="rideTrot">Trab</button><button data-p="ride">Galopp</button>
+      </div>
+      <label>Tempo <input id="speed" type="range" min="0" max="2" step="0.05" value="1"></label>
+      <label><input id="pv" type="checkbox"> Pivots zeigen</label>
+      <label><input id="flip" type="checkbox"> Spiegeln (nach links)</label>
+    </div>
+    <div class="box">
+      <h2>Spritesheet (8 Frames, aktuelle Pose)</h2>
+      <label>Frame-Höhe <select id="ph"><option>128</option><option selected>256</option><option>512</option></select> px</label>
+      <button id="sheet">Erzeugen</button> <a id="dl" style="color:var(--acc);display:none" download="monarch.png">PNG speichern</a>
+      <div style="margin-top:8px"><canvas id="strip"></canvas></div>
+    </div>
+  </div>
+</div>
+<script>
+const C = { o:'#222034', skin:'#eec39a', skinD:'#d9a066', hair:'#663931', gold:'#fbf236', goldD:'#d9a066',
+  red:'#ac3232', redL:'#d95763', tun:'#5b6ee1', tunD:'#3f3f74', pant:'#847e87', pantD:'#595652',
+  boot:'#45283c', belt:'#8f563b', horse:'#8f563b', horseD:'#663931', mane:'#45283c' };
+
+
+// ---- Rig-Bausteine: jede Gruppe dreht um ihren Pivot (px,py), Kinder erben die Drehung ----
+const part = (id, px, py, body, kids = '') =>
+  `<g id="${id}" data-px="${px}" data-py="${py}">${body}${kids}<circle class="pv" cx="${px}" cy="${py}" r="2.2"/></g>`;
+
+// ===== Styleguide (Papierschnitt) =====
+// Keine Konturlinien: jede Fläche ist ein Stück Papier mit schmalem Schlagschatten (Filter ds, 0.5/0.9, Unschärfe 0.45).
+// Schattierungen sind aufgeklebte Lagen mit noch kleinerem Schatten (ds2). Innenlinien nur als zarte Falz (Deckkraft ≤ 25 %).
+// Papierstruktur: feines Rauschen über der ganzen Figur (Filter paper). Schatten auf den Hintergrund macht später die Engine.
+// Licht: von vorn oben (rechts oben). Jedes Material hat genau drei Töne: Licht, Basis, Schatten.
+// Proportionen Monarch: Kopf ≈ 1/3,5 der Höhe, Krone ≈ halbe Kopfhöhe, Hände und Füße leicht übergroß.
+// Pferd: Rumpf ≈ 2 Kopflängen des Reiters hoch, Beine schlank mit betonten Gelenken.
+const PAL = {
+  line: '#2a1d2e',
+  skin: ['#f8dcc0', '#efc29c', '#d49a74'], hair: ['#8a5a3c', '#6b4128', '#4a2b1a'], gold: ['#ffe36e', '#f2c33a', '#c48a1e'],
+  royal: ['#8796f2', '#4f5fd0', '#33368f'], red: ['#e2574c', '#b8312f', '#7c1f2a'], ermine: ['#ffffff', '#ebe8f4', '#c9c4da'],
+  leather: ['#a5683f', '#7d4a2b', '#55301d'], cloth: ['#aaa4b2', '#857f8e', '#625c6b'], horse: ['#cf8a52', '#a8622f', '#723f1d'],
+  mane: ['#5a362a', '#3e241c', '#26150f'], hoof: '#3a2c2a', eye: '#3b2a20' };
+C.o = PAL.line; C.red = PAL.red[1]; C.redL = PAL.red[0]; C.skin = PAL.skin[1];
+const shade = (d, fill) => `<path d="${d}" fill="${fill}" stroke="none" filter="url(#ds2)"/>`;
+const S = (d, fill, inner = '') => `<path d="${d}" fill="${fill}" filter="url(#ds)"/>${inner}`;
+const L = (d, w = 0.9, col = PAL.line, op = 0.6) => `<path d="${d}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" opacity="${(op * 0.3).toFixed(2)}"/>`;
+const dot = (x, y, r, f) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${f}" stroke="none"/>`;
+const ermineSpot = (x, y) => `<path d="M${x} ${y - 1.4}L${x + 0.8} ${y + 1.4}L${x - 0.8} ${y + 1.4}Z" fill="${PAL.line}" stroke="none"/>`;
+
+// ---- Monarch ----
+const leg = (s, far) => { const c = far ? [PAL.cloth[1], PAL.cloth[2], PAL.cloth[2]] : PAL.cloth, b = far ? [PAL.leather[1], PAL.leather[2], PAL.leather[2]] : PAL.leather;
+  return part('thigh' + s, 0, -50,
+    S('M-7 -55C-8 -45 -7 -35 -5 -27L5 -27C7 -35 8 -45 7 -55Z', c[1], shade('M-7 -55C-8 -45 -7 -35 -5 -27L-1.5 -27C-3 -36 -3.5 -46 -3 -55Z', c[2])
+      + L('M4.5 -50C5.5 -42 5 -35 3.5 -29', 1.2, c[0], 0.9)),
+    part('shin' + s, 0, -28,
+      S('M-5.2 -31L5.2 -31L5.2 -24L-5.2 -24Z', c[1])
+      + S('M-5.6 -24C-5.6 -17 -5.2 -11 -5.2 -6L-6.2 -1C-6.4 1 -5.2 1.6 -3 1.6L11 1.6C14 1.6 14.6 -1.6 12 -3.2L5.2 -6.2C5.2 -12 5.6 -18 5.6 -24Z', b[1],
+          shade('M-5.6 -24C-5.6 -17 -5.2 -11 -5.2 -6L-6.2 -1C-6.4 1 -5.2 1.6 -3 1.6L0 1.6L-1.5 -6C-1.8 -12 -2 -18 -2 -24Z', b[2])
+          + L('M3.8 -21C4 -15 4 -10 3.6 -7', 1.2, b[0], 0.9) + L('M-6 -0.2H12.8', 1.2))
+      + S('M-6.6 -27L6.6 -27L6.1 -21.5L-6.1 -21.5Z', b[0], L('M-5 -23.5H5'))));
+};
+const arm = (s, far) => { const c = far ? [PAL.royal[1], PAL.royal[2], PAL.royal[2]] : PAL.royal, k = far ? [PAL.skin[2], PAL.skin[2], PAL.skin[2]] : PAL.skin;
+  return part('upper' + s, 0, -84,
+    S('M-6.2 -90C-8 -84 -6.5 -74 -4.6 -68L4.6 -68C6.5 -74 8 -84 6.2 -90C2 -93.5 -2 -93.5 -6.2 -90Z', c[1],
+      shade('M-6.2 -90C-8 -84 -6.5 -74 -4.6 -68L-1 -68C-2.5 -75 -3.5 -84 -2.5 -92Z', c[2]) + L('M4 -87C5 -81 4.5 -75 3.2 -71', 1.3, c[0], 0.9)),
+    part('fore' + s, 0, -70,
+      S('M-4.9 -72.5C-4.7 -66 -4.1 -60 -3.9 -56L3.9 -56C4.1 -60 4.7 -66 4.9 -72.5Z', c[1], shade('M-4.9 -72.5C-4.7 -66 -4.1 -60 -3.9 -56L-1 -56L-1.3 -72.5Z', c[2]))
+      + S('M-5.6 -58.5H5.6L5.2 -53.5H-5.2Z', PAL.ermine[0], shade('M-5.6 -58.5H-2L-2.2 -53.5H-5.2Z', PAL.ermine[2]) + ermineSpot(2, -56))
+      + S('M-4.2 -53.8C-5.4 -50 -4.4 -45.8 0 -45.2C4.2 -45.6 5.4 -49 4.3 -53.8Z', k[1], shade('M-4.2 -53.8C-5.4 -50 -4.4 -45.8 0 -45.2L-1 -53.8Z', k[2]))
+      + `<path d="M3.6 -52.2C6.6 -52.4 7 -49 4.4 -48" fill="${k[1]}"/>` + L('M-1.6 -49.5H2.2') + `<circle id="hand${s}" cx="0" cy="-50" r="0.1" fill="none" stroke="none"/>`));
+};
+// Umhang: Kette aus Punkten (Verlet), oben am Kragen verankert, Schwerkraft + Fahrtwind, als Band mit wachsender Breite gezeichnet.
+const capeAnchor = `<circle id="capeAnchor" cx="-4" cy="-91" r="0.1" fill="none"/>`;
+const CAPE_N = 8, CAPE_SEG = 7.6;
+const cloth = {
+  pts: null, time: 0,
+  anchor() { const ride = $('ride'), el = $('capeAnchor'); return new DOMPoint(-4, -91).matrixTransform(ride.getCTM().inverse().multiply(el.getCTM())); },
+  step(dt, st) {
+    if (dt <= 0) return; const A = this.anchor(); this.time += dt;
+    if (!this.pts) this.pts = Array.from({ length: CAPE_N }, (_, i) => ({ x: A.x - i * 1.5, y: A.y + i * CAPE_SEG, px: A.x - i * 1.5, py: A.y + i * CAPE_SEG }));
+    // Seitenwind nur im Stand: langsam an- und abschwellende Böe (22..46 Einheiten/s, Galopp-Fahrtwind ≈ 240),
+    // damit der Umhang sichtbar hinter der Figur weht. Kollisionsregeln unten bleiben unverändert.
+    const gust = st.scroll ? 0 : 22 + 18 * (0.5 + 0.5 * Math.sin(this.time * 1.1)) + 6 * Math.sin(this.time * 2.9);
+    const air = -(st.scroll || 0) * 0.8 - 8 - 6 * Math.sin(this.time * 1.7) - gust, floor = st.horse ? -103 : 0;
+    for (let i = 1; i < CAPE_N; i++) { const p = this.pts[i], vx = (p.x - p.px) / dt, vy = (p.y - p.py) / dt;
+      const ax = 2.4 * (air - vx), ay = 260 - 1.2 * vy, nx = p.x + (p.x - p.px) * 0.99 + ax * dt * dt, ny = p.y + (p.y - p.py) * 0.99 + ay * dt * dt;
+      p.px = p.x; p.py = p.y; p.x = nx; p.y = ny; }
+    for (let it = 0; it < 8; it++) { this.pts[0].x = A.x; this.pts[0].y = A.y;
+      for (let i = 1; i < CAPE_N; i++) { const a = this.pts[i - 1], b = this.pts[i], dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1, k = (d - CAPE_SEG) / d;
+        if (i > 1) { a.x += dx * k * 0.5; a.y += dy * k * 0.5; b.x -= dx * k * 0.5; b.y -= dy * k * 0.5; } else { b.x -= dx * k; b.y -= dy * k; }
+        if (b.x > A.x + 2) b.x = A.x + 2; // nicht durch den Körper nach vorn
+        if (b.y > floor) b.y = floor; } }
+  },
+  draw() {
+    if (!this.pts) return; const P = this.pts, n = P.length, L = [], R = [], I = [];
+    for (let i = 0; i < n; i++) { const a = P[Math.max(i - 1, 0)], b = P[Math.min(i + 1, n - 1)], tx = b.x - a.x, ty = b.y - a.y, d = Math.hypot(tx, ty) || 1;
+      const nx = ty / d, ny = -tx / d, w = 4 + i * 1.9; // Normale zeigt nach "rechts" der Laufrichtung
+      L.push([P[i].x - nx * w, P[i].y - ny * w]); R.push([P[i].x + nx * w * 0.6, P[i].y + ny * w * 0.6]); I.push([P[i].x - nx * w * 0.35, P[i].y - ny * w * 0.35]); }
+    $('capeP').setAttribute('d', crPath(L) + crPath([...R].reverse(), true) + 'Z');
+    $('capeIn').setAttribute('d', crPath(L.slice(2)) + crPath([...I.slice(2)].reverse(), true) + 'Z');
+    $('capeHi').setAttribute('d', crPath(R.slice(1, -1).map(([x, y], i) => [x - (x - P[i + 1].x) * 0.35, y - (y - P[i + 1].y) * 0.35])));
+    const l = L[n - 1], r = R[n - 1], l2 = L[n - 2], r2 = R[n - 2], m = (u, v, k) => [u[0] + (v[0] - u[0]) * k, u[1] + (v[1] - u[1]) * k];
+    const a = m(l, l2, 0.45), b = m(r, r2, 0.45);
+    $('capeHem').setAttribute('d', `M${l[0]} ${l[1]}L${r[0]} ${r[1]}L${b[0]} ${b[1]}L${a[0]} ${a[1]}Z`);
+  },
+};
+// Catmull-Rom durch Punkte als kubische Bézier-Kurven (cont = an vorhandenen Pfad anschließen)
+function crPath(pts, cont = false) {
+  const f = v => v.toFixed(2); let d = (cont ? 'L' : 'M') + f(pts[0][0]) + ' ' + f(pts[0][1]);
+  for (let i = 0; i < pts.length - 1; i++) { const p0 = pts[Math.max(i - 1, 0)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(i + 2, pts.length - 1)];
+    d += `C${f(p1[0] + (p2[0] - p0[0]) / 6)} ${f(p1[1] + (p2[1] - p0[1]) / 6)} ${f(p2[0] - (p3[0] - p1[0]) / 6)} ${f(p2[1] - (p3[1] - p1[1]) / 6)} ${f(p2[0])} ${f(p2[1])}`; }
+  return d;
+}
+let trim = ''; for (let x = -15; x <= 15; x += 5) trim += `<path d="M${x} -42.6L${x + 1.6} -41L${x} -39.4L${x - 1.6} -41Z" fill="${PAL.red[1]}" stroke="none"/>`;
+const sword = S('M-9 -53L-25 -29.5L-22 -27.5L-6 -51Z', PAL.leather[2], L('M-11 -49L-20 -35', 0.9, PAL.leather[0], 0.8))
+  + S('M-24.5 -30L-26 -26.5L-22.5 -26L-21.5 -28Z', PAL.gold[1]) + S('M-12 -58L-4.5 -50.5L-3.5 -51.5L-11 -59Z', PAL.gold[1]) + dot(-6.8, -55.8, 1.6, PAL.gold[2]);
+const torso = S('M-12 -91C-15 -80 -16 -60 -16 -43L16 -43C16 -59 15 -78 12 -91C4 -94.5 -4 -94.5 -12 -91Z', PAL.royal[1],
+    shade('M-12 -91C-15 -80 -16 -60 -16 -43L-5 -43C-6 -60 -6 -78 -4 -93Z', PAL.royal[2]) + shade('M8 -89C11 -78 12.5 -62 13 -46L14.6 -46C14.5 -62 13.6 -78 11 -90Z', PAL.royal[0])
+    + `<path d="M3 -89V-58" stroke="${PAL.gold[1]}" stroke-width="2.4"/>` + dot(3, -80, 1.1, PAL.gold[2]) + dot(3, -70, 1.1, PAL.gold[2]))
+  + S('M-17 -44H17L18.5 -38H-18.5Z', PAL.gold[1], shade('M-17 -44H-6L-6 -38H-18.5Z', PAL.gold[2]) + trim)
+  + S('M-15.5 -58.5H15.5V-53H-15.5Z', PAL.leather[1], shade('M-15.5 -55.2H15.5V-53H-15.5Z', PAL.leather[2]))
+  + S('M2.5 -60H9.5V-51.5H2.5Z', PAL.gold[1], S('M4.6 -58H7.4V-53.5H4.6Z', PAL.leather[2]))
+  + S('M-15.5 -93C-6 -99 6 -99 15.5 -92.5C14.5 -84 6 -82 0 -83C-8 -82 -14.5 -84 -15.5 -88.5Z', PAL.ermine[0],
+      shade('M-15.5 -93C-12 -95 -8 -96.5 -5 -97C-6 -91 -6 -86 -6 -82.6C-11 -83 -14.5 -84.5 -15.5 -88.5Z', PAL.ermine[2])
+      + ermineSpot(-9, -88) + ermineSpot(-2, -86.5) + ermineSpot(5, -88) + ermineSpot(11, -88.5) + ermineSpot(1, -93));
+const head = part('head', 0, -90,
+  S('M-4.5 -98H5.5V-89H-4.5Z', PAL.skin[2])
+  + S('M-12 -104C-13 -116 -6 -123 3 -122.5C12 -122 17 -115 17.2 -107.5C17.4 -100 13 -95 6 -94.2C-2 -93.5 -11 -97 -12 -104Z', PAL.skin[1],
+      shade('M-12 -104C-13 -116 -6 -123 3 -122.5C-2 -118 -4 -110 -2 -95C-7 -96 -11 -99 -12 -104Z', PAL.skin[2])
+      + shade('M10 -119C14 -116 16 -112 16.4 -108C14.6 -110 12.8 -114 10 -119Z', PAL.skin[0]))
+  + S('M-12 -104.5C-15.5 -112 -12.5 -121 -3.5 -123.5C3.5 -125 10 -123 13.5 -119.5C6.5 -118.5 0.5 -116.5 -3.5 -112.5C-6 -108.5 -6 -103 -4 -99C-8 -99 -11 -101 -12 -104.5Z', PAL.hair[1],
+      shade('M-12 -104.5C-15.5 -112 -12.5 -121 -3.5 -123.5C-7 -118 -8 -110 -6.5 -101C-9 -101 -11 -102 -12 -104.5Z', PAL.hair[2])
+      + L('M-8 -118C-6 -114 -5 -110 -5 -106', 0.9, PAL.hair[0], 0.9) + L('M-2 -121C0 -119 2 -118.5 6 -118.5', 0.9, PAL.hair[0], 0.9))
+  + S('M-6 -106.5C-9 -107.5 -9.5 -101.5 -6 -101.5Z', PAL.skin[1], L('M-7.2 -105.2C-6.4 -104.4 -6.4 -103.4 -7.2 -102.6'))
+  + S('M-4.5 -100C-2 -94.5 2 -89.5 8 -86.8C12.5 -85.6 16.5 -88.8 17.4 -94C17.8 -97 17.2 -99.4 16 -100.4C14 -98.4 10 -97.4 6 -98.4C2 -99.4 -1.5 -100.4 -4.5 -100Z', PAL.hair[1],
+      shade('M-4.5 -100C-2 -94.5 2 -89.5 8 -86.8C4 -90 1.5 -94 0.5 -99.4C-1.5 -100 -3 -100.2 -4.5 -100Z', PAL.hair[2])
+      + L('M5 -96C6 -93 7.5 -90.5 9.5 -88.5', 0.9, PAL.hair[0], 0.9) + L('M10.5 -96.5C11.5 -94 12.5 -92 14 -90.5', 0.9, PAL.hair[0], 0.9))
+  + S('M7.5 -101C10.5 -103.8 14 -103.4 16 -101.6C18 -103.4 20.2 -102.4 20.8 -100.2C18.4 -99 16.4 -99.4 15.2 -100.6C13 -99 10 -98.8 7.5 -101Z', PAL.hair[1])
+  + S('M14.6 -109.5C17.2 -106.4 19 -104.2 17.6 -102.4C16.6 -101.6 15.2 -102 14.4 -102.8Z', PAL.skin[1], shade('M14.6 -103.4C15.4 -102.6 16.4 -102.2 17.4 -102.6L17 -103.6Z', PAL.skin[2]))
+  + `<path d="M6.8 -111C8.8 -113.4 12.2 -113.6 13.8 -110.8C11.8 -109.2 8.8 -109 6.8 -111Z" fill="#ffffff" stroke-width="0.9"/>`
+  + dot(10.9, -111, 1.5, PAL.eye) + dot(11.4, -111.5, 0.5, '#ffffff')
+  + L('M6.6 -111.2C8.8 -113.8 12.4 -114 14 -111', 1.5, PAL.line, 1) + L('M5.8 -115.8C8.8 -117.4 12 -117 14.4 -115.2', 2, PAL.hair[2], 1)
+  + dot(11.5, -105.5, 2.6, PAL.red[0]).replace('stroke="none"', 'stroke="none" opacity="0.35"'),
+  part('crown', 2, -120,
+    S('M-6.5 -122C-6 -131.5 10 -131.5 10.5 -122Z', PAL.red[1], shade('M-6.5 -122C-6 -128 -2 -131 2 -131.5C-1 -128 -2 -125 -2 -122Z', PAL.red[2]))
+    + S('M-10.5 -124.5L-11.5 -134C-9.5 -132 -7.5 -131 -6 -128C-4 -133 -1 -137 2 -141C5 -137 8 -133 10 -128C11.5 -131 13.5 -132 15.5 -134L14.5 -124.5Z', PAL.gold[1],
+        shade('M-10.5 -124.5L-11.5 -134C-9.5 -132 -7.5 -131 -6 -128C-4.6 -131.6 -2.6 -134.6 -0.6 -137.6L-1 -124.5Z', PAL.gold[2])
+        + L('M5 -131L7.5 -128', 1.2, PAL.gold[0], 1))
+    + S('M-11 -125H15V-118.5H-11Z', PAL.gold[1], shade('M-11 -125H-2V-118.5H-11Z', PAL.gold[2]) + L('M-1 -123.6H13.5', 1, PAL.gold[0], 1))
+    + dot(-11.5, -134.5, 1.7, PAL.ermine[0]) + dot(15.5, -134.5, 1.7, PAL.ermine[0])
+    + S('M1.2 -141.5V-146.5M-1 -144.5H3.4', 'none').replace('fill="none"/>', 'fill="none" stroke-width="1.6"/>')
+    + `<g stroke-width="0.9">${S('M-6.5 -122.6L-4.5 -120.6L-6.5 -118.8L-8.5 -120.6Z', PAL.red[0])}${S('M2 -123.2L4.4 -121.6L2 -119.4L-0.4 -121.6Z', '#5fcde4')}${S('M10.5 -122.6L12.5 -120.6L10.5 -118.8L8.5 -120.6Z', PAL.red[0])}</g>`));
+const monarch = `<g id="mon">${capeAnchor}${arm('B', true)}${leg('B', true)}${sword}${leg('F', false)}${torso}${head}${arm('F', false)}</g>`;
+
+// ---- Pferd ----
+// Pferdebein: Knochen (Gruppen hu/hl/hh) liefern nur die Winkel. Sichtbar ist ein einziger Pfad über Schulter, Knie und
+// Fessel, dessen Breite an jedem Gelenk festgelegt ist; so verformt sich das Bein statt in Segmente zu zerfallen.
+const LEGW = { front: [16, 14, 11.5, 8.2, 5.4, 6.8], back: [19, 17, 12.5, 8, 5.4, 6.8] };
+const hleg = (id, x, far, sock) => { const c = far ? [PAL.horse[1], PAL.horse[2], PAL.horse[2]] : PAL.horse;
+  return `<path id="lgB${id}" fill="${c[1]}" filter="url(#ds)"/><path id="lgS${id}" fill="${c[2]}" filter="url(#ds2)"/>`
+    + `<path id="lgH${id}" fill="none" stroke="${c[0]}" stroke-width="1.3" stroke-linecap="round" opacity="0.8"/>`
+    + part('hu' + id, x, -56, '', part('hl' + id, x, -31, '',
+      part('hh' + id, x, -9, S(`M${x - 3.3} -10.5L${x + 3.3} -10.5L${x + 4.6} -5H${x - 3.6}Z`, sock ? PAL.ermine[0] : c[1])
+        + S(`M${x - 4.2} -5.2H${x + 5}L${x + 6.4} 0H${x - 4.2}Z`, PAL.hoof))));
+};
+function drawLegs(a) {
+  const dir = deg => { const r = deg / DEG; return [-Math.sin(r), Math.cos(r)]; };
+  for (const [id, leg] of Object.entries(HLEGS)) {
+    const a1 = a['hu' + id] || 0, a2 = a1 + (a['hl' + id] || 0), d1 = dir(a1), d2 = dir(a2), x = leg.x;
+    const H = [x, -56], K = [x + d1[0] * 25, -56 + d1[1] * 25], F = [K[0] + d2[0] * 22, K[1] + d2[1] * 22];
+    const P = [[x, -72], H, [x + d1[0] * 12, -56 + d1[1] * 12], K, [K[0] + d2[0] * 11, K[1] + d2[1] * 11], F];
+    const W = LEGW[leg.front ? 'front' : 'back'], Lp = [], Rp = [], Sp = [], Hp = [];
+    P.forEach((p, i) => { const q0 = P[Math.max(i - 1, 0)], q1 = P[Math.min(i + 1, P.length - 1)], tx = q1[0] - q0[0], ty = q1[1] - q0[1], d = Math.hypot(tx, ty) || 1;
+      const nx = ty / d, ny = -tx / d, w = W[i] / 2, bulge = leg.front && i === 2 ? 1.6 : 0; // Unterarmmuskel vorn
+      Lp.push([p[0] - nx * w, p[1] - ny * w]); Rp.push([p[0] + nx * (w + bulge), p[1] + ny * (w + bulge)]);
+      Sp.push([p[0] - nx * w * 0.15, p[1] - ny * w * 0.15]); Hp.push([p[0] + nx * w * 0.55, p[1] + ny * w * 0.55]); });
+    const tip = [F[0] + d2[0] * 3.4, F[1] + d2[1] * 3.4];
+    $('lgB' + id).setAttribute('d', crPath([...Lp, tip]) + crPath([tip, ...[...Rp].reverse()], true) + 'Z');
+    $('lgS' + id).setAttribute('d', crPath(Lp.slice(1)) + crPath([...Sp.slice(1)].reverse(), true) + 'Z');
+    $('lgH' + id).setAttribute('d', crPath(Hp.slice(1, 5)));
+  }
+}
+const hind = inner => `<g class="hindQ">${inner}</g>`;
+const tail = part('tail', -38, -68, S('M-40 -76C-52 -79 -61 -70 -63 -56C-64 -46 -61 -37 -55 -30C-57 -41 -54 -50 -50 -55C-52 -46 -50 -39 -45 -34C-48 -45 -46 -56 -40 -64Z', PAL.mane[1],
+  shade('M-40 -76C-52 -79 -61 -70 -63 -56C-64 -46 -61 -37 -55 -30C-60 -42 -59 -58 -50 -70Z', PAL.mane[2])
+  + L('M-44 -72C-52 -66 -55 -56 -54 -46', 0.9, PAL.mane[0], 1) + L('M-46 -64C-50 -58 -50 -50 -48 -42', 0.9, PAL.mane[0], 1)));
+const rearBody = S('M-34 -81C-42 -80 -46.5 -72 -45.5 -64C-44.5 -56 -40.5 -51 -34 -48.8C-24 -45.6 -10 -45 6 -46L6 -79C-8 -78.5 -22 -80.5 -34 -81Z', PAL.horse[1],
+  shade('M-44 -58C-36 -52 -20 -49 6 -50L6 -46C-10 -45 -24 -45.6 -34 -48.8C-39 -50.6 -42.6 -54 -44 -58Z', PAL.horse[2])
+  + shade('M-36 -79C-28 -79 -16 -77.5 -4 -77.8C-16 -74.5 -28 -75 -38 -76.6Z', PAL.horse[0])
+  + L('M-26 -76C-33.5 -70 -34 -59 -28.5 -51'));
+const frontBody = S('M-6 -79C4 -79 12 -81 20 -83.5C30 -85 38 -81 43 -73C46.4 -66 45.4 -58 40.4 -53C34 -48.6 22 -46.6 10 -46L-6 -46Z', PAL.horse[1],
+  shade('M-6 -50C10 -50 26 -51 38 -55C34 -49.5 22 -46.6 10 -46L-6 -46Z', PAL.horse[2]) + shade('M22 -82C30 -83 37 -79 41 -72C36 -76 30 -79 22 -80Z', PAL.horse[0])
+  + L('M30.5 -78C24.5 -70 24.5 -60 30 -52.5'));
+const blanketD = `M-18 -78H18L18.6 -55.5Q14.1 -51.5 9.6 -55.5Q5.1 -51.5 0.6 -55.5Q-3.9 -51.5 -8.4 -55.5Q-12.9 -51.5 -17.4 -55.5Q-18 -60 -18 -78Z`;
+const saddleCloth = S(blanketD, PAL.royal[1], shade('M-18 -78H-8V-54.5Q-12.9 -51.5 -17.4 -55.5Q-18 -60 -18 -78Z', PAL.royal[2])
+  + L('M-16 -58.5Q-12.9 -55 -8.4 -58.5Q-3.9 -55 0.6 -58.5Q5.1 -55 9.6 -58.5Q14.1 -55 16.6 -58.5', 1.4, PAL.gold[1], 1)
+  + S('M-3 -70L-2 -74L0 -71.5L2 -75L4 -71.5L6 -74L7 -70Z', PAL.gold[1]) + S('M-3 -70H7V-67.5H-3Z', PAL.gold[2]));
+const saddle = S('M-15 -79C-12 -85 -6 -85 -2 -81.5C4 -82.5 10 -86.5 14.5 -84C15.5 -80 14.5 -77 13 -75H-13C-14.5 -76 -15.5 -77.5 -15 -79Z', PAL.leather[1],
+  shade('M-15 -79C-12 -85 -6 -85 -2 -81.5L-2 -75H-13C-14.5 -76 -15.5 -77.5 -15 -79Z', PAL.leather[2]) + L('M-10 -78H10', 1, PAL.leather[0], 1))
+  + S('M-1 -75V-62', 'none').replace('fill="none"/>', 'fill="none" stroke="' + PAL.leather[2] + '" stroke-width="2.4"/>');
+const horseBack = `<g id="horseBack" transform="scale(1.3)">${hind(hleg('fB', -26, true, false))}${hleg('fF', 30, true, false)}
+  ${hind(tail + rearBody)}${frontBody}${S('M-7.5 -62H-2.5V-46.5H-7.5Z', PAL.leather[1])}
+  ${hind(hleg('nB', -30, false, true))}${hleg('nF', 26, false, false)}${saddleCloth}${saddle}</g>`;
+let maneStrands = 'M16 -74C12 -79 15 -83 19 -84C14 -88 18 -93 23 -93C20 -98 25 -102 30 -101C28 -106 33 -109 38 -109C38 -103 36 -99 34 -95C32 -89 29 -84 27 -79C25 -75 24 -71 24 -68Z';
+const horseFront = `<g id="horseFront" transform="scale(1.3)">${part('neck', 30, -70,
+  S('M16 -76C18 -88 28 -100 38 -106C44 -104.5 50 -100.5 52.5 -96.5C47.5 -88 45 -76 44 -62Z', PAL.horse[1],
+    shade('M40 -97C44.5 -87 45.5 -76 44 -63L37.5 -65.5C41 -76 41.5 -87 40 -97Z', PAL.horse[2]) + L('M36 -96C33 -86 33 -76 35 -68'))
+  + S('M36 -107.5C42 -113.5 50 -112.5 55 -107.5C59 -102.5 65 -97.5 69 -94.5C72.4 -91.5 71.4 -87 67.4 -86C63 -85 58 -86 55 -87C50 -88.5 46 -92 43 -95Z', PAL.horse[1],
+    shade('M55 -87C50 -88.5 46 -92 43 -95L44.5 -98C49 -94 54 -91.5 60 -90.5C63 -90 66 -88.5 67.4 -86C63 -85 58 -86 55 -87Z', PAL.horse[2])
+    + shade('M62 -98C65.4 -96 68.6 -94.6 69.8 -92.6C70.8 -90.4 70 -87.6 67.4 -86.4C66.4 -89.6 64.4 -93.6 62 -98Z', PAL.horse[2])
+    + shade('M44 -110C48 -112 52 -111 55 -107.5C51 -109 47.5 -109.5 44 -110Z', PAL.horse[0]))
+  + S('M41.5 -107L44.5 -118C46.5 -115 48.5 -111.5 48.5 -107.5Z', PAL.horse[1], shade('M43.2 -108L45 -114.6C46 -112.6 46.8 -110.4 46.8 -108.4Z', PAL.horse[2]))
+  + S(maneStrands, PAL.mane[1], shade('M24 -68C24 -71 25 -75 27 -79C29 -84 32 -89 34 -95C36 -99 38 -103 38 -109C33 -100 28 -88 24 -68Z', PAL.mane[0])
+    + L('M20 -80C23 -82 26 -86 27 -90', 0.9, PAL.mane[0], 1) + L('M25 -92C28 -95 30 -99 31 -102', 0.9, PAL.mane[0], 1))
+  + S('M40 -109.5C44.5 -107 45.5 -102.5 43 -99C41.5 -102 40 -105.5 40 -109.5Z', PAL.mane[1])
+  + `<path d="M48.6 -102.4C50.6 -104.6 53.6 -104.6 54.8 -102C52.8 -100.6 50.2 -100.6 48.6 -102.4Z" fill="${PAL.eye}" stroke-width="0.9"/>`
+  + dot(52.6, -103, 0.6, '#ffffff') + L('M48.2 -103.2C50.4 -105.8 54 -105.6 55.2 -102.6', 1.3, PAL.line, 1)
+  + L('M66.6 -92.6C68 -91.6 68.4 -90.2 67.6 -89.2', 1.3, PAL.line, 1) + L('M62 -87.6C64 -87 66 -87 67.4 -87.4', 0.9)
+  + `<g fill="none" stroke="${PAL.leather[2]}" stroke-width="1.8" stroke-linecap="round"><path d="M44 -104.5L47.5 -97.5L58 -91.5"/><path d="M45.5 -106C48 -105 49.6 -104 51 -102.5"/><path d="M57.5 -96.5L61 -88.5"/></g>`
+  + dot(57.6, -96.2, 1.4, PAL.gold[1])
+  + `<circle id="mouth" cx="60" cy="-91" r="0.1" fill="none" stroke="none"/>`)}</g>`;
+
+// ---- Gangarten des Pferdes. Stand: Huf steht fest am Boden (IK), Schwung: Huf auf einem Bogen nach vorn.
+// off = Phase des Auffußens je Bein, stance = Anteil des Zyklus mit Bodenkontakt (Schritt viel, Galopp wenig).
+// Fußfolgen: Schritt 4-Takt lateral, Trab 2-Takt diagonal, Galopp nach Muybridge (1878) mit Schwebephase.
+const TAU = Math.PI * 2, DEG = 180 / Math.PI, HL1 = 25, HL2 = 31;
+const HLEGS = { fB: { x: -26, front: false }, nB: { x: -30, front: false }, fF: { x: 30, front: true }, nF: { x: 26, front: true } };
+const c1 = (ph, at) => Math.cos(TAU * (ph - at)), c2 = (ph, at) => Math.cos(2 * TAU * (ph - at));
+const GAITS = {
+  walk: { freq: 0.9, stance: 0.65, reach: 11, lift: [9, 7], curl: [35, 15], offs: { nB: 0, nF: 0.25, fB: 0.5, fF: 0.75 },
+    dy: ph => 1 + c2(ph, 0.3), pitch: ph => Math.sin(2 * TAU * ph), nod: ph => 6 * c2(ph, 0.3), lean: () => 3, spine: ph => 1.5 * Math.sin(2 * TAU * ph),
+    riderY: (dy, ph) => -0.7 * (dy - 1) + 0.6 * Math.sin(2 * TAU * ph), tail: ph => 6 + 4 * Math.sin(TAU * ph), cape: 8, capeW: ph => 2 + Math.sin(2 * TAU * ph) },
+  trot: { freq: 1.5, stance: 0.45, reach: 12, lift: [16, 12], curl: [45, 20], offs: { nB: 0, fF: 0, fB: 0.5, nF: 0.5 },
+    dy: ph => 1 + 2.5 * c2(ph, 0.225), pitch: ph => Math.sin(2 * TAU * ph), nod: ph => 4 * c2(ph, 0.25), lean: () => 6, spine: ph => 2.5 * c2(ph, 0.1),
+    // Leichttraben: der Reiter steht bei jedem zweiten Takt im Bügel auf
+    riderY: (dy, ph) => -0.4 * (dy - 1) - 4 * Math.max(0, Math.sin(TAU * (ph - 0.1))),
+    tail: ph => 12 + 6 * Math.sin(2 * TAU * ph), cape: 20, capeW: ph => 6 + 3 * Math.sin(2 * TAU * ph) },
+  // Galopp: Körper tiefer (längere Schritte möglich), starkes Schaukeln um die Querachse, Schwebephase mit
+  // gesammelten Beinen. Schwungbahnen als Stützpunkte (x in Schrittweiten, y in Hubhöhen) statt symmetrischem Bogen.
+  gallop: { freq: 2.1, stance: 0.25, reach: 22, lift: [26, 18], curl: [80, 35], offs: { fB: 0, nB: 0.08, fF: 0.3, nF: 0.38 },
+    path: {
+      front: [[-1, 0], [-1.35, 0.45], [-0.7, 1], [0.3, 0.95], [1.35, 0.55], [1.15, 0.12], [1, 0]],
+      back: [[-1, 0], [-1.45, 0.35], [-0.9, 0.85], [0.2, 0.75], [1.1, 0.35], [1, 0]] },
+    dy: ph => 8 - 6 * c1(ph, 0.8), spine: ph => 7 * c1(ph, 0.2), pitch: ph => 6 * Math.sin(TAU * (ph - 0.2)), nod: ph => 10 * c1(ph, 0.45),
+    lean: ph => 14 + 3 * Math.sin(TAU * (ph - 0.95)), riderY: dy => -0.55 * (dy - 8), riderLevel: 0.7,
+    tail: ph => 28 + 10 * Math.sin(TAU * (ph - 0.2)), cape: 35, capeW: ph => 12 + 4 * Math.sin(2 * TAU * ph) },
+};
+function ik(dx, dy, kneeFwd) { // Zwei-Knochen-IK, Winkel 0 = Bein hängt senkrecht
+  const d = Math.min(HL1 + HL2 - 0.01, Math.max(Math.abs(HL1 - HL2) + 0.01, Math.hypot(dx, dy)));
+  const at = Math.atan2(-dx, dy), al = Math.acos((HL1 * HL1 + d * d - HL2 * HL2) / (2 * HL1 * d));
+  const bend = Math.PI - Math.acos((HL1 * HL1 + HL2 * HL2 - d * d) / (2 * HL1 * HL2));
+  return kneeFwd ? [(at - al) * DEG, bend * DEG] : [(at + al) * DEG, -bend * DEG];
+}
+function spline(P, k) { // Catmull-Rom durch alle Stützpunkte, k = 0..1
+  const n = P.length - 1, s = Math.min(k, 0.9999) * n, i = Math.floor(s), t = s - i;
+  const p0 = P[Math.max(i - 1, 0)], p1 = P[i], p2 = P[i + 1], p3 = P[Math.min(i + 2, n)];
+  return [0, 1].map(j => 0.5 * (2 * p1[j] + (p2[j] - p0[j]) * t + (2 * p0[j] - 5 * p1[j] + 4 * p2[j] - p3[j]) * t * t
+    + (3 * p1[j] - p0[j] - 3 * p2[j] + p3[j]) * t * t * t));
+}
+function gait(G, ph) {
+  const dy = G.dy(ph), pitch = G.pitch(ph), a = {}, r = G.reach * 1.3;
+  const spine = G.spine ? G.spine(ph) : 0;
+  const M = new DOMMatrix().translate(0, dy).translate(0, -80).rotate(pitch).translate(0, 80).scale(1.3), Mi = M.inverse();
+  const Mh = M.translate(0, -66).rotate(spine).translate(0, 66), Mhi = Mh.inverse();
+  for (const [id, leg] of Object.entries(HLEGS)) {
+    const u = ((ph - G.offs[id]) % 1 + 1) % 1, B = leg.front ? M : Mh, hip = B.transformPoint(new DOMPoint(leg.x, -56)), fi = leg.front ? 0 : 1;
+    let tx, ty, curl = 0;
+    if (u < G.stance) { tx = hip.x + r * (1 - 2 * u / G.stance); ty = 0; }
+    else { const k = (u - G.stance) / (1 - G.stance);
+      if (G.path) { const [px, py] = spline(G.path[leg.front ? 'front' : 'back'], k);
+        tx = hip.x + r * px; ty = -py * G.lift[fi]; curl = G.curl[fi] * Math.sin(Math.PI * Math.pow(k, 0.7)); }
+      else { const e = 0.5 - 0.5 * Math.cos(Math.PI * k);
+        tx = hip.x + r * (2 * e - 1); ty = -Math.sin(Math.PI * k) * G.lift[fi]; curl = G.curl[fi] * Math.sin(Math.PI * k); } }
+    const lt = (leg.front ? Mi : Mhi).transformPoint(new DOMPoint(tx, ty)), [u1, u2] = ik(lt.x - leg.x, lt.y + 56, leg.front);
+    a['hu' + id] = u1; a['hl' + id] = u2; a['hh' + id] = -(u1 + u2) - pitch - (leg.front ? 0 : spine) + curl;
+  }
+  // riderLevel: Anteil der Pferdeneigung, den der Reiter mit dem Oberkörper ausgleicht
+  const lean = G.lean(ph) - (G.riderLevel || 0) * pitch, nod = G.nod(ph);
+  Object.assign(a, { neck: nod, tail: G.tail(ph), thighF: -40 - lean, shinF: 50,
+    upperF: -35 - lean + 0.6 * nod, foreF: -40, upperB: -30 - lean, foreB: -40, head: -lean * 0.7 + 2 * Math.sin(TAU * ph),
+    crown: -2 * Math.sin(TAU * ph), cape: G.cape + 6 * Math.sin(2 * TAU * ph) * G.cape / 35 });
+  return { a, capeW: G.capeW(ph), mon: [-2, -54 + G.riderY(dy, ph)], monRot: lean, ride: [dy, pitch], spine, horse: true,
+    scroll: r * 2 / (G.stance / G.freq) };
+}
+const ridePose = key => ({ freq: GAITS[key].freq, f: p => gait(GAITS[key], ((p / TAU) % 1 + 1) % 1) });
+
+let ticks = ''; for (let x = -140; x <= 140; x += 20) ticks += `<line x1="${x}" y1="1" x2="${x - 6}" y2="12"/>`;
+const svg = document.getElementById('svg');
+svg.innerHTML = `<g id="ground" stroke="#4b4968" stroke-width="1.5"><line x1="-120" y1="1" x2="120" y2="1"/><g id="ticks">${ticks}</g></g>
+  <ellipse id="shadow" cx="0" cy="1" rx="18" ry="3" fill="#000" opacity="0.25"/>
+  <defs>
+    <filter id="ds" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0.5" dy="0.9" stdDeviation="0.45" flood-color="#1a0f14" flood-opacity="0.55"/></filter>
+    <filter id="ds2" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0.3" dy="0.5" stdDeviation="0.3" flood-color="#1a0f14" flood-opacity="0.35"/></filter>
+    <filter id="paper" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="2" seed="7" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0" result="g"/>
+      <feComponentTransfer in="g" result="t"><feFuncR type="linear" slope="0.18" intercept="0.86"/><feFuncG type="linear" slope="0.18" intercept="0.86"/><feFuncB type="linear" slope="0.18" intercept="0.86"/><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer>
+      <feComposite in="SourceGraphic" in2="t" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/>
+    </filter>
+  </defs>
+  <g id="world"><g id="ride" stroke="none" filter="url(#paper)">${horseBack}<g id="capeG">
+    <path id="capeP" fill="${PAL.red[1]}" filter="url(#ds)"/><path id="capeIn" fill="${PAL.red[2]}" filter="url(#ds2)"/>
+    <path id="capeHi" fill="none" stroke="${PAL.red[0]}" stroke-width="1.8" stroke-linecap="round" opacity="0.7"/>
+    <path id="capeHem" fill="${PAL.ermine[0]}" filter="url(#ds2)"/></g>${monarch}${horseFront}
+  <path id="reins" fill="none" stroke="${C.boot}" stroke-width="1.3"/></g></g>`;
+const $ = id => document.getElementById(id);
+const parts = [...svg.querySelectorAll('[data-px]')];
+
+// ---- Posen: Winkel in Grad (positiv = im Uhrzeigersinn; beim Unterschenkel = Knie beugt) ----
+const POSES = {
+  idle: { freq: 0.5, f(p) { const s = Math.sin(p);
+    return { a: { upperF: 5 + 2 * s, foreF: -6 - 3 * s, upperB: -3 - 2 * s, foreB: -4, head: 2 * s, crown: -s,
+      cape: 4 + 3 * Math.sin(p * 1.3) }, capeW: 2 * Math.sin(p * 1.3), mon: [0, 0], scroll: 0 }; } },
+  walk: { freq: 1.6, f(p) { const s = Math.sin(p), c = Math.cos(p), s2 = Math.sin(2 * p);
+    return { a: { thighF: -30 * s, thighB: 30 * s, shinF: 45 * Math.max(0, c), shinB: 45 * Math.max(0, -c),
+      upperF: 25 * s, foreF: -15 - 12 * Math.max(0, -s), upperB: -25 * s, foreB: -15 - 12 * Math.max(0, s),
+      head: 2 * s2, crown: -2 * s2, cape: 14 + 6 * s2 }, capeW: 3 + 4 * s2, mon: [0, 2.5 * Math.abs(s) - 2], scroll: 30 }; } },
+  rideWalk: ridePose('walk'), rideTrot: ridePose('trot'), ride: ridePose('gallop'),
+};
+
+let pose = 'idle', t = 0, last = performance.now();
+const stateOf = (name, time) => { const P = POSES[name]; return P.f(time * P.freq * TAU); };
+// Weicher Übergang: alle Winkel und Offsets linear von der alten zur neuen Pose (k = 0..1)
+function blend(A, B, k) {
+  const L = (x, y) => x + (y - x) * k, a = {};
+  for (const id of new Set([...Object.keys(A.a), ...Object.keys(B.a)])) a[id] = L(A.a[id] || 0, B.a[id] || 0);
+  const rA = A.ride || [0, 0], rB = B.ride || [0, 0];
+  return { ...B, a, capeW: L(A.capeW || 0, B.capeW || 0), mon: [L(A.mon[0], B.mon[0]), L(A.mon[1], B.mon[1])],
+    monRot: L(A.monRot || 0, B.monRot || 0), spine: L(A.spine || 0, B.spine || 0), ride: [L(rA[0], rB[0]), L(rA[1], rB[1])], scroll: L(A.scroll, B.scroll),
+    horse: A.horse && B.horse ? true : (k < 0.5 ? A.horse : B.horse) };
+}
+let prevPose = null, switchAt = 0;
+function apply(name, time, now) {
+  let st = stateOf(name, time);
+  const k = prevPose && now !== undefined ? Math.min(1, (now - switchAt) / 450) : 1;
+  if (k < 1) st = blend(stateOf(prevPose, time), st, 0.5 - 0.5 * Math.cos(Math.PI * k));
+  for (const g of parts) g.setAttribute('transform', `rotate(${(st.a[g.id] || 0).toFixed(2)} ${g.dataset.px} ${g.dataset.py})`);
+  $('mon').setAttribute('transform', `translate(${st.mon[0]} ${st.mon[1].toFixed(2)}) rotate(${(st.monRot || 0).toFixed(2)} 0 -50)`);
+  const r = st.ride || [0, 0];
+  $('ride').setAttribute('transform', `translate(0 ${r[0].toFixed(2)}) rotate(${r[1].toFixed(2)} 0 -80)`);
+  for (const id of ['horseBack', 'horseFront']) $(id).style.display = st.horse ? '' : 'none';
+  $('thighB').style.display = st.horse ? 'none' : '';
+  for (const g of svg.querySelectorAll('.hindQ')) g.setAttribute('transform', `rotate(${(st.spine || 0).toFixed(2)} 0 -66)`);
+  if (st.horse) drawLegs(st.a);
+  $('shadow').setAttribute('rx', st.horse ? 62 : 18);
+  $('reins').style.display = st.horse ? '' : 'none';
+  if (st.horse) { const ride = $('ride'), pt = (el, x, y) => new DOMPoint(x, y).matrixTransform(ride.getCTM().inverse().multiply(el.getCTM()));
+    const h = pt($('handF'), 0, -50), m = pt($('mouth'), 60, -91);
+    $('reins').setAttribute('d', `M${h.x.toFixed(1)} ${h.y.toFixed(1)}Q${((h.x + m.x) / 2).toFixed(1)} ${((h.y + m.y) / 2 + 8).toFixed(1)} ${m.x.toFixed(1)} ${m.y.toFixed(1)}`); }
+  $('ticks').setAttribute('transform', `translate(${(-(time * st.scroll) % 20).toFixed(2)} 0)`);
+  $('world').setAttribute('transform', $('flip').checked ? 'scale(-1 1)' : '');
+}
+
+// ---- Export: SVG -> PNG in Zielgröße (ohne Quantisierung, Papierschnitt bleibt weich) ----
+function rasterize(svgText, w, h) {
+  return new Promise(res => { const img = new Image();
+    img.onload = () => { const c = document.createElement('canvas'); c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h); res(c); };
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgText); });
+}
+function snapshot(w, h) { const c = svg.cloneNode(true); c.classList.remove('showpv'); c.querySelector('#ground').remove(); c.querySelector('#shadow').remove();
+  c.querySelectorAll('.pv').forEach(e => e.remove()); // Pivot-Marker: im Export gilt das Seiten-CSS nicht
+  c.setAttribute('width', w); c.setAttribute('height', h); return new XMLSerializer().serializeToString(c); }
+const size = () => { const h = +$('ph').value; return [Math.round(h * 240 / 220), h]; };
+
+$('sheet').onclick = async () => {
+  const [w, h] = size(), P = POSES[pose], texts = [], dt = 1 / 120;
+  let tt = 0; const run = d => { for (let n = 0; n < Math.round(d / dt); n++) { tt += dt; apply(pose, tt); cloth.step(dt, stateOf(pose, tt)); } cloth.draw(); };
+  run(2); // Umhang einschwingen lassen
+  for (let i = 0; i < 8; i++) { run(1 / (8 * P.freq)); texts.push(snapshot(w, h)); }
+  const strip = document.createElement('canvas'); strip.width = w * 8; strip.height = h;
+  const sx = strip.getContext('2d');
+  for (let i = 0; i < 8; i++) sx.drawImage(await rasterize(texts[i], w, h), i * w, 0);
+  const out = $('strip'); out.width = strip.width; out.height = strip.height; out.style.width = '100%';
+  out.getContext('2d').drawImage(strip, 0, 0);
+  $('dl').href = strip.toDataURL('image/png'); $('dl').style.display = 'inline';
+};
+
+$('poses').onclick = e => { const b = e.target.closest('button'); if (!b || b.dataset.p === pose) return;
+  prevPose = pose; switchAt = performance.now(); pose = b.dataset.p;
+  document.querySelectorAll('#poses button').forEach(x => x.classList.toggle('on', x === b)); };
+$('pv').onchange = () => svg.classList.toggle('showpv', $('pv').checked);
+
+function frame(now) { t += (now - last) / 1000 * +$('speed').value; last = now;
+  apply(pose, t, now); const dt = Math.min(1 / 30, (now - lastStep) / 1000) * +$('speed').value; lastStep = now;
+  const st = stateOf(pose, t); for (let n = 0; n < 4; n++) cloth.step(dt / 4, st); cloth.draw(); requestAnimationFrame(frame); }
+let lastStep = performance.now();
+requestAnimationFrame(frame);
+window.rig = { apply, POSES, cloth, setPose: p => { pose = p; } };
+</script>
+</body>
+</html>

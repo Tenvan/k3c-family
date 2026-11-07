@@ -9,6 +9,9 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| RD1 | PAP | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | `aktiv/RD1-papierschnitt-renderer/` |
+| MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
+| RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | `aktiv/BD10-schreibende-endpunkte-schutz/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
@@ -29,6 +32,12 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| CU1 | PAP, CLI, DEV, INF | PAP | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | – | bereit | `geplant/CU1-alte-grafik-aufraeumen/` |
+| RD2 | PAP | PAP | Renderer und Stil nach der Sichtprüfung: Schatten, Materialien, Sichtbarkeit, Rig-Proportionen | – | Entwurf | `geplant/RD2-renderer-stil-nachschaerfen/` |
+| MG9 | PAP | PAP | Papierschnitt nachbessern: Monarch, Reittiere, Truppen, Gegner | – | Entwurf | `geplant/MG9-papier-figuren-nachbessern/` |
+| MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | Entwurf | `geplant/MG10-papier-bosse-neu/` |
+| MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
+| US3 | CLI | PAP | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | – | Entwurf | `geplant/US3-spielbefunde-papierschnitt/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 | P1 | REG | BAL | Spieleabend 1 | Protokoll und Folge-Tickets | bereit | `geplant/P1-spieleabend-1/` |
@@ -275,3 +284,17 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BAL8 | Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt | `erledigt/BAL8-welt-werte-overrides/` |
 | WZ37 | Welt-Overrides im Welten-Editor und im Studio-Chat | `erledigt/WZ37-overrides-editor-chat/` |
 | BAL9 | Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance | `erledigt/BAL9-meilenstein-1-nachtraege/` |
+| PV1 | INF, DEV, PAP | `erledigt/PV1-papierschnitt-vertraege/` |
+| WB1 | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | `erledigt/WB1-workbench-development-assets/` |
+| MG6 | Papierschnitt-Migration: Gebäude mit Ausbaustufen | `erledigt/MG6-papier-gebaeude/` |
+| US1 | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | `erledigt/US1-spiel-auf-papierschnitt/` |
+| US2 | Spiel lädt Natur, Objekte, Münzen, Icons und Reittiere als Papierschnitt | `erledigt/US2-spiel-natur-reittiere-papier/` |
+| PS1 | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | `erledigt/PS1-papierschnitt-sichtpruefungen/` |
+| MG1 | Papierschnitt-Migration: Monarch und Spielerfarben | `erledigt/MG1-papier-monarch-spielerfarben/` |
+| MG2 | Papierschnitt-Migration: Reittiere | `erledigt/MG2-papier-reittiere/` |
+| MG3 | Papierschnitt-Migration: Truppen | `erledigt/MG3-papier-truppen/` |
+| MG4 | Papierschnitt-Migration: Gegner | `erledigt/MG4-papier-gegner/` |
+| MG5 | Papierschnitt-Migration: Bosse | `erledigt/MG5-papier-bosse/` |
+| MG7 | Papierschnitt-Migration: Hintergründe je Biom | `erledigt/MG7-papier-hintergruende/` |
+| MG8 | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | `erledigt/MG8-papier-natur-objekte-icons/` |
+| WB2 | Review und Katalog: feste Schieber, getrennte Scrollbereiche, Lade-Anzeige | `erledigt/WB2-assets-review-katalog-ruhig/` |

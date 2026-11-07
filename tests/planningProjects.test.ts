@@ -6,7 +6,7 @@ import { checkTemplate, DOCS, meta, none, read, section, sessionRows, sprints, t
 
 type Project = { id: string; status: string; rang: string; sprints: string[] };
 type SprintInfo = { id: string; projekt: string; domains: string[]; sessionDomains: string[] };
-type SessionInfo = { id: string; domain: string; status: string };
+type SessionInfo = { id: string; domain: string; status: string; lane?: string };
 
 /** Sprint-Tabelle eines Projekts: erste Spalte jeder Zeile außer Kopf und Trenner. */
 const projectSprints = (text: string) =>
@@ -39,11 +39,17 @@ function linkErrors(projects: Project[], list: SprintInfo[]): string[] {
 /** Sprint-Feld `Domäne` = Domänen seiner Sessions in Reihenfolge des ersten Auftretens. */
 const domainListOk = (s: SprintInfo) => s.domains.join() === [...new Set(s.sessionDomains)].join();
 
-/** Domänen mit mehr als einer Session `in Arbeit` (Sperre je Domäne). */
+/** Sperren mit mehr als einer Session `in Arbeit`: je Domäne und Lane; eine Session ohne Lane sperrt die ganze Domäne (PV1.1). */
 function busyDomains(sessions: SessionInfo[]): string[] {
-  const count = new Map<string, number>();
-  for (const s of sessions.filter((s) => s.status === 'in Arbeit')) count.set(s.domain, (count.get(s.domain) ?? 0) + 1);
-  return [...count].filter(([, n]) => n > 1).map(([d]) => d);
+  const busy = sessions.filter((s) => s.status === 'in Arbeit');
+  const clashes = new Set<string>();
+  for (const [i, a] of busy.entries())
+    for (const b of busy.slice(i + 1)) {
+      if (a.domain !== b.domain) continue;
+      if (none(a.lane) || none(b.lane)) clashes.add(a.domain);
+      else if (a.lane === b.lane) clashes.add(`${a.domain}/${a.lane}`);
+    }
+  return [...clashes];
 }
 
 const P = (id: string, status: string, rang: string, list: string[] = []): Project => ({ id, status, rang, sprints: list });
@@ -80,10 +86,14 @@ describe('Regeln für Projekte (Beispiele)', () => {
     expect(domainListOk(S('K3', '–', ['SRV', 'SIM'], ['SIM', 'SRV']))).toBe(false);
   });
 
-  it('höchstens eine Session je Domäne in Arbeit', () => {
-    const s = (id: string, domain: string, status: string) => ({ id, domain, status });
+  it('höchstens eine Session je Domäne und Lane in Arbeit; eine Session ohne Lane schließt jede andere derselben Domäne aus', () => {
+    const s = (id: string, domain: string, status: string, lane?: string) => ({ id, domain, status, lane });
     expect(busyDomains([s('A.1', 'CLI', 'in Arbeit'), s('B.1', 'SIM', 'in Arbeit'), s('C.1', 'CLI', 'offen')])).toEqual([]);
     expect(busyDomains([s('A.1', 'CLI', 'in Arbeit'), s('B.2', 'CLI', 'in Arbeit')])).toEqual(['CLI']);
+    expect(busyDomains([s('A.1', 'DEV', 'in Arbeit', 'mcp'), s('B.1', 'DEV', 'in Arbeit', 'ui')])).toEqual([]);
+    expect(busyDomains([s('A.1', 'DEV', 'in Arbeit', 'mcp'), s('B.1', 'DEV', 'in Arbeit', 'mcp')])).toEqual(['DEV/mcp']);
+    expect(busyDomains([s('A.1', 'DEV', 'in Arbeit'), s('B.1', 'DEV', 'in Arbeit', 'ui')])).toEqual(['DEV']);
+    expect(busyDomains([s('A.1', 'DEV', 'in Arbeit', '–'), s('B.1', 'DEV', 'in Arbeit', 'ui')])).toEqual(['DEV']);
   });
 });
 
@@ -102,7 +112,10 @@ const sprintInfos: (SprintInfo & { reife: string })[] = sprints.map(({ path }) =
   return { id: title(readme) ?? path, projekt: f.Projekt, reife: f.Reife, domains: f.Domäne.split(/,\s*/), sessionDomains };
 });
 const sessions: SessionInfo[] = sprints.flatMap(({ path }) =>
-  sessionRows(read(`${path}/README.md`)).map((r) => ({ id: r.id, domain: meta(read(`${path}/${r.file}`)).Domäne, status: r.status })));
+  sessionRows(read(`${path}/README.md`)).map((r) => {
+    const f = meta(read(`${path}/${r.file}`));
+    return { id: r.id, domain: f.Domäne, status: r.status, lane: f.Lane };
+  }));
 const ticketDir = (folder: string) => readdirSync(join(DOCS, 'backlog', folder)).filter((f) => /^B-\d{3}-.+\.md$/.test(f))
   .map((f) => `backlog/${folder ? folder + '/' : ''}${f}`);
 
@@ -140,7 +153,7 @@ describe('Domäne je Session', () => {
     expect(wrong.map((s) => `${s.id}: ${s.domains.join(', ')} ≠ ${[...new Set(s.sessionDomains)].join(', ')}`)).toEqual([]);
   });
 
-  it('höchstens eine Session je Domäne in Arbeit', () => {
+  it('höchstens eine Session je Domäne und Lane in Arbeit', () => {
     expect(busyDomains(sessions)).toEqual([]);
   });
 });

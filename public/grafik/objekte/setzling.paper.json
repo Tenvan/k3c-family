@@ -1,0 +1,89 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "setzling",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Setzling: kleiner brauner Erdhügel mit jungem zweiblättrigem Sprössling (leerer Plantagen-Platz); Spross wiegt",
+  "teile": [
+    {
+      "id": "huegel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-16 0C-14 -6 -6 -9 0 -9C6 -9 14 -6 16 0Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-16 0C-14 -6 -6 -9 0 -9C-4 -6 -6 -3 -6 0Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-8 -3L-4 -4M4 -5L9 -3",
+          "material": "leder",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "huegel",
+      "id": "spross",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-1 -8L-1 -26L1 -26L1 -8Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 -18C-4 -22 -10 -22 -13 -19C-9 -16 -4 -16 0 -18Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 -24C4 -29 10 -30 13 -27C10 -23 5 -22 0 -24Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M0 -18L-9 -19.5M0 -24L9 -27",
+          "material": "smaragd",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -8]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 36,
+    "rahmen": [-20, -32, 40, 34]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "spross": 5
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "spross": -5
+          }
+        }
+      ]
+    }
+  }
+}

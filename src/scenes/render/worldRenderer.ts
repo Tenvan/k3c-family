@@ -7,7 +7,7 @@ import { createBackWallView, updateBackWallView } from './backWallView';
 import { BuergerView } from './citizenView';
 import { createRider, updateRider } from './mountView';
 import { createMineSign, showsMineSign } from './mineSignView';
-import { campSprite, decoRoots, nodeSprite } from './natureSprites';
+import { NATURE_TEXTURES, campSprite, decoRoots, nodeSprite, objectLook } from './natureSprites';
 import { objectImage } from './objectView';
 import { PENNANT_MAX_HEIGHT, noteMarkers } from './pennant';
 import { type Plot, isPlantationTree, plantationPlots } from './plantation';
@@ -151,7 +151,7 @@ export class WorldRenderer {
     this.plots = this.layer((p) => this.createPlot(p), () => {});
     this.backWalls = this.layer(() => createBackWallView(scene), (v, b) => updateBackWallView(scene, v, b));
     this.pickups = this.layer((p) => this.createPickup(p), () => {}, undefined, (v) => this.openChest(v));
-    this.coins = this.layer((c) => scene.add.container(c.x * U, G - 8, [objectImage(scene, 'coin', 0, 8) ?? scene.add.circle(0, 0, 8, 0xffd166).setStrokeStyle(2, 0x9c6644)]).setDepth(6), () => {});
+    this.coins = this.layer((c) => scene.add.container(c.x * U, G - 8, [objectImage(scene, 'coin', 0, 8, undefined, c.x) ?? scene.add.circle(0, 0, 8, 0xffd166).setStrokeStyle(2, 0x9c6644)]).setDepth(6), () => {});
     this.troops = this.layer(
       (t) => this.createTroop(t),
       (v, t) => this.updateTroop(v, t),
@@ -257,10 +257,10 @@ export class WorldRenderer {
     // Plantage-Baum (steht auf einem Platz): eigene niedrige Pappel vor der Baumschule (B-568); Waldbäume bleiben bei der Zuordnung (GEB6)
     const pappel = isPlantationTree(n, this.world.sites) && s.textures.exists('grafik:pappel-niedrig');
     // Baumform aus der Position, Look aus dem Biom (GEB6); unbekannte Art oder fehlende Grafik: Platzhalter-Form
-    const sprite = pappel ? s.add.image(0, 0, 'grafik:pappel-niedrig').setOrigin(0.5, 1) : objectImage(s, `node:${n.kind}`, 0, 0, nodeSprite(n.kind, n.x, this.world.biome.id));
+    const sprite = pappel ? s.add.image(0, 0, 'grafik:pappel-niedrig').setOrigin(0.5, 1) : objectImage(s, `node:${n.kind}`, 0, 0, nodeSprite(n.kind, n.x, this.world.biome.id), n.x);
     // Deko-Wurzeln hinter dem Knoten (GEB15.1): nur Darstellung, Dichte aus dem Biom, gehen mit dem Knoten
     const deko = n.kind === 'tree' && !pappel ? decoRoots(n.x, this.world.biome.id, this.world.biome.rootsPerNode) : [];
-    for (const d of deko) if (s.textures.exists(d.key)) parts.push(s.add.image(d.dx * U, 0, d.key).setOrigin(0.5, 1));
+    for (const d of deko) parts.push(...[objectImage(s, 'deco:root', d.dx * U, 0, objectLook(d.key, NATURE_TEXTURES[d.key]), n.x + d.dx)].filter((o) => o !== null)); // Rahmen wie der Knoten (Review US2)
     if (sprite) parts.push(sprite);
     else if (n.kind === 'tree') {
       parts.push(s.add.rectangle(0, -40, 14, 80, 0x6b4226), s.add.triangle(0, -110, 0, 90, 40, 0, 80, 90, 0x2d6a4f));
@@ -340,7 +340,7 @@ export class WorldRenderer {
   private createPickup(p: Pickup): View {
     const s = this.scene;
     const chest = p.kind === 'chest';
-    const shape = objectImage(s, `pickup:${p.kind}`, 0, chest ? 0 : -44) ?? (chest ? s.add.rectangle(0, -18, 44, 36, 0x9c6644).setStrokeStyle(3, 0x5c3d2e) : s.add.star(0, -60, 5, 8, 18, 0xffd60a).setStrokeStyle(2, 0xffffff));
+    const shape = objectImage(s, `pickup:${p.kind}`, 0, chest ? 0 : -44, undefined, p.x) ?? (chest ? s.add.rectangle(0, -18, 44, 36, 0x9c6644).setStrokeStyle(3, 0x5c3d2e) : s.add.star(0, -60, 5, 8, 18, 0xffd60a).setStrokeStyle(2, 0xffffff));
     return s.add.container(p.x * U, G, [shape]).setDepth(3);
   }
 
@@ -391,10 +391,10 @@ export class WorldRenderer {
   }
 }
 
-/** Figur eines Monarchen (zu Fuß) bzw. der Reiter-Sprite (beritten, Index 1 im Reiter-Container) */
+/** Figur eines Monarchen (zu Fuß) bzw. der Reiter-Sprite (beritten, einziges Kind des Reiter-Containers) */
 function monarchSprite(v: View | undefined): Sprite | undefined {
   const fig = v?.getAt(1);
-  const sprite = fig instanceof Phaser.GameObjects.Container ? fig.getAt(1) : fig;
+  const sprite = fig instanceof Phaser.GameObjects.Container ? fig.getAt(0) : fig;
   return sprite instanceof Phaser.GameObjects.Sprite ? sprite : undefined;
 }
 

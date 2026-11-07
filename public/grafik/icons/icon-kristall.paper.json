@@ -1,0 +1,96 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "icon-kristall",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Kristall: drei blau leuchtende Kristallspitzen",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-9.5 -4L-12.5 -16L-9 -20L-5.5 -16L-2.5 -4Z",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-9.5 -4L-12.5 -16L-9 -20L-7.5 -4Z",
+          "material": "koenigsblau",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-9 -18L-7.2 -5",
+          "material": "weiss"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3 -4L6 -14.5L9 -18L12 -14.5L9 -4Z",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M3 -4L6 -14.5L9 -18L7.5 -4Z",
+          "material": "koenigsblau",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M9 -16L7.2 -5",
+          "material": "weiss"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4.5 -4L-4.5 -22L0 -28L4.5 -22L4.5 -4Z",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-4.5 -4L-4.5 -22L0 -28L0 -4Z",
+          "material": "koenigsblau",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M0 -26L0 -5",
+          "material": "weiss"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [1, -24],
+          "radius": 1.2
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

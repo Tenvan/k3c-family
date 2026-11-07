@@ -1,0 +1,11 @@
+Papierschnitt · Rig figur · Standard docs/standards/paper-spec.md
+Stil: keine Konturen; jede Fläche ein Papierstück mit Schatten papier.lage (0.5/0.9, Unschärfe 0.45, 55 %); Schattierungen als aufgeklebte Lage (auflage: true, 0.3/0.5/0.3/35 %); Innenlinien nur als Falz (Deckkraft 0.25); Licht von rechts oben; keine Farben in der Spec, nur Papier-Materialien.
+Papier-Materialien (licht/basis/schatten): haut, haar, gold, koenigsblau, koenigsrot, hermelin, leder, stoff, fell-fuchs, maehne, smaragd, purpur, stein, holz
+Einzeltöne (ohne Ton): huf, auge, weiss, linie, edelstein
+Pflicht-Teile figur: rumpf, kopf, oberarm-v, unterarm-v, oberarm-h, unterarm-h, oberschenkel-v, unterschenkel-v, oberschenkel-h, unterschenkel-h
+Pivots: Hüfte (0,-50) rumpf, oberschenkel-*; Schulter (0,-84) oberarm-*; Ellbogen (0,-70) unterarm-*; Knie (0,-28) unterschenkel-*; Hals (0,-90) kopf
+Proportion: Kopfhöhe / Rahmenhöhe = 0.286 ± 0.15
+Lagen: flaeche {form, material, ton?, auflage?} · falz {form, breite, material, ton?} · punkt {mitte, radius, material, ton?}
+Beispiel (gekürzt, vollständig: tools/paper/fixtures/specs/monarch.paper.json):
+{"id":"monarch","rig":"figur","version":1,"beschreibung":"König …","teile":[{"id":"rumpf","pivot":[0,-50],"lagen":[{"art":"flaeche","form":"M-12 -91C…Z","material":"koenigsblau"}]}],"ausgabe":{"hoehe_px":192,"rahmen":[-60,-145,85,151]}}
+Ablauf: assets_get → assets_set (Merge-Patch) → assets_preview → assets_review

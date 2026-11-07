@@ -1,0 +1,34 @@
+{
+  "id": "busch",
+  "version": 1,
+  "specHash": "37209ff3dd07b1ad8072b5f385e5bc7f82e73fe92b61ec247f00a582643786c4",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "115eca2849c043e0f931f8f266536b6145e233de34113b963eb874b6a9111d59",
+  "rahmen": [
+    -30,
+    -38,
+    60,
+    40
+  ],
+  "frameW": 63,
+  "frameH": 42,
+  "animationen": {
+    "idle": {
+      "frames": 8,
+      "fps": 6,
+      "datei": "idle.png",
+      "hashes": [
+        "d90cf67bf742ee741dd4f6f5cfa0e2c20df3b2b45ef2538915db358eef48c2bc",
+        "402ff9da35f3846ba5e6d552fe5c57b5a6aa0fec4944af6a132148eee13488ce",
+        "ee43bfa67d63c392c6d3c80b93548d6cd599997b533d50fbe449c82f6313d5d1",
+        "4adb78f2f4e8828ca46fa385de7a9246b3cb49bb53c039dcdce86397795927b3",
+        "2d390cc4d7fd970ddcdded92f9c8e3ca4e2080b8fd6b4148461d1ccd738c5adb",
+        "4adb78f2f4e8828ca46fa385de7a9246b3cb49bb53c039dcdce86397795927b3",
+        "ee43bfa67d63c392c6d3c80b93548d6cd599997b533d50fbe449c82f6313d5d1",
+        "402ff9da35f3846ba5e6d552fe5c57b5a6aa0fec4944af6a132148eee13488ce"
+      ]
+    }
+  },
+  "varianten": []
+}

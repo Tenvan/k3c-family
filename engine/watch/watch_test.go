@@ -186,3 +186,19 @@ func TestTempDateienSindKeineAenderung(t *testing.T) {
 		t.Errorf("fertige Datei: %v", got)
 	}
 }
+
+// Specs (`*.paper.json`) lösen keinen Neustart aus, erst die gerenderten PNGs (US1/AC-02, B-701 D-11).
+func TestPaperSpecsSindKeineAenderung(t *testing.T) {
+	w, _, public := newWatcher(t)
+	t0 := time.Unix(5000, 0)
+	_ = w.Poll(t0)
+	write(t, public, "grafik/truppen/krieger.paper.json", `{}`, t0)
+	if got := w.Poll(t0.Add(quiet + time.Second)); got != nil {
+		t.Fatalf("Spec löste einen Vorgang aus: %v", got)
+	}
+	write(t, public, "grafik/truppen/krieger/idle.png", "png", t0)
+	_ = w.Poll(t0.Add(2 * (quiet + time.Second)))
+	if got := w.Poll(t0.Add(4 * (quiet + time.Second))); !slices.Equal(got, []string{"public/grafik/truppen/krieger/idle.png"}) {
+		t.Errorf("PNG: %v", got)
+	}
+}

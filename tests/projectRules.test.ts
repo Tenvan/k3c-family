@@ -91,23 +91,21 @@ describe('Regeltabelle Hub-Stufe → Gebäude (WZ15.2, B-462)', () => {
   });
 });
 
-// Der Spielserver hat keine Studio-Seite mehr; das Studio ist ein eigenes Fenster mit eigenem Build (B-507/AC-03).
-describe('Keine Studio-Seite im Spielserver (B-507)', () => {
-  const taskBlock = (name: string) => {
-    const file = read('Taskfile.yml').replace(/\r\n/g, '\n');
-    const from = file.indexOf(`\n  ${name}:\n`);
-    return file.slice(from, file.indexOf('\n\n', from + 1));
-  };
+// Das Asset-Studio ist entfallen (Entscheidung 005 › 5, WB1/AC-04): der Bereich Assets der Workbench zeigt Assets nur an,
+// geändert wird über die MCP-Tools assets_*. Keine Tasks, EXEs, Ports und Dienste des Studios mehr.
+describe('Asset-Studio entfernt (005/AC-10, WB1)', () => {
+  const STUDIO = /k3c-studio|check:studio|\b(8091|8182|5192)\b/;
+  const FILES = ['Taskfile.yml', '.github/workflows/ci.yml', 'vite.config.ts', '.claude/launch.json', '.oxlintrc.json',
+    'tools/k3c-workbench/services.json', 'tools/k3c-workbench/task-freigaben.json'];
+
+  it.each(FILES)('%s nennt weder Studio-Tasks noch Studio-Ports', (file) => {
+    const hits = read(file).split(/\r?\n/).filter((line) => STUDIO.test(line));
+    expect(hits).toEqual([]);
+  });
 
   it('keine studio.html und keine Kachel zum Studio', () => {
     expect(allHtml).not.toContain('studio.html');
     expect(hrefs.filter((h) => h.includes('studio'))).toEqual([]);
-  });
-
-  it('task build baut kein Studio, das Studio baut nicht nach dist/', () => {
-    expect(taskBlock('build')).not.toContain('studio');
-    expect(taskBlock('studio:frontend')).not.toMatch(/dist\/studio/);
-    expect(read('tools/k3c-studio/frontend/paths.ts')).not.toMatch(/dist\/studio/);
   });
 
   it('Vite reicht /api ohne Studio-Ausnahme weiter', () => {
@@ -117,5 +115,17 @@ describe('Keine Studio-Seite im Spielserver (B-507)', () => {
   it('K3C_STUDIO_LAN kommt im Code nicht mehr vor', () => {
     const code = ['src', 'engine', 'cmd', 'tools'].flatMap((d) => filesIn(d, (n) => /\.(ts|tsx|go)$/.test(n)));
     expect(code.filter((f) => read(f).includes('K3C_STUDIO_LAN'))).toEqual([]);
+  });
+});
+
+describe('Spiel lädt Papierschnitt (US1/AC-01)', () => {
+  const RENDER = ['src/scenes/LoadScene.ts', ...filesIn('src/scenes/render', (n) => n.endsWith('.ts') && !n.endsWith('.test.ts'))];
+
+  it('kein Lade-Pfad zeigt auf atlas/ oder grafik-db32/', () => {
+    for (const file of RENDER) {
+      const text = readFileSync(join(ROOT, file), 'utf8');
+      expect(/['"`/]atlas\//.test(text), `${file}: atlas/`).toBe(false);
+      expect(text.includes('grafik-db32'), `${file}: grafik-db32`).toBe(false);
+    }
   });
 });

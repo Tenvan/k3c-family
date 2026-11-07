@@ -1,0 +1,27 @@
+{
+  "id": "icon-muenzstapel",
+  "version": 1,
+  "specHash": "703b450f04074d1d2e3f5daab64312341edb3626f5054f8bf951a260b40efa59",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "a08cb460d3e1166b32af0c4cd3575d5387742689f65584545db5e66c04c74042",
+  "rahmen": [
+    -16,
+    -32,
+    32,
+    32
+  ],
+  "frameW": 32,
+  "frameH": 32,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 1,
+      "datei": "idle.png",
+      "hashes": [
+        "5bedcd1e7fb98749594a5fc0865e8053c61ee15534dd51b3fb15131bc5499515"
+      ]
+    }
+  },
+  "varianten": []
+}

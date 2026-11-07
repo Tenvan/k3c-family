@@ -1,0 +1,77 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "felsen-c",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Steinhaufen: flacher, breiter grauer Steinhaufen mit kleinem Brocken obenauf",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-28 0L-24 -8L-10 -12L4 -10L16 -12L28 -6L30 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-28 0L-24 -8L-10 -12L0.55 -10L-1.25 -12L-3.05 -6L-3.35 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M-10 -11L27 -6",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-14 -10L-10 -18L2 -20L8 -12Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-14 -10L-10 -18L-3.75 -20L-4.65 -12Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M2 -19L7 -12",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-6 -6L4 -4M14 -9L20 -4",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 28,
+    "rahmen": [-32, -24, 64, 26]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

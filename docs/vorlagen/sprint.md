@@ -2,7 +2,7 @@
 
 - **Status:** geplant | aktiv | erledigt
 - **Projekt:** – (oder Kürzel des Projekts, z. B. GRA; der Sprint steht in dessen Sprint-Tabelle)
-- **Domäne:** REG | SIM | SRV | CLI | PLAT | INF | DEV (eine oder mehrere, kommagetrennt in der Reihenfolge der Sessions)
+- **Domäne:** REG | SIM | SRV | CLI | PLAT | INF | DEV | PAP (eine oder mehrere, kommagetrennt in der Reihenfolge der Sessions)
 - **Reife:** Entwurf | bereit
 - **Tickets:** B-000, B-000
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)

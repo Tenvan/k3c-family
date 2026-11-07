@@ -1,0 +1,147 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "hg-mine-mitte-v2",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Hintergrund Schachtwand mit Gerüst, mittlere Ebene, Variante 2: periodisches Profil, kachelt waagrecht.",
+  "teile": [
+    {
+      "id": "grund",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -480l0 47 32 1 32 -3 32 0 32 2 32 0 32 -5 32 -7 32 -2 32 2 32 -2 32 -6 32 -6 32 1 32 7 32 7 32 3 32 4 32 7 32 5 32 -2 32 -8 32 -5 32 3 32 4 0 -47Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -480l0 16 32 -1 32 2 32 3 32 0 32 -1 32 -2 32 2 32 3 32 2 32 1 32 -1 32 -1 32 -2 32 -5 32 -5 32 -1 32 2 32 4 32 1 32 0 32 0 32 1 32 -1 32 -1 0 -16Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 0l0 -35 32 1 32 3 32 -1 32 -6 32 -4 32 -1 32 1 32 -3 32 -5 32 -3 32 4 32 7 32 3 32 1 32 1 32 2 32 0 32 -5 32 -5 32 -1 32 6 32 5 32 1 32 -1 0 35Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 0l0 -11 32 -2 32 -1 32 1 32 0 32 -2 32 -4 32 -3 32 0 32 2 32 2 32 0 32 1 32 1 32 1 32 -3 32 -3 32 1 32 3 32 4 32 0 32 0 32 1 32 1 32 0 0 11Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M0 -25l32 1 32 3 32 -1 32 -6 32 -4 32 -1 32 1 32 -3 32 -5 32 -3 32 4 32 7 32 3 32 1 32 1 32 2 32 0 32 -5 32 -5 32 -1 32 6 32 5 32 1 32 -1",
+          "material": "gold"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -447l32 1 32 -3 32 0 32 2 32 0 32 -5 32 -7 32 -2 32 2 32 -2 32 -6 32 -6 32 1 32 7 32 7 32 3 32 4 32 7 32 5 32 -2 32 -8 32 -5 32 3 32 4",
+          "material": "gold"
+        }
+      ],
+      "pivot": [384, -240]
+    },
+    {
+      "id": "gestell",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M90 -37l0 -279 16 0 0 279ZM228 -37l0 -279 16 0 0 279ZM76 -316l0 -20 182 0 0 20ZM95 -249l52 -54 7 7 -52 54ZM232 -242l-52 -54 7 -7 52 54ZM353 -32l0 -288 16 0 0 288ZM483 -32l0 -288 16 0 0 288ZM339 -320l0 -20 174 0 0 20ZM357 -254l52 -54 7 7 -52 54ZM487 -247l-52 -54 8 -7 52 54ZM492 -33l0 -293 16 0 0 293ZM634 -33l0 -293 16 0 0 293ZM478 -326l0 -20 186 0 0 20ZM496 -260l52 -54 8 7 -52 54ZM638 -253l-52 -54 7 -7 52 54Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M90 -37l0 -279 6 0 0 279ZM228 -37l0 -279 6 0 0 279ZM76 -302l0 -6 182 0 0 6ZM353 -32l0 -288 6 0 0 288ZM483 -32l0 -288 6 0 0 288ZM339 -306l0 -6 174 0 0 6ZM492 -33l0 -293 6 0 0 293ZM634 -33l0 -293 6 0 0 293ZM478 -312l0 -6 186 0 0 6Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M184 -296L184 -264M407 -300L407 -268M583 -306L583 -274",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M177 -246l0 -18 14 0 0 18ZM400 -250l0 -18 14 0 0 18ZM576 -256l0 -18 14 0 0 18Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [184, -254],
+          "radius": 6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [184, -254],
+          "radius": 2.5
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [407, -258],
+          "radius": 6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [407, -258],
+          "radius": 2.5
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [583, -264],
+          "radius": 6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [583, -264],
+          "radius": 2.5
+        }
+      ],
+      "pivot": [384, -240]
+    },
+    {
+      "id": "schiene",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -26l0 -4 768 0 0 4Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M6 -18l0 -8 22 0 0 8ZM54 -18l0 -8 22 0 0 8ZM102 -18l0 -8 22 0 0 8ZM150 -18l0 -8 22 0 0 8ZM198 -18l0 -8 22 0 0 8ZM246 -18l0 -8 22 0 0 8ZM294 -18l0 -8 22 0 0 8ZM342 -18l0 -8 22 0 0 8ZM390 -18l0 -8 22 0 0 8ZM438 -18l0 -8 22 0 0 8ZM486 -18l0 -8 22 0 0 8ZM534 -18l0 -8 22 0 0 8ZM582 -18l0 -8 22 0 0 8ZM630 -18l0 -8 22 0 0 8ZM678 -18l0 -8 22 0 0 8ZM726 -18l0 -8 22 0 0 8Z",
+          "material": "holz",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [384, -240]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 480,
+    "rahmen": [0, -480, 768, 480]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

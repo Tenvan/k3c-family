@@ -1,0 +1,36 @@
+// gen:paper: rendert jede Gruppe (Unterordner mit *.paper.json) einer Wurzel und schreibt je Gruppe den Gruppen-Index
+// und golden.json (paper-spec.md › 1, 6). Es gibt keinen gemeinsamen Index. Stil-Datei: <wurzel>/stil.paper.json.
+import { existsSync, readdirSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import type { Stil } from '../schema/types';
+import { renderOrdner, sha256, specsIn } from '../render/ausgabe';
+import { ladeStil } from '../render/stil';
+
+type Manifest = { id: string; renderKey: string; animationen: Record<string, { datei: string }> };
+
+/** golden.json einer Gruppe aus den Manifesten und PNG-Dateien neben den Specs. */
+function golden(gruppe: string): Record<string, { renderKey: string; dateien: Record<string, string> }> {
+  const out: Record<string, { renderKey: string; dateien: Record<string, string> }> = {};
+  for (const spec of specsIn(gruppe)) {
+    const ordner = spec.slice(0, -'.paper.json'.length);
+    const m = JSON.parse(readFileSync(join(ordner, 'manifest.json'), 'utf8')) as Manifest;
+    const dateien = Object.values(m.animationen).map((a) => a.datei);
+    out[m.id] = { renderKey: m.renderKey, dateien: Object.fromEntries(dateien.map((d) => [d, sha256(readFileSync(join(ordner, d)))])) };
+  }
+  return out;
+}
+
+export function gen(wurzel: string, o: { stil?: Stil } = {}): { gruppen: string[] } {
+  const stilPfad = join(wurzel, 'stil.paper.json');
+  const stil = o.stil ?? (existsSync(stilPfad) ? ladeStil(stilPfad) : ladeStil());
+  const gruppen = readdirSync(wurzel).sort()
+    .filter((g) => statSync(join(wurzel, g)).isDirectory() && specsIn(join(wurzel, g)).length > 0);
+  for (const g of gruppen) {
+    const dir = join(wurzel, g);
+    renderOrdner(dir, { stil });
+    const tmp = join(dir, `.golden.json.tmp-${process.pid}`);
+    writeFileSync(tmp, JSON.stringify(golden(dir), null, 2) + '\n');
+    renameSync(tmp, join(dir, 'golden.json'));
+  }
+  return { gruppen };
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "material-aendern",
+    "titel": "Material ändern",
+    "ort": "asset",
+    "text": "Rufe zuerst `assets_guide {rig: {rig}}` auf. Ändere im Asset `{asset}` ({pfad}) ein Papier-Material: Nenne mir, welche Teile welches Material tragen, und tausche es mit `assets_set` per JSON-Merge-Patch nur dort, wo es gewünscht ist. Nur Material-Namen aus der Stil-Datei, keine Farben. Zustand: {zustand}. Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf."
+  },
+  {
+    "id": "proportion-anpassen",
+    "titel": "Proportion anpassen",
+    "ort": "asset",
+    "text": "Rufe zuerst `assets_guide {rig: {rig}}` auf. Passe die Proportionen des Assets `{asset}` ({pfad}) an das Proportionsraster des Rig-Typs an (Kopf-Anteil, Rumpfhöhe). Ändere Formen und Pivots der betroffenen Teile mit `assets_set`; `paper validate` darf keine Regel `proportion` melden. Zustand: {zustand}. Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf."
+  },
+  {
+    "id": "detail-ergaenzen",
+    "titel": "Detail ergänzen",
+    "ort": "asset",
+    "text": "Rufe zuerst `assets_guide {rig: {rig}}` auf. Ergänze am Asset `{asset}` ({pfad}) ein Detail als neue Lage oder neues Teil im Papierschnitt-Stil (Fläche, aufgeklebte Lage, Falz oder Punkt; Licht von rechts oben). Beschreibe kurz, was du ergänzt, und schreibe es mit `assets_set`. Zustand: {zustand}. Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf."
+  },
+  {
+    "id": "variante-anlegen",
+    "titel": "Variante anlegen",
+    "ort": "asset",
+    "text": "Rufe zuerst `assets_guide {rig: {rig}}` auf. Lege für das Asset `{asset}` ({pfad}) eine neue Variante unter `varianten` an, die nur Materialien tauscht (`tausch`). Schlage Name und Tausch vor und schreibe sie mit `assets_set`. Zustand: {zustand}. Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf."
+  },
+  {
+    "id": "animation-aendern",
+    "titel": "Animation ändern",
+    "ort": "asset",
+    "text": "Rufe zuerst `assets_guide {rig: {rig}}` auf. Ändere eine Animation des Assets `{asset}` ({pfad}): Frames, fps, Gangart oder Winkel-Keyframes je Teil. Bewegung der Rig-Typen bleibt Code; ändere nur die Parameter der Spec mit `assets_set`. Zustand: {zustand}. Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf."
+  },
+  {
+    "id": "neues-wie-dieses",
+    "titel": "Neues Asset wie dieses",
+    "ort": "asset",
+    "text": "Rufe zuerst `assets_guide {rig: {rig}}` auf. Lege mit `assets_create` ein neues Asset an, das sich am Asset `{asset}` ({pfad}) orientiert: gleicher Rig-Typ, gleicher Stil, eigene Formen und Materialien. Frage nach Name und Gruppe, wenn sie fehlen. Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf."
+  },
+  {
+    "id": "teil-material",
+    "titel": "Material dieses Teils",
+    "ort": "teil",
+    "text": "Rufe zuerst `assets_guide {rig: {rig}}` auf. Ändere im Asset `{asset}` ({pfad}) nur das Teil `{teil}`: Tausche das Papier-Material seiner Lagen (Töne bleiben). Andere Teile bleiben unverändert; schreibe mit `assets_set`. Zustand: {zustand}. Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf."
+  },
+  {
+    "id": "teil-form",
+    "titel": "Form dieses Teils",
+    "ort": "teil",
+    "text": "Rufe zuerst `assets_guide {rig: {rig}}` auf. Ändere im Asset `{asset}` ({pfad}) nur die Form des Teils `{teil}` (Pfade seiner Lagen, Pivot nur wenn nötig). Andere Teile bleiben unverändert; schreibe mit `assets_set`. Zustand: {zustand}. Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf."
+  },
+  {
+    "id": "aenderung-zuruecknehmen",
+    "titel": "Änderung zurücknehmen",
+    "ort": "review",
+    "text": "Rufe zuerst `assets_guide {rig: {rig}}` auf. Nimm die Änderung am Asset `{asset}` ({pfad}) gegenüber der Basis `{basis}` zurück, ganz oder nur diesen Teil: {eingabe}. Lies den alten Stand mit `assets_review {basis: {basis}}` und schreibe ihn mit `assets_set`, nicht mit Git. Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf."
+  },
+  {
+    "id": "nachbessern",
+    "titel": "Nachbessern …",
+    "ort": "review",
+    "text": "Rufe zuerst `assets_guide {rig: {rig}}` auf. Bessere die Änderung am Asset `{asset}` ({pfad}) gegenüber der Basis `{basis}` nach: {eingabe}. Zustand: {zustand}. Schreibe nur mit `assets_set`. Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf."
+  }
+]

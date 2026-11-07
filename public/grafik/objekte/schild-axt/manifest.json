@@ -1,0 +1,30 @@
+{
+  "id": "schild-axt",
+  "version": 1,
+  "specHash": "be6587195644520bebbc4fab3101f51aec6b41d06072ab9027e183cc7bde5e06",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "74bc2489205bcb76075d6e1e50c610e6ee22ac9a4fc136425e361fb3781f9653",
+  "rahmen": [
+    -17,
+    -46,
+    34,
+    48
+  ],
+  "frameW": 36,
+  "frameH": 51,
+  "animationen": {
+    "idle": {
+      "frames": 4,
+      "fps": 4,
+      "datei": "idle.png",
+      "hashes": [
+        "72a0d26807dd4eb29d8d23d948f187713294c1a951c8bea025e8248c2e18885c",
+        "dcb800ddb8a6564260a4b132e166951602e57a9a4e6b978680f2ca0640f1c2dc",
+        "4cdcff96d115519ce887694dd42c78ab833ed12b57f9e02aa0de00c0f6b695f9",
+        "dcb800ddb8a6564260a4b132e166951602e57a9a4e6b978680f2ca0640f1c2dc"
+      ]
+    }
+  },
+  "varianten": []
+}

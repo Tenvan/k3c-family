@@ -35,6 +35,30 @@ tasks:
       - go build -o bin/gebaeude{{exeExt}} ./tools/buildings
       - ./bin/gebaeude{{exeExt}}
 
+  paper:
+    desc: Papierschnitt-Grafik rendern (public/grafik/<gruppe>/*.paper.json → PNG, Manifest, index.paper.json, golden.json; RD1)
+    preconditions:
+      - sh: command -v bun
+        msg: Bun fehlt (requirements.md)
+    sources:
+      - tools/paper/bin/*.ts
+      - tools/paper/cli/*.ts
+      - tools/paper/render/*.ts
+      - tools/paper/rig/*.ts
+      - tools/paper/schema/*.ts
+      - tools/paper/schema/*.json
+      - exclude: tools/paper/**/*.test.ts
+      - public/grafik/stil.paper.json
+      - public/grafik/*/*.paper.json
+      - exclude: public/grafik/*/index.paper.json
+    generates:
+      - public/grafik/*/golden.json
+      - public/grafik/*/index.paper.json
+      - public/grafik/*/*/manifest.json
+      - public/grafik/*/*/*.png
+    cmds:
+      - bun tools/paper/bin/gen.ts public/grafik
+
   pipeline:
     desc: Grafiken aus docs/assets/pipeline-liste.json auf DB32 und 16 px umrechnen (public/grafik → public/grafik-db32, deterministisch; feste EXE bin/pipeline, B-331)
     deps: [':tmp']

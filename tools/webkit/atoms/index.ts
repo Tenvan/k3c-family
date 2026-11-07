@@ -43,6 +43,7 @@ export { ActionButton } from './ActionButton';
 export { CardButton } from './CardButton';
 export { LinkButton } from './LinkButton';
 export { SelectField, plainOptions, type SelectOption } from './SelectField';
+export { ValueSlider } from './Slider';
 export { Splitter } from './Splitter';
 export { StatusBadge } from './StatusBadge';
 export { Tip } from './Tip';

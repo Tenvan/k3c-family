@@ -1,0 +1,27 @@
+{
+  "id": "hg-hoehle-fern-v1",
+  "version": 1,
+  "specHash": "e435393c8d0d0e9c2af47a8eec3992702575f624eb237b0c81d8328eccd35e1e",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "bc00e6853b98a3c1ab650227848285a96c3e4056d5c2200b6b52754e0503e967",
+  "rahmen": [
+    0,
+    -480,
+    768,
+    480
+  ],
+  "frameW": 768,
+  "frameH": 480,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "1489ed1674c854d49b9820e1762842f11f289fa2c85e326dde9b8783fe1c2f58"
+      ]
+    }
+  },
+  "varianten": []
+}

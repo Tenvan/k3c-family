@@ -1,0 +1,32 @@
+{
+  "monarch": {
+    "renderKey": "7380c28d31c427a61713da84f0e348560929b3b37b2682d0c1c09fba3275a2d6",
+    "dateien": {
+      "galopp.png": "59c467c21fda2cccc043337178762ee4304fffe8e08d29c0085d40d2bd07a348",
+      "galopp@spieler1.png": "59c467c21fda2cccc043337178762ee4304fffe8e08d29c0085d40d2bd07a348",
+      "galopp@spieler2.png": "651abb915c8d56707ddc9c98892acc8690afcf02d52aee848b1e82afe81abae5",
+      "galopp@spieler3.png": "7672f29f2e61d3282f1aeb461e148c3b75f0f568d95cffb122ce9814f59d5ac7",
+      "galopp@spieler4.png": "dee738438ebb7fa2ca2eef71705ef2bfcb4331aa40a97eabdabd9985303bbfe0",
+      "idle.png": "3788d27c00c7a9a9d1215e3437062b915488dfaf09a5806ba527f4084637b459",
+      "idle@spieler1.png": "3788d27c00c7a9a9d1215e3437062b915488dfaf09a5806ba527f4084637b459",
+      "idle@spieler2.png": "0fff8bb8286ea5f977b5bf32b3f16903fdbb9adf9aec66f0162c8aacef0f2c6c",
+      "idle@spieler3.png": "61653d9008adb15bf67730736a386ecfbfeb0ba8685af46a686aa61c5a25daf4",
+      "idle@spieler4.png": "842bea6cf9db61490aa65e0fd7df13e09a9fec65a0c55dfd53bf859adb61893f",
+      "lauf.png": "0828fbd281ea99b404d67d679bb3ce2f5e1d30c16020911549c2812e975a3f66",
+      "lauf@spieler1.png": "0828fbd281ea99b404d67d679bb3ce2f5e1d30c16020911549c2812e975a3f66",
+      "lauf@spieler2.png": "7b94b3c54706d2346ac674dd75a29ce176bd0e10fe060a0a4a94c1741ebf5a9d",
+      "lauf@spieler3.png": "5b897cbe65e8d36fda1af0ebacfec3373c35b9eb2d4ebc7c82232dbcc9f45a34",
+      "lauf@spieler4.png": "484f798f6bdf5e6d3ef8ca14dcc38e06de45e74904b82c6f60b002620d77f109",
+      "schritt.png": "242b6720cfcd57164d5cb9cf1e78e86ee36fe20eb04f7b88815f62554d12afb8",
+      "schritt@spieler1.png": "242b6720cfcd57164d5cb9cf1e78e86ee36fe20eb04f7b88815f62554d12afb8",
+      "schritt@spieler2.png": "8adc8104db0367095072735f397579c3ad34545a45609cef15538a9331537480",
+      "schritt@spieler3.png": "7c3785d81fba4ad7a97855802d0e98e6c9ae3ecf1f6550ffb41636ffac14725c",
+      "schritt@spieler4.png": "740e47cea2a1c85ba21bc20a916363bee445785dde76be9294331edee217612f",
+      "trab.png": "50f14fc3a8696d08c3564124ee37860a3a80eef569b3f2fc80dec502fa165dfc",
+      "trab@spieler1.png": "50f14fc3a8696d08c3564124ee37860a3a80eef569b3f2fc80dec502fa165dfc",
+      "trab@spieler2.png": "abe6304150db737bc55f9dcc894a5f1544965819b3fed79e7913c22e651c098e",
+      "trab@spieler3.png": "01a1ec00cbb6d25a7300d0943303c1aec222061ad46f4aa4d490c4bad61f1949",
+      "trab@spieler4.png": "aabb7dc1e9705fc26e91c88ed27e1e017f02552542e0d0936330e44677c61998"
+    }
+  }
+}

@@ -24,6 +24,8 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 - Architektur-Entscheidungen: `docs/decisions/` – **001: Die Spiel-Engine wandert auf einen Go-Server**, der Browser
   wird reiner Client. Umgesetzt (SP09): Es gibt keine TS-Simulation mehr, neue Mechaniken entstehen in `engine/` (Go).
   **004: Asset-Studio getrennt vom Spielserver**, Schnittstelle sind die Dateien, der Server beobachtet sie (TS1, B-507).
+  **005: Papierschnitt-Grafik aus Specs**, Assets nur über MCP `assets_*`, Review im Bereich Assets der Workbench; das
+  Asset-Studio ist entfallen (WB1).
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
 
 ## Befehle
@@ -35,7 +37,7 @@ task               # alle Aufgaben anzeigen (Go Task, Taskfile.yml; einziger Ein
 task install       # Abhängigkeiten holen
 task dev           # Dev-Server (auch im LAN erreichbar, Port 5183)
 task test          # Vitest (Level-Generator, reine Logik); Filter: task test -- planning
-task check:diff    # nur die Prüfungen, die der Diff zu origin/develop braucht (einmal vor jedem Commit)
+task check:diff    # nur die Prüfungen, die der eigene Diff zum Integrations-Branch braucht (einmal vor jedem Commit, B-730)
 task check         # Lint + Typecheck + Tests des Clients, parallel
 task check:go      # go test + golangci-lint (Rechner mit Go)
 task check:race    # Go-Race-Detector (langsam; Review-Session, check:all, CI)
@@ -43,42 +45,38 @@ task check:dev     # k3c-workbench: Frontend, go test, golangci-lint
 task check:all     # alles inklusive Build
 task go:golden     # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
 task build         # Typecheck + Produktions-Build nach dist/
-task buildall      # alle EXE (Server, Lasttest, TUI, Workbench, Studio, Starter, dazu die Web-EXE `k3c-workbench-web` und `k3c-studio-web`) bauen und nach bin/ legen; laufende EXE vorher schließen
+task buildall      # alle EXE (Server, Lasttest, TUI, Workbench, Starter, dazu die Web-EXE `k3c-workbench-web`) bauen und nach bin/ legen; laufende EXE vorher schließen
 task pages         # GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build)
 task serve         # Build + Go-Server (Port 8080, bin/k3c-server)
 task start         # Go-Server ohne Web-Build (task dev leitet /api und /ws an ihn weiter)
 task k3c-workbench       # Workbench als Client/Server-Dev (Backend -dev + Vite 5191 im Browser); Fenster: k3c-workbench:window, EXE: k3c-workbench:build
-task k3c-studio    # Asset-Studio als Client/Server-Dev (Backend -dev + Vite 5192 im Browser); Fenster: k3c-studio:window, EXE: k3c-studio:build
 task k3c-workbench:web  # Web-Client: nur der Server, Oberfläche im Browser http://127.0.0.1:8181/ (MCP 5180, nicht zugleich mit der EXE)
-task k3c-studio:web     # Web-Client: nur der Server, Oberfläche im Browser http://127.0.0.1:8182/studio/
-task check:studio  # Asset-Studio: Frontend-Vitest, go test + golangci-lint für tools/assetkit und tools/k3c-studio
 ```
 
 **Taskfile-Gruppen:** `Taskfile.yml` hält nur die Kernbefehle (Workspace) und die Prüf-Aggregate `check:*`; jedes Projekt hat sein
 Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `go` (engine/), `k3c-server`,
-`k3c-load`, `k3c-tui` (cmd/), `k3c-workbench`, `k3c-studio`, `k3c-starter` (tools/), `balance`, `gen` (Generatoren: `gen:atlas`,
+`k3c-load`, `k3c-tui` (cmd/), `k3c-workbench`, `k3c-starter` (tools/), `balance`, `gen` (Generatoren: `gen:atlas`,
 `gen:gebaeude`, `gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`). Neue Aufgaben kommen in das Taskfile ihres Projekts, nicht
 in die Wurzel.
 
 **Dev ohne Neubau-Fenster:** Jedes EXE-Projekt kennt `build` (EXE bauen), `run` (bauen und starten) und `dev`.
 Der Projektname allein (`task k3c-workbench`) startet `dev`. `dev` ist Client/Server: Das Backend läuft mit `-dev` als kleiner Supervisor
 (`engine/devrun`), baut sich als Kind (`-headless`, ohne Fenster) und startet es bei jeder Go-Änderung neu; bei Build-Fehler läuft
-die alte Version weiter, ein Job-Objekt beendet verwaiste Kinder. Die Oberflächen der Wails-Apps (`k3c-workbench` 5191, `k3c-studio` 5192,
+die alte Version weiter, ein Job-Objekt beendet verwaiste Kinder. Die Oberflächen der Wails-Apps (`k3c-workbench` 5191,
 `k3c-starter` 5194) laufen dabei unter Vite mit Hot Reload im Browser und leiten `/api` an das Kind weiter. `<app>:window` startet
 das echte Fenster mit `wails dev`. Der Server (`k3c-server:dev`) baut als Kind `bin/k3c-server` (freigegebener Pfad), `data/` und
 `public/` beobachtet er weiter selbst (Exit 75 = Neustart). Supervisor und Kinder werden mit `go build` (Konsole) gebaut, nie per
-`wails build`, damit sie sauber per CTRL_BREAK beenden. Wails-Builds (`k3c-workbench:build`, `k3c-studio:build`, `k3c-starter:exe`) und die
+`wails build`, damit sie sauber per CTRL_BREAK beenden. Wails-Builds (`k3c-workbench:build`, `k3c-starter:exe`) und die
 Frontends laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` erzwingt.
-**Web-Client first (B-614):** `k3c-workbench:web` und `k3c-studio:web` bauen die Oberfläche (nur bei Änderungen) und eine feste EXE
-(`bin/k3c-workbench-web`, `bin/k3c-studio-web`, `go build`), starten sie `-headless -open` und liefern die gebaute Oberfläche selbst
-aus, ohne Fenster, Vite und Neubau bei Go-Änderungen. Ports über die Umgebung: `K3C_WEB_UI_PORT` (8181), `K3C_WEB_MCP_PORT` (5180),
-`K3C_STUDIO_WEB_PORT` (8182); `K3C_WEB_OPEN=0` öffnet keinen Browser. Die EXE-Builds bleiben, bis sich der Weg bewährt hat.
-Die Oberfläche des Studios steckt nicht in der EXE (liegt unter `tools/k3c-studio/frontend/dist/`), eine Änderung daran braucht keinen EXE-Neubau.
+**Web-Client first (B-614):** `k3c-workbench:web` baut die Oberfläche (nur bei Änderungen) und eine feste EXE
+(`bin/k3c-workbench-web`, `go build`), starten sie `-headless -open` und liefern die gebaute Oberfläche selbst
+aus, ohne Fenster, Vite und Neubau bei Go-Änderungen. Ports über die Umgebung: `K3C_WEB_UI_PORT` (8181), `K3C_WEB_MCP_PORT` (5180);
+`K3C_WEB_OPEN=0` öffnet keinen Browser. Die EXE-Builds bleiben, bis sich der Weg bewährt hat.
 
 Der Go-Server beobachtet `data/` und `public/` immer (auch produktiv, `engine/watch`, Entscheidung 004): Nach einer
 Änderung prüft er den neuen Stand (`k3c-server -check-data`), zeigt allen Geräten „Server startet neu“ und startet sich
 über seinen Supervisor neu (Kindprozess mit `K3C_CHILD=1`, Exit-Code 75 = Neustart, Daten von der Platte aus
-`K3C_DATA_DIR`, Standard `data/`; ohne Ordner eingebettet). Ein ungültiger Stand lässt den alten Stand laufen.
+`K3C_DATA_DIR`, Standard `data/`; ohne Ordner eingebettet). Ein ungültiger Stand lässt den alten Stand laufen. Der Watch ignoriert `*.paper.json`; neu gestartet wird erst bei geänderten PNGs.
 
 Die Gamepad-Testseite (`gamepad-test.html`) schickt Berichte von der Xbox nach `reports/*.json`. Dort die Ergebnisse nachlesen.
 
@@ -101,22 +99,24 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   Go-Server (`data/embed.go`: von der Platte aus `K3C_DATA_DIR`, ohne Ordner per `go:embed`). Werte gehören hierher, nicht in den Code.
 - `engine/` – Go: `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/`, `net/` (HTTP, WebSocket `/ws`,
   Protokoll laut `docs/protocol.md`), `store/` (Spielstände → `saves/`, Berichte → `reports/`), `watch/` (Datei-Watch für
-  `data/` und `public/`). `engine/` und `cmd/k3c-server` importieren nichts aus `tools/` (`engine/internal/rules/imports_test.go`).
+  `data/` und `public/`, ignoriert `*.paper.json`). `engine/` und `cmd/k3c-server` importieren nichts aus `tools/` (`engine/internal/rules/imports_test.go`).
 - `cmd/` – Go-Binaries: `k3c-server` (liefert `dist/` und die API aus; Supervisor `supervise.go`, Neustart bei geänderten
   Dateien `restart.go`), `k3c-load` (Lasttest), `k3c-tui`.
-  `tools/k3c-workbench` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-workbench`). `tools/k3c-studio` – Asset-Studio als
-  eigenständiges Wails-Fenster, keine Seite des Spielservers (Entscheidung 004, B-507): Backend `tools/k3c-studio/backend`
-  (`/api/studio/` auf eigenem Loopback-Port 8091, samt Chat), bindet die Engine als Bibliothek ein (Vorschau und „Im Spiel
-  öffnen“ ohne Spielserver, eigene Testspielstände); Frontend `tools/k3c-studio/frontend` (Build nach
-  `tools/k3c-studio/frontend/dist/`, `task k3c-studio:frontend`); `task k3c-studio` bzw. `task k3c-studio:build` → `bin/k3c-studio.exe`,
-  wie k3c-workbench mit gemerkter Größe und Position. Das Studio schreibt `data/**` und `public/`, der Server liest sie nur.
-  `tools/assetkit` – gemeinsame Asset-Logik von k3c-workbench und Studio (eigenes Go-Modul, per `replace` eingebunden). `tools/k3c-starter` – Windows-Starter für den Server (Wails-Fenster
+  `tools/k3c-workbench` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-workbench`) mit den Bereichen **Development**
+  (Dienste, Tasks, Planung, Git, MCP, Monitoring, Balancing) und **Assets** (Review, Katalog, Styleguide, Sound, Quellen; nur
+  Ansehen, Prompt-Buttons, „Im Spiel ansehen“ über die eingebundene Engine in `internal/studioview`). Assets ändern nur die
+  MCP-Tools `assets_*`; das frühere Asset-Studio `tools/k3c-studio` ist entfallen (Entscheidung 005, WB1).
+  `tools/paper/` – Papierschnitt-Renderer und Verträge (Entscheidung 005), Aufruf `bun tools/paper/bin/paper.ts`.
+  `tools/assetkit` – Asset-Logik der Workbench (eigenes Go-Modul, per `replace` eingebunden; geprüft mit `k3c-workbench:gotest`/`lint`). `tools/k3c-starter` – Windows-Starter für den Server (Wails-Fenster
   startet `bin/k3c-server`, zeigt Status und Adresse, EXE `bin/k3c-starter.exe`, `task k3c-starter:build`, B-041).
-  `tools/webkit` – gemeinsame Oberflächen-Bausteine aller Wails-Frontends (k3c-workbench, Studio, Starter) als **Atomic Design** auf
+  `tools/webkit` – gemeinsame Oberflächen-Bausteine aller Wails-Frontends (k3c-workbench, Starter) als **Atomic Design** auf
   Radix Themes: `lib/`, `atoms/`, `molecules/`, `organisms/`, `templates/` (`@webkit/<ebene>`); Seiten sind die Feature-Ordner der App.
   Verbindlich für jedes Wails-Programm: Radix nur über `@webkit`, rohe Controls nur in `atoms/`, Importe nur nach unten
   (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme, geprüft von `tests/atomicDesign.test.ts`).
-  CLIs: `tools/atlas`, `tools/buildings` (`task gen:gebaeude`), `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
+  CLIs: `tools/atlas` (Altlast bis CU1, vom Spiel nicht mehr geladen), `tools/buildings` (`task gen:gebaeude`), `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
+- Papierschnitt-Grafik (Entscheidung 005): Der Client lädt Figuren, Monarch mit Reittier, Gebäude und Hintergründe über die
+  Gruppen-Indizes `public/grafik/<gruppe>/index.paper.json` (je Asset `manifest.json` + PNG-Sheets); die Zuordnung steht in
+  `data/paper.json`. Atlas und alte Packs lädt das Spiel nicht mehr (Entfernung in CU1). Natur, Objekte und Gerüste bleiben bis MG8 Pixel-Grafik.
 - `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.
 - `src/online/` – Client des Go-Servers (`clientConnection.ts`, Version in `clientProtocol.ts`): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
 - `src/input/` – `PlayerInput`-Abstraktion (Tastatur, Gamepad, Touch-Overlay `touchInput.ts`, per `?touch=1` erzwingbar). Spiel-Code fragt Aktionen ab, nie konkrete Tasten.
