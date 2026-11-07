@@ -14,6 +14,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
+| RS1 | Messen, Go-Fixes, Rust-Spike für den Simulationskern | geplant |
 
 ## Nicht-Ziele
 
@@ -21,4 +22,4 @@ Server, Lasttest, TUI und Workbench in Rust (006, Varianten 2–4), bis der Spik
 
 ## Notizen
 
-2026-11-07: angelegt; 006 von Ralf angenommen („erstmal“), Pi bleibt Zielplattform und ist der Hauptgrund. Timing-Messung auf Ralfs Wunsch in die Umsetzung verschoben (RST-M1). Sprints folgen nach Freigabe der Spec B-725.
+2026-11-07: angelegt; 006 von Ralf angenommen („erstmal“), Pi bleibt Zielplattform und ist der Hauptgrund. Timing-Messung auf Ralfs Wunsch in die Umsetzung verschoben (RS1.1/RS1.2). Workbench-Importe von `engine/sim` dürfen wegfallen (B-726), damit ist Variante 2 (Rust-Server) mögliche Etappe 2. Generatoren entfallen mit PAP und zählen nicht.

@@ -43,8 +43,8 @@ Entscheidung 001 bleibt gültig (Engine im Server). Lange Läufe nur über `sim_
 
 ## Beispiele
 
-- `sim_test` Meilenstein-Lauf (coop2, standard, 40 Tage) dauert heute X min → nach RST-M2 messbar kürzer, nach Spike ≥ 2× schneller oder Rust wird verworfen.
-- Leerer Spielserver: heute 8,9 % eines Kerns → nach RST-M2 unter 1 %.
+- `sim_test` Meilenstein-Lauf (coop2, standard, 40 Tage) dauert heute X min → nach RS1.3 messbar kürzer, nach Spike ≥ 2× schneller oder Rust wird verworfen.
+- Leerer Spielserver: heute 8,9 % eines Kerns → nach RS1.3 unter 1 %.
 
 ## Ausnahme- und Fehlerfälle
 

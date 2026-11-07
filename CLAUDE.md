@@ -24,7 +24,7 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 - Architektur-Entscheidungen: `docs/decisions/` – **001: Die Spiel-Engine wandert auf einen Go-Server**, der Browser
   wird reiner Client. Umgesetzt (SP09): Es gibt keine TS-Simulation mehr, neue Mechaniken entstehen in `engine/` (Go).
   **004: Asset-Studio getrennt vom Spielserver**, Schnittstelle sind die Dateien, der Server beobachtet sie (TS1, B-507).
-  **006: Simulationskern wird Rust, Server bleibt Go** (Projekt RST, B-725; erst messen, Go-Fixes, Spike mit Abbruchkriterium).
+  **006: Simulationskern wird Rust** (Etappe 1, Server bleibt Go; Etappe 2 Rust-Server möglich), Projekt RST, B-725, B-726.
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
 
 ## Befehle
