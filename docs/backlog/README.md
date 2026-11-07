@@ -666,3 +666,4 @@ Zeile in diesen Abschnitt.
 | [B-654](archiv/B-654-bot-performance-miniboss-json.md) | SIM | Schuld | mittel | erledigt | BAL9 | Bot-Performance: bosses.json je Tick neu geparst, nodeFor/wanted mit Map-Zugriffen |
 | [B-656](archiv/B-656-meilenstein-titan-mehrseed.md) | REG | Problem | mittel | erledigt | BAL9 | Meilenstein 1 coop2 standard: Titan über mehrere Seeds, holz und schiff grün |
 | [B-657](archiv/B-657-castlehold-messfenster.md) | DEV | Problem | mittel | erledigt | BAL9 | Die Kennzahl castleHeld misst Nacht 1 bis 5 über den ganzen Lauf, nicht nur über das Fenster des Ziels |
+| [B-707](archiv/B-707-assets-set-golden-veraltet.md) | DEV | Problem | mittel | erledigt | – | assets_set und assets_render lassen golden.json der Gruppe veraltet |
