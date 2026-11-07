@@ -1,6 +1,6 @@
 # RD2 · PAP · Renderer und Stil nach der Sichtprüfung: Schatten, Materialien, Sichtbarkeit, Rig-Proportionen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
@@ -61,7 +61,7 @@ keine
 | RD2.2 | `RD2.2-stil-materialien.md` | Umsetzung | autonom | fertig |
 | RD2.3 | `RD2.3-renderer-sichtbar-renderkey.md` | Umsetzung | autonom | fertig |
 | RD2.4 | `RD2.4-renderer-rig-proportionen.md` | Umsetzung | autonom | fertig |
-| RD2.5 | `RD2.5-review.md` | Review | autonom | offen |
+| RD2.5 | `RD2.5-review.md` | Review | autonom | fertig |
 
 Reife Entwurf:
 
@@ -73,5 +73,6 @@ Reife Entwurf:
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-07 Claude: AC-01 bis AC-04 umgesetzt und belegt (Ergebnisse RD2.1 bis RD2.4), `task check` und `task check:go` grün, Race lokal übersprungen (kein gcc, CI).
+Offen bei Ralf: Sichtprüfung Monarch idle 4 gegen den Prototyp (B-712/AC-01) samt Optik der neuen Materialfarben.
+Behoben: Pfote schwebte über dem Boden (Reviewer RD2.4). Neues Ticket: B-732.

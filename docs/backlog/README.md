@@ -109,10 +109,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-709](B-709-assets-preview-reittier-boxen.md) | PAP | Idee | niedrig | offen | – | assets_preview nennt bei Reit-Animationen keine Teil-Boxen des Reittiers |
 | [B-710](B-710-assets-set-teil-patch.md) | PAP | Problem | mittel | offen | – | assets_set kann einzelne Teile nicht ändern, ohne die ganze Teile-Liste zu senden |
 | [B-711](B-711-reiter-variante-reittier.md) | PAP | Frage | mittel | eingeplant | MG9 | Variante des Reiters tauscht die Materialien des Reittiers nicht |
-| [B-712](B-712-stil-schatten-materialien.md) | PAP | Problem | hoch | eingeplant | RD2 | Stil zeigt Papierschatten wie der Prototyp und kennt Metall-, Kristall- und Biom-Materialien |
-| [B-713](B-713-renderkey-reiter-reittier.md) | PAP | Schuld | mittel | eingeplant | RD2 | renderKey des Reiters enthält den Hash der Reittier-Spec |
-| [B-714](B-714-keyframe-sichtbar.md) | PAP | Idee | hoch | eingeplant | RD2 | Keyframes schalten Teile mit dem Feld sichtbar ein und aus |
-| [B-715](B-715-rig-proportionen-je-figur.md) | PAP | Idee | hoch | eingeplant | RD2 | Rigs vierbeiner und figur erlauben Proportionen, Füße und Gangarten je Tier oder Figur |
 | [B-716](B-716-reittiere-je-tier-massstab.md) | PAP | Problem | mittel | eingeplant | MG9 | Reittiere haben eigene Silhouetten, Füße und einen einheitlichen Maßstab |
 | [B-717](B-717-monarch-animationen-farben.md) | PAP | Problem | hoch | eingeplant | MG9 | Monarch hat Reit-Idle, Gangarten je Reittier, give/hit/death/respawn und vier gut unterscheidbare Spielerfarben |
 | [B-718](B-718-truppen-nachbessern.md) | PAP | Problem | mittel | eingeplant | MG9 | Truppen greifen sichtbar zum Gegner an und haben keine Lesbarkeits-Reste aus MG3 |
@@ -692,3 +688,7 @@ Zeile in diesen Abschnitt.
 | [B-657](archiv/B-657-castlehold-messfenster.md) | DEV | Problem | mittel | erledigt | BAL9 | Die Kennzahl castleHeld misst Nacht 1 bis 5 über den ganzen Lauf, nicht nur über das Fenster des Ziels |
 | [B-707](archiv/B-707-assets-set-golden-veraltet.md) | DEV | Problem | mittel | erledigt | – | assets_set und assets_render lassen golden.json der Gruppe veraltet |
 | [B-701](archiv/B-701-pap-gesammelte-fragen.md) | DEV | Frage | hoch | erledigt | PS1 | PAP: kritische Fragen und vorab getroffene Entscheidungen werden gesammelt von Ralf bestätigt |
+| [B-712](archiv/B-712-stil-schatten-materialien.md) | PAP | Problem | hoch | erledigt | RD2 | Stil zeigt Papierschatten wie der Prototyp und kennt Metall-, Kristall- und Biom-Materialien |
+| [B-713](archiv/B-713-renderkey-reiter-reittier.md) | PAP | Schuld | mittel | erledigt | RD2 | renderKey des Reiters enthält den Hash der Reittier-Spec |
+| [B-714](archiv/B-714-keyframe-sichtbar.md) | PAP | Idee | hoch | erledigt | RD2 | Keyframes schalten Teile mit dem Feld sichtbar ein und aus |
+| [B-715](archiv/B-715-rig-proportionen-je-figur.md) | PAP | Idee | hoch | erledigt | RD2 | Rigs vierbeiner und figur erlauben Proportionen, Füße und Gangarten je Tier oder Figur |
