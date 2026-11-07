@@ -1,6 +1,6 @@
 # MG2 · PAP · Papierschnitt-Migration: Reittiere
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit

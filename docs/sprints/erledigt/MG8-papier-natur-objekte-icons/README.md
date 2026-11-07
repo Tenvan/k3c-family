@@ -1,6 +1,6 @@
 # MG8 · PAP · Papierschnitt-Migration: Natur, Objekte, Münzen, Icons
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit

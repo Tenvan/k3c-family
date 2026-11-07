@@ -1,6 +1,6 @@
 # MG5 · PAP · Papierschnitt-Migration: Bosse
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
