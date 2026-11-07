@@ -83,7 +83,7 @@ describe('Reiten', { timeout: 60_000 }, () => {
     expect([m.frameW, m.frameH]).toEqual([108, 192]);
     expect(m.animationen.reiten).toMatchObject({ rahmen: [-89, -199, 190, 205], frameW: 242, frameH: 261 });
     expect(readdirSync(join(dir, 'monarch'))).toContain('reiten@spieler2.png');
-  });
+  }, 60_000);
 
   it('Monarch mit schritt, trab, galopp als Reit-Animationen rendert ohne Fehler', () => {
     const dir = tmp(), m = structuredClone(monarch);
