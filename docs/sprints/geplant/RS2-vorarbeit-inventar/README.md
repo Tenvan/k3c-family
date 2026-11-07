@@ -6,9 +6,9 @@
 - **Reife:** bereit
 - **Tickets:** B-736, B-726, B-731
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-11-07, Chat (Ralf), Revision 1, durch 🧑; umfasst B-736, B-731 Revision 1 und B-726 Revision 1
 
 ## Ausgangslage
 
