@@ -106,6 +106,9 @@ func Loesche(root, id string) (LoeschErgebnis, error) {
 		return LoeschErgebnis{}, err
 	}
 	index, err := ausIndexEntfernen(filepath.Join(filepath.Dir(a.Abs(root)), indexName), id)
+	if err == nil {
+		err = goldenEntfernen(root, a.Gruppe, id)
+	}
 	return LoeschErgebnis{Asset: a, PNGs: n, Index: index}, err
 }
 
