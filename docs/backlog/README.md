@@ -96,7 +96,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-684](B-684-studio-ausschnitt-rahmen-und-einpassen.md) | DEV | Idee | mittel | eingeplant | GRJ2 | Die Ausschnitt-Bearbeitung zeigt wahlweise einen Rahmen und passt die Grafik in die Kachel ein |
 | [B-685](B-685-zielmass-grafiken-skalieren.md) | CLI | Idee | hoch | eingeplant | GRJ2 | Grafiken bekommen ein Zielmaß in der Ausgabe und werden dort passend skaliert |
 | [B-695](B-695-flaky-simrun-tempdir-balancing-abbruch.md) | DEV | Problem | niedrig | offen | – | Zwei Tests flackern: simrun-TempDir-Cleanup und Abbruch eines wartenden Laufs |
-| [B-696](B-696-gebaeude-in-allen-aufloesungen-rendern.md) | DEV | Idee | mittel | offen | – | Gebäude liegen in allen vorgesehenen Auflösungen als Grafik vor |
+| [B-696](B-696-ticket-relationen-und-index-verdichtung.md) | DEV | Idee | mittel | offen | – | Tickets verweisen auf Duplikate und Ersatz, der Index und die Archive bleiben klein |
 | [B-698](B-698-balancing-tests-vorlaeufig-mit-cheats.md) | REG | Schuld | niedrig | offen | – | Balancing-Tests und Simulationen laufen vorläufig mit Cheats und bestehen spätestens im dritten Lauf |
 | [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | – | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
 | [B-700](B-700-alte-pixel-grafik-aufraeumen.md) | CLI | Schuld | mittel | eingeplant | CU1 | Alte Pixel-Grafiken, Register und Gebäude-Renderer werden nach der Papierschnitt-Umstellung entfernt |
@@ -691,3 +691,4 @@ Zeile in diesen Abschnitt.
 | [B-657](archiv/B-657-castlehold-messfenster.md) | DEV | Problem | mittel | erledigt | BAL9 | Die Kennzahl castleHeld misst Nacht 1 bis 5 über den ganzen Lauf, nicht nur über das Fenster des Ziels |
 | [B-707](archiv/B-707-assets-set-golden-veraltet.md) | DEV | Problem | mittel | erledigt | – | assets_set und assets_render lassen golden.json der Gruppe veraltet |
 | [B-701](archiv/B-701-pap-gesammelte-fragen.md) | DEV | Frage | hoch | erledigt | PS1 | PAP: kritische Fragen und vorab getroffene Entscheidungen werden gesammelt von Ralf bestätigt |
+| [B-696](archiv/B-696-gebaeude-in-allen-aufloesungen-rendern.md) | DEV | Idee | mittel | verworfen | – | Gebäude liegen in allen vorgesehenen Auflösungen als Grafik vor |
