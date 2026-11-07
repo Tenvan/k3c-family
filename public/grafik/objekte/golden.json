@@ -1,4 +1,28 @@
 {
+  "ader-eisen": {
+    "renderKey": "c02995bfb01f81be3cd4bfcf7885a2c160a19ba42ac732ef12f7001dc22713bc",
+    "dateien": {
+      "idle.png": "2b86a0adbdcafc905b8b7b203529a5d940b0e34d377d49e3da998d87b86550bc"
+    }
+  },
+  "ader-kristall": {
+    "renderKey": "cc964c563ef59d59aae726daf5cfe4043f630efde853718d19d7c9848c516492",
+    "dateien": {
+      "idle.png": "8e92dea5cf27b18e277ae41ca91b740130034e7e8e89c42d0403ac28b586a8a2"
+    }
+  },
+  "ader-kupfer": {
+    "renderKey": "85e7ea8bb74c744d2add54fe2d4230a67222e3a3dc82548046f6f810a62ae82e",
+    "dateien": {
+      "idle.png": "26c3267aef62da9636bf5042b8ad5400af93008b145eb88bd7af71cff10c0570"
+    }
+  },
+  "ader-stein": {
+    "renderKey": "1871e1d07b1808de5047452fb0739c1bad45f6907a9b65a1cd4eb0440390c9f3",
+    "dateien": {
+      "idle.png": "e6e72580c176c3daac47fde45c4815f2a0f35e3278fb00375ce8a76c95935c22"
+    }
+  },
   "birke": {
     "renderKey": "19e12c4357d44d7e272f021f6b0f1b2e23b2f0307c16a90b985813408c473adb",
     "dateien": {
@@ -9,6 +33,30 @@
     "renderKey": "115eca2849c043e0f931f8f266536b6145e233de34113b963eb874b6a9111d59",
     "dateien": {
       "idle.png": "9a35d0f026b01538bdeee9c0c4595b7d8e969626f245f475b0ff72ecd92a2247"
+    }
+  },
+  "erzbrocken": {
+    "renderKey": "c7525e6d63776ca73cfd82e89ebc249bdeedf74f6236401e4dd10cf7a3c12edd",
+    "dateien": {
+      "idle.png": "f3fed502fca313ed468f0007cf386db94e097961ae8561b35d9389207958f76a"
+    }
+  },
+  "felsen-b": {
+    "renderKey": "9d8bb4b5f633898edc3f4063fd91736fd0fbba6cd611f4b90b724d56d523f261",
+    "dateien": {
+      "idle.png": "262fe5fb79b4bbb7e3800aafe825364e25c1b2a7d945efd51d2ad1854f9383e2"
+    }
+  },
+  "felsen-c": {
+    "renderKey": "31683ebd30172beeeded0575d305cd3df8a9018b32285a2f5d7e6666c8bb1bf2",
+    "dateien": {
+      "idle.png": "a64b95bc096dda568cf8b072bc263b40b6a31a77f0a2d01b50a133107ed753f2"
+    }
+  },
+  "felsen": {
+    "renderKey": "1a9c61cebd39a2716b86d22005f4a1f5c2c8da47d828edad1c622b2c5efb1cca",
+    "dateien": {
+      "idle.png": "113a02c26e4dc0f5108b317f41f77c72be3a7a772d0ea11a6deec055740f9308"
     }
   },
   "hoehlenbusch": {

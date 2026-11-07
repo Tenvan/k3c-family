@@ -1,6 +1,6 @@
 # MG8.2 · Felsen, Erzbrocken und Adern als requisite
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -55,5 +55,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: felsen, felsen-b, felsen-c, erzbrocken, ader-stein, ader-kupfer, ader-eisen, ader-kristall gültig.
+- AC-02 geprüft: `task gen:paper`, `objekte/golden.json` ergänzt, fremde Gruppen zurückgesetzt; `tools/paper` 187/187 grün.
+- AC-03 geprüft: jedes Asset mit `assets_preview` angesehen. Befund: Eisenbänder in `ader-eisen` heben sich kaum vom Stein ab (kein dunkles Metall-Material, D-MG8-02).
+- Keine neuen Tickets.

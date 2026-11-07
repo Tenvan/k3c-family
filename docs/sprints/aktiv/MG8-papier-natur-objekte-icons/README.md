@@ -59,7 +59,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | MG8.1 | `MG8.1-baeume-bueesche.md` | Umsetzung | autonom | fertig |
-| MG8.2 | `MG8.2-fels-erz.md` | Umsetzung | autonom | offen |
+| MG8.2 | `MG8.2-fels-erz.md` | Umsetzung | autonom | fertig |
 | MG8.3 | `MG8.3-truhe-portal-schilder.md` | Umsetzung | autonom | offen |
 | MG8.4 | `MG8.4-muenzen-gold-icons.md` | Umsetzung | autonom | offen |
 | MG8.5 | `MG8.5-material-icons.md` | Umsetzung | autonom | offen |

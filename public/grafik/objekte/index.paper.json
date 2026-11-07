@@ -1,5 +1,25 @@
 [
   {
+    "id": "ader-eisen",
+    "rig": "requisite",
+    "manifest": "ader-eisen/manifest.json"
+  },
+  {
+    "id": "ader-kristall",
+    "rig": "requisite",
+    "manifest": "ader-kristall/manifest.json"
+  },
+  {
+    "id": "ader-kupfer",
+    "rig": "requisite",
+    "manifest": "ader-kupfer/manifest.json"
+  },
+  {
+    "id": "ader-stein",
+    "rig": "requisite",
+    "manifest": "ader-stein/manifest.json"
+  },
+  {
     "id": "birke",
     "rig": "requisite",
     "manifest": "birke/manifest.json"
@@ -8,6 +28,26 @@
     "id": "busch",
     "rig": "requisite",
     "manifest": "busch/manifest.json"
+  },
+  {
+    "id": "erzbrocken",
+    "rig": "requisite",
+    "manifest": "erzbrocken/manifest.json"
+  },
+  {
+    "id": "felsen-b",
+    "rig": "requisite",
+    "manifest": "felsen-b/manifest.json"
+  },
+  {
+    "id": "felsen-c",
+    "rig": "requisite",
+    "manifest": "felsen-c/manifest.json"
+  },
+  {
+    "id": "felsen",
+    "rig": "requisite",
+    "manifest": "felsen/manifest.json"
   },
   {
     "id": "hoehlenbusch",

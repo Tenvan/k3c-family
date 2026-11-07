@@ -1,0 +1,27 @@
+{
+  "id": "ader-kupfer",
+  "version": 1,
+  "specHash": "2cbb8e93ce2009ebed57550ebc7eb46a21e7f0139f74cbd5dbddfaef93168c5b",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "85e7ea8bb74c744d2add54fe2d4230a67222e3a3dc82548046f6f810a62ae82e",
+  "rahmen": [
+    -36,
+    -64,
+    72,
+    66
+  ],
+  "frameW": 76,
+  "frameH": 70,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 1,
+      "datei": "idle.png",
+      "hashes": [
+        "3fa840e77bad0efe04c2fe81bba67635b47f8a36a9990e49471c012bbf787ef1"
+      ]
+    }
+  },
+  "varianten": []
+}

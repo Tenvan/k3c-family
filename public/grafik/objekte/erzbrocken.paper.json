@@ -1,0 +1,103 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "erzbrocken",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Erzbrocken: grauer Steinbrocken mit glänzenden kupferroten Erzeinschlüssen",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-16 0L-14 -12L-4 -20L8 -18L16 -8L16 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-16 0L-14 -12L-4 -20L-1.2 -18L-2.4 -8L-2.4 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M-4 -19L15 -8",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-2 -10C-2 -11.66 -3.79 -13 -6 -13C-8.21 -13 -10 -11.66 -10 -10C-10 -8.34 -8.21 -7 -6 -7C-3.79 -7 -2 -8.34 -2 -10Z",
+          "material": "fell-fuchs",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-6 -13C-7.65 -13 -9 -11.65 -9 -10C-9 -8.35 -7.65 -7 -6 -7C-6.9 -8.5 -6.9 -11.5 -6 -13Z",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M9 -12C9 -13.38 7.66 -14.5 6 -14.5C4.34 -14.5 3 -13.38 3 -12C3 -10.62 4.34 -9.5 6 -9.5C7.66 -9.5 9 -10.62 9 -12Z",
+          "material": "fell-fuchs",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M6 -14.5C4.62 -14.5 3.5 -13.38 3.5 -12C3.5 -10.62 4.62 -9.5 6 -9.5C5.25 -10.75 5.25 -13.25 6 -14.5Z",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M5 -4C5 -5.1 3.66 -6 2 -6C0.34 -6 -1 -5.1 -1 -4C-1 -2.9 0.34 -2 2 -2C3.66 -2 5 -2.9 5 -4Z",
+          "material": "fell-fuchs",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M2 -6C0.9 -6 0 -5.1 0 -4C0 -2.9 0.9 -2 2 -2C1.4 -3 1.4 -5 2 -6Z",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [7, -13.5],
+          "radius": 1.1
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [-5, -11.5],
+          "radius": 1.1
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 28,
+    "rahmen": [-20, -24, 40, 26]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

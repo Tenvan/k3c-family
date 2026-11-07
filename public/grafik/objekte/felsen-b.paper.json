@@ -1,0 +1,76 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "felsen-b",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Findling: hoher, aufrechter grauer Felsblock mit Riss und Moosflecken",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-16 0L-18 -20L-12 -40L-2 -48L8 -44L16 -26L18 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-16 0L-18 -20L-12 -40L-2 -48L-1.2 -44L-2.4 -26L-2.7 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M-2 -47L15 -26",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-6 -30L2 -36L6 -22L-2 -18Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-4 -44L-8 -24L-4 -8",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6 -2C-6 -3.38 -8.69 -4.5 -12 -4.5C-15.31 -4.5 -18 -3.38 -18 -2C-18 -0.62 -15.31 0.5 -12 0.5C-8.69 0.5 -6 -0.62 -6 -2Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M15 -40C15 -41.1 12.76 -42 10 -42C7.24 -42 5 -41.1 5 -40C5 -38.9 7.24 -38 10 -38C12.76 -38 15 -38.9 15 -40Z",
+          "material": "smaragd"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 57,
+    "rahmen": [-24, -52, 48, 54]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}
