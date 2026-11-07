@@ -10,7 +10,7 @@ tasks:
       - sh: command -v go
         msg: Go fehlt (requirements.md)
     cmds:
-      - go test {{.GO_TEST_FLAGS}} ./...
+      - go test {{.GO_TEST_FLAGS}} {{.GO_PKGS | default "./..."}}
 
   lint:
     desc: golangci-lint
@@ -19,7 +19,7 @@ tasks:
       - sh: command -v golangci-lint
         msg: golangci-lint fehlt (requirements.md)
     cmds:
-      - golangci-lint run
+      - golangci-lint run {{.GO_LINT_PKGS}}
 
   race:
     desc: go test -race für engine/ (braucht cgo und einen C-Compiler; ohne Compiler nur ein Hinweis, B-077)

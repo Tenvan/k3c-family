@@ -122,6 +122,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-722](B-722-hintergruende-neu-ohne-baeume.md) | PAP | Problem | hoch | eingeplant | MG11 | Hintergründe sind neu gestaltet, mit Tiefe und ohne Bäume |
 | [B-723](B-723-natur-icons-muenze.md) | PAP | Problem | mittel | eingeplant | MG11 | Natur hat Spielhöhe und mehrere Formen, Icons sind bei 32 px lesbar, die Münze dreht sich |
 | [B-724](B-724-spielbefunde-ps1.md) | CLI | Problem | hoch | eingeplant | US3 | Im Spiel stehen Bogenschützen auf der Plattform, Reiten passt zum Tempo, Bäume und Tor haben die richtige Größe |
+| [B-730](B-730-check-diff-schneller.md) | INF | Problem | hoch | offen | – | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel |
 
 ## Archiv
 

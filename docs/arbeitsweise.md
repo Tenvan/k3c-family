@@ -122,9 +122,12 @@ Eine Session pro Lauf. Eine Review-Session nie im selben Lauf wie eine Umsetzung
 Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und Freigaben. Deshalb:
 
 - **Prüfstufen:** Während der Arbeit nur gezielte Tests (`go test ./engine/sim/ -run TestX`, `check_run go:test` oder
-  `task:test` mit `pattern`). Vor dem Commit **genau einmal** `task check:diff`: Es wählt Client, Go, k3c-workbench (samt `tools/assetkit`)
-  und Starter nach dem Diff zu `origin/develop`, je Tool getrennt nach Go-Tests, Lint und Vitest, und ruft `go test -short`.
-  Den vollen Satz (`task check`, `task check:go`, `task check:race`) fährt nur
+  `task:test` mit `pattern`). Vor dem Commit **genau einmal** `task check:diff` (B-730): Basis ist der nächste
+  Integrations-Branch (jüngster Merge-Base aus `origin/develop` und den `origin/feature/*` in HEAD, `CHECK_BASE=` überschreibt).
+  Nur Doku → nur Planungs- und Regel-Tests. Go: nur geänderte Pakete und ihre Abnehmer (`-short`), Lint nur die geänderten;
+  Vitest mit `--changed`; JS und Go parallel. Volle Module nur bei `go.mod`, `Taskfile.yml`, `testdata/`, `.github/`.
+  **Takt:** einmal je Session-Commit. Nach einem Merge der Basis in den Sprint-Branch kein neuer Lauf, wenn der eigene
+  Diff unverändert ist (die Basis ist schon geprüft). Den vollen Satz (`task check`, `task check:go`, `task check:race`) fährt nur
   die Review-Session, `task check:all` nur der Release. Ein roter Lauf wird behoben und einmal wiederholt, nicht
   mehrfach „zur Sicherheit“.
 - **Lange Tests (B-619):** Ein Go-Test, der über etwa 3 s braucht (echte Git-Repos, `go build`, lange Lauf-Simulationen,

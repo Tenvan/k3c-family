@@ -37,7 +37,7 @@ task               # alle Aufgaben anzeigen (Go Task, Taskfile.yml; einziger Ein
 task install       # Abhängigkeiten holen
 task dev           # Dev-Server (auch im LAN erreichbar, Port 5183)
 task test          # Vitest (Level-Generator, reine Logik); Filter: task test -- planning
-task check:diff    # nur die Prüfungen, die der Diff zu origin/develop braucht (einmal vor jedem Commit)
+task check:diff    # nur die Prüfungen, die der eigene Diff zum Integrations-Branch braucht (einmal vor jedem Commit, B-730)
 task check         # Lint + Typecheck + Tests des Clients, parallel
 task check:go      # go test + golangci-lint (Rechner mit Go)
 task check:race    # Go-Race-Detector (langsam; Review-Session, check:all, CI)
