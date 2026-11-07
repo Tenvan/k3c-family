@@ -1,0 +1,49 @@
+{
+  "id": "kristallherz-waechter",
+  "version": 1,
+  "specHash": "e8eb4be4c6ddb7f49730f8b8fa3c55d9bef40c0a8a26864831d898232be65fd2",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "419afbde66d63804f77467db6a0977f932b6fc3e07e93a3e0b64a64a6c960ca2",
+  "rahmen": [
+    -82,
+    -134,
+    164,
+    136
+  ],
+  "frameW": 347,
+  "frameH": 288,
+  "animationen": {
+    "angriff": {
+      "frames": 8,
+      "fps": 12,
+      "datei": "angriff.png",
+      "hashes": [
+        "4a96ffe9627ef3a6a0458d53cf8a5bb23cdee63f566ee9eb7ff7f5c57548da96",
+        "af0b317ee26771c15236cf8a5f49aa795dce0bd62fd6b8015c11833c5af777ec",
+        "360536cbf8188781a08c232b1f2fe0e07041424891ad77f4537b2f0a83bab958",
+        "f5455e730b2add6ec59aebc85e14a59668504da435fd7f00f4d55cfd3b5e0f7b",
+        "0af0fe188d727fedbfdfb0a5b08b235f9fd8a5cd44d5747b001c4b592f1f2820",
+        "aa2bd828a1fd46ea23e63763f5602eeb7d27675a786a73bb04b264dfe8dbbcc0",
+        "663e3a47c67987ea46c49108ad085946ed600ae0cb41c1e9a6633d28872ae68a",
+        "a265d5039e3806b5fbdf54296d5fada55f0eb2e74584058125393a7d6528fe12"
+      ]
+    },
+    "idle": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "idle.png",
+      "hashes": [
+        "4a96ffe9627ef3a6a0458d53cf8a5bb23cdee63f566ee9eb7ff7f5c57548da96",
+        "5325d9ca55b63ee8f40b1f9ce96b1075ba6fdd5f30d03dbac8000c1580f9c420",
+        "85a5be4f873fc8eed3d046cce8a072239e790822a64f066877cf9f626a534bbb",
+        "9b7bed942e7c4e0a4d4b87bef45275cdc6f5e2451c71b3f313e57defad52dc44",
+        "35b5bd63beb0488abd55fdbaa1edac33c642d88290f53e7db00cc337ed34c259",
+        "9b7bed942e7c4e0a4d4b87bef45275cdc6f5e2451c71b3f313e57defad52dc44",
+        "85a5be4f873fc8eed3d046cce8a072239e790822a64f066877cf9f626a534bbb",
+        "5325d9ca55b63ee8f40b1f9ce96b1075ba6fdd5f30d03dbac8000c1580f9c420"
+      ]
+    }
+  },
+  "varianten": []
+}

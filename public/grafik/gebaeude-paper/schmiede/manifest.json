@@ -1,0 +1,59 @@
+{
+  "id": "schmiede",
+  "version": 1,
+  "specHash": "9bbe48e0b146171723e91619fcd66cd7fd628bd619da274da3a84b5849370341",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "fca4dbaf0bbfbdfa3dce5b036154362f4d4597779af8bb52b186e703a030b6b5",
+  "rahmen": [
+    -96,
+    -128,
+    192,
+    128
+  ],
+  "frameW": 192,
+  "frameH": 128,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "b55e78ad128188697b31b5e98bc36d387c3b8b1352cabaf1f85eff1e3a83452e"
+      ]
+    },
+    "stand.s2": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s2.png",
+      "hashes": [
+        "2bec3637de292783dc0ea62f233341244f9d1e88da6ecfe62d0d3298eed49b6a"
+      ]
+    },
+    "stand.s3": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s3.png",
+      "hashes": [
+        "87eb49cc0cb2de42b890eea5a42eed285ac7b8e2fb4d72d9bb1d1496bb127e17"
+      ]
+    },
+    "stand.s4": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s4.png",
+      "hashes": [
+        "602f5facc4a8f7c3f57f223254fefb9cadb9c1c938fb01e2a710d134dd5c2768"
+      ]
+    },
+    "stand.s5": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s5.png",
+      "hashes": [
+        "1887066abaefba8848a9e9ee38d9b442616cf2092b48763b8d78246790630e39"
+      ]
+    }
+  },
+  "varianten": []
+}

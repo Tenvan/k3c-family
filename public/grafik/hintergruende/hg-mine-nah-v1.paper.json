@@ -1,0 +1,283 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "hg-mine-nah-v1",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Hintergrund Schachtwand mit Gerüst, nahe Ebene, Variante 1: periodisches Profil, kachelt waagrecht.",
+  "teile": [
+    {
+      "id": "grund",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 0l0 -25 32 -3 32 -2 32 1 32 3 32 1 32 1 32 3 32 4 32 2 32 -2 32 -4 32 -3 32 1 32 2 32 1 32 0 32 2 32 2 32 0 32 -4 32 -4 32 -1 32 1 32 -1 0 25Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 0l0 -11 32 -1 32 0 32 1 32 1 32 1 32 1 32 2 32 0 32 -1 32 -1 32 1 32 1 32 0 32 -2 32 -2 32 -1 32 0 32 -1 32 0 32 2 32 2 32 1 32 -2 32 -2 0 11Z",
+          "material": "stein",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [384, -240]
+    },
+    {
+      "id": "balken",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M272 0l0 -480 43 0 0 480ZM512 0l0 -480 47 0 0 480ZM253 -391l0 -22 323 0 0 22ZM263 -355l0 -18 303 0 0 18Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M272 0l0 -480 13 0 0 480ZM512 0l0 -480 14 0 0 480ZM253 -391l0 -6 323 0 0 6Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M307 0l0 -480 8 0 0 480ZM551 0l0 -480 8 0 0 480Z",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M289 -60L293 -100M289 -150L293 -190M289 -240L293 -280M289 -330L293 -370M289 -420L293 -460M531 -60L536 -100M531 -150L536 -190M531 -240L536 -280M531 -330L536 -370M531 -420L536 -460",
+          "material": "holz"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [293, -402],
+          "radius": 2.6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [293, -364],
+          "radius": 2.6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [536, -402],
+          "radius": 2.6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [536, -364],
+          "radius": 2.6,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [384, -240]
+    },
+    {
+      "id": "vorn",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -30l0 -6 768 0 0 6Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M4 -22l0 -10 30 0 0 10ZM60 -22l0 -10 30 0 0 10ZM116 -22l0 -10 30 0 0 10ZM172 -22l0 -10 30 0 0 10ZM228 -22l0 -10 30 0 0 10ZM284 -22l0 -10 30 0 0 10ZM340 -22l0 -10 30 0 0 10ZM396 -22l0 -10 30 0 0 10ZM452 -22l0 -10 30 0 0 10ZM508 -22l0 -10 30 0 0 10ZM564 -22l0 -10 30 0 0 10ZM620 -22l0 -10 30 0 0 10ZM676 -22l0 -10 30 0 0 10ZM732 -22l0 -10 30 0 0 10Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M407 -40l-10 -70 140 0 -10 70Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M407 -40l-10 -70 26 0 6 70Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M409 -108C409 -121 435 -132 467 -132C499 -132 525 -121 525 -108Z",
+          "material": "linie"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [423, -128],
+          "radius": 6.7,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [438, -120],
+          "radius": 5.1,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [453, -121],
+          "radius": 6.2,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [468, -122],
+          "radius": 4.1,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [483, -116],
+          "radius": 6.1,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [498, -126],
+          "radius": 5.8,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [513, -126],
+          "radius": 5.6,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [429, -38],
+          "radius": 11
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [429, -38],
+          "radius": 4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [505, -38],
+          "radius": 11
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [505, -38],
+          "radius": 4,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M289 -12l0 -54 53 0 0 54ZM137 -20l0 -60 60 0 0 60Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M289 -12l0 -54 11 0 0 54ZM137 -20l0 -60 13 0 0 60Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M289 -12L342 -66M289 -66L342 -12M137 -20L197 -80M137 -80L197 -20",
+          "material": "holz"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [56, -22],
+          "radius": 4
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [118, -21],
+          "radius": 4.7
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [193, -19],
+          "radius": 4.7
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [294, -10],
+          "radius": 4.7
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [326, -15],
+          "radius": 4.7
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [442, -16],
+          "radius": 4.7
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [485, -15],
+          "radius": 4.5
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [552, -15],
+          "radius": 4.1
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [639, -15],
+          "radius": 4.2
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [700, -17],
+          "radius": 3.7
+        }
+      ],
+      "pivot": [384, -240]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 480,
+    "rahmen": [0, -480, 768, 480]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

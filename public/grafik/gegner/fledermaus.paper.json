@@ -1,0 +1,254 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "fledermaus",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Fledermaus: braune Fledermaus mit violetten Flughäuten, roten Augen und Fangzähnen; flattert, stößt herab",
+  "teile": [
+    {
+      "eltern": "korpus",
+      "id": "fluegel-h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M2 -42C-4 -50 -10 -58 -16 -66C-22 -66 -28 -64 -34 -58C-30 -56 -28 -53 -28 -50C-24 -51 -20 -50 -18 -46C-14 -47 -10 -46 -8 -42Z",
+          "material": "purpur",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M2 -42C-4 -50 -10 -58 -16 -66C-14 -58 -10 -50 -6 -43Z",
+          "material": "purpur",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-2 -44L-28 -60",
+          "material": "haar",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-6 -44L-26 -51",
+          "material": "haar",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-8 -43L-18 -47",
+          "material": "haar",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -42]
+    },
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-8 -40C-8 -46 -2 -48 4 -47C9 -46 11 -42 10 -37C9 -33 4 -31 -1 -32C-6 -33 -8 -36 -8 -40Z",
+          "material": "haar"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-8 -40C-8 -46 -2 -48 4 -47C-1 -44 -3 -38 -1 -32C-6 -33 -8 -36 -8 -40Z",
+          "material": "haar",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M5 -47L6 -55L10 -46Z",
+          "material": "haar"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M6.5 -48L7 -52L9 -47Z",
+          "material": "haut",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M8 -46C12 -46 15 -44 15 -41C14 -39 11 -38 8 -39Z",
+          "material": "haar"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [10.5, -43],
+          "radius": 1.3,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [10.9, -43.3],
+          "radius": 0.4
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [14.6, -41.6],
+          "radius": 0.8
+        },
+        {
+          "art": "flaeche",
+          "form": "M10 -39L10.6 -36.5L11.4 -39Z",
+          "material": "weiss"
+        },
+        {
+          "art": "flaeche",
+          "form": "M12 -39.2L12.5 -37L13.2 -39.4Z",
+          "material": "weiss"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-4 -33L-5 -29",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M0 -32L0 -28.5",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -40]
+    },
+    {
+      "eltern": "korpus",
+      "id": "fluegel-v",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M2 -42C-4 -50 -10 -58 -16 -66C-22 -66 -28 -64 -34 -58C-30 -56 -28 -53 -28 -50C-24 -51 -20 -50 -18 -46C-14 -47 -10 -46 -8 -42Z",
+          "material": "purpur"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M2 -42C-4 -50 -10 -58 -16 -66C-14 -58 -10 -50 -6 -43Z",
+          "material": "purpur",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-2 -44L-28 -60",
+          "material": "haar",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-6 -44L-26 -51",
+          "material": "haar",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-8 -43L-18 -47",
+          "material": "haar",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -42]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 91,
+    "rahmen": [-46, -84, 82, 86]
+  },
+  "animationen": {
+    "angriff": {
+      "fps": 14,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "fluegel-h": 0,
+            "fluegel-v": 20,
+            "korpus": -10
+          }
+        },
+        {
+          "t": 0.3,
+          "winkel": {
+            "fluegel-h": 60,
+            "fluegel-v": 70,
+            "korpus": 50
+          }
+        },
+        {
+          "t": 0.55,
+          "winkel": {
+            "fluegel-h": 60,
+            "fluegel-v": 70,
+            "korpus": 50
+          }
+        },
+        {
+          "t": 0.75,
+          "winkel": {
+            "fluegel-h": -90,
+            "fluegel-v": -100,
+            "korpus": 20
+          }
+        }
+      ]
+    },
+    "idle": {
+      "fps": 8,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "fluegel-h": 15,
+            "fluegel-v": 40,
+            "korpus": 3
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "fluegel-h": -70,
+            "fluegel-v": -100,
+            "korpus": -3
+          }
+        }
+      ]
+    },
+    "lauf": {
+      "fps": 14,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "fluegel-h": 30,
+            "fluegel-v": 60,
+            "korpus": 5
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "fluegel-h": -80,
+            "fluegel-v": -110,
+            "korpus": -5
+          }
+        }
+      ]
+    }
+  }
+}

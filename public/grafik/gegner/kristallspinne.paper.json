@@ -1,0 +1,475 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "kristallspinne",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Kristallspinne: dunkle Steinspinne mit blau glimmenden Augen und Kristallen auf dem Hinterleib, acht Beine; krabbelt, bäumt sich zum Biss auf",
+  "teile": [
+    {
+      "eltern": "korpus",
+      "id": "bein-1h",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 2.2,
+          "form": "M-3 -22L-23 -14",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M-23 -14L-29 0",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [-23, -14],
+          "radius": 1.4,
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-30 -3L-29 0L-28 -3Z",
+          "material": "edelstein"
+        }
+      ],
+      "pivot": [-3, -22]
+    },
+    {
+      "eltern": "korpus",
+      "id": "bein-2h",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 2.2,
+          "form": "M1 -20L-11 -24",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M-11 -24L-13 0",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [-11, -24],
+          "radius": 1.4,
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-14 -3L-13 0L-12 -3Z",
+          "material": "edelstein"
+        }
+      ],
+      "pivot": [1, -20]
+    },
+    {
+      "eltern": "korpus",
+      "id": "bein-3h",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 2.2,
+          "form": "M5 -20L9 -24",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M9 -24L13 0",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [9, -24],
+          "radius": 1.4,
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M12 -3L13 0L14 -3Z",
+          "material": "edelstein"
+        }
+      ],
+      "pivot": [5, -20]
+    },
+    {
+      "eltern": "korpus",
+      "id": "bein-4h",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 2.2,
+          "form": "M9 -22L25 -18",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M25 -18L31 0",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [25, -18],
+          "radius": 1.4,
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M30 -3L31 0L32 -3Z",
+          "material": "edelstein"
+        }
+      ],
+      "pivot": [9, -22]
+    },
+    {
+      "eltern": "korpus",
+      "id": "hinterleib",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-8 -18C-14 -14 -26 -14 -32 -20C-36 -26 -34 -34 -26 -36C-18 -38 -10 -32 -8 -24Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-8 -18C-14 -14 -26 -14 -32 -20C-34 -24 -34 -28 -32 -31C-28 -24 -18 -20 -8 -21Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-28 -34L-26 -46L-20 -35Z",
+          "material": "edelstein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-28 -34L-26 -46L-24 -35Z",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-20 -36L-15 -44L-13 -33Z",
+          "material": "edelstein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-20 -36L-15 -44L-16 -35Z",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-33 -26L-40 -32L-32 -21Z",
+          "material": "edelstein"
+        }
+      ],
+      "pivot": [-8, -20]
+    },
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-9 -20C-9 -26 -4 -28 2 -28C9 -28 14 -25 15 -20C15 -15 10 -12 2 -12C-5 -12 -9 -15 -9 -20Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-9 -20C-9 -26 -4 -28 2 -28C-2 -24 -3 -18 -1 -12C-6 -13 -9 -16 -9 -20Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M4 -28C9 -28 13 -26 14 -22C11 -25 8 -26 4 -26Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsblau",
+          "mitte": [10, -23],
+          "radius": 1.2,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsblau",
+          "mitte": [12.6, -21.6],
+          "radius": 0.9,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsblau",
+          "mitte": [8, -24.8],
+          "radius": 0.8,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-2 -28L0 -34L3 -28Z",
+          "material": "edelstein"
+        }
+      ],
+      "pivot": [0, -20]
+    },
+    {
+      "eltern": "korpus",
+      "id": "kiefer",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M13 -17C16 -16 18 -13 17 -10C16 -12 14 -14 12 -15Z",
+          "material": "weiss"
+        },
+        {
+          "art": "flaeche",
+          "form": "M14 -19C18 -18 20 -15 19.5 -12C18 -14 16 -16 13.5 -17Z",
+          "material": "weiss"
+        }
+      ],
+      "pivot": [14, -17]
+    },
+    {
+      "eltern": "korpus",
+      "id": "bein-1",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 2.2,
+          "form": "M-6 -22L-26 -14",
+          "material": "stein"
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M-26 -14L-32 0",
+          "material": "stein"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [-26, -14],
+          "radius": 1.4
+        },
+        {
+          "art": "flaeche",
+          "form": "M-33 -3L-32 0L-31 -3Z",
+          "material": "edelstein"
+        }
+      ],
+      "pivot": [-6, -22]
+    },
+    {
+      "eltern": "korpus",
+      "id": "bein-2",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 2.2,
+          "form": "M-2 -20L-14 -24",
+          "material": "stein"
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M-14 -24L-16 0",
+          "material": "stein"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [-14, -24],
+          "radius": 1.4
+        },
+        {
+          "art": "flaeche",
+          "form": "M-17 -3L-16 0L-15 -3Z",
+          "material": "edelstein"
+        }
+      ],
+      "pivot": [-2, -20]
+    },
+    {
+      "eltern": "korpus",
+      "id": "bein-3",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 2.2,
+          "form": "M2 -20L6 -24",
+          "material": "stein"
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M6 -24L10 0",
+          "material": "stein"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [6, -24],
+          "radius": 1.4
+        },
+        {
+          "art": "flaeche",
+          "form": "M9 -3L10 0L11 -3Z",
+          "material": "edelstein"
+        }
+      ],
+      "pivot": [2, -20]
+    },
+    {
+      "eltern": "korpus",
+      "id": "bein-4",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 2.2,
+          "form": "M6 -22L22 -18",
+          "material": "stein"
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M22 -18L28 0",
+          "material": "stein"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [22, -18],
+          "radius": 1.4
+        },
+        {
+          "art": "flaeche",
+          "form": "M27 -3L28 0L29 -3Z",
+          "material": "edelstein"
+        }
+      ],
+      "pivot": [6, -22]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 59,
+    "rahmen": [-46, -50, 92, 56]
+  },
+  "animationen": {
+    "angriff": {
+      "fps": 12,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        },
+        {
+          "t": 0.35,
+          "winkel": {
+            "bein-3": -20,
+            "bein-3h": -15,
+            "bein-4": -55,
+            "bein-4h": -50,
+            "kiefer": 20,
+            "korpus": -12
+          }
+        },
+        {
+          "t": 0.55,
+          "winkel": {
+            "bein-4": 8,
+            "bein-4h": 6,
+            "kiefer": -10,
+            "korpus": 6
+          }
+        },
+        {
+          "t": 0.8,
+          "winkel": {
+            "korpus": 2
+          }
+        }
+      ]
+    },
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "hinterleib": 0,
+            "kiefer": 0
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "hinterleib": -3,
+            "kiefer": 10
+          }
+        }
+      ]
+    },
+    "lauf": {
+      "fps": 14,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "bein-1": 12,
+            "bein-1h": -12,
+            "bein-2": -12,
+            "bein-2h": 12,
+            "bein-3": 12,
+            "bein-3h": -12,
+            "bein-4": -12,
+            "bein-4h": 12,
+            "korpus": -1
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "bein-1": -12,
+            "bein-1h": 12,
+            "bein-2": 12,
+            "bein-2h": -12,
+            "bein-3": -12,
+            "bein-3h": 12,
+            "bein-4": 12,
+            "bein-4h": -12,
+            "korpus": 1
+          }
+        }
+      ]
+    }
+  }
+}

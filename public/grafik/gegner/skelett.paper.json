@@ -1,0 +1,604 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "skelett",
+  "rig": "figur",
+  "version": 1,
+  "beschreibung": "Skelett: Knochen ohne Fleisch, rostiges Schwert, zerfetzter Schild; hackt zu",
+  "teile": [
+    {
+      "eltern": "rumpf",
+      "id": "oberarm-h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-1.8 -86L1.8 -86L1.44 -70L-1.44 -70Z",
+          "material": "hermelin",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-1.8 -86L0 -86L0 -70L-1.44 -70Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -86],
+          "radius": 3
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -70],
+          "radius": 2.6,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -84]
+    },
+    {
+      "eltern": "oberarm-h",
+      "id": "unterarm-h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-1.8 -70L1.8 -70L1.44 -55L-1.44 -55Z",
+          "material": "hermelin",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-1.8 -70L0 -70L0 -55L-1.44 -55Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -70],
+          "radius": 3
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -55],
+          "radius": 2.6,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3.5 -55C-4.5 -51 -3 -47 0 -46.5C3 -47 4.5 -51 3.5 -55Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-1 -50L-1 -46",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M1.5 -50L1.5 -46.5",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -70]
+    },
+    {
+      "eltern": "unterarm-h",
+      "id": "schild",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-14 -66C-14 -53 -11 -40 0 -32C11 -40 14 -53 14 -66Z",
+          "material": "stoff"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-12 -64C-12 -53 -9.5 -42 0 -35C9.5 -42 12 -53 12 -64Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 -64C-12 -53 -9.5 -42 0 -35L0 -64Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [0, -52],
+          "radius": 3.2
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [0.7, -52.7],
+          "radius": 1.3,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -49]
+    },
+    {
+      "eltern": "rumpf",
+      "id": "oberschenkel-h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-2.2 -50L2.2 -50L1.76 -29L-1.76 -29Z",
+          "material": "hermelin",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-2.2 -50L0 -50L0 -29L-1.76 -29Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -50],
+          "radius": 3.4
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -29],
+          "radius": 3,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -50]
+    },
+    {
+      "eltern": "oberschenkel-h",
+      "id": "unterschenkel-h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-2 -28L2 -28L1.6 -4L-1.6 -4Z",
+          "material": "hermelin",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-2 -28L0 -28L0 -4L-1.6 -4Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -28],
+          "radius": 3.2
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -4],
+          "radius": 2.8,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4 -4C-4 0 -2 1 1 1L10 1C12 1 12 -2 9 -3L3 -5H-3Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-4 -4C-4 0 -2 1 1 1L1 -5H-3Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -28]
+    },
+    {
+      "eltern": "rumpf",
+      "id": "oberschenkel-v",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-2.2 -50L2.2 -50L1.76 -29L-1.76 -29Z",
+          "material": "hermelin",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-2.2 -50L0 -50L0 -29L-1.76 -29Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -50],
+          "radius": 3.4
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -29],
+          "radius": 3,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -50]
+    },
+    {
+      "eltern": "oberschenkel-v",
+      "id": "unterschenkel-v",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-2 -28L2 -28L1.6 -4L-1.6 -4Z",
+          "material": "hermelin",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-2 -28L0 -28L0 -4L-1.6 -4Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -28],
+          "radius": 3.2
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -4],
+          "radius": 2.8,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4 -4C-4 0 -2 1 1 1L10 1C12 1 12 -2 9 -3L3 -5H-3Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-4 -4C-4 0 -2 1 1 1L1 -5H-3Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -28]
+    },
+    {
+      "id": "rumpf",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-1.8 -90L1.8 -90L1.8 -50L-1.8 -50Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-12 -54C-10 -46 10 -46 12 -54L8 -58H-8Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 -54C-10 -46 0 -46 0 -46L0 -58H-8Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 2.4,
+          "form": "M-10 -86C-14 -80 -12 -76 -4 -76",
+          "material": "hermelin",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 2.4,
+          "form": "M10 -86C14 -80 12 -76 4 -76",
+          "material": "hermelin",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 2.2,
+          "form": "M-11 -79C-15 -73 -13 -69 -4 -69",
+          "material": "hermelin"
+        },
+        {
+          "art": "falz",
+          "breite": 2.2,
+          "form": "M11 -79C15 -73 13 -69 4 -69",
+          "material": "hermelin"
+        },
+        {
+          "art": "falz",
+          "breite": 2,
+          "form": "M-10 -72C-13 -67 -11 -63 -4 -63",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 2,
+          "form": "M10 -72C13 -67 11 -63 4 -63",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-12 -92C-6 -95 6 -95 12 -92L12 -89C6 -91 -6 -91 -12 -89Z",
+          "material": "hermelin"
+        }
+      ],
+      "pivot": [0, -50]
+    },
+    {
+      "eltern": "rumpf",
+      "id": "kopf",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-1.6 -98H1.6V-89H-1.6Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-11 -106C-12 -117 -5 -124 3 -123.5C12 -123 17 -116 17 -108C17 -103 15 -100 12 -99L12 -95H2L1 -98C-5 -99 -10 -101 -11 -106Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-11 -106C-12 -117 -5 -124 3 -123.5C-2 -119 -4 -111 -2 -98C-6 -99 -10 -101 -11 -106Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [10, -110.5],
+          "radius": 3
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [10.6, -110.8],
+          "radius": 0.9,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M14.5 -105L16 -102L13.5 -102Z",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M3 -98H12",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M5 -99V-96",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M8 -99V-96",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M11 -99V-96",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -90]
+    },
+    {
+      "eltern": "rumpf",
+      "id": "oberarm-v",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-1.8 -86L1.8 -86L1.44 -70L-1.44 -70Z",
+          "material": "hermelin",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-1.8 -86L0 -86L0 -70L-1.44 -70Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -86],
+          "radius": 3
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -70],
+          "radius": 2.6,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -84]
+    },
+    {
+      "eltern": "oberarm-v",
+      "id": "unterarm-v",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-1.8 -70L1.8 -70L1.44 -55L-1.44 -55Z",
+          "material": "hermelin",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-1.8 -70L0 -70L0 -55L-1.44 -55Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -70],
+          "radius": 3
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -55],
+          "radius": 2.6,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3.5 -55C-4.5 -51 -3 -47 0 -46.5C3 -47 4.5 -51 3.5 -55Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-1 -50L-1 -46",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M1.5 -50L1.5 -46.5",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -70]
+    },
+    {
+      "eltern": "unterarm-v",
+      "id": "schwert",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-3.25 -48.01L-0.99 -45.75L-5.23 -41.5L-7.5 -43.77Z",
+          "material": "leder"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [-7.07, -41.93],
+          "radius": 2.2
+        },
+        {
+          "art": "flaeche",
+          "form": "M0.35 -58.55L9.55 -49.35L7.42 -47.23L-1.77 -56.42Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3.25 -55.65L6.65 -52.25L33.09 -79.55L35.36 -84.36L30.55 -82.09Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M3.25 -55.65L4.95 -53.95L35.36 -84.36L30.55 -82.09Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M8.13 -56.42L30.76 -79.05",
+          "material": "stein"
+        }
+      ],
+      "pivot": [0, -49]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 192,
+    "rahmen": [-60, -175, 150, 181]
+  },
+  "animationen": {
+    "angriff": {
+      "fps": 14,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "oberarm-h": 10,
+            "oberarm-v": -50,
+            "schwert": 75,
+            "unterarm-v": -40
+          }
+        },
+        {
+          "t": 0.35,
+          "winkel": {
+            "kopf": 4,
+            "oberarm-h": 25,
+            "oberarm-v": -165,
+            "rumpf": -6,
+            "schwert": 26,
+            "unterarm-v": -10
+          }
+        },
+        {
+          "t": 0.55,
+          "winkel": {
+            "kopf": -3,
+            "oberarm-h": -10,
+            "oberarm-v": -85,
+            "rumpf": 8,
+            "schwert": 142,
+            "unterarm-v": 0
+          }
+        },
+        {
+          "t": 0.75,
+          "winkel": {
+            "oberarm-h": 0,
+            "oberarm-v": -55,
+            "rumpf": 4,
+            "schwert": 146,
+            "unterarm-v": -10
+          }
+        }
+      ]
+    },
+    "idle": {
+      "frames": 8
+    },
+    "lauf": {
+      "frames": 8
+    }
+  }
+}

@@ -22,10 +22,10 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | MG1 | Papierschnitt-Migration: Monarch und Spielerfarben | aktiv |
 | MG2 | Papierschnitt-Migration: Reittiere | aktiv |
 | MG3 | Papierschnitt-Migration: Truppen | aktiv |
-| MG4 | Papierschnitt-Migration: Gegner | geplant |
-| MG5 | Papierschnitt-Migration: Bosse | geplant |
-| MG6 | Papierschnitt-Migration: Gebäude mit Ausbaustufen | geplant |
-| MG7 | Papierschnitt-Migration: Hintergründe je Biom | geplant |
+| MG4 | Papierschnitt-Migration: Gegner | aktiv |
+| MG5 | Papierschnitt-Migration: Bosse | aktiv |
+| MG6 | Papierschnitt-Migration: Gebäude mit Ausbaustufen | erledigt |
+| MG7 | Papierschnitt-Migration: Hintergründe je Biom | aktiv |
 | MG8 | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | geplant |
 | US1 | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | geplant |
 | PS1 | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | geplant |

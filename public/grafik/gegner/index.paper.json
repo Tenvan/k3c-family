@@ -1,0 +1,87 @@
+[
+  {
+    "id": "alphawolf",
+    "rig": "vierbeiner",
+    "manifest": "alphawolf/manifest.json"
+  },
+  {
+    "id": "eisenkaefer",
+    "rig": "requisite",
+    "manifest": "eisenkaefer/manifest.json"
+  },
+  {
+    "id": "feuergeist",
+    "rig": "requisite",
+    "manifest": "feuergeist/manifest.json"
+  },
+  {
+    "id": "fledermaus",
+    "rig": "requisite",
+    "manifest": "fledermaus/manifest.json"
+  },
+  {
+    "id": "gier",
+    "rig": "figur",
+    "manifest": "gier/manifest.json"
+  },
+  {
+    "id": "goblin-bogenschuetze",
+    "rig": "figur",
+    "manifest": "goblin-bogenschuetze/manifest.json"
+  },
+  {
+    "id": "goblin",
+    "rig": "figur",
+    "manifest": "goblin/manifest.json"
+  },
+  {
+    "id": "grubengeist",
+    "rig": "requisite",
+    "manifest": "grubengeist/manifest.json"
+  },
+  {
+    "id": "hoehlentroll",
+    "rig": "figur",
+    "manifest": "hoehlentroll/manifest.json"
+  },
+  {
+    "id": "kristallspinne",
+    "rig": "requisite",
+    "manifest": "kristallspinne/manifest.json"
+  },
+  {
+    "id": "kristallwaechter",
+    "rig": "figur",
+    "manifest": "kristallwaechter/manifest.json"
+  },
+  {
+    "id": "lavaschleim",
+    "rig": "requisite",
+    "manifest": "lavaschleim/manifest.json"
+  },
+  {
+    "id": "rattenschwarm",
+    "rig": "requisite",
+    "manifest": "rattenschwarm/manifest.json"
+  },
+  {
+    "id": "skelett",
+    "rig": "figur",
+    "manifest": "skelett/manifest.json"
+  },
+  {
+    "id": "splitterling",
+    "rig": "requisite",
+    "manifest": "splitterling/manifest.json"
+  },
+  {
+    "id": "wolf",
+    "rig": "vierbeiner",
+    "manifest": "wolf/manifest.json"
+  },
+  {
+    "id": "zombie",
+    "rig": "figur",
+    "manifest": "zombie/manifest.json"
+  }
+]

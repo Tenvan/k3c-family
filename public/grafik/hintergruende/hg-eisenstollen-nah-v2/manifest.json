@@ -1,0 +1,27 @@
+{
+  "id": "hg-eisenstollen-nah-v2",
+  "version": 1,
+  "specHash": "711d56192173e37d339038b773d8c205856578191fb692703cfcb67255a58136",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "b14ac6ee8743e5155c667c2d1f084ff280bf2ade049240aea30916899f30a4b8",
+  "rahmen": [
+    0,
+    -480,
+    768,
+    480
+  ],
+  "frameW": 768,
+  "frameH": 480,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "d2b094f291d475b4b426439e239a8d3cf44c2c3a4c40dc5dacba03cbd877d665"
+      ]
+    }
+  },
+  "varianten": []
+}

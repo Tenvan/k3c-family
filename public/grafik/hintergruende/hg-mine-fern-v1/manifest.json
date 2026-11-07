@@ -1,0 +1,27 @@
+{
+  "id": "hg-mine-fern-v1",
+  "version": 1,
+  "specHash": "306f8dd3985cf9159088e8c1edf9ea2c63f91d11afa8a0ebebde2c3909225b17",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "c5051c8a1fe6e532a51ff81376d2258673cdc880b0e7d9d610a58188a2662c13",
+  "rahmen": [
+    0,
+    -480,
+    768,
+    480
+  ],
+  "frameW": 768,
+  "frameH": 480,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "8c8e24457567536d19250e4e1e2472b6e6dadb2eed508e25203aff00f163a986"
+      ]
+    }
+  },
+  "varianten": []
+}

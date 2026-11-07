@@ -15,6 +15,9 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | MG1 | PAP | PAP | Papierschnitt-Migration: Monarch und Spielerfarben | – | `aktiv/MG1-papier-monarch-spielerfarben/` |
 | MG2 | PAP | PAP | Papierschnitt-Migration: Reittiere | – | `aktiv/MG2-papier-reittiere/` |
 | MG3 | PAP | PAP | Papierschnitt-Migration: Truppen | – | `aktiv/MG3-papier-truppen/` |
+| MG5 | PAP | PAP | Papierschnitt-Migration: Bosse | – | `aktiv/MG5-papier-bosse/` |
+| MG4 | PAP | PAP | Papierschnitt-Migration: Gegner | – | `aktiv/MG4-papier-gegner/` |
+| MG7 | PAP | PAP | Papierschnitt-Migration: Hintergründe je Biom | – | `aktiv/MG7-papier-hintergruende/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | `aktiv/BD10-schreibende-endpunkte-schutz/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
@@ -36,10 +39,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
 | US1 | CLI | PAP | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | – | Entwurf | `geplant/US1-spiel-auf-papierschnitt/` |
-| MG4 | CLI | PAP | Papierschnitt-Migration: Gegner | – | Entwurf | `geplant/MG4-papier-gegner/` |
-| MG5 | CLI | PAP | Papierschnitt-Migration: Bosse | – | Entwurf | `geplant/MG5-papier-bosse/` |
-| MG6 | CLI | PAP | Papierschnitt-Migration: Gebäude mit Ausbaustufen | – | Entwurf | `geplant/MG6-papier-gebaeude/` |
-| MG7 | CLI | PAP | Papierschnitt-Migration: Hintergründe je Biom | – | Entwurf | `geplant/MG7-papier-hintergruende/` |
 | MG8 | CLI | PAP | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | – | Entwurf | `geplant/MG8-papier-natur-objekte-icons/` |
 | PS1 | CLI | PAP | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | – | Entwurf | `geplant/PS1-papierschnitt-sichtpruefungen/` |
 | CU1 | CLI | PAP | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | – | Entwurf | `geplant/CU1-alte-grafik-aufraeumen/` |
@@ -291,3 +290,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BAL9 | Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance | `erledigt/BAL9-meilenstein-1-nachtraege/` |
 | PV1 | INF, DEV, PAP | `erledigt/PV1-papierschnitt-vertraege/` |
 | WB1 | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | `erledigt/WB1-workbench-development-assets/` |
+| MG6 | Papierschnitt-Migration: Gebäude mit Ausbaustufen | `erledigt/MG6-papier-gebaeude/` |
