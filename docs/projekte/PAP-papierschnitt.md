@@ -28,7 +28,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | MG7 | Papierschnitt-Migration: Hintergründe je Biom | aktiv |
 | MG8 | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | aktiv |
 | US1 | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | erledigt |
-| PS1 | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | geplant |
+| PS1 | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | aktiv |
 | CU1 | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | geplant |
 
 ## Nicht-Ziele

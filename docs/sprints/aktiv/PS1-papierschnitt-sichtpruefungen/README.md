@@ -1,11 +1,11 @@
 # PS1 · CLI · Papierschnitt-Sichtprüfungen und Abnahmen gebündelt
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** PAP
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-699, B-701
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** bbf99760
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** autonom, Claude
