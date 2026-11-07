@@ -5,12 +5,12 @@
 - **Prio:** hoch
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** –
+- **Sprint:** WZ40
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude (Ralf: "Autonom freigeben", 2026-11-07)
 
 ## Ausgangslage
 
@@ -22,7 +22,7 @@
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+🧑 Ralf (entscheidet, nimmt ab); Agenten, die vor jedem Session-Commit `check:diff` fahren.
 
 ## Anforderungen
 
@@ -35,19 +35,23 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Vollständige Prüfung in der Review-Session und CI bleibt unverändert (`check`, `check:go`, `check:race`). Flackernde Go-Tests: B-704.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Nur sh, git, go, bunx (check_run startet task ohne Git-Bash-PATH). Lange Go-Tests überspringen sich mit `testing.Short()` (B-619). Prozess nur in `docs/arbeitsweise.md`.
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+- Reiner Doku-Commit → nur `tests/planning*.test.ts` und `tests/projectRules.test.ts`, Ausgabe `· nur Doku`.
+- Änderung in `engine/sim/` → Ausgabe nennt `engine/sim` und seine Abnehmer.
+- `go.mod` geändert → volle Go-Module.
+- `CHECK_BASE=<ref>` → überschreibt die Basis.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+- Kein `origin/feature/*` in HEAD → Basis ist der Merge-Base mit `origin/develop`.
+- Merge-Base nicht ermittelbar → Basis bleibt leer, `git diff` schlägt fehl und der Lauf bricht ab (kein stilles Grün).
 
 ## Akzeptanzkriterien
 
@@ -57,8 +61,8 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine (Spec autonom freigegeben, keine offenen Fragen; Umsetzung lag bereits mit #509 auf develop)
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Umsetzung kam mit PR #509 (Taskfile `check:diff`, `docs/arbeitsweise.md` › Tempo im Lauf). Sprint WZ40 belegt die Kriterien und schließt das Ticket.
