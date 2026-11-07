@@ -2,9 +2,9 @@
   "id": "ader-stein",
   "version": 1,
   "specHash": "9d319d23de5c769960ecf3022b10221491ed72958fafbb1759ef2419ed7fbcd8",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "1871e1d07b1808de5047452fb0739c1bad45f6907a9b65a1cd4eb0440390c9f3",
+  "renderKey": "8516d2c027f174b8fb05debcac50282fc4ec58ff52704aa2bda7557447e1797a",
   "rahmen": [
     -36,
     -64,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "5f2fd680e3b289a860ba324fbe83aa6bb6314a528503c6378277001888cc85b9"
+        "23509445ea1f933e56c6509de69b6bc24536965df51dad1f0967a4993e31901d"
       ]
     }
   },

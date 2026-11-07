@@ -2,9 +2,9 @@
   "id": "taverne",
   "version": 1,
   "specHash": "2812a588a7b3ebee4d133d96e777f8862d52fc5d6a4281cfb311fe5139cbafd4",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "867511b89846d125b8c90201be954cf4d17a7b067aa887c0149090aae7bfcae8",
+  "renderKey": "b0b68d8b2174e7eb20fe1d819fa3e6b215fd4ad2a8f394249e35a987dbe1309c",
   "rahmen": [
     -96,
     -128,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "fff6428febc126c4ec05adc059415eec2bf6a0c3ee991159503efe8e23337ae1"
+        "ed1dabecd918ce38e3953213d3437d64d8f567b4c882745ef77a46abd3f2014a"
       ]
     },
     "stand.s2": {
@@ -27,7 +27,7 @@
       "fps": 8,
       "datei": "stand.s2.png",
       "hashes": [
-        "17bf02f6ef7bea74cff4861f2363ec4570e9c174f94b5d2564944de6a4c9055b"
+        "f3f7a69560b7135070f276983705bc5ce461365fa1e501fa7eb40f4c2e841121"
       ]
     },
     "stand.s3": {
@@ -35,7 +35,7 @@
       "fps": 8,
       "datei": "stand.s3.png",
       "hashes": [
-        "2da17bb0a72d84dedc747a5c64ca5953fe0bf9395e497e09671e5664f17ed0ee"
+        "021c193653e9d3de12a0c6f51d0c4cf346207c53aeb0d7e140d424bf92dcb3f8"
       ]
     },
     "stand.s4": {
@@ -43,7 +43,7 @@
       "fps": 8,
       "datei": "stand.s4.png",
       "hashes": [
-        "349fe15990e4c97e6c9ec1f6f5916a5ceb1c5dec4ce08cc1d6e9242694f05ae2"
+        "3b44bc048fd171658395417f2bef4201b0a03c3a6c0372db4b3bce68a9726214"
       ]
     },
     "stand.s5": {
@@ -51,7 +51,7 @@
       "fps": 8,
       "datei": "stand.s5.png",
       "hashes": [
-        "ac465d1b5d7a1631a5264d06a58f1c63edaf66f320f426617d2f51aee695c392"
+        "65237f0b7f3da890723f483f5d7012ee7021c90c7009f3d9b2e0cc78b2db315c"
       ]
     }
   },

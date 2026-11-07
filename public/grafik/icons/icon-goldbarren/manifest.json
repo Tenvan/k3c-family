@@ -2,9 +2,9 @@
   "id": "icon-goldbarren",
   "version": 1,
   "specHash": "4816561d9b6ffa72deac14fc47c1f20d63fb73fcfa8632f156c01e3c4dbd3450",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "56fda0fdc26f6e3d8ac03adc35d7bd3d60e15ebe6b1ad14ccc30f7f01bbfb2d8",
+  "renderKey": "57bac56cc6717e2211fec4ce504269b1a77493234e0850cba6a67332429dd3b7",
   "rahmen": [
     -16,
     -32,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "32d63d0907f9db462ec1a2fa8a289f3654db3f127ecfd070375225580109dc10"
+        "d4b392ea52b1c8e7dd434f0015f57cc669a5012459c8ca534bc84317bf34b0ca"
       ]
     }
   },

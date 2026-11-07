@@ -32,7 +32,7 @@ export function rendereAsset(spec: Spec, k: Kontext): Asset {
   const basis = frameGroesse(spec.ausgabe);
   for (const a of ausgaben(spec)) {
     const bild = bildVon(spec, a, k), g = bild.groesse;
-    const r = rastere(streifenSvg(bild.frames.map((f) => f.svg), g, defs(k.stil, spec.id)));
+    const r = rastere(streifenSvg(bild.frames.map((f) => f.svg), g, defs(k.stil, spec.id, g.frameH / g.rahmen[3])));
     const datei = `${a.schluessel}.png`;
     pngs.push([datei, r.png]);
     const eigen = g.eigen || g.frameW !== basis.frameW || g.frameH !== basis.frameH ? { rahmen: g.rahmen, frameW: g.frameW, frameH: g.frameH } : {};

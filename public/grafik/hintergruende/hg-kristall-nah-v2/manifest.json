@@ -2,9 +2,9 @@
   "id": "hg-kristall-nah-v2",
   "version": 1,
   "specHash": "a8b1b57d679f244e87522c1136a3c5b848a5c3f7134f68485846df57f335f706",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "c7d402eda4721316d83a11b96a0093020cb719221d415207dc73f2e46eaca66d",
+  "renderKey": "635f3a07521fe0d14a38ac2bbe5cb493ea04abdcc87fc1a913f81305d7929239",
   "rahmen": [
     0,
     -480,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "183aeb2dcea07361740d4f36cb7009712f938c1ccf2c9248fb4a2906360e1ac6"
+        "a28ad125e0d587b55640e085d0475f1d670566f9178196d70cde9da6c4def602"
       ]
     }
   },

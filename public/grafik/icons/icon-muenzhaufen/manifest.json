@@ -2,9 +2,9 @@
   "id": "icon-muenzhaufen",
   "version": 1,
   "specHash": "26b920e794349a8ebe9cfdf06250cb614ae35caaab12fb9de21d325d860fe459",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "ac855e8b42acb8d2bd384e4634e3263e5da3f2baa3dc2b6e889fa70ae304ce3a",
+  "renderKey": "37de352729d42a4b327f0a22815d51f74fe6933d1926367fc7763e02fd7da368",
   "rahmen": [
     -16,
     -32,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "82ee1c1ad90264a5f0e3ab5a995b74a97fd835605a2c5aa00c3f582008722845"
+        "faf604db30dc0d23db5a8f548957785a53b9177019c29542fbcabbc605549057"
       ]
     }
   },

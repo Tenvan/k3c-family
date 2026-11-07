@@ -57,7 +57,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RD2.1 | `RD2.1-stil-schatten.md` | Umsetzung | autonom | in Arbeit |
+| RD2.1 | `RD2.1-stil-schatten.md` | Umsetzung | autonom | fertig |
 | RD2.2 | `RD2.2-stil-materialien.md` | Umsetzung | autonom | offen |
 | RD2.3 | `RD2.3-renderer-sichtbar-renderkey.md` | Umsetzung | autonom | offen |
 | RD2.4 | `RD2.4-renderer-rig-proportionen.md` | Umsetzung | autonom | offen |

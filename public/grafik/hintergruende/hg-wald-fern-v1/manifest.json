@@ -2,9 +2,9 @@
   "id": "hg-wald-fern-v1",
   "version": 1,
   "specHash": "4f0e154ff569e77110d7aafc0101814ca40eea7319934c2dd9c047b889b53427",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "8f6dff29ea56e234104bc0a5ce82896d261553b1d187a28edf157bbbcdb13285",
+  "renderKey": "b602e9772a4406f867fe4265a8f4a3caa5b3e01d91441e28c8fa025736f60a68",
   "rahmen": [
     0,
     -480,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "a8031ceeda0e7f4a3d802e40607678eeb6d623227bc933a2a7176af77017b4a3"
+        "df5ca09020ea853398fb174c840ae00584cdeac7c185f6b7d46fe3d2184afe74"
       ]
     }
   },

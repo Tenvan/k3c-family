@@ -2,9 +2,9 @@
   "id": "erzbrocken",
   "version": 1,
   "specHash": "690f788dd9311e708a05e64266500203b8c5c263dcb38109d524a6760e2bfc9e",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "c7525e6d63776ca73cfd82e89ebc249bdeedf74f6236401e4dd10cf7a3c12edd",
+  "renderKey": "d123b0d5bb488843fe9bc07e62da009aca29120529f3ee6e71767d780cbb06c4",
   "rahmen": [
     -20,
     -24,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "5b3ec46680dcdd3fc72788a22a5f4dc1f2e9e8526beb0da59d6a76501526a9c0"
+        "3a0b63a87fd4b5f244080bf166c8bf0e3a1b080f8135a568e6accc32cc00a4fe"
       ]
     }
   },

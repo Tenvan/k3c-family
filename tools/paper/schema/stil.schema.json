@@ -32,7 +32,7 @@
     "papier": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["lage", "auflage", "struktur", "falz_deckkraft"],
+      "required": ["lage", "auflage", "struktur", "falz_deckkraft", "bezug_px_je_einheit"],
       "properties": {
         "lage": {
           "description": "Schlagschatten jedes Papierstücks",
@@ -70,7 +70,8 @@
             "staerke": { "$ref": "#/$defs/anteil" }
           }
         },
-        "falz_deckkraft": { "type": "number", "minimum": 0, "maximum": 0.25 }
+        "falz_deckkraft": { "type": "number", "minimum": 0, "maximum": 0.25 },
+        "bezug_px_je_einheit": { "description": "Pixeldichte, bei der Schatten und Struktur gemeint sind", "type": "number", "exclusiveMinimum": 0 }
       }
     },
     "licht": { "enum": ["rechts-oben"] },

@@ -2,9 +2,9 @@
   "id": "icon-stein",
   "version": 1,
   "specHash": "ee7fffa3a501d00e14bfb01029165f9e062a0e0f0e86ee283bdfe221a56ad70e",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "ee13a34bf8e4dca328b1f19214886a1647e89827ae24f5ba94a8c3ae1d4d574d",
+  "renderKey": "55cba13953ebeec87dcc722c92d890de6ff94da09113b53171ac083c9adcce34",
   "rahmen": [
     -16,
     -32,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "edcf89fb5807d650bf005f30c0e63f3de4664cdc967cf26af4763c4bf2467aad"
+        "d82d4706b51042e045464fa549ea6124ce3ff37809dabe0c8f9429550386e981"
       ]
     }
   },

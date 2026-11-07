@@ -2,9 +2,9 @@
   "id": "schmiede",
   "version": 1,
   "specHash": "9bbe48e0b146171723e91619fcd66cd7fd628bd619da274da3a84b5849370341",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "fca4dbaf0bbfbdfa3dce5b036154362f4d4597779af8bb52b186e703a030b6b5",
+  "renderKey": "7b409dbcf1b3cb8af11c288a509acc7d3af221841ec98d42d766c143c02a5ade",
   "rahmen": [
     -96,
     -128,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "b55e78ad128188697b31b5e98bc36d387c3b8b1352cabaf1f85eff1e3a83452e"
+        "b9929b787590eb2a24e96934acb029a402b8ffaf7347278771a4830ca38e027f"
       ]
     },
     "stand.s2": {
@@ -27,7 +27,7 @@
       "fps": 8,
       "datei": "stand.s2.png",
       "hashes": [
-        "2bec3637de292783dc0ea62f233341244f9d1e88da6ecfe62d0d3298eed49b6a"
+        "c847f7822d6d722fa1fef26a7ad72e017097f8a85c47a4e6c90a0a3481111d80"
       ]
     },
     "stand.s3": {
@@ -35,7 +35,7 @@
       "fps": 8,
       "datei": "stand.s3.png",
       "hashes": [
-        "87eb49cc0cb2de42b890eea5a42eed285ac7b8e2fb4d72d9bb1d1496bb127e17"
+        "1f1102d796a47c398b4eb1e1696bd9cf2f01e15723328cbd5fbd8ffb6cc1b881"
       ]
     },
     "stand.s4": {
@@ -43,7 +43,7 @@
       "fps": 8,
       "datei": "stand.s4.png",
       "hashes": [
-        "602f5facc4a8f7c3f57f223254fefb9cadb9c1c938fb01e2a710d134dd5c2768"
+        "0f69d0a0036eb05d5e292da96210af7f11873716aa75d766e91f4c05c3ea7e3d"
       ]
     },
     "stand.s5": {
@@ -51,7 +51,7 @@
       "fps": 8,
       "datei": "stand.s5.png",
       "hashes": [
-        "1887066abaefba8848a9e9ee38d9b442616cf2092b48763b8d78246790630e39"
+        "25309d061222f7cfab4910a06b0109fc4a77e57157627fdfb7a6491ba7ddfad7"
       ]
     }
   },

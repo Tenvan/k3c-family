@@ -2,9 +2,9 @@
   "id": "schild-spitzhacke",
   "version": 1,
   "specHash": "73352f06063f9bfd73abf8c8607c5d962140d998221b7607cb41500671695e1b",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "374420e4126f6ab2c43acfd4e7ce3404ad8e9f601a1dc4e28de9ef6ba880a1c8",
+  "renderKey": "100b9940932f4104262a06195ad76cf78789da77ea7e72a51d7e7570a6292d99",
   "rahmen": [
     -17,
     -46,
@@ -19,10 +19,10 @@
       "fps": 4,
       "datei": "idle.png",
       "hashes": [
-        "f9be13cce8cc90b6cc7ff8faa92e5ac80e49e9ddf4d1bcd20302454ca559b922",
-        "d8f0ec157af90af6b06b240a53b12b6949ae30b516d7bf3342ec9433b8896d11",
-        "fea1ff4d262592dad0c8ed40ffae9f8221b587a180d478e598a971434490684a",
-        "d8f0ec157af90af6b06b240a53b12b6949ae30b516d7bf3342ec9433b8896d11"
+        "7f70dc1e54ea9a8d30e93d41b9c337573f9b72cef5b0b8703a1c1a275a56e252",
+        "251805e44b17b56b2363a1c22d186933509fd232bb7b21f4c8f4c5462203c879",
+        "08c580bd8f869a0c3c097cd43907d3328dce570553e30a050f41ebe055a360f4",
+        "251805e44b17b56b2363a1c22d186933509fd232bb7b21f4c8f4c5462203c879"
       ]
     }
   },

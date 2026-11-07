@@ -2,9 +2,9 @@
   "id": "burg-ausbau",
   "version": 1,
   "specHash": "47217d7a67ee7f9ae3d38e480e9f706ad0997f1a4940fe179970a5f0355bca08",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "c0a1df9b8da28fb401e40b62c1ddee574d2e0aa79c1c61899fbd3404119d0288",
+  "renderKey": "faee7b7c3708a9648b899e54abe427f2856aff1db5c036cdb46a733edc3726cf",
   "rahmen": [
     -128,
     -288,
@@ -27,7 +27,7 @@
       "fps": 8,
       "datei": "stand.s2.png",
       "hashes": [
-        "60cb806e230d4bacf72d9e29e2d102dfd6bdce3c26d1027a8ae7b0c707ac59a5"
+        "3af8c9ef9f53b4c032bf7e879a03733820c426d4b0e58a0556d74debb3c74717"
       ]
     },
     "stand.s3": {
@@ -35,7 +35,7 @@
       "fps": 8,
       "datei": "stand.s3.png",
       "hashes": [
-        "47df21f76dd7a45408767bf678f36c86a7b57481644313295c40889b74a2c791"
+        "dae06e926fdea1ce1af07ad253cdf1a13dfc9e84d405151951fa217e8e76d93d"
       ]
     }
   },

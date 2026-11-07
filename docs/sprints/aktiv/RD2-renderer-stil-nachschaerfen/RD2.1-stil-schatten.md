@@ -1,6 +1,6 @@
 # RD2.1 · Stil: Schatten und Papierstruktur wie der Prototyp
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -57,5 +57,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-11-07, Claude.
+
+- AC-01 umgesetzt, Sichtprüfung offen bei Ralf: Ursache war nicht der Wert (identisch mit dem Prototyp), sondern der Maßstab (Prototyp 3 px je Einheit, Monarch-Frame 1,27). Neues Stil-Feld `papier.bezug_px_je_einheit` = 3; `defs(stil, id, dichte)` rechnet Schatten (× bezug/dichte, Faktor 1…4) und Rausch-Frequenz (÷ Faktor) um, Aufrufer `ausgabe.ts` und `cli/frame.ts` übergeben `frameH / rahmen[3]`. Vergleichsbild vorher/nachher: `.omc/artifacts/rd2-1/vergleich.png` (Monarch idle 1; nachher sichtbarer Schatten und Papierkörnung). Der Vergleich neben dem Prototyp im Browser ist Ralfs Abnahme.
+- Getestet: `svg.test.ts` (Bezugsdichte = Prototyp-Werte, Umrechnung bei 1,27 px, Klemmung 1…4), Schema-Tests, `task check:diff` grün.
+- Alle neun Gruppen neu gerendert (`task gen:paper`), `fixtures.golden.json` neu (gewollte Änderung: alle Hashes, weil sich die Filter ändern).
+- Abweichung vom Tickettext: B-712 sagt „Stil-Werte angleichen“; die Werte waren schon gleich, angeglichen wurde deshalb die Wirkung über das neue Feld.
+- Neue Tickets: keine.

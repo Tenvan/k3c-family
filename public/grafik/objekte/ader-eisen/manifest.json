@@ -2,9 +2,9 @@
   "id": "ader-eisen",
   "version": 1,
   "specHash": "e1d742c473d806deabe23b28b289145e0e70a118e69b3a7d58fbf80a1d63d40d",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "c0191502a058cb1b201e7bb61adb35a789f490676189e142495a6621d4014aff",
+  "renderKey": "1c13bcf15faacfe6b64b89453a091a36c610bb4cf233ef8073539e8ba2d1c867",
   "rahmen": [
     -36,
     -64,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "9327e54b2926b188a9ecc4db93564a2b16c86f97f353003803f0bbb8d99f624f"
+        "486323c48d37143ad5d2a9af136059816c7b61a1ce9634b801550ec0a29ebd1c"
       ]
     }
   },

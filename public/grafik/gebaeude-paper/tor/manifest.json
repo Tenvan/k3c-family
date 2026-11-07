@@ -2,9 +2,9 @@
   "id": "tor",
   "version": 1,
   "specHash": "c7eb77861e08d680f6aa9037b498b811fedc08907ac34f67af3f9f4bb6113a5d",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "3709816563dbf8b9db1339599cc1f5c0b4278b02ae50bf48c82c8f730301925d",
+  "renderKey": "ee3f3593e1378421bc50ebe6abf029a929cd26baa8fb9bfc46b00a33d7506e96",
   "rahmen": [
     -32,
     -128,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "638b5d3301053ffb1dcb6fa8e1b38cd84980ff7ddee4b3bd9f606f734869a773"
+        "2d562dcb1e60157f6e9373d4632f0cc4db0bf9035c8dfd62f0c0e6d4dcdcdc95"
       ]
     },
     "stand.s2": {
@@ -27,7 +27,7 @@
       "fps": 8,
       "datei": "stand.s2.png",
       "hashes": [
-        "49a408ebd7f3c5fff2032717fc2f28460f6c3c8c7d8450dca71c232ad0f1d08a"
+        "35c42a14417f86be378777d811a9968479ca1c0d04d4183a608c472373507803"
       ]
     },
     "stand.s3": {
@@ -35,7 +35,7 @@
       "fps": 8,
       "datei": "stand.s3.png",
       "hashes": [
-        "2cc96586d1c3a838271ce5ee3ec05c5490925a4f271e5e3c0fe9ccac2c65bd03"
+        "d5957c78126f01e09936ae640dbbc337c3f709edf893b237280e366665cd7f43"
       ]
     },
     "stand.s4": {
@@ -43,7 +43,7 @@
       "fps": 8,
       "datei": "stand.s4.png",
       "hashes": [
-        "dccb3f8b0e870a5ace2d2b7580f47999522727a864bd8d708a3442ab203c8bc0"
+        "fb32957b46e5acf25392d3ffff8e25f0f08850165976e87ea8ccda97ee8380b4"
       ]
     },
     "stand.s5": {
@@ -51,7 +51,7 @@
       "fps": 8,
       "datei": "stand.s5.png",
       "hashes": [
-        "82c16fabb52a8929e766893df3943364573fbc139f825eba0a3d49a5ad95ba66"
+        "8624bd616e293b31d48d593334b61c280122dcde29f7ef0f9778044194029fc7"
       ]
     }
   },

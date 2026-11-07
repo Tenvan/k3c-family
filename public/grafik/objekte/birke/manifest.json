@@ -2,9 +2,9 @@
   "id": "birke",
   "version": 1,
   "specHash": "7a846e1791dba1dbe0c351db5730e8165c40d709ec51efc539bed956482c1de2",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "19e12c4357d44d7e272f021f6b0f1b2e23b2f0307c16a90b985813408c473adb",
+  "renderKey": "08a944d76fed2c96ac1cd888fbb013ce5bedfa0f4cd2558a84ef565d49379b58",
   "rahmen": [
     -36,
     -132,
@@ -19,14 +19,14 @@
       "fps": 6,
       "datei": "idle.png",
       "hashes": [
-        "8ffea4d72f65b0121f9275bfb5c68011b5afe040c5458e716760bf8611b6b692",
-        "39b206b888872fe57ef22d2284618c1ddd1130a4859dc96a27a31d96f410fd3b",
-        "0274a982bcf393422ee4d0e1b058af2cedc0297a64c3e3ee8ddcd228cb045ab5",
-        "e3b7c249db08364b4835fdb185255a674525c681eee2aa0522949c9ab504b036",
-        "08cc83d90f73aa0369f380e215d0b23c27a39def55eccc4cfdb48b75c07d9124",
-        "e3b7c249db08364b4835fdb185255a674525c681eee2aa0522949c9ab504b036",
-        "0274a982bcf393422ee4d0e1b058af2cedc0297a64c3e3ee8ddcd228cb045ab5",
-        "39b206b888872fe57ef22d2284618c1ddd1130a4859dc96a27a31d96f410fd3b"
+        "ff03a22d57782badcaf9a437e8252938cd26d6dbffbc2039e8f22f87bd3a838e",
+        "8efe43f97f88068a320aeb6c0f5f0a4652c9d1e1aa850181c68bee2bdff816a1",
+        "b931a5392fa7ffed9b0c7e9bf64d5f0f95f580d28cba78f4caea431d659dff7d",
+        "c10cbc9ef4e4a6e3a753093601ffdc556d5ff8321ebf7126bdc34fcf2da5cbfe",
+        "eae6b6ca08ff40765d7d56c6460c23174007c4f4a307449c5b2fbcfbbac7093c",
+        "c10cbc9ef4e4a6e3a753093601ffdc556d5ff8321ebf7126bdc34fcf2da5cbfe",
+        "b931a5392fa7ffed9b0c7e9bf64d5f0f95f580d28cba78f4caea431d659dff7d",
+        "8efe43f97f88068a320aeb6c0f5f0a4652c9d1e1aa850181c68bee2bdff816a1"
       ]
     }
   },

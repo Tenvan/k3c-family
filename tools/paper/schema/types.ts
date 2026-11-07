@@ -40,6 +40,8 @@ export type Stil = {
     auflage: { dx: number; dy: number; unschaerfe: number; deckkraft: number };
     struktur: { frequenz: number; oktaven: number; staerke: number };
     falz_deckkraft: number;
+    /** Pixeldichte (px je Einheit), bei der Schatten und Struktur gemeint sind (Prototyp: 3). */
+    bezug_px_je_einheit: number;
   };
   licht: 'rechts-oben';
   proportionen: { figur: { kopf_anteil: number; toleranz: number }; vierbeiner: { rumpfhoehe_kopflaengen: number; toleranz: number } };

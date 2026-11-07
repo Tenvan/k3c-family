@@ -2,9 +2,9 @@
   "id": "icon-holz",
   "version": 1,
   "specHash": "8ba9c4ad241be7288fc8a17952d0744a1f34e10ac20cb13ca2fc9a39e244b57c",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "eb88fcc501488ae84dde23ea78284436e5f1752a033ec6b247f147b842690260",
+  "renderKey": "0009fd53ba6c8c7067052b205b92d44d9eb38033f25de6284a800d29cfad831b",
   "rahmen": [
     -16,
     -32,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "9fa46a43390ba2f211e9f2063167a32597c953cc3b574b6c652f1c7cdb4c01cc"
+        "76a84a9d0bb4ae797358bc65e8a8ddfffc9645f776fc1d6caea9fa38a210b7ab"
       ]
     }
   },

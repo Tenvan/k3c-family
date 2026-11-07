@@ -2,9 +2,9 @@
   "id": "hintergrundmauer",
   "version": 1,
   "specHash": "8ea17dbed7dcf72e037c8984b8699fbe48bc0a6132db75f18c388e42f7109721",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "e6a9602a571b8e06a82d5c8e644c4725d365bd7bb1e7d044d0061d3432fbc8dc",
+  "renderKey": "20f482e911ba4ab76bb6d6972871049ffe249508f14bed064ec99ea1473f312d",
   "rahmen": [
     -16,
     -128,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "887d1bc5bd1975802be3d9e5fbe15977a5a9dd1edd9c01468690b1cdadecf7e9"
+        "556fb1007443e83c5d06976200d08b0e11fa8a52a545a659fb7d8b4e88c62ab6"
       ]
     },
     "stand.s2": {
@@ -27,7 +27,7 @@
       "fps": 8,
       "datei": "stand.s2.png",
       "hashes": [
-        "2200febf67d28e48a0fccec0c08bfe55ecacdf35e0d97aa7be9006999cd048eb"
+        "9beaa537112c9fb101dfae66c68a09a671db1144d1ddf5934a98077e4ee4bc3f"
       ]
     },
     "stand.s3": {
@@ -35,7 +35,7 @@
       "fps": 8,
       "datei": "stand.s3.png",
       "hashes": [
-        "f8b4f9933b7f98a2acf71922c9460ec051542020ef3100407bd9751527ac2428"
+        "d057f6df6b11bbce6dd0ebfdc3c96303dcb326a691880a16250d7656af2c7758"
       ]
     },
     "stand.s4": {
@@ -43,7 +43,7 @@
       "fps": 8,
       "datei": "stand.s4.png",
       "hashes": [
-        "ad416a8e4d2d702f3cb609be10598a76c1f748cbbb9b9a3e341adcf7d8c524b8"
+        "b7dc18396bd6659d96d540ff18ea1dc659ff9f3228076036838e552e0daa0314"
       ]
     },
     "stand.s5": {
@@ -51,7 +51,7 @@
       "fps": 8,
       "datei": "stand.s5.png",
       "hashes": [
-        "0dcd64efc6a27c0236224985d3386c74134f7c0fc05008c5003bc2be741b055a"
+        "f07a20916a1b2a148a1d8341a7cfa6f65bf63ba2c1cd60fb6e575c335b6b799c"
       ]
     }
   },

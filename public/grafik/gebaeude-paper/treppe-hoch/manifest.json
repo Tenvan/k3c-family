@@ -2,9 +2,9 @@
   "id": "treppe-hoch",
   "version": 1,
   "specHash": "2cab77e3b0aed4234323a79a7a4bdbb63faca1c4f1abf796b2834b10868326a4",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "905cc9124e4fd4b09edd0da136dd7ff9d7e81febdc2fcbe1f4ad8b898d1c3a8f",
+  "renderKey": "2f92a92962e71f0a697797bb95b8e7528f3ece13b78e92006ab210b5981dcb11",
   "rahmen": [
     -64,
     -128,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "997947876e51ede881ce7dd0822a4aa80743ec95f13e50a8765d691c3735dac4"
+        "164e5a6a5a4a1b297854946a446ed030b97a55998375268252d4be930ef04866"
       ]
     }
   },

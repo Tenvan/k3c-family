@@ -30,6 +30,7 @@ Es gibt **keinen** gemeinsamen Index aller Gruppen; das Spiel liest die Gruppen-
 | `papier.auflage` | Schatten aufgeklebter Lagen: `dx`, `dy`, `unschaerfe`, `deckkraft` (Farbe wie `lage`) |
 | `papier.struktur` | Papierstruktur: `frequenz`, `oktaven` (1–4), `staerke` |
 | `papier.falz_deckkraft` | Deckkraft aller Falze, höchstens 0,25 |
+| `papier.bezug_px_je_einheit` | Pixeldichte, bei der `lage`, `auflage` und `struktur` gemeint sind (Prototyp: 3). Der Renderer rechnet Schatten-Versatz und -Unschärfe mit `bezug / dichte` (Faktor 1…4) um, die Rausch-Frequenz mit dem Kehrwert; `dichte` = `frameH / rahmen[3]` der Ausgabe. Deckkraft und Stärke bleiben. |
 | `licht` | `rechts-oben` (einziger Wert in v1) |
 | `proportionen.figur` | `kopf_anteil` (Soll Kopfhöhe / Rahmenhöhe) und `toleranz` (absolut) |
 | `proportionen.vierbeiner` | `rumpfhoehe_kopflaengen`, `toleranz` (Richtwert, in v1 nicht geprüft) |

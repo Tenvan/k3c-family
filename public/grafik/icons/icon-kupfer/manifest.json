@@ -2,9 +2,9 @@
   "id": "icon-kupfer",
   "version": 1,
   "specHash": "9738215e525aebff08dac89b4bc632a2ac541c9ee9e6a42738e79b9738f0bfac",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "056accf7b549976c3f249ff61270503d83e99d51b76031cfb68b74d1f164e770",
+  "renderKey": "63d9d8bbda64eb90e924a6ee6f1f6d5ef5a9eeec8f65c202fb182fb594a7dddb",
   "rahmen": [
     -16,
     -32,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "9167b74e24f24b6635a5b235502661dcc4c596e2a8dacd4a27c1307c69c7d7f7"
+        "4f64ef0d5efec7485f8559ec592c55cde3bcf2c055a645927f2fde9aeee3b0bd"
       ]
     }
   },

@@ -2,9 +2,9 @@
   "id": "pappel",
   "version": 1,
   "specHash": "e565ff8d05a311637f2278abd8c1cbcea034aa9c10f57427b1360ac6b700e76d",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "b82bbea5c7c8fa21bdfe9fad433db852f8871c68ac257eb287eda85cfe2534b8",
+  "renderKey": "e830dd7cb7e7c6a4ef23f4589b80f970b3e122d9b17a4ab2d5dfc7c7eae03693",
   "rahmen": [
     -24,
     -146,
@@ -19,14 +19,14 @@
       "fps": 6,
       "datei": "idle.png",
       "hashes": [
-        "25aa5d11d0f64a32e60c4e510c44bb9f2a525e471feec0a4f4300512e60ea898",
-        "651919801ee13ffdbb152d30ce53934131304a5ba23f7dc23adf67640655c8db",
-        "8b57a9f5113b200e8237f06efedb27a5179aab80e5b9757e7b7aaa5c88743303",
-        "bc1ee679fc2bb98bda5ab76565549fc5b66b0c6836a0969fe106484d8d198195",
-        "6c59c80f5cc30d514fc8ff4f81108f3f595b4c68083edf95e25cec90f00689f6",
-        "bc1ee679fc2bb98bda5ab76565549fc5b66b0c6836a0969fe106484d8d198195",
-        "8b57a9f5113b200e8237f06efedb27a5179aab80e5b9757e7b7aaa5c88743303",
-        "651919801ee13ffdbb152d30ce53934131304a5ba23f7dc23adf67640655c8db"
+        "e04c697ad441251eac76370ed053b665eec0fe03f6d3cafc8cf80239a277d197",
+        "f1cd05adfd4bc48ad9ac4428273b9ff08043d7f69e644fcdf7e57ef9a8ec5ddd",
+        "d4a84fda6fd96e39ff2a6a37738478457da8acdaaf35a23649cfe13231ee454c",
+        "ef8f2c878fc7f4e156999b5de7559e27dd00d9649665bcc6ee07fce468f5ca54",
+        "9e69505524c59013783fda63e0b5208b26edb7fce1df24007c9bc50224f7a8c4",
+        "ef8f2c878fc7f4e156999b5de7559e27dd00d9649665bcc6ee07fce468f5ca54",
+        "d4a84fda6fd96e39ff2a6a37738478457da8acdaaf35a23649cfe13231ee454c",
+        "f1cd05adfd4bc48ad9ac4428273b9ff08043d7f69e644fcdf7e57ef9a8ec5ddd"
       ]
     }
   },
