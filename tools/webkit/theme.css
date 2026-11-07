@@ -72,6 +72,20 @@ html { scrollbar-width: thin; scrollbar-color: rgb(128 128 128 / 0.45) transpare
 .wk-page { flex: 1; min-width: 0; padding: 20px; }
 .wk-shell-fixed .wk-page { overflow: auto; padding: 12px 20px 20px; }
 
+/* templates/ListDetail (WB2): Kopf, darunter Liste | Detail in voller Höhe (Kopfzeile 61 px + Rand der Seite 2 × 20 px);
+   beide Spalten scrollen je für sich, der Kopf bleibt stehen. */
+.wk-listdetail { display: flex; flex-direction: column; gap: 12px; height: calc(100vh - 104px); min-height: 360px; }
+.wk-listdetail-head { flex: none; display: flex; flex-direction: column; gap: 8px; }
+.wk-listdetail-body { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: var(--wk-list-w, 320px) minmax(0, 1fr); gap: 16px; }
+.wk-listdetail-list { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 6px; scrollbar-gutter: stable; }
+.wk-listdetail-detail { min-height: 0; min-width: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 6px; scrollbar-gutter: stable; }
+
+/* molecules/LoadingNote als Überlage (WB2): Spinner in der Ecke über einer Grafik, ohne Platz im Layout. */
+.wk-loading-overlay { position: absolute; top: 8px; right: 8px; z-index: 2; display: flex; padding: 6px; border-radius: 999px; background: var(--color-panel-translucent); box-shadow: 0 0 0 1px var(--gray-a5); pointer-events: none;
+  opacity: 0; animation: wk-loading-show 1ms linear 180ms forwards; }
+/* erst nach 180 ms sichtbar: schnelle Ladevorgänge (Frames aus dem Cache) blinken nicht */
+@keyframes wk-loading-show { to { opacity: 1; } }
+
 /* atoms/StatusBadge: Punkt in der Farbe des Tons (Badge setzt die Akzentfarbe). */
 .wk-status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-9); flex: none; }
 

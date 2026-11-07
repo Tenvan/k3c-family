@@ -297,3 +297,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | MG5 | Papierschnitt-Migration: Bosse | `erledigt/MG5-papier-bosse/` |
 | MG7 | Papierschnitt-Migration: Hintergründe je Biom | `erledigt/MG7-papier-hintergruende/` |
 | MG8 | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | `erledigt/MG8-papier-natur-objekte-icons/` |
+| WB2 | Review und Katalog: feste Schieber, getrennte Scrollbereiche, Lade-Anzeige | `erledigt/WB2-assets-review-katalog-ruhig/` |

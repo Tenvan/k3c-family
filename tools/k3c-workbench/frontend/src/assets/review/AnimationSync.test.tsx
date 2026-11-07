@@ -18,6 +18,8 @@ const letzte = () => {
   const seite = (b: string) => calls.filter((c) => c[4] === b).at(-1);
   return { vorher: seite('HEAD~1'), nachher: seite('') };
 };
+/** Zeitlimit der Tests, die 16 Frames einzeln rendern: unter Volllast (task check:diff) reichen 5 s nicht (B-704). */
+const LANG = 15_000;
 /** Lässt n Frames im Takt von 125 ms (fps 8) laufen, jeden einzeln gerendert. */
 const tick = async (ms: number) => {
   for (let t = 0; t < ms; t += 125) {
@@ -86,6 +88,29 @@ describe('AnimationSync', () => {
     await tick(125 * 8);
     expect(fake.api.frame.mock.calls.length).toBe(nachEinemDurchlauf);
     expect(nachEinemDurchlauf).toBe(16);
+  }, LANG);
+});
+
+describe('Feste Steuerung (WB2/AC-01)', () => {
+  it('Frame-Player mit festen Breiten, Zähler tabular-nums; Abspielen ändert die Breiten nicht', async () => {
+    vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] });
+    const host = await mount(<Compare asset={monarch} basis="HEAD~1" />);
+    await tick(10);
+    const teile = () => ['play', 'slider', 'count'].map((p) => host.querySelector<HTMLElement>(`[data-part="${p}"]`)?.style.width);
+    const vorher = teile();
+    expect(vorher.every(Boolean)).toBe(true);
+    expect(host.querySelector<HTMLElement>('[data-part="count"]')!.style.fontVariantNumeric).toBe('tabular-nums');
+    await act(async () => button(host, 'Abspielen')!.click());
+    await tick(125 * 3);
+    expect(teile()).toEqual(vorher);
+  });
+});
+
+describe('Review-Befund 6 (WB2.3)', () => {
+  it('Animations-Auswahl hat eine feste Mindestbreite', async () => {
+    const host = await mount(<Compare asset={monarch} basis="HEAD~1" />);
+    const box = host.querySelector<HTMLElement>('[data-part="animation-select"]')!;
+    expect(box.style.width).not.toBe('');
   });
 });
 
@@ -97,5 +122,5 @@ describe('Pixel-Diff beim Abspielen (Befund 4)', () => {
     await act(async () => button(host, 'Abspielen')!.click());
     await tick(125 * 16);
     expect(fake.api.pixelDiff.mock.calls.length).toBe(8);
-  });
+  }, LANG);
 });

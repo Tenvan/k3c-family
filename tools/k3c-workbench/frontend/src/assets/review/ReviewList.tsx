@@ -37,7 +37,7 @@ function Eintrag({ asset, aktiv, onSelect }: { asset: ReviewAsset; aktiv: boolea
 export function ReviewList({ assets, auswahl, onSelect }: { assets: ReviewAsset[]; auswahl: string | null; onSelect: (id: string) => void }) {
   if (assets.length === 0) return <Text color="gray">Keine Asset-Änderung gegen diese Basis.</Text>;
   return (
-    <Flex direction="column" gap="2" style={{ minWidth: 280, maxWidth: 360 }}>
+    <Flex direction="column" gap="2">
       {assets.map((a) => (
         <Eintrag key={a.id} asset={a} aktiv={a.id === auswahl} onSelect={() => onSelect(a.id)} />
       ))}

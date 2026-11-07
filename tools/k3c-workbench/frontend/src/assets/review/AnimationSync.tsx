@@ -1,4 +1,5 @@
-import { Box, Button, Flex, SelectField, Text, ValueSlider } from '@webkit/atoms';
+import { Box, Flex, SelectField } from '@webkit/atoms';
+import { FramePlayer } from '@webkit/molecules';
 import { useEffect } from 'react';
 
 /** Name, Frame-Anzahl und fps einer Animation (aus der Spec des Arbeitsstands). */
@@ -18,7 +19,8 @@ interface Props {
   onSpielt: (spielt: boolean) => void;
 }
 
-/** Gemeinsame Steuerung für Vorher und Nachher: Animation, Frame-Schieber, Abspielen im Takt der fps. */
+/** Gemeinsame Steuerung für Vorher und Nachher: Animation, Frame-Schieber, Abspielen im Takt der fps; feste Breiten über
+ *  den `FramePlayer` (WB2), damit beim Abspielen nichts springt. */
 export function AnimationSync({ animationen, anim, nr, spielt, onAnim, onNr, onSpielt }: Props) {
   const aktuell = animationen.find((a) => a.name === anim);
   const frames = aktuell?.frames ?? 1;
@@ -30,21 +32,16 @@ export function AnimationSync({ animationen, anim, nr, spielt, onAnim, onNr, onS
   }, [spielt, frames, fps, onNr]);
   if (!aktuell) return null;
   return (
-    <Flex gap="3" align="center" wrap="wrap">
-      <SelectField size="1" aria-label="Animation" value={anim} options={animationen.map((a) => ({ value: a.name, label: a.name }))}
-        onChange={(name) => {
-          onAnim(name);
-          onNr(0);
-        }} />
-      <Box style={{ width: 200 }}>
-        <ValueSlider aria-label="Frame" value={nr} min={0} max={Math.max(frames - 1, 0)} onChange={onNr} />
+    <Flex gap="3" align="center" wrap="wrap" data-part="animation">
+      {/* feste Breite: lange und kurze Animationsnamen verschieben den Player nicht (Review-Befund 6) */}
+      <Box data-part="animation-select" style={{ width: '9rem', flex: 'none' }}>
+        <SelectField size="1" aria-label="Animation" value={anim} options={animationen.map((a) => ({ value: a.name, label: a.name }))}
+          onChange={(name) => {
+            onAnim(name);
+            onNr(0);
+          }} />
       </Box>
-      <Text size="1" color="gray">
-        Frame {nr + 1}/{frames}
-      </Text>
-      <Button size="1" variant="soft" onClick={() => onSpielt(!spielt)}>
-        {spielt ? 'Anhalten' : 'Abspielen'}
-      </Button>
+      <FramePlayer frame={nr} frames={frames} playing={spielt} onFrame={onNr} onPlaying={onSpielt} />
     </Flex>
   );
 }

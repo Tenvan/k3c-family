@@ -123,6 +123,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-723](B-723-natur-icons-muenze.md) | PAP | Problem | mittel | eingeplant | MG11 | Natur hat Spielhöhe und mehrere Formen, Icons sind bei 32 px lesbar, die Münze dreht sich |
 | [B-724](B-724-spielbefunde-ps1.md) | CLI | Problem | hoch | eingeplant | US3 | Im Spiel stehen Bogenschützen auf der Plattform, Reiten passt zum Tempo, Bäume und Tor haben die richtige Größe |
 | [B-730](B-730-check-diff-schneller.md) | INF | Problem | hoch | offen | – | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel |
+| [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | offen | – | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
+| [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | offen | – | Die Sound-Seite hat Filter und Prompt-Buttons |
+| [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | offen | – | Die Quellen-Seite hat Filter und Prompt-Buttons |
 
 ## Archiv
 

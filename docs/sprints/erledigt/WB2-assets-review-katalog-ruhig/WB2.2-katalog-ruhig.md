@@ -1,0 +1,66 @@
+# WB2.2 · Katalog: Lade-Anzeige, feste Schieber, getrennte Scrollbereiche
+
+- **Status:** fertig
+- **Typ:** Umsetzung
+- **Agent:** autonom
+- **Domäne:** DEV
+- **Lane:** –
+- **Modell:** –
+- **Umgebung:** offline
+- **Branch:** wb2/2-katalog-ruhig
+- **Abhängig von:** WB2.1
+- **Tickets:** –
+- **Kriterien:** AC-03, AC-04, AC-05
+
+## Ziel
+
+Der Katalog zeigt beim Laden eine Lade-Anzeige, nutzt `FramePlayer` und `ListDetail` aus WB2.1 und hält beim Frame-Laden das alte Bild.
+
+## Kontext
+
+Katalog: `tools/k3c-workbench/frontend/src/assets/catalog/` (`CatalogPage.tsx`, `AssetList.tsx`, `Preview.tsx`, `useCatalog.ts`). `useFrame` liefert bei neuem Schlüssel `frame: null`, bis das Bild da ist; die Bühne fällt zusammen und der Schieber springt. `useCatalog` meldet kein Laden. Bausteine aus WB2.1: `@webkit/molecules` › `FramePlayer`, `@webkit/templates` › `ListDetail`.
+
+## Erlaubte Dateien
+
+- `tools/k3c-workbench/frontend/src/assets/catalog/*`
+- `tools/k3c-workbench/frontend/src/styles/assets.css`
+- `tools/webkit/molecules/LoadingNote.tsx`, `index.ts`, `tools/webkit/theme.css`
+- `docs/sprints/…/WB2-*`
+
+## Nicht-Ziele
+
+Backend-Tempo; Styleguide, Sound, Quellen.
+
+## Schritte
+
+1. Test (rot): Lade-Anzeige beim Laden der Liste, bei Asset-Wahl und beim Frame-Laden; altes Bild bleibt stehen.
+2. Test (rot): Katalog in `ListDetail`, Vorschau mit `FramePlayer`.
+3. Umsetzen.
+4. Browser: Katalog öffnen, Gruppen wechseln, abspielen, Liste scrollen.
+5. `task check:diff`, Commit.
+
+## Fertig, wenn
+
+- [ ] AC-03 Lade-Anzeige (Test, Browser)
+- [ ] AC-04 Katalog getrennt scrollbar (Test, Browser)
+- [ ] AC-05 Katalog-Schieber fest (Test, Browser-Messung)
+- [ ] `task check:diff` grün
+
+## Prüfen
+
+```bash
+task check:diff
+```
+
+Einmal vor dem Commit; während der Arbeit nur gezielte Tests (`docs/arbeitsweise.md` › Tempo im Lauf).
+Review-Session statt dessen: `task check`, `task check:go`, `task check:race` (nacheinander).
+Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑 sie für diesen Lauf freigegeben hat.
+
+## Ergebnis
+
+- AC-03 geprüft: `LoadingNote` (`@webkit/molecules`, Zeile oder Überlage `wk-loading-overlay`, erst nach 180 ms sichtbar); Liste „Lädt Assets …“, Asset-Wahl „Lädt <id> …“, Frame-Laden als Spinner über der Grafik, das alte Bild bleibt (`useFrame` mit Frame-Cache, Vorabladen aller Frames beim Abspielen). Tests `CatalogRuhig.test.tsx`, `LoadingNote.test.tsx`. Browser (Vite 5196, `?mock=1`, 300 ms künstliche Ladezeit je Frame): 60 Proben beim Abspielen, Bühne, Knopf, Schieber und Zähler an einer Position, nie ohne Bild, Spinner nur in der ersten Runde.
+- AC-04 geprüft: Katalog in `ListDetail`, Filter klebt oben in der Liste; Browser 900 × 480: Detail auf scrollTop 142, Liste unverändert.
+- AC-05 geprüft: `FramePlayer` statt eigener Steuerung (Test, Browser-Messung oben).
+- Prüfung: `task check:diff` mit zwei lastabhängigen Timeouts (`tools/paper/fixtures/stub.test.ts`, einzeln 8/8; danach lief der Workbench-Teil nicht mehr), daher `task k3c-workbench:vitest` (Typecheck, Build, 446/446) separat grün. Zwei lange Review-Tests bekamen 15 s Zeitlimit (B-704; Laufzeit wie auf dem Basisstand).
+- Hinweis Ralf (2026-11-07): Lade-Anzeige über die Grafik statt im Layout, umgesetzt.
+- Neue Tickets: keine.
