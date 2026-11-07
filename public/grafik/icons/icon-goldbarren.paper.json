@@ -1,0 +1,93 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "icon-goldbarren",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Goldbarren: drei gestapelte Goldbarren",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-11 -4L-9 -10L-1 -10L1 -4Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-9 -10L-8 -12L-2 -12L-1 -10Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-11 -4L-9 -10L-7 -10L-8 -4Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M1 -4L3 -10L11 -10L13 -4Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3 -10L4 -12L10 -12L11 -10Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M1 -4L3 -10L5 -10L4 -4Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-5 -11L-3 -17L5 -17L7 -11Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3 -17L-2 -19L4 -19L5 -17Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-5 -11L-3 -17L-1 -17L-2 -11Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [6, -14],
+          "radius": 1
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

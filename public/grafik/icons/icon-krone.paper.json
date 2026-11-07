@@ -1,0 +1,90 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "icon-krone",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Krone: goldene Königskrone mit drei Zacken und farbigen Steinen (Monarch)",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12 -8L-14 -24L-7 -16L0 -27L7 -16L14 -24L12 -8Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 -8L-14 -24L-7 -16L-3 -22L-5 -8Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-12 -8L12 -8L12 -4L-12 -4Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [-14, -24],
+          "radius": 1.6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [0, -27],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [14, -24],
+          "radius": 1.6,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M2 -6C2 -6.88 1.1 -7.6 0 -7.6C-1.1 -7.6 -2 -6.88 -2 -6C-2 -5.12 -1.1 -4.4 0 -4.4C1.1 -4.4 2 -5.12 2 -6Z",
+          "material": "koenigsrot",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-5.4 -6C-5.4 -6.72 -6.12 -7.3 -7 -7.3C-7.88 -7.3 -8.6 -6.72 -8.6 -6C-8.6 -5.28 -7.88 -4.7 -7 -4.7C-6.12 -4.7 -5.4 -5.28 -5.4 -6Z",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M8.6 -6C8.6 -6.72 7.88 -7.3 7 -7.3C6.12 -7.3 5.4 -6.72 5.4 -6C5.4 -5.28 6.12 -4.7 7 -4.7C7.88 -4.7 8.6 -5.28 8.6 -6Z",
+          "material": "smaragd",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

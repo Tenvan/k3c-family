@@ -1,0 +1,27 @@
+{
+  "id": "icon-schwerter",
+  "version": 1,
+  "specHash": "910fa23eda732ec439558ec37b732b5b9a582c5bb1c0fc81674f4761a126e375",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "3777c5d3071926ba8c62faa5fb5d7f59a10295fe2ddfeac369147185c2d3751d",
+  "rahmen": [
+    -16,
+    -32,
+    32,
+    32
+  ],
+  "frameW": 32,
+  "frameH": 32,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 1,
+      "datei": "idle.png",
+      "hashes": [
+        "7fe42df20a31855c55ee158ba107cf6275ebe3a17b06f2064c639c0924fcb38f"
+      ]
+    }
+  },
+  "varianten": []
+}

@@ -1,0 +1,70 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "muenze",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Münze: goldene Münze mit Prägung und Glanzpunkt, liegt im Gras und kippelt",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M8 -9C8 -13.42 4.42 -17 0 -17C-4.42 -17 -8 -13.42 -8 -9C-8 -4.58 -4.42 -1 0 -1C4.42 -1 8 -4.58 8 -9Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -17C-4.4 -17 -8 -13.4 -8 -9C-8 -4.6 -4.4 -1 0 -1C-3.2 -5 -3.2 -13 0 -17Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M4.96 -9C4.96 -11.74 2.74 -13.96 0 -13.96C-2.74 -13.96 -4.96 -11.74 -4.96 -9C-4.96 -6.26 -2.74 -4.04 0 -4.04C2.74 -4.04 4.96 -6.26 4.96 -9Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-1.6 -11.8L1.6 -11.8M0 -12.2L0 -5.8",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [3.6, -13],
+          "radius": 0.8
+        }
+      ],
+      "pivot": [0, -9]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 24,
+    "rahmen": [-10, -19, 20, 20]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 8,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": -10
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "icon": 10
+          }
+        }
+      ]
+    }
+  }
+}

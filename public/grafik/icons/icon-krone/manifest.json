@@ -1,0 +1,27 @@
+{
+  "id": "icon-krone",
+  "version": 1,
+  "specHash": "f992b10992446054dc72169de8b7d58a4ffb118258e6343371d5943f0734ec89",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "21eae3c61fc9cb76825da5b8ab6898fd1886368e6b99d63c45f7362e323bc679",
+  "rahmen": [
+    -16,
+    -32,
+    32,
+    32
+  ],
+  "frameW": 32,
+  "frameH": 32,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 1,
+      "datei": "idle.png",
+      "hashes": [
+        "42008c3a4af859a48a9865a6bda5d28d7651fa71842f3df4cb14ec0efd37a460"
+      ]
+    }
+  },
+  "varianten": []
+}

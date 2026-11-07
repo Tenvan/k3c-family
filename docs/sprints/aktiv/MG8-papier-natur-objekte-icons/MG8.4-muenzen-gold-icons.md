@@ -1,6 +1,6 @@
 # MG8.4 · Münze und Gold-Icons als requisite
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -55,5 +55,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: muenze, icon-muenze, icon-muenzstapel, icon-muenzhaufen, icon-pokal, icon-goldbarren, icon-truhe, icon-krone, icon-schwerter gültig (Gruppe `icons`).
+- AC-02 geprüft: `task gen:paper` schreibt `icons/golden.json`, fremde Gruppen zurückgesetzt; `tools/paper` 187/187 grün.
+- AC-03 geprüft: alle mit `assets_preview` angesehen (Münze kippelt ±10°). Befund: Krone und Schwerter reichen bis an den 32-px-Rand; bleibt bis PS1.
+- Abweichung: kein Dreh-Sheet der Münze (requisite kann nicht stauchen), `idle` kippelt statt dessen (D-MG8-03). Keine neuen Tickets.

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "icon-goldbarren",
+    "rig": "requisite",
+    "manifest": "icon-goldbarren/manifest.json"
+  },
+  {
+    "id": "icon-krone",
+    "rig": "requisite",
+    "manifest": "icon-krone/manifest.json"
+  },
+  {
+    "id": "icon-muenze",
+    "rig": "requisite",
+    "manifest": "icon-muenze/manifest.json"
+  },
+  {
+    "id": "icon-muenzhaufen",
+    "rig": "requisite",
+    "manifest": "icon-muenzhaufen/manifest.json"
+  },
+  {
+    "id": "icon-muenzstapel",
+    "rig": "requisite",
+    "manifest": "icon-muenzstapel/manifest.json"
+  },
+  {
+    "id": "icon-pokal",
+    "rig": "requisite",
+    "manifest": "icon-pokal/manifest.json"
+  },
+  {
+    "id": "icon-schwerter",
+    "rig": "requisite",
+    "manifest": "icon-schwerter/manifest.json"
+  },
+  {
+    "id": "icon-truhe",
+    "rig": "requisite",
+    "manifest": "icon-truhe/manifest.json"
+  },
+  {
+    "id": "muenze",
+    "rig": "requisite",
+    "manifest": "muenze/manifest.json"
+  }
+]
