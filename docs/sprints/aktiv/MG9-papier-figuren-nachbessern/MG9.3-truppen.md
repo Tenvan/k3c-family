@@ -1,6 +1,6 @@
 # MG9.3 · Truppen: Angriff zum Gegner, Reste aus MG3
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -55,5 +55,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-11-07, Claude. Sichtprüfung per `assets_preview` und vergrößertem Ausschnitt (Claude); die Abnahme der Optik bleibt bei Ralf. Test: `tools/paper/golden/truppen.test.ts`.
+
+- AC-03 / B-718/AC-01 umgesetzt: Krieger und Elite-Krieger `angriff`: Der Zwischenschlag liegt nicht mehr über dem Kopf (`oberarm-v` −45 statt −165, Unterarm nach vorn, Klinge waagrecht), Schwertarm und Klinge vor dem Körper, Gesicht frei.
+- AC-03 / B-718/AC-02, Punkte aus D-MG3-08: (1) Helm-Nasal: Querbalken und Nasal sitzen am Helmrand über den Augen, das Nasal reicht senkrecht über den Nasenrücken statt als T unter dem Balken über dem Mund (Krieger, Elite) – erledigt. (2) Schild: im Stand nach vorn gehalten (`idle`-Keyframes `oberarm-h`, `unterarm-h`), damit er nicht hinter dem Rumpf verschwindet, sichtbar in idle, lauf, angriff – erledigt. (3) Waffe schwingt in `lauf` nicht mehr voll mit: Schwertarm schwingt nur noch um 10° (Keyframes), Klinge bleibt in Trageposition – erledigt. (4) Stabknauf: Stock des Landstreichers um ein Viertel kürzer (alle Pfade nach unten skaliert), Knauf liegt unter dem Bart – erledigt. (5) Strohhut: Material `leinen` statt `gold` – erledigt.
+- AC-03 / B-717/AC-02 für die Truppen umgesetzt: `give`, `hit`, `death`, `respawn` für alle sechs Truppen (gleiche Keyframes wie der Monarch, Rumpf-Drehung −52°, damit der Kopf im Rahmen bleibt); Sterben und Aufstehen sind einfache Körperdrehungen, optisch schlicht.

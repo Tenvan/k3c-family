@@ -1,50 +1,74 @@
 {
   "bauer": {
-    "renderKey": "025409d4fe7328ce6dce87925922180001165282b20bf39de57fa3ce7a490ae4",
+    "renderKey": "e03f618b7a9121a12c1069c09e6f1de34f852d8fb231a592317f12c954ee6818",
     "dateien": {
-      "angriff.png": "9d15936c84e2eea52921e8470ecdb88b02d6e539d70e2257556f8f688512bb1c",
-      "idle.png": "c5e39382845ac94a45e814fe092f9f7c355fbb0807c6ea6c25c64209339277f4",
-      "lauf.png": "79ae5ac65bed08a4dfdc0e193a48c737acb69080aa2400f7a183b5cf38aa4f3a"
+      "angriff.png": "4369e2f803ad8a6d84563b9574d29c139d6f25253afd2a522e91e520a0924d67",
+      "death.png": "bffa89ea8630bf943c7a3c5bc3470789f12bc20214d508601ca538bac3c2bb6f",
+      "give.png": "cd1399aa9d453a39b80216a3faa72abad98ea2c01af54beed6fb77ccca7948a2",
+      "hit.png": "40bb7c46df1aefac452b976e835731b1621c096a8362fbab0f1625bae760ccc1",
+      "idle.png": "471281acc844d7fa92e2f156064f235518cde6d9876075d07284e777d2d5344a",
+      "lauf.png": "0b3fe39d04b739047f2be49c7303373b50454c6048b16b66393edfcbed211b4b",
+      "respawn.png": "5104690c905756dff38e2b053c530db36e5e98f50c3a8f03ecc65082991f2b18"
     }
   },
   "bogenschuetze": {
-    "renderKey": "b62eba9c81773872609cc73ad71494ea6683f2be4e4c1a6e33b512f2ec0b7ef5",
+    "renderKey": "a6995af350a900f78041340dc1b75b037004a7399e19a07da1a05677c2966bde",
     "dateien": {
       "angriff.png": "8a9a49b9c14c239a501ccadbed0a283b27d4b19945b5e3f48fc97362dbdb8887",
+      "death.png": "00d210043aaca40ae293b61fc2fb2e1bcec5e3c20a06f2761d26c3bd710ee414",
+      "give.png": "c20fb057846a53ed907fc3321a54d930c43dcc2c52e268c013312d45ba5ec787",
+      "hit.png": "bfd07ae04421256dd1332a94c08a10ba9c0cccc0d0e94a512eff290d0412e239",
       "idle.png": "3476906c43753eac00fa6a368d10307d5fa2bb1f66eeada0ad61bc5aed79d334",
-      "lauf.png": "ffbb2ab14aa7da3346fae8a5b1ee0d0629ee12e26ef1032a71dc2d5ea70d8ef8"
+      "lauf.png": "ffbb2ab14aa7da3346fae8a5b1ee0d0629ee12e26ef1032a71dc2d5ea70d8ef8",
+      "respawn.png": "b148aa95174e502f003fdd9d735e3c2367c1badcacf3649ff8cc9ae4be951f40"
     }
   },
   "elite-bogenschuetze": {
-    "renderKey": "7d05738f32fca95e14237b91b441daaa7bbd6d791d57da72571f5e5d00b06a29",
+    "renderKey": "cc21c51634b29ab2c36115a7d582d87a0a229ff3d09c8e3236c215747fdc17a5",
     "dateien": {
       "angriff.png": "c03ca72430b08c3f4f83fe07c68416e1c056f0be463c24c09a81660dd60f90a5",
+      "death.png": "cd50d399140e01aec3aa60c24894c0a38ecbd4e3879403dbe53bd7d3cbe7a3c0",
+      "give.png": "5d623ce167394051754bc79d235138b993c7bac62cc87928a613d1f78fccc792",
+      "hit.png": "940f348e94f620b85230ef11d3da6e0c06acfd7c58ff49a1b7bf163ddec81204",
       "idle.png": "9e063b21616d85c8eb0a43d9ba398cc74ecea125e3b014cb024861b5e44765f6",
-      "lauf.png": "139c9b0c0326030cdd91aee2dba36f3da2557e217ba9e1df055f7d740ffb6a2a"
+      "lauf.png": "139c9b0c0326030cdd91aee2dba36f3da2557e217ba9e1df055f7d740ffb6a2a",
+      "respawn.png": "d1888b0218f5156b03affac9adddfdc6797be57f4c8c6e33e5bcf26ba769e561"
     }
   },
   "elite-krieger": {
-    "renderKey": "a4f47dcd3c66797bb524743881bb2269d09aa7cf734545c3c9a21d2c322ac94a",
+    "renderKey": "d95d5cba898e9b21351c1a0e89b21a20802196deaa78d2268e3ce3567311def0",
     "dateien": {
-      "angriff.png": "fc635816c813de5d2039c5e2a261a89afa86aaa9eac67c4ceddc5a3693ada36b",
-      "idle.png": "be3826e343d4348b104c23b468785c2d3fb728481fd3b0771643d93cbc27add6",
-      "lauf.png": "4912e7eed5bff06f27918fcbcf3a43f56c946abfc573ffba1320052705850a5c"
+      "angriff.png": "21748dc34c84943b3752548bcc8feab533a397a0d9ffe180693960c87b9852c8",
+      "death.png": "95666500d0cdbda6643c6e77e790becb2679493e6da6811a76c14d658b6688f8",
+      "give.png": "fcf78894773ee74204a037f455fe5d2395cd7e2c37bc1d45a11849c6038e6c7c",
+      "hit.png": "3c402d75f690d9e2d98ac30b48bbdc4c48c035be1aa76f5270ad81bae14433af",
+      "idle.png": "d93c38aa3e1a2b193f00f62d815b6fe4519c5d185691d3170a970f042b824a95",
+      "lauf.png": "cd87f12dec2ecb46c83a56e3e6dbd91d317320586e0cea2ce0d8a2eed8706e7f",
+      "respawn.png": "47ef999844ad90a937e8b9f464ee4f3278be7427184a29f3de4537ab9be0fd63"
     }
   },
   "krieger": {
-    "renderKey": "c310e09aac372b32339dfcdf5bab1b173aa69901890d841b91c8c2b0ea42d914",
+    "renderKey": "c95d5306a1f6d0cb92e47a11e916e3c0a9102a3af7711ea963db9d304d4e93b4",
     "dateien": {
-      "angriff.png": "1d6b5d2599da4ec21ec63ffab32830f6d9e3b29e1af14af63527de4dab2dc64b",
-      "idle.png": "661cc75beec3f425e7529d97766620d653a95b169a04798e11c4ce26e467b266",
-      "lauf.png": "6141ab1946a7d017f6b53cbfd68846c7f444d9f00ebb6fdaae34b5d6f07a8036"
+      "angriff.png": "78983c73085b4cacb1db2b84a94406155d2da9091bcf58af34ac04364e87cb55",
+      "death.png": "61bbc3f6c248670a8473f9ab09209cbeba76c792d4e6880ef08b6af60879add1",
+      "give.png": "3bf2db6defbbcf6a5fffc835a118fd8d3713d3c6aff7bdb5b4c9191b108045e6",
+      "hit.png": "61a34a8ab4ff6f7f506fecf68432f3fa6d7b040ec478e3f2a5525873bae6eb7c",
+      "idle.png": "141ee4e8cfeb0676eae35aa437ad5edb8126645f5a63bcafdf6288f13dd1b7fa",
+      "lauf.png": "bb6d00cd1260d4fc692ce687ea6eaee0a412b9a105e9f80f2a48dde8b254737d",
+      "respawn.png": "c7e2d7cb434d3c4af3f63084dc9634f50466f0b5e2d4aa31071c10088871ac29"
     }
   },
   "landstreicher": {
-    "renderKey": "94cc9334420c9d828ed1c485150981e1a8553c288787499ee455498b28f2c38f",
+    "renderKey": "3dd44be378a6d1b45a52e9e0210be6bd6cee09fb98238e1e432b8fb79895cd5a",
     "dateien": {
-      "angriff.png": "9bd6acde91b0d932c79ee61d17f8f6561193314e50ca890498cb19fb6bf0c4d0",
-      "idle.png": "112a23afa7f06bacf6c2edabb1bff657e296089399034a44aea1c9ad2b041904",
-      "lauf.png": "c5ee91f15803c6f4283ccd0c2cd34a12fd709506bc27771c7301260dbf1b3285"
+      "angriff.png": "bd957b4ff49fbfcf40bfcfb53827988ca35a5384227e16a249ed3c455554d105",
+      "death.png": "f6e39fc0fca37cc6e4c6d60c1c22b03e3222a0a974f06700c1a1fd25838fb9db",
+      "give.png": "081736625bc4aacc7e58154634dcaa98e2aba2c6aa0e4ec330f1f2213f71ff5d",
+      "hit.png": "3433f38ad5beebecd8a69ac2c7fe0fe9a90f016c0d907353604d89227c76a8b3",
+      "idle.png": "6f0730dac807d3203113645d89629c11873747a728edf4fe4611ddb96a6f01b6",
+      "lauf.png": "ecefc7346391627412d4d26677f559dfa6c272545e09ab95dbc804ae924f8f3a",
+      "respawn.png": "f2d037a4bee9a85f62a449b04b4573dbc623d3b0480eefc278de54bbf0b42b3a"
     }
   }
 }

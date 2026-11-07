@@ -411,25 +411,25 @@
         {
           "art": "flaeche",
           "form": "M-16 -116C-10 -120 12 -121 21 -116C14 -113 -9 -113 -16 -116Z",
-          "material": "gold"
+          "material": "leinen"
         },
         {
           "art": "flaeche",
           "form": "M-8 -117C-8 -128 12 -130 13 -117Z",
-          "material": "gold"
+          "material": "leinen"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-8 -117C-8 -124 -2 -128 4 -129C-1 -125 -3 -121 -3 -117Z",
-          "material": "gold",
+          "material": "leinen",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 0.8,
           "form": "M-7 -118C0 -119.5 7 -119.5 13 -118",
-          "material": "gold",
+          "material": "leinen",
           "ton": "licht"
         }
       ],
@@ -622,6 +622,171 @@
     },
     "lauf": {
       "frames": 8
+    },
+    "give": {
+      "fps": 10,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "oberarm-v": -30,
+            "unterarm-v": -20,
+            "rumpf": 0,
+            "kopf": 0
+          }
+        },
+        {
+          "t": 0.4,
+          "winkel": {
+            "oberarm-v": -95,
+            "unterarm-v": -5,
+            "rumpf": 5,
+            "kopf": 6
+          }
+        },
+        {
+          "t": 0.7,
+          "winkel": {
+            "oberarm-v": -95,
+            "unterarm-v": -5,
+            "rumpf": 5,
+            "kopf": 6
+          }
+        },
+        {
+          "t": 0.9,
+          "winkel": {
+            "oberarm-v": -40,
+            "unterarm-v": -15,
+            "rumpf": 1,
+            "kopf": 1
+          }
+        }
+      ]
+    },
+    "hit": {
+      "fps": 12,
+      "frames": 6,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "rumpf": 0,
+            "kopf": 0,
+            "oberarm-v": -20,
+            "oberarm-h": 10
+          }
+        },
+        {
+          "t": 0.3,
+          "winkel": {
+            "rumpf": -14,
+            "kopf": -12,
+            "oberarm-v": 35,
+            "oberarm-h": 40,
+            "unterarm-v": -10
+          }
+        },
+        {
+          "t": 0.65,
+          "winkel": {
+            "rumpf": -8,
+            "kopf": -6,
+            "oberarm-v": 15,
+            "oberarm-h": 20
+          }
+        },
+        {
+          "t": 0.9,
+          "winkel": {
+            "rumpf": -2,
+            "kopf": -1,
+            "oberarm-v": -10,
+            "oberarm-h": 5
+          }
+        }
+      ]
+    },
+    "death": {
+      "fps": 8,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "rumpf": 0,
+            "kopf": 0,
+            "oberarm-v": -20,
+            "oberarm-h": 10
+          }
+        },
+        {
+          "t": 0.3,
+          "winkel": {
+            "rumpf": -25,
+            "kopf": -12,
+            "oberarm-v": 40,
+            "oberarm-h": 45,
+            "oberschenkel-v": 15,
+            "unterschenkel-v": 30
+          }
+        },
+        {
+          "t": 0.85,
+          "winkel": {
+            "rumpf": -52,
+            "kopf": -15,
+            "oberarm-v": 70,
+            "oberarm-h": 60,
+            "oberschenkel-v": 25,
+            "unterschenkel-v": 50,
+            "oberschenkel-h": 10,
+            "unterschenkel-h": 35
+          }
+        }
+      ]
+    },
+    "respawn": {
+      "fps": 8,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "rumpf": -52,
+            "kopf": -15,
+            "oberarm-v": 70,
+            "oberarm-h": 60,
+            "oberschenkel-v": 25,
+            "unterschenkel-v": 50,
+            "oberschenkel-h": 10,
+            "unterschenkel-h": 35
+          }
+        },
+        {
+          "t": 0.55,
+          "winkel": {
+            "rumpf": -25,
+            "kopf": -8,
+            "oberarm-v": 30,
+            "oberarm-h": 30,
+            "oberschenkel-v": 15,
+            "unterschenkel-v": 30
+          }
+        },
+        {
+          "t": 0.85,
+          "winkel": {
+            "rumpf": 0,
+            "kopf": 0,
+            "oberarm-v": -20,
+            "oberarm-h": 10,
+            "oberschenkel-v": 0,
+            "unterschenkel-v": 0
+          }
+        }
+      ]
     }
   }
 }

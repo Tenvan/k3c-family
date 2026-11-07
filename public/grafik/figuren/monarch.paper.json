@@ -919,7 +919,7 @@
         {
           "t": 0.85,
           "winkel": {
-            "rumpf": -78,
+            "rumpf": -52,
             "kopf": -15,
             "oberarm-v": 70,
             "oberarm-h": 60,
@@ -938,7 +938,7 @@
         {
           "t": 0,
           "winkel": {
-            "rumpf": -78,
+            "rumpf": -52,
             "kopf": -15,
             "oberarm-v": 70,
             "oberarm-h": 60,

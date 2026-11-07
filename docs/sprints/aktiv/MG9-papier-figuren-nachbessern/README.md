@@ -59,7 +59,7 @@ keine
 |---|---|---|---|---|
 | MG9.1 | `MG9.1-reittiere.md` | Umsetzung | autonom | fertig |
 | MG9.2 | `MG9.2-monarch.md` | Umsetzung | autonom | fertig |
-| MG9.3 | `MG9.3-truppen.md` | Umsetzung | autonom | offen |
+| MG9.3 | `MG9.3-truppen.md` | Umsetzung | autonom | fertig |
 | MG9.4 | `MG9.4-gegner.md` | Umsetzung | autonom | offen |
 | MG9.5 | `MG9.5-review.md` | Review | autonom | offen |
 
