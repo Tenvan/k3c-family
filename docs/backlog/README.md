@@ -110,6 +110,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-709](B-709-assets-preview-reittier-boxen.md) | PAP | Idee | niedrig | offen | – | assets_preview nennt bei Reit-Animationen keine Teil-Boxen des Reittiers |
 | [B-710](B-710-assets-set-teil-patch.md) | PAP | Problem | mittel | offen | – | assets_set kann einzelne Teile nicht ändern, ohne die ganze Teile-Liste zu senden |
 | [B-711](B-711-reiter-variante-reittier.md) | PAP | Frage | mittel | offen | – | Variante des Reiters tauscht die Materialien des Reittiers nicht |
+| [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | offen | – | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
+| [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | offen | – | Die Sound-Seite hat Filter und Prompt-Buttons |
+| [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | offen | – | Die Quellen-Seite hat Filter und Prompt-Buttons |
 
 ## Archiv
 
