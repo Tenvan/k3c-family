@@ -13,7 +13,8 @@ Die Werte schwanken unter Last stark; Vergleiche nur bei ähnlicher Last und mit
 
 0. **Last:** `powershell -c "Get-CimInstance Win32_Processor | Select LoadPercentage"`, Wert in die Tabelle schreiben.
 1. **Sim (CPU/Heap):**
-   `go test ./engine/sim -run XXX -bench IslandStep -benchmem -benchtime 3s -cpuprofile .rs1prof/sim.cpu -memprofile .rs1prof/sim.mem -o .rs1prof/sim.test`
+   `go test ./engine/sim -run XXX -bench IslandStep -benchmem -benchtime 100000x -cpuprofile .rs1prof/sim.cpu -memprofile .rs1prof/sim.mem -o .rs1prof/sim.test`
+   (feste Iterationszahl, nie `3s`: die Welt im Benchmark wächst, ns/op hängt sonst von der Zahl der Läufe ab)
    dann `go tool pprof -top -nodecount=15 .rs1prof/sim.test .rs1prof/sim.cpu` und `-sample_index=alloc_space` für das Heap-Profil.
 2. **Raum/Netz (CPU, Heap, Mutex):**
    `go test ./engine/net -run XXX -bench . -benchmem -benchtime 3s -cpuprofile .rs1prof/net.cpu -memprofile .rs1prof/net.mem -mutexprofile .rs1prof/net.mutex -o .rs1prof/net.test`;
@@ -32,7 +33,7 @@ Die Werte schwanken unter Last stark; Vergleiche nur bei ähnlicher Last und mit
 7. **Online (Takt):** Spielserver des Checkouts mit `svc_start Spielserver` (vorher `check_run task:build`), dann
    `sim_test {action: start, mode: online, rooms: 1, players: 4, duration: 5m, focus: [perf], wait: true}`; Ergebnis
    „Tick p99 max“ (Tick-Dauer).
-8. **Tick-Abstand:** `K3C_TAKT_SECONDS=20 go test ./engine/net -run XXX -bench TaktAbstand4 -benchtime 1x`
+8. **Tick-Abstand:** `K3C_TAKT_TUNE=1` schaltet Priorität „über normal“ und EcoQoS aus wie der Server (Windows); ohne = Standard. `K3C_TAKT_SECONDS=20 go test ./engine/net -run XXX -bench TaktAbstand4 -benchtime 1x`
    (echter 30-Hz-Takt, 4 Geräte; Abstand der Zustandslieferungen an Gerät 0: gapP50/gapP99/gapMax in ms). Zweimal laufen lassen.
 9. **Leerer Server:** `svc_start Spielserver`, 5 s warten, dann in PowerShell 10 s lang die CPU-Zeit des Kindprozesses
    (`k3c-server.exe` mit Eltern-PID = Supervisor) messen:

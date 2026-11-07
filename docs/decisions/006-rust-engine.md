@@ -64,6 +64,32 @@ Lesart: 77 % der Sim-CPU im Insel-Tick liegen in einer einzigen Funktion (`colle
 Der Netz-Raum-Tick (1,8 ms) liegt weit unter 10 ms; die Ausreißer im Online-Lauf (p99 136 ms) und im Takt-Abstand
 (p99 66–84 ms) stammen von Scheduler und GC unter 68 % Last, nicht von der Rechenarbeit (wie in der Erstmessung).
 
+### Go-Fixes (RS1.3, 2026-11-07): vorher/nachher
+
+Gleicher Aufbau wie die Baseline (Rezept `docs/messung/rst-baseline.md`). **Last:** vorher 68 %, nachher 3–30 % (Agenten
+ruhig); Zeilen mit Wandzeit sind deshalb nur grob vergleichbar, die Benchmark-Zeilen (feste Iterationszahl) gut.
+
+| Messung | vorher | nachher |
+|---|---|---|
+| Datei-Watch im Leerlauf | Scan alle 1 s, 150 ms, neue Map mit ~2 000 Einträgen je Scan | Scan nur nach Datei-Ereignis, bei Frist oder alle 30 s; `BenchmarkRunLeerlaufMitWake`: **0 allocs/op**, ~1 µs je Takt |
+| Leerer Spielserver (10 s) | 3,3 % eines Kerns (Erstmessung 8,9 %), 13 Threads | **0,00 %**, 14 Threads, Priorität „über normal“ |
+| Insel-Tick 3 Stufen × 4 Spieler, 100 000 Iterationen | 31,5–42,3 µs, 3 549 B, 37 allocs | **20,4–21,5 µs**, 650 B, 10 allocs |
+| Insel-Tick Endboss | 22,9 µs | 12,1 µs (andere Iterationszahl, nur Richtung) |
+| Tick-Abstand p99, 4 Geräte, 20 s (`TaktAbstand4`) | 74,6–76,9 ms, max 108–223 ms (Last 25 %) | mit Priorität/EcoQoS-Aus (`K3C_TAKT_TUNE=1`): **35,8–36,0 ms**, max 42–45 ms |
+| Online `sim_test` (1 × 4, 5 min) Tick-Dauer p99 max | 135,7 ms (Last 68 %) | 2,5 ms (Last ~30 %) |
+| Meilenstein-Lauf, ein Seed `k3c-dev` | 50 s | 57 s (Lauf und Bericht unverändert, 8 von 16 Zielen wie vorher) |
+
+Maßnahmen: (1) Datei-Watch ereignisgesteuert (`engine/watch/notify.go`, fsnotify, Rückfall auf Abfragen im Takt) und
+Stände ohne Neuanlage der Map; (2) Server-Kind setzt unter Windows Priorität „über normal“ und schaltet Power-Throttling
+(EcoQoS) ab (`cmd/k3c-server/priority_windows.go`); (3) drei Sim-Fixes ohne Verhaltensänderung: `collectCoins` holt
+Reichweite und Beutelgrenze einmal je Aufruf, `stepSpawns` baut Listen nur bei fälligen Spawns, `chooseTarget` gibt
+Zeiger in die Kandidatenliste zurück statt `&c` der Schleifenvariable (Heap-Objekt je Durchlauf). Der dritte große
+Heap-Posten der Baseline (`bytes.Clone` aus `json.Marshal`) kommt vom Benchmark-Aufbau, nicht aus dem Tick.
+Golden-Dateien unverändert, `engine/sim`-Tests grün.
+
+Folgerung: Die Takt-Ausreißer waren überwiegend Prozess-Scheduling, nicht Go: Priorität/EcoQoS brachte den Tick-Abstand
+p99 von ~75 ms auf ~36 ms (Ziel ≤ 40 ms), ohne eine Zeile Rechenlogik. `collectCoins` bleibt der heißeste Sim-Pfad.
+
 ### Was die Erstmessung zur Vermutung sagt
 
 - **Windows-Timer (15,6 ms): widerlegt.** Go 1.27 schläft auf etwa 0,5 ms genau.

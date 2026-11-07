@@ -103,6 +103,9 @@ func main() {
 		os.Exit(supervise(startChild(dir, log), sigs, clock{time.Now, time.After}, dir == "", log))
 	}
 	log, closeLog := newLogger(logDir(), os.Stderr)
+	if prio, throttling := tuneProcess(); prio != nil || throttling != nil {
+		log.Warn("🚫 Prozess-Priorität oder Power-Throttling nicht angepasst", "ns", "main", "prio", prio, "throttling", throttling)
+	}
 	err := run(loadConfig(), log)
 	code := 0
 	switch {

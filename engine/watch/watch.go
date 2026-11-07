@@ -17,6 +17,7 @@ import (
 type Root struct {
 	Name string
 	FS   fs.FS
+	Dir  string // echter Ordner für Datei-Ereignisse (notify.go); leer: nur Abfragen
 }
 
 // stamp ist der Stand einer Datei.
@@ -29,6 +30,7 @@ type Watcher struct {
 	roots   []Root
 	quiet   time.Duration
 	seen    map[string]stamp
+	spare   map[string]stamp // zweiter Stand, wird je Poll wiederverwendet statt neu angelegt
 	changed map[string]bool
 	last    time.Time // Zeit der letzten erkannten Änderung, solange changed nicht leer ist
 }
@@ -38,8 +40,8 @@ type Watcher struct {
 // Grundstand verloren geht; die Frist läuft dann ab since. Null: keine. Zeiten nach jetzt (falsche Uhr, kopierte
 // Dateien) zählen nicht, sonst startete jeder Prozess sofort wieder neu.
 func New(roots []Root, quiet time.Duration, since time.Time) *Watcher {
-	w := &Watcher{roots: roots, quiet: quiet, changed: map[string]bool{}}
-	w.seen = w.scan()
+	w := &Watcher{roots: roots, quiet: quiet, changed: map[string]bool{}, seen: map[string]stamp{}, spare: map[string]stamp{}}
+	w.scan(w.seen)
 	now := time.Now().UnixNano()
 	for p, s := range w.seen {
 		if !since.IsZero() && s.mod >= since.UnixNano() && s.mod <= now { // Zeit in der Zukunft (falsche Uhr): keine Änderung
@@ -52,7 +54,9 @@ func New(roots []Root, quiet time.Duration, since time.Time) *Watcher {
 // Poll liest den Stand zur Zeit now. Liefert die geänderten Pfade (neu, geändert, gelöscht; sortiert), sobald seit der
 // letzten Änderung quiet vergangen ist, sonst nil. Jede Änderung startet die Frist neu.
 func (w *Watcher) Poll(now time.Time) []string {
-	cur := w.scan()
+	cur := w.spare
+	clear(cur)
+	w.scan(cur)
 	for p, s := range cur {
 		if old, ok := w.seen[p]; !ok || old != s {
 			w.mark(p, now)
@@ -63,7 +67,7 @@ func (w *Watcher) Poll(now time.Time) []string {
 			w.mark(p, now)
 		}
 	}
-	w.seen = cur
+	w.seen, w.spare = cur, w.seen
 	if len(w.changed) == 0 || now.Sub(w.last) < w.quiet {
 		return nil
 	}
@@ -85,8 +89,7 @@ func isTemp(name string) bool {
 }
 
 // scan liest Größe und Änderungszeit aller Dateien; fehlende oder unlesbare Ordner und Dateien fallen weg.
-func (w *Watcher) scan() map[string]stamp {
-	out := map[string]stamp{}
+func (w *Watcher) scan(out map[string]stamp) {
 	for _, r := range w.roots {
 		_ = fs.WalkDir(r.FS, ".", func(p string, d fs.DirEntry, err error) error {
 			if err != nil || d.IsDir() || isTemp(d.Name()) {
@@ -98,17 +101,33 @@ func (w *Watcher) scan() map[string]stamp {
 			return nil
 		})
 	}
-	return out
 }
 
+// Pending: Es gibt erkannte Änderungen, die auf das Ende der Entprellfrist warten; dann muss weiter abgefragt werden.
+func (w *Watcher) Pending() bool { return len(w.changed) > 0 }
+
+// fullScanEvery ist der Abstand des Sicherheits-Scans, wenn Datei-Ereignisse die Abfrage steuern (verpasste Ereignisse,
+// Netzlaufwerke).
+const fullScanEvery = 30 * time.Second
+
 // Run ruft Poll bei jedem Takt aus tick und fire mit den Pfaden eines Vorgangs, bis ctx endet. fire läuft in dieser
-// Goroutine; solange es läuft, wird nicht abgefragt.
-func Run(ctx context.Context, w *Watcher, tick <-chan time.Time, fire func([]string)) {
+// Goroutine; solange es läuft, wird nicht abgefragt. wake (nil erlaubt) meldet Datei-Ereignisse: Mit wake wird nur
+// abgefragt, wenn ein Ereignis kam, eine Änderung noch auf ihre Frist wartet oder fullScanEvery vergangen ist; im
+// Leerlauf kostet der Takt dann nichts. Ohne wake wird bei jedem Takt abgefragt.
+func Run(ctx context.Context, w *Watcher, tick <-chan time.Time, wake <-chan struct{}, fire func([]string)) {
+	dirty := true
+	var scanned time.Time
 	for {
 		select {
 		case <-ctx.Done():
 			return
+		case <-wake:
+			dirty = true
 		case now := <-tick:
+			if wake != nil && !dirty && !w.Pending() && now.Sub(scanned) < fullScanEvery {
+				continue
+			}
+			dirty, scanned = false, now
 			if paths := w.Poll(now); paths != nil {
 				fire(paths)
 			}

@@ -21,10 +21,9 @@ func BenchmarkSimRun100k(b *testing.B) {
 		}
 		AddPlayer(w)
 		cmds := make([]PlayerCommand, 1)
-		b.ResetTimer()
 		for range ticks {
 			Step(w, cmds, 1.0/30)
 		}
-		b.ReportMetric(ticks/b.Elapsed().Seconds(), "ticks/s")
 	}
+	b.ReportMetric(float64(ticks)*float64(b.N)/b.Elapsed().Seconds(), "ticks/s")
 }
