@@ -1,6 +1,6 @@
 # RS1.3 · Go-Fixes: Datei-Watch, Priorität, Tick-Allokationen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -55,5 +55,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 umgesetzt, gemessen: leerer Server 0,00 % eines Kerns (10 s; vorher 3,3 %), Datei-Watch ereignisgesteuert (fsnotify, `engine/watch/notify.go`), `BenchmarkRunLeerlaufMitWake` 0 allocs/op; Neustart bei geändertem PNG per Hand bestätigt (Kindprozess ersetzt), Watch-Tests grün.
+- AC-04 umgesetzt, gemessen: Tick-Abstand p99 35,8–36,0 ms (max 42–45 ms) bei 4 Geräten mit Priorität »über normal« und EcoQoS aus (`cmd/k3c-server/priority_windows.go`), ohne 74–77 ms. Gemessen im Benchmark `TaktAbstand4` mit `K3C_TAKT_TUNE=1` (dieselben Prozess-Einstellungen wie der Server), nicht am laufenden Server; Last 25 %, keine parallelen Agenten im engeren Sinn. Online-Lauf Tick-Dauer p99 max 135,7 → 2,5 ms (Last 68 % → ~30 %, nur Richtung).
+- Sim-Fixes (Profil RS1.1): `collectCoins`, `stepSpawns`, `chooseTarget`; Insel-Tick 31,5–42,3 → 20,4–21,5 µs (100 000 Iterationen), 37 → 10 allocs. Golden unverändert, `engine/sim`-Tests grün. Abweichung: `collectCoins` ist CPU- statt Allokationsposten; wegen 77 % der Sim-CPU trotzdem behoben (nur Hochziehen von Werten).
+- Vorher/Nachher-Tabelle in 006 › Go-Fixes. Benchmark `SimRun100k` aus RS1.1 hing (ResetTimer in b.Loop), behoben.
+- Reviewer (Sonnet): keine schweren Befunde. Geprüft: `task check:diff`.

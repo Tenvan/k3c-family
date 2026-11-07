@@ -286,14 +286,15 @@ func payVagrant(w *World, p *Player, t *Troop) {
 
 func collectCoins(w *World) {
 	kept := w.Coins[:0]
+	reach, purse := w.values().Economy.PickupRangeUnits, purseMax(w) // je Aufruf einmal: Profil RS1.1, Münzen × Spieler
 	for _, c := range w.Coins {
 		var taker *Player
 		for _, p := range w.Players {
-			if math.Abs(p.X-c.X) > w.values().Economy.PickupRangeUnits {
+			if math.Abs(p.X-c.X) > reach {
 				continue
 			}
 			blocked := c.BlockedPlayerID != nil && *c.BlockedPlayerID == p.ID && w.Time < c.BlockedUntil
-			if isAlive(p) && p.Gold < purseMax(w) && !blocked {
+			if isAlive(p) && p.Gold < purse && !blocked {
 				taker = p
 				break
 			}

@@ -71,7 +71,7 @@ func watchRoots(cfg config, writes []string, log *slog.Logger) []watch.Root {
 			log.Warn("🚫 Ordner nicht beobachtet: Server schreibt dort", "ns", "watch", "ordner", r.dir, "schreibt", w)
 			continue
 		}
-		out = append(out, watch.Root{Name: r.name, FS: os.DirFS(r.dir)})
+		out = append(out, watch.Root{Name: r.name, FS: os.DirFS(r.dir), Dir: r.dir})
 	}
 	return out
 }
@@ -106,9 +106,14 @@ func startWatch(ctx context.Context, roots []watch.Root, r restarter) {
 	r.log.Info("🚀 Datei-Watch aktiv", "ns", "watch", "ordner", names, "entprellenS", watchQuiet.Seconds())
 	w := watch.New(roots, watchQuiet, data.LoadedAt) // was nach dem Laden der Daten geändert wurde, zählt als Änderung
 	ticker := time.NewTicker(watchEvery)
+	wake, err := watch.Notify(ctx, roots)
+	if err != nil {
+		r.log.Warn("🚫 Datei-Ereignisse nicht verfügbar, Datei-Watch fragt im Takt ab", "ns", "watch", "err", err)
+		wake = nil
+	}
 	go func() {
 		defer ticker.Stop()
-		watch.Run(ctx, w, ticker.C, r.changed)
+		watch.Run(ctx, w, ticker.C, wake, r.changed)
 	}()
 }
 

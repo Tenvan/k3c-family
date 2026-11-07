@@ -1,6 +1,6 @@
 # RS1.4 · Rust-Toolchain, Taskfile, CI und Brücke ohne cgo
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -54,5 +54,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-05 umgesetzt: `task rust:build|test|lint|build:arm64` (Namensraum `rust`), Crate `k3c-core` (cdylib + rlib, C-ABI, `panic = abort`), Toolchain 1.99 in `rust/rust-toolchain.toml` und `requirements.md`. Geprüft lokal: DLL (windows/amd64) gebaut, `cargo test`/`clippy -D warnings`/`fmt` grün, `go test ./engine/core` grün unter Windows ohne cgo; linux/arm64 lokal nur `cargo check` (kein Linker), Go-Brücke per `GOOS=linux GOARCH=arm64 go vet -tags k3ccore`. CI-Job `rust` (windows amd64 + linux arm64, nur Push/Dispatch wie `go-arm64`): ungeprüft bis zum Merge nach develop.
+- Aufrufkosten Go→Rust: 41 ns je Aufruf, 0 allocs (006 › Brücke).
+- Abweichungen: (1) Linux-Brücke nur mit Build-Tag `k3ccore`, weil purego das Go-Binary dynamisch an libc bindet und das Image `distroless/static` das nicht laden kann; Standard-Build bleibt statisch. (2) Dockerfile bewusst unverändert (kein Docker lokal; Umstellung auf `distroless/cc` + `.so` erst bei bestandenem Spike). (3) `purego` v0.10.2 als neue Abhängigkeit (nur unter dem Tag genutzt), `golang.org/x/sys` direkt.
+- Geprüft: `task check:diff`.

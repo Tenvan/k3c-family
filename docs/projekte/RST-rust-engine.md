@@ -14,7 +14,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
-| RS1 | Messen, Go-Fixes, Rust-Spike für den Simulationskern | geplant |
+| RS1 | Messen, Go-Fixes, Rust-Spike für den Simulationskern | aktiv |
 
 ## Nicht-Ziele
 

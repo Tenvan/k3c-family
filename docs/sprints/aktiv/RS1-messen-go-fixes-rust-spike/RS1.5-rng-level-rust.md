@@ -1,6 +1,6 @@
 # RS1.5 · rng und level in Rust gegen die Golden-Dateien
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -52,5 +52,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-06 umgesetzt, lokal (amd64) geprüft: `rng` (`rng.rs`) und Level-Generator (`rust/k3c-core/src/level/`, 9 Module) erzeugen `rng.json` und alle sechs `level-*.json` bitgleich; Go-Vergleichstests `engine/rng/rust_test.go` (`TestRustBitgleich`) und `engine/level/rust_test.go` (`TestRustWieGo`: alle Biome × 9–12 Fälle × 40 Seeds, `TestRustFehlerWieGo`: 31 Fehlerfälle mit gleichem Text); `cargo test` (13 Tests) und clippy grün. Aufruf aus Go ohne cgo (`engine/core/level.go`, `rng.go`).
+- arm64: nicht lokal geprüft (kein Linker/Runner); der CI-Job `rust` (linux arm64) führt `go test -tags k3ccore ./engine/core ./engine/rng ./engine/level` und die Rust-Golden-Tests aus (nur Push/Dispatch, ungeprüft bis zum Merge).
+- Benchmark Go vs. Rust inkl. Brücke: 006 › rng und Level-Generator; Rust + Brücke 0,5–1,3× Go (Biom-JSON ein-/auslesen frisst den Gewinn des 2–4× schnelleren Kerns).
+- Lücken (bewusst): `Validate`/`ValidateWith`, `LoadBiome`, `Cycle.Check`, `checkRuinRules`/`checkGuardRules` bleiben in Go; Zahlenformat nur für Werte im Bereich 1e-6..1e21 wie Go.
+- Umsetzung des Level-Ports durch einen Subagent (Opus), Prüfung und Messung durch Claude; Reviewer (Sonnet) über Speicherzugriffe der FFI und Determinismus: siehe RS1.7.
+- Geprüft: `task check:diff`.

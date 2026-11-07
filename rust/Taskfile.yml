@@ -1,0 +1,41 @@
+# Namespace `rust`: Rust-Kern k3c-core (Entscheidung 006, B-725). Go lädt die Bibliothek ohne cgo (engine/core).
+# Ziele: windows/amd64 (DLL, lokal) und linux/arm64 (`.so`, Raspberry Pi; gelinkt nur in der CI/im Docker-Image, lokal
+# gibt es dafür keinen Linker, `build:arm64` prüft lokal nur mit `cargo check`).
+version: '3'
+
+vars:
+  RUST: '{{.ROOT_DIR}}/rust'
+
+tasks:
+  build:
+    desc: "Kern-Bibliothek k3c-core bauen (Release) für den Rechner: Windows DLL oder Linux .so nach rust/target/release/"
+    dir: '{{.RUST}}'
+    sources:
+      - '**/*.rs'
+      - '**/Cargo.toml'
+      - Cargo.lock
+    cmds:
+      - cargo build --release --locked -p k3c-core
+
+  build:arm64:
+    desc: "linux/arm64: `.so` bauen (CI, braucht den aarch64-Linker); lokal ohne Linker nur Typprüfung (`cargo check`), Umgebung K3C_RUST_CHECK_ONLY=1"
+    dir: '{{.RUST}}'
+    cmds:
+      - rustup target add aarch64-unknown-linux-gnu
+      - cmd: cargo check --locked -p k3c-core --target aarch64-unknown-linux-gnu
+        platforms: [windows]
+      - cmd: cargo build --release --locked -p k3c-core --target aarch64-unknown-linux-gnu
+        platforms: [linux]
+
+  test:
+    desc: "Rust-Tests (cargo test) des Kerns"
+    dir: '{{.RUST}}'
+    cmds:
+      - cargo test --locked -p k3c-core
+
+  lint:
+    desc: "cargo fmt --check und clippy ohne Warnungen"
+    dir: '{{.RUST}}'
+    cmds:
+      - cargo fmt --check
+      - cargo clippy --locked -p k3c-core --all-targets -- -D warnings

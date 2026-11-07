@@ -47,6 +47,9 @@ func spawnScaled(w *World, kind string, x, hpFactor, damageFactor float64) *Enem
 }
 
 func stepSpawns(w *World) {
+	if !slices.ContainsFunc(w.SpawnQueue, func(s QueuedSpawn) bool { return s.At <= w.Time }) {
+		return // meistens nichts fällig: keine neuen Listen je Tick (Profil RS1.1)
+	}
 	due, rest := []QueuedSpawn{}, []QueuedSpawn{}
 	for _, s := range w.SpawnQueue {
 		if s.At <= w.Time {
@@ -54,9 +57,6 @@ func stepSpawns(w *World) {
 		} else {
 			rest = append(rest, s)
 		}
-	}
-	if len(due) == 0 {
-		return
 	}
 	w.SpawnQueue = rest
 	for _, s := range due {
@@ -258,14 +258,14 @@ func (e *Enemy) prefers(c target) bool {
 // Reichweite ist (gegner.md § 4).
 func chooseTarget(w *World, e *Enemy, dir float64, wall *Site) *target {
 	all := candidates(w, e, dir, wall)
-	for _, c := range all {
-		if e.TauntFor > 0 && c.kind == "player" && c.id == e.TauntID {
-			return &c
+	for i := range all { // Zeiger in die Liste statt &c der Schleifenvariable: kein Heap-Objekt je Durchlauf
+		if c := &all[i]; e.TauntFor > 0 && c.kind == "player" && c.id == e.TauntID {
+			return c
 		}
 	}
-	for _, c := range all { // Händler-Überfall: der Händler zuerst (events_merchant.go)
-		if c.kind == "merchant" && w.Merchant.Raid {
-			return &c
+	for i := range all { // Händler-Überfall: der Händler zuerst (events_merchant.go)
+		if c := &all[i]; c.kind == "merchant" && w.Merchant.Raid {
+			return c
 		}
 	}
 	pool := []target{}

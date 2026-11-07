@@ -107,7 +107,7 @@ func TestRunTaktUndNurLesen(t *testing.T) {
 	fired := make(chan []string, 4)
 	ctx, cancel := context.WithCancel(context.Background())
 	done := make(chan struct{})
-	go func() { Run(ctx, w, tick, func(p []string) { fired <- p }); close(done) }()
+	go func() { Run(ctx, w, tick, nil, func(p []string) { fired <- p }); close(done) }()
 	t0 := time.Unix(5000, 0)
 	for i := range 5 {
 		tick <- t0.Add(time.Duration(i) * time.Second)
