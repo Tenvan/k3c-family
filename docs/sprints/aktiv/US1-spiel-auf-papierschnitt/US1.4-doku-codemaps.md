@@ -1,6 +1,6 @@
 # US1.4 · Doku und Codemaps beschreiben Papierschnitt
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -51,5 +51,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04 geprüft: `grep -i "k3c-studio|lädt den Atlas|Atlas und Grafiken"` findet in CLAUDE.md, `docs/arbeitsweise.md` und den drei Codemaps nur noch „ist entfallen“. Papierschnitt-Laden (Gruppen-Indizes, `data/paper.json`), Workbench-Bereiche und Watch-Regel beschrieben; Studio-Zeilen der Wurzel-Codemap entfernt, `tools/atlas` als Altlast bis CU1.
+- `docs/arbeitsweise.md` brauchte keine Änderung. Doku-Agent (Haiku), von Claude per Diff geprüft; Planung- und Regel-Tests grün.

@@ -1,14 +1,13 @@
 # Repository Atlas: K3C – Family Three Crowns
 
 ## Project Responsibility
-Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (Gamepad API), gehostet im Heimnetz. Ein Go-Server (`engine/`, `cmd/k3c-server`) rechnet die deterministische Simulation und verteilt Snapshots über WebSocket (Protokoll v7). Der Browser-Client (`src/`, TypeScript + Phaser 4 + Vite) sendet nur Eingaben und zeichnet. Balancing liegt als JSON in `data/` und ist die einzige Quelle für beide Seiten. `tools/k3c-workbench` ist das Entwickler-Werkzeug (Wails-Desktop-App + MCP-Server), `tools/k3c-studio` das Asset-Studio als eigenständiges Fenster (Backend `tools/k3c-studio/backend` mit eingebundener Engine, Frontend; Grafik, Sound, Monarch, Gegner, Gebäude-Planer und Welten Editor), keine Seite des Spielservers (Entscheidung 004). Schnittstelle sind die Dateien: Das Studio schreibt `data/**` und `public/`, der Server beobachtet sie (`engine/watch`) und startet sich über seinen Supervisor neu. `site/` ist die statische GitHub-Pages-Seite (Pages lädt nur `site/`, ohne Build).
+Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (Gamepad API), gehostet im Heimnetz. Ein Go-Server (`engine/`, `cmd/k3c-server`) rechnet die deterministische Simulation und verteilt Snapshots über WebSocket (Protokoll v7). Der Browser-Client (`src/`, TypeScript + Phaser 4 + Vite) sendet nur Eingaben und zeichnet. Balancing liegt als JSON in `data/` und ist die einzige Quelle für beide Seiten. `tools/k3c-workbench` ist das Entwickler-Werkzeug (Wails-Desktop-App + MCP-Server) mit den Bereichen Development und Assets; Assets ändern nur die MCP-Tools `assets_*`. Das frühere Asset-Studio `tools/k3c-studio` ist entfallen (Entscheidung 005, WB1). Grafik ist Papierschnitt (Entscheidung 005): Das Spiel lädt sie über die Gruppen-Indizes `public/grafik/<gruppe>/index.paper.json`, die Zuordnung steht in `data/paper.json`. Schnittstelle sind die Dateien: Werkzeuge schreiben `data/**` und `public/`, der Server beobachtet sie (`engine/watch`, ignoriert `*.paper.json`) und startet sich über seinen Supervisor neu. `site/` ist die statische GitHub-Pages-Seite (Pages lädt nur `site/`, ohne Build).
 
 ## System Entry Points
 - `game.html` → `src/main.ts`: Spiel-Client (Phaser-Szenen `load` → `lobby` → `game` + `hud`)
 - `index.html` → `src/landing/landing.ts`: Landingpage/Shell, hält alle anderen Seiten im Vollflächen-iframe
 - weitere `*.html` im Root: Test- und Info-Seiten (`src/tools/`)
 - `cmd/k3c-server/`: Go-Spielserver (liefert `dist/` aus, `/api`, `/ws`; Supervisor mit Selbst-Neustart bei geänderten Dateien: Kind mit `K3C_CHILD=1`, Exit-Code 75 = Neustart, Daten aus `K3C_DATA_DIR`)
-- `tools/k3c-studio/`: Asset-Studio als Wails-Fenster (`task k3c-studio`, Loopback-Port 8091)
 - `Taskfile.yml`: einziger Einstieg für Befehle (`task dev`, `task start`, `task check` …)
 - `package.json`, `tsconfig.json`, `vite.config.ts`: Client-Build (jede Root-`*.html` wird eine Seite; Dev-Proxy für `/api` und `/ws`; Watcher ignoriert Worktrees und Laufzeit-Ausgaben)
 - `go.mod`: Go-Modul für Engine, Server und `tools/atlas`; `tools/k3c-workbench/go.mod`, `tools/k3c-starter/go.mod` und `tools/assetkit/go.mod` sind eigene Module
@@ -31,7 +30,6 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 | `engine/rng/` | Deterministischer mulberry32-Generator, einzige Zufallsquelle | [View Map](engine/rng/codemap.md) |
 | `engine/conlog/` | Farbiger `slog.Handler` mit Emoji-Topics | [View Map](engine/conlog/codemap.md) |
 | `engine/watch/` | Datei-Watch durch Abfragen (Größe, Änderungszeit), entprellt; beobachtet `data/` und `public/` für den Neustart des Servers | – |
-| `tools/k3c-studio/backend/` | Backend des Asset-Studios (Modul `tools/k3c-studio`): RPC unter `/api/studio/` (Assets, Welten Editor, Chunk-Planung, Gebäude-Planer, Chat), SSE bei Registeränderungen, nur Loopback; `engine/` und `cmd/k3c-server` importieren nichts aus `tools/` | [View Map](tools/k3c-studio/backend/codemap.md) |
 | `src/` | Browser-Client (Thin Client): Composition Root `main.ts` | [View Map](src/codemap.md) |
 | `src/scenes/` | Presentation Layer: Phaser-Szenen mit ihrer Logik und Split-Screen; Unterordner für Rendering, HUD, Hinweise, Effekte, Debug | [View Map](src/scenes/codemap.md) |
 | `src/scenes/render/` | Zeichnen der Welt: `WorldRenderer`, `StageView`, Sprites und Grafik-Zuordnung, Plätze, Reittier, Bürger | [View Map](src/scenes/render/codemap.md) |
@@ -47,15 +45,15 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 | `src/landing/` | Landingpage/Shell: Kacheln aus `pages.ts`, iframe-Host | [View Map](src/landing/codemap.md) |
 | `src/tools/` | Entry-Scripts der Test- und Info-Seiten (Entwicklerseite, Gamepad-Test, Szenarien, Grafiken, Monitor, Hörprobe, Dungeon Master, Lizenzen) | [View Map](src/tools/codemap.md) |
 | `tools/` | Entwickler-Werkzeuge außerhalb des Spiels | [View Map](tools/codemap.md) |
-| `tools/atlas/` | Build-Time-CLI: packt Sprites zu Atlas-PNGs und Phaser-`atlas.json` | [View Map](tools/atlas/codemap.md) |
-| `tools/assetkit/` | Gemeinsame Asset-Logik von k3c-workbench und Asset-Studio: Slot-Register, Katalog, Recherche, Schreibregel | [View Map](tools/assetkit/codemap.md) |
+| `tools/atlas/` | Altlast bis CU1, vom Spiel nicht mehr geladen: Build-Time-CLI, packt Sprites zu Atlas-PNGs und Phaser-`atlas.json` | [View Map](tools/atlas/codemap.md) |
+| `tools/assetkit/` | Gemeinsame Asset-Logik der k3c-workbench (Bereich Assets): Slot-Register, Katalog, Recherche, Schreibregel | [View Map](tools/assetkit/codemap.md) |
+| `tools/paper/` | Papierschnitt-Renderer und Verträge (Entscheidung 005), Aufruf `bun tools/paper/bin/paper.ts` | – |
 | `tools/buildings/` | CLI: rendert Gebäude-JSON deterministisch zu PNGs (Dichten 16/32/64/128) | [View Map](tools/buildings/codemap.md) |
 | `tools/ruletable/` | CLI (`task gen:rules`): schreibt den Block Hub-Stufe → Gebäude in die Regeldoku | [View Map](tools/ruletable/codemap.md) |
 | `tools/ruletable/table/` | Paket: erzeugt, ersetzt und prüft den Regeltabellen-Block aus `hub.json` | [View Map](tools/ruletable/table/codemap.md) |
 | `tools/cleanup/` | CLI: löscht lokale Branches und Worktrees nur in sicheren Fällen | [View Map](tools/cleanup/codemap.md) |
 | `tools/k3c-workbench/` | Wails-Desktop-Host: Composition Root, App-Bindings, MCP-Server, Dienste | [View Map](tools/k3c-workbench/codemap.md) |
-| `tools/k3c-studio/` | Asset-Studio: Wails-Fenster (EXE `bin/k3c-studio`, merkt Größe und Position, Loopback-Port 8091, keine Seite des Spielservers) und Frontend mit Seiten Grafik, Sound, Monarch, Gegner, Gebäude-Planer und Welten Editor | [View Map](tools/k3c-studio/codemap.md) |
-| `tools/webkit/` | Gemeinsame Oberflächen-Bausteine von k3c-workbench und Asset-Studio (`@webkit/…`) | [View Map](tools/webkit/codemap.md) |
+| `tools/webkit/` | Gemeinsame Oberflächen-Bausteine der Wails-Frontends k3c-workbench und k3c-starter (`@webkit/…`) | [View Map](tools/webkit/codemap.md) |
 | `tools/k3c-starter/` | Windows-Starter (Wails-Fenster, eigenes Go-Modul): startet `bin/k3c-server`, zeigt Status und Adressen | [View Map](tools/k3c-starter/codemap.md) |
 | `tools/k3c-workbench/internal/` | Interne Packages von k3c-workbench | [View Map](tools/k3c-workbench/internal/codemap.md) |
 | `tools/k3c-workbench/internal/mcpsrv/` | MCP-Server (Streamable HTTP): Tool-Katalog, Worktree-Scoping, Check-Pipeline | [View Map](tools/k3c-workbench/internal/mcpsrv/codemap.md) |
@@ -88,17 +86,3 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 | `tools/k3c-workbench/frontend/src/mcp/` | Reiter MCP: Server-Zustand, Live-Verlauf, Aufruf-Log, Statistik, Instructions | [View Map](tools/k3c-workbench/frontend/src/mcp/codemap.md) |
 | `tools/k3c-workbench/frontend/src/ui/` | Markdown-Ansicht und Hinweis-Toasts von k3c-workbench | [View Map](tools/k3c-workbench/frontend/src/ui/codemap.md) |
 | `tools/k3c-workbench/frontend/src/lib/` | Formatierung, Prefs (`k3c-workbench.`), `useNow` | [View Map](tools/k3c-workbench/frontend/src/lib/codemap.md) |
-| `tools/k3c-studio/frontend/` | Vite/React-Frontend des Asset-Studios (Aliase `@game`, `@data`) | [View Map](tools/k3c-studio/frontend/codemap.md) |
-| `tools/k3c-studio/frontend/src/` | React-Rahmen mit Seitenwahl und sechs Seiten | [View Map](tools/k3c-studio/frontend/src/codemap.md) |
-| `tools/k3c-studio/frontend/src/playback/` | Abspiel-Bausteine für Figuren-Seiten | [View Map](tools/k3c-studio/frontend/src/playback/codemap.md) |
-| `tools/k3c-studio/frontend/src/api/` | Typen, HTTP-Client (`/api/studio/`) und Mocks zum Go-Backend | [View Map](tools/k3c-studio/frontend/src/api/codemap.md) |
-| `tools/k3c-studio/frontend/src/assets/` | Gemeinsame Seitenstruktur für Grafik und Sound | [View Map](tools/k3c-studio/frontend/src/assets/codemap.md) |
-| `tools/k3c-studio/frontend/src/enemies/` | Seite Gegner: Typen und Bosse nach Biom und Tiefe | [View Map](tools/k3c-studio/frontend/src/enemies/codemap.md) |
-| `tools/k3c-studio/frontend/src/graphics/` | Seite Grafik: Slots, Szenen, Packs | [View Map](tools/k3c-studio/frontend/src/graphics/codemap.md) |
-| `tools/k3c-studio/frontend/src/lib/` | Prefs (`k3c-studio.`) | [View Map](tools/k3c-studio/frontend/src/lib/codemap.md) |
-| `tools/k3c-studio/frontend/src/ui/` | `Splitter` (gemerkte Teilung) | [View Map](tools/k3c-studio/frontend/src/ui/codemap.md) |
-| `tools/k3c-studio/frontend/src/monarch/` | Seite Monarch: Reittier, Bewegung, Aktionen, Skills | [View Map](tools/k3c-studio/frontend/src/monarch/codemap.md) |
-| `tools/k3c-studio/frontend/src/planner/` | Seite Gebäude-Planer: `hub.json` als Matrix | [View Map](tools/k3c-studio/frontend/src/planner/codemap.md) |
-| `tools/k3c-studio/frontend/src/sound/` | Seite Sound: Slots, Szenen, Hörprobe | [View Map](tools/k3c-studio/frontend/src/sound/codemap.md) |
-| `tools/k3c-studio/frontend/src/stage/` | Wiederverwendbare Phaser-Bühne für Live-Vorschau | [View Map](tools/k3c-studio/frontend/src/stage/codemap.md) |
-| `tools/k3c-studio/frontend/src/world/` | Seite Welten Editor: Chunk-Streifen, Live-Vorschau, Plan-Editor | [View Map](tools/k3c-studio/frontend/src/world/codemap.md) |

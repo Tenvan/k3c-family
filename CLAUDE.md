@@ -76,7 +76,7 @@ aus, ohne Fenster, Vite und Neubau bei Go-Änderungen. Ports über die Umgebung:
 Der Go-Server beobachtet `data/` und `public/` immer (auch produktiv, `engine/watch`, Entscheidung 004): Nach einer
 Änderung prüft er den neuen Stand (`k3c-server -check-data`), zeigt allen Geräten „Server startet neu“ und startet sich
 über seinen Supervisor neu (Kindprozess mit `K3C_CHILD=1`, Exit-Code 75 = Neustart, Daten von der Platte aus
-`K3C_DATA_DIR`, Standard `data/`; ohne Ordner eingebettet). Ein ungültiger Stand lässt den alten Stand laufen.
+`K3C_DATA_DIR`, Standard `data/`; ohne Ordner eingebettet). Ein ungültiger Stand lässt den alten Stand laufen. Der Watch ignoriert `*.paper.json`; neu gestartet wird erst bei geänderten PNGs.
 
 Die Gamepad-Testseite (`gamepad-test.html`) schickt Berichte von der Xbox nach `reports/*.json`. Dort die Ergebnisse nachlesen.
 
@@ -99,7 +99,7 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   Go-Server (`data/embed.go`: von der Platte aus `K3C_DATA_DIR`, ohne Ordner per `go:embed`). Werte gehören hierher, nicht in den Code.
 - `engine/` – Go: `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/`, `net/` (HTTP, WebSocket `/ws`,
   Protokoll laut `docs/protocol.md`), `store/` (Spielstände → `saves/`, Berichte → `reports/`), `watch/` (Datei-Watch für
-  `data/` und `public/`). `engine/` und `cmd/k3c-server` importieren nichts aus `tools/` (`engine/internal/rules/imports_test.go`).
+  `data/` und `public/`, ignoriert `*.paper.json`). `engine/` und `cmd/k3c-server` importieren nichts aus `tools/` (`engine/internal/rules/imports_test.go`).
 - `cmd/` – Go-Binaries: `k3c-server` (liefert `dist/` und die API aus; Supervisor `supervise.go`, Neustart bei geänderten
   Dateien `restart.go`), `k3c-load` (Lasttest), `k3c-tui`.
   `tools/k3c-workbench` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-workbench`) mit den Bereichen **Development**
@@ -113,7 +113,10 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   Radix Themes: `lib/`, `atoms/`, `molecules/`, `organisms/`, `templates/` (`@webkit/<ebene>`); Seiten sind die Feature-Ordner der App.
   Verbindlich für jedes Wails-Programm: Radix nur über `@webkit`, rohe Controls nur in `atoms/`, Importe nur nach unten
   (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme, geprüft von `tests/atomicDesign.test.ts`).
-  CLIs: `tools/atlas`, `tools/buildings` (`task gen:gebaeude`), `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
+  CLIs: `tools/atlas` (Altlast bis CU1, vom Spiel nicht mehr geladen), `tools/buildings` (`task gen:gebaeude`), `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
+- Papierschnitt-Grafik (Entscheidung 005): Der Client lädt Figuren, Monarch mit Reittier, Gebäude und Hintergründe über die
+  Gruppen-Indizes `public/grafik/<gruppe>/index.paper.json` (je Asset `manifest.json` + PNG-Sheets); die Zuordnung steht in
+  `data/paper.json`. Atlas und alte Packs lädt das Spiel nicht mehr (Entfernung in CU1). Natur, Objekte und Gerüste bleiben bis MG8 Pixel-Grafik.
 - `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.
 - `src/online/` – Client des Go-Servers (`clientConnection.ts`, Version in `clientProtocol.ts`): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
 - `src/input/` – `PlayerInput`-Abstraktion (Tastatur, Gamepad, Touch-Overlay `touchInput.ts`, per `?touch=1` erzwingbar). Spiel-Code fragt Aktionen ab, nie konkrete Tasten.

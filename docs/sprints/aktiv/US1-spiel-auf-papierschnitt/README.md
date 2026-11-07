@@ -66,7 +66,7 @@ keine (Defaults als D-US1-xx in B-701)
 | US1.1 | `US1.1-loader.md` | Umsetzung | autonom | fertig |
 | US1.2 | `US1.2-server-check-watch.md` | Umsetzung | autonom | fertig |
 | US1.3 | `US1.3-tasks-ci.md` | Umsetzung | autonom | fertig |
-| US1.4 | `US1.4-doku-codemaps.md` | Umsetzung | autonom | offen |
+| US1.4 | `US1.4-doku-codemaps.md` | Umsetzung | autonom | fertig |
 | US1.5 | `US1.5-review.md` | Review | autonom | offen |
 
 ## Abnahme
