@@ -55,3 +55,41 @@ describe('Papierschnitt-Zuordnung (US1)', () => {
   });
 });
 
+
+describe('Natur, Objekte, Münzen und Icons als Papierschnitt (US2/AC-01)', () => {
+
+  it('Natur- und Objekt-Texturen kommen aus objekte/ und icons/', async () => {
+    const { NATURE_TEXTURES } = await import('../src/scenes/render/natureSprites');
+    const { WORLD_TEXTURES } = await import('../src/scenes/render/worldSprites');
+    const files = { ...NATURE_TEXTURES, ...Object.fromEntries(Object.entries(WORLD_TEXTURES).map(([k, v]) => [k, v.file])) };
+    for (const [key, file] of Object.entries(files)) {
+      if (file.startsWith('gebaeude-paper/')) continue;
+      expect(file, key).toMatch(/^(objekte|icons)\/[a-z-]+\/idle\.png$/);
+      expect(existsSync(join(GRAFIK, file)), file).toBe(true);
+    }
+  });
+
+  it('alte Pixel-Gebäude nur noch für die Lücken aus D-US2-02', async () => {
+    const { BUILDING_TEXTURES } = await import('../src/scenes/render/buildingSprites');
+    const alt = Object.entries(BUILDING_TEXTURES).filter(([, f]) => f.startsWith('gebaeude/')).map(([k]) => k);
+    for (const key of alt) expect(key, key).toMatch(/^grafik:(hub-geruest|geruest-\d+|setzling|pappel-niedrig)$/);
+  });
+
+  it('Maße in data/paper.json passen zu den Manifesten', async () => {
+    const { PAPER_OBJECTS } = await import('../src/scenes/render/paperAssets');
+    expect(Object.keys(PAPER_OBJECTS).length).toBeGreaterThan(20);
+    for (const [id, o] of Object.entries(PAPER_OBJECTS)) {
+      const m = manifest(`${o.gruppe}/${id}`);
+      expect([o.frame, o.frames, o.rahmen], id).toEqual([[m.frameW, m.frameH], m.animationen.idle!.frames, m.rahmen]);
+    }
+  });
+});
+
+describe('Reittiere (US2/AC-02)', () => {
+  it('jeder Reittier-Schlüssel aus data/sprites.json zeigt auf ein Asset in reittiere/', async () => {
+    const { PAPER_MOUNTS } = await import('../src/scenes/render/paperAssets');
+    const d = spritesJson as unknown as { mounts: object };
+    expect(Object.keys(PAPER_MOUNTS).sort()).toEqual(Object.keys(d.mounts).sort());
+    for (const id of Object.values(PAPER_MOUNTS)) expect(index('reittiere'), id).toContain(id);
+  });
+});

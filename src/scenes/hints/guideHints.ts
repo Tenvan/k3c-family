@@ -22,7 +22,7 @@ export const MOON_IMAGE = 'guide:moon';
 
 /** Bild vor dem Text (B-294, B-370): Münze mit dem Münzbild, die Nacht mit dem Mond */
 export function guideImage(id: GuideId): GuideImage | null {
-  if (id === 'coin') return { image: 'grafik:coinIcon', scale: 4 }; // Münze 6 px im 16-px-Bild → 24 px, etwa Texthöhe
+  if (id === 'coin') return { image: 'grafik:coinIcon', scale: 0.75 }; // Papier-Icon 32 px → 24 px, etwa Texthöhe (US2)
   if (id === 'dusk') return { image: MOON_IMAGE, scale: 1 };
   return null;
 }

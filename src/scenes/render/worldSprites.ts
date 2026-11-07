@@ -1,4 +1,4 @@
-import { natureFiles } from './natureSprites';
+import { natureFiles, objectLook, worldFile } from './natureSprites';
 import { paperBackgroundFile } from './paperAssets';
 
 /**
@@ -73,11 +73,16 @@ export function biomeLayers(biome: string): { key: string; scroll: number }[] | 
 /** Alle Schlüssel eines Plans, je einmal (die Stufe lädt genau diese) */
 export const planKeys = (plan: readonly BackgroundLayerPlan[]): string[] => [...new Set(plan.flatMap((l) => l.parts.map((p) => p.key)))];
 
+/** Münze, Münz-Icon und Stern als Papierschnitt (MG8, US2) */
+const OBJECT_FILES: Record<string, string> = {
+  'grafik:coinIcon': 'icons/icon-muenze/idle.png', // Münze von vorn, Hinweis der ersten Nacht (B-294)
+  'grafik:star': 'objekte/stern/idle.png',
+  'grafik:coins': 'icons/muenze/idle.png',
+};
+
 export const WORLD_TEXTURES: Record<string, WorldFile> = {
   ...natureFiles(),
-  'grafik:coinIcon': { file: 'gold-treasure-icons-16x16/icons/2.png' }, // Münze von vorn, Hinweis der ersten Nacht (B-294)
-  'grafik:star': { file: 'item-ruby-banana-star/props/part-star.png', frameWidth: 16, frameHeight: 16 },
-  'grafik:coins': { file: '16x16-small-and-medium-coin-animation/muenzen/sCoins_1.png', frameWidth: 16, frameHeight: 16 },
+  ...Object.fromEntries(Object.entries(OBJECT_FILES).map(([key, file]) => [key, worldFile(file)])),
 };
 
 /** Bild eines Objekts: Frame im Sheet (Nummer oder Ausschnitt-Name), Anzahl Frames für die Animation (1 = still), Zoom (Q13 ganzzahlig) */
@@ -86,20 +91,24 @@ export interface ObjectSprite {
   frame: number | string;
   frames: number;
   zoom: number;
+  /** Fußpunkt im Frame (Papierschnitt aus dem Rahmen); fehlt er, unten mittig */
+  originX?: number;
+  originY?: number;
 }
 
-const sprite = (key: string, frame: number | string = 0, frames = 1, zoom = 2): ObjectSprite => ({ key, frame, frames, zoom });
+/** Bild eines Schlüssels aus `WORLD_TEXTURES` (Papier: Frames, Ursprung und Maßstab aus `data/paper.json`) */
+const sprite = (key: string): ObjectSprite => objectLook(key, WORLD_TEXTURES[key]?.file);
 
 /** Objekt-IDs wie in der Zuordnung (Knoten: `natureSprites.ts` › `nodeSprite`); Truhe, Portal, Ausgang, Lager aus `tools/buildings` im Maßstab 1 (GEB6) */
 const OBJECTS: Record<string, ObjectSprite> = {
-  portal: sprite('grafik:portal', 0, 1, 1),
-  exit: sprite('grafik:ausgang', 0, 1, 1),
-  harbor: sprite('grafik:hafen', 0, 1, 1),
+  portal: sprite('grafik:portal'),
+  exit: sprite('grafik:ausgang'),
+  harbor: sprite('grafik:hafen'),
   // Eine liegende Truhe ist ungeöffnet: geschlossen; die offene zeigt der Renderer kurz beim Aufheben (GEB10)
-  'pickup:chest': sprite('grafik:truhe-geschlossen', 0, 1, 1),
-  'pickup:skillPoint': sprite('grafik:star', 0, 4),
-  coin: sprite('grafik:coins', 0, 8),
-  'camp:recruit': sprite('grafik:lager', 0, 1, 1),
+  'pickup:chest': sprite('grafik:truhe-geschlossen'),
+  'pickup:skillPoint': sprite('grafik:star'),
+  coin: sprite('grafik:coins'),
+  'camp:recruit': sprite('grafik:lager'),
 };
 
 /** Geschlossene Truhe → offene: der Renderer zeigt sie kurz, wenn die Truhe aufgehoben wird (GEB10, B-455) */

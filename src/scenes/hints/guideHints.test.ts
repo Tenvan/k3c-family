@@ -83,8 +83,8 @@ describe('stepGuide', () => {
 });
 
 describe('guideImage (B-294)', () => {
-  it('Münze zeigt das Münzbild aus dem Coin-Pack', () => {
-    expect(guideImage('coin')).toEqual({ image: 'grafik:coinIcon', scale: 4 });
+  it('Münze zeigt das Münz-Icon (Papierschnitt, US2)', () => {
+    expect(guideImage('coin')).toEqual({ image: 'grafik:coinIcon', scale: 0.75 });
   });
 
   it('Nacht zeigt den Mond (Emoji-Textur, B-370)', () => {
@@ -97,7 +97,7 @@ describe('guideImage (B-294)', () => {
 });
 
 describe('usableGuideImage (B-393)', () => {
-  const coin = { image: 'grafik:coinIcon', scale: 4 };
+  const coin = { image: 'grafik:coinIcon', scale: 0.75 };
 
   it('geladene Textur: das Bild bleibt, kein Log', () => {
     const warned = new Set<string>();

@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GROUND_Y } from '../../core/constants';
+import { animPhase } from './natureSprites';
 import { isPaperFile } from './paperAssets';
 import { BACKGROUND_ZOOM, WORLD_TEXTURES, backgroundFile, objectSprite, planKeys, type BackgroundLayerPlan, type ObjectSprite } from './worldSprites';
 
@@ -20,6 +21,12 @@ export function prepareWorld(scene: Phaser.Scene): void {
     // Papierschnitt weich, Pixel-Grafik scharf (bis CU1)
     scene.textures.get(key).setFilter(isPaperFile(file) ? Phaser.Textures.FilterMode.LINEAR : Phaser.Textures.FilterMode.NEAREST);
   }
+  for (const [key, f] of Object.entries(WORLD_TEXTURES)) {
+    const frames = f.frameWidth && scene.textures.exists(key) ? scene.textures.get(key).frameTotal - 1 : 0; // ohne __BASE
+    if (frames > 1 && !scene.anims.exists(`anim:${key}`)) {
+      scene.anims.create({ key: `anim:${key}`, frames: scene.anims.generateFrameNumbers(key, { start: 0, end: frames - 1 }), frameRate: 8, repeat: -1 });
+    }
+  }
   for (const id of ['pickup:skillPoint', 'coin']) {
     const s = objectSprite(id);
     if (!s || typeof s.frame !== 'number' || !scene.textures.exists(s.key) || scene.anims.exists(id)) continue;
@@ -28,12 +35,13 @@ export function prepareWorld(scene: Phaser.Scene): void {
   }
 }
 
-/** Sprite eines Objekts mit Fußpunkt (x, y); `sprite` überschreibt die Zuordnung der ID (Biom-Look, Baumform: `natureSprites.ts`). `null` = keine Grafik, dann zeichnet der Aufrufer die Platzhalter-Form */
-export function objectImage(scene: Phaser.Scene, id: string, x: number, y: number, sprite?: ObjectSprite | null): Phaser.GameObjects.Sprite | null {
+/** Sprite eines Objekts mit Fußpunkt (x, y); `sprite` überschreibt die Zuordnung der ID (Biom-Look, Baumform: `natureSprites.ts`); `worldX` (Units) streut den Startframe. `null` = keine Grafik, dann zeichnet der Aufrufer die Platzhalter-Form */
+export function objectImage(scene: Phaser.Scene, id: string, x: number, y: number, sprite?: ObjectSprite | null, worldX = x / 32): Phaser.GameObjects.Sprite | null {
   const s = sprite === undefined ? objectSprite(id) : sprite;
   if (!s || !scene.textures.exists(s.key)) return null;
-  const image = scene.add.sprite(x, y, s.key, s.frame).setOrigin(0.5, 1).setScale(s.zoom);
-  if (s.frames > 1 && scene.anims.exists(id)) image.play(id);
+  const image = scene.add.sprite(x, y, s.key, s.frame).setOrigin(s.originX ?? 0.5, s.originY ?? 1).setScale(s.zoom);
+  const anim = scene.anims.exists(id) ? id : `anim:${s.key}`; // Papier-Objekte: eine Animation je Textur (Bäume, Busch, Portal …)
+  if (s.frames > 1 && scene.anims.exists(anim)) image.play({ key: anim, startFrame: animPhase(worldX, s.frames) });
   return image;
 }
 
