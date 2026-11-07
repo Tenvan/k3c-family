@@ -20,6 +20,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | MG7 | PAP | PAP | Papierschnitt-Migration: Hintergründe je Biom | – | `aktiv/MG7-papier-hintergruende/` |
 | MG8 | PAP | PAP | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | – | `aktiv/MG8-papier-natur-objekte-icons/` |
 | PS1 | CLI | PAP | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | – | `aktiv/PS1-papierschnitt-sichtpruefungen/` |
+| US2 | CLI | PAP | Spiel lädt Natur, Objekte, Münzen, Icons und Reittiere als Papierschnitt | – | `aktiv/US2-spiel-natur-reittiere-papier/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | `aktiv/BD10-schreibende-endpunkte-schutz/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
