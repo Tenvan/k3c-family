@@ -106,6 +106,62 @@ ungemessen (RS1.2, Ralf). Linux-arm64 prüft lokal nur `cargo check`; Linken und
 **Docker:** Das Image bleibt `distroless/static` und lädt den Kern nicht; mit `-tags k3ccore` hängt das Go-Binary dynamisch
 an glibc, das Image bräuchte dann `distroless/cc` und die `.so` (Umstellung erst bei bestandenem Spike, RS1.6).
 
+### rng und Level-Generator in Rust (RS1.5, 2026-11-07, Last ~2 %)
+
+`rust/k3c-core/src/rng.rs` und `src/level/` (9 Module) erzeugen `rng.json` und alle sechs `level-*.json` (forest, cave, mine,
+ironhold, crystal, planned) **bitgleich** (Go-Vergleichstests `TestRustBitgleich`, `TestRustWieGo`: alle Biome × 9–12 Fälle × 40 Seeds,
+dazu 31 Fehlerfälle mit identischem Text). Aufruf aus Go über die Brücke (`engine/core/level.go`, JSON rein und raus; Rust liest
+`data/` nicht selbst). arm64: Vergleichstests laufen im CI-Job `rust` (ungeprüft bis zum Merge).
+`BenchmarkGenerate` (Go) gegen `BenchmarkGenerateRust` (inklusive Brücke), `-benchtime 20000x -count 3`, Minimum in ns/op:
+
+| Biom | Go | Rust + Brücke | Verhältnis |
+|---|---|---|---|
+| forest | 54 852 | 44 064 | 1,24× |
+| cave | 39 889 | 31 526 | 1,27× |
+| crystal | 32 644 | 34 731 | 0,94× |
+| ironhold | 40 274 | 43 298 | 0,93× |
+| mine | 17 606 | 34 554 | 0,51× |
+
+Rust braucht 1 Allokation je Aufruf (Go 93–117). Der Kern selbst ist 2–4× schneller (Einzelmessung Rust: Erzeugen 8–25 µs),
+aber Biom-JSON einlesen (6–13 µs) und Layout-JSON schreiben (4–17 µs) fressen den Gewinn: Mit Brücke liegt Rust bei 0,5–1,3× Go.
+Folgerung: Ein Generator, der JSON-in/JSON-out über die Grenze spricht, ist kein Gewinn; ein Gewinn braucht ein Handle mit einmal
+gelesenem Biom und binäre Ausgabe. Level-Erzeugung ist selten (je Insel einmal) und kein Engpass.
+
+### Spike heißer Sim-Pfad `collectCoins` (RS1.6, 2026-11-07, nur PC; Pi ausstehend)
+
+Pfad: `collectCoins` (Münzen × Spieler), in der Baseline 77 % der Sim-CPU. Rust: `rust/k3c-core/src/coins.rs`, Aufruf über die
+Brücke mit flachen Feldern (Go liefert x, Sperre, Gold, Lebend-Flag; Rust liefert den Nehmer je Münze, Gold wird erhöht).
+Vergleichstest `TestRustCollectCoinsBitgleich` (Nehmer-Reihenfolge und Gold, 27 / 327 / 3 027 Münzen): **bitgleich**.
+`go test ./engine/sim -run XXX -bench CollectCoins -benchtime 20000x` (Go = optimiertes Go aus RS1.3):
+
+| Münzen | Go | Rust, Eingabe flach (Aufruf + Rechnung) | Rust, je Aufruf aus Go-Strukturen gepackt |
+|---|---|---|---|
+| 27 (realer Spielstand nach 6 000 Ticks) | 257 ns | 227 ns (1,1×) | 2 089 ns (0,12×) |
+| 327 | 3 810 ns | 1 207 ns (3,2×) | 16 842 ns (0,23×) |
+| 3 027 | 17 939 ns | 3 899 ns (4,6×) | 78 476 ns (0,23×) |
+
+Befunde:
+
+1. **Der Pfad ist im Spielbetrieb gar nicht heiß.** Im Benchmark wachsen die Münzen unbegrenzt (nach 100 000 Ticks 538 / 2 078 /
+   3 495 je Stufe, weil Spieler auf anderen Stufen sind und nichts einsammeln); echte Stände haben Dutzende. Mit 27 Münzen kostet
+   `collectCoins` 0,26 µs je Tick, ein Insel-Tick insgesamt 12–21 µs.
+2. **Die Sim ist nicht der Takt-Kostenträger.** CPU-Profil von `Room.Tick` (4 Geräte, `TickDevices4`): 97,7 % in
+   `pushStatesSaved` → `stateOf` (Zustand als JSON serialisieren und wieder in `map[string]any` einlesen, zweimal je Gerät-Zustand),
+   **1,9 % in `sim.StepIsland`**. Ein Tick dauert 1,1 ms, davon sind ~20 µs Simulation. Rust für die Sim kann also höchstens
+   ~2 % Tick-Zeit sparen; die Pi-Tick-Zeit liegt in `engine/net/protocol.go` (`stateOf`, Delta), nicht in `engine/sim`.
+3. **Brückenkosten:** Der reine Aufruf kostet ~40 ns (RS1.4). Packen aus Go-Strukturen (`[]*Coin`, `[]*Player`) frisst den ganzen
+   Gewinn (4–8× langsamer als Go). Teilumstellung einzelner Pfade mit Zustand in Go lohnt nie; ein Gewinn entsteht nur, wenn der
+   Zustand dauerhaft in Rust liegt (voller Umbau der Sim, evtl. mit Serialisierung in Rust, Variante 1 voll / Etappe 2).
+
+Abbruchkriterium aus 006 (weniger als 2× gegen optimiertes Go **oder** Brückenkosten > 20 % der Tick-Dauer): Der Rechenkern
+erreicht 3–5×, aber nur bei unrealistisch vielen Münzen (bei realen 27: 1,1×), und mit der Go↔Rust-Übergabe des Zustands
+liegen die Brückenkosten weit über 20 %. **Empfehlung (Entwurf, Ralf entscheidet): kein voller Umbau der Sim nach Rust jetzt;
+Projekt RST pausiert nach RS1 mit dem Ergebnis „Go optimieren“.** Begründung in Zahlen: (a) die Takt-Ausreißer waren
+Prozess-Scheduling (Tick-Abstand p99 75 → 36 ms durch Priorität/EcoQoS), (b) die Tick-Arbeit ist zu 98 % Zustands-Serialisierung
+(Go-Fix möglich, Ticket), (c) die Sim ist 2 % des Ticks. **Offen bis zur Pi-Messung (RS1.2, Ralf):** liegt der Pi-Tick weiter bei
+8–10 ms, entscheidet sich, ob die Serialisierung in Go (kein Roundtrip) reicht oder Etappe 2 (Server in Rust) gebraucht wird.
+Nicht belegt: Pi-Werte für alle Zeilen oben, Rust-Gewinn für die Serialisierung.
+
 ### Was die Erstmessung zur Vermutung sagt
 
 - **Windows-Timer (15,6 ms): widerlegt.** Go 1.27 schläft auf etwa 0,5 ms genau.

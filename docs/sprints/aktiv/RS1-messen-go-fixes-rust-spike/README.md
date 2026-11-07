@@ -71,8 +71,8 @@ keine
 | RS1.2 | `RS1.2-baseline-pi.md` | Umsetzung | Mensch | offen |
 | RS1.3 | `RS1.3-go-fixes.md` | Umsetzung | autonom | fertig |
 | RS1.4 | `RS1.4-rust-toolchain-bruecke.md` | Umsetzung | autonom | fertig |
-| RS1.5 | `RS1.5-rng-level-rust.md` | Umsetzung | autonom | offen |
-| RS1.6 | `RS1.6-spike-sim-pfad.md` | Umsetzung | autonom | offen |
+| RS1.5 | `RS1.5-rng-level-rust.md` | Umsetzung | autonom | fertig |
+| RS1.6 | `RS1.6-spike-sim-pfad.md` | Umsetzung | autonom | fertig |
 | RS1.7 | `RS1.7-review.md` | Review | autonom | offen |
 
 ## Abnahme

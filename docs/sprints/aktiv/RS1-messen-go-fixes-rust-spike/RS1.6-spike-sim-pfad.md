@@ -1,6 +1,6 @@
 # RS1.6 · Spike: heißer Sim-Pfad in Rust, Messung und Entscheidung
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -55,5 +55,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-07 teilweise geprüft (nur PC): Spike `collectCoins` in Rust (`rust/k3c-core/src/coins.rs`), Vergleichstest Go↔Rust bitgleich grün (`TestRustCollectCoinsBitgleich`), Benchmark `BenchmarkCollectCoins` (Go 257 ns / Rust 227 ns bei 27 Münzen; 3810/1207 bei 327; 17939/3899 bei 3027; mit Packen der Eingabe 2089/16842/78476 ns). Brückenaufruf 41 ns.
+Befund: Der Sim-Pfad ist nur ~2 % der Raum-Tick-Zeit, 97,7 % liegen in `stateOf` (JSON-Roundtrip). Teilweise Migration mit Go-Zustand ist netto negativ (Packkosten); Empfehlung in 006: Kern nicht voll umstellen, zuerst B-731.
+Pi-Werte fehlen (RS1.2 Mensch offen), die Entscheidung bleibt bei Ralf. Neues Ticket: B-731 (Projekt RST).
