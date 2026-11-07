@@ -1,0 +1,50 @@
+{
+  "bauer": {
+    "renderKey": "19d78da6111726a0acac4b397971f9ae9f4c627b6eaa9fea889858964d1217aa",
+    "dateien": {
+      "angriff.png": "bf1c47aaa705799cf400f0c10240cd0214738a0fb5473e35d01a3fe5de6abd6f",
+      "idle.png": "2c5257d7a07c6807f20e4b510a01712bd59a7a79d144df53f1013640ec75743e",
+      "lauf.png": "17369ecf8c1184582ecd6873b981fd7e0692043ca244465764ff3b0444e0f40a"
+    }
+  },
+  "bogenschuetze": {
+    "renderKey": "e18bac9f3508c8c9a56ecaf4797fc745fd5d1f5e733d3696a3cc21ab860f3f71",
+    "dateien": {
+      "angriff.png": "297b6eebc082527a76a7c9b1154f0937a6c47062a03d540894d189c368a48444",
+      "idle.png": "6b38223b41c433846c1e6cfded8cd5f90e6187f5a225d5b14cabf2bc8d7e1df7",
+      "lauf.png": "d60c20d8088509e2751240dfcf911928c5a66e0ffe9e5d9276da427742d334b1"
+    }
+  },
+  "elite-bogenschuetze": {
+    "renderKey": "3c5700947afde5266e1469ef821bbb86654e563b1186dd741be05b15606c0a95",
+    "dateien": {
+      "angriff.png": "753211d156764c2c091a6c90b172e9786a14b0daa77b349001a35b28b07ec349",
+      "idle.png": "de2f8e3092655d4fbd5138a03496acf9cd33a75b633f0e379e141d46d5c377e1",
+      "lauf.png": "0aaaafd89edce0240783c9e05c83010230ed238c47f1284dc35b3d2acca045db"
+    }
+  },
+  "elite-krieger": {
+    "renderKey": "4cc70a659a5621cdec62fcbb5238c639809ce93517bea8b032341e9c9a7ba7b2",
+    "dateien": {
+      "angriff.png": "16d500bcd38370a2febde30ec63c9f2bb330c7f84811dbe845cc8c0b1929a05d",
+      "idle.png": "d2e8f515adec59346dc9482405dd4ab98f3d12f061681a53438fd0b5c0fbc739",
+      "lauf.png": "0b9c3bd10559ea58fb1032245f1cd9f39ea801d67433cba14ca5c3d6ff3d74ed"
+    }
+  },
+  "krieger": {
+    "renderKey": "80d60219c25ac9e58c83811736c358d35aab3f061592a5c21ca363015b1d7a5f",
+    "dateien": {
+      "angriff.png": "e9a79ec142fea582a984fdbadaee5d81a4df52d11a191b9fe0ca68bdee6950bb",
+      "idle.png": "9ffd9d30a86a79a5bc8add4957a96219dd146b1734f765cd67cfba5b022a0e6b",
+      "lauf.png": "158823d68837c9fa6ff5cddd25f7684044cf6925f499d185dd868ae01e310e9a"
+    }
+  },
+  "landstreicher": {
+    "renderKey": "66b9006a3b90506a1e0ab9a68297aaab10e954ccdc6526c904236c6072f90875",
+    "dateien": {
+      "angriff.png": "cced54098d96b622ca5e91d4efdca4935bbd8931790d97b36234bf1cf4ffa59b",
+      "idle.png": "dcdb471491c794d2d7a1f3f4a8436123010b7c19df4a5c05993ab1029875c404",
+      "lauf.png": "40f37111282a08051f41a1c4e3cc3bc8542d458e3872cf157b6b63fb58b30600"
+    }
+  }
+}

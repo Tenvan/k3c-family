@@ -98,6 +98,34 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-695](B-695-flaky-simrun-tempdir-balancing-abbruch.md) | DEV | Problem | niedrig | offen | – | Zwei Tests flackern: simrun-TempDir-Cleanup und Abbruch eines wartenden Laufs |
 | [B-696](B-696-gebaeude-in-allen-aufloesungen-rendern.md) | DEV | Idee | mittel | offen | – | Gebäude liegen in allen vorgesehenen Auflösungen als Grafik vor |
 | [B-698](B-698-balancing-tests-vorlaeufig-mit-cheats.md) | REG | Schuld | niedrig | offen | – | Balancing-Tests und Simulationen laufen vorläufig mit Cheats und bestehen spätestens im dritten Lauf |
+| [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | – | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
+| [B-700](B-700-alte-pixel-grafik-aufraeumen.md) | CLI | Schuld | mittel | eingeplant | CU1 | Alte Pixel-Grafiken, Register und Gebäude-Renderer werden nach der Papierschnitt-Umstellung entfernt |
+| [B-704](B-704-go-tests-unter-last-flaky.md) | DEV | Problem | mittel | offen | – | Lastabhängige Go-Tests scheitern bei parallelen Agenten |
+| [B-703](B-703-review-auf-wb1-backend.md) | DEV | Schuld | mittel | offen | – | Die Review-Seite nutzt backend.assets* und fillPrompt aus WB1 statt eigener Kopien |
+| [B-705](B-705-paper-frame-stil-der-basis.md) | DEV | Problem | mittel | offen | – | Das Vorher-Bild im Review rendert mit dem Stil der Basis |
+| [B-702](B-702-test-runprocess-wackelt.md) | DEV | Problem | mittel | offen | – | TestRunProcessExitUndAusgabe wackelt: fehlendes Programm ohne Fehler |
+| [B-706](B-706-asset-tools-nachzug-review-mc1.md) | DEV | Schuld | mittel | offen | – | Asset-MCP-Tools: Restbefunde aus dem Review MC1 nachziehen |
+| [B-708](B-708-paper-fehlerfeld-reittier.md) | PAP | Problem | niedrig | offen | – | Ablehnung reittier-unbekannt nennt das Feld ohne Animationsnamen |
+| [B-709](B-709-assets-preview-reittier-boxen.md) | PAP | Idee | niedrig | offen | – | assets_preview nennt bei Reit-Animationen keine Teil-Boxen des Reittiers |
+| [B-710](B-710-assets-set-teil-patch.md) | PAP | Problem | mittel | offen | – | assets_set kann einzelne Teile nicht ändern, ohne die ganze Teile-Liste zu senden |
+| [B-711](B-711-reiter-variante-reittier.md) | PAP | Frage | mittel | eingeplant | MG9 | Variante des Reiters tauscht die Materialien des Reittiers nicht |
+| [B-712](B-712-stil-schatten-materialien.md) | PAP | Problem | hoch | eingeplant | RD2 | Stil zeigt Papierschatten wie der Prototyp und kennt Metall-, Kristall- und Biom-Materialien |
+| [B-713](B-713-renderkey-reiter-reittier.md) | PAP | Schuld | mittel | eingeplant | RD2 | renderKey des Reiters enthält den Hash der Reittier-Spec |
+| [B-714](B-714-keyframe-sichtbar.md) | PAP | Idee | hoch | eingeplant | RD2 | Keyframes schalten Teile mit dem Feld sichtbar ein und aus |
+| [B-715](B-715-rig-proportionen-je-figur.md) | PAP | Idee | hoch | eingeplant | RD2 | Rigs vierbeiner und figur erlauben Proportionen, Füße und Gangarten je Tier oder Figur |
+| [B-716](B-716-reittiere-je-tier-massstab.md) | PAP | Problem | mittel | eingeplant | MG9 | Reittiere haben eigene Silhouetten, Füße und einen einheitlichen Maßstab |
+| [B-717](B-717-monarch-animationen-farben.md) | PAP | Problem | hoch | eingeplant | MG9 | Monarch hat Reit-Idle, Gangarten je Reittier, give/hit/death/respawn und vier gut unterscheidbare Spielerfarben |
+| [B-718](B-718-truppen-nachbessern.md) | PAP | Problem | mittel | eingeplant | MG9 | Truppen greifen sichtbar zum Gegner an und haben keine Lesbarkeits-Reste aus MG3 |
+| [B-719](B-719-gegner-nachbessern.md) | PAP | Problem | mittel | eingeplant | MG9 | Gegner sind unterscheidbar und richtig groß, ohne Lesbarkeits-Reste aus MG4 |
+| [B-720](B-720-bosse-neu.md) | PAP | Problem | hoch | eingeplant | MG10 | Bosse sind neu gestaltet, jeder mit eigener Silhouette |
+| [B-721](B-721-gebaeude-stufen-form.md) | PAP | Problem | mittel | eingeplant | MG11 | Gebäude steigern sich in Form und Material, Kristall leuchtet, nichts wird abgeschnitten |
+| [B-722](B-722-hintergruende-neu-ohne-baeume.md) | PAP | Problem | hoch | eingeplant | MG11 | Hintergründe sind neu gestaltet, mit Tiefe und ohne Bäume |
+| [B-723](B-723-natur-icons-muenze.md) | PAP | Problem | mittel | eingeplant | MG11 | Natur hat Spielhöhe und mehrere Formen, Icons sind bei 32 px lesbar, die Münze dreht sich |
+| [B-724](B-724-spielbefunde-ps1.md) | CLI | Problem | hoch | eingeplant | US3 | Im Spiel stehen Bogenschützen auf der Plattform, Reiten passt zum Tempo, Bäume und Tor haben die richtige Größe |
+| [B-730](B-730-check-diff-schneller.md) | INF | Problem | hoch | offen | – | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel |
+| [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | offen | – | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
+| [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | offen | – | Die Sound-Seite hat Filter und Prompt-Buttons |
+| [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | offen | – | Die Quellen-Seite hat Filter und Prompt-Buttons |
 | [B-725](B-725-rust-engine-machbarkeit.md) | SRV | Idee | mittel | eingeplant | RS1 | Simulationskern läuft schneller in Rust, Server bleibt Go (Machbarkeit und Umstiegspfad) |
 | [B-726](B-726-workbench-sim-per-task.md) | DEV | Schuld | mittel | offen | – | Workbench ruft Sim und Balancing als Task auf statt engine/sim zu importieren |
 
@@ -660,3 +688,5 @@ Zeile in diesen Abschnitt.
 | [B-654](archiv/B-654-bot-performance-miniboss-json.md) | SIM | Schuld | mittel | erledigt | BAL9 | Bot-Performance: bosses.json je Tick neu geparst, nodeFor/wanted mit Map-Zugriffen |
 | [B-656](archiv/B-656-meilenstein-titan-mehrseed.md) | REG | Problem | mittel | erledigt | BAL9 | Meilenstein 1 coop2 standard: Titan über mehrere Seeds, holz und schiff grün |
 | [B-657](archiv/B-657-castlehold-messfenster.md) | DEV | Problem | mittel | erledigt | BAL9 | Die Kennzahl castleHeld misst Nacht 1 bis 5 über den ganzen Lauf, nicht nur über das Fenster des Ziels |
+| [B-707](archiv/B-707-assets-set-golden-veraltet.md) | DEV | Problem | mittel | erledigt | – | assets_set und assets_render lassen golden.json der Gruppe veraltet |
+| [B-701](archiv/B-701-pap-gesammelte-fragen.md) | DEV | Frage | hoch | erledigt | PS1 | PAP: kritische Fragen und vorab getroffene Entscheidungen werden gesammelt von Ralf bestätigt |

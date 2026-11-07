@@ -1,0 +1,152 @@
+[
+  {
+    "id": "hg-eisenstollen-fern-v1",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-fern-v1/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-fern-v2",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-fern-v2/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-mitte-v1",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-mitte-v1/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-mitte-v2",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-mitte-v2/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-nah-v1",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-nah-v1/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-nah-v2",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-nah-v2/manifest.json"
+  },
+  {
+    "id": "hg-hoehle-fern-v1",
+    "rig": "hintergrund",
+    "manifest": "hg-hoehle-fern-v1/manifest.json"
+  },
+  {
+    "id": "hg-hoehle-fern-v2",
+    "rig": "hintergrund",
+    "manifest": "hg-hoehle-fern-v2/manifest.json"
+  },
+  {
+    "id": "hg-hoehle-mitte-v1",
+    "rig": "hintergrund",
+    "manifest": "hg-hoehle-mitte-v1/manifest.json"
+  },
+  {
+    "id": "hg-hoehle-mitte-v2",
+    "rig": "hintergrund",
+    "manifest": "hg-hoehle-mitte-v2/manifest.json"
+  },
+  {
+    "id": "hg-hoehle-nah-v1",
+    "rig": "hintergrund",
+    "manifest": "hg-hoehle-nah-v1/manifest.json"
+  },
+  {
+    "id": "hg-hoehle-nah-v2",
+    "rig": "hintergrund",
+    "manifest": "hg-hoehle-nah-v2/manifest.json"
+  },
+  {
+    "id": "hg-kristall-fern-v1",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-fern-v1/manifest.json"
+  },
+  {
+    "id": "hg-kristall-fern-v2",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-fern-v2/manifest.json"
+  },
+  {
+    "id": "hg-kristall-mitte-v1",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-mitte-v1/manifest.json"
+  },
+  {
+    "id": "hg-kristall-mitte-v2",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-mitte-v2/manifest.json"
+  },
+  {
+    "id": "hg-kristall-nah-v1",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-nah-v1/manifest.json"
+  },
+  {
+    "id": "hg-kristall-nah-v2",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-nah-v2/manifest.json"
+  },
+  {
+    "id": "hg-mine-fern-v1",
+    "rig": "hintergrund",
+    "manifest": "hg-mine-fern-v1/manifest.json"
+  },
+  {
+    "id": "hg-mine-fern-v2",
+    "rig": "hintergrund",
+    "manifest": "hg-mine-fern-v2/manifest.json"
+  },
+  {
+    "id": "hg-mine-mitte-v1",
+    "rig": "hintergrund",
+    "manifest": "hg-mine-mitte-v1/manifest.json"
+  },
+  {
+    "id": "hg-mine-mitte-v2",
+    "rig": "hintergrund",
+    "manifest": "hg-mine-mitte-v2/manifest.json"
+  },
+  {
+    "id": "hg-mine-nah-v1",
+    "rig": "hintergrund",
+    "manifest": "hg-mine-nah-v1/manifest.json"
+  },
+  {
+    "id": "hg-mine-nah-v2",
+    "rig": "hintergrund",
+    "manifest": "hg-mine-nah-v2/manifest.json"
+  },
+  {
+    "id": "hg-wald-fern-v1",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-fern-v1/manifest.json"
+  },
+  {
+    "id": "hg-wald-fern-v2",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-fern-v2/manifest.json"
+  },
+  {
+    "id": "hg-wald-mitte-v1",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-mitte-v1/manifest.json"
+  },
+  {
+    "id": "hg-wald-mitte-v2",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-mitte-v2/manifest.json"
+  },
+  {
+    "id": "hg-wald-nah-v1",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-nah-v1/manifest.json"
+  },
+  {
+    "id": "hg-wald-nah-v2",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-nah-v2/manifest.json"
+  }
+]

@@ -10,15 +10,14 @@
 #   k3c-load     cmd/k3c-load/Taskfile.yml      Lasttest
 #   k3c-tui      cmd/k3c-tui/Taskfile.yml       Diagnose-Oberfläche
 #   k3c-workbench      tools/k3c-workbench/Taskfile.yml     Workbench: dev (Client/Server), window (wails dev), build, frontend, test, lint
-#   k3c-studio   tools/k3c-studio/Taskfile.yml  Asset-Studio: dev (Client/Server), window (wails dev), build, frontend, test, lint
 #   k3c-starter  tools/k3c-starter/Taskfile.yml Windows-Starter: dev (Client/Server), window (wails dev), build, test, lint
 #   balance      tools/k3c-workbench/internal/balance/Taskfile.yml  Balancing-Tester
 #   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Grafik-Pipeline, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
 #
 # Gruppen dieses Taskfiles (in dieser Reihenfolge): Einrichten (install) · Client (dev, lint, typecheck, test) · Bauen und Ausliefern
-# (build, buildall, pages) · Spielserver (start, serve) · Prüfen (check, check:go, check:race, check:diff, check:dev, check:studio,
-# check:starter, check:all).
+# (build, buildall, pages) · Spielserver (start, serve) · Prüfen (check, check:go, check:race, check:diff, check:dev, check:starter,
+# check:all).
 #
 # Jedes EXE-Projekt kennt dieselben Verben: `build` (EXE bauen), `run` (bauen und starten), `dev` (Backend mit `-dev` baut und startet sich
 # bei jeder Go-Änderung selbst neu, engine/devrun; Wails-Apps zeigen die Oberfläche über Vite im Browser). Der Name des Projekts allein (`task k3c-workbench`) startet `dev`.
@@ -42,7 +41,6 @@ includes:
   k3c-load: cmd/k3c-load/Taskfile.yml
   k3c-tui: cmd/k3c-tui/Taskfile.yml
   k3c-workbench: tools/k3c-workbench/Taskfile.yml
-  k3c-studio: tools/k3c-studio/Taskfile.yml
   k3c-starter: tools/k3c-starter/Taskfile.yml
   balance: tools/k3c-workbench/internal/balance/Taskfile.yml
   gen: tools/Taskfile.yml
@@ -66,19 +64,17 @@ tasks:
   # --- Einrichten ---------------------------------------------------------------------------------------------------
 
   install:
-    desc: Abhängigkeiten holen (Client, Frontends von k3c-workbench, Asset-Studio und Starter)
+    desc: Abhängigkeiten holen (Client, Frontends von k3c-workbench und Starter)
     cmds:
       - mkdir -p '{{.K3C_TMP}}'
       - bun install --frozen-lockfile
       - bun install --frozen-lockfile --cwd tools/k3c-workbench/frontend
-      - bun install --frozen-lockfile --cwd tools/k3c-studio/frontend
       - bun install --frozen-lockfile --cwd tools/k3c-starter/frontend
 
   # --- Client (Phaser, Vite): entwickeln und prüfen -----------------------------------------------------------------
 
   dev:
     desc: Dev-Server (LAN, Port 5183); /api und /ws gehen an den Go-Server (Port 8080, `task start`)
-    deps: [gen:atlas]
     cmds:
       - bunx vite --host {{.CLI_ARGS}}
 
@@ -112,19 +108,16 @@ tasks:
   # `build` ist der Web-Build (dist/), `buildall` baut dazu alle EXE nach bin/, `pages` die statische Präsentationsseite.
 
   build:
-    desc: Atlas, Typecheck und Produktions-Build nach dist/
-    deps: [gen:atlas]
+    desc: Typecheck und Produktions-Build nach dist/ (Grafik liegt als Papierschnitt-PNGs in public/grafik/, US1)
     cmds:
       - bunx tsc --noEmit
       - bunx vite build
 
   buildall:
-    desc: Alle EXE bauen und nach bin/ legen (Spielserver, Lasttest, TUI, Workbench, Asset-Studio, Starter samt Web-Build dist/, dazu die Web-EXE bin/k3c-workbench-web und bin/k3c-studio-web); laufende EXE vorher schließen, sonst scheitert die Kopie
+    desc: Alle EXE bauen und nach bin/ legen (Spielserver, Lasttest, TUI, Workbench, Starter samt Web-Build dist/, dazu die Web-EXE bin/k3c-workbench-web); laufende EXE vorher schließen, sonst scheitert die Kopie
     cmds:
       - task: k3c-workbench:build
-      - task: k3c-studio:build
       - task: k3c-workbench:web:build
-      - task: k3c-studio:web:build
       - task: k3c-server:build
       - task: k3c-load:build
       - task: k3c-tui:build
@@ -168,42 +161,87 @@ tasks:
       - task: go:race
 
   check:diff:
-    desc: Nur die Prüfungen, die der Diff zu origin/develop braucht (samt ungespeicherter Änderungen; Go mit -short; vor jedem Commit, B-518, B-619)
+    desc: Nur die Prüfungen, die der eigene Diff braucht (Basis = nächster Integrations-Branch, samt ungespeicherter Änderungen; nur betroffene Go-Pakete, Go mit -short, parallel; vor jedem Commit, B-518, B-619, B-730)
     cmds:
       - cmd: |
-          # Nur sh und git: check_run startet task ohne Git-Bash-PATH (kein sort, awk, grep).
-          # Je Tool getrennt: Go-Tests (…g), Lint (…l), Vitest (…v). Die Engine zieht nur die Go-Tests der Tools nach,
-          # ihre Frontends kennen die Engine nicht. Lange Go-Tests überspringt -short; voll prüfen check:go und die CI.
-          base=$(git merge-base origin/develop HEAD)
-          g=; dg=; dl=; dv=; sg=; sl=; sv=; pg=; pl=; pv=
+          # Nur sh, git, go und bunx: check_run startet task ohne Git-Bash-PATH (kein sort, awk, grep).
+          # Basis: jüngster Merge-Base aus origin/develop und allen origin/feature/*, die in HEAD stecken (CHECK_BASE überschreibt).
+          base="{{.CHECK_BASE}}"
+          if [ -z "$base" ]; then
+            for r in origin/develop $(git for-each-ref --format='%(refname:short)' 'refs/remotes/origin/feature/*'); do
+              mb=$(git merge-base HEAD "$r" 2>/dev/null) || continue
+              if [ -z "$base" ] || git merge-base --is-ancestor "$base" "$mb"; then base=$mb; fi
+            done
+          fi
+          # Flags: c Client (Lint, Typecheck, Vitest --changed), a Assets (Golden-Tests), gf Root-Go voll, wf/wv/wa Workbench Go voll/Vitest/assetkit,
+          # sp/sl/sv Starter. ch = geänderte Go-Pakete (Importpfade, auch für die Abnehmer in anderen Modulen).
+          c=; a=; gf=; wf=; wv=; wa=; sg=; sl=; sv=; ch=; docs=1
           for f in $(git diff --name-only "$base"; git ls-files --others --exclude-standard); do
             case "$f" in
-              engine/*|data/*|go.mod|go.sum) g=1; dg=1; sg=1; pg=1 ;;
-              cmd/*|testdata/*|.golangci*|tools/atlas/*|tools/buildings/*|tools/pipeline/*|tools/cleanup/*|tools/ruletable/*|Taskfile.yml|.github/*) g=1 ;;
-              tools/webkit/*) dv=1; sv=1; pv=1 ;;
-              tools/assetkit/*) dg=1; dl=1; sg=1; sl=1 ;;
-              tools/k3c-workbench/frontend/*) dv=1 ;;
-              tools/k3c-workbench/*) dg=1; dl=1 ;;
-              tools/k3c-studio/frontend/*) sv=1 ;;
-              tools/k3c-studio/*) sg=1; sl=1 ;;
-              tools/k3c-starter/frontend/*) pv=1 ;;
-              tools/k3c-starter/*) pg=1; pl=1 ;;
+              docs/*|*.md|reports/*) continue ;;
+            esac
+            docs=
+            d=${f%/*}; [ "$d" = "$f" ] && d=.
+            d=${d%%/testdata*}
+            case "$f" in
+              go.mod|go.sum|Taskfile.yml|.golangci*|.github/*|testdata/*) gf=1; wf=1 ;;
+              data/*) ch="$ch k3c/data"; c=1 ;;
+              engine/*|cmd/*|tools/atlas/*|tools/buildings/*|tools/pipeline/*|tools/cleanup/*|tools/ruletable/*|tools/spritegen/*|tools/soundatlas/*)
+                ch="$ch k3c/$d" ;;
+              public/grafik/*) a=1 ;;
+              tools/webkit/*) wv=1; sv=1 ;;
+              tools/assetkit/*) wa=1; ch="$ch k3c/$d" ;;
+              tools/k3c-workbench/frontend/*) wv=1 ;;
+              tools/k3c-workbench/go.mod|tools/k3c-workbench/go.sum|tools/k3c-workbench/Taskfile.yml|tools/k3c-workbench/.golangci*) wf=1 ;;
+              tools/k3c-workbench/*) ch="$ch k3c/$d" ;;
+              tools/k3c-starter/frontend/*) sv=1 ;;
+              tools/k3c-starter/*) sg=1; sl=1 ;;
+              *) c=1 ;;
             esac
           done
-          # check (15 s) immer: Repo-Regeln scannen auch Go, Protokoll-Testdaten und Wails-Frontends.
-          run="check"
-          [ -z "$g" ] || run="$run go:test go:lint"
-          [ -z "$dv" ] || run="$run k3c-workbench:vitest"
-          [ -z "$dg" ] || run="$run k3c-workbench:gotest"
-          [ -z "$dl" ] || run="$run k3c-workbench:lint"
-          [ -z "$sv" ] || run="$run k3c-studio:vitest"
-          [ -z "$sg" ] || run="$run k3c-studio:gotest"
-          [ -z "$sl" ] || run="$run k3c-studio:lint"
-          [ -z "$pv" ] || run="$run k3c-starter:vitest"
-          [ -z "$pg" ] || run="$run k3c-starter:gotest"
-          [ -z "$pl" ] || run="$run k3c-starter:lint"
-          echo "🚦 check:diff → $run"
-          for t in $run; do task "$t" GO_TEST_FLAGS=-short || exit 1; done
+          # Betroffene Pakete je Modul: geändertes Paket oder ein Paket, das eines davon importiert.
+          t='{''{.ImportPath}} {''{join .Deps " "}}'
+          aff() {
+            [ -n "$ch" ] || return 0
+            go list -f "$t" ./... 2>/dev/null | while read -r p rest; do
+              for x in $ch; do case " $p $rest " in *" $x "*) printf '%s ' "$p"; break ;; esac; done
+            done
+          }
+          own() { for x in $ch; do case "$x" in "$1"/*|"$1") printf '%s ' "$x" ;; esac; done; }
+          gp=; wp=; [ -n "$gf" ] || gp=$(aff)
+          [ -n "$wf" ] || wp=$(cd tools/k3c-workbench && aff)
+          [ -n "$wa" ] || wa=$(cd tools/assetkit && aff)
+          gl=$(for x in $(own k3c); do case "$x" in k3c/tools/k3c-workbench*|k3c/tools/assetkit*) ;; *) printf './%s/... ' "${x#k3c/}" ;; esac; done)
+          wl=$(for x in $(own k3c/tools/k3c-workbench); do printf './%s/... ' "${x#k3c/tools/k3c-workbench/}"; done)
+          wl=${wl//.\/k3c\/tools\/k3c-workbench\/.../.\/...}
+          scan="tests/planning.test.ts tests/planningProjects.test.ts tests/projectRules.test.ts"
+          [ -z "$a" ] || scan="$scan tests/paperAssets.test.ts tools/paper/golden"
+          echo "🚦 check:diff Basis $(git rev-parse --short "$base")$([ -n "$docs" ] && echo ' · nur Doku')"
+          echo "🚦 Client: ${c:+Lint Typecheck Vitest-changed} Scan · Go: $([ -n "$gf" ] && echo voll || echo "${gp:-–}") · Workbench: $([ -n "$wf" ] && echo voll || echo "${wp:-–}")${wv:+ Vitest}${wa:+ assetkit} · Starter: ${sg}${sl}${sv}"
+          # JS und Go laufen parallel; innerhalb nacheinander.
+          (
+            bunx vitest run $scan || exit 1
+            if [ -n "$c" ]; then
+              task lint && task typecheck && bunx vitest run --changed "$base" --passWithNoTests || exit 1
+            fi
+            [ -z "$wv" ] || task k3c-workbench:vitest VITEST_ARGS="--changed $base --passWithNoTests" || exit 1
+            [ -z "$sv" ] || task k3c-starter:vitest || exit 1
+          ) & js=$!
+          (
+            if [ -n "$gf" ]; then task go:test GO_TEST_FLAGS=-short && task go:lint || exit 1
+            elif [ -n "$gp" ]; then task go:test GO_TEST_FLAGS=-short GO_PKGS="$gp" && { [ -z "$gl" ] || task go:lint GO_LINT_PKGS="$gl"; } || exit 1; fi
+            if [ -n "$wf" ]; then task k3c-workbench:gotest GO_TEST_FLAGS=-short && task k3c-workbench:lint || exit 1
+            elif [ -n "$wp$wa" ]; then
+              k=0; [ -z "$wa" ] || k=1
+              { [ -z "$wp" ] || task k3c-workbench:gotest GO_TEST_FLAGS=-short WB_PKGS="$wp" ASSETKIT=$k; } &&
+              { [ -z "$wl$wa" ] || task k3c-workbench:lint WB_LINT_PKGS="${wl:-./...}" ASSETKIT=$k; } || exit 1
+            fi
+            [ -z "$sg" ] || task k3c-starter:gotest GO_TEST_FLAGS=-short || exit 1
+            [ -z "$sl" ] || task k3c-starter:lint || exit 1
+          ) & gopid=$!
+          r1=0; r2=0; wait $js || r1=$?; wait $gopid || r2=$?
+          [ $r1 -eq 0 ] && [ $r2 -eq 0 ] || { echo "❌ check:diff fehlgeschlagen (JS $r1, Go $r2)"; exit 1; }
+          echo "✅ check:diff grün"
 
   check:dev:
     desc: k3c-workbench prüfen (Frontend mit Vitest, go test, golangci-lint)
@@ -212,13 +250,6 @@ tasks:
       - task: k3c-workbench:test
       - task: k3c-workbench:lint
 
-  check:studio:
-    desc: Asset-Studio prüfen (Frontend-Vitest; go test und golangci-lint für die Asset-Logik und das Modul tools/k3c-studio samt Backend; B-459, B-507)
-    cmds:
-      - task: k3c-studio:frontend
-      - task: k3c-studio:test
-      - task: k3c-studio:lint
-
   check:starter:
     desc: Windows-Starter prüfen (Frontend-Vitest, go test, golangci-lint; B-041)
     cmds:
@@ -226,12 +257,11 @@ tasks:
       - task: k3c-starter:lint
 
   check:all:
-    desc: Alles prüfen (Client, Go, k3c-workbench, Asset-Studio, Starter, Build)
+    desc: Alles prüfen (Client, Go, k3c-workbench, Starter, Build)
     cmds:
       - task: check
       - task: build
       - task: check:go
       - task: check:race
       - task: check:dev
-      - task: check:studio
       - task: check:starter

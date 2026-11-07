@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	domains = []string{"REG", "SIM", "SRV", "CLI", "PLAT", "INF", "DEV"}
+	domains = []string{"REG", "SIM", "SRV", "CLI", "PLAT", "INF", "DEV", "PAP"}
 	specs   = []string{"Entwurf", "freigegeben", "rückwirkend"}
 	prios   = []string{"hoch", "mittel", "niedrig", "?"}
 	// Envs: offline = ohne laufende Dienste prüfbar (Code, Mock-Tests, Werkzeuge ohne Server), worktree-tauglich;
@@ -22,7 +22,7 @@ var (
 			"Umgebung": Envs, "Status": {"offen", "eingeplant", "erledigt", "verworfen"}, "Spec": specs},
 		"sprint": {"Status": States, "Domäne": domains, "Reife": {"Entwurf", "bereit"}, "Spec": specs},
 		"session": {"Status": {"offen", "in Arbeit", "fertig", "blockiert", "verworfen"}, "Typ": {"Umsetzung", "Review", "Workshop"},
-			"Agent": {"autonom", "Mensch"}, "Umgebung": Envs, "Domäne": domains},
+			"Agent": {"autonom", "Mensch"}, "Umgebung": Envs, "Domäne": domains, "Modell": models},
 		"projekt": {"Status": {"aktiv", "ruht", "erledigt"}},
 	}
 	reRevision = regexp.MustCompile(`^\d+$`)
@@ -67,6 +67,11 @@ func checkValue(kind, name, value string, known map[string]string) error {
 	if vals, ok := allowed[kind][name]; ok && !slices.Contains(vals, value) {
 		return fmt.Errorf("%s = %q ungültig (%s)", name, value, strings.Join(vals, ", "))
 	}
+	if kind == "session" && name == "Lane" {
+		if err := checkLane(value); err != nil {
+			return err
+		}
+	}
 	if name == "Revision" && !reRevision.MatchString(value) {
 		return fmt.Errorf("die Revision muss eine Zahl sein")
 	}
@@ -107,7 +112,12 @@ func setFields(root, kind, text string, values map[string]string) (string, error
 			return "", err
 		}
 		if _, ok := headFields(text)[k]; !ok {
-			return "", fmt.Errorf("das Feld %s fehlt in der Datei (Vorlage: %s), nichts geändert", k, known[k])
+			added, ok := insertField(kind, text, k, values[k])
+			if !ok {
+				return "", fmt.Errorf("das Feld %s fehlt in der Datei (Vorlage: %s), nichts geändert", k, known[k])
+			}
+			text = added
+			continue
 		}
 		text = setField(text, k, values[k])
 	}

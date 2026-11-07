@@ -36,7 +36,7 @@ var uiMethods = map[string]bool{
 	"Tasks": true, "TasksReload": true, "TaskStart": true, "TaskStop": true, "TaskRuns": true,
 	"TaskGatesView": true, "TaskGateToggle": true, "TaskGateSave": true,
 	"PlanningData": true, "PlanningDocs": true, "PlanningSet": true, "PlanningDoc": true, "PlanningGet": true,
-	"GitHubStatus": true, "WorktreeCheck": true, "OpenInClaude": true, "StudioOpen": true, "Resources": true,
+	"GitHubStatus": true, "WorktreeCheck": true, "OpenInClaude": true, "Resources": true,
 	"GitOverview": true, "GitAction": true, "GitDeleteBranches": true, "GitPRs": true, "GitPRCreate": true, "GitPRAction": true,
 	"GitCheckMerged": true, "GitStamp": true, "TicketCreate": true, "TicketRecent": true,
 	"BalanceStart": true, "BalanceRuns": true, "BalanceStop": true, "BalanceReports": true, "BalanceReport": true,
@@ -44,6 +44,11 @@ var uiMethods = map[string]bool{
 	"BalanceReportRate": true, "BalanceReportDelete": true, "BalanceInsights": true, "BalanceReportHTML": true,
 	"BalanceBaselines": true, "BalanceReportsRate": true, "BalanceReportsDelete": true, "BalanceSaveBaseline": true,
 	"BalanceDataValuesAll": true,
+	// Asset-Oberfläche (docs/standards/paper-mcp.md › Oberfläche; Stubs bis RV1)
+	"AssetsList": true, "AssetsGet": true, "AssetsStyle": true, "AssetsPrompts": true, "AssetsReview": true,
+	"AssetsFrame": true, "AssetsPixelDiff": true,
+	// Lesende Teile des früheren Asset-Studios (WB1.4, internal/studioview)
+	"StudioSounds": true, "StudioSoundData": true, "StudioSources": true, "StudioGameOpen": true,
 }
 
 // uiHandler beantwortet alle Adressen unter uiPrefix, alle anderen GET liefern die eingebettete Oberfläche (web.go).

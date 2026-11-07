@@ -1,168 +1,306 @@
 package mcpsrv
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	assets "k3c/tools/assetkit"
+	pa "k3c/tools/k3c-workbench/internal/paperassets"
 )
 
-type assetsListIn struct {
-	Art       string `json:"art,omitempty" jsonschema:"grafik oder sound; leer = beide"`
-	Kategorie string `json:"kategorie,omitempty" jsonschema:"z. B. gebaeude, figuren, sfx, musik"`
-	Status    string `json:"status,omitempty" jsonschema:"zugeordnet, luecke oder fehlt"`
+// Asset-Tools auf Spec-Basis (Vertrag docs/standards/paper-mcp.md › MCP-Tools, MC1). Sie rufen die Render-CLI über
+// internal/paperassets; bis RD1 zeigt K3C_PAPER_CLI auf die Attrappe tools/paper/fixtures/cli-stub.ts.
+
+// assetGueltig merkt sich validate je Spec, solange Spec und Stil-Datei gleich bleiben (assets_list).
+var assetGueltig = pa.NewGueltigkeit()
+
+type assetsGuideIn struct {
+	Rig string `json:"rig,omitempty" jsonschema:"Rig-Typ: figur, vierbeiner, gebaeude, requisite, hintergrund; leer = alle"`
 }
 
+type assetsListIn struct {
+	Rig       string `json:"rig,omitempty" jsonschema:"nur dieser Rig-Typ"`
+	Gruppe    string `json:"gruppe,omitempty" jsonschema:"nur diese Gruppe (Ordner unter public/grafik, z. B. figuren)"`
+	Geaendert bool   `json:"geaendert,omitempty" jsonschema:"nur Assets mit Änderung gegen HEAD"`
+}
+
+type assetsGetIn struct {
+	ID     string   `json:"id" jsonschema:"Asset-ID (Dateiname ohne .paper.json), z. B. monarch"`
+	Felder []string `json:"felder,omitempty" jsonschema:"nur diese obersten Schlüssel, z. B. [umhang, ausgabe]"`
+}
+
+type assetsCreateIn struct {
+	ID           string `json:"id" jsonschema:"neue Asset-ID: a-z, 0-9, - (eindeutig über alle Gruppen)"`
+	Rig          string `json:"rig" jsonschema:"figur, vierbeiner, gebaeude, requisite oder hintergrund"`
+	Beschreibung string `json:"beschreibung" jsonschema:"was das Asset zeigt"`
+	Gruppe       string `json:"gruppe" jsonschema:"Ordner unter public/grafik, z. B. requisiten"`
+}
+
+// assetsIDIn ist die Eingabe der Recherche-Tools (Slot des eingefrorenen Registers data/assets.json).
 type assetsIDIn struct {
 	ID string `json:"id" jsonschema:"Asset-Slot, z. B. farm, mount:horse, sfx:coin"`
 }
 
-type assetsSetIn struct {
-	ID   string          `json:"id" jsonschema:"Asset-Slot, z. B. farm"`
-	Wahl []assets.Choice `json:"wahl" jsonschema:"Zuordnungen nach Präferenz: datei (relativ zu public/), optional sheet, ausschnitt {x,y,w,h}, raster {w,h}, sprite"`
-}
-
-type assetsCatalogIn struct {
-	Query string `json:"query,omitempty" jsonschema:"Wörter, die alle in Datei, Pack, Gruppe, Titel oder Lizenz vorkommen"`
-	Art   string `json:"art,omitempty" jsonschema:"grafik oder sound; leer = beide"`
-	Limit int    `json:"limit,omitempty" jsonschema:"höchstens so viele Treffer (Vorgabe 50)"`
-}
-
-// registerAssets sind die Tools des Ressourcen-Managers (B-298): Slot-Register data/assets.json und Asset-Katalog.
+// registerAssets registriert die Asset-Tools auf Spec-Basis (die Recherche-Tools: tools_assets_research.go).
 func registerAssets(s *Server) {
-	closed, destructive := false, false
+	add(s, &mcp.Tool{
+		Name: "assets_guide",
+		Description: "Einstieg jeder Asset-Arbeit: Stil-Regeln, Papier-Materialien und Einzeltöne der Stil-Datei, Pflicht-Teile und Pivots " +
+			"des Rig-Typs, Proportion, Lagen-Arten, Vorlage, Ablauf. Nutze es bei: bevor du ein Asset anlegst oder änderst. " +
+			"Statt: paper-spec.md und Stil-Datei lesen.",
+		Annotations: readOnly(),
+	}, func(ctx context.Context, in assetsGuideIn) (string, error) {
+		return assetsGuide(s.ws(ctx).root, in.Rig)
+	})
 	add(s, &mcp.Tool{
 		Name: "assets_list",
-		Description: "Asset-Slots des Slot-Registers (data/assets.json) als je eine Zeile: ID, Kategorie, Status, aktive Zuordnung. " +
-			"Nutze es bei: welche Grafik- oder Sound-Slots gibt es, wo fehlt etwas. Statt: data/assets.json oder docs/assets lesen.",
+		Description: "Alle Assets (Paper-Specs unter public/grafik) je Zeile: id · rig · pfad · gültig|ungültig[ · geändert]. " +
+			"Nutze es bei: Überblick, ungültige oder geänderte Assets finden. Statt: public/grafik durchsuchen.",
 		Annotations: readOnly(),
-	}, func(ctx context.Context, in assetsListIn) (string, error) { return assetsList(s.ws(ctx).root, in) })
+	}, func(ctx context.Context, in assetsListIn) (string, error) {
+		return assetsListText(ctx, s.ws(ctx).root, in)
+	})
 	add(s, &mcp.Tool{
 		Name: "assets_get",
-		Description: "Ein Asset-Slot mit allen Zuordnungen nach Präferenz, Ausschnitt und Status. " +
-			"Nutze es bei: Zuordnung eines Slots prüfen. Statt: data/assets.json durchsuchen.",
+		Description: "Pfad und Paper-Spec eines Assets als JSON; felder kürzt auf oberste Schlüssel. " +
+			"Nutze es bei: vor einem assets_set. Statt: die .paper.json-Datei lesen.",
 		Annotations: readOnly(),
-	}, func(ctx context.Context, in assetsIDIn) (string, error) { return assetsGet(s.ws(ctx).root, in.ID) })
+	}, func(ctx context.Context, in assetsGetIn) (string, error) { return assetsGetText(s.ws(ctx).root, in) })
+	notDestructive, closed := false, false
 	add(s, &mcp.Tool{
-		Name: "assets_set",
-		Description: "Ersetzt die Zuordnungen eines Asset-Slots (Reihenfolge = Präferenz, nur die erste ist im Spiel aktiv); " +
-			"prüft Datei unter public/, Art und Ausschnitt. Nutze es bei: Zuordnung setzen oder umordnen. Statt: data/assets.json von Hand ändern.",
-		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
-	}, func(ctx context.Context, in assetsSetIn) (string, error) {
-		root := s.ws(ctx).root
-		slot, err := assets.SetChoices(root, in.ID, in.Wahl)
-		if err != nil {
+		Name: "assets_create",
+		Description: "Legt public/grafik/<gruppe>/<id>.paper.json aus der Rig-Vorlage an (Pflicht-Teile mit leeren Lagen), prüft und rendert. " +
+			"Nutze es bei: neues Asset. Statt: Spec-Datei von Hand anlegen.",
+		Annotations: &mcp.ToolAnnotations{DestructiveHint: &notDestructive, OpenWorldHint: &closed},
+	}, func(ctx context.Context, in assetsCreateIn) (string, error) {
+		return assetsCreateText(ctx, s.ws(ctx).root, in)
+	})
+	registerAssetsSet(s)
+	registerAssetsRender(s)
+	registerAssetsPreview(s)
+	registerAssetsReview(s)
+	registerAssetPrompts(s)
+}
+
+// stilKurz sind die Teile der Stil-Datei, die guide und style_get zeigen (Feldnamen ohne Tag: json ignoriert Groß-/Kleinschreibung).
+type stilKurz struct {
+	Papier struct {
+		Lage struct {
+			Dx, Dy, Unschaerfe, Deckkraft float64
+			Farbe                         string
+		}
+		Auflage  struct{ Dx, Dy, Unschaerfe, Deckkraft float64 }
+		Struktur struct{ Frequenz, Oktaven, Staerke float64 }
+		Falz     float64 `json:"falz_deckkraft"`
+	}
+	Licht        string
+	Proportionen struct {
+		Figur struct {
+			KopfAnteil float64 `json:"kopf_anteil"`
+			Toleranz   float64
+		}
+		Vierbeiner struct {
+			Kopflaengen float64 `json:"rumpfhoehe_kopflaengen"`
+			Toleranz    float64
+		}
+	}
+}
+
+func zahl(f float64) string { return strconv.FormatFloat(f, 'f', -1, 64) }
+
+// leseStil liest die Stil-Datei roh und verdichtet.
+func leseStil(root string) ([]byte, stilKurz, error) {
+	var k stilKurz
+	b, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(pa.StilPfad)))
+	if err != nil {
+		return nil, k, fmt.Errorf("Stil-Datei %s fehlt", pa.StilPfad) //nolint:staticcheck // Satz für die Antwort
+	}
+	if err := json.Unmarshal(b, &k); err != nil {
+		return nil, k, fmt.Errorf("Stil-Datei: %v", err) //nolint:staticcheck // Satz für die Antwort
+	}
+	return b, k, nil
+}
+
+func assetsGuide(root, rig string) (string, error) {
+	if rig != "" {
+		if _, err := pa.FindeRig(rig); err != nil {
 			return "", err
 		}
-		return fmt.Sprintf("%s gespeichert: %d Zuordnung(en)\n%s", slot.ID, len(slot.Choices), slotText(root, *slot)), nil
-	})
-	add(s, &mcp.Tool{
-		Name: "assets_catalog",
-		Description: "Sucht im Asset-Katalog (public/grafik, public/sprites, public/audio): Datei, Pack, Gruppe, Maße, Lizenz mit Kennzeichen NC/SA/ND (Q70). " +
-			"Nutze es bei: passende Datei für einen Slot finden. Statt: public/ durchsuchen und CREDITS lesen.",
-		Annotations: readOnly(),
-	}, func(ctx context.Context, in assetsCatalogIn) (string, error) {
-		return assetsCatalog(s.ws(ctx).root, in)
-	})
-}
-
-func assetsList(root string, in assetsListIn) (string, error) {
-	reg, err := assets.Load(root)
+	}
+	roh, k, err := leseStil(root)
 	if err != nil {
 		return "", err
 	}
+	p := k.Papier
 	var b strings.Builder
-	n := 0
-	for _, sl := range reg.Slots {
-		st := assets.Status(root, sl)
-		if (in.Art != "" && sl.Kind != in.Art) || (in.Kategorie != "" && sl.Category != in.Kategorie) || (in.Status != "" && st != in.Status) {
+	titel := "alle Rigs"
+	if rig != "" {
+		titel = "Rig " + rig
+	}
+	fmt.Fprintf(&b, "Papierschnitt · %s · Standard docs/standards/paper-spec.md\n", titel)
+	fmt.Fprintf(&b, "Stil: keine Konturen; jede Fläche ein Papierstück mit Schatten papier.lage (%s/%s, Unschärfe %s, %s %%); "+
+		"Schattierungen als aufgeklebte Lage (auflage: true, %s/%s/%s/%s %%); Innenlinien nur als Falz (Deckkraft %s); Licht von %s; "+
+		"keine Farben in der Spec, nur Papier-Materialien.\n", zahl(p.Lage.Dx), zahl(p.Lage.Dy), zahl(p.Lage.Unschaerfe),
+		zahl(p.Lage.Deckkraft*100), zahl(p.Auflage.Dx), zahl(p.Auflage.Dy), zahl(p.Auflage.Unschaerfe), zahl(p.Auflage.Deckkraft*100),
+		zahl(p.Falz), strings.ReplaceAll(k.Licht, "-", " "))
+	fmt.Fprintf(&b, "Papier-Materialien (licht/basis/schatten): %s\n", strings.Join(pa.Schluessel(roh, "materialien"), ", "))
+	fmt.Fprintf(&b, "Einzeltöne (ohne Ton): %s\n", strings.Join(pa.Schluessel(roh, "einzeltoene"), ", "))
+	rigs := pa.RigNamen()
+	if rig != "" {
+		rigs = []string{rig}
+	}
+	for _, name := range rigs {
+		guideRig(&b, name, rig != "", k)
+	}
+	b.WriteString("Lagen: flaeche {form, material, ton?, auflage?} · falz {form, breite, material, ton?} · punkt {mitte, radius, material, ton?}\n")
+	if rig != "" {
+		vorlage, _ := pa.Vorlage(rig, "beispiel", "…")
+		var kompakt bytes.Buffer
+		_ = json.Compact(&kompakt, vorlage)
+		fmt.Fprintf(&b, "Vorlage %s: %s\n", rig, kompakt.String())
+	}
+	b.WriteString("Beispiele (vollständig): tools/paper/fixtures/specs/monarch.paper.json (figur), pferd.paper.json (vierbeiner), mauer.paper.json (gebaeude)\n")
+	b.WriteString("Ablauf: assets_get → assets_set (Merge-Patch) → assets_preview → assets_review")
+	return b.String(), nil
+}
+
+func guideRig(b *strings.Builder, name string, einzeln bool, k stilKurz) {
+	r := pa.Rigs[name]
+	pflicht := strings.Join(r.Pflicht, ", ")
+	if pflicht == "" {
+		pflicht = "mindestens ein Teil (Vorlage: " + r.Platzhalter + ")"
+	}
+	fmt.Fprintf(b, "Pflicht-Teile %s: %s\n", name, pflicht)
+	if einzeln {
+		fmt.Fprintf(b, "Pivots: %s\n", r.PivotText)
+	} else {
+		fmt.Fprintf(b, "Pivots %s: %s\n", name, r.PivotText)
+	}
+	switch name {
+	case "figur":
+		fmt.Fprintf(b, "Proportion: Kopfhöhe / Rahmenhöhe = %s ± %s\n", zahl(k.Proportionen.Figur.KopfAnteil), zahl(k.Proportionen.Figur.Toleranz))
+	case "vierbeiner":
+		fmt.Fprintf(b, "Proportion: Rumpfhöhe = %s Kopflängen ± %s\n", zahl(k.Proportionen.Vierbeiner.Kopflaengen), zahl(k.Proportionen.Vierbeiner.Toleranz))
+	}
+}
+
+func mehrzahl(n int, eins, viele string) string {
+	if n == 1 {
+		return eins
+	}
+	return viele
+}
+
+func assetsListText(ctx context.Context, root string, in assetsListIn) (string, error) {
+	alle, err := pa.Assets(root)
+	if err != nil {
+		return "", err
+	}
+	geaendert, err := pa.Geaendert(ctx, root)
+	if err != nil {
+		return "", err
+	}
+	var liste []pa.Asset
+	for _, a := range alle {
+		if (in.Rig != "" && a.Rig != in.Rig) || (in.Gruppe != "" && a.Gruppe != in.Gruppe) || (in.Geaendert && !geaendert[a.ID]) {
 			continue
 		}
-		n++
-		active := "–"
-		if len(sl.Choices) > 0 {
-			active = choiceText(sl.Choices[0])
-			if more := len(sl.Choices) - 1; more > 0 {
-				active += fmt.Sprintf(" (+%d)", more)
-			}
+		liste = append(liste, a)
+	}
+	if len(liste) == 0 {
+		return "keine Assets für diesen Filter", nil
+	}
+	fehler := assetGueltig.Pruefe(ctx, pa.NewCLI(root), liste)
+	var b strings.Builder
+	ungueltig, nGeaendert := 0, 0
+	for _, a := range liste {
+		zustand := "gültig"
+		if len(fehler[a.ID]) > 0 {
+			zustand = "ungültig"
+			ungueltig++
 		}
-		fmt.Fprintf(&b, "%s %s %s · %s → %s\n", sl.ID, sl.Category, st, sl.Description, active)
+		if geaendert[a.ID] {
+			zustand += " · geändert"
+			nGeaendert++
+		}
+		fmt.Fprintf(&b, "%s · %s · %s · %s\n", a.ID, a.Rig, a.Pfad, zustand)
 	}
-	if n == 0 {
-		return "keine Asset-Slots für diesen Filter", nil
-	}
-	return fmt.Sprintf("%d Asset-Slots\n%s", n, b.String()), nil
+	return fmt.Sprintf("%d %s · %d ungültig · %d geändert gegen HEAD\n%s", len(liste), mehrzahl(len(liste), "Asset", "Assets"),
+		ungueltig, nGeaendert, strings.TrimSuffix(b.String(), "\n")), nil
 }
 
-func assetsGet(root, id string) (string, error) {
-	reg, err := assets.Load(root)
+func assetsGetText(root string, in assetsGetIn) (string, error) {
+	a, err := pa.Finde(root, in.ID)
 	if err != nil {
 		return "", err
 	}
-	sl := reg.Find(id)
-	if sl == nil {
-		return "", fmt.Errorf("unbekannter Asset-Slot %q", id)
+	roh, err := os.ReadFile(a.Abs(root))
+	if err != nil {
+		return "", err
 	}
-	return slotText(root, *sl), nil
+	auswahl, err := pa.Felder(roh, in.Felder)
+	if err != nil {
+		return "", err
+	}
+	text, err := pa.Format(auswahl)
+	if err != nil {
+		return "", err
+	}
+	kopf := a.Pfad
+	if len(in.Felder) > 0 {
+		kopf += " · Felder " + strings.Join(in.Felder, ", ")
+	}
+	return kopf + "\n" + strings.TrimSuffix(string(text), "\n"), nil
 }
 
-func slotText(root string, sl assets.Slot) string {
+func assetsCreateText(ctx context.Context, root string, in assetsCreateIn) (string, error) {
+	r, err := pa.Anlegen(ctx, pa.NewCLI(root), in.ID, in.Rig, in.Beschreibung, in.Gruppe)
+	if err != nil {
+		return "", err
+	}
 	var b strings.Builder
-	fmt.Fprintf(&b, "%s · %s/%s · %s · %s", sl.ID, sl.Kind, sl.Category, sl.Description, assets.Status(root, sl))
-	if sl.Bus != "" {
-		fmt.Fprintf(&b, " · Bus %s", sl.Bus)
+	fmt.Fprintf(&b, "%s angelegt: %s (Rig %s, Vorlage mit %s %s)\n", r.Asset.ID, r.Asset.Pfad, r.Asset.Rig,
+		mehrzahl(len(r.Teile), "Teil", "Teilen"), strings.Join(r.Teile, ", "))
+	if len(r.Fehler) == 0 {
+		b.WriteString("validate: ok\n")
+		b.WriteString(renderZeile(r.Render) + "\n")
+	} else {
+		fmt.Fprintf(&b, "validate: %d %s\n%s\nRender: übersprungen (ungültig)\n", len(r.Fehler), mehrzahl(len(r.Fehler), "Fehler", "Fehler"), fehlerZeilen(r.Fehler))
 	}
-	for i, c := range sl.Choices {
-		fmt.Fprintf(&b, "\n%d. %s", i+1, choiceText(c))
-	}
-	return b.String()
+	fmt.Fprintf(&b, "Nächster Schritt: assets_set {id: %q, patch: …}, dann assets_preview", r.Asset.ID)
+	return b.String(), nil
 }
 
-func choiceText(c assets.Choice) string {
-	t := c.File
-	if c.Sprite != "" {
-		t += "#" + c.Sprite
+// renderZeile fasst das Render-Ergebnis eines Assets zusammen.
+func renderZeile(e pa.AssetErgebnis) string {
+	switch {
+	case e.Fehler != "":
+		return "Render: Fehler · " + e.Fehler
+	case e.Uebersprungen != "":
+		return "Render: übersprungen (ungültig: " + e.Uebersprungen + ")"
 	}
-	if c.Sheet != "" {
-		t += " sheet " + c.Sheet
-	}
-	if r := c.Cut; r != nil {
-		t += fmt.Sprintf(" [%d,%d,%d,%d]", r.X, r.Y, r.W, r.H)
-	}
-	if g := c.Grid; g != nil {
-		t += fmt.Sprintf(" raster %d×%d", g.W, g.H)
+	t := fmt.Sprintf("Render: %d %s", e.PNGs, mehrzahl(e.PNGs, "PNG", "PNGs"))
+	switch {
+	case e.Manifest != "":
+		t += " · " + e.Manifest
+	case len(e.Dateien) > 0:
+		t += " · " + e.Dateien[0]
 	}
 	return t
 }
 
-func assetsCatalog(root string, in assetsCatalogIn) (string, error) {
-	list, err := assets.Catalog(root)
-	if err != nil {
-		return "", err
+// fehlerZeilen schreibt je Fehler `feld · regel · text`.
+func fehlerZeilen(fehler []pa.Fehler) string {
+	z := make([]string, len(fehler))
+	for i, f := range fehler {
+		z[i] = f.Feld + " · " + f.Regel + " · " + f.Text
 	}
-	limit := in.Limit
-	if limit <= 0 {
-		limit = 50
-	}
-	hits := assets.Search(list, in.Query, in.Art, limit)
-	if len(hits) == 0 {
-		return "keine Treffer im Asset-Katalog", nil
-	}
-	var b strings.Builder
-	fmt.Fprintf(&b, "%d Treffer (höchstens %d)\n", len(hits), limit)
-	for _, a := range hits {
-		size := ""
-		if a.W > 0 {
-			size = fmt.Sprintf(" · %d×%d", a.W, a.H)
-		}
-		flag := ""
-		if a.Flag != "" {
-			flag = " [" + a.Flag + "]"
-		}
-		fmt.Fprintf(&b, "%s · %s %s%s · %s%s\n", a.File, a.Pack, a.Group, size, a.License, flag)
-	}
-	return b.String(), nil
+	return strings.Join(z, "\n")
 }

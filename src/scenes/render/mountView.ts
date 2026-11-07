@@ -2,69 +2,59 @@ import Phaser from 'phaser';
 import { clientLog } from '../../core/clientLog';
 import { MONARCH } from '../../model/data';
 import type { Player } from '../../model/types';
-import { type MountContext, type MountPose, mountPose } from './mountPose';
-import { type AnimName, MOUNTS, PLAYER_SPRITES, RIDER_WAIST, SHEETS, face, makeSprite, playAnim } from './sprites';
+import { mountGait, mountedAnim } from './mountGait';
+import { PAPER_MOUNTED, animFrame, paperTextureKey } from './paperAssets';
+import { type AnimName, PLAYER_SPRITES, face, makeSprite, paperManifest, playPaper } from './sprites';
 
 /**
- * Monarch auf dem Standard-Reittier (B-173, S7.2): Container aus Reittier- und Reiter-Sprite. Liest nur Snapshot-Felder
- * (`index`, `vx`, `facing`) und Daten, alle Entscheidungen trifft `mountPose`. Index 0 = Reittier, 1 = Reiter.
+ * Monarch auf dem Reittier als Papierschnitt (US1, US2): Das Monarch-Asset zeigt Reiter und Reittier zusammen, das Pferd in
+ * `schritt`, `trab` und `galopp`, andere Reittiere in `<gangart>-<reittier>` (`mountedAnim`, sonst Pferd). Container mit einem
+ * Sprite; liest nur Snapshot-Felder (`index`, `vx`, `facing`) und das Reittier aus `data/monarch.json`.
  */
 
-const ctxFor = (p: Player, mountKey: string): MountContext => ({
-  key: mountKey,
-  rider: PLAYER_SPRITES[p.index % PLAYER_SPRITES.length],
-  refSpeed: MONARCH.base.speed * MONARCH.mount.speedFactor,
-  mounts: MOUNTS,
-  sheets: SHEETS,
-  riderWaist: RIDER_WAIST,
-});
-
+const REF_SPEED = MONARCH.base.speed * MONARCH.mount.speedFactor;
 const warned = new Set<string>();
 
-/** Reiter samt Reittier `mountKey` (Standard: das des Monarchen) oder `null` (unbekannter Schlüssel, Textur fehlt): dann
- *  zeichnet der Aufrufer die bisherige Figur. Andere Reittiere vorher mit `preloadMount` laden (B-476). */
+/** Spieler-Spec mit dem berittenen Asset (Variante des Spielers bleibt) */
+const mountedSpec = (p: Player) => {
+  const spec = PLAYER_SPRITES[p.index % PLAYER_SPRITES.length]!;
+  return { ...spec, paper: { ...PAPER_MOUNTED, variante: spec.paper?.variante } };
+};
+
+/** Reiter samt Reittier `mountKey` (Standard aus `data/monarch.json`) oder `null` (Asset nicht geladen): dann zeichnet der
+ *  Aufrufer die Figur zu Fuß. Hat das Monarch-Asset das Reittier nicht, reitet er das Pferd (eine Warnung je Schlüssel). */
 export function createRider(scene: Phaser.Scene, p: Player, mountKey: string = MONARCH.mount.sprite): Phaser.GameObjects.Container | null {
-  const ctx = ctxFor(p, mountKey);
-  const pose = mountPose(p, 0, ctx);
-  if (!pose || !scene.textures.exists(`${pose.sheet}-idle`)) {
-    if (ctx.key && !warned.has(ctx.key)) {
-      warned.add(ctx.key);
-      clientLog('warn', '🐴 Reittier unbekannt', { key: ctx.key });
+  const spec = mountedSpec(p);
+  const key = `${spec.paper.gruppe}/${spec.paper.id}`;
+  if (!paperManifest(key)?.animationen.schritt || !scene.textures.exists(paperTextureKey(key, 'schritt'))) {
+    if (!warned.has(key)) {
+      warned.add(key);
+      clientLog('warn', '🤒 Reittier-Grafik fehlt', { key });
     }
     return null;
   }
-  const mount = scene.add.sprite(0, 0, `${pose.sheet}-idle`, 0).setData('sheet', pose.sheet);
-  const rider = makeSprite(scene, ctx.rider);
-  const view = scene.add.container(0, 0, [mount, rider]).setData('ctx', ctx).setData('top', pose.top);
+  const rider = makeSprite(scene, spec);
+  // Oberkante beritten aus dem Gang-Rahmen (Pferd samt Reiter ist höher als die Figur zu Fuß, Review US1, W2)
+  const m = paperManifest(key)!;
+  const top = ((rider.getData('target') as number) * animFrame(m, 'schritt').rahmen[1]) / -m.rahmen[1];
+  const view = scene.add.container(0, 0, [rider]).setData('top', top).setData('mount', mountKey);
   updateRider(view, p);
   return view;
 }
 
-/** `anim`/`restart`: Animation des Reiters (Monarch-Auswahl, GR9.3); Einmal-Animationen wie der Schlag laufen zu Ende. */
-export function updateRider(view: Phaser.GameObjects.Container, p: Player, anim: AnimName = 'idle', restart = false): void {
-  const ctx = view.getData('ctx') as MountContext;
-  const mount = view.getAt(0) as Phaser.GameObjects.Sprite;
-  const rider = view.getAt(1) as Phaser.GameObjects.Sprite;
-  const first = mountPose(p, Number(mount.frame.name), ctx);
-  if (!first) return;
-  const key = `${first.sheet}-${first.anim}`;
-  if (mount.anims.currentAnim?.key !== key) mount.play(key);
-  mount.anims.timeScale = first.timeScale;
-  // Sattelpunkt hängt am Frame, der nach dem Wechsel der Animation gilt
-  const pose = mountPose(p, Number(mount.frame.name), ctx) ?? first;
-  styleMount(mount, pose, p.facing);
-  styleRider(rider, pose, anim, restart);
-}
-
-function styleMount(mount: Phaser.GameObjects.Sprite, pose: MountPose, facing: number): void {
-  face(mount, facing);
-  mount.setScale(pose.scale);
-  if (pose.tint) mount.setTint(Phaser.Display.Color.HexStringToColor(pose.tint).color);
-}
-
-function styleRider(rider: Phaser.GameObjects.Sprite, pose: MountPose, anim: AnimName, restart: boolean): void {
-  const r = pose.rider;
-  playAnim(rider, anim === 'run' ? 'idle' : anim, restart);
-  rider.setFlipX(pose.flip).setOrigin(r.originX, r.originY).setScale(r.scale).setPosition(r.x, r.y);
-  rider.setCrop(0, 0, rider.frame.width, r.cropHeight);
+/** Gangart nach Tempo; im Stand steht der erste Schritt-Frame. `anim` (Schlag usw.) hat beritten keine eigene Grafik. */
+export function updateRider(view: Phaser.GameObjects.Container, p: Player, _anim: AnimName = 'idle', _restart = false): void {
+  const rider = view.getAt(0) as Phaser.GameObjects.Sprite;
+  const { gait, moving } = mountGait(p.vx, REF_SPEED);
+  face(rider, p.facing);
+  const anims = paperManifest(rider.getData('paper') as string)?.animationen ?? {};
+  const mountKey = view.getData('mount') as string;
+  const pick = mountedAnim(mountKey, gait, rider.getData('variante') as string | undefined, (a) => a in anims);
+  if (pick.fallback && !warned.has(`mount:${mountKey}`)) {
+    warned.add(`mount:${mountKey}`);
+    clientLog('warn', '🤒 Reittier ohne Monarch-Animation, stattdessen Pferd', { key: mountKey });
+  }
+  playPaper(rider, pick.anim);
+  if (moving && !rider.anims.isPlaying) rider.anims.resume();
+  if (!moving && rider.anims.isPlaying) rider.anims.pause(rider.anims.currentAnim?.frames[0]);
 }

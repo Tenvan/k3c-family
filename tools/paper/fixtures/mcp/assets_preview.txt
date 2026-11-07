@@ -1,0 +1,3 @@
+[Bild image/png: tools/paper/fixtures/render/monarch/monarch-galopp-0-purpur.png]
+monarch · reiten · Frame 0 · Basis – · 209×192 px
+Teile (x,y,b,h px): rumpf 53,58,47,78 · kopf 57,25,46,50 · krone 62,5,34,29 · oberarm-v 66,65,20,32 · unterarm-v 69,92,16,35 · schwert 43,109,29,42

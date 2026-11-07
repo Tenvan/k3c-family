@@ -4,7 +4,7 @@ import { currentLanguage, nameOf, t } from '../../core/texts';
 import { BUILDINGS, TROOPS } from '../../model/data';
 import type { Site, World } from '../../model/types';
 import { drawBuildSign } from './buildSignView';
-import { HUB_SCAFFOLD_TEXTURE, hubLookTexture, hubTexture, isHubBuilding, siteTexture } from './buildingSprites';
+import { HUB_SCAFFOLD_TEXTURE, castleOverlay, hubLookTexture, hubTexture, isHubBuilding, siteTexture } from './buildingSprites';
 import { prepareBuildingLooks, preloadBuildingLooks, showBuildingLook } from './buildingLook';
 import { damageStage, showRubble } from './damageRules';
 import { damageTint, drawDamage, drawRubble } from './damageView';
@@ -74,7 +74,8 @@ export function createCastleView(scene: Phaser.Scene, x: number): View {
   const picture = scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 1).setVisible(false);
   const scaffold = scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 1).setVisible(false);
   const label = scene.add.text(0, 0, '', { ...TEXT, ...fontStyle('priceTag') }).setOrigin(0.5, 1);
-  return scene.add.container(x, G, [picture, scene.add.graphics(), scaffold, scene.add.graphics(), label]);
+  const overlay = scene.add.image(0, 0, '__DEFAULT').setOrigin(0.5, 1).setVisible(false).setName('overlay');
+  return scene.add.container(x, G, [picture, scene.add.graphics(), scaffold, scene.add.graphics(), label, overlay]);
 }
 
 type CastleWorld = Pick<World, 'hubLevel' | 'hubUpgrade' | 'danger' | 'stock'> & Partial<Pick<World, 'hubStep'>>;
@@ -121,6 +122,11 @@ function drawCastle(scene: Phaser.Scene, v: View, world: CastleWorld): void {
   else scaffold.setVisible(false);
   let key = hubLookTexture(look);
   if (!has(scene, key)) key = hubTexture(look.level);
+  const overlay = v.getByName('overlay') as Phaser.GameObjects.Image | null;
+  const over = castleOverlay(look);
+  if (overlay && has(scene, over) && has(scene, key) && !look.scaffold) { // im Bau steht das Gerüst, noch kein Schmuck (Review US1, K5)
+    showBuildingLook(overlay, over); // letztes Kind: über Burg, Gerüst und Schild (Indizes 0–4 bleiben)
+  } else overlay?.setVisible(false);
   if (has(scene, key)) {
     showBuildingLook(picture, key);
     return;

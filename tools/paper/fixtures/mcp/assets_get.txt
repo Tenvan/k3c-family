@@ -1,0 +1,5 @@
+public/grafik/figuren/monarch.paper.json · Felder umhang, ausgabe
+{
+  "umhang": { "anker": "rumpf", "punkt": [-4, -91], "material": "purpur", "laenge": 53.2, "breite": [4, 17.3], "segmente": 8 },
+  "ausgabe": { "hoehe_px": 192, "rahmen": [-60, -145, 85, 151] }
+}

@@ -1,0 +1,213 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "hg-hoehle-nah-v2",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Hintergrund Tropfsteinhalle, nahe Ebene, Variante 2: periodisches Profil, kachelt waagrecht.",
+  "teile": [
+    {
+      "id": "grund",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 0l0 -21 32 -2 32 0 32 0 32 -2 32 -3 32 -2 32 1 32 2 32 0 32 0 32 1 32 0 32 -1 32 -4 32 -2 32 0 32 3 32 3 32 2 32 2 32 2 32 2 32 0 32 -2 0 21Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 0l0 -13 32 4 32 1 32 -1 32 0 32 1 32 2 32 0 32 -1 32 -1 32 0 32 -1 32 -1 32 -2 32 0 32 3 32 2 32 -1 32 -3 32 -2 32 0 32 -1 32 -2 32 1 32 2 0 13Z",
+          "material": "stein",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [384, -240]
+    },
+    {
+      "id": "bloecke",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M101 -23C101 -80 137 -126 180 -126C223 -126 258 -80 258 -23ZM264 -20C264 -60 300 -93 343 -93C387 -93 423 -60 423 -20ZM426 -28C426 -68 455 -100 491 -100C526 -100 556 -68 556 -28ZM584 -17C584 -50 613 -78 649 -78C685 -78 714 -50 714 -17ZM58 -19l23 -119 16 119ZM349 -22l28 -87 20 87ZM626 -19l27 -94 19 94Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M180 -126C137 -126 101 -80 101 -23L137 -23C137 -74 161 -111 180 -126ZM343 -93C300 -93 264 -60 264 -20L300 -20C300 -56 324 -83 343 -93ZM491 -100C455 -100 426 -68 426 -28L455 -28C455 -64 475 -90 491 -100ZM649 -78C613 -78 584 -50 584 -17L613 -17C613 -47 633 -69 649 -78Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M180 -126C223 -126 258 -80 258 -23L236 -23C236 -74 206 -111 180 -126ZM343 -93C387 -93 423 -60 423 -20L401 -20C401 -56 370 -83 343 -93ZM491 -100C526 -100 556 -68 556 -28L538 -28C538 -64 512 -90 491 -100ZM649 -78C685 -78 714 -50 714 -17L696 -17C696 -47 671 -69 649 -78ZM75 -19l8 -74 6 74ZM371 -22l7 -71 6 71ZM646 -19l8 -95 7 95Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M172 -115L188 -74M335 -86L351 -57M484 -93L497 -64M642 -72L656 -47",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M133 -118C133 -125 147 -131 164 -131C181 -131 195 -125 195 -118ZM296 -88C296 -93 310 -97 327 -97C345 -97 359 -93 359 -88ZM452 -95C452 -100 464 -104 478 -104C492 -104 504 -100 504 -95ZM610 -74C610 -78 622 -81 636 -81C650 -81 662 -78 662 -74Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "form": "M440 -8C440 -11 467 -14 500 -14C533 -14 560 -11 560 -8C560 -5 533 -2 500 -2C467 -2 440 -5 440 -8Z",
+          "material": "koenigsblau",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M488 -9C488 -10 500 -12 514 -12C529 -12 540 -10 540 -9C540 -8 529 -6 514 -6C500 -6 488 -8 488 -9Z",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [56, -17],
+          "radius": 4.1,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [95, -16],
+          "radius": 3.6,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [142, -19],
+          "radius": 3.6,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [192, -26],
+          "radius": 3.7,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [253, -25],
+          "radius": 4.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [310, -21],
+          "radius": 2.8,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [351, -21],
+          "radius": 2.7,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [410, -20],
+          "radius": 3.5,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [478, -28],
+          "radius": 3.3,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [512, -25],
+          "radius": 4.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [570, -26],
+          "radius": 4,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [619, -20],
+          "radius": 3.9,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [661, -14],
+          "radius": 3.6,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [717, -12],
+          "radius": 4.3,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [113, -76],
+          "radius": 1.4
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [282, -81],
+          "radius": 1.4
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [347, -60],
+          "radius": 1.4
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [536, -63],
+          "radius": 1.4
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [703, -50],
+          "radius": 1.4
+        }
+      ],
+      "pivot": [384, -240]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 480,
+    "rahmen": [0, -480, 768, 480]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

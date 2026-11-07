@@ -3,7 +3,9 @@
 - **Status:** offen | in Arbeit | fertig | blockiert | verworfen (Grund im Ergebnis)
 - **Typ:** Umsetzung | Review | Workshop
 - **Agent:** autonom | Mensch
-- **Domäne:** REG | SIM | SRV | CLI | PLAT | INF | DEV (genau eine; die Session ändert nur deren Dateien)
+- **Domäne:** REG | SIM | SRV | CLI | PLAT | INF | DEV | PAP (genau eine; die Session ändert nur deren Dateien)
+- **Lane:** – (oder Kurzname wie `mcp`; Sessions derselben Domäne mit verschiedener Lane laufen parallel)
+- **Modell:** – | haiku | sonnet | opus | fable (Empfehlung für den ausführenden Agenten)
 - **Umgebung:** offline | live | ? (offline: ohne laufende Dienste prüfbar – Code, Unit-/Mock-Tests, Werkzeuge ohne Serverzugriff, worktree-tauglich; live: braucht laufenden Server, Browser oder Gerät)
 - **Branch:** sp00/1-kurzname
 - **Abhängig von:** – (oder SP00.1, B-000)

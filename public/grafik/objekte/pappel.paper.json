@@ -1,0 +1,112 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "pappel",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Pappel: hohe, schlanke hellgrüne Säulenkrone auf dünnem Stamm; Krone wiegt im Wind",
+  "teile": [
+    {
+      "id": "stamm",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6.5 0L-3.5 -6L-2.5 -34L2.5 -34L3.5 -6L6.5 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-6.5 0L-3.5 -6L-2.5 -34L-1.05 -34L-1.05 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M1.05 -4L0.7 -20.4",
+          "material": "holz",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "stamm",
+      "id": "krone",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M17 -84C17 -116.03 9.39 -142 0 -142C-9.39 -142 -17 -116.03 -17 -84C-17 -51.97 -9.39 -26 0 -26C9.39 -26 17 -51.97 17 -84Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -101C-9.35 -101 -17 -93.35 -17 -84C-17 -74.65 -9.35 -67 0 -67C-3.4 -75.5 -3.4 -92.5 0 -101Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M7 -84C7 -112.72 2.08 -136 -4 -136C-10.08 -136 -15 -112.72 -15 -84C-15 -55.28 -10.08 -32 -4 -32C2.08 -32 7 -55.28 7 -84Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M12 -88C12 -112.3 7.97 -132 3 -132C-1.97 -132 -6 -112.3 -6 -88C-6 -63.7 -1.97 -44 3 -44C7.97 -44 12 -63.7 12 -88Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M2 -40C0 -70 0 -100 3 -132",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-6 -60L1 -78",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M8 -96L2 -112",
+          "material": "smaragd",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -30]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 159,
+    "rahmen": [-24, -146, 48, 150]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "krone": 1.5
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "krone": -1.5
+          }
+        }
+      ]
+    }
+  }
+}

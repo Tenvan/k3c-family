@@ -1,0 +1,59 @@
+{
+  "id": "taverne",
+  "version": 1,
+  "specHash": "2812a588a7b3ebee4d133d96e777f8862d52fc5d6a4281cfb311fe5139cbafd4",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "867511b89846d125b8c90201be954cf4d17a7b067aa887c0149090aae7bfcae8",
+  "rahmen": [
+    -96,
+    -128,
+    192,
+    128
+  ],
+  "frameW": 192,
+  "frameH": 128,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "fff6428febc126c4ec05adc059415eec2bf6a0c3ee991159503efe8e23337ae1"
+      ]
+    },
+    "stand.s2": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s2.png",
+      "hashes": [
+        "17bf02f6ef7bea74cff4861f2363ec4570e9c174f94b5d2564944de6a4c9055b"
+      ]
+    },
+    "stand.s3": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s3.png",
+      "hashes": [
+        "2da17bb0a72d84dedc747a5c64ca5953fe0bf9395e497e09671e5664f17ed0ee"
+      ]
+    },
+    "stand.s4": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s4.png",
+      "hashes": [
+        "349fe15990e4c97e6c9ec1f6f5916a5ceb1c5dec4ce08cc1d6e9242694f05ae2"
+      ]
+    },
+    "stand.s5": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s5.png",
+      "hashes": [
+        "ac465d1b5d7a1631a5264d06a58f1c63edaf66f320f426617d2f51aee695c392"
+      ]
+    }
+  },
+  "varianten": []
+}

@@ -1,0 +1,5 @@
+4 Assets · 1 ungültig · 4 geändert gegen HEAD~1
+monarch · figur · public/grafik/figuren/monarch.paper.json · gültig · geändert
+pferd · vierbeiner · public/grafik/reittiere/pferd.paper.json · gültig · geändert
+mauer · gebaeude · public/grafik/gebaeude/mauer.paper.json · gültig · geändert
+banner · requisite · public/grafik/requisiten/banner.paper.json · ungültig · geändert

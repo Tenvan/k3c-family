@@ -1,0 +1,387 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "hg-eisenstollen-mitte-v2",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Hintergrund Schmiedehalle mit Glut, mittlere Ebene, Variante 2: periodisches Profil, kachelt waagrecht.",
+  "teile": [
+    {
+      "id": "grund",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -480l0 47 32 2 32 -6 32 -7 32 -5 32 -1 32 -2 32 -4 32 1 32 5 32 7 32 2 32 -3 32 -2 32 3 32 3 32 -2 32 -3 32 -1 32 3 32 2 32 -1 32 0 32 3 32 6 0 -47ZM0 0l0 -40 32 3 32 1 32 -2 32 -2 32 -1 32 1 32 -2 32 -4 32 -5 32 -1 32 2 32 2 32 2 32 1 32 3 32 1 32 -3 32 -4 32 -3 32 2 32 4 32 3 32 1 32 1 0 40Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 0l0 -11 32 -4 32 -2 32 0 32 2 32 0 32 -3 32 -2 32 0 32 0 32 -1 32 -1 32 1 32 3 32 1 32 -3 32 -4 32 0 32 2 32 3 32 2 32 1 32 3 32 3 32 -1 0 11Z",
+          "material": "stein",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [384, -240]
+    },
+    {
+      "id": "stahl",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M168 -35l0 -422 18 0 0 422ZM159 -35l0 -8 36 0 0 8ZM159 -449l0 -8 36 0 0 8ZM373 -42l0 -408 18 0 0 408ZM364 -42l0 -8 36 0 0 8ZM364 -442l0 -8 36 0 0 8ZM548 -39l0 -413 18 0 0 413ZM539 -39l0 -8 36 0 0 8ZM539 -444l0 -8 36 0 0 8ZM137 -404l0 -16 460 0 0 16ZM190 -415l92 88 -5 6 -93 -88ZM375 -409l-93 88 -5 -6 93 -88ZM395 -415l78 88 -6 6 -78 -88ZM550 -409l-77 88 -6 -6 77 -88Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M168 -35l0 -422 6 0 0 422ZM373 -42l0 -408 6 0 0 408ZM548 -39l0 -413 6 0 0 413ZM137 -404l0 -5 460 0 0 5Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [180, -64],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [180, -104],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [180, -144],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [180, -184],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [180, -224],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [180, -264],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [180, -304],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [180, -344],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [180, -384],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [180, -424],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [385, -71],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [385, -111],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [385, -151],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [385, -191],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [385, -231],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [385, -271],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [385, -311],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [385, -351],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [385, -391],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [560, -69],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [560, -109],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [560, -149],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [560, -189],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [560, -229],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [560, -269],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [560, -309],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [560, -349],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [560, -389],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.6,
+          "form": "M253 -404L259 -284M448 -404L454 -284",
+          "material": "linie"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [253, -394],
+          "radius": 3.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [254, -374],
+          "radius": 3.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [255, -354],
+          "radius": 3.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [256, -334],
+          "radius": 3.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [257, -314],
+          "radius": 3.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [258, -294],
+          "radius": 3.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [448, -394],
+          "radius": 3.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [449, -374],
+          "radius": 3.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [450, -354],
+          "radius": 3.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [451, -334],
+          "radius": 3.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [452, -314],
+          "radius": 3.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [453, -294],
+          "radius": 3.2,
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [384, -240]
+    },
+    {
+      "id": "glut",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M98 -44l20 -8 10 6 15 -8 14 10 -14 -4 -15 6 -10 -5ZM189 -46l24 -8 11 6 18 -8 18 10 -18 -4 -18 6 -11 -5ZM386 -50l22 -8 11 6 17 -8 16 10 -16 -4 -17 6 -11 -5ZM448 -46l23 -8 12 6 17 -8 17 10 -17 -4 -17 6 -12 -5ZM617 -52l21 -8 11 6 16 -8 16 10 -16 -4 -16 6 -11 -5Z",
+          "material": "koenigsrot",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [128, -48],
+          "radius": 2.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [224, -50],
+          "radius": 2.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [419, -54],
+          "radius": 2.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [483, -50],
+          "radius": 2.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [649, -56],
+          "radius": 2.4,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [384, -240]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 480,
+    "rahmen": [0, -480, 768, 480]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

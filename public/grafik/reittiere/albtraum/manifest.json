@@ -1,0 +1,64 @@
+{
+  "id": "albtraum",
+  "version": 1,
+  "specHash": "99af8d71f3bff519c3185f801ec83ae44b4810dd3ff79e56e1b95f5ace095872",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "7a43caadd972920e73c1a380b17ccf482c63d7195e09bd73dfdc030e5db05340",
+  "rahmen": [
+    -78,
+    -122,
+    155,
+    126
+  ],
+  "frameW": 236,
+  "frameH": 192,
+  "animationen": {
+    "galopp": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "galopp.png",
+      "hashes": [
+        "3640eeaefb76af5d195aeba1f019849870004f439bb3a8a7b8684c356bc773ee",
+        "bae827edb93e5e04ab9b542273ef592fd7324fd039f8198c0857e7d3ddb8e3c5",
+        "c6e2aaacb9ae81a26c5a118cf668e7212f16ceff659f3aed8f6ab495fcdf9b38",
+        "4298367d3e5ae05f7f14274c0721f6d9801addee57dd4ec2dacb094020c79e18",
+        "79b0dc19a8185d2d5bc189bd8e11c5d4877f24d8d1ccb0fcae7666018c0f51f7",
+        "4340df5d1d0f8b8b2e58752ec67461f07dd5dfa8e7fd3d245037b050380bdcbc",
+        "262e3680051998145333bd7abafe7c0e97b194b559130dfdb08a67452d01c619",
+        "e5b8e6c4eac971ab42d79b45041855ab6f54626d4e307ca04ec54699486a7eb3"
+      ]
+    },
+    "schritt": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "schritt.png",
+      "hashes": [
+        "98ea555317ee5b1caeb53d154e3eb7f340995575f52f989d16c59909632e0038",
+        "80359e1f7d591ba400514616c988b9ec3a218d6d4f0b4d1bc046f40fe7c19f9d",
+        "06c698bd6d741e9d60357f0c0f635028bda60e6377200c445466e8c3c777f8e0",
+        "0762ec2969bfbbf8633ba9ba65a6752e55e4fbb37725f7c1b86009d147de5c2a",
+        "8de90737aed1291275564452555f039f6e01bd900e6d1b4868715e167db3613e",
+        "2dbc24192aa25b02864eb7458d983d3a04ac8d271f95b6183a583be05b2fda31",
+        "c8bdfc7ad9fd9315f51162f9c75b06401b6a866c2dc127b08137a38a27c4c5d5",
+        "65704b006fdc35f63299c6f2aa232311470290e6f290bc40825fbd20f47c3da0"
+      ]
+    },
+    "trab": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "trab.png",
+      "hashes": [
+        "127214d4179b088c20395d351c0dd41a52f4ad24a1b1fa8213b7d765f0cb38ad",
+        "29bd2b51cc402de4a0a134a9b5b10f71af9051a9ee7737cc3363365038676a39",
+        "66d52609548dfdbaa7636917fa87844d9e4758063bd3f856afc02ee6c4466b28",
+        "716b62874095d525ee90d6e43314bf4e4e0c29c5e205ed01211b2b8689216fe6",
+        "6e5da4ac223fdcf308a72f64a8834b59b352e6f66b25fa349ade19a107bb9055",
+        "9507fcf2e018b2c823fddd2bd2a958a309acfddcb19addb47430e6683e42cd6b",
+        "91cb7358fc0a32ae204a0e95f146b5d050ebbd1c79624f9fda23d6bebdb740df",
+        "bbe6dc55cd34f72d1cb0573c09a0c5f5d255c9ab21717ea50c7806dccb6ccf17"
+      ]
+    }
+  },
+  "varianten": []
+}

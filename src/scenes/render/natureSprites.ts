@@ -1,4 +1,5 @@
 import { MINE_SYMBOL_TEXTURES } from './mineSignView';
+import { paperBuildingFile, paperObjectFile, paperObjectLook, paperObjectOf } from './paperAssets';
 import type { ObjectSprite, WorldFile } from './worldSprites';
 
 /**
@@ -15,27 +16,44 @@ export const FELSEN = ['felsen', 'felsen-b', 'felsen-c'] as const;
 /** Adern in der Reihenfolge ihrer Stufen (Stufe = Material, nicht Biom) */
 const ADERN = ['stone', 'copper', 'iron', 'crystal'] as const;
 
-const datei = (name: string) => `gebaeude/${name}-32.png`;
+/** Rekrutierungslager und Hafen als Papierschnitt (MG6, US1) */
+const papier = (id: string, stufe = 1) => paperBuildingFile(id, stufe)!;
+/** Natur und Objekte als Papierschnitt (MG8, US2): eine Form je Art, Looks je Biom und Baumformen 2–3 zeigen dasselbe Asset (B-701 D-US2-01) */
+const objekt = (id: string) => paperObjectFile(id)!;
+/** Adern in der Reihenfolge von `ADERN` */
+const ADER_IDS = ['ader-stein', 'ader-kupfer', 'ader-eisen', 'ader-kristall'] as const;
 
 /** Textur-Schlüssel → Datei unter `public/grafik/` (LoadScene lädt genau diese, `WORLD_TEXTURES` nimmt sie auf) */
 export const NATURE_TEXTURES: Record<string, string> = {
-  ...Object.fromEntries(ARTEN.flatMap((art) => [1, 2, 3].map((f) => [`grafik:tree-${art}-${f}`, datei(f === 1 ? art : `${art}-${f}`)]))),
-  ...Object.fromEntries(WURZELN.map((id) => [`grafik:${id}`, datei(id)])),
-  'grafik:hoehlenbusch': datei('hoehlenbusch'),
-  'grafik:truhe-geschlossen': datei('truhe-geschlossen'),
-  ...Object.fromEntries(FELSEN.flatMap((id) => [1, 2, 3].map((look) => [`grafik:${id}-${look}`, datei(`${id}-${look}`)]))),
-  ...Object.fromEntries(ADERN.map((_, i) => [`grafik:ader-${i + 1}`, datei(`ader-${i + 1}`)])),
-  'grafik:erzbrocken': datei('erzbrocken'),
-  'grafik:busch': datei('busch'),
-  'grafik:truhe': datei('truhe'),
-  'grafik:portal': datei('portal'),
-  'grafik:ausgang': datei('ausgang'),
-  'grafik:hafen': datei('hafen'), // Hafen-Steg des Chunks `harbor` (BS10, B-641)
-  ...Object.fromEntries([1, 2, 3].map((look) => [look === 1 ? 'grafik:lager' : `grafik:lager-${look}`, datei(`rekrutierungslager-${look}`)])),
+  ...Object.fromEntries(ARTEN.flatMap((art) => [1, 2, 3].map((f) => [`grafik:tree-${art}-${f}`, objekt(art)]))),
+  ...Object.fromEntries(WURZELN.map((id) => [`grafik:${id}`, objekt('wurzel')])),
+  'grafik:hoehlenbusch': objekt('hoehlenbusch'),
+  'grafik:truhe-geschlossen': objekt('truhe'),
+  ...Object.fromEntries(FELSEN.flatMap((id) => [1, 2, 3].map((look) => [`grafik:${id}-${look}`, objekt(id)]))),
+  ...Object.fromEntries(ADER_IDS.map((id, i) => [`grafik:ader-${i + 1}`, objekt(id)])),
+  'grafik:erzbrocken': objekt('erzbrocken'),
+  'grafik:busch': objekt('busch'),
+  'grafik:truhe': objekt('truhe-offen'),
+  'grafik:portal': objekt('portal'),
+  'grafik:ausgang': objekt('ausgang'),
+  'grafik:hafen': papier('hafen'), // Hafen-Steg des Chunks `harbor` (BS10, B-641)
+  ...Object.fromEntries([1, 2, 3].map((look) => [look === 1 ? 'grafik:lager' : `grafik:lager-${look}`, papier('rekrutierungslager', look)])),
   ...MINE_SYMBOL_TEXTURES, // Axt und Spitzhacke am Abbau-Schild (GEB16, B-588)
 };
 
-export const natureFiles = (): Record<string, WorldFile> => Object.fromEntries(Object.entries(NATURE_TEXTURES).map(([key, file]) => [key, { file }]));
+/** Datei samt Frame-Maßen: Papier-Sheets legen die Frames nebeneinander und laden als Spritesheet */
+export function worldFile(file: string): WorldFile {
+  const look = paperObjectLook(paperObjectOf(file) ?? '');
+  return look ? { file, frameWidth: look.frameWidth, frameHeight: look.frameHeight } : { file };
+}
+
+export const natureFiles = (): Record<string, WorldFile> => Object.fromEntries(Object.entries(NATURE_TEXTURES).map(([key, file]) => [key, worldFile(file)]));
+
+/** Bild eines Schlüssels: Papier-Objekt mit Frames, Ursprung und Maßstab aus dem Rahmen, sonst still im Maßstab 1 */
+export function objectLook(key: string, file: string | undefined): ObjectSprite {
+  const look = file ? paperObjectLook(paperObjectOf(file) ?? '') : null;
+  return look ? { key, frame: 0, frames: look.frames, zoom: look.zoom, originX: look.originX, originY: look.originY } : { key, frame: 0, frames: 1, zoom: 1 };
+}
 
 /** Look des Bioms: 1 Wald, 2 Höhle, 3 Mine; Biome ohne eigenen Look (Eisenstollen, Kristallhöhle, neue) zeigen Mine, fehlende ID Wald */
 export function natureLook(biomeId: string | undefined): 1 | 2 | 3 {
@@ -61,6 +79,11 @@ function mix(x: number): number {
   h = Math.imul(h ^ (h >>> 16), 0x85ebca6b);
   h = Math.imul(h ^ (h >>> 13), 0xc2b2ae35);
   return (h ^ (h >>> 16)) >>> 0;
+}
+
+/** Startframe einer Schleifen-Animation aus der Weltposition (Units), damit gleiche Objekte nicht im Gleichtakt laufen (Review US2) */
+export function animPhase(x: number, frames: number): number {
+  return frames > 1 ? mix(x * 7) % frames : 0;
 }
 
 /**
@@ -99,7 +122,7 @@ export function rockTexture(x: number, biomeId: string | undefined): string {
   return `grafik:${FELSEN[mix(x) % FELSEN.length]!}-${natureLook(biomeId)}`;
 }
 
-const still = (key: string): ObjectSprite => ({ key, frame: 0, frames: 1, zoom: 1 });
+const still = (key: string): ObjectSprite => objectLook(key, NATURE_TEXTURES[key]);
 
 /** Bild eines Ressourcen-Knotens (Baum, Fels, Erzbrocken, Busch, Ader) an Position `x` im Biom; unbekannte Art `null` → Platzhalter */
 export function nodeSprite(kind: string, x: number, biomeId: string | undefined): ObjectSprite | null {

@@ -1,0 +1,27 @@
+{
+  "id": "hg-kristall-mitte-v1",
+  "version": 1,
+  "specHash": "19f2c5911e26a92d8f6578875d1704f1b00deaaa284e934b8c93367d5924b774",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "aecb46a4c1b8892fb47ca1588fe9c585ba7438f0951706391d2593c7a5eb3db2",
+  "rahmen": [
+    0,
+    -480,
+    768,
+    480
+  ],
+  "frameW": 768,
+  "frameH": 480,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "1962cbfec516a688089fdba5c0c2a2c0b2b4a4fc88a89b6688ca929b6c47a2d0"
+      ]
+    }
+  },
+  "varianten": []
+}

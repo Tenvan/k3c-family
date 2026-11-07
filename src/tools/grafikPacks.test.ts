@@ -12,9 +12,16 @@ const lizenzen =renderCredits(CREDITS.filter((c) => c.root === 'grafik'));
 /** Alle Dateien unter public/grafik (Schlüssel: Pfad ab dem Ordner) */
 /** ohne `gebaeude/`: eigene Grafik mit Daten-JSON aus `task gen:gebaeude` (GEB1), kein Fremd-Pack */
 /** ohne `kandidaten/`: Importe aus k3c-workbench (M10.5), kein Pack; ihre Credit-Zeilen prüft `credits.test.ts` (B-420) */
-const files = Object.keys(import.meta.glob('../../public/grafik/**/*', { query: '?url', import: 'default' }))
-  .map((p) => p.replace('../../public/grafik/', ''))
-  .filter((f) => !f.startsWith('gebaeude/') && !f.startsWith('kandidaten/'));
+/** ohne `stil.paper.json` und Papierschnitt-Gruppen (Ordner mit `index.paper.json`): eigene Grafik (Entscheidung 005, RD1) */
+const all = Object.keys(import.meta.glob('../../public/grafik/**/*', { query: '?url', import: 'default' }))
+  .map((p) => p.replace('../../public/grafik/', ''));
+/** Papierschnitt-Gruppe = Ordner mit index.paper.json und golden.json; frei sind nur ihre Specs und gerenderten Ausgaben. */
+const papier = new Set(all.filter((f) => /^[^/]+\/index\.paper\.json$/.test(f)).map((f) => f.split('/')[0])
+  .filter((g) => all.includes(`${g}/golden.json`)));
+const PAPIER_DATEI = /^([^/]+)\/(index\.paper\.json|golden\.json|[a-z0-9-]+\.paper\.json|[a-z0-9-]+\/(manifest\.json|[^/]+\.png))$/;
+const istPapier = (f: string) => papier.has(PAPIER_DATEI.exec(f)?.[1] ?? '');
+const files = all
+  .filter((f) => !f.startsWith('gebaeude/') && !f.startsWith('kandidaten/') && f !== 'stil.paper.json' && !istPapier(f));
 
 /** Dateiendungen, die nicht ins Repo gehören: Musik, Code, Quelldateien, Skripte */
 const FORBIDDEN = /\.(mp3|ogg|wav|js|html|psd|ase|aseprite|gif|iml|tps|json)$/i;

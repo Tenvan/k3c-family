@@ -1,0 +1,27 @@
+{
+  "id": "hg-mine-nah-v1",
+  "version": 1,
+  "specHash": "8211fe8888546183253ec20a952b39c883dd6b553ad0fadb31e4df4fb6d26195",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "d52a1e4d1da7f1bd8023c2777a58aa1d182cd72ff3e28ca57010a8c38840ded7",
+  "rahmen": [
+    0,
+    -480,
+    768,
+    480
+  ],
+  "frameW": 768,
+  "frameH": 480,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "ebb89bba6c54dee4d43398af5118423d0b392e77a44e8083aaef0682e667f19b"
+      ]
+    }
+  },
+  "varianten": []
+}

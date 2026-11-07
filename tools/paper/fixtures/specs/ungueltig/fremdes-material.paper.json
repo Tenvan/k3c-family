@@ -1,0 +1,24 @@
+{
+  "$schema": "../../../schema/paper-spec.schema.json",
+  "id": "fremdes-material",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Negativ-Fixture fremdes-material",
+  "teile": [
+    {
+      "id": "koerper",
+      "pivot": [0, 0],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-10 0V-20H10V0Z",
+          "material": "neon-gruen"
+        }
+      ]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 64,
+    "rahmen": [-12, -22, 24, 24]
+  }
+}

@@ -1,0 +1,2 @@
+fass gelöscht: public/grafik/requisiten/fass.paper.json und public/grafik/requisiten/fass/ (2 PNGs, manifest.json); Gruppen-Index requisiten nachgezogen
+Checkout: Worktree pv1 (C:\WORKSPACE\k3c\.claude\worktrees\pv1)

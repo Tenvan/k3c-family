@@ -1,0 +1,43 @@
+{
+  "id": "burg-ausbau",
+  "version": 1,
+  "specHash": "47217d7a67ee7f9ae3d38e480e9f706ad0997f1a4940fe179970a5f0355bca08",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "c0a1df9b8da28fb401e40b62c1ddee574d2e0aa79c1c61899fbd3404119d0288",
+  "rahmen": [
+    -128,
+    -288,
+    256,
+    288
+  ],
+  "frameW": 256,
+  "frameH": 288,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "b9c048de34d844a2381155656d249036a85a52b60cb9fd06bf1600e44d7aa3ae"
+      ]
+    },
+    "stand.s2": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s2.png",
+      "hashes": [
+        "60cb806e230d4bacf72d9e29e2d102dfd6bdce3c26d1027a8ae7b0c707ac59a5"
+      ]
+    },
+    "stand.s3": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s3.png",
+      "hashes": [
+        "47df21f76dd7a45408767bf678f36c86a7b57481644313295c40889b74a2c791"
+      ]
+    }
+  },
+  "varianten": []
+}

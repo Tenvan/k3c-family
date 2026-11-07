@@ -1,0 +1,34 @@
+{
+  "id": "hoehlenbusch",
+  "version": 1,
+  "specHash": "db793f50184acb505d3ee5f54434fc1badc46df76d28642635050fb97764bdd5",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "ea53686d5e2935b6ce2440ee35433c4de61df00ae87dcbf5fcbab8da26a611ca",
+  "rahmen": [
+    -30,
+    -38,
+    60,
+    40
+  ],
+  "frameW": 63,
+  "frameH": 42,
+  "animationen": {
+    "idle": {
+      "frames": 8,
+      "fps": 6,
+      "datei": "idle.png",
+      "hashes": [
+        "462c090c5aaa2475dfc3724671e091fc6c1fc27d1653dc7697be0ad456dd62d6",
+        "53dbda7926a785475463531af93bc5113495af431bbec75a9b6e8dbbe91c9807",
+        "b9330785952203bfd69bd728a225849447a6118455314cc86e0ded8b6f735f99",
+        "f784ae21c02ab8143e172129ef4eebdbe61ee59c4b1305ac49d2d670f500a241",
+        "e4b62516f6d5f538a2ff8c1fbd8e9be8bf45710f786a1e446990f3cdb5368204",
+        "f784ae21c02ab8143e172129ef4eebdbe61ee59c4b1305ac49d2d670f500a241",
+        "b9330785952203bfd69bd728a225849447a6118455314cc86e0ded8b6f735f99",
+        "53dbda7926a785475463531af93bc5113495af431bbec75a9b6e8dbbe91c9807"
+      ]
+    }
+  },
+  "varianten": []
+}

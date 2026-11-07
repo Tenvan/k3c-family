@@ -1,0 +1,172 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "ader-kristall",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Kristallader (Stufe 4): Felswand, aus der blau leuchtende Kristallspitzen wachsen",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-30 0L-32 -24L-24 -50L-6 -60L14 -58L28 -44L32 -18L30 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-30 0L-32 -24L-24 -50L-6 -60L-2.1 -58L-4.2 -44L-4.8 -18L-4.5 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M-6 -59L31 -18",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-20 -40L-8 -48L-6 -30L-18 -26Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-26 -20L-10 -14L8 -22",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-12 -30L-15 -43.5L-11 -48L-7 -43.5L-4 -30Z",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 -30L-15 -43.5L-11 -48L-9.5 -30Z",
+          "material": "koenigsblau",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-11 -46L-9.2 -31",
+          "material": "weiss"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-0.5 -32L0.5 -50L5 -56L9.5 -50L8.5 -32Z",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-0.5 -32L0.5 -50L5 -56L4.5 -32Z",
+          "material": "koenigsblau",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M5 -54L4.4 -33",
+          "material": "weiss"
+        },
+        {
+          "art": "flaeche",
+          "form": "M12.5 -28L16.5 -38.5L20 -42L23.5 -38.5L19.5 -28Z",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M12.5 -28L16.5 -38.5L20 -42L18 -28Z",
+          "material": "koenigsblau",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M20 -40L17.6 -29",
+          "material": "weiss"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-17 -10L-19 -19L-16 -22L-13 -19L-11 -10Z",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-17 -10L-19 -19L-16 -22L-15 -10Z",
+          "material": "koenigsblau",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-16 -20L-14.8 -11",
+          "material": "weiss"
+        },
+        {
+          "art": "flaeche",
+          "form": "M11 -8L13 -15.5L16 -18L19 -15.5L17 -8Z",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M11 -8L13 -15.5L16 -18L15 -8Z",
+          "material": "koenigsblau",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M16 -16L14.8 -9",
+          "material": "weiss"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [4, -54],
+          "radius": 1.3
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [-10, -46],
+          "radius": 1
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 70,
+    "rahmen": [-36, -64, 72, 66]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

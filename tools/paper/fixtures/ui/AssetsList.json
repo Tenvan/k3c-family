@@ -1,0 +1,41 @@
+[
+  {
+    "id": "monarch",
+    "rig": "figur",
+    "gruppe": "figuren",
+    "pfad": "public/grafik/figuren/monarch.paper.json",
+    "gueltig": true,
+    "geaendert": true
+  },
+  {
+    "id": "pferd",
+    "rig": "vierbeiner",
+    "gruppe": "reittiere",
+    "pfad": "public/grafik/reittiere/pferd.paper.json",
+    "gueltig": true,
+    "geaendert": true
+  },
+  {
+    "id": "mauer",
+    "rig": "gebaeude",
+    "gruppe": "gebaeude",
+    "pfad": "public/grafik/gebaeude/mauer.paper.json",
+    "gueltig": true,
+    "geaendert": true
+  },
+  {
+    "id": "banner",
+    "rig": "requisite",
+    "gruppe": "requisiten",
+    "pfad": "public/grafik/requisiten/banner.paper.json",
+    "gueltig": false,
+    "geaendert": true,
+    "fehler": [
+      {
+        "feld": "teile[0].lagen[0].material",
+        "regel": "material-unbekannt",
+        "text": "Material „scharlach“ fehlt in der Stil-Datei"
+      }
+    ]
+  }
+]

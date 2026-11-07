@@ -1,0 +1,339 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "taverne",
+  "rig": "gebaeude",
+  "version": 1,
+  "beschreibung": "Fachwerk-Taverne (6 × 4 Kacheln) mit rotem Satteldach, Steinkamin, Putzwand mit Fachwerk, zwei warm erleuchteten Fenstern, Plankentür auf Steinstufe, Fass und Hängeschild mit Bierkrug; ab Stufe 2 Wand, Fachwerk und Dach in der Materialkette, Laterne ab Stufe 3.",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M44 -128L58 -128L58 -98L44 -98Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M42 -128L60 -128L60 -124L42 -124Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-92 -70L-10 -126L6 -126L88 -70Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M-88 -72L-8 -124",
+          "material": "koenigsrot",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-60 -90L64 -90",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-34 -108L34 -108",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-80 -70L80 -70L80 0L-80 0Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-80 -10L80 -10L80 -4L-80 -4Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-80 -40L80 -40L80 -36L-80 -36Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-80 -70L80 -70L80 -66L-80 -66Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-80 -70L-74 -70L-74 -6L-80 -6Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-34 -70L-28 -70L-28 -6L-34 -6Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M28 -70L34 -70L34 -6L28 -6Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M74 -70L80 -70L80 -6L74 -6Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-66 -60L-44 -60L-44 -44L-66 -44Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-64 -58L-46 -58L-46 -46L-64 -46Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-56 -58L-54 -58L-54 -46L-56 -46Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-64 -53L-46 -53L-46 -51L-64 -51Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-68 -44L-42 -44L-42 -41L-68 -41Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M40 -60L62 -60L62 -44L40 -44Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M42 -58L60 -58L60 -46L42 -46Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M50 -58L52 -58L52 -46L50 -46Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M42 -53L60 -53L60 -51L42 -51Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M38 -44L64 -44L64 -41L38 -41Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-12 -4L-12 -40L0 -46L12 -40L12 -4Z",
+          "material": "leder"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M0 -44L0 -5",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [7, -22],
+          "radius": 1.4
+        },
+        {
+          "art": "flaeche",
+          "form": "M-16 -4L16 -4L16 0L-16 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M18 -20L32 -20L32 -4L18 -4Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M18 -16L32 -16",
+          "material": "maehne",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M18 -8L32 -8",
+          "material": "maehne",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M80 -66L94 -66L94 -63L80 -63Z",
+          "material": "maehne"
+        },
+        {
+          "art": "flaeche",
+          "form": "M82 -63L83 -63L83 -59L82 -59Z",
+          "material": "maehne"
+        },
+        {
+          "art": "flaeche",
+          "form": "M91 -63L92 -63L92 -59L91 -59Z",
+          "material": "maehne"
+        },
+        {
+          "art": "flaeche",
+          "form": "M79 -59L95 -59L95 -45L79 -45Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M84 -56L90 -56L90 -48L84 -48Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M84 -57L90 -57L90 -55L84 -55Z",
+          "material": "hermelin"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 128,
+    "rahmen": [-96, -128, 192, 128]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  },
+  "stufen": [
+    {
+      "tausch": {
+        "hermelin": "stein",
+        "holz": "stein",
+        "koenigsrot": "stein"
+      }
+    },
+    {
+      "tausch": {
+        "stein": "fell-fuchs"
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "laterne",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-20 -36L-18 -36L-18 -26L-20 -26Z",
+              "material": "maehne"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-24 -30L-18 -30L-18 -22L-24 -22Z",
+              "material": "gold",
+              "ton": "licht"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-25 -31L-17 -31L-17 -29L-25 -29Z",
+              "material": "maehne"
+            },
+            {
+              "art": "punkt",
+              "material": "smaragd",
+              "mitte": [-50, -20],
+              "radius": 1.8
+            },
+            {
+              "art": "punkt",
+              "material": "smaragd",
+              "mitte": [60, -30],
+              "radius": 1.4
+            },
+            {
+              "art": "punkt",
+              "material": "smaragd",
+              "mitte": [-20, -96],
+              "radius": 1.8
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    },
+    {
+      "tausch": {
+        "fell-fuchs": "stoff",
+        "smaragd": "stoff"
+      }
+    },
+    {
+      "tausch": {
+        "stoff": "koenigsblau"
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "kristall",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-23 -29L-19 -29L-19 -23L-23 -23Z",
+              "material": "weiss"
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [-70, -24],
+              "radius": 1.1
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [70, -20],
+              "radius": 1.1
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [-40, -86],
+              "radius": 1.1
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [30, -100],
+              "radius": 1.1
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    }
+  ]
+}

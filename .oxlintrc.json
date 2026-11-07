@@ -3,7 +3,6 @@
   "ignorePatterns": [
     "dist", "_site", "node_modules", "public",
     "tools/k3c-workbench/frontend/dist", "tools/k3c-workbench/frontend/wailsjs",
-    "tools/k3c-studio/frontend/dist",
     "tools/k3c-starter/frontend/dist", "tools/k3c-starter/frontend/wailsjs",
     ".claude" // fremde Skill-Skripte, nicht Teil des Spiel-Codes
   ],

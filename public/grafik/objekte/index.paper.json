@@ -1,0 +1,112 @@
+[
+  {
+    "id": "ader-eisen",
+    "rig": "requisite",
+    "manifest": "ader-eisen/manifest.json"
+  },
+  {
+    "id": "ader-kristall",
+    "rig": "requisite",
+    "manifest": "ader-kristall/manifest.json"
+  },
+  {
+    "id": "ader-kupfer",
+    "rig": "requisite",
+    "manifest": "ader-kupfer/manifest.json"
+  },
+  {
+    "id": "ader-stein",
+    "rig": "requisite",
+    "manifest": "ader-stein/manifest.json"
+  },
+  {
+    "id": "ausgang",
+    "rig": "requisite",
+    "manifest": "ausgang/manifest.json"
+  },
+  {
+    "id": "birke",
+    "rig": "requisite",
+    "manifest": "birke/manifest.json"
+  },
+  {
+    "id": "busch",
+    "rig": "requisite",
+    "manifest": "busch/manifest.json"
+  },
+  {
+    "id": "erzbrocken",
+    "rig": "requisite",
+    "manifest": "erzbrocken/manifest.json"
+  },
+  {
+    "id": "felsen-b",
+    "rig": "requisite",
+    "manifest": "felsen-b/manifest.json"
+  },
+  {
+    "id": "felsen-c",
+    "rig": "requisite",
+    "manifest": "felsen-c/manifest.json"
+  },
+  {
+    "id": "felsen",
+    "rig": "requisite",
+    "manifest": "felsen/manifest.json"
+  },
+  {
+    "id": "hoehlenbusch",
+    "rig": "requisite",
+    "manifest": "hoehlenbusch/manifest.json"
+  },
+  {
+    "id": "pappel",
+    "rig": "requisite",
+    "manifest": "pappel/manifest.json"
+  },
+  {
+    "id": "portal",
+    "rig": "requisite",
+    "manifest": "portal/manifest.json"
+  },
+  {
+    "id": "schild-axt",
+    "rig": "requisite",
+    "manifest": "schild-axt/manifest.json"
+  },
+  {
+    "id": "schild-spitzhacke",
+    "rig": "requisite",
+    "manifest": "schild-spitzhacke/manifest.json"
+  },
+  {
+    "id": "setzling",
+    "rig": "requisite",
+    "manifest": "setzling/manifest.json"
+  },
+  {
+    "id": "stern",
+    "rig": "requisite",
+    "manifest": "stern/manifest.json"
+  },
+  {
+    "id": "tanne",
+    "rig": "requisite",
+    "manifest": "tanne/manifest.json"
+  },
+  {
+    "id": "truhe-offen",
+    "rig": "requisite",
+    "manifest": "truhe-offen/manifest.json"
+  },
+  {
+    "id": "truhe",
+    "rig": "requisite",
+    "manifest": "truhe/manifest.json"
+  },
+  {
+    "id": "wurzel",
+    "rig": "requisite",
+    "manifest": "wurzel/manifest.json"
+  }
+]

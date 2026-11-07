@@ -1,0 +1,27 @@
+{
+  "id": "hg-kristall-nah-v1",
+  "version": 1,
+  "specHash": "4f57df8afa4b47015002f5826b8d58467023dc0a801da7634143fa3d993ce0af",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "a89ff2adaafce9a0dec33b7f0ca8c5b42bab32b3b098e0294b6c14a00340d755",
+  "rahmen": [
+    0,
+    -480,
+    768,
+    480
+  ],
+  "frameW": 768,
+  "frameH": 480,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "7a846a7a05e7408a0deec403440131062d692b8bfd401501ef3babd990faa943"
+      ]
+    }
+  },
+  "varianten": []
+}

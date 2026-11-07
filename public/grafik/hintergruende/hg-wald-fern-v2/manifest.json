@@ -1,0 +1,27 @@
+{
+  "id": "hg-wald-fern-v2",
+  "version": 1,
+  "specHash": "5702c38d3cf87f60f1b9b975a7ad73ca8dc9328263cfe1ac57d31da966353ec4",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "2d264baf2a686c22abd311d88ff2b76afa5c6ffb13353982b216d4a01530c2a6",
+  "rahmen": [
+    0,
+    -480,
+    768,
+    480
+  ],
+  "frameW": 768,
+  "frameH": 480,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "c8b4760db5ea184b77b9f5038939a296c7624c3eed08e481c8755960b95205de"
+      ]
+    }
+  },
+  "varianten": []
+}

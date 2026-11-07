@@ -1,0 +1,27 @@
+{
+  "id": "ader-kristall",
+  "version": 1,
+  "specHash": "5acea6785e26aebf29f62d10e967b104f7db124f01aaacb3e9a7cd5c7ff91939",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "cc964c563ef59d59aae726daf5cfe4043f630efde853718d19d7c9848c516492",
+  "rahmen": [
+    -36,
+    -64,
+    72,
+    66
+  ],
+  "frameW": 76,
+  "frameH": 70,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 1,
+      "datei": "idle.png",
+      "hashes": [
+        "7b3b5abeae098e89289de2ed0a50ffc76a0bd3c5a7864acb23573216e9119236"
+      ]
+    }
+  },
+  "varianten": []
+}

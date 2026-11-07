@@ -1,0 +1,132 @@
+{
+  "$schema": "../../../schema/paper-spec.schema.json",
+  "id": "proportion",
+  "rig": "figur",
+  "version": 1,
+  "beschreibung": "Negativ-Fixture proportion",
+  "teile": [
+    {
+      "id": "rumpf",
+      "pivot": [0, -50],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -50V-100H6V-50Z",
+          "material": "holz"
+        }
+      ]
+    },
+    {
+      "id": "kopf",
+      "eltern": "rumpf",
+      "pivot": [0, -100],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -100V-110H6V-100Z",
+          "material": "holz"
+        }
+      ]
+    },
+    {
+      "id": "oberarm-v",
+      "eltern": "rumpf",
+      "pivot": [0, -60],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -60V-90H6V-60Z",
+          "material": "holz"
+        }
+      ]
+    },
+    {
+      "id": "unterarm-v",
+      "eltern": "rumpf",
+      "pivot": [0, -55],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -55V-85H6V-55Z",
+          "material": "holz"
+        }
+      ]
+    },
+    {
+      "id": "oberarm-h",
+      "eltern": "rumpf",
+      "pivot": [0, -50],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -50V-80H6V-50Z",
+          "material": "holz"
+        }
+      ]
+    },
+    {
+      "id": "unterarm-h",
+      "eltern": "rumpf",
+      "pivot": [0, -45],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -45V-75H6V-45Z",
+          "material": "holz"
+        }
+      ]
+    },
+    {
+      "id": "oberschenkel-v",
+      "eltern": "rumpf",
+      "pivot": [0, -40],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -40V-70H6V-40Z",
+          "material": "holz"
+        }
+      ]
+    },
+    {
+      "id": "unterschenkel-v",
+      "eltern": "rumpf",
+      "pivot": [0, -35],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -35V-65H6V-35Z",
+          "material": "holz"
+        }
+      ]
+    },
+    {
+      "id": "oberschenkel-h",
+      "eltern": "rumpf",
+      "pivot": [0, -30],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -30V-60H6V-30Z",
+          "material": "holz"
+        }
+      ]
+    },
+    {
+      "id": "unterschenkel-h",
+      "eltern": "rumpf",
+      "pivot": [0, -25],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -25V-55H6V-25Z",
+          "material": "holz"
+        }
+      ]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 192,
+    "rahmen": [-20, -148, 40, 150]
+  }
+}

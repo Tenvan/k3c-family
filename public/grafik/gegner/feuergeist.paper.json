@@ -1,0 +1,239 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "feuergeist",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Feuergeist: schwebende Flamme in Rot, Orange und Gold mit dunklen Augen; flackert, schleudert einen Feuerball",
+  "teile": [
+    {
+      "eltern": "korpus",
+      "id": "flamme-hinten",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12 -26C-20 -36 -22 -50 -16 -62C-14 -54 -10 -50 -8 -48C-10 -58 -6 -70 2 -78C0 -66 4 -56 10 -50Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -24]
+    },
+    {
+      "eltern": "korpus",
+      "id": "hand",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M8 -38C14 -40 20 -38 24 -34C22 -32 18 -32 14 -33C12 -32 9 -33 8 -34Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M10 -37C14 -38 18 -37 21 -35C18 -34 14 -34 11 -35Z",
+          "material": "fell-fuchs",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [10, -36]
+    },
+    {
+      "eltern": "hand",
+      "id": "feuerball",
+      "lagen": [
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [27, -36],
+          "radius": 5,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "fell-fuchs",
+          "mitte": [28, -36.5],
+          "radius": 3.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [28.6, -37],
+          "radius": 1.8,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M23 -38C19 -40 16 -40 13 -38C16 -36 19 -35 23 -34Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [10, -36]
+    },
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-14 -32C-18 -42 -14 -54 -4 -60C-2 -54 2 -52 6 -52C6 -58 10 -64 16 -66C14 -58 18 -50 18 -42C18 -30 10 -20 0 -18C-8 -18 -13 -24 -14 -32Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-10 -32C-12 -40 -10 -48 -4 -52C-2 -46 2 -44 6 -45C8 -50 10 -54 13 -56C12 -50 14 -44 14 -38C13 -30 8 -24 0 -23C-6 -23 -9 -27 -10 -32Z",
+          "material": "fell-fuchs",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-5 -32C-6 -38 -4 -42 0 -44C1 -40 4 -40 7 -42C9 -38 9 -33 7 -29C5 -26 2 -25 0 -25C-3 -26 -5 -28 -5 -32Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M1 -38C2 -40 5 -40 6 -38C5 -36 2 -36 1 -38Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M8.5 -38.5C9.5 -40.2 11.5 -40 12 -38.4C11.4 -36.6 9.3 -36.6 8.5 -38.5Z",
+          "material": "linie"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [3.8, -38.4],
+          "radius": 0.6
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [10.6, -38.6],
+          "radius": 0.5
+        },
+        {
+          "art": "flaeche",
+          "form": "M3 -32C5 -30 8 -30 10 -32C8 -29 5 -29 3 -32Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6 -20C-4 -14 -2 -10 0 -6C1 -10 3 -14 6 -19Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -30]
+    },
+    {
+      "eltern": "korpus",
+      "id": "krone",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-4 -54C-6 -62 -4 -70 0 -76C0 -68 4 -64 6 -62C8 -66 10 -70 14 -72C12 -64 12 -58 10 -54Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-1 -55C-2 -61 0 -66 2 -69C2 -64 4 -61 7 -59C8 -62 9 -64 11 -65C10 -60 10 -57 8 -55Z",
+          "material": "gold",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [2, -56]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 87,
+    "rahmen": [-30, -84, 72, 82]
+  },
+  "animationen": {
+    "angriff": {
+      "fps": 12,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "hand": -190,
+            "korpus": 0
+          }
+        },
+        {
+          "t": 0.35,
+          "winkel": {
+            "hand": -110,
+            "korpus": -8,
+            "krone": 10
+          }
+        },
+        {
+          "t": 0.55,
+          "winkel": {
+            "hand": 15,
+            "korpus": 10,
+            "krone": -10
+          }
+        },
+        {
+          "t": 0.8,
+          "winkel": {
+            "hand": -60,
+            "korpus": 2
+          }
+        }
+      ]
+    },
+    "idle": {
+      "fps": 8,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "flamme-hinten": 6,
+            "hand": -190,
+            "korpus": -2,
+            "krone": -8
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "flamme-hinten": -6,
+            "hand": -190,
+            "korpus": 2,
+            "krone": 8
+          }
+        }
+      ]
+    },
+    "lauf": {
+      "fps": 12,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "flamme-hinten": -12,
+            "hand": -190,
+            "korpus": 8,
+            "krone": -14
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "flamme-hinten": -4,
+            "hand": -190,
+            "korpus": 12,
+            "krone": -6
+          }
+        }
+      ]
+    }
+  }
+}

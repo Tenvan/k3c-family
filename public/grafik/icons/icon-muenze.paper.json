@@ -1,0 +1,64 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "icon-muenze",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Münze: goldene Münze von vorn mit Prägung (Gold-Anzeige, Hinweis „Münze aufheben“)",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M12 -16C12 -22.63 6.63 -28 0 -28C-6.63 -28 -12 -22.63 -12 -16C-12 -9.37 -6.63 -4 0 -4C6.63 -4 12 -9.37 12 -16Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -28C-6.6 -28 -12 -22.6 -12 -16C-12 -9.4 -6.6 -4 0 -4C-4.8 -10 -4.8 -22 0 -28Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M7.44 -16C7.44 -20.11 4.11 -23.44 0 -23.44C-4.11 -23.44 -7.44 -20.11 -7.44 -16C-7.44 -11.89 -4.11 -8.56 0 -8.56C4.11 -8.56 7.44 -11.89 7.44 -16Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-2.4 -20.2L2.4 -20.2M0 -20.8L0 -11.2",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [5.4, -22],
+          "radius": 1.2000000000000002
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

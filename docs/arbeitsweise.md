@@ -86,9 +86,10 @@ Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten 
    sprint/<präfix>`), gilt der Stand der Sprint-Dateien dort (`git show origin/sprint/<präfix>:<Pfad>`), sonst der von
    `develop`. Die nächste Session ergibt sich aus dem **Rang** (`projekte/README.md`): aktives Projekt mit dem kleinsten
    Rang → seine aktiven Sprints in der Reihenfolge der Projekt-Tabelle → erste Session mit `Status: offen`,
-   `Agent: autonom` und erledigten Abhängigkeiten. Gibt es dort keine, kommt das Projekt mit dem nächsten Rang. Die **Domäne** der Session darf nicht gesperrt sein:
+   `Agent: autonom` und erledigten Abhängigkeiten. Gibt es dort keine, kommt das Projekt mit dem nächsten Rang. Die **Domäne** (bei gesetzter `Lane`: Domäne und Lane) der Session darf nicht gesperrt sein:
    Steht auf einem anderen Sprint-Branch (`git ls-remote --heads origin 'sprint/*'`) eine Session derselben Domäne auf
-   `in Arbeit`, die nächste passende Session nehmen. Gibt es keine: **nichts tun** und das melden.
+   `in Arbeit` und gleicher Lane oder ohne Lane (oder ist die eigene Session ohne Lane), die nächste passende Session nehmen
+   (Sperr-Regel: Abschnitt „Domänen“). Gibt es keine: **nichts tun** und das melden.
    **Kurzweg:** `plan_next` (k3c-workbench) trifft diese Auswahl aus den lokalen Dateien und liefert Session, Kriterien und
    „Parallel möglich“; je aktivem Sprint überlagert es den Stand von `origin/sprint/<präfix>` (lokaler Ref nach `git fetch`,
    Schritt 1 oben; fehlt der Ref, gilt der lokale Stand und die Antwort sagt das, B-519). Sprint-Branches, die lokal noch nicht
@@ -121,9 +122,12 @@ Eine Session pro Lauf. Eine Review-Session nie im selben Lauf wie eine Umsetzung
 Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und Freigaben. Deshalb:
 
 - **Prüfstufen:** Während der Arbeit nur gezielte Tests (`go test ./engine/sim/ -run TestX`, `check_run go:test` oder
-  `task:test` mit `pattern`). Vor dem Commit **genau einmal** `task check:diff`: Es wählt Client, Go, k3c-workbench, Studio und
-  Starter nach dem Diff zu `origin/develop`, je Tool getrennt nach Go-Tests, Lint und Vitest, und ruft `go test -short`.
-  Den vollen Satz (`task check`, `task check:go`, `task check:race`) fährt nur
+  `task:test` mit `pattern`). Vor dem Commit **genau einmal** `task check:diff` (B-730): Basis ist der nächste
+  Integrations-Branch (jüngster Merge-Base aus `origin/develop` und den `origin/feature/*` in HEAD, `CHECK_BASE=` überschreibt).
+  Nur Doku → nur Planungs- und Regel-Tests. Go: nur geänderte Pakete und ihre Abnehmer (`-short`), Lint nur die geänderten;
+  Vitest mit `--changed`; JS und Go parallel. Volle Module nur bei `go.mod`, `Taskfile.yml`, `testdata/`, `.github/`.
+  **Takt:** einmal je Session-Commit. Nach einem Merge der Basis in den Sprint-Branch kein neuer Lauf, wenn der eigene
+  Diff unverändert ist (die Basis ist schon geprüft). Den vollen Satz (`task check`, `task check:go`, `task check:race`) fährt nur
   die Review-Session, `task check:all` nur der Release. Ein roter Lauf wird behoben und einmal wiederholt, nicht
   mehrfach „zur Sicherheit“.
 - **Lange Tests (B-619):** Ein Go-Test, der über etwa 3 s braucht (echte Git-Repos, `go build`, lange Lauf-Simulationen,
@@ -145,13 +149,26 @@ Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und
 - **Lesen nach Bedarf:** Session und Kriterien liefert `plan_next`; das Glossar beim Schreiben von Specs und Texten,
   `codemap.md` nur für unbekannte Bereiche.
 
+### Ausführung mit Superpowers
+
+Verbindlich ab PV1 für jeden Sprint (Vorgabe 🧑, 2026-11-06): Agenten arbeiten mit den Superpowers-Skills.
+
+- **Sprint:** `superpowers:executing-plans`; der Plan sind Sprint-README und Session-Dateien.
+- **Session:** `superpowers:test-driven-development` (Red → Green → Refactor): erst der fehlschlagende Test, dann der Code.
+- **Vor jedem Commit:** `superpowers:verification-before-completion` – die Befehle unter **Prüfen** frisch laufen lassen
+  und das Ergebnis belegen; keine Erfolgsmeldung ohne Nachweis.
+- **Review vor dem Commit:** `superpowers:requesting-code-review` statt eines freien Reviewer-Agenten. Wann reviewt wird,
+  regelt weiter „Review in der Umsetzung“ oben (Risiko-Regel aus `CLAUDE.md`).
+
 ## Domänen
 
 Jede **Session** gehört zu **genau einer Domäne** (Feld `Domäne`) und ändert nur deren Dateien (plus Tests und Doku dazu).
 Ein Sprint darf Sessions mehrerer Domänen **nacheinander** enthalten (z. B. SIM → SRV → CLI); sein Feld `Domäne` nennt
 sie in der Reihenfolge der Sessions. Was eine Domäne außerhalb des Sprints braucht, wird ein Ticket.
-**Sperre:** Eine Session `in Arbeit` sperrt ihre Domäne; parallele Läufe arbeiten nur in verschiedenen Domänen
-(siehe Autonomer Ablauf, Schritt 1).
+**Sperre:** Eine Session `in Arbeit` **ohne** `Lane` sperrt ihre ganze Domäne; eine Session **mit** `Lane` sperrt nur
+Domäne **und** Lane (PV1.1). Eine Session ohne Lane ist gesperrt, sobald irgendeine Session derselben Domäne in Arbeit
+ist. Parallele Läufe derselben Domäne brauchen also verschiedene Lanes **und** disjunkte **Erlaubte Dateien**.
+Sessions **eines** Sprints laufen immer nacheinander (ein Sprint-Branch). Siehe Autonomer Ablauf, Schritt 1.
 
 | Kürzel | Domäne | Dateien |
 |---|---|---|
@@ -161,7 +178,13 @@ sie in der Reihenfolge der Sessions. Was eine Domäne außerhalb des Sprints bra
 | **CLI** | Client: Darstellung, HUD, Grafik, Audio, Verbindung | `src/scenes/`, `public/`, `src/online/client.ts`, `src/core/saveStore.ts` |
 | **PLAT** | Plattform: Eingabe, Shell, Seiten | `src/input/`, `src/core/shell.ts`, `src/core/fullscreen.ts`, `src/landing/`, `*.html`, Pages-Präsentation `site/` |
 | **INF** | Frameworks, Tooling, CI, Repo-Aufbau, Arbeitsweise | `package.json`, `go.mod`, `vite*.ts`, `tsconfig.json`, Lint-Konfiguration, `.github/`, `tests/projectRules.test.ts`, `tests/planning.test.ts`, `docs/arbeitsweise.md`, `docs/vorlagen/` |
-| **DEV** | Entwickler-Werkzeug | `tools/k3c-workbench/` (eigenes Go-Modul mit Oberfläche, MCP-Server), `tools/k3c-studio/` (Asset-Studio als eigenes Fenster: Backend in `tools/k3c-studio/backend`, Frontend in `tools/k3c-studio/frontend`; keine Seite des Spielservers, Entscheidung 004), `tools/assetkit/` (gemeinsame Asset-Logik von k3c-workbench und Asset-Studio), `cmd/k3c-load/`, `cmd/k3c-tui/`, Werkzeug-Seiten `src/tools/` |
+| **PAP** | Papierschnitt-Grafik (Entscheidung 005) | `tools/paper/`, `public/grafik/stil.paper.json`, `public/grafik/**/*.paper.json` samt den daneben gerenderten Ausgaben (PNG, `manifest.json`, Gruppen-Index), `data/asset-prompts.json`, `docs/standards/paper-*.md` |
+| **DEV** | Entwickler-Werkzeug | `tools/k3c-workbench/` (eigenes Go-Modul mit Oberfläche – Bereiche Development und Assets, Entscheidung 005 › 5 – und MCP-Server), `tools/assetkit/` (Asset-Logik der Workbench, eigenes Modul), `cmd/k3c-load/`, `cmd/k3c-tui/`, Werkzeug-Seiten `src/tools/` |
+
+**Modell-Wahl** (Feld `Modell` der Session, Empfehlung für den ausführenden Agenten): `haiku` für reine Nachschlage-
+und Doku-Sessions, `sonnet` Standard für Umsetzung und Migration, `opus` für Verträge, Rig-Mathematik, Bild-Diff und
+Sprint-Reviews, `fable` nur auf Anweisung 🧑. Ohne Feld (oder `–`) gilt `sonnet`. Höchstens **vier Agenten** arbeiten
+gleichzeitig; `plan_next` schlägt neben der gewählten Session höchstens drei parallele vor.
 
 Grenzfälle:
 
@@ -299,7 +322,7 @@ Niedrige Komplexität ist in **jeder** Session Pflicht, nicht erst im Review.
 
 ### Oberflächen der Wails-Programme (Atomic Design)
 
-Gilt verbindlich für jedes Wails-Programm mit Oberfläche (`tools/*/frontend`: k3c-workbench, Asset-Studio, Starter) und jedes neue.
+Gilt verbindlich für jedes Wails-Programm mit Oberfläche (`tools/*/frontend`: k3c-workbench, Starter) und jedes neue.
 Die Oberfläche ist React mit **Radix Themes**, aufgebaut nach Atomic Design; die gemeinsamen Ebenen liegen in `tools/webkit`:
 
 | Ebene | Ort | Inhalt |

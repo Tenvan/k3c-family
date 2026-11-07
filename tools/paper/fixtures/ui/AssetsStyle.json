@@ -1,0 +1,116 @@
+{
+  "materialien": {
+    "haut": {
+      "licht": "#f8dcc0",
+      "basis": "#efc29c",
+      "schatten": "#d49a74"
+    },
+    "haar": {
+      "licht": "#8a5a3c",
+      "basis": "#6b4128",
+      "schatten": "#4a2b1a"
+    },
+    "gold": {
+      "licht": "#ffe36e",
+      "basis": "#f2c33a",
+      "schatten": "#c48a1e"
+    },
+    "koenigsblau": {
+      "licht": "#8796f2",
+      "basis": "#4f5fd0",
+      "schatten": "#33368f"
+    },
+    "koenigsrot": {
+      "licht": "#e2574c",
+      "basis": "#b8312f",
+      "schatten": "#7c1f2a"
+    },
+    "hermelin": {
+      "licht": "#ffffff",
+      "basis": "#ebe8f4",
+      "schatten": "#c9c4da"
+    },
+    "leder": {
+      "licht": "#a5683f",
+      "basis": "#7d4a2b",
+      "schatten": "#55301d"
+    },
+    "stoff": {
+      "licht": "#aaa4b2",
+      "basis": "#857f8e",
+      "schatten": "#625c6b"
+    },
+    "fell-fuchs": {
+      "licht": "#cf8a52",
+      "basis": "#a8622f",
+      "schatten": "#723f1d"
+    },
+    "maehne": {
+      "licht": "#5a362a",
+      "basis": "#3e241c",
+      "schatten": "#26150f"
+    },
+    "smaragd": {
+      "licht": "#5fd18a",
+      "basis": "#2f9a5c",
+      "schatten": "#1d6640"
+    },
+    "purpur": {
+      "licht": "#a865b8",
+      "basis": "#7c3a8a",
+      "schatten": "#5a2466"
+    },
+    "stein": {
+      "licht": "#c2bdb1",
+      "basis": "#9a9386",
+      "schatten": "#6b6559"
+    },
+    "holz": {
+      "licht": "#b07a4a",
+      "basis": "#875a33",
+      "schatten": "#5c3b20"
+    }
+  },
+  "einzeltoene": {
+    "huf": "#3a2c2a",
+    "auge": "#3b2a20",
+    "weiss": "#ffffff",
+    "linie": "#2a1d2e",
+    "edelstein": "#5fcde4"
+  },
+  "papier": {
+    "lage": {
+      "dx": 0.5,
+      "dy": 0.9,
+      "unschaerfe": 0.45,
+      "deckkraft": 0.55,
+      "farbe": "#1a0f14"
+    },
+    "auflage": {
+      "dx": 0.3,
+      "dy": 0.5,
+      "unschaerfe": 0.3,
+      "deckkraft": 0.35
+    },
+    "struktur": {
+      "frequenz": 1.3,
+      "oktaven": 2,
+      "staerke": 0.18
+    },
+    "falz_deckkraft": 0.25
+  },
+  "licht": "rechts-oben",
+  "proportionen": {
+    "figur": {
+      "kopf_anteil": 0.286,
+      "toleranz": 0.15
+    },
+    "vierbeiner": {
+      "rumpfhoehe_kopflaengen": 2,
+      "toleranz": 0.2
+    }
+  },
+  "skalierung": {
+    "pc": 1
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://k3c.local/paper/stil.schema.json",
+  "title": "Stil-Datei der Papierschnitt-Grafik (public/grafik/stil.paper.json)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["materialien", "einzeltoene", "papier", "licht", "proportionen", "skalierung"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "materialien": {
+      "description": "Papier-Materialien: Name → genau drei Töne",
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "$ref": "#/$defs/name" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["licht", "basis", "schatten"],
+        "properties": {
+          "licht": { "$ref": "#/$defs/hex" },
+          "basis": { "$ref": "#/$defs/hex" },
+          "schatten": { "$ref": "#/$defs/hex" }
+        }
+      }
+    },
+    "einzeltoene": {
+      "description": "Einzelne Farben ohne Töne (Huf, Auge, Linie …)",
+      "type": "object",
+      "propertyNames": { "$ref": "#/$defs/name" },
+      "additionalProperties": { "$ref": "#/$defs/hex" }
+    },
+    "papier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lage", "auflage", "struktur", "falz_deckkraft"],
+      "properties": {
+        "lage": {
+          "description": "Schlagschatten jedes Papierstücks",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["dx", "dy", "unschaerfe", "deckkraft", "farbe"],
+          "properties": {
+            "dx": { "type": "number" },
+            "dy": { "type": "number" },
+            "unschaerfe": { "type": "number", "minimum": 0 },
+            "deckkraft": { "$ref": "#/$defs/anteil" },
+            "farbe": { "$ref": "#/$defs/hex" }
+          }
+        },
+        "auflage": {
+          "description": "Schatten aufgeklebter Lagen (Farbe wie lage)",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["dx", "dy", "unschaerfe", "deckkraft"],
+          "properties": {
+            "dx": { "type": "number" },
+            "dy": { "type": "number" },
+            "unschaerfe": { "type": "number", "minimum": 0 },
+            "deckkraft": { "$ref": "#/$defs/anteil" }
+          }
+        },
+        "struktur": {
+          "description": "Papierstruktur (Rauschen über der ganzen Figur)",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["frequenz", "oktaven", "staerke"],
+          "properties": {
+            "frequenz": { "type": "number", "exclusiveMinimum": 0 },
+            "oktaven": { "type": "integer", "minimum": 1, "maximum": 4 },
+            "staerke": { "$ref": "#/$defs/anteil" }
+          }
+        },
+        "falz_deckkraft": { "type": "number", "minimum": 0, "maximum": 0.25 }
+      }
+    },
+    "licht": { "enum": ["rechts-oben"] },
+    "proportionen": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["figur", "vierbeiner"],
+      "properties": {
+        "figur": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kopf_anteil", "toleranz"],
+          "properties": { "kopf_anteil": { "$ref": "#/$defs/anteil" }, "toleranz": { "$ref": "#/$defs/anteil" } }
+        },
+        "vierbeiner": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["rumpfhoehe_kopflaengen", "toleranz"],
+          "properties": {
+            "rumpfhoehe_kopflaengen": { "type": "number", "exclusiveMinimum": 0 },
+            "toleranz": { "$ref": "#/$defs/anteil" }
+          }
+        }
+      }
+    },
+    "skalierung": {
+      "description": "Faktor je Plattform; vorerst nur pc",
+      "type": "object",
+      "required": ["pc"],
+      "additionalProperties": false,
+      "properties": {
+        "pc": { "type": "number", "exclusiveMinimum": 0 },
+        "xbox": { "type": "number", "exclusiveMinimum": 0 },
+        "mobil": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    }
+  },
+  "$defs": {
+    "name": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "hex": { "type": "string", "pattern": "^#[0-9a-f]{6}$" },
+    "anteil": { "type": "number", "minimum": 0, "maximum": 1 }
+  }
+}

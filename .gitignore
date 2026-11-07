@@ -34,5 +34,8 @@ data/worlds/*
 # Testspielstände des Asset-Studios (eingebundene Engine, B-507/AC-02), nie in saves/ des Servers
 /tools/k3c-studio/.studio-saves/
 
+# Render-Cache des Papierschnitt-Renderers (Entscheidung 005, renderKey)
+.cache/paper/
+
 # Sperrdatei der Ticket-Nummernvergabe (B-615)
 docs/backlog/.ticket.lock

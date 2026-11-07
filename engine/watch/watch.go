@@ -77,10 +77,11 @@ func (w *Watcher) mark(path string, now time.Time) {
 	w.last = now
 }
 
-// isTemp: Temp-Dateien des Studios beim atomaren Schreiben (.import-*, .assets-*, .tmp-*) sind keine Änderung; erst das
-// Umbenennen zählt (B-511).
+// isTemp: Temp-Dateien beim atomaren Schreiben (.import-*, .assets-*, .tmp-*) sind keine Änderung; erst das Umbenennen
+// zählt (B-511). Papierschnitt-Specs (`*.paper.json`) auch nicht: neu startet erst das gerenderte PNG (US1, B-701 D-11).
 func isTemp(name string) bool {
-	return strings.HasPrefix(name, ".import-") || strings.HasPrefix(name, ".assets-") || strings.HasPrefix(name, ".tmp-")
+	return strings.HasPrefix(name, ".import-") || strings.HasPrefix(name, ".assets-") || strings.HasPrefix(name, ".tmp-") ||
+		strings.HasSuffix(name, ".paper.json")
 }
 
 // scan liest Größe und Änderungszeit aller Dateien; fehlende oder unlesbare Ordner und Dateien fallen weg.

@@ -1,0 +1,122 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "tanne",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Tanne: dunkelgrüne Nadelbaum-Pyramide aus drei Stufen auf braunem Stamm; Krone wiegt leicht im Wind",
+  "teile": [
+    {
+      "id": "stamm",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-9 0L-5 -6L-4 -30L4 -30L5 -6L9 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-9 0L-5 -6L-4 -30L-1.5 -30L-1.5 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M1.5 -4L1 -18",
+          "material": "holz",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "stamm",
+      "id": "krone",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-38 -24L0 -82L38 -24L21.28 -27L0 -25L-21.28 -27Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-38 -24L0 -82L-7.6 -25L-21.28 -27Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -82L9.12 -55.9L22.8 -38.5L6.08 -47.2Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-30 -58L0 -110L30 -58L16.8 -61L0 -59L-16.8 -61Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-30 -58L0 -110L-6 -59L-16.8 -61Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -110L7.2 -86.6L18 -71L4.8 -78.8Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-22 -90L0 -138L22 -90L12.32 -93L0 -91L-12.32 -93Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-22 -90L0 -138L-4.4 -91L-12.32 -93Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -138L5.28 -116.4L13.2 -102L3.52 -109.2Z",
+          "material": "smaragd",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -24]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 155,
+    "rahmen": [-44, -142, 88, 146]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "krone": 2
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "krone": -2
+          }
+        }
+      ]
+    }
+  }
+}
