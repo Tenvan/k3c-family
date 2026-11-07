@@ -14,7 +14,6 @@ import (
 	"path/filepath"
 	"slices"
 	"strings"
-	"sync"
 	"time"
 
 	"k3c/tools/k3c-workbench/internal/review"
@@ -37,6 +36,8 @@ type AssetEintrag struct {
 	Gueltig   bool     `json:"gueltig"`
 	Geaendert bool     `json:"geaendert"`
 	Fehler    []Fehler `json:"fehler,omitempty"`
+	// Offen: noch ungeprüft (nur AssetsIndex, B-732); gilt bis zur Prüfung als gültig.
+	Offen bool `json:"offen,omitempty"`
 }
 
 // Frame ist ein gerenderter Frame als Data-URL mit den Teil-Boxen [x, y, b, h] in Pixeln.
@@ -85,76 +86,6 @@ func (d Dienst) renderer() review.Renderer {
 
 func kontext() (context.Context, context.CancelFunc) {
 	return context.WithTimeout(context.Background(), zeitlimit)
-}
-
-// AssetsList liefert den Katalog: je Spec des Arbeitsstands Rig, Gruppe, Gültigkeit und Änderung gegen HEAD.
-func (d Dienst) AssetsList() ([]AssetEintrag, error) {
-	ctx, cancel := kontext()
-	defer cancel()
-	pfade, err := review.SpecsImArbeitsstand(d.Root)
-	if err != nil {
-		return nil, err
-	}
-	geaendert, err := review.Geaendert(ctx, d.Root, "HEAD")
-	if err != nil {
-		geaendert = nil // ohne Commit: alles gilt als geändert
-	}
-	liste := make([]AssetEintrag, len(pfade))
-	fehler := make([]error, len(pfade))
-	sem := make(chan struct{}, parallelList)
-	var wg sync.WaitGroup
-	for i, p := range pfade {
-		wg.Go(func() {
-			sem <- struct{}{}
-			defer func() { <-sem }()
-			liste[i], fehler[i] = d.eintrag(ctx, p, geaendert == nil || geaendert[p])
-		})
-	}
-	wg.Wait()
-	for _, err := range fehler {
-		if err != nil {
-			return nil, err
-		}
-	}
-	return liste, nil
-}
-
-// pruefMemo merkt Prüfergebnisse je Spec-, Stil-Hash und Renderer: der Katalog prüft beim Neuladen nur Geändertes.
-var pruefMemo sync.Map // string → []Fehler
-
-func (d Dienst) eintrag(ctx context.Context, pfad string, geaendert bool) (AssetEintrag, error) {
-	e := AssetEintrag{ID: strings.TrimSuffix(path.Base(pfad), ".paper.json"), Gruppe: strings.Split(pfad, "/")[2], Pfad: pfad, Geaendert: geaendert}
-	q, _, err := review.QuelleArbeitsstand(d.Root, pfad)
-	var unlesbar *review.SpecUnlesbar
-	if errors.As(err, &unlesbar) {
-		e.Fehler = []Fehler{{Feld: "", Regel: "schema", Text: unlesbar.Error()}}
-		return e, nil
-	}
-	if err != nil {
-		return e, err
-	}
-	var kopf struct{ Rig string }
-	_ = json.Unmarshal(q.Spec, &kopf)
-	e.Rig = kopf.Rig
-	r := d.renderer()
-	key := q.SpecHash + ":" + q.StilHash + ":" + review.Kennung(r)
-	if f, ok := pruefMemo.Load(key); ok {
-		e.Fehler = f.([]Fehler)
-	} else {
-		f, err := r.Validate(ctx, filepath.Join(d.Root, filepath.FromSlash(pfad)))
-		if err != nil {
-			// ein Absturz der CLI trifft nur diesen Eintrag, nicht den Katalog
-			e.Fehler = []Fehler{{Feld: "", Regel: "cli", Text: err.Error()}}
-			return e, nil
-		}
-		pruefMemo.Store(key, f)
-		e.Fehler = f
-	}
-	e.Gueltig = len(e.Fehler) == 0
-	if e.Gueltig {
-		e.Fehler = nil
-	}
-	return e, nil
 }
 
 // pfadZu sucht die Spec einer id im Arbeitsstand, sonst (mit commit) in der Basis.

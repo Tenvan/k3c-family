@@ -96,7 +96,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-684](B-684-studio-ausschnitt-rahmen-und-einpassen.md) | DEV | Idee | mittel | eingeplant | GRJ2 | Die Ausschnitt-Bearbeitung zeigt wahlweise einen Rahmen und passt die Grafik in die Kachel ein |
 | [B-685](B-685-zielmass-grafiken-skalieren.md) | CLI | Idee | hoch | eingeplant | GRJ2 | Grafiken bekommen ein Zielmaß in der Ausgabe und werden dort passend skaliert |
 | [B-695](B-695-flaky-simrun-tempdir-balancing-abbruch.md) | DEV | Problem | niedrig | offen | – | Zwei Tests flackern: simrun-TempDir-Cleanup und Abbruch eines wartenden Laufs |
-| [B-696](B-696-gebaeude-in-allen-aufloesungen-rendern.md) | DEV | Idee | mittel | offen | – | Gebäude liegen in allen vorgesehenen Auflösungen als Grafik vor |
+| [B-696](B-696-ticket-relationen-und-index-verdichtung.md) | DEV | Idee | mittel | offen | – | Tickets verweisen auf Duplikate und Ersatz, der Index und die Archive bleiben klein |
 | [B-698](B-698-balancing-tests-vorlaeufig-mit-cheats.md) | REG | Schuld | niedrig | offen | – | Balancing-Tests und Simulationen laufen vorläufig mit Cheats und bestehen spätestens im dritten Lauf |
 | [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | – | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
 | [B-700](B-700-alte-pixel-grafik-aufraeumen.md) | CLI | Schuld | mittel | eingeplant | CU1 | Alte Pixel-Grafiken, Register und Gebäude-Renderer werden nach der Papierschnitt-Umstellung entfernt |
@@ -125,7 +125,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-725](B-725-rust-engine-machbarkeit.md) | SRV | Idee | mittel | eingeplant | RS1 | Simulationskern läuft schneller in Rust, Server bleibt Go (Machbarkeit und Umstiegspfad) |
 | [B-726](B-726-workbench-sim-per-task.md) | DEV | Schuld | mittel | offen | – | Workbench ruft Sim und Balancing als Task auf statt engine/sim zu importieren |
 | [B-731](B-731-zustand-ohne-json-roundtrip.md) | SRV | Idee | hoch | offen | – | Zustands-Snapshot ohne JSON-Roundtrip (stateOf) – 98 % der Raum-Tick-Zeit |
-| [B-732](B-732-weitere-materialien-stroh-lava-geisterweiss.md) | PAP | Schuld | niedrig | offen | – | Weitere Ersatz-Materialien (stroh, lava, geisterweiss, fell-grau) in der Stil-Datei |
+| [B-732](B-732-assets-katalog-schneller.md) | DEV | Idee | mittel | offen | – | Der Assets-Katalog zeigt Einträge sofort, cacht sie und hat eine größere Vorschau |
+| [B-733](B-733-assets-groessenvergleich.md) | DEV | Idee | mittel | offen | – | Katalog und Review zeigen ein Asset im Größenvergleich mit dem Monarch vor einem Biom |
+| [B-734](B-734-katalog-teil-ausblenden.md) | DEV | Idee | mittel | offen | – | Im Katalog lässt sich das gewählte Teil in der Vorschau aus- und einblenden |
+| [B-735](B-735-weitere-materialien-stroh-lava-geisterweiss.md) | PAP | Schuld | niedrig | offen | – | Weitere Ersatz-Materialien (stroh, lava, geisterweiss, fell-grau) in der Stil-Datei |
 
 ## Archiv
 
@@ -688,6 +691,7 @@ Zeile in diesen Abschnitt.
 | [B-657](archiv/B-657-castlehold-messfenster.md) | DEV | Problem | mittel | erledigt | BAL9 | Die Kennzahl castleHeld misst Nacht 1 bis 5 über den ganzen Lauf, nicht nur über das Fenster des Ziels |
 | [B-707](archiv/B-707-assets-set-golden-veraltet.md) | DEV | Problem | mittel | erledigt | – | assets_set und assets_render lassen golden.json der Gruppe veraltet |
 | [B-701](archiv/B-701-pap-gesammelte-fragen.md) | DEV | Frage | hoch | erledigt | PS1 | PAP: kritische Fragen und vorab getroffene Entscheidungen werden gesammelt von Ralf bestätigt |
+| [B-696](archiv/B-696-gebaeude-in-allen-aufloesungen-rendern.md) | DEV | Idee | mittel | verworfen | – | Gebäude liegen in allen vorgesehenen Auflösungen als Grafik vor |
 | [B-712](archiv/B-712-stil-schatten-materialien.md) | PAP | Problem | hoch | erledigt | RD2 | Stil zeigt Papierschatten wie der Prototyp und kennt Metall-, Kristall- und Biom-Materialien |
 | [B-713](archiv/B-713-renderkey-reiter-reittier.md) | PAP | Schuld | mittel | erledigt | RD2 | renderKey des Reiters enthält den Hash der Reittier-Spec |
 | [B-714](archiv/B-714-keyframe-sichtbar.md) | PAP | Idee | hoch | erledigt | RD2 | Keyframes schalten Teile mit dem Feld sichtbar ein und aus |

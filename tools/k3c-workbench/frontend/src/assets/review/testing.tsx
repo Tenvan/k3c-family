@@ -6,6 +6,7 @@ import { resolve } from 'node:path';
 import { act, type ReactNode } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { vi } from 'vitest';
+import { clearReviewCache } from './reviewStore';
 import type { Frame, PixelDiff, Review, Spec, Vorlage } from './types';
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -46,6 +47,8 @@ export function unmount() {
   act(() => root?.unmount());
   root = null;
   document.body.innerHTML = '';
+  // der Review-Cache lebt auf Modul-Ebene (B-732): jeder Test beginnt wie nach einem Neustart
+  clearReviewCache();
 }
 
 export async function click(el: Element | null | undefined) {

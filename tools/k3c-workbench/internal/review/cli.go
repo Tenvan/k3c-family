@@ -135,6 +135,17 @@ func (c CLI) Frame(ctx context.Context, spec, animation string, frame int, varia
 	return f, err
 }
 
+// FrameOhne rendert einen Frame nach out, die Teile in ohne ohne ihre Lagen (B-734: Teil in der Vorschau ausblenden).
+func (c CLI) FrameOhne(ctx context.Context, spec, animation string, frame int, ohne []string, out string) (FrameAntwort, error) {
+	args := []string{"frame", spec, "--animation", animation, "--frame", strconv.Itoa(frame), "--out", out}
+	if len(ohne) > 0 {
+		args = append(args, "--ohne", strings.Join(ohne, ","))
+	}
+	var f FrameAntwort
+	err := c.run(ctx, &f, args...)
+	return f, err
+}
+
 // PixelDiff vergleicht zwei PNGs und schreibt das Overlay nach out.
 func (c CLI) PixelDiff(ctx context.Context, a, b, out string) (PixelAntwort, error) {
 	var p PixelAntwort

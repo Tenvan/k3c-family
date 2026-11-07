@@ -1,4 +1,4 @@
-# B-732 · Weitere Ersatz-Materialien (stroh, lava, geisterweiss, fell-grau) in der Stil-Datei
+# B-735 · Weitere Ersatz-Materialien (stroh, lava, geisterweiss, fell-grau) in der Stil-Datei
 
 - **Domäne:** PAP
 - **Typ:** Schuld

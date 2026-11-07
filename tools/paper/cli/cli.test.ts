@@ -50,6 +50,22 @@ describe('frame', { timeout: 60_000 }, () => {
     expect(r.code).toBe(1);
     expect(run(['frame', join(dir, 'monarch.paper.json'), '--animation', 'idle', '--frame', '0', '--variante', 'gibts', '--out', a]).code).toBe(1);
   }, 30_000);
+
+  it('--ohne: Teile ohne Lagen, übrige Boxen gleich; unbekanntes Teil → Exit 1 teil-unbekannt (B-734)', () => {
+    const dir = tmp();
+    copyFileSync(join(SPECS, 'monarch.paper.json'), join(dir, 'monarch.paper.json'));
+    const spec = join(dir, 'monarch.paper.json'), a = join(dir, 'a.png'), b = join(dir, 'b.png');
+    const mit = json(['frame', spec, '--animation', 'idle', '--frame', '0', '--out', a]);
+    const ohne = json(['frame', spec, '--animation', 'idle', '--frame', '0', '--ohne', 'krone,kopf', '--out', b]);
+    expect(mit.teile.krone).toBeDefined();
+    expect(ohne.teile.krone).toBeUndefined();
+    expect(ohne.teile.kopf).toBeUndefined();
+    expect(ohne.teile.rumpf).toEqual(mit.teile.rumpf);
+    expect(readFileSync(a).equals(readFileSync(b))).toBe(false);
+    const r = run(['frame', spec, '--animation', 'idle', '--frame', '0', '--ohne', 'fluegel', '--out', b]);
+    expect(r.code).toBe(1);
+    expect(r.stdout).toContain('teil-unbekannt');
+  }, 30_000);
 });
 
 describe('diff', { timeout: 60_000 }, () => {

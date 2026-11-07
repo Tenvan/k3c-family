@@ -88,6 +88,12 @@ function httpBalance(): BalanceBackend {
 function httpAssets(): AssetsBackend {
   return {
     assetsList: () => rpc('AssetsList'),
+    assetsIndex: () => rpc('AssetsIndex'),
+    assetsCheck: (pfade) => rpc('AssetsCheck', pfade),
+    assetsGroesse: (id) => rpc('AssetsGroesse', id),
+    assetsFrameOhne: (id, animation, frame, ohne) => rpc('AssetsFrameOhne', id, animation, frame, ohne),
+    assetsHintergruende: () => rpc('AssetsHintergruende'),
+    assetsHintergrund: (teil) => rpc('AssetsHintergrund', teil),
     assetsGet: (id) => rpc('AssetsGet', id),
     assetsStyle: () => rpc('AssetsStyle'),
     assetsPrompts: () => rpc('AssetsPrompts'),

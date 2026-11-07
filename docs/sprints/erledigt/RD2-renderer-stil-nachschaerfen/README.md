@@ -75,4 +75,4 @@ Reife Entwurf:
 
 2026-11-07 Claude: AC-01 bis AC-04 umgesetzt und belegt (Ergebnisse RD2.1 bis RD2.4), `task check` und `task check:go` grün, Race lokal übersprungen (kein gcc, CI).
 Offen bei Ralf: Sichtprüfung Monarch idle 4 gegen den Prototyp (B-712/AC-01) samt Optik der neuen Materialfarben.
-Behoben: Pfote schwebte über dem Boden (Reviewer RD2.4). Neues Ticket: B-732.
+Behoben: Pfote schwebte über dem Boden (Reviewer RD2.4). Neues Ticket: B-735.

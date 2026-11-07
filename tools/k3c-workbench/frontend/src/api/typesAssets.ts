@@ -17,6 +17,21 @@ export interface AssetEintrag {
   gueltig: boolean;
   geaendert: boolean;
   fehler?: AssetFehler[];
+  /** Noch ungeprüft (nur `assetsIndex`, B-732); gilt bis zur Prüfung als gültig. */
+  offen?: boolean;
+}
+
+/** Spiel-Maßstab eines Assets (B-733): Spiel-Pixel je Einheit der Spec und woher der Wert kommt. */
+export interface Groesse {
+  pxProEinheit: number;
+  quelle: string;
+}
+
+/** Hintergrund eines Bioms (Variante 1): Ebenen hinten → vorn als Data-URLs, je 768 × 480 Spiel-Pixel, Fuß unten. */
+export interface Hintergrund {
+  fern: string;
+  mitte: string;
+  nah: string;
 }
 
 /** Animation einer Spec (`docs/standards/paper-spec.md`): 1–64 Frames, `fps` Standard 8. */
@@ -35,6 +50,8 @@ export interface Spec {
   teile: { id: string; [feld: string]: unknown }[];
   animationen?: Record<string, SpecAnimation>;
   varianten?: Record<string, unknown>;
+  /** Ausgabe: Frame-Höhe in Pixeln und Rahmen [x, y, Breite, Höhe] in Einheiten, Fuß bei 0/0 (B-733). */
+  ausgabe?: { hoehe_px: number; rahmen: [number, number, number, number] };
   [feld: string]: unknown;
 }
 
@@ -149,6 +166,18 @@ export interface Quellen {
 /** RPC-Methoden der Asset-Oberfläche (Wails-Bindings bzw. /api/dev/rpc/Assets…). */
 export interface AssetsBackend {
   assetsList(): Promise<AssetEintrag[]>;
+  /** Katalog ohne Prüfung (B-732): ungeprüfte Einträge mit `offen`, Ergebnis über `assetsCheck`. */
+  assetsIndex(): Promise<AssetEintrag[]>;
+  /** Prüft die Specs unter `pfade` (aus `assetsIndex`) und liefert ihre Einträge. */
+  assetsCheck(pfade: string[]): Promise<AssetEintrag[]>;
+  /** Spiel-Maßstab eines Assets für den Größenvergleich (B-733). */
+  assetsGroesse(id: string): Promise<Groesse>;
+  /** Frame des Arbeitsstands ohne die Teile in `ohne` (B-734: Teil ausblenden). */
+  assetsFrameOhne(id: string, animation: string, frame: number, ohne: string[]): Promise<Frame>;
+  /** Biome mit Hintergrund (Namensteil `hg-<teil>-…`, z. B. `wald`). */
+  assetsHintergruende(): Promise<string[]>;
+  /** Die drei Ebenen eines Biom-Hintergrunds als Data-URLs. */
+  assetsHintergrund(teil: string): Promise<Hintergrund>;
   assetsGet(id: string): Promise<Spec>;
   assetsStyle(): Promise<Stil>;
   assetsPrompts(): Promise<Vorlage[]>;

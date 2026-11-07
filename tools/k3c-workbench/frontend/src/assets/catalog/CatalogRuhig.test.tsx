@@ -36,8 +36,8 @@ async function pressRight(host: ParentNode) {
 describe('Katalog: Lade-Anzeige (WB2/AC-03)', () => {
   it('beim Laden der Liste', async () => {
     const list = deferred<AssetEintrag[]>();
-    const real = backend.assetsList.bind(backend);
-    vi.spyOn(backend, 'assetsList').mockReturnValue(list.promise);
+    const real = backend.assetsIndex.bind(backend);
+    vi.spyOn(backend, 'assetsIndex').mockReturnValue(list.promise);
     const host = await mount(<CatalogPage />);
     expect(loading(host, 'list')?.textContent).toContain('Lädt Assets');
     list.resolve(await real());

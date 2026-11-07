@@ -3,7 +3,7 @@ import type {
   McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData, WorktreeDiff,
   BalanceBackend, BalanceBaseline, BalanceDataFile, BalanceDataFileValue, BalanceInsights, BalanceDataValue, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning, GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
 } from './types';
-import type { AssetEintrag, AssetsBackend, Frame, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
+import type { AssetEintrag, AssetsBackend, Frame, Groesse, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
 // frontend/wailsjs/ bindet die Oberfläche bewusst nicht ein: so braucht der Typecheck keine Wails-CLI.
@@ -74,6 +74,12 @@ interface GoApp {
   BalanceReportHTML(path: string): Promise<string>;
   // Asset-Oberfläche (docs/standards/paper-mcp.md › Oberfläche; Typen in typesAssets.ts)
   AssetsList(): Promise<AssetEintrag[]>;
+  AssetsIndex(): Promise<AssetEintrag[]>;
+  AssetsCheck(pfade: string[]): Promise<AssetEintrag[]>;
+  AssetsGroesse(id: string): Promise<Groesse>;
+  AssetsFrameOhne(id: string, animation: string, frame: number, ohne: string[]): Promise<Frame>;
+  AssetsHintergruende(): Promise<string[]>;
+  AssetsHintergrund(teil: string): Promise<Hintergrund>;
   AssetsGet(id: string): Promise<Spec>;
   AssetsStyle(): Promise<Stil>;
   AssetsPrompts(): Promise<Vorlage[]>;
@@ -129,6 +135,12 @@ function balanceWails(app: GoApp): BalanceBackend {
 function assetsWails(app: GoApp): AssetsBackend {
   return {
     assetsList: () => app.AssetsList(),
+    assetsIndex: () => app.AssetsIndex(),
+    assetsCheck: (pfade) => app.AssetsCheck(pfade),
+    assetsGroesse: (id) => app.AssetsGroesse(id),
+    assetsFrameOhne: (id, animation, frame, ohne) => app.AssetsFrameOhne(id, animation, frame, ohne),
+    assetsHintergruende: () => app.AssetsHintergruende(),
+    assetsHintergrund: (teil) => app.AssetsHintergrund(teil),
     assetsGet: (id) => app.AssetsGet(id),
     assetsStyle: () => app.AssetsStyle(),
     assetsPrompts: () => app.AssetsPrompts(),

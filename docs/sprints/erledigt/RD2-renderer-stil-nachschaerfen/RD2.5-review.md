@@ -56,5 +56,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 - `task check` grün (1 min 57 s), `task check:go` grün (3 min 2 s), `task check:race` läuft lokal ohne C-Compiler still durch (551 ms) und gilt als übersprungen; die CI fährt den Race-Detector.
 - Diff `origin/develop...sprint/rd2` gelesen: Code in `tools/paper/**` (Stil-Umrechnung, renderKey, `sichtbar`, Proportionen), Specs, Tests, Standard. Vor dem Commit lief ein Reviewer bei RD2.4; sein Befund (Pfote schwebt) ist in RD2.4 behoben.
 - AC-01 (B-712): umgesetzt und geprüft (RD2.1, RD2.2); **Sichtprüfung Monarch idle 4 neben dem Prototyp bleibt offen bei Ralf**. AC-02 (B-713), AC-03 (B-714), AC-04 (B-715): umgesetzt und mit Tests belegt (RD2.3, RD2.4).
-- Neues Ticket: B-732 (Stroh, Lava, Geisterweiß, `fell-grau`, Eisen/Kristall bei Gegnern und Bossen).
+- Neues Ticket: B-735 (Stroh, Lava, Geisterweiß, `fell-grau`, Eisen/Kristall bei Gegnern und Bossen).
 - Offene Fragen mit Default entschieden: Pfeil-Abschuss bei t = 0,7; `biom-*` als Material statt Ton; Proportionen der Figur als Winkel-Faktoren, des Vierbeiners über Pivots; keine Rumpf-Achse je Tier.

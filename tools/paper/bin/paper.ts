@@ -61,7 +61,8 @@ const frame: Befehl = (pos, opt, o) => {
   const stil = o.stil ?? ladeStil(), fehler = checkSpecFile(pfad, stil);
   if (fehler.length) throw new Abgelehnt(fehler);
   const spec = JSON.parse(readFileSync(pfad, 'utf8')) as Spec;
-  const wahl = { animation: opt.animation, frame: ganzzahl(opt.frame, 'frame'), variante: opt.variante, stufe: ganzzahl(opt.stufe ?? '1', 'stufe') };
+  const ohne = opt.ohne ? opt.ohne.split(',').filter(Boolean) : undefined;
+  const wahl = { animation: opt.animation, frame: ganzzahl(opt.frame, 'frame'), variante: opt.variante, stufe: ganzzahl(opt.stufe ?? '1', 'stufe'), ohne };
   return { datei: rel(opt.out), teile: frameRendern(spec, wahl, stil, pfad, opt.out) };
 };
 

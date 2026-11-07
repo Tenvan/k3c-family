@@ -1,4 +1,4 @@
-import type { AssetEintrag, AssetsBackend, Frame, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
+import type { AssetEintrag, AssetsBackend, Frame, Groesse, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
 
 // Mock der Asset-Methoden (WB1.1): die Beispielantworten aus tools/paper/fixtures/ui (PV1.4), geladen beim ersten
 // Aufruf. Wie die Go-Stubs (internal/assetsui) kennt er nur das Asset monarch.
@@ -30,9 +30,31 @@ const QUELLEN: Quellen = {
   },
 };
 
+/** Transparentes 1×1-PNG für die Hintergrund-Ebenen des Mocks. */
+const PIXEL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+
 export function mockAssets(): AssetsBackend {
   return {
     assetsList: () => fixture<AssetEintrag[]>('AssetsList'),
+    // Index ohne Prüfung: alle offen und gültig, die Prüfung liefert die Fixture (B-732)
+    assetsIndex: async () => (await fixture<AssetEintrag[]>('AssetsList')).map((e) => ({ ...e, fehler: undefined, gueltig: true, offen: true })),
+    // Größenvergleich (B-733): Maßstab des Monarchen laut data/sprites.json, ein Biom mit 1×1-PNGs
+    // Teil ausblenden (B-734): Fixture-Frame ohne die Boxen der ausgeblendeten Teile
+    assetsFrameOhne: async (id, _animation, _frame, ohne) => {
+      known(id);
+      const f = await fixture<Frame>('AssetsFrame');
+      return { ...f, teile: Object.fromEntries(Object.entries(f.teile).filter(([t]) => !ohne.includes(t))) };
+    },
+    assetsGroesse: async (id): Promise<Groesse> => {
+      known(id);
+      return { pxProEinheit: (81 * 1.5) / 145, quelle: 'Spielrolle Spieler (data/sprites.json)' };
+    },
+    assetsHintergruende: async () => ['wald'],
+    assetsHintergrund: async (teil): Promise<Hintergrund> => {
+      if (teil !== 'wald') throw new Error(`Hintergrund „${teil}“ fehlt`);
+      return { fern: PIXEL, mitte: PIXEL, nah: PIXEL };
+    },
+    assetsCheck: async (pfade) => (await fixture<AssetEintrag[]>('AssetsList')).filter((e) => pfade.includes(e.pfad)),
     assetsGet: async (id) => {
       known(id);
       return fixture<Spec>('AssetsGet');
