@@ -1,0 +1,43 @@
+{
+  "id": "rekrutierungslager",
+  "version": 1,
+  "specHash": "5d4fd274a8a68085dc3e6e7aaa862115712e42de7fc0fb556a033f855a671659",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "b70a4f565ca7864b2c747049bc54b6ba94ace3705b2a5b74dc239dfb669b9a6d",
+  "rahmen": [
+    -48,
+    -64,
+    96,
+    64
+  ],
+  "frameW": 96,
+  "frameH": 64,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "f2a02c73fdf58c0958c547ec829785e7aead811cb2d5a1cf330c1ab37f6365ba"
+      ]
+    },
+    "stand.s2": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s2.png",
+      "hashes": [
+        "d3269e2798cd6b422e535da283ccd09b85630cf6c970ba45f027387985ce25a4"
+      ]
+    },
+    "stand.s3": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s3.png",
+      "hashes": [
+        "2b031f43cb80e77ac3afb4b8baa6213e5ea6dc62e69e1f43ffa7dadb798b8904"
+      ]
+    }
+  },
+  "varianten": []
+}

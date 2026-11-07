@@ -1,0 +1,64 @@
+{
+  "id": "splitterling",
+  "version": 1,
+  "specHash": "2e5f08391c2f755a7648ef0d3e0222dadf311e86cfc17da92b1824ccede846f4",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "943ecd8e5c1b03f40d5399520503f156c122ca09d17146c9f3007c0e3782be79",
+  "rahmen": [
+    -16,
+    -36,
+    32,
+    41
+  ],
+  "frameW": 34,
+  "frameH": 44,
+  "animationen": {
+    "angriff": {
+      "frames": 8,
+      "fps": 14,
+      "datei": "angriff.png",
+      "hashes": [
+        "ef2faf434479ccfb6b36cf73fe6a83708f69fd6cc83702ec93ae317be4f4dff0",
+        "b9315b3a2e58514b80744a7732a3288a635b38484b3a71f782d921a648dbc418",
+        "34d06f2a68f25a69ff814af62a7a4df7dd2973c0a0a87e8d18ed596b2da0785d",
+        "2f1335a9abec09f02cfa9b28d7614006c9b3beaf9e6bc24293b602b23b6996bd",
+        "9797d7b8fa5941144edcce69cde04f9c1f66765d50cc0111d6e494f0d0260dce",
+        "2f96efd510932e4b431179ab58e70c9a93a0710f1c1786d71b553e4a6b61e46b",
+        "768e9e2da5313549a5dd0516b1e419b913c6bebd1fad941943936d7373a01fc6",
+        "53d511d47169597d7ba8bf579a8d3cb93ad98de3319daf8dcf1d59eb3262999a"
+      ]
+    },
+    "idle": {
+      "frames": 8,
+      "fps": 6,
+      "datei": "idle.png",
+      "hashes": [
+        "89cc29802d4ba9fa5014f52e579060759b4418eec2f5d920feaef2887f5cf391",
+        "38484b0c9ecf0276cfca9b7e1dc03923dcccfa031cf5420e74f81821fca985ee",
+        "ef2faf434479ccfb6b36cf73fe6a83708f69fd6cc83702ec93ae317be4f4dff0",
+        "aff7bcc570f8e585f7aa57ff87f1b95a82a997ef69a3a2da12a088dc611d042d",
+        "441e264feb20343ea5963f27a09063328e5a8db393356ce8ac770d831c3e8353",
+        "aff7bcc570f8e585f7aa57ff87f1b95a82a997ef69a3a2da12a088dc611d042d",
+        "ef2faf434479ccfb6b36cf73fe6a83708f69fd6cc83702ec93ae317be4f4dff0",
+        "38484b0c9ecf0276cfca9b7e1dc03923dcccfa031cf5420e74f81821fca985ee"
+      ]
+    },
+    "lauf": {
+      "frames": 8,
+      "fps": 14,
+      "datei": "lauf.png",
+      "hashes": [
+        "333caf3f3248d7147c96629af3321a8eca8cf1e6f7e624da59be8668aa6c675c",
+        "df88d5cf06a1a4b3ecc16de5f916281686e29e6c9093e7e2dd73a8b7191e0d52",
+        "ef2faf434479ccfb6b36cf73fe6a83708f69fd6cc83702ec93ae317be4f4dff0",
+        "e53a28a6dc0e59a21d0f24bb84fdf1623254e32e32319123d20dd304f3acf487",
+        "d7d4ce2233fdbb7c54cded3c21474c11b8c59ff26423a2db78f7f83e9558dac6",
+        "e53a28a6dc0e59a21d0f24bb84fdf1623254e32e32319123d20dd304f3acf487",
+        "ef2faf434479ccfb6b36cf73fe6a83708f69fd6cc83702ec93ae317be4f4dff0",
+        "df88d5cf06a1a4b3ecc16de5f916281686e29e6c9093e7e2dd73a8b7191e0d52"
+      ]
+    }
+  },
+  "varianten": []
+}

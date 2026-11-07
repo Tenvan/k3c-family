@@ -1,0 +1,310 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "eisenkaefer",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Eisenkäfer: gepanzerter grauer Käfer mit Metallglanz, Fühlern und Beißzangen; krabbelt, zwickt zu",
+  "teile": [
+    {
+      "eltern": "panzer",
+      "id": "beine-h",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M-7 -10L-11 -5L-9 0",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-9 0L-6 0",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M2 -10L-2 -5L0 0",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M0 0L3 0",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M11 -10L7 -5L9 0",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M9 0L12 0",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -10]
+    },
+    {
+      "eltern": "panzer",
+      "id": "zange-h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M17 -12C22 -14 27 -12 29 -8C26 -9 22 -10 18 -9Z",
+          "material": "stein",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [18, -10]
+    },
+    {
+      "id": "panzer",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-22 -8C-22 -18 -12 -25 0 -25C10 -25 16 -20 17 -12L17 -6C8 -5 -10 -5 -22 -8Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-22 -8C-22 -18 -12 -25 0 -25C-8 -22 -12 -14 -10 -5C-14 -5 -19 -6 -22 -8Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-6 -24C4 -26 12 -22 15 -15C10 -19 4 -22 -6 -22Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M0 -25C-1 -18 -1 -11 0 -5",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-12 -22C-15 -17 -15 -11 -13 -6",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M9 -23C7 -18 7 -11 8 -5",
+          "material": "linie"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [-6, -16],
+          "radius": 1.2,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [4, -17],
+          "radius": 1.2,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "stein",
+          "mitte": [-16, -13],
+          "radius": 1,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M15 -15C18 -17 22 -16 23 -12C23 -9 20 -7 16 -7Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [19.5, -13.5],
+          "radius": 1.4,
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M20 -16C23 -21 27 -23 31 -22",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M19 -16C21 -22 24 -26 28 -27",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -6]
+    },
+    {
+      "eltern": "panzer",
+      "id": "zange-v",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M17 -11C22 -12 28 -10 30 -6C27 -6 22 -7 18 -8Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M17 -11C22 -12 28 -10 30 -6C26 -8 22 -9 18 -9.5Z",
+          "material": "stein",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [18, -10]
+    },
+    {
+      "eltern": "panzer",
+      "id": "beine-v",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M-10 -10L-14 -5L-12 0",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-12 0L-9 0",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M-1 -10L-5 -5L-3 0",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-3 0L0 0",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M8 -10L4 -5L6 0",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M6 0L9 0",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -10]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 40,
+    "rahmen": [-30, -32, 66, 37]
+  },
+  "animationen": {
+    "angriff": {
+      "fps": 14,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "panzer": 0,
+            "zange-h": -10,
+            "zange-v": 10
+          }
+        },
+        {
+          "t": 0.35,
+          "winkel": {
+            "panzer": -8,
+            "zange-h": -25,
+            "zange-v": 25
+          }
+        },
+        {
+          "t": 0.55,
+          "winkel": {
+            "panzer": 6,
+            "zange-h": 8,
+            "zange-v": -8
+          }
+        },
+        {
+          "t": 0.8,
+          "winkel": {
+            "panzer": 2,
+            "zange-h": -10,
+            "zange-v": 10
+          }
+        }
+      ]
+    },
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "panzer": 0,
+            "zange-h": 0,
+            "zange-v": 0
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "panzer": -2,
+            "zange-h": -8,
+            "zange-v": 12
+          }
+        }
+      ]
+    },
+    "lauf": {
+      "fps": 14,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "beine-h": -14,
+            "beine-v": 14,
+            "panzer": -1
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "beine-h": 14,
+            "beine-v": -14,
+            "panzer": 1
+          }
+        }
+      ]
+    }
+  }
+}
