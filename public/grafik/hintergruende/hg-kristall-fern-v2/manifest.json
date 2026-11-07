@@ -1,0 +1,27 @@
+{
+  "id": "hg-kristall-fern-v2",
+  "version": 1,
+  "specHash": "800c56229bef06eae6720b4b87891acb64332b8fbc792c9b9da6e8d373bd8b8f",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "06598f984ea34e73ea43b58a8261da55d428a22a5148b56eebd7dc7c0f3ce3bf",
+  "rahmen": [
+    0,
+    -480,
+    768,
+    480
+  ],
+  "frameW": 768,
+  "frameH": 480,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "ab9997c620543c317bd4cc27cbb6923bb2ad9f541822061856bd71364795642a"
+      ]
+    }
+  },
+  "varianten": []
+}

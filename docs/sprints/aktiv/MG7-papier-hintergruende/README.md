@@ -70,7 +70,7 @@ Defaults in B-701 (D-MG7-01 bis D-MG7-04), Entscheidung durch 🧑 in PS1.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | MG7.1 | `MG7.1-wald-hoehle.md` | Umsetzung | autonom | fertig |
-| MG7.2 | `MG7.2-mine-eisenstollen-kristall.md` | Umsetzung | autonom | offen |
+| MG7.2 | `MG7.2-mine-eisenstollen-kristall.md` | Umsetzung | autonom | fertig |
 | MG7.3 | `MG7.3-review.md` | Review | autonom | offen |
 
 Lane `hintergruende`, nacheinander; Umsetzung Sonnet, Review Opus; keine Mensch-Session (Sichtprüfung in PS1).

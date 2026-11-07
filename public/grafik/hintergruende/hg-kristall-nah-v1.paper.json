@@ -1,0 +1,159 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "hg-kristall-nah-v1",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Hintergrund Kristallhalle, nahe Ebene, Variante 1: periodisches Profil, kachelt waagrecht.",
+  "teile": [
+    {
+      "id": "grund",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 0l0 -15 32 0 32 -2 32 -2 32 -2 32 -4 32 -4 32 -2 32 0 32 1 32 0 32 0 32 1 32 2 32 3 32 1 32 0 32 0 32 0 32 0 32 -1 32 -1 32 3 32 4 32 3 0 15Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 0l0 -10 32 0 32 -1 32 0 32 0 32 0 32 0 32 0 32 1 32 1 32 0 32 -2 32 -2 32 0 32 0 32 1 32 2 32 2 32 2 32 1 32 -1 32 -2 32 -1 32 -1 32 0 0 10Z",
+          "material": "stein",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [384, -240]
+    },
+    {
+      "id": "kristalle",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M134 -16C134 -48 158 -73 188 -73C218 -73 242 -48 242 -16ZM378 -24C378 -50 399 -72 426 -72C452 -72 474 -50 474 -24ZM614 -18C614 -44 642 -65 676 -65C710 -65 738 -44 738 -18Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M188 -73C158 -73 134 -48 134 -16L158 -16C158 -45 175 -65 188 -73ZM426 -72C399 -72 378 -50 378 -24L399 -24C399 -48 414 -65 426 -72ZM676 -65C642 -65 614 -44 614 -18L642 -18C642 -41 661 -58 676 -65Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M188 -73C218 -73 242 -48 242 -16L227 -16C227 -45 206 -65 188 -73ZM426 -72C452 -72 474 -50 474 -24L460 -24C460 -48 441 -65 426 -72ZM676 -65C710 -65 738 -44 738 -18L720 -18C720 -41 696 -58 676 -65Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M141 -16l0 -109 14 -21 15 21 1 109ZM160 -20l-12 -164 20 -31 24 31 12 164ZM188 -22l-14 -128 16 -24 19 24 14 128ZM465 -15l-11 -110 14 -21 16 21 10 110ZM484 -15l5 -186 23 -31 21 31 -5 186ZM512 -15l4 -114 18 -25 17 25 -4 114Z",
+          "material": "purpur"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M156 -16l-1 -130 15 21 1 109ZM182 -20l-14 -195 24 31 12 164ZM206 -22l-16 -152 19 24 14 128ZM480 -15l-12 -131 16 21 10 110ZM506 -15l6 -217 21 31 -5 186ZM530 -15l4 -139 17 25 -4 114Z",
+          "material": "purpur",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M141 -16l0 -109 8 -11 0 120ZM160 -20l-12 -164 12 -16 12 180ZM188 -22l-14 -128 10 -13 14 141ZM465 -15l-11 -110 8 -11 11 121ZM484 -15l5 -186 12 -17 -5 203ZM512 -15l4 -114 9 -13 -3 127Z",
+          "material": "purpur",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M273 -22l17 -113 17 -21 12 21 -16 113ZM292 -21l22 -183 25 -30 19 30 -22 183ZM321 -22l16 -141 19 -24 16 24 -16 141ZM598 -15l-11 -110 13 -21 17 21 10 110ZM617 -16l15 -123 25 -31 19 31 -15 123ZM645 -17l-15 -88 15 -24 20 24 15 88Z",
+          "material": "koenigsblau"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M288 -22l19 -134 12 21 -16 113ZM314 -21l25 -213 19 30 -22 183ZM338 -22l18 -165 16 24 -16 141ZM613 -15l-13 -131 17 21 10 110ZM639 -16l18 -154 19 31 -15 123ZM663 -17l-18 -112 20 24 15 88Z",
+          "material": "koenigsblau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M273 -22l17 -113 8 -11 -17 124ZM292 -21l22 -183 12 -16 -22 199ZM321 -22l16 -141 9 -13 -16 154ZM598 -15l-11 -110 8 -11 11 121ZM617 -16l15 -123 12 -17 -15 140ZM645 -17l-15 -88 10 -13 15 101Z",
+          "material": "koenigsblau",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [62, -92],
+          "radius": 2.2
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [122, -79],
+          "radius": 1.4
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [243, -150],
+          "radius": 1.6
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [291, -157],
+          "radius": 2.1
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [366, -185],
+          "radius": 1.9
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [442, -100],
+          "radius": 1.4
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [560, -93],
+          "radius": 2.3
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [636, -62],
+          "radius": 1.5
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [684, -155],
+          "radius": 1.8
+        },
+        {
+          "art": "flaeche",
+          "form": "M77 -15l4 -11 4 11ZM162 -23l3 -10 5 10ZM237 -28l8 -16 0 16ZM323 -27l5 -13 3 13ZM438 -21l7 -10 1 10ZM533 -20l8 -10 0 10ZM610 -20l7 -15 1 15ZM676 -21l6 -12 2 12Z",
+          "material": "purpur",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [384, -240]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 480,
+    "rahmen": [0, -480, 768, 480]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # MG7.2 · Hintergründe Mine, Eisenstollen und Kristall
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -54,5 +54,14 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- 18 Assets in `public/grafik/hintergruende/` (Rig `hintergrund`, 768 × 480, Animation `stand`):
+  - `hg-mine-*`: Gesteinsschichten mit Stollenöffnungen und Gerüsten; Stützgestelle mit Laternen, Erzadern und Schiene; dicke Balken mit Brettern, Lore voll Erz, Kisten und Kohle.
+  - `hg-eisenstollen-*`: Gewölbe aus vier Bögen mit Trägern und Glutpunkten; Stahlträger mit Flanschen, Streben, Ketten und Glutspalten; genietete Platten mit Rost, Glut am Fuß und Schlacke.
+  - `hg-kristall-*`: Höhlenwand mit Kristall-Silhouetten; Kristallgruppen mit Licht- und Schattenfacette, Kristallzapfen und Leuchtadern; große Kristalle in `purpur` und `koenigsblau`, Felsblöcke, Glanz und Splitter.
+- Generator aus MG7.1 um `motive2.py` erweitert (Scratchpad).
+- **AC-01 geprüft:** `assets_list {gruppe: hintergruende}` 30/30 gültig.
+- **AC-02 geprüft:** `task gen:paper` grün, `golden.json` mit 30 Einträgen; fremde Gruppen zurückgesetzt; `task test -- paper` 187/187 grün.
+- **AC-03 geprüft:** `assets_preview` je Asset (18 Previews, korrigierte zusätzlich nach dem Fix), dazu ein Kontaktbogen mit allen drei Ebenen je Biom (kacheln ohne Sprung); `assets_review` 18× neu, kein roter Eintrag.
+- Befund behoben: Streben und Pfosten lagen in einem Pfad mit gegenläufigem Umlaufsinn, die Füllregel stanzte die Überlappung aus (weiße Kerben in `hg-mine-mitte-*`, `hg-eisenstollen-mitte-*`, kleiner in `hg-mine-fern-*`); Balken haben jetzt denselben Umlaufsinn wie Rechtecke.
+- Offen für PS1: Glut im Eisenstollen eher schwach (nur Punkte und kleine Spalten), Rost als ovale Flecken.
+- `task check:diff` nach 10 min abgebrochen (Workbench-Go-Tests des feature/pap-Stands); `task test` einzeln 3173/3173 grün, der Diff von MG7 berührt nur `public/grafik/hintergruende/` und Doku.

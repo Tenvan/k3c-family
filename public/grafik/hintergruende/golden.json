@@ -1,4 +1,40 @@
 {
+  "hg-eisenstollen-fern-v1": {
+    "renderKey": "b7607b1841259cddb8670c62df8b34419091399db80445f20635b65e2a15c14b",
+    "dateien": {
+      "stand.png": "d7f42d886dff6b061a04e62cdb035bdea1ccd1c566575447a189a3e602b2433a"
+    }
+  },
+  "hg-eisenstollen-fern-v2": {
+    "renderKey": "05c99ff0adca3507d7c40cc44926c39b66a1c95c2ac86fbf7383fef4d23429d9",
+    "dateien": {
+      "stand.png": "33ecf0a3a30570c548dd184490c70f95b810951563af41991cdb6f1799a764ea"
+    }
+  },
+  "hg-eisenstollen-mitte-v1": {
+    "renderKey": "0106d95fc5f2163d86808d44968b4ab1a5ab9546f01d3aec233cd9a32d45bfb3",
+    "dateien": {
+      "stand.png": "42702a950afc10584c4cfe5cbe201e2be613ed4b8c6143b106238dba4407112f"
+    }
+  },
+  "hg-eisenstollen-mitte-v2": {
+    "renderKey": "1575c08f53860ec41aa786ae917769178777aaf41b3d50196b2cf6267d96af10",
+    "dateien": {
+      "stand.png": "c3617459e51e1a9b8b6c6c0b453f0e5bf7ba884d5b18b3ed4e2642279517626d"
+    }
+  },
+  "hg-eisenstollen-nah-v1": {
+    "renderKey": "5ee46190d8d64b6c95ccdac855bb1217be823472d5aa37c3274e335708d3e183",
+    "dateien": {
+      "stand.png": "45fca7e6755fe3170b7fb6354e70d15f6c8fa003c77d4f8c3bc9c9751619485f"
+    }
+  },
+  "hg-eisenstollen-nah-v2": {
+    "renderKey": "b14ac6ee8743e5155c667c2d1f084ff280bf2ade049240aea30916899f30a4b8",
+    "dateien": {
+      "stand.png": "c194e72285ce678c98f8074a9c39b8ce90511d20b8c704d69a7bc113f8d5a551"
+    }
+  },
   "hg-hoehle-fern-v1": {
     "renderKey": "bc00e6853b98a3c1ab650227848285a96c3e4056d5c2200b6b52754e0503e967",
     "dateien": {
@@ -33,6 +69,78 @@
     "renderKey": "00eec5063ccaef630fa9f85d01c97793fb7c50da6e1fc58348052d94cb28aaf9",
     "dateien": {
       "stand.png": "695d15421caea9281371519d87df7ec1ff5468a044aafb10de7a373fe39ac213"
+    }
+  },
+  "hg-kristall-fern-v1": {
+    "renderKey": "03143ec704518358c20722d74cb5adfca2ec35ac560c62eccb21e412c0ab02ab",
+    "dateien": {
+      "stand.png": "2a753fecd15bcd80c436988134949964d3cd59181a7ee205575731495502e849"
+    }
+  },
+  "hg-kristall-fern-v2": {
+    "renderKey": "06598f984ea34e73ea43b58a8261da55d428a22a5148b56eebd7dc7c0f3ce3bf",
+    "dateien": {
+      "stand.png": "d3bd37dc53a9cdd4b9acff6c693e565e5085c3897b723629e0a655508eb59968"
+    }
+  },
+  "hg-kristall-mitte-v1": {
+    "renderKey": "aecb46a4c1b8892fb47ca1588fe9c585ba7438f0951706391d2593c7a5eb3db2",
+    "dateien": {
+      "stand.png": "632939dbf122b12ee1b9cb7bc7163db373a57103a15a9fe8c656df10b8ad5b14"
+    }
+  },
+  "hg-kristall-mitte-v2": {
+    "renderKey": "c5505e4519446126fdccd174f43137331bd560bd6f89c30bc184dd493ef58f5b",
+    "dateien": {
+      "stand.png": "d3dfbc698797d2815e754e991e332caffc17ff38fdf85a40a5374241c889ca6d"
+    }
+  },
+  "hg-kristall-nah-v1": {
+    "renderKey": "a89ff2adaafce9a0dec33b7f0ca8c5b42bab32b3b098e0294b6c14a00340d755",
+    "dateien": {
+      "stand.png": "d6b2c142f07073980853be1034b0413ab91f1443204b2337a8547c38aaaa4ef0"
+    }
+  },
+  "hg-kristall-nah-v2": {
+    "renderKey": "c7d402eda4721316d83a11b96a0093020cb719221d415207dc73f2e46eaca66d",
+    "dateien": {
+      "stand.png": "b9b883ce52ee421963148b881e3933d68718305f1fc216f7ce9d887f796e187b"
+    }
+  },
+  "hg-mine-fern-v1": {
+    "renderKey": "c5051c8a1fe6e532a51ff81376d2258673cdc880b0e7d9d610a58188a2662c13",
+    "dateien": {
+      "stand.png": "71913850f0f2e9632bbe54bc05ef42d14fa0fcd033802bc812257d3282b12bb4"
+    }
+  },
+  "hg-mine-fern-v2": {
+    "renderKey": "993ae75d6d5d0a2c7988a6cbef1b1e92928179bbac8cd72f082f7a486efce9a2",
+    "dateien": {
+      "stand.png": "f8d94da66bf08b38f2da204f60a63eafd513ef38e73869f172e5b5c54efdd1f9"
+    }
+  },
+  "hg-mine-mitte-v1": {
+    "renderKey": "82b469e1939080fa74d6ba2d37f7b6502bd35cc987325ee0cb3aaa2588374275",
+    "dateien": {
+      "stand.png": "518be93f16e37d49c602f48780aaad332e94079ef43fa2efaf70fa95138e8111"
+    }
+  },
+  "hg-mine-mitte-v2": {
+    "renderKey": "e6cc253be78796f84855b2c41598a132eb9f7a23e8d8651d335cc9bbbade2b20",
+    "dateien": {
+      "stand.png": "2bc5500d1dcbb497f8a00df44aaef5a902cdc710037dc3e68e535ba8d961a54b"
+    }
+  },
+  "hg-mine-nah-v1": {
+    "renderKey": "d52a1e4d1da7f1bd8023c2777a58aa1d182cd72ff3e28ca57010a8c38840ded7",
+    "dateien": {
+      "stand.png": "8e28e3586e7f4acc7841efb7d1a6078d4ee41dbba0eb054c640250c3c601cc02"
+    }
+  },
+  "hg-mine-nah-v2": {
+    "renderKey": "bd7ff87511cd5a64414ae969f0814a18e2561a3f69c502af77c0fd56034ebe90",
+    "dateien": {
+      "stand.png": "ab85817e1d616d9fe558cabd8b02c8c277f50d8781a435f67acacd13b068673f"
     }
   },
   "hg-wald-fern-v1": {
