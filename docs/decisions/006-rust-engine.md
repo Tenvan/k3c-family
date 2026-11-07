@@ -90,6 +90,22 @@ Golden-Dateien unverändert, `engine/sim`-Tests grün.
 Folgerung: Die Takt-Ausreißer waren überwiegend Prozess-Scheduling, nicht Go: Priorität/EcoQoS brachte den Tick-Abstand
 p99 von ~75 ms auf ~36 ms (Ziel ≤ 40 ms), ohne eine Zeile Rechenlogik. `collectCoins` bleibt der heißeste Sim-Pfad.
 
+### Brücke Go → Rust ohne cgo (RS1.4, 2026-11-07)
+
+`rust/k3c-core` (cdylib, C-ABI) wird von `engine/core` geladen: Windows über `syscall.LoadDLL` + `SyscallN`, Linux über
+purego (`dlopen`, nur mit `-tags k3ccore`). Aufrufkosten auf dem PC (Core Ultra 7 165H, Windows, `go test ./engine/core -bench .`):
+
+| Aufruf | Kosten | allocs |
+|---|---|---|
+| `k3c_add(a, b)` (zwei Zahlen, eine Zahl zurück) | **41 ns** | 0 |
+| `k3c_sum_bytes` über 4 KiB (Zeiger + Länge, Summe im Rust-Teil) | 881 ns (davon fast alles Rechnen, ~0,2 ns/Byte) | 0 |
+
+Folgerung: Der reine Aufruf kostet etwa 40 ns, bei 30 Hz und einigen hundert Aufrufen je Tick unter 0,1 % des 33-ms-Takts.
+Teuer wird nur, was über die Grenze kopiert oder serialisiert wird (Zustand für Snapshot/Delta); das misst RS1.6. Pi (arm64):
+ungemessen (RS1.2, Ralf). Linux-arm64 prüft lokal nur `cargo check`; Linken und Laden läuft in der CI (Job `rust`, nur Push).
+**Docker:** Das Image bleibt `distroless/static` und lädt den Kern nicht; mit `-tags k3ccore` hängt das Go-Binary dynamisch
+an glibc, das Image bräuchte dann `distroless/cc` und die `.so` (Umstellung erst bei bestandenem Spike, RS1.6).
+
 ### Was die Erstmessung zur Vermutung sagt
 
 - **Windows-Timer (15,6 ms): widerlegt.** Go 1.27 schläft auf etwa 0,5 ms genau.

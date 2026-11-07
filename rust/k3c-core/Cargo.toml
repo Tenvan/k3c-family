@@ -1,0 +1,10 @@
+[package]
+name = "k3c-core"
+description = "Simulationskern von K3C als Bibliothek mit C-ABI (Go lädt sie ohne cgo)"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+
+[lib]
+name = "k3c_core"
+crate-type = ["cdylib", "rlib"]
