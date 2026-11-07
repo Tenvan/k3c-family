@@ -45,7 +45,8 @@ var uiMethods = map[string]bool{
 	"BalanceBaselines": true, "BalanceReportsRate": true, "BalanceReportsDelete": true, "BalanceSaveBaseline": true,
 	"BalanceDataValuesAll": true,
 	// Asset-Oberfläche (docs/standards/paper-mcp.md › Oberfläche; Stubs bis RV1)
-	"AssetsList": true, "AssetsIndex": true, "AssetsCheck": true, "AssetsGet": true, "AssetsStyle": true, "AssetsPrompts": true, "AssetsReview": true,
+	"AssetsList": true, "AssetsIndex": true, "AssetsCheck": true, "AssetsGroesse": true, "AssetsFrameOhne": true, "AssetsHintergruende": true,
+	"AssetsHintergrund": true, "AssetsGet": true, "AssetsStyle": true, "AssetsPrompts": true, "AssetsReview": true,
 	"AssetsFrame": true, "AssetsPixelDiff": true,
 	// Lesende Teile des früheren Asset-Studios (WB1.4, internal/studioview)
 	"StudioSounds": true, "StudioSoundData": true, "StudioSources": true, "StudioGameOpen": true,

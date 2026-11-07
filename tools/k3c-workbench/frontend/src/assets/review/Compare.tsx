@@ -2,6 +2,7 @@ import { Box, Button, Flex, Text, ValueSlider } from '@webkit/atoms';
 import { useEffect, useState } from 'react';
 import { type Animation, AnimationSync } from './AnimationSync';
 import { reviewApi } from './api';
+import { useZoom } from '../zoom';
 import { diffCache, frameCache, loadSpec } from './reviewStore';
 import { Boxes, pngGroesse } from './Boxes';
 import { text } from './fehlertext';
@@ -49,24 +50,33 @@ function useFrame(cache: Map<string, Promise<Frame>>, id: string, anim: string |
   return stand;
 }
 
-function Seite({ titel, stand }: { titel: 'Vorher' | 'Nachher'; stand: Stand }) {
+function Seite({ titel, stand, zoom }: { titel: 'Vorher' | 'Nachher'; stand: Stand; zoom: number }) {
   return (
     <Flex direction="column" gap="1" align="center">
       <Text size="1" color="gray">{titel}</Text>
-      {stand.frame && <img alt={titel} src={stand.frame.bild} style={{ maxHeight: 240, imageRendering: 'pixelated' }} />}
+      {stand.frame && <img alt={titel} src={stand.frame.bild} data-zoom={zoom} style={{ height: pngGroesse(stand.frame.bild).h * zoom, imageRendering: 'pixelated' }} />}
       {stand.fehler && <Text size="1" color="red">{titel === 'Vorher' ? `Frame fehlt in der Basis: ${stand.fehler}` : stand.fehler}</Text>}
     </Flex>
   );
 }
 
 /** Überblendung, Pixel-Diff-Overlay und Rahmen auf einem gemeinsamen Bild. */
-function Stapel({ vorher, nachher, blend, diff, teile }: { vorher?: Frame; nachher?: Frame; blend: number; diff?: PixelDiff; teile: [string, Rahmen][] }) {
+interface StapelProps {
+  vorher?: Frame;
+  nachher?: Frame;
+  blend: number;
+  diff?: PixelDiff;
+  teile: [string, Rahmen][];
+  zoom: number;
+}
+
+function Stapel({ vorher, nachher, blend, diff, teile, zoom }: StapelProps) {
   const basis = nachher ?? vorher;
   if (!basis) return null;
   const groesse = pngGroesse(basis.bild);
   const ebene = { position: 'absolute', inset: 0, width: '100%', height: '100%', imageRendering: 'pixelated' } as const;
   return (
-    <Box position="relative" style={{ width: 'fit-content', height: 240, aspectRatio: `${groesse.b} / ${groesse.h}` }}>
+    <Box position="relative" style={{ width: 'fit-content', height: groesse.h * zoom, aspectRatio: `${groesse.b} / ${groesse.h}` }}>
       {vorher && <img alt="Vorher (Überblendung)" data-ebene="vorher" src={vorher.bild} style={ebene} />}
       {nachher && <img alt="Nachher (Überblendung)" data-ebene="nachher" src={nachher.bild} style={{ ...ebene, opacity: vorher ? blend / 100 : 1 }} />}
       {diff && <img alt="Unterschiede" data-ebene="overlay" src={diff.overlay} style={ebene} />}
@@ -144,17 +154,21 @@ export function Compare({ asset, basis }: { asset: ReviewAsset; basis: string })
   const [zeigeDiff, setZeigeDiff] = useState(false);
   const diffs = diffCache;
   const diff = useDiff(diffs, asset, a.anim, a.nr, basis, zeigeDiff);
+  const zoom = useZoom('review', '1');
   return (
     <Flex direction="column" gap="3">
-      <Flex gap="4" align="end">
-        {asset.status !== 'neu' && <Seite titel="Vorher" stand={a.vorher} />}
-        {asset.status !== 'geloescht' && <Seite titel="Nachher" stand={a.nachher} />}
+      {zoom.schalter}
+      <Flex gap="4" align="end" className="as-zoom">
+        {asset.status !== 'neu' && <Seite titel="Vorher" stand={a.vorher} zoom={zoom.faktor} />}
+        {asset.status !== 'geloescht' && <Seite titel="Nachher" stand={a.nachher} zoom={zoom.faktor} />}
       </Flex>
       {a.animationen && a.anim && (
         <AnimationSync animationen={a.animationen} anim={a.anim} nr={a.nr} spielt={a.spielt} onAnim={a.setAnim} onNr={a.setNr} onSpielt={a.setSpielt} />
       )}
-      <Stapel vorher={a.vorher.frame} nachher={a.nachher.frame} blend={blend} diff={zeigeDiff ? diff.wert : undefined}
-        teile={markierteTeile(asset, a.nachher.frame ?? a.vorher.frame)} />
+      <div className="as-zoom">
+        <Stapel vorher={a.vorher.frame} nachher={a.nachher.frame} blend={blend} diff={zeigeDiff ? diff.wert : undefined}
+          teile={markierteTeile(asset, a.nachher.frame ?? a.vorher.frame)} zoom={zoom.faktor} />
+      </div>
       <Regler blend={blend} onBlend={setBlend} zeigeDiff={zeigeDiff} onDiff={() => setZeigeDiff((z) => !z)} diffMoeglich={asset.status === 'geaendert'} diff={diff} />
     </Flex>
   );

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { errorText } from '@webkit/lib/errors';
-import { assetsFrame, assetsGet, type Frame, type Spec } from '../api';
+import { assetsFrame, assetsFrameOhne, assetsGet, type Frame, type Spec } from '../api';
 import { currentGeneration, frameCache, specCache, useCatalogStore } from './catalogStore';
 
 /** Katalog aus dem Cache (B-732, catalogStore.ts): alle Specs, Prompt-Vorlagen und die IDs im aktuellen Diff (Review gegen
@@ -35,18 +35,22 @@ export function useSpec(id: string) {
 /** Frames einer Vorschau: je Asset, Animation und Frame ein Promise (ein zweiter Durchlauf lädt nichts nach, WB2). */
 export type FrameCache = Map<string, Promise<Frame>>;
 
+/** Schlüssel eines Frames; ausgeblendete Teile (B-734) gehören dazu. */
+const frameKey = (id: string, animation: string, frame: number, ohne: readonly string[]) =>
+  `${id}|${animation}|${frame}${ohne.length ? `|ohne:${[...ohne].sort().join(',')}` : ''}`;
+
 /** Frame aus dem Cache, sonst vom Backend (Arbeitsstand, ohne Variante). Ein Fehler bleibt bis zum Asset-Wechsel im Cache,
  *  damit das Abspielen einen defekten Frame nicht jede Runde neu anfragt (Review-Befund 4); erfolgreiche Frames merkt
  *  sich `frameCache` über den Tab-Wechsel hinaus (B-732). */
-export function cachedFrame(cache: FrameCache, id: string, animation: string, frame: number): Promise<Frame> {
-  const key = `${id}|${animation}|${frame}`;
+export function cachedFrame(cache: FrameCache, id: string, animation: string, frame: number, ohne: readonly string[] = []): Promise<Frame> {
+  const key = frameKey(id, animation, frame, ohne);
   let p = cache.get(key);
   if (!p) {
     const hit = frameCache.get(key);
     const gen = currentGeneration();
     p = hit
       ? Promise.resolve(hit)
-      : assetsFrame(id, animation, frame).then((f) => {
+      : (ohne.length ? assetsFrameOhne(id, animation, frame, [...ohne]) : assetsFrame(id, animation, frame)).then((f) => {
           if (gen === currentGeneration()) frameCache.set(key, f);
           return f;
         });
@@ -65,8 +69,8 @@ interface Shown {
 }
 
 /** Bild eines Frames; das alte Bild bleibt stehen, bis das neue da ist (`loading`), eine neuere Wahl verwirft ältere Antworten. */
-export function useFrame(cache: FrameCache, id: string, animation: string, frame: number) {
-  const key = `${id}|${animation}|${frame}`;
+export function useFrame(cache: FrameCache, id: string, animation: string, frame: number, ohne: readonly string[] = []) {
+  const key = frameKey(id, animation, frame, ohne);
   // ein Frame aus dem Cache steht sofort da, ohne Lade-Anzeige (B-732)
   const [state, setState] = useState<Shown>(() => {
     const hit = frameCache.get(key);
@@ -75,7 +79,7 @@ export function useFrame(cache: FrameCache, id: string, animation: string, frame
   useEffect(() => {
     if (!animation) return;
     let live = true;
-    cachedFrame(cache, id, animation, frame).then(
+    cachedFrame(cache, id, animation, frame, ohne).then(
       (f) => live && setState({ key, frame: f, anim: animation, nr: frame, error: '' }),
       // das letzte Bild bleibt stehen, der Fehler liegt darüber
       (e) => live && setState((s) => ({ ...s, key, error: errorText(e) })),

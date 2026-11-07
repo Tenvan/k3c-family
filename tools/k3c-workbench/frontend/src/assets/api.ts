@@ -7,6 +7,11 @@ export type * from '../api/typesAssets';
 export const assetsList = () => backend.assetsList();
 export const assetsIndex = () => backend.assetsIndex();
 export const assetsCheck = (pfade: string[]) => backend.assetsCheck(pfade);
+export const assetsFrameOhne = (id: string, animation: string, frame: number, ohne: string[]) =>
+  backend.assetsFrameOhne(id, animation, frame, ohne);
+export const assetsGroesse = (id: string) => backend.assetsGroesse(id);
+export const assetsHintergruende = () => backend.assetsHintergruende();
+export const assetsHintergrund = (teil: string) => backend.assetsHintergrund(teil);
 export const assetsGet = (id: string) => backend.assetsGet(id);
 export const assetsStyle = () => backend.assetsStyle();
 export const assetsPrompts = () => backend.assetsPrompts();

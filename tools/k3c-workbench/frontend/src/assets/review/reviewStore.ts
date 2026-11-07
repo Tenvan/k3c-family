@@ -1,3 +1,4 @@
+import { clearSizeCache } from '../size/sizeCache';
 import { reviewApi } from './api';
 import type { Frame, PixelDiff, Review, Spec } from './types';
 
@@ -47,4 +48,5 @@ export function clearReviewCache() {
   specCache.clear();
   frameCache.clear();
   diffCache.clear();
+  clearSizeCache();
 }

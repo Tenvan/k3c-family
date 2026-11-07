@@ -167,7 +167,7 @@ JSON-Objekt auf stdout. Exit 0 = ok, 1 = fachlich abgelehnt (`{"ok": false, "feh
 |---|---|
 | `validate <spec>` | `{"ok": true, "fehler": []}` |
 | `render <spec\|ordner>` | `{"ok": true, "manifeste": ["…/manifest.json"], "dateien": ["…/idle.png", …]}`; ein Ordner rendert alle Specs darin (ohne `index.paper.json`) und schreibt den Gruppen-Index |
-| `frame <spec> --animation a --frame n [--variante v] [--stufe s] --out datei.png` | `{"ok": true, "datei": "…", "teile": {"<teilId>": [x, y, b, h]}}` – Teil-Boxen in Pixeln des Frames |
+| `frame <spec> --animation a --frame n [--variante v] [--stufe s] [--ohne t1,t2] --out datei.png` | `{"ok": true, "datei": "…", "teile": {"<teilId>": [x, y, b, h]}}` – Teil-Boxen in Pixeln des Frames; `--ohne` rendert die genannten Teile ohne Lagen (Gelenke bleiben, B-734), ein unbekanntes Teil lehnt mit `teil-unbekannt` ab |
 | `diff <alt.json> <neu.json> [--stil-alt s1 --stil-neu s2]` | `{"ok": true, "felder": [{"pfad", "alt", "neu"}], "teile": ["<teilId>"], "stil": false}` |
 | `pixeldiff <a.png> <b.png> --out overlay.png` | `{"ok": true, "anteil": 0.0123, "boxen": [[x, y, b, h]], "datei": "overlay.png"}` |
 

@@ -131,6 +131,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-731](B-731-zustand-ohne-json-roundtrip.md) | SRV | Idee | hoch | offen | – | Zustands-Snapshot ohne JSON-Roundtrip (stateOf) – 98 % der Raum-Tick-Zeit |
 | [B-732](B-732-assets-katalog-schneller.md) | DEV | Idee | mittel | offen | – | Der Assets-Katalog zeigt Einträge sofort, cacht sie und hat eine größere Vorschau |
 | [B-733](B-733-assets-groessenvergleich.md) | DEV | Idee | mittel | offen | – | Katalog und Review zeigen ein Asset im Größenvergleich mit dem Monarch vor einem Biom |
+| [B-734](B-734-katalog-teil-ausblenden.md) | DEV | Idee | mittel | offen | – | Im Katalog lässt sich das gewählte Teil in der Vorschau aus- und einblenden |
 
 ## Archiv
 

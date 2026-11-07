@@ -87,6 +87,10 @@ Beispielantworten `tools/paper/fixtures/ui/<Methode>.json`: PV1.8.
 | `AssetsReview(basis string) Review` | `{basis, basisCommit, basisStand: aktuell\|lokal, assets: [{id, rig, pfad, status: neu\|geaendert\|geloescht\|ungueltig, fehler?, felder: [{pfad, alt, neu}], teile: [id], stil, pixelAnteil}]}` |
 | `AssetsFrame(id, animation string, frame int, variante, basis string) Frame` | `{bild, teile: {teilId: [x, y, b, h]}}`; `variante` und `basis` dürfen leer sein (leere Basis = Arbeitsstand) |
 | `AssetsPixelDiff(id, animation string, frame int, basis string) PixelDiff` | `{anteil, boxen: [[x, y, b, h]], overlay}` – Arbeitsstand gegen `basis` |
+| `AssetsFrameOhne(id, animation string, frame int, ohne []string) Frame` | wie `AssetsFrame` (Arbeitsstand, ohne Variante), die Teile in `ohne` ausgeblendet (`paper frame --ohne`, B-734) |
+| `AssetsGroesse(id string) Groesse` | `{pxProEinheit, quelle}`: Spiel-Pixel je Einheit von `ausgabe.rahmen` – Figur mit Spielrolle aus `data/paper.json` + `data/sprites.json` (`height · scale`), Figur ohne Rolle mit dem Maßstab des Monarchen, sonst 1 (B-733) |
+| `AssetsHintergruende() []string` | Biome mit Hintergrund, Namensteil `hg-<teil>-…` unter `public/grafik/hintergruende/` (B-733) |
+| `AssetsHintergrund(teil string) Hintergrund` | `{fern, mitte, nah}`: die Ebenen der Variante 1 als Data-URLs (je 768 × 480 Spiel-Pixel, Fuß unten) |
 
 - `status`: `neu` (fehlt in der Basis), `geaendert` (Spec, Stil oder Ausgabe anders), `geloescht` (fehlt im Arbeitsstand),
   `ungueltig` (Arbeitsstand verletzt eine Regel; `fehler` gesetzt, `felder` gegen die Basis). `stil: true`, wenn sich

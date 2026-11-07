@@ -1,14 +1,15 @@
 import { Button, Flex, Heading, Text } from '@webkit/atoms';
-import { LoadingNote } from '@webkit/molecules';
+import { ChipSwitch, LoadingNote } from '@webkit/molecules';
 import { ListDetail } from '@webkit/templates';
 import { useCallback, useEffect, useState, type RefCallback } from 'react';
 import { text } from './fehlertext';
 import { BasisSelect } from './BasisSelect';
 import { Compare } from './Compare';
 import { PromptButtons } from './PromptButtons';
+import { SizeCompare } from '../size/SizeCompare';
 import { ReviewList } from './ReviewList';
 import { cachedReview, clearReviewCache, loadReview } from './reviewStore';
-import type { Review } from './types';
+import type { Review, ReviewAsset } from './types';
 
 /** Review-Seite im Bereich Assets (RV1, Vertrag docs/standards/paper-mcp.md › Oberfläche): jede Asset-Änderung gegen
  *  eine wählbare Git-Basis mit Vorher/Nachher, Pixel-Diff-Overlay und markierten Teilen. Ändert nichts. */
@@ -50,7 +51,7 @@ export function ReviewPage() {
     <ListDetail header={kopf} listWidth={520} list={review && <ReviewList assets={review.assets} auswahl={auswahl} onSelect={setAuswahl} felderHoehe={hoehe} />}>
       {review && eintrag && (
         <Flex ref={detail} key={`${eintrag.id}@${review.basisCommit}#${stand}`} direction="column" gap="4">
-          <Compare asset={eintrag} basis={review.basisCommit} />
+          <Detail asset={eintrag} review={review} />
           <PromptButtons asset={eintrag} basis={review.basis} />
         </Flex>
       )}
@@ -101,4 +102,25 @@ function useReview(basis: string, stand: number) {
     };
   }, [basis, stand]);
   return { review, laedt, fehler };
+}
+
+type Ansicht = 'vergleich' | 'groesse';
+/** Vorher/Nachher oder Größenvergleich des Arbeitsstands mit dem Monarchen (B-733); gilt für alle Einträge. */
+const ANSICHTEN = [{ value: 'vergleich', label: 'Vorher/Nachher' }, { value: 'groesse', label: 'Größenvergleich' }] as const;
+let letzteAnsicht: Ansicht = 'vergleich';
+
+function Detail({ asset, review }: { asset: ReviewAsset; review: Review }) {
+  const [ansicht, setAnsicht] = useState<Ansicht>(letzteAnsicht);
+  const waehle = (a: Ansicht) => {
+    letzteAnsicht = a;
+    setAnsicht(a);
+  };
+  const groesse = ansicht === 'groesse' && asset.status !== 'geloescht';
+  return (
+    <>
+      <ChipSwitch label="Ansicht" options={ANSICHTEN} value={ansicht} onChange={waehle} />
+      {ansicht === 'groesse' && asset.status === 'geloescht' && <Text size="2" color="gray">Gelöscht: kein Arbeitsstand für den Größenvergleich</Text>}
+      {groesse ? <SizeCompare id={asset.id} /> : ansicht === 'vergleich' && <Compare asset={asset} basis={review.basisCommit} />}
+    </>
+  );
 }

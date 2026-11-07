@@ -15,6 +15,22 @@ func (a *App) AssetsList() ([]assetsui.AssetEintrag, error) { return a.assets().
 // AssetsIndex liefert den Katalog ohne Prüfung, ungeprüfte Einträge mit `offen` (Binding, B-732).
 func (a *App) AssetsIndex() ([]assetsui.AssetEintrag, error) { return a.assets().AssetsIndex() }
 
+// AssetsFrameOhne liefert einen Frame des Arbeitsstands ohne die Teile in ohne (Binding, B-734).
+func (a *App) AssetsFrameOhne(id, animation string, frame int, ohne []string) (assetsui.Frame, error) {
+	return a.assets().AssetsFrameOhne(id, animation, frame, ohne)
+}
+
+// AssetsGroesse liefert den Spiel-Maßstab eines Assets für den Größenvergleich (Binding, B-733).
+func (a *App) AssetsGroesse(id string) (assetsui.Groesse, error) { return a.assets().AssetsGroesse(id) }
+
+// AssetsHintergruende listet die Biome mit Hintergrund (Binding, B-733).
+func (a *App) AssetsHintergruende() ([]string, error) { return a.assets().AssetsHintergruende() }
+
+// AssetsHintergrund liefert die drei Ebenen eines Biom-Hintergrunds als Data-URLs (Binding, B-733).
+func (a *App) AssetsHintergrund(teil string) (assetsui.Hintergrund, error) {
+	return a.assets().AssetsHintergrund(teil)
+}
+
 // AssetsCheck prüft die Specs unter pfade und liefert ihre Einträge (Binding, B-732).
 func (a *App) AssetsCheck(pfade []string) ([]assetsui.AssetEintrag, error) {
 	return a.assets().AssetsCheck(pfade)

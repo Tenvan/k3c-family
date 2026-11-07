@@ -1,6 +1,7 @@
 import { useEffect, useSyncExternalStore } from 'react';
 import { backend } from '../../api';
 import { errorText } from '@webkit/lib/errors';
+import { clearSizeCache } from '../size/sizeCache';
 import { assetsCheck, assetsIndex, assetsPrompts, assetsReview, type AssetEintrag, type Frame, type Spec, type Vorlage } from '../api';
 
 /** Katalog-Cache (B-732): Liste, Prompt-Vorlagen, IDs im Diff, Specs und Frames leben auf Modul-Ebene und überleben den
@@ -49,6 +50,7 @@ export function loadCatalog(force = false) {
   const live = () => gen === generation;
   specCache.clear();
   frameCache.clear();
+  if (force) clearSizeCache();
   set({ loading: true, error: '', stand: gen });
   assetsIndex().then(
     (list) => {
