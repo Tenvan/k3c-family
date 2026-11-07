@@ -14,7 +14,7 @@ const PAGES: Record<string, boolean> = { katalog: true, styleguide: false, sound
 /** Lesen, Ansehen, Kopieren und „In Claude öffnen“ (B-701 D-12); alles andere gilt als schreibend. */
 const READ = new Set([
   'mock', 'on', 'info', 'openUrl', 'openInClaude',
-  'assetsList', 'assetsGet', 'assetsStyle', 'assetsPrompts', 'assetsReview', 'assetsFrame', 'assetsPixelDiff',
+  'assetsList', 'assetsIndex', 'assetsCheck', 'assetsGet', 'assetsStyle', 'assetsPrompts', 'assetsReview', 'assetsFrame', 'assetsPixelDiff',
   'studioSounds', 'studioSoundData', 'studioSources', 'studioGameOpen',
 ]);
 

@@ -1,7 +1,8 @@
 import { Box, Button, Flex, Text, ValueSlider } from '@webkit/atoms';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { type Animation, AnimationSync } from './AnimationSync';
 import { reviewApi } from './api';
+import { diffCache, frameCache, loadSpec } from './reviewStore';
 import { Boxes, pngGroesse } from './Boxes';
 import { text } from './fehlertext';
 import type { Box as Rahmen, Frame, PixelDiff, ReviewAsset } from './types';
@@ -20,7 +21,7 @@ function useAnimationen(asset: ReviewAsset): Animation[] | undefined {
     const leer = [{ name: '', frames: 1, fps: 8 }];
     if (asset.status === 'geloescht') setListe(leer);
     else
-      reviewApi.get(asset.id).then(
+      loadSpec(asset.id).then(
         (s) => aktiv && setListe(Object.entries(s.animationen ?? {}).map(([name, a]) => ({ name, frames: a.frames, fps: a.fps ?? 8 }))),
         () => aktiv && setListe(leer),
       );
@@ -100,7 +101,7 @@ function useAnsicht(asset: ReviewAsset, basis: string) {
   const anim = animationen === undefined ? undefined : (gewaehlt ?? animationen[0]?.name ?? '');
   const [nr, setNr] = useState(0);
   const [spielt, setSpielt] = useState(false);
-  const cache = useRef(new Map<string, Promise<Frame>>()).current;
+  const cache = frameCache;
   const vorher = useFrame(cache, asset.id, anim, nr, asset.status === 'neu' ? null : basis);
   const nachher = useFrame(cache, asset.id, anim, nr, asset.status === 'geloescht' ? null : '');
   return { animationen, anim, setAnim, nr, setNr, spielt, setSpielt, vorher, nachher };
@@ -141,7 +142,7 @@ export function Compare({ asset, basis }: { asset: ReviewAsset; basis: string })
   const a = useAnsicht(asset, basis);
   const [blend, setBlend] = useState(50);
   const [zeigeDiff, setZeigeDiff] = useState(false);
-  const diffs = useRef(new Map<string, Promise<PixelDiff>>()).current;
+  const diffs = diffCache;
   const diff = useDiff(diffs, asset, a.anim, a.nr, basis, zeigeDiff);
   return (
     <Flex direction="column" gap="3">

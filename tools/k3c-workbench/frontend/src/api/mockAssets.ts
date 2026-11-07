@@ -33,6 +33,9 @@ const QUELLEN: Quellen = {
 export function mockAssets(): AssetsBackend {
   return {
     assetsList: () => fixture<AssetEintrag[]>('AssetsList'),
+    // Index ohne Prüfung: alle offen und gültig, die Prüfung liefert die Fixture (B-732)
+    assetsIndex: async () => (await fixture<AssetEintrag[]>('AssetsList')).map((e) => ({ ...e, fehler: undefined, gueltig: true, offen: true })),
+    assetsCheck: async (pfade) => (await fixture<AssetEintrag[]>('AssetsList')).filter((e) => pfade.includes(e.pfad)),
     assetsGet: async (id) => {
       known(id);
       return fixture<Spec>('AssetsGet');

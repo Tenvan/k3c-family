@@ -17,6 +17,8 @@ export interface AssetEintrag {
   gueltig: boolean;
   geaendert: boolean;
   fehler?: AssetFehler[];
+  /** Noch ungeprüft (nur `assetsIndex`, B-732); gilt bis zur Prüfung als gültig. */
+  offen?: boolean;
 }
 
 /** Animation einer Spec (`docs/standards/paper-spec.md`): 1–64 Frames, `fps` Standard 8. */
@@ -149,6 +151,10 @@ export interface Quellen {
 /** RPC-Methoden der Asset-Oberfläche (Wails-Bindings bzw. /api/dev/rpc/Assets…). */
 export interface AssetsBackend {
   assetsList(): Promise<AssetEintrag[]>;
+  /** Katalog ohne Prüfung (B-732): ungeprüfte Einträge mit `offen`, Ergebnis über `assetsCheck`. */
+  assetsIndex(): Promise<AssetEintrag[]>;
+  /** Prüft die Specs unter `pfade` (aus `assetsIndex`) und liefert ihre Einträge. */
+  assetsCheck(pfade: string[]): Promise<AssetEintrag[]>;
   assetsGet(id: string): Promise<Spec>;
   assetsStyle(): Promise<Stil>;
   assetsPrompts(): Promise<Vorlage[]>;

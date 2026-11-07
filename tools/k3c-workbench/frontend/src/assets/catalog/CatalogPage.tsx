@@ -13,7 +13,7 @@ import { useCatalog } from './useCatalog';
 /** Seite Katalog im Bereich Assets (WB1.2, WB1.3): Liste aller Specs, Vorschau des gewählten Assets mit Teil-Auswahl per
  *  Klick und Prompt-Buttons. Nur Ansehen; Änderungen laufen über die MCP-Tools assets_* (Entscheidung 005 › 4, 5). */
 export function CatalogPage() {
-  const { list, inDiff, prompts, error, loading } = useCatalog();
+  const { list, inDiff, prompts, error, loading, open, reload, stand } = useCatalog();
   const [selected, setSelected] = useState('');
   const [teil, setTeil] = useState('');
   const choose = (id: string) => {
@@ -23,12 +23,12 @@ export function CatalogPage() {
   const eintrag = list.find((a) => a.id === selected);
   // Liste und Vorschau scrollen je für sich (WB2/AC-04)
   return (
-    <ListDetail listWidth={300} list={<AssetList list={list} loading={loading} inDiff={inDiff} selected={selected} onSelect={choose} />}>
+    <ListDetail listWidth={300} list={<AssetList list={list} loading={loading} inDiff={inDiff} open={open} onReload={reload} selected={selected} onSelect={choose} />}>
       <Flex direction="column" gap="2">
         <GameOpen />
         {error && <Text color="red">{error}</Text>}
         {selected ? (
-          <Preview key={selected} id={selected}
+          <Preview key={`${selected}|${stand}`} id={selected}
             overlay={(frame, spec) => <TeilLayer teile={frame.teile} reihenfolge={spec.teile.map((t) => t.id)} selected={teil} onSelect={setTeil} />}
             footer={(spec) => <Prompts spec={spec} eintrag={eintrag} prompts={prompts} teil={teil} />} />
         ) : (

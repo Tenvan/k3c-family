@@ -10,7 +10,27 @@ const STATUS: Record<ReviewStatus, { text: string; farbe: 'red' | 'amber' | 'gre
 };
 
 
-function Eintrag({ asset, aktiv, onSelect }: { asset: ReviewAsset; aktiv: boolean; onSelect: () => void }) {
+/** Zeilenhöhe von Text size="1" und Platz für Kopfzeile und Fehler über der Feldliste. */
+const ZEILE = 16;
+const KOPF = 64;
+
+/** Nicht gewählte Einträge zeigen nur den Anfang der Feldliste. */
+const KURZ = 2;
+
+/** Feldliste: gewählt höchstens so hoch wie die Ansicht rechts, sonst {@link KURZ} Zeilen, darüber hinaus „…“; der volle
+ *  Text steht im Tooltip. */
+function Felder({ asset, aktiv, hoehe }: { asset: ReviewAsset; aktiv: boolean; hoehe: number }) {
+  const text = felderText(asset);
+  const lang = hoehe > 0 ? Math.max(3, Math.floor((hoehe - KOPF) / ZEILE)) : undefined;
+  const zeilen = aktiv ? lang : KURZ;
+  return (
+    <Text size="1" color="gray" title={text} data-felder data-zeilen={zeilen} className="rv-felder" style={zeilen ? { WebkitLineClamp: zeilen } : undefined}>
+      {text}
+    </Text>
+  );
+}
+
+function Eintrag({ asset, aktiv, onSelect, felderHoehe }: { asset: ReviewAsset; aktiv: boolean; onSelect: () => void; felderHoehe: number }) {
   const s = STATUS[asset.status];
   return (
     <CardButton data-asset={asset.id} data-status={asset.status} aria-current={aktiv} variant={aktiv ? 'classic' : 'surface'}
@@ -27,19 +47,27 @@ function Eintrag({ asset, aktiv, onSelect }: { asset: ReviewAsset; aktiv: boolea
             {f.text}
           </Text>
         ))}
-        {asset.felder.length > 0 && <Text size="1" color="gray">{felderText(asset)}</Text>}
+        {asset.felder.length > 0 && <Felder asset={asset} aktiv={aktiv} hoehe={felderHoehe} />}
       </Flex>
     </CardButton>
   );
 }
 
 /** Liste der geänderten Assets; ungültige stehen rot mit Fehlertext, die übrigen bleiben sichtbar. */
-export function ReviewList({ assets, auswahl, onSelect }: { assets: ReviewAsset[]; auswahl: string | null; onSelect: (id: string) => void }) {
+interface Props {
+  assets: ReviewAsset[];
+  auswahl: string | null;
+  onSelect: (id: string) => void;
+  /** Höhe der Ansicht rechts in Pixeln (0 = unbekannt, dann ohne Grenze). */
+  felderHoehe?: number;
+}
+
+export function ReviewList({ assets, auswahl, onSelect, felderHoehe = 0 }: Props) {
   if (assets.length === 0) return <Text color="gray">Keine Asset-Änderung gegen diese Basis.</Text>;
   return (
     <Flex direction="column" gap="2">
       {assets.map((a) => (
-        <Eintrag key={a.id} asset={a} aktiv={a.id === auswahl} onSelect={() => onSelect(a.id)} />
+        <Eintrag key={a.id} asset={a} aktiv={a.id === auswahl} onSelect={() => onSelect(a.id)} felderHoehe={felderHoehe} />
       ))}
     </Flex>
   );

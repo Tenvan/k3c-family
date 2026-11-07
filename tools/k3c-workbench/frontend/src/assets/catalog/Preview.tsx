@@ -78,7 +78,7 @@ function SpecPreview({ spec, footer, overlay }: { spec: Spec } & Omit<Props, 'id
       )}
       {/* Das alte Bild bleibt beim Laden stehen, der Spinner liegt darüber (WB2/AC-03) */}
       <div className="as-stage">
-        {shown.frame && <img src={shown.frame.bild} alt={`${spec.id} ${shown.anim} Frame ${shown.nr + 1}`} className="as-frame" />}
+        {shown.frame && <ZoomedFrame src={shown.frame.bild} alt={`${spec.id} ${shown.anim} Frame ${shown.nr + 1}`} />}
         {shown.frame && overlay?.(shown.frame, spec)}
         {shown.loading && <LoadingNote id="frame" text={`Lädt ${a.anim} Frame ${a.frame + 1}`} overlay />}
         {shown.error && <Text color="red" size="1" className="as-stage-error">{shown.error}</Text>}
@@ -86,5 +86,18 @@ function SpecPreview({ spec, footer, overlay }: { spec: Spec } & Omit<Props, 'id
       {a.frames > 1 && <FramePlayer frame={a.frame} frames={a.frames} playing={a.playing} onFrame={a.setFrame} onPlaying={a.setPlaying} />}
       {footer?.(spec, shown.frame)}
     </Flex>
+  );
+}
+
+/** Vorschau doppelt so groß wie der gerenderte Frame (B-732), höchstens so breit wie die Spalte (`.as-frame`). Bis die
+ *  Bildgröße bekannt ist, bleibt das Bild verborgen, damit es nicht erst klein aufblitzt; ohne Größe (-1) in Normalgröße. */
+const ZOOM = 2;
+
+function ZoomedFrame({ src, alt }: { src: string; alt: string }) {
+  const [width, setWidth] = useState(0);
+  return (
+    <img src={src} alt={alt} className="as-frame" data-zoom={ZOOM}
+      style={width > 0 ? { width: width * ZOOM } : width === 0 ? { visibility: 'hidden' } : undefined}
+      onLoad={(e) => setWidth(e.currentTarget.naturalWidth || -1)} />
   );
 }

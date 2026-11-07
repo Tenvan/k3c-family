@@ -1,36 +1,28 @@
 import { useEffect, useState } from 'react';
 import { errorText } from '@webkit/lib/errors';
-import { assetsFrame, assetsGet, assetsList, assetsPrompts, assetsReview, type AssetEintrag, type Frame, type Spec, type Vorlage } from '../api';
+import { assetsFrame, assetsGet, type Frame, type Spec } from '../api';
+import { currentGeneration, frameCache, specCache, useCatalogStore } from './catalogStore';
 
-/** Katalog: alle Specs, Prompt-Vorlagen und die IDs im aktuellen Diff (Review gegen HEAD, Entscheidung 005 › 6). Ein Fehler des Reviews
- *  lässt die Liste stehen, nur ohne Abzeichen. */
-export function useCatalog() {
-  const [list, setList] = useState<AssetEintrag[]>([]);
-  const [inDiff, setInDiff] = useState<Set<string>>(new Set());
-  const [prompts, setPrompts] = useState<Vorlage[]>([]);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    let live = true;
-    assetsList()
-      .then((l) => live && setList(l), (e) => live && setError(errorText(e)))
-      .finally(() => live && setLoading(false));
-    assetsPrompts().then((p) => live && setPrompts(p), (e) => live && setError(errorText(e)));
-    assetsReview('HEAD').then((r) => live && setInDiff(new Set(r.assets.map((a) => a.id))), () => undefined);
-    return () => {
-      live = false;
-    };
-  }, []);
-  return { list, inDiff, prompts, error, loading };
-}
+/** Katalog aus dem Cache (B-732, catalogStore.ts): alle Specs, Prompt-Vorlagen und die IDs im aktuellen Diff (Review gegen
+ *  HEAD, Entscheidung 005 › 6). Ein Fehler des Reviews lässt die Liste stehen, nur ohne Abzeichen. */
+export const useCatalog = useCatalogStore;
 
 /** Spec des gewählten Assets; `error` statt Abbruch (005 › 7: die übrigen Assets bleiben bedienbar). */
 export function useSpec(id: string) {
-  const [state, setState] = useState<{ id: string; spec: Spec | null; error: string }>({ id: '', spec: null, error: '' });
+  const [state, setState] = useState<{ id: string; spec: Spec | null; error: string }>(() => ({ id, spec: specCache.get(id) ?? null, error: '' }));
   useEffect(() => {
+    const hit = specCache.get(id);
+    if (hit) {
+      setState({ id, spec: hit, error: '' });
+      return;
+    }
     let live = true;
+    const gen = currentGeneration();
     assetsGet(id).then(
-      (spec) => live && setState({ id, spec, error: '' }),
+      (spec) => {
+        if (gen === currentGeneration()) specCache.set(id, spec);
+        if (live) setState({ id, spec, error: '' });
+      },
       (e) => live && setState({ id, spec: null, error: errorText(e) }),
     );
     return () => {
@@ -44,12 +36,20 @@ export function useSpec(id: string) {
 export type FrameCache = Map<string, Promise<Frame>>;
 
 /** Frame aus dem Cache, sonst vom Backend (Arbeitsstand, ohne Variante). Ein Fehler bleibt bis zum Asset-Wechsel im Cache,
- *  damit das Abspielen einen defekten Frame nicht jede Runde neu anfragt (Review-Befund 4). */
+ *  damit das Abspielen einen defekten Frame nicht jede Runde neu anfragt (Review-Befund 4); erfolgreiche Frames merkt
+ *  sich `frameCache` über den Tab-Wechsel hinaus (B-732). */
 export function cachedFrame(cache: FrameCache, id: string, animation: string, frame: number): Promise<Frame> {
   const key = `${id}|${animation}|${frame}`;
   let p = cache.get(key);
   if (!p) {
-    p = assetsFrame(id, animation, frame);
+    const hit = frameCache.get(key);
+    const gen = currentGeneration();
+    p = hit
+      ? Promise.resolve(hit)
+      : assetsFrame(id, animation, frame).then((f) => {
+          if (gen === currentGeneration()) frameCache.set(key, f);
+          return f;
+        });
     cache.set(key, p);
   }
   return p;
@@ -66,8 +66,12 @@ interface Shown {
 
 /** Bild eines Frames; das alte Bild bleibt stehen, bis das neue da ist (`loading`), eine neuere Wahl verwirft ältere Antworten. */
 export function useFrame(cache: FrameCache, id: string, animation: string, frame: number) {
-  const [state, setState] = useState<Shown>({ key: '', frame: null, anim: '', nr: 0, error: '' });
   const key = `${id}|${animation}|${frame}`;
+  // ein Frame aus dem Cache steht sofort da, ohne Lade-Anzeige (B-732)
+  const [state, setState] = useState<Shown>(() => {
+    const hit = frameCache.get(key);
+    return { key: hit ? key : '', frame: hit ?? null, anim: animation, nr: frame, error: '' };
+  });
   useEffect(() => {
     if (!animation) return;
     let live = true;

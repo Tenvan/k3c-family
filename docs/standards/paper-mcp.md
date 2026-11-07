@@ -79,6 +79,8 @@ Beispielantworten `tools/paper/fixtures/ui/<Methode>.json`: PV1.8.
 | Methode | Antwort |
 |---|---|
 | `AssetsList() []AssetEintrag` | `[{id, rig, gruppe, pfad, gueltig, geaendert, fehler?}]`; `geaendert` gegen `HEAD`, `fehler` wie bei `validate` |
+| `AssetsIndex() []AssetEintrag` | wie `AssetsList`, aber ohne Prüfung (B-732): Einträge ohne gemerktes Prüfergebnis tragen `offen: true` und gelten bis dahin als gültig |
+| `AssetsCheck(pfade []string) []AssetEintrag` | prüft die Specs unter `pfade` (aus `AssetsIndex`) und liefert ihre Einträge wie `AssetsList`, nur ohne `geaendert` (immer `false`, steht im Index); ein Pfad außerhalb des Arbeitsstands wird nicht geprüft und meldet `fehlt` |
 | `AssetsGet(id string) Spec` | Spec als Objekt (ohne `$schema`) |
 | `AssetsStyle() Stil` | Stil-Datei als Objekt (ohne `$schema`) |
 | `AssetsPrompts() []Vorlage` | Inhalt von `data/asset-prompts.json` |

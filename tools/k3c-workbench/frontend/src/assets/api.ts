@@ -5,6 +5,8 @@ import { backend } from '../api';
 export type * from '../api/typesAssets';
 
 export const assetsList = () => backend.assetsList();
+export const assetsIndex = () => backend.assetsIndex();
+export const assetsCheck = (pfade: string[]) => backend.assetsCheck(pfade);
 export const assetsGet = (id: string) => backend.assetsGet(id);
 export const assetsStyle = () => backend.assetsStyle();
 export const assetsPrompts = () => backend.assetsPrompts();

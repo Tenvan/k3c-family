@@ -12,6 +12,14 @@ func (a *App) assets() assetsui.Dienst {
 // AssetsList liefert den Katalog: je Asset ID, Rig, Gruppe, Pfad, gültig und geändert (Binding).
 func (a *App) AssetsList() ([]assetsui.AssetEintrag, error) { return a.assets().AssetsList() }
 
+// AssetsIndex liefert den Katalog ohne Prüfung, ungeprüfte Einträge mit `offen` (Binding, B-732).
+func (a *App) AssetsIndex() ([]assetsui.AssetEintrag, error) { return a.assets().AssetsIndex() }
+
+// AssetsCheck prüft die Specs unter pfade und liefert ihre Einträge (Binding, B-732).
+func (a *App) AssetsCheck(pfade []string) ([]assetsui.AssetEintrag, error) {
+	return a.assets().AssetsCheck(pfade)
+}
+
 // AssetsGet liefert die Spec eines Assets als Objekt (Binding).
 func (a *App) AssetsGet(id string) (map[string]any, error) { return a.assets().AssetsGet(id) }
 

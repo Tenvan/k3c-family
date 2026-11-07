@@ -74,6 +74,8 @@ interface GoApp {
   BalanceReportHTML(path: string): Promise<string>;
   // Asset-Oberfläche (docs/standards/paper-mcp.md › Oberfläche; Typen in typesAssets.ts)
   AssetsList(): Promise<AssetEintrag[]>;
+  AssetsIndex(): Promise<AssetEintrag[]>;
+  AssetsCheck(pfade: string[]): Promise<AssetEintrag[]>;
   AssetsGet(id: string): Promise<Spec>;
   AssetsStyle(): Promise<Stil>;
   AssetsPrompts(): Promise<Vorlage[]>;
@@ -129,6 +131,8 @@ function balanceWails(app: GoApp): BalanceBackend {
 function assetsWails(app: GoApp): AssetsBackend {
   return {
     assetsList: () => app.AssetsList(),
+    assetsIndex: () => app.AssetsIndex(),
+    assetsCheck: (pfade) => app.AssetsCheck(pfade),
     assetsGet: (id) => app.AssetsGet(id),
     assetsStyle: () => app.AssetsStyle(),
     assetsPrompts: () => app.AssetsPrompts(),
