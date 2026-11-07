@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** RS1
 - **Projekt:** RST
 - **Erstellt:** 2026-11-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-11-07, Chat (Ralf), Revision 1, durch 🧑 (mit RS1)
 
 ## Ausgangslage
 

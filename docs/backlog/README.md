@@ -98,7 +98,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-695](B-695-flaky-simrun-tempdir-balancing-abbruch.md) | DEV | Problem | niedrig | offen | – | Zwei Tests flackern: simrun-TempDir-Cleanup und Abbruch eines wartenden Laufs |
 | [B-696](B-696-gebaeude-in-allen-aufloesungen-rendern.md) | DEV | Idee | mittel | offen | – | Gebäude liegen in allen vorgesehenen Auflösungen als Grafik vor |
 | [B-698](B-698-balancing-tests-vorlaeufig-mit-cheats.md) | REG | Schuld | niedrig | offen | – | Balancing-Tests und Simulationen laufen vorläufig mit Cheats und bestehen spätestens im dritten Lauf |
-| [B-725](B-725-rust-engine-machbarkeit.md) | SRV | Idee | mittel | offen | – | Simulationskern läuft schneller in Rust, Server bleibt Go (Machbarkeit und Umstiegspfad) |
+| [B-725](B-725-rust-engine-machbarkeit.md) | SRV | Idee | mittel | eingeplant | RS1 | Simulationskern läuft schneller in Rust, Server bleibt Go (Machbarkeit und Umstiegspfad) |
 | [B-726](B-726-workbench-sim-per-task.md) | DEV | Schuld | mittel | offen | – | Workbench ruft Sim und Balancing als Task auf statt engine/sim zu importieren |
 
 ## Archiv

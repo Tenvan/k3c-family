@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** RST
 - **Domäne:** SRV, INF, SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-725
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-11-07, Chat (Ralf), Revision 1, durch 🧑; umfasst B-725 Revision 1
 
 ## Ausgangslage
 
