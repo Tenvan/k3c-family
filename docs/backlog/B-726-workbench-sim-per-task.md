@@ -4,8 +4,8 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** RS2
 - **Projekt:** RST
 - **Erstellt:** 2026-11-07
 - **Spec:** freigegeben
