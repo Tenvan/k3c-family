@@ -8,9 +8,9 @@
 - **Sprint:** MG9
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-07 (auf Ralfs Zustimmung im Chat)
 
 ## Ausgangslage
 
