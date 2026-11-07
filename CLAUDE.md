@@ -26,6 +26,7 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
   **004: Asset-Studio getrennt vom Spielserver**, Schnittstelle sind die Dateien, der Server beobachtet sie (TS1, B-507).
   **005: Papierschnitt-Grafik aus Specs**, Assets nur über MCP `assets_*`, Review im Bereich Assets der Workbench; das
   Asset-Studio ist entfallen (WB1).
+  **006: Simulationskern wird Rust** (Etappe 1, Server bleibt Go; Etappe 2 Rust-Server möglich), Projekt RST, B-725, B-726.
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
 
 ## Befehle
