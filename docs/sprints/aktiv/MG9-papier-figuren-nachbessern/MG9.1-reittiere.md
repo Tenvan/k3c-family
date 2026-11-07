@@ -1,6 +1,6 @@
 # MG9.1 · Reittiere: einheitlicher Maßstab, Wolfssilhouette, Füße
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -22,8 +22,9 @@ Ticket B-716. Specs `public/grafik/reittiere/*.paper.json` (Rig `vierbeiner`). H
 
 ## Erlaubte Dateien
 
-- `public/grafik/reittiere/**`
+- `public/grafik/reittiere/**`, `public/grafik/figuren/**` (nur neu gerenderte Ausgabe)
 - `tools/paper/golden/**` (neuer Gruppen-Test zum Maßstab)
+- `tools/paper/rig/reiten.ts` (Variante färbt auch die Satteldecke des Reittiers, Vorgriff auf MG9.2/AC-02)
 - `docs/sprints/aktiv/MG9-papier-figuren-nachbessern/**`
 
 ## Nicht-Ziele
@@ -55,5 +56,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-11-07, Claude.
+
+- AC-01 / B-716/AC-01 umgesetzt, geprüft (`tools/paper/golden/reittiere.test.ts`): alle elf Reittiere haben Rahmenhöhe 132 bei `hoehe_px` 192, also denselben Maßstab. Die drei Wölfe haben den Rahmen `[-94,-128,184,132]` (breiter, gleiche Höhe), weil Schnauze und Rute breiter sind.
+- AC-01 / B-716/AC-02 umgesetzt, Sichtprüfung per `assets_preview` (Claude): Wolf, Weißer Wolf, Höllenhund mit Hundekopf (lange Schnauze, Spitzohren, Nase), buschiger Rute und Pfoten (`proportionen.fuss: pfote`); Elefant mit `elefantenfuss` und Zehennägeln. Manuelle Abnahme der Optik bleibt bei Ralf.
+- AC-01 / B-716/AC-03 umgesetzt, geprüft: Elefant mit `gangarten: [schritt, trab]`, Animation `galopp` und PNG entfernt.
+- Abweichung: `tools/paper/rig/reiten.ts` angefasst (Variante tauscht auch das Reittier, damit die Satteldecke der Rockfarbe folgt, B-711), dadurch neue Ausgabe der Monarch-Varianten spieler2–4; Farbe von spieler4 folgt in MG9.2.

@@ -1,12 +1,12 @@
 {
   "monarch": {
-    "renderKey": "5a0afdb7ec9794f01a1b672ab11176f971376778682b823128d2e7e15e5f9a73",
+    "renderKey": "97b9a9571adbcbeb2093898e27362c9c533a4c7f69bffb49e306d91cdc0a36f7",
     "dateien": {
       "galopp.png": "d673968e7d9d2b86d1ff539cbe6fb28f1f1e44fdc8e80acb61f0848bc6fd07d1",
       "galopp@spieler1.png": "d673968e7d9d2b86d1ff539cbe6fb28f1f1e44fdc8e80acb61f0848bc6fd07d1",
-      "galopp@spieler2.png": "dd7542424ed53e94ac6444441b89be5e3604ded30e9c6149ac931d70622594f9",
-      "galopp@spieler3.png": "5215e6ce671c895898a62bbec78be9d65227eae19b364f5f26928a723139db47",
-      "galopp@spieler4.png": "6e255e264c6500a96b1c4f9556f5eebf89e907dfe9eedf633a1b7410a9e24bac",
+      "galopp@spieler2.png": "d7db63c696a7eebbe92466ee4ccf0e21fac63069ff936096d35e1ed1e446082e",
+      "galopp@spieler3.png": "55c85e1386aaf9eda06a8fa69d69533bde848b0b4d1f837fa50cfc7c10270c45",
+      "galopp@spieler4.png": "e15557e332eb22c9b548442e9f28dd148edbdd696c471912154502981418f19e",
       "idle.png": "bf7bd9c38fa0e45fb7c78950cce98f490c42d7a91157bd4f1fcafe691f3e273f",
       "idle@spieler1.png": "bf7bd9c38fa0e45fb7c78950cce98f490c42d7a91157bd4f1fcafe691f3e273f",
       "idle@spieler2.png": "269d7f161b7d53371aff39886690da4c1a35eb4baba87adc6bcaefbf0a23164a",
@@ -19,14 +19,14 @@
       "lauf@spieler4.png": "27187f0202e8a127276ab261972f5665b60e961846cdf760ae6e30212686907b",
       "schritt.png": "2c15af1f665bc3878e38719ee5ff6425b189dd482eaa40edc584c699d733abe2",
       "schritt@spieler1.png": "2c15af1f665bc3878e38719ee5ff6425b189dd482eaa40edc584c699d733abe2",
-      "schritt@spieler2.png": "a777c5824b2ce6a979b3d4b3754429182a89d6bdce4205aec7fbf9dad2322bc8",
-      "schritt@spieler3.png": "0f177db76694df8ca9d8d3f3c0ad90edd365aa212c9c80ad355de9c99fa09050",
-      "schritt@spieler4.png": "52e434b66436248e5cd546c476e50027175adfb3b01ad4d2fb845e4fb7e9ef3d",
+      "schritt@spieler2.png": "0a13ff65b32ac9d753ab9614e6a00d88a85a63e6bff559ea12a635625466b217",
+      "schritt@spieler3.png": "8f825f1bfa7a6e390295fa989f3414a207afc76c36a198b90f6166f77d419e43",
+      "schritt@spieler4.png": "fb0a62a983253a1ecae3df6202255f9b70dd9ac572d3a03d687e539284093a04",
       "trab.png": "9e52de4f7bdbcbb35a12ac5f61012491f08986979f5565b43cad54df592f20d0",
       "trab@spieler1.png": "9e52de4f7bdbcbb35a12ac5f61012491f08986979f5565b43cad54df592f20d0",
-      "trab@spieler2.png": "e48413c71805b917aeadefcbb06f423cd1a0726f33201cf5de2c154144a0b5ab",
-      "trab@spieler3.png": "1d09f270cca76d48a7fb19585f04896d7832e3d842e9b57c4310f9dc050d0bf1",
-      "trab@spieler4.png": "9a65b7f71c875b32823504d25a7bda5ac50e8c4788d3b6698720c62826447e95"
+      "trab@spieler2.png": "b1c3cdf4bb47410581eae9564291cb8c121f38325f21e3576eb9be52715294f9",
+      "trab@spieler3.png": "ab110f60858b8af164fbe136c008f4b7927b560e7d57da1d765f550b7242cc81",
+      "trab@spieler4.png": "f99b6bfa5e5645dd26bde005657daa56aeb8d5f051d50d2d4c94cd331cfd5d25"
     }
   }
 }

@@ -1,47 +1,32 @@
 {
   "id": "elefant",
   "version": 1,
-  "specHash": "511e93ed5b780e7ac011c0178d88817bc74ef353f88ea0607e4de245c9bc558c",
+  "specHash": "670661e9e284c4235aa479174cfb8499dcc26a7624df5cf30d0f21cb0bd97231",
   "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "0cf8a98a6e54780849852b59d5c8fbc0c1524e09857c3f515c4a8f7bcd9328fb",
+  "renderKey": "c4b2409e193b5a2b06777d9ebafa098ad573444dc2a71934c453833b65b9fdc1",
   "rahmen": [
     -78,
-    -122,
+    -128,
     155,
-    126
+    132
   ],
-  "frameW": 236,
+  "frameW": 225,
   "frameH": 192,
   "animationen": {
-    "galopp": {
-      "frames": 8,
-      "fps": 8,
-      "datei": "galopp.png",
-      "hashes": [
-        "e75a69db980b9c579cbe5ab88287dfc0bd0289dda9d35c9e0bddbe1a3b352400",
-        "2e89d445804c9c31c0e5ef09f4c7e01e52c6d8224701da8ff060c24135a9ad32",
-        "8e8b47a6087c6c720c32f4174fc7097f5ed7edcc569859842cd7496d3231f290",
-        "f6b3894caacffe528bb847cf4c8666004f1694c1501b2d8a1584573266340c81",
-        "2225c77432f5bb60fe7bb6af244feb03461c8e3253efa3fc495636e586b72308",
-        "95cbbfbcb796cd0c4c0940e5f3720d41613112e5751254b8c4be07ed89bfedcb",
-        "0a14ba7d780e5304d72ed2a44b03aeffe0610a6f9020dd84c4e5dced6cf92d9f",
-        "97dfca28ab55baed68df6813b1091821998733f9a39e52a417af0addc4bcfebb"
-      ]
-    },
     "schritt": {
       "frames": 8,
       "fps": 8,
       "datei": "schritt.png",
       "hashes": [
-        "cc578e8a479ce214d021fc32ec1a6664e7c88bb85d4df5ac14ef32fbcfe45580",
-        "d538b167304fee28e7cf4986907b7523a0ebe65708e350515f46134b1110a25b",
-        "fe495b58f7e4598099cdd1f448c62182fd11f61659980fefd0acba5d305a3fea",
-        "94334066642a38560a5b07b3d702562d55a4a69af1d6c5384e5463567c1888b1",
-        "2b0e6e396d91c61764eb352f1508f41a7e4c1f4f28e3d30011470db454a0b5d7",
-        "860388ff0a468e88df8bd0f2dcfe8524c3b2bdfc98630adc1da289242a2f1823",
-        "e9c8f994e381fea1f36ed09a636be5a1e889ff9c207a5d2301529c046d1654d7",
-        "29c7824983a2900c0a70aa8924d1969d13a95cc97bdacdfd9666849b1d8f7bbf"
+        "2e1281c65e171bcbdf3cbe81b6929d19b109f271a777719808404d67e11fbae2",
+        "3ccafc4f9c4737f500e27c95e180a618a8688207985cd732595c4ba2e16bac95",
+        "b90144d974f06d4778a8558a3c1d4f000c002b86d57ae9bcb7f7d0e159079dec",
+        "09bc76b574c0a52a9ce649c0f69ceb82c2e0ec3b7c2d685c4b3c751a226c9842",
+        "b53436c59d413ccc3877e46d99e2db016a87bb63df0a26721dd55eb4fef2ad2d",
+        "45985d60b44bcc3399ca861d117385ae33b61df41f3f220a05ea93f8b7f1ae3f",
+        "38c47519e3b94d6fba1837e9b373cdf5616d16912ce70203b0ea685edad8909d",
+        "385a5c825a8924cf8907b8561d0e9f2aa6cc8cea71db6da9da1e91e0e522923f"
       ]
     },
     "trab": {
@@ -49,14 +34,14 @@
       "fps": 8,
       "datei": "trab.png",
       "hashes": [
-        "4a53b2ef84893cd897e009eb1e87c85c90ea7c74b50ab190f841f70b77b652a2",
-        "42ce30c30bbf8f5e5298b457822c1ece1faf8a577e40aa1905b3aefc4bf6ef5b",
-        "8f460c4aa9e30dbea7146e51d8d86c66a1afee294cf4166fec092dac262f7198",
-        "4c666b4f81e63a3fb40ae44e72f49dd3da8e23979ace54ea4564d878b64a3fdf",
-        "d6aa2376e9002fe1c56c5ab92d4b4afc47f80cb4aec745e270b72311d5500b6f",
-        "ea1b67ce7c45c793db72b8b40414d6be8edb0c529ebf76931bffe29bb9bbc5f8",
-        "917db012b930b569f73958786d5e84c83e2286c79fbebfcd102ac72c16c5a8ba",
-        "7f06667d26dbae45fd903921a291925faa6c4f1ddc4a834a8e8d3ab9abb31fdf"
+        "1bba560ec7d25d82e34e14678b043861516916b74f397ebf57dd1551bfd84dd9",
+        "5219c6d4ae18eb7d5740a15961e0a43f8839b6d31f718043ac8636fea6185706",
+        "5da4b0c67a2ecd5b9d2de68ceed47466d0b6afadfe7414f9fab6556a6a7312f0",
+        "3461ab5061dedf3b96bed5f41272216c5a2b60ac187f55bfdbf77fb6b160c4d4",
+        "caaab167c76798d048cc0ebde039b5371e8f3528e2a56a4a5fa93e548279a9d8",
+        "bb9abecec2375dc3dee16e0d2de23ff81a7b316c58466388446f0e46ef317a0b",
+        "e761c0dfb06aafb8ebce5c8e1d68c324ab26c897ac4a297f68c3f8ad001e631a",
+        "1b823f9fc6468a328f7dbd5daf33de28fee8592734b6e5897c12cb7e5f829b9a"
       ]
     }
   },
