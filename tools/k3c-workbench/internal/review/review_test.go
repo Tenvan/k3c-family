@@ -44,7 +44,9 @@ func TestReviewHEAD1WieFixture(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if g, w := generisch(t, got), generisch(t, fixtureReview(t)); !reflect.DeepEqual(g, w) {
+	want := fixtureReview(t)
+	want.BasisCommit = basisCommit(t, repo) // Hash hängt von der echten Stil-Datei ab (B-738)
+	if g, w := generisch(t, got), generisch(t, want); !reflect.DeepEqual(g, w) {
 		gj, _ := json.MarshalIndent(g, "", " ")
 		t.Fatalf("Review weicht ab:\n%s", gj)
 	}

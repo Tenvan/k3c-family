@@ -98,6 +98,7 @@ func TestAssetsReviewTestRepo(t *testing.T) {
 		t.Fatal(err)
 	}
 	g, w := roundtrip(t, got).(map[string]any), fixture(t, "AssetsReview").(map[string]any)
+	w["basisCommit"] = g["basisCommit"] // Hash des Test-Repos hängt von der echten Stil-Datei ab (B-738)
 	g["assets"], w["assets"] = nachID(g["assets"]), nachID(w["assets"])
 	if !reflect.DeepEqual(g, w) {
 		t.Fatalf("AssetsReview = %v", g)

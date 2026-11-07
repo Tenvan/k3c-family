@@ -5,7 +5,12 @@ import (
 	"testing"
 )
 
-const basisCommit = "32eb7a7" // HEAD~1 im Review-Test-Repo (paper-mcp.md › Attrappen)
+// basisCommit ist HEAD~1 im Review-Test-Repo. Der Hash hängt vom Inhalt der echten stil.paper.json ab (erzeuge.ts
+// kopiert sie ins Repo) und wird deshalb aus dem Repo gelesen, nicht als Konstante geführt (B-738).
+func basisCommit(t *testing.T, repo string) string {
+	t.Helper()
+	return gitIn(t, repo, "rev-parse", "--short=7", "HEAD~1")
+}
 
 // TestBasisAufloesen: leer und HEAD = HEAD, HEAD~1 und SHA (kurz, lang) lösen auf, Stand aktuell (AC-02).
 func TestBasisAufloesen(t *testing.T) {
@@ -13,6 +18,7 @@ func TestBasisAufloesen(t *testing.T) {
 	repo := testRepo(t)
 	head := gitIn(t, repo, "rev-parse", "--short=7", "HEAD")
 	voll := gitIn(t, repo, "rev-parse", "HEAD~1")
+	basisCommit := basisCommit(t, repo)
 	faelle := []struct{ basis, name, commit string }{
 		{"", "HEAD", head},
 		{"HEAD", "HEAD", head},
@@ -40,8 +46,8 @@ func TestBasisOriginDevelopLokal(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if s.Commit != basisCommit || s.BasisStand != "lokal" {
-		t.Fatalf("%+v, will %s lokal", s, basisCommit)
+	if s.Commit != basisCommit(t, repo) || s.BasisStand != "lokal" {
+		t.Fatalf("%+v, will %s lokal", s, basisCommit(t, repo))
 	}
 }
 

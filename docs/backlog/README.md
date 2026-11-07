@@ -127,6 +127,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-735](B-735-weitere-materialien-stroh-lava-geisterweiss.md) | PAP | Schuld | niedrig | offen | – | Weitere Ersatz-Materialien (stroh, lava, geisterweiss, fell-grau) in der Stil-Datei |
 | [B-736](B-736-rust-server-etappe2.md) | SRV | Idee | mittel | eingeplant | RS2 | Etappe 2: Server und Simulation laufen komplett in Rust, Go-Server und Brücke entfallen |
 | [B-738](B-738-workbench-go-tests-rot-style-vorlage-review.md) | DEV | Problem | mittel | offen | – | Workbench-Go-Tests rot: Style-Fixture, Rig-Vorlage vierbeiner ohne Gangarten, Review-Tests mit festen Commit-Hashes |
+| [B-739](B-739-check-diff-grafik-golden-logging-sperre.md) | INF | Problem | hoch | offen | – | check:diff: Grafik-Golden je Gruppe, Schritt-Logging und Sperre gegen parallele Läufe |
 
 ## Archiv
 
