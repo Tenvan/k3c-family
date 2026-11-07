@@ -61,7 +61,7 @@ func RenderEins(ctx context.Context, cli CLI, a Asset) AssetErgebnis {
 		e.Fehler = err.Error()
 		return e
 	}
-	if err := inIndexAufnehmen(cli.Root, a); err != nil {
+	if err := gruppeNachziehen(cli.Root, a); err != nil {
 		e.Fehler = err.Error()
 		return e
 	}

@@ -126,7 +126,7 @@ func schreibeSpec(ctx context.Context, cli CLI, a Asset, alt, text []byte) (SetE
 			return r, err
 		}
 	}
-	if err := inIndexAufnehmen(cli.Root, a); err != nil {
+	if err := gruppeNachziehen(cli.Root, a); err != nil {
 		return r, err
 	}
 	vorher, nachher := cli.rel(tmpAus)+"/", cli.rel(a.Ausgabe(cli.Root))+"/"

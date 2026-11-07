@@ -12,6 +12,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RD1 | PAP | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | `aktiv/RD1-papierschnitt-renderer/` |
 | MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
 | RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
+| MG1 | PAP | PAP | Papierschnitt-Migration: Monarch und Spielerfarben | – | `aktiv/MG1-papier-monarch-spielerfarben/` |
 | MG2 | PAP | PAP | Papierschnitt-Migration: Reittiere | – | `aktiv/MG2-papier-reittiere/` |
 | MG3 | PAP | PAP | Papierschnitt-Migration: Truppen | – | `aktiv/MG3-papier-truppen/` |
 | MG5 | PAP | PAP | Papierschnitt-Migration: Bosse | – | `aktiv/MG5-papier-bosse/` |
@@ -38,9 +39,8 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| MG1 | CLI | PAP | Papierschnitt-Migration: Monarch und Spielerfarben | – | Entwurf | `geplant/MG1-papier-monarch-spielerfarben/` |
 | MG8 | CLI | PAP | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | – | Entwurf | `geplant/MG8-papier-natur-objekte-icons/` |
-| PS1 | CLI | PAP | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | – | Entwurf | `geplant/PS1-papierschnitt-sichtpruefungen/` |
+| PS1 | CLI | PAP | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | – | bereit | `geplant/PS1-papierschnitt-sichtpruefungen/` |
 | CU1 | CLI | PAP | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | – | Entwurf | `geplant/CU1-alte-grafik-aufraeumen/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
