@@ -1,0 +1,27 @@
+{
+  "id": "hg-wald-nah-v2",
+  "version": 1,
+  "specHash": "28e9513d1b8c964abd705a1c5a11c9fea19bd35e2b51f6ae163624653ec881f7",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "10f3f5b1e7f06220b07bb6cc7102d87470db8e2d12c77eff4f6fd8c24f36e27f",
+  "rahmen": [
+    0,
+    -480,
+    768,
+    480
+  ],
+  "frameW": 768,
+  "frameH": 480,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "3a637cc7b1d63e3b2cc054659c3dd0afecde1a53a8c43fcf241566283d5ef494"
+      ]
+    }
+  },
+  "varianten": []
+}

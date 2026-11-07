@@ -1,6 +1,6 @@
 # MG7.1 · Hintergründe Wald und Höhle
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -54,5 +54,11 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- 12 Assets in `public/grafik/hintergruende/` (Rig `hintergrund`, 768 × 480, Animation `stand`): `hg-wald-<fern|mitte|nah>-v1/v2` (Tannenhang: Bergkette und Tannen-Silhouetten, Bäume und Büsche, dicke Stämme mit Laub, Gras, Blumen und Pilzen) und `hg-hoehle-<fern|mitte|nah>-v1/v2` (Tropfsteinhalle: Decke und Wand mit Zapfen, Säulen mit Zapfen und Kegeln, Felsblöcke mit Moos, Pfütze und Kieseln).
+- Entstanden aus einem Generator im Scratchpad (periodische Profile, Zufall je ID fest); gleichartige Flächen sind je Teil zu einer Lage mit Teilpfaden zusammengefasst, Polylinien relativ (`l`).
+- **AC-01 geprüft:** `assets_list {gruppe: hintergruende}` 12/12 gültig.
+- **AC-02 geprüft:** `task gen:paper` grün, `golden.json` und `index.paper.json` der Gruppe neu; fremde Gruppen zurückgesetzt; `task test -- paper` 187/187 grün.
+- **AC-03 geprüft:** `assets_preview` je Asset (12 Previews, dazu ein Kontaktbogen mit den drei Ebenen übereinander, je zweimal nebeneinander: Profile kacheln ohne Sprung); `assets_review` 12× neu, kein roter Eintrag.
+- Befund behoben: Schatten der Felsblöcke in `hg-hoehle-nah-*` war eine dunkle Halbkuppel (wirkte wie Höhleneingang), jetzt Schattenkante links.
+- Abweichung: `animationen.stand` ergänzt, weil `assets_preview` statische Specs sonst ablehnt (D-MG7-05). Laub in `hg-wald-nah-*` reicht oben bis knapp über den Rahmen (Krone geht oben weiter, gewollt).
+- `task check:diff`: 1 Test unter Parallellast rot; `task test` einzeln 3173/3173 grün (Wackel-Test wie D-MG2-07).

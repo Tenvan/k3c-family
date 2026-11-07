@@ -1,0 +1,27 @@
+{
+  "id": "hg-hoehle-nah-v1",
+  "version": 1,
+  "specHash": "4e9240f6033915594ed7dba8056e524819fdc4b72a3c03ede7cfb19f34e75c45",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "7d259156fda0e738b7b4e7763dbea1b7b5c8ff0cd559e75271aeaec8c533e2a8",
+  "rahmen": [
+    0,
+    -480,
+    768,
+    480
+  ],
+  "frameW": 768,
+  "frameH": 480,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "2c47ae9eeb66c19f421d2c9919fcf445b58ab4b983c72bb9722fb16d96655796"
+      ]
+    }
+  },
+  "varianten": []
+}

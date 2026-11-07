@@ -1,0 +1,27 @@
+{
+  "id": "hg-hoehle-mitte-v2",
+  "version": 1,
+  "specHash": "e38e31fc212356a396cc662a53b8d294b1efa41323f28c3bacca98f6a0ad1c5b",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "631757869095b654b606a14c423f29d75b1b149a6b52453bfd5ae694b66fe166",
+  "rahmen": [
+    0,
+    -480,
+    768,
+    480
+  ],
+  "frameW": 768,
+  "frameH": 480,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "fed8fd20778a40e8e9970f4184e858082330e6eb0e4df99f1c55243dd6844976"
+      ]
+    }
+  },
+  "varianten": []
+}
