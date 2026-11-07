@@ -1,0 +1,44 @@
+{
+  "birke": {
+    "renderKey": "19e12c4357d44d7e272f021f6b0f1b2e23b2f0307c16a90b985813408c473adb",
+    "dateien": {
+      "idle.png": "138b3f0a2b092d36b7ba433e6df8a9c1b05f8f65386c652e931616450b849012"
+    }
+  },
+  "busch": {
+    "renderKey": "115eca2849c043e0f931f8f266536b6145e233de34113b963eb874b6a9111d59",
+    "dateien": {
+      "idle.png": "9a35d0f026b01538bdeee9c0c4595b7d8e969626f245f475b0ff72ecd92a2247"
+    }
+  },
+  "hoehlenbusch": {
+    "renderKey": "ea53686d5e2935b6ce2440ee35433c4de61df00ae87dcbf5fcbab8da26a611ca",
+    "dateien": {
+      "idle.png": "e560e6ab1b2dac83d6025d448c770f0fe053a6c1e6708aba834f77427c2f6626"
+    }
+  },
+  "pappel": {
+    "renderKey": "b82bbea5c7c8fa21bdfe9fad433db852f8871c68ac257eb287eda85cfe2534b8",
+    "dateien": {
+      "idle.png": "614badd77225186c830f694a9e77f244f799a092818d1d63d4e3889a18e46cc8"
+    }
+  },
+  "setzling": {
+    "renderKey": "d94ef7235fbb15a6a9ce55a39db23ce4fe18a42330129fadc5d04cffdbb6bdd4",
+    "dateien": {
+      "idle.png": "081108e246b5a728a7af381aa2b1b638c0f666cbfa1ee58882c437f7ddc007f4"
+    }
+  },
+  "tanne": {
+    "renderKey": "12ed0fc89cd46bcce20c296ebb18b527cfd09170d9386f40f07db31a712f1841",
+    "dateien": {
+      "idle.png": "4cfc2f1ff15bd1f35a0f82039cfd01bb661d22f4644cc4506707b6e9b6d04197"
+    }
+  },
+  "wurzel": {
+    "renderKey": "ce7193d0524efb5b3f841f5e58a416b60a1e7449420af3a11531d35b1ed95ce0",
+    "dateien": {
+      "idle.png": "84b47ce2843170743d7754b81918c1c499c7bd99ad3721fcede93c177f4fa102"
+    }
+  }
+}

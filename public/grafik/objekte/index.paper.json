@@ -1,0 +1,37 @@
+[
+  {
+    "id": "birke",
+    "rig": "requisite",
+    "manifest": "birke/manifest.json"
+  },
+  {
+    "id": "busch",
+    "rig": "requisite",
+    "manifest": "busch/manifest.json"
+  },
+  {
+    "id": "hoehlenbusch",
+    "rig": "requisite",
+    "manifest": "hoehlenbusch/manifest.json"
+  },
+  {
+    "id": "pappel",
+    "rig": "requisite",
+    "manifest": "pappel/manifest.json"
+  },
+  {
+    "id": "setzling",
+    "rig": "requisite",
+    "manifest": "setzling/manifest.json"
+  },
+  {
+    "id": "tanne",
+    "rig": "requisite",
+    "manifest": "tanne/manifest.json"
+  },
+  {
+    "id": "wurzel",
+    "rig": "requisite",
+    "manifest": "wurzel/manifest.json"
+  }
+]

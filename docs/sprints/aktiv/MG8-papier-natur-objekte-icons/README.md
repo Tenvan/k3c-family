@@ -56,14 +56,16 @@ keine
 
 ## Sessions
 
-Je Session 5–9 Assets, Umsetzung Sonnet, Review Opus, keine Mensch-Session.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| MG8.1 | `MG8.1-baeume-bueesche.md` | Umsetzung | autonom | fertig |
+| MG8.2 | `MG8.2-fels-erz.md` | Umsetzung | autonom | offen |
+| MG8.3 | `MG8.3-truhe-portal-schilder.md` | Umsetzung | autonom | offen |
+| MG8.4 | `MG8.4-muenzen-gold-icons.md` | Umsetzung | autonom | offen |
+| MG8.5 | `MG8.5-material-icons.md` | Umsetzung | autonom | offen |
+| MG8.6 | `MG8.6-review.md` | Review | autonom | offen |
 
-- MG8.1 Bäume, Wurzeln, Büsche, Setzling → `objekte`
-- MG8.2 Felsen, Erzbrocken, Adern → `objekte`
-- MG8.3 Truhe, Portal, Ausgang, Abbau-Schilder, Stern → `objekte`
-- MG8.4 Münze und Gold-Icons → `icons`
-- MG8.5 Material-Icons → `icons`
-- MG8.6 Review (Opus)
+Lane `objekte`, je Session 5–9 Assets: MG8.1 Bäume und Büsche, MG8.2 Felsen und Erz (`objekte`), MG8.3 Truhe, Portal, Schilder (`objekte`), MG8.4 Münze und Gold-Icons, MG8.5 Material-Icons (`icons`); Review Opus, keine Mensch-Session (Sichtprüfung in PS1). Umsetzung Sonnet.
 
 ## Abnahme
 

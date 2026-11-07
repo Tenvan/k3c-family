@@ -1,0 +1,34 @@
+{
+  "id": "tanne",
+  "version": 1,
+  "specHash": "94674db9d2922a8385b38916ba3e290becb86cb4952b82b4d2b864bcadfed3c0",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "12ed0fc89cd46bcce20c296ebb18b527cfd09170d9386f40f07db31a712f1841",
+  "rahmen": [
+    -44,
+    -142,
+    88,
+    146
+  ],
+  "frameW": 93,
+  "frameH": 155,
+  "animationen": {
+    "idle": {
+      "frames": 8,
+      "fps": 6,
+      "datei": "idle.png",
+      "hashes": [
+        "ce49a640902ee7ca0d07663b70c426b6b49ed0ae73c2457d14271a8f63c1633c",
+        "ec83a5b2e5cb71383ff3e6e6780729172375f505537bf6ce01e0f64e5c6542c4",
+        "1a4dece697c877f2baf90a94042a89a18c5e1bf2305b577d453cdd037af47d05",
+        "8b29819bc9af2458e03e60e8fb16b309966311dfc6dedfa43c24f06f9c2da0e9",
+        "db142fde16270d7190d64795bf9bf5d13b096be27ccdde8168ee61da98ea5dd2",
+        "8b29819bc9af2458e03e60e8fb16b309966311dfc6dedfa43c24f06f9c2da0e9",
+        "1a4dece697c877f2baf90a94042a89a18c5e1bf2305b577d453cdd037af47d05",
+        "ec83a5b2e5cb71383ff3e6e6780729172375f505537bf6ce01e0f64e5c6542c4"
+      ]
+    }
+  },
+  "varianten": []
+}

@@ -1,0 +1,34 @@
+{
+  "id": "setzling",
+  "version": 1,
+  "specHash": "ff01df1826d39c0856428dd68aa56222b6fd8e9621847862654b13ee308ea806",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "d94ef7235fbb15a6a9ce55a39db23ce4fe18a42330129fadc5d04cffdbb6bdd4",
+  "rahmen": [
+    -20,
+    -32,
+    40,
+    34
+  ],
+  "frameW": 42,
+  "frameH": 36,
+  "animationen": {
+    "idle": {
+      "frames": 8,
+      "fps": 6,
+      "datei": "idle.png",
+      "hashes": [
+        "bba63c98a96069d5edccb593603a80e64362a3bd18553ae2b49d84f055d00a55",
+        "cd38556d8b2eafc7d9d7c285539b60e7f00c6f30cee55122543c8936737b369c",
+        "d8d270dd4c3405d6d84437e8a2d85e43703081f7bb82c4710acc25b785410a7e",
+        "ad0560f03b4d440fb7b6200315f783e67501e8192c932b3409311d206b8df738",
+        "3b4380a42a01d5255ddbb9a8094cf95b15d9e6e4a79ef9027999457f79a0236b",
+        "ad0560f03b4d440fb7b6200315f783e67501e8192c932b3409311d206b8df738",
+        "d8d270dd4c3405d6d84437e8a2d85e43703081f7bb82c4710acc25b785410a7e",
+        "cd38556d8b2eafc7d9d7c285539b60e7f00c6f30cee55122543c8936737b369c"
+      ]
+    }
+  },
+  "varianten": []
+}

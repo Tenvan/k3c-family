@@ -1,6 +1,6 @@
 # MG8.1 · Bäume, Wurzeln, Büsche und Setzling als requisite
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -56,5 +56,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `assets_list {gruppe: objekte}` meldet tanne, pappel, birke, wurzel, busch, hoehlenbusch, setzling gültig.
+- AC-02 geprüft: `task gen:paper` schreibt `objekte/golden.json`, fremde Gruppen zurückgesetzt; `bunx vitest run tools/paper` 187/187 grün.
+- AC-03 geprüft: jede `idle` mit `assets_preview` angesehen; `assets_review` 7 × neu, kein roter Eintrag. Befunde: Wurzel wirkt kaktusartig, Pappel-Schatten als dunkle Sichel; bleibt bis PS1.
+- Abweichung: statische Assets mit `idle` aus einem Frame (D-MG8-01). Keine neuen Tickets.
