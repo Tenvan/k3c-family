@@ -16,7 +16,7 @@
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M-32 0L-34 -40C-32 -56 -20 -64 -8 -66L-12 -50L-22 -40L-22 0Z",
+          "form": "M-32 0L-34 -40C-32 -54 -20 -60 -8 -61L-12 -50L-22 -40L-22 0Z",
           "material": "stein",
           "ton": "schatten"
         },

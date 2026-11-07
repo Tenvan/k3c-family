@@ -1,10 +1,10 @@
 {
   "id": "icon-pokal",
   "version": 1,
-  "specHash": "ff51d48f796bfb3b7343af008bb4290cb96f5df222833348ba6f502235e9f49e",
+  "specHash": "77f0bb394205cda6b10cf265726535d92605e3b0a97b806f690fece6c72747a9",
   "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "1b9c2fb32697b193942a08aa7bda5d8d25f6e64b2f04fa7166b6fa6586205915",
+  "renderKey": "28841dcbfb533327e9e4debc8f54946943c68defa9ebbe5fbe978e00804ec932",
   "rahmen": [
     -16,
     -32,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "9a6f5ca4c95d91c128c11f054d572befcff6458dc01203c8cefe4a74ab36562f"
+        "48954ea39983d56c7fa2dec13cdc0a16919397f22e2f4bf051acad4e2898ea51"
       ]
     }
   },

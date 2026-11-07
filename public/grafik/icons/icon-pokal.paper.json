@@ -21,9 +21,14 @@
           "ton": "schatten"
         },
         {
-          "art": "falz",
-          "breite": 1.6,
-          "form": "M-10 -24C-15 -24 -15 -17 -8 -17M10 -24C15 -24 15 -17 8 -17",
+          "art": "flaeche",
+          "form": "M-10 -25C-16 -25 -16 -16 -8 -16L-8 -18C-13 -18 -13 -23 -10 -23Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M10 -25C16 -25 16 -16 8 -16L8 -18C13 -18 13 -23 10 -23Z",
           "material": "gold",
           "ton": "schatten"
         },

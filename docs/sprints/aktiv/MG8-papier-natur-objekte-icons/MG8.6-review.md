@@ -1,6 +1,6 @@
 # MG8.6 · Review des Sprints MG8
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -54,5 +54,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: 22 Assets in `objekte`, 14 in `icons`, alle gültig.
+- AC-02 geprüft: `task gen:paper`, Golden beider Gruppen aktuell, fremde Gruppen zurückgesetzt; `tools/paper` 187/187, `task check` grün.
+- AC-03 geprüft: Opus-Review aller Sheets (frischer Kontext), 7 wichtige Befunde über `assets_set` behoben und mit `assets_preview` nachgeprüft: Portal-Wirbel stand still (Keyframe 0→360°), `icon-schwerter` am Rand abgeschnitten (Rahmen 34 px), `icon-pokal`-Henkel als Fläche, `icon-eisen` ohne `linie`-Seite und größer, Moos von `felsen-b` als Auflage, Zacken an `ausgang`, `ader-eisen` mit Glanz-Falzen und Rost-Strichen. Dazu klein: Rahmen `muenze`, Kugeln `icon-krone`.
+- Restbefunde als D-MG8-04 bis PS1. Keine neuen Tickets.

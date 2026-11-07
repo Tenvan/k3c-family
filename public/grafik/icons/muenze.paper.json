@@ -44,8 +44,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 24,
-    "rahmen": [-10, -19, 20, 20]
+    "hoehe_px": 26,
+    "rahmen": [-11, -20, 22, 22]
   },
   "animationen": {
     "idle": {

@@ -99,8 +99,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 32,
-    "rahmen": [-16, -32, 32, 32]
+    "hoehe_px": 34,
+    "rahmen": [-17, -33, 34, 34]
   },
   "animationen": {
     "idle": {

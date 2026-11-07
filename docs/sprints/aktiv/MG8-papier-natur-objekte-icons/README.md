@@ -63,11 +63,10 @@ keine
 | MG8.3 | `MG8.3-truhe-portal-schilder.md` | Umsetzung | autonom | fertig |
 | MG8.4 | `MG8.4-muenzen-gold-icons.md` | Umsetzung | autonom | fertig |
 | MG8.5 | `MG8.5-material-icons.md` | Umsetzung | autonom | fertig |
-| MG8.6 | `MG8.6-review.md` | Review | autonom | offen |
+| MG8.6 | `MG8.6-review.md` | Review | autonom | fertig |
 
 Lane `objekte`, je Session 5–9 Assets: MG8.1 Bäume und Büsche, MG8.2 Felsen und Erz (`objekte`), MG8.3 Truhe, Portal, Schilder (`objekte`), MG8.4 Münze und Gold-Icons, MG8.5 Material-Icons (`icons`); Review Opus, keine Mensch-Session (Sichtprüfung in PS1). Umsetzung Sonnet.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-07, autonom (Claude). AC-01 bis AC-03 laut MG8.1–MG8.6: 36 Assets (`objekte` 22, `icons` 14) gültig, Golden eingetragen, `task check` und `tools/paper` grün. Review (Opus): 7 wichtige Befunde behoben (u. a. stehender Portal-Wirbel, abgeschnittene Icons), Rest D-MG8-04. Keine neuen Tickets; Sichtprüfung durch 🧑 in PS1.

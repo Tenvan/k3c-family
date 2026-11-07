@@ -29,22 +29,22 @@
         {
           "art": "punkt",
           "material": "gold",
-          "mitte": [-14, -24],
-          "radius": 1.6,
+          "mitte": [-13, -23],
+          "radius": 1.5,
           "ton": "licht"
         },
         {
           "art": "punkt",
           "material": "gold",
-          "mitte": [0, -27],
-          "radius": 1.8,
+          "mitte": [0, -26],
+          "radius": 1.7,
           "ton": "licht"
         },
         {
           "art": "punkt",
           "material": "gold",
-          "mitte": [14, -24],
-          "radius": 1.6,
+          "mitte": [13, -23],
+          "radius": 1.5,
           "ton": "licht"
         },
         {

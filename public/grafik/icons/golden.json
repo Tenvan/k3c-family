@@ -1,8 +1,8 @@
 {
   "icon-eisen": {
-    "renderKey": "0f96308d9395749feed76d78bba19178de4788e936045e8597bd99aa661a95cd",
+    "renderKey": "43263844436eda55ec81ff7739422b25e898e3c19b16f69f2d719ea3699981f0",
     "dateien": {
-      "idle.png": "8948bcbf1aaad7ad9bb820fdb1be91bbd87696ccbe9179824ebf3457a50f0fa8"
+      "idle.png": "9b3fabac00a1864f04235e152c3877e6b18b158844b2bc2d905461a65e53e68d"
     }
   },
   "icon-goldbarren": {
@@ -24,9 +24,9 @@
     }
   },
   "icon-krone": {
-    "renderKey": "21eae3c61fc9cb76825da5b8ab6898fd1886368e6b99d63c45f7362e323bc679",
+    "renderKey": "efb3bcd74d6055421053c7f10f46767f0c0bd9317ee3475ae1587e51a133857e",
     "dateien": {
-      "idle.png": "4327e1295c2d1198a506cac60d6ba56cff3d7a17269f5e7ed61af992632ce760"
+      "idle.png": "e48fae0c7a3bc79785448d48f2808af728dd935eb30f47e5b9ef301fce59894d"
     }
   },
   "icon-kupfer": {
@@ -54,15 +54,15 @@
     }
   },
   "icon-pokal": {
-    "renderKey": "1b9c2fb32697b193942a08aa7bda5d8d25f6e64b2f04fa7166b6fa6586205915",
+    "renderKey": "28841dcbfb533327e9e4debc8f54946943c68defa9ebbe5fbe978e00804ec932",
     "dateien": {
-      "idle.png": "ebdef270b06faf8b2772d7958f689de4255631c798d6939893a474503c4f0a26"
+      "idle.png": "fd1db3b894e7767be054e08ec97a488418e335411db78a2d12734de76bcec46c"
     }
   },
   "icon-schwerter": {
-    "renderKey": "3777c5d3071926ba8c62faa5fb5d7f59a10295fe2ddfeac369147185c2d3751d",
+    "renderKey": "4ac6f4ab9365c4d8910e728aedbb8f903e40c7efc58bb54cf35d4844175b121e",
     "dateien": {
-      "idle.png": "04fd15bd440c607a2d51a0db4b91f15b02af8a23f7f793ebbc7ae0e00afa010b"
+      "idle.png": "0c06e2b00d780b4d5b1e7b61a12b8ee9b1096bb543ec7d1d80b2277c16bb2f64"
     }
   },
   "icon-stein": {
@@ -78,9 +78,9 @@
     }
   },
   "muenze": {
-    "renderKey": "0c545b3a3b2bec44f65f31efde2586926ca8711b1d127587b78088b67cc9f389",
+    "renderKey": "39dfc1c4785ca9c0586965fec7b50be761126d318908fc6120de426c7224eb1f",
     "dateien": {
-      "idle.png": "3cd2330b461104b1a8c72c7f892a49d08f3990507aed12ec2e76ff1567cdd524"
+      "idle.png": "69246402c3dca7566d7014930d69f3fce9bc2067f8b5c628060c9d83340ac9b2"
     }
   }
 }
