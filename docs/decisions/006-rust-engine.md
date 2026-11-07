@@ -34,6 +34,36 @@ Rechner während der Messung: **100 % CPU-Last** durch parallele Agenten-Session
 Nicht gemessen (auf Ralfs Wunsch verschoben): pprof CPU/Heap von `engine/sim`, Tick-Dauern im laufenden Raum,
 GC-Pausen (`GODEBUG=gctrace=1`), Lock-Contention (`mutex`-Profil), Kosten von Snapshot/Delta, `sim_test` online.
 
+### Baseline PC (RS1.1, 2026-11-07, Stand develop 9d8b2353, Rezept `docs/messung/rst-baseline.md`)
+
+Rechner: Core Ultra 7 165H, Go 1.27.3. **Last:** 68 % CPU (`LoadPercentage`) durch parallele Agenten während der Messung;
+Wandzeiten (Takt, GC) sind damit nur als obere Schranke zu lesen, `ns/op` der Benchmarks schwankt etwa ±20 %.
+
+| Messung | Ergebnis |
+|---|---|
+| Insel-Tick 3 Stufen × 4 Spieler (`IslandStep3Stages4Players`) | 40,2 µs/Tick (≈ 24 900 Ticks/s), 3 666 B/op, 39 allocs/op |
+| Insel-Tick Endboss, 4 Spieler | 22,9 µs/Tick, 0 allocs |
+| `sim_run` 100 000 Ticks (`SimRun100k`, Wald, 1 Monarch) | 0,125 s = 802 000 Ticks/s, 15,4 MB, 373 620 allocs |
+| Sim-CPU-Profil (Insel-Tick) | `collectCoins` 51,7 % flat / 77,4 % kumulativ, `World.values` 12,0 %, `purseMax` 6,2 %, `math.Abs` 3,3 % |
+| Sim-Heap (alloc_space) | `stepSpawns` 40,4 %, `chooseTarget` 27,5 %, `bytes.Clone` 19,2 % |
+| Raum-Tick mit 4 Geräten (`TickDevices4`) | 1,81 ms/Tick, 232 920 B, 5 571 allocs |
+| Raum-Tick mit/ohne Monitor (`TickMonitor`) | 1,31 ms / 1,10 ms |
+| Stufen-Raum 2 Spieler (`StufenZweiSpieler`) | 419 ms/op, 82,7 MB, 72 918 allocs (Mehr-Tick-Lauf) |
+| Net/Raum-CPU | `json.Unmarshal` im Messaufbau 39 %, `json.Marshal` des Zustands 8,7 % (Spielbetrieb); Rest Runtime (`preemptM`, `semasleep`) |
+| Net/Raum-Heap | `reflect.mapassign` (Testclient-Entpacken) 45,7 %, `bytes.Clone` 11,1 %, `addActions`/`actionsOf` 8,7 % |
+| Mutex-Profil (`net`, `room`) | nur Runtime (`runtime.unlock`, GC-Worker `enlistWorker`); keine Wartezeit an Raum-Sperren im Profil |
+| GC (`gctrace`, `TickDevices4`, 5 s) | 894 GCs; STW je GC p50 ≈ 0 ms, p99 9,6 ms, max 21 ms (unter Last); Live-Heap max 102 MB |
+| Level-Generator (`GenerateWith`) | 28–65 µs/Aufruf (forest 63 µs, cave 34, mine 28, ironhold 65, crystal 55, geplant 40), 93–137 allocs |
+| Meilenstein-Lauf `sim_test` coop2/standard/40 Tage, 101 Seeds | 38 min 41 s (Pass); ein Seed (`k3c-dev`): 50 s |
+| Online `sim_test` perf (1 Raum × 4 Bots, 5 min) | Tick-Dauer p99 max 135,7 ms über 61 Proben (Ziel ≤ 10 ms; Last 68 %), 35 310 Zustände, 0 Fehler |
+| Tick-Abstand p99 (`TaktAbstand4`, 4 Geräte, 20 s) | p50 33,3 ms, **p99 65,7–84,3 ms**, max 154–263 ms (Last 68 %) |
+| Leerer Spielserver (10 s) | **3,3 % eines Kerns**, 13 Threads (Kindprozess; Supervisor 0 %) |
+
+Lesart: 77 % der Sim-CPU im Insel-Tick liegen in einer einzigen Funktion (`collectCoins`: Münzen × Spieler mit
+`w.values()` in der inneren Schleife). Das ist zuerst ein Go-Fix und zugleich der naheliegende Spike-Kandidat für RS1.6.
+Der Netz-Raum-Tick (1,8 ms) liegt weit unter 10 ms; die Ausreißer im Online-Lauf (p99 136 ms) und im Takt-Abstand
+(p99 66–84 ms) stammen von Scheduler und GC unter 68 % Last, nicht von der Rechenarbeit (wie in der Erstmessung).
+
 ### Was die Erstmessung zur Vermutung sagt
 
 - **Windows-Timer (15,6 ms): widerlegt.** Go 1.27 schläft auf etwa 0,5 ms genau.

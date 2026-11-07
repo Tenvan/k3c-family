@@ -1,6 +1,6 @@
 # RS1.1 · Baseline auf dem PC messen
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -55,5 +55,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 umgesetzt und gemessen: PC-Baseline mit pprof-Top (Sim, Raum/Netz, Level), GC (gctrace), Mutex-Profil, `sim_run`-Ticks/s (Benchmark `SimRun100k`), Meilenstein-Lauf (101 Seeds 38 min 41 s; ein Seed 50 s), Online-perf, Tick-Abstand und -Dauer p99 stehen in 006 › Messbefunde › Baseline PC. Last 68 % durch parallele Agenten, in 006 vermerkt.
+- Mess-Rezept: `docs/messung/rst-baseline.md` (Schritte 0–10, Befehle wörtlich).
+- Abweichungen: (1) gctrace am Benchmark `TickDevices4` statt am Online-Server, weil die Workbench dem Server keine GODEBUG-Umgebung gibt. (2) Tick-Abstand war nirgends gemessen; neuer Benchmark `engine/net/takt_bench_test.go` (echter 30-Hz-Takt, 4 Geräte) und `engine/sim/simrun_bench_test.go` (Nachbau `sim_run`). (3) Der Online-Lauf lief gegen den unveränderten develop-Stand (Änderungen kurz gestasht).
+- Befund für RS1.3/RS1.6: `collectCoins` = 77 % der Sim-CPU im Insel-Tick; Heap: `stepSpawns`, `chooseTarget`, `bytes.Clone`.
+- Geprüft: `task check:diff`.
