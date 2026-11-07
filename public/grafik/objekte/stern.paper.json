@@ -1,0 +1,72 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "stern",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Stern (Fähigkeitspunkt): goldener fünfzackiger Stern mit Glanzpunkt, schwebt und dreht sich leicht",
+  "teile": [
+    {
+      "id": "stern",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -29L3.23 -20.45L12.36 -20.02L5.23 -14.3L7.64 -5.48L0 -10.5L-7.64 -5.48L-5.23 -14.3L-12.36 -20.02L-3.23 -20.45Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -16L7.64 -5.48L0 -10.5L-7.64 -5.48L-5.23 -14.3L-12.36 -20.02Z",
+          "material": "gold",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -16L0 -29L3.23 -20.45L12.36 -20.02Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [3, -21],
+          "radius": 1.4
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M0 -29L0 -16",
+          "material": "gold",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 34,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 8,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "stern": -12
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "stern": 12
+          }
+        }
+      ]
+    }
+  }
+}

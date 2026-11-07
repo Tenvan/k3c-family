@@ -1,0 +1,80 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "ausgang",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Ausgang: dunkle Stollenöffnung im Fels mit Holzrahmen und goldenem Pfeil nach oben",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-32 0L-34 -40C-30 -70 30 -70 34 -40L32 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-32 0L-34 -40C-32 -56 -20 -64 -8 -66L-12 -50L-22 -40L-22 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-20 0L-20 -44C-20 -56 20 -56 20 -44L20 0Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-23 0L-23 -46L-19 -46L-19 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M19 0L19 -46L23 -46L23 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-25 -46L-25 -51L25 -51L25 -46Z",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-25 -48.5L25 -48.5",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6 -16L0 -26L6 -16L2 -16L2 -6L-2 -6L-2 -16Z",
+          "material": "gold",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 76,
+    "rahmen": [-38, -70, 76, 72]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

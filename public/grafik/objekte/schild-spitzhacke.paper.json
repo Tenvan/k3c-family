@@ -1,0 +1,93 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "schild-spitzhacke",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Abbau-Schild Spitzhacke: kleines Holzschild am Pfahl mit Spitzhacken-Symbol, markiert Fels, Erz oder Ader; wackelt leicht",
+  "teile": [
+    {
+      "id": "schild",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-2 0L-2 -22L2 -22L2 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-13 -20L-13 -42L13 -42L13 -20Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-13 -20L-13 -42L-7 -42L-7 -20Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-13 -31L13 -31",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [-10, -39],
+          "radius": 0.9
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [10, -39],
+          "radius": 0.9
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6 -23L6 -38L7.5 -36.5L-4.5 -21.5Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4 -38C0 -40 8 -40 12 -34C8 -36 4 -36 0 -35Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M12 -34L11 -30L9 -33Z",
+          "material": "stein"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 51,
+    "rahmen": [-17, -46, 34, 48]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 4,
+      "frames": 4,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "schild": -2
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "schild": 2
+          }
+        }
+      ]
+    }
+  }
+}

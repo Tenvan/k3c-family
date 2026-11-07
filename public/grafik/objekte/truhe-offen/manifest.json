@@ -1,0 +1,27 @@
+{
+  "id": "truhe-offen",
+  "version": 1,
+  "specHash": "5757eada4f8880c0cfbd3f51e07945b3d4a792c8ebe2bc1e5bf63c3f69a9234b",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "08a22d07b396941a6648e5eec1d3028b5b8fce5504c9476b7e9bab8c279b21f7",
+  "rahmen": [
+    -22,
+    -44,
+    44,
+    46
+  ],
+  "frameW": 47,
+  "frameH": 49,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 1,
+      "datei": "idle.png",
+      "hashes": [
+        "c872ee19cadcb3d54fabc16720a07cf9381d62f4cbcebef1e50d20ff64abd741"
+      ]
+    }
+  },
+  "varianten": []
+}

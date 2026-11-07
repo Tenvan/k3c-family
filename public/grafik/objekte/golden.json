@@ -23,6 +23,12 @@
       "idle.png": "e6e72580c176c3daac47fde45c4815f2a0f35e3278fb00375ce8a76c95935c22"
     }
   },
+  "ausgang": {
+    "renderKey": "6c86540bc8ed89e8cf8a8c87a136094456543a186b68e19ef3751e813ce1ac28",
+    "dateien": {
+      "idle.png": "417db5d5c18754555eebe54fa87c2e04827a0f039079e56c422f2a93b173bb9d"
+    }
+  },
   "birke": {
     "renderKey": "19e12c4357d44d7e272f021f6b0f1b2e23b2f0307c16a90b985813408c473adb",
     "dateien": {
@@ -71,16 +77,52 @@
       "idle.png": "614badd77225186c830f694a9e77f244f799a092818d1d63d4e3889a18e46cc8"
     }
   },
+  "portal": {
+    "renderKey": "e5e12da1377927d11a43b3104ee02cb03fdd129e24b48146698df84c65834eb1",
+    "dateien": {
+      "idle.png": "fe672e0c6716de7be0b0b5f46badad6d2b105a09cbd0c7917daaef8f2ad8089d"
+    }
+  },
+  "schild-axt": {
+    "renderKey": "74bc2489205bcb76075d6e1e50c610e6ee22ac9a4fc136425e361fb3781f9653",
+    "dateien": {
+      "idle.png": "5cbd648a44923228680e59e6efc8f8e833b0073a81b3f855cc5cea1e26464f3c"
+    }
+  },
+  "schild-spitzhacke": {
+    "renderKey": "374420e4126f6ab2c43acfd4e7ce3404ad8e9f601a1dc4e28de9ef6ba880a1c8",
+    "dateien": {
+      "idle.png": "396ffe8b32d98019bc9dc349cbaa11debf923b067e732d088521b44a1eb2e8fa"
+    }
+  },
   "setzling": {
     "renderKey": "d94ef7235fbb15a6a9ce55a39db23ce4fe18a42330129fadc5d04cffdbb6bdd4",
     "dateien": {
       "idle.png": "081108e246b5a728a7af381aa2b1b638c0f666cbfa1ee58882c437f7ddc007f4"
     }
   },
+  "stern": {
+    "renderKey": "fc1bcc5ada812afd45138a99ca0b491932abf032bcb14361df9b9ccf399989b7",
+    "dateien": {
+      "idle.png": "c82ce7ca10c6db27778008a628303119ce6cd912e75881a28d144e718897a61f"
+    }
+  },
   "tanne": {
     "renderKey": "12ed0fc89cd46bcce20c296ebb18b527cfd09170d9386f40f07db31a712f1841",
     "dateien": {
       "idle.png": "4cfc2f1ff15bd1f35a0f82039cfd01bb661d22f4644cc4506707b6e9b6d04197"
+    }
+  },
+  "truhe-offen": {
+    "renderKey": "08a22d07b396941a6648e5eec1d3028b5b8fce5504c9476b7e9bab8c279b21f7",
+    "dateien": {
+      "idle.png": "27afb343121397561495130de665368c2dfb5e6d9cf07ae9f4c80ffa04436b2e"
+    }
+  },
+  "truhe": {
+    "renderKey": "133ce5b0e837f67dacb632cf11e7d10257ac05fafb9aa997c2ce0240b215eca9",
+    "dateien": {
+      "idle.png": "5eec10d6a59cbe6d203e07e2ce64a138781b0f6091e6213d62b47478486d464d"
     }
   },
   "wurzel": {

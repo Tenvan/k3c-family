@@ -1,0 +1,34 @@
+{
+  "id": "portal",
+  "version": 1,
+  "specHash": "fdc9ba9170019d38d3a74916c14634bdc0a9c1e8da32d5c0999c16ff7c0823bd",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "e5e12da1377927d11a43b3104ee02cb03fdd129e24b48146698df84c65834eb1",
+  "rahmen": [
+    -38,
+    -96,
+    76,
+    98
+  ],
+  "frameW": 81,
+  "frameH": 104,
+  "animationen": {
+    "idle": {
+      "frames": 8,
+      "fps": 8,
+      "datei": "idle.png",
+      "hashes": [
+        "b23804eccc084aa8cd31b9bc2c5e28b53f865cc0e13d2150952c54b8020eb8fa",
+        "c322fb4c0701d1a8b94025fc830519d177899a29b7018e70c6ced9b1069b4797",
+        "b23804eccc084aa8cd31b9bc2c5e28b53f865cc0e13d2150952c54b8020eb8fa",
+        "c322fb4c0701d1a8b94025fc830519d177899a29b7018e70c6ced9b1069b4797",
+        "b23804eccc084aa8cd31b9bc2c5e28b53f865cc0e13d2150952c54b8020eb8fa",
+        "c322fb4c0701d1a8b94025fc830519d177899a29b7018e70c6ced9b1069b4797",
+        "b23804eccc084aa8cd31b9bc2c5e28b53f865cc0e13d2150952c54b8020eb8fa",
+        "c322fb4c0701d1a8b94025fc830519d177899a29b7018e70c6ced9b1069b4797"
+      ]
+    }
+  },
+  "varianten": []
+}

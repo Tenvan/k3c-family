@@ -20,6 +20,11 @@
     "manifest": "ader-stein/manifest.json"
   },
   {
+    "id": "ausgang",
+    "rig": "requisite",
+    "manifest": "ausgang/manifest.json"
+  },
+  {
     "id": "birke",
     "rig": "requisite",
     "manifest": "birke/manifest.json"
@@ -60,14 +65,44 @@
     "manifest": "pappel/manifest.json"
   },
   {
+    "id": "portal",
+    "rig": "requisite",
+    "manifest": "portal/manifest.json"
+  },
+  {
+    "id": "schild-axt",
+    "rig": "requisite",
+    "manifest": "schild-axt/manifest.json"
+  },
+  {
+    "id": "schild-spitzhacke",
+    "rig": "requisite",
+    "manifest": "schild-spitzhacke/manifest.json"
+  },
+  {
     "id": "setzling",
     "rig": "requisite",
     "manifest": "setzling/manifest.json"
   },
   {
+    "id": "stern",
+    "rig": "requisite",
+    "manifest": "stern/manifest.json"
+  },
+  {
     "id": "tanne",
     "rig": "requisite",
     "manifest": "tanne/manifest.json"
+  },
+  {
+    "id": "truhe-offen",
+    "rig": "requisite",
+    "manifest": "truhe-offen/manifest.json"
+  },
+  {
+    "id": "truhe",
+    "rig": "requisite",
+    "manifest": "truhe/manifest.json"
   },
   {
     "id": "wurzel",

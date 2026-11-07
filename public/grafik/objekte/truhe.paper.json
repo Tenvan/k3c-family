@@ -1,0 +1,99 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "truhe",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Truhe geschlossen: braune Holztruhe mit gewölbtem Deckel, Goldbeschlägen und Schloss",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-16 0L-16 -16L16 -16L16 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-16 0L-16 -16L-8 -16L-8 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-16 -8L16 -8",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-11 0L-11 -16L-8 -16L-8 0Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M8 0L8 -16L11 -16L11 0Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3 -14L3 -14L3 -8L-3 -8Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [0, -10.5],
+          "radius": 1
+        },
+        {
+          "art": "flaeche",
+          "form": "M-16 -16L-16 -22C-14 -28 14 -28 16 -22L16 -16Z",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-16 -16L-16 -22C-14 -26 -10 -27 -8 -27L-8 -16Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-11 -16L-11 -26.6L-8 -27L-8 -16Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M8 -16L8 -27L11 -26.6L11 -16Z",
+          "material": "gold"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 36,
+    "rahmen": [-20, -32, 40, 34]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}
