@@ -40,7 +40,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 |---|---|---|---|---|---|---|
 | US1 | CLI | PAP | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | – | Entwurf | `geplant/US1-spiel-auf-papierschnitt/` |
 | MG8 | CLI | PAP | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | – | Entwurf | `geplant/MG8-papier-natur-objekte-icons/` |
-| PS1 | CLI | PAP | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | – | Entwurf | `geplant/PS1-papierschnitt-sichtpruefungen/` |
+| PS1 | CLI | PAP | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | – | bereit | `geplant/PS1-papierschnitt-sichtpruefungen/` |
 | CU1 | CLI | PAP | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | – | Entwurf | `geplant/CU1-alte-grafik-aufraeumen/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |

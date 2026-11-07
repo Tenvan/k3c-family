@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** PAP
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-699, B-701
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude
 
 ## Ausgangslage
 
@@ -22,7 +22,9 @@ Am Ende sichtbar: B-701 ohne offene Zeile, Abnahme-Notizen je Gruppe.
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+- **Ralf (🧑):** entscheidet in PS1.1–PS1.4, prüft Look und Spiel.
+- **Claude:** bereitet vor (Prüflisten), setzt in PS1.4 die Review-Änderung, schreibt in PS1.5 Tickets und schließt ab.
+- **Profitieren:** Spieler (einheitlicher Look), Lanes der Folgesprints (klare Defaults).
 
 ## Anforderungen
 
@@ -38,11 +40,16 @@ Nach US1, vor CU1 (Aufräumen erst nach Abnahme). Alle Sessions `Agent: Mensch` 
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis.
+- D-Zeile passt → ✅, Status in PS1.5 `bestätigt`.
+- D-Zeile soll anders sein, z. B. Rappe schwarz statt dunkelbraun (D-MG2-01) → ✏️, PS1.5 legt ein Ticket in der Lane `reittiere` an.
+- Lesbarkeits-Befund „Lava-Golem gleich Splitter-Titan“ (D-MG5-04) → Ralf entscheidet lassen oder nachbessern.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten.
+- US1 noch nicht gemerged → PS1.4 wartet; PS1.1–PS1.3 laufen schon, Sprint bleibt `geplant`, bis US1 gemerged ist.
+- MG8 noch nicht gemerged → PS1.3 Schritt 8 offen, Session wartet.
+- Workbench läuft nicht → Assets über `task k3c-workbench:web` öffnen.
+- Ralf bricht ab → Teilergebnis in die Session, Status bleibt `in Arbeit`.
 
 ## Akzeptanzkriterien
 
@@ -58,13 +65,13 @@ keine
 
 ## Sessions
 
-Reife Entwurf:
-
-- PS1.1 Mensch: B-701 durchgehen (AC-01)
-- PS1.2 Mensch: resvg-Ausgabe gegen Prototyp (AC-02)
-- PS1.3 Mensch: Gruppen MG1–MG8 in Assets (AC-03)
-- PS1.4 Mensch: Spiel und Review-Lauf (AC-04)
-- PS1.5 Claude (Sonnet): Befunde als Tickets, Sprint schließen (AC-05)
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| PS1.1 | `PS1.1-b701-durchgehen.md` | Workshop | Mensch | offen |
+| PS1.2 | `PS1.2-resvg-gegen-prototyp.md` | Workshop | Mensch | offen |
+| PS1.3 | `PS1.3-gruppen-in-assets.md` | Workshop | Mensch | offen |
+| PS1.4 | `PS1.4-spiel-und-review-lauf.md` | Workshop | Mensch | offen |
+| PS1.5 | `PS1.5-befunde-tickets-abschluss.md` | Review | autonom | offen |
 
 ## Abnahme
 
