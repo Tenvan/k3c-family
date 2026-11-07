@@ -1,24 +1,27 @@
 import { useState } from 'react';
 import { Box, Flex, Heading, Text, TextField } from '@webkit/atoms';
 import { StatusBadge } from '@webkit/atoms';
+import { LoadingNote } from '@webkit/molecules';
 import type { AssetEintrag } from '../api';
 
 interface Props {
   list: AssetEintrag[];
+  /** Liste lädt noch: Lade-Anzeige statt „Keine Assets“ (WB2/AC-03). */
+  loading?: boolean;
   inDiff: Set<string>;
   selected: string;
   onSelect: (id: string) => void;
 }
 
 /** Liste der Specs nach Gruppe; ungültige rot mit `feld · regel` und Text (005 › 7), Abzeichen „im Diff“. */
-export function AssetList({ list, inDiff, selected, onSelect }: Props) {
+export function AssetList({ list, loading = false, inDiff, selected, onSelect }: Props) {
   const [query, setQuery] = useState('');
   const q = query.trim().toLowerCase();
   const shown = list.filter((a) => !q || a.id.includes(q) || a.rig.includes(q) || a.gruppe.includes(q));
   const groups = [...new Set(shown.map((a) => a.gruppe))].sort();
   return (
-    <Flex direction="column" gap="3" className="as-list">
-      <TextField.Root size="1" placeholder="Filter: ID, Rig, Gruppe" aria-label="Filter" value={query} onChange={(e) => setQuery(e.target.value)} />
+    <Flex direction="column" gap="3">
+      <TextField.Root size="1" className="as-list-filter" placeholder="Filter: ID, Rig, Gruppe" aria-label="Filter" value={query} onChange={(e) => setQuery(e.target.value)} />
       {groups.map((g) => (
         <Flex key={g} direction="column" gap="1">
           <Heading size="2" color="gray">{g}</Heading>
@@ -27,7 +30,8 @@ export function AssetList({ list, inDiff, selected, onSelect }: Props) {
           ))}
         </Flex>
       ))}
-      {!shown.length && <Text size="1" color="gray">Keine Assets</Text>}
+      {loading && <LoadingNote id="list" text="Lädt Assets …" />}
+      {!loading && !shown.length && <Text size="1" color="gray">Keine Assets</Text>}
     </Flex>
   );
 }

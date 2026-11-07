@@ -18,6 +18,8 @@ const letzte = () => {
   const seite = (b: string) => calls.filter((c) => c[4] === b).at(-1);
   return { vorher: seite('HEAD~1'), nachher: seite('') };
 };
+/** Zeitlimit der Tests, die 16 Frames einzeln rendern: unter Volllast (task check:diff) reichen 5 s nicht (B-704). */
+const LANG = 15_000;
 /** Lässt n Frames im Takt von 125 ms (fps 8) laufen, jeden einzeln gerendert. */
 const tick = async (ms: number) => {
   for (let t = 0; t < ms; t += 125) {
@@ -86,7 +88,7 @@ describe('AnimationSync', () => {
     await tick(125 * 8);
     expect(fake.api.frame.mock.calls.length).toBe(nachEinemDurchlauf);
     expect(nachEinemDurchlauf).toBe(16);
-  });
+  }, LANG);
 });
 
 describe('Feste Steuerung (WB2/AC-01)', () => {
@@ -112,5 +114,5 @@ describe('Pixel-Diff beim Abspielen (Befund 4)', () => {
     await act(async () => button(host, 'Abspielen')!.click());
     await tick(125 * 16);
     expect(fake.api.pixelDiff.mock.calls.length).toBe(8);
-  });
+  }, LANG);
 });

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Flex, Text } from '@webkit/atoms';
+import { ListDetail } from '@webkit/templates';
 import type { AssetEintrag, Spec, Vorlage } from '../api';
 import { GameOpen } from '../game/GameOpen';
 import { zustandVon } from '../prompts/fill';
@@ -12,7 +13,7 @@ import { useCatalog } from './useCatalog';
 /** Seite Katalog im Bereich Assets (WB1.2, WB1.3): Liste aller Specs, Vorschau des gewählten Assets mit Teil-Auswahl per
  *  Klick und Prompt-Buttons. Nur Ansehen; Änderungen laufen über die MCP-Tools assets_* (Entscheidung 005 › 4, 5). */
 export function CatalogPage() {
-  const { list, inDiff, prompts, error } = useCatalog();
+  const { list, inDiff, prompts, error, loading } = useCatalog();
   const [selected, setSelected] = useState('');
   const [teil, setTeil] = useState('');
   const choose = (id: string) => {
@@ -20,10 +21,10 @@ export function CatalogPage() {
     setTeil('');
   };
   const eintrag = list.find((a) => a.id === selected);
+  // Liste und Vorschau scrollen je für sich (WB2/AC-04)
   return (
-    <Flex gap="4" p="4" className="as-page">
-      <AssetList list={list} inDiff={inDiff} selected={selected} onSelect={choose} />
-      <Flex direction="column" gap="2" className="as-detail">
+    <ListDetail listWidth={300} list={<AssetList list={list} loading={loading} inDiff={inDiff} selected={selected} onSelect={choose} />}>
+      <Flex direction="column" gap="2">
         <GameOpen />
         {error && <Text color="red">{error}</Text>}
         {selected ? (
@@ -34,7 +35,7 @@ export function CatalogPage() {
           <Text color="gray">Asset links wählen</Text>
         )}
       </Flex>
-    </Flex>
+    </ListDetail>
   );
 }
 
