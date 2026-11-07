@@ -1,0 +1,70 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "icon-eisen",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Eisen: dunkelgrauer Eisenbarren mit Rostkante",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12 -5L-9 -15L9 -15L12 -5Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-9 -15L-7 -19L7 -19L9 -15Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 -5L-9 -15L-6 -15L-8 -5Z",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-12 -5L12 -5",
+          "material": "fell-fuchs",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-7 -19L7 -19",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [6, -17],
+          "radius": 0.9
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

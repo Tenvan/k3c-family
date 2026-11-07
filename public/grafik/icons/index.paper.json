@@ -1,13 +1,33 @@
 [
   {
+    "id": "icon-eisen",
+    "rig": "requisite",
+    "manifest": "icon-eisen/manifest.json"
+  },
+  {
     "id": "icon-goldbarren",
     "rig": "requisite",
     "manifest": "icon-goldbarren/manifest.json"
   },
   {
+    "id": "icon-holz",
+    "rig": "requisite",
+    "manifest": "icon-holz/manifest.json"
+  },
+  {
+    "id": "icon-kristall",
+    "rig": "requisite",
+    "manifest": "icon-kristall/manifest.json"
+  },
+  {
     "id": "icon-krone",
     "rig": "requisite",
     "manifest": "icon-krone/manifest.json"
+  },
+  {
+    "id": "icon-kupfer",
+    "rig": "requisite",
+    "manifest": "icon-kupfer/manifest.json"
   },
   {
     "id": "icon-muenze",
@@ -33,6 +53,11 @@
     "id": "icon-schwerter",
     "rig": "requisite",
     "manifest": "icon-schwerter/manifest.json"
+  },
+  {
+    "id": "icon-stein",
+    "rig": "requisite",
+    "manifest": "icon-stein/manifest.json"
   },
   {
     "id": "icon-truhe",

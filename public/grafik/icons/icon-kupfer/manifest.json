@@ -1,0 +1,27 @@
+{
+  "id": "icon-kupfer",
+  "version": 1,
+  "specHash": "9738215e525aebff08dac89b4bc632a2ac541c9ee9e6a42738e79b9738f0bfac",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "056accf7b549976c3f249ff61270503d83e99d51b76031cfb68b74d1f164e770",
+  "rahmen": [
+    -16,
+    -32,
+    32,
+    32
+  ],
+  "frameW": 32,
+  "frameH": 32,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 1,
+      "datei": "idle.png",
+      "hashes": [
+        "9167b74e24f24b6635a5b235502661dcc4c596e2a8dacd4a27c1307c69c7d7f7"
+      ]
+    }
+  },
+  "varianten": []
+}

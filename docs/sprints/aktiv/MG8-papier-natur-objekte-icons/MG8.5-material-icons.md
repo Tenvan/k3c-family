@@ -1,6 +1,6 @@
 # MG8.5 · Material-Icons als requisite
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -55,5 +55,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: icon-holz, icon-stein, icon-kupfer, icon-eisen, icon-kristall gültig.
+- AC-02 geprüft: `task gen:paper`, `icons/golden.json` ergänzt, fremde Gruppen zurückgesetzt; `tools/paper` 187/187 grün.
+- AC-03 geprüft: alle mit `assets_preview` angesehen. Befund `icon-holz` ragte links über den Rand, verschoben und erneut geprüft. Eisen als Barren in `stein` Schatten mit Rostkante (D-MG8-02).
+- Keine neuen Tickets.

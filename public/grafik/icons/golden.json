@@ -1,14 +1,38 @@
 {
+  "icon-eisen": {
+    "renderKey": "0f96308d9395749feed76d78bba19178de4788e936045e8597bd99aa661a95cd",
+    "dateien": {
+      "idle.png": "8948bcbf1aaad7ad9bb820fdb1be91bbd87696ccbe9179824ebf3457a50f0fa8"
+    }
+  },
   "icon-goldbarren": {
     "renderKey": "56fda0fdc26f6e3d8ac03adc35d7bd3d60e15ebe6b1ad14ccc30f7f01bbfb2d8",
     "dateien": {
       "idle.png": "a774f78352141ab09f65cb2783f11ccca2e25b724317aa69803dd34badea9c8e"
     }
   },
+  "icon-holz": {
+    "renderKey": "eb88fcc501488ae84dde23ea78284436e5f1752a033ec6b247f147b842690260",
+    "dateien": {
+      "idle.png": "e40e5a9c212027ce12503c8ebe78a669acdfa324c92676f7353357f808f0724b"
+    }
+  },
+  "icon-kristall": {
+    "renderKey": "e8d794663dee45b7138c14de0862f6515852348b658219114ead81ca7a4deed9",
+    "dateien": {
+      "idle.png": "09ac410d670b2ff0729c6bad750bcfbee3c50a58fd61fa377b90a9028b0739ad"
+    }
+  },
   "icon-krone": {
     "renderKey": "21eae3c61fc9cb76825da5b8ab6898fd1886368e6b99d63c45f7362e323bc679",
     "dateien": {
       "idle.png": "4327e1295c2d1198a506cac60d6ba56cff3d7a17269f5e7ed61af992632ce760"
+    }
+  },
+  "icon-kupfer": {
+    "renderKey": "056accf7b549976c3f249ff61270503d83e99d51b76031cfb68b74d1f164e770",
+    "dateien": {
+      "idle.png": "d23afacb90d69e2b0be04aa45085d9c74147869e414a385d984151d9c1238e9e"
     }
   },
   "icon-muenze": {
@@ -39,6 +63,12 @@
     "renderKey": "3777c5d3071926ba8c62faa5fb5d7f59a10295fe2ddfeac369147185c2d3751d",
     "dateien": {
       "idle.png": "04fd15bd440c607a2d51a0db4b91f15b02af8a23f7f793ebbc7ae0e00afa010b"
+    }
+  },
+  "icon-stein": {
+    "renderKey": "ee13a34bf8e4dca328b1f19214886a1647e89827ae24f5ba94a8c3ae1d4d574d",
+    "dateien": {
+      "idle.png": "e9af1bfc5c01ae29a62c6d87ccc9197b1de97b0d7912cff2ba936e742457e9ad"
     }
   },
   "icon-truhe": {

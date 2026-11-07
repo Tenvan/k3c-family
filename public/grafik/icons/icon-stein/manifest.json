@@ -1,0 +1,27 @@
+{
+  "id": "icon-stein",
+  "version": 1,
+  "specHash": "ee7fffa3a501d00e14bfb01029165f9e062a0e0f0e86ee283bdfe221a56ad70e",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "ee13a34bf8e4dca328b1f19214886a1647e89827ae24f5ba94a8c3ae1d4d574d",
+  "rahmen": [
+    -16,
+    -32,
+    32,
+    32
+  ],
+  "frameW": 32,
+  "frameH": 32,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 1,
+      "datei": "idle.png",
+      "hashes": [
+        "edcf89fb5807d650bf005f30c0e63f3de4664cdc967cf26af4763c4bf2467aad"
+      ]
+    }
+  },
+  "varianten": []
+}

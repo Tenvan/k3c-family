@@ -62,7 +62,7 @@ keine
 | MG8.2 | `MG8.2-fels-erz.md` | Umsetzung | autonom | fertig |
 | MG8.3 | `MG8.3-truhe-portal-schilder.md` | Umsetzung | autonom | fertig |
 | MG8.4 | `MG8.4-muenzen-gold-icons.md` | Umsetzung | autonom | fertig |
-| MG8.5 | `MG8.5-material-icons.md` | Umsetzung | autonom | offen |
+| MG8.5 | `MG8.5-material-icons.md` | Umsetzung | autonom | fertig |
 | MG8.6 | `MG8.6-review.md` | Review | autonom | offen |
 
 Lane `objekte`, je Session 5–9 Assets: MG8.1 Bäume und Büsche, MG8.2 Felsen und Erz (`objekte`), MG8.3 Truhe, Portal, Schilder (`objekte`), MG8.4 Münze und Gold-Icons, MG8.5 Material-Icons (`icons`); Review Opus, keine Mensch-Session (Sichtprüfung in PS1). Umsetzung Sonnet.

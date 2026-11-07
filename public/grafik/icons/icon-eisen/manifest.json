@@ -1,0 +1,27 @@
+{
+  "id": "icon-eisen",
+  "version": 1,
+  "specHash": "f9cc155e89360e3073627e417eb677b5be4555e6c00206e4c8808803f79412ef",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "0f96308d9395749feed76d78bba19178de4788e936045e8597bd99aa661a95cd",
+  "rahmen": [
+    -16,
+    -32,
+    32,
+    32
+  ],
+  "frameW": 32,
+  "frameH": 32,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 1,
+      "datei": "idle.png",
+      "hashes": [
+        "6ddc49092f83453fe521aa904a9b00b5ef20884f813595b876bccec1652a2086"
+      ]
+    }
+  },
+  "varianten": []
+}

@@ -1,0 +1,27 @@
+{
+  "id": "icon-holz",
+  "version": 1,
+  "specHash": "8ba9c4ad241be7288fc8a17952d0744a1f34e10ac20cb13ca2fc9a39e244b57c",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "eb88fcc501488ae84dde23ea78284436e5f1752a033ec6b247f147b842690260",
+  "rahmen": [
+    -16,
+    -32,
+    32,
+    32
+  ],
+  "frameW": 32,
+  "frameH": 32,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 1,
+      "datei": "idle.png",
+      "hashes": [
+        "9fa46a43390ba2f211e9f2063167a32597c953cc3b574b6c652f1c7cdb4c01cc"
+      ]
+    }
+  },
+  "varianten": []
+}
