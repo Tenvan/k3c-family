@@ -1,6 +1,6 @@
 # US1.2 · Server prüft Gruppen-Indizes und ignoriert Specs im Watch
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -54,5 +54,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 geprüft: `TestCheckPaperFehlendeDatei` (fehlendes Sheet, fehlendes Manifest, kaputter Index → Fehler mit Pfad, `checkData` Exit 1 → alter Stand bleibt), `TestCheckPaperRepoStand` (eingecheckter Stand vollständig), `TestPaperSpecsSindKeineAenderung` (Watch ignoriert `*.paper.json`, PNG löst aus) grün.
+- `task check:diff`: Go grün; ein Workbench-Frontend-Test (`CatalogPrompts`) rot unter Last, einzeln grün (B-704).
+- Abweichung: Gruppen-Index wird auch ohne Dev-Mode geprüft; Gebäude-Stufen `stand.s<n>.png` stehen nicht im Manifest und bleiben ungeprüft.

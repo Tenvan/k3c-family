@@ -143,13 +143,20 @@ func firstLine(out []byte) string {
 }
 
 // checkData prüft im Dev-Mode jede Welt-Datei in cfg.worlds (ohne Dev-Mode liest der Server keine) samt `extends`-Kette
-// und Overrides (sim.ResolveWorld, welten.md § 1.2); die übrigen Daten hat der Prozess beim Start schon geladen. Exit-Code 0 = gültig, 1 = Fehler (Gründe nach w).
+// und Overrides (sim.ResolveWorld, welten.md § 1.2), immer die Gruppen-Indizes der Papierschnitt-Grafik in cfg.public (checkPaper); die übrigen Daten hat der Prozess beim Start schon geladen. Exit-Code 0 = gültig, 1 = Fehler (Gründe nach w).
 func checkData(cfg config, w io.Writer) int {
+	code := 0
+	if st, err := os.Stat(cfg.public); err == nil && st.IsDir() {
+		for _, err := range checkPaper(os.DirFS(cfg.public)) { // Papierschnitt-Grafik, auch ohne Dev-Mode (US1/AC-02)
+			_, _ = fmt.Fprintln(w, err)
+			code = 1
+		}
+	}
 	entries, err := os.ReadDir(cfg.worlds)
 	if !cfg.dev || err != nil {
-		return 0
+		return code
 	}
-	code, fsys := 0, os.DirFS(cfg.worlds)
+	fsys := os.DirFS(cfg.worlds)
 	lookup := func(id string) (sim.WorldDef, error) { return sim.LoadWorld(fsys, id) }
 	for _, e := range entries {
 		id, ok := strings.CutSuffix(e.Name(), ".json")
