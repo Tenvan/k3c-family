@@ -147,7 +147,11 @@ func firstLine(out []byte) string {
 func checkData(cfg config, w io.Writer) int {
 	code := 0
 	if st, err := os.Stat(cfg.public); err == nil && st.IsDir() {
-		for _, err := range checkPaper(os.DirFS(cfg.public)) { // Papierschnitt-Grafik, auch ohne Dev-Mode (US1/AC-02)
+		errs, warns := checkPaperUse(os.DirFS(cfg.public), data.Files) // Papierschnitt-Grafik, auch ohne Dev-Mode (US1/AC-02)
+		for _, err := range warns {
+			_, _ = fmt.Fprintln(w, "🤒 nur Warnung:", err)
+		}
+		for _, err := range errs {
 			_, _ = fmt.Fprintln(w, err)
 			code = 1
 		}

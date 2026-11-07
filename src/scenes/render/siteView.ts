@@ -124,7 +124,7 @@ function drawCastle(scene: Phaser.Scene, v: View, world: CastleWorld): void {
   if (!has(scene, key)) key = hubTexture(look.level);
   const overlay = v.getByName('overlay') as Phaser.GameObjects.Image | null;
   const over = castleOverlay(look);
-  if (overlay && has(scene, over) && has(scene, key)) {
+  if (overlay && has(scene, over) && has(scene, key) && !look.scaffold) { // im Bau steht das Gerüst, noch kein Schmuck (Review US1, K5)
     showBuildingLook(overlay, over); // letztes Kind: über Burg, Gerüst und Schild (Indizes 0–4 bleiben)
   } else overlay?.setVisible(false);
   if (has(scene, key)) {

@@ -54,3 +54,4 @@ describe('Papierschnitt-Zuordnung (US1)', () => {
     expect(paperScale(m, 'idle', 50)).toEqual({ scale: 0.25, top: -50 });
   });
 });
+

@@ -3,7 +3,7 @@ import { clientLog } from '../../core/clientLog';
 import { MONARCH } from '../../model/data';
 import type { Player } from '../../model/types';
 import { mountGait } from './mountGait';
-import { PAPER_MOUNTED, manifestAnim, paperTextureKey } from './paperAssets';
+import { PAPER_MOUNTED, animFrame, manifestAnim, paperTextureKey } from './paperAssets';
 import { type AnimName, PLAYER_SPRITES, face, makeSprite, paperManifest, playPaper } from './sprites';
 
 /**
@@ -33,7 +33,10 @@ export function createRider(scene: Phaser.Scene, p: Player, _mountKey: string = 
     return null;
   }
   const rider = makeSprite(scene, spec);
-  const view = scene.add.container(0, 0, [rider]).setData('top', rider.getData('top'));
+  // Oberkante beritten aus dem Gang-Rahmen (Pferd samt Reiter ist höher als die Figur zu Fuß, Review US1, W2)
+  const m = paperManifest(key)!;
+  const top = ((rider.getData('target') as number) * animFrame(m, 'schritt').rahmen[1]) / -m.rahmen[1];
+  const view = scene.add.container(0, 0, [rider]).setData('top', top);
   updateRider(view, p);
   return view;
 }

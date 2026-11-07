@@ -59,9 +59,16 @@ export const MOUNTS = DATA.mounts;
 /** Anteil der Figurhöhe, der über dem Sattel sichtbar ist */
 export const RIDER_WAIST = DATA.riderWaist;
 const withPaper = (spec: SpriteSpec, paper: PaperRef | undefined): SpriteSpec => (paper ? { ...spec, paper } : spec);
+/** Truppen und Gegner haben je ein eigenes Asset: die alte Einfärbung gleicher Pixel-Sheets entfällt (Review US1, W4) */
+const ownAsset = (spec: SpriteSpec, paper: PaperRef | undefined): SpriteSpec => {
+  const s = withPaper(spec, paper);
+  if (!paper) return s;
+  const { tint: _tint, ...rest } = s;
+  return rest;
+};
 export const PLAYER_SPRITES: SpriteSpec[] = DATA.players.map((s, i) => withPaper(s, PAPER_PLAYERS[i % PAPER_PLAYERS.length]));
-export const TROOP_SPRITES: Record<string, SpriteSpec> = Object.fromEntries(Object.entries(DATA.troops).map(([k, s]) => [k, withPaper(s, PAPER_TROOPS[k])]));
-export const ENEMY_SPRITES: Record<string, SpriteSpec> = Object.fromEntries(Object.entries(DATA.enemies).map(([k, s]) => [k, withPaper(s, PAPER_ENEMIES[k])]));
+export const TROOP_SPRITES: Record<string, SpriteSpec> = Object.fromEntries(Object.entries(DATA.troops).map(([k, s]) => [k, ownAsset(s, PAPER_TROOPS[k])]));
+export const ENEMY_SPRITES: Record<string, SpriteSpec> = Object.fromEntries(Object.entries(DATA.enemies).map(([k, s]) => [k, ownAsset(s, PAPER_ENEMIES[k])]));
 
 /** Spiel-Animationen. Nur idle und run laufen in Schleife, die übrigen einmal; death hält den letzten Frame. */
 const ANIMS: AnimName[] = ['idle', 'run', 'attack', 'give', 'hit', 'death', 'respawn'];
@@ -212,9 +219,11 @@ export function hasAnim(sprite: Phaser.GameObjects.Sprite, anim: AnimName): bool
 
 /**
  * Spielt eine Animation, ohne eine laufende neu zu starten. Eine Einmal-Animation (Angriff) läuft zu Ende, bevor wieder
- * Laufen/Stehen gezeigt wird. Fehlt eine Animation (z. B. Tod, Wurf), bleibt es bei idle.
+ * Laufen/Stehen gezeigt wird. Fehlt eine Einmal-Animation (z. B. Schlag des Monarchen, Tod, Wurf), läuft die aktuelle
+ * weiter, statt idle neu zu starten (Review US1, W1).
  */
 export function playAnim(sprite: Phaser.GameObjects.Sprite, anim: AnimName, restart = false): void {
+  if (!LOOPS.has(anim) && !(paperAnimName(anim) && paperAnim(sprite, anim))) return;
   const name = (paperAnimName(anim) && paperAnim(sprite, anim)) || paperAnim(sprite, 'idle');
   if (!name) return;
   const loop = LOOPS.has(anim) || name === paperAnim(sprite, 'idle');
