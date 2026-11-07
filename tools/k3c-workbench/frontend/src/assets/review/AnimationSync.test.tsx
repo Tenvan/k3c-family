@@ -89,6 +89,21 @@ describe('AnimationSync', () => {
   });
 });
 
+describe('Feste Steuerung (WB2/AC-01)', () => {
+  it('Frame-Player mit festen Breiten, Zähler tabular-nums; Abspielen ändert die Breiten nicht', async () => {
+    vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] });
+    const host = await mount(<Compare asset={monarch} basis="HEAD~1" />);
+    await tick(10);
+    const teile = () => ['play', 'slider', 'count'].map((p) => host.querySelector<HTMLElement>(`[data-part="${p}"]`)?.style.width);
+    const vorher = teile();
+    expect(vorher.every(Boolean)).toBe(true);
+    expect(host.querySelector<HTMLElement>('[data-part="count"]')!.style.fontVariantNumeric).toBe('tabular-nums');
+    await act(async () => button(host, 'Abspielen')!.click());
+    await tick(125 * 3);
+    expect(teile()).toEqual(vorher);
+  });
+});
+
 describe('Pixel-Diff beim Abspielen (Befund 4)', () => {
   it('fragt jeden Diff nur einmal an', async () => {
     vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] });

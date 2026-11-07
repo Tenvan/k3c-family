@@ -130,7 +130,7 @@ function Regler({ blend, onBlend, zeigeDiff, onDiff, diffMoeglich, diff }: Steue
       <Button size="1" variant={zeigeDiff ? 'solid' : 'soft'} aria-pressed={zeigeDiff} disabled={!diffMoeglich} onClick={onDiff}>
         Unterschiede
       </Button>
-      {diff.wert && <Text size="1" color="gray">{Math.round(diff.wert.anteil * 1000) / 10} % der Pixel</Text>}
+      {diff.wert && <Text size="1" color="gray" style={{ fontVariantNumeric: 'tabular-nums' }}>{Math.round(diff.wert.anteil * 1000) / 10} % der Pixel</Text>}
       {diff.fehler && <Text size="1" color="red">{diff.fehler}</Text>}
     </Flex>
   );

@@ -1,4 +1,5 @@
 import { Button, Flex, Heading, Text } from '@webkit/atoms';
+import { ListDetail } from '@webkit/templates';
 import { useEffect, useState } from 'react';
 import { reviewApi } from './api';
 import { text } from './fehlertext';
@@ -32,8 +33,8 @@ export function ReviewPage() {
     };
   }, [basis, stand]);
   const eintrag = review?.assets.find((a) => a.id === auswahl);
-  return (
-    <Flex direction="column" gap="3" p="4">
+  const kopf = (
+    <>
       <Heading size="4">Asset-Review</Heading>
       <Flex gap="3" align="center" wrap="wrap">
         <BasisSelect basis={basis} onChange={setBasis} />
@@ -52,17 +53,17 @@ export function ReviewPage() {
           {fehler}
         </Text>
       )}
-      {review && (
-        <Flex gap="4" align="start">
-          <ReviewList assets={review.assets} auswahl={auswahl} onSelect={setAuswahl} />
-          {eintrag && (
-            <Flex key={`${eintrag.id}@${review.basisCommit}#${stand}`} direction="column" gap="4">
-              <Compare asset={eintrag} basis={review.basisCommit} />
-              <PromptButtons asset={eintrag} basis={review.basis} />
-            </Flex>
-          )}
+    </>
+  );
+  // Liste und Detail scrollen je für sich (WB2/AC-02)
+  return (
+    <ListDetail header={kopf} listWidth={360} list={review && <ReviewList assets={review.assets} auswahl={auswahl} onSelect={setAuswahl} />}>
+      {review && eintrag && (
+        <Flex key={`${eintrag.id}@${review.basisCommit}#${stand}`} direction="column" gap="4">
+          <Compare asset={eintrag} basis={review.basisCommit} />
+          <PromptButtons asset={eintrag} basis={review.basis} />
         </Flex>
       )}
-    </Flex>
+    </ListDetail>
   );
 }

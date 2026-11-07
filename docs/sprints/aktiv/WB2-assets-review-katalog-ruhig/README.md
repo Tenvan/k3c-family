@@ -62,7 +62,7 @@ keine (Defaults in B-701 als D-WB2-xx)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WB2.1 | `WB2.1-review-ruhig.md` | Umsetzung | autonom | offen |
+| WB2.1 | `WB2.1-review-ruhig.md` | Umsetzung | autonom | fertig |
 | WB2.2 | `WB2.2-katalog-ruhig.md` | Umsetzung | autonom | offen |
 | WB2.3 | `WB2.3-review.md` | Review | autonom | offen |
 

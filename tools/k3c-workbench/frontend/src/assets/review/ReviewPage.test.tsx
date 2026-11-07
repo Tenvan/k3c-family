@@ -18,6 +18,17 @@ afterEach(unmount);
 const eintrag = (host: ParentNode, id: string) => host.querySelector<HTMLElement>(`[data-asset="${id}"]`);
 
 describe('ReviewPage', () => {
+  it('Liste und Detail je eigener Scrollbereich, Kopf außerhalb (WB2/AC-02)', async () => {
+    const host = await mount(<ReviewPage />);
+    await click(eintrag(host, 'monarch'));
+    const liste = host.querySelector('[data-scroll="list"]')!;
+    const detail = host.querySelector('[data-scroll="detail"]')!;
+    expect(liste.contains(eintrag(host, 'monarch'))).toBe(true);
+    expect(detail.querySelector('img[alt="Nachher"]')).not.toBeNull();
+    expect(liste.contains(detail)).toBe(false);
+    expect(host.querySelector('.wk-listdetail-head')?.textContent).toContain('Asset-Review');
+  });
+
   it('listet alle Einträge mit Status', async () => {
     const host = await mount(<ReviewPage />);
     for (const [id, status] of [['monarch', 'geaendert'], ['pferd', 'neu'], ['fass', 'geloescht'], ['banner', 'ungueltig'], ['mauer', 'geaendert']]) {

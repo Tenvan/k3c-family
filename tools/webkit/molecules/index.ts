@@ -23,4 +23,5 @@ export { CorridorBar, type CorridorBarProps } from './CorridorBar';
 export { LineChart, type LineChartProps, type LineSeries } from './LineChart';
 export type { ChartBand, ChartTone } from './chartTheme';
 export { FocusBar, type FocusBarProps, type FocusOption } from './FocusBar';
+export { FramePlayer, counterWidth, type FramePlayerProps } from './FramePlayer';
 

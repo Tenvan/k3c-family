@@ -3,3 +3,4 @@
 export { Theme, ThemePanel } from '@radix-ui/themes';
 
 export { AppFrame } from './AppFrame';
+export { ListDetail } from './ListDetail';

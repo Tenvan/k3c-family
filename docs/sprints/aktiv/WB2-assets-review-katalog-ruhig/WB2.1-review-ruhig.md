@@ -1,6 +1,6 @@
 # WB2.1 · Review: feste Schieber, Liste und Detail getrennt scrollbar
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -59,5 +59,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `FramePlayer` (`@webkit/molecules`) mit festen Breiten (Knopf 6.5rem, Schieber 240 px, Zähler in `ch` nach Stellen, `tabular-nums`); Tests `FramePlayer.test.tsx`, `AnimationSync.test.tsx` › Feste Steuerung. Browser (Vite 5196, Fixture-Daten über eine Wails-Attrappe, 60 Einträge): alle 12 Frames gespielt, Knopf, Schieber und Zähler blieben auf 457/573/825 px.
+- AC-02 geprüft: `ListDetail` (`@webkit/templates`, `wk-listdetail` in theme.css); Tests `ListDetail.test.tsx`, `ReviewPage.test.tsx`. Browser: Liste auf scrollTop 2000, Detail blieb bei scrollTop 0 und y 197, Seite scrollt nicht.
+- AC-06 (Teil): Bausteine über `@webkit`; `task check:diff` grün bis auf `Catalog.test.tsx` › Auswahl zeigt Animationen (lastabhängig, einzeln 5/5 grün, B-704; Katalog in dieser Session unverändert).
+- Abweichung: Die Review-Seite nutzt im Browser nicht den Mock (`?mock=1`), weil sie einen eigenen Transport hat (B-703); die Sichtprüfung lief deshalb mit einer Wails-Attrappe im Browser.
+- Neue Tickets: keine.
