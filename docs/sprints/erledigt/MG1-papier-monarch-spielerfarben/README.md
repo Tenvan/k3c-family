@@ -1,6 +1,6 @@
 # MG1 · PAP · Papierschnitt-Migration: Monarch und Spielerfarben
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit

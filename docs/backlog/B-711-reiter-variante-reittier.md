@@ -4,8 +4,8 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** MG9
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-06
 - **Spec:** Entwurf

@@ -1,6 +1,6 @@
 # MG7 · PAP · Papierschnitt-Migration: Hintergründe je Biom
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit

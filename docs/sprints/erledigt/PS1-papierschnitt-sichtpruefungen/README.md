@@ -1,6 +1,6 @@
 # PS1 · CLI · Papierschnitt-Sichtprüfungen und Abnahmen gebündelt
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -71,9 +71,9 @@ keine
 | PS1.2 | `PS1.2-resvg-gegen-prototyp.md` | Workshop | Mensch | fertig |
 | PS1.3 | `PS1.3-gruppen-in-assets.md` | Workshop | Mensch | fertig |
 | PS1.4 | `PS1.4-spiel-und-review-lauf.md` | Workshop | Mensch | fertig |
-| PS1.5 | `PS1.5-befunde-tickets-abschluss.md` | Review | autonom | offen |
+| PS1.5 | `PS1.5-befunde-tickets-abschluss.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-07: AC-01 PS1.1 (B-701 alle Zeilen entschieden oder Ticket), AC-02 PS1.2 (Papierkanten → B-712), AC-03 PS1.3 (alle Gruppen ✏️ → B-716–B-723), AC-04 PS1.4 (Review-Lauf ✅, Spielbefunde → B-724), AC-05 PS1.5.
+Behoben in PS1: keine (nur Planung). Neue Tickets: B-712 bis B-724; Folge-Sprints RD2, MG9, MG10, MG11, US3 (geplant).

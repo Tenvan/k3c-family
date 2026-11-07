@@ -1,6 +1,6 @@
 # MG3 · PAP · Papierschnitt-Migration: Truppen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit

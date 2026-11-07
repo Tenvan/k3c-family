@@ -1,6 +1,6 @@
 # MG4 · PAP · Papierschnitt-Migration: Gegner
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
