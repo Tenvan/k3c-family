@@ -109,10 +109,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-709](B-709-assets-preview-reittier-boxen.md) | PAP | Idee | niedrig | offen | – | assets_preview nennt bei Reit-Animationen keine Teil-Boxen des Reittiers |
 | [B-710](B-710-assets-set-teil-patch.md) | PAP | Problem | mittel | offen | – | assets_set kann einzelne Teile nicht ändern, ohne die ganze Teile-Liste zu senden |
 | [B-711](B-711-reiter-variante-reittier.md) | PAP | Frage | mittel | eingeplant | MG9 | Variante des Reiters tauscht die Materialien des Reittiers nicht |
-| [B-716](B-716-reittiere-je-tier-massstab.md) | PAP | Problem | mittel | eingeplant | MG9 | Reittiere haben eigene Silhouetten, Füße und einen einheitlichen Maßstab |
-| [B-717](B-717-monarch-animationen-farben.md) | PAP | Problem | hoch | eingeplant | MG9 | Monarch hat Reit-Idle, Gangarten je Reittier, give/hit/death/respawn und vier gut unterscheidbare Spielerfarben |
-| [B-718](B-718-truppen-nachbessern.md) | PAP | Problem | mittel | eingeplant | MG9 | Truppen greifen sichtbar zum Gegner an und haben keine Lesbarkeits-Reste aus MG3 |
-| [B-719](B-719-gegner-nachbessern.md) | PAP | Problem | mittel | eingeplant | MG9 | Gegner sind unterscheidbar und richtig groß, ohne Lesbarkeits-Reste aus MG4 |
 | [B-720](B-720-bosse-neu.md) | PAP | Problem | hoch | eingeplant | MG10 | Bosse sind neu gestaltet, jeder mit eigener Silhouette |
 | [B-721](B-721-gebaeude-stufen-form.md) | PAP | Problem | mittel | eingeplant | MG11 | Gebäude steigern sich in Form und Material, Kristall leuchtet, nichts wird abgeschnitten |
 | [B-722](B-722-hintergruende-neu-ohne-baeume.md) | PAP | Problem | hoch | eingeplant | MG11 | Hintergründe sind neu gestaltet, mit Tiefe und ohne Bäume |
@@ -130,6 +126,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-734](B-734-katalog-teil-ausblenden.md) | DEV | Idee | mittel | offen | – | Im Katalog lässt sich das gewählte Teil in der Vorschau aus- und einblenden |
 | [B-735](B-735-weitere-materialien-stroh-lava-geisterweiss.md) | PAP | Schuld | niedrig | offen | – | Weitere Ersatz-Materialien (stroh, lava, geisterweiss, fell-grau) in der Stil-Datei |
 | [B-736](B-736-rust-server-etappe2.md) | SRV | Idee | mittel | eingeplant | RS2 | Etappe 2: Server und Simulation laufen komplett in Rust, Go-Server und Brücke entfallen |
+| [B-738](B-738-workbench-go-tests-rot-style-vorlage-review.md) | DEV | Problem | mittel | offen | – | Workbench-Go-Tests rot: Style-Fixture, Rig-Vorlage vierbeiner ohne Gangarten, Review-Tests mit festen Commit-Hashes |
 
 ## Archiv
 
@@ -697,3 +694,8 @@ Zeile in diesen Abschnitt.
 | [B-713](archiv/B-713-renderkey-reiter-reittier.md) | PAP | Schuld | mittel | erledigt | RD2 | renderKey des Reiters enthält den Hash der Reittier-Spec |
 | [B-714](archiv/B-714-keyframe-sichtbar.md) | PAP | Idee | hoch | erledigt | RD2 | Keyframes schalten Teile mit dem Feld sichtbar ein und aus |
 | [B-715](archiv/B-715-rig-proportionen-je-figur.md) | PAP | Idee | hoch | erledigt | RD2 | Rigs vierbeiner und figur erlauben Proportionen, Füße und Gangarten je Tier oder Figur |
+| [B-737](archiv/B-737-gerenderte-bilder-nicht-im-repo.md) | PAP | Idee | hoch | erledigt | MG9 | Gerenderte Papierschnitt-PNGs aus dem Repo nehmen, beim Build bzw. nach Änderung erzeugen |
+| [B-716](archiv/B-716-reittiere-je-tier-massstab.md) | PAP | Problem | mittel | erledigt | MG9 | Reittiere haben eigene Silhouetten, Füße und einen einheitlichen Maßstab |
+| [B-717](archiv/B-717-monarch-animationen-farben.md) | PAP | Problem | hoch | erledigt | MG9 | Monarch hat Reit-Idle, Gangarten je Reittier, give/hit/death/respawn und vier gut unterscheidbare Spielerfarben |
+| [B-718](archiv/B-718-truppen-nachbessern.md) | PAP | Problem | mittel | erledigt | MG9 | Truppen greifen sichtbar zum Gegner an und haben keine Lesbarkeits-Reste aus MG3 |
+| [B-719](archiv/B-719-gegner-nachbessern.md) | PAP | Problem | mittel | erledigt | MG9 | Gegner sind unterscheidbar und richtig groß, ohne Lesbarkeits-Reste aus MG4 |

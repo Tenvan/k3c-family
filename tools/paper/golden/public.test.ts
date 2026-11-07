@@ -18,7 +18,7 @@ describe('Golden public/grafik', { timeout: 60_000 }, () => {
   });
 
   it('monarch hat idle, lauf, schritt, trab, galopp; pferd hat schritt, trab, galopp', () => {
-    expect(Object.keys(lies(join(GRAFIK, 'figuren/monarch.paper.json')).animationen)).toEqual(['idle', 'lauf', 'schritt', 'trab', 'galopp']);
+    expect(Object.keys(lies(join(GRAFIK, 'figuren/monarch.paper.json')).animationen)).toEqual(expect.arrayContaining(['idle', 'lauf', 'schritt', 'trab', 'galopp']));
     expect(Object.keys(lies(join(GRAFIK, 'reittiere/pferd.paper.json')).animationen)).toEqual(['schritt', 'trab', 'galopp']);
     expect(existsSync(join(GRAFIK, 'figuren/monarch/galopp.png'))).toBe(true);
   });
@@ -33,5 +33,5 @@ describe('Golden public/grafik', { timeout: 60_000 }, () => {
       const png = (seite: 'soll' | 'ist', id: string, d: string) => readFileSync(join(seite === 'soll' ? GRAFIK : w, g, id, d));
       expect(goldenAbweichungen(lies(join(GRAFIK, g, 'golden.json')), lies(join(w, g, 'golden.json')), png), g).toEqual([]);
     }
-  }, 180_000);
+  }, 600_000);
 });

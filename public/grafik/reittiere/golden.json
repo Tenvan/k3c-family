@@ -1,10 +1,10 @@
 {
   "albtraum": {
-    "renderKey": "251adac42d1c5a7f388e1ae62ef14298722e7b8386aedb12d709710b5b64f085",
+    "renderKey": "b646b2c08d4b0e18f9d6e65dd7229204311e07fb7f4b629e11d5416bceafe1cb",
     "dateien": {
-      "galopp.png": "edb3cc48abd36d56cac9010e554180a84b9d3f829d668927169846ec98a6722c",
-      "schritt.png": "55c4838d8501dc2b6318e4036615323029f388bc794b5949a2ceecbd11917c72",
-      "trab.png": "e4bf872a836084b55ca9d2465cddaf2a9fe49cf2cabc61fe12cbfbe8e6734e27"
+      "galopp.png": "7f106bb597d73d23ed314d0925ec9345b67ad06172118a595217613283859791",
+      "schritt.png": "53a88b28e67323dc1e4b7962af05d518434938613a8a3258a2d592d6e3eed076",
+      "trab.png": "f6fae4092a863f7958c1c61d715d83492de742f4156a341307927a8468e0c456"
     }
   },
   "einhorn": {
@@ -16,11 +16,10 @@
     }
   },
   "elefant": {
-    "renderKey": "0cf8a98a6e54780849852b59d5c8fbc0c1524e09857c3f515c4a8f7bcd9328fb",
+    "renderKey": "c4b2409e193b5a2b06777d9ebafa098ad573444dc2a71934c453833b65b9fdc1",
     "dateien": {
-      "galopp.png": "1f52a35b28e7af85d5af05df670fe4aad804d0101d84e776e5c9bcc41020db61",
-      "schritt.png": "070187ef839c00312b38ec0ffe80a99b120a2131489d6cbb33d12d2f0b4f593a",
-      "trab.png": "3e65d817385afa9abf8c7bcd1b68254afd7a9cc3171d56915c8e6d811571646b"
+      "schritt.png": "3d26983ae43d438ce8d5ddb310074dd509aa5a0b06a670520d3d4474e8913d35",
+      "trab.png": "bf9a3cc9970277b6323f71a45ab9da1e53aa7d782a5f25cfac9f3bb3430b9682"
     }
   },
   "hirsch": {
@@ -32,59 +31,59 @@
     }
   },
   "hoellenhund": {
-    "renderKey": "cb0b3394cbdc1c6f819943399a9f25c2a2de31dce8c0d96565295f059416b37e",
+    "renderKey": "8a4afda6dc574471d3da945a991af36fd103c6388b196c75bbe791beeb9966bf",
     "dateien": {
-      "galopp.png": "4d68238b3c8dc0463bbc8da13eb726598936b82847a98cc157f0ff1df4d6df41",
-      "schritt.png": "a0a018e35d31dc55e82192a2bdf319618265490fbb2270ff6f9ebd4828595ac0",
-      "trab.png": "4f9922ef4d670e6dd3fce843719d811ad7033553cc8b82e6b693c9822d299069"
+      "galopp.png": "a845bc5bf6c5a46eb98204c7939bdde9e27471229f1703b41221eaee44a3d834",
+      "schritt.png": "a1f9ceac797452f6ee9a97df5c556e30532f65500c666bc8cb5008ebae31c7d4",
+      "trab.png": "7aa98bfbf61e5db2fef2f83ed0731df970a2ec1e8191769316416831c88626bf"
     }
   },
   "pegasus": {
-    "renderKey": "079353dd5dd92fa7a3d66dd94ea8197af225e7a248fedade4bb25003c0b67440",
+    "renderKey": "a786794f12c2fb7117f305813e07a3ff6171a33d4165839b83286179d4b7b5a2",
     "dateien": {
-      "galopp.png": "c92f4fbf725d8d75b02f7e125ce78eb7aa0dc7c2ecf92e37ee755bc409c2d80e",
-      "schritt.png": "0154a509df1fa1133fa989684b941614d41ff603b8c6c3c9e9bbbc9d7aac099d",
-      "trab.png": "7b29e70bf66d0c700943fb6513b87e342749def7c02c011b85eb245226348b07"
+      "galopp.png": "948306a5411bb34183106c9014a96d8ed5334200eda59fcd582211a2a9888c94",
+      "schritt.png": "55dfb67147f320a2cb137fbcdb7b5f8f8c8e6412e5621c914c20501015d3d6ac",
+      "trab.png": "0c1657a505997ee3347298d72a5bed4e6216f77fc347aa678f8ac2057cb6a96e"
     }
   },
   "pferd": {
-    "renderKey": "22538e60f89c7993ed426bd6ad68bd578fd4fb313beb06485e3ac133c11b1e5a",
+    "renderKey": "ca40a99afad09bb4bfbad1ab8363998841f3bb40f17f5ac6df13d8850b10da16",
     "dateien": {
-      "galopp.png": "627130915dc2b0f38f8dd5617c64c4ab503fb69bdf197e7b2a95eb6d2dbd3cae",
-      "schritt.png": "1e86c630588d71ae29788af27f8f5bf81b29adf083cd7873ef3a787e342513df",
-      "trab.png": "2b86472864fbc5ae39b29036b38f5e5f3828c37c42d55c694f7d7ae67ad5fb59"
+      "galopp.png": "93738a0240cf7121339f0f6f7cec09175aa137382b25a6941f9561fb41a31f25",
+      "schritt.png": "eb377b67b69b3a63ec832ac3529bdd02ffb84ef54b3b61c5a0b5f10a8d236d1f",
+      "trab.png": "898b1924c857046f0836a3fa47298286dfd1b2ef255f41dea9d8e64fc382fcf7"
     }
   },
   "rappe": {
-    "renderKey": "7b72924622d94f6a58d30f2e7994b19fd0281a1eab461e2e3114b23a3f9e48c4",
+    "renderKey": "c5a0629f9755097516b3fa430fefacac23f3e4f1860ecfed52273d311ce99a6f",
     "dateien": {
-      "galopp.png": "1baafb093d057210bd124fae9618e6122627aeee20d6493ba892990c86aa12f7",
-      "schritt.png": "d7332cca78e38b9318d768278fff56db2a8d454e9c01c6175c4bfb3b0d045764",
-      "trab.png": "637a7f789509629bf951f4c2e36c6c9cba9f76007ed8b188916b28f8cce14326"
+      "galopp.png": "229b2f340336c0fcbb87b01b64c9deba2fd6fa2add522df58769d286183e10c4",
+      "schritt.png": "bfa4b0a6490cd8398370bedc9254bbec7ebe62849c30394fa05d13c463623445",
+      "trab.png": "807602d5c3d2c8767b562a5788cf1dac726711da794730db856de915bddca5c6"
     }
   },
   "schimmel": {
-    "renderKey": "32e4e879a38134d827a8e7eb68f4bc4c2b21c476a1e2e529870a45ffb22b1d9b",
+    "renderKey": "0f98f6a6c19bcfe4ec7ca82e7924879878f6861349f9fa4da602f23519fa8ec6",
     "dateien": {
-      "galopp.png": "515cdeee9296f41c87b0f7d9bc789a75a6041292f92745a4609e653c8af275bd",
-      "schritt.png": "7c71937958b07418ad31c98c0b19668bae26c927a4ec4e376f2e02ac21c3f7b5",
-      "trab.png": "bf0ba0bdbcca797dcc8cad83218fde9809e849cbf8bae6a3720dcdd37c1307d8"
+      "galopp.png": "7c45e80d3e9dc19a26ad1b627d102a9bb80db3beef548db2a36128f7eb404523",
+      "schritt.png": "bd5c9bac12b5b27725c4f2250f1e5cd9a40db71bb0088e1dac60028e31a832a4",
+      "trab.png": "c7f40acee1955c46986c083da7ba03fa7434bb4d1528824cbb37894a4b8f1164"
     }
   },
   "weisser-wolf": {
-    "renderKey": "f3eed1c2639df53873a7d9b00da4a6d0ee7e92c960c37256029e88468a52f10f",
+    "renderKey": "7ef9591a14f2e1d3525b7dc5f752a84956809fcbeab51741083d4b325660e396",
     "dateien": {
-      "galopp.png": "a0444aa7698d06927ccfa1738e6b2383172f46ed52f0045105679ad59b252aef",
-      "schritt.png": "b56a1bb5bb31e2915a40477c1f1266858840f0a1148e263a0f41d1f6a1bb25ca",
-      "trab.png": "233d1fd54e8a382f1397928fbacbe6af29f4b0e3b41e1a97ef8caab675a56674"
+      "galopp.png": "99610668b52683a9daf2b31ab7b6bb2802c13403e19a98155f56d8a25576692c",
+      "schritt.png": "79f31ac7fabe3f56eac4cd0b54223dd04f7ff903771b19f0b1e2ce2996e7333d",
+      "trab.png": "089f3b1adcfad6393d7f72528c51fa81ee161131a53d753a918cc63105f2fd51"
     }
   },
   "wolf": {
-    "renderKey": "b31aa22bca08e3f55f63877cfa01004e0e7af789db520b8c57bd8f06c77bc164",
+    "renderKey": "f7531e4cb9f8d674285fca64e499e3e43e3722a38215c41a162cfd0d65dd4ba6",
     "dateien": {
-      "galopp.png": "ef327734991621950af41b13357142a8b077df99c514e28dd24764fa95f06846",
-      "schritt.png": "9c147a033f60d70c9f358517e4196798054ce568e252588a5469a46b8566b885",
-      "trab.png": "574deee969f6f37149635d34dabc9a81994e8a1093af5c486b433156243b6c61"
+      "galopp.png": "783609c02b2f68e7b03df6dd9b0197a7bd2d4bc4a13955ac1f6c8b7926774afe",
+      "schritt.png": "76dab9ca939dc3170e3a4d1ab84ff32e757a715d5f8d6698f261ce7d10253a32",
+      "trab.png": "ec7201cf0874f5b50ab555cf04652895407b1d7aa31e016a5d7d62748fb34697"
     }
   }
 }

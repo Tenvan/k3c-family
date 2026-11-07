@@ -42,3 +42,16 @@ docs/backlog/.ticket.lock
 
 # Rust-Kern (RST)
 /rust/target/
+
+# Gerenderte Papierschnitt-Grafik (B-737): Arbeitsordner und Asset-Ordner entstehen durch `task gen:paper`; eingecheckt bleiben
+# Specs, index.paper.json und golden.json je Gruppe
+/.work/
+/public/grafik/bosse/*/
+/public/grafik/figuren/*/
+/public/grafik/gebaeude-paper/*/
+/public/grafik/gegner/*/
+/public/grafik/hintergruende/*/
+/public/grafik/icons/*/
+/public/grafik/objekte/*/
+/public/grafik/reittiere/*/
+/public/grafik/truppen/*/

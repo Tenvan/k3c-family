@@ -36,7 +36,7 @@ tasks:
       - ./bin/gebaeude{{exeExt}}
 
   paper:
-    desc: Papierschnitt-Grafik rendern (public/grafik/<gruppe>/*.paper.json → PNG, Manifest, index.paper.json, golden.json; RD1)
+    desc: 'Papierschnitt-Grafik rendern (public/grafik/<gruppe>/*.paper.json → .work/grafik, geänderte Dateien nach public/grafik/; PNG und Manifest nicht eingecheckt, index.paper.json und golden.json schon; RD1, B-737)'
     preconditions:
       - sh: command -v bun
         msg: Bun fehlt (requirements.md)
@@ -57,7 +57,7 @@ tasks:
       - public/grafik/*/*/manifest.json
       - public/grafik/*/*/*.png
     cmds:
-      - bun tools/paper/bin/gen.ts public/grafik
+      - bun tools/paper/bin/gen.ts
 
   pipeline:
     desc: Grafiken aus docs/assets/pipeline-liste.json auf DB32 und 16 px umrechnen (public/grafik → public/grafik-db32, deterministisch; feste EXE bin/pipeline, B-331)

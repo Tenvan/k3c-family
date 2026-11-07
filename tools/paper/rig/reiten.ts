@@ -10,6 +10,7 @@ import { type Bild, geometrie, type Kontext } from '../render/bild';
 import { Abgelehnt, Aufruf } from '../render/fehler';
 import { anwenden, drehung, type M, mul, skaliere, verschiebe } from '../render/matrix';
 import { animationVon } from '../render/pose';
+import { tausche } from '../render/stil';
 import type { FrameGroesse } from '../render/raster';
 import { type Ausgabe, ausgabeSpec } from '../render/stufen';
 import { lageSvg, mitNachkommen, teileSvg } from '../render/svg';
@@ -111,7 +112,9 @@ export function reitSegmente(reiter: Spec, reittier: Spec, f: ReitFrame, stil: S
 
 export function reitBild(spec: Spec, a: Ausgabe, k: Kontext): Bild {
   const reiter = ausgabeSpec(spec, a), id = animationVon(spec, a.animation).reittier!;
-  const reittier = ladeReittier(k.specPfad, id, k.stil);
+  // Varianten färben auch die Satteldecke des Reittiers (B-717/AC-03, B-711): der Tausch der Variante gilt für beide.
+  const geladen = ladeReittier(k.specPfad, id, k.stil);
+  const reittier = a.variante ? tausche(geladen, spec.varianten![a.variante].tausch) : geladen;
   const ohne = mitNachkommen(reiter.teile, 'oberschenkel-h');
   const frames = reitZustand(reiter, reittier, a, k).map((f) => {
     const p = f.pose, R0 = rideMatrix(p.ride.dy, p.ride.pitch, 1);

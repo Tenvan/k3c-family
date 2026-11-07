@@ -1,6 +1,6 @@
 // Gangarten des Vierbeiners wie im Prototyp (docs/decisions/005/prototyp-monarch-rig.html › GAITS, gait): Standphase
 // am Boden, Schwungbahn, Zwei-Knochen-IK, Rückengelenk, Kopfnicken, Schweif und die Pose des Reiters.
-import type { Punkt, Spec } from '../schema/types';
+import type { GangartName, Punkt, Spec } from '../schema/types';
 import { anwenden, drehung, invers, type M, mul } from '../render/matrix';
 import { ik } from './ik';
 import { spline } from './kurve';
@@ -23,7 +23,11 @@ type Gang = {
   spine(ph: number): number; riderY(dy: number, ph: number): number; tail(ph: number): number;
 };
 
-export const GANGARTEN: Record<'schritt' | 'trab' | 'galopp', Gang> = {
+export const GANGARTEN: Record<GangartName, Gang> = {
+  // Stand (B-717, Reit-Idle): alle Hufe am Boden (reach 0, stance 1), nur Atmen, leichtes Nicken und Schweifpendeln.
+  stand: { freq: 0.5, stance: 1, reach: 0, lift: [0, 0], curl: [0, 0], offs: { hn: 0, vn: 0, hf: 0, vf: 0 },
+    dy: (ph) => 1 + 0.6 * Math.sin(TAU * ph), pitch: () => 0, nod: (ph) => 1.5 * Math.sin(TAU * (ph - 0.2)), lean: () => 2,
+    spine: (ph) => 0.4 * Math.sin(TAU * ph), riderY: (dy) => -0.8 * (dy - 1), tail: (ph) => 6 + 3 * Math.sin(TAU * ph) },
   schritt: { freq: 0.9, stance: 0.65, reach: 11, lift: [9, 7], curl: [35, 15], offs: { hn: 0, vn: 0.25, hf: 0.5, vf: 0.75 },
     dy: (ph) => 1 + c2(ph, 0.3), pitch: (ph) => Math.sin(2 * TAU * ph), nod: (ph) => 6 * c2(ph, 0.3), lean: () => 3,
     spine: (ph) => 1.5 * Math.sin(2 * TAU * ph), riderY: (dy, ph) => -0.7 * (dy - 1) + 0.6 * Math.sin(2 * TAU * ph),

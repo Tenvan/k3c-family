@@ -3,7 +3,7 @@
   "id": "monarch",
   "rig": "figur",
   "version": 1,
-  "beschreibung": "König mit Bart, Hermelinkragen, Krone mit Edelsteinen, blauer Rock, Schwert an der Seite, roter Umhang (aus dem Prototyp 005); reitet das Pferd aus reittiere/ in Schritt, Trab und Galopp.",
+  "beschreibung": "König mit Bart, Hermelinkragen, Krone mit Edelsteinen, blauer Rock, Schwert an der Seite, roter Umhang (aus dem Prototyp 005); reitet das Pferd (schritt, trab, galopp, reiten-idle) und jedes andere Reittier aus reittiere/ als <gangart>-<reittier>; Zustände give, hit, death, respawn.",
   "teile": [
     {
       "id": "oberarm-h",
@@ -806,6 +806,321 @@
       "frames": 8,
       "reittier": "pferd",
       "gangart": "galopp"
+    },
+    "give": {
+      "fps": 10,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "oberarm-v": -30,
+            "unterarm-v": -20,
+            "rumpf": 0,
+            "kopf": 0
+          }
+        },
+        {
+          "t": 0.4,
+          "winkel": {
+            "oberarm-v": -95,
+            "unterarm-v": -5,
+            "rumpf": 5,
+            "kopf": 6
+          }
+        },
+        {
+          "t": 0.7,
+          "winkel": {
+            "oberarm-v": -95,
+            "unterarm-v": -5,
+            "rumpf": 5,
+            "kopf": 6
+          }
+        },
+        {
+          "t": 0.9,
+          "winkel": {
+            "oberarm-v": -40,
+            "unterarm-v": -15,
+            "rumpf": 1,
+            "kopf": 1
+          }
+        }
+      ]
+    },
+    "hit": {
+      "fps": 12,
+      "frames": 6,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "rumpf": 0,
+            "kopf": 0,
+            "oberarm-v": -20,
+            "oberarm-h": 10
+          }
+        },
+        {
+          "t": 0.3,
+          "winkel": {
+            "rumpf": -14,
+            "kopf": -12,
+            "oberarm-v": 35,
+            "oberarm-h": 40,
+            "unterarm-v": -10
+          }
+        },
+        {
+          "t": 0.65,
+          "winkel": {
+            "rumpf": -8,
+            "kopf": -6,
+            "oberarm-v": 15,
+            "oberarm-h": 20
+          }
+        },
+        {
+          "t": 0.9,
+          "winkel": {
+            "rumpf": -2,
+            "kopf": -1,
+            "oberarm-v": -10,
+            "oberarm-h": 5
+          }
+        }
+      ]
+    },
+    "death": {
+      "fps": 8,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "rumpf": 0,
+            "kopf": 0,
+            "oberarm-v": -20,
+            "oberarm-h": 10
+          }
+        },
+        {
+          "t": 0.3,
+          "winkel": {
+            "rumpf": -25,
+            "kopf": -12,
+            "oberarm-v": 40,
+            "oberarm-h": 45,
+            "oberschenkel-v": 15,
+            "unterschenkel-v": 30
+          }
+        },
+        {
+          "t": 0.85,
+          "winkel": {
+            "rumpf": -52,
+            "kopf": -15,
+            "oberarm-v": 70,
+            "oberarm-h": 60,
+            "oberschenkel-v": 25,
+            "unterschenkel-v": 50,
+            "oberschenkel-h": 10,
+            "unterschenkel-h": 35
+          }
+        }
+      ]
+    },
+    "respawn": {
+      "fps": 8,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "rumpf": -52,
+            "kopf": -15,
+            "oberarm-v": 70,
+            "oberarm-h": 60,
+            "oberschenkel-v": 25,
+            "unterschenkel-v": 50,
+            "oberschenkel-h": 10,
+            "unterschenkel-h": 35
+          }
+        },
+        {
+          "t": 0.55,
+          "winkel": {
+            "rumpf": -25,
+            "kopf": -8,
+            "oberarm-v": 30,
+            "oberarm-h": 30,
+            "oberschenkel-v": 15,
+            "unterschenkel-v": 30
+          }
+        },
+        {
+          "t": 0.85,
+          "winkel": {
+            "rumpf": 0,
+            "kopf": 0,
+            "oberarm-v": -20,
+            "oberarm-h": 10,
+            "oberschenkel-v": 0,
+            "unterschenkel-v": 0
+          }
+        }
+      ]
+    },
+    "reiten-idle": {
+      "frames": 8,
+      "gangart": "stand",
+      "reittier": "pferd"
+    },
+    "schritt-albtraum": {
+      "frames": 8,
+      "gangart": "schritt",
+      "reittier": "albtraum"
+    },
+    "trab-albtraum": {
+      "frames": 8,
+      "gangart": "trab",
+      "reittier": "albtraum"
+    },
+    "galopp-albtraum": {
+      "frames": 8,
+      "gangart": "galopp",
+      "reittier": "albtraum"
+    },
+    "schritt-einhorn": {
+      "frames": 8,
+      "gangart": "schritt",
+      "reittier": "einhorn"
+    },
+    "trab-einhorn": {
+      "frames": 8,
+      "gangart": "trab",
+      "reittier": "einhorn"
+    },
+    "galopp-einhorn": {
+      "frames": 8,
+      "gangart": "galopp",
+      "reittier": "einhorn"
+    },
+    "schritt-elefant": {
+      "frames": 8,
+      "gangart": "schritt",
+      "reittier": "elefant"
+    },
+    "trab-elefant": {
+      "frames": 8,
+      "gangart": "trab",
+      "reittier": "elefant"
+    },
+    "schritt-hirsch": {
+      "frames": 8,
+      "gangart": "schritt",
+      "reittier": "hirsch"
+    },
+    "trab-hirsch": {
+      "frames": 8,
+      "gangart": "trab",
+      "reittier": "hirsch"
+    },
+    "galopp-hirsch": {
+      "frames": 8,
+      "gangart": "galopp",
+      "reittier": "hirsch"
+    },
+    "schritt-hoellenhund": {
+      "frames": 8,
+      "gangart": "schritt",
+      "reittier": "hoellenhund"
+    },
+    "trab-hoellenhund": {
+      "frames": 8,
+      "gangart": "trab",
+      "reittier": "hoellenhund"
+    },
+    "galopp-hoellenhund": {
+      "frames": 8,
+      "gangart": "galopp",
+      "reittier": "hoellenhund"
+    },
+    "schritt-pegasus": {
+      "frames": 8,
+      "gangart": "schritt",
+      "reittier": "pegasus"
+    },
+    "trab-pegasus": {
+      "frames": 8,
+      "gangart": "trab",
+      "reittier": "pegasus"
+    },
+    "galopp-pegasus": {
+      "frames": 8,
+      "gangart": "galopp",
+      "reittier": "pegasus"
+    },
+    "schritt-rappe": {
+      "frames": 8,
+      "gangart": "schritt",
+      "reittier": "rappe"
+    },
+    "trab-rappe": {
+      "frames": 8,
+      "gangart": "trab",
+      "reittier": "rappe"
+    },
+    "galopp-rappe": {
+      "frames": 8,
+      "gangart": "galopp",
+      "reittier": "rappe"
+    },
+    "schritt-schimmel": {
+      "frames": 8,
+      "gangart": "schritt",
+      "reittier": "schimmel"
+    },
+    "trab-schimmel": {
+      "frames": 8,
+      "gangart": "trab",
+      "reittier": "schimmel"
+    },
+    "galopp-schimmel": {
+      "frames": 8,
+      "gangart": "galopp",
+      "reittier": "schimmel"
+    },
+    "schritt-weisser-wolf": {
+      "frames": 8,
+      "gangart": "schritt",
+      "reittier": "weisser-wolf"
+    },
+    "trab-weisser-wolf": {
+      "frames": 8,
+      "gangart": "trab",
+      "reittier": "weisser-wolf"
+    },
+    "galopp-weisser-wolf": {
+      "frames": 8,
+      "gangart": "galopp",
+      "reittier": "weisser-wolf"
+    },
+    "schritt-wolf": {
+      "frames": 8,
+      "gangart": "schritt",
+      "reittier": "wolf"
+    },
+    "trab-wolf": {
+      "frames": 8,
+      "gangart": "trab",
+      "reittier": "wolf"
+    },
+    "galopp-wolf": {
+      "frames": 8,
+      "gangart": "galopp",
+      "reittier": "wolf"
     }
   },
   "varianten": {
@@ -826,7 +1141,7 @@
     },
     "spieler4": {
       "tausch": {
-        "koenigsblau": "leder"
+        "koenigsblau": "kristall"
       }
     }
   },

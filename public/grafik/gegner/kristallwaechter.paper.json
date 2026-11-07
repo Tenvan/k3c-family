@@ -12,21 +12,21 @@
         {
           "art": "flaeche",
           "form": "M-9.92 -90C-12.8 -84 -10.4 -74 -7.36 -68L7.36 -68C10.4 -74 12.8 -84 9.92 -90C3.2 -93.5 -3.2 -93.5 -9.92 -90Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-9.92 -90C-12.8 -84 -10.4 -74 -7.36 -68L-1.6 -68C-4 -75 -5.6 -84 -4 -92Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 1.82,
           "form": "M6.4 -87C8 -81 7.2 -75 5.12 -71",
-          "material": "stein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
@@ -50,27 +50,27 @@
         {
           "art": "flaeche",
           "form": "M-7.84 -72.5C-7.52 -66 -6.56 -60 -6.24 -56L6.24 -56C6.56 -60 7.52 -66 7.84 -72.5Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-7.84 -72.5C-7.52 -66 -6.56 -60 -6.24 -56L-1.6 -56L-2.08 -72.5Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "form": "M-8.96 -58.5H8.96L8.32 -53.5H-8.32Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-8.96 -58.5H-3.2L-3.52 -53.5H-8.32Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
@@ -82,21 +82,21 @@
         {
           "art": "flaeche",
           "form": "M-6.72 -53.8C-8.64 -50 -7.04 -45.8 0 -45.2C6.72 -45.6 8.64 -49 6.88 -53.8Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-6.72 -53.8C-8.64 -50 -7.04 -45.8 0 -45.2L-1.6 -53.8Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M5.76 -52.2C10.56 -52.4 11.2 -49 7.04 -48",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
@@ -115,21 +115,21 @@
         {
           "art": "flaeche",
           "form": "M-10.15 -55C-11.6 -45 -10.15 -35 -7.25 -27L7.25 -27C10.15 -35 11.6 -45 10.15 -55Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-10.15 -55C-11.6 -45 -10.15 -35 -7.25 -27L-2.17 -27C-4.35 -36 -5.08 -46 -4.35 -55Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 1.68,
           "form": "M6.52 -50C7.97 -42 7.25 -35 5.08 -29",
-          "material": "stein"
+          "material": "kristall"
         }
       ],
       "pivot": [0, -50]
@@ -141,27 +141,27 @@
         {
           "art": "flaeche",
           "form": "M-7.02 -31L7.02 -31L7.02 -24L-7.02 -24Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "form": "M-7.56 -24C-7.56 -17 -7.02 -11 -7.02 -6L-8.37 -1C-8.64 1 -7.02 1.6 -4.05 1.6L14.85 1.6C18.9 1.6 19.71 -1.6 16.2 -3.2L7.02 -6.2C7.02 -12 7.56 -18 7.56 -24Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-7.56 -24C-7.56 -17 -7.02 -11 -7.02 -6L-8.37 -1C-8.64 1 -7.02 1.6 -4.05 1.6L0 1.6L-2.03 -6C-2.43 -12 -2.7 -18 -2.7 -24Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 1.62,
           "form": "M5.13 -21C5.4 -15 5.4 -10 4.86 -7",
-          "material": "stein"
+          "material": "kristall"
         },
         {
           "art": "falz",
@@ -172,7 +172,7 @@
         {
           "art": "flaeche",
           "form": "M-8.91 -27L8.91 -27L8.23 -21.5L-8.23 -21.5Z",
-          "material": "stein"
+          "material": "kristall"
         },
         {
           "art": "falz",
@@ -190,20 +190,20 @@
         {
           "art": "flaeche",
           "form": "M-10.15 -55C-11.6 -45 -10.15 -35 -7.25 -27L7.25 -27C10.15 -35 11.6 -45 10.15 -55Z",
-          "material": "stein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-10.15 -55C-11.6 -45 -10.15 -35 -7.25 -27L-2.17 -27C-4.35 -36 -5.08 -46 -4.35 -55Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 1.68,
           "form": "M6.52 -50C7.97 -42 7.25 -35 5.08 -29",
-          "material": "stein",
+          "material": "kristall",
           "ton": "licht"
         }
       ],
@@ -216,25 +216,25 @@
         {
           "art": "flaeche",
           "form": "M-7.02 -31L7.02 -31L7.02 -24L-7.02 -24Z",
-          "material": "stein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "form": "M-7.56 -24C-7.56 -17 -7.02 -11 -7.02 -6L-8.37 -1C-8.64 1 -7.02 1.6 -4.05 1.6L14.85 1.6C18.9 1.6 19.71 -1.6 16.2 -3.2L7.02 -6.2C7.02 -12 7.56 -18 7.56 -24Z",
-          "material": "stein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-7.56 -24C-7.56 -17 -7.02 -11 -7.02 -6L-8.37 -1C-8.64 1 -7.02 1.6 -4.05 1.6L0 1.6L-2.03 -6C-2.43 -12 -2.7 -18 -2.7 -24Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 1.62,
           "form": "M5.13 -21C5.4 -15 5.4 -10 4.86 -7",
-          "material": "stein",
+          "material": "kristall",
           "ton": "licht"
         },
         {
@@ -246,7 +246,7 @@
         {
           "art": "flaeche",
           "form": "M-8.91 -27L8.91 -27L8.23 -21.5L-8.23 -21.5Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "licht"
         },
         {
@@ -264,32 +264,32 @@
         {
           "art": "flaeche",
           "form": "M-18.6 -91C-23.25 -80 -24.8 -60 -24.8 -43L24.8 -43C24.8 -59 23.25 -78 18.6 -91C6.2 -94.5 -6.2 -94.5 -18.6 -91Z",
-          "material": "stein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-18.6 -91C-23.25 -80 -24.8 -60 -24.8 -43L-7.75 -43C-9.3 -60 -9.3 -78 -6.2 -93Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M12.4 -89C17.05 -78 19.38 -62 20.15 -46L22.63 -46C22.48 -62 21.08 -78 17.05 -90Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "form": "M-24.03 -58.5H24.03V-53H-24.03Z",
-          "material": "stein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-24.03 -55.2H24.03V-53H-24.03Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
@@ -350,32 +350,32 @@
         {
           "art": "flaeche",
           "form": "M-4.95 -98H6.05V-89H-4.95Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "form": "M-13.2 -104C-14.3 -116 -6.6 -123 3.3 -122.5C13.2 -122 18.7 -115 18.92 -107.5C19.14 -100 14.3 -95 6.6 -94.2C-2.2 -93.5 -12.1 -97 -13.2 -104Z",
-          "material": "stein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-13.2 -104C-14.3 -116 -6.6 -123 3.3 -122.5C-2.2 -118 -4.4 -110 -2.2 -95C-7.7 -96 -12.1 -99 -13.2 -104Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M11 -119C15.4 -116 17.6 -112 18.04 -108C16.06 -110 14.08 -114 11 -119Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "form": "M-6.6 -106.5C-9.9 -107.5 -10.45 -101.5 -6.6 -101.5Z",
-          "material": "stein"
+          "material": "kristall"
         },
         {
           "art": "falz",
@@ -386,13 +386,13 @@
         {
           "art": "flaeche",
           "form": "M16.06 -109.5C18.92 -106.4 20.9 -104.2 19.36 -102.4C18.26 -101.6 16.72 -102 15.84 -102.8Z",
-          "material": "stein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M16.06 -103.4C16.94 -102.6 18.04 -102.2 19.14 -102.6L18.7 -103.6Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
@@ -425,7 +425,7 @@
           "art": "falz",
           "breite": 2.2,
           "form": "M6.38 -115.8C9.68 -117.4 13.2 -117 15.84 -115.2",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
@@ -456,20 +456,20 @@
         {
           "art": "flaeche",
           "form": "M-9.92 -90C-12.8 -84 -10.4 -74 -7.36 -68L7.36 -68C10.4 -74 12.8 -84 9.92 -90C3.2 -93.5 -3.2 -93.5 -9.92 -90Z",
-          "material": "stein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-9.92 -90C-12.8 -84 -10.4 -74 -7.36 -68L-1.6 -68C-4 -75 -5.6 -84 -4 -92Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 1.82,
           "form": "M6.4 -87C8 -81 7.2 -75 5.12 -71",
-          "material": "stein",
+          "material": "kristall",
           "ton": "licht"
         },
         {
@@ -494,26 +494,26 @@
         {
           "art": "flaeche",
           "form": "M-7.84 -72.5C-7.52 -66 -6.56 -60 -6.24 -56L6.24 -56C6.56 -60 7.52 -66 7.84 -72.5Z",
-          "material": "stein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-7.84 -72.5C-7.52 -66 -6.56 -60 -6.24 -56L-1.6 -56L-2.08 -72.5Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "form": "M-8.96 -58.5H8.96L8.32 -53.5H-8.32Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-8.96 -58.5H-3.2L-3.52 -53.5H-8.32Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
@@ -525,20 +525,20 @@
         {
           "art": "flaeche",
           "form": "M-6.72 -53.8C-8.64 -50 -7.04 -45.8 0 -45.2C6.72 -45.6 8.64 -49 6.88 -53.8Z",
-          "material": "stein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-6.72 -53.8C-8.64 -50 -7.04 -45.8 0 -45.2L-1.6 -53.8Z",
-          "material": "stein",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M5.76 -52.2C10.56 -52.4 11.2 -49 7.04 -48",
-          "material": "stein"
+          "material": "kristall"
         },
         {
           "art": "falz",
@@ -603,7 +603,18 @@
       ]
     },
     "idle": {
-      "frames": 8
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "oberarm-v": -30,
+            "oberarm-h": -22,
+            "unterarm-v": -25,
+            "unterarm-h": -25
+          }
+        }
+      ]
     },
     "lauf": {
       "frames": 8

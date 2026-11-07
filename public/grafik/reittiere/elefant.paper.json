@@ -29,7 +29,13 @@
         },
         {
           "art": "flaeche",
-          "form": "M-30.2 -5.2H-21L-19.6 0H-30.2Z",
+          "form": "M-34 -7L-18 -7L-17 0L-35 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-32 -2.5H-29V0H-32ZM-27.5 -2.5H-24.5V0H-27.5ZM-23 -2.5H-20V0H-23Z",
           "material": "huf"
         }
       ],
@@ -59,7 +65,13 @@
         },
         {
           "art": "flaeche",
-          "form": "M25.8 -5.2H35L36.4 0H25.8Z",
+          "form": "M22 -7L38 -7L39 0L21 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M24 -2.5H27V0H24ZM28.5 -2.5H31.5V0H28.5ZM33 -2.5H36V0H33Z",
           "material": "huf"
         }
       ],
@@ -176,7 +188,13 @@
         },
         {
           "art": "flaeche",
-          "form": "M-34.2 -5.2H-25L-23.6 0H-34.2Z",
+          "form": "M-38 -7L-22 -7L-21 0L-39 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-36 -2.5H-33V0H-36ZM-31.5 -2.5H-28.5V0H-31.5ZM-27 -2.5H-24V0H-27Z",
           "material": "huf"
         }
       ],
@@ -205,7 +223,13 @@
         },
         {
           "art": "flaeche",
-          "form": "M21.8 -5.2H31L32.4 0H21.8Z",
+          "form": "M18 -7L34 -7L35 0L17 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M20 -2.5H23V0H20ZM24.5 -2.5H27.5V0H24.5ZM29 -2.5H32V0H29Z",
           "material": "huf"
         }
       ],
@@ -339,14 +363,10 @@
   },
   "ausgabe": {
     "hoehe_px": 192,
-    "rahmen": [-78, -122, 155, 126],
+    "rahmen": [-78, -128, 155, 132],
     "massstab": 1.3
   },
   "animationen": {
-    "galopp": {
-      "frames": 8,
-      "gangart": "galopp"
-    },
     "schritt": {
       "frames": 8,
       "gangart": "schritt"
@@ -355,5 +375,9 @@
       "frames": 8,
       "gangart": "trab"
     }
+  },
+  "proportionen": {
+    "fuss": "elefantenfuss",
+    "gangarten": ["schritt", "trab"]
   }
 }

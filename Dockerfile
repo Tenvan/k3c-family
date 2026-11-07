@@ -18,6 +18,8 @@ COPY package.json bun.lock ./
 RUN npm i -g bun@1.4.2 && bun install --frozen-lockfile
 COPY . .
 COPY --from=atlas /src/public/atlas ./public/atlas
+# Papierschnitt-Grafik rendern: PNG und Manifeste sind nicht eingecheckt (B-737)
+RUN bun tools/paper/bin/gen.ts
 # Version des Clients (Landingpage, Lobby, Debug-Overlay); .git fehlt im Image, deshalb als Build-Argument
 ARG VERSION=dev
 RUN bunx tsc --noEmit && K3C_VERSION=$VERSION bunx vite build

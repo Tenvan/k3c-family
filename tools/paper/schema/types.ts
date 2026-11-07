@@ -19,7 +19,7 @@ export type Animation = {
 };
 
 export type Fuss = 'huf' | 'pfote' | 'elefantenfuss';
-export type GangartName = 'schritt' | 'trab' | 'galopp';
+export type GangartName = 'stand' | 'schritt' | 'trab' | 'galopp';
 /** Proportionen je Figur (`figur`: Faktoren) bzw. je Tier (`vierbeiner`: Fußform, Gangarten); RD2.4, B-715. */
 export type Proportionen = { fuss?: Fuss; gangarten?: GangartName[]; arme?: number; beine?: number; rumpf?: number; kopf?: number };
 

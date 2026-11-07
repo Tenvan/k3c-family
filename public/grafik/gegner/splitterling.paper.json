@@ -104,7 +104,7 @@
         },
         {
           "art": "flaeche",
-          "form": "M7 -11L11 -14L10 -9Z",
+          "form": "M5.5 -12L12 -15L11 -8L7 -8.5Z",
           "material": "edelstein"
         }
       ],

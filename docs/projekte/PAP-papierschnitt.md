@@ -33,7 +33,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | US2 | Spiel lädt Natur, Objekte, Münzen, Icons und Reittiere als Papierschnitt | erledigt |
 | WB2 | Review und Katalog: feste Schieber, getrennte Scrollbereiche, Lade-Anzeige | erledigt |
 | RD2 | Renderer und Stil nach der Sichtprüfung: Schatten, Materialien, Sichtbarkeit, Rig-Proportionen | erledigt |
-| MG9 | Papierschnitt nachbessern: Monarch, Reittiere, Truppen, Gegner | geplant |
+| MG9 | Papierschnitt nachbessern: Monarch, Reittiere, Truppen, Gegner | erledigt |
 | MG10 | Papierschnitt: Bosse neu mit eigener Silhouette | geplant |
 | MG11 | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | geplant |
 | US3 | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | geplant |
