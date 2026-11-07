@@ -123,12 +123,13 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | offen | – | Die Sound-Seite hat Filter und Prompt-Buttons |
 | [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | offen | – | Die Quellen-Seite hat Filter und Prompt-Buttons |
 | [B-725](B-725-rust-engine-machbarkeit.md) | SRV | Idee | mittel | eingeplant | RS1 | Simulationskern läuft schneller in Rust, Server bleibt Go (Machbarkeit und Umstiegspfad) |
-| [B-726](B-726-workbench-sim-per-task.md) | DEV | Schuld | mittel | offen | – | Workbench ruft Sim und Balancing als Task auf statt engine/sim zu importieren |
-| [B-731](B-731-zustand-ohne-json-roundtrip.md) | SRV | Idee | hoch | offen | – | Zustands-Snapshot ohne JSON-Roundtrip (stateOf) – 98 % der Raum-Tick-Zeit |
+| [B-726](B-726-workbench-sim-per-task.md) | DEV | Schuld | mittel | eingeplant | RS2 | Workbench ruft Sim und Balancing als Task auf statt engine/sim zu importieren |
+| [B-731](B-731-zustand-ohne-json-roundtrip.md) | SRV | Idee | hoch | eingeplant | RS2 | Zustands-Snapshot ohne JSON-Roundtrip (stateOf) – 98 % der Raum-Tick-Zeit |
 | [B-732](B-732-assets-katalog-schneller.md) | DEV | Idee | mittel | offen | – | Der Assets-Katalog zeigt Einträge sofort, cacht sie und hat eine größere Vorschau |
 | [B-733](B-733-assets-groessenvergleich.md) | DEV | Idee | mittel | offen | – | Katalog und Review zeigen ein Asset im Größenvergleich mit dem Monarch vor einem Biom |
 | [B-734](B-734-katalog-teil-ausblenden.md) | DEV | Idee | mittel | offen | – | Im Katalog lässt sich das gewählte Teil in der Vorschau aus- und einblenden |
 | [B-735](B-735-weitere-materialien-stroh-lava-geisterweiss.md) | PAP | Schuld | niedrig | offen | – | Weitere Ersatz-Materialien (stroh, lava, geisterweiss, fell-grau) in der Stil-Datei |
+| [B-736](B-736-rust-server-etappe2.md) | SRV | Idee | mittel | eingeplant | RS2 | Etappe 2: Server und Simulation laufen komplett in Rust, Go-Server und Brücke entfallen |
 
 ## Archiv
 
