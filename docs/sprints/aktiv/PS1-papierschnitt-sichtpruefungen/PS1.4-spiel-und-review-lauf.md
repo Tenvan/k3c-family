@@ -59,12 +59,12 @@ Ergebnis nennt je Punkt ✅ oder den Befund.
 2026-11-07, Ralf im Browser-Pane (neuer Spielstand) und in der Workbench.
 
 ### Spiel ✏️
-- Der Bogenschütze schwebt über dem Turm. Er muss immer auf der Plattform stehen, auch nach einem Gebäude-Wechsel.
-- Beim Reiten passt die Animation des Monarchen nicht zur Laufgeschwindigkeit.
+- Der Bogenschütze schwebt deutlich über dem Turm. Er muss immer auf der Plattform stehen, auch wenn das Gebäude wechselt. Bild: [Bogenschütze über dem Turm](bilder/ps1.4-bogenschuetze-turm.webp)
+- Die Animation des berittenen Monarchen passt nicht zur Laufgeschwindigkeit.
 - Auf dem Pferd ist kein Idle zu sehen.
-- Die Bäume sind zu klein und unterscheiden sich nicht vom Hintergrund. Der Hintergrund soll keine Bäume zeigen, sonst passt das Roden nicht (siehe D-US2-01).
-- Das Tor ist zu klein.
+- Die Bäume sind zu klein. Die rodbaren Birken, Tannen und Pappeln sind kaum von den Bäumen im Hintergrund zu unterscheiden. Der Hintergrund soll deshalb keine Bäume zeigen, sonst passt das Roden nicht (siehe D-US2-01). Bild: [Bäume und Hintergrund](bilder/ps1.4-baeume-hintergrund.webp)
+- Das Tor bzw. Portal ist zu klein, gemessen am berittenen Monarchen. Bild: [Tor und Portal](bilder/ps1.4-tor-portal.webp)
 - Pixel-Reste: nur die bekannten (Gerüste, Plantage) ✅
 
 ### Review-Lauf ✅
-Claude hat per `assets_set` den Umhang des Monarchen auf 66 gekürzt. Diff, Overlay und Teil-Markierung waren unter Assets › Review sichtbar, ohne eine Datei zu öffnen. Ralf hat abgelehnt, die Änderung ist zurückgesetzt (005/AC-11 erfüllt).
+Claude hat per `assets_set` den Umhang des Monarchen auf 66 gekürzt. Diff, Overlay und Teil-Markierung waren unter Assets › Review zu sehen, ohne eine Datei zu öffnen. Ralf hat abgelehnt, die Änderung ist zurückgesetzt (005/AC-11 erfüllt).
