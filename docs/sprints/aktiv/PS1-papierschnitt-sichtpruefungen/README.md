@@ -67,10 +67,10 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| PS1.1 | `PS1.1-b701-durchgehen.md` | Workshop | Mensch | offen |
-| PS1.2 | `PS1.2-resvg-gegen-prototyp.md` | Workshop | Mensch | offen |
-| PS1.3 | `PS1.3-gruppen-in-assets.md` | Workshop | Mensch | offen |
-| PS1.4 | `PS1.4-spiel-und-review-lauf.md` | Workshop | Mensch | offen |
+| PS1.1 | `PS1.1-b701-durchgehen.md` | Workshop | Mensch | fertig |
+| PS1.2 | `PS1.2-resvg-gegen-prototyp.md` | Workshop | Mensch | fertig |
+| PS1.3 | `PS1.3-gruppen-in-assets.md` | Workshop | Mensch | fertig |
+| PS1.4 | `PS1.4-spiel-und-review-lauf.md` | Workshop | Mensch | fertig |
 | PS1.5 | `PS1.5-befunde-tickets-abschluss.md` | Review | autonom | offen |
 
 ## Abnahme

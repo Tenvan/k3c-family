@@ -1,6 +1,6 @@
 # PS1.2 · resvg-Ausgabe gegen Prototyp
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -50,4 +50,9 @@ Ergebnis nennt je Punkt ✅ oder die Abweichung.
 
 ## Ergebnis
 
-–
+2026-11-07, Ralf im Dialog (Prototyp im Browser-Pane, resvg-Ausgabe idle 4, lauf 2, galopp 5):
+
+- Papierkanten ✏️ Drop-Shadow und Papierstruktur deutlich schwächer als im Prototyp → Folge-Ticket: Stil-Werte `lage`/`auflage`/`struktur` an den Prototyp angleichen, alle Gruppen neu rendern.
+- Farben und Proportionen ✅
+- idle, lauf, Reiten ✅ (Sitz, Umhang, Schweif im Bild)
+- Kleine Stufe: entfällt (Monarch hat keine `*.s2.png`).

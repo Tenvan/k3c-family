@@ -1,6 +1,6 @@
 # PS1.3 · Gruppen MG1–MG8 in Assets
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -51,4 +51,13 @@ Ergebnis hat acht Abschnitte, je Gruppe einen.
 
 ## Ergebnis
 
-–
+2026-11-07, Ralf im Dialog anhand von `assets_preview`-Bildern. Alle Gruppen ✏️:
+
+1. **figuren:** spieler4 eine kontrastreiche Farbe statt `leder`, weil der Rock auf dem braunen Pferd verschwimmt. Die Satteldecke folgt der Rockfarbe (B-711). Sonst ✅.
+2. **reittiere:** Pfoten bzw. Füße je Tier und eine eigene Wolfssilhouette, als Teil des Rig-Tickets (D-MG2-08). Material und Maßstab wie in PS1.1.
+3. **truppen:** Der Krieger greift zum Gegner hin an (bisher verdeckt der Schwertarm das Gesicht). Dazu alle Punkte aus D-MG3-08 und der Pfeil (D-MG3-07).
+4. **gegner:** alle Punkte aus D-MG4-07. Dazu wirkt der Troll im Angriff einbeinig, und die Kristallspinne ist mit 97 × 59 px zu klein.
+5. **bosse:** komplett neu gestalten. Jeder Boss bekommt eine eigene Silhouette statt der Krieger-Grundform, das braucht Rig-Proportionen je Figur. Dazu alle Punkte aus D-MG5-04.
+6. **gebaeude:** Die Turmspitzen der Burg sind in Stufe 5 abgeschnitten, ein Rahmen-Bug. Kristall soll leuchten und Fugen zeigen. Die Stufen sollen sich auch in der Form steigern, nicht nur in der Farbe. Dazu alle Punkte aus D-MG6-08.
+7. **hintergruende:** neu gestalten. Mehr Tiefe und Details je Ebene, Höhlenfelsen nicht mehr wie Kuppelzelte, eine Rückwand im Eisenstollen, die Glut nicht mehr wie rote Vögel. Dazu die Varianten v3–v5 und alle Punkte aus D-MG7-06, nach der Material-Erweiterung.
+8. **MG8:** Die Icons sind bei 32 px kaum lesbar und werden nachgebessert. Die Münze bekommt eine Dreh-Animation. Dazu alle Punkte aus D-MG8-04. Die Tanne ✅.

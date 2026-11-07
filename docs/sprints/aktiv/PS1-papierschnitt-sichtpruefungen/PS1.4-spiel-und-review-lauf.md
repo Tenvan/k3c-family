@@ -1,6 +1,6 @@
 # PS1.4 · Spiel und Review-Lauf
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -56,4 +56,15 @@ Ergebnis nennt je Punkt ✅ oder den Befund.
 
 ## Ergebnis
 
-–
+2026-11-07, Ralf im Browser-Pane (neuer Spielstand) und in der Workbench.
+
+### Spiel ✏️
+- Der Bogenschütze schwebt über dem Turm. Er muss immer auf der Plattform stehen, auch nach einem Gebäude-Wechsel.
+- Beim Reiten passt die Animation des Monarchen nicht zur Laufgeschwindigkeit.
+- Auf dem Pferd ist kein Idle zu sehen.
+- Die Bäume sind zu klein und unterscheiden sich nicht vom Hintergrund. Der Hintergrund soll keine Bäume zeigen, sonst passt das Roden nicht (siehe D-US2-01).
+- Das Tor ist zu klein.
+- Pixel-Reste: nur die bekannten (Gerüste, Plantage) ✅
+
+### Review-Lauf ✅
+Claude hat per `assets_set` den Umhang des Monarchen auf 66 gekürzt. Diff, Overlay und Teil-Markierung waren unter Assets › Review sichtbar, ohne eine Datei zu öffnen. Ralf hat abgelehnt, die Änderung ist zurückgesetzt (005/AC-11 erfüllt).

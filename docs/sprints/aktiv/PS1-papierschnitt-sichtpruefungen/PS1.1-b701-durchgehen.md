@@ -1,6 +1,6 @@
 # PS1.1 · B-701 durchgehen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -90,4 +90,15 @@ Zählung: Zeilen in B-701 › Notizen = Zeilen mit Vermerk (ohne die fünf Lesba
 
 ## Ergebnis
 
-–
+2026-11-07, Ralf im Dialog. Alle Zeilen ✅ außer diesen ✏️ (Folge-Tickets in PS1.5):
+
+- **D-RD1-06** renderKey des Reiters enthält den Hash der Reittier-Spec.
+- **D-MG2-06** einheitlicher Maßstab aller Reittiere, Rahmen wächst ohne Skalierung.
+- **Materialien** (D-MG2-01, D-MG3-04, D-MG4-05, D-MG5-02, D-MG7-04, D-MG8-02): Stil um schwarz, eisen, leinen, kupfer, kristall und Biom-Töne erweitern, betroffene Assets umstellen.
+- **D-MG2-08** Rig `vierbeiner`: Beinlänge und Rumpf je Tier, Gangarten je Tier (Elefant ohne Galopp).
+- **D-MG3-07, D-MG4-06** Keyframe-Feld `sichtbar` je Teil; Bogenschützen und Lavaschleim nachziehen.
+- **D-US2-01** Natur in alter Spielhöhe (Bäume ≈ 360 px) und 2–3 Formen je Art.
+- **D-US2-03 / D-US1-02** Monarch mit `<gangart>-<reittier>` für alle Reittiere (nach Rig-Ausbau).
+- **D-US1-03** Keyframes für give, hit, death, respawn (Monarch, Truppen).
+
+Zusätzlich in PS1.3/PS1.4 ansehen: D-09/D-US1-05 (Schatten), D-MG6-05 (Burg-Stufen), D-MG1-03/04 (Spielerfarben, Satteldecke). Kleinbefunde D-MG8-04, D-US1-06, D-US2-02/04 laufen nach PS1.3/CU1.
