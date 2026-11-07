@@ -1,14 +1,14 @@
 # RD2 · PAP · Renderer und Stil nach der Sichtprüfung: Schatten, Materialien, Sichtbarkeit, Rig-Proportionen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** PAP
 - **Domäne:** PAP
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-712, B-713, B-714, B-715
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 8cd4c5be
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Ralf, 2026-11-07, Chat (Revision 1)
 
 ## Ausgangslage
 
@@ -20,7 +20,7 @@ Renderer und Stil liefern alles, was die Asset-Sprints MG9–MG11 brauchen.
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+Ralf (🧑) prüft die Sichtprüfung und gibt frei; Claude setzt um; Nutzer sind die Asset-Sprints MG9 bis MG11 und das Spiel.
 
 ## Anforderungen
 
@@ -36,11 +36,11 @@ Welle 4, erster Sprint: vor MG9, MG10, MG11. Lanes `stil` und `renderer`.
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis.
+Monarch idle 4 neben dem Prototyp: gleich starke Schatten und Struktur. Pferd-Spec ändern: Monarch wird neu gerendert. Teil mit `sichtbar: false` fehlt im Frame. Elefant ohne `galopp` ist gültig.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten.
+Pferd ohne `galopp` ist ungültig. `sichtbar` fehlt im Keyframe: Teil bleibt wie im vorigen Keyframe. Ersatz-Material nach Umstellung noch benutzt: Test schlägt fehl.
 
 ## Akzeptanzkriterien
 
@@ -54,6 +54,14 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 keine
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| RD2.1 | `RD2.1-stil-schatten.md` | Umsetzung | autonom | in Arbeit |
+| RD2.2 | `RD2.2-stil-materialien.md` | Umsetzung | autonom | offen |
+| RD2.3 | `RD2.3-renderer-sichtbar-renderkey.md` | Umsetzung | autonom | offen |
+| RD2.4 | `RD2.4-renderer-rig-proportionen.md` | Umsetzung | autonom | offen |
+| RD2.5 | `RD2.5-review.md` | Review | autonom | offen |
 
 Reife Entwurf:
 

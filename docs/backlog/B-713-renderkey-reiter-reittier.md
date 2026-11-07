@@ -8,9 +8,9 @@
 - **Sprint:** RD2
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Ralf, 2026-11-07, Chat (mit Sprint RD2)
 
 ## Ausgangslage
 
