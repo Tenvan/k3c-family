@@ -24,9 +24,9 @@ export function beinLaengen(spec: Spec): { ober: number; unter: number } {
 
 /** Jede Gangart des Tiers braucht eine Animation, und keine Animation nutzt eine fremde Gangart (Regeln gangart-fehlt, gangart-nicht-erlaubt). */
 export function pruefeGangarten(spec: Spec): void {
-  const erlaubt = gangartenVon(spec), anims = Object.entries(spec.animationen ?? {});
+  const erlaubt: GangartName[] = [...gangartenVon(spec), 'stand'], anims = Object.entries(spec.animationen ?? {});
   const fehler = [
-    ...erlaubt.filter((g) => !anims.some(([, a]) => a.gangart === g))
+    ...gangartenVon(spec).filter((g) => !anims.some(([, a]) => a.gangart === g))
       .map((g) => ({ feld: 'animationen', regel: 'gangart-fehlt', text: `${spec.id} braucht eine Animation mit gangart ${g} (oder proportionen.gangarten ohne ${g})` })),
     ...anims.filter(([, a]) => a.gangart && !erlaubt.includes(a.gangart))
       .map(([n, a]) => ({ feld: `animationen.${n}.gangart`, regel: 'gangart-nicht-erlaubt', text: `gangart ${a.gangart} steht nicht in proportionen.gangarten (${erlaubt.join(', ')})` })),

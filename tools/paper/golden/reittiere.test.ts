@@ -14,7 +14,7 @@ describe('Reittiere (B-716)', () => {
 
   it('AC-01: gleicher Maßstab (hoehe_px / Rahmenhöhe) in der ganzen Gruppe', () => {
     const faktoren = new Set(IDS.map((id) => { const a = spec(id).ausgabe!; return a.hoehe_px / a.rahmen![3]; }));
-    expect([...faktoren].length).toBe(1);
+    expect(faktoren.size).toBe(1);
   });
 
   it.each(['wolf', 'weisser-wolf', 'hoellenhund'])('AC-02: %s hat Pfoten', (id) => expect(spec(id).proportionen?.fuss).toBe('pfote'));

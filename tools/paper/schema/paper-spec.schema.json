@@ -182,7 +182,7 @@
         "frames": { "type": "integer", "minimum": 1, "maximum": 64 },
         "fps": { "type": "integer", "minimum": 1, "maximum": 60 },
         "reittier": { "description": "id eines vierbeiner-Assets", "$ref": "#/$defs/name" },
-        "gangart": { "enum": ["schritt", "trab", "galopp"] },
+        "gangart": { "enum": ["stand", "schritt", "trab", "galopp"] },
         "keyframes": {
           "description": "Eigene Pose: zyklisch, linear interpoliert",
           "type": "array",
