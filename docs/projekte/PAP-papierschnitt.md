@@ -31,6 +31,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | PS1 | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | aktiv |
 | CU1 | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | geplant |
 | US2 | Spiel lädt Natur, Objekte, Münzen, Icons und Reittiere als Papierschnitt | erledigt |
+| WB2 | Review und Katalog: feste Schieber, getrennte Scrollbereiche, Lade-Anzeige | aktiv |
 
 ## Nicht-Ziele
 
