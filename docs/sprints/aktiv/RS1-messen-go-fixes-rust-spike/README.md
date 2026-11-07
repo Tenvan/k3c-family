@@ -73,9 +73,10 @@ keine
 | RS1.4 | `RS1.4-rust-toolchain-bruecke.md` | Umsetzung | autonom | fertig |
 | RS1.5 | `RS1.5-rng-level-rust.md` | Umsetzung | autonom | fertig |
 | RS1.6 | `RS1.6-spike-sim-pfad.md` | Umsetzung | autonom | fertig |
-| RS1.7 | `RS1.7-review.md` | Review | autonom | offen |
+| RS1.7 | `RS1.7-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-07 (Claude, autonom): AC-01, AC-03, AC-04, AC-05, AC-06 (amd64), AC-07 (nur PC) siehe Session-Ergebnisse RS1.1–RS1.6; `task check`, `check:go`, `check:diff` grün, `check:race` lokal ohne gcc übersprungen, `rust:test`/clippy grün.
+Offen (Ralf): AC-02 Pi-Baseline (RS1.2), AC-06 arm64 und CI-Jobs `rust`/`go-arm64`/`docker` laufen erst nach Push auf develop (nicht im PR), AC-04 am Benchmark gemessen, Entscheidung Vollumbau (Empfehlung 006: nein, zuerst B-731).
+Behoben: Review-Befunde FFI (escape, Null-Guards, MAX_CHUNKS), Fehlertext Level. Neue Tickets: B-731.

@@ -45,6 +45,9 @@ func (g *LevelGen) Generate(input []byte, seed string, opts, out []byte) ([]byte
 			if i := bytes.IndexByte(msg, 0); i >= 0 {
 				msg = msg[:i]
 			}
+			if len(msg) == 0 {
+				msg = []byte("(ohne Text, Puffer zu klein)")
+			}
 			kind := "Eingabe"
 			if n == LevelErrGenerate {
 				kind = "Generator"

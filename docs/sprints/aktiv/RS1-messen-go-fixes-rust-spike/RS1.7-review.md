@@ -1,6 +1,6 @@
 # RS1.7 · Review und Abnahme RS1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -53,5 +53,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+task check, check:go grün; check:race lokal ohne gcc übersprungen (CI prüft); rust:test und clippy grün. Zwei Reviews (FFI/Level, Sprint-Diff): keine schweren Funde; behoben: Heap-Pinning der Puffer, Null-Guards, Chunk-Obergrenze, leerer Fehlertext. Offen als Hinweis: Watch ersetzt Root-Ordner erst nach 30 s (Sicherheits-Scan), Seed ungültiges UTF-8 nur in Rust lossy (Go liefert immer gültig). Abnahme im Sprint-README; RS1.2 (Pi) bleibt offen, Sprint bleibt aktiv.
