@@ -71,7 +71,7 @@ Defaults in B-701 (D-MG7-01 bis D-MG7-04), Entscheidung durch 🧑 in PS1.
 |---|---|---|---|---|
 | MG7.1 | `MG7.1-wald-hoehle.md` | Umsetzung | autonom | fertig |
 | MG7.2 | `MG7.2-mine-eisenstollen-kristall.md` | Umsetzung | autonom | fertig |
-| MG7.3 | `MG7.3-review.md` | Review | autonom | offen |
+| MG7.3 | `MG7.3-review.md` | Review | autonom | fertig |
 
 Lane `hintergruende`, nacheinander; Umsetzung Sonnet, Review Opus; keine Mensch-Session (Sichtprüfung in PS1).
 
@@ -81,5 +81,7 @@ Lane `hintergruende`, nacheinander; Umsetzung Sonnet, Review Opus; keine Mensch-
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-11-07, Review MG7.3 (Opus-Reviewer, Claude): AC-01 bis AC-03 erfüllt (Nachweise MG7.1–MG7.3); Sichtprüfung durch 🧑 in PS1 offen.
+- Behoben: Kerben an Streben (Mine, Eisenstollen), Schatten der Höhlen-Blöcke, Löcher am Säulenfuß (Höhle mitte).
+- Offen als D-MG7-01 bis D-MG7-06 in B-701. Keine neuen Tickets.
+- `task check:diff` lief in die Zeitgrenze (Workbench-Go-Tests des feature/pap-Stands); `task test` 3173/3173 und `task test -- paper` 187/187 grün.

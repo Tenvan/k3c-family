@@ -48,15 +48,15 @@
     }
   },
   "hg-hoehle-mitte-v1": {
-    "renderKey": "e01ce6e0b9ecb421b0b1255175d42e30e3ec735fea7f23feb60ba03e62e38083",
+    "renderKey": "70abf288b2c9dbcf9ab05d97d47ca2e9bdc3113ac6623873bc0d12732bee56b2",
     "dateien": {
-      "stand.png": "4ccfff6543b81a8c3172b202e81ab99682b18baec40483b6eb0abc570279b127"
+      "stand.png": "731e1fd79c9787b9c5ff9f44f0120ddbe5eb2243590606a7c052c1678508df90"
     }
   },
   "hg-hoehle-mitte-v2": {
-    "renderKey": "631757869095b654b606a14c423f29d75b1b149a6b52453bfd5ae694b66fe166",
+    "renderKey": "c656f660e3094a7b31330166186a41e94293a43dfac084c9eec8eb2e68d03c4b",
     "dateien": {
-      "stand.png": "5be749926225e6ee173665f729053e3246b69decbdd432c7f8674b196924e6a4"
+      "stand.png": "6e5fcb7d20539cb1e5f37a3e4b53eb19e8928b31c8b8b19a286a7cc7639eafd1"
     }
   },
   "hg-hoehle-nah-v1": {

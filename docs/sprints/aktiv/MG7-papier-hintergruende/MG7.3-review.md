@@ -1,6 +1,6 @@
 # MG7.3 · Review MG7
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -53,5 +53,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Getrennter Reviewer (Opus, nur lesend): `assets_list`, `assets_review` gegen e3c95f7f, 30 `assets_preview`, Kachelprüfung per PIL (Spalte 0 gegen 767: 26/30 ohne Abweichung, 4 mit 1–2 Zeilen Kantenglättung, kein Motiv am Rand abgeschnitten).
+- **AC-01 geprüft:** 30/30 gültig, Rig `hintergrund`, 768 × 480.
+- **AC-02 geprüft:** `task gen:paper` grün, `golden.json` und `index.paper.json` je 30 Einträge, Hashes passen zu den PNGs; `task test -- paper` 187/187 grün.
+- **AC-03 geprüft:** alle 30 per Preview (Umsetzung und Review), `assets_review` ohne roten Eintrag. Sichtprüfung durch 🧑 in PS1 offen.
+- Befund behoben: ausgestanzte Löcher am Säulenfuß in `hg-hoehle-mitte-*` (Stalagmiten jetzt eigenes Teil `kegel`).
+- Übrige Befunde (Lesbarkeit, Tiefe, Varianten) als D-MG7-06 für PS1.

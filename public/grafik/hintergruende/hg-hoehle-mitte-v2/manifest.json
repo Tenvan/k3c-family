@@ -1,10 +1,10 @@
 {
   "id": "hg-hoehle-mitte-v2",
   "version": 1,
-  "specHash": "e38e31fc212356a396cc662a53b8d294b1efa41323f28c3bacca98f6a0ad1c5b",
+  "specHash": "f09bce75ea1f52463bfe33001404dd1334e7aadf02082b116b9e54050874c053",
   "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "631757869095b654b606a14c423f29d75b1b149a6b52453bfd5ae694b66fe166",
+  "renderKey": "c656f660e3094a7b31330166186a41e94293a43dfac084c9eec8eb2e68d03c4b",
   "rahmen": [
     0,
     -480,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "fed8fd20778a40e8e9970f4184e858082330e6eb0e4df99f1c55243dd6844976"
+        "cde2ceffae6c64f728350ed6339f6a1335cfc92a815d49fde6653a631a33b2c3"
       ]
     }
   },
