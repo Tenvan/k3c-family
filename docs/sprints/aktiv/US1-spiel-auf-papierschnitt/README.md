@@ -1,14 +1,14 @@
-# US1 · CLI · Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt
+# US1 · CLI, SRV, INF · Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** PAP
-- **Domäne:** CLI
-- **Reife:** Entwurf
+- **Domäne:** CLI, SRV, INF
+- **Reife:** bereit
 - **Tickets:** B-699
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 094be01c
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-11-07, autonom, Claude
 
 ## Ausgangslage
 
@@ -22,7 +22,7 @@ Am Ende sichtbar: Spiel im PC-Browser im Papierschnitt-Look (Abnahme in PS1).
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+Spieler sehen das Spiel im Papierschnitt-Look; Claude setzt um; 🧑 nimmt in PS1 ab.
 
 ## Anforderungen
 
@@ -38,11 +38,15 @@ Sessions nacheinander nach Domäne: CLI → SRV → INF → Doku. Engine-Schatte
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis.
+- Spiel startet → LoadScene liest die Gruppen-Indizes, lädt Manifeste und PNG-Sheets, Krieger erscheint als Papierschnitt mit `idle`/`lauf`/`angriff`.
+- Mauer Stufe 3 gebaut → Textur `gebaeude-paper/mauer/stand.s3.png`.
+- Monarch beritten → kombinierte Animation `schritt`/`trab`/`galopp` des Monarch-Assets (Pferd im Bild).
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten.
+- Manifest oder PNG fehlt → Ladefehler mit Dateiname wie bisher.
+- Rolle ohne Papier-Asset → alte Grafik bleibt (bis CU1), Zuordnung in `data/paper.json`.
+- `-check-data` findet eine im Index genannte Datei nicht → Fehler, alter Stand bleibt aktiv.
 
 ## Akzeptanzkriterien
 
@@ -53,17 +57,17 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Offene Fragen
 
-keine (Defaults in B-701)
+keine (Defaults als D-US1-xx in B-701)
 
 ## Sessions
 
-Reife Entwurf:
-
-- US1.1 CLI · Sonnet: Loader, Renderer, Engine-Schatten (AC-01)
-- US1.2 SRV · Sonnet: Server-Check und Watch (AC-02)
-- US1.3 INF · Sonnet: Tasks, CI (AC-03)
-- US1.4 INF · Haiku: Doku und Codemaps (AC-04)
-- US1.5 Review · Opus
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| US1.1 | `US1.1-loader.md` | Umsetzung | autonom | offen |
+| US1.2 | `US1.2-server-check-watch.md` | Umsetzung | autonom | offen |
+| US1.3 | `US1.3-tasks-ci.md` | Umsetzung | autonom | offen |
+| US1.4 | `US1.4-doku-codemaps.md` | Umsetzung | autonom | offen |
+| US1.5 | `US1.5-review.md` | Review | autonom | offen |
 
 ## Abnahme
 
