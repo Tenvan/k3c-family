@@ -15,7 +15,7 @@ export type Animation = {
   fps?: number;
   reittier?: string;
   gangart?: 'schritt' | 'trab' | 'galopp';
-  keyframes?: { t: number; winkel: Record<string, number> }[];
+  keyframes?: { t: number; winkel: Record<string, number>; sichtbar?: Record<string, boolean> }[];
 };
 
 export type Spec = {

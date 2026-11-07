@@ -116,8 +116,11 @@ function verweisFehler(spec: Spec): Fehler[] {
   const fehler: Fehler[] = [];
   if (spec.umhang && !ids.has(spec.umhang.anker)) fehler.push({ feld: 'umhang.anker', regel: 'teil-unbekannt', text: `Teil „${spec.umhang.anker}“ fehlt` });
   for (const [name, a] of Object.entries(spec.animationen ?? {}))
-    (a.keyframes ?? []).forEach((k, i) => Object.keys(k.winkel).filter((id) => !ids.has(id)).forEach((id) =>
-      fehler.push({ feld: `animationen.${name}.keyframes[${i}].winkel.${id}`, regel: 'teil-unbekannt', text: `Teil „${id}“ fehlt` })));
+    (a.keyframes ?? []).forEach((k, i) => {
+      for (const feld of ['winkel', 'sichtbar'] as const)
+        Object.keys(k[feld] ?? {}).filter((id) => !ids.has(id)).forEach((id) =>
+          fehler.push({ feld: `animationen.${name}.keyframes[${i}].${feld}.${id}`, regel: 'teil-unbekannt', text: `Teil „${id}“ fehlt` }));
+    });
   return fehler;
 }
 

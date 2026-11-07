@@ -1,10 +1,10 @@
 {
   "id": "lavaschleim",
   "version": 1,
-  "specHash": "8cfb4df2841898ce2493c221fe637b416c04dbc6ca2aaed0ebea28b3edefc565",
+  "specHash": "2d9c2a89675d950bede5f31d69fb814c1ff4ca8c8f506e7cbf324d2c5070462c",
   "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "d161211ef590b76609dd7c1550e18995db150913b785437e9ae46d1f28f463de",
+  "renderKey": "8c83908556672a2991102a5528a8d6812bc1d8b999d716c6aacde3d81b5c9069",
   "rahmen": [
     -34,
     -42,

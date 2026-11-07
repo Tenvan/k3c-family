@@ -1,6 +1,6 @@
 # RD2.3 · Renderer: renderKey mit Reittier, Keyframe sichtbar
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -56,5 +56,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-11-07, Claude.
+
+- AC-02 umgesetzt, geprüft (`tools/paper/rig/reiten.test.ts` neu: `reittierHash`, Pferd-Spec ändern → renderKey des Monarchen ändert sich, `gen` auf einer Test-Wurzel rendert `figuren/monarch` danach neu; `check:diff` grün): Der renderKey eines Assets mit `reittier` ist `renderKey(specHash + "+" + id=specHash(Reittier)…, stilHash)`; Assets ohne Reit-Animation behalten ihren Schlüssel. `manifest.specHash` bleibt der Hash der eigenen Spec. Nur der renderKey des Monarchen ändert sich.
+- AC-03 umgesetzt, geprüft: Schema (`keyframes[].sichtbar`), Typ, `check.ts` (Teil unbekannt), `paper-spec.md` und Renderer (`keyframeAusgeblendet` in `render/pose.ts`; `einfachesBild` und `figurBild`, ausgeblendetes Teil fehlt im SVG und in den Teil-Boxen). Test `render/pose.test.ts`. Gilt nicht für `vierbeiner` und Reiten (kein Bedarf, in `paper-spec.md` vermerkt).
+- AC-03 Assets: Pfeil der drei Bogenschützen (`bogenschuetze`, `elite-bogenschuetze`, `goblin-bogenschuetze`) nur in `angriff` bis t = 0,7 (Frames 0–5), in `idle` und `lauf` nie; Lavaschleim-Zunge (der „Spritzer“ des Tickets ist das Teil `zunge`) nur in `angriff` zwischen t = 0,35 und 0,8. Test `tools/paper/golden/sichtbar.test.ts`.
+- Alle neun Gruppen neu gerendert, Golden neu (gewollt: Pfeil und Zunge fehlen in Frames, renderKey Monarch).
+- Abweichung: Das Ticket nennt „Pfeil bis zum Abschuss“; Abschuss = t 0,7 (Keyframe mit Pfeil-Drehung 388°). Wenn Ralf einen anderen Zeitpunkt will, ändert er nur das `sichtbar` im Keyframe.

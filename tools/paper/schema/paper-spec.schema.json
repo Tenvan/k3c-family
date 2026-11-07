@@ -178,7 +178,8 @@
             "required": ["t", "winkel"],
             "properties": {
               "t": { "type": "number", "minimum": 0, "maximum": 1 },
-              "winkel": { "type": "object", "propertyNames": { "$ref": "#/$defs/name" }, "additionalProperties": { "type": "number" } }
+              "winkel": { "type": "object", "propertyNames": { "$ref": "#/$defs/name" }, "additionalProperties": { "type": "number" } },
+              "sichtbar": { "description": "Teil ein- oder ausblenden ab diesem Keyframe (ohne Übergang); ohne Eintrag bleibt der letzte Wert", "type": "object", "propertyNames": { "$ref": "#/$defs/name" }, "additionalProperties": { "type": "boolean" } }
             }
           }
         }

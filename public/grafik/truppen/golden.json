@@ -8,19 +8,19 @@
     }
   },
   "bogenschuetze": {
-    "renderKey": "97e298a5b9af653a552c2d7976d7ed9cb83a427136c585293359cd7e9da65849",
+    "renderKey": "b62eba9c81773872609cc73ad71494ea6683f2be4e4c1a6e33b512f2ec0b7ef5",
     "dateien": {
-      "angriff.png": "22816876234e92b088d706c2b7fa7c9b9d8a6121c4fbe7df30f157cf2c573b01",
-      "idle.png": "8cf94336b8bfea8589829d0256920b88c35c875b32ba2c40e4eb1fefe850afa6",
-      "lauf.png": "6e28cb1e511f10cc68e95819181e41b1960117ed6fff771c58d5268b35ac14ff"
+      "angriff.png": "8a9a49b9c14c239a501ccadbed0a283b27d4b19945b5e3f48fc97362dbdb8887",
+      "idle.png": "3476906c43753eac00fa6a368d10307d5fa2bb1f66eeada0ad61bc5aed79d334",
+      "lauf.png": "ffbb2ab14aa7da3346fae8a5b1ee0d0629ee12e26ef1032a71dc2d5ea70d8ef8"
     }
   },
   "elite-bogenschuetze": {
-    "renderKey": "78b7616eccc3634d3969d04897237199acaa001acf6ee0b19cbf790a34786670",
+    "renderKey": "7d05738f32fca95e14237b91b441daaa7bbd6d791d57da72571f5e5d00b06a29",
     "dateien": {
-      "angriff.png": "b0ea5d48d6377ce39b6227e9a7e4087962cf15ad5e3b6aa22384791650580a98",
-      "idle.png": "d109e2881ea8d8dc35b5f84ef6894c379f76812f39da998cac4ce3f76da34d40",
-      "lauf.png": "40dd94269085ec444c13d9cfb29ffabfc948c0aaba0098027c165b6efd199eb8"
+      "angriff.png": "c03ca72430b08c3f4f83fe07c68416e1c056f0be463c24c09a81660dd60f90a5",
+      "idle.png": "9e063b21616d85c8eb0a43d9ba398cc74ecea125e3b014cb024861b5e44765f6",
+      "lauf.png": "139c9b0c0326030cdd91aee2dba36f3da2557e217ba9e1df055f7d740ffb6a2a"
     }
   },
   "elite-krieger": {

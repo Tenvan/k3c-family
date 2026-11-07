@@ -40,11 +40,11 @@
     }
   },
   "goblin-bogenschuetze": {
-    "renderKey": "ae6056ee6a65b534e27bfbc90431043e08cef3053b9096b712735473ec8bf4f5",
+    "renderKey": "9fc4e72ffb272899c412e379b953c6440d246d9384c528ca1a29b8b032675869",
     "dateien": {
-      "angriff.png": "5f7c374fc61ddcd595e9e2ded0faee58611a5ae506537c30019d75aa8778b326",
-      "idle.png": "2054902c8dac5a09e4faaab120112fcbea467b89834f1c1a0c034bf994cb32c9",
-      "lauf.png": "5e5e625886fab098bb8e4db701a1d55c6ad16cd62f20a2909f5748ecba2dfd98"
+      "angriff.png": "fb3ca246f51228b39edf012b59d6688e536b9187f5c738760fc4463aebd5a04b",
+      "idle.png": "e8bebc3ce26bc92ad7247af35681f87b02e7952b075e7b1f29893a1892f2a8ce",
+      "lauf.png": "f526e207b23684c59fb93e94088cab9933089138ef282ea05c5cf6ccb9220c47"
     }
   },
   "goblin": {
@@ -88,7 +88,7 @@
     }
   },
   "lavaschleim": {
-    "renderKey": "d161211ef590b76609dd7c1550e18995db150913b785437e9ae46d1f28f463de",
+    "renderKey": "8c83908556672a2991102a5528a8d6812bc1d8b999d716c6aacde3d81b5c9069",
     "dateien": {
       "angriff.png": "6a907bf29ba56d1fe9bcc774c573f3ae0ea6a42247a4f7978dac1c71ad03dda3",
       "idle.png": "0a99862ea8aa5c6dccf71fce17d7017b92bd5f35a1644c7f4bbf19539f4b6f92",

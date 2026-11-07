@@ -3,7 +3,7 @@
 import type { Spec, Stil, Teil } from '../schema/types';
 import { weltMatrizen } from './baum';
 import type { M } from './matrix';
-import { posen } from './pose';
+import { animationVon, keyframeAusgeblendet, posen } from './pose';
 import { type FrameGroesse, frameGroesse } from './raster';
 import { type Ausgabe, ausgabeSpec } from './stufen';
 import { teileSvg } from './svg';
@@ -19,10 +19,14 @@ export const geometrie = (teile: Teil[], m: Map<string, M>, ohne?: Set<string>):
 /** Frames ohne Rig-Bewegung: Keyframes der Animation, Teile mit Papier-Filter. */
 export function einfachesBild(spec: Spec, a: Ausgabe, k: Kontext): Bild {
   const s = ausgabeSpec(spec, a);
-  const frames = posen(s, a.animation).map(({ winkel }) => ({
-    svg: `<g filter="url(#paper)">${teileSvg(s, k.stil, winkel)}</g>`,
-    geometrie: geometrie(s.teile, weltMatrizen(s, winkel)),
-  }));
+  const anim = animationVon(s, a.animation);
+  const frames = posen(s, a.animation).map(({ winkel }, n) => {
+    const aus = keyframeAusgeblendet(anim.keyframes, n / anim.frames);
+    return {
+      svg: `<g filter="url(#paper)">${teileSvg(s, k.stil, winkel, { ausblenden: aus })}</g>`,
+      geometrie: geometrie(s.teile, weltMatrizen(s, winkel), aus),
+    };
+  });
   return { groesse: frameGroesse(spec.ausgabe), frames };
 }
 

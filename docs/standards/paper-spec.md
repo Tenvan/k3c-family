@@ -59,7 +59,10 @@ Koordinaten in **Spec-Einheiten**, Boden `y = 0`, Blick nach rechts, `y` wächst
 | `ausgabe` | ja | `{hoehe_px (8–1024), rahmen:[x, y, b, h], massstab?}` |
 
 - **Teil:** `{id, eltern?, pivot:[x,y], lagen:[Lage]}`. Ein Teil dreht um seinen Pivot, Kinder erben die Drehung.
-- **`keyframes`:** `[{t: 0..1, winkel: {teilId: Grad}}]`, zyklisch, linear interpoliert; Grad positiv = im Uhrzeigersinn.
+- **`keyframes`:** `[{t: 0..1, winkel: {teilId: Grad}, sichtbar?: {teilId: bool}}]`, zyklisch, linear interpoliert; Grad positiv = im Uhrzeigersinn.
+  `sichtbar` blendet ein Teil (nur dieses, nicht seine Kinder) ohne Übergang aus (`false`) oder ein (`true`); es gilt der letzte Keyframe
+  mit Eintrag für das Teil und `t` ≤ Phase, vor dem ersten der letzte der Animation (zyklisch); ohne Eintrag ist das Teil sichtbar.
+  Ein ausgeblendetes Teil fehlt im Frame und in den Teil-Boxen von `frame`. Gilt für `figur`, `requisite`, `gebaeude` und `hintergrund`.
   Bewegung der Rig-Typen (Posen, Gangarten mit IK, Rückengelenk, Umhang) ist Code im Rig, die Spec setzt nur Parameter.
 - **`reittier`:** `id` eines `vierbeiner`-Assets; beim Reiten gilt der Rahmen des Reittiers.
 - **`massstab`:** Faktor Spec-Einheiten → Welt-Einheiten (Standard 1). Das Pferd steht in eigenen Einheiten mit `1.3`
