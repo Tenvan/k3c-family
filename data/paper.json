@@ -1,0 +1,19 @@
+{
+  "_hinweis": "Zuordnung Spielrolle → Papierschnitt-Asset (US1). Wert: <gruppe>/<id>, optional @<variante>. Grafik liegt unter public/grafik/<gruppe>/<id>/.",
+  "spieler": ["figuren/monarch", "figuren/monarch@spieler2", "figuren/monarch", "figuren/monarch@spieler2"],
+  "beritten": "figuren/monarch",
+  "truppen": {
+    "vagrant": "truppen/landstreicher", "peasant": "truppen/bauer", "archer": "truppen/bogenschuetze",
+    "warrior": "truppen/krieger", "eliteArcher": "truppen/elite-bogenschuetze", "eliteWarrior": "truppen/elite-krieger"
+  },
+  "gegner": {
+    "greed": "gegner/gier", "wolf": "gegner/wolf", "alphaWolf": "gegner/alphawolf", "goblin": "gegner/goblin",
+    "goblinArcher": "gegner/goblin-bogenschuetze", "skeleton": "gegner/skelett", "bat": "gegner/fledermaus",
+    "caveTroll": "gegner/hoehlentroll", "zombie": "gegner/zombie", "ratSwarm": "gegner/rattenschwarm",
+    "mineGhost": "gegner/grubengeist", "lavaSlime": "gegner/lavaschleim", "ironBeetle": "gegner/eisenkaefer",
+    "fireSpirit": "gegner/feuergeist", "crystalSpider": "gegner/kristallspinne", "shardling": "gegner/splitterling",
+    "crystalGuardian": "gegner/kristallwaechter"
+  },
+  "gebaeude": "gebaeude-paper",
+  "hintergruende": { "gruppe": "hintergruende", "varianten": 2 }
+}

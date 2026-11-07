@@ -38,8 +38,8 @@ describe('Welt-Grafik (GR3.2)', () => {
 });
 
 describe('Hintergründe je Kachel und Variante (GEB18, B-618/AC-04)', () => {
-  it('alle fünf Biome: drei Schichten, hinten langsamer, jede Variante 1 … backdropVariants als Datei in 64 px', () => {
-    expect(BACKGROUND_ZOOM).toBe(0.5);
+  it('alle fünf Biome: drei Schichten, hinten langsamer, jede Variante 1 … backdropVariants als Papierschnitt-Datei (US1, 32 px je Unit)', () => {
+    expect(BACKGROUND_ZOOM).toBe(1);
     for (const biome of ALL) {
       const plan = backgroundPlan(biome, 3000, 1920)!;
       const scrolls = plan.map((l) => l.scroll);
@@ -50,7 +50,7 @@ describe('Hintergründe je Kachel und Variante (GEB18, B-618/AC-04)', () => {
       for (let layer = 1; layer <= 3; layer++) {
         for (let v = 1; v <= n; v++) {
           const f = backgroundFile(backgroundKey(biome, layer, v))!;
-          expect(f.file).toMatch(/^gebaeude\/hg-[a-z]+-(fern|mitte|nah)-v[1-5]-64\.png$/);
+          expect(f.file).toMatch(/^hintergruende\/hg-[a-z]+-(fern|mitte|nah)-v[12]\/stand\.png$/);
           expect(FILES, f.file).toContain(`../../../public/grafik/${f.file}`);
         }
       }

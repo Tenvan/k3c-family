@@ -1,4 +1,5 @@
 import { natureFiles } from './natureSprites';
+import { paperBackgroundFile } from './paperAssets';
 
 /**
  * Grafiken für Truhe, Portal, Ausgang, Lager, Stern, Münze und Hintergründe je Biom (GR3.2, Zuordnung
@@ -13,7 +14,7 @@ export interface WorldFile {
   frameHeight?: number;
 }
 
-/** Schichten je Biom (GEB7): Namensteil der Dateien `gebaeude/hg-<teil>-<fern|mitte|nah>-v<n>-64.png` und Scroll-Faktoren hinten → vorn */
+/** Schichten je Biom (GEB7): Namensteil der Assets `hintergruende/hg-<teil>-<fern|mitte|nah>-v<n>/` und Scroll-Faktoren hinten → vorn */
 const BACKGROUND_LAYERS: Record<string, { teil: string; scroll: [number, number, number] }> = {
   forest: { teil: 'wald', scroll: [0.15, 0.35, 0.5] },
   cave: { teil: 'hoehle', scroll: [0.1, 0.2, 0.4] },
@@ -23,9 +24,9 @@ const BACKGROUND_LAYERS: Record<string, { teil: string; scroll: [number, number,
 };
 const LAYER_NAMES = ['fern', 'mitte', 'nah'];
 
-/** Dichte der Hintergrund-Dateien, die das Spiel lädt (GEB18, Entscheidung Ralf: 64 statt 128, auf 1080p voll sichtbar) */
-export const BACKGROUND_DENSITY = 64;
-/** Maßstab der Hintergrund-Bilder: 64 px je Kachel → 32 px je Unit */
+/** Dichte der Hintergrund-Dateien, die das Spiel lädt: Papierschnitt `hintergruende/` mit 32 px je Unit (MG7, US1) */
+export const BACKGROUND_DENSITY = 32;
+/** Maßstab der Hintergrund-Bilder: 32 px je Unit → 1 */
 export const BACKGROUND_ZOOM = 32 / BACKGROUND_DENSITY;
 /** Breite einer Hintergrund-Kachel in Spiel-Pixeln (24 Units, Regeldatei § 10; Server: `level.BackdropTileUnits`) */
 export const BACKGROUND_TILE_PX = 24 * 32;
@@ -37,7 +38,7 @@ export const backgroundKey = (biome: string, n: number, v: number): string => `b
 export function backgroundFile(key: string): WorldFile | null {
   const m = /^bg:([a-z]+):([1-3]):v([1-9][0-9]*)$/.exec(key);
   const b = m && BACKGROUND_LAYERS[m[1]!];
-  return b ? { file: `gebaeude/hg-${b.teil}-${LAYER_NAMES[Number(m[2]) - 1]}-v${m[3]}-${BACKGROUND_DENSITY}.png` } : null;
+  return b ? { file: paperBackgroundFile(b.teil, LAYER_NAMES[Number(m[2]) - 1]!, Number(m[3])) } : null;
 }
 
 /** Bilder einer Hintergrund-Schicht: je Kachel k ein Bild bei x = k · BACKGROUND_TILE_PX in Variante `backdrops[k]` */

@@ -117,3 +117,15 @@ describe('Asset-Studio entfernt (005/AC-10, WB1)', () => {
     expect(code.filter((f) => read(f).includes('K3C_STUDIO_LAN'))).toEqual([]);
   });
 });
+
+describe('Spiel lädt Papierschnitt (US1/AC-01)', () => {
+  const RENDER = ['src/scenes/LoadScene.ts', ...filesIn('src/scenes/render', (n) => n.endsWith('.ts') && !n.endsWith('.test.ts'))];
+
+  it('kein Lade-Pfad zeigt auf atlas/ oder grafik-db32/', () => {
+    for (const file of RENDER) {
+      const text = readFileSync(join(ROOT, file), 'utf8');
+      expect(/['"`/]atlas\//.test(text), `${file}: atlas/`).toBe(false);
+      expect(text.includes('grafik-db32'), `${file}: grafik-db32`).toBe(false);
+    }
+  });
+});
