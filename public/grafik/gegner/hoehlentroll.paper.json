@@ -574,7 +574,11 @@
             "keule": 80,
             "oberarm-h": 10,
             "oberarm-v": -50,
-            "unterarm-v": -40
+            "unterarm-v": -40,
+            "oberschenkel-v": -25,
+            "unterschenkel-v": 10,
+            "oberschenkel-h": 22,
+            "unterschenkel-h": -5
           }
         },
         {
@@ -585,7 +589,11 @@
             "oberarm-h": 25,
             "oberarm-v": -165,
             "rumpf": -6,
-            "unterarm-v": -10
+            "unterarm-v": -10,
+            "oberschenkel-v": -30,
+            "unterschenkel-v": 15,
+            "oberschenkel-h": 25,
+            "unterschenkel-h": -10
           }
         },
         {
@@ -596,7 +604,11 @@
             "oberarm-h": -10,
             "oberarm-v": -85,
             "rumpf": 8,
-            "unterarm-v": 0
+            "unterarm-v": 0,
+            "oberschenkel-v": -35,
+            "unterschenkel-v": 20,
+            "oberschenkel-h": 28,
+            "unterschenkel-h": -8
           }
         },
         {
@@ -606,7 +618,11 @@
             "oberarm-h": 0,
             "oberarm-v": -55,
             "rumpf": 4,
-            "unterarm-v": -10
+            "unterarm-v": -10,
+            "oberschenkel-v": -28,
+            "unterschenkel-v": 12,
+            "oberschenkel-h": 24,
+            "unterschenkel-h": -6
           }
         }
       ]
@@ -615,7 +631,25 @@
       "frames": 8
     },
     "lauf": {
-      "frames": 8
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "oberarm-v": -20,
+            "unterarm-v": -20,
+            "keule": 120
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "oberarm-v": -12,
+            "unterarm-v": -20,
+            "keule": 120
+          }
+        }
+      ]
     }
   }
 }

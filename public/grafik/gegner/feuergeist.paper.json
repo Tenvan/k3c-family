@@ -44,29 +44,23 @@
         {
           "art": "punkt",
           "material": "koenigsrot",
-          "mitte": [27, -36],
-          "radius": 5,
+          "mitte": [31.0, -36],
+          "radius": 9.5,
           "ton": "licht"
         },
         {
           "art": "punkt",
           "material": "fell-fuchs",
-          "mitte": [28, -36.5],
-          "radius": 3.4,
+          "mitte": [32.0, -36.5],
+          "radius": 6.46,
           "ton": "licht"
         },
         {
           "art": "punkt",
           "material": "gold",
-          "mitte": [28.6, -37],
-          "radius": 1.8,
+          "mitte": [32.6, -37],
+          "radius": 3.42,
           "ton": "licht"
-        },
-        {
-          "art": "flaeche",
-          "form": "M23 -38C19 -40 16 -40 13 -38C16 -36 19 -35 23 -34Z",
-          "material": "koenigsrot",
-          "ton": "schatten"
         }
       ],
       "pivot": [10, -36]
@@ -133,12 +127,13 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-4 -54C-6 -62 -4 -70 0 -76C0 -68 4 -64 6 -62C8 -66 10 -70 14 -72C12 -64 12 -58 10 -54Z",
+          "form": "M-4 -54C-9 -62 -4 -68 -2 -74C-1 -78 2 -80 3 -86C8 -78 12 -70 10 -62C10 -58 10 -56 10 -54Z",
           "material": "koenigsrot"
         },
         {
           "art": "flaeche",
-          "form": "M-1 -55C-2 -61 0 -66 2 -69C2 -64 4 -61 7 -59C8 -62 9 -64 11 -65C10 -60 10 -57 8 -55Z",
+          "auflage": true,
+          "form": "M-0.5 -55C-3 -61 0 -66 2 -70C3 -73 4 -75 5 -78C8 -72 9 -66 8 -60C8 -57 8 -56 8 -55Z",
           "material": "gold",
           "ton": "licht"
         }
@@ -147,8 +142,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 87,
-    "rahmen": [-30, -84, 72, 82]
+    "hoehe_px": 93,
+    "rahmen": [-30, -90, 72, 88]
   },
   "animationen": {
     "angriff": {

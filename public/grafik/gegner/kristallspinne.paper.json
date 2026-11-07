@@ -11,32 +11,32 @@
       "lagen": [
         {
           "art": "falz",
-          "breite": 2.2,
-          "form": "M-3 -22L-23 -14",
+          "breite": 4,
+          "form": "M-7.2 -52.8L-55.2 -33.6",
           "material": "stein",
           "ton": "schatten"
         },
         {
           "art": "falz",
-          "breite": 1.8,
-          "form": "M-23 -14L-29 0",
+          "breite": 4,
+          "form": "M-55.2 -33.6L-69.6 0",
           "material": "stein",
           "ton": "schatten"
         },
         {
           "art": "punkt",
           "material": "stein",
-          "mitte": [-23, -14],
-          "radius": 1.4,
+          "mitte": [-55.2, -33.6],
+          "radius": 3.36,
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "form": "M-30 -3L-29 0L-28 -3Z",
+          "form": "M-72 -7.2L-69.6 0L-67.2 -7.2Z",
           "material": "edelstein"
         }
       ],
-      "pivot": [-3, -22]
+      "pivot": [-7.2, -52.8]
     },
     {
       "eltern": "korpus",
@@ -44,32 +44,32 @@
       "lagen": [
         {
           "art": "falz",
-          "breite": 2.2,
-          "form": "M1 -20L-11 -24",
+          "breite": 4,
+          "form": "M2.4 -48L-26.4 -57.6",
           "material": "stein",
           "ton": "schatten"
         },
         {
           "art": "falz",
-          "breite": 1.8,
-          "form": "M-11 -24L-13 0",
+          "breite": 4,
+          "form": "M-26.4 -57.6L-31.2 0",
           "material": "stein",
           "ton": "schatten"
         },
         {
           "art": "punkt",
           "material": "stein",
-          "mitte": [-11, -24],
-          "radius": 1.4,
+          "mitte": [-26.4, -57.6],
+          "radius": 3.36,
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "form": "M-14 -3L-13 0L-12 -3Z",
+          "form": "M-33.6 -7.2L-31.2 0L-28.8 -7.2Z",
           "material": "edelstein"
         }
       ],
-      "pivot": [1, -20]
+      "pivot": [2.4, -48.0]
     },
     {
       "eltern": "korpus",
@@ -77,32 +77,32 @@
       "lagen": [
         {
           "art": "falz",
-          "breite": 2.2,
-          "form": "M5 -20L9 -24",
+          "breite": 4,
+          "form": "M12 -48L21.6 -57.6",
           "material": "stein",
           "ton": "schatten"
         },
         {
           "art": "falz",
-          "breite": 1.8,
-          "form": "M9 -24L13 0",
+          "breite": 4,
+          "form": "M21.6 -57.6L31.2 0",
           "material": "stein",
           "ton": "schatten"
         },
         {
           "art": "punkt",
           "material": "stein",
-          "mitte": [9, -24],
-          "radius": 1.4,
+          "mitte": [21.6, -57.6],
+          "radius": 3.36,
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "form": "M12 -3L13 0L14 -3Z",
+          "form": "M28.8 -7.2L31.2 0L33.6 -7.2Z",
           "material": "edelstein"
         }
       ],
-      "pivot": [5, -20]
+      "pivot": [12.0, -48.0]
     },
     {
       "eltern": "korpus",
@@ -110,32 +110,32 @@
       "lagen": [
         {
           "art": "falz",
-          "breite": 2.2,
-          "form": "M9 -22L25 -18",
+          "breite": 4,
+          "form": "M21.6 -52.8L60 -43.2",
           "material": "stein",
           "ton": "schatten"
         },
         {
           "art": "falz",
-          "breite": 1.8,
-          "form": "M25 -18L31 0",
+          "breite": 4,
+          "form": "M60 -43.2L74.4 0",
           "material": "stein",
           "ton": "schatten"
         },
         {
           "art": "punkt",
           "material": "stein",
-          "mitte": [25, -18],
-          "radius": 1.4,
+          "mitte": [60.0, -43.2],
+          "radius": 3.36,
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "form": "M30 -3L31 0L32 -3Z",
+          "form": "M72 -7.2L74.4 0L76.8 -7.2Z",
           "material": "edelstein"
         }
       ],
-      "pivot": [9, -22]
+      "pivot": [21.6, -52.8]
     },
     {
       "eltern": "korpus",
@@ -143,98 +143,98 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-8 -18C-14 -14 -26 -14 -32 -20C-36 -26 -34 -34 -26 -36C-18 -38 -10 -32 -8 -24Z",
+          "form": "M-19.2 -43.2C-33.6 -33.6 -62.4 -33.6 -76.8 -48C-86.4 -62.4 -81.6 -81.6 -62.4 -86.4C-43.2 -91.2 -24 -76.8 -19.2 -57.6Z",
           "material": "stein"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M-8 -18C-14 -14 -26 -14 -32 -20C-34 -24 -34 -28 -32 -31C-28 -24 -18 -20 -8 -21Z",
+          "form": "M-19.2 -43.2C-33.6 -33.6 -62.4 -33.6 -76.8 -48C-81.6 -57.6 -81.6 -67.2 -76.8 -74.4C-67.2 -57.6 -43.2 -48 -19.2 -50.4Z",
           "material": "stein",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "form": "M-28 -34L-26 -46L-20 -35Z",
+          "form": "M-67.2 -81.6L-62.4 -110.4L-48 -84Z",
           "material": "edelstein"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M-28 -34L-26 -46L-24 -35Z",
+          "form": "M-67.2 -81.6L-62.4 -110.4L-57.6 -84Z",
           "material": "koenigsblau",
           "ton": "licht"
         },
         {
           "art": "flaeche",
-          "form": "M-20 -36L-15 -44L-13 -33Z",
+          "form": "M-48 -86.4L-36 -105.6L-31.2 -79.2Z",
           "material": "edelstein"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M-20 -36L-15 -44L-16 -35Z",
+          "form": "M-48 -86.4L-36 -105.6L-38.4 -84Z",
           "material": "koenigsblau",
           "ton": "licht"
         },
         {
           "art": "flaeche",
-          "form": "M-33 -26L-40 -32L-32 -21Z",
+          "form": "M-79.2 -62.4L-96 -76.8L-76.8 -50.4Z",
           "material": "edelstein"
         }
       ],
-      "pivot": [-8, -20]
+      "pivot": [-19.2, -48.0]
     },
     {
       "id": "korpus",
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-9 -20C-9 -26 -4 -28 2 -28C9 -28 14 -25 15 -20C15 -15 10 -12 2 -12C-5 -12 -9 -15 -9 -20Z",
+          "form": "M-21.6 -48C-21.6 -62.4 -9.6 -67.2 4.8 -67.2C21.6 -67.2 33.6 -60 36 -48C36 -36 24 -28.8 4.8 -28.8C-12 -28.8 -21.6 -36 -21.6 -48Z",
           "material": "stein"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M-9 -20C-9 -26 -4 -28 2 -28C-2 -24 -3 -18 -1 -12C-6 -13 -9 -16 -9 -20Z",
+          "form": "M-21.6 -48C-21.6 -62.4 -9.6 -67.2 4.8 -67.2C-4.8 -57.6 -7.2 -43.2 -2.4 -28.8C-14.4 -31.2 -21.6 -38.4 -21.6 -48Z",
           "material": "stein",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M4 -28C9 -28 13 -26 14 -22C11 -25 8 -26 4 -26Z",
+          "form": "M9.6 -67.2C21.6 -67.2 31.2 -62.4 33.6 -52.8C26.4 -60 19.2 -62.4 9.6 -62.4Z",
           "material": "stein",
           "ton": "licht"
         },
         {
           "art": "punkt",
           "material": "koenigsblau",
-          "mitte": [10, -23],
-          "radius": 1.2,
+          "mitte": [24.0, -55.2],
+          "radius": 2.88,
           "ton": "licht"
         },
         {
           "art": "punkt",
           "material": "koenigsblau",
-          "mitte": [12.6, -21.6],
-          "radius": 0.9,
+          "mitte": [30.24, -51.84],
+          "radius": 2.16,
           "ton": "licht"
         },
         {
           "art": "punkt",
           "material": "koenigsblau",
-          "mitte": [8, -24.8],
-          "radius": 0.8,
+          "mitte": [19.2, -59.52],
+          "radius": 1.92,
           "ton": "licht"
         },
         {
           "art": "flaeche",
-          "form": "M-2 -28L0 -34L3 -28Z",
+          "form": "M-4.8 -67.2L0 -81.6L7.2 -67.2Z",
           "material": "edelstein"
         }
       ],
-      "pivot": [0, -20]
+      "pivot": [0.0, -48.0]
     },
     {
       "eltern": "korpus",
@@ -242,16 +242,16 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M13 -17C16 -16 18 -13 17 -10C16 -12 14 -14 12 -15Z",
+          "form": "M31.2 -40.8C38.4 -38.4 43.2 -31.2 40.8 -24C38.4 -28.8 33.6 -33.6 28.8 -36Z",
           "material": "weiss"
         },
         {
           "art": "flaeche",
-          "form": "M14 -19C18 -18 20 -15 19.5 -12C18 -14 16 -16 13.5 -17Z",
+          "form": "M33.6 -45.6C43.2 -43.2 48 -36 46.8 -28.8C43.2 -33.6 38.4 -38.4 32.4 -40.8Z",
           "material": "weiss"
         }
       ],
-      "pivot": [14, -17]
+      "pivot": [33.6, -40.8]
     },
     {
       "eltern": "korpus",
@@ -259,29 +259,29 @@
       "lagen": [
         {
           "art": "falz",
-          "breite": 2.2,
-          "form": "M-6 -22L-26 -14",
+          "breite": 4,
+          "form": "M-14.4 -52.8L-62.4 -33.6",
           "material": "stein"
         },
         {
           "art": "falz",
-          "breite": 1.8,
-          "form": "M-26 -14L-32 0",
+          "breite": 4,
+          "form": "M-62.4 -33.6L-76.8 0",
           "material": "stein"
         },
         {
           "art": "punkt",
           "material": "stein",
-          "mitte": [-26, -14],
-          "radius": 1.4
+          "mitte": [-62.4, -33.6],
+          "radius": 3.36
         },
         {
           "art": "flaeche",
-          "form": "M-33 -3L-32 0L-31 -3Z",
+          "form": "M-79.2 -7.2L-76.8 0L-74.4 -7.2Z",
           "material": "edelstein"
         }
       ],
-      "pivot": [-6, -22]
+      "pivot": [-14.4, -52.8]
     },
     {
       "eltern": "korpus",
@@ -289,29 +289,29 @@
       "lagen": [
         {
           "art": "falz",
-          "breite": 2.2,
-          "form": "M-2 -20L-14 -24",
+          "breite": 4,
+          "form": "M-4.8 -48L-33.6 -57.6",
           "material": "stein"
         },
         {
           "art": "falz",
-          "breite": 1.8,
-          "form": "M-14 -24L-16 0",
+          "breite": 4,
+          "form": "M-33.6 -57.6L-38.4 0",
           "material": "stein"
         },
         {
           "art": "punkt",
           "material": "stein",
-          "mitte": [-14, -24],
-          "radius": 1.4
+          "mitte": [-33.6, -57.6],
+          "radius": 3.36
         },
         {
           "art": "flaeche",
-          "form": "M-17 -3L-16 0L-15 -3Z",
+          "form": "M-40.8 -7.2L-38.4 0L-36 -7.2Z",
           "material": "edelstein"
         }
       ],
-      "pivot": [-2, -20]
+      "pivot": [-4.8, -48.0]
     },
     {
       "eltern": "korpus",
@@ -319,29 +319,29 @@
       "lagen": [
         {
           "art": "falz",
-          "breite": 2.2,
-          "form": "M2 -20L6 -24",
+          "breite": 4,
+          "form": "M4.8 -48L14.4 -57.6",
           "material": "stein"
         },
         {
           "art": "falz",
-          "breite": 1.8,
-          "form": "M6 -24L10 0",
+          "breite": 4,
+          "form": "M14.4 -57.6L24 0",
           "material": "stein"
         },
         {
           "art": "punkt",
           "material": "stein",
-          "mitte": [6, -24],
-          "radius": 1.4
+          "mitte": [14.4, -57.6],
+          "radius": 3.36
         },
         {
           "art": "flaeche",
-          "form": "M9 -3L10 0L11 -3Z",
+          "form": "M21.6 -7.2L24 0L26.4 -7.2Z",
           "material": "edelstein"
         }
       ],
-      "pivot": [2, -20]
+      "pivot": [4.8, -48.0]
     },
     {
       "eltern": "korpus",
@@ -349,34 +349,34 @@
       "lagen": [
         {
           "art": "falz",
-          "breite": 2.2,
-          "form": "M6 -22L22 -18",
+          "breite": 4,
+          "form": "M14.4 -52.8L52.8 -43.2",
           "material": "stein"
         },
         {
           "art": "falz",
-          "breite": 1.8,
-          "form": "M22 -18L28 0",
+          "breite": 4,
+          "form": "M52.8 -43.2L67.2 0",
           "material": "stein"
         },
         {
           "art": "punkt",
           "material": "stein",
-          "mitte": [22, -18],
-          "radius": 1.4
+          "mitte": [52.8, -43.2],
+          "radius": 3.36
         },
         {
           "art": "flaeche",
-          "form": "M27 -3L28 0L29 -3Z",
+          "form": "M64.8 -7.2L67.2 0L69.6 -7.2Z",
           "material": "edelstein"
         }
       ],
-      "pivot": [6, -22]
+      "pivot": [14.4, -52.8]
     }
   ],
   "ausgabe": {
-    "hoehe_px": 59,
-    "rahmen": [-46, -50, 92, 56]
+    "hoehe_px": 142,
+    "rahmen": [-110, -120, 221, 134]
   },
   "animationen": {
     "angriff": {

@@ -1,6 +1,6 @@
 # MG9.4 · Gegner: unterscheidbar, richtig groß, Reste aus MG4
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -56,5 +56,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Troll: Angriff mit zwei Beinen, Keule im Lauf getragen (umgesetzt, Vorschau geprüft)
+- Kristallspinne ×2,4 (≈ Goblin-Höhe), Kristallwächter aus Kristall mit Armen vor dem Körper (umgesetzt)
+- Goblin-Bogenschütze: kürzerer Pfeil, Bogen im Lauf getragen; Feuergeist: größerer Feuerball, einzelne Krone, Rahmen vergrößert; Splitterling: Scherbe am Arm; Elite-Bogenschütze ×1,15 (umgesetzt)
+- Geprüft: tools/paper-Vitest 289/289 inkl. neuem golden/gegner.test.ts, gen:paper grün
+- Hinweis: Zustände give/hit/death/respawn der Gegner nicht Teil dieser Session

@@ -8,7 +8,7 @@ import { ROOT } from '../render/stil';
 const DIR = join(ROOT, 'public/grafik/truppen');
 const IDS = readdirSync(DIR).filter((f) => f.endsWith('.paper.json') && f !== 'index.paper.json').map((f) => f.replace('.paper.json', ''));
 const spec = (id: string) => JSON.parse(readFileSync(join(DIR, `${id}.paper.json`), 'utf8')) as Spec;
-const lagen = (id: string, teil: string) => spec(id).teile.find((t) => t.id === teil)!.lagen;
+const lagen = (id: string, teil: string) => spec(id).teile.find((t) => t.id === teil)!.lagen as { form?: string; material?: string }[];
 
 describe('Truppen (MG9.3)', () => {
   it.each(IDS)('%s hat give, hit, death, respawn mit Keyframes', (id) => {

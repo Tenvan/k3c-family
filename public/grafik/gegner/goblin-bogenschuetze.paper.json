@@ -102,13 +102,13 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-0.7 -98L0.7 -98L0.7 -40L-0.7 -40Z",
+          "form": "M-0.7 -86L0.7 -86L0.7 -40L-0.7 -40Z",
           "material": "holz",
           "ton": "licht"
         },
         {
           "art": "flaeche",
-          "form": "M-2.2 -98L0 -104L2.2 -98Z",
+          "form": "M-2.2 -86L0 -92L2.2 -86Z",
           "material": "stein"
         },
         {
@@ -676,7 +676,11 @@
             "pfeil": false
           },
           "t": 0,
-          "winkel": {}
+          "winkel": {
+            "oberarm-v": -25,
+            "unterarm-v": -35,
+            "bogen": 150
+          }
         }
       ]
     }

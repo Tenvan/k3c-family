@@ -24,15 +24,15 @@
     }
   },
   "elite-bogenschuetze": {
-    "renderKey": "cc21c51634b29ab2c36115a7d582d87a0a229ff3d09c8e3236c215747fdc17a5",
+    "renderKey": "31d25de2269cda2cfdf9afe55a09b23d2e6b5e91a6af90fded2f0bfdec32f74a",
     "dateien": {
-      "angriff.png": "c03ca72430b08c3f4f83fe07c68416e1c056f0be463c24c09a81660dd60f90a5",
-      "death.png": "cd50d399140e01aec3aa60c24894c0a38ecbd4e3879403dbe53bd7d3cbe7a3c0",
-      "give.png": "5d623ce167394051754bc79d235138b993c7bac62cc87928a613d1f78fccc792",
-      "hit.png": "940f348e94f620b85230ef11d3da6e0c06acfd7c58ff49a1b7bf163ddec81204",
-      "idle.png": "9e063b21616d85c8eb0a43d9ba398cc74ecea125e3b014cb024861b5e44765f6",
-      "lauf.png": "139c9b0c0326030cdd91aee2dba36f3da2557e217ba9e1df055f7d740ffb6a2a",
-      "respawn.png": "d1888b0218f5156b03affac9adddfdc6797be57f4c8c6e33e5bcf26ba769e561"
+      "angriff.png": "ae28fd48525302644ae6889a5b76564dd7b0fced6da9d4e7ad353628797517fd",
+      "death.png": "72cdcbf30f1e5c4b4ed16b11e1d33f8410eb8a160ca2f2593ec3cb14e64fe54a",
+      "give.png": "f03dbb32c249298cd4f9ec0244a5a7eabb89a006296b524a05dc997c3ce3e572",
+      "hit.png": "18b5fd97db1eadf2d3ebaa18fdc95e2ada382067a0004a39f8c99f10f8ef8b42",
+      "idle.png": "49029446e1bfdafbdb3e83e210959fee8716c76f15a23c2696f0706548b86ff2",
+      "lauf.png": "c1731aa33344b613e0f5f9a4c5b49f0fb1a24f9bfa4077f6b8e43e27b1cda726",
+      "respawn.png": "ac7ec2bda7f923122865bcde1929ec0c58dc22bf6d40723281357753b416452f"
     }
   },
   "elite-krieger": {
