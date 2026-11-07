@@ -43,14 +43,14 @@ export function useSpec(id: string) {
 /** Frames einer Vorschau: je Asset, Animation und Frame ein Promise (ein zweiter Durchlauf lädt nichts nach, WB2). */
 export type FrameCache = Map<string, Promise<Frame>>;
 
-/** Frame aus dem Cache, sonst vom Backend (Arbeitsstand, ohne Variante); ein Fehler bleibt nicht im Cache. */
+/** Frame aus dem Cache, sonst vom Backend (Arbeitsstand, ohne Variante). Ein Fehler bleibt bis zum Asset-Wechsel im Cache,
+ *  damit das Abspielen einen defekten Frame nicht jede Runde neu anfragt (Review-Befund 4). */
 export function cachedFrame(cache: FrameCache, id: string, animation: string, frame: number): Promise<Frame> {
   const key = `${id}|${animation}|${frame}`;
   let p = cache.get(key);
   if (!p) {
     p = assetsFrame(id, animation, frame);
     cache.set(key, p);
-    p.catch(() => cache.delete(key));
   }
   return p;
 }
@@ -73,7 +73,8 @@ export function useFrame(cache: FrameCache, id: string, animation: string, frame
     let live = true;
     cachedFrame(cache, id, animation, frame).then(
       (f) => live && setState({ key, frame: f, anim: animation, nr: frame, error: '' }),
-      (e) => live && setState({ key, frame: null, anim: animation, nr: frame, error: errorText(e) }),
+      // das letzte Bild bleibt stehen, der Fehler liegt darüber
+      (e) => live && setState((s) => ({ ...s, key, error: errorText(e) })),
     );
     return () => {
       live = false;

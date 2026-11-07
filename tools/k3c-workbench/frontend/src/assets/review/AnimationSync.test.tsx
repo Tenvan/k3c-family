@@ -106,6 +106,14 @@ describe('Feste Steuerung (WB2/AC-01)', () => {
   });
 });
 
+describe('Review-Befund 6 (WB2.3)', () => {
+  it('Animations-Auswahl hat eine feste Mindestbreite', async () => {
+    const host = await mount(<Compare asset={monarch} basis="HEAD~1" />);
+    const box = host.querySelector<HTMLElement>('[data-part="animation-select"]')!;
+    expect(box.style.width).not.toBe('');
+  });
+});
+
 describe('Pixel-Diff beim Abspielen (Befund 4)', () => {
   it('fragt jeden Diff nur einmal an', async () => {
     vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] });

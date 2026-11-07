@@ -1,6 +1,6 @@
 # WB2 · DEV · Review und Katalog: feste Schieber, getrennte Scrollbereiche, Lade-Anzeige
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -56,7 +56,7 @@ Gemeinsame Bausteine in `tools/webkit`: Molekül `FramePlayer` (Abspielen, Frame
 
 ## Offene Fragen
 
-keine (Defaults in B-701 als D-WB2-xx)
+keine
 
 ## Sessions
 
@@ -64,12 +64,12 @@ keine (Defaults in B-701 als D-WB2-xx)
 |---|---|---|---|---|
 | WB2.1 | `WB2.1-review-ruhig.md` | Umsetzung | autonom | fertig |
 | WB2.2 | `WB2.2-katalog-ruhig.md` | Umsetzung | autonom | fertig |
-| WB2.3 | `WB2.3-review.md` | Review | autonom | offen |
+| WB2.3 | `WB2.3-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-07, autonom (Claude). AC-01 und AC-02 WB2.1, AC-03 bis AC-05 WB2.2 (Tests und Browser-Messung im Worktree, Vite 5196), AC-06 WB2.3 (Review Opus ohne offene wichtige Befunde; Bausteine `FramePlayer`, `LoadingNote`, `ListDetail` über `@webkit`). Letztes `task check:diff` auf Wunsch von Ralf abgebrochen, gezielte Prüfungen grün (siehe WB2.3).
+Hinweis Ralf umgesetzt: Lade-Anzeige über der Grafik. Zurückgestellt: Review-Befunde 3, 5, 7–10 (klein). Neue Tickets: B-727, B-728, B-729. Sichtprüfung im echten Workbench-Fenster durch Ralf nach dem Merge.

@@ -1,4 +1,6 @@
 // @vitest-environment happy-dom
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { act } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../../api';
@@ -97,5 +99,51 @@ describe('Katalog: ruhige Ansicht (WB2/AC-04, AC-05)', () => {
     expect(widths()).toEqual(before);
     const keys = frame.mock.calls.map((c) => c.slice(0, 3).join('|'));
     expect(new Set(keys).size).toBe(keys.length);
+  });
+});
+
+describe('Review-Befunde WB2.3', () => {
+  it('Befund 1: Filter klebt in einer deckenden Hülle, das Feld behält seinen Rahmen', async () => {
+    const host = await mount(<CatalogPage />);
+    const wrap = host.querySelector('.as-list-filter')!;
+    expect(wrap.querySelector('input[aria-label="Filter"]')).toBeTruthy();
+    expect(wrap.tagName).not.toBe('INPUT');
+    const css = readFileSync(resolve(__dirname, '../../styles/assets.css'), 'utf8');
+    const rule = /\.as-list-filter\s*\{([^}]*)\}/.exec(css)?.[1] ?? '';
+    expect(rule).toMatch(/position:\s*sticky/);
+    expect(rule).toMatch(/background:\s*var\(--color-background\)/);
+    expect(rule).not.toMatch(/box-shadow/);
+  });
+
+  it('Befund 2: Vorabladen nacheinander (höchstens zwei offen), Abbruch bei Asset-Wechsel', async () => {
+    const host = await mount(<CatalogPage />);
+    await click(entry(host, 'monarch'));
+    const real = backend.assetsFrame.bind(backend);
+    const offen: { resolve: () => void }[] = [];
+    const frame = vi.spyOn(backend, 'assetsFrame').mockImplementation((id, a, f, v, b) => new Promise<Frame>((r) => offen.push({ resolve: () => r(real(id, a, f, v, b)) })));
+    await click(buttons(host, 'Abspielen')[0]);
+    await wait(400);
+    expect(frame.mock.calls.length).toBeLessThanOrEqual(2);
+    await click(entry(host, 'mauer'));
+    const vorher = frame.mock.calls.filter((c) => c[0] === 'monarch').length;
+    for (const o of offen.splice(0)) o.resolve();
+    await flush();
+    await wait(200);
+    expect(frame.mock.calls.filter((c) => c[0] === 'monarch').length).toBe(vorher);
+  });
+
+  it('Befund 4: defekter Frame lässt das letzte Bild stehen und wird nicht jede Runde neu geladen', async () => {
+    const host = await mount(<CatalogPage />);
+    await click(entry(host, 'monarch'));
+    const real = backend.assetsFrame.bind(backend);
+    const frame = vi.spyOn(backend, 'assetsFrame').mockImplementation((id, a, f, v, b) => (f === 1 ? Promise.reject(new Error('Frame kaputt')) : real(id, a, f, v, b)));
+    await pressRight(host);
+    const stage = host.querySelector('.as-stage')!;
+    expect(stage.textContent).toContain('Frame kaputt');
+    expect(stage.querySelector('img')).toBeTruthy();
+    await click(buttons(host, 'Abspielen')[0]);
+    await wait(2200);
+    await click(buttons(host, 'Anhalten')[0]);
+    expect(frame.mock.calls.filter((c) => c[2] === 1)).toHaveLength(1);
   });
 });

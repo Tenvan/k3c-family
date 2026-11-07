@@ -1,12 +1,14 @@
 /* Bereich Assets (WB1): Katalog mit Liste und Vorschau, Materialtafel; Farben aus dem Theme wie Git und Monitoring. */
 /* Katalog in templates/ListDetail (WB2): der Filter bleibt oben in der Liste stehen. */
-.as-list-filter { position: sticky; top: 0; z-index: 1; box-shadow: 0 -8px 0 var(--color-background); }
+.as-list-filter { position: sticky; top: 0; z-index: 1; padding-bottom: 8px; background: var(--color-background); }
 .as-entry { padding: 6px 8px; border-radius: 6px; border: 1px solid transparent; cursor: pointer; }
 .as-entry:hover { background: var(--gray-a3); }
 .as-entry:focus-visible { outline: 2px solid var(--accent-8); outline-offset: 1px; }
 .as-entry-active { background: var(--accent-a3); border-color: var(--accent-a6); }
 .as-entry-invalid { border-color: var(--red-a7); background: var(--red-a2); }
 .as-stage { position: relative; display: inline-block; min-width: 160px; min-height: 160px; align-self: flex-start; background: var(--card); border: 1px solid var(--card-line); border-radius: 8px; padding: 8px; }
+/* Fehler eines Frames über dem letzten Bild statt darunter: die Bühne behält ihre Größe (Review-Befund 4). */
+.as-stage-error { position: absolute; left: 8px; right: 8px; bottom: 8px; padding: 2px 6px; border-radius: 4px; background: var(--color-panel-translucent); }
 .as-frame { display: block; max-width: 100%; height: auto; image-rendering: auto; }
 .as-material { background: var(--card); border: 1px solid var(--card-line); border-radius: 8px; padding: 8px 10px; }
 .as-swatch { width: 28px; height: 18px; border-radius: 4px; border: 1px solid var(--gray-a6); flex-shrink: 0; }

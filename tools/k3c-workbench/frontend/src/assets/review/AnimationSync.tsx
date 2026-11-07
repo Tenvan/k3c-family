@@ -1,4 +1,4 @@
-import { Flex, SelectField } from '@webkit/atoms';
+import { Box, Flex, SelectField } from '@webkit/atoms';
 import { FramePlayer } from '@webkit/molecules';
 import { useEffect } from 'react';
 
@@ -33,11 +33,14 @@ export function AnimationSync({ animationen, anim, nr, spielt, onAnim, onNr, onS
   if (!aktuell) return null;
   return (
     <Flex gap="3" align="center" wrap="wrap" data-part="animation">
-      <SelectField size="1" aria-label="Animation" value={anim} options={animationen.map((a) => ({ value: a.name, label: a.name }))}
-        onChange={(name) => {
-          onAnim(name);
-          onNr(0);
-        }} />
+      {/* feste Breite: lange und kurze Animationsnamen verschieben den Player nicht (Review-Befund 6) */}
+      <Box data-part="animation-select" style={{ width: '9rem', flex: 'none' }}>
+        <SelectField size="1" aria-label="Animation" value={anim} options={animationen.map((a) => ({ value: a.name, label: a.name }))}
+          onChange={(name) => {
+            onAnim(name);
+            onNr(0);
+          }} />
+      </Box>
       <FramePlayer frame={nr} frames={frames} playing={spielt} onFrame={onNr} onPlaying={onSpielt} />
     </Flex>
   );

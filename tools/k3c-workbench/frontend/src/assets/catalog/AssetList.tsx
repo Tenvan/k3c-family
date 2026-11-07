@@ -21,7 +21,9 @@ export function AssetList({ list, loading = false, inDiff, selected, onSelect }:
   const groups = [...new Set(shown.map((a) => a.gruppe))].sort();
   return (
     <Flex direction="column" gap="3">
-      <TextField.Root size="1" className="as-list-filter" placeholder="Filter: ID, Rig, Gruppe" aria-label="Filter" value={query} onChange={(e) => setQuery(e.target.value)} />
+      <Box className="as-list-filter">
+        <TextField.Root size="1" placeholder="Filter: ID, Rig, Gruppe" aria-label="Filter" value={query} onChange={(e) => setQuery(e.target.value)} />
+      </Box>
       {groups.map((g) => (
         <Flex key={g} direction="column" gap="1">
           <Heading size="2" color="gray">{g}</Heading>
