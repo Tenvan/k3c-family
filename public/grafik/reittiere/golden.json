@@ -48,11 +48,11 @@
     }
   },
   "pferd": {
-    "renderKey": "6a50b148e4b11d74243efb4b96e6fabc5d4d46df9123928e86469e48b8a0c997",
+    "renderKey": "bceee87b15fac3e70fadb9a5625ab8f8c5211729d15fd599a469c2eb86355186",
     "dateien": {
-      "galopp.png": "91be7bce99bb6d0a7995a92d18381fced5b673bcd5b0098cee3f4128ea805c86",
-      "schritt.png": "dffb3d544574d5865a770a25abaf3f88542e7841c55c27baa94022c54a8efa6c",
-      "trab.png": "98b451a351f08296c98309bb54af37d919204c95bced5991ccc2fe2e8de65477"
+      "galopp.png": "b36e1a1ddcd9d8adceb07dc582d99541db31a67f2a4ae5a7b19af78658cb329f",
+      "schritt.png": "dcd971e9ded1714263f266835c6083cdba6a2a081b11e5ebf077571cb14e9e18",
+      "trab.png": "f1cfa27470741ad61d002336fc6c5f0b261c01f4d425bd0f221ac307bdf60400"
     }
   },
   "rappe": {

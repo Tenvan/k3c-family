@@ -8,28 +8,19 @@
     {
       "id": "oberbein-hf",
       "eltern": "rumpf-hinten",
-      "pivot": [
-        -26,
-        -56
-      ],
+      "pivot": [-26, -56],
       "lagen": []
     },
     {
       "id": "unterbein-hf",
       "eltern": "oberbein-hf",
-      "pivot": [
-        -26,
-        -31
-      ],
+      "pivot": [-26, -31],
       "lagen": []
     },
     {
       "id": "huf-hf",
       "eltern": "unterbein-hf",
-      "pivot": [
-        -26,
-        -9
-      ],
+      "pivot": [-26, -9],
       "lagen": [
         {
           "art": "flaeche",
@@ -47,28 +38,19 @@
     {
       "id": "oberbein-vf",
       "eltern": "rumpf-vorn",
-      "pivot": [
-        30,
-        -56
-      ],
+      "pivot": [30, -56],
       "lagen": []
     },
     {
       "id": "unterbein-vf",
       "eltern": "oberbein-vf",
-      "pivot": [
-        30,
-        -31
-      ],
+      "pivot": [30, -31],
       "lagen": []
     },
     {
       "id": "huf-vf",
       "eltern": "unterbein-vf",
-      "pivot": [
-        30,
-        -9
-      ],
+      "pivot": [30, -9],
       "lagen": [
         {
           "art": "flaeche",
@@ -86,10 +68,7 @@
     {
       "id": "schweif",
       "eltern": "rumpf-hinten",
-      "pivot": [
-        -38,
-        -68
-      ],
+      "pivot": [-38, -68],
       "lagen": [
         {
           "art": "flaeche",
@@ -122,10 +101,7 @@
     {
       "id": "rumpf-hinten",
       "eltern": "rumpf-vorn",
-      "pivot": [
-        0,
-        -66
-      ],
+      "pivot": [0, -66],
       "lagen": [
         {
           "art": "flaeche",
@@ -156,10 +132,7 @@
     },
     {
       "id": "rumpf-vorn",
-      "pivot": [
-        0,
-        -80
-      ],
+      "pivot": [0, -80],
       "lagen": [
         {
           "art": "flaeche",
@@ -196,28 +169,19 @@
     {
       "id": "oberbein-hn",
       "eltern": "rumpf-hinten",
-      "pivot": [
-        -30,
-        -56
-      ],
+      "pivot": [-30, -56],
       "lagen": []
     },
     {
       "id": "unterbein-hn",
       "eltern": "oberbein-hn",
-      "pivot": [
-        -30,
-        -31
-      ],
+      "pivot": [-30, -31],
       "lagen": []
     },
     {
       "id": "huf-hn",
       "eltern": "unterbein-hn",
-      "pivot": [
-        -30,
-        -9
-      ],
+      "pivot": [-30, -9],
       "lagen": [
         {
           "art": "flaeche",
@@ -235,28 +199,19 @@
     {
       "id": "oberbein-vn",
       "eltern": "rumpf-vorn",
-      "pivot": [
-        26,
-        -56
-      ],
+      "pivot": [26, -56],
       "lagen": []
     },
     {
       "id": "unterbein-vn",
       "eltern": "oberbein-vn",
-      "pivot": [
-        26,
-        -31
-      ],
+      "pivot": [26, -31],
       "lagen": []
     },
     {
       "id": "huf-vn",
       "eltern": "unterbein-vn",
-      "pivot": [
-        26,
-        -9
-      ],
+      "pivot": [26, -9],
       "lagen": [
         {
           "art": "flaeche",
@@ -273,10 +228,7 @@
     {
       "id": "sattel",
       "eltern": "rumpf-vorn",
-      "pivot": [
-        0,
-        -78
-      ],
+      "pivot": [0, -78],
       "lagen": [
         {
           "art": "flaeche",
@@ -331,10 +283,7 @@
     {
       "id": "hals",
       "eltern": "rumpf-vorn",
-      "pivot": [
-        30,
-        -70
-      ],
+      "pivot": [30, -70],
       "lagen": [
         {
           "art": "flaeche",
@@ -431,10 +380,7 @@
         },
         {
           "art": "punkt",
-          "mitte": [
-            52.6,
-            -103
-          ],
+          "mitte": [52.6, -103],
           "radius": 0.6,
           "material": "hermelin",
           "ton": "licht"
@@ -480,10 +426,7 @@
         },
         {
           "art": "punkt",
-          "mitte": [
-            57.6,
-            -96.2
-          ],
+          "mitte": [57.6, -96.2],
           "radius": 1.4,
           "material": "gold"
         }
@@ -491,22 +434,8 @@
     }
   ],
   "bein": {
-    "breiten_vorn": [
-      16,
-      14,
-      11.5,
-      8.2,
-      5.4,
-      6.8
-    ],
-    "breiten_hinten": [
-      19,
-      17,
-      12.5,
-      8,
-      5.4,
-      6.8
-    ]
+    "breiten_vorn": [16, 14, 11.5, 8.2, 5.4, 6.8],
+    "breiten_hinten": [19, 17, 12.5, 8, 5.4, 6.8]
   },
   "animationen": {
     "schritt": {
@@ -524,12 +453,7 @@
   },
   "ausgabe": {
     "hoehe_px": 192,
-    "rahmen": [
-      -68,
-      -122,
-      145,
-      126
-    ],
+    "rahmen": [-78, -122, 155, 126],
     "massstab": 1.3
   }
 }

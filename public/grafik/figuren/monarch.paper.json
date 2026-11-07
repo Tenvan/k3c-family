@@ -3,15 +3,12 @@
   "id": "monarch",
   "rig": "figur",
   "version": 1,
-  "beschreibung": "König mit Bart, Hermelinkragen, Krone mit Edelsteinen, blauer Rock, Schwert an der Seite, roter Umhang (aus dem Prototyp 005).",
+  "beschreibung": "König mit Bart, Hermelinkragen, Krone mit Edelsteinen, blauer Rock, Schwert an der Seite, roter Umhang (aus dem Prototyp 005); reitet das Pferd aus reittiere/ in Schritt, Trab und Galopp.",
   "teile": [
     {
       "id": "oberarm-h",
       "eltern": "rumpf",
-      "pivot": [
-        0,
-        -84
-      ],
+      "pivot": [0, -84],
       "lagen": [
         {
           "art": "flaeche",
@@ -37,10 +34,7 @@
     {
       "id": "unterarm-h",
       "eltern": "oberarm-h",
-      "pivot": [
-        0,
-        -70
-      ],
+      "pivot": [0, -70],
       "lagen": [
         {
           "art": "flaeche",
@@ -70,10 +64,7 @@
         },
         {
           "art": "punkt",
-          "mitte": [
-            2,
-            -55.5
-          ],
+          "mitte": [2, -55.5],
           "radius": 1,
           "material": "linie"
         },
@@ -108,10 +99,7 @@
     {
       "id": "oberschenkel-h",
       "eltern": "rumpf",
-      "pivot": [
-        0,
-        -50
-      ],
+      "pivot": [0, -50],
       "lagen": [
         {
           "art": "flaeche",
@@ -137,10 +125,7 @@
     {
       "id": "unterschenkel-h",
       "eltern": "oberschenkel-h",
-      "pivot": [
-        0,
-        -28
-      ],
+      "pivot": [0, -28],
       "lagen": [
         {
           "art": "flaeche",
@@ -189,10 +174,7 @@
     {
       "id": "schwert",
       "eltern": "rumpf",
-      "pivot": [
-        -7,
-        -53
-      ],
+      "pivot": [-7, -53],
       "lagen": [
         {
           "art": "flaeche",
@@ -219,10 +201,7 @@
         },
         {
           "art": "punkt",
-          "mitte": [
-            -6.8,
-            -55.8
-          ],
+          "mitte": [-6.8, -55.8],
           "radius": 1.6,
           "material": "gold",
           "ton": "schatten"
@@ -232,10 +211,7 @@
     {
       "id": "oberschenkel-v",
       "eltern": "rumpf",
-      "pivot": [
-        0,
-        -50
-      ],
+      "pivot": [0, -50],
       "lagen": [
         {
           "art": "flaeche",
@@ -261,10 +237,7 @@
     {
       "id": "unterschenkel-v",
       "eltern": "oberschenkel-v",
-      "pivot": [
-        0,
-        -28
-      ],
+      "pivot": [0, -28],
       "lagen": [
         {
           "art": "flaeche",
@@ -312,10 +285,7 @@
     },
     {
       "id": "rumpf",
-      "pivot": [
-        0,
-        -50
-      ],
+      "pivot": [0, -50],
       "lagen": [
         {
           "art": "flaeche",
@@ -344,20 +314,14 @@
         },
         {
           "art": "punkt",
-          "mitte": [
-            3,
-            -80
-          ],
+          "mitte": [3, -80],
           "radius": 1.1,
           "material": "gold",
           "ton": "schatten"
         },
         {
           "art": "punkt",
-          "mitte": [
-            3,
-            -70
-          ],
+          "mitte": [3, -70],
           "radius": 1.1,
           "material": "gold",
           "ton": "schatten"
@@ -454,46 +418,31 @@
         },
         {
           "art": "punkt",
-          "mitte": [
-            -9,
-            -87.5
-          ],
+          "mitte": [-9, -87.5],
           "radius": 1,
           "material": "linie"
         },
         {
           "art": "punkt",
-          "mitte": [
-            -2,
-            -86
-          ],
+          "mitte": [-2, -86],
           "radius": 1,
           "material": "linie"
         },
         {
           "art": "punkt",
-          "mitte": [
-            5,
-            -87.5
-          ],
+          "mitte": [5, -87.5],
           "radius": 1,
           "material": "linie"
         },
         {
           "art": "punkt",
-          "mitte": [
-            11,
-            -88
-          ],
+          "mitte": [11, -88],
           "radius": 1,
           "material": "linie"
         },
         {
           "art": "punkt",
-          "mitte": [
-            1,
-            -92.5
-          ],
+          "mitte": [1, -92.5],
           "radius": 1,
           "material": "linie"
         }
@@ -502,10 +451,7 @@
     {
       "id": "kopf",
       "eltern": "rumpf",
-      "pivot": [
-        0,
-        -90
-      ],
+      "pivot": [0, -90],
       "lagen": [
         {
           "art": "flaeche",
@@ -621,19 +567,13 @@
         },
         {
           "art": "punkt",
-          "mitte": [
-            10.9,
-            -111
-          ],
+          "mitte": [10.9, -111],
           "radius": 1.5,
           "material": "auge"
         },
         {
           "art": "punkt",
-          "mitte": [
-            11.4,
-            -111.5
-          ],
+          "mitte": [11.4, -111.5],
           "radius": 0.5,
           "material": "hermelin",
           "ton": "licht"
@@ -653,10 +593,7 @@
         },
         {
           "art": "punkt",
-          "mitte": [
-            11.5,
-            -105.5
-          ],
+          "mitte": [11.5, -105.5],
           "radius": 2.6,
           "material": "koenigsrot",
           "ton": "licht"
@@ -666,10 +603,7 @@
     {
       "id": "krone",
       "eltern": "kopf",
-      "pivot": [
-        2,
-        -120
-      ],
+      "pivot": [2, -120],
       "lagen": [
         {
           "art": "flaeche",
@@ -723,20 +657,14 @@
         },
         {
           "art": "punkt",
-          "mitte": [
-            -11.5,
-            -134.5
-          ],
+          "mitte": [-11.5, -134.5],
           "radius": 1.7,
           "material": "hermelin",
           "ton": "licht"
         },
         {
           "art": "punkt",
-          "mitte": [
-            15.5,
-            -134.5
-          ],
+          "mitte": [15.5, -134.5],
           "radius": 1.7,
           "material": "hermelin",
           "ton": "licht"
@@ -763,10 +691,7 @@
     {
       "id": "oberarm-v",
       "eltern": "rumpf",
-      "pivot": [
-        0,
-        -84
-      ],
+      "pivot": [0, -84],
       "lagen": [
         {
           "art": "flaeche",
@@ -792,10 +717,7 @@
     {
       "id": "unterarm-v",
       "eltern": "oberarm-v",
-      "pivot": [
-        0,
-        -70
-      ],
+      "pivot": [0, -70],
       "lagen": [
         {
           "art": "flaeche",
@@ -824,10 +746,7 @@
         },
         {
           "art": "punkt",
-          "mitte": [
-            2,
-            -55.5
-          ],
+          "mitte": [2, -55.5],
           "radius": 1,
           "material": "linie"
         },
@@ -860,16 +779,10 @@
   ],
   "umhang": {
     "anker": "rumpf",
-    "punkt": [
-      -4,
-      -91
-    ],
-    "material": "koenigsrot",
-    "laenge": 53.2,
-    "breite": [
-      4,
-      17.3
-    ],
+    "punkt": [-4, -91],
+    "material": "smaragd",
+    "laenge": 79.8,
+    "breite": [4, 17.3],
     "segmente": 8
   },
   "animationen": {
@@ -898,17 +811,27 @@
   "varianten": {
     "spieler2": {
       "tausch": {
-        "koenigsblau": "smaragd"
+        "koenigsblau": "koenigsrot"
+      }
+    },
+    "spieler1": {
+      "tausch": {
+        "koenigsblau": "koenigsblau"
+      }
+    },
+    "spieler3": {
+      "tausch": {
+        "koenigsblau": "purpur"
+      }
+    },
+    "spieler4": {
+      "tausch": {
+        "koenigsblau": "leder"
       }
     }
   },
   "ausgabe": {
     "hoehe_px": 192,
-    "rahmen": [
-      -60,
-      -145,
-      85,
-      151
-    ]
+    "rahmen": [-60, -145, 85, 151]
   }
 }
