@@ -59,11 +59,11 @@ Ergebnis nennt je Punkt ✅ oder den Befund.
 2026-11-07, Ralf im Browser-Pane (neuer Spielstand) und in der Workbench.
 
 ### Spiel ✏️
-- Der Bogenschütze schwebt deutlich über dem Turm. Er muss immer auf der Plattform stehen, auch wenn das Gebäude wechselt. Bild: [Bogenschütze über dem Turm](bilder/ps1.4-bogenschuetze-turm.webp)
+- Der Bogenschütze schwebt deutlich über dem Turm. Er muss immer auf der Plattform stehen, auch wenn das Gebäude wechselt. Bild: [Bogenschütze über dem Turm](../../../playtests/ps1/ps1.4-bogenschuetze-turm.webp)
 - Die Animation des berittenen Monarchen passt nicht zur Laufgeschwindigkeit.
 - Auf dem Pferd ist kein Idle zu sehen.
-- Die Bäume sind zu klein. Die rodbaren Birken, Tannen und Pappeln sind kaum von den Bäumen im Hintergrund zu unterscheiden. Der Hintergrund soll deshalb keine Bäume zeigen, sonst passt das Roden nicht (siehe D-US2-01). Bild: [Bäume und Hintergrund](bilder/ps1.4-baeume-hintergrund.webp)
-- Das Tor bzw. Portal ist zu klein, gemessen am berittenen Monarchen. Bild: [Tor und Portal](bilder/ps1.4-tor-portal.webp)
+- Die Bäume sind zu klein. Die rodbaren Birken, Tannen und Pappeln sind kaum von den Bäumen im Hintergrund zu unterscheiden. Der Hintergrund soll deshalb keine Bäume zeigen, sonst passt das Roden nicht (siehe D-US2-01). Bild: [Bäume und Hintergrund](../../../playtests/ps1/ps1.4-baeume-hintergrund.webp)
+- Das Tor bzw. Portal ist zu klein, gemessen am berittenen Monarchen. Bild: [Tor und Portal](../../../playtests/ps1/ps1.4-tor-portal.webp)
 - Pixel-Reste: nur die bekannten (Gerüste, Plantage) ✅
 
 ### Review-Lauf ✅
