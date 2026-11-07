@@ -17,6 +17,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | MG5 | PAP | PAP | Papierschnitt-Migration: Bosse | – | `aktiv/MG5-papier-bosse/` |
 | MG4 | PAP | PAP | Papierschnitt-Migration: Gegner | – | `aktiv/MG4-papier-gegner/` |
 | MG7 | PAP | PAP | Papierschnitt-Migration: Hintergründe je Biom | – | `aktiv/MG7-papier-hintergruende/` |
+| MG8 | PAP | PAP | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | – | `aktiv/MG8-papier-natur-objekte-icons/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | `aktiv/BD10-schreibende-endpunkte-schutz/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
@@ -39,7 +40,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 |---|---|---|---|---|---|---|
 | US1 | CLI | PAP | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | – | Entwurf | `geplant/US1-spiel-auf-papierschnitt/` |
 | MG1 | CLI | PAP | Papierschnitt-Migration: Monarch und Spielerfarben | – | Entwurf | `geplant/MG1-papier-monarch-spielerfarben/` |
-| MG8 | CLI | PAP | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | – | Entwurf | `geplant/MG8-papier-natur-objekte-icons/` |
 | PS1 | CLI | PAP | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | – | Entwurf | `geplant/PS1-papierschnitt-sichtpruefungen/` |
 | CU1 | CLI | PAP | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | – | Entwurf | `geplant/CU1-alte-grafik-aufraeumen/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |

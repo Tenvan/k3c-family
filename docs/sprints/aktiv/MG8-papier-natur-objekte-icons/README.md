@@ -1,18 +1,18 @@
-# MG8 · CLI · Papierschnitt-Migration: Natur, Objekte, Münzen, Icons
+# MG8 · PAP · Papierschnitt-Migration: Natur, Objekte, Münzen, Icons
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** PAP
-- **Domäne:** CLI
-- **Reife:** Entwurf
+- **Domäne:** PAP
+- **Reife:** bereit
 - **Tickets:** B-699
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 094be01c
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude
 
 ## Ausgangslage
 
-Welle 2, Lane `objekte` (Domäne PAP ab PV1.1; bis das Werkzeug PAP kennt, als CLI geführt). Läuft parallel zu den anderen MG-Sprints, sobald RD1 und MC1 erledigt sind. Liste aus `public/grafik/index.json` und `docs/assets/zuordnung-*.md`.
+Welle 2, Lane `objekte`, Domäne PAP. RD1, MC1 und MG2–MG7 sind in `feature/pap` (094be01c). Liste aus `docs/assets/zuordnung-welt.md` (Natur, Truhen/Portale/Münzen, Abbau-Schilder, Icons, Materialien). Die Gruppen `objekte` und `icons` gibt es noch nicht. Gerüste (`site:scaffold:*`) gehören zu den Gebäuden und bleiben draußen.
 
 ## Ziel
 
@@ -22,7 +22,7 @@ Am Ende sichtbar: alle Assets der Gruppe im Katalog von Assets, Review ohne rote
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+Claude setzt um und prüft (autonom); 🧑 sieht in PS1 die Grafiken an.
 
 ## Anforderungen
 
@@ -38,11 +38,11 @@ Nur `public/grafik/objekte/` und `public/grafik/icons/`. Kein `assets_style_set`
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis.
+Tanne in `objekte` → `requisite` mit Stamm und Krone, `idle` wiegt die Krone leicht. Münze in `icons` → statisch oder mit kurzem Glanz-Kippen.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten.
+Fehlt ein Papier-Material (z. B. Kupfer, Kristall), wird ein vorhandenes genommen (Kupfer = `fell-fuchs`, Kristall = `edelstein`/`koenigsblau`) und als D-Zeile in B-701 vermerkt.
 
 ## Akzeptanzkriterien
 
@@ -56,7 +56,14 @@ keine
 
 ## Sessions
 
-Reife Entwurf, Lane `objekte`; Zuschnitt beim Bereitmachen (je Session 5–10 einfache Objekte), dazu ein Review (Opus); keine Mensch-Session (Sichtprüfung in PS1). Umsetzung Sonnet.
+Je Session 5–9 Assets, Umsetzung Sonnet, Review Opus, keine Mensch-Session.
+
+- MG8.1 Bäume, Wurzeln, Büsche, Setzling → `objekte`
+- MG8.2 Felsen, Erzbrocken, Adern → `objekte`
+- MG8.3 Truhe, Portal, Ausgang, Abbau-Schilder, Stern → `objekte`
+- MG8.4 Münze und Gold-Icons → `icons`
+- MG8.5 Material-Icons → `icons`
+- MG8.6 Review (Opus)
 
 ## Abnahme
 
