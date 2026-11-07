@@ -1,0 +1,525 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "werkstatt",
+  "rig": "gebaeude",
+  "version": 1,
+  "beschreibung": "Offener Handelsstand der Werkstatt (6 × 4 Kacheln): Plankenwand, zwei Pfosten und Balken, Tuchdach aus acht Bahnen rot und hell mit Volant, Wandschild mit Hammer, Tresen mit Werkzeug und Kiste, Gestell rechts mit Hämmern und Bögen. Wand, Pfosten und Balken folgen der Materialkette; Wimpel ab Stufe 3.",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-84 -96L32 -96L32 -34L-84 -34Z",
+          "material": "holz"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-72 -95L-72 -35",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-60 -95L-60 -35",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-48 -95L-48 -35",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-36 -95L-36 -35",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-24 -95L-24 -35",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-12 -95L-12 -35",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M0 -95L0 -35",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M12 -95L12 -35",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M24 -95L24 -35",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-90 -102L-82 -102L-82 0L-90 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-83.6 -101L-83.6 -2",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M30 -102L38 -102L38 0L30 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M36.4 -101L36.4 -2",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-92 -106L40 -106L40 -99L-92 -99Z",
+          "material": "holz"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-91 -105L39 -105",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-92 -126L-75 -126L-77 -106L-94 -106Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-94 -106L-77 -106L-85.5 -101Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-75 -126L-58 -126L-60 -106L-77 -106Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-77 -106L-60 -106L-68.5 -101Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-58 -126L-41 -126L-43 -106L-60 -106Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-60 -106L-43 -106L-51.5 -101Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-41 -126L-24 -126L-26 -106L-43 -106Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-43 -106L-26 -106L-34.5 -101Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-24 -126L-7 -126L-9 -106L-26 -106Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-26 -106L-9 -106L-17.5 -101Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-7 -126L10 -126L8 -106L-9 -106Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-9 -106L8 -106L-0.5 -101Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M10 -126L27 -126L25 -106L8 -106Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "flaeche",
+          "form": "M8 -106L25 -106L16.5 -101Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M27 -126L44 -126L42 -106L25 -106Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "form": "M25 -106L42 -106L33.5 -101Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-20 -84L20 -84L20 -66L-20 -66Z",
+          "material": "leder"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-19 -83L19 -83",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-9 -81L5 -81L5 -76L-9 -76Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-2 -76L1 -76L1 -67L-2 -67Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-90 -34L38 -34L38 0L-90 0Z",
+          "material": "leder"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-74 -33L-74 -1",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-58 -33L-58 -1",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-42 -33L-42 -1",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-26 -33L-26 -1",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-10 -33L-10 -1",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M6 -33L6 -1",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M22 -33L22 -1",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-92 -38L40 -38L40 -32L-92 -32Z",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-70 -44L-56 -44L-56 -38L-70 -38Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-64 -40L-61 -40L-61 -38L-64 -38Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-44 -42L-34 -42L-34 -38L-44 -38Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M8 -52L30 -52L30 -38L8 -38Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M9 -51L29 -51",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M9 -45L29 -45",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M48 -76L52 -76L52 0L48 0Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M86 -76L90 -76L90 0L86 0Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M46 -78L92 -78L92 -74L46 -74Z",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M46 -40L92 -40L92 -36L46 -36Z",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M56 -74L64 -74L64 -69L56 -69Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M59 -69L61 -69L61 -57L59 -57Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M72 -74L80 -74L80 -69L72 -69Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M75 -69L77 -69L77 -57L75 -57Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M56 -36L62 -30L62 -6L56 -12Z",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M72 -36L78 -30L78 -6L72 -12Z",
+          "material": "leder",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 128,
+    "rahmen": [-96, -128, 192, 128]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  },
+  "stufen": [
+    {
+      "tausch": {
+        "holz": "stein"
+      }
+    },
+    {
+      "tausch": {
+        "stein": "fell-fuchs"
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "wimpel",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M33 -126L35 -126L35 -104L33 -104Z",
+              "material": "maehne"
+            },
+            {
+              "art": "flaeche",
+              "form": "M35 -126L48 -121L35 -116Z",
+              "material": "koenigsrot"
+            },
+            {
+              "art": "punkt",
+              "material": "smaragd",
+              "mitte": [-60, -60],
+              "radius": 1.8
+            },
+            {
+              "art": "punkt",
+              "material": "smaragd",
+              "mitte": [-10, -50],
+              "radius": 1.4
+            },
+            {
+              "art": "punkt",
+              "material": "smaragd",
+              "mitte": [20, -88],
+              "radius": 1.6
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    },
+    {
+      "tausch": {
+        "fell-fuchs": "stoff",
+        "smaragd": "stoff"
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "baender",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-90 -70L-82 -70L-82 -66L-90 -66Z",
+              "material": "stoff",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M30 -70L38 -70L38 -66L30 -66Z",
+              "material": "stoff",
+              "ton": "schatten"
+            },
+            {
+              "art": "punkt",
+              "material": "hermelin",
+              "mitte": [-86, -68],
+              "radius": 1,
+              "ton": "schatten"
+            },
+            {
+              "art": "punkt",
+              "material": "hermelin",
+              "mitte": [34, -68],
+              "radius": 1,
+              "ton": "schatten"
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    },
+    {
+      "tausch": {
+        "stoff": "koenigsblau"
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "kristall",
+          "lagen": [
+            {
+              "art": "punkt",
+              "material": "gold",
+              "mitte": [41, -121],
+              "radius": 2.2,
+              "ton": "licht"
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [-70, -90],
+              "radius": 1.1
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [-30, -60],
+              "radius": 1.1
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [24, -80],
+              "radius": 1.1
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "id": "burg",
+  "version": 1,
+  "specHash": "544d3e8c170196561f888b62e0946c0953ecadaec522fcdd1d4b218409abf755",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "8990b6af20ebe2be9852527cc889c03868300204c3d42a3fc4cf23521671f110",
+  "rahmen": [
+    -128,
+    -288,
+    256,
+    288
+  ],
+  "frameW": 256,
+  "frameH": 288,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "dbd6731b0999c3dbd95137ffe989d67e843b889bae659a46f7ae9bf253d107ed"
+      ]
+    },
+    "stand.s2": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s2.png",
+      "hashes": [
+        "adc1a17626070eb710336cd6c4a0a73f03a48f84d0c8e7774b109ca016971ac2"
+      ]
+    },
+    "stand.s3": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s3.png",
+      "hashes": [
+        "0ea25026036d5cd793c6aa8db1f20b55c0577711fc0e31e121df91917fb0c647"
+      ]
+    },
+    "stand.s4": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s4.png",
+      "hashes": [
+        "e013f56f64d0224429d56f7b69e6da3c4c07ad1bfbf114e8cc5735b17e516825"
+      ]
+    },
+    "stand.s5": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s5.png",
+      "hashes": [
+        "50a01334be9f3d86ab263b6e7fc02b89e59f18c6568913114cd3411008f3335f"
+      ]
+    }
+  },
+  "varianten": []
+}

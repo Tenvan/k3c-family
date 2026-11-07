@@ -1,0 +1,27 @@
+{
+  "id": "treppe-runter",
+  "version": 1,
+  "specHash": "c977d1836df9d615e3a3980dc8a5933ddcdb0ec2ee2b2ccb3a8bf6ec4bc0b0fe",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "111f9518b93289d8704f1e873e67a0100355005f9b130974b9b0da81d7ea3f6e",
+  "rahmen": [
+    -64,
+    -96,
+    128,
+    96
+  ],
+  "frameW": 128,
+  "frameH": 96,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "7ab4aa90e448b49d616f64ff36a6128dce312188e88c34b65522e1db12841171"
+      ]
+    }
+  },
+  "varianten": []
+}

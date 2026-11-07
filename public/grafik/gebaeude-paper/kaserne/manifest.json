@@ -1,0 +1,59 @@
+{
+  "id": "kaserne",
+  "version": 1,
+  "specHash": "2db46fd0ee5870420c95a2ed1bf0200cc7545db611a0e3141ac7dfc91c63606e",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "527f2d3482b261b3d14f9812ebfbf804b4c825a7e94b6637f53d6bcfbb60d8d7",
+  "rahmen": [
+    -96,
+    -128,
+    192,
+    128
+  ],
+  "frameW": 192,
+  "frameH": 128,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "53f6f9e75b791872f48436bfc1d2b0079cc40259da1266c1c881193369a2fe4f"
+      ]
+    },
+    "stand.s2": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s2.png",
+      "hashes": [
+        "03b0553edb3711fe3ed8ba5eb95f636c9f81f5f4ae068aebd8e035491d7b71d3"
+      ]
+    },
+    "stand.s3": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s3.png",
+      "hashes": [
+        "b1be74ca4715e3e690b45661b168ec458c50569ee23c56255223b87eaec899c4"
+      ]
+    },
+    "stand.s4": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s4.png",
+      "hashes": [
+        "17481bc5684636f6a83665bb137aaa5e763a4f708edc7ea3873fb6f894591836"
+      ]
+    },
+    "stand.s5": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.s5.png",
+      "hashes": [
+        "c590b90c5eddd2f6c516f2eee9830bccc4fd257d24e770eef0ca325c27395ea4"
+      ]
+    }
+  },
+  "varianten": []
+}
