@@ -175,6 +175,7 @@ tasks:
               if [ -z "$base" ] || git merge-base --is-ancestor "$base" "$mb"; then base=$mb; fi
             done
           fi
+          [ -n "$base" ] || { echo "❌ check:diff: keine Basis gefunden (origin/develop fehlt? git fetch, oder CHECK_BASE setzen)"; exit 1; }
           # Flags: c Client (Lint, Typecheck, Vitest --changed), a Assets (Golden-Tests), gf Root-Go voll, wf/wv/wa Workbench Go voll/Vitest/assetkit,
           # sp/sl/sv Starter. ch = geänderte Go-Pakete (Importpfade, auch für die Abnehmer in anderen Modulen).
           c=; a=; gf=; wf=; wv=; wa=; sg=; sl=; sv=; ch=; docs=1
