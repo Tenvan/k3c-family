@@ -1,0 +1,74 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "icon-truhe",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Truhe: kleine Holztruhe mit Goldbeschlägen",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12 -4L-12 -16L12 -16L12 -4Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 -4L-12 -16L-6 -16L-6 -4Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-12 -16L-12 -20C-10 -26 10 -26 12 -20L12 -16Z",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-9 -4L-9 -24L-6 -25L-6 -4Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M6 -4L6 -25L9 -24L9 -4Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-2.5 -18L2.5 -18L2.5 -12L-2.5 -12Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [0, -14.5],
+          "radius": 0.8
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

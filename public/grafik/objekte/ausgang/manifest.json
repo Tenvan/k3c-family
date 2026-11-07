@@ -1,0 +1,27 @@
+{
+  "id": "ausgang",
+  "version": 1,
+  "specHash": "6119f58034ea21c775ba7da940dacfabbd40bb4f3a438c8395e92d236c463ef1",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "7080f0c4613c49749150ce28452ce0868d181a3a04f690c05591c5d6af006e9e",
+  "rahmen": [
+    -38,
+    -70,
+    76,
+    72
+  ],
+  "frameW": 80,
+  "frameH": 76,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 1,
+      "datei": "idle.png",
+      "hashes": [
+        "73dc78e44ebe987cdfeac22c9099b5574f58ee93e99270c4cd54ceb1e142ff8c"
+      ]
+    }
+  },
+  "varianten": []
+}

@@ -1,0 +1,34 @@
+{
+  "id": "birke",
+  "version": 1,
+  "specHash": "7a846e1791dba1dbe0c351db5730e8165c40d709ec51efc539bed956482c1de2",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "19e12c4357d44d7e272f021f6b0f1b2e23b2f0307c16a90b985813408c473adb",
+  "rahmen": [
+    -36,
+    -132,
+    72,
+    136
+  ],
+  "frameW": 76,
+  "frameH": 144,
+  "animationen": {
+    "idle": {
+      "frames": 8,
+      "fps": 6,
+      "datei": "idle.png",
+      "hashes": [
+        "8ffea4d72f65b0121f9275bfb5c68011b5afe040c5458e716760bf8611b6b692",
+        "39b206b888872fe57ef22d2284618c1ddd1130a4859dc96a27a31d96f410fd3b",
+        "0274a982bcf393422ee4d0e1b058af2cedc0297a64c3e3ee8ddcd228cb045ab5",
+        "e3b7c249db08364b4835fdb185255a674525c681eee2aa0522949c9ab504b036",
+        "08cc83d90f73aa0369f380e215d0b23c27a39def55eccc4cfdb48b75c07d9124",
+        "e3b7c249db08364b4835fdb185255a674525c681eee2aa0522949c9ab504b036",
+        "0274a982bcf393422ee4d0e1b058af2cedc0297a64c3e3ee8ddcd228cb045ab5",
+        "39b206b888872fe57ef22d2284618c1ddd1130a4859dc96a27a31d96f410fd3b"
+      ]
+    }
+  },
+  "varianten": []
+}

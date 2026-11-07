@@ -1,0 +1,27 @@
+{
+  "id": "icon-kristall",
+  "version": 1,
+  "specHash": "66fc011be2dc9314bda8fb76de1fd5576247681c6a8735a338ad87180e46167a",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "e8d794663dee45b7138c14de0862f6515852348b658219114ead81ca7a4deed9",
+  "rahmen": [
+    -16,
+    -32,
+    32,
+    32
+  ],
+  "frameW": 32,
+  "frameH": 32,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 1,
+      "datei": "idle.png",
+      "hashes": [
+        "f9043bf3a23bfce056a906cfc2d208c4e06b0c57254086752866904efd3ac0be"
+      ]
+    }
+  },
+  "varianten": []
+}

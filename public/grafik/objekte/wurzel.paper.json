@@ -1,0 +1,97 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "wurzel",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Höhlenwurzel: knorriger brauner Wurzelstrunk mit zwei Seitenarmen und dunklen Moosflecken, Höhlen-Flora statt Baum",
+  "teile": [
+    {
+      "id": "strunk",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12 0C-10 -10 -14 -24 -8 -40C-4 -52 -10 -64 -4 -78C0 -84 6 -82 6 -74C4 -60 10 -50 8 -38C6 -24 12 -10 14 0Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 0C-10 -10 -14 -24 -8 -40C-4 -52 -10 -64 -4 -78C-2 -80 0 -80 0 -78C-4 -64 0 -52 -2 -40C-6 -24 -4 -10 -4 0Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-8 -40C-16 -44 -22 -52 -24 -62C-20 -60 -16 -54 -10 -50Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M8 -36C16 -38 22 -44 26 -54C22 -54 16 -48 9 -46Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-12 0C-18 -2 -24 0 -28 2L-10 2Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M14 0C20 -2 26 -1 30 2L12 2Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M2 -10C0 -30 4 -50 0 -70",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-6 -20C-4 -26 -6 -32 -5 -38",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M5 -78C5 -80.21 1.87 -82 -2 -82C-5.87 -82 -9 -80.21 -9 -78C-9 -75.79 -5.87 -74 -2 -74C1.87 -74 5 -75.79 5 -78Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M14 -44C14 -45.66 11.76 -47 9 -47C6.24 -47 4 -45.66 4 -44C4 -42.34 6.24 -41 9 -41C11.76 -41 14 -42.34 14 -44Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-17 -60C-17 -61.38 -18.79 -62.5 -21 -62.5C-23.21 -62.5 -25 -61.38 -25 -60C-25 -58.62 -23.21 -57.5 -21 -57.5C-18.79 -57.5 -17 -58.62 -17 -60Z",
+          "material": "smaragd"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 98,
+    "rahmen": [-32, -88, 64, 92]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "strunk": 0
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "schild-axt",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Abbau-Schild Axt: kleines Holzschild am Pfahl mit Axt-Symbol, markiert einen Baum zum Fällen; wackelt leicht",
+  "teile": [
+    {
+      "id": "schild",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-2 0L-2 -22L2 -22L2 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-13 -20L-13 -42L13 -42L13 -20Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-13 -20L-13 -42L-7 -42L-7 -20Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-13 -31L13 -31",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [-10, -39],
+          "radius": 0.9
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [10, -39],
+          "radius": 0.9
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6 -24L6 -38L7.5 -36.5L-4.5 -22.5Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M2 -40C6 -42 10 -38 10 -34L6 -33L2 -37Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M2 -37L6 -33L4 -31C1 -32 0 -35 2 -37Z",
+          "material": "stein"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 51,
+    "rahmen": [-17, -46, 34, 48]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 4,
+      "frames": 4,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "schild": -2
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "schild": 2
+          }
+        }
+      ]
+    }
+  }
+}

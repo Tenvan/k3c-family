@@ -1,0 +1,102 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "felsen",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Felsen: grauer Haufen aus drei kantigen Steinbrocken, Licht oben rechts",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-26 0L-24 -12L-14 -20L-4 -16L0 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-26 0L-24 -12L-14 -20L-14.35 -16L-14.95 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M-14 -19L-5 -16",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4 0L-2 -18L8 -28L20 -22L26 -8L24 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-4 0L-2 -18L8 -28L9.65 -22L8.75 -8L9.05 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M8 -27L25 -8",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-12 0L-10 -8L-2 -11L6 -6L8 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 0L-10 -8L-2 -11L-3.2 -6L-3.5 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M-2 -10L5 -6",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M8 -26L4 -12",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-18 -14L-14 -4",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 36,
+    "rahmen": [-30, -32, 60, 34]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

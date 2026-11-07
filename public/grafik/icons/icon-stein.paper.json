@@ -1,0 +1,58 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "icon-stein",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Stein: kantiger grauer Steinblock mit heller Oberseite",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-13 -4L-12 -16L-4 -24L8 -22L13 -12L12 -4Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-13 -4L-12 -16L-4 -24L-2 -14L-4 -4Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-2 -14L-4 -24L8 -22L6 -14Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-2 -14L6 -14L12 -6",
+          "material": "stein",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

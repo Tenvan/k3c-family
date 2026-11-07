@@ -1,0 +1,27 @@
+{
+  "id": "icon-muenze",
+  "version": 1,
+  "specHash": "6569b5924e393c55417aac75976944290992f4848e2e18bd08497d4844e2baaa",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "d45bf32a5fd0f49163e448f698958df713782e8f588b5313e20247526fcd1ddc",
+  "rahmen": [
+    -16,
+    -32,
+    32,
+    32
+  ],
+  "frameW": 32,
+  "frameH": 32,
+  "animationen": {
+    "idle": {
+      "frames": 1,
+      "fps": 1,
+      "datei": "idle.png",
+      "hashes": [
+        "e2ddabbb0e9691a7a806690f68356e352fceee11953d86219cdad9d0d6103451"
+      ]
+    }
+  },
+  "varianten": []
+}
