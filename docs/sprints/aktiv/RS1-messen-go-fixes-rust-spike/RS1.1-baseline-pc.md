@@ -1,6 +1,6 @@
 # RS1.1 · Baseline auf dem PC messen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
