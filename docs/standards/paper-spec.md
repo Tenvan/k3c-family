@@ -53,6 +53,7 @@ Koordinaten in **Spec-Einheiten**, Boden `y = 0`, Blick nach rechts, `y` wächst
 | `teile` | ja | Liste der Teile; **Zeichenreihenfolge = Reihenfolge der Liste** (Eltern müssen nicht vorher stehen) |
 | `umhang` | nein | `{anker, punkt:[x,y], material, laenge, breite:[oben, unten], segmente?}` – Umhang-Physik des Rigs |
 | `bein` | nur `vierbeiner` | `{breiten_vorn:[6], breiten_hinten:[6]}` – Breite des Beinpfads an Schulter/Hüfte, Oberschenkel, Knie, Unterbein, Fessel, Huf |
+| `proportionen` | nein | `vierbeiner`: `{fuss?: huf|pfote|elefantenfuss, gangarten?: [schritt, trab, galopp]}`; `figur`: `{arme?, beine?, rumpf?, kopf?}` (Faktoren 0,1–3, Standard 1). Felder am falschen Rig lehnt `validate` ab (`proportionen-rig`) |
 | `animationen` | nein | Name → `{frames (1–64), fps? (Standard 8), reittier?, gangart?: schritt|trab|galopp, keyframes?}` |
 | `varianten` | nein | Name → `{tausch: {material: material}}` |
 | `stufen` | nur `gebaeude` | Delta je weiterer Ausbaustufe: `stufen[0]` = Stufe 2, `{tausch?, zusaetze?: [Teil]}` |
@@ -64,6 +65,14 @@ Koordinaten in **Spec-Einheiten**, Boden `y = 0`, Blick nach rechts, `y` wächst
   mit Eintrag für das Teil und `t` ≤ Phase, vor dem ersten der letzte der Animation (zyklisch); ohne Eintrag ist das Teil sichtbar.
   Ein ausgeblendetes Teil fehlt im Frame und in den Teil-Boxen von `frame`. Gilt für `figur`, `requisite`, `gebaeude` und `hintergrund`.
   Bewegung der Rig-Typen (Posen, Gangarten mit IK, Rückengelenk, Umhang) ist Code im Rig, die Spec setzt nur Parameter.
+- **`proportionen` (vierbeiner):** Beinlängen folgen den Pivots von `oberbein-*`, `unterbein-*` und `huf-*` (IK: Oberbein = Knie − Hüfte,
+  Unterbein = Hüfthöhe − Oberbein, das Bein reicht also immer bis zum Boden). `fuss` setzt die Spitze des Beinpfads über der Fessel:
+  `huf` 3,4 (Standard, wie RD1), `pfote` 2,2, `elefantenfuss` 1,2. `gangarten` (Standard alle drei) nennt die Gangarten des Tiers: jede braucht eine Animation
+  mit dieser `gangart` (`gangart-fehlt`), keine Animation nutzt eine andere (`gangart-nicht-erlaubt`). Ein Elefant ohne `galopp`
+  setzt `gangarten: [schritt, trab]`; ein Pferd ohne `galopp`-Animation ist ungültig.
+- **`proportionen` (figur):** Faktoren auf die Winkel der Posen `idle` und `lauf` (`arme`: oberarm-*/unterarm-*, `beine`:
+  oberschenkel-*/unterschenkel-*, `kopf`: kopf/krone) und auf den senkrechten Versatz (`rumpf`). 1 = Grundform; kleiner bei längeren
+  Gliedern (gleicher Ausschlag in Einheiten). Keyframe-Winkel der Spec bleiben unverändert.
 - **`reittier`:** `id` eines `vierbeiner`-Assets; beim Reiten gilt der Rahmen des Reittiers.
 - **`massstab`:** Faktor Spec-Einheiten → Welt-Einheiten (Standard 1). Das Pferd steht in eigenen Einheiten mit `1.3`
   (wie `scale(1.3)` im Prototyp); Pivots und Beinbreiten gelten in Spec-Einheiten.

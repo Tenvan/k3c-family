@@ -10,6 +10,7 @@ import { type Ausgabe, ausgabeSpec } from '../render/stufen';
 import { kette, teileSvg } from '../render/svg';
 import { beinpfad } from './beinpfad';
 import { type Bein, type Gangart, GANGARTEN, type GangPose, gangPose } from './gangarten';
+import { pruefeGangarten } from './proportionen';
 import { rideText, vierbeinerMatrizen } from './vierbeiner';
 
 /** Gangart der Animation oder Ablehnung animation-unbekannt. */
@@ -26,6 +27,7 @@ export function pruefeVierbeiner(spec: Spec): void {
   const fehler = fehlt.map((id) => ({ feld: 'teile', regel: 'pflicht-teil-fehlt', text: `vierbeiner braucht das Teil „${id}“ für den Beinpfad` }));
   if (!spec.bein) fehler.push({ feld: 'bein', regel: 'pflicht-teil-fehlt', text: 'vierbeiner braucht bein (Breiten des Beinpfads)' });
   if (fehler.length) throw new Abgelehnt(fehler);
+  pruefeGangarten(spec);
 }
 
 export function vierbeinerGroesse(spec: Spec): FrameGroesse {

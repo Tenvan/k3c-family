@@ -10,7 +10,7 @@ import { box } from './form';
 import type { Lage, Spec, Stil, Teil } from './types';
 
 export type Regel = 'json' | 'schema' | 'hex-farbe' | 'material-unbekannt' | 'material-doppelt' | 'ton-ohne-toene'
-  | 'pflicht-teil-fehlt' | 'teil-doppelt' | 'eltern-unbekannt' | 'teil-unbekannt' | 'zyklus' | 'id-dateiname' | 'proportion';
+  | 'pflicht-teil-fehlt' | 'teil-doppelt' | 'eltern-unbekannt' | 'teil-unbekannt' | 'zyklus' | 'id-dateiname' | 'proportion' | 'proportionen-rig';
 export type Fehler = { feld: string; regel: Regel; text: string };
 
 /** Pflicht-Teile je Rig-Typ; requisite und hintergrund brauchen mindestens ein Teil. */
@@ -124,6 +124,15 @@ function verweisFehler(spec: Spec): Fehler[] {
   return fehler;
 }
 
+/** `proportionen`: vierbeiner-Felder nur am vierbeiner, figur-Felder nur an der figur (B-715). */
+function proportionenFehler(spec: Spec): Fehler[] {
+  const p = spec.proportionen;
+  if (!p) return [];
+  const erlaubt: string[] = spec.rig === 'vierbeiner' ? ['fuss', 'gangarten'] : spec.rig === 'figur' ? ['arme', 'beine', 'rumpf', 'kopf'] : [];
+  return Object.keys(p).filter((k) => !erlaubt.includes(k)).map((k): Fehler =>
+    ({ feld: `proportionen.${k}`, regel: 'proportionen-rig', text: `„${k}“ gilt nicht für rig ${spec.rig}` }));
+}
+
 /** Figur: Höhe des Teils `kopf` (eigene Lagen) zur Rahmenhöhe innerhalb kopf_anteil ± toleranz (absolut). */
 function proportionFehler(spec: Spec, stil: Stil): Fehler[] {
   const kopf = spec.teile.find((t) => t.id === 'kopf');
@@ -144,7 +153,7 @@ export function checkSpec(spec: unknown, stil: Stil, datei?: string): Fehler[] {
   const v = validators().spec;
   if (!v(spec)) return schemaFehler(v.errors);
   const s = spec as Spec;
-  const fehler = [...materialFehler(s, stil), ...teilFehler(s), ...verweisFehler(s), ...proportionFehler(s, stil)];
+  const fehler = [...materialFehler(s, stil), ...teilFehler(s), ...verweisFehler(s), ...proportionFehler(s, stil), ...proportionenFehler(s)];
   if (datei && basename(datei).replace(/\.paper\.json$/, '') !== s.id)
     fehler.push({ feld: 'id', regel: 'id-dateiname', text: `id „${s.id}“ passt nicht zu ${basename(datei)}` });
   return fehler;

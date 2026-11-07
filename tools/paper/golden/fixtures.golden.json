@@ -24,5 +24,14 @@
       "schritt.png": "744a8266bb11ae08fd36f44ff2b41d3c17d83298c6a8369cbfeb2bb834dc9eb8",
       "trab.png": "f4a5dbbc9f8c7b6b14c1aab1e08ed9113af9569972d0686dc825cc2a2aae2fa8"
     }
+  },
+  "langarm": {
+    "renderKey": "d9c8c1d5821336c441603aa0703b0538b4f3c5e8e775f2e4183c0e0269386d38",
+    "dateien": {
+      "idle.png": "cd741be3a1ed9b96e9d19bf17fb984c572bb7d900eabc913d761bdc7dc7b770f",
+      "idle@spieler2.png": "f4e86ea83eab89fb29d12fe61f9246bc5706e62987736f44b4ed367a3a365bfd",
+      "lauf.png": "b79658fc1fadbe32cc9adf044821437487cb07d45504434a14c7e53ad02f11dc",
+      "lauf@spieler2.png": "ff8aafb07854515dc53b13c1746058f68cce27f0caa12a04b77b5f950ff84ece"
+    }
   }
 }

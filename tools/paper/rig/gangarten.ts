@@ -4,6 +4,7 @@ import type { Punkt, Spec } from '../schema/types';
 import { anwenden, drehung, invers, type M, mul } from '../render/matrix';
 import { ik } from './ik';
 import { spline } from './kurve';
+import { beinLaengen } from './proportionen';
 import { rideMatrix } from './vierbeiner';
 
 const TAU = Math.PI * 2;
@@ -59,12 +60,12 @@ function hufZiel(G: Gang, hip: Punkt, r: number, u: number, vorn: boolean): { t:
   return { t: [hip[0] + r * (2 * e - 1), -Math.sin(Math.PI * k) * G.lift[fi]], curl: G.curl[fi] * Math.sin(Math.PI * k) };
 }
 
-function beinWinkel(G: Gang, ph: number, M: M, Mh: M, r: number, pitch: number, spine: number) {
+function beinWinkel(G: Gang, ph: number, M: M, Mh: M, r: number, pitch: number, spine: number, l: { ober: number; unter: number }) {
   const a: Record<string, number> = {};
   for (const [id, b] of Object.entries(BEINE) as [Bein, (typeof BEINE)[Bein]][]) {
     const u = (((ph - G.offs[id]) % 1) + 1) % 1, B = b.vorn ? M : Mh;
     const { t, curl } = hufZiel(G, anwenden(B, [b.x, -56]), r, u, b.vorn);
-    const lt = anwenden(invers(B), t), [u1, u2] = ik(lt[0] - b.x, lt[1] + 56, b.vorn);
+    const lt = anwenden(invers(B), t), [u1, u2] = ik(lt[0] - b.x, lt[1] + 56, b.vorn, l.ober, l.unter);
     a[`oberbein-${id}`] = u1;
     a[`unterbein-${id}`] = u2;
     a[`huf-${id}`] = -(u1 + u2) - pitch - (b.vorn ? 0 : spine) + curl;
@@ -78,7 +79,7 @@ export function gangPose(spec: Spec, gangart: Gangart, ph: number): GangPose {
   const dy = G.dy(ph), pitch = G.pitch(ph), spine = G.spine(ph), r = G.reach * m;
   const M = rideMatrix(dy, pitch, m), Mh = mul(M, drehung(spine, 0, -66));
   const lean = G.lean(ph) - (G.riderLevel ?? 0) * pitch, nod = G.nod(ph), s = Math.sin(TAU * ph);
-  const winkel = { ...beinWinkel(G, ph, M, Mh, r, pitch, spine), hals: nod, schweif: G.tail(ph), 'rumpf-hinten': spine };
+  const winkel = { ...beinWinkel(G, ph, M, Mh, r, pitch, spine, beinLaengen(spec)), hals: nod, schweif: G.tail(ph), 'rumpf-hinten': spine };
   const reiter = { 'oberschenkel-v': -40 - lean, 'unterschenkel-v': 50, 'oberarm-v': -35 - lean + 0.6 * nod, 'unterarm-v': -40,
     'oberarm-h': -30 - lean, 'unterarm-h': -40, kopf: -lean * 0.7 + 2 * s, krone: -2 * s };
   return { winkel, ride: { dy, pitch }, massstab: m, wind: (r * 2) / (G.stance / G.freq),

@@ -1,6 +1,6 @@
 # RD2.4 · Renderer: Rig-Proportionen je Figur und Tier
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -55,5 +55,11 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-11-07, Claude.
+
+- AC-04 / B-715/AC-01 umgesetzt, geprüft (`tools/paper/rig/proportionen.test.ts`, Schema- und Rig-Tests, `check:diff` grün): Neues Spec-Feld `proportionen` in Schema, Typ, `check.ts` (Regel `proportionen-rig`: vierbeiner-Felder nur am vierbeiner, figur-Felder nur an der figur) und `paper-spec.md`. `vierbeiner`: `fuss` = `huf` | `pfote` | `elefantenfuss` (Beinpfad-Spitze 3,4 / 2,2 / 1,2; die IK-Längen ändert der Fuß nicht, das Bein reicht immer bis zum Boden, Reviewer-Befund), `gangarten`. Die Beinlängen folgen jetzt den Pivots von `oberbein-*`, `unterbein-*`, `huf-*` (Pferd: 25 und 31, wie die alten Konstanten); `ik()` nimmt die Längen als Parameter.
+- B-715/AC-02 umgesetzt, geprüft: Jede Gangart des Tiers braucht eine Animation (`gangart-fehlt`), keine Animation nutzt eine fremde Gangart (`gangart-nicht-erlaubt`). Standard = alle drei Gangarten, also ist ein Pferd ohne `galopp`-Animation ungültig; ein Elefant ohne `galopp` ist mit `proportionen.gangarten: [schritt, trab]` gültig.
+- B-715/AC-03 umgesetzt, geprüft: `figur`-Faktoren `arme`, `beine`, `kopf` (Winkel der Posen idle/lauf) und `rumpf` (senkrechter Versatz). Fixture `tools/paper/fixtures/specs/langarm.paper.json` (arme 0,6, kopf 0,8, rumpf 0,4) mit Golden-Eintrag in `fixtures.golden.json`; Test: alle Frames ohne NaN, alle Teil-Matrizen endlich.
+- Defaults = RD1: `task gen:paper` ändert danach kein einziges Asset (Git-Status der Gruppen leer), die bestehenden Golden-Einträge in `fixtures.golden.json` sind unverändert, nur `langarm` kam dazu.
+- Abweichungen: (1) Eine Rumpf-Proportion des vierbeiner (Rückengelenk, Neigungsachse bei (0, −66) und (0, −80)) bleibt fest; die Beinlänge kommt aus den Pivots statt aus einem Feld, weil das Zeichnen des Beinpfads dieselben Pivots nutzt. (2) Die Figur-Proportionen sind Faktoren auf Pose-Winkel, nicht auf Gliedlängen: die Rigs rechnen mit Winkeln, die Längen stehen in den Pivots. Der Aufwand für feste Rumpf-Achsen je Tier ist bei Bedarf B-716/B-720 (MG9, MG10) zu entscheiden.
+- Neue Tickets: keine.

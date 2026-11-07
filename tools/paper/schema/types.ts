@@ -14,9 +14,14 @@ export type Animation = {
   frames: number;
   fps?: number;
   reittier?: string;
-  gangart?: 'schritt' | 'trab' | 'galopp';
+  gangart?: GangartName;
   keyframes?: { t: number; winkel: Record<string, number>; sichtbar?: Record<string, boolean> }[];
 };
+
+export type Fuss = 'huf' | 'pfote' | 'elefantenfuss';
+export type GangartName = 'schritt' | 'trab' | 'galopp';
+/** Proportionen je Figur (`figur`: Faktoren) bzw. je Tier (`vierbeiner`: Fußform, Gangarten); RD2.4, B-715. */
+export type Proportionen = { fuss?: Fuss; gangarten?: GangartName[]; arme?: number; beine?: number; rumpf?: number; kopf?: number };
 
 export type Spec = {
   id: string;
@@ -26,6 +31,7 @@ export type Spec = {
   teile: Teil[];
   umhang?: { anker: string; punkt: Punkt; material: string; laenge: number; breite: [number, number]; segmente?: number };
   bein?: { breiten_vorn: number[]; breiten_hinten: number[] };
+  proportionen?: Proportionen;
   animationen?: Record<string, Animation>;
   varianten?: Record<string, { tausch: Record<string, string> }>;
   stufen?: { tausch?: Record<string, string>; zusaetze?: Teil[] }[];
