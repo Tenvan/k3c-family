@@ -1,0 +1,27 @@
+{
+  "id": "hg-eisenstollen-mitte-v2",
+  "version": 1,
+  "specHash": "58d998e6fe46f948cffbf14c5041f9cc6b1dfaf3f87a41c319ad575a1006eff8",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "1575c08f53860ec41aa786ae917769178777aaf41b3d50196b2cf6267d96af10",
+  "rahmen": [
+    0,
+    -480,
+    768,
+    480
+  ],
+  "frameW": 768,
+  "frameH": 480,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "99d5bd6190e226df35ca199c6dab74b046e442e122cedaebe7f1a1b963c9b49e"
+      ]
+    }
+  },
+  "varianten": []
+}

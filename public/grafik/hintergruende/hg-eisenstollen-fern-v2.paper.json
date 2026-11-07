@@ -1,0 +1,133 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "hg-eisenstollen-fern-v2",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Hintergrund Schmiedehalle mit Glut, ferne Ebene, Variante 2: periodisches Profil, kachelt waagrecht.",
+  "teile": [
+    {
+      "id": "grund",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -480l0 150 16 -28 16 -27 16 -23 16 -17 16 -11 16 -4 16 4 16 11 16 17 16 23 16 27 16 28 16 -28 16 -27 16 -23 16 -17 16 -11 16 -4 16 4 16 11 16 17 16 23 16 27 16 28 16 -28 16 -27 16 -23 16 -17 16 -11 16 -4 16 4 16 11 16 17 16 23 16 27 16 28 16 -28 16 -27 16 -23 16 -17 16 -11 16 -4 16 4 16 11 16 17 16 23 16 27 16 28 0 -150ZM0 0l0 -93 32 3 32 4 32 7 32 5 32 0 32 -2 32 3 32 5 32 -2 32 -12 32 -13 32 -2 32 7 32 6 32 0 32 -3 32 -2 32 -6 32 -12 32 -15 32 -5 32 10 32 15 32 9 0 93Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M0 -69l32 3 32 4 32 7 32 5 32 0 32 -2 32 3 32 5 32 -2 32 -12 32 -13 32 -2 32 7 32 6 32 0 32 -3 32 -2 32 -6 32 -12 32 -15 32 -5 32 10 32 15 32 9",
+          "material": "stein",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [384, -240]
+    },
+    {
+      "id": "traeger",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M185 -72l0 -262 14 0 0 262ZM377 -93l0 -241 14 0 0 241ZM569 -91l0 -243 14 0 0 243Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [43, -78],
+          "radius": 1.7,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [101, -39],
+          "radius": 2.2,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [191, -64],
+          "radius": 1.7,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [227, -32],
+          "radius": 2.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [303, -37],
+          "radius": 2.1,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [357, -58],
+          "radius": 1.6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [401, -80],
+          "radius": 1.5,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [466, -59],
+          "radius": 1.6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [518, -62],
+          "radius": 1.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [583, -62],
+          "radius": 2.2,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [664, -111],
+          "radius": 1.7,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [712, -73],
+          "radius": 2,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [384, -240]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 480,
+    "rahmen": [0, -480, 768, 480]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

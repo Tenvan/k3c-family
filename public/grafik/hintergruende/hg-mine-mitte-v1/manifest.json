@@ -1,0 +1,27 @@
+{
+  "id": "hg-mine-mitte-v1",
+  "version": 1,
+  "specHash": "94c775360aca861dbabf5088211622604893808732ca529e09196f260c91c3ce",
+  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "renderer": "paper-0+resvg-js-2.6.2",
+  "renderKey": "82b469e1939080fa74d6ba2d37f7b6502bd35cc987325ee0cb3aaa2588374275",
+  "rahmen": [
+    0,
+    -480,
+    768,
+    480
+  ],
+  "frameW": 768,
+  "frameH": 480,
+  "animationen": {
+    "stand": {
+      "frames": 1,
+      "fps": 8,
+      "datei": "stand.png",
+      "hashes": [
+        "f6f069eddd3955d141be3027d56187ff1acfdf2a2dd6d84b07684b1c07c4542a"
+      ]
+    }
+  },
+  "varianten": []
+}
