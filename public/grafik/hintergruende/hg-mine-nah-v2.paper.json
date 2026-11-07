@@ -11,13 +11,13 @@
         {
           "art": "flaeche",
           "form": "M0 0l0 -17 32 -2 32 -2 32 -3 32 -2 32 0 32 2 32 2 32 -1 32 -2 32 -2 32 1 32 2 32 0 32 0 32 1 32 1 32 0 32 -1 32 0 32 3 32 4 32 3 32 -2 32 -2 0 17Z",
-          "material": "stein"
+          "material": "biom-mine"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M0 0l0 -13 32 0 32 2 32 1 32 -1 32 -1 32 1 32 1 32 2 32 0 32 1 32 2 32 2 32 -1 32 -3 32 -2 32 -1 32 1 32 0 32 0 32 -1 32 1 32 0 32 -1 32 -3 0 13Z",
-          "material": "stein",
+          "material": "biom-mine",
           "ton": "schatten"
         }
       ],
@@ -53,28 +53,28 @@
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-mine",
           "mitte": [201, -396],
           "radius": 2.6,
           "ton": "licht"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-mine",
           "mitte": [201, -358],
           "radius": 2.6,
           "ton": "licht"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-mine",
           "mitte": [494, -396],
           "radius": 2.6,
           "ton": "licht"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-mine",
           "mitte": [494, -358],
           "radius": 2.6,
           "ton": "licht"
@@ -88,7 +88,7 @@
         {
           "art": "flaeche",
           "form": "M0 -30l0 -6 768 0 0 6Z",
-          "material": "stein",
+          "material": "biom-mine",
           "ton": "licht"
         },
         {
@@ -100,13 +100,13 @@
         {
           "art": "flaeche",
           "form": "M189 -40l-10 -70 140 0 -10 70Z",
-          "material": "stein"
+          "material": "biom-mine"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M189 -40l-10 -70 26 0 6 70Z",
-          "material": "stein",
+          "material": "biom-mine",
           "ton": "schatten"
         },
         {
@@ -171,7 +171,7 @@
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-mine",
           "mitte": [211, -38],
           "radius": 4,
           "ton": "licht"
@@ -184,7 +184,7 @@
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-mine",
           "mitte": [287, -38],
           "radius": 4,
           "ton": "licht"

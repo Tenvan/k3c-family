@@ -1,10 +1,10 @@
 {
   "id": "ader-kristall",
   "version": 1,
-  "specHash": "5acea6785e26aebf29f62d10e967b104f7db124f01aaacb3e9a7cd5c7ff91939",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "specHash": "f7cc5e7b01ddf99c39e4785f516a4d9678afc2515ea532eef0509502cf6bb9bd",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "cc964c563ef59d59aae726daf5cfe4043f630efde853718d19d7c9848c516492",
+  "renderKey": "d2260c2b7850bda74956d7b2529898371260897d3df36125b7fd1b29c0075e21",
   "rahmen": [
     -36,
     -64,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "7b3b5abeae098e89289de2ed0a50ffc76a0bd3c5a7864acb23573216e9119236"
+        "80036b0306de0f517328bbbf17abde2e0595750dbbc4de8901de018405674181"
       ]
     }
   },

@@ -11,13 +11,13 @@
         {
           "art": "flaeche",
           "form": "M0 0l0 -21 32 -2 32 0 32 0 32 -2 32 -3 32 -2 32 1 32 2 32 0 32 0 32 1 32 0 32 -1 32 -4 32 -2 32 0 32 3 32 3 32 2 32 2 32 2 32 2 32 0 32 -2 0 21Z",
-          "material": "stein"
+          "material": "biom-hoehle"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M0 0l0 -13 32 4 32 1 32 -1 32 0 32 1 32 2 32 0 32 -1 32 -1 32 0 32 -1 32 -1 32 -2 32 0 32 3 32 2 32 -1 32 -3 32 -2 32 0 32 -1 32 -2 32 1 32 2 0 13Z",
-          "material": "stein",
+          "material": "biom-hoehle",
           "ton": "schatten"
         }
       ],
@@ -29,27 +29,27 @@
         {
           "art": "flaeche",
           "form": "M101 -23C101 -80 137 -126 180 -126C223 -126 258 -80 258 -23ZM264 -20C264 -60 300 -93 343 -93C387 -93 423 -60 423 -20ZM426 -28C426 -68 455 -100 491 -100C526 -100 556 -68 556 -28ZM584 -17C584 -50 613 -78 649 -78C685 -78 714 -50 714 -17ZM58 -19l23 -119 16 119ZM349 -22l28 -87 20 87ZM626 -19l27 -94 19 94Z",
-          "material": "stein"
+          "material": "biom-hoehle"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M180 -126C137 -126 101 -80 101 -23L137 -23C137 -74 161 -111 180 -126ZM343 -93C300 -93 264 -60 264 -20L300 -20C300 -56 324 -83 343 -93ZM491 -100C455 -100 426 -68 426 -28L455 -28C455 -64 475 -90 491 -100ZM649 -78C613 -78 584 -50 584 -17L613 -17C613 -47 633 -69 649 -78Z",
-          "material": "stein",
+          "material": "biom-hoehle",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M180 -126C223 -126 258 -80 258 -23L236 -23C236 -74 206 -111 180 -126ZM343 -93C387 -93 423 -60 423 -20L401 -20C401 -56 370 -83 343 -93ZM491 -100C526 -100 556 -68 556 -28L538 -28C538 -64 512 -90 491 -100ZM649 -78C685 -78 714 -50 714 -17L696 -17C696 -47 671 -69 649 -78ZM75 -19l8 -74 6 74ZM371 -22l7 -71 6 71ZM646 -19l8 -95 7 95Z",
-          "material": "stein",
+          "material": "biom-hoehle",
           "ton": "licht"
         },
         {
           "art": "falz",
           "breite": 1.4,
           "form": "M172 -115L188 -74M335 -86L351 -57M484 -93L497 -64M642 -72L656 -47",
-          "material": "stein"
+          "material": "biom-hoehle"
         },
         {
           "art": "flaeche",
@@ -71,98 +71,98 @@
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-hoehle",
           "mitte": [56, -17],
           "radius": 4.1,
           "ton": "schatten"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-hoehle",
           "mitte": [95, -16],
           "radius": 3.6,
           "ton": "schatten"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-hoehle",
           "mitte": [142, -19],
           "radius": 3.6,
           "ton": "schatten"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-hoehle",
           "mitte": [192, -26],
           "radius": 3.7,
           "ton": "schatten"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-hoehle",
           "mitte": [253, -25],
           "radius": 4.2,
           "ton": "schatten"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-hoehle",
           "mitte": [310, -21],
           "radius": 2.8,
           "ton": "schatten"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-hoehle",
           "mitte": [351, -21],
           "radius": 2.7,
           "ton": "schatten"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-hoehle",
           "mitte": [410, -20],
           "radius": 3.5,
           "ton": "schatten"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-hoehle",
           "mitte": [478, -28],
           "radius": 3.3,
           "ton": "licht"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-hoehle",
           "mitte": [512, -25],
           "radius": 4.4,
           "ton": "licht"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-hoehle",
           "mitte": [570, -26],
           "radius": 4,
           "ton": "schatten"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-hoehle",
           "mitte": [619, -20],
           "radius": 3.9,
           "ton": "licht"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-hoehle",
           "mitte": [661, -14],
           "radius": 3.6,
           "ton": "schatten"
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "biom-hoehle",
           "mitte": [717, -12],
           "radius": 4.3,
           "ton": "licht"

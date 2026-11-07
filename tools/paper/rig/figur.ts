@@ -3,6 +3,7 @@
 import type { Punkt, Spec } from '../schema/types';
 import { Abgelehnt } from '../render/fehler';
 import { animationVon, keyframeWinkel } from '../render/pose';
+import { figurFaktor } from './proportionen';
 
 const TAU = Math.PI * 2;
 export type FigurPose = { winkel: Record<string, number>; versatz: Punkt; wind: number };
@@ -39,7 +40,10 @@ export function figurPose(spec: Spec, name: string, t: number): FigurPose {
     throw new Abgelehnt([{ feld: `animationen.${name}`, regel: 'animation-unbekannt',
       text: `figur kennt ohne Keyframes nur idle und lauf, nicht „${name}“` }]);
   const freq = figurFreq(spec, name), phase = (((t * freq) % 1) + 1) % 1;
-  const basis = istPose(name) ? FIGUR_POSEN[name].f(phase * TAU) : { winkel: {}, versatz: [0, 0] as Punkt, wind: 0 };
+  const roh = istPose(name) ? FIGUR_POSEN[name].f(phase * TAU) : { winkel: {}, versatz: [0, 0] as Punkt, wind: 0 };
+  const rumpf = spec.proportionen?.rumpf ?? 1;
+  const basis = { ...roh, versatz: [roh.versatz[0], roh.versatz[1] * rumpf] as Punkt,
+    winkel: Object.fromEntries(Object.entries(roh.winkel).map(([id, w]) => [id, w * figurFaktor(spec, id)])) };
   const kf = keyframeWinkel(anim.keyframes, phase);
   const winkel = { ...basis.winkel };
   for (const [id, w] of Object.entries(kf)) winkel[id] = (winkel[id] ?? 0) + w;

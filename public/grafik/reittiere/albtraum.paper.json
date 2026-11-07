@@ -24,7 +24,7 @@
         {
           "art": "flaeche",
           "form": "M-29.3 -10.5L-22.7 -10.5L-21.4 -5H-29.6Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "schatten"
         },
         {
@@ -54,7 +54,7 @@
         {
           "art": "flaeche",
           "form": "M26.7 -10.5L33.3 -10.5L34.6 -5H26.4Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "schatten"
         },
         {
@@ -105,20 +105,20 @@
         {
           "art": "flaeche",
           "form": "M-34 -81C-42 -80 -46.5 -72 -45.5 -64C-44.5 -56 -40.5 -51 -34 -48.8C-24 -45.6 -10 -45 6 -46L6 -79C-8 -78.5 -22 -80.5 -34 -81Z",
-          "material": "maehne"
+          "material": "schwarz"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-44 -58C-36 -52 -20 -49 6 -50L6 -46C-10 -45 -24 -45.6 -34 -48.8C-39 -50.6 -42.6 -54 -44 -58Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-36 -79C-28 -79 -16 -77.5 -4 -77.8C-16 -74.5 -28 -75 -38 -76.6Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "licht"
         },
         {
@@ -136,20 +136,20 @@
         {
           "art": "flaeche",
           "form": "M-6 -79C4 -79 12 -81 20 -83.5C30 -85 38 -81 43 -73C46.4 -66 45.4 -58 40.4 -53C34 -48.6 22 -46.6 10 -46L-6 -46Z",
-          "material": "maehne"
+          "material": "schwarz"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-6 -50C10 -50 26 -51 38 -55C34 -49.5 22 -46.6 10 -46L-6 -46Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M22 -82C30 -83 37 -79 41 -72C36 -76 30 -79 22 -80Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "licht"
         },
         {
@@ -215,7 +215,7 @@
         {
           "art": "flaeche",
           "form": "M22.7 -10.5L29.3 -10.5L30.6 -5H22.4Z",
-          "material": "maehne"
+          "material": "schwarz"
         },
         {
           "art": "flaeche",
@@ -287,13 +287,13 @@
         {
           "art": "flaeche",
           "form": "M16 -76C18 -88 28 -100 38 -106C44 -104.5 50 -100.5 52.5 -96.5C47.5 -88 45 -76 44 -62Z",
-          "material": "maehne"
+          "material": "schwarz"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M40 -97C44.5 -87 45.5 -76 44 -63L37.5 -65.5C41 -76 41.5 -87 40 -97Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "schatten"
         },
         {
@@ -305,39 +305,39 @@
         {
           "art": "flaeche",
           "form": "M36 -107.5C42 -113.5 50 -112.5 55 -107.5C59 -102.5 65 -97.5 69 -94.5C72.4 -91.5 71.4 -87 67.4 -86C63 -85 58 -86 55 -87C50 -88.5 46 -92 43 -95Z",
-          "material": "maehne"
+          "material": "schwarz"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M55 -87C50 -88.5 46 -92 43 -95L44.5 -98C49 -94 54 -91.5 60 -90.5C63 -90 66 -88.5 67.4 -86C63 -85 58 -86 55 -87Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M62 -98C65.4 -96 68.6 -94.6 69.8 -92.6C70.8 -90.4 70 -87.6 67.4 -86.4C66.4 -89.6 64.4 -93.6 62 -98Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M44 -110C48 -112 52 -111 55 -107.5C51 -109 47.5 -109.5 44 -110Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "form": "M41.5 -107L44.5 -118C46.5 -115 48.5 -111.5 48.5 -107.5Z",
-          "material": "maehne"
+          "material": "schwarz"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M43.2 -108L45 -114.6C46 -112.6 46.8 -110.4 46.8 -108.4Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "schatten"
         },
         {

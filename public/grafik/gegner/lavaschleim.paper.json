@@ -205,6 +205,9 @@
       "frames": 8,
       "keyframes": [
         {
+          "sichtbar": {
+            "zunge": false
+          },
           "t": 0,
           "winkel": {
             "korpus": -4,
@@ -212,6 +215,9 @@
           }
         },
         {
+          "sichtbar": {
+            "zunge": true
+          },
           "t": 0.35,
           "winkel": {
             "korpus": -10,
@@ -228,6 +234,9 @@
           }
         },
         {
+          "sichtbar": {
+            "zunge": false
+          },
           "t": 0.8,
           "winkel": {
             "korpus": 2,
@@ -241,6 +250,9 @@
       "frames": 8,
       "keyframes": [
         {
+          "sichtbar": {
+            "zunge": false
+          },
           "t": 0,
           "winkel": {
             "blase": -10,
@@ -265,6 +277,9 @@
       "frames": 8,
       "keyframes": [
         {
+          "sichtbar": {
+            "zunge": false
+          },
           "t": 0,
           "winkel": {
             "korpus": -7,

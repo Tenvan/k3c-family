@@ -2,9 +2,9 @@
   "id": "schiff",
   "version": 1,
   "specHash": "489c65f33a1e1290f08d738e57b5859af8cd1476b98239475d096bed38fc017a",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "96f4944ba3dd1991101bc63c7cca31543fbd8c580fe37769c141d7434146d001",
+  "renderKey": "e7e6d08e2b525e34ac8cae56a906ea407305c694140f95be9f789f1cc0e8f456",
   "rahmen": [
     -96,
     -160,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "96b9d39352ad3b32f177c759963a76b2a2184f417809d8e42f8459d32d4895f7"
+        "14fcbf42457f43576ded1601a9709e0dd989af53d96319630c5cf9638037e935"
       ]
     },
     "stand.s2": {
@@ -27,7 +27,7 @@
       "fps": 8,
       "datei": "stand.s2.png",
       "hashes": [
-        "9b9c30c3176888e8f8e76c624178dbe8b790d3c4c96b25ccf665c210f6b51323"
+        "10a3571d652ef7708c74a13bb4b80f1efbb0c7f462a5e135bafa66b6b05fccd4"
       ]
     },
     "stand.s3": {
@@ -35,7 +35,7 @@
       "fps": 8,
       "datei": "stand.s3.png",
       "hashes": [
-        "545e177d3d78c5f05436ef9de653a8e40e33555cbf0f81515b70fa8d6cf4fb92"
+        "38688d70999c4e04860df67470415ea57adfcae4e00d9dec294b8272b0e13863"
       ]
     }
   },

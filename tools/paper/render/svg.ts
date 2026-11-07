@@ -13,14 +13,22 @@ export function seed(id: string): number {
 /** Gegenfarbe der Papierstruktur (Wert des Prototyps; die Stil-Datei hat dafür kein Feld). */
 const STRUKTUR_INTERCEPT = 0.86;
 
-export function defs(stil: Stil, id: string): string {
+/** Faktor von Prototyp-Pixeln auf die Pixeldichte der Ausgabe (px je Einheit); ohne Dichte 1, geklemmt auf 1…4 (RD2.1). */
+export function dichteFaktor(stil: Stil, dichte?: number): number {
+  if (!dichte || dichte <= 0) return 1;
+  return Math.min(4, Math.max(1, stil.papier.bezug_px_je_einheit / dichte));
+}
+
+/** Filter der Stil-Datei; Werte gelten bei `bezug_px_je_einheit` und werden auf die Ausgabe-Dichte umgerechnet. */
+export function defs(stil: Stil, id: string, dichte?: number): string {
   const { lage, auflage, struktur } = stil.papier;
+  const k = dichteFaktor(stil, dichte);
   const schatten = (name: string, s: { dx: number; dy: number; unschaerfe: number; deckkraft: number }) =>
-    `<filter id="${name}" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="${num(s.dx)}" dy="${num(s.dy)}" ` +
-    `stdDeviation="${num(s.unschaerfe)}" flood-color="${lage.farbe}" flood-opacity="${num(s.deckkraft)}"/></filter>`;
+    `<filter id="${name}" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="${num(s.dx * k)}" dy="${num(s.dy * k)}" ` +
+    `stdDeviation="${num(s.unschaerfe * k)}" flood-color="${lage.farbe}" flood-opacity="${num(s.deckkraft)}"/></filter>`;
   const f = (k: string) => `<feFunc${k} type="linear" slope="${num(struktur.staerke)}" intercept="${STRUKTUR_INTERCEPT}"/>`;
   const papier = `<filter id="paper" x="-5%" y="-5%" width="110%" height="110%">` +
-    `<feTurbulence type="fractalNoise" baseFrequency="${num(struktur.frequenz)}" numOctaves="${struktur.oktaven}" seed="${seed(id)}" result="n"/>` +
+    `<feTurbulence type="fractalNoise" baseFrequency="${num(struktur.frequenz / k)}" numOctaves="${struktur.oktaven}" seed="${seed(id)}" result="n"/>` +
     `<feColorMatrix in="n" type="saturate" values="0" result="g"/>` +
     `<feComponentTransfer in="g" result="t">${f('R')}${f('G')}${f('B')}<feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer>` +
     `<feComposite in="SourceGraphic" in2="t" operator="arithmetic" k1="1" k2="0" k3="0" k4="0"/></filter>`;

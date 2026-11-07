@@ -3,7 +3,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
 import { checkSpecFile } from '../schema/check';
-import { num } from '../schema/hash';
+import { num, specHash } from '../schema/hash';
 import type { Punkt, Spec, Stil } from '../schema/types';
 import { weltMatrizen } from '../render/baum';
 import { type Bild, geometrie, type Kontext } from '../render/bild';
@@ -38,6 +38,13 @@ export function findeReittier(specPfad: string, id: string): string {
   const treffer = gruppen.find((g) => g !== ordner && existsSync(join(g, name)) && istOrdner(g));
   if (!treffer) throw abgelehnt(`Reittier „${id}“ fehlt neben ${basename(specPfad)} und in den Nachbar-Gruppen`);
   return join(treffer, name);
+}
+
+/** Hashes der Reittier-Specs aller Reit-Animationen (sortiert nach id), damit der renderKey des Reiters sie enthält (B-713). */
+export function reittierHash(spec: Spec, specPfad: string | undefined): string | undefined {
+  const ids = [...new Set(Object.values(spec.animationen ?? {}).flatMap((a) => (a.reittier ? [a.reittier] : [])))].sort();
+  if (!specPfad || !ids.length) return undefined;
+  return ids.map((id) => `${id}=${specHash(readFileSync(findeReittier(specPfad, id), 'utf8'))}`).join(',');
 }
 
 export function ladeReittier(specPfad: string | undefined, id: string, stil: Stil): Spec {

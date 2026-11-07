@@ -2,9 +2,9 @@
   "id": "truhe",
   "version": 1,
   "specHash": "55b7623e4f3958d9377fe18a50701c57998f680e978ea714399985960213ff41",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "133ce5b0e837f67dacb632cf11e7d10257ac05fafb9aa997c2ce0240b215eca9",
+  "renderKey": "aa3bf28f1b7b212855b110e02ccad28a24c4ad7a974c019d45aea66e9d1125b4",
   "rahmen": [
     -20,
     -32,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "bc94f8f61528e73d0bb67641ad085d7b036e3bc462d01bc0d8a65c62942dd89f"
+        "30dd48c1de1973a494f2bed83eb6877c5800b89c427cae5ecb2c5968923c1114"
       ]
     }
   },

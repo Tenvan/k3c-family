@@ -1,10 +1,10 @@
 {
   "id": "hg-eisenstollen-nah-v1",
   "version": 1,
-  "specHash": "582cc16fc1fa3943670ab6a286d602338ef81889d5760fbcd0364b60b129e546",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "specHash": "c8cda165e9a47fda49921b6308998beb2198a139ddbb1f32f0392a9def26c2d1",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "5ee46190d8d64b6c95ccdac855bb1217be823472d5aa37c3274e335708d3e183",
+  "renderKey": "7ff5b1a3928888ada97eace7006b12672041c543667c313e7425cedc01e733cb",
   "rahmen": [
     0,
     -480,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "0f26fef4e0213e655b7c506cb648d0d6aa73f87190122eb75302e18a3d83a645"
+        "c28fe3c084e621108ff875af371de5b83aba917414534e66fc5a8eb5f583238f"
       ]
     }
   },

@@ -2,9 +2,9 @@
   "id": "icon-muenze",
   "version": 1,
   "specHash": "6569b5924e393c55417aac75976944290992f4848e2e18bd08497d4844e2baaa",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "d45bf32a5fd0f49163e448f698958df713782e8f588b5313e20247526fcd1ddc",
+  "renderKey": "f55a01081940cb3a612a248a06c1b03e97a09ee67b8738e6db3100853ee12647",
   "rahmen": [
     -16,
     -32,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "e2ddabbb0e9691a7a806690f68356e352fceee11953d86219cdad9d0d6103451"
+        "c07d73ce9eb48f46104ccbf6b2acb493e5f217bf811cfb5515e6574dc6fb9571"
       ]
     }
   },

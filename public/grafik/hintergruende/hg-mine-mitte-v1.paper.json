@@ -23,13 +23,13 @@
         {
           "art": "flaeche",
           "form": "M0 0l0 -38 32 1 32 -4 32 -7 32 -5 32 2 32 5 32 4 32 1 32 1 32 2 32 2 32 -2 32 -1 32 2 32 5 32 3 32 -3 32 -6 32 -4 32 1 32 1 32 0 32 0 32 2 0 38Z",
-          "material": "stein"
+          "material": "biom-mine"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M0 0l0 -13 32 -2 32 0 32 0 32 0 32 -3 32 -2 32 1 32 3 32 1 32 -3 32 -3 32 0 32 1 32 2 32 0 32 2 32 4 32 3 32 -1 32 -4 32 -2 32 1 32 2 32 0 0 13Z",
-          "material": "stein",
+          "material": "biom-mine",
           "ton": "schatten"
         },
         {
@@ -71,7 +71,7 @@
         {
           "art": "flaeche",
           "form": "M203 -274l0 -18 14 0 0 18ZM400 -273l0 -18 14 0 0 18ZM534 -247l0 -18 14 0 0 18Z",
-          "material": "stein",
+          "material": "biom-mine",
           "ton": "schatten"
         },
         {
@@ -122,7 +122,7 @@
         {
           "art": "flaeche",
           "form": "M0 -26l0 -4 768 0 0 4Z",
-          "material": "stein",
+          "material": "biom-mine",
           "ton": "licht"
         },
         {

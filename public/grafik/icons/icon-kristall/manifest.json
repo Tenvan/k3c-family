@@ -1,10 +1,10 @@
 {
   "id": "icon-kristall",
   "version": 1,
-  "specHash": "66fc011be2dc9314bda8fb76de1fd5576247681c6a8735a338ad87180e46167a",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "specHash": "643a7a1913e05efd6a012ce85b164490e7f22c7fd48cf461959ce64b1c416d81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "e8d794663dee45b7138c14de0862f6515852348b658219114ead81ca7a4deed9",
+  "renderKey": "1a3ea1e1bc7180c995847b007745f3e9f4ddd79938eeeb457924a1abe1e2852a",
   "rahmen": [
     -16,
     -32,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "f9043bf3a23bfce056a906cfc2d208c4e06b0c57254086752866904efd3ac0be"
+        "01b3324bb51d21cec46525afbb447af357403a8e55bd90bdc0968bd0a5cebc23"
       ]
     }
   },

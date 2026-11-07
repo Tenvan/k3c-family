@@ -2,9 +2,9 @@
   "id": "werkstatt",
   "version": 1,
   "specHash": "f7d31d35ecf152bd5f21b1e8ca1f65bcce19d50cfe5d707379949b893d89685b",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "dea76ad06ad5f108e66fd4bcd8ebea4c0bf7824c58eed98ddc9793e48808f42e",
+  "renderKey": "cda63c26d3abe660595e4300162dbc633165be24b9cf0d8843ccf289f8399a58",
   "rahmen": [
     -96,
     -128,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "dcfd18ae6b146b76f134518784c87def1530f80a740bf1775644a98e11087832"
+        "497b63fe70d491f44bc7dedf4078d509dfed20cd36f8533a894d775fc8ec5ddb"
       ]
     },
     "stand.s2": {
@@ -27,7 +27,7 @@
       "fps": 8,
       "datei": "stand.s2.png",
       "hashes": [
-        "90c5cf89e8dcfbd0d5377c5a7426f9a017d91a73faf7da704b232b474d5c22e7"
+        "98ee995c803f3dc97cbc970a61b5bb38b4684c9820aed995095ac1973811d38e"
       ]
     },
     "stand.s3": {
@@ -35,7 +35,7 @@
       "fps": 8,
       "datei": "stand.s3.png",
       "hashes": [
-        "917f23efc38fcc8e4e042417db38030a046a04f4bcba191ceccc3473158687c7"
+        "9bd554a2b84b948e1bb62f4449d7edf24542c9b7d0b1514046e9a846f42b0f08"
       ]
     },
     "stand.s4": {
@@ -43,7 +43,7 @@
       "fps": 8,
       "datei": "stand.s4.png",
       "hashes": [
-        "817ae2bb541661f7c930bd1542397354ba1466a5ef931c0950c19b5cd41a28fa"
+        "f63e9d4628baccd6ff90cf5ce49ab5936dfe4409af867e24ead969461f6e9265"
       ]
     },
     "stand.s5": {
@@ -51,7 +51,7 @@
       "fps": 8,
       "datei": "stand.s5.png",
       "hashes": [
-        "0d42b50d5b1a1752c05612edbbb4c2a3920a770d507fe9177870562116721053"
+        "54399a6df73573ef3808b9fcf21f91ed92a6aab4c35b620faf2489aebce35bb6"
       ]
     }
   },

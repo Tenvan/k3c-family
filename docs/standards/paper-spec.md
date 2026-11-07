@@ -30,6 +30,7 @@ Es gibt **keinen** gemeinsamen Index aller Gruppen; das Spiel liest die Gruppen-
 | `papier.auflage` | Schatten aufgeklebter Lagen: `dx`, `dy`, `unschaerfe`, `deckkraft` (Farbe wie `lage`) |
 | `papier.struktur` | Papierstruktur: `frequenz`, `oktaven` (1–4), `staerke` |
 | `papier.falz_deckkraft` | Deckkraft aller Falze, höchstens 0,25 |
+| `papier.bezug_px_je_einheit` | Pixeldichte, bei der `lage`, `auflage` und `struktur` gemeint sind (Prototyp: 3). Der Renderer rechnet Schatten-Versatz und -Unschärfe mit `bezug / dichte` (Faktor 1…4) um, die Rausch-Frequenz mit dem Kehrwert; `dichte` = `frameH / rahmen[3]` der Ausgabe. Deckkraft und Stärke bleiben. |
 | `licht` | `rechts-oben` (einziger Wert in v1) |
 | `proportionen.figur` | `kopf_anteil` (Soll Kopfhöhe / Rahmenhöhe) und `toleranz` (absolut) |
 | `proportionen.vierbeiner` | `rumpfhoehe_kopflaengen`, `toleranz` (Richtwert, in v1 nicht geprüft) |
@@ -52,14 +53,26 @@ Koordinaten in **Spec-Einheiten**, Boden `y = 0`, Blick nach rechts, `y` wächst
 | `teile` | ja | Liste der Teile; **Zeichenreihenfolge = Reihenfolge der Liste** (Eltern müssen nicht vorher stehen) |
 | `umhang` | nein | `{anker, punkt:[x,y], material, laenge, breite:[oben, unten], segmente?}` – Umhang-Physik des Rigs |
 | `bein` | nur `vierbeiner` | `{breiten_vorn:[6], breiten_hinten:[6]}` – Breite des Beinpfads an Schulter/Hüfte, Oberschenkel, Knie, Unterbein, Fessel, Huf |
+| `proportionen` | nein | `vierbeiner`: `{fuss?: huf|pfote|elefantenfuss, gangarten?: [schritt, trab, galopp]}`; `figur`: `{arme?, beine?, rumpf?, kopf?}` (Faktoren 0,1–3, Standard 1). Felder am falschen Rig lehnt `validate` ab (`proportionen-rig`) |
 | `animationen` | nein | Name → `{frames (1–64), fps? (Standard 8), reittier?, gangart?: schritt|trab|galopp, keyframes?}` |
 | `varianten` | nein | Name → `{tausch: {material: material}}` |
 | `stufen` | nur `gebaeude` | Delta je weiterer Ausbaustufe: `stufen[0]` = Stufe 2, `{tausch?, zusaetze?: [Teil]}` |
 | `ausgabe` | ja | `{hoehe_px (8–1024), rahmen:[x, y, b, h], massstab?}` |
 
 - **Teil:** `{id, eltern?, pivot:[x,y], lagen:[Lage]}`. Ein Teil dreht um seinen Pivot, Kinder erben die Drehung.
-- **`keyframes`:** `[{t: 0..1, winkel: {teilId: Grad}}]`, zyklisch, linear interpoliert; Grad positiv = im Uhrzeigersinn.
+- **`keyframes`:** `[{t: 0..1, winkel: {teilId: Grad}, sichtbar?: {teilId: bool}}]`, zyklisch, linear interpoliert; Grad positiv = im Uhrzeigersinn.
+  `sichtbar` blendet ein Teil (nur dieses, nicht seine Kinder) ohne Übergang aus (`false`) oder ein (`true`); es gilt der letzte Keyframe
+  mit Eintrag für das Teil und `t` ≤ Phase, vor dem ersten der letzte der Animation (zyklisch); ohne Eintrag ist das Teil sichtbar.
+  Ein ausgeblendetes Teil fehlt im Frame und in den Teil-Boxen von `frame`. Gilt für `figur`, `requisite`, `gebaeude` und `hintergrund`.
   Bewegung der Rig-Typen (Posen, Gangarten mit IK, Rückengelenk, Umhang) ist Code im Rig, die Spec setzt nur Parameter.
+- **`proportionen` (vierbeiner):** Beinlängen folgen den Pivots von `oberbein-*`, `unterbein-*` und `huf-*` (IK: Oberbein = Knie − Hüfte,
+  Unterbein = Hüfthöhe − Oberbein, das Bein reicht also immer bis zum Boden). `fuss` setzt die Spitze des Beinpfads über der Fessel:
+  `huf` 3,4 (Standard, wie RD1), `pfote` 2,2, `elefantenfuss` 1,2. `gangarten` (Standard alle drei) nennt die Gangarten des Tiers: jede braucht eine Animation
+  mit dieser `gangart` (`gangart-fehlt`), keine Animation nutzt eine andere (`gangart-nicht-erlaubt`). Ein Elefant ohne `galopp`
+  setzt `gangarten: [schritt, trab]`; ein Pferd ohne `galopp`-Animation ist ungültig.
+- **`proportionen` (figur):** Faktoren auf die Winkel der Posen `idle` und `lauf` (`arme`: oberarm-*/unterarm-*, `beine`:
+  oberschenkel-*/unterschenkel-*, `kopf`: kopf/krone) und auf den senkrechten Versatz (`rumpf`). 1 = Grundform; kleiner bei längeren
+  Gliedern (gleicher Ausschlag in Einheiten). Keyframe-Winkel der Spec bleiben unverändert.
 - **`reittier`:** `id` eines `vierbeiner`-Assets; beim Reiten gilt der Rahmen des Reittiers.
 - **`massstab`:** Faktor Spec-Einheiten → Welt-Einheiten (Standard 1). Das Pferd steht in eigenen Einheiten mit `1.3`
   (wie `scale(1.3)` im Prototyp); Pivots und Beinbreiten gelten in Spec-Einheiten.

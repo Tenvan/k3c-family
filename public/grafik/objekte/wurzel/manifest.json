@@ -2,9 +2,9 @@
   "id": "wurzel",
   "version": 1,
   "specHash": "07e1801ebcdee6d69d09108ed9285b6c5ccb0c7a8c62188dea085c91e0186e26",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "ce7193d0524efb5b3f841f5e58a416b60a1e7449420af3a11531d35b1ed95ce0",
+  "renderKey": "017c5f1c22fea6e6169eb142a02709ca20866b400f668e8d93a7ab158aa883e9",
   "rahmen": [
     -32,
     -88,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "00fcc720bac90d90abe4bcf0165fca61e60585a7dc09b0632525413acf4f3a4b"
+        "bb3bcaa61e5f9c64849f67b5a2aab13a1d3f0f93e32cdf08f4a41577518a687f"
       ]
     }
   },

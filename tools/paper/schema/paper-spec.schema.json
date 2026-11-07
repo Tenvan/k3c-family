@@ -15,6 +15,7 @@
     "teile": { "description": "Zeichenreihenfolge = Reihenfolge der Liste", "type": "array", "items": { "$ref": "#/$defs/teil" } },
     "umhang": { "$ref": "#/$defs/umhang" },
     "bein": { "$ref": "#/$defs/bein" },
+    "proportionen": { "$ref": "#/$defs/proportionen" },
     "animationen": {
       "type": "object",
       "propertyNames": { "$ref": "#/$defs/name" },
@@ -148,6 +149,20 @@
         "segmente": { "type": "integer", "minimum": 2, "maximum": 32 }
       }
     },
+    "proportionen": {
+      "description": "vierbeiner: fuss, gangarten; figur: arme, beine, rumpf, kopf (Faktoren, 1 = Grundform). Welches Rig welche Felder darf, prüft check.ts",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "fuss": { "description": "Fußform des Beinpfads und Länge der letzten IK-Strecke", "enum": ["huf", "pfote", "elefantenfuss"] },
+        "gangarten": { "description": "Gangarten des Tiers (Standard: alle drei); jede braucht eine Animation mit dieser gangart", "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["schritt", "trab", "galopp"] } },
+        "arme": { "description": "Faktor auf die Winkel von oberarm-* und unterarm-* in den Posen idle und lauf", "type": "number", "minimum": 0.1, "maximum": 3 },
+        "beine": { "description": "Faktor auf die Winkel von oberschenkel-* und unterschenkel-*", "type": "number", "minimum": 0.1, "maximum": 3 },
+        "rumpf": { "description": "Faktor auf den senkrechten Versatz der Figur (Wippen)", "type": "number", "minimum": 0.1, "maximum": 3 },
+        "kopf": { "description": "Faktor auf die Winkel von kopf und krone", "type": "number", "minimum": 0.1, "maximum": 3 }
+      }
+    },
     "bein": {
       "description": "Nur vierbeiner: Breite des Beinpfads an Schulter, Hüfte, Oberschenkel, Knie, Unterbein, Fessel",
       "type": "object",
@@ -178,7 +193,8 @@
             "required": ["t", "winkel"],
             "properties": {
               "t": { "type": "number", "minimum": 0, "maximum": 1 },
-              "winkel": { "type": "object", "propertyNames": { "$ref": "#/$defs/name" }, "additionalProperties": { "type": "number" } }
+              "winkel": { "type": "object", "propertyNames": { "$ref": "#/$defs/name" }, "additionalProperties": { "type": "number" } },
+              "sichtbar": { "description": "Teil ein- oder ausblenden ab diesem Keyframe (ohne Übergang); ohne Eintrag bleibt der letzte Wert", "type": "object", "propertyNames": { "$ref": "#/$defs/name" }, "additionalProperties": { "type": "boolean" } }
             }
           }
         }

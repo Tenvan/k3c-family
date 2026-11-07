@@ -1,10 +1,10 @@
 {
   "id": "hg-mine-fern-v2",
   "version": 1,
-  "specHash": "84c6399f3d8ed4c9a675e8de4663b1cb63bcf49c7858f2cf9e8a3f13013eb5b5",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "specHash": "79edc2cb24c71fbf2a07c042d3d1916423945058f412bc5e8cbcc7968c202463",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "993ae75d6d5d0a2c7988a6cbef1b1e92928179bbac8cd72f082f7a486efce9a2",
+  "renderKey": "b0166d265486ecb4899b4d936db1bf807e0f63f7c16ce85636a5f7ddbbec9dbc",
   "rahmen": [
     0,
     -480,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "63ff6f4c769b0ce34e384095d97027568facf02693597518c739b50acaab527d"
+        "edc8fa2b1089b07c2a5afcf71ca152983f7800879ada01ae8d5bdff4972db695"
       ]
     }
   },
