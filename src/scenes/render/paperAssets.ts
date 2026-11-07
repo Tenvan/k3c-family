@@ -35,6 +35,7 @@ export interface PaperRef {
 const DATA = paperJson as unknown as {
   spieler: string[];
   beritten: string;
+  reittiere: Record<string, string>;
   truppen: Record<string, string>;
   gegner: Record<string, string>;
   gebaeude: string;
@@ -50,6 +51,8 @@ export function parseRef(text: string): PaperRef {
 
 export const PAPER_PLAYERS: PaperRef[] = DATA.spieler.map(parseRef);
 export const PAPER_MOUNTED: PaperRef = parseRef(DATA.beritten);
+/** Reittier-Schlüssel (`data/sprites.json` › `mounts`, `data/monarch.json` › `mount.sprite`) → Asset-Id in `reittiere/` (US2) */
+export const PAPER_MOUNTS: Record<string, string> = DATA.reittiere;
 export const PAPER_TROOPS: Record<string, PaperRef> = Object.fromEntries(Object.entries(DATA.truppen).map(([k, v]) => [k, parseRef(v)]));
 export const PAPER_ENEMIES: Record<string, PaperRef> = Object.fromEntries(Object.entries(DATA.gegner).map(([k, v]) => [k, parseRef(v)]));
 

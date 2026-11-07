@@ -1,6 +1,6 @@
 # US2.2 · Berittener Monarch nach Reittier aus data/monarch.json
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -53,5 +53,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 geprüft: `mountGait.test.ts` (Pferd direkt, `<gangart>-<reittier>` bei vorhandener Animation, sonst Rückfall Pferd, Variante je Spieler) und `tests/paperAssets.test.ts` (jeder Reittier-Schlüssel zeigt auf `reittiere/<id>`) RED→GREEN; `task check:diff` grün.
+- Sichtprüfung im Browser-Pane: Default `horse` → `paper:figuren/monarch:schritt`, keine Warnung.
+- Abweichung D-US2-03: Das Monarch-Asset hat nur das Pferd, andere Reittiere fallen mit Warnung aufs Pferd zurück; Gangarten je Reittier im Asset gehören zu MG1 bzw. einem Nachzug.

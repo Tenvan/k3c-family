@@ -80,3 +80,12 @@ describe('Natur, Objekte, Münzen und Icons als Papierschnitt (US2/AC-01)', () =
     }
   });
 });
+
+describe('Reittiere (US2/AC-02)', () => {
+  it('jeder Reittier-Schlüssel aus data/sprites.json zeigt auf ein Asset in reittiere/', async () => {
+    const { PAPER_MOUNTS } = await import('../src/scenes/render/paperAssets');
+    const d = spritesJson as unknown as { mounts: object };
+    expect(Object.keys(PAPER_MOUNTS).sort()).toEqual(Object.keys(d.mounts).sort());
+    for (const id of Object.values(PAPER_MOUNTS)) expect(index('reittiere'), id).toContain(id);
+  });
+});

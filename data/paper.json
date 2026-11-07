@@ -2,6 +2,11 @@
   "_hinweis": "Zuordnung Spielrolle → Papierschnitt-Asset (US1). Wert: <gruppe>/<id>, optional @<variante>. Grafik liegt unter public/grafik/<gruppe>/<id>/.",
   "spieler": ["figuren/monarch", "figuren/monarch@spieler2", "figuren/monarch", "figuren/monarch@spieler2"],
   "beritten": "figuren/monarch",
+  "reittiere": {
+    "horse": "pferd", "horseWalk": "pferd", "blackHorse": "rappe", "whiteHorse": "schimmel", "unicorn": "einhorn",
+    "pegasus": "pegasus", "elephant": "elefant", "stag": "hirsch", "wolf": "wolf", "hellhound": "hoellenhund",
+    "nightmare": "albtraum", "hellHound": "hoellenhund", "whiteWolf": "weisser-wolf"
+  },
   "truppen": {
     "vagrant": "truppen/landstreicher", "peasant": "truppen/bauer", "archer": "truppen/bogenschuetze",
     "warrior": "truppen/krieger", "eliteArcher": "truppen/elite-bogenschuetze", "eliteWarrior": "truppen/elite-krieger"
