@@ -58,7 +58,7 @@ describe('Gebäude-Slots im Register (B-685)', () => {
     expect(keys.length).toBeGreaterThanOrEqual(71);
     for (const key of keys) {
       expect(buildingTarget(key), key).not.toBeNull();
-      expect(buildingSource(key)?.file, key).toMatch(/^gebaeude\/.+\.png$/);
+      expect(buildingSource(key)?.file, key).toMatch(/^gebaeude(-paper)?\/.+\.png$/);
     }
   });
 

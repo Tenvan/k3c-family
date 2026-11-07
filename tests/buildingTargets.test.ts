@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { buildingFit, buildingSlot } from '../src/scenes/render/buildingSize';
 import { BUILDING_TEXTURES, textureScale } from '../src/scenes/render/buildingSprites';
+import { isPaperFile } from '../src/scenes/render/paperAssets';
 
 /** Breite und Höhe aus dem IHDR-Block einer PNG-Datei */
 function pngSize(file: string): { w: number; h: number } {
@@ -20,7 +21,9 @@ describe('Vorbelegung der Zielmaße (B-685/AC-02)', () => {
       const src = pngSize(BUILDING_TEXTURES[key]!);
       const fit = buildingFit(key, src);
       const today = textureScale(key);
-      expect({ key, w: fit.w, h: fit.h, scale: fit.scale, smooth: fit.smooth }).toEqual({ key, w: src.w * today, h: src.h * today, scale: today, smooth: false });
+      // Papierschnitt (US1) wird weich gezeichnet, Pixel-Grafik scharf
+      const paper = isPaperFile(BUILDING_TEXTURES[key]!);
+      expect({ key, w: fit.w, h: fit.h, scale: fit.scale, smooth: fit.smooth }).toEqual({ key, w: src.w * today, h: src.h * today, scale: today, smooth: paper });
     }
   });
 });

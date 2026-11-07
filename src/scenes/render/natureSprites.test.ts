@@ -3,7 +3,7 @@ import { BIOMES } from '../../model/biome';
 import { FELSEN, NATURE_TEXTURES, WURZELN, campSprite, decoRoots, natureLook, nodeSprite, rockTexture, treeTexture, veinSlot } from './natureSprites';
 
 /** Nur die Pfade, nichts wird geladen */
-const FILES = Object.keys(import.meta.glob('../../../public/grafik/gebaeude/*.png'));
+const FILES = Object.keys(import.meta.glob(['../../../public/grafik/gebaeude/*.png', '../../../public/grafik/gebaeude-paper/*/*.png']));
 
 describe('Natur-Looks (GEB6.5)', () => {
   it('natureLook: Wald 1, Höhle 2, Mine und Biome ohne eigenen Look 3, fehlende ID Wald', () => {
@@ -151,7 +151,7 @@ describe('campSprite (B-570)', () => {
     expect(campSprite('cave').key).toBe('grafik:lager-2');
     for (const biome of ['mine', 'ironhold', 'crystal']) expect(campSprite(biome).key).toBe('grafik:lager-3');
     for (const [key, file] of [['grafik:lager', 1], ['grafik:lager-2', 2], ['grafik:lager-3', 3]] as const) {
-      expect(NATURE_TEXTURES[key]).toBe(`gebaeude/rekrutierungslager-${file}-32.png`);
+      expect(NATURE_TEXTURES[key]).toBe(`gebaeude-paper/rekrutierungslager/stand${file > 1 ? `.s${file}` : ''}.png`); // Papierschnitt (US1)
       expect(FILES).toContain(`../../../public/grafik/${NATURE_TEXTURES[key]}`);
     }
   });

@@ -1,6 +1,6 @@
 # US1.1 · Spiel lädt Papierschnitt über die Gruppen-Indizes
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -55,5 +55,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `tests/projectRules.test.ts` (kein `atlas/`, kein `grafik-db32`) und `tests/paperAssets.test.ts` (Zuordnung gegen Gruppen-Indizes und Dateien) grün; `task check:diff` grün.
+- Sichtprüfung durch Claude im Browser-Pane (Worktree-Ports): Monarch beritten, Truppen, Lagerfeuer und Wald-Hintergrund als Papierschnitt, keine Konsolenfehler.
+- Abweichungen: D-US1-01 bis D-US1-05 in B-701 (Zuordnung `data/paper.json`, Monarch beritten nur mit Pferd, fehlende Animationen fallen auf idle zurück, Natur/Gerüste bleiben bis MG8, Schatten als Phaser-Filter).

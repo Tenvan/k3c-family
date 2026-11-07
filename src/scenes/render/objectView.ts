@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GROUND_Y } from '../../core/constants';
+import { isPaperFile } from './paperAssets';
 import { BACKGROUND_ZOOM, WORLD_TEXTURES, backgroundFile, objectSprite, planKeys, type BackgroundLayerPlan, type ObjectSprite } from './worldSprites';
 
 /** Lädt, bereitet vor und setzt die Welt-Grafiken aus worldSprites.ts (GR3.2). Zeichnet nur. */
@@ -14,9 +15,10 @@ export function preloadWorld(scene: Phaser.Scene): void {
 
 /** Nach dem Laden: Pixel-Art scharf, Animationen (Stern, Münze) anlegen; Portal und Lager stehen still (GEB6) */
 export function prepareWorld(scene: Phaser.Scene): void {
-  for (const key of Object.keys(WORLD_TEXTURES)) {
+  for (const [key, { file }] of Object.entries(WORLD_TEXTURES)) {
     if (!scene.textures.exists(key)) continue;
-    scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
+    // Papierschnitt weich, Pixel-Grafik scharf (bis CU1)
+    scene.textures.get(key).setFilter(isPaperFile(file) ? Phaser.Textures.FilterMode.LINEAR : Phaser.Textures.FilterMode.NEAREST);
   }
   for (const id of ['pickup:skillPoint', 'coin']) {
     const s = objectSprite(id);
@@ -47,7 +49,7 @@ export function loadBackground(scene: Phaser.Scene, plan: readonly BackgroundLay
     if (f) scene.load.image(key, `grafik/${f.file}`);
   }
   scene.load.once(Phaser.Loader.Events.COMPLETE, () => {
-    for (const key of missing) if (scene.textures.exists(key)) scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
+    for (const key of missing) if (scene.textures.exists(key)) scene.textures.get(key).setFilter(Phaser.Textures.FilterMode.LINEAR); // Papierschnitt (US1)
     done();
   });
   scene.load.start();

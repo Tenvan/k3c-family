@@ -1,4 +1,5 @@
 import { MINE_SYMBOL_TEXTURES } from './mineSignView';
+import { paperBuildingFile } from './paperAssets';
 import type { ObjectSprite, WorldFile } from './worldSprites';
 
 /**
@@ -16,6 +17,8 @@ export const FELSEN = ['felsen', 'felsen-b', 'felsen-c'] as const;
 const ADERN = ['stone', 'copper', 'iron', 'crystal'] as const;
 
 const datei = (name: string) => `gebaeude/${name}-32.png`;
+/** Rekrutierungslager und Hafen als Papierschnitt (MG6, US1) */
+const papier = (id: string, stufe = 1) => paperBuildingFile(id, stufe)!;
 
 /** Textur-Schlüssel → Datei unter `public/grafik/` (LoadScene lädt genau diese, `WORLD_TEXTURES` nimmt sie auf) */
 export const NATURE_TEXTURES: Record<string, string> = {
@@ -30,8 +33,8 @@ export const NATURE_TEXTURES: Record<string, string> = {
   'grafik:truhe': datei('truhe'),
   'grafik:portal': datei('portal'),
   'grafik:ausgang': datei('ausgang'),
-  'grafik:hafen': datei('hafen'), // Hafen-Steg des Chunks `harbor` (BS10, B-641)
-  ...Object.fromEntries([1, 2, 3].map((look) => [look === 1 ? 'grafik:lager' : `grafik:lager-${look}`, datei(`rekrutierungslager-${look}`)])),
+  'grafik:hafen': papier('hafen'), // Hafen-Steg des Chunks `harbor` (BS10, B-641)
+  ...Object.fromEntries([1, 2, 3].map((look) => [look === 1 ? 'grafik:lager' : `grafik:lager-${look}`, papier('rekrutierungslager', look)])),
   ...MINE_SYMBOL_TEXTURES, // Axt und Spitzhacke am Abbau-Schild (GEB16, B-588)
 };
 

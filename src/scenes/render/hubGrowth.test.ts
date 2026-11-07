@@ -7,7 +7,7 @@ import { HUB_GROWTH, hubLookOf } from './hubGrowth';
 const up = (paid: number, state?: HubUpgrade['state']): HubUpgrade => ({ gold: 50, material: { stone: 100 }, paid, ...(state ? { state } : {}) });
 
 /** 32-px-Grafiken unter public/grafik/gebaeude/, als Pfad relativ zu public/grafik/ */
-const files = new Set(Object.keys(import.meta.glob('../../../public/grafik/gebaeude/*-32.png')).map((p) => p.replace('../../../public/grafik/', '')));
+const files = new Set(Object.keys(import.meta.glob(['../../../public/grafik/gebaeude/*-32.png', '../../../public/grafik/gebaeude-paper/*/*.png'])).map((p) => p.replace('../../../public/grafik/', '')));
 
 /** Alle 15 Kombinationen aus Hub-Stufe 1–5 und Ausbauschritt 1–3 */
 const combos = [1, 2, 3, 4, 5].flatMap((hubLevel) => [1, 2, 3].map((hubStep) => ({ hubLevel, hubStep })));

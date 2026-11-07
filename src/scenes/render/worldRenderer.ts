@@ -391,10 +391,10 @@ export class WorldRenderer {
   }
 }
 
-/** Figur eines Monarchen (zu Fuß) bzw. der Reiter-Sprite (beritten, Index 1 im Reiter-Container) */
+/** Figur eines Monarchen (zu Fuß) bzw. der Reiter-Sprite (beritten, einziges Kind des Reiter-Containers) */
 function monarchSprite(v: View | undefined): Sprite | undefined {
   const fig = v?.getAt(1);
-  const sprite = fig instanceof Phaser.GameObjects.Container ? fig.getAt(1) : fig;
+  const sprite = fig instanceof Phaser.GameObjects.Container ? fig.getAt(0) : fig;
   return sprite instanceof Phaser.GameObjects.Sprite ? sprite : undefined;
 }
 
