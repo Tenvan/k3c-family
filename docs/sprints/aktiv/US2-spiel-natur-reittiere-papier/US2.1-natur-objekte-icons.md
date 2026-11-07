@@ -1,6 +1,6 @@
 # US2.1 · Natur, Objekte, Münzen und Icons als Papierschnitt
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,5 +54,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `tests/paperAssets.test.ts` (Natur, Objekte, Münzen, Icons nur aus `objekte/` und `icons/`; Maße in `data/paper.json` gleich den Manifesten) RED→GREEN; Vitest `tests` + `src/scenes` 1846/1846.
+- Sichtprüfung durch Claude im Browser-Pane: 103 Papier-Objekte in der Szene, Bäume, Busch, Portal, Münze und Stern animiert, Tanne 146 px.
+- `task check:diff`: nur `TestTickReiheJeRaum` (k3c-load) rot unter Last, einzeln grün (B-704).
+- Abweichungen: D-US2-01 (eine Form je Art, 1:1-Maßstab, Bäume kleiner), D-US2-02 (Gerüste und Plantage bleiben alt).

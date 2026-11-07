@@ -59,7 +59,7 @@ keine (Defaults in B-701 als D-US2-xx)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| US2.1 | `US2.1-natur-objekte-icons.md` | Umsetzung | autonom | offen |
+| US2.1 | `US2.1-natur-objekte-icons.md` | Umsetzung | autonom | fertig |
 | US2.2 | `US2.2-reittier.md` | Umsetzung | autonom | offen |
 | US2.3 | `US2.3-review.md` | Review | autonom | offen |
 

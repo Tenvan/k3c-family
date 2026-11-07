@@ -3,7 +3,7 @@ import { BIOMES } from '../../model/biome';
 import { FELSEN, NATURE_TEXTURES, WURZELN, campSprite, decoRoots, natureLook, nodeSprite, rockTexture, treeTexture, veinSlot } from './natureSprites';
 
 /** Nur die Pfade, nichts wird geladen */
-const FILES = Object.keys(import.meta.glob(['../../../public/grafik/gebaeude/*.png', '../../../public/grafik/gebaeude-paper/*/*.png']));
+const FILES = Object.keys(import.meta.glob(['../../../public/grafik/gebaeude/*.png', '../../../public/grafik/gebaeude-paper/*/*.png', '../../../public/grafik/objekte/*/*.png']));
 
 describe('Natur-Looks (GEB6.5)', () => {
   it('natureLook: Wald 1, Höhle 2, Mine und Biome ohne eigenen Look 3, fehlende ID Wald', () => {
@@ -103,8 +103,8 @@ describe('rockTexture (GEB15.2/AC-02)', () => {
     }
     for (const id of FELSEN) {
       for (const look of [1, 2, 3]) {
-        expect(NATURE_TEXTURES).toHaveProperty([`grafik:${id}-${look}`], `gebaeude/${id}-${look}-32.png`);
-        expect(FILES).toContain(`../../../public/grafik/gebaeude/${id}-${look}-32.png`);
+        expect(NATURE_TEXTURES).toHaveProperty([`grafik:${id}-${look}`], `objekte/${id}/idle.png`); // eine Form je Art, Looks gleich (US2, D-US2-01)
+        expect(FILES).toContain(`../../../public/grafik/objekte/${id}/idle.png`);
       }
     }
   });
@@ -139,7 +139,7 @@ describe('nodeSprite (GEB6.5)', () => {
   });
 
   it('alles im Maßstab 1; unbekannte Art null (Platzhalter)', () => {
-    for (const kind of ['tree', 'rock', 'copperOre', 'bush', 'stoneVein']) expect(nodeSprite(kind, 3, 'forest')?.zoom).toBe(1);
+    for (const kind of ['tree', 'rock', 'copperOre', 'bush', 'stoneVein']) expect(nodeSprite(kind, 3, 'forest')?.zoom).toBeCloseTo(1, 0); // Papier 1 Einheit = 1 px (US2)
     expect(nodeSprite('goldVein', 3, 'forest')).toBeNull();
   });
 });

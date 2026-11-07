@@ -39,6 +39,7 @@ const DATA = paperJson as unknown as {
   gegner: Record<string, string>;
   gebaeude: string;
   hintergruende: { gruppe: string; varianten: number };
+  objekte: Record<string, PaperObject>;
 };
 
 export function parseRef(text: string): PaperRef {
@@ -109,10 +110,44 @@ export function paperBuildingFile(id: string, stufe = 1): string | null {
   return `${DATA.gebaeude}/${id}/stand${stufe > 1 ? `.s${stufe}` : ''}.png`;
 }
 
-export const isPaperFile = (file: string): boolean => file.startsWith(`${DATA.gebaeude}/`) || file.startsWith(`${DATA.hintergruende.gruppe}/`);
+export const isPaperFile = (file: string): boolean =>
+  [DATA.gebaeude, DATA.hintergruende.gruppe, ...new Set(Object.values(DATA.objekte).map((o) => o.gruppe))].some((g) => file.startsWith(`${g}/`));
 
 /** Hintergrund-Schicht `teil` (`wald` …), `ebene` (`fern`, `mitte`, `nah`), Variante v; Papier kennt weniger Varianten, sie wiederholen sich */
 export function paperBackgroundFile(teil: string, ebene: string, v: number): string {
   const n = ((Math.max(1, Math.trunc(v)) - 1) % DATA.hintergruende.varianten) + 1;
   return `${DATA.hintergruende.gruppe}/hg-${teil}-${ebene}-v${n}/stand.png`;
+}
+
+// ---------- Natur, Objekte, Münzen und Icons (MG8, US2) ----------
+
+/** Maße eines Objekt-Assets aus `data/paper.json` › `objekte` (ein Test hält sie gleich mit den Manifesten) */
+export interface PaperObject {
+  gruppe: string;
+  /** Frame-Breite und -Höhe in Pixeln; das Sheet `idle.png` legt die Frames nebeneinander */
+  frame: [number, number];
+  frames: number;
+  rahmen: [number, number, number, number];
+}
+
+export const PAPER_OBJECTS: Record<string, PaperObject> = DATA.objekte;
+
+/** Datei des Objekts (`<gruppe>/<id>/idle.png`); kein Papier-Objekt `null` */
+export function paperObjectFile(id: string): string | null {
+  const o = PAPER_OBJECTS[id];
+  return o ? `${o.gruppe}/${id}/idle.png` : null;
+}
+
+/** Objekt-Id zu einer Datei aus `paperObjectFile`, sonst `null` */
+export function paperObjectOf(file: string): string | null {
+  const m = /^[a-z]+\/([a-z-]+)\/idle\.png$/.exec(file);
+  return m && PAPER_OBJECTS[m[1]!] && paperObjectFile(m[1]!) === file ? m[1]! : null;
+}
+
+/** Darstellung eines Objekts: Frames, Ursprung im Fußpunkt und Maßstab 1 Einheit = 1 Spiel-Pixel (32 je Kachel wie die Gebäude) */
+export function paperObjectLook(id: string): { frameWidth: number; frameHeight: number; frames: number; originX: number; originY: number; zoom: number } | null {
+  const o = PAPER_OBJECTS[id];
+  if (!o) return null;
+  const origin = paperOrigin(o.rahmen);
+  return { frameWidth: o.frame[0], frameHeight: o.frame[1], frames: o.frames, originX: origin.x, originY: origin.y, zoom: o.rahmen[3] / o.frame[1] };
 }
