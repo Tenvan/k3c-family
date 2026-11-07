@@ -106,6 +106,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-705](B-705-paper-frame-stil-der-basis.md) | DEV | Problem | mittel | offen | – | Das Vorher-Bild im Review rendert mit dem Stil der Basis |
 | [B-702](B-702-test-runprocess-wackelt.md) | DEV | Problem | mittel | offen | – | TestRunProcessExitUndAusgabe wackelt: fehlendes Programm ohne Fehler |
 | [B-706](B-706-asset-tools-nachzug-review-mc1.md) | DEV | Schuld | mittel | offen | – | Asset-MCP-Tools: Restbefunde aus dem Review MC1 nachziehen |
+| [B-708](B-708-paper-fehlerfeld-reittier.md) | PAP | Problem | niedrig | offen | – | Ablehnung reittier-unbekannt nennt das Feld ohne Animationsnamen |
+| [B-709](B-709-assets-preview-reittier-boxen.md) | PAP | Idee | niedrig | offen | – | assets_preview nennt bei Reit-Animationen keine Teil-Boxen des Reittiers |
+| [B-710](B-710-assets-set-teil-patch.md) | PAP | Problem | mittel | offen | – | assets_set kann einzelne Teile nicht ändern, ohne die ganze Teile-Liste zu senden |
+| [B-711](B-711-reiter-variante-reittier.md) | PAP | Frage | mittel | offen | – | Variante des Reiters tauscht die Materialien des Reittiers nicht |
 
 ## Archiv
 
@@ -666,3 +670,4 @@ Zeile in diesen Abschnitt.
 | [B-654](archiv/B-654-bot-performance-miniboss-json.md) | SIM | Schuld | mittel | erledigt | BAL9 | Bot-Performance: bosses.json je Tick neu geparst, nodeFor/wanted mit Map-Zugriffen |
 | [B-656](archiv/B-656-meilenstein-titan-mehrseed.md) | REG | Problem | mittel | erledigt | BAL9 | Meilenstein 1 coop2 standard: Titan über mehrere Seeds, holz und schiff grün |
 | [B-657](archiv/B-657-castlehold-messfenster.md) | DEV | Problem | mittel | erledigt | BAL9 | Die Kennzahl castleHeld misst Nacht 1 bis 5 über den ganzen Lauf, nicht nur über das Fenster des Ziels |
+| [B-707](archiv/B-707-assets-set-golden-veraltet.md) | DEV | Problem | mittel | erledigt | – | assets_set und assets_render lassen golden.json der Gruppe veraltet |
