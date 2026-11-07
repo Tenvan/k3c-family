@@ -2,9 +2,9 @@
   "id": "pferd",
   "version": 1,
   "specHash": "e0e1d6072844723ad5398634000b3b93b8cd32f425a43d6e0f66f1b7e47cd8c1",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "eea2ec7153ff0bcc4410088bc7937fedc3666537bdbda3a48879b930a58d1470",
+  "renderKey": "22538e60f89c7993ed426bd6ad68bd578fd4fb313beb06485e3ac133c11b1e5a",
   "rahmen": [
     -78,
     -122,

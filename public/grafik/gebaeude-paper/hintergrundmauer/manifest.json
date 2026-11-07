@@ -2,9 +2,9 @@
   "id": "hintergrundmauer",
   "version": 1,
   "specHash": "8ea17dbed7dcf72e037c8984b8699fbe48bc0a6132db75f18c388e42f7109721",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "20f482e911ba4ab76bb6d6972871049ffe249508f14bed064ec99ea1473f312d",
+  "renderKey": "975530623de7fed0f608cac0821bd8bf0a069996d91dc6e429ec085cd6f78e9b",
   "rahmen": [
     -16,
     -128,

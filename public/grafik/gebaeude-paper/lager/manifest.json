@@ -2,9 +2,9 @@
   "id": "lager",
   "version": 1,
   "specHash": "fa51cb1793ce573f04cfa4a10b31bb25e2acf47b2684fb43f5e247454e144d69",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "2365c33015851ead0068404fb0262563ffc830a9479224ec49b4089d6548f3e6",
+  "renderKey": "b9c392b0e1df5ff84d80ff095ee9e61e53f77493b7b76a9267928ca0333de5f3",
   "rahmen": [
     -96,
     -128,

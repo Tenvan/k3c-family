@@ -2,9 +2,9 @@
   "id": "weisser-wolf",
   "version": 1,
   "specHash": "738bd9b8fe9e7ba233ee8dfce960153d5e0fa5705cce0fb6351437f38e0d9490",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "b1ed6f0bd30596fe0572c8c74c2689b60a2ae662adbb7e5bfdfb756dce1d0bad",
+  "renderKey": "f3eed1c2639df53873a7d9b00da4a6d0ee7e92c960c37256029e88468a52f10f",
   "rahmen": [
     -78,
     -128,

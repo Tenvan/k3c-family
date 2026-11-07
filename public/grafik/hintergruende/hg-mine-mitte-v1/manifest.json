@@ -1,10 +1,10 @@
 {
   "id": "hg-mine-mitte-v1",
   "version": 1,
-  "specHash": "94c775360aca861dbabf5088211622604893808732ca529e09196f260c91c3ce",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "specHash": "027bdaf8be7c1c8a95b8eb789c52b9cbf85b1c6d076c4204f33a321c947645fe",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "e74cff6ff1530fd17aea1d31e38cadceba100c764e5e26e3bfc0c902e8a26adb",
+  "renderKey": "a4d7e33e649eb7e0e7451fd2448f30c21af7aa9d2b5a58577f5f4632fbe0f934",
   "rahmen": [
     0,
     -480,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "2ae6c9adfd631a028f3912d5b00dead225e82e8e97fbe3e37d11c45821c43cbb"
+        "22f463cb20b9c94336e8c3d46e5f0e08cf816d91d1e7186f460e541bee7d06fd"
       ]
     }
   },

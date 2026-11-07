@@ -2,9 +2,9 @@
   "id": "rekrutierungslager",
   "version": 1,
   "specHash": "5d4fd274a8a68085dc3e6e7aaa862115712e42de7fc0fb556a033f855a671659",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "d69c67fea4a08ce97243f100fba1b124df7e7b0f166578691232972c1000ff49",
+  "renderKey": "455ec90027ff14e1689728aaba94dd2db179b03385db9e665bef0dbb5d97bad9",
   "rahmen": [
     -48,
     -64,

@@ -2,9 +2,9 @@
   "id": "icon-stein",
   "version": 1,
   "specHash": "ee7fffa3a501d00e14bfb01029165f9e062a0e0f0e86ee283bdfe221a56ad70e",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "55cba13953ebeec87dcc722c92d890de6ff94da09113b53171ac083c9adcce34",
+  "renderKey": "62b85fbe2f1c6862301f61590366b469bb169c4d892fc7f7254721ffc4c3cee0",
   "rahmen": [
     -16,
     -32,

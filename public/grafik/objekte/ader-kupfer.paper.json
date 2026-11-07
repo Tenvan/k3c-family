@@ -43,39 +43,39 @@
         {
           "art": "flaeche",
           "form": "M-24 -36C-14 -40 -2 -34 8 -38C16 -41 22 -36 26 -32L24 -28C18 -32 12 -34 6 -31C-4 -27 -14 -32 -24 -30Z",
-          "material": "fell-fuchs",
+          "material": "kupfer",
           "ton": "basis"
         },
         {
           "art": "flaeche",
           "form": "M-20 -14C-10 -18 0 -12 12 -16C18 -18 24 -14 28 -12L26 -8C20 -10 14 -12 8 -10C-2 -6 -12 -10 -22 -8Z",
-          "material": "fell-fuchs",
+          "material": "kupfer",
           "ton": "basis"
         },
         {
           "art": "flaeche",
           "form": "M-5 -48C-5 -49.38 -6.34 -50.5 -8 -50.5C-9.66 -50.5 -11 -49.38 -11 -48C-11 -46.62 -9.66 -45.5 -8 -45.5C-6.34 -45.5 -5 -46.62 -5 -48Z",
-          "material": "fell-fuchs",
+          "material": "kupfer",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-8 -50.5C-9.38 -50.5 -10.5 -49.38 -10.5 -48C-10.5 -46.62 -9.38 -45.5 -8 -45.5C-8.75 -46.75 -8.75 -49.25 -8 -50.5Z",
-          "material": "fell-fuchs",
+          "material": "kupfer",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "form": "M17 -22C17 -23.1 15.66 -24 14 -24C12.34 -24 11 -23.1 11 -22C11 -20.9 12.34 -20 14 -20C15.66 -20 17 -20.9 17 -22Z",
-          "material": "fell-fuchs",
+          "material": "kupfer",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M14 -24C12.9 -24 12 -23.1 12 -22C12 -20.9 12.9 -20 14 -20C13.4 -21 13.4 -23 14 -24Z",
-          "material": "fell-fuchs",
+          "material": "kupfer",
           "ton": "schatten"
         },
         {

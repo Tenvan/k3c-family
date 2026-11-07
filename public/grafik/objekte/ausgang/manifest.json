@@ -2,9 +2,9 @@
   "id": "ausgang",
   "version": 1,
   "specHash": "6119f58034ea21c775ba7da940dacfabbd40bb4f3a438c8395e92d236c463ef1",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "b709d2123d719d0ce58fd5af199465070e6bdac8193581ed3f45c4a48e72e8eb",
+  "renderKey": "dbb5c3aa9dce8ae622aae49dc652a0b35746af7ebb501759b3697efcdfd2ed93",
   "rahmen": [
     -38,
     -70,

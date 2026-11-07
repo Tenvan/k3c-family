@@ -1,10 +1,10 @@
 {
   "id": "hg-wald-mitte-v1",
   "version": 1,
-  "specHash": "157969304710042ef2afb7bf7555bf57943716293bf4c432c58ef70f8f5cbc40",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "specHash": "ef379f78a053ce1a8df53ddc2ec67f3b83e99668e57a9e7b9c18f32598b5c1c0",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "79e72139f49fddf4cebd151f821c32d51b8476696566ba54e6d3d7fc19775f33",
+  "renderKey": "a9d53a0ea9bdc151f93f9d1a4a0ed2dec84d71def4d3fdb0a2db55a720737268",
   "rahmen": [
     0,
     -480,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "5051fe5d9b5f9acc119fcb24377f34f5b73ef7c1daa8fde65005434f8cebea35"
+        "2f4c56a7eb6f5a6f0ac87bf6108681d0f9ab42453645c56720267fe117a16120"
       ]
     }
   },

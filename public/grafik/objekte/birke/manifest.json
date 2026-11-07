@@ -2,9 +2,9 @@
   "id": "birke",
   "version": 1,
   "specHash": "7a846e1791dba1dbe0c351db5730e8165c40d709ec51efc539bed956482c1de2",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "08a944d76fed2c96ac1cd888fbb013ce5bedfa0f4cd2558a84ef565d49379b58",
+  "renderKey": "0fd994ae34849e2fc631f3477a28b328c07522af925cd1f0cb0f809e0c831e20",
   "rahmen": [
     -36,
     -132,

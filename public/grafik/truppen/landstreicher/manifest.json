@@ -2,9 +2,9 @@
   "id": "landstreicher",
   "version": 1,
   "specHash": "5055c5ad0aec60428c22d23d0f6dd9a2347263e9c579d5b94207ef47e674054b",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "0d1de54f3e0736370e8efc0cfd57eaf36d9eea6c591dcabfb7f2d18e5c71376b",
+  "renderKey": "94cc9334420c9d828ed1c485150981e1a8553c288787499ee455498b28f2c38f",
   "rahmen": [
     -60,
     -175,

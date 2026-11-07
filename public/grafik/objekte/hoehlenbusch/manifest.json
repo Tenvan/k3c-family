@@ -2,9 +2,9 @@
   "id": "hoehlenbusch",
   "version": 1,
   "specHash": "db793f50184acb505d3ee5f54434fc1badc46df76d28642635050fb97764bdd5",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "863874ccbafedb2b389f4fbdecbe73d569dd66e2518e77d4c46f69a698562d9d",
+  "renderKey": "08b93b86f885048e4fc86ab7f41a60d8e9f883ac5ba07bd334f50ce04f28415a",
   "rahmen": [
     -30,
     -38,

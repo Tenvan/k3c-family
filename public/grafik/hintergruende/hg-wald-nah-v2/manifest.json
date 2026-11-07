@@ -1,10 +1,10 @@
 {
   "id": "hg-wald-nah-v2",
   "version": 1,
-  "specHash": "28e9513d1b8c964abd705a1c5a11c9fea19bd35e2b51f6ae163624653ec881f7",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "specHash": "1e211b721c5ae8af5370f6b69cad1965ca86d1cf12eb5831e6563cf5eca54c0e",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "8b001f76a513215c82d4d9cd2486da3c9954f87efcbd4604229190d41b0b04a4",
+  "renderKey": "b0151d2bd3afcd988986b73e3ae306b851cd9d78f3b6ee366f20c5b7e899a24b",
   "rahmen": [
     0,
     -480,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "afbd18ce7483145b73304ff5056225af1a91ec0561695b314280cb4abc7a3064"
+        "c789bed2cdf3ed41525c6a62424cc8348bd7ffc2770c4f2e24f5b2a83eacd62f"
       ]
     }
   },

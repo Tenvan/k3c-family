@@ -2,9 +2,9 @@
   "id": "icon-muenzhaufen",
   "version": 1,
   "specHash": "26b920e794349a8ebe9cfdf06250cb614ae35caaab12fb9de21d325d860fe459",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "37de352729d42a4b327f0a22815d51f74fe6933d1926367fc7763e02fd7da368",
+  "renderKey": "6f828285b2e28d3b428960a66f9fe8e1a1837ffe42a4cfa47ce8d0b6fa9ac874",
   "rahmen": [
     -16,
     -32,

@@ -2,9 +2,9 @@
   "id": "truhe-offen",
   "version": 1,
   "specHash": "5757eada4f8880c0cfbd3f51e07945b3d4a792c8ebe2bc1e5bf63c3f69a9234b",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "c46ec7b9f977e6f778f659395c7e2ab398f942e38a93a76747bb94eb3f0f8284",
+  "renderKey": "2429774e15d8574b7bc5bd260d3821ba5090473420647b680557b7994714838a",
   "rahmen": [
     -22,
     -44,

@@ -2,9 +2,9 @@
   "id": "icon-muenzstapel",
   "version": 1,
   "specHash": "703b450f04074d1d2e3f5daab64312341edb3626f5054f8bf951a260b40efa59",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "56b3dd693ba315e1b6745a61ed3fa8f2e86d2fcb9f559e0f20647ffa4a128f16",
+  "renderKey": "64959bb6a029f4529d218ac7fe813cf1c762bd0fcf99ade9bab6dc18aa56f012",
   "rahmen": [
     -16,
     -32,

@@ -320,27 +320,27 @@
         {
           "art": "flaeche",
           "form": "M-15.5 -52H15.5L16.5 -40H-16.5Z",
-          "material": "stein"
+          "material": "eisen"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-15.5 -52H-5L-5 -40H-16.5Z",
-          "material": "stein",
+          "material": "eisen",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 0.8,
           "form": "M-13 -47H14",
-          "material": "stein",
+          "material": "eisen",
           "ton": "licht"
         },
         {
           "art": "falz",
           "breite": 0.8,
           "form": "M-14 -43.5H15",
-          "material": "stein",
+          "material": "eisen",
           "ton": "licht"
         },
         {
@@ -498,20 +498,20 @@
         {
           "art": "flaeche",
           "form": "M-13 -104C-15 -118 -7 -126 3 -126C13 -126 19 -118 18 -106L16 -106C15 -116 10 -121 3 -121C-4 -121 -10 -116 -10 -104Z",
-          "material": "stein"
+          "material": "eisen"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-13 -104C-15 -118 -7 -126 3 -126C-3 -122 -6 -116 -7 -104Z",
-          "material": "stein",
+          "material": "eisen",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M10 -122C14 -119 16 -114 16.5 -108L15 -108C14.5 -113 13 -117 10 -122Z",
-          "material": "stein",
+          "material": "eisen",
           "ton": "licht"
         },
         {
@@ -522,7 +522,7 @@
         {
           "art": "flaeche",
           "form": "M5 -106H8.5V-96H5Z",
-          "material": "stein"
+          "material": "eisen"
         },
         {
           "art": "flaeche",
@@ -650,21 +650,21 @@
         {
           "art": "flaeche",
           "form": "M3.25 -55.65L6.65 -52.25L33.09 -79.55L35.36 -84.36L30.55 -82.09Z",
-          "material": "stein",
+          "material": "eisen",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M3.25 -55.65L4.95 -53.95L35.36 -84.36L30.55 -82.09Z",
-          "material": "stein",
+          "material": "eisen",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 0.8,
           "form": "M8.13 -56.42L30.76 -79.05",
-          "material": "stein"
+          "material": "eisen"
         }
       ],
       "pivot": [0, -49]

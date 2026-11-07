@@ -2,9 +2,9 @@
   "id": "busch",
   "version": 1,
   "specHash": "37209ff3dd07b1ad8072b5f385e5bc7f82e73fe92b61ec247f00a582643786c4",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "762d81f5ed862bf81a0046db91e87634e112175e9871d2a9ea91f4f471ca68b0",
+  "renderKey": "fcb7f5f0100a08ff0a110850404e7a1a71fd7f595296e21c98a2f591c813670a",
   "rahmen": [
     -30,
     -38,

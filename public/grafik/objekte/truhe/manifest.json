@@ -2,9 +2,9 @@
   "id": "truhe",
   "version": 1,
   "specHash": "55b7623e4f3958d9377fe18a50701c57998f680e978ea714399985960213ff41",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "a1b91f0779e227a7beb9e6019e49961680723eb5bb6613d93b566b320e15628c",
+  "renderKey": "aa3bf28f1b7b212855b110e02ccad28a24c4ad7a974c019d45aea66e9d1125b4",
   "rahmen": [
     -20,
     -32,

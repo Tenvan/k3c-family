@@ -2,9 +2,9 @@
   "id": "einhorn",
   "version": 1,
   "specHash": "653dd16a15a9ee0fd8fac25587bc18ad3e4899066c116e05d5afc0a739e6a004",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "df8990148f24ef57c937903a262ed93b1d5b0bdcffb2df780e11d70168bab370",
+  "renderKey": "d718d341d084f7202222e07789c54edcd617933dcfe334dba94ec2210856ce15",
   "rahmen": [
     -78,
     -128,

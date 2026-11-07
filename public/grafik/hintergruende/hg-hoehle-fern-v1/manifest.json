@@ -1,10 +1,10 @@
 {
   "id": "hg-hoehle-fern-v1",
   "version": 1,
-  "specHash": "e435393c8d0d0e9c2af47a8eec3992702575f624eb237b0c81d8328eccd35e1e",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "specHash": "b4d4bb6a0f54d72b593925cf970627bf920856b3a242d41aebd4a2e3249dd3e7",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "abe8326f6c825fa63b29eddd882ebac181d5ef3200ac2443ba5f4c6caf12f3bd",
+  "renderKey": "a977edb2d5f4a772585717dad6ca8bbbecab05766b8361f086d9929aa1c9a8e4",
   "rahmen": [
     0,
     -480,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "1c255f271f100fc46a4b162aff312009ca625cac489e87bf95fd12157a8aba01"
+        "1e7e3de131bfa1803c4b4c8fc66cfb9d3a251c79ae78284c4f0dd5758b39a6d4"
       ]
     }
   },

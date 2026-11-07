@@ -2,9 +2,9 @@
   "id": "schild-axt",
   "version": 1,
   "specHash": "be6587195644520bebbc4fab3101f51aec6b41d06072ab9027e183cc7bde5e06",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "559191b4dd9cfb0821804640735ab3331c80552cd440f39e57f1653d4841d392",
+  "renderKey": "d6a32374193d43f205ea772af8fab36d8ba49d00eac0d11437aa456b3403c004",
   "rahmen": [
     -17,
     -46,

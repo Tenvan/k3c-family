@@ -2,9 +2,9 @@
   "id": "schiff",
   "version": 1,
   "specHash": "489c65f33a1e1290f08d738e57b5859af8cd1476b98239475d096bed38fc017a",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "2273eb9708128930f68556fdaf56ea8d0b154d18679b041f5c5de653f6b35c6b",
+  "renderKey": "e7e6d08e2b525e34ac8cae56a906ea407305c694140f95be9f789f1cc0e8f456",
   "rahmen": [
     -96,
     -160,

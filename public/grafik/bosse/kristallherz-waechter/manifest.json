@@ -2,9 +2,9 @@
   "id": "kristallherz-waechter",
   "version": 1,
   "specHash": "e8eb4be4c6ddb7f49730f8b8fa3c55d9bef40c0a8a26864831d898232be65fd2",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "a8aac552e1e09a1001b3d779035179e54f371e099ae450ccdb09b5e024be3a50",
+  "renderKey": "cb74f098e03e8538144693acd651721de6e48e0707277f65b016b108cd8b2bfe",
   "rahmen": [
     -82,
     -134,

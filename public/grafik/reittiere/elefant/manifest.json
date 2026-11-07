@@ -2,9 +2,9 @@
   "id": "elefant",
   "version": 1,
   "specHash": "511e93ed5b780e7ac011c0178d88817bc74ef353f88ea0607e4de245c9bc558c",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "a4ad656e75d550bdf282da6fe08d1f1640ce2e870f39cb773eb6001117a8a768",
+  "renderKey": "0cf8a98a6e54780849852b59d5c8fbc0c1524e09857c3f515c4a8f7bcd9328fb",
   "rahmen": [
     -78,
     -122,

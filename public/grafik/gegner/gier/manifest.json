@@ -2,9 +2,9 @@
   "id": "gier",
   "version": 1,
   "specHash": "4a24e14e131266670eb7a9062f849a3f06b1911f2d4cba6afd259ecbd29939db",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "0549f5e9b461d0c16b100e943b1411f7d03852ae77adf51fe80245f7c4e6fbff",
+  "renderKey": "d4d74e343f09812afb863c495e935ae23a91b0add6b75147b54a8a27d1b1705a",
   "rahmen": [
     -60,
     -175,

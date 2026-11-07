@@ -2,9 +2,9 @@
   "id": "kristallspinne",
   "version": 1,
   "specHash": "bc2f110b14332bc93abaec13396b40d0227a5ceef7ccaf6f16bd86f6f91a39cc",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "3f3777e4337cab8453b63080136af7ac2891a5e98ae5cab85ed6bec55b53e276",
+  "renderKey": "aca29dea785cd07412230213327f79d3283080d64d173ac4a7d95f8749274588",
   "rahmen": [
     -46,
     -50,

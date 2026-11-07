@@ -2,9 +2,9 @@
   "id": "pappel",
   "version": 1,
   "specHash": "e565ff8d05a311637f2278abd8c1cbcea034aa9c10f57427b1360ac6b700e76d",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "e830dd7cb7e7c6a4ef23f4589b80f970b3e122d9b17a4ab2d5dfc7c7eae03693",
+  "renderKey": "ff3c32682184795941cdcda69bfdc1d5b380cce10956827206b5e6d473d596b3",
   "rahmen": [
     -24,
     -146,

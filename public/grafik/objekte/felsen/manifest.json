@@ -2,9 +2,9 @@
   "id": "felsen",
   "version": 1,
   "specHash": "55d9a21f85ef204a34f96b276b2552857838208a5897c6d0490d7f80b695aab7",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "c4005271c257fd6874e18131112cfb2dc5cb34494ea863f75b8d5d1f25a12fb7",
+  "renderKey": "8d4b67158881889feb7994f1df7d9d195706a92de0646cf337edbee0e2f2d6d9",
   "rahmen": [
     -30,
     -32,

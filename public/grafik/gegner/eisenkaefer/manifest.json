@@ -2,9 +2,9 @@
   "id": "eisenkaefer",
   "version": 1,
   "specHash": "9a21e5b076c76c1920f4b975d0599c38f33291ef5787a2854df33e34b5f746f6",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "debb460dd2872a35ae9231c03c39ff566644870c7ed7b63401767622445d1466",
+  "renderKey": "504edbb99bd26182314e39b983ef1df1c3ae3adbde63c1ef07d89fbffd9f88dc",
   "rahmen": [
     -30,
     -32,

@@ -2,9 +2,9 @@
   "id": "icon-truhe",
   "version": 1,
   "specHash": "909e1f0ff64d89833a11de484acc955a2dd794be33415c2ae9af9aa8f2420ebb",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "f6b45622b21172496459f26035bec7e55f766fcaa2e464df858e78e5f31ad549",
+  "renderKey": "4a27acf05d38f87dc93cc9e18563efcc26789762947a08e326d633cbbd4ec225",
   "rahmen": [
     -16,
     -32,

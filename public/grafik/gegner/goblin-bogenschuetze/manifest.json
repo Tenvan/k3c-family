@@ -2,9 +2,9 @@
   "id": "goblin-bogenschuetze",
   "version": 1,
   "specHash": "74ce2d4b57bf097023045f768cf7d82a6a0173bec13037b71c26dce7816e72fe",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "fc81a4f0776a0ff3a13000bf77610f44e583cdd74509f46bf7a08049b59d4126",
+  "renderKey": "ae6056ee6a65b534e27bfbc90431043e08cef3053b9096b712735473ec8bf4f5",
   "rahmen": [
     -60,
     -175,

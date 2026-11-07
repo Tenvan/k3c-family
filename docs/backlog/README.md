@@ -129,6 +129,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-725](B-725-rust-engine-machbarkeit.md) | SRV | Idee | mittel | eingeplant | RS1 | Simulationskern läuft schneller in Rust, Server bleibt Go (Machbarkeit und Umstiegspfad) |
 | [B-726](B-726-workbench-sim-per-task.md) | DEV | Schuld | mittel | offen | – | Workbench ruft Sim und Balancing als Task auf statt engine/sim zu importieren |
 | [B-731](B-731-zustand-ohne-json-roundtrip.md) | SRV | Idee | hoch | offen | – | Zustands-Snapshot ohne JSON-Roundtrip (stateOf) – 98 % der Raum-Tick-Zeit |
+| [B-732](B-732-weitere-materialien-stroh-lava-geisterweiss.md) | PAP | Schuld | niedrig | offen | – | Weitere Ersatz-Materialien (stroh, lava, geisterweiss, fell-grau) in der Stil-Datei |
 
 ## Archiv
 

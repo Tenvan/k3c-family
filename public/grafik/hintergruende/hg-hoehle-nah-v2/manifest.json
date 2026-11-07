@@ -1,10 +1,10 @@
 {
   "id": "hg-hoehle-nah-v2",
   "version": 1,
-  "specHash": "b2f1e40423a82c3a5272c3bbe9176f2696711be559d7c56a33d9d059daccf30c",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "specHash": "7179ba776d294fb88ca261afd02bf0c1ffbe9f738793bc0e4353b25550880464",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "1e263bbf8a391d0b9a30ec818bdb387ab719f6826e545b091b64a21f381e8c27",
+  "renderKey": "425017a5261f49f6ca30fbfd6a3365f9a8f84452528b13b091e8ad7b09d057b3",
   "rahmen": [
     0,
     -480,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "238406a74ee32a0e225a6e49cbb4d4ee036a6ed6d92cde6ed2a19f580626aa92"
+        "cb38f89b1512c2ef3a2631e07e2681d592ca20d61cca9c668c822b21dc5715a9"
       ]
     }
   },

@@ -1,6 +1,6 @@
 # RD2.2 · Stil: neue Materialien und Umstellung der Assets
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -56,5 +56,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-11-07, Claude.
+
+- AC-01 umgesetzt, geprüft (neuer Test `tools/paper/golden/materialien.test.ts`, 27 Fälle grün; `check:diff` grün): `schwarz`, `eisen`, `leinen`, `kupfer`, `kristall` und je Biom ein Material `biom-wald`, `biom-hoehle`, `biom-mine`, `biom-eisenstollen`, `biom-kristall` (Tripel licht/basis/schatten) in `stil.paper.json`. Das Biom-Material ist ein eigenes Material statt eines Tons, weil `kristall` sonst doppelt vorkäme.
+- AC-01 (B-712/AC-03) umgestellt, 499 Material-Zeilen in 46 Specs: rappe, albtraum, hoellenhund `maehne` → `schwarz`; Truppen (bauer, krieger, elite-krieger, bogenschuetze, elite-bogenschuetze) `stein` → `eisen`; Bauer-Kittel und Ärmel `haar` → `leinen`; icon-kupfer, ader-kupfer, erzbrocken `fell-fuchs` → `kupfer`; icon-eisen und ader-eisen `stein`(Schatten)/Rost → `eisen`/`kupfer`; icon-kristall, ader-kristall `koenigsblau` → `kristall`; alle 30 Hintergründe `smaragd`/`stein`/`koenigsblau` → `biom-<biom>` (Verhältnis zum Bild: sichtbar geprüft, Montage `.omc/artifacts/rd2-1/rd22.png`).
+- AC-04 umgesetzt: alle neun Gruppen neu gerendert, `fixtures.golden.json` neu (Stil-Hash ändert sich).
+- Verschoben: Stroh (Strohhut), Lava, Geisterweiß, `fell-grau` und Eisen/Kristall bei Gegnern und Bossen sind nicht in der Materialliste von B-712 → B-732. Der Optik-Eindruck der neuen Farbwerte ist Ralfs Sichtprüfung.
+- Abweichung: Hintergrund-Töne sind Materialien `biom-*`, nicht Töne einer Tabelle.

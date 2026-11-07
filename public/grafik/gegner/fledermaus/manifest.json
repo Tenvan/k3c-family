@@ -2,9 +2,9 @@
   "id": "fledermaus",
   "version": 1,
   "specHash": "595bee3de5bacc449a3cdad3c05169b913c2baebc4751d9c2c0acdbd46e48ce6",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "284cf2a65c8aa8f7bc90c993dd091d30cb609e4db94c51756e690fd99a428f85",
+  "renderKey": "86b2d4ef5fda045cbaac2d185d2cfc1e7ffb706e4310b6dfc81def5ac8181b2d",
   "rahmen": [
     -46,
     -84,

@@ -2,9 +2,9 @@
   "id": "hoehlentroll",
   "version": 1,
   "specHash": "ed90cf0df6e77ea08ab8bc5dacd91f8345d272f261a999707fe1dbd2ce7aa6c9",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "f6a7b8a849446bba0efd7e22d536449dbfbeb6fc7bf18c02b52ff8e481303b1a",
+  "renderKey": "b55bdae29eadf8835b452b320dae03fd9dcfbdda9d3d2044305d68131b096c27",
   "rahmen": [
     -75,
     -180,

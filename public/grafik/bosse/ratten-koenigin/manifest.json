@@ -2,9 +2,9 @@
   "id": "ratten-koenigin",
   "version": 1,
   "specHash": "07192bfa5d2803f4ad6779ac53a0622dd21100159db277d3d8c439a2a781242f",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "800ed97801053d8c08295460d01ab91df372441c1cab69906bdc978d119fb347",
+  "renderKey": "692c32a241322b44a98844cedb181f928ddf26e7d8b3ad3fef26fd577d1bce5b",
   "rahmen": [
     -68,
     -175,

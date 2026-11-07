@@ -2,9 +2,9 @@
   "id": "taverne",
   "version": 1,
   "specHash": "2812a588a7b3ebee4d133d96e777f8862d52fc5d6a4281cfb311fe5139cbafd4",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "b0b68d8b2174e7eb20fe1d819fa3e6b215fd4ad2a8f394249e35a987dbe1309c",
+  "renderKey": "0f4f69bf710a12ac9bfe88051b219d2ae5b26ad9f607fd7cb6be363d89fc1a4b",
   "rahmen": [
     -96,
     -128,

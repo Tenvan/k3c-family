@@ -2,9 +2,9 @@
   "id": "ruestkammer",
   "version": 1,
   "specHash": "22aeda49bfc58ac0e6b772ebadb7ac0d167a6747b033896f1ef1de0b806ae578",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "87b24101ec3882d92d337e8add8f23f9c85d5265b8124943899e8790a83d8241",
+  "renderKey": "cc90532140998952d0e3e9b0f2973afd4f99721825f71a1658b99469d257c22d",
   "rahmen": [
     -96,
     -128,

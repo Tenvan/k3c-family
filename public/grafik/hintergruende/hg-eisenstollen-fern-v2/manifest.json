@@ -1,10 +1,10 @@
 {
   "id": "hg-eisenstollen-fern-v2",
   "version": 1,
-  "specHash": "52b5fdf5b6a95efe5931317a1acb2e81b83b260d10852d63c302f9f042e35d05",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "specHash": "c095010c6d4947b68bdb210c87f1d3c15f9e2bbc4fac8c01fd7ee84f487bd740",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "ee257e0ff9e6e7d5be31803fa3c971a7b616061db1a08cdce8739ee284f8d388",
+  "renderKey": "36db8f290004f425646d026c53b75f87e92ab990105a4ef333a5aedc1cb6e723",
   "rahmen": [
     0,
     -480,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "0895f025ee5a43b25514e3b548341a3ae741d804b73c7541ddfa13c0dbd54f44"
+        "cb02fec67e0e4d7b7586016f0e51f9b4afeeb9504f6365dbcba0cbb1f0e805cb"
       ]
     }
   },

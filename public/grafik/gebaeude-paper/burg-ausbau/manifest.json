@@ -2,9 +2,9 @@
   "id": "burg-ausbau",
   "version": 1,
   "specHash": "47217d7a67ee7f9ae3d38e480e9f706ad0997f1a4940fe179970a5f0355bca08",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "faee7b7c3708a9648b899e54abe427f2856aff1db5c036cdb46a733edc3726cf",
+  "renderKey": "4dacf7576a48d1213b793d202bb0992e3934c41bf2b73b925e69d25a38bb2fd1",
   "rahmen": [
     -128,
     -288,

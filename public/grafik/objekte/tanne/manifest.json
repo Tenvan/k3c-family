@@ -2,9 +2,9 @@
   "id": "tanne",
   "version": 1,
   "specHash": "94674db9d2922a8385b38916ba3e290becb86cb4952b82b4d2b864bcadfed3c0",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "84a30c58a0ab4d2da05070d1db658ab753502cbe0114a367a8f2e9e63f7c00fa",
+  "renderKey": "ba24772d66a656abe0ec61c8c003f0e50f1c596291945d66a56cbc956aac83fd",
   "rahmen": [
     -44,
     -142,

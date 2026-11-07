@@ -1,10 +1,10 @@
 {
   "id": "icon-eisen",
   "version": 1,
-  "specHash": "26a81550c231e70aad55f7e3f529068e4ea2ead72445ac5a031f575ce688d498",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "specHash": "b47dcf486ca10aea472bb6558f47c3eb0e8b7927695d989673c47a01b17521fc",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "726d386b0c49b1a62b14756c82b07fef3306d6b3f2929b6ede7fdb6b943c9716",
+  "renderKey": "d94690c541f1aec57ad93c3e3ff82670f1ff632db3995f9be2845d4925bf115d",
   "rahmen": [
     -16,
     -32,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "401c171274dd8ab4a000a3b9137f3d384111f7c5e87cb5b6c27b8cce4849c2df"
+        "46ca79a5f5ca0252bd99bb0c7bfbe6cd29f689abfb99568bde839cc729c5e2c5"
       ]
     }
   },

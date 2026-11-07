@@ -2,9 +2,9 @@
   "id": "wurzel",
   "version": 1,
   "specHash": "07e1801ebcdee6d69d09108ed9285b6c5ccb0c7a8c62188dea085c91e0186e26",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "aeb4e73a3159450330469b394db2331aa3900c8af3d4a935253154a28410b7a1",
+  "renderKey": "017c5f1c22fea6e6169eb142a02709ca20866b400f668e8d93a7ab158aa883e9",
   "rahmen": [
     -32,
     -88,

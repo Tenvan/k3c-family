@@ -2,9 +2,9 @@
   "id": "felsen-c",
   "version": 1,
   "specHash": "0fc58801465ce6bb0bdf616063e45e07a958bffcad2a0790ea69ce59fa2de6c1",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "77337035cb49284cae0e2b2df2d15ab83c684765bb1fbea0e959827345040bc4",
+  "renderKey": "8e0e8f9c5ea8c94b06b5d40900ecd827bbb7f128d379fc2e4c481aaf6ac11ca7",
   "rahmen": [
     -32,
     -24,

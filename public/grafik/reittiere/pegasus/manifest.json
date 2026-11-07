@@ -2,9 +2,9 @@
   "id": "pegasus",
   "version": 1,
   "specHash": "994467bb52b5cfc929d29d709aa308f821335074c3b4ab1f0168fbe714b7e798",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "c5c21e53919fc4c0ee8c6b2e46b1d2fe0abb5b37d74d029b3d51c49cd628bc8d",
+  "renderKey": "079353dd5dd92fa7a3d66dd94ea8197af225e7a248fedade4bb25003c0b67440",
   "rahmen": [
     -78,
     -122,

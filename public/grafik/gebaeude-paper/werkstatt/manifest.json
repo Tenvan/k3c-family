@@ -2,9 +2,9 @@
   "id": "werkstatt",
   "version": 1,
   "specHash": "f7d31d35ecf152bd5f21b1e8ca1f65bcce19d50cfe5d707379949b893d89685b",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "0360953251dbc6f304710dbe1107fc416e6ef736f4a469a4e3a8719d69d3c647",
+  "renderKey": "cda63c26d3abe660595e4300162dbc633165be24b9cf0d8843ccf289f8399a58",
   "rahmen": [
     -96,
     -128,

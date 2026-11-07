@@ -2,9 +2,9 @@
   "id": "schild-spitzhacke",
   "version": 1,
   "specHash": "73352f06063f9bfd73abf8c8607c5d962140d998221b7607cb41500671695e1b",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "100b9940932f4104262a06195ad76cf78789da77ea7e72a51d7e7570a6292d99",
+  "renderKey": "d2054c7ac8578ddf1c1763150efd13be2d2dfa3b65242de74ec9dca7c9279f9c",
   "rahmen": [
     -17,
     -46,

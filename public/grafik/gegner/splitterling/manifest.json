@@ -2,9 +2,9 @@
   "id": "splitterling",
   "version": 1,
   "specHash": "2e5f08391c2f755a7648ef0d3e0222dadf311e86cfc17da92b1824ccede846f4",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "49b789634c755ad4c7e1afcd7ac6a7619ed79fcdf72a3ba7a0f4d121258ba606",
+  "renderKey": "ca8df7e6ad520f5e824ca5e4ad10a389fce5d8e52ea93d7859a05e1ab6420e13",
   "rahmen": [
     -16,
     -36,

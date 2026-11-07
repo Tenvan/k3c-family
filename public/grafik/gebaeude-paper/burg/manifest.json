@@ -2,9 +2,9 @@
   "id": "burg",
   "version": 1,
   "specHash": "544d3e8c170196561f888b62e0946c0953ecadaec522fcdd1d4b218409abf755",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "d36b530e223256227db5bd499b1d0203ea750c15ee8cd4ba4af627df825dd46e",
+  "renderKey": "5dac8096c4aa18cba32890fb3a8054c79b5548b669ca8b682d31f34d588eb5f5",
   "rahmen": [
     -128,
     -288,

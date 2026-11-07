@@ -2,9 +2,9 @@
   "id": "schimmel",
   "version": 1,
   "specHash": "2863efca25b3ef731d7135bd9d7064493c6add325c730862cc1d1bb02f96bf34",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "6b31b647e2c2a74bd0c93d79ac7d02d520dd8a100a440874fb5804a21de74fad",
+  "renderKey": "32e4e879a38134d827a8e7eb68f4bc4c2b21c476a1e2e529870a45ffb22b1d9b",
   "rahmen": [
     -78,
     -122,

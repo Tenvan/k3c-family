@@ -1,10 +1,10 @@
 {
   "id": "hg-mine-nah-v1",
   "version": 1,
-  "specHash": "8211fe8888546183253ec20a952b39c883dd6b553ad0fadb31e4df4fb6d26195",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "specHash": "1e5e20f2f586bff45d532422bd77a268bef9a74f3082faefea66988e90708590",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "a92965bfea5db95e5b8418021bc7e9e1eef457d14daa4ee8ec4c76551a38d3b0",
+  "renderKey": "1828a2b42da5695827051a9be11670c73b92a3072e461d4ec2e814fdc7c48be0",
   "rahmen": [
     0,
     -480,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "4b4ca812403081a999abf00c3b3b7e5e6d5aff77477401c9925657ccbd8cf2bb"
+        "9b50489faa4a7ef5ed81db7093008048c74e98bb14138a31d8f10df591b4ac53"
       ]
     }
   },

@@ -2,9 +2,9 @@
   "id": "portal",
   "version": 1,
   "specHash": "e53b387378546b9521daf20629caab1d8419a40084635b6acaaafecce84210cf",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "7ccb1fb311cd4b1e16f171823ddc21320526417006b4b9159fbb86e0062dacd2",
+  "renderKey": "bbdb41808a6bb21d6aaba565fbef718a500f04b8fa14bc170d9704b187350fc9",
   "rahmen": [
     -38,
     -96,

@@ -2,9 +2,9 @@
   "id": "grubengeist",
   "version": 1,
   "specHash": "954e29a2e3942f7a587c224005bd92ea21e5caf1fe39d67930b4e3c3c8da32ee",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "311ac0707b6a848149772b0a0d8107016f27564d9dc5a84a1acee034ef109ee9",
+  "renderKey": "6663250f8768da9c4d8c52a366fd9d52a4dfad4e2035eb564440be5f25ed4873",
   "rahmen": [
     -40,
     -102,

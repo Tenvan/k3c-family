@@ -2,9 +2,9 @@
   "id": "rattenschwarm",
   "version": 1,
   "specHash": "f353c04942685288518d6f6fc4144c3a63fb588b66dcc48cf0f42a95c1c941ef",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "73744d4faf6d4a561bd609af8f4d7c962caa677eb6129ad7ee44dfeb7aa1f01c",
+  "renderKey": "1ca2e60052d150a66f89dd593f5009f99c85a746830ee317d601499d22ac79e6",
   "rahmen": [
     -50,
     -26,

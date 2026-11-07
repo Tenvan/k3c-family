@@ -2,9 +2,9 @@
   "id": "kristallwaechter",
   "version": 1,
   "specHash": "7b9ea3b946d1e6c8e6bee2618182c8b4a827cb5fc193ee9d0feed0c313db86c5",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "fb3598d7de064c0b53d092dc041f0c6ff4f54d8067bd1d4be8b6b103824915ca",
+  "renderKey": "62aa5a5d5cb2034cb402e70eb5cc45daf2663a5b4c9cd9b7bdd966e700a5fd7a",
   "rahmen": [
     -65,
     -180,

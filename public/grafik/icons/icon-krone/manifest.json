@@ -2,9 +2,9 @@
   "id": "icon-krone",
   "version": 1,
   "specHash": "f7349ac690ec64feead7ae8494c82773c1538aa0ec60b90bf044a992acbbe02c",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "64af56bc01d23d49e6e332f4ca94edc8c7ab2cb1f6d0f439309ff6e1da3dde15",
+  "renderKey": "7054c65c1499359cadebb56842f4b11bc490c61efa0de3eb45129c674206d926",
   "rahmen": [
     -16,
     -32,

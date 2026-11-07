@@ -2,9 +2,9 @@
   "id": "setzling",
   "version": 1,
   "specHash": "ff01df1826d39c0856428dd68aa56222b6fd8e9621847862654b13ee308ea806",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "1e90608cb6a1a25d09bb8198a96af4c65f6e86c81cba6ee25a4db60a3414635e",
+  "renderKey": "3dc6ebd5ea4acca7f5c5831df30c23ab15558be41fd9701b1d4f7aa74fb3a02d",
   "rahmen": [
     -20,
     -32,

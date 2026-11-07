@@ -2,9 +2,9 @@
   "id": "mauer",
   "version": 1,
   "specHash": "4a83b5b16e5284351002c0e4ddff0b95c24abaa5368b5e4cdfd9bc7b3e006c40",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "10242e47289ccde9e45c5924e6d74e551ca1c8deb0092cdf4c0095af202c8223",
+  "renderKey": "82c9f7770bbfe1215c1deaeaecb97492a73edac6264704a79eee5df821ebc5b2",
   "rahmen": [
     -16,
     -160,

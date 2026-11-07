@@ -2,9 +2,9 @@
   "id": "wolf",
   "version": 1,
   "specHash": "fe7d5c478cfbf13554d432dcad9bdeb931d569d4b69962beadaff927ad2a87f3",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "232cad8f756698b5760524b4a42917d136a711c2d7765e809e80012a874cf5cd",
+  "renderKey": "b31aa22bca08e3f55f63877cfa01004e0e7af789db520b8c57bd8f06c77bc164",
   "rahmen": [
     -78,
     -128,

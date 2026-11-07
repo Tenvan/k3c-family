@@ -2,9 +2,9 @@
   "id": "kaserne",
   "version": 1,
   "specHash": "2db46fd0ee5870420c95a2ed1bf0200cc7545db611a0e3141ac7dfc91c63606e",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "57f6a84be6a9037b77d676bbf4924319d7b314acbc98125085e153eaefe384ec",
+  "renderKey": "0cb1aa68e1e7318e50aeca8296db7e5c0a8c302ff457b13106f47b164fd7c200",
   "rahmen": [
     -96,
     -128,

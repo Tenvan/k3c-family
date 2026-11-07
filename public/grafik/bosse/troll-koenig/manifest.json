@@ -2,9 +2,9 @@
   "id": "troll-koenig",
   "version": 1,
   "specHash": "ec7b342f1ceb34296e7f9fa9406f9cf318c206a8a9dcc7c99369c86c4d40a451",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "00668894569bfe44004381bad46228a4be58a6ed8d655d1ee32ff37c233cf1e1",
+  "renderKey": "d7e05b0d13bd8d2cc81cee29d845f45b5f34816b370195988b96ad8ab79b9ff1",
   "rahmen": [
     -60,
     -175,

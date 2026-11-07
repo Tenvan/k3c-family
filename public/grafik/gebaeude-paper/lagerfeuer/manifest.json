@@ -2,9 +2,9 @@
   "id": "lagerfeuer",
   "version": 1,
   "specHash": "b13c6661c3be7390453542db301796eb56e82b7652ddb0b5bf1b365f6b7ce1dd",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "f67e4e40aacd11dae8e6dc764a271241d90b10a8f7ea93166e9fb7ee8ff94357",
+  "renderKey": "d9bced3de452a56f7d5e41ac4c6740ab630b3b5729517ff3d21a3902f8b42d8f",
   "rahmen": [
     -128,
     -160,

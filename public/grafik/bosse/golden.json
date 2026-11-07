@@ -1,6 +1,6 @@
 {
   "goblin-anfuehrer": {
-    "renderKey": "fe24c34ee9b29a25bd0996f4f3a88584df94cc9eee346eba61413b4d964dd958",
+    "renderKey": "425a598620d928217cc9b7dd4ca8c7177f11f479a84e77bd784d05112124928f",
     "dateien": {
       "angriff.png": "d68172421cafad49b27448d669ceb6aa63f4f1aabf768c59b3db7a8231f8037d",
       "idle.png": "70dd3ea3c2ff0db6f6219dbf45191edeef023f6aeff33f1863816a2d90481133",
@@ -8,14 +8,14 @@
     }
   },
   "kristallherz-waechter": {
-    "renderKey": "a8aac552e1e09a1001b3d779035179e54f371e099ae450ccdb09b5e024be3a50",
+    "renderKey": "cb74f098e03e8538144693acd651721de6e48e0707277f65b016b108cd8b2bfe",
     "dateien": {
       "angriff.png": "ad5ae4684e2ff642639d30cf4aa225b0441db649e105536ff333e6a75d9e4a61",
       "idle.png": "40d65063035fc9a5ffa22d88388e89399f6de17ff9bb1faa4eadb3cdbbf1dec0"
     }
   },
   "lava-golem": {
-    "renderKey": "3e24d0f84344d2981355119e3445ff9071ed3d9f616be124d35a40743d10134c",
+    "renderKey": "9ece10818875d5aadc049421e99f92ef0a991fb63db45854fc4cd2b2ff6698d4",
     "dateien": {
       "angriff.png": "9563f8ddb15b6dfad22d62a5e7808425327752f3d02ab81941f8bc6997b4f980",
       "idle.png": "c0d458ee6de6bf7a2c70e3f73bfdf46a8ef3be95762fc24709f011d48be835a1",
@@ -23,7 +23,7 @@
     }
   },
   "ratten-koenigin": {
-    "renderKey": "800ed97801053d8c08295460d01ab91df372441c1cab69906bdc978d119fb347",
+    "renderKey": "692c32a241322b44a98844cedb181f928ddf26e7d8b3ad3fef26fd577d1bce5b",
     "dateien": {
       "angriff.png": "8fc3774e838b7126a994642daf66e62433c7c9400c85738631596ef2a72d1fda",
       "idle.png": "4cd8a59d0c25f2079a23d07a17c625959f48b97b7f4246dd251fcf10c8af95d4",
@@ -31,7 +31,7 @@
     }
   },
   "splitter-titan": {
-    "renderKey": "81613021201646a4fe3496dd7a85d6b01d4b96797d4476a4e57d5f7d853d026a",
+    "renderKey": "6eca4b9e15abea3702f481f42d85701dda6bc5d312101db536e18674b9ff2613",
     "dateien": {
       "angriff.png": "14a45624b9b117c424ccff631c8b91e620398d9441d9b6ffda5c0e54e81a8d83",
       "idle.png": "249f42c93e2edc5ab234d308f448e4e92d42b565ee04238e21c74b0044cdd797",
@@ -39,7 +39,7 @@
     }
   },
   "troll-koenig": {
-    "renderKey": "00668894569bfe44004381bad46228a4be58a6ed8d655d1ee32ff37c233cf1e1",
+    "renderKey": "d7e05b0d13bd8d2cc81cee29d845f45b5f34816b370195988b96ad8ab79b9ff1",
     "dateien": {
       "angriff.png": "3ba396c328c4bd9405180cd521b48d907ba38b69ce0af6acec28e525c09e2741",
       "idle.png": "4889bdd065410355027e9f1794ae88b80c30b12df6372d66fca0968cbea100c9",

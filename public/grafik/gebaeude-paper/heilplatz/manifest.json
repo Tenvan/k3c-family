@@ -2,9 +2,9 @@
   "id": "heilplatz",
   "version": 1,
   "specHash": "b45bec9a0a4b0412df7cb078764142ffa0ad6886acf06b59c203d68d977de3dd",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "46e2f5d1edd66b7691011bb29f4360d786103bb36d43913daf0c3563b05c71ca",
+  "renderKey": "9ace66829b450ac3865046bc8957f65af1aae09e0e7cf543262d6139049ae1cf",
   "rahmen": [
     -96,
     -128,

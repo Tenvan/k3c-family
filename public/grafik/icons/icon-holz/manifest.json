@@ -2,9 +2,9 @@
   "id": "icon-holz",
   "version": 1,
   "specHash": "8ba9c4ad241be7288fc8a17952d0744a1f34e10ac20cb13ca2fc9a39e244b57c",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "0009fd53ba6c8c7067052b205b92d44d9eb38033f25de6284a800d29cfad831b",
+  "renderKey": "2f69f93ca973e3dca958c3bbfefa24a11ac2bdcb87466574d48b96d94bb7ca55",
   "rahmen": [
     -16,
     -32,

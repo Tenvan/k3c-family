@@ -2,9 +2,9 @@
   "id": "turm",
   "version": 1,
   "specHash": "7baf2be4a0e031b5121d5935b507012602829cdf90adc6ac3f11f1e2ed8b1744",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "c27a1ab99e1fa4a41ae47454cae66f17d90fdad50e4a8e8689579025db6959b0",
+  "renderKey": "c7506176ebb90ac85c6f3cbe10cd1c0c48d61736b8322d2ad1457a2110d5bdc1",
   "rahmen": [
     -48,
     -256,

@@ -2,9 +2,9 @@
   "id": "goblin-anfuehrer",
   "version": 1,
   "specHash": "c3151906a5b120e995abdf6bb0a682cf36101abe03bb8f5406b122ce36345b5c",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "fe24c34ee9b29a25bd0996f4f3a88584df94cc9eee346eba61413b4d964dd958",
+  "renderKey": "425a598620d928217cc9b7dd4ca8c7177f11f479a84e77bd784d05112124928f",
   "rahmen": [
     -60,
     -175,

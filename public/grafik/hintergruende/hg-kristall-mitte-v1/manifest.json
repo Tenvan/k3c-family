@@ -1,10 +1,10 @@
 {
   "id": "hg-kristall-mitte-v1",
   "version": 1,
-  "specHash": "19f2c5911e26a92d8f6578875d1704f1b00deaaa284e934b8c93367d5924b774",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "specHash": "8f2b3d9b6834ee257915e3f324fc46c4b2c422d212369d08e6e07f09dff60231",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "a294dbf2d6479a4f76bce3f20657d3772fca3d32e14bf2447cf53f19248a37bb",
+  "renderKey": "9387d2aacf90946b58220a7e10790b255023f15f27c17960c030f94d18aebece",
   "rahmen": [
     0,
     -480,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "9114ffcde4cc5c0c21ab6b17c9c64594a68f247fa10732119444c6f3c7125b68"
+        "f98a249358a950c6d83293af16f92d588cf0287c19c540d95a6ed116fd831838"
       ]
     }
   },

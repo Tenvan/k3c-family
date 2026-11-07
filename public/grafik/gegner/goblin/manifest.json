@@ -2,9 +2,9 @@
   "id": "goblin",
   "version": 1,
   "specHash": "86af4e10a985d4069ee8b0b469adeaa39021d7a2047e6da0fb88f85ed092473b",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "aad90c1babb47f924b9ae757452b878f50a474407a9e4dd0ddafa32b16bb3f2f",
+  "renderKey": "f5f3251209f2eca437dda3d23db16dd664be6ac3b1a7ced3b73bd8e083819c38",
   "rahmen": [
     -60,
     -175,

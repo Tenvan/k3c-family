@@ -2,9 +2,9 @@
   "id": "alphawolf",
   "version": 1,
   "specHash": "5b4d91dc6ac186e030c57f151f71d014931e8531556687b2b7d05a5a56f6d607",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "14d396a4b5681d1a871deed53f721e9a89e06be9bebca157540c090c3feb1f19",
+  "renderKey": "2864e801a8ad5543df8d7177d8ee8386777251a6a1c8a67585fa19c224998b51",
   "rahmen": [
     -80,
     -118,

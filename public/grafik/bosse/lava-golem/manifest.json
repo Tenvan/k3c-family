@@ -2,9 +2,9 @@
   "id": "lava-golem",
   "version": 1,
   "specHash": "ece972190078c3ba4d139189652bebed812126256ed92a1552956225072d11dc",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "3e24d0f84344d2981355119e3445ff9071ed3d9f616be124d35a40743d10134c",
+  "renderKey": "9ece10818875d5aadc049421e99f92ef0a991fb63db45854fc4cd2b2ff6698d4",
   "rahmen": [
     -60,
     -175,

@@ -2,9 +2,9 @@
   "id": "hirsch",
   "version": 1,
   "specHash": "f4b43ce7197e0b7d9c030cda363cec4a3a08734dd85356bbbd4f27007a9a8887",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "9b6d7757251e4107272df439f0d4543f3204ff189a843b9f152db8bfc358adfa",
+  "renderKey": "efaa603ee72f6e5b4eea94030e542407036f5bd85f267eb98604ce105f0a958c",
   "rahmen": [
     -78,
     -128,

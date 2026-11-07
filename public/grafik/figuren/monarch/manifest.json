@@ -2,9 +2,9 @@
   "id": "monarch",
   "version": 1,
   "specHash": "303e66de182a5fa14cf8310470124714610a0fae830c5e130b1c04aa72118e7e",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "cab9712c261b8fee3d78ed0d4cf43f55213e953a0d5bbb22ce67be0cb3237759",
+  "renderKey": "92e82972d05ccf90829af587f6b7cb11a0ee99279eedf91358690b026fe52aa2",
   "rahmen": [
     -60,
     -145,

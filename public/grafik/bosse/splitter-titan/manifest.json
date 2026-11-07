@@ -2,9 +2,9 @@
   "id": "splitter-titan",
   "version": 1,
   "specHash": "86c0bf9f62345648419ca137bba27ce57312c5dba32f4829725d67b04783db08",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "81613021201646a4fe3496dd7a85d6b01d4b96797d4476a4e57d5f7d853d026a",
+  "renderKey": "6eca4b9e15abea3702f481f42d85701dda6bc5d312101db536e18674b9ff2613",
   "rahmen": [
     -60,
     -175,

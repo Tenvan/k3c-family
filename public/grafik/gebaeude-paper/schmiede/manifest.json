@@ -2,9 +2,9 @@
   "id": "schmiede",
   "version": 1,
   "specHash": "9bbe48e0b146171723e91619fcd66cd7fd628bd619da274da3a84b5849370341",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "7b409dbcf1b3cb8af11c288a509acc7d3af221841ec98d42d766c143c02a5ade",
+  "renderKey": "b677f051aeb72b4f24819428ec0bf6b885bdfde10de9926b2972855d4e5130a4",
   "rahmen": [
     -96,
     -128,

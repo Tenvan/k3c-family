@@ -2,9 +2,9 @@
   "id": "muenze",
   "version": 1,
   "specHash": "c5b4d4eea28c60925db038bd525aebcb2b7debedbe21503ce800efd751615d6a",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "ea1fb4705e30c17f5ea7eb5e1f56b75da43f9df5f013211d493569f2121b9324",
+  "renderKey": "4fd8c98eac6a137a2357a29172e4181cafe83c3533b3a29a52a41ee0310102e1",
   "rahmen": [
     -11,
     -20,

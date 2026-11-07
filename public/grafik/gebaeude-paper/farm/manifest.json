@@ -2,9 +2,9 @@
   "id": "farm",
   "version": 1,
   "specHash": "dd87f260aad397229ccf3543ce15acd5fcc4fcc80cf06606dc6d0da5aceca224",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "096acf01d16d3f358177e240aa0f7b228f5cd3592797f945c206c0acd17cdced",
+  "renderKey": "af92b21543d76a21ac61cd8bcd7e203eec2b6686a2fc409e4faa8528ac1c4264",
   "rahmen": [
     -64,
     -96,

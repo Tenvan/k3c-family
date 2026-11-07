@@ -2,9 +2,9 @@
   "id": "stern",
   "version": 1,
   "specHash": "ff9d68ffa18970f48e11e7f6b49825c3eb00321fb1a48308598ef7d5a9fcc342",
-  "stilHash": "2b919c3a7525c022d6ee5f561e9278b181105394aacc590334e7d49226a55b81",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "7cbf900c12dec012d3c279eae3b8f98631159b01a823585f063b1c525ec0bad5",
+  "renderKey": "f8b8e0a63c51e2c96c1390167a6c9a0e67ec6bcb90b7002064df1af6998823a6",
   "rahmen": [
     -16,
     -32,
