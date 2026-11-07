@@ -1,10 +1,10 @@
 {
   "id": "hg-kristall-fern-v1",
   "version": 1,
-  "specHash": "d120c48df3b0a0a0f95f0eae551479916c3663384a489217c933fdbaa582bbe5",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "specHash": "8680559d329f6aef7b18baf1ace314737979c063673e6042f2a3ae1ceb38126d",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "03143ec704518358c20722d74cb5adfca2ec35ac560c62eccb21e412c0ab02ab",
+  "renderKey": "8ea6715e02fa948915ccd14e03f6c381795d4a7727491266c00615424a72be42",
   "rahmen": [
     0,
     -480,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "aeac45832d48d5a8c6d5873f2d47c61465bdf0da0ee4cb485fceb6133c5288c4"
+        "06c5420f2ae33eab0817e0f2b634180652009a774a9da7749ffe4f1245f9d0a5"
       ]
     }
   },

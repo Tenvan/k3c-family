@@ -11,14 +11,14 @@
         {
           "art": "flaeche",
           "form": "M-9.5 -4L-12.5 -16L-9 -20L-5.5 -16L-2.5 -4Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-9.5 -4L-12.5 -16L-9 -20L-7.5 -4Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "basis"
         },
         {
@@ -30,14 +30,14 @@
         {
           "art": "flaeche",
           "form": "M3 -4L6 -14.5L9 -18L12 -14.5L9 -4Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M3 -4L6 -14.5L9 -18L7.5 -4Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "basis"
         },
         {
@@ -49,14 +49,14 @@
         {
           "art": "flaeche",
           "form": "M-4.5 -4L-4.5 -22L0 -28L4.5 -22L4.5 -4Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-4.5 -4L-4.5 -22L0 -28L0 -4Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "basis"
         },
         {

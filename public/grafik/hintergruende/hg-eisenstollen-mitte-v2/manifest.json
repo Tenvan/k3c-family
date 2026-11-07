@@ -1,10 +1,10 @@
 {
   "id": "hg-eisenstollen-mitte-v2",
   "version": 1,
-  "specHash": "58d998e6fe46f948cffbf14c5041f9cc6b1dfaf3f87a41c319ad575a1006eff8",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "specHash": "112ec570dd5d9a60169dc0fc4e4e4e112ed601f911d28735ec211bf6efe71dee",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "1575c08f53860ec41aa786ae917769178777aaf41b3d50196b2cf6267d96af10",
+  "renderKey": "a3848be96c498a295e473436b5a47f15c9546506a8be0b3d76f1aeecee2265ae",
   "rahmen": [
     0,
     -480,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "99d5bd6190e226df35ca199c6dab74b046e442e122cedaebe7f1a1b963c9b49e"
+        "aaa6f5542f9ff37da2d5b12958c9470120be5babcb01dd7fcfbc33488f8ead38"
       ]
     }
   },

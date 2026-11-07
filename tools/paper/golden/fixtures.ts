@@ -9,7 +9,7 @@ export const SPECS = join(import.meta.dirname, '../fixtures/specs');
 export const GOLDEN_DATEI = join(import.meta.dirname, 'fixtures.golden.json');
 
 /** Fixtures mit Golden; wächst mit den Rigs (RD1.2 monarch, RD1.3 pferd). */
-export const FIXTURES = ['mauer', 'monarch', 'pferd'];
+export const FIXTURES = ['mauer', 'monarch', 'pferd', 'langarm'];
 
 export function rendereFixture(id: string): Asset {
   const pfad = join(SPECS, `${id}.paper.json`);

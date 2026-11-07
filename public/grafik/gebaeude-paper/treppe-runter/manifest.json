@@ -2,9 +2,9 @@
   "id": "treppe-runter",
   "version": 1,
   "specHash": "c977d1836df9d615e3a3980dc8a5933ddcdb0ec2ee2b2ccb3a8bf6ec4bc0b0fe",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "111f9518b93289d8704f1e873e67a0100355005f9b130974b9b0da81d7ea3f6e",
+  "renderKey": "8af2216bb52d55e094b79062aa578b78b54959b8a43706408065b6978639fd4f",
   "rahmen": [
     -64,
     -96,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "7ab4aa90e448b49d616f64ff36a6128dce312188e88c34b65522e1db12841171"
+        "97abe63d37013b2737f87054c4f9ffb8e9ddb948e32848d622fa6a065a5434d8"
       ]
     }
   },

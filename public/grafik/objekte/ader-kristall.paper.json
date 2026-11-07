@@ -43,14 +43,14 @@
         {
           "art": "flaeche",
           "form": "M-12 -30L-15 -43.5L-11 -48L-7 -43.5L-4 -30Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-12 -30L-15 -43.5L-11 -48L-9.5 -30Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "basis"
         },
         {
@@ -62,14 +62,14 @@
         {
           "art": "flaeche",
           "form": "M-0.5 -32L0.5 -50L5 -56L9.5 -50L8.5 -32Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-0.5 -32L0.5 -50L5 -56L4.5 -32Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "basis"
         },
         {
@@ -81,14 +81,14 @@
         {
           "art": "flaeche",
           "form": "M12.5 -28L16.5 -38.5L20 -42L23.5 -38.5L19.5 -28Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M12.5 -28L16.5 -38.5L20 -42L18 -28Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "basis"
         },
         {
@@ -100,14 +100,14 @@
         {
           "art": "flaeche",
           "form": "M-17 -10L-19 -19L-16 -22L-13 -19L-11 -10Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-17 -10L-19 -19L-16 -22L-15 -10Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "basis"
         },
         {
@@ -119,14 +119,14 @@
         {
           "art": "flaeche",
           "form": "M11 -8L13 -15.5L16 -18L19 -15.5L17 -8Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M11 -8L13 -15.5L16 -18L15 -8Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "basis"
         },
         {

@@ -11,19 +11,19 @@
         {
           "art": "flaeche",
           "form": "M-12 -6C-14 -12 -10 -20 -2 -22C6 -24 12 -18 12 -12C12 -6 6 -3 0 -4C-4 -4 -10 -3 -12 -6Z",
-          "material": "fell-fuchs"
+          "material": "kupfer"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-12 -6C-14 -12 -10 -20 -2 -22C-6 -16 -6 -10 -2 -4C-6 -4 -10 -3 -12 -6Z",
-          "material": "fell-fuchs",
+          "material": "kupfer",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "form": "M8 -15C8 -16.93 5.76 -18.5 3 -18.5C0.24 -18.5 -2 -16.93 -2 -15C-2 -13.07 0.24 -11.5 3 -11.5C5.76 -11.5 8 -13.07 8 -15Z",
-          "material": "fell-fuchs",
+          "material": "kupfer",
           "ton": "licht"
         },
         {

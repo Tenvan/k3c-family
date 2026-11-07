@@ -57,6 +57,6 @@ export function frameRendern(spec: Spec, w: FrameWahl, stil: Stil, specPfad: str
   if (w.ohne?.length) spec = { ...spec, teile: spec.teile.map((t) => (w.ohne!.includes(t.id) ? { ...t, lagen: [] } : t)) };
   const a: Ausgabe = { schluessel: w.animation, animation: w.animation, stufe: w.stufe, ...(w.variante ? { variante: w.variante } : {}) };
   const bild = bildVon(spec, a, { stil, specPfad }), f = bild.frames[w.frame];
-  writeFileSync(out, rastere(streifenSvg([f.svg], bild.groesse, defs(stil, spec.id))).png);
+  writeFileSync(out, rastere(streifenSvg([f.svg], bild.groesse, defs(stil, spec.id, bild.groesse.frameH / bild.groesse.rahmen[3]))).png);
   return teilBoxen(f.geometrie, bild.groesse);
 }

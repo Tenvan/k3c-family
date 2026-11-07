@@ -35,7 +35,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
 | CU1 | PAP, CLI, DEV, INF | PAP | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | – | bereit | `geplant/CU1-alte-grafik-aufraeumen/` |
-| RD2 | PAP | PAP | Renderer und Stil nach der Sichtprüfung: Schatten, Materialien, Sichtbarkeit, Rig-Proportionen | – | Entwurf | `geplant/RD2-renderer-stil-nachschaerfen/` |
 | MG9 | PAP | PAP | Papierschnitt nachbessern: Monarch, Reittiere, Truppen, Gegner | – | Entwurf | `geplant/MG9-papier-figuren-nachbessern/` |
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | Entwurf | `geplant/MG10-papier-bosse-neu/` |
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
@@ -300,3 +299,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | MG7 | Papierschnitt-Migration: Hintergründe je Biom | `erledigt/MG7-papier-hintergruende/` |
 | MG8 | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | `erledigt/MG8-papier-natur-objekte-icons/` |
 | WB2 | Review und Katalog: feste Schieber, getrennte Scrollbereiche, Lade-Anzeige | `erledigt/WB2-assets-review-katalog-ruhig/` |
+| RD2 | Renderer und Stil nach der Sichtprüfung: Schatten, Materialien, Sichtbarkeit, Rig-Proportionen | `erledigt/RD2-renderer-stil-nachschaerfen/` |

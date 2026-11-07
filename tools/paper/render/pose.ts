@@ -22,6 +22,16 @@ export function keyframeWinkel(kf: Keyframes | undefined, p: number): Record<str
   }));
 }
 
+/** Ausgeblendete Teile bei Phase p: je Teil gilt der letzte Keyframe mit `sichtbar`-Eintrag und t ≤ p (zyklisch), ohne Eintrag sichtbar. */
+export function keyframeAusgeblendet(kf: Keyframes | undefined, p: number): Set<string> {
+  const k = [...(kf ?? [])].sort((a, b) => a.t - b.t), aus = new Set<string>();
+  for (const id of new Set(k.flatMap((f) => Object.keys(f.sichtbar ?? {})))) {
+    const mit = k.filter((f) => f.sichtbar && Object.hasOwn(f.sichtbar, id)), davor = mit.filter((f) => f.t <= p);
+    if ((davor.length ? davor[davor.length - 1] : mit[mit.length - 1]).sichtbar![id] === false) aus.add(id);
+  }
+  return aus;
+}
+
 /** Animation der Spec oder Ablehnung `animation-unbekannt`. */
 export function animationVon(spec: Spec, name: string): Animation {
   const alle = animationen(spec);

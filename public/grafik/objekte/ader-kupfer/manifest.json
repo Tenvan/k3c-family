@@ -1,10 +1,10 @@
 {
   "id": "ader-kupfer",
   "version": 1,
-  "specHash": "2cbb8e93ce2009ebed57550ebc7eb46a21e7f0139f74cbd5dbddfaef93168c5b",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "specHash": "df8780d71de4d7e55a45971bac9e20b336e6fa38d94dce5b7d6dc42b4c05ca3e",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "85e7ea8bb74c744d2add54fe2d4230a67222e3a3dc82548046f6f810a62ae82e",
+  "renderKey": "168c82b21b52332be060df75b656b71b34e8631d93b928dff93753a2e17b4a99",
   "rahmen": [
     -36,
     -64,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "3fa840e77bad0efe04c2fe81bba67635b47f8a36a9990e49471c012bbf787ef1"
+        "55b0192eaca9238a166e792db8a67622f1116c04352929a59daa1e210022015e"
       ]
     }
   },

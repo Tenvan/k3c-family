@@ -2,11 +2,41 @@
 import { describe, expect, it } from 'vitest';
 import type { Spec } from '../schema/types';
 import { Abgelehnt, Aufruf } from './fehler';
-import { keyframeWinkel, posen } from './pose';
+import { keyframeAusgeblendet, keyframeWinkel, posen } from './pose';
+import { ladeStil } from './stil';
+import { einfachesBild } from './bild';
 
 const spec = (rig: Spec['rig'], animationen: Spec['animationen']): Spec => ({
   id: 'k', rig, version: 1, beschreibung: '', animationen, ausgabe: { hoehe_px: 32, rahmen: [0, 0, 1, 1] },
   teile: [{ id: 'k', pivot: [0, 0], lagen: [] }],
+});
+
+describe('sichtbar (B-714)', () => {
+  const kf = [{ t: 0, winkel: {}, sichtbar: { p: true } }, { t: 0.7, winkel: {}, sichtbar: { p: false } }];
+
+  it('keyframeAusgeblendet: letzter Eintrag mit t ≤ Phase gilt, vor dem ersten der letzte (zyklisch)', () => {
+    expect([...keyframeAusgeblendet(kf, 0)]).toEqual([]);
+    expect([...keyframeAusgeblendet(kf, 0.69)]).toEqual([]);
+    expect([...keyframeAusgeblendet(kf, 0.7)]).toEqual(['p']);
+    expect([...keyframeAusgeblendet(kf, 0.99)]).toEqual(['p']);
+    expect([...keyframeAusgeblendet([{ t: 0.5, winkel: {}, sichtbar: { p: true } }, { t: 0.8, winkel: {}, sichtbar: { p: false } }], 0.2)]).toEqual(['p']);
+    expect(keyframeAusgeblendet(undefined, 0.5).size).toBe(0);
+    expect(keyframeAusgeblendet([{ t: 0, winkel: { p: 1 } }], 0.5).size).toBe(0);
+  });
+
+  it('Teil mit sichtbar: false fehlt im Frame, mit true steht es darin (requisite)', () => {
+    const teile: Spec['teile'] = [
+      { id: 'a', pivot: [0, 0], lagen: [{ art: 'flaeche', form: 'M0 0L1 0L1 1Z', material: 'stein' }] },
+      { id: 'p', pivot: [0, 0], lagen: [{ art: 'flaeche', form: 'M5 5L6 5L6 6Z', material: 'gold' }] },
+    ];
+    const s: Spec = { ...spec('requisite', { an: { frames: 2, keyframes: kf.map((f) => ({ ...f, t: f.t === 0 ? 0 : 0.5 })) } }), teile };
+    const frames = einfachesBild(s, { schluessel: 'an', animation: 'an', stufe: 1 }, { stil: ladeStil() }).frames;
+    expect(frames[0].svg).toContain('M5 5L6 5L6 6Z');
+    expect(frames[1].svg).not.toContain('M5 5L6 5L6 6Z');
+    expect(frames[1].svg).toContain('M0 0L1 0L1 1Z');
+    expect(frames[0].geometrie.map((g) => g.teil.id)).toEqual(['a', 'p']);
+    expect(frames[1].geometrie.map((g) => g.teil.id)).toEqual(['a']);
+  });
 });
 
 describe('Pose', () => {

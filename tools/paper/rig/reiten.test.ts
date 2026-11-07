@@ -4,12 +4,13 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import type { Spec } from '../schema/types';
-import { renderSpec } from '../render/ausgabe';
+import { gen } from '../cli/gen';
+import { renderSpec, rendereAsset } from '../render/ausgabe';
 import { Abgelehnt } from '../render/fehler';
 import { ladeStil } from '../render/stil';
 import { lageSvg } from '../render/svg';
 import { ausgaben } from '../render/stufen';
-import { findeReittier, reitRahmen, reitSegmente, reitZustand } from './reiten';
+import { findeReittier, reitRahmen, reitSegmente, reitZustand, reittierHash } from './reiten';
 
 const SPECS = join(import.meta.dirname, '../fixtures/specs');
 const lies = (id: string) => JSON.parse(readFileSync(join(SPECS, `${id}.paper.json`), 'utf8')) as Spec;
@@ -100,5 +101,46 @@ describe('Reiten', { timeout: 60_000 }, () => {
 describe('Reiten: Randfälle (Review RD1.3)', { timeout: 60_000 }, () => {
   it('Reittier-id mit Pfadanteilen: reittier-unbekannt', () => {
     expect(() => findeReittier(join(SPECS, 'monarch.paper.json'), '../specs/pferd')).toThrow(Abgelehnt);
+  });
+});
+
+describe('renderKey mit Reittier (B-713)', { timeout: 120_000 }, () => {
+  const wurzel = () => {
+    const dir = tmp();
+    mkdirSync(join(dir, 'figuren'));
+    mkdirSync(join(dir, 'reittiere'));
+    copyFileSync(join(SPECS, 'monarch.paper.json'), join(dir, 'figuren/monarch.paper.json'));
+    copyFileSync(join(SPECS, 'pferd.paper.json'), join(dir, 'reittiere/pferd.paper.json'));
+    return dir;
+  };
+  const key = (dir: string) => (rendereAsset(JSON.parse(readFileSync(join(dir, 'figuren/monarch.paper.json'), 'utf8')) as Spec,
+    { stil, specPfad: join(dir, 'figuren/monarch.paper.json') }).manifest as { renderKey: string }).renderKey;
+
+  it('reittierHash: nur mit Reit-Animation und Pfad, sortiert nach id', () => {
+    expect(reittierHash(monarch, undefined)).toBeUndefined();
+    expect(reittierHash(pferd, join(SPECS, 'pferd.paper.json'))).toBeUndefined();
+    expect(reittierHash(monarch, join(SPECS, 'monarch.paper.json'))).toMatch(/^pferd=[0-9a-f]{64}$/);
+  });
+
+  it('Pferd-Spec geändert: renderKey des Monarchen ändert sich; Monarch ohne Reittier-Änderung bleibt gleich (AC-01)', () => {
+    const dir = wurzel(), a = key(dir);
+    expect(key(dir)).toBe(a);
+    const p = JSON.parse(readFileSync(join(dir, 'reittiere/pferd.paper.json'), 'utf8')) as Spec;
+    p.beschreibung += ' (geändert)';
+    writeFileSync(join(dir, 'reittiere/pferd.paper.json'), JSON.stringify(p));
+    expect(key(dir)).not.toBe(a);
+  });
+
+  it('gen rendert nach einer Pferd-Änderung auch figuren/monarch neu (AC-02)', () => {
+    const dir = wurzel();
+    copyFileSync(join(import.meta.dirname, '../../../public/grafik/stil.paper.json'), join(dir, 'stil.paper.json'));
+    const manifest = () => (JSON.parse(readFileSync(join(dir, 'figuren/monarch/manifest.json'), 'utf8')) as { renderKey: string }).renderKey;
+    gen(dir);
+    const a = manifest();
+    const p = JSON.parse(readFileSync(join(dir, 'reittiere/pferd.paper.json'), 'utf8')) as Spec;
+    p.beschreibung += ' (geändert)';
+    writeFileSync(join(dir, 'reittiere/pferd.paper.json'), JSON.stringify(p));
+    gen(dir);
+    expect(manifest()).not.toBe(a);
   });
 });

@@ -2,9 +2,9 @@
   "id": "felsen",
   "version": 1,
   "specHash": "55d9a21f85ef204a34f96b276b2552857838208a5897c6d0490d7f80b695aab7",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "1a9c61cebd39a2716b86d22005f4a1f5c2c8da47d828edad1c622b2c5efb1cca",
+  "renderKey": "8d4b67158881889feb7994f1df7d9d195706a92de0646cf337edbee0e2f2d6d9",
   "rahmen": [
     -30,
     -32,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "cadc4cf8f08c14ee576fdc8c7899cd39337dcdb4eda4d2d6912a627a1cf53c68"
+        "d98e3b0080acc91a2ee407c3d2781ca4fd37ac668c7705c29dccad0dfb8ab936"
       ]
     }
   },

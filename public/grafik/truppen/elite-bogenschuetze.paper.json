@@ -140,7 +140,7 @@
         {
           "art": "flaeche",
           "form": "M-2.2 -98L0 -104L2.2 -98Z",
-          "material": "stein"
+          "material": "eisen"
         },
         {
           "art": "flaeche",
@@ -667,6 +667,9 @@
       "frames": 8,
       "keyframes": [
         {
+          "sichtbar": {
+            "pfeil": true
+          },
           "t": 0,
           "winkel": {
             "bogen": 85,
@@ -702,6 +705,9 @@
           }
         },
         {
+          "sichtbar": {
+            "pfeil": false
+          },
           "t": 0.7,
           "winkel": {
             "bogen": 83,
@@ -727,10 +733,28 @@
       ]
     },
     "idle": {
-      "frames": 8
+      "frames": 8,
+      "keyframes": [
+        {
+          "sichtbar": {
+            "pfeil": false
+          },
+          "t": 0,
+          "winkel": {}
+        }
+      ]
     },
     "lauf": {
-      "frames": 8
+      "frames": 8,
+      "keyframes": [
+        {
+          "sichtbar": {
+            "pfeil": false
+          },
+          "t": 0,
+          "winkel": {}
+        }
+      ]
     }
   }
 }

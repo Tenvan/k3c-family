@@ -24,7 +24,7 @@
         {
           "art": "flaeche",
           "form": "M-29.3 -10.5L-22.7 -10.5L-21.4 -5H-29.6Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "schatten"
         },
         {
@@ -54,7 +54,7 @@
         {
           "art": "flaeche",
           "form": "M26.7 -10.5L33.3 -10.5L34.6 -5H26.4Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "schatten"
         },
         {
@@ -72,7 +72,7 @@
         {
           "art": "flaeche",
           "form": "M-40 -76C-54 -78 -64 -66 -66 -52C-60 -56 -54 -60 -48 -62C-52 -56 -52 -50 -50 -44C-44 -54 -42 -64 -40 -70Z",
-          "material": "maehne"
+          "material": "schwarz"
         },
         {
           "art": "flaeche",
@@ -98,20 +98,20 @@
         {
           "art": "flaeche",
           "form": "M-34 -81C-42 -80 -46.5 -72 -45.5 -64C-44.5 -56 -40.5 -51 -34 -48.8C-24 -45.6 -10 -45 6 -46L6 -79C-8 -78.5 -22 -80.5 -34 -81Z",
-          "material": "maehne"
+          "material": "schwarz"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-44 -58C-36 -52 -20 -49 6 -50L6 -46C-10 -45 -24 -45.6 -34 -48.8C-39 -50.6 -42.6 -54 -44 -58Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-36 -79C-28 -79 -16 -77.5 -4 -77.8C-16 -74.5 -28 -75 -38 -76.6Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "licht"
         },
         {
@@ -129,20 +129,20 @@
         {
           "art": "flaeche",
           "form": "M-6 -79C4 -79 12 -81 20 -83.5C30 -85 38 -81 43 -73C46.4 -66 45.4 -58 40.4 -53C34 -48.6 22 -46.6 10 -46L-6 -46Z",
-          "material": "maehne"
+          "material": "schwarz"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-6 -50C10 -50 26 -51 38 -55C34 -49.5 22 -46.6 10 -46L-6 -46Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M22 -82C30 -83 37 -79 41 -72C36 -76 30 -79 22 -80Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "licht"
         },
         {
@@ -208,7 +208,7 @@
         {
           "art": "flaeche",
           "form": "M22.7 -10.5L29.3 -10.5L30.6 -5H22.4Z",
-          "material": "maehne"
+          "material": "schwarz"
         },
         {
           "art": "flaeche",
@@ -280,13 +280,13 @@
         {
           "art": "flaeche",
           "form": "M16 -76C20 -88 28 -98 38 -102C44 -100 48 -96 50 -92C46 -84 44 -74 44 -62Z",
-          "material": "maehne"
+          "material": "schwarz"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M40 -97C44.5 -87 45.5 -76 44 -63L37.5 -65.5C41 -76 41.5 -87 40 -97Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "schatten"
         },
         {
@@ -299,19 +299,19 @@
         {
           "art": "flaeche",
           "form": "M34 -104C38 -110 46 -112 52 -108L66 -98C70 -96 70 -92 66 -91L52 -90C46 -90 40 -94 36 -98Z",
-          "material": "maehne"
+          "material": "schwarz"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M52 -90C46 -90 40 -94 36 -98L40 -98C44 -95 50 -93 58 -93L66 -91Z",
-          "material": "maehne",
+          "material": "schwarz",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "form": "M38 -106L40 -119L46 -109Z",
-          "material": "maehne"
+          "material": "schwarz"
         },
         {
           "art": "flaeche",
@@ -323,7 +323,7 @@
         {
           "art": "flaeche",
           "form": "M44 -108.5L48 -119L50.5 -107Z",
-          "material": "maehne"
+          "material": "schwarz"
         },
         {
           "art": "flaeche",

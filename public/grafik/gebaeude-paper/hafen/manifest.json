@@ -2,9 +2,9 @@
   "id": "hafen",
   "version": 1,
   "specHash": "43993b52d824409b1a96cad1c27f111840cbb7c49e05c51186cc957e1bf678d2",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "4020da3ea13154c04d47162a2da41dc446155ecf6915917dba7f7e5376185b22",
+  "renderKey": "350b9082506fb91d82d4e3b004edad9fc0f021de5451a125555d7907e7a3aea8",
   "rahmen": [
     -96,
     -128,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "62fa660e02f67851375151d8771878927d03553a63d052da1898cc6d2ce85c55"
+        "fcc2cfaa03734fe9dc4b6f4298747a5f6cacf059301b76750d53ef97728a1d9d"
       ]
     }
   },

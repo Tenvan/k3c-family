@@ -2,9 +2,9 @@
   "id": "icon-krone",
   "version": 1,
   "specHash": "f7349ac690ec64feead7ae8494c82773c1538aa0ec60b90bf044a992acbbe02c",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "efb3bcd74d6055421053c7f10f46767f0c0bd9317ee3475ae1587e51a133857e",
+  "renderKey": "7054c65c1499359cadebb56842f4b11bc490c61efa0de3eb45129c674206d926",
   "rahmen": [
     -16,
     -32,
@@ -19,7 +19,7 @@
       "fps": 1,
       "datei": "idle.png",
       "hashes": [
-        "a33821d36dd8f3b88af169c0559fe95e823d457c9ed2791a0292ca5a774915fd"
+        "8d6ca445f6f58820d243e7650f95dd5b0db5ca6bc3e459bb72ef86addb97983e"
       ]
     }
   },

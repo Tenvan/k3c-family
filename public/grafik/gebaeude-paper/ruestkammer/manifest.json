@@ -2,9 +2,9 @@
   "id": "ruestkammer",
   "version": 1,
   "specHash": "22aeda49bfc58ac0e6b772ebadb7ac0d167a6747b033896f1ef1de0b806ae578",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "e823c0d5e2d85899cd3415c0eb9adc1111d1039c7a1b942b1b2dc70396aca94d",
+  "renderKey": "cc90532140998952d0e3e9b0f2973afd4f99721825f71a1658b99469d257c22d",
   "rahmen": [
     -96,
     -128,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "0f9a917ba3215d5230192785dafb7bcc2edba8045453668eb6c6ef713a4fbf5c"
+        "5c6f9f5791ab00b3971d5d349579d810526dfa1312554ef6aad8c69fe7ca72e4"
       ]
     },
     "stand.s2": {
@@ -27,7 +27,7 @@
       "fps": 8,
       "datei": "stand.s2.png",
       "hashes": [
-        "6b50b7b20bdbf18b1728f6f95816205cce5f1330794c5b4fc8efdd6cb41b4f2f"
+        "f04d0502c8d0574f1c0153feef9af0293f1ab2dcf80653c4caccb47f80a6805f"
       ]
     },
     "stand.s3": {
@@ -35,7 +35,7 @@
       "fps": 8,
       "datei": "stand.s3.png",
       "hashes": [
-        "d06389ccadbb59825a59282c4c3a69384b749afe7c7ad081f4defddb21b8e097"
+        "b4a4d02ce5e1166c34708d8f318156ec730614ec40e678aa08c6b2d702152bf1"
       ]
     },
     "stand.s4": {
@@ -43,7 +43,7 @@
       "fps": 8,
       "datei": "stand.s4.png",
       "hashes": [
-        "b339de0898dd3a682b48ce9e19ee8b94cc43aec7b82192f36060274220bddc32"
+        "9f0e2ed9c86d332d54d5cecfaf4bd5999d9b61cf22de0d14e4952e460b7d36c1"
       ]
     },
     "stand.s5": {
@@ -51,7 +51,7 @@
       "fps": 8,
       "datei": "stand.s5.png",
       "hashes": [
-        "0b9ed84eec476bf64ec389001f8280c38582196f80edd0dfabb53f09ffda4870"
+        "b0406d80e2cff639516566d5acf30b7e98bb4264d7f33169990cd5eb39d6fbd8"
       ]
     }
   },

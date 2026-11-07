@@ -7,6 +7,7 @@ import { checkSpecFile } from '../schema/check';
 import { RENDERER_VERSION, renderKey, specHash, stilHash } from '../schema/hash';
 import type { Spec, Stil } from '../schema/types';
 import '../rig/register';
+import { reittierHash } from '../rig/reiten';
 import { bildVon, type Kontext } from './bild';
 import { Abgelehnt, Aufruf } from './fehler';
 import { animationen, ausgaben } from './stufen';
@@ -27,12 +28,12 @@ export type Asset = { manifest: Record<string, unknown>; pngs: [string, Buffer][
 
 /** Rendert alle Ausgaben einer Spec im Speicher. */
 export function rendereAsset(spec: Spec, k: Kontext): Asset {
-  const sh = specHash(spec), st = stilHash(k.stil), pngs: [string, Buffer][] = [];
+  const sh = specHash(spec), st = stilHash(k.stil), reittier = reittierHash(spec, k.specPfad), pngs: [string, Buffer][] = [];
   const anim: Record<string, unknown> = {};
   const basis = frameGroesse(spec.ausgabe);
   for (const a of ausgaben(spec)) {
     const bild = bildVon(spec, a, k), g = bild.groesse;
-    const r = rastere(streifenSvg(bild.frames.map((f) => f.svg), g, defs(k.stil, spec.id)));
+    const r = rastere(streifenSvg(bild.frames.map((f) => f.svg), g, defs(k.stil, spec.id, g.frameH / g.rahmen[3])));
     const datei = `${a.schluessel}.png`;
     pngs.push([datei, r.png]);
     const eigen = g.eigen || g.frameW !== basis.frameW || g.frameH !== basis.frameH ? { rahmen: g.rahmen, frameW: g.frameW, frameH: g.frameH } : {};
@@ -40,7 +41,7 @@ export function rendereAsset(spec: Spec, k: Kontext): Asset {
       hashes: frameHashes(r.rgba, r.breite, g.frameW, g.frameH, bild.frames.length), ...eigen };
   }
   const manifest = { id: spec.id, version: spec.version, specHash: sh, stilHash: st, renderer: RENDERER_VERSION,
-    renderKey: renderKey(sh, st), ...basis, animationen: anim, varianten: Object.keys(spec.varianten ?? {}).sort() };
+    renderKey: renderKey(reittier ? `${sh}+${reittier}` : sh, st), ...basis, animationen: anim, varianten: Object.keys(spec.varianten ?? {}).sort() };
   return { manifest, pngs };
 }
 

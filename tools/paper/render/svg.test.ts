@@ -1,8 +1,9 @@
 // RD1.1: Lagen und Teile als SVG mit den Papier-Filtern aus der Stil-Datei.
+import { num } from '../schema/hash';
 import { describe, expect, it } from 'vitest';
 import type { Spec } from '../schema/types';
 import { ladeStil } from './stil';
-import { defs, lageSvg, seed, teileSvg } from './svg';
+import { defs, dichteFaktor, lageSvg, seed, teileSvg } from './svg';
 
 const stil = ladeStil();
 const spec = (teile: Spec['teile']): Spec => ({
@@ -69,5 +70,20 @@ describe('Teile und Filter', () => {
     expect(d).toContain('<feDropShadow dx="0.3" dy="0.5" stdDeviation="0.3" flood-color="#1a0f14" flood-opacity="0.35"/>');
     expect(d).toContain('baseFrequency="1.3" numOctaves="2"');
     expect(d).toContain('slope="0.18" intercept="0.86"');
+  });
+
+  it('defs: bei der Bezugsdichte (3 px je Einheit) Prototyp-Werte, bei 1,27 px je Einheit umgerechnet (RD2.1)', () => {
+    expect(defs(stil, 'mauer', 3)).toBe(defs(stil, 'mauer'));
+    const d = defs(stil, 'mauer', 192 / 151), k = 3 / (192 / 151);
+    expect(dichteFaktor(stil, 192 / 151)).toBeCloseTo(k, 6);
+    expect(d).toContain(`dx="${num(0.5 * k)}" dy="${num(0.9 * k)}" stdDeviation="${num(0.45 * k)}"`);
+    expect(d).toContain(`baseFrequency="${num(1.3 / k)}"`);
+    expect(d).toContain('flood-opacity="0.55"');
+  });
+
+  it('dichteFaktor: nie unter 1 (große Ausgaben) und höchstens 4 (winzige Ausgaben)', () => {
+    expect(dichteFaktor(stil, 10)).toBe(1);
+    expect(dichteFaktor(stil, 0.1)).toBe(4);
+    expect(dichteFaktor(stil, undefined)).toBe(1);
   });
 });

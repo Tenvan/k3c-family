@@ -2,9 +2,9 @@
   "id": "burg",
   "version": 1,
   "specHash": "544d3e8c170196561f888b62e0946c0953ecadaec522fcdd1d4b218409abf755",
-  "stilHash": "891d92e0312e2a857e1db4425bbbe6d25bdfe89903cf0b0737245dce857736b1",
+  "stilHash": "566b8b3913ece270edc507986531be195052a0a89708b727d1fe51b03315046d",
   "renderer": "paper-0+resvg-js-2.6.2",
-  "renderKey": "8990b6af20ebe2be9852527cc889c03868300204c3d42a3fc4cf23521671f110",
+  "renderKey": "5dac8096c4aa18cba32890fb3a8054c79b5548b669ca8b682d31f34d588eb5f5",
   "rahmen": [
     -128,
     -288,
@@ -19,7 +19,7 @@
       "fps": 8,
       "datei": "stand.png",
       "hashes": [
-        "dbd6731b0999c3dbd95137ffe989d67e843b889bae659a46f7ae9bf253d107ed"
+        "d7c2184899c482d76728aabd60e44c7e5d91ee6c59a1b843f051513d5ad28b43"
       ]
     },
     "stand.s2": {
@@ -27,7 +27,7 @@
       "fps": 8,
       "datei": "stand.s2.png",
       "hashes": [
-        "adc1a17626070eb710336cd6c4a0a73f03a48f84d0c8e7774b109ca016971ac2"
+        "e09547707fc72fa718aed9223e96d75da5ee71004334a9db734abfc9fb0678d4"
       ]
     },
     "stand.s3": {
@@ -35,7 +35,7 @@
       "fps": 8,
       "datei": "stand.s3.png",
       "hashes": [
-        "0ea25026036d5cd793c6aa8db1f20b55c0577711fc0e31e121df91917fb0c647"
+        "3723d301fd4f9b0a3f9f4cbe66aa666ddfba1d756e4e5f1ab3c918a02e4ce5e9"
       ]
     },
     "stand.s4": {
@@ -43,7 +43,7 @@
       "fps": 8,
       "datei": "stand.s4.png",
       "hashes": [
-        "e013f56f64d0224429d56f7b69e6da3c4c07ad1bfbf114e8cc5735b17e516825"
+        "bc7f7748b8dcedb9e06862e326297b0e8485212efe0c7f73afc46bafc415a001"
       ]
     },
     "stand.s5": {
@@ -51,7 +51,7 @@
       "fps": 8,
       "datei": "stand.s5.png",
       "hashes": [
-        "50a01334be9f3d86ab263b6e7fc02b89e59f18c6568913114cd3411008f3335f"
+        "8e99a5f8b8bfdacd5769ec38395bc55fb2500dfd9827f0ef658a0798c0ba52b4"
       ]
     }
   },

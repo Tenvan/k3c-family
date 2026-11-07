@@ -11,13 +11,13 @@
         {
           "art": "flaeche",
           "form": "M0 0l0 -24 32 -2 32 0 32 2 32 1 32 -2 32 -2 32 -2 32 -2 32 -1 32 0 32 2 32 5 32 5 32 3 32 0 32 -2 32 0 32 -1 32 -1 32 -1 32 0 32 1 32 -1 32 -2 0 24Z",
-          "material": "stein"
+          "material": "biom-kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M0 0l0 -10 32 -1 32 -1 32 1 32 1 32 0 32 -2 32 0 32 0 32 0 32 -1 32 -1 32 1 32 3 32 3 32 1 32 0 32 0 32 0 32 -1 32 -2 32 -2 32 0 32 1 32 0 0 10Z",
-          "material": "stein",
+          "material": "biom-kristall",
           "ton": "schatten"
         }
       ],
@@ -29,20 +29,20 @@
         {
           "art": "flaeche",
           "form": "M189 -22C189 -47 216 -67 249 -67C283 -67 310 -47 310 -22ZM396 -17C396 -41 419 -61 447 -61C475 -61 498 -41 498 -17ZM551 -13C551 -43 575 -68 604 -68C634 -68 658 -43 658 -13Z",
-          "material": "stein"
+          "material": "biom-kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M249 -67C216 -67 189 -47 189 -22L216 -22C216 -44 235 -61 249 -67ZM447 -61C419 -61 396 -41 396 -17L419 -17C419 -39 434 -55 447 -61ZM604 -68C575 -68 551 -43 551 -13L575 -13C575 -40 591 -60 604 -68Z",
-          "material": "stein",
+          "material": "biom-kristall",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M249 -67C283 -67 310 -47 310 -22L293 -22C293 -44 269 -61 249 -67ZM447 -61C475 -61 498 -41 498 -17L483 -17C483 -39 464 -55 447 -61ZM604 -68C634 -68 658 -43 658 -13L643 -13C643 -40 622 -60 604 -68Z",
-          "material": "stein",
+          "material": "biom-kristall",
           "ton": "licht"
         },
         {
@@ -67,20 +67,20 @@
         {
           "art": "flaeche",
           "form": "M220 -22l-14 -106 13 -20 17 20 13 106ZM238 -23l-15 -119 20 -31 24 31 15 119ZM267 -24l-19 -127 15 -25 20 25 19 127ZM565 -12l20 -84 18 -21 11 21 -20 84ZM584 -13l-9 -126 21 -30 23 30 9 126ZM612 -14l21 -110 20 -24 15 24 -21 110Z",
-          "material": "koenigsblau"
+          "material": "biom-kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M234 -22l-15 -126 17 20 13 106ZM260 -23l-17 -150 24 31 15 119ZM284 -24l-21 -152 20 25 19 127ZM580 -12l23 -105 11 21 -20 84ZM606 -13l-10 -156 23 30 9 126ZM630 -14l23 -134 15 24 -21 110Z",
-          "material": "koenigsblau",
+          "material": "biom-kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M220 -22l-14 -106 8 -11 14 117ZM238 -23l-15 -119 12 -17 15 136ZM267 -24l-19 -127 9 -13 19 140ZM565 -12l20 -84 8 -11 -20 95ZM584 -13l-9 -126 12 -16 9 142ZM612 -14l21 -110 9 -13 -20 123Z",
-          "material": "koenigsblau",
+          "material": "biom-kristall",
           "ton": "schatten"
         },
         {

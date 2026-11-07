@@ -5,6 +5,7 @@ import type { Lage, Punkt, Spec, Stil, Ton } from '../schema/types';
 import { lageSvg } from '../render/svg';
 import { BEINE, type Bein } from './gangarten';
 import { crPath } from './kurve';
+import { FUESSE, fussVon } from './proportionen';
 
 const teil = (spec: Spec, id: string) => spec.teile.find((t) => t.id === id)!;
 const richtung = (grad: number): Punkt => {
@@ -39,7 +40,7 @@ export function beinpfad(spec: Spec, b: Bein, winkel: Record<string, number>, st
     Hp.push([p[0] + nx * w * 0.55, p[1] + ny * w * 0.55]);
   });
   const F = P[5], unter = Math.hypot(F[0] - P[3][0], F[1] - P[3][1]) || 1;
-  const spitze = plus(F, [(F[0] - P[3][0]) / unter, (F[1] - P[3][1]) / unter], 3.4);
+  const spitze = plus(F, [(F[0] - P[3][0]) / unter, (F[1] - P[3][1]) / unter], FUESSE[fussVon(spec)].spitze);
   const m = material(spec, vorn), [koerper, licht]: Ton[] = fern ? ['schatten', 'basis'] : ['basis', 'licht'];
   const lagen: Lage[] = [
     { art: 'flaeche', form: crPath([...Lp, spitze]) + crPath([spitze, ...[...Rp].reverse()], true) + 'Z', material: m, ton: koerper },

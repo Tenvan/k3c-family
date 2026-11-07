@@ -1,28 +1,37 @@
 {
   "mauer": {
-    "renderKey": "34a12ac80b9ab33dfa21cd1af1e0913739a7d147c84e516a24989a5a3d10d409",
+    "renderKey": "5b86f3ea320f7704efcdb5337bfa39ddbc1fb211918c69d24e75c5f3dc3e9e8d",
     "dateien": {
-      "stand.png": "c8bc3946dc0342fea8f4f1392926f5ef2be365a596800cfce1dba1fcf0a3f80b",
-      "stand.s2.png": "f5a468475d16392871fc7e2ceef48bf40561266348515877d484ade95f43edea"
+      "stand.png": "dd9bfacfd6a3577a12ed38e97c42eb0bf38704ce9961e2f9e038af4f23a77045",
+      "stand.s2.png": "8ff9c2fade4f72ecc2c4c35c874a6975b64d7dc1af58e7bb4bab2d8870c60ce6"
     }
   },
   "monarch": {
-    "renderKey": "a418c9492b1e986d8884d05cac86986f4620e2a276b2d2ae2cdc41212f5debad",
+    "renderKey": "0e0dc2056719002211c7e19472336e6d6f8bc4878bb7175a230e550bdb4837b4",
     "dateien": {
-      "idle.png": "566ee838a58c70832f7b1d484bd6fbb96f910f117bb77e6e37c56f3d7fd9870b",
-      "idle@spieler2.png": "094486e2ed03572943c51e61dcc2cdd8c63726263014b332fd7652b746050043",
-      "lauf.png": "7493de022becd559efa5ab43fe0cdb119af8b2a0d3411faa04876d3b5f79684f",
-      "lauf@spieler2.png": "c1b72b9ba27a0a350234674e32d787850404e6db7296d269b45e965956674deb",
-      "reiten.png": "b128963c482178b2230a5dc3c009411a70d534da6485c90b4ef1350e6d50e619",
-      "reiten@spieler2.png": "c1db33b1ccec94d4a3a8155b2c380fa3f738d4a57931f44ab867d05ed690ad07"
+      "idle.png": "42f04bd38674cee01c691120a7409f8847bcd68697094602a5e7e8f67400dd9d",
+      "idle@spieler2.png": "2b238e43fbf30202ec830436948f3782b9843db049aceb3b09e5d439e0e52ee2",
+      "lauf.png": "d4c81ae227d6b3ac47a6b0323afc32da1bb2b293f73985c1d18e691f258a3bda",
+      "lauf@spieler2.png": "f3850e06628d4f899c8211d6d61e346b9d8a123fabc16e5b978a3578377f4fc4",
+      "reiten.png": "a5c3169de4de33a8cdb3e0ecdab4ddce73f3cbf493b559a8b7fac5736afd181d",
+      "reiten@spieler2.png": "fb8054eb4833b31dd9bf557e98551f04d21ffc2c280676d4059d3923f6707932"
     }
   },
   "pferd": {
-    "renderKey": "6a50b148e4b11d74243efb4b96e6fabc5d4d46df9123928e86469e48b8a0c997",
+    "renderKey": "89fb31c166d076d4e317ae7e128d5e505d3953e1ee956d0f6c4dd8da016605e4",
     "dateien": {
-      "galopp.png": "91be7bce99bb6d0a7995a92d18381fced5b673bcd5b0098cee3f4128ea805c86",
-      "schritt.png": "dffb3d544574d5865a770a25abaf3f88542e7841c55c27baa94022c54a8efa6c",
-      "trab.png": "98b451a351f08296c98309bb54af37d919204c95bced5991ccc2fe2e8de65477"
+      "galopp.png": "6e01934be7311d58207c752593531e9ffecb3c091f523247a3103fbb5dd05b70",
+      "schritt.png": "744a8266bb11ae08fd36f44ff2b41d3c17d83298c6a8369cbfeb2bb834dc9eb8",
+      "trab.png": "f4a5dbbc9f8c7b6b14c1aab1e08ed9113af9569972d0686dc825cc2a2aae2fa8"
+    }
+  },
+  "langarm": {
+    "renderKey": "d9c8c1d5821336c441603aa0703b0538b4f3c5e8e775f2e4183c0e0269386d38",
+    "dateien": {
+      "idle.png": "cd741be3a1ed9b96e9d19bf17fb984c572bb7d900eabc913d761bdc7dc7b770f",
+      "idle@spieler2.png": "f4e86ea83eab89fb29d12fe61f9246bc5706e62987736f44b4ed367a3a365bfd",
+      "lauf.png": "b79658fc1fadbe32cc9adf044821437487cb07d45504434a14c7e53ad02f11dc",
+      "lauf@spieler2.png": "ff8aafb07854515dc53b13c1746058f68cce27f0caa12a04b77b5f950ff84ece"
     }
   }
 }
