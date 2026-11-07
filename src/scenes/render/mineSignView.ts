@@ -1,5 +1,6 @@
 import type Phaser from 'phaser';
 import type { ResourceNode } from '../../model/types';
+import { paperObjectLook, paperObjectOf } from './paperAssets';
 
 /**
  * Abbau-Schild (B-588, GEB16): Brett am Stock am Fuß eines Knotens, den der Server als abbaubar meldet (`minable`), mit Axt
@@ -31,7 +32,12 @@ const STICK = 14;
 export function createMineSign(scene: Phaser.Scene, kind: string, x: number): Phaser.GameObjects.Container {
   const key = mineSymbol(kind);
   // Papierschnitt-Schild samt Pfahl (MG8, US2): ersetzt Brett und Stock, Fuß am Boden
-  if (key && scene.textures.exists(key)) return scene.add.container(x, 0, [scene.add.image(0, 0, key, 0).setOrigin(0.5, 1)]).setVisible(false);
+  const look = key ? paperObjectLook(paperObjectOf(MINE_SYMBOL_TEXTURES[key] ?? '') ?? '') : null;
+  if (key && look && scene.textures.exists(key)) {
+    const sign = scene.add.sprite(0, 0, key, 0).setOrigin(look.originX, look.originY).setScale(look.zoom);
+    if (scene.anims.exists(`anim:${key}`)) sign.play({ key: `anim:${key}`, startFrame: Math.abs(Math.round(x)) % look.frames });
+    return scene.add.container(x, 0, [sign]).setVisible(false);
+  }
   const g = scene.add.graphics();
   g.fillStyle(0x6f4518).fillRect(-4, -STICK, 8, STICK);
   g.fillStyle(0xb08968).fillRect(-BOARD / 2, -STICK - BOARD, BOARD, BOARD).lineStyle(2, 0x3d2b1f).strokeRect(-BOARD / 2, -STICK - BOARD, BOARD, BOARD);

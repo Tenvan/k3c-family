@@ -23,5 +23,6 @@ describe('Reittier des Monarchen (US2/AC-02)', () => {
     expect(mountedAnim('wolf', 'galopp', undefined, has(['galopp', 'galopp-wolf']))).toEqual({ anim: 'galopp-wolf', reittier: 'wolf', fallback: false });
     expect(mountedAnim('wolf', 'galopp', undefined, has(['galopp']))).toEqual({ anim: 'galopp', reittier: 'pferd', fallback: true });
     expect(mountedAnim('gibtsnicht', 'schritt', undefined, has(['schritt']))).toEqual({ anim: 'schritt', reittier: 'pferd', fallback: true });
+    expect(mountedAnim('wolf', 'galopp', 'spieler2', has(['galopp', 'galopp@spieler2']))).toEqual({ anim: 'galopp@spieler2', reittier: 'pferd', fallback: true });
   });
 });

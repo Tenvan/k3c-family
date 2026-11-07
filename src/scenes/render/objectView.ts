@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GROUND_Y } from '../../core/constants';
+import { animPhase } from './natureSprites';
 import { isPaperFile } from './paperAssets';
 import { BACKGROUND_ZOOM, WORLD_TEXTURES, backgroundFile, objectSprite, planKeys, type BackgroundLayerPlan, type ObjectSprite } from './worldSprites';
 
@@ -34,13 +35,13 @@ export function prepareWorld(scene: Phaser.Scene): void {
   }
 }
 
-/** Sprite eines Objekts mit Fußpunkt (x, y); `sprite` überschreibt die Zuordnung der ID (Biom-Look, Baumform: `natureSprites.ts`). `null` = keine Grafik, dann zeichnet der Aufrufer die Platzhalter-Form */
-export function objectImage(scene: Phaser.Scene, id: string, x: number, y: number, sprite?: ObjectSprite | null): Phaser.GameObjects.Sprite | null {
+/** Sprite eines Objekts mit Fußpunkt (x, y); `sprite` überschreibt die Zuordnung der ID (Biom-Look, Baumform: `natureSprites.ts`); `worldX` (Units) streut den Startframe. `null` = keine Grafik, dann zeichnet der Aufrufer die Platzhalter-Form */
+export function objectImage(scene: Phaser.Scene, id: string, x: number, y: number, sprite?: ObjectSprite | null, worldX = x / 32): Phaser.GameObjects.Sprite | null {
   const s = sprite === undefined ? objectSprite(id) : sprite;
   if (!s || !scene.textures.exists(s.key)) return null;
   const image = scene.add.sprite(x, y, s.key, s.frame).setOrigin(s.originX ?? 0.5, s.originY ?? 1).setScale(s.zoom);
   const anim = scene.anims.exists(id) ? id : `anim:${s.key}`; // Papier-Objekte: eine Animation je Textur (Bäume, Busch, Portal …)
-  if (s.frames > 1 && scene.anims.exists(anim)) image.play({ key: anim, startFrame: Math.floor(Math.abs(x)) % s.frames });
+  if (s.frames > 1 && scene.anims.exists(anim)) image.play({ key: anim, startFrame: animPhase(worldX, s.frames) });
   return image;
 }
 

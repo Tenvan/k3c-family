@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { paperObjectLook, paperObjectOf } from './paperAssets';
 import { BIOMES } from '../../model/biome';
 import { BACKGROUND_TILE_PX, BACKGROUND_ZOOM, CHEST_OPEN, WORLD_TEXTURES, backgroundFile, backgroundKey, backgroundPlan, objectSprite, planKeys } from './worldSprites';
 
@@ -11,7 +12,8 @@ describe('Welt-Grafik (GR3.2)', () => {
     expect(objectSprite('coin')).toMatchObject({ key: 'grafik:coins', frames: 8 });
     for (const [id, key] of [['portal', 'grafik:portal'], ['exit', 'grafik:ausgang'], ['harbor', 'grafik:hafen'], ['pickup:chest', 'grafik:truhe-geschlossen'], ['camp:recruit', 'grafik:lager']]) {
       expect(objectSprite(id!), id).toMatchObject({ key, frame: 0 });
-      expect(objectSprite(id!)!.zoom, id).toBeCloseTo(1, 0);
+      const file = WORLD_TEXTURES[key!]!.file;
+      expect(objectSprite(id!)!.zoom, id).toBe(paperObjectLook(paperObjectOf(file) ?? '')?.zoom ?? 1);
     }
     expect(objectSprite('camp:recruit:fire')).toBeNull(); // das Bild enthält die Feuerstelle
   });

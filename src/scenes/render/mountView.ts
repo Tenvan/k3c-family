@@ -29,7 +29,7 @@ export function createRider(scene: Phaser.Scene, p: Player, mountKey: string = M
   if (!paperManifest(key)?.animationen.schritt || !scene.textures.exists(paperTextureKey(key, 'schritt'))) {
     if (!warned.has(key)) {
       warned.add(key);
-      clientLog('warn', '🐴 Reittier-Grafik fehlt', { key });
+      clientLog('warn', '🤒 Reittier-Grafik fehlt', { key });
     }
     return null;
   }
@@ -52,7 +52,7 @@ export function updateRider(view: Phaser.GameObjects.Container, p: Player, _anim
   const pick = mountedAnim(mountKey, gait, rider.getData('variante') as string | undefined, (a) => a in anims);
   if (pick.fallback && !warned.has(`mount:${mountKey}`)) {
     warned.add(`mount:${mountKey}`);
-    clientLog('warn', '🐴 Reittier ohne Monarch-Animation, stattdessen Pferd', { key: mountKey });
+    clientLog('warn', '🤒 Reittier ohne Monarch-Animation, stattdessen Pferd', { key: mountKey });
   }
   playPaper(rider, pick.anim);
   if (moving && !rider.anims.isPlaying) rider.anims.resume();

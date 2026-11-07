@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { BIOMES } from '../../model/biome';
+import { paperObjectLook, paperObjectOf } from './paperAssets';
 import { FELSEN, NATURE_TEXTURES, WURZELN, campSprite, decoRoots, natureLook, nodeSprite, rockTexture, treeTexture, veinSlot } from './natureSprites';
 
 /** Nur die Pfade, nichts wird geladen */
@@ -139,7 +140,10 @@ describe('nodeSprite (GEB6.5)', () => {
   });
 
   it('alles im Maßstab 1; unbekannte Art null (Platzhalter)', () => {
-    for (const kind of ['tree', 'rock', 'copperOre', 'bush', 'stoneVein']) expect(nodeSprite(kind, 3, 'forest')?.zoom).toBeCloseTo(1, 0); // Papier 1 Einheit = 1 px (US2)
+    for (const kind of ['tree', 'rock', 'copperOre', 'bush', 'stoneVein']) {
+      const s = nodeSprite(kind, 3, 'forest')!;
+      expect(s.zoom, kind).toBe(paperObjectLook(paperObjectOf(NATURE_TEXTURES[s.key]!)!)!.zoom); // Papier 1 Einheit = 1 px (US2)
+    }
     expect(nodeSprite('goldVein', 3, 'forest')).toBeNull();
   });
 });
@@ -154,5 +158,19 @@ describe('campSprite (B-570)', () => {
       expect(NATURE_TEXTURES[key]).toBe(`gebaeude-paper/rekrutierungslager/stand${file > 1 ? `.s${file}` : ''}.png`); // Papierschnitt (US1)
       expect(FILES).toContain(`../../../public/grafik/${NATURE_TEXTURES[key]}`);
     }
+  });
+});
+
+describe('animPhase (Review US2, Befund 1)', () => {
+  it('Startframe aus der Weltposition, gestreut auch auf ganzen Units, deterministisch', async () => {
+    const { animPhase } = await import('./natureSprites');
+    const phases = new Set(Array.from({ length: 40 }, (_, x) => animPhase(x, 8)));
+    expect(phases.size).toBeGreaterThan(4);
+    for (let x = 0; x < 40; x++) {
+      expect(animPhase(x, 8)).toBe(animPhase(x, 8));
+      expect(animPhase(x, 8)).toBeGreaterThanOrEqual(0);
+      expect(animPhase(x, 8)).toBeLessThan(8);
+    }
+    expect(animPhase(7, 1)).toBe(0);
   });
 });

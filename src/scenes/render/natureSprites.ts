@@ -81,6 +81,11 @@ function mix(x: number): number {
   return (h ^ (h >>> 16)) >>> 0;
 }
 
+/** Startframe einer Schleifen-Animation aus der Weltposition (Units), damit gleiche Objekte nicht im Gleichtakt laufen (Review US2) */
+export function animPhase(x: number, frames: number): number {
+  return frames > 1 ? mix(x * 7) % frames : 0;
+}
+
 /**
  * Baum-Knoten an Position `x` (Units) im Biom: im Wald Art und Form (1–3) aus der Position, außerhalb des Walds
  * (Höhle; Mine und andere zeigen wie bisher den Höhle-Look) eine der fünf Wurzel-Formen statt eines Baums (GEB10).
