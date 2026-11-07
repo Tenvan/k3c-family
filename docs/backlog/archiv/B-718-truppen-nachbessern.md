@@ -1,10 +1,10 @@
-# B-716 · Reittiere haben eigene Silhouetten, Füße und einen einheitlichen Maßstab
+# B-718 · Truppen greifen sichtbar zum Gegner an und haben keine Lesbarkeits-Reste aus MG3
 
 - **Domäne:** PAP
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** MG9
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-07
@@ -14,11 +14,11 @@
 
 ## Ausgangslage
 
-D-MG2-06: Weil Horn, Geweih und Ohren den Rahmen sprengten, sind die Reittiere ~4 % unterschiedlich skaliert. D-MG2-08/PS1.3: Wolf, Höllenhund, Elefant wirken wie umgefärbte Pferde.
+PS1.3: Der Schwertarm des Kriegers verdeckt im Angriff das Gesicht. D-MG3-08: Helm-Nasal unter dem Querbalken, Schild nur in lauf/angriff, Waffe schwingt in `lauf` voll mit, Stabknauf vor dem Bart, Strohhut so gelb wie die Krone.
 
 ## Ziel
 
-Jedes Reittier ist an der Silhouette erkennbar, alle im selben Maßstab.
+Truppen sind in allen Animationen lesbar.
 
 ## Beteiligte und Zielgruppen
 
@@ -26,12 +26,11 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-- Rahmen wächst ohne Skalierung (einheitlicher Maßstab der Gruppe).
-- Eigene Wolfssilhouette, Füße bzw. Pfoten je Tier, Gangarten je Tier mit dem Rig aus B-715.
+Krieger-Angriff zum Gegner hin; alle Punkte aus D-MG3-08 beheben.
 
 ## Nicht-Ziele
 
-Neue Reittiere.
+Pfeil (B-714).
 
 ## Regeln und Einschränkungen
 
@@ -47,9 +46,8 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Alle Reittiere haben dieselbe Skala (px je Einheit), Test in `tools/paper`.
-- **AC-02** Wolf, Höllenhund, Elefant mit eigener Silhouette und Fußform (Sichtprüfung).
-- **AC-03** Elefant ohne `galopp`.
+- **AC-01** Krieger `angriff`: Klinge vor dem Körper Richtung Gegner, Gesicht frei.
+- **AC-02** Jeder Punkt aus D-MG3-08 erledigt (Liste im Ergebnis, Sichtprüfung).
 
 ## Offene Fragen
 
@@ -57,4 +55,4 @@ keine
 
 ## Notizen
 
-Quelle: PS1.1 ✏️ D-MG2-06, D-MG2-08; PS1.3 Punkt 2. Nach B-712, B-715. Lane `reittiere`.
+Quelle: PS1.3 Punkt 3, D-MG3-08. Nach B-712, B-714. Lane `truppen`.

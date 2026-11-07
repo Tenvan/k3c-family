@@ -1,6 +1,6 @@
 # MG9 · PAP · Papierschnitt nachbessern: Monarch, Reittiere, Truppen, Gegner
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
@@ -61,7 +61,7 @@ keine
 | MG9.2 | `MG9.2-monarch.md` | Umsetzung | autonom | fertig |
 | MG9.3 | `MG9.3-truppen.md` | Umsetzung | autonom | fertig |
 | MG9.4 | `MG9.4-gegner.md` | Umsetzung | autonom | fertig |
-| MG9.5 | `MG9.5-review.md` | Review | autonom | offen |
+| MG9.5 | `MG9.5-review.md` | Review | autonom | fertig |
 
 Reife Entwurf:
 
@@ -73,5 +73,6 @@ Reife Entwurf:
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-07, autonom (Claude): AC-01 bis AC-04 gem. Ergebnissen MG9.1 bis MG9.5 geprüft; `task check` und `task check:go` grün, `check:race` lokal ohne gcc übersprungen.
+Befunde: keine. Neue Tickets: B-737 (Render über .work, erledigt), B-738 (Workbench-Go-Tests rot, offen).
+Offen bei Ralf: Sichtabnahme der Figuren im Spiel; Docker-Build ungeprüft.

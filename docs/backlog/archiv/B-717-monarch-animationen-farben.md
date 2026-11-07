@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** MG9
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-07

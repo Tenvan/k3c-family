@@ -1,10 +1,10 @@
-# B-719 · Gegner sind unterscheidbar und richtig groß, ohne Lesbarkeits-Reste aus MG4
+# B-716 · Reittiere haben eigene Silhouetten, Füße und einen einheitlichen Maßstab
 
 - **Domäne:** PAP
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** MG9
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-07
@@ -14,11 +14,11 @@
 
 ## Ausgangslage
 
-D-MG4-07: Kristallwächter zu nah am Troll, Goblin-Pfeil ragt über den Bogen, Bogen schleift, Feuerball klein, Flammenkrone ähnelt der Monarch-Krone, Troll-Keule verdeckt den Kopf. PS1.3: Troll wirkt im Angriff einbeinig, Kristallspinne mit 97 × 59 px zu klein.
+D-MG2-06: Weil Horn, Geweih und Ohren den Rahmen sprengten, sind die Reittiere ~4 % unterschiedlich skaliert. D-MG2-08/PS1.3: Wolf, Höllenhund, Elefant wirken wie umgefärbte Pferde.
 
 ## Ziel
 
-Gegner sind auf einen Blick zu unterscheiden.
+Jedes Reittier ist an der Silhouette erkennbar, alle im selben Maßstab.
 
 ## Beteiligte und Zielgruppen
 
@@ -26,11 +26,12 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-Alle Punkte aus D-MG4-07 und PS1.3 Punkt 4 beheben.
+- Rahmen wächst ohne Skalierung (einheitlicher Maßstab der Gruppe).
+- Eigene Wolfssilhouette, Füße bzw. Pfoten je Tier, Gangarten je Tier mit dem Rig aus B-715.
 
 ## Nicht-Ziele
 
-Bosse (B-720).
+Neue Reittiere.
 
 ## Regeln und Einschränkungen
 
@@ -46,9 +47,9 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Troll `angriff` mit zwei sichtbaren Beinen.
-- **AC-02** Kristallspinne mindestens so hoch wie der Goblin (Messwert im Ergebnis).
-- **AC-03** Jeder Punkt aus D-MG4-07 erledigt (Sichtprüfung).
+- **AC-01** Alle Reittiere haben dieselbe Skala (px je Einheit), Test in `tools/paper`.
+- **AC-02** Wolf, Höllenhund, Elefant mit eigener Silhouette und Fußform (Sichtprüfung).
+- **AC-03** Elefant ohne `galopp`.
 
 ## Offene Fragen
 
@@ -56,4 +57,4 @@ keine
 
 ## Notizen
 
-Quelle: PS1.3 Punkt 4, D-MG4-07. Nach B-712, B-714, B-715. Lane `gegner`.
+Quelle: PS1.1 ✏️ D-MG2-06, D-MG2-08; PS1.3 Punkt 2. Nach B-712, B-715. Lane `reittiere`.

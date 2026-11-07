@@ -1,6 +1,6 @@
 # MG9.5 · Review Sprint MG9
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -54,5 +54,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 bis AC-04 geprüft gegen die Ergebnisse MG9.1 bis MG9.4 (Specs, Vitest-Goldens je Gruppe).
+- `task check` grün (4:41), `task check:go` grün (1:57), `task check:race` lokal ohne gcc übersprungen (CI prüft).
+- Diff gelesen: Specs, Rig (`stand`-Gangart, `reiten.ts`), B-737 (.work-Rendern); keine Funde.
+- Offen/ungeprüft: Docker-Build (resvg-js auf alpine), Geräteabnahme durch Ralf.

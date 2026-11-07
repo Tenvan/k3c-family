@@ -1,10 +1,10 @@
-# B-718 · Truppen greifen sichtbar zum Gegner an und haben keine Lesbarkeits-Reste aus MG3
+# B-719 · Gegner sind unterscheidbar und richtig groß, ohne Lesbarkeits-Reste aus MG4
 
 - **Domäne:** PAP
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** MG9
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-07
@@ -14,11 +14,11 @@
 
 ## Ausgangslage
 
-PS1.3: Der Schwertarm des Kriegers verdeckt im Angriff das Gesicht. D-MG3-08: Helm-Nasal unter dem Querbalken, Schild nur in lauf/angriff, Waffe schwingt in `lauf` voll mit, Stabknauf vor dem Bart, Strohhut so gelb wie die Krone.
+D-MG4-07: Kristallwächter zu nah am Troll, Goblin-Pfeil ragt über den Bogen, Bogen schleift, Feuerball klein, Flammenkrone ähnelt der Monarch-Krone, Troll-Keule verdeckt den Kopf. PS1.3: Troll wirkt im Angriff einbeinig, Kristallspinne mit 97 × 59 px zu klein.
 
 ## Ziel
 
-Truppen sind in allen Animationen lesbar.
+Gegner sind auf einen Blick zu unterscheiden.
 
 ## Beteiligte und Zielgruppen
 
@@ -26,11 +26,11 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-Krieger-Angriff zum Gegner hin; alle Punkte aus D-MG3-08 beheben.
+Alle Punkte aus D-MG4-07 und PS1.3 Punkt 4 beheben.
 
 ## Nicht-Ziele
 
-Pfeil (B-714).
+Bosse (B-720).
 
 ## Regeln und Einschränkungen
 
@@ -46,8 +46,9 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Krieger `angriff`: Klinge vor dem Körper Richtung Gegner, Gesicht frei.
-- **AC-02** Jeder Punkt aus D-MG3-08 erledigt (Liste im Ergebnis, Sichtprüfung).
+- **AC-01** Troll `angriff` mit zwei sichtbaren Beinen.
+- **AC-02** Kristallspinne mindestens so hoch wie der Goblin (Messwert im Ergebnis).
+- **AC-03** Jeder Punkt aus D-MG4-07 erledigt (Sichtprüfung).
 
 ## Offene Fragen
 
@@ -55,4 +56,4 @@ keine
 
 ## Notizen
 
-Quelle: PS1.3 Punkt 3, D-MG3-08. Nach B-712, B-714. Lane `truppen`.
+Quelle: PS1.3 Punkt 4, D-MG4-07. Nach B-712, B-714, B-715. Lane `gegner`.
