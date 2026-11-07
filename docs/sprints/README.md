@@ -18,7 +18,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | MG5 | PAP | PAP | Papierschnitt-Migration: Bosse | – | `aktiv/MG5-papier-bosse/` |
 | MG4 | PAP | PAP | Papierschnitt-Migration: Gegner | – | `aktiv/MG4-papier-gegner/` |
 | MG7 | PAP | PAP | Papierschnitt-Migration: Hintergründe je Biom | – | `aktiv/MG7-papier-hintergruende/` |
-| US1 | CLI, SRV, INF | PAP | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | – | `aktiv/US1-spiel-auf-papierschnitt/` |
 | BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
 | BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | `aktiv/BD10-schreibende-endpunkte-schutz/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
@@ -291,3 +290,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | PV1 | INF, DEV, PAP | `erledigt/PV1-papierschnitt-vertraege/` |
 | WB1 | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | `erledigt/WB1-workbench-development-assets/` |
 | MG6 | Papierschnitt-Migration: Gebäude mit Ausbaustufen | `erledigt/MG6-papier-gebaeude/` |
+| US1 | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | `erledigt/US1-spiel-auf-papierschnitt/` |

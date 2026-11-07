@@ -1,6 +1,6 @@
 # US1 · CLI, SRV, INF · Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** CLI, SRV, INF
 - **Reife:** bereit
@@ -67,9 +67,10 @@ keine (Defaults als D-US1-xx in B-701)
 | US1.2 | `US1.2-server-check-watch.md` | Umsetzung | autonom | fertig |
 | US1.3 | `US1.3-tasks-ci.md` | Umsetzung | autonom | fertig |
 | US1.4 | `US1.4-doku-codemaps.md` | Umsetzung | autonom | fertig |
-| US1.5 | `US1.5-review.md` | Review | autonom | offen |
+| US1.5 | `US1.5-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-07, autonom (Claude). AC-01 US1.1, AC-02 US1.2 und US1.5, AC-03 US1.3 (`task check:all` Exit 0; Race lokal ohne gcc übersprungen), AC-04 US1.4.
+Behoben aus dem Review: W1–W4, K5, K10; zurückgestellt D-US1-06. Defaults D-US1-01 bis D-US1-06 in B-701.
+Neue Tickets: keine. Sichtprüfung am PC-Browser und Xbox in PS1.

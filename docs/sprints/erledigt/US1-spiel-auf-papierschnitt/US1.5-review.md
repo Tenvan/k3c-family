@@ -1,6 +1,6 @@
 # US1.5 · Review US1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** INF
@@ -51,5 +51,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Review Opus über `094be01c..HEAD`: 0 kritisch, 4 wichtig, 6 klein.
+- Behoben: W1 fehlende Einmal-Animation startet idle nicht neu (Schlag zu Fuß), W2 Oberkante beritten aus dem Gang-Rahmen, W3 `-check-data` prüft nach `data/paper.json` (`TestCheckPaperNurGenutzteGruppen`, `TestCheckPaperUseRepoStand`, `TestCheckDataPaperFehlerExit1`), W4 keine alte Einfärbung für Truppen und Gegner (`paperTint.test.ts` RED→GREEN), K5 Überlage im Bau ausgeblendet, K10 Kommentar.
+- Zurückgestellt: K6–K9 als D-US1-06.
+- `origin/feature/pap` gemergt (Konflikt `docs/sprints/README.md` gelöst); danach Vitest 3193/3193, tsc, Go-Tests grün; `check:diff` rot nur durch einen Workbench-Frontend-Flake unter Last, Frontend allein 432/432 (B-704).
