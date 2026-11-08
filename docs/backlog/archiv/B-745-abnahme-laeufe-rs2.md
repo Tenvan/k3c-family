@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** RS2
 - **Projekt:** RST
 - **Erstellt:** 2026-11-08
@@ -69,4 +69,4 @@ Vorab: `sim_test` online lehnte ab, `bin/k3c-sim.exe` war älter als `engine/net
 - **AC-03 Gen – grün:** `check_run task:test` exit 0, 4 min 27 s (mit `gen:paper`); keine Golden-Änderung im Arbeitsbaum.
 - **AC-04 Race – übersprungen:** `check_run task:check:race` exit 0 in 468 ms, Ausgabe „go:race übersprungen: kein C-Compiler“. Hinweis: `go:race` deckt nur `./engine/...` ab, `tools/k3c-workbench/internal/simexe` wäre auch mit gcc nicht im Race-Lauf; die CI prüft `-race`.
 
-Status bleibt offen, bis B-753 und B-754 geklärt sind.
+Ticket erledigt nach Regel B-742 (rot = neues Ticket): offene Folgen in B-753 und B-754.

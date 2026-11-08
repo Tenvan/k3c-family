@@ -132,7 +132,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-747](B-747-verweise-k3c-balance-nachziehen.md) | DEV | Schuld | niedrig | offen | – | Verweise auf bin/k3c-balance und internal/enginetools außerhalb der Workbench nachziehen |
 | [B-743](B-743-simexe-bot-pool-robust.md) | DEV | Problem | mittel | offen | – | Online-Bots über k3c-sim bot erholen sich nicht von einem toten Bot-Prozess |
 | [B-744](B-744-k3c-sim-eingaben-absichern.md) | DEV | Schuld | niedrig | offen | – | k3c-sim: Replay-Dateinamen aus Seeds absichern und Segment-Kopie der Workbench per Test halten |
-| [B-745](B-745-abnahme-laeufe-rs2.md) | SRV | Schuld | mittel | offen | RS2 | Abnahme-Läufe RS2 |
 ||||||| 8d74a196
 | [B-740](B-740-gen-paper-fortschritt.md) | PAP | Idee | mittel | offen | – | gen:paper zeigt Fortschritt je Schritt in Konsole und Log |
 | [B-741](B-741-hud-ohne-tastenhinweise-tastenbelegung-menue.md) | CLI | Idee | mittel | offen | – | HUD ohne Tastenhinweise, Tastenbelegung im Menü |
@@ -716,3 +715,4 @@ Zeile in diesen Abschnitt.
 | [B-718](archiv/B-718-truppen-nachbessern.md) | PAP | Problem | mittel | erledigt | MG9 | Truppen greifen sichtbar zum Gegner an und haben keine Lesbarkeits-Reste aus MG3 |
 | [B-719](archiv/B-719-gegner-nachbessern.md) | PAP | Problem | mittel | erledigt | MG9 | Gegner sind unterscheidbar und richtig groß, ohne Lesbarkeits-Reste aus MG4 |
 | [B-742](archiv/B-742-check-diff-ohne-sim-balance-gen-abnahme-ticket.md) | INF | Problem | hoch | erledigt | – | check:diff ohne Sim-, Balance- und Gen-Läufe; Abnahme-Ticket je Sprint/Projekt |
+| [B-745](archiv/B-745-abnahme-laeufe-rs2.md) | SRV | Schuld | mittel | erledigt | RS2 | Abnahme-Läufe RS2 |
