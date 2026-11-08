@@ -7,10 +7,10 @@ import { t } from '../core/texts';
 import type { SlotCommand } from './localSlots';
 import { worldOf } from './saveMenu';
 
-export type OptionId = 'music' | 'sfx' | 'ambient' | 'screenshake' | 'flash' | 'colorblind' | 'guide' | 'language' | 'keys' | 'resume' | 'removePlayer' | 'leave';
+export type OptionId = 'music' | 'sfx' | 'ambient' | 'screenshake' | 'flash' | 'colorblind' | 'guide' | 'tech' | 'language' | 'keys' | 'resume' | 'removePlayer' | 'leave';
 
 /** Feste Reihenfolge der Einträge */
-export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'ambient', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'keys', 'resume', 'removePlayer', 'leave'];
+export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'ambient', 'screenshake', 'flash', 'colorblind', 'guide', 'tech', 'language', 'keys', 'resume', 'removePlayer', 'leave'];
 
 /** Registry-Schlüssel: die Optionen melden „Spiel verlassen“, `GameScene` verlässt den Raum (B-293) */
 export const LEAVE_KEY = 'leaveGame';
@@ -26,7 +26,7 @@ export const MENU_SHORT_MS = 600;
 export const VOLUME_STEP = 10;
 
 /** Schalter-Einträge → Feld der Einstellungen */
-const SWITCHES = { screenshake: 'screenshake', flash: 'flash', colorblind: 'colorblindSymbols', guide: 'guideHints' } as const;
+const SWITCHES = { screenshake: 'screenshake', flash: 'flash', colorblind: 'colorblindSymbols', guide: 'guideHints', tech: 'techInfo' } as const;
 
 /** Regler-Einträge → Feld der Einstellungen (ein Regler je Bus) */
 const VOLUMES = { music: 'musicVolume', sfx: 'sfxVolume', ambient: 'ambientVolume' } as const;
@@ -73,7 +73,8 @@ export function applyOption(settings: Settings, id: OptionId, dir: OptionDir): O
     case 'screenshake':
     case 'flash':
     case 'colorblind':
-    case 'guide': {
+    case 'guide':
+    case 'tech': {
       const key = SWITCHES[id];
       return { ...unchanged, settings: { ...settings, [key]: !settings[key] } };
     }
@@ -102,6 +103,8 @@ export function optionLabel(settings: Settings, id: OptionId): string {
       return `${t('opt.colorblind')}  ${onOff(settings.colorblindSymbols)}`;
     case 'guide':
       return `${t('opt.guide')}  ${onOff(settings.guideHints)}`;
+    case 'tech':
+      return `${t('opt.tech')}  ${onOff(settings.techInfo)}`;
     case 'language':
       return `${t('opt.language')}  ◀ ${t(`lang.${settings.language}`)} ▶`;
     case 'keys':
@@ -126,7 +129,7 @@ export interface OptionsSceneData {
 }
 
 /** Lage im Pausenmenü (1920 × 1080): Titel 64 px, Weltzeile 40 px (BD9.2, B-604), danach die 12 Zeilen; oben bleiben 70 px frei */
-export const OPTIONS_LAYOUT = { titleY: 110, titlePx: 64, worldY: 182, worldPx: 40, top: 250, rowH: 64, rowPx: 40 } as const;
+export const OPTIONS_LAYOUT = { titleY: 110, titlePx: 64, worldY: 182, worldPx: 40, top: 250, rowH: 60, rowPx: 40 } as const;
 
 /** Zeile unter dem Titel: Welt des Raums (BD5.2, B-506); ohne Angabe keine Zeile */
 export const worldLine = (world: string | undefined): string => (world === undefined ? '' : t('opt.world', { world: worldOf(world) }));
