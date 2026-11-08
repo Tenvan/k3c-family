@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-// WB1.4 (005 › 5, Sprint-README WB1 › D-03): Sound und Quellen nur lesend aus data/assets.json, data/assets-recherche.json
+// WB1.4 (005 › 5, Sprint-README WB1 › D-03): Sound und Quellen nur lesend aus data/sounds.json, data/assets-recherche.json
 // und dem Katalog unter public/.
 
 func write(t *testing.T, root, rel, content string) {
@@ -25,7 +25,7 @@ func write(t *testing.T, root, rel, content string) {
 func assetRoot(t *testing.T) string {
 	t.Helper()
 	root := t.TempDir()
-	write(t, root, "data/assets.json", `{"_comment": "", "slots": [
+	write(t, root, "data/sounds.json", `{"_comment": "", "slots": [
 		{"id": "music:tag", "art": "sound", "kategorie": "musik", "beschreibung": "Tag", "bus": "music", "wahl": [{"datei": "audio/tag.ogg"}]},
 		{"id": "sfx:fehlt", "art": "sound", "kategorie": "sfx", "beschreibung": "Fehlt", "wahl": [{"datei": "audio/weg.ogg"}]},
 		{"id": "sfx:luecke", "art": "sound", "kategorie": "sfx", "beschreibung": "Lücke", "wahl": []},

@@ -14,7 +14,7 @@ func studioRoot(t *testing.T) string {
 	t.Helper()
 	root := t.TempDir()
 	files := map[string]string{
-		"data/assets.json":     `{"_comment": "", "slots": [{"id": "music:tag", "art": "sound", "kategorie": "musik", "beschreibung": "Tag", "wahl": [{"datei": "audio/tag.ogg"}]}]}`,
+		"data/sounds.json":     `{"_comment": "", "slots": [{"id": "music:tag", "art": "sound", "kategorie": "musik", "beschreibung": "Tag", "wahl": [{"datei": "audio/tag.ogg"}]}]}`,
 		"public/audio/tag.ogg": "OggS",
 	}
 	for rel, content := range files {
@@ -38,7 +38,7 @@ func TestStudioLeseBindings(t *testing.T) {
 	if data, err := app.StudioSoundData("audio/tag.ogg"); err != nil || !strings.HasPrefix(data, "data:audio/ogg;base64,") {
 		t.Errorf("Hörprobe %q, %v", data, err)
 	}
-	if _, err := app.StudioSoundData("../data/assets.json"); err == nil {
+	if _, err := app.StudioSoundData("../data/sounds.json"); err == nil {
 		t.Error("Pfad außerhalb von public/ angenommen")
 	}
 	if q, err := app.StudioSources(); err != nil || q.Katalog == nil {

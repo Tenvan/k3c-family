@@ -120,7 +120,7 @@ export interface PixelDiff {
   overlay: string;
 }
 
-/** Sound-Slot aus data/assets.json (Go: studioview.SoundEintrag, WB1.4). */
+/** Sound-Slot aus data/sounds.json (Go: studioview.SoundEintrag, WB1.4). */
 export interface SoundEintrag {
   id: string;
   kategorie: string;

@@ -40,7 +40,7 @@ func TestEchtesRegister(t *testing.T) {
 	}
 	after, _ := os.ReadFile(filepath.Join(tmp, RegisterPath))
 	if string(normalize(before)) != string(after) {
-		t.Error("Speichern ändert data/assets.json (Format weicht ab)")
+		t.Error("Speichern ändert data/sounds.json (Format weicht ab)")
 	}
 }
 
@@ -56,7 +56,7 @@ func normalize(b []byte) []byte {
 	return out
 }
 
-// repoRoot ist das erste Verzeichnis über dem Paket mit data/assets.json (kein fester Relativpfad).
+// repoRoot ist das erste Verzeichnis über dem Paket mit data/sounds.json (kein fester Relativpfad).
 func repoRoot(t *testing.T) string {
 	t.Helper()
 	dir, err := filepath.Abs(".")

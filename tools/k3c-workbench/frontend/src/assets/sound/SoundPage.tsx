@@ -7,7 +7,7 @@ import type { SoundEintrag } from '../api';
 const TONE: Record<SoundEintrag['status'], Tone> = { zugeordnet: 'ok', luecke: 'warn', fehlt: 'error' };
 const LABEL: Record<SoundEintrag['status'], string> = { zugeordnet: 'zugeordnet', luecke: 'Lücke', fehlt: 'fehlt' };
 
-/** Seite Sound im Bereich Assets (WB1.4, D-03): Sound-Slots aus data/assets.json mit Status und Hörprobe. Zuordnen,
+/** Seite Sound im Bereich Assets (WB1.4, D-03): Sound-Slots aus data/sounds.json mit Status und Hörprobe. Zuordnen,
  *  Recherche und Import laufen über die MCP-Tools assets_*. */
 export function SoundPage() {
   const [list, setList] = useState<SoundEintrag[]>([]);

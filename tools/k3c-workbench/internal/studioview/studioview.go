@@ -21,7 +21,7 @@ type hint string
 
 func (h hint) Error() string { return string(h) }
 
-// SoundEintrag ist ein Sound-Slot aus data/assets.json mit Status (zugeordnet, luecke, fehlt) und seinen Dateien.
+// SoundEintrag ist ein Sound-Slot aus data/sounds.json mit Status (zugeordnet, luecke, fehlt) und seinen Dateien.
 type SoundEintrag struct {
 	ID           string   `json:"id"`
 	Kategorie    string   `json:"kategorie"`

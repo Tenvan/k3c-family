@@ -1,4 +1,4 @@
-// Package assets verwaltet das Slot-Register (data/assets.json) und den Asset-Katalog unter public/ (B-298):
+// Package assets verwaltet das Slot-Register der Sounds (data/sounds.json, seit CU1.2 nur Sound-Slots) und den Asset-Katalog unter public/ (B-298):
 // je Asset-Slot die Zuordnungen nach Präferenz, nur die erste ist im Spiel aktiv.
 package assets
 
@@ -16,7 +16,7 @@ import (
 )
 
 // RegisterPath ist das Slot-Register relativ zur Repo-Wurzel.
-const RegisterPath = "data/assets.json"
+const RegisterPath = "data/sounds.json"
 
 // Art eines Asset-Slots.
 const (
@@ -51,7 +51,7 @@ type Size struct {
 	H int `json:"h"`
 }
 
-// Choice ist eine Zuordnung: Datei relativ zu public/, optional Sheet aus data/sprites.json, Ausschnitt,
+// Choice ist eine Zuordnung: Datei relativ zu public/, optional Sheet (alte Pixel-Sheets), Ausschnitt,
 // Frame-Raster oder (Sound) der Name im Audio-Atlas.
 type Choice struct {
 	File   string `json:"datei"`
@@ -72,7 +72,7 @@ type Slot struct {
 	Choices     []Choice `json:"wahl"`
 }
 
-// Register ist der Inhalt von data/assets.json.
+// Register ist der Inhalt von data/sounds.json.
 type Register struct {
 	Comment string `json:"_comment"`
 	Slots   []Slot `json:"slots"`

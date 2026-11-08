@@ -127,7 +127,7 @@ Repo-Wurzel (B-701 D-10).
 
 ### Recherche für Grafik- und Sound-Slots
 
-Das Slot-Register `data/assets.json` ist seit MC1 eingefroren (Entfernung B-700); `id` ist hier weiter ein Slot daraus.
+Das Slot-Register ist seit CU1.2 `data/sounds.json` (nur Sound-Slots); `id` ist hier ein Slot daraus.
 
 - Recherche (Treffer in `data/assets-recherche.json`): `assets_research {id, query?}` fragt freesound (Token in
   `K3C_FREESOUND_TOKEN` oder `.work/freesound-token`), Wikimedia Commons und OpenGameArt; `assets_hits {id}` liest,

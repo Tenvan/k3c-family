@@ -1,6 +1,6 @@
 # CU1.4 · Workbench und assetkit ohne Register
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -61,5 +61,7 @@ Kein Review-Agent, außer der Diff wächst über 150 geänderte Code-Zeilen.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 umgesetzt, geprüft:** `git grep -n -E "assets.json|atlas.json|sprites.json|zuordnung" -- tools/assetkit tools/k3c-workbench` (ohne `node_modules`) ist leer. Dazu: Register liest `data/sounds.json` (`RegisterPath`), `atlasread.go`, `slotdetails.go`(+Test) und `zuordnung.go` sind entfernt, `usageSkip` kennt `sounds.json`, Sound-Seite (`studioview.Sounds`), MCP-Anleitung und Frontend-Texte nennen `data/sounds.json`; der Größenvergleich (`assetsui/groesse.go`) liest die Rollenmaße aus `data/paper.json › figuren` statt `data/sprites.json`.
+- **Tests:** `studioview`, `assetsui`, `datadoc`, Workbench-Root (`.`) und `mcpsrv` (Einzelaufruf) grün, Frontend 464 Tests grün, `go vet` beider Module sauber. Rot lokal: `tools/assetkit` (TLS-Tests: `x509: certificate signed by unknown authority`, Norton; mit zurückgestellten Änderungen ebenfalls rot, in der CI grün) und zwei `mcpsrv`-Tests nur unter Last (`TestSimTestClientsFakeClient`, `TestSimTestOnlineHeadless` laufen einzeln grün). `task check:dev` und `task check:diff` nicht gelaufen (Nutzerwunsch); kein Review-Agent.
+- **Abweichung vom Plan (verschoben → B-760):** Der Register-/Katalog-Code in `assetkit` ist nicht ganz entfernt. Er hängt in Recherche, Import, Vorrat und Credits an `reg.Find(slot)` und an Grafik-Slots; das Streichen brächte einen Umbau der ganzen Recherche samt Tests (Nicht-Ziel „Recherche-Tools fachlich ändern“). `catalog.go` läuft deshalb weiter über `public/grafik` und `public/sprites`; fehlen sie (CU1.5), ist das kein Fehler. Die Frontend-Katalog-Seite zeigt die Papier-Assets und blieb.
+- Hinweis: Das Test-Repo der Workbench-Tests enthält jetzt `data/sounds.json` statt `data/assets.json` (Tests laufen ohne `data/assets.json`).
