@@ -1,43 +1,17 @@
 import Phaser from 'phaser';
-import { nameOf, t } from '../../core/texts';
-import { MONARCH } from '../../model/data';
-import type { Player } from '../../model/types';
 import { fontStyle } from '../render/fontRules';
-import { slotLabels, type HintDevice } from '../hints/glyphs';
+import type { HintDevice } from '../hints/glyphs';
 import type { RadarCell } from './radarView';
 import { HudBox } from './hudElements';
-import { menuEntries, skillName, slotViews, type MenuEntry, type SkillMenus } from './skillMenuLogic';
+import type { SkillMenus } from './skillMenuLogic';
+import { menuText, slotBar } from './skillMenuText';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
-/** Sichtbare Menüzeilen um den Cursor (passt auch ins Viertel bei 28 px) */
-const WINDOW = 5;
-const TIERS = ['', 'I', 'II', 'III', 'IV'];
-
-const lineName = (line: string): string => nameOf('line', line, (MONARCH.lines as Record<string, { name: string }>)[line]?.name ?? line);
-
-function entryText(e: MenuEntry, selected: boolean): string {
-  const mark = selected ? '▶ ' : '   ';
-  if (e.id === 'respec') return mark + t('skill.respec');
-  const state = e.learned ? t('skill.learned') : e.learnable ? t('skill.learnable') : t('skill.locked');
-  const passive = e.passive ? ` (${t('skill.passive')})` : '';
-  return `${mark}${lineName(e.line)} ${TIERS[e.tier] ?? e.tier} · ${skillName(e.id)}${passive}  ·  ${state}`;
-}
-
-/** Skill-Leiste: Taste, Skill und Abklingzeit je Slot */
-function slotBar(p: Player, device: HintDevice): string {
-  const labels = slotLabels(device).slice(1, 5);
-  return slotViews(p)
-    .map((s, i) => `${labels[i]} ${s.skill ? `${skillName(s.skill)} ${s.cooldown > 0 ? `${Math.ceil(s.cooldown)} s` : t('skill.ready')}` : t('skill.free')}`)
-    .join('  ·  ');
-}
-
-function menuText(p: Player, cursor: number, device: HintDevice): string {
-  const entries = menuEntries(p);
-  const from = Math.max(0, Math.min(cursor - Math.floor(WINDOW / 2), entries.length - WINDOW));
-  const rows = entries.slice(from, from + WINDOW).map((e, i) => entryText(e, from + i === cursor));
-  const menu = slotLabels(device)[5] ?? '';
-  return [t('skill.title', { n: p.points }), ...rows, t(`skill.hint.${device}`, { menu })].join('\n');
-}
+/** Schrift des Menüs je Feldbreite: moderat größer als 28 px, nie darunter (Q03); `fit` schrumpft bis der Text passt */
+const MENU_PX_FULL = 36;
+const MENU_PX_HALF = 32;
+const MENU_MIN_PX = 28;
+const MENU_PAD = { x: 24, y: 18 } as const;
 
 /**
  * Zeichnet je Spielerfeld die Skill-Leiste (immer, als HUD-Element `skills:<Zelle>`, Lage aus `hudLayout`) und das
@@ -62,11 +36,21 @@ export class SkillMenuLayer {
       const device = deviceOf(slot);
       let bar = this.bars.get(i);
       if (!bar) this.bars.set(i, (bar = new HudBox(this.scene, this.scene.add.text(0, 0, '', { ...STYLE, ...fontStyle('playerValue') }))));
-      bar.text.setText(slotBar(p, device)).setVisible(true);
-      const menu = (this.menus[n] ??= this.scene.add.text(0, 0, '', { ...STYLE, ...fontStyle('playerValue'), backgroundColor: '#0c1024cc', padding: { x: 16, y: 12 } }).setOrigin(0.5));
+      bar.text.setText(slotBar(p)).setVisible(true);
+      const menu = (this.menus[n] ??= this.scene.add.text(0, 0, '', { ...STYLE, ...fontStyle('playerValue'), backgroundColor: '#0c1024cc', padding: MENU_PAD }).setOrigin(0.5));
       n += 1;
       if (!menus.isOpen(slot)) continue;
       menu.setText(menuText(p, menus.cursor(slot), device)).setPosition(cell.x + cell.w / 2, cell.y + cell.h / 2 - 40).setVisible(true); // etwas hoch: unten steht der Beitritts-Hinweis
+      fit(menu, cell);
     }
   }
+}
+
+/** Größte Schrift (36 px im vollen, 32 px im halben Feld, mindestens 28 px), bei der das Menü ins Feld passt */
+function fit(menu: Phaser.GameObjects.Text, cell: { w: number; h: number }): void {
+  for (let px = cell.w >= 1400 ? MENU_PX_FULL : MENU_PX_HALF; px >= MENU_MIN_PX; px -= 2) {
+    menu.setFontSize(px);
+    if (menu.width <= cell.w * 0.96 && menu.height <= cell.h * 0.9) return;
+  }
+  menu.setFontSize(MENU_MIN_PX);
 }
