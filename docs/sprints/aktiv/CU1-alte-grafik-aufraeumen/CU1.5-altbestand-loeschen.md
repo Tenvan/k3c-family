@@ -1,6 +1,6 @@
 # CU1.5 · Altbestand, Generatoren und Tasks löschen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF

@@ -1,13 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import assets from '../../data/assets.json';
 import sounds from '../../data/sounds.json';
 
-// CU1.2: Die Sound-Slots stehen in data/sounds.json; data/assets.json (Altregister) fällt mit CU1.5, dann entfällt der Vergleich.
+// CU1.2/CU1.5: Die Sound-Slots stehen in data/sounds.json (einzige Quelle seit dem Wegfall des Altregisters).
 describe('data/sounds.json (CU1.2)', () => {
-  it('nur Sound-Slots, mit denselben Ids und Wahlen wie im Altregister', () => {
+  it('nur Sound-Slots, 32 Stück (Altregister data/assets.json fiel mit CU1.5)', () => {
     expect(sounds.slots.every((s) => s.art === 'sound')).toBe(true);
-    const alt = (assets.slots as { art: string }[]).filter((s) => s.art === 'sound');
-    expect(sounds.slots).toEqual(alt);
     expect(sounds.slots).toHaveLength(32);
   });
 

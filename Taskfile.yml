@@ -197,7 +197,7 @@ tasks:
             case "$f" in
               go.mod|go.sum|Taskfile.yml|.golangci*|.github/*|testdata/*) gf=1; wf=1 ;;
               data/*) ch="$ch k3c/data"; c=1 ;;
-              engine/*|cmd/*|tools/atlas/*|tools/buildings/*|tools/pipeline/*|tools/cleanup/*|tools/ruletable/*|tools/spritegen/*|tools/soundatlas/*)
+              engine/*|cmd/*|tools/cleanup/*|tools/ruletable/*|tools/soundatlas/*)
                 ch="$ch k3c/$d" ;;
               public/grafik/*|tools/paper/*) c=1 ;;
               tools/webkit/*) wv=1; sv=1 ;;

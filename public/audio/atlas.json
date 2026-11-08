@@ -1,5 +1,5 @@
 {
-  "_comment": "Erzeugt von task gen:soundatlas (tools/soundatlas) aus data/assets.json; nicht von Hand ändern.",
+  "_comment": "Erzeugt von task gen:soundatlas (tools/soundatlas) aus data/sounds.json; nicht von Hand ändern.",
   "files": {
     "mp3": "atlas.mp3",
     "ogg": "atlas.ogg"

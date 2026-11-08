@@ -93,9 +93,9 @@ func TestFehlenderOrdner(t *testing.T) {
 	if got := w.Poll(t0); got != nil {
 		t.Fatalf("fehlender Ordner: %v", got)
 	}
-	write(t, dir, "sprites/a.png", "a", time.Unix(2000, 0))
+	write(t, dir, "grafik/a.png", "a", time.Unix(2000, 0))
 	w.Poll(t0.Add(time.Second))
-	if got := w.Poll(t0.Add(time.Second + quiet)); !slices.Equal(got, []string{"public/sprites/a.png"}) {
+	if got := w.Poll(t0.Add(time.Second + quiet)); !slices.Equal(got, []string{"public/grafik/a.png"}) {
 		t.Fatalf("neuer Ordner: %v", got)
 	}
 }

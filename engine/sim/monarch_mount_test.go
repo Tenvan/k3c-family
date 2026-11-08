@@ -87,19 +87,19 @@ func TestMountDeterministisch(t *testing.T) {
 	}
 }
 
-// (e) Datenprüfung: mount.sprite ist ein Tier aus sprites.json › mounts (ein unbekannter Schlüssel lässt diesen Test
-// scheitern, nicht das Spiel).
+// (e) Datenprüfung: mount.sprite ist ein Reittier aus data/paper.json › reittiere (ein unbekannter Schlüssel lässt
+// diesen Test scheitern, nicht das Spiel).
 func TestMountSpriteBekannt(t *testing.T) {
-	raw, err := data.Files.ReadFile("sprites.json")
+	raw, err := data.Files.ReadFile("paper.json")
 	if err != nil {
 		t.Fatal(err)
 	}
-	var sprites struct{ Mounts map[string]json.RawMessage }
-	if err := json.Unmarshal(raw, &sprites); err != nil {
+	var paper struct{ Reittiere map[string]string }
+	if err := json.Unmarshal(raw, &paper); err != nil {
 		t.Fatal(err)
 	}
-	if _, ok := sprites.Mounts[monarch.Mount.Sprite]; !ok {
-		t.Fatalf("monarch.json › mount.sprite %q fehlt in sprites.json › mounts", monarch.Mount.Sprite)
+	if _, ok := paper.Reittiere[monarch.Mount.Sprite]; !ok {
+		t.Fatalf("monarch.json › mount.sprite %q fehlt in paper.json › reittiere", monarch.Mount.Sprite)
 	}
 }
 
