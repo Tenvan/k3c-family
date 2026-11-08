@@ -48,7 +48,7 @@ func TestAssetsStyle(t *testing.T) {
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 	text, isErr := callText(t, cs, "assets_style_get", map[string]any{})
 	if isErr || !regexp.MustCompile(`^public/grafik/stil\.paper\.json · stilHash [0-9a-f]{64}\n`).MatchString(text) ||
-		!strings.Contains(text, "Materialien (14): haut, haar") || !strings.Contains(text, "Einzeltöne (5): huf, auge") ||
+		!strings.Contains(text, "Materialien (24): haut, haar") || !strings.Contains(text, "Einzeltöne (5): huf, auge") ||
 		!strings.Contains(text, "papier: lage 0.5/0.9/0.45/0.55 #1a0f14 · auflage 0.3/0.5/0.3/0.35 · struktur 1.3/2/0.18 · falz 0.25 · licht rechts-oben") {
 		t.Errorf("style_get:\n%s", text)
 	}

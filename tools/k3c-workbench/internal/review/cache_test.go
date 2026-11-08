@@ -13,7 +13,7 @@ func TestVorherCache(t *testing.T) {
 	repo := testRepo(t)
 	r := &fakeFrames{CLI: cli()}
 	ctx := context.Background()
-	q, ok, err := QuelleBasis(ctx, repo, basisCommit, "public/grafik/figuren/monarch.paper.json")
+	q, ok, err := QuelleBasis(ctx, repo, basisCommit(t, repo), "public/grafik/figuren/monarch.paper.json")
 	if err != nil || !ok {
 		t.Fatalf("Quelle: %v %v", ok, err)
 	}

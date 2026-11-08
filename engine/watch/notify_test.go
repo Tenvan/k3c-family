@@ -85,6 +85,7 @@ func TestRunMitWakeFragtImLeerlaufNichtAb(t *testing.T) {
 	go Run(ctx, w, tick, wake, func(p []string) { fired <- p })
 	now := time.Now()
 	tick <- now // erster Takt: Grundabfrage (dirty startet true)
+	tick <- now // ungepuffert: kehrt erst zurück, wenn die Grundabfrage fertig ist (sonst sieht sie schon a.json)
 	_ = os.WriteFile(filepath.Join(dir, "a.json"), []byte("{}"), 0o644)
 	tick <- now.Add(time.Second)
 	select {

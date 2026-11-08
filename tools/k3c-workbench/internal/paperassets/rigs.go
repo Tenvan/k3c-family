@@ -12,6 +12,7 @@ type Rig struct {
 	Pflicht     []string
 	Pivots      map[string][2]float64
 	Eltern      map[string]string // Kette der Vorlage (Vierbeiner: Beinpfad braucht eltern an oberbein-*)
+	Animationen json.RawMessage   // Gangarten-Animationen (Regel gangart-fehlt)
 	Bein        json.RawMessage   // Vorgabe für bein (nur Vierbeiner, aus der Fixture pferd)
 	PivotText   string
 	Platzhalter string
@@ -46,7 +47,8 @@ var Rigs = map[string]Rig{
 			"oberbein-vf": "rumpf-vorn", "unterbein-vf": "oberbein-vf", "huf-vf": "unterbein-vf", "schweif": "rumpf-hinten",
 			"rumpf-hinten": "rumpf-vorn", "oberbein-hn": "rumpf-hinten", "unterbein-hn": "oberbein-hn", "huf-hn": "unterbein-hn",
 			"oberbein-vn": "rumpf-vorn", "unterbein-vn": "oberbein-vn", "huf-vn": "unterbein-vn", "hals": "rumpf-vorn"},
-		Bein: json.RawMessage(`{"breiten_vorn":[16,14,11.5,8.2,5.4,6.8],"breiten_hinten":[19,17,12.5,8,5.4,6.8]}`),
+		Animationen: json.RawMessage(`{"schritt":{"frames":8,"gangart":"schritt"},"trab":{"frames":8,"gangart":"trab"},"galopp":{"frames":8,"gangart":"galopp"}}`),
+		Bein:        json.RawMessage(`{"breiten_vorn":[16,14,11.5,8.2,5.4,6.8],"breiten_hinten":[19,17,12.5,8,5.4,6.8]}`),
 		PivotText: "Hüfte (-26/-30 hinten, 26/30 vorn; -56) oberbein-*; Knie -31 unterbein-*; Fessel -9 huf-*; " +
 			"Rückengelenk (0,-66) rumpf-hinten",
 		HoehePx: 192, Rahmen: [4]float64{-68, -122, 145, 126},
@@ -100,11 +102,12 @@ func Vorlage(rig, id, beschreibung string) ([]byte, error) {
 		Beschreibung string          `json:"beschreibung"`
 		Teile        []teil          `json:"teile"`
 		Bein         json.RawMessage `json:"bein,omitempty"`
+		Animationen  json.RawMessage `json:"animationen,omitempty"`
 		Ausgabe      struct {
 			HoehePx int        `json:"hoehe_px"`
 			Rahmen  [4]float64 `json:"rahmen"`
 		} `json:"ausgabe"`
-	}{Schema: "../../../tools/paper/schema/paper-spec.schema.json", ID: id, Rig: rig, Version: 1, Beschreibung: beschreibung, Teile: teile, Bein: r.Bein}
+	}{Schema: "../../../tools/paper/schema/paper-spec.schema.json", ID: id, Rig: rig, Version: 1, Beschreibung: beschreibung, Teile: teile, Bein: r.Bein, Animationen: r.Animationen}
 	spec.Ausgabe.HoehePx, spec.Ausgabe.Rahmen = r.HoehePx, r.Rahmen
 	raw, err := json.Marshal(spec)
 	if err != nil {

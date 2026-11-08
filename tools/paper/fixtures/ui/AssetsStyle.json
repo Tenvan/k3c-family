@@ -69,6 +69,56 @@
       "licht": "#b07a4a",
       "basis": "#875a33",
       "schatten": "#5c3b20"
+    },
+    "schwarz": {
+      "licht": "#4a4450",
+      "basis": "#2b262f",
+      "schatten": "#17131a"
+    },
+    "eisen": {
+      "licht": "#b4bcc6",
+      "basis": "#7f8896",
+      "schatten": "#565d6a"
+    },
+    "leinen": {
+      "licht": "#f3ead4",
+      "basis": "#e0d2b0",
+      "schatten": "#bba98a"
+    },
+    "kupfer": {
+      "licht": "#e8a070",
+      "basis": "#c0703c",
+      "schatten": "#8a4a24"
+    },
+    "kristall": {
+      "licht": "#a8e8f2",
+      "basis": "#5fcde4",
+      "schatten": "#2f8fb0"
+    },
+    "biom-wald": {
+      "licht": "#5f9e6b",
+      "basis": "#3b7249",
+      "schatten": "#234a30"
+    },
+    "biom-hoehle": {
+      "licht": "#8a8fa0",
+      "basis": "#5c6074",
+      "schatten": "#3a3d4e"
+    },
+    "biom-mine": {
+      "licht": "#a69072",
+      "basis": "#7a6648",
+      "schatten": "#4f4130"
+    },
+    "biom-eisenstollen": {
+      "licht": "#8e8582",
+      "basis": "#5f5654",
+      "schatten": "#3a3333"
+    },
+    "biom-kristall": {
+      "licht": "#7d86e0",
+      "basis": "#4a52b0",
+      "schatten": "#2c3174"
     }
   },
   "einzeltoene": {
@@ -97,7 +147,8 @@
       "oktaven": 2,
       "staerke": 0.18
     },
-    "falz_deckkraft": 0.25
+    "falz_deckkraft": 0.25,
+    "bezug_px_je_einheit": 3
   },
   "licht": "rechts-oben",
   "proportionen": {

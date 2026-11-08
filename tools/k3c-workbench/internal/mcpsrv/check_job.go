@@ -135,10 +135,13 @@ func (s *Server) runCheck(ctx context.Context, j *checkJob, dir string, args []s
 	}()
 	source := "check:" + j.key
 	s.console.Reset(source)
+	defer s.acquireHeavy(ctx, j.t.name, j.key)() // B-739: ein schwerer Lauf zugleich
+	steps := newStepLog(s.log, j.key)
 	res = s.run(ctx, runSpec{dir: dir, args: args, timeout: j.t.timeout,
 		out: func(stream, text string) {
 			s.console.Add(source, stream, text)
 			j.add(text)
+			steps.line(text)
 		}})
 }
 
