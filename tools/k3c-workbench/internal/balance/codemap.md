@@ -1,30 +1,24 @@
 # tools/k3c-workbench/internal/balance/
 
 ## Responsibility
-Balancing-Tester (B-099, BAL1/BAL2): spielt eine Szenario-Matrix (Seed x Spieleranzahl x Bot x Tiefe) headless gegen die Go-Simulation, sammelt Kennzahlen, bewertet sie gegen Zielkorridore und erzeugt/spielt Replays. Ausgabe ist deterministisch und byte-gleich bei gleichen Daten.
+Leseteil des Balancing-Testers in der Workbench (seit RS2.2, B-726): liest Berichte von `bin/k3c-sim balance`
+(`balance-*.json`, `tuning-*.json`), bewertet sie gegen die Zielkorridore neu, baut die Auswertung (Insights, Markdown,
+HTML) und verwaltet Baselines. Gerechnet wird nicht hier, sondern in `engine/balance` (Bots, Matrix, Kennzahlen,
+Replays, Sensitivität, Abstimmen) über das Engine-CLI `cmd/k3c-sim`. Kein Import aus `engine/*` (depguard).
 
 ## Design
-- Strategy: `Bot` (`bots.go`) = `func(*sim.World, *sim.Player) sim.PlayerCommand`, registriert in der Map `bots` (`passive`, `saver`, `walls`, `economy`, `wirtschaft`, `coop2`, `coop4`; Verhalten: `README.md`; `wirtschaft` in `bot_wirtschaft.go`, liest Zahl-Regeln über `sim.SiteGoldLeft` und `sim.EconomyOf`); `BotNames` sortiert, `minPlayers`/`checkPlayers` = Mindest-Spieleranzahl je Profil (Fehler in `Matrix.Scenarios` und `Target.validate`). Zufall nur über `engine/rng`.
-- Matrix/Runner (`run.go`): `Matrix`, `Scenario`, `Result`, `Report`; `Matrix.Scenarios` validiert und zählt auf, `Run`/`runOne` spielen sequenziell, ein abgebrochener Lauf wird als ungültig (`Error`) vermerkt.
-- Collector (`metrics.go`): `collector` beobachtet Welt und `sim.Event`s je Tick und liefert `Metrics` mit `DayMetrics`/`WaveMetrics`/`DawnMetrics` (Stand zu Tagesbeginn: Gold je Monarch, Vorrat, Hub-Stufe, Kämpfer; BAL6).
-- Replay (`replay.go`): `Replay` mit `Span`-Lauflängen je Spieler, `ReadReplay` (Version `ReplayVersion`=1, Zeilennummern in Fehlern), `Play` rechnet ohne Bot nach und vergleicht Endzustand-Hash (`endHash`) und `DataHash` des eingebetteten Datenstands.
-- Zielkorridore (`targets.go`, `evaluate.go`): `Targets`/`Target` aus `data/balance-targets.json` (`measures`-Map: Anteil in % oder Median, Wirtschafts-Kennzahlen in `economy_measures.go`; Ziel optional mit Grad), `Targets.Evaluate` liefert `Verdict` (ok/knapp/verletzt) mit `FailSeeds`.
-- Sensitivität (`vary.go`, `sensitivity.go`): `variedFS` ändert einen Wert `datei.json:a.b.c` um ±10/±25 % in einer Kopie von `data.Files` im Speicher (`fstest.MapFS`), nur in Dateien, die `sim.UseData` neu lädt (`reloaded`, B-301), `withData` lädt sie per `sim.UseData` und `loadPrices` und stellt danach `data.Files` wieder her; `Targets.Sensitivity` vergleicht die Bewertungen je Variation mit dem unveränderten Lauf (`Flip`), `SensitivityReport.JSON`/`Markdown`.
-- Grad-Kurven (`curves.go`): `Grades` (aus `data/difficulty.json`, nach Wellengröße), `Curves` spielt Wald, 2 Spieler, `saver` je Grad (`Matrix.Grade` → `Scenario.Grade` → `sim.SetGrade` in `newIsland`) und liefert je Nacht Anteil Burg hält, Median zerstörte Gebäude, Median Gold zur Dämmerung.
-- Summary (`summary.go`): `Summary`/`Entry`/`Change`, `RunTargets`, `Summarize`, `Compare` gegen Baseline (selbst ein Summary-JSON), `Summary.Markdown`.
-- Auswertung (B-632, `insights*.go`, `hints.go`): `BuildInsights` → Ampel je Ziel (Abstand in % der Korridorbreite, Trend
-  zur Baseline) und je Kennzahl (Richtwerte und Hebel aus `data/balance-hints.json`), Stärken, Schwächen, Tuning-Hinweise,
-  Kurzauswertung, `NextRun` (Befehle mit Ziel Chat/Terminal/Workbench); `Insights.Markdown`, `Insights.HTML`
-  (`report_html.go`, Vorlage `report/*` per embed, Spielgrafiken aus `public/` als data-URIs); `WriteReports`, `Reevaluate`
-  (CLI `--insights`).
-
-## Flow
-1. `DefaultTargets` lädt `balance-targets.json` aus `data.Files` und validiert.
-2. `Targets.RunTargets(n)` baut `Matrix` aus den Zielszenarien, ruft `Run`.
-3. `runOne`: `newIsland` → je Tick Bot-Befehle (`Replay.record`) → `sim.Step` mit `enginetools.TickHz` → `collector.observe/event` → `Metrics`.
-4. `Summarize` → `Evaluate` je Ziel → `Compare` zur Baseline → `JSON`/`Markdown`.
-5. Replay: `Play` setzt Befehle aus `Span`s ein und liefert `Playback` mit Warnings bei abweichendem Datenstand.
+- Lese-Typen (`report_types.go`): `Report`, `Result`, `Scenario`, `Matrix`, `Metrics` samt Tages-, Wellen-, Morgen- und
+  Insel-Kennzahlen, `ShipNeed`; Felder und Reihenfolge wie `engine/balance`, `Stock`/`Cost` als Kopien der JSON-Form.
+- Namen (`names.go`): `BotNames`, `KnownBot` (Mischung mit `MixSep`), `HelpsNames`, `Worlds`; `names_test.go` hält sie per
+  Quelltext-Vergleich gleich mit `engine/balance/bots.go` und `helps.go`.
+- Zielkorridore (`targets.go`, `evaluate.go`, `scope.go`, `seedmode.go`): `Targets` aus `data/balance-targets.json`,
+  `Evaluate`, `Summarize`, `Compare`, `Restrict`.
+- Auswertung (`insights*.go`, `hints.go`, `figures*.go`, `ship_figures.go`, `progress.go`, `curves.go` › `Grades`):
+  `BuildInsights`, `Insights.Markdown`/`HTML` (`report_html.go`, Vorlage `report/*`), `WriteReports`, `Reevaluate`.
+- Abstimmen (`tune.go`, `tuneparam.go`): Lese-Typen `Tuning`, `TuneBest`, Grenzen; `ParseTuneParam` für Vorschläge.
+- Baselines (`baselines.go`, `delta.go`, `groups.go`): sichern, listen, Delta je Werte-Gruppe.
 
 ## Integration
-- Abhängigkeiten: `k3c/engine/sim`, `k3c/data` (embed), `internal/enginetools` (`TickHz`, `MaxTicks`).
-- Konsumenten: `internal/mcpsrv/tools_replay.go` (MCP-Tool Replay), CLI `internal/balance/cmd`.
+- Abhängigkeiten: `k3c/data` (Zielkorridore, Hinweise, Welten).
+- Konsumenten: `internal/simrun` (Berichte, Baselines, Spec-Prüfung), `internal/mcpsrv` (`sim_test`), `app_balance.go`.
+- Handweg: `Taskfile.yml` (Namensraum `balance`) ruft `bin/k3c-sim balance` bzw. `go test ./engine/balance`.

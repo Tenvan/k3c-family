@@ -1,55 +1,49 @@
-# Namespace `balance`: der Balancing-Tester k3c-balance (tools/k3c-workbench/internal/balance, feste EXE bin/k3c-balance).
-# Autonome Läufe starten Agenten nur über `sim_test` der Workbench (CLAUDE.md); die Tasks hier sind der Handweg.
+# Namespace `balance`: der Balancing-Tester als Handweg. Gerechnet wird seit RS2.2 (B-726) im Engine-CLI bin/k3c-sim
+# (`k3c-sim balance`, cmd/k3c-sim, Rechnung in engine/balance); tools/k3c-workbench/internal/balance ist nur noch der
+# Leseteil der Workbench (Berichte, Insights, Baselines). Autonome Läufe starten Agenten nur über `sim_test` (CLAUDE.md).
 version: '3'
-
-vars:
-  DEV: '{{.ROOT_DIR}}/tools/k3c-workbench'
 
 tasks:
   build:
-    desc: EXE bin/k3c-balance bauen
-    deps: [':tmp']
-    dir: '{{.DEV}}'
+    desc: EXE bin/k3c-sim bauen (wie k3c-sim:build)
     cmds:
-      - go build -o ../../bin/k3c-balance{{exeExt}} ./internal/balance/cmd
+      - task: :k3c-sim:build
 
   fullgame:
-    desc: 'Vollständiges Spiel mit einem Bot (BS3.4): Go-Test mit Build-Tag fullgame, bewusst nicht in task check; nur die aktuelle Stufe, `task balance:fullgame STUFE=4` (Standard 4); K3C_FULLGAME=hilfen|voll (Standard)|boss|ohne'
-    dir: '{{.DEV}}'
+    desc: 'Vollständiges Spiel mit einem Bot (BS3.4): Go-Test in engine/balance mit Build-Tag fullgame, bewusst nicht in task check; nur die aktuelle Stufe, `task balance:fullgame STUFE=4` (Standard 4); K3C_FULLGAME=hilfen|voll (Standard)|boss|ohne'
     vars:
       STUFE: '{{.STUFE | default "4"}}'
     cmds:
-      - go test -tags fullgame -run 'TestFullGame{{.STUFE}}' -v -count=1 -timeout 30m ./internal/balance
+      - go test -tags fullgame -run 'TestFullGame{{.STUFE}}' -v -count=1 -timeout 30m ./engine/balance
 
   milestone:
-    desc: 'Meilenstein-Lauf coop2, Welt standard, 40 Tage (BS3.6) als Go-Test, ohne Workbench-Neubau; K3C_VARY="economy.json:dawnGoldPerDepth=10" (Semikolon), K3C_SEEDS=k3c-dev,7'
-    dir: '{{.DEV}}'
+    desc: 'Meilenstein-Lauf coop2, Welt standard, 40 Tage (BS3.6) als Go-Test in engine/balance; K3C_VARY="economy.json:dawnGoldPerDepth=10" (Semikolon), K3C_SEEDS=k3c-dev,7'
     cmds:
-      - go test -tags fullgame -run 'TestMeilensteinCoop2' -v -count=1 -timeout 30m ./internal/balance
+      - go test -tags fullgame -run 'TestMeilensteinCoop2' -v -count=1 -timeout 30m ./engine/balance
 
   targets:
     desc: 'Zielkorridore prüfen: 100 feste Seeds (seit BAL6 sechs Szenarien, geschätzt 35–40 min; zum Entwickeln `task balance -- --seeds 10`), Bericht reports/balance-<Zeit>.json und .md, Vergleich mit testdata/balance/baseline.json (kein Teil von `task check`)'
     cmds:
       - task: build
-      - ./bin/k3c-balance{{exeExt}} --targets --baseline testdata/balance/baseline.json --replay-dir reports/balance-replays {{.CLI_ARGS}}
+      - ./bin/k3c-sim{{exeExt}} balance --targets --baseline testdata/balance/baseline.json --replay-dir reports/balance-replays {{.CLI_ARGS}}
 
   baseline:
     desc: 'Baseline neu schreiben (testdata/balance/baseline.json); nur mit Begründung im Commit, wie bei Golden-Dateien'
     cmds:
       - task: build
-      - ./bin/k3c-balance{{exeExt}} --targets --write-baseline --baseline testdata/balance/baseline.json {{.CLI_ARGS}}
+      - ./bin/k3c-sim{{exeExt}} balance --targets --write-baseline --baseline testdata/balance/baseline.json {{.CLI_ARGS}}
 
   sensitivity:
     desc: 'Sensitivität und Grad-Kurven: Werte aus data/ um ±10/±25 % nur im Speicher ändern, gekippte Ziele und Kurven je Grad nach reports/sensitivity-<Zeit>.json und .md (z. B. `task balance:sensitivity -- --seeds 10 --vary economy.json:purse.startGold`; kein Teil von `task check`)'
     cmds:
       - task: build
-      - ./bin/k3c-balance{{exeExt}} --sensitivity --curves {{.CLI_ARGS}}
+      - ./bin/k3c-sim{{exeExt}} balance --sensitivity --curves {{.CLI_ARGS}}
 
   run:
-    desc: 'Balancing-Tester: Bots spielen eine Szenario-Matrix, Kennzahlen als JSON (z. B. `task balance:run -- --seeds 10 --bots saver --days 5`)'
+    desc: 'Balancing-Tester: Bots spielen eine Szenario-Matrix, Kennzahlen als JSON-Zeile result (z. B. `task balance:run -- --seeds 10 --bots saver --days 5 --out matrix.json`)'
     cmds:
       - task: build
-      - ./bin/k3c-balance{{exeExt}} {{.CLI_ARGS}}
+      - ./bin/k3c-sim{{exeExt}} balance {{.CLI_ARGS}}
 
   default:
     desc: Kurzform von balance:targets

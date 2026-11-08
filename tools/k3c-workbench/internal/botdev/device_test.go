@@ -2,6 +2,7 @@ package botdev
 
 import (
 	"context"
+	"encoding/json"
 	"net/http/httptest"
 	"path/filepath"
 	"testing"
@@ -10,8 +11,29 @@ import (
 	k3cnet "k3c/engine/net"
 	"k3c/engine/room"
 	"k3c/engine/store"
-	"k3c/tools/k3c-workbench/internal/balance"
+	"k3c/tools/k3c-workbench/internal/simexe"
 )
+
+// Die Tests laufen gegen den echten Handler im Testprozess (nur Tests importieren engine/net, room, store); die Bots
+// ersetzt ein fester Entscheider, k3c-sim bot prüft cmd/k3c-sim (bot_test.go).
+
+// stepRight geht nach rechts und zahlt; zählt die Anfragen.
+type stepRight struct{ calls int }
+
+func (s *stepRight) Decide(_ json.RawMessage, players []int) ([]simexe.Command, error) {
+	s.calls++
+	out := make([]simexe.Command, len(players))
+	for i, p := range players {
+		out[i] = simexe.Command{Player: p, MoveX: 1, Pay: true}
+	}
+	return out, nil
+}
+
+func TestProtokollVersionWieServer(t *testing.T) {
+	if ProtocolVersion != k3cnet.ProtocolVersion {
+		t.Errorf("botdev.ProtocolVersion %d, engine/net %d", ProtocolVersion, k3cnet.ProtocolVersion)
+	}
+}
 
 // startServer startet den echten Handler mit Räumen im Testprozess (nur Loopback).
 func startServer(t *testing.T, token string) *httptest.Server {
@@ -29,7 +51,7 @@ func startServer(t *testing.T, token string) *httptest.Server {
 
 func TestBotGeraeteSteuernMonarchen(t *testing.T) {
 	srv := startServer(t, "geheim")
-	bot, _ := balance.BotByName("saver")
+	bot := &stepRight{}
 	ctx := context.Background()
 	a, err := Dial(ctx, srv.URL, "bot-a", bot)
 	if err != nil {
@@ -76,7 +98,7 @@ func TestDeltaListen(t *testing.T) {
 // schickt keine Eingabe.
 func TestBeobachterOhnePlatz(t *testing.T) {
 	srv := startServer(t, "geheim")
-	bot, _ := balance.BotByName("saver")
+	bot := &stepRight{}
 	ctx := context.Background()
 	o, err := Dial(ctx, srv.URL, "beobachter", bot)
 	if err != nil {
@@ -100,7 +122,7 @@ func TestBeobachterOhnePlatz(t *testing.T) {
 	if st := o.Stats(); st.States == 0 || st.Inputs != 0 || st.Errors != 0 || st.Disconnected {
 		t.Errorf("Beobachter: %+v", st)
 	}
-	if w == nil || own != -1 || len(w.Players) != 1 {
+	if w == nil || own != -1 || len(w.Players) != 1 || !json.Valid(w.State) {
 		t.Fatalf("Zustand des Beobachters: eigener Monarch %d, Welt %v", own, w)
 	}
 }

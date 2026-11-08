@@ -237,3 +237,5 @@ func TestVergleichMitLetztemLaufUndResultJSON(t *testing.T) {
 		}
 	}
 }
+
+func ptr(v int) *int { return &v }

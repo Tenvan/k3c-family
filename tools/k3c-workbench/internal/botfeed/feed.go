@@ -14,7 +14,7 @@ import (
 
 	"github.com/coder/websocket"
 
-	"k3c/engine/sim"
+	"k3c/tools/k3c-workbench/internal/simexe"
 )
 
 // Prefix ist der Pfad der Route; ein Feed liegt unter Prefix + "<lauf>/<client>".
@@ -22,7 +22,7 @@ const Prefix = "/bot/"
 
 const writeTimeout = 2 * time.Second
 
-// Cmd ist eine Feed-Nachricht: das Kommando eines Slots, Felder wie sim.PlayerCommand.
+// Cmd ist eine Feed-Nachricht: das Kommando eines Slots, Felder wie sim.PlayerCommand (über k3c-sim bot).
 type Cmd struct {
 	Slot   int     `json:"slot"`
 	MoveX  float64 `json:"moveX"`
@@ -33,7 +33,7 @@ type Cmd struct {
 }
 
 // CmdOf baut die Nachricht eines Slots aus einem Bot-Kommando.
-func CmdOf(slot int, c sim.PlayerCommand) Cmd {
+func CmdOf(slot int, c simexe.Command) Cmd {
 	return Cmd{Slot: slot, MoveX: c.MoveX, Sprint: c.Sprint, Pay: c.Pay, Attack: c.Attack, Skill: c.Skill}
 }
 

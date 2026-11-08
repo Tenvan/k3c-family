@@ -29,7 +29,11 @@ Die Werte schwanken unter Last stark; Vergleiche nur bei ähnlicher Last und mit
 5. **Durchsatz:** `go test ./engine/sim -run XXX -bench SimRun100k -benchtime 1x -benchmem` (bildet `sim_run` nach: 100 000 Ticks,
    Wald, Seed `k3c-dev`, ein Monarch) → `ticks/s`. Der Insel-Tick (`IslandStep3Stages4Players`, ns/op) ist der schwerere, realistische Wert.
 6. **Meilenstein-Lauf:** `sim_test {action: start, bots: coop2, world: standard, days: 40, wait: true}` (ohne `seedList` 101 Seeds,
-   fast 40 min); für Vorher/Nachher schnell: zusätzlich `seedList: k3c-dev` (ein Seed, ~50 s).
+   fast 40 min); für Vorher/Nachher schnell: zusätzlich `seedList: k3c-dev` (ein Seed, ~50 s). Seit RS2.2 (B-726) baut
+   der Lauf `bin/k3c-sim-<platz>` und ruft `k3c-sim balance --targets --report-dir … --progress …` (vorher
+   `bin/k3c-balance`); Bericht und Dauer gleich (RS2.2: 1 Seed 52 s vorher, 48 s nachher, Mittel aus je 2 Läufen).
+   Handweg ohne Workbench: `task balance` bzw. `./bin/k3c-sim balance …`; `sim_run`/`level_generate` brauchen
+   `task k3c-sim:build`.
 7. **Online (Takt):** Spielserver des Checkouts mit `svc_start Spielserver` (vorher `check_run task:build`), dann
    `sim_test {action: start, mode: online, rooms: 1, players: 4, duration: 5m, focus: [perf], wait: true}`; Ergebnis
    „Tick p99 max“ (Tick-Dauer).

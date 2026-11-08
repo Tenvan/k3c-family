@@ -13,12 +13,14 @@ import (
 
 	"github.com/coder/websocket"
 
-	k3cnet "k3c/engine/net"
-	"k3c/engine/sim"
-	"k3c/tools/k3c-workbench/internal/balance"
+	"k3c/tools/k3c-workbench/internal/simexe"
 )
 
 const setupTimeout = 10 * time.Second
+
+// ProtocolVersion ist die Protokoll-Version des Handschlags (engine/net › ProtocolVersion, docs/protocol.md); die
+// Workbench importiert engine/net nicht (RS2.2), device_test.go hält beide gleich.
+const ProtocolVersion = 11
 
 // Stats sind die Zähler eines Geräts.
 type Stats struct {
@@ -26,15 +28,16 @@ type Stats struct {
 	Disconnected           bool           // Verbindung ohne Stop verloren
 	Moved                  bool           // der Monarch hat seine Position geändert
 	Events                 map[string]int // Ereignisse der eigenen Stufe nach Typ
+	BotError               string         // erster Fehler des Bot-Entscheiders (k3c-sim bot), leer = keiner
 }
 
 // Device ist ein Bot-Gerät; Felder hinter mu ändert nur play.
 type Device struct {
 	name    string
 	ws      *websocket.Conn
-	bot     balance.Bot
-	monarch int  // eigener Monarch, -1 beim Beobachter
-	watch   bool // Beobachter ohne Platz: liest nur, schickt keine Eingabe
+	bot     simexe.Decider // entscheidet je Zustand (k3c-sim bot); nil beim Beobachter
+	monarch int            // eigener Monarch, -1 beim Beobachter
+	watch   bool           // Beobachter ohne Platz: liest nur, schickt keine Eingabe
 	seq     int64
 	done    chan struct{}
 
@@ -42,7 +45,7 @@ type Device struct {
 	stage   int
 	states  map[int]map[string]any
 	firstX  *float64
-	world   *sim.World // zuletzt dekodierter Zustand der eigenen Stufe (Beobachter, World)
+	view    *View // zuletzt gesehener Zustand der eigenen Stufe (Beobachter, World)
 	stopped bool
 	stats   Stats
 }
@@ -60,7 +63,7 @@ type inMsg struct {
 }
 
 // Dial verbindet zu base (http://host:port) und schickt den Handschlag.
-func Dial(ctx context.Context, base, name string, bot balance.Bot) (*Device, error) {
+func Dial(ctx context.Context, base, name string, bot simexe.Decider) (*Device, error) {
 	ctx, cancel := context.WithTimeout(ctx, setupTimeout)
 	defer cancel()
 	url := strings.Replace(strings.Replace(base, "https://", "wss://", 1), "http://", "ws://", 1) + "/ws"
@@ -71,7 +74,7 @@ func Dial(ctx context.Context, base, name string, bot balance.Bot) (*Device, err
 	ws.SetReadLimit(8 << 20) // snap mit Level ist groß
 	d := &Device{name: name, ws: ws, bot: bot, done: make(chan struct{}), states: map[int]map[string]any{},
 		stats: Stats{Events: map[string]int{}}}
-	if err := d.send(ctx, map[string]any{"t": "hello", "v": k3cnet.ProtocolVersion, "device": name}); err != nil {
+	if err := d.send(ctx, map[string]any{"t": "hello", "v": ProtocolVersion, "device": name}); err != nil {
 		return nil, err
 	}
 	if _, err := d.await(ctx, "welcome"); err != nil {
@@ -165,7 +168,11 @@ func (d *Device) play() {
 		if json.Unmarshal(data, &m) != nil {
 			continue
 		}
-		cmd, ok := d.handle(m)
+		v, ok := d.handle(m)
+		if !ok {
+			continue
+		}
+		cmd, ok := d.decide(v) // ohne mu: ein Prozess-Aufruf, Stats und Stop warten nicht darauf
 		if !ok {
 			continue
 		}
@@ -180,8 +187,8 @@ func (d *Device) play() {
 	}
 }
 
-// handle verarbeitet eine Nachricht; ok heißt: eine Eingabe ist fällig.
-func (d *Device) handle(m inMsg) (sim.PlayerCommand, bool) {
+// handle verarbeitet eine Nachricht; ok heißt: eine Eingabe für den Zustand v ist fällig.
+func (d *Device) handle(m inMsg) (*View, bool) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	switch m.T {
@@ -194,13 +201,13 @@ func (d *Device) handle(m inMsg) (sim.PlayerCommand, bool) {
 	case "snap", "delta":
 		return d.onState(m)
 	}
-	return sim.PlayerCommand{}, false
+	return nil, false
 }
 
-func (d *Device) onState(m inMsg) (sim.PlayerCommand, bool) {
+func (d *Device) onState(m inMsg) (*View, bool) {
 	var s map[string]any
 	if json.Unmarshal(m.S, &s) != nil {
-		return sim.PlayerCommand{}, false
+		return nil, false
 	}
 	if m.T == "snap" {
 		d.states[m.Stage] = s
@@ -211,7 +218,7 @@ func (d *Device) onState(m inMsg) (sim.PlayerCommand, bool) {
 		d.follow(m.Stage)
 	}
 	if m.Stage != d.stage || d.states[m.Stage] == nil {
-		return sim.PlayerCommand{}, false
+		return nil, false
 	}
 	d.stats.States++
 	for _, ev := range asList(s["events"]) {
@@ -219,22 +226,38 @@ func (d *Device) onState(m inMsg) (sim.PlayerCommand, bool) {
 			d.stats.Events[t]++
 		}
 	}
-	w, err := worldOf(d.states[m.Stage])
+	v, err := viewOf(d.states[m.Stage])
 	if err != nil {
 		d.stats.Errors++
-		return sim.PlayerCommand{}, false
+		return nil, false
 	}
-	d.world = w
+	d.view = v
 	if d.watch {
-		return sim.PlayerCommand{}, false
+		return nil, false
 	}
-	for _, p := range w.Players {
-		if p.Index == d.monarch {
-			d.track(p.X)
-			return d.bot(w, p), true
+	return v, true
+}
+
+// decide fragt den Bot nach dem Kommando des eigenen Monarchen (ohne mu; nur play ruft es).
+func (d *Device) decide(v *View) (simexe.Command, bool) {
+	for _, p := range v.Players {
+		if p.Index != d.monarch {
+			continue
 		}
+		cmds, err := d.bot.Decide(v.State, []int{d.monarch})
+		d.mu.Lock()
+		defer d.mu.Unlock()
+		d.track(p.X)
+		if err != nil || len(cmds) != 1 {
+			d.stats.Errors++
+			if err != nil && d.stats.BotError == "" {
+				d.stats.BotError = err.Error()
+			}
+			return simexe.Command{}, false
+		}
+		return cmds[0], true
 	}
-	return sim.PlayerCommand{}, false
+	return simexe.Command{}, false
 }
 
 // follow: Der Beobachter liest die Stufe mit Spielern; er bleibt bei ihr, bis sie leer ist (unter mu).
@@ -242,7 +265,7 @@ func (d *Device) follow(stage int) {
 	if stage == d.stage || len(asList(d.states[stage]["players"])) == 0 {
 		return
 	}
-	if d.world == nil || len(d.world.Players) == 0 {
+	if d.view == nil || len(d.view.Players) == 0 {
 		d.stage = stage
 	}
 }
@@ -255,11 +278,11 @@ func (d *Device) track(x float64) {
 }
 
 // World liefert den zuletzt empfangenen Zustand der eigenen Stufe (nil vor dem ersten) und den eigenen Monarchen.
-// Der Zustand wird nach dem Dekodieren nicht mehr geändert; der Aufrufer liest ihn nur.
-func (d *Device) World() (*sim.World, int) {
+// Der Zustand wird danach nicht mehr geändert; der Aufrufer liest ihn nur.
+func (d *Device) World() (*View, int) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
-	return d.world, d.monarch
+	return d.view, d.monarch
 }
 
 // Stats liefert eine Kopie der Zähler.

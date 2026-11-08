@@ -6,7 +6,6 @@ import (
 	"net"
 	"net/http"
 	"net/http/pprof"
-
 )
 
 // workbenchResources ist das Tool workbench_resources: der Bericht des Messgeräts.

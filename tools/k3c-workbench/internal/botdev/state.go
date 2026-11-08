@@ -4,12 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"k3c/engine/sim"
 )
 
 // Zustand einer Stufe nach docs/protocol.md › Zustand und Delta: `snap` setzt ihn, `delta` ändert ihn. Listen mit `id`
-// stehen im Delta als {set, del}, alles andere ganz; `unset` entfernt Felder. Die Bots entscheiden auf einer sim.World,
-// die aus diesem Zustand dekodiert wird (dieselben JSON-Namen wie der Server sendet).
+// stehen im Delta als {set, del}, alles andere ganz; `unset` entfernt Felder. Die Bots entscheiden in `k3c-sim bot` auf
+// diesem Zustand (dieselben JSON-Namen wie der Server sendet); die Workbench liest daraus nur die Monarchen.
 
 // idLists wie engine/net/delta.go › idLists (dort nicht exportiert).
 var idLists = map[string]bool{
@@ -79,15 +78,33 @@ func asList(v any) []any {
 	return l
 }
 
-// worldOf dekodiert den Zustand in eine sim.World (nur die gesendeten Felder; Level und Biom fehlen).
-func worldOf(state map[string]any) (*sim.World, error) {
+// View ist ein gesehener Zustand: das JSON für den Bot und die Monarchen (Index, Position).
+type View struct {
+	State   json.RawMessage
+	Players []Monarch
+}
+
+// Monarch ist ein Spieler im Zustand (Felder wie sim.Player › index, x).
+type Monarch struct {
+	Index int     `json:"index"`
+	X     float64 `json:"x"`
+}
+
+// viewOf schreibt den Zustand als JSON fest und liest die Monarchen.
+func viewOf(state map[string]any) (*View, error) {
 	raw, err := json.Marshal(state)
 	if err != nil {
-		return nil, err
-	}
-	var w sim.World
-	if err := json.Unmarshal(raw, &w); err != nil {
 		return nil, fmt.Errorf("zustand nicht lesbar: %w", err)
 	}
-	return &w, nil
+	v := &View{State: raw}
+	for _, e := range asList(state["players"]) {
+		p, _ := e.(map[string]any)
+		idx, ok1 := p["index"].(float64)
+		x, ok2 := p["x"].(float64)
+		if !ok1 || !ok2 {
+			return nil, fmt.Errorf("zustand nicht lesbar: Monarch ohne index oder x")
+		}
+		v.Players = append(v.Players, Monarch{Index: int(idx), X: x})
+	}
+	return v, nil
 }

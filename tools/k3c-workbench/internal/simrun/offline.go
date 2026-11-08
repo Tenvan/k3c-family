@@ -5,21 +5,20 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"path/filepath"
-	"regexp"
-	"runtime"
-	"strconv"
+	"slices"
+	"strings"
 	"sync"
 	"time"
 
-	"k3c/data"
 	"k3c/tools/k3c-workbench/internal/console"
 	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/k3c-workbench/internal/simexe"
 )
 
-// Modus offline (B-348/AC-02): Balancing-Tester im Checkout bauen (bin/k3c-balance, fester Pfad, kein go run) und mit
-// --targets ausführen. So rechnet die Engine des Checkouts, nicht die der Workbench. Bericht des Testers und eigener
-// Bericht liegen in reports/simtest-<id>/.
+// Modus offline (B-348/AC-02, RS2.2): das Engine-CLI im Checkout bauen (bin/k3c-sim-<platz>, fester Pfad, kein go run)
+// und `k3c-sim balance --targets` ausführen. So rechnet die Engine des Checkouts, nicht die der Workbench; die
+// Workbench liest nur die JSON-Zeilen (Fortschritt, Fehler) und den Bericht. Bericht des Testers und eigener Bericht
+// liegen in reports/simtest-<id>/.
 
 const (
 	buildTimeout   = 5 * time.Minute
@@ -41,8 +40,6 @@ type Result struct {
 	TimedOut bool
 	Err      error // Start gescheitert
 }
-
-var progressLine = regexp.MustCompile(`^PROGRESS (\d+)/(\d+)$`)
 
 // StartOffline prüft die Spec und reiht einen Offline-Lauf ein (wartet, wenn alle Plätze belegt sind). Mit PerVariant
 // reiht es n + 1 Läufe ein (pervariant.go) und liefert den Basis-Lauf; geprüft wird jeder Lauf, bevor einer startet.
@@ -76,38 +73,23 @@ func (g *Registry) StartOffline(root, where string, spec Spec) (Info, error) {
 func (g *Registry) Offline(spec Spec) Runner {
 	return func(ctx context.Context, run *Run) {
 		dir := ReportDir(run)
-		// Zwei feste EXE-Pfade, einer je Platz: läuft der erste Lauf noch, sperrt Windows seine EXE, und der zweite
-		// Bau schlüge fehl (kein go run, B-348/AC-02).
+		// Ein fester EXE-Pfad je Platz: läuft der erste Lauf noch, sperrt Windows seine EXE, und der zweite Bau
+		// schlüge fehl (kein go run, B-348/AC-02). bin/k3c-sim selbst baut `task k3c-sim:build` (sim_run, Bots).
 		exe := balanceExe(run.Slot())
 		steps := []struct {
 			phase string
 			proc  Proc
 		}{
-			{"bauen", Proc{Dir: filepath.Join(run.root, "tools", "k3c-workbench"), Timeout: buildTimeout,
-				Args: []string{"go", "build", "-o", filepath.Join("..", "..", exe), "./internal/balance/cmd"}}},
-			{"rechnen", Proc{Dir: run.root, Timeout: offlineTimeout, Args: spec.args(exe, dir),
-				Env: []string{data.DirEnv + "=" + filepath.Join(run.root, "data")}}},
+			{"bauen", Proc{Dir: run.root, Timeout: buildTimeout,
+				Args: []string{"go", "build", "-o", exe, "./cmd/k3c-sim"}}},
+			{"rechnen", Proc{Dir: run.root, Timeout: offlineTimeout, Args: spec.args(exe, dir), Env: simexe.Env(run.root)}},
 		}
-		var mu sync.Mutex // stdout und stderr schreiben nebenläufig
-		var tail []string
+		out := &procOutput{progress: func(done, total int) { g.SetProgress(run, done, total) }}
 		for _, st := range steps {
 			g.SetPhase(run, st.phase)
-			st.proc.Out = func(stream, text string) {
-				if m := progressLine.FindStringSubmatch(text); m != nil && stream == "stdout" {
-					done, _ := strconv.Atoi(m[1])
-					total, _ := strconv.Atoi(m[2])
-					g.SetProgress(run, done, total)
-					return
-				}
-				mu.Lock()
-				defer mu.Unlock()
-				tail = lastLines(append(tail, text), 3)
-			}
+			st.proc.Out = out.line
 			if failed := stepFailed(ctx, g.Exec(ctx, st.proc)); failed != "" {
-				mu.Lock()
-				lines := append([]string{st.phase + ": " + failed}, tail...)
-				mu.Unlock()
-				g.finishFailed(run, lines, dir, spec)
+				g.finishFailed(run, append([]string{st.phase + ": " + failed}, out.lines()...), dir, spec)
 				return
 			}
 		}
@@ -118,6 +100,40 @@ func (g *Registry) Offline(spec Spec) Runner {
 		}
 		g.Finish(run, Done, verdict, lines, dir)
 	}
+}
+
+// procOutput liest die Ausgabe von Bau und k3c-sim: Fortschritt aus den JSON-Zeilen, sonst die letzten Zeilen für
+// den Status. Die Zeile „panic: …“ eines Absturzes bleibt erhalten, auch wenn der Stack danach die Zeilen füllt.
+type procOutput struct {
+	progress func(done, total int)
+	mu       sync.Mutex // stdout und stderr schreiben nebenläufig
+	tail     []string
+	panic    string
+}
+
+func (o *procOutput) line(stream, text string) {
+	if ev, ok := simexe.ParseEvent(text); ok && stream == "stdout" {
+		if ev.Event == "progress" {
+			o.progress(ev.Done, ev.Total)
+		}
+		return // error steht auch auf stderr („❌ k3c-sim: …“), report und aborted liest der Runner selbst
+	}
+	o.mu.Lock()
+	defer o.mu.Unlock()
+	if stream == "stderr" && strings.HasPrefix(text, "panic:") && o.panic == "" {
+		o.panic = text
+	}
+	o.tail = lastLines(append(o.tail, text), 3)
+}
+
+// lines sind die Zeilen für den Status: die Panic-Zeile (falls nicht schon im Rest), dann die letzten Zeilen.
+func (o *procOutput) lines() []string {
+	o.mu.Lock()
+	defer o.mu.Unlock()
+	if o.panic != "" && !slices.Contains(o.tail, o.panic) {
+		return append([]string{o.panic}, o.tail...)
+	}
+	return slices.Clone(o.tail)
 }
 
 // finishFailed beendet einen gescheiterten oder abgebrochenen Lauf; steht schon ein Bericht (balance-*.json bzw.
@@ -184,15 +200,6 @@ func lastLines(lines []string, n int) []string {
 	return lines
 }
 
-// balanceExe ist der feste Pfad der Balance-EXE für einen Platz (relativ zum Checkout): Platz 0 bin/k3c-balance,
-// weitere bin/k3c-balance-<n+1>.
-func balanceExe(slot int) string {
-	exe := filepath.Join("bin", "k3c-balance")
-	if slot > 0 {
-		exe += "-" + strconv.Itoa(slot+1)
-	}
-	if runtime.GOOS == "windows" {
-		exe += ".exe"
-	}
-	return exe
-}
+// balanceExe ist der feste Pfad des Engine-CLI für einen Platz (relativ zum Checkout): Platz n baut
+// bin/k3c-sim-<n+1>, getrennt von bin/k3c-sim, das sim_run und die Bots der Online-Läufe nutzen.
+func balanceExe(slot int) string { return simexe.Rel(slot + 1) }

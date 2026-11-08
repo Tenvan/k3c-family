@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-// Fake-Binary (WZ28.4/AC-04): Der Testprozess selbst spielt die Balance-CLI (Hilfsprozess-Muster). „Bauen“ entfällt,
+// Fake-Binary (WZ28.4/AC-04, RS2.2): Der Testprozess selbst spielt `k3c-sim balance` (Hilfsprozess-Muster). „Bauen“ entfällt,
 // „rechnen“ startet ihn als echten Kindprozess über runProcess (Job-Objekt, Abbruch, Ausgabe).
 
 // TestHelperProcess ist die falsche Balance-CLI; ohne SIMRUN_HELPER tut er nichts.
@@ -32,12 +32,20 @@ func TestHelperProcess(t *testing.T) {
 	}
 	switch os.Getenv("SIMRUN_FAKE") {
 	case "slow":
-		fmt.Println("PROGRESS 1/3")
+		fmt.Println(`{"event":"progress","done":1,"total":3}`)
 		write()
 		time.Sleep(time.Minute)
+	case "crash":
+		fmt.Println(`{"event":"progress","done":1,"total":2}`)
+		fmt.Fprintln(os.Stderr, "panic: boom\n\ngoroutine 1 [running]:\nmain.main()\n\tmain.go:1 +0x1")
+		os.Exit(2)
+	case "error":
+		fmt.Println(`{"event":"error","message":"welt \"x\" fehlt"}`)
+		fmt.Fprintln(os.Stderr, `❌ k3c-sim: welt "x" fehlt`)
+		os.Exit(1)
 	default:
-		fmt.Println("PROGRESS 1/2")
-		fmt.Println("PROGRESS 2/2")
+		fmt.Println(`{"event":"progress","done":1,"total":2}`)
+		fmt.Println(`{"event":"progress","done":2,"total":2}`)
 		write()
 	}
 	os.Exit(0)
@@ -95,7 +103,7 @@ func TestOfflineLaufMitFortschrittUndBericht(t *testing.T) {
 		t.Error(err)
 	}
 	raw, _ := os.ReadFile(filepath.Join(root, "reports", "simtest-"+info.ID, "args.txt"))
-	for _, want := range []string{"--targets", "--progress", "--seeds\n2", "--depth\n0", "--bot\nsaver", "--vary\ngegner.json:a.b=2"} {
+	for _, want := range []string{"balance\n--targets", "--progress", "--seeds\n2", "--depth\n0", "--bot\nsaver", "--vary\ngegner.json:a.b=2"} {
 		if !strings.Contains(string(raw), want) {
 			t.Errorf("argumente ohne %q:\n%s", want, raw)
 		}
@@ -110,7 +118,7 @@ func TestOfflineAbbruchLiefertTeilbericht(t *testing.T) {
 		t.Fatal(err)
 	}
 	waitFor(t, g, root, info.ID, func(i Info) bool { return i.Done == 1 && i.Total == 3 })
-	time.Sleep(200 * time.Millisecond) // balance-1.json steht nach der PROGRESS-Zeile
+	time.Sleep(200 * time.Millisecond) // balance-1.json steht nach der Fortschrittszeile
 	begin := time.Now()
 	if before, err := g.Stop(root, info.ID); err != nil || before != Running {
 		t.Fatalf("stop: %q, %v", before, err)
@@ -140,5 +148,23 @@ func TestOfflineAlterBerichtZaehltNicht(t *testing.T) {
 	}
 	if _, _, err := readBalanceSummary(dir, time.Now()); err == nil {
 		t.Error("alter Bericht gelesen")
+	}
+}
+
+// RS2.2: Ein Absturz oder Fehler von k3c-sim beendet den Lauf als fehlgeschlagen; der Status nennt Exit und Grund.
+func TestOfflineAbsturzNenntStderr(t *testing.T) {
+	for mode, want := range map[string][]string{"crash": {"rechnen: Exit 2", "panic: boom"},
+		"error": {"rechnen: Exit 1", `❌ k3c-sim: welt "x" fehlt`}} {
+		root := t.TempDir()
+		g := fakeRegistry(mode)
+		info, err := g.StartOffline(root, "Repo-Wurzel", Spec{})
+		if err != nil {
+			t.Fatal(err)
+		}
+		info = waitFor(t, g, root, info.ID, func(i Info) bool { return i.State != Running && i.State != Waiting })
+		text := strings.Join(info.Lines, "\n")
+		if info.State != Failed || !strings.Contains(text, want[0]) || !strings.Contains(text, want[1]) {
+			t.Errorf("%s: %+v", mode, info)
+		}
 	}
 }

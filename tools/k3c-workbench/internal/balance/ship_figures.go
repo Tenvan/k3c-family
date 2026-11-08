@@ -1,84 +1,9 @@
 package balance
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
-
-	"k3c/data"
-	"k3c/engine/sim"
 )
-
-// Schiff: Bedarf gegen Bestand (BS3.3, B-638 Stufe 1). Ohne Schiff-Mechanik (BS5) rechnet der Bericht aus dem Verlauf des
-// Laufs, an welchem Tag die Bots jeden Abschnitt hätten bezahlen können: Alles Gold, das die Monarchen bis dahin
-// bekommen haben (Startgold plus Einnahmen), und alles Material, das bis dahin in den Insel-Vorrat floss, deckt die
-// kumulierten Kosten der Abschnitte bis hierher. Das ist eine Obergrenze („hätten können“), denn Gold und Material gehen
-// im Lauf auch in andere Bauten; mit dem Bau (BS5, BS9) kommt der echte Tag.
-
-// ShipStage ist ein Abschnitt aus data/ship.json.
-type ShipStage struct {
-	ID   string   `json:"id"`
-	Name string   `json:"name"`
-	Cost sim.Cost `json:"cost"`
-}
-
-// ShipNeed ist der früheste Tag, an dem ein Abschnitt (samt den Abschnitten davor) bezahlbar gewesen wäre; null: nie im Lauf.
-type ShipNeed struct {
-	ID            string `json:"id"`
-	AffordableDay *int   `json:"affordableDay"`
-}
-
-// LoadShip liest die Abschnitte aus data/ship.json (BS3.2).
-func LoadShip() ([]ShipStage, error) {
-	raw, err := data.Files.ReadFile("ship.json")
-	if err != nil {
-		return nil, fmt.Errorf("ship.json: %w", err)
-	}
-	var f struct {
-		Stages []ShipStage `json:"stages"`
-	}
-	if err := json.Unmarshal(raw, &f); err != nil {
-		return nil, fmt.Errorf("ship.json: %w", err)
-	}
-	return f.Stages, nil
-}
-
-// shipNeeds rechnet je Abschnitt den Tag, ab dem die Summe aller Zuflüsse die kumulierten Kosten deckt. Tag d zählt
-// mit allem, was bis zum Ende von Tag d zugeflossen ist.
-func shipNeeds(stages []ShipStage, m *Metrics) []ShipNeed {
-	out := make([]ShipNeed, 0, len(stages))
-	var cum sim.Cost
-	for _, st := range stages {
-		cum = addShipCost(cum, st.Cost)
-		out = append(out, ShipNeed{ID: st.ID, AffordableDay: affordableDay(cum, m)})
-	}
-	return out
-}
-
-func addShipCost(a, b sim.Cost) sim.Cost {
-	return sim.Cost{Gold: a.Gold + b.Gold, Wood: a.Wood + b.Wood, Stone: a.Stone + b.Stone, Copper: a.Copper + b.Copper,
-		Iron: a.Iron + b.Iron, Crystal: a.Crystal + b.Crystal}
-}
-
-func affordableDay(need sim.Cost, m *Metrics) *int {
-	gold := 0
-	if len(m.Dawns) > 0 {
-		for _, g := range m.Dawns[0].Gold {
-			gold += g
-		}
-	}
-	var in sim.Stock
-	for _, d := range m.Days {
-		gold += d.Income
-		in.Wood, in.Stone, in.Copper = in.Wood+d.StockIn.Wood, in.Stone+d.StockIn.Stone, in.Copper+d.StockIn.Copper
-		in.Iron, in.Crystal = in.Iron+d.StockIn.Iron, in.Crystal+d.StockIn.Crystal
-		if gold >= need.Gold && in.Wood >= need.Wood && in.Stone >= need.Stone && in.Copper >= need.Copper &&
-			in.Iron >= need.Iron && in.Crystal >= need.Crystal {
-			return ptr(d.Day)
-		}
-	}
-	return nil
-}
 
 // ShipFigures sind die Abschnitte im Bericht: Median des Tags über die Läufe, in denen der Abschnitt bezahlbar war
 // (Reached = Anteil der Läufe in %), und die Ampel gegen den Korridor „Schiff fertig“ (zielkorridore.md § 6): zwischen

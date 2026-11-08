@@ -20,23 +20,23 @@ const (
 
 // Insights ist die Auswertung; das JSON speist den HTML-Bericht (report/*.js) und die Workbench (ReportView).
 type Insights struct {
-	Title      string          `json:"title"`
-	Run        string          `json:"run"`
-	Generated  string          `json:"generated"`
-	Seeds      int             `json:"seeds"`
-	Pass       bool            `json:"pass"`
-	Counts     map[string]int  `json:"counts"`
-	Summary    []string        `json:"summary"`
-	Strengths  []string        `json:"strengths"`
-	Weaknesses []string        `json:"weaknesses"`
-	Targets    []TargetInsight `json:"targets"`
-	Figures    FigureInsights  `json:"figures"`
-	Hints      []Hint          `json:"hints"`
-	LeverGroups []LeverGroup   `json:"leverGroups"` // Stellschrauben nach Wirkung zusammengefasst (insights_levers.go)
-	Next       NextRun         `json:"next"`
-	Baseline   BaselineView    `json:"baseline"`
-	Delta      []GroupDelta    `json:"delta"` // Vergleich je Werte-Gruppe (delta.go), leer ohne Baseline
-	Varianten  []string        `json:"varianten"`
+	Title       string          `json:"title"`
+	Run         string          `json:"run"`
+	Generated   string          `json:"generated"`
+	Seeds       int             `json:"seeds"`
+	Pass        bool            `json:"pass"`
+	Counts      map[string]int  `json:"counts"`
+	Summary     []string        `json:"summary"`
+	Strengths   []string        `json:"strengths"`
+	Weaknesses  []string        `json:"weaknesses"`
+	Targets     []TargetInsight `json:"targets"`
+	Figures     FigureInsights  `json:"figures"`
+	Hints       []Hint          `json:"hints"`
+	LeverGroups []LeverGroup    `json:"leverGroups"` // Stellschrauben nach Wirkung zusammengefasst (insights_levers.go)
+	Next        NextRun         `json:"next"`
+	Baseline    BaselineView    `json:"baseline"`
+	Delta       []GroupDelta    `json:"delta"` // Vergleich je Werte-Gruppe (delta.go), leer ohne Baseline
+	Varianten   []string        `json:"varianten"`
 	// B-648: Urteil über das Ziel, Qualität der Korridore, Spielfortschritt (Leiter mit Pfeilen) und der Lauf, mit dem verglichen wurde.
 	Goal     *GoalView    `json:"goal"`
 	Quality  *QualityView `json:"quality"`

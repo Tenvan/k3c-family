@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/balance"
 	"k3c/tools/k3c-workbench/internal/botdev"
 	"k3c/tools/k3c-workbench/internal/serverapi"
+	"k3c/tools/k3c-workbench/internal/simexe"
 	"k3c/tools/k3c-workbench/internal/simrun"
 )
 
@@ -37,7 +37,13 @@ func (s *Server) runOnline(ctx context.Context, run *simRun, spec simSpec, c *se
 		o.failures = len(st.Failures)
 	}
 	s.sims.SetPhase(run, "verbinden")
-	err := o.connect(ctx, c.Base, run.ID(), spec)
+	bots, err := simexe.StartPool(ctx, run.Root(), spec.bots, spec.rooms*spec.players)
+	if err != nil {
+		s.sims.Finish(run, "fehler", "", []string{"bots: " + err.Error()}, simrun.ReportDir(run))
+		return
+	}
+	defer bots.Close() // nach den Geräten (defer läuft rückwärts)
+	err = o.connect(ctx, c.Base, run.ID(), spec, bots)
 	defer func() {
 		for _, d := range o.devices {
 			d.Stop()
@@ -72,8 +78,7 @@ func (s *Server) runOnline(ctx context.Context, run *simRun, spec simSpec, c *se
 }
 
 // connect: je Raum legt das erste Gerät einen Raum an (Name mit Präfix test-), die übrigen treten bei.
-func (o *onlineRun) connect(ctx context.Context, base, id string, spec simSpec) error {
-	bot, _ := balance.BotByName(spec.bots)
+func (o *onlineRun) connect(ctx context.Context, base, id string, spec simSpec, bot simexe.Decider) error {
 	for r := range spec.rooms {
 		var code string
 		for p := range spec.players {
@@ -132,6 +137,16 @@ func (o *onlineRun) totals() (states, inputs, errs, lost, moved int, events map[
 	return states, inputs, errs, lost, moved, events
 }
 
+// botError ist der erste Fehler eines Bot-Entscheiders (k3c-sim bot) über alle Geräte; leer = keiner.
+func (o *onlineRun) botError() string {
+	for _, d := range o.devices {
+		if e := d.Stats().BotError; e != "" {
+			return e
+		}
+	}
+	return ""
+}
+
 func (o *onlineRun) lines(spec simSpec, newFailures int) []string {
 	states, inputs, errs, lost, moved, ev := o.totals()
 	cpu := "–"
@@ -143,6 +158,9 @@ func (o *onlineRun) lines(spec simSpec, newFailures int) []string {
 		fmt.Sprintf("Tick p99 max %.1f ms (Ziel ≤ %.0f ms), CPU max %s", o.maxP99, targetP99, cpu),
 		fmt.Sprintf("Zustände %d, Eingaben %d, Monarchen bewegt %d/%d", states, inputs, moved, len(o.devices)),
 		fmt.Sprintf("Trennungen %d, Fehler %d, neue Server-Fehler %d", lost, errs, newFailures),
+	}
+	if e := o.botError(); e != "" {
+		out = append(out, "Bot: "+e)
 	}
 	if slices.Contains(spec.focus, "balance") {
 		out = append(out, fmt.Sprintf("Ereignisse: Burgfälle %d, Wellen %d, gebaut %d", ev["castleFallen"], ev["wave"], ev["built"]))

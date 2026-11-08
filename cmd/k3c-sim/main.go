@@ -6,6 +6,7 @@
 //	k3c-sim run     [--input DATEI|-]          JSON {"biome","seed","ticks","inputs":[Segment…]} wie sim_run
 //	k3c-sim level   [--input DATEI|-]          JSON {"biome","seed"} wie level_generate
 //	k3c-sim balance [--input DATEI|-] [Flags]  Flags wie bin/k3c-balance (--targets, --report-dir, --seed-list …)
+//	k3c-sim bot     --bot NAME                  je Zeile auf stdin ein Zustand, je Zeile eine Antwort (bot.go, RS2.2)
 //
 // Eingabe: JSON aus der Datei hinter --input, bei run und level ohne --input von stdin („-“ = stdin). Bei balance ist
 // das JSON ein Objekt mit Flag-Namen als Schlüssel ({"targets": true, "seed-list": "k3c-dev", "vary": ["a=1"]});
@@ -17,6 +18,7 @@
 //	{"event":"result","text":"…"}                     Ergebnis von run und level (Text wie sim_run/level_generate)
 //	{"event":"result","report":{…}}                   balance ohne --targets und ohne --out (Matrix-Bericht, --play)
 //	{"event":"report","files":["…json","…md","…html"]} balance --targets: geschriebene Berichtsdateien
+//	{"event":"commands","commands":[{"player":0,…}]}  Antwort von bot je Anfrage (bot.go)
 //	{"event":"error","message":"…"}                   vor Exit 1 oder 2
 //	{"event":"aborted"}                               vor Exit 130
 //
@@ -132,7 +134,7 @@ func run(args []string, v env) int {
 
 func dispatch(args []string, v env) error {
 	if len(args) == 0 {
-		return usagef("Unterbefehl fehlt: run, balance oder level")
+		return usagef("Unterbefehl fehlt: run, balance, level oder bot")
 	}
 	switch args[0] {
 	case "run":
@@ -141,6 +143,8 @@ func dispatch(args []string, v env) error {
 		return cmdLevel(args[1:], v)
 	case "balance":
 		return cmdBalance(args[1:], v)
+	case "bot":
+		return cmdBot(args[1:], v)
 	}
-	return usagef("unbekannter Unterbefehl %q (bekannt: run, balance, level)", args[0])
+	return usagef("unbekannter Unterbefehl %q (bekannt: run, balance, level, bot)", args[0])
 }

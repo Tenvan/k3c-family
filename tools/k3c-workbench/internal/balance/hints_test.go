@@ -29,15 +29,15 @@ func TestRichtwerteLaden(t *testing.T) {
 // AC-02: Fehler beim Laden nennen die Stelle.
 func TestRichtwerteFehler(t *testing.T) {
 	cases := map[string]string{
-		`{"version":1,"figures":{},"levers":{},"x":1}`:                                                        "unknown field",
-		`{"version":2,"figures":{},"levers":{}}`:                                                              "version 2",
-		`{"version":1,"figures":{"fehlt":{"name":"a","green":[0,1],"yellow":[0,1]}},"levers":{}}`:            `kennzahl "fehlt"`,
-		`{"version":1,"figures":{"idleShare":{"name":"a","green":[0,30],"yellow":[0,20]}},"levers":{}}`:       "yellow muss green",
-		`{"version":1,"figures":{"idleShare":{"name":"a","green":[5,1],"yellow":[null,null]}},"levers":{}}`:   "von ≤ bis",
-		`{"version":1,"figures":{},"levers":{"fehlt":{"low":[],"high":[]}}}`:                                 `"fehlt" unbekannt`,
-		`{"version":1,"figures":{},"levers":{"castleHeld":{"low":[{"path":"a","direction":"+","step":0.1,"label":"x"}]}}}`: "erwartet datei.json",
+		`{"version":1,"figures":{},"levers":{},"x":1}`:                                                                            "unknown field",
+		`{"version":2,"figures":{},"levers":{}}`:                                                                                  "version 2",
+		`{"version":1,"figures":{"fehlt":{"name":"a","green":[0,1],"yellow":[0,1]}},"levers":{}}`:                                 `kennzahl "fehlt"`,
+		`{"version":1,"figures":{"idleShare":{"name":"a","green":[0,30],"yellow":[0,20]}},"levers":{}}`:                           "yellow muss green",
+		`{"version":1,"figures":{"idleShare":{"name":"a","green":[5,1],"yellow":[null,null]}},"levers":{}}`:                       "von ≤ bis",
+		`{"version":1,"figures":{},"levers":{"fehlt":{"low":[],"high":[]}}}`:                                                      `"fehlt" unbekannt`,
+		`{"version":1,"figures":{},"levers":{"castleHeld":{"low":[{"path":"a","direction":"+","step":0.1,"label":"x"}]}}}`:        "erwartet datei.json",
 		`{"version":1,"figures":{},"levers":{"castleHeld":{"low":[{"path":"a.json:b","direction":"*","step":0.1,"label":"x"}]}}}`: "direction",
-		`{"version":1,"figures":{},"levers":{"castleHeld":{"low":[{"path":"a.json:b","direction":"+","step":2,"label":"x"}]}}}`: "step",
+		`{"version":1,"figures":{},"levers":{"castleHeld":{"low":[{"path":"a.json:b","direction":"+","step":2,"label":"x"}]}}}`:   "step",
 	}
 	for raw, want := range cases {
 		if _, err := LoadHints([]byte(raw)); err == nil || !strings.Contains(err.Error(), want) {

@@ -66,7 +66,9 @@ func (s *Server) logsStats(ctx context.Context, in statsIn) (string, error) {
 	for k := range counts {
 		keys = append(keys, k)
 	}
-	sort.Slice(keys, func(i, j int) bool { return counts[keys[i]] > counts[keys[j]] || counts[keys[i]] == counts[keys[j]] && keys[i] < keys[j] })
+	sort.Slice(keys, func(i, j int) bool {
+		return counts[keys[i]] > counts[keys[j]] || counts[keys[i]] == counts[keys[j]] && keys[i] < keys[j]
+	})
 	parts := make([]string, len(keys))
 	for i, k := range keys {
 		parts[i] = fmt.Sprintf("%s %d", orDash(k), counts[k])

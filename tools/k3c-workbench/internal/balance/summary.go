@@ -19,18 +19,18 @@ type Entry struct {
 // Summary ist der Bericht: alle Ziele mit Urteil. Seeds ist die Zahl der gespielten Seeds (kleiner als in der Datei bei --seeds N).
 // Varianten und Kennzahlen (WZ28.4) fehlen in älteren Berichten und in der Baseline; ReadSummary liest beide.
 type Summary struct {
-	Version    int      `json:"version"`
-	Seeds      int      `json:"seeds"`
-	SeedMode   string   `json:"seedMode,omitempty"`  // dev, all oder auswahl (B-634); fehlt in älteren Berichten
-	SeedNames  []string `json:"seedNames,omitempty"` // die Seeds bei höchstens 5, sonst leer
+	Version   int      `json:"version"`
+	Seeds     int      `json:"seeds"`
+	SeedMode  string   `json:"seedMode,omitempty"`  // dev, all oder auswahl (B-634); fehlt in älteren Berichten
+	SeedNames []string `json:"seedNames,omitempty"` // die Seeds bei höchstens 5, sonst leer
 	// Pass: alle Ziele mit Rolle goal erreicht (B-648); ohne Rollen (alte Berichte) alle Ziele.
-	Pass       bool     `json:"pass"`
+	Pass       bool         `json:"pass"`
 	Goal       *GoalView    `json:"goal,omitempty"`     // Urteil über die Ziele (Rolle goal)
 	Quality    *QualityView `json:"quality,omitempty"`  // Korridore mit Rolle guard im Korridor
 	Progress   *Progress    `json:"progress,omitempty"` // Meilenstein-Leiter des Insel-Laufs
-	Targets    []Entry  `json:"targets"`
-	Varianten  []string `json:"varianten,omitempty"`  // Wert-Varianten des Laufs (datei.json:a.b.c=wert)
-	Kennzahlen *Figures `json:"kennzahlen,omitempty"` // FiguresOf des Laufs
+	Targets    []Entry      `json:"targets"`
+	Varianten  []string     `json:"varianten,omitempty"`  // Wert-Varianten des Laufs (datei.json:a.b.c=wert)
+	Kennzahlen *Figures     `json:"kennzahlen,omitempty"` // FiguresOf des Laufs
 }
 
 // Change ist ein Ziel, dessen Bewertung gegenüber der Baseline anders ist. Before/After sind Status; „neu“ und
@@ -40,37 +40,6 @@ type Change struct {
 	Before string `json:"before"`
 	After  string `json:"after"`
 	Tipped bool   `json:"tipped"`
-}
-
-// RunTargets spielt alle Szenarien der Ziele über die ersten n Seeds der Datei (0 = alle).
-func (t *Targets) RunTargets(n int) (Report, error) {
-	return t.RunTargetsProgress(n, nil)
-}
-
-// RunTargetsProgress wie RunTargets; progress (darf nil sein) erfährt nach jedem Lauf fertige und alle Läufe.
-func (t *Targets) RunTargetsProgress(n int, progress func(done, total int)) (Report, error) {
-	seedList := t.seedList(n)
-	var rep Report
-	var all []Scenario
-	done := map[Scenario]bool{}
-	for _, g := range t.Targets {
-		key := Scenario{Players: g.Players, Bot: g.Bot, Depth: g.Depth, Days: g.Days, Grade: g.Grade, World: g.World, Helps: g.Helps}
-		if done[key] {
-			continue
-		}
-		done[key] = true
-		m := Matrix{Seeds: seedList, Players: []int{g.Players}, Bots: []string{g.Bot}, Depths: []int{g.Depth}, Days: g.Days, Grade: g.Grade, World: g.World, Helps: g.Helps}
-		sc, err := m.Scenarios()
-		if err != nil {
-			return Report{}, err
-		}
-		if all == nil {
-			rep.Matrix = m
-		}
-		all = append(all, sc...)
-	}
-	rep.Results = runAll(all, 0, progress)
-	return rep, nil
 }
 
 // Summarize bewertet einen Bericht gegen die Ziele.

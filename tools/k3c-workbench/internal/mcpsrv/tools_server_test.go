@@ -134,10 +134,13 @@ func TestServerAdresseAusPort(t *testing.T) {
 }
 
 func TestEngineToolsLaufenOhneServer(t *testing.T) {
-	t.Setenv("K3C_SERVER_URL", "http://127.0.0.1:1") // kein Server: die In-process-Tools brauchen keinen
-	call := serverTools(t)
+	t.Setenv("K3C_SERVER_URL", "http://127.0.0.1:1") // kein Server: die Engine-Tools brauchen keinen
+	root := t.TempDir()
+	installFakeSim(t, root)
+	cs := connect(t, New(Config{Version: "test", Root: root}))
+	call := func(name string, args any) (string, bool) { return callText(t, cs, name, args) }
 	text, isErr := call("level_generate", map[string]any{"seed": "0", "biome": "forest"})
-	if isErr || !strings.HasPrefix(text, "Level forest · Seed \"0\" · Breite 900 Units") {
+	if isErr || text != `level · Seed "0" · 0 Ticks` {
 		t.Errorf("level_generate: %q", text)
 	}
 	a, isErr := call("sim_run", map[string]any{"seed": "abc", "ticks": 600})
@@ -147,5 +150,16 @@ func TestEngineToolsLaufenOhneServer(t *testing.T) {
 	}
 	if text, isErr = call("sim_run", map[string]any{"seed": "abc", "ticks": 100001}); !isErr || !strings.Contains(text, "100000") {
 		t.Errorf("Grenze: %q", text)
+	}
+}
+
+// RS2.2: Fehlt bin/k3c-sim, nennt der Fehler den Bau-Befehl.
+func TestEngineToolsOhneEXE(t *testing.T) {
+	cs := connect(t, New(Config{Version: "test", Root: t.TempDir()}))
+	for tool, args := range map[string]map[string]any{"level_generate": {"seed": "0"}, "sim_run": {"seed": "0", "ticks": 1}} {
+		text, isErr := callText(t, cs, tool, args)
+		if !isErr || !strings.Contains(text, "task k3c-sim:build") {
+			t.Errorf("%s: %q", tool, text)
+		}
 	}
 }

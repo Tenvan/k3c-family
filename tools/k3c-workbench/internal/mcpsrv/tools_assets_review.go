@@ -35,7 +35,9 @@ func registerAssetsReview(s *Server) {
 		Description: "Review des Arbeitsstands gegen eine Basis: je Asset status · id · Felder · Pixel-Anteil · Bilder (PNG unter .cache/paper/mcp/); " +
 			"Stiländerungen mit stil: true. Nutze es bei: zum Schluss jeder Asset-Änderung. Statt: git diff auf Specs und PNGs.",
 		Annotations: readOnly(),
-	}, func(ctx context.Context, in assetsReviewIn) (string, error) { return assetsReviewText(s.ws(ctx).root, in.Basis) })
+	}, func(ctx context.Context, in assetsReviewIn) (string, error) {
+		return assetsReviewText(s.ws(ctx).root, in.Basis)
+	})
 }
 
 // reviewKopf ist die Kopfzeile wie fixtures/mcp/assets_review[-lokal].txt.
