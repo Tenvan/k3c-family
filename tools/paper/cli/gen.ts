@@ -33,7 +33,11 @@ export function gen(wurzel: string, o: { stil?: Stil; melde?: Melde } = {}): { g
   let nr = 0;
   for (const g of gruppen) {
     const dir = join(wurzel, g);
-    renderOrdner(dir, { stil, beiAsset: (id, ms) => melde?.(`🔨 [${++nr}/${gesamt}] ${g}/${id} gerendert ✅ ${dauer(ms)}`) });
+    renderOrdner(dir, {
+      stil,
+      vorAsset: (id) => melde?.(`⏳ [${nr + 1}/${gesamt}] ${g}/${id} rendert …`),
+      beiAsset: (id, ms) => melde?.(`🔨 [${++nr}/${gesamt}] ${g}/${id} gerendert ✅ ${dauer(ms)}`),
+    });
     schritt(melde, '💾', `${g}: golden.json`, () => {
       const tmp = join(dir, `.golden.json.tmp-${process.pid}`);
       writeFileSync(tmp, JSON.stringify(golden(dir), null, 2) + '\n');

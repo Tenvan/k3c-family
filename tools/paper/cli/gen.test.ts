@@ -57,6 +57,7 @@ describe('gen', { timeout: 60_000 }, () => {
     const zeilen: string[] = [];
     gen(wurzel(), { melde: (z) => zeilen.push(z) });
     expect(zeilen[0]).toBe('🚀 gen:paper: 2 Gruppen, 2 Assets');
+    expect(zeilen.filter((z) => z.startsWith('⏳'))).toEqual(['⏳ [1/2] bauten/mauer rendert …', '⏳ [2/2] reittiere/pferd rendert …']);
     const assets = zeilen.filter((z) => z.startsWith('🔨'));
     expect(assets).toHaveLength(2);
     expect(assets[0]).toMatch(/^🔨 \[1\/2\] bauten\/mauer gerendert ✅ \d+(,\d)? (ms|s)$/);
