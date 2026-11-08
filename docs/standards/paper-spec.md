@@ -54,7 +54,7 @@ Koordinaten in **Spec-Einheiten**, Boden `y = 0`, Blick nach rechts, `y` wächst
 | `umhang` | nein | `{anker, punkt:[x,y], material, laenge, breite:[oben, unten], segmente?}` – Umhang-Physik des Rigs |
 | `bein` | nur `vierbeiner` | `{breiten_vorn:[6], breiten_hinten:[6]}` – Breite des Beinpfads an Schulter/Hüfte, Oberschenkel, Knie, Unterbein, Fessel, Huf |
 | `proportionen` | nein | `vierbeiner`: `{fuss?: huf|pfote|elefantenfuss, gangarten?: [schritt, trab, galopp]}`; `figur`: `{arme?, beine?, rumpf?, kopf?}` (Faktoren 0,1–3, Standard 1). Felder am falschen Rig lehnt `validate` ab (`proportionen-rig`) |
-| `animationen` | nein | Name → `{frames (1–64), fps? (Standard 8), reittier?, gangart?: stand|schritt|trab|galopp, keyframes?}` |
+| `animationen` | nein | Name → `{frames (1–64), fps? (Standard 8), reittier?, gangart?: stand|schritt|trab|galopp, ebene?: reiter|hinten|vorn, reiter?, keyframes?}` |
 | `varianten` | nein | Name → `{tausch: {material: material}}` |
 | `stufen` | nur `gebaeude` | Delta je weiterer Ausbaustufe: `stufen[0]` = Stufe 2, `{tausch?, zusaetze?: [Teil]}` |
 | `ausgabe` | ja | `{hoehe_px (8–1024), rahmen:[x, y, b, h], massstab?}` |
@@ -74,6 +74,7 @@ Koordinaten in **Spec-Einheiten**, Boden `y = 0`, Blick nach rechts, `y` wächst
   oberschenkel-*/unterschenkel-*, `kopf`: kopf/krone) und auf den senkrechten Versatz (`rumpf`). 1 = Grundform; kleiner bei längeren
   Gliedern (gleicher Ausschlag in Einheiten). Keyframe-Winkel der Spec bleiben unverändert.
 - **`reittier`:** `id` eines `vierbeiner`-Assets; beim Reiten gilt der Rahmen des Reittiers.
+- **`ebene`** (B-752): Reiter und Reittier getrennt rendern, der Client setzt sie nach `rahmen` zusammen (Reihenfolge hinten, Umhang + Reiter, vorn mit Zügeln). `reiter` am `figur` (braucht `reittier` und `gangart`): Umhang und Reiter; `hinten` und `vorn` am `vierbeiner` (brauchen `reiter` = id der Figur, deren Hand die Zügel hält, und `gangart`). Alle Ebenen teilen Koordinaten (Fußpunkt des Reittiers) und Pixel je Einheit, jede hat einen eigenen engen Rahmen mit Rand. Der Tausch der Spielerfarbe gilt nur für die Reiter-Ebene (Satteldecke ohne Spielerfarbe, 🧑 2026-11-08). Fehler: `ebene-angabe`.
 - **`massstab`:** Faktor Spec-Einheiten → Welt-Einheiten (Standard 1). Das Pferd steht in eigenen Einheiten mit `1.3`
   (wie `scale(1.3)` im Prototyp); Pivots und Beinbreiten gelten in Spec-Einheiten.
 - **`rahmen`:** Ausschnitt eines Frames in Spec-Einheiten; Frame-Breite = `round(hoehe_px · b / h)`.

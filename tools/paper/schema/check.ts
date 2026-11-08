@@ -10,7 +10,7 @@ import { box } from './form';
 import type { Lage, Spec, Stil, Teil } from './types';
 
 export type Regel = 'json' | 'schema' | 'hex-farbe' | 'material-unbekannt' | 'material-doppelt' | 'ton-ohne-toene'
-  | 'pflicht-teil-fehlt' | 'teil-doppelt' | 'eltern-unbekannt' | 'teil-unbekannt' | 'zyklus' | 'id-dateiname' | 'proportion' | 'proportionen-rig';
+  | 'pflicht-teil-fehlt' | 'teil-doppelt' | 'eltern-unbekannt' | 'teil-unbekannt' | 'zyklus' | 'id-dateiname' | 'proportion' | 'proportionen-rig' | 'ebene-angabe';
 export type Fehler = { feld: string; regel: Regel; text: string };
 
 /** Pflicht-Teile je Rig-Typ; requisite und hintergrund brauchen mindestens ein Teil. */
