@@ -141,6 +141,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-750](B-750-gen-paper-schritte-im-asset.md) | PAP | Problem | mittel | offen | – | gen:paper meldet die Ausgaben innerhalb großer Assets |
 | [B-751](B-751-gen-paper-schneller-rendern.md) | PAP | Idee | mittel | offen | – | gen:paper schneller: Cache je Asset und parallel rastern |
 | [B-752](B-752-monarch-aus-teilen-zusammensetzen.md) | PAP | Idee | mittel | eingeplant | – | Monarch und Reittier getrennt rendern und im Client zusammensetzen |
+| [B-753](B-753-meilenstein-volllauf-zeitlimit.md) | SRV | Problem | hoch | offen | – | Meilenstein-Volllauf über k3c-sim überschreitet das 60-min-Limit |
+| [B-754](B-754-tick-p99-online-ueber-rs2-3.md) | SRV | Problem | mittel | offen | – | Tick p99 online bei 4 Geräten liegt über dem RS2.3-Wert |
 
 ## Archiv
 
