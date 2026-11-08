@@ -1,11 +1,11 @@
 # CU1 · PAP, CLI, DEV, INF · Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** PAP
 - **Domäne:** PAP, CLI, DEV, INF
 - **Reife:** bereit
 - **Tickets:** B-700, B-701
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 89ad1b81
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** autonom, Claude
