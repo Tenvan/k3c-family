@@ -40,8 +40,8 @@ func TestSimTestMitCheckout(t *testing.T) {
 	if len(specs) < 2 {
 		t.Fatalf("%d Schritte statt bauen und rechnen\n%s", len(specs), status)
 	}
-	if want := filepath.Join(wts[0], "tools", "k3c-workbench"); !samePath(specs[0].dir, want) {
-		t.Errorf("Build in %q, erwartet %q", specs[0].dir, want)
+	if !samePath(specs[0].dir, wts[0]) { // go build ./cmd/k3c-sim im Checkout (RS2.2)
+		t.Errorf("Build in %q, erwartet %q", specs[0].dir, wts[0])
 	}
 	if !samePath(specs[1].dir, wts[0]) {
 		t.Errorf("Lauf in %q, erwartet %q", specs[1].dir, wts[0])

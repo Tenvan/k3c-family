@@ -12,7 +12,7 @@ import (
 	"k3c/tools/k3c-workbench/internal/balance"
 )
 
-// Spec ist ein Offline-Lauf der Balancing-Seite; jedes Feld wird ein Flag der Balance-CLI (internal/balance/cmd).
+// Spec ist ein Offline-Lauf der Balancing-Seite; jedes Feld wird ein Flag von `k3c-sim balance` (cmd/k3c-sim).
 // Null bzw. leer heißt: Flag weglassen, die CLI nimmt alle Ziele aus data/balance-targets.json.
 type Spec struct {
 	Seeds int `json:"seeds,omitempty"`
@@ -221,7 +221,7 @@ func (s Spec) args(exe, dir string) []string {
 	if s.Baseline != "" {
 		baseline = balance.BaselineFile(s.Baseline)
 	}
-	args := []string{exe, "--targets", "--report-dir", dir, "--progress", "--baseline", baseline}
+	args := []string{exe, "balance", "--targets", "--report-dir", dir, "--progress", "--baseline", baseline}
 	for _, f := range []struct {
 		flag string
 		n    int
@@ -254,10 +254,7 @@ func (s Spec) args(exe, dir string) []string {
 	return append(args, s.Tune.args()...)
 }
 
-func knownBot(name string) bool {
-	_, ok := balance.BotByName(name)
-	return ok
-}
+func knownBot(name string) bool { return balance.KnownBot(name) }
 
 func worldNames() []string {
 	ids, _ := balance.Worlds()

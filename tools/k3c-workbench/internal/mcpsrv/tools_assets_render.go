@@ -35,7 +35,9 @@ func registerAssetsRender(s *Server) {
 		Description: "Rendert Assets über die Render-CLI: {id} synchron, {alle: true} als Job (sofort zurück), {job} Stand, " +
 			"{job, wait: true} bis zum Ende. Nutze es bei: Ausgabe neu erzeugen, nach assets_style_set warten. Statt: CLI in der Shell.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &notDestructive, OpenWorldHint: &closed},
-	}, func(ctx context.Context, in assetsRenderIn) (string, error) { return assetsRenderText(ctx, s.ws(ctx).root, in) })
+	}, func(ctx context.Context, in assetsRenderIn) (string, error) {
+		return assetsRenderText(ctx, s.ws(ctx).root, in)
+	})
 }
 
 func assetsRenderText(ctx context.Context, root string, in assetsRenderIn) (string, error) {

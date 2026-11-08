@@ -120,32 +120,32 @@ func registerLogs(s *Server) {
 	}, s.logsSince)
 }
 
-// registerEngine sind die In-process-Tools (B-047): rechnen mit engine/level und engine/sim, ohne laufenden Server.
+// registerEngine sind die Engine-Tools (B-047): rechnen im Kindprozess bin/k3c-sim des Checkouts (RS2.2), ohne laufenden Server.
 func registerEngine(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "level_generate",
-		Description: "Erzeugt ein Level in-process (engine/level, kein Server nötig): Kopfzeile, eine Zeile je Abschnitt, " +
+		Description: "Erzeugt ein Level mit bin/k3c-sim des Checkouts (kein Server nötig; fehlt die EXE: task k3c-sim:build): Kopfzeile, eine Zeile je Abschnitt, " +
 			"Objekte nach Art, Warnungen der Prüfung. Gleicher Seed ergibt dasselbe Level wie im Spiel. " +
 			"Nutze es bei: Level eines Seeds prüfen. Statt: Server starten und Level-Betrachter öffnen.",
 		Annotations: readOnlyEngine(),
 	}, s.levelGenerate)
 	add(s, &mcp.Tool{
 		Name: "sim_run",
-		Description: "Deterministischer Simulationslauf in-process (engine/sim, kein Server nötig), höchstens 100000 Ticks (30/s): " +
+		Description: "Deterministischer Simulationslauf mit bin/k3c-sim des Checkouts (kein Server nötig), höchstens 100000 Ticks (30/s): " +
 			"Tag, Welle, Gold, Truppen, Verluste, Ende. Optional Eingaben je Monarch und Tick-Bereich (höchstens 100 Segmente). " +
 			"Nutze es bei: kurzer deterministischer Regel-Check. Statt: go run oder ein Spiel von Hand.",
 		Annotations: readOnlyEngine(),
 	}, s.simRun)
 	add(s, &mcp.Tool{
 		Name: "replay_run",
-		Description: "Spielt eine Replay-Datei des Balancing-Testers (task balance:run -- --replay-dir) in-process ohne Bot ab: " +
+		Description: "Spielt eine Replay-Datei des Balancing-Testers (task balance:run -- --replay-dir) mit bin/k3c-sim ohne Bot ab: " +
 			"Endzustand-Hash, Burgfall-Tick, Vergleich mit der Aufnahme, Warnung bei anderem Datenstand. Nur Dateien im Repo. " +
 			"Nutze es bei: Replay nachrechnen oder Abweichung finden. Statt: Balancing-Binary in der Shell.",
 		Annotations: readOnlyEngine(),
 	}, s.replayRun)
 }
 
-// readOnlyEngine: rechnet nur im Speicher, ändert nichts.
+// readOnlyEngine: rechnet nur (Kindprozess), ändert nichts.
 func readOnlyEngine() *mcp.ToolAnnotations { return readOnly() }
 
 // registerServer sind die Tools für den laufenden Go-Server (B-047): nur lesend über /api/status.

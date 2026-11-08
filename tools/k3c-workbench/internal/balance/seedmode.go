@@ -42,16 +42,6 @@ func (t *Targets) WithSeeds(seeds []string) (*Targets, error) {
 	return &out, nil
 }
 
-// allSeeds liefert eine Kopie ohne Seed-Modus dev: ohne Angabe rechnet sie alle Seeds (Sensitivität, Kurven).
-func (t *Targets) allSeeds() *Targets {
-	if t.SeedMode != SeedModeDev {
-		return t
-	}
-	out := *t
-	out.SeedMode = SeedModeAll
-	return &out
-}
-
 func (t *Targets) validateSeeds() error {
 	if !validSeedMode(t.SeedMode) {
 		return fmt.Errorf("seedMode %q: %s oder %s", t.SeedMode, SeedModeDev, SeedModeAll)

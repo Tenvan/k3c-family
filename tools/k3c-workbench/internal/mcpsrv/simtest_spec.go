@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"k3c/tools/k3c-workbench/internal/balance"
+	"k3c/tools/k3c-workbench/internal/simexe"
 	"k3c/tools/k3c-workbench/internal/simrun"
 )
 
@@ -159,6 +160,9 @@ func (s *Server) simRunner(ctx context.Context, spec simSpec) (simrun.Runner, er
 	}
 	if err != nil {
 		return nil, fmt.Errorf("sim_test start abgelehnt: Spielserver des Checkouts antwortet nicht, erst svc_start server (%v)", oneLine(err))
+	}
+	if err := simexe.Check(s.ws(ctx).root); err != nil {
+		return nil, fmt.Errorf("sim_test start abgelehnt: die Bots rechnet %v", err)
 	}
 	if spec.clients > 0 {
 		return s.clientsRunner(ctx, spec, c)

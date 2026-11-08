@@ -30,7 +30,7 @@ func balanceApp(t *testing.T, hold chan struct{}) *App {
 			return simrun.Result{Exit: -1}
 		case <-hold:
 		}
-		dir := filepath.Join(p.Dir, p.Args[3])
+		dir := filepath.Join(p.Dir, p.Args[slices.Index(p.Args, "--report-dir")+1])
 		if err := os.MkdirAll(dir, 0o755); err != nil {
 			t.Error(err)
 		}

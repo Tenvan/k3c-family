@@ -26,7 +26,7 @@ type DepthFigures struct {
 	Arrived          float64  `json:"arrived"`
 	ArrivalDayMedian *float64 `json:"arrivalDayMedian"`
 	CastleFell       float64  `json:"castleFell"`
-	Downs            float64  `json:"downs"` // gefallene Monarchen je Lauf (Mittel), Ereignis playerDown
+	Downs            float64  `json:"downs"`    // gefallene Monarchen je Lauf (Mittel), Ereignis playerDown
 	HubLevel         float64  `json:"hubLevel"` // Hub-Stufe am Ende (Mittel)
 	Fighters         float64  `json:"fighters"` // Kämpfer am Ende (Mittel)
 }
@@ -155,4 +155,11 @@ func spawnShare(runs []*Metrics, id string) float64 {
 		}
 	}
 	return round1(100 * float64(n) / float64(len(runs)))
+}
+
+func b2i(b bool) int {
+	if b {
+		return 1
+	}
+	return 0
 }

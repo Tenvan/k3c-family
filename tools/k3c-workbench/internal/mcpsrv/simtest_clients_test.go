@@ -129,6 +129,7 @@ func clientsServer(t *testing.T) (*Server, *fakeClients) {
 	t.Cleanup(vite.Close)
 	t.Setenv("K3C_VITE_PORT", vite.URL[strings.LastIndex(vite.URL, ":")+1:])
 	root := t.TempDir()
+	installFakeSim(t, root)
 	if err := os.MkdirAll(filepath.Join(root, "logs"), 0o755); err != nil {
 		t.Fatal(err)
 	}

@@ -37,7 +37,9 @@ func registerAssetsSet(s *Server) {
 		Description: "Ändert eine Paper-Spec per JSON-Merge-Patch atomar (validate, render, dann ersetzen); ungültig = nichts geändert, " +
 			"Antwort je Fehler feld · regel · text. Nutze es bei: jede Änderung an einem Asset. Statt: .paper.json von Hand ändern.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &notDestructive, OpenWorldHint: &closed},
-	}, func(ctx context.Context, in assetsSetIn) (string, error) { return assetsSetText(ctx, s.ws(ctx).root, in) })
+	}, func(ctx context.Context, in assetsSetIn) (string, error) {
+		return assetsSetText(ctx, s.ws(ctx).root, in)
+	})
 	add(s, &mcp.Tool{
 		Name: "assets_style_get",
 		Description: "Stil-Datei verdichtet: Pfad, stilHash, Materialien, Einzeltöne, Papier-Werte. " +
@@ -57,7 +59,9 @@ func registerAssetsSet(s *Server) {
 		Description: "Löscht Spec, Ausgabe-Ordner und den Eintrag im Gruppen-Index; ohne confirm=true nur Hinweis. " +
 			"Nutze es bei: Asset entfernen. Statt: Dateien von Hand löschen.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
-	}, func(ctx context.Context, in assetsDeleteIn) (string, error) { return assetsDeleteText(s.ws(ctx).root, in) })
+	}, func(ctx context.Context, in assetsDeleteIn) (string, error) {
+		return assetsDeleteText(s.ws(ctx).root, in)
+	})
 }
 
 // ablehnung macht aus einem *pa.Abgelehnt den Vertragstext; andere Fehler bleiben.
@@ -88,7 +92,9 @@ func felderText(felder []assetsui.FeldAenderung) string {
 }
 
 // prozent schreibt einen Anteil 0..1 als Prozent mit Komma und zwei Nachkommastellen.
-func prozent(f float64) string { return strings.Replace(fmt.Sprintf("%.2f", f*100), ".", ",", 1) + " %" }
+func prozent(f float64) string {
+	return strings.Replace(fmt.Sprintf("%.2f", f*100), ".", ",", 1) + " %"
+}
 
 func assetsSetText(ctx context.Context, root string, in assetsSetIn) (string, error) {
 	patch, err := json.Marshal(in.Patch)

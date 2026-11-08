@@ -16,7 +16,7 @@ Interne Go-Packages von k3c-workbench (Service Layer hinter Wails-Bindings und M
 | [`console/`](console/codemap.md) / [`applog/`](applog/codemap.md) | Konsolenpuffer je Quelle, eigenes Log `logs/k3c-workbench.jsonl` |
 | [`logs/`](logs/codemap.md) | Leser für `logs/*.jsonl` mit Cursor und Digest |
 | [`serverapi/`](serverapi/codemap.md) | Read-only-Client für `/api/status` des Spielservers |
-| [`enginetools/`](enginetools/codemap.md) | In-process-Facade auf `engine/level` und `engine/sim` |
+| `simexe/` | Kindprozess `bin/k3c-sim` (Engine-CLI): `sim_run`, `level_generate`, `replay_run`, Bot-Entscheider (B-726) |
 | [`balance/`](balance/codemap.md) (+ [`cmd/`](balance/cmd/codemap.md)) | Balancing-Matrix, Zielkorridor, Baseline, Sensitivität, Kurven, Replays |
 | [`gamedata/`](gamedata/codemap.md) | Zusammenfassungen von `reports/` und `saves/` |
 | [`github/`](github/codemap.md) | `gh`-CLI-Client für PR- und CI-Stand |
@@ -28,4 +28,4 @@ Interne Go-Packages von k3c-workbench (Service Layer hinter Wails-Bindings und M
 
 ## Integration
 - Konsument: `tools/k3c-workbench` (Wails-Host).
-- Abhängigkeiten: `engine/*` (enginetools, balance), externe CLIs `task`, `gh`, `go`.
+- Abhängigkeiten: `engine/conlog`, `engine/devrun`, `engine/store`; Engine-Kern nur in `studioview` (depguard, B-726); externe CLIs `task`, `gh`, `go`, `bin/k3c-sim`.

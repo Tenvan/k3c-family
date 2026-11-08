@@ -1,7 +1,8 @@
 # Balancing-Tester
 
 Bots spielen eine Szenario-Matrix headless gegen `engine/sim` (B-099, BAL1), `task balance` prüft die Zielkorridore
-(B-157, BAL2). Aufbau: `codemap.md`. Befehle: `task balance`, `task balance:run`, `task balance:baseline`,
+(B-157, BAL2). Seit RS2.2 (B-726) rechnet `engine/balance` im Engine-CLI `bin/k3c-sim balance`; dieser Ordner ist nur
+noch der Leseteil der Workbench. Aufbau: `codemap.md`. Befehle: `task balance`, `task balance:run`, `task balance:baseline`,
 `task balance:sensitivity` (Sensitivität und Grad-Kurven, z. B. `-- --seeds 10 --vary economy.json:purse.startGold`).
 Laufzeit: Seit BAL6 prüft `task balance` sechs Szenarien (Bot `wirtschaft` je Grad, Hub-Stufe 3 über 9 Tage), bei 100 Seeds geschätzt
 35–40 min (nicht gemessen); zum Entwickeln `task balance -- --seeds 10`.

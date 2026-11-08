@@ -68,17 +68,6 @@ func (p TuneParam) format(v float64) string {
 	return strconv.FormatFloat(math.Round(v*1e4)/1e4, 'f', -1, 64)
 }
 
-// norm rundet einen Wert wie format, als Zahl.
-func (p TuneParam) norm(v float64) float64 {
-	f, _ := strconv.ParseFloat(p.format(v), 64)
-	return f
-}
-
-// variant ist die Wert-Variante `datei.json:a.b.c=wert` (variant.go).
-func (p TuneParam) variant(v float64) string {
-	return p.File + ":" + p.Path + "=" + p.format(v)
-}
-
 // frame ist eine offene Ebene beim Durchlaufen der JSON-Token.
 type frame struct {
 	arr     bool

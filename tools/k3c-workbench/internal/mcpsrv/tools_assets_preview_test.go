@@ -83,7 +83,7 @@ func TestAssetsPreviewBild(t *testing.T) {
 		}
 		text := res.Content[1].(*mcp.TextContent).Text
 		zeige := map[string]string{"": "idle", "reiten": "reiten"}[anim]
-		if !regexp.MustCompile(`^monarch · ` + zeige + ` · Frame 0 · Basis – · \d+×\d+ px\nTeile \(x,y,b,h px\): \S+ \d+,\d+,\d+,\d+`).MatchString(text) ||
+		if !regexp.MustCompile(`^monarch · `+zeige+` · Frame 0 · Basis – · \d+×\d+ px\nTeile \(x,y,b,h px\): \S+ \d+,\d+,\d+,\d+`).MatchString(text) ||
 			!strings.Contains(text, "rumpf 53,58,47,78") {
 			t.Errorf("%s: Text\n%s", anim, text)
 		}

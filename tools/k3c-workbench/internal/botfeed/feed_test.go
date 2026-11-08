@@ -11,7 +11,7 @@ import (
 
 	"github.com/coder/websocket"
 
-	"k3c/engine/sim"
+	"k3c/tools/k3c-workbench/internal/simexe"
 )
 
 func TestFeedNurLoopback(t *testing.T) {
@@ -57,7 +57,7 @@ func TestFeedSchicktJeSlot(t *testing.T) {
 	for now, _ := f.Connected(); !now; now, _ = f.Connected() {
 		time.Sleep(10 * time.Millisecond)
 	}
-	f.Send(ctx, []Cmd{CmdOf(0, sim.PlayerCommand{MoveX: -1}), CmdOf(1, sim.PlayerCommand{Pay: true, Skill: 2})})
+	f.Send(ctx, []Cmd{CmdOf(0, simexe.Command{MoveX: -1}), CmdOf(1, simexe.Command{Pay: true, Skill: 2})})
 	var got []Cmd
 	for range 2 {
 		_, data, err := c.Read(ctx)

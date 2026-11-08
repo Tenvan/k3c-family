@@ -10,11 +10,11 @@ import (
 
 // Hint ist ein Tuning-Hinweis zu einem Ziel.
 type Hint struct {
-	Target string  `json:"target"`
-	Light  string  `json:"light"`
-	Text   string  `json:"text"`
-	Why    string  `json:"why"`
-	Levers []Lever `json:"levers"`
+	Target string      `json:"target"`
+	Light  string      `json:"light"`
+	Text   string      `json:"text"`
+	Why    string      `json:"why"`
+	Levers []Lever     `json:"levers"`
 	Plans  []LeverPlan `json:"plans"`
 }
 

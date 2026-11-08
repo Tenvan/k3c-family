@@ -1,24 +1,20 @@
 package mcpsrv
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
-
-	"k3c/tools/k3c-workbench/internal/balance"
 )
 
-// recordReplay nimmt einen Bot-Lauf auf und schreibt ihn nach dir/name. Seit der Verlust-Kaskade (W4.3a, Q67) heben die
-// Start-Bogenschützen ihren Bogen wieder auf, die passive Burg fällt in keinem Lauf mehr (Burgfall-Tick „keiner“).
-func recordReplay(t *testing.T, dir, name string) balance.Replay {
+// writeReplay schreibt eine Aufnahme nach dir/name (Felder wie engine/balance › Replay, ohne Eingaben); das falsche
+// k3c-sim spielt sie mit gleichem Endzustand ab (fakesim_test.go).
+func writeReplay(t *testing.T, dir, name string) replayHead {
 	t.Helper()
-	rep, err := balance.Run(balance.Matrix{Seeds: []string{"2"}, Players: []int{1}, Bots: []string{"passive"}, Depths: []int{0}, Days: 1})
-	if err != nil || rep.Results[0].Replay == nil {
-		t.Fatalf("Aufnahme: %v %+v", err, rep.Results)
-	}
-	r := *rep.Results[0].Replay
-	b, err := r.JSON()
+	r := replayHead{Seed: "2", Players: 1, Bot: "passive", Days: 1, EndHash: "a1b2c3"}
+	b, err := json.Marshal(map[string]any{"version": 1, "seed": r.Seed, "players": r.Players, "bot": r.Bot, "depth": 0,
+		"days": r.Days, "endHash": r.EndHash, "castleFallTick": nil})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -33,7 +29,8 @@ func TestReplayRunGleicherHashUndBurgfall(t *testing.T) {
 	if err := os.Mkdir(filepath.Join(root, "replays"), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	r := recordReplay(t, filepath.Join(root, "replays"), "2.replay.json")
+	r := writeReplay(t, filepath.Join(root, "replays"), "2.replay.json")
+	installFakeSim(t, root)
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 
 	text, isErr := callText(t, cs, "replay_run", map[string]any{"path": "replays/2.replay.json"})
@@ -69,6 +66,7 @@ func TestReplayRunKaputteDatei(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(root, "alt.json"), []byte(`{"version":99}`), 0o644); err != nil {
 		t.Fatal(err)
 	}
+	installFakeSim(t, root)
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 	if text, isErr := callText(t, cs, "replay_run", map[string]any{"path": "alt.json"}); !isErr || !strings.Contains(text, "unbekannte Version 99") {
 		t.Errorf("Version: %q", text)

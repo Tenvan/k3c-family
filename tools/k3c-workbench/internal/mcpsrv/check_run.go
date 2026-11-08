@@ -74,7 +74,6 @@ func (c *checkRuns) lastRun(name string) (runResult, bool) {
 	return r, ok
 }
 
-
 func (s *Server) logRun(name string, res runResult) {
 	attrs := []any{"ns", "check", "target", name, "exit", res.exit, "ms", int64(res.ms())}
 	switch {

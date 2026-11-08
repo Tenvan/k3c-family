@@ -10,7 +10,7 @@ import { goldenAbweichungen } from './regel';
 
 const GRAFIK = join(ROOT, 'public/grafik');
 const alle = readdirSync(GRAFIK).filter((g) => statSync(join(GRAFIK, g)).isDirectory() && specsIn(join(GRAFIK, g)).length > 0).sort();
-// B-739: `GOLDEN_GRUPPEN="figuren reittiere"` (check:diff, nur die Gruppen des Diffs) beschränkt den teuren Render-Vergleich; ohne Wert alle Gruppen (CI, Review).
+// B-739: `GOLDEN_GRUPPEN="figuren reittiere"` beschränkt den teuren Render-Vergleich; ohne Wert alle Gruppen (CI, Review).
 const nur = (process.env.GOLDEN_GRUPPEN ?? '').split(/\s+/).filter(Boolean);
 const gruppen = nur.length > 0 ? alle.filter((g) => nur.includes(g)) : alle;
 const lies = (p: string) => JSON.parse(readFileSync(p, 'utf8'));

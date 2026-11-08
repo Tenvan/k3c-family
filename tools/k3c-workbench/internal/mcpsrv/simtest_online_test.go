@@ -35,7 +35,9 @@ func TestSimTestOnlineHeadless(t *testing.T) {
 	old := onlineSample
 	onlineSample = 300 * time.Millisecond
 	t.Cleanup(func() { onlineSample = old })
-	s := New(Config{Version: "test", Root: t.TempDir()})
+	root := t.TempDir()
+	installFakeSim(t, root)
+	s := New(Config{Version: "test", Root: root})
 	id := start(t, s, simTestIn{Mode: "online", Rooms: 2, Players: 2, Duration: "3s", Focus: []string{"perf", "stability", "balance"}})
 	out := waitDone(t, s, id)
 	t.Log("\n" + out)

@@ -40,7 +40,9 @@ func registerAssetsPreview(s *Server) {
 		Description: "Ein Frame eines Assets als Bild (image/png) plus Text: Animation, Frame, Basis, Größe, Teil-Boxen x,y,b,h; mit basis der alte Stand. " +
 			"Nutze es bei: Ergebnis eines assets_set ansehen, Teile finden. Statt: PNG-Dateien öffnen.",
 		Annotations: readOnly(),
-	}, func(ctx context.Context, in assetsPreviewIn) ([]byte, string, error) { return assetsPreview(ctx, s.ws(ctx).root, in) })
+	}, func(ctx context.Context, in assetsPreviewIn) ([]byte, string, error) {
+		return assetsPreview(ctx, s.ws(ctx).root, in)
+	})
 }
 
 // addImage registriert ein Tool, das ein PNG und Text liefert (wie add, aber mit ImageContent).

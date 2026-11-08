@@ -147,13 +147,14 @@ Das Slot-Register `data/assets.json` ist seit MC1 eingefroren (Entfernung B-700)
 
 ### Rechnen ohne Server
 
-- `level_generate {seed, biome?}` und `sim_run {seed, ticks, biome?, inputs?}` rechnen in-process mit `engine/level` und
-  `engine/sim`, ohne laufenden Server und ohne den Browser. Gleiche Eingabe ergibt denselben Text; `ticks` höchstens 100000
+- `level_generate {seed, biome?}` und `sim_run {seed, ticks, biome?, inputs?}` rechnen im Kindprozess `bin/k3c-sim`
+  (Engine-CLI, B-726), ohne laufenden Server und ohne den Browser. Gleiche Eingabe ergibt denselben Text; `ticks` höchstens 100000
   (30 pro Sekunde). Für Balancing-Vergleiche statt eigener Skripte.
 - `replay_run {path}` spielt eine Replay-Datei (`task balance:run -- --replay-dir DIR`) ohne Bot ab: Endzustand-Hash,
   Burgfall-Tick, Vergleich mit der Aufnahme; `path` relativ zur Repo-Wurzel, Dateien außerhalb werden abgelehnt.
-- Diese drei rechnen mit der Engine, mit der k3c-workbench gebaut ist (Repo-Wurzel), nicht mit geänderter Engine im
-  Worktree; dafür `check_run go:test`.
+- Diese drei rechnen mit `bin/k3c-sim` des Checkouts der Session (Daten aus dessen `data/`). Fehlt die EXE oder ist sie
+  älter als `engine/`, `cmd/k3c-sim`, `go.mod`: Meldung mit `task k3c-sim:build`. `sim_test` offline baut sich
+  `bin/k3c-sim-<platz>` selbst; online rechnen die Bots in `k3c-sim bot` (ebenfalls `bin/k3c-sim`).
 
 ### Testläufe
 

@@ -101,13 +101,21 @@ Entscheidung 001, 004, 006; Entwurf 007 (RS2.4). Datei ≤ 400 Zeilen, Funktion 
 
 ## Offene Fragen
 
+Abgeglichen mit `docs/decisions/007-rust-server.md` › Offene Entscheidungen für Ralf (RS2.4, 2026-11-08); Nummer in 007 in Klammern.
+
 1. **Umfang bei Pause:** Soll Etappe 2 nach RS2 automatisch weiterlaufen, auch wenn G1 erfüllt ist (B-731 erreicht das Pi-Ziel)? Default: Nein, Ralf entscheidet an G1 (Claude fragt, Sprint RS3 bleibt `geplant`).
-2. **Reihenfolge Sim vor Server oder Server-Skelett zuerst:** Default: Skelett zuerst (RS3, Spike), damit das Pi-Risiko früh geprüft wird, dann Sim-Port.
-3. **Laufzeit und Bibliotheken:** tokio + axum oder blockierende Threads + tungstenite? Default: Entscheidung in 007 mit Messung im Skelett (Pi 3 hat 1 GB und 4 Kerne, ein Thread je Raum ist plausibel). Jede Crate braucht Ralfs Zustimmung.
+2. **Reihenfolge Sim vor Server oder Server-Skelett zuerst:** Default: Skelett zuerst (RS3, Spike), damit das Pi-Risiko früh geprüft wird, dann Sim-Port. 007 übernimmt das.
+3. **Laufzeit und Bibliotheken** (007: 1): tokio + axum oder blockierende Threads + tungstenite? Entwurf 007: hybrid, Räume auf OS-Threads, Netz auf tokio + axum; Rückfall `tiny_http` + `tungstenite`, falls G2 an Speicher oder Binärgröße scheitert.
 4. **Parallelbetrieb:** Gilt „Regel zuerst in Go, dann portieren“ oder friert die Regelentwicklung ein? Default: Regeländerungen laufen weiter in Go (SIM-Domäne) und werden in der Portphase in Rust nachgezogen; das kostet Zeit und ist Treiber für G3.
-5. **Docker:** statisches musl-Binary (`distroless/static`) oder glibc (`distroless/cc`)? Default: musl, wenn Tests grün sind.
-6. **Schema-Erzeugung:** JSON-Schema als Quelle (Entscheidung 006) oder Rust-Typen als Quelle und TS-Typen daraus? Default: Protokoll-Trace-Golden als Orakel, Schema erst, wenn der Port es braucht (Komplexitäts-Budget).
-7. **Rust-Lints für Komplexität:** Welches Werkzeug erzwingt Funktion ≤ 60 und Komplexität ≤ 15 (clippy `too_many_lines`, `cognitive_complexity`)? Default: clippy-Konfiguration plus Dateilängen-Test.
+5. **Docker** (007: 4): statisches musl-Binary (`distroless/static`) oder glibc (`distroless/cc`)? Default: musl, Wechsel nur, wenn RS3 den musl-Allokator als Nachteil misst.
+6. **Schema-Erzeugung** (007: 9): Default bestätigt: kein JSON-Schema, Trace-Golden ist das Orakel.
+7. **Rust-Lints für Komplexität** (007: 10): clippy `too_many_lines` (60), `cognitive_complexity` (15), `excessive_nesting` (4) auf `deny`, dazu Dateilänge ≤ 400 im Regeltest für `rust/**/*.rs`.
+8. **Crate-Liste** (007: 2): `tokio`, `axum`, `notify`, `windows-sys` neu; `serde`, `serde_json` schon da. Einzeln zustimmen oder streichen.
+9. **HTTPS** (007: 3): Wird der HTTPS-Port (`K3C_CERTS_DIR`) noch gebraucht? Default: nein, Cargo-Feature `tls` bleibt aus (rustls bringt C-Code mit).
+10. **Balancing in Rust** (007: 5): `engine/balance` + `cmd/k3c-sim` (~8 300 Zeilen) hängen an `engine/sim`. Portieren (neuer Sprint RS7b, 10–14 Sessions) oder Go-Sim fürs Balancing behalten (doppelte Regelpflege, AC-08 nicht erreichbar)? Default: portieren.
+11. **Umfang anpassen** (007: 6): `devrun`, `conlog` bleiben Go (Workbench); dazu `balance`, `k3c-sim`, `studioview`. Summe 66–86 statt 57–72 Sessions (ungeprüft, ±30 %).
+12. **Spielstand nur v9** (007: 7): Migrationen v1–v8 nicht portieren? Default: ja.
+13. **Logging** (007: 8): eigenes `conlog` in Rust mit identischem JSON-Format (Default) oder `tracing`?
 
 ## Notizen
 

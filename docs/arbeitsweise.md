@@ -112,7 +112,7 @@ widerspricht dem Code oder einer Regel):
 `Status: blockiert`, im **Ergebnis** Grund und bisherigen Stand notieren, ein Ticket vom Typ `Frage` anlegen,
 bisherigen Stand auf den Sprint-Branch pushen und einen **Entwurfs-PR** des Sprints öffnen (falls noch keiner offen ist), **aufhören**. Nicht raten, nicht um die Regeln herum arbeiten.
 
-**Testläufe** (Balancing, Performance, Stabilität) startet und überwacht ein Agent nur über das MCP-Tool `sim_test` der Workbench (B-348), nie in der Shell; ohne laufende Workbench wartet der Testlauf.
+**Testläufe** (Balancing, Performance, Stabilität) startet und überwacht ein Agent nur über das MCP-Tool `sim_test` der Workbench (B-348), nie in der Shell; ohne laufende Workbench wartet der Testlauf. Sie laufen nur bei der Entwicklung des betroffenen Features oder im Abnahme-Ticket (B-742, Abschnitt „Sim, Balance und Gen“).
 
 Eine Session pro Lauf. Eine Review-Session nie im selben Lauf wie eine Umsetzung. Sessions mit `Agent: Mensch`
 (Xbox-Test, Workshop, Spieleabend) nimmt ein Agent nicht; er darf sie nur vorbereiten, wenn die Datei das verlangt.
@@ -127,8 +127,8 @@ Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und
   Nur Doku → nur Planungs- und Regel-Tests. Go: nur geänderte Pakete und ihre Abnehmer (`-short`), Lint nur die geänderten;
   Vitest mit `--changed`; JS und Go parallel. Volle Module nur bei `go.mod`, `Taskfile.yml`, `testdata/`, `.github/`.
   **Takt:** einmal je Session-Commit. Nach einem Merge der Basis in den Sprint-Branch kein neuer Lauf, wenn der eigene
-  Diff unverändert ist (die Basis ist schon geprüft). Den vollen Satz (`task check`, `task check:go`, `task check:race`) fährt nur
-  die Review-Session, `task check:all` nur der Release. Ein roter Lauf wird behoben und einmal wiederholt, nicht
+  Diff unverändert ist (die Basis ist schon geprüft). Den vollen Satz (`task check`, `task check:go`) fährt nur
+  die Review-Session, `task check:race` nur das Abnahme-Ticket, `task check:all` nur der Release. Ein roter Lauf wird behoben und einmal wiederholt, nicht
   mehrfach „zur Sicherheit“.
 - **Lange Tests (B-619):** Ein Go-Test, der über etwa 3 s braucht (echte Git-Repos, `go build`, lange Lauf-Simulationen,
   Repo-Scans), beginnt mit `if testing.Short() { t.Skip(…) }`. `check:diff` lässt ihn aus, `check:go`, die
@@ -148,6 +148,31 @@ Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und
   zwei Zeilen; Einzelheiten stehen im Commit und im Code.
 - **Lesen nach Bedarf:** Session und Kriterien liefert `plan_next`; das Glossar beim Schreiben von Specs und Texten,
   `codemap.md` nur für unbekannte Bereiche.
+
+### Sim, Balance und Gen (B-742)
+
+Lange Läufe gehören nicht in den Abschluss. **Sessions, Sprints und Projekte schließen ohne** Sim-, Balance- und
+Gen-Läufe ab; auch `task check:diff` fährt sie nicht (kein `gen:paper`, kein Grafik-Golden, kein `sim_test`, kein
+Balancing, kein `check:race`; Vitest lässt dort die Tests aus, die gerenderte Papierschnitt-PNGs brauchen).
+
+- **Bei der Feature-Arbeit:** Nur die Session, die ein betroffenes Feature entwickelt, fährt die passenden Läufe gezielt
+  (z. B. `sim_test` nach einer Balancing-Änderung, `task gen:paper` und Golden nach einer Spec- oder Renderer-Änderung).
+  `task test`, `task build` und `task dev` rufen `gen:paper` weiter selbst auf.
+- **Abnahme-Ticket:** Zum Abschluss eines Sprints legt die Review-Session (Doku-Sprint: letzte Session) **genau ein**
+  Ticket für diese Läufe an; zum Abschluss eines Projekts ebenso genau eins, das noch offene Abnahme-Tickets seiner
+  Sprints aufnimmt (diese `verworfen` mit Verweis). Claude arbeitet es autonom ab, gedacht für nachts; der Sprint wartet
+  nicht darauf und wird trotzdem `erledigt`.
+- **Anlegen:** `plan_create` (Vorlage `ticket.md`), Titel „Abnahme-Läufe <Sprint oder Projekt>“, Domäne der letzten
+  Umsetzungs-Session, Typ `Schuld`, Prio `mittel`, Umgebung `live`, Felder `Sprint` und `Projekt` gesetzt,
+  `Spec: freigegeben`, Freigabe „Regel B-742 (Abnahme-Ticket)“. Die Kriterien nennen nur die Läufe, die der Sprint
+  braucht (was er nicht berührt, `nicht relevant` mit Grund):
+  - **AC-01 Sim:** `sim_test` (Stabilität, Performance von Server und Client) mit Dauer und Abbruchkriterium, grün.
+  - **AC-02 Balance:** Balancing-Tests über `sim_test` bzw. `sim_run` (vorläufig mit Cheats, B-698), grün.
+  - **AC-03 Gen:** `check_run task:test` (ruft `gen:paper` auf, fährt Grafik-Golden `tests/paperAssets.test.ts`,
+    `tools/paper/golden` und die Sprite-Tests), grün; eine gewollte Golden-Änderung nach „Golden aktualisieren“.
+  - **AC-04 Race:** `check_run task:check:race`, grün (ohne C-Compiler übersprungen, im Ergebnis so nennen).
+- **Ergebnis:** Rot heißt neues Ticket (Typ `Problem`) im Projekt, nicht Nachbessern im Abnahme-Ticket; danach
+  `Status: erledigt` mit den Messwerten in den Notizen.
 
 ### Ausführung mit Superpowers
 
@@ -230,6 +255,7 @@ Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchsta
    Das Feld `Start-Commit` setzt die **erste Session** des Sprints: `git rev-parse --short origin/develop` beim Anlegen des Sprint-Branchs.
 4. **Abschließen:** Erledigt ist ein Sprint erst, wenn **alle** Sessions `fertig` oder `verworfen` sind. Die letzte
    davon (meist das Review, sonst die letzte Hardware-Session) verschiebt den Ordner nach `sprints/erledigt/` und setzt `Status: erledigt`.
+   Das Abnahme-Ticket für Sim, Balance und Gen (B-742) ist keine Session und hält den Abschluss nicht auf.
 
 - **Reihenfolge:** Abgearbeitet wird nach dem **Rang** der Projekte und der Sprint-Tabelle im Projekt
   (Abschnitt „Projekte und Rang“); aktiviert werden darf jeder Sprint ohne offene Abhängigkeit (Schritt 3). Eine Sprint-Prio gibt es nicht mehr; die Prio gehört zum Ticket.
@@ -264,7 +290,8 @@ Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchsta
 Leicht und billig: Die Automatik prüft die Komplexität, das Review sucht nur **schwere Fehler**. Ein günstiges
 Modell (z. B. Sonnet) reicht.
 
-1. `task check`, `task check:go` und `task check:race` → grün. Damit gelten die Grenzen aus dem Komplexitäts-Budget als geprüft.
+1. `task check` und `task check:go` → grün. Damit gelten die Grenzen aus dem Komplexitäts-Budget als geprüft.
+   Sim, Balance, Gen und `check:race` laufen nicht hier, sondern im Abnahme-Ticket (Schritt 4, B-742).
 2. `git fetch && git diff origin/develop...origin/sprint/<präfix>` lesen (alles, was der Sprint ändert, in **allen**
    Domänen seiner Sessions), **nur den Diff**, nicht jede Datei vollständig.
 3. Nur diese Befunde zählen:
@@ -277,7 +304,8 @@ Modell (z. B. Sonnet) reicht.
    Stil, Doku, Benennung, mögliche Vereinfachungen sind **kein** Befund. Schwere Befunde in den Domänen des Sprints
    im Review-Commit beheben, außerhalb → Ticket. Die Review-Session trägt die Domäne der letzten Umsetzungs-Session. Das Review läuft auf dem Sprint-Branch, nie im selben Lauf wie eine Umsetzung.
 4. **Abnahme** in der Sprint-README, höchstens fünf Zeilen: Datum, Kriterien (Verweis auf die Session-Ergebnisse,
-   `verschoben` mit Ticket), behobene Befunde, neue Tickets.
+   `verschoben` mit Ticket), behobene Befunde, neue Tickets und das **Abnahme-Ticket** des Sprints (genau eins, anlegen
+   nach „Sim, Balance und Gen“; bei Projektabschluss das des Projekts).
 5. **Wip-Branches prüfen** (B-302): Was inhaltlich von `wip/<präfix>…` im Sprint-Branch steckt, kommt in den PR-Text unter „Zum Löschen“.
    Sind alle anderen Sessions fertig: Sprint-Ordner nach `sprints/erledigt/` verschieben, `Status: erledigt`; sonst bleibt
    er in `aktiv/` (Hardware entkoppelt). Fahrplan anpassen, committen, `git merge origin/develop`,

@@ -52,14 +52,20 @@ dann `plan_set {Status: fertig}`. Ein Commit mit Session im Titel (`feat(sim): �
 
 ## Review-Session
 
-Nur auf dem Sprint-Branch, nie im selben Lauf wie eine Umsetzung: `task check`, `task check:go`, `task check:race`
+Nur auf dem Sprint-Branch, nie im selben Lauf wie eine Umsetzung: `task check`, `task check:go`
 **nacheinander** (Go-Wanduhr-Tests flackern unter Last, B-284), währenddessen den Diff `origin/develop...origin/sprint/<präfix>` lesen; Abnahme in höchstens
 fünf Zeilen, PR mit Auto-Merge (`docs/arbeitsweise.md` › Review-Session).
+Keine Sim-, Balance- oder Gen-Läufe und kein `check:race`: Die Review-Session legt dafür **genau ein Abnahme-Ticket**
+an (`plan_create`, Kriterien Sim, Balance, Gen samt Golden, Race; Projektabschluss: eins für das Projekt), das Claude
+autonom nachts abarbeitet (`docs/arbeitsweise.md` › Sim, Balance und Gen, B-742).
 
 ## Feste Regeln
 
 - Eine Session pro Lauf; **Nicht-Ziele** der Session einhalten.
-- Testläufe (Balancing, Performance, Stabilität) nur über `sim_test`, nie in der Shell.
+- Testläufe (Balancing, Performance, Stabilität) nur über `sim_test`, nie in der Shell, und nur, wenn die Session das
+  betroffene Feature entwickelt; sonst im Abnahme-Ticket. Gleiches gilt für `gen:paper` samt Golden (B-742).
+- **Abnahme-Ticket abarbeiten** („Abnahme-Läufe …“): Kriterien der Reihe nach über `sim_test`, `check_run task:test`,
+  `check_run task:check:race`; rot → neues Ticket, Messwerte in die Notizen, `plan_set {Status: erledigt}`.
 - **Wenn etwas nicht passt** (Schritt unklar, Befehl scheitert unerklärlich, Datei nicht erlaubt, Kriterium widerspricht
   Code oder Regel): `Status: blockiert`, Grund im Ergebnis, Ticket vom Typ `Frage`, Stand pushen, Entwurfs-PR des
   Sprints (falls keiner offen), **aufhören**.

@@ -25,7 +25,7 @@ var reportScripts = []string{"report-core.js", "report-charts.js", "report-view.
 // reportAsset ist eine Grafik des Berichts: Datei unter public/ und Breite eines Frames (0 = ganzes Bild, sonst der
 // erste Frame eines waagrechten Streifens bzw. das Feld oben links).
 type reportAsset struct {
-	path         string
+	path           string
 	frameW, frameH int
 }
 

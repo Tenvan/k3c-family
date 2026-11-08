@@ -65,9 +65,9 @@ func paperRepo(t *testing.T) string {
 	t.Setenv("K3C_PAPER_CLI", filepath.Join(repoWurzel(t), "tools", "paper", "fixtures", "cli-stub.ts"))
 	root := t.TempDir()
 	for src, dst := range map[string]string{
-		"public/grafik/stil.paper.json":                  "public/grafik/stil.paper.json",
-		"tools/paper/schema/stil.schema.json":            "tools/paper/schema/stil.schema.json",
-		"data/asset-prompts.json":                        "data/asset-prompts.json",
+		"public/grafik/stil.paper.json":                 "public/grafik/stil.paper.json",
+		"tools/paper/schema/stil.schema.json":           "tools/paper/schema/stil.schema.json",
+		"data/asset-prompts.json":                       "data/asset-prompts.json",
 		"tools/paper/fixtures/specs/monarch.paper.json": "public/grafik/figuren/monarch.paper.json",
 		"tools/paper/fixtures/specs/pferd.paper.json":   "public/grafik/reittiere/pferd.paper.json",
 		"tools/paper/fixtures/specs/mauer.paper.json":   "public/grafik/gebaeude/mauer.paper.json",

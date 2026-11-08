@@ -10,12 +10,11 @@ import (
 	"strconv"
 	"time"
 
-	"k3c/engine/sim"
-	"k3c/tools/k3c-workbench/internal/balance"
 	"k3c/tools/k3c-workbench/internal/botdev"
 	"k3c/tools/k3c-workbench/internal/botfeed"
 	"k3c/tools/k3c-workbench/internal/browser"
 	"k3c/tools/k3c-workbench/internal/serverapi"
+	"k3c/tools/k3c-workbench/internal/simexe"
 	"k3c/tools/k3c-workbench/internal/simrun"
 )
 
@@ -110,6 +109,12 @@ func (s *Server) runClients(ctx context.Context, run *simRun, spec simSpec, c *s
 	}
 	started := time.Now()
 	s.sims.SetPhase(run, "verbinden")
+	bot, err := simexe.StartPool(ctx, run.Root(), spec.bots, spec.clients)
+	if err != nil {
+		s.sims.Finish(run, "fehler", "", []string{"bots: " + err.Error()}, simrun.ReportDir(run))
+		return
+	}
+	defer bot.Close() // nach den Plätzen (defer läuft rückwärts)
 	seats, err := s.openSeats(ctx, run, spec, o, c.Base, exe, vite, feedBase)
 	defer s.closeSeats(seats)
 	if err != nil {
@@ -117,7 +122,6 @@ func (s *Server) runClients(ctx context.Context, run *simRun, spec simSpec, c *s
 		return
 	}
 	s.sims.SetPhase(run, "messen")
-	bot, _ := balance.BotByName(spec.bots)
 	logPath := filepath.Join(run.Root(), "logs", "k3c-client.jsonl")
 	deadline := time.After(spec.duration)
 	drive, sample := time.NewTicker(clientTick), time.NewTicker(onlineSample)
@@ -149,10 +153,9 @@ func (s *Server) runClients(ctx context.Context, run *simRun, spec simSpec, c *s
 
 // openSeats legt je Client Raum, Beobachter und Feed an und startet den Browser (ohne attach).
 func (s *Server) openSeats(ctx context.Context, run *simRun, spec simSpec, o *onlineRun, base, exe, vite, feedBase string) ([]*clientSeat, error) {
-	bot, _ := balance.BotByName(spec.bots)
 	var seats []*clientSeat
 	for i := range spec.clients {
-		d, err := botdev.Dial(ctx, base, fmt.Sprintf("simtest-%s-beobachter-%d", run.ID(), i), bot)
+		d, err := botdev.Dial(ctx, base, fmt.Sprintf("simtest-%s-beobachter-%d", run.ID(), i), nil)
 		if err != nil {
 			return seats, err
 		}
@@ -199,27 +202,37 @@ func (s *Server) closeSeats(seats []*clientSeat) {
 
 // drive schickt je Monarch des Clients ein Kommando. Die Monarchen des Clients sind alle im Raum (der Beobachter hat
 // keinen), nach Index geordnet: Slot k ist der k-te (der Server vergibt freie Plätze aufsteigend). Monarchen auf einer anderen
-// Stufe als der Beobachter sieht er nicht; sie bekommen kein Kommando.
-func (seat *clientSeat) drive(ctx context.Context, bot balance.Bot) {
-	w, own := seat.observer.World()
-	if w == nil {
+// Stufe als der Beobachter sieht er nicht; sie bekommen kein Kommando. Entscheidet der Bot nicht, fällt der Takt aus.
+func (seat *clientSeat) drive(ctx context.Context, bot simexe.Decider) {
+	v, own := seat.observer.World()
+	if v == nil {
 		return
 	}
-	var cmds []botfeed.Cmd
-	for _, p := range clientMonarchs(w, own) {
-		cmds = append(cmds, botfeed.CmdOf(len(cmds), bot(w, p)))
+	idx := clientMonarchs(v, own)
+	if len(idx) == 0 {
+		seat.feed.Send(ctx, nil)
+		return
+	}
+	got, err := bot.Decide(v.State, idx)
+	if err != nil {
+		return
+	}
+	cmds := make([]botfeed.Cmd, 0, len(got))
+	for _, c := range got {
+		cmds = append(cmds, botfeed.CmdOf(len(cmds), c))
 	}
 	seat.feed.Send(ctx, cmds)
 }
 
-func clientMonarchs(w *sim.World, own int) []*sim.Player {
-	var out []*sim.Player
-	for _, p := range w.Players {
+// clientMonarchs sind die Indizes der Monarchen außer dem eigenen, aufsteigend.
+func clientMonarchs(v *botdev.View, own int) []int {
+	var out []int
+	for _, p := range v.Players {
 		if p.Index != own {
-			out = append(out, p)
+			out = append(out, p.Index)
 		}
 	}
-	slices.SortFunc(out, func(a, b *sim.Player) int { return a.Index - b.Index })
+	slices.Sort(out)
 	return out
 }
 

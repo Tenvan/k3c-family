@@ -48,6 +48,10 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 - **AC-01** Prüfbar formuliert: Test, Befehl, Datei oder Beobachtung am TV mit erwartetem Ergebnis.
 
+Abnahme-Ticket eines Sprints oder Projekts (B-742): Kriterien AC-01 Sim (`sim_test`), AC-02 Balance, AC-03 Gen
+(`check_run task:test` samt `gen:paper` und Golden), AC-04 Race (`check_run task:check:race`), Einzelheiten in
+`docs/arbeitsweise.md` › Sim, Balance und Gen.
+
 ## Offene Fragen
 
 Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.

@@ -38,10 +38,10 @@ task               # alle Aufgaben anzeigen (Go Task, Taskfile.yml; einziger Ein
 task install       # Abhängigkeiten holen
 task dev           # Dev-Server (auch im LAN erreichbar, Port 5183)
 task test          # Vitest (Level-Generator, reine Logik); Filter: task test -- planning
-task check:diff    # nur die Prüfungen, die der eigene Diff zum Integrations-Branch braucht (einmal vor jedem Commit, B-730)
+task check:diff    # nur die Prüfungen, die der eigene Diff zum Integrations-Branch braucht (einmal vor jedem Commit, B-730; ohne Sim/Balance/Gen, B-742)
 task check         # Lint + Typecheck + Tests des Clients, parallel
 task check:go      # go test + golangci-lint (Rechner mit Go)
-task check:race    # Go-Race-Detector (langsam; Review-Session, check:all, CI)
+task check:race    # Go-Race-Detector (langsam; Abnahme-Ticket, check:all, CI)
 task check:dev     # k3c-workbench: Frontend, go test, golangci-lint
 task check:all     # alles inklusive Build
 task go:golden     # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
@@ -118,7 +118,7 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   CLIs: `tools/atlas` (Altlast bis CU1, vom Spiel nicht mehr geladen), `tools/buildings` (`task gen:gebaeude`), `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
 - Papierschnitt-Grafik (Entscheidung 005): Der Client lädt Figuren, Monarch mit Reittier, Gebäude und Hintergründe über die
   Gruppen-Indizes `public/grafik/<gruppe>/index.paper.json` (je Asset `manifest.json` + PNG-Sheets); die Zuordnung steht in
-  `data/paper.json`. Atlas und alte Packs lädt das Spiel nicht mehr (Entfernung in CU1). **PNG und `manifest.json` sind nicht eingecheckt** (B-737): `task gen:paper` rendert nach `.work/grafik/` und kopiert nur Geändertes nach `public/grafik/<gruppe>/<asset>/` (ignoriert); `task build`, `test`, `dev` und `check:diff` rufen es vorher auf. Eingecheckt bleiben Specs, `index.paper.json` und `golden.json`. Natur, Objekte und Gerüste bleiben bis MG8 Pixel-Grafik.
+  `data/paper.json`. Atlas und alte Packs lädt das Spiel nicht mehr (Entfernung in CU1). **PNG und `manifest.json` sind nicht eingecheckt** (B-737): `task gen:paper` rendert nach `.work/grafik/` und kopiert nur Geändertes nach `public/grafik/<gruppe>/<asset>/` (ignoriert); `task build`, `test` und `dev` rufen es vorher auf, `check:diff` nicht (B-742). Eingecheckt bleiben Specs, `index.paper.json` und `golden.json`. Natur, Objekte und Gerüste bleiben bis MG8 Pixel-Grafik.
 - `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.
 - `src/online/` – Client des Go-Servers (`clientConnection.ts`, Version in `clientProtocol.ts`): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
 - `src/input/` – `PlayerInput`-Abstraktion (Tastatur, Gamepad, Touch-Overlay `touchInput.ts`, per `?touch=1` erzwingbar). Spiel-Code fragt Aktionen ab, nie konkrete Tasten.
@@ -164,6 +164,10 @@ Nur so bleibt Vollbild auf der Xbox über Seitenwechsel erhalten. Für **jede** 
   150 geänderten Code-Zeilen, im
   Hintergrund parallel zu `task check:diff`; schwere Befunde werden vor dem Commit behoben, ein Fix unter etwa 30 Zeilen
   ohne zweites Review. Die Sprint-Review-Session bleibt Pflicht (`docs/arbeitsweise.md` › Tempo im Lauf).
+- **Sim, Balance, Gen nur am Feature (B-742):** Sessions, Sprints und Projekte schließen ohne Sim-, Balance- und
+  Gen-Läufe ab (`sim_test`, Balancing, `gen:paper` samt Grafik-Golden, `check:race`); sie laufen nur bei der Entwicklung
+  des betroffenen Features. Zum Abschluss eines Sprints oder Projekts gibt es dafür **genau ein Abnahme-Ticket**, das
+  Claude autonom nachts abarbeitet (`docs/arbeitsweise.md` › Sim, Balance und Gen).
 - **Kein automatischer Worktree-Wechsel:** Nicht von sich aus in einen Worktree wechseln (`change_directory`, `EnterWorktree`,
   Lesen/Schreiben unter `.claude/worktrees/`). Nur auf ausdrückliche Anweisung von 🧑. Sonst im aktuellen Checkout bleiben;
   Inhalte anderer Branches nur lesend per `git show <branch>:<pfad>`.

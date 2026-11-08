@@ -62,7 +62,7 @@ func registerTasks(s *Server) {
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &no, OpenWorldHint: &closed},
 	}, s.taskStart)
 	add(s, &mcp.Tool{
-		Name: "task_stop",
+		Name:        "task_stop",
 		Description: "Stoppt einen laufenden Task samt Prozessbaum. Nutze es bei: Task hängt oder läuft ungewollt. Statt: taskkill.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &yes, OpenWorldHint: &closed},
 	}, s.taskStop)
