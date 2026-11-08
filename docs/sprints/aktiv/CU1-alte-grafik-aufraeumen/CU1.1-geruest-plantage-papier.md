@@ -1,6 +1,6 @@
 # CU1.1 · Gerüste und Plantage als Papier-Assets
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -59,5 +59,6 @@ Kein Review-Agent (nur Asset-Specs).
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-04:** umgesetzt. `gebaeude-paper` hat `geruest-1`, `-2`, `-3`, `-4`, `-6` und `hub-geruest`, `objekte` hat `pappel-niedrig` (neben `setzling`); alle gerendert (`assets_render`, Vorschau gesehen). Die Specs entstanden aus den alten Bausteinen (`public/grafik/gebaeude/*.json`) mit einem Konverter (Rechtecke → Flächen und Falze, Streben-Quadrate → je eine Diagonale; Material Holz und Stein); `pappel-niedrig` ist die Pappel auf halber Größe. Angelegt über `assets_create`, Inhalt per Skript eingesetzt (`assets_set` hätte über 40 KB Patch-Text gebraucht), danach `assets_render`.
+- **`task test -- public` grün:** geprüft (`tools/paper/golden`, `tests/paperAssets.test.ts`, `tests/planning.test.ts`: 1085 Tests); `golden.json` und Index der Gruppen aktuell. `tests/paperAssets.test.ts` nimmt die Gerüste bis CU1.2 aus dem Index-Vergleich mit `PAPER_BUILDINGS`.
+- **Review-Status:** `assets_review` setzt keinen Status (es vergleicht nur mit dem Basis-Stand); die sieben Assets stehen dort als „neu“ zur Abnahme durch 🧑. Keine offenen Formfragen (D-CU1).

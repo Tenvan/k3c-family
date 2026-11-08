@@ -71,6 +71,12 @@
       "idle.png": "2ef0db1871bad733d379094da65dbdaf42b9066cc98c572b7f0488c966ce0bc9"
     }
   },
+  "pappel-niedrig": {
+    "renderKey": "61d0e06829548ee807aa2f67274a953bdfbcc8e1997be39323097ce688e83e84",
+    "dateien": {
+      "idle.png": "0cd136f4e862c98da927eed0700aa72b9445a22b01b957dbb3bf6cac489846ff"
+    }
+  },
   "pappel": {
     "renderKey": "ff3c32682184795941cdcda69bfdc1d5b380cce10956827206b5e6d473d596b3",
     "dateien": {

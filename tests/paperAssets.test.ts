@@ -34,7 +34,10 @@ describe('Papierschnitt-Zuordnung (US1)', () => {
   });
 
   it('Gebäude und ihre Stufen aus dem Gruppen-Index', () => {
-    expect([...PAPER_BUILDINGS].sort()).toEqual(index('gebaeude-paper').sort());
+    // Die Gerüste (CU1.1) hängt CU1.2 an den Client; bis dahin stehen sie im Index, aber nicht in PAPER_BUILDINGS
+    const geruest = (id: string) => /^(geruest-\d+|hub-geruest)$/.test(id);
+    expect([...PAPER_BUILDINGS].sort()).toEqual(index('gebaeude-paper').filter((id) => !geruest(id)).sort());
+    expect(index('gebaeude-paper').filter(geruest).sort()).toEqual(['geruest-1', 'geruest-2', 'geruest-3', 'geruest-4', 'geruest-6', 'hub-geruest']);
     expect(paperBuildingFile('mauer')).toBe('gebaeude-paper/mauer/stand.png');
     expect(paperBuildingFile('mauer', 3)).toBe('gebaeude-paper/mauer/stand.s3.png');
     expect(paperBuildingFile('geruest-2')).toBeNull();

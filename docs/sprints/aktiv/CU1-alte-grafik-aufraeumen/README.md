@@ -83,7 +83,7 @@ Autonom mit Default entschieden (D-Zeilen D-CU1-01 … in B-701 beim Abarbeiten)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| CU1.1 | `CU1.1-geruest-plantage-papier.md` | Umsetzung | autonom | offen |
+| CU1.1 | `CU1.1-geruest-plantage-papier.md` | Umsetzung | autonom | fertig |
 | CU1.2 | `CU1.2-spiel-nur-papier.md` | Umsetzung | autonom | offen |
 | CU1.3 | `CU1.3-werkzeugseiten-ohne-register.md` | Umsetzung | autonom | offen |
 | CU1.4 | `CU1.4-workbench-ohne-register.md` | Umsetzung | autonom | offen |
