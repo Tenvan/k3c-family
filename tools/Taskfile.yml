@@ -36,6 +36,23 @@ tasks:
       - ./bin/gebaeude{{exeExt}}
 
   paper:
+    desc: 'Papierschnitt-Grafik bereitstellen: rendert nach .work/grafik (nur bei geänderten Quellen) und kopiert fehlende oder geänderte Dateien nach public/grafik (RD1, B-737, B-748)'
+    cmds:
+      - task: paper-render
+      - task: paper-sync
+
+  paper-sync:
+    internal: true
+    desc: Fehlende Grafiken aus .work/grafik nach public/grafik kopieren, ohne zu rendern (B-748)
+    # golden.json und index.paper.json sind eingecheckt und erfüllen `generates` auch ohne PNGs (frischer Checkout, gelöschte Ordner):
+    # fehlt zu irgendeiner Spec das Manifest in public/grafik, wird kopiert
+    status:
+      - bun tools/paper/bin/gen.ts --fehlt public
+    cmds:
+      - bun tools/paper/bin/gen.ts --nur-kopieren
+
+  paper-render:
+    internal: true
     desc: 'Papierschnitt-Grafik rendern (public/grafik/<gruppe>/*.paper.json → .work/grafik, geänderte Dateien nach public/grafik/; PNG und Manifest nicht eingecheckt, index.paper.json und golden.json schon; RD1, B-737)'
     preconditions:
       - sh: command -v bun
@@ -56,6 +73,9 @@ tasks:
       - public/grafik/*/index.paper.json
       - public/grafik/*/*/manifest.json
       - public/grafik/*/*/*.png
+    # .work gelöscht (Quellen unverändert): auch dann neu rendern
+    status:
+      - bun tools/paper/bin/gen.ts --fehlt work
     cmds:
       - bun tools/paper/bin/gen.ts
 

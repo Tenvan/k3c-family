@@ -64,3 +64,19 @@ export function genMitWork(wurzel: string, work = WORK, melde?: Melde): { gruppe
   melde?.(`✅ gen:paper fertig in ${dauer(performance.now() - t0)}: ${r.geschrieben} Dateien geschrieben, ${r.entfernt} entfernt`);
   return { gruppen, ...r };
 }
+
+/** Nur kopieren (B-748): `.work` ist vollständig, `public/grafik` nicht (frischer Checkout, gelöschte Ordner); kein Rendern. */
+export function nurKopieren(wurzel: string, work = WORK, melde?: Melde): { geschrieben: number; entfernt: number } {
+  const r = schritt(melde, '📦', 'nach public/grafik übertragen (ohne Rendern)', () => uebertragen(work, wurzel));
+  melde?.(`✅ ${r.geschrieben} Dateien geschrieben, ${r.entfernt} entfernt`);
+  return r;
+}
+
+/** Specs unter `wurzel` (`<gruppe>/<asset>.paper.json`), zu denen `<gruppe>/<asset>/manifest.json` fehlt (B-748). */
+export function ohneManifest(wurzel: string): string[] {
+  return gruppenIn(wurzel).flatMap((g) =>
+    readdirSync(join(wurzel, g))
+      .filter((f) => f.endsWith('.paper.json') && f !== 'index.paper.json')
+      .map((f) => `${g}/${f.slice(0, -'.paper.json'.length)}`)
+      .filter((a) => !existsSync(join(wurzel, g, a.split('/')[1]!, 'manifest.json'))));
+}
