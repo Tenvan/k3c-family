@@ -1,6 +1,6 @@
 # CU1.3 · Werkzeugseiten ohne Register und Packs
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -59,5 +59,9 @@ Kein Review-Agent, außer der Diff wächst über 150 geänderte Code-Zeilen (gel
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-05 umgesetzt, geprüft:** `src/tools/noOldGraphics.test.ts` (neu) prüft, dass kein Modul unter `src/tools` `data/assets.json`, `data/sprites.json`, `grafik/index.json`, `grafik-db32`, `public/sprites`, `atlas/` oder die alten CREDITS-Dateien nennt: grün. `git grep -E "assets.json|sprites.json|grafik-db32|grafik/index.json|public/sprites" -- src/tools tests` trifft nur noch den Schutz-Test `tests/projectRules.test.ts` (nennt `grafik-db32` als verbotenen Pfad).
+- **Entfernt:** Seiten `grafiken.html` und `pipeline.html` samt Kacheln, Texten (`grafik.*`, `pipeline.*`, `sel.*`, `tile.grafiken/pipeline`) und Modulen (`grafiken.ts`, `grafikPacks.ts`+Test, `pipeline.ts`, `spriteReference.ts`+Test, `selection.ts`+Test) sowie die Register-Tests `assets.test.ts`, `zuordnung.test.ts` und `tests/sprites.test.ts` (prüften `data/sprites.json`). `installPadScroll` zog nach `padScroll.ts` (von `lizenzen.ts` genutzt).
+- **Soundtest:** liest `data/sounds.json`; die Logik-Tests (`soundtestLogic.test.ts`) sind grün, die Seite lädt im Dev-Server ohne Fehler (Slots erscheinen nach dem Entsperren per Taste, wie bisher; nicht hörend geprüft).
+- **Credits:** `credits.ts` liest nur noch `public/audio/README.md` (Sound-Credits, 52 Zeilen auf der Lizenzseite); die Lizenzseite sagt im Abschnitt Grafiken, dass die Grafik eigener Papierschnitt ist, die Reittier-Hinweise (CC BY 3.0) entfallen, weil die Pixel-Reittiere nicht mehr im Spiel sind. Die Textstelle „Spiel hat keinen Ton“ im Sound-Abschnitt ist durch einen zutreffenden Satz ersetzt.
+- `tests/paperAssets.test.ts` ohne Ausnahmeliste: schon in CU1.2 erledigt. `tests/projectRules.test.ts` grün (keine verwaisten Seiten oder Kacheln).
+- **Geprüft:** `tsc`, `oxlint`, Vitest `src` + `tests` (2825 Tests) grün. `task check:diff` nicht gelaufen (Nutzerwunsch); kein Review-Agent (Diff fast nur Entfernen).
