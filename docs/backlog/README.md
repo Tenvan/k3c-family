@@ -145,6 +145,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-755](B-755-skill-leiste-ohne-tasten-menue-groesser.md) | CLI | Idee | mittel | offen | – | Skill-Leiste ohne Tastentexte, Skillmenü zeigt die Taste vor dem Skill und ist größer |
 | [B-756](B-756-ci-rendert-papier-grafik-vor-go-tests.md) | INF | Problem | hoch | offen | – | CI rendert die Papierschnitt-Grafik vor den Go-Tests, die sie lesen |
 | [B-757](B-757-ci-race-balance-timeout-datadoc-test.md) | INF | Problem | hoch | offen | – | CI: Race-Lauf ohne engine/balance, datadoc-Test kennt Balance-Berichtsdateien |
+| [B-758](B-758-release-workflow-tests-wieder-einschalten.md) | INF | Schuld | hoch | offen | – | Release-Workflow: Typecheck und Tests vor dem Bauen wieder einschalten |
 
 ## Archiv
 
