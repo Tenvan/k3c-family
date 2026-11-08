@@ -143,6 +143,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-753](B-753-meilenstein-volllauf-zeitlimit.md) | SRV | Problem | hoch | offen | – | Meilenstein-Volllauf über k3c-sim überschreitet das 60-min-Limit |
 | [B-754](B-754-tick-p99-online-ueber-rs2-3.md) | SRV | Problem | mittel | offen | – | Tick p99 online bei 4 Geräten liegt über dem RS2.3-Wert |
 | [B-755](B-755-skill-leiste-ohne-tasten-menue-groesser.md) | CLI | Idee | mittel | offen | – | Skill-Leiste ohne Tastentexte, Skillmenü zeigt die Taste vor dem Skill und ist größer |
+| [B-756](B-756-ci-rendert-papier-grafik-vor-go-tests.md) | INF | Problem | hoch | offen | – | CI rendert die Papierschnitt-Grafik vor den Go-Tests, die sie lesen |
 
 ## Archiv
 
