@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { toggleFullscreen } from '../core/fullscreen';
 import { GAME_HEIGHT, GAME_WIDTH, UNIT_PX } from '../core/constants';
-import { GamepadInput, keyboardPlayers, type KeyboardInput, type PlayerInput } from '../input/playerInput';
+import { GamepadInput, KeyboardInput, type PlayerInput } from '../input/playerInput';
 import { TouchInput, wantsTouchControls } from '../input/touchInput';
 import type { Frame, LevelInfo, RoomClient } from '../online/clientConnection';
 import { applyState, createViewWorld } from '../online/clientWorld';
@@ -58,7 +58,7 @@ export class GameScene extends Phaser.Scene {
   /** Ereignisse für die HudScene, die sie abholt und leert */
   readonly pendingEvents: GameEvent[] = [];
   /** Zuletzt benutztes Eingabegerät, damit die Hinweise im HUD zur Steuerung passen */
-  lastDevice: 'keyboard' | 'keyboard2' | 'pad' | 'touch' = 'keyboard';
+  lastDevice: 'keyboard' | 'pad' | 'touch' = 'keyboard';
 
   private data_!: GameSceneData;
   private world_: World | undefined;
@@ -75,7 +75,7 @@ export class GameScene extends Phaser.Scene {
   /** Kameras mit Himmelfarbe ihrer Stufe; der Himmel dunkelt nachts mit dem Hintergrund */
   private skyCams: { cam: Phaser.Cameras.Scene2D.Camera; sky: string }[] = [];
   private follows: { cam: Phaser.Cameras.Scene2D.Camera; stage: StageView; monarch: number; target?: object }[] = [];
-  keyboards!: [KeyboardInput, KeyboardInput]; // Spieler 1 und 2 an einer Tastatur (B-316)
+  keyboard!: KeyboardInput; // die einzige Tastatur-Belegung; Spieler 2 kommt per Controller
   private touch: TouchInput | undefined;
   private pads: GamepadInput[] = [];
   /** Eingabe je lokalem Slot (die HudScene liest das Gerät für die Tasten der Skill-Leiste) */
@@ -138,7 +138,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(): void {
-    this.keyboards = keyboardPlayers(this.input.keyboard!);
+    this.keyboard = new KeyboardInput(this.input.keyboard!);
     if (wantsTouchControls()) this.touch = touchControls();
     // Browser melden Gamepads erst nach dem ersten Tastendruck. Alle bekannten + neue Pads beobachten.
     const gamepads = this.input.gamepad!;
@@ -157,7 +157,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   update(): void {
-    [...this.keyboards, ...this.pads, ...pageBots()].forEach((p) => p.update());
+    [this.keyboard, ...this.pads, ...pageBots()].forEach((p) => p.update());
     this.touch?.update();
     this.trackLastDevice();
 
@@ -179,7 +179,7 @@ export class GameScene extends Phaser.Scene {
     if (this.scene.isActive('options')) return this.paused(seated); // Optionen offen: Monarchen stehen, nur zeichnen
     const opener = this.optionsOpener();
     if (opener) {
-      const targets = removeTargets(opener.input, this.slots.bound, this.keyboards, seated);
+      const targets = removeTargets(opener.input, this.slots.bound, seated);
       this.scene.launch('options', { targets, world: client.roomWorld } satisfies OptionsSceneData);
     }
     const devFocus = this.registry.get(DEV_FOCUS_KEY) === true; // Cheat-Dialog offen (B-179, B-317): Controller und Tastatur bedienen ihn
@@ -205,7 +205,7 @@ export class GameScene extends Phaser.Scene {
   private optionsOpener(): { input: PlayerInput } | null {
     const now = performance.now();
     const signals: OpenSignal<PlayerInput>[] = [
-      { input: this.keyboards[0], opens: this.keyboards[0].justPressed('pause') },
+      { input: this.keyboard, opens: this.keyboard.justPressed('pause') },
       ...(this.touch ? [{ input: this.touch, opens: pauseButton().take() }] : []),
       ...this.pads.map((p) => {
         let press = this.padMenus.get(p);
@@ -225,8 +225,7 @@ export class GameScene extends Phaser.Scene {
   joinCandidates(): JoinCandidate[] {
     const bound = (i: PlayerInput) => this.slots.bound.includes(i);
     return [
-      { device: 'keyboard', bound: bound(this.keyboards[0]) },
-      { device: 'keyboard2', bound: bound(this.keyboards[1]) },
+      { device: 'keyboard', bound: bound(this.keyboard) },
       ...this.pads.map((p): JoinCandidate => ({ device: 'pad', bound: bound(p) })),
       ...(this.touch ? [{ device: 'touch', bound: bound(this.touch) } as JoinCandidate] : []),
     ];
@@ -261,7 +260,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private allInputs(): PlayerInput[] {
-    return [...this.keyboards, ...this.pads, ...(this.touch ? [this.touch] : [])];
+    return [this.keyboard, ...this.pads, ...(this.touch ? [this.touch] : [])];
   }
 
   private trackLastDevice(): void {
@@ -269,7 +268,7 @@ export class GameScene extends Phaser.Scene {
     if (this.allInputs().some(used)) void audioCore().onInput(); // erste Eingabe entsperrt den Ton (SO1.2)
     if (this.touch && used(this.touch)) this.lastDevice = 'touch';
     else if (this.pads.some(used)) this.lastDevice = 'pad';
-    else if (this.keyboards.some(used)) this.lastDevice = used(this.keyboards[1]) ? 'keyboard2' : 'keyboard';
+    else if (used(this.keyboard)) this.lastDevice = 'keyboard';
   }
 
   /** Controller getrennt: sein Spieler verlässt den Raum (Monarch wird frei); der letzte Spieler verlässt den Raum ganz. */

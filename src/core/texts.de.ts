@@ -69,7 +69,6 @@ export const de = {
   'hud.join.touch': 'Münz-Taste drücken zum Beitreten',
   'hud.join.pad': 'A drücken zum Beitreten',
   'hud.join.keyboard': 'Leertaste drücken zum Beitreten',
-  'hud.join.keyboard2': 'Enter drücken zum Beitreten',
   'hud.joinCenter': 'Drücke  A  (Controller), Leertaste oder die Münz-Taste zum Beitreten',
   'hud.room': 'Raum {code} · {name} · {n} Spieler',
 
@@ -196,8 +195,7 @@ export const de = {
   'opt.keysHint': 'Menu / Esc / A / Enter: zurück zu den Optionen',
   'keys.ctrlRight': 'Strg rechts',
   'keys.pad': 'Controller',
-  'keys.keyboard': 'Tastatur 1',
-  'keys.keyboard2': 'Tastatur 2',
+  'keys.keyboard': 'Tastatur',
   'keys.touch': 'Touch',
   'keys.padMove': 'Stick / D-Pad ←→',
   'keys.touchMove': 'links/rechts tippen',
@@ -227,7 +225,6 @@ export const de = {
   'skill.ready': 'bereit',
   'skill.hint.pad': '◀ ▶ wählen · A bestätigen · {menu} schließen',
   'skill.hint.keyboard': 'A / D wählen · Leertaste bestätigen · {menu} schließen',
-  'skill.hint.keyboard2': '◀ ▶ wählen · Enter bestätigen · {menu} schließen',
   'skill.hint.touch': 'Links/rechts wählen · Münz-Taste bestätigt · {menu} schließt',
   // Aktionen-Overlay (S3.3)
   'hint.space': 'Leertaste',

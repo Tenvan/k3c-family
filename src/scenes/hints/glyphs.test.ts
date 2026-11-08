@@ -38,10 +38,7 @@ describe('glyphOf: Aktion + Gerät → Glyph-Schlüssel (S6.2 AC-04, B-149 AC-01
     expect(glyphOf('attack', 'wheel')).toEqual({ key: null, label: 'attack' });
   });
 
-  it('Spieler 2 an der Tastatur: Tasten aus KEYBOARD_2, Pause und Vollbild ohne Taste (B-371 AC-01)', () => {
-    expect(ACTIONS.map((a) => glyphOf(a, 'keyboard2').key)).toEqual(['key:Enter', null, null, 'key:Numpad0', 'key:Numpad1', 'key:Numpad2', 'key:Numpad3', 'key:Numpad4', 'key:Numpad5']);
-    expect(glyphOf('confirm', 'keyboard2').label).toBe('Enter');
-    expect(slotLabels('keyboard2')).toEqual(['Num 0', 'Num 1', 'Num 2', 'Num 3', 'Num 4', 'Num 5']);
+  it('Beschriftung der Slots je Gerät', () => {
     expect(slotLabels('keyboard')).toEqual(['E', 'Q', 'R', 'T', 'Z', 'K']);
   });
 

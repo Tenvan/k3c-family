@@ -36,7 +36,7 @@ describe('hintView: Aktion → Text ohne Taste (B-741)', () => {
     expect(v.text).toBe('Bau des Endbosses: Ankunft löst ihn aus');
     expect(playerHint(world([]), player({ actions: [{ action: 'lair' }] }))?.text).toBe(v.text);
     // Kampf geht vor: im Bau-Radius bleibt „Schlag“ die Hauptzeile
-    expect(playerHint(world([]), player({ actions: [{ action: 'attack' }, { action: 'lair' }] }))?.text).not.toBe(v.text);
+    expect(playerHint(world([]), player({ actions: [{ action: 'attack' }, { action: 'lair' }] }))?.text).toBe(v.text);
   });
 
   it('Wichtigkeit: Wiederbeleben vor Bauen/Zahlen vor Schlag vor Skills', () => {
@@ -84,14 +84,15 @@ describe('playerHint: ein Hinweis je Spieler (B-319)', () => {
   const skill = { action: 'skill', slot: 1, skill: 'taunt' } as const;
 
   it('höchstens ein Hinweis; die Server-Aktionen stehen am Spieler, bei Gleichstand gewinnt das Gewicht (AC-01)', () => {
-    expect(playerHint(world([]), player({ actions: [skill, { action: 'attack' }] }))?.text).toBe('Schlag');
-    expect(playerHint(world([]), player({ actions: [{ action: 'learn' }] }))?.text).toBe('Skill lernen');
+    expect(playerHint(world([]), player({ actions: [{ action: 'attack' }, { action: 'lair' }] }))?.text).toBe('Bau des Endbosses: Ankunft löst ihn aus');
+    // Tasten-Aktionen zeigt das Overlay nicht mehr (Optionen › Tastenbelegung)
+    for (const a of [skill, { action: 'attack' }, { action: 'learn' }, { action: 'respec' }] as const) expect(playerHint(world([]), player({ actions: [a] }))).toBeNull();
     expect(playerHint(world([]), player())).toBeNull();
   });
 
   it('ignoriert Aktionen, die der Client nicht kennt (W11.3)', () => {
     const fremd = { action: 'grave' } as unknown as PlayerAction;
-    expect(playerHint(world([]), player({ actions: [fremd, { action: 'attack' }] }))?.text).toBe('Schlag');
+    expect(playerHint(world([]), player({ actions: [fremd, { action: 'lair' }] }))?.text).toBe('Bau des Endbosses: Ankunft löst ihn aus');
     expect(playerHint(world([]), player({ actions: [fremd] }))).toBeNull();
   });
 
@@ -106,10 +107,10 @@ describe('playerHint: ein Hinweis je Spieler (B-319)', () => {
     expect(playerHint(world([site({})]), player({ actions: [{ action: 'attack' }] }))).toBeNull();
     const shop = site({ kind: 'workshop', state: 'built', bows: 0 });
     expect(playerHint(world([shop]), player({ actions: [{ action: 'attack' }] }))).toBeNull();
-    expect(playerHint(world([site({ x: 40 })]), player({ actions: [{ action: 'attack' }] }))?.text).toBe('Schlag');
-    expect(playerHint(world([site({ payable: false })]), player({ actions: [{ action: 'attack' }] }))?.text).toBe('Schlag'); // gesperrter Platz: kein Preisschild (B-653)
+    expect(playerHint(world([site({ x: 40 })]), player({ actions: [{ action: 'lair' }] }))?.text).toBe('Bau des Endbosses: Ankunft löst ihn aus');
+    expect(playerHint(world([site({ payable: false })]), player({ actions: [{ action: 'lair' }] }))?.text).toBe('Bau des Endbosses: Ankunft löst ihn aus'); // gesperrter Platz: kein Preisschild (B-653)
     const full = site({ kind: 'workshop', state: 'built', bows: 99 });
-    expect(playerHint(world([full]), player({ actions: [{ action: 'attack' }] }))?.text).toBe('Schlag');
+    expect(playerHint(world([full]), player({ actions: [{ action: 'lair' }] }))?.text).toBe('Bau des Endbosses: Ankunft löst ihn aus');
   });
 
   it('gefallener Monarch hat keinen Hinweis', () => {

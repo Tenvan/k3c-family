@@ -35,6 +35,8 @@ export interface HintView {
 /** Ausbilden und Tauschen wiegen wie Bezahlen: Sie sagen, was die gehaltene Münz-Taste am Ort tut (W11.4) */
 export const WEIGHT: Record<Hint['action'], number> = { revive: 5, build: 4, pay: 4, train: 4, trade: 4, attack: 2, skill: 1, learn: 1, respec: 1, lair: 1 };
 
+/** Tasten-Aktionen (Schlag, Skills, Lernen, Zurücksetzen) zeigt das Overlay nicht mehr: Sie stehen unter Optionen › Tastenbelegung (B-741) */
+const KEY_ONLY = new Set<Hint['action']>(['attack', 'skill', 'learn', 'respec']);
 /** Aktionen, die der Server aus dem Zahlziel am Ort ableitet (`sim.TrainAt`, `sim.TradeAt`): stehen auch am Preisschild */
 const AT_PAY_TARGET = new Set<Hint['action']>(['train', 'trade']);
 
@@ -78,7 +80,7 @@ function atPriceTag(world: World, p: Player): boolean {
 export function playerHint(world: World, p: Player): HintView | null {
   if (p.respawnIn > 0) return null;
   const tag = atPriceTag(world, p);
-  return p.actions.filter(known).filter((h) => !tag || AT_PAY_TARGET.has(h.action)).map((h) => hintView(h)).sort((a, b) => b.weight - a.weight)[0] ?? null;
+  return p.actions.filter(known).filter((h) => !KEY_ONLY.has(h.action)).filter((h) => !tag || AT_PAY_TARGET.has(h.action)).map((h) => hintView(h)).sort((a, b) => b.weight - a.weight)[0] ?? null;
 }
 
 const warned = new Set<string>();

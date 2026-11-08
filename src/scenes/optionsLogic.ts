@@ -116,7 +116,7 @@ export function optionLabel(settings: Settings, id: OptionId): string {
 }
 
 /** Lage der Tabelle „Tastenbelegung“ (B-741): Kopf bei `top`, je Zeile `rowH`, erste Spalte links, Geräte-Spalten gleich breit; Schrift ≥ 28 px (Q03) */
-export const KEYS_LAYOUT = { top: 240, rowH: 56, px: 30, labelX: 120, colX: [680, 1000, 1320, 1640] } as const;
+export const KEYS_LAYOUT = { top: 240, rowH: 56, px: 30, labelX: 120, colX: [760, 1160, 1560] } as const;
 
 /** Szenen-Daten der Optionen: Slots, die „Spieler abmelden“ treffen kann (leer = ausgegraut, B-411) */
 export interface OptionsSceneData {
