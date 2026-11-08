@@ -786,6 +786,24 @@
     "segmente": 8
   },
   "animationen": {
+    "reiter-schritt": {
+      "frames": 8,
+      "reittier": "pferd",
+      "gangart": "schritt",
+      "ebene": "reiter"
+    },
+    "reiter-trab": {
+      "frames": 8,
+      "reittier": "pferd",
+      "gangart": "trab",
+      "ebene": "reiter"
+    },
+    "reiter-galopp": {
+      "frames": 8,
+      "reittier": "pferd",
+      "gangart": "galopp",
+      "ebene": "reiter"
+    },
     "idle": {
       "frames": 8
     },

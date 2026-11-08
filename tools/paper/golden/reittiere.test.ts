@@ -24,6 +24,7 @@ describe('Reittiere (B-716)', () => {
   it('AC-03: Elefant ohne galopp, Spec gültig', () => {
     const e = spec('elefant');
     expect(e.proportionen?.gangarten).toEqual(['schritt', 'trab']);
-    expect(Object.keys(e.animationen!).sort()).toEqual(['schritt', 'trab']);
+    // Ebenen (B-752) nur für die Gangarten des Tiers: kein galopp, auch nicht als hinten/vorn
+    expect(Object.keys(e.animationen!).sort()).toEqual(['hinten-schritt', 'hinten-trab', 'schritt', 'trab', 'vorn-schritt', 'vorn-trab']);
   });
 });

@@ -15,6 +15,10 @@ export type Animation = {
   fps?: number;
   reittier?: string;
   gangart?: GangartName;
+  /** Ebene des zusammengesetzten Reiters (B-752): `reiter` = Umhang + Reiter (am figur), `hinten`/`vorn` = Teile des Reittiers (am vierbeiner) */
+  ebene?: 'reiter' | 'hinten' | 'vorn';
+  /** Reittier-Ebenen: id der figur, deren Hand die Zügel hält */
+  reiter?: string;
   keyframes?: { t: number; winkel: Record<string, number>; sichtbar?: Record<string, boolean> }[];
 };
 

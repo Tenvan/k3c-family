@@ -124,6 +124,17 @@ function verweisFehler(spec: Spec): Fehler[] {
   return fehler;
 }
 
+/** `ebene` (B-752): `reiter` nur am figur mit reittier und gangart, `hinten`/`vorn` nur am vierbeiner mit reiter und gangart. */
+function ebenenFehler(spec: Spec): Fehler[] {
+  return Object.entries(spec.animationen ?? {}).flatMap(([name, a]): Fehler[] => {
+    if (!a.ebene) return a.reiter ? [{ feld: `animationen.${name}.reiter`, regel: 'ebene-angabe', text: '„reiter“ gilt nur für Reittier-Ebenen (ebene hinten/vorn)' }] : [];
+    const reiter = a.ebene === 'reiter', rig = reiter ? 'figur' : 'vierbeiner';
+    const fehlt = [spec.rig !== rig && `ebene „${a.ebene}“ gilt nur für rig ${rig}`, !a.gangart && 'gangart fehlt',
+      reiter && !a.reittier && 'reittier fehlt', !reiter && !a.reiter && 'reiter fehlt', reiter && a.reiter && '„reiter“ gilt nur für Reittier-Ebenen'].filter((t): t is string => !!t);
+    return fehlt.map((text) => ({ feld: `animationen.${name}.ebene`, regel: 'ebene-angabe', text }));
+  });
+}
+
 /** `proportionen`: vierbeiner-Felder nur am vierbeiner, figur-Felder nur an der figur (B-715). */
 function proportionenFehler(spec: Spec): Fehler[] {
   const p = spec.proportionen;
@@ -153,7 +164,7 @@ export function checkSpec(spec: unknown, stil: Stil, datei?: string): Fehler[] {
   const v = validators().spec;
   if (!v(spec)) return schemaFehler(v.errors);
   const s = spec as Spec;
-  const fehler = [...materialFehler(s, stil), ...teilFehler(s), ...verweisFehler(s), ...proportionFehler(s, stil), ...proportionenFehler(s)];
+  const fehler = [...materialFehler(s, stil), ...teilFehler(s), ...verweisFehler(s), ...proportionFehler(s, stil), ...proportionenFehler(s), ...ebenenFehler(s)];
   if (datei && basename(datei).replace(/\.paper\.json$/, '') !== s.id)
     fehler.push({ feld: 'id', regel: 'id-dateiname', text: `id „${s.id}“ passt nicht zu ${basename(datei)}` });
   return fehler;

@@ -140,6 +140,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-749](B-749-gen-paper-startzeile-je-asset.md) | PAP | Problem | mittel | offen | – | gen:paper meldet den Start jedes Assets, lange Assets wirken sonst wie ein Stillstand |
 | [B-750](B-750-gen-paper-schritte-im-asset.md) | PAP | Problem | mittel | offen | – | gen:paper meldet die Ausgaben innerhalb großer Assets |
 | [B-751](B-751-gen-paper-schneller-rendern.md) | PAP | Idee | mittel | offen | – | gen:paper schneller: Cache je Asset und parallel rastern |
+| [B-752](B-752-monarch-aus-teilen-zusammensetzen.md) | PAP | Idee | mittel | eingeplant | – | Monarch und Reittier getrennt rendern und im Client zusammensetzen |
 
 ## Archiv
 
