@@ -22,4 +22,5 @@ Was zu einem anderen Projekt gehört, mit Kürzel.
 
 ## Notizen
 
-Entscheidungen, Zurückstellungen (Grund und Datum bei `ruht`). Darf leer bleiben (`–`).
+Entscheidungen, Zurückstellungen (Grund und Datum bei `ruht`). Beim Abschluss: das eine Abnahme-Ticket des Projekts
+für Sim, Balance und Gen (`docs/arbeitsweise.md` › Sim, Balance und Gen). Darf leer bleiben (`–`).

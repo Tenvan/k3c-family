@@ -702,3 +702,4 @@ Zeile in diesen Abschnitt.
 | [B-717](archiv/B-717-monarch-animationen-farben.md) | PAP | Problem | hoch | erledigt | MG9 | Monarch hat Reit-Idle, Gangarten je Reittier, give/hit/death/respawn und vier gut unterscheidbare Spielerfarben |
 | [B-718](archiv/B-718-truppen-nachbessern.md) | PAP | Problem | mittel | erledigt | MG9 | Truppen greifen sichtbar zum Gegner an und haben keine Lesbarkeits-Reste aus MG3 |
 | [B-719](archiv/B-719-gegner-nachbessern.md) | PAP | Problem | mittel | erledigt | MG9 | Gegner sind unterscheidbar und richtig groß, ohne Lesbarkeits-Reste aus MG4 |
+| [B-742](archiv/B-742-check-diff-ohne-sim-balance-gen-abnahme-ticket.md) | INF | Problem | hoch | erledigt | – | check:diff ohne Sim-, Balance- und Gen-Läufe; Abnahme-Ticket je Sprint/Projekt |

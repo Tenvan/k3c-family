@@ -164,12 +164,12 @@ tasks:
       - task: go:lint
 
   check:race:
-    desc: Go-Race-Detector für engine/ (langsam; nur Review-Session, check:all und CI, B-518)
+    desc: Go-Race-Detector für engine/ (langsam; nur Abnahme-Ticket des Sprints, check:all und CI, B-518, B-742)
     cmds:
       - task: go:race
 
   check:diff:
-    desc: Nur die Prüfungen, die der eigene Diff braucht (Basis = nächster Integrations-Branch, samt ungespeicherter Änderungen; nur betroffene Go-Pakete, Go mit -short, parallel; vor jedem Commit, B-518, B-619, B-730)
+    desc: Nur die Prüfungen, die der eigene Diff braucht (Basis = nächster Integrations-Branch, samt ungespeicherter Änderungen; nur betroffene Go-Pakete, Go mit -short, parallel; ohne gen:paper, Grafik-Golden, Sim, Balance und Race; vor jedem Commit, B-518, B-619, B-730, B-742)
     cmds:
       - cmd: |
           # Nur sh, git, go und bunx: check_run startet task ohne Git-Bash-PATH (kein sort, awk, grep).
@@ -182,10 +182,11 @@ tasks:
             done
           fi
           [ -n "$base" ] || { echo "❌ check:diff: keine Basis gefunden (origin/develop fehlt? git fetch, oder CHECK_BASE setzen)"; exit 1; }
-          # Flags: c Client (Lint, Typecheck, Vitest --changed), a Assets (Golden-Tests), gf Root-Go voll, wf/wv/wa Workbench Go voll/Vitest/assetkit,
+          # Flags: c Client (Lint, Typecheck, Vitest --changed), gf Root-Go voll, wf/wv/wa Workbench Go voll/Vitest/assetkit,
           # sp/sl/sv Starter. ch = geänderte Go-Pakete (Importpfade, auch für die Abnehmer in anderen Modulen).
-          # ga/gr: Grafik-Golden für alle Gruppen (Stil, Renderer) oder nur die Gruppen des Diffs (B-739).
-          c=; a=; ga=; gr=; gf=; wf=; wv=; wa=; sg=; sl=; sv=; ch=; docs=1
+          # Keine Sim-, Balance- und Gen-Läufe (gen:paper, Grafik-Golden, check:race): die laufen bei der Feature-Arbeit und im
+          # Abnahme-Ticket des Sprints (B-742, docs/arbeitsweise.md › Sim, Balance und Gen).
+          c=; gf=; wf=; wv=; wa=; sg=; sl=; sv=; ch=; docs=1
           for f in $(git diff --name-only "$base"; git ls-files --others --exclude-standard); do
             case "$f" in
               docs/*|*.md|reports/*) continue ;;
@@ -198,8 +199,7 @@ tasks:
               data/*) ch="$ch k3c/data"; c=1 ;;
               engine/*|cmd/*|tools/atlas/*|tools/buildings/*|tools/pipeline/*|tools/cleanup/*|tools/ruletable/*|tools/spritegen/*|tools/soundatlas/*)
                 ch="$ch k3c/$d" ;;
-              public/grafik/*/*) a=1; x=${f#public/grafik/}; gr="$gr ${x%%/*}" ;;
-              public/grafik/*|tools/paper/*) a=1; ga=1; c=1 ;;
+              public/grafik/*|tools/paper/*) c=1 ;;
               tools/webkit/*) wv=1; sv=1 ;;
               tools/assetkit/*) wa=1; ch="$ch k3c/$d" ;;
               tools/k3c-workbench/frontend/*) wv=1 ;;
@@ -226,24 +226,22 @@ tasks:
           wl=$(for x in $(own k3c/tools/k3c-workbench); do printf './%s/... ' "${x#k3c/tools/k3c-workbench/}"; done)
           wl=${wl//.\/k3c\/tools\/k3c-workbench\/.../.\/...}
           scan="tests/planning.test.ts tests/planningProjects.test.ts tests/projectRules.test.ts"
-          # Teurer Grafik-Golden (rendert alle Gruppen neu, ~190 s) nur für die Gruppen des Diffs; Stil und Renderer prüfen alle (B-739).
-          [ -z "$ga" ] || gr=
-          export GOLDEN_GRUPPEN="$gr"
           # Schritt-Protokoll: check_run zeitstempelt die Marker `⏱▶ name` und `⏱■ name exit=n` und schreibt sie in das MCP-Log (B-739).
           step() { n=$1; shift; echo "⏱▶ $n"; "$@"; r=$?; echo "⏱■ $n exit=$r"; return $r; }
           echo "🚦 check:diff Basis $(git rev-parse --short "$base")$([ -n "$docs" ] && echo ' · nur Doku')"
           echo "🚦 Client: ${c:+Lint Typecheck Vitest-changed} Scan · Go: $([ -n "$gf" ] && echo voll || echo "${gp:-–}") · Workbench: $([ -n "$wf" ] && echo voll || echo "${wp:-–}")${wv:+ Vitest}${wa:+ assetkit} · Starter: ${sg}${sl}${sv}"
           # JS und Go laufen parallel; innerhalb nacheinander.
           (
-            # Papierschnitt-Bilder sind nicht eingecheckt (B-737): rendern, bei unveränderten Quellen sofort fertig.
-            step gen-paper task gen:paper || exit 1
             step vitest-scan bunx vitest run $scan || exit 1
             if [ -n "$c" ]; then
-              step lint task lint && step typecheck task typecheck && step vitest-changed bunx vitest run --changed "$base" --passWithNoTests || exit 1
+              # Ohne gen:paper (B-742): Tests, die gerenderte Papierschnitt-PNGs oder Golden brauchen (B-737), laufen in
+              # task test/build/dev und im Abnahme-Ticket, nicht hier.
+              step lint task lint && step typecheck task typecheck && step vitest-changed bunx vitest run --changed "$base" --passWithNoTests \
+                --exclude 'tests/paperAssets.test.ts' --exclude 'tests/buildingTargets.test.ts' --exclude 'tools/paper/golden/**' \
+                --exclude 'src/scenes/render/*Sprites.test.ts' --exclude 'src/scenes/render/hubGrowth.test.ts' || exit 1
             fi
             [ -z "$wv" ] || step wb-vitest task k3c-workbench:vitest VITEST_ARGS="--changed $base --passWithNoTests" || exit 1
             [ -z "$sv" ] || step starter-vitest task k3c-starter:vitest || exit 1
-            [ -z "$a" ] || step grafik-golden bunx vitest run tests/paperAssets.test.ts tools/paper/golden || exit 1
           ) & js=$!
           (
             if [ -n "$gf" ]; then step go-test task go:test GO_TEST_FLAGS=-short && step go-lint task go:lint || exit 1
