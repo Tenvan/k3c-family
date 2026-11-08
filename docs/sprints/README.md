@@ -23,6 +23,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RG1 | REG | BAL | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | Beschlüsse in `docs/rules/`, geänderte Werte in `data/`, `task balance` grün | `aktiv/RG1-werte-burg-hub-adern/` |
 | BR2 | REG | BAL | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | `aktiv/BR2-balancing-kampf/` |
 | RS1 | SRV, INF, SIM | RST | Messen, Go-Fixes, Rust-Spike für den Simulationskern | – | `aktiv/RS1-messen-go-fixes-rust-spike/` |
+| RS2 | SRV, DEV, INF | RST | Etappe 2 vorbereiten: Workbench entkoppeln, Zustand ohne JSON-Roundtrip, Inventar | – | `aktiv/RS2-vorarbeit-inventar/` |
 | HW1 | PLAT, SRV, INF, CLI | ABN | Zurückgestellte Controller-Prüfungen nachholen | – | `aktiv/HW1-controller-pruefungen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | `aktiv/PF1-splitscreen-leistung/` |
 
@@ -42,7 +43,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 | P1 | REG | BAL | Spieleabend 1 | Protokoll und Folge-Tickets | bereit | `geplant/P1-spieleabend-1/` |
 | BR1 | REG | BAL | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
-| RS2 | SRV, DEV, INF | RST | Etappe 2 vorbereiten: Workbench entkoppeln, Zustand ohne JSON-Roundtrip, Inventar | – | bereit | `geplant/RS2-vorarbeit-inventar/` |
 | GRJ2 | DEV | GRJ | Grafik-Zielmaß und Ausschnitt-Rahmen abnehmen | – | Entwurf | `geplant/GRJ2-zielmass-ausschnitt-abnehmen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).

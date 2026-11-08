@@ -1,11 +1,11 @@
 # RS2 · SRV, DEV, INF · Etappe 2 vorbereiten: Workbench entkoppeln, Zustand ohne JSON-Roundtrip, Inventar
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RST
 - **Domäne:** SRV, DEV, INF
 - **Reife:** bereit
 - **Tickets:** B-736, B-726, B-731
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 8d74a196
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-11-07, Chat (Ralf), Revision 1, durch 🧑; umfasst B-736, B-731 Revision 1 und B-726 Revision 1
