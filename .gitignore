@@ -55,3 +55,4 @@ docs/backlog/.ticket.lock
 /public/grafik/objekte/*/
 /public/grafik/reittiere/*/
 /public/grafik/truppen/*/
+graphify-out/
