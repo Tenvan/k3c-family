@@ -8,6 +8,7 @@
 #   go           engine/Taskfile.yml            go test, Lint, Race, Abdeckung, Golden-Dateien
 #   k3c-server   cmd/k3c-server/Taskfile.yml    Spielserver: build, run, dev (devrun, -dev)
 #   k3c-load     cmd/k3c-load/Taskfile.yml      Lasttest
+#   k3c-sim      cmd/k3c-sim/Taskfile.yml       Engine-CLI: Simulation, Balancing, Level (B-726)
 #   k3c-tui      cmd/k3c-tui/Taskfile.yml       Diagnose-Oberfläche
 #   k3c-workbench      tools/k3c-workbench/Taskfile.yml     Workbench: dev (Client/Server), window (wails dev), build, frontend, test, lint
 #   k3c-starter  tools/k3c-starter/Taskfile.yml Windows-Starter: dev (Client/Server), window (wails dev), build, test, lint
@@ -40,6 +41,7 @@ includes:
   go: engine/Taskfile.yml
   k3c-server: cmd/k3c-server/Taskfile.yml
   k3c-load: cmd/k3c-load/Taskfile.yml
+  k3c-sim: cmd/k3c-sim/Taskfile.yml
   k3c-tui: cmd/k3c-tui/Taskfile.yml
   k3c-workbench: tools/k3c-workbench/Taskfile.yml
   k3c-starter: tools/k3c-starter/Taskfile.yml
@@ -119,12 +121,13 @@ tasks:
       - bunx vite build
 
   buildall:
-    desc: Alle EXE bauen und nach bin/ legen (Spielserver, Lasttest, TUI, Workbench, Starter samt Web-Build dist/, dazu die Web-EXE bin/k3c-workbench-web); laufende EXE vorher schließen, sonst scheitert die Kopie
+    desc: Alle EXE bauen und nach bin/ legen (Spielserver, Lasttest, Engine-CLI k3c-sim, TUI, Workbench, Starter samt Web-Build dist/, dazu die Web-EXE bin/k3c-workbench-web); laufende EXE vorher schließen, sonst scheitert die Kopie
     cmds:
       - task: k3c-workbench:build
       - task: k3c-workbench:web:build
       - task: k3c-server:build
       - task: k3c-load:build
+      - task: k3c-sim:build
       - task: k3c-tui:build
       - task: k3c-starter:build
 

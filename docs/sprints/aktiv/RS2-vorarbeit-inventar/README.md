@@ -65,7 +65,7 @@ Siehe `B-736 › Offene Fragen` (Frage 1 betrifft den Sprint: G1 bei erfülltem 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RS2.1 | `RS2.1-sim-cli.md` | Umsetzung | autonom | offen |
+| RS2.1 | `RS2.1-sim-cli.md` | Umsetzung | autonom | fertig |
 | RS2.2 | `RS2.2-workbench-entkoppeln.md` | Umsetzung | autonom | offen |
 | RS2.3 | `RS2.3-zustand-stufe1.md` | Umsetzung | autonom | offen |
 | RS2.4 | `RS2.4-inventar-007.md` | Umsetzung | autonom | offen |

@@ -1,0 +1,182 @@
+// Package balance ist der Balancing-Tester (B-099, BAL1): Er spielt eine Szenario-Matrix headless mit Bots und
+// liefert Kennzahlen je Lauf als JSON. Die Simulation (engine/sim) wird nur benutzt; gleiche Matrix und gleiche
+// Daten ergeben byte-gleiche Ausgabe (keine Wanduhr, keine Map-Iteration in der Ausgabe).
+package balance
+
+import (
+	"encoding/json"
+	"fmt"
+
+	"k3c/engine/sim"
+	"k3c/engine/enginetools"
+)
+
+// maxTicksPerDay begrenzt einen Lauf: eine Stunde Spielzeit je Tag (ein Tag dauert heute 16 min, data/biomes).
+const maxTicksPerDay = 3600 * enginetools.TickHz
+
+// Matrix beschreibt alle Läufe: jedes Paar aus Seed × Spieleranzahl × Bot × Tiefe läuft `Days` Tage.
+type Matrix struct {
+	Seeds   []string `json:"seeds"`
+	Players []int    `json:"players"`
+	Bots    []string `json:"bots"`
+	Depths  []int    `json:"depths"` // Tiefe = Biom (0 Wald, 1 Höhle, …)
+	Days    int      `json:"days"`
+	// GoldThreshold: Schwelle für Metrics.GoldThresholdTick (Gold aller Monarchen zusammen); 0 = nicht messen.
+	GoldThreshold int    `json:"goldThreshold"`
+	Grade         string `json:"grade,omitempty"` // Schwierigkeitsgrad aller Läufe, leer = normal (Grad-Kurven, BAL3.3)
+	// World: ID der Welt (z. B. standard); gesetzt baut der Lauf alle Tiefen der ersten Insel (BS11, B-642), Depths gilt dann nicht.
+	World string `json:"world,omitempty"`
+	// Helps: Dev-Hilfen wie im Stufen-Test (hilfen, voll, boss; helps.go), nur mit World; leer = keine.
+	Helps string `json:"helps,omitempty"`
+}
+
+// Scenario ist ein einzelner Lauf.
+type Scenario struct {
+	Seed    string `json:"seed"`
+	Players int    `json:"players"`
+	Bot     string `json:"bot"`
+	Depth   int    `json:"depth"`
+	Days    int    `json:"days"`
+	Grade   string `json:"grade,omitempty"` // leer = normal; steht so auch im Replay
+	World   string `json:"world,omitempty"` // leer = eine Stufe der Tiefe Depth; sonst alle Tiefen der ersten Insel der Welt (BS11)
+	Helps   string `json:"helps,omitempty"` // Dev-Hilfen (helps.go), leer = keine
+}
+
+// Result ist ein Lauf mit Kennzahlen; ein ungültiger Lauf hat Error statt Metrics.
+type Result struct {
+	Scenario
+	Valid   bool     `json:"valid"`
+	Error   string   `json:"error,omitempty"`
+	Ticks   int      `json:"ticks"`
+	Metrics *Metrics `json:"metrics"`
+	// Replay ist die Aufnahme des Laufs (nur gültige Läufe); sie steht nicht im Bericht, der Befehl schreibt sie
+	// auf Wunsch als eigene Datei (BAL1.2).
+	Replay *Replay `json:"-"`
+}
+
+// Report ist die Ausgabe: die Matrix und alle Läufe in der Reihenfolge der Matrix.
+type Report struct {
+	Matrix  Matrix   `json:"matrix"`
+	Results []Result `json:"results"`
+}
+
+// Scenarios prüft die Matrix und zählt die Läufe auf (Seeds außen, Tiefe innen).
+func (m Matrix) Scenarios() ([]Scenario, error) {
+	if len(m.Seeds) == 0 || len(m.Players) == 0 || len(m.Bots) == 0 || len(m.Depths) == 0 {
+		return nil, fmt.Errorf("matrix: Seeds, Spieler, Bots und Tiefen brauchen je mindestens einen Wert")
+	}
+	if m.Days < 1 {
+		return nil, fmt.Errorf("matrix: days muss mindestens 1 sein, war %d", m.Days)
+	}
+	for _, n := range m.Players {
+		if n < 1 || n > 4 {
+			return nil, fmt.Errorf("matrix: Spieleranzahl muss 1 bis 4 sein, war %d", n)
+		}
+	}
+	if err := m.checkBots(); err != nil {
+		return nil, err
+	}
+	if err := checkHelps(m.Helps, m.World); err != nil {
+		return nil, fmt.Errorf("matrix: %w", err)
+	}
+	var out []Scenario
+	for _, seed := range m.Seeds {
+		for _, n := range m.Players {
+			for _, b := range m.Bots {
+				for _, d := range m.Depths {
+					out = append(out, Scenario{Seed: seed, Players: n, Bot: b, Depth: d, Days: m.Days, Grade: m.Grade, World: m.World, Helps: m.Helps})
+				}
+			}
+		}
+	}
+	return out, nil
+}
+
+// checkBots: Jeder Bot ist bekannt und hat in jeder Spieleranzahl genug Monarchen.
+func (m Matrix) checkBots() error {
+	for _, b := range m.Bots {
+		if _, ok := BotByName(b); !ok {
+			return fmt.Errorf("matrix: unbekannter Bot %q (bekannt: %v, je Spieler mit %s)", b, BotNames(), MixSep)
+		}
+		for _, n := range m.Players {
+			if err := checkPlayers(b, n); err != nil {
+				return fmt.Errorf("matrix: %w", err)
+			}
+		}
+	}
+	return nil
+}
+
+// Run spielt alle Läufe der Matrix (parallel, parallel.go). Ein abgebrochener Lauf erscheint als ungültig, der Rest läuft weiter.
+func Run(m Matrix) (Report, error) {
+	scenarios, err := m.Scenarios()
+	if err != nil {
+		return Report{}, err
+	}
+	return Report{Matrix: m, Results: runAll(scenarios, m.GoldThreshold, nil)}, nil
+}
+
+// JSON schreibt den Bericht eingerückt mit Zeilenende; Feldreihenfolge aus den Structs.
+func (r Report) JSON() ([]byte, error) {
+	b, err := json.MarshalIndent(r, "", "  ")
+	return append(b, '\n'), err
+}
+
+// runOne rechnet einen Lauf bis zum Morgen nach dem letzten Tag (Cycle.Day > Days).
+func runOne(sc Scenario, threshold int) (res Result) {
+	res = Result{Scenario: sc}
+	defer func() {
+		if p := recover(); p != nil {
+			res.Valid, res.Metrics, res.Error = false, nil, fmt.Sprintf("abgebrochen: %v", p)
+		}
+	}()
+	isl, err := newIsland(sc)
+	if err != nil {
+		res.Error = err.Error()
+		return res
+	}
+	bot, _ := BotByName(sc.Bot)
+	if sc.World != "" {
+		bot = withBossFight(withDescent(bot, isl, deepestOf(isl)), isl, deepestOf(isl))
+	}
+	c := newCollector(isl, threshold)
+	cmds := make([]sim.PlayerCommand, sc.Players)
+	rp := &Replay{Version: ReplayVersion, Scenario: sc, DataHash: dataHash}
+	for tick := 1; tick <= sc.Days*maxTicksPerDay; tick++ {
+		for _, w := range isl.Stages {
+			for _, p := range w.Players {
+				cmds[p.Index] = bot(w, p)
+			}
+		}
+		rp.record(cmds)
+		sim.StepIsland(isl, cmds, 1.0/enginetools.TickHz)
+		afterStep(isl, sc, tick, enginetools.TickHz)
+		c.observe(tick)
+		res.Ticks = tick
+		if isl.Stages[0].Cycle.Day > sc.Days {
+			res.Valid, res.Metrics, res.Replay = true, c.result(), rp
+			rp.EndHash, rp.CastleFallTick = endHash(isl), res.Metrics.CastleFallTick
+			return res
+		}
+	}
+	res.Error = fmt.Sprintf("Tag %d nach %d Ticks nicht beendet", sc.Days, res.Ticks)
+	return res
+}
+
+// newIsland erzeugt die Insel eines Szenarios mit seinen Monarchen auf Stufe 0 (Lauf und Wiedergabe).
+func newIsland(sc Scenario) (*sim.Island, error) {
+	isl, err := createIsland(sc)
+	if err != nil {
+		return nil, err
+	}
+	if grade := gradeOf(sc); grade != "" {
+		if err := sim.SetGrade(isl, grade, true); err != nil {
+			return nil, err
+		}
+	}
+	for range sc.Players {
+		sim.AddIslandPlayer(isl, 0)
+	}
+	applyHelps(isl, sc)
+	return isl, nil
+}

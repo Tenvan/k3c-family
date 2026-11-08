@@ -1,0 +1,79 @@
+package main
+
+import (
+	"flag"
+	"os"
+	"path/filepath"
+	"strings"
+	"time"
+
+	"k3c/engine/balance"
+)
+
+// sensOpts sind die Optionen von `--sensitivity` und `--curves` (task balance:sensitivity, BAL3.3).
+type sensOpts struct {
+	vary, curves bool
+	paths        []string // leer = balance.DefaultPaths
+	variants     []string // Wert-Varianten datei.json:a.b.c=wert (nur --targets, WZ28.4)
+	seeds        int      // 0 = alle Seeds aus data/balance-targets.json
+	dir          string
+}
+
+func (o *sensOpts) register(fs *flag.FlagSet) {
+	fs.BoolVar(&o.vary, "sensitivity", false, "Sensitivität: Werte aus data/ um −25/−10/+10/+25 % ändern (nur im Speicher), "+
+		"gekippte Ziele nach reports/sensitivity-<Zeit>.json und .md; --seeds N = nur die ersten N Seeds")
+	fs.Func("vary", "Pfad datei.json:a.b.c zum Variieren (setzt --sensitivity), mehrfach oder mit Komma (Standard: "+
+		strings.Join(balance.DefaultPaths, ", ")+"); mit =wert (datei.json:a.b.c=wert) eine feste Wert-Variante für --targets, "+
+		"nur im Speicher", func(s string) error {
+		for _, part := range split(s) {
+			if strings.Contains(part, "=") {
+				o.variants = append(o.variants, part)
+			} else {
+				o.vary, o.paths = true, append(o.paths, part)
+			}
+		}
+		return nil
+	})
+	fs.BoolVar(&o.curves, "curves", false, "Grad-Kurven je Schwierigkeitsgrad (Nacht 1–5, Wald, 2 Spieler, saver) in den Sensitivitäts-Bericht")
+}
+
+// runSensitivity rechnet Variationen und/oder Grad-Kurven und schreibt sensitivity-<Zeit>.json und .md nach dir.
+func runSensitivity(o sensOpts, v env) error {
+	ts, err := balance.DefaultTargets()
+	if err != nil {
+		return err
+	}
+	opt := balance.SensitivityOptions{Seeds: o.seeds}
+	if o.vary {
+		opt.Paths = o.paths
+		if len(opt.Paths) == 0 {
+			opt.Paths = balance.DefaultPaths
+		}
+	}
+	if o.curves {
+		opt.Nights = balance.CurveNights
+	}
+	start := time.Now()
+	rep, err := ts.Sensitivity(opt)
+	if err != nil {
+		return err
+	}
+	b, err := rep.JSON()
+	if err != nil {
+		return err
+	}
+	if err := os.MkdirAll(o.dir, 0o755); err != nil {
+		return err
+	}
+	stem := filepath.Join(o.dir, "sensitivity-"+time.Now().Format("20060102-150405"))
+	if err := os.WriteFile(stem+".json", b, 0o644); err != nil {
+		return err
+	}
+	if err := os.WriteFile(stem+".md", []byte(rep.Markdown()), 0o644); err != nil {
+		return err
+	}
+	v.out.emit(map[string]any{"event": "report", "files": []string{stem + ".json", stem + ".md"}})
+	v.logf("💾 k3c-sim: Sensitivität mit %d Seeds in %s, Bericht %s.json und %s.md",
+		rep.Seeds, time.Since(start).Round(time.Second), stem, stem)
+	return nil
+}

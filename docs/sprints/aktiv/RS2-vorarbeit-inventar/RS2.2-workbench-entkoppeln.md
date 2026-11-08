@@ -20,6 +20,13 @@ Die Workbench ruft Sim, Balancing und Level-Erzeugung nur noch als Kindprozess `
 
 B-726 (freigegeben). Die Schnittstelle liefert RS2.1 (`cmd/k3c-sim`). Betroffen: `tools/k3c-workbench/internal/{balance,botdev,enginetools,botfeed,mcpsrv}`, `studioview` darf laut Nicht-Ziel den laufenden Spielserver nutzen. MCP-Tools `sim_run`, `sim_test` (start, status, stop, list; wait), `level_generate`, Balancing-Seite. Lange Läufe laufen nur über `sim_test`. Fehlt oder veraltet die EXE: klare Meldung mit `task k3c-sim:build`; Absturz: Lauf `fehlgeschlagen`, letzte stderr-Zeilen im Status. Wails-/Workbench-Frontends folgen Atomic Design (`@webkit`), hier nur Go-Seite.
 
+### Hinweise aus RS2.1
+
+- **Kopien entfernen (Pflicht):** RS2.1 hat `internal/balance` (samt Tests, `report/`, `testdata/`) nach `engine/balance` und `internal/enginetools` nach `engine/enginetools` kopiert (nur Importpfade angepasst), `internal/balance/cmd` lebt als `cmd/k3c-sim balance` weiter. Bis RS2.2 laufen die Balance-Tests (~5 min ohne `-short`) und die langen CLI-Tests doppelt. RS2.2 löscht `internal/balance/cmd`, `internal/enginetools` und die Engine-Teile von `internal/balance` samt deren Tests, dazu den Namensraum `balance` (`tools/k3c-workbench/internal/balance/Taskfile.yml`: `balance:build` → `k3c-sim:build`; `fullgame`/`milestone` laufen dann über `go test ./engine/balance`, Taskfile-Änderung dort mit vermerken).
+- **Berichtsteil bleibt in der Workbench:** Die Workbench liest Berichte (`ReadSummary`, `Insights`, `GoalView` und deren Typen, `BaselinePath`/`BaselineFile` in `simrun/spec.go`). Diese NICHT aus `engine/balance` importieren (zieht `engine/sim` nach); sie bleiben als reiner Leseteil in `internal/balance` (ohne `engine/*`-Importe, mit ihren schnellen Tests) oder lesen das Berichts-JSON selbst.
+- **Offline-Weg:** `simrun/offline.go` baut heute `bin/k3c-balance[-n]` und liest `PROGRESS n/m` von stdout. Neu: `bin/k3c-sim balance --targets --report-dir … --progress …` (gleiche Flags), stdout nur JSON-Zeilen `{"event":"progress","done":n,"total":m}`, `{"event":"report","files":[…]}`, `{"event":"error","message":…}`, `{"event":"aborted"}`; Exit 0/1/2/130. Schnittstelle im Kopfkommentar von `cmd/k3c-sim/main.go`. Parallel-Plätze (`k3c-balance-2` …) entsprechend als `bin/k3c-sim-<n>` oder eine EXE mit mehreren Prozessen.
+- `sim_run`/`level_generate`: `k3c-sim run|level` mit JSON auf stdin, Ergebnis `{"event":"result","text":…}` byte-gleich zum heutigen Text.
+
 ## Erlaubte Dateien
 
 - `tools/k3c-workbench/**` (Go-Seite)

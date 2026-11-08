@@ -1,0 +1,30 @@
+# Namespace `k3c-sim`: das Engine-CLI (B-726, RS2.1) für Simulation, Balancing und Level als Kindprozess der Workbench.
+# Feste EXE bin/k3c-sim; Schnittstelle im Kopfkommentar von cmd/k3c-sim/main.go. Autonome Testläufe nur über `sim_test`.
+version: '3'
+
+tasks:
+  build:
+    desc: EXE bin/k3c-sim bauen
+    deps: [':tmp']
+    sources:
+      - cmd/k3c-sim/**/*.go
+      - engine/**/*.go
+      - engine/balance/report/*
+      - data/**/*
+      - go.mod
+      - go.sum
+    generates:
+      - bin/k3c-sim{{exeExt}}
+    cmds:
+      - go build -o bin/k3c-sim{{exeExt}} ./cmd/k3c-sim
+
+  run:
+    desc: 'Engine-CLI starten, z. B. `task k3c-sim:run -- level --input level.json` oder `task k3c-sim -- balance --targets --seed-list k3c-dev --progress`'
+    cmds:
+      - task: build
+      - ./bin/k3c-sim{{exeExt}} {{.CLI_ARGS}}
+
+  default:
+    desc: Kurzform von k3c-sim:run
+    cmds:
+      - task: run

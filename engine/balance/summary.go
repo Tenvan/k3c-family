@@ -1,0 +1,276 @@
+package balance
+
+import (
+	"encoding/json"
+	"fmt"
+	"strconv"
+	"strings"
+)
+
+// Bericht von `task balance` (B-157, BAL2.2): Pass/Fail je Ziel als JSON und Markdown, Vergleich mit einer Baseline.
+// Die Baseline ist selbst ein Summary-JSON (testdata/balance/baseline.json), ein eigenes Format gibt es nicht.
+
+// Entry ist ein bewertetes Ziel; Pass gilt für „ok“ und „knapp“.
+type Entry struct {
+	Verdict
+	Pass bool `json:"pass"`
+}
+
+// Summary ist der Bericht: alle Ziele mit Urteil. Seeds ist die Zahl der gespielten Seeds (kleiner als in der Datei bei --seeds N).
+// Varianten und Kennzahlen (WZ28.4) fehlen in älteren Berichten und in der Baseline; ReadSummary liest beide.
+type Summary struct {
+	Version    int      `json:"version"`
+	Seeds      int      `json:"seeds"`
+	SeedMode   string   `json:"seedMode,omitempty"`  // dev, all oder auswahl (B-634); fehlt in älteren Berichten
+	SeedNames  []string `json:"seedNames,omitempty"` // die Seeds bei höchstens 5, sonst leer
+	// Pass: alle Ziele mit Rolle goal erreicht (B-648); ohne Rollen (alte Berichte) alle Ziele.
+	Pass       bool     `json:"pass"`
+	Goal       *GoalView    `json:"goal,omitempty"`     // Urteil über die Ziele (Rolle goal)
+	Quality    *QualityView `json:"quality,omitempty"`  // Korridore mit Rolle guard im Korridor
+	Progress   *Progress    `json:"progress,omitempty"` // Meilenstein-Leiter des Insel-Laufs
+	Targets    []Entry  `json:"targets"`
+	Varianten  []string `json:"varianten,omitempty"`  // Wert-Varianten des Laufs (datei.json:a.b.c=wert)
+	Kennzahlen *Figures `json:"kennzahlen,omitempty"` // FiguresOf des Laufs
+}
+
+// Change ist ein Ziel, dessen Bewertung gegenüber der Baseline anders ist. Before/After sind Status; „neu“ und
+// „entfällt“, wenn das Ziel nur auf einer Seite steht. Tipped: Pass wechselt (ok/knapp ↔ verletzt/ungültig).
+type Change struct {
+	Name   string `json:"name"`
+	Before string `json:"before"`
+	After  string `json:"after"`
+	Tipped bool   `json:"tipped"`
+}
+
+// RunTargets spielt alle Szenarien der Ziele über die ersten n Seeds der Datei (0 = alle).
+func (t *Targets) RunTargets(n int) (Report, error) {
+	return t.RunTargetsProgress(n, nil)
+}
+
+// RunTargetsProgress wie RunTargets; progress (darf nil sein) erfährt nach jedem Lauf fertige und alle Läufe.
+func (t *Targets) RunTargetsProgress(n int, progress func(done, total int)) (Report, error) {
+	seedList := t.seedList(n)
+	var rep Report
+	var all []Scenario
+	done := map[Scenario]bool{}
+	for _, g := range t.Targets {
+		key := Scenario{Players: g.Players, Bot: g.Bot, Depth: g.Depth, Days: g.Days, Grade: g.Grade, World: g.World, Helps: g.Helps}
+		if done[key] {
+			continue
+		}
+		done[key] = true
+		m := Matrix{Seeds: seedList, Players: []int{g.Players}, Bots: []string{g.Bot}, Depths: []int{g.Depth}, Days: g.Days, Grade: g.Grade, World: g.World, Helps: g.Helps}
+		sc, err := m.Scenarios()
+		if err != nil {
+			return Report{}, err
+		}
+		if all == nil {
+			rep.Matrix = m
+		}
+		all = append(all, sc...)
+	}
+	rep.Results = runAll(all, 0, progress)
+	return rep, nil
+}
+
+// Summarize bewertet einen Bericht gegen die Ziele.
+func (t *Targets) Summarize(r Report) Summary {
+	s := Summary{Version: 1, Seeds: len(r.Matrix.Seeds)}
+	if len(t.Seeds) > 0 {
+		s.SeedMode = t.seedModeOf(r.Matrix.Seeds)
+	}
+	if len(r.Matrix.Seeds) <= 5 {
+		s.SeedNames = r.Matrix.Seeds
+	}
+	var goal GoalView
+	var quality QualityView
+	for _, v := range t.Evaluate(r) {
+		role := v.role()
+		if role != RoleGoal && v.Status == StatusNarrow {
+			v.Status = StatusOK // „knapp“ gibt es nur bei Zielen (B-648)
+		}
+		e := Entry{Verdict: v, Pass: v.Status == StatusOK || v.Status == StatusNarrow}
+		switch role {
+		case RoleGoal:
+			goal.Total++
+			if e.Pass {
+				goal.Hit++
+			}
+		case RoleGuard:
+			quality.Total++
+			if e.Pass {
+				quality.Passed++
+			}
+		}
+		s.Targets = append(s.Targets, e)
+	}
+	goal.Reached = goal.Hit == goal.Total
+	s.Pass, s.Goal = goal.Reached, &goal
+	if quality.Total > 0 {
+		s.Quality = &quality
+	}
+	if sc, ok := t.goalScenario(); ok {
+		s.Progress = progressOf(r, sc, r.Matrix.Seeds)
+	}
+	return s
+}
+
+// goalScenario ist das Szenario des ersten Ziels mit Rolle goal und Welt (Insel-Lauf).
+func (t *Targets) goalScenario() (Scenario, bool) {
+	for _, g := range t.Targets {
+		if g.World != "" && g.role() == RoleGoal {
+			return Scenario{Players: g.Players, Bot: g.Bot, Days: g.Days, Grade: g.Grade, World: g.World, Helps: g.Helps}, true
+		}
+	}
+	return Scenario{}, false
+}
+
+// JSON schreibt den Bericht eingerückt mit Zeilenende.
+func (s Summary) JSON() ([]byte, error) {
+	b, err := json.MarshalIndent(s, "", "  ")
+	return append(b, '\n'), err
+}
+
+// ReadSummary liest ein Summary-JSON (Baseline).
+func ReadSummary(raw []byte) (Summary, error) {
+	var s Summary
+	if err := json.Unmarshal(raw, &s); err != nil {
+		return s, fmt.Errorf("baseline: %w", err)
+	}
+	return s, nil
+}
+
+// targetKey unterscheidet Ziele auch bei gleichem Namen (Szenario gehört dazu).
+func (e Entry) targetKey() string {
+	return fmt.Sprintf("%s|%s|%d|%s|%d|%d|%s|%s|%s", e.Measure, e.Name, e.Players, e.Bot, e.Depth, e.Days, e.Grade, e.World, e.Helps)
+}
+
+// Compare nennt die Ziele, deren Status sich gegenüber der Baseline geändert hat, in der Reihenfolge von cur
+// (entfallene am Ende). Wertänderungen ohne Statuswechsel sind keine Änderung.
+func Compare(base, cur Summary) []Change {
+	before := map[string]Entry{}
+	for _, e := range base.Targets {
+		before[e.targetKey()] = e
+	}
+	var out []Change
+	for _, e := range cur.Targets {
+		b, ok := before[e.targetKey()]
+		delete(before, e.targetKey())
+		switch {
+		case !ok:
+			out = append(out, Change{Name: e.Name, Before: "neu", After: e.Status, Tipped: !e.Pass})
+		case b.Status != e.Status:
+			out = append(out, Change{Name: e.Name, Before: b.Status, After: e.Status, Tipped: b.Pass != e.Pass})
+		}
+	}
+	for _, b := range base.Targets {
+		if _, left := before[b.targetKey()]; left {
+			out = append(out, Change{Name: b.Name, Before: b.Status, After: "entfällt", Tipped: b.Pass})
+		}
+	}
+	return out
+}
+
+// Markdown schreibt Auswertung (B-632, mit den eingebetteten Richtwerten), Tabelle je Ziel und Vergleich.
+// base == nil: Hinweis „keine Baseline“.
+func (s Summary) Markdown(base *Summary) string {
+	in, err := s.Insights(base, Meta{Baseline: "Baseline"})
+	if err != nil {
+		return s.MarkdownWith(base, nil)
+	}
+	return s.MarkdownWith(base, &in)
+}
+
+// MarkdownWith wie Markdown mit einer fertigen Auswertung; in == nil: ohne Auswertung.
+func (s Summary) MarkdownWith(base *Summary, in *Insights) string {
+	var b strings.Builder
+	verdict := "Pass"
+	if !s.Pass {
+		verdict = "Fail"
+	}
+	if s.Goal != nil && s.Goal.Total > 0 {
+		verdict = "Ziel nicht erreicht"
+		if s.Goal.Reached {
+			verdict = "Ziel erreicht"
+		}
+	}
+	fmt.Fprintf(&b, "# Balancing-Bericht\n\nGesamt: **%s**, %s, Ziele nach `data/balance-targets.json`.\n\n", verdict, s.seedText())
+	if in != nil {
+		b.WriteString(in.Markdown())
+		b.WriteString("\n## Ziele im Detail\n\n")
+	}
+	b.WriteString("| Ziel | Szenario | Wert | Grenzen | Bewertung | Seeds zum Nachspielen |\n|---|---|---|---|---|---|\n")
+	for _, e := range s.Targets {
+		fmt.Fprintf(&b, "| %s | %d Spieler, %s, Tiefe %d, %d Tage | %s | %s | %s | %s |\n",
+			e.Name, e.Players, e.Bot, e.Depth, e.Days, e.valueText(), e.boundsText(), e.statusText(), e.seedsText())
+	}
+	b.WriteString("\n## Vergleich mit der Baseline\n\n")
+	if base == nil {
+		b.WriteString("Keine Baseline vorhanden (`testdata/balance/baseline.json`); `task balance:baseline` legt sie an.\n")
+		return b.String()
+	}
+	if base.Seeds != s.Seeds {
+		fmt.Fprintf(&b, "Hinweis: Die Baseline hat %d Seeds, dieser Lauf %d.\n\n", base.Seeds, s.Seeds)
+	}
+	changes := Compare(*base, s)
+	if len(changes) == 0 {
+		b.WriteString("Keine Bewertung hat sich geändert.\n")
+	}
+	for _, c := range changes {
+		mark := ""
+		if c.Tipped {
+			mark = " **gekippt**"
+		}
+		fmt.Fprintf(&b, "- %s: %s → %s%s\n", c.Name, c.Before, c.After, mark)
+	}
+	return b.String()
+}
+
+func num(x float64) string {
+	return strings.ReplaceAll(strconv.FormatFloat(x, 'f', -1, 64), ".", ",")
+}
+
+func (e Entry) unit() string {
+	if e.Kind == KindShare {
+		return " %"
+	}
+	return ""
+}
+
+func (e Entry) valueText() string {
+	if e.Status == StatusInvalid {
+		return "–"
+	}
+	return strings.ReplaceAll(strconv.FormatFloat(e.Value, 'f', 1, 64), ".", ",") + e.unit()
+}
+
+func (e Entry) boundsText() string {
+	switch {
+	case e.Lower != nil && e.Upper != nil:
+		return num(*e.Lower) + "–" + num(*e.Upper) + e.unit()
+	case e.Lower != nil:
+		return "≥ " + num(*e.Lower) + e.unit()
+	}
+	return "≤ " + num(*e.Upper) + e.unit()
+}
+
+func (e Entry) statusText() string {
+	if e.Pass {
+		return "Pass (" + e.Status + ")"
+	}
+	return "Fail (" + e.Status + ")"
+}
+
+func (e Entry) seedsText() string {
+	var parts []string
+	if len(e.FailSeeds) > 0 {
+		parts = append(parts, strings.Join(e.FailSeeds, ", "))
+	}
+	if len(e.InvalidSeeds) > 0 {
+		parts = append(parts, "ungültig: "+strings.Join(e.InvalidSeeds, ", "))
+	}
+	if len(parts) == 0 {
+		return "–"
+	}
+	return strings.Join(parts, "; ")
+}

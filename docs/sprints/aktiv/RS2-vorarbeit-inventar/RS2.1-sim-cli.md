@@ -1,6 +1,6 @@
 # RS2.1 · Engine-CLI k3c-sim (run, balance, level)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -59,5 +59,12 @@ Einmal vor dem Commit; während der Arbeit nur gezielte Tests (`docs/arbeitsweis
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+**AC-01 geprüft (Vergleich):** `bin/k3c-sim run` liefert denselben Text wie `sim_run` (k3c-dev, 1 000 und 100 000 Ticks mit Eingaben); `bin/k3c-sim level` wie `level_generate` (cave, familie-2026); Balancing-Einzel-Seed (coop2, standard, 40 Tage, k3c-dev): `balance-*.json` und `.md` byte-gleich zu `bin/k3c-balance`, `.html` und `result.json` nur im Zeitstempel `generated` verschieden. Tests grün: `TestRunGleichSimRun`, `TestLevelGleichLevelGenerate`, `TestBalanceMatrixGleich`.
+
+**AC-01 geprüft (Fortschritt, Abbruch):** stdout nur JSON-Zeilen (`progress`, `result`, `report`, `error`, `aborted`), Exit 0/1/2/130; `TestAbbruchPerProzessEnde` startet einen Kindprozess und beendet ihn, kein Bericht bleibt liegen; `TestSignalAbbruch` grün.
+
+**AC-01 Dauer:** je 3 Läufe gleicher Argumente unter Last 43–100 %: `k3c-balance` Mittel 127,7 s, `k3c-sim` 116,3 s; isoliert 160 s gegen 156 s. Nicht langsamer (die 50–57 s aus 006 waren bei der hohen Last nicht reproduzierbar).
+
+**CI-Voraussetzung:** `check:diff`-Schritte `go-test`, `go-lint`, `vitest-scan`, `lint`, `typecheck`, `vitest-changed` grün. Der Schritt `wb-gotest` (volle Workbench, ausgelöst durch die Änderung der Root-`Taskfile.yml`, nicht durch Workbench-Code) lief auf dem durch parallele Sessions ausgelasteten Rechner (CPU ~100 %) ins Zeitlimit von 10 min; die Workbench ist in RS2.1 unverändert, ihre Pakete liefen einzeln grün (planning 78 s allein). Review (Sonnet): keine schweren Befunde.
+
+**Abweichungen:** `engine/balance` und `engine/enginetools` sind bis RS2.2 1:1-Kopien aus `tools/k3c-workbench/internal/` (nur Importpfade), RS2.2 löscht die Workbench-Seite (Hinweise dort ergänzt). Die Vergleichsläufe liefen in der Shell, weil `sim_test` `k3c-sim` erst nach RS2.2 starten kann. **Neue Tickets:** keine. Manuell geprüft: nichts.
