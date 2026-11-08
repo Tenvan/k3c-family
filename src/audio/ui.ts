@@ -6,7 +6,7 @@ import { audioCore } from './audioCore';
 
 export type UiSound = 'select' | 'confirm';
 
-/** Effekt-Slots im Register `data/assets.json` */
+/** Effekt-Slots im Register `data/sounds.json` */
 export const UI_SLOTS: Readonly<Record<UiSound, string>> = { select: 'sfx:uiSelect', confirm: 'sfx:uiConfirm' };
 
 /** Rein: Eingabe eines Frames → Ton. Bestätigen (Enter, A, Tippen) schlägt Auswahl (Richtung, Seite); nichts getan → `null`. */

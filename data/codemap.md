@@ -16,7 +16,7 @@ Configuration Data: einzige Quelle für Balancing-Werte (JSON) für den TS-Clien
 - `bosses.json`: `bosses` (Minibosse je Stufe: `kind`, `depth`, `wave`, `base`, `hpFactor`, `damageFactor`, `ability` `summon|aoe|flameTrail|shardThrow`, `reward`) und `endBosses` (`lair`, `phases`). `events.json`: Nacht-Events `fullMoon`, `bloodMoon`, `merchantRaid` (nur Inseln). `worlds/standard.json`: Standard-Welt (Welt-Datei nach `docs/rules/welten.md`: `id`, `name`, `notes`, `islands` mit `depths`, `depthScaling`, `plannedChunks`, `chunkCounts`); als einzige Welt eingebettet, eigene Welten unter `worlds/` bleiben lokal (`.gitignore`). `goals.json`: Startwerte der Siegvarianten (`gold`, `days`).
 - `assets.json`: Slot-Register (`slots` mit `art` grafik|sound, `kategorie`, `wahl`), geschrieben von k3c-workbench und vom Asset-Studio. `assets-recherche.json`: Recherche-Treffer je Slot (`treffer`: Link, Quelle, Urheber, Lizenz, `lizenzStatus`), geschrieben von k3c-workbench (`assets_hit_add`, `assets_research`).
 - `island-sizes.json`: erlaubte Chunk-Anzahlen einer Stufe (`sizes`: Name, `chunkCount`, alle Biome), gesetzt je Insel und Tiefe in der Welt-Datei › `chunkCounts`; gelesen von `engine/sim/island_sizes.go`.
-- `sprites.json` (Sheets, Skalierung, Reittiere) und `balance-targets.json` (`margin`, `seeds`, `targets` für Balancing-Läufe). `biomes/`: siehe eigene codemap.
+- `sprites.json` (alte Pixel-Sheets, nur noch für Werkzeuge und Atlas, fällt mit CU1.5), `sounds.json` (die 32 Sound-Slots, CU1.2) und `balance-targets.json` (`margin`, `seeds`, `targets` für Balancing-Läufe). `biomes/`: siehe eigene codemap.
 
 ## Flow
 

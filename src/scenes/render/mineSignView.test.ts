@@ -13,7 +13,7 @@ describe('Abbau-Symbol je Knotenart (B-588)', () => {
     expect(mineSymbol('bush')).toBeNull();
     expect(mineSymbol('unbekannt')).toBeNull();
   });
-  it('Symbole laden ihre 32-px-Grafik aus tools/buildings (Datei geprüft über data/assets.json)', () => {
+  it('Symbole laden ihre Papier-Grafik aus der Natur-Zuordnung', () => {
     for (const [key, file] of Object.entries(MINE_SYMBOL_TEXTURES)) {
       expect(NATURE_TEXTURES[key]).toBe(file);
     }

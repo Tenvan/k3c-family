@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { BUILDINGS } from '../../model/data';
 import { paperBuildingFile } from './paperAssets';
-import { BUILDING_TEXTURES, HUB_SCAFFOLD_TEXTURE, castleOverlay, backWallTexture, hubLookTexture, hubTexture, isHubBuilding, siteTexture, textureScale } from './buildingSprites';
+import { BUILDING_TEXTURES, HUB_SCAFFOLD_TEXTURE, castleOverlay, backWallTexture, hubLookTexture, hubTexture, isHubBuilding, siteTexture } from './buildingSprites';
 import { NATURE_TEXTURES, nodeSprite } from './natureSprites';
 
 /** Nur die Pfade, nichts wird geladen */
@@ -28,11 +28,9 @@ describe('Gebäude-Grafik (GR3.1)', () => {
       const key = siteTexture(kind as keyof typeof neu, 'built');
       expect(key).not.toBeNull();
       expect(BUILDING_TEXTURES[key!]).toBe(paperBuildingFile(id)); // Papierschnitt (US1); Hub-Gebäude ohne Stufe: Grundform = Stufe 1 (GEB9)
-      expect(textureScale(key!)).toBe(1);
     }
     for (const [key, id] of [['grafik:setzling', 'setzling'], ['grafik:pappel-niedrig', 'pappel-niedrig']] as const) {
-      expect(BUILDING_TEXTURES[key]).toBe(`gebaeude/${id}-32.png`); // Plantage (GEB5 AC-02)
-      expect(textureScale(key)).toBe(1);
+      expect(NATURE_TEXTURES[key]).toBe(`objekte/${id}/idle.png`); // Plantage (GEB5 AC-02): Papier-Objekt (CU1.2)
     }
   });
 
@@ -51,7 +49,6 @@ describe('Gebäude-Grafik (GR3.1)', () => {
         const key = siteTexture(kind, 'built', s);
         expect(key).toBe(`grafik:${kind}-${s}`);
         expect(BUILDING_TEXTURES[key!]).toBe(paperBuildingFile(id, s)); // GEB3 AC-02: alle zehn Stufen, eigene Grafik
-        expect(textureScale(key!)).toBe(1);
       }
     }
     expect(siteTexture('wall', 'built', 9)).toBeNull();
@@ -66,7 +63,6 @@ describe('Gebäude-Grafik (GR3.1)', () => {
         const key = siteTexture(k, 'built', s);
         expect(key).toBe(`grafik:${kind}-${s}`);
         expect(BUILDING_TEXTURES[key!]).toBe(paperBuildingFile(id, s));
-        expect(textureScale(key!)).toBe(1);
       }
       expect(siteTexture(k, 'built', 6)).toBe(`grafik:${kind}-5`); // B-458: andere Stufenzahl später
       expect(siteTexture(k, 'built', 0)).toBe(`grafik:${kind}-1`);
@@ -92,7 +88,6 @@ describe('Gebäude-Grafik (GR3.1)', () => {
       const key = siteTexture('ship', 'built', n);
       expect(key).toBe(`grafik:ship-${n}`);
       expect(BUILDING_TEXTURES[key!]).toBe(paperBuildingFile('schiff', n));
-      expect(textureScale(key!)).toBe(1);
       expect(FILES).toContain(`../../../public/grafik/${BUILDING_TEXTURES[key!]}`);
     }
     expect(siteTexture('ship', 'built')).toBe('grafik:ship-1');
@@ -106,7 +101,6 @@ describe('Gebäude-Grafik (GR3.1)', () => {
     for (const n of [1, 2, 3, 4, 5]) {
       const key = backWallTexture(n);
       expect(BUILDING_TEXTURES[key!]).toBe(paperBuildingFile('hintergrundmauer', n));
-      expect(textureScale(key!)).toBe(1);
     }
     expect(backWallTexture(6)).toBeNull();
   });
@@ -116,7 +110,6 @@ describe('Gebäude-Grafik (GR3.1)', () => {
       const key = hubTexture(n);
       expect(key).toBe(`grafik:hub-${n}`);
       expect(BUILDING_TEXTURES[key!]).toBe(paperBuildingFile('burg', n));
-      expect(textureScale(key!)).toBe(1);
     }
     expect(hubTexture()).toBe('grafik:hub-1');
     expect(hubTexture(6)).toBeNull();
@@ -127,7 +120,6 @@ describe('Gebäude-Grafik (GR3.1)', () => {
       const key = hubLookTexture({ id: 'lagerfeuer', stufe: n });
       expect(key).toBe(`grafik:lagerfeuer-${n}`);
       expect(BUILDING_TEXTURES[key!]).toBe(paperBuildingFile('lagerfeuer', n));
-      expect(textureScale(key!)).toBe(1);
     }
     expect(hubLookTexture({ id: 'burg', stufe: 2 })).toBe('grafik:hub-2');
     expect(hubLookTexture({ id: 'burg', stufe: 6 })).toBe('grafik:burg-6'); // Ausbauschritte (GEB17.6)
@@ -138,8 +130,11 @@ describe('Gebäude-Grafik (GR3.1)', () => {
     expect(BUILDING_TEXTURES['grafik:burg-ausbau-3']).toBe(paperBuildingFile('burg-ausbau', 3));
     expect(hubLookTexture({ id: 'lagerfeuer', stufe: 4 })).toBeNull();
     expect(hubLookTexture({ id: 'burg', stufe: 14 })).toBeNull();
-    expect(BUILDING_TEXTURES[HUB_SCAFFOLD_TEXTURE]).toBe('gebaeude/hub-geruest-32.png');
-    expect(textureScale(HUB_SCAFFOLD_TEXTURE)).toBe(1);
+    expect(BUILDING_TEXTURES[HUB_SCAFFOLD_TEXTURE]).toBe(paperBuildingFile('hub-geruest')); // Papierschnitt (CU1.2)
+  });
+
+  it('jede Gebäude-Textur ist ein Papier-Asset (CU1.2)', () => {
+    for (const [key, file] of Object.entries(BUILDING_TEXTURES)) expect(file, key).toMatch(/^gebaeude-paper\/[a-z0-9-]+\/stand(\.s\d)?\.png$/);
   });
 
   it('jede genannte Datei liegt unter public/grafik/', () => {

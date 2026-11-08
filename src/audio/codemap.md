@@ -11,7 +11,7 @@ Audio-Subsystem des Clients (Presentation Layer): erzeugt Ton aus Spiel-Ereignis
 - `mixer.ts`: `Mixer` mit Master-Gain und je einem Bus (`music`, `sfx`, `ambient`); Lautstärken je Gerät in den Settings (`volumeToGain`).
 - `atlas.ts`: Sound-Atlas (`public/audio/atlas.json`, ein Sprite je Format): `parseAtlas`, `pickFile` nach `FORMAT_ORDER` (ogg, mp3, wav).
 - `music.ts` (SO4.2): reiner Zustands-Automat `nextMusicState` (acht Zustände, Priorität Lobby > Ende > Boss > Kampf > Tiefe > Tageszeit), Tabelle `MUSIC_TRACKS` (Zustand → ein Stück oder Lücke = Stille) und `MusicDirector` (`lobby()`, `update(view, events)`, `reset()`; `musicDirector()` liefert die Instanz), der per `preload` + `playFile` mit Crossfade (`CROSSFADE_SECONDS`) auf dem Bus `music` spielt; `musicViewOf(world)` leitet den Auszug ab, `trackUrl` wählt das Format. Fehlt die Datei einer Zustands-Zeile (`null`), blendet das laufende Stück aus. Gespeist von `GameScene` (Welt-Auszug, Ereignisse) und `LobbyScene`.
-- `events.ts` (SO2.3): reine Zuordnung `cueFor(GameEvent)` → `SoundCue {slot, global}` (Slot des Registers `data/assets.json`, Katalog `docs/assets/sounds.md`), `sfxUrls`/`SFX_URLS` (Slot → Datei, erste Präferenz), Positionsdämpfung `attenuation` (`Listener`, `EDGE_GAIN`), `eventX`, `nightGain`/`NIGHT_GAIN` (Nacht leise).
+- `events.ts` (SO2.3): reine Zuordnung `cueFor(GameEvent)` → `SoundCue {slot, global}` (Slot des Registers `data/sounds.json`, Katalog `docs/assets/sounds.md`), `sfxUrls`/`SFX_URLS` (Slot → Datei, erste Präferenz), Positionsdämpfung `attenuation` (`Listener`, `EDGE_GAIN`), `eventX`, `nightGain`/`NIGHT_GAIN` (Nacht leise).
 
 ## Flow
 

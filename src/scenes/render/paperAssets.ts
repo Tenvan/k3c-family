@@ -32,7 +32,16 @@ export interface PaperRef {
   variante?: string;
 }
 
+/** Maße je Rolle (`data/paper.json › figuren`): Zielhöhe in Spiel-Pixeln, Tönung, Höhe über dem Boden, Deckkraft */
+export interface PaperFigure {
+  hoehe: number;
+  tint?: string;
+  y?: number;
+  alpha?: number;
+}
+
 const DATA = paperJson as unknown as {
+  figuren: { spieler: PaperFigure[]; truppen: Record<string, PaperFigure>; gegner: Record<string, PaperFigure> };
   spieler: string[];
   beritten: string;
   reittiere: Record<string, string>;
@@ -49,9 +58,10 @@ export function parseRef(text: string): PaperRef {
   return variante ? { gruppe: gruppe!, id: id! , variante } : { gruppe: gruppe!, id: id! };
 }
 
+export const PAPER_FIGURES = DATA.figuren;
 export const PAPER_PLAYERS: PaperRef[] = DATA.spieler.map(parseRef);
 export const PAPER_MOUNTED: PaperRef = parseRef(DATA.beritten);
-/** Reittier-Schlüssel (`data/sprites.json` › `mounts`, `data/monarch.json` › `mount.sprite`) → Asset-Id in `reittiere/` (US2) */
+/** Reittier-Schlüssel (`data/paper.json` › `reittiere`, `data/monarch.json` › `mount.sprite`) → Asset-Id in `reittiere/` (US2) */
 export const PAPER_MOUNTS: Record<string, string> = DATA.reittiere;
 export const PAPER_TROOPS: Record<string, PaperRef> = Object.fromEntries(Object.entries(DATA.truppen).map(([k, v]) => [k, parseRef(v)]));
 export const PAPER_ENEMIES: Record<string, PaperRef> = Object.fromEntries(Object.entries(DATA.gegner).map(([k, v]) => [k, parseRef(v)]));
@@ -104,6 +114,8 @@ export function paperScale(m: PaperManifest, anim: string, targetPx: number): { 
 export const PAPER_BUILDINGS = [
   'burg', 'burg-ausbau', 'farm', 'hafen', 'heilplatz', 'hintergrundmauer', 'kaserne', 'lager', 'lagerfeuer', 'mauer',
   'rekrutierungslager', 'ruestkammer', 'schiff', 'schmiede', 'taverne', 'tor', 'treppe-hoch', 'treppe-runter', 'turm', 'werkstatt',
+  // Baugerüste je Größenklasse und vor der Burg (CU1.1, CU1.2)
+  'geruest-1', 'geruest-2', 'geruest-3', 'geruest-4', 'geruest-6', 'hub-geruest',
 ] as const;
 const BUILDINGS = new Set<string>(PAPER_BUILDINGS);
 

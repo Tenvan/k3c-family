@@ -1,6 +1,6 @@
 # CU1.2 · Spiel-Client lädt nur noch Papier
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -67,5 +67,10 @@ Review-Agent vor dem Commit (Loader- und Datenpfade).
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-04 umgesetzt, geprüft:** Gerüste (`geruest-1…6`, `hub-geruest`) und Plantage (`setzling`, `pappel-niedrig`) laden aus `gebaeude-paper` bzw. `objekte` (`buildingSprites.ts`, `natureSprites.ts` › `plantationSprite`, `worldRenderer.ts`, `data/paper.json` › `objekte › pappel-niedrig`). Tests: `buildingSprites.test.ts` (jede Gebäude-Textur ist `gebaeude-paper/…`), `scaffoldView.test.ts`, `tests/paperAssets.test.ts` (keine `gebaeude/`-Dateien mehr). Probe im Spiel (`window.game`, Dev-Server): alle 8 Texturen da (Gerüste 32×160 … 256×288, Setzling und Pappel mit 8 Frames), 0 Anfragen an `gebaeude/`, `sprites/`, `atlas/`.
+- **AC-05 (Grep) umgesetzt, mit Ausnahmen:** In `src/scenes`, `src/audio`, `tests` bleiben nur Kommentare, die Regel-Tests (`tests/projectRules.test.ts`) und `tests/sprites.test.ts` (prüft `data/sprites.json`, fällt mit der Datei in CU1.5). `engine/balance/report_html.go` (Vorschau-Sprites des Balance-Berichts) und `engine/watch/watch_test.go` (Pfadbeispiel) nennen `sprites/`; das Go-Teil gehört nicht zu CU1.2 → offen für CU1.5. `data/sprites.json` und `data/assets.json` bleiben bis CU1.5/CU1.3, weil Werkzeuge (`src/tools`, `tools/atlas`, `tools/soundatlas`, Workbench) sie noch lesen.
+- **Werte statt sprites.json:** Rollenmaße (Zielhöhe, Tönung, y, Deckkraft) stehen in `data/paper.json › figuren`; `sprites.ts` liest sie (`PAPER_FIGURES`). Entfernt: `preloadSheet`, `preloadMount`, `createSheetAnims`, `SHEETS`, `MOUNTS`, `RIDER_WAIST`, toter Pixel-Reittier-Code (`mountPose.ts` samt Test, `mountLoad.test.ts`, `mountData.test.ts`), das Zielmaß-Register von `buildingSize.ts` (B-685, samt `tests/buildingTargets.test.ts`).
+- **Sound (AC-05):** `data/sounds.json` mit den 32 Sound-Slots, `src/audio` liest sie; `src/audio/sounds.test.ts` vergleicht mit dem Altregister (gleiche Ids und Wahl). `task test -- audio` entspricht `vitest run src/audio`: 130 Tests grün.
+- **Fehlendes Papier-Asset:** `file()` in `buildingSprites.ts` warnt einmal je Id (`🤒`) und liefert keine Datei, kein Rückfall.
+- **Geprüft:** `tsc`, `oxlint`, Vitest `src` + `tests` + `tools/paper/cli` (3085 Tests) grün; `go test ./data`, `go build ./engine/sim`. `task check` und `task check:diff` nicht gelaufen (Nutzerwunsch, kein check:diff in dieser Session). **Review-Agent nicht gelaufen**, Selbstdurchsicht der Lade- und Datenpfade statt dessen.
+- **Hinweis:** Der Server-Datencheck meldet seit Längerem `data/worlds/rom.json` (Insel `north-hsea-1`, kein Hafen); nicht aus CU1.2, nur beobachtet.

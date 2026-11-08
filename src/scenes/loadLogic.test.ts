@@ -15,8 +15,8 @@ describe('loadLogic', () => {
   });
 
   it('Fehlermeldung nennt jeden Dateinamen einmal', () => {
-    const t = errorText(['atlas/atlas-0.png', 'atlas/atlas.json', 'atlas/atlas-0.png']);
-    expect(t.match(/atlas-0\.png/g)).toHaveLength(1);
-    expect(t).toContain('atlas/atlas.json');
+    const t = errorText(['grafik/a/sheet-0.png', 'grafik/a/manifest.json', 'grafik/a/sheet-0.png']);
+    expect(t.match(/sheet-0\.png/g)).toHaveLength(1);
+    expect(t).toContain('grafik/a/manifest.json');
   });
 });
