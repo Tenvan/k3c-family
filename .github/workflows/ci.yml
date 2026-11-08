@@ -69,13 +69,19 @@ jobs:
     if: github.event_name != 'pull_request'
     name: Go · Tests · Lint · Cross-Build
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
       - uses: go-task/setup-task@v2
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      # Die Papierschnitt-Grafik ist nicht eingecheckt (B-737): Tests lesen sie aus public/grafik, hier rendern (B-756)
+      - run: bun install --frozen-lockfile
+      - run: task gen:paper
       - run: task go:test
       - name: Race-Detector für engine/ (B-077)
         run: task go:race
@@ -110,13 +116,19 @@ jobs:
     if: github.event_name != 'pull_request'
     name: Go · Tests arm64
     runs-on: ubuntu-24.04-arm
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
       - uses: go-task/setup-task@v2
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      # Die Papierschnitt-Grafik ist nicht eingecheckt (B-737): Tests lesen sie aus public/grafik, hier rendern (B-756)
+      - run: bun install --frozen-lockfile
+      - run: task gen:paper
       - run: go env GOARCH
       - run: task go:test
 
@@ -192,7 +204,7 @@ jobs:
     if: github.event_name != 'pull_request'
     name: k3c-workbench · Frontend · Tests · Lint · Wails (Windows)
     runs-on: windows-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: tools/k3c-workbench
@@ -212,6 +224,9 @@ jobs:
       # (Alias @webkit) aus tools/k3c-workbench/frontend/vitest.config.ts.
       - uses: go-task/setup-task@v2
       - run: bun install --frozen-lockfile
+        working-directory: .
+      # Go-Tests von assetsui und datadoc lesen die gerenderte Grafik (B-756)
+      - run: task gen:paper
         working-directory: .
       # go:embed braucht frontend/dist, deshalb zuerst das Frontend (mit Typecheck).
       - run: bun install --frozen-lockfile
