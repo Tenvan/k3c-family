@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** RS2
 - **Projekt:** RST
 - **Erstellt:** 2026-11-08
@@ -59,3 +59,14 @@ keine
 ## Notizen
 
 Angelegt von der Review-Session RS2.6 (2026-11-08).
+
+### Abnahme-Läufe 2026-11-08 (Workbench mit RS2-Stand, CPU-Last vor jedem Lauf gering)
+
+Vorab: `sim_test` online lehnte ab, `bin/k3c-sim.exe` war älter als `engine/net/protocol.go`; `task k3c-sim:build --force` in der Shell (Task-Schloss in der Workbench zu).
+
+- **AC-01 Sim – rot (B-754):** online perf 1 × 4 Geräte, 5 min: run-29 Tick p99 max 6,8 ms (über Abbruchgrenze 5 ms), Wiederholung run-30 3,2 ms; Referenz RS2.3 run-28 2,5 ms. Keine Trennungen, Fehler 0, Monarchen 4/4. Lauf „offline mit Clients“ lehnt `sim_test` ab (Client braucht den Spielserver), daher online headless 1 × 2 Geräte (Bots über `k3c-sim`), 10 min, stability+perf: run-31 Pass, Tick p99 max 1,6 ms, Fehler 0, Trennungen 0.
+- **AC-02 Balance – rot (B-753):** BAS-Standardlauf (coop2, 101 Seeds) run-32 fertig in 7 min 39 s über `bin/k3c-sim`, Ziele: 1 von 5, 4 von 8 Korridoren (Werte im Fluss, B-698; kein vergleichbarer Lauf vor RS2, kein Vergleichswert). Meilenstein-Lauf (coop2, standard, 40 Tage, 101 Seeds) run-33: Abbruch nach 1 h 0 min 2 s „Zeitlimit erreicht“, ohne Bericht; vor RS2 38 min 41 s (RS1.1) → mindestens +55 %, Grenze +5 % verfehlt.
+- **AC-03 Gen – grün:** `check_run task:test` exit 0, 4 min 27 s (mit `gen:paper`); keine Golden-Änderung im Arbeitsbaum.
+- **AC-04 Race – übersprungen:** `check_run task:check:race` exit 0 in 468 ms, Ausgabe „go:race übersprungen: kein C-Compiler“. Hinweis: `go:race` deckt nur `./engine/...` ab, `tools/k3c-workbench/internal/simexe` wäre auch mit gcc nicht im Race-Lauf; die CI prüft `-race`.
+
+Ticket erledigt nach Regel B-742 (rot = neues Ticket): offene Folgen in B-753 und B-754.
