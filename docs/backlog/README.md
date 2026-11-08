@@ -146,6 +146,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-756](B-756-ci-rendert-papier-grafik-vor-go-tests.md) | INF | Problem | hoch | offen | – | CI rendert die Papierschnitt-Grafik vor den Go-Tests, die sie lesen |
 | [B-757](B-757-ci-race-balance-timeout-datadoc-test.md) | INF | Problem | hoch | offen | – | CI: Race-Lauf ohne engine/balance, datadoc-Test kennt Balance-Berichtsdateien |
 | [B-758](B-758-release-workflow-tests-wieder-einschalten.md) | INF | Schuld | hoch | offen | – | Release-Workflow: Typecheck und Tests vor dem Bauen wieder einschalten |
+| [B-759](B-759-docker-build-ohne-work-ordner.md) | INF | Problem | hoch | offen | – | Docker-Build im Release scheitert an .work (EXDEV beim gen:paper) |
 
 ## Archiv
 

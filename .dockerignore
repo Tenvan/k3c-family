@@ -15,3 +15,5 @@ docs/assets/*
 !docs/assets/pipeline-liste.json
 .omc
 .claude
+# Gerenderte Papierschnitt-Zwischenstände: das Image rendert selbst (Dockerfile), B-759
+.work
