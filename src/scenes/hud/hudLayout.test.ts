@@ -24,7 +24,6 @@ function sizes(cells: readonly Cell[]): Map<string, Size> {
   m.set('travel', { w: 512, h: 56 });
   m.set('join', { w: 480, h: 40 });
   m.set('info', { w: 448, h: 38 });
-  m.set('controls', { w: 608, h: 38 });
   return m;
 }
 
@@ -99,7 +98,7 @@ describe('hudLayout (B-337/AC-01)', () => {
   it('zu kleine Fläche: Elemente fallen nach Rang weg, Pflicht bleibt', () => {
     const area: Rect = { x: 0, y: 0, w: 400, h: 100 };
     const item = (id: string, rank: number): HudItem => ({ id, area, rank, h: 'left', v: 'top', dx: 0, dy: 0, w: 400, ht: 46 });
-    const out = hudLayout([item('hint', RANK.controls), item('room', RANK.info), item('gold', RANK.player)], []);
+    const out = hudLayout([item('hint', RANK.info + 1), item('room', RANK.info), item('gold', RANK.player)], []);
     expect(out.get('gold')).not.toBeNull();
     expect(out.get('room')).not.toBeNull();
     expect(out.get('hint')).toBeNull();

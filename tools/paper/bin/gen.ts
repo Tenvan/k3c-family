@@ -3,7 +3,8 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { gen } from '../cli/gen';
-import { genMitWork } from '../cli/work';
+import { konsoleUndLog } from '../cli/fortschritt';
+import { genMitWork, WORK } from '../cli/work';
 import { Abgelehnt } from '../render/fehler';
 import { ROOT } from '../render/stil';
 
@@ -11,7 +12,9 @@ const wurzel = process.argv[2] ?? join(ROOT, 'public/grafik');
 try {
   if (!existsSync(wurzel)) throw new Error(`Wurzel fehlt: ${wurzel}`);
   // Ohne Argument im Arbeitsordner `.work/grafik` rendern und Geändertes nach public/grafik kopieren (B-737); mit Wurzel direkt dort.
-  process.stdout.write(JSON.stringify({ ok: true, ...(process.argv[2] ? gen(wurzel) : genMitWork(wurzel)) }) + '\n');
+  // Fortschritt je Schritt auf stderr und in .work/grafik/gen.log (B-740); stdout bleibt das eine JSON-Objekt.
+  const melde = konsoleUndLog(join(WORK, 'gen.log'));
+  process.stdout.write(JSON.stringify({ ok: true, ...(process.argv[2] ? gen(wurzel, { melde }) : genMitWork(wurzel, WORK, melde)) }) + '\n');
 } catch (e) {
   if (e instanceof Abgelehnt) {
     process.stdout.write(JSON.stringify({ ok: false, fehler: e.fehler }) + '\n');

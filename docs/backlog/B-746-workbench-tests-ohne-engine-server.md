@@ -1,4 +1,4 @@
-# B-740 · Workbench-Tests laufen gegen einen Fake-Spielserver statt engine/net und engine/room
+# B-746 · Workbench-Tests laufen gegen einen Fake-Spielserver statt engine/net und engine/room
 
 - **Domäne:** DEV
 - **Typ:** Schuld

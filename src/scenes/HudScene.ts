@@ -21,11 +21,9 @@ import { hudItems, hudLayout, type HAlign, type Rect, type Size } from './hud/hu
 import { cellRadar, radarRect, RADAR_HEIGHT } from './hud/radar';
 import type { HintDevice } from './hints/glyphs';
 import { joinHintDevices } from './hud/joinHint';
-import { stepControlsHint, type ControlsTrack } from './hud/controlsHint';
 import { stepGoldFlash, type GoldFlash } from './hud/goldFlash';
 import { enqueueBanner } from './hud/bannerQueue';
 import { stepSaved } from './hud/savedHint';
-import { loadSettings } from '../core/settings';
 import { GamepadInput, type PlayerInput } from '../input/playerInput';
 import { TouchInput } from '../input/touchInput';
 import { siteName } from './render/worldRenderer';
@@ -56,10 +54,9 @@ export class HudScene extends Phaser.Scene {
   private fight!: Phaser.GameObjects.Text;
   private banner!: Phaser.GameObjects.Text;
   private debug: DebugOverlay | null = null;
-  private controlsHint!: Phaser.GameObjects.Text;
-  private controlsTrack: ControlsTrack | null = null;
   private info!: Phaser.GameObjects.Text;
   private travel!: Phaser.GameObjects.Text;
+  private citizens!: Phaser.GameObjects.Text;
   /** Spielerzeile je Zellen-Index */
   private players = new Map<number, HudBox>();
   /** Feste Elemente nach Layout-Id */
@@ -91,7 +88,6 @@ export class HudScene extends Phaser.Scene {
     this.boxes = new Map();
     this.layoutKey = '';
     this.bannerQueue = [];
-    this.controlsTrack = null;
     this.bannerLeft = 0;
     this.savedLeft = 0;
     this.radar = new RadarLayer(this);
@@ -116,11 +112,10 @@ export class HudScene extends Phaser.Scene {
     this.boxed('places', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('roomInfo'), strokeThickness: 4, align: 'right' }), false);
     this.cards = this.add.graphics();
     this.probe = this.add.text(0, 0, 'MMMMMMMMMM', { ...STYLE, ...fontStyle('playerValue') }).setVisible(false);
-    this.boxed('citizens', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('shared') }), false);
+    this.citizens = this.boxed('citizens', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('shared') }), false);
     this.banner = this.boxed('banner', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('banner'), strokeThickness: 4, align: 'center' }).setVisible(false));
     this.joinHint = this.boxed('join', this.add.text(0, 0, t('hud.joinCenter'), { ...STYLE, ...fontStyle('joinCenter') }));
     this.debug = debugEnabled(location.search) ? new DebugOverlay(this) : null;
-    this.controlsHint = this.boxed('controls', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('controlsHint'), strokeThickness: 4 }));
     this.info = this.boxed('info', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('roomInfo'), strokeThickness: 4 }), false);
     this.travel = this.boxed('travel', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('travel') }));
   }
@@ -146,9 +141,9 @@ export class HudScene extends Phaser.Scene {
     this.showCells(cells);
     const seats = [...game.client.you].sort((a, b) => a.slot - b.slot); // Reihenfolge wie `hudCells` (cell.seat)
     const slotOf = (seat: number) => seats[seat]?.slot;
-    const device = (slot: number) => deviceOf(game.slots.bound[slot], game.keyboards[1]) ?? game.lastDevice;
-    this.actions.draw(cells, game.cameras.cameras, slotOf, device);
-    this.guide.draw(cells, game.cameras.cameras, slotOf, device);
+    const device = (slot: number) => deviceOf(game.slots.bound[slot]) ?? game.lastDevice;
+    this.actions.draw(cells, game.cameras.cameras, slotOf);
+    this.guide.draw(cells, game.cameras.cameras, slotOf);
     this.skills.draw(cells, game.skillMenus, slotOf, device);
     // Leiste: Stufe der ersten Zelle dieses Geräts, die Leiste hat immer Platz für die lange Form
     const shown = cells.find((c) => c.cell.kind === 'player' && c.world)?.world ?? world;
@@ -193,7 +188,7 @@ export class HudScene extends Phaser.Scene {
     this.drawCards();
   }
 
-  /** Hinweise: Verbindungsstand, Beitritt, Steuerung, Raum. Rückgabe: Der Beitritts-Hinweis steht groß in der Mitte. */
+  /** Hinweise: Verbindungsstand, Beitritt, Raum (Steuerung steht im Menü › Tastenbelegung, B-741). Rückgabe: Der Beitritts-Hinweis steht groß in der Mitte. */
   private showHints(game: GameScene, world: World | undefined): boolean {
     const client = game.client;
     const away = gameNotice(client);
@@ -202,9 +197,6 @@ export class HudScene extends Phaser.Scene {
       return true;
     }
     const waiting = !world || game.waitingForJoin();
-    const controls = stepControlsHint(this.controlsTrack, performance.now(), { seats: client.you.length, device: game.lastDevice, guide: loadSettings().guideHints });
-    this.controlsTrack = controls.track;
-    this.controlsHint.setText(t(`hud.hint.${game.lastDevice}`)).setVisible(controls.visible);
     const joinText = joinHintDevices(game.joinCandidates(), game.lastDevice).map((d) => t(`hud.join.${d}`)).join('  ·  ');
     this.joinHint.setText(world ? joinText : (client.notice ?? t('net.connecting')));
     this.joinHint.setVisible((waiting || client.you.length < (client.limits?.slotsPerDevice ?? 4)) && (!world || joinText !== ''));
@@ -221,9 +213,10 @@ export class HudScene extends Phaser.Scene {
     this.travel.setText(tr ? `${target}  ${'▮'.repeat(Math.ceil(tr.progress * 10))}${'▯'.repeat(10 - Math.ceil(tr.progress * 10))}` : '');
     const stock = stockTexts(world, compact);
     if (world.skillPoints > 0) stock.push(t('hud.skillPoints', { n: world.skillPoints }));
-    const hub = hubText(world, compact);
-    const lines = [stock.join('  ·  '), ...(hub ? [hub] : []), ...buergerLines(world, compact)];
-    this.shared.setText(lines.join('\n'));
+    // Zeile 3 der Leiste hat Platz für eine Zeile: links der Vorrat (immer sichtbar), rechts Hub und Bürger kurz (die Leiste ist 134 px hoch, drei Zeilen passten nicht und blendeten den Vorrat aus)
+    const hub = hubText(world, true);
+    this.shared.setText(stock.join('  ·  '));
+    this.citizens.setText([...(hub ? [hub] : []), ...buergerLines(world, true)].join('  ·  '));
     this.clock.setText(clockText(world) + (this.savedLeft > 0 ? t('hud.saved') : ''));
     const enemies = world.enemies.length + world.spawnQueue.length;
     this.fight.setText(enemies > 0 ? t('hud.wave', { wave: world.wave, n: enemies }) : '');
@@ -303,11 +296,10 @@ interface CardData {
 /** Maße der Spielerkarte: Breite des Lebensbalkens (und seine Höhe) und der Fläche des Goldtopfs, in px */
 const CARD = { bar: 150, barH: 20, pot: 30 } as const;
 
-/** Gerät einer Eingabe, damit jede Skill-Leiste die Tasten ihres Spielers zeigt; `keyboard2` = Spieler 2 an der Tastatur */
-function deviceOf(input: PlayerInput | null | undefined, keyboard2: PlayerInput): HintDevice | undefined {
+/** Gerät einer Eingabe, damit jede Skill-Leiste die Tasten ihres Spielers zeigt */
+function deviceOf(input: PlayerInput | null | undefined): HintDevice | undefined {
   if (input instanceof GamepadInput) return 'pad';
   if (input instanceof TouchInput) return 'touch';
-  if (input === keyboard2) return 'keyboard2';
   return input ? 'keyboard' : undefined;
 }
 

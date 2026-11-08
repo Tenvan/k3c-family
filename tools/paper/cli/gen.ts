@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import type { Stil } from '../schema/types';
 import { renderOrdner, sha256, specsIn } from '../render/ausgabe';
 import { ladeStil } from '../render/stil';
+import { dauer, schritt, type Melde } from './fortschritt';
 
 type Manifest = { id: string; renderKey: string; animationen: Record<string, { datei: string }> };
 
@@ -20,17 +21,24 @@ function golden(gruppe: string): Record<string, { renderKey: string; dateien: Re
   return out;
 }
 
-export function gen(wurzel: string, o: { stil?: Stil } = {}): { gruppen: string[] } {
+/** Fortschritt (B-740): `[i/n] gruppe/id gerendert ✅ Dauer` je Asset, je Gruppe eine Zeile für golden/Index. */
+export function gen(wurzel: string, o: { stil?: Stil; melde?: Melde } = {}): { gruppen: string[] } {
+  const { melde } = o;
   const stilPfad = join(wurzel, 'stil.paper.json');
   const stil = o.stil ?? (existsSync(stilPfad) ? ladeStil(stilPfad) : ladeStil());
   const gruppen = readdirSync(wurzel).sort()
     .filter((g) => statSync(join(wurzel, g)).isDirectory() && specsIn(join(wurzel, g)).length > 0);
+  const gesamt = gruppen.reduce((n, g) => n + specsIn(join(wurzel, g)).length, 0);
+  melde?.(`🚀 gen:paper: ${gruppen.length} Gruppen, ${gesamt} Assets`);
+  let nr = 0;
   for (const g of gruppen) {
     const dir = join(wurzel, g);
-    renderOrdner(dir, { stil });
-    const tmp = join(dir, `.golden.json.tmp-${process.pid}`);
-    writeFileSync(tmp, JSON.stringify(golden(dir), null, 2) + '\n');
-    renameSync(tmp, join(dir, 'golden.json'));
+    renderOrdner(dir, { stil, beiAsset: (id, ms) => melde?.(`🔨 [${++nr}/${gesamt}] ${g}/${id} gerendert ✅ ${dauer(ms)}`) });
+    schritt(melde, '💾', `${g}: golden.json`, () => {
+      const tmp = join(dir, `.golden.json.tmp-${process.pid}`);
+      writeFileSync(tmp, JSON.stringify(golden(dir), null, 2) + '\n');
+      renameSync(tmp, join(dir, 'golden.json'));
+    });
   }
   return { gruppen };
 }

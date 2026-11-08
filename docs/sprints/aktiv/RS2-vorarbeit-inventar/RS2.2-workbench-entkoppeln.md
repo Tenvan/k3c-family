@@ -80,4 +80,4 @@ Einmal vor dem Commit; während der Arbeit nur gezielte Tests (`docs/arbeitsweis
 
 **Reviewer (Sonnet):** keine schweren Befunde; behoben: Bot-RPC unter Geräte-Lock, fehlendes Zeitlimit je Antwort, verlorener Bot-Fehlertext, Pipe-Leck im Startfehler, Größengrenze `replay_run` (64 MB). Offen bewusst: mtime-Prüfung erkennt Checkout ohne Inhaltsänderung als veraltet (Hinweis `--force`).
 
-**Neue Tickets:** B-740 (Workbench-Tests ohne Engine-Server), B-741 (Verweise auf `bin/k3c-balance`/`enginetools` außerhalb der Workbench).
+**Neue Tickets:** B-746 (Workbench-Tests ohne Engine-Server), B-747 (Verweise auf `bin/k3c-balance`/`enginetools` außerhalb der Workbench).

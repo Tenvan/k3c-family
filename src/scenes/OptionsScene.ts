@@ -20,12 +20,16 @@ import {
   syncVolumes,
   tapOption,
   OPTIONS_LAYOUT,
+  KEYS_LAYOUT,
   worldLine,
   type OptionDir,
   type OptionId,
+  type OptionResult,
   type OptionsSceneData,
 } from './optionsLogic';
 import { pauseButton } from './hud/pauseButton';
+import { keyTable } from './keyTable';
+import { GlyphRow } from './hints/glyphView';
 
 const { top: TOP, rowH: ROW_H, rowPx: FONT_PX } = OPTIONS_LAYOUT; // 11 Zeilen über dem Hinweis unten, Zeilen ≥ 28 px (Q03)
 const STICK = 0.5;
@@ -72,6 +76,8 @@ export class OptionsScene extends Phaser.Scene {
   private choice = 0;
   /** Welt des Raums (BD5.2) */
   private world: string | undefined;
+  /** Seite „Tastenbelegung“ (B-741) offen? Die Texte der Tabelle entstehen beim Öffnen */
+  private keysTable: Phaser.GameObjects.GameObject[] | null = null;
 
   constructor() {
     super('options');
@@ -87,6 +93,7 @@ export class OptionsScene extends Phaser.Scene {
     this.settings = loadSettings();
     setLanguage(this.settings.language);
     this.selected = 0;
+    this.keysTable = null;
     this.padHeld = new Set();
     this.menu = new MenuPress();
     this.tapped = null;
@@ -113,6 +120,7 @@ export class OptionsScene extends Phaser.Scene {
 
   update(): void {
     const { dir, act, close } = this.poll();
+    if (this.keysTable) return this.updateKeys(act !== null || close || !!this.tapped);
     playUi(uiSoundFor({ dir, side: act === 'left' || act === 'right' ? 1 : 0, confirm: act === 'confirm' || !!this.tapped })); // UI-Klick (B-575)
     this.selected = moveOption(this.selected, dir);
     let want: OptionDir | null = act;
@@ -123,24 +131,7 @@ export class OptionsScene extends Phaser.Scene {
     }
     const current = OPTION_IDS[this.selected]!;
     want = this.filterRemove(current, want);
-    if (want) {
-      const result = applyOption(this.settings, current, want);
-      if (result.settings !== this.settings) {
-        if (result.settings.guideHints && !this.settings.guideHints) guideSeen.reset(); // wieder an = alle Hinweise erneut (Q11)
-        saveSettings((this.settings = result.settings));
-        setLanguage(this.settings.language);
-        syncVolumes(this.settings, audioCore()); // Regler wirken sofort auf Musik, Effekte und Ambient
-      }
-      if (result.close) return this.close();
-      if (result.removePlayer) {
-        this.registry.set(REMOVE_PLAYER_KEY, this.targets[this.choice] ?? null); // GameScene meldet genau diesen Slot ab (B-411)
-        return this.close();
-      }
-      if (result.leave) {
-        this.registry.set(LEAVE_KEY, true); // GameScene verlässt den Raum und schließt diese Szene
-        return;
-      }
-    }
+    if (want && this.applyResult(applyOption(this.settings, current, want))) return;
     if (close) return this.close();
     this.title.setText(t('opt.title'));
     this.hint.setText(t('opt.hint'));
@@ -150,6 +141,52 @@ export class OptionsScene extends Phaser.Scene {
       const color = !optionEnabled(id, this.targets) ? '#777777' : i === this.selected ? '#ffd166' : '#ffffff';
       row.setText(`${i === this.selected ? '▶  ' : '    '}${label}`).setColor(color);
     });
+  }
+
+  /** Wirkt ein Ergebnis von `applyOption`; `true` = die Szene ist damit fertig für diesen Frame (geschlossen, Seite gewechselt, Raum verlassen) */
+  private applyResult(result: OptionResult): boolean {
+    if (result.settings !== this.settings) {
+      if (result.settings.guideHints && !this.settings.guideHints) guideSeen.reset(); // wieder an = alle Hinweise erneut (Q11)
+      saveSettings((this.settings = result.settings));
+      setLanguage(this.settings.language);
+      syncVolumes(this.settings, audioCore()); // Regler wirken sofort auf Musik, Effekte und Ambient
+    }
+    if (result.close) this.close();
+    else if (result.keys) this.openKeys();
+    else if (result.removePlayer) {
+      this.registry.set(REMOVE_PLAYER_KEY, this.targets[this.choice] ?? null); // GameScene meldet genau diesen Slot ab (B-411)
+      this.close();
+    } else if (result.leave) this.registry.set(LEAVE_KEY, true); // GameScene verlässt den Raum und schließt diese Szene
+    return result.close || result.keys || result.removePlayer || result.leave;
+  }
+
+  /** Tabelle der Tastenbelegung zeichnen (B-741): die Optionszeilen ruhen, bis die Seite geschlossen wird */
+  private openKeys(): void {
+    const { head, rows, padGlyphs } = keyTable();
+    const L = KEYS_LAYOUT;
+    const style = { ...STYLE, fontSize: `${L.px}px`, strokeThickness: 4 };
+    const objs: Phaser.GameObjects.GameObject[] = [];
+    [head, ...rows].forEach((cells, r) => {
+      const y = L.top + r * L.rowH;
+      cells.forEach((txt, c) => {
+        const glyph = r > 0 && c === 1 ? padGlyphs[r - 1] : null; // Controller-Spalte: Symbol statt Text (A, X, LB …)
+        if (glyph) objs.push(new GlyphRow(this, style, 'top').set([glyph], L.colX[0], y - Math.ceil(L.px * 1.3) / 2).box);
+        else objs.push(this.add.text(c === 0 ? L.labelX : L.colX[c - 1]!, y, txt, { ...style, color: r === 0 ? '#ffd166' : '#ffffff' }).setOrigin(c === 0 ? 0 : 0.5, 0.5));
+      });
+    });
+    this.keysTable = objs;
+    this.rows.forEach((row) => row.setVisible(false));
+    this.title.setText(t('opt.keys'));
+    this.hint.setText(t('opt.keysHint'));
+  }
+
+  /** Seite offen: jede Taste oder jedes Tippen führt zurück zu den Optionen */
+  private updateKeys(back: boolean): void {
+    this.tapped = null;
+    if (!back) return;
+    this.keysTable?.forEach((txt) => txt.destroy());
+    this.keysTable = null;
+    this.rows.forEach((row) => row.setVisible(true));
   }
 
   /** „Spieler abmelden“ (B-411): ausgegraut ohne Wirkung; bei zwei Tastatur-Spielern wählen links/rechts das Ziel, nur Bestätigen löst aus. */

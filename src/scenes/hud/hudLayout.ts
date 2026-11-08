@@ -39,7 +39,7 @@ export const DEBUG_AREA: Rect = { x: 20, y: 780, w: 570, h: 230 };
 export const GAP = 8;
 
 /** Rangfolge laut 🧑 (2026-10-10): Pflicht Spielerzeile, Meldung, Skill-Leiste; der Steuerhinweis fällt zuerst weg. Die Leiste oben hat eigene Zeilen: `shared` gilt für alle ihre Elemente. */
-export const RANK = { player: 0, banner: 0, skills: 0, shared: 1, travel: 2, join: 3, radar: 4, info: 5, controls: 6 } as const;
+export const RANK = { player: 0, banner: 0, skills: 0, shared: 1, travel: 2, join: 3, radar: 4, info: 5 } as const;
 
 export const overlaps = (a: Rect, b: Rect): boolean => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
 
@@ -107,7 +107,7 @@ function radarAnchor(cell: Cell): Pick<HudItem, 'h' | 'dx'> {
 
 /**
  * Die HUD-Elemente mit Anker und Rang. `sizes` nennt die Größe je Id (`player:<i>`, `skills:<i>`, `radar:<i>` mit
- * Zellen-Index `i`, sonst `shared`, `clock`, `fight`, `citizens`, `places`, `banner`, `join`, `travel`, `info`, `controls`); fehlt eine Id,
+ * Zellen-Index `i`, sonst `shared`, `clock`, `fight`, `citizens`, `places`, `banner`, `join`, `travel`, `info`); fehlt eine Id,
  * wird das Element gerade nicht gezeigt. `waiting`: der Beitritts-Hinweis steht groß in der Mitte.
  */
 export function hudItems(cells: readonly Cell[], sizes: ReadonlyMap<string, Size>, waiting: boolean): HudItem[] {
@@ -139,6 +139,5 @@ export function hudItems(cells: readonly Cell[], sizes: ReadonlyMap<string, Size
   add('places', BAR, RANK.shared, { h: 'right', v: 'top', dx: 24, dy: 2 }); // Orts-Tabelle: ein Spieler je Zeile, über die Höhe der Leiste
   add('travel', SCREEN, RANK.travel, { h: 'center', v: 'bottom', dx: 0, dy: 150 });
   add('join', SCREEN, RANK.join, waiting ? { h: 'center', v: 'middle', dx: 0, dy: 120 } : { h: 'center', v: 'bottom', dx: 0, dy: 85 });
-  add('controls', SCREEN, RANK.controls, { h: 'right', v: 'bottom', dx: 20, dy: 10 });
   return items;
 }

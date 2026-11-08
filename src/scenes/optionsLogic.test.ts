@@ -7,7 +7,7 @@ const base: Settings = { ...DEFAULT_SETTINGS };
 
 describe('Einträge', () => {
   it('stehen in fester Reihenfolge', () => {
-    expect(OPTION_IDS).toEqual(['music', 'sfx', 'ambient', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'resume', 'removePlayer', 'leave']);
+    expect(OPTION_IDS).toEqual(['music', 'sfx', 'ambient', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'keys', 'resume', 'removePlayer', 'leave']);
   });
 
   it('jeder Eintrag hat einen Text', () => {
@@ -68,7 +68,7 @@ describe('Werte', () => {
   });
 
   it('nur „Spiel verlassen“ mit Bestätigen verlässt (B-293)', () => {
-    expect(applyOption(base, 'leave', 'confirm')).toEqual({ settings: base, close: false, leave: true, removePlayer: false });
+    expect(applyOption(base, 'leave', 'confirm')).toEqual({ settings: base, close: false, leave: true, removePlayer: false, keys: false });
     expect(applyOption(base, 'leave', 'left').leave).toBe(false);
     expect(applyOption(base, 'leave', 'right').leave).toBe(false);
     for (const id of OPTION_IDS.filter((i) => i !== 'leave')) {
@@ -77,8 +77,17 @@ describe('Werte', () => {
     expect(optionLabel(base, 'leave')).toBe('Spiel verlassen');
   });
 
+  it('nur „Tastenbelegung“ mit Bestätigen öffnet die Tabelle (B-741)', () => {
+    expect(applyOption(base, 'keys', 'confirm')).toEqual({ settings: base, close: false, leave: false, removePlayer: false, keys: true });
+    for (const id of OPTION_IDS.filter((i) => i !== 'keys')) {
+      for (const dir of ['left', 'right', 'confirm'] as const) expect(applyOption(base, id, dir).keys).toBe(false);
+    }
+    expect(optionLabel(base, 'keys')).toBe('Tastenbelegung');
+    for (const x of [100, 960, 1800]) expect(tapOption('keys', x, 1920)).toBe('confirm');
+  });
+
   it('nur „Spieler abmelden“ mit Bestätigen meldet ab, schließt und verlässt nicht (B-411)', () => {
-    expect(applyOption(base, 'removePlayer', 'confirm')).toEqual({ settings: base, close: false, leave: false, removePlayer: true });
+    expect(applyOption(base, 'removePlayer', 'confirm')).toEqual({ settings: base, close: false, leave: false, removePlayer: true, keys: false });
     expect(applyOption(base, 'removePlayer', 'left').removePlayer).toBe(false);
     for (const id of OPTION_IDS.filter((i) => i !== 'removePlayer')) {
       for (const dir of ['left', 'right', 'confirm'] as const) expect(applyOption(base, id, dir).removePlayer).toBe(false);
