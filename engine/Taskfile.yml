@@ -22,12 +22,12 @@ tasks:
       - golangci-lint run {{.GO_LINT_PKGS}}
 
   race:
-    desc: go test -race für engine/ (braucht cgo und einen C-Compiler; ohne Compiler nur ein Hinweis, B-077)
+    desc: go test -race für engine/ ohne engine/balance (dessen Simulationsläufe dauern unter -race über 10 min; Balancing nur im Abnahme-Ticket, B-742, B-757); braucht cgo und einen C-Compiler, ohne Compiler nur ein Hinweis, B-077
     deps: [':tmp']
     cmds:
       - cmd: |
           if command -v gcc >/dev/null 2>&1 || command -v clang >/dev/null 2>&1; then
-            CGO_ENABLED=1 go test -race ./engine/...
+            CGO_ENABLED=1 go test -race -timeout 20m $(go list ./engine/... | grep -v '/engine/balance$')
           else
             echo "go:race übersprungen: kein C-Compiler (gcc oder clang), siehe requirements.md. Die CI prüft -race."
           fi
