@@ -17,13 +17,17 @@ const root = "../../../.."
 func TestListeWieLoader(t *testing.T) {
 	lit := regexp.MustCompile(`"([a-z-]+\.json)"`)
 	loaded := map[string]bool{"biomes/*.json": true, "worlds/*.json": true}
+	// Berichtsdateien von engine/balance (Baselines, Fortschritt), keine Daten aus data/ (B-757)
+	reports := map[string]bool{"run.json": true, "result.json": true, "balance.json": true}
 	err := filepath.WalkDir(filepath.Join(root, "engine"), func(p string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() || !strings.HasSuffix(p, ".go") || strings.HasSuffix(p, "_test.go") {
 			return err
 		}
 		src, err := os.ReadFile(p)
 		for _, m := range lit.FindAllSubmatch(src, -1) {
-			loaded[string(m[1])] = true
+			if !reports[string(m[1])] {
+				loaded[string(m[1])] = true
+			}
 		}
 		return err
 	})
