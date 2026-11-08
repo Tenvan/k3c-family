@@ -469,6 +469,42 @@
     "massstab": 1.3
   },
   "animationen": {
+    "hinten-schritt": {
+      "frames": 8,
+      "gangart": "schritt",
+      "ebene": "hinten",
+      "reiter": "monarch"
+    },
+    "vorn-schritt": {
+      "frames": 8,
+      "gangart": "schritt",
+      "ebene": "vorn",
+      "reiter": "monarch"
+    },
+    "hinten-trab": {
+      "frames": 8,
+      "gangart": "trab",
+      "ebene": "hinten",
+      "reiter": "monarch"
+    },
+    "vorn-trab": {
+      "frames": 8,
+      "gangart": "trab",
+      "ebene": "vorn",
+      "reiter": "monarch"
+    },
+    "hinten-galopp": {
+      "frames": 8,
+      "gangart": "galopp",
+      "ebene": "hinten",
+      "reiter": "monarch"
+    },
+    "vorn-galopp": {
+      "frames": 8,
+      "gangart": "galopp",
+      "ebene": "vorn",
+      "reiter": "monarch"
+    },
     "galopp": {
       "frames": 8,
       "gangart": "galopp"

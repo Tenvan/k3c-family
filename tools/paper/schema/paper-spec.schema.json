@@ -183,6 +183,8 @@
         "fps": { "type": "integer", "minimum": 1, "maximum": 60 },
         "reittier": { "description": "id eines vierbeiner-Assets", "$ref": "#/$defs/name" },
         "gangart": { "enum": ["stand", "schritt", "trab", "galopp"] },
+        "ebene": { "description": "Ebene des zusammengesetzten Reiters (B-752): reiter (am figur: Umhang + Reiter, braucht reittier und gangart), hinten/vorn (am vierbeiner: Teile des Reittiers, braucht reiter und gangart)", "enum": ["reiter", "hinten", "vorn"] },
+        "reiter": { "description": "Reittier-Ebenen: id der figur, deren Hand die Zügel hält", "$ref": "#/$defs/name" },
         "keyframes": {
           "description": "Eigene Pose: zyklisch, linear interpoliert",
           "type": "array",

@@ -22,7 +22,7 @@ describe('Golden public/grafik', { timeout: 60_000 }, () => {
 
   it('monarch hat idle, lauf, schritt, trab, galopp; pferd hat schritt, trab, galopp', () => {
     expect(Object.keys(lies(join(GRAFIK, 'figuren/monarch.paper.json')).animationen)).toEqual(expect.arrayContaining(['idle', 'lauf', 'schritt', 'trab', 'galopp']));
-    expect(Object.keys(lies(join(GRAFIK, 'reittiere/pferd.paper.json')).animationen)).toEqual(['schritt', 'trab', 'galopp']);
+    expect(Object.keys(lies(join(GRAFIK, 'reittiere/pferd.paper.json')).animationen)).toEqual(expect.arrayContaining(['schritt', 'trab', 'galopp']));
     expect(existsSync(join(GRAFIK, 'figuren/monarch/galopp.png'))).toBe(true);
   });
 

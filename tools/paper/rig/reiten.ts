@@ -41,9 +41,9 @@ export function findeReittier(specPfad: string, id: string): string {
   return join(treffer, name);
 }
 
-/** Hashes der Reittier-Specs aller Reit-Animationen (sortiert nach id), damit der renderKey des Reiters sie enthält (B-713). */
+/** Hashes der Specs, auf die Reit-Animationen verweisen (`reittier`, bei Reittier-Ebenen `reiter`; sortiert nach id), damit der renderKey des Reiters sie enthält (B-713). */
 export function reittierHash(spec: Spec, specPfad: string | undefined): string | undefined {
-  const ids = [...new Set(Object.values(spec.animationen ?? {}).flatMap((a) => (a.reittier ? [a.reittier] : [])))].sort();
+  const ids = [...new Set(Object.values(spec.animationen ?? {}).flatMap((a) => [...(a.reittier ? [a.reittier] : []), ...(a.reiter ? [a.reiter] : [])]))].sort();
   if (!specPfad || !ids.length) return undefined;
   return ids.map((id) => `${id}=${specHash(readFileSync(findeReittier(specPfad, id), 'utf8'))}`).join(',');
 }
@@ -95,22 +95,33 @@ function zuegel(reiter: Spec, reittier: Spec, p: GangPose, stil: Stil): string {
   return lageSvg({ art: 'falz', form, breite: 1.3, material: 'leder', ton: 'schatten' }, stil);
 }
 
-export function reitSegmente(reiter: Spec, reittier: Spec, f: ReitFrame, stil: Stil): { name: string; svg: string }[] {
-  const p = f.pose, ab = reittier.teile.findIndex((t) => t.id === 'hals');
-  const vorn = new Set(reittier.teile.slice(ab < 0 ? reittier.teile.length : ab).map((t) => t.id));
+/** Ebenen von hinten nach vorn (D-09); die Reittier-Teile ab `hals` liegen vor dem Reiter */
+export const EBENEN = ['reittier-hinten', 'umhang', 'reiter', 'reittier-vorn', 'zuegel'] as const;
+export type Segment = (typeof EBENEN)[number];
+
+/** Teile des Reittiers, die vor dem Reiter liegen (ab `hals`) */
+const vornVon = (reittier: Spec): Set<string> => {
+  const ab = reittier.teile.findIndex((t) => t.id === 'hals');
+  return new Set(reittier.teile.slice(ab < 0 ? reittier.teile.length : ab).map((t) => t.id));
+};
+
+/** SVG der gewünschten Segmente (`nur`, sonst alle) in Zeichenreihenfolge; nicht gewünschte werden nicht gerechnet. */
+export function reitSegmente(reiter: Spec, reittier: Spec, f: ReitFrame, stil: Stil, nur?: ReadonlySet<Segment>): { name: Segment; svg: string }[] {
+  const p = f.pose, vorn = vornVon(reittier);
   const [vx, vy] = p.reiter.versatz;
-  const reiterSvg = `<g transform="translate(${num(vx)} ${num(vy)}) rotate(${num(p.reiter.drehung)} 0 -50)">` +
-    `${teileSvg(reiter, stil, p.reiter.winkel, { ausblenden: mitNachkommen(reiter.teile, 'oberschenkel-h') })}</g>`;
-  return [
-    { name: 'reittier-hinten', svg: pferdTeile(reittier, p, stil, (id) => !vorn.has(id)) },
-    { name: 'umhang', svg: f.umhang && reiter.umhang ? umhangSvg(f.umhang, reiter.umhang, stil) : '' },
-    { name: 'reiter', svg: reiterSvg },
-    { name: 'reittier-vorn', svg: pferdTeile(reittier, p, stil, (id) => vorn.has(id)) },
-    { name: 'zuegel', svg: zuegel(reiter, reittier, p, stil) },
-  ];
+  const svg: Record<Segment, () => string> = {
+    'reittier-hinten': () => pferdTeile(reittier, p, stil, (id) => !vorn.has(id)),
+    umhang: () => (f.umhang && reiter.umhang ? umhangSvg(f.umhang, reiter.umhang, stil) : ''),
+    reiter: () => `<g transform="translate(${num(vx)} ${num(vy)}) rotate(${num(p.reiter.drehung)} 0 -50)">` +
+      `${teileSvg(reiter, stil, p.reiter.winkel, { ausblenden: mitNachkommen(reiter.teile, 'oberschenkel-h') })}</g>`,
+    'reittier-vorn': () => pferdTeile(reittier, p, stil, (id) => vorn.has(id)),
+    zuegel: () => zuegel(reiter, reittier, p, stil),
+  };
+  return EBENEN.filter((n) => !nur || nur.has(n)).map((name) => ({ name, svg: svg[name]() }));
 }
 
 export function reitBild(spec: Spec, a: Ausgabe, k: Kontext): Bild {
+  if (animationVon(spec, a.animation).ebene === 'reiter') return reiterEbeneBild(spec, a, k);
   const reiter = ausgabeSpec(spec, a), id = animationVon(spec, a.animation).reittier!;
   // Varianten färben auch die Satteldecke des Reittiers (B-717/AC-03, B-711): der Tausch der Variante gilt für beide.
   const geladen = ladeReittier(k.specPfad, id, k.stil);
@@ -126,4 +137,62 @@ export function reitBild(spec: Spec, a: Ausgabe, k: Kontext): Bild {
     };
   });
   return { groesse: reitRahmen(spec, reittier), frames };
+}
+
+// ── Ebenen (B-752): Reiter und Reittier getrennt rendern, der Client setzt sie zusammen ──────────────────────────────
+// Alle Ebenen teilen Koordinatensystem (Welt-Einheiten, Fußpunkt des Reittiers = 0/0) und Pixel je Einheit (die des
+// Reiters); jede hat ihren eigenen engen Rahmen mit Rand für die Bewegung. Der Client legt sie nach `rahmen` übereinander.
+
+/** Rand um die Rahmen der Ebenen in Einheiten: deckt Ride-Hub, Neigung und Reiter-Versatz ab (Test prüft leere Ränder) */
+const EBENEN_RAND = 14;
+
+/** `randX`: seitlicher Rand in Einheiten (der Umhang flattert über den Rahmen des Reiters hinaus) */
+function ebenenGroesse(rahmen: [number, number, number, number], reiter: Spec, randX = EBENEN_RAND): FrameGroesse {
+  const px = reiter.ausgabe.hoehe_px / reiter.ausgabe.rahmen[3], [x, y, b, h] = rahmen;
+  const x0 = Math.floor(x - randX), y0 = Math.floor(y - EBENEN_RAND);
+  const x1 = Math.ceil(x + b + randX), y1 = Math.ceil(y + h + EBENEN_RAND);
+  return { rahmen: [x0, y0, x1 - x0, y1 - y0], frameW: Math.round((x1 - x0) * px), frameH: Math.round((y1 - y0) * px), eigen: true };
+}
+
+/** Reiter-Ebene (Umhang + Reiter): hängt von Gangart und Phase ab, nicht vom Reittier (alle teilen den Maßstab) */
+function reiterEbeneBild(spec: Spec, a: Ausgabe, k: Kontext): Bild {
+  const reiter = ausgabeSpec(spec, a), anim = animationVon(spec, a.animation);
+  const reittier = ladeReittier(k.specPfad, anim.reittier!, k.stil);
+  const [rx, ry, rb, rh] = reiter.ausgabe.rahmen;
+  const frames = reitZustand(reiter, reittier, a, k).map((f) => {
+    const p = f.pose, R0 = rideMatrix(p.ride.dy, p.ride.pitch, 1);
+    const inhalt = reitSegmente(reiter, reittier, f, k.stil, new Set<Segment>(['umhang', 'reiter'])).map((s) => s.svg).join('');
+    return {
+      svg: `<g filter="url(#paper)"><g transform="${rideText(p.ride.dy, p.ride.pitch)}">${inhalt}</g></g>`,
+      geometrie: geometrie(reiter.teile, weltMatrizen(reiter, p.reiter.winkel, mul(R0, reiterBasis(p))), mitNachkommen(reiter.teile, 'oberschenkel-h')),
+    };
+  });
+  // Galopp: der Umhang reicht gemessen bis 0,35 · Länge hinter und 0,3 · Länge vor den Reiter-Rahmen
+  const randX = EBENEN_RAND + (reiter.umhang ? Math.ceil(reiter.umhang.laenge * 0.4) : 0);
+  return { groesse: ebenenGroesse([rx - 2, ry - 54, rb, rh], reiter, randX), frames };
+}
+
+/** Reiter, dessen Hand die Zügel hält (Pflichtangabe `reiter` der Reittier-Ebenen); Figur im selben Ordner oder in Nachbar-Gruppen */
+export function ladeReiter(specPfad: string | undefined, id: string, stil: Stil): Spec {
+  if (!specPfad) throw new Aufruf('Reittier-Ebenen brauchen den Pfad der Spec');
+  const pfad = findeReittier(specPfad, id), fehler = checkSpecFile(pfad, stil);
+  if (fehler.length) throw new Abgelehnt(fehler.map((f) => ({ ...f, feld: `${basename(pfad)}:${f.feld}` })));
+  const spec = JSON.parse(readFileSync(pfad, 'utf8')) as Spec;
+  if (spec.rig !== 'figur') throw abgelehnt(`„${id}“ ist keine figur (rig ${spec.rig})`);
+  return spec;
+}
+
+/** Reittier-Ebene `hinten` oder `vorn` (vorn samt Zügeln des Standard-Reiters); der Tausch der Spielerfarbe gilt hier nicht */
+export function reittierEbeneBild(spec: Spec, a: Ausgabe, k: Kontext): Bild {
+  pruefeVierbeiner(spec);
+  const s = ausgabeSpec(spec, a), anim = animationVon(s, a.animation), g = gangartVon(anim, a.animation);
+  const reiter = ladeReiter(k.specPfad, anim.reiter!, k.stil), vorn = anim.ebene === 'vorn';
+  const nur = new Set<Segment>(vorn ? ['reittier-vorn', 'zuegel'] : ['reittier-hinten']);
+  const frames = Array.from({ length: anim.frames }, (_, n) => {
+    const p = gangPose(s, g, n / anim.frames);
+    const inhalt = reitSegmente(reiter, s, { pose: p }, k.stil, nur).map((x) => x.svg).join('');
+    return { svg: `<g filter="url(#paper)"><g transform="${rideText(p.ride.dy, p.ride.pitch)}">${inhalt}</g></g>`, geometrie: geometrie(s.teile, vierbeinerMatrizen(s, p)) };
+  });
+  const m = s.ausgabe.massstab ?? 1;
+  return { groesse: ebenenGroesse(s.ausgabe.rahmen.map((v) => v * m) as [number, number, number, number], reiter), frames };
 }

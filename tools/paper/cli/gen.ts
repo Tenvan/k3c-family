@@ -36,6 +36,8 @@ export function gen(wurzel: string, o: { stil?: Stil; melde?: Melde } = {}): { g
     renderOrdner(dir, {
       stil,
       vorAsset: (id) => melde?.(`⏳ [${nr + 1}/${gesamt}] ${g}/${id} rendert …`),
+      // Assets mit vielen Ausgaben (Monarch: über 2 min) melden jede einzelne, kleine nur sich selbst
+      beiAusgabe: (id, nr, n, key, ms) => n > 4 && melde?.(`   ↳ ${nr}/${n} ${g}/${id}: ${key} ${dauer(ms)}`),
       beiAsset: (id, ms) => melde?.(`🔨 [${++nr}/${gesamt}] ${g}/${id} gerendert ✅ ${dauer(ms)}`),
     });
     schritt(melde, '💾', `${g}: golden.json`, () => {
