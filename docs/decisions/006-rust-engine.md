@@ -90,6 +90,24 @@ Golden-Dateien unverändert, `engine/sim`-Tests grün.
 Folgerung: Die Takt-Ausreißer waren überwiegend Prozess-Scheduling, nicht Go: Priorität/EcoQoS brachte den Tick-Abstand
 p99 von ~75 ms auf ~36 ms (Ziel ≤ 40 ms), ohne eine Zeile Rechenlogik. `collectCoins` bleibt der heißeste Sim-Pfad.
 
+### Zustand ohne JSON-Roundtrip (RS2.3, B-731 Stufe 1, 2026-11-08)
+
+`net.stateOf` baut die Map direkt aus `sim.World` und `sim.EconomyOf` (`engine/net/state.go`), der alte Weg bleibt als
+Test-Orakel `stateOfJSON`. Vorher = `HEAD` (2b55090e) als Kopie, nachher = Arbeitsstand, beide nacheinander auf demselben
+PC (Core Ultra 7 165H), `go test ./engine/net -run XXX -bench 'TickDevices4$' -benchmem -benchtime 100000x`, je zwei Läufe.
+**Last:** 91 % vor dem ersten Paar (parallele Agenten), 2–65 % danach.
+
+| Messung | vorher | nachher | Faktor |
+|---|---|---|---|
+| `BenchmarkTickDevices4` ns/op | 893 794 / 914 131 | **225 281 / 215 459** | 4,0–4,2× |
+| allocs/op | 5 647 / 5 648 | **1 229** | 21,8 % |
+| B/op | 239 621 / 240 025 | 151 325 / 151 341 | 63 % |
+| Online `sim_test` (1 × 4, 5 min, perf) Tick-Dauer p99 max | 2,5 ms (RS1.3) | 2,5 ms (run-28) | gleich |
+
+B-731/AC-01 erfüllt (≥ 3×, allocs ≤ 25 %), Stufe 2 nicht nötig. Snapshot und Delta sind in jedem Takt byte-gleich zum
+Orakel (alle Biome × 660 Takte, Bosswelle, Golden-Läufe, Vorschau); der Reflection-Test fängt neue `sim.World`-Felder.
+Kniffe gegen Allokationen: ganze Zahlen 1–4095 und Texte aus festen Mengen liegen vorab als `any` bereit.
+
 ### Brücke Go → Rust ohne cgo (RS1.4, 2026-11-07)
 
 `rust/k3c-core` (cdylib, C-ABI) wird von `engine/core` geladen: Windows über `syscall.LoadDLL` + `SyscallN`, Linux über

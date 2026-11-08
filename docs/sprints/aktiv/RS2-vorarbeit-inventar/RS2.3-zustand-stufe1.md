@@ -1,6 +1,6 @@
 # RS2.3 · B-731 Stufe 1: Zustand direkt bauen, Orakel-Test
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -59,5 +59,9 @@ Einmal vor dem Commit; während der Arbeit nur gezielte Tests (`docs/arbeitsweis
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **B-731/AC-01 geprüft:** `BenchmarkTickDevices4` (100 000x) vorher 894–914 µs, 5 647 allocs/op; nachher 215–225 µs, 1 229 allocs/op (4,0–4,2×, 21,8 %). Vorher = `HEAD` als Kopie im Scratchpad, beide auf demselben PC nacheinander; Last 91 % vor dem ersten Paar (parallele Agenten), danach 2–65 %. Tabelle in 006 › Go-Fixes (RS2.3).
+- **B-731/AC-02 geprüft:** `TestStateGleichOrakel*` (alle Biome × 660 Takte mit 2 Spielern, Zeitraffer/Pause, `saved`, Game Over; Bosswelle; alle Golden-Läufe; leere Stufe; Vorschau) vergleicht Map, Snapshot- und Delta-Bytes gegen `stateOfJSON`, grün.
+- **B-731/AC-03 geprüft:** `go:test` grün, in `task check:diff` alle Go-Schritte (go test, golangci-lint, Workbench) grün; Golden und `docs/protocol.md` unverändert. Rot nur `tests/planning.test.ts` wegen fremder Tickets ohne Projekt (B-740, B-741 aus RS2.2, B-742 aus paralleler Session), nicht Teil dieser Session.
+- **B-731/AC-04 geprüft:** `TestStateReflection*` (Welt in drei Füll-Arten, jedes JSON-Feld im Zustand oder in `seed`/`widthUnits`/`free`, Wirtschaft) grün; nach Review bricht `fillScalar` bei unbekannter Feld-Art ab.
+- **B-731/AC-05 geprüft:** `sim_test` online perf 1 × 4, 5 min (run-28): Tick p99 max 2,5 ms, gleich RS1.3.
+- Abweichungen: Session von einem zweiten Agenten fertiggestellt (erster Agent hatte Code und Tests geschrieben); Stufe 2 nicht nötig. Code-Review (Sonnet): keine schweren Befunde. Keine neuen Tickets.
