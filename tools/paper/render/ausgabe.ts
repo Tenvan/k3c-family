@@ -23,15 +23,17 @@ export function rel(p: string): string {
 
 export const sha256 = (b: Buffer | string) => createHash('sha256').update(b).digest('hex');
 
-export type Optionen = { stil?: Stil; /** nach jedem gerenderten Asset einer Gruppe (B-740): Id und Dauer in ms */ beiAsset?: (id: string, ms: number) => void; /** vor jedem Asset einer Gruppe (B-749), damit lange Assets nicht wie ein Stillstand wirken */ vorAsset?: (id: string) => void };
+export type Optionen = { stil?: Stil; /** nach jedem gerenderten Asset einer Gruppe (B-740): Id und Dauer in ms */ beiAsset?: (id: string, ms: number) => void; /** vor jedem Asset einer Gruppe (B-749), damit lange Assets nicht wie ein Stillstand wirken */ vorAsset?: (id: string) => void; /** nach jeder Ausgabe (Animation/Variante) eines Assets (B-750): Nr., Anzahl, Schlüssel, Dauer in ms */ beiAusgabe?: (id: string, nr: number, n: number, schluessel: string, ms: number) => void };
 export type Asset = { manifest: Record<string, unknown>; pngs: [string, Buffer][] };
 
 /** Rendert alle Ausgaben einer Spec im Speicher. */
-export function rendereAsset(spec: Spec, k: Kontext): Asset {
+export function rendereAsset(spec: Spec, k: Kontext, beiAusgabe?: (nr: number, n: number, schluessel: string, ms: number) => void): Asset {
   const sh = specHash(spec), st = stilHash(k.stil), reittier = reittierHash(spec, k.specPfad), pngs: [string, Buffer][] = [];
   const anim: Record<string, unknown> = {};
   const basis = frameGroesse(spec.ausgabe);
-  for (const a of ausgaben(spec)) {
+  const alle = ausgaben(spec);
+  for (const [nr, a] of alle.entries()) {
+    const t0 = performance.now();
     const bild = bildVon(spec, a, k), g = bild.groesse;
     const r = rastere(streifenSvg(bild.frames.map((f) => f.svg), g, defs(k.stil, spec.id, g.frameH / g.rahmen[3])));
     const datei = `${a.schluessel}.png`;
@@ -39,6 +41,7 @@ export function rendereAsset(spec: Spec, k: Kontext): Asset {
     const eigen = g.eigen || g.frameW !== basis.frameW || g.frameH !== basis.frameH ? { rahmen: g.rahmen, frameW: g.frameW, frameH: g.frameH } : {};
     anim[a.schluessel] = { frames: bild.frames.length, fps: animationen(spec)[a.animation].fps ?? 8, datei,
       hashes: frameHashes(r.rgba, r.breite, g.frameW, g.frameH, bild.frames.length), ...eigen };
+    beiAusgabe?.(nr + 1, alle.length, a.schluessel, performance.now() - t0);
   }
   const manifest = { id: spec.id, version: spec.version, specHash: sh, stilHash: st, renderer: RENDERER_VERSION,
     renderKey: renderKey(reittier ? `${sh}+${reittier}` : sh, st), ...basis, animationen: anim, varianten: Object.keys(spec.varianten ?? {}).sort() };
@@ -134,7 +137,7 @@ export function renderOrdner(ordner: string, opt: Optionen = {}) {
   const ziele = pfade.map((p, i) => {
     opt.vorAsset?.(specs[i].id);
     const t0 = performance.now();
-    const asset = rendereAsset(specs[i], { stil, specPfad: p });
+    const asset = rendereAsset(specs[i], { stil, specPfad: p }, (nr, n, key, ms) => opt.beiAusgabe?.(specs[i].id, nr, n, key, ms));
     opt.beiAsset?.(specs[i].id, performance.now() - t0);
     return { ordner: zielOrdner(p), asset };
   });

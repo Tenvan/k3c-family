@@ -138,6 +138,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-741](B-741-hud-ohne-tastenhinweise-tastenbelegung-menue.md) | CLI | Idee | mittel | offen | – | HUD ohne Tastenhinweise, Tastenbelegung im Menü |
 | [B-748](B-748-gen-paper-fehlende-grafik-erkennen.md) | PAP | Problem | hoch | offen | – | gen:paper rendert, wenn Grafiken fehlen, obwohl Specs unverändert sind |
 | [B-749](B-749-gen-paper-startzeile-je-asset.md) | PAP | Problem | mittel | offen | – | gen:paper meldet den Start jedes Assets, lange Assets wirken sonst wie ein Stillstand |
+| [B-750](B-750-gen-paper-schritte-im-asset.md) | PAP | Problem | mittel | offen | – | gen:paper meldet die Ausgaben innerhalb großer Assets |
+| [B-751](B-751-gen-paper-schneller-rendern.md) | PAP | Idee | mittel | offen | – | gen:paper schneller: Cache je Asset und parallel rastern |
 
 ## Archiv
 
