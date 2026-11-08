@@ -70,12 +70,13 @@ Siehe `B-736 › Offene Fragen` (Frage 1 betrifft den Sprint: G1 bei erfülltem 
 | RS2.3 | `RS2.3-zustand-stufe1.md` | Umsetzung | autonom | fertig |
 | RS2.4 | `RS2.4-inventar-007.md` | Umsetzung | autonom | fertig |
 | RS2.5 | `RS2.5-pi-messung.md` | Umsetzung | Mensch | offen |
-| RS2.6 | `RS2.6-review.md` | Review | autonom | offen |
+| RS2.6 | `RS2.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-08, Review RS2.6 (autonom, Claude): AC-01 bis AC-04 geprüft (Nachweise in RS2.1–RS2.4 und RS2.6), `task check` und `task check:go` grün.
+AC-05 angenommen, Validierung offen (RS2.5, Pi-Messung und Gate G1 durch Ralf); 007 bleibt Entwurf bis zur Freigabe durch Ralf.
+Behobene Befunde: keine schweren. Neue Tickets: B-743, B-744 (Review), B-745 (Abnahme-Läufe Sim, Balance, Gen, Race nach B-742).

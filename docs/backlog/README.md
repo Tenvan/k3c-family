@@ -130,6 +130,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-739](B-739-check-diff-grafik-golden-logging-sperre.md) | INF | Problem | hoch | offen | – | check:diff: Grafik-Golden je Gruppe, Schritt-Logging und Sperre gegen parallele Läufe |
 | [B-740](B-740-workbench-tests-ohne-engine-server.md) | DEV | Schuld | niedrig | offen | – | Workbench-Tests laufen gegen einen Fake-Spielserver statt engine/net und engine/room |
 | [B-741](B-741-verweise-k3c-balance-nachziehen.md) | DEV | Schuld | niedrig | offen | – | Verweise auf bin/k3c-balance und internal/enginetools außerhalb der Workbench nachziehen |
+| [B-743](B-743-simexe-bot-pool-robust.md) | DEV | Problem | mittel | offen | – | Online-Bots über k3c-sim bot erholen sich nicht von einem toten Bot-Prozess |
+| [B-744](B-744-k3c-sim-eingaben-absichern.md) | DEV | Schuld | niedrig | offen | – | k3c-sim: Replay-Dateinamen aus Seeds absichern und Segment-Kopie der Workbench per Test halten |
+| [B-745](B-745-abnahme-laeufe-rs2.md) | SRV | Schuld | mittel | offen | RS2 | Abnahme-Läufe RS2 |
 
 ## Archiv
 

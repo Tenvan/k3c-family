@@ -1,6 +1,6 @@
 # RS2.6 · Review RS2
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -54,5 +54,12 @@ Nacheinander (Review-Session).
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-11-08, autonom (Claude). `check_run task:check` exit 0 (5 min 41 s), danach `task:check:go` exit 0 (3 min 46 s); `check:race`, Sim, Balance, Gen nach B-742 im Abnahme-Ticket B-745.
+
+- **AC-01 geprüft:** `go list -deps ./tools/k3c-workbench/...` → `engine/sim|room|net|level` nur über `internal/studioview` (erlaubte Ausnahme) und das Hauptpaket, das es einbindet; depguard `workbench-ohne-engine` in `.golangci.yml`. Gleiche Ergebnisse und Dauer −8 % (Meilenstein 1 Seed) laut RS2.2; Volllauf offen in B-745/AC-02.
+- **AC-02 geprüft:** `BenchmarkTickDevices4` 4,0–4,2×, allocs 21,8 % (006 › RS2.3); online perf Tick p99 2,5 ms (run-28).
+- **AC-03 geprüft:** `TestStateGleichOrakel*`, `TestStateReflection*` in `check:go` grün; Golden und `docs/protocol.md` im Diff unverändert.
+- **AC-04 geprüft:** `docs/decisions/007-rust-server.md` Status Entwurf (nicht freigegeben), Inventar Anhang A–G, Crate-Tabelle.
+- **AC-05 angenommen, Validierung offen (RS2.5):** Pi-Messung und Gate G1 bei Ralf; Sprint bleibt aktiv.
+
+Reviewer (Sonnet) über den Sprint-Diff: keine schweren Befunde; mittel als B-743 (Bot-Pool erholt sich nicht) und B-744 (Replay-Pfad aus Seed, Segment-Kopie, Version in `protocol.md`). Leicht: `state.go` 398/400 Zeilen. Abweichung: RS3 nicht angelegt (wartet auf G1).
