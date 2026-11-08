@@ -285,3 +285,5 @@ Umsetzung: Sprint RS1 (Sessions RS1.1–RS1.7, `docs/sprints/geplant/RS1-messen-
   (falls sie kommt): Rust-Server, dann wird 001 im Wortlaut „Go“ angepasst.
 - Projekt RST wird aktiv; Sprints und Sessions werden über `plan_*` angelegt, die Spec B-725 gibt Ralf frei.
 - Scheitert der Spike: 006 wird mit Zahlen auf „Go optimieren“ geändert, Projekt RST endet nach RS1.
+- Etappe 2 (Ralf, 2026-11-07, B-736): Architektur, Bibliotheken, Portreihenfolge und Inventar des Go-Servers stehen in
+  `docs/decisions/007-rust-server.md` (Entwurf, RS2.4, Freigabe durch Ralf).

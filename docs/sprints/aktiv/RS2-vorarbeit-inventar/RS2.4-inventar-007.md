@@ -1,6 +1,6 @@
 # RS2.4 · Inventar der Engine und Entscheidung 007 (Rust-Server, Entwurf)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -42,9 +42,9 @@ Kein Code, kein Rust-Server-Skelett (RS3), keine neue Abhängigkeit hinzufügen,
 
 ## Fertig, wenn
 
-- [ ] AC-04: 007 (Entwurf) enthält alle sieben Inventar-Tabellen und je Rust-Abhängigkeit Grund und Pi-Tauglichkeit.
-- [ ] AC-04: Offene Entscheidungen für Ralf stehen als Liste in 007 und in B-736 › Offene Fragen (abgeglichen).
-- [ ] CI-Voraussetzung: `task check:diff` grün (`tests/planning.test.ts`, Glossar).
+- [x] AC-04: 007 (Entwurf) enthält alle sieben Inventar-Tabellen und je Rust-Abhängigkeit Grund und Pi-Tauglichkeit.
+- [x] AC-04: Offene Entscheidungen für Ralf stehen als Liste in 007 und in B-736 › Offene Fragen (abgeglichen).
+- [x] CI-Voraussetzung: `task check:diff` grün (`tests/planning.test.ts`, Glossar).
 
 ## Prüfen
 
@@ -56,5 +56,17 @@ Einmal vor dem Commit; während der Arbeit nur gezielte Tests (`docs/arbeitsweis
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+2026-11-08, autonom (Claude), nur Doku. `docs/decisions/007-rust-server.md` angelegt (Status **Entwurf**, nicht freigegeben), Verweis in 006 › Folgen, Glossar-Eintrag „Go-JSON-Schreiber“ (Orakel, Trace-Golden, Rust-Server, Gate standen schon drin).
+
+- **AC-04 geprüft (Inventar):** Anhang A–G in 007: (A) `sim.World` (50 Felder, 33 JSON) und 20 Teilstrukturen mit Feldanzahl, JSON-Tags, Herkunft; (B) Protokoll v11, 12 Nachrichten Gerät → Server, 8 Server → Gerät, 19 HTTP-Routen; (C) Spielstand v9 und Ablage `store`; (D) `data/*.json` mit Go-Typ und Leser; (E) Goroutinen, Sperren, Kanäle mit Rust-Gegenstück; (F) Dateisystem, Neustart Exit 75, 14 `K3C_*`-Variablen; (G) externe Pakete mit Rust-Gegenstück und alle Abhängigen der Engine-Pakete.
+- **AC-04 geprüft (Bibliotheken):** Tabelle je Crate mit Zweck, Grund, Größe (ungeprüft, Messung RS3), Pi-Tauglichkeit, Alternativen; Liste der bewusst nicht vorgeschlagenen Crates.
+- **AC-04 geprüft (offene Entscheidungen):** 10 Punkte am Ende von 007, abgeglichen mit `B-736 › Offene Fragen` (dort 13 Punkte mit Verweis auf die 007-Nummer).
+- **CI-Voraussetzung:** `check_run task:test` (Muster `planning`) und `task:check:diff` grün (siehe Commit).
+
+Abweichungen und Befunde für Ralf:
+
+- **Umfang von B-736 zu klein:** `engine/balance` + `cmd/k3c-sim` (~8 300 Zeilen) und `studioview` der Workbench hängen an `engine/sim`/`net`/`room`; ohne Port ist AC-08 (Go-Engine löschen) nicht erreichbar. `devrun` und `conlog` nutzt die Workbench, sie bleiben Go. Schätzung 66–86 statt 57–72 Sessions (ungeprüft).
+- **Byte-Gleichheit braucht einen eigenen Go-JSON-Schreiber** (sortierte Map-Schlüssel, Go-Zahlenformat, HTML-Escapes) und eine Portierung von `math.Pow`/`math.Exp` (libm der Plattform rechnet anders).
+- `rust/Cargo.toml` hat `panic = "abort"`; für den Server muss das auf `unwind` (Raum-Absturz schließt nur den Raum).
+- `docs/protocol.md` nennt in der Nachrichten-Tabelle noch `v` = 9, Code und Kopf sagen 11 (nicht geändert, Datei außerhalb der erlaubten Dateien).
+- Keine neuen Tickets; die Befunde stehen als offene Fragen in B-736 und 007.
