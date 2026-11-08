@@ -128,6 +128,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-736](B-736-rust-server-etappe2.md) | SRV | Idee | mittel | eingeplant | RS2 | Etappe 2: Server und Simulation laufen komplett in Rust, Go-Server und Brücke entfallen |
 | [B-738](B-738-workbench-go-tests-rot-style-vorlage-review.md) | DEV | Problem | mittel | offen | – | Workbench-Go-Tests rot: Style-Fixture, Rig-Vorlage vierbeiner ohne Gangarten, Review-Tests mit festen Commit-Hashes |
 | [B-739](B-739-check-diff-grafik-golden-logging-sperre.md) | INF | Problem | hoch | offen | – | check:diff: Grafik-Golden je Gruppe, Schritt-Logging und Sperre gegen parallele Läufe |
+| [B-740](B-740-gen-paper-fortschritt.md) | PAP | Idee | mittel | offen | – | gen:paper zeigt Fortschritt je Schritt in Konsole und Log |
+| [B-741](B-741-hud-ohne-tastenhinweise-tastenbelegung-menue.md) | CLI | Idee | mittel | offen | – | HUD ohne Tastenhinweise, Tastenbelegung im Menü |
 
 ## Archiv
 

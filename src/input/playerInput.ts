@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { KEYBOARD_1, KEYBOARD_2, keyMatches, layoutKeys, type KeyboardLayout, type KeySpec } from './keyboardLayouts';
+import { KEYBOARD_1, keyMatches, layoutKeys, type KeyboardLayout, type KeySpec } from './keyboardLayouts';
 import { PAD, PAD_ACTIONS, type Action } from './slotBindings';
 
 export type { Action } from './slotBindings';
@@ -125,9 +125,4 @@ export class KeyboardInput implements PlayerInput {
   held(action: Action): boolean {
     return this.isDown(this.layout.actions[action] ?? []);
   }
-}
-
-/** Zwei Spieler an einer Tastatur (B-316): Spieler 1 links, Spieler 2 rechts (`keyboardLayouts.ts`) */
-export function keyboardPlayers(keyboard: Phaser.Input.Keyboard.KeyboardPlugin): [KeyboardInput, KeyboardInput] {
-  return [new KeyboardInput(keyboard), new KeyboardInput(keyboard, KEYBOARD_2, 'Tastatur 2')];
 }

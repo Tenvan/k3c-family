@@ -23,7 +23,7 @@ export function rel(p: string): string {
 
 export const sha256 = (b: Buffer | string) => createHash('sha256').update(b).digest('hex');
 
-export type Optionen = { stil?: Stil };
+export type Optionen = { stil?: Stil; /** nach jedem gerenderten Asset einer Gruppe (B-740): Id und Dauer in ms */ beiAsset?: (id: string, ms: number) => void };
 export type Asset = { manifest: Record<string, unknown>; pngs: [string, Buffer][] };
 
 /** Rendert alle Ausgaben einer Spec im Speicher. */
@@ -131,7 +131,12 @@ export function renderOrdner(ordner: string, opt: Optionen = {}) {
   const stil = opt.stil ?? ladeStil(), pfade = specsIn(ordner);
   pruefe(pfade, stil, true);
   const specs = pfade.map(lese);
-  const ziele = pfade.map((p, i) => ({ ordner: zielOrdner(p), asset: rendereAsset(specs[i], { stil, specPfad: p }) }));
+  const ziele = pfade.map((p, i) => {
+    const t0 = performance.now();
+    const asset = rendereAsset(specs[i], { stil, specPfad: p });
+    opt.beiAsset?.(specs[i].id, performance.now() - t0);
+    return { ordner: zielOrdner(p), asset };
+  });
   const geschrieben = schreibe(ziele);
   const index = specs.map((s) => ({ id: s.id, rig: s.rig, manifest: `${s.id}/manifest.json` }));
   const indexTmp = join(ordner, `.index.paper.json.tmp-${process.pid}`);
