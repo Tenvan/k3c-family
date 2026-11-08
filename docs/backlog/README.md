@@ -147,6 +147,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-757](B-757-ci-race-balance-timeout-datadoc-test.md) | INF | Problem | hoch | offen | – | CI: Race-Lauf ohne engine/balance, datadoc-Test kennt Balance-Berichtsdateien |
 | [B-758](B-758-release-workflow-tests-wieder-einschalten.md) | INF | Schuld | hoch | offen | – | Release-Workflow: Typecheck und Tests vor dem Bauen wieder einschalten |
 | [B-759](B-759-docker-build-ohne-work-ordner.md) | INF | Problem | hoch | offen | – | Docker-Build im Release scheitert an .work (EXDEV beim gen:paper) |
+| [B-761](B-761-render-info-anzeige-xbox.md) | CLI | Idee | hoch | offen | – | Renderer-Info (WebGL/Canvas, FPS, Texturen) im Spiel anzeigen, WebGL erzwingbar |
 
 ## Archiv
 

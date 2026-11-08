@@ -17,6 +17,8 @@ export interface Settings {
   colorblindSymbols: boolean;
   /** Hinweise der ersten Nacht (S6.3, Beschluss Q11: optional, Standard an) */
   guideHints: boolean;
+  /** Technik-Anzeige (Renderer, FPS, Texturen; B-761), Standard aus */
+  techInfo: boolean;
   language: Language;
 }
 
@@ -32,6 +34,7 @@ export const DEFAULT_SETTINGS: Readonly<Settings> = Object.freeze({
   flash: true,
   colorblindSymbols: true,
   guideHints: true,
+  techInfo: false,
   language: 'de',
 });
 
@@ -55,6 +58,7 @@ export function normalizeSettings(raw: unknown): Settings {
     flash: bool(r.flash, d.flash),
     colorblindSymbols: bool(r.colorblindSymbols, d.colorblindSymbols),
     guideHints: bool(r.guideHints, d.guideHints),
+    techInfo: bool(r.techInfo, d.techInfo),
     language: r.language === 'en' ? 'en' : 'de',
   };
 }

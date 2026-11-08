@@ -187,6 +187,7 @@ export const de = {
   'opt.colorblind': 'Farbschwäche-Symbole',
   'opt.language': 'Sprache',
   'opt.guide': 'Hinweise (erste Nacht)',
+  'opt.tech': 'Technik-Anzeige',
   'opt.resume': 'Weiter',
   'opt.removePlayer': 'Spieler abmelden',
   'opt.removePlayerOf': 'Spieler abmelden  ◀ Spieler {n} ▶',

@@ -3,6 +3,7 @@ import { GAME_HEIGHT, GAME_WIDTH } from './core/constants';
 import { clientLog, installClientLog } from './core/clientLog';
 import { installPageChrome } from './core/shell';
 import { CLIENT, fetchServerBuild, versionLine, type BuildInfo } from './core/version';
+import { antialiasOff, rendererRequest } from './core/renderInfo';
 import { showNoServer } from './landing/serverCheck';
 import { createRoomClient } from './online/clientConnection';
 import { GameScene } from './scenes/GameScene';
@@ -20,8 +21,11 @@ function start(server: BuildInfo): void {
   // Der Server rechnet, der Browser zeichnet; Raumwahl und Start-Parameter übernimmt die LobbyScene.
   const client = createRoomClient();
 
+  // Renderer: Standard AUTO (WebGL, sonst Canvas); `?renderer=webgl|canvas` erzwingt einen, `?aa=0` schaltet die MSAA-Glättung ab (B-761)
+  const want = rendererRequest(location.search);
   const game = new Phaser.Game({
-    type: Phaser.AUTO,
+    type: want === 'webgl' ? Phaser.WEBGL : want === 'canvas' ? Phaser.CANVAS : Phaser.AUTO,
+    render: { powerPreference: 'high-performance', antialiasGL: !antialiasOff(location.search) },
     parent: 'game',
     width: GAME_WIDTH,
     height: GAME_HEIGHT,
@@ -33,7 +37,7 @@ function start(server: BuildInfo): void {
 
   // Versionen für Lobby und Debug-Overlay, je eine Zeile für Client und Server (beide lesen sie aus der Registry)
   game.registry.set(VERSION_KEY, versionLine(CLIENT, server, '\n'));
-  clientLog('info', `🚀 Phaser gestartet (${game.config.renderType === Phaser.WEBGL ? 'WebGL' : 'Canvas/Auto'})`);
+  clientLog('info', `🚀 Phaser gestartet (${game.renderer.type === Phaser.WEBGL ? 'WebGL' : '⚠️ Canvas'}, gewünscht: ${want})`);
   game.scene.add('load', LoadScene, true, { client }); // lädt den Atlas, startet dann die Lobby
   game.scene.add('lobby', LobbyScene, false);
   game.scene.add('game', GameScene, false);

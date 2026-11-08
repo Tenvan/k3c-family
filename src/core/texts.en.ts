@@ -177,6 +177,7 @@ export const en: Record<TextKey, string> = {
   'opt.colorblind': 'Colorblind symbols',
   'opt.language': 'Language',
   'opt.guide': 'Hints (first night)',
+  'opt.tech': 'Tech info',
   'opt.resume': 'Resume',
   'opt.removePlayer': 'Remove player',
   'opt.removePlayerOf': 'Remove player  ◀ Player {n} ▶',

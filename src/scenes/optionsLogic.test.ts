@@ -7,7 +7,7 @@ const base: Settings = { ...DEFAULT_SETTINGS };
 
 describe('Einträge', () => {
   it('stehen in fester Reihenfolge', () => {
-    expect(OPTION_IDS).toEqual(['music', 'sfx', 'ambient', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'keys', 'resume', 'removePlayer', 'leave']);
+    expect(OPTION_IDS).toEqual(['music', 'sfx', 'ambient', 'screenshake', 'flash', 'colorblind', 'guide', 'tech', 'language', 'keys', 'resume', 'removePlayer', 'leave']);
   });
 
   it('jeder Eintrag hat einen Text', () => {
