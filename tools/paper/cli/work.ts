@@ -4,6 +4,7 @@
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT } from '../render/stil';
+import { dauer, schritt, type Melde } from './fortschritt';
 import { gen } from './gen';
 
 export const WORK = join(ROOT, '.work/grafik');
@@ -55,8 +56,11 @@ export function uebertragen(work: string, wurzel: string): { geschrieben: number
 }
 
 /** Spiegeln, rendern, übertragen. */
-export function genMitWork(wurzel: string, work = WORK): { gruppen: string[]; geschrieben: number; entfernt: number } {
-  spiegeln(wurzel, work);
-  const { gruppen } = gen(work);
-  return { gruppen, ...uebertragen(work, wurzel) };
+export function genMitWork(wurzel: string, work = WORK, melde?: Melde): { gruppen: string[]; geschrieben: number; entfernt: number } {
+  const t0 = performance.now();
+  schritt(melde, '📂', 'Specs spiegeln', () => spiegeln(wurzel, work));
+  const { gruppen } = gen(work, { melde });
+  const r = schritt(melde, '📦', 'nach public/grafik übertragen', () => uebertragen(work, wurzel));
+  melde?.(`✅ gen:paper fertig in ${dauer(performance.now() - t0)}: ${r.geschrieben} Dateien geschrieben, ${r.entfernt} entfernt`);
+  return { gruppen, ...r };
 }

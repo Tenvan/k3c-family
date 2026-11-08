@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { sha256 } from '../render/ausgabe';
+import { dauer } from './fortschritt';
 import { gen } from './gen';
 
 const SPECS = join(import.meta.dirname, '../fixtures/specs');
@@ -50,6 +51,21 @@ describe('gen', { timeout: 60_000 }, () => {
     expect(readdirSync(join(w, 'leer'))).toEqual([]);
     expect(readdirSync(join(w, 'altes-pack'))).toEqual(['x.json']);
   }, 60_000);
+
+  it('meldet je Asset genau eine Zeile [i/n] mit Dauer (B-740)', () => {
+    const zeilen: string[] = [];
+    gen(wurzel(), { melde: (z) => zeilen.push(z) });
+    expect(zeilen[0]).toBe('🚀 gen:paper: 2 Gruppen, 2 Assets');
+    const assets = zeilen.filter((z) => z.startsWith('🔨'));
+    expect(assets).toHaveLength(2);
+    expect(assets[0]).toMatch(/^🔨 \[1\/2\] bauten\/mauer gerendert ✅ \d+(,\d)? (ms|s)$/);
+    expect(assets[1]).toMatch(/^🔨 \[2\/2\] reittiere\/pferd gerendert ✅ /);
+    expect(zeilen.filter((z) => z.startsWith('💾'))).toHaveLength(2);
+  }, 60_000);
+
+  it('dauer formatiert ms, Sekunden und Minuten', () => {
+    expect([dauer(80), dauer(2300), dauer(252_000)]).toEqual(['80 ms', '2,3 s', '4 min 12 s']);
+  });
 
   it('zwei Läufe hintereinander: keine Datei ändert sich', () => {
     const w = wurzel();

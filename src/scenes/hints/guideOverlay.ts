@@ -4,7 +4,6 @@ import { loadSettings } from '../../core/settings';
 import { t } from '../../core/texts';
 import { screenAt } from './actionOverlay';
 import { fontStyle } from '../render/fontRules';
-import { glyphOf, type HintDevice } from './glyphs';
 import { GlyphRow, type RowPart } from './glyphView';
 import { guideImage, MOON_IMAGE, stepGuide, usableGuideImage, type GuideHint } from './guideHints';
 import { clientLog } from '../../core/clientLog';
@@ -35,16 +34,15 @@ function ensureMoon(scene: Phaser.Scene): void {
   tex.refresh();
 }
 
-/** Hinweis als Zeilenteile; `{key}` im Text wird zur Glyph der Bestätigen-Taste des Geräts, ein Bild steht davor (B-294) */
-function partsOf(h: GuideHint, device: HintDevice, usable: (h: GuideHint) => ReturnType<typeof guideImage>): RowPart[] {
-  const [before = '', after] = t(`guide.${h.id}`, {}).split('{key}');
-  const text: RowPart[] = after === undefined ? [before] : [before, glyphOf('confirm', device), after];
+/** Hinweis als Zeilenteile: ein Bild steht vor dem Text (B-294); ohne Tastennamen (B-741) */
+function partsOf(h: GuideHint, usable: (h: GuideHint) => ReturnType<typeof guideImage>): RowPart[] {
+  const text: RowPart[] = [t(`guide.${h.id}`, {})];
   const image = usable(h);
   return image ? [image, ...text] : text;
 }
 
 /**
- * Geführte erste Nacht (S6.3, B-148): je Spielerfeld der nächste ungesehene Hinweis über seinem Objekt, mit Glyph (S6.2).
+ * Geführte erste Nacht (S6.3, B-148): je Spielerfeld der nächste ungesehene Hinweis über seinem Objekt, ohne Tastennamen (B-741).
  * Rein zum Ansehen, nimmt keine Eingabe; abschaltbar in den Optionen (`guideHints`).
  */
 export class GuideOverlay {
@@ -63,7 +61,7 @@ export class GuideOverlay {
   }
 
   /** Argumente wie `ActionOverlay.draw` */
-  draw(cells: readonly RadarCell[], cameras: readonly Phaser.Cameras.Scene2D.Camera[], slotOf: (seat: number) => number | undefined, deviceOf: (slot: number) => HintDevice): void {
+  draw(cells: readonly RadarCell[], cameras: readonly Phaser.Cameras.Scene2D.Camera[], slotOf: (seat: number) => number | undefined): void {
     this.rows.forEach((r) => r.box.setVisible(false));
     const on = loadSettings().guideHints; // je Frame gelesen wie in `GameScene`: die Optionen wirken sofort
     cells.forEach(({ cell, monarch, world }, i) => {
@@ -73,7 +71,7 @@ export class GuideOverlay {
       this.shown[i] = h;
       const at = h && cameras[i] ? screenAt(cell, cameras[i].worldView, h.x, h.target === null ? PLAYER_PX : OBJECT_PX) : null;
       if (!h || !at || slot === undefined) return;
-      (this.rows[i] ??= new GlyphRow(this.scene, STYLE, 'bottom')).set(partsOf(h, deviceOf(slot), (hint) => this.imageOf(hint)), at.x, at.y);
+      (this.rows[i] ??= new GlyphRow(this.scene, STYLE, 'bottom')).set(partsOf(h, (hint) => this.imageOf(hint)), at.x, at.y);
     });
   }
 }

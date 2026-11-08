@@ -7,10 +7,10 @@ import { t } from '../core/texts';
 import type { SlotCommand } from './localSlots';
 import { worldOf } from './saveMenu';
 
-export type OptionId = 'music' | 'sfx' | 'ambient' | 'screenshake' | 'flash' | 'colorblind' | 'guide' | 'language' | 'resume' | 'removePlayer' | 'leave';
+export type OptionId = 'music' | 'sfx' | 'ambient' | 'screenshake' | 'flash' | 'colorblind' | 'guide' | 'language' | 'keys' | 'resume' | 'removePlayer' | 'leave';
 
 /** Feste Reihenfolge der Einträge */
-export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'ambient', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'resume', 'removePlayer', 'leave'];
+export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'ambient', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'keys', 'resume', 'removePlayer', 'leave'];
 
 /** Registry-Schlüssel: die Optionen melden „Spiel verlassen“, `GameScene` verlässt den Raum (B-293) */
 export const LEAVE_KEY = 'leaveGame';
@@ -51,11 +51,16 @@ export interface OptionResult {
   leave: boolean;
   /** „Spieler abmelden“ bestätigt: der gewählte Slot geht (B-411) */
   removePlayer: boolean;
+  /** „Tastenbelegung“ bestätigt: die Tabelle öffnen (B-741) */
+  keys: boolean;
 }
+
+/** Einträge, die nur mit Bestätigen etwas auslösen → gesetztes Feld des Ergebnisses */
+const CONFIRM_FLAG = { keys: 'keys', resume: 'close', removePlayer: 'removePlayer', leave: 'leave' } as const;
 
 /** Links/Rechts ändert Regler um 10 % (0–100) und kippt Schalter; Bestätigen kippt Schalter oder wählt „Weiter“. */
 export function applyOption(settings: Settings, id: OptionId, dir: OptionDir): OptionResult {
-  const unchanged = { settings, close: false, leave: false, removePlayer: false };
+  const unchanged = { settings, close: false, leave: false, removePlayer: false, keys: false };
   switch (id) {
     case 'music':
     case 'sfx':
@@ -74,12 +79,8 @@ export function applyOption(settings: Settings, id: OptionId, dir: OptionDir): O
     }
     case 'language':
       return { ...unchanged, settings: { ...settings, language: settings.language === 'de' ? 'en' : 'de' } };
-    case 'resume':
-      return { ...unchanged, close: dir === 'confirm' };
-    case 'removePlayer':
-      return { ...unchanged, removePlayer: dir === 'confirm' };
-    case 'leave':
-      return { ...unchanged, leave: dir === 'confirm' };
+    default:
+      return { ...unchanged, [CONFIRM_FLAG[id]]: dir === 'confirm' };
   }
 }
 
@@ -103,6 +104,8 @@ export function optionLabel(settings: Settings, id: OptionId): string {
       return `${t('opt.guide')}  ${onOff(settings.guideHints)}`;
     case 'language':
       return `${t('opt.language')}  ◀ ${t(`lang.${settings.language}`)} ▶`;
+    case 'keys':
+      return t('opt.keys');
     case 'resume':
       return t('opt.resume');
     case 'removePlayer':
@@ -112,6 +115,9 @@ export function optionLabel(settings: Settings, id: OptionId): string {
   }
 }
 
+/** Lage der Tabelle „Tastenbelegung“ (B-741): Kopf bei `top`, je Zeile `rowH`, erste Spalte links, Geräte-Spalten gleich breit; Schrift ≥ 28 px (Q03) */
+export const KEYS_LAYOUT = { top: 240, rowH: 56, px: 30, labelX: 120, colX: [680, 1000, 1320, 1640] } as const;
+
 /** Szenen-Daten der Optionen: Slots, die „Spieler abmelden“ treffen kann (leer = ausgegraut, B-411) */
 export interface OptionsSceneData {
   targets: number[];
@@ -119,8 +125,8 @@ export interface OptionsSceneData {
   world?: string;
 }
 
-/** Lage im Pausenmenü (1920 × 1080): Titel 64 px, Weltzeile 40 px (BD9.2, B-604), danach die 11 Zeilen; oben bleiben 70 px frei */
-export const OPTIONS_LAYOUT = { titleY: 110, titlePx: 64, worldY: 182, worldPx: 40, top: 250, rowH: 72, rowPx: 40 } as const;
+/** Lage im Pausenmenü (1920 × 1080): Titel 64 px, Weltzeile 40 px (BD9.2, B-604), danach die 12 Zeilen; oben bleiben 70 px frei */
+export const OPTIONS_LAYOUT = { titleY: 110, titlePx: 64, worldY: 182, worldPx: 40, top: 250, rowH: 64, rowPx: 40 } as const;
 
 /** Zeile unter dem Titel: Welt des Raums (BD5.2, B-506); ohne Angabe keine Zeile */
 export const worldLine = (world: string | undefined): string => (world === undefined ? '' : t('opt.world', { world: worldOf(world) }));
@@ -145,7 +151,7 @@ export function tapDir(x: number, width: number): OptionDir {
 
 /** Tippen auf eine Zeile: „Weiter“ und „Spiel verlassen“ bestätigen in jedem Drittel (B-336), sonst gilt `tapDir`. */
 export function tapOption(id: OptionId, x: number, width: number): OptionDir {
-  return id === 'resume' || id === 'removePlayer' || id === 'leave' ? 'confirm' : tapDir(x, width);
+  return id === 'resume' || id === 'removePlayer' || id === 'leave' || id === 'keys' ? 'confirm' : tapDir(x, width);
 }
 
 /**

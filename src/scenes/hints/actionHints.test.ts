@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { nameOf, setLanguage } from '../../core/texts';
 import type { Player, PlayerAction, Site, World } from '../../model/types';
-import type { Device } from '../../input/slotBindings';
 import { GAME_WIDTH } from '../../core/constants';
 import { HINT_FONT, WEIGHT, hintView, playerHint, type Hint } from './actionHints';
 import { FONTS, minFontPx } from '../render/fontRules';
@@ -23,40 +22,25 @@ const ALL: Hint[] = [
 
 beforeEach(() => setLanguage('de'));
 
-describe('hintView: Aktion → Taste und Text je Gerät (B-125/AC-01)', () => {
-  it.each<[Device, string[]]>([
-    ['pad', ['A', 'A', 'A', 'X', 'LB', 'D-Pad ↓', 'D-Pad ↓']],
-    ['keyboard', ['Leertaste', 'Leertaste', 'Leertaste', 'E', 'Q', 'K', 'K']],
-    ['touch', ['🪙', '🪙', '🪙', '⚔', '1', '★', '★']],
-  ])('%s', (device, keys) => {
-    const views = ALL.map((h) => hintView(h, device));
-    expect(views.map((v) => v.key)).toEqual(keys);
-    expect(views.every((v) => v.text.includes(v.key) && v.text.length > v.key.length + 2)).toBe(true);
-  });
-
-  it('Texte wie im Regelwerk', () => {
-    expect(hintView({ action: 'build', name: 'Mauer' }, 'pad').text).toBe('A halten: Mauer bauen');
-    expect(hintView({ action: 'revive' }, 'pad').text).toBe('A halten: Wiederbeleben');
-    expect(hintView({ action: 'attack' }, 'pad').text).toBe('X: Schlag');
-    expect(hintView({ action: 'skill', slot: 2, skill: 'shieldBash' }, 'keyboard').text).toBe('R: Shield Bash');
+describe('hintView: Aktion → Text ohne Taste (B-741)', () => {
+  it('Texte wie im Regelwerk, ohne Tastennamen', () => {
+    expect(hintView({ action: 'build', name: 'Mauer' }).text).toBe('Mauer bauen');
+    expect(hintView({ action: 'revive' }).text).toBe('Wiederbeleben');
+    expect(hintView({ action: 'attack' }).text).toBe('Schlag');
+    expect(hintView({ action: 'skill', slot: 2, skill: 'shieldBash' }).text).toBe('Shield Bash');
+    expect(ALL.map((h) => hintView(h).text).join(' ')).not.toMatch(/(halten|Leertaste|LB|RB|D-Pad)|\[|:/);
   });
 
   it('Bau des Endbosses: Zeile ohne Taste (B-563/AC-01)', () => {
-    const v = hintView({ action: 'lair' }, 'pad');
-    expect(v.glyph.key).toBeNull();
+    const v = hintView({ action: 'lair' });
     expect(v.text).toBe('Bau des Endbosses: Ankunft löst ihn aus');
-    expect(playerHint(world([]), player({ actions: [{ action: 'lair' }] }), 'pad')?.text).toBe(v.text);
+    expect(playerHint(world([]), player({ actions: [{ action: 'lair' }] }))?.text).toBe(v.text);
     // Kampf geht vor: im Bau-Radius bleibt „Schlag“ die Hauptzeile
-    expect(playerHint(world([]), player({ actions: [{ action: 'attack' }, { action: 'lair' }] }), 'pad')?.text).not.toBe(v.text);
-  });
-
-  it('Text um die Glyph bleibt erhalten (S6.2)', () => {
-    expect(hintView({ action: 'build', name: 'Mauer' }, 'pad').around).toEqual(['', ' halten: Mauer bauen']);
-    expect(hintView({ action: 'attack' }, 'pad').around).toEqual(['', ': Schlag']);
+    expect(playerHint(world([]), player({ actions: [{ action: 'attack' }, { action: 'lair' }] }))?.text).not.toBe(v.text);
   });
 
   it('Wichtigkeit: Wiederbeleben vor Bauen/Zahlen vor Schlag vor Skills', () => {
-    const w = (h: Hint) => hintView(h, 'pad').weight;
+    const w = (h: Hint) => hintView(h).weight;
     expect(w(ALL[0]!)).toBeGreaterThan(w(ALL[1]!));
     expect(w(ALL[1]!)).toBe(w(ALL[2]!));
     expect(w(ALL[2]!)).toBeGreaterThan(w(ALL[3]!));
@@ -68,23 +52,23 @@ describe('Ausbilden und Tauschen (W11.4, B-410)', () => {
   const train = (profession: string): Hint => ({ action: 'train', profession });
   const trade = (side: 'buy' | 'sell', resource: string): Hint => ({ action: 'trade', side, resource });
 
-  it('deutsche Texte: Taste halten, Beruf bzw. Material aus den Textdateien', () => {
-    expect(hintView(train('miner'), 'pad').text).toBe('A halten: Bergmann ausbilden');
-    expect(hintView(train('craftsman'), 'touch').text).toBe('🪙 halten: Handwerker ausbilden');
-    expect(hintView(trade('buy', 'stone'), 'pad').text).toBe('A halten: Stein kaufen');
-    expect(hintView(trade('sell', 'stone'), 'pad').text).toBe('A halten: Stein verkaufen');
+  it('deutsche Texte: Beruf bzw. Material aus den Textdateien', () => {
+    expect(hintView(train('miner')).text).toBe('Bergmann ausbilden');
+    expect(hintView(train('craftsman')).text).toBe('Handwerker ausbilden');
+    expect(hintView(trade('buy', 'stone')).text).toBe('Stein kaufen');
+    expect(hintView(trade('sell', 'stone')).text).toBe('Stein verkaufen');
   });
 
   it('englische Texte', () => {
     setLanguage('en');
-    expect(hintView(train('miner'), 'pad').text).toBe('Hold A: train Miner');
-    expect(hintView(trade('buy', 'copper'), 'pad').text).toBe(`Hold A: buy ${nameOf('res', 'copper', 'copper')}`);
-    expect(hintView(trade('sell', 'copper'), 'pad').text).toMatch(/^Hold A: sell \S/);
+    expect(hintView(train('miner')).text).toBe('train Miner');
+    expect(hintView(trade('buy', 'copper')).text).toBe(`buy ${nameOf('res', 'copper', 'copper')}`);
+    expect(hintView(trade('sell', 'copper')).text).toMatch(/^sell \S/);
   });
 
   it('unbekanntes Material oder unbekannter Beruf: Name aus dem Protokoll, kein Absturz', () => {
-    expect(hintView(trade('buy', 'mithril'), 'pad').text).toBe('A halten: mithril kaufen');
-    expect(hintView(train('wizard'), 'pad').text).toMatch(/^A halten: .+ ausbilden$/);
+    expect(hintView(trade('buy', 'mithril')).text).toBe('mithril kaufen');
+    expect(hintView(train('wizard')).text).toMatch(/^.+ ausbilden$/);
   });
 
   it('Gewicht wie Bezahlen: über Schlag und Skills, unter Wiederbeleben', () => {
@@ -92,7 +76,7 @@ describe('Ausbilden und Tauschen (W11.4, B-410)', () => {
     expect(WEIGHT.trade).toBe(WEIGHT.pay);
     expect(WEIGHT.trade).toBeGreaterThan(WEIGHT.attack);
     expect(WEIGHT.revive).toBeGreaterThan(WEIGHT.train);
-    expect(hintView(trade('buy', 'stone'), 'pad').weight).toBe(WEIGHT.trade);
+    expect(hintView(trade('buy', 'stone')).weight).toBe(WEIGHT.trade);
   });
 });
 
@@ -100,36 +84,36 @@ describe('playerHint: ein Hinweis je Spieler (B-319)', () => {
   const skill = { action: 'skill', slot: 1, skill: 'taunt' } as const;
 
   it('höchstens ein Hinweis; die Server-Aktionen stehen am Spieler, bei Gleichstand gewinnt das Gewicht (AC-01)', () => {
-    expect(playerHint(world([]), player({ actions: [skill, { action: 'attack' }] }), 'pad')?.text).toBe('X: Schlag');
-    expect(playerHint(world([]), player({ actions: [{ action: 'learn' }] }), 'keyboard')?.text).toBe('K: Skill lernen');
-    expect(playerHint(world([]), player(), 'pad')).toBeNull();
+    expect(playerHint(world([]), player({ actions: [skill, { action: 'attack' }] }))?.text).toBe('Schlag');
+    expect(playerHint(world([]), player({ actions: [{ action: 'learn' }] }))?.text).toBe('Skill lernen');
+    expect(playerHint(world([]), player())).toBeNull();
   });
 
   it('ignoriert Aktionen, die der Client nicht kennt (W11.3)', () => {
     const fremd = { action: 'grave' } as unknown as PlayerAction;
-    expect(playerHint(world([]), player({ actions: [fremd, { action: 'attack' }] }), 'pad')?.text).toBe('X: Schlag');
-    expect(playerHint(world([]), player({ actions: [fremd] }), 'pad')).toBeNull();
+    expect(playerHint(world([]), player({ actions: [fremd, { action: 'attack' }] }))?.text).toBe('Schlag');
+    expect(playerHint(world([]), player({ actions: [fremd] }))).toBeNull();
   });
 
   it('Ausbilden und Tauschen stehen auch am Preisschild: Sie sagen, was das Bezahlen tut (W11.4)', () => {
     const train = { action: 'train', profession: 'builder' } as const;
-    expect(playerHint(world([site({})]), player({ actions: [{ action: 'attack' }, train] }), 'pad')?.text).toBe('A halten: Baumeister ausbilden');
+    expect(playerHint(world([site({})]), player({ actions: [{ action: 'attack' }, train] }))?.text).toBe('Baumeister ausbilden');
     const sell = { action: 'trade', side: 'sell', resource: 'iron' } as const;
-    expect(playerHint(world([]), player({ actions: [{ action: 'attack' }, sell] }), 'keyboard')?.text).toBe('Leertaste halten: Eisen verkaufen');
+    expect(playerHint(world([]), player({ actions: [{ action: 'attack' }, sell] }))?.text).toBe('Eisen verkaufen');
   });
 
   it('im Bereich eines Preisschilds kein Hinweis, das Preisschild trägt die Aktion (AC-02)', () => {
-    expect(playerHint(world([site({})]), player({ actions: [{ action: 'attack' }] }), 'pad')).toBeNull();
+    expect(playerHint(world([site({})]), player({ actions: [{ action: 'attack' }] }))).toBeNull();
     const shop = site({ kind: 'workshop', state: 'built', bows: 0 });
-    expect(playerHint(world([shop]), player({ actions: [{ action: 'attack' }] }), 'pad')).toBeNull();
-    expect(playerHint(world([site({ x: 40 })]), player({ actions: [{ action: 'attack' }] }), 'pad')?.text).toBe('X: Schlag');
-    expect(playerHint(world([site({ payable: false })]), player({ actions: [{ action: 'attack' }] }), 'pad')?.text).toBe('X: Schlag'); // gesperrter Platz: kein Preisschild (B-653)
+    expect(playerHint(world([shop]), player({ actions: [{ action: 'attack' }] }))).toBeNull();
+    expect(playerHint(world([site({ x: 40 })]), player({ actions: [{ action: 'attack' }] }))?.text).toBe('Schlag');
+    expect(playerHint(world([site({ payable: false })]), player({ actions: [{ action: 'attack' }] }))?.text).toBe('Schlag'); // gesperrter Platz: kein Preisschild (B-653)
     const full = site({ kind: 'workshop', state: 'built', bows: 99 });
-    expect(playerHint(world([full]), player({ actions: [{ action: 'attack' }] }), 'pad')?.text).toBe('X: Schlag');
+    expect(playerHint(world([full]), player({ actions: [{ action: 'attack' }] }))?.text).toBe('Schlag');
   });
 
   it('gefallener Monarch hat keinen Hinweis', () => {
-    expect(playerHint(world([]), player({ respawnIn: 3, actions: [{ action: 'attack' }] }), 'pad')).toBeNull();
+    expect(playerHint(world([]), player({ respawnIn: 3, actions: [{ action: 'attack' }] }))).toBeNull();
   });
 
   it('Schrift ist Nebeninfo nach bedienung.md § 2: 24 px bei 1–2 Spielern, mindestens 20 px im Viertel (AC-03)', () => {

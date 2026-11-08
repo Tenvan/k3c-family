@@ -21,11 +21,9 @@ import { hudItems, hudLayout, type HAlign, type Rect, type Size } from './hud/hu
 import { cellRadar, radarRect, RADAR_HEIGHT } from './hud/radar';
 import type { HintDevice } from './hints/glyphs';
 import { joinHintDevices } from './hud/joinHint';
-import { stepControlsHint, type ControlsTrack } from './hud/controlsHint';
 import { stepGoldFlash, type GoldFlash } from './hud/goldFlash';
 import { enqueueBanner } from './hud/bannerQueue';
 import { stepSaved } from './hud/savedHint';
-import { loadSettings } from '../core/settings';
 import { GamepadInput, type PlayerInput } from '../input/playerInput';
 import { TouchInput } from '../input/touchInput';
 import { siteName } from './render/worldRenderer';
@@ -56,8 +54,6 @@ export class HudScene extends Phaser.Scene {
   private fight!: Phaser.GameObjects.Text;
   private banner!: Phaser.GameObjects.Text;
   private debug: DebugOverlay | null = null;
-  private controlsHint!: Phaser.GameObjects.Text;
-  private controlsTrack: ControlsTrack | null = null;
   private info!: Phaser.GameObjects.Text;
   private travel!: Phaser.GameObjects.Text;
   /** Spielerzeile je Zellen-Index */
@@ -91,7 +87,6 @@ export class HudScene extends Phaser.Scene {
     this.boxes = new Map();
     this.layoutKey = '';
     this.bannerQueue = [];
-    this.controlsTrack = null;
     this.bannerLeft = 0;
     this.savedLeft = 0;
     this.radar = new RadarLayer(this);
@@ -120,7 +115,6 @@ export class HudScene extends Phaser.Scene {
     this.banner = this.boxed('banner', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('banner'), strokeThickness: 4, align: 'center' }).setVisible(false));
     this.joinHint = this.boxed('join', this.add.text(0, 0, t('hud.joinCenter'), { ...STYLE, ...fontStyle('joinCenter') }));
     this.debug = debugEnabled(location.search) ? new DebugOverlay(this) : null;
-    this.controlsHint = this.boxed('controls', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('controlsHint'), strokeThickness: 4 }));
     this.info = this.boxed('info', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('roomInfo'), strokeThickness: 4 }), false);
     this.travel = this.boxed('travel', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('travel') }));
   }
@@ -147,8 +141,8 @@ export class HudScene extends Phaser.Scene {
     const seats = [...game.client.you].sort((a, b) => a.slot - b.slot); // Reihenfolge wie `hudCells` (cell.seat)
     const slotOf = (seat: number) => seats[seat]?.slot;
     const device = (slot: number) => deviceOf(game.slots.bound[slot], game.keyboards[1]) ?? game.lastDevice;
-    this.actions.draw(cells, game.cameras.cameras, slotOf, device);
-    this.guide.draw(cells, game.cameras.cameras, slotOf, device);
+    this.actions.draw(cells, game.cameras.cameras, slotOf);
+    this.guide.draw(cells, game.cameras.cameras, slotOf);
     this.skills.draw(cells, game.skillMenus, slotOf, device);
     // Leiste: Stufe der ersten Zelle dieses Geräts, die Leiste hat immer Platz für die lange Form
     const shown = cells.find((c) => c.cell.kind === 'player' && c.world)?.world ?? world;
@@ -193,7 +187,7 @@ export class HudScene extends Phaser.Scene {
     this.drawCards();
   }
 
-  /** Hinweise: Verbindungsstand, Beitritt, Steuerung, Raum. Rückgabe: Der Beitritts-Hinweis steht groß in der Mitte. */
+  /** Hinweise: Verbindungsstand, Beitritt, Raum (Steuerung steht im Menü › Tastenbelegung, B-741). Rückgabe: Der Beitritts-Hinweis steht groß in der Mitte. */
   private showHints(game: GameScene, world: World | undefined): boolean {
     const client = game.client;
     const away = gameNotice(client);
@@ -202,9 +196,6 @@ export class HudScene extends Phaser.Scene {
       return true;
     }
     const waiting = !world || game.waitingForJoin();
-    const controls = stepControlsHint(this.controlsTrack, performance.now(), { seats: client.you.length, device: game.lastDevice, guide: loadSettings().guideHints });
-    this.controlsTrack = controls.track;
-    this.controlsHint.setText(t(`hud.hint.${game.lastDevice}`)).setVisible(controls.visible);
     const joinText = joinHintDevices(game.joinCandidates(), game.lastDevice).map((d) => t(`hud.join.${d}`)).join('  ·  ');
     this.joinHint.setText(world ? joinText : (client.notice ?? t('net.connecting')));
     this.joinHint.setVisible((waiting || client.you.length < (client.limits?.slotsPerDevice ?? 4)) && (!world || joinText !== ''));
