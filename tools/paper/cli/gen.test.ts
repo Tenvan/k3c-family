@@ -1,11 +1,12 @@
 // RD1.4: gen rendert alle Gruppen einer Wurzel, je Gruppe index.paper.json und golden.json, kein gemeinsamer Index.
-import { copyFileSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { sha256 } from '../render/ausgabe';
 import { dauer } from './fortschritt';
 import { gen } from './gen';
+import { genMitWork, nurKopieren, ohneManifest } from './work';
 
 const SPECS = join(import.meta.dirname, '../fixtures/specs');
 
@@ -66,6 +67,17 @@ describe('gen', { timeout: 60_000 }, () => {
   it('dauer formatiert ms, Sekunden und Minuten', () => {
     expect([dauer(80), dauer(2300), dauer(252_000)]).toEqual(['80 ms', '2,3 s', '4 min 12 s']);
   });
+
+  it('fehlende Grafik in public wird ohne Neu-Rendern aus .work kopiert (B-748)', () => {
+    const w = wurzel(), work = join(mkdtempSync(join(tmpdir(), 'paper-work-')), 'grafik');
+    expect(ohneManifest(w).sort()).toEqual(['bauten/mauer', 'reittiere/pferd']);
+    genMitWork(w, work);
+    expect(ohneManifest(w)).toEqual([]);
+    rmSync(join(w, 'bauten/mauer'), { recursive: true });
+    expect(ohneManifest(w)).toEqual(['bauten/mauer']);
+    expect(nurKopieren(w, work).geschrieben).toBeGreaterThan(0);
+    expect(ohneManifest(w)).toEqual([]);
+  }, 90_000);
 
   it('zwei Läufe hintereinander: keine Datei ändert sich', () => {
     const w = wurzel();

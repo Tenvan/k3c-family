@@ -136,6 +136,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 ||||||| 8d74a196
 | [B-740](B-740-gen-paper-fortschritt.md) | PAP | Idee | mittel | offen | – | gen:paper zeigt Fortschritt je Schritt in Konsole und Log |
 | [B-741](B-741-hud-ohne-tastenhinweise-tastenbelegung-menue.md) | CLI | Idee | mittel | offen | – | HUD ohne Tastenhinweise, Tastenbelegung im Menü |
+| [B-748](B-748-gen-paper-fehlende-grafik-erkennen.md) | PAP | Problem | hoch | offen | – | gen:paper rendert, wenn Grafiken fehlen, obwohl Specs unverändert sind |
 
 ## Archiv
 
