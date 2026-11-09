@@ -3,7 +3,7 @@ import { SCENARIOS, scenarioUrl } from './testScenarios';
 import { applyTexts, t } from './texts';
 import { nextFocus } from './testTiles';
 
-installPageChrome();
+installPageChrome({ padNav: false }); // eigene Pad-Bedienung bzw. Phaser-Spiel
 applyTexts();
 
 const list = document.getElementById('scenarios')!;

@@ -16,7 +16,7 @@ import { OptionsScene } from './scenes/OptionsScene';
 import { VERSION_KEY } from './scenes/debug/debugOverlay';
 
 // Seitenrahmen sofort (Home-Button, Zurück-Falle für B).
-installPageChrome();
+installPageChrome({ padNav: false }); // eigene Pad-Bedienung bzw. Phaser-Spiel
 installClientLog();
 
 function start(server: BuildInfo): void {

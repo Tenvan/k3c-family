@@ -15,7 +15,7 @@ export const en: Record<TextKey, string> = {
   'stage.loadingN': 'Loading level {depth}',
 
   'lobby.title': 'Family Three Crowns',
-  'lobby.hint': 'Arrows/stick select · A / Enter / tap confirm · X / Del delete save or close room',
+  'lobby.hint': 'Arrows/stick select · A / Enter / tap confirm · X / Y / Del delete save or close room',
   'lobby.dialog.title': 'New room',
   'lobby.dialog.grade': 'Grade:  ◀ {value} ▶',
   'lobby.dialog.goal': 'Goal:  ◀ {value} ▶',

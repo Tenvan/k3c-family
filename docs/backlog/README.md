@@ -153,6 +153,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-764](B-764-grosse-texturen-xbox.md) | CLI | Problem | hoch | eingeplant | RX1 | Texturen auf die Xbox als Zielplattform auslegen (höchstens 2048 px, bei Bedarf laden) |
 | [B-765](B-765-stress-szene-live-grafik.md) | CLI | Idee | hoch | eingeplant | RX1 | Stress-Szene Live-Grafik: Dichte-Test mit Szenario-Datei, Rampe und Presets (1 und 2 Spieler) |
 | [B-766](B-766-stresstest-echter-client.md) | CLI | Idee | hoch | eingeplant | RX1 | Stresstest des echten Clients: Dev-Aktion spawn und Lauf mit Rampe in der GameScene |
+| [B-767](B-767-nachbesserungen-erster-xbox-test.md) | CLI | Problem | hoch | eingeplant | RX1 | Nachbesserungen aus dem ersten Xbox-Test: frischer Client, Pad auf allen Seiten, Lobby-Löschen, Stress ohne Dev-Mode |
 
 ## Archiv
 

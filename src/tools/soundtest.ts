@@ -9,7 +9,7 @@ import {
 } from './soundtestLogic';
 import { applyTexts, t } from './texts';
 
-installPageChrome();
+installPageChrome({ padNav: false }); // eigene Pad-Bedienung bzw. Phaser-Spiel
 applyTexts();
 // Kein installPadScroll(): Stick und Steuerkreuz wählen hier den Eintrag, die Auswahl scrollt selbst (scrollIntoView).
 

@@ -19,7 +19,7 @@ export const de = {
 
   // Lobby
   'lobby.title': 'Family Three Crowns',
-  'lobby.hint': 'Pfeile/Stick wählen · A / Enter / Tippen bestätigen · X / Entf Spielstand löschen oder Raum schließen',
+  'lobby.hint': 'Pfeile/Stick wählen · A / Enter / Tippen bestätigen · X / Y / Entf Spielstand löschen oder Raum schließen',
   'lobby.dialog.title': 'Neuer Raum',
   'lobby.dialog.grade': 'Grad:  ◀ {value} ▶',
   'lobby.dialog.goal': 'Ziel:  ◀ {value} ▶',

@@ -3,6 +3,7 @@ import { SHELL_MESSAGE, isOpenable, type ShellMessage } from '../core/shell';
 import { currentLanguage, t, type TextKey } from '../core/texts';
 import { PAGES, SECTIONS, type PageEntry } from './pages';
 import { CLIENT, fetchServerBuild, versionLine, versionMismatch } from '../core/version';
+import { FRESH_KEY, freshHref, shouldRefresh, withVersion } from './fresh';
 import { needsServer } from './serverCheck';
 
 /**
@@ -162,7 +163,7 @@ function openPage(href: string): void {
   frame.id = 'frame';
   frame.title = t('landing.frame');
   frame.allow = 'fullscreen; gamepad; autoplay';
-  frame.src = safe;
+  frame.src = withVersion(safe, CLIENT.version); // die Version im Parameter umgeht einen alten Zwischenspeicher (B-767)
   frame.addEventListener('load', () => frame?.contentWindow?.focus(), { once: true });
   document.body.append(frame);
   document.body.classList.add('page-open');
@@ -328,12 +329,35 @@ render();
 setupFullscreen();
 restoreFocus();
 // Ohne Go-Server: Spiel-Kacheln aus; die Kopfzeile zeigt Client- und Server-Version (Tag und Buildzeit).
-void fetchServerBuild().then((server) => {
-  if (!server) markNoServer();
-  const el = document.getElementById('version')!;
-  el.textContent = versionLine(CLIENT, server);
-  el.classList.toggle('mismatch', versionMismatch(CLIENT, server));
-});
+/** Meldet der Server eine andere Version, lädt die Landingpage einmal je Version frisch (`?v=`), der Hash der offenen Seite bleibt (B-767) */
+function refreshIfStale(server: Awaited<ReturnType<typeof fetchServerBuild>>): void {
+  let tried: string | null = null;
+  try {
+    tried = sessionStorage.getItem(FRESH_KEY);
+  } catch {
+    // ohne Sitzungsspeicher bleibt es bei der Anzeige der Abweichung
+    return;
+  }
+  if (!shouldRefresh(CLIENT, server, tried) || !server) return;
+  try {
+    sessionStorage.setItem(FRESH_KEY, server.version);
+  } catch {
+    return;
+  }
+  location.replace(freshHref(location.pathname, location.search, location.hash, server.version));
+}
+
+function checkVersion(first: boolean): void {
+  void fetchServerBuild().then((server) => {
+    if (!server && first) markNoServer(); // später ausgefallen: Kacheln bleiben, wie sie sind
+    const el = document.getElementById('version')!;
+    el.textContent = versionLine(CLIENT, server);
+    el.classList.toggle('mismatch', versionMismatch(CLIENT, server));
+    if (!isPageOpen()) refreshIfStale(server); // nie mitten im Spiel neu laden
+  });
+}
+checkVersion(true);
+setInterval(() => checkVersion(false), 60_000); // die Landingpage bleibt auf der Xbox tagelang offen: neue Fassung des Servers erkennen
 // Direkt-Link / Neuladen mit geöffneter Seite (index.html#game.html?seed=abc)
 if (location.hash.length > 1) openPage(decodeURIComponent(location.hash.slice(1)));
 requestAnimationFrame(pollGamepads);

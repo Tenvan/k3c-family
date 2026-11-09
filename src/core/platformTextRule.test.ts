@@ -75,6 +75,7 @@ describe('Keine deutschen Text-Literale in Touch-Overlay, Shell und Landingpage 
   it('findet alle Dateien', () => {
     expect(Object.keys(sources).sort()).toEqual([
       '../input/touchInput.ts',
+      '../landing/fresh.ts',
       '../landing/landing.ts',
       '../landing/pages.ts',
       '../landing/serverCheck.ts',

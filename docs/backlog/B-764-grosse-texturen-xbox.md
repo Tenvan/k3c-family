@@ -59,4 +59,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Erste Messwerte aus dem Pi-Log (2026-11-09, Client 192.168.2.209, Edge 150): Kontextverlust dreimal nach 3,8 bis 7,1 s bei 233 bis 331 Texturen und 338 bis 374 MiB Texturspeicher. Der PC (RX 6700 XT, maxTex 16384) hält 355 Texturen und 477 MiB. Die Xbox-GPU meldete sich nicht (Canvas-Fallback: GPU „unbekannt“). Als erstes Budget deshalb deutlich unter ca. 330 MiB Texturspeicher je Stufe ansetzen, nicht nur 2048 px je Kante. Die Texturvermutung ist damit gestützt, aber noch nicht bewiesen (kein Lauf mit kleineren Sheets).
