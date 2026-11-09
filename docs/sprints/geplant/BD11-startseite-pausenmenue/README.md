@@ -52,8 +52,7 @@ Siehe B-768 › Ausnahme- und Fehlerfälle (Vollbild abgelehnt, kein Server, Spi
 
 ## Offene Fragen
 
-- 🧑: Lobby (Räume, Beitritt) als Einträge im Pausenmenü (Vorschlag: ein Eintrag je Aktion)?
-- 🧑: Werkzeugseiten im Pausenmenü unter „Seiten“ (Vorschlag)?
+keine (entschieden 2026-11-09 🧑, siehe B-768 › Notizen: Entwurf A „Kachel-Hub“, Lobby-Aktionen je ein Eintrag, Werkzeugseiten unter „Seiten“).
 
 ## Sessions
 

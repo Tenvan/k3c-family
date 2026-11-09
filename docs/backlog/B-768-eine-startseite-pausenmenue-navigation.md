@@ -58,9 +58,10 @@ Lehnt der Browser Vollbild ab (keine Nutzergeste), zeigt ein Hinweis die Eingabe
 
 ## Offene Fragen
 
-- Soll die Lobby (Räume, Online-Beitritt) im Pausenmenü bleiben oder ein Eintrag Neues Spiel / Fortsetzen / Raum beitreten werden? Vorschlag: ein Eintrag je Aktion im Pausenmenü.
-- Wo liegen die Werkzeugseiten (Entwickler)? Vorschlag: eigener Bereich im Pausenmenü unter Seiten.
+keine (entschieden 2026-11-09 🧑: Lobby-Aktionen je ein Eintrag im Pausenmenü; Werkzeugseiten unter „Seiten“).
 
 ## Notizen
 
 Baut auf B-767 (padNav, frischer Client) auf. Vollbild-Verhalten: Edge auf der Xbox verlässt Vollbild bei Navigation; Shell-Iframe-Lösung bleibt.
+
+**Gestaltung (entschieden 2026-11-09 🧑, Entwurf A „Kachel-Hub“):** Pausenmenü als Vollbild-Kachelseite im Stil der Landingpage (Nachtblau, Gold, Glas-Kacheln). Große goldene Kachel „Fortsetzen“ (Insel, Stufe, Welt, zuletzt gespielt), daneben Neues Spiel (grün), Raum beitreten (blau), Optionen (lila), Seiten (türkis); Spiel verlassen unten links (koralle). Pad: D-Pad/Stick bewegt, A wählt, B frei. Produktkontext: `PRODUCT.md`.
