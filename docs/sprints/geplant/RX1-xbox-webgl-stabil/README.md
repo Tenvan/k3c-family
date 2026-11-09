@@ -4,7 +4,7 @@
 - **Projekt:** LST
 - **Domäne:** CLI, PAP, SRV
 - **Reife:** Entwurf
-- **Tickets:** B-761, B-762, B-763, B-764, B-765, B-766
+- **Tickets:** B-761, B-762, B-763, B-764, B-765, B-766, B-767
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -72,6 +72,10 @@ Bestätigt der Xbox-Lauf (RX1.5) die Texturvermutung nicht, wird B-764 verworfen
 - **AC-21** Der Lauf im echten Client schreibt Start-, Echt- und Stufen-Zeilen mit Server-Werten (`B-766/AC-04`, Test).
 - **AC-22** Lauf im Browser mit Go-Server bis zur Endzeile, Zeilen im Server-Log (`B-766/AC-05`, Claude).
 - **AC-23** Echter Client mit den Kacheln am Gerät (Xbox, PC), Dichte-Grenze notiert (🧑, `B-766/AC-06`).
+- **AC-24** Frisch laden bei abweichender Server-Version, `v` im iframe (`B-767/AC-01`, Test).
+- **AC-25** Lobby: X und Y lösen das Löschen aus (`B-767/AC-02`, Test).
+- **AC-26** Pad auf allen Seiten: `PadNav` und Zielwahl (`B-767/AC-03`, Test).
+- **AC-27** Stresslauf endet bei `forbidden` mit K3C_DEV-Hinweis (`B-767/AC-04`, Test).
 
 ## Offene Fragen
 
@@ -91,8 +95,9 @@ Bestätigt der Xbox-Lauf (RX1.5) die Texturvermutung nicht, wird B-764 verworfen
 | RX1.7 | `RX1.7-review.md` | Review | autonom | offen |
 | RX1.8 | `RX1.8-xbox-abnahme.md` | Workshop | Mensch | offen |
 | RX1.4 | `RX1.4-stress-echter-client.md` | Umsetzung | autonom | fertig |
+| RX1.9 | `RX1.9-nachbesserungen-xbox-test.md` | Umsetzung | autonom | fertig |
 
-Reihenfolge: RX1.1 → RX1.2 → RX1.3 → RX1.4 → RX1.5 → RX1.6 → RX1.7 → RX1.8. RX1.2 loggt über RX1.1; RX1.3 (Stress-Szene, B-765) und RX1.4 (Stresstest mit echtem Client und Go-Server, B-766) bauen auf RX1.1 und RX1.3 auf und liegen vor dem Xbox-Lauf, damit RX1.5 gleich abgestuft misst; RX1.5 braucht RX1.2 bis RX1.4; RX1.6 braucht die Werte aus RX1.5. Vor jedem Start der Stress-Szenen läuft `task gen:paper` (PNG nicht eingecheckt, B-737).
+Reihenfolge: RX1.1 → RX1.2 → RX1.3 → RX1.4 → RX1.9 (Nachbesserungen aus dem ersten Xbox-Test, B-767) → RX1.5 → RX1.6 → RX1.7 → RX1.8. RX1.2 loggt über RX1.1; RX1.3 (Stress-Szene, B-765) und RX1.4 (Stresstest mit echtem Client und Go-Server, B-766) bauen auf RX1.1 und RX1.3 auf und liegen vor dem Xbox-Lauf, damit RX1.5 gleich abgestuft misst; RX1.5 braucht RX1.2 bis RX1.4; RX1.6 braucht die Werte aus RX1.5. Vor jedem Start der Stress-Szenen läuft `task gen:paper` (PNG nicht eingecheckt, B-737).
 
 ## Abnahme
 

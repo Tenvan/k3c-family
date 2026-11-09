@@ -64,7 +64,7 @@ function fakeHost() {
     events: { on: () => undefined, off: () => undefined, once: () => undefined },
     delayMs: 100,
     world: undefined as { enemies: unknown[]; troops: unknown[] } | undefined,
-    client: { status: 'lobby', latency: { mean: 12.4 } as never, you: [] as { slot: number }[], sendDev: (m: DevMessage) => void sent.push(m) },
+    client: { status: 'lobby', errorCode: null as string | null, latency: { mean: 12.4 } as never, you: [] as { slot: number }[], sendDev: (m: DevMessage) => void sent.push(m) },
   };
   return { host: host as unknown as RealHost & typeof host, sent };
 }
@@ -151,6 +151,14 @@ describe('Verbindungsverlust im Lauf (RX1.2)', () => {
     expect(end).toHaveLength(1);
     expect(end[0]!.msg).toContain('abgebrochen');
     rs.update();
+    expect(lines.filter((l) => l.msg.startsWith('✅ Ergebnis'))).toHaveLength(1);
+  });
+
+  it('forbidden vom Server (Dev-Mode aus): Hinweis mit K3C_DEV und sofortiges Ende statt leerem Lauf', () => {
+    const { host, rs, lines } = started();
+    host.client.errorCode = 'forbidden';
+    rs.update();
+    expect(lines.some((l) => l.msg.includes('Server ohne Dev-Mode') && l.msg.includes('K3C_DEV=1'))).toBe(true);
     expect(lines.filter((l) => l.msg.startsWith('✅ Ergebnis'))).toHaveLength(1);
   });
 

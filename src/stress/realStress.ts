@@ -60,7 +60,7 @@ export interface RealHost {
   events: { on(e: 'update', fn: () => void): unknown; off(e: 'update', fn: () => void): unknown; once(e: 'shutdown', fn: () => void): unknown };
   delayMs: number;
   world: { enemies: readonly unknown[]; troops: readonly unknown[] } | undefined;
-  client: { status: string; latency: LatencyStats | null; you: readonly { slot: number }[]; sendDev(m: DevMessage): void };
+  client: { status: string; errorCode: string | null; latency: LatencyStats | null; you: readonly { slot: number }[]; sendDev(m: DevMessage): void };
 }
 
 /** Der Lauf: wartet auf den Raum, setzt je Stufe die fehlenden Figuren, misst und schreibt das Log */
@@ -90,6 +90,7 @@ export class RealStress {
     if (this.done) return;
     const h = this.host;
     if (!this.run) return this.tryStart();
+    if (h.client.errorCode === 'forbidden') return this.noDevMode();
     if (h.client.status === 'reconnecting') return this.waitForConnection();
     if (h.client.status !== 'room') return this.end('aborted'); // Raum verlassen oder Verbindung endgültig weg
     this.resume();
@@ -107,6 +108,12 @@ export class RealStress {
       this.run!.event('Verbindung blieb weg: Lauf abgebrochen', { pausedMs: Math.round(this.offlineMs) });
       this.end('aborted');
     }
+  }
+
+  /** Der Server hat `spawn` abgelehnt (Dev-Mode aus): der Lauf würde ohne Figuren durchlaufen, also sofort mit Hinweis enden */
+  private noDevMode(): void {
+    this.run!.event('Server ohne Dev-Mode: spawn abgelehnt (K3C_DEV=1 setzen, z. B. K3C_DEV=1 docker compose up -d)', { errorCode: 'forbidden' });
+    this.end('aborted');
   }
 
   private resume(): void {

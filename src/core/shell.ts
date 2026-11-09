@@ -9,6 +9,7 @@
  * Läuft die Seite ausnahmsweise ohne Shell (direkt aufgerufen), führt Home per Link zur Landingpage.
  */
 
+import { installPadNav } from './padNav';
 import { t } from './texts';
 
 export const SHELL_MESSAGE = {
@@ -59,12 +60,15 @@ const HOLD_MS = 400;
 export interface PageChromeOptions {
   /** Wird aufgerufen, wenn der Browser "Zurück" auslöst (auf der Xbox vermutlich die B-Taste). Die Seite bleibt offen. */
   onBack?: () => void;
+  /** Controller bewegt den Fokus und klickt (B-767, `padNav.ts`); `false` für Seiten mit eigener Pad-Bedienung oder Phaser-Spiel. Standard: an. */
+  padNav?: boolean;
 }
 
 /** Home-Button, Home-Kombi und Zurück-Falle installieren. Auf jeder Unterseite genau einmal aufrufen. */
 export function installPageChrome(options: PageChromeOptions = {}): void {
   addHomeButton();
   installBackTrap(options.onBack);
+  if (options.padNav !== false) installPadNav();
 
   let heldSince = 0;
   const poll = () => {

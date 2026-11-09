@@ -3,7 +3,7 @@ import { DEV_SECTIONS, type DevTile } from './devTiles';
 import { applyTexts, t } from './texts';
 import { type FocusKey, nextFocus } from './testTiles';
 
-installPageChrome();
+installPageChrome({ padNav: false }); // eigene Pad-Bedienung bzw. Phaser-Spiel
 applyTexts();
 
 const root = document.getElementById('sections')!;

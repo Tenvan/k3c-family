@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
+import { heldPadKeys, type LobbyKey } from './lobbyPad';
+import { clientLog } from '../core/clientLog';
 import { closeRoom, deleteSave, listSaves, listWorlds, type SaveInfo } from '../core/saveStore';
 import { t } from '../core/texts';
 import type { RoomClient, Status } from '../online/clientConnection';
@@ -20,30 +22,8 @@ export interface LobbySceneData {
 const STYLE = { fontSize: '36px', color: '#ffffff', stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
 const TOP = 200;
 const ROW_H = 64;
-const STICK = 0.5;
-/** Pad-Tasten (standard mapping): A bestätigt, X fragt nach dem Löschen eines Spielstands, D-Pad oder Stick wählt; B bleibt frei (Edge-Zurück) */
-const PAD_A = 0;
-const PAD_X = 2;
-const PAD_UP = 12;
-const PAD_DOWN = 13;
-const PAD_LEFT = 14;
-const PAD_RIGHT = 15;
-
-/** Gerade gehaltene Lobby-Tasten aller Pads: 'a', 'x', 'up', 'down', 'left', 'right' */
-function heldPadKeys(pads: readonly (Phaser.Input.Gamepad.Gamepad | null)[]): Set<string> {
-  const held = new Set<string>();
-  for (const pad of pads) {
-    if (!pad) continue;
-    const pressed = (i: number) => pad.buttons[i]?.pressed;
-    if (pressed(PAD_A)) held.add('a');
-    if (pressed(PAD_X)) held.add('x');
-    if (pressed(PAD_UP) || pad.leftStick.y < -STICK) held.add('up');
-    if (pressed(PAD_DOWN) || pad.leftStick.y > STICK) held.add('down');
-    if (pressed(PAD_LEFT) || pad.leftStick.x < -STICK) held.add('left');
-    if (pressed(PAD_RIGHT) || pad.leftStick.x > STICK) held.add('right');
-  }
-  return held;
-}
+/** Höchstzahl geloggter Tastendrücke je Lobby-Besuch (Rate-Limit des Client-Logs) */
+const PAD_LOG_MAX = 30;
 
 /**
  * Raumliste (Spielmenü): Welt, „Spielen“, „Neuer Spielstand“, die Räume und die Spielstände des Servers. Bedienung per
@@ -60,6 +40,9 @@ export class LobbyScene extends Phaser.Scene {
   private keys!: Record<'up' | 'down' | 'left' | 'right' | 'w' | 's' | 'a' | 'd' | 'enter' | 'space' | 'del', Phaser.Input.Keyboard.Key>;
   private hint!: Phaser.GameObjects.Text;
   private padHeld = new Set<string>();
+  /** Pad-Tasten im letzten Bild und Zahl der geloggten Tastendrücke (Diagnose: kommt X auf dem Gerät an?) */
+  private padButtons = new Set<string>();
+  private padLogged = 0;
   private tapped: number | null = null;
   private saves: SaveInfo[] = [];
   /** Zustand im letzten Bild: Spielstände nur beim Wechsel nach `lobby` laden, nicht jedes Bild */
@@ -258,6 +241,20 @@ export class LobbyScene extends Phaser.Scene {
     this.hint.setText(t('lobby.hint'));
   }
 
+  /** Neu gedrückte Pad-Tasten (Index) ins Client-Log, höchstens `PAD_LOG_MAX` je Lobby-Besuch: zeigt auf dem Gerät, welche Tasten ankommen */
+  private logPadButtons(): void {
+    const now = new Set<string>();
+    for (const [p, pad] of (this.input.gamepad?.gamepads ?? []).entries()) {
+      pad?.buttons.forEach((b, i) => b.pressed && now.add(`${p}:${i}`));
+    }
+    for (const key of now) {
+      if (this.padButtons.has(key) || this.padLogged >= PAD_LOG_MAX) continue;
+      this.padLogged++;
+      clientLog('info', `🎮 Lobby: Pad ${key.split(':')[0]} Taste ${key.split(':')[1]}`);
+    }
+    this.padButtons = now;
+  }
+
   /** Eingaben der Tastatur und aller Pads: Richtung (-1/0/1), Bestätigung und Löschen (X/Entf), je einmal pro Druck */
   private poll(): { dir: number; side: number; confirm: boolean; del: boolean } {
     const down = Phaser.Input.Keyboard.JustDown;
@@ -268,8 +265,9 @@ export class LobbyScene extends Phaser.Scene {
     let del = pressed(k.del) > 0;
     let side = pressed(k.right, k.d) - pressed(k.left, k.a);
 
+    this.logPadButtons();
     const held = heldPadKeys(this.input.gamepad?.gamepads ?? []);
-    const edge = (name: string) => (held.has(name) && !this.padHeld.has(name) ? 1 : 0);
+    const edge = (name: LobbyKey) => (held.has(name) && !this.padHeld.has(name) ? 1 : 0);
     dir += edge('down') - edge('up');
     confirm ||= edge('a') > 0;
     del ||= edge('x') > 0;

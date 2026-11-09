@@ -24,7 +24,7 @@ import {
 import { nextFocus } from './testTiles';
 import { applyTexts, t } from './texts';
 
-installPageChrome();
+installPageChrome({ padNav: false }); // eigene Pad-Bedienung bzw. Phaser-Spiel
 applyTexts();
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
