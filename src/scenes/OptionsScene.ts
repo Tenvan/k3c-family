@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
+import { GAME_WIDTH } from '../core/constants';
 import { audioCore } from '../audio/audioCore';
 import { playUi, uiSoundFor } from '../audio/ui';
 import { guideSeen } from '../core/guideSeen';
@@ -23,8 +23,11 @@ import {
   type OptionResult,
   type OptionsSceneData,
 } from './optionsLogic';
-import { HUB_COLORS, HUB_LAYOUT, PAUSE_TILES, hubAction, hubChoice, hubDir, hubEnabled, hubLabel, hubSub, hubTileAt, moveHub, type HubAction, type HubDir } from './pauseHub';
+import { HUB_LAYOUT, PAUSE_TILES, hubAction, hubChoice, hubDir, hubEnabled, hubLabel, hubSub, hubTileAt, moveHub, type HubAction, type HubDir } from './pauseHub';
 import { HubView } from './hubView';
+import { hubArt } from './hubArt';
+import { PaperBackdrop } from './paperBackdrop';
+import { LINE_TEXT } from './paperCard';
 import { pauseButton } from './hud/pauseButton';
 import { keyTable } from './keyTable';
 import { GlyphRow } from './hints/glyphView';
@@ -73,6 +76,7 @@ export class OptionsScene extends Phaser.Scene {
   private title!: Phaser.GameObjects.Text;
   private hint!: Phaser.GameObjects.Text;
   private hubView!: HubView;
+  private backdrop!: PaperBackdrop;
   /** Von der Startseite der Lobby geöffnet (B-768): nur die Optionen, Menu/Esc schließt die Szene */
   private standalone = false;
   private keys!: Record<'up' | 'down' | 'w' | 's' | 'left' | 'right' | 'enter' | 'space' | 'esc', Phaser.Input.Keyboard.Key>;
@@ -112,8 +116,9 @@ export class OptionsScene extends Phaser.Scene {
     this.tappedTile = null;
     const K = Phaser.Input.Keyboard.KeyCodes;
     this.keys = this.input.keyboard!.addKeys({ up: K.UP, down: K.DOWN, w: K.W, s: K.S, left: K.LEFT, right: K.RIGHT, enter: K.ENTER, space: K.SPACE, esc: K.ESC }) as OptionsScene['keys'];
-    this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, HUB_COLORS.night, 0.93).setOrigin(0);
-    this.title = this.add.text(GAME_WIDTH / 2, OPTIONS_LAYOUT.titleY, '', { ...STYLE, fontSize: `${OPTIONS_LAYOUT.titlePx}px`, strokeThickness: 10 }).setOrigin(0.5);
+    this.backdrop = new PaperBackdrop(this); // deckt das pausierte Spiel ab, Papierschnitt-Nacht
+    this.backdrop.banner(GAME_WIDTH / 2, OPTIONS_LAYOUT.titleY, 960, 108);
+    this.title = this.add.text(GAME_WIDTH / 2, OPTIONS_LAYOUT.titleY, '', { ...STYLE, fontSize: `${OPTIONS_LAYOUT.titlePx}px`, color: LINE_TEXT, strokeThickness: 0 }).setOrigin(0.5);
     this.add.text(GAME_WIDTH / 2, OPTIONS_LAYOUT.worldY, worldLine(this.world), { ...STYLE, fontSize: `${OPTIONS_LAYOUT.worldPx}px`, strokeThickness: 6 }).setOrigin(0.5);
     this.hint = this.add.text(GAME_WIDTH / 2, HUB_LAYOUT.hintY, '', { ...STYLE, fontSize: `${HUB_LAYOUT.hintPx}px`, strokeThickness: 4 }).setOrigin(0.5);
     this.rows = SETTINGS_IDS.map((_, i) => this.add.text(GAME_WIDTH / 2, TOP + i * ROW_H, '', { ...STYLE, fontSize: `${FONT_PX}px` }).setOrigin(0.5));
@@ -142,7 +147,7 @@ export class OptionsScene extends Phaser.Scene {
 
   /** Kachelseite anlegen; gezeichnet wird sie in `drawHub` */
   private createHub(): void {
-    this.hubView = new HubView(this, PAUSE_TILES);
+    this.hubView = new HubView(this, PAUSE_TILES, hubArt);
   }
 
   /** Zeigt je Seite die richtigen Teile: Kacheln, Optionszeilen oder die Tastentabelle */
@@ -150,6 +155,7 @@ export class OptionsScene extends Phaser.Scene {
     const hub = this.mode === 'hub' && !this.keysTable;
     const settings = this.mode === 'settings' && !this.keysTable;
     this.hubView.setVisible(hub);
+    this.backdrop.setDim(hub ? 0 : 0.8); // Optionen und Tastentabelle: ruhiger Grund für die weiße Schrift
     this.rows.forEach((row) => row.setVisible(settings));
     if (this.keysTable) return;
     this.title.setText(hub ? t('hub.title') : t('opt.title'));

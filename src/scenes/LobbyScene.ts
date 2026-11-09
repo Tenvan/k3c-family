@@ -14,6 +14,9 @@ import { musicDirector } from '../audio/music';
 import { playUi, uiSoundFor } from '../audio/ui';
 import { openPage } from '../core/shell';
 import { HubView } from './hubView';
+import { hubArt } from './hubArt';
+import { PaperBackdrop } from './paperBackdrop';
+import { LINE_TEXT } from './paperCard';
 import { HUB_COLORS, START_TILES, gridTiles, hubAction, hubDir, hubLabel, hubSub, hubTileAt, moveHub, type HubAction, type HubTile } from './pauseHub';
 import { CATEGORY_COLOR, categoryLabel, categorySub, menuCategories, uniqueRun, type CategoryId, type MenuEntry } from './menuPages';
 import { startRun } from './runStart';
@@ -62,6 +65,7 @@ export class LobbyScene extends Phaser.Scene {
   private gridView: HubView<string> | null = null;
   private gridTiles: readonly HubTile<string>[] = [];
   private hubView!: HubView;
+  private backdrop!: PaperBackdrop;
   private hubShown = false;
   private saves: SaveInfo[] = [];
   /** Zustand im letzten Bild: Spielstände nur beim Wechsel nach `lobby` laden, nicht jedes Bild */
@@ -103,7 +107,9 @@ export class LobbyScene extends Phaser.Scene {
     const K = Phaser.Input.Keyboard.KeyCodes;
     this.keys = this.input.keyboard!.addKeys({ up: K.UP, down: K.DOWN, left: K.LEFT, right: K.RIGHT, w: K.W, s: K.S, a: K.A, d: K.D, enter: K.ENTER, space: K.SPACE, del: K.DELETE, esc: K.ESC }) as LobbyScene['keys'];
     this.cameras.main.setBackgroundColor(HUB_COLORS.night); // Nachtblau der Landingpage statt Schwarz
-    this.add.text(GAME_WIDTH / 2, 80, t('lobby.title'), { ...STYLE, fontSize: '56px', strokeThickness: 10 }).setOrigin(0.5);
+    this.backdrop = new PaperBackdrop(this);
+    this.backdrop.banner(GAME_WIDTH / 2, 66, 900, 92);
+    this.add.text(GAME_WIDTH / 2, 70, t('lobby.title'), { ...STYLE, fontSize: '56px', color: LINE_TEXT, strokeThickness: 0 }).setOrigin(0.5);
     this.notice = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 90, '', { ...STYLE, fontSize: '30px', color: '#ffd166', align: 'center' }).setOrigin(0.5);
     // Versionen in einer Zeile zwischen Titel und Liste (Nebeninfo, 24 px nach rules/bedienung.md § 2)
     const versions = ((this.registry.get(VERSION_KEY) as string | undefined) ?? '').replace('\n', ' · ');
@@ -123,7 +129,7 @@ export class LobbyScene extends Phaser.Scene {
       this.tapped = this.flow.dialog ? rowAt(y, TOP + ROW_H, ROW_H, DIALOG_ROWS.length) : rowAt(y, TOP, ROW_H, rows());
     };
     window.addEventListener('pointerdown', onTap);
-    this.hubView = new HubView(this, START_TILES);
+    this.hubView = new HubView(this, START_TILES, hubArt);
     this.events.once('shutdown', () => window.removeEventListener('pointerdown', onTap));
   }
 
@@ -140,8 +146,12 @@ export class LobbyScene extends Phaser.Scene {
     const entries = lobbyEntries(client.rooms, client.status, this.saves);
     const input = this.poll();
     playUi(uiSoundFor({ ...input, confirm: input.confirm || (this.tapped !== null && this.tapped >= 0) })); // UI-Klick (B-575)
-    if (this.updateDialogs(input)) return this.showHub(false);
+    if (this.updateDialogs(input)) {
+      this.backdrop.setDim(0.8);
+      return this.showHub(false);
+    }
     const view = this.currentView();
+    this.backdrop.setDim(view === 'hub' ? 0 : view === 'pages' ? 0.25 : 0.8); // Listen mit weißer Schrift brauchen ruhigen Grund
     if (view !== 'pages') this.clearGrid();
     if (view === 'hub') return this.updateHub(input, entries);
     this.showHub(false);
@@ -289,7 +299,7 @@ export class LobbyScene extends Phaser.Scene {
     this.rows.forEach((r) => r.setText(''));
     this.gridKey = key;
     this.gridTiles = tiles;
-    this.gridView = new HubView<string>(this, tiles);
+    this.gridView = new HubView<string>(this, tiles, hubArt);
     this.gridView.setVisible(true);
   }
 

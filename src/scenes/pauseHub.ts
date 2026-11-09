@@ -6,6 +6,7 @@
 import { pickTarget, type Box } from '../core/padNav';
 import { t } from '../core/texts';
 import { stepChoice } from './optionsLogic';
+import { LINE_TEXT, LINE_TEXT_OFF, MATERIAL } from './paperCard';
 
 /** Pause: resume, options, keys, removePlayer, leave. Start (Lobby): resume (Fortsetzen), new, join, options, pages. */
 export type HubTileId = 'resume' | 'options' | 'keys' | 'removePlayer' | 'leave' | 'new' | 'join' | 'pages';
@@ -26,10 +27,20 @@ export interface HubTile<Id extends string = HubTileId> {
   labelPx: number;
 }
 
-/** Farben der Kacheln (Landingpage: Gold #ffd166, Nachtblau #0b1026, grüner A-Knopf); dunkle Schrift darauf, ausgegraut bleibt gedämpft */
-export const HUB_COLORS = { gold: 0xffd166, green: 0x3fb950, blue: 0x85b7eb, purple: 0xafa9ec, teal: 0x5dcaa5, coral: 0xf09b7b, pink: 0xed93b1, off: 0x2b3558, night: 0x0b1026 } as const;
-export const HUB_TEXT = '#0b1026';
-export const HUB_TEXT_OFF = '#8a93b2';
+/** Farben der Kacheln: Materialien des Papierschnitt-Stils (`stil.paper.json`); Nachtblau der Landingpage als Grund, dunkle Schrift auf dem Leinen-Schild */
+export const HUB_COLORS = {
+  gold: MATERIAL.gold.basis,
+  green: MATERIAL.smaragd.basis,
+  blue: MATERIAL.koenigsblau.basis,
+  purple: MATERIAL.purpur.basis,
+  teal: MATERIAL.kristall.basis,
+  coral: MATERIAL.kupfer.basis,
+  pink: MATERIAL.koenigsrot.basis,
+  off: MATERIAL.stoff.basis,
+  night: 0x0b1026,
+} as const;
+export const HUB_TEXT = LINE_TEXT;
+export const HUB_TEXT_OFF = LINE_TEXT_OFF;
 
 const COLOR: Record<HubTileId, number> = {
   resume: HUB_COLORS.gold,
