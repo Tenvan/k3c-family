@@ -42,9 +42,9 @@ describe('Ebenen Seiten (B-768/AC-02)', () => {
     expect(menuCategories(true).find((c) => c.id === 'dev')!.entries.some((e) => e.id === 'gamepad-test.html')).toBe(false);
   });
 
-  it('Performance enthält Monitor, Stress Live-Grafik und die drei Stress-echt-Szenarien', () => {
+  it('Performance enthält Monitor, Stress Live-Grafik, Textur-Grenze und die drei Stress-echt-Szenarien', () => {
     const perf = menuCategories(true).find((c) => c.id === 'perf')!;
-    expect(perf.entries.map((e) => e.target.kind)).toEqual(['page', 'page', 'run', 'run', 'run']);
+    expect(perf.entries.map((e) => e.target.kind)).toEqual(['page', 'page', 'page', 'run', 'run', 'run']);
   });
 
   it('jeder Eintrag hat Titel und Beschreibung, deutsch und englisch', () => {
