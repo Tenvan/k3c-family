@@ -6,17 +6,17 @@
 - **Reife:** Entwurf
 - **Tickets:** B-768
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-11-09 🧑 Chat (Konzept und Entscheidungen bestätigt)
 
 ## Ausgangslage
 
-Landingpage mit Kacheln und Iframe-Seiten, Lobby in `game.html`, Pausenmenü im Spiel; Vollbild geht beim Wechsel leicht verloren (Xbox, Edge). Details: B-768.
+Die Kachelseiten für Pausenmenü (BD11.1) und Startseite der Lobby (BD11.2) stehen; Landingpage, Shell und URL-Steuerung bestehen noch. Details: B-768.
 
 ## Ziel
 
-Ein Einstieg: eine Startseite mit Bereichswechsel per links/rechts, Pad und Schaltflächen; Neues Spiel und Fortsetzen nur im Pausenmenü; andere Seiten nur über das Pausenmenü; der Client hält Vollbild. Am Ende sichtbar: Xbox: Start → Spiel → Pausenmenü → Seiten → zurück, alles per Pad, Vollbild bleibt.
+Das Spiel ist die einzige Seite: `ip:8080` öffnet das Spielmenü; alle Seiten, Werkzeuge und Test-Szenarien laufen aus dem Menü, ohne Landingpage und ohne URL-Syntax; Vollbild bleibt. Am Ende sichtbar: Xbox/Pi: Adresse öffnen, mit dem Pad Spiel, Optionen, Werkzeuge und Stress-Szenen erreichen.
 
 ## Beteiligte und Zielgruppen
 
@@ -24,15 +24,15 @@ Spieler am TV (Xbox-Pad), Entwickler am PC; 🧑 gibt die Spec frei und nimmt am
 
 ## Anforderungen
 
-Siehe B-768 › Anforderungen (Startseite, Pausenmenü als einziger Weg, Vollbild halten, Pad-Bedienung).
+Siehe B-768 › Anforderungen (Das Spiel ist die Seite, Menü-Ebenen, Werkzeuge eingebettet, RunConfig statt URLs, Dev-Modus fest an, Dungeon Master extern, Vollbild halten).
 
 ## Nicht-Ziele
 
-Kein neues Menü-Design, keine Änderung an Protokoll oder Spielständen, Werkzeugseiten bleiben inhaltlich unverändert.
+Siehe B-768 › Nicht-Ziele.
 
 ## Regeln und Einschränkungen
 
-Shell-Regeln aus CLAUDE.md (Landingpage bleibt offen, `openPage()`, `toggleFullscreen()`, `installPageChrome()`, B frei, View+Menu reserviert); Texte aus `src/core/texts.*.ts`.
+Shell-Regeln aus `CLAUDE.md` werden mit BD11.5 neu gefasst. Eine Session ändert nur CLI-Dateien; Werkzeugseiten selbst bleiben inhaltlich unverändert (nur ihr Rahmen).
 
 ## Beispiele
 
@@ -44,24 +44,30 @@ Siehe B-768 › Ausnahme- und Fehlerfälle (Vollbild abgelehnt, kein Server, Spi
 
 ## Akzeptanzkriterien
 
-- **AC-01** Startseite wechselt Bereiche per links/rechts, Pad und Schaltflächen (`B-768/AC-01`, Test).
-- **AC-02** Neues Spiel und Fortsetzen nur im Pausenmenü (`B-768/AC-02`, Test).
-- **AC-03** Alle Seiten aus dem Pausenmenü erreichbar, keine Querlinks (`B-768/AC-03`, projectRules).
-- **AC-04** Vollbild bei der ersten Eingabe und nach Verlust erneut (`B-768/AC-04`, Test).
-- **AC-05** Abnahme am Gerät: Xbox/Edge, alles per Pad, Vollbild bleibt (`B-768/AC-05`).
+- **AC-01** `GET /` liefert das Spiel, keine Landingpage (`B-768/AC-01`, Test).
+- **AC-02** Menü-Ebenen und Kacheln für alle Seiten und Szenarien, bedienbar per Pad, Tastatur, Tippen (`B-768/AC-02`, Test).
+- **AC-03** Werkzeuge als Panel im selben Dokument (`B-768/AC-03`, Test).
+- **AC-04** `RunConfig` als einzige Quelle für Start-Parameter (`B-768/AC-04`, Test).
+- **AC-05** Vollbild halten (`B-768/AC-05`, Test).
+- **AC-06** Stress-Kachel startet ohne Neuladen (`B-768/AC-06`, Test).
+- **AC-07** Abnahme am Gerät: Xbox und Pi, nur Pad (`B-768/AC-07`).
 
 ## Offene Fragen
 
-keine (entschieden 2026-11-09 🧑, siehe B-768 › Notizen: Entwurf A „Kachel-Hub“, Lobby-Aktionen je ein Eintrag, Werkzeugseiten unter „Seiten“).
+keine (siehe B-768 › Offene Fragen).
 
 ## Sessions
 
 Stichpunkte (Reife Entwurf):
 
-- BD11.1 CLI Umsetzung: Startseite mit Bereichswechsel und Vollbild-Halten (AC-01, AC-04).
-- BD11.2 CLI Umsetzung: Pausenmenü mit Neues Spiel, Fortsetzen und Seitenwechsel; Lobby und Querlinks entfallen (AC-02, AC-03).
-- BD11.3 CLI Review: Sprint BD11 abnehmen (alle).
-- BD11.4 CLI Workshop Mensch live: Abnahme an der Xbox (AC-05).
+- BD11.1 CLI Umsetzung: Pausenmenü als Kachelseite (fertig, `2e478b20`).
+- BD11.2 CLI Umsetzung: Startseite der Lobby als Kachelseite mit Unterseiten Raumliste, Seiten, Optionen (fertig, `99b390a7`).
+- BD11.3 CLI Umsetzung: `RunConfig` (Menü > URL > Standard), Szenen lesen nur sie, Regel-Test gegen `location.search` (AC-04, AC-06).
+- BD11.4 CLI Umsetzung: Menü-Ebenen Seiten und Kategorien aus `PAGES` und `DEV_SECTIONS`, Stress- und Debug-Kacheln starten per `RunConfig` (AC-02, AC-06).
+- BD11.5 CLI Umsetzung: Panel-Host für Werkzeugseiten im Spiel-Dokument, `installPageChrome` schließt das Panel, Dungeon Master extern (AC-03).
+- BD11.6 CLI Umsetzung: Landingpage, Shell und `game.html` entfernen, `/` ist das Spiel, Vollbild halten, Regeln in `CLAUDE.md` und `projectRules` neu fassen (AC-01, AC-05).
+- BD11.7 CLI Review: Sprint BD11 abnehmen (alle).
+- BD11.8 CLI Workshop Mensch live: Abnahme an Xbox und Pi (AC-07).
 
 ## Abnahme
 
