@@ -4,7 +4,9 @@
  * hat genau eine Kachel. Reine Daten und Logik ohne Phaser; `LobbyScene` zeichnet und führt aus.
  */
 import { t } from '../core/texts';
-import type { RunParams } from '../core/runConfig';
+import { runParamsOf, type RunParams } from '../core/runConfig';
+
+export { runParamsOf };
 import { DEV_SECTIONS, type DevTile } from '../tools/devTiles';
 import { HUB_COLORS } from './pauseHub';
 
@@ -40,15 +42,6 @@ export const CATEGORY_COLOR: Record<CategoryId, number> = { info: HUB_COLORS.tea
  * (`/api/health`).
  */
 export const devMenuVisible = (): boolean => true;
-
-/** Parameter einer Spiel-URL `game.html?a=1&b=2` als Konfiguration; `null` bei einer anderen Seite oder ohne Abfrage */
-export function runParamsOf(href: string): RunParams | null {
-  const q = href.indexOf('?');
-  if (!href.startsWith('game.html?') || q < 0) return null;
-  const out: Record<string, string> = {};
-  for (const [key, value] of new URLSearchParams(href.slice(q + 1))) out[key] = value;
-  return out;
-}
 
 /**
  * Ein Szenario mit `fresh=1` legt einen neuen Spielstand an; der Server lehnt das auf einen vorhandenen Namen ab („Spielstand gibt es schon“).

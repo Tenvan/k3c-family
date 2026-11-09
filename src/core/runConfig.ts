@@ -23,6 +23,15 @@ const asSearch = (p: URLSearchParams): string => {
 /** Die wirksame Abfrage, z. B. `?dev=1&autostart=1`; leer ohne Parameter */
 export const runSearch = (): string => asSearch(params);
 
+/** Parameter einer Spiel-URL `game.html?a=1&b=2` als Konfiguration; `null` bei einer anderen Seite oder ohne Abfrage */
+export function runParamsOf(href: string): RunParams | null {
+  const q = href.indexOf('?');
+  if (!href.startsWith('game.html?') || q < 0) return null;
+  const out: Record<string, string> = {};
+  for (const [key, value] of new URLSearchParams(href.slice(q + 1))) out[key] = value;
+  return out;
+}
+
 /** Wert eines Parameters der wirksamen Abfrage, `null` wenn er fehlt */
 export const runParam = (key: string): string | null => params.get(key);
 

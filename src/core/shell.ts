@@ -48,6 +48,12 @@ export function openPage(href: string): void {
   else location.assign(href);
 }
 
+/** Solange der Wächter `true` meldet, löst die Home-Kombi dieses Dokuments nichts aus (ein Werkzeug-Panel im Menü bedient sie selbst, B-768) */
+let homeGuard: () => boolean = () => false;
+export function setHomeGuard(guard: () => boolean): void {
+  homeGuard = guard;
+}
+
 export function goHome(): void {
   if (isEmbedded) postToShell({ type: SHELL_MESSAGE.home });
   else location.assign('./');
@@ -79,14 +85,14 @@ export function installPageChrome(options: PageChromeOptions = {}): void {
     else if (heldSince === 0) heldSince = performance.now();
     else if (performance.now() - heldSince > HOLD_MS) {
       heldSince = Infinity; // nur einmal auslösen, bis losgelassen
-      goHome();
+      if (!homeGuard()) goHome();
     }
     requestAnimationFrame(poll);
   };
   requestAnimationFrame(poll);
 
   addEventListener('keydown', (e) => {
-    if (e.key === 'Home') goHome();
+    if (e.key === 'Home' && !homeGuard()) goHome();
   });
 }
 

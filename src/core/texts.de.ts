@@ -177,6 +177,8 @@ export const de = {
   'biome.mine': 'Tiefe 2 (Mine)',
 
   // Optionen und Pause
+  'panel.back': 'Zurück zum Menü',
+  'panel.hint': 'View + Menu oder Esc: zurück ins Menü',
   'menu.cat.info': 'Info und Hilfe',
   'menu.cat.dev': 'Entwicklung',
   'menu.cat.perf': 'Performance',

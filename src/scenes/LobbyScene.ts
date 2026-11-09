@@ -12,7 +12,7 @@ import { DeleteDialog, closeNotice, deleteNotice, worldOf } from './saveMenu';
 import { VERSION_KEY } from './debug/debugOverlay';
 import { musicDirector } from '../audio/music';
 import { playUi, uiSoundFor } from '../audio/ui';
-import { openPage } from '../core/shell';
+import { openPanel } from '../core/panelHost';
 import { HubView } from './hubView';
 import { hubArt } from './hubArt';
 import { PaperBackdrop } from './paperBackdrop';
@@ -276,7 +276,7 @@ export class LobbyScene extends Phaser.Scene {
   /** Seite öffnen, Szenario starten (ohne Neuladen) oder das eigene Fenster des Dungeon Masters öffnen */
   private runEntry(entry: MenuEntry): void {
     const target = entry.target;
-    if (target.kind === 'page') openPage(target.href);
+    if (target.kind === 'page') openPanel(target.href, entry.title);
     else if (target.kind === 'external') window.open(target.href, '_blank', 'noopener');
     else startRun(this, this.client, uniqueRun(target.params));
   }

@@ -167,6 +167,8 @@ export const en: Record<TextKey, string> = {
   'biome.cave': 'Depth 1 (cave)',
   'biome.mine': 'Depth 2 (mine)',
 
+  'panel.back': 'Back to the menu',
+  'panel.hint': 'View + Menu or Esc: back to the menu',
   'menu.cat.info': 'Info and help',
   'menu.cat.dev': 'Development',
   'menu.cat.perf': 'Performance',

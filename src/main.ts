@@ -6,6 +6,7 @@ import { CLIENT, fetchServerBuild, versionLine, type BuildInfo } from './core/ve
 import { antialiasOff, rendererRequest } from './core/renderInfo';
 import { installRenderLog } from './core/renderLogInstall';
 import { installContextGuard } from './core/contextGuardInstall';
+import { installPanelHost } from './core/panelHost';
 import { showNoServer } from './landing/serverCheck';
 import { createRoomClient } from './online/clientConnection';
 import { GameScene } from './scenes/GameScene';
@@ -14,6 +15,8 @@ import { LoadScene } from './scenes/LoadScene';
 import { LobbyScene } from './scenes/LobbyScene';
 import { OptionsScene } from './scenes/OptionsScene';
 import { VERSION_KEY } from './scenes/debug/debugOverlay';
+import { uniqueRun } from './scenes/menuPages';
+import { startRun } from './scenes/runStart';
 import { runSearch } from './core/runConfig';
 
 // Seitenrahmen sofort (Home-Button, Zurück-Falle für B).
@@ -43,6 +46,12 @@ function start(server: BuildInfo): void {
   clientLog('info', `🚀 Phaser gestartet (${game.renderer.type === Phaser.WEBGL ? 'WebGL' : '⚠️ Canvas'}, gewünscht: ${want})`);
   installRenderLog(game, versionLine(CLIENT, server, ' | '));
   installContextGuard(game, () => client.roomCode); // Kontextverlust: Neustart mit Canvas, höchstens einmal je Sitzung (B-763)
+  // Werkzeug-Seiten öffnen als Panel im Menü: das Spiel pausiert die Schleife, ein Szenario aus dem Panel startet im selben Dokument (BD11.5)
+  installPanelHost({
+    onOpen: () => game.loop.sleep(),
+    onClose: () => game.loop.wake(),
+    onRun: (params) => startRun(game.scene.getScene('lobby'), client, uniqueRun(params)),
+  });
   game.scene.add('load', LoadScene, true, { client }); // lädt den Atlas, startet dann die Lobby
   game.scene.add('lobby', LobbyScene, false);
   game.scene.add('game', GameScene, false);
