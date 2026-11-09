@@ -177,6 +177,15 @@ export const de = {
   'biome.mine': 'Tiefe 2 (Mine)',
 
   // Optionen und Pause
+  'hub.title': 'Family Three Crowns',
+  'hub.resume': 'Fortsetzen',
+  'hub.resumeSub': 'Zurück ins Spiel',
+  'hub.optionsSub': 'Ton, Anzeige, Sprache',
+  'hub.keysSub': 'Tasten und Controller',
+  'hub.removeSub': 'Meldet den Spieler dieses Geräts ab',
+  'hub.removeSubOf': 'Spieler {n} · Links/Rechts wählt',
+  'hub.leaveSub': 'Zurück zum Start',
+  'hub.hint': 'Pfeile / Stick wählen · A / Enter bestätigen · Menu / Esc zurück ins Spiel',
   'opt.title': 'Optionen',
   'opt.world': 'Welt: {world}',
   'opt.music': 'Musik',
@@ -215,7 +224,7 @@ export const de = {
   'keys.row.fullscreen': 'Vollbild',
   'opt.on': 'an',
   'opt.off': 'aus',
-  'opt.hint': 'Hoch/Runter wählen · Links/Rechts ändern · A / Enter umlegen · Menu / Esc schließen',
+  'opt.hint': 'Hoch/Runter wählen · Links/Rechts ändern · A / Enter umlegen · Menu / Esc zurück',
   'opt.openButton': 'Optionen',
   // Skill-Menü und Skill-Leiste (S3.2)
   'skill.title': 'Skills  ·  {n} Punkte frei',

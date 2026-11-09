@@ -121,6 +121,9 @@ export function optionLabel(settings: Settings, id: OptionId): string {
 /** Lage der Tabelle „Tastenbelegung“ (B-741): Kopf bei `top`, je Zeile `rowH`, erste Spalte links, Geräte-Spalten gleich breit; Schrift ≥ 28 px (Q03) */
 export const KEYS_LAYOUT = { top: 240, rowH: 56, px: 30, labelX: 120, colX: [760, 1160, 1560] } as const;
 
+/** Einträge der Seite „Optionen“: Regler, Schalter und Sprache; die übrigen (weiter, Tasten, abmelden, verlassen) sind Kacheln des Pausenmenüs (`pauseHub.ts`) */
+export const SETTINGS_IDS: readonly OptionId[] = OPTION_IDS.filter((id) => id !== 'keys' && id !== 'resume' && id !== 'removePlayer' && id !== 'leave');
+
 /** Szenen-Daten der Optionen: Slots, die „Spieler abmelden“ treffen kann (leer = ausgegraut, B-411) */
 export interface OptionsSceneData {
   targets: number[];
