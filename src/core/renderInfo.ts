@@ -12,10 +12,9 @@ export function rendererRequest(search: string): RendererRequest {
   return v === 'webgl' || v === 'canvas' ? v : 'auto';
 }
 
-/** Technik-Anzeige: `?gfx=1` erzwingt an, `?gfx=0` aus, sonst gilt die Menü-Einstellung (Standard an, RX1); `?aa=0` schaltet die Kantenglättung des WebGL-Kontexts ab (Leistungstest) */
-export function gfxEnabled(search: string, setting: boolean): boolean {
-  const v = new URLSearchParams(search).get('gfx');
-  return v === '1' ? true : v === '0' ? false : setting;
+/** Technik-Anzeige: immer an (RX1-Testphase, gespeicherte Einstellungen älterer Läufe zählen nicht); nur `?gfx=0` schaltet sie ab; `?aa=0` schaltet die Kantenglättung des WebGL-Kontexts ab (Leistungstest) */
+export function gfxEnabled(search: string): boolean {
+  return new URLSearchParams(search).get('gfx') !== '0';
 }
 export const antialiasOff = (search: string): boolean => new URLSearchParams(search).get('aa') === '0';
 
