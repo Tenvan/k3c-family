@@ -129,6 +129,8 @@ export interface OptionsSceneData {
   targets: number[];
   /** Welt-ID des Raums aus `joined.world` (BD5.2, B-506); leer = standard */
   world?: string;
+  /** Von der Startseite der Lobby geöffnet: nur die Optionen, Menu/Esc schließt die Szene (B-768) */
+  standalone?: boolean;
 }
 
 /** Lage im Pausenmenü (1920 × 1080): Titel 64 px, Weltzeile 40 px (BD9.2, B-604), danach die 12 Zeilen; oben bleiben 70 px frei */

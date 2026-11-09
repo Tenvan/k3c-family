@@ -12,6 +12,10 @@ import { DeleteDialog, closeNotice, deleteNotice, worldOf } from './saveMenu';
 import { VERSION_KEY } from './debug/debugOverlay';
 import { musicDirector } from '../audio/music';
 import { playUi, uiSoundFor } from '../audio/ui';
+import { PAGES } from '../landing/pages';
+import { openPage } from '../core/shell';
+import { HubView } from './hubView';
+import { HUB_COLORS, START_TILES, hubAction, hubDir, hubLabel, hubSub, hubTileAt, moveHub, type HubAction } from './pauseHub';
 
 export interface LobbySceneData {
   client: RoomClient;
@@ -20,6 +24,8 @@ export interface LobbySceneData {
 }
 
 const STYLE = { fontSize: '36px', color: '#ffffff', stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
+/** Ansichten der Lobby: Startseite (Kacheln, Einstieg), Raum- und Spielstandliste, Seitenliste (B-768) */
+type View = 'hub' | 'list' | 'pages';
 const TOP = 200;
 const ROW_H = 64;
 /** Höchstzahl geloggter Tastendrücke je Lobby-Besuch (Rate-Limit des Client-Logs) */
@@ -37,13 +43,19 @@ export class LobbyScene extends Phaser.Scene {
   private selected = 0;
   private rows: Phaser.GameObjects.Text[] = [];
   private notice!: Phaser.GameObjects.Text;
-  private keys!: Record<'up' | 'down' | 'left' | 'right' | 'w' | 's' | 'a' | 'd' | 'enter' | 'space' | 'del', Phaser.Input.Keyboard.Key>;
+  private keys!: Record<'up' | 'down' | 'left' | 'right' | 'w' | 's' | 'a' | 'd' | 'enter' | 'space' | 'del' | 'esc', Phaser.Input.Keyboard.Key>;
   private hint!: Phaser.GameObjects.Text;
   private padHeld = new Set<string>();
   /** Pad-Tasten im letzten Bild und Zahl der geloggten Tastendrücke (Diagnose: kommt X auf dem Gerät an?) */
   private padButtons = new Set<string>();
   private padLogged = 0;
   private tapped: number | null = null;
+  private tappedTile: number | null = null;
+  private view: View = 'hub';
+  private hubSel = 0;
+  private pageSel = 0;
+  private hubView!: HubView;
+  private hubShown = false;
   private saves: SaveInfo[] = [];
   /** Zustand im letzten Bild: Spielstände nur beim Wechsel nach `lobby` laden, nicht jedes Bild */
   private lastStatus: Status | null = null;
@@ -65,6 +77,11 @@ export class LobbyScene extends Phaser.Scene {
     this.rows = [];
     this.padHeld = new Set();
     this.tapped = null;
+    this.tappedTile = null;
+    this.view = 'hub';
+    this.hubSel = 0;
+    this.pageSel = 0;
+    this.hubShown = false;
     this.saves = [];
     this.lastStatus = null;
     this.dialog = new DeleteDialog();
@@ -73,7 +90,8 @@ export class LobbyScene extends Phaser.Scene {
 
   create(): void {
     const K = Phaser.Input.Keyboard.KeyCodes;
-    this.keys = this.input.keyboard!.addKeys({ up: K.UP, down: K.DOWN, left: K.LEFT, right: K.RIGHT, w: K.W, s: K.S, a: K.A, d: K.D, enter: K.ENTER, space: K.SPACE, del: K.DELETE }) as LobbyScene['keys'];
+    this.keys = this.input.keyboard!.addKeys({ up: K.UP, down: K.DOWN, left: K.LEFT, right: K.RIGHT, w: K.W, s: K.S, a: K.A, d: K.D, enter: K.ENTER, space: K.SPACE, del: K.DELETE, esc: K.ESC }) as LobbyScene['keys'];
+    this.cameras.main.setBackgroundColor(HUB_COLORS.night); // Nachtblau der Landingpage statt Schwarz
     this.add.text(GAME_WIDTH / 2, 80, t('lobby.title'), { ...STYLE, fontSize: '56px', strokeThickness: 10 }).setOrigin(0.5);
     this.notice = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 90, '', { ...STYLE, fontSize: '30px', color: '#ffd166', align: 'center' }).setOrigin(0.5);
     // Versionen in einer Zeile zwischen Titel und Liste (Nebeninfo, 24 px nach rules/bedienung.md § 2)
@@ -86,9 +104,14 @@ export class LobbyScene extends Phaser.Scene {
     const rows = () => (this.dialog.open ? this.dialog.labels().length : lobbyEntries(this.client.rooms, this.client.status, this.saves).length);
     const onTap = (e: PointerEvent) => {
       const y = this.scale.transformY(e.pageY);
+      if (this.currentView() === 'hub' && !this.flow.dialog && !this.dialog.open) {
+        this.tappedTile = hubTileAt(START_TILES, this.scale.transformX(e.pageX), y);
+        return;
+      }
       this.tapped = this.flow.dialog ? rowAt(y, TOP + ROW_H, ROW_H, DIALOG_ROWS.length) : rowAt(y, TOP, ROW_H, rows());
     };
     window.addEventListener('pointerdown', onTap);
+    this.hubView = new HubView(this, START_TILES);
     this.events.once('shutdown', () => window.removeEventListener('pointerdown', onTap));
   }
 
@@ -96,6 +119,7 @@ export class LobbyScene extends Phaser.Scene {
     musicDirector().lobby();
     const client = this.client;
     if (client.status === 'room') return this.enterGame();
+    if (this.scene.isActive('options')) return void this.poll(); // Optionen offen (Startseite): Eingaben verwerfen, damit sie danach nicht nachwirken
     this.loadLists(client.status);
     this.lastStatus = client.status;
     const first = this.flow.step(client);
@@ -104,7 +128,20 @@ export class LobbyScene extends Phaser.Scene {
     const entries = lobbyEntries(client.rooms, client.status, this.saves);
     const input = this.poll();
     playUi(uiSoundFor({ ...input, confirm: input.confirm || (this.tapped !== null && this.tapped >= 0) })); // UI-Klick (B-575)
-    if (this.updateDialogs(input)) return;
+    if (this.updateDialogs(input)) return this.showHub(false);
+    const view = this.currentView();
+    if (view === 'hub') return this.updateHub(input, entries);
+    this.showHub(false);
+    if (view === 'pages') return this.updatePages(input);
+    if (input.back && client.status === 'lobby') {
+      this.view = 'hub';
+      return;
+    }
+    this.updateList(input, entries);
+  }
+
+  /** Raum- und Spielstandliste: Auswahl, Bestätigen oder Tippen, X/Entf löscht oder schließt */
+  private updateList(input: { dir: number; confirm: boolean; del: boolean }, entries: ReturnType<typeof lobbyEntries>): void {
     this.selected = moveSelection(this.selected, input.dir, entries.length);
     let chosen = input.confirm ? this.selected : null;
     if (this.tapped !== null) {
@@ -118,6 +155,77 @@ export class LobbyScene extends Phaser.Scene {
     }
     if (input.del) this.askRemove(entries[this.selected]);
     this.draw(entries);
+  }
+
+  /** Ohne Verbindung zeigt die Lobby die Liste (mit „Erneut versuchen“ und „Seite neu laden“), sonst die gewählte Ansicht */
+  private currentView(): View {
+    return this.client.status === 'lobby' ? this.view : 'list';
+  }
+
+  /** Kachelseite ein- oder ausblenden, nur beim Wechsel (sonst würde sie jedes Bild neu gezeichnet) */
+  private showHub(on: boolean): void {
+    if (on === this.hubShown) return;
+    this.hubShown = on;
+    this.hubView.setVisible(on);
+    if (on) this.rows.forEach((r) => r.setText(''));
+  }
+
+  /** Startseite: Pfeile und Stick bewegen die Auswahl in vier Richtungen, A/Enter oder Tippen bestätigt */
+  private updateHub(input: { dir: number; side: number; confirm: boolean }, entries: ReturnType<typeof lobbyEntries>): void {
+    this.showHub(true);
+    let confirm = input.confirm;
+    if (this.tappedTile !== null) {
+      if (this.tappedTile >= 0) {
+        this.hubSel = this.tappedTile;
+        confirm = true;
+      }
+      this.tappedTile = null;
+    } else {
+      const d = hubDir(input.dir, input.side < 0 ? 'left' : input.side > 0 ? 'right' : null);
+      if (d) this.hubSel = moveHub(START_TILES, this.hubSel, d);
+    }
+    const action = confirm ? hubAction(START_TILES[this.hubSel]!.id, []) : null;
+    if (action) this.runStart(action, entries);
+    this.hubView.draw(this.hubSel, this.params.save, (id) => ({ enabled: true, label: hubLabel(id), sub: hubSub(id, [], 0, this.params.save) }));
+    this.notice.setText(this.message ?? lobbyNotice(this.client) ?? '');
+    this.hint.setText(t('hub.startHint'));
+  }
+
+  /** Wirkt eine bestätigte Kachel der Startseite */
+  private runStart(action: HubAction, entries: ReturnType<typeof lobbyEntries>): void {
+    this.message = null;
+    if (action === 'close') this.activate({ kind: 'play' }); // Fortsetzen: der Spielstand der Start-Parameter
+    else if (action === 'new') {
+      const entry = entries.find((e) => e.kind === 'new');
+      if (entry) this.activate(entry);
+    } else if (action === 'join') {
+      this.view = 'list';
+      this.selected = Math.min(2, Math.max(0, entries.length - 1)); // gleich auf den ersten Raum oder Spielstand
+    } else if (action === 'pages') {
+      this.view = 'pages';
+      this.pageSel = 0;
+    } else if (action === 'settings') this.scene.launch('options', { targets: [], standalone: true });
+  }
+
+  /** Seiten: Lizenzen und Entwicklung; A/Enter öffnet über die Shell, Menu/Esc geht zur Startseite */
+  private updatePages(input: { dir: number; confirm: boolean; back: boolean }): void {
+    const pages = PAGES.filter((p) => p.section === 'about');
+    this.pageSel = moveSelection(this.pageSel, input.dir, pages.length);
+    let chosen = input.confirm ? this.pageSel : null;
+    if (this.tapped !== null) {
+      if (this.tapped >= 0) chosen = this.pageSel = this.tapped;
+      this.tapped = null;
+    }
+    const page = chosen === null ? undefined : pages[chosen];
+    if (page) openPage(typeof page.href === 'function' ? page.href() : page.href);
+    if (input.back) this.view = 'hub';
+    pages.forEach((p, i) => {
+      const row = (this.rows[i] ??= this.add.text(GAME_WIDTH / 2, TOP + i * ROW_H + ROW_H / 2, '', STYLE).setOrigin(0.5));
+      row.setText(`${i === this.pageSel ? '▶  ' : '    '}${p.title}`).setColor(i === this.pageSel ? '#ffd166' : '#ffffff');
+    });
+    this.rows.slice(pages.length).forEach((r) => r.setText(''));
+    this.notice.setText('');
+    this.hint.setText(t('hub.listHint'));
   }
 
   /** X/Entf: Rückfrage zum Löschen eines Spielstands oder zum Schließen eines Raums (BD9.2); andere Einträge ignorieren es */
@@ -256,7 +364,7 @@ export class LobbyScene extends Phaser.Scene {
   }
 
   /** Eingaben der Tastatur und aller Pads: Richtung (-1/0/1), Bestätigung und Löschen (X/Entf), je einmal pro Druck */
-  private poll(): { dir: number; side: number; confirm: boolean; del: boolean } {
+  private poll(): { dir: number; side: number; confirm: boolean; del: boolean; back: boolean } {
     const down = Phaser.Input.Keyboard.JustDown;
     const k = this.keys;
     const pressed = (...keys: Phaser.Input.Keyboard.Key[]) => (keys.some((key) => down(key)) ? 1 : 0);
@@ -264,6 +372,7 @@ export class LobbyScene extends Phaser.Scene {
     let confirm = pressed(k.enter, k.space) > 0;
     let del = pressed(k.del) > 0;
     let side = pressed(k.right, k.d) - pressed(k.left, k.a);
+    let back = pressed(k.esc) > 0;
 
     this.logPadButtons();
     const held = heldPadKeys(this.input.gamepad?.gamepads ?? []);
@@ -272,7 +381,8 @@ export class LobbyScene extends Phaser.Scene {
     confirm ||= edge('a') > 0;
     del ||= edge('x') > 0;
     side += edge('right') - edge('left');
+    back ||= edge('back') > 0;
     this.padHeld = held;
-    return { dir: Math.sign(dir), side: Math.sign(side), confirm, del };
+    return { dir: Math.sign(dir), side: Math.sign(side), confirm, del, back };
   }
 }

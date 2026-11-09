@@ -23,7 +23,8 @@ import {
   type OptionResult,
   type OptionsSceneData,
 } from './optionsLogic';
-import { HUB_COLORS, HUB_LAYOUT, HUB_TEXT, HUB_TEXT_OFF, HUB_TILES, hubAction, hubChoice, hubDir, hubEnabled, hubLabel, hubSub, hubTileAt, moveHub, type HubAction, type HubDir } from './pauseHub';
+import { HUB_COLORS, HUB_LAYOUT, PAUSE_TILES, hubAction, hubChoice, hubDir, hubEnabled, hubLabel, hubSub, hubTileAt, moveHub, type HubAction, type HubDir } from './pauseHub';
+import { HubView } from './hubView';
 import { pauseButton } from './hud/pauseButton';
 import { keyTable } from './keyTable';
 import { GlyphRow } from './hints/glyphView';
@@ -31,7 +32,6 @@ import { GlyphRow } from './hints/glyphView';
 const { top: TOP, rowH: ROW_H, rowPx: FONT_PX } = OPTIONS_LAYOUT; // Zeilen der Seite „Optionen“ über dem Hinweis unten, Zeilen ≥ 28 px (Q03)
 const STICK = 0.5;
 const STYLE = { fontFamily: 'sans-serif', fontStyle: 'bold', color: '#ffffff', stroke: '#000000', strokeThickness: 6 };
-const TILE_STYLE = { fontFamily: 'sans-serif', fontStyle: 'bold', color: HUB_TEXT };
 
 /**
  * Touch-Overlay (`.k3c-zone`, `.k3c-touch`) und ☰ verdecken die Zeilen (B-336): solange die Szene offen ist ausblenden.
@@ -72,9 +72,9 @@ export class OptionsScene extends Phaser.Scene {
   private rows: Phaser.GameObjects.Text[] = [];
   private title!: Phaser.GameObjects.Text;
   private hint!: Phaser.GameObjects.Text;
-  private hubGfx!: Phaser.GameObjects.Graphics;
-  private hubTexts: { label: Phaser.GameObjects.Text; sub: Phaser.GameObjects.Text }[] = [];
-  private hubKey = '';
+  private hubView!: HubView;
+  /** Von der Startseite der Lobby geöffnet (B-768): nur die Optionen, Menu/Esc schließt die Szene */
+  private standalone = false;
   private keys!: Record<'up' | 'down' | 'w' | 's' | 'left' | 'right' | 'enter' | 'space' | 'esc', Phaser.Input.Keyboard.Key>;
   private padHeld = new Set<string>();
   private menu = new MenuPress();
@@ -95,16 +95,16 @@ export class OptionsScene extends Phaser.Scene {
   init(data?: Partial<OptionsSceneData>): void {
     this.targets = data?.targets ?? [];
     this.world = data?.world;
+    this.standalone = data?.standalone ?? false;
     this.choice = 0;
   }
 
   create(): void {
     this.settings = loadSettings();
     setLanguage(this.settings.language);
-    this.mode = 'hub';
+    this.mode = this.standalone ? 'settings' : 'hub';
     this.selected = 0;
     this.hubSel = 0;
-    this.hubKey = '';
     this.keysTable = null;
     this.padHeld = new Set();
     this.menu = new MenuPress();
@@ -124,7 +124,7 @@ export class OptionsScene extends Phaser.Scene {
       const x = this.scale.transformX(e.pageX);
       const y = this.scale.transformY(e.pageY);
       if (this.mode === 'hub') {
-        const tile = hubTileAt(x, y);
+        const tile = hubTileAt(PAUSE_TILES, x, y);
         if (tile >= 0) this.tappedTile = tile;
         return;
       }
@@ -140,26 +140,17 @@ export class OptionsScene extends Phaser.Scene {
     });
   }
 
-  /** Flächen und Texte der Kacheln anlegen; gezeichnet werden sie in `drawHub` */
+  /** Kachelseite anlegen; gezeichnet wird sie in `drawHub` */
   private createHub(): void {
-    this.hubGfx = this.add.graphics();
-    const { pad } = HUB_LAYOUT;
-    this.hubTexts = HUB_TILES.map((tile) => {
-      const wrap = { width: tile.w - 2 * pad };
-      const sub = this.add.text(tile.x + pad, tile.y + tile.h - pad, '', { ...TILE_STYLE, fontSize: `${HUB_LAYOUT.subPx}px`, fontStyle: 'normal', wordWrap: wrap }).setOrigin(0, 1);
-      const label = this.add.text(tile.x + pad, tile.y + tile.h - pad - sub.height - 8, '', { ...TILE_STYLE, fontSize: `${tile.labelPx}px`, wordWrap: wrap }).setOrigin(0, 1);
-      return { label, sub };
-    });
+    this.hubView = new HubView(this, PAUSE_TILES);
   }
 
   /** Zeigt je Seite die richtigen Teile: Kacheln, Optionszeilen oder die Tastentabelle */
   private refreshView(): void {
     const hub = this.mode === 'hub' && !this.keysTable;
     const settings = this.mode === 'settings' && !this.keysTable;
-    this.hubGfx.setVisible(hub);
-    this.hubTexts.forEach(({ label, sub }) => [label, sub].forEach((o) => o.setVisible(hub)));
+    this.hubView.setVisible(hub);
     this.rows.forEach((row) => row.setVisible(settings));
-    this.hubKey = '';
     if (this.keysTable) return;
     this.title.setText(hub ? t('hub.title') : t('opt.title'));
     this.hint.setText(hub ? t('hub.hint') : t('opt.hint'));
@@ -191,7 +182,7 @@ export class OptionsScene extends Phaser.Scene {
   private updateHub(dir: number, act: OptionDir | null, close: boolean): void {
     playUi(uiSoundFor({ dir, side: act === 'left' || act === 'right' ? 1 : 0, confirm: act === 'confirm' || this.tappedTile !== null })); // UI-Klick (B-575)
     const confirm = this.moveHubSelection(hubDir(dir, act)) || act === 'confirm';
-    const action = confirm ? hubAction(HUB_TILES[this.hubSel]!.id, this.targets) : null;
+    const action = confirm ? hubAction(PAUSE_TILES[this.hubSel]!.id, this.targets) : null;
     if (action && this.runHub(action)) return;
     if (close) return this.close();
     if (this.mode === 'hub') this.drawHub();
@@ -205,9 +196,9 @@ export class OptionsScene extends Phaser.Scene {
       return true;
     }
     if (!d) return false;
-    const choice = hubChoice(HUB_TILES[this.hubSel]!.id, d, this.choice, this.targets.length);
+    const choice = hubChoice(PAUSE_TILES[this.hubSel]!.id, d, this.choice, this.targets.length);
     if (choice !== null) this.choice = choice;
-    else this.hubSel = moveHub(this.hubSel, d);
+    else this.hubSel = moveHub(PAUSE_TILES, this.hubSel, d);
     return false;
   }
 
@@ -232,25 +223,18 @@ export class OptionsScene extends Phaser.Scene {
       case 'leave':
         this.registry.set(LEAVE_KEY, true); // GameScene verlässt den Raum und schließt diese Szene
         return true;
+      default:
+        return false; // Einträge der Startseite (Lobby) gibt es im Pausenmenü nicht
     }
   }
 
   /** Zeichnet die Kacheln neu, wenn sich Auswahl, Ziele oder Sprache geändert haben */
   private drawHub(): void {
-    const key = `${this.hubSel}|${this.targets.length}|${this.choice}|${this.settings.language}`;
-    if (key === this.hubKey) return;
-    this.hubKey = key;
-    const g = this.hubGfx.clear();
-    HUB_TILES.forEach((tile, i) => {
-      const on = hubEnabled(tile.id, this.targets);
-      g.fillStyle(on ? tile.color : HUB_COLORS.off, 1).fillRoundedRect(tile.x, tile.y, tile.w, tile.h, 28);
-      if (i === this.hubSel) g.lineStyle(10, 0xffffff, 1).strokeRoundedRect(tile.x - 6, tile.y - 6, tile.w + 12, tile.h + 12, 32);
-      if (tile.id === 'resume') g.fillStyle(HUB_COLORS.night, 1).fillTriangle(tile.x + 40, tile.y + 40, tile.x + 40, tile.y + 150, tile.x + 140, tile.y + 95);
-      const { label, sub } = this.hubTexts[i]!;
-      const color = on ? HUB_TEXT : HUB_TEXT_OFF;
-      sub.setText(hubSub(tile.id, this.targets, this.choice)).setColor(color);
-      label.setText(hubLabel(tile.id)).setColor(color).setY(tile.y + tile.h - HUB_LAYOUT.pad - sub.height - 8);
-    });
+    this.hubView.draw(this.hubSel, `${this.targets.length}|${this.choice}|${this.settings.language}`, (id) => ({
+      enabled: hubEnabled(id, this.targets),
+      label: hubLabel(id),
+      sub: hubSub(id, this.targets, this.choice),
+    }));
   }
 
   /** Optionen-Seite: Einstellungen speichern und wirken lassen */
@@ -294,6 +278,7 @@ export class OptionsScene extends Phaser.Scene {
 
   /** Von den Optionen zurück zu den Kacheln (Menu/Esc) */
   private backToHub(): void {
+    if (this.standalone) return this.close();
     this.mode = 'hub';
     this.refreshView();
   }

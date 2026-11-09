@@ -2,30 +2,30 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { setLanguage } from '../core/texts';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { OPTION_IDS, SETTINGS_IDS } from './optionsLogic';
-import { HUB_COLORS, HUB_LAYOUT, HUB_TILES, hubAction, hubChoice, hubDir, hubEnabled, hubLabel, hubSub, hubTileAt, moveHub, type HubTileId } from './pauseHub';
+import { HUB_COLORS, HUB_LAYOUT, PAUSE_TILES, START_TILES, hubAction, hubChoice, hubDir, hubEnabled, hubLabel, hubSub, hubTileAt, moveHub, type HubTileId } from './pauseHub';
 
 afterEach(() => setLanguage('de'));
 
-const ids = HUB_TILES.map((tile) => tile.id);
+const ids = PAUSE_TILES.map((tile) => tile.id);
 const at = (id: HubTileId) => ids.indexOf(id);
 
 describe('Lage und Lesbarkeit', () => {
   it('Fortsetzen ist die erste Kachel und die größte', () => {
-    expect(HUB_TILES[0]!.id).toBe('resume');
-    const area = (i: number) => HUB_TILES[i]!.w * HUB_TILES[i]!.h;
+    expect(PAUSE_TILES[0]!.id).toBe('resume');
+    const area = (i: number) => PAUSE_TILES[i]!.w * PAUSE_TILES[i]!.h;
     expect(area(0)).toBeGreaterThan(Math.max(...[1, 2, 3, 4].map(area)) * 1.5);
   });
 
   it('alle Kacheln liegen im Bild, unter dem Titel und über dem Hinweis, ohne sich zu überlappen', () => {
-    for (const tile of HUB_TILES) {
+    for (const tile of PAUSE_TILES) {
       expect(tile.x).toBeGreaterThanOrEqual(0);
       expect(tile.x + tile.w).toBeLessThanOrEqual(GAME_WIDTH);
       expect(tile.y).toBeGreaterThan(HUB_LAYOUT.worldY + HUB_LAYOUT.worldPx / 2);
       expect(tile.y + tile.h).toBeLessThan(HUB_LAYOUT.hintY - HUB_LAYOUT.hintPx);
       expect(tile.y + tile.h).toBeLessThanOrEqual(GAME_HEIGHT);
     }
-    HUB_TILES.forEach((a, i) =>
-      HUB_TILES.slice(i + 1).forEach((b) => {
+    PAUSE_TILES.forEach((a, i) =>
+      PAUSE_TILES.slice(i + 1).forEach((b) => {
         const apart = a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y;
         expect(apart).toBe(true);
       }),
@@ -33,13 +33,13 @@ describe('Lage und Lesbarkeit', () => {
   });
 
   it('Schrift aus Sofa-Abstand: Beschriftung ≥ 52 px, Zeile darunter ≥ 32 px', () => {
-    for (const tile of HUB_TILES) expect(tile.labelPx).toBeGreaterThanOrEqual(52);
+    for (const tile of PAUSE_TILES) expect(tile.labelPx).toBeGreaterThanOrEqual(52);
     expect(HUB_LAYOUT.subPx).toBeGreaterThanOrEqual(32);
   });
 
   it('Kachelfarben nach Bereich: Gold, Lila, Türkis, Blau, Koralle, alle verschieden', () => {
-    expect(HUB_TILES.map((tile) => tile.color)).toEqual([HUB_COLORS.gold, HUB_COLORS.purple, HUB_COLORS.teal, HUB_COLORS.blue, HUB_COLORS.coral]);
-    expect(new Set(HUB_TILES.map((tile) => tile.color)).size).toBe(HUB_TILES.length);
+    expect(PAUSE_TILES.map((tile) => tile.color)).toEqual([HUB_COLORS.gold, HUB_COLORS.purple, HUB_COLORS.teal, HUB_COLORS.blue, HUB_COLORS.coral]);
+    expect(new Set(PAUSE_TILES.map((tile) => tile.color)).size).toBe(PAUSE_TILES.length);
   });
 });
 
@@ -51,7 +51,7 @@ describe('Auswahl mit dem Pad', () => {
       const next: number[] = [];
       for (const from of frontier)
         for (const dir of ['up', 'down', 'left', 'right'] as const) {
-          const to = moveHub(from, dir);
+          const to = moveHub(PAUSE_TILES, from, dir);
           if (!seen.has(to)) {
             seen.add(to);
             next.push(to);
@@ -59,19 +59,19 @@ describe('Auswahl mit dem Pad', () => {
         }
       frontier = next;
     }
-    expect([...seen].sort()).toEqual(HUB_TILES.map((_, i) => i));
+    expect([...seen].sort()).toEqual(PAUSE_TILES.map((_, i) => i));
   });
 
   it('Richtungen führen zur Nachbarkachel, am Rand bleibt die Auswahl', () => {
-    expect(moveHub(at('resume'), 'right')).toBe(at('options'));
-    expect(moveHub(at('options'), 'left')).toBe(at('resume'));
-    expect(moveHub(at('options'), 'right')).toBe(at('keys'));
-    expect(moveHub(at('options'), 'down')).toBe(at('removePlayer'));
-    expect(moveHub(at('keys'), 'down')).toBe(at('leave'));
-    expect(moveHub(at('leave'), 'up')).toBe(at('keys'));
-    expect(moveHub(at('resume'), 'up')).toBe(at('resume'));
-    expect(moveHub(at('leave'), 'down')).toBe(at('leave'));
-    expect(moveHub(at('keys'), 'right')).toBe(at('keys'));
+    expect(moveHub(PAUSE_TILES, at('resume'), 'right')).toBe(at('options'));
+    expect(moveHub(PAUSE_TILES, at('options'), 'left')).toBe(at('resume'));
+    expect(moveHub(PAUSE_TILES, at('options'), 'right')).toBe(at('keys'));
+    expect(moveHub(PAUSE_TILES, at('options'), 'down')).toBe(at('removePlayer'));
+    expect(moveHub(PAUSE_TILES, at('keys'), 'down')).toBe(at('leave'));
+    expect(moveHub(PAUSE_TILES, at('leave'), 'up')).toBe(at('keys'));
+    expect(moveHub(PAUSE_TILES, at('resume'), 'up')).toBe(at('resume'));
+    expect(moveHub(PAUSE_TILES, at('leave'), 'down')).toBe(at('leave'));
+    expect(moveHub(PAUSE_TILES, at('keys'), 'right')).toBe(at('keys'));
   });
 });
 
@@ -95,8 +95,8 @@ describe('Aktionen', () => {
   });
 
   it('Tippen trifft die Kachel unter dem Punkt, daneben nichts', () => {
-    for (const tile of HUB_TILES) expect(hubTileAt(tile.x + tile.w / 2, tile.y + tile.h / 2)).toBe(at(tile.id));
-    expect(hubTileAt(5, 5)).toBe(-1);
+    for (const tile of PAUSE_TILES) expect(hubTileAt(PAUSE_TILES, tile.x + tile.w / 2, tile.y + tile.h / 2)).toBe(at(tile.id));
+    expect(hubTileAt(PAUSE_TILES, 5, 5)).toBe(-1);
   });
 
   it('Links/Rechts wählt bei zwei Spielern das Ziel, sonst die Kachel', () => {
@@ -128,5 +128,39 @@ describe('Texte', () => {
   it('Optionen-Seite: nur Regler, Schalter und Sprache; die Kacheln der Kachelseite fehlen dort', () => {
     expect(SETTINGS_IDS).toEqual(['music', 'sfx', 'ambient', 'screenshake', 'flash', 'colorblind', 'guide', 'tech', 'language']);
     for (const id of OPTION_IDS) expect(SETTINGS_IDS.includes(id) || ['keys', 'resume', 'removePlayer', 'leave'].includes(id)).toBe(true);
+  });
+});
+
+describe('Startseite der Lobby', () => {
+  const ids = START_TILES.map((tile) => tile.id);
+
+  it('Fortsetzen groß, dazu Neues Spiel, Raum beitreten, Optionen, Seiten in den Farben des Produktkontexts', () => {
+    expect(ids).toEqual(['resume', 'new', 'join', 'options', 'pages']);
+    expect(START_TILES.map((tile) => tile.color)).toEqual([HUB_COLORS.gold, HUB_COLORS.green, HUB_COLORS.blue, HUB_COLORS.purple, HUB_COLORS.teal]);
+    for (const tile of START_TILES) expect(tile.labelPx).toBeGreaterThanOrEqual(52);
+  });
+
+  it('gleiche Lage wie das Pausenmenü: dieselben Rechtecke, nur andere Einträge', () => {
+    expect(START_TILES.map(({ x, y, w, h }) => [x, y, w, h])).toEqual(PAUSE_TILES.map(({ x, y, w, h }) => [x, y, w, h]));
+  });
+
+  it('jede Kachel ist per Pad erreichbar und löst ihre Aktion aus', () => {
+    expect(moveHub(START_TILES, 0, 'right')).toBe(1);
+    expect(moveHub(START_TILES, 1, 'right')).toBe(2);
+    expect(moveHub(START_TILES, 1, 'down')).toBe(3);
+    expect(moveHub(START_TILES, 2, 'down')).toBe(4);
+    expect(moveHub(START_TILES, 3, 'up')).toBe(1);
+    expect(ids.map((id) => hubAction(id, []))).toEqual(['close', 'new', 'join', 'settings', 'pages']);
+  });
+
+  it('Texte: Fortsetzen nennt den Spielstand, jede Kachel hat Beschriftung und Zeile (de, en)', () => {
+    expect(hubSub('resume', [], 0, 'familie')).toContain('familie');
+    for (const lang of ['de', 'en']) {
+      setLanguage(lang);
+      for (const id of ids) {
+        expect(hubLabel(id).length).toBeGreaterThan(0);
+        expect(hubSub(id, [], 0).length).toBeGreaterThan(0);
+      }
+    }
   });
 });

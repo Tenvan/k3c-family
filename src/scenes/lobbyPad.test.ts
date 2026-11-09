@@ -15,7 +15,12 @@ describe('Lobby-Tasten am Pad (B-767)', () => {
     expect([...heldPadKeys([pad([], { x: -0.8, y: 0.9 })])].sort()).toEqual(['down', 'left']);
   });
 
-  it('B, View und Menu bleiben ohne Wirkung; fehlende Pads stören nicht', () => {
-    expect(heldPadKeys([pad([1, 8, 9]), null, undefined]).size).toBe(0);
+  it('Menu geht zurück; mit View zusammen (Home-Kombi) nicht', () => {
+    expect([...heldPadKeys([pad([9])])]).toEqual(['back']);
+    expect(heldPadKeys([pad([8, 9])]).size).toBe(0);
+  });
+
+  it('B und View bleiben ohne Wirkung; fehlende Pads stören nicht', () => {
+    expect(heldPadKeys([pad([1, 8]), null, undefined]).size).toBe(0);
   });
 });
