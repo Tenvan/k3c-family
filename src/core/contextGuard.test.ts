@@ -138,3 +138,16 @@ describe('Adresse des Neustarts', () => {
     expect(href).toBe('game.html?gfx=1&renderer=canvas');
   });
 });
+
+describe('Absichtliche Freigabe (RX1)', () => {
+  it('stop bricht das Warten ab, danach löst auch ein Verlust keinen Neustart und keinen Hinweis aus', () => {
+    const { guard, calls, advance } = setup();
+    guard.lost();
+    guard.stop();
+    advance(RESTORE_WAIT_MS * 2);
+    guard.lost();
+    advance(RESTORE_WAIT_MS * 2);
+    expect(calls.restart).toBe(0);
+    expect(calls.notices).toEqual([]);
+  });
+});

@@ -927,3 +927,11 @@ Schema 1 (`engine/room/metrics.go`):
 ```
 
 Die Rotation in `reports/` (B-142) erfasst bisher nur `gamepad-*.json`; die Spielmetrik-Reports folgen mit B-272.
+
+## Auslesen im Dev-Mode: /api/dev/status, /log, /reports (RX1)
+
+Kein Teil des WebSocket-Protokolls. Drei Lese-Endpunkte, nur `GET`, **ohne Token, aber nur mit Dev-Mode** (`K3C_DEV`, Standard an; sonst 403; andere Methode 405). Sie dienen dazu, einen entfernten Server (Raspberry Pi) von der Entwicklungsmaschine aus zu lesen.
+
+- `/api/dev/status`: derselbe Zustand wie `/api/status` (Speicher, Version, Laufzeit, CPU, Räume, Abstürze).
+- `/api/dev/log?pattern=<regex>&limit=<1–1000>&mib=<1–8>`: aus den letzten `mib` MiB von `k3c-server.jsonl` die letzten `limit` Zeilen, die `pattern` treffen (RE2, ohne Groß-/Kleinschreibung, bis 200 Zeichen), ältere zuerst, als `text/plain`, höchstens 1 MiB. Kopfzeilen `X-Log-Size`, `X-Log-Matched`. Ungültige Parameter 400, ohne Log 404.
+- `/api/dev/reports`: Liste der `*.json` im Berichte-Ordner (Name, Bytes, Zeit), neueste zuerst; mit `?name=<datei>.json` der Inhalt. Der Name ist ein reiner Dateiname (Pfade, Punkt am Anfang, fremde Endungen 400; fehlende Datei 404; über 2 MiB 413).

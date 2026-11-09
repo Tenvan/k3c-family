@@ -30,16 +30,30 @@ export function panelAction(message: unknown): PanelAction | null {
   return null;
 }
 
-/** Was das Spiel beim Öffnen und Schließen des Panels tun muss (Schleife anhalten, Szenario starten) */
+/**
+ * Seiten, die den Speicher des Spiels brauchen (Textur-Messung, RX1): Beim Öffnen gibt das Spiel seine Texturen frei, beim Schließen lädt das
+ * Dokument neu. Sonst hielte das Spiel im Hintergrund seine ~480 MiB, und die Messung sähe nur den Rest.
+ */
+const RELEASE_PAGES: readonly string[] = ['texturetest.html'];
+
+/** Gibt die Seite den Speicher des Spiels frei? Maßgeblich ist der Dateiname ohne Abfrage und Anker */
+export function releasesGame(href: string): boolean {
+  const name = href.split(/[?#]/)[0]!.split('/').pop() ?? '';
+  return RELEASE_PAGES.includes(name);
+}
+
+/** Was das Spiel beim Öffnen und Schließen des Panels tun muss (Schleife anhalten oder Speicher freigeben, Szenario starten) */
 export interface PanelHooks {
-  onOpen(): void;
-  onClose(): void;
+  /** `release`: die Seite braucht den Speicher des Spiels (`releasesGame`) */
+  onOpen(release: boolean): void;
+  onClose(release: boolean): void;
   onRun(params: RunParams): void;
 }
 
 interface Panel {
   root: HTMLElement;
   frame: HTMLIFrameElement;
+  release: boolean;
 }
 
 let panel: Panel | null = null;
@@ -109,16 +123,18 @@ export function openPanel(href: string, title: string): void {
   frame.src = href;
   root.append(bar, frame);
   document.body.append(root);
-  panel = { root, frame };
+  const release = releasesGame(href);
+  panel = { root, frame, release };
   document.querySelector<HTMLElement>('.k3c-home')?.style.setProperty('display', 'none'); // die Home-Taste der Seite im Panel genügt
-  hooks?.onOpen();
+  hooks?.onOpen(release);
 }
 
 export function closePanel(): void {
   if (!panel) return;
-  panel.root.remove();
+  const { root, release } = panel;
+  root.remove();
   panel = null;
   document.querySelector<HTMLElement>('.k3c-home')?.style.removeProperty('display');
   window.focus();
-  hooks?.onClose();
+  hooks?.onClose(release);
 }

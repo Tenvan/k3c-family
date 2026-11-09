@@ -54,12 +54,21 @@ function start(server: BuildInfo): void {
   game.registry.set(VERSION_KEY, versionLine(CLIENT, server, '\n'));
   clientLog('info', `🚀 Phaser gestartet (${game.renderer.type === Phaser.WEBGL ? 'WebGL' : '⚠️ Canvas'}, gewünscht: ${want})`);
   installRenderLog(game, versionLine(CLIENT, server, ' | '));
-  installContextGuard(game, () => client.roomCode); // Kontextverlust: Neustart mit Canvas, höchstens einmal je Sitzung (B-763)
-  // Werkzeug-Seiten öffnen als Panel im Menü: das Spiel pausiert die Schleife, ein Szenario aus dem Panel startet im selben Dokument (BD11.5)
+  const guard = installContextGuard(game, () => client.roomCode); // Kontextverlust: Neustart mit Canvas, höchstens einmal je Sitzung (B-763)
+  // Werkzeug-Seiten öffnen als Panel im Menü: das Spiel pausiert die Schleife, ein Szenario aus dem Panel startet im selben Dokument (BD11.5).
+  // Seiten, die den Speicher brauchen (Textur-Messung), bekommen ihn: das Spiel wird zerstört, beim Schließen lädt das Dokument neu (RX1).
+  let released = false;
   installPanelHost({
-    onOpen: () => game.loop.sleep(),
-    onClose: () => game.loop.wake(),
-    onRun: (params) => startRun(game.scene.getScene('lobby'), client, uniqueRun(params)),
+    onOpen: (release) => {
+      if (!release) return game.loop.sleep();
+      released = true;
+      guard?.stop(); // der Kontext geht mit Absicht, kein Canvas-Neustart
+      clientLog('info', '🧹 Spiel für die Messung freigegeben (Texturen und Renderer zerstört)');
+      game.loop.wake(); // Phaser zerstört beim nächsten Bild, nicht in der schlafenden Schleife
+      game.destroy(true);
+    },
+    onClose: (release) => (release ? location.reload() : game.loop.wake()),
+    onRun: (params) => !released && startRun(game.scene.getScene('lobby'), client, uniqueRun(params)),
   });
   game.scene.add('load', LoadScene, true, { client }); // lädt den Atlas, startet dann die Lobby
   game.scene.add('lobby', LobbyScene, false);
