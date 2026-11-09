@@ -39,7 +39,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | Entwurf | `geplant/MG10-papier-bosse-neu/` |
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
 | US3 | CLI | PAP | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | – | Entwurf | `geplant/US3-spielbefunde-papierschnitt/` |
-| BD11 | CLI | BED | Eine Startseite, Navigation im Pausenmenü, Vollbild halten | – | Entwurf | `geplant/BD11-startseite-pausenmenue/` |
 | W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
 | RX1 | CLI, PAP, SRV | LST | Xbox hält den WebGL-Kontext: Render-Log, Kontextverlust abfangen, Texturen auf 2048 px | – | Entwurf | `geplant/RX1-xbox-webgl-stabil/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
@@ -303,3 +302,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WB2 | Review und Katalog: feste Schieber, getrennte Scrollbereiche, Lade-Anzeige | `erledigt/WB2-assets-review-katalog-ruhig/` |
 | RD2 | Renderer und Stil nach der Sichtprüfung: Schatten, Materialien, Sichtbarkeit, Rig-Proportionen | `erledigt/RD2-renderer-stil-nachschaerfen/` |
 | MG9 | Papierschnitt nachbessern: Monarch, Reittiere, Truppen, Gegner | `erledigt/MG9-papier-figuren-nachbessern/` |
+| BD11 | Eine Startseite, Navigation im Pausenmenü, Vollbild halten | `erledigt/BD11-startseite-pausenmenue/` |

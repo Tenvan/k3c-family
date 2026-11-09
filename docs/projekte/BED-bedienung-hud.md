@@ -33,7 +33,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | BD8 | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl | erledigt |
 | BD9 | Welt-Anzeige größer und je Spielstand, offene Räume schließen | aktiv |
 | BD10 | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | aktiv |
-| BD11 | Eine Startseite, Navigation im Pausenmenü, Vollbild halten | geplant |
+| BD11 | Eine Startseite, Navigation im Pausenmenü, Vollbild halten | erledigt |
 
 ## Nicht-Ziele
 

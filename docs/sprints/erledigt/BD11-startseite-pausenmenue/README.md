@@ -1,6 +1,6 @@
 # BD11 · CLI · Eine Startseite, Navigation im Pausenmenü, Vollbild halten
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** BED
 - **Domäne:** CLI
 - **Reife:** Entwurf
@@ -58,19 +58,19 @@ keine (siehe B-768 › Offene Fragen).
 
 ## Sessions
 
-Stichpunkte (Reife Entwurf):
+Stichpunkte (Reife Entwurf), alle fertig:
 
-- BD11.1 CLI Umsetzung: Pausenmenü als Kachelseite (fertig, `2e478b20`).
-- BD11.2 CLI Umsetzung: Startseite der Lobby als Kachelseite mit Unterseiten Raumliste, Seiten, Optionen (fertig, `99b390a7`).
-- BD11.3 CLI Umsetzung: `RunConfig` (Menü > URL > Standard), Szenen lesen nur sie, Regel-Test gegen `location.search` (AC-04, AC-06).
-- BD11.4 CLI Umsetzung: Menü-Ebenen Seiten und Kategorien aus `PAGES` und `DEV_SECTIONS`, Stress- und Debug-Kacheln starten per `RunConfig` (AC-02, AC-06).
-- BD11.5 CLI Umsetzung: Panel-Host für Werkzeugseiten im Spiel-Dokument, `installPageChrome` schließt das Panel, Dungeon Master extern (AC-03).
-- BD11.6 CLI Umsetzung: Landingpage, Shell und `game.html` entfernen, `/` ist das Spiel, Vollbild halten, Regeln in `CLAUDE.md` und `projectRules` neu fassen (AC-01, AC-05).
-- BD11.7 CLI Review: Sprint BD11 abnehmen (alle).
-- BD11.8 CLI Workshop Mensch live: Abnahme an Xbox und Pi (AC-07).
+- BD11.1 CLI Umsetzung: Pausenmenü als Kachelseite (`2e478b20`).
+- BD11.2 CLI Umsetzung: Startseite der Lobby als Kachelseite mit Unterseiten Raumliste, Seiten, Optionen (`99b390a7`).
+- BD11.3 CLI Umsetzung: `RunConfig` (Menü > URL > Standard), Regel-Test gegen `location.search` (`422b280e`).
+- BD11.4 CLI Umsetzung: Menü-Ebenen Seiten und Kategorien, Stress- und Debug-Kacheln per `startRun` (`593b3247`).
+- BD11.5 CLI Umsetzung: Panel-Host für Werkzeugseiten im Spiel-Dokument (`354052cb`).
+- BD11.6 CLI Umsetzung: Landingpage und Shell entfernt, `/` ist das Spiel, Vollbild halten, Regeln neu gefasst (`7e48e91a`); Nachtrag B als Zurück-Taste und Lobby ohne Nachwirkung gehaltener Tasten (`7951a652`). Dazu Papierschnitt-Optik der Kachelseiten (`c07349e2`).
+- BD11.7 CLI Review: Sprint BD11 abgenommen (2026-11-09, 🧑 Chat).
+- BD11.8 CLI Workshop Mensch live: Abnahme an Xbox und Pi (2026-11-09, 🧑 Chat, mit Auffälligkeiten, siehe Abnahme).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-09 🧑 Chat: BD11 abgenommen, AC-01 bis AC-07 erfüllt (Tests und Gerätetest Xbox/Pi mit v0.23.0). Behobene Befunde: Spiel nicht verlassbar (A vom Verlassen bestätigte „Fortsetzen“, `7951a652`), URL nur mit Port zeigte die Landingpage (jetzt das Spiel).
+Auffälligkeiten am Gerät: Xbox läuft nur im Canvas-Fallback (kein WebGL, keine Seite grün), Leistung trotzdem akzeptabel; offen bleibt eine Aussage, ob Pi 3 (Server) und Xbox (Client) generell tragen (B-763, B-764, RX1.5/RX1.6) und ob ein anderer Browser hilft (Xbox kennt nur Edge).
+Kein neues Abnahme-Ticket für Sim, Balance und Gen: der Sprint ändert weder Simulation noch Werte noch Generatoren.
