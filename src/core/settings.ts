@@ -17,7 +17,7 @@ export interface Settings {
   colorblindSymbols: boolean;
   /** Hinweise der ersten Nacht (S6.3, Beschluss Q11: optional, Standard an) */
   guideHints: boolean;
-  /** Technik-Anzeige (Renderer, FPS, Texturen; B-761), Standard aus */
+  /** Technik-Anzeige (Renderer, FPS, Texturen; B-761), Standard an (RX1) */
   techInfo: boolean;
   language: Language;
 }
@@ -34,7 +34,7 @@ export const DEFAULT_SETTINGS: Readonly<Settings> = Object.freeze({
   flash: true,
   colorblindSymbols: true,
   guideHints: true,
-  techInfo: false,
+  techInfo: true,
   language: 'de',
 });
 

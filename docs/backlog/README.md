@@ -147,10 +147,12 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-757](B-757-ci-race-balance-timeout-datadoc-test.md) | INF | Problem | hoch | offen | – | CI: Race-Lauf ohne engine/balance, datadoc-Test kennt Balance-Berichtsdateien |
 | [B-758](B-758-release-workflow-tests-wieder-einschalten.md) | INF | Schuld | hoch | offen | – | Release-Workflow: Typecheck und Tests vor dem Bauen wieder einschalten |
 | [B-759](B-759-docker-build-ohne-work-ordner.md) | INF | Problem | hoch | offen | – | Docker-Build im Release scheitert an .work (EXDEV beim gen:paper) |
-| [B-761](B-761-render-info-anzeige-xbox.md) | CLI | Idee | hoch | offen | – | Renderer-Info (WebGL/Canvas, FPS, Texturen) im Spiel anzeigen, WebGL erzwingbar |
-| [B-762](B-762-render-info-ins-client-log.md) | CLI | Idee | hoch | offen | – | Renderer-, Textur- und Leistungswerte im Client-Log (Start, Laden, Verlauf, Kontextverlust) |
-| [B-763](B-763-webgl-kontextverlust-abfangen.md) | CLI | Problem | hoch | offen | – | Bei WebGL-Kontextverlust Renderer neu aufbauen statt abschalten |
-| [B-764](B-764-grosse-texturen-xbox.md) | CLI | Problem | hoch | offen | – | Texturen auf die Xbox als Zielplattform auslegen (höchstens 2048 px, bei Bedarf laden) |
+| [B-761](B-761-render-info-anzeige-xbox.md) | CLI | Idee | hoch | eingeplant | RX1 | Renderer-Info (WebGL/Canvas, FPS, Texturen) im Spiel anzeigen, WebGL erzwingbar |
+| [B-762](B-762-render-info-ins-client-log.md) | CLI | Idee | hoch | eingeplant | RX1 | Renderer-, Textur- und Leistungswerte im Client-Log (Start, Laden, Verlauf, Kontextverlust) |
+| [B-763](B-763-webgl-kontextverlust-abfangen.md) | CLI | Problem | hoch | eingeplant | RX1 | Bei WebGL-Kontextverlust Renderer neu aufbauen statt abschalten |
+| [B-764](B-764-grosse-texturen-xbox.md) | CLI | Problem | hoch | eingeplant | RX1 | Texturen auf die Xbox als Zielplattform auslegen (höchstens 2048 px, bei Bedarf laden) |
+| [B-765](B-765-stress-szene-live-grafik.md) | CLI | Idee | hoch | eingeplant | RX1 | Stress-Szene Live-Grafik: Dichte-Test mit Szenario-Datei, Rampe und Presets (1 und 2 Spieler) |
+| [B-766](B-766-stresstest-echter-client.md) | CLI | Idee | hoch | eingeplant | RX1 | Stresstest des echten Clients: Dev-Aktion spawn und Lauf mit Rampe in der GameScene |
 
 ## Archiv
 

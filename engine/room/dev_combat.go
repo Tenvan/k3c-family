@@ -22,6 +22,13 @@ func (r *Room) devCombat(who string, a DevAction, player func(int) (int, bool)) 
 			r.log().Warn("🚫 Dev-Aktion abgelehnt: Boss schon da", "device", who, "aktion", a.Action, "boss", a.Boss)
 		}
 		return []any{"slot", *a.Slot, "boss", a.Boss}, err == nil
+	case "spawn":
+		idx, ok := devIndex(a, player)
+		if !ok {
+			return nil, false
+		}
+		n, err := sim.DevSpawnUnits(r.isl, idx, a.Kind, a.Unit, a.Amount)
+		return []any{"slot", *a.Slot, "art", a.Kind, "sorte", a.Unit, "anzahl", n}, err == nil
 	case "bossPhase":
 		phase, ok := sim.DevBossPhase(r.isl)
 		return []any{"phase", phase}, ok

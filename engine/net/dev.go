@@ -23,6 +23,8 @@ type devBody struct {
 	Level    int    `json:"level"`
 	Boss     string `json:"boss"`
 	Event    string `json:"event"`
+	Kind     string `json:"kind"`
+	Unit     string `json:"unit"`
 }
 
 // dev ist /api/dev für die Seite /dm (B-232): GET ohne room liefert Dev-Mode und Raumliste, GET mit room die Diagnose
@@ -62,7 +64,7 @@ func (s *server) devAction(w http.ResponseWriter, r *http.Request, rm *room.Room
 	}
 	err := rm.DevPage(room.DevAction{Action: b.Action, Slot: b.Slot, Amount: b.Amount, Resource: b.Resource,
 		Factor: b.Factor, Paused: b.Paused, Phase: b.Phase, Grade: b.Grade, On: b.On, Level: b.Level,
-		Boss: b.Boss, Event: b.Event})
+		Boss: b.Boss, Event: b.Event, Kind: b.Kind, Unit: b.Unit})
 	switch {
 	case errors.Is(err, room.ErrForbidden):
 		fail(w, http.StatusForbidden, messages["forbidden"])

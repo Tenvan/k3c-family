@@ -12,8 +12,10 @@ describe('URL-Schalter (AC-02, AC-04)', () => {
     expect(rendererRequest('')).toBe('auto');
   });
   it('gfx und aa', () => {
-    expect(gfxEnabled('?gfx=1')).toBe(true);
-    expect(gfxEnabled('?gfx=0')).toBe(false);
+    expect(gfxEnabled('?gfx=1', false)).toBe(true);
+    expect(gfxEnabled('?gfx=0', true)).toBe(false);
+    expect(gfxEnabled('', true)).toBe(true);
+    expect(gfxEnabled('', false)).toBe(false);
     expect(antialiasOff('?aa=0')).toBe(true);
     expect(antialiasOff('')).toBe(false);
   });

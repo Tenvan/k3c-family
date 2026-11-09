@@ -78,6 +78,8 @@ type inMsg struct {
 	Level    int       `json:"level"`    // dev: buildAll (1 bis 5)
 	Boss     string    `json:"boss"`     // dev: boss (Id aus data/bosses.json)
 	Event    string    `json:"event"`    // dev: event (fullMoon, bloodMoon, merchantRaid)
+	Kind     string    `json:"kind"`     // dev: spawn (enemy, troop)
+	Unit     string    `json:"unit"`     // dev: spawn (Schlüssel aus data/enemies.json bzw. troops.json)
 }
 
 type inInput struct {

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { GAME_WIDTH } from '../../core/constants';
-import { FrameAverage, canvasWarning, gfxEnabled, readRenderInfo, renderInfoLines, rendererRequest, type RenderInfo } from '../../core/renderInfo';
+import { FrameAverage, canvasWarning, gfxEnabled, renderInfoLines, type RenderInfo } from '../../core/renderInfo';
+import { readGameRenderInfo } from '../../core/gameRenderInfo';
 import { loadSettings } from '../../core/settings';
 
 /** Oben rechts unter der Leiste, klein genug, um das Spiel nicht zu verdecken */
@@ -9,7 +10,7 @@ const POS = { x: GAME_WIDTH - 16, y: 110 };
 const REFRESH_MS = 2000;
 
 /**
- * Technik-Anzeige (B-761): Renderer-Typ, GPU, Texturen, FPS, Ø Frametime. An mit Menü › Technik-Anzeige oder `?gfx=1`, sonst aus.
+ * Technik-Anzeige (B-761): Renderer-Typ, GPU, Texturen, FPS, Ø Frametime. Standard an (Menü › Technik-Anzeige schaltet ab, `?gfx=0` ebenso, `?gfx=1` erzwingt an).
  * Bei Canvas-Fallback rot und mit Warnzeile. Gehört der `HudScene`, liest nur.
  */
 export class RenderInfoView {
@@ -27,8 +28,13 @@ export class RenderInfoView {
       .setVisible(false);
   }
 
+  /** Das Text-Objekt, z. B. damit eine zweite Kamera es ausblendet */
+  get object(): Phaser.GameObjects.Text {
+    return this.text;
+  }
+
   update(): void {
-    const on = gfxEnabled(location.search) || loadSettings().techInfo;
+    const on = gfxEnabled(location.search, loadSettings().techInfo);
     this.text.setVisible(on);
     if (!on) return;
     const loop = this.scene.game.loop;
@@ -44,14 +50,6 @@ export class RenderInfoView {
   }
 
   private read(): RenderInfo {
-    const game = this.scene.game;
-    return readRenderInfo({
-      renderer: game.renderer as unknown as Parameters<typeof readRenderInfo>[0]['renderer'],
-      webglType: Phaser.WEBGL,
-      textureList: Object.values(game.textures.list) as unknown as Parameters<typeof readRenderInfo>[0]['textureList'],
-      devicePixelRatio: window.devicePixelRatio,
-      viewport: `${window.innerWidth}×${window.innerHeight}`,
-      request: rendererRequest(location.search),
-    });
+    return readGameRenderInfo(this.scene.game);
   }
 }
