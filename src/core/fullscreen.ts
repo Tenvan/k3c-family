@@ -24,6 +24,17 @@ export function toggleFullscreen(): Promise<string | null> {
   return isEmbedded ? askShell() : toggleLocal();
 }
 
+/** Nur ein: fordert Vollbild für das eigene Dokument an (Vollbild-Halter); liefert eine Fehlermeldung oder null. Synchron aufrufen, solange die Nutzeraktion frisch ist. */
+export async function requestLocal(): Promise<string | null> {
+  if (isFullscreen()) return null;
+  try {
+    await withTimeout(document.documentElement.requestFullscreen({ navigationUI: 'hide' }));
+    return null;
+  } catch (err) {
+    return err instanceof Error ? err.message : String(err);
+  }
+}
+
 /** Nur für die Shell selbst: schaltet das eigene Dokument um. */
 export async function toggleLocal(): Promise<string | null> {
   // Wichtig: request/exit synchron aufrufen, solange die Nutzeraktion noch "frisch" ist.

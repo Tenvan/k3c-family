@@ -13,9 +13,9 @@ task dev
 ```
 
 Dann `http://localhost:5183` öffnen, oder im Heimnetz `http://<PC-IP>:5183` (z.B. von der Xbox aus).
-Die Startseite ist eine Landingpage, die man komplett mit dem Controller bedient (D-Pad/Stick + **A**,
-**Y** bzw. **F** = Vollbild). Sie bleibt dauerhaft geöffnet und zeigt Spiel und Testseiten in sich an.
-Dadurch bleibt Vollbild beim Seitenwechsel erhalten.
+Die Adresse öffnet direkt das Spiel mit seinem Menü, das man komplett mit dem Controller bedient (D-Pad/Stick + **A**,
+**RS** bzw. **F** = Vollbild). Auch alle Werkzeug- und Testseiten liegen im Menü (Seiten); sie öffnen als Panel im selben Dokument,
+dadurch bleibt Vollbild erhalten.
 Der Dev-Server reicht `/api` und `/ws` an den Go-Server (Port 8080) weiter: Zum Spielen zusätzlich `task start` laufen lassen.
 
 Jede Seite hat oben mittig einen **Start**-Button. Zurück zur Übersicht geht es auch mit **View + Menu**
@@ -119,7 +119,7 @@ Zum Zurückholen die Sicherung einfach in `autosave.json` umbenennen.
 
 1. `meine-seite.html` in den Projektordner legen. Der Build nimmt jede `*.html` automatisch auf.
 2. Im Script `installPageChrome()` aus `src/core/shell.ts` aufrufen. Das bringt Start-Button, View + Menu und B-Schutz mit.
-3. Eintrag in `src/landing/pages.ts` ergänzen. Danach erscheint die Kachel auf der Startseite.
+3. Eintrag in `src/tools/devTiles.ts` ergänzen. Danach erscheint die Kachel im Spielmenü unter Seiten.
 4. Vollbild nur über `toggleFullscreen()` aus `src/core/fullscreen.ts`.
 
 Die vollständige Regel steht in `CLAUDE.md` unter „Regel: Seiten & Navigation“.

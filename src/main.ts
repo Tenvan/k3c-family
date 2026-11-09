@@ -6,8 +6,10 @@ import { CLIENT, fetchServerBuild, versionLine, type BuildInfo } from './core/ve
 import { antialiasOff, rendererRequest } from './core/renderInfo';
 import { installRenderLog } from './core/renderLogInstall';
 import { installContextGuard } from './core/contextGuardInstall';
-import { installPanelHost } from './core/panelHost';
-import { showNoServer } from './landing/serverCheck';
+import { installPanelHost, panelOpen } from './core/panelHost';
+import { showNoServer } from './core/serverCheck';
+import { reloadIfStale } from './core/fresh';
+import { installFullscreenKeeper } from './core/fullscreenKeeper';
 import { createRoomClient } from './online/clientConnection';
 import { GameScene } from './scenes/GameScene';
 import { HudScene } from './scenes/HudScene';
@@ -20,8 +22,15 @@ import { startRun } from './scenes/runStart';
 import { runSearch } from './core/runConfig';
 
 // Seitenrahmen sofort (Home-Button, Zurück-Falle für B).
-installPageChrome({ padNav: false }); // eigene Pad-Bedienung bzw. Phaser-Spiel
+installPageChrome({ padNav: false, home: false }); // eigene Pad-Bedienung; das Spiel ist die oberste Seite (kein Home)
+installFullscreenKeeper(); // Vollbild bei der ersten Eingabe anfordern und nach einem Verlust erneut (BD11.6)
 installClientLog();
+
+/** Neuere Fassung am Server? Dann einmal je Version frisch laden, nie im Spiel oder im Werkzeug-Panel (B-767) */
+function checkFresh(game: Phaser.Game | null): void {
+  if (game && (panelOpen() || !game.scene.isActive('lobby'))) return;
+  void fetchServerBuild().then((server) => reloadIfStale(CLIENT, server));
+}
 
 function start(server: BuildInfo): void {
   // Der Server rechnet, der Browser zeichnet; Raumwahl und Start-Parameter übernimmt die LobbyScene.
@@ -58,9 +67,15 @@ function start(server: BuildInfo): void {
   game.scene.add('hud', HudScene, false);
   game.scene.add('options', OptionsScene, false);
 
+  setInterval(() => checkFresh(game), 60_000); // das Spiel bleibt auf der Xbox tagelang offen: neue Fassung des Servers erkennen
+
   // Nur im Dev-Server oder mit ?dev=1: Zugriff für Debugging über die Browser-Konsole (window.game).
   if (import.meta.env.DEV || new URLSearchParams(runSearch()).has('dev')) (window as unknown as { game: Phaser.Game; client: typeof client }).game = Object.assign(game, { client });
 }
 
 // Ohne Go-Server (z. B. GitHub Pages) statt der Lobby ein Hinweis (B-032).
-void fetchServerBuild().then((server) => (server ? start(server) : showNoServer(document.getElementById('game')!)));
+void fetchServerBuild().then((server) => {
+  if (!server) return showNoServer(document.getElementById('game')!);
+  if (reloadIfStale(CLIENT, server)) return; // alter Client im Zwischenspeicher: frisch laden, bevor das Spiel startet
+  start(server);
+});

@@ -177,6 +177,7 @@ export const de = {
   'biome.mine': 'Tiefe 2 (Mine)',
 
   // Optionen und Pause
+  'fs.denied': 'Vollbild abgelehnt. Mit F oder RS (rechten Stick drücken) selbst umschalten.',
   'panel.back': 'Zurück zum Menü',
   'panel.hint': 'View + Menu oder Esc: zurück ins Menü',
   'menu.cat.info': 'Info und Hilfe',

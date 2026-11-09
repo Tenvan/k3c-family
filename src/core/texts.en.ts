@@ -167,6 +167,7 @@ export const en: Record<TextKey, string> = {
   'biome.cave': 'Depth 1 (cave)',
   'biome.mine': 'Depth 2 (mine)',
 
+  'fs.denied': 'Full screen was refused. Switch it yourself with F or RS (press the right stick).',
   'panel.back': 'Back to the menu',
   'panel.hint': 'View + Menu or Esc: back to the menu',
   'menu.cat.info': 'Info and help',

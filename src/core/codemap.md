@@ -25,6 +25,6 @@ Infrastructure-Schicht des Browser-Clients: Shell-Protokoll zur Landingpage, Vol
 
 ## Integration
 
-- Konsumenten: `src/landing/landing.ts` (shell, fullscreen, version), `src/main.ts` (shell, clientLog, version, constants), `src/input/touchInput.ts` (fullscreen), `src/tools/*` (`installPageChrome`, `toggleFullscreen`), `src/landing/*` (texts, shell), `src/scenes/*` (texts, constants, settings, guideSeen, saveStore inkl. `listSaves` in `LobbyScene`, clientLog, Version im Debug-Overlay), `src/online/clientConnection.ts` (clientLog, texts), `src/audio/*` (settings, clientLog).
+- Konsumenten: `src/core/panelHost.ts` (shell, fullscreen), `src/main.ts` (shell, clientLog, version, constants), `src/input/touchInput.ts` (fullscreen), `src/tools/*` (`installPageChrome`, `toggleFullscreen`), `src/landing/*` (texts, shell), `src/scenes/*` (texts, constants, settings, guideSeen, saveStore inkl. `listSaves` in `LobbyScene`, clientLog, Version im Debug-Overlay), `src/online/clientConnection.ts` (clientLog, texts), `src/audio/*` (settings, clientLog).
 - Abhängigkeiten: `src/model/types` (`isSaveGame`); Endpoints `/api/clientlog`, `api/save`, `api/health`; Browser-APIs `localStorage`, Fullscreen API, `postMessage`, Gamepad API.
 - Wird von `src/scenes/noSim.test.ts` auf Importgrenzen geprüft (nur `src/model`).

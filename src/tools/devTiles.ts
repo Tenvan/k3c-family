@@ -1,6 +1,6 @@
 /**
- * Kacheln der Entwicklerseite (`dev.html`, B-335): alle Werkzeug-Seiten, gegliedert nach Entwicklung, Performance und Balancing.
- * Die Landingpage (`src/landing/pages.ts`) zeigt nur Spieler-Kacheln und eine kleine Kachel hierher.
+ * Kacheln der Werkzeug-Seiten, gegliedert nach Entwicklung, Performance und Balancing. Das Spielmenü (Seiten, `src/scenes/menuPages.ts`) zeigt
+ * sie als Kategorien und öffnet sie als Panel (B-768); `dev.html` gibt es nicht mehr.
  * Neue Werkzeug-Seite: `<name>.html` anlegen, `installPageChrome()` aufrufen und hier eintragen (Regel in CLAUDE.md).
  */
 import { t, textOf } from './texts';

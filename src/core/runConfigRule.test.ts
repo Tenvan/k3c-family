@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest';
 
 /**
  * B-768/AC-04 (BD11.3): Kein Modul außer `runConfig.ts` liest die Abfrage der Seite (`location.search`, auch `window.location.search`
- * und `new URL(location…)`). Start-Parameter kommen aus `runSearch()`/`runParam()` (Menü vor URL vor Standard). Ausgenommen:
- * `src/landing/` (die Landingpage entfällt mit BD11.6) und Kommentare.
+ * und `new URL(location…)`). Start-Parameter kommen aus `runSearch()`/`runParam()` (Menü vor URL vor Standard). Ausgenommen: Kommentare
+ * und wenige Stellen, die die Adresse aus anderem Grund brauchen (Log-Eintrag, frisches Neuladen mit Version, Gamepad-Bericht).
  */
-const sources = import.meta.glob(['../**/*.ts', '!../**/*.test.ts', '!./runConfig.ts', '!../landing/**'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const sources = import.meta.glob(['../**/*.ts', '!../**/*.test.ts', '!./runConfig.ts'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 
 const READS_LOCATION = /\b(?:window\.|document\.)?location\.(?:search|href|hash)\b|new URL\((?:window\.)?location/;
 const withoutComments = (text: string): string =>
@@ -14,8 +14,8 @@ const withoutComments = (text: string): string =>
     .map((line) => line.replace(/\/\/.*$/, '').replace(/^\s*\*.*$/, '').replace(/\/\*.*?\*\//g, ''))
     .join('\n');
 
-/** Stellen, die die Adresse der Seite aus anderem Grund brauchen: Log-Eintrag, Kachel-Ziele der Werkzeugseite, Gamepad-Bericht */
-const ALLOWED = ['./clientLog.ts', '../tools/dev.ts', '../tools/gamepadTest.ts'];
+/** Stellen, die die Adresse der Seite aus anderem Grund brauchen: Log-Eintrag, frisches Neuladen mit Version, Gamepad-Bericht */
+const ALLOWED = ['./clientLog.ts', './fresh.ts', '../tools/gamepadTest.ts'];
 
 describe('Start-Parameter nur über RunConfig (B-768/AC-04)', () => {
   it('findet die Quellen', () => {

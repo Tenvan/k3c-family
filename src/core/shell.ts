@@ -1,12 +1,12 @@
 /**
- * Seiten-Rahmen ("Shell"): Die Landingpage (index.html) bleibt dauerhaft geöffnet und zeigt alle anderen Seiten
- * in einem Vollflächen-iframe. So bleibt Vollbild über Seitenwechsel erhalten.
+ * Seiten-Rahmen ("Shell", B-768): Das Spiel (`index.html`) ist die einzige oberste Seite und navigiert nie, damit Vollbild erhalten
+ * bleibt. Werkzeug-Seiten öffnen als Panel (iframe) im Spiel-Menü (`panelHost.ts`).
  *
- * REGEL: Jede Seite außer der Landingpage ruft `installPageChrome()` auf. Das liefert:
- *   - sichtbaren Home-Button (oben mittig),
- *   - View + Menu gemeinsam halten (Controller) bzw. Pos1 (Tastatur) => zurück zur Landingpage,
+ * REGEL: Jede Werkzeug-Seite ruft `installPageChrome()` auf, das Spiel selbst `installPageChrome({ home: false })`. Das liefert:
+ *   - sichtbaren Home-Button (oben mittig), nicht im Spiel,
+ *   - View + Menu gemeinsam halten (Controller) bzw. Pos1 (Tastatur) => zurück ins Menü (schließt das Panel), nicht im Spiel,
  *   - Zurück-Falle: Browser-Zurück (B auf der Xbox) schließt die Seite nicht versehentlich.
- * Läuft die Seite ausnahmsweise ohne Shell (direkt aufgerufen), führt Home per Link zur Landingpage.
+ * Läuft eine Werkzeug-Seite ausnahmsweise allein (direkt aufgerufen), führt Home per Link zum Spiel.
  */
 
 import { installPadNav } from './padNav';
@@ -68,11 +68,14 @@ export interface PageChromeOptions {
   onBack?: () => void;
   /** Controller bewegt den Fokus und klickt (B-767, `padNav.ts`); `false` für Seiten mit eigener Pad-Bedienung oder Phaser-Spiel. Standard: an. */
   padNav?: boolean;
+  /** Home-Button, Home-Kombi (View + Menu) und Pos1; `false` für das Spiel selbst, das die oberste Seite ist (BD11.6). Standard: an. */
+  home?: boolean;
 }
 
 /** Home-Button, Home-Kombi und Zurück-Falle installieren. Auf jeder Unterseite genau einmal aufrufen. */
 export function installPageChrome(options: PageChromeOptions = {}): void {
-  addHomeButton();
+  const home = options.home !== false;
+  if (home) addHomeButton();
   installBackTrap(options.onBack);
   if (options.padNav !== false) installPadNav();
 
@@ -80,7 +83,7 @@ export function installPageChrome(options: PageChromeOptions = {}): void {
   const poll = () => {
     const pads = typeof navigator.getGamepads === 'function' ? navigator.getGamepads() : [];
     if (pads.some((p) => p?.buttons.some((b) => b.pressed))) rearmOnFirstInteraction();
-    const combo = pads.some((p) => p?.buttons[VIEW]?.pressed && p.buttons[MENU]?.pressed);
+    const combo = home && pads.some((p) => p?.buttons[VIEW]?.pressed && p.buttons[MENU]?.pressed); // das Spiel (home: false) ist oben: kein „Home“
     if (!combo) heldSince = 0;
     else if (heldSince === 0) heldSince = performance.now();
     else if (performance.now() - heldSince > HOLD_MS) {
@@ -92,7 +95,7 @@ export function installPageChrome(options: PageChromeOptions = {}): void {
   requestAnimationFrame(poll);
 
   addEventListener('keydown', (e) => {
-    if (e.key === 'Home' && !homeGuard()) goHome();
+    if (home && e.key === 'Home' && !homeGuard()) goHome();
   });
 }
 
