@@ -5,6 +5,8 @@
 import { installPageChrome } from '../core/shell';
 import { deviceTag } from '../stress/stressReport';
 import { applyTexts, t } from './texts';
+import { diagnose, gatherEnv, openContext, type Gl } from './glDiagnose';
+import { ATTEMPTS, attemptLine, summarize, type AttemptResult, type Summary } from './glProbe';
 import {
   FrameStats, SMOOTH_FPS, TEXTURE_SIZES, defaultConfig, glErrorName, stageCount, stageLine, textureMiB, verdict,
   type Loss, type ProbeConfig, type Stage, type TextureSize,
@@ -23,9 +25,11 @@ const sendBtn = el<HTMLButtonElement>('btn-send');
 
 let cfg: ProbeConfig = defaultConfig(2048);
 let lastReport: object | null = null;
+/** Stand der letzten Diagnose (Teil jedes Berichts) */
+let diag: { results: AttemptResult[]; summary: Summary } = { results: [], summary: summarize([]) };
 
 interface Run {
-  gl: WebGL2RenderingContext | WebGLRenderingContext;
+  gl: Gl;
   canvas: HTMLCanvasElement;
   textures: WebGLTexture[];
   stats: FrameStats;
@@ -141,8 +145,27 @@ function buildReport(r: Run, v: ReturnType<typeof verdict>): object {
   return {
     kind: 'texture-probe', version: 1, device: deviceTag(), userAgent: navigator.userAgent, viewport: `${innerWidth}x${innerHeight}`, devicePixelRatio: devicePixelRatio,
     startedAt: new Date(Date.now() - (performance.now() - r.startedAt)).toISOString(), durationMs: Math.round(performance.now() - r.startedAt),
-    config: cfg, info: describe(r.gl), stages: r.stages, loss: r.loss, verdict: v,
+    config: cfg, info: describe(r.gl), stages: r.stages, loss: r.loss, verdict: v, env: gatherEnv(), attempts: diag.results, context: diag.summary.first,
   };
+}
+
+/** Bericht ohne Messung: Es gab keinen Kontext, die Diagnose erklärt warum */
+function buildNoGlReport(): object {
+  return {
+    kind: 'texture-probe', version: 1, noGl: true, device: deviceTag(), userAgent: navigator.userAgent, viewport: `${innerWidth}x${innerHeight}`, devicePixelRatio,
+    startedAt: new Date().toISOString(), durationMs: 0, config: cfg, info: {}, stages: [], loss: null, verdict: verdict([], null), aborted: false,
+    env: gatherEnv(), attempts: diag.results, context: null, reasons: diag.summary.reasons,
+  };
+}
+
+/** Führt alle Versuche aus und zeigt sie an */
+function runDiagnose(): Summary {
+  const results = diagnose();
+  diag = { results, summary: summarize(results) };
+  el<HTMLPreElement>('diag').textContent = results.map(attemptLine).join('\n');
+  const s = diag.summary;
+  el('diagResult').textContent = t(`tex.diag.${s.kind}`, { ok: s.ok, total: results.length, first: s.first ?? '', reasons: s.reasons.join('; ') });
+  return s;
 }
 
 function endStage(r: Run, now: number): void {
@@ -169,7 +192,7 @@ function frame(now: number): void {
   r.raf = requestAnimationFrame(frame);
 }
 
-function describe(gl: WebGLRenderingContext): Record<string, string | number> {
+function describe(gl: Gl): Record<string, string | number> {
   const ext = gl.getExtension('WEBGL_debug_renderer_info');
   const mem = (performance as unknown as { memory?: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
   return {
@@ -187,6 +210,7 @@ function showDevice(info: Record<string, string | number> | null): void {
   const rows: [string, string][] = [
     ['User-Agent', navigator.userAgent],
     ['Viewport', `${innerWidth}×${innerHeight} @${devicePixelRatio}`],
+    ['Panel', String(gatherEnv().inPanel)],
     ...Object.entries(info ?? {}).map(([k, v]): [string, string] => [k, String(v)]),
   ];
   dl.replaceChildren(...rows.flatMap(([k, v]) => [Object.assign(document.createElement('dt'), { textContent: k }), Object.assign(document.createElement('dd'), { textContent: v })]));
@@ -197,12 +221,16 @@ function start(): void {
   canvas.width = 640;
   canvas.height = 360;
   stage.replaceChildren(canvas);
-  const gl = (canvas.getContext('webgl2') ?? canvas.getContext('webgl')) as WebGL2RenderingContext | WebGLRenderingContext | null;
   out.textContent = '';
   result.textContent = '';
+  const attempt = ATTEMPTS.find((a) => a.id === runDiagnose().first);
+  const gl = attempt ? openContext(canvas, attempt).gl : null;
   if (!gl) {
-    result.textContent = t('tex.noGl');
-    return showDevice(null);
+    result.textContent = t('tex.noGl', { reasons: diag.summary.reasons.join('; ') || '-' });
+    showDevice(null);
+    lastReport = buildNoGlReport();
+    sendBtn.disabled = false;
+    return void send();
   }
   setupGl(gl);
   showDevice(describe(gl));
@@ -225,10 +253,10 @@ function start(): void {
   r.raf = requestAnimationFrame(frame);
 }
 
-async function send(): Promise<void> {
-  if (!lastReport) return;
+async function send(report: object | null = lastReport): Promise<void> {
+  if (!report) return;
   try {
-    const res = await fetch('/api/report', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(lastReport) });
+    const res = await fetch('/api/report', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(report) });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     el('sent').textContent = t('tex.sent');
   } catch (err) {
@@ -241,6 +269,10 @@ startBtn.addEventListener('click', () => {
   start();
 });
 sendBtn.addEventListener('click', () => void send());
+el('btn-diag').addEventListener('click', () => {
+  runDiagnose();
+  void send({ kind: 'gl-diagnose', version: 1, device: deviceTag(), env: gatherEnv(), attempts: diag.results, summary: diag.summary });
+});
 
 const sizes = el<HTMLDivElement>('sizes');
 for (const px of TEXTURE_SIZES) {
@@ -258,3 +290,9 @@ for (const px of TEXTURE_SIZES) {
 }
 state.textContent = t('tex.idle');
 showDevice(null);
+// Schon beim Öffnen: Diagnose zeigen und an den Server schicken, damit sie ohne weiteren Tastendruck vorliegt. Kurz warten: Im Panel gibt das
+// Spiel gerade seinen Speicher frei (RX1), die Diagnose soll den freien Zustand sehen.
+setTimeout(() => {
+  runDiagnose();
+  void send({ kind: 'gl-diagnose', version: 1, device: deviceTag(), env: gatherEnv(), attempts: diag.results, summary: diag.summary });
+}, 1200);

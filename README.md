@@ -61,6 +61,7 @@ Einstellungen per Umgebung: `K3C_HTTP_PORT`,
   Eintrag im Log mit `ns` `diag`): `/api/status/disconnect?room=CODE&device=KENNUNG` trennt die Verbindung eines Geräts (es
   verhält sich wie nach einem Abbruch und darf sich bis zur Frist wieder verbinden), `/api/status/save?room=CODE` sichert den
   Spielstand des Raums sofort.
+- **Auslesen im Dev-Mode (RX1):** Ist `K3C_DEV` an (Standard), liest ein Entwickler den Server ohne Token und ohne SSH aus, nur `GET`: `/api/dev/status` (wie `/api/status`: Speicher, CPU, Räume, Abstürze), `/api/dev/log?pattern=<regex>&limit=<n>&mib=<n>` (die letzten passenden Zeilen des JSON-Logs als Text, z. B. `curl "http://pi-gaming:8080/api/dev/log?pattern=Context%20lost&limit=50"`) und `/api/dev/reports` (Liste der Berichte, mit `?name=<datei>.json` der Inhalt). Ohne Dev-Mode 403. Nur fürs Heimnetz.
 - **Diagnose-TUI:** `go run ./cmd/k3c-tui` (oder im Container `docker exec -it k3c k3c-tui`) zeigt Räume, Geräte, Tick-Dauer, Speicher
   und Abstürze live (jede Sekunde). Token `K3C_STATUS_TOKEN`, Adresse `K3C_SERVER_URL` oder `K3C_HTTP_PORT` (Standard 8080);
   im Container gelten die Variablen des Servers. `k3c-tui -once` druckt den Zustand einmal als Text und endet (Skripte, CI,

@@ -64,6 +64,13 @@ export class ContextGuard {
     this.env.log('✅ WebGL-Kontext wiederhergestellt', { losses: this.lossesThisPage });
   }
 
+  /** Das Spiel wird absichtlich freigegeben (Messung im Panel, RX1): kein Neustart mehr, auch nicht bei einem Verlust danach, und kein Hinweis */
+  stop(): void {
+    this.cancel?.();
+    this.cancel = null;
+    this.state = 'gaveUp';
+  }
+
   /** Gab es in den letzten `TRIED_TTL_MS` schon einen automatischen Neustart? */
   private tried(): boolean {
     const at = Number(this.env.read(TRIED_KEY));

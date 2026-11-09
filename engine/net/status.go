@@ -24,6 +24,11 @@ func (s *server) status(w http.ResponseWriter, r *http.Request) {
 		s.roomStatus(w, code)
 		return
 	}
+	writeJSON(w, http.StatusOK, s.statusBody())
+}
+
+// statusBody ist der Zustand des Servers für /api/status und /api/dev/status: Speicher, Version, Laufzeit, CPU, Räume, Abstürze.
+func (s *server) statusBody() map[string]any {
 	started := s.cfg.StartedAt
 	var mem runtime.MemStats
 	runtime.ReadMemStats(&mem)
@@ -42,7 +47,7 @@ func (s *server) status(w http.ResponseWriter, r *http.Request) {
 	if s.cfg.Rooms != nil {
 		body["rooms"], body["failures"] = s.cfg.Rooms.Status()
 	}
-	writeJSON(w, http.StatusOK, body)
+	return body
 }
 
 // authorized prüft alle Diagnose-Wege gleich (B-027, B-088): ohne gesetztes Token 404, falsches Token 401, falsche Methode 405.
