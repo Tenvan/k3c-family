@@ -59,4 +59,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Umgesetzt in RX1.2 (`src/core/contextGuard.ts`): Phaser 4.2 baut den Kontext bei `webglcontextrestored` selbst wieder auf (`dispatchContextRestored`); die Seite wartet 4 s darauf, sonst genau ein Neustart mit `?renderer=canvas` und Beitritt zum offenen Raum, höchstens einmal je 10 Minuten (Sitzungsmarke mit Zeitstempel). Ein zweiter Verlust nach einer Wiederherstellung startet sofort den Neustart; nach dem Neustart gibt es nur den Hinweis „Bitte die Seite neu laden“. Offen: AC-03 (Xbox) im Xbox-Lauf. Bekannt: Nach einem Server-Neustart ist der Raum neu; ein laufender Stresstest misst dann ab der nächsten Stufe ohne die zuvor gesetzten Figuren.

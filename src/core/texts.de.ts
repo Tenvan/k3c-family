@@ -188,6 +188,8 @@ export const de = {
   'opt.language': 'Sprache',
   'opt.guide': 'Hinweise (erste Nacht)',
   'opt.tech': 'Technik-Anzeige',
+  'ctx.restart': 'Die Grafik ist ausgefallen. Das Spiel startet gleich neu und tritt dem Raum wieder bei.',
+  'ctx.canvas': 'Die Grafik ist erneut ausgefallen. Bitte die Seite neu laden (Notbetrieb).',
   'opt.resume': 'Weiter',
   'opt.removePlayer': 'Spieler abmelden',
   'opt.removePlayerOf': 'Spieler abmelden  ◀ Spieler {n} ▶',

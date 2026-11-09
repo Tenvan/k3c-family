@@ -19,6 +19,9 @@ import { StressRun, type RunEnv } from './stressRun';
 /** Höchstzahl je Dev-Aktion (`sim.DevMaxSpawn`) */
 export const SPAWN_CHUNK = 200;
 
+/** So lange pausiert der Lauf bei einem Verbindungsverlust (`reconnecting`), danach endet er mit `aborted` */
+export const RECONNECT_LIMIT_MS = 60_000;
+
 /** Szenario-ID aus `?stress=`; nur mit `?dev=1` (die Aktion gibt es nur im Dev-Mode des Servers), sonst `null` */
 export function realStressId(search: string): string | null {
   const p = new URLSearchParams(search);
@@ -67,6 +70,8 @@ export class RealStress {
   private slots: number[] = [];
   private total = 0;
   private planned = 0;
+  /** Spielzeit seit Beginn der Pause bei Verbindungsverlust; `null` = Verbindung steht */
+  private offlineMs: number | null = null;
   private done = false;
   private startedAt = '';
   private runId = '';
@@ -85,8 +90,29 @@ export class RealStress {
     if (this.done) return;
     const h = this.host;
     if (!this.run) return this.tryStart();
-    if (h.client.status !== 'room') return this.end('aborted'); // Raum verlassen oder Verbindung weg
+    if (h.client.status === 'reconnecting') return this.waitForConnection();
+    if (h.client.status !== 'room') return this.end('aborted'); // Raum verlassen oder Verbindung endgültig weg
+    this.resume();
     if (this.run.frame(h.game.loop.rawDelta)) this.nextStage();
+  }
+
+  /** Kurzer Verbindungsverlust: Die Messung ruht (die Spielzeit der Stufe läuft nicht weiter), bis die Verbindung zurück ist oder das Zeitlimit endet */
+  private waitForConnection(): void {
+    if (this.offlineMs === null) {
+      this.offlineMs = 0;
+      this.run!.event('Verbindung weg: Lauf pausiert', { limitMs: RECONNECT_LIMIT_MS });
+    }
+    this.offlineMs += Math.min(this.host.game.loop.rawDelta, 1000);
+    if (this.offlineMs > RECONNECT_LIMIT_MS) {
+      this.run!.event('Verbindung blieb weg: Lauf abgebrochen', { pausedMs: Math.round(this.offlineMs) });
+      this.end('aborted');
+    }
+  }
+
+  private resume(): void {
+    if (this.offlineMs === null) return;
+    this.run!.event('Verbindung wieder da: Lauf geht weiter', { pausedMs: Math.round(this.offlineMs) });
+    this.offlineMs = null;
   }
 
   /** Die Szene endet (Raum verlassen, Seite zu): offener Lauf bekommt seine Endzeile */

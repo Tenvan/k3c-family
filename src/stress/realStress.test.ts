@@ -3,7 +3,7 @@ import type { RenderInfo } from '../core/renderInfo';
 import type { DevMessage } from '../online/clientProtocol';
 import { KNOWN } from './known';
 import { figuresAt, parseScenarios, type Scenario } from './stressPlan';
-import { RealStress, SPAWN_CHUNK, realStressId, spawnMessages, type RealHost } from './realStress';
+import { RECONNECT_LIMIT_MS, RealStress, SPAWN_CHUNK, realStressId, spawnMessages, type RealHost } from './realStress';
 import data from '../../data/stress.json';
 
 const scenarios = parseScenarios(data as Record<string, unknown>, KNOWN);
@@ -100,5 +100,64 @@ describe('Lauf im echten Client', () => {
     expect(lines[0]!.ctx).toMatchObject({ params: '?dev=1&stress=typisch&depth=1&seed=stress' });
     expect(lines[1]!.msg).toContain('Echter Client');
     expect(String(lines[0]!.ctx!.runId)).toMatch(/-real-typisch-p1-d1-/);
+  });
+});
+
+describe('Verbindungsverlust im Lauf (RX1.2)', () => {
+  const tiny: Scenario = { ...typ, ramp: { everyMs: 4000, steps: 2, factor: 2 }, enemies: [{ type: 'greed', count: 2 }], troops: [], sprites: { mix: 'typical', distinctSheets: 5 } };
+
+  function started() {
+    const { host } = fakeHost();
+    const lines: { level: string; msg: string }[] = [];
+    const rs = new RealStress(host, tiny, 'typisch', '?dev=1&stress=typisch', () => INFO, (level, msg) => lines.push({ level, msg }));
+    host.client.status = 'room';
+    host.client.you = [{ slot: 0 }];
+    host.world = { enemies: [], troops: [] };
+    rs.update();
+    return { host, rs, lines };
+  }
+
+  it('reconnecting pausiert den Lauf: keine Frames, eine Pausen-Zeile, danach geht er weiter', () => {
+    const { host, rs, lines } = started();
+    for (let i = 0; i < 50; i++) rs.update(); // 1 s im Raum
+    host.client.status = 'reconnecting';
+    for (let i = 0; i < 100; i++) rs.update();
+    expect(lines.filter((l) => l.msg.includes('Verbindung weg'))).toHaveLength(1);
+    expect(lines.some((l) => l.msg.includes('✅ Ergebnis'))).toBe(false);
+    host.client.status = 'room';
+    rs.update();
+    expect(lines.filter((l) => l.msg.includes('Verbindung wieder da'))).toHaveLength(1);
+    expect(lines.some((l) => l.msg.includes('✅ Ergebnis'))).toBe(false);
+  });
+
+  it('die Pause zählt nicht zur Stufenzeit: nach 60 s Pause endet die Stufe nicht früher', () => {
+    const { host, rs, lines } = started();
+    host.client.status = 'reconnecting';
+    host.game.loop.rawDelta = 1000;
+    for (let i = 0; i < 30; i++) rs.update();
+    host.client.status = 'room';
+    host.game.loop.rawDelta = 20;
+    rs.update();
+    expect(lines.some((l) => l.msg.startsWith('💓 Stufe'))).toBe(false);
+  });
+
+  it('bleibt die Verbindung über das Zeitlimit weg, endet der Lauf mit abgebrochen', () => {
+    const { host, rs, lines } = started();
+    host.client.status = 'reconnecting';
+    host.game.loop.rawDelta = 1000;
+    for (let i = 0; i < RECONNECT_LIMIT_MS / 1000 + 2; i++) rs.update();
+    expect(lines.some((l) => l.msg.includes('Verbindung blieb weg'))).toBe(true);
+    const end = lines.filter((l) => l.msg.startsWith('✅ Ergebnis'));
+    expect(end).toHaveLength(1);
+    expect(end[0]!.msg).toContain('abgebrochen');
+    rs.update();
+    expect(lines.filter((l) => l.msg.startsWith('✅ Ergebnis'))).toHaveLength(1);
+  });
+
+  it('ended oder lost beendet den Lauf sofort', () => {
+    const { host, rs, lines } = started();
+    host.client.status = 'lost';
+    rs.update();
+    expect(lines.filter((l) => l.msg.startsWith('✅ Ergebnis'))).toHaveLength(1);
   });
 });

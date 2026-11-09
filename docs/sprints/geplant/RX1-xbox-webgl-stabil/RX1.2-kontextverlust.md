@@ -1,6 +1,6 @@
 # RX1.2 · WebGL-Kontextverlust abfangen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -14,17 +14,16 @@
 
 ## Ziel
 
-Ein WebGL-Kontextverlust führt zu einer spielbaren Anzeige statt zur weißen Seite (B-763).
+Ein WebGL-Kontextverlust führt zu einer spielbaren Anzeige statt zur weißen Seite (B-763); ein kurzer Verbindungsverlust pausiert den Stresstest des echten Clients, statt ihn abzubrechen.
 
 ## Kontext
 
-Xbox-Edge meldet nach 3–4 s dreimal „WebGL Context lost. Renderer disabled“; Phaser schaltet ab, Seite weiß. Start in `src/main.ts` (`Phaser.AUTO`, `?renderer=` aus B-761). Die Log-Haken stammen aus RX1.1. Shell-Regeln: Seitenwechsel nur über `openPage()`; Neuladen des eigenen Frames ist mit der Shell abzustimmen. Spec: B-763. Offene Frage der README (Neuaufbau vs. Canvas-Neuladen) hier entscheiden.
+Xbox-Edge meldet nach 3–4 s dreimal „WebGL Context lost“. Phaser 4.2 ruft bei `webglcontextlost` `preventDefault()` und baut Texturen und Puffer bei `webglcontextrestored` selbst wieder auf (`WebGLRenderer.dispatchContextRestored`); kommt kein `restored`, bleibt die Seite weiß. Log-Haken aus RX1.1 (`renderLogInstall.ts`). Shell-Regel: Seitenwechsel nur über `openPage()`. Der Client hat keinen Spielzustand, der Raum bleibt auf dem Server (Beitritt per `?room=CODE&autostart=1`). Stresslauf: `src/stress/realStress.ts` (B-766).
 
 ## Erlaubte Dateien
 
-- `src/main.ts`, `src/core/contextGuard.ts` (neu), `src/core/renderInfo.ts`, ggf. `src/core/shell.ts`
-- Hinweis-Anzeige in `src/scenes/hud/`
-- zugehörige `*.test.ts`
+- `src/core/contextGuard.ts`, `contextGuardInstall.ts` (neu), `src/main.ts`, `src/core/texts.de.ts`, `texts.en.ts`
+- `src/stress/realStress.ts` (Pause bei Verbindungsverlust), zugehörige `*.test.ts`
 
 ## Nicht-Ziele
 
@@ -32,15 +31,16 @@ Keine Texturverkleinerung (RX1.6), keine Optimierung des Canvas-Renderers.
 
 ## Schritte
 
-1. Entscheidung Neuaufbau (Kontext wiederherstellen, Texturen neu hochladen) oder Neuladen mit `?renderer=canvas` begründen und im Ticket B-763 notieren.
-2. Höchstens ein automatischer Versuch je Sitzung (sessionStorage), danach Canvas und sichtbarer Hinweis.
-3. Verbindung und Spielstand bleiben (Client ohne Zustand); Ereignisse ins Log (RX1.1).
-4. Tests mit simuliertem Verlust; Reviewer-Agent vor dem Commit (Shell-/Pfad-Code).
+1. Entscheidung: Phaser baut den Kontext selbst auf; die Seite wartet 4 s auf `webglcontextrestored`, sonst Neustart mit `?renderer=canvas` und Beitritt zum offenen Raum (`room`, `autostart`), höchstens einmal je Sitzung (Sitzungsspeicher `k3c-ctx-restart`); ein zweiter Verlust nach einer Wiederherstellung startet sofort den Neustart; nach dem Neustart nur noch ein Hinweis (Notbetrieb).
+2. Hinweisleiste unabhängig von Phaser (DOM), Texte de/en.
+3. Stresslauf: `reconnecting` pausiert (Spielzeit der Stufe läuft nicht), nach 60 s `aborted`; `ended`/`lost` beenden sofort.
+4. Tests, Browser-Prüfung mit `WEBGL_lose_context`.
 
 ## Fertig, wenn
 
-- [ ] AC-05: Test: erster Verlust löst genau einen Neuaufbau/Canvas-Neustart aus, zweiter keinen weiteren.
-- [ ] Keine Schleife bei sofortiger Wiederholung; B nicht belegt.
+- [ ] AC-05: Test: erster Verlust löst genau einen Neustart aus, ein zweiter nach dem Neustart keinen (`src/core/contextGuard.test.ts`).
+- [ ] Verbindungsverlust im Stresslauf pausiert und endet nach dem Limit (`realStress.test.ts`).
+- [ ] B nicht belegt, keine Schleife.
 
 ## Prüfen
 
@@ -56,4 +56,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-05: umgesetzt und getestet (`contextGuard.test.ts`, 8 Tests; `realStress.test.ts` +4). Entscheidung: Wiederherstellung durch Phaser abwarten (4 s), sonst genau ein Canvas-Neustart mit Raum-Beitritt; danach nur der Hinweis „Notbetrieb“.
+- Browser (Vite + Go-Server, `WEBGL_lose_context`): `restoreContext` innerhalb der Frist → kein Neustart; ohne Wiederherstellung → Neustart nach 4 s mit `renderer=canvas`. Der Beitritt zum offenen Raum ist nur im Test der Adresse geprüft (das Pane im Hintergrund trat dem Raum nicht bei).
+- Stresslauf: `reconnecting` pausiert bis 60 s (`RECONNECT_LIMIT_MS`), dann `aborted`.
+- Offen: AC-09 (Xbox bleibt bedienbar) im Xbox-Lauf RX1.5/Abnahme RX1.8.

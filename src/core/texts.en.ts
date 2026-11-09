@@ -178,6 +178,8 @@ export const en: Record<TextKey, string> = {
   'opt.language': 'Language',
   'opt.guide': 'Hints (first night)',
   'opt.tech': 'Tech info',
+  'ctx.restart': 'Graphics failed. The game restarts now and rejoins the room.',
+  'ctx.canvas': 'Graphics failed again. Please reload the page (fallback mode).',
   'opt.resume': 'Resume',
   'opt.removePlayer': 'Remove player',
   'opt.removePlayerOf': 'Remove player  ◀ Player {n} ▶',
