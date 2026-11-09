@@ -18,8 +18,8 @@ export const LEAVE_KEY = 'leaveGame';
 /** Registry-Schlüssel: „Spieler abmelden“, Wert = Slot des Spielers (sonst `null`); `GameScene` meldet genau ihn ab (B-411) */
 export const REMOVE_PLAYER_KEY = 'removePlayer';
 
-/** Pad-Tasten (standard mapping), die die Szene liest. B (Index 1) bleibt frei: Edge-Zurück auf der Xbox. */
-export const OPTION_PAD_KEYS = { A: 0, VIEW: 8, MENU: 9, UP: 12, DOWN: 13, LEFT: 14, RIGHT: 15 } as const;
+/** Pad-Tasten (standard mapping), die die Szene liest. B (Index 1) geht im Menü eine Seite zurück, wie Menu kurz und Esc (der Edge-Zurück der Xbox verfällt in der Zurück-Falle). */
+export const OPTION_PAD_KEYS = { A: 0, B: 1, VIEW: 8, MENU: 9, UP: 12, DOWN: 13, LEFT: 14, RIGHT: 15 } as const;
 
 /** Menu kürzer als das gilt als „kurz“; länger bleibt der Kombi View + Menu (Shell) vorbehalten */
 export const MENU_SHORT_MS = 600;

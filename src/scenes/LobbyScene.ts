@@ -1,12 +1,12 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
-import { heldPadKeys, type LobbyKey } from './lobbyPad';
+import { freshPadButtons, heldPadKeys, type LobbyKey } from './lobbyPad';
 import { clientLog } from '../core/clientLog';
 import { closeRoom, deleteSave, listSaves, listWorlds, type SaveInfo } from '../core/saveStore';
 import { t } from '../core/texts';
 import type { RoomClient, Status } from '../online/clientConnection';
 import type { GameSceneData } from './GameScene';
-import { LobbyFlow, applyCommand, entryLabel, gradeName, lobbyEntries, lobbyNotice, moveSelection, parseStartParams, rowAt, slotsFor, type StartParams } from './lobbyLogic';
+import { LobbyFlow, applyCommand, dialogLabels, entryLabel, lobbyEntries, lobbyNotice, moveSelection, parseStartParams, rowAt, slotsFor, type StartParams } from './lobbyLogic';
 import { DIALOG_ROWS, devAllowed, type DialogState } from './lobbyOptions';
 import { DeleteDialog, closeNotice, deleteNotice, worldOf } from './saveMenu';
 import { VERSION_KEY } from './debug/debugOverlay';
@@ -32,6 +32,8 @@ const STYLE = { fontSize: '36px', color: '#ffffff', stroke: '#000000', strokeThi
 /** Ansichten der Lobby: Startseite (Kacheln, Einstieg), Raum- und Spielstandliste, Seitenliste (B-768) */
 type View = 'hub' | 'list' | 'pages';
 const TOP = 200;
+/** Eingaben ruhen kurz nach dem Start der Lobby (gehaltene Tasten vom Verlassen des Spiels) */
+const SETTLE_MS = 350;
 const ROW_H = 64;
 /** Höchstzahl geloggter Tastendrücke je Lobby-Besuch (Rate-Limit des Client-Logs) */
 const PAD_LOG_MAX = 30;
@@ -67,6 +69,8 @@ export class LobbyScene extends Phaser.Scene {
   private hubView!: HubView;
   private backdrop!: PaperBackdrop;
   private hubShown = false;
+  /** Bis dahin zählen Eingaben nicht: das A von „Spiel verlassen“ ist beim Start der Lobby noch gedrückt und würde „Fortsetzen“ bestätigen */
+  private settleUntil = 0;
   private saves: SaveInfo[] = [];
   /** Zustand im letzten Bild: Spielstände nur beim Wechsel nach `lobby` laden, nicht jedes Bild */
   private lastStatus: Status | null = null;
@@ -87,6 +91,7 @@ export class LobbyScene extends Phaser.Scene {
     this.selected = 0;
     this.rows = [];
     this.padHeld = new Set();
+    this.settleUntil = performance.now() + SETTLE_MS;
     this.tapped = null;
     this.tappedTile = null;
     this.view = 'hub';
@@ -145,6 +150,7 @@ export class LobbyScene extends Phaser.Scene {
 
     const entries = lobbyEntries(client.rooms, client.status, this.saves);
     const input = this.poll();
+    this.settle(input);
     playUi(uiSoundFor({ ...input, confirm: input.confirm || (this.tapped !== null && this.tapped >= 0) })); // UI-Klick (B-575)
     if (this.updateDialogs(input)) {
       this.backdrop.setDim(0.8);
@@ -178,6 +184,14 @@ export class LobbyScene extends Phaser.Scene {
     }
     if (input.del) this.askRemove(entries[this.selected]);
     this.draw(entries);
+  }
+
+  /** Kurz nach dem Start zählen Eingaben nicht (gehaltene Tasten vom Verlassen des Spiels): Richtung, Bestätigen, Löschen, Zurück und Tippen entfallen */
+  private settle(input: { dir: number; side: number; confirm: boolean; del: boolean; back: boolean }): void {
+    if (performance.now() >= this.settleUntil) return;
+    Object.assign(input, { dir: 0, side: 0, confirm: false, del: false, back: false });
+    this.tapped = null;
+    this.tappedTile = null;
   }
 
   /** Ohne Verbindung zeigt die Lobby die Liste (mit „Erneut versuchen“ und „Seite neu laden“), sonst die gewählte Ansicht */
@@ -364,16 +378,7 @@ export class LobbyScene extends Phaser.Scene {
   }
 
   private drawOptions(d: DialogState): void {
-    const o = d.options;
-    const labels = [
-      t('lobby.dialog.title'),
-      t('lobby.dialog.grade', { value: gradeName(o.grade) }),
-      t('lobby.dialog.goal', { value: t(`opt.goal.${o.goal}`) }),
-      t('lobby.dialog.defeat', { value: t(`opt.defeat.${o.defeat}`) }),
-      t('lobby.dialog.world', { value: o.world }),
-      t('lobby.dialog.create'),
-      t('lobby.dialog.cancel'),
-    ];
+    const labels = dialogLabels(d.options);
     labels.forEach((label, i) => {
       const selected = i === d.row + 1;
       const row = (this.rows[i] ??= this.add.text(GAME_WIDTH / 2, TOP + i * ROW_H + ROW_H / 2, '', STYLE).setOrigin(0.5));
@@ -433,15 +438,9 @@ export class LobbyScene extends Phaser.Scene {
 
   /** Neu gedrückte Pad-Tasten (Index) ins Client-Log, höchstens `PAD_LOG_MAX` je Lobby-Besuch: zeigt auf dem Gerät, welche Tasten ankommen */
   private logPadButtons(): void {
-    const now = new Set<string>();
-    for (const [p, pad] of (this.input.gamepad?.gamepads ?? []).entries()) {
-      pad?.buttons.forEach((b, i) => b.pressed && now.add(`${p}:${i}`));
-    }
-    for (const key of now) {
-      if (this.padButtons.has(key) || this.padLogged >= PAD_LOG_MAX) continue;
-      this.padLogged++;
-      clientLog('info', `🎮 Lobby: Pad ${key.split(':')[0]} Taste ${key.split(':')[1]}`);
-    }
+    const { now, fresh } = freshPadButtons(this.input.gamepad?.gamepads ?? [], this.padButtons, PAD_LOG_MAX - this.padLogged);
+    for (const key of fresh) clientLog('info', `🎮 Lobby: Pad ${key.split(':')[0]} Taste ${key.split(':')[1]}`);
+    this.padLogged += fresh.length;
     this.padButtons = now;
   }
 

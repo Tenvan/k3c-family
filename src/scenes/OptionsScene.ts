@@ -305,7 +305,7 @@ export class OptionsScene extends Phaser.Scene {
     const edge = (name: string) => held.has(name) && !this.padHeld.has(name);
     dir += (edge('down') ? 1 : 0) - (edge('up') ? 1 : 0);
     act ??= edge('left') ? 'left' : edge('right') ? 'right' : edge('a') ? 'confirm' : null;
-    close ||= this.menu.update(held.has('menu'), held.has('view'), performance.now());
+    close ||= this.menu.update(held.has('menu'), held.has('view'), performance.now()) || edge('b'); // B geht zurück wie Menu kurz und Esc
     this.padHeld = held;
     return { dir: Math.sign(dir), act, close };
   }
@@ -313,7 +313,7 @@ export class OptionsScene extends Phaser.Scene {
   /** Gerade gehaltene Tasten aller Pads (B bleibt unbelegt). */
   private heldPadKeys(): Set<string> {
     const held = new Set<string>();
-    const names: [string, number][] = [['a', PAD.A], ['view', PAD.VIEW], ['menu', PAD.MENU], ['up', PAD.UP], ['down', PAD.DOWN], ['left', PAD.LEFT], ['right', PAD.RIGHT]];
+    const names: [string, number][] = [['a', PAD.A], ['b', PAD.B], ['view', PAD.VIEW], ['menu', PAD.MENU], ['up', PAD.UP], ['down', PAD.DOWN], ['left', PAD.LEFT], ['right', PAD.RIGHT]];
     for (const pad of this.input.gamepad?.gamepads ?? []) {
       if (!pad) continue;
       for (const [name, index] of names) if (pad.buttons[index]?.pressed) held.add(name);

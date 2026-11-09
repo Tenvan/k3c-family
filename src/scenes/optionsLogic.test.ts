@@ -158,8 +158,9 @@ describe('Menu kurz', () => {
 });
 
 describe('B-Taste und Stillstand', () => {
-  it('die Szene belegt Pad-Taste B (Index 1) nicht', () => {
-    expect(Object.values(OPTION_PAD_KEYS)).not.toContain(1);
+  it('Pad-Taste B (Index 1) geht im Menü zurück; View und Menu bleiben die Home-Kombi', () => {
+    expect(OPTION_PAD_KEYS.B).toBe(1);
+    expect(Object.values(OPTION_PAD_KEYS).filter((i) => i === 1)).toHaveLength(1);
   });
 
   it('idleCommands: alle Sitzplätze stehen still', () => {

@@ -30,8 +30,10 @@ describe('Papierschnitt-Stil der Kacheln (B-768)', () => {
   });
 
   it('Schatten hat die Farbe von papier.lage und drei Schichten von blass bis dunkel', () => {
-    expect(SHADOW_LAYERS.map((l) => l.alpha)).toEqual([...SHADOW_LAYERS.map((l) => l.alpha)].sort((a, b) => a - b));
-    expect(SHADOW_LAYERS.map((l) => l.d)).toEqual([...SHADOW_LAYERS.map((l) => l.d)].sort((a, b) => b - a));
+    const alphas = SHADOW_LAYERS.map((l) => l.alpha);
+    const offsets = SHADOW_LAYERS.map((l) => l.d);
+    expect(alphas).toEqual(alphas.slice().sort((a, b) => a - b));
+    expect(offsets).toEqual(offsets.slice().sort((a, b) => b - a));
     expect(stil.papier.lage.farbe.toLowerCase()).toBe('#1a0f14');
   });
 });
@@ -88,7 +90,8 @@ describe('Illustrationen aus dem Spiel', () => {
 describe('Hintergrund', () => {
   it('drei Waldschichten von hinten nach vorn mit steigender Fußlinie, alle aus dem Spiel (hintergruende/hg-wald-*)', () => {
     expect(FOREST_LAYERS.map((l) => l.file)).toEqual(['fern', 'mitte', 'nah'].map((e) => `hintergruende/hg-wald-${e}-v1/stand.png`));
-    expect(FOREST_LAYERS.map((l) => l.y)).toEqual([...FOREST_LAYERS.map((l) => l.y)].sort((a, b) => a - b));
+    const feet = FOREST_LAYERS.map((l) => l.y);
+    expect(feet).toEqual(feet.slice().sort((a, b) => a - b));
   });
 
   it('Sterne liegen im Bild; die Papierbahn deckt die ganze Breite und den unteren Rand', () => {

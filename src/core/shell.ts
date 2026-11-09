@@ -77,7 +77,7 @@ export function installPageChrome(options: PageChromeOptions = {}): void {
   const home = options.home !== false;
   if (home) addHomeButton();
   installBackTrap(options.onBack);
-  if (options.padNav !== false) installPadNav();
+  if (options.padNav !== false) installPadNav(undefined, goHome); // B geht zurück: im Panel ins Menü
 
   let heldSince = 0;
   const poll = () => {

@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { clientLog, installClientLog } from '../core/clientLog';
 import { installPadNav } from '../core/padNav';
-import { installPageChrome } from '../core/shell';
+import { goHome, installPageChrome } from '../core/shell';
 import { CLIENT, formatBuild } from '../core/version';
 import { antialiasOff, rendererRequest } from '../core/renderInfo';
 import { readGameRenderInfo } from '../core/gameRenderInfo';
@@ -17,7 +17,7 @@ import { StressRun, type RunResult } from './stressRun';
 import { runSearch } from '../core/runConfig';
 
 installPageChrome({ padNav: false });
-installPadNav(() => !el('menu').hidden); // das Menü bedient der Controller, während des Laufs nicht
+installPadNav(() => !el('menu').hidden, goHome); // das Menü bedient der Controller, während des Laufs nicht; B = zurück ins Spielmenü
 installClientLog();
 applyTexts();
 
