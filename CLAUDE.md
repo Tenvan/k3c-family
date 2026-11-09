@@ -153,7 +153,7 @@ Für **jede** Werkzeug-Seite gilt:
 - Keine Sprünge, nur horizontale Bewegung. Welt-Koordinaten in **Units** (1 Unit = `UNIT_PX` = 32 px).
 - Level-Generierung und Simulation sind deterministisch und laufen in Go: nur `engine/rng` (`rng.New(seed)`) verwenden, niemals `math/rand`; im Client gibt es keine Würfel (kein `Math.random()` für Spiel-Logik).
 - Jede Mechanik muss mit **2 Spielern gleichzeitig** funktionieren (Split-Screen, eigene Eingabe pro Spieler).
-- Controller-Taste **B** nicht belegen (Edge-Zurück auf der Xbox, wird von der Zurück-Falle geschluckt).
+- Controller-Taste **B** geht in jedem Menü und in jedem Werkzeug-Panel **zurück** (wie Menu kurz und Esc); im laufenden Spiel bleibt sie unbelegt. Der Edge-Zurück der Xbox wird von der Zurück-Falle geschluckt.
   **View + Menu** gemeinsam = zurück ins Menü (in einem Werkzeug-Panel; reserviert, auf keiner Seite anders belegen).
 - **Logging mit Emojis:** Jede Log-Meldung (Go `slog`, Client `clientLog`) beginnt mit einem Emoji zur Aktion:
   🚀 Start · 🛑 Stopp · 🔁 Neustart · ✅ geschafft · ❌ fehlgeschlagen · 💥 Fehler/Absturz · 🚫 abgelehnt · ⏳ Warten/Frist ·
