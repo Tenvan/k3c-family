@@ -25,7 +25,7 @@ afterEach(() => vi.unstubAllGlobals());
 
 describe('settings', () => {
   it('Standard: alles an, Lautstärke 100 %, Deutsch', () => {
-    expect(DEFAULT_SETTINGS).toEqual({ musicVolume: 100, sfxVolume: 100, ambientVolume: 100, screenshake: true, flash: true, colorblindSymbols: true, guideHints: true, techInfo: false, language: 'de' });
+    expect(DEFAULT_SETTINGS).toEqual({ musicVolume: 100, sfxVolume: 100, ambientVolume: 100, screenshake: true, flash: true, colorblindSymbols: true, guideHints: true, techInfo: true, language: 'de' });
     expect(loadSettings(fakeStorage())).toEqual(DEFAULT_SETTINGS);
   });
 

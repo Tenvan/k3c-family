@@ -4,6 +4,7 @@ import { clientLog, installClientLog } from './core/clientLog';
 import { installPageChrome } from './core/shell';
 import { CLIENT, fetchServerBuild, versionLine, type BuildInfo } from './core/version';
 import { antialiasOff, rendererRequest } from './core/renderInfo';
+import { installRenderLog } from './core/renderLogInstall';
 import { showNoServer } from './landing/serverCheck';
 import { createRoomClient } from './online/clientConnection';
 import { GameScene } from './scenes/GameScene';
@@ -38,6 +39,7 @@ function start(server: BuildInfo): void {
   // Versionen für Lobby und Debug-Overlay, je eine Zeile für Client und Server (beide lesen sie aus der Registry)
   game.registry.set(VERSION_KEY, versionLine(CLIENT, server, '\n'));
   clientLog('info', `🚀 Phaser gestartet (${game.renderer.type === Phaser.WEBGL ? 'WebGL' : '⚠️ Canvas'}, gewünscht: ${want})`);
+  installRenderLog(game, versionLine(CLIENT, server, ' | '));
   game.scene.add('load', LoadScene, true, { client }); // lädt den Atlas, startet dann die Lobby
   game.scene.add('lobby', LobbyScene, false);
   game.scene.add('game', GameScene, false);
