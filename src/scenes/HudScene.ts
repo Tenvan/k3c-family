@@ -32,6 +32,7 @@ import { hubText, stockTexts } from './hud/economyLabels';
 import { buergerLines } from './hud/citizenLabels';
 import { formatTime } from './kampfAnzeige';
 import { KampfHud } from './kampfView';
+import { runSearch } from '../core/runConfig';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
 const BANNER_SECONDS = 2.8;
@@ -117,7 +118,7 @@ export class HudScene extends Phaser.Scene {
     this.citizens = this.boxed('citizens', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('shared') }), false);
     this.banner = this.boxed('banner', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('banner'), strokeThickness: 4, align: 'center' }).setVisible(false));
     this.joinHint = this.boxed('join', this.add.text(0, 0, t('hud.joinCenter'), { ...STYLE, ...fontStyle('joinCenter') }));
-    this.debug = debugEnabled(location.search) ? new DebugOverlay(this) : null;
+    this.debug = debugEnabled(runSearch()) ? new DebugOverlay(this) : null;
     this.renderInfo = new RenderInfoView(this);
     this.info = this.boxed('info', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('roomInfo'), strokeThickness: 4 }), false);
     this.travel = this.boxed('travel', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('travel') }));

@@ -126,23 +126,27 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   Unterordner `render/` (`worldRenderer.ts` zeichnet den Zustand), `hud/`, `hints/`, `effects/`, `debug/`.
   Neue Mechanik: Logik + Test in `engine/sim/`, dann nur zeichnen.
 - Namen und Ablage: Datei- und Ordnernamen im Code englisch, Gruppen-Präfixe in `engine/sim` (`docs/arbeitsweise.md` › Namen und Ablage).
-- Seiten: `index.html` = Landingpage/Shell (Kacheln aus `src/landing/pages.ts`), `game.html` = Spiel, weitere `*.html` = Testseiten.
-  Jede `*.html` im Root wird automatisch gebaut.
+- Seiten: `index.html` = das Spiel (`ip:8080` öffnet direkt das Spielmenü, B-768), `game.html` = Alias derselben Seite (Werkzeuge und Lesezeichen), weitere `*.html` = Werkzeug-Seiten.
+  Jede `*.html` im Root wird automatisch gebaut. Es gibt keine Landingpage mehr.
 - `site/` – Präsentationsseite für GitHub Pages (B-183), rein statisch, ohne Server. Pages lädt nur `site/` hoch (kein Node, kein Build); Bilder liegen als Kopien in `site/img/` (B-507).
-- `src/core/shell.ts` – Seiten-Rahmen (Home-Button, Home-Kombi, Zurück-Falle), `src/core/fullscreen.ts` – Vollbild über die Shell.
+- `src/core/shell.ts` – Seiten-Rahmen der Werkzeug-Seiten (Home-Button, Home-Kombi, Zurück-Falle), `src/core/panelHost.ts` – Panel im Spielmenü, `src/core/fullscreen.ts` und `fullscreenKeeper.ts` – Vollbild, `src/core/runConfig.ts` – Start-Parameter (Menü > URL > Standard).
 
 ## Regel: Seiten & Navigation
 
-Die Landingpage bleibt **dauerhaft geöffnet** und zeigt alle anderen Seiten in einem Vollflächen-iframe.
-Nur so bleibt Vollbild auf der Xbox über Seitenwechsel erhalten. Für **jede** Seite außer der Landingpage gilt:
+**Das Spiel ist die einzige oberste Seite** (`index.html`, B-768) und navigiert nie; so bleibt Vollbild auf der Xbox erhalten
+(`src/core/fullscreenKeeper.ts` fordert es bei der ersten Eingabe an). Alle Werkzeug- und Testseiten erreicht man über das Spielmenü
+(Seiten › Kategorie) und sie öffnen als **Panel** im selben Dokument (`src/core/panelHost.ts`, iframe unter einer Leiste mit Zurück).
+Für **jede** Werkzeug-Seite gilt:
 
-1. Im Script **`installPageChrome()`** aus `src/core/shell.ts` aufrufen. Das liefert den sichtbaren **Home-Button**
-   (oben mittig), **View + Menu** gemeinsam halten bzw. **Pos1** = zurück, und die Zurück-Falle für B.
+1. Im Script **`installPageChrome()`** aus `src/core/shell.ts` aufrufen (das Spiel selbst mit `{ home: false }`). Das liefert den sichtbaren
+   **Home-Button** (oben mittig; im Panel = zurück ins Menü), **View + Menu** gemeinsam halten bzw. **Pos1** = zurück, und die Zurück-Falle für B.
    Oben ca. 70 px frei lassen, damit der Home-Button nichts verdeckt.
-2. Spieler-Seiten in `src/landing/pages.ts` eintragen, Werkzeug-Seiten in `src/tools/devTiles.ts` (Entwicklerseite `dev.html`, B-335). Sonst ist die Seite vom Controller aus nicht erreichbar.
-3. Vollbild nur über `toggleFullscreen()` aus `src/core/fullscreen.ts`. Nie `requestFullscreen()` direkt
-   oder `this.scale.toggleFullscreen()`, das würde nur das iframe betreffen.
-4. Seiten nie per Link oder `location` untereinander wechseln, außer über `openPage()` aus `src/core/shell.ts` (die Shell öffnet nur `name.html` dieses Ordners). Zurück zur Übersicht immer über `goHome()`.
+2. Die Seite braucht eine Kachel im Spielmenü: Daten in `src/tools/devTiles.ts` (Kategorien Entwicklung, Performance, Balancing; Info und Hilfe in
+   `src/scenes/menuPages.ts`). Sonst ist sie vom Controller aus nicht erreichbar (`tests/projectRules.test.ts`).
+3. Vollbild nur über `src/core/fullscreen.ts` (`toggleFullscreen()`, `requestLocal()`). Nie `requestFullscreen()` direkt oder `this.scale.toggleFullscreen()`.
+4. Seiten wechseln nie per Link oder `location`; innerhalb des Spiels nur über `openPage()` (Panel) oder `startRun()` (Szenario im selben Dokument).
+5. **Start-Parameter** (`?dev`, `?autostart`, `?seed` …) liest nur `src/core/runConfig.ts` (`runSearch()`/`runParam()`); die URL gilt beim Laden als Deep-Link für
+   Tests, CI und Bots, das Menü setzt die Konfiguration mit `setRun()`/`startRun()` (`src/core/runConfigRule.test.ts`).
 
 ## Regeln
 
@@ -150,7 +154,7 @@ Nur so bleibt Vollbild auf der Xbox über Seitenwechsel erhalten. Für **jede** 
 - Level-Generierung und Simulation sind deterministisch und laufen in Go: nur `engine/rng` (`rng.New(seed)`) verwenden, niemals `math/rand`; im Client gibt es keine Würfel (kein `Math.random()` für Spiel-Logik).
 - Jede Mechanik muss mit **2 Spielern gleichzeitig** funktionieren (Split-Screen, eigene Eingabe pro Spieler).
 - Controller-Taste **B** nicht belegen (Edge-Zurück auf der Xbox, wird von der Zurück-Falle geschluckt).
-  **View + Menu** gemeinsam = zurück zur Landingpage (reserviert, auf keiner Seite anders belegen).
+  **View + Menu** gemeinsam = zurück ins Menü (in einem Werkzeug-Panel; reserviert, auf keiner Seite anders belegen).
 - **Logging mit Emojis:** Jede Log-Meldung (Go `slog`, Client `clientLog`) beginnt mit einem Emoji zur Aktion:
   🚀 Start · 🛑 Stopp · 🔁 Neustart · ✅ geschafft · ❌ fehlgeschlagen · 💥 Fehler/Absturz · 🚫 abgelehnt · ⏳ Warten/Frist ·
   🐢 zu langsam · 🔌 verbunden · 👑 Spieler kommt · 👋 geht/getrennt · 💾 gespeichert · 📂 geladen · 🩹 wiederhergestellt ·

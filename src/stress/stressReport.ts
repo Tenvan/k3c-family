@@ -1,4 +1,5 @@
 import type { RunResult } from './stressRun';
+import { runSearch } from '../core/runConfig';
 
 export interface ReportMeta {
   runId: string;
@@ -20,7 +21,7 @@ export function deviceTag(): string {
 }
 
 /** Bericht über `/api/report` (`reports/*.json`), nur mit `?perf=1`; Fehler werden verworfen */
-export function sendStressReport(meta: ReportMeta, result: RunResult, search: string = location.search): void {
+export function sendStressReport(meta: ReportMeta, result: RunResult, search: string = runSearch()): void {
   if (new URLSearchParams(search).get('perf') !== '1') return;
   const body = { kind: 'stress', version: 1, ...meta, device: deviceTag(), userAgent: navigator.userAgent, viewport: `${window.innerWidth}x${window.innerHeight}`, ...result };
   void fetch('/api/report', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), keepalive: true }).catch(() => undefined);

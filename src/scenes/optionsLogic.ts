@@ -18,8 +18,8 @@ export const LEAVE_KEY = 'leaveGame';
 /** Registry-Schlüssel: „Spieler abmelden“, Wert = Slot des Spielers (sonst `null`); `GameScene` meldet genau ihn ab (B-411) */
 export const REMOVE_PLAYER_KEY = 'removePlayer';
 
-/** Pad-Tasten (standard mapping), die die Szene liest. B (Index 1) bleibt frei: Edge-Zurück auf der Xbox. */
-export const OPTION_PAD_KEYS = { A: 0, VIEW: 8, MENU: 9, UP: 12, DOWN: 13, LEFT: 14, RIGHT: 15 } as const;
+/** Pad-Tasten (standard mapping), die die Szene liest. B (Index 1) geht im Menü eine Seite zurück, wie Menu kurz und Esc (der Edge-Zurück der Xbox verfällt in der Zurück-Falle). */
+export const OPTION_PAD_KEYS = { A: 0, B: 1, VIEW: 8, MENU: 9, UP: 12, DOWN: 13, LEFT: 14, RIGHT: 15 } as const;
 
 /** Menu kürzer als das gilt als „kurz“; länger bleibt der Kombi View + Menu (Shell) vorbehalten */
 export const MENU_SHORT_MS = 600;
@@ -121,11 +121,16 @@ export function optionLabel(settings: Settings, id: OptionId): string {
 /** Lage der Tabelle „Tastenbelegung“ (B-741): Kopf bei `top`, je Zeile `rowH`, erste Spalte links, Geräte-Spalten gleich breit; Schrift ≥ 28 px (Q03) */
 export const KEYS_LAYOUT = { top: 240, rowH: 56, px: 30, labelX: 120, colX: [760, 1160, 1560] } as const;
 
+/** Einträge der Seite „Optionen“: Regler, Schalter und Sprache; die übrigen (weiter, Tasten, abmelden, verlassen) sind Kacheln des Pausenmenüs (`pauseHub.ts`) */
+export const SETTINGS_IDS: readonly OptionId[] = OPTION_IDS.filter((id) => id !== 'keys' && id !== 'resume' && id !== 'removePlayer' && id !== 'leave');
+
 /** Szenen-Daten der Optionen: Slots, die „Spieler abmelden“ treffen kann (leer = ausgegraut, B-411) */
 export interface OptionsSceneData {
   targets: number[];
   /** Welt-ID des Raums aus `joined.world` (BD5.2, B-506); leer = standard */
   world?: string;
+  /** Von der Startseite der Lobby geöffnet: nur die Optionen, Menu/Esc schließt die Szene (B-768) */
+  standalone?: boolean;
 }
 
 /** Lage im Pausenmenü (1920 × 1080): Titel 64 px, Weltzeile 40 px (BD9.2, B-604), danach die 12 Zeilen; oben bleiben 70 px frei */

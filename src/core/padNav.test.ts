@@ -11,8 +11,9 @@ describe('gehaltene Tasten', () => {
     expect([...heldActions(pad([], [-0.9, 0.7, 0, 0]))].sort()).toEqual(['down', 'left']);
   });
 
-  it('B, X, Y, View und Menu lösen nichts aus (B bleibt für Edge-Zurück frei)', () => {
-    expect(heldActions(pad([1, 2, 3, 8, 9])).size).toBe(0);
+  it('B geht zurück; X, Y, View und Menu lösen nichts aus', () => {
+    expect([...heldActions(pad([1]))]).toEqual(['back']);
+    expect(heldActions(pad([2, 3, 8, 9])).size).toBe(0);
   });
 
   it('kleiner Stickausschlag zählt nicht', () => {
@@ -35,6 +36,12 @@ describe('Wiederholung', () => {
     expect(nav.update(down, REPEAT_FIRST_MS + REPEAT_EVERY_MS)).toEqual(['down']);
     expect(nav.update([pad()], 2000)).toEqual([]);
     expect(nav.update(down, 2010)).toEqual(['down']);
+  });
+
+  it('B wiederholt wie A nicht beim Halten', () => {
+    const nav = new PadNav();
+    expect(nav.update([pad([1])], 0)).toEqual(['back']);
+    expect(nav.update([pad([1])], 5000)).toEqual([]);
   });
 
   it('A wiederholt nicht beim Halten', () => {

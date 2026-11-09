@@ -2,6 +2,7 @@ import { toggleFullscreen } from '../core/fullscreen';
 import { t } from '../core/texts';
 import type { Action, PlayerInput } from './playerInput';
 import { SLOT_ACTIONS, slotBindings, type SlotAction } from './slotBindings';
+import { runSearch } from '../core/runConfig';
 
 type TouchKey = 'left' | 'right' | 'sprint' | 'confirm' | 'fullscreen' | SlotAction;
 /** Aktionen, die per Bildschirmtaste ausgelöst werden (Laufen und Sprint fragt `PlayerInput` eigens ab) */
@@ -9,7 +10,7 @@ const TOUCH_ACTIONS: readonly Action[] = ['confirm', ...SLOT_ACTIONS];
 
 /** Touch-Steuerung nötig? Handy/Tablet, oder per ?touch=1 erzwingbar (zum Testen am PC). */
 export function wantsTouchControls(): boolean {
-  if (new URLSearchParams(window.location.search).has('touch')) return true;
+  if (new URLSearchParams(runSearch()).has('touch')) return true;
   return navigator.maxTouchPoints > 0 && window.matchMedia('(pointer: coarse)').matches;
 }
 

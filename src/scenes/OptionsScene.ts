@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
+import { GAME_WIDTH } from '../core/constants';
 import { audioCore } from '../audio/audioCore';
 import { playUi, uiSoundFor } from '../audio/ui';
 import { guideSeen } from '../core/guideSeen';
@@ -8,30 +8,31 @@ import { setLanguage, t } from '../core/texts';
 import {
   LEAVE_KEY,
   MenuPress,
-  OPTION_IDS,
   OPTION_PAD_KEYS as PAD,
   REMOVE_PLAYER_KEY,
+  SETTINGS_IDS,
   applyOption,
   moveOption,
-  optionEnabled,
   optionLabel,
-  removeLabel,
-  stepChoice,
   syncVolumes,
   tapOption,
   OPTIONS_LAYOUT,
   KEYS_LAYOUT,
   worldLine,
   type OptionDir,
-  type OptionId,
   type OptionResult,
   type OptionsSceneData,
 } from './optionsLogic';
+import { HUB_LAYOUT, PAUSE_TILES, hubAction, hubChoice, hubDir, hubEnabled, hubLabel, hubSub, hubTileAt, moveHub, type HubAction, type HubDir } from './pauseHub';
+import { HubView } from './hubView';
+import { hubArt } from './hubArt';
+import { PaperBackdrop } from './paperBackdrop';
+import { LINE_TEXT } from './paperCard';
 import { pauseButton } from './hud/pauseButton';
 import { keyTable } from './keyTable';
 import { GlyphRow } from './hints/glyphView';
 
-const { top: TOP, rowH: ROW_H, rowPx: FONT_PX } = OPTIONS_LAYOUT; // 11 Zeilen über dem Hinweis unten, Zeilen ≥ 28 px (Q03)
+const { top: TOP, rowH: ROW_H, rowPx: FONT_PX } = OPTIONS_LAYOUT; // Zeilen der Seite „Optionen“ über dem Hinweis unten, Zeilen ≥ 28 px (Q03)
 const STICK = 0.5;
 const STYLE = { fontFamily: 'sans-serif', fontStyle: 'bold', color: '#ffffff', stroke: '#000000', strokeThickness: 6 };
 
@@ -57,20 +58,32 @@ function keyAction(k: OptionsScene['keys']): OptionDir | null {
   return down(k.enter) || down(k.space) ? 'confirm' : null;
 }
 
+/** Zwei Seiten: das Pausenmenü als Kachelseite (`hub`, B-768) und darunter die Optionen (`settings`) */
+type Mode = 'hub' | 'settings';
+
 /**
- * Optionen und Pause (Client-Anteil, S5.2): liegt über dem Spiel, die Eingaben der Monarchen ruhen (`GameScene`).
- * Jedes Gerät (Tastatur, Pads, Tippen) steuert sie; Menu/Esc oder „Weiter“ schließt. Jede Änderung wird sofort gespeichert.
+ * Pause und Optionen (Client-Anteil, S5.2): liegt über dem Spiel, die Eingaben der Monarchen ruhen (`GameScene`).
+ * Jedes Gerät (Tastatur, Pads, Tippen) steuert sie; Menu/Esc geht eine Seite zurück, auf der Kachelseite ins Spiel.
+ * Jede Änderung der Optionen wird sofort gespeichert.
  */
 export class OptionsScene extends Phaser.Scene {
   private settings!: Settings;
+  private mode: Mode = 'hub';
+  /** Auswahl auf der Seite „Optionen“ (Zeile) und auf der Kachelseite (Kachel) */
   private selected = 0;
+  private hubSel = 0;
   private rows: Phaser.GameObjects.Text[] = [];
   private title!: Phaser.GameObjects.Text;
   private hint!: Phaser.GameObjects.Text;
+  private hubView!: HubView;
+  private backdrop!: PaperBackdrop;
+  /** Von der Startseite der Lobby geöffnet (B-768): nur die Optionen, Menu/Esc schließt die Szene */
+  private standalone = false;
   private keys!: Record<'up' | 'down' | 'w' | 's' | 'left' | 'right' | 'enter' | 'space' | 'esc', Phaser.Input.Keyboard.Key>;
   private padHeld = new Set<string>();
   private menu = new MenuPress();
   private tapped: { row: number; dir: OptionDir } | null = null;
+  private tappedTile: number | null = null;
   /** Slots, die „Spieler abmelden“ treffen kann (leer = ausgegraut), und der gewählte davon (B-411) */
   private targets: number[] = [];
   private choice = 0;
@@ -86,29 +99,43 @@ export class OptionsScene extends Phaser.Scene {
   init(data?: Partial<OptionsSceneData>): void {
     this.targets = data?.targets ?? [];
     this.world = data?.world;
+    this.standalone = data?.standalone ?? false;
     this.choice = 0;
   }
 
   create(): void {
     this.settings = loadSettings();
     setLanguage(this.settings.language);
+    this.mode = this.standalone ? 'settings' : 'hub';
     this.selected = 0;
+    this.hubSel = 0;
     this.keysTable = null;
     this.padHeld = new Set();
     this.menu = new MenuPress();
     this.tapped = null;
+    this.tappedTile = null;
     const K = Phaser.Input.Keyboard.KeyCodes;
     this.keys = this.input.keyboard!.addKeys({ up: K.UP, down: K.DOWN, w: K.W, s: K.S, left: K.LEFT, right: K.RIGHT, enter: K.ENTER, space: K.SPACE, esc: K.ESC }) as OptionsScene['keys'];
-    this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.8).setOrigin(0);
-    this.title = this.add.text(GAME_WIDTH / 2, OPTIONS_LAYOUT.titleY, '', { ...STYLE, fontSize: `${OPTIONS_LAYOUT.titlePx}px`, strokeThickness: 10 }).setOrigin(0.5);
+    this.backdrop = new PaperBackdrop(this); // deckt das pausierte Spiel ab, Papierschnitt-Nacht
+    this.backdrop.banner(GAME_WIDTH / 2, OPTIONS_LAYOUT.titleY, 960, 108);
+    this.title = this.add.text(GAME_WIDTH / 2, OPTIONS_LAYOUT.titleY, '', { ...STYLE, fontSize: `${OPTIONS_LAYOUT.titlePx}px`, color: LINE_TEXT, strokeThickness: 0 }).setOrigin(0.5);
     this.add.text(GAME_WIDTH / 2, OPTIONS_LAYOUT.worldY, worldLine(this.world), { ...STYLE, fontSize: `${OPTIONS_LAYOUT.worldPx}px`, strokeThickness: 6 }).setOrigin(0.5);
-    this.hint = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 60, '', { ...STYLE, fontSize: '28px', strokeThickness: 4 }).setOrigin(0.5);
-    this.rows = OPTION_IDS.map((_, i) => this.add.text(GAME_WIDTH / 2, TOP + i * ROW_H, '', { ...STYLE, fontSize: `${FONT_PX}px` }).setOrigin(0.5));
+    this.hint = this.add.text(GAME_WIDTH / 2, HUB_LAYOUT.hintY, '', { ...STYLE, fontSize: `${HUB_LAYOUT.hintPx}px`, strokeThickness: 4 }).setOrigin(0.5);
+    this.rows = SETTINGS_IDS.map((_, i) => this.add.text(GAME_WIDTH / 2, TOP + i * ROW_H, '', { ...STYLE, fontSize: `${FONT_PX}px` }).setOrigin(0.5));
+    this.createHub();
+    this.refreshView();
     // Touch über das Fenster, wie in der Lobby; das Touch-Overlay ist ausgeblendet, solange die Szene offen ist.
     const onTap = (e: PointerEvent) => {
-      const row = Math.round((this.scale.transformY(e.pageY) - TOP) / ROW_H);
-      const id = OPTION_IDS[row];
-      if (id) this.tapped = { row, dir: tapOption(id, this.scale.transformX(e.pageX), GAME_WIDTH) };
+      const x = this.scale.transformX(e.pageX);
+      const y = this.scale.transformY(e.pageY);
+      if (this.mode === 'hub') {
+        const tile = hubTileAt(PAUSE_TILES, x, y);
+        if (tile >= 0) this.tappedTile = tile;
+        return;
+      }
+      const row = Math.round((y - TOP) / ROW_H);
+      const id = SETTINGS_IDS[row];
+      if (id) this.tapped = { row, dir: tapOption(id, x, GAME_WIDTH) };
     };
     window.addEventListener('pointerdown', onTap);
     const restoreTouch = hideTouchControls();
@@ -118,49 +145,114 @@ export class OptionsScene extends Phaser.Scene {
     });
   }
 
+  /** Kachelseite anlegen; gezeichnet wird sie in `drawHub` */
+  private createHub(): void {
+    this.hubView = new HubView(this, PAUSE_TILES, hubArt);
+  }
+
+  /** Zeigt je Seite die richtigen Teile: Kacheln, Optionszeilen oder die Tastentabelle */
+  private refreshView(): void {
+    const hub = this.mode === 'hub' && !this.keysTable;
+    const settings = this.mode === 'settings' && !this.keysTable;
+    this.hubView.setVisible(hub);
+    this.backdrop.setDim(hub ? 0 : 0.8); // Optionen und Tastentabelle: ruhiger Grund für die weiße Schrift
+    this.rows.forEach((row) => row.setVisible(settings));
+    if (this.keysTable) return;
+    this.title.setText(hub ? t('hub.title') : t('opt.title'));
+    this.hint.setText(hub ? t('hub.hint') : t('opt.hint'));
+  }
+
   update(): void {
     const { dir, act, close } = this.poll();
-    if (this.keysTable) return this.updateKeys(act !== null || close || !!this.tapped);
+    if (this.keysTable) return this.updateKeys(act !== null || close || !!this.tapped || this.tappedTile !== null);
+    if (this.mode === 'hub') return this.updateHub(dir, act, close);
     playUi(uiSoundFor({ dir, side: act === 'left' || act === 'right' ? 1 : 0, confirm: act === 'confirm' || !!this.tapped })); // UI-Klick (B-575)
-    this.selected = moveOption(this.selected, dir);
+    this.selected = moveOption(this.selected, dir, SETTINGS_IDS.length);
     let want: OptionDir | null = act;
     if (this.tapped) {
       this.selected = this.tapped.row;
       want = this.tapped.dir;
       this.tapped = null;
     }
-    const current = OPTION_IDS[this.selected]!;
-    want = this.filterRemove(current, want);
-    if (want && this.applyResult(applyOption(this.settings, current, want))) return;
-    if (close) return this.close();
+    if (want) this.applyResult(applyOption(this.settings, SETTINGS_IDS[this.selected]!, want));
+    if (close) return this.backToHub();
     this.title.setText(t('opt.title'));
     this.hint.setText(t('opt.hint'));
     this.rows.forEach((row, i) => {
-      const id = OPTION_IDS[i]!;
-      const label = id === 'removePlayer' ? removeLabel(this.settings, this.targets, this.choice) : optionLabel(this.settings, id);
-      const color = !optionEnabled(id, this.targets) ? '#777777' : i === this.selected ? '#ffd166' : '#ffffff';
-      row.setText(`${i === this.selected ? '▶  ' : '    '}${label}`).setColor(color);
+      const id = SETTINGS_IDS[i]!;
+      row.setText(`${i === this.selected ? '▶  ' : '    '}${optionLabel(this.settings, id)}`).setColor(i === this.selected ? '#ffd166' : '#ffffff');
     });
   }
 
-  /** Wirkt ein Ergebnis von `applyOption`; `true` = die Szene ist damit fertig für diesen Frame (geschlossen, Seite gewechselt, Raum verlassen) */
-  private applyResult(result: OptionResult): boolean {
-    if (result.settings !== this.settings) {
-      if (result.settings.guideHints && !this.settings.guideHints) guideSeen.reset(); // wieder an = alle Hinweise erneut (Q11)
-      saveSettings((this.settings = result.settings));
-      setLanguage(this.settings.language);
-      syncVolumes(this.settings, audioCore()); // Regler wirken sofort auf Musik, Effekte und Ambient
-    }
-    if (result.close) this.close();
-    else if (result.keys) this.openKeys();
-    else if (result.removePlayer) {
-      this.registry.set(REMOVE_PLAYER_KEY, this.targets[this.choice] ?? null); // GameScene meldet genau diesen Slot ab (B-411)
-      this.close();
-    } else if (result.leave) this.registry.set(LEAVE_KEY, true); // GameScene verlässt den Raum und schließt diese Szene
-    return result.close || result.keys || result.removePlayer || result.leave;
+  /** Kachelseite: Pfeile und Stick bewegen die Auswahl in vier Richtungen, A/Enter bestätigt, Menu/Esc geht ins Spiel */
+  private updateHub(dir: number, act: OptionDir | null, close: boolean): void {
+    playUi(uiSoundFor({ dir, side: act === 'left' || act === 'right' ? 1 : 0, confirm: act === 'confirm' || this.tappedTile !== null })); // UI-Klick (B-575)
+    const confirm = this.moveHubSelection(hubDir(dir, act)) || act === 'confirm';
+    const action = confirm ? hubAction(PAUSE_TILES[this.hubSel]!.id, this.targets) : null;
+    if (action && this.runHub(action)) return;
+    if (close) return this.close();
+    if (this.mode === 'hub') this.drawHub();
   }
 
-  /** Tabelle der Tastenbelegung zeichnen (B-741): die Optionszeilen ruhen, bis die Seite geschlossen wird */
+  /** Tippen wählt und bestätigt die Kachel (`true`); eine Richtung bewegt die Auswahl oder wählt das Ziel von „Spieler abmelden“ */
+  private moveHubSelection(d: HubDir | null): boolean {
+    if (this.tappedTile !== null) {
+      this.hubSel = this.tappedTile;
+      this.tappedTile = null;
+      return true;
+    }
+    if (!d) return false;
+    const choice = hubChoice(PAUSE_TILES[this.hubSel]!.id, d, this.choice, this.targets.length);
+    if (choice !== null) this.choice = choice;
+    else this.hubSel = moveHub(PAUSE_TILES, this.hubSel, d);
+    return false;
+  }
+
+  /** Wirkt eine bestätigte Kachel; `true` = die Szene ist für diesen Frame fertig (geschlossen oder Raum verlassen) */
+  private runHub(action: HubAction): boolean {
+    switch (action) {
+      case 'close':
+        this.close();
+        return true;
+      case 'settings':
+        this.mode = 'settings';
+        this.selected = 0;
+        this.refreshView();
+        return false;
+      case 'keys':
+        this.openKeys();
+        return false;
+      case 'removePlayer':
+        this.registry.set(REMOVE_PLAYER_KEY, this.targets[this.choice] ?? null); // GameScene meldet genau diesen Slot ab (B-411)
+        this.close();
+        return true;
+      case 'leave':
+        this.registry.set(LEAVE_KEY, true); // GameScene verlässt den Raum und schließt diese Szene
+        return true;
+      default:
+        return false; // Einträge der Startseite (Lobby) gibt es im Pausenmenü nicht
+    }
+  }
+
+  /** Zeichnet die Kacheln neu, wenn sich Auswahl, Ziele oder Sprache geändert haben */
+  private drawHub(): void {
+    this.hubView.draw(this.hubSel, `${this.targets.length}|${this.choice}|${this.settings.language}`, (id) => ({
+      enabled: hubEnabled(id, this.targets),
+      label: hubLabel(id),
+      sub: hubSub(id, this.targets, this.choice),
+    }));
+  }
+
+  /** Optionen-Seite: Einstellungen speichern und wirken lassen */
+  private applyResult(result: OptionResult): void {
+    if (result.settings === this.settings) return;
+    if (result.settings.guideHints && !this.settings.guideHints) guideSeen.reset(); // wieder an = alle Hinweise erneut (Q11)
+    saveSettings((this.settings = result.settings));
+    setLanguage(this.settings.language);
+    syncVolumes(this.settings, audioCore()); // Regler wirken sofort auf Musik, Effekte und Ambient
+  }
+
+  /** Tabelle der Tastenbelegung zeichnen (B-741): Kacheln und Zeilen ruhen, bis die Seite geschlossen wird */
   private openKeys(): void {
     const { head, rows, padGlyphs } = keyTable();
     const L = KEYS_LAYOUT;
@@ -175,29 +267,26 @@ export class OptionsScene extends Phaser.Scene {
       });
     });
     this.keysTable = objs;
-    this.rows.forEach((row) => row.setVisible(false));
+    this.refreshView();
     this.title.setText(t('opt.keys'));
     this.hint.setText(t('opt.keysHint'));
   }
 
-  /** Seite offen: jede Taste oder jedes Tippen führt zurück zu den Optionen */
+  /** Seite offen: jede Taste oder jedes Tippen führt zurück zur Kachelseite */
   private updateKeys(back: boolean): void {
     this.tapped = null;
+    this.tappedTile = null;
     if (!back) return;
     this.keysTable?.forEach((txt) => txt.destroy());
     this.keysTable = null;
-    this.rows.forEach((row) => row.setVisible(true));
+    this.refreshView();
   }
 
-  /** „Spieler abmelden“ (B-411): ausgegraut ohne Wirkung; bei zwei Tastatur-Spielern wählen links/rechts das Ziel, nur Bestätigen löst aus. */
-  private filterRemove(id: OptionId, want: OptionDir | null): OptionDir | null {
-    if (!want || id !== 'removePlayer') return want;
-    if (!optionEnabled(id, this.targets)) return null;
-    if (this.targets.length > 1 && want !== 'confirm') {
-      this.choice = stepChoice(this.choice, want, this.targets.length);
-      return null;
-    }
-    return want;
+  /** Von den Optionen zurück zu den Kacheln (Menu/Esc) */
+  private backToHub(): void {
+    if (this.standalone) return this.close();
+    this.mode = 'hub';
+    this.refreshView();
   }
 
   private close(): void {
@@ -216,7 +305,7 @@ export class OptionsScene extends Phaser.Scene {
     const edge = (name: string) => held.has(name) && !this.padHeld.has(name);
     dir += (edge('down') ? 1 : 0) - (edge('up') ? 1 : 0);
     act ??= edge('left') ? 'left' : edge('right') ? 'right' : edge('a') ? 'confirm' : null;
-    close ||= this.menu.update(held.has('menu'), held.has('view'), performance.now());
+    close ||= this.menu.update(held.has('menu'), held.has('view'), performance.now()) || edge('b'); // B geht zurück wie Menu kurz und Esc
     this.padHeld = held;
     return { dir: Math.sign(dir), act, close };
   }
@@ -224,7 +313,7 @@ export class OptionsScene extends Phaser.Scene {
   /** Gerade gehaltene Tasten aller Pads (B bleibt unbelegt). */
   private heldPadKeys(): Set<string> {
     const held = new Set<string>();
-    const names: [string, number][] = [['a', PAD.A], ['view', PAD.VIEW], ['menu', PAD.MENU], ['up', PAD.UP], ['down', PAD.DOWN], ['left', PAD.LEFT], ['right', PAD.RIGHT]];
+    const names: [string, number][] = [['a', PAD.A], ['b', PAD.B], ['view', PAD.VIEW], ['menu', PAD.MENU], ['up', PAD.UP], ['down', PAD.DOWN], ['left', PAD.LEFT], ['right', PAD.RIGHT]];
     for (const pad of this.input.gamepad?.gamepads ?? []) {
       if (!pad) continue;
       for (const [name, index] of names) if (pad.buttons[index]?.pressed) held.add(name);

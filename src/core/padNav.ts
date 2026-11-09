@@ -1,14 +1,16 @@
 /**
  * Controller-Bedienung für Seiten mit Bedienelementen (B-767): D-Pad und linker Stick bewegen den Fokus zum nächsten Element in
  * der Richtung, A klickt, ohne Ziel in der Richtung scrollt die Seite. Gilt für jede Seite, die `installPageChrome()` aufruft, außer sie
- * hat eine eigene Pad-Bedienung (`padNav: false`) oder zeichnet mit Phaser. B (1) ist nie belegt (Edge-Zurück), View und Menu sind
+ * hat eine eigene Pad-Bedienung (`padNav: false`) oder zeichnet mit Phaser. B (1) geht zurück (im Werkzeug-Panel ins Menü; der Edge-Zurück
+ * der Xbox verfällt in der Zurück-Falle), View und Menu sind
  * reserviert (Home-Kombi). Die Zustandsmaschine und die Zielwahl sind rein; `installPadNav` verdrahtet sie mit der Seite.
  */
 
-export type NavAction = 'up' | 'down' | 'left' | 'right' | 'accept';
+export type NavAction = 'up' | 'down' | 'left' | 'right' | 'accept' | 'back';
 
-/** Pad-Tasten (standard mapping): A bestätigt, D-Pad bewegt */
+/** Pad-Tasten (standard mapping): A bestätigt, B geht zurück, D-Pad bewegt */
 const A = 0;
+const B = 1;
 const UP = 12;
 const DOWN = 13;
 const LEFT = 14;
@@ -31,6 +33,7 @@ export function heldActions(pad: PadSnapshot): Set<NavAction> {
   const x = pad.axes[0] ?? 0;
   const y = pad.axes[1] ?? 0;
   if (on(A)) held.add('accept');
+  if (on(B)) held.add('back');
   if (on(UP) || y < -STICK) held.add('up');
   if (on(DOWN) || y > STICK) held.add('down');
   if (on(LEFT) || x < -STICK) held.add('left');
@@ -48,7 +51,7 @@ export class PadNav {
     const held = new Set<NavAction>();
     for (const p of pads) if (p) for (const a of heldActions(p)) held.add(a);
     const out: NavAction[] = [];
-    for (const a of ['up', 'down', 'left', 'right', 'accept'] as const) {
+    for (const a of ['up', 'down', 'left', 'right', 'accept', 'back'] as const) {
       if (!held.has(a)) {
         this.since.delete(a);
         this.last.delete(a);
@@ -61,7 +64,7 @@ export class PadNav {
         out.push(a);
         continue;
       }
-      if (a === 'accept') continue;
+      if (a === 'accept' || a === 'back') continue; // einmal je Druck
       const wait = this.last.get(a)! === start ? REPEAT_FIRST_MS : REPEAT_EVERY_MS;
       if (now - this.last.get(a)! >= wait) {
         this.last.set(a, now);
@@ -123,18 +126,23 @@ function visible(el: HTMLElement): boolean {
 }
 
 /** Verdrahtet `PadNav` mit der Seite (`enabled` schaltet sie zeitweise ab, z. B. während ein Phaser-Spiel läuft): Fokus bewegen, A klickt, ohne Ziel scrollen (nur sichtbare Elemente zählen) */
-export function installPadNav(enabled: () => boolean = () => true): void {
+export function installPadNav(enabled: () => boolean = () => true, onBack?: () => void): void {
   const nav = new PadNav();
   const step = (): void => {
     const pads = typeof navigator.getGamepads === 'function' ? Array.from(navigator.getGamepads()) : [];
     const actions = nav.update(pads, performance.now());
-    if (enabled()) for (const action of actions) apply(action);
+    if (enabled()) {
+      for (const action of actions) {
+        if (action === 'back') onBack?.();
+        else apply(action);
+      }
+    }
     requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
 }
 
-function apply(action: NavAction): void {
+function apply(action: Exclude<NavAction, 'back'>): void {
   const els = Array.from(document.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(visible);
   const at = els.indexOf(document.activeElement as HTMLElement);
   if (action === 'accept') {
