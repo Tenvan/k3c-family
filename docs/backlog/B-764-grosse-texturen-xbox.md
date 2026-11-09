@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** RX1
 - **Projekt:** LST
 - **Erstellt:** 2026-11-08
 - **Spec:** Entwurf
