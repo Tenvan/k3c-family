@@ -177,6 +177,12 @@ export const de = {
   'biome.mine': 'Tiefe 2 (Mine)',
 
   // Optionen und Pause
+  'menu.cat.info': 'Info und Hilfe',
+  'menu.cat.dev': 'Entwicklung',
+  'menu.cat.perf': 'Performance',
+  'menu.cat.balance': 'Balancing',
+  'menu.catCount': '{n} Einträge',
+  'menu.catEmpty': 'noch leer',
   'hub.title': 'Family Three Crowns',
   'hub.resume': 'Fortsetzen',
   'hub.resumeSub': 'Zurück ins Spiel',

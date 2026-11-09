@@ -167,6 +167,12 @@ export const en: Record<TextKey, string> = {
   'biome.cave': 'Depth 1 (cave)',
   'biome.mine': 'Depth 2 (mine)',
 
+  'menu.cat.info': 'Info and help',
+  'menu.cat.dev': 'Development',
+  'menu.cat.perf': 'Performance',
+  'menu.cat.balance': 'Balancing',
+  'menu.catCount': '{n} entries',
+  'menu.catEmpty': 'still empty',
   'hub.title': 'Family Three Crowns',
   'hub.resume': 'Resume',
   'hub.resumeSub': 'Back to the game',

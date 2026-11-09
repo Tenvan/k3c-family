@@ -13,8 +13,8 @@ export type HubDir = 'up' | 'down' | 'left' | 'right';
 /** Was ein bestätigter Eintrag auslöst */
 export type HubAction = 'close' | 'settings' | 'keys' | 'removePlayer' | 'leave' | 'new' | 'join' | 'pages';
 
-export interface HubTile {
-  id: HubTileId;
+export interface HubTile<Id extends string = HubTileId> {
+  id: Id;
   /** Lage in 1920 × 1080: links, oben, Breite, Höhe */
   x: number;
   y: number;
@@ -27,7 +27,7 @@ export interface HubTile {
 }
 
 /** Farben der Kacheln (Landingpage: Gold #ffd166, Nachtblau #0b1026, grüner A-Knopf); dunkle Schrift darauf, ausgegraut bleibt gedämpft */
-export const HUB_COLORS = { gold: 0xffd166, green: 0x3fb950, blue: 0x85b7eb, purple: 0xafa9ec, teal: 0x5dcaa5, coral: 0xf09b7b, off: 0x2b3558, night: 0x0b1026 } as const;
+export const HUB_COLORS = { gold: 0xffd166, green: 0x3fb950, blue: 0x85b7eb, purple: 0xafa9ec, teal: 0x5dcaa5, coral: 0xf09b7b, pink: 0xed93b1, off: 0x2b3558, night: 0x0b1026 } as const;
 export const HUB_TEXT = '#0b1026';
 export const HUB_TEXT_OFF = '#8a93b2';
 
@@ -73,18 +73,39 @@ export function hubTiles(ids: readonly [HubTileId, HubTileId, HubTileId, HubTile
   ];
 }
 
+/**
+ * Gleichmäßiges Raster für Listen von Kacheln (Kategorien und Einträge der Seiten, BD11.4): bis 4 Einträge in 2 Spalten mit der
+ * großen Schrift, bis 9 in 3 Spalten mit etwas kleinerer (44 px, immer noch aus Sofa-Abstand lesbar); mehr passt nicht auf eine Seite.
+ */
+export const GRID_MAX = 9;
+export function gridTiles<Id extends string>(items: readonly { id: Id; color: number }[]): readonly HubTile<Id>[] {
+  const cols = items.length <= 4 ? 2 : 3;
+  const rows = Math.max(1, Math.ceil(items.length / cols));
+  const w = (1680 - (cols - 1) * HUB_LAYOUT.gap) / cols;
+  const h = (GRID_H - (rows - 1) * HUB_LAYOUT.gap) / rows;
+  return items.map((item, i) => ({
+    id: item.id,
+    x: LEFT + (i % cols) * (w + HUB_LAYOUT.gap),
+    y: TOP + Math.floor(i / cols) * (h + HUB_LAYOUT.gap),
+    w,
+    h,
+    color: item.color,
+    labelPx: items.length <= 4 ? 52 : 44,
+  }));
+}
+
 /** Pausenmenü im Spiel */
 export const PAUSE_TILES = hubTiles(['resume', 'options', 'keys', 'removePlayer', 'leave']);
 /** Startseite der Lobby (Einstieg): Fortsetzen, Neues Spiel, Raum beitreten, Optionen, Seiten */
 export const START_TILES = hubTiles(['resume', 'new', 'join', 'options', 'pages']);
 
-const boxOf = (tile: HubTile): Box => ({ left: tile.x, top: tile.y, right: tile.x + tile.w, bottom: tile.y + tile.h });
+const boxOf = (tile: HubTile<string>): Box => ({ left: tile.x, top: tile.y, right: tile.x + tile.w, bottom: tile.y + tile.h });
 
 /**
  * Nächste Kachel in der Richtung; am Rand bleibt die Auswahl. Hoch/Runter springt nur zu Kacheln, die über oder unter der
  * gewählten liegen (gleiche Spalte), Links/Rechts nur zu Kacheln in derselben Zeile: von der großen Kachel geht „hoch“ nirgendwohin.
  */
-export function moveHub(tiles: readonly HubTile[], selected: number, dir: HubDir): number {
+export function moveHub(tiles: readonly HubTile<string>[], selected: number, dir: HubDir): number {
   const from = boxOf(tiles[selected]!);
   const vertical = dir === 'up' || dir === 'down';
   const overlap = (b: Box): boolean => (vertical ? b.left < from.right && b.right > from.left : b.top < from.bottom && b.bottom > from.top);
@@ -100,7 +121,7 @@ export function hubDir(dir: number, act: string | null): HubDir | null {
 }
 
 /** Kachel unter einem Punkt (Tippen oder Maus), −1 daneben */
-export function hubTileAt(tiles: readonly HubTile[], x: number, y: number): number {
+export function hubTileAt(tiles: readonly HubTile<string>[], x: number, y: number): number {
   return tiles.findIndex((tile) => x >= tile.x && x <= tile.x + tile.w && y >= tile.y && y <= tile.y + tile.h);
 }
 

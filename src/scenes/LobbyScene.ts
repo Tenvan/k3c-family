@@ -12,10 +12,11 @@ import { DeleteDialog, closeNotice, deleteNotice, worldOf } from './saveMenu';
 import { VERSION_KEY } from './debug/debugOverlay';
 import { musicDirector } from '../audio/music';
 import { playUi, uiSoundFor } from '../audio/ui';
-import { PAGES } from '../landing/pages';
 import { openPage } from '../core/shell';
 import { HubView } from './hubView';
-import { HUB_COLORS, START_TILES, hubAction, hubDir, hubLabel, hubSub, hubTileAt, moveHub, type HubAction } from './pauseHub';
+import { HUB_COLORS, START_TILES, gridTiles, hubAction, hubDir, hubLabel, hubSub, hubTileAt, moveHub, type HubAction, type HubTile } from './pauseHub';
+import { CATEGORY_COLOR, categoryLabel, categorySub, menuCategories, uniqueRun, type CategoryId, type MenuEntry } from './menuPages';
+import { startRun } from './runStart';
 import { runSearch } from '../core/runConfig';
 
 export interface LobbySceneData {
@@ -54,7 +55,12 @@ export class LobbyScene extends Phaser.Scene {
   private tappedTile: number | null = null;
   private view: View = 'hub';
   private hubSel = 0;
-  private pageSel = 0;
+  /** Seiten (BD11.4): Kategorie offen (`null` = die Kategorien selbst), Auswahl im Raster, Raster und seine Kacheln */
+  private category: CategoryId | null = null;
+  private gridSel = 0;
+  private gridKey = '';
+  private gridView: HubView<string> | null = null;
+  private gridTiles: readonly HubTile<string>[] = [];
   private hubView!: HubView;
   private hubShown = false;
   private saves: SaveInfo[] = [];
@@ -81,7 +87,11 @@ export class LobbyScene extends Phaser.Scene {
     this.tappedTile = null;
     this.view = 'hub';
     this.hubSel = 0;
-    this.pageSel = 0;
+    this.category = null;
+    this.gridSel = 0;
+    this.gridKey = '';
+    this.gridView = null;
+    this.gridTiles = [];
     this.hubShown = false;
     this.saves = [];
     this.lastStatus = null;
@@ -105,8 +115,9 @@ export class LobbyScene extends Phaser.Scene {
     const rows = () => (this.dialog.open ? this.dialog.labels().length : lobbyEntries(this.client.rooms, this.client.status, this.saves).length);
     const onTap = (e: PointerEvent) => {
       const y = this.scale.transformY(e.pageY);
-      if (this.currentView() === 'hub' && !this.flow.dialog && !this.dialog.open) {
-        this.tappedTile = hubTileAt(START_TILES, this.scale.transformX(e.pageX), y);
+      const view = this.currentView();
+      if (view !== 'list' && !this.flow.dialog && !this.dialog.open) {
+        this.tappedTile = hubTileAt(view === 'hub' ? START_TILES : this.gridTiles, this.scale.transformX(e.pageX), y);
         return;
       }
       this.tapped = this.flow.dialog ? rowAt(y, TOP + ROW_H, ROW_H, DIALOG_ROWS.length) : rowAt(y, TOP, ROW_H, rows());
@@ -131,6 +142,7 @@ export class LobbyScene extends Phaser.Scene {
     playUi(uiSoundFor({ ...input, confirm: input.confirm || (this.tapped !== null && this.tapped >= 0) })); // UI-Klick (B-575)
     if (this.updateDialogs(input)) return this.showHub(false);
     const view = this.currentView();
+    if (view !== 'pages') this.clearGrid();
     if (view === 'hub') return this.updateHub(input, entries);
     this.showHub(false);
     if (view === 'pages') return this.updatePages(input);
@@ -204,29 +216,88 @@ export class LobbyScene extends Phaser.Scene {
       this.selected = Math.min(2, Math.max(0, entries.length - 1)); // gleich auf den ersten Raum oder Spielstand
     } else if (action === 'pages') {
       this.view = 'pages';
-      this.pageSel = 0;
+      this.category = null;
+      this.gridSel = 0;
     } else if (action === 'settings') this.scene.launch('options', { targets: [], standalone: true });
   }
 
-  /** Seiten: Lizenzen und Entwicklung; A/Enter öffnet über die Shell, Menu/Esc geht zur Startseite */
-  private updatePages(input: { dir: number; confirm: boolean; back: boolean }): void {
-    const pages = PAGES.filter((p) => p.section === 'about');
-    this.pageSel = moveSelection(this.pageSel, input.dir, pages.length);
-    let chosen = input.confirm ? this.pageSel : null;
-    if (this.tapped !== null) {
-      if (this.tapped >= 0) chosen = this.pageSel = this.tapped;
-      this.tapped = null;
+  /** Seiten (BD11.4): erst die Kategorien, dann ihre Einträge; Menu/Esc geht eine Ebene zurück */
+  private updatePages(input: { dir: number; side: number; confirm: boolean; back: boolean }): void {
+    const cats = menuCategories();
+    const open = this.category === null ? undefined : cats.find((c) => c.id === this.category);
+    const items = open ? open.entries.map((e) => ({ id: e.id, color: CATEGORY_COLOR[open.id] })) : cats.map((c) => ({ id: c.id as string, color: c.entries.length > 0 ? CATEGORY_COLOR[c.id] : HUB_COLORS.off }));
+    this.setGrid(`${this.category}|${items.map((i) => i.id).join(',')}`, gridTiles(items));
+    if (this.moveGrid(input)) this.confirmPage(open?.entries[this.gridSel], cats[this.gridSel]);
+    if (input.back) this.pagesBack();
+    this.drawPages(cats, open);
+  }
+
+  /** Auswahl im Raster der Seiten: Richtungen, Tippen; `true` = bestätigt */
+  private moveGrid(input: { dir: number; side: number; confirm: boolean }): boolean {
+    if (this.tappedTile !== null) {
+      const tile = this.tappedTile;
+      this.tappedTile = null;
+      if (tile < 0) return false;
+      this.gridSel = tile;
+      return true;
     }
-    const page = chosen === null ? undefined : pages[chosen];
-    if (page) openPage(typeof page.href === 'function' ? page.href() : page.href);
-    if (input.back) this.view = 'hub';
-    pages.forEach((p, i) => {
-      const row = (this.rows[i] ??= this.add.text(GAME_WIDTH / 2, TOP + i * ROW_H + ROW_H / 2, '', STYLE).setOrigin(0.5));
-      row.setText(`${i === this.pageSel ? '▶  ' : '    '}${p.title}`).setColor(i === this.pageSel ? '#ffd166' : '#ffffff');
-    });
-    this.rows.slice(pages.length).forEach((r) => r.setText(''));
-    this.notice.setText('');
+    const d = hubDir(input.dir, input.side < 0 ? 'left' : input.side > 0 ? 'right' : null);
+    if (d) this.gridSel = moveHub(this.gridTiles, this.gridSel, d);
+    return input.confirm;
+  }
+
+  private drawPages(cats: readonly { id: CategoryId; entries: readonly MenuEntry[] }[], open: { entries: readonly MenuEntry[] } | undefined): void {
+    this.gridView?.draw(this.gridSel, this.gridKey, (_id, i) =>
+      open ? { enabled: true, label: open.entries[i]!.title, sub: '' } : { enabled: cats[i]!.entries.length > 0, label: categoryLabel(cats[i]!.id), sub: categorySub(cats[i]!) },
+    );
+    this.notice.setText(open?.entries[this.gridSel]?.description ?? '');
     this.hint.setText(t('hub.listHint'));
+  }
+
+  /** Bestätigt: eine Kategorie öffnen oder einen Eintrag ausführen */
+  private confirmPage(entry: MenuEntry | undefined, category: { id: CategoryId; entries: readonly MenuEntry[] } | undefined): void {
+    if (entry) return this.runEntry(entry);
+    if (category && category.entries.length > 0) {
+      this.category = category.id;
+      this.gridSel = 0;
+    }
+  }
+
+  /** Seite öffnen, Szenario starten (ohne Neuladen) oder das eigene Fenster des Dungeon Masters öffnen */
+  private runEntry(entry: MenuEntry): void {
+    const target = entry.target;
+    if (target.kind === 'page') openPage(target.href);
+    else if (target.kind === 'external') window.open(target.href, '_blank', 'noopener');
+    else startRun(this, this.client, uniqueRun(target.params));
+  }
+
+  /** Eine Ebene zurück: aus einer Kategorie zu den Kategorien (mit ihr als Auswahl), von dort zur Startseite */
+  private pagesBack(): void {
+    if (this.category === null) {
+      this.view = 'hub';
+      return;
+    }
+    const index = menuCategories().findIndex((c) => c.id === this.category);
+    this.category = null;
+    this.gridSel = Math.max(0, index);
+  }
+
+  /** Raster der Seiten bei Änderung neu aufbauen (andere Kacheln oder Ebene) */
+  private setGrid(key: string, tiles: readonly HubTile<string>[]): void {
+    if (key === this.gridKey && this.gridView) return;
+    this.clearGrid();
+    this.rows.forEach((r) => r.setText(''));
+    this.gridKey = key;
+    this.gridTiles = tiles;
+    this.gridView = new HubView<string>(this, tiles);
+    this.gridView.setVisible(true);
+  }
+
+  private clearGrid(): void {
+    this.gridView?.destroy();
+    this.gridView = null;
+    this.gridKey = '';
+    this.gridTiles = [];
   }
 
   /** X/Entf: Rückfrage zum Löschen eines Spielstands oder zum Schließen eines Raums (BD9.2); andere Einträge ignorieren es */
