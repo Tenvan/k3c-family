@@ -1,4 +1,4 @@
-# RX1.6 · Xbox-Abnahme ohne Kontextverlust
+# RX1.7 · Xbox-Abnahme ohne Kontextverlust
 
 - **Status:** offen
 - **Typ:** Workshop
@@ -7,8 +7,8 @@
 - **Lane:** –
 - **Modell:** –
 - **Umgebung:** live
-- **Branch:** rx1/6-xbox-abnahme
-- **Abhängig von:** RX1.5
+- **Branch:** rx1/7-xbox-abnahme
+- **Abhängig von:** RX1.6
 - **Tickets:** B-763, B-764
 - **Kriterien:** AC-09, AC-10
 
@@ -18,7 +18,7 @@
 
 ## Kontext
 
-Voraussetzung: RX1.1 bis RX1.5 auf `develop` und ausgeliefert, PNG per `task gen:paper` neu erzeugt. Claude liest anschließend das Pi-Log.
+Voraussetzung: RX1.1 bis RX1.6 auf `develop` und ausgeliefert, PNG per `task gen:paper` neu erzeugt. Claude liest anschließend das Pi-Log.
 
 ## Erlaubte Dateien
 

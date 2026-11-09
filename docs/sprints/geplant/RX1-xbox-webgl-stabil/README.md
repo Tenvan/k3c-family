@@ -4,7 +4,7 @@
 - **Projekt:** LST
 - **Domäne:** CLI, PAP
 - **Reife:** Entwurf
-- **Tickets:** B-761, B-762, B-763, B-764
+- **Tickets:** B-761, B-762, B-763, B-764, B-765
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -20,11 +20,11 @@ Die Xbox hält den WebGL-Kontext, und das Render-Verhalten jedes Clients ist im 
 
 ## Beteiligte und Zielgruppen
 
-🧑 testet und nimmt auf der Xbox ab (RX1.3, RX1.6); Claude setzt um und wertet das Log über `logs_query` aus.
+🧑 testet und nimmt auf der Xbox ab (RX1.4, RX1.7); Claude setzt um und wertet das Log über `logs_query` aus.
 
 ## Anforderungen
 
-B-762 › Anforderungen (Render-Log); B-763 › Anforderungen (Kontextverlust); B-764 › Anforderungen (Texturprofil ≤ 2048 px, Laden bei Bedarf); B-761 nur noch AC-05 (Abnahme am TV). Sprint-eigen: Die Technik-Anzeige (B-761, `?gfx=1`) steht ab RX1.1 standardmäßig **an** (Wunsch von 🧑, ändert B-761/AC-04; abschaltbar im Menü und mit `?gfx=0`). Die Reihenfolge ist fest, B-764 beginnt erst nach dem Xbox-Lauf (RX1.3), weil die Log-Werte die Ursache bestätigen müssen.
+B-762 › Anforderungen (Render-Log); B-763 › Anforderungen (Kontextverlust); B-764 › Anforderungen (Texturprofil ≤ 2048 px, Laden bei Bedarf); B-761 nur noch AC-05 (Abnahme am TV). Sprint-eigen: Die Technik-Anzeige (B-761, `?gfx=1`) steht ab RX1.1 standardmäßig **an** (Wunsch von 🧑, ändert B-761/AC-04; abschaltbar im Menü und mit `?gfx=0`). Die Reihenfolge ist fest, B-764 beginnt erst nach dem Xbox-Lauf (RX1.4), weil die Log-Werte die Ursache bestätigen müssen.
 
 ## Nicht-Ziele
 
@@ -32,7 +32,7 @@ Leistungsoptimierung des Canvas-Renderers; zweites Texturprofil oder Low-Profil;
 
 ## Regeln und Einschränkungen
 
-- Domäne CLI (`src/`); RX1.4 berührt zusätzlich `tools/paper` und `public/grafik`-Specs (Entscheidung 005) und ist deshalb Domäne PAP.
+- Domäne CLI (`src/`); RX1.5 berührt zusätzlich `tools/paper` und `public/grafik`-Specs (Entscheidung 005) und ist deshalb Domäne PAP.
 - Kein Spiel-Zustand im Client; B nicht belegen; Seitenwechsel nur über `openPage()`.
 - Log nur über `/api/clientlog` (Rate-Limit beachten), Emoji-Präfix laut CLAUDE.md.
 - PNG und Manifeste sind nicht eingecheckt (B-737); Grafik-Golden pflegen.
@@ -45,7 +45,7 @@ Xbox startet → Server-Log zeigt „🚀 Renderer: WebGL2, GPU …, maxTex …,
 
 ## Ausnahme- und Fehlerfälle
 
-Bestätigt der Xbox-Lauf (RX1.3) die Texturvermutung nicht, wird B-764 verworfen und die Ursache neu gesucht (Sprint wird angepasst). Verlust wiederholt sich sofort: keine Schleife, Canvas bleibt mit Hinweis.
+Bestätigt der Xbox-Lauf (RX1.4) die Texturvermutung nicht, wird B-764 verworfen und die Ursache neu gesucht (Sprint wird angepasst). Verlust wiederholt sich sofort: keine Schleife, Canvas bleibt mit Hinweis.
 
 ## Akzeptanzkriterien
 
@@ -59,12 +59,19 @@ Bestätigt der Xbox-Lauf (RX1.3) die Texturvermutung nicht, wird B-764 verworfen
 - **AC-08** Xbox-Lauf (🧑): Technik-Anzeige sichtbar, Startwerte, Leistungsverlauf und Ladedaten im Server-Log des Pi (`B-761/AC-05`, `B-762/AC-05`).
 - **AC-09** Xbox bleibt nach Kontextverlust bedienbar, keine weiße Seite (`B-763/AC-03`).
 - **AC-10** Xbox-Start ohne „WebGL Context lost“ im Server-Log, FPS-Wert notiert (`B-764/AC-03`).
+- **AC-11** `data/stress.json` mit `typisch` und `worstCase`, alle Typen mit Asset (`B-765/AC-01`, Test).
+- **AC-12** Ungültige Szenarien werden abgelehnt (`B-765/AC-02`, Test).
+- **AC-13** Rampe alle 10 s um den Faktor, gleicher Seed gleiche Verteilung (`B-765/AC-03`, Test).
+- **AC-14** Je Stufe genau eine Log-Zeile mit `runId`, `device`, FPS, p95, `textureMiB`, `entities`, `sheets` (`B-765/AC-04`, Test).
+- **AC-15** Endzeile mit Dichte-Grenze und Zusammenfassung, Aufwärmzeit zählt nicht (`B-765/AC-05`, Test).
+- **AC-16** `stress.html` ist Kachel und nutzt `installPageChrome()` (`B-765/AC-06`).
+- **AC-17** Stress-Szene mit beiden Presets, 1 und 2 Spielern am PC und auf der Xbox, Dichte-Grenze notiert (🧑, `B-765/AC-07`).
 
 ## Offene Fragen
 
 - Wiederherstellen des Kontexts oder Neuladen mit `?renderer=canvas`? Default: Neuaufbau versuchen, sonst Canvas-Neuladen; entscheidet RX1.2 beim Planen (🧑 informieren).
-- B-764 verlangt Laden „bei Bedarf“ je Stufe: Ob die Gruppen-Indizes (`index.paper.json`) dafür schon je Stufe ladbar sind, klärt RX1.4 beim Planen; ist der Umbau groß, wird er ein eigenes Ticket.
-- Welcher Browser-Parameter legt auf der Xbox die Texturgrenze fest (maxTex aus B-762)? Klärt RX1.3.
+- B-764 verlangt Laden „bei Bedarf“ je Stufe: Ob die Gruppen-Indizes (`index.paper.json`) dafür schon je Stufe ladbar sind, klärt RX1.5 beim Planen; ist der Umbau groß, wird er ein eigenes Ticket.
+- Welcher Browser-Parameter legt auf der Xbox die Texturgrenze fest (maxTex aus B-762)? Klärt RX1.4.
 
 ## Sessions
 
@@ -72,12 +79,13 @@ Bestätigt der Xbox-Lauf (RX1.3) die Texturvermutung nicht, wird B-764 verworfen
 |---|---|---|---|---|
 | RX1.1 | `RX1.1-render-log.md` | Umsetzung | autonom | offen |
 | RX1.2 | `RX1.2-kontextverlust.md` | Umsetzung | autonom | offen |
-| RX1.3 | `RX1.3-xbox-lauf.md` | Workshop | Mensch | offen |
-| RX1.4 | `RX1.4-texturprofil.md` | Umsetzung | autonom | offen |
-| RX1.5 | `RX1.5-review.md` | Review | autonom | offen |
-| RX1.6 | `RX1.6-xbox-abnahme.md` | Workshop | Mensch | offen |
+| RX1.3 | `RX1.3-stress-szene.md` | Umsetzung | autonom | offen |
+| RX1.4 | `RX1.4-xbox-lauf.md` | Workshop | Mensch | offen |
+| RX1.5 | `RX1.5-texturprofil.md` | Umsetzung | autonom | offen |
+| RX1.6 | `RX1.6-review.md` | Review | autonom | offen |
+| RX1.7 | `RX1.7-xbox-abnahme.md` | Workshop | Mensch | offen |
 
-Reihenfolge: RX1.1 → RX1.2 → RX1.3 → RX1.4 → RX1.5 → RX1.6 (RX1.2 loggt über RX1.1, RX1.3 braucht beide, RX1.4 braucht die Werte aus RX1.3).
+Reihenfolge: RX1.1 → RX1.2 → RX1.3 → RX1.4 → RX1.5 → RX1.6 → RX1.7. RX1.2 loggt über RX1.1; RX1.3 (Stress-Szene, B-765) baut auf RX1.1 auf und liegt vor dem Xbox-Lauf, damit RX1.4 gleich abgestuft misst; RX1.4 braucht RX1.2 und RX1.3; RX1.5 braucht die Werte aus RX1.4. Vor jedem Start der Stress-Szene läuft `task gen:paper` (PNG nicht eingecheckt, B-737).
 
 ## Abnahme
 

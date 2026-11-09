@@ -1,4 +1,4 @@
-# RX1.5 · Review RX1
+# RX1.6 · Review RX1
 
 - **Status:** offen
 - **Typ:** Review
@@ -7,10 +7,10 @@
 - **Lane:** –
 - **Modell:** –
 - **Umgebung:** offline
-- **Branch:** rx1/5-review
-- **Abhängig von:** RX1.4
-- **Tickets:** B-762, B-763, B-764
-- **Kriterien:** AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07
+- **Branch:** rx1/6-review
+- **Abhängig von:** RX1.5
+- **Tickets:** B-762, B-763, B-764, B-765
+- **Kriterien:** AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07, AC-11, AC-12, AC-13, AC-14, AC-15, AC-16
 
 ## Ziel
 
@@ -18,7 +18,7 @@ Alle autonom prüfbaren Kriterien von RX1 sind geprüft, die Abnahme steht in de
 
 ## Kontext
 
-Review-Session am Sprint-Ende (wie PM1.3). Sessions RX1.1, RX1.2 und RX1.4 sind erledigt; RX1.3 hat die Xbox-Werte geliefert.
+Review-Session am Sprint-Ende (wie PM1.3). Sessions RX1.1, RX1.2 und RX1.5 sind erledigt; RX1.4 hat die Xbox-Werte geliefert.
 
 ## Erlaubte Dateien
 
@@ -39,7 +39,7 @@ Keine neuen Features; keine Sim-/Balance-/Gen-Läufe außer im Abnahme-Ticket.
 ## Fertig, wenn
 
 - [ ] AC-01 bis AC-07: geprüft (Tests grün, Diff gelesen).
-- [ ] Abnahme in der README, offene Punkte (AC-09, AC-10) auf RX1.6 verwiesen.
+- [ ] Abnahme in der README, offene Punkte (AC-09, AC-10) auf RX1.7 verwiesen.
 
 ## Prüfen
 
