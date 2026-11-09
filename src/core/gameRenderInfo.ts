@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { readRenderInfo, rendererRequest, type RenderInfo } from './renderInfo';
+import { runSearch } from './runConfig';
 
 type Source = Parameters<typeof readRenderInfo>[0];
 
@@ -11,6 +12,6 @@ export function readGameRenderInfo(game: Phaser.Game): RenderInfo {
     textureList: Object.values(game.textures.list) as unknown as Source['textureList'],
     devicePixelRatio: window.devicePixelRatio,
     viewport: `${window.innerWidth}×${window.innerHeight}`,
-    request: rendererRequest(location.search),
+    request: rendererRequest(runSearch()),
   });
 }

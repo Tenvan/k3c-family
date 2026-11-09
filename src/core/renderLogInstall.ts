@@ -3,6 +3,7 @@ import { clientLog } from './clientLog';
 import { readGameRenderInfo } from './gameRenderInfo';
 import { rendererRequest } from './renderInfo';
 import { RENDER_LOG_KEY, RenderLog } from './renderLog';
+import { runSearch } from './runConfig';
 
 /**
  * Render-Log eines Phaser-Spiels (B-762): Verlauf je Frame und Kontext-Ereignisse. Die Startzeile schreibt der Aufrufer nach dem Laden
@@ -24,7 +25,7 @@ export function installRenderLog(game: Phaser.Game, version: string): RenderLog 
     const canvas = game.canvas;
     canvas.addEventListener('webglcontextlost', () => log.context('lost', game.loop.actualFps));
     canvas.addEventListener('webglcontextrestored', () => log.context('restored', game.loop.actualFps));
-    if (game.renderer.type !== Phaser.WEBGL && rendererRequest(location.search) !== 'canvas') log.context('fallback', null);
+    if (game.renderer.type !== Phaser.WEBGL && rendererRequest(runSearch()) !== 'canvas') log.context('fallback', null);
   };
   if (game.isBooted) watch();
   else game.events.once('ready', watch);

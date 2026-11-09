@@ -14,6 +14,7 @@ import { LoadScene } from './scenes/LoadScene';
 import { LobbyScene } from './scenes/LobbyScene';
 import { OptionsScene } from './scenes/OptionsScene';
 import { VERSION_KEY } from './scenes/debug/debugOverlay';
+import { runSearch } from './core/runConfig';
 
 // Seitenrahmen sofort (Home-Button, Zurück-Falle für B).
 installPageChrome({ padNav: false }); // eigene Pad-Bedienung bzw. Phaser-Spiel
@@ -24,10 +25,10 @@ function start(server: BuildInfo): void {
   const client = createRoomClient();
 
   // Renderer: Standard AUTO (WebGL, sonst Canvas); `?renderer=webgl|canvas` erzwingt einen, `?aa=0` schaltet die MSAA-Glättung ab (B-761)
-  const want = rendererRequest(location.search);
+  const want = rendererRequest(runSearch());
   const game = new Phaser.Game({
     type: want === 'webgl' ? Phaser.WEBGL : want === 'canvas' ? Phaser.CANVAS : Phaser.AUTO,
-    render: { powerPreference: 'high-performance', antialiasGL: !antialiasOff(location.search) },
+    render: { powerPreference: 'high-performance', antialiasGL: !antialiasOff(runSearch()) },
     parent: 'game',
     width: GAME_WIDTH,
     height: GAME_HEIGHT,
@@ -49,7 +50,7 @@ function start(server: BuildInfo): void {
   game.scene.add('options', OptionsScene, false);
 
   // Nur im Dev-Server oder mit ?dev=1: Zugriff für Debugging über die Browser-Konsole (window.game).
-  if (import.meta.env.DEV || new URLSearchParams(location.search).has('dev')) (window as unknown as { game: Phaser.Game; client: typeof client }).game = Object.assign(game, { client });
+  if (import.meta.env.DEV || new URLSearchParams(runSearch()).has('dev')) (window as unknown as { game: Phaser.Game; client: typeof client }).game = Object.assign(game, { client });
 }
 
 // Ohne Go-Server (z. B. GitHub Pages) statt der Lobby ein Hinweis (B-032).

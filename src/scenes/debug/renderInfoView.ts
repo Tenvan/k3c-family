@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { GAME_WIDTH } from '../../core/constants';
 import { FrameAverage, canvasWarning, gfxEnabled, renderInfoLines, type RenderInfo } from '../../core/renderInfo';
 import { readGameRenderInfo } from '../../core/gameRenderInfo';
+import { runSearch } from '../../core/runConfig';
 
 /** Oben rechts unter der Leiste, klein genug, um das Spiel nicht zu verdecken */
 const POS = { x: GAME_WIDTH - 16, y: 110 };
@@ -33,7 +34,7 @@ export class RenderInfoView {
   }
 
   update(): void {
-    const on = gfxEnabled(location.search);
+    const on = gfxEnabled(runSearch());
     this.text.setVisible(on);
     if (!on) return;
     const loop = this.scene.game.loop;

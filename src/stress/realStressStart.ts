@@ -4,9 +4,10 @@ import data from '../../data/stress.json';
 import { KNOWN } from './known';
 import { RealStress, realStressId, type RealHost } from './realStress';
 import { parseScenarios, type Scenario } from './stressPlan';
+import { runSearch } from '../core/runConfig';
 
 /** Startet den Lauf für `?stress=<szenario>&dev=1` in der `GameScene`; sonst nichts. Gibt den Lauf zurück. */
-export function startRealStress(host: RealHost, search: string = location.search): RealStress | null {
+export function startRealStress(host: RealHost, search: string = runSearch()): RealStress | null {
   const id = realStressId(search);
   if (!id) return null;
   let scenario: Scenario | undefined;

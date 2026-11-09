@@ -16,6 +16,7 @@ import { PAGES } from '../landing/pages';
 import { openPage } from '../core/shell';
 import { HubView } from './hubView';
 import { HUB_COLORS, START_TILES, hubAction, hubDir, hubLabel, hubSub, hubTileAt, moveHub, type HubAction } from './pauseHub';
+import { runSearch } from '../core/runConfig';
 
 export interface LobbySceneData {
   client: RoomClient;
@@ -70,9 +71,9 @@ export class LobbyScene extends Phaser.Scene {
 
   init(data: LobbySceneData): void {
     this.client = data.client;
-    const parsed = parseStartParams(window.location.search);
+    const parsed = parseStartParams(runSearch());
     this.params = data.returned ? { ...parsed, autostart: false, room: null } : parsed;
-    this.flow = new LobbyFlow(this.params, devAllowed(window.location.search));
+    this.flow = new LobbyFlow(this.params, devAllowed(runSearch()));
     this.selected = 0;
     this.rows = [];
     this.padHeld = new Set();

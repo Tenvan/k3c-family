@@ -14,6 +14,7 @@ import { KNOWN } from './known';
 import { deviceTag, sendStressReport } from './stressReport';
 import { hashText, parseScenarios, stageCount, withScenery, type Scenario } from './stressPlan';
 import { StressRun, type RunResult } from './stressRun';
+import { runSearch } from '../core/runConfig';
 
 installPageChrome({ padNav: false });
 installPadNav(() => !el('menu').hidden); // das Menü bedient der Controller, während des Laufs nicht
@@ -25,7 +26,7 @@ const el = <T extends HTMLElement>(id: string): T => document.getElementById(id)
 let game: Phaser.Game | null = null;
 /** Beendet den laufenden Lauf mit Endzeile (Zurück zum Menü) */
 let abort: (() => void) | null = null;
-let ramp = new URLSearchParams(location.search).get('ramp') !== '0';
+let ramp = new URLSearchParams(runSearch()).get('ramp') !== '0';
 
 function stop(): void {
   abort?.();
@@ -37,17 +38,17 @@ function stop(): void {
 }
 
 function launch(id: string, base: Scenario, players: 1 | 2): void {
-  const scenario = withScenery(base, location.search);
-  const params = new URLSearchParams(location.search);
+  const scenario = withScenery(base, runSearch());
+  const params = new URLSearchParams(runSearch());
   const seed = Number(params.get('seed') ?? '1') || 1;
   const startedAt = new Date().toISOString();
   const runId = `${deviceTag()}-${id}-p${players}-s${seed}-${Date.now().toString(36)}`;
-  const want = rendererRequest(location.search);
+  const want = rendererRequest(runSearch());
   el('menu').hidden = true;
   el('back').hidden = false;
   const g = new Phaser.Game({
     type: want === 'webgl' ? Phaser.WEBGL : want === 'canvas' ? Phaser.CANVAS : Phaser.AUTO,
-    render: { powerPreference: 'high-performance', antialiasGL: !antialiasOff(location.search) },
+    render: { powerPreference: 'high-performance', antialiasGL: !antialiasOff(runSearch()) },
     parent: 'game',
     width: GAME_WIDTH,
     height: GAME_HEIGHT,
@@ -61,7 +62,7 @@ function launch(id: string, base: Scenario, players: 1 | 2): void {
   const version = formatBuild(CLIENT);
   const renderLog = installRenderLog(g, version);
   const run = new StressRun(
-    { runId, scenario: id, players, seed, fileHash: hashText(JSON.stringify(stressJson)), params: location.search, version, userAgent: navigator.userAgent, stages: stageCount(scenario, ramp), everyMs: scenario.ramp.everyMs },
+    { runId, scenario: id, players, seed, fileHash: hashText(JSON.stringify(stressJson)), params: runSearch(), version, userAgent: navigator.userAgent, stages: stageCount(scenario, ramp), everyMs: scenario.ramp.everyMs },
     { log: clientLog, info: () => readGameRenderInfo(g), heapMiB: () => ((performance as unknown as { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize ?? NaN) / (1024 * 1024) || null },
   );
   const onEnd = (r: RunResult): void => {
@@ -108,7 +109,7 @@ function boot(): void {
   }
   menu(scenarios);
   // Mit ?scenario=<id> (und optional ?players=1|2) startet der Lauf sofort, auch ohne Bedienung am TV
-  const params = new URLSearchParams(location.search);
+  const params = new URLSearchParams(runSearch());
   const id = params.get('scenario');
   const s = id ? scenarios[id] : undefined;
   if (id && s) {

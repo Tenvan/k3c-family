@@ -4,6 +4,7 @@ import { ContextGuard, canvasRestartHref, type GuardEnv } from './contextGuard';
 import { openPage } from './shell';
 import { rendererRequest } from './renderInfo';
 import { t } from './texts';
+import { runSearch } from './runConfig';
 
 /** Name der Seite für `openPage`: `name.html`, sonst `game.html` (ein Server ohne Endung in der Adresse) */
 function pageName(): string {
@@ -29,7 +30,7 @@ function showNotice(text: string): void {
  * `roomCode` liefert den offenen Raum, damit der Neustart ihm wieder beitritt.
  */
 export function installContextGuard(game: Phaser.Game, roomCode: () => string | null): ContextGuard | null {
-  if (rendererRequest(location.search) === 'canvas') return null;
+  if (rendererRequest(runSearch()) === 'canvas') return null;
   const env: GuardEnv = {
     read: (k) => {
       try {
@@ -50,7 +51,7 @@ export function installContextGuard(game: Phaser.Game, roomCode: () => string | 
       const id = setTimeout(fn, ms);
       return () => clearTimeout(id);
     },
-    restartWithCanvas: () => openPage(canvasRestartHref(pageName(), location.search, roomCode())),
+    restartWithCanvas: () => openPage(canvasRestartHref(pageName(), runSearch(), roomCode())),
     notice: (kind) => showNotice(t(kind === 'restart' ? 'ctx.restart' : 'ctx.canvas')),
     log: (msg, ctx) => clientLog('warn', msg, ctx),
   };
