@@ -1,6 +1,6 @@
 # RX1.3 · Stress-Szene Live-Grafik mit Szenario-Datei, Rampe und Log
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -61,4 +61,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-11 bis AC-16: umgesetzt und getestet (`src/stress/*.test.ts`, 38 Tests). `stress.html` + `src/stress/` (`stressPlan.ts` Prüfung, Rampe, Seed; `stressRun.ts` Messung und Log; `StressScene.ts`; `scenery.ts` Hintergrund und Vordergrund; `main.ts` Menü, URL-Parameter `scenario`, `players`, `ramp`, `seed`, `bg`, `fg`, `perf`), `data/stress.json`, Kachel auf `dev.html`.
+- Hintergrund (Parallax des Bioms) und Vordergrund (Bäume, Felsen, Büsche) gehören dazu (B-765 E-4); `?bg=0`/`?fg=0` für Vergleichsläufe.
+- Im Browser mit WebGL geprüft (1 und 2 Spieler, Stufen laufen, Log-Zeilen entstehen; der Server lief nicht, daher nur Konsole). Draw-Calls stehen nicht im Log (Phaser liefert sie nicht sicher).
+- Review-Befunde (Sonnet) behoben: Abbruch schreibt Endzeile, Listener auch bei `destroy` entfernt, fehlende Assets einmal gemeldet und nicht mitgezählt, Mindest-Stufenlänge 4 s.
+- Offen: AC-17 (Xbox-Abnahme) im Xbox-Lauf RX1.4. Vor jedem Start `task gen:paper`.

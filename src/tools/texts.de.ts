@@ -171,6 +171,18 @@ export const de = {
   'tile.dm.desc': 'Laufende Räume beobachten und steuern: Zeit, Pause, Gold, Material, Welle, Tageszeit · neues Fenster (Dev-Mode des Servers)',
   'tile.monitor.title': 'Monitor',
   'tile.monitor.desc': 'Serverzustand: Ampel je Raum, Verläufe mit Perzentilen, Fehler-Zeitleiste (Go-Server mit K3C_STATUS_TOKEN)',
+  'tile.stress.title': 'Stress-Szene',
+  'tile.stress.desc': 'Figuren-Dichte testen: 1 oder 2 Spieler, Rampe alle 10 s, FPS, Frame-Zeit und Texturspeicher je Stufe im Server-Log (B-765)',
+  'stress.pageTitle': 'K3C Stress-Szene',
+  'stress.title': 'Stress-Szene',
+  'stress.sub': 'Zeichnet Gegner und Truppen mit der echten Papierschnitt-Grafik und steigert die Zahl alle 10 Sekunden. Jede Stufe steht im Server-Log (logs_query, Lauf-Kennung in eckigen Klammern). Vorher läuft task gen:paper.',
+  'stress.btn': '{name} · {players} Spieler',
+  'stress.rampOn': 'Rampe: an',
+  'stress.rampOff': 'Rampe: aus (eine Stufe)',
+  'stress.back': 'Zurück zum Menü',
+  'stress.hud': 'Stufe {stage}/{total} · {figures} Figuren · {fps} FPS',
+  'stress.done': 'Fertig · Dichte-Grenze: Stufe {limit}',
+  'stress.error': 'Szenario ungültig: {error}',
 
   // Test page (testing.html)
   'test.pageTitle': 'K3C Testing',

@@ -77,9 +77,9 @@ Bestätigt der Xbox-Lauf (RX1.4) die Texturvermutung nicht, wird B-764 verworfen
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RX1.1 | `RX1.1-render-log.md` | Umsetzung | autonom | offen |
+| RX1.1 | `RX1.1-render-log.md` | Umsetzung | autonom | fertig |
 | RX1.2 | `RX1.2-kontextverlust.md` | Umsetzung | autonom | offen |
-| RX1.3 | `RX1.3-stress-szene.md` | Umsetzung | autonom | offen |
+| RX1.3 | `RX1.3-stress-szene.md` | Umsetzung | autonom | fertig |
 | RX1.4 | `RX1.4-xbox-lauf.md` | Workshop | Mensch | offen |
 | RX1.5 | `RX1.5-texturprofil.md` | Umsetzung | autonom | offen |
 | RX1.6 | `RX1.6-review.md` | Review | autonom | offen |

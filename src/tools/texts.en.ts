@@ -170,6 +170,18 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'tile.dm.desc': 'Watch and control running rooms: time, pause, gold, material, wave, time of day · new window (server dev mode)',
   'tile.monitor.title': 'Monitor',
   'tile.monitor.desc': 'Server state: traffic light per room, history with percentiles, error timeline (Go server with K3C_STATUS_TOKEN)',
+  'tile.stress.title': 'Stress scene',
+  'tile.stress.desc': 'Test figure density: 1 or 2 players, ramp every 10 s, FPS, frame time and texture memory per stage in the server log (B-765)',
+  'stress.pageTitle': 'K3C Stress scene',
+  'stress.title': 'Stress scene',
+  'stress.sub': 'Draws enemies and troops with the real paper-cut graphics and raises the count every 10 seconds. Every stage is in the server log (logs_query, run id in square brackets). Run task gen:paper first.',
+  'stress.btn': '{name} · {players} players',
+  'stress.rampOn': 'Ramp: on',
+  'stress.rampOff': 'Ramp: off (one stage)',
+  'stress.back': 'Back to menu',
+  'stress.hud': 'Stage {stage}/{total} · {figures} figures · {fps} FPS',
+  'stress.done': 'Done · density limit: stage {limit}',
+  'stress.error': 'Invalid scenario: {error}',
 
   // Test page (testing.html)
   'test.pageTitle': 'K3C Testing',

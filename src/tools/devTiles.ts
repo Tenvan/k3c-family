@@ -61,7 +61,7 @@ export const DEV_SECTIONS: readonly DevSection[] = [
     tile('sound', '🔊', 'soundtest.html'),
     tile('dm', '🎲', 'dm.html', true),
   ]),
-  section('perf', [tile('monitor', '📈', 'monitor.html')]),
+  section('perf', [tile('monitor', '📈', 'monitor.html'), tile('stress', '🔥', 'stress.html')]),
   section('balance', []),
 ];
 

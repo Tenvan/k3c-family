@@ -3,7 +3,7 @@ import { isOpenable } from '../core/shell';
 import { DEV_SECTIONS, DEV_TILES } from './devTiles';
 
 /** Werkzeug-Seiten, die bis LP1 auf der Landingpage standen, dazu Dungeon Master (B-335/AC-02) und Grafik-Pipeline (B-331). */
-const TOOLS = ['testing.html', 'gamepad-test.html', 'grafiken.html', 'pipeline.html', 'soundtest.html', 'monitor.html', 'dm.html', 'game.html?dev=1'];
+const TOOLS = ['testing.html', 'gamepad-test.html', 'grafiken.html', 'pipeline.html', 'soundtest.html', 'monitor.html', 'stress.html', 'dm.html', 'game.html?dev=1'];
 
 describe('Entwicklerseite (B-335)', () => {
   it('gliedert nach Entwicklung, Performance und Balancing', () => {
@@ -24,7 +24,7 @@ describe('Entwicklerseite (B-335)', () => {
 
   it('Monitor liegt unter Performance, Balancing ist noch leer und erklärt das', () => {
     const [, perf, balance] = DEV_SECTIONS;
-    expect(perf!.tiles.map((t) => t.href)).toEqual(['monitor.html']);
+    expect(perf!.tiles.map((t) => t.href)).toEqual(['monitor.html', 'stress.html']);
     expect(balance!.tiles).toEqual([]);
     expect(balance!.empty).not.toBe('');
   });

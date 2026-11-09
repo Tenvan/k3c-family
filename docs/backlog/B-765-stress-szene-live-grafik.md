@@ -53,8 +53,12 @@ Eine startbare Szene zeichnet reproduzierbar N Figuren (Gegner, Truppen, Sprite-
   }
 }
 ```
-- Felder: `name`; `players` 1|2; `camera` (Start-X in Units, Zoom, Pan `none` oder `sweep`; bei 2 Spielern je Viewport eine Kamera); `enemies[]` und `troops[]` mit `type` (Schlüssel aus `enemies.json`/`troops.json`) und `count`; `sprites.mix` (`typical` = Verteilung wie in einer Nacht, `worstCase` = gleichmäßig über alle Sheets) und `distinctSheets` (Zahl verschiedener Papierschnitt-Assets, steuert die Texturlast); `ramp`.
+- Felder: `name`; `scenery` (`biome` = Schlüssel aus `data/biomes/`, `background` an/aus, `foreground` = Zahl der Vordergrund-Objekte); `players` 1|2; `camera` (Start-X in Units, Zoom, Pan `none` oder `sweep`; bei 2 Spielern je Viewport eine Kamera); `enemies[]` und `troops[]` mit `type` (Schlüssel aus `enemies.json`/`troops.json`) und `count`; `sprites.mix` (`typical` = Verteilung wie in einer Nacht, `worstCase` = gleichmäßig über alle Sheets) und `distinctSheets` (Zahl verschiedener Papierschnitt-Assets, steuert die Texturlast); `ramp`.
 - Unbekannter Typ, `players` ≠ 1|2, `count` < 0 oder Datei ohne Preset → Fehlermeldung beim Laden, Szene startet nicht.
+
+**Hintergrund und Vordergrund (RX1-Rückmeldung 2026-11-09)**
+- Die Szene zeichnet wie das Spiel die Parallax-Hintergründe des Bioms (`hintergruende/`, drei Schichten, Texturen und Füllrate) und einen Vordergrund aus Bäumen, Felsen und Büschen (Papierschnitt-Objekte), je zur Hälfte hinter und vor den Figuren. Beides gehört zur Last: Große Hintergrund-Sheets sind der Hauptverdacht für den Kontextverlust (B-764).
+- Hintergrund und Vordergrund bleiben über alle Stufen gleich; die Rampe steigert nur die Figuren. `?bg=0` und `?fg=0` schalten sie für Vergleichsläufe ab (A/B: Figuren allein gegen Figuren mit Szene); die Startzeile nennt die Werte.
 
 **Rampe**
 - Alle `ramp.everyMs` (Standard 10 000 ms) wird die Last um `factor` erhöht (`count` je Eintrag, aufgerundet), höchstens `steps` Stufen; danach Halten und Ende nach einer Schlussstufe (10 s).
@@ -64,6 +68,7 @@ Eine startbare Szene zeichnet reproduzierbar N Figuren (Gegner, Truppen, Sprite-
 **Messung und Log** (je Stufe eine Zeile, Emoji 💓 Verlauf, 🚀 Start, ✅ Ende; Mengen im Rate-Limit)
 - Felder je Stufen-Zeile: `device`, `scenario`, `step`, `players`, `entities` (Zahl gezeichneter Figuren), `sheets` (verschiedene Texturen), `fps` (Ø und min), `frameP95Ms`, `textureMiB`, `renderer` (WebGL2/WebGL/Canvas).
 - Startzeile mit Renderer, GPU, `maxTex`, Größe, `devicePixelRatio` (aus `readRenderInfo`/B-762, keine zweite Messung); Endzeile mit der größten Stufe, die ≥ 30 FPS hielt („Dichte-Grenze“), und der ersten Stufe mit Kontextverlust, falls eintritt.
+- Szenen-Zeile am Start: Zahl der Hintergrund-Bilder und Vordergrund-Objekte, Biom.
 - Mit `?perf=1` zusätzlich Bericht über `sendPerfReport` (`Histogram`, Einbrüche); Stufen stehen als Reihe im Bericht.
 - Technik-Anzeige (B-761) läuft in der Szene mit, zusätzlich Zeile „Stufe n/N, Figuren x“.
 
@@ -83,7 +88,7 @@ Eine startbare Szene zeichnet reproduzierbar N Figuren (Gegner, Truppen, Sprite-
 
 ## Nicht-Ziele
 
-Kein Server, keine Simulation, keine Netz-/Snapshot-Messung (das wäre ein Dev-Spawn-Befehl im Raum, Variante B, eigenes SRV-Ticket); keine Leistungsoptimierung; keine neue Grafik; keine Werte für Balancing.
+Kein Server, keine Simulation, keine Netz-/Snapshot-Messung (das wäre ein Dev-Spawn-Befehl im Raum, Variante B, eigenes SRV-Ticket); keine Leistungsoptimierung; keine neue Grafik; keine Werte für Balancing; keine Gebäude und Bürger (Folgearbeit, falls der Lauf zeigt, dass sie fehlen).
 
 ## Regeln und Einschränkungen
 
@@ -99,8 +104,8 @@ Unbekanntes Preset oder Typ → Fehlertext im Bild und Log (🚫). Kontextverlus
 
 ## Akzeptanzkriterien
 
-- **AC-01** Test: `data/stress.json` enthält `typisch` und `worstCase`; alle Typen existieren in `enemies.json`/`troops.json` und haben einen Eintrag in `data/paper.json` und `index.paper.json`; `players` ist 1 oder 2.
-- **AC-02** Test: Ungültige Szenarien (unbekannter Typ, `players: 3`, negative Anzahl) werden mit Fehler abgelehnt.
+- **AC-01** Test: `data/stress.json` enthält `typisch` und `worstCase`, beide mit Hintergrund und Vordergrund (Biom bekannt); alle Typen existieren in `enemies.json`/`troops.json` und haben einen Eintrag in `data/paper.json` und `index.paper.json`; `players` ist 1 oder 2.
+- **AC-02** Test: Ungültige Szenarien (unbekannter Typ, `players: 3`, negative Anzahl, unbekanntes Biom, Stufe unter 4 s) werden mit Fehler abgelehnt.
 - **AC-03** Test: Die Rampe erhöht die Last alle 10 s um den Faktor, höchstens `steps` Stufen; gleicher Seed → gleiche Verteilung.
 - **AC-04** Test: Jede Stufe erzeugt genau eine Log-Zeile mit `device`, FPS, Frame-Zeit p95, `textureMiB`, `entities`, `sheets`.
 - **AC-05** Test: Die Endzeile nennt die Dichte-Grenze (größte Stufe ≥ 30 FPS) korrekt, trägt `runId` und die Zusammenfassung je Stufe; die Aufwärm-Zeit zählt nicht in die Perzentile (Test).
@@ -115,6 +120,8 @@ keine (am 2026-11-09 vorgeschlagen und entschieden, siehe unten; 🧑 kann wider
 
 - **E-1 Eigene Seite `stress.html`, kein Modus in `game.html`.** Gründe: Die Szene ist serverlos, `game.html` startet Lobby, Verbindung und Raum und verfälscht damit Start- und Ladezeiten. Eine eigene Seite hält die Messung isoliert (nur `StressScene` und Renderer), lässt sich per Kachel und Link starten und ist als Werkzeug-Seite durch `projectRules.test.ts` abgedeckt. Gemeinsam genutzt werden nur Renderer, Papierschnitt-Lader und Messbausteine.
 - **E-2 Preset-Zahlen darf Claude nach dem ersten Xbox-Lauf (RX1.4) ohne neue Freigabe anpassen.** Rahmen: nur Zahlen in `data/stress.json` (Anzahl, Stufen, Faktor, `distinctSheets`), keine neuen Felder, keine neuen Presets, keine Änderung der Preset-Namen. Jede Anpassung steht mit alter und neuer Zahl und dem Log-Wert (`runId`) als Begründung im Commit und in den Notizen. Neue Presets oder Felder brauchen eine Freigabe durch 🧑.
+- **E-4 Hintergrund und Vordergrund gehören dazu (🧑, 2026-11-09).** Die Szene zeichnet Parallax-Hintergrund und Vordergrund-Objekte des Bioms; Gebäude und Bürger nicht. Umgesetzt in `src/stress/scenery.ts`.
+- **E-5 Mindest-Stufenlänge 4 s** (länger als die 2 s Aufwärmzeit), im Szenario geprüft.
 - **E-3 Gegner und Truppen haben ein Asset (geprüft 2026-11-09).** `data/paper.json` ordnet alle 17 Gegnertypen aus `enemies.json` (`greed` bis `crystalGuardian`) und alle 6 Truppentypen aus `troops.json` (`vagrant` bis `eliteWarrior`) einem Asset zu; die Ordner liegen unter `public/grafik/gegner/` und `public/grafik/truppen/` und stehen in den Gruppen-Indizes. **Lücke:** Bosse stehen nicht in dieser Zuordnung (eigene Gruppe `public/grafik/bosse/`, `data/bosses.json`); die Preset-Gegnerlisten enthalten deshalb zunächst keine Bosse, ein Boss-Preset wäre Folgearbeit. Da PNG und Manifeste nicht eingecheckt sind (B-737), prüft der Test in AC-01 die Zuordnung gegen `data/paper.json` und `index.paper.json`, nicht gegen vorhandene PNG; die Stress-Szene braucht vor dem Start `task gen:paper` (`task dev`/`build`/`test` rufen es selbst auf).
 
 ## Notizen
