@@ -1,10 +1,10 @@
-# RX1 · CLI, PAP · Xbox hält den WebGL-Kontext: Render-Log, Kontextverlust abfangen, Texturen auf 2048 px
+# RX1 · CLI, PAP, SRV · Xbox hält den WebGL-Kontext: Render-Log, Kontextverlust abfangen, Texturen auf 2048 px
 
 - **Status:** geplant
 - **Projekt:** LST
-- **Domäne:** CLI, PAP
+- **Domäne:** CLI, PAP, SRV
 - **Reife:** Entwurf
-- **Tickets:** B-761, B-762, B-763, B-764, B-765
+- **Tickets:** B-761, B-762, B-763, B-764, B-765, B-766
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -20,11 +20,11 @@ Die Xbox hält den WebGL-Kontext, und das Render-Verhalten jedes Clients ist im 
 
 ## Beteiligte und Zielgruppen
 
-🧑 testet und nimmt auf der Xbox ab (RX1.4, RX1.7); Claude setzt um und wertet das Log über `logs_query` aus.
+🧑 testet und nimmt auf der Xbox ab (RX1.5, RX1.8); Claude setzt um und wertet das Log über `logs_query` aus.
 
 ## Anforderungen
 
-B-762 › Anforderungen (Render-Log); B-763 › Anforderungen (Kontextverlust); B-764 › Anforderungen (Texturprofil ≤ 2048 px, Laden bei Bedarf); B-761 nur noch AC-05 (Abnahme am TV). Sprint-eigen: Die Technik-Anzeige (B-761, `?gfx=1`) steht ab RX1.1 standardmäßig **an** (Wunsch von 🧑, ändert B-761/AC-04; abschaltbar im Menü und mit `?gfx=0`). Die Reihenfolge ist fest, B-764 beginnt erst nach dem Xbox-Lauf (RX1.4), weil die Log-Werte die Ursache bestätigen müssen.
+B-762 › Anforderungen (Render-Log); B-763 › Anforderungen (Kontextverlust); B-764 › Anforderungen (Texturprofil ≤ 2048 px, Laden bei Bedarf); B-761 nur noch AC-05 (Abnahme am TV). Sprint-eigen: Die Technik-Anzeige (B-761, `?gfx=1`) steht ab RX1.1 standardmäßig **an** (Wunsch von 🧑, ändert B-761/AC-04; abschaltbar im Menü und mit `?gfx=0`). Die Reihenfolge ist fest, B-764 beginnt erst nach dem Xbox-Lauf (RX1.5), weil die Log-Werte die Ursache bestätigen müssen.
 
 ## Nicht-Ziele
 
@@ -32,7 +32,7 @@ Leistungsoptimierung des Canvas-Renderers; zweites Texturprofil oder Low-Profil;
 
 ## Regeln und Einschränkungen
 
-- Domäne CLI (`src/`); RX1.5 berührt zusätzlich `tools/paper` und `public/grafik`-Specs (Entscheidung 005) und ist deshalb Domäne PAP.
+- Domäne CLI (`src/`); RX1.4 berührt zusätzlich Go (`engine/`, Dev-Aktion `spawn`, Domäne SRV); RX1.6 berührt zusätzlich `tools/paper` und `public/grafik`-Specs (Entscheidung 005) und ist deshalb Domäne PAP.
 - Kein Spiel-Zustand im Client; B nicht belegen; Seitenwechsel nur über `openPage()`.
 - Log nur über `/api/clientlog` (Rate-Limit beachten), Emoji-Präfix laut CLAUDE.md.
 - PNG und Manifeste sind nicht eingecheckt (B-737); Grafik-Golden pflegen.
@@ -45,7 +45,7 @@ Xbox startet → Server-Log zeigt „🚀 Renderer: WebGL2, GPU …, maxTex …,
 
 ## Ausnahme- und Fehlerfälle
 
-Bestätigt der Xbox-Lauf (RX1.4) die Texturvermutung nicht, wird B-764 verworfen und die Ursache neu gesucht (Sprint wird angepasst). Verlust wiederholt sich sofort: keine Schleife, Canvas bleibt mit Hinweis.
+Bestätigt der Xbox-Lauf (RX1.5) die Texturvermutung nicht, wird B-764 verworfen und die Ursache neu gesucht (Sprint wird angepasst). Verlust wiederholt sich sofort: keine Schleife, Canvas bleibt mit Hinweis.
 
 ## Akzeptanzkriterien
 
@@ -66,12 +66,18 @@ Bestätigt der Xbox-Lauf (RX1.4) die Texturvermutung nicht, wird B-764 verworfen
 - **AC-15** Endzeile mit Dichte-Grenze und Zusammenfassung, Aufwärmzeit zählt nicht (`B-765/AC-05`, Test).
 - **AC-16** `stress.html` ist Kachel und nutzt `installPageChrome()` (`B-765/AC-06`).
 - **AC-17** Stress-Szene mit beiden Presets, 1 und 2 Spielern am PC und auf der Xbox, Dichte-Grenze notiert (🧑, `B-765/AC-07`).
+- **AC-18** `spawn` setzt Gegner und Truppen um den Spieler und lehnt Ungültiges ab (`B-766/AC-01`, Go-Test).
+- **AC-19** Protokoll-Beispiel `c2s-dev-spawn.json` wird im Dev-Mode angenommen, ungültig `bad_request`, ohne Dev-Mode `forbidden` (`B-766/AC-02`, Go-Test).
+- **AC-20** Die Nachrichten je Stufe sind die fehlenden Figuren, höchstens 200 je Nachricht (`B-766/AC-03`, Test).
+- **AC-21** Der Lauf im echten Client schreibt Start-, Echt- und Stufen-Zeilen mit Server-Werten (`B-766/AC-04`, Test).
+- **AC-22** Lauf im Browser mit Go-Server bis zur Endzeile, Zeilen im Server-Log (`B-766/AC-05`, Claude).
+- **AC-23** Echter Client mit den Kacheln am Gerät (Xbox, PC), Dichte-Grenze notiert (🧑, `B-766/AC-06`).
 
 ## Offene Fragen
 
 - Wiederherstellen des Kontexts oder Neuladen mit `?renderer=canvas`? Default: Neuaufbau versuchen, sonst Canvas-Neuladen; entscheidet RX1.2 beim Planen (🧑 informieren).
-- B-764 verlangt Laden „bei Bedarf“ je Stufe: Ob die Gruppen-Indizes (`index.paper.json`) dafür schon je Stufe ladbar sind, klärt RX1.5 beim Planen; ist der Umbau groß, wird er ein eigenes Ticket.
-- Welcher Browser-Parameter legt auf der Xbox die Texturgrenze fest (maxTex aus B-762)? Klärt RX1.4.
+- B-764 verlangt Laden „bei Bedarf“ je Stufe: Ob die Gruppen-Indizes (`index.paper.json`) dafür schon je Stufe ladbar sind, klärt RX1.6 beim Planen; ist der Umbau groß, wird er ein eigenes Ticket.
+- Welcher Browser-Parameter legt auf der Xbox die Texturgrenze fest (maxTex aus B-762)? Klärt RX1.5.
 
 ## Sessions
 
@@ -80,12 +86,13 @@ Bestätigt der Xbox-Lauf (RX1.4) die Texturvermutung nicht, wird B-764 verworfen
 | RX1.1 | `RX1.1-render-log.md` | Umsetzung | autonom | fertig |
 | RX1.2 | `RX1.2-kontextverlust.md` | Umsetzung | autonom | offen |
 | RX1.3 | `RX1.3-stress-szene.md` | Umsetzung | autonom | fertig |
-| RX1.4 | `RX1.4-xbox-lauf.md` | Workshop | Mensch | offen |
-| RX1.5 | `RX1.5-texturprofil.md` | Umsetzung | autonom | offen |
-| RX1.6 | `RX1.6-review.md` | Review | autonom | offen |
-| RX1.7 | `RX1.7-xbox-abnahme.md` | Workshop | Mensch | offen |
+| RX1.5 | `RX1.5-xbox-lauf.md` | Workshop | Mensch | offen |
+| RX1.6 | `RX1.6-texturprofil.md` | Umsetzung | autonom | offen |
+| RX1.7 | `RX1.7-review.md` | Review | autonom | offen |
+| RX1.8 | `RX1.8-xbox-abnahme.md` | Workshop | Mensch | offen |
+| RX1.4 | `RX1.4-stress-echter-client.md` | Umsetzung | autonom | fertig |
 
-Reihenfolge: RX1.1 → RX1.2 → RX1.3 → RX1.4 → RX1.5 → RX1.6 → RX1.7. RX1.2 loggt über RX1.1; RX1.3 (Stress-Szene, B-765) baut auf RX1.1 auf und liegt vor dem Xbox-Lauf, damit RX1.4 gleich abgestuft misst; RX1.4 braucht RX1.2 und RX1.3; RX1.5 braucht die Werte aus RX1.4. Vor jedem Start der Stress-Szene läuft `task gen:paper` (PNG nicht eingecheckt, B-737).
+Reihenfolge: RX1.1 → RX1.2 → RX1.3 → RX1.4 → RX1.5 → RX1.6 → RX1.7 → RX1.8. RX1.2 loggt über RX1.1; RX1.3 (Stress-Szene, B-765) und RX1.4 (Stresstest mit echtem Client und Go-Server, B-766) bauen auf RX1.1 und RX1.3 auf und liegen vor dem Xbox-Lauf, damit RX1.5 gleich abgestuft misst; RX1.5 braucht RX1.2 bis RX1.4; RX1.6 braucht die Werte aus RX1.5. Vor jedem Start der Stress-Szenen läuft `task gen:paper` (PNG nicht eingecheckt, B-737).
 
 ## Abnahme
 

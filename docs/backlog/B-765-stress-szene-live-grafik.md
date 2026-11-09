@@ -83,7 +83,7 @@ Eine startbare Szene zeichnet reproduzierbar N Figuren (Gegner, Truppen, Sprite-
 
 **Presets**
 - **Typisch** (`typisch`): 1 Spieler, Nachtwelle wie im Spiel: Start 12 Gegner (Greed, Wolf), 8 Truppen, `mix: typical`, `distinctSheets: 12`, 6 Stufen × 1,5.
-- **Worst Case** (`worstCase`): 2 Spieler (Split-Screen), Start 40 Gegner über alle Gegnertypen, 20 Truppen, `mix: worstCase`, `distinctSheets` = alle Papierschnitt-Assets der Gegner und Truppen, 8 Stufen × 1,5, Kamera `sweep` über die Stufe. Die Zahlen sind Startwerte und werden nach dem ersten Xbox-Lauf (RX1.4) angepasst.
+- **Worst Case** (`worstCase`): 2 Spieler (Split-Screen), Start 40 Gegner über alle Gegnertypen, 20 Truppen, `mix: worstCase`, `distinctSheets` = alle Papierschnitt-Assets der Gegner und Truppen, 8 Stufen × 1,5, Kamera `sweep` über die Stufe. Die Zahlen sind Startwerte und werden nach dem ersten Xbox-Lauf (RX1.5) angepasst.
 - Beide Presets mit je `players: 1` und `players: 2` startbar (URL-Parameter).
 
 ## Nicht-Ziele
@@ -119,18 +119,18 @@ keine (am 2026-11-09 vorgeschlagen und entschieden, siehe unten; 🧑 kann wider
 ### Entscheidungen
 
 - **E-1 Eigene Seite `stress.html`, kein Modus in `game.html`.** Gründe: Die Szene ist serverlos, `game.html` startet Lobby, Verbindung und Raum und verfälscht damit Start- und Ladezeiten. Eine eigene Seite hält die Messung isoliert (nur `StressScene` und Renderer), lässt sich per Kachel und Link starten und ist als Werkzeug-Seite durch `projectRules.test.ts` abgedeckt. Gemeinsam genutzt werden nur Renderer, Papierschnitt-Lader und Messbausteine.
-- **E-2 Preset-Zahlen darf Claude nach dem ersten Xbox-Lauf (RX1.4) ohne neue Freigabe anpassen.** Rahmen: nur Zahlen in `data/stress.json` (Anzahl, Stufen, Faktor, `distinctSheets`), keine neuen Felder, keine neuen Presets, keine Änderung der Preset-Namen. Jede Anpassung steht mit alter und neuer Zahl und dem Log-Wert (`runId`) als Begründung im Commit und in den Notizen. Neue Presets oder Felder brauchen eine Freigabe durch 🧑.
+- **E-2 Preset-Zahlen darf Claude nach dem ersten Xbox-Lauf (RX1.5) ohne neue Freigabe anpassen.** Rahmen: nur Zahlen in `data/stress.json` (Anzahl, Stufen, Faktor, `distinctSheets`), keine neuen Felder, keine neuen Presets, keine Änderung der Preset-Namen. Jede Anpassung steht mit alter und neuer Zahl und dem Log-Wert (`runId`) als Begründung im Commit und in den Notizen. Neue Presets oder Felder brauchen eine Freigabe durch 🧑.
 - **E-4 Hintergrund und Vordergrund gehören dazu (🧑, 2026-11-09).** Die Szene zeichnet Parallax-Hintergrund und Vordergrund-Objekte des Bioms; Gebäude und Bürger nicht. Umgesetzt in `src/stress/scenery.ts`.
 - **E-5 Mindest-Stufenlänge 4 s** (länger als die 2 s Aufwärmzeit), im Szenario geprüft.
 - **E-3 Gegner und Truppen haben ein Asset (geprüft 2026-11-09).** `data/paper.json` ordnet alle 17 Gegnertypen aus `enemies.json` (`greed` bis `crystalGuardian`) und alle 6 Truppentypen aus `troops.json` (`vagrant` bis `eliteWarrior`) einem Asset zu; die Ordner liegen unter `public/grafik/gegner/` und `public/grafik/truppen/` und stehen in den Gruppen-Indizes. **Lücke:** Bosse stehen nicht in dieser Zuordnung (eigene Gruppe `public/grafik/bosse/`, `data/bosses.json`); die Preset-Gegnerlisten enthalten deshalb zunächst keine Bosse, ein Boss-Preset wäre Folgearbeit. Da PNG und Manifeste nicht eingecheckt sind (B-737), prüft der Test in AC-01 die Zuordnung gegen `data/paper.json` und `index.paper.json`, nicht gegen vorhandene PNG; die Stress-Szene braucht vor dem Start `task gen:paper` (`task dev`/`build`/`test` rufen es selbst auf).
 
 ## Notizen
 
-Eingeplant als RX1.3, vor dem Xbox-Lauf RX1.4 (der misst dann gleich mit). Variante B (Dev-Spawn im Raum, SRV) bleibt ein Folge-Ticket.
+Eingeplant als RX1.3, vor dem Xbox-Lauf RX1.5 (der misst dann gleich mit). Variante B (Dev-Spawn im Raum, SRV) bleibt ein Folge-Ticket.
 
 ### Einplanung und Voraussetzungen
 
-- **Sprint:** RX1, Session RX1.3 (Domäne CLI), Reihenfolge RX1.1 → RX1.2 → **RX1.3** → RX1.4 (Xbox-Lauf) → RX1.5 → RX1.6 → RX1.7.
-- **Abhängigkeiten:** Setzt RX1.1 voraus (Render-Log, `renderInfo.ts`, `clientLog`); RX1.4 (Xbox-Lauf, 🧑) setzt RX1.3 voraus, damit der Lauf mit der Stress-Szene misst.
+- **Sprint:** RX1, Session RX1.3 (Domäne CLI), Reihenfolge RX1.1 → RX1.2 → **RX1.3** → RX1.5 (Xbox-Lauf) → RX1.6 → RX1.7 → RX1.8.
+- **Abhängigkeiten:** Setzt RX1.1 voraus (Render-Log, `renderInfo.ts`, `clientLog`); RX1.5 (Xbox-Lauf, 🧑) setzt RX1.3 voraus, damit der Lauf mit der Stress-Szene misst.
 - **Voraussetzung vor jedem Start (Entwicklung, Test und Lauf auf Xbox/Pi): `task gen:paper`.** PNG und Manifeste sind nicht eingecheckt (B-737); ohne sie fehlen der Szene die Sheets. `task dev`, `task build` und `task test` rufen es selbst auf, `task check:diff` nicht (B-742). Der Pi-/Xbox-Lauf braucht die neu erzeugten PNG ausgeliefert.
 - **Kriterien-Zuordnung im Sprint:** `B-765/AC-01` bis `AC-06` = RX1 `AC-11` bis `AC-16`, `B-765/AC-07` = RX1 `AC-17`.

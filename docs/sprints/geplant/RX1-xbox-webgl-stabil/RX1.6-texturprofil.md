@@ -1,4 +1,4 @@
-# RX1.5 · Texturprofil Xbox: Sheets höchstens 2048 px, Laden je Stufe
+# RX1.6 · Texturprofil Xbox: Sheets höchstens 2048 px, Laden je Stufe
 
 - **Status:** offen
 - **Typ:** Umsetzung
@@ -7,8 +7,8 @@
 - **Lane:** –
 - **Modell:** –
 - **Umgebung:** offline
-- **Branch:** rx1/5-texturprofil
-- **Abhängig von:** RX1.4
+- **Branch:** rx1/6-texturprofil
+- **Abhängig von:** RX1.5
 - **Tickets:** B-764
 - **Kriterien:** AC-06, AC-07
 
@@ -18,7 +18,7 @@ Alle Papierschnitt-Sheets sind höchstens 2048 px je Kante, der Client lädt bei
 
 ## Kontext
 
-Sheets bis 3072×1920 px in `public/grafik` (Renderer `tools/paper`, Vertrag Entscheidung 005, Zuordnung `data/paper.json`). PNG und Manifeste sind nicht eingecheckt (B-737): Änderung am Generator und an den Specs, `task gen:paper` rendert. Grenzen aus RX1.4 verwenden. Nur ein Profil, kein Low-Profil. Spec: B-764.
+Sheets bis 3072×1920 px in `public/grafik` (Renderer `tools/paper`, Vertrag Entscheidung 005, Zuordnung `data/paper.json`). PNG und Manifeste sind nicht eingecheckt (B-737): Änderung am Generator und an den Specs, `task gen:paper` rendert. Grenzen aus RX1.5 verwenden. Nur ein Profil, kein Low-Profil. Spec: B-764.
 
 ## Erlaubte Dateien
 

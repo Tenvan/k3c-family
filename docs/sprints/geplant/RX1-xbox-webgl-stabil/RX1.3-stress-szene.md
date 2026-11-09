@@ -14,7 +14,7 @@
 
 ## Ziel
 
-`stress.html` startet die Stress-Szene mit Szenario-Datei, Rampe und auswertbarem Log (B-765), damit der Xbox-Lauf (RX1.4) gleich mit abgestuften Dichten misst.
+`stress.html` startet die Stress-Szene mit Szenario-Datei, Rampe und auswertbarem Log (B-765), damit der Xbox-Lauf (RX1.5) gleich mit abgestuften Dichten misst.
 
 ## Kontext
 
@@ -65,4 +65,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 - Hintergrund (Parallax des Bioms) und Vordergrund (Bäume, Felsen, Büsche) gehören dazu (B-765 E-4); `?bg=0`/`?fg=0` für Vergleichsläufe.
 - Im Browser mit WebGL geprüft (1 und 2 Spieler, Stufen laufen, Log-Zeilen entstehen; der Server lief nicht, daher nur Konsole). Draw-Calls stehen nicht im Log (Phaser liefert sie nicht sicher).
 - Review-Befunde (Sonnet) behoben: Abbruch schreibt Endzeile, Listener auch bei `destroy` entfernt, fehlende Assets einmal gemeldet und nicht mitgezählt, Mindest-Stufenlänge 4 s.
-- Offen: AC-17 (Xbox-Abnahme) im Xbox-Lauf RX1.4. Vor jedem Start `task gen:paper`.
+- Offen: AC-17 (Xbox-Abnahme) im Xbox-Lauf RX1.5. Vor jedem Start `task gen:paper`.

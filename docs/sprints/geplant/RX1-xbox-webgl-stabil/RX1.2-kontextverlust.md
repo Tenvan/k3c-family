@@ -28,7 +28,7 @@ Xbox-Edge meldet nach 3–4 s dreimal „WebGL Context lost. Renderer disabled�
 
 ## Nicht-Ziele
 
-Keine Texturverkleinerung (RX1.5), keine Optimierung des Canvas-Renderers.
+Keine Texturverkleinerung (RX1.6), keine Optimierung des Canvas-Renderers.
 
 ## Schritte
 

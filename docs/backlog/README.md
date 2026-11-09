@@ -152,6 +152,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-763](B-763-webgl-kontextverlust-abfangen.md) | CLI | Problem | hoch | eingeplant | RX1 | Bei WebGL-Kontextverlust Renderer neu aufbauen statt abschalten |
 | [B-764](B-764-grosse-texturen-xbox.md) | CLI | Problem | hoch | eingeplant | RX1 | Texturen auf die Xbox als Zielplattform auslegen (höchstens 2048 px, bei Bedarf laden) |
 | [B-765](B-765-stress-szene-live-grafik.md) | CLI | Idee | hoch | eingeplant | RX1 | Stress-Szene Live-Grafik: Dichte-Test mit Szenario-Datei, Rampe und Presets (1 und 2 Spieler) |
+| [B-766](B-766-stresstest-echter-client.md) | CLI | Idee | hoch | eingeplant | RX1 | Stresstest des echten Clients: Dev-Aktion spawn und Lauf mit Rampe in der GameScene |
 
 ## Archiv
 

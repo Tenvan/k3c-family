@@ -10,6 +10,7 @@ import { applyTexts, t } from '../tools/texts';
 import stressJson from '../../data/stress.json';
 import { StressScene } from './StressScene';
 import { KNOWN } from './known';
+import { deviceTag, sendStressReport } from './stressReport';
 import { hashText, parseScenarios, stageCount, withScenery, type Scenario } from './stressPlan';
 import { StressRun, type RunResult } from './stressRun';
 
@@ -23,22 +24,6 @@ let game: Phaser.Game | null = null;
 /** Beendet den laufenden Lauf mit Endzeile (Zurück zum Menü) */
 let abort: (() => void) | null = null;
 let ramp = new URLSearchParams(location.search).get('ramp') !== '0';
-
-/** Gerätekennung für die Lauf-Kennung; dieselbe wie im Client-Log (`k3c-client`) */
-function deviceTag(): string {
-  try {
-    return (localStorage.getItem('k3c-client') ?? '').slice(0, 6) || 'anon';
-  } catch {
-    return 'anon';
-  }
-}
-
-/** Bericht über `/api/report` (`reports/*.json`), nur mit `?perf=1`; Fehler werden verworfen */
-function sendReport(meta: { runId: string; scenario: string; players: number; seed: number; startedAt: string }, result: RunResult): void {
-  if (new URLSearchParams(location.search).get('perf') !== '1') return;
-  const body = { kind: 'stress', version: 1, ...meta, device: deviceTag(), userAgent: navigator.userAgent, viewport: `${window.innerWidth}x${window.innerHeight}`, ...result };
-  void fetch('/api/report', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), keepalive: true }).catch(() => undefined);
-}
 
 function stop(): void {
   abort?.();
@@ -79,7 +64,7 @@ function launch(id: string, base: Scenario, players: 1 | 2): void {
   );
   const onEnd = (r: RunResult): void => {
     abort = null;
-    sendReport({ runId, scenario: id, players, seed, startedAt }, r);
+    sendStressReport({ runId, scenario: id, players, seed, startedAt, mode: 'canvas' }, r);
   };
   abort = () => onEnd(run.finish('aborted'));
   g.scene.add('stress', StressScene, true, { scenario, players, ramp, seed, known: KNOWN, run, renderLog, version, onEnd });

@@ -19,7 +19,8 @@ export interface RunMeta {
   runId: string;
   scenario: string;
   players: number;
-  seed: number;
+  /** Zahl (stress.html) oder Seed-Text des Raums (echter Client) */
+  seed: number | string;
   /** Hash der Szenario-Datei */
   fileHash: string;
   params: string;
@@ -51,6 +52,16 @@ export interface StageSummary {
   textures: number;
   textureMiB: number;
   heapMiB: number | null;
+  /** nur im echten Client */
+  server?: ServerStats;
+}
+
+/** Werte des echten Clients je Stufe: Server-Takt und Zahl der Figuren im Zustand */
+export interface ServerStats {
+  latencyMs: number | null;
+  bufferMs: number;
+  enemies: number;
+  troops: number;
 }
 
 export type EndReason = 'done' | 'contextLost' | 'aborted';
@@ -69,6 +80,13 @@ export interface RunEnv {
 }
 
 const r1 = (v: number): number => Math.round(v * 10) / 10;
+/** `count` je `ms` (1 Nachkommastelle); 0 ohne Messwerte */
+const rate = (count: number, ms: number): number => (ms > 0 ? r1(count / ms) : 0);
+const heapOf = (v: number | null): number | null => (v === null ? null : r1(v));
+const quantileFields = (q: { p50: number; p95: number; p99: number } | null): { frameP50: number; frameP95: number; frameP99: number } => ({ frameP50: q?.p50 ?? 0, frameP95: q?.p95 ?? 0, frameP99: q?.p99 ?? 0 });
+
+/** Zusatz der Stufen-Zeile im echten Client */
+const serverText = (v?: ServerStats): string => (v ? `, Latenz ${v.latencyMs ?? '–'} ms, ${v.enemies} Gegner, ${v.troops} Truppen` : '');
 
 /** Größte Stufe, bis zu der alle Stufen ≥ `OK_FPS` Ø FPS hielten */
 export function densityLimit(stages: readonly StageSummary[]): RunResult['densityLimit'] {
@@ -146,7 +164,7 @@ export class StressRun {
   }
 
   /** Beendet die Stufe, schreibt die Zeile und liefert die Zusammenfassung */
-  endStage(inView: number[]): StageSummary {
+  endStage(inView: number[], server?: ServerStats): StageSummary {
     const o = this.open!;
     const q = this.hist.quantiles();
     const info = this.env.info();
@@ -159,23 +177,22 @@ export class StressRun {
       durationMs: Math.round(this.sumMs),
       frames: this.frames,
       warmupFrames: this.warm,
-      fpsMean: this.sumMs > 0 ? r1((this.frames * 1000) / this.sumMs) : 0,
-      fpsMin: this.maxMs > 0 ? r1(1000 / this.maxMs) : 0,
-      fpsP5: q && q.p95 > 0 ? r1(1000 / q.p95) : 0,
+      fpsMean: rate(this.frames * 1000, this.sumMs),
+      fpsMin: rate(1000, this.maxMs),
+      fpsP5: rate(1000, q?.p95 ?? 0),
       frameMeanMs: r1(mean),
-      frameP50: q?.p50 ?? 0,
-      frameP95: q?.p95 ?? 0,
-      frameP99: q?.p99 ?? 0,
+      ...quantileFields(q),
       frameMax: Math.round(this.maxMs),
       over50: this.drops,
       over33: this.slow,
       textures: info.textures,
       textureMiB: r1(info.textureMiB),
-      heapMiB: this.env.heapMiB() === null ? null : r1(this.env.heapMiB()!),
+      heapMiB: heapOf(this.env.heapMiB()),
+      ...(server && { server }),
     };
     this.stages.push(s);
     this.open = null;
-    this.env.log(s.fpsMean >= OK_FPS ? 'info' : 'warn', `💓 Stufe ${s.stage}/${this.meta.stages}: ${s.entities} Figuren, ${s.sheets} Typen, FPS Ø ${s.fpsMean} (min ${s.fpsMin}), p95 ${s.frameP95} ms, ${s.textureMiB} MiB [${this.meta.runId}]`, {
+    this.env.log(s.fpsMean >= OK_FPS ? 'info' : 'warn', `💓 Stufe ${s.stage}/${this.meta.stages}: ${s.entities} Figuren, ${s.sheets} Typen, FPS Ø ${s.fpsMean} (min ${s.fpsMin}), p95 ${s.frameP95} ms, ${s.textureMiB} MiB${serverText(server)} [${this.meta.runId}]`, {
       runId: this.meta.runId,
       ...s,
     });

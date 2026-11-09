@@ -62,5 +62,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 - AC-01 bis AC-04: umgesetzt und getestet (`src/core/renderLog.test.ts`, 13 Tests). `src/core/renderLog.ts` (`RenderLog`: Startzeile, Verlauf alle 30 s, FPS-Warnung < 20 höchstens je Minute, Kontext-Ereignisse, Ladezeile, `logLoadError` mit Status), `renderLogInstall.ts` (Verdrahtung in `main.ts`), `gameRenderInfo.ts` (gemeinsame Messung mit der Technik-Anzeige), `LoadScene.ts` (Ladezeile, Startzeile, Fehler mit Status).
 - Technik-Anzeige jetzt Standard an (Wunsch 🧑): `techInfo` true, `?gfx=0` schaltet ab, `?gfx=1` erzwingt an.
-- Geladen wird noch alles beim Start (eine Ladezeile „start“); je Stufe getrennt folgt mit B-764 (RX1.5).
+- Geladen wird noch alles beim Start (eine Ladezeile „start“); je Stufe getrennt folgt mit B-764 (RX1.6).
 - Geprüft: `task check` grün; `check:diff` JS grün, `golangci-lint` fehlt auf diesem Rechner (kein Go geändert).
