@@ -149,7 +149,7 @@ jobs:
       - name: amd64-Image starten und prüfen
         run: |
           docker buildx build --platform linux/amd64 --load -t k3c-server:ci .
-          docker run -d --name k3c -p 8080:8080 k3c-server:ci
+          docker run -d --name k3c -e NO_COLOR=1 -p 8080:8080 k3c-server:ci
           for i in $(seq 1 30); do curl -fs http://localhost:8080/api/health && break; sleep 1; done
           for page in / /game.html /gamepad-test.html; do curl -fsS -o /dev/null "http://localhost:8080$page"; done
           test "$(curl -s -o /dev/null -w '%{http_code}' -X POST -d '{"version":1,"campaignId":"ci"}' http://localhost:8080/api/save)" = 200
@@ -157,11 +157,11 @@ jobs:
           test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/api/status)" = 404
           case "$(docker inspect --format '{{.Config.User}}' k3c-server:ci)" in nonroot | 65532 | 65532:65532) ;; *) exit 1 ;; esac
           docker logs k3c
-          # Image mit Dev-Mode (Entwicklungsphase, RX1): Startzeile nennt dev=true
+          # Image mit Dev-Mode (Entwicklungsphase, RX1): Startzeile nennt dev=true (NO_COLOR=1: sonst steht ein Farbcode zwischen dev= und true)
           docker logs k3c 2>&1 | grep -q 'dev=true'
       - name: Dev-Mode per K3C_DEV=0 ausschaltbar
         run: |
-          docker run -d --name k3c-workbench -e K3C_DEV=0 k3c-server:ci
+          docker run -d --name k3c-workbench -e K3C_DEV=0 -e NO_COLOR=1 k3c-server:ci
           for i in $(seq 1 30); do docker exec k3c-workbench /app/k3c-server -health && break; sleep 1; done
           docker logs k3c-workbench 2>&1 | grep -q 'dev=false'
       # Diagnose-TUI im Image (SP10, B-002): ein zweiter Container mit Token, k3c-tui -once ohne Terminal.
