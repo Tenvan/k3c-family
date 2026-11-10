@@ -1,4 +1,4 @@
-import register from '../../data/assets.json';
+import register from '../../data/sounds.json';
 import { clientLog } from '../core/clientLog';
 import { installPageChrome } from '../core/shell';
 import { audioCore } from '../audio/audioCore';

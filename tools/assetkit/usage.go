@@ -13,7 +13,7 @@ import (
 const maxUsage = 20
 
 // usageSkip sind data/-Dateien, die Slots nur beschreiben und keine Verwendung sind.
-var usageSkip = map[string]bool{"assets.json": true, "sprites.json": true, "assets-vorschlaege.json": true}
+var usageSkip = map[string]bool{"sounds.json": true, "assets-vorschlaege.json": true}
 
 // findUsage nennt jede Stelle in data/*.json, an der die Slot-ID als Wert oder Schlüssel steht
 // ("data/biomes.json › forest.enemies", Array-Indizes entfallen); sortiert, ohne Doppelte, höchstens 20 und dann

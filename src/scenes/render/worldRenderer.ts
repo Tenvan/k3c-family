@@ -7,7 +7,7 @@ import { createBackWallView, updateBackWallView } from './backWallView';
 import { BuergerView } from './citizenView';
 import { createRider, updateRider } from './mountView';
 import { createMineSign, showsMineSign } from './mineSignView';
-import { NATURE_TEXTURES, campSprite, decoRoots, nodeSprite, objectLook } from './natureSprites';
+import { NATURE_TEXTURES, campSprite, decoRoots, nodeSprite, objectLook, plantationSprite } from './natureSprites';
 import { objectImage } from './objectView';
 import { PENNANT_MAX_HEIGHT, noteMarkers } from './pennant';
 import { type Plot, isPlantationTree, plantationPlots } from './plantation';
@@ -247,8 +247,8 @@ export class WorldRenderer {
 
   /** Setzling auf einem leeren Plantage-Platz, vor der Baumschule; ohne geladene Grafik bleibt der Platz leer */
   private createPlot(p: Plot): View {
-    const image = this.scene.textures.exists('grafik:setzling') ? [this.scene.add.image(0, 0, 'grafik:setzling').setOrigin(0.5, 1)] : [];
-    return this.scene.add.container(p.x * U, G, image).setDepth(PLANTATION_DEPTH);
+    const image = objectImage(this.scene, 'plot:setzling', 0, 0, plantationSprite('setzling'), p.x);
+    return this.scene.add.container(p.x * U, G, image ? [image] : []).setDepth(PLANTATION_DEPTH);
   }
 
   private createNode(n: ResourceNode): View {
@@ -257,7 +257,7 @@ export class WorldRenderer {
     // Plantage-Baum (steht auf einem Platz): eigene niedrige Pappel vor der Baumschule (B-568); Waldbäume bleiben bei der Zuordnung (GEB6)
     const pappel = isPlantationTree(n, this.world.sites) && s.textures.exists('grafik:pappel-niedrig');
     // Baumform aus der Position, Look aus dem Biom (GEB6); unbekannte Art oder fehlende Grafik: Platzhalter-Form
-    const sprite = pappel ? s.add.image(0, 0, 'grafik:pappel-niedrig').setOrigin(0.5, 1) : objectImage(s, `node:${n.kind}`, 0, 0, nodeSprite(n.kind, n.x, this.world.biome.id), n.x);
+    const sprite = pappel ? objectImage(s, 'node:pappel-niedrig', 0, 0, plantationSprite('pappel-niedrig'), n.x) : objectImage(s, `node:${n.kind}`, 0, 0, nodeSprite(n.kind, n.x, this.world.biome.id), n.x);
     // Deko-Wurzeln hinter dem Knoten (GEB15.1): nur Darstellung, Dichte aus dem Biom, gehen mit dem Knoten
     const deko = n.kind === 'tree' && !pappel ? decoRoots(n.x, this.world.biome.id, this.world.biome.rootsPerNode) : [];
     for (const d of deko) parts.push(...[objectImage(s, 'deco:root', d.dx * U, 0, objectLook(d.key, NATURE_TEXTURES[d.key]), n.x + d.dx)].filter((o) => o !== null)); // Rahmen wie der Knoten (Review US2)

@@ -11,10 +11,10 @@ describe('Gerüst-Größenklasse (B-586)', () => {
     };
     expect(SCAFFOLD_CLASS).toEqual(erwartet);
   });
-  it('jede Klasse lädt ihre 32-px-Grafik aus tools/buildings (Datei geprüft über data/assets.json)', () => {
+  it('jede Klasse lädt ihr Papier-Gerüst aus gebaeude-paper (CU1.2)', () => {
     for (const c of SCAFFOLD_CLASSES) {
       const file = BUILDING_TEXTURES[`grafik:geruest-${c}`];
-      expect(file).toBe(`gebaeude/geruest-${c}-32.png`);
+      expect(file).toBe(`gebaeude-paper/geruest-${c}/stand.png`);
     }
     expect(scaffoldTexture('workshop')).toBe('grafik:geruest-6');
     expect(scaffoldTexture('tower')).toBe('grafik:geruest-3');

@@ -27,6 +27,36 @@
       "stand.s5.png": "13c1e23441b981a7c0ee49eaf08d32e67d465bf605bd7d05ce618877f129b0b4"
     }
   },
+  "geruest-1": {
+    "renderKey": "95b470d62d9c4acc7db1008a32e6c8f948e9e07bde9bd28b46e1fd89db720e8d",
+    "dateien": {
+      "stand.png": "a9a46a8928f0af1fb4b2bc8a43c1c507145209522058fc53e179364ac6eb0590"
+    }
+  },
+  "geruest-2": {
+    "renderKey": "667b69074d905a87269517d15a120169ab86026f6e3d018f0c0a5052860df4dd",
+    "dateien": {
+      "stand.png": "739b3005851678ee28101ae631f20c40239eb116a3f64d88f67cb8f66ced00b0"
+    }
+  },
+  "geruest-3": {
+    "renderKey": "02f092276fdf4869b6521d6f7d2a962ae14ff50323f56c17e1edd55dd7690597",
+    "dateien": {
+      "stand.png": "0bd80bca9071854fb2df49d7d545eb2f9135d417882de3004d1e8c5d695f1791"
+    }
+  },
+  "geruest-4": {
+    "renderKey": "c526792db15be1cdc1522b664d6fc40aac396535e6a34856f1ba4402e0b15f66",
+    "dateien": {
+      "stand.png": "8e29f6f93c0780934de90cb45e48cfa51a7b163a5ae181782bc3d1699f195643"
+    }
+  },
+  "geruest-6": {
+    "renderKey": "b7a0834f9d65f8682bacb521a69890403246db5c19de02c9619483abc00ebc14",
+    "dateien": {
+      "stand.png": "aba0f94eb29f7a4bdcdca8b84dca417c3d4f9990a8618d81686df6893f4e2926"
+    }
+  },
   "hafen": {
     "renderKey": "350b9082506fb91d82d4e3b004edad9fc0f021de5451a125555d7907e7a3aea8",
     "dateien": {
@@ -51,6 +81,12 @@
       "stand.s3.png": "4cb649a9cee131b317b9f669aed5553fd7547bbb567c835fb19c7ead49fca356",
       "stand.s4.png": "6814069cb7413af87e52d12e12ac2a7dd7c586d81ad2957eb3171357ff65d1d6",
       "stand.s5.png": "3bb1f99eee85cb727c51395d1cbf5a577aa947457127cf3bbe6bc1b520775c47"
+    }
+  },
+  "hub-geruest": {
+    "renderKey": "8452cea54ffbf14cf2fcc01fef9dc57af19ea35f7f7a2f2b4833f01a1e7eeae0",
+    "dateien": {
+      "stand.png": "c18aeed92deeedb98c91e931278c130db61f3107f491ed4afb7aebe1aa389ff6"
     }
   },
   "kaserne": {

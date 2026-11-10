@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import assets from '../../data/assets.json';
+import assets from '../../data/sounds.json';
 import type { GameEvent } from '../model/types';
 import { attenuation, cueFor, EDGE_GAIN, eventX, hubRaised, NIGHT_GAIN, nightGain, RIDE_GAIN, RIDE_MIN_SPEED, rideLoops, SFX_URLS, sfxUrls, type Listener, type SfxSlot } from './events';
 

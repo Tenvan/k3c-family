@@ -5,7 +5,6 @@
     "check:all",
     "check:dev",
     "check:go",
-    "gen:atlas",
     "go:lint",
     "go:test",
     "install",

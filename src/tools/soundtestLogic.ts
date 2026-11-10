@@ -15,7 +15,7 @@ export interface Candidate {
 export const ZUSTAENDE = ['Tag', 'Abend', 'Nacht', 'Kampf', 'Tiefe/Höhle', 'Boss', 'Lobby', 'Niederlage/Sieg'] as const;
 export const EREIGNISSE = ['Treffer', 'Kill', 'Münze', 'Pfeil', 'Schlag', 'Bau', 'Tod', 'Wiederbeleben', 'Skill', 'Nacht naht', 'Portal'] as const;
 
-/** Sound-Slot des Slot-Registers `data/assets.json` (B-298), nur was die Hörprobe braucht */
+/** Sound-Slot aus `data/sounds.json` (CU1.2), nur was die Hörprobe braucht */
 export interface SoundSlot {
   id: string;
   art: string;

@@ -1,7 +1,8 @@
+import { clientLog } from '../../core/clientLog';
 import { BUILDINGS } from '../../model/data';
 import type { SiteKind, SiteState } from '../../model/types';
 import { HUB_GROWTH, HUB_SCAFFOLD, type HubLook } from './hubGrowth';
-import { isPaperFile, paperBuildingFile } from './paperAssets';
+import { paperBuildingFile } from './paperAssets';
 import { SCAFFOLD_CLASSES, scaffoldKey } from './scaffoldView';
 
 /**
@@ -18,8 +19,17 @@ const HUB_BUILDINGS: Partial<Record<SiteKind, string>> = {
 /** Abschnitte des Schiffs aus `data/ship.json` (B-637): Kiel, Rumpf, Segel */
 const SHIP_STAGES = [1, 2, 3];
 
-/** Datei eines Gebäudes in Stufe n: Papierschnitt (`gebaeude-paper/`, US1), sonst die alte Pixel-Grafik bis CU1 */
-const file = (id: string, n?: number): string => paperBuildingFile(id, n ?? 1) ?? `gebaeude/${id}${n ? `-${n}` : ''}-32.png`;
+/** Datei eines Gebäudes in Stufe n: Papierschnitt (`gebaeude-paper/`); jede Id steht in `PAPER_BUILDINGS` (ein Test prüft alle Schlüssel) */
+const missing = new Set<string>();
+const file = (id: string, n?: number): string => {
+  const f = paperBuildingFile(id, n ?? 1);
+  if (f) return f;
+  if (!missing.has(id)) {
+    missing.add(id);
+    clientLog('warn', '🤒 Papier-Asset fehlt, keine Grafik', { id }); // kein Rückfall auf alte Pixel-Grafik (CU1.2)
+  }
+  return '';
+};
 
 /** Burg-Ausbauschritt (Stufe 6–13 der Wachstumsreihe) → Hub-Stufe 2–5 und Schritt 2–3 (D-MG6-05) */
 export function castleStep(stufe: number): { level: number; step: number } | null {
@@ -41,9 +51,9 @@ export const BUILDING_TEXTURES: Record<string, string> = {
   /** Überlage der Burg-Ausbauschritte (US1, D-MG6-05) */
   'grafik:burg-ausbau-2': file('burg-ausbau', 2),
   'grafik:burg-ausbau-3': file('burg-ausbau', 3),
-  [`grafik:${HUB_SCAFFOLD}`]: `gebaeude/${HUB_SCAFFOLD}-32.png`,
+  [`grafik:${HUB_SCAFFOLD}`]: file(HUB_SCAFFOLD),
   /** Gerüst im Bau je Größenklasse (GEB16, B-586): `grafik:geruest-<breite>` */
-  ...Object.fromEntries(SCAFFOLD_CLASSES.map((c) => [scaffoldKey(c), `gebaeude/geruest-${c}-32.png`])),
+  ...Object.fromEntries(SCAFFOLD_CLASSES.map((c) => [scaffoldKey(c), file(`geruest-${c}`)])),
   ...stufen('wall', 'mauer'),
   ...stufen('tower', 'turm'),
   ...stufen('backwall', 'hintergrundmauer'),
@@ -52,9 +62,6 @@ export const BUILDING_TEXTURES: Record<string, string> = {
   ...Object.assign({}, ...Object.entries(HUB_BUILDINGS).map(([kind, id]) => stufen(kind, id!))),
   'grafik:stairsUp': file('treppe-hoch'),
   'grafik:stairsDown': file('treppe-runter'),
-  /** Plantage (GEB5, B-568): Setzling auf leerem Platz, niedrige Pappel auf gewachsenem Platz (vor der Baumschule) */
-  'grafik:setzling': 'gebaeude/setzling-32.png',
-  'grafik:pappel-niedrig': 'gebaeude/pappel-niedrig-32.png',
 };
 
 /** Burg, Mauer, Turm, Tor und Hub-Gebäude in den Stufen 1–5 aus `tools/buildings` (GEB3, GEB4, GEB9): `grafik:<kind>-<n>` → `gebaeude/<id>-<n>-32.png` */
@@ -87,12 +94,6 @@ const BASE: Partial<Record<SiteKind, string>> = {
 /** Hub-Gebäude ohne eigene Stufen zeigen die Grafik der Hub-Stufe (GEB9); der Aufrufer reicht `World.hubLevel` (fehlt = 1) als Stufe durch. Mit `levels` (B-569) zählt die Stufe des Platzes */
 export function isHubBuilding(kind: SiteKind): boolean {
   return kind in HUB_BUILDINGS && !BUILDINGS[kind]?.levels?.length;
-}
-
-/** Maßstab im Spiel: eigene Gebäude aus `tools/buildings` sind schon 32 px je Kachel (×1), die 16-px-Packs ×2 (GEB2) */
-export function textureScale(key: string): number {
-  const f = BUILDING_TEXTURES[key];
-  return f && (f.startsWith('gebaeude/') || isPaperFile(f)) ? 1 : 2;
 }
 
 /** Textur der Hintergrundmauer in Stufe 1–5 (B-442), sonst `null` */

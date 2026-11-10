@@ -107,35 +107,8 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'dm.level': 'Level {n}',
   'dm.levelLabel': 'Build level',
 
-  // Graphics pipeline (pipeline.html, B-331)
-  'pipeline.pageTitle': 'K3C Graphics Pipeline',
-  'pipeline.title': 'Graphics pipeline: before and after',
-  'pipeline.sub':
-    'Left the source from public/grafik, right the result from public/grafik-db32 (DB32, 16 px, hard alpha). Both at the same world size (×2) on a shared ground. Rules: docs/assets/stil-bibel.md.',
-  'pipeline.before': 'before',
-  'pipeline.after': 'after',
 
   // Graphics page (grafiken.html) and credits (lizenzen.html)
-  'grafik.pageTitle': 'K3C All Graphics',
-  'grafik.title': 'All Graphics',
-  'grafik.sub1':
-    'The pixel art packs chosen for B-010 for buildings, resources and backgrounds, with author, license and source. Only the environment images are in the game folder',
-  'grafik.sub2':
-    'Scroll with stick or D-pad. With the “Selection” boxes (per pack and per image) you build a set of IDs below that you can mention in the chat.',
-  'grafik.zoom': 'Zoom',
-  'grafik.missing': 'Image missing',
-  'grafik.source': 'Source',
-  'grafik.noIndex': 'The image list grafik/index.json cannot be loaded.',
-  'grafik.group.ebenen': 'Layers and tilesets',
-  'grafik.group.umgebung': 'Environment',
-  'grafik.group.props': 'Props',
-  'grafik.group.props-einzeln': 'Single props',
-  'grafik.group.tileset-einzeln': 'Single tilesets',
-  'grafik.group.ressourcen': 'Resources',
-  'grafik.group.portale': 'Portals',
-  'grafik.group.muenzen': 'Coins',
-  'grafik.group.icons': 'Icons',
-  'grafik.group.vorschau': 'Preview',
   'credits.work': 'Work',
   'credits.author': 'Author(s)',
   'credits.license': 'License',
@@ -160,10 +133,6 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'tile.gamedev.desc': 'Game with debug overlay (?dev=1) · window.game for the console',
   'tile.gamepad.title': 'Gamepad Test',
   'tile.gamepad.desc': 'Controller, B button, fullscreen, rumble, FPS · report to the PC',
-  'tile.grafiken.title': 'All Graphics',
-  'tile.grafiken.desc': 'Chosen CC0 packs for buildings, resources and backgrounds · with author, license and source',
-  'tile.pipeline.title': 'Graphics Pipeline',
-  'tile.pipeline.desc': 'Before and after: graphics from task gen:pipeline in DB32 at 16 px · on a shared ground',
   'tile.sound.title': 'Listening Test',
   'tile.sound.desc': 'Listen to candidates for music and effects · by state and event, with source and license',
   'tile.dm.title': 'Dungeon Master',
@@ -248,12 +217,6 @@ export const en: Partial<Record<ToolTextKey, string>> = {
   'sprite.player': 'Player {n}',
   'sprite.depth': '{name} · depth {depth}',
   'sprite.height': '{id} · {px} px tall in the game',
-  'sel.pick': 'Selection',
-  'sel.placeholder': 'Tick the “Selection” box, the text to copy appears here',
-  'sel.copy': 'Copy',
-  'sel.clear': 'Clear',
-  'sel.text': 'Selection {label}: {ids}',
-  'sel.grafiken': 'graphics',
 
   // Gamepad test (gamepad-test.html) and its audio probe
   'pad.pageTitle': 'K3C Gamepad Test',
@@ -344,17 +307,12 @@ export const en: Partial<Record<ToolTextKey, string>> = {
     'The non-commercial clause only applies to our own work. The third-party material below keeps its original license and stays usable for everyone as its authors permitted.',
   'lic.h.graphics': 'Graphics',
   'lic.graphics':
-    'All figures in the game come from talented pixel artists who give their work to the public. Without them this game would not exist in this form. <strong>Thank you very much!</strong> We cropped every figure, partly mirrored it, assembled it into strips or tinted it.',
-  'lic.creditsNote': 'The entries are in <code>public/grafik/CREDITS.md</code>, <code>public/sprites/CREDITS.md</code> and (sounds) <code>public/audio/README.md</code>; this page reads them from there.',
-  'lic.h.mounts': 'Notes on mounts (CC BY 3.0, attribution required)',
-  'lic.mounts':
-    'Horses, unicorn, pegasus, deer, elephant and wolves are licensed under <a href="https://creativecommons.org/licenses/by/3.0/deed.en" target="_blank" rel="noopener">Creative Commons Attribution 3.0</a>. We use them exclusively under CC BY 3.0 (not under the GPL variants also offered there). Our changes: cut out of the sheets, turned to face right, cropped, partly tinted; a rider sits on them in the game.',
-  'lic.mountsSource':
-    'Obtained via <a href="https://github.com/hckr/endless-horse-run" target="_blank" rel="noopener">hckr/endless-horse-run</a> (LPC Horses) and the collection by AntumDeluge. The horses belong to the Liberated Pixel Cup (LPC) community of <a href="https://opengameart.org" target="_blank" rel="noopener">OpenGameArt.org</a>. Thanks to everyone who shares their work there!',
-  'lic.mountsTable': 'Full table with folders: <code>public/sprites/CREDITS.md</code>.',
+    'All graphics in the game are <strong>our own paper-cut art</strong>, generated from specs (<code>tools/paper</code>). There is no third-party artwork in it, so there are no graphics credits here.',
+  'lic.creditsNote':
+    'The entries are in <code>public/audio/README.md</code>; this page reads them from there.',
   'lic.h.sound': 'Sound & Music',
   'lic.sound':
-    'The game currently has <strong>no sound</strong>, so there is nobody to thank here yet. Once sound effects or music arrive, authors, license and source will be listed here, our own recordings under CC BY-NC 4.0.',
+    'Sound effects and music come from free sources or are our own recordings; authors, license and source are listed below, our own recordings under CC BY-NC 4.0.',
   'lic.h.software': 'Software',
   'lic.softwareIntro': 'These building blocks run in the game or build it. Thanks to everyone who maintains them.',
   'lic.th.part': 'Component',

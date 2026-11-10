@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import assets from '../../data/assets.json';
+import assets from '../../data/sounds.json';
 import { SFX_URLS } from './events';
 import { UI_SLOTS, uiSoundFor } from './ui';
 

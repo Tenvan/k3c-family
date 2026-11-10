@@ -15,7 +15,7 @@ func TestAssetsGroesse(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// data/sprites.json: medieval-king height 81, scale 1.5; Spec: ausgabe.rahmen[1] = -145
+	// data/paper.json › figuren › spieler[0]: hoehe 121,5 (= 81 × 1,5); Spec: ausgabe.rahmen[1] = -145
 	if want := 81 * 1.5 / 145; math.Abs(monarch.PxProEinheit-want) > 1e-9 || !strings.Contains(monarch.Quelle, "Spieler") {
 		t.Fatalf("monarch = %+v, will %.4f", monarch, want)
 	}

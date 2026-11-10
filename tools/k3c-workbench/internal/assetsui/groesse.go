@@ -45,7 +45,7 @@ func (d Dienst) AssetsGroesse(id string) (Groesse, error) {
 		return Groesse{}, err
 	}
 	if r, ok := rollen[ref]; ok {
-		return d.figurGroesse(p, r.hoehe, fmt.Sprintf("Spielrolle %s (data/sprites.json)", r.rolle))
+		return d.figurGroesse(p, r.hoehe, fmt.Sprintf("Spielrolle %s (data/paper.json)", r.rolle))
 	}
 	if !slices.Contains(figurGruppen, strings.Split(ref, "/")[0]) {
 		return Groesse{PxProEinheit: 1, Quelle: "1 px je Einheit wie im Spiel (Gebäude, Objekte, Hintergründe)"}, nil
@@ -84,54 +84,44 @@ type rolle struct {
 	hoehe float64
 }
 
-// rollenHoehen ordnet jedem Asset (`gruppe/id`) mit Spielrolle die Figurhöhe in Spiel-Pixeln zu (data/paper.json ›
-// spieler, truppen, gegner; data/sprites.json › sheets).
+// rollenHoehen ordnet jedem Asset (`gruppe/id`) mit Spielrolle die Figurhöhe in Spiel-Pixeln zu (data/paper.json:
+// spieler, truppen, gegner und deren Maße unter figuren, CU1.2).
 func (d Dienst) rollenHoehen() (map[string]rolle, error) {
+	type figur struct {
+		Hoehe float64 `json:"hoehe"`
+	}
 	var paper struct {
 		Spieler []string          `json:"spieler"`
 		Truppen map[string]string `json:"truppen"`
 		Gegner  map[string]string `json:"gegner"`
-	}
-	type figur struct {
-		Sheet string   `json:"sheet"`
-		Scale *float64 `json:"scale"`
-	}
-	var sprites struct {
-		Sheets  map[string]struct{ Height, Scale float64 } `json:"sheets"`
-		Players []figur                                    `json:"players"`
-		Troops  map[string]figur                           `json:"troops"`
-		Enemies map[string]figur                           `json:"enemies"`
+		Figuren struct {
+			Spieler []figur          `json:"spieler"`
+			Truppen map[string]figur `json:"truppen"`
+			Gegner  map[string]figur `json:"gegner"`
+		} `json:"figuren"`
 	}
 	if err := d.leseJSON("data/paper.json", &paper); err != nil {
-		return nil, err
-	}
-	if err := d.leseJSON("data/sprites.json", &sprites); err != nil {
 		return nil, err
 	}
 	out := map[string]rolle{}
 	setze := func(ref, name string, f figur) {
 		ref = strings.Split(ref, "@")[0]
-		sh, ok := sprites.Sheets[f.Sheet]
-		if _, schon := out[ref]; schon || !ok {
+		if _, schon := out[ref]; schon || f.Hoehe <= 0 {
 			return
 		}
-		h := sh.Height * sh.Scale
-		if f.Scale != nil {
-			h *= *f.Scale
-		}
-		out[ref] = rolle{rolle: name, hoehe: h}
+		out[ref] = rolle{rolle: name, hoehe: f.Hoehe}
 	}
 	for i, ref := range paper.Spieler {
-		if i < len(sprites.Players) {
-			setze(ref, "Spieler", sprites.Players[i])
+		if i < len(paper.Figuren.Spieler) {
+			setze(ref, "Spieler", paper.Figuren.Spieler[i])
 		}
 	}
 	// sortiert: zeigen zwei Rollen auf dasselbe Asset, gewinnt immer dieselbe
 	for _, name := range slices.Sorted(maps.Keys(paper.Truppen)) {
-		setze(paper.Truppen[name], name, sprites.Troops[name])
+		setze(paper.Truppen[name], name, paper.Figuren.Truppen[name])
 	}
 	for _, name := range slices.Sorted(maps.Keys(paper.Gegner)) {
-		setze(paper.Gegner[name], name, sprites.Enemies[name])
+		setze(paper.Gegner[name], name, paper.Figuren.Gegner[name])
 	}
 	return out, nil
 }

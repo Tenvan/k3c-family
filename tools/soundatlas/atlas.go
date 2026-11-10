@@ -84,7 +84,7 @@ func layout(entries []entry, samples []int) (map[string]sprite, []int) {
 func ms(samples int) float64 { return math.Round(float64(samples)/sampleRate*1000) / 1000 }
 
 func run(root, ffmpeg string) (int, error) {
-	raw, err := os.ReadFile(filepath.Join(root, "data", "assets.json"))
+	raw, err := os.ReadFile(filepath.Join(root, "data", "sounds.json"))
 	if err != nil {
 		return 0, err
 	}
@@ -92,7 +92,7 @@ func run(root, ffmpeg string) (int, error) {
 		Slots []slot `json:"slots"`
 	}
 	if err := json.Unmarshal(raw, &reg); err != nil {
-		return 0, fmt.Errorf("data/assets.json: %w", err)
+		return 0, fmt.Errorf("data/sounds.json: %w", err)
 	}
 	entries := pickEntries(reg.Slots)
 	if len(entries) == 0 {
@@ -160,7 +160,7 @@ func write(root, ffmpeg string, pcm []byte, sprites map[string]sprite) error {
 		}
 	}
 	js, err := json.MarshalIndent(atlasJSON{
-		Comment: "Erzeugt von task gen:soundatlas (tools/soundatlas) aus data/assets.json; nicht von Hand ändern.",
+		Comment: "Erzeugt von task gen:soundatlas (tools/soundatlas) aus data/sounds.json; nicht von Hand ändern.",
 		Files:   map[string]string{"ogg": "atlas.ogg", "mp3": "atlas.mp3"},
 		Sprites: sprites,
 	}, "", "  ")

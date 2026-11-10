@@ -43,7 +43,7 @@ type assetsCreateIn struct {
 	Gruppe       string `json:"gruppe" jsonschema:"Ordner unter public/grafik, z. B. requisiten"`
 }
 
-// assetsIDIn ist die Eingabe der Recherche-Tools (Slot des eingefrorenen Registers data/assets.json).
+// assetsIDIn ist die Eingabe der Recherche-Tools (Slot des Sound-Registers data/sounds.json).
 type assetsIDIn struct {
 	ID string `json:"id" jsonschema:"Asset-Slot, z. B. farm, mount:horse, sfx:coin"`
 }

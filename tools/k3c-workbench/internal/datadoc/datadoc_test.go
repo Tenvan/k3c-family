@@ -88,7 +88,7 @@ func TestValues(t *testing.T) {
 	if err != nil || !slices.Equal(got, want) {
 		t.Errorf("Values = %v, %v", got, err)
 	}
-	for _, bad := range []string{"biomes/*.json", "balance-targets.json", "../x.json", "sprites.json", "guards.json"} {
+	for _, bad := range []string{"biomes/*.json", "balance-targets.json", "../x.json", "unbekannt.json", "guards.json"} {
 		if _, err := Values(dir, bad); err == nil {
 			t.Errorf("Values(%q): Fehler erwartet", bad)
 		}

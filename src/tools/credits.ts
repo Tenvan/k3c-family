@@ -1,14 +1,12 @@
-// Credits aus den CREDITS.md-Dateien (einzige Quelle, B-165) und den Sound-Credits in public/audio/README.md (B-493):
-// Parser und HTML-Ausgabe für lizenzen.html.
+// Credits der Sounds aus public/audio/README.md (B-493): Parser und HTML-Ausgabe für lizenzen.html. Die Grafik ist eigener
+// Papierschnitt und braucht keine Fremd-Credits mehr (CU1.3; die CREDITS.md der alten Packs entfallen mit CU1.5).
 import { t } from './texts';
-import grafik from '../../public/grafik/CREDITS.md?raw';
-import sprites from '../../public/sprites/CREDITS.md?raw';
 import audio from '../../public/audio/README.md?raw';
 
 export interface Credit {
-  /** Ordner unter public/<root>/ (eine Zeile kann mehrere nennen) */
+  /** Dateien unter public/<root>/ (eine Zeile kann mehrere nennen) */
   folders: string[];
-  root: 'grafik' | 'sprites' | 'audio';
+  root: 'audio';
   title: string;
   author: string;
   license: string;
@@ -46,7 +44,7 @@ export function parseCredits(markdown: string, root: Credit['root']): Credit[] {
   return out;
 }
 
-export const CREDITS: readonly Credit[] = [...parseCredits(grafik, 'grafik'), ...parseCredits(sprites, 'sprites'), ...parseCredits(audio, 'audio')];
+export const CREDITS: readonly Credit[] = parseCredits(audio, 'audio');
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 

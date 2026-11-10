@@ -1,7 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import spritesJson from '../data/sprites.json';
 import {
   PAPER_BUILDINGS, PAPER_ENEMIES, PAPER_PLAYERS, PAPER_TROOPS, type PaperManifest, manifestAnim, paperBackgroundFile,
   paperBuildingFile, paperOrigin, paperScale, usedFigureAssets,
@@ -12,10 +11,11 @@ const manifest = (key: string) => JSON.parse(readFileSync(join(GRAFIK, key, 'man
 const index = (gruppe: string) => (JSON.parse(readFileSync(join(GRAFIK, gruppe, 'index.paper.json'), 'utf8')) as { id: string }[]).map((e) => e.id);
 
 describe('Papierschnitt-Zuordnung (US1)', () => {
-  it('jede Truppe und jeder Gegner aus data/sprites.json hat ein Papier-Asset', () => {
-    const d = spritesJson as unknown as { troops: object; enemies: object };
-    expect(Object.keys(PAPER_TROOPS).sort()).toEqual(Object.keys(d.troops).sort());
-    expect(Object.keys(PAPER_ENEMIES).sort()).toEqual(Object.keys(d.enemies).sort());
+  it('jede Truppe und jeder Gegner hat ein Papier-Asset und Maße (data/paper.json › figuren)', async () => {
+    const { PAPER_FIGURES } = await import('../src/scenes/render/paperAssets');
+    expect(Object.keys(PAPER_TROOPS).sort()).toEqual(Object.keys(PAPER_FIGURES.truppen).sort());
+    expect(Object.keys(PAPER_ENEMIES).sort()).toEqual(Object.keys(PAPER_FIGURES.gegner).sort());
+    for (const f of [...PAPER_FIGURES.spieler, ...Object.values(PAPER_FIGURES.truppen), ...Object.values(PAPER_FIGURES.gegner)]) expect(f.hoehe).toBeGreaterThan(0);
   });
 
   it('jedes Figuren-Asset steht im Gruppen-Index und hat idle samt Varianten', () => {
@@ -37,7 +37,7 @@ describe('Papierschnitt-Zuordnung (US1)', () => {
     expect([...PAPER_BUILDINGS].sort()).toEqual(index('gebaeude-paper').sort());
     expect(paperBuildingFile('mauer')).toBe('gebaeude-paper/mauer/stand.png');
     expect(paperBuildingFile('mauer', 3)).toBe('gebaeude-paper/mauer/stand.s3.png');
-    expect(paperBuildingFile('geruest-2')).toBeNull();
+    expect(paperBuildingFile('geruest-2')).toBe('gebaeude-paper/geruest-2/stand.png');
     for (const id of PAPER_BUILDINGS) expect(existsSync(join(GRAFIK, paperBuildingFile(id)!)), id).toBe(true);
   });
 
@@ -69,10 +69,10 @@ describe('Natur, Objekte, Münzen und Icons als Papierschnitt (US2/AC-01)', () =
     }
   });
 
-  it('alte Pixel-Gebäude nur noch für die Lücken aus D-US2-02', async () => {
+  it('keine alten Pixel-Gebäude mehr (CU1.2)', async () => {
     const { BUILDING_TEXTURES } = await import('../src/scenes/render/buildingSprites');
     const alt = Object.entries(BUILDING_TEXTURES).filter(([, f]) => f.startsWith('gebaeude/')).map(([k]) => k);
-    for (const key of alt) expect(key, key).toMatch(/^grafik:(hub-geruest|geruest-\d+|setzling|pappel-niedrig)$/);
+    expect(alt).toEqual([]);
   });
 
   it('Maße in data/paper.json passen zu den Manifesten', async () => {
@@ -86,10 +86,10 @@ describe('Natur, Objekte, Münzen und Icons als Papierschnitt (US2/AC-01)', () =
 });
 
 describe('Reittiere (US2/AC-02)', () => {
-  it('jeder Reittier-Schlüssel aus data/sprites.json zeigt auf ein Asset in reittiere/', async () => {
+  it('jeder Reittier-Schlüssel zeigt auf ein Asset in reittiere/, auch das Standard-Reittier des Monarchen', async () => {
     const { PAPER_MOUNTS } = await import('../src/scenes/render/paperAssets');
-    const d = spritesJson as unknown as { mounts: object };
-    expect(Object.keys(PAPER_MOUNTS).sort()).toEqual(Object.keys(d.mounts).sort());
+    const { MONARCH } = await import('../src/model/data');
+    expect(Object.keys(PAPER_MOUNTS)).toContain(MONARCH.mount.sprite);
     for (const id of Object.values(PAPER_MOUNTS)) expect(index('reittiere'), id).toContain(id);
   });
 });

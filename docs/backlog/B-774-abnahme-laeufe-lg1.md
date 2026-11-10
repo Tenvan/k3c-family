@@ -46,10 +46,10 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01 Sim:** nicht relevant: LG1 ändert weder `engine/sim` noch Raum-Takt oder Protokoll; die Dev-Endpunkte lesen nur Dateien.
-- **AC-02 Balance:** nicht relevant: keine Werte aus `data/` für Spielregeln geändert (`data/render.json` betrifft nur den Client).
-- **AC-03 Gen:** nicht relevant: keine Papierschnitt-Spec, kein Sheet, kein Golden berührt (`texturetest.html` ist eine Werkzeugseite).
-- **AC-04 Race:** `check_run task:check:race` grün (ohne C-Compiler übersprungen, im Ergebnis so nennen).
+- **AC-01** Sim: nicht relevant: LG1 ändert weder `engine/sim` noch Raum-Takt oder Protokoll; die Dev-Endpunkte lesen nur Dateien.
+- **AC-02** Balance: nicht relevant: keine Werte aus `data/` für Spielregeln geändert (`data/render.json` betrifft nur den Client).
+- **AC-03** Gen: nicht relevant: keine Papierschnitt-Spec, kein Sheet, kein Golden berührt (`texturetest.html` ist eine Werkzeugseite).
+- **AC-04** Race: `check_run task:check:race` grün (ohne C-Compiler übersprungen, im Ergebnis so nennen).
 
 ## Offene Fragen
 
