@@ -4,7 +4,7 @@ import { installSelection, type Selection } from './selection';
 import { installPadScroll } from './spriteReference';
 import { applyTexts, t, textOf } from './texts';
 
-installPageChrome();
+installPageChrome({ padNav: false }); // eigene Pad-Bedienung bzw. Phaser-Spiel
 applyTexts();
 installPadScroll();
 

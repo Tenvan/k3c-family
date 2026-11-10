@@ -342,6 +342,7 @@ class PerfScene extends Phaser.Scene {
 
 // Zurück-Navigation (B-Taste auf der Xbox?) fängt installPageChrome ab – hier nur zählen.
 installPageChrome({
+  padNav: false,
   onBack: () => {
     report.backNavigations++;
     log(t('pad.log.back'));

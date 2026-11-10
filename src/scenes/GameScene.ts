@@ -35,6 +35,7 @@ import { pauseButton } from './hud/pauseButton';
 import { SkillMenus } from './hud/skillMenuLogic';
 import { SkillCasts, type SkillCast } from './effects/skillCasts';
 import { startPerfProbe } from './perfProbe';
+import { startRealStress } from '../stress/realStressStart';
 
 /** Ein Overlay pro Seite, auch über Szenen-Neustarts hinweg */
 let sharedTouch: TouchInput | undefined;
@@ -150,6 +151,7 @@ export class GameScene extends Phaser.Scene {
     gamepads.on('disconnected', (pad: Phaser.Input.Gamepad.Gamepad) => this.padLost(pad));
     this.scene.launch('hud');
     startPerfProbe(this); // Diagnose-Zeile, mit ?perf=1 auch Leistungsbericht (PM1)
+    startRealStress(this); // Stresstest des echten Clients, nur mit ?stress=<szenario>&dev=1 (B-766)
     if (this.touch) {
       pauseButton().show(true);
       this.events.once('shutdown', () => pauseButton().show(false));

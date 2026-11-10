@@ -2,8 +2,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { PAGES } from '../src/landing/pages';
-import { DEV_TILES } from '../src/tools/devTiles';
+import { menuCategories } from '../src/scenes/menuPages';
 
 const ROOT = resolve(__dirname, '..');
 const read = (file: string) => readFileSync(join(ROOT, file), 'utf8');
@@ -20,15 +19,28 @@ function filesIn(dir: string, keep: (name: string) => boolean): string[] {
 }
 const sourceFiles = (dir: string) => filesIn(dir, (n) => n.endsWith('.ts') && !n.endsWith('.test.ts'));
 
-// dm.html läuft außerhalb der Shell, Aufruf über /dm (B-232) oder die Entwicklerseite (neues Fenster, B-335).
+// Das Spiel ist die einzige oberste Seite (`index.html`, BD11.6); `game.html` ist sein Alias für Werkzeuge und Lesezeichen.
+// dm.html läuft außerhalb des Spiels in einem eigenen Fenster (B-232).
 const allHtml = readdirSync(ROOT).filter((f) => f.endsWith('.html'));
-const htmlPages = allHtml.filter((f) => f !== 'index.html' && f !== 'dm.html');
-// Eine Seite steht auf der Landingpage (Spieler) oder auf der Entwicklerseite (Werkzeuge, B-335).
-const hrefs = [...PAGES.map((p) => (typeof p.href === 'function' ? p.href() : p.href)), ...DEV_TILES.map((t) => t.href)].map((h) => h.split('?')[0]);
+const GAME_PAGES = ['index.html', 'game.html'];
+const htmlPages = allHtml.filter((f) => !GAME_PAGES.includes(f) && f !== 'dm.html');
+// Jede Werkzeug-Seite hat eine Kachel im Spielmenü (Seiten › Kategorie, `src/scenes/menuPages.ts`, Daten in `src/tools/devTiles.ts`).
+const hrefs = menuCategories(true).flatMap((c) => c.entries.map((e) => e.id.split('?')[0]!));
 
 describe('Seiten & Navigation', () => {
-  it.each(htmlPages)('%s ist in src/landing/pages.ts oder src/tools/devTiles.ts eingetragen', (page) => {
+  it.each(htmlPages)('%s hat eine Kachel im Spielmenü (src/scenes/menuPages.ts, src/tools/devTiles.ts)', (page) => {
     expect(hrefs).toContain(page);
+  });
+
+  it('das Spiel ist die Startseite: index.html und game.html laden beide src/main.ts, keine Landingpage', () => {
+    for (const page of GAME_PAGES) expect(read(page)).toContain('src="/src/main.ts"');
+    expect(existsSync(join(ROOT, 'src/landing'))).toBe(false);
+    expect(existsSync(join(ROOT, 'dev.html'))).toBe(false);
+    expect(read('index.html')).not.toMatch(/<iframe|landing/i);
+  });
+
+  it('das Spiel ruft installPageChrome ohne Home auf (es ist die oberste Seite)', () => {
+    expect(read('src/main.ts')).toMatch(/^installPageChrome\(\{[^}]*home: false/m);
   });
 
   it('jede Kachel zeigt auf eine vorhandene Seite', () => {
@@ -53,9 +65,7 @@ describe('Code-Regeln', () => {
   });
 
   it('kein Seitenwechsel per location (nur goHome() / Shell)', () => {
-    const offenders = files.filter(
-      (f) => !f.startsWith(join('src', 'core')) && !f.startsWith(join('src', 'landing')) && /location\.(href\s*=|assign|replace)/.test(read(f)),
-    );
+    const offenders = files.filter((f) => !f.startsWith(join('src', 'core')) && /location\.(href\s*=|assign|replace)/.test(read(f)));
     expect(offenders).toEqual([]);
   });
 });

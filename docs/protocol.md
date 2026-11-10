@@ -362,7 +362,7 @@ das zählt als Abbruch.
 | `leave` | Gerät → Server | Raum bewusst verlassen | – | `c2s-leave.json` |
 | `pause` | Gerät → Server | Gerät pausiert (Pause-Menü offen), im Raum; v8 | – | `c2s-pause.json` |
 | `resume` | Gerät → Server | Gerät setzt fort, im Raum; v8 | – | `c2s-resume.json` |
-| `dev` | Gerät → Server | nur im Dev-Mode (siehe *Dev-Aktionen*), im Raum | `action` und je Aktion: `gold` `slot`, `amount`; `material` `slot`, `resource`, `amount`; `timescale` `factor`; `pause` `paused`; `castleFall` `slot`; `boss` `slot`, `boss`; `event` `event`; `bossPhase`, `night` ohne Felder | `c2s-dev-gold.json`, `c2s-dev-material.json`, `c2s-dev-timescale.json`, `c2s-dev-pause.json`, `c2s-dev-castlefall.json`, `c2s-dev-boss.json`, `c2s-dev-bossphase.json`, `c2s-dev-event.json`, `c2s-dev-night.json` |
+| `dev` | Gerät → Server | nur im Dev-Mode (siehe *Dev-Aktionen*), im Raum | `action` und je Aktion: `gold` `slot`, `amount`; `material` `slot`, `resource`, `amount`; `timescale` `factor`; `pause` `paused`; `castleFall` `slot`; `boss` `slot`, `boss`; `event` `event`; `bossPhase`, `night` ohne Felder; `spawn` `slot`, `kind` (`enemy`, `troop`), `unit`, `amount` | `c2s-dev-gold.json`, `c2s-dev-material.json`, `c2s-dev-timescale.json`, `c2s-dev-pause.json`, `c2s-dev-castlefall.json`, `c2s-dev-boss.json`, `c2s-dev-bossphase.json`, `c2s-dev-event.json`, `c2s-dev-night.json`, `c2s-dev-spawn.json` |
 | `error` | Server → Gerät | Fehlerfall, siehe Codes | `code`, `message` (deutsch, für die Anzeige) | `s2c-error.json`, `s2c-error-forbidden.json` |
 
 Die Beispiele stammen aus dem Ablauf *2 Controller an der Xbox + 1 Handy*; `level`, `snap` und `delta` sind aus der
@@ -572,6 +572,7 @@ Aktion, Werte, Raum).
     (`c2s-dev-boss.json`). Lebt in der Stufe schon ein Boss oder läuft der Endboss-Kampf der Insel, ist die Aktion
     `bad_request` mit dem Hinweis „Boss schon da“ als Warnung im Log; unbekannte Id, fehlender `slot` oder eine Stufe
     ohne Portal ebenso `bad_request`.
+  - `spawn` (B-766, Stresstest des echten Clients): `amount` (1 bis 200) Gegner (`kind` `enemy`, `unit` aus `data/enemies.json`) oder Truppen (`kind` `troop`, `unit` aus `data/troops.json`) erscheinen gleichmäßig verteilt auf 40 Units um den Monarchen von `slot` in dessen Stufe, ohne den rng-Strom zu berühren; sie handeln danach wie alle anderen (`c2s-dev-spawn.json`). Unbekannte Art oder Sorte, `amount` außerhalb 1…200 oder fehlender `slot` ergeben `bad_request`.
   - `bossPhase`: Der laufende Endboss wechselt in seine nächste Phase; seine HP fallen dazu knapp unter deren Schwelle,
     der Zustand nennt die Phase wie sonst, das Ereignis `bossPhase` kommt mit (`c2s-dev-bossphase.json`). Ohne
     Endboss-Kampf oder in der letzten Phase `bad_request` (Minibosse haben keine Phasen).
@@ -926,3 +927,11 @@ Schema 1 (`engine/room/metrics.go`):
 ```
 
 Die Rotation in `reports/` (B-142) erfasst bisher nur `gamepad-*.json`; die Spielmetrik-Reports folgen mit B-272.
+
+## Auslesen im Dev-Mode: /api/dev/status, /log, /reports (RX1)
+
+Kein Teil des WebSocket-Protokolls. Drei Lese-Endpunkte, nur `GET`, **ohne Token, aber nur mit Dev-Mode** (`K3C_DEV`, Standard an; sonst 403; andere Methode 405). Sie dienen dazu, einen entfernten Server (Raspberry Pi) von der Entwicklungsmaschine aus zu lesen.
+
+- `/api/dev/status`: derselbe Zustand wie `/api/status` (Speicher, Version, Laufzeit, CPU, Räume, Abstürze).
+- `/api/dev/log?pattern=<regex>&limit=<1–1000>&mib=<1–8>`: aus den letzten `mib` MiB von `k3c-server.jsonl` die letzten `limit` Zeilen, die `pattern` treffen (RE2, ohne Groß-/Kleinschreibung, bis 200 Zeichen), ältere zuerst, als `text/plain`, höchstens 1 MiB. Kopfzeilen `X-Log-Size`, `X-Log-Matched`. Ungültige Parameter 400, ohne Log 404.
+- `/api/dev/reports`: Liste der `*.json` im Berichte-Ordner (Name, Bytes, Zeit), neueste zuerst; mit `?name=<datei>.json` der Inhalt. Der Name ist ein reiner Dateiname (Pfade, Punkt am Anfang, fremde Endungen 400; fehlende Datei 404; über 2 MiB 413).

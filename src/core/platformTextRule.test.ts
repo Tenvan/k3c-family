@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest';
  * Kommentare, CSS (mit `;` oder in Zeilen mit `font`) und Log-Zeilen. In HTML-Markup (`<…>`) zählen nur Umlaute und ß,
  * weil Tag- und Attributnamen sonst als „zwei Wörter“ gälten.
  */
-const sources = import.meta.glob(['../input/touchInput.ts', './shell.ts', '../landing/*.ts', '!../landing/*.test.ts'], {
+const sources = import.meta.glob(['../input/touchInput.ts', './shell.ts', './fresh.ts', './serverCheck.ts', './panelHost.ts', './fullscreenKeeper.ts'], {
   query: '?raw',
   import: 'default',
   eager: true,
@@ -75,9 +75,10 @@ describe('Keine deutschen Text-Literale in Touch-Overlay, Shell und Landingpage 
   it('findet alle Dateien', () => {
     expect(Object.keys(sources).sort()).toEqual([
       '../input/touchInput.ts',
-      '../landing/landing.ts',
-      '../landing/pages.ts',
-      '../landing/serverCheck.ts',
+      './fresh.ts',
+      './fullscreenKeeper.ts',
+      './panelHost.ts',
+      './serverCheck.ts',
       './shell.ts',
     ]);
   });

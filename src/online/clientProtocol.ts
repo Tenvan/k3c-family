@@ -114,4 +114,6 @@ export type DevMessage =
   | { t: 'dev'; action: 'boss'; slot: number; boss: string }
   | { t: 'dev'; action: 'bossPhase' }
   | { t: 'dev'; action: 'event'; event: string }
-  | { t: 'dev'; action: 'night' };
+  | { t: 'dev'; action: 'night' }
+  /** Stresstest des echten Clients (B-766): `amount` (1 bis 200) Gegner oder Truppen um den Monarchen von `slot` */
+  | { t: 'dev'; action: 'spawn'; slot: number; kind: 'enemy' | 'troop'; unit: string; amount: number };

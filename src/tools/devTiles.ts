@@ -1,6 +1,6 @@
 /**
- * Kacheln der Entwicklerseite (`dev.html`, B-335): alle Werkzeug-Seiten, gegliedert nach Entwicklung, Performance und Balancing.
- * Die Landingpage (`src/landing/pages.ts`) zeigt nur Spieler-Kacheln und eine kleine Kachel hierher.
+ * Kacheln der Werkzeug-Seiten, gegliedert nach Entwicklung, Performance und Balancing. Das Spielmenü (Seiten, `src/scenes/menuPages.ts`) zeigt
+ * sie als Kategorien und öffnet sie als Panel (B-768); `dev.html` gibt es nicht mehr.
  * Neue Werkzeug-Seite: `<name>.html` anlegen, `installPageChrome()` aufrufen und hier eintragen (Regel in CLAUDE.md).
  */
 import { t, textOf } from './texts';
@@ -61,7 +61,7 @@ export const DEV_SECTIONS: readonly DevSection[] = [
     tile('sound', '🔊', 'soundtest.html'),
     tile('dm', '🎲', 'dm.html', true),
   ]),
-  section('perf', [tile('monitor', '📈', 'monitor.html')]),
+  section('perf', [tile('monitor', '📈', 'monitor.html'), tile('stress', '🔥', 'stress.html'), tile('textures', '🧱', 'texturetest.html'), tile('stressReal1', '🧪', 'game.html?dev=1&autostart=1&fresh=1&save=stress-wald&seed=stress&players=1&depth=0&stress=typisch'), tile('stressReal2', '🧪', 'game.html?dev=1&autostart=1&fresh=1&save=stress-wald2&seed=stress&players=2&depth=0&stress=worstCase'), tile('stressReal3', '🧪', 'game.html?dev=1&autostart=1&fresh=1&save=stress-mine&seed=stress&players=2&depth=2&stress=worstCase')]),
   section('balance', []),
 ];
 

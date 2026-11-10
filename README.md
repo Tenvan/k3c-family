@@ -13,9 +13,9 @@ task dev
 ```
 
 Dann `http://localhost:5183` öffnen, oder im Heimnetz `http://<PC-IP>:5183` (z.B. von der Xbox aus).
-Die Startseite ist eine Landingpage, die man komplett mit dem Controller bedient (D-Pad/Stick + **A**,
-**Y** bzw. **F** = Vollbild). Sie bleibt dauerhaft geöffnet und zeigt Spiel und Testseiten in sich an.
-Dadurch bleibt Vollbild beim Seitenwechsel erhalten.
+Die Adresse öffnet direkt das Spiel mit seinem Menü, das man komplett mit dem Controller bedient (D-Pad/Stick + **A**,
+**RS** bzw. **F** = Vollbild). Auch alle Werkzeug- und Testseiten liegen im Menü (Seiten); sie öffnen als Panel im selben Dokument,
+dadurch bleibt Vollbild erhalten.
 Der Dev-Server reicht `/api` und `/ws` an den Go-Server (Port 8080) weiter: Zum Spielen zusätzlich `task start` laufen lassen.
 
 Jede Seite hat oben mittig einen **Start**-Button. Zurück zur Übersicht geht es auch mit **View + Menu**
@@ -61,6 +61,7 @@ Einstellungen per Umgebung: `K3C_HTTP_PORT`,
   Eintrag im Log mit `ns` `diag`): `/api/status/disconnect?room=CODE&device=KENNUNG` trennt die Verbindung eines Geräts (es
   verhält sich wie nach einem Abbruch und darf sich bis zur Frist wieder verbinden), `/api/status/save?room=CODE` sichert den
   Spielstand des Raums sofort.
+- **Auslesen im Dev-Mode (RX1):** Ist `K3C_DEV` an (Standard), liest ein Entwickler den Server ohne Token und ohne SSH aus, nur `GET`: `/api/dev/status` (wie `/api/status`: Speicher, CPU, Räume, Abstürze), `/api/dev/log?pattern=<regex>&limit=<n>&mib=<n>` (die letzten passenden Zeilen des JSON-Logs als Text, z. B. `curl "http://pi-gaming:8080/api/dev/log?pattern=Context%20lost&limit=50"`) und `/api/dev/reports` (Liste der Berichte, mit `?name=<datei>.json` der Inhalt). Ohne Dev-Mode 403. Nur fürs Heimnetz.
 - **Diagnose-TUI:** `go run ./cmd/k3c-tui` (oder im Container `docker exec -it k3c k3c-tui`) zeigt Räume, Geräte, Tick-Dauer, Speicher
   und Abstürze live (jede Sekunde). Token `K3C_STATUS_TOKEN`, Adresse `K3C_SERVER_URL` oder `K3C_HTTP_PORT` (Standard 8080);
   im Container gelten die Variablen des Servers. `k3c-tui -once` druckt den Zustand einmal als Text und endet (Skripte, CI,
@@ -119,7 +120,7 @@ Zum Zurückholen die Sicherung einfach in `autosave.json` umbenennen.
 
 1. `meine-seite.html` in den Projektordner legen. Der Build nimmt jede `*.html` automatisch auf.
 2. Im Script `installPageChrome()` aus `src/core/shell.ts` aufrufen. Das bringt Start-Button, View + Menu und B-Schutz mit.
-3. Eintrag in `src/landing/pages.ts` ergänzen. Danach erscheint die Kachel auf der Startseite.
+3. Eintrag in `src/tools/devTiles.ts` ergänzen. Danach erscheint die Kachel im Spielmenü unter Seiten.
 4. Vollbild nur über `toggleFullscreen()` aus `src/core/fullscreen.ts`.
 
 Die vollständige Regel steht in `CLAUDE.md` unter „Regel: Seiten & Navigation“.

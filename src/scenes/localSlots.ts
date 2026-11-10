@@ -5,6 +5,7 @@
 import { botInputs, type BotInput } from '../input/botInput';
 import { heldSkill, type SlotAction } from '../input/slotBindings';
 import { MAX_LOCAL_PLAYERS } from './layout';
+import { runSearch } from '../core/runConfig';
 
 export interface SlotInputDevice {
   justPressed(action: 'confirm'): boolean;
@@ -116,7 +117,7 @@ let bots: BotInput[] | undefined;
 
 /** Bot-Eingaben der Seite (`?botfeed=…&players=n`, B-353), einmal je Seite; ohne Parameter keine */
 export function pageBots(): BotInput[] {
-  return (bots ??= botInputs(window.location.search, window.location.hostname));
+  return (bots ??= botInputs(runSearch(), window.location.hostname));
 }
 
 /** Eingabe eines bedienten Slots; `attack` und `skill` nur, wenn gehalten (Schlag, Skill-Slot 1–4) */

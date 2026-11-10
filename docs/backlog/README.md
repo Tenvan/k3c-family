@@ -147,6 +147,18 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-757](B-757-ci-race-balance-timeout-datadoc-test.md) | INF | Problem | hoch | offen | – | CI: Race-Lauf ohne engine/balance, datadoc-Test kennt Balance-Berichtsdateien |
 | [B-758](B-758-release-workflow-tests-wieder-einschalten.md) | INF | Schuld | hoch | offen | – | Release-Workflow: Typecheck und Tests vor dem Bauen wieder einschalten |
 | [B-759](B-759-docker-build-ohne-work-ordner.md) | INF | Problem | hoch | offen | – | Docker-Build im Release scheitert an .work (EXDEV beim gen:paper) |
+| [B-761](B-761-render-info-anzeige-xbox.md) | CLI | Idee | hoch | eingeplant | RX1 | Renderer-Info (WebGL/Canvas, FPS, Texturen) im Spiel anzeigen, WebGL erzwingbar |
+| [B-762](B-762-render-info-ins-client-log.md) | CLI | Idee | hoch | eingeplant | RX1 | Renderer-, Textur- und Leistungswerte im Client-Log (Start, Laden, Verlauf, Kontextverlust) |
+| [B-763](B-763-webgl-kontextverlust-abfangen.md) | CLI | Problem | hoch | eingeplant | RX1 | Bei WebGL-Kontextverlust Renderer neu aufbauen statt abschalten |
+| [B-764](B-764-grosse-texturen-xbox.md) | CLI | Problem | hoch | eingeplant | RX1 | Texturen auf die Xbox als Zielplattform auslegen (höchstens 2048 px, bei Bedarf laden) |
+| [B-765](B-765-stress-szene-live-grafik.md) | CLI | Idee | hoch | eingeplant | RX1 | Stress-Szene Live-Grafik: Dichte-Test mit Szenario-Datei, Rampe und Presets (1 und 2 Spieler) |
+| [B-766](B-766-stresstest-echter-client.md) | CLI | Idee | hoch | eingeplant | RX1 | Stresstest des echten Clients: Dev-Aktion spawn und Lauf mit Rampe in der GameScene |
+| [B-767](B-767-nachbesserungen-erster-xbox-test.md) | CLI | Problem | hoch | eingeplant | RX1 | Nachbesserungen aus dem ersten Xbox-Test: frischer Client, Pad auf allen Seiten, Lobby-Löschen, Stress ohne Dev-Mode |
+| [B-769](B-769-xbox-webgl-diagnose-pi-auslesen.md) | CLI | Problem | hoch | offen | RX1 | Xbox-WebGL-Diagnose in der Textur-Testseite und Lese-Endpunkte für den Pi |
+| [B-770](B-770-remote-logs-alle-im-dev-endpunkt.md) | SRV | Idee | hoch | offen | LG1 | Alle Logs eines Servers sind über den Dev-Endpunkt abrufbar |
+| [B-771](B-771-mcp-log-tools-fuer-remote-server.md) | DEV | Idee | hoch | offen | LG1 | Die Log-Tools des MCP-Servers lesen auch entfernte Server (Pi) |
+| [B-772](B-772-xbox-webgl1-und-speichergrenze-130-mib.md) | CLI | Problem | hoch | offen | LG1 | Auf der Xbox läuft WebGL 1 mit einem Texturspeicher von höchstens 130 MiB |
+| [B-773](B-773-texturtest-seite-responsive-ein-screen.md) | CLI | Problem | mittel | offen | LG1 | Die Textur-Testseite passt responsiv auf einen Screen |
 
 ## Archiv
 
@@ -721,3 +733,4 @@ Zeile in diesen Abschnitt.
 | [B-719](archiv/B-719-gegner-nachbessern.md) | PAP | Problem | mittel | erledigt | MG9 | Gegner sind unterscheidbar und richtig groß, ohne Lesbarkeits-Reste aus MG4 |
 | [B-742](archiv/B-742-check-diff-ohne-sim-balance-gen-abnahme-ticket.md) | INF | Problem | hoch | erledigt | – | check:diff ohne Sim-, Balance- und Gen-Läufe; Abnahme-Ticket je Sprint/Projekt |
 | [B-745](archiv/B-745-abnahme-laeufe-rs2.md) | SRV | Schuld | mittel | erledigt | RS2 | Abnahme-Läufe RS2 |
+| [B-768](archiv/B-768-eine-startseite-pausenmenue-navigation.md) | CLI | Idee | hoch | erledigt | BD11 | Eine Startseite, Navigation im Pausenmenü, Vollbild halten |
