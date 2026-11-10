@@ -1,6 +1,6 @@
 # LG1.3 · Xbox: WebGL 1 und Texturbudget 130 MiB
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -55,5 +55,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 geprüft: `src/core/textureBudget.test.ts` und die neuen Fälle in `src/core/renderLog.test.ts` (29 Tests in den drei Dateien grün), `task typecheck` und `task lint` grün. B-772/AC-01 (Wahl der WebGL-Version, Budgetprüfung) und AC-02 (Budget aus `data/render.json`, 130 MiB, nur auf der Xbox) erfüllt.
+- Befund zur WebGL-Version: Phaser 4.2.1 fordert den Kontext mit `getContext('webgl')` an (`node_modules/phaser/src/renderer/webgl/WebGLRenderer.js:709`), das ist per Definition ein WebGL-1-Kontext. Der Client läuft also schon mit WebGL 1; eine eigene „Wahl“ war nicht nötig. Neu ist die Startzeile mit `glVersion`, Budget und Ampel.
+- Neu: `data/render.json` (`xbox.textureMiB` 130, `near` 0,85), `src/core/textureBudget.ts` (Xbox-Erkennung am User-Agent, Ampel ok/near/over), Budget in Startzeile, Verlaufszeile und Ladezeile des Render-Logs, Warnzeile bei Überschreitung (höchstens eine je Minute).
+- Abweichung von B-772/Anforderungen: Es gibt **keine automatische Verkleinerung** der Texturen bei Überschreitung, nur Messung, Log und Warnung. Eine kleinere Auflösung braucht Texturvarianten und gehört zum Texturprofil RX1.6 (`≤ 2048 px`, Laden je Stufe, Domäne PAP). Nachgelagert: RX1.6 sollte das Budget aus `data/render.json` als Ziel nutzen.
+- Das Budget (130 MiB) stammt aus der Erinnerung von 🧑 und ist an den Pi-Logs noch nicht geprüft (LG1.6, `B-772/AC-03`).

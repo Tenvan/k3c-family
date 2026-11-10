@@ -61,4 +61,6 @@ keine. Entschieden von 🧑 am 2026-11-10: 130 **MiB**, nur **Texturspeicher**. 
 
 ## Notizen
 
-Quelle: 🧑 am 2026-11-10 aus der Erinnerung; der Analysebericht ist unbekannt („gestern ab ca. 22:00“). Unter `/api/dev/reports` liegt am 2026-11-10 aber kein Bericht nach 2026-11-09 16:51 UTC; ein Bericht dieser Analyse ist dort also nicht zu finden. Zusammenhang: B-761, B-762, B-764, B-769, RX1.
+Quelle: 🧑 am 2026-11-10 aus der Erinnerung; der Analysebericht ist unbekannt („gestern ab ca. 22:00“). Unter `/api/dev/reports` liegt am 2026-11-10 kein Bericht nach 2026-11-09 16:51 UTC. Zusammenhang: B-761, B-762, B-764, B-769, RX1.
+
+**Umsetzung LG1.3 (2026-11-10):** Phaser 4.2.1 fordert `getContext('webgl')` an und läuft damit schon auf WebGL 1 (`WebGLRenderer.js:709`); die Anforderung „WebGL 1 wählen“ ist erfüllt, das Log nennt `glVersion`. Das Budget (`data/render.json`, 130 MiB) wird gemessen, geloggt und bei Überschreitung gewarnt. **Nicht umgesetzt:** automatische Verkleinerung der Texturen bei Überschreitung (braucht Texturvarianten, gehört zu RX1.6/B-764). Offen bis zur Abnahme (LG1.6): Stimmen 130 MiB und WebGL 1 mit den Logs vom Pi überein?

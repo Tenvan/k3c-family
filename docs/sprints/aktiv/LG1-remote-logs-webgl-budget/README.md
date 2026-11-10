@@ -68,7 +68,7 @@ Pi nicht erreichbar oder „Log aus“ → klare Meldung mit Adresse und Hinweis
 |---|---|---|---|---|
 | LG1.1 | `LG1.1-dev-endpunkt-alle-logs.md` | Umsetzung | autonom | fertig |
 | LG1.2 | `LG1.2-mcp-log-tools-remote.md` | Umsetzung | autonom | fertig |
-| LG1.3 | `LG1.3-xbox-webgl1-textur-budget.md` | Umsetzung | autonom | offen |
+| LG1.3 | `LG1.3-xbox-webgl1-textur-budget.md` | Umsetzung | autonom | fertig |
 | LG1.4 | `LG1.4-texturtest-responsive.md` | Umsetzung | autonom | fertig |
 | LG1.5 | `LG1.5-review.md` | Review | autonom | offen |
 | LG1.6 | `LG1.6-abnahme-pi-xbox.md` | Workshop | Mensch | offen |

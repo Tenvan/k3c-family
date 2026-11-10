@@ -1,0 +1,4 @@
+{
+  "_hinweis": "Speicherbudget des Clients je Plattform (B-772). xbox.textureMiB: höchster geschätzter Texturspeicher (Breite × Höhe × 4 je Quellbild, ohne Mipmaps) in MiB; darüber verliert die Xbox-Edge den WebGL-Kontext. Der Wert stammt aus einer ersten WebGL-Analyse (aus der Erinnerung, 2026-11-10) und wird an den Client-Logs des Pi (/api/dev/log?file=client) nachgeprüft. near ist der Anteil, ab dem das Log warnt. Erkennung der Xbox: userAgent enthält „Xbox“.",
+  "xbox": { "textureMiB": 130, "near": 0.85 }
+}
