@@ -135,6 +135,19 @@ export function gradeName(grade: string): string {
   return (GRADES as readonly string[]).includes(grade) ? t(`opt.grade.${grade as Grade}`) : grade;
 }
 
+/** Zeilen des Anlegen-Dialogs: Titel, Grad, Ziel, Niederlage, Welt, Anlegen, Abbrechen (K5.2) */
+export function dialogLabels(o: DialogState['options']): string[] {
+  return [
+    t('lobby.dialog.title'),
+    t('lobby.dialog.grade', { value: gradeName(o.grade) }),
+    t('lobby.dialog.goal', { value: t(`opt.goal.${o.goal}`) }),
+    t('lobby.dialog.defeat', { value: t(`opt.defeat.${o.defeat}`) }),
+    t('lobby.dialog.world', { value: o.world }),
+    t('lobby.dialog.create'),
+    t('lobby.dialog.cancel'),
+  ];
+}
+
 /** Zeile unter dem Zeiger (Touch), -1 = keine */
 export function rowAt(y: number, top: number, rowHeight: number, count: number): number {
   const row = Math.floor((y - top) / rowHeight);

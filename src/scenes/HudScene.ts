@@ -8,6 +8,7 @@ import type { GameEvent, World } from '../model/types';
 import type { GameScene } from './GameScene';
 import { debugEnabled } from './debug/debugOverlay';
 import { DebugOverlay } from './debug/debugOverlayView';
+import { RenderInfoView } from './debug/renderInfoView';
 import { gameNotice } from './lobbyLogic';
 import { FONTS, fontStyle } from './render/fontRules';
 import { PauseBanner, pauseShown } from './hud/pauseBanner';
@@ -31,6 +32,7 @@ import { hubText, stockTexts } from './hud/economyLabels';
 import { buergerLines } from './hud/citizenLabels';
 import { formatTime } from './kampfAnzeige';
 import { KampfHud } from './kampfView';
+import { runSearch } from '../core/runConfig';
 
 const STYLE = { stroke: '#000000', strokeThickness: 6, fontStyle: 'bold' };
 const BANNER_SECONDS = 2.8;
@@ -54,6 +56,7 @@ export class HudScene extends Phaser.Scene {
   private fight!: Phaser.GameObjects.Text;
   private banner!: Phaser.GameObjects.Text;
   private debug: DebugOverlay | null = null;
+  private renderInfo: RenderInfoView | null = null;
   private info!: Phaser.GameObjects.Text;
   private travel!: Phaser.GameObjects.Text;
   private citizens!: Phaser.GameObjects.Text;
@@ -115,7 +118,8 @@ export class HudScene extends Phaser.Scene {
     this.citizens = this.boxed('citizens', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('shared') }), false);
     this.banner = this.boxed('banner', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('banner'), strokeThickness: 4, align: 'center' }).setVisible(false));
     this.joinHint = this.boxed('join', this.add.text(0, 0, t('hud.joinCenter'), { ...STYLE, ...fontStyle('joinCenter') }));
-    this.debug = debugEnabled(location.search) ? new DebugOverlay(this) : null;
+    this.debug = debugEnabled(runSearch()) ? new DebugOverlay(this) : null;
+    this.renderInfo = new RenderInfoView(this);
     this.info = this.boxed('info', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('roomInfo'), strokeThickness: 4 }), false);
     this.travel = this.boxed('travel', this.add.text(0, 0, '', { ...STYLE, ...fontStyle('travel') }));
   }
@@ -129,6 +133,7 @@ export class HudScene extends Phaser.Scene {
     const game = this.game.scene.getScene('game') as GameScene;
     const world = game.world;
     this.debug?.update(game.client, world ?? null);
+    this.renderInfo?.update();
     const waiting = this.showHints(game, world);
     this.bar.setVisible(!!world);
     if (!world) {

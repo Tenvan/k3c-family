@@ -12,7 +12,7 @@ import (
 // phase (day, dusk, night, dawn) (B-232); grade braucht grade (Name aus data/difficulty.json, gilt ab der nächsten Welle, B-080).
 // maxStock (+100 je Aufruf), fillStock und nextPhase brauchen nichts; cheapBuild und timescaleAuto brauchen on, buildAll
 // braucht level (1 bis 5). Kampf (B-603, dev_combat.go): boss braucht slot und boss (Id aus data/bosses.json), event
-// braucht event (fullMoon, bloodMoon, merchantRaid), bossPhase und night brauchen nichts.
+// braucht event (fullMoon, bloodMoon, merchantRaid), bossPhase und night brauchen nichts; spawn (B-766, Stresstest) braucht slot, kind, unit, amount.
 type DevAction struct {
 	Action   string
 	Slot     *int
@@ -26,6 +26,9 @@ type DevAction struct {
 	Level    int
 	Boss     string
 	Event    string
+	// Kind und Unit (B-766): spawn braucht slot, kind (enemy, troop), unit (Schlüssel aus data/enemies.json bzw. troops.json) und amount (1 bis sim.DevMaxSpawn)
+	Kind string
+	Unit string
 }
 
 // devMaxAmount ist die Obergrenze von amount (gold, material).

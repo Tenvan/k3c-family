@@ -33,7 +33,7 @@ func TestLogsSourcesUndUnbekannteQuelle(t *testing.T) {
 	s := logServer(t)
 	ctx := context.Background()
 	s.console.Add("check:task:test", "stdout", "x")
-	text, _ := s.logsSources(ctx, struct{}{})
+	text, _ := s.logsSources(ctx, sourcesIn{})
 	if !strings.Contains(text, "Log k3c-workbench · ") || !strings.Contains(text, " zuletzt ") || !strings.Contains(text, "WARN") ||
 		!strings.Contains(text, "Konsole check:task:test · 1 Zeilen") {
 		t.Errorf("Quellen: %q", text)

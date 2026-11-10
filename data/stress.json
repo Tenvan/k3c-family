@@ -1,0 +1,51 @@
+{
+  "_hinweis": "Szenarien der Stress-Szene (stress.html, B-765): Die Last steigt alle ramp.everyMs um ramp.factor, höchstens ramp.steps Stufen. Typen sind Schlüssel aus enemies.json und troops.json. sprites.mix typical = Typen mit den angegebenen Anzahlen, worstCase = Anzahlen gleichmäßig über distinctSheets Typen (Gegner und Truppen). camera.pan sweep = Kamera schwenkt, none = steht. scenery = Hintergrund (Parallax-Schichten des Bioms, wie im Spiel) und Vordergrund (Zahl der Bäume, Felsen, Büsche). Zahlen sind Startwerte (nach dem ersten Xbox-Lauf anpassen, B-765 E-2).",
+  "typisch": {
+    "name": "Typisch",
+    "players": 1,
+    "scenery": { "biome": "forest", "background": true, "foreground": 30 },
+    "camera": { "x": 0, "zoom": 1, "pan": "none" },
+    "enemies": [
+      { "type": "greed", "count": 12 },
+      { "type": "wolf", "count": 6 }
+    ],
+    "troops": [{ "type": "archer", "count": 8 }],
+    "sprites": { "mix": "typical", "distinctSheets": 12 },
+    "ramp": { "everyMs": 10000, "steps": 6, "factor": 1.5 }
+  },
+  "worstCase": {
+    "name": "Worst Case",
+    "players": 2,
+    "scenery": { "biome": "forest", "background": true, "foreground": 120 },
+    "camera": { "x": 0, "zoom": 1, "pan": "sweep" },
+    "enemies": [
+      { "type": "greed", "count": 3 },
+      { "type": "wolf", "count": 3 },
+      { "type": "alphaWolf", "count": 3 },
+      { "type": "goblin", "count": 3 },
+      { "type": "goblinArcher", "count": 3 },
+      { "type": "skeleton", "count": 3 },
+      { "type": "bat", "count": 2 },
+      { "type": "caveTroll", "count": 2 },
+      { "type": "zombie", "count": 2 },
+      { "type": "ratSwarm", "count": 2 },
+      { "type": "mineGhost", "count": 2 },
+      { "type": "lavaSlime", "count": 2 },
+      { "type": "ironBeetle", "count": 2 },
+      { "type": "fireSpirit", "count": 2 },
+      { "type": "crystalSpider", "count": 2 },
+      { "type": "shardling", "count": 2 },
+      { "type": "crystalGuardian", "count": 2 }
+    ],
+    "troops": [
+      { "type": "vagrant", "count": 3 },
+      { "type": "peasant", "count": 3 },
+      { "type": "archer", "count": 4 },
+      { "type": "warrior", "count": 4 },
+      { "type": "eliteArcher", "count": 3 },
+      { "type": "eliteWarrior", "count": 3 }
+    ],
+    "sprites": { "mix": "worstCase", "distinctSheets": 23 },
+    "ramp": { "everyMs": 10000, "steps": 8, "factor": 1.5 }
+  }
+}

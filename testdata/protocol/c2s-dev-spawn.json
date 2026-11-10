@@ -1,0 +1,8 @@
+{
+  "t": "dev",
+  "action": "spawn",
+  "slot": 0,
+  "kind": "enemy",
+  "unit": "wolf",
+  "amount": 20
+}

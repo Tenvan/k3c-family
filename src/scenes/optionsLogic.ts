@@ -7,10 +7,10 @@ import { t } from '../core/texts';
 import type { SlotCommand } from './localSlots';
 import { worldOf } from './saveMenu';
 
-export type OptionId = 'music' | 'sfx' | 'ambient' | 'screenshake' | 'flash' | 'colorblind' | 'guide' | 'language' | 'keys' | 'resume' | 'removePlayer' | 'leave';
+export type OptionId = 'music' | 'sfx' | 'ambient' | 'screenshake' | 'flash' | 'colorblind' | 'guide' | 'tech' | 'language' | 'keys' | 'resume' | 'removePlayer' | 'leave';
 
 /** Feste Reihenfolge der Einträge */
-export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'ambient', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'keys', 'resume', 'removePlayer', 'leave'];
+export const OPTION_IDS: readonly OptionId[] = ['music', 'sfx', 'ambient', 'screenshake', 'flash', 'colorblind', 'guide', 'tech', 'language', 'keys', 'resume', 'removePlayer', 'leave'];
 
 /** Registry-Schlüssel: die Optionen melden „Spiel verlassen“, `GameScene` verlässt den Raum (B-293) */
 export const LEAVE_KEY = 'leaveGame';
@@ -18,15 +18,15 @@ export const LEAVE_KEY = 'leaveGame';
 /** Registry-Schlüssel: „Spieler abmelden“, Wert = Slot des Spielers (sonst `null`); `GameScene` meldet genau ihn ab (B-411) */
 export const REMOVE_PLAYER_KEY = 'removePlayer';
 
-/** Pad-Tasten (standard mapping), die die Szene liest. B (Index 1) bleibt frei: Edge-Zurück auf der Xbox. */
-export const OPTION_PAD_KEYS = { A: 0, VIEW: 8, MENU: 9, UP: 12, DOWN: 13, LEFT: 14, RIGHT: 15 } as const;
+/** Pad-Tasten (standard mapping), die die Szene liest. B (Index 1) geht im Menü eine Seite zurück, wie Menu kurz und Esc (der Edge-Zurück der Xbox verfällt in der Zurück-Falle). */
+export const OPTION_PAD_KEYS = { A: 0, B: 1, VIEW: 8, MENU: 9, UP: 12, DOWN: 13, LEFT: 14, RIGHT: 15 } as const;
 
 /** Menu kürzer als das gilt als „kurz“; länger bleibt der Kombi View + Menu (Shell) vorbehalten */
 export const MENU_SHORT_MS = 600;
 export const VOLUME_STEP = 10;
 
 /** Schalter-Einträge → Feld der Einstellungen */
-const SWITCHES = { screenshake: 'screenshake', flash: 'flash', colorblind: 'colorblindSymbols', guide: 'guideHints' } as const;
+const SWITCHES = { screenshake: 'screenshake', flash: 'flash', colorblind: 'colorblindSymbols', guide: 'guideHints', tech: 'techInfo' } as const;
 
 /** Regler-Einträge → Feld der Einstellungen (ein Regler je Bus) */
 const VOLUMES = { music: 'musicVolume', sfx: 'sfxVolume', ambient: 'ambientVolume' } as const;
@@ -73,7 +73,8 @@ export function applyOption(settings: Settings, id: OptionId, dir: OptionDir): O
     case 'screenshake':
     case 'flash':
     case 'colorblind':
-    case 'guide': {
+    case 'guide':
+    case 'tech': {
       const key = SWITCHES[id];
       return { ...unchanged, settings: { ...settings, [key]: !settings[key] } };
     }
@@ -102,6 +103,8 @@ export function optionLabel(settings: Settings, id: OptionId): string {
       return `${t('opt.colorblind')}  ${onOff(settings.colorblindSymbols)}`;
     case 'guide':
       return `${t('opt.guide')}  ${onOff(settings.guideHints)}`;
+    case 'tech':
+      return `${t('opt.tech')}  ${onOff(settings.techInfo)}`;
     case 'language':
       return `${t('opt.language')}  ◀ ${t(`lang.${settings.language}`)} ▶`;
     case 'keys':
@@ -118,15 +121,20 @@ export function optionLabel(settings: Settings, id: OptionId): string {
 /** Lage der Tabelle „Tastenbelegung“ (B-741): Kopf bei `top`, je Zeile `rowH`, erste Spalte links, Geräte-Spalten gleich breit; Schrift ≥ 28 px (Q03) */
 export const KEYS_LAYOUT = { top: 240, rowH: 56, px: 30, labelX: 120, colX: [760, 1160, 1560] } as const;
 
+/** Einträge der Seite „Optionen“: Regler, Schalter und Sprache; die übrigen (weiter, Tasten, abmelden, verlassen) sind Kacheln des Pausenmenüs (`pauseHub.ts`) */
+export const SETTINGS_IDS: readonly OptionId[] = OPTION_IDS.filter((id) => id !== 'keys' && id !== 'resume' && id !== 'removePlayer' && id !== 'leave');
+
 /** Szenen-Daten der Optionen: Slots, die „Spieler abmelden“ treffen kann (leer = ausgegraut, B-411) */
 export interface OptionsSceneData {
   targets: number[];
   /** Welt-ID des Raums aus `joined.world` (BD5.2, B-506); leer = standard */
   world?: string;
+  /** Von der Startseite der Lobby geöffnet: nur die Optionen, Menu/Esc schließt die Szene (B-768) */
+  standalone?: boolean;
 }
 
 /** Lage im Pausenmenü (1920 × 1080): Titel 64 px, Weltzeile 40 px (BD9.2, B-604), danach die 12 Zeilen; oben bleiben 70 px frei */
-export const OPTIONS_LAYOUT = { titleY: 110, titlePx: 64, worldY: 182, worldPx: 40, top: 250, rowH: 64, rowPx: 40 } as const;
+export const OPTIONS_LAYOUT = { titleY: 110, titlePx: 64, worldY: 182, worldPx: 40, top: 250, rowH: 60, rowPx: 40 } as const;
 
 /** Zeile unter dem Titel: Welt des Raums (BD5.2, B-506); ohne Angabe keine Zeile */
 export const worldLine = (world: string | undefined): string => (world === undefined ? '' : t('opt.world', { world: worldOf(world) }));

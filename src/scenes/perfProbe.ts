@@ -8,6 +8,7 @@ import type { LatencyStats } from '../online/clientLatency';
 import type { Status } from '../online/clientConnection';
 import { collectPerf, startDiag, type PerfValues } from '../online/clientPerf';
 import { FRAME_DROP_MS, PerfRecorder, STATE_GAP_MS, perfEnabled, sendPerfReport, type Drop, type PerfReport, type ReportMeta } from '../online/clientPerfReport';
+import { runSearch } from '../core/runConfig';
 
 /** Was die Messung von der GameScene liest (dieselben Quellen wie das Debug-Overlay) */
 export interface ProbeScene {
@@ -32,7 +33,7 @@ export interface ProbeEnv {
 
 function browserEnv(): ProbeEnv {
   return {
-    search: location.search,
+    search: runSearch(),
     now: () => performance.now(),
     hidden: () => document.hidden,
     isoNow: () => new Date().toISOString(),

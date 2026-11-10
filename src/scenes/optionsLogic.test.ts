@@ -7,7 +7,7 @@ const base: Settings = { ...DEFAULT_SETTINGS };
 
 describe('Einträge', () => {
   it('stehen in fester Reihenfolge', () => {
-    expect(OPTION_IDS).toEqual(['music', 'sfx', 'ambient', 'screenshake', 'flash', 'colorblind', 'guide', 'language', 'keys', 'resume', 'removePlayer', 'leave']);
+    expect(OPTION_IDS).toEqual(['music', 'sfx', 'ambient', 'screenshake', 'flash', 'colorblind', 'guide', 'tech', 'language', 'keys', 'resume', 'removePlayer', 'leave']);
   });
 
   it('jeder Eintrag hat einen Text', () => {
@@ -158,8 +158,9 @@ describe('Menu kurz', () => {
 });
 
 describe('B-Taste und Stillstand', () => {
-  it('die Szene belegt Pad-Taste B (Index 1) nicht', () => {
-    expect(Object.values(OPTION_PAD_KEYS)).not.toContain(1);
+  it('Pad-Taste B (Index 1) geht im Menü zurück; View und Menu bleiben die Home-Kombi', () => {
+    expect(OPTION_PAD_KEYS.B).toBe(1);
+    expect(Object.values(OPTION_PAD_KEYS).filter((i) => i === 1)).toHaveLength(1);
   });
 
   it('idleCommands: alle Sitzplätze stehen still', () => {
