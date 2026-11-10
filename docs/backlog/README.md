@@ -159,6 +159,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-771](B-771-mcp-log-tools-fuer-remote-server.md) | DEV | Idee | hoch | offen | LG1 | Die Log-Tools des MCP-Servers lesen auch entfernte Server (Pi) |
 | [B-772](B-772-xbox-webgl1-und-speichergrenze-130-mib.md) | CLI | Problem | hoch | offen | LG1 | Auf der Xbox läuft WebGL 1 mit einem Texturspeicher von höchstens 130 MiB |
 | [B-773](B-773-texturtest-seite-responsive-ein-screen.md) | CLI | Problem | mittel | offen | LG1 | Die Textur-Testseite passt responsiv auf einen Screen |
+| [B-774](B-774-abnahme-laeufe-lg1.md) | CLI | Schuld | mittel | offen | LG1 | Abnahme-Läufe LG1 |
 
 ## Archiv
 

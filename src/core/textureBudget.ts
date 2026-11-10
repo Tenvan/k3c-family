@@ -20,8 +20,8 @@ export function textureBudgetMiB(userAgent: string, data: RenderBudgetData = ren
   return isXbox(userAgent) ? data.xbox.textureMiB : null;
 }
 
-/** Bewertung: `over` ab dem Budget, `near` ab dem Anteil `near` (Standard 0,85), sonst `ok`. */
-export function budgetState(usedMiB: number, budgetMiB: number, near = renderData.xbox.near): BudgetState {
+/** Bewertung: `over` ab dem Budget, `near` ab dem Anteil `near` (Standard aus `data/render.json`, 0,85), sonst `ok`. */
+export function budgetState(usedMiB: number, budgetMiB: number, near: number = renderData.xbox.near): BudgetState {
   if (usedMiB >= budgetMiB) return 'over';
   return usedMiB >= budgetMiB * near ? 'near' : 'ok';
 }

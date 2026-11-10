@@ -24,6 +24,8 @@ describe('Texturbudget (B-772/AC-01, AC-02)', () => {
     expect(budgetState(110.4, 130)).toBe('ok'); // 85 % von 130 = 110,5 → knapp darunter ist noch ok
     expect(budgetState(111, 130)).toBe('near');
     expect(budgetState(129.9, 130)).toBe('near');
+    expect(budgetState(65, 130, 0.5)).toBe('near'); // eigene Schwelle (near aus den Daten)
+    expect(budgetState(64.9, 130, 0.5)).toBe('ok');
     expect(budgetState(130, 130)).toBe('over');
     expect(budgetState(410, 130)).toBe('over');
   });

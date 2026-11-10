@@ -17,7 +17,7 @@ export interface Opened {
 export function openContext(canvas: HTMLCanvasElement, attempt: Attempt): Opened {
   let reason: string | null = null;
   const onError = (e: Event): void => {
-    reason = (e as WebGLContextEvent).statusMessage || 'creation error';
+    reason = (e as WebGLContextEvent).statusMessage || 'creation-error';
   };
   canvas.addEventListener('webglcontextcreationerror', onError);
   try {

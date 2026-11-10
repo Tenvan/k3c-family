@@ -1,6 +1,6 @@
 # LG1.5 · Review LG1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,5 +54,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Review (Sonnet, getrennt vom Schreiben) über den Sprint-Diff: keine Befunde über „niedrig“; behoben: Hinweistext zu `near` in `data/render.json`, `budgetState` nutzt das übergebene `near` (Test ergänzt), `X-Log-Partial` und Cursor-Bedeutung in `docs/protocol.md`. Zusammenspiel Endpunkt ↔ MCP-Tools (Header, Dateinamen) stimmt.
+- `task check` grün (Client: Lint, Typecheck, 3713 Tests). Dafür musste ein roter Test aus #538 behoben werden: `src/tools/glDiagnose.ts` enthielt das Literal `'creation error'`, das die Regel „keine deutschen Text-Literale“ (`textRule.test.ts`) traf; jetzt `'creation-error'`.
+- Go: `engine/net`, `cmd/k3c-server`, `data` und die Workbench-Pakete (Log- und Remote-Gruppen) gezielt grün. Der volle `task check:go` konnte hier nicht grün gemeldet werden: `golangci-lint` fehlt auf diesem Rechner, und der volle Testlauf überschreitet 10 Minuten (Sim, Balance); die Pakete davor liefen ok.
+- Abnahme-Ticket: B-774 (nur AC-04 Race relevant).
+- Neue Tickets: keine.
