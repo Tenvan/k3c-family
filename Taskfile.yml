@@ -16,6 +16,7 @@
 #   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Grafik-Pipeline, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
 #   rust         rust/Taskfile.yml              Rust-Kern k3c-core (Entscheidung 006): build, test, lint
+#   native       native/Taskfile.yml            Bevy-Prototyp (Projekt NAT, B-776): proto, measure, proto:paket
 #
 # Gruppen dieses Taskfiles (in dieser Reihenfolge): Einrichten (install) · Client (dev, lint, typecheck, test) · Bauen und Ausliefern
 # (build, buildall, pages) · Spielserver (start, serve) · Prüfen (check, check:go, check:race, check:diff, check:dev, check:starter,
@@ -49,6 +50,7 @@ includes:
   gen: tools/Taskfile.yml
   ops: scripts/Taskfile.yml
   rust: rust/Taskfile.yml
+  native: native/Taskfile.yml
 
 tasks:
   # Legt das feste Temp-Verzeichnis an (GOTMPDIR muss existieren, auch in der CI und in frischen Klonen ohne `task install`).
