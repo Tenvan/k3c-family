@@ -155,6 +155,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-766](B-766-stresstest-echter-client.md) | CLI | Idee | hoch | eingeplant | RX1 | Stresstest des echten Clients: Dev-Aktion spawn und Lauf mit Rampe in der GameScene |
 | [B-767](B-767-nachbesserungen-erster-xbox-test.md) | CLI | Problem | hoch | eingeplant | RX1 | Nachbesserungen aus dem ersten Xbox-Test: frischer Client, Pad auf allen Seiten, Lobby-Löschen, Stress ohne Dev-Mode |
 | [B-769](B-769-xbox-webgl-diagnose-pi-auslesen.md) | CLI | Problem | hoch | offen | RX1 | Xbox-WebGL-Diagnose in der Textur-Testseite und Lese-Endpunkte für den Pi |
+| [B-770](B-770-remote-logs-alle-im-dev-endpunkt.md) | SRV | Idee | hoch | offen | LG1 | Alle Logs eines Servers sind über den Dev-Endpunkt abrufbar |
+| [B-771](B-771-mcp-log-tools-fuer-remote-server.md) | DEV | Idee | hoch | offen | LG1 | Die Log-Tools des MCP-Servers lesen auch entfernte Server (Pi) |
+| [B-772](B-772-xbox-webgl1-und-speichergrenze-130-mib.md) | CLI | Problem | hoch | offen | LG1 | Auf der Xbox läuft WebGL 1 mit einem Texturspeicher von höchstens 130 MiB |
+| [B-773](B-773-texturtest-seite-responsive-ein-screen.md) | CLI | Problem | mittel | offen | LG1 | Die Textur-Testseite passt responsiv auf einen Screen |
 
 ## Archiv
 

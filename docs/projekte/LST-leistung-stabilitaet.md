@@ -19,6 +19,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | NT1 | Stabile Tests, Warteschlange und Snapshot-Budget | erledigt |
 | ST1 | Speichern alle 60 s, unter Windows robust, Rotation der Spielmetrik | erledigt |
 | RX1 | Xbox hält den WebGL-Kontext: Render-Log, Kontextverlust abfangen, Texturen auf 2048 px | geplant |
+| LG1 | Remote-Logs vom Pi und Xbox mit WebGL 1 und 130 MiB | geplant |
 
 ## Nicht-Ziele
 
