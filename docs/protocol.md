@@ -928,10 +928,11 @@ Schema 1 (`engine/room/metrics.go`):
 
 Die Rotation in `reports/` (B-142) erfasst bisher nur `gamepad-*.json`; die Spielmetrik-Reports folgen mit B-272.
 
-## Auslesen im Dev-Mode: /api/dev/status, /log, /reports (RX1)
+## Auslesen im Dev-Mode: /api/dev/status, /log, /logs, /reports (RX1, B-770)
 
-Kein Teil des WebSocket-Protokolls. Drei Lese-Endpunkte, nur `GET`, **ohne Token, aber nur mit Dev-Mode** (`K3C_DEV`, Standard an; sonst 403; andere Methode 405). Sie dienen dazu, einen entfernten Server (Raspberry Pi) von der Entwicklungsmaschine aus zu lesen.
+Kein Teil des WebSocket-Protokolls. Vier Lese-Endpunkte, nur `GET`, **ohne Token, aber nur mit Dev-Mode** (`K3C_DEV`, Standard an; sonst 403; andere Methode 405). Sie dienen dazu, einen entfernten Server (Raspberry Pi) von der Entwicklungsmaschine aus zu lesen.
 
-- `/api/dev/status`: derselbe Zustand wie `/api/status` (Speicher, Version, Laufzeit, CPU, Räume, Abstürze).
-- `/api/dev/log?pattern=<regex>&limit=<1–1000>&mib=<1–8>`: aus den letzten `mib` MiB von `k3c-server.jsonl` die letzten `limit` Zeilen, die `pattern` treffen (RE2, ohne Groß-/Kleinschreibung, bis 200 Zeichen), ältere zuerst, als `text/plain`, höchstens 1 MiB. Kopfzeilen `X-Log-Size`, `X-Log-Matched`. Ungültige Parameter 400, ohne Log 404.
+- `/api/dev/status`: derselbe Zustand wie `/api/status` (Speicher, Version, Laufzeit, CPU, Räume, Abstürze) plus `log: {on, files}` (ob ein Log-Ordner gesetzt ist und welche Dateien es gibt, nur Namen).
+- `/api/dev/logs`: die abrufbaren Log-Dateien als Text, eine Zeile je Datei: Name (`server`, `client`, `client.1`), Bytes, Zeit. Ohne Log-Ordner 404 mit Hinweis auf `K3C_LOG_DIR` (der Pi braucht diese Variable, sonst gibt es kein Log).
+- `/api/dev/log?file=<server|client|client.1>&since=<Cursor>&pattern=<regex>&limit=<1–1000>&mib=<1–8>`: aus den letzten `mib` MiB der Datei `file` (Standard `server` = `k3c-server.jsonl`, `client` = `k3c-client.jsonl`, `client.1` = dessen alte Generation; anderer Wert 400, nie ein Pfad) die letzten `limit` Zeilen, die `pattern` treffen (RE2, ohne Groß-/Kleinschreibung, bis 200 Zeichen), ältere zuerst, als `text/plain`, höchstens 1 MiB. Kopfzeilen `X-Log-Size` (Bytes der Datei = nächster Cursor), `X-Log-Matched`. Mit `since=<Bytes>` kommen nur Zeilen ab diesem Cursor; liegt er hinter dem Dateiende (Datei rotiert), beginnt die Antwort von vorn und `X-Log-Truncated: 1` steht im Kopf. Ungültige Parameter 400, ohne Log 404.
 - `/api/dev/reports`: Liste der `*.json` im Berichte-Ordner (Name, Bytes, Zeit), neueste zuerst; mit `?name=<datei>.json` der Inhalt. Der Name ist ein reiner Dateiname (Pfade, Punkt am Anfang, fremde Endungen 400; fehlende Datei 404; über 2 MiB 413).

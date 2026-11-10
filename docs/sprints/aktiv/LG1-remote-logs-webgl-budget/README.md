@@ -1,14 +1,14 @@
 # LG1 · SRV, DEV, CLI · Remote-Logs vom Pi und Xbox mit WebGL 1 und 130 MiB
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** LST
 - **Domäne:** SRV, DEV, CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-770, B-771, B-772, B-773
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** cbb93dc0
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude (Nutzer: „LST ganz abarbeiten“, 2026-11-10)
 
 ## Ausgangslage
 
@@ -66,7 +66,7 @@ Pi nicht erreichbar oder „Log aus“ → klare Meldung mit Adresse und Hinweis
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| LG1.1 | `LG1.1-dev-endpunkt-alle-logs.md` | Umsetzung | autonom | offen |
+| LG1.1 | `LG1.1-dev-endpunkt-alle-logs.md` | Umsetzung | autonom | fertig |
 | LG1.2 | `LG1.2-mcp-log-tools-remote.md` | Umsetzung | autonom | offen |
 | LG1.3 | `LG1.3-xbox-webgl1-textur-budget.md` | Umsetzung | autonom | offen |
 | LG1.4 | `LG1.4-texturtest-responsive.md` | Umsetzung | autonom | fertig |

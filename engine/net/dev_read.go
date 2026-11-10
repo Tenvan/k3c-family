@@ -47,25 +47,34 @@ func (s *server) devStatus(w http.ResponseWriter, r *http.Request) {
 	if !s.devRead(w, r) {
 		return
 	}
-	writeJSON(w, http.StatusOK, s.statusBody())
+	body := s.statusBody()
+	body["log"] = s.logInfo()
+	writeJSON(w, http.StatusOK, body)
 }
 
-// devLog ist GET /api/dev/log?pattern=<regex>&limit=<n>&mib=<n>: die letzten passenden Zeilen des JSON-Logs, ältere zuerst, als Text.
-// pattern ist ein Regex (RE2, ohne Groß-/Kleinschreibung) auf die ganze Zeile; ohne pattern kommen die letzten Zeilen. Gelesen wird
-// nur <LogDir>/k3c-server.jsonl, nie ein Pfad aus der URL. Kopfzeilen: X-Log-Size (Bytes der Datei), X-Log-Matched (Treffer im Fenster).
+// devLog ist GET /api/dev/log?file=<name>&pattern=<regex>&limit=<n>&mib=<n>&since=<cursor>: die letzten passenden Zeilen eines JSON-Logs,
+// ältere zuerst, als Text. file ist server (Standard), client oder client.1 (B-770), nie ein Pfad. pattern ist ein Regex (RE2, ohne Groß-/
+// Kleinschreibung) auf die ganze Zeile. Mit since (Byte-Cursor aus X-Log-Size) kommen nur Zeilen ab dort; liegt er hinter dem Dateiende,
+// beginnt die Antwort von vorn und X-Log-Truncated ist 1. Kopfzeilen: X-Log-Size (nächster Cursor), X-Log-Matched, X-Log-Partial (limit oder Fenster haben ältere Zeilen weggelassen).
 func (s *server) devLog(w http.ResponseWriter, r *http.Request) {
 	if !s.devRead(w, r) {
 		return
 	}
 	limit, ok1 := number(r, "limit", devLogRows, devLogRowsMax)
 	mib, ok2 := number(r, "mib", devLogTailMiB, devLogTailMax)
+	_, ok4 := number(r, "since", 0, 1<<62)
 	re, ok3 := logPattern(r.URL.Query().Get("pattern"))
-	if !ok1 || !ok2 || !ok3 || limit < 1 || mib < 1 {
-		fail(w, http.StatusBadRequest, "limit 1 bis 1000, mib 1 bis 8, pattern ein gültiger Regex bis 200 Zeichen")
+	if !ok1 || !ok2 || !ok3 || !ok4 || limit < 1 || mib < 1 {
+		fail(w, http.StatusBadRequest, "limit 1 bis 1000, mib 1 bis 8, since eine Zahl, pattern ein gültiger Regex bis 200 Zeichen")
 		return
 	}
 	if s.cfg.LogDir == "" {
-		fail(w, http.StatusNotFound, "Log aus")
+		fail(w, http.StatusNotFound, logOffMsg)
+		return
+	}
+	path, ok := devLogPath(s.cfg.LogDir, r.URL.Query().Get("file"))
+	if !ok {
+		fail(w, http.StatusBadRequest, "file: "+devLogNames())
 		return
 	}
 	select {
@@ -75,20 +84,20 @@ func (s *server) devLog(w http.ResponseWriter, r *http.Request) {
 		fail(w, http.StatusTooManyRequests, "Zu viele gleichzeitige Log-Anfragen")
 		return
 	}
-	lines, size, err := tailLines(filepath.Join(s.cfg.LogDir, logFileName), mib<<20)
-	if errors.Is(err, os.ErrNotExist) {
-		fail(w, http.StatusNotFound, "Log aus")
+	win, err := readDevLog(path, r, mib<<20)
+	if s.logReadError(w, err) {
 		return
 	}
-	if err != nil {
-		s.log.Error("📄 Log nicht lesbar", "ns", "diag", "err", err)
-		fail(w, http.StatusInternalServerError, "Log nicht lesbar")
-		return
-	}
-	hits, matched := lastMatches(lines, re, int(limit), devLogBodyMax)
+	hits, matched := lastMatches(win.lines, re, int(limit), devLogBodyMax)
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-	w.Header().Set("X-Log-Size", strconv.FormatInt(size, 10))
+	w.Header().Set("X-Log-Size", strconv.FormatInt(win.cursor, 10))
 	w.Header().Set("X-Log-Matched", strconv.Itoa(matched))
+	if win.truncated {
+		w.Header().Set("X-Log-Truncated", "1")
+	}
+	if win.partial || matched > len(hits) { // der Cursor wandert trotzdem ans Ende: ältere Zeilen fielen weg
+		w.Header().Set("X-Log-Partial", "1")
+	}
 	_, _ = io.WriteString(w, strings.Join(hits, "\n"))
 }
 

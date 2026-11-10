@@ -8,9 +8,9 @@
 - **Sprint:** LG1
 - **Projekt:** LST
 - **Erstellt:** 2026-11-10
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude (Nutzer: „LST ganz abarbeiten“, 2026-11-10)
 
 ## Ausgangslage
 
