@@ -75,6 +75,12 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
   zuerst (verdichtet, ohne `service` über alle), `logs_stats {service?, since?, groupBy?}` für Zahlen je Level oder
   Namensraum, `logs_query {service, level?, ns?, pattern?, since?, limit?}` für einzelne Zeilen,
   `logs_context {service, ts}` für die Zeilen um einen Zeitpunkt, `logs_since {service, cursor}` zum Mitlesen.
+  **Entfernte Server (B-771):** Alle `logs_*`-Tools, `server_status`, `reports_list` und `report_read` nehmen `server`
+  (`pi` = pi-gaming:8080, weitere Namen aus der Umgebungsvariable `K3C_REMOTE_SERVERS="name=host:port,…"`, oder `host:port`
+  im Heimnetz). Sie lesen dann die Dev-Endpunkte `/api/dev/*` dieses Servers (nur GET, Dev-Mode am Server nötig, Log-Ordner
+  `K3C_LOG_DIR` am Server gesetzt) statt der lokalen Dateien. Es gelten nur die Dienste `k3c-server` und `k3c-client`; je
+  Datei kommen die letzten 1000 Zeilen. `logs_since` nutzt dann die Byte-Position im Log des Servers als Cursor. Die Antwort
+  nennt oben die Quelle. Ohne `server` bleibt alles lokal.
 - `console_tail {service, limit?, since?}`: flüchtige Ausgabe eines Dienstes oder Laufs (`check:<ziel>`, `task:<name>`).
 
 ## 3. MCP

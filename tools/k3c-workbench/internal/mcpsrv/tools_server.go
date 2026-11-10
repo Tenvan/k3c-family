@@ -10,8 +10,15 @@ type roomIn struct {
 	Room string `json:"room" jsonschema:"Raum-Code aus rooms_list, z. B. FAMILIE"`
 }
 
-// serverStatus ist das Tool server_status.
-func (s *Server) serverStatus(ctx context.Context, _ struct{}) (string, error) {
+type statusIn struct {
+	Server string `json:"server,omitempty" jsonschema:"entfernter Server statt des lokalen Spielservers: pi (= pi-gaming:8080), ein Name aus K3C_REMOTE_SERVERS oder host:port im Heimnetz"`
+}
+
+// serverStatus ist das Tool server_status; mit server liest es /api/dev/status eines entfernten Servers.
+func (s *Server) serverStatus(ctx context.Context, in statusIn) (string, error) {
+	if in.Server != "" {
+		return s.remoteStatus(ctx, in.Server)
+	}
 	c, err := s.serverClient(ctx)
 	if err != nil {
 		return "", err

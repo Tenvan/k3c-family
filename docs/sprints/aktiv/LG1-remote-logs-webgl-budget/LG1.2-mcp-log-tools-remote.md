@@ -1,12 +1,12 @@
 # LG1.2 · MCP-Log-Tools lesen entfernte Server
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
 - **Lane:** –
 - **Modell:** –
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Branch:** lg1/2-mcp-log-tools-remote
 - **Abhängig von:** LG1.1
 - **Tickets:** B-771
@@ -54,5 +54,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 geprüft: `tools/k3c-workbench/internal/mcpsrv/remote_test.go` (18 Tests der Log- und Remote-Gruppen grün, `go vet` sauber): `logs_errors`/`logs_query`/`logs_stats`/`logs_context`/`logs_services`/`logs_since`, `server_status`, `reports_list` und `report_read` lesen mit `server` einen Test-Server; ohne `server` unverändert lokal. Fehler (nicht erreichbar, 403, „Log aus“ mit `K3C_LOG_DIR`, Weiterleitung, unbekannter Name, fremde Adresse, lokaler Dienst mit `server`) haben klare Meldungen. B-771/AC-01 bis AC-03 erfüllt.
+- Neu: `internal/mcpsrv/remote.go`, `remote_tools.go`; Argument `server` (`pi` = pi-gaming:8080, weitere über `K3C_REMOTE_SERVERS`, oder `host:port` im Heimnetz); `instructions.md` ergänzt.
+- Review (Sonnet, getrennt vom Schreiben), alle Befunde behoben: Dateinamen vom Server nur aus fester Liste (Pfad-Traversal), Ziffern-/Hex-Hosts abgelehnt, Dialer prüft die verbundene IP (DNS-Rebinding) und kein Proxy, Kurznamen nur `[A-Za-z0-9_-]`, je Aufruf ein eigener Temp-Ordner unter `.work/remote-logs` (parallele Aufrufe, wird aufgeräumt), Antwort über 2 MiB und fehlendes `X-Log-Size` sind Fehler.
+- Nicht geprüft: `golangci-lint` fehlt auf diesem Rechner; der Gesamtlauf von `k3c-workbench:gotest` hängt in `TestEngineToolsLaufenOhneServer` (Sim-Kindprozess, nicht von dieser Änderung), die übrigen Tests wurden gezielt ausgeführt. `B-771/AC-04` (echte Pi-Zeilen) liegt in LG1.6 bei 🧑; die laufende Workbench muss dafür neu gestartet werden.
+- Hinweis: Der Pi braucht `K3C_LOG_DIR`, sonst meldet der Server „Log aus“ (B-770).
