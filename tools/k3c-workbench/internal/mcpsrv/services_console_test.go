@@ -32,7 +32,7 @@ func TestDienstAusgabeInLogsSources(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer ctl.StopAll(context.Background())
-	text, _ := s.logsSources(context.Background(), struct{}{})
+	text, _ := s.logsSources(context.Background(), sourcesIn{})
 	if !strings.Contains(text, "Konsole Vite · 1 Zeilen") {
 		t.Errorf("Quellen: %q", text)
 	}

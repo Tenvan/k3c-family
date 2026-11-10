@@ -1,6 +1,6 @@
 # LG1.1 · Dev-Endpunkt liefert alle Logs
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -55,5 +55,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `engine/net/dev_logs_test.go` (Liste, Server- und Client-Log, Filter, Cursor, halbe letzte Zeile, Fensterkürzung, `since` über int64, Pfad-Ablehnung, 403/405/404, Status-Log) und das ganze Paket `engine/net` grün, `go vet` sauber. B-770/AC-01 bis AC-03 erfüllt.
+- Neu: `GET /api/dev/logs`, `file=server|client|client.1` und `since` an `/api/dev/log` (Kopfzeilen `X-Log-Size` = Cursor, `X-Log-Truncated`, `X-Log-Partial`), `log: {on, files}` in `/api/dev/status`; `docs/protocol.md` und `README.md` nachgezogen.
+- Review (Sonnet, getrennt vom Schreiben): keine kritischen Befunde; Cursor-Rennen, halb geschriebene Zeile, stilles Verwerfen (jetzt `X-Log-Partial`) und fehlende Tests behoben.
+- Nicht geprüft: `golangci-lint` fehlt auf diesem Rechner (`task check:diff` endet dort mit Exit 1); `B-770/AC-04` (Abnahme am Pi) liegt in LG1.6 bei 🧑.
+- Abweichung: Ein Worktree-Ordner unter `.work/worktrees` wird von der Workbench nicht aufgelöst; gearbeitet wurde im Haupt-Checkout auf `sprint/lg1`.

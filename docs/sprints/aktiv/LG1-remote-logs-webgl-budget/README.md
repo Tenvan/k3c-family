@@ -1,14 +1,14 @@
 # LG1 · SRV, DEV, CLI · Remote-Logs vom Pi und Xbox mit WebGL 1 und 130 MiB
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** LST
 - **Domäne:** SRV, DEV, CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-770, B-771, B-772, B-773
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** cbb93dc0
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude (Nutzer: „LST ganz abarbeiten“, 2026-11-10)
 
 ## Ausgangslage
 
@@ -66,11 +66,11 @@ Pi nicht erreichbar oder „Log aus“ → klare Meldung mit Adresse und Hinweis
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| LG1.1 | `LG1.1-dev-endpunkt-alle-logs.md` | Umsetzung | autonom | offen |
-| LG1.2 | `LG1.2-mcp-log-tools-remote.md` | Umsetzung | autonom | offen |
-| LG1.3 | `LG1.3-xbox-webgl1-textur-budget.md` | Umsetzung | autonom | offen |
+| LG1.1 | `LG1.1-dev-endpunkt-alle-logs.md` | Umsetzung | autonom | fertig |
+| LG1.2 | `LG1.2-mcp-log-tools-remote.md` | Umsetzung | autonom | fertig |
+| LG1.3 | `LG1.3-xbox-webgl1-textur-budget.md` | Umsetzung | autonom | fertig |
 | LG1.4 | `LG1.4-texturtest-responsive.md` | Umsetzung | autonom | fertig |
-| LG1.5 | `LG1.5-review.md` | Review | autonom | offen |
+| LG1.5 | `LG1.5-review.md` | Review | autonom | fertig |
 | LG1.6 | `LG1.6-abnahme-pi-xbox.md` | Workshop | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -79,6 +79,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-10: LG1.1 bis LG1.5 abgeschlossen (Ergebnisse in den Session-Dateien), Review ohne offene Befunde, `task check` grün, `golangci-lint` auf diesem Rechner nicht verfügbar. Abnahme-Ticket: B-774. Offen bei 🧑: LG1.6 (Log-Ordner am Pi setzen, Pi- und Xbox-Abnahme AC-05 bis AC-08). Neue Tickets: keine.

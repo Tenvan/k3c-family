@@ -24,7 +24,9 @@ const (
 
 var sourceName = regexp.MustCompile(`^[A-Za-z0-9_.-]+$`)
 
+// Das Argument `server` aller Log-Tools (B-771): entfernter Server statt der lokalen Logs, dann gelten nur k3c-server und k3c-client.
 type queryIn struct {
+	Server   string `json:"server,omitempty" jsonschema:"entfernter Server statt der lokalen Logs: pi (= pi-gaming:8080), ein Name aus K3C_REMOTE_SERVERS oder host:port im Heimnetz"`
 	Source   string `json:"service" jsonschema:"Dienst mit Logdatei aus logs_services, z. B. k3c-server"`
 	MinLevel string `json:"level,omitempty" jsonschema:"Mindest-Level: DEBUG, INFO, WARN oder ERROR"`
 	NS       string `json:"ns,omitempty" jsonschema:"nur dieser Bereich, z. B. mcp"`
@@ -34,12 +36,18 @@ type queryIn struct {
 }
 
 type errorsIn struct {
-	Source   string `json:"service,omitempty" jsonschema:"Dienst mit Logdatei aus logs_services; leer: alle"`
+	Server   string `json:"server,omitempty" jsonschema:"entfernter Server statt der lokalen Logs: pi (= pi-gaming:8080), ein Name aus K3C_REMOTE_SERVERS oder host:port im Heimnetz"`
+	Source  string `json:"service,omitempty" jsonschema:"Dienst mit Logdatei aus logs_services; leer: alle"`
 	MinLevel string `json:"level,omitempty" jsonschema:"Mindest-Level, Standard WARN"`
 	Since    string `json:"since,omitempty" jsonschema:"Standard 24h"`
 }
 
+type sourcesIn struct {
+	Server string `json:"server,omitempty" jsonschema:"entfernter Server statt der lokalen Logs: pi (= pi-gaming:8080), ein Name aus K3C_REMOTE_SERVERS oder host:port im Heimnetz"`
+}
+
 type sinceIn struct {
+	Server string `json:"server,omitempty" jsonschema:"entfernter Server statt der lokalen Logs: pi (= pi-gaming:8080), ein Name aus K3C_REMOTE_SERVERS oder host:port im Heimnetz; der Cursor ist dann die Byte-Position im Log des Servers"`
 	Source string `json:"service" jsonschema:"Dienst mit Logdatei aus logs_services, z. B. k3c-server"`
 	Cursor int64  `json:"cursor,omitempty" jsonschema:"Byte-Cursor aus der letzten Antwort, 0 = Anfang"`
 	Limit  int    `json:"limit,omitempty" jsonschema:"höchstens so viele Einträge, Standard 100, höchstens 500"`
@@ -88,7 +96,10 @@ func (s *Server) logPath(root, source string) (string, error) {
 }
 
 // logsSources ist das Tool logs_services: Log-Dateien und Konsolen-Quellen des eigenen Checkouts.
-func (s *Server) logsSources(ctx context.Context, _ struct{}) (string, error) {
+func (s *Server) logsSources(ctx context.Context, in sourcesIn) (string, error) {
+	if in.Server != "" {
+		return s.remoteSources(ctx, in.Server)
+	}
 	ws := s.ws(ctx)
 	var out []string
 	for _, name := range logSources(ws.root) {
@@ -121,7 +132,12 @@ func (s *Server) logFileLine(root, name string) string {
 
 // logsQuery ist das Tool logs_query: gefilterte Einträge, neueste zuerst.
 func (s *Server) logsQuery(ctx context.Context, in queryIn) (string, error) {
-	path, err := s.logPath(s.ws(ctx).root, in.Source)
+	root, note, done, err := s.logRoot(ctx, in.Server, in.Source, s.ws(ctx).root)
+	defer done()
+	if err != nil {
+		return "", err
+	}
+	path, err := s.logPath(root, in.Source)
 	if err != nil {
 		return "", err
 	}
@@ -142,12 +158,17 @@ func (s *Server) logsQuery(ctx context.Context, in queryIn) (string, error) {
 	for _, e := range res.Entries {
 		out = append(out, entryLine(e))
 	}
-	return strings.Join(append(out, scanFooter(fmt.Sprintf("%d Einträge", len(res.Entries)), res)), "\n"), nil
+	return withNote(note, strings.Join(append(out, scanFooter(fmt.Sprintf("%d Einträge", len(res.Entries)), res)), "\n")), nil
 }
 
 // logsErrors ist das Tool logs_errors: Warnungen und Fehler, gleichartige zu je einer Zeile verdichtet.
 func (s *Server) logsErrors(ctx context.Context, in errorsIn) (string, error) {
-	paths, err := s.logPaths(s.ws(ctx).root, in.Source)
+	root, note, done, err := s.logRoot(ctx, in.Server, in.Source, s.ws(ctx).root)
+	defer done()
+	if err != nil {
+		return "", err
+	}
+	paths, err := s.logPaths(root, in.Source, in.Server != "")
 	if err != nil {
 		return "", err
 	}
@@ -171,11 +192,14 @@ func (s *Server) logsErrors(ctx context.Context, in errorsIn) (string, error) {
 		out = append(out, fmt.Sprintf("%d× %s %s %s · %s", g.Count, g.Level, g.NS, clip(g.Example), window(g.First, g.Last)))
 	}
 	head := fmt.Sprintf("%d Gruppen aus %d Einträgen ab %s seit %s", len(groups), len(res.Entries), q.MinLevel, in.Since)
-	return strings.Join(append(out, scanFooter(head, res)), "\n"), nil
+	return withNote(note, strings.Join(append(out, scanFooter(head, res)), "\n")), nil
 }
 
 // logsSince ist das Tool logs_since: neue Einträge ab einem Byte-Cursor, älteste zuerst, und der nächste Cursor.
 func (s *Server) logsSince(ctx context.Context, in sinceIn) (string, error) {
+	if in.Server != "" {
+		return s.remoteSince(ctx, in)
+	}
 	path, err := s.logPath(s.ws(ctx).root, in.Source)
 	if err != nil {
 		return "", err
@@ -271,10 +295,14 @@ func formatBytes(n int64) string {
 }
 
 // logPaths sind die Dateien eines Dienstes oder, ohne Namen, aller Log-Quellen des Checkouts.
-func (s *Server) logPaths(root, source string) ([]string, error) {
+// remote: Es zählen nur die gespiegelten Dateien des Servers, nicht die bekannten lokalen Quellen (k3c-workbench, vite).
+func (s *Server) logPaths(root, source string, remote bool) ([]string, error) {
 	names := []string{source}
 	if source == "" {
 		names = logSources(root)
+		if remote {
+			names = mirroredSources(root)
+		}
 	}
 	paths := make([]string, 0, len(names))
 	for _, n := range names {
