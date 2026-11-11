@@ -165,6 +165,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-778](B-778-rig-prototyp-monarch-aus-teilen.md) | CLI | Frage | hoch | eingeplant | NV2 | Ein dritter Prototyp setzt den Monarchen in Ebitengine zur Laufzeit aus Rig-Teilen zusammen |
 | [B-779](B-779-rust-und-bevy-entfernen.md) | INF | Schuld | mittel | offen | – | Rust und der Bevy-Prototyp sind aus dem Repo entfernt, das Projekt ist rein Go |
 | [B-780](B-780-rig-fuer-alle-figuren-gegnerzahl.md) | CLI | Frage | mittel | offen | – | Prototypen zeigen, wie viele Gegner, Truppen und Bosse gleichzeitig als Rig-Modelle laufen |
+| [B-782](B-782-plan-next-branch-praefix.md) | DEV | Problem | hoch | offen | – | plan_next nennt den Sprint-Branch richtig, auch wenn das Feld Branch schon mit sprint/ beginnt |
+| [B-783](B-783-plan-waves-ralf-queue.md) | DEV | Idee | hoch | offen | – | plan_waves berechnet Wellen aus Abhängigkeit, Bereich und Sperre, plan_queue zeigt die Ralf-Queue |
+| [B-784](B-784-planungsangaben-pruefen.md) | DEV | Idee | mittel | offen | – | Planungsangaben für Wellen werden geprüft: plan_check und Regel-Test für freigegebene Tickets |
+| [B-785](B-785-fahrplan-aufraeumen-geraetetermine.md) | INF | Schuld | mittel | offen | – | Fahrplan ist aufgeräumt: fertige Sprints erledigt, Abnahmen als Gerätetermine, alte bereite Sprints geprüft |
 
 ## Archiv
 
