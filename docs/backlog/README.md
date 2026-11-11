@@ -172,6 +172,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-786](B-786-rig-monarch-sichtpruefung-mini-pc.md) | CLI | Frage | niedrig | offen | – | Rig-Monarch wird am Mini-PC geprüft und gemessen, sobald das Spiel am PC fertig ist |
 | [B-787](B-787-workbench-tests-short-zu-langsam.md) | DEV | Problem | hoch | offen | – | Workbench-Tests bleiben mit -short unter 3 s je Test, der volle Lauf ist grün |
 | [B-788](B-788-check-run-teilaufgaben-sim-sperre.md) | DEV | Schuld | mittel | offen | – | check_run kennt die Teilaufgaben von check:diff, sim_test und sim_run lehnen während der Sperre ab |
+| [B-789](B-789-prototyp-fluss-fester-hintergrund-alle-rigs.md) | CLI | Frage | hoch | offen | – | Der Ebitengine-Prototyp zeigt den Fluss in der unteren Bildhälfte, einen festen Fern-Hintergrund und alle Figuren als Rig |
+| [B-790](B-790-prototyp-shader-wasser.md) | CLI | Frage | mittel | offen | – | Ein vierter Prototyp zeigt, was Shader in Ebitengine für Wasser und Papier-Effekte bringen |
 
 ## Archiv
 
