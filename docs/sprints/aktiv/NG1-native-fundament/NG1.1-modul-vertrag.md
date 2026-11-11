@@ -1,6 +1,6 @@
 # NG1.1 · Modul native/k3c-game und Vertrag view
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
