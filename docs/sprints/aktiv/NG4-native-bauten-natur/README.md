@@ -1,6 +1,6 @@
 # NG4 · CLI · Natives Spiel: Gebäude, Baustellen, Natur und Objekte
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit

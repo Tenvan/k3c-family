@@ -9,6 +9,10 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| NG2 | CLI | NAT | Natives Spiel: Welt, Kamera, Schichten, Fluss und Licht | – | `aktiv/NG2-native-welt-kamera/` |
+| NG3 | CLI | NAT | Natives Spiel: Figuren als Rig, Bein-Bänder und Gegnerzahl | – | `aktiv/NG3-native-figuren/` |
+| NG4 | CLI | NAT | Natives Spiel: Gebäude, Baustellen, Natur und Objekte | – | `aktiv/NG4-native-bauten-natur/` |
+| NG5 | PLAT | NAT | Natives Spiel: Eingabe mit Gamepads und Tastatur | – | `aktiv/NG5-native-eingabe/` |
 | RD1 | PAP | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | `aktiv/RD1-papierschnitt-renderer/` |
 | MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
 | RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
@@ -37,10 +41,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| NG2 | CLI | NAT | Natives Spiel: Welt, Kamera, Schichten, Fluss und Licht | – | bereit | `geplant/NG2-native-welt-kamera/` |
-| NG3 | CLI | NAT | Natives Spiel: Figuren als Rig, Bein-Bänder und Gegnerzahl | – | bereit | `geplant/NG3-native-figuren/` |
-| NG4 | CLI | NAT | Natives Spiel: Gebäude, Baustellen, Natur und Objekte | – | bereit | `geplant/NG4-native-bauten-natur/` |
-| NG5 | PLAT | NAT | Natives Spiel: Eingabe mit Gamepads und Tastatur | – | bereit | `geplant/NG5-native-eingabe/` |
 | NG6 | CLI | NAT | Natives Spiel: HUD, Hinweise und Effekte | – | bereit | `geplant/NG6-native-hud-effekte/` |
 | NG7 | CLI | NAT | Natives Spiel: Menüs, Lobby, Spielstände, Optionen und Pause | – | bereit | `geplant/NG7-native-menues-spielstaende/` |
 | NG8 | CLI | NAT | Natives Spiel: Klänge und Musik | – | bereit | `geplant/NG8-native-ton/` |

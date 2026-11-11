@@ -1,6 +1,6 @@
 # NG3 · CLI · Natives Spiel: Figuren als Rig, Bein-Bänder und Gegnerzahl
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit

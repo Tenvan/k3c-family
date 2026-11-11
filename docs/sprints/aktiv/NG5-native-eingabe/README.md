@@ -1,10 +1,10 @@
-# NG2 · CLI · Natives Spiel: Welt, Kamera, Schichten, Fluss und Licht
+# NG5 · PLAT · Natives Spiel: Eingabe mit Gamepads und Tastatur
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
-- **Domäne:** CLI
+- **Domäne:** PLAT
 - **Reife:** bereit
-- **Tickets:** B-795
+- **Tickets:** B-798
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -12,48 +12,48 @@
 
 ## Ausgangslage
 
-Nach NG1 zeichnet `native/k3c-game/world` nur Platzhalter. Vorbild sind `src/scenes/render/` und `src/scenes/layout.ts` sowie Fluss und Schichten aus NV3 (`native/k3c-ebiten/river.go`, `level.go`). Einzelheiten: B-795.
+Nach NG1 liefert `native/k3c-game/input` nur einen Platzhalter. Vorbild: `src/input/`, `docs/rules/bedienung.md`, `src/scenes/keyTable.ts`, Prototyp `native/k3c-ebiten/players.go`. Einzelheiten: B-798.
 
 ## Ziel
 
-Jede Zelle zeigt Hintergrund, Boden, Fluss und Licht und führt die Kamera wie das heutige Spiel. Am Ende sichtbar: Monarch reitet, `fern` steht, `mitte` und `nah` ziehen vorbei, der Fluss fließt im unteren Drittel, Nacht wird dunkel.
+1–2 Gamepads und die Tastatur steuern Spieler und Menüs mit der heutigen Belegung. Am Ende sichtbar: zwei Pads steuern je einen Monarchen, ein Pad kann während des Spiels kommen und gehen.
 
 ## Beteiligte und Zielgruppen
 
-Familie, Claude (Umsetzung), 🧑 Ralf (Sichtprüfung in NG9).
+Familie, Claude (Umsetzung).
 
 ## Anforderungen
 
-`B-795 › Anforderungen`.
+`B-798 › Anforderungen`.
 
 ## Nicht-Ziele
 
-`B-795 › Nicht-Ziele`; Vertrag `view` ändern.
+`B-798 › Nicht-Ziele`; Vertrag `view` ändern.
 
 ## Regeln und Einschränkungen
 
-Entscheidung 005 und 008. Vertrag `view` aus NG1 ist fest; fehlt etwas, Ticket.
+Regeln aus `CLAUDE.md` (B zurück, View + Menu reserviert, nur Xbox-Belegung). Vertrag `view` fest. Domäne PLAT (Eingabe), damit der Sprint neben den CLI-Sprints läuft.
 
 Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
 
-- **Bereich:** `native/k3c-game/world/**`
+- **Bereich:** `native/k3c-game/input/**`
 - **Abhängig von:** NG1
 - **Braucht 🧑:** Freigabe
 - **Sperre:** –
 
 ## Beispiele
 
-`B-795 › Beispiele`.
+`B-798 › Beispiele`.
 
 ## Ausnahme- und Fehlerfälle
 
-`B-795 › Ausnahme- und Fehlerfälle`.
+`B-798 › Ausnahme- und Fehlerfälle`.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Kamera und Culling je Zelle (`B-795/AC-01`).
-- **AC-02** Schichten und Fluss im unteren Drittel (`B-795/AC-02`).
-- **AC-03** Licht und Stufenübergang (`B-795/AC-03`).
+- **AC-01** Belegung nach `docs/rules/bedienung.md` (`B-798/AC-01`).
+- **AC-02** Zuordnung bei Pad kommt, geht, zwei Pads, kein Pad (`B-798/AC-02`).
+- **AC-03** B zurück in Menüs, im Spiel unbelegt; View + Menu zurück ins Menü (`B-798/AC-03`).
 
 ## Offene Fragen
 
@@ -63,10 +63,9 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NG2.1 | `NG2.1-kamera-culling.md` | Umsetzung | autonom | offen |
-| NG2.2 | `NG2.2-schichten-fluss.md` | Umsetzung | autonom | offen |
-| NG2.3 | `NG2.3-licht-stufen.md` | Umsetzung | autonom | offen |
-| NG2.4 | `NG2.4-review.md` | Review | autonom | offen |
+| NG5.1 | `NG5.1-belegung.md` | Umsetzung | autonom | offen |
+| NG5.2 | `NG5.2-gamepads-hotplug.md` | Umsetzung | autonom | offen |
+| NG5.3 | `NG5.3-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
