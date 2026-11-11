@@ -1,6 +1,6 @@
 # NG1.1 · Modul native/k3c-game und Vertrag view
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -70,5 +70,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 umgesetzt: Modul `native/k3c-game` (Ebitengine v2.10.6, `replace` auf `k3c` und `k3c-rig`), `task native:game:build` baut ohne cgo; geprüft mit `go vet`, `go build`, `go test ./...` (Agent, Opus).
+AC-02 umgesetzt: Vertrag `view` (Layer, Drawer, Listener, Frame mit Stages/Seats/Events/Cues, Cell, Camera, Eingabe, Screen, Session), Platzhalter je Fachpaket, Importregel als Test `game/imports_test.go`.
+Abweichungen: `Frame` führt eine Liste `Stages` (zwei Spieler auf verschiedenen Stufen); Menüs `Main()` und `Pause()`; vorläufige Schleife bis NG1.4. Offen für NG1.3/NG1.6: Konstruktoren der Fachpakete brauchen die Grafik-Bibliothek; vermutete Lücken im Vertrag (Insel-Infos fürs HUD, Einstellungen, Rütteln, Texteingabe, Welt-ID). Fenster nicht gestartet.

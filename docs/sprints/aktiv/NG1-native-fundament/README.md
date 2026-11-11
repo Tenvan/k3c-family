@@ -77,7 +77,7 @@ Gesammelt aus den Tickets, je mit Vorschlag; entscheidet 🧑 vor der Freigabe:
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NG1.1 | `NG1.1-modul-vertrag.md` | Umsetzung | autonom | in Arbeit |
+| NG1.1 | `NG1.1-modul-vertrag.md` | Umsetzung | autonom | fertig |
 | NG1.2 | `NG1.2-simulation-im-prozess.md` | Umsetzung | autonom | offen |
 | NG1.3 | `NG1.3-grafik-bibliothek.md` | Umsetzung | autonom | offen |
 | NG1.4 | `NG1.4-spielschleife-zellen.md` | Umsetzung | autonom | offen |

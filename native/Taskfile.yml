@@ -5,6 +5,7 @@
 # Rig-Teilen unter native/k3c-rig/assets (Pakete rig und paint per replace eingebunden, `--art sheet` wie vorher).
 # Rig-Prototyp (Sprint NV2, B-778): eigenes Go-Modul unter native/k3c-rig; seine Teil-Bilder und Rig-Dateien sind eingecheckt
 # (native/k3c-rig/assets, `rig:export` schreibt sie neu), Bauen und Starten braucht keinen Gen-Lauf.
+# Natives Spiel (Sprint NG1, B-792): eigenes Go-Modul unter native/k3c-game (`game:build`, `game`), ohne cgo.
 version: '3'
 
 vars:
@@ -18,6 +19,9 @@ vars:
   RIG: '{{.ROOT_DIR}}/native/k3c-rig'
   RIG_EXE: '{{.ROOT_DIR}}/native/k3c-rig/bin/k3c-rig.exe'
   RIG_PAKET: '{{.ROOT_DIR}}/.work/native-rig'
+  # Natives Spiel (Sprint NG1, B-792): eigenes Go-Modul unter native/k3c-game, bindet k3c und k3c-rig per replace ein
+  GAME: '{{.ROOT_DIR}}/native/k3c-game'
+  GAME_EXE: '{{.ROOT_DIR}}/native/k3c-game/bin/k3c-game.exe'
 
 tasks:
   proto:build:
@@ -62,6 +66,33 @@ tasks:
     deps: [ebiten:build]
     cmds:
       - '"{{.EBITEN_EXE}}" --root "{{.ROOT_DIR}}"'
+
+  game:build:
+    desc: "Natives Spiel bauen (Go, ohne cgo) nach native/k3c-game/bin/"
+    dir: '{{.GAME}}'
+    deps: [':tmp']
+    env:
+      CGO_ENABLED: '0'
+    sources:
+      - '**/*.go'
+      - go.mod
+      - go.sum
+      # Simulation und Balancing aus dem Wurzel-Modul (replace k3c => ../..), data per go:embed
+      - ../../go.mod
+      - ../../engine/sim/*.go
+      - ../../engine/level/*.go
+      - ../../engine/rng/*.go
+      - ../../data/**/*
+    generates:
+      - bin/k3c-game.exe
+    cmds:
+      - go build -o bin/k3c-game.exe .
+
+  game:
+    desc: "Natives Spiel starten (Platzhalter; Menü: Enter, Spiel: A/D oder Pfeile, Esc Pause)"
+    deps: [game:build]
+    cmds:
+      - '"{{.GAME_EXE}}"'
 
   measure:
     desc: "Bevy: FPS und Grafikspeicher messen (Lastfälle level und alle, Vulkan), Bericht nach reports/native-proto-*.json"
