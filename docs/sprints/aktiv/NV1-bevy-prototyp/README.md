@@ -4,7 +4,7 @@
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
-- **Tickets:** B-776
+- **Tickets:** B-776, B-777
 - **Start-Commit:** 98dfed8e
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -60,6 +60,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | NV1.1 | `NV1.1-bevy-prototyp.md` | Umsetzung | autonom | fertig |
+| NV1.2 | `NV1.2-ebitengine-prototyp.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

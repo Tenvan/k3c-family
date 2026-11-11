@@ -1,10 +1,15 @@
-# Namespace `native`: Bevy-Prototyp (Projekt NAT, Sprint NV1, B-776). Eigenes Cargo-Projekt unter native/k3c-proto,
-# Bevy exakt gepinnt, Bau nur mit --locked. Grafik kommt aus public/grafik (vorher `task gen:paper`).
+# Namespace `native`: Bevy-Prototyp (Projekt NAT, Sprint NV1, B-776) und zum Vergleich der Ebitengine-Prototyp.
+# Bevy: eigenes Cargo-Projekt unter native/k3c-proto, exakt gepinnt, Bau nur mit --locked. Ebitengine: eigenes Go-Modul
+# unter native/k3c-ebiten (nicht Teil des Moduls `k3c`), Version in go.mod festgelegt, ohne cgo.
+# Grafik kommt aus public/grafik (vorher `task gen:paper`).
 version: '3'
 
 vars:
   PROTO: '{{.ROOT_DIR}}/native/k3c-proto'
   EXE: '{{.ROOT_DIR}}/native/k3c-proto/target/release/k3c-proto.exe'
+  EBITEN: '{{.ROOT_DIR}}/native/k3c-ebiten'
+  EBITEN_EXE: '{{.ROOT_DIR}}/native/k3c-ebiten/bin/k3c-ebiten.exe'
+  MEASURE: 'powershell -NoProfile -ExecutionPolicy Bypass -File "{{.ROOT_DIR}}/native/measure.ps1"'
   PAKET: '{{.ROOT_DIR}}/.work/native-proto'
 
 tasks:
@@ -26,17 +31,50 @@ tasks:
     cmds:
       - '"{{.EXE}}" --root "{{.ROOT_DIR}}"'
 
+  ebiten:build:
+    desc: "Ebitengine-Prototyp bauen (Go, ohne cgo) nach native/k3c-ebiten/bin/"
+    dir: '{{.EBITEN}}'
+    deps: [':tmp']
+    env:
+      CGO_ENABLED: '0'
+    sources:
+      - '*.go'
+      - go.mod
+      - go.sum
+    generates:
+      - bin/k3c-ebiten.exe
+    cmds:
+      - go build -o bin/k3c-ebiten.exe .
+
+  ebiten:
+    desc: "Ebitengine-Prototyp starten (Spieler 1: Pad 1 oder A/D, Spieler 2: Pad 2 oder ←/→)"
+    deps: [ebiten:build]
+    cmds:
+      - '"{{.EBITEN_EXE}}" --root "{{.ROOT_DIR}}"'
+
   measure:
-    desc: "FPS und Grafikspeicher messen (Lastfälle level und alle, Vulkan), Bericht nach reports/native-proto-*.json"
+    desc: "Bevy: FPS und Grafikspeicher messen (Lastfälle level und alle, Vulkan), Bericht nach reports/native-proto-*.json"
     deps: [proto:build]
     cmds:
-      - powershell -NoProfile -ExecutionPolicy Bypass -File "{{.ROOT_DIR}}/native/measure.ps1"
+      - '{{.MEASURE}} -Engine bevy'
+
+  measure:ebiten:
+    desc: "Ebitengine: FPS und Grafikspeicher messen (Lastfälle level und alle, DirectX 11), Bericht nach reports/native-proto-*.json"
+    deps: [ebiten:build]
+    cmds:
+      - '{{.MEASURE}} -Engine ebiten'
+
+  measure:beide:
+    desc: "Beide Prototypen nacheinander messen, ein gemeinsamer Bericht nach reports/native-proto-*.json"
+    deps: [proto:build, ebiten:build]
+    cmds:
+      - '{{.MEASURE}} -Engine beide'
 
   proto:paket:
-    desc: "Paket für den Mini-PC nach .work/native-proto/ (EXE, Messskript, public/grafik); dort messen.cmd starten"
-    deps: [proto:build]
+    desc: "Paket für den Mini-PC nach .work/native-proto/ (beide EXE, Messskript, public/grafik); dort messen.cmd starten"
+    deps: [proto:build, ebiten:build]
     cmds:
       - rm -rf "{{.PAKET}}"
       - mkdir -p "{{.PAKET}}/public"
-      - cp "{{.EXE}}" "{{.ROOT_DIR}}/native/measure.ps1" "{{.ROOT_DIR}}/native/messen.cmd" "{{.PAKET}}/"
+      - cp "{{.EXE}}" "{{.EBITEN_EXE}}" "{{.ROOT_DIR}}/native/measure.ps1" "{{.ROOT_DIR}}/native/messen.cmd" "{{.PAKET}}/"
       - cp -r "{{.ROOT_DIR}}/public/grafik" "{{.PAKET}}/public/grafik"
