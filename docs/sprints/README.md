@@ -9,10 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| NG6 | CLI | NAT | Natives Spiel: HUD, Hinweise und Effekte | – | `aktiv/NG6-native-hud-effekte/` |
-| NG7 | CLI | NAT | Natives Spiel: Menüs, Lobby, Spielstände, Optionen und Pause | – | `aktiv/NG7-native-menues-spielstaende/` |
-| NG8 | CLI | NAT | Natives Spiel: Klänge und Musik | – | `aktiv/NG8-native-ton/` |
-| NG10 | INF | NAT | Rust und Bevy entfernen | – | `aktiv/NG10-rust-bevy-entfernen/` |
 | RD1 | PAP | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | `aktiv/RD1-papierschnitt-renderer/` |
 | MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
 | RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
@@ -28,8 +24,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | `aktiv/PB1-itch-io/` |
 | RG1 | REG | BAL | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | Beschlüsse in `docs/rules/`, geänderte Werte in `data/`, `task balance` grün | `aktiv/RG1-werte-burg-hub-adern/` |
 | BR2 | REG | BAL | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | `aktiv/BR2-balancing-kampf/` |
-| RS1 | SRV, INF, SIM | RST | Messen, Go-Fixes, Rust-Spike für den Simulationskern | – | `aktiv/RS1-messen-go-fixes-rust-spike/` |
-| RS2 | SRV, DEV, INF | RST | Etappe 2 vorbereiten: Workbench entkoppeln, Zustand ohne JSON-Roundtrip, Inventar | – | `aktiv/RS2-vorarbeit-inventar/` |
 | HW1 | PLAT, SRV, INF, CLI | ABN | Zurückgestellte Controller-Prüfungen nachholen | – | `aktiv/HW1-controller-pruefungen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | `aktiv/PF1-splitscreen-leistung/` |
 
@@ -319,3 +313,9 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | NG3 | Natives Spiel: Figuren als Rig, Bein-Bänder und Gegnerzahl | `erledigt/NG3-native-figuren/` |
 | NG4 | Natives Spiel: Gebäude, Baustellen, Natur und Objekte | `erledigt/NG4-native-bauten-natur/` |
 | NG5 | Natives Spiel: Eingabe mit Gamepads und Tastatur | `erledigt/NG5-native-eingabe/` |
+| NG6 | Natives Spiel: HUD, Hinweise und Effekte | `erledigt/NG6-native-hud-effekte/` |
+| NG7 | Natives Spiel: Menüs, Lobby, Spielstände, Optionen und Pause | `erledigt/NG7-native-menues-spielstaende/` |
+| NG8 | Natives Spiel: Klänge und Musik | `erledigt/NG8-native-ton/` |
+| NG10 | Rust und Bevy entfernen | `erledigt/NG10-rust-bevy-entfernen/` |
+| RS1 | Messen, Go-Fixes, Rust-Spike für den Simulationskern | `erledigt/RS1-messen-go-fixes-rust-spike/` |
+| RS2 | Etappe 2 vorbereiten: Workbench entkoppeln, Zustand ohne JSON-Roundtrip, Inventar | `erledigt/RS2-vorarbeit-inventar/` |

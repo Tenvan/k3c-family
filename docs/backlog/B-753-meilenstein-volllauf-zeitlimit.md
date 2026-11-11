@@ -6,7 +6,7 @@
 - **Umgebung:** ?
 - **Status:** offen
 - **Sprint:** –
-- **Projekt:** RST
+- **Projekt:** LST
 - **Erstellt:** 2026-11-08
 - **Spec:** Entwurf
 - **Revision:** 1

@@ -22,11 +22,11 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | NG3 | Natives Spiel: Figuren als Rig, Bein-Bänder und Gegnerzahl | erledigt |
 | NG4 | Natives Spiel: Gebäude, Baustellen, Natur und Objekte | erledigt |
 | NG5 | Natives Spiel: Eingabe mit Gamepads und Tastatur | erledigt |
-| NG6 | Natives Spiel: HUD, Hinweise und Effekte | aktiv |
-| NG7 | Natives Spiel: Menüs, Lobby, Spielstände, Optionen und Pause | aktiv |
-| NG8 | Natives Spiel: Klänge und Musik | aktiv |
+| NG6 | Natives Spiel: HUD, Hinweise und Effekte | erledigt |
+| NG7 | Natives Spiel: Menüs, Lobby, Spielstände, Optionen und Pause | erledigt |
+| NG8 | Natives Spiel: Klänge und Musik | erledigt |
 | NG9 | Natives Spiel: Zusammenführung, Messung und Abnahme | geplant |
-| NG10 | Rust und Bevy entfernen | aktiv |
+| NG10 | Rust und Bevy entfernen | erledigt |
 | NG11 | Natives Spiel: Fluss mit Shader | geplant |
 
 ## Nicht-Ziele

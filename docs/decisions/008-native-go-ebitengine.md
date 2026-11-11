@@ -43,7 +43,7 @@ Go + Ebitengine (`native/k3c-ebiten`, B-777).
 ## Folgen
 
 - B-775 und Projekt NAT beschreiben den Weg mit Ebitengine (Revision 2).
-- `rust/`, `native/k3c-proto`, die FFI-Tests und die Rust-Schritte in Taskfile und CI werden entfernt (B-779).
+- `rust/`, `native/k3c-proto`, die FFI-Tests und die Rust-Schritte in Taskfile und CI sind entfernt (B-779, NG10, 2026-11-11).
 - Risiko: Ebitengine brauchte mit allen Sheets mehr Grafikspeicher als Bevy (1330 statt 996 MiB). Der Monarch belegt
   363 von 580 MiB RGBA aller Sheets; der Rig-Prototyp (B-778) zielt genau auf diesen Anteil.
 - Die Messung am Mini-PC steht noch aus (B-776/AC-06, B-777/AC-06); sie ändert die Entscheidung nur, wenn Ebitengine dort

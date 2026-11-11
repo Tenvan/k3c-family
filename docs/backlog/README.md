@@ -163,7 +163,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-776](B-776-bevy-prototyp-papier-sheets-zwei-pads.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Bevy-Prototyp zeigt ein Level mit echten Papier-Sheets, zwei Gamepads steuern je einen Monarchen, FPS und Grafikspeicher sind gemessen |
 | [B-777](B-777-ebitengine-prototyp-vergleich.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Ebitengine-Prototyp zeigt dasselbe Level wie der Bevy-Prototyp und liefert vergleichbare Messwerte |
 | [B-778](B-778-rig-prototyp-monarch-aus-teilen.md) | CLI | Frage | hoch | eingeplant | NV2 | Ein dritter Prototyp setzt den Monarchen in Ebitengine zur Laufzeit aus Rig-Teilen zusammen |
-| [B-779](B-779-rust-und-bevy-entfernen.md) | INF | Schuld | mittel | eingeplant | NG10 | Rust und der Bevy-Prototyp sind aus dem Repo entfernt, das Projekt ist rein Go |
 | [B-780](B-780-rig-fuer-alle-figuren-gegnerzahl.md) | CLI | Frage | mittel | eingeplant | NG3 | Prototypen zeigen, wie viele Gegner, Truppen und Bosse gleichzeitig als Rig-Modelle laufen |
 | [B-782](B-782-plan-next-branch-praefix.md) | DEV | Problem | hoch | offen | – | plan_next nennt den Sprint-Branch richtig, auch wenn das Feld Branch schon mit sprint/ beginnt |
 | [B-783](B-783-plan-waves-ralf-queue.md) | DEV | Idee | hoch | offen | – | plan_waves berechnet Wellen aus Abhängigkeit, Bereich und Sperre, plan_queue zeigt die Ralf-Queue |
@@ -173,12 +172,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-787](B-787-workbench-tests-short-zu-langsam.md) | DEV | Problem | hoch | offen | – | Workbench-Tests bleiben mit -short unter 3 s je Test, der volle Lauf ist grün |
 | [B-788](B-788-check-run-teilaufgaben-sim-sperre.md) | DEV | Schuld | mittel | offen | – | check_run kennt die Teilaufgaben von check:diff, sim_test und sim_run lehnen während der Sperre ab |
 | [B-790](B-790-prototyp-shader-wasser.md) | CLI | Frage | mittel | eingeplant | NG11 | Ein vierter Prototyp zeigt, was Shader in Ebitengine für Wasser und Papier-Effekte bringen |
-| [B-799](B-799-native-hud-hinweise-effekte.md) | CLI | Idee | hoch | eingeplant | NG6 | Das native Spiel zeigt HUD, Hinweise, Skill-Menü und Effekte wie der Browser-Client |
-| [B-800](B-800-native-menues-lobby-spielstaende.md) | CLI | Idee | hoch | eingeplant | NG7 | Das native Spiel hat Hauptmenü, Lobby für 1–2 Spieler, Spielstand-Menü, Optionen und Pause |
-| [B-801](B-801-native-ton.md) | CLI | Idee | mittel | eingeplant | NG8 | Das native Spiel spielt Klänge und Musik zu den Ereignissen wie der Browser-Client |
 | [B-802](B-802-native-zusammenfuehrung-abnahme.md) | CLI | Idee | hoch | eingeplant | NG9 | Das native Spiel läuft von Start bis Spielstand durch, ist gemessen und am PC abgenommen |
 | [B-803](B-803-room-absturzbehandlung-exportieren.md) | SRV | Schuld | niedrig | offen | – | Ein Raum bietet seine Absturzbehandlung und den Grund abgelehnter Skill-Befehle nach außen an |
 | [B-804](B-804-paper-reittier-suche-und-wolf-pfote.md) | PAP | Problem | mittel | offen | – | tools/paper findet für das Reittier Wolf das Reittier statt des Gegners, Gegner-Wölfe haben Pfoten |
+| [B-805](B-805-native-ton-geraetefehler-abfangen.md) | CLI | Problem | mittel | offen | – | Ein Fehler des Ton-Geräts beendet das native Spiel nicht mehr |
 
 ## Archiv
 
@@ -765,3 +762,7 @@ Zeile in diesen Abschnitt.
 | [B-797](archiv/B-797-native-gebaeude-natur-objekte.md) | CLI | Idee | hoch | erledigt | NG4 | Das native Spiel zeichnet Gebäude, Baustellen, Plätze, Natur und Objekte aus dem Spielzustand |
 | [B-798](archiv/B-798-native-eingabe-gamepads.md) | PLAT | Idee | hoch | erledigt | NG5 | Im nativen Spiel steuern 1–2 Gamepads und die Tastatur je einen Spieler und die Menüs |
 | [B-791](archiv/B-791-rig-bein-baender-klappen-um.md) | CLI | Problem | mittel | erledigt | NG3 | Bein-Bänder von Elefant, Wolf und Alphawolf klappen im Rig nicht mehr um |
+| [B-799](archiv/B-799-native-hud-hinweise-effekte.md) | CLI | Idee | hoch | erledigt | NG6 | Das native Spiel zeigt HUD, Hinweise, Skill-Menü und Effekte wie der Browser-Client |
+| [B-800](archiv/B-800-native-menues-lobby-spielstaende.md) | CLI | Idee | hoch | erledigt | NG7 | Das native Spiel hat Hauptmenü, Lobby für 1–2 Spieler, Spielstand-Menü, Optionen und Pause |
+| [B-801](archiv/B-801-native-ton.md) | CLI | Idee | mittel | erledigt | NG8 | Das native Spiel spielt Klänge und Musik zu den Ereignissen wie der Browser-Client |
+| [B-779](archiv/B-779-rust-und-bevy-entfernen.md) | INF | Schuld | mittel | erledigt | NG10 | Rust und der Bevy-Prototyp sind aus dem Repo entfernt, das Projekt ist rein Go |
