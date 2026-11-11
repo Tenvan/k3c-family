@@ -1,6 +1,6 @@
 # NV3 · CLI · Prototyp-Ausbau: Fluss, fester Hintergrund, alle Figuren als Rig
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -69,7 +69,7 @@ keine
 | NV3.2 | `NV3.2-rig-export-alle-figuren.md` | Umsetzung | autonom | fertig |
 | NV3.3 | `NV3.3-rigs-im-level.md` | Umsetzung | autonom | fertig |
 | NV3.4 | `NV3.4-messung-review.md` | Review | autonom | fertig |
-| NV3.5 | `NV3.5-sichtpruefung-pc.md` | Review | Mensch | offen |
+| NV3.5 | `NV3.5-sichtpruefung-pc.md` | Review | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -77,4 +77,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-2026-11-11 Review (Claude, `k3c-reviewer`): AC-01 bis AC-04 laut Ergebnis NV3.1 bis NV3.4, AC-05 offen (NV3.5, 🧑 am PC). Behoben: Mipmaps der Rig-Teile aus. Neue Tickets: B-791 (Bein-Bänder). Kein Abnahme-Ticket (nur `native/`, keine Sim-, Balance-, Gen-Läufe betroffen). Sprint bleibt aktiv bis NV3.5. Version: keine vorgeschlagen (Prototyp).
+2026-11-11 Review (Claude, `k3c-reviewer`): AC-01 bis AC-04 laut Ergebnis NV3.1 bis NV3.4. AC-05: Sichtprüfung am PC durch 🧑 bestanden (NV3.5, 2026-11-11). Behoben: Mipmaps der Rig-Teile aus. Neue Tickets: B-791 (Bein-Bänder). Kein Abnahme-Ticket (nur `native/`, keine Sim-, Balance-, Gen-Läufe betroffen). Version: keine vorgeschlagen (Prototyp).
