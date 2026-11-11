@@ -2,6 +2,7 @@ package art
 
 import (
 	"errors"
+	"math"
 	"os"
 	"path/filepath"
 	"slices"
@@ -113,6 +114,9 @@ func TestFontMissing(t *testing.T) {
 	if w, h := f.Measure("abc", 20); w != 18 || h != 16 {
 		t.Errorf("Debug-Maße %v×%v", w, h)
 	}
+	if w, h := f.Measure("ab\nabcd", 20); w != 24 || h != 32 {
+		t.Errorf("Debug-Maße mit Umbruch %v×%v", w, h)
+	}
 }
 
 func TestFontLoad(t *testing.T) {
@@ -127,6 +131,10 @@ func TestFontLoad(t *testing.T) {
 	w, h := f.Measure("Hallo", 20)
 	if w <= 0 || h <= 0 {
 		t.Errorf("Maße %v×%v", w, h)
+	}
+	w2, h2 := f.Measure("Hallo\nHallo", 20)
+	if w2 != w || math.Abs(h2-h-LineSpacing*20) > 1e-9 {
+		t.Errorf("Umbruch: %v×%v, erwartet %v×%v", w2, h2, w, h+LineSpacing*20)
 	}
 	a, b := f.face(20), f.face(20)
 	if a != b {

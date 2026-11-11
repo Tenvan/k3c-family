@@ -7,6 +7,15 @@ func catmull(p0, p1, p2, p3, t float64) float64 {
 	return 0.5 * (2*p1 + (p2-p0)*t + (2*p0-5*p1+4*p2-p3)*t*t + (3*p1-p0-3*p2+p3)*t*t*t)
 }
 
+// hermite: Catmull-Rom zwischen p1 und p2 bei t = 0..1 mit den Tangenten (p2 − p0)/2 und (p3 − p1)/2, gekürzt um die
+// Faktoren f1 und f2; f1 = f2 = 1 ergibt genau catmull.
+func hermite(p0, p1, p2, p3, t, f1, f2 float64) float64 {
+	t2, t3 := t*t, t*t*t
+	h00, h01 := 2*t3-3*t2+1, -2*t3+3*t2
+	h10, h11 := t3-2*t2+t, t3-t2
+	return h00*p1 + h01*p2 + h10*f1*(p2-p0)/2 + h11*f2*(p3-p1)/2
+}
+
 // spline: Punkt auf der Catmull-Rom-Kurve durch alle Stützpunkte, k = 0..1.
 func spline(pts []Point, k float64) Point {
 	n := len(pts) - 1

@@ -26,11 +26,14 @@ type Font struct {
 	op    text.DrawOptions
 }
 
-// debug-Schrift von ebitenutil: 6 × 16 Pixel je Zeichen
+// debug-Schrift von ebitenutil: 6 × 16 Pixel je Zeichen (Zeilenabstand 16, `\n` bricht dort selbst um)
 const (
 	debugCharW = 6
 	debugCharH = 16
 )
+
+// LineSpacing ist der Abstand zweier Grundlinien als Vielfaches der Schriftgröße (Text mit `\n`).
+const LineSpacing = 1.25
 
 // LoadFont lädt die Schrift aus path. Fehlt die Datei: strict → Fehler (ErrMissing, mit Pfad), sonst Debug-Schrift.
 // Eine vorhandene, aber kaputte Datei ist immer ein Fehler.
@@ -60,16 +63,34 @@ func (f *Font) face(size float64) *text.GoTextFace {
 	return g
 }
 
-// Measure liefert Breite und Höhe von s in Pixeln bei Größe size.
+// Measure liefert Breite (längste Zeile) und Höhe von s in Pixeln bei Größe size; `\n` beginnt eine neue Zeile im
+// Abstand LineSpacing × size.
 func (f *Font) Measure(s string, size float64) (w, h float64) {
 	if f.Fallback {
-		return float64(len(s) * debugCharW), debugCharH
+		lines, widest := debugLines(s)
+		return float64(widest * debugCharW), float64(lines * debugCharH)
 	}
-	return text.Measure(s, f.face(size), 0)
+	return text.Measure(s, f.face(size), LineSpacing*size)
 }
 
-// Draw zeichnet s mit der linken oberen Ecke bei (x, y). clr ist vormultipliziert (color.RGBA). Die Größen sollten
-// aus einer kleinen Menge kommen (Rollen), jede neue Größe legt einmal ein Face an.
+// debugLines zählt die Zeilen von s und die Zeichen der längsten (Debug-Schrift, ein Byte je Zeichen wie DebugPrint).
+func debugLines(s string) (lines, widest int) {
+	n := 0
+	lines = 1
+	for i := range len(s) {
+		if s[i] == '\n' {
+			lines, widest, n = lines+1, max(widest, n), 0
+			continue
+		}
+		n++
+	}
+	return lines, max(widest, n)
+}
+
+// Draw zeichnet s mit der linken oberen Ecke bei (x, y); `\n` beginnt eine neue Zeile im Abstand LineSpacing × size.
+// clr ist vormultipliziert (color.RGBA). Die Größen sollten aus einer kleinen Menge kommen (Rollen), jede neue Größe
+// legt einmal ein Face an. Font selbst legt je Aufruf nichts an (Optionen und Faces werden wiederverwendet); was
+// text.Draw intern braucht (Glyph-Puffer aus sync.Pool, Glyph-Cache), liegt bei Ebitengine und ist nicht abschaltbar.
 func (f *Font) Draw(dst *ebiten.Image, s string, x, y, size float64, clr color.RGBA) {
 	if f.Fallback {
 		ebitenutil.DebugPrintAt(dst, s, int(x), int(y))
@@ -82,5 +103,6 @@ func (f *Font) Draw(dst *ebiten.Image, s string, x, y, size float64, clr color.R
 	f.op.ColorScale.SetG(float32(clr.G) / 255)
 	f.op.ColorScale.SetB(float32(clr.B) / 255)
 	f.op.ColorScale.SetA(float32(clr.A) / 255)
+	f.op.LineSpacing = LineSpacing * size
 	text.Draw(dst, s, f.face(size), &f.op)
 }

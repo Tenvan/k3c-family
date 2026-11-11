@@ -37,10 +37,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| NG2 | CLI | NAT | Natives Spiel: Welt, Kamera, Schichten, Fluss und Licht | – | bereit | `geplant/NG2-native-welt-kamera/` |
-| NG3 | CLI | NAT | Natives Spiel: Figuren als Rig, Bein-Bänder und Gegnerzahl | – | bereit | `geplant/NG3-native-figuren/` |
-| NG4 | CLI | NAT | Natives Spiel: Gebäude, Baustellen, Natur und Objekte | – | bereit | `geplant/NG4-native-bauten-natur/` |
-| NG5 | PLAT | NAT | Natives Spiel: Eingabe mit Gamepads und Tastatur | – | bereit | `geplant/NG5-native-eingabe/` |
 | NG6 | CLI | NAT | Natives Spiel: HUD, Hinweise und Effekte | – | bereit | `geplant/NG6-native-hud-effekte/` |
 | NG7 | CLI | NAT | Natives Spiel: Menüs, Lobby, Spielstände, Optionen und Pause | – | bereit | `geplant/NG7-native-menues-spielstaende/` |
 | NG8 | CLI | NAT | Natives Spiel: Klänge und Musik | – | bereit | `geplant/NG8-native-ton/` |
@@ -319,3 +315,7 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | NV2 | Rig-Prototyp: Monarch aus Teilen in Ebitengine | `erledigt/NV2-rig-prototyp-monarch/` |
 | NV3 | Prototyp-Ausbau: Fluss, fester Hintergrund, alle Figuren als Rig | `erledigt/NV3-prototyp-fluss-rigs/` |
 | NG1 | Natives Spiel: Fundament mit Modul, Vertrag, Simulation im Prozess und Spielschleife | `erledigt/NG1-native-fundament/` |
+| NG2 | Natives Spiel: Welt, Kamera, Schichten, Fluss und Licht | `erledigt/NG2-native-welt-kamera/` |
+| NG3 | Natives Spiel: Figuren als Rig, Bein-Bänder und Gegnerzahl | `erledigt/NG3-native-figuren/` |
+| NG4 | Natives Spiel: Gebäude, Baustellen, Natur und Objekte | `erledigt/NG4-native-bauten-natur/` |
+| NG5 | Natives Spiel: Eingabe mit Gamepads und Tastatur | `erledigt/NG5-native-eingabe/` |

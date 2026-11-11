@@ -1,5 +1,6 @@
-// Package world zeichnet Kulisse, Boden und Fluss einer Zelle (Fach-Sprint der Welt). Bis dahin Platzhalter: farbige
-// Bänder je Ebene.
+// Package world zeichnet je Zelle Himmel, Kulisse (fern, mitte, nah), Boden, Fluss und Licht und führt die Kamera
+// (B-795). Rechnung (Kamera, Culling, Schichten, Fluss, Licht) liegt in reinen Funktionen ohne ebiten.Image; die
+// Drawer sind dünn und legen je Bild nichts an.
 package world
 
 import (
@@ -7,77 +8,94 @@ import (
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 
+	"k3c/engine/sim"
 	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/view"
 )
 
-// band ist ein Platzhalter-Drawer: ein farbiges Band der Zelle auf einer Ebene.
-type band struct {
-	layer view.Layer
-	clr   color.RGBA
+// World hält den gemeinsamen Zustand der Drawer: Daten (Paletten, Kulissen, Licht), Kamera-Zustand je Spieler und
+// die wiederverwendeten Zeichen-Puffer.
+type World struct {
+	lib    *art.Library
+	looks  looks
+	light  lightData
+	cams   cameras
+	river  riverTile
+	mesh   lightMesh
+	px     *ebiten.Image           // weißer Bildpunkt für Flächen (lazy, erst beim ersten Zeichnen)
+	op     ebiten.DrawImageOptions // Sheets und Fluss: linear, ohne Mipmaps
+	fillOp ebiten.DrawImageOptions // Flächen aus dem Bildpunkt
 }
 
-// New liefert die Drawer der Welt: fern, mitte, nah, Boden und Fluss; lib (Grafik) darf nil sein, die Platzhalter
-// brauchen sie nicht. Der ferne Drawer führt zugleich die Kamera (view.CameraRule).
-func New(_ *art.Library) []view.Drawer {
+// New liefert die Drawer der Welt: fern (mit Himmel), mitte, nah, Boden, Fluss und Licht. lib (Grafik) darf nil sein,
+// dann bleiben die Kulissen leer. Der ferne Drawer führt zugleich die Kamera (view.CameraRule) und meldet die
+// Kulissen-Grafik je Level (view.AssetSource).
+func New(lib *art.Library) []view.Drawer {
+	w := &World{lib: lib, looks: loadLooks(), light: loadLight()}
+	w.op.Filter = ebiten.FilterLinear
+	w.op.DisableMipmaps = true
 	return []view.Drawer{
-		far{band{view.LayerFar, color.RGBA{158, 199, 219, 255}}},
-		band{view.LayerMid, color.RGBA{120, 160, 130, 255}},
-		band{view.LayerNear, color.RGBA{80, 130, 80, 255}},
-		band{view.LayerGround, color.RGBA{110, 85, 55, 255}},
-		band{view.LayerRiver, color.RGBA{60, 110, 170, 255}},
+		far{w},
+		layerDrawer{w, view.LayerMid, w.drawMid},
+		layerDrawer{w, view.LayerNear, w.drawNear},
+		layerDrawer{w, view.LayerGround, w.drawGround},
+		layerDrawer{w, view.LayerRiver, w.drawRiver},
+		layerDrawer{w, view.LayerRiver, w.drawLight},
 	}
 }
 
-// far ist das ferne Band mit der Kamera-Regel des Platzhalters.
-type far struct{ band }
+// far ist die ferne Ebene mit Himmel; sie trägt die Kamera-Regel und die Asset-Quelle der Welt.
+type far struct{ w *World }
 
-// Follow ist die Kamera-Regel des Platzhalters: ohne Totzone und Grenzen direkt auf dem Monarchen, ohne Monarchen an
-// der Burg, ohne Welt bleibt sie stehen (Totzone und Stufen-Grenzen: B-795).
-func (far) Follow(f *view.Frame, c view.Cell, prev view.Camera) view.Camera {
-	k := c.Camera
-	k.X = FollowX(f, c, prev.X)
-	return k
+func (far) Layer() view.Layer { return view.LayerFar }
+
+func (d far) Draw(dst *ebiten.Image, f *view.Frame, c view.Cell) { d.w.drawFar(dst, f, c) }
+
+// Follow ist die Kamera-Regel (Totzone, Grenzen der Stufe, Sprung beim Stufenwechsel; camera.go).
+func (d far) Follow(f *view.Frame, c view.Cell, prev view.Camera) view.Camera {
+	return d.w.cams.follow(f, c, prev)
 }
 
-// FollowX ist das Ziel der Platzhalter-Kamera: Monarch, sonst Burg, sonst x.
-func FollowX(f *view.Frame, c view.Cell, x float64) float64 {
-	if m := f.Monarch(c.Player); m != nil {
-		return m.X
-	}
-	if w := f.World(c); w != nil {
-		return w.Castle.X
-	}
-	return x
+// Assets nennt die Kulissen-Grafik des Levels (alle Varianten der drei Schichten).
+func (d far) Assets(level string, _ *sim.World) []string { return d.w.looks.assets(level) }
+
+// layerDrawer zeichnet eine Ebene über eine Methode der Welt.
+type layerDrawer struct {
+	w     *World
+	layer view.Layer
+	draw  func(dst *ebiten.Image, f *view.Frame, c view.Cell)
 }
 
-func (b band) Layer() view.Layer { return b.layer }
+func (d layerDrawer) Layer() view.Layer { return d.layer }
 
-func (b band) Draw(dst *ebiten.Image, _ *view.Frame, c view.Cell) {
-	r := bandRect(b.layer, c)
-	if r.Empty() {
+func (d layerDrawer) Draw(dst *ebiten.Image, f *view.Frame, c view.Cell) { d.draw(dst, f, c) }
+
+// pixel liefert den weißen Bildpunkt für Flächen (einmal angelegt).
+func (w *World) pixel() *ebiten.Image {
+	if w.px == nil {
+		w.px = ebiten.NewImage(1, 1)
+		w.px.Fill(color.White)
+	}
+	return w.px
+}
+
+// fill füllt das Rechteck (Fenster-px) mit der Farbe clr, skaliert mit dem Faktor k (0 … 1, Helligkeit) und der
+// Deckkraft a; ohne Allokation.
+func (w *World) fill(dst *ebiten.Image, x, y, wd, h float64, clr color.RGBA, k, a float64) {
+	if wd <= 0 || h <= 0 || a <= 0 {
 		return
 	}
-	vector.FillRect(dst, float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy()), b.clr, false)
+	op := &w.fillOp
+	op.GeoM.Reset()
+	op.GeoM.Scale(wd, h)
+	op.GeoM.Translate(x, y)
+	op.ColorScale.Reset()
+	op.ColorScale.Scale(float32(float64(clr.R)/255*k*a), float32(float64(clr.G)/255*k*a), float32(float64(clr.B)/255*k*a), float32(a))
+	dst.DrawImage(w.pixel(), op)
 }
 
-// bandRect liefert das Band einer Ebene in der Zelle: fern füllt die Welt, mitte und nah die untere Hälfte bzw. das
-// untere Fünftel der Welt, Boden einen Streifen über der Boden-Linie, Fluss das untere Drittel.
-func bandRect(l view.Layer, c view.Cell) image.Rectangle {
-	w := c.WorldRect()
-	switch l {
-	case view.LayerFar:
-		return w
-	case view.LayerMid:
-		return image.Rect(w.Min.X, w.Max.Y-w.Dy()/2, w.Max.X, w.Max.Y)
-	case view.LayerNear:
-		return image.Rect(w.Min.X, w.Max.Y-w.Dy()/5, w.Max.X, w.Max.Y)
-	case view.LayerGround:
-		return image.Rect(w.Min.X, w.Max.Y-max(2, w.Dy()/30), w.Max.X, w.Max.Y)
-	case view.LayerRiver:
-		return c.RiverRect()
-	}
-	return image.Rectangle{}
+// fillRect füllt ein ganzzahliges Rechteck.
+func (w *World) fillRect(dst *ebiten.Image, r image.Rectangle, clr color.RGBA, k float64) {
+	w.fill(dst, float64(r.Min.X), float64(r.Min.Y), float64(r.Dx()), float64(r.Dy()), clr, k, 1)
 }

@@ -71,8 +71,11 @@ Stützpunkte, gerechnet von `tools/paper` (`export/expected.ts`): figur mit Vers
 Umhang; vierbeiner mit Ride (Hub, Neigung), Wind und Beinen. Reittiere haben dazu `reiten-<gangart>.json` je
 Reit-Animation des Monarchen (Matrizen beider Figuren, Umhang, Zügel). `go test ./rig/` geht über alle Ordner mit
 `rig.json` und vergleicht die Go-Rechnung damit (Toleranz 0,01, B-778/AC-02, B-789/AC-03). `TestLegStripNeverFolds`
-prüft die Bein-Bänder; bekannt umklappend und deshalb übersprungen: Elefant (kurze Fußspitze) und die Gegner-Wölfe
-(Galopp), siehe `rig/band_test.go` › `knownFolds`.
+prüft die Bein-Bänder aller Vierbeiner in jeder Gangart ohne Ausnahme (`rig/band_test.go` › `knownFolds` ist seit
+B-791 leer): `tangentLimits` begrenzt die Tangente der Kurve am Band-Ende (Elefant: langes Unterbein, kurze
+Fußspitze), `unfold` hält die innere Kante an engen Beugungen an (Gegner-Wölfe im Galopp), statt sie rückwärts laufen
+zu lassen: Die Ecke kommt per Lot auf die Linie davor, das Dreieck wird zur Linie und die Kante bewegt sich stetig
+(`rig/band.go`, geprüft von `TestUnfoldIsContinuous` und `TestLegStripContinuous`).
 
 ## Entscheidungen des Prototyps (B-778 › Offene Fragen)
 

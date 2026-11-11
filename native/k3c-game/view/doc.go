@@ -27,7 +27,10 @@
 //
 // Draw je Bild: für jede Zelle die Drawer der Zellen-Ebenen (LayerFar … LayerHUD) in Ebenen-Reihenfolge, danach einmal
 // die Overlay-Drawer für das ganze Fenster, zuletzt der oberste Screen. Draw kann denselben Frame mehrmals zeichnen
-// und ändert keinen Zustand (Kameras rechnet nur das Update).
+// und ändert keinen Zustand (Kameras rechnet nur das Update). Zustand über Bilder hinweg (Animation, Umhang der
+// Rig-Figuren in actors) schreibt ein Listener im Takt fort, nie Draw; das Bild hängt nicht davon ab, wie oft Draw
+// läuft, in welcher Reihenfolge die Zellen kommen oder was vorher sichtbar war. Erlaubt sind in Draw nur Puffer und
+// Zwischenspeicher, die das Bild nicht ändern (Messwerte von Texten, Zeichenlisten je Zelle).
 //
 // Spieler, Zellen, Geräte: Seat.Player ist der Slot im Raum und bleibt fest; Zelle i zeigt Frame.Seats[i] (geht
 // Spieler 0, steht Spieler 1 in Zelle 0). DeviceID.Index ist bei Pads die ebiten.GamepadID; ein Platz hängt nie an
