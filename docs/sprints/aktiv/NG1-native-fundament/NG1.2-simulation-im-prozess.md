@@ -1,6 +1,6 @@
 # NG1.2 · Simulation im Prozess und Spielstände (local)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -58,5 +58,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03 umgesetzt: `local` taktet einen `room.Manager` synchron (`Step`), Frame ohne Kopie; geprüft mit `TestDeterminismLikeRoom` (2 Spieler, 300 Takte, gleicher Welt-Hash wie `engine/room`).
+AC-04 umgesetzt mit Abweichung: Speichern, Liste, Laden, Löschen gegen Temp-Ordner geprüft (6 Tests). Der Welt-Hash direkt nach dem Laden gleicht nicht dem vor dem Schließen, weil das Spielstand-Format Positionen rundet und Abklingzeiten neu setzt; der Test vergleicht deshalb mit einem direkt über `engine/room` geladenen Raum und den Datei-Hash.
+AC-05 geprüft: `git diff --stat origin/develop -- engine testdata` leer.
+Befunde: Autosave läuft ohne `Manager.Run` (belegt); Absturzbehandlung des Raums ist nicht exportiert, `local` fängt den Panic selbst (Kandidat SRV-Ticket). Wünsche an den Vertrag für NG1.6: Geräte bei `Load` und `Continue`. `--saves` liest NG1.4 ein.
