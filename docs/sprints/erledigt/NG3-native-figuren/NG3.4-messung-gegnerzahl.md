@@ -1,6 +1,6 @@
 # NG3.4 · Messung Rig gegen Sheet mit vielen Gegnern und Empfehlung
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -55,5 +55,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+B-780/AC-01 (Teil Entwicklungs-PC) geprüft: Messung im echten Fenster, je Fassung ein Lauf (1920×1080, zwei Zellen, ohne VSync), Bericht `reports/native-actors-ng3.json`. Größte Welle laut `data/`: 50 Gegner (gelesen, nicht simuliert).
+50 Goblins: Rig 926 FPS / 0,75 ms, Sheet 2382 FPS / 0,14 ms. 50 Wölfe: Rig 587 FPS / 1,45 ms, Sheet 1593 FPS / 0,17 ms. 200 Wölfe als Rig: 172 FPS / 5,63 ms.
+Die größte Welle liegt am Entwicklungs-PC weit über 60 FPS. Mini-PC-Teil bleibt in NG9.5.

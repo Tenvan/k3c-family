@@ -1,6 +1,6 @@
 # NG2.2 · Schichten, Boden und Fluss
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -55,5 +55,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 umgesetzt: Himmel, drei Schichten aus den Papier-Hintergründen (`fern` steht, `mitte` 0,35, `nah` 0,5), Uferstreifen, Fluss im unteren Drittel mit sechs Reihen nach links; Assets je Level über `view.AssetSource`. Geprüft mit `layers_test.go`, `river_test.go` und am Bild `reports/native-game-shots/ng2/shot-01.png` (Agent und Claude: beide Zellen mit Schichten, Ufer, Fluss).
+Abweichung: Scroll-Faktoren und Biom-Namen stehen als Tabelle im Code (nicht in `data/`). Dass `fern` steht, belegt der Test; im Bild schwer zu sehen.

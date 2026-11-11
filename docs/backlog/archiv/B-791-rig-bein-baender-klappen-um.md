@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** NG3
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
@@ -67,4 +67,8 @@ Entschieden von 🧑 am 2026-11-11 (Chat): Die Kurve am Band-Ende wird begrenzt;
 
 ## Notizen
 
-Gefunden in NV3.2 (2026-11-11).
+Gefunden in NV3.2 (2026-11-11). Umgesetzt in NG3.1 (2026-11-11): Kurve am Band-Ende begrenzt (Elefant) und innere Kante angehalten (Wolf, Alphawolf im Galopp), `knownFolds` leer.
+
+Ergebnis der zwei Spec-Auffälligkeiten (AC-02, beide belegt):
+1. `gegner/wolf` und `gegner/alphawolf` haben kein `proportionen.fuss`; `fussVon` fällt auf `huf` zurück (Spitze 3,4), die Reittier-Wölfe haben `pfote` (2,2). Vermutlich ein Spec-Fehler; Änderung nur über `assets_*` mit Freigabe 🧑.
+2. `findeReittier` (`tools/paper/rig/reiten.ts`) durchsucht die Nachbar-Gruppen alphabetisch; „gegner“ kommt vor „reittiere“, also findet die Monarch-Spec für `"reittier": "wolf"` den Gegner-Wolf. Fehler in `tools/paper`, braucht ein PAP-Ticket.

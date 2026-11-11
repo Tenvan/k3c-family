@@ -1,6 +1,6 @@
 # NG4 · CLI · Natives Spiel: Gebäude, Baustellen, Natur und Objekte
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -63,10 +63,10 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NG4.1 | `NG4.1-gebaeude.md` | Umsetzung | autonom | offen |
-| NG4.2 | `NG4.2-baustellen-schilder.md` | Umsetzung | autonom | offen |
-| NG4.3 | `NG4.3-natur-objekte.md` | Umsetzung | autonom | offen |
-| NG4.4 | `NG4.4-review.md` | Review | autonom | offen |
+| NG4.1 | `NG4.1-gebaeude.md` | Umsetzung | autonom | fertig |
+| NG4.2 | `NG4.2-baustellen-schilder.md` | Umsetzung | autonom | fertig |
+| NG4.3 | `NG4.3-natur-objekte.md` | Umsetzung | autonom | fertig |
+| NG4.4 | `NG4.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -74,6 +74,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-11 Review (Claude, `k3c-reviewer`): Kriterien laut Ergebnis der Sessions. Behobene Befunde: siehe Review-Session. Offen: Schriftdatei fehlt (Debug-Schrift); am echten Gerät ungeprüft (Fenster, Gamepads). Kein Abnahme-Ticket. Version: keine vorgeschlagen (noch kein spielbarer Stand).

@@ -1,6 +1,6 @@
 # NG4.2 · Baustellen, Gerüste, Schilder und Preis-Anzeigen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,5 +54,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 umgesetzt: Gerüst je Größenklasse, Bauschild, Fortschrittsbalken, Preis-Anzeige (nur das nächste Schild je Monarch), „erst roden“, Wartegrund, Treppen-Schild, Ausbau-Schild der Burg. Geprüft mit `sites_test.go` (Fälle aus dem Browser) und an den Bildern `ng4/shot-01.png` und `ng4/baustelle/shot-01.png` (Agent).

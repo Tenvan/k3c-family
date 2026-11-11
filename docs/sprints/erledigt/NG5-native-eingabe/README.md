@@ -1,6 +1,6 @@
 # NG5 · PLAT · Natives Spiel: Eingabe mit Gamepads und Tastatur
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** PLAT
 - **Reife:** bereit
@@ -63,9 +63,9 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NG5.1 | `NG5.1-belegung.md` | Umsetzung | autonom | offen |
-| NG5.2 | `NG5.2-gamepads-hotplug.md` | Umsetzung | autonom | offen |
-| NG5.3 | `NG5.3-review.md` | Review | autonom | offen |
+| NG5.1 | `NG5.1-belegung.md` | Umsetzung | autonom | fertig |
+| NG5.2 | `NG5.2-gamepads-hotplug.md` | Umsetzung | autonom | fertig |
+| NG5.3 | `NG5.3-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -73,6 +73,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-11 Review (Claude, `k3c-reviewer`): Kriterien laut Ergebnis der Sessions. Behobene Befunde: siehe Review-Session. Offen: Schriftdatei fehlt (Debug-Schrift); am echten Gerät ungeprüft (Fenster, Gamepads). Kein Abnahme-Ticket. Version: keine vorgeschlagen (noch kein spielbarer Stand). Am Gerät zu prüfen (🧑): zwei Pads, Ein- und Ausstecken, RT, Stick-Schwellen, Ziffernblock.

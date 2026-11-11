@@ -72,3 +72,16 @@ Entschieden von 🧑 am 2026-11-11 (Chat):
 ## Notizen
 
 Angelegt 2026-11-11 aus dem Chat mit 🧑. Baut auf B-778/AC-05 auf (2, 50, 200 Rig-Figuren).
+
+### Messung Entwicklungs-PC (NG3.4, 2026-11-11)
+
+Echtes Fenster, 1920×1080, zwei Zellen, ohne VSync, je Fassung ein Lauf (60 Bilder Aufwärmen, 300 gemessen), Bericht `reports/native-actors-ng3.json`. Größte Welle laut `data/` (gelesen, nicht simuliert): 50 Gegner = (20 Standard + 5 Elite) × 1,25 bei 2 Spielern × 1,6 (ultra). Werte: Bildrate / Rechenzeit der Figuren je Bild.
+
+| Figur | Fassung | 2 Gegner | 50 Gegner | 200 Gegner |
+|---|---|---|---|---|
+| Goblin | Rig | 1557 FPS / 0,23 ms | 926 FPS / 0,75 ms | 371 FPS / 2,30 ms |
+| Goblin | Sheet | 2226 FPS / 0,13 ms | 2382 FPS / 0,14 ms | 1841 FPS / 0,31 ms |
+| Wolf | Rig | 2109 FPS / 0,14 ms | 587 FPS / 1,45 ms | 172 FPS / 5,63 ms |
+| Wolf | Sheet | 2713 FPS / 0,14 ms | 1593 FPS / 0,17 ms | 2359 FPS / 0,34 ms |
+
+Die größte Welle liegt am Entwicklungs-PC weit über 60 FPS. Vorschlag zur Reihenfolge (Entscheidung 🧑 offen): Monarch und Truppen, dann Zweibeiner-Gegner, zuletzt Vierbeiner-Gegner (am teuersten); Mischbetrieb erst, wenn der Mini-PC (NG9.5) unter das Ziel fällt.

@@ -1,6 +1,6 @@
 # NG2.3 · Licht bei Tag und Nacht und Stufenübergang
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,5 +54,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03 umgesetzt: Tag-Nacht-Licht aus `data/light.json` als Lichtkarte über der Zelle, Lagerfeuer und Fackeln als Lichtquellen, Aufblenden 0,6 s nach Stufen- oder Inselwechsel. Geprüft mit `light_test.go` (Werte wie `nightLight.test.ts`, Fackeln gleich `sim.TorchXs`) und am Nachtbild `reports/native-game-shots/ng2-nacht/shot-01.png` (Agent).
+Abweichungen: Lava leuchtet nicht (keine Lichtwerte in den Daten); der Lichtschein ist nur im Test belegt, im geprüften Ausschnitt stand kein Licht.

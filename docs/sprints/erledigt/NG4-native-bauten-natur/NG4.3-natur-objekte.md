@@ -1,6 +1,6 @@
 # NG4.3 · Natur und Objekte
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,5 +54,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03 umgesetzt: Bäume, Wurzeln, Felsen, Erz, Büsche, Adern, Plantage, Portal, Ausgang, Hafen-Steg, Rekrutierungslager, Truhe, Stern, Münzen, Fackeln; Natur wiegt je Platz in eigener Phase. Geprüft mit `TestJederTypAusDenDatenHatEineGrafik` und `TestJedeGewaehlteGrafikLiegtVorUndIstGemeldet` sowie an den Bildern `ng4/rand`, `ng4/hoehle`, `ng4/hub` (Agent).
+Abweichungen: alles auf einer Ebene (ein Drawer je Fachpaket); Text ist die einzige Allokation im Zeichenpfad; Schrift fehlt (Debug-Schrift). Offen für die Zusammenführung: zwei Tests in `game/` erwarten noch Platzhalter-Rollen.

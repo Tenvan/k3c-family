@@ -1,6 +1,6 @@
 # NG5.2 · Gamepads, Hot-Plug, Tastatur-Rückfall und Zurück-Tasten
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PLAT
@@ -56,5 +56,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 umgesetzt: Pads nach `ebiten.GamepadID` sortiert, eigener Zustand je Pad, neu verbundenes Pad löst im ersten Update nichts aus, Pads ohne Standard-Belegung werden einmal gemeldet und ignoriert; geprüft mit `TestDevicesHotPlug`, `TestNoCrosstalk` (vier Geräte), `TestPollAllocs` (0 Allokationen).
+AC-03 umgesetzt: View + Menu gemeinsam liefert nur `ActionHome`, Menu kurz beim Loslassen, B nur Zurück und nie ein Befehl; geprüft mit `TestPadMenuViewHome`.
+Offen: Vertrag kennt keine Aktion für Skill-Menü und Vollbild; Haltezeiten rechnen mit 30 Updates je Sekunde. Am echten Gerät ungeprüft (zwei Pads, Ein- und Ausstecken, RT, Ziffernblock).

@@ -1,6 +1,6 @@
 # NG3.3 · Bürger, Truppen, Gegner und Bosse
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,5 +54,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+B-796/AC-02 umgesetzt: 6 Truppen, 9 Gegner und 5 Bosse als Rig (Wolf und Alphawolf als Vierbeiner), 8 Gegner und 1 Boss ohne Teile-Baum als Sheet; Animation aus Bewegung und Cooldown wie im Browser. Geprüft mit `TestEveryFigureHasRigOrSheet` (jede Art aus `data/`), `TestFigureWant`, `TestTroopWant` und an Bildern (Landstreicher im Lager; 50 Goblins und 50 Wölfe als Rig und Sheet deckungsgleich).
+Abweichungen: kein Bild einer Gegner-Welle aus dem Spiel gefunden; Bosse und `requisite`-Liste stehen in `actors/catalog.go` (nicht in `data/`); Rig-Figuren können nicht durchscheinend gezeichnet werden.

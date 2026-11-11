@@ -1,6 +1,6 @@
 # NG3.2 · Monarch und Reittier aus dem Spielzustand
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,5 +54,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+B-796/AC-01 umgesetzt: Monarch reitet als Rig auf dem Reittier aus den Daten, Gangart aus dem Tempo (wie `mountGait.ts`), Tod und Respawn zu Fuß, Blickrichtung, Farbvariante, eigener Phasenversatz, Umhang eingeschwungen. Geprüft mit `TestMountGait`, `TestMonarchWant`, `TestRigFootAndSize` (Fußpunkt auf der Boden-Linie) und am Bild `reports/native-game-shots/ng3/strip.png` (Agent; Claude hat die Monarchen im Bild des Bauten-Pakets gesehen).

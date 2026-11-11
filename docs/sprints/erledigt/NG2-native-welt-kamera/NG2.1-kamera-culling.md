@@ -1,6 +1,6 @@
 # NG2.1 · Kamera und Culling je Zelle
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,5 +54,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 umgesetzt: Kamera-Regel (`view.CameraRule`) in `world`: folgt dem Monarchen mit Totzone ±1 Unit und Nachführung, Grenzen der Stufe, Sprung bei Stufen- und Inselwechsel; Culling mit Rand. Geprüft mit `camera_test.go` und `cull_test.go` (Fälle aus dem Browser-Client), Lint 0 Befunde (Agent, Opus).

@@ -9,10 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| NG2 | CLI | NAT | Natives Spiel: Welt, Kamera, Schichten, Fluss und Licht | – | `aktiv/NG2-native-welt-kamera/` |
-| NG3 | CLI | NAT | Natives Spiel: Figuren als Rig, Bein-Bänder und Gegnerzahl | – | `aktiv/NG3-native-figuren/` |
-| NG4 | CLI | NAT | Natives Spiel: Gebäude, Baustellen, Natur und Objekte | – | `aktiv/NG4-native-bauten-natur/` |
-| NG5 | PLAT | NAT | Natives Spiel: Eingabe mit Gamepads und Tastatur | – | `aktiv/NG5-native-eingabe/` |
 | RD1 | PAP | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | `aktiv/RD1-papierschnitt-renderer/` |
 | MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
 | RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
@@ -319,3 +315,7 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | NV2 | Rig-Prototyp: Monarch aus Teilen in Ebitengine | `erledigt/NV2-rig-prototyp-monarch/` |
 | NV3 | Prototyp-Ausbau: Fluss, fester Hintergrund, alle Figuren als Rig | `erledigt/NV3-prototyp-fluss-rigs/` |
 | NG1 | Natives Spiel: Fundament mit Modul, Vertrag, Simulation im Prozess und Spielschleife | `erledigt/NG1-native-fundament/` |
+| NG2 | Natives Spiel: Welt, Kamera, Schichten, Fluss und Licht | `erledigt/NG2-native-welt-kamera/` |
+| NG3 | Natives Spiel: Figuren als Rig, Bein-Bänder und Gegnerzahl | `erledigt/NG3-native-figuren/` |
+| NG4 | Natives Spiel: Gebäude, Baustellen, Natur und Objekte | `erledigt/NG4-native-bauten-natur/` |
+| NG5 | Natives Spiel: Eingabe mit Gamepads und Tastatur | `erledigt/NG5-native-eingabe/` |

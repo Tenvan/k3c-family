@@ -1,6 +1,6 @@
 # NG2.4 · Review Welt und Kamera
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,5 +54,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Review Welle 2a (Agent `k3c-reviewer`, Opus) für `world`: Befund Fackeln doppelt gezeichnet (mit `props`) behoben: `world` zeichnet Halter und Flamme, Stärke aus `data/light.json`. Ohne Befund: Kamera und Aufblenden je Spieler getrennt, Zeit nur aus dem Takt, Lichtkarte als ein Zeichenaufruf je Zelle.
+
+Geprüft: `go vet`, `go test`, `golangci-lint` im Modul grün (0 Befunde), `check_run task:check:diff` grün; Aufnahme-Modus bildgleich (drei Läufe Takt 300, zwei Läufe Takt 900), Bilder unter `reports/native-game-shots/w2a*`. `task check` und `task check:go` nicht gefahren: Die Welle ändert nur `native/`. Kein Abnahme-Ticket (keine Sim-, Balance-, Gen-Läufe betroffen). Abweichung: Die vier Sprints liefen in einem Checkout auf dem Branch `sprint/ng-welle2a` mit einem gemeinsamen PR.

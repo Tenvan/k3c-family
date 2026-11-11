@@ -1,6 +1,6 @@
 # NG2 · CLI · Natives Spiel: Welt, Kamera, Schichten, Fluss und Licht
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -63,10 +63,10 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NG2.1 | `NG2.1-kamera-culling.md` | Umsetzung | autonom | offen |
-| NG2.2 | `NG2.2-schichten-fluss.md` | Umsetzung | autonom | offen |
-| NG2.3 | `NG2.3-licht-stufen.md` | Umsetzung | autonom | offen |
-| NG2.4 | `NG2.4-review.md` | Review | autonom | offen |
+| NG2.1 | `NG2.1-kamera-culling.md` | Umsetzung | autonom | fertig |
+| NG2.2 | `NG2.2-schichten-fluss.md` | Umsetzung | autonom | fertig |
+| NG2.3 | `NG2.3-licht-stufen.md` | Umsetzung | autonom | fertig |
+| NG2.4 | `NG2.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -74,6 +74,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-11 Review (Claude, `k3c-reviewer`): Kriterien laut Ergebnis der Sessions. Behobene Befunde: siehe Review-Session. Offen: Schriftdatei fehlt (Debug-Schrift); am echten Gerät ungeprüft (Fenster, Gamepads). Kein Abnahme-Ticket. Version: keine vorgeschlagen (noch kein spielbarer Stand).

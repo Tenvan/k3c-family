@@ -173,16 +173,12 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-787](B-787-workbench-tests-short-zu-langsam.md) | DEV | Problem | hoch | offen | – | Workbench-Tests bleiben mit -short unter 3 s je Test, der volle Lauf ist grün |
 | [B-788](B-788-check-run-teilaufgaben-sim-sperre.md) | DEV | Schuld | mittel | offen | – | check_run kennt die Teilaufgaben von check:diff, sim_test und sim_run lehnen während der Sperre ab |
 | [B-790](B-790-prototyp-shader-wasser.md) | CLI | Frage | mittel | eingeplant | NG11 | Ein vierter Prototyp zeigt, was Shader in Ebitengine für Wasser und Papier-Effekte bringen |
-| [B-791](B-791-rig-bein-baender-klappen-um.md) | CLI | Problem | mittel | eingeplant | NG3 | Bein-Bänder von Elefant, Wolf und Alphawolf klappen im Rig nicht mehr um |
-| [B-795](B-795-native-welt-kamera.md) | CLI | Idee | hoch | eingeplant | NG2 | Das native Spiel zeigt Welt, Kamera, Schichten, Fluss und Licht je Split-Screen-Zelle |
-| [B-796](B-796-native-figuren-als-rig.md) | CLI | Idee | hoch | eingeplant | NG3 | Das native Spiel zeichnet Monarchen, Reittiere, Bürger, Truppen, Gegner und Bosse aus dem Spielzustand |
-| [B-797](B-797-native-gebaeude-natur-objekte.md) | CLI | Idee | hoch | eingeplant | NG4 | Das native Spiel zeichnet Gebäude, Baustellen, Plätze, Natur und Objekte aus dem Spielzustand |
-| [B-798](B-798-native-eingabe-gamepads.md) | PLAT | Idee | hoch | eingeplant | NG5 | Im nativen Spiel steuern 1–2 Gamepads und die Tastatur je einen Spieler und die Menüs |
 | [B-799](B-799-native-hud-hinweise-effekte.md) | CLI | Idee | hoch | eingeplant | NG6 | Das native Spiel zeigt HUD, Hinweise, Skill-Menü und Effekte wie der Browser-Client |
 | [B-800](B-800-native-menues-lobby-spielstaende.md) | CLI | Idee | hoch | eingeplant | NG7 | Das native Spiel hat Hauptmenü, Lobby für 1–2 Spieler, Spielstand-Menü, Optionen und Pause |
 | [B-801](B-801-native-ton.md) | CLI | Idee | mittel | eingeplant | NG8 | Das native Spiel spielt Klänge und Musik zu den Ereignissen wie der Browser-Client |
 | [B-802](B-802-native-zusammenfuehrung-abnahme.md) | CLI | Idee | hoch | eingeplant | NG9 | Das native Spiel läuft von Start bis Spielstand durch, ist gemessen und am PC abgenommen |
 | [B-803](B-803-room-absturzbehandlung-exportieren.md) | SRV | Schuld | niedrig | offen | – | Ein Raum bietet seine Absturzbehandlung und den Grund abgelehnter Skill-Befehle nach außen an |
+| [B-804](B-804-paper-reittier-suche-und-wolf-pfote.md) | PAP | Problem | mittel | offen | – | tools/paper findet für das Reittier Wolf das Reittier statt des Gegners, Gegner-Wölfe haben Pfoten |
 
 ## Archiv
 
@@ -764,3 +760,8 @@ Zeile in diesen Abschnitt.
 | [B-792](archiv/B-792-native-spiel-modul-vertrag-schleife.md) | CLI | Idee | hoch | erledigt | NG1 | Das native Spiel hat ein eigenes Go-Modul mit Spielschleife, Grafik-Bibliothek und festem Zeichen-Vertrag |
 | [B-793](archiv/B-793-native-simulation-im-prozess.md) | CLI | Idee | hoch | erledigt | NG1 | Das native Spiel rechnet mit der Go-Simulation im selben Prozess und speichert Spielstände lokal |
 | [B-794](archiv/B-794-native-pruefkette-checkdiff-ci.md) | INF | Schuld | hoch | erledigt | NG1 | check:diff und CI prüfen das Modul des nativen Spiels |
+| [B-795](archiv/B-795-native-welt-kamera.md) | CLI | Idee | hoch | erledigt | NG2 | Das native Spiel zeigt Welt, Kamera, Schichten, Fluss und Licht je Split-Screen-Zelle |
+| [B-796](archiv/B-796-native-figuren-als-rig.md) | CLI | Idee | hoch | erledigt | NG3 | Das native Spiel zeichnet Monarchen, Reittiere, Bürger, Truppen, Gegner und Bosse aus dem Spielzustand |
+| [B-797](archiv/B-797-native-gebaeude-natur-objekte.md) | CLI | Idee | hoch | erledigt | NG4 | Das native Spiel zeichnet Gebäude, Baustellen, Plätze, Natur und Objekte aus dem Spielzustand |
+| [B-798](archiv/B-798-native-eingabe-gamepads.md) | PLAT | Idee | hoch | erledigt | NG5 | Im nativen Spiel steuern 1–2 Gamepads und die Tastatur je einen Spieler und die Menüs |
+| [B-791](archiv/B-791-rig-bein-baender-klappen-um.md) | CLI | Problem | mittel | erledigt | NG3 | Bein-Bänder von Elefant, Wolf und Alphawolf klappen im Rig nicht mehr um |

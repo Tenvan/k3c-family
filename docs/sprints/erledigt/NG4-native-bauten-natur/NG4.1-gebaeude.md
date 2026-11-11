@@ -1,6 +1,6 @@
 # NG4.1 · Gebäude mit Stufe, Schaden und Ruine
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,5 +54,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 umgesetzt: Gebäude je Typ und Stufe (Mauer, Turm, Hub-Gebäude, Schiff, Treppen), Schaden mit Rissen, Ruine, Hintergrundmauer, Wachstumsreihe der Burg. Geprüft mit `buildings_test.go` (Fälle aus den Browser-Tests) und am Bild `reports/native-game-shots/ng4/bauten/shot-01.png` aus einem gebauten Spielstand (Agent und Claude: Mauern, Türme, Heilplatz, Taverne, Lager, Werkstatt, Burg Stufe 3, beschädigter Turm, Gerüst).
+Ruine nur per Test belegt (im Seed wald gibt es keine).
