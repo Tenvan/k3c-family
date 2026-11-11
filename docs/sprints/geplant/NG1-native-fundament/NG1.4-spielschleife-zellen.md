@@ -10,7 +10,7 @@
 - **Branch:** ng1/4-spielschleife-zellen
 - **Abhängig von:** NG1.2, NG1.3
 - **Tickets:** B-792
-- **Kriterien:** AC-07
+- **Kriterien:** AC-07, AC-11
 
 ## Ziel
 
@@ -39,10 +39,12 @@ Echte Darstellung der Fachbereiche (NG2–NG8); Menü (Start direkt ins Spiel mi
 3. Platzhalter zeichnen Figuren und Gebäude aus `*sim.World` als Rechtecke.
 4. FPS-Anzeige groß oben.
 5. Task `native:game` startet das Spiel; Fenster einmal sehen und Screenshot ins Ergebnis.
+6. Aufnahme-Modus (B-792/AC-05, Vorbild `native/k3c-ebiten/shots.go`): Szenen-Schalter (Seed, Stufe oder Spielstand, Spieler, Kamera-x je Zelle, Takt, feste Eingabe-Folge) als reine, getestete Auswertung; `--shots <ordner>` lässt die Simulation bis zum Takt vorlaufen, schreibt n Bilder im festen Takt-Abstand als PNG und als Streifen-PNG und beendet das Programm. Zeit aus dem Takt, nicht aus der Wanduhr. Task `native:game:shots`.
 
 ## Fertig, wenn
 
 - [ ] AC-07: Lage-Tests grün; `task native:game` zeigt zwei Zellen mit sich bewegenden Platzhaltern (Screenshot im Ergebnis).
+- [ ] AC-11: Szenen-Tests grün; `task native:game:shots` schreibt Bildfolge und Streifen-PNG, zwei Läufe mit gleichen Schaltern sind bildgleich (Streifen im Ergebnis, vom Agenten angesehen).
 - [ ] `task check:diff` grün.
 
 ## Prüfen

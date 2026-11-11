@@ -10,7 +10,7 @@
 - **Branch:** ng1/6-review
 - **Abhängig von:** NG1.5
 - **Tickets:** B-792, B-793, B-794
-- **Kriterien:** AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07, AC-08, AC-09, AC-10
+- **Kriterien:** AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07, AC-08, AC-09, AC-10, AC-11
 
 ## Ziel
 

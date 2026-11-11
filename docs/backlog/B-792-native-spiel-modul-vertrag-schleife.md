@@ -9,8 +9,8 @@
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
 - **Spec:** freigegeben
-- **Revision:** 2
-- **Freigabe:** 2026-11-11 🧑 Chat (Ralf-Queue natives Spiel)
+- **Revision:** 3
+- **Freigabe:** 2026-11-11 🧑 Chat (Ralf-Queue natives Spiel; Revision 3: Aufnahme-Modus mit Bildfolgen und gesteuerten Szenen)
 
 ## Ausgangslage
 
@@ -33,6 +33,7 @@ Claude (Umsetzung, die Fach-Sprints NG2–NG8 bauen darauf), 🧑 Ralf (Freigabe
 - **Rechnen getrennt vom Zeichnen:** Lage, Reihenfolge und Auswahl sind reine Funktionen ohne `ebiten.Image`, damit sie offline testbar sind.
 - **Grafik `art`:** Sheets je Level aus `public/grafik` über `data/paper.json`, Rig-Bibliothek über `native/k3c-rig/paint`, eine Schrift für HUD und Menüs, Texturbudget im Log.
 - **Schleife:** 1 oder 2 Zellen im Split-Screen, Platzhalter für alles aus dem Frame, große FPS-Anzeige.
+- **Bildprüfung ohne Zuschauen (🧑 2026-11-11):** Das Spiel hat einen Aufnahme-Modus, mit dem ein Agent das Bild selbst begutachten kann. **Gesteuerte Szene:** Schalter legen fest, was zu sehen ist (Seed und Stufe bzw. Spielstand, Zahl der Spieler, Kamera-x je Zelle, Takt, bis zu dem die Simulation vorläuft, Eingaben aus einer festen Folge statt vom Gamepad); dieselben Schalter ergeben dasselbe Bild. **Bildfolge:** `--shots <ordner>` schreibt statt eines Einzelbilds n Bilder im festen Abstand (z. B. 8 Bilder alle 100 ms Spielzeit) als einzelne PNG und als ein Streifen-PNG nebeneinander, damit Bewegung, Tempo und Fließrichtung im Standbild sichtbar sind. Danach beendet sich das Programm. Die Zeit der Aufnahme folgt dem Takt, nicht der Wanduhr.
 
 ## Nicht-Ziele
 
@@ -64,6 +65,7 @@ Grafik fehlt (`gen:paper` nicht gelaufen, Rig-Teil fehlt) → Meldung mit Pfad b
 - **AC-02** Paket `view` enthält Frame, Cell, Camera, Drawer mit fester Ebenen-Reihenfolge, Eingabe-Typen, Screen und Session; `game` registriert je Fachpaket einen Platzhalter; ein Test prüft die Importregel.
 - **AC-03** `art` lädt Sheets je Level, die Rig-Bibliothek und eine Schrift; fehlende Grafik bricht mit Meldung ab (Test); das Texturbudget steht im Log.
 - **AC-04** Das Fenster zeigt 1 oder 2 Zellen mit Platzhaltern für alle Figuren und Gebäude aus dem Frame und eine FPS-Anzeige; Lage der Zellen und Kamera-Ausschnitt sind offline getestet.
+- **AC-05** Aufnahme-Modus: Ein Aufruf mit Szenen-Schaltern (Seed, Stufe, Spieler, Kamera-x, Takt) und `--shots <ordner>` schreibt eine Bildfolge aus n PNG und ein Streifen-PNG und beendet sich; zwei Aufrufe mit denselben Schaltern liefern dieselben Bilder (Test der Szenen-Auswertung offline, Bildfolge im Ergebnis der Session).
 
 ## Offene Fragen
 
