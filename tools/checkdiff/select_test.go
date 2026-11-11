@@ -11,10 +11,10 @@ func testRepo() repo {
 	goDirs := map[string]bool{
 		"data": true, "engine/sim": true, "engine/balance": true, "engine/net": true, "tools/checkdiff": true,
 		"tools/k3c-workbench": true, "tools/k3c-workbench/internal/planning": true, "tools/k3c-workbench/internal/simrun": true,
-		"tools/assetkit": true, "native/k3c-rig": true, "native/k3c-rig/rig": true, "engine/balance/report": false,
+		"tools/assetkit": true, "native/k3c-rig": true, "native/k3c-rig/rig": true, "native/k3c-game/view": true, "engine/balance/report": false,
 	}
 	return repo{
-		modules: []string{".", "native/k3c-rig", "tools/assetkit", "tools/k3c-workbench"},
+		modules: []string{".", "native/k3c-game", "native/k3c-rig", "tools/assetkit", "tools/k3c-workbench"},
 		hasGo:   func(dir string) bool { return goDirs[dir] },
 	}
 }
@@ -133,5 +133,25 @@ func TestJsSteps(t *testing.T) {
 	got = jsSteps(plan{Rules: true, Client: true}, "HEAD")
 	if names(got) != "regeln lint typecheck vitest" || got[3].Stage != 2 {
 		t.Errorf("Client: %q", names(got))
+	}
+}
+
+// Spiel-Modul (B-794, AC-01): Änderung im Paket löst vet und Test im Modul aus; Lint nur, sobald das Modul in lintMods steht
+// (heute draußen: Befunde im Code, NG1.5). Eine Änderung in engine/ übersetzt das Modul als Abnehmer (nur vet).
+func TestSpielModul(t *testing.T) {
+	p := classify(testRepo(), []string{"native/k3c-game/view/frame.go"})
+	if w := summary(p); !reflect.DeepEqual(w, want{"R", []string{"native/k3c-game:view"}}) {
+		t.Fatalf("Auswahl %+v", w)
+	}
+	got := goSteps([]goTargets{targetsOf("native/k3c-game", p.Mods["native/k3c-game"], nil, false)})
+	if names(got) != "k3c-game-vet k3c-game-test" || got[0].Dir != "native/k3c-game" {
+		t.Fatalf("Schritte %q in %q", names(got), got[0].Dir)
+	}
+	if strings.Join(got[1].Cmd, " ") != "go test -short ./view" {
+		t.Errorf("Test: %v", got[1].Cmd)
+	}
+	got = goSteps([]goTargets{targetsOf("native/k3c-game", nil, []string{"k3c/native/k3c-game/world"}, false)})
+	if names(got) != "k3c-game-vet" {
+		t.Errorf("Abnehmer aus engine/: %q", names(got))
 	}
 }

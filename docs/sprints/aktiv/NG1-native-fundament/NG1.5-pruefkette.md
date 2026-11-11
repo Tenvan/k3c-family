@@ -1,6 +1,6 @@
 # NG1.5 · check:diff und CI kennen das Modul
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -56,5 +56,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-08 geprüft: `check:diff` (Werkzeug `tools/checkdiff`) prüft `native/k3c-game` bereits mit `go vet` und `go test -short` der geänderten Pakete und vet der Abnehmer; belegt mit `checkdiff -plan` und neuem Test `TestSpielModul`. Lint für das Modul folgt in NG1.6, sobald die 7 Befunde (errcheck, gocyclo in Tests, staticcheck) behoben sind.
+AC-09 umgesetzt: CI-Job `k3c-game` unter Windows (`go vet`, `go build`, `go test -short`, ohne cgo). Ungetestet: Der Job lief noch nie; YAML ist geparst.
