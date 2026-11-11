@@ -1,6 +1,6 @@
 # NG1.6 · Review Fundament und Glossar
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** INF

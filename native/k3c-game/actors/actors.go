@@ -25,15 +25,17 @@ type Box struct {
 	Color   color.RGBA
 }
 
-type drawer struct{}
+// drawer hält den Puffer der Rechtecke, damit Draw nach dem ersten Bild nichts mehr anlegt.
+type drawer struct{ buf []Box }
 
 // New liefert den Drawer der Figuren; lib (Grafik) darf nil sein, die Platzhalter brauchen sie nicht.
-func New(_ *art.Library) view.Drawer { return drawer{} }
+func New(_ *art.Library) view.Drawer { return &drawer{} }
 
-func (drawer) Layer() view.Layer { return view.LayerActors }
+func (*drawer) Layer() view.Layer { return view.LayerActors }
 
-func (drawer) Draw(dst *ebiten.Image, f *view.Frame, c view.Cell) {
-	for _, b := range Boxes(f.World(c), c.Camera) {
+func (d *drawer) Draw(dst *ebiten.Image, f *view.Frame, c view.Cell) {
+	d.buf = Boxes(d.buf[:0], f.World(c), c.Camera)
+	for _, b := range d.buf {
 		x := c.Camera.ScreenX(b.X - b.W/2)
 		y := c.ScreenY(b.H)
 		s := c.Camera.Scale
@@ -41,12 +43,11 @@ func (drawer) Draw(dst *ebiten.Image, f *view.Frame, c view.Cell) {
 	}
 }
 
-// Boxes liefert die sichtbaren Figuren der Welt w als Rechtecke, hinten nach vorn: Truppen, Gegner, Monarchen.
-func Boxes(w *sim.World, k view.Camera) []Box {
+// Boxes hängt die sichtbaren Figuren der Welt w als Rechtecke an out, hinten nach vorn: Truppen, Gegner, Monarchen.
+func Boxes(out []Box, w *sim.World, k view.Camera) []Box {
 	if w == nil {
-		return nil
+		return out
 	}
-	var out []Box
 	add := func(x, width, h float64, clr color.RGBA) {
 		if k.Visible(x, width/2) {
 			out = append(out, Box{X: x, W: width, H: h, Color: clr})

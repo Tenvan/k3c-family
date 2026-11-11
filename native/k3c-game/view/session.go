@@ -9,6 +9,8 @@ type NewGame struct {
 	Grade   string     // Schwierigkeitsgrad
 	Goal    string     // Ziel der Insel
 	Defeat  string     // Niederlage-Regel
+	World   string     // Welt-ID (wie room.Options.World); leer = Standard-Welt
+	Depth   int        // Tiefe der Stufe, in der die Spieler beginnen (0 = Oberfläche; Aufnahme-Modus, Tests)
 	Devices []DeviceID // Geräte der Spieler 1 … MaxPlayers in dieser Reihenfolge, mindestens eins
 }
 
@@ -25,9 +27,11 @@ type SaveInfo struct {
 // Session ist das Spiel aus Sicht der Menüs; local erfüllt sie. Alle Methoden laufen in der Goroutine der Schleife
 // und blockieren nur kurz (Dateizugriff). Fehler sind deutsch und anzeigbar.
 type Session interface {
-	New(g NewGame) error    // neues Spiel anlegen und starten (ersetzt ein laufendes nach dessen Speichern)
-	Continue() error        // zuletzt gespeicherten Spielstand laden und starten
-	Load(name string) error // Spielstand laden und starten
+	New(g NewGame) error // neues Spiel anlegen und starten (ersetzt ein laufendes nach dessen Speichern)
+	// Continue und Load starten mit den Geräten devices (Spieler 1 … in dieser Reihenfolge); leer = Geräte des letzten
+	// Spiels, ohne letztes Spiel die linke Tastatur.
+	Continue(devices []DeviceID) error          // zuletzt gespeicherten Spielstand laden und starten
+	Load(name string, devices []DeviceID) error // Spielstand laden und starten
 	List() ([]SaveInfo, error)
 	Delete(name string) error // nicht den Spielstand des laufenden Spiels
 	Save() error              // laufendes Spiel jetzt speichern (zusätzlich zum Autosave)

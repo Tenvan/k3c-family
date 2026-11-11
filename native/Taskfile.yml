@@ -89,10 +89,18 @@ tasks:
       - go build -o bin/k3c-game.exe .
 
   game:
-    desc: "Natives Spiel starten (Platzhalter; Menü: Enter, Spiel: A/D oder Pfeile, Esc Pause)"
+    desc: "Natives Spiel starten (Platzhalter; Menü: Leertaste/Enter/A, Mitspieler: Bestätigen, Spiel: A/D bzw. Pfeile bzw. Stick, Esc/Menu Pause; direkt ins Spiel: task native:game -- --seed wald)"
+    dir: '{{.ROOT_DIR}}'
     deps: [game:build]
     cmds:
-      - '"{{.GAME_EXE}}"'
+      - '"{{.GAME_EXE}}" {{.CLI_ARGS}}'
+
+  game:shots:
+    desc: "Natives Spiel, Aufnahme-Modus: Szene vorlaufen lassen, 8 Bilder alle 3 Takte und Streifen nach reports/native-game-shots/ (Schalter anhängen: task native:game:shots -- --seed x --tick 300)"
+    dir: '{{.ROOT_DIR}}'
+    deps: [game:build]
+    cmds:
+      - '"{{.GAME_EXE}}" --shots "{{.ROOT_DIR}}/reports/native-game-shots" --tick 90 {{.CLI_ARGS}}'
 
   measure:
     desc: "Bevy: FPS und Grafikspeicher messen (Lastfälle level und alle, Vulkan), Bericht nach reports/native-proto-*.json"

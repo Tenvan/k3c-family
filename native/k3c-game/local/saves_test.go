@@ -80,7 +80,7 @@ func TestSaveListLoadDelete(t *testing.T) {
 	if err != nil || len(list) != 1 || list[0].Name != "spiel-1" || !list[0].Loadable || list[0].SavedAt.IsZero() {
 		t.Fatalf("Liste = %+v, %v", list, err)
 	}
-	if err := s.Load("spiel-1"); err != nil {
+	if err := s.Load("spiel-1", nil); err != nil {
 		t.Fatal(err)
 	}
 	if got, ref := hashWorlds(t, s.p.worlds), roomLoadHash(t, dir, "spiel-1"); got != ref {
@@ -111,7 +111,7 @@ func TestSaveListLoadDelete(t *testing.T) {
 	if err := s.Delete("spiel-1"); !errors.Is(err, store.ErrNotFound) {
 		t.Error("Löschen eines fehlenden Stands ohne Fehler")
 	}
-	if err := s.Load("spiel-1"); err == nil {
+	if err := s.Load("spiel-1", nil); err == nil {
 		t.Error("gelöschter Stand geladen")
 	}
 }
@@ -119,7 +119,7 @@ func TestSaveListLoadDelete(t *testing.T) {
 // Weiter lädt den zuletzt gespeicherten ladbaren Stand; ein Name gibt es nur einmal.
 func TestContinueAndDuplicate(t *testing.T) {
 	s := testSession(t, t.TempDir())
-	if err := s.Continue(); err == nil {
+	if err := s.Continue(nil); err == nil {
 		t.Fatal("Weiter ohne Spielstand")
 	}
 	if err := s.New(view.NewGame{Name: "alt", Devices: twoDevices[:1]}); err != nil {
@@ -135,8 +135,25 @@ func TestContinueAndDuplicate(t *testing.T) {
 	if err := s.New(view.NewGame{Name: "Ungültig!", Devices: twoDevices[:1]}); err == nil {
 		t.Error("ungültiger Name angenommen")
 	}
-	if err := s.Continue(); err != nil || s.name != "alt" {
+	if err := s.Continue(nil); err != nil || s.name != "alt" {
 		t.Errorf("Weiter: %v, Spiel %q", err, s.name)
+	}
+	if f := s.Step(); len(f.Seats) != 1 || f.Seats[0].Device != twoDevices[0] {
+		t.Errorf("Weiter ohne Geräte: Plätze %+v, erwartet das Gerät des letzten Spiels", f.Seats)
+	}
+	// Mit Geräten gelten diese, nicht die des letzten Spiels (Vertrag NG1.4).
+	pad := []view.DeviceID{twoDevices[1]}
+	if err := s.Continue(pad); err != nil {
+		t.Fatal(err)
+	}
+	if f := s.Step(); len(f.Seats) != 1 || f.Seats[0].Device != pad[0] {
+		t.Errorf("Weiter mit Pad: Plätze %+v", f.Seats)
+	}
+	if err := s.Load("alt", twoDevices[:1]); err != nil {
+		t.Fatal(err)
+	}
+	if f := s.Step(); len(f.Seats) != 1 || f.Seats[0].Device != twoDevices[0] {
+		t.Errorf("Laden mit Tastatur: Plätze %+v", f.Seats)
 	}
 }
 
@@ -161,11 +178,11 @@ func TestBrokenSaves(t *testing.T) {
 		if e.Loadable || e.Problem == "" {
 			t.Errorf("%s ladbar: %+v", e.Name, e)
 		}
-		if err := s.Load(e.Name); err == nil || s.Active() {
+		if err := s.Load(e.Name, nil); err == nil || s.Active() {
 			t.Errorf("%s geladen", e.Name)
 		}
 	}
-	if err := s.Continue(); err == nil {
+	if err := s.Continue(nil); err == nil {
 		t.Error("Weiter mit nur kaputten Ständen")
 	}
 }

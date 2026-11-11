@@ -1,6 +1,6 @@
 # NG1.4 · Spielschleife, Split-Screen-Zellen und Platzhalter
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -61,5 +61,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-07 umgesetzt: Schleife mit festem Takt (30 Updates je Sekunde, ein `local.Step` je Update), 1 oder 2 Zellen übereinander, Welt zwei Drittel und Fluss ein Drittel, Platzhalter aus dem Frame, große Anzeige; Lage offline getestet (`layout_test.go`). Im Fenster nicht angesehen; geprüft am Streifen des Aufnahme-Modus (Agent und Claude).
+AC-11 umgesetzt: Szenen-Schalter (`--seed`/`--load`, `--depth`, `--players`, `--cam`, `--tick`, `--input`, `--size`) und `--shots <ordner>` mit `--count`, `--every`; schreibt Einzelbilder und `strip.png`; zwei Läufe mit gleichen Schaltern sind bildgleich (Hashes aller 9 PNG verglichen). Task `native:game:shots`.
+Vertragsänderungen: `Session.Load(name, devices)`, `Session.Continue(devices)`, `NewGame.World`, `NewGame.Depth`. Offen für NG1.6: Insel-Infos fürs HUD, Einstellungen, Rütteln, Texteingabe. Schrift fehlt (Debug-Schrift).

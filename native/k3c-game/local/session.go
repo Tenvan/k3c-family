@@ -90,35 +90,39 @@ func (s *Session) New(g view.NewGame) error {
 	if name == "" {
 		name = s.freeName()
 	}
-	opts := room.Options{Grade: g.Grade, Goal: g.Goal, Defeat: g.Defeat, Seed: g.Seed}
-	return s.start(name, true, opts, g.Devices)
+	opts := room.Options{Grade: g.Grade, Goal: g.Goal, Defeat: g.Defeat, Seed: g.Seed, World: g.World}
+	return s.start(name, true, g.Depth, opts, g.Devices)
 }
 
-// Load lädt den Spielstand name mit den Geräten des letzten Spiels (ohne: Tastatur links) und startet ihn.
-func (s *Session) Load(name string) error {
-	devs := s.last
+// Load lädt den Spielstand name mit den Geräten devices (leer: die des letzten Spiels, ohne: Tastatur links) und
+// startet ihn.
+func (s *Session) Load(name string, devices []view.DeviceID) error {
+	devs := devices
+	if len(devs) == 0 {
+		devs = s.last
+	}
 	if len(devs) == 0 {
 		devs = []view.DeviceID{{Kind: view.DeviceKeyboard}}
 	}
-	return s.start(name, false, room.Options{}, devs)
+	return s.start(name, false, 0, room.Options{}, devs)
 }
 
-// Continue lädt den zuletzt gespeicherten ladbaren Spielstand.
-func (s *Session) Continue() error {
+// Continue lädt den zuletzt gespeicherten ladbaren Spielstand mit den Geräten devices (leer wie bei Load).
+func (s *Session) Continue(devices []view.DeviceID) error {
 	list, err := s.List()
 	if err != nil {
 		return err
 	}
 	for _, e := range list {
 		if e.Loadable {
-			return s.Load(e.Name)
+			return s.Load(e.Name, devices)
 		}
 	}
 	return userErr("Kein ladbarer Spielstand vorhanden", nil)
 }
 
-// start öffnet den Raum mit den Geräten devices (Slot i = Gerät i).
-func (s *Session) start(name string, fresh bool, opts room.Options, devices []view.DeviceID) error {
+// start öffnet den Raum mit den Geräten devices (Slot i = Gerät i); depth ist die Start-Tiefe eines neuen Spiels.
+func (s *Session) start(name string, fresh bool, depth int, opts room.Options, devices []view.DeviceID) error {
 	if len(devices) == 0 || len(devices) > view.MaxPlayers {
 		return userErr(fmt.Sprintf("1 bis %d Geräte nötig", view.MaxPlayers), nil)
 	}
@@ -136,7 +140,7 @@ func (s *Session) start(name string, fresh bool, opts room.Options, devices []vi
 	for i, d := range devices {
 		slots[i], devs[i] = i, d
 	}
-	r, err := m.Create(deviceID, p, name, fresh, 0, slots, opts)
+	r, err := m.Create(deviceID, p, name, fresh, depth, slots, opts)
 	if err != nil {
 		return describe(err, name)
 	}

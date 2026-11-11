@@ -228,7 +228,7 @@ func TestPanicInTick(t *testing.T) {
 	if string(after) != string(before) {
 		t.Error("Spielstand nach Panic verändert")
 	}
-	if err := s.Load("absturz"); err != nil {
+	if err := s.Load("absturz", nil); err != nil {
 		t.Errorf("Laden nach Panic: %v", err)
 	}
 }

@@ -13,17 +13,17 @@ type fakeSession struct {
 	news []view.NewGame
 }
 
-func (s *fakeSession) New(g view.NewGame) error        { s.news = append(s.news, g); return s.err }
-func (s *fakeSession) Continue() error                 { return nil }
-func (s *fakeSession) Load(string) error               { return nil }
-func (s *fakeSession) List() ([]view.SaveInfo, error)  { return nil, nil }
-func (s *fakeSession) Delete(string) error             { return nil }
-func (s *fakeSession) Save() error                     { return nil }
-func (s *fakeSession) Close() error                    { return nil }
-func (s *fakeSession) Active() bool                    { return len(s.news) > 0 }
-func (s *fakeSession) Pause(bool)                      {}
-func (s *fakeSession) Join(view.DeviceID) (int, error) { return 0, nil }
-func (s *fakeSession) Leave(int) error                 { return nil }
+func (s *fakeSession) New(g view.NewGame) error           { s.news = append(s.news, g); return s.err }
+func (s *fakeSession) Continue([]view.DeviceID) error     { return nil }
+func (s *fakeSession) Load(string, []view.DeviceID) error { return nil }
+func (s *fakeSession) List() ([]view.SaveInfo, error)     { return nil, nil }
+func (s *fakeSession) Delete(string) error                { return nil }
+func (s *fakeSession) Save() error                        { return nil }
+func (s *fakeSession) Close() error                       { return nil }
+func (s *fakeSession) Active() bool                       { return len(s.news) > 0 }
+func (s *fakeSession) Pause(bool)                         {}
+func (s *fakeSession) Join(view.DeviceID) (int, error)    { return 0, nil }
+func (s *fakeSession) Leave(int) error                    { return nil }
 
 func press(d view.DeviceID, a ...view.Action) view.Input {
 	return view.Input{Devices: []view.DeviceInput{{Device: d, Actions: a}}}

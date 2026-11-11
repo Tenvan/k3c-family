@@ -15,7 +15,7 @@ func TestBoxesOrderAndCulling(t *testing.T) {
 		Enemies: []*sim.Enemy{{X: 9}},
 	}
 	k := view.NewCamera(image.Rect(0, 0, 640, 360), 10, 32) // sichtbar 0 … 20
-	got := Boxes(w, k)
+	got := Boxes(nil, w, k)
 	want := []uint8{troopColor.R, enemyColor.R, monarchColor.R}
 	if len(got) != len(want) {
 		t.Fatalf("%d Figuren, erwartet %d: %+v", len(got), len(want), got)
@@ -25,7 +25,7 @@ func TestBoxesOrderAndCulling(t *testing.T) {
 			t.Errorf("Platz %d: Farbe %v", i, b.Color)
 		}
 	}
-	if Boxes(nil, k) != nil {
+	if Boxes(nil, nil, k) != nil {
 		t.Error("ohne Welt Figuren")
 	}
 }
