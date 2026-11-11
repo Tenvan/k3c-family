@@ -141,7 +141,7 @@ foreach ($eng in $engines) {
         if (-not (Test-Path $tmp)) { Write-Host "❌ Kein Bericht für $eng $mode (Exit $($proc.ExitCode))"; continue }
         $r = Get-Content $tmp -Raw -Encoding UTF8 | ConvertFrom-Json
         Remove-Item $tmp
-        $r = $r | Select-Object @{ n = 'engine'; e = { $eng } }, *
+        $r = $r | Select-Object @{ n = 'engine'; e = { $eng } }, @{ n = 'szene'; e = { $mode } }, *
         $r | Add-Member gpu_dediziert_mib_max ([math]::Round($max.ded / 1MB))
         $r | Add-Member gpu_geteilt_mib_max ([math]::Round($max.shr / 1MB))
         $r | Add-Member ram_mib_max ([math]::Round($max.ws / 1MB))

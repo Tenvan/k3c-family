@@ -115,9 +115,13 @@ func (g *Game) Update() error {
 		g.mode = ModeQuit
 		return g.sim.Close()
 	}
-	t0 := clock()
-	g.advance()
-	g.meter.tick(clock() - t0)
+	if g.meter == nil {
+		g.advance()
+	} else {
+		t0 := clock() // Wanduhr nur im Messmodus: clock() ist unter Windows ein Syscall mit Heap-Allokation
+		g.advance()
+		g.meter.tick(clock() - t0)
+	}
 	if g.err != nil {
 		return g.err
 	}
@@ -199,7 +203,10 @@ func (g *Game) step(st view.Step) {
 
 // Draw zeichnet je Zelle die Zellen-Ebenen, dann das Overlay, den obersten Screen und zuletzt die Anzeige oben.
 func (g *Game) Draw(screen *ebiten.Image) {
-	t0 := clock()
+	var t0 float64
+	if g.meter != nil {
+		t0 = clock()
+	}
 	screen.Fill(clearColor)
 	win := screen.Bounds()
 	Place(g.cells, win)

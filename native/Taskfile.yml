@@ -110,12 +110,13 @@ tasks:
       - mkdir -p "{{.GAME_PAKET}}/public/grafik" "{{.GAME_PAKET}}/native/k3c-rig"
       - cp "{{.GAME_EXE}}" "{{.ROOT_DIR}}/native/measure.ps1" "{{.ROOT_DIR}}/native/messen.cmd" "{{.GAME_PAKET}}/"
       # nur die Grafik, die das Spiel laden kann (k3c-game --assets: je Zeile gruppe/id aller Level)
-      - 'for a in $("{{.GAME_EXE}}" --assets); do mkdir -p "{{.GAME_PAKET}}/public/grafik/${a%/*}" && cp -r "public/grafik/$a" "{{.GAME_PAKET}}/public/grafik/$a" || exit 1; done'
+      - '"{{.GAME_EXE}}" --assets > "{{.GAME_PAKET}}/assets.txt"'
+      - 'for a in $(cat "{{.GAME_PAKET}}/assets.txt"); do mkdir -p "{{.GAME_PAKET}}/public/grafik/${a%/*}" && cp -r "public/grafik/$a" "{{.GAME_PAKET}}/public/grafik/$a" || exit 1; done'
       - cp -r public/audio "{{.GAME_PAKET}}/public/audio"
       - 'if [ -d public/schrift ]; then cp -r public/schrift "{{.GAME_PAKET}}/public/schrift"; fi'
       - cp -r "{{.RIG}}/assets" "{{.GAME_PAKET}}/native/k3c-rig/assets"
       # Probe: die EXE startet aus dem Paket-Ordner (Tag und Nacht mit Gegnern, Aufnahme-Modus)
-      - 'cd "{{.GAME_PAKET}}" && ./k3c-game.exe --shots "{{.GAME_PAKET}}-probe/tag" --seed k3c --tick 300 --count 2 && ./k3c-game.exe --shots "{{.GAME_PAKET}}-probe/nacht" --seed k3c --tick 15700 --count 2 --input 0@0=-,1@0=-'
+      - 'cd "{{.GAME_PAKET}}" && ./k3c-game.exe --shots "{{.GAME_PAKET}}-probe/tag" --seed k3c --tick 300 --count 2 && ./k3c-game.exe --shots "{{.GAME_PAKET}}-probe/nacht" --seed k3c --tick 15600 --count 2 --input 0@0=-,1@0=-'
 
   measure:ebiten:
     desc: "Ebitengine: FPS und Grafikspeicher messen (Lastfälle level und alle, DirectX 11), Bericht nach reports/native-proto-*.json"
