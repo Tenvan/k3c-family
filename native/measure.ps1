@@ -1,0 +1,133 @@
+﻿# K3C-Prototypen messen (B-776/AC-04): startet den Bevy-Prototyp (k3c-proto) und/oder den Ebitengine-Prototyp
+# (k3c-ebiten) für die Lastfälle `level` und `alle`, liest dabei den GPU-Speicher des Prozesses (WMI-Klasse der
+# GPU-Zähler, sprachunabhängig) und den Arbeitsspeicher und schreibt einen gemeinsamen Bericht nach
+# reports/native-proto-<rechner>-<zeit>.json (je Lauf ein Feld `engine`). Läuft mit Windows PowerShell 5.1 und pwsh 7.
+# Aufruf im Repo: `task native:measure`, `native:measure:ebiten`, `native:measure:beide`; im Paket auf dem Mini-PC:
+# `messen.cmd` (gleicher Ordner wie die EXE). Ohne -Engine werden alle vorhandenen EXE gemessen.
+param(
+    [string]$Exe = '',
+    [string]$Root = '',
+    [int]$Seconds = 20,
+    [int]$Warmup = 5,
+    [string]$Backend = 'vulkan',
+    [string[]]$Modes = @('level', 'alle'),
+    [ValidateSet('', 'bevy', 'ebiten', 'beide')]
+    [string]$Engine = '',
+    [string[]]$EbitenArgs = @()
+)
+$ErrorActionPreference = 'Stop'
+[Console]::OutputEncoding = [Text.Encoding]::UTF8
+$here = $PSScriptRoot
+
+# Paket (EXE und public/grafik neben dem Skript) oder Repo (EXE im Bau-Ordner des Prototyps)
+function Find-Exe($name, $repoPath) {
+    $p = Join-Path $here "$name.exe"
+    if (-not (Test-Path $p)) { $p = Join-Path $here $repoPath }
+    $p
+}
+$exes = [ordered]@{
+    bevy   = Find-Exe 'k3c-proto' 'k3c-proto\target\release\k3c-proto.exe'
+    ebiten = Find-Exe 'k3c-ebiten' 'k3c-ebiten\bin\k3c-ebiten.exe'
+}
+if ($Exe) {
+    # Eigene EXE: gilt für die genannte Engine, sonst entscheidet der Dateiname
+    if ($Engine -eq 'beide') { throw '-Exe und -Engine beide passen nicht zusammen' }
+    if (-not $Engine) { $Engine = if ((Split-Path $Exe -Leaf) -like '*ebiten*') { 'ebiten' } else { 'bevy' } }
+    $exes[$Engine] = $Exe
+}
+$engines = @(switch ($Engine) {
+        'bevy' { 'bevy' }
+        'ebiten' { 'ebiten' }
+        'beide' { 'bevy', 'ebiten' }
+        default { $exes.Keys | Where-Object { Test-Path $exes[$_] } }
+    })
+if ($engines.Count -eq 0) { throw "Keine EXE gefunden (erst task native:proto:build oder native:ebiten:build)" }
+foreach ($e in $engines) {
+    if (-not (Test-Path $exes[$e])) { throw "EXE fehlt: $($exes[$e]) (erst task native:$(if ($e -eq 'bevy') { 'proto' } else { 'ebiten' }):build)" }
+}
+if (-not $Root) {
+    $Root = $here
+    if (-not (Test-Path (Join-Path $Root 'public\grafik'))) { $Root = Split-Path $here -Parent }
+}
+if (-not (Test-Path (Join-Path $Root 'public\grafik'))) { throw "public\grafik fehlt unter $Root (erst task gen:paper)" }
+
+$reports = Join-Path $Root 'reports'
+New-Item -ItemType Directory -Force $reports | Out-Null
+$stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
+# Zeitlimit je Lauf: Aufwärmen + Messen + 120 s für Start und Laden; danach wird der Prozess beendet
+$limit = $Warmup + $Seconds + 120
+
+function Get-Machine {
+    $cs = Get-CimInstance Win32_ComputerSystem
+    $gpus = @(Get-CimInstance Win32_VideoController | ForEach-Object { "$($_.Name) (Treiber $($_.DriverVersion))" })
+    [ordered]@{
+        name   = $env:COMPUTERNAME
+        modell = "$($cs.Manufacturer) $($cs.Model)"
+        cpu    = (Get-CimInstance Win32_Processor | Select-Object -First 1).Name.Trim()
+        ram_gb = [math]::Round($cs.TotalPhysicalMemory / 1GB)
+        gpus   = $gpus
+    }
+}
+
+# Höchstwerte von GPU-Speicher (dediziert, geteilt) und Arbeitsspeicher, solange der Prozess läuft; nach $limit Sekunden
+# wird er beendet (timeout = $true)
+function Watch-Process($proc, $limit) {
+    $max = @{ ded = 0; shr = 0; ws = 0; timeout = $false }
+    $watch = [Diagnostics.Stopwatch]::StartNew()
+    while (-not $proc.HasExited) {
+        if ($watch.Elapsed.TotalSeconds -gt $limit) {
+            Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
+            $proc.WaitForExit(5000) | Out-Null
+            $max.timeout = $true
+            break
+        }
+        try {
+            $rows = @(Get-CimInstance Win32_PerfFormattedData_GPUPerformanceCounters_GPUProcessMemory |
+                    Where-Object { $_.Name -like "pid_$($proc.Id)_*" })
+            $ded = ($rows | Measure-Object -Property DedicatedUsage -Sum).Sum
+            $shr = ($rows | Measure-Object -Property SharedUsage -Sum).Sum
+            if ($ded -gt $max.ded) { $max.ded = $ded }
+            if ($shr -gt $max.shr) { $max.shr = $shr }
+            $proc.Refresh()
+            if ($proc.WorkingSet64 -gt $max.ws) { $max.ws = $proc.WorkingSet64 }
+        } catch { }
+        Start-Sleep -Milliseconds 500
+    }
+    $max
+}
+
+$runs = @()
+foreach ($eng in $engines) {
+    foreach ($mode in $Modes) {
+        $tmp = Join-Path $reports "native-proto-$stamp-$eng-$mode.tmp.json"
+        $argList = @('--root', "`"$Root`"", '--mode', $mode, '--measure', $Seconds, '--warmup', $Warmup, '--report', "`"$tmp`"", '--novsync', '--auto')
+        # WGPU_BACKEND gilt nur für Bevy; Ebitengine wählt seine Grafik-Bibliothek selbst (Windows: DirectX 11)
+        if ($eng -eq 'bevy') {
+            $env:WGPU_BACKEND = $Backend
+            Write-Host "🚀 Messe $eng $mode ($Seconds s nach $Warmup s Aufwärmen, Backend $Backend)"
+        } else {
+            Remove-Item Env:WGPU_BACKEND -ErrorAction SilentlyContinue
+            $argList += $EbitenArgs
+            Write-Host "🚀 Messe $eng $mode ($Seconds s nach $Warmup s Aufwärmen)"
+        }
+        $proc = Start-Process -FilePath $exes[$eng] -ArgumentList $argList -PassThru
+        $max = Watch-Process $proc $limit
+        if ($max.timeout) { Write-Host "❌ $eng $mode nach $limit s nicht fertig, Prozess beendet"; Remove-Item $tmp -ErrorAction SilentlyContinue; continue }
+        if (-not (Test-Path $tmp)) { Write-Host "❌ Kein Bericht für $eng $mode (Exit $($proc.ExitCode))"; continue }
+        $r = Get-Content $tmp -Raw -Encoding UTF8 | ConvertFrom-Json
+        Remove-Item $tmp
+        $r = $r | Select-Object @{ n = 'engine'; e = { $eng } }, *
+        $r | Add-Member gpu_dediziert_mib_max ([math]::Round($max.ded / 1MB))
+        $r | Add-Member gpu_geteilt_mib_max ([math]::Round($max.shr / 1MB))
+        $r | Add-Member ram_mib_max ([math]::Round($max.ws / 1MB))
+        $runs += $r
+        Write-Host ("✅ {0} {1}: {2:N0} FPS Mittel, {3:N0} FPS 1-%-Low, p99 {4:N1} ms, GPU {5} MiB, RAM {6} MiB" -f $eng, $mode, $r.fps_mittel, $r.fps_1pct_low, $r.frametime_ms.p99, $r.gpu_dediziert_mib_max, $r.ram_mib_max)
+    }
+}
+Remove-Item Env:WGPU_BACKEND -ErrorAction SilentlyContinue
+
+$out = Join-Path $reports "native-proto-$($env:COMPUTERNAME)-$stamp.json"
+$json = [ordered]@{ zeit = (Get-Date -Format 'o'); rechner = (Get-Machine); laeufe = $runs } | ConvertTo-Json -Depth 6
+# UTF-8 ohne BOM (Set-Content -Encoding UTF8 schreibt in PowerShell 5.1 eine BOM, an der JSON-Leser scheitern)
+[IO.File]::WriteAllText($out, $json, (New-Object Text.UTF8Encoding $false))
+Write-Host "💾 Bericht: $out"

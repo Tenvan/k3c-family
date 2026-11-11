@@ -161,6 +161,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-772](B-772-xbox-webgl1-und-speichergrenze-130-mib.md) | CLI | Problem | hoch | offen | LG1 | Auf der Xbox läuft WebGL 1 mit einem Texturspeicher von höchstens 130 MiB |
 | [B-773](B-773-texturtest-seite-responsive-ein-screen.md) | CLI | Problem | mittel | offen | LG1 | Die Textur-Testseite passt responsiv auf einen Screen |
 | [B-774](B-774-abnahme-laeufe-lg1.md) | CLI | Schuld | mittel | offen | LG1 | Abnahme-Läufe LG1 |
+| [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | offen | – | K3C läuft nativ in Rust und Bevy auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
+| [B-776](B-776-bevy-prototyp-papier-sheets-zwei-pads.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Bevy-Prototyp zeigt ein Level mit echten Papier-Sheets, zwei Gamepads steuern je einen Monarchen, FPS und Grafikspeicher sind gemessen |
+| [B-777](B-777-ebitengine-prototyp-vergleich.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Ebitengine-Prototyp zeigt dasselbe Level wie der Bevy-Prototyp und liefert vergleichbare Messwerte |
 
 ## Archiv
 

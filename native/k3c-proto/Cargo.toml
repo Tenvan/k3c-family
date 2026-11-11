@@ -1,0 +1,22 @@
+# Bevy-Prototyp (Projekt NAT, Sprint NV1, B-776): ein Level aus Papier-Sheets, zwei Gamepads, Messung.
+# Eigenes Cargo-Projekt, nicht im Workspace `rust/` (dessen Release-Profil gilt der FFI-DLL). Befehle nur über `task native:*`.
+[package]
+name = "k3c-proto"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[dependencies]
+# Exakt gepinnt (B-776/AC-01); ein Update nur bewusst, mit neuem Cargo.lock.
+bevy = "=0.20.1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.release]
+opt-level = 3
+codegen-units = 16
+lto = "thin"
