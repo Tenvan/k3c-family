@@ -68,7 +68,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RS1.1 | `RS1.1-baseline-pc.md` | Umsetzung | autonom | fertig |
-| RS1.2 | `RS1.2-baseline-pi.md` | Umsetzung | Mensch | offen |
+| RS1.2 | `RS1.2-baseline-pi.md` | Umsetzung | Mensch | verworfen |
 | RS1.3 | `RS1.3-go-fixes.md` | Umsetzung | autonom | fertig |
 | RS1.4 | `RS1.4-rust-toolchain-bruecke.md` | Umsetzung | autonom | fertig |
 | RS1.5 | `RS1.5-rng-level-rust.md` | Umsetzung | autonom | fertig |

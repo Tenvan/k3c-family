@@ -1,6 +1,6 @@
 # 007 · Rust-Server: Architektur, Bibliotheken und Portreihenfolge (Etappe 2)
 
-- **Status:** Entwurf (RS2.4, 2026-11-08, autonom, Claude). Freigabe nur durch Ralf; jede Crate gilt erst mit dieser Freigabe.
+- **Status:** überholt durch 008 (2026-11-11, Rust entfällt). Vorher: Entwurf (RS2.4, 2026-11-08, autonom, Claude). Freigabe nur durch Ralf; jede Crate gilt erst mit dieser Freigabe.
 - **Datum:** 2026-11-08
 - **Projekt:** RST · Ticket: B-736 (Sprint RS2, Session RS2.4)
 - **Vorgänger:** 001 (Engine auf Go-Server), 004 (Datei-Watch, Neustart), 006 (Rust-Engine, Variante 2 = Etappe 2)

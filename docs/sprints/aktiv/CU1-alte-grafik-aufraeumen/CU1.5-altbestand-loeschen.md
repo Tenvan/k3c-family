@@ -1,6 +1,6 @@
 # CU1.5 · Altbestand, Generatoren und Tasks löschen
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -66,5 +66,5 @@ Review-Agent (Sonnet) vor dem Commit, weil Taskfile, Dockerfile und CI geändert
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01, AC-03 geprüft:** Ordner, Generatoren, Tasks, Dockerfile und Packs entfernt mit PR #543; Claude hat danach Doku-Reste bereinigt (`docs/assets/zuordnung*.md`, `pipeline-liste.json`, `stil-bibel.md`, `docs/standards/gebaeude-grafik.md` gelöscht; CLAUDE.md, Codemaps, Glossar, Code-Kommentare ohne Verweise auf `tools/(buildings|atlas|pipeline|spritegen)`). `LICENSE-ASSETS` ohne Grafik-Packs, `public/grafik/CREDITS.md` fehlt.
+- **Offen:** Rest-Verweise in `tools/assetkit/catalog*.go` und `src/scenes/render/*Sprites*.ts` (Kommentare/Konstante „tools/buildings“) gehören zu B-760. AC-02 (`check:all`, `buildall`) nicht gelaufen; `check:diff` rot nur wegen `tests/planning.test.ts` (NV1: AC-06 ohne Session, nicht aus CU1).

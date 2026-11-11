@@ -61,6 +61,7 @@ keine
 |---|---|---|---|---|
 | NV1.1 | `NV1.1-bevy-prototyp.md` | Umsetzung | autonom | fertig |
 | NV1.2 | `NV1.2-ebitengine-prototyp.md` | Umsetzung | autonom | fertig |
+| NV1.3 | `NV1.3-messung-mini-pc.md` | Review | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

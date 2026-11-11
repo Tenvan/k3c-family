@@ -1,7 +1,7 @@
 # RST · Rust-Engine
 
-- **Status:** aktiv
-- **Rang:** 11
+- **Status:** ruht
+- **Rang:** –
 - **Ziel-Tickets:** –
 
 ## Ziel
@@ -26,3 +26,5 @@ Lasttest, TUI, Workbench, `assetkit` und Starter in Rust (006, Varianten 3–4).
 2026-11-07: angelegt; 006 von Ralf angenommen („erstmal“), Pi bleibt Zielplattform und ist der Hauptgrund. Timing-Messung auf Ralfs Wunsch in die Umsetzung verschoben (RS1.1/RS1.2). Workbench-Importe von `engine/sim` dürfen wegfallen (B-726), damit ist Variante 2 (Rust-Server) mögliche Etappe 2. Generatoren entfallen mit PAP und zählen nicht.
 
 2026-11-07 (RS1 gemerged, PR #510): RS1-Empfehlung lautete „kein Vollumbau, zuerst B-731“. Ralf hat trotzdem Etappe 2 gewählt; Planung als B-736 und Sprint RS2 (Entwurf, nicht freigegeben). B-731 bleibt Vorarbeit (Referenzweg, Gate G1: erfüllt der Go-Server nach B-731 das Pi-Ziel mit Reserve, entscheidet Ralf, ob es weitergeht). Folgesprints RS3–RS12 sind nur in B-736 skizziert und werden einzeln bereit gemacht.
+
+2026-11-11: Projekt ruht. Entscheidung 008: natives Spiel in Go + Ebitengine, Rust entfällt komplett; 006 und 007 sind überholt. Aufräumen und Schließen: B-779 (Projekt NAT).

@@ -69,7 +69,7 @@ Siehe `B-736 › Offene Fragen` (Frage 1 betrifft den Sprint: G1 bei erfülltem 
 | RS2.2 | `RS2.2-workbench-entkoppeln.md` | Umsetzung | autonom | fertig |
 | RS2.3 | `RS2.3-zustand-stufe1.md` | Umsetzung | autonom | fertig |
 | RS2.4 | `RS2.4-inventar-007.md` | Umsetzung | autonom | fertig |
-| RS2.5 | `RS2.5-pi-messung.md` | Umsetzung | Mensch | offen |
+| RS2.5 | `RS2.5-pi-messung.md` | Umsetzung | Mensch | verworfen |
 | RS2.6 | `RS2.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
