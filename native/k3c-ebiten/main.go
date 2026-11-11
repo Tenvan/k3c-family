@@ -1,6 +1,6 @@
-// K3C Ebitengine-Prototyp (Projekt NAT, Sprint NV1): derselbe Wald-Level aus Papier-Sheets wie der Bevy-Prototyp
-// (native/k3c-proto), zwei Monarchen an zwei Gamepads im Split-Screen, Messmodus für FPS und Texturspeicher.
-// Keine Spiel-Logik, kein Netz. Zweck: direkter Vergleich der Messwerte beider Engines.
+// K3C Ebitengine-Prototyp (Projekt NAT, Sprint NV1): ein Wald-Level aus Papier-Sheets, zwei Monarchen an zwei
+// Gamepads im Split-Screen, Messmodus für FPS und Texturspeicher. Keine Spiel-Logik, kein Netz. Zweck: Messwerte der
+// Engine für die Entscheidung 008.
 //
 // Aufruf (über `task native:*`): k3c-ebiten [--root <repo>] [--mode level|alle] [--measure <s>] [--warmup <s>]
 // [--report <datei>] [--novsync] [--auto]; zusätzlich nur hier: [--shots <ordner>] (Screenshots an zwei Kamera-Positionen, NV3.1), [--unmanaged] (Gegenversuch: je Sheet eine eigene Textur statt Ebitengines Atlas),
@@ -23,7 +23,7 @@ import (
 	"k3c/native/k3c-rig/paint"
 )
 
-// Fenstergröße in Bildpunkten des Bildschirms (wie der Bevy-Prototyp)
+// Fenstergröße in Bildpunkten des Bildschirms
 const (
 	winW = 1920
 	winH = 1080
@@ -102,7 +102,7 @@ func (g *Game) Update() error {
 		return err
 	}
 	now := clock()
-	dt := math.Min(now-g.last, 0.25) // gekappt wie Bevys Spielzeit, nur für die Bewegung
+	dt := math.Min(now-g.last, 0.25) // gekappt auf 0,25 s, nur für die Bewegung
 	g.last = now
 	g.elapsed += dt
 	if g.shots != nil {

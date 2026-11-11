@@ -1,7 +1,7 @@
 package main
 
 // Messmodus: warten, bis alle Bilder geladen und einmal gezeichnet sind, aufwärmen, dann die echte Zeit je gezeichnetem
-// Frame (Hochleistungszähler, siehe clock_windows.go) sammeln und einen JSON-Bericht mit denselben Feldern wie der Bevy-Prototyp schreiben (measure.rs).
+// Frame (Hochleistungszähler, siehe clock_windows.go) sammeln und einen JSON-Bericht schreiben.
 // GPU-Speicher misst native/measure.ps1 von außen (Windows-Zähler) und ergänzt den Bericht.
 
 import (

@@ -108,7 +108,7 @@ func (f *figure) update(dt float64, playing, visible bool) error {
 func (f *figure) reach() float64 { return (math.Abs(f.frame[0]) + math.Abs(f.frame[2])) * f.unit }
 
 // draw zeichnet die Figur mit Fußpunkt (fx, fy); s = Bildschirm-Pixel je Spiel-Pixel. Gespiegelt wird wie beim Sheet im
-// eigenen Rahmen (flip_x in Bevy), nicht um den Fußpunkt, damit Rig und Sheet an derselben Stelle stehen.
+// eigenen Rahmen, nicht um den Fußpunkt, damit Rig und Sheet an derselben Stelle stehen.
 func (f *figure) draw(p *paint.Painter, dst *ebiten.Image, fx, fy, s, viewW float64, flip bool) {
 	k := f.unit * s
 	x0 := fx + f.frame[0]*k

@@ -40,9 +40,7 @@ data/worlds/*
 # Sperrdatei der Ticket-Nummernvergabe (B-615)
 docs/backlog/.ticket.lock
 
-# Rust-Kern (RST)
-/rust/target/
-/native/k3c-proto/target/
+# Bau-Ordner der nativen Go-Prototypen (NAT)
 /native/k3c-ebiten/bin/
 /native/k3c-rig/bin/
 

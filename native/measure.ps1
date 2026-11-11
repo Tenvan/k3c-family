@@ -1,9 +1,9 @@
-﻿# K3C-Prototypen messen (B-776/AC-04): startet den Bevy-Prototyp (k3c-proto) und/oder den Ebitengine-Prototyp
-# (k3c-ebiten) für die Lastfälle `level` und `alle`, liest dabei den GPU-Speicher des Prozesses (WMI-Klasse der
-# GPU-Zähler, sprachunabhängig) und den Arbeitsspeicher und schreibt einen gemeinsamen Bericht nach
-# reports/native-proto-<rechner>-<zeit>.json (je Lauf ein Feld `engine`). Läuft mit Windows PowerShell 5.1 und pwsh 7.
-# Aufruf im Repo: `task native:measure`, `native:measure:ebiten`, `native:measure:beide`; im Paket auf dem Mini-PC:
-# `messen.cmd` (gleicher Ordner wie die EXE). Ohne -Engine werden alle vorhandenen EXE gemessen.
+﻿# K3C-Prototypen messen (B-776/AC-04): startet den Ebitengine-Prototyp (k3c-ebiten) für die Lastfälle `level` und
+# `alle`, liest dabei den GPU-Speicher des Prozesses (WMI-Klasse der GPU-Zähler, sprachunabhängig) und den
+# Arbeitsspeicher und schreibt einen Bericht nach reports/native-proto-<rechner>-<zeit>.json (je Lauf ein Feld `engine`).
+# Läuft mit Windows PowerShell 5.1 und pwsh 7. Der Rust-Vergleichs-Prototyp ist entfallen (Entscheidung 008, B-779).
+# Aufruf im Repo: `task native:measure:ebiten`; im Paket auf dem Mini-PC: `messen.cmd` (gleicher Ordner wie die EXE).
+# Ohne -Engine werden alle vorhandenen EXE gemessen.
 # Rig-Prototyp (B-778/AC-05, `task native:rig:measure`, -Engine rig): k3c-rig mit 2, 50 und 200 Reitern, je als Rig und
 # aus dem Sheet; Bericht nach reports/native-rig-<rechner>-<zeit>.json (Felder `art` und `figuren` je Lauf).
 param(
@@ -11,9 +11,8 @@ param(
     [string]$Root = '',
     [int]$Seconds = 20,
     [int]$Warmup = 5,
-    [string]$Backend = 'vulkan',
     [string[]]$Modes = @('level', 'alle'),
-    [ValidateSet('', 'bevy', 'ebiten', 'beide', 'rig')]
+    [ValidateSet('', 'ebiten', 'rig')]
     [string]$Engine = '',
     [string[]]$EbitenArgs = @(),
     [int[]]$Figuren = @(2, 50, 200),
@@ -30,25 +29,21 @@ function Find-Exe($name, $repoPath) {
     $p
 }
 $exes = [ordered]@{
-    bevy   = Find-Exe 'k3c-proto' 'k3c-proto\target\release\k3c-proto.exe'
     ebiten = Find-Exe 'k3c-ebiten' 'k3c-ebiten\bin\k3c-ebiten.exe'
     rig    = Find-Exe 'k3c-rig' 'k3c-rig\bin\k3c-rig.exe'
 }
-$buildTask = @{ bevy = 'proto'; ebiten = 'ebiten'; rig = 'rig' }
+$buildTask = @{ ebiten = 'ebiten'; rig = 'rig' }
 if ($Exe) {
     # Eigene EXE: gilt für die genannte Engine, sonst entscheidet der Dateiname
-    if ($Engine -eq 'beide') { throw '-Exe und -Engine beide passen nicht zusammen' }
-    if (-not $Engine) { $Engine = if ((Split-Path $Exe -Leaf) -like '*ebiten*') { 'ebiten' } else { 'bevy' } }
+    if (-not $Engine) { $Engine = if ((Split-Path $Exe -Leaf) -like '*rig*') { 'rig' } else { 'ebiten' } }
     $exes[$Engine] = $Exe
 }
 $engines = @(switch ($Engine) {
-        'bevy' { 'bevy' }
         'ebiten' { 'ebiten' }
-        'beide' { 'bevy', 'ebiten' }
         'rig' { 'rig' }
         default { $exes.Keys | Where-Object { Test-Path $exes[$_] } }
     })
-if ($engines.Count -eq 0) { throw "Keine EXE gefunden (erst task native:proto:build, native:ebiten:build oder native:rig:build)" }
+if ($engines.Count -eq 0) { throw "Keine EXE gefunden (erst task native:ebiten:build oder native:rig:build)" }
 foreach ($e in $engines) {
     if (-not (Test-Path $exes[$e])) { throw "EXE fehlt: $($exes[$e]) (erst task native:$($buildTask[$e]):build)" }
 }
@@ -103,7 +98,7 @@ function Watch-Process($proc, $limit) {
     $max
 }
 
-# Läufe je Engine: Lastfälle `level` und `alle` (Bevy, Ebitengine) oder Art × Figurenzahl (Rig-Prototyp)
+# Läufe je Engine: Lastfälle `level` und `alle` (Ebitengine) oder Art × Figurenzahl (Rig-Prototyp)
 function Get-Jobs($eng) {
     if ($eng -ne 'rig') { return @($Modes | ForEach-Object { @{ name = $_; args = @('--mode', $_, '--auto') } }) }
     $jobs = @()
@@ -117,15 +112,9 @@ foreach ($eng in $engines) {
         $mode = $job.name
         $tmp = Join-Path $reports "native-proto-$stamp-$eng-$mode.tmp.json"
         $argList = @('--root', "`"$Root`"", '--measure', $Seconds, '--warmup', $Warmup, '--report', "`"$tmp`"", '--novsync') + $job.args
-        # WGPU_BACKEND gilt nur für Bevy; Ebitengine wählt seine Grafik-Bibliothek selbst (Windows: DirectX 11)
-        if ($eng -eq 'bevy') {
-            $env:WGPU_BACKEND = $Backend
-            Write-Host "🚀 Messe $eng $mode ($Seconds s nach $Warmup s Aufwärmen, Backend $Backend)"
-        } else {
-            Remove-Item Env:WGPU_BACKEND -ErrorAction SilentlyContinue
-            if ($eng -eq 'ebiten') { $argList += $EbitenArgs }
-            Write-Host "🚀 Messe $eng $mode ($Seconds s nach $Warmup s Aufwärmen)"
-        }
+        # Ebitengine wählt seine Grafik-Bibliothek selbst (Windows: DirectX 11)
+        if ($eng -eq 'ebiten') { $argList += $EbitenArgs }
+        Write-Host "🚀 Messe $eng $mode ($Seconds s nach $Warmup s Aufwärmen)"
         $proc = Start-Process -FilePath $exes[$eng] -ArgumentList $argList -PassThru
         $max = Watch-Process $proc $limit
         if ($max.timeout) { Write-Host "❌ $eng $mode nach $limit s nicht fertig, Prozess beendet"; Remove-Item $tmp -ErrorAction SilentlyContinue; continue }
@@ -140,7 +129,6 @@ foreach ($eng in $engines) {
         Write-Host ("✅ {0} {1}: {2:N0} FPS Mittel, {3:N0} FPS 1-%-Low, p99 {4:N1} ms, GPU {5} MiB, RAM {6} MiB" -f $eng, $mode, $r.fps_mittel, $r.fps_1pct_low, $r.frametime_ms.p99, $r.gpu_dediziert_mib_max, $r.ram_mib_max)
     }
 }
-Remove-Item Env:WGPU_BACKEND -ErrorAction SilentlyContinue
 
 $kind = if ($engines.Count -eq 1 -and $engines[0] -eq 'rig') { 'rig' } else { 'proto' }
 $out = Join-Path $reports "native-$kind-$($env:COMPUTERNAME)-$stamp.json"
