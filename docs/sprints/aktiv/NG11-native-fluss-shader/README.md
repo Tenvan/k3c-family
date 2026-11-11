@@ -1,6 +1,6 @@
 # NG11 · CLI · Natives Spiel: Fluss mit Shader
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit

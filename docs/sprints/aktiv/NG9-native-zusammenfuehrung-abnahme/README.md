@@ -1,6 +1,6 @@
 # NG9 · CLI · Natives Spiel: Zusammenführung, Messung und Abnahme
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
