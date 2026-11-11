@@ -1,11 +1,11 @@
 # NV3 · CLI · Prototyp-Ausbau: Fluss, fester Hintergrund, alle Figuren als Rig
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-789
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 005c5c9b
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-11-11 🧑 Chat (B-789 Revision 2)
@@ -65,7 +65,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NV3.1 | `NV3.1-fluss-fester-hintergrund.md` | Umsetzung | autonom | offen |
+| NV3.1 | `NV3.1-fluss-fester-hintergrund.md` | Umsetzung | autonom | in Arbeit |
 | NV3.2 | `NV3.2-rig-export-alle-figuren.md` | Umsetzung | autonom | offen |
 | NV3.3 | `NV3.3-rigs-im-level.md` | Umsetzung | autonom | offen |
 | NV3.4 | `NV3.4-messung-review.md` | Review | autonom | offen |

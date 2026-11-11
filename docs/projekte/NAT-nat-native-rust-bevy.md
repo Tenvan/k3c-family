@@ -16,7 +16,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 |---|---|---|
 | NV1 | Bevy-Prototyp: Papier-Sheets, zwei Gamepads, Messung | aktiv |
 | NV2 | Rig-Prototyp: Monarch aus Teilen in Ebitengine | aktiv |
-| NV3 | Prototyp-Ausbau: Fluss, fester Hintergrund, alle Figuren als Rig | geplant |
+| NV3 | Prototyp-Ausbau: Fluss, fester Hintergrund, alle Figuren als Rig | aktiv |
 
 ## Nicht-Ziele
 

@@ -1,6 +1,6 @@
 # NV3.1 · Fluss in der unteren Bildhälfte und feste Schicht fern
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
