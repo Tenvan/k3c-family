@@ -1,6 +1,6 @@
 # NG9.3 · Review Zusammenführung und Abnahme-Ticket des Projekts
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -57,5 +57,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Review Welle 3 (Agent `k3c-reviewer`, Opus): kein schwerer Befund. Behoben: Wanduhr nur im Messmodus (vorher Syscall mit Heap-Allokation je Bild im normalen Spiel); Paket-Task bricht ab, wenn `--assets` scheitert; Szene im Messbericht; Tests ohne gerenderte Grafik überspringen sich (CI auf develop war rot). Ohne Befund: CI-Tauglichkeit ohne Grafik, Ton, Fenster, Schrift; Ende-zu-Ende-Test prüft jede Station; Paket-Task löscht nur unter `.work/`. Offen (niedrig): Bild-Test prüft nur Gleichheit zweier Läufe; je zwei Sessions in einem Commit. Geprüft: `check_run task:check:diff` grün. `task check`/`check:go` nicht gefahren (nur `native/`). Hardware entkoppelt: AC-04 und AC-05 angenommen, Validierung offen (NG9.4, NG9.5).

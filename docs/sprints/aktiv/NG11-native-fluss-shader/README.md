@@ -65,7 +65,7 @@ Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität
 |---|---|---|---|---|
 | NG11.1 | `NG11.1-fluss-shader.md` | Umsetzung | autonom | fertig |
 | NG11.2 | `NG11.2-messung.md` | Umsetzung | autonom | fertig |
-| NG11.3 | `NG11.3-review.md` | Review | autonom | offen |
+| NG11.3 | `NG11.3-review.md` | Review | autonom | fertig |
 | NG11.4 | `NG11.4-sichtpruefung.md` | Review | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -74,6 +74,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-11 Review (Claude, `k3c-reviewer`): AC laut Ergebnis der Sessions; Hardware entkoppelt, Sprint bleibt aktiv bis NG11.4 (🧑). Neue Tickets: B-806, B-807, B-808, B-809, B-810, B-811, B-812, B-813, B-814, B-815, B-816. Abnahme-Ticket des Projekts: B-817. Version: keine vorgeschlagen (Abnahme am PC steht aus).
