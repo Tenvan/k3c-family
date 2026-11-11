@@ -15,15 +15,16 @@ import (
 // Importregel (B-792, view/doc.go): Fachpakete importieren nur view, art, k3c/engine/sim und k3c/data, dazu
 // Standardbibliothek und Ebitengine; nie einander, nie game oder local. view kennt nur sim. Tests der Fachpakete
 // dürfen zusätzlich k3c/engine/* nutzen (Welten für Testfälle bauen). Fachpaket ist jeder Ordner des Moduls außer
-// game, local, art und view; ein neues Paket fällt damit von selbst unter die Regel.
+// game, local, art, view und e2e; ein neues Paket fällt damit von selbst unter die Regel.
 
 const module = "k3c/native/k3c-game"
 
 // fachpakete sind die Fachpakete laut B-792; jedes hat einen Eintrag in Packages().
 var fachpakete = []string{"actors", "audio", "fx", "hud", "input", "menu", "props", "world"}
 
-// notFach sind die Ordner mit eigener Regel bzw. ohne Go-Paket.
-var notFach = []string{"game", "local", "art", "view", "bin"}
+// notFach sind die Ordner mit eigener Regel bzw. ohne Go-Paket; e2e ist der Ende-zu-Ende-Test (nur Tests, darf alles
+// wie game).
+var notFach = []string{"game", "local", "art", "view", "bin", "e2e"}
 
 func isStd(path string) bool {
 	first, _, _ := strings.Cut(path, "/")

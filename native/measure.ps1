@@ -6,17 +6,22 @@
 # Ohne -Engine werden alle vorhandenen EXE gemessen.
 # Rig-Prototyp (B-778/AC-05, `task native:rig:measure`, -Engine rig): k3c-rig mit 2, 50 und 200 Reitern, je als Rig und
 # aus dem Sheet; Bericht nach reports/native-rig-<rechner>-<zeit>.json (Felder `art` und `figuren` je Lauf).
+# Natives Spiel (B-802/AC-03, `task native:game:measure`, -Engine game): k3c-game im Messmodus, Fenster 1920x1080, VSync
+# aus, 2 Spieler, je einmal die Szenen `tag` und `nacht` (Gegner an der Burg); Arbeitsordner ist -Root (public\grafik,
+# native\k3c-rig\assets); Bericht nach reports/native-game-<rechner>-<zeit>.json (Feld `szene` je Lauf).
 param(
     [string]$Exe = '',
     [string]$Root = '',
     [int]$Seconds = 20,
     [int]$Warmup = 5,
     [string[]]$Modes = @('level', 'alle'),
-    [ValidateSet('', 'ebiten', 'rig')]
+    [ValidateSet('', 'ebiten', 'rig', 'game')]
     [string]$Engine = '',
     [string[]]$EbitenArgs = @(),
     [int[]]$Figuren = @(2, 50, 200),
-    [string[]]$Arten = @('rig', 'sheet')
+    [string[]]$Arten = @('rig', 'sheet'),
+    [string[]]$Szenen = @('tag', 'nacht'),
+    [string]$Size = '1920x1080'
 )
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [Text.Encoding]::UTF8
@@ -31,19 +36,24 @@ function Find-Exe($name, $repoPath) {
 $exes = [ordered]@{
     ebiten = Find-Exe 'k3c-ebiten' 'k3c-ebiten\bin\k3c-ebiten.exe'
     rig    = Find-Exe 'k3c-rig' 'k3c-rig\bin\k3c-rig.exe'
+    game   = Find-Exe 'k3c-game' 'k3c-game\bin\k3c-game.exe'
 }
-$buildTask = @{ ebiten = 'ebiten'; rig = 'rig' }
+$buildTask = @{ ebiten = 'ebiten'; rig = 'rig'; game = 'game' }
 if ($Exe) {
     # Eigene EXE: gilt für die genannte Engine, sonst entscheidet der Dateiname
-    if (-not $Engine) { $Engine = if ((Split-Path $Exe -Leaf) -like '*rig*') { 'rig' } else { 'ebiten' } }
+    if (-not $Engine) {
+        $leaf = Split-Path $Exe -Leaf
+        $Engine = if ($leaf -like '*rig*') { 'rig' } elseif ($leaf -like '*game*') { 'game' } else { 'ebiten' }
+    }
     $exes[$Engine] = $Exe
 }
 $engines = @(switch ($Engine) {
         'ebiten' { 'ebiten' }
         'rig' { 'rig' }
+        'game' { 'game' }
         default { $exes.Keys | Where-Object { Test-Path $exes[$_] } }
     })
-if ($engines.Count -eq 0) { throw "Keine EXE gefunden (erst task native:ebiten:build oder native:rig:build)" }
+if ($engines.Count -eq 0) { throw "Keine EXE gefunden (erst task native:ebiten:build, native:rig:build oder native:game:build)" }
 foreach ($e in $engines) {
     if (-not (Test-Path $exes[$e])) { throw "EXE fehlt: $($exes[$e]) (erst task native:$($buildTask[$e]):build)" }
 }
@@ -98,8 +108,16 @@ function Watch-Process($proc, $limit) {
     $max
 }
 
-# Läufe je Engine: Lastfälle `level` und `alle` (Ebitengine) oder Art × Figurenzahl (Rig-Prototyp)
+# Szenen des nativen Spiels: fester Seed, 2 Spieler, Vorlauf über --tick (ohne Fenster), feste Eingabe-Folge.
+# tag: Spieler 1 läuft rechts, Spieler 2 links. nacht: erste Nacht, beide stehen an der Burg, die Welle kommt dort an.
+$gameScenes = @{
+    tag   = @('--seed', 'k3c', '--players', '2', '--tick', '300', '--input', '0@0=R,1@0=L')
+    nacht = @('--seed', 'k3c', '--players', '2', '--tick', '15600', '--input', '0@0=-,1@0=-')
+}
+
+# Läufe je Engine: Lastfälle `level` und `alle` (Ebitengine), Art × Figurenzahl (Rig-Prototyp) oder Szenen (Spiel)
 function Get-Jobs($eng) {
+    if ($eng -eq 'game') { return @($Szenen | ForEach-Object { @{ name = $_; args = $gameScenes[$_] } }) }
     if ($eng -ne 'rig') { return @($Modes | ForEach-Object { @{ name = $_; args = @('--mode', $_, '--auto') } }) }
     $jobs = @()
     foreach ($n in $Figuren) { foreach ($art in $Arten) { $jobs += @{ name = "$art-$n"; args = @('--art', $art, '--figuren', $n) } } }
@@ -111,11 +129,13 @@ foreach ($eng in $engines) {
     foreach ($job in (Get-Jobs $eng)) {
         $mode = $job.name
         $tmp = Join-Path $reports "native-proto-$stamp-$eng-$mode.tmp.json"
-        $argList = @('--root', "`"$Root`"", '--measure', $Seconds, '--warmup', $Warmup, '--report', "`"$tmp`"", '--novsync') + $job.args
+        $argList = @('--measure', $Seconds, '--warmup', $Warmup, '--report', "`"$tmp`"", '--novsync') + $job.args
+        # Das Spiel liest seine Dateien relativ zum Arbeitsordner, die Prototypen über --root
+        if ($eng -eq 'game') { $argList += @('--size', $Size) } else { $argList = @('--root', "`"$Root`"") + $argList }
         # Ebitengine wählt seine Grafik-Bibliothek selbst (Windows: DirectX 11)
         if ($eng -eq 'ebiten') { $argList += $EbitenArgs }
         Write-Host "🚀 Messe $eng $mode ($Seconds s nach $Warmup s Aufwärmen)"
-        $proc = Start-Process -FilePath $exes[$eng] -ArgumentList $argList -PassThru
+        $proc = Start-Process -FilePath $exes[$eng] -ArgumentList $argList -WorkingDirectory $Root -PassThru
         $max = Watch-Process $proc $limit
         if ($max.timeout) { Write-Host "❌ $eng $mode nach $limit s nicht fertig, Prozess beendet"; Remove-Item $tmp -ErrorAction SilentlyContinue; continue }
         if (-not (Test-Path $tmp)) { Write-Host "❌ Kein Bericht für $eng $mode (Exit $($proc.ExitCode))"; continue }
@@ -130,7 +150,7 @@ foreach ($eng in $engines) {
     }
 }
 
-$kind = if ($engines.Count -eq 1 -and $engines[0] -eq 'rig') { 'rig' } else { 'proto' }
+$kind = if ($engines.Count -eq 1 -and $engines[0] -in @('rig', 'game')) { $engines[0] } else { 'proto' }
 $out = Join-Path $reports "native-$kind-$($env:COMPUTERNAME)-$stamp.json"
 $json = [ordered]@{ zeit = (Get-Date -Format 'o'); rechner = (Get-Machine); laeufe = $runs } | ConvertTo-Json -Depth 6
 # UTF-8 ohne BOM (Set-Content -Encoding UTF8 schreibt in PowerShell 5.1 eine BOM, an der JSON-Leser scheitern)

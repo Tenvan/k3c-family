@@ -61,6 +61,13 @@ type Args struct {
 	W, H   int    // Größe der Zeichenfläche (Aufnahme) bzw. des Fensters
 	Scene  Scene
 	Script bool // Eingabe aus Scene.Script statt von den Geräten
+	// Flow (--flow): Ablauf ab dem Hauptmenü ohne Szenen-Spiel; die Eingabe-Folge bedient Menüs und Spiel, die Aufnahme
+	// läuft auch ohne laufendes Spiel weiter (Ende-zu-Ende, NG9.1).
+	Flow bool
+	// At (--at): Aufnahme genau nach diesen Takten seit dem Start (aufsteigend); ersetzt --tick, --count und --every.
+	At      []int
+	Measure Measure // Messmodus (--measure, measure.go)
+	Assets  bool    // --assets: Grafik-Ordner aller Level ausgeben und beenden (Paket, assets.go)
 }
 
 // InGame meldet, ob das Menü der Szene über dem laufenden (pausierten) Spiel liegt.
@@ -81,50 +88,69 @@ func (s Scene) Devices() []view.DeviceID {
 }
 
 // Usage nennt die Schalter.
-const Usage = "k3c-game [--saves <ordner>] [--seed <s> | --load <name>] [--depth <n>] [--players 1|2] [--cam <x>[,<x>]] " +
+const Usage = "k3c-game [--saves <ordner>] [--seed <s> | --load <name> | --flow] [--depth <n>] [--players 1|2] [--cam <x>[,<x>]] " +
 	"[--tick <n>] [--input <p@t=LRSPA1234-|a:aktion,…>] [--menu main|saves|options|lobby|pause] [--size <B>x<H>] " +
-	"[--shots <ordner> [--count <n>] [--every <takte>]]"
+	"[--shots <ordner> [--count <n>] [--every <takte>] [--at <t>,…]] " +
+	"[--measure <s> [--warmup <s>] [--report <datei>] [--novsync]] [--assets]"
 
-// ParseArgs wertet die Schalter aus (rein, ohne Dateizugriff); defSaves ist der Standard für --saves.
-func ParseArgs(argv []string, defSaves string) (Args, error) {
-	a := Args{Saves: defSaves}
-	var cams, input, size string
+// rawArgs sind die Schalter, die erst nach dem Einlesen ausgewertet werden.
+type rawArgs struct{ cams, input, size, at string }
+
+// newFlagSet bindet alle Schalter an a und r.
+func newFlagSet(a *Args, r *rawArgs, defSaves string) *flag.FlagSet {
 	fs := flag.NewFlagSet("k3c-game", flag.ContinueOnError)
 	fs.SetOutput(io.Discard)
 	fs.StringVar(&a.Saves, "saves", defSaves, "")
 	fs.StringVar(&a.Shots, "shots", "", "")
 	fs.IntVar(&a.Count, "count", 8, "")
 	fs.IntVar(&a.Every, "every", 3, "")
-	fs.StringVar(&size, "size", "1280x720", "")
+	fs.StringVar(&r.size, "size", "1280x720", "")
 	fs.StringVar(&a.Scene.Seed, "seed", "", "")
 	fs.IntVar(&a.Scene.Depth, "depth", 0, "")
 	fs.StringVar(&a.Scene.Load, "load", "", "")
 	fs.IntVar(&a.Scene.Players, "players", 2, "")
-	fs.StringVar(&cams, "cam", "", "")
+	fs.StringVar(&r.cams, "cam", "", "")
 	fs.IntVar(&a.Scene.Tick, "tick", 0, "")
-	fs.StringVar(&input, "input", "", "")
+	fs.StringVar(&r.input, "input", "", "")
 	fs.StringVar(&a.Scene.Menu, "menu", "", "")
+	addModeFlags(fs, a, r)
+	return fs
+}
+
+// ParseArgs wertet die Schalter aus (rein, ohne Dateizugriff); defSaves ist der Standard für --saves.
+func ParseArgs(argv []string, defSaves string) (Args, error) {
+	a := Args{Saves: defSaves}
+	var r rawArgs
+	fs := newFlagSet(&a, &r, defSaves)
 	if err := fs.Parse(argv); err != nil || fs.NArg() > 0 {
 		return Args{}, fmt.Errorf("🚫 ungültige Schalter (%v %v); gültig: %s", err, fs.Args(), Usage)
 	}
-	if !a.Scene.Direct() && ((a.Shots != "" && a.Scene.Menu == "") || a.Scene.Menu == "pause") {
-		a.Scene.Seed = "k3c" // Aufnahme einer Szene bzw. der Pause braucht ein Spiel
-	}
-	a.Script = input != "" || a.Shots != ""
-	if input == "" && a.Shots != "" && a.Scene.Menu == "" {
-		input = defScript
-	}
+	a.applyDefaults(&r)
 	var err error
-	if a.W, a.H, err = parseSize(size); err != nil {
+	if a.W, a.H, err = parseSize(r.size); err != nil {
 		return Args{}, err
 	}
-	if a.Scene.Cams, err = parseCams(cams); err != nil {
+	if a.Scene.Cams, err = parseCams(r.cams); err != nil {
 		return Args{}, err
 	}
-	if a.Scene.Script, err = ParseScript(input); err != nil {
+	if a.Scene.Script, err = ParseScript(r.input); err != nil {
+		return Args{}, err
+	}
+	if err = a.applyAt(r.at); err != nil {
 		return Args{}, err
 	}
 	return a, a.check()
+}
+
+// applyDefaults setzt Seed und Eingabe-Folge, die eine Aufnahme ohne eigene Angabe braucht (nicht bei --flow).
+func (a *Args) applyDefaults(r *rawArgs) {
+	if !a.Scene.Direct() && !a.Flow && ((a.Shots != "" && a.Scene.Menu == "") || a.Scene.Menu == "pause") {
+		a.Scene.Seed = "k3c" // Aufnahme einer Szene bzw. der Pause braucht ein Spiel
+	}
+	a.Script = r.input != "" || a.Shots != ""
+	if r.input == "" && a.Shots != "" && a.Scene.Menu == "" && !a.Flow {
+		r.input = defScript
+	}
 }
 
 // check prüft die Grenzen der Schalter.
@@ -157,7 +183,7 @@ func (a Args) checkShots() error {
 			return fmt.Errorf("🚫 --input: Spieler %d bei %d Spielern", h.Player, a.Scene.Players)
 		}
 	}
-	return nil
+	return a.checkModes()
 }
 
 // parseSize liest „BxH“.
