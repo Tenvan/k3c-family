@@ -1,6 +1,6 @@
 # NV3.4 · Messung am Entwicklungs-PC und Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,5 +54,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-04 geprüft: Messlauf Entwicklungs-PC (Notebook, DirectX 11, 8 s nach 4 s Aufwärmen, ohne VSync, je Art ein Lauf, Berichte `reports/native-ebiten-nv3/messung-rig.json` und `messung-sheet.json`): Rig 1188 FPS Mittel, 112 FPS 1-%-Low, 0,482 ms Rechenzeit je Frame, 16,7 MiB RGBA geladen (10,6 Sheets + 6,1 Rig-Teile); Sheet 1660 FPS, 179 FPS 1-%-Low, 0,147 ms, 31,9 MiB. Grafikspeicher der GPU nicht gemessen (nur geladene Texturen); die Werte entstanden bei laufenden anderen Agenten und schwanken.
+AC-01 bis AC-03 bestätigt aus NV3.1 bis NV3.3 (Screenshots, Tests).
+Review (Agent `k3c-reviewer`, Opus): keine schweren Befunde. Behoben: Rig-Teile ohne Mipmaps wie Sheets (Ruckler-Quelle, geschönter MiB-Vergleich). Offen für 🧑: Lauf-Frequenz Rig 1,6 Hz gegen Sheet 1 Hz (Sheet spielt mit fps 8 statt 12,8); Aufwärmen deckt Rig-Bilder nicht ab.
+`task check` und `task check:go` nicht gefahren: Der Sprint ändert nur `native/`, das beide nicht prüfen; `check:diff:go` der nativen Module grün. Kein Abnahme-Ticket: weder Sim, Balance, Gen noch `engine/` berührt.

@@ -28,6 +28,10 @@ func NewPainter(white *ebiten.Image) *Painter {
 	p := &Painter{white: white, View: rig.Identity}
 	p.op.Filter = ebiten.FilterLinear
 	p.tri.Filter = ebiten.FilterLinear
+	// Ohne Mipmaps wie Sheets und Fluss: Ebitengine legt sie sonst erst beim ersten verkleinerten Zeichnen an (Ruckler,
+	// mehr Grafikspeicher); die Teile liegen in doppelter Dichte vor, das genügt für das lineare Filtern.
+	p.op.DisableMipmaps = true
+	p.tri.DisableMipmaps = true
 	return p
 }
 

@@ -68,7 +68,7 @@ keine
 | NV3.1 | `NV3.1-fluss-fester-hintergrund.md` | Umsetzung | autonom | fertig |
 | NV3.2 | `NV3.2-rig-export-alle-figuren.md` | Umsetzung | autonom | fertig |
 | NV3.3 | `NV3.3-rigs-im-level.md` | Umsetzung | autonom | fertig |
-| NV3.4 | `NV3.4-messung-review.md` | Review | autonom | offen |
+| NV3.4 | `NV3.4-messung-review.md` | Review | autonom | fertig |
 | NV3.5 | `NV3.5-sichtpruefung-pc.md` | Review | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -77,6 +77,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-11 Review (Claude, `k3c-reviewer`): AC-01 bis AC-04 laut Ergebnis NV3.1 bis NV3.4, AC-05 offen (NV3.5, 🧑 am PC). Behoben: Mipmaps der Rig-Teile aus. Neue Tickets: B-791 (Bein-Bänder). Kein Abnahme-Ticket (nur `native/`, keine Sim-, Balance-, Gen-Läufe betroffen). Sprint bleibt aktiv bis NV3.5. Version: keine vorgeschlagen (Prototyp).
