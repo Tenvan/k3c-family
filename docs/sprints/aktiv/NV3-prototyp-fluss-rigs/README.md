@@ -65,7 +65,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NV3.1 | `NV3.1-fluss-fester-hintergrund.md` | Umsetzung | autonom | in Arbeit |
+| NV3.1 | `NV3.1-fluss-fester-hintergrund.md` | Umsetzung | autonom | fertig |
 | NV3.2 | `NV3.2-rig-export-alle-figuren.md` | Umsetzung | autonom | offen |
 | NV3.3 | `NV3.3-rigs-im-level.md` | Umsetzung | autonom | offen |
 | NV3.4 | `NV3.4-messung-review.md` | Review | autonom | offen |

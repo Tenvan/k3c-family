@@ -27,7 +27,7 @@ const (
 var layers = []struct {
 	name   string
 	scroll float64
-}{{"fern", 0.15}, {"mitte", 0.35}, {"nah", 0.5}}
+}{{"fern", 0}, {"mitte", 0.35}, {"nah", 0.5}}
 
 var groundColor = color.RGBA{74, 56, 36, 255} // sRGB 0.29/0.22/0.14
 
@@ -141,6 +141,17 @@ func (l *Level) addBackgrounds(p *Paper) error {
 		}
 	}
 	return nil
+}
+
+// tileRange: Kachel-Indizes einer Schicht. Fester Hintergrund (scroll 0) steht auf dem Bildschirm und braucht nur die Sichtbreite
+// um die Mitte; scrollende Schichten decken die Welt ab (Kamera 100 … worldW − 100).
+func tileRange(scroll float64) (int, int) {
+	const view = 2400.0
+	if scroll == 0 {
+		n := int(math.Ceil(view / 2 / tileW))
+		return -n, n + 1
+	}
+	return -1, int(math.Ceil((worldW*scroll + view*2) / tileW))
 }
 
 func (l *Level) addBuildings(p *Paper) error {

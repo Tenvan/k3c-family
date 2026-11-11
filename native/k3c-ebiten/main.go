@@ -3,7 +3,7 @@
 // Keine Spiel-Logik, kein Netz. Zweck: direkter Vergleich der Messwerte beider Engines.
 //
 // Aufruf (über `task native:*`): k3c-ebiten [--root <repo>] [--mode level|alle] [--measure <s>] [--warmup <s>]
-// [--report <datei>] [--novsync] [--auto]; zusätzlich nur hier: [--unmanaged] (Gegenversuch: je Sheet eine eigene Textur statt Ebitengines Atlas).
+// [--report <datei>] [--novsync] [--auto]; zusätzlich nur hier: [--shots <ordner>] (Screenshots an zwei Kamera-Positionen, NV3.1), [--unmanaged] (Gegenversuch: je Sheet eine eigene Textur statt Ebitengines Atlas).
 package main
 
 import (
@@ -32,7 +32,7 @@ var (
 )
 
 type Args struct {
-	root, mode, report     string
+	root, mode, report, shots string
 	measureS, warmupS      float64
 	vsync, auto, unmanaged bool
 }
@@ -57,8 +57,9 @@ func parseArgs() Args {
 	fs.BoolVar(&novsync, "novsync", false, "")
 	fs.BoolVar(&a.auto, "auto", false, "")
 	fs.BoolVar(&a.unmanaged, "unmanaged", false, "")
+	fs.StringVar(&a.shots, "shots", "", "")
 	if err := fs.Parse(os.Args[1:]); err != nil || fs.NArg() > 0 {
-		fatal("🚫 Ungültige Argumente (%v %v); gültig: --root --mode --measure --warmup --report --novsync --auto", err, fs.Args())
+		fatal("🚫 Ungültige Argumente (%v %v); gültig: --root --mode --measure --warmup --report --novsync --auto --shots --unmanaged", err, fs.Args())
 	}
 	if a.mode != "level" && a.mode != "alle" {
 		fatal("🚫 --mode level|alle, nicht %s", a.mode)
@@ -72,6 +73,8 @@ type Game struct {
 	args    Args
 	paper   *Paper
 	level   *Level
+	river   *River
+	shots   *Shots
 	measure *Measure
 	w, h    int
 	views   [2]*ebiten.Image
@@ -93,6 +96,9 @@ func (g *Game) Update() error {
 	dt := math.Min(now-g.last, 0.25) // gekappt wie Bevys Spielzeit, nur für die Bewegung
 	g.last = now
 	g.elapsed += dt
+	if g.shots != nil {
+		g.shots.update(g)
+	}
 	return g.level.update(g.paper, dt, g.elapsed, g.args.auto)
 }
 
@@ -102,6 +108,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		g.drawView(screen, i)
 	}
 	g.paper.prime(screen)
+	if g.shots != nil {
+		g.shots.capture(g, screen)
+	}
 	info := RunInfo{sheets: g.paper.count(), bytes: g.paper.bytes, size: [2]int{g.w, g.h}, unmanaged: g.args.unmanaged}
 	if g.measure.frame(clock(), g.paper.settled(), info) {
 		g.quit = true
@@ -134,14 +143,15 @@ func (g *Game) view(screen *ebiten.Image, i int) *ebiten.Image {
 	return g.views[i]
 }
 
-// drawView zeichnet die Welt aus Sicht eines Spielers: sichtbare Höhe viewH, Kamera-Mitte cameraY über dem Boden.
+// drawView zeichnet eine Sicht: obere Hälfte Welt (Boden-Linie an der Mitte), untere Hälfte Fluss vor allem anderen.
+// Sichtbare Welthöhe über dem Boden: worldViewH. Die Schicht `fern` steht (Scroll-Faktor 0), `mitte` und `nah` scrollen.
 func (g *Game) drawView(screen *ebiten.Image, i int) {
 	view := g.view(screen, i)
 	half := float64(g.h / 2)
-	s := half / viewH
+	s := half / 2 / worldViewH
 	cam := g.level.players[i].sprite.x
 	cx := float64(g.w) / 2
-	groundY := float64(i)*half + half/2 + cameraY*s
+	groundY := float64(i)*half + half/2
 	for _, sp := range g.level.sprites {
 		if sp.player >= 0 && sp.player != i {
 			continue
@@ -152,6 +162,7 @@ func (g *Game) drawView(screen *ebiten.Image, i int) {
 		}
 		sp.draw(view, (x-cam)*s+cx, groundY, s, float64(g.w))
 	}
+	g.river.draw(view, groundY+bankH*s, float64(i+1)*half, float64(g.w), s, cam, g.elapsed)
 }
 
 func main() {
@@ -166,7 +177,10 @@ func main() {
 	if err != nil {
 		fatal("💥 %v", err)
 	}
-	g := &Game{args: args, paper: paper, level: level, last: clock(), measure: NewMeasure(args)}
+	g := &Game{args: args, paper: paper, level: level, last: clock(), measure: NewMeasure(args), river: newRiver()}
+	if args.shots != "" {
+		g.shots = NewShots(args.shots)
+	}
 
 	s := scaleFactor()
 	ebiten.SetWindowSize(int(math.Round(winW/s)), int(math.Round(winH/s)))

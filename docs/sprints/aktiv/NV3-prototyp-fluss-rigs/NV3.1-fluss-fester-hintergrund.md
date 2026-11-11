@@ -1,6 +1,6 @@
 # NV3.1 · Fluss in der unteren Bildhälfte und feste Schicht fern
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -55,5 +55,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 umgesetzt: Fluss füllt die untere Hälfte jeder Sicht, drei Bahnen aus durchlaufenden Platzhalter-Kacheln mit eigenem Tempo (18/42/80 px/s) und Parallaxe (`river.go`); geprüft am Screenshot `reports/native-ebiten-nv3/01-kamera-1000.png` (Claude), das Fließen selbst nur im Code, Sichtprüfung in NV3.5.
+AC-02 umgesetzt: `fern` mit Scroll-Faktor 0, `mitte` und `nah` scrollen; geprüft an zwei Screenshots (`--shots`, Kamera 1000 und 2200) nach Augenmaß.
+Abweichung: Maßstab der Welt kleiner (Sicht-Höhe 420), damit Welt und Fluss je eine halbe Sicht füllen. Glossar-Eintrag „Fluss“ folgt im letzten Commit des Sprints (Sammeldatei). `go vet` und Build grün, das Modul hat keine Tests.
