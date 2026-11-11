@@ -1,12 +1,12 @@
-# NAT · Native Umstellung (Rust + Bevy, lokal, ohne Server)
+# NAT · Native Umstellung (Go + Ebitengine, lokal, ohne Server)
 
 - **Status:** aktiv
-- **Rang:** 12
+- **Rang:** 11
 - **Ziel-Tickets:** B-775
 
 ## Ziel
 
-K3C läuft als native Windows-Anwendung in **Rust + Bevy** auf dem Mini-PC (Vulkan-GPU), lokal für 1–2 Spieler mit je einem Gamepad, **ohne Server und ohne Browser**. Erledigt, wenn das Spiel auf dem heutigen Stand (Regeln, Grafik, HUD, Menüs, Spielstände) nativ läuft und Balancing-Läufe ohne Go-Simulation gehen. Gesamt-Spec: B-775. **Vorläufig** (angelegt 2026-11-10): Weg und Umfang entscheidet 🧑 nach dem Prototyp NV1.
+K3C läuft als native Windows-Anwendung in **Go + Ebitengine** auf dem Mini-PC (Entscheidung 008), als **lokal laufender Monolith**: ein Prozess für 1–2 Spieler mit je einem Gamepad, **ohne Server, ohne Netz, ohne Browser**. Die Go-Simulation läuft im selben Programm; Rust entfällt komplett. Zielbild der Grafik sind Rig-Modelle statt PNG-Sheets (zuerst Monarch und Reittier, B-778; weitere Figuren nach B-780), `gen:paper` schrumpft dabei Figur für Figur. Erledigt, wenn das Spiel auf dem heutigen Stand (Regeln, Grafik, HUD, Menüs, Spielstände) nativ läuft. Gesamt-Spec: B-775.
 
 ## Sprints
 
@@ -15,12 +15,13 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | Sprint | Thema | Status |
 |---|---|---|
 | NV1 | Bevy-Prototyp: Papier-Sheets, zwei Gamepads, Messung | aktiv |
+| NV2 | Rig-Prototyp: Monarch aus Teilen in Ebitengine | geplant |
 
 ## Nicht-Ziele
 
 - Browser-Client, Xbox/Edge und Online-Spiel über den Go-Server (bleiben bis zur Umstellung, wie sie sind).
-- Neue Regeln oder Balancing-Änderungen während der Portierung: nur portieren, Ideen als Ticket.
-- Rust-Server (RST, Entscheidung 007 Entwurf): entfällt bei lokalem Spiel; ob RST ruht, entscheidet 🧑.
+- Neue Regeln oder Balancing-Änderungen während der Umstellung: nur umstellen, Ideen als Ticket.
+- Rust und Bevy (Entscheidung 008): Projekt RST ruht und wird mit B-779 geschlossen.
 
 ## Notizen
 
@@ -35,12 +36,12 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 ### Schätzung (Einschätzung, nicht gemessen)
 
-Sim + Level + Spielstände portieren gegen Goldens 1–2 Wochen · Bevy-Client Welt/Kamera/2 Pads 1–2 Wochen · HUD/Menüs/Lobby 1–2 Wochen · Balancing-Werkzeuge und Workbench-Anbindung ca. 1 Woche → **ca. 4–6 Wochen**. Risiken: Bevy-API ändert sich je Version (Version pinnen, Doku über context7), Abnahmen am Mini-PC, Umbau-Versuchung während der Portierung.
+Mit Go + Ebitengine entfällt die Portierung von Sim, Level und Spielständen. Rig-Prototyp Monarch (NV2) einige Tage · Ebitengine-Client Welt/Kamera/2 Pads 1–2 Wochen · HUD/Menüs/Lobby 1–2 Wochen · Balancing-Werkzeuge und Workbench bleiben in Go → **ca. 2–4 Wochen**. Risiken: Grafikspeicher mit allen Sheets (1330 MiB im Prototyp, deshalb Texturen je Level und Monarch als Rig), Abnahmen am Mini-PC, Umbau-Versuchung während der Umstellung.
 
-### Reihenfolge (Vorschlag)
+### Reihenfolge (Entscheidung 008, 2026-11-11)
 
-1. NV1 Prototyp (Darstellung + Eingabe, Messung) → Entscheidung 🧑.
-2. Goldens aus Go breit erzeugen, dann Sim/Level/Store portieren, jede Stufe gegen die Goldens.
-3. Client: Welt, Kamera/Split-Screen, Eingabe; dann HUD, Menüs, Spielstände.
-4. Balancing-Läufe und Workbench (`sim_run`, `level_generate`) auf den Rust-Kern.
+1. NV1 Prototypen (Bevy, Ebitengine) → Entscheidung 🧑: **Go + Ebitengine**, Rust entfällt. Offen: Messung am Mini-PC (NV1.3).
+2. NV2 Rig-Prototyp: Monarch aus Teilen (B-778) → Entscheidung 🧑 über den Weg für den Monarchen.
+3. Rust und Bevy entfernen (B-779), nach der Messung am Mini-PC.
+4. Client: Welt, Kamera/Split-Screen, Eingabe mit der Go-Simulation im selben Prozess; dann HUD, Menüs, Spielstände.
 5. Abnahme-Ticket des Projekts (Sim, Balance, Gen).

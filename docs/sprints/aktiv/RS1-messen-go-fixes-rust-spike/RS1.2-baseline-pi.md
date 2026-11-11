@@ -1,6 +1,6 @@
 # RS1.2 · Baseline auf dem Pi 3 messen
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** Mensch
 - **Domäne:** SRV
@@ -50,5 +50,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Verworfen am 2026-11-11 (🧑, Chat): Entscheidung 008, das Spiel wird ein lokaler Monolith in Go + Ebitengine ohne Server; die Pi-Messung ist gegenstandslos.

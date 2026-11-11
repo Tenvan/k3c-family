@@ -27,7 +27,7 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
   **004: Asset-Studio getrennt vom Spielserver**, Schnittstelle sind die Dateien, der Server beobachtet sie (TS1, B-507).
   **005: Papierschnitt-Grafik aus Specs**, Assets nur über MCP `assets_*`, Review im Bereich Assets der Workbench; das
   Asset-Studio ist entfallen (WB1).
-  **006: Simulationskern wird Rust** (Etappe 1, Server bleibt Go; Etappe 2 Rust-Server möglich), Projekt RST, B-725, B-726.
+  **008: Natives Spiel in Go + Ebitengine, Rust entfällt** (Projekt NAT, B-775; 006 und 007 sind überholt, Projekt RST ruht, Aufräumen B-779); der Monarch wird ein Rig aus Teilen, wenn der Prototyp B-778 das bestätigt.
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
 
 ## Befehle
@@ -58,8 +58,8 @@ task k3c-workbench:web  # Web-Client: nur der Server, Oberfläche im Browser htt
 
 **Taskfile-Gruppen:** `Taskfile.yml` hält nur die Kernbefehle (Workspace) und die Prüf-Aggregate `check:*`; jedes Projekt hat sein
 Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `go` (engine/), `k3c-server`,
-`k3c-load`, `k3c-tui` (cmd/), `k3c-workbench`, `k3c-starter` (tools/), `balance`, `gen` (Generatoren: `gen:atlas`,
-`gen:gebaeude`, `gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`). Neue Aufgaben kommen in das Taskfile ihres Projekts, nicht
+`k3c-load`, `k3c-tui` (cmd/), `k3c-workbench`, `k3c-starter` (tools/), `balance`, `gen` (Generatoren:
+`gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`). Neue Aufgaben kommen in das Taskfile ihres Projekts, nicht
 in die Wurzel.
 
 **Dev ohne Neubau-Fenster:** Jedes EXE-Projekt kennt `build` (EXE bauen), `run` (bauen und starten) und `dev`.
@@ -88,7 +88,7 @@ Die Gamepad-Testseite (`gamepad-test.html`) schickt Berichte von der Xbox nach `
 `logs_errors`/`logs_query`, Berichte und Spielstände über `reports_list`/`report_read`/`saves_list`, Balancing über
 `sim_run`/`level_generate`. **Jeder autonome Testlauf** (Balancing, Performance von Server und Client, Stabilität;
 offline, online, headless oder mit Clients) startet und läuft **nur über `sim_test`** (`start`, `status`, `stop`, `list`),
-nie über `task balance`, `task k3c-load` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-workbench nicht läuft.
+nie über `task balance`, `task k3c-load` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-workbench nicht läuft. Fehlen die MCP-Tools, erst prüfen, ob die Workbench läuft, und sie sonst starten (`bin/k3c-workbench.exe`, nie zusätzlich die Web-EXE: gleicher Port 5180), dann den MCP neu verbinden (`docs/arbeitsweise.md` › Ablage).
 
 **Tasks und Ausführungen laufen ausschließlich über `task`** (Neues in `Taskfile.yml`, nicht in `package.json`).
 Vor jedem Commit: `task check:diff` (bzw. `check_run task:check:diff`) einmal grün; währenddessen nur gezielte Tests
@@ -116,7 +116,7 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   Radix Themes: `lib/`, `atoms/`, `molecules/`, `organisms/`, `templates/` (`@webkit/<ebene>`); Seiten sind die Feature-Ordner der App.
   Verbindlich für jedes Wails-Programm: Radix nur über `@webkit`, rohe Controls nur in `atoms/`, Importe nur nach unten
   (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme, geprüft von `tests/atomicDesign.test.ts`).
-  CLIs: `tools/atlas` (Altlast bis CU1, vom Spiel nicht mehr geladen), `tools/buildings` (`task gen:gebaeude`), `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
+  CLIs: `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
 - Papierschnitt-Grafik (Entscheidung 005): Der Client lädt Figuren, Monarch mit Reittier, Gebäude und Hintergründe über die
   Gruppen-Indizes `public/grafik/<gruppe>/index.paper.json` (je Asset `manifest.json` + PNG-Sheets); die Zuordnung steht in
   `data/paper.json`. Atlas und alte Packs lädt das Spiel nicht mehr (Entfernung in CU1). **PNG und `manifest.json` sind nicht eingecheckt** (B-737): `task gen:paper` rendert nach `.work/grafik/` und kopiert nur Geändertes nach `public/grafik/<gruppe>/<asset>/` (ignoriert); `task build`, `test` und `dev` rufen es vorher auf, `check:diff` nicht (B-742). Eingecheckt bleiben Specs, `index.paper.json` und `golden.json`. Natur, Objekte und Gerüste bleiben bis MG8 Pixel-Grafik.

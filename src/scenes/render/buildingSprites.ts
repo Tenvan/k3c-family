@@ -6,7 +6,7 @@ import { paperBuildingFile } from './paperAssets';
 import { SCAFFOLD_CLASSES, scaffoldKey } from './scaffoldView';
 
 /**
- * Welche Grafik ein Gebäude zeigt (GR3.1, Zuordnung `docs/assets/zuordnung-objekte.md` und `zuordnung-welt.md`).
+ * Welche Grafik ein Gebäude zeigt (GR3.1).
  * Reine Auswahl ohne Phaser: `null` = keine Grafik, dann zeichnet der Platzhalter. Lücken stehen hier nicht drin.
  */
 

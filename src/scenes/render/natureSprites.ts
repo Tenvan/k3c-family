@@ -5,7 +5,7 @@ import type { ObjectSprite, WorldFile } from './worldSprites';
 /**
  * Natur und Objekte aus `tools/buildings` (GEB6, GEB10): Bäume, Höhlen-Flora, Busch, Fels, Erzbrocken, Adern, Truhe,
  * Portal, Ausgang und Rekrutierungslager, alle 32 px je Kachel (Maßstab 1). Reine Auswahl ohne Phaser und ohne Zufall:
- * Form aus der Position, Look aus dem Biom (Regeldatei `docs/standards/gebaeude-grafik.md` § 5, § 6).
+ * Form aus der Position, Look aus dem Biom.
  */
 
 const ARTEN = ['tanne', 'pappel', 'birke'] as const;

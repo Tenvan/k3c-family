@@ -1,6 +1,6 @@
 # RS2.5 · Pi-3-Messung nach B-731 (Gate G1)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** Mensch
 - **Domäne:** INF
@@ -47,5 +47,4 @@ Manuelle Messung am Gerät durch Ralf; kein `check:diff` nötig, wenn nur `docs/
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Verworfen am 2026-11-11 (🧑, Chat): Entscheidung 008, das Spiel wird ein lokaler Monolith in Go + Ebitengine ohne Server; die Pi-Messung (Gate G1) ist gegenstandslos.

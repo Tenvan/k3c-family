@@ -12,7 +12,9 @@ die ganze Datei nur bei Regelfragen lesen.
 
 1. `git fetch --prune`, dann `task ops:aufraeumen`.
 2. `plan_next` (k3c-workbench) liefert Session, Pfad, Branch-Präfix, Kriterien und „Parallel möglich“.
-   Ohne k3c-workbench: `docs/arbeitsweise.md` › Autonomer Ablauf, Schritt 1.
+   Fehlen die MCP-Tools: erst prüfen, ob die Workbench läuft (Prozess `k3c-workbench*`, Port 5180, `logs/k3c-workbench.jsonl`),
+   sonst `bin/k3c-workbench.exe` starten (veraltet: vorher `task k3c-workbench:build`; nie zusätzlich die Web-EXE, gleicher Port) und
+   den MCP neu verbinden. Erst wenn das scheitert, ohne k3c-workbench: `docs/arbeitsweise.md` › Autonomer Ablauf, Schritt 1.
    `plan_next` überlagert je aktivem Sprint automatisch den Stand von `origin/sprint/<präfix>` (lokaler Ref aus dem
    `git fetch` in Schritt 1, B-519); die Zeilen unter „Stand der Sprints“ nennen, ob origin oder der lokale Stand gilt.
 3. Sperre über `origin`: Sie ist in `plan_next` enthalten; nur für Sprint-Branches, die lokal unbekannt sind, hilft

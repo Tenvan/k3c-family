@@ -1,6 +1,6 @@
 # 006 · Rust-Engine: Simulationskern zuerst, Server bleibt vorerst Go
 
-- **Status:** angenommen (Ralf, 2026-11-07, vorläufig: „erstmal“)
+- **Status:** überholt durch 008 (2026-11-11, Rust entfällt). Vorher: angenommen (Ralf, 2026-11-07, vorläufig: „erstmal“)
 - **Datum:** 2026-11-07
 - **Projekt:** RST · Ticket: B-725
 - **Vorgänger:** 001 (Engine auf Go-Server)

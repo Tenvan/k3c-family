@@ -2,8 +2,8 @@ import { natureFiles, objectLook, worldFile } from './natureSprites';
 import { paperBackgroundFile } from './paperAssets';
 
 /**
- * Grafiken für Truhe, Portal, Ausgang, Lager, Stern, Münze und Hintergründe je Biom (GR3.2, Zuordnung
- * `docs/assets/zuordnung-welt.md`); Bäume, Fels, Erz, Busch und Adern wählt `natureSprites.ts` (GEB6). Reine Auswahl ohne
+ * Grafiken für Truhe, Portal, Ausgang, Lager, Stern, Münze und Hintergründe je Biom (GR3.2);
+ * Bäume, Fels, Erz, Busch und Adern wählt `natureSprites.ts` (GEB6). Reine Auswahl ohne
  * Phaser: `null` = keine Grafik, dann zeichnet der Platzhalter.
  */
 
