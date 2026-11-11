@@ -1,47 +1,51 @@
-// Package props zeichnet Bauten: Burg, Bauplätze und Gebäude (Fach-Sprint der Bauten). Bis dahin Platzhalter:
-// farbige Rechtecke an den Positionen der Simulation.
+// Package props zeichnet Bauten, Natur und Objekte aus dem Spielzustand (Sprint NG4, B-797): Burg mit Wachstumsreihe,
+// Bauplätze mit Stufe, Schaden und Ruine, Hintergrundmauer, Baustellen mit Gerüst, Bauschild, Preis-Anzeige und
+// Wartegrund, Bäume, Felsen, Büsche, Adern mit Abbau-Schild, Plantage, Portal, Ausgang, Hafen, Lager, Truhen, Sterne,
+// Münzen, wie der Browser (src/scenes/render/); Fackeln zeichnet world (Licht). Alles liegt auf LayerBuildings,
+// Schilder, Balken und Texte wie im Browser hinter den Figuren (siteView.ts: Tiefe 2 mit dem Platz).
+//
+// Aufbau: listen.go rechnet je Update den abgeleiteten Zustand (Listener), plan*.go baut je Zelle die Zeichenliste
+// (rein, getestet), paint.go zeichnet sie; buildings.go, sites.go und nature.go sind die Auswahl-Regeln.
 package props
 
 import (
-	"image/color"
-
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 
+	"k3c/engine/sim"
 	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/view"
 )
 
-var (
-	castleColor = color.RGBA{140, 140, 150, 255}
-	builtColor  = color.RGBA{150, 100, 60, 255}
-	siteColor   = color.RGBA{150, 100, 60, 110} // nicht gebaut: halb durchsichtig
-)
+// drawer ist der Beitrag des Pakets: Drawer (LayerBuildings), Listener und AssetSource.
+type drawer struct {
+	lib   *art.Library
+	plan  *planner
+	paint painter
+	infos []*stageInfo // Stufen des laufenden Frames
+	spare []*stageInfo // alle je angelegten (Wiederverwendung)
+}
 
-type drawer struct{}
+// New liefert den Drawer der Bauten; lib (Grafik) darf nil sein, dann zeichnen die Platzhalter-Formen.
+func New(lib *art.Library) view.Drawer {
+	return &drawer{lib: lib, plan: newPlanner(lib)} // Library.Sheet verträgt nil
+}
 
-// New liefert den Drawer der Bauten; lib (Grafik) darf nil sein, die Platzhalter brauchen sie nicht.
-func New(_ *art.Library) view.Drawer { return drawer{} }
+func (*drawer) Layer() view.Layer { return view.LayerBuildings }
 
-func (drawer) Layer() view.Layer { return view.LayerBuildings }
-
-func (drawer) Draw(dst *ebiten.Image, f *view.Frame, c view.Cell) {
-	w := f.World(c)
-	if w == nil {
+// Draw zeichnet die Bauten der Welt, in der der Spieler der Zelle steht.
+func (d *drawer) Draw(dst *ebiten.Image, f *view.Frame, c view.Cell) {
+	s, ok := f.Seat(c.Player)
+	if !ok {
 		return
 	}
-	k := c.Camera
-	rect := func(x, width, h float64, clr color.RGBA) {
-		if k.Visible(x, width/2) {
-			vector.FillRect(dst, float32(k.ScreenX(x-width/2)), float32(c.ScreenY(h)), float32(width*k.Scale), float32(h*k.Scale), clr, false)
-		}
+	st, ok := f.Stage(s.Stage)
+	if !ok || st.World == nil {
+		return
 	}
-	rect(w.Castle.X, 6, 5, castleColor)
-	for _, s := range w.Sites {
-		clr := siteColor
-		if s.State == "built" {
-			clr = builtColor
-		}
-		rect(s.X, 3, 3, clr)
-	}
+	d.plan.plan(st.World, d.info(st.Index), c.Camera, f.Clock)
+	d.paint.paint(dst, d.plan.body, d.lib, c, f.Clock)
+	d.paint.paint(dst, d.plan.top, d.lib, c, f.Clock)
 }
+
+// Assets nennt alle Papier-Assets, die props im Level zeichnen kann (view.AssetSource).
+func (*drawer) Assets(level string, _ *sim.World) []string { return levelAssets(level) }
