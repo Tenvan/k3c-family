@@ -163,18 +163,29 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-776](B-776-bevy-prototyp-papier-sheets-zwei-pads.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Bevy-Prototyp zeigt ein Level mit echten Papier-Sheets, zwei Gamepads steuern je einen Monarchen, FPS und Grafikspeicher sind gemessen |
 | [B-777](B-777-ebitengine-prototyp-vergleich.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Ebitengine-Prototyp zeigt dasselbe Level wie der Bevy-Prototyp und liefert vergleichbare Messwerte |
 | [B-778](B-778-rig-prototyp-monarch-aus-teilen.md) | CLI | Frage | hoch | eingeplant | NV2 | Ein dritter Prototyp setzt den Monarchen in Ebitengine zur Laufzeit aus Rig-Teilen zusammen |
-| [B-779](B-779-rust-und-bevy-entfernen.md) | INF | Schuld | mittel | offen | – | Rust und der Bevy-Prototyp sind aus dem Repo entfernt, das Projekt ist rein Go |
-| [B-780](B-780-rig-fuer-alle-figuren-gegnerzahl.md) | CLI | Frage | mittel | offen | – | Prototypen zeigen, wie viele Gegner, Truppen und Bosse gleichzeitig als Rig-Modelle laufen |
+| [B-779](B-779-rust-und-bevy-entfernen.md) | INF | Schuld | mittel | eingeplant | NG10 | Rust und der Bevy-Prototyp sind aus dem Repo entfernt, das Projekt ist rein Go |
+| [B-780](B-780-rig-fuer-alle-figuren-gegnerzahl.md) | CLI | Frage | mittel | eingeplant | NG3 | Prototypen zeigen, wie viele Gegner, Truppen und Bosse gleichzeitig als Rig-Modelle laufen |
 | [B-782](B-782-plan-next-branch-praefix.md) | DEV | Problem | hoch | offen | – | plan_next nennt den Sprint-Branch richtig, auch wenn das Feld Branch schon mit sprint/ beginnt |
 | [B-783](B-783-plan-waves-ralf-queue.md) | DEV | Idee | hoch | offen | – | plan_waves berechnet Wellen aus Abhängigkeit, Bereich und Sperre, plan_queue zeigt die Ralf-Queue |
 | [B-784](B-784-planungsangaben-pruefen.md) | DEV | Idee | mittel | offen | – | Planungsangaben für Wellen werden geprüft: plan_check und Regel-Test für freigegebene Tickets |
 | [B-785](B-785-fahrplan-aufraeumen-geraetetermine.md) | INF | Schuld | mittel | offen | – | Fahrplan ist aufgeräumt: fertige Sprints erledigt, Abnahmen als Gerätetermine, alte bereite Sprints geprüft |
-| [B-786](B-786-rig-monarch-sichtpruefung-mini-pc.md) | CLI | Frage | niedrig | offen | – | Rig-Monarch wird am Mini-PC geprüft und gemessen, sobald das Spiel am PC fertig ist |
+| [B-786](B-786-rig-monarch-sichtpruefung-mini-pc.md) | CLI | Frage | niedrig | eingeplant | NG9 | Rig-Monarch wird am Mini-PC geprüft und gemessen, sobald das Spiel am PC fertig ist |
 | [B-787](B-787-workbench-tests-short-zu-langsam.md) | DEV | Problem | hoch | offen | – | Workbench-Tests bleiben mit -short unter 3 s je Test, der volle Lauf ist grün |
 | [B-788](B-788-check-run-teilaufgaben-sim-sperre.md) | DEV | Schuld | mittel | offen | – | check_run kennt die Teilaufgaben von check:diff, sim_test und sim_run lehnen während der Sperre ab |
 | [B-789](B-789-prototyp-fluss-fester-hintergrund-alle-rigs.md) | CLI | Frage | hoch | offen | – | Der Ebitengine-Prototyp zeigt den Fluss in der unteren Bildhälfte, einen festen Fern-Hintergrund und alle Figuren als Rig |
-| [B-790](B-790-prototyp-shader-wasser.md) | CLI | Frage | mittel | offen | – | Ein vierter Prototyp zeigt, was Shader in Ebitengine für Wasser und Papier-Effekte bringen |
-| [B-791](B-791-rig-bein-baender-klappen-um.md) | CLI | Problem | mittel | offen | – | Bein-Bänder von Elefant, Wolf und Alphawolf klappen im Rig nicht mehr um |
+| [B-790](B-790-prototyp-shader-wasser.md) | CLI | Frage | mittel | eingeplant | NG11 | Ein vierter Prototyp zeigt, was Shader in Ebitengine für Wasser und Papier-Effekte bringen |
+| [B-791](B-791-rig-bein-baender-klappen-um.md) | CLI | Problem | mittel | eingeplant | NG3 | Bein-Bänder von Elefant, Wolf und Alphawolf klappen im Rig nicht mehr um |
+| [B-792](B-792-native-spiel-modul-vertrag-schleife.md) | CLI | Idee | hoch | eingeplant | NG1 | Das native Spiel hat ein eigenes Go-Modul mit Spielschleife, Grafik-Bibliothek und festem Zeichen-Vertrag |
+| [B-793](B-793-native-simulation-im-prozess.md) | CLI | Idee | hoch | eingeplant | NG1 | Das native Spiel rechnet mit der Go-Simulation im selben Prozess und speichert Spielstände lokal |
+| [B-794](B-794-native-pruefkette-checkdiff-ci.md) | INF | Schuld | hoch | eingeplant | NG1 | check:diff und CI prüfen das Modul des nativen Spiels |
+| [B-795](B-795-native-welt-kamera.md) | CLI | Idee | hoch | eingeplant | NG2 | Das native Spiel zeigt Welt, Kamera, Schichten, Fluss und Licht je Split-Screen-Zelle |
+| [B-796](B-796-native-figuren-als-rig.md) | CLI | Idee | hoch | eingeplant | NG3 | Das native Spiel zeichnet Monarchen, Reittiere, Bürger, Truppen, Gegner und Bosse aus dem Spielzustand |
+| [B-797](B-797-native-gebaeude-natur-objekte.md) | CLI | Idee | hoch | eingeplant | NG4 | Das native Spiel zeichnet Gebäude, Baustellen, Plätze, Natur und Objekte aus dem Spielzustand |
+| [B-798](B-798-native-eingabe-gamepads.md) | PLAT | Idee | hoch | eingeplant | NG5 | Im nativen Spiel steuern 1–2 Gamepads und die Tastatur je einen Spieler und die Menüs |
+| [B-799](B-799-native-hud-hinweise-effekte.md) | CLI | Idee | hoch | eingeplant | NG6 | Das native Spiel zeigt HUD, Hinweise, Skill-Menü und Effekte wie der Browser-Client |
+| [B-800](B-800-native-menues-lobby-spielstaende.md) | CLI | Idee | hoch | eingeplant | NG7 | Das native Spiel hat Hauptmenü, Lobby für 1–2 Spieler, Spielstand-Menü, Optionen und Pause |
+| [B-801](B-801-native-ton.md) | CLI | Idee | mittel | eingeplant | NG8 | Das native Spiel spielt Klänge und Musik zu den Ereignissen wie der Browser-Client |
+| [B-802](B-802-native-zusammenfuehrung-abnahme.md) | CLI | Idee | hoch | eingeplant | NG9 | Das native Spiel läuft von Start bis Spielstand durch, ist gemessen und am PC abgenommen |
 
 ## Archiv
 

@@ -4,8 +4,8 @@
 - **Typ:** Frage
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** NG9
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
 - **Spec:** Entwurf

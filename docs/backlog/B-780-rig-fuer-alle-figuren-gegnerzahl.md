@@ -4,8 +4,8 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** NG3
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
 - **Spec:** Entwurf
@@ -37,7 +37,15 @@ Umstellung der Figuren selbst (eigene Sprints je Gruppe); neue Figuren, Waffen o
 
 ## Regeln und Einschränkungen
 
-Entscheidung 005 und 008. Das Rig-Format aus B-778 (Teile-Baum und Plätze) gilt für alle Figuren. Balancing-Werte (Gegnerzahl je Welle) ändert dieses Ticket nicht; eine nötige Obergrenze wird als eigenes Ticket vorgelegt.
+Entscheidung 005 und 008. Das Rig-Format aus B-778 (Teile-Baum und Plätze) gilt für alle Figuren. Balancing-Werte (Gegnerzahl je Welle) ändert dieses Ticket nicht; eine nötige Obergrenze wird als eigenes Ticket vorgelegt. Kein Lasttest über `k3c-load` oder `sim_test` (Sperre 2026-11-11): gemessen wird die Darstellung im Spiel-Modul mit einer festen Szene, je Fassung ein Lauf. Teil Entwicklungs-PC im Sprint NG3 (Session NG3.4), Teil Mini-PC mit B-786 in NG9.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `native/k3c-game/actors/**`
+- **Abhängig von:** NG1
+- **Braucht 🧑:** Freigabe, Entscheidung, Gerät
+- **Größe:** M
+- **Sperre:** –
 
 ## Beispiele
 
@@ -54,8 +62,8 @@ Die größte Welle des Spiels läuft als Rig nicht flüssig → Vorschlag: Misch
 
 ## Offene Fragen
 
-- Ziel-Bildrate und größte Gegnerzahl, die als Maßstab gelten (aus den Balancing-Daten ableiten).
-- Welche Gegner brauchen Waffen und Rüstungen überhaupt als eigene Elemente?
+- Ziel-Bildrate und größte Gegnerzahl, die als Maßstab gelten (aus den Balancing-Daten ableiten). Vorschlag: 60 FPS bei 2 Spielern, Gegnerzahl der größten Welle aus `data/` (gelesen, nicht simuliert). Entscheidet 🧑.
+- Welche Gegner brauchen Waffen und Rüstungen überhaupt als eigene Elemente? Vorschlag: erst nach der Messung, eigenes Ticket. Entscheidet 🧑.
 
 ## Notizen
 
