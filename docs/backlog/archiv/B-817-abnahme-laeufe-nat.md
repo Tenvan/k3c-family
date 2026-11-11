@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
@@ -67,4 +67,14 @@ keine
 
 ## Notizen
 
-Angelegt vom Review Welle 3 (2026-11-11), Projekt NAT.
+Abgearbeitet 2026-11-11 (Claude, autonom, je Lauf einmal):
+
+| Kriterium | Lauf | Ergebnis |
+|---|---|---|
+| AC-01 Sim | – | verschoben (Sperre 2026-11-11) |
+| AC-02 Balance | – | verschoben (Sperre 2026-11-11) |
+| AC-03 Gen | `task test` (Shell, weil `check_run` nach 5 min abbrach: `gen:paper` rendert nach dem fps-Fix alle 134 Figuren neu) | grün: 180 Testdateien, 3520 Tests, 218 s; keine eingecheckte Datei geändert (Grafik-Golden unverändert) |
+| AC-04 Race | `check_run task:check:race` | übersprungen: kein C-Compiler auf dem Entwicklungs-PC (221 ms); die CI fährt `-race` |
+| AC-05 | `task check:all` (462 s) | rot: einziger Fehler `TestHTMLEigenstaendig` in `tools/k3c-workbench/internal/balance` („Grafik castle/wall/tower/coin/enemy fehlt“); alle anderen Pakete und Schritte grün |
+
+AC-05: Der Fehler ist kein Befund des Projekts NAT. Er bestand schon vor NAT auf `develop` (gemessen 2026-11-11 beim Umbau von `check:diff`, steht in B-787). Ursache: `report_html.go` bettet Pixel-Grafik aus alten Pfaden ein (`grafik/gebaeude/burg-1-32.png`, `sprites/skeleton/idle.png` …), die mit CU1 entfernt wurden. Nachbesserung in B-787 (WZG), nicht hier. Der Balancing-Bericht ist während der Sperre ohnehin nicht in Gebrauch.
