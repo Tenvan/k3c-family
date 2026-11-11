@@ -42,6 +42,7 @@ type Sprite struct {
 	frame   int
 	acc     float64
 	playing bool
+	rate    float64 // Tempo der Animation (0 = 1); Natur wiegt je Pflanze verschieden schnell
 	// Hintergrund-Kachel eines Spielers (player ≥ 0): x = baseX + Kamera-x · (1 − scroll)
 	player        int
 	scroll, baseX float64
@@ -186,9 +187,16 @@ func (l *Level) addNature(p *Paper) error {
 		if _, ok := m.Animationen["idle"]; ok {
 			anim = "idle"
 		}
-		if _, err := l.add(p, asset, anim, 60+float64((i*367)%3900), -1+float64(i)*0.001, 0); err != nil {
+		sp, err := l.add(p, asset, anim, 60+float64((i*367)%3900), -1+float64(i)*0.001, 0)
+		if err != nil {
 			return err
 		}
+		// Jede Pflanze beginnt in einer anderen Phase und wiegt mit eigenem Tempo (0,7 bis 1,3), fest aus dem Platz
+		// abgeleitet statt gewürfelt: so bewegen sich Nachbarn nicht im Gleichschritt.
+		if sp.sheet.frames > 1 {
+			sp.frame = (i * 7) % sp.sheet.frames
+		}
+		sp.rate = 0.7 + 0.6*float64((i*37)%100)/100
 	}
 	return nil
 }
@@ -268,6 +276,9 @@ func (sp *Sprite) animate(dt float64) {
 		return
 	}
 	period := 1 / math.Max(sp.sheet.fps, 1)
+	if sp.rate > 0 {
+		period /= sp.rate
+	}
 	sp.acc += dt
 	if sp.acc >= period {
 		sp.acc = math.Mod(sp.acc, period)
