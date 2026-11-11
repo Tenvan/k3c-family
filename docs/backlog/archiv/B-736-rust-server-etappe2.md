@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** verworfen
 - **Sprint:** RS2
 - **Projekt:** RST
 - **Erstellt:** 2026-11-07

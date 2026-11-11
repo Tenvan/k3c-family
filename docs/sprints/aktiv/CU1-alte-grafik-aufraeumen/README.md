@@ -87,7 +87,7 @@ Autonom mit Default entschieden (D-Zeilen D-CU1-01 … in B-701 beim Abarbeiten)
 | CU1.2 | `CU1.2-spiel-nur-papier.md` | Umsetzung | autonom | fertig |
 | CU1.3 | `CU1.3-werkzeugseiten-ohne-register.md` | Umsetzung | autonom | fertig |
 | CU1.4 | `CU1.4-workbench-ohne-register.md` | Umsetzung | autonom | fertig |
-| CU1.5 | `CU1.5-altbestand-loeschen.md` | Umsetzung | autonom | in Arbeit |
+| CU1.5 | `CU1.5-altbestand-loeschen.md` | Umsetzung | autonom | fertig |
 | CU1.6 | `CU1.6-review.md` | Review | autonom | offen |
 
 - CU1.1 PAP · Sonnet · Lane `mg`: Papier-Assets Gerüste und Plantage (AC-04), nach PS1

@@ -118,14 +118,12 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | offen | – | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
 | [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | offen | – | Die Sound-Seite hat Filter und Prompt-Buttons |
 | [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | offen | – | Die Quellen-Seite hat Filter und Prompt-Buttons |
-| [B-725](B-725-rust-engine-machbarkeit.md) | SRV | Idee | mittel | eingeplant | RS1 | Simulationskern läuft schneller in Rust, Server bleibt Go (Machbarkeit und Umstiegspfad) |
 | [B-726](B-726-workbench-sim-per-task.md) | DEV | Schuld | mittel | eingeplant | RS2 | Workbench ruft Sim und Balancing als Task auf statt engine/sim zu importieren |
 | [B-731](B-731-zustand-ohne-json-roundtrip.md) | SRV | Idee | hoch | eingeplant | RS2 | Zustands-Snapshot ohne JSON-Roundtrip (stateOf) – 98 % der Raum-Tick-Zeit |
 | [B-732](B-732-assets-katalog-schneller.md) | DEV | Idee | mittel | offen | – | Der Assets-Katalog zeigt Einträge sofort, cacht sie und hat eine größere Vorschau |
 | [B-733](B-733-assets-groessenvergleich.md) | DEV | Idee | mittel | offen | – | Katalog und Review zeigen ein Asset im Größenvergleich mit dem Monarch vor einem Biom |
 | [B-734](B-734-katalog-teil-ausblenden.md) | DEV | Idee | mittel | offen | – | Im Katalog lässt sich das gewählte Teil in der Vorschau aus- und einblenden |
 | [B-735](B-735-weitere-materialien-stroh-lava-geisterweiss.md) | PAP | Schuld | niedrig | offen | – | Weitere Ersatz-Materialien (stroh, lava, geisterweiss, fell-grau) in der Stil-Datei |
-| [B-736](B-736-rust-server-etappe2.md) | SRV | Idee | mittel | eingeplant | RS2 | Etappe 2: Server und Simulation laufen komplett in Rust, Go-Server und Brücke entfallen |
 | [B-738](B-738-workbench-go-tests-rot-style-vorlage-review.md) | DEV | Problem | mittel | offen | – | Workbench-Go-Tests rot: Style-Fixture, Rig-Vorlage vierbeiner ohne Gangarten, Review-Tests mit festen Commit-Hashes |
 | [B-739](B-739-check-diff-grafik-golden-logging-sperre.md) | INF | Problem | hoch | offen | – | check:diff: Grafik-Golden je Gruppe, Schritt-Logging und Sperre gegen parallele Läufe |
 | [B-746](B-746-workbench-tests-ohne-engine-server.md) | DEV | Schuld | niedrig | offen | – | Workbench-Tests laufen gegen einen Fake-Spielserver statt engine/net und engine/room |
@@ -161,9 +159,12 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-772](B-772-xbox-webgl1-und-speichergrenze-130-mib.md) | CLI | Problem | hoch | offen | LG1 | Auf der Xbox läuft WebGL 1 mit einem Texturspeicher von höchstens 130 MiB |
 | [B-773](B-773-texturtest-seite-responsive-ein-screen.md) | CLI | Problem | mittel | offen | LG1 | Die Textur-Testseite passt responsiv auf einen Screen |
 | [B-774](B-774-abnahme-laeufe-lg1.md) | CLI | Schuld | mittel | offen | LG1 | Abnahme-Läufe LG1 |
-| [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | offen | – | K3C läuft nativ in Rust und Bevy auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
+| [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | offen | – | K3C läuft nativ in Go und Ebitengine auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
 | [B-776](B-776-bevy-prototyp-papier-sheets-zwei-pads.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Bevy-Prototyp zeigt ein Level mit echten Papier-Sheets, zwei Gamepads steuern je einen Monarchen, FPS und Grafikspeicher sind gemessen |
 | [B-777](B-777-ebitengine-prototyp-vergleich.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Ebitengine-Prototyp zeigt dasselbe Level wie der Bevy-Prototyp und liefert vergleichbare Messwerte |
+| [B-778](B-778-rig-prototyp-monarch-aus-teilen.md) | CLI | Frage | hoch | eingeplant | NV2 | Ein dritter Prototyp setzt den Monarchen in Ebitengine zur Laufzeit aus Rig-Teilen zusammen |
+| [B-779](B-779-rust-und-bevy-entfernen.md) | INF | Schuld | mittel | offen | – | Rust und der Bevy-Prototyp sind aus dem Repo entfernt, das Projekt ist rein Go |
+| [B-780](B-780-rig-fuer-alle-figuren-gegnerzahl.md) | CLI | Frage | mittel | offen | – | Prototypen zeigen, wie viele Gegner, Truppen und Bosse gleichzeitig als Rig-Modelle laufen |
 
 ## Archiv
 
@@ -739,3 +740,5 @@ Zeile in diesen Abschnitt.
 | [B-742](archiv/B-742-check-diff-ohne-sim-balance-gen-abnahme-ticket.md) | INF | Problem | hoch | erledigt | – | check:diff ohne Sim-, Balance- und Gen-Läufe; Abnahme-Ticket je Sprint/Projekt |
 | [B-745](archiv/B-745-abnahme-laeufe-rs2.md) | SRV | Schuld | mittel | erledigt | RS2 | Abnahme-Läufe RS2 |
 | [B-768](archiv/B-768-eine-startseite-pausenmenue-navigation.md) | CLI | Idee | hoch | erledigt | BD11 | Eine Startseite, Navigation im Pausenmenü, Vollbild halten |
+| [B-725](archiv/B-725-rust-engine-machbarkeit.md) | SRV | Idee | mittel | verworfen | RS1 | Simulationskern läuft schneller in Rust, Server bleibt Go (Machbarkeit und Umstiegspfad) |
+| [B-736](archiv/B-736-rust-server-etappe2.md) | SRV | Idee | mittel | verworfen | RS2 | Etappe 2: Server und Simulation laufen komplett in Rust, Go-Server und Brücke entfallen |

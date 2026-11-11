@@ -34,6 +34,10 @@ Eine Abweichung lässt `npm test` scheitern.
 Entwürfe löschen laufen über die MCP-Tools `plan_list`, `plan_get`, `plan_create`, `plan_set`, `plan_section`,
 `plan_delete`; sie ziehen Index, Session-Tabelle, Fahrplan und Ordner selbst nach. Handarbeit an diesen Dateien ist nur
 der Rückfall, wenn k3c-workbench nicht läuft; dann gelten die Regeln dieses Abschnitts wörtlich.
+**Fehlen die MCP-Tools, erst die Workbench prüfen.** Sind `mcp__k3c-workbench__*` in einer Session nicht verbunden, wird nicht sofort von Hand gearbeitet:
+(1) Läuft sie? Prozess `k3c-workbench*`, Port 5180 hört, letzte Zeilen von `logs/k3c-workbench.jsonl` (`💥 start fehlgeschlagen` nennt den Grund, meist ein belegter Port).
+(2) Läuft sie nicht: `bin/k3c-workbench.exe` starten; ist die EXE älter als `develop`, vorher `task k3c-workbench:build`. Nie zusätzlich die Web-EXE (`k3c-workbench:web`) starten:
+beide teilen sich Port 5180, die zweite Instanz bleibt ohne MCP. (3) MCP der Session neu verbinden. Erst wenn das scheitert, gilt der Rückfall von Hand, und die Meldung an 🧑 nennt den Grund.
 **Glossar ist verbindlich.** [`glossar.md`](glossar.md) legt die Begriffe fest und wird beim Schreiben von Specs und Texten gelesen. Ein neuer
 Begriff kommt beim Planen zuerst ins Glossar, dann in Ticket, Sprint oder Regel. Reviews achten auf Begriffs-Treue: Abweichungen gleicht der Review-Commit an (kein schwerer Befund).
 
