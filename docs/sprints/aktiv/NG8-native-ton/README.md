@@ -1,6 +1,6 @@
 # NG8 · CLI · Natives Spiel: Klänge und Musik
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit

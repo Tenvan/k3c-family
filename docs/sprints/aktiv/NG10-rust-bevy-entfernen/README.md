@@ -1,6 +1,6 @@
 # NG10 · INF · Rust und Bevy entfernen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** INF
 - **Reife:** bereit

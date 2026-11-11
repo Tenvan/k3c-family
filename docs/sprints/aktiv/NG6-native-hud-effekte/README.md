@@ -1,6 +1,6 @@
 # NG6 · CLI · Natives Spiel: HUD, Hinweise und Effekte
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit

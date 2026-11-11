@@ -1,6 +1,6 @@
 # NG7 · CLI · Natives Spiel: Menüs, Lobby, Spielstände, Optionen und Pause
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
