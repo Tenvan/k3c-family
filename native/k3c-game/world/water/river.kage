@@ -1,0 +1,66 @@
+// Fluss als Kage-Shader (B-790, NG11.1): dieselben sechs Wellen-Reihen wie die Kachel-Fassung (river.go), eine Farbe,
+// dazu eine leichte Verzerrung, ein Papier-Schatten unter dem Wellen-Band und Glanzstriche als Spiegelung. Alle Werte
+// kommen als Uniforms aus dem Frame (Lage, Kamera, Phasen aus Frame.Clock); der Shader kennt keine Uhr.
+
+//kage:unit pixels
+
+package main
+
+// Origin ist das Fenster-px der linken oberen Ecke des gezeichneten Rechtecks.
+var Origin vec2
+
+// Rows sind die Reihen aus riverLayout in Fenster-px: x = oben, y = Höhe, z = Kachelbreite, w = erste Kachelkante.
+var Rows [6]vec4
+
+// Phase sind Phasen in Bogenmaß (0 … 2π) aus Frame.Clock: x = Verzerrung, y = Heben des Bands, z = Glanz.
+var Phase vec3
+
+// Farben: Grund und Wellen-Band wie die Kacheln, Papier-Schatten und Glanz als Töne derselben Farbe.
+var Base vec3
+var Wave vec3
+var Shade vec3
+var Glint vec3
+
+// tau ist 2π.
+const tau = 6.283185307179586
+
+// srcH ist die Höhe der Wellen-Kachel in Quell-px (riverSrcH); Band und Schatten rechnen in dieser Einheit.
+const srcH = 64.0
+
+func Fragment(dstPos vec4, srcPos vec2, color vec4) vec4 {
+	p := Origin + srcPos
+	if p.y < Rows[0].x {
+		return vec4(0)
+	}
+	row := Rows[0]
+	n := 0.0
+	for i := 1; i < 6; i++ {
+		if p.y >= Rows[i].x {
+			row = Rows[i]
+			n = float(i)
+		}
+	}
+	v := clamp((p.y-row.x)/row.y, 0, 1) * srcH
+	u := (p.x - row.w) / row.z
+	// Verzerrung: die Reihe schwankt waagrecht, je Tiefe der Reihe versetzt.
+	u += 0.025 * sin(tau*v/srcH+Phase.x+n*1.3)
+	// Wellen-Band wie paintWaves: zwei Wellen je Kachel um die Mitte, leicht gehoben.
+	line := srcH*0.5 + 7*sin(tau*2*u) + 1.5*sin(Phase.y+n*0.9)
+	c := Base
+	if v > line+3 && v < line+6 {
+		c = Shade
+	}
+	c = mix(c, Wave, clamp(1-abs(v-line)/4, 0, 1))
+	c = mix(c, Glint, 0.6*glint(u, v, n))
+	return vec4(c, 1)
+}
+
+// glint liefert 1 auf einem Glanzstrich: drei je Kachel unter dem Band, sie fließen mit und blinken nacheinander.
+func glint(u, v, n float) float {
+	s := u*3 + n*0.37
+	on := 0.5 + 0.5*sin(Phase.z+floor(s)*2.3+n*1.7)
+	if fract(s) < 0.2 && abs(v-srcH*0.8) < 1.5 && on > 0.6 {
+		return 1
+	}
+	return 0
+}

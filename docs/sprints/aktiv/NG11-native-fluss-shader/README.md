@@ -63,8 +63,8 @@ Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NG11.1 | `NG11.1-fluss-shader.md` | Umsetzung | autonom | offen |
-| NG11.2 | `NG11.2-messung.md` | Umsetzung | autonom | offen |
+| NG11.1 | `NG11.1-fluss-shader.md` | Umsetzung | autonom | fertig |
+| NG11.2 | `NG11.2-messung.md` | Umsetzung | autonom | fertig |
 | NG11.3 | `NG11.3-review.md` | Review | autonom | offen |
 | NG11.4 | `NG11.4-sichtpruefung.md` | Review | Mensch | offen |
 
