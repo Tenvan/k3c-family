@@ -24,6 +24,8 @@ Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Date
 ## Erlaubte Dateien
 
 Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
+Ein Pfad oder Glob je Zeile in Backticks: daraus entsteht die Kollisionsprüfung paralleler Sessions. Sammeldateien (`docs/backlog/README.md`,
+`docs/sprints/README.md`, `docs/projekte/README.md`, `docs/glossar.md`) stehen hier nicht; sie ändert `plan_*` oder der letzte Commit des Sprints.
 
 - `pfad/…`
 

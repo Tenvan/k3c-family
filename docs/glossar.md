@@ -18,6 +18,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Ampel | Zustand eines Raums auf der Monitoring-Seite aus den letzten 5 min: rot bei Absturz, Tick p99 > 33,3 ms, RTT > 250 ms oder kein Pong; gelb bei anderem Diagnose-Ereignis, Tick p99 > 16,7 ms oder RTT > 100 ms; grau ohne Daten; sonst grün (Schwellen angenommen). | B-282, `src/tools/monitorData.ts` |
 | Angebot | Etwas, das ein Gebäude verkauft oder ausbildet (Bogen, Schwert, Beruf, Elite, Rüstung). Jedes Angebot hat ein eigenes Zahlziel, keine Auswahl per Taste. | Q34, `rules/materialien-gebaeude.md` § 3 |
 | Angebots-Anhang (`dx`) | Zahlziel eines Angebots mit festem Abstand `dx` zum Gebäude (`data/buildings.json`); entsteht mit dem Bau, alle `dx` liegen frei. Beispiel: Schwert an der Werkstatt `dx +4`. | Q52, Q53 |
+| Arbeitswelle | Planung (kurz „Welle“, nicht die Gegner-Welle): Menge der Sessions, die gleichzeitig laufen dürfen, weil sie sich weder über `Abhängig von` noch über Bereich oder Sperre berühren; höchstens vier Agenten. Die Folgewelle startet nach dem Merge. | `arbeitsweise.md` › Parallelität und Wellen |
 | Asset-Kandidat | Datei, die für einen Asset-Slot in Frage kommt, mit Stufe Netz (Recherche-Treffer oder Vorschlag), Vorrat, Spiel (Katalog) oder Präferenz n und Lizenz-Marke; im Inspektor der Assets-Seite eine Liste ohne Dubletten. | B-677 |
 | Asset-Katalog | Alle Grafik- und Sound-Dateien unter `public/grafik/`, `public/sprites/`, `public/audio/` mit Pack, Urheber und Lizenz aus den CREDITS-Dateien; in k3c-workbench durchsuchbar. | B-298 |
 | Asset-Slot | Stelle im Spiel, an der eine Grafik oder ein Sound eingebaut wird (z. B. `nursery`, `mount:horse`, `sfx:coin`), mit Kategorie und einer Liste von Zuordnungen nach Präferenz. Nicht verwechseln mit Slot (lokaler Spieler). | B-298, `data/assets.json` |
@@ -38,6 +39,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Baumschule | Gebäude der Hub-Stufe 1 auf einem Baumschul-Platz im Wald (Code `nursery`, früher Baumschule); wirkt als Plantage. | `rules/materialien-gebaeude.md` §§ 1, 3.3, B-636 |
 | Bauplatz | Fester Ort, an dem genau ein Gebäude gebaut und am selben Ort ausgebaut wird; kein Platz bewegt sich. Klassen: Hub-Platz, Mauerlinie (Mauer, Turm), Tor-Platz, Baumschul-Platz, Angebots-Anhang. | Q43, `rules/materialien-gebaeude.md` § 3; `data/hub.json` › `sites` |
 | Bauzeit | Zeit, die ein Bauer nach dem Bezahlen baut (z. B. Hub-Ausbau 20/30/40/50 s); Baumeister sind schneller. | `rules/materialien-gebaeude.md` §§ 2–3, Q44, Q45 |
+| Bereich | Planungsangabe an Ticket und Sprint: Pfad-Globs aller Dateien, die die Arbeit anfasst; bei Sessions die Erlaubten Dateien. Überlappende Bereiche laufen nicht in derselben Arbeitswelle. | `arbeitsweise.md` › Parallelität und Wellen |
 | Bereich Assets | Bereich der Workbench neben **Development** (Kopfleiste): Review (Startseite), Katalog, Styleguide, Sound, Quellen; nur Ansehen, ohne schreibende Controls, mit Prompt-Buttons und „Im Spiel ansehen“. Assets ändern nur die MCP-Tools `assets_*` (Entscheidung 005 › 4–5). | B-699 |
 | Bergmann | Beruf (20 Gold): +50 % Abbaurate an Adern, Fels und Kupfererz; zählt als einer der höchstens 2 Bauern an einer Ader. | `rules/buerger.md` § 1, Q35 |
 | Beruf | Spezialisierung eines Bauern gegen Gold: Bergmann, Baumeister, Handwerker. Umschulung kostet erneut. | `rules/buerger.md` § 1 |
@@ -185,6 +187,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Protokoll | Nachrichten zwischen Gerät und Server über WebSocket `/ws`, heute Version 7 (`hello.v` = 7). Eine Änderung bekommt eine eigene Session für beide Enden. | `protocol.md`, `arbeitsweise.md` › Grenzfälle |
 | Prozentpunkt (Pkt.) | Einheit für den Unterschied zweier Prozentwerte: 100 % statt höchstens 90 % sind 10 Prozentpunkte darüber (nicht „10 %“). | `insights_plain.go` |
 | Puffer (Verzögerung) | Zeit, um die die Zeitleiste hinter der geschätzten Server-Zeit zeichnet: 1 Tick plus die doppelte Ankunfts-Schwankung, höchstens 150 ms (angenommen). Diagnose-Zeile „Puffer 33 ms“. | B-277 |
+| Ralf-Queue | Liste dessen, was 🧑 braucht (`Braucht 🧑`): Freigaben, Entscheidungen, Abnahmen je Gerät, Workshops, Veröffentlichungen. Sie hält nur auf, was ausdrücklich davon abhängt. | `arbeitsweise.md` › Parallelität und Wellen |
 | Rang | Reihenfolge der aktiven Projekte (1 = zuerst, lückenlos), von 🧑 gesetzt; bestimmt, welcher Sprint und welche Session als Nächstes drankommt. | `arbeitsweise.md` › Projekte und Rang, B-355 |
 | Raum | Ein laufendes Spiel auf dem Server mit genau einem Spielstand und einem Code aus 4 Buchstaben; tickt unabhängig von anderen Räumen. | `protocol.md` › Begriffe |
 | Raum-Option | Beim Anlegen gewählte Einstellung des Raums: Schwierigkeitsgrad, Ziel (Siegvariante), Niederlage-Modus; steht im Spielstand. | `rules/stufen.md` § 5 |
@@ -206,6 +209,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Rust-Server | Ziel von Etappe 2 (RST): `rust/k3c-server` hält Simulation, Raum, Netz und Spielstände in Rust; ersetzt den Go-Server und die Brücke `engine/core`. | B-736, `decisions/006-rust-engine.md` |
 | Rüstkammer | Gebäude der Hub-Stufe 4: Rüstungsstufen für alle Kämpfer. | `rules/materialien-gebaeude.md` § 3.2 |
 | Rüstungsstufe | Upgrade in der Rüstkammer, 2 Stufen (ab Hub-Stufe 4 und 5): +20 % bzw. +40 % Basis-HP für alle Kämpfer, sofort, ohne Vollheilung. | `rules/buerger.md` § 2, Q37 |
+| Sammeldatei | Datei, die fast jede Session berührt (`backlog/README.md`, `sprints/README.md`, `projekte/README.md`, `glossar.md`); sie zählt nicht zum Bereich und wird nur über `plan_*` oder im letzten Commit des Sprints geändert. | `arbeitsweise.md` › Parallelität und Wellen |
 | Schiff | Bauwerk am Hafen, mit dem die Spieler die Insel verlassen; 3 Schiff-Abschnitte, Gegner beschädigen es nicht. Synonym: Boot. | `rules/stufen.md` § 1, `rules/wirtschaft.md` § 8, B-637 |
 | Schiff-Abschnitt | Bauabschnitt des Schiffs: Kiel, Rumpf, Segel; je Münzen und Material, von einem Bauern gebaut. | `rules/wirtschaft.md` § 8, B-637, B-638 |
 | Schlag | Einfacher Nahkampfangriff des Monarchen (X bzw. E): 10 Schaden, Reichweite 1,5 Units, Abklingzeit 0,7 s. | `rules/monarch.md` § 1 |
@@ -225,6 +229,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Slot-Register | `data/assets.json`: einzige Quelle aller Asset-Slots mit Art, Kategorie, Beschreibung, Zielmaß bzw. Bus und Zuordnungen nach Präferenz; k3c-workbench schreibt es, die Dev-Seite liest es. | B-298, M10 |
 | Snapshot | Zustand der Welt, den der Server an ein Gerät schickt: voll als `snap`, danach als `delta`; der Client zeichnet nur ihn. | `protocol.md` › Nachrichten |
 | Spec | Anforderung eines Tickets oder Sprints (README) mit Akzeptanzkriterien; Status `Entwurf`, `freigegeben` oder `rückwirkend`. | `arbeitsweise.md` › SDD |
+| Sperre | Planungsangabe: benannte Ressource, die nur ein Sprint zugleich ändert (`golden`, `protokoll`, `spielstand`, `deps`, `taskfile`, `exe`). Daneben die Übergangs-Sperre je Domäne und Lane in `plan_next`. | `arbeitsweise.md` › Parallelität und Wellen, Domänen |
 | Spielerfarbe | Variante des Monarchen je Spieler-Index 0–3 (Sheet und `tint` aus `data/sprites.json` › `players`). Nicht verwechseln mit Kennfarbe. | B-463 |
 | Spielstand | Gespeicherter Zustand eines Raums (`saves/<name>.json`) mit Seeds, Hubs, Vorrat und Raum-Optionen; Gegner und Level-Layout werden nicht gespeichert. | `protocol.md` › Begriffe, `game-design.md` › Speichern |
 | Spielstand-Version | `IslandSaveVersion` (`engine/sim/island_save.go`), heute 8 (Welt-ID `world` und Insel-ID `islandId` statt des Index `island`, WZ18.3; Stände bis 7 laden auf die Welt `standard`). Jede Formatänderung erhöht sie und bringt eine Fixture (`testdata/saves/v<n>/`). | `arbeitsweise.md` › Spielstand-Format, `rules/welten.md` § 5 |
