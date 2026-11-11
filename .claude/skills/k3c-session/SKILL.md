@@ -37,7 +37,7 @@ Sprint-Branch auschecken (fehlt er: von `origin/develop`), `plan_set {Status: in
 
 ## 4. Prüfen und Review (einmal, parallel)
 
-1. `check_run task:check:diff` wartet bis zum Ende und liefert das Ergebnis (B-520); über 2 min macht Claude Code den
+1. `check_run task:check:diff` prüft nur die geänderten Dateien dieses Commits (Basis `HEAD`; vor dem Commit aufrufen), wartet bis zum Ende und liefert das Ergebnis (B-520); über 2 min macht Claude Code den
    Aufruf selbst zum Hintergrund-Task. Kommt doch „läuft noch“ mit Lauf-ID, `check_run {run}` einmal aufrufen (wartet
    weiter), keine Schleife. Ohne k3c-workbench: `task check:diff` per Bash mit `run_in_background`.
 2. **Gleichzeitig** im Hintergrund ein Reviewer, aber nur bei Domäne SIM oder SRV, Protokoll- oder Spielstand-Änderung,

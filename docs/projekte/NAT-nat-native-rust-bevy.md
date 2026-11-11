@@ -1,7 +1,7 @@
 # NAT · Native Umstellung (Go + Ebitengine, lokal, ohne Server)
 
 - **Status:** aktiv
-- **Rang:** 11
+- **Rang:** 1
 - **Ziel-Tickets:** B-775
 
 ## Ziel

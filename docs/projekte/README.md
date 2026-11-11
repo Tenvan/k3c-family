@@ -8,17 +8,17 @@ Jedes Projekt ist eine Datei `XXX-name.md` nach [`../vorlagen/projekt.md`](../vo
 
 | Rang | Projekt | Ziel | Datei |
 |---|---|---|---|
-| 1 | PAP · Papierschnitt-Grafik, Assets über MCP, Review | – | [PAP-papierschnitt.md](PAP-papierschnitt.md) |
+| 1 | NAT · Native Umstellung (Go + Ebitengine, lokal, ohne Server) | – | [NAT-nat-native-rust-bevy.md](NAT-nat-native-rust-bevy.md) |
 | 2 | WZG · Werkzeuge | k3c-workbench und Werkzeug-Seiten für Planung, Prüfung und Diagnose | [WZG-werkzeuge-testlaeufe.md](WZG-werkzeuge-testlaeufe.md) |
-| 3 | BED · Bedienung & HUD | Menüs, HUD, Overlays und Lobby klar bedienbar | [BED-bedienung-hud.md](BED-bedienung-hud.md) |
-| 4 | GEB · Gebäude-Grafik | Gebäude und Strukturen einheitlich aus Regeln und Beschreibung im Asset-Manager | [GEB-gebaeude-grafik.md](GEB-gebaeude-grafik.md) |
-| 5 | WRT · Wirtschaft & Spielstand | Wirtschaft sichtbar, Ausrüstung fair, Spielstand vollständig | [WRT-wirtschaft-spielstand.md](WRT-wirtschaft-spielstand.md) |
-| 6 | SND · Sound | Sound und Musik je Zustand (B-011) | [SND-sound.md](SND-sound.md) |
-| 7 | LST · Leistung & Stabilität | Flüssig und stabil: Leistung messbar, Split-Screen flüssig, Tests stabil, Speichern robust | [LST-leistung-stabilitaet.md](LST-leistung-stabilitaet.md) |
-| 8 | KMP · Kampf, Bosse, Events | Bosse, Siege, Events und Level-Elemente durchgängig | [KMP-kampf-bosse-events.md](KMP-kampf-bosse-events.md) |
-| 9 | REL · Release & Betrieb | Belegte Releases, Start im Heimnetz, Veröffentlichung | [REL-release-betrieb.md](REL-release-betrieb.md) |
-| 10 | BAL · Balancing & Spieleabende | – | [BAL-balancing-spieleabende.md](BAL-balancing-spieleabende.md) |
-| 11 | NAT · Native Umstellung (Go + Ebitengine, lokal, ohne Server) | – | [NAT-nat-native-rust-bevy.md](NAT-nat-native-rust-bevy.md) |
+| 3 | PAP · Papierschnitt-Grafik, Assets über MCP, Review | – | [PAP-papierschnitt.md](PAP-papierschnitt.md) |
+| 4 | BED · Bedienung & HUD | Menüs, HUD, Overlays und Lobby klar bedienbar | [BED-bedienung-hud.md](BED-bedienung-hud.md) |
+| 5 | GEB · Gebäude-Grafik | Gebäude und Strukturen einheitlich aus Regeln und Beschreibung im Asset-Manager | [GEB-gebaeude-grafik.md](GEB-gebaeude-grafik.md) |
+| 6 | WRT · Wirtschaft & Spielstand | Wirtschaft sichtbar, Ausrüstung fair, Spielstand vollständig | [WRT-wirtschaft-spielstand.md](WRT-wirtschaft-spielstand.md) |
+| 7 | SND · Sound | Sound und Musik je Zustand (B-011) | [SND-sound.md](SND-sound.md) |
+| 8 | LST · Leistung & Stabilität | Flüssig und stabil: Leistung messbar, Split-Screen flüssig, Tests stabil, Speichern robust | [LST-leistung-stabilitaet.md](LST-leistung-stabilitaet.md) |
+| 9 | KMP · Kampf, Bosse, Events | Bosse, Siege, Events und Level-Elemente durchgängig | [KMP-kampf-bosse-events.md](KMP-kampf-bosse-events.md) |
+| 10 | REL · Release & Betrieb | Belegte Releases, Start im Heimnetz, Veröffentlichung | [REL-release-betrieb.md](REL-release-betrieb.md) |
+| 11 | BAL · Balancing & Spieleabende | – | [BAL-balancing-spieleabende.md](BAL-balancing-spieleabende.md) |
 | – | ABN · Abnahmen am Gerät | Prüfungen am Gerät gesammelt | [ABN-abnahmen-geraet.md](ABN-abnahmen-geraet.md) |
 
 ## Ruht

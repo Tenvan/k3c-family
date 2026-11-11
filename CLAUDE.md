@@ -39,7 +39,7 @@ task               # alle Aufgaben anzeigen (Go Task, Taskfile.yml; einziger Ein
 task install       # Abhängigkeiten holen
 task dev           # Dev-Server (auch im LAN erreichbar, Port 5183)
 task test          # Vitest (Level-Generator, reine Logik); Filter: task test -- planning
-task check:diff    # nur die Prüfungen, die der eigene Diff zum Integrations-Branch braucht (einmal vor jedem Commit, B-730; ohne Sim/Balance/Gen, B-742)
+task check:diff    # nur was die geänderten Dateien dieses Commits brauchen (einmal vor jedem Commit; Basis HEAD, Tests nur der geänderten Pakete; Teilaufgaben check:diff:plan, :js, :go)
 task check         # Lint + Typecheck + Tests des Clients, parallel
 task check:go      # go test + golangci-lint (Rechner mit Go)
 task check:race    # Go-Race-Detector (langsam; Abnahme-Ticket, check:all, CI)
@@ -86,12 +86,12 @@ Die Gamepad-Testseite (`gamepad-test.html`) schickt Berichte von der Xbox nach `
 **k3c-workbench zuerst:** Sind die MCP-Tools `mcp__k3c-workbench__*` verbunden, gehen Prüfungen über `check_run` (statt `task check`,
 `task test`, `go test` …), Dienste über `svc_start`/`svc_stop` (nie `task dev`/`task start` in der Shell), Logs über
 `logs_errors`/`logs_query`, Berichte und Spielstände über `reports_list`/`report_read`/`saves_list`, Balancing über
-`sim_run`/`level_generate`. **Jeder autonome Testlauf** (Balancing, Performance von Server und Client, Stabilität;
+`sim_run`/`level_generate`. **Simulationen und Balancing sind bis auf Widerruf gesperrt** (Beschluss 🧑 2026-11-11: kein `sim_test`, `sim_run`, Balancing, Lasttest). Danach gilt wieder: **Jeder autonome Testlauf** (Balancing, Performance von Server und Client, Stabilität;
 offline, online, headless oder mit Clients) startet und läuft **nur über `sim_test`** (`start`, `status`, `stop`, `list`),
 nie über `task balance`, `task k3c-load` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-workbench nicht läuft. Fehlen die MCP-Tools, erst prüfen, ob die Workbench läuft, und sie sonst starten (`bin/k3c-workbench.exe`, nie zusätzlich die Web-EXE: gleicher Port 5180), dann den MCP neu verbinden (`docs/arbeitsweise.md` › Ablage).
 
 **Tasks und Ausführungen laufen ausschließlich über `task`** (Neues in `Taskfile.yml`, nicht in `package.json`).
-Vor jedem Commit: `task check:diff` (bzw. `check_run task:check:diff`) einmal grün; währenddessen nur gezielte Tests
+Vor jedem Commit: `task check:diff` (bzw. `check_run task:check:diff`) einmal grün; es prüft nur die geänderten Dateien dieses Commits, minutenlange Läufe gehören nicht dazu; währenddessen nur gezielte Tests
 (`docs/arbeitsweise.md` › Tempo im Lauf).
 Die CI (`.github/workflows/ci.yml`) prüft zusätzlich Build + Server-Smoke-Test. `tests/projectRules.test.ts`
 prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, Vollbild, kein `Math.random()`).
@@ -116,7 +116,7 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   Radix Themes: `lib/`, `atoms/`, `molecules/`, `organisms/`, `templates/` (`@webkit/<ebene>`); Seiten sind die Feature-Ordner der App.
   Verbindlich für jedes Wails-Programm: Radix nur über `@webkit`, rohe Controls nur in `atoms/`, Importe nur nach unten
   (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme, geprüft von `tests/atomicDesign.test.ts`).
-  CLIs: `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
+  CLIs: `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`), `tools/checkdiff` (`task check:diff`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
 - Papierschnitt-Grafik (Entscheidung 005): Der Client lädt Figuren, Monarch mit Reittier, Gebäude und Hintergründe über die
   Gruppen-Indizes `public/grafik/<gruppe>/index.paper.json` (je Asset `manifest.json` + PNG-Sheets); die Zuordnung steht in
   `data/paper.json`. Atlas und alte Packs lädt das Spiel nicht mehr (Entfernung in CU1). **PNG und `manifest.json` sind nicht eingecheckt** (B-737): `task gen:paper` rendert nach `.work/grafik/` und kopiert nur Geändertes nach `public/grafik/<gruppe>/<asset>/` (ignoriert); `task build`, `test` und `dev` rufen es vorher auf, `check:diff` nicht (B-742). Eingecheckt bleiben Specs, `index.paper.json` und `golden.json`. Natur, Objekte und Gerüste bleiben bis MG8 Pixel-Grafik.
@@ -169,10 +169,10 @@ Für **jede** Werkzeug-Seite gilt:
   150 geänderten Code-Zeilen, im
   Hintergrund parallel zu `task check:diff`; schwere Befunde werden vor dem Commit behoben, ein Fix unter etwa 30 Zeilen
   ohne zweites Review. Die Sprint-Review-Session bleibt Pflicht (`docs/arbeitsweise.md` › Tempo im Lauf).
-- **Sim, Balance, Gen nur am Feature (B-742):** Sessions, Sprints und Projekte schließen ohne Sim-, Balance- und
-  Gen-Läufe ab (`sim_test`, Balancing, `gen:paper` samt Grafik-Golden, `check:race`); sie laufen nur bei der Entwicklung
-  des betroffenen Features. Zum Abschluss eines Sprints oder Projekts gibt es dafür **genau ein Abnahme-Ticket**, das
-  Claude autonom nachts abarbeitet (`docs/arbeitsweise.md` › Sim, Balance und Gen).
+- **Sim und Balancing gesperrt (Beschluss 🧑 2026-11-11, bis auf Widerruf):** keine Simulationen, kein Balancing, kein
+  Lasttest, auch nicht am Feature oder im Abnahme-Ticket. **Gen nur am Feature (B-742):** Sessions, Sprints und Projekte
+  schließen ohne Gen-Läufe ab (`gen:paper` samt Grafik-Golden, `check:race`); zum Abschluss eines Sprints oder Projekts gibt
+  es dafür **genau ein Abnahme-Ticket** (`docs/arbeitsweise.md` › Sim, Balance und Gen).
 - **Kein automatischer Worktree-Wechsel:** Nicht von sich aus in einen Worktree wechseln (`change_directory`, `EnterWorktree`,
   Lesen/Schreiben unter `.claude/worktrees/`). Nur auf ausdrückliche Anweisung von 🧑; dazu zählt der **Wellen-Auftrag** („Welle starten“, „parallel abarbeiten“), er gilt für alle Sessions dieser Welle.
   In einem Checkout, in dem eine andere Session arbeitet: kein Branchwechsel, kein Stash, kein Reset. Sonst im aktuellen Checkout bleiben;

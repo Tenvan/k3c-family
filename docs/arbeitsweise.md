@@ -124,7 +124,7 @@ widerspricht dem Code oder einer Regel):
 `Status: blockiert`, im **Ergebnis** Grund und bisherigen Stand notieren, ein Ticket vom Typ `Frage` anlegen,
 bisherigen Stand auf den Sprint-Branch pushen und einen **Entwurfs-PR** des Sprints öffnen (falls noch keiner offen ist), **aufhören**. Nicht raten, nicht um die Regeln herum arbeiten.
 
-**Testläufe** (Balancing, Performance, Stabilität) startet und überwacht ein Agent nur über das MCP-Tool `sim_test` der Workbench (B-348), nie in der Shell; ohne laufende Workbench wartet der Testlauf. Sie laufen nur bei der Entwicklung des betroffenen Features oder im Abnahme-Ticket (B-742, Abschnitt „Sim, Balance und Gen“).
+**Testläufe** (Balancing, Performance, Stabilität) sind **bis auf Widerruf gesperrt** (Beschluss 🧑 2026-11-11, Abschnitt „Sim, Balance und Gen“): kein `sim_test`, kein `sim_run`, kein Balancing, kein Lasttest, auch nicht bei der Feature-Arbeit oder im Abnahme-Ticket. Nach dem Widerruf startet und überwacht sie ein Agent nur über das MCP-Tool `sim_test` der Workbench (B-348), nie in der Shell.
 
 Eine Session pro Lauf. Eine Review-Session nie im selben Lauf wie eine Umsetzung. Sessions mit `Agent: Mensch`
 (Xbox-Test, Workshop, Spieleabend) nimmt ein Agent nicht; er darf sie nur vorbereiten, wenn die Datei das verlangt.
@@ -135,10 +135,16 @@ Eine Mensch-Session ist nie Abhängigkeit einer Agenten-Session, außer ihr Erge
 Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und Freigaben. Deshalb:
 
 - **Prüfstufen:** Während der Arbeit nur gezielte Tests (`go test ./engine/sim/ -run TestX`, `check_run go:test` oder
-  `task:test` mit `pattern`). Vor dem Commit **genau einmal** `task check:diff` (B-730): Basis ist der nächste
-  Integrations-Branch (jüngster Merge-Base aus `origin/develop` und den `origin/feature/*` in HEAD, `CHECK_BASE=` überschreibt).
-  Nur Doku → nur Planungs- und Regel-Tests. Go: nur geänderte Pakete und ihre Abnehmer (`-short`), Lint nur die geänderten;
-  Vitest mit `--changed`; JS und Go parallel. Volle Module nur bei `go.mod`, `Taskfile.yml`, `testdata/`, `.github/`.
+  `task:test` mit `pattern`). Vor dem Commit **genau einmal** `task check:diff` (B-730, Werkzeug `tools/checkdiff`): Es prüft
+  **nur, was die geänderten Dateien dieses Commits brauchen** (Beschluss 🧑 2026-11-11). Basis ist `HEAD` (geänderte und neue
+  Dateien; bei sauberem Checkout der letzte Commit), nicht mehr der ganze Sprint; `CHECK_BASE=origin/develop` nimmt bewusst mehr.
+  **Stufe 1 (Sekunden):** Planungs-Tests nur bei Doku, Regel-Test, Oxlint, tsc, `go vet` der geänderten Pakete **und ihrer
+  Abnehmer** (übersetzt sie samt Tests, führt nichts aus), golangci-lint der geänderten Pakete. **Stufe 2, nur nach grüner
+  Stufe 1:** `go test -short` **nur der geänderten Pakete** und Vitest `--changed`. Tests der Abnehmer, volle Module, Sim,
+  Balance, Gen und Race laufen hier nie; `go.mod` übersetzt nur das Modul, `Taskfile.yml` und `.github/` lösen keine Tests aus,
+  `testdata/` an der Wurzel nur die Pakete, die es lesen. JS und Go laufen nebeneinander.
+  **Teilaufgaben:** `task check:diff:plan` zeigt nur, was laufen würde; nach einem roten Lauf wiederholt `task check:diff:js`
+  bzw. `task check:diff:go` nur die betroffene Bahn. Ein Lauf über mehr als etwa eine Minute ist ein Befund (Ticket), kein Normalfall.
   **Takt:** einmal je Session-Commit. Nach einem Merge der Basis in den Sprint-Branch kein neuer Lauf, wenn der eigene
   Diff unverändert ist (die Basis ist schon geprüft). Den vollen Satz (`task check`, `task check:go`) fährt nur
   die Review-Session, `task check:race` nur das Abnahme-Ticket, `task check:all` nur der Release. Ein roter Lauf wird behoben und einmal wiederholt, nicht
@@ -164,6 +170,12 @@ Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und
   `codemap.md` nur für unbekannte Bereiche.
 
 ### Sim, Balance und Gen (B-742)
+
+**Sperre (Beschluss 🧑 2026-11-11, bis auf Widerruf):** Simulationen und Balancing laufen **gar nicht**: kein `sim_test`,
+kein `sim_run`, kein `task balance`, kein Lasttest (`k3c-load`), weder bei der Feature-Arbeit noch im Abnahme-Ticket. Die
+Kriterien AC-01 Sim und AC-02 Balance eines Abnahme-Tickets heißen so lange `verschoben (Sperre 2026-11-11)`. `check:diff`
+lässt die Tests der Sim-, Balance- und Lasttest-Pakete aus (`tools/checkdiff/steps.go` › `simDirs`; `go vet` und Lint bleiben).
+Gen und Race bleiben wie unten beschrieben.
 
 Lange Läufe gehören nicht in den Abschluss. **Sessions, Sprints und Projekte schließen ohne** Sim-, Balance- und
 Gen-Läufe ab; auch `task check:diff` fährt sie nicht (kein `gen:paper`, kein Grafik-Golden, kein `sim_test`, kein
