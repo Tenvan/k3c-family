@@ -1,6 +1,6 @@
 # NV3.3 · Figuren des Levels als Rig zeichnen
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

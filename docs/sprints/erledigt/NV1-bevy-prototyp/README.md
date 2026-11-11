@@ -1,6 +1,6 @@
 # NV1 · CLI · Bevy-Prototyp: Papier-Sheets, zwei Gamepads, Messung
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -61,7 +61,7 @@ keine
 |---|---|---|---|---|
 | NV1.1 | `NV1.1-bevy-prototyp.md` | Umsetzung | autonom | fertig |
 | NV1.2 | `NV1.2-ebitengine-prototyp.md` | Umsetzung | autonom | fertig |
-| NV1.3 | `NV1.3-messung-mini-pc.md` | Review | Mensch | offen |
+| NV1.3 | `NV1.3-messung-mini-pc.md` | Review | Mensch | verworfen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -69,6 +69,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-11, geschlossen auf Anweisung 🧑 (Chat). Kriterien laut Ergebnis NV1.1 und NV1.2; Entscheidung 008 (Go + Ebitengine). Messung am Mini-PC (NV1.3) verworfen, später über B-786. Version: keine vorgeschlagen (Prototyp).

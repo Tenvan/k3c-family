@@ -1,6 +1,6 @@
 # NV2.4 · Sichtprüfung und Messung am Mini-PC
 
-- **Status:** blockiert
+- **Status:** verworfen
 - **Typ:** Review
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -52,4 +52,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-AC-06 verschoben: Der Mini-PC wird erst organisiert, wenn das Spiel am PC weit genug fertig ist (Ralf, 2026-11-11), B-786. Session `blockiert` bis dahin; Sprint NV2 bleibt `aktiv`, bis NV2.4 wieder aufgenommen wird. AC-01 bis AC-05 laut Ergebnis NV2.1 bis NV2.3 (B-778 › Notizen). Keine manuelle Prüfung durchgeführt.
+Verworfen (🧑 2026-11-11, Chat: NV2 schließen): AC-06 verschoben auf B-786 (Mini-PC erst, wenn das Spiel am PC fertig ist). Der Rig-Weg wird in NV3 (B-789) für alle Figuren weitergeführt; die Sichtprüfung am PC ist dort NV3.5. AC-01 bis AC-05 laut Ergebnis NV2.1 bis NV2.3. Keine manuelle Prüfung durchgeführt.

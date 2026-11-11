@@ -1,6 +1,6 @@
 # NV2 · CLI · Rig-Prototyp: Monarch aus Teilen in Ebitengine
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -62,7 +62,7 @@ B-778 › Offene Fragen (Schatten, Schärfe, Beine des Pferds, Farbvarianten, Pl
 | NV2.1 | `NV2.1-teile-export-rig-daten.md` | Umsetzung | autonom | fertig |
 | NV2.2 | `NV2.2-rig-laufzeit-go.md` | Umsetzung | autonom | fertig |
 | NV2.3 | `NV2.3-bildvergleich-messung.md` | Umsetzung | autonom | fertig |
-| NV2.4 | `NV2.4-sichtpruefung-mini-pc.md` | Review | Mensch | blockiert |
+| NV2.4 | `NV2.4-sichtpruefung-mini-pc.md` | Review | Mensch | verworfen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -70,6 +70,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-11, geschlossen auf Anweisung 🧑 (Chat). AC-01 bis AC-05 laut Ergebnis NV2.1 bis NV2.3 (B-778 › Notizen); AC-06 verschoben auf B-786. Der Rig-Weg läuft in NV3 (B-789) weiter. Neue Tickets: B-786. Version: keine vorgeschlagen (Prototyp).

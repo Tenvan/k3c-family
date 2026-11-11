@@ -25,10 +25,8 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | `aktiv/PB1-itch-io/` |
 | RG1 | REG | BAL | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | Beschlüsse in `docs/rules/`, geänderte Werte in `data/`, `task balance` grün | `aktiv/RG1-werte-burg-hub-adern/` |
 | BR2 | REG | BAL | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | `aktiv/BR2-balancing-kampf/` |
-| NV2 | CLI | NAT | Rig-Prototyp: Monarch aus Teilen in Ebitengine | – | `aktiv/NV2-rig-prototyp-monarch/` |
 | RS1 | SRV, INF, SIM | RST | Messen, Go-Fixes, Rust-Spike für den Simulationskern | – | `aktiv/RS1-messen-go-fixes-rust-spike/` |
 | RS2 | SRV, DEV, INF | RST | Etappe 2 vorbereiten: Workbench entkoppeln, Zustand ohne JSON-Roundtrip, Inventar | – | `aktiv/RS2-vorarbeit-inventar/` |
-| NV1 | CLI | NAT | Bevy-Prototyp: Papier-Sheets, zwei Gamepads, Messung | – | `aktiv/NV1-bevy-prototyp/` |
 | HW1 | PLAT, SRV, INF, CLI | ABN | Zurückgestellte Controller-Prüfungen nachholen | – | `aktiv/HW1-controller-pruefungen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | `aktiv/PF1-splitscreen-leistung/` |
 
@@ -308,3 +306,5 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RD2 | Renderer und Stil nach der Sichtprüfung: Schatten, Materialien, Sichtbarkeit, Rig-Proportionen | `erledigt/RD2-renderer-stil-nachschaerfen/` |
 | MG9 | Papierschnitt nachbessern: Monarch, Reittiere, Truppen, Gegner | `erledigt/MG9-papier-figuren-nachbessern/` |
 | BD11 | Eine Startseite, Navigation im Pausenmenü, Vollbild halten | `erledigt/BD11-startseite-pausenmenue/` |
+| NV1 | Bevy-Prototyp: Papier-Sheets, zwei Gamepads, Messung | `erledigt/NV1-bevy-prototyp/` |
+| NV2 | Rig-Prototyp: Monarch aus Teilen in Ebitengine | `erledigt/NV2-rig-prototyp-monarch/` |

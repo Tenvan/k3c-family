@@ -1,6 +1,6 @@
 # NV1.3 · Beide Prototypen am Mini-PC messen, echte Gamepads prüfen
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Review
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -53,5 +53,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Verworfen (🧑 2026-11-11, Chat: „NV1 kann geschlossen werden“): Die Entscheidung für Go + Ebitengine ist gefallen (008), Bevy entfällt; der Mini-PC wird erst organisiert, wenn das Spiel am PC fertig ist. Die Messung am Mini-PC läuft später über B-786. Keine manuelle Prüfung durchgeführt.
