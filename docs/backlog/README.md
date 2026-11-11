@@ -164,6 +164,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | offen | – | K3C läuft nativ in Rust und Bevy auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
 | [B-776](B-776-bevy-prototyp-papier-sheets-zwei-pads.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Bevy-Prototyp zeigt ein Level mit echten Papier-Sheets, zwei Gamepads steuern je einen Monarchen, FPS und Grafikspeicher sind gemessen |
 | [B-777](B-777-ebitengine-prototyp-vergleich.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Ebitengine-Prototyp zeigt dasselbe Level wie der Bevy-Prototyp und liefert vergleichbare Messwerte |
+| [B-782](B-782-plan-next-branch-praefix.md) | DEV | Problem | hoch | offen | – | plan_next nennt den Sprint-Branch richtig, auch wenn das Feld Branch schon mit sprint/ beginnt |
+| [B-783](B-783-plan-waves-ralf-queue.md) | DEV | Idee | hoch | offen | – | plan_waves berechnet Wellen aus Abhängigkeit, Bereich und Sperre, plan_queue zeigt die Ralf-Queue |
+| [B-784](B-784-planungsangaben-pruefen.md) | DEV | Idee | mittel | offen | – | Planungsangaben für Wellen werden geprüft: plan_check und Regel-Test für freigegebene Tickets |
+| [B-785](B-785-fahrplan-aufraeumen-geraetetermine.md) | INF | Schuld | mittel | offen | – | Fahrplan ist aufgeräumt: fertige Sprints erledigt, Abnahmen als Gerätetermine, alte bereite Sprints geprüft |
 
 ## Archiv
 

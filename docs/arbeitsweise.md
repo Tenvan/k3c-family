@@ -5,6 +5,8 @@
 Ein Code-Sprint ist erst fertig, wenn seine **Review-Session** ihn abgenommen hat (leicht, siehe unten).
 Übersicht der Projekte: [`projekte/README.md`](projekte/README.md), aller Sprints: [`sprints/README.md`](sprints/README.md).
 Zielbild: [`decisions/001-server-engine-go.md`](decisions/001-server-engine-go.md).
+**Parallel statt seriell:** Gearbeitet wird in **Arbeitswellen**: Sessions, die sich weder über Abhängigkeit noch **Bereich** noch **Sperre** berühren, laufen gleichzeitig.
+Was 🧑 braucht, steht in der **Ralf-Queue** und hält nur auf, was wirklich davon abhängt (Abschnitt „Parallelität und Wellen“).
 
 ## Ablage
 
@@ -54,6 +56,9 @@ Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht
   die Specs der freigegebenen Arbeit selbst freigeben (Feld `Freigabe`: „autonom, Claude, <Datum>“), nach eigener
   Einschätzung und bisherigem Vorgehen. Offene Fragen entscheidet Claude mit einem begründeten Default und meldet sie im
   Nachgang; 🧑 ändert, was ihm nicht gefällt. Manuelle Abnahmen (siehe unten) bleiben bei 🧑.
+  **Klasse A (Beschluss 🧑 2026-11-11):** Specs vom Typ `Problem` oder `Schuld` in den Domänen DEV, INF oder PAP, die weder Spielregeln noch Protokoll,
+  Spielstand-Format oder Abhängigkeiten (`go.mod`, `package.json`) ändern, gibt Claude dauerhaft selbst frei (Feld `Freigabe`: „Klasse A, Claude, <Datum>“)
+  und meldet sie gesammelt im Nachgang. Alles andere (Klasse B) gibt nur 🧑 frei.
 - **Änderung:** Passt eine Anforderung während der Umsetzung nicht, erst die Spec ändern (`Revision` + 1, zurück auf
   `Entwurf`, neue Freigabe), dann den Code. Nie ein Kriterium umschreiben, damit es zum Code passt.
 - **Nachweis:** Das **Ergebnis** der Session nennt je Kriterium `umgesetzt`, `geprüft` (womit), `verschoben` (Grund,
@@ -68,6 +73,9 @@ Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht
   der Teil vor `/` im Feld `Branch` seiner Sessions (z. B. `f5/1-…` → `sprint/f5`). Alle Sessions committen dort,
   am Ende steht **ein PR je Sprint** gegen `develop`. Abgleich mit `develop` per `git merge origin/develop`, nie Rebase
   oder Force-Push auf einem geteilten Sprint-Branch.
+- **Basis:** Nennt das Projekt einen Integrations-Branch (`feature/<projekt>`, Zeile `Basis:` in den Notizen des Projekts), basiert der Sprint-Branch darauf, sonst auf `origin/develop`.
+- **Parallele Sprints:** Sprint-PRs mergen in der Reihenfolge ihrer Fertigstellung. Wer später fertig wird, holt die Basis mit `git merge origin/<Basis>` und löst die Konflikte vor dem Push;
+  für Index und Fahrplan gilt die Regel „Sammeldateien“ (Abschnitt „Parallelität und Wellen“). Eine Session, die von einem offenen Sprint abhängt, startet erst nach dessen Merge.
 - **Aufräumen (B-302):** Lokal und auf `origin` liegen nur `develop`, `main`, die Branches aktiver Sprints und ihre Worktrees. Vier Meilensteine:
   Session-Start (Autonomer Ablauf, Schritt 1: `task ops:aufraeumen`) · Sprint erledigt (Review, Schritt 5: `wip/<präfix>…`-Branches des Sprints prüfen; was im Sprint-Branch steckt, steht im PR-Text unter „Zum Löschen“) ·
   Sprint-PR gemergt (🧑 löscht die genannten `origin/wip/…`-Branches; auf `origin` löscht nur 🧑) · Release (Zeile „Aufgeräumt“ der Checkliste, nur Hinweis).
@@ -116,6 +124,7 @@ bisherigen Stand auf den Sprint-Branch pushen und einen **Entwurfs-PR** des Spri
 
 Eine Session pro Lauf. Eine Review-Session nie im selben Lauf wie eine Umsetzung. Sessions mit `Agent: Mensch`
 (Xbox-Test, Workshop, Spieleabend) nimmt ein Agent nicht; er darf sie nur vorbereiten, wenn die Datei das verlangt.
+Eine Mensch-Session ist nie Abhängigkeit einer Agenten-Session, außer ihr Ergebnis ist deren Eingabe (Workshop-Beschluss, Spieleabend-Protokoll); dann steht sie in `Abhängig von`.
 
 ### Tempo im Lauf (B-518)
 
@@ -139,8 +148,9 @@ Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und
   der Review-Session (nur schwere Befunde). Er startet im Hintergrund **parallel** zu `task check:diff`. Ein Fix unter
   etwa 30 Zeilen bekommt kein zweites Review. Doku-, Planungs- und reine Werte-Sessions haben kein eigenes Review.
 - **Parallel statt nacheinander:** Unabhängige Teile einer Session laufen als parallele Agenten in getrennten Dateien
-  (z. B. Kontext erheben ∥ Tests schreiben ∥ Umsetzung). Sessions verschiedener Domänen ohne gegenseitige Abhängigkeit
-  dürfen parallel laufen (`plan_next` › „Parallel möglich“): `offline` im eigenen Worktree, `live` im Checkout.
+  (z. B. Kontext erheben ∥ Tests schreiben ∥ Umsetzung). Sessions verschiedener Sprints ohne gegenseitige Abhängigkeit, ohne gemeinsame Dateien
+  und ohne gemeinsame Sperre laufen parallel, jede im eigenen Worktree (Abschnitt „Parallelität und Wellen“). Schwere Prüfläufe (Grafik-Golden,
+  `check:go`, `check:race`, `buildall`) laufen höchstens zwei gleichzeitig; mehr bringt lastabhängige Tests zum Scheitern (B-704).
 - **Kein Polling:** `check_run` wartet selbst bis zum Ende des Laufs (B-520); Shell-Läufe im Hintergrund mit
   Benachrichtigung (`run_in_background`); `sim_test status` nur einmal nach der erwarteten Dauer abfragen. Keine `sleep`-Schleifen; Messreihen höchstens drei Läufe;
   `sim_test` immer mit Dauer und Abbruchkriterium.
@@ -190,10 +200,11 @@ Verbindlich ab PV1 für jeden Sprint (Vorgabe 🧑, 2026-11-06): Agenten arbeite
 Jede **Session** gehört zu **genau einer Domäne** (Feld `Domäne`) und ändert nur deren Dateien (plus Tests und Doku dazu).
 Ein Sprint darf Sessions mehrerer Domänen **nacheinander** enthalten (z. B. SIM → SRV → CLI); sein Feld `Domäne` nennt
 sie in der Reihenfolge der Sessions. Was eine Domäne außerhalb des Sprints braucht, wird ein Ticket.
-**Sperre:** Eine Session `in Arbeit` **ohne** `Lane` sperrt ihre ganze Domäne; eine Session **mit** `Lane` sperrt nur
-Domäne **und** Lane (PV1.1). Eine Session ohne Lane ist gesperrt, sobald irgendeine Session derselben Domäne in Arbeit
-ist. Parallele Läufe derselben Domäne brauchen also verschiedene Lanes **und** disjunkte **Erlaubte Dateien**.
-Sessions **eines** Sprints laufen immer nacheinander (ein Sprint-Branch). Siehe Autonomer Ablauf, Schritt 1.
+**Sperre:** Maßgeblich sind die Dateien: Zwei Sessions kollidieren, wenn ihre **Erlaubten Dateien** überlappen oder sie dieselbe **Sperre** tragen
+(Abschnitt „Parallelität und Wellen“). Die Domäne ordnet Zuständigkeit und Commit-Titel.
+**Übergang, bis `plan_next` Dateimengen liest (B-783):** Das Werkzeug sperrt weiter nach Domäne und `Lane`: Eine Session `in Arbeit` ohne `Lane` sperrt ihre Domäne,
+eine mit `Lane` nur Domäne und Lane (PV1.1). Wer Sessions derselben Domäne parallel plant, setzt deshalb verschiedene Lanes **und** disjunkte Erlaubte Dateien.
+Sessions **eines** Sprints laufen immer nacheinander (ein Sprint-Branch); Parallelität entsteht zwischen Sprints. Siehe Autonomer Ablauf, Schritt 1.
 
 | Kürzel | Domäne | Dateien |
 |---|---|---|
@@ -209,7 +220,7 @@ Sessions **eines** Sprints laufen immer nacheinander (ein Sprint-Branch). Siehe 
 **Modell-Wahl** (Feld `Modell` der Session, Empfehlung für den ausführenden Agenten): `haiku` für reine Nachschlage-
 und Doku-Sessions, `sonnet` Standard für Umsetzung und Migration, `opus` für Verträge, Rig-Mathematik, Bild-Diff und
 Sprint-Reviews, `fable` nur auf Anweisung 🧑. Ohne Feld (oder `–`) gilt `sonnet`. Höchstens **vier Agenten** arbeiten
-gleichzeitig; `plan_next` schlägt neben der gewählten Session höchstens drei parallele vor.
+gleichzeitig (vier Plätze über alle Checkouts); `plan_next` schlägt neben der gewählten Session höchstens drei parallele vor.
 
 Grenzfälle:
 
@@ -223,6 +234,84 @@ Grenzfälle:
 - **Feature-Kette:** Ein neues Spielelement läuft als REG → SIM → CLI, als Sessions eines Sprints oder als
   aufeinanderfolgende Sprints desselben Projekts.
 
+## Parallelität und Wellen
+
+Ziel: Was ohne 🧑 und ohne Kollision gleichzeitig gehen kann, läuft gleichzeitig (Beschluss 🧑 2026-11-11). Eine **Arbeitswelle** (kurz Welle; nicht die
+Gegner-Welle des Spiels) ist die Menge der Sessions, die sich weder über Abhängigkeit noch Bereich noch Sperre berühren.
+
+### Planungsangaben
+
+Jedes Ticket und jede Sprint-README trägt im Abschnitt „Regeln und Einschränkungen“ je eine Zeile (Vorlagen), Pflicht ab `Spec: freigegeben`:
+
+| Angabe | Werte | Bedeutung |
+|---|---|---|
+| **Bereich** | Pfad-Globs, kommagetrennt (z. B. `tools/paper/cli/**`) | alle Dateien, die die Arbeit anfasst, ohne Sammeldateien; bei Sessions sind es die Erlaubten Dateien |
+| **Abhängig von** | `B-…`, `SPnn`, `SPnn.m` oder `–` | nur IDs, kein Freitext: erst starten, wenn der andere Stand erledigt **und gemergt** ist |
+| **Braucht 🧑** | `–`, Freigabe, Entscheidung, Abnahme, Gerät | `–` heißt vollständig autonom; alles andere steht in der Ralf-Queue |
+| **Größe** (Ticket) | S, M, L | S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen |
+| **Sperre** | `–` oder Name aus der Tabelle unten | Ressource, die nur ein Sprint zugleich ändert |
+
+`Umgebung: ?` ist ab `Spec: freigegeben` nicht mehr erlaubt. Worktree-tauglich ist, was `offline` ist und 🧑 nicht braucht.
+
+### Sperren
+
+| Name | Gilt für |
+|---|---|
+| `golden` | `testdata/golden/`, Grafik-Golden unter `tools/paper/golden/` (Abschnitt „Golden aktualisieren“) |
+| `protokoll` | `docs/protocol.md`, `engine/net/protocol*.go`, `src/online/protocol.ts`, `testdata/protocol/` |
+| `spielstand` | Spielstand-Format, `IslandSaveVersion`, Fixtures |
+| `deps` | `go.mod`, `package.json`, Lockfiles, jede neue Abhängigkeit |
+| `taskfile` | dieselbe Taskfile- oder Workflow-Datei (`Taskfile.yml`, `.github/workflows/*.yml`) |
+| `exe` | `task buildall`, Neubau oder Neustart der Workbench (laufende EXE, Port 5180) |
+
+Zwei Sprints mit derselben Sperre laufen nie in derselben Welle. Eine neue Sperre braucht eine Zeile in dieser Tabelle.
+
+### Sammeldateien
+
+`docs/backlog/README.md`, `docs/sprints/README.md`, `docs/projekte/README.md` und `docs/glossar.md` berührt fast jede Session. Sie zählen nicht zum
+Bereich und werden nur über `plan_*` oder im **letzten Commit** des Sprints nach `git merge origin/<Basis>` geändert. Bei einem Konflikt dort gilt
+der Stand der Basis; die eigene Änderung wird mit `plan_*` oder dem kleinen Edit neu ausgeführt, Tabellenzeilen werden nicht von Hand zusammengeführt.
+
+### Wellen berechnen
+
+Bis `plan_waves` das übernimmt (B-783), rechnet der planende Agent von Hand:
+
+1. **Kandidaten:** offene Sessions `Agent: autonom` aktiver Sprints, dazu Tickets und Sprints mit `Spec: freigegeben` und `Braucht 🧑: –`.
+2. **Ralf-Queue zuerst:** Alles mit `Braucht 🧑` ≠ `–` wird 🧑 vorab und gesammelt vorgelegt. Es hält nur auf, was es in `Abhängig von` nennt.
+3. **Ebene:** ohne Abhängigkeit Ebene 1, sonst eins mehr als die höchste Ebene der Abhängigkeiten. Werkzeug-Änderungen sind erst nach Merge, Pull und
+   Neubau nutzbar; wer sie braucht, nennt sie in `Abhängig von`.
+4. **Kollision:** Zwei Kandidaten einer Ebene kollidieren, wenn ihre Bereiche überlappen (ein Pfad ist Präfix des anderen) oder sie dieselbe Sperre
+   tragen. Der Kandidat aus dem Projekt mit dem kleineren Rang bleibt (danach Ticket-Prio, dann kleinere Nummer), der andere rückt in die nächste Welle.
+5. **Plätze:** höchstens vier Agenten gleichzeitig; Sessions `in Arbeit` zählen mit, gleich in welchem Checkout.
+6. **Folgewelle:** Sie startet, wenn die Sprint-PRs gemergt sind, von denen sie abhängt. Ihre Specs werden 🧑 schon während der laufenden Welle vorgelegt.
+
+### Zuschnitt
+
+- **Ein Ticket, eine Absicht, eine Dateimenge.** Tickets mit überlappendem Bereich werden ein Ticket (Kriterien je Teil) oder ein Sprint mit
+  Sessions nacheinander, nie mehrere Einzel-Tickets nebeneinander.
+- **Ein Sprint, eine Dateimenge.** Was eine andere Dateimenge braucht, wird ein eigener Sprint und kann parallel laufen.
+- **Abhängigkeiten eines Sprints** stehen als IDs in seiner README, nicht als Prosa in den Sessions.
+- **Bereit heißt aktuell:** Ein Sprint mit `Reife: bereit`, der 14 Tage nicht aktiviert wurde, bekommt vor dem Aktivieren einen Spec-Check (Pfade,
+  Abhängigkeiten, Begriffe) oder fällt auf `Reife: Entwurf` zurück. Ein Sprint ohne offene Session wandert sofort nach `erledigt/`.
+
+### Ralf-Queue
+
+Was 🧑 braucht, wird gebündelt statt je Sprint einzeln vorgelegt:
+
+1. **Freigaben** (Klasse B, Abschnitt SDD) mit Default, sodass ein „ja, alle“ genügt.
+2. **Entscheidungen:** Offene Fragen mit Vorschlag.
+3. **Abnahmen je Gerät:** PC · Xbox/TV · Pi · Mini-PC · Workshop · Veröffentlichung. Ein Termin je Gerät; die Mensch-Sessions bleiben in ihren
+   Sprints und stehen im Fahrplan unter „Offen am Gerät“ nach Gerät geordnet.
+
+### Worktrees
+
+- Ein **Wellen-Auftrag** von 🧑 („Welle starten“, „parallel abarbeiten“) ist die ausdrückliche Anweisung für Worktrees (`CLAUDE.md`) und gilt für
+  alle Sessions dieser Welle. Ohne Auftrag bleibt ein Agent im aktuellen Checkout.
+- Jede Session einer Welle arbeitet im eigenen Worktree auf ihrem Sprint-Branch; schreibende MCP-Aufrufe nennen `checkout`.
+- In einem Checkout, in dem eine andere Session arbeitet, wechselt niemand den Branch, stasht oder setzt zurück.
+- Ticketnummern: `plan_create` kennt nur den eigenen Checkout. Vor dem Anlegen `git fetch` und die höchste Nummer aller offenen Branches prüfen
+  (`git ls-tree -r --name-only <branch> docs/backlog`), sonst vergeben zwei Branches dieselbe Nummer.
+
 ## Projekte und Rang
 
 Ein **Projekt** bündelt die Sprints eines Themas (z. B. Grafik, Sound, Leistung & Stabilität) in fester Reihenfolge.
@@ -231,6 +320,7 @@ Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchsta
 - **Status:** `aktiv` (wird abgearbeitet), `ruht` (zurückgestellt, wird nie gewählt) oder `erledigt`.
 - **Rang:** Nur aktive Projekte haben einen Rang, eindeutig und lückenlos ab 1; er ist die **einzige Reihenfolge** der
   Arbeit. Den Rang setzt 🧑. `ruht` und `erledigt` tragen `Rang: –`.
+  Der Rang entscheidet bei Kollision und bei zu wenigen Plätzen, wer zuerst läuft; er hält keine Arbeit zurück, die nicht kollidiert.
 - **Sprints:** Die Tabelle im Projekt nennt seine Sprints in Abarbeitungs-Reihenfolge; jeder Sprint nennt sein Projekt
   im Feld `Projekt`. Je Projekt dürfen **mehrere Sprints gleichzeitig aktiv** sein; was sie trennt, sind nur
   Abhängigkeiten und die Sperre je Domäne (Abschnitt „Domänen“).
@@ -250,6 +340,7 @@ Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchsta
    `Status: aktiv`, Fahrplan in `sprints/README.md` anpassen. Es gibt keine Obergrenze für aktive Sprints, weder je Projekt
    noch insgesamt: **Aktiviert werden darf jeder Sprint ohne offene Abhängigkeit** (Sprints, Tickets oder Sessions, die
    er laut „Regeln und Einschränkungen“ voraussetzt, sind erledigt). Hat ein Sprint eine offene Abhängigkeit, wartet er.
+   Braucht er 🧑 (`Braucht 🧑` ≠ `–`), steht er bis dahin in der Ralf-Queue.
    Die Aktivierung ist der erste Commit auf `sprint/<präfix>`; ein Sprint mit Branch auf `origin`
    (`git ls-remote --heads origin 'sprint/*'`) gilt als aktiv, auch solange sein PR noch offen ist.
    Das Feld `Start-Commit` setzt die **erste Session** des Sprints: `git rev-parse --short origin/develop` beim Anlegen des Sprint-Branchs.
@@ -261,9 +352,9 @@ Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchsta
   (Abschnitt „Projekte und Rang“); aktiviert werden darf jeder Sprint ohne offene Abhängigkeit (Schritt 3). Eine Sprint-Prio gibt es nicht mehr; die Prio gehört zum Ticket.
 - **Umgebung:** Ticket und Session tragen `offline` (ohne laufende Dienste prüfbar: Code, Unit-/Mock-Tests, Werkzeuge
   ohne Serverzugriff) oder `live` (braucht laufenden Server, Browser oder Gerät); `?` nur bis zur Einordnung beim
-  Einplanen. Nur Sessions mit `Agent: autonom` und `Umgebung: offline` dürfen in einem eigenen Worktree ohne Rückfrage
-  laufen; `live` arbeitet im Checkout mit den laufenden Diensten.
-- **Klein:** 3–6 Sessions. In Code-Sprints ist die letzte das **Review**; Doku- und Planungs-Sprints (nur `docs/`)
+  Einplanen. Sessions mit `Agent: autonom` und `Umgebung: offline` sind worktree-tauglich; `live` ist es mit den eigenen Ports der Workbench (`get_urls`), solange kein Gerät nötig ist.
+  In einen Worktree wechselt ein Agent nur auf Anweisung von 🧑; der Wellen-Auftrag ist eine solche (Abschnitt „Parallelität und Wellen“ › Worktrees).
+- **Klein:** 3–6 Sessions auf einer zusammenhängenden Dateimenge (Zuschnitt: „Parallelität und Wellen“); Mensch-Sessions am Gerät zählen nicht mit. In Code-Sprints ist die letzte das **Review**; Doku- und Planungs-Sprints (nur `docs/`)
   haben keins, ihre letzte Session schließt den Sprint ab (Schritte 4–5 der Review-Session). Mehr Arbeit → nächster
   Sprint im selben Projekt.
 - **Blockade** (🧑 fehlt): Sprint bleibt aktiv, blockierte Session `Status: blockiert`. Die Arbeit geht im Projekt mit
@@ -278,6 +369,7 @@ Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchsta
   der Sprint bleibt aber **aktiv**, bis die Hardware-Session fertig ist (entkoppelt heißt: weiter zum nächsten Sprint,
   nicht erledigt). Offene Hardware-Sessions stehen im Fahrplan unter „Offen am Gerät“ und werden erledigt, wenn das
   Gerät da ist; weicht das Ergebnis von der Annahme ab, entsteht ein Ticket (die Arbeit dahinter läuft weiter).
+  Abnahmen mehrerer Sprints am selben Gerät fasst die Ralf-Queue zu einem Termin zusammen.
 - **Richtwert Session:** ein Commit mit ≤ ~400 geänderten Code-Zeilen (ohne Bilder, Daten-JSON, Lockfiles).
 - **Übergang:** Sprints, die vor dieser Regel (2026-10-03) schon Session-PRs hatten (F4), schließen nach altem Ablauf ab
   (Review-Session mit eigenem PR). Ab dem nächsten aktivierten Sprint gilt ein PR je Sprint.
