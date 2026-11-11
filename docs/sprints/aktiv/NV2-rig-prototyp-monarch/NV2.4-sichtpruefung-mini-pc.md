@@ -1,6 +1,6 @@
 # NV2.4 · Sichtprüfung und Messung am Mini-PC
 
-- **Status:** offen
+- **Status:** blockiert
 - **Typ:** Review
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -52,5 +52,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-06 verschoben: Der Mini-PC wird erst organisiert, wenn das Spiel am PC weit genug fertig ist (Ralf, 2026-11-11), B-786. Session `blockiert` bis dahin; Sprint NV2 bleibt `aktiv`, bis NV2.4 wieder aufgenommen wird. AC-01 bis AC-05 laut Ergebnis NV2.1 bis NV2.3 (B-778 › Notizen). Keine manuelle Prüfung durchgeführt.

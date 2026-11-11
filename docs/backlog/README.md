@@ -169,6 +169,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-783](B-783-plan-waves-ralf-queue.md) | DEV | Idee | hoch | offen | – | plan_waves berechnet Wellen aus Abhängigkeit, Bereich und Sperre, plan_queue zeigt die Ralf-Queue |
 | [B-784](B-784-planungsangaben-pruefen.md) | DEV | Idee | mittel | offen | – | Planungsangaben für Wellen werden geprüft: plan_check und Regel-Test für freigegebene Tickets |
 | [B-785](B-785-fahrplan-aufraeumen-geraetetermine.md) | INF | Schuld | mittel | offen | – | Fahrplan ist aufgeräumt: fertige Sprints erledigt, Abnahmen als Gerätetermine, alte bereite Sprints geprüft |
+| [B-786](B-786-rig-monarch-sichtpruefung-mini-pc.md) | CLI | Frage | niedrig | offen | – | Rig-Monarch wird am Mini-PC geprüft und gemessen, sobald das Spiel am PC fertig ist |
 
 ## Archiv
 

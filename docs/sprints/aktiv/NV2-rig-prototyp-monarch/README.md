@@ -62,7 +62,7 @@ B-778 › Offene Fragen (Schatten, Schärfe, Beine des Pferds, Farbvarianten, Pl
 | NV2.1 | `NV2.1-teile-export-rig-daten.md` | Umsetzung | autonom | fertig |
 | NV2.2 | `NV2.2-rig-laufzeit-go.md` | Umsetzung | autonom | fertig |
 | NV2.3 | `NV2.3-bildvergleich-messung.md` | Umsetzung | autonom | fertig |
-| NV2.4 | `NV2.4-sichtpruefung-mini-pc.md` | Review | Mensch | offen |
+| NV2.4 | `NV2.4-sichtpruefung-mini-pc.md` | Review | Mensch | blockiert |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
