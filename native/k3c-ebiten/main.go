@@ -33,8 +33,8 @@ var (
 
 type Args struct {
 	root, mode, report, shots string
-	measureS, warmupS      float64
-	vsync, auto, unmanaged bool
+	measureS, warmupS         float64
+	vsync, auto, unmanaged    bool
 }
 
 func logf(format string, a ...any) { fmt.Printf(format+"\n", a...) }
@@ -74,6 +74,7 @@ type Game struct {
 	paper   *Paper
 	level   *Level
 	river   *River
+	fps     *fpsHUD
 	shots   *Shots
 	measure *Measure
 	w, h    int
@@ -108,6 +109,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		g.drawView(screen, i)
 	}
 	g.paper.prime(screen)
+	g.fps.draw(screen, g.elapsed)
 	if g.shots != nil {
 		g.shots.capture(g, screen)
 	}
@@ -143,15 +145,15 @@ func (g *Game) view(screen *ebiten.Image, i int) *ebiten.Image {
 	return g.views[i]
 }
 
-// drawView zeichnet eine Sicht: obere Hälfte Welt (Boden-Linie an der Mitte), untere Hälfte Fluss vor allem anderen.
+// drawView zeichnet eine Sicht: obere zwei Drittel Welt (Boden-Linie an der Grenze), unteres Drittel Fluss vor allem anderen.
 // Sichtbare Welthöhe über dem Boden: worldViewH. Die Schicht `fern` steht (Scroll-Faktor 0), `mitte` und `nah` scrollen.
 func (g *Game) drawView(screen *ebiten.Image, i int) {
 	view := g.view(screen, i)
 	half := float64(g.h / 2)
-	s := half / 2 / worldViewH
+	s := half * worldShare / worldViewH
 	cam := g.level.players[i].sprite.x
 	cx := float64(g.w) / 2
-	groundY := float64(i)*half + half/2
+	groundY := float64(i)*half + half*worldShare
 	for _, sp := range g.level.sprites {
 		if sp.player >= 0 && sp.player != i {
 			continue
@@ -177,7 +179,7 @@ func main() {
 	if err != nil {
 		fatal("💥 %v", err)
 	}
-	g := &Game{args: args, paper: paper, level: level, last: clock(), measure: NewMeasure(args), river: newRiver()}
+	g := &Game{args: args, paper: paper, level: level, last: clock(), measure: NewMeasure(args), river: newRiver(), fps: newFpsHUD()}
 	if args.shots != "" {
 		g.shots = NewShots(args.shots)
 	}

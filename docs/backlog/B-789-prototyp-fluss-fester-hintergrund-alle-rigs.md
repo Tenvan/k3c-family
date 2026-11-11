@@ -9,8 +9,8 @@
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
 - **Spec:** freigegeben
-- **Revision:** 2
-- **Freigabe:** 2026-11-11 🧑 Chat (Vorschläge 1, 3 bis 6 angenommen, Punkt 2 geändert)
+- **Revision:** 3
+- **Freigabe:** 2026-11-11 🧑 Chat (Revision 3: Fluss unteres Drittel, eine Farbe, sechs Wellen-Reihen nach links, FPS-Anzeige)
 
 ## Ausgangslage
 
@@ -26,9 +26,10 @@ Der Prototyp zeigt das Bild, wie es im Spiel gemeint ist: Der Fluss füllt die u
 
 ## Anforderungen
 
-- **Fluss:** Er belegt die untere Hälfte der Szene (je Sicht eines Spielers), die Welt mit Boden und Figuren die obere. Die Fläche ist so angelegt, dass später Schiffe auf bis zu drei Ebenen darauf fahren können (drei Bahnen hintereinander, für Bosskämpfe).
-- **Fließen:** Der Fluss besteht aus Kacheln, die waagerecht durchlaufen (fließender Kachel-Effekt), je Bahn mit eigenem Tempo; er liegt im Vordergrund vor dem Ufer. Platzhalter-Kacheln genügen (Papierwellen in drei Blautönen).
+- **Fluss:** Er belegt das untere Drittel der Szene (je Sicht eines Spielers), die Welt mit Boden und Figuren die oberen zwei Drittel (Änderung 🧑 2026-11-11 nach dem ersten Bild; vorher untere Hälfte). Die Fläche ist so angelegt, dass später Schiffe auf bis zu drei Ebenen darauf fahren können (Bosskämpfe).
+- **Fließen:** Eine Farbe, keine hervorgehobenen Bahnen. Sechs Wellen-Reihen fließen in Flussrichtung nach links und bewegen sich perspektivisch richtig: Reihen weiter vorn sind höher, ihre Wellen breiter und schneller. Der Fluss liegt im Vordergrund vor dem Ufer. Platzhalter-Grafik genügt.
 - **Fester Fern-Hintergrund:** Die hinterste der drei Schichten (`fern`) bewegt sich nicht mit der Kamera; das bisherige Bild genügt für den Test. `mitte` und `nah` scrollen wie bisher.
+- **FPS-Anzeige:** groß und deutlich im Bild.
 - **Rigs:** Alle Figuren mit Teile-Baum (Rig-Typen `figur` und `vierbeiner`: 6 Truppen, 7 Gegner, 5 Bosse, 11 Reittiere, 2 Gegner) bekommen Teile und Rig-Dateien aus dem Export; im Level laufen die bisher gezeigten Figuren als Rig. Figuren vom Typ `requisite` bleiben in diesem Prototyp Sheets.
 - Gebaut wird in `native/k3c-ebiten`, das Paket `native/k3c-rig/rig` wird eingebunden.
 - Zwei Spieler im Split-Screen mit je einem Gamepad wie bisher; Messlauf (Bildrate, Grafikspeicher, Rechenzeit) gegen den Stand mit Sheets.
@@ -59,7 +60,7 @@ Eine Figur hat keinen Teile-Baum (`requisite`) → siehe Offene Fragen. Rig-Date
 
 ## Akzeptanzkriterien
 
-- **AC-01** Im Fenster füllt der Fluss die untere Hälfte jeder Sicht, drei Bahnen fließen als Kacheln mit eigenem Tempo (Screenshot im Bericht).
+- **AC-01** Im Fenster füllt der Fluss das untere Drittel jeder Sicht, sechs Wellen-Reihen in einer Farbe fließen nach links, vorn schneller und größer (Screenshot im Bericht).
 - **AC-02** Die Schicht `fern` bleibt bei Kamerafahrt stehen, `mitte` und `nah` scrollen (Screenshots an zwei Kamera-Positionen).
 - **AC-03** Alle Figuren des Levels mit Teile-Baum werden als Rig gezeichnet; `go test` vergleicht ihre Posen mit den Sollwerten aus `tools/paper` (Toleranz 0,01).
 - **AC-04** Messbericht Entwicklungs-PC: Bildrate, Grafikspeicher und Rechenzeit je Bild, Rig gegen Sheet, im selben Level.
