@@ -1,0 +1,10 @@
+{
+  "id": "zwerg",
+  "rahmen": [-2, -5, 4, 6],
+  "frameW": 4,
+  "frameH": 6,
+  "animationen": {
+    "idle": { "frames": 3, "fps": 6, "datei": "idle.png" },
+    "lauf": { "frames": 4, "fps": 12, "datei": "lauf.png" }
+  }
+}

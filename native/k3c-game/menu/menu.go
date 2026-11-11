@@ -8,6 +8,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 
+	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/view"
 )
 
@@ -20,8 +21,8 @@ var (
 
 type menus struct{}
 
-// New liefert die Einstiege des Menüs.
-func New() view.Menus { return menus{} }
+// New liefert die Einstiege des Menüs; lib (Grafik) darf nil sein, die Platzhalter brauchen sie nicht.
+func New(_ *art.Library) view.Menus { return menus{} }
 
 func (menus) Main() view.Screen  { return &mainScreen{} }
 func (menus) Pause() view.Screen { return pauseScreen{} }

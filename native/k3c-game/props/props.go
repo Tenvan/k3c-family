@@ -8,6 +8,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 
+	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/view"
 )
 
@@ -19,8 +20,8 @@ var (
 
 type drawer struct{}
 
-// New liefert den Drawer der Bauten.
-func New() view.Drawer { return drawer{} }
+// New liefert den Drawer der Bauten; lib (Grafik) darf nil sein, die Platzhalter brauchen sie nicht.
+func New(_ *art.Library) view.Drawer { return drawer{} }
 
 func (drawer) Layer() view.Layer { return view.LayerBuildings }
 

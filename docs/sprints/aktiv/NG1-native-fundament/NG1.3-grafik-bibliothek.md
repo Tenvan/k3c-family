@@ -1,6 +1,6 @@
 # NG1.3 · Grafik-Bibliothek art: Sheets, Rigs, Schrift
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-06 umgesetzt: `art` plant und lädt Sheets je Level (`PlanLevel`, `LoadLevel`), bindet die Rig-Bibliothek ein und lädt eine Schrift; fehlende Grafik bricht mit `ErrMissing` und allen Pfaden ab; Texturbudget im Log. Geprüft mit Tests ohne GPU (Planen, Budget, fehlende und kaputte Dateien, Schrift) und `go vet`, `go build` (Agent).
+Zusätzlich: Konstruktoren aller Fachpakete einheitlich `New(lib *art.Library)`.
+Abweichungen und Offenes: Es gibt noch keine Schriftdatei (nur über `assets_*`); fehlt sie, zeichnet `art` mit der Debug-Schrift und warnt, `StrictFont` bricht ab. Hochladen auf die GPU und `art.New` mit Rigs sind gebaut, nicht gestartet. Laden ist synchron und lädt jede Animation eines Assets (Budget bei Varianten groß, Folge-Thema).

@@ -9,6 +9,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 
+	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/view"
 )
 
@@ -18,8 +19,8 @@ type band struct {
 	clr   color.RGBA
 }
 
-// New liefert die Drawer der Welt: fern, mitte, nah, Boden und Fluss.
-func New() []view.Drawer {
+// New liefert die Drawer der Welt: fern, mitte, nah, Boden und Fluss; lib (Grafik) darf nil sein, die Platzhalter brauchen sie nicht.
+func New(_ *art.Library) []view.Drawer {
 	return []view.Drawer{
 		band{view.LayerFar, color.RGBA{158, 199, 219, 255}},
 		band{view.LayerMid, color.RGBA{120, 160, 130, 255}},

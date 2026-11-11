@@ -7,6 +7,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 
+	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/view"
 )
 
@@ -26,8 +27,8 @@ var actionKeys = []struct {
 
 type keyboard struct{}
 
-// New liefert die Eingabe-Quelle.
-func New() view.Source { return keyboard{} }
+// New liefert die Eingabe-Quelle; lib ist einheitlich dabei, Eingabe zeichnet nichts und braucht sie nicht.
+func New(_ *art.Library) view.Source { return keyboard{} }
 
 func (keyboard) Poll() view.Input {
 	di := view.DeviceInput{

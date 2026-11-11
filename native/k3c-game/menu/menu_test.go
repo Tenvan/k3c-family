@@ -32,7 +32,7 @@ func press(d view.DeviceID, a ...view.Action) view.Input {
 func TestMainStartsGameWithConfirmingDevice(t *testing.T) {
 	pad := view.DeviceID{Kind: view.DeviceGamepad, Index: 1}
 	s := &fakeSession{}
-	m := New().Main()
+	m := New(nil).Main()
 	if st := m.Update(press(pad, view.ActionDown), s); st.Kind != view.StepStay || len(s.news) != 0 {
 		t.Fatalf("ohne Bestätigen: %+v", st)
 	}
@@ -44,14 +44,14 @@ func TestMainStartsGameWithConfirmingDevice(t *testing.T) {
 
 func TestMainStaysOnError(t *testing.T) {
 	s := &fakeSession{err: errors.New("Simulation fehlt")}
-	st := New().Main().Update(press(view.DeviceID{}, view.ActionConfirm), s)
+	st := New(nil).Main().Update(press(view.DeviceID{}, view.ActionConfirm), s)
 	if st.Kind != view.StepStay || len(st.Cues) != 1 || st.Cues[0].Kind != view.CueDenied || st.Cues[0].Text != "Simulation fehlt" {
 		t.Errorf("Fehler: %+v", st)
 	}
 }
 
 func TestPauseClosesOnBack(t *testing.T) {
-	p := New().Pause()
+	p := New(nil).Pause()
 	if st := p.Update(press(view.DeviceID{}, view.ActionDown), nil); st.Kind != view.StepStay {
 		t.Errorf("Pause schließt ohne Taste: %+v", st)
 	}

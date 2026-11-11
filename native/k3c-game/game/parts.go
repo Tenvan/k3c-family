@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"k3c/native/k3c-game/actors"
+	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/audio"
 	"k3c/native/k3c-game/fx"
 	"k3c/native/k3c-game/hud"
@@ -35,17 +36,17 @@ type Parts struct {
 	Menus     view.Menus
 }
 
-// Packages liefert die Beiträge aller Fachpakete; jedes Fachpaket hat hier genau einen Eintrag.
-func Packages() []Part {
+// Packages liefert die Beiträge aller Fachpakete; alle bekommen dieselbe Grafik-Bibliothek (nil in Tests). Jedes Fachpaket hat hier genau einen Eintrag.
+func Packages(lib *art.Library) []Part {
 	return []Part{
-		{Name: "world", Drawers: world.New()},
-		{Name: "props", Drawers: []view.Drawer{props.New()}},
-		{Name: "actors", Drawers: []view.Drawer{actors.New()}},
-		{Name: "fx", Drawers: []view.Drawer{fx.New()}},
-		{Name: "hud", Drawers: []view.Drawer{hud.New()}},
-		{Name: "input", Source: input.New()},
-		{Name: "menu", Menus: menu.New()},
-		{Name: "audio", Listener: audio.New()},
+		{Name: "world", Drawers: world.New(lib)},
+		{Name: "props", Drawers: []view.Drawer{props.New(lib)}},
+		{Name: "actors", Drawers: []view.Drawer{actors.New(lib)}},
+		{Name: "fx", Drawers: []view.Drawer{fx.New(lib)}},
+		{Name: "hud", Drawers: []view.Drawer{hud.New(lib)}},
+		{Name: "input", Source: input.New(lib)},
+		{Name: "menu", Menus: menu.New(lib)},
+		{Name: "audio", Listener: audio.New(lib)},
 	}
 }
 

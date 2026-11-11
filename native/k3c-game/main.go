@@ -11,11 +11,17 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 
+	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/game"
 )
 
 func main() {
-	parts, err := game.Assemble(game.Packages())
+	lib, err := art.New(art.DefaultConfig())
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "💥 %v\n", err)
+		os.Exit(1)
+	}
+	parts, err := game.Assemble(game.Packages(lib))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "💥 %v\n", err)
 		os.Exit(1)

@@ -10,7 +10,7 @@ import (
 )
 
 func TestEveryPackageRegistered(t *testing.T) {
-	p, err := Assemble(Packages())
+	p, err := Assemble(Packages(nil))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,7 +45,7 @@ func (listeningDrawer) Layer() view.Layer  { return view.LayerEffects }
 func (listeningDrawer) Listen(*view.Frame) {}
 
 func TestAssembleRejects(t *testing.T) {
-	base := Packages()
+	base := Packages(nil)
 	if _, err := Assemble(append(slices.Clone(base), Part{Name: "kaputt", Drawers: []view.Drawer{badDrawer{}}})); err == nil {
 		t.Error("ungültige Ebene angenommen")
 	}
