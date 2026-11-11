@@ -11,6 +11,8 @@ import (
 	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
+
+	"k3c/native/k3c-rig/paint"
 )
 
 type sheetAnim struct {
@@ -78,7 +80,7 @@ func (s *Sheets) sheet(anim, variant string) (*Sheet, error) {
 	if a.FrameH != nil {
 		sh.fh = *a.FrameH
 	}
-	pix, err := readPNG(filepath.Join(s.dir, a.Datei))
+	pix, err := paint.ReadPNG(filepath.Join(s.dir, a.Datei))
 	if err != nil {
 		return nil, fmt.Errorf("Sheet %s nicht geladen: %w", a.Datei, err)
 	}

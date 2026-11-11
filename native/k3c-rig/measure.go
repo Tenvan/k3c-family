@@ -14,6 +14,8 @@ import (
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
+
+	"k3c/native/k3c-rig/paint"
 )
 
 const measureState = "trab"
@@ -45,7 +47,7 @@ type Report struct {
 
 type Measure struct {
 	args     Args
-	actors   []*Actor
+	actors   []*paint.Actor
 	sheet    *Sheet
 	t        float64
 	warm     bool
@@ -66,12 +68,8 @@ func NewMeasure(g *Game) (*Measure, error) {
 		if err != nil {
 			return nil, err
 		}
-		for k, st := range states {
-			if st.name == measureState {
-				a.state = k
-			}
-		}
-		a.t = float64(i) * 0.137 // versetzte Phasen, fest statt gewürfelt
+		a.State = states[stateIndex(measureState)]
+		a.T = float64(i) * 0.137 // versetzte Phasen, fest statt gewürfelt
 		m.actors = append(m.actors, a)
 	}
 	return m, nil
@@ -82,7 +80,7 @@ func (m *Measure) Update(g *Game, dt float64) error {
 	start := clock()
 	for _, a := range m.actors {
 		if m.args.kind == "sheet" {
-			a.t += dt
+			a.T += dt
 			continue
 		}
 		if err := a.Update(dt); err != nil {
@@ -110,16 +108,16 @@ func (m *Measure) Draw(g *Game, screen *ebiten.Image) {
 	for i, a := range m.actors {
 		x, y := m.place(g, i)
 		if m.args.kind == "sheet" {
-			sh, err := g.sheets.sheet(measureState, variants[a.variant])
+			sh, err := g.sheets.sheet(measureState, a.Variant)
 			if err != nil {
 				fatal("💥 %v", err)
 			}
-			freq, _ := a.freq()
-			phase := math.Mod(a.t*freq, 1)
+			freq, _ := a.Freq()
+			phase := math.Mod(a.T*freq, 1)
 			sh.draw(screen, int(phase*float64(len(sh.frames))), x, y, scale, false)
 			continue
 		}
-		g.painter.dst, g.painter.view = screen, viewAt(x, y, scale, false)
+		g.painter.Dst, g.painter.View = screen, viewAt(x, y, scale, false)
 		a.Draw(g.painter)
 	}
 	now := clock()
@@ -171,7 +169,7 @@ func (m *Measure) build(g *Game) Report {
 	n := len(sorted)
 	total := sum(sorted)
 	worst := sorted[n-max(n/100, 1):] // 1-%-Low: mittlere FPS der langsamsten 1 % der Bilder
-	images, bytes := len(g.assets.images), g.assets.bytes
+	images, bytes := len(g.assets.Images), g.assets.Bytes
 	if m.args.kind == "sheet" {
 		images, bytes = len(g.sheets.sheets), g.sheets.bytes
 	}

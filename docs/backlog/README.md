@@ -174,6 +174,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-788](B-788-check-run-teilaufgaben-sim-sperre.md) | DEV | Schuld | mittel | offen | – | check_run kennt die Teilaufgaben von check:diff, sim_test und sim_run lehnen während der Sperre ab |
 | [B-789](B-789-prototyp-fluss-fester-hintergrund-alle-rigs.md) | CLI | Frage | hoch | offen | – | Der Ebitengine-Prototyp zeigt den Fluss in der unteren Bildhälfte, einen festen Fern-Hintergrund und alle Figuren als Rig |
 | [B-790](B-790-prototyp-shader-wasser.md) | CLI | Frage | mittel | offen | – | Ein vierter Prototyp zeigt, was Shader in Ebitengine für Wasser und Papier-Effekte bringen |
+| [B-791](B-791-rig-bein-baender-klappen-um.md) | CLI | Problem | mittel | offen | – | Bein-Bänder von Elefant, Wolf und Alphawolf klappen im Rig nicht mehr um |
 
 ## Archiv
 

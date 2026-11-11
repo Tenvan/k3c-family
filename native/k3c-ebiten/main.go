@@ -3,7 +3,8 @@
 // Keine Spiel-Logik, kein Netz. Zweck: direkter Vergleich der Messwerte beider Engines.
 //
 // Aufruf (über `task native:*`): k3c-ebiten [--root <repo>] [--mode level|alle] [--measure <s>] [--warmup <s>]
-// [--report <datei>] [--novsync] [--auto]; zusätzlich nur hier: [--unmanaged] (Gegenversuch: je Sheet eine eigene Textur statt Ebitengines Atlas).
+// [--report <datei>] [--novsync] [--auto]; zusätzlich nur hier: [--shots <ordner>] (Screenshots an zwei Kamera-Positionen, NV3.1), [--unmanaged] (Gegenversuch: je Sheet eine eigene Textur statt Ebitengines Atlas),
+// [--art rig|sheet] (NV3.3: Figuren aus Rig-Teilen, Standard, oder wie vorher aus Sheets).
 package main
 
 import (
@@ -18,6 +19,8 @@ import (
 	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
+
+	"k3c/native/k3c-rig/paint"
 )
 
 // Fenstergröße in Bildpunkten des Bildschirms (wie der Bevy-Prototyp)
@@ -32,9 +35,9 @@ var (
 )
 
 type Args struct {
-	root, mode, report     string
-	measureS, warmupS      float64
-	vsync, auto, unmanaged bool
+	root, mode, report, shots, art string
+	measureS, warmupS              float64
+	vsync, auto, unmanaged         bool
 }
 
 func logf(format string, a ...any) { fmt.Printf(format+"\n", a...) }
@@ -57,8 +60,13 @@ func parseArgs() Args {
 	fs.BoolVar(&novsync, "novsync", false, "")
 	fs.BoolVar(&a.auto, "auto", false, "")
 	fs.BoolVar(&a.unmanaged, "unmanaged", false, "")
+	fs.StringVar(&a.shots, "shots", "", "")
+	fs.StringVar(&a.art, "art", "rig", "")
 	if err := fs.Parse(os.Args[1:]); err != nil || fs.NArg() > 0 {
-		fatal("🚫 Ungültige Argumente (%v %v); gültig: --root --mode --measure --warmup --report --novsync --auto", err, fs.Args())
+		fatal("🚫 Ungültige Argumente (%v %v); gültig: --root --mode --measure --warmup --report --novsync --auto --shots --unmanaged --art", err, fs.Args())
+	}
+	if a.art != "rig" && a.art != "sheet" {
+		fatal("🚫 --art rig|sheet, nicht %s", a.art)
 	}
 	if a.mode != "level" && a.mode != "alle" {
 		fatal("🚫 --mode level|alle, nicht %s", a.mode)
@@ -72,12 +80,16 @@ type Game struct {
 	args    Args
 	paper   *Paper
 	level   *Level
+	river   *River
+	fps     *fpsHUD
+	shots   *Shots
 	measure *Measure
 	w, h    int
 	views   [2]*ebiten.Image
 	viewsOf *ebiten.Image
 	last    float64
 	elapsed float64
+	workMs  float64 // Rechenzeit dieses Bilds (Update und Zeichenbefehle der Sichten, CPU)
 	quit    bool
 }
 
@@ -93,16 +105,34 @@ func (g *Game) Update() error {
 	dt := math.Min(now-g.last, 0.25) // gekappt wie Bevys Spielzeit, nur für die Bewegung
 	g.last = now
 	g.elapsed += dt
-	return g.level.update(g.paper, dt, g.elapsed, g.args.auto)
+	if g.shots != nil {
+		g.shots.update(g)
+	}
+	start := clock()
+	if g.h > 0 {
+		g.level.viewHalf = float64(g.w) / 2 / (float64(g.h/2) * worldShare / worldViewH)
+	}
+	err := g.level.update(g.paper, dt, g.elapsed, g.args.auto)
+	g.workMs = (clock() - start) * 1000
+	return err
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	screen.Fill(sky)
+	start := clock()
 	for i := range 2 {
 		g.drawView(screen, i)
 	}
+	g.workMs += (clock() - start) * 1000
 	g.paper.prime(screen)
-	info := RunInfo{sheets: g.paper.count(), bytes: g.paper.bytes, size: [2]int{g.w, g.h}, unmanaged: g.args.unmanaged}
+	g.fps.draw(screen, g.elapsed)
+	if g.shots != nil {
+		g.shots.capture(g, screen)
+	}
+	info := RunInfo{sheets: g.paper.count(), bytes: g.paper.bytes, size: [2]int{g.w, g.h}, unmanaged: g.args.unmanaged, workMs: g.workMs}
+	if r := g.level.rigs; r != nil {
+		info.rigImages, info.rigBytes = len(r.assets.Images), r.assets.Bytes
+	}
 	if g.measure.frame(clock(), g.paper.settled(), info) {
 		g.quit = true
 	}
@@ -134,14 +164,19 @@ func (g *Game) view(screen *ebiten.Image, i int) *ebiten.Image {
 	return g.views[i]
 }
 
-// drawView zeichnet die Welt aus Sicht eines Spielers: sichtbare Höhe viewH, Kamera-Mitte cameraY über dem Boden.
+// drawView zeichnet eine Sicht: obere zwei Drittel Welt (Boden-Linie an der Grenze), unteres Drittel Fluss vor allem anderen.
+// Sichtbare Welthöhe über dem Boden: worldViewH. Die Schicht `fern` steht (Scroll-Faktor 0), `mitte` und `nah` scrollen.
 func (g *Game) drawView(screen *ebiten.Image, i int) {
 	view := g.view(screen, i)
 	half := float64(g.h / 2)
-	s := half / viewH
+	s := half * worldShare / worldViewH
 	cam := g.level.players[i].sprite.x
 	cx := float64(g.w) / 2
-	groundY := float64(i)*half + half/2 + cameraY*s
+	groundY := float64(i)*half + half*worldShare
+	var pt *paint.Painter
+	if g.level.rigs != nil {
+		pt = g.level.rigs.painter
+	}
 	for _, sp := range g.level.sprites {
 		if sp.player >= 0 && sp.player != i {
 			continue
@@ -150,8 +185,9 @@ func (g *Game) drawView(screen *ebiten.Image, i int) {
 		if sp.player >= 0 {
 			x = sp.baseX + cam*(1-sp.scroll)
 		}
-		sp.draw(view, (x-cam)*s+cx, groundY, s, float64(g.w))
+		sp.draw(view, pt, (x-cam)*s+cx, groundY, s, float64(g.w))
 	}
+	g.river.draw(view, groundY+bankH*s, float64(i+1)*half, float64(g.w), s, cam, g.elapsed)
 }
 
 func main() {
@@ -160,18 +196,27 @@ func main() {
 	if st, serr := os.Stat(grafik); err != nil || serr != nil || !st.IsDir() {
 		fatal("💥 public/grafik fehlt unter %s. Erst `task gen:paper` ausführen.", args.root)
 	}
-	logf("🚀 K3C Ebitengine-Prototyp, Modus %s, Grafik %s", args.mode, grafik)
+	logf("🚀 K3C Ebitengine-Prototyp, Modus %s, Art %s, Grafik %s", args.mode, args.art, grafik)
 	paper := NewPaper(grafik, args.unmanaged)
-	level, err := buildLevel(paper, args.mode == "alle")
+	var rigs *Rigs
+	if args.art == "rig" {
+		if rigs, err = loadRigs(args.root); err != nil {
+			fatal("💥 %v", err)
+		}
+	}
+	level, err := buildLevel(paper, args.mode == "alle", rigs)
 	if err != nil {
 		fatal("💥 %v", err)
 	}
-	g := &Game{args: args, paper: paper, level: level, last: clock(), measure: NewMeasure(args)}
+	g := &Game{args: args, paper: paper, level: level, last: clock(), measure: NewMeasure(args), river: newRiver(), fps: newFpsHUD()}
+	if args.shots != "" {
+		g.shots = NewShots(args.shots)
+	}
 
 	s := scaleFactor()
 	ebiten.SetWindowSize(int(math.Round(winW/s)), int(math.Round(winH/s)))
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
-	ebiten.SetWindowTitle(fmt.Sprintf("K3C Ebitengine-Prototyp (%s)", args.mode))
+	ebiten.SetWindowTitle(fmt.Sprintf("K3C Ebitengine-Prototyp (%s, %s)", args.mode, args.art))
 	ebiten.SetVsyncEnabled(args.vsync)
 	// Update im Takt der Bilder: Ohne VSync läuft Draw damit unbegrenzt, die Bewegung rechnet mit der echten Zeit.
 	ebiten.SetTPS(ebiten.SyncWithFPS)

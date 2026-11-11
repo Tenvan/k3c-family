@@ -1,30 +1,46 @@
-// Teile-Export des Rig-Prototyps (B-778/AC-01, `task native:rig:export`): Teil-PNGs, Rig-Dateien, Elemente und
-// Sollwerte nach native/k3c-rig/assets/. Liest Specs und Stil nur; tools/paper und gen:paper bleiben unberührt.
+// Teile-Export des Rig-Prototyps (B-778/AC-01, B-789/AC-03, `task native:rig:export`): Teil-PNGs, Rig-Dateien,
+// Elemente und Sollwerte aller Figuren mit Teile-Baum (catalog.ts) nach native/k3c-rig/assets/<gruppe>/<id>/. Liest
+// Specs und Stil nur; tools/paper und gen:paper bleiben unberührt.
 // Aufruf: bun native/k3c-rig/export/export.ts [--pruefen]   (--pruefen: nichts schreiben, mit dem Bestand vergleichen)
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
-import type { Spec } from '../../../tools/paper/schema/types';
-import { ladeStil, ROOT } from '../../../tools/paper/render/stil';
+import type { Spec, Stil } from '../../../tools/paper/schema/types';
+import { ladeStil } from '../../../tools/paper/render/stil';
 import { groesse } from '../../../tools/paper/render/png';
+import { type Eintrag, katalog, REITER, REITTIERE } from './catalog';
 import { exportElemente } from './elements';
 import { exportFigur, figurKontext } from './figure';
-import { sollFigur, sollReiten, sollText } from './expected';
+import { sollFigur, sollGang, sollReiten, sollText } from './expected';
 import type { Dateien } from './types';
 import { exportVierbeiner } from './quadruped';
 
 const ASSETS = resolve(import.meta.dirname, '../assets');
-const lese = (pfad: string) => JSON.parse(readFileSync(join(ROOT, pfad), 'utf8')) as Spec;
 const json = (wert: unknown) => JSON.stringify(wert, null, 2) + '\n';
 
+/** figur: Rig und Sollwerte je eigener Animation; der Reiter dazu seine Elemente. */
+function figur(e: Eintrag, stil: Stil, dateien: Dateien) {
+  const reiter = e.ordner === REITER, rig = exportFigur(e.spec, stil, dateien, e.ordner, reiter);
+  dateien.set(`${e.ordner}/rig.json`, json(rig));
+  if (reiter) dateien.set('elemente/elemente.json', json(exportElemente(e.spec, rig, figurKontext(e.spec, stil), dateien)));
+  for (const a of Object.keys(rig.animationen)) dateien.set(`soll/${e.ordner}/${a}.json`, sollText(sollFigur(e.spec, a)));
+}
+
+/** vierbeiner: Rig und Sollwerte je Gangart-Animation; ein Reittier dazu je Reit-Animation des Reiters (`reiten-<gangart>`). */
+function vierbeiner(e: Eintrag, reiter: Spec, stil: Stil, dateien: Dateien) {
+  const traegt = e.gruppe === REITTIERE, rig = exportVierbeiner(e.spec, traegt ? reiter : undefined, stil, dateien, e.ordner);
+  dateien.set(`${e.ordner}/rig.json`, json(rig));
+  for (const [a, anim] of Object.entries(rig.animationen)) dateien.set(`soll/${e.ordner}/${a}.json`, sollText(sollGang(e.spec, a, anim)));
+  if (!traegt) return;
+  const reiten = Object.entries(reiter.animationen ?? {}).filter(([, a]) => a.reittier === e.spec.id && !a.ebene && a.gangart);
+  if (!reiten.length) throw new Error(`${e.ordner}: ${reiter.id} hat keine Reit-Animation für dieses Reittier`);
+  for (const [a, anim] of reiten) dateien.set(`soll/${e.ordner}/reiten-${anim.gangart}.json`, sollText(sollReiten(reiter, e.spec, a)));
+}
+
 function baue(): Dateien {
-  const stil = ladeStil(), monarch = lese('public/grafik/figuren/monarch.paper.json'), pferd = lese('public/grafik/reittiere/pferd.paper.json');
-  const dateien: Dateien = new Map();
-  const figur = exportFigur(monarch, stil, dateien);
-  dateien.set('monarch/rig.json', json(figur));
-  dateien.set('pferd/rig.json', json(exportVierbeiner(pferd, monarch, stil, dateien)));
-  dateien.set('elemente/elemente.json', json(exportElemente(monarch, figur, figurKontext(monarch, stil), dateien)));
-  for (const a of ['idle', 'lauf']) dateien.set(`soll/monarch-${a}.json`, sollText(sollFigur(monarch, a)));
-  dateien.set('soll/reiten-trab.json', sollText(sollReiten(monarch, pferd, 'trab')));
+  const stil = ladeStil(), alle = katalog(), dateien: Dateien = new Map();
+  const reiter = alle.find((e) => e.ordner === REITER)?.spec;
+  if (!reiter) throw new Error(`Reiter ${REITER} fehlt in public/grafik`);
+  for (const e of alle) (e.spec.rig === 'figur' ? figur(e, stil, dateien) : vierbeiner(e, reiter, stil, dateien));
   return dateien;
 }
 
@@ -58,12 +74,21 @@ function schreibe(dateien: Dateien) {
   }
 }
 
-/** Kennzahlen: Anzahl und Bytes der PNGs, RGBA-Speicher (Breite · Höhe · 4) in MiB. */
+const mib = (b: number) => Math.round((b / 1048576) * 100) / 100;
+const rgbaVon = (b: Buffer) => groesse(b).breite * groesse(b).hoehe * 4;
+
+/** Kennzahlen: Anzahl und Bytes der PNGs, RGBA-Speicher (Breite · Höhe · 4) in MiB, gesamt und je Figur (Texturbudget). */
 function kennzahlen(dateien: Dateien) {
   const pngs = [...dateien].filter((e): e is [string, Buffer] => e[0].endsWith('.png'));
-  const rgba = pngs.reduce((s, [, b]) => s + groesse(b).breite * groesse(b).hoehe * 4, 0);
   const bytes = [...dateien.values()].reduce((s, b) => s + Buffer.byteLength(b), 0);
-  return { dateien: dateien.size, pngs: pngs.length, bytes, rgba_mib: Math.round((rgba / 1048576) * 100) / 100 };
+  const je: Record<string, { pngs: number; bytes: number; rgba: number }> = {};
+  for (const [p, b] of pngs) {
+    const f = (je[p.split('/').slice(0, -1).join('/')] ??= { pngs: 0, bytes: 0, rgba: 0 });
+    f.pngs++, (f.bytes += b.length), (f.rgba += rgbaVon(b));
+  }
+  const figuren = Object.fromEntries(Object.entries(je).map(([o, f]) => [o, { pngs: f.pngs, bytes: f.bytes, rgba_mib: mib(f.rgba) }]));
+  const rgba = pngs.reduce((s, [, b]) => s + rgbaVon(b), 0);
+  return { dateien: dateien.size, pngs: pngs.length, bytes, rgba_mib: mib(rgba), figuren };
 }
 
 const dateien = baue();

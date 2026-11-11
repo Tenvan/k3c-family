@@ -16,6 +16,8 @@ import (
 	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
+
+	"k3c/native/k3c-rig/paint"
 )
 
 // Fenstergröße in Bildpunkten des Bildschirms (wie die Prototypen aus NV1)
@@ -97,7 +99,7 @@ type Game struct {
 	args    Args
 	assets  *Assets
 	sheets  *Sheets
-	painter *Painter
+	painter *paint.Painter
 	scene   Scene
 	w, h    int
 	last    float64
@@ -156,12 +158,12 @@ func main() {
 	if err != nil {
 		fatal("💥 %v", err)
 	}
-	logf("📂 %d Teil-Bilder geladen (%.2f MiB RGBA)", len(assets.images), mib(assets.bytes))
+	logf("📂 %d Teil-Bilder geladen (%.2f MiB RGBA)", len(assets.Images), mib(assets.Bytes))
 	sheets, err := LoadSheets(args.root)
 	if err != nil {
 		logf("📄 Ohne Sheet-Vergleich: %v", err)
 	}
-	g := &Game{args: args, assets: assets, sheets: sheets, painter: NewPainter(assets.white), last: clock()}
+	g := &Game{args: args, assets: assets, sheets: sheets, painter: paint.NewPainter(assets.White), last: clock()}
 	if g.scene, err = newScene(g); err != nil {
 		fatal("💥 %v", err)
 	}

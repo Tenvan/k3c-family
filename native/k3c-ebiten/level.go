@@ -11,6 +11,8 @@ import (
 	"sort"
 
 	"github.com/hajimehoshi/ebiten/v2"
+
+	"k3c/native/k3c-rig/paint"
 )
 
 const (
@@ -27,7 +29,7 @@ const (
 var layers = []struct {
 	name   string
 	scroll float64
-}{{"fern", 0.15}, {"mitte", 0.35}, {"nah", 0.5}}
+}{{"fern", 0}, {"mitte", 0.35}, {"nah", 0.5}}
 
 var groundColor = color.RGBA{74, 56, 36, 255} // sRGB 0.29/0.22/0.14
 
@@ -42,6 +44,7 @@ type Sprite struct {
 	frame   int
 	acc     float64
 	playing bool
+	rate    float64 // Tempo der Animation (0 = 1); Natur wiegt je Pflanze verschieden schnell
 	// Hintergrund-Kachel eines Spielers (player ≥ 0): x = baseX + Kamera-x · (1 − scroll)
 	player        int
 	scroll, baseX float64
@@ -49,11 +52,15 @@ type Sprite struct {
 	from, to, speed float64
 	ground          bool
 	pixel           *ebiten.Image // nur Boden: ein weißer Bildpunkt, eingefärbt und gestreckt
+	fig             *figure       // Rig-Figur statt Sheet (--art rig)
 }
 
 type Level struct {
 	sprites []*Sprite
 	players [2]*Player
+	rigs    *Rigs // nil = alles aus Sheets (--art sheet)
+	// Sichtbarer Bereich je Spieler: Kamera-x (Monarch) ± viewHalf in Spiel-Pixeln; 0 = noch unbekannt (alles rechnen)
+	viewHalf float64
 }
 
 // add legt ein Sprite eines Sheets an (x, z) mit Spielhöhe height an.
@@ -67,9 +74,24 @@ func (l *Level) add(p *Paper, asset, anim string, x, z, height float64) (*Sprite
 	return sp, nil
 }
 
-// buildLevel baut das Level; mit all zusätzlich jedes Sheet jedes Assets (Lastfall `alle`).
-func buildLevel(p *Paper, all bool) (*Level, error) {
-	l := &Level{}
+// addFigure legt eine Figur an: mit Rigs aus Rig-Teilen, sonst aus dem Sheet.
+func (l *Level) addFigure(p *Paper, asset, anim string, x, z, height float64) (*Sprite, error) {
+	if l.rigs == nil {
+		return l.add(p, asset, anim, x, z, height)
+	}
+	f, err := l.rigs.newFigure(p, asset, anim, height)
+	if err != nil {
+		return nil, err
+	}
+	sp := &Sprite{asset: asset, x: x, z: z, height: height, player: -1, playing: true, fig: f}
+	l.sprites = append(l.sprites, sp)
+	return sp, nil
+}
+
+// buildLevel baut das Level; mit all zusätzlich jedes Sheet jedes Assets (Lastfall `alle`); rigs = nil zeichnet Figuren
+// aus Sheets.
+func buildLevel(p *Paper, all bool, rigs *Rigs) (*Level, error) {
+	l := &Level{rigs: rigs}
 	white := ebiten.NewImage(3, 3)
 	white.Fill(color.White)
 	pixel := white.SubImage(image.Rect(1, 1, 2, 2)).(*ebiten.Image)
@@ -143,6 +165,17 @@ func (l *Level) addBackgrounds(p *Paper) error {
 	return nil
 }
 
+// tileRange: Kachel-Indizes einer Schicht. Fester Hintergrund (scroll 0) steht auf dem Bildschirm und braucht nur die Sichtbreite
+// um die Mitte; scrollende Schichten decken die Welt ab (Kamera 100 … worldW − 100).
+func tileRange(scroll float64) (int, int) {
+	const view = 2400.0
+	if scroll == 0 {
+		n := int(math.Ceil(view / 2 / tileW))
+		return -n, n + 1
+	}
+	return -1, int(math.Ceil((worldW*scroll + view*2) / tileW))
+}
+
 func (l *Level) addBuildings(p *Paper) error {
 	list := []struct {
 		id   string
@@ -175,9 +208,16 @@ func (l *Level) addNature(p *Paper) error {
 		if _, ok := m.Animationen["idle"]; ok {
 			anim = "idle"
 		}
-		if _, err := l.add(p, asset, anim, 60+float64((i*367)%3900), -1+float64(i)*0.001, 0); err != nil {
+		sp, err := l.add(p, asset, anim, 60+float64((i*367)%3900), -1+float64(i)*0.001, 0)
+		if err != nil {
 			return err
 		}
+		// Jede Pflanze beginnt in einer anderen Phase und wiegt mit eigenem Tempo (0,7 bis 1,3), fest aus dem Platz
+		// abgeleitet statt gewürfelt: so bewegen sich Nachbarn nicht im Gleichschritt.
+		if sp.sheet.frames > 1 {
+			sp.frame = (i * 7) % sp.sheet.frames
+		}
+		sp.rate = 0.7 + 0.6*float64((i*37)%100)/100
 	}
 	return nil
 }
@@ -190,7 +230,7 @@ func (l *Level) addTroops(p *Paper) error {
 		if i%3 == 0 {
 			anim = "lauf"
 		}
-		sp, err := l.add(p, "truppen/"+troops[i%len(troops)], anim, x, 2+float64(i)*0.01, hTroop)
+		sp, err := l.addFigure(p, "truppen/"+troops[i%len(troops)], anim, x, 2+float64(i)*0.01, hTroop)
 		if err != nil {
 			return err
 		}
@@ -212,7 +252,7 @@ func (l *Level) addEnemies(p *Paper) error {
 		if i%2 == 0 {
 			x = 150 + float64(i*23)
 		}
-		sp, err := l.add(p, "gegner/"+e.id, "lauf", x, 3+float64(i)*0.01, e.h)
+		sp, err := l.addFigure(p, "gegner/"+e.id, "lauf", x, 3+float64(i)*0.01, e.h)
 		if err != nil {
 			return err
 		}
@@ -223,6 +263,16 @@ func (l *Level) addEnemies(p *Paper) error {
 
 func (l *Level) addMonarchs(p *Paper) error {
 	for i, x := range []float64{1900, 2100} {
+		if l.rigs != nil {
+			f, err := l.rigs.newRider(p, "figuren/monarch", "reittiere/"+mounts[i], fmt.Sprintf("spieler%d", i+1), "schritt", gaitAnim("schritt", i), hMonarch)
+			if err != nil {
+				return err
+			}
+			sp := &Sprite{asset: "figuren/monarch", x: x, z: 10 + float64(i), height: hMonarch, player: -1, playing: true, fig: f}
+			l.sprites = append(l.sprites, sp)
+			l.players[i] = &Player{index: i, sprite: sp}
+			continue
+		}
 		sp, err := l.add(p, "figuren/monarch", gaitAnim("schritt", i), x, 10+float64(i), hMonarch)
 		if err != nil {
 			return err
@@ -245,10 +295,29 @@ func (l *Level) update(p *Paper, dt, elapsed float64, auto bool) error {
 		}
 	}
 	for _, sp := range l.sprites {
-		sp.animate(dt)
 		sp.wander(dt)
+		if sp.fig == nil {
+			sp.animate(dt)
+			continue
+		}
+		if err := sp.fig.update(dt, sp.playing, l.visible(sp)); err != nil {
+			return err
+		}
 	}
 	return nil
+}
+
+// visible: Figur steht in der Sicht eines Spielers (Kamera = Monarch des Spielers, Rand = halbe Breite der Figur).
+func (l *Level) visible(sp *Sprite) bool {
+	if l.viewHalf <= 0 {
+		return true
+	}
+	for _, pl := range l.players {
+		if math.Abs(sp.x-pl.sprite.x) < l.viewHalf+sp.fig.reach() {
+			return true
+		}
+	}
+	return false
 }
 
 // animate schaltet höchstens ein Bild je Frame weiter (wie der Timer im Bevy-Prototyp).
@@ -257,6 +326,9 @@ func (sp *Sprite) animate(dt float64) {
 		return
 	}
 	period := 1 / math.Max(sp.sheet.fps, 1)
+	if sp.rate > 0 {
+		period /= sp.rate
+	}
 	sp.acc += dt
 	if sp.acc >= period {
 		sp.acc = math.Mod(sp.acc, period)
@@ -276,8 +348,12 @@ func (sp *Sprite) wander(dt float64) {
 }
 
 // draw zeichnet das Sprite mit Fußpunkt (fx, fy) am Bildschirm; s = Bildschirm-Pixel je Spiel-Pixel. Gespiegelt wird
-// innerhalb des eigenen Rechtecks (wie `flip_x` in Bevy), außerhalb der Sicht wird nicht gezeichnet.
-func (sp *Sprite) draw(dst *ebiten.Image, fx, fy, s, viewW float64) {
+// innerhalb des eigenen Rechtecks (wie `flip_x` in Bevy), außerhalb der Sicht wird nicht gezeichnet. Rig-Figuren zeichnet pt.
+func (sp *Sprite) draw(dst *ebiten.Image, pt *paint.Painter, fx, fy, s, viewW float64) {
+	if sp.fig != nil {
+		sp.fig.draw(pt, dst, fx, fy, s, viewW, sp.flip)
+		return
+	}
 	var op ebiten.DrawImageOptions
 	if sp.ground {
 		// Boden: Welt-x −2000 … 6000, 400 hoch, unter der Bodenlinie

@@ -1,11 +1,12 @@
-// Rig eines vierbeiner (Pferd): starre Teile als Bilder, Beine als Band (Ober- und Unterbein sind ein gebogenes
-// Papierstück), Platz `sattel` für den Reiter, `maul` für die Zügel. Bilder in der Dichte der Reit-Sheets.
+// Rig eines vierbeiner: starre Teile als Bilder, Beine als Band (Ober- und Unterbein sind ein gebogenes Papierstück).
+// Reittiere haben dazu Platz `sattel` für den Reiter, `maul` für die Zügel und Bilder in der Dichte der Reit-Sheets.
 import type { Punkt, Spec, Stil } from '../../../tools/paper/schema/types';
 import { farbe } from '../../../tools/paper/render/stil';
 import { beinpfad, beinPunkte } from '../../../tools/paper/rig/beinpfad';
 import { BEINE, type Bein } from '../../../tools/paper/rig/gangarten';
 import { FUESSE, fussVon } from '../../../tools/paper/rig/proportionen';
 import { reitRahmen } from '../../../tools/paper/rig/reiten';
+import { vierbeinerGroesse } from '../../../tools/paper/rig/vierbeinerBild';
 import { blattDichte, SITZ } from './figure';
 import { type Bereich, type Kontext, runde } from './raster';
 import { bildMitVarianten, ebeneVon, neuesZiel, type Quelle, quelle, rigTeile, type Ziel } from './parts';
@@ -18,10 +19,15 @@ const MAUL: Punkt = [60, -91];
 const DURCHHANG = 8;
 const RAND = 30;
 
-function kontext(spec: Spec, reiter: Spec, stil: Stil): Kontext {
-  const m = spec.ausgabe.massstab ?? 1, [x, y, b, h] = spec.ausgabe.rahmen.map((v) => v * m), g = reitRahmen(reiter, spec);
+/** Rahmen des Sheets in Welt-Einheiten: beim Reittier der Reit-Rahmen, sonst der eigene (rahmen · massstab). */
+const sheetRahmen = (spec: Spec, reiter?: Spec) => (reiter ? reitRahmen(reiter, spec) : vierbeinerGroesse(spec));
+
+function kontext(spec: Spec, reiter: Spec | undefined, stil: Stil): Kontext {
+  const m = spec.ausgabe.massstab ?? 1, [x, y, b, h] = spec.ausgabe.rahmen.map((v) => v * m), g = sheetRahmen(spec, reiter);
   // Das Reit-Sheet rendert der Reiter: Papierstruktur mit seinem Seed, Filter in der Dichte des Reit-Rahmens.
-  return { stil, papierId: reiter.id, blattDichte: g.frameH / g.rahmen[3], dichte: 2 * blattDichte(reiter), massstab: m,
+  // Ohne Reiter (Gegner) rendert das Tier sein Sheet selbst.
+  const px = g.frameH / g.rahmen[3];
+  return { stil, papierId: reiter?.id ?? spec.id, blattDichte: px, dichte: 2 * (reiter ? blattDichte(reiter) : px), massstab: m,
     bereich: [x - RAND, y - RAND, b + 2 * RAND, h + 2 * RAND] };
 }
 
@@ -49,23 +55,24 @@ function plaetze(spec: Spec): RigPlatz[] {
   ];
 }
 
-/** Gangarten des Tiers: Animationen ohne Ebene, dazu der Stand (Reit-Idle). */
-function gangarten(spec: Spec): Rig['animationen'] {
-  const eigen = Object.entries(spec.animationen ?? {}).filter(([, a]) => !a.ebene);
-  return { ...Object.fromEntries(eigen), stand: { frames: 8, gangart: 'stand' } };
+/** Animationen des Tiers ohne Ebene; das Reittier bekommt dazu den Stand (Reit-Idle). */
+export function gangarten(spec: Spec, reittier: boolean): Rig['animationen'] {
+  const eigen = Object.fromEntries(Object.entries(spec.animationen ?? {}).filter(([, a]) => !a.ebene));
+  return reittier ? { ...eigen, stand: { frames: 8, gangart: 'stand' } } : eigen;
 }
 
-/** `reiter` liefert die Varianten (Spielerfarben färben auch die Satteldecke) und die Dichte der Reit-Sheets. */
-export function exportVierbeiner(spec: Spec, reiter: Spec, stil: Stil, dateien: Dateien): Rig {
-  const k = kontext(spec, reiter, stil), q = quelle(spec, reiter.varianten), z = neuesZiel(spec.id, dateien, q);
+/** Mit `reiter` ist das Tier ein Reittier: Varianten des Reiters (Spielerfarben färben auch die Satteldecke), Dichte der
+ * Reit-Sheets, Plätze `sattel` und `maul`, Zügel. Ohne Reiter (Gegner) nur Teile, Beine und Gangarten. */
+export function exportVierbeiner(spec: Spec, reiter: Spec | undefined, stil: Stil, dateien: Dateien, ordner: string): Rig {
+  const k = kontext(spec, reiter, stil), q = quelle(spec, reiter?.varianten), z = neuesZiel(ordner, dateien, q);
   const teile = rigTeile(k, q, z);
   const baender = (Object.keys(BEINE) as Bein[]).map((b) => beinBand(k, q, z, b));
+  const zuegel = { farbe: farbe(stil, 'leder', 'schatten'), deckkraft: stil.papier.falz_deckkraft, breite: 1.3, durchhang: DURCHHANG,
+    ebene: ebeneVon(spec, 'hals') + 5 };
   return {
     id: spec.id, rig: 'vierbeiner', version: spec.version, dichte: k.dichte * k.massstab, massstab: k.massstab,
-    rahmen: reitRahmen(reiter, spec).rahmen, teile, plaetze: plaetze(spec), baender,
+    rahmen: sheetRahmen(spec, reiter).rahmen, teile, plaetze: reiter ? plaetze(spec) : [], baender,
     bein: { spitze: FUESSE[fussVon(spec)].spitze }, ...(spec.proportionen ? { proportionen: spec.proportionen } : {}),
-    animationen: gangarten(spec), varianten: z.varianten,
-    zuegel: { farbe: farbe(stil, 'leder', 'schatten'), deckkraft: stil.papier.falz_deckkraft, breite: 1.3, durchhang: DURCHHANG,
-      ebene: ebeneVon(spec, 'hals') + 5 },
+    animationen: gangarten(spec, !!reiter), varianten: z.varianten, ...(reiter ? { zuegel } : {}),
   };
 }

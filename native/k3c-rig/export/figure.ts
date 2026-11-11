@@ -1,4 +1,5 @@
-// Rig einer figur (Monarch): starre Teile als Bilder, Umhang als Band, Plätze für Waffe, Rüstung, Kopfbedeckung.
+// Rig einer figur: starre Teile als Bilder, Umhang als Band (falls vorhanden); beim Monarchen Plätze für Waffe,
+// Rüstung, Kopfbedeckung und Zügel-Hand.
 import type { Punkt, Spec, Stil } from '../../../tools/paper/schema/types';
 import { mitNachkommen } from '../../../tools/paper/render/svg';
 import { umhangSvg } from '../../../tools/paper/rig/umhang';
@@ -47,17 +48,22 @@ function umhangBand(k: Kontext, spec: Spec, z: Ziel, q: ReturnType<typeof quelle
 }
 
 /** Animationen ohne Reittier (Reiten kommt aus dem Rig des Reittiers). */
-const eigeneAnimationen = (spec: Spec) =>
+export const eigeneAnimationen = (spec: Spec) =>
   Object.fromEntries(Object.entries(spec.animationen ?? {}).filter(([, a]) => !a.reittier));
 
-export function exportFigur(spec: Spec, stil: Stil, dateien: Dateien): Rig {
-  const k = figurKontext(spec, stil), q = quelle(spec, spec.varianten), z = neuesZiel(spec.id, dateien, q);
-  const teile = rigTeile(k, q, z, new Set([WAFFEN_TEIL]));
+/** Figur reitet, wenn eine Animation ein Reittier nennt (Monarch). */
+const reitet = (spec: Spec) => Object.values(spec.animationen ?? {}).some((a) => a.reittier);
+
+/** `elemente`: Figur mit wählbaren Elementen (Monarch): Waffe als Element, Plätze für Rüstung, Kopfbedeckung und
+ * Zügel-Hand. Sonst bleiben alle Teile fest (auch die Waffe) und das Rig hat keine Plätze. */
+export function exportFigur(spec: Spec, stil: Stil, dateien: Dateien, ordner: string, elemente: boolean): Rig {
+  const k = figurKontext(spec, stil), q = quelle(spec, spec.varianten), z = neuesZiel(ordner, dateien, q);
+  const teile = rigTeile(k, q, z, new Set(elemente ? [WAFFEN_TEIL] : []));
   return {
     id: spec.id, rig: 'figur', version: spec.version, dichte: k.dichte, massstab: 1, rahmen: spec.ausgabe.rahmen,
-    teile, plaetze: plaetze(spec), baender: spec.umhang ? [umhangBand(k, spec, z, q)] : [],
+    teile, plaetze: elemente ? plaetze(spec) : [], baender: spec.umhang ? [umhangBand(k, spec, z, q)] : [],
     ...(spec.umhang ? { umhang: spec.umhang } : {}), ...(spec.proportionen ? { proportionen: spec.proportionen } : {}),
-    animationen: eigeneAnimationen(spec), varianten: z.varianten, standard: { waffe: WAFFEN_TEIL },
-    reiten: { sitz: SITZ, ausblenden: [...mitNachkommen(spec.teile, 'oberschenkel-h')] },
+    animationen: eigeneAnimationen(spec), varianten: z.varianten, ...(elemente ? { standard: { waffe: WAFFEN_TEIL } } : {}),
+    ...(reitet(spec) ? { reiten: { sitz: SITZ, ausblenden: [...mitNachkommen(spec.teile, 'oberschenkel-h')] } } : {}),
   };
 }
