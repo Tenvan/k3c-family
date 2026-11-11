@@ -1,7 +1,7 @@
 # BAL · Balancing & Spieleabende
 
 - **Status:** aktiv
-- **Rang:** 10
+- **Rang:** 11
 - **Ziel-Tickets:** B-099
 
 ## Ziel

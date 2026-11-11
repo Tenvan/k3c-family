@@ -170,96 +170,30 @@ tasks:
     cmds:
       - task: go:race
 
+  # check:diff ist das Werkzeug tools/checkdiff (Auswahl als getestete Go-Logik statt Shell). Teilaufgaben: `check:diff:plan` zeigt nur,
+  # was laufen würde; `check:diff:js` und `check:diff:go` wiederholen nach einem roten Lauf nur die betroffene Bahn.
   check:diff:
-    desc: Nur die Prüfungen, die der eigene Diff braucht (Basis = nächster Integrations-Branch, samt ungespeicherter Änderungen; nur betroffene Go-Pakete, Go mit -short, parallel; ohne gen:paper, Grafik-Golden, Sim, Balance und Race; vor jedem Commit, B-518, B-619, B-730, B-742)
+    desc: "Vor jedem Commit: nur was die geänderten Dateien dieses Commits brauchen (Basis HEAD; `CHECK_BASE=origin/develop` für den ganzen Sprint). Stufe 1 Regel-Tests, Lint, Typecheck, go vet; Stufe 2 nur nach grüner Stufe 1: Tests der geänderten Pakete (-short), Vitest --changed. Ohne Abnehmer-Tests, Sim, Balance, Gen, Race (B-518, B-730, B-742)"
+    deps: [tmp]
     cmds:
-      - cmd: |
-          # Nur sh, git, go und bunx: check_run startet task ohne Git-Bash-PATH (kein sort, awk, grep).
-          # Basis: jüngster Merge-Base aus origin/develop und allen origin/feature/*, die in HEAD stecken (CHECK_BASE überschreibt).
-          base="{{.CHECK_BASE}}"
-          if [ -z "$base" ]; then
-            for r in origin/develop $(git for-each-ref --format='%(refname:short)' 'refs/remotes/origin/feature/*'); do
-              mb=$(git merge-base HEAD "$r" 2>/dev/null) || continue
-              if [ -z "$base" ] || git merge-base --is-ancestor "$base" "$mb"; then base=$mb; fi
-            done
-          fi
-          [ -n "$base" ] || { echo "❌ check:diff: keine Basis gefunden (origin/develop fehlt? git fetch, oder CHECK_BASE setzen)"; exit 1; }
-          # Flags: c Client (Lint, Typecheck, Vitest --changed), gf Root-Go voll, wf/wv/wa Workbench Go voll/Vitest/assetkit,
-          # sp/sl/sv Starter. ch = geänderte Go-Pakete (Importpfade, auch für die Abnehmer in anderen Modulen).
-          # Keine Sim-, Balance- und Gen-Läufe (gen:paper, Grafik-Golden, check:race): die laufen bei der Feature-Arbeit und im
-          # Abnahme-Ticket des Sprints (B-742, docs/arbeitsweise.md › Sim, Balance und Gen).
-          c=; gf=; wf=; wv=; wa=; sg=; sl=; sv=; ch=; docs=1
-          for f in $(git diff --name-only "$base"; git ls-files --others --exclude-standard); do
-            case "$f" in
-              docs/*|*.md|reports/*) continue ;;
-            esac
-            docs=
-            d=${f%/*}; [ "$d" = "$f" ] && d=.
-            d=${d%%/testdata*}
-            case "$f" in
-              go.mod|go.sum|Taskfile.yml|.golangci*|.github/*|testdata/*) gf=1; wf=1 ;;
-              data/*) ch="$ch k3c/data"; c=1 ;;
-              engine/*|cmd/*|tools/cleanup/*|tools/ruletable/*|tools/soundatlas/*)
-                ch="$ch k3c/$d" ;;
-              public/grafik/*|tools/paper/*) c=1 ;;
-              tools/webkit/*) wv=1; sv=1 ;;
-              tools/assetkit/*) wa=1; ch="$ch k3c/$d" ;;
-              tools/k3c-workbench/frontend/*) wv=1 ;;
-              tools/k3c-workbench/go.mod|tools/k3c-workbench/go.sum|tools/k3c-workbench/Taskfile.yml|tools/k3c-workbench/.golangci*) wf=1 ;;
-              tools/k3c-workbench/*) ch="$ch k3c/$d" ;;
-              tools/k3c-starter/frontend/*) sv=1 ;;
-              tools/k3c-starter/*) sg=1; sl=1 ;;
-              *) c=1 ;;
-            esac
-          done
-          # Betroffene Pakete je Modul: geändertes Paket oder ein Paket, das eines davon importiert.
-          t='{''{.ImportPath}} {''{join .Deps " "}}'
-          aff() {
-            [ -n "$ch" ] || return 0
-            go list -f "$t" ./... 2>/dev/null | while read -r p rest; do
-              for x in $ch; do case " $p $rest " in *" $x "*) printf '%s ' "$p"; break ;; esac; done
-            done
-          }
-          own() { for x in $ch; do case "$x" in "$1"/*|"$1") printf '%s ' "$x" ;; esac; done; }
-          gp=; wp=; [ -n "$gf" ] || gp=$(aff)
-          [ -n "$wf" ] || wp=$(cd tools/k3c-workbench && aff)
-          [ -n "$wa" ] || wa=$(cd tools/assetkit && aff)
-          gl=$(for x in $(own k3c); do case "$x" in k3c/tools/k3c-workbench*|k3c/tools/assetkit*) ;; *) printf './%s/... ' "${x#k3c/}" ;; esac; done)
-          wl=$(for x in $(own k3c/tools/k3c-workbench); do printf './%s/... ' "${x#k3c/tools/k3c-workbench/}"; done)
-          wl=${wl//.\/k3c\/tools\/k3c-workbench\/.../.\/...}
-          scan="tests/planning.test.ts tests/planningProjects.test.ts tests/projectRules.test.ts"
-          # Schritt-Protokoll: check_run zeitstempelt die Marker `⏱▶ name` und `⏱■ name exit=n` und schreibt sie in das MCP-Log (B-739).
-          step() { n=$1; shift; echo "⏱▶ $n"; "$@"; r=$?; echo "⏱■ $n exit=$r"; return $r; }
-          echo "🚦 check:diff Basis $(git rev-parse --short "$base")$([ -n "$docs" ] && echo ' · nur Doku')"
-          echo "🚦 Client: ${c:+Lint Typecheck Vitest-changed} Scan · Go: $([ -n "$gf" ] && echo voll || echo "${gp:-–}") · Workbench: $([ -n "$wf" ] && echo voll || echo "${wp:-–}")${wv:+ Vitest}${wa:+ assetkit} · Starter: ${sg}${sl}${sv}"
-          # JS und Go laufen parallel; innerhalb nacheinander.
-          (
-            step vitest-scan bunx vitest run $scan || exit 1
-            if [ -n "$c" ]; then
-              # Ohne gen:paper (B-742): Tests, die gerenderte Papierschnitt-PNGs oder Golden brauchen (B-737), laufen in
-              # task test/build/dev und im Abnahme-Ticket, nicht hier.
-              step lint task lint && step typecheck task typecheck && step vitest-changed bunx vitest run --changed "$base" --passWithNoTests \
-                --exclude 'tests/paperAssets.test.ts' --exclude 'tests/buildingTargets.test.ts' --exclude 'tools/paper/golden/**' \
-                --exclude 'src/scenes/render/*Sprites.test.ts' --exclude 'src/scenes/render/hubGrowth.test.ts' || exit 1
-            fi
-            [ -z "$wv" ] || step wb-vitest task k3c-workbench:vitest VITEST_ARGS="--changed $base --passWithNoTests" || exit 1
-            [ -z "$sv" ] || step starter-vitest task k3c-starter:vitest || exit 1
-          ) & js=$!
-          (
-            if [ -n "$gf" ]; then step go-test task go:test GO_TEST_FLAGS=-short && step go-lint task go:lint || exit 1
-            elif [ -n "$gp" ]; then step go-test task go:test GO_TEST_FLAGS=-short GO_PKGS="$gp" && { [ -z "$gl" ] || step go-lint task go:lint GO_LINT_PKGS="$gl"; } || exit 1; fi
-            if [ -n "$wf" ]; then step wb-gotest task k3c-workbench:gotest GO_TEST_FLAGS=-short && step wb-lint task k3c-workbench:lint || exit 1
-            elif [ -n "$wp$wa" ]; then
-              k=0; [ -z "$wa" ] || k=1
-              { [ -z "$wp" ] || step wb-gotest task k3c-workbench:gotest GO_TEST_FLAGS=-short WB_PKGS="$wp" ASSETKIT=$k; } &&
-              { [ -z "$wl$wa" ] || step wb-lint task k3c-workbench:lint WB_LINT_PKGS="${wl:-./...}" ASSETKIT=$k; } || exit 1
-            fi
-            [ -z "$sg" ] || step starter-gotest task k3c-starter:gotest GO_TEST_FLAGS=-short || exit 1
-            [ -z "$sl" ] || step starter-lint task k3c-starter:lint || exit 1
-          ) & gopid=$!
-          r1=0; r2=0; wait $js || r1=$?; wait $gopid || r2=$?
-          [ $r1 -eq 0 ] && [ $r2 -eq 0 ] || { echo "❌ check:diff fehlgeschlagen (JS $r1, Go $r2)"; exit 1; }
-          echo "✅ check:diff grün"
+      - go run ./tools/checkdiff {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}} {{.CLI_ARGS}}
+
+  check:diff:plan:
+    desc: "check:diff trocken: zeigt Basis und Schritte, führt nichts aus"
+    cmds:
+      - go run ./tools/checkdiff -plan {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
+
+  check:diff:js:
+    desc: "check:diff, nur die Bahn JS (Regel-Tests, Oxlint, tsc, Vitest --changed)"
+    deps: [tmp]
+    cmds:
+      - go run ./tools/checkdiff -only js {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
+
+  check:diff:go:
+    desc: "check:diff, nur die Bahn Go (go vet, golangci-lint, go test -short der geänderten Pakete)"
+    deps: [tmp]
+    cmds:
+      - go run ./tools/checkdiff -only go {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
 
   check:dev:
     desc: k3c-workbench prüfen (Frontend mit Vitest, go test, golangci-lint)
