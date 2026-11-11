@@ -3,6 +3,7 @@ package local
 import (
 	"fmt"
 	"slices"
+	"time"
 
 	"k3c/engine/level"
 	"k3c/engine/room"
@@ -36,7 +37,8 @@ func (s *Session) Step() view.Frame {
 		s.tick()
 	}
 	s.collectSaves()
-	f := view.Frame{Clock: float64(s.steps) / stepHz, Paused: s.paused, Timescale: 1, Cues: s.cues, Settings: s.settings}
+	f := view.Frame{Clock: float64(s.steps) / stepHz, Paused: s.paused, Timescale: 1, Cues: s.cues, Settings: s.settings,
+		Outcome: s.ended}
 	s.cues = nil
 	if s.p != nil {
 		f.Tick, f.Stages, f.Events, f.Seats = s.p.tick, s.p.stages(), s.p.events, s.seats()
@@ -45,16 +47,69 @@ func (s *Session) Step() view.Frame {
 	return f
 }
 
-// tick taktet den Raum einmal. Ein Panic schließt das Spiel ohne Speichern; der letzte Spielstand bleibt.
+// tick taktet den Raum einmal und bestimmt den Ausgang. Ein Panic schließt das Spiel ohne Speichern; der letzte
+// Spielstand bleibt. Im Aufnahme-Modus wartet es auf die in diesem Takt begonnenen Speicherungen.
 func (s *Session) tick() {
 	defer func() {
+		s.inTick = false
 		if p := recover(); p != nil {
 			s.crash(fmt.Sprint(p))
 		}
 	}()
 	s.p.begin()
-	if !s.r.Tick() {
+	base := s.store.count()
+	s.inTick, s.encodes = true, 0
+	ok := s.r.Tick()
+	s.inTick = false
+	if !ok {
 		s.crash("Raum geschlossen")
+		return
+	}
+	if s.recording && s.encodes > 0 {
+		s.awaitSaves(base + s.encodes)
+	}
+	s.judge()
+}
+
+// saveWait ist die längste Wartezeit des Aufnahme-Modus auf eine Speicherung; danach schreibt der Raum wieder im
+// Hintergrund (Log), statt das Programm anzuhalten.
+const saveWait = 10 * time.Second
+
+// awaitSaves wartet, bis der Store n Ergebnisse gesehen hat (Aufnahme-Modus, Config.Recording).
+func (s *Session) awaitSaves(n int) {
+	for deadline := time.Now().Add(saveWait); s.store.count() < n; time.Sleep(time.Millisecond) {
+		if time.Now().After(deadline) {
+			s.log.Error("⏳ Aufnahme: Speichern nicht abgewartet, CueSaved folgt der Wanduhr", "erwartet", n, "gesehen", s.store.count())
+			s.recording = false
+			return
+		}
+	}
+}
+
+// judge setzt den Ausgang des Spiels: victory bzw. gameOver unter den Ereignissen der Stufen mit lokalen Spielern,
+// sonst verloren, wenn eine Stufe trotz Takt nicht weiterläuft (sim.StepIsland rechnet nach Island.Over nichts mehr,
+// das Ereignis kann in einer Stufe ohne lokalen Spieler liegen). Der erste Ausgang bleibt.
+func (s *Session) judge() {
+	stalled := s.p.stalled()
+	if s.ended != view.OutcomeNone {
+		return
+	}
+	for _, e := range s.p.events {
+		switch e.Type() {
+		case "gameOver":
+			s.ended = view.OutcomeLost
+		case "victory":
+			s.ended = view.OutcomeWon
+		}
+		if s.ended != view.OutcomeNone {
+			break
+		}
+	}
+	if s.ended == view.OutcomeNone && stalled {
+		s.ended = view.OutcomeLost
+	}
+	if s.ended != view.OutcomeNone {
+		s.log.Info("🚦 Spielende", "save", s.name, "ausgang", s.ended)
 	}
 }
 
@@ -78,11 +133,24 @@ func (s *Session) collectSaves() {
 
 // seats sind die Plätze der lokalen Spieler nach Slot (im Puffer seatBuf).
 func (s *Session) seats() []view.Seat {
-	s.seatBuf = s.seatBuf[:0]
-	for _, st := range s.p.seats {
-		s.seatBuf = append(s.seatBuf, view.Seat{Player: st.Slot, Device: s.devs[st.Slot], Monarch: st.Monarch, Stage: st.Stage})
-	}
+	s.seatBuf = s.appendSeats(s.seatBuf[:0])
 	return s.seatBuf
+}
+
+func (s *Session) appendSeats(dst []view.Seat) []view.Seat {
+	for _, st := range s.p.seats {
+		dst = append(dst, view.Seat{Player: st.Slot, Device: s.devs[st.Slot], Monarch: st.Monarch, Stage: st.Stage})
+	}
+	return dst
+}
+
+// Seats liefert die Plätze des laufenden Spiels nach Slot (eigener Puffer, nicht der von Frame.Seats); leer ohne Spiel.
+func (s *Session) Seats() []view.Seat {
+	s.seatOut = s.seatOut[:0]
+	if s.p != nil {
+		s.seatOut = s.appendSeats(s.seatOut)
+	}
+	return s.seatOut
 }
 
 // peer ist das lokale Gerät im Raum (room.Peer). Der Raum ruft es unter seiner Sperre in der Goroutine der Schleife
@@ -94,6 +162,15 @@ type peer struct {
 	seats    []room.Seat
 	stageBuf []view.Stage // Puffer von Frame.Stages
 	onState  func()       // Test-Naht: läuft in State
+	times    []stageTime  // Spielzeit je Stufe nach dem letzten Takt (stalled)
+	timeBuf  []stageTime
+}
+
+// stageTime ist die Spielzeit einer Stufe nach einem Takt.
+type stageTime struct {
+	stage int
+	w     *sim.World
+	t     float64
 }
 
 var _ room.Peer = (*peer)(nil)
@@ -125,6 +202,21 @@ func (p *peer) State(tick, stage int, state any) {
 			p.events = append(p.events, view.Event{Stage: stage, Tick: uint64(tick), Data: e})
 		}
 	}
+}
+
+// stalled meldet nach einem Takt, ob eine Stufe mit derselben Welt wie im vorigen Takt stehen geblieben ist (Spielzeit
+// gleich), und merkt sich die Zeiten. sim.Step zählt die Zeit in jedem Schritt weiter; steht sie, ruht die Insel.
+func (p *peer) stalled() bool {
+	out := false
+	p.timeBuf = p.timeBuf[:0]
+	for i, w := range p.worlds {
+		for _, old := range p.times {
+			out = out || (old.stage == i && old.w == w && old.t == w.Time)
+		}
+		p.timeBuf = append(p.timeBuf, stageTime{stage: i, w: w, t: w.Time})
+	}
+	p.times, p.timeBuf = p.timeBuf, p.times
+	return out
 }
 
 // stages sind die Stufen mit Welt nach Index (im Puffer stageBuf).

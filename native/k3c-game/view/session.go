@@ -51,4 +51,9 @@ type Session interface {
 	// SetSettings übernimmt die Einstellungen (Normalized) sofort und speichert sie; ein Fehler betrifft nur das
 	// Speichern, die Werte gelten trotzdem.
 	SetSettings(s Settings) error
+	// Settings liefert die aktuellen Einstellungen (wie Frame.Settings des nächsten Frames), auch ohne Spiel.
+	Settings() Settings
+	// Seats liefert die Plätze des laufenden Spiels nach Player (Device, Monarch, Stage; Seat.Lost setzt nur game im
+	// Frame); leer ohne Spiel. Der Slice gilt bis zum nächsten Aufruf einer Session-Methode.
+	Seats() []Seat
 }

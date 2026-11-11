@@ -17,6 +17,7 @@ type watchedStore struct {
 	saves   *store.Saves
 	mu      sync.Mutex // Store läuft auch in der Schreib-Goroutine des Raums
 	results []error    // nil = gespeichert
+	stored  int        // Zahl aller Ergebnisse (Aufnahme-Modus wartet darauf)
 }
 
 func (w *watchedStore) Load(name string) ([]byte, error) { return w.saves.Load(name) }
@@ -26,8 +27,16 @@ func (w *watchedStore) Store(name string, data []byte) (string, error) {
 	backup, err := w.saves.Store(name, data)
 	w.mu.Lock()
 	w.results = append(w.results, err)
+	w.stored++
 	w.mu.Unlock()
 	return backup, err
+}
+
+// count ist die Zahl aller Ergebnisse seit dem Anlegen.
+func (w *watchedStore) count() int {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	return w.stored
 }
 
 // take liefert die Ergebnisse seit dem letzten Aufruf.

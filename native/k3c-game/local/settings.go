@@ -78,3 +78,6 @@ func (s *Session) SetSettings(v view.Settings) error {
 	s.log.Info("💾 Einstellungen gespeichert", "datei", s.settingsPath)
 	return nil
 }
+
+// Settings liefert die aktuellen Einstellungen (wie Frame.Settings), auch ohne laufendes Spiel.
+func (s *Session) Settings() view.Settings { return s.settings }

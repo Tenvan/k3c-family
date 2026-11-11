@@ -133,3 +133,36 @@ func collectKeys() []ebiten.Key {
 	}
 	return out
 }
+
+// ActionKeys liefert die Tasten der Tastatur-Hälfte half (0 links, 1 rechts) für die Menü-Aktion a (nil = keine).
+// Für Abgleich-Tests anderer Pakete (Tasten-Texte im HUD, game/keys_test.go).
+func ActionKeys(half int, a view.Action) []ebiten.Key {
+	if half < 0 || half >= len(halves) || a < 0 || int(a) >= actionCount {
+		return nil
+	}
+	return halves[half].actions[a]
+}
+
+// CommandKeys liefert die Tasten der Tastatur-Hälfte half für einen gehaltenen Befehl: left, right, sprint, pay,
+// attack, skill1 … skill4 (nil = unbekannt).
+func CommandKeys(half int, name string) []ebiten.Key {
+	if half < 0 || half >= len(halves) {
+		return nil
+	}
+	l := &halves[half]
+	switch name {
+	case "left":
+		return l.left
+	case "right":
+		return l.right
+	case "sprint":
+		return l.sprint
+	case "pay":
+		return l.pay
+	case "attack":
+		return l.attack
+	case "skill1", "skill2", "skill3", "skill4":
+		return l.skills[name[5]-'1']
+	}
+	return nil
+}

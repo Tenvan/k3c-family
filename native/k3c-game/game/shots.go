@@ -1,7 +1,7 @@
 package game
 
 // Aufnahme-Modus (`--shots <ordner>`, B-792/AC-05, Vorbild native/k3c-ebiten/shots.go): Die Szene läuft in New bis
-// Scene.Tick vor, dann schreibt der shooter Count Bilder im Abstand von Every Takten als shot-01.png … und zusätzlich
+// Scene.Tick vor (mit --menu liegt danach das Menü oben), dann schreibt der shooter Count Bilder im Abstand von Every Takten als shot-01.png … und zusätzlich
 // verkleinert nebeneinander als strip.png, und beendet das Programm. Die Zeit folgt dem Takt: Update rechnet die Takte
 // bis zum nächsten Bild und wartet, bis Draw es geschrieben hat; dieselben Schalter ergeben dieselben Bilder.
 
@@ -65,8 +65,8 @@ func (s *shooter) update(g *Game) error {
 			return g.err
 		}
 	}
-	if !g.sim.Active() {
-		return errors.New("💥 Aufnahme: Spiel nicht mehr aktiv (Absturz oder Niederlage)")
+	if g.args.Scene.Menu == "" && !g.sim.Active() {
+		return errors.New("💥 Aufnahme: Spiel nicht mehr aktiv (Absturz oder Spielende)")
 	}
 	s.pending = true
 	return nil
