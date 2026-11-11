@@ -187,7 +187,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-814](B-814-monarchen-nach-laden-position.md) | SIM | Frage | mittel | offen | – | Geklärt ist, warum Monarchen nach dem Laden an der Burg statt an ihrer gespeicherten Stelle stehen |
 | [B-815](B-815-native-schrift-ofl.md) | PAP | Schuld | hoch | offen | – | Das native Spiel zeichnet mit einer freien OFL-Schrift statt der Debug-Schrift |
 | [B-816](B-816-native-shader-umschalter-leistungsanzeige.md) | CLI | Idee | niedrig | offen | – | Fluss-Shader und Kacheln lassen sich im Spiel umschalten, Bildrate und Rechenzeit sind im Bild sichtbar |
-| [B-817](B-817-abnahme-laeufe-nat.md) | CLI | Schuld | mittel | offen | – | Abnahme-Läufe NAT |
 
 ## Archiv
 
@@ -778,3 +777,4 @@ Zeile in diesen Abschnitt.
 | [B-800](archiv/B-800-native-menues-lobby-spielstaende.md) | CLI | Idee | hoch | erledigt | NG7 | Das native Spiel hat Hauptmenü, Lobby für 1–2 Spieler, Spielstand-Menü, Optionen und Pause |
 | [B-801](archiv/B-801-native-ton.md) | CLI | Idee | mittel | erledigt | NG8 | Das native Spiel spielt Klänge und Musik zu den Ereignissen wie der Browser-Client |
 | [B-779](archiv/B-779-rust-und-bevy-entfernen.md) | INF | Schuld | mittel | erledigt | NG10 | Rust und der Bevy-Prototyp sind aus dem Repo entfernt, das Projekt ist rein Go |
+| [B-817](archiv/B-817-abnahme-laeufe-nat.md) | CLI | Schuld | mittel | erledigt | – | Abnahme-Läufe NAT |

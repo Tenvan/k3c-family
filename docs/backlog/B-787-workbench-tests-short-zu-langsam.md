@@ -66,3 +66,5 @@ Warum brauchen einzelne Tests in `assetsui` und `paperassets` 40 bis 57 s (vermu
 ## Notizen
 
 Zum Vergleich Wurzel-Modul (`-short -count=1`): 57 s Wanduhr; `engine/net` 29 s (TestStateGleichOrakelAlleBiome 17,8 s), `engine/balance` 27 s, `engine/level` TestRustWieGo 4,2 s (fällt mit B-779 weg). `tools/assetkit` 10 s. Gemessen von Claude beim Umbau von `check:diff` (`tools/checkdiff`).
+
+2026-11-11, Abnahme-Ticket B-817 (`task check:all`, 462 s): einziger roter Test `TestHTMLEigenstaendig` (`internal/balance`). Ursache belegt: `report_html.go` bettet Pixel-Grafik aus Pfaden ein, die mit CU1 entfernt wurden (`grafik/gebaeude/burg-1-32.png`, `mauer-1-32.png`, `turm-1-32.png`, `grafik/16x16-small-and-medium-coin-animation/…`, `sprites/skeleton/idle.png`); auch nach `gen:paper` fehlen sie. Vorschlag: auf Papier-Assets aus `public/grafik` umstellen oder fehlende Bilder auslassen. Die drei übrigen roten Tests der ersten Messung (`simexe`, `botdev`, `mcpsrv`) waren in diesem Lauf grün (vermutet: lastabhängig, B-704).
