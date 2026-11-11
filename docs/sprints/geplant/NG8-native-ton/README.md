@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** NAT
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-801
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-11-11 🧑 Chat (Ralf-Queue natives Spiel)
 
 ## Ausgangslage
 

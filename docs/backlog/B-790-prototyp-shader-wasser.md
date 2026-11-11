@@ -8,9 +8,9 @@
 - **Sprint:** NG11
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
-- **Revision:** 2
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 3
+- **Freigabe:** 2026-11-11 🧑 Chat (Ralf-Queue natives Spiel)
 
 ## Ausgangslage
 
@@ -61,8 +61,9 @@ Shader übersetzt auf dem Zielgerät nicht → Kachel-Fassung läuft weiter, Mel
 
 ## Offene Fragen
 
-- Welche weiteren Effekte sollen Shader prüfen (Papierstruktur, Licht bei Nacht, Fackeln)? Vorschlag: nur Fluss in diesem Ticket, weitere Effekte als eigene Tickets nach der Entscheidung. Entscheidet 🧑.
-- Im nativen Spiel statt im Prototyp bauen (Revision 2)? Vorschlag: ja. Entscheidet 🧑.
+keine.
+
+Entschieden von 🧑 am 2026-11-11 (Chat): Gebaut wird im nativen Spiel (nicht im Prototyp), und nur der Fluss; weitere Effekte (Papierstruktur, Licht bei Nacht, Fackeln) werden eigene Tickets nach der Entscheidung.
 
 ## Notizen
 

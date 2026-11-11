@@ -8,9 +8,9 @@
 - **Sprint:** NG3
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-11-11 🧑 Chat (Ralf-Queue natives Spiel)
 
 ## Ausgangslage
 
@@ -62,8 +62,12 @@ Die größte Welle des Spiels läuft als Rig nicht flüssig → Vorschlag: Misch
 
 ## Offene Fragen
 
-- Ziel-Bildrate und größte Gegnerzahl, die als Maßstab gelten (aus den Balancing-Daten ableiten). Vorschlag: 60 FPS bei 2 Spielern, Gegnerzahl der größten Welle aus `data/` (gelesen, nicht simuliert). Entscheidet 🧑.
-- Welche Gegner brauchen Waffen und Rüstungen überhaupt als eigene Elemente? Vorschlag: erst nach der Messung, eigenes Ticket. Entscheidet 🧑.
+keine.
+
+Entschieden von 🧑 am 2026-11-11 (Chat):
+
+- **Maßstab:** 60 FPS bei 2 Spielern mit der Gegnerzahl der größten Welle laut `data/` (gelesen, nicht simuliert).
+- **Waffen und Rüstungen für Gegner:** erst nach der Messung, als eigenes Ticket.
 
 ## Notizen
 

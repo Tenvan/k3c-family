@@ -8,9 +8,9 @@
 - **Sprint:** NG1
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-11-11 🧑 Chat (Ralf-Queue natives Spiel)
 
 ## Ausgangslage
 
@@ -64,8 +64,12 @@ Speicherordner nicht beschreibbar → Meldung, Spiel läuft ohne Speichern weite
 
 ## Offene Fragen
 
-- **Speicherort:** Vorschlag `saves/` neben der EXE, per Schalter `--saves` änderbar. Entscheidet 🧑.
-- **Takt und Bildrate:** Simulation 30 Hz, Bild mit Bildrate des Geräts. Vorschlag: zuerst ohne Zwischenbilder (Interpolation); ruckelt es sichtbar, eigenes Ticket. Entscheidet die Umsetzung, Befund an 🧑.
+keine.
+
+Entschieden von 🧑 am 2026-11-11 (Chat):
+
+- **Speicherort:** `saves/` neben der EXE, per Schalter `--saves` änderbar.
+- **Takt und Bildrate:** Simulation 30 Hz ohne Zwischenbilder; ruckelt es sichtbar, gibt es ein eigenes Ticket.
 
 ## Notizen
 
