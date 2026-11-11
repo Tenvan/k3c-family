@@ -1,6 +1,6 @@
 # NG9.2 · Messlauf am Entwicklungs-PC und Paket für den Mini-PC
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -57,5 +57,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03 geprüft: Messung des ganzen Spiels am Entwicklungs-PC (`task native:game:measure`, Core Ultra 7 165H, Intel Arc integriert, DirectX 11, 1920×1080, VSync aus, 2 Spieler, je ein Lauf): Tag 1794 FPS Mittel, 1-%-Low 350, Zeichnen 0,29 ms je Bild, RAM 335 MiB; Nacht mit 9 Gegnern 1181 FPS, 1-%-Low 190, 0,54 ms, RAM 433 MiB; Texturen 18,2 MiB Sheets und 9,5 MiB Rigs. Paket `task native:game:paket` nach `.work/native-game/` (49 MB, nur die geladene Grafik), Start aus dem Paket-Ordner geprüft; Checkliste `.work/native-game/CHECKLISTE.md` für NG9.4 und NG9.5.

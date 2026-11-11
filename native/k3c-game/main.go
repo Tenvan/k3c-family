@@ -33,7 +33,13 @@ func main() {
 	if err != nil {
 		fatal(err)
 	}
-	if args.Shots == "" {
+	if args.Assets {
+		if err := printAssets(); err != nil {
+			fatal(err)
+		}
+		return
+	}
+	if args.Shots == "" && args.Measure.Seconds == 0 {
 		err = run(args)
 	} else {
 		var tmp string
@@ -83,14 +89,34 @@ func run(args game.Args) error {
 	ebiten.SetWindowTitle("K3C")
 	ebiten.SetTPS(game.TPS)
 	ebiten.SetRunnableOnUnfocused(true)
+	if args.Measure.NoVsync {
+		ebiten.SetVsyncEnabled(false)
+	}
 	if err := ebiten.RunGame(g); err != nil && !errors.Is(err, ebiten.Termination) {
 		return fmt.Errorf("abgebrochen: %w", err)
 	}
 	return nil
 }
 
-// shotSaves legt den Wegwerf-Ordner der Spielstände einer Aufnahme an; mit --load liegt der Spielstand als Kopie darin,
-// damit Autosave den Stand im Ordner --saves nicht verändert.
+// printAssets gibt die Grafik-Ordner aller Level aus (--assets, je Zeile `gruppe/id` unter public/grafik); ohne Fenster
+// und ohne Grafik.
+func printAssets() error {
+	parts, err := game.Assemble(game.Packages(nil))
+	if err != nil {
+		return err
+	}
+	dirs, err := game.AssetDirs(parts.Assets)
+	if err != nil {
+		return err
+	}
+	for _, d := range dirs {
+		fmt.Println(d)
+	}
+	return nil
+}
+
+// shotSaves legt den Wegwerf-Ordner der Spielstände einer Aufnahme bzw. Messung an; mit --load liegt der Spielstand als
+// Kopie darin, damit Autosave den Stand im Ordner --saves nicht verändert.
 func shotSaves(args game.Args) (string, error) {
 	tmp, err := os.MkdirTemp("", "k3c-shots-")
 	if err != nil {

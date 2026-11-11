@@ -43,7 +43,8 @@ type Game struct {
 	subs   subImages
 	stats  *overlay
 	shots  *shooter
-	endIn  int // Takte im Spiel seit Frame.Outcome (Spielende nach view.EndDelay)
+	meter  *meter // Messmodus (--measure), sonst nil
+	endIn  int    // Takte im Spiel seit Frame.Outcome (Spielende nach view.EndDelay)
 }
 
 // New baut die Schleife. Mit Szene (Seed oder Spielstand) startet das Spiel sofort, sonst liegt das Hauptmenü oben.
@@ -62,6 +63,9 @@ func New(p Parts, s Sim, a Args) (*Game, error) {
 			return nil, err
 		}
 		g.shots = sh
+	}
+	if a.Measure.Seconds > 0 {
+		g.meter = newMeter(a.Measure)
 	}
 	if a.Scene.Direct() {
 		if err := g.startScene(); err != nil {
@@ -98,7 +102,8 @@ func (g *Game) startScene() error {
 	return nil
 }
 
-// Update rechnet einen Takt: Eingabe, Menü bzw. Spiel, Simulation, Listener. Im Aufnahme-Modus taktet der shooter.
+// Update rechnet einen Takt: Eingabe, Menü bzw. Spiel, Simulation, Listener. Im Aufnahme-Modus taktet der shooter;
+// im Messmodus endet das Programm, sobald der Bericht geschrieben ist.
 func (g *Game) Update() error {
 	if g.mode == ModeQuit {
 		return ebiten.Termination
@@ -106,7 +111,17 @@ func (g *Game) Update() error {
 	if g.shots != nil {
 		return g.shots.update(g)
 	}
-	g.advance()
+	if g.meter.done() {
+		g.mode = ModeQuit
+		return g.sim.Close()
+	}
+	if g.meter == nil {
+		g.advance()
+	} else {
+		t0 := clock() // Wanduhr nur im Messmodus: clock() ist unter Windows ein Syscall mit Heap-Allokation
+		g.advance()
+		g.meter.tick(clock() - t0)
+	}
 	if g.err != nil {
 		return g.err
 	}
@@ -115,6 +130,12 @@ func (g *Game) Update() error {
 	}
 	return nil
 }
+
+// Frame liefert den Frame des letzten Updates (nur lesen, gilt bis zum nächsten Update; Ende-zu-Ende-Test).
+func (g *Game) Frame() *view.Frame { return &g.frame }
+
+// Screen liefert den obersten Screen des Menü-Stapels (nil im laufenden Spiel; Ende-zu-Ende-Test).
+func (g *Game) Screen() view.Screen { return g.stack.Top() }
 
 // advance liest die Eingabe, schaltet bei ActionFullscreen das Vollbild um, bedient Menü bzw. Spiel, taktet die Simulation einmal und bereitet den Frame vor:
 // Geräte, Grafik der Level, Kameras, Vollbild, dann die Listener.
@@ -182,6 +203,10 @@ func (g *Game) step(st view.Step) {
 
 // Draw zeichnet je Zelle die Zellen-Ebenen, dann das Overlay, den obersten Screen und zuletzt die Anzeige oben.
 func (g *Game) Draw(screen *ebiten.Image) {
+	var t0 float64
+	if g.meter != nil {
+		t0 = clock()
+	}
 	screen.Fill(clearColor)
 	win := screen.Bounds()
 	Place(g.cells, win)
@@ -205,6 +230,10 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	g.stats.draw(screen, &g.frame)
 	if g.shots != nil {
 		g.shots.capture(g, screen)
+	}
+	if g.meter != nil {
+		now := clock()
+		g.meter.frame(now, now-t0, g)
 	}
 }
 

@@ -1,7 +1,8 @@
 package game
 
 // Aufnahme-Modus (`--shots <ordner>`, B-792/AC-05, Vorbild native/k3c-ebiten/shots.go): Die Szene läuft in New bis
-// Scene.Tick vor (mit --menu liegt danach das Menü oben), dann schreibt der shooter Count Bilder im Abstand von Every Takten als shot-01.png … und zusätzlich
+// Scene.Tick vor (mit --menu liegt danach das Menü oben), dann schreibt der shooter Count Bilder im Abstand von Every
+// Takten (mit --at genau nach den genannten Takten) als shot-01.png … und zusätzlich
 // verkleinert nebeneinander als strip.png, und beendet das Programm. Die Zeit folgt dem Takt: Update rechnet die Takte
 // bis zum nächsten Bild und wartet, bis Draw es geschrieben hat; dieselben Schalter ergeben dieselben Bilder.
 
@@ -30,7 +31,9 @@ type shooter struct {
 	dir     string
 	count   int
 	every   int
-	pending bool // ein Bild ist fällig, Draw schreibt es
+	at      []int // --at: Takte der Bilder; gesetzt, ersetzt every
+	flow    bool  // --flow: auch ohne laufendes Spiel weiter aufnehmen
+	pending bool  // ein Bild ist fällig, Draw schreibt es
 	taken   int
 	thumbs  []*image.RGBA
 	err     error
@@ -47,7 +50,15 @@ func newShooter(a Args) (*shooter, error) {
 			return nil, err
 		}
 	}
-	return &shooter{dir: a.Shots, count: a.Count, every: a.Every, pending: true}, nil
+	return &shooter{dir: a.Shots, count: a.Count, every: a.Every, at: a.At, flow: a.Flow, pending: true}, nil
+}
+
+// gap sind die Takte bis zum nächsten Bild (nach dem ersten: taken ≥ 1).
+func (s *shooter) gap() int {
+	if len(s.at) > s.taken && s.taken > 0 {
+		return s.at[s.taken] - s.at[s.taken-1]
+	}
+	return s.every
 }
 
 // update rechnet die Takte bis zum nächsten Bild; nach dem letzten Bild schreibt es den Streifen und beendet.
@@ -60,12 +71,12 @@ func (s *shooter) update(g *Game) error {
 	case s.taken == s.count:
 		return s.finish(g)
 	}
-	for range s.every {
+	for range s.gap() {
 		if g.advance(); g.err != nil {
 			return g.err
 		}
 	}
-	if g.args.Scene.Menu == "" && !g.sim.Active() {
+	if g.args.Scene.Menu == "" && !s.flow && !g.sim.Active() {
 		return errors.New("💥 Aufnahme: Spiel nicht mehr aktiv (Absturz oder Spielende)")
 	}
 	s.pending = true

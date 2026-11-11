@@ -67,4 +67,15 @@ Entschieden von 🧑 am 2026-11-11 (Chat): Gebaut wird im nativen Spiel (nicht i
 
 ## Notizen
 
-Angelegt 2026-11-11 aus dem Chat mit 🧑 („für den nächsten Prototyp könnte schon die Verwendung von Shadern eingeplant werden“).
+Angelegt 2026-11-11 aus dem Chat mit 🧑 („für den nächsten Prototyp könnte schon die Verwendung von Shadern eingeplant werden“). Umgesetzt in NG11 (2026-11-11).
+
+### Messung Entwicklungs-PC (NG11.2)
+
+Intel Core Ultra 7 165H, integrierte Intel Arc, 1920×1080, VSync aus, zwei Zellen, 120 Bilder Aufwärmen, 3000 gemessen, je Fassung ein Lauf.
+
+| Fassung | FPS Mittel | 1-%-Low | p99 Bildzeit | Fluss-Draw (CPU) je Bild |
+|---|---|---|---|---|
+| Kacheln | 2141 | 82 | 3,52 ms | 0,043 ms |
+| Shader | 2573 | 193 | 3,75 ms | 0,006 ms |
+
+Umschalten nur über `K3C_RIVER=tiles|shader`; eine Taste und die Anzeige im Bild fehlen im Vertrag. Treiber-Fehler beim Übersetzen auf der GPU fängt der Rückfall vermutlich nicht ab.

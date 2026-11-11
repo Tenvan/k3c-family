@@ -176,6 +176,18 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-803](B-803-room-absturzbehandlung-exportieren.md) | SRV | Schuld | niedrig | offen | – | Ein Raum bietet seine Absturzbehandlung und den Grund abgelehnter Skill-Befehle nach außen an |
 | [B-804](B-804-paper-reittier-suche-und-wolf-pfote.md) | PAP | Problem | mittel | offen | – | tools/paper findet für das Reittier Wolf das Reittier statt des Gegners, Gegner-Wölfe haben Pfoten |
 | [B-805](B-805-native-ton-geraetefehler-abfangen.md) | CLI | Problem | mittel | offen | – | Ein Fehler des Ton-Geräts beendet das native Spiel nicht mehr |
+| [B-806](B-806-native-figuren-anzeigen.md) | CLI | Problem | mittel | offen | – | Das native Spiel zeigt Lebensbalken, Beute-Gold, Monarchen-Punkt und Last wie der Browser-Client |
+| [B-807](B-807-native-tastenbelegung-pausemenue.md) | CLI | Problem | mittel | offen | – | Das Pause-Menü des nativen Spiels zeigt die Tastenbelegung |
+| [B-808](B-808-native-info-lizenzen-version.md) | CLI | Schuld | mittel | offen | – | Das native Spiel zeigt Lizenzen und Version und liefert die Lizenzdatei im Paket mit |
+| [B-809](B-809-native-optionen-blitze-anleitung.md) | CLI | Idee | niedrig | offen | – | Die Optionen des nativen Spiels bieten Blitze und Anleitung an und merken sich „Anleitung gesehen“ |
+| [B-810](B-810-native-lade-und-fehleranzeige.md) | CLI | Problem | mittel | offen | – | Das native Spiel meldet Startfehler und fehlende Grafik im Fenster und zeigt beim Stufenwechsel eine Ladeanzeige |
+| [B-811](B-811-native-darstellungs-kleinteile.md) | CLI | Problem | niedrig | offen | – | Plantagen-Bäume, gegnerische Geschosse und die Anleitung sehen im nativen Spiel aus wie im Browser-Client |
+| [B-812](B-812-native-menue-papierschnitt.md) | CLI | Idee | niedrig | offen | – | Das Menü des nativen Spiels erscheint im Papierschnitt-Stil mit Illustrationen |
+| [B-813](B-813-native-hud-menue-befunde-ng9.md) | CLI | Problem | mittel | offen | – | Burgfall-Banner, Skill-Menü, Hauptmenü nach dem Verlassen und Siegmeldung zeigen im nativen Spiel das Richtige |
+| [B-814](B-814-monarchen-nach-laden-position.md) | SIM | Frage | mittel | offen | – | Geklärt ist, warum Monarchen nach dem Laden an der Burg statt an ihrer gespeicherten Stelle stehen |
+| [B-815](B-815-native-schrift-ofl.md) | PAP | Schuld | hoch | offen | – | Das native Spiel zeichnet mit einer freien OFL-Schrift statt der Debug-Schrift |
+| [B-816](B-816-native-shader-umschalter-leistungsanzeige.md) | CLI | Idee | niedrig | offen | – | Fluss-Shader und Kacheln lassen sich im Spiel umschalten, Bildrate und Rechenzeit sind im Bild sichtbar |
+| [B-817](B-817-abnahme-laeufe-nat.md) | CLI | Schuld | mittel | offen | – | Abnahme-Läufe NAT |
 
 ## Archiv
 

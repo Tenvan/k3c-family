@@ -1,6 +1,6 @@
 # NG9.1 · Ende-zu-Ende-Test und Funktionsabgleich mit dem Browser-Client
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -58,5 +58,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 umgesetzt: Ende-zu-Ende-Lauf `native/k3c-game/e2e` (`TestFlow`) treibt die echte Schleife ohne Fenster: Hauptmenü, Lobby mit zwei Tastatur-Hälften, laufen, Münzen an die Mauer, Mauer gebaut, Skill über das Skill-Menü gelernt, Dämmerung, Nacht und Welle, Pause, Spiel verlassen mit Speichern, Weiter (Welt-Hash gleich dem direkt über `engine/room` geladenen Stand), Spieler 2 tritt wieder bei, Niederlage, Hauptmenü. Zwei Läufe gleich in allen 13 Stationen, auch im Bild (`TestFlowImages`, `task native:game:e2e`). Bilder `reports/native-game-e2e/a/`. AC-02 umgesetzt: Funktionsabgleich mit dem Browser-Client (Ereignisse, Texte, Effekte, Ton, Menüs ohne Abweichung; Lücken als Tickets B-806 bis B-816).

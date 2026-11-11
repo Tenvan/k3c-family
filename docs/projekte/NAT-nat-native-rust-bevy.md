@@ -25,9 +25,9 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | NG6 | Natives Spiel: HUD, Hinweise und Effekte | erledigt |
 | NG7 | Natives Spiel: Menüs, Lobby, Spielstände, Optionen und Pause | erledigt |
 | NG8 | Natives Spiel: Klänge und Musik | erledigt |
-| NG9 | Natives Spiel: Zusammenführung, Messung und Abnahme | geplant |
+| NG9 | Natives Spiel: Zusammenführung, Messung und Abnahme | aktiv |
 | NG10 | Rust und Bevy entfernen | erledigt |
-| NG11 | Natives Spiel: Fluss mit Shader | geplant |
+| NG11 | Natives Spiel: Fluss mit Shader | aktiv |
 
 ## Nicht-Ziele
 
