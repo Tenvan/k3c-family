@@ -4,8 +4,8 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** erledigt
+- **Sprint:** NV3
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
 - **Spec:** freigegeben

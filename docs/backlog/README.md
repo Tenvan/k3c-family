@@ -172,7 +172,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-786](B-786-rig-monarch-sichtpruefung-mini-pc.md) | CLI | Frage | niedrig | eingeplant | NG9 | Rig-Monarch wird am Mini-PC geprüft und gemessen, sobald das Spiel am PC fertig ist |
 | [B-787](B-787-workbench-tests-short-zu-langsam.md) | DEV | Problem | hoch | offen | – | Workbench-Tests bleiben mit -short unter 3 s je Test, der volle Lauf ist grün |
 | [B-788](B-788-check-run-teilaufgaben-sim-sperre.md) | DEV | Schuld | mittel | offen | – | check_run kennt die Teilaufgaben von check:diff, sim_test und sim_run lehnen während der Sperre ab |
-| [B-789](B-789-prototyp-fluss-fester-hintergrund-alle-rigs.md) | CLI | Frage | hoch | offen | – | Der Ebitengine-Prototyp zeigt den Fluss in der unteren Bildhälfte, einen festen Fern-Hintergrund und alle Figuren als Rig |
 | [B-790](B-790-prototyp-shader-wasser.md) | CLI | Frage | mittel | eingeplant | NG11 | Ein vierter Prototyp zeigt, was Shader in Ebitengine für Wasser und Papier-Effekte bringen |
 | [B-791](B-791-rig-bein-baender-klappen-um.md) | CLI | Problem | mittel | eingeplant | NG3 | Bein-Bänder von Elefant, Wolf und Alphawolf klappen im Rig nicht mehr um |
 | [B-792](B-792-native-spiel-modul-vertrag-schleife.md) | CLI | Idee | hoch | eingeplant | NG1 | Das native Spiel hat ein eigenes Go-Modul mit Spielschleife, Grafik-Bibliothek und festem Zeichen-Vertrag |
@@ -763,3 +762,4 @@ Zeile in diesen Abschnitt.
 | [B-768](archiv/B-768-eine-startseite-pausenmenue-navigation.md) | CLI | Idee | hoch | erledigt | BD11 | Eine Startseite, Navigation im Pausenmenü, Vollbild halten |
 | [B-725](archiv/B-725-rust-engine-machbarkeit.md) | SRV | Idee | mittel | verworfen | RS1 | Simulationskern läuft schneller in Rust, Server bleibt Go (Machbarkeit und Umstiegspfad) |
 | [B-736](archiv/B-736-rust-server-etappe2.md) | SRV | Idee | mittel | verworfen | RS2 | Etappe 2: Server und Simulation laufen komplett in Rust, Go-Server und Brücke entfallen |
+| [B-789](archiv/B-789-prototyp-fluss-fester-hintergrund-alle-rigs.md) | CLI | Frage | hoch | erledigt | NV3 | Der Ebitengine-Prototyp zeigt den Fluss in der unteren Bildhälfte, einen festen Fern-Hintergrund und alle Figuren als Rig |

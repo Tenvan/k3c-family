@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| NV3 | CLI | NAT | Prototyp-Ausbau: Fluss, fester Hintergrund, alle Figuren als Rig | – | `aktiv/NV3-prototyp-fluss-rigs/` |
 | RD1 | PAP | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | `aktiv/RD1-papierschnitt-renderer/` |
 | MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
 | RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
@@ -319,3 +318,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BD11 | Eine Startseite, Navigation im Pausenmenü, Vollbild halten | `erledigt/BD11-startseite-pausenmenue/` |
 | NV1 | Bevy-Prototyp: Papier-Sheets, zwei Gamepads, Messung | `erledigt/NV1-bevy-prototyp/` |
 | NV2 | Rig-Prototyp: Monarch aus Teilen in Ebitengine | `erledigt/NV2-rig-prototyp-monarch/` |
+| NV3 | Prototyp-Ausbau: Fluss, fester Hintergrund, alle Figuren als Rig | `erledigt/NV3-prototyp-fluss-rigs/` |
