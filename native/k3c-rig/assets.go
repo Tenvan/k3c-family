@@ -48,10 +48,10 @@ func LoadAssets(dir string) (*Assets, error) {
 	a := &Assets{dir: dir, images: map[string]*ebiten.Image{}, skins: map[string]*Skin{}, elements: map[string]*ElementImage{},
 		weapons: []string{}, armors: []string{""}}
 	var err error
-	if a.monarch, err = rig.Load(filepath.Join(dir, "monarch")); err != nil {
+	if a.monarch, err = rig.Load(filepath.Join(dir, "figuren", "monarch")); err != nil {
 		return nil, err
 	}
-	if a.horse, err = rig.Load(filepath.Join(dir, "pferd")); err != nil {
+	if a.horse, err = rig.Load(filepath.Join(dir, "reittiere", "pferd")); err != nil {
 		return nil, err
 	}
 	elements, err := rig.LoadElements(filepath.Join(dir, "elemente"))
@@ -101,9 +101,14 @@ func (a *Assets) image(rel string) (*ebiten.Image, error) {
 	return img, nil
 }
 
-// skin stellt die Bilder eines Rigs in einer Variante zusammen (Varianten ersetzen einzelne Bilder).
+// skin stellt die Bilder eines Rigs in einer Variante zusammen (Varianten ersetzen einzelne Bilder). Schlüssel und
+// Bildpfade gehen über den Ordner des Rigs (<gruppe>/<id>), weil dieselbe id in zwei Gruppen vorkommt.
 func (a *Assets) skin(r *rig.Rig, variant string) (*Skin, error) {
-	key := r.ID + "@" + variant
+	dir, err := filepath.Rel(a.dir, r.Dir)
+	if err != nil {
+		return nil, err
+	}
+	key := dir + "@" + variant
 	if s, ok := a.skins[key]; ok {
 		return s, nil
 	}
@@ -112,14 +117,14 @@ func (a *Assets) skin(r *rig.Rig, variant string) (*Skin, error) {
 		if p.File == "" {
 			continue
 		}
-		img, err := a.image(filepath.Join(r.ID, r.ImageFile(p.ID, p.File, variant)))
+		img, err := a.image(filepath.Join(dir, r.ImageFile(p.ID, p.File, variant)))
 		if err != nil {
 			return nil, err
 		}
 		s.parts[i] = img
 	}
 	for i, b := range r.Bands {
-		img, err := a.image(filepath.Join(r.ID, r.ImageFile(b.ID, b.File, variant)))
+		img, err := a.image(filepath.Join(dir, r.ImageFile(b.ID, b.File, variant)))
 		if err != nil {
 			return nil, err
 		}

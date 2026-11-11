@@ -1,10 +1,18 @@
-# Rig-Format des nativen Spiels (Prototyp NV2, B-778)
+# Rig-Format des nativen Spiels (Prototyp NV2, B-778; alle Figuren NV3.2, B-789)
 
-Eine Figur ist ein Ordner unter `native/k3c-rig/assets/<id>/` mit `rig.json` und einem PNG je Teil. Der Export
-(`task native:rig:export`, `native/k3c-rig/export/`) schreibt ihn aus der Papier-Spec und der Stil-Datei; das Go-Paket
-`native/k3c-rig/rig` liest ihn und rechnet die Pose je Bild. Das Format gilt für die Rig-Typen `figur` und `vierbeiner`
-und ist für Gegner und Bosse gedacht (B-780). Maße in **Einheiten der Figur** (y nach unten, Füße bei y = 0), Winkel in
-Grad, positiv im Uhrzeigersinn (wie SVG).
+Eine Figur ist ein Ordner unter `native/k3c-rig/assets/<gruppe>/<id>/` mit `rig.json` und einem PNG je Teil; `<gruppe>`
+ist der Ordner der Spec unter `public/grafik` (dieselbe id kommt in zwei Gruppen vor: Gegner `wolf`, Reittier `wolf`).
+Der Export (`task native:rig:export`, `native/k3c-rig/export/`) schreibt alle Specs mit Rig-Typ `figur` oder
+`vierbeiner` (`export/catalog.ts`); `requisite`, `gebaeude` und `hintergrund` haben keinen Teile-Baum und bleiben Sheets.
+Das Go-Paket `native/k3c-rig/rig` liest ihn und rechnet die Pose je Bild. Maße in **Einheiten der Figur** (y nach unten,
+Füße bei y = 0), Winkel in Grad, positiv im Uhrzeigersinn (wie SVG).
+
+**Was je Figur vorkommt:** Alle Figuren haben `teile`, `animationen` und `varianten` (leer ohne Farbvarianten). Nur der
+Monarch (`figuren/monarch`, der Reiter) hat Plätze, Elemente, `standard`, `reiten` und Farbvarianten; nur Figuren mit
+`umhang` in der Spec haben das Band `umhang`. Bei allen anderen Figuren bleibt die Waffe ein festes Teil, `plaetze` ist
+leer. Reittiere (Gruppe `reittiere`) haben `sattel`, `maul`, `zuegel`, die Animation `stand` und die Varianten des
+Reiters; Vierbeiner anderer Gruppen (Gegner) nur Teile, Bein-Bänder und ihre Animationen. Teile ohne Lagen (Bein-Knochen,
+leere Schild-, Helm- oder Waffen-Teile mancher Bosse) haben kein Bild, drehen aber mit.
 
 ## rig.json
 
@@ -20,11 +28,11 @@ Grad, positiv im Uhrzeigersinn (wie SVG).
 | `umhang` | Physik des Umhangs wie in der Spec (`anker`, `punkt`, `laenge`, `breite`, `segmente`) |
 | `bein` | Vierbeiner: `spitze` = Verlängerung des Beins über die Fessel |
 | `proportionen` | wie in der Spec (Faktoren auf die Pose-Winkel) |
-| `animationen` | figur: Animationen ohne Reittier (`idle`, `lauf` sind Posen des Rigs, die anderen Keyframes); vierbeiner: Gangarten |
-| `varianten` | Variante → Bild-Id (Teil oder Band) → Datei statt des Standardbilds (Spielerfarben) |
-| `standard` | Elemente, die ohne Auswahl an den Plätzen sitzen (`waffe: schwert`) |
-| `reiten` | figur: `sitz` (Punkt, der auf dem Platz `sattel` liegt) und `ausblenden` (Teile, die beim Reiten entfallen) |
-| `zuegel` | vierbeiner: Farbe, Deckkraft, Breite, Durchhang und Ebene der Zügel |
+| `animationen` | wie in der Spec. figur: Animationen ohne Reittier (`idle`, `lauf` sind Posen des Rigs, Keyframes addieren sich; andere brauchen Keyframes, `sichtbar` blendet Teile aus, `fps` bestimmt die Frequenz); vierbeiner: Animationen ohne Ebene, je mit `gangart` (Gegner: `idle` = schritt, `lauf` = trab, `angriff` = galopp), Reittiere dazu `stand` |
+| `varianten` | Variante → Bild-Id (Teil oder Band) → Datei statt des Standardbilds (Spielerfarben); `{}` ohne Varianten |
+| `standard` | nur Monarch: Elemente, die ohne Auswahl an den Plätzen sitzen (`waffe: schwert`) |
+| `reiten` | nur figur mit Reit-Animationen: `sitz` (Punkt, der auf dem Platz `sattel` liegt) und `ausblenden` (Teile, die beim Reiten entfallen) |
+| `zuegel` | nur Reittiere: Farbe, Deckkraft, Breite, Durchhang und Ebene der Zügel |
 
 **Teil:** dreht um `pivot`, Kinder erben die Drehung (`eltern`). `bild` ist das Teil in Ruhelage (alle Winkel 0) mit
 Schatten und Papierstruktur; `versatz` ist die linke obere Ecke des Bilds in Einheiten, `groesse` seine Pixel. Teile ohne
@@ -58,8 +66,13 @@ der Ebene des Platzes `sattel` kommt der Reiter (erst sein Umhang), danach der H
 
 ## Sollwerte
 
-`assets/soll/*.json` hält je Frame die Winkel, Teil-Matrizen und Stützpunkte, gerechnet von `tools/paper`
-(`export/expected.ts`). `go test ./rig/` vergleicht die Go-Rechnung damit (Toleranz 0,01, B-778/AC-02).
+`assets/soll/<gruppe>/<id>/<animation>.json` hält je Animation jeder Figur und je Frame die Winkel, Teil-Matrizen und
+Stützpunkte, gerechnet von `tools/paper` (`export/expected.ts`): figur mit Versatz, Wind, ausgeblendeten Teilen und
+Umhang; vierbeiner mit Ride (Hub, Neigung), Wind und Beinen. Reittiere haben dazu `reiten-<gangart>.json` je
+Reit-Animation des Monarchen (Matrizen beider Figuren, Umhang, Zügel). `go test ./rig/` geht über alle Ordner mit
+`rig.json` und vergleicht die Go-Rechnung damit (Toleranz 0,01, B-778/AC-02, B-789/AC-03). `TestLegStripNeverFolds`
+prüft die Bein-Bänder; bekannt umklappend und deshalb übersprungen: Elefant (kurze Fußspitze) und die Gegner-Wölfe
+(Galopp), siehe `rig/band_test.go` › `knownFolds`.
 
 ## Entscheidungen des Prototyps (B-778 › Offene Fragen)
 

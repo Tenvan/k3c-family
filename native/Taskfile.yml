@@ -104,7 +104,8 @@ tasks:
     env:
       CGO_ENABLED: '0'
     cmds:
-      - 'test -z "$(gofmt -l .)" || { echo "❌ gofmt: $(gofmt -l .)"; exit 1; }'
+      # gofmt ohne CR: Unter Windows (core.autocrlf=true) liegt der Arbeitsbaum mit CRLF vor, im Repo steht LF
+      - 'bad=""; for f in $(find . -name "*.go"); do test -z "$(tr -d "\r" < "$f" | gofmt -l)" || bad="$bad $f"; done; test -z "$bad" || { echo "❌ gofmt:$bad"; exit 1; }'
       - go vet ./...
       - go test ./...
 

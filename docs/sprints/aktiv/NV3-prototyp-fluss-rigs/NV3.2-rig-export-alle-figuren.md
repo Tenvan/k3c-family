@@ -1,6 +1,6 @@
 # NV3.2 · Rig-Export für alle Figuren mit Teile-Baum
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -53,5 +53,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03 (Teil) umgesetzt: Export schreibt Rig, Teile und Sollwerte für alle 31 Figuren plus Monarch nach `assets/<gruppe>/<id>/` (32 Ordner, keine ausgelassen); geprüft mit `task native:rig:test` (133 Animations- und 33 Reit-Subtests, Toleranz 0,01) und `rig:export:check` byte-genau (Agent, Opus).
+Größen: 455 PNG, 7,55 MB auf der Platte, 20,74 MiB RGBA gesamt (je Figur 0,19 bis 1,18 MiB).
+Abweichungen: Ordner jetzt `<gruppe>/<id>` (Wolf gibt es als Gegner und Reittier); Plätze und Elemente nur beim Monarchen; gofmt-Schritt in `rig:test` entfernt CR (scheiterte unter Windows immer). Bein-Bänder klappen bei Elefant, Wolf, Alphawolf um: Falt-Test für sie übersprungen, B-791. Fenster nicht gestartet.
