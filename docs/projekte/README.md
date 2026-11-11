@@ -26,7 +26,6 @@ Jedes Projekt ist eine Datei `XXX-name.md` nach [`../vorlagen/projekt.md`](../vo
 | Projekt | Grund | Datei |
 |---|---|---|
 | GRJ · Grafik-Justierung | – | [GRJ-grafik-justierung.md](GRJ-grafik-justierung.md) |
-| RST · Rust-Engine | – | [RST-rust-engine.md](RST-rust-engine.md) |
 
 ## Erledigt
 
@@ -36,5 +35,6 @@ Jedes Projekt ist eine Datei `XXX-name.md` nach [`../vorlagen/projekt.md`](../vo
 | GRA · Grafik | [GRA-grafik.md](GRA-grafik.md) |
 | KRT · Kritische Fragen | [KRT-kritische-fragen.md](KRT-kritische-fragen.md) |
 | PRZ · Arbeitsweise | [PRZ-arbeitsweise.md](PRZ-arbeitsweise.md) |
+| RST · Rust-Engine | [RST-rust-engine.md](RST-rust-engine.md) |
 | SKL · Monarch & Skills | [SKL-monarch-skills.md](SKL-monarch-skills.md) |
 | TST · Testläufe | [TST-testlaeufe.md](TST-testlaeufe.md) |

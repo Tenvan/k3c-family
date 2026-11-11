@@ -15,8 +15,7 @@
 #   balance      tools/k3c-workbench/internal/balance/Taskfile.yml  Balancing-Tester
 #   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Grafik-Pipeline, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
-#   rust         rust/Taskfile.yml              Rust-Kern k3c-core (Entscheidung 006): build, test, lint
-#   native       native/Taskfile.yml            Bevy-Prototyp (Projekt NAT, B-776): proto, measure, proto:paket
+#   native       native/Taskfile.yml            Natives Spiel und Prototypen (Projekt NAT, Entscheidung 008): game, ebiten, rig, measure
 #
 # Gruppen dieses Taskfiles (in dieser Reihenfolge): Einrichten (install) · Client (dev, lint, typecheck, test) · Bauen und Ausliefern
 # (build, buildall, pages) · Spielserver (start, serve) · Prüfen (check, check:go, check:race, check:diff, check:dev, check:starter,
@@ -49,7 +48,6 @@ includes:
   balance: tools/k3c-workbench/internal/balance/Taskfile.yml
   gen: tools/Taskfile.yml
   ops: scripts/Taskfile.yml
-  rust: rust/Taskfile.yml
   native: native/Taskfile.yml
 
 tasks:

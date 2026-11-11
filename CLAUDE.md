@@ -27,7 +27,7 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
   **004: Asset-Studio getrennt vom Spielserver**, Schnittstelle sind die Dateien, der Server beobachtet sie (TS1, B-507).
   **005: Papierschnitt-Grafik aus Specs**, Assets nur über MCP `assets_*`, Review im Bereich Assets der Workbench; das
   Asset-Studio ist entfallen (WB1).
-  **008: Natives Spiel in Go + Ebitengine, Rust entfällt** (Projekt NAT, B-775; 006 und 007 sind überholt, Projekt RST ruht, Aufräumen B-779); der Monarch wird ein Rig aus Teilen, wenn der Prototyp B-778 das bestätigt.
+  **008: Natives Spiel in Go + Ebitengine, Rust entfällt** (Projekt NAT, B-775; 006 und 007 sind überholt, Projekt RST ruht; Rust-Code, Rust-Prototyp und Rust-Brücke `engine/core` sind entfernt, B-779); der Monarch wird ein Rig aus Teilen, wenn der Prototyp B-778 das bestätigt.
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
 
 ## Befehle

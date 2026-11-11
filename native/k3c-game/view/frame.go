@@ -21,7 +21,30 @@ type Frame struct {
 	Cues      []Cue      // Ereignisse außerhalb der Simulation seit dem letzten Frame (Menü, Session, Geräte)
 	Settings  Settings   // Einstellungen (Session.SetSettings), auch ohne laufendes Spiel
 	Unseated  []DeviceID // verbundene Geräte ohne Platz, Reihenfolge wie Input (Beitritts-Hinweis im HUD)
+	// Outcome ist der Ausgang des laufenden bzw. zuletzt beendeten Spiels (local); er bleibt nach Session.Close
+	// stehen, bis ein neues Spiel startet (Hauptmenü zeigt ihn). game schließt das Spiel EndDelay Takte nachdem er
+	// erscheint.
+	Outcome Outcome
+	// Cells sind die Zellen dieses Updates mit Lage und Kamera (game, nach CameraRule und --cam), Index = Zelle;
+	// leer ohne Spiel. Für Listener, die den sichtbaren Ausschnitt brauchen (audio); Draw bekommt dieselben Zellen,
+	// bei geänderter Fenstergröße mit angepasstem Rechteck.
+	Cells []Cell
+	// Recording: Aufnahme-Modus (--shots). Kein Ton, kein Vollbild, das Bild hängt nur vom Takt ab; game zeichnet
+	// statt der FPS den Takt in StatsRect.
+	Recording bool
 }
+
+// Outcome ist der Ausgang eines Spiels.
+type Outcome int
+
+const (
+	OutcomeNone Outcome = iota // Spiel läuft bzw. kein Spiel
+	OutcomeLost                // Insel komplett verloren (Ereignis gameOver oder Insel ruht)
+	OutcomeWon                 // Ziel der Insel erreicht (Ereignis victory)
+)
+
+// EndDelay sind die Takte (30 Hz) zwischen Spielende (Frame.Outcome) und Hauptmenü.
+const EndDelay = 90
 
 // Stage ist eine Stufe der Insel mit ihrer Welt.
 type Stage struct {

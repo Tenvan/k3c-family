@@ -7,6 +7,7 @@ import (
 	"io"
 	"math"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -25,11 +26,14 @@ const (
 // saveName ist ein gültiger Spielstand-Name (wie engine/store).
 var saveName = regexp.MustCompile(`^[a-z0-9-]{1,32}$`)
 
-// Hold ist ein Eintrag der festen Eingabe-Folge: Ab Takt Tick (seit Start der Szene) hält Spieler Player den Befehl.
+// Hold ist ein Eintrag der festen Eingabe-Folge: Ab Takt Tick (seit Start der Szene) hält Spieler Player den Befehl
+// Cmd; mit Press drückt er stattdessen genau in Takt Tick die Menü-Aktion Action (Flanke, der Befehl bleibt).
 type Hold struct {
 	Tick   int
 	Player int
 	Cmd    view.Command
+	Press  bool
+	Action view.Action
 }
 
 // Scene ist die gesteuerte Szene: was zu sehen ist, ohne Menü und ohne Zufall von außen.
@@ -41,7 +45,12 @@ type Scene struct {
 	Cams    []float64 // Kamera-x je Zelle in Units, NaN = folgt dem Monarchen
 	Tick    int       // Takte, die die Simulation vor dem ersten Bild vorläuft
 	Script  []Hold    // feste Eingabe-Folge; gesetzt: ersetzt Tastatur und Gamepads
+	Menu    string    // Aufnahme eines Menüs nach dem Vorlauf: "", main, saves, options, lobby, pause (menus)
 }
+
+// menus sind die Werte von --menu: main, saves und lobby ohne Spiel (ein Spiel der Szene endet nach dem Vorlauf mit
+// Speichern), options über dem Hauptmenü bzw. mit Szene über der Pause, pause über dem stehenden Spiel.
+var menus = []string{"main", "saves", "options", "lobby", "pause"}
 
 // Args sind die Schalter des Programms.
 type Args struct {
@@ -52,6 +61,11 @@ type Args struct {
 	W, H   int    // Größe der Zeichenfläche (Aufnahme) bzw. des Fensters
 	Scene  Scene
 	Script bool // Eingabe aus Scene.Script statt von den Geräten
+}
+
+// InGame meldet, ob das Menü der Szene über dem laufenden (pausierten) Spiel liegt.
+func (s Scene) InGame() bool {
+	return s.Menu == "pause" || (s.Menu == "options" && s.Direct())
 }
 
 // Direct meldet, ob das Spiel ohne Menü startet.
@@ -68,7 +82,8 @@ func (s Scene) Devices() []view.DeviceID {
 
 // Usage nennt die Schalter.
 const Usage = "k3c-game [--saves <ordner>] [--seed <s> | --load <name>] [--depth <n>] [--players 1|2] [--cam <x>[,<x>]] " +
-	"[--tick <n>] [--input <p@t=LRSPA,…>] [--size <B>x<H>] [--shots <ordner> [--count <n>] [--every <takte>]]"
+	"[--tick <n>] [--input <p@t=LRSPA1234-|a:aktion,…>] [--menu main|saves|options|lobby|pause] [--size <B>x<H>] " +
+	"[--shots <ordner> [--count <n>] [--every <takte>]]"
 
 // ParseArgs wertet die Schalter aus (rein, ohne Dateizugriff); defSaves ist der Standard für --saves.
 func ParseArgs(argv []string, defSaves string) (Args, error) {
@@ -88,14 +103,15 @@ func ParseArgs(argv []string, defSaves string) (Args, error) {
 	fs.StringVar(&cams, "cam", "", "")
 	fs.IntVar(&a.Scene.Tick, "tick", 0, "")
 	fs.StringVar(&input, "input", "", "")
+	fs.StringVar(&a.Scene.Menu, "menu", "", "")
 	if err := fs.Parse(argv); err != nil || fs.NArg() > 0 {
 		return Args{}, fmt.Errorf("🚫 ungültige Schalter (%v %v); gültig: %s", err, fs.Args(), Usage)
 	}
-	if a.Shots != "" && !a.Scene.Direct() {
-		a.Scene.Seed = "k3c"
+	if !a.Scene.Direct() && ((a.Shots != "" && a.Scene.Menu == "") || a.Scene.Menu == "pause") {
+		a.Scene.Seed = "k3c" // Aufnahme einer Szene bzw. der Pause braucht ein Spiel
 	}
 	a.Script = input != "" || a.Shots != ""
-	if input == "" && a.Shots != "" {
+	if input == "" && a.Shots != "" && a.Scene.Menu == "" {
 		input = defScript
 	}
 	var err error
@@ -125,6 +141,8 @@ func (a Args) check() error {
 		return fmt.Errorf("🚫 --depth ab 0, --tick 0 bis %d", maxTick)
 	case len(s.Cams) > s.Players:
 		return fmt.Errorf("🚫 --cam: %d Werte für %d Spieler", len(s.Cams), s.Players)
+	case s.Menu != "" && !slices.Contains(menus, s.Menu):
+		return fmt.Errorf("🚫 --menu %q: einer von %s", s.Menu, strings.Join(menus, ", "))
 	}
 	return a.checkShots()
 }
@@ -171,103 +189,4 @@ func parseCams(s string) ([]float64, error) {
 		out = append(out, x)
 	}
 	return out, nil
-}
-
-// ParseScript liest die Eingabe-Folge „spieler@takt=befehl,…“, Befehl aus L (links), R (rechts), S (Sprint),
-// P (zahlen), A (Schlag), 1–4 (Skill) oder „-“ (nichts). Beispiel: „0@0=R,1@0=LS,0@90=-“.
-func ParseScript(s string) ([]Hold, error) {
-	if s == "" {
-		return nil, nil
-	}
-	var out []Hold
-	for part := range strings.SplitSeq(s, ",") {
-		h, err := parseHold(part)
-		if err != nil {
-			return nil, fmt.Errorf("🚫 --input %q: %v", part, err)
-		}
-		out = append(out, h)
-	}
-	return out, nil
-}
-
-// parseHold liest einen Eintrag „spieler@takt=befehl“.
-func parseHold(s string) (Hold, error) {
-	who, cmd, ok := strings.Cut(s, "=")
-	ps, ts, ok2 := strings.Cut(who, "@")
-	p, errP := strconv.Atoi(ps)
-	t, errT := strconv.Atoi(ts)
-	if !ok || !ok2 || errP != nil || errT != nil || p < 0 || p >= view.MaxPlayers || t < 0 || t > maxTick {
-		return Hold{}, errors.New("erwartet spieler@takt=befehl")
-	}
-	h := Hold{Tick: t, Player: p}
-	if cmd == "-" {
-		return h, nil
-	}
-	for _, r := range cmd {
-		if err := apply(&h.Cmd, r); err != nil {
-			return Hold{}, err
-		}
-	}
-	if cmd == "" {
-		return Hold{}, errors.New("leerer Befehl, „-“ für nichts")
-	}
-	return h, nil
-}
-
-// apply setzt den Buchstaben r im Befehl c.
-func apply(c *view.Command, r rune) error {
-	switch r {
-	case 'L':
-		c.Move--
-	case 'R':
-		c.Move++
-	case 'S':
-		c.Sprint = true
-	case 'P':
-		c.Pay = true
-	case 'A':
-		c.Attack = true
-	case '1', '2', '3', '4':
-		c.Skill = int(r - '0')
-	default:
-		return fmt.Errorf("unbekannter Befehl %q (L R S P A 1–4 -)", r)
-	}
-	return nil
-}
-
-// CommandsAt liefert die gehaltenen Befehle aller Spieler im Takt tick: je Spieler der letzte Eintrag mit Tick ≤ tick
-// (bei gleichem Takt der spätere in der Folge).
-func CommandsAt(script []Hold, tick int) [view.MaxPlayers]view.Command {
-	var out [view.MaxPlayers]view.Command
-	var best [view.MaxPlayers]int
-	for i := range best {
-		best[i] = -1
-	}
-	for _, h := range script {
-		if h.Tick <= tick && h.Tick >= best[h.Player] {
-			out[h.Player], best[h.Player] = h.Cmd, h.Tick
-		}
-	}
-	return out
-}
-
-// scripted ist die Eingabe-Quelle der festen Folge: je Poll ein Takt, Geräte wie Scene.Devices, keine Menü-Aktionen.
-type scripted struct {
-	script []Hold
-	devs   []view.DeviceID
-	buf    []view.DeviceInput
-	tick   int
-}
-
-func newScripted(s Scene) *scripted {
-	return &scripted{script: s.Script, devs: s.Devices(), buf: make([]view.DeviceInput, s.Players)}
-}
-
-func (s *scripted) Poll() view.Input {
-	cmds := CommandsAt(s.script, s.tick)
-	s.tick++
-	for i, d := range s.devs {
-		s.buf[i] = view.DeviceInput{Device: d, Command: cmds[i]}
-	}
-	return view.Input{Devices: s.buf}
 }

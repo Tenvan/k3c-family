@@ -24,8 +24,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | `aktiv/PB1-itch-io/` |
 | RG1 | REG | BAL | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | Beschlüsse in `docs/rules/`, geänderte Werte in `data/`, `task balance` grün | `aktiv/RG1-werte-burg-hub-adern/` |
 | BR2 | REG | BAL | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | `aktiv/BR2-balancing-kampf/` |
-| RS1 | SRV, INF, SIM | RST | Messen, Go-Fixes, Rust-Spike für den Simulationskern | – | `aktiv/RS1-messen-go-fixes-rust-spike/` |
-| RS2 | SRV, DEV, INF | RST | Etappe 2 vorbereiten: Workbench entkoppeln, Zustand ohne JSON-Roundtrip, Inventar | – | `aktiv/RS2-vorarbeit-inventar/` |
 | HW1 | PLAT, SRV, INF, CLI | ABN | Zurückgestellte Controller-Prüfungen nachholen | – | `aktiv/HW1-controller-pruefungen/` |
 | PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | `aktiv/PF1-splitscreen-leistung/` |
 
@@ -37,11 +35,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| NG6 | CLI | NAT | Natives Spiel: HUD, Hinweise und Effekte | – | bereit | `geplant/NG6-native-hud-effekte/` |
-| NG7 | CLI | NAT | Natives Spiel: Menüs, Lobby, Spielstände, Optionen und Pause | – | bereit | `geplant/NG7-native-menues-spielstaende/` |
-| NG8 | CLI | NAT | Natives Spiel: Klänge und Musik | – | bereit | `geplant/NG8-native-ton/` |
 | NG9 | CLI | NAT | Natives Spiel: Zusammenführung, Messung und Abnahme | – | bereit | `geplant/NG9-native-zusammenfuehrung-abnahme/` |
-| NG10 | INF | NAT | Rust und Bevy entfernen | – | bereit | `geplant/NG10-rust-bevy-entfernen/` |
 | NG11 | CLI | NAT | Natives Spiel: Fluss mit Shader | – | bereit | `geplant/NG11-native-fluss-shader/` |
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | Entwurf | `geplant/MG10-papier-bosse-neu/` |
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
@@ -319,3 +313,9 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | NG3 | Natives Spiel: Figuren als Rig, Bein-Bänder und Gegnerzahl | `erledigt/NG3-native-figuren/` |
 | NG4 | Natives Spiel: Gebäude, Baustellen, Natur und Objekte | `erledigt/NG4-native-bauten-natur/` |
 | NG5 | Natives Spiel: Eingabe mit Gamepads und Tastatur | `erledigt/NG5-native-eingabe/` |
+| NG6 | Natives Spiel: HUD, Hinweise und Effekte | `erledigt/NG6-native-hud-effekte/` |
+| NG7 | Natives Spiel: Menüs, Lobby, Spielstände, Optionen und Pause | `erledigt/NG7-native-menues-spielstaende/` |
+| NG8 | Natives Spiel: Klänge und Musik | `erledigt/NG8-native-ton/` |
+| NG10 | Rust und Bevy entfernen | `erledigt/NG10-rust-bevy-entfernen/` |
+| RS1 | Messen, Go-Fixes, Rust-Spike für den Simulationskern | `erledigt/RS1-messen-go-fixes-rust-spike/` |
+| RS2 | Etappe 2 vorbereiten: Workbench entkoppeln, Zustand ohne JSON-Roundtrip, Inventar | `erledigt/RS2-vorarbeit-inventar/` |

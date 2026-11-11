@@ -43,10 +43,12 @@ type Game struct {
 	subs   subImages
 	stats  *overlay
 	shots  *shooter
+	endIn  int // Takte im Spiel seit Frame.Outcome (Spielende nach view.EndDelay)
 }
 
 // New baut die Schleife. Mit Szene (Seed oder Spielstand) startet das Spiel sofort, sonst liegt das Hauptmenü oben.
-// Im Aufnahme-Modus läuft die Simulation bis Scene.Tick vor.
+// Die Schleife läuft Scene.Tick Takte vor (wie im Spiel: Eingabe, Overlays, Listener; nur ohne Zeichnen) und legt
+// danach das Menü der Szene auf (Scene.Menu, menu.go).
 func New(p Parts, s Sim, a Args) (*Game, error) {
 	g := &Game{parts: p, sim: s, args: a, src: p.Input, mode: ModeMenu, cells: make([]view.Cell, 0, view.MaxPlayers),
 		win: image.Rect(0, 0, a.W, a.H), cams: Cameras{Rule: p.Camera, Fixed: a.Scene.Cams}}
@@ -54,13 +56,6 @@ func New(p Parts, s Sim, a Args) (*Game, error) {
 		g.src = newScripted(a.Scene)
 	}
 	g.stats = newOverlay(a.Shots == "")
-	if !a.Scene.Direct() {
-		g.stack.Push(p.Menus.Main())
-		return g, nil
-	}
-	if err := g.startScene(); err != nil {
-		return nil, err
-	}
 	if a.Shots != "" {
 		sh, err := newShooter(a)
 		if err != nil {
@@ -68,10 +63,20 @@ func New(p Parts, s Sim, a Args) (*Game, error) {
 		}
 		g.shots = sh
 	}
+	if a.Scene.Direct() {
+		if err := g.startScene(); err != nil {
+			return nil, err
+		}
+	} else {
+		g.stack.Push(p.Menus.Main())
+	}
 	for range a.Scene.Tick {
 		if g.advance(); g.err != nil {
 			return nil, g.err
 		}
+	}
+	if err := g.openMenu(); err != nil {
+		return nil, err
 	}
 	return g, nil
 }
@@ -131,6 +136,7 @@ func (g *Game) advance() {
 	g.loadLevels()
 	g.cells = Cells(g.cells, g.win, &g.frame)
 	g.cams.Follow(g.cells, &g.frame)
+	g.frame.Cells, g.frame.Recording = g.cells, g.args.Shots != ""
 	g.applyFullscreen()
 	for _, l := range g.parts.Listeners {
 		l.Listen(&g.frame)

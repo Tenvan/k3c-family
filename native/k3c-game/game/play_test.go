@@ -16,6 +16,8 @@ type fakeSim struct {
 	paused  bool
 	learned []string
 	set     []view.Settings
+	closed  int
+	ended   bool // Close gerufen: Active() == false
 }
 
 func newFakeSim() *fakeSim { return &fakeSim{cmds: map[int]view.Command{}} }
@@ -26,8 +28,10 @@ func (s *fakeSim) Load(string, []view.DeviceID) error  { return nil }
 func (s *fakeSim) List() ([]view.SaveInfo, error)      { return nil, nil }
 func (s *fakeSim) Delete(string) error                 { return nil }
 func (s *fakeSim) Save() error                         { return nil }
-func (s *fakeSim) Close() error                        { return nil }
-func (s *fakeSim) Active() bool                        { return true }
+func (s *fakeSim) Close() error                        { s.closed++; s.ended = true; return nil }
+func (s *fakeSim) Active() bool                        { return !s.ended }
+func (s *fakeSim) Settings() view.Settings             { return view.DefaultSettings() }
+func (s *fakeSim) Seats() []view.Seat                  { return nil }
 func (s *fakeSim) Pause(on bool)                       { s.paused = on }
 func (s *fakeSim) Join(d view.DeviceID) (int, error)   { s.joins = append(s.joins, d); return 1, nil }
 func (s *fakeSim) Leave(int) error                     { return nil }

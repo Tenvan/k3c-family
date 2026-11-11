@@ -30,6 +30,10 @@ type Config struct {
 	Dir string           // Ordner der Spielstände; leer = DefaultSavesDir()
 	Log *slog.Logger     // nil = verwerfen
 	Now func() time.Time // Zeitstempel der Spielstände und Insel-ID (nicht Spiellogik); nil = time.Now
+	// Recording (Aufnahme-Modus): Step wartet nach jedem Takt, bis ein in diesem Takt begonnenes Speichern
+	// geschrieben ist, damit CueSaved im Frame desselben Takts liegt und das Bild nicht von der Wanduhr abhängt. Im
+	// normalen Spiel schreibt der Raum im Hintergrund, ohne den Takt aufzuhalten.
+	Recording bool
 }
 
 // Session erfüllt view.Session und taktet das Spiel mit Step. Alle Methoden laufen in der Goroutine der Schleife.
@@ -47,11 +51,17 @@ type Session struct {
 	paused bool
 	steps  uint64 // Aufrufe von Step, Grundlage von Frame.Clock
 	cues   []view.Cue
+	ended  view.Outcome // Ausgang des laufenden bzw. zuletzt beendeten Spiels (Frame.Outcome)
+
+	recording bool // Config.Recording
+	inTick    bool // ein Takt läuft (Zählung der Speicher-Anfänge)
+	encodes   int  // Speicher-Anfänge im laufenden Takt (Aufrufe von Manager.Now im Takt)
 
 	settings     view.Settings
 	settingsPath string
 	cmd          map[int]sim.PlayerCommand // Puffer von Command, je Aufruf geleert
 	seatBuf      []view.Seat               // Puffer von Frame.Seats
+	seatOut      []view.Seat               // Puffer von Seats (getrennt von Frame.Seats, dort setzt game Lost)
 }
 
 var _ view.Session = (*Session)(nil)
@@ -78,7 +88,7 @@ func Open(cfg Config) *Session {
 		cfg.Now = time.Now
 	}
 	saves := &store.Saves{Dir: cfg.Dir, Now: cfg.Now}
-	s := &Session{saves: saves, store: &watchedStore{saves: saves}, log: cfg.Log, now: cfg.Now,
+	s := &Session{saves: saves, store: &watchedStore{saves: saves}, log: cfg.Log, now: cfg.Now, recording: cfg.Recording,
 		settingsPath: filepath.Join(cfg.Dir, SettingsFile), cmd: map[int]sim.PlayerCommand{}}
 	var err error
 	if s.settings, err = loadSettings(s.settingsPath); err != nil {
@@ -87,10 +97,18 @@ func Open(cfg Config) *Session {
 	return s
 }
 
-// manager legt den Manager eines Spiels an: Snapshot liefert die Welt selbst (keine Kopie, kein JSON).
+// manager legt den Manager eines Spiels an: Snapshot liefert die Welt selbst (keine Kopie, kein JSON). Now zählt die
+// Aufrufe im Takt: Im Takt fragt der Raum die Uhr nur, wenn er einen Spielstand kodiert (room/saver.go › encode), also
+// je begonnenem Speichern einmal (Grundlage von Config.Recording).
 func (s *Session) manager() *room.Manager {
 	m := room.NewManager(s.store)
-	m.Log, m.Now = s.log, s.now
+	m.Log = s.log
+	m.Now = func() time.Time {
+		if s.inTick {
+			s.encodes++
+		}
+		return s.now()
+	}
 	m.NewCode = func() string { return roomCode }
 	m.Snapshot = func(w *sim.World, _ int, _ bool) any { return w }
 	return m
@@ -156,7 +174,7 @@ func (s *Session) start(name string, fresh bool, depth int, opts room.Options, d
 	if err != nil {
 		return describe(err, name)
 	}
-	s.m, s.r, s.p, s.name, s.devs, s.paused = m, r, p, name, devs, false
+	s.m, s.r, s.p, s.name, s.devs, s.paused, s.ended = m, r, p, name, devs, false, view.OutcomeNone
 	s.last = slices.Clone(devices)
 	s.log.Info("🚀 Spiel gestartet", "save", name, "neu", fresh, "spieler", len(devices))
 	return nil

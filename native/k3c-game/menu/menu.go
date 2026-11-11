@@ -1,79 +1,86 @@
-// Package menu baut die Menü-Bildschirme: Hauptmenü, Spielstände, Pause (Fach-Sprint der Menüs). Bis dahin
-// Platzhalter: Hauptmenü mit „Bestätigen = neues Spiel“, Pause-Menü mit „jede Taste = weiter“.
+// Package menu baut die Menü-Bildschirme des nativen Spiels (Sprint NG7, B-800): Hauptmenü, Lobby für 1–2 Spieler,
+// Spielstände, Optionen und Pause; Spielende führt ins Hauptmenü. Vorbild sind die Menüs des Browsers
+// (src/scenes/pauseHub.ts, lobbyOptions.ts, saveMenu.ts, optionsLogic.ts); Online-Räume, Raum-Code, Werkzeug-Seiten und
+// Dev-Optionen gibt es nativ nicht.
+//
+// Aufbau: Jeder Bildschirm ist ein view.Screen; Untermenüs legt er über den Menü-Stapel von game auf (StepPush),
+// zurück geht es mit StepPop. Die Stapeltiefe ist höchstens zwei (Hauptmenü bzw. Pause und ein Untermenü), Rückfragen
+// liegen im Bildschirm selbst; Home (View + Menu, Pos1) ist darum im Untermenü dasselbe wie B. Update ändert den
+// Zustand (reine Logik, Tabellen-Tests), Draw baut daraus nur die Texte und zeichnet.
+//
+// Spielende: game schließt das Spiel view.EndDelay Takte nach Frame.Outcome und legt das Hauptmenü auf; das zeigt
+// den Ausgang aus dem Frame (Frame.Outcome bleibt bis zum nächsten Spiel). Plätze und Einstellungen liest menu aus
+// der Session (Seats, Settings).
 package menu
 
 import (
-	"image/color"
-
-	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/vector"
-
 	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/view"
 )
 
+// menus hält, was die Bildschirme teilen: Zeichner, Plätze des laufenden Spiels, Meldung fürs Hauptmenü.
+type menus struct {
+	paint  painter
+	seats  [view.MaxPlayers]view.Seat // Plätze aus Session.Seats beim letzten Update des Pause-Menüs
+	nSeats int
+	notice note // zeigt das nächste Hauptmenü (Fehler beim Verlassen)
+}
+
 var (
-	mainColor  = color.RGBA{40, 30, 60, 255}
-	pauseColor = color.RGBA{0, 0, 0, 140}
-	boxColor   = color.RGBA{230, 190, 40, 255}
-	errorColor = color.RGBA{200, 50, 50, 255}
+	_ view.Menus     = (*menus)(nil)
+	_ view.MenuPages = (*menus)(nil)
 )
 
-type menus struct{}
-
-// New liefert die Einstiege des Menüs; lib (Grafik) darf nil sein, die Platzhalter brauchen sie nicht.
-func New(_ *art.Library) view.Menus { return menus{} }
-
-func (menus) Main() view.Screen  { return &mainScreen{} }
-func (menus) Pause() view.Screen { return pauseScreen{} }
-
-// mainScreen startet bei Bestätigen ein neues Spiel mit dem Gerät, das bestätigt hat.
-type mainScreen struct{ failed bool }
-
-func (m *mainScreen) Update(in view.Input, s view.Session) view.Step {
-	d, ok := in.Has(view.ActionConfirm)
-	if !ok {
-		return view.Step{}
+// New liefert die Einstiege des Menüs; lib (Grafik) darf nil sein, dann zeichnet die Debug-Schrift.
+func New(lib *art.Library) view.Menus {
+	font := &art.Font{Fallback: true}
+	if lib != nil && lib.Font != nil {
+		font = lib.Font
 	}
-	if err := s.New(view.NewGame{Devices: []view.DeviceID{d}}); err != nil {
-		m.failed = true
-		return view.Step{Cues: []view.Cue{{Kind: view.CueDenied, Player: -1, Text: err.Error()}}}
-	}
-	m.failed = false
-	return view.Step{Kind: view.StepPlay, Cues: []view.Cue{{Kind: view.CueConfirm, Player: -1}}}
+	return &menus{paint: painter{font: font}}
 }
 
-func (m *mainScreen) Draw(dst *ebiten.Image, _ *view.Frame, c view.Cell) {
-	r := c.Rect
-	vector.FillRect(dst, float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy()), mainColor, false)
-	clr := boxColor
-	if m.failed {
-		clr = errorColor
-	}
-	drawBox(dst, c, clr)
+// Main liefert das Hauptmenü; eine vorgemerkte Meldung (Fehler beim Verlassen) erscheint darin.
+func (m *menus) Main() view.Screen {
+	sc := newMain(m)
+	sc.note, m.notice = m.notice, note{}
+	return sc
 }
 
-// pauseScreen schließt sich bei Bestätigen, Zurück oder Menü.
-type pauseScreen struct{}
+// Pause liefert das Pause-Menü.
+func (m *menus) Pause() view.Screen { return newPause(m) }
 
-func (pauseScreen) Update(in view.Input, _ view.Session) view.Step {
-	for _, a := range []view.Action{view.ActionConfirm, view.ActionBack, view.ActionMenu} {
-		if _, ok := in.Has(a); ok {
-			return view.Step{Kind: view.StepPop, Cues: []view.Cue{{Kind: view.CueResume, Player: -1}}}
+// Page liefert ein Untermenü für den Aufnahme-Modus (view.MenuPages): "saves", "options" (inGame: über der Pause)
+// oder "lobby" (geführt von by); nil für andere Namen.
+func (m *menus) Page(name string, inGame bool, by view.DeviceID) view.Screen {
+	switch name {
+	case "saves":
+		return newSaves(m)
+	case "options":
+		return newOptions(m, inGame)
+	case "lobby":
+		return newLobby(m, by)
+	}
+	return nil
+}
+
+// sync übernimmt die Plätze des laufenden Spiels aus der Session (ohne Slices zu halten).
+func (m *menus) sync(s view.Session) {
+	m.nSeats = 0
+	for _, st := range s.Seats() {
+		if m.nSeats < view.MaxPlayers {
+			m.seats[m.nSeats] = st
+			m.nSeats++
 		}
 	}
-	return view.Step{}
 }
 
-func (pauseScreen) Draw(dst *ebiten.Image, _ *view.Frame, c view.Cell) {
-	r := c.Rect
-	vector.FillRect(dst, float32(r.Min.X), float32(r.Min.Y), float32(r.Dx()), float32(r.Dy()), pauseColor, false)
-	drawBox(dst, c, boxColor)
-}
-
-// drawBox zeichnet ein Rechteck in der Mitte des Fensters (Platzhalter für die Auswahl).
-func drawBox(dst *ebiten.Image, c view.Cell, clr color.RGBA) {
-	r := c.Rect
-	w, h := float32(r.Dx())/4, float32(r.Dy())/6
-	vector.FillRect(dst, float32(r.Min.X)+(float32(r.Dx())-w)/2, float32(r.Min.Y)+(float32(r.Dy())-h)/2, w, h, clr, false)
+// seatOf liefert den Spieler des Geräts d aus den zuletzt übernommenen Plätzen (-1 ohne Platz).
+func (m *menus) seatOf(d view.DeviceID) int {
+	for _, st := range m.seats[:m.nSeats] {
+		if st.Device == d {
+			return st.Player
+		}
+	}
+	return -1
 }

@@ -1,6 +1,6 @@
 package main
 
-// Ein Wald-Level aus Papier-Sheets, 1:1 nach native/k3c-proto/src/level.rs: drei Hintergrund-Schichten je Spieler,
+// Ein Wald-Level aus Papier-Sheets, 1:1 nach dem früheren Vergleichs-Prototyp (mit B-779 entfernt): drei Hintergrund-Schichten je Spieler,
 // Boden, Gebäude, Natur, Truppen, Gegner, zwei berittene Monarchen. Feste Positionen, kein Zufall, keine Spiel-Logik.
 
 import (
@@ -286,7 +286,7 @@ func (l *Level) addMonarchs(p *Paper) error {
 	return nil
 }
 
-// update dreht die Welt um dt weiter: Spieler, Animationen, Hin-und-Her-Läufer (Reihenfolge wie im Bevy-Prototyp).
+// update dreht die Welt um dt weiter: Spieler, Animationen, Hin-und-Her-Läufer (feste Reihenfolge).
 func (l *Level) update(p *Paper, dt, elapsed float64, auto bool) error {
 	pads := sortedPads()
 	for _, pl := range l.players {
@@ -320,7 +320,7 @@ func (l *Level) visible(sp *Sprite) bool {
 	return false
 }
 
-// animate schaltet höchstens ein Bild je Frame weiter (wie der Timer im Bevy-Prototyp).
+// animate schaltet höchstens ein Bild je Frame weiter (Timer je Sprite).
 func (sp *Sprite) animate(dt float64) {
 	if sp.sheet == nil || !sp.playing || sp.sheet.frames <= 1 {
 		return
@@ -348,7 +348,7 @@ func (sp *Sprite) wander(dt float64) {
 }
 
 // draw zeichnet das Sprite mit Fußpunkt (fx, fy) am Bildschirm; s = Bildschirm-Pixel je Spiel-Pixel. Gespiegelt wird
-// innerhalb des eigenen Rechtecks (wie `flip_x` in Bevy), außerhalb der Sicht wird nicht gezeichnet. Rig-Figuren zeichnet pt.
+// innerhalb des eigenen Rechtecks, außerhalb der Sicht wird nicht gezeichnet. Rig-Figuren zeichnet pt.
 func (sp *Sprite) draw(dst *ebiten.Image, pt *paint.Painter, fx, fy, s, viewW float64) {
 	if sp.fig != nil {
 		sp.fig.draw(pt, dst, fx, fy, s, viewW, sp.flip)
@@ -380,7 +380,7 @@ func (sp *Sprite) draw(dst *ebiten.Image, pt *paint.Painter, fx, fy, s, viewW fl
 		op.GeoM.Scale(k, k)
 		op.GeoM.Translate(x0, y0)
 	}
-	// Linear gefiltert und ohne Mipmaps, wie Bevys Standard-Sampler
+	// Linear gefiltert und ohne Mipmaps
 	op.Filter = ebiten.FilterLinear
 	op.DisableMipmaps = true
 	dst.DrawImage(sh.frameImgs[sp.frame%sh.frames], &op)

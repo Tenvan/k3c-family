@@ -6,7 +6,7 @@
 - **Umgebung:** ?
 - **Status:** eingeplant
 - **Sprint:** RS2
-- **Projekt:** RST
+- **Projekt:** WZG
 - **Erstellt:** 2026-11-07
 - **Spec:** freigegeben
 - **Revision:** 1

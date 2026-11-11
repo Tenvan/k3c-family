@@ -10,8 +10,10 @@ import (
 // play bedient das laufende Spiel (kein Screen offen): Overlays (Skill-Menü) zuerst, dann Pause bei ActionMenu bzw.
 // ActionHome, verwaiste Plätze nach der Zuordnungs-Regel, Befehle der Geräte an ihre Spieler und Beitritt neuer Geräte
 // mit Bestätigen. Verbrauchte Spieler bekommen einen leeren Befehl, ihre Aktionen zählen nicht. B ist im Spiel unbelegt.
+// Endet das Spiel (Absturz oder Spielende), liegt danach das Hauptmenü oben und dieses Update tut sonst nichts.
 func (g *Game) play(in view.Input) {
-	if !g.sim.Active() {
+	if !g.sim.Active() || g.ending() {
+		g.endIn = 0
 		g.stack.Push(g.parts.Menus.Main())
 		g.mode = ModeMenu
 		return
@@ -34,6 +36,24 @@ func (g *Game) play(in view.Input) {
 		}
 	}
 	g.join(in)
+}
+
+// ending zählt die Takte im Spiel, seit der Frame einen Ausgang trägt (Frame.Outcome), und schließt das Spiel nach
+// view.EndDelay (Session.Close speichert; nach einer Niederlage speichert der Raum nicht mehr). Ein Frame ohne Stufe
+// (Menü, beendetes Spiel) setzt den Zähler zurück, damit ein späteres Spiel neu zählt. true: Spiel geschlossen.
+func (g *Game) ending() bool {
+	if g.frame.Outcome == view.OutcomeNone || len(g.frame.Stages) == 0 {
+		g.endIn = 0
+		return false
+	}
+	if g.endIn++; g.endIn < view.EndDelay {
+		return false
+	}
+	if err := g.sim.Close(); err != nil {
+		slog.Warn("💥 Spiel nach Spielende nicht sauber beendet", "err", err)
+	}
+	slog.Info("🛑 Spielende, zurück ins Hauptmenü", "ausgang", g.frame.Outcome)
+	return true
 }
 
 // overlays ruft alle Overlays und vereinigt die verbrauchten Spieler; ihre Cues kommen in den nächsten Frame.

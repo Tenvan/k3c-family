@@ -1,6 +1,6 @@
 package game
 
-// Große Anzeige oben rechts (wie native/k3c-ebiten/fps.go): die kleine Debug-Schrift in ein eigenes Bild, vergrößert
+// Große Anzeige oben rechts in view.StatsRect (wie native/k3c-ebiten/fps.go): die kleine Debug-Schrift in ein eigenes Bild, vergrößert
 // gezeichnet. Im Fenster die FPS (Text höchstens viermal je Sekunde Spielzeit neu), im Aufnahme-Modus der Takt statt
 // der FPS, damit das Bild nicht von der Wanduhr abhängt.
 
@@ -14,13 +14,8 @@ import (
 	"k3c/native/k3c-game/view"
 )
 
-const (
-	overlayScale    = 5.0  // Vergrößerung der Debug-Schrift
-	overlayInterval = 0.25 // Sekunden Spielzeit zwischen zwei FPS-Texten
-	overlayW        = 76   // Breite des Textbilds in px vor der Vergrößerung
-	overlayH        = 18
-	overlayMargin   = 16
-)
+// overlayInterval sind die Sekunden Spielzeit zwischen zwei FPS-Texten. Lage und Größe: view.StatsRect.
+const overlayInterval = 0.25
 
 var overlayBack = color.RGBA{0, 0, 0, 170}
 
@@ -34,10 +29,11 @@ type overlay struct {
 }
 
 func newOverlay(fps bool) *overlay {
-	return &overlay{img: ebiten.NewImage(overlayW, overlayH), fps: fps, tick: ^uint64(0)}
+	w, h, _ := view.StatsTextSize()
+	return &overlay{img: ebiten.NewImage(w, h), fps: fps, tick: ^uint64(0)}
 }
 
-// draw setzt den Text bei Bedarf neu und zeichnet ihn oben rechts.
+// draw setzt den Text bei Bedarf neu und zeichnet ihn in view.StatsRect.
 func (o *overlay) draw(screen *ebiten.Image, f *view.Frame) {
 	switch {
 	case o.fps && f.Clock >= o.next:
@@ -49,9 +45,11 @@ func (o *overlay) draw(screen *ebiten.Image, f *view.Frame) {
 	}
 	if w := screen.Bounds().Dx(); w != o.w {
 		o.w = w
+		_, _, k := view.StatsTextSize()
+		r := view.StatsRect(screen.Bounds())
 		o.op.GeoM.Reset()
-		o.op.GeoM.Scale(overlayScale, overlayScale)
-		o.op.GeoM.Translate(float64(screen.Bounds().Max.X)-overlayW*overlayScale-overlayMargin, overlayMargin)
+		o.op.GeoM.Scale(float64(k), float64(k))
+		o.op.GeoM.Translate(float64(r.Min.X), float64(r.Min.Y))
 	}
 	screen.DrawImage(o.img, &o.op)
 }

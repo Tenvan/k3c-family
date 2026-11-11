@@ -60,6 +60,26 @@ type Cell struct {
 	Camera Camera
 }
 
+// Anzeige oben rechts (game: FPS bzw. im Aufnahme-Modus der Takt): Debug-Schrift statsW × statsH px, statsScale-fach,
+// statsMargin px vom Rand.
+const (
+	statsW      = 76
+	statsH      = 18
+	statsScale  = 5
+	statsMargin = 16
+)
+
+// StatsRect ist die Fläche der Anzeige oben rechts im Fenster win; game zeichnet dort, die Drawer halten sie frei.
+// Sie liegt in der obersten Zelle (gleiche Oberkante und Breite wie das Fenster).
+func StatsRect(win image.Rectangle) image.Rectangle {
+	w, h := statsW*statsScale, statsH*statsScale
+	x := win.Max.X - w - statsMargin
+	return image.Rect(x, win.Min.Y+statsMargin, x+w, win.Min.Y+statsMargin+h)
+}
+
+// StatsTextSize ist die Größe des Textbilds der Anzeige vor der Vergrößerung (Debug-Schrift) und der Faktor.
+func StatsTextSize() (w, h, scale int) { return statsW, statsH, statsScale }
+
 // WindowCell ist die Zelle für LayerOverlay und Screens: das ganze Fenster, ohne Spieler.
 func WindowCell(win image.Rectangle) Cell {
 	return Cell{Index: -1, Player: -1, Rect: win, Camera: NewCamera(win, 0, 1)}

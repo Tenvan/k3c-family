@@ -1,6 +1,6 @@
 # RST · Rust-Engine
 
-- **Status:** ruht
+- **Status:** erledigt
 - **Rang:** –
 - **Ziel-Tickets:** –
 
@@ -14,8 +14,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
-| RS1 | Messen, Go-Fixes, Rust-Spike für den Simulationskern | aktiv |
-| RS2 | Etappe 2 vorbereiten: Workbench entkoppeln, Zustand ohne JSON-Roundtrip, Inventar | aktiv |
+| RS1 | Messen, Go-Fixes, Rust-Spike für den Simulationskern | erledigt |
+| RS2 | Etappe 2 vorbereiten: Workbench entkoppeln, Zustand ohne JSON-Roundtrip, Inventar | erledigt |
 
 ## Nicht-Ziele
 

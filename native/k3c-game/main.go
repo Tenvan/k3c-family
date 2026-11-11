@@ -11,6 +11,7 @@ import (
 	"log/slog"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 
@@ -18,6 +19,9 @@ import (
 	"k3c/native/k3c-game/game"
 	"k3c/native/k3c-game/local"
 )
+
+// shotTime ist die Uhr der Spielstände im Aufnahme-Modus (das Bild hängt nicht von der Wanduhr ab).
+var shotTime = time.Date(2026, 1, 1, 12, 0, 0, 0, time.UTC)
 
 func fatal(err error) {
 	fmt.Fprintf(os.Stderr, "💥 %v\n", err)
@@ -65,7 +69,11 @@ func run(args game.Args) error {
 	}
 	parts.Art = lib
 	slog.Info("🚀 K3C natives Spiel", "pakete", parts.Names, "drawer", len(parts.Drawers), "spielstaende", args.Saves, "aufnahme", args.Shots)
-	sim := local.Open(local.Config{Dir: args.Saves, Log: slog.Default()})
+	cfg := local.Config{Dir: args.Saves, Log: slog.Default()}
+	if args.Shots != "" { // Aufnahme: Speichern im Takt, feste Uhr (Zeitstempel in der Spielstand-Liste, Insel-ID)
+		cfg.Recording, cfg.Now = true, func() time.Time { return shotTime }
+	}
+	sim := local.Open(cfg)
 	g, err := game.New(parts, sim, args)
 	if err != nil {
 		return err
