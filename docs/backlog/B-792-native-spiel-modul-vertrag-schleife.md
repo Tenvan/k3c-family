@@ -8,9 +8,9 @@
 - **Sprint:** NG1
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-11-11 🧑 Chat (Ralf-Queue natives Spiel)
 
 ## Ausgangslage
 
@@ -67,10 +67,13 @@ Grafik fehlt (`gen:paper` nicht gelaufen, Rig-Teil fehlt) → Meldung mit Pfad b
 
 ## Offene Fragen
 
-- **Ort und Weg:** neues Modul `native/k3c-game` statt Ausbau von `native/k3c-ebiten`. Vorschlag: neu, weil der Prototyp flach in `package main` liegt und parallele Sprints getrennte Ordner brauchen; der Prototyp bleibt Mess-Referenz, seine Bausteine (`river.go`, `paper.go`, `fps.go`) werden übernommen. Alternative `cmd/k3c-native` im Wurzel-Modul verworfen: Ebitengine käme in das `go.mod` des Servers, und Linux-CI und Docker müssten es übersetzen (vermutet: Ebitengine braucht unter Linux cgo und X11-Header). Entscheidet 🧑.
-- **Abhängigkeiten:** Für Text (`ebiten/v2/text/v2`) und Ton (`ebiten/v2/audio/vorbis`) zieht Ebitengine weitere Module nach (vermutet: `go-text/typesetting`, `jfreymuth/oggvorbis`, `hajimehoshi/go-mp3`). Vorschlag: zulassen, nur was Ebitengine selbst verlangt, keine weiteren. Entscheidet 🧑.
-- **Schrift:** Im Repo liegt keine Schriftdatei (der Browser nutzt CSS-Schriften). Vorschlag: eine freie Schrift (OFL) über `assets_*` mit Lizenz-Eintrag. Entscheidet 🧑.
-- **Rig-Paket:** Das Spiel bindet `native/k3c-rig/rig` und `paint` aus dem Prototyp-Modul ein. Vorschlag: so lassen, Umzug in ein festes Modul erst als eigenes Ticket nach NG9.
+- **Rig-Paket:** Das Spiel bindet `native/k3c-rig/rig` und `paint` aus dem Prototyp-Modul ein. Vorschlag: so lassen, Umzug in ein festes Modul erst als eigenes Ticket nach NG9. Klärt die Umsetzung.
+
+Entschieden von 🧑 am 2026-11-11 (Chat):
+
+- **Ort und Weg:** neues Modul `native/k3c-game`; der Prototyp bleibt Mess-Referenz, seine Bausteine (`river.go`, `paper.go`, `fps.go`) werden übernommen.
+- **Abhängigkeiten:** Für Text und Ton nur, was Ebitengine selbst nachzieht, sonst nichts.
+- **Schrift:** eine freie OFL-Schrift über `assets_*` mit Lizenz-Eintrag.
 
 ## Notizen
 

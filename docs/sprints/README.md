@@ -37,17 +37,17 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| NG1 | CLI, INF | NAT | Natives Spiel: Fundament mit Modul, Vertrag, Simulation im Prozess und Spielschleife | – | Entwurf | `geplant/NG1-native-fundament/` |
-| NG2 | CLI | NAT | Natives Spiel: Welt, Kamera, Schichten, Fluss und Licht | – | Entwurf | `geplant/NG2-native-welt-kamera/` |
-| NG3 | CLI | NAT | Natives Spiel: Figuren als Rig, Bein-Bänder und Gegnerzahl | – | Entwurf | `geplant/NG3-native-figuren/` |
-| NG4 | CLI | NAT | Natives Spiel: Gebäude, Baustellen, Natur und Objekte | – | Entwurf | `geplant/NG4-native-bauten-natur/` |
-| NG5 | PLAT | NAT | Natives Spiel: Eingabe mit Gamepads und Tastatur | – | Entwurf | `geplant/NG5-native-eingabe/` |
-| NG6 | CLI | NAT | Natives Spiel: HUD, Hinweise und Effekte | – | Entwurf | `geplant/NG6-native-hud-effekte/` |
-| NG7 | CLI | NAT | Natives Spiel: Menüs, Lobby, Spielstände, Optionen und Pause | – | Entwurf | `geplant/NG7-native-menues-spielstaende/` |
-| NG8 | CLI | NAT | Natives Spiel: Klänge und Musik | – | Entwurf | `geplant/NG8-native-ton/` |
-| NG9 | CLI | NAT | Natives Spiel: Zusammenführung, Messung und Abnahme | – | Entwurf | `geplant/NG9-native-zusammenfuehrung-abnahme/` |
-| NG10 | INF | NAT | Rust und Bevy entfernen | – | Entwurf | `geplant/NG10-rust-bevy-entfernen/` |
-| NG11 | CLI | NAT | Natives Spiel: Fluss mit Shader | – | Entwurf | `geplant/NG11-native-fluss-shader/` |
+| NG1 | CLI, INF | NAT | Natives Spiel: Fundament mit Modul, Vertrag, Simulation im Prozess und Spielschleife | – | bereit | `geplant/NG1-native-fundament/` |
+| NG2 | CLI | NAT | Natives Spiel: Welt, Kamera, Schichten, Fluss und Licht | – | bereit | `geplant/NG2-native-welt-kamera/` |
+| NG3 | CLI | NAT | Natives Spiel: Figuren als Rig, Bein-Bänder und Gegnerzahl | – | bereit | `geplant/NG3-native-figuren/` |
+| NG4 | CLI | NAT | Natives Spiel: Gebäude, Baustellen, Natur und Objekte | – | bereit | `geplant/NG4-native-bauten-natur/` |
+| NG5 | PLAT | NAT | Natives Spiel: Eingabe mit Gamepads und Tastatur | – | bereit | `geplant/NG5-native-eingabe/` |
+| NG6 | CLI | NAT | Natives Spiel: HUD, Hinweise und Effekte | – | bereit | `geplant/NG6-native-hud-effekte/` |
+| NG7 | CLI | NAT | Natives Spiel: Menüs, Lobby, Spielstände, Optionen und Pause | – | bereit | `geplant/NG7-native-menues-spielstaende/` |
+| NG8 | CLI | NAT | Natives Spiel: Klänge und Musik | – | bereit | `geplant/NG8-native-ton/` |
+| NG9 | CLI | NAT | Natives Spiel: Zusammenführung, Messung und Abnahme | – | bereit | `geplant/NG9-native-zusammenfuehrung-abnahme/` |
+| NG10 | INF | NAT | Rust und Bevy entfernen | – | bereit | `geplant/NG10-rust-bevy-entfernen/` |
+| NG11 | CLI | NAT | Natives Spiel: Fluss mit Shader | – | bereit | `geplant/NG11-native-fluss-shader/` |
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | Entwurf | `geplant/MG10-papier-bosse-neu/` |
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
 | US3 | CLI | PAP | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | – | Entwurf | `geplant/US3-spielbefunde-papierschnitt/` |

@@ -8,9 +8,9 @@
 - **Sprint:** NG10
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-11-11 🧑 Chat (Ralf-Queue natives Spiel)
 
 ## Ausgangslage
 
@@ -63,9 +63,12 @@ Ein Go-Test hängt noch an der Rust-Bibliothek → Test löschen, wenn er nur de
 
 ## Offene Fragen
 
-- Die übrigen Tickets aus RST betreffen Go und die Workbench, nicht Rust (B-726, B-731, B-743, B-744, B-746, B-747, B-753, B-754). Default: nach WZG bzw. LST umhängen; B-731, B-753 und B-754 prüfen, ob sie mit dem Monolithen ohne Server entfallen.
-- Warten auf die Messung am Mini-PC (Notizen)? Der Mini-PC kommt erst, wenn das Spiel am PC fertig ist (B-786). Vorschlag: nicht warten, der Vergleich mit Bevy steht in B-776 und B-777; Sprint NG10 in Welle 2. Entscheidet 🧑.
 - Fällt `purego` aus dem Wurzel-`go.mod`, wenn die Rust-Brücke geht (vermutet)? Klärt die Umsetzung; deshalb Sperre `deps`.
+
+Entschieden von 🧑 am 2026-11-11 (Chat):
+
+- **Mini-PC:** nicht auf die Messung warten; Sprint NG10 läuft in Welle 2.
+- **Übrige RST-Tickets** (B-726, B-731, B-743, B-744, B-746, B-747, B-753, B-754): nach WZG bzw. LST umhängen. Das Umhängen gehört in die Umsetzung von NG10; dort prüfen B-731, B-753 und B-754, ob sie mit dem Monolithen ohne Server entfallen.
 
 ## Notizen
 

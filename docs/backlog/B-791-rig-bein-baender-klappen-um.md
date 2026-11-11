@@ -8,9 +8,9 @@
 - **Sprint:** NG3
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-11-11 🧑 Chat (Ralf-Queue natives Spiel)
 
 ## Ausgangslage
 
@@ -61,7 +61,9 @@ nicht relevant: reine Zeichen-Geometrie.
 
 ## Offene Fragen
 
-Kurve am Band-Ende begrenzen oder Spec des Elefanten ändern (längere Spitze)? Entscheidet die Umsetzung mit 🧑.
+keine.
+
+Entschieden von 🧑 am 2026-11-11 (Chat): Die Kurve am Band-Ende wird begrenzt; die Specs bleiben unverändert.
 
 ## Notizen
 

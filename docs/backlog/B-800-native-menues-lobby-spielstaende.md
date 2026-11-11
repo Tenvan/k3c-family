@@ -8,9 +8,9 @@
 - **Sprint:** NG7
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** 2026-11-11 🧑 Chat (Ralf-Queue natives Spiel)
 
 ## Ausgangslage
 
@@ -65,7 +65,9 @@ Kein Spielstand → „Weiter“ ausgegraut. Spielstand nicht ladbar → Eintrag
 
 ## Offene Fragen
 
-- Welche Optionen gibt es nativ? Vorschlag: Lautstärke Musik und Effekte, Vollbild, Sprache wie heute; Online- und Dev-Optionen entfallen. Entscheidet 🧑.
+keine.
+
+Entschieden von 🧑 am 2026-11-11 (Chat): Optionen nativ sind Lautstärke Musik und Effekte, Vollbild und Sprache; Online- und Dev-Optionen entfallen.
 
 ## Notizen
 
