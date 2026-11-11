@@ -1,6 +1,6 @@
 # NV3.3 · Figuren des Levels als Rig zeichnen
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,5 +54,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03 umgesetzt: Im Level laufen 18 Truppen, 16 Gegner (darunter Wolf als Vierbeiner) und beide Monarchen auf Schimmel und Rappe als Rig; geprüft mit `go vet`, `go build`, `go test` in beiden Modulen, `task native:rig:test` und am Screenshot-Vergleich `reports/native-ebiten-nv3/rig` gegen `sheet` (Agent, Opus; Claude hat das Rig-Bild angesehen).
+Einbindung: neues Paket `native/k3c-rig/paint` (Laden, Painter, Actor), `k3c-ebiten` per `replace`; Schalter `--art rig|sheet`.
+Vorab-Messung (je ein Lauf, ohne VSync): rig 1633 FPS, Rechenzeit 0,482 ms; sheet 1905 FPS, 0,131 ms; Grafik 16,7 statt 31,9 MiB.
+Abweichungen: Im Level stehen keine Bosse und keine `requisite`-Figuren; Posen werden nicht geteilt. Offen für das Review: ein Ausreißer-Frame 46 ms im Rig-Lauf, Lauf-Frequenz Rig 1,6 Hz gegen Sheet 1 Hz, Mipmaps nur bei Rig-Teilen.

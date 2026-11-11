@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 
 	"github.com/hajimehoshi/ebiten/v2"
+
+	"k3c/native/k3c-rig/paint"
 )
 
 // shot ist ein Bild: Zustand beider Monarchen, Zeit der Animation im Bild und Elemente je Spieler ("-" = Platz leer).
@@ -58,29 +60,22 @@ type Shots struct {
 
 func NewShots(demo *Demo, dir string) *Shots { return &Shots{demo: demo, dir: dir} }
 
-func indexOf(list []string, name string) int {
+// element: Element-Id eines Bilds ("-" = Platz leer).
+func element(name string) string {
 	if name == "-" {
-		name = ""
+		return ""
 	}
-	for i, v := range list {
-		if v == name {
-			return i
-		}
-	}
-	return 0
+	return name
 }
 
 // prepare stellt beide Monarchen auf das Bild ein und rechnet den Vorlauf.
 func (s *Shots) prepare(sh shot) error {
 	for i, a := range s.demo.actors {
-		for k, st := range states {
-			if st.name == sh.state {
-				a.state = k
-			}
-		}
-		a.weapon, a.armor = indexOf(a.assets.weapons, sh.weapon[i]), indexOf(a.assets.armors, sh.armor[i])
-		a.left, a.tempo, a.cloak = sh.left, 1, nil
-		a.t = sh.at - shotSettle
+		a.State = states[stateIndex(sh.state)]
+		a.Weapon, a.Armor = element(sh.weapon[i]), element(sh.armor[i])
+		a.Left, a.Tempo = sh.left, 1
+		a.ResetCloak()
+		a.T = sh.at - shotSettle
 		for range int(shotSettle / shotDT) {
 			if err := a.Update(shotDT); err != nil {
 				return err
@@ -116,7 +111,7 @@ func (s *Shots) save(g *Game) error {
 	s.canvas.ReadPixels(img.Pix)
 	path := filepath.Join(s.dir, s.pending+".png")
 	s.pending = ""
-	if err := writePNG(path, img); err != nil {
+	if err := paint.WritePNG(path, img); err != nil {
 		return err
 	}
 	logf("💾 %s", path)

@@ -1,4 +1,4 @@
-package main
+package paint
 
 // Zeichnen mit Ebitengine: Teile als Bild mit Matrix, Bänder (Umhang, Beine) als Dreiecksband, Zügel als Linie.
 
@@ -11,10 +11,10 @@ import (
 	"k3c/native/k3c-rig/rig"
 )
 
-// Painter zeichnet in ein Ziel; view bildet Welt-Einheiten auf Bildpunkte ab. Die Puffer werden wiederverwendet.
+// Painter zeichnet in ein Ziel (Dst); View bildet Welt-Einheiten auf Bildpunkte ab. Die Puffer werden wiederverwendet.
 type Painter struct {
-	dst   *ebiten.Image
-	view  rig.M
+	Dst   *ebiten.Image
+	View  rig.M
 	white *ebiten.Image
 	verts []ebiten.Vertex
 	idx   []uint16
@@ -25,7 +25,7 @@ type Painter struct {
 }
 
 func NewPainter(white *ebiten.Image) *Painter {
-	p := &Painter{white: white, view: rig.Identity}
+	p := &Painter{white: white, View: rig.Identity}
 	p.op.Filter = ebiten.FilterLinear
 	p.tri.Filter = ebiten.FilterLinear
 	return p
@@ -33,20 +33,20 @@ func NewPainter(white *ebiten.Image) *Painter {
 
 // image zeichnet ein Teil-Bild: Pixel → Einheiten (1/density, Versatz), dann die Matrix des Teils, dann die Sicht.
 func (p *Painter) image(img *ebiten.Image, m rig.M, offset rig.Point, density float64) {
-	f := rig.Mul(p.view, rig.Mul(m, rig.Mul(rig.Translate(offset[0], offset[1]), rig.Scale(1/density))))
+	f := rig.Mul(p.View, rig.Mul(m, rig.Mul(rig.Translate(offset[0], offset[1]), rig.Scale(1/density))))
 	p.op.GeoM.SetElement(0, 0, f[0])
 	p.op.GeoM.SetElement(1, 0, f[1])
 	p.op.GeoM.SetElement(0, 1, f[2])
 	p.op.GeoM.SetElement(1, 1, f[3])
 	p.op.GeoM.SetElement(0, 2, f[4])
 	p.op.GeoM.SetElement(1, 2, f[5])
-	p.dst.DrawImage(img, &p.op)
+	p.Dst.DrawImage(img, &p.op)
 }
 
 // band biegt das Bild eines Bands entlang der Stützpunkte; m ist die Matrix des Rahmens, in dem die Punkte liegen.
 func (p *Painter) band(img *ebiten.Image, b *rig.Band, pts []rig.Point, m rig.M, density float64) {
 	p.strip = b.Strip(pts, density, p.strip)
-	f := rig.Mul(p.view, m)
+	f := rig.Mul(p.View, m)
 	p.verts, p.idx = p.verts[:0], p.idx[:0]
 	for i, v := range p.strip {
 		at := f.Apply(rig.Point{v.X, v.Y})
@@ -58,7 +58,7 @@ func (p *Painter) band(img *ebiten.Image, b *rig.Band, pts []rig.Point, m rig.M,
 		}
 	}
 	p.tri.AntiAlias = false
-	p.dst.DrawTriangles(p.verts, p.idx, img, &p.tri)
+	p.Dst.DrawTriangles(p.verts, p.idx, img, &p.tri)
 }
 
 const curveSteps = 12
@@ -69,9 +69,9 @@ func (p *Painter) curve(a, c, b rig.Point, width float64, col color.RGBA, opacit
 	for i := 0; i <= curveSteps; i++ {
 		t := float64(i) / curveSteps
 		u := 1 - t
-		p.pts = append(p.pts, p.view.Apply(rig.Point{u*u*a[0] + 2*u*t*c[0] + t*t*b[0], u*u*a[1] + 2*u*t*c[1] + t*t*b[1]}))
+		p.pts = append(p.pts, p.View.Apply(rig.Point{u*u*a[0] + 2*u*t*c[0] + t*t*b[0], u*u*a[1] + 2*u*t*c[1] + t*t*b[1]}))
 	}
-	half := width / 2 * math.Hypot(p.view[0], p.view[1])
+	half := width / 2 * math.Hypot(p.View[0], p.View[1])
 	// Ecken-Farben sind nicht vormultipliziert (Standard von DrawTriangles)
 	r, g, bl, al := float32(col.R)/255, float32(col.G)/255, float32(col.B)/255, float32(opacity)
 	p.verts, p.idx = p.verts[:0], p.idx[:0]
@@ -101,7 +101,7 @@ func (p *Painter) curve(a, c, b rig.Point, width float64, col color.RGBA, opacit
 		}
 	}
 	p.tri.AntiAlias = false
-	p.dst.DrawTriangles(p.verts, p.idx, p.white, &p.tri)
+	p.Dst.DrawTriangles(p.verts, p.idx, p.white, &p.tri)
 }
 
 // parseColor liest #rrggbb; alles andere ergibt Schwarz.

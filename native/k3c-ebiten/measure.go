@@ -32,6 +32,7 @@ type Measure struct {
 	last        float64
 	loadedAfter float64
 	framesMs    []float64
+	workMs      float64 // Summe der Rechenzeit der gemessenen Frames
 }
 
 // RunInfo: was der Bericht vom laufenden Spiel braucht.
@@ -40,6 +41,9 @@ type RunInfo struct {
 	bytes     int64
 	size      [2]int
 	unmanaged bool
+	workMs    float64 // Rechenzeit dieses Frames (CPU: Update und Zeichenbefehle)
+	rigImages int
+	rigBytes  int64
 }
 
 type FrameStats struct {
@@ -51,6 +55,7 @@ type FrameStats struct {
 
 type Report struct {
 	Modus         string     `json:"modus"`
+	Art           string     `json:"art"`
 	Ebitengine    string     `json:"ebitengine"`
 	Adapter       string     `json:"adapter"`
 	Backend       string     `json:"backend"`
@@ -60,12 +65,15 @@ type Report struct {
 	Vsync         bool       `json:"vsync"`
 	Sheets        int        `json:"sheets"`
 	TexturMibRgba float64    `json:"textur_mib_rgba"`
+	RigBilder     int        `json:"rig_bilder"`
+	RigMibRgba    float64    `json:"rig_mib_rgba"`
 	LadezeitS     float64    `json:"ladezeit_s"`
 	MessdauerS    float64    `json:"messdauer_s"`
 	Frames        int        `json:"frames"`
 	FpsMittel     float64    `json:"fps_mittel"`
 	Fps1PctLow    float64    `json:"fps_1pct_low"`
 	FrametimeMs   FrameStats `json:"frametime_ms"`
+	RechenzeitMs  float64    `json:"rechenzeit_ms"` // Mittel je Frame: Update und Zeichenbefehle (CPU)
 }
 
 func NewMeasure(args Args) *Measure { return &Measure{args: args} }
@@ -92,6 +100,7 @@ func (m *Measure) frame(now float64, loaded bool, info RunInfo) bool {
 		}
 	case phaseMeasuring:
 		m.framesMs = append(m.framesMs, dt*1000)
+		m.workMs += info.workMs
 		if m.t += dt; m.args.measureS > 0 && m.t >= m.args.measureS {
 			m.finish(m.build(info))
 			m.phase = phaseDone
@@ -129,8 +138,9 @@ func (m *Measure) build(info RunInfo) Report {
 		textures = "unmanaged"
 	}
 	return Report{
-		Modus: m.args.mode, Ebitengine: ebitenVersion(), Adapter: "?", Backend: backendName(), Treiber: "?", Texturen: textures,
+		Modus: m.args.mode, Art: m.args.art, Ebitengine: ebitenVersion(), Adapter: "?", Backend: backendName(), Treiber: "?", Texturen: textures,
 		Fenster: info.size, Vsync: m.args.vsync, Sheets: info.sheets, TexturMibRgba: math.Round(mib(info.bytes)*10) / 10,
+		RigBilder: info.rigImages, RigMibRgba: math.Round(mib(info.rigBytes)*10) / 10, RechenzeitMs: m.workMs / float64(n),
 		LadezeitS: m.loadedAfter, MessdauerS: total / 1000, Frames: n,
 		FpsMittel: float64(n) * 1000 / total, Fps1PctLow: 1000 / worstMs,
 		FrametimeMs: FrameStats{P50: percentile(sorted, 0.5), P95: percentile(sorted, 0.95), P99: percentile(sorted, 0.99), Max: sorted[n-1]},
@@ -142,7 +152,8 @@ func (m *Measure) finish(r Report) {
 	if err != nil {
 		fatal("❌ Bericht nicht serialisiert: %v", err)
 	}
-	logf("✅ Messung %s: %.0f FPS Mittel, %.0f FPS 1-%%-Low, p99 %.1f ms", r.Modus, r.FpsMittel, r.Fps1PctLow, r.FrametimeMs.P99)
+	logf("✅ Messung %s, Art %s: %.0f FPS Mittel, %.0f FPS 1-%%-Low, p99 %.1f ms, Rechenzeit %.3f ms je Frame", r.Modus, r.Art, r.FpsMittel,
+		r.Fps1PctLow, r.FrametimeMs.P99, r.RechenzeitMs)
 	if m.args.report == "" {
 		fmt.Println(string(text))
 		return

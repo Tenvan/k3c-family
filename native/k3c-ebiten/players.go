@@ -9,6 +9,8 @@ import (
 	"sort"
 
 	"github.com/hajimehoshi/ebiten/v2"
+
+	"k3c/native/k3c-rig/paint"
 )
 
 const (
@@ -98,6 +100,14 @@ func (pl *Player) update(p *Paper, dt, elapsed float64, auto bool, pads []ebiten
 	if pl.moving {
 		gait = "galopp"
 	}
+	sp.playing = pl.moving
+	if f := sp.fig; f != nil {
+		// Rig: Gangart wechseln und von vorn beginnen (wie Frame 0 beim Sheet); Name nur beim Wechsel bauen
+		if f.actor.State.Gait != gait {
+			f.actor.State, f.actor.T = paint.State{Name: gaitAnim(gait, pl.index), Gait: gait}, 0
+		}
+		return nil
+	}
 	s, err := p.sheet(sp.asset, gaitAnim(gait, pl.index))
 	if err != nil {
 		return err
@@ -106,6 +116,5 @@ func (pl *Player) update(p *Paper, dt, elapsed float64, auto bool, pads []ebiten
 		sp.sheet, sp.frame = s, 0
 		sp.scale = p.scaleFor(sp.asset, sp.height, s)
 	}
-	sp.playing = pl.moving
 	return nil
 }

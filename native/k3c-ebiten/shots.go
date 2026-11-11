@@ -20,7 +20,7 @@ var shotList = []struct {
 	{"02-kamera-2200", [2]float64{2200, 3000}},
 }
 
-const shotWait = 20 // Frames Ruhe nach dem Einstellen (Fluss läuft weiter, Sheets sind geladen)
+const shotWait = 120 // Frames Ruhe nach dem Einstellen (Fluss läuft weiter, Sheets sind geladen, Umhang der Rigs eingeschwungen)
 
 type Shots struct {
 	dir  string

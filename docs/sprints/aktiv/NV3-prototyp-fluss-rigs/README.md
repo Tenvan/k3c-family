@@ -67,7 +67,7 @@ keine
 |---|---|---|---|---|
 | NV3.1 | `NV3.1-fluss-fester-hintergrund.md` | Umsetzung | autonom | fertig |
 | NV3.2 | `NV3.2-rig-export-alle-figuren.md` | Umsetzung | autonom | fertig |
-| NV3.3 | `NV3.3-rigs-im-level.md` | Umsetzung | autonom | in Arbeit |
+| NV3.3 | `NV3.3-rigs-im-level.md` | Umsetzung | autonom | fertig |
 | NV3.4 | `NV3.4-messung-review.md` | Review | autonom | offen |
 | NV3.5 | `NV3.5-sichtpruefung-pc.md` | Review | Mensch | offen |
 

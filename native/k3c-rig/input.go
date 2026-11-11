@@ -9,6 +9,8 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+
+	"k3c/native/k3c-rig/paint"
 )
 
 const (
@@ -66,78 +68,81 @@ func (d *Demo) input(g *Game) bool {
 	if inpututil.IsKeyJustPressed(ebiten.KeyP) {
 		d.keyboard = (d.keyboard + 1) % len(d.actors)
 	}
-	d.keys(d.actors[d.keyboard])
+	d.keys(g, d.actors[d.keyboard])
 	for i, a := range d.actors {
 		if i < len(d.pads) {
-			d.pad(a, d.pads[i])
+			d.pad(g, a, d.pads[i])
 		}
 	}
 	return false
 }
 
-func (d *Demo) keys(a *Actor) {
+func (d *Demo) keys(g *Game, a *paint.Actor) {
 	if inpututil.IsKeyJustPressed(ebiten.KeyTab) {
 		if ebiten.IsKeyPressed(ebiten.KeyShift) {
-			a.apply(actPrev)
+			apply(g, a, actPrev)
 		} else {
-			a.apply(actNext)
+			apply(g, a, actNext)
 		}
 	}
 	for key, act := range keyActions {
 		if inpututil.IsKeyJustPressed(key) {
-			a.apply(act)
+			apply(g, a, act)
 		}
 	}
 	for i, key := range digitKeys {
 		if inpututil.IsKeyJustPressed(key) && i < len(states) {
-			a.setState(i)
+			setState(a, i)
 		}
 	}
 }
 
-func (d *Demo) pad(a *Actor, id ebiten.GamepadID) {
+func (d *Demo) pad(g *Game, a *paint.Actor, id ebiten.GamepadID) {
 	if !ebiten.IsStandardGamepadLayoutAvailable(id) {
 		return
 	}
 	for button, act := range padActions {
 		if inpututil.IsStandardGamepadButtonJustPressed(id, button) {
-			a.apply(act)
+			apply(g, a, act)
 		}
 	}
 	if inpututil.IsStandardGamepadButtonJustPressed(id, ebiten.StandardGamepadButtonCenterRight) {
 		d.zoom = (d.zoom + 1) % len(zooms)
 	}
 	if x := ebiten.StandardGamepadAxisValue(id, ebiten.StandardGamepadAxisLeftStickHorizontal); math.Abs(x) > deadzone {
-		a.left = x < 0
+		a.Left = x < 0
 	}
 }
 
 // setState wechselt den Zustand und beginnt die Animation von vorn.
-func (a *Actor) setState(i int) {
-	a.state, a.t = (i%len(states)+len(states))%len(states), 0
+func setState(a *paint.Actor, i int) {
+	a.State, a.T = states[(i%len(states)+len(states))%len(states)], 0
 }
 
+// next liefert den Eintrag nach cur in list (zyklisch).
+func next(list []string, cur string) string { return list[(indexOf(list, cur)+1)%len(list)] }
+
 // apply führt eine Eingabe aus; ein Fehler beim Bildwechsel kann nicht auftreten (alle Varianten sind geladen).
-func (a *Actor) apply(act Action) {
+func apply(g *Game, a *paint.Actor, act Action) {
 	switch act {
 	case actNext:
-		a.setState(a.state + 1)
+		setState(a, stateIndex(a.State.Name)+1)
 	case actPrev:
-		a.setState(a.state - 1)
+		setState(a, stateIndex(a.State.Name)-1)
 	case actColor:
-		a.variant = (a.variant + 1) % len(variants)
-		_ = a.refresh()
+		a.Variant = next(variants, a.Variant)
+		_ = a.Refresh()
 	case actWeapon:
-		a.weapon = (a.weapon + 1) % len(a.assets.weapons)
+		a.Weapon = next(g.assets.Weapons, a.Weapon)
 	case actArmor:
-		a.armor = (a.armor + 1) % len(a.assets.armors)
+		a.Armor = next(g.assets.Armors, a.Armor)
 	case actFaster:
-		a.tempo = math.Min(a.tempo+tempoStep, tempoMax)
+		a.Tempo = math.Min(a.Tempo+tempoStep, tempoMax)
 	case actSlower:
-		a.tempo = math.Max(a.tempo-tempoStep, tempoMin)
+		a.Tempo = math.Max(a.Tempo-tempoStep, tempoMin)
 	case actLeft:
-		a.left = true
+		a.Left = true
 	case actRight:
-		a.left = false
+		a.Left = false
 	}
 }

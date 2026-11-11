@@ -15,6 +15,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 
+	"k3c/native/k3c-rig/paint"
 	"k3c/native/k3c-rig/rig"
 )
 
@@ -58,7 +59,7 @@ type CompareReport struct {
 
 type Compare struct {
 	dir   string
-	actor *Actor
+	actor *paint.Actor
 	ticks int
 }
 
@@ -102,12 +103,8 @@ func (c *Compare) Update(g *Game, _ float64) error {
 
 // chains liefert die Umhang-Kette je Frame wie im Sheet und stellt den Zustand des Monarchen ein.
 func (c *Compare) chains(g *Game, name string, frames int) ([][]rig.Point, error) {
-	for k, st := range states {
-		if st.name == name {
-			c.actor.state = k
-		}
-	}
-	if gait := states[c.actor.state].gait; gait != "" {
+	c.actor.State = states[stateIndex(name)]
+	if gait := c.actor.State.Gait; gait != "" {
 		return rig.RideCloakFrames(g.assets.horse, g.assets.monarch, gait, frames)
 	}
 	return g.assets.monarch.FigureCloakFrames(name)
@@ -134,7 +131,7 @@ func (c *Compare) compareAnim(g *Game, name string) (AnimDiff, error) {
 			return out, err
 		}
 		off.Clear()
-		g.painter.dst, g.painter.view = off, rig.M{sx, 0, 0, sy, -sh.frame[0] * sx, -sh.frame[1] * sy}
+		g.painter.Dst, g.painter.View = off, rig.M{sx, 0, 0, sy, -sh.frame[0] * sx, -sh.frame[1] * sy}
 		c.actor.Draw(g.painter)
 		off.ReadPixels(pix)
 		d := diffFrame(sh, i, pix, sheet)
@@ -143,7 +140,7 @@ func (c *Compare) compareAnim(g *Game, name string) (AnimDiff, error) {
 		out.Frames = append(out.Frames, d.finish())
 	}
 	out.Total = out.Total.finish()
-	return out, writePNG(filepath.Join(c.dir, out.Image), sheet)
+	return out, paint.WritePNG(filepath.Join(c.dir, out.Image), sheet)
 }
 
 // diffFrame vergleicht Frame n des Sheets mit dem Rig-Bild und füllt die drei Zeilen des Differenzbilds.
