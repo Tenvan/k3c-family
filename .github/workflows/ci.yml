@@ -1,4 +1,4 @@
-# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Rust: Kern-Bibliothek bauen und von Go ohne cgo laden; Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; k3c-workbench und Windows-Starter: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf develop/main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
+# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Rust: Kern-Bibliothek bauen und von Go ohne cgo laden; Go: Tests (auch Heimnetz-Server), Lint, Cross-Build; Docker: Image amd64/arm64 mit Smoke-Test; natives Spiel: vet, Build, Tests unter Windows ohne cgo; k3c-workbench und Windows-Starter: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf develop/main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
 name: CI
 
 on:
@@ -135,6 +135,28 @@ jobs:
       - run: task rust:lint
       - run: task rust:build
       # Brücke, rng und Level: Rust gegen die Golden-Dateien (RS1.5, AC-06) auf windows amd64 und linux arm64; Linux: dlopen über purego, unter Windows ignoriert Go den Tag
+
+  # Natives Spiel (Projekt NAT, B-794): Go + Ebitengine, eigenes Modul native/k3c-game. Nur Windows ohne cgo (unter Linux
+  # bräuchte Ebitengine cgo und X11); es laufen nur Tests ohne Fenster und GPU (-short).
+  k3c-game:
+    if: github.event_name != 'pull_request'
+    name: Natives Spiel · vet · Build · Tests (Windows)
+    runs-on: windows-latest
+    timeout-minutes: 15
+    env:
+      CGO_ENABLED: "0"
+    defaults:
+      run:
+        working-directory: native/k3c-game
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: native/k3c-game/go.mod
+          cache-dependency-path: native/k3c-game/go.sum
+      - run: go vet ./...
+      - run: go build ./...
+      - run: go test -short ./...
 
   docker:
     if: github.event_name != 'pull_request'

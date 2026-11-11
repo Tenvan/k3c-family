@@ -37,7 +37,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| NG1 | CLI, INF | NAT | Natives Spiel: Fundament mit Modul, Vertrag, Simulation im Prozess und Spielschleife | – | bereit | `geplant/NG1-native-fundament/` |
 | NG2 | CLI | NAT | Natives Spiel: Welt, Kamera, Schichten, Fluss und Licht | – | bereit | `geplant/NG2-native-welt-kamera/` |
 | NG3 | CLI | NAT | Natives Spiel: Figuren als Rig, Bein-Bänder und Gegnerzahl | – | bereit | `geplant/NG3-native-figuren/` |
 | NG4 | CLI | NAT | Natives Spiel: Gebäude, Baustellen, Natur und Objekte | – | bereit | `geplant/NG4-native-bauten-natur/` |
@@ -319,3 +318,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | NV1 | Bevy-Prototyp: Papier-Sheets, zwei Gamepads, Messung | `erledigt/NV1-bevy-prototyp/` |
 | NV2 | Rig-Prototyp: Monarch aus Teilen in Ebitengine | `erledigt/NV2-rig-prototyp-monarch/` |
 | NV3 | Prototyp-Ausbau: Fluss, fester Hintergrund, alle Figuren als Rig | `erledigt/NV3-prototyp-fluss-rigs/` |
+| NG1 | Natives Spiel: Fundament mit Modul, Vertrag, Simulation im Prozess und Spielschleife | `erledigt/NG1-native-fundament/` |

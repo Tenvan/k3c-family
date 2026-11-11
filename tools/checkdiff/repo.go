@@ -62,6 +62,12 @@ func loadRepo() (repo, error) {
 	if err != nil {
 		return repo{}, err
 	}
+	// Auch neue, noch nicht eingecheckte Module (sonst zählt ihr Code zum Wurzel-Modul).
+	fresh, err := gitLines("ls-files", "--others", "--exclude-standard", "*go.mod")
+	if err != nil {
+		return repo{}, err
+	}
+	mods = append(mods, fresh...)
 	r := repo{}
 	for _, m := range mods {
 		r.modules = append(r.modules, path.Dir(m))
