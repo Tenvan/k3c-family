@@ -164,6 +164,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | offen | – | K3C läuft nativ in Rust und Bevy auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
 | [B-776](B-776-bevy-prototyp-papier-sheets-zwei-pads.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Bevy-Prototyp zeigt ein Level mit echten Papier-Sheets, zwei Gamepads steuern je einen Monarchen, FPS und Grafikspeicher sind gemessen |
 | [B-777](B-777-ebitengine-prototyp-vergleich.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Ebitengine-Prototyp zeigt dasselbe Level wie der Bevy-Prototyp und liefert vergleichbare Messwerte |
+| [B-778](B-778-monarch-gliederpuppe-live-kombinierbar.md) | PAP | Idee | hoch | offen | – | Der Monarch wird im Spiel live als Gliederpuppe gezeichnet und ist mit Reittier, Rüstung und Waffe frei kombinierbar |
 
 ## Archiv
 

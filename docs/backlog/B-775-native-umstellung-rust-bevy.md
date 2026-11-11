@@ -18,7 +18,7 @@ K3C läuft als Phaser-4-Browser-Client (`src/`) mit Go-Server (`engine/`, Docker
 
 ## Ziel
 
-Ein natives Windows-Spiel in Rust + Bevy mit den heutigen Regeln, der Papier-Grafik und 1–2 lokalen Spielern; Browser, Netz und Server fallen für das Spielen weg.
+Ein natives Windows-Spiel in **Go + Ebitengine** mit den heutigen Regeln, der Papier-Grafik und 1–2 lokalen Spielern; Browser, Netz und Server fallen für das Spielen weg. (Erster Ansatz Rust + Bevy, siehe Titel; 🧑 hat sich am 2026-11-11 für Go ausgesprochen.)
 
 ## Beteiligte und Zielgruppen
 
@@ -26,19 +26,20 @@ Ein natives Windows-Spiel in Rust + Bevy mit den heutigen Regeln, der Papier-Gra
 
 ## Anforderungen
 
-- Gleiche Regeln wie heute: Die Rust-Simulation liefert für Seed und Eingaben dieselben Ergebnisse wie die Go-Simulation (Goldens).
-- Deterministisch, eigener RNG wie `engine/rng`, kein Zufall aus der Plattform.
+- Gleiche Regeln wie heute: Die Go-Simulation (`engine/sim`, `engine/level`) läuft unverändert im selben Programm, ohne Netz und ohne JSON-Roundtrip; `engine/room` und `engine/store` soweit nötig (Takt, Spielstände).
+- Deterministisch wie bisher (`engine/rng`), Goldens bleiben grün.
 - 1–2 Spieler lokal, je ein Gamepad, Split-Screen.
-- Grafik aus den bestehenden Papier-Sheets (`public/grafik`, `data/paper.json`), Texturen je Level geladen statt alle.
+- Grafik aus den bestehenden Papier-Sheets (`public/grafik`, `data/paper.json`), Texturen je Level geladen statt alle; Monarch als Gliederpuppe (B-778).
+- Effekte des heutigen Clients (Parallaxe, Fluss mit Spiegelung, Lichtkarte, Partikel, Tweens) nachgebaut.
 - Flüssig auf dem Mini-PC (Messwerte aus NV1 als Maßstab).
 
 ## Nicht-Ziele
 
-Online-Spiel, Browser, Xbox; Regeländerungen während der Portierung; Rust-Server (Entscheidung 007).
+Online-Spiel, Browser, Xbox; Regeländerungen während der Umstellung; Rust-Portierung und Rust-Server (Entscheidungen 006/007).
 
 ## Regeln und Einschränkungen
 
-Entscheidung 005 (Papier-Grafik aus Specs) gilt weiter. Entscheidung 001 (Engine auf Go-Server) und 006/007 (Rust-Kern/-Server) müssten bei Freigabe angepasst werden – neue Entscheidung 008. Bevy-Version gepinnt (`=x.y.z`, `Cargo.lock` eingecheckt).
+Entscheidung 005 (Papier-Grafik aus Specs) gilt weiter. Entscheidung 001 (Engine auf Go-Server) wird angepasst: Engine bleibt Go, der Server entfällt für das Spielen – neue Entscheidung 008 bei Freigabe. Ebitengine-Version in `go.mod` festgelegt, eigenes Go-Modul oder Einbindung per `replace` (bei der Planung klären). Unter Windows zeichnet Ebitengine über DirectX 11, nicht Vulkan.
 
 ## Beispiele
 
@@ -50,15 +51,15 @@ Ein Gamepad fehlt → Einzelspieler oder Tastatur. Grafik fehlt (kein `gen:paper
 
 ## Akzeptanzkriterien
 
-- **AC-01** NV1 (B-776) ist erledigt und 🧑 hat auf Grundlage der Messwerte über den Weg entschieden (Entscheidung 008).
-- **AC-02** Die Rust-Simulation besteht alle Goldens aus `testdata/golden/` gleich wie Go.
+- **AC-01** NV1 (B-776, B-777) ist erledigt, die Mini-PC-Werte liegen vor und 🧑 hat den Weg bestätigt (Entscheidung 008).
+- **AC-02** Das native Spiel nutzt `engine/sim` unverändert; alle bestehenden Go-Tests und Goldens bleiben grün.
 - **AC-03** Das native Spiel läuft auf dem Mini-PC mit 2 Gamepads auf dem heutigen Funktionsstand (Abnahme 🧑).
 
 ## Offene Fragen
 
-- Weg endgültig Rust + Bevy oder Go + Ebitengine? Entscheidet 🧑 nach NV1.
-- Ruht RST (Rust-Server) damit? Entscheidet 🧑.
+- Ruht RST (Rust-Engine/-Server) damit? Entscheidet 🧑.
+- Bleibt der Go-Server samt Browser-Client als zweiter Weg erhalten oder wird er nach der Umstellung entfernt? Entscheidet 🧑.
 
 ## Notizen
 
-Daten und Schätzung: Projekt NAT › Notizen. Vergleich der Kandidaten (2026-11-10): Go + Ebitengine (Go-Sim 1:1, ca. 2–4 Wochen), Bevy (Neubau Sim, ca. 4–6 Wochen), Godot + gdext, MonoGame, Raylib.
+Daten, Prototyp-Vergleich und Schätzung: Projekt NAT › Notizen. Schätzung Go + Ebitengine ca. 2–4 Wochen, dazu B-778 ca. 1 Woche.
