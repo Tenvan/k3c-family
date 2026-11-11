@@ -17,6 +17,17 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | NV1 | Bevy-Prototyp: Papier-Sheets, zwei Gamepads, Messung | erledigt |
 | NV2 | Rig-Prototyp: Monarch aus Teilen in Ebitengine | erledigt |
 | NV3 | Prototyp-Ausbau: Fluss, fester Hintergrund, alle Figuren als Rig | aktiv |
+| NG1 | Natives Spiel: Fundament mit Modul, Vertrag, Simulation im Prozess und Spielschleife | geplant |
+| NG2 | Natives Spiel: Welt, Kamera, Schichten, Fluss und Licht | geplant |
+| NG3 | Natives Spiel: Figuren als Rig, Bein-Bänder und Gegnerzahl | geplant |
+| NG4 | Natives Spiel: Gebäude, Baustellen, Natur und Objekte | geplant |
+| NG5 | Natives Spiel: Eingabe mit Gamepads und Tastatur | geplant |
+| NG6 | Natives Spiel: HUD, Hinweise und Effekte | geplant |
+| NG7 | Natives Spiel: Menüs, Lobby, Spielstände, Optionen und Pause | geplant |
+| NG8 | Natives Spiel: Klänge und Musik | geplant |
+| NG9 | Natives Spiel: Zusammenführung, Messung und Abnahme | geplant |
+| NG10 | Rust und Bevy entfernen | geplant |
+| NG11 | Natives Spiel: Fluss mit Shader | geplant |
 
 ## Nicht-Ziele
 

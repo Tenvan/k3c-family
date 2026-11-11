@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** NG3
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
 - **Spec:** Entwurf

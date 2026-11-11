@@ -4,8 +4,8 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** NG10
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
 - **Spec:** Entwurf
@@ -37,7 +37,15 @@ Entwickler (🧑, Claude): kein Rust-Toolchain mehr nötig, kürzere Prüfläufe
 
 ## Regeln und Einschränkungen
 
-Erst suchen, dann löschen (Befehl und Ergebnis ins Ergebnis der Session). Die Messwerte des Bevy-Prototyps bleiben in B-776 und B-777 erhalten. Tickets verwirft nur 🧑.
+Erst suchen, dann löschen (Befehl und Ergebnis ins Ergebnis der Session). Die Messwerte des Bevy-Prototyps bleiben in B-776 und B-777 erhalten. Tickets verwirft nur 🧑. `engine/core` lädt die Rust-Bibliothek über `purego` (`engine/core/core.go`, `lib_linux.go`) und wird von `engine/sim` importiert: Nur die Rust-Brücke fällt, die Go-Rechnung bleibt, die Goldens bleiben grün.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/**`, `native/k3c-proto/**`, `engine/core/**`, `engine/sim/coins_spike_test.go`, `engine/level/rust_test.go`, `go.mod`, `go.sum`, `Taskfile.yml`, `native/Taskfile.yml`, `native/measure.ps1`, `.github/workflows/**`, `Dockerfile`, `.gitignore`, `requirements.md`, `CLAUDE.md`, `docs/arbeitsweise.md`, `docs/decisions/006-rust-engine.md`, `docs/decisions/007-rust-server.md`, `**/codemap.md`
+- **Abhängig von:** NV3
+- **Braucht 🧑:** Freigabe, Entscheidung
+- **Größe:** M
+- **Sperre:** taskfile, deps
 
 ## Beispiele
 
@@ -56,6 +64,8 @@ Ein Go-Test hängt noch an der Rust-Bibliothek → Test löschen, wenn er nur de
 ## Offene Fragen
 
 - Die übrigen Tickets aus RST betreffen Go und die Workbench, nicht Rust (B-726, B-731, B-743, B-744, B-746, B-747, B-753, B-754). Default: nach WZG bzw. LST umhängen; B-731, B-753 und B-754 prüfen, ob sie mit dem Monolithen ohne Server entfallen.
+- Warten auf die Messung am Mini-PC (Notizen)? Der Mini-PC kommt erst, wenn das Spiel am PC fertig ist (B-786). Vorschlag: nicht warten, der Vergleich mit Bevy steht in B-776 und B-777; Sprint NG10 in Welle 2. Entscheidet 🧑.
+- Fällt `purego` aus dem Wurzel-`go.mod`, wenn die Rust-Brücke geht (vermutet)? Klärt die Umsetzung; deshalb Sperre `deps`.
 
 ## Notizen
 

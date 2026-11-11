@@ -4,17 +4,17 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** NG11
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
 - **Spec:** Entwurf
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** –
 
 ## Ausgangslage
 
-Der Prototyp nach B-789 zeichnet den Fluss als durchlaufende Kacheln. Ebitengine kennt eigene Shader (Kage); im Projekt gibt es noch keinen.
+Der Prototyp nach B-789 zeichnet den Fluss als durchlaufende Kacheln; das native Spiel übernimmt das in `native/k3c-game/world` (B-795, NG2). Ebitengine kennt eigene Shader (Kage); im Projekt gibt es noch keinen.
 
 ## Ziel
 
@@ -26,7 +26,7 @@ Ein Prototyp zeigt an Bild und Messwerten, ob Shader für den Fluss (Wellen, Spi
 
 ## Anforderungen
 
-- Fluss mit Shader statt reiner Kachel-Verschiebung, umschaltbar gegen die Kachel-Fassung.
+- Fluss mit Shader statt reiner Kachel-Verschiebung im nativen Spiel (`native/k3c-game/world/water/`), umschaltbar gegen die Kachel-Fassung.
 - Messung Bildrate und Rechenzeit, auch mit integrierter Grafik.
 
 ## Nicht-Ziele
@@ -35,13 +35,13 @@ Shader im Browser-Client; neue Spiel-Logik.
 
 ## Regeln und Einschränkungen
 
-Entscheidung 008. Draw-Call-Batching darf nicht brechen (ein Shader je Schicht, nicht je Kachel).
+Entscheidung 008. Draw-Call-Batching darf nicht brechen (ein Shader je Schicht, nicht je Kachel). Gebaut wird im nativen Spiel statt im Prototyp `native/k3c-ebiten` (Revision 2, Planung 2026-11-11), damit die Arbeit bleibt; Shader-Quelle unter `world/water/`, Umschalter am Fluss in `world/`.
 
 Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen):
 
-- **Bereich:** `native/k3c-ebiten/**`
-- **Abhängig von:** B-789
-- **Braucht 🧑:** Freigabe
+- **Bereich:** `native/k3c-game/world/**`
+- **Abhängig von:** NG2
+- **Braucht 🧑:** Freigabe, Abnahme
 - **Größe:** M
 - **Sperre:** –
 
@@ -61,7 +61,8 @@ Shader übersetzt auf dem Zielgerät nicht → Kachel-Fassung läuft weiter, Mel
 
 ## Offene Fragen
 
-Welche weiteren Effekte sollen Shader prüfen (Papierstruktur, Licht bei Nacht, Fackeln)? Entscheidet 🧑.
+- Welche weiteren Effekte sollen Shader prüfen (Papierstruktur, Licht bei Nacht, Fackeln)? Vorschlag: nur Fluss in diesem Ticket, weitere Effekte als eigene Tickets nach der Entscheidung. Entscheidet 🧑.
+- Im nativen Spiel statt im Prototyp bauen (Revision 2)? Vorschlag: ja. Entscheidet 🧑.
 
 ## Notizen
 
