@@ -1,6 +1,6 @@
 # NV2.3 · Bildvergleich gegen das Sheet und Messung am Entwicklungs-PC
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -41,8 +41,8 @@ Optik nachbessern über die Defaults hinaus (Befunde als Notiz für 🧑); Messu
 
 ## Fertig, wenn
 
-- [ ] AC-04: Kennzahlen und Differenzbilder für `idle`, `lauf` und `trab` im Bericht, Schatten und Schärfe bewertet.
-- [ ] AC-05: Messwerte Entwicklungs-PC mit 2, 50 und 200 Figuren in B-778 › Notizen.
+- [x] AC-04: Kennzahlen und Differenzbilder für `idle`, `lauf` und `trab` im Bericht, Schatten und Schärfe bewertet.
+- [x] AC-05: Messwerte Entwicklungs-PC mit 2, 50 und 200 Figuren in B-778 › Notizen.
 
 ## Prüfen
 
@@ -58,5 +58,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-04 geprüft:** `task native:rig:vergleich` schreibt `reports/native-rig-vergleich/vergleich.json` und je Animation ein Differenzbild (Sheet, Rig, Differenz ×4). Mittlere Abweichung 3,05 bis 3,51 von 255 je Kanal, 4,1 bis 5,0 % der belegten Pixel über 32, kein fehlendes Pixel. Bewertung von Schatten und Schärfe: B-778 › Notizen.
+- **AC-05 geprüft:** `task native:rig:measure` (`native/measure.ps1 -Engine rig`), Bericht `reports/native-rig-WS1285-RS-20261111-124137.json`, Werte in B-778 › Notizen. Rig 1774 / 469 / 126 FPS, Sheet 1756 / 1772 / 981 FPS bei 2 / 50 / 200 Reitern. Der Entwicklungs-PC dieser Session ist ein Notebook mit integrierter Intel Arc, nicht der Rechner der NV1-Messung.
+- **Befund behoben:** Zügel mit Ebitengines `AntiAlias` brachen das Bündeln (50 Reiter 31 FPS); eigene Kantenglättung, danach 469 FPS.
+- **Abweichung:** Der Umhang wird nicht ausgeblendet, sondern wie im Sheet eingeschwungen und mitverglichen. Paket für den Mini-PC: `task native:rig:paket`. Neue Tickets: keine.

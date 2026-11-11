@@ -4,6 +4,8 @@
 # reports/native-proto-<rechner>-<zeit>.json (je Lauf ein Feld `engine`). Läuft mit Windows PowerShell 5.1 und pwsh 7.
 # Aufruf im Repo: `task native:measure`, `native:measure:ebiten`, `native:measure:beide`; im Paket auf dem Mini-PC:
 # `messen.cmd` (gleicher Ordner wie die EXE). Ohne -Engine werden alle vorhandenen EXE gemessen.
+# Rig-Prototyp (B-778/AC-05, `task native:rig:measure`, -Engine rig): k3c-rig mit 2, 50 und 200 Reitern, je als Rig und
+# aus dem Sheet; Bericht nach reports/native-rig-<rechner>-<zeit>.json (Felder `art` und `figuren` je Lauf).
 param(
     [string]$Exe = '',
     [string]$Root = '',
@@ -11,9 +13,11 @@ param(
     [int]$Warmup = 5,
     [string]$Backend = 'vulkan',
     [string[]]$Modes = @('level', 'alle'),
-    [ValidateSet('', 'bevy', 'ebiten', 'beide')]
+    [ValidateSet('', 'bevy', 'ebiten', 'beide', 'rig')]
     [string]$Engine = '',
-    [string[]]$EbitenArgs = @()
+    [string[]]$EbitenArgs = @(),
+    [int[]]$Figuren = @(2, 50, 200),
+    [string[]]$Arten = @('rig', 'sheet')
 )
 $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = [Text.Encoding]::UTF8
@@ -28,7 +32,9 @@ function Find-Exe($name, $repoPath) {
 $exes = [ordered]@{
     bevy   = Find-Exe 'k3c-proto' 'k3c-proto\target\release\k3c-proto.exe'
     ebiten = Find-Exe 'k3c-ebiten' 'k3c-ebiten\bin\k3c-ebiten.exe'
+    rig    = Find-Exe 'k3c-rig' 'k3c-rig\bin\k3c-rig.exe'
 }
+$buildTask = @{ bevy = 'proto'; ebiten = 'ebiten'; rig = 'rig' }
 if ($Exe) {
     # Eigene EXE: gilt für die genannte Engine, sonst entscheidet der Dateiname
     if ($Engine -eq 'beide') { throw '-Exe und -Engine beide passen nicht zusammen' }
@@ -39,11 +45,12 @@ $engines = @(switch ($Engine) {
         'bevy' { 'bevy' }
         'ebiten' { 'ebiten' }
         'beide' { 'bevy', 'ebiten' }
+        'rig' { 'rig' }
         default { $exes.Keys | Where-Object { Test-Path $exes[$_] } }
     })
-if ($engines.Count -eq 0) { throw "Keine EXE gefunden (erst task native:proto:build oder native:ebiten:build)" }
+if ($engines.Count -eq 0) { throw "Keine EXE gefunden (erst task native:proto:build, native:ebiten:build oder native:rig:build)" }
 foreach ($e in $engines) {
-    if (-not (Test-Path $exes[$e])) { throw "EXE fehlt: $($exes[$e]) (erst task native:$(if ($e -eq 'bevy') { 'proto' } else { 'ebiten' }):build)" }
+    if (-not (Test-Path $exes[$e])) { throw "EXE fehlt: $($exes[$e]) (erst task native:$($buildTask[$e]):build)" }
 }
 if (-not $Root) {
     $Root = $here
@@ -96,18 +103,27 @@ function Watch-Process($proc, $limit) {
     $max
 }
 
+# Läufe je Engine: Lastfälle `level` und `alle` (Bevy, Ebitengine) oder Art × Figurenzahl (Rig-Prototyp)
+function Get-Jobs($eng) {
+    if ($eng -ne 'rig') { return @($Modes | ForEach-Object { @{ name = $_; args = @('--mode', $_, '--auto') } }) }
+    $jobs = @()
+    foreach ($n in $Figuren) { foreach ($art in $Arten) { $jobs += @{ name = "$art-$n"; args = @('--art', $art, '--figuren', $n) } } }
+    $jobs
+}
+
 $runs = @()
 foreach ($eng in $engines) {
-    foreach ($mode in $Modes) {
+    foreach ($job in (Get-Jobs $eng)) {
+        $mode = $job.name
         $tmp = Join-Path $reports "native-proto-$stamp-$eng-$mode.tmp.json"
-        $argList = @('--root', "`"$Root`"", '--mode', $mode, '--measure', $Seconds, '--warmup', $Warmup, '--report', "`"$tmp`"", '--novsync', '--auto')
+        $argList = @('--root', "`"$Root`"", '--measure', $Seconds, '--warmup', $Warmup, '--report', "`"$tmp`"", '--novsync') + $job.args
         # WGPU_BACKEND gilt nur für Bevy; Ebitengine wählt seine Grafik-Bibliothek selbst (Windows: DirectX 11)
         if ($eng -eq 'bevy') {
             $env:WGPU_BACKEND = $Backend
             Write-Host "🚀 Messe $eng $mode ($Seconds s nach $Warmup s Aufwärmen, Backend $Backend)"
         } else {
             Remove-Item Env:WGPU_BACKEND -ErrorAction SilentlyContinue
-            $argList += $EbitenArgs
+            if ($eng -eq 'ebiten') { $argList += $EbitenArgs }
             Write-Host "🚀 Messe $eng $mode ($Seconds s nach $Warmup s Aufwärmen)"
         }
         $proc = Start-Process -FilePath $exes[$eng] -ArgumentList $argList -PassThru
@@ -126,7 +142,8 @@ foreach ($eng in $engines) {
 }
 Remove-Item Env:WGPU_BACKEND -ErrorAction SilentlyContinue
 
-$out = Join-Path $reports "native-proto-$($env:COMPUTERNAME)-$stamp.json"
+$kind = if ($engines.Count -eq 1 -and $engines[0] -eq 'rig') { 'rig' } else { 'proto' }
+$out = Join-Path $reports "native-$kind-$($env:COMPUTERNAME)-$stamp.json"
 $json = [ordered]@{ zeit = (Get-Date -Format 'o'); rechner = (Get-Machine); laeufe = $runs } | ConvertTo-Json -Depth 6
 # UTF-8 ohne BOM (Set-Content -Encoding UTF8 schreibt in PowerShell 5.1 eine BOM, an der JSON-Leser scheitern)
 [IO.File]::WriteAllText($out, $json, (New-Object Text.UTF8Encoding $false))

@@ -44,6 +44,7 @@ docs/backlog/.ticket.lock
 /rust/target/
 /native/k3c-proto/target/
 /native/k3c-ebiten/bin/
+/native/k3c-rig/bin/
 
 # Gerenderte Papierschnitt-Grafik (B-737): Arbeitsordner und Asset-Ordner entstehen durch `task gen:paper`; eingecheckt bleiben
 # Specs, index.paper.json und golden.json je Gruppe

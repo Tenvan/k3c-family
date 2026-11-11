@@ -1,6 +1,6 @@
 # NV2.1 · Teile des Monarchen und Rig-Daten exportieren
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -46,7 +46,7 @@
 
 ## Fertig, wenn
 
-- [ ] AC-01: Export läuft für Monarch und Pferd, Rig-Dateien nennen die Plätze, zweiter Lauf erzeugt byte-gleiche Dateien, Ausgabe eingecheckt; Gesamtgröße und RGBA-Speicher der Teile stehen im Ergebnis (Vergleich: 363 MiB der Monarch-Sheets).
+- [x] AC-01: Export läuft für Monarch und Pferd, Rig-Dateien nennen die Plätze, zweiter Lauf erzeugt byte-gleiche Dateien, Ausgabe eingecheckt; Gesamtgröße und RGBA-Speicher der Teile stehen im Ergebnis (Vergleich: 363 MiB der Monarch-Sheets).
 
 ## Prüfen
 
@@ -62,5 +62,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft:** `task native:rig:export` schreibt 52 Dateien nach `native/k3c-rig/assets/` (46 PNG, `monarch/rig.json`, `pferd/rig.json`, `elemente/elemente.json`, 3 Sollwert-Dateien); `task native:rig:export:check` (zweiter Lauf, byte-genauer Vergleich) grün. Plätze: Monarch `waffe`, `ruestung`, `kopfbedeckung`, `hand`; Pferd `sattel`, `maul`. **Größe 579 KB, 1,94 MiB RGBA** (Monarch-Sheets: 363 MiB). Einchecken folgt mit dem Commit der Session.
+- **Abweichungen:** Das Band bekam `breite` je Stützpunkt (Befund aus NV2.2: mit der vollen Bildbreite faltete sich das Bein am gebeugten Knie). Der Papier-Filter gilt je Teil für das ganze Bild statt für die Hülle (sonst schneidet er Schatten kleiner Teile ab). Das Pferd trägt die Papierstruktur des Reiters (Seed `monarch`), weil das Reit-Sheet so gerendert ist. Dateinamen des Exports englisch (`docs/arbeitsweise.md` › Namen und Ablage). Zusätzlich Plätze `hand` und `maul` für die Zügel.
+- **Format:** `native/k3c-rig/RIG.md`. Platzhalter `axt` und `brustpanzer` nur in `native/k3c-rig/export/elements.ts`.
+- Geprüft von Claude (2026-11-11), keine manuelle Prüfung. Neue Tickets: keine.

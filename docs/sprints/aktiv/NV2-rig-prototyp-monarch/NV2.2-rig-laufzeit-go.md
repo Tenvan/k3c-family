@@ -1,6 +1,6 @@
 # NV2.2 · Rig-Laufzeit in Go: Pose, Umhang, Zeichnen, Reiten, Teile tauschen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -47,8 +47,8 @@ Simulation, HUD, Netz; andere Figuren; alle Reittiere und Gangarten; Änderungen
 
 ## Fertig, wenn
 
-- [ ] AC-02: `go test` vergleicht Teil-Matrizen und Stützpunkte für Monarch (`idle`, `lauf`) und Pferd (`trab`) mit den Sollwerten.
-- [ ] AC-03: Screenshots je Zustand (idle, lauf, Keyframe-Animation, Schritt, Trab, Galopp, getauschte und abgenommene Waffe und Rüstung) liegen im Ergebnis; `go vet` und `gofmt` sauber.
+- [x] AC-02: `go test` vergleicht Teil-Matrizen und Stützpunkte für Monarch (`idle`, `lauf`) und Pferd (`trab`) mit den Sollwerten.
+- [x] AC-03: Screenshots je Zustand (idle, lauf, Keyframe-Animation, Schritt, Trab, Galopp, getauschte und abgenommene Waffe und Rüstung) liegen im Ergebnis; `go vet` und `gofmt` sauber.
 
 ## Prüfen
 
@@ -64,5 +64,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-02 geprüft:** `task native:rig:test` grün (`rig/expected_test.go`): Winkel, Teil-Matrizen, Umhang-Kette, Bein-Stützpunkte und Zügel-Enden je Frame gegen `assets/soll/` (Toleranz 0,01) für Monarch `idle`, `lauf` und Reiter mit Pferd `trab`. Gegenprobe: eine geänderte Konstante (Schenkelwinkel, Hufhub) macht den Test rot.
+- **AC-03 umgesetzt, geprüft von Claude an Screenshots:** `task native:rig:shots` schreibt 14 Bilder nach `reports/native-rig-shots/` (idle, lauf, give, hit, death, respawn, reiten-idle, schritt, trab, galopp, dazu Axt, Brustpanzer, leerer Waffenplatz, gespiegelt). Fenster: `task native:rig`, zwei Monarchen, je Zeile links Sheet und rechts Rig. `gofmt` und `go vet` sauber. Die Sichtprüfung im laufenden Fenster (Umhang in Bewegung, Gamepads) bleibt bei 🧑 (NV2.4).
+- **Befunde:** (1) Band faltete sich am stark gebeugten Knie → Kanten je Stützpunkt an der Papierkante (`breite`), Test `TestLegStripNeverFolds`. (2) Zügel zu dunkel (Farbe doppelt vormultipliziert) → behoben. (3) Offen für 🧑: Der Umhang wird bei stark geknickter Kette kantig (death am Boden).
+- **Abweichungen:** Tempo und Blickrichtung statt freier Bewegung im Fenster (der Umhang folgt Fahrtwind × Tempo); Ebitengine 2.10.6 wie `native/k3c-ebiten`, keine neue Abhängigkeit. Neue Tickets: keine.
