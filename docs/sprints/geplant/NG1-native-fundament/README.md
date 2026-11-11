@@ -7,8 +7,8 @@
 - **Tickets:** B-792, B-793, B-794
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** 2026-11-11 🧑 Chat (Ralf-Queue natives Spiel)
+- **Revision:** 2
+- **Freigabe:** 2026-11-11 🧑 Chat (Ralf-Queue natives Spiel; Revision 2: AC-11 Aufnahme-Modus)
 
 ## Ausgangslage
 
@@ -61,6 +61,7 @@ Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität
 - **AC-08** `check:diff` prüft das Modul (`B-794/AC-01`).
 - **AC-09** CI-Schritt unter Windows (`B-794/AC-02`).
 - **AC-10** Die Begriffe „Natives Spiel“, „Frame“ (nativ), „Zelle“ und „Zeichner“ stehen im Glossar (letzter Commit des Sprints).
+- **AC-11** Aufnahme-Modus mit gesteuerter Szene und Bildfolge samt Streifen-PNG, gleiche Schalter ergeben gleiche Bilder (`B-792/AC-05`).
 
 ## Offene Fragen
 
