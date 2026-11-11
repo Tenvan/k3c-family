@@ -15,7 +15,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | Sprint | Thema | Status |
 |---|---|---|
 | NV1 | Bevy-Prototyp: Papier-Sheets, zwei Gamepads, Messung | aktiv |
-| NV2 | Rig-Prototyp: Monarch aus Teilen in Ebitengine | geplant |
+| NV2 | Rig-Prototyp: Monarch aus Teilen in Ebitengine | aktiv |
 
 ## Nicht-Ziele
 

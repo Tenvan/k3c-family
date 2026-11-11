@@ -1,11 +1,11 @@
 # NV2 · CLI · Rig-Prototyp: Monarch aus Teilen in Ebitengine
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-778
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** cfd95463
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** 2026-11-11 🧑 Chat („Danach NV2 freigegeben“)
@@ -59,9 +59,9 @@ B-778 › Offene Fragen (Schatten, Schärfe, Beine des Pferds, Farbvarianten, Pl
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NV2.1 | `NV2.1-teile-export-rig-daten.md` | Umsetzung | autonom | offen |
-| NV2.2 | `NV2.2-rig-laufzeit-go.md` | Umsetzung | autonom | offen |
-| NV2.3 | `NV2.3-bildvergleich-messung.md` | Umsetzung | autonom | offen |
+| NV2.1 | `NV2.1-teile-export-rig-daten.md` | Umsetzung | autonom | fertig |
+| NV2.2 | `NV2.2-rig-laufzeit-go.md` | Umsetzung | autonom | fertig |
+| NV2.3 | `NV2.3-bildvergleich-messung.md` | Umsetzung | autonom | fertig |
 | NV2.4 | `NV2.4-sichtpruefung-mini-pc.md` | Review | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

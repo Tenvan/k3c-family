@@ -2,6 +2,8 @@
 # Bevy: eigenes Cargo-Projekt unter native/k3c-proto, exakt gepinnt, Bau nur mit --locked. Ebitengine: eigenes Go-Modul
 # unter native/k3c-ebiten (nicht Teil des Moduls `k3c`), Version in go.mod festgelegt, ohne cgo.
 # Grafik kommt aus public/grafik (vorher `task gen:paper`).
+# Rig-Prototyp (Sprint NV2, B-778): eigenes Go-Modul unter native/k3c-rig; seine Teil-Bilder und Rig-Dateien sind eingecheckt
+# (native/k3c-rig/assets, `rig:export` schreibt sie neu), Bauen und Starten braucht keinen Gen-Lauf.
 version: '3'
 
 vars:
@@ -11,6 +13,10 @@ vars:
   EBITEN_EXE: '{{.ROOT_DIR}}/native/k3c-ebiten/bin/k3c-ebiten.exe'
   MEASURE: 'powershell -NoProfile -ExecutionPolicy Bypass -File "{{.ROOT_DIR}}/native/measure.ps1"'
   PAKET: '{{.ROOT_DIR}}/.work/native-proto'
+  # Rig-Prototyp (Sprint NV2, B-778): eigenes Go-Modul unter native/k3c-rig, Teile und Rig-Dateien eingecheckt in assets/
+  RIG: '{{.ROOT_DIR}}/native/k3c-rig'
+  RIG_EXE: '{{.ROOT_DIR}}/native/k3c-rig/bin/k3c-rig.exe'
+  RIG_PAKET: '{{.ROOT_DIR}}/.work/native-rig'
 
 tasks:
   proto:build:
@@ -78,3 +84,77 @@ tasks:
       - mkdir -p "{{.PAKET}}/public"
       - cp "{{.EXE}}" "{{.EBITEN_EXE}}" "{{.ROOT_DIR}}/native/measure.ps1" "{{.ROOT_DIR}}/native/messen.cmd" "{{.PAKET}}/"
       - cp -r "{{.ROOT_DIR}}/public/grafik" "{{.PAKET}}/public/grafik"
+
+  rig:export:
+    desc: "Rig-Prototyp: Teil-PNGs, Rig-Dateien, Elemente und Sollwerte nach native/k3c-rig/assets/ schreiben (eingecheckt; liest Specs und Stil nur)"
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - bun native/k3c-rig/export/export.ts
+
+  rig:export:check:
+    desc: "Rig-Prototyp: Export wiederholen und byte-genau mit native/k3c-rig/assets/ vergleichen (schreibt nichts)"
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - bun native/k3c-rig/export/export.ts --pruefen
+
+  rig:test:
+    desc: "Rig-Prototyp prüfen: gofmt, go vet, go test (Rig-Rechnung gegen die Sollwerte aus tools/paper)"
+    dir: '{{.RIG}}'
+    deps: [':tmp']
+    env:
+      CGO_ENABLED: '0'
+    cmds:
+      - 'test -z "$(gofmt -l .)" || { echo "❌ gofmt: $(gofmt -l .)"; exit 1; }'
+      - go vet ./...
+      - go test ./...
+
+  rig:build:
+    desc: "Rig-Prototyp bauen (Go, ohne cgo) nach native/k3c-rig/bin/"
+    dir: '{{.RIG}}'
+    deps: [':tmp']
+    env:
+      CGO_ENABLED: '0'
+    sources:
+      - '*.go'
+      - rig/*.go
+      - go.mod
+      - go.sum
+    generates:
+      - bin/k3c-rig.exe
+    cmds:
+      - go build -o bin/k3c-rig.exe .
+
+  rig:
+    desc: "Rig-Prototyp starten: links Sheet, rechts Rig-Teile, zwei Monarchen (Tastatur oder je ein Gamepad; Tasten stehen im Fenster)"
+    deps: [rig:build]
+    cmds:
+      - '"{{.RIG_EXE}}" --root "{{.ROOT_DIR}}"'
+
+  rig:shots:
+    desc: "Rig-Prototyp: Screenshots aller Zustände nach reports/native-rig-shots/"
+    deps: [rig:build]
+    cmds:
+      - '"{{.RIG_EXE}}" --root "{{.ROOT_DIR}}" --shots "{{.ROOT_DIR}}/reports/native-rig-shots"'
+
+  rig:vergleich:
+    desc: "Rig-Prototyp: Bildvergleich Rig gegen Sheet (idle, lauf, trab) nach reports/native-rig-vergleich/ (Kennzahlen und Differenzbilder; braucht task gen:paper)"
+    deps: [rig:build]
+    cmds:
+      - mkdir -p "{{.ROOT_DIR}}/reports/native-rig-vergleich"
+      - '"{{.RIG_EXE}}" --root "{{.ROOT_DIR}}" --vergleich "{{.ROOT_DIR}}/reports/native-rig-vergleich"'
+
+  rig:measure:
+    desc: "Rig-Prototyp messen: 2, 50 und 200 Reiter als Rig und aus dem Sheet (FPS, GPU-Speicher, RAM), Bericht nach reports/native-rig-*.json"
+    deps: [rig:build]
+    cmds:
+      - '{{.MEASURE}} -Engine rig'
+
+  rig:paket:
+    desc: "Paket für den Mini-PC nach .work/native-rig/ (EXE, assets, Messskript, Sheets des Monarchen); dort k3c-rig.exe oder messen.cmd starten"
+    deps: [rig:build]
+    cmds:
+      - rm -rf "{{.RIG_PAKET}}"
+      - mkdir -p "{{.RIG_PAKET}}/public/grafik/figuren"
+      - cp "{{.RIG_EXE}}" "{{.ROOT_DIR}}/native/measure.ps1" "{{.ROOT_DIR}}/native/messen.cmd" "{{.RIG_PAKET}}/"
+      - cp -r "{{.RIG}}/assets" "{{.RIG_PAKET}}/assets"
+      - cp -r "{{.ROOT_DIR}}/public/grafik/figuren/monarch" "{{.RIG_PAKET}}/public/grafik/figuren/monarch"

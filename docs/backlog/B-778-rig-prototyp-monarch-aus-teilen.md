@@ -81,3 +81,34 @@ Teil-PNG oder Rig-Datei fehlt (Export nicht gelaufen) → Abbruch mit klarer Mel
 ## Notizen
 
 Angelegt 2026-11-11 nach Ralfs Entscheidung (008). Analyse dazu: 12 Teile (oberarm-h, unterarm-h, oberschenkel-h, unterschenkel-h, schwert, oberschenkel-v, unterschenkel-v, rumpf, kopf, krone, oberarm-v, unterarm-v), Umhang 8 Segmente, zu portieren etwa 500 Zeilen TypeScript (Schätzung). Verwandt: B-752 (Ebenen aus Sheets).
+
+### Ergebnis NV2.1 bis NV2.3 (2026-11-11, Claude)
+
+- **Speicher:** Alle Teile von Monarch (4 Farben), Pferd und 3 Elementen: 46 PNG, 579 KB, **1,94 MiB RGBA** (Monarch-Sheets: 363 MiB). Format: `native/k3c-rig/RIG.md`.
+- **Rechnung:** Go liefert dieselben Matrizen und Stützpunkte wie `tools/paper` (Toleranz 0,01; `task native:rig:test`).
+- **Bildvergleich** (`task native:rig:vergleich`, Bericht und Differenzbilder unter `reports/native-rig-vergleich/`), je Kanal 0..255 über die belegten Pixel, Umhang wie im Sheet eingeschwungen und mitverglichen:
+
+| Animation | mittlere Abweichung | Pixel über 8 | Pixel über 32 | größte Abweichung |
+|---|---|---|---|---|
+| idle | 3,21 | 27,5 % | 4,1 % | 170 |
+| lauf | 3,51 | 28,3 % | 5,0 % | 150 |
+| trab (Reiter mit Pferd) | 3,05 | 24,8 % | 4,4 % | 231 |
+
+  Kein Pixel fehlt ganz (nur im Sheet oder nur im Rig: 0). Die Abweichungen liegen fast nur an den Kanten (Teile werden von doppelter Dichte heruntergefiltert, das Sheet ist direkt gerastert) und im Papierkorn.
+- **Schatten (Einschätzung Claude, Abnahme 🧑):** In das Teil gebacken reicht; im Differenzbild fällt er nicht stärker auf als die Kanten. Die zweite Variante (Schatten-Textur mit festem Versatz) ist nach diesen Zahlen nicht nötig.
+- **Schärfe:** Doppelte Dichte mit linearem Filter ist bei Zoom 2 sichtbar schärfer als das hochskalierte Sheet, bei 1:1 gleichwertig.
+- **Befunde:** Das Rig schneidet nichts ab, das Sheet schon (Stiefel in `lauf`, Krone in `death` am Rahmenrand). Der Umhang wird bei stark geknickter Kette kantig (`death` am Boden). Bein-Band brauchte die Papierkante je Stützpunkt, sonst faltet es sich am Knie.
+- **Messung Entwicklungs-PC** (`task native:rig:measure`, Bericht `reports/native-rig-WS1285-RS-20261111-124137.json`): Lenovo-Notebook, Core Ultra 7 165H, **Intel Arc (integriert)**, 1920×1080, DirectX 11, ohne VSync, 20 s nach 5 s Aufwärmen, Reiter mit Pferd im Trab. Nicht der Rechner der NV1-Messung (RX 6700 XT), die Werte sind nicht mit B-777 vergleichbar.
+
+| Figuren | Art | FPS Mittel | 1-%-Low | Rechenzeit je Bild | Textur RGBA | GPU geteilt | RAM |
+|---|---|---|---|---|---|---|---|
+| 2 | Rig | 1774 | 159 | 0,09 ms | 1,94 MiB | 55 MiB | 113 MiB |
+| 2 | Sheet | 1756 | 179 | 0,004 ms | 4,11 MiB | 82 MiB | 155 MiB |
+| 50 | Rig | 469 | 67 | 1,85 ms | 1,94 MiB | 67 MiB | 143 MiB |
+| 50 | Sheet | 1772 | 183 | 0,04 ms | 8,22 MiB | 80 MiB | 194 MiB |
+| 200 | Rig | 126 | 28 | 7,43 ms | 1,94 MiB | 83 MiB | 200 MiB |
+| 200 | Sheet | 981 | 104 | 0,16 ms | 8,22 MiB | 114 MiB | 203 MiB |
+
+  Die Sheet-Läufe laden nur `trab` in vier Farben (2 bis 4 Sheets), nicht die 195 Sheets des Monarchen. Dedizierter GPU-Speicher ist auf dem integrierten Chip 0.
+- **Hinweis für B-780:** Ein Reiter mit Pferd kostet als Rig rund 0,037 ms Rechenzeit (etwa 26 Zeichenaufrufe, Pose, Umhang) gegen 0,0008 ms aus dem Sheet. Für 60 FPS bleiben auf diesem Notebook etwa 400 solcher Figuren; Gegner ohne Reittier und Umhang sind billiger (ungeprüft). Glätten mit Ebitengines `AntiAlias` je Figur bricht das Bündeln der Zeichenaufrufe (50 Reiter: 31 statt 469 FPS) und ist zu vermeiden.
+- **Offen:** Sichtprüfung im laufenden Fenster und Messung am Mini-PC (AC-06, NV2.4): `task native:rig:paket` legt das Paket nach `.work/native-rig/`.
