@@ -24,6 +24,10 @@ func (s *fakeSession) Active() bool                       { return len(s.news) >
 func (s *fakeSession) Pause(bool)                         {}
 func (s *fakeSession) Join(view.DeviceID) (int, error)    { return 0, nil }
 func (s *fakeSession) Leave(int) error                    { return nil }
+func (s *fakeSession) Rebind(int, view.DeviceID) error    { return nil }
+func (s *fakeSession) Learn(int, string) error            { return nil }
+func (s *fakeSession) Respec(int) error                   { return nil }
+func (s *fakeSession) SetSettings(view.Settings) error    { return nil }
 
 func press(d view.DeviceID, a ...view.Action) view.Input {
 	return view.Input{Devices: []view.DeviceInput{{Device: d, Actions: a}}}

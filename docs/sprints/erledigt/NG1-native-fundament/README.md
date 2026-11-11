@@ -1,6 +1,6 @@
 # NG1 · CLI, INF · Natives Spiel: Fundament mit Modul, Vertrag, Simulation im Prozess und Spielschleife
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI, INF
 - **Reife:** bereit
@@ -82,7 +82,7 @@ Gesammelt aus den Tickets, je mit Vorschlag; entscheidet 🧑 vor der Freigabe:
 | NG1.3 | `NG1.3-grafik-bibliothek.md` | Umsetzung | autonom | fertig |
 | NG1.4 | `NG1.4-spielschleife-zellen.md` | Umsetzung | autonom | fertig |
 | NG1.5 | `NG1.5-pruefkette.md` | Umsetzung | autonom | fertig |
-| NG1.6 | `NG1.6-review.md` | Review | autonom | in Arbeit |
+| NG1.6 | `NG1.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -90,6 +90,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-11 Review (Claude, `k3c-reviewer`): AC-01 bis AC-11 laut Ergebnis NG1.1 bis NG1.6. Behoben: 11 Review-Befunde am Vertrag (Kamera-Regel, Grafik je Level, Einstellungen, Skill-Befehle und Overlay, Geräte neu zuordnen, `ActionHome`, Geräte im Frame, Rig-Mathematik, Allokationen) und 16 Lint-Befunde. Vertrag `view` gilt ab jetzt als eingefroren (`view/doc.go`). Neue Tickets: B-803. Offen: CI-Job `k3c-game` lief noch nie, Fenster nie gestartet, Schriftdatei fehlt. Kein Abnahme-Ticket (keine Sim-, Balance-, Gen-Läufe betroffen). Version: keine vorgeschlagen (noch kein spielbarer Stand).

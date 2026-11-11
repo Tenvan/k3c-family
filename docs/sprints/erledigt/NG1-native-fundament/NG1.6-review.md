@@ -1,6 +1,6 @@
 # NG1.6 · Review Fundament und Glossar
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** INF
@@ -59,5 +59,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Review (Agent `k3c-reviewer`, Opus) mit Schwerpunkt Vertrag: 5 schwere, 3 mittlere, 3 leichte Befunde, alle behoben (Agent, Opus): Kamera-Regel `view.CameraRule` aus `world`; Grafik je Level über `view.AssetSource` und `art.Library.SetLevels` (mehrere Level gleichzeitig); `view.Settings` mit Speicherung in `local`; `Session.Learn`/`Respec` und `view.Overlay` für Menüs im Spiel; `Session.Rebind` und Zuordnungs-Regel bei Pad-Verlust; `ActionHome`; unbesetzte Geräte und Geräte-Cues im Frame; `art.M`, `art.Point`, `art.RigView`; `EventsOf` und `local` ohne Allokation je Takt.
+AC-01 bis AC-09, AC-11 bestätigt aus NG1.1 bis NG1.5 und erneut geprüft: `go vet`, `go build`, `go test`, `golangci-lint` im Modul grün (0 Befunde, Modul jetzt in `lintMods`); Aufnahme-Modus bildgleich vor und nach den Änderungen (9 PNG byte-gleich). AC-04: Laden und erneutes Speichern ergibt dieselbe Datei; neu `TestLoadDeterminismLikeRoom` (120 Takte nach dem Laden).
+AC-10 umgesetzt: Glossar „Natives Spiel“, „Frame (nativ)“, „Zelle“, „Zeichner“.
+`task check` und `task check:go` nicht gefahren: Der Sprint ändert weder Client noch `engine/`; `check:diff` deckt Modul und `tools/checkdiff`. Offen: CI-Job lief noch nie; Fenster nie gestartet; Schrift fehlt. Neues Ticket B-803.

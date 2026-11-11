@@ -1,6 +1,7 @@
 package view
 
 import (
+	"slices"
 	"testing"
 
 	"k3c/engine/sim"
@@ -56,11 +57,22 @@ func TestFrameMissingStage(t *testing.T) {
 
 func TestFrameEvents(t *testing.T) {
 	f, _, _ := testFrame()
-	got := f.EventsOf(0)
+	got := slices.Collect(f.EventsOf(0))
 	if len(got) != 2 || got[0].Type() != "night" || got[1].Type() != "" {
 		t.Errorf("EventsOf(0) = %+v", got)
 	}
-	if len(f.EventsOf(9)) != 0 {
+	if len(slices.Collect(f.EventsOf(9))) != 0 {
 		t.Error("Ereignisse einer fremden Stufe")
+	}
+	for range f.EventsOf(0) {
+		break // Abbruch beim ersten Ereignis
+	}
+	n := 0
+	if a := testing.AllocsPerRun(10, func() {
+		for e := range f.EventsOf(2) {
+			n += len(e.Type())
+		}
+	}); a != 0 {
+		t.Errorf("EventsOf legt %v Objekte an", a)
 	}
 }

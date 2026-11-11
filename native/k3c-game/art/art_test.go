@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 
@@ -127,7 +128,8 @@ func TestFontLoad(t *testing.T) {
 	if w <= 0 || h <= 0 {
 		t.Errorf("Maße %v×%v", w, h)
 	}
-	if f.face(20) != f.face(20) {
+	a, b := f.face(20), f.face(20)
+	if a != b {
 		t.Error("Face je Größe nicht gecacht")
 	}
 	bad := filepath.Join(t.TempDir(), "kaputt.ttf")
@@ -141,7 +143,7 @@ func TestFontLoad(t *testing.T) {
 
 func TestNilLibrary(t *testing.T) {
 	var l *Library
-	if l.Sheet("a/b", "idle") != nil || l.Level() != "" || l.Budget().Bytes != 0 {
+	if l.Sheet("a/b", "idle") != nil || len(l.Levels()) != 0 || l.Budget().Bytes != 0 {
 		t.Error("nil-Library liefert Inhalt")
 	}
 	if _, err := l.NewActor("figuren/monarch", "", "x"); !errors.Is(err, ErrMissing) {
@@ -156,10 +158,45 @@ func TestSheetFrameIndex(t *testing.T) {
 	}
 }
 
-func TestLoadLevelMissingKeepsState(t *testing.T) {
-	l := &Library{cfg: Config{GrafikDir: testGrafik}, sheets: map[sheetKey]*Sheet{}}
-	err := l.LoadLevel("kaputt", []string{"figuren/gibtsnicht"})
-	if !errors.Is(err, ErrMissing) || l.Level() != "" {
-		t.Fatalf("%v, Level %q", err, l.Level())
+func TestSetLevelsMissingKeepsState(t *testing.T) {
+	l := &Library{cfg: Config{GrafikDir: testGrafik}, sheets: map[sheetKey]*Sheet{}, levels: map[string][]string{}}
+	err := l.SetLevels(map[string][]string{"wald": {"figuren/zwerg"}, "kaputt": {"figuren/gibtsnicht"}})
+	if !errors.Is(err, ErrMissing) || len(l.Levels()) != 0 || len(l.sheets) != 0 {
+		t.Fatalf("%v, Level %v", err, l.Levels())
+	}
+	if err := l.SetLevels(map[string][]string{"leer": nil}); err != nil || !slices.Equal(l.Levels(), []string{"leer"}) {
+		t.Errorf("Level ohne Assets: %v %v", err, l.Levels())
+	}
+	var nilLib *Library
+	if err := nilLib.SetLevels(map[string][]string{"wald": {"figuren/zwerg"}}); !errors.Is(err, ErrMissing) {
+		t.Errorf("nil-Library mit Assets: %v", err)
+	}
+	if err := nilLib.SetLevels(map[string][]string{"wald": nil}); err != nil {
+		t.Errorf("nil-Library ohne Assets: %v", err)
+	}
+}
+
+func spec(asset, anim string, w, h int) SheetSpec {
+	return SheetSpec{Asset: asset, Anim: anim, W: w, H: h}
+}
+
+// Zwei Level zugleich: gemeinsame Sheets einmal laden und zählen; frei wird nur, was kein Level mehr nennt.
+func TestDiffSheetsSeveralLevels(t *testing.T) {
+	wald := &Plan{Level: "wald", Sheets: []SheetSpec{spec("figuren/zwerg", "idle", 2, 2), spec("natur/baum", "idle", 4, 4)}}
+	mine := &Plan{Level: "mine", Sheets: []SheetSpec{spec("figuren/zwerg", "idle", 2, 2), spec("natur/stein", "idle", 1, 1)}}
+	load, free := diffSheets(map[sheetKey]*Sheet{}, []*Plan{mine, wald})
+	if len(load) != 3 || len(free) != 0 {
+		t.Fatalf("leer → beide: laden %+v, frei %+v", load, free)
+	}
+	if b := budgetOf([]*Plan{mine, wald}); b.Images != 3 || b.Bytes != (4+16+1)*4 {
+		t.Errorf("Budget %+v", b)
+	}
+	have := map[sheetKey]*Sheet{{"figuren/zwerg", "idle"}: nil, {"natur/baum", "idle"}: nil, {"natur/stein", "idle"}: nil}
+	load, free = diffSheets(have, []*Plan{wald})
+	if len(load) != 0 || !slices.Equal(free, []sheetKey{{"natur/stein", "idle"}}) {
+		t.Errorf("nur noch wald: laden %+v, frei %+v", load, free)
+	}
+	if _, free = diffSheets(have, nil); len(free) != 3 || free[0].asset != "figuren/zwerg" {
+		t.Errorf("kein Level: frei %+v", free)
 	}
 }

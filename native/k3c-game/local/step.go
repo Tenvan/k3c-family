@@ -22,22 +22,25 @@ func (s *Session) Command(player int, c view.Command) error {
 	if _, ok := s.devs[player]; !ok {
 		return userErr(fmt.Sprintf("Spieler %d spielt nicht", player+1), nil)
 	}
-	return s.r.Input(deviceID, s.p, map[int]sim.PlayerCommand{player: c.Sim()})
+	clear(s.cmd)
+	s.cmd[player] = c.Sim()
+	return s.r.Input(deviceID, s.p, s.cmd)
 }
 
 // Step rechnet einen Takt (1/30 s), außer ohne Spiel und in der Pause, und liefert den Frame. Die Schleife ruft Step
-// einmal je Update bei 30 Updates je Sekunde.
+// einmal je Update bei 30 Updates je Sekunde. Stages, Seats und Events des Frames liegen in Puffern, die der nächste
+// Step überschreibt.
 func (s *Session) Step() view.Frame {
 	s.steps++
 	if s.r != nil && !s.paused {
 		s.tick()
 	}
 	s.collectSaves()
-	f := view.Frame{Clock: float64(s.steps) / stepHz, Paused: s.paused, Timescale: 1, Cues: s.cues}
+	f := view.Frame{Clock: float64(s.steps) / stepHz, Paused: s.paused, Timescale: 1, Cues: s.cues, Settings: s.settings}
 	s.cues = nil
 	if s.p != nil {
 		f.Tick, f.Stages, f.Events, f.Seats = s.p.tick, s.p.stages(), s.p.events, s.seats()
-		s.p.events = nil
+		s.p.events = s.p.events[:0]
 	}
 	return f
 }
@@ -73,23 +76,24 @@ func (s *Session) collectSaves() {
 	}
 }
 
-// seats sind die Plätze der lokalen Spieler nach Slot.
+// seats sind die Plätze der lokalen Spieler nach Slot (im Puffer seatBuf).
 func (s *Session) seats() []view.Seat {
-	out := make([]view.Seat, 0, len(s.p.seats))
+	s.seatBuf = s.seatBuf[:0]
 	for _, st := range s.p.seats {
-		out = append(out, view.Seat{Player: st.Slot, Device: s.devs[st.Slot], Monarch: st.Monarch, Stage: st.Stage})
+		s.seatBuf = append(s.seatBuf, view.Seat{Player: st.Slot, Device: s.devs[st.Slot], Monarch: st.Monarch, Stage: st.Stage})
 	}
-	return out
+	return s.seatBuf
 }
 
 // peer ist das lokale Gerät im Raum (room.Peer). Der Raum ruft es unter seiner Sperre in der Goroutine der Schleife
 // auf (Create, Tick, AddSlot, CloseRoom); es merkt sich nur Welten, Ereignisse und Plätze.
 type peer struct {
-	tick    uint64
-	worlds  map[int]*sim.World // Stufe → Welt des letzten Zustands
-	events  []view.Event       // seit dem letzten Frame
-	seats   []room.Seat
-	onState func() // Test-Naht: läuft in State
+	tick     uint64
+	worlds   map[int]*sim.World // Stufe → Welt des letzten Zustands
+	events   []view.Event       // seit dem letzten Frame
+	seats    []room.Seat
+	stageBuf []view.Stage // Puffer von Frame.Stages
+	onState  func()       // Test-Naht: läuft in State
 }
 
 var _ room.Peer = (*peer)(nil)
@@ -123,12 +127,12 @@ func (p *peer) State(tick, stage int, state any) {
 	}
 }
 
-// stages sind die Stufen mit Welt nach Index.
+// stages sind die Stufen mit Welt nach Index (im Puffer stageBuf).
 func (p *peer) stages() []view.Stage {
-	out := make([]view.Stage, 0, len(p.worlds))
+	p.stageBuf = p.stageBuf[:0]
 	for i, w := range p.worlds {
-		out = append(out, view.Stage{Index: i, Depth: w.Biome.Depth, World: w})
+		p.stageBuf = append(p.stageBuf, view.Stage{Index: i, Depth: w.Biome.Depth, Level: w.Biome.ID, World: w})
 	}
-	slices.SortFunc(out, func(a, b view.Stage) int { return a.Index - b.Index })
-	return out
+	slices.SortFunc(p.stageBuf, func(a, b view.Stage) int { return a.Index - b.Index })
+	return p.stageBuf
 }

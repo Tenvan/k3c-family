@@ -61,7 +61,9 @@ func (s *shooter) update(g *Game) error {
 		return s.finish(g)
 	}
 	for range s.every {
-		g.advance()
+		if g.advance(); g.err != nil {
+			return g.err
+		}
 	}
 	if !g.sim.Active() {
 		return errors.New("💥 Aufnahme: Spiel nicht mehr aktiv (Absturz oder Niederlage)")
@@ -162,8 +164,7 @@ func writePNG(path string, img image.Image) error {
 		return err
 	}
 	if err := png.Encode(f, img); err != nil {
-		f.Close()
-		return err
+		return errors.Join(err, f.Close())
 	}
 	return f.Close()
 }

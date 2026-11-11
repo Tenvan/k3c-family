@@ -58,22 +58,7 @@ func roomLoadHash(t *testing.T, dir, name string) string {
 func TestSaveListLoadDelete(t *testing.T) {
 	dir := t.TempDir()
 	s := testSession(t, dir)
-	if err := s.New(view.NewGame{Devices: twoDevices}); err != nil {
-		t.Fatal(err)
-	}
-	if s.name != "spiel-1" {
-		t.Fatalf("freier Name = %q", s.name)
-	}
-	stepN(t, s, 60)
-	if err := s.Save(); err != nil {
-		t.Fatal(err)
-	}
-	if f := s.Step(); !hasCue(f, view.CueSaved) {
-		t.Errorf("kein CueSaved nach Save: %+v", f.Cues)
-	}
-	if err := s.Close(); err != nil || s.Active() {
-		t.Fatalf("Close: %v, aktiv %v", err, s.Active())
-	}
+	savedGame(t, s)
 	want := fileHash(t, dir, "spiel-1")
 
 	list, err := s.List()
@@ -95,7 +80,33 @@ func TestSaveListLoadDelete(t *testing.T) {
 	if f := s.Step(); len(f.Seats) != 2 {
 		t.Errorf("nach Laden %d Plätze, erwartet die 2 Geräte des letzten Spiels", len(f.Seats))
 	}
+	checkDelete(t, s)
+}
 
+// savedGame legt das Spiel spiel-1 an, taktet 60 Mal, speichert und schließt es.
+func savedGame(t *testing.T, s *Session) {
+	t.Helper()
+	if err := s.New(view.NewGame{Devices: twoDevices}); err != nil {
+		t.Fatal(err)
+	}
+	if s.name != "spiel-1" {
+		t.Fatalf("freier Name = %q", s.name)
+	}
+	stepN(t, s, 60)
+	if err := s.Save(); err != nil {
+		t.Fatal(err)
+	}
+	if f := s.Step(); !hasCue(f, view.CueSaved) {
+		t.Errorf("kein CueSaved nach Save: %+v", f.Cues)
+	}
+	if err := s.Close(); err != nil || s.Active() {
+		t.Fatalf("Close: %v, aktiv %v", err, s.Active())
+	}
+}
+
+// checkDelete: Der Stand des laufenden Spiels bleibt, nach dem Schließen ist er löschbar und danach weg.
+func checkDelete(t *testing.T, s *Session) {
+	t.Helper()
 	if err := s.Delete("spiel-1"); err == nil {
 		t.Error("Spielstand des laufenden Spiels gelöscht")
 	}
@@ -116,12 +127,9 @@ func TestSaveListLoadDelete(t *testing.T) {
 	}
 }
 
-// Weiter lädt den zuletzt gespeicherten ladbaren Stand; ein Name gibt es nur einmal.
-func TestContinueAndDuplicate(t *testing.T) {
-	s := testSession(t, t.TempDir())
-	if err := s.Continue(nil); err == nil {
-		t.Fatal("Weiter ohne Spielstand")
-	}
+// oldGame legt das Spiel „alt“ an, taktet 5 Mal und schließt es.
+func oldGame(t *testing.T, s *Session) {
+	t.Helper()
 	if err := s.New(view.NewGame{Name: "alt", Devices: twoDevices[:1]}); err != nil {
 		t.Fatal(err)
 	}
@@ -129,12 +137,27 @@ func TestContinueAndDuplicate(t *testing.T) {
 	if err := s.Close(); err != nil {
 		t.Fatal(err)
 	}
+}
+
+// Einen Namen gibt es nur einmal; ungültige Namen lehnt New ab.
+func TestNewDuplicateAndInvalid(t *testing.T) {
+	s := testSession(t, t.TempDir())
+	oldGame(t, s)
 	if err := s.New(view.NewGame{Name: "alt", Devices: twoDevices[:1]}); err == nil {
 		t.Error("zweites neues Spiel mit demselben Namen")
 	}
 	if err := s.New(view.NewGame{Name: "Ungültig!", Devices: twoDevices[:1]}); err == nil {
 		t.Error("ungültiger Name angenommen")
 	}
+}
+
+// Weiter lädt den zuletzt gespeicherten ladbaren Stand, ohne Geräte mit denen des letzten Spiels.
+func TestContinue(t *testing.T) {
+	s := testSession(t, t.TempDir())
+	if err := s.Continue(nil); err == nil {
+		t.Fatal("Weiter ohne Spielstand")
+	}
+	oldGame(t, s)
 	if err := s.Continue(nil); err != nil || s.name != "alt" {
 		t.Errorf("Weiter: %v, Spiel %q", err, s.name)
 	}

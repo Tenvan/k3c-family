@@ -1,9 +1,10 @@
 // Package input liest Tastatur und Gamepads und liefert view.Input (Fach-Sprint der Eingabe, NG5). Bis dahin
 // Platzhalter: zwei Tastatur-Hälften und alle Gamepads mit Standard-Belegung, je ein Gerät.
 //
-//	keys1 (links):  A/D laufen, Shift links Sprint, S zahlen, Leertaste Schlag; Menü: W/A/S/D, Leertaste, Esc
+//	keys1 (links):  A/D laufen, Shift links Sprint, S zahlen, Leertaste Schlag; Menü: W/A/S/D, Leertaste, Esc, Pos1
 //	keys2 (rechts): ←/→ laufen, Shift rechts Sprint, ↓ zahlen, Enter Schlag; Menü: Pfeile, Enter, Rücktaste
-//	Gamepad:        Stick/D-Pad laufen, RT Sprint, A zahlen, X Schlag; Menü: D-Pad, A, B zurück, Menu, View, LB/RB
+//	Gamepad:        Stick/D-Pad laufen, RT Sprint, A zahlen, X Schlag; Menü: D-Pad, A, B zurück, Menu, View, LB/RB,
+//	                View + Menu gemeinsam = ActionHome
 //
 // B ist im Spiel unbelegt (nur ActionBack, die Schleife wertet sie im Spiel nicht aus).
 package input
@@ -38,7 +39,7 @@ var halves = [2]keyLayout{
 		{ebiten.KeyW, view.ActionUp}, {ebiten.KeyS, view.ActionDown}, {ebiten.KeyA, view.ActionLeft},
 		{ebiten.KeyD, view.ActionRight}, {ebiten.KeySpace, view.ActionConfirm}, {ebiten.KeyEscape, view.ActionBack},
 		{ebiten.KeyEscape, view.ActionMenu}, {ebiten.KeyTab, view.ActionView}, {ebiten.KeyQ, view.ActionPrevPage},
-		{ebiten.KeyE, view.ActionNextPage},
+		{ebiten.KeyE, view.ActionNextPage}, {ebiten.KeyHome, view.ActionHome},
 	}},
 	{ebiten.KeyArrowLeft, ebiten.KeyArrowRight, ebiten.KeyShiftRight, ebiten.KeyArrowDown, ebiten.KeyEnter, []keyAction{
 		{ebiten.KeyArrowUp, view.ActionUp}, {ebiten.KeyArrowDown, view.ActionDown}, {ebiten.KeyArrowLeft, view.ActionLeft},
@@ -107,6 +108,17 @@ func (s *source) pollPad(id ebiten.GamepadID) {
 			di.Actions = append(di.Actions, pa.action)
 		}
 	}
+	just := func(b ebiten.StandardGamepadButton) bool { return inpututil.IsStandardGamepadButtonJustPressed(id, b) }
+	bView, bMenu := ebiten.StandardGamepadButtonCenterLeft, ebiten.StandardGamepadButtonCenterRight
+	if HomeChord(pressed(bView), pressed(bMenu), just(bView), just(bMenu)) {
+		di.Actions = append(di.Actions, view.ActionHome)
+	}
+}
+
+// HomeChord meldet „View + Menu gemeinsam“ (ActionHome): beide gehalten und mindestens eine in diesem Update gedrückt,
+// damit Halten nicht wiederholt auslöst.
+func HomeChord(heldView, heldMenu, justView, justMenu bool) bool {
+	return heldView && heldMenu && (justView || justMenu)
 }
 
 // slot liefert den nächsten Eintrag des Puffers für Gerät d, geleert; die Aktionen behalten ihren Speicher.

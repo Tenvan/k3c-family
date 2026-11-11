@@ -6,9 +6,10 @@ import "image"
 // der Fluss (wie NV3, native/k3c-ebiten).
 const WorldShare = 2.0 / 3.0
 
-// Camera bildet Welt-x (Units) auf Fenster-x (px) einer Zelle ab. Reine Rechnung, Werte setzt game je Bild.
+// Camera bildet Welt-x (Units) auf Fenster-x (px) einer Zelle ab. Reine Rechnung; X setzt game je Update über die
+// CameraRule, Scale, Center und Half folgen aus der Lage der Zelle.
 type Camera struct {
-	X      float64 // Welt-x in Units in der Mitte der Zelle (folgt dem Monarchen des Spielers)
+	X      float64 // Welt-x in Units in der Mitte der Zelle (CameraRule bzw. --cam)
 	Scale  float64 // Bildpunkte je Unit
 	Center float64 // Fenster-x der Zellenmitte in px
 	Half   float64 // halbe Zellenbreite in px
@@ -51,9 +52,10 @@ func (k Camera) Visible(x, half float64) bool {
 
 // Cell ist eine Zelle des Split-Screens: Rechteck im Fenster, Spieler und Kamera. Welt in den oberen zwei Dritteln,
 // Fluss im unteren Drittel.
+// Zelle i zeigt Frame.Seats[i]; Index und Player sind verschieden, sobald Spieler 0 fehlt.
 type Cell struct {
-	Index  int             // 0 … Zahl der Zellen − 1; -1 = WindowCell
-	Player int             // lokaler Spieler (Seat.Player) dieser Zelle; -1 = keiner (Fenster)
+	Index  int             // Lage: 0 = oben, 1 = unten (Zahl der Zellen = len(Frame.Seats)); -1 = WindowCell
+	Player int             // lokaler Spieler (Seat.Player) dieser Zelle, nicht Index; -1 = keiner (Fenster)
 	Rect   image.Rectangle // Lage im Fenster in px
 	Camera Camera
 }

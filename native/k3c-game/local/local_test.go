@@ -169,8 +169,8 @@ func TestStepWithoutGameAndPaused(t *testing.T) {
 	}
 }
 
-// Spieler kommen und gehen; der letzte bleibt, höchstens zwei.
-func TestJoinLeave(t *testing.T) {
+// Ohne Spiel gibt es keinen Beitritt; der letzte Spieler bleibt.
+func TestJoinLeaveRejects(t *testing.T) {
 	s := testSession(t, t.TempDir())
 	if _, err := s.Join(twoDevices[0]); err == nil {
 		t.Fatal("Join ohne Spiel")
@@ -180,6 +180,14 @@ func TestJoinLeave(t *testing.T) {
 	}
 	if err := s.Leave(0); err == nil {
 		t.Error("letzter Spieler ging")
+	}
+}
+
+// Spieler kommen und gehen, höchstens zwei.
+func TestJoinLeave(t *testing.T) {
+	s := testSession(t, t.TempDir())
+	if err := s.New(view.NewGame{Name: "couch", Devices: twoDevices[:1]}); err != nil {
+		t.Fatal(err)
 	}
 	if p, err := s.Join(twoDevices[1]); err != nil || p != 1 {
 		t.Fatalf("Join = %d, %v", p, err)

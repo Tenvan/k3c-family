@@ -25,8 +25,10 @@ var simDirs = map[string]bool{
 	"tools/k3c-workbench/internal/simexe": true, "tools/k3c-workbench/internal/botdev": true,
 }
 
-// lintMods: Module mit golangci-lint (wie task check:go, check:dev, check:starter).
-var lintMods = map[string]bool{".": true, "tools/k3c-workbench": true, "tools/assetkit": true, "tools/k3c-starter": true}
+// lintMods: Module mit golangci-lint (wie task check:go, check:dev, check:starter; das Spiel-Modul seit NG1-Review).
+var lintMods = map[string]bool{
+	".": true, "tools/k3c-workbench": true, "tools/assetkit": true, "tools/k3c-starter": true, "native/k3c-game": true,
+}
 
 // prepTasks: Module, deren Go-Code ein gebautes Frontend einbettet (go:embed frontend/dist).
 var prepTasks = map[string]string{"tools/k3c-workbench": "k3c-workbench:frontend", "tools/k3c-starter": "k3c-starter:frontend"}

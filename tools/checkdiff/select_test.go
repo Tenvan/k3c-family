@@ -136,19 +136,22 @@ func TestJsSteps(t *testing.T) {
 	}
 }
 
-// Spiel-Modul (B-794, AC-01): Änderung im Paket löst vet und Test im Modul aus; Lint nur, sobald das Modul in lintMods steht
-// (heute draußen: Befunde im Code, NG1.5). Eine Änderung in engine/ übersetzt das Modul als Abnehmer (nur vet).
+// Spiel-Modul (B-794, AC-01): Änderung im Paket löst vet, Lint und Test im Modul aus (Lint seit dem NG1-Review, das
+// Modul steht in lintMods). Eine Änderung in engine/ übersetzt das Modul als Abnehmer (nur vet).
 func TestSpielModul(t *testing.T) {
 	p := classify(testRepo(), []string{"native/k3c-game/view/frame.go"})
 	if w := summary(p); !reflect.DeepEqual(w, want{"R", []string{"native/k3c-game:view"}}) {
 		t.Fatalf("Auswahl %+v", w)
 	}
 	got := goSteps([]goTargets{targetsOf("native/k3c-game", p.Mods["native/k3c-game"], nil, false)})
-	if names(got) != "k3c-game-vet k3c-game-test" || got[0].Dir != "native/k3c-game" {
+	if names(got) != "k3c-game-vet k3c-game-lint k3c-game-test" || got[0].Dir != "native/k3c-game" {
 		t.Fatalf("Schritte %q in %q", names(got), got[0].Dir)
 	}
-	if strings.Join(got[1].Cmd, " ") != "go test -short ./view" {
-		t.Errorf("Test: %v", got[1].Cmd)
+	if strings.Join(got[1].Cmd, " ") != "golangci-lint run ./view" {
+		t.Errorf("Lint: %v", got[1].Cmd)
+	}
+	if strings.Join(got[2].Cmd, " ") != "go test -short ./view" {
+		t.Errorf("Test: %v", got[2].Cmd)
 	}
 	got = goSteps([]goTargets{targetsOf("native/k3c-game", nil, []string{"k3c/native/k3c-game/world"}, false)})
 	if names(got) != "k3c-game-vet" {

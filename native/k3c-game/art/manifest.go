@@ -13,7 +13,7 @@ import (
 )
 
 // ErrMissing kennzeichnet fehlende oder unlesbare Grafik; die Meldung nennt immer den Pfad.
-var ErrMissing = errors.New("Grafik fehlt")
+var ErrMissing = errors.New("fehlende Grafik")
 
 // Anim ist eine Animation im Manifest; Rahmen, frameW und frameH überschreiben optional die Werte des Assets.
 type Anim struct {
@@ -42,7 +42,7 @@ func ReadManifest(dir, asset string) (*Manifest, error) {
 	}
 	m := &Manifest{}
 	if err := json.Unmarshal(text, m); err != nil {
-		return nil, fmt.Errorf("Manifest kaputt: %s (%w)", path, err)
+		return nil, fmt.Errorf("%s: Manifest kaputt (%w)", path, err)
 	}
 	return m, nil
 }
@@ -83,7 +83,7 @@ func GroupAssets(dir, group string) ([]string, error) {
 		ID string `json:"id"`
 	}
 	if err := json.Unmarshal(text, &entries); err != nil {
-		return nil, fmt.Errorf("Gruppen-Index kaputt: %s (%w)", path, err)
+		return nil, fmt.Errorf("%s: Gruppen-Index kaputt (%w)", path, err)
 	}
 	out := make([]string, len(entries))
 	for i, e := range entries {

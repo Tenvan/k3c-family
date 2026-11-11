@@ -19,15 +19,38 @@ type band struct {
 	clr   color.RGBA
 }
 
-// New liefert die Drawer der Welt: fern, mitte, nah, Boden und Fluss; lib (Grafik) darf nil sein, die Platzhalter brauchen sie nicht.
+// New liefert die Drawer der Welt: fern, mitte, nah, Boden und Fluss; lib (Grafik) darf nil sein, die Platzhalter
+// brauchen sie nicht. Der ferne Drawer führt zugleich die Kamera (view.CameraRule).
 func New(_ *art.Library) []view.Drawer {
 	return []view.Drawer{
-		band{view.LayerFar, color.RGBA{158, 199, 219, 255}},
+		far{band{view.LayerFar, color.RGBA{158, 199, 219, 255}}},
 		band{view.LayerMid, color.RGBA{120, 160, 130, 255}},
 		band{view.LayerNear, color.RGBA{80, 130, 80, 255}},
 		band{view.LayerGround, color.RGBA{110, 85, 55, 255}},
 		band{view.LayerRiver, color.RGBA{60, 110, 170, 255}},
 	}
+}
+
+// far ist das ferne Band mit der Kamera-Regel des Platzhalters.
+type far struct{ band }
+
+// Follow ist die Kamera-Regel des Platzhalters: ohne Totzone und Grenzen direkt auf dem Monarchen, ohne Monarchen an
+// der Burg, ohne Welt bleibt sie stehen (Totzone und Stufen-Grenzen: B-795).
+func (far) Follow(f *view.Frame, c view.Cell, prev view.Camera) view.Camera {
+	k := c.Camera
+	k.X = FollowX(f, c, prev.X)
+	return k
+}
+
+// FollowX ist das Ziel der Platzhalter-Kamera: Monarch, sonst Burg, sonst x.
+func FollowX(f *view.Frame, c view.Cell, x float64) float64 {
+	if m := f.Monarch(c.Player); m != nil {
+		return m.X
+	}
+	if w := f.World(c); w != nil {
+		return w.Castle.X
+	}
+	return x
 }
 
 func (b band) Layer() view.Layer { return b.layer }

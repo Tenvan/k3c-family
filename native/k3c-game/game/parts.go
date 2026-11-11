@@ -27,13 +27,18 @@ type Part struct {
 	Menus    view.Menus
 }
 
-// Parts ist das zusammengebaute Spiel: Drawer nach Ebene sortiert, Listener in Anmelde-Reihenfolge.
+// Parts ist das zusammengebaute Spiel: Drawer nach Ebene sortiert, Listener, Overlays und Asset-Quellen in
+// Anmelde-Reihenfolge. Art setzt der Aufrufer (main: die Grafik-Bibliothek; nil = ohne Laden, Tests).
 type Parts struct {
 	Names     []string
 	Drawers   []view.Drawer
 	Listeners []view.Listener
 	Input     view.Source
 	Menus     view.Menus
+	Camera    view.CameraRule
+	Assets    []view.AssetSource
+	Overlays  []view.Overlay
+	Art       Loader
 }
 
 // Packages liefert die Beiträge aller Fachpakete; alle bekommen dieselbe Grafik-Bibliothek (nil in Tests). Jedes Fachpaket hat hier genau einen Eintrag.
@@ -50,8 +55,10 @@ func Packages(lib *art.Library) []Part {
 	}
 }
 
-// Assemble baut die Beiträge zusammen. Drawer, die zugleich Listener sind, hören mit. Genau eine Eingabe-Quelle und
-// genau ein Menü sind Pflicht; Drawer mit ungültiger Ebene sind ein Fehler.
+// Assemble baut die Beiträge zusammen. Drawer, die zugleich Listener sind, hören mit; jeder Beitrag (Drawer, Listener,
+// Source, Menus) wird außerdem für die optionalen Rollen aus view/roles.go angemeldet, die er erfüllt. Genau eine
+// Eingabe-Quelle und genau ein Menü sind Pflicht, höchstens eine Kamera-Regel; Drawer mit ungültiger Ebene sind ein
+// Fehler.
 func Assemble(ps []Part) (Parts, error) {
 	var out Parts
 	for _, p := range ps {
@@ -74,12 +81,42 @@ func Assemble(ps []Part) (Parts, error) {
 		if err := setOnce(&out.Menus, p.Menus, p.Name, "Menü"); err != nil {
 			return Parts{}, err
 		}
+		if err := out.addRoles(p); err != nil {
+			return Parts{}, err
+		}
 	}
 	if out.Input == nil || out.Menus == nil {
 		return Parts{}, errors.New("❌ Eingabe-Quelle oder Menü fehlt")
 	}
 	out.Drawers = view.Sorted(out.Drawers)
 	return out, nil
+}
+
+// addRoles meldet die Beiträge des Pakets p für Kamera-Regel, Asset-Quelle und Overlay an.
+func (out *Parts) addRoles(p Part) error {
+	items := make([]any, 0, len(p.Drawers)+3)
+	for _, d := range p.Drawers {
+		items = append(items, d)
+	}
+	for _, x := range []any{p.Listener, p.Source, p.Menus} {
+		if x != nil {
+			items = append(items, x)
+		}
+	}
+	for _, x := range items {
+		if r, ok := x.(view.CameraRule); ok {
+			if err := setOnce(&out.Camera, r, p.Name, "Kamera-Regel"); err != nil {
+				return err
+			}
+		}
+		if a, ok := x.(view.AssetSource); ok {
+			out.Assets = append(out.Assets, a)
+		}
+		if o, ok := x.(view.Overlay); ok {
+			out.Overlays = append(out.Overlays, o)
+		}
+	}
+	return nil
 }
 
 // setOnce setzt *dst auf v, wenn v gesetzt ist; ein zweiter Beitrag derselben Art ist ein Fehler.

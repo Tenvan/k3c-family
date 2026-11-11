@@ -12,13 +12,15 @@ type DeviceKind int
 
 const (
 	DeviceKeyboard DeviceKind = iota // Tastatur; Index 0 = linke Hälfte (WASD), 1 = rechte Hälfte (Pfeile)
-	DeviceGamepad                    // Gamepad; Index = Reihenfolge der Verbindung (stabil, solange verbunden)
+	DeviceGamepad                    // Gamepad; Index = ebiten.GamepadID (stabil, solange verbunden; neu verbunden: neue ID)
 )
 
-// DeviceID benennt ein Eingabegerät. game ordnet Geräte Spielern zu (Seat.Device), input kennt keine Spieler.
+// DeviceID benennt ein Eingabegerät. game ordnet Geräte Spielern zu (Seat.Device, Session.Rebind), input kennt keine
+// Spieler. Ein Pad bekommt nach Trennen und Wiederverbinden meist eine neue ID; game ordnet es dann über die
+// Zuordnungs-Regel dem verwaisten Platz zu, nie über einen festen Index.
 type DeviceID struct {
 	Kind  DeviceKind
-	Index int
+	Index int // Tastatur: Hälfte 0 (links) oder 1 (rechts); Gamepad: ebiten.GamepadID
 }
 
 func (d DeviceID) String() string {
@@ -65,6 +67,7 @@ const (
 	ActionView     // View / Tab
 	ActionPrevPage // LB / Q
 	ActionNextPage // RB / E
+	ActionHome     // View + Menu gemeinsam / Pos1: zurück ins Menü (im Spiel wie ActionMenu; in Menüs wertet der Screen sie aus)
 )
 
 // DeviceInput ist die Eingabe eines verbundenen Geräts in einem Update.

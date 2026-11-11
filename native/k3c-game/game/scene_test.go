@@ -39,10 +39,13 @@ func TestParseArgsScene(t *testing.T) {
 	if a.Count != 4 || a.Every != 6 || a.W != 1920 || a.H != 1080 || a.Saves != "x" || len(s.Script) != 2 {
 		t.Errorf("Schalter: %+v", a)
 	}
-	if d := s.Devices(); len(d) != 1 || d[0] != (view.DeviceID{Kind: view.DeviceKeyboard}) {
+}
+
+func TestParseArgsCamAndDevices(t *testing.T) {
+	if d := (Scene{Players: 1}).Devices(); len(d) != 1 || d[0] != (view.DeviceID{Kind: view.DeviceKeyboard}) {
 		t.Errorf("Geräte: %v", d)
 	}
-	a, err = ParseArgs([]string{"--seed", "x", "--depth", "1", "--cam", "-,40"}, "s")
+	a, err := ParseArgs([]string{"--seed", "x", "--depth", "1", "--cam", "-,40"}, "s")
 	if err != nil || a.Scene.Depth != 1 || !math.IsNaN(a.Scene.Cams[0]) || a.Scene.Cams[1] != 40 || a.Script {
 		t.Errorf("Kamera folgt / fest: %+v %v", a.Scene, err)
 	}

@@ -47,6 +47,11 @@ type Session struct {
 	paused bool
 	steps  uint64 // Aufrufe von Step, Grundlage von Frame.Clock
 	cues   []view.Cue
+
+	settings     view.Settings
+	settingsPath string
+	cmd          map[int]sim.PlayerCommand // Puffer von Command, je Aufruf geleert
+	seatBuf      []view.Seat               // Puffer von Frame.Seats
 }
 
 var _ view.Session = (*Session)(nil)
@@ -60,7 +65,8 @@ func DefaultSavesDir() string {
 	return filepath.Join(filepath.Dir(exe), "saves")
 }
 
-// Open legt die Session an; der Ordner entsteht erst beim ersten Speichern.
+// Open legt die Session an und liest die Einstellungen (SettingsFile; fehlt oder kaputt: Standardwerte); der Ordner
+// entsteht erst beim ersten Speichern.
 func Open(cfg Config) *Session {
 	if cfg.Dir == "" {
 		cfg.Dir = DefaultSavesDir()
@@ -72,7 +78,13 @@ func Open(cfg Config) *Session {
 		cfg.Now = time.Now
 	}
 	saves := &store.Saves{Dir: cfg.Dir, Now: cfg.Now}
-	return &Session{saves: saves, store: &watchedStore{saves: saves}, log: cfg.Log, now: cfg.Now}
+	s := &Session{saves: saves, store: &watchedStore{saves: saves}, log: cfg.Log, now: cfg.Now,
+		settingsPath: filepath.Join(cfg.Dir, SettingsFile), cmd: map[int]sim.PlayerCommand{}}
+	var err error
+	if s.settings, err = loadSettings(s.settingsPath); err != nil {
+		s.log.Warn("🩹 Einstellungen unlesbar, Standardwerte", "datei", s.settingsPath, "err", err)
+	}
+	return s
 }
 
 // manager legt den Manager eines Spiels an: Snapshot liefert die Welt selbst (keine Kopie, kein JSON).

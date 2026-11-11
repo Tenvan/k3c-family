@@ -125,12 +125,18 @@ func (a Args) check() error {
 		return fmt.Errorf("🚫 --depth ab 0, --tick 0 bis %d", maxTick)
 	case len(s.Cams) > s.Players:
 		return fmt.Errorf("🚫 --cam: %d Werte für %d Spieler", len(s.Cams), s.Players)
-	case a.Count < 1 || a.Count > maxShots || a.Every < 1 || a.Every > maxTick:
+	}
+	return a.checkShots()
+}
+
+// checkShots prüft Zahl und Abstand der Bilder und die Spieler der Eingabe-Folge.
+func (a Args) checkShots() error {
+	if a.Count < 1 || a.Count > maxShots || a.Every < 1 || a.Every > maxTick {
 		return fmt.Errorf("🚫 --count 1 bis %d, --every ab 1", maxShots)
 	}
-	for _, h := range s.Script {
-		if h.Player >= s.Players {
-			return fmt.Errorf("🚫 --input: Spieler %d bei %d Spielern", h.Player, s.Players)
+	for _, h := range a.Scene.Script {
+		if h.Player >= a.Scene.Players {
+			return fmt.Errorf("🚫 --input: Spieler %d bei %d Spielern", h.Player, a.Scene.Players)
 		}
 	}
 	return nil
@@ -191,7 +197,7 @@ func parseHold(s string) (Hold, error) {
 	p, errP := strconv.Atoi(ps)
 	t, errT := strconv.Atoi(ts)
 	if !ok || !ok2 || errP != nil || errT != nil || p < 0 || p >= view.MaxPlayers || t < 0 || t > maxTick {
-		return Hold{}, errors.New("Form spieler@takt=befehl")
+		return Hold{}, errors.New("erwartet spieler@takt=befehl")
 	}
 	h := Hold{Tick: t, Player: p}
 	if cmd == "-" {

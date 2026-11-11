@@ -174,9 +174,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-788](B-788-check-run-teilaufgaben-sim-sperre.md) | DEV | Schuld | mittel | offen | – | check_run kennt die Teilaufgaben von check:diff, sim_test und sim_run lehnen während der Sperre ab |
 | [B-790](B-790-prototyp-shader-wasser.md) | CLI | Frage | mittel | eingeplant | NG11 | Ein vierter Prototyp zeigt, was Shader in Ebitengine für Wasser und Papier-Effekte bringen |
 | [B-791](B-791-rig-bein-baender-klappen-um.md) | CLI | Problem | mittel | eingeplant | NG3 | Bein-Bänder von Elefant, Wolf und Alphawolf klappen im Rig nicht mehr um |
-| [B-792](B-792-native-spiel-modul-vertrag-schleife.md) | CLI | Idee | hoch | eingeplant | NG1 | Das native Spiel hat ein eigenes Go-Modul mit Spielschleife, Grafik-Bibliothek und festem Zeichen-Vertrag |
-| [B-793](B-793-native-simulation-im-prozess.md) | CLI | Idee | hoch | eingeplant | NG1 | Das native Spiel rechnet mit der Go-Simulation im selben Prozess und speichert Spielstände lokal |
-| [B-794](B-794-native-pruefkette-checkdiff-ci.md) | INF | Schuld | hoch | eingeplant | NG1 | check:diff und CI prüfen das Modul des nativen Spiels |
 | [B-795](B-795-native-welt-kamera.md) | CLI | Idee | hoch | eingeplant | NG2 | Das native Spiel zeigt Welt, Kamera, Schichten, Fluss und Licht je Split-Screen-Zelle |
 | [B-796](B-796-native-figuren-als-rig.md) | CLI | Idee | hoch | eingeplant | NG3 | Das native Spiel zeichnet Monarchen, Reittiere, Bürger, Truppen, Gegner und Bosse aus dem Spielzustand |
 | [B-797](B-797-native-gebaeude-natur-objekte.md) | CLI | Idee | hoch | eingeplant | NG4 | Das native Spiel zeichnet Gebäude, Baustellen, Plätze, Natur und Objekte aus dem Spielzustand |
@@ -185,6 +182,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-800](B-800-native-menues-lobby-spielstaende.md) | CLI | Idee | hoch | eingeplant | NG7 | Das native Spiel hat Hauptmenü, Lobby für 1–2 Spieler, Spielstand-Menü, Optionen und Pause |
 | [B-801](B-801-native-ton.md) | CLI | Idee | mittel | eingeplant | NG8 | Das native Spiel spielt Klänge und Musik zu den Ereignissen wie der Browser-Client |
 | [B-802](B-802-native-zusammenfuehrung-abnahme.md) | CLI | Idee | hoch | eingeplant | NG9 | Das native Spiel läuft von Start bis Spielstand durch, ist gemessen und am PC abgenommen |
+| [B-803](B-803-room-absturzbehandlung-exportieren.md) | SRV | Schuld | niedrig | offen | – | Ein Raum bietet seine Absturzbehandlung und den Grund abgelehnter Skill-Befehle nach außen an |
 
 ## Archiv
 
@@ -763,3 +761,6 @@ Zeile in diesen Abschnitt.
 | [B-725](archiv/B-725-rust-engine-machbarkeit.md) | SRV | Idee | mittel | verworfen | RS1 | Simulationskern läuft schneller in Rust, Server bleibt Go (Machbarkeit und Umstiegspfad) |
 | [B-736](archiv/B-736-rust-server-etappe2.md) | SRV | Idee | mittel | verworfen | RS2 | Etappe 2: Server und Simulation laufen komplett in Rust, Go-Server und Brücke entfallen |
 | [B-789](archiv/B-789-prototyp-fluss-fester-hintergrund-alle-rigs.md) | CLI | Frage | hoch | erledigt | NV3 | Der Ebitengine-Prototyp zeigt den Fluss in der unteren Bildhälfte, einen festen Fern-Hintergrund und alle Figuren als Rig |
+| [B-792](archiv/B-792-native-spiel-modul-vertrag-schleife.md) | CLI | Idee | hoch | erledigt | NG1 | Das native Spiel hat ein eigenes Go-Modul mit Spielschleife, Grafik-Bibliothek und festem Zeichen-Vertrag |
+| [B-793](archiv/B-793-native-simulation-im-prozess.md) | CLI | Idee | hoch | erledigt | NG1 | Das native Spiel rechnet mit der Go-Simulation im selben Prozess und speichert Spielstände lokal |
+| [B-794](archiv/B-794-native-pruefkette-checkdiff-ci.md) | INF | Schuld | hoch | erledigt | NG1 | check:diff und CI prüfen das Modul des nativen Spiels |

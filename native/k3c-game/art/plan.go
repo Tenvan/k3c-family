@@ -64,19 +64,19 @@ func planSheet(dir, asset, anim string, m *Manifest) (SheetSpec, error) {
 	fw, fh, r := m.resolve(a)
 	path := filepath.Join(dir, filepath.FromSlash(asset), a.File)
 	if a.Frames < 1 || fw < 1 || fh < 1 || r[2] == 0 || r[3] == 0 {
-		return SheetSpec{}, fmt.Errorf("Animation %s in %s hat ungültige Maße (%s)", anim, asset, path)
+		return SheetSpec{}, fmt.Errorf("%s: Animation %s in %s hat ungültige Maße", path, anim, asset)
 	}
 	f, err := os.Open(path)
 	if err != nil {
 		return SheetSpec{}, fmt.Errorf("%w: Sheet %s (%v); erst `task gen:paper` ausführen", ErrMissing, path, err)
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }() // nur gelesen, Schließen kann nichts verlieren
 	cfg, _, err := image.DecodeConfig(f)
 	if err != nil {
-		return SheetSpec{}, fmt.Errorf("Sheet kaputt: %s (%w)", path, err)
+		return SheetSpec{}, fmt.Errorf("%s: Sheet kaputt (%w)", path, err)
 	}
 	if cfg.Width < a.Frames*fw || cfg.Height < fh {
-		return SheetSpec{}, fmt.Errorf("Sheet %s: Bild %d×%d zu klein für %d Frames à %d×%d", path, cfg.Width, cfg.Height, a.Frames, fw, fh)
+		return SheetSpec{}, fmt.Errorf("%s: Bild %d×%d zu klein für %d Frames à %d×%d", path, cfg.Width, cfg.Height, a.Frames, fw, fh)
 	}
 	return SheetSpec{
 		Asset: asset, Anim: anim, Path: path, Frames: a.Frames, FPS: a.Fps, FW: fw, FH: fh, W: cfg.Width, H: cfg.Height,

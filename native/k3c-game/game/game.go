@@ -22,27 +22,34 @@ type Sim interface {
 	Step() view.Frame
 }
 
-// Game ist die Ebitengine-Schleife: Eingabe, Menü-Stapel, Takt der Simulation und Zeichnen der Zellen in
-// Ebenen-Reihenfolge. Alle Zeit kommt aus dem Takt (Frame.Clock), nie aus der Wanduhr.
+// Game ist die Ebitengine-Schleife: Eingabe, Menü-Stapel, Takt der Simulation, Kameras, Grafik der Level und Zeichnen
+// der Zellen in Ebenen-Reihenfolge. Alle Zeit kommt aus dem Takt (Frame.Clock), nie aus der Wanduhr.
 type Game struct {
-	parts Parts
-	sim   Sim
-	args  Args
-	src   view.Source
-	stack Stack
-	mode  Mode
-	frame view.Frame
-	cues  []view.Cue
-	cells []view.Cell
-	subs  subImages
-	stats *overlay
-	shots *shooter
+	parts  Parts
+	sim    Sim
+	args   Args
+	src    view.Source
+	stack  Stack
+	mode   Mode
+	frame  view.Frame
+	cues   []view.Cue
+	cells  []view.Cell
+	win    image.Rectangle // Zeichenfläche aus Layout
+	cams   Cameras
+	devs   devices
+	levels []string // Level, deren Grafik geladen ist (sortiert)
+	full   bool     // Vollbild ist angewendet
+	err    error    // beendet das Programm (fehlende Grafik)
+	subs   subImages
+	stats  *overlay
+	shots  *shooter
 }
 
 // New baut die Schleife. Mit Szene (Seed oder Spielstand) startet das Spiel sofort, sonst liegt das Hauptmenü oben.
 // Im Aufnahme-Modus läuft die Simulation bis Scene.Tick vor.
 func New(p Parts, s Sim, a Args) (*Game, error) {
-	g := &Game{parts: p, sim: s, args: a, src: p.Input, mode: ModeMenu, cells: make([]view.Cell, 0, view.MaxPlayers)}
+	g := &Game{parts: p, sim: s, args: a, src: p.Input, mode: ModeMenu, cells: make([]view.Cell, 0, view.MaxPlayers),
+		win: image.Rect(0, 0, a.W, a.H), cams: Cameras{Rule: p.Camera, Fixed: a.Scene.Cams}}
 	if a.Script {
 		g.src = newScripted(a.Scene)
 	}
@@ -62,7 +69,9 @@ func New(p Parts, s Sim, a Args) (*Game, error) {
 		g.shots = sh
 	}
 	for range a.Scene.Tick {
-		g.advance()
+		if g.advance(); g.err != nil {
+			return nil, g.err
+		}
 	}
 	return g, nil
 }
@@ -93,78 +102,48 @@ func (g *Game) Update() error {
 		return g.shots.update(g)
 	}
 	g.advance()
+	if g.err != nil {
+		return g.err
+	}
 	if g.mode == ModeQuit {
 		return g.sim.Close()
 	}
 	return nil
 }
 
-// advance liest die Eingabe, bedient Menü bzw. Spiel und taktet die Simulation einmal.
+// advance liest die Eingabe, bedient Menü bzw. Spiel, taktet die Simulation einmal und bereitet den Frame vor:
+// Geräte, Grafik der Level, Kameras, Vollbild, dann die Listener.
 func (g *Game) advance() {
 	in := g.src.Poll()
+	g.cues = g.devs.observe(in, g.frame.Seats, g.cues)
 	if top := g.stack.Top(); top != nil {
 		g.step(top.Update(in, g.sim))
 	} else {
 		g.play(in)
 	}
 	g.frame = g.sim.Step()
+	g.devs.decorate(&g.frame, in)
 	if len(g.cues) > 0 {
 		g.frame.Cues = append(g.frame.Cues, g.cues...)
 		g.cues = g.cues[:0]
 	}
+	g.loadLevels()
+	g.cells = Cells(g.cells, g.win, &g.frame)
+	g.cams.Follow(g.cells, &g.frame)
+	g.applyFullscreen()
 	for _, l := range g.parts.Listeners {
 		l.Listen(&g.frame)
 	}
 }
 
-// play gibt im laufenden Spiel die Befehle der Geräte an ihre Spieler, nimmt neue Geräte bei Bestätigen auf und
-// öffnet bei ActionMenu das Pause-Menü. ActionBack (B) ist im Spiel unbelegt.
-func (g *Game) play(in view.Input) {
-	if !g.sim.Active() {
-		g.stack.Push(g.parts.Menus.Main())
-		g.mode = ModeMenu
+// applyFullscreen setzt Vollbild nach den Einstellungen, sobald sie sich ändern; nicht im Aufnahme-Modus.
+func (g *Game) applyFullscreen() {
+	if g.shots != nil || g.args.Shots != "" || g.frame.Settings.Fullscreen == g.full {
 		return
 	}
-	if _, ok := in.Has(view.ActionMenu); ok {
-		g.sim.Pause(true)
-		g.stack.Push(g.parts.Menus.Pause())
-		g.mode = ModeMenu
-		return
-	}
-	for _, s := range g.frame.Seats {
-		di, _ := in.Of(s.Device)
-		if err := g.sim.Command(s.Player, di.Command); err != nil {
-			slog.Warn("🚫 Befehl abgelehnt", "player", s.Player, "err", err)
-		}
-	}
-	for _, di := range in.Devices {
-		if !g.seated(di.Device) && hasAction(di, view.ActionConfirm) {
-			if p, err := g.sim.Join(di.Device); err != nil {
-				g.cues = append(g.cues, view.Cue{Kind: view.CueDenied, Player: -1, Text: err.Error()})
-			} else {
-				slog.Info("👑 Gerät spielt mit", "device", di.Device.String(), "player", p)
-			}
-		}
-	}
-}
-
-// seated meldet, ob das Gerät d einen Platz hat.
-func (g *Game) seated(d view.DeviceID) bool {
-	for _, s := range g.frame.Seats {
-		if s.Device == d {
-			return true
-		}
-	}
-	return false
-}
-
-func hasAction(di view.DeviceInput, a view.Action) bool {
-	for _, x := range di.Actions {
-		if x == a {
-			return true
-		}
-	}
-	return false
+	g.full = g.frame.Settings.Fullscreen
+	ebiten.SetFullscreen(g.full)
+	slog.Info("🚦 Vollbild", "an", g.full)
 }
 
 // step wendet das Ergebnis des obersten Screens an.
@@ -181,7 +160,7 @@ func (g *Game) step(st view.Step) {
 func (g *Game) Draw(screen *ebiten.Image) {
 	screen.Fill(clearColor)
 	win := screen.Bounds()
-	g.cells = Cells(g.cells, win, &g.frame, g.args.Scene.Cams)
+	Place(g.cells, win)
 	for i, c := range g.cells {
 		dst := g.subs.of(screen, i, c.Rect)
 		for _, d := range g.parts.Drawers {
@@ -208,8 +187,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 // Layout: Zeichenfläche in Fenster-Bildpunkten; im Aufnahme-Modus fest (dieselben Schalter, dasselbe Bild).
 func (g *Game) Layout(ow, oh int) (int, int) {
 	if g.shots != nil {
-		return g.args.W, g.args.H
+		ow, oh = g.args.W, g.args.H
 	}
+	g.win = image.Rect(0, 0, ow, oh)
 	return ow, oh
 }
 

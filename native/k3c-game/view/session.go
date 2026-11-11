@@ -40,4 +40,15 @@ type Session interface {
 	Pause(on bool)            // Simulation anhalten bzw. weiterlaufen lassen
 	Join(d DeviceID) (player int, err error)
 	Leave(player int) error
+	// Rebind gibt dem Spieler ein anderes Gerät (verlorenes Pad, B-798); das Gerät darf keinen anderen Platz haben.
+	// Meldet CueRebound. game ruft es nach der Zuordnungs-Regel auf, Menüs dürfen es auch.
+	Rebind(player int, d DeviceID) error
+	// Learn lernt für den Spieler den Skill (Skill-ID der Simulation, wie sim.LearnSkill); Respec setzt seine Skills
+	// zurück. Ob es geht, prüft die Simulation (Punkte, Tag, Burg); abgelehnt kommt ein anzeigbarer Fehler (Skill-Menü
+	// des HUD). Die Wirkung zeigt der nächste Frame.
+	Learn(player int, skill string) error
+	Respec(player int) error
+	// SetSettings übernimmt die Einstellungen (Normalized) sofort und speichert sie; ein Fehler betrifft nur das
+	// Speichern, die Werte gelten trotzdem.
+	SetSettings(s Settings) error
 }

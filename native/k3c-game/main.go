@@ -29,18 +29,28 @@ func main() {
 	if err != nil {
 		fatal(err)
 	}
-	if args.Shots != "" {
-		tmp, err := shotSaves(args)
-		if err != nil {
+	if args.Shots == "" {
+		err = run(args)
+	} else {
+		var tmp string
+		if tmp, err = shotSaves(args); err != nil {
 			fatal(err)
 		}
-		defer os.RemoveAll(tmp)
 		args.Saves = tmp
+		err = run(args)
+		removeTemp(tmp) // vor fatal: os.Exit überspringt defer
 	}
-	if err := run(args); err != nil {
+	if err != nil {
 		fatal(err)
 	}
 	fmt.Println("🛑 K3C natives Spiel beendet")
+}
+
+// removeTemp räumt den Wegwerf-Ordner weg; ein Fehler steht nur im Log.
+func removeTemp(dir string) {
+	if err := os.RemoveAll(dir); err != nil {
+		slog.Warn("🧹 Wegwerf-Ordner nicht entfernt", "ordner", dir, "err", err)
+	}
 }
 
 // run baut Grafik, Pakete, Simulation und Schleife und läuft bis zum Ende.
@@ -53,6 +63,7 @@ func run(args game.Args) error {
 	if err != nil {
 		return err
 	}
+	parts.Art = lib
 	slog.Info("🚀 K3C natives Spiel", "pakete", parts.Names, "drawer", len(parts.Drawers), "spielstaende", args.Saves, "aufnahme", args.Shots)
 	sim := local.Open(local.Config{Dir: args.Saves, Log: slog.Default()})
 	g, err := game.New(parts, sim, args)
@@ -65,7 +76,7 @@ func run(args game.Args) error {
 	ebiten.SetTPS(game.TPS)
 	ebiten.SetRunnableOnUnfocused(true)
 	if err := ebiten.RunGame(g); err != nil && !errors.Is(err, ebiten.Termination) {
-		return fmt.Errorf("Abbruch: %w", err)
+		return fmt.Errorf("abgebrochen: %w", err)
 	}
 	return nil
 }
@@ -83,8 +94,8 @@ func shotSaves(args game.Args) (string, error) {
 			err = os.WriteFile(filepath.Join(tmp, name+".json"), data, 0o644)
 		}
 		if err != nil {
-			os.RemoveAll(tmp)
-			return "", fmt.Errorf("Spielstand %s: %w", name, err)
+			removeTemp(tmp)
+			return "", fmt.Errorf("%s: Spielstand nicht kopiert: %w", name, err)
 		}
 	}
 	return tmp, nil

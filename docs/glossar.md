@@ -88,6 +88,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Fixture | Kleiner, aus dem Code erzeugter Spielstand je Version unter `testdata/saves/v<n>/`; alte bleiben unverändert, `TestJedeVersionHatFixture` verlangt eines je Version. | `arbeitsweise.md` › Spielstand-Format |
 | Fluss | Wasserfläche im Vordergrund des nativen Spiels: unteres Drittel der Sicht eines Spielers, vor dem Ufer gezeichnet, fließt nach links; später fahren darauf Schiffe auf bis zu drei Ebenen (Bosskämpfe). | B-789, Entscheidung 008 |
 | Fokus-Chip | Gespeicherter Filter oben auf der Assets-Seite (Suche, Facetten, Sicht, Gruppierung) mit Anzahl; fest: Alles, Grafik, Sound, Lücken, Aus dem Netz, Lizenz prüfen, Vorrat; eigene über „Ansicht merken“ in den Studio-Einstellungen. | B-677 |
+| Frame (nativ) | Momentaufnahme eines Takts für die Zeichner des nativen Spiels: Takt, Zeit aus dem Takt, Stufen mit ihrer Welt (nur lesen), Plätze, Ereignisse, Hinweise (Cues), Geräte und Einstellungen. | `native/k3c-game/view`, B-792 |
 | Freifläche | Bildschirmbereich, den kein HUD-Element belegen darf: Home-Button, „☰ Optionen“, Touch-Knöpfe und der Bereich der Diagnose. Die Layout-Funktion spart ihn aus. | B-337, `src/scenes/hud/hudLayout.ts` |
 | Freigabe | Ausdrückliche Zustimmung von 🧑 zu genau einer Revision einer Spec (Feld `Freigabe`: Datum und Quelle); erst dann `Spec: freigegeben`. | `arbeitsweise.md` › SDD |
 | Gate (Etappe-2-Gate G1–G4) | Entscheidungspunkt mit Messwert in B-736: Wird er verfehlt oder (G1) übererfüllt, pausiert RST, und Ralf entscheidet, ob Etappe 2 weiterläuft. | B-736 › AC-09 |
@@ -169,6 +170,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Münze | Ein Gold als Gegenstand: per A-Halten bezahlt (alle 0,25 s, Reichweite 2 Units); fallen gelassen nach 1,5 s für andere aufhebbar. | `rules/wirtschaft.md` § 1 |
 | Münzskala | Erlaubte Goldpreise regulärer Bauwerke, Ausbaustufen, Ausbauschritte und Ausrüstung: 2, 3, 4, 6, 8, 10, 12, 15, 20, 25, 30. Mauer Stufe 1 = 2, teuerstes reguläres Bauwerk = 30; alte Werte über `2 · (alt / 5)^0,66`. Markieren und Rekrutieren sind Kleinbeträge (1–2) außerhalb der Skala. | `rules/wirtschaft.md` § 8, B-635 |
 | Nacht | Phase des Tageszyklus zwischen Dämmerung und Morgengrauen, Startwert 4 min; in der Oberwelt kommt eine Welle je Nacht. | `rules/wirtschaft.md` § 3, Q65 |
+| Natives Spiel | K3C als ein Go-Programm mit Ebitengine: lokal, 1–2 Spieler, Simulation im selben Prozess, ohne Server, Netz und Browser (Modul `native/k3c-game`). | Entscheidung 008, B-775 |
 | Niederlage-Modus | Raum-Option für den Fall einer Burg: Gold/Material-Verlust, Stufenverlust oder Komplett verloren (`defeat`: `resources`, `stage`, `lost`). | `rules/stufen.md` § 4 |
 | Oberwelt | Die Stufe der Tiefe 0, der Wald. | `rules/stufen.md` § 1 |
 | Orakel (Port-Orakel) | Der lauffähige Go-Server samt Golden-Dateien und Trace-Golden: Er liefert die Sollwerte, an denen jede Port-Etappe des Rust-Servers bitgleich gemessen wird. | B-736 |
@@ -284,7 +286,9 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Workshop | Session-Typ (meist `Agent: Mensch`), in dem 🧑 Regeln oder Werte beschließt (z. B. R2.2, F1.4). | `vorlagen/session.md`, `rules/` (Köpfe) |
 | Zahlziel | Ort, an dem Münzen per A-Halten etwas bezahlen: Bauplatz, Burg (Hub-Ausbau), Angebots-Anhang, Händler „Kaufen“/„Verkaufen“. Zahlziele halten ≥ 4 Units Abstand zueinander. | Q34, Q44, Q57, W0 › AC-04 |
 | Zaubertum | Turm der Material-Stufe 5: Flächenschaden (40 Schaden, Radius 3, Reichweite 13, alle 1,5 s) statt Bogen; die Schützen steigen ab. | `rules/materialien-gebaeude.md` § 3.1, Q31 |
+| Zeichner | Baustein eines Fachpakets im nativen Spiel, der eine feste Zeichen-Ebene je Zelle aus dem Frame zeichnet (`view.Drawer`); er rechnet keinen Spielzustand. | `native/k3c-game/view`, B-792 |
 | Zeitleiste | Puffer der empfangenen Zustände im Client: gezeichnet wird zur geschätzten Server-Zeit minus der Verzögerung, zwischen zwei Zuständen interpoliert; Stufenwechsel leert sie. | B-277, `src/online/clientTimeline.ts` |
+| Zelle | Bildausschnitt eines Spielers im nativen Spiel (Split-Screen): oben zwei Drittel Welt, unten ein Drittel Fluss, mit eigener Kamera. | `native/k3c-game/view`, B-792 |
 | Ziel-Palette | Feste Farbliste, auf die jede Grafik umgerechnet wird; festgelegt in der Stil-Bibel. | B-331 |
 | Ziel-Ticket | Ticket eines Projekts, das das Thema als Ganzes beschreibt (Feld `Ziel-Tickets` der Projekt-Datei, z. B. B-099 bei BAL); es wird eingeplant wie jedes Ticket und gibt dem Projekt sein Ziel. | `arbeitsweise.md` › Projekte und Rang, `vorlagen/projekt.md` |
 | Zielkorridor | Kennzahl mit Unter- und Obergrenze im Standardszenario; Pass/Fail für das Balancing. | `rules/zielkorridore.md` |

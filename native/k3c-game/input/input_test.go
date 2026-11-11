@@ -36,6 +36,25 @@ func TestCommandOf(t *testing.T) {
 	}
 }
 
+// View + Menu gemeinsam löst ActionHome einmal aus: beim Druck der zweiten Taste, nicht beim Halten, nicht allein.
+func TestHomeChord(t *testing.T) {
+	cases := []struct {
+		heldView, heldMenu, justView, justMenu, want bool
+	}{
+		{true, true, true, false, true},
+		{true, true, false, true, true},
+		{true, true, true, true, true},
+		{true, true, false, false, false},
+		{true, false, true, false, false},
+		{false, true, false, true, false},
+	}
+	for i, c := range cases {
+		if got := HomeChord(c.heldView, c.heldMenu, c.justView, c.justMenu); got != c.want {
+			t.Errorf("Fall %d: %v", i, got)
+		}
+	}
+}
+
 func padHeld(bs ...ebiten.StandardGamepadButton) func(ebiten.StandardGamepadButton) bool {
 	return func(b ebiten.StandardGamepadButton) bool {
 		for _, h := range bs {

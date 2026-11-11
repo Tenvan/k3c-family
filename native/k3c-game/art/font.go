@@ -45,7 +45,7 @@ func LoadFont(path string, strict bool) (*Font, error) {
 	}
 	src, err := text.NewGoTextFaceSource(bytes.NewReader(data))
 	if err != nil {
-		return nil, fmt.Errorf("Schrift kaputt: %s (%w)", path, err)
+		return nil, fmt.Errorf("%s: Schrift kaputt (%w)", path, err)
 	}
 	return &Font{Path: path, src: src, faces: map[float64]*text.GoTextFace{}}, nil
 }
