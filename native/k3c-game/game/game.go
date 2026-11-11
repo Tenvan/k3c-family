@@ -111,11 +111,12 @@ func (g *Game) Update() error {
 	return nil
 }
 
-// advance liest die Eingabe, bedient Menü bzw. Spiel, taktet die Simulation einmal und bereitet den Frame vor:
+// advance liest die Eingabe, schaltet bei ActionFullscreen das Vollbild um, bedient Menü bzw. Spiel, taktet die Simulation einmal und bereitet den Frame vor:
 // Geräte, Grafik der Level, Kameras, Vollbild, dann die Listener.
 func (g *Game) advance() {
 	in := g.src.Poll()
 	g.cues = g.devs.observe(in, g.frame.Seats, g.cues)
+	g.toggleFullscreen(in)
 	if top := g.stack.Top(); top != nil {
 		g.step(top.Update(in, g.sim))
 	} else {
@@ -133,6 +134,23 @@ func (g *Game) advance() {
 	g.applyFullscreen()
 	for _, l := range g.parts.Listeners {
 		l.Listen(&g.frame)
+	}
+}
+
+// toggleFullscreen kehrt bei ActionFullscreen eines Geräts (Menü und Spiel) das Vollbild der Einstellungen um
+// (Session.SetSettings; applyFullscreen wendet es im nächsten Schritt an). Nicht im Aufnahme-Modus und nicht vor dem
+// ersten Frame (dessen Settings sind noch leer, sonst gingen Lautstärken und Sprache verloren).
+func (g *Game) toggleFullscreen(in view.Input) {
+	if g.args.Shots != "" || g.frame.Settings.Language == "" {
+		return
+	}
+	if _, ok := in.Has(view.ActionFullscreen); !ok {
+		return
+	}
+	s := g.frame.Settings
+	s.Fullscreen = !s.Fullscreen
+	if err := g.sim.SetSettings(s); err != nil {
+		slog.Warn("💥 Einstellungen nicht gespeichert", "err", err)
 	}
 }
 

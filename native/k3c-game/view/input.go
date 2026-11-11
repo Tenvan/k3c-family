@@ -68,6 +68,11 @@ const (
 	ActionPrevPage // LB / Q
 	ActionNextPage // RB / E
 	ActionHome     // View + Menu gemeinsam / Pos1: zurück ins Menü (im Spiel wie ActionMenu; in Menüs wertet der Screen sie aus)
+	// ActionSkillMenu öffnet das Skill-Menü im Spiel (Steuerkreuz ↓ / K / Num 5, wie src/input/slotBindings.ts).
+	// input kennt Spiel und Menü nicht: Steuerkreuz ↓ liefert immer ActionDown und ActionSkillMenu. Nur das Overlay
+	// (hud) wertet ActionSkillMenu aus, also nur im Spiel; Menüs und Overlays mit offenem Menü nehmen ActionDown.
+	ActionSkillMenu
+	ActionFullscreen // F / rechter Stick gedrückt: Vollbild umschalten (game über Session.SetSettings, nicht im Aufnahme-Modus)
 )
 
 // DeviceInput ist die Eingabe eines verbundenen Geräts in einem Update.

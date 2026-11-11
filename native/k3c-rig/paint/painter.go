@@ -11,10 +11,13 @@ import (
 	"k3c/native/k3c-rig/rig"
 )
 
-// Painter zeichnet in ein Ziel (Dst); View bildet Welt-Einheiten auf Bildpunkte ab. Die Puffer werden wiederverwendet.
+// Painter zeichnet in ein Ziel (Dst); View bildet Welt-Einheiten auf Bildpunkte ab. Alpha ist die Deckkraft 0..1 der
+// ganzen Figur (Teile, Bänder, Zügel; NewPainter setzt 1). Jedes Teil wird einzeln mit Alpha gezeichnet: Wo sich Teile
+// überlappen, scheint das hintere durch (anders als ein ganzes Sheet mit Alpha). Die Puffer werden wiederverwendet.
 type Painter struct {
 	Dst   *ebiten.Image
 	View  rig.M
+	Alpha float64
 	white *ebiten.Image
 	verts []ebiten.Vertex
 	idx   []uint16
@@ -25,7 +28,7 @@ type Painter struct {
 }
 
 func NewPainter(white *ebiten.Image) *Painter {
-	p := &Painter{white: white, View: rig.Identity}
+	p := &Painter{white: white, View: rig.Identity, Alpha: 1}
 	p.op.Filter = ebiten.FilterLinear
 	p.tri.Filter = ebiten.FilterLinear
 	// Ohne Mipmaps wie Sheets und Fluss: Ebitengine legt sie sonst erst beim ersten verkleinerten Zeichnen an (Ruckler,
@@ -44,6 +47,8 @@ func (p *Painter) image(img *ebiten.Image, m rig.M, offset rig.Point, density fl
 	p.op.GeoM.SetElement(1, 1, f[3])
 	p.op.GeoM.SetElement(0, 2, f[4])
 	p.op.GeoM.SetElement(1, 2, f[5])
+	p.op.ColorScale.Reset()
+	p.op.ColorScale.ScaleAlpha(p.alpha())
 	p.Dst.DrawImage(img, &p.op)
 }
 
@@ -52,10 +57,11 @@ func (p *Painter) band(img *ebiten.Image, b *rig.Band, pts []rig.Point, m rig.M,
 	p.strip = b.Strip(pts, density, p.strip)
 	f := rig.Mul(p.View, m)
 	p.verts, p.idx = p.verts[:0], p.idx[:0]
+	al := p.alpha() // Ecken-Farben nicht vormultipliziert: Alpha allein genügt
 	for i, v := range p.strip {
 		at := f.Apply(rig.Point{v.X, v.Y})
 		p.verts = append(p.verts, ebiten.Vertex{DstX: float32(at[0]), DstY: float32(at[1]), SrcX: float32(v.U), SrcY: float32(v.V),
-			ColorR: 1, ColorG: 1, ColorB: 1, ColorA: 1})
+			ColorR: 1, ColorG: 1, ColorB: 1, ColorA: al})
 		if i >= 2 && i%2 == 0 {
 			k := uint16(i)
 			p.idx = append(p.idx, k-2, k-1, k, k-1, k+1, k)
@@ -77,7 +83,7 @@ func (p *Painter) curve(a, c, b rig.Point, width float64, col color.RGBA, opacit
 	}
 	half := width / 2 * math.Hypot(p.View[0], p.View[1])
 	// Ecken-Farben sind nicht vormultipliziert (Standard von DrawTriangles)
-	r, g, bl, al := float32(col.R)/255, float32(col.G)/255, float32(col.B)/255, float32(opacity)
+	r, g, bl, al := float32(col.R)/255, float32(col.G)/255, float32(col.B)/255, float32(opacity)*p.alpha()
 	p.verts, p.idx = p.verts[:0], p.idx[:0]
 	for i, q := range p.pts {
 		prev, next := p.pts[max(i-1, 0)], p.pts[min(i+1, len(p.pts)-1)]
@@ -106,6 +112,14 @@ func (p *Painter) curve(a, c, b rig.Point, width float64, col color.RGBA, opacit
 	}
 	p.tri.AntiAlias = false
 	p.Dst.DrawTriangles(p.verts, p.idx, p.white, &p.tri)
+}
+
+// alpha liefert die Deckkraft begrenzt auf 0..1 (NaN = 1).
+func (p *Painter) alpha() float32 {
+	if math.IsNaN(p.Alpha) {
+		return 1
+	}
+	return float32(math.Max(0, math.Min(1, p.Alpha)))
 }
 
 // parseColor liest #rrggbb; alles andere ergibt Schwarz.

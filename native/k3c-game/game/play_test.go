@@ -15,6 +15,7 @@ type fakeSim struct {
 	joins   []view.DeviceID
 	paused  bool
 	learned []string
+	set     []view.Settings
 }
 
 func newFakeSim() *fakeSim { return &fakeSim{cmds: map[int]view.Command{}} }
@@ -31,7 +32,7 @@ func (s *fakeSim) Pause(on bool)                       { s.paused = on }
 func (s *fakeSim) Join(d view.DeviceID) (int, error)   { s.joins = append(s.joins, d); return 1, nil }
 func (s *fakeSim) Leave(int) error                     { return nil }
 func (s *fakeSim) Respec(int) error                    { return nil }
-func (s *fakeSim) SetSettings(view.Settings) error     { return nil }
+func (s *fakeSim) SetSettings(v view.Settings) error   { s.set = append(s.set, v); return nil }
 func (s *fakeSim) Step() view.Frame                    { return view.Frame{} }
 func (s *fakeSim) Command(p int, c view.Command) error { s.cmds[p] = c; return nil }
 func (s *fakeSim) Learn(p int, skill string) error     { s.learned = append(s.learned, skill); return nil }
@@ -129,5 +130,30 @@ func TestPlayRebindsLostPad(t *testing.T) {
 	}
 	if len(g.cues) != 2 || g.cues[0].Kind != view.CueDeviceConnected || g.cues[1].Kind != view.CueDeviceLost {
 		t.Errorf("Cues %+v", g.cues)
+	}
+}
+
+// ActionFullscreen kehrt das Vollbild der Einstellungen um und lässt den Rest stehen; nicht im Aufnahme-Modus und nicht
+// ohne Frame (leere Einstellungen).
+func TestFullscreenToggles(t *testing.T) {
+	s := newFakeSim()
+	g := playGame(s)
+	in := view.Input{Devices: []view.DeviceInput{press(pad3, view.Command{}, view.ActionFullscreen)}}
+	g.toggleFullscreen(in)
+	if len(s.set) != 0 {
+		t.Fatalf("ohne Frame umgeschaltet: %+v", s.set)
+	}
+	g.frame.Settings = view.Settings{Music: 0.5, Effects: 1, Language: view.LanguageEnglish}
+	g.toggleFullscreen(view.Input{Devices: []view.DeviceInput{press(pad3, view.Command{}, view.ActionDown)}})
+	g.toggleFullscreen(in)
+	want := g.frame.Settings
+	want.Fullscreen = true
+	if len(s.set) != 1 || s.set[0] != want {
+		t.Errorf("Vollbild an: %+v, erwartet %+v", s.set, want)
+	}
+	g.args.Shots = "reports/x"
+	g.toggleFullscreen(in)
+	if len(s.set) != 1 {
+		t.Errorf("im Aufnahme-Modus umgeschaltet: %+v", s.set)
 	}
 }
