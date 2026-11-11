@@ -121,6 +121,7 @@ func chosen(biome string) []look {
 }
 
 func TestJedeGewaehlteGrafikLiegtVorUndIstGemeldet(t *testing.T) {
+	needGrafik(t)
 	for _, biome := range []string{"forest", "cave", "mine", "ironhold", "crystal"} {
 		listed := levelAssets(biome)
 		for _, l := range chosen(biome) {

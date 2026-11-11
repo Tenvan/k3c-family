@@ -2,6 +2,8 @@ package props
 
 import (
 	"image"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -44,6 +46,15 @@ func (f fakeSheets) read(asset, anim string) *art.Sheet {
 
 const grafikDir = "../../../public/grafik"
 
+// needGrafik überspringt Tests, die gerenderte Papier-Grafik brauchen. PNG und manifest.json sind nicht eingecheckt
+// (B-737); `task gen:paper` erzeugt sie, die CI rendert sie nicht.
+func needGrafik(t *testing.T) {
+	t.Helper()
+	if _, err := os.Stat(filepath.Join(grafikDir, "objekte", "tanne", "manifest.json")); err != nil {
+		t.Skip("gerenderte Grafik fehlt (task gen:paper)")
+	}
+}
+
 // island baut eine Insel mit einer Stufe (Wald) für Testfälle.
 func island(t *testing.T) *sim.World {
 	t.Helper()
@@ -69,6 +80,7 @@ func assetsOf(items []item) []string {
 }
 
 func TestPlanBurgUndPlaetzeAusDerSimulation(t *testing.T) {
+	needGrafik(t)
 	w := island(t)
 	d := New(nil).(*drawer)
 	d.plan = newPlanner(newFake())
@@ -82,6 +94,7 @@ func TestPlanBurgUndPlaetzeAusDerSimulation(t *testing.T) {
 }
 
 func TestPlanGebauteStufenSchadenUndRuine(t *testing.T) {
+	needGrafik(t)
 	w := island(t)
 	p := newPlanner(newFake())
 	var wall *sim.Site
@@ -145,6 +158,7 @@ func TestPlanNurSichtbares(t *testing.T) {
 }
 
 func TestPlanBaustelleMitPreisUndGeruest(t *testing.T) {
+	needGrafik(t)
 	w := island(t)
 	p := newPlanner(newFake())
 	info := &stageInfo{}
