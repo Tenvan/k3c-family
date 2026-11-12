@@ -9,6 +9,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 
+	"k3c/engine/sim"
 	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/view"
 )
@@ -22,43 +23,65 @@ func (d *drawer) Draw(dst *ebiten.Image, f *view.Frame, c view.Cell) {
 	if w == nil || !ok {
 		return
 	}
+	if d.ink == nil {
+		d.ink = newInk()
+	}
 	for _, t := range w.Troops {
-		d.drawFigure(dst, c, key{s.Stage, classTroop, t.ID}, t.X)
+		if fg := d.drawFigure(dst, c, key{s.Stage, classTroop, t.ID}, t.X); fg != nil {
+			d.troopMarks(dst, c, fg, t)
+		}
 	}
 	for _, e := range w.Enemies {
-		d.drawFigure(dst, c, key{s.Stage, classEnemy, e.ID}, e.X)
+		if fg := d.drawFigure(dst, c, key{s.Stage, classEnemy, e.ID}, e.X); fg != nil {
+			d.enemyMarks(dst, c, fg, e)
+		}
 	}
+	d.drawPlayers(dst, f, c, s.Stage, w)
+}
+
+// drawPlayers zeichnet die Monarchen der Zelle: Punkt, Figur, Balken. Freie Monarchen (kein Platz in Frame.Seats)
+// bleiben unsichtbar.
+func (d *drawer) drawPlayers(dst *ebiten.Image, f *view.Frame, c view.Cell, stage int, w *sim.World) {
 	for _, p := range w.Players {
-		if p != nil {
-			d.drawFigure(dst, c, key{s.Stage, classPlayer, p.ID}, p.X)
+		if p == nil || !Seated(f.Seats, p.Index) {
+			continue
+		}
+		k := key{stage, classPlayer, p.ID}
+		if fg := d.figs[k]; fg != nil && !fg.broken {
+			d.playerMarker(dst, c, fg, p)
+		}
+		if fg := d.drawFigure(dst, c, k, p.X); fg != nil {
+			d.playerBarMark(dst, c, fg, p)
 		}
 	}
 }
 
-// drawFigure zeichnet die Figur k mit Fußpunkt bei Welt-x x, wenn sie in die Zelle ragt.
-func (d *drawer) drawFigure(dst *ebiten.Image, c view.Cell, k key, x float64) {
+// drawFigure zeichnet die Figur k mit Fußpunkt bei Welt-x x, wenn sie in die Zelle ragt. Rückgabe: die Figur, wenn sie
+// zeichenbar ist (für ihre Anzeigen, auch außerhalb der Zelle), sonst nil (unbekannt, Rig fehlt, noch ohne Pose).
+func (d *drawer) drawFigure(dst *ebiten.Image, c view.Cell, k key, x float64) *figure {
 	fg := d.figs[k]
 	if fg == nil || fg.broken {
-		return
+		return nil
 	}
 	y := c.ScreenY(fg.lift)
 	if fg.actor == nil {
 		d.drawSheet(dst, c.Camera, fg, x, y)
-		return
+		return fg
 	}
 	if d.painter == nil {
-		return
+		return nil
 	}
 	size, frame := rigSize(fg)
 	if !c.Camera.Visible(x, (math.Abs(frame[0])+math.Abs(frame[2]))*size) {
-		return
+		return fg
 	}
 	if !fg.posed {
-		return // noch ohne Pose aus Listen oder Pose fehlerhaft (gemeldet)
+		return nil // noch ohne Pose aus Listen oder Pose fehlerhaft (gemeldet)
 	}
 	d.painter.Dst, d.painter.Alpha = dst, fg.alpha
 	d.painter.View = art.RigView(c.Camera, x, y, size, frame, fg.left)
 	fg.actor.Draw(d.painter)
+	return fg
 }
 
 // rigSize liefert Welt-Units je Rig-Einheit (Spielhöhe / Rahmenhöhe der eigenen Figur; beritten bleibt der Maßstab

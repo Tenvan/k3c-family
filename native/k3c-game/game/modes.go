@@ -7,8 +7,11 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"slices"
 	"strconv"
 	"strings"
+
+	"k3c/native/k3c-game/view"
 )
 
 // Measure sind die Schalter des Messmodus (measure.go): Fenster in Echtzeit, Aufwärmen, dann Messen, Bericht als JSON.
@@ -19,6 +22,10 @@ type Measure struct {
 	NoVsync bool    // VSync aus (Bildrate unbegrenzt)
 }
 
+// Prüf-Schalter für Fehler-, Lade- und Leistungsanzeige (NG14): --grafik (anderer Grafik-Ordner, z. B. ein leerer, um
+// die Fehlermeldung zu sehen), --river und --stats (wie F3 und F2, gespeichert in den Einstellungen des Ordners
+// --saves), --stall (nur mit --shots: dauerhaft die Ladeanzeige).
+
 // addModeFlags bindet die Schalter der Abnahme-Modi.
 func addModeFlags(fs *flag.FlagSet, a *Args, r *rawArgs) {
 	fs.BoolVar(&a.Flow, "flow", false, "")
@@ -28,6 +35,10 @@ func addModeFlags(fs *flag.FlagSet, a *Args, r *rawArgs) {
 	fs.StringVar(&a.Measure.Report, "report", "", "")
 	fs.BoolVar(&a.Measure.NoVsync, "novsync", false, "")
 	fs.BoolVar(&a.Assets, "assets", false, "")
+	fs.StringVar(&a.Grafik, "grafik", "", "")
+	fs.StringVar(&a.River, "river", "", "")
+	fs.BoolVar(&a.Stats, "stats", false, "")
+	fs.BoolVar(&a.Stall, "stall", false, "")
 }
 
 // applyAt liest „t,t,…“ (streng aufsteigend, ab 0): der erste Takt ist der Vorlauf, die Zahl der Takte die der Bilder.
@@ -57,6 +68,10 @@ func (a Args) checkModes() error {
 		return errors.New("🚫 --measure und --warmup ab 0 Sekunden")
 	case a.Measure.Seconds > 0 && a.Shots != "":
 		return errors.New("🚫 --measure und --shots schließen sich aus")
+	case a.River != "" && !slices.Contains([]string{view.RiverShader, view.RiverTiles}, a.River):
+		return fmt.Errorf("🚫 --river %q: %s oder %s", a.River, view.RiverShader, view.RiverTiles)
+	case a.Stall && a.Shots == "":
+		return errors.New("🚫 --stall nur mit --shots")
 	}
 	return nil
 }

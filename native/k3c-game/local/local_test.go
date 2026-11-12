@@ -4,7 +4,9 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"slices"
+	"strings"
 	"testing"
 	"time"
 
@@ -212,7 +214,8 @@ func TestJoinLeave(t *testing.T) {
 	}
 }
 
-// Ein Panic im Takt schließt das Spiel ohne Speichern, meldet CueError, der letzte Spielstand bleibt.
+// Ein Panic im Takt schließt das Spiel ohne Speichern, meldet CueError mit dem Panic, der letzte Spielstand bleibt;
+// der Raum selbst ist geschlossen und speichert nicht mehr (room.SafeTick, B-803/AC-01).
 func TestPanicInTick(t *testing.T) {
 	dir := t.TempDir()
 	s := testSession(t, dir)
@@ -228,9 +231,14 @@ func TestPanicInTick(t *testing.T) {
 		t.Fatal(err)
 	}
 	s.p.onState = func() { panic("kaputt") }
+	r := s.r
 	f := s.Step()
-	if s.Active() || !hasCue(f, view.CueError) {
+	crashed := func(c view.Cue) bool { return c.Kind == view.CueError && strings.HasSuffix(c.Text, "kaputt") }
+	if s.Active() || !slices.ContainsFunc(f.Cues, crashed) {
 		t.Fatalf("nach Panic aktiv %v, Cues %+v", s.Active(), f.Cues)
+	}
+	if _, err := r.SaveNow(); !r.Closed() || !errors.Is(err, room.ErrClosed) {
+		t.Errorf("Raum nach Panic geschlossen %v, SaveNow %v", r.Closed(), err)
 	}
 	after, _ := s.saves.Load("absturz")
 	if string(after) != string(before) {

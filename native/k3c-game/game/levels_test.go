@@ -67,7 +67,7 @@ func (l *loader) SetLevels(want map[string][]string) error {
 	return l.fail
 }
 
-// Die Schleife lädt nur, wenn sich die Level ändern; ein Fehler beendet das Programm.
+// Die Schleife lädt nur, wenn sich die Level ändern; ein Fehler (fehlende Grafik) wird im Fenster gemeldet (B-810).
 func TestLoadLevels(t *testing.T) {
 	ld := &loader{}
 	g := &Game{parts: Parts{Art: ld, Assets: []view.AssetSource{assetsOf{"wald": {"a/b"}}}}}
@@ -83,7 +83,7 @@ func TestLoadLevels(t *testing.T) {
 	}
 	ld.fail = errors.New("fehlende Grafik")
 	g.frame.Stages = stages("mine")
-	if g.loadLevels(); g.err == nil || len(g.levels) != 0 {
-		t.Errorf("Fehler nicht gemeldet: %v %v", g.err, g.levels)
+	if g.loadLevels(); g.Fault() == nil || g.err != nil || len(g.levels) != 0 {
+		t.Errorf("Fehler nicht im Fenster gemeldet: %v %v %v", g.Fault(), g.err, g.levels)
 	}
 }

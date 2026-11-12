@@ -43,15 +43,15 @@ func WantedAssets(stages []view.Stage, sources []view.AssetSource) map[string][]
 	return want
 }
 
-// loadLevels lädt die Grafik, sobald sich die Level in Frame.Stages ändern; ein Fehler (fehlende Grafik) beendet
-// das Programm über Update.
+// loadLevels lädt die Grafik, sobald sich die Level in Frame.Stages ändern; ein Fehler (fehlende Grafik) zeigt die
+// Schleife im Fenster (fail, B-810) statt still zu beenden.
 func (g *Game) loadLevels() {
 	if g.parts.Art == nil || SameLevels(g.levels, g.frame.Stages) {
 		return
 	}
 	want := WantedAssets(g.frame.Stages, g.parts.Assets)
 	if err := g.parts.Art.SetLevels(want); err != nil {
-		g.err = err
+		g.fail(err)
 		return
 	}
 	g.levels = g.levels[:0]

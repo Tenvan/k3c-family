@@ -173,10 +173,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-788](B-788-check-run-teilaufgaben-sim-sperre.md) | DEV | Schuld | mittel | offen | – | check_run kennt die Teilaufgaben von check:diff, sim_test und sim_run lehnen während der Sperre ab |
 | [B-790](B-790-prototyp-shader-wasser.md) | CLI | Frage | mittel | eingeplant | NG11 | Ein vierter Prototyp zeigt, was Shader in Ebitengine für Wasser und Papier-Effekte bringen |
 | [B-802](B-802-native-zusammenfuehrung-abnahme.md) | CLI | Idee | hoch | eingeplant | NG9 | Das native Spiel läuft von Start bis Spielstand durch, ist gemessen und am PC abgenommen |
-| [B-803](B-803-room-absturzbehandlung-exportieren.md) | SRV | Schuld | niedrig | eingeplant | NG16 | Ein Raum bietet seine Absturzbehandlung und den Grund abgelehnter Skill-Befehle nach außen an |
 | [B-804](B-804-paper-reittier-suche-und-wolf-pfote.md) | PAP | Problem | mittel | eingeplant | NG17 | tools/paper findet für das Reittier Wolf das Reittier statt des Gegners, Gegner-Wölfe haben Pfoten |
 | [B-805](B-805-native-ton-geraetefehler-abfangen.md) | CLI | Problem | mittel | eingeplant | NG15 | Ein Fehler des Ton-Geräts beendet das native Spiel nicht mehr |
-| [B-806](B-806-native-figuren-anzeigen.md) | CLI | Problem | mittel | eingeplant | NG12 | Das native Spiel zeigt Lebensbalken, Beute-Gold, Monarchen-Punkt und Last wie der Browser-Client |
 | [B-807](B-807-native-tastenbelegung-pausemenue.md) | CLI | Problem | mittel | eingeplant | NG13 | Das Pause-Menü des nativen Spiels zeigt die Tastenbelegung |
 | [B-808](B-808-native-info-lizenzen-version.md) | CLI | Schuld | mittel | eingeplant | NG13 | Das native Spiel zeigt Lizenzen und Version und liefert die Lizenzdatei im Paket mit |
 | [B-809](B-809-native-optionen-blitze-anleitung.md) | CLI | Idee | niedrig | eingeplant | NG13 | Die Optionen des nativen Spiels bieten Blitze und Anleitung an und merken sich „Anleitung gesehen“ |
@@ -184,9 +182,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-811](B-811-native-darstellungs-kleinteile.md) | CLI | Problem | niedrig | eingeplant | NG12 | Plantagen-Bäume, gegnerische Geschosse und die Anleitung sehen im nativen Spiel aus wie im Browser-Client |
 | [B-812](B-812-native-menue-papierschnitt.md) | CLI | Idee | niedrig | eingeplant | NG13 | Das Menü des nativen Spiels erscheint im Papierschnitt-Stil mit Illustrationen |
 | [B-813](B-813-native-hud-menue-befunde-ng9.md) | CLI | Problem | mittel | eingeplant | NG13 | Burgfall-Banner, Skill-Menü, Hauptmenü nach dem Verlassen und Siegmeldung zeigen im nativen Spiel das Richtige |
-| [B-814](B-814-monarchen-nach-laden-position.md) | SIM | Frage | mittel | eingeplant | NG16 | Geklärt ist, warum Monarchen nach dem Laden an der Burg statt an ihrer gespeicherten Stelle stehen |
-| [B-815](B-815-native-schrift-ofl.md) | PAP | Schuld | hoch | eingeplant | NG18 | Das native Spiel zeichnet mit einer freien OFL-Schrift statt der Debug-Schrift |
-| [B-816](B-816-native-shader-umschalter-leistungsanzeige.md) | CLI | Idee | niedrig | eingeplant | NG14 | Fluss-Shader und Kacheln lassen sich im Spiel umschalten, Bildrate und Rechenzeit sind im Bild sichtbar |
 | [B-818](B-818-native-menue-kachel-illustrationen.md) | CLI | Idee | niedrig | offen | – | Hauptmenü und Pause-Menü des nativen Spiels zeigen Kacheln mit Illustrationen |
 
 ## Archiv
@@ -779,3 +774,8 @@ Zeile in diesen Abschnitt.
 | [B-801](archiv/B-801-native-ton.md) | CLI | Idee | mittel | erledigt | NG8 | Das native Spiel spielt Klänge und Musik zu den Ereignissen wie der Browser-Client |
 | [B-779](archiv/B-779-rust-und-bevy-entfernen.md) | INF | Schuld | mittel | erledigt | NG10 | Rust und der Bevy-Prototyp sind aus dem Repo entfernt, das Projekt ist rein Go |
 | [B-817](archiv/B-817-abnahme-laeufe-nat.md) | CLI | Schuld | mittel | erledigt | – | Abnahme-Läufe NAT |
+| [B-814](archiv/B-814-monarchen-nach-laden-position.md) | SIM | Frage | mittel | verworfen | NG16 | Geklärt ist, warum Monarchen nach dem Laden an der Burg statt an ihrer gespeicherten Stelle stehen |
+| [B-803](archiv/B-803-room-absturzbehandlung-exportieren.md) | SRV | Schuld | niedrig | erledigt | NG16 | Ein Raum bietet seine Absturzbehandlung und den Grund abgelehnter Skill-Befehle nach außen an |
+| [B-806](archiv/B-806-native-figuren-anzeigen.md) | CLI | Problem | mittel | erledigt | NG12 | Das native Spiel zeigt Lebensbalken, Beute-Gold, Monarchen-Punkt und Last wie der Browser-Client |
+| [B-815](archiv/B-815-native-schrift-ofl.md) | PAP | Schuld | hoch | erledigt | NG18 | Das native Spiel zeichnet mit einer freien OFL-Schrift statt der Debug-Schrift |
+| [B-816](archiv/B-816-native-shader-umschalter-leistungsanzeige.md) | CLI | Idee | niedrig | erledigt | NG14 | Fluss-Shader und Kacheln lassen sich im Spiel umschalten, Bildrate und Rechenzeit sind im Bild sichtbar |

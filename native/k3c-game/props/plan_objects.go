@@ -20,23 +20,40 @@ func (p *planner) plantation(w *sim.World, k view.Camera) {
 		}
 		for i := range pl.Slots {
 			x := plotX(s.X, i, pl.Slots, pl.StripUnits)
-			l := seedlingLook
-			if treeAt(w.Nodes, x) {
-				l = plantTreeLook
+			if n := treeAt(w.Nodes, x); n != nil {
+				p.felledTree(n, x)
+				continue
 			}
-			p.sprite(l, x, 0, animPhase(x, 8))
+			p.sprite(seedlingLook, x, 0, animPhase(x, 8))
 		}
 	}
 }
 
-// treeAt meldet, ob ein Baum-Knoten auf dem Platz x steht.
-func treeAt(nodes []*sim.ResourceNode, x float64) bool {
+// felledTree: niedrige Pappel auf dem Platz; beim Fällen schrumpft sie und der Balken läuft (worldRenderer.ts ›
+// updateNode, wie bei den Waldbäumen in nodes).
+func (p *planner) felledTree(n *sim.ResourceNode, x float64) {
+	_, h, ok := p.size(plantTreeLook)
+	if !ok {
+		return
+	}
+	p.body = append(p.body, item{shape: shapeSprite, look: plantTreeLook, x: x, phase: animPhase(x, 8), sy: fellShrink(n.Progress)})
+	if n.Progress > 0 {
+		p.bar(x, min(h, pennantMax)+px(28), px(50), n.Progress, gold)
+	}
+}
+
+// fellShrink ist der vertikale Maßstab eines Baums beim Fällen: bis zu 30 % niedriger (worldRenderer.ts ›
+// updateNode: setScale(1, 1 - progress * 0.3)).
+func fellShrink(progress float64) float64 { return 1 - progress*0.3 }
+
+// treeAt liefert den Baum-Knoten, der auf dem Platz x steht (nil: keiner).
+func treeAt(nodes []*sim.ResourceNode, x float64) *sim.ResourceNode {
 	for _, n := range nodes {
 		if n.Kind == "tree" && math.Abs(n.X-x) < plotTolerance {
-			return true
+			return n
 		}
 	}
-	return false
+	return nil
 }
 
 // pickups: Truhen geschlossen, Sterne darüber; aufgehobene Truhen kurz offen.

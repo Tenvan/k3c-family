@@ -24,6 +24,7 @@ type drawer struct {
 	lib     *art.Library
 	cat     *Catalog
 	painter *art.Painter
+	ink     *ink // Vorlagen der Anzeigen, beim ersten Zeichnen angelegt (markdraw.go)
 	figs    map[key]*figure
 	gen     uint64
 	now     float64 // Darstellungszeit in Sekunden (aus Frame.Clock, steht in der Pause)

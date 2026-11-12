@@ -179,3 +179,13 @@ func TestListenDeterministisch(t *testing.T) {
 		}
 	}
 }
+
+// Geschossfarbe nach Seite (worldRenderer.ts: team === 'player' ? weiß : 0xff4d6d).
+func TestGeschossFarbeNachSeite(t *testing.T) {
+	if got := projectileColor("enemy"); got != 0xff4d6d {
+		t.Errorf("Gegner: %#x, erwartet 0xff4d6d", got)
+	}
+	if got := projectileColor("player"); got != ownProjectile || got == enemyProjectile {
+		t.Errorf("eigene Geschosse unverändert: %#x", got)
+	}
+}

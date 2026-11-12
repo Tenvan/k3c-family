@@ -53,6 +53,7 @@ type figure struct {
 	shift  float64
 	lift   float64 // Fußpunkt über dem Boden in Units
 	alpha  float64
+	ui     float64 // Deckkraft der Anzeigen (Balken, Punkt, Gold): Container-Alpha des Browsers, ohne Sprite-Alpha
 	gen    uint64
 
 	known       bool // Vor-Zustand gesetzt
@@ -110,6 +111,7 @@ func (d *drawer) listenPlayers(st *view.Stage) {
 			fg.left = p.Facing < 0
 		}
 		fg.known, fg.x, fg.dead, fg.lift, fg.alpha = true, p.X, p.RespawnIn, 0, MonarchAlpha(p.StealthFor)
+		fg.ui = fg.alpha
 	}
 }
 
@@ -154,8 +156,10 @@ func (d *drawer) listenEnemy(stage int, e *sim.Enemy) {
 		fg.left = dir < 0
 	}
 	fg.known, fg.x, fg.cd, fg.lift, fg.alpha = true, e.X, e.Cooldown, look.Lift, look.Alpha
+	fg.ui = 1
 	if e.Fleeing {
 		fg.alpha *= fleeAlpha
+		fg.ui = fleeAlpha
 	}
 }
 
@@ -207,7 +211,7 @@ func onTower(w *sim.World, t *sim.Troop) bool {
 func (d *drawer) figure(k key, look Look, mounted bool) *figure {
 	fg := d.figs[k]
 	if fg == nil || fg.look != look {
-		fg = &figure{look: look, shift: Shift(k.id), alpha: look.Alpha}
+		fg = &figure{look: look, shift: Shift(k.id), alpha: look.Alpha, ui: 1}
 		if !look.Sheet {
 			fg.actor, fg.broken = d.newActor(look, mounted)
 		}

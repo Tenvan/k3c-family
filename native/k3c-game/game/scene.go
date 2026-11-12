@@ -68,6 +68,10 @@ type Args struct {
 	At      []int
 	Measure Measure // Messmodus (--measure, measure.go)
 	Assets  bool    // --assets: Grafik-Ordner aller Level ausgeben und beenden (Paket, assets.go)
+	Grafik  string  // --grafik: Grafik-Ordner statt public/grafik (leer = Standard)
+	River   string  // --river shader|tiles: Fluss-Fassung in die Einstellungen schreiben
+	Stats   bool    // --stats: Leistungsanzeige in die Einstellungen schreiben
+	Stall   bool    // --stall: dauerhaft die Ladeanzeige (nur Aufnahme-Modus)
 }
 
 // InGame meldet, ob das Menü der Szene über dem laufenden (pausierten) Spiel liegt.
@@ -91,7 +95,8 @@ func (s Scene) Devices() []view.DeviceID {
 const Usage = "k3c-game [--saves <ordner>] [--seed <s> | --load <name> | --flow] [--depth <n>] [--players 1|2] [--cam <x>[,<x>]] " +
 	"[--tick <n>] [--input <p@t=LRSPA1234-|a:aktion,…>] [--menu main|saves|options|lobby|pause] [--size <B>x<H>] " +
 	"[--shots <ordner> [--count <n>] [--every <takte>] [--at <t>,…]] " +
-	"[--measure <s> [--warmup <s>] [--report <datei>] [--novsync]] [--assets]"
+	"[--measure <s> [--warmup <s>] [--report <datei>] [--novsync]] [--assets] " +
+	"[--grafik <ordner>] [--river shader|tiles] [--stats] [--stall]"
 
 // rawArgs sind die Schalter, die erst nach dem Einlesen ausgewertet werden.
 type rawArgs struct{ cams, input, size, at string }

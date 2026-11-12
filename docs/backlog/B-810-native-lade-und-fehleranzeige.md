@@ -68,4 +68,4 @@ keine
 
 ## Notizen
 
-Gefunden in NG9 (2026-11-11). Verwandt, nicht blockierend: B-805.
+AC-03 geprüft in NG14.1 (2026-11-12): `game:build` baut ohne `-H=windowsgui`; PE-Subsystem 3 (Konsole), stderr bleibt sichtbar. Bei Doppelklick öffnet Windows nebenher ein Konsolenfenster.

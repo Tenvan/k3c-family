@@ -170,12 +170,26 @@ func (pt *painter) warn(dst *ebiten.Image, w *sim.World, c view.Cell) {
 	}
 }
 
-// projectiles: Pfeile und Geschosse als kurze helle Striche (Platzhalter wie NG1).
+// Farben der Geschosse (worldRenderer.ts: eigene 0xffffff, Gegner 0xff4d6d); die eigenen bleiben der helle Strich von NG1.
+const (
+	ownProjectile   = 0xfafaf0
+	enemyProjectile = 0xff4d6d
+)
+
+// projectileColor liefert die Farbe eines Geschosses nach Seite: Gegner rot, alles andere unverändert.
+func projectileColor(team string) uint32 {
+	if team == "enemy" {
+		return enemyProjectile
+	}
+	return ownProjectile
+}
+
+// projectiles: Pfeile und Geschosse als kurze Striche, Gegner rot (Platzhalter-Form wie NG1).
 func (pt *painter) projectiles(dst *ebiten.Image, w *sim.World, c view.Cell) {
 	k := c.Camera
 	for _, p := range w.Projectiles {
 		if p != nil && k.Visible(p.X, 0.3) {
-			pt.stamp(dst, pt.pixel, k.ScreenX(p.X-0.3), c.ScreenY(1.2), 0.6*k.Scale, 0.1*k.Scale, rgba(0xfafaf0, 1))
+			pt.stamp(dst, pt.pixel, k.ScreenX(p.X-0.3), c.ScreenY(1.2), 0.6*k.Scale, 0.1*k.Scale, rgba(projectileColor(p.Team), 1))
 		}
 	}
 }

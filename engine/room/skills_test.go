@@ -1,7 +1,9 @@
 package room
 
 import (
+	"errors"
 	"slices"
+	"strings"
 	"testing"
 
 	"k3c/engine/sim"
@@ -45,12 +47,12 @@ func TestSkillsLernen(t *testing.T) {
 		"fremder Slot":  r.Learn("a", p, 3, "taunt"),
 		"fremde Verb.":  r.Learn("a", &peer{}, 0, "taunt"),
 	} {
-		if err != ErrBadRequest {
+		if !errors.Is(err, ErrBadRequest) {
 			t.Errorf("%s: %v", name, err)
 		}
 	}
 	r.isl.SkillPool--
-	if err := r.Learn("a", p, 1, "iceWall"); err != ErrBadRequest {
+	if err := r.Learn("a", p, 1, "iceWall"); !errors.Is(err, ErrBadRequest) || reason(err) != `skill "iceWall": keine Punkte frei` {
 		t.Fatalf("ohne Punkte: %v", err)
 	}
 	if !slices.Equal(m0.Skills, before0) || len(m1.Skills) != r.isl.SkillPool {
@@ -66,7 +68,8 @@ func TestSkillsRespec(t *testing.T) {
 	r.isl.SkillPool = len(m0.Skills) + 1
 	ok(t, r.Learn("a", p, 0, "taunt"))
 	w.Cycle.Phase = "night"
-	if err := r.Respec("a", p, 0); err != ErrBadRequest || !slices.Contains(m0.Skills, "taunt") {
+	if err := r.Respec("a", p, 0); !errors.Is(err, ErrBadRequest) || !strings.HasPrefix(reason(err), "respec nur am Tag") ||
+		!slices.Contains(m0.Skills, "taunt") {
 		t.Fatalf("Nacht: %v, %v", err, m0.Skills)
 	}
 	w.Cycle.Phase = "day"
@@ -75,4 +78,26 @@ func TestSkillsRespec(t *testing.T) {
 	if len(m0.Skills) != 0 || len(m0.Slots) != 0 {
 		t.Fatalf("nach Respec: %v %v", m0.Skills, m0.Slots)
 	}
+}
+
+// B-803/AC-02: Eine Ablehnung der Sim trägt ihren Grund (SkillError), eine Ablehnung des Raums (fremder Slot) nicht.
+func TestSkillsGrund(t *testing.T) {
+	r, p, _ := devRoom(t)
+	m1 := islPlayer(t, r, r.devices["a"].slots[1])
+	r.isl.SkillPool = len(m1.Skills) // kein freier Punkt
+	if got := reason(r.Learn("a", p, 1, "fireball")); got != `skill "fireball": keine Punkte frei` {
+		t.Errorf("ohne Punkte: %q", got)
+	}
+	if err := r.Learn("a", p, 3, "fireball"); err != ErrBadRequest {
+		t.Errorf("fremder Slot: %v", err)
+	}
+}
+
+// reason ist der Grund eines SkillError, sonst leer.
+func reason(err error) string {
+	var se *SkillError
+	if errors.As(err, &se) {
+		return se.Reason
+	}
+	return ""
 }

@@ -150,3 +150,20 @@ func TestVersion2IsNotReadByCampaignParser(t *testing.T) {
 		t.Error("ParseSave (Raum) liest nur Version 1 und muss einen Stand der Version 2 ablehnen")
 	}
 }
+
+// B-814/AC-02: Die Stelle des Monarchen steht nicht im Spielstand; nach dem Laden steht er wie beim Beitritt an der Burg
+// seiner Stufe, nicht an der gespeicherten Stelle (gewollt, FromIslandSaveIn).
+func TestIslandSaveMonarchAnDerBurg(t *testing.T) {
+	isl := mustIsland(t, "stand-burg", []int{0, 1})
+	a, b := AddIslandPlayer(isl, 0), AddIslandPlayer(isl, 1)
+	homeA, homeB := a.X, b.X
+	a.X, b.X = isl.Stages[0].HubX+40, isl.Stages[1].HubX-25
+	loaded := loadIsland(t, saveJSON(t, isl.ToSave("x")))
+	for i, home := range []float64{homeA, homeB} {
+		w := loaded.Stages[loaded.StageOf(i)]
+		q := w.Players[0]
+		if q.Index != i || q.X != home || q.X != w.HubX+float64(2*i-1)*3 {
+			t.Errorf("Spieler %d nach dem Laden bei %v, erwartet die Burg bei %v", i, q.X, home)
+		}
+	}
+}

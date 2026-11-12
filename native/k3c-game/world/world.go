@@ -23,7 +23,8 @@ type World struct {
 	light  lightData
 	cams   cameras
 	river  riverTile
-	water  riverWater // Fluss mit Shader (K3C_RIVER, water.go)
+	water  riverWater // Fluss mit Shader (water.go)
+	start  riverMode  // Fassung ohne gewählte Einstellung (K3C_RIVER)
 	mesh   lightMesh
 	px     *ebiten.Image           // weißer Bildpunkt für Flächen (lazy, erst beim ersten Zeichnen)
 	op     ebiten.DrawImageOptions // Sheets und Fluss: linear, ohne Mipmaps
@@ -37,7 +38,8 @@ func New(lib *art.Library) []view.Drawer {
 	w := &World{lib: lib, looks: loadLooks(), light: loadLight()}
 	w.op.Filter = ebiten.FilterLinear
 	w.op.DisableMipmaps = true
-	w.water.init(riverModeOf(os.Getenv(riverEnv)), riverKage)
+	w.start = riverModeOf(os.Getenv(riverEnv))
+	w.water.init(w.start, riverKage)
 	return []view.Drawer{
 		far{w},
 		layerDrawer{w, view.LayerMid, w.drawMid},

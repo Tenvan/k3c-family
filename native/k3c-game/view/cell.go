@@ -80,6 +80,23 @@ func StatsRect(win image.Rectangle) image.Rectangle {
 // StatsTextSize ist die Größe des Textbilds der Anzeige vor der Vergrößerung (Debug-Schrift) und der Faktor.
 func StatsTextSize() (w, h, scale int) { return statsW, statsH, statsScale }
 
+// statsLine ist die Höhe einer weiteren Textzeile der Debug-Schrift in px.
+const statsLine = 16
+
+// StatsRectLines ist StatsRect mit lines Textzeilen (Leistungsanzeige, Settings.Stats: zwei Zeilen); die weiteren Zeilen
+// reichen nach unten über StatsRect hinaus. lines < 1 zählt als 1.
+func StatsRectLines(win image.Rectangle, lines int) image.Rectangle {
+	r := StatsRect(win)
+	r.Max.Y += (max(lines, 1) - 1) * statsLine * statsScale
+	return r
+}
+
+// StatsTextSizeLines ist StatsTextSize für lines Textzeilen.
+func StatsTextSizeLines(lines int) (w, h, scale int) {
+	w, h, scale = StatsTextSize()
+	return w, h + (max(lines, 1)-1)*statsLine, scale
+}
+
 // WindowCell ist die Zelle für LayerOverlay und Screens: das ganze Fenster, ohne Spieler.
 func WindowCell(win image.Rectangle) Cell {
 	return Cell{Index: -1, Player: -1, Rect: win, Camera: NewCamera(win, 0, 1)}

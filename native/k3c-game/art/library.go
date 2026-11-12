@@ -17,7 +17,8 @@ const (
 	DefaultFontPath  = "public/schrift/k3c.ttf"
 )
 
-// Config sagt, woher die Grafik kommt. RigDir leer = ohne Rig-Bibliothek (Tests). StrictFont: fehlende Schrift bricht ab.
+// Config sagt, woher die Grafik kommt. RigDir leer = ohne Rig-Bibliothek (Tests). StrictFont: fehlende Schrift bricht ab
+// (DefaultConfig: an, die Schrift liegt eingecheckt unter public/schrift).
 type Config struct {
 	GrafikDir, RigDir, FontPath string
 	StrictFont                  bool
@@ -25,7 +26,7 @@ type Config struct {
 
 // DefaultConfig liefert die Pfade im Repo.
 func DefaultConfig() Config {
-	return Config{GrafikDir: DefaultGrafikDir, RigDir: DefaultRigDir, FontPath: DefaultFontPath}
+	return Config{GrafikDir: DefaultGrafikDir, RigDir: DefaultRigDir, FontPath: DefaultFontPath, StrictFont: true}
 }
 
 type sheetKey struct{ asset, anim string }
