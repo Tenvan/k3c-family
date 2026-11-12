@@ -1,11 +1,11 @@
 # WZ44 · DEV, INF · Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV, INF
 - **Reife:** bereit
 - **Tickets:** B-782, B-788, B-783, B-784, B-785
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** ebbf1d9fd
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** autonom, Claude, 2026-11-12 (Gruppe von Ralf zur Umsetzung freigegeben; B-782, B-785, B-788 Klasse A)

@@ -1,11 +1,11 @@
 # WZ41 · INF · CI und Release grün, check:diff-Protokoll belegt
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** INF
 - **Reife:** bereit
 - **Tickets:** B-739, B-756, B-757, B-758, B-759
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** ebbf1d9fd
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** Klasse A, Claude, 2026-11-12

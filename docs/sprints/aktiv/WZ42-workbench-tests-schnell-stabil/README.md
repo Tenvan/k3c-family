@@ -1,11 +1,11 @@
 # WZ42 · DEV · Workbench-Tests schnell und stabil
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-738, B-787, B-704, B-695, B-702, B-621, B-747
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** ebbf1d9fd
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** Klasse A, Claude, 2026-11-12
