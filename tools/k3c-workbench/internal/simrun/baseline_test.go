@@ -58,11 +58,12 @@ func TestBaselineLehntAb(t *testing.T) {
 		t.Fatal(err)
 	}
 	release := make(chan struct{})
-	defer close(release)
 	running, err := g.Start(root, "Repo-Wurzel", "x", nil, blocking(g, release), true)
 	if err != nil {
+		close(release)
 		t.Fatal(err)
 	}
+	releaseOnCleanup(t, g, running, release)
 	writeReport(t, root, "reports/simtest-"+running.ID()+"/balance-1.json", passingReport)
 	writeReport(t, root, "reports/balance-1.json", passingReport)
 	cases := []struct{ path, name, why string }{

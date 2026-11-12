@@ -132,8 +132,8 @@ Nicht zur Wirtschaft (Quelle `stufen.md`, `gegner.md`, `monarch.md`, `bosse.md`)
 Befehle (Standardszenario Wald, Normal, 2 Spieler, Bot `saver`, Seeds 1–100):
 
 - `task balance`: Bericht `reports/balance-20261007-145615.md` (5 Tage)
-- `./bin/k3c-balance.exe --seeds 100 --days 10 --out …`: Rohmetriken je Lauf, 10 Tage
-- `./bin/k3c-balance.exe --curves --seeds 100`: Grad-Kurven, `reports/sensitivity-20261007-150222.md`
+- `./bin/k3c-sim.exe balance --seeds 100 --days 10 --out …`: Rohmetriken je Lauf, 10 Tage
+- `./bin/k3c-sim.exe balance --curves --seeds 100`: Grad-Kurven, `reports/sensitivity-20261007-150222.md`
 
 | Kennzahl | Messwert | Pass/Fail (vorläufig) | Anmerkung |
 |---|---|---|---|

@@ -147,7 +147,7 @@ func TestSpielModul(t *testing.T) {
 	if names(got) != "k3c-game-vet k3c-game-lint k3c-game-test" || got[0].Dir != "native/k3c-game" {
 		t.Fatalf("Schritte %q in %q", names(got), got[0].Dir)
 	}
-	if strings.Join(got[1].Cmd, " ") != "golangci-lint run ./view" {
+	if strings.Join(got[1].Cmd, " ") != "golangci-lint run --allow-serial-runners ./view" {
 		t.Errorf("Lint: %v", got[1].Cmd)
 	}
 	if strings.Join(got[2].Cmd, " ") != "go test -short ./view" {

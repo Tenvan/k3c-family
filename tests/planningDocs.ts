@@ -67,6 +67,27 @@ export function sessionRows(text: string) {
   }));
 }
 
+/** Stichtag der Planungsangaben (B-784, Merge von WZ44): Tickets, die danach freigegeben werden, tragen sie. */
+export const PLAN_LINES_SINCE = '2026-11-12';
+const PLAN_LINES = ['Bereich', 'Abhängig von', 'Braucht 🧑', 'Größe', 'Sperre'];
+
+/** Mängel der Planungsangaben (docs/arbeitsweise.md › Planungsangaben) eines Tickets, das nach dem Stichtag
+ *  freigegeben wurde; für den Bestand (früher freigegeben oder nicht freigegeben) leer. Volle Prüfung: plan_check. */
+export function planLineDefects(text: string): string[] {
+  const fields = meta(text);
+  const dates = fields.Freigabe?.match(/\d{4}-\d{2}-\d{2}/g) ?? [];
+  const date = dates[dates.length - 1];
+  if (fields.Spec !== 'freigegeben' || !date || date <= PLAN_LINES_SINCE) return [];
+  const rules = section(text, 'Regeln und Einschränkungen');
+  const value = (name: string) => new RegExp(`^- \\*\\*${name}:\\*\\* *(.*)$`, 'm').exec(rules)?.[1].trim();
+  const out = PLAN_LINES.filter((name) => value(name) === undefined).map((name) => `${name} fehlt`);
+  const area = value('Bereich');
+  if (area !== undefined && none(area)) out.push('Bereich leer');
+  if (fields.Umgebung === '?') out.push('Umgebung: ?');
+  if (value('Größe') === 'L') out.push('Größe: L');
+  return out;
+}
+
 /** Sprint wartet nur noch aufs Gerät: alle offenen Sessions sind Mensch-Sessions (Hardware entkoppelt). */
 export function waitsForDevice(readme: string) {
   const open = sessionRows(readme).filter((r) => !['fertig', 'verworfen'].includes(r.status));

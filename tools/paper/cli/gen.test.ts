@@ -63,16 +63,19 @@ describe('gen', { timeout: 60_000 }, () => {
     expect(assets[0]).toMatch(/^🔨 \[1\/2\] bauten\/mauer gerendert ✅ \d+(,\d)? (ms|s)$/);
     expect(assets[1]).toMatch(/^🔨 \[2\/2\] reittiere\/pferd gerendert ✅ /);
     expect(zeilen.filter((z) => z.startsWith('💾'))).toHaveLength(2);
+    // B-749/AC-01: je Asset die ⏳-Zeile vor seiner 🔨-Zeile
+    for (const a of ['bauten/mauer', 'reittiere/pferd'])
+      expect(zeilen.findIndex((z) => z.startsWith('⏳') && z.includes(a))).toBeLessThan(zeilen.findIndex((z) => z.startsWith('🔨') && z.includes(a)));
   }, 60_000);
 
   it('dauer formatiert ms, Sekunden und Minuten', () => {
     expect([dauer(80), dauer(2300), dauer(252_000)]).toEqual(['80 ms', '2,3 s', '4 min 12 s']);
   });
 
-  it('fehlende Grafik in public wird ohne Neu-Rendern aus .work kopiert (B-748)', () => {
+  it('fehlende Grafik in public wird ohne Neu-Rendern aus .work kopiert (B-748)', async () => {
     const w = wurzel(), work = join(mkdtempSync(join(tmpdir(), 'paper-work-')), 'grafik');
     expect(ohneManifest(w).sort()).toEqual(['bauten/mauer', 'reittiere/pferd']);
-    genMitWork(w, work);
+    await genMitWork(w, work);
     expect(ohneManifest(w)).toEqual([]);
     rmSync(join(w, 'bauten/mauer'), { recursive: true });
     expect(ohneManifest(w)).toEqual(['bauten/mauer']);

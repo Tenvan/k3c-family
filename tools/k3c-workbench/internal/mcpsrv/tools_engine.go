@@ -41,8 +41,11 @@ func (s *Server) levelGenerate(ctx context.Context, in levelIn) (string, error) 
 	return s.engineCall(ctx, "level", in)
 }
 
-// simRun ist das Tool sim_run (`k3c-sim run`, kein Server nötig).
+// simRun ist das Tool sim_run (`k3c-sim run`, kein Server nötig); während der Sim-Sperre lehnt es ab (B-788).
 func (s *Server) simRun(ctx context.Context, in simIn) (string, error) {
+	if err := simLockErr("sim_run"); err != nil {
+		return "", err
+	}
 	return s.engineCall(ctx, "run", in)
 }
 

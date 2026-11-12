@@ -33,15 +33,8 @@ func register(s *Server) {
 	}, s.notifyUI)
 	closed, destructive := false, false
 	add(s, &mcp.Tool{
-		Name: "check_run",
-		Description: "Führt eine Prüfung aus einem festen Katalog aus (task:check, task:test, task:typecheck, task:lint, " +
-			"task:build, task:check:go, task:check:diff, task:check:race, go:test, go:lint, dev:test) und antwortet mit Exit-Code, " +
-			"Dauer und nur den Fehlerzeilen. task:check:diff prüft nur, was der Diff zu origin/develop braucht (vor jedem Commit); " +
-			"task:check:race ist der langsame Race-Detector (Review, CI). " +
-			"Ersetzt task check, task test und go test in der Shell. Volle Ausgabe: console_tail check:<ziel>. " +
-			"Wartet bis zum Ende des Laufs und meldet dabei Fortschritt (ohne progressToken höchstens 4 min, dann Lauf-ID; " +
-			"run=<ID> wartet weiter auf diesen Lauf). Nie in Schleifen nachfragen. " +
-			"Nutze es bei: jeder Prüfung vor einem Abschluss. Statt: task check, task test, go test oder golangci-lint in der Shell; volle Ausgabe über console_tail check:<ziel>.",
+		Name:        "check_run",
+		Description: checkRunDescription,
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
 	}, s.checkRun)
 	registerLogs(s)
@@ -133,6 +126,7 @@ func registerEngine(s *Server) {
 		Name: "sim_run",
 		Description: "Deterministischer Simulationslauf mit bin/k3c-sim des Checkouts (kein Server nötig), höchstens 100000 Ticks (30/s): " +
 			"Tag, Welle, Gold, Truppen, Verluste, Ende. Optional Eingaben je Monarch und Tick-Bereich (höchstens 100 Segmente). " +
+			"Bis auf Widerruf gesperrt (Beschluss 🧑 2026-11-11, aufheben: Workbench mit K3C_SIM_ENTSPERRT=1). " +
 			"Nutze es bei: kurzer deterministischer Regel-Check. Statt: go run oder ein Spiel von Hand.",
 		Annotations: readOnlyEngine(),
 	}, s.simRun)

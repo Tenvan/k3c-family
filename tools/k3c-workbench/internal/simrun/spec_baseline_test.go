@@ -11,7 +11,7 @@ import (
 // B-640: eine benannte Baseline ersetzt die Baseline des Repos im Aufruf der Balance-CLI.
 func TestSpecBaselineArgsUndPruefung(t *testing.T) {
 	arg := func(s Spec) string {
-		a := s.args("bin/k3c-balance", "reports/simtest-run-1")
+		a := s.args("bin/k3c-sim", "reports/simtest-run-1")
 		return a[slices.Index(a, "--baseline")+1]
 	}
 	if got := arg(Spec{}); got != balance.BaselinePath {

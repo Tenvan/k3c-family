@@ -152,8 +152,8 @@ tasks:
     deps: [':tmp', frontend]
     dir: '{{.DEV}}'
     cmds:
-      - golangci-lint run {{.WB_LINT_PKGS}}
-      - cmd: cd ../assetkit && golangci-lint run
+      - golangci-lint run --allow-serial-runners {{.WB_LINT_PKGS}}
+      - cmd: cd ../assetkit && golangci-lint run --allow-serial-runners
         if: '[ "{{.ASSETKIT}}" != "0" ]'
 
   build:

@@ -46,10 +46,25 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 - `plan_list {kind?, status?, domain?, sprint?, archive?}` für den Überblick, `plan_get {id}` für ein Dokument
   (`B-210`, `M8`, `M8.1`).
 - `plan_next {domain?}` zu Beginn einer autonomen Session: die nächste Session nach `docs/arbeitsweise.md` › Autonomer
-  Ablauf, Schritt 1 (Rang, aktive Sprints, offen und autonom, Abhängigkeiten erledigt, Domäne frei), mit Pfad, Branch
-  `sprint/<präfix>`, Session-Datei, ihren Kriterien aus der Sprint-README und den parallel möglichen Sessions anderer
-  Domänen; sonst „Keine Session frei“ mit Grund je Projekt. Liest nur die lokalen Dateien: die Sperre über `origin`
-  (`git ls-remote --heads origin 'sprint/*'`) prüft der Agent selbst.
+  Ablauf, Schritt 1 (Rang, aktive Sprints, offen und autonom, Abhängigkeiten erledigt, keine Kollision mit einer Session
+  in Arbeit), mit Pfad, Branch `sprint/<präfix>` (ein Feld `Branch: sprint/cu1` bleibt, `w15/1-x` wird `sprint/w15`),
+  Session-Datei, ihren Kriterien aus der Sprint-README und den parallel möglichen Sessions; sonst „Keine Session frei“
+  mit Grund je Projekt. Kollision wie bei `plan_waves`: gleiche Sperre der Sprint-README oder überlappende Erlaubte
+  Dateien; fehlt einer Session die Dateimenge, gilt noch die Sperre nach Domäne und Lane. Liest nur die lokalen Dateien:
+  die Sperre über `origin` (`git ls-remote --heads origin 'sprint/*'`) prüft der Agent selbst.
+- `plan_waves {slots?, project?, domain?}` beim Planen oder Starten einer Welle (`docs/arbeitsweise.md` › Parallelität
+  und Wellen): Kandidaten sind offene autonome Sessions aktiver Sprints, freigegebene Tickets ohne Sprint und
+  freigegebene geplante Sprints mit `Braucht 🧑: –`. Ebene aus `Abhängig von`, Kollision bei überlappendem `Bereich`
+  (Präfix der Globs, Sammeldateien ausgenommen; Sessions: Erlaubte Dateien) oder gleicher `Sperre`; Rang, Prio, Nummer
+  entscheiden. Sessions in Arbeit stehen in Welle 1 und belegen Plätze (höchstens 4). Je zurückgestelltem Knoten steht
+  der Grund da; „In keiner Welle“ nennt `Bereich fehlt`, `wartet auf …` und als `Fehler:` unbekannte IDs.
+  `project`/`domain` grenzen nur die Anzeige ein.
+- `plan_check {id}` vor der Freigabe einer Spec und vor `plan_waves`: nennt je Ticket oder Sprint die Mängel der
+  Planungsangaben (Zeilen fehlen, `Bereich` leer, `Umgebung: ?`, `Größe: L`, unbekannte ID oder Freitext in
+  `Abhängig von`, `Bereich` überlappt mit einem anderen offenen Ticket); archivierte Tickets prüft es nicht.
+- `plan_queue {device?}` legt 🧑 gesammelt vor (Ralf-Queue): Freigaben (Specs im Entwurf mit `Braucht 🧑: Freigabe`),
+  Entscheidungen, Abnahmen je Gerät (PC, Xbox/TV, Pi, Mini-PC, Workshop, Veröffentlichung, `unbekannt`). Das Gerät einer
+  Mensch-Session steht in einer Zeile `Gerät: …` im Abschnitt Kontext, sonst gilt `unbekannt`.
 - `plan_create {kind, slug, title, id?, fields}`: Ticket (Felder `Domäne`, `Typ`, `Prio`), Sprint (`id`, `Domäne`) oder
   Session (`id` wie `M8.5`) als Kopie der Vorlage; danach die Abschnitte mit `plan_sections {id, sections}` füllen
   (`sections`: Abschnitt → Text). Mehrere Abschnitte immer mit `plan_sections`; ein unbekannter Abschnitt bricht ab,
@@ -105,10 +120,15 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 
 - `check_run` statt `task check`, `task test`, `task typecheck`, `task lint`, `task build`, `task check:go`, `go test`
   oder `golangci-lint` in der Shell. Ziele: `task:check`, `task:test`, `task:typecheck`, `task:lint`, `task:build`,
-  `task:check:go`, `task:check:diff`, `task:check:race`, `go:test`, `go:lint`, `dev:test`. Ein Testmuster (`pattern`) geht
-  bei `task:test`, `go:test` und `dev:test`.
-- `task:check:diff` prüft nur, was der Diff zu `origin/develop` braucht (vor jedem Commit); `task:check:race` ist der
-  langsame Race-Detector für `engine/` (Review-Session, CI).
+  `task:check:go`, `task:check:diff`, `task:check:diff:plan`, `task:check:diff:js`, `task:check:diff:go`,
+  `task:check:race`, `go:test`, `go:lint`, `dev:test`. Ein Testmuster (`pattern`) geht bei `task:test`, `go:test` und
+  `dev:test`.
+- `task:check:diff` prüft nur, was die geänderten Dateien gegenüber der Basis `HEAD` brauchen (vor jedem Commit), in zwei
+  Stufen: Stufe 1 Regel-Tests, Lint, Typecheck, `go vet`; Stufe 2 nur nach grüner Stufe 1 die Tests der geänderten Pakete.
+  Nach einem roten Lauf wiederholt `task:check:diff:js` bzw. `task:check:diff:go` nur diese Bahn; `task:check:diff:plan`
+  zeigt nur Basis und Schritte. `task:check:race` ist der langsame Race-Detector für `engine/` (Review-Session, CI).
+- **Sim-Sperre (B-788):** `sim_test start` und `sim_run` lehnen ab, solange Simulationen und Balancing gesperrt sind
+  (Beschluss 🧑 2026-11-11). Nur 🧑 hebt die Sperre auf: Workbench mit `K3C_SIM_ENTSPERRT=1` starten.
 - Die Antwort ist bei grünem Lauf eine Zeile, sonst Kopfzeile und nur die Fehlerzeilen.
 - `check_run` wartet bis zum Ende des Laufs und sendet alle 20 s Fortschritt (B-520); ein Aufruf liefert das Ergebnis.
   Nie in Schleifen nachfragen. Nur ohne progressToken antwortet es nach 4 min mit „läuft noch“ und einer Lauf-ID;

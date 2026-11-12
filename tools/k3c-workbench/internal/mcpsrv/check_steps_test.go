@@ -2,8 +2,10 @@ package mcpsrv
 
 import (
 	"bytes"
+	"context"
 	"log/slog"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 )
@@ -50,5 +52,60 @@ func TestParseStepEnd(t *testing.T) {
 func TestIsHeavyTarget(t *testing.T) {
 	if !isHeavyTarget("task:check:diff") || isHeavyTarget("task:test") {
 		t.Error("schwere Ziele falsch erkannt")
+	}
+}
+
+// lockedBuf: Log-Puffer, den Test und wartende Goroutine gleichzeitig benutzen.
+type lockedBuf struct {
+	mu  sync.Mutex
+	buf bytes.Buffer
+}
+
+func (b *lockedBuf) Write(p []byte) (int, error) { b.mu.Lock(); defer b.mu.Unlock(); return b.buf.Write(p) }
+func (b *lockedBuf) String() string               { b.mu.Lock(); defer b.mu.Unlock(); return b.buf.String() }
+
+// B-739/AC-03: Zwei schwere Läufe aus verschiedenen Checkouts laufen nacheinander, der zweite loggt das Warten.
+func TestAcquireHeavyNacheinander(t *testing.T) {
+	var buf lockedBuf
+	s := &Server{log: slog.New(slog.NewTextHandler(&buf, nil))}
+	ctx := context.Background()
+	release := s.acquireHeavy(ctx, "task:check:diff", "wurzel")
+	got := make(chan func(), 1)
+	go func() { got <- s.acquireHeavy(ctx, "task:check:diff", "worktree") }()
+	for deadline := time.Now().Add(5 * time.Second); !strings.Contains(buf.String(), "wartet auf freien Prüf-Slot"); {
+		if time.Now().After(deadline) {
+			t.Fatalf("zweiter Lauf wartet nicht:\n%s", buf.String())
+		}
+		time.Sleep(5 * time.Millisecond)
+	}
+	select {
+	case <-got:
+		t.Fatal("zweiter Lauf bekam den Slot, obwohl der erste ihn hält")
+	default:
+	}
+	s.acquireHeavy(ctx, "task:test", "leicht")() // leichte Ziele warten nie
+	release()
+	select {
+	case r := <-got:
+		r()
+	case <-time.After(5 * time.Second):
+		t.Fatal("zweiter Lauf bekommt den Slot nach der Freigabe nicht")
+	}
+	if out := buf.String(); !strings.Contains(out, "target=worktree") || !strings.Contains(out, "Prüf-Slot frei") {
+		t.Errorf("Log unvollständig:\n%s", out)
+	}
+}
+
+func TestAcquireHeavyAbbruch(t *testing.T) {
+	s := &Server{log: slog.New(slog.NewTextHandler(&bytes.Buffer{}, nil))}
+	release := s.acquireHeavy(context.Background(), "task:check", "erster")
+	defer release()
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	s.acquireHeavy(ctx, "task:check", "abgebrochen")() // kehrt ohne Slot zurück und gibt nichts frei
+	select {
+	case heavySlot <- struct{}{}:
+		t.Fatal("Slot frei, obwohl der erste Lauf ihn hält")
+	default:
 	}
 }

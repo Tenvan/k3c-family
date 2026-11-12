@@ -6,9 +6,10 @@ import (
 	"strings"
 )
 
-// Sperre je Domäne und Lane (docs/arbeitsweise.md › Domänen, PV1.1/PV1.2): Eine Session `in Arbeit` ohne Lane sperrt
-// ihre ganze Domäne, eine mit Lane nur Domäne und Lane. Eine Session ohne Lane ist gesperrt, sobald irgendeine Session
-// derselben Domäne in Arbeit ist. Neben der Auswahl schlägt plan_next höchstens maxParallel weitere vor (vier Agenten).
+// Kollision wie bei den Arbeitswellen (B-783, docs/arbeitsweise.md › Parallelität und Wellen): gleiche Sperre des
+// Sprints oder überlappende Erlaubte Dateien. Übergang für Sessions ohne Dateimenge: Sperre je Domäne und Lane
+// (PV1.1/PV1.2): ohne Lane sperrt eine Session in Arbeit ihre ganze Domäne, mit Lane nur Domäne und Lane. Neben der
+// Auswahl schlägt plan_next höchstens maxParallel weitere vor (vier Agenten).
 
 // maxParallel begrenzt „Parallel möglich“: Auswahl plus drei = höchstens vier Agenten gleichzeitig.
 const maxParallel = 3
@@ -43,39 +44,45 @@ func lockKey(x Session) string {
 	return x.Domain
 }
 
-// locks sind die Sessions in Arbeit aktiver Sprints: je Sperrschlüssel und je Domäne die erste.
-type locks struct {
-	keys   map[string]string // Domäne oder Domäne/Lane → Session
-	domain map[string]string // Domäne → erste Session in Arbeit, gleich welche Lane
+// scoped ist eine Session mit ihrer Dateimenge (Erlaubte Dateien) und den Sperren ihres Sprints (B-783).
+type scoped struct {
+	session     Session
+	area, locks []string
 }
 
-func newLocks() locks { return locks{keys: map[string]string{}, domain: map[string]string{}} }
-
-func (l locks) add(x Session) {
-	if _, ok := l.keys[lockKey(x)]; !ok {
-		l.keys[lockKey(x)] = x.Nr
-	}
-	if _, ok := l.domain[x.Domain]; !ok {
-		l.domain[x.Domain] = x.Nr
-	}
-}
-
-// why nennt die Sperre einer offenen Session; leer = frei.
-func (l locks) why(x Session) string {
-	if by, ok := l.keys[x.Domain]; ok {
-		return "Domäne " + x.Domain + " gesperrt (" + by + " in Arbeit)"
-	}
-	lane := laneOf(x)
-	if by, ok := l.domain[x.Domain]; ok && lane == "" {
-		return "Domäne " + x.Domain + " gesperrt (" + by + " in Arbeit)"
-	}
-	if by, ok := l.keys[x.Domain+"/"+lane]; ok && lane != "" {
-		return "Domäne " + x.Domain + ", Lane " + lane + " gesperrt (" + by + " in Arbeit)"
+// busy nennt, warum x neben den Sessions in Arbeit nicht laufen darf; leer = frei.
+func busy(running []scoped, x scoped) string {
+	for _, r := range running {
+		if why := clash(r, x); why != "" {
+			return why + " gesperrt (" + r.session.Nr + " in Arbeit)"
+		}
 	}
 	return ""
 }
 
-// conflict: zwei Sessions dürfen nicht gleichzeitig laufen (gleiche Domäne und gleiche oder fehlende Lane).
+// clash ist die Kollisionsprüfung der Arbeitswellen (wie plan_waves): gleiche Sperre oder überlappende Dateimengen.
+// Übergang: Fehlt einer der beiden die Dateimenge, gilt die alte Regel nach Domäne und Lane. Sessions desselben
+// Sprints ordnet „Abhängig von“; ohne Abhängigkeit dürfen sie wie bisher über Lanes parallel laufen (PV1).
+func clash(a, b scoped) string {
+	if l := sharedLock(a.locks, b.locks); l != "" {
+		return "Sperre " + l
+	}
+	if len(a.area) > 0 && len(b.area) > 0 {
+		if pair, ok := areaOverlap(a.area, b.area); ok {
+			return "Bereich " + pair
+		}
+		return ""
+	}
+	if !conflict(a.session, b.session) {
+		return ""
+	}
+	if l := laneOf(b.session); l != "" && l == laneOf(a.session) {
+		return "Domäne " + b.session.Domain + ", Lane " + l
+	}
+	return "Domäne " + b.session.Domain
+}
+
+// conflict: zwei Sessions ohne Dateimenge dürfen nicht gleichzeitig laufen (gleiche Domäne und gleiche oder fehlende Lane).
 func conflict(a, b Session) bool {
 	la, lb := laneOf(a), laneOf(b)
 	return a.Domain == b.Domain && (la == "" || lb == "" || la == lb)
@@ -83,7 +90,7 @@ func conflict(a, b Session) bool {
 
 // parallel sind weitere freie Sessions, die weder mit pick noch untereinander kollidieren, höchstens maxParallel.
 func parallel(cands []candidate, pick candidate) []candidate {
-	chosen := []Session{pick.session}
+	chosen := []scoped{pick.scope}
 	var out []candidate
 	for _, c := range cands {
 		if c.why != "" || len(out) == maxParallel {
@@ -91,10 +98,10 @@ func parallel(cands []candidate, pick candidate) []candidate {
 		}
 		free := true
 		for _, s := range chosen {
-			free = free && !conflict(s, c.session)
+			free = free && clash(s, c.scope) == ""
 		}
 		if free {
-			chosen = append(chosen, c.session)
+			chosen = append(chosen, c.scope)
 			out = append(out, c)
 		}
 	}

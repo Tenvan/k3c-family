@@ -49,6 +49,7 @@ func cli() CLI { return CLI{Root: repoRoot} }
 
 // TestCLIValidateUngueltig: banner mit fremdem Material wird abgelehnt.
 func TestCLIValidateUngueltig(t *testing.T) {
+	langsam(t)
 	t.Parallel()
 	repo := testRepo(t)
 	fehler, err := cli().Validate(context.Background(), filepath.Join(repo, "public/grafik/requisiten/banner.paper.json"))
@@ -67,6 +68,7 @@ func TestCLIValidateUngueltig(t *testing.T) {
 
 // TestCLIDiffUmhang: Feld-Diff des Umhangs, kein Teil geändert.
 func TestCLIDiffUmhang(t *testing.T) {
+	langsam(t)
 	t.Parallel()
 	repo := testRepo(t)
 	alt := filepath.Join(t.TempDir(), "monarch.paper.json")
@@ -89,6 +91,7 @@ func TestCLIDiffUmhang(t *testing.T) {
 
 // TestCLISystemfehler: Exit 2 wird ein Go-Fehler mit stderr.
 func TestCLISystemfehler(t *testing.T) {
+	langsam(t)
 	t.Parallel()
 	_, err := cli().Validate(context.Background(), filepath.Join(t.TempDir(), "fehlt.paper.json"))
 	var abgelehnt *Abgelehnt

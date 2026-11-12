@@ -1,6 +1,6 @@
 # PT1.2 · Cache je Asset und paralleles Rastern
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -59,5 +59,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-04 geprüft: zweiter Lauf 0 Assets (3 s); kalt 5 min 19 s → 54 s mit 8 Workern (22 Kerne); golden.json unverändert, Bitgleichheit per Test gegen `rendereAsset` und `gen`. Cache = `renderKey` plus Hash der Renderer-Quellen; `K3C_PAPER_JOBS` übersteuert (Kerne minus 1, höchstens 8). Review-Befunde (k3c-reviewer) behoben; offen niedrig: kein Timeout für hängendes resvg. `check:diff` grün. Commit b33d00515.

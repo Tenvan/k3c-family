@@ -211,9 +211,12 @@ func TestRunProcessExitUndAusgabe(t *testing.T) {
 	if res.exit != 3 || res.err != nil || !strings.Contains(joined, "stdout:vor dem Fehler") || !strings.Contains(joined, "stderr:fehler") {
 		t.Errorf("exit %d, err %v, Zeilen %v", res.exit, res.err, lines)
 	}
-	res = runProcess(context.Background(), runSpec{args: []string{"gibt-es-nicht-k3c"}, timeout: time.Second, out: func(string, string) {}})
-	if res.err == nil {
-		t.Error("fehlendes Programm ohne Fehler")
+	// Ein fehlendes Programm ist ein Fehler, auch wenn das Zeitlimit schon vor dem Start abgelaufen ist (B-702).
+	for _, limit := range []time.Duration{time.Minute, time.Nanosecond} {
+		res = runProcess(context.Background(), runSpec{args: []string{"gibt-es-nicht-k3c"}, timeout: limit, out: func(string, string) {}})
+		if res.err == nil || res.timedOut {
+			t.Errorf("fehlendes Programm (Limit %v): %+v", limit, res)
+		}
 	}
 }
 

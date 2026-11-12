@@ -4,7 +4,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  checkTemplate, DOCS, DOMAINS, ids, laneOk, meta, none, read, sessionRows, sprints, title,
+  checkTemplate, DOCS, DOMAINS, ids, laneOk, meta, none, PLAN_LINES_SINCE, planLineDefects, read, sessionRows, sprints, title,
 } from './planningDocs';
 
 /** Akzeptanzkriterien `- **AC-01** …` im gleichnamigen Abschnitt. */
@@ -152,5 +152,26 @@ describe('Glossar', () => {
   it('ist in CLAUDE.md und arbeitsweise.md verpflichtend verlinkt', () => {
     expect(readFileSync(resolve(DOCS, '../CLAUDE.md'), 'utf8')).toContain('docs/glossar.md');
     expect(read('arbeitsweise.md')).toContain('glossar.md');
+  });
+});
+
+describe('Planungsangaben für Arbeitswellen (B-784)', () => {
+  it('jedes offene Ticket, das nach dem Stichtag freigegeben wurde, trägt sie', () => {
+    const open = tickets.filter((t) => !t.folder);
+    expect(open.flatMap((t) => planLineDefects(read(t.path)).map((d) => `${t.file}: ${d}`))).toEqual([]);
+  });
+
+  it('schlägt bei einem neu freigegebenen Ticket ohne Bereich an, der Bestand bleibt gültig', () => {
+    const rules = (area: string | null) =>
+      (area === null ? '' : `- **Bereich:** ${area}\n`) + '- **Abhängig von:** –\n- **Braucht 🧑:** –\n- **Größe:** S\n- **Sperre:** –\n';
+    const ticket = (freigabe: string, area: string | null) =>
+      `# B-999 · Neu\n\n- **Umgebung:** offline\n- **Spec:** freigegeben\n- **Freigabe:** Klasse A, Claude, ${freigabe}\n\n` +
+      `## Regeln und Einschränkungen\n\nDomäne DEV.\n\n${rules(area)}\n## Beispiele\n\n–\n`;
+    expect(planLineDefects(ticket('2099-01-01', ''))).toEqual(['Bereich leer']);
+    expect(planLineDefects(ticket('2099-01-01', null))).toEqual(['Bereich fehlt']);
+    expect(planLineDefects(ticket('2099-01-01', '`tools/x/**`'))).toEqual([]);
+    expect(planLineDefects(ticket(PLAN_LINES_SINCE, ''))).toEqual([]);
+    expect(planLineDefects(ticket('2026-01-01', null))).toEqual([]);
+    expect(planLineDefects(ticket('2099-01-01', '').replace('Spec:** freigegeben', 'Spec:** Entwurf'))).toEqual([]);
   });
 });

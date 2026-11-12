@@ -1,11 +1,11 @@
 # PT1 · PAP · gen:paper schneller: Cache je Asset, paralleles Rastern, Fortschritt belegt
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
 - **Tickets:** B-740, B-748, B-749, B-750, B-751
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** ebbf1d9fd
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** autonom, Claude, 2026-11-12 (Gruppe von Ralf zur Umsetzung freigegeben; B-748 bis B-750 Klasse A)
@@ -64,8 +64,8 @@ keine blockierenden. Default (Claude, 2026-11-12) zu `B-751 › Offene Fragen`: 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| PT1.1 | `PT1.1-fortschritt-belegen.md` | Umsetzung | autonom | offen |
-| PT1.2 | `PT1.2-cache-parallel.md` | Umsetzung | autonom | offen |
+| PT1.1 | `PT1.1-fortschritt-belegen.md` | Umsetzung | autonom | fertig |
+| PT1.2 | `PT1.2-cache-parallel.md` | Umsetzung | autonom | fertig |
 | PT1.3 | `PT1.3-review.md` | Review | autonom | offen |
 
 Keine eigenen Sim- oder Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).

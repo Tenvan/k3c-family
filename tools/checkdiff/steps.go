@@ -133,7 +133,7 @@ func goSteps(targets []goTargets) []step {
 			out = append(out, step{n + "-vet", "go", 1, t.Mod, append([]string{"go", "vet"}, t.Vet...)})
 		}
 		if len(t.Lint) > 0 {
-			out = append(out, step{n + "-lint", "go", 1, t.Mod, append([]string{"golangci-lint", "run"}, t.Lint...)})
+			out = append(out, step{n + "-lint", "go", 1, t.Mod, append([]string{"golangci-lint", "run", "--allow-serial-runners"}, t.Lint...)})
 		}
 		if len(t.Tests) > 0 {
 			out = append(out, step{n + "-test", "go", 2, t.Mod, append([]string{"go", "test", "-short"}, t.Tests...)})

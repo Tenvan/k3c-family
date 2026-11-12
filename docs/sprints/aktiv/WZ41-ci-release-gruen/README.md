@@ -1,11 +1,11 @@
 # WZ41 · INF · CI und Release grün, check:diff-Protokoll belegt
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** INF
 - **Reife:** bereit
-- **Tickets:** B-739, B-756, B-757, B-758, B-759
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Tickets:** B-739, B-756, B-757, B-758, B-759, B-825
+- **Start-Commit:** ebbf1d9fd
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** Klasse A, Claude, 2026-11-12
@@ -56,6 +56,7 @@ Ein CI-Job ist rot aus einem Grund außerhalb des Bereichs → Ticket mit Fundst
 - **AC-03** `task go:race` ohne `engine/balance`, datadoc-Test grün, Jobs `go` und `k3c-workbench` grün (`B-757/AC-01` bis `B-757/AC-03`).
 - **AC-04** Docker-Image entsteht ohne `.work` im Kontext (`B-759/AC-01`).
 - **AC-05** `release.yml` mit `task typecheck` und `task test` vor `task build`, CI grün, `task check:all` nachgeholt mit Befunden als Tickets (`B-758/AC-01` bis `B-758/AC-03`).
+- **AC-06** Die CI führt die Tests wieder aus, ohne Sim- und Balance-Pakete, Laufzeit je Job belegt (`B-825/AC-01` bis `B-825/AC-03`; nach WZ42, Entscheidung Ralf 2026-11-12).
 
 ## Offene Fragen
 
@@ -65,9 +66,10 @@ keine blockierenden. Default (Claude, 2026-11-12): B-758/AC-03 prüft den aktuel
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ41.1 | `WZ41.1-ci-belegen.md` | Umsetzung | autonom | offen |
-| WZ41.2 | `WZ41.2-release-pruefungen.md` | Umsetzung | autonom | offen |
+| WZ41.1 | `WZ41.1-ci-belegen.md` | Umsetzung | autonom | fertig |
+| WZ41.2 | `WZ41.2-release-pruefungen.md` | Umsetzung | autonom | fertig |
 | WZ41.3 | `WZ41.3-review.md` | Review | autonom | offen |
+| WZ41.4 | `WZ41.4-ci-tests-einschalten.md` | Umsetzung | autonom | offen |
 
 Keine eigenen Sim- oder Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
 

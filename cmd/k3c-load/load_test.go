@@ -91,7 +91,7 @@ func testConfig(srv *httptest.Server, seed string, d time.Duration, rec *recorde
 		tag: strings.ReplaceAll(strings.ToLower(seed), "_", ""), sent: rec.sent}
 }
 
-// AC-01 und AC-05: 2 Räume × 2 Bots, 5 s → je Raum eine Tick-Reihe; danach kein Bot mehr verbunden, nach der Leer-Frist
+// AC-01 und AC-05: 2 Räume × 2 Bots, 10 s → je Raum eine Tick-Reihe; danach kein Bot mehr verbunden, nach der Leer-Frist
 // sind Räume und Test-Spielstände weg; die Ausgabe nennt das Token nicht.
 func TestLaufSammeltTicksUndRaeumtAuf(t *testing.T) {
 	if testing.Short() {
@@ -99,7 +99,9 @@ func TestLaufSammeltTicksUndRaeumtAuf(t *testing.T) {
 	}
 	srv, m, saves, skew := testServer(t)
 	var out, errOut bytes.Buffer
-	args := []string{"-url", srv.URL, "-token", testToken, "-rooms", "2", "-players", "2", "-duration", "5s", "-interval", "1s", "-target-p99", "10000", "-out", filepath.Join(t.TempDir(), "r")}
+	// Über die Kommandozeile gibt es keinen Takt-Haken; 10 s statt 5 s lassen einem unter Last langsam startenden Raum
+	// Zeit für seine ersten Zustände (B-704).
+	args := []string{"-url", srv.URL, "-token", testToken, "-rooms", "2", "-players", "2", "-duration", "10s", "-interval", "1s", "-target-p99", "10000", "-out", filepath.Join(t.TempDir(), "r")}
 	if code := run(context.Background(), args, func(string) string { return "" }, &out, &errOut); code != 0 {
 		t.Fatalf("Exit %d, stderr: %s", code, errOut.String())
 	}
@@ -122,10 +124,25 @@ func TestLaufSammeltTicksUndRaeumtAuf(t *testing.T) {
 	}
 }
 
-// AC-01: Die Tick-Reihe je Raum steigt und deckt den Lauf ab.
+// AC-01: Die Tick-Reihe je Raum steigt und deckt den Lauf ab. Der Lauf endet, sobald jeder Bot 21 Eingaben gesendet
+// hat (eine je Zustand, also mindestens 20 Ticks je Raum), nicht nach fester Wanduhr: unter Last kamen in 2 s zu
+// wenige zusammen (B-704, wie B-284).
 func TestTickReiheJeRaum(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Lasttest mit Spielserver, läuft ohne -short (B-619, B-704)")
+	}
 	srv, _, _, _ := testServer(t)
-	runs, err := load(context.Background(), testConfig(srv, "reihe", 2*time.Second, &recorder{}))
+	rec := &recorder{}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	c := testConfig(srv, "reihe", 30*time.Second, rec) // Obergrenze, falls der Server hängt
+	c.sent = func(dev string, msg []byte) {
+		rec.sent(dev, msg)
+		if rec.enough(4, 21) {
+			cancel()
+		}
+	}
+	runs, err := load(ctx, c)
 	if err != nil || len(runs) != 2 {
 		t.Fatalf("runs %d, err %v", len(runs), err)
 	}

@@ -48,6 +48,12 @@ var checkTargets = []checkTarget{
 		kinds: []string{kindGoTest, kindGolangci}},
 	{name: "task:check:diff", command: []string{"task", "check:diff"}, timeout: defaultTimeout,
 		kinds: []string{kindOxlint, kindTsc, kindVitest, kindGoTest, kindGolangci}},
+	// Teilaufgaben von check:diff (B-788): plan zeigt nur die Schritte, js und go wiederholen eine Bahn.
+	{name: "task:check:diff:plan", command: []string{"task", "check:diff:plan"}, timeout: testTimeout},
+	{name: "task:check:diff:js", command: []string{"task", "check:diff:js"}, timeout: defaultTimeout,
+		kinds: []string{kindOxlint, kindTsc, kindVitest}},
+	{name: "task:check:diff:go", command: []string{"task", "check:diff:go"}, timeout: defaultTimeout,
+		kinds: []string{kindGoTest, kindGolangci}},
 	{name: "task:check:race", command: []string{"task", "check:race"}, timeout: defaultTimeout,
 		kinds: []string{kindGoTest}},
 	{name: "go:test", command: []string{"go", "test", "./..."}, pattern: "-run", timeout: testTimeout,
@@ -57,6 +63,21 @@ var checkTargets = []checkTarget{
 	{name: "dev:test", dir: "tools/k3c-workbench", command: []string{"go", "test", "./..."}, pattern: "-run",
 		timeout: testTimeout, kinds: []string{kindGoTest}},
 }
+
+// checkRunDescription ist die Beschreibung von check_run; sie nennt den Katalog oben (B-788: Basis HEAD, zwei Stufen,
+// Teilaufgaben von check:diff).
+const checkRunDescription = "Führt eine Prüfung aus einem festen Katalog aus (task:check, task:test, task:typecheck, task:lint, " +
+	"task:build, task:check:go, task:check:diff, task:check:diff:plan, task:check:diff:js, task:check:diff:go, task:check:race, " +
+	"go:test, go:lint, dev:test) und antwortet mit Exit-Code, Dauer und nur den Fehlerzeilen. task:check:diff prüft nur, was " +
+	"die geänderten Dateien gegenüber der Basis HEAD brauchen (vor jedem Commit), in zwei Stufen: Stufe 1 Regel-Tests, Lint, " +
+	"Typecheck, go vet; Stufe 2 nur nach grüner Stufe 1 die Tests der geänderten Pakete. task:check:diff:plan zeigt nur die " +
+	"Schritte, task:check:diff:js und task:check:diff:go wiederholen nach einem roten Lauf nur diese Bahn; " +
+	"task:check:race ist der langsame Race-Detector (Review, CI). " +
+	"Ersetzt task check, task test und go test in der Shell. Volle Ausgabe: console_tail check:<ziel>. " +
+	"Wartet bis zum Ende des Laufs und meldet dabei Fortschritt (ohne progressToken höchstens 4 min, dann Lauf-ID; " +
+	"run=<ID> wartet weiter auf diesen Lauf). Nie in Schleifen nachfragen. " +
+	"Nutze es bei: jeder Prüfung vor einem Abschluss. Statt: task check, task test, go test oder golangci-lint in der Shell; " +
+	"volle Ausgabe über console_tail check:<ziel>."
 
 // patternRule ist eine Positivliste: sie lehnt Shell-Zeichen (;&|$`"' < > % ^) und Leerzeichen ab, und ein
 // führendes "-", damit kein Muster zur Option wird (z. B. "--watch" hielte den Lauf bis zum Zeitlimit offen).

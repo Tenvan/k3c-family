@@ -123,16 +123,17 @@ func TestBotAntwortUndEnde(t *testing.T) {
 // Hängt k3c-sim bot, endet Decide nach decideTimeout mit Fehler; danach antwortet der Bot nur noch mit diesem Fehler.
 func TestBotZeitlimit(t *testing.T) {
 	old := decideTimeout
-	decideTimeout = 300 * time.Millisecond
 	t.Cleanup(func() { decideTimeout = old })
 	b, err := StartBot(context.Background(), install(t, "bot"), "saver")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer b.Close()
+	// Die erste Antwort mit dem normalen Limit: unter Last startet der Bot-Prozess langsamer als 300 ms (B-704).
 	if _, err := b.Decide(json.RawMessage(`{}`), []int{1}); err != nil {
 		t.Fatal(err)
 	}
+	decideTimeout = 300 * time.Millisecond // erst ab hier soll der hängende Bot das Limit reißen
 	if _, err := b.Decide(json.RawMessage(`{}`), []int{1}); err == nil || !strings.Contains(err.Error(), "binnen") {
 		t.Errorf("zeitlimit: %v", err)
 	}

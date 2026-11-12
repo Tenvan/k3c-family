@@ -155,4 +155,4 @@ tasks:
     desc: golangci-lint für den Windows-Starter
     deps: [':tmp', frontend]
     cmds:
-      - cd {{.STARTER}} && golangci-lint run
+      - cd {{.STARTER}} && golangci-lint run --allow-serial-runners

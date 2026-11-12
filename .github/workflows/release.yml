@@ -27,7 +27,10 @@ jobs:
           go-version-file: go.mod
       - uses: go-task/setup-task@v2
       - run: task install
-      # v0.22.0 (Pi-Test): Typecheck und Tests vorläufig raus, 🧑 2026-11-08; wieder einschalten: B-758
+      # Vor Paket und Image: Typecheck und Tests (Client und Frontends, wie lokal task check); task test rendert vorher
+      # die Papierschnitt-Grafik (gen:paper). Nach dem Pi-Test v0.22.0 wieder eingeschaltet (B-758).
+      - run: task typecheck
+      - run: task test
       - run: task build
       - name: k3c-server bauen (Windows, Linux amd64, Linux arm64)
         run: |
