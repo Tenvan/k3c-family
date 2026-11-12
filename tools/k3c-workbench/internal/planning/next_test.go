@@ -125,3 +125,21 @@ func TestNextKeineFrei(t *testing.T) {
 		t.Fatalf("Antwort:\n%s", out)
 	}
 }
+
+// B-782/AC-01: Ein Branch mit führendem sprint/ bleibt, sonst gilt sprint/ + Teil vor dem ersten /.
+func TestSprintBranch(t *testing.T) {
+	cases := []struct{ id, field, want string }{
+		{"CU1", "sprint/cu1", "sprint/cu1"},
+		{"CU1", "`sprint/cu1`", "sprint/cu1"},
+		{"W15", "w15/1-x", "sprint/w15"},
+		{"W15", "w15/1-fackeln", "sprint/w15"},
+		{"W15", "", "sprint/w15"},
+		{"W15", "ohne-strich", "sprint/w15"},
+		{"W15", "sprint/", "sprint/w15"},
+	}
+	for _, c := range cases {
+		if got := sprintBranch(c.id, c.field); got != c.want {
+			t.Errorf("sprintBranch(%q, %q) = %q, will %q", c.id, c.field, got, c.want)
+		}
+	}
+}

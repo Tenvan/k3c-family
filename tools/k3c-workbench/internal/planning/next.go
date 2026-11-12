@@ -200,17 +200,13 @@ func (st nextState) pickText(c candidate, more []candidate) (string, error) {
 		}
 	}
 	x, head := c.session, sessionHead(c.session)
-	prefix := strings.ToLower(c.sprint.ID)
-	if b, _, ok := strings.Cut(head["Branch"], "/"); ok && b != "" {
-		prefix = b
-	}
 	crit := firstOf(head["Kriterien"], "–")
 	out := []string{
 		"Nächste Session: " + x.Nr + " · " + x.Titel,
 		"Pfad: docs/" + r.dir + "/" + x.File,
 		fmt.Sprintf("Sprint: %s · %s (Projekt %s, Rang %s)", c.sprint.ID, c.sprint.Title, c.project.ID, c.project.Rang),
 		domainLine(x),
-		"Branch: sprint/" + prefix,
+		"Branch: " + sprintBranch(c.sprint.ID, head["Branch"]),
 		"Kriterien: " + crit,
 		"Hinweis: Stand je Sprint (origin oder lokal) siehe unten; Branches, die lokal noch nicht bekannt sind, prüft der " +
 			"Agent mit git fetch --prune.",
