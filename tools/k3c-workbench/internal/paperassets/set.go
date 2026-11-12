@@ -90,7 +90,7 @@ func schreibeSpec(ctx context.Context, cli CLI, a Asset, alt, text []byte) (SetE
 	}
 	defer func() { _ = os.RemoveAll(tmp) }()
 	spec := filepath.Join(tmp, a.Gruppe, a.ID+endung)
-	if err := spiegeleNachbarn(cli.Root, tmp, a.ID); err != nil {
+	if err := spiegeleNachbarn(cli.Root, tmp, a); err != nil {
 		return SetErgebnis{}, err
 	}
 	if err := schreibeDatei(spec, text); err != nil {
@@ -151,13 +151,13 @@ func zurueck(spec string, alt []byte) {
 
 // spiegeleNachbarn kopiert die übrigen Specs in den Temp-Ordner (<tmp>/<gruppe>/<id>.paper.json): Die Render-CLI
 // sucht z. B. das Reittier neben der Spec und in den Nachbar-Gruppen (RD1, tools/paper/rig/reiten.ts).
-func spiegeleNachbarn(root, tmp, ohne string) error {
+func spiegeleNachbarn(root, tmp string, ohne Asset) error {
 	alle, err := Assets(root)
 	if err != nil {
 		return err
 	}
 	for _, n := range alle {
-		if n.ID == ohne {
+		if n.ID == ohne.ID && n.Gruppe == ohne.Gruppe {
 			continue
 		}
 		b, err := os.ReadFile(n.Abs(root))
