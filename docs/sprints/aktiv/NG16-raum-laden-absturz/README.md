@@ -64,8 +64,8 @@ keine (entschieden autonom, Claude, 2026-11-12: Default „gewollt“ bei fehlen
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NG16.1 | `NG16.1-position-nach-laden.md` | Umsetzung | autonom | offen |
-| NG16.2 | `NG16.2-absturz-skill-grund.md` | Umsetzung | autonom | offen |
+| NG16.1 | `NG16.1-position-nach-laden.md` | Umsetzung | autonom | fertig |
+| NG16.2 | `NG16.2-absturz-skill-grund.md` | Umsetzung | autonom | fertig |
 | NG16.3 | `NG16.3-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

@@ -184,7 +184,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-811](B-811-native-darstellungs-kleinteile.md) | CLI | Problem | niedrig | eingeplant | NG12 | Plantagen-Bäume, gegnerische Geschosse und die Anleitung sehen im nativen Spiel aus wie im Browser-Client |
 | [B-812](B-812-native-menue-papierschnitt.md) | CLI | Idee | niedrig | eingeplant | NG13 | Das Menü des nativen Spiels erscheint im Papierschnitt-Stil mit Illustrationen |
 | [B-813](B-813-native-hud-menue-befunde-ng9.md) | CLI | Problem | mittel | eingeplant | NG13 | Burgfall-Banner, Skill-Menü, Hauptmenü nach dem Verlassen und Siegmeldung zeigen im nativen Spiel das Richtige |
-| [B-814](B-814-monarchen-nach-laden-position.md) | SIM | Frage | mittel | eingeplant | NG16 | Geklärt ist, warum Monarchen nach dem Laden an der Burg statt an ihrer gespeicherten Stelle stehen |
 | [B-815](B-815-native-schrift-ofl.md) | PAP | Schuld | hoch | eingeplant | NG18 | Das native Spiel zeichnet mit einer freien OFL-Schrift statt der Debug-Schrift |
 | [B-816](B-816-native-shader-umschalter-leistungsanzeige.md) | CLI | Idee | niedrig | eingeplant | NG14 | Fluss-Shader und Kacheln lassen sich im Spiel umschalten, Bildrate und Rechenzeit sind im Bild sichtbar |
 | [B-818](B-818-native-menue-kachel-illustrationen.md) | CLI | Idee | niedrig | offen | – | Hauptmenü und Pause-Menü des nativen Spiels zeigen Kacheln mit Illustrationen |
@@ -779,3 +778,4 @@ Zeile in diesen Abschnitt.
 | [B-801](archiv/B-801-native-ton.md) | CLI | Idee | mittel | erledigt | NG8 | Das native Spiel spielt Klänge und Musik zu den Ereignissen wie der Browser-Client |
 | [B-779](archiv/B-779-rust-und-bevy-entfernen.md) | INF | Schuld | mittel | erledigt | NG10 | Rust und der Bevy-Prototyp sind aus dem Repo entfernt, das Projekt ist rein Go |
 | [B-817](archiv/B-817-abnahme-laeufe-nat.md) | CLI | Schuld | mittel | erledigt | – | Abnahme-Läufe NAT |
+| [B-814](archiv/B-814-monarchen-nach-laden-position.md) | SIM | Frage | mittel | verworfen | NG16 | Geklärt ist, warum Monarchen nach dem Laden an der Burg statt an ihrer gespeicherten Stelle stehen |

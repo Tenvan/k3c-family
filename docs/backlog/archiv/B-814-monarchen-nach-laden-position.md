@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** verworfen
 - **Sprint:** NG16
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
@@ -67,4 +67,4 @@ Entschieden autonom, Claude, 2026-11-12: Default „gewollt“, wenn die Positio
 
 ## Notizen
 
-Gefunden in NG9.1 (2026-11-11). Revision 2 (2026-11-12): als „prüfen, dann dokumentieren oder beheben“ formuliert, Bereich um `engine/room/**` ergänzt.
+Geprüft in NG16.1 (2026-11-12): gewollt. `IslandPlayerSave` (`engine/sim/island_save.go:51`) hat kein Positionsfeld, die v1-`PlayerSave` (`save.go:63`) nur Gold; `FromIslandSaveIn` (`island_save.go:230`) ruft `addPlayerAt` (`world.go:133-138`, `HubX ± 3`) bewusst wie beim Beitritt; Grundprinzip im Kopfkommentar `island_save.go:13-15`. Festgehalten mit Kommentar und `TestIslandSaveMonarchAnDerBurg`. Verworfen als „gewollt, dokumentiert“.

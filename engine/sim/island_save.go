@@ -225,6 +225,8 @@ func FromIslandSaveIn(s IslandSave, cycleSpeed float64, world WorldDef) (*Island
 	*isl.Stock = s.Stock // applyHub setzt den Vorrat je Hub; maßgeblich ist der der Insel
 	restorePool(isl, s)
 	restoreProgress(isl, s)
+	// Die Stelle des Monarchen ist flüchtig wie Gegner und Münzen am Boden (B-814, gewollt): IslandPlayerSave trägt keine
+	// Position, addPlayerAt stellt den Monarchen wie beim Beitritt an die Burg seiner Stufe (HubX ± 3).
 	for _, p := range s.Players {
 		q := addPlayerAt(isl.Stages[stageByDepth(isl, p.Depth)], p.Index)
 		q.Gold = p.Gold

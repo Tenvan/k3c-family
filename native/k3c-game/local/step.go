@@ -47,22 +47,17 @@ func (s *Session) Step() view.Frame {
 	return f
 }
 
-// tick taktet den Raum einmal und bestimmt den Ausgang. Ein Panic schließt das Spiel ohne Speichern; der letzte
-// Spielstand bleibt. Im Aufnahme-Modus wartet es auf die in diesem Takt begonnenen Speicherungen.
+// tick taktet den Raum einmal und bestimmt den Ausgang. Ein Panic im Takt schließt der Raum selbst ohne Speichern
+// (room.SafeTick, B-803: eine begonnene Speicherung läuft zu Ende, danach keine mehr); der letzte Spielstand bleibt. Im
+// Aufnahme-Modus wartet es auf die in diesem Takt begonnenen Speicherungen.
 func (s *Session) tick() {
-	defer func() {
-		s.inTick = false
-		if p := recover(); p != nil {
-			s.crash(fmt.Sprint(p))
-		}
-	}()
 	s.p.begin()
 	base := s.store.count()
 	s.inTick, s.encodes = true, 0
-	ok := s.r.Tick()
+	ok := s.r.SafeTick()
 	s.inTick = false
 	if !ok {
-		s.crash("Raum geschlossen")
+		s.crash(s.failure())
 		return
 	}
 	if s.recording && s.encodes > 0 {
@@ -111,6 +106,14 @@ func (s *Session) judge() {
 	if s.ended != view.OutcomeNone {
 		s.log.Info("🚦 Spielende", "save", s.name, "ausgang", s.ended)
 	}
+}
+
+// failure ist der Grund, aus dem der Raum geschlossen ist: der Panic aus Manager.Status, sonst „Raum geschlossen“.
+func (s *Session) failure() string {
+	if _, fails := s.m.Status(); len(fails) > 0 {
+		return fails[len(fails)-1].Error
+	}
+	return "Raum geschlossen"
 }
 
 // crash verwirft Raum und Manager, ohne zu speichern (der Zustand ist nicht mehr sicher), und meldet es dem Menü.

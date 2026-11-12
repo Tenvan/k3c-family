@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strings"
 	"testing"
 
 	"k3c/engine/sim"
@@ -58,6 +59,10 @@ func TestLearnRespec(t *testing.T) {
 	}
 	if err := s.Respec(1); err == nil {
 		t.Error("Respec für fehlenden Spieler")
+	}
+	// B-803/AC-02: Die Ablehnung der Simulation nennt den Grund.
+	if err := s.Learn(0, "fireball"); err == nil || !strings.HasSuffix(err.Error(), `: skill "fireball": keine Punkte frei`) {
+		t.Errorf("Learn ohne Punkt: %v", err)
 	}
 	// Zu Beginn gibt es keine Punkte: ein Punkt über SkillBase (der Takt läuft nur in Step, kein Wettlauf).
 	f.Monarch(0).SkillBase = 1
