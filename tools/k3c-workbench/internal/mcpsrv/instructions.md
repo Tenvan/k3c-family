@@ -46,10 +46,22 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 - `plan_list {kind?, status?, domain?, sprint?, archive?}` für den Überblick, `plan_get {id}` für ein Dokument
   (`B-210`, `M8`, `M8.1`).
 - `plan_next {domain?}` zu Beginn einer autonomen Session: die nächste Session nach `docs/arbeitsweise.md` › Autonomer
-  Ablauf, Schritt 1 (Rang, aktive Sprints, offen und autonom, Abhängigkeiten erledigt, Domäne frei), mit Pfad, Branch
-  `sprint/<präfix>`, Session-Datei, ihren Kriterien aus der Sprint-README und den parallel möglichen Sessions anderer
-  Domänen; sonst „Keine Session frei“ mit Grund je Projekt. Liest nur die lokalen Dateien: die Sperre über `origin`
-  (`git ls-remote --heads origin 'sprint/*'`) prüft der Agent selbst.
+  Ablauf, Schritt 1 (Rang, aktive Sprints, offen und autonom, Abhängigkeiten erledigt, keine Kollision mit einer Session
+  in Arbeit), mit Pfad, Branch `sprint/<präfix>` (ein Feld `Branch: sprint/cu1` bleibt, `w15/1-x` wird `sprint/w15`),
+  Session-Datei, ihren Kriterien aus der Sprint-README und den parallel möglichen Sessions; sonst „Keine Session frei“
+  mit Grund je Projekt. Kollision wie bei `plan_waves`: gleiche Sperre der Sprint-README oder überlappende Erlaubte
+  Dateien; fehlt einer Session die Dateimenge, gilt noch die Sperre nach Domäne und Lane. Liest nur die lokalen Dateien:
+  die Sperre über `origin` (`git ls-remote --heads origin 'sprint/*'`) prüft der Agent selbst.
+- `plan_waves {slots?, project?, domain?}` beim Planen oder Starten einer Welle (`docs/arbeitsweise.md` › Parallelität
+  und Wellen): Kandidaten sind offene autonome Sessions aktiver Sprints, freigegebene Tickets ohne Sprint und
+  freigegebene geplante Sprints mit `Braucht 🧑: –`. Ebene aus `Abhängig von`, Kollision bei überlappendem `Bereich`
+  (Präfix der Globs, Sammeldateien ausgenommen; Sessions: Erlaubte Dateien) oder gleicher `Sperre`; Rang, Prio, Nummer
+  entscheiden. Sessions in Arbeit stehen in Welle 1 und belegen Plätze (höchstens 4). Je zurückgestelltem Knoten steht
+  der Grund da; „In keiner Welle“ nennt `Bereich fehlt`, `wartet auf …` und als `Fehler:` unbekannte IDs.
+  `project`/`domain` grenzen nur die Anzeige ein.
+- `plan_queue {device?}` legt 🧑 gesammelt vor (Ralf-Queue): Freigaben (Specs im Entwurf mit `Braucht 🧑: Freigabe`),
+  Entscheidungen, Abnahmen je Gerät (PC, Xbox/TV, Pi, Mini-PC, Workshop, Veröffentlichung, `unbekannt`). Das Gerät einer
+  Mensch-Session steht in einer Zeile `Gerät: …` im Abschnitt Kontext, sonst gilt `unbekannt`.
 - `plan_create {kind, slug, title, id?, fields}`: Ticket (Felder `Domäne`, `Typ`, `Prio`), Sprint (`id`, `Domäne`) oder
   Session (`id` wie `M8.5`) als Kopie der Vorlage; danach die Abschnitte mit `plan_sections {id, sections}` füllen
   (`sections`: Abschnitt → Text). Mehrere Abschnitte immer mit `plan_sections`; ein unbekannter Abschnitt bricht ab,

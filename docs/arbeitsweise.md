@@ -218,8 +218,8 @@ Ein Sprint darf Sessions mehrerer Domänen **nacheinander** enthalten (z. B. SIM
 sie in der Reihenfolge der Sessions. Was eine Domäne außerhalb des Sprints braucht, wird ein Ticket.
 **Sperre:** Maßgeblich sind die Dateien: Zwei Sessions kollidieren, wenn ihre **Erlaubten Dateien** überlappen oder sie dieselbe **Sperre** tragen
 (Abschnitt „Parallelität und Wellen“). Die Domäne ordnet Zuständigkeit und Commit-Titel.
-**Übergang, bis `plan_next` Dateimengen liest (B-783):** Das Werkzeug sperrt weiter nach Domäne und `Lane`: Eine Session `in Arbeit` ohne `Lane` sperrt ihre Domäne,
-eine mit `Lane` nur Domäne und Lane (PV1.1). Wer Sessions derselben Domäne parallel plant, setzt deshalb verschiedene Lanes **und** disjunkte Erlaubte Dateien.
+`plan_next` und `plan_waves` prüfen das aus den Erlaubten Dateien und der Sperre der Sprint-README (B-783). Nur wenn einer Session die Erlaubten Dateien
+fehlen, sperrt `plan_next` noch nach Domäne und `Lane` (PV1.1).
 Sessions **eines** Sprints laufen immer nacheinander (ein Sprint-Branch); Parallelität entsteht zwischen Sprints. Siehe Autonomer Ablauf, Schritt 1.
 
 | Kürzel | Domäne | Dateien |
@@ -290,7 +290,7 @@ der Stand der Basis; die eigene Änderung wird mit `plan_*` oder dem kleinen Edi
 
 ### Wellen berechnen
 
-Bis `plan_waves` das übernimmt (B-783), rechnet der planende Agent von Hand:
+`plan_waves {slots?, project?, domain?}` rechnet die Wellen so (B-783) und nennt je zurückgestelltem Kandidaten den Grund:
 
 1. **Kandidaten:** offene Sessions `Agent: autonom` aktiver Sprints, dazu Tickets und Sprints mit `Spec: freigegeben` und `Braucht 🧑: –`.
 2. **Ralf-Queue zuerst:** Alles mit `Braucht 🧑` ≠ `–` wird 🧑 vorab und gesammelt vorgelegt. Es hält nur auf, was es in `Abhängig von` nennt.
@@ -312,7 +312,8 @@ Bis `plan_waves` das übernimmt (B-783), rechnet der planende Agent von Hand:
 
 ### Ralf-Queue
 
-Was 🧑 braucht, wird gebündelt statt je Sprint einzeln vorgelegt:
+Was 🧑 braucht, wird gebündelt statt je Sprint einzeln vorgelegt; `plan_queue {device?}` stellt es zusammen (B-783). Das Gerät einer Mensch-Session
+steht in einer Zeile `Gerät: …` im Abschnitt Kontext, sonst gilt „unbekannt“:
 
 1. **Freigaben** (Klasse B, Abschnitt SDD) mit Default, sodass ein „ja, alle“ genügt.
 2. **Entscheidungen:** Offene Fragen mit Vorschlag.
