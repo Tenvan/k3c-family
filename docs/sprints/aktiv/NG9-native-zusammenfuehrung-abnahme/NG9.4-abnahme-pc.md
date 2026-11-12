@@ -1,6 +1,6 @@
 # NG9.4 · Abnahme am PC zu zweit mit zwei Gamepads
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -52,5 +52,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-04 ✅ 🧑 Ralf, 2026-11-12: Standard-Abnahme mit 1 und 2 Spielern an der Tastatur bestanden, Menüs gehen (B-802 › Notizen). Abweichung: Tastatur statt zwei Gamepads; Gamepads, Ton und übrige Checkliste später (NG14.5, NG15.3, NG9.5). Keine neuen Tickets.

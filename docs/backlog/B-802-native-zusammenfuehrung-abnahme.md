@@ -69,3 +69,5 @@ keine
 ## Notizen
 
 Angelegt 2026-11-11 bei der Planung der Umsetzung (NG9). Mini-PC-Teil: B-786 im selben Sprint.
+
+**Abnahme am PC (NG9.4), 🧑 Ralf, 2026-11-12:** bestanden. Standard-Abnahme mit 1 und 2 Spielern an der Tastatur läuft, Menüs gehen. Abweichung: mit Tastatur statt zwei Gamepads; der Rest (Gamepads, Ton, weitere Punkte der Checkliste) kommt später in NG14.5/NG15.3 bzw. am Mini-PC (NG9.5). Keine Befunde.
