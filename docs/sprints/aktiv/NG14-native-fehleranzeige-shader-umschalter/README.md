@@ -1,6 +1,6 @@
 # NG14 · CLI · Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit

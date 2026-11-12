@@ -1,6 +1,6 @@
 # NG18 · PAP · Natives Spiel: freie Schrift statt Debug-Schrift
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** PAP
 - **Reife:** bereit

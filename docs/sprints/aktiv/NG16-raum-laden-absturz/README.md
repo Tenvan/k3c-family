@@ -1,6 +1,6 @@
 # NG16 · SIM, SRV · Raum: Absturzbehandlung nach außen, Position nach dem Laden
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** SIM, SRV
 - **Reife:** bereit

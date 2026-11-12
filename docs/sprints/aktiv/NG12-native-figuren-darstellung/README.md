@@ -1,6 +1,6 @@
 # NG12 · CLI · Natives Spiel: Anzeigen an Figuren, Bäume und Geschosse
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
