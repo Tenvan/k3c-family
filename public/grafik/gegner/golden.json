@@ -120,11 +120,11 @@
     }
   },
   "wolf": {
-    "renderKey": "250c5734a34f05ed0e79219ef6ec38ed841854e1fae35467ec86656cb3fe1c5c",
+    "renderKey": "0d81ceb0eb1ac08f96f4b88fe881a48d43d030521196c5539bf473554eae122a",
     "dateien": {
-      "angriff.png": "6141d6a358573ccd61f9b6e9e6292f7604adf3005846f6d3816b109f5fa6ab58",
-      "idle.png": "5ecde06f8c6a5ee3f72024933de6b69326ee155114541ade31722f92ae908bea",
-      "lauf.png": "642c743ace6faaaa90108fa307ba656c2adbaf8202d5e43d51989016f187a214"
+      "angriff.png": "bbaa053698c040b5274f9c7b57da0fdfe5da8f4929312ec3be130fdf88540a23",
+      "idle.png": "0262b628f1a20cf16df2074572846b1685f8ae6608c2b3596c0cfa87a85aa514",
+      "lauf.png": "dc434a941801e7d7c63bc49b70269164296e23d9f0b4e9dd38784601a4fce6b7"
     }
   },
   "zombie": {

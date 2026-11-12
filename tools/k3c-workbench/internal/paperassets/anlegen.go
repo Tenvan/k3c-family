@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -35,8 +36,13 @@ func Anlegen(ctx context.Context, cli CLI, id, rig, beschreibung, gruppe string)
 	if err != nil {
 		return AnlegenErgebnis{}, err
 	}
-	if a, err := Finde(cli.Root, id); err == nil {
-		return AnlegenErgebnis{}, fmt.Errorf("%s gibt es schon (%s)", id, a.Pfad)
+	vorhanden, err := Finde(cli.Root, id)
+	var mehrdeutig *MehrdeutigFehler
+	if errors.As(err, &mehrdeutig) {
+		return AnlegenErgebnis{}, fmt.Errorf("%s gibt es schon (%s)", id, strings.Join(mehrdeutig.Treffer, ", "))
+	}
+	if err == nil {
+		return AnlegenErgebnis{}, fmt.Errorf("%s gibt es schon (%s)", id, vorhanden.Pfad)
 	}
 	text, err := Vorlage(rig, id, beschreibung)
 	if err != nil {

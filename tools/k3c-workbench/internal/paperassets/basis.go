@@ -75,18 +75,54 @@ func Assets(root string) ([]Asset, error) {
 	return out, nil
 }
 
-// Finde sucht ein Asset über seine ID.
+// MehrdeutigFehler: Die ID ohne Gruppe kommt in mehreren Gruppen vor; Treffer sind <gruppe>/<id>.
+type MehrdeutigFehler struct {
+	ID      string
+	Treffer []string
+}
+
+func (e *MehrdeutigFehler) Error() string {
+	return fmt.Sprintf("mehrdeutig: %s (mit <gruppe>/<id> wählen)", strings.Join(e.Treffer, ", "))
+}
+
+// Finde sucht ein Asset über „<gruppe>/<id>“ oder die bloße ID. Eine bloße ID in mehreren Gruppen wird mit der
+// Trefferliste abgelehnt (MehrdeutigFehler), eine unbekannte Gruppe mit den vorhandenen Gruppen.
 func Finde(root, id string) (Asset, error) {
 	liste, err := Assets(root)
 	if err != nil {
 		return Asset{}, err
 	}
+	gruppe, kurz, mitGruppe := strings.Cut(id, "/")
+	if !mitGruppe {
+		gruppe, kurz = "", id
+	}
+	var treffer []Asset
+	gruppen := map[string]bool{}
 	for _, a := range liste {
-		if a.ID == id {
-			return a, nil
+		gruppen[a.Gruppe] = true
+		if a.ID == kurz && (gruppe == "" || a.Gruppe == gruppe) {
+			treffer = append(treffer, a)
 		}
 	}
-	return Asset{}, fmt.Errorf("Asset „%s“ fehlt", id) //nolint:staticcheck // Vertragstext (paper-mcp.md)
+	if mitGruppe && !gruppen[gruppe] {
+		namen := make([]string, 0, len(gruppen))
+		for g := range gruppen {
+			namen = append(namen, g)
+		}
+		sort.Strings(namen)
+		return Asset{}, fmt.Errorf("Gruppe „%s“ unbekannt, vorhanden: %s", gruppe, strings.Join(namen, ", ")) //nolint:staticcheck // Satz für die Antwort
+	}
+	switch len(treffer) {
+	case 0:
+		return Asset{}, fmt.Errorf("Asset „%s“ fehlt", id) //nolint:staticcheck // Vertragstext (paper-mcp.md)
+	case 1:
+		return treffer[0], nil
+	}
+	e := &MehrdeutigFehler{ID: id}
+	for _, a := range treffer {
+		e.Treffer = append(e.Treffer, a.Gruppe+"/"+a.ID)
+	}
+	return Asset{}, e
 }
 
 // Geaendert sind die IDs, deren Spec oder Ausgabe gegen HEAD geändert ist (auch unversioniert oder gelöscht).

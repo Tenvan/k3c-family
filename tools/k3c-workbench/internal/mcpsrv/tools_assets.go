@@ -32,7 +32,7 @@ type assetsListIn struct {
 }
 
 type assetsGetIn struct {
-	ID     string   `json:"id" jsonschema:"Asset-ID (Dateiname ohne .paper.json), z. B. monarch"`
+	ID     string   `json:"id" jsonschema:"Asset-ID (Dateiname ohne .paper.json), z. B. monarch; bei gleicher ID in zwei Gruppen <gruppe>/<id>, z. B. gegner/wolf"`
 	Felder []string `json:"felder,omitempty" jsonschema:"nur diese obersten Schlüssel, z. B. [umhang, ausgabe]"`
 }
 

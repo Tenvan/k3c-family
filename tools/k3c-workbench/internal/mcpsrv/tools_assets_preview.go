@@ -21,7 +21,7 @@ import (
 )
 
 type assetsPreviewIn struct {
-	ID        string `json:"id" jsonschema:"Asset-ID, z. B. monarch"`
+	ID        string `json:"id" jsonschema:"Asset-ID, z. B. monarch (bei doppelter ID <gruppe>/<id>, z. B. gegner/wolf)"`
 	Animation string `json:"animation,omitempty" jsonschema:"Animation; leer = erste der Spec"`
 	Frame     int    `json:"frame,omitempty" jsonschema:"Frame-Nummer, Standard 0"`
 	Variante  string `json:"variante,omitempty" jsonschema:"Variante (Material-Tausch); leer = keine"`

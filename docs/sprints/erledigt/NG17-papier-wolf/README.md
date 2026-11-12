@@ -1,6 +1,6 @@
 # NG17 · PAP · Papier: Reittier Wolf und Pfoten der Gegner-Wölfe
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** PAP
 - **Reife:** bereit
@@ -64,7 +64,7 @@ keine
 |---|---|---|---|---|
 | NG17.1 | `NG17.1-reittier-wolf-pfoten.md` | Umsetzung | autonom | fertig |
 | NG17.2 | `NG17.2-review.md` | Review | autonom | fertig |
-| NG17.3 | `NG17.3-gegner-wolf-pfote.md` | Umsetzung | autonom | offen |
+| NG17.3 | `NG17.3-gegner-wolf-pfote.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -72,6 +72,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-12: AC-01 in NG17.1, AC-02 in NG17.1 (Alphawolf) und NG17.3 (Gegner-Wolf, nach B-819). Review NG17.2 ohne schweren Befund; Golden-Änderungen gewollt (figuren: Reittier-Suche, gegner: Pfoten). Neues Ticket B-819 (erledigt). Gen lief in den Feature-Sessions; Sim und Balance gesperrt (Beschluss 2026-11-11), kein Abnahme-Ticket nötig.
