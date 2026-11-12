@@ -63,7 +63,7 @@ keine (entschieden autonom, Claude, 2026-11-12: Go-Schrift BSD-3 als Default, Ab
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NG18.1 | `NG18.1-schrift.md` | Umsetzung | autonom | offen |
+| NG18.1 | `NG18.1-schrift.md` | Umsetzung | autonom | fertig |
 | NG18.2 | `NG18.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
