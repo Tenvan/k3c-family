@@ -8,9 +8,7 @@ import { describe, expect, it } from 'vitest';
 const sources = import.meta.glob(['./*.ts'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
 
 /** Reine Daten, keine Oberflächen-Texte. */
-const DATEN: Record<string, string> = {
-  './soundtestLogic.ts': 'Gruppen-Namen der Hörprobe und Verweis auf die Credit-Datei public/audio/README.md',
-};
+const DATEN: Record<string, string> = {};
 
 const GERMAN = /[äöüßÄÖÜ]|[A-Za-z]{2,}\s+[A-Za-z]{2,}/;
 const TEXT_FILES = /\/texts(\.\w+)?\.ts$/;
@@ -66,7 +64,7 @@ describe('Keine deutschen Text-Literale in den Werkzeug-Seiten (PL2 AC-01)', () 
   const checked = all.filter(([name]) => !(name in DATEN));
 
   it('findet die Dateien, und jeder Eintrag in DATEN existiert', () => {
-    expect(checked.map(([n]) => n)).toEqual(expect.arrayContaining(['./dm.ts', './soundtest.ts']));
+    expect(checked.map(([n]) => n)).toEqual(expect.arrayContaining(['./monitor.ts', './lizenzen.ts']));
     for (const name of Object.keys(DATEN)) expect(sources[name], name).toBeDefined();
   });
 

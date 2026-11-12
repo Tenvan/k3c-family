@@ -146,7 +146,7 @@ jobs:
           docker buildx build --platform linux/amd64 --load -t k3c-server:ci .
           docker run -d --name k3c -e NO_COLOR=1 -p 8080:8080 k3c-server:ci
           for i in $(seq 1 30); do curl -fs http://localhost:8080/api/health && break; sleep 1; done
-          for page in / /game.html /gamepad-test.html; do curl -fsS -o /dev/null "http://localhost:8080$page"; done
+          for page in / /game.html; do curl -fsS -o /dev/null "http://localhost:8080$page"; done
           test "$(curl -s -o /dev/null -w '%{http_code}' -X POST -d '{"version":1,"campaignId":"ci"}' http://localhost:8080/api/save)" = 200
           curl -fsS http://localhost:8080/api/save | grep -q '"campaignId":"ci"'
           test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/api/status)" = 404

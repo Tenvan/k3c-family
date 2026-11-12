@@ -1,5 +1,5 @@
 /**
- * Fokus-Weiterschaltung der Testseite (`testing.html`) per Controller. Szenarien stehen in `testScenarios.ts`.
+ * Fokus-Weiterschaltung der Kacheln des Monitors (`monitor.html`) per Controller.
  */
 export type FocusKey = 'prev' | 'next';
 

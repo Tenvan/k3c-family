@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { isOpenable } from '../core/shell';
 import { DEV_SECTIONS, DEV_TILES } from './devTiles';
 
-/** Werkzeug-Seiten, die bis LP1 auf der Landingpage standen, dazu Dungeon Master (B-335/AC-02) und Grafik-Pipeline (B-331). */
-const TOOLS = ['testing.html', 'gamepad-test.html', 'soundtest.html', 'monitor.html', 'stress.html', 'texturetest.html', 'game.html?dev=1&autostart=1&fresh=1&save=stress-wald&seed=stress&players=1&depth=0&stress=typisch', 'game.html?dev=1&autostart=1&fresh=1&save=stress-wald2&seed=stress&players=2&depth=0&stress=worstCase', 'game.html?dev=1&autostart=1&fresh=1&save=stress-mine&seed=stress&players=2&depth=2&stress=worstCase', 'dm.html', 'game.html?dev=1'];
+/** Werkzeug-Seiten, die im Spielmenü eine Kachel haben (B-335/AC-02). */
+const TOOLS = ['monitor.html', 'game.html?dev=1'];
 
 describe('Entwicklerseite (B-335)', () => {
   it('gliedert nach Entwicklung, Performance und Balancing', () => {
@@ -18,18 +18,13 @@ describe('Entwicklerseite (B-335)', () => {
   it('Kachel „Spiel (Dev)“ öffnet game.html?dev=1 über die Shell (B-564/AC-01)', () => {
     const tile = DEV_TILES.find((t) => t.href === 'game.html?dev=1');
     expect(tile?.title).toBe('Spiel (Dev)');
-    expect(tile?.external).toBeUndefined();
     expect(isOpenable(tile!.href)).toBe(true);
   });
 
   it('Monitor liegt unter Performance, Balancing ist noch leer und erklärt das', () => {
     const [, perf, balance] = DEV_SECTIONS;
-    expect(perf!.tiles.map((t) => t.href)).toEqual(['monitor.html', 'stress.html', 'texturetest.html', 'game.html?dev=1&autostart=1&fresh=1&save=stress-wald&seed=stress&players=1&depth=0&stress=typisch', 'game.html?dev=1&autostart=1&fresh=1&save=stress-wald2&seed=stress&players=2&depth=0&stress=worstCase', 'game.html?dev=1&autostart=1&fresh=1&save=stress-mine&seed=stress&players=2&depth=2&stress=worstCase']);
+    expect(perf!.tiles.map((t) => t.href)).toEqual(['monitor.html']);
     expect(balance!.tiles).toEqual([]);
     expect(balance!.empty).not.toBe('');
-  });
-
-  it('nur Dungeon Master öffnet in einem neuen Fenster (das Asset-Studio ist ein eigenes Fenster, B-507)', () => {
-    expect(DEV_TILES.filter((t) => t.external).map((t) => t.href)).toEqual(['dm.html']);
   });
 });

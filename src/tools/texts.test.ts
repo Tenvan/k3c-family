@@ -22,19 +22,19 @@ describe('Textdateien der Werkzeug-Seiten (PL2 AC-01)', () => {
 
 describe('t() der Werkzeug-Seiten', () => {
   it('liefert die gewählte Sprache und ersetzt Platzhalter', () => {
-    expect(t('test.starting', { title: 'Wald' })).toBe('Starte „Wald“ …');
+    expect(t('tool.opening', { title: 'Wald' })).toBe('Öffne „Wald“ …');
     setLanguage('en');
-    expect(t('test.starting', { title: 'Wald' })).toBe('Starting “Wald” …');
+    expect(t('tool.opening', { title: 'Wald' })).toBe('Opening “Wald” …');
   });
 
   it('fällt auf Deutsch zurück, wenn der englische Text fehlt', () => {
     setLanguage('en');
-    const saved = en['sound.volUp'];
-    delete en['sound.volUp'];
+    const saved = en['monitor.tab.overview'];
+    delete en['monitor.tab.overview'];
     try {
-      expect(t('sound.volUp')).toBe('Lauter +');
+      expect(t('monitor.tab.overview')).toBe('Übersicht');
     } finally {
-      en['sound.volUp'] = saved;
+      en['monitor.tab.overview'] = saved;
     }
   });
 });
@@ -47,10 +47,10 @@ describe('applyTexts()', () => {
 
   it('setzt Inhalt, aria-label und Platzhalter; ein unbekannter Schlüssel lässt den HTML-Text stehen', () => {
     setLanguage('en');
-    const els = [target({ t: 'tool.opening' }), target({ tAria: 'sound.volUpAria', t: 'sound.volUp' }), target({ tPlaceholder: 'test.h.players' }), target({ t: 'gibt.es.nicht' })];
+    const els = [target({ t: 'tool.opening' }), target({ tAria: 'monitor.tab.history', t: 'monitor.tab.overview' }), target({ tPlaceholder: 'monitor.tab.history' }), target({ t: 'gibt.es.nicht' })];
     applyTexts({ querySelectorAll: () => els });
-    expect(els.map((e) => e.textContent)).toEqual(['Opening “{title}” …', 'Louder +', 'alt', 'alt']);
-    expect(els[1]!.attrs).toEqual({ 'aria-label': 'Louder' });
-    expect(els[2]!.attrs).toEqual({ placeholder: 'Players' });
+    expect(els.map((e) => e.textContent)).toEqual(['Opening “{title}” …', 'Overview', 'alt', 'alt']);
+    expect(els[1]!.attrs).toEqual({ 'aria-label': 'History' });
+    expect(els[2]!.attrs).toEqual({ placeholder: 'History' });
   });
 });
