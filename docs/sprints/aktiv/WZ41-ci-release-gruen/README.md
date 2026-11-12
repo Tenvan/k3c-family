@@ -4,7 +4,7 @@
 - **Projekt:** WZG
 - **Domäne:** INF
 - **Reife:** bereit
-- **Tickets:** B-739, B-756, B-757, B-758, B-759
+- **Tickets:** B-739, B-756, B-757, B-758, B-759, B-825
 - **Start-Commit:** ebbf1d9fd
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -56,6 +56,7 @@ Ein CI-Job ist rot aus einem Grund außerhalb des Bereichs → Ticket mit Fundst
 - **AC-03** `task go:race` ohne `engine/balance`, datadoc-Test grün, Jobs `go` und `k3c-workbench` grün (`B-757/AC-01` bis `B-757/AC-03`).
 - **AC-04** Docker-Image entsteht ohne `.work` im Kontext (`B-759/AC-01`).
 - **AC-05** `release.yml` mit `task typecheck` und `task test` vor `task build`, CI grün, `task check:all` nachgeholt mit Befunden als Tickets (`B-758/AC-01` bis `B-758/AC-03`).
+- **AC-06** Die CI führt die Tests wieder aus, ohne Sim- und Balance-Pakete, Laufzeit je Job belegt (`B-825/AC-01` bis `B-825/AC-03`; nach WZ42, Entscheidung Ralf 2026-11-12).
 
 ## Offene Fragen
 

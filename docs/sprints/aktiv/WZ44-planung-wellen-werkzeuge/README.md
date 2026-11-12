@@ -65,9 +65,9 @@ keine blockierenden. Defaults (Claude, 2026-11-12, Meldung im Nachgang): Gerät 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ44.1 | `WZ44.1-branch-checkrun-simsperre.md` | Umsetzung | autonom | offen |
-| WZ44.2 | `WZ44.2-plan-waves-queue.md` | Umsetzung | autonom | offen |
-| WZ44.3 | `WZ44.3-plan-check.md` | Umsetzung | autonom | offen |
+| WZ44.1 | `WZ44.1-branch-checkrun-simsperre.md` | Umsetzung | autonom | fertig |
+| WZ44.2 | `WZ44.2-plan-waves-queue.md` | Umsetzung | autonom | fertig |
+| WZ44.3 | `WZ44.3-plan-check.md` | Umsetzung | autonom | fertig |
 | WZ44.4 | `WZ44.4-fahrplan-aufraeumen.md` | Umsetzung | autonom | offen |
 | WZ44.5 | `WZ44.5-review.md` | Review | autonom | offen |
 
