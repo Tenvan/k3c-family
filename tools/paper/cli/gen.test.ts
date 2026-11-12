@@ -63,6 +63,9 @@ describe('gen', { timeout: 60_000 }, () => {
     expect(assets[0]).toMatch(/^🔨 \[1\/2\] bauten\/mauer gerendert ✅ \d+(,\d)? (ms|s)$/);
     expect(assets[1]).toMatch(/^🔨 \[2\/2\] reittiere\/pferd gerendert ✅ /);
     expect(zeilen.filter((z) => z.startsWith('💾'))).toHaveLength(2);
+    // B-749/AC-01: je Asset die ⏳-Zeile vor seiner 🔨-Zeile
+    for (const a of ['bauten/mauer', 'reittiere/pferd'])
+      expect(zeilen.findIndex((z) => z.startsWith('⏳') && z.includes(a))).toBeLessThan(zeilen.findIndex((z) => z.startsWith('🔨') && z.includes(a)));
   }, 60_000);
 
   it('dauer formatiert ms, Sekunden und Minuten', () => {
