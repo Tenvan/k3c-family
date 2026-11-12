@@ -41,7 +41,6 @@ data/worlds/*
 docs/backlog/.ticket.lock
 
 # Bau-Ordner der nativen Go-Prototypen (NAT)
-/native/k3c-ebiten/bin/
 /native/k3c-rig/bin/
 
 # Gerenderte Papierschnitt-Grafik (B-737): Arbeitsordner und Asset-Ordner entstehen durch `task gen:paper`; eingecheckt bleiben
@@ -57,3 +56,4 @@ docs/backlog/.ticket.lock
 /public/grafik/reittiere/*/
 /public/grafik/truppen/*/
 graphify-out/
+/native/k3c-game/bin/

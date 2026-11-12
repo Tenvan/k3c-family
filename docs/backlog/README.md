@@ -138,8 +138,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-750](B-750-gen-paper-schritte-im-asset.md) | PAP | Problem | mittel | offen | – | gen:paper meldet die Ausgaben innerhalb großer Assets |
 | [B-751](B-751-gen-paper-schneller-rendern.md) | PAP | Idee | mittel | offen | – | gen:paper schneller: Cache je Asset und parallel rastern |
 | [B-752](B-752-monarch-aus-teilen-zusammensetzen.md) | PAP | Idee | mittel | eingeplant | – | Monarch und Reittier getrennt rendern und im Client zusammensetzen |
-| [B-753](B-753-meilenstein-volllauf-zeitlimit.md) | SRV | Problem | hoch | offen | – | Meilenstein-Volllauf über k3c-sim überschreitet das 60-min-Limit |
-| [B-754](B-754-tick-p99-online-ueber-rs2-3.md) | SRV | Problem | mittel | offen | – | Tick p99 online bei 4 Geräten liegt über dem RS2.3-Wert |
 | [B-755](B-755-skill-leiste-ohne-tasten-menue-groesser.md) | CLI | Idee | mittel | offen | – | Skill-Leiste ohne Tastentexte, Skillmenü zeigt die Taste vor dem Skill und ist größer |
 | [B-756](B-756-ci-rendert-papier-grafik-vor-go-tests.md) | INF | Problem | hoch | offen | – | CI rendert die Papierschnitt-Grafik vor den Go-Tests, die sie lesen |
 | [B-757](B-757-ci-race-balance-timeout-datadoc-test.md) | INF | Problem | hoch | offen | – | CI: Race-Lauf ohne engine/balance, datadoc-Test kennt Balance-Berichtsdateien |
@@ -782,3 +780,5 @@ Zeile in diesen Abschnitt.
 | [B-813](archiv/B-813-native-hud-menue-befunde-ng9.md) | CLI | Problem | mittel | erledigt | NG13 | Burgfall-Banner, Skill-Menü, Hauptmenü nach dem Verlassen und Siegmeldung zeigen im nativen Spiel das Richtige |
 | [B-819](archiv/B-819-assets-tools-doppelte-ids.md) | DEV | Problem | mittel | erledigt | – | Die assets_*-Tools erreichen auch Assets, deren ID in zwei Gruppen vorkommt |
 | [B-804](archiv/B-804-paper-reittier-suche-und-wolf-pfote.md) | PAP | Problem | mittel | erledigt | NG17 | tools/paper findet für das Reittier Wolf das Reittier statt des Gegners, Gegner-Wölfe haben Pfoten |
+| [B-753](archiv/B-753-meilenstein-volllauf-zeitlimit.md) | SRV | Problem | hoch | verworfen | – | Meilenstein-Volllauf über k3c-sim überschreitet das 60-min-Limit |
+| [B-754](archiv/B-754-tick-p99-online-ueber-rs2-3.md) | SRV | Problem | mittel | verworfen | – | Tick p99 online bei 4 Geräten liegt über dem RS2.3-Wert |

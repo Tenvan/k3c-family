@@ -23,3 +23,6 @@ Dockerfile text eol=lf
 # Go-Werkzeuge (wails, go mod tidy) schreiben go.mod/go.sum immer mit LF; sonst zeigt jeder Build eine Scheinänderung.
 go.mod text eol=lf
 go.sum text eol=lf
+
+# Rig-Export (task native:rig:export) schreibt LF; im Arbeitsbaum auch LF, sonst erscheint jeder Export als Scheinänderung.
+native/k3c-rig/assets/**/*.json text eol=lf
