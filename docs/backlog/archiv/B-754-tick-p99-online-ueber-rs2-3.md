@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Projekt:** LST
 - **Erstellt:** 2026-11-08

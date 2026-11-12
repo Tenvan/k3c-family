@@ -1,18 +1,12 @@
-# Namespace `native`: natives Spiel in Go + Ebitengine (Projekt NAT, Entscheidung 008) und seine Prototypen.
-# Ebitengine-Prototyp (Sprint NV1, B-776): eigenes Go-Modul unter native/k3c-ebiten (nicht Teil des Moduls `k3c`),
-# Version in go.mod festgelegt, ohne cgo. Der Rust-Vergleichs-Prototyp ist entfallen (B-779).
-# Grafik kommt aus public/grafik (vorher `task gen:paper`); die Figuren des Ebitengine-Levels zeichnet er seit NV3.3 aus den
-# Rig-Teilen unter native/k3c-rig/assets (Pakete rig und paint per replace eingebunden, `--art sheet` wie vorher).
+# Namespace `native`: natives Spiel in Go + Ebitengine (Projekt NAT, Entscheidung 008) und der Rig-Prototyp.
+# Der Ebitengine-Prototyp native/k3c-ebiten (NV1, NV3) ist entfernt; Fluss und Shader leben in native/k3c-game weiter.
 # Rig-Prototyp (Sprint NV2, B-778): eigenes Go-Modul unter native/k3c-rig; seine Teil-Bilder und Rig-Dateien sind eingecheckt
 # (native/k3c-rig/assets, `rig:export` schreibt sie neu), Bauen und Starten braucht keinen Gen-Lauf.
 # Natives Spiel (Sprint NG1, B-792): eigenes Go-Modul unter native/k3c-game (`game:build`, `game`), ohne cgo.
 version: '3'
 
 vars:
-  EBITEN: '{{.ROOT_DIR}}/native/k3c-ebiten'
-  EBITEN_EXE: '{{.ROOT_DIR}}/native/k3c-ebiten/bin/k3c-ebiten.exe'
   MEASURE: 'powershell -NoProfile -ExecutionPolicy Bypass -File "{{.ROOT_DIR}}/native/measure.ps1"'
-  PAKET: '{{.ROOT_DIR}}/.work/native-ebiten'
   # Rig-Prototyp (Sprint NV2, B-778): eigenes Go-Modul unter native/k3c-rig, Teile und Rig-Dateien eingecheckt in assets/
   RIG: '{{.ROOT_DIR}}/native/k3c-rig'
   RIG_EXE: '{{.ROOT_DIR}}/native/k3c-rig/bin/k3c-rig.exe'
@@ -26,31 +20,6 @@ vars:
     sh: git describe --tags --always --dirty 2>/dev/null || true
 
 tasks:
-  ebiten:build:
-    desc: "Ebitengine-Prototyp bauen (Go, ohne cgo) nach native/k3c-ebiten/bin/"
-    dir: '{{.EBITEN}}'
-    deps: [':tmp']
-    env:
-      CGO_ENABLED: '0'
-    sources:
-      - '*.go'
-      - go.mod
-      - go.sum
-      # Pakete rig und paint aus dem Rig-Prototyp (replace in go.mod, NV3.3)
-      - ../k3c-rig/rig/*.go
-      - ../k3c-rig/paint/*.go
-      - ../k3c-rig/go.mod
-    generates:
-      - bin/k3c-ebiten.exe
-    cmds:
-      - go build -o bin/k3c-ebiten.exe .
-
-  ebiten:
-    desc: "Ebitengine-Prototyp starten (Spieler 1: Pad 1 oder A/D, Spieler 2: Pad 2 oder ←/→)"
-    deps: [ebiten:build]
-    cmds:
-      - '"{{.EBITEN_EXE}}" --root "{{.ROOT_DIR}}"'
-
   game:build:
     desc: "Natives Spiel bauen (Go, ohne cgo) nach native/k3c-game/bin/"
     dir: '{{.GAME}}'
@@ -123,24 +92,6 @@ tasks:
       - 'cd "{{.GAME}}" && CGO_ENABLED=0 go run ./menu/licensefile -version "{{.GAME_VERSION}}" > "{{.GAME_PAKET}}/LIZENZEN.txt"'
       # Probe: die EXE startet aus dem Paket-Ordner (Tag und Nacht mit Gegnern, Aufnahme-Modus)
       - 'cd "{{.GAME_PAKET}}" && ./k3c-game.exe --shots "{{.GAME_PAKET}}-probe/tag" --seed k3c --tick 300 --count 2 && ./k3c-game.exe --shots "{{.GAME_PAKET}}-probe/nacht" --seed k3c --tick 15600 --count 2 --input 0@0=-,1@0=-'
-
-  measure:ebiten:
-    desc: "Ebitengine: FPS und Grafikspeicher messen (Lastfälle level und alle, DirectX 11), Bericht nach reports/native-proto-*.json"
-    deps: [ebiten:build]
-    cmds:
-      - '{{.MEASURE}} -Engine ebiten'
-
-  ebiten:paket:
-    desc: "Paket für den Mini-PC nach .work/native-ebiten/ (EXE, Messskript, public/grafik); dort messen.cmd starten"
-    deps: [ebiten:build]
-    cmds:
-      - rm -rf "{{.PAKET}}"
-      - mkdir -p "{{.PAKET}}/public"
-      - cp "{{.EBITEN_EXE}}" "{{.ROOT_DIR}}/native/measure.ps1" "{{.ROOT_DIR}}/native/messen.cmd" "{{.PAKET}}/"
-      - cp -r "{{.ROOT_DIR}}/public/grafik" "{{.PAKET}}/public/grafik"
-      # Rig-Figuren des Ebitengine-Levels (--art rig, Standard; NV3.3)
-      - mkdir -p "{{.PAKET}}/native/k3c-rig"
-      - cp -r "{{.RIG}}/assets" "{{.PAKET}}/native/k3c-rig/assets"
 
   rig:export:
     desc: "Rig-Prototyp: Teil-PNGs, Rig-Dateien, Elemente und Sollwerte nach native/k3c-rig/assets/ schreiben (eingecheckt; liest Specs und Stil nur)"
