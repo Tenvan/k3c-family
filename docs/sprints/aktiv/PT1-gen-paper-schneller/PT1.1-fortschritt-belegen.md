@@ -1,6 +1,6 @@
 # PT1.1 · gen:paper-Fortschritt und Kopieren belegen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -59,5 +59,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 bis AC-03 geprüft: neuer `tools/paper/cli/fortschritt.test.ts` (stderr und `gen.log`, ✅/❌), Test „⏳ vor 🔨“. Läufe: `gen:paper-sync --status` Exit 1, nach dem Kopieren 0 (3 s, ohne Rendern); `--fehlt` 1/0; Monarch zeigt 210 ↳-Zeilen (heute 210 statt 195 Ausgaben). `check:diff` grün. Commit 1411cca32.

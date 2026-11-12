@@ -64,8 +64,8 @@ keine blockierenden. Default (Claude, 2026-11-12) zu `B-751 › Offene Fragen`: 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| PT1.1 | `PT1.1-fortschritt-belegen.md` | Umsetzung | autonom | offen |
-| PT1.2 | `PT1.2-cache-parallel.md` | Umsetzung | autonom | offen |
+| PT1.1 | `PT1.1-fortschritt-belegen.md` | Umsetzung | autonom | fertig |
+| PT1.2 | `PT1.2-cache-parallel.md` | Umsetzung | autonom | fertig |
 | PT1.3 | `PT1.3-review.md` | Review | autonom | offen |
 
 Keine eigenen Sim- oder Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
