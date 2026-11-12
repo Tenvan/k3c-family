@@ -68,7 +68,7 @@ Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität
 | NG9.1 | `NG9.1-ende-zu-ende.md` | Umsetzung | autonom | fertig |
 | NG9.2 | `NG9.2-messung-paket.md` | Umsetzung | autonom | fertig |
 | NG9.3 | `NG9.3-review.md` | Review | autonom | fertig |
-| NG9.4 | `NG9.4-abnahme-pc.md` | Review | Mensch | offen |
+| NG9.4 | `NG9.4-abnahme-pc.md` | Review | Mensch | fertig |
 | NG9.5 | `NG9.5-mini-pc.md` | Review | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
