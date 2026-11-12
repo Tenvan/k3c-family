@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** NG12
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -62,11 +62,11 @@ Volle Gesundheit: Browser-Verhalten übernehmen (laut `bar`), im Test festhalten
 - **AC-01** Test in `native/k3c-game/actors`: Balkenbreite und Sichtbarkeit je Figurentyp entsprechen den Browser-Regeln aus `worldRenderer.ts`.
 - **AC-02** Test: Goldkreis nur bei `carriedGold` > 0; Punkt in der Farbe des Spielers; freier Sitz (`Frame.Seats`) wird nicht gezeichnet.
 - **AC-03** Test: Bauer mit Last zeichnet die Last, ohne Last nicht.
-- **AC-04** Bildvergleich mit zwei Läufen gleich (wie `TestFlowImages`), Sichtprüfung am PC durch 🧑.
+- **AC-04** Bildvergleich mit zwei Läufen gleich (wie `TestFlowImages`), Bilder unter `reports/native-game-e2e/` für die Sichtprüfung.
 
 ## Offene Fragen
 
-keine
+Entschieden autonom, Claude, 2026-11-12: Die Sichtprüfung am PC durch 🧑 (bisher Teil von AC-04) ist keine eigene Mensch-Session, sondern läuft bei der nächsten PC-Abnahme mit (Ralf-Queue, Gerät PC, NG9.4); AC-04 verlangt nur den Bildvergleich und die abgelegten Bilder. Begründung: Hardware entkoppelt, eine eigene Abnahme nur für das Bild lohnt nicht.
 
 ## Notizen
 

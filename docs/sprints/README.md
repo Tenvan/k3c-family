@@ -37,6 +37,13 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| NG12 | CLI | NAT | Natives Spiel: Anzeigen an Figuren, Bäume und Geschosse | – | bereit | `geplant/NG12-native-figuren-darstellung/` |
+| NG13 | CLI | NAT | Natives Spiel: Menüs und HUD nachziehen | – | bereit | `geplant/NG13-native-menues-hud/` |
+| NG14 | CLI | NAT | Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter | – | bereit | `geplant/NG14-native-fehleranzeige-shader-umschalter/` |
+| NG15 | CLI | NAT | Natives Spiel: Ton-Gerät ohne Absturz | – | bereit | `geplant/NG15-native-ton-geraet/` |
+| NG16 | SIM, SRV | NAT | Raum: Absturzbehandlung nach außen, Position nach dem Laden | – | bereit | `geplant/NG16-raum-laden-absturz/` |
+| NG17 | PAP | NAT | Papier: Reittier Wolf und Pfoten der Gegner-Wölfe | – | bereit | `geplant/NG17-papier-wolf/` |
+| NG18 | PAP | NAT | Natives Spiel: freie Schrift statt Debug-Schrift | – | bereit | `geplant/NG18-native-schrift/` |
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | Entwurf | `geplant/MG10-papier-bosse-neu/` |
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
 | US3 | CLI | PAP | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | – | Entwurf | `geplant/US3-spielbefunde-papierschnitt/` |

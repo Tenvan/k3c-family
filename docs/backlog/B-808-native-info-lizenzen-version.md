@@ -4,13 +4,13 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** NG13
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -33,7 +33,7 @@ Spieler, Ralf (Weitergabe des Pakets), Claude (Umsetzung).
 
 ## Nicht-Ziele
 
-Neue Abhängigkeiten, Lizenz der Schrift (kommt mit B-815).
+Neue Abhängigkeiten. Auswahl und Ablage der Schrift samt Lizenzdatei gehören zu B-815 (NG18, vorher gemergt); die Lizenz-Seite liest deren Lizenzdatei unter `public/schrift/`.
 
 ## Regeln und Einschränkungen
 

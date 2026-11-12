@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** NG15
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -51,7 +51,7 @@ Kopfhörer während des Spiels abziehen → Ton aus oder auf anderem Gerät, Spi
 
 ## Ausnahme- und Fehlerfälle
 
-Gerät kommt zurück → Ton darf stumm bleiben bis zum Neustart (Vorschlag).
+Gerät kommt zurück → Ton bleibt stumm bis zum Neustart (entschieden, siehe Offene Fragen).
 
 ## Akzeptanzkriterien
 
@@ -60,7 +60,7 @@ Gerät kommt zurück → Ton darf stumm bleiben bis zum Neustart (Vorschlag).
 
 ## Offene Fragen
 
-oto direkt als Abhängigkeit zulassen? Entscheidet 🧑.
+Entschieden autonom, Claude, 2026-11-12: oto (`github.com/ebitengine/oto/v3`) wird direkte Abhängigkeit des Moduls `native/k3c-game`. Begründung: oto ist schon indirekte Abhängigkeit von Ebitengine (v3.5.0 in `go.mod`), es kommt kein neuer Code ins Modul, nur die Markierung `// indirect` entfällt; Sperre `deps` bleibt. Gerät kommt zurück → stumm bis zum Neustart (Vorschlag übernommen, kein Wiederverbinden).
 
 ## Notizen
 

@@ -28,6 +28,13 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | NG9 | Natives Spiel: Zusammenführung, Messung und Abnahme | aktiv |
 | NG10 | Rust und Bevy entfernen | erledigt |
 | NG11 | Natives Spiel: Fluss mit Shader | aktiv |
+| NG12 | Natives Spiel: Anzeigen an Figuren, Bäume und Geschosse | geplant |
+| NG13 | Natives Spiel: Menüs und HUD nachziehen | geplant |
+| NG14 | Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter | geplant |
+| NG15 | Natives Spiel: Ton-Gerät ohne Absturz | geplant |
+| NG16 | Raum: Absturzbehandlung nach außen, Position nach dem Laden | geplant |
+| NG17 | Papier: Reittier Wolf und Pfoten der Gegner-Wölfe | geplant |
+| NG18 | Natives Spiel: freie Schrift statt Debug-Schrift | geplant |
 
 ## Nicht-Ziele
 
