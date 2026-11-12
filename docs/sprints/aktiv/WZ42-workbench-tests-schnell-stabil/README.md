@@ -64,9 +64,9 @@ keine blockierenden. Defaults (Claude, 2026-11-12): Online- und Lasttests (`cmd/
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ42.1 | `WZ42.1-rote-und-wackelnde-tests.md` | Umsetzung | autonom | offen |
-| WZ42.2 | `WZ42.2-short-unter-drei-sekunden.md` | Umsetzung | autonom | offen |
-| WZ42.3 | `WZ42.3-verweise-balance.md` | Umsetzung | autonom | offen |
+| WZ42.1 | `WZ42.1-rote-und-wackelnde-tests.md` | Umsetzung | autonom | fertig |
+| WZ42.2 | `WZ42.2-short-unter-drei-sekunden.md` | Umsetzung | autonom | fertig |
+| WZ42.3 | `WZ42.3-verweise-balance.md` | Umsetzung | autonom | fertig |
 | WZ42.4 | `WZ42.4-review.md` | Review | autonom | offen |
 
 Keine eigenen Sim- oder Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
