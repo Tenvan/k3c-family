@@ -54,11 +54,18 @@ var glyphColors = map[string][2]color.RGBA{
 	"key": {rgb(0xf2f2f2, 1), rgb(0x111111, 1)},
 }
 
-// keyLabel ist die Beschriftung einer Tastatur-Taste (Leertaste aus den Texten, Ziffernblock als „Num n“).
+// keyLabel ist die Beschriftung einer Tastatur-Taste (Leertaste und Umschalttasten aus den Texten, Ziffernblock als
+// „Num n“).
 func keyLabel(lang, name string) string {
 	switch {
 	case name == "SPACE":
 		return tr(lang, "hint.space")
+	case name == "SHIFTLEFT":
+		return tr(lang, "key.shiftLeft")
+	case name == "SHIFTRIGHT":
+		return tr(lang, "key.shiftRight")
+	case name == "CONTROLRIGHT":
+		return tr(lang, "key.ctrlRight")
 	case name == "ESC":
 		return "Esc"
 	case name == "ENTER":
@@ -69,6 +76,32 @@ func keyLabel(lang, name string) string {
 		return tr(lang, "hint."+strings.ToLower(name))
 	case strings.HasPrefix(name, "NUM"):
 		return "Num " + name[3:]
+	}
+	return name
+}
+
+// KeyLabel ist die Beschriftung der Tastatur-Taste name (Schreibweise wie KeyName, dazu SHIFTLEFT, SHIFTRIGHT,
+// CONTROLRIGHT) in der Sprache lang, wie das HUD sie zeigt; für die Tastenbelegung im Pause-Menü (game, B-807).
+func KeyLabel(lang, name string) string { return keyLabel(lang, name) }
+
+// PadLabel ist die Beschriftung der Gamepad-Taste für action (Aktionen wie KeyName, dazu "sprint" und "move") in der
+// Sprache lang; "" = nicht belegt. Für die Tastenbelegung im Pause-Menü (game, B-807).
+func PadLabel(lang, action string) string {
+	switch action {
+	case "move":
+		return tr(lang, "key.padMove")
+	case "sprint":
+		return "RT"
+	}
+	name, ok := padKeys[action]
+	if !ok {
+		return ""
+	}
+	if l, ok := padLabels[name]; ok {
+		return l
+	}
+	if name == "MENU" {
+		return "Menu"
 	}
 	return name
 }

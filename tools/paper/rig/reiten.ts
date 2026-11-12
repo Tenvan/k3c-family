@@ -35,7 +35,8 @@ export function findeReittier(specPfad: string, id: string): string {
   if (!/^[a-z0-9][a-z0-9-]*$/.test(id)) throw abgelehnt(`Reittier-id „${id}“ ist kein Asset-Name`);
   const ordner = dirname(specPfad), eltern = dirname(ordner), name = `${id}.paper.json`;
   if (existsSync(join(ordner, name))) return join(ordner, name);
-  const gruppen = existsSync(eltern) ? readdirSync(eltern).sort().map((g) => join(eltern, g)) : [];
+  // Gruppe `reittiere` zuerst (B-804): gleiche ids bei Gegnern (Wolf) dürfen das Reittier nicht verdecken.
+  const gruppen = existsSync(eltern) ? readdirSync(eltern).sort((a, b) => Number(b === 'reittiere') - Number(a === 'reittiere') || (a < b ? -1 : 1)).map((g) => join(eltern, g)) : [];
   const treffer = gruppen.find((g) => g !== ordner && existsSync(join(g, name)) && istOrdner(g));
   if (!treffer) throw abgelehnt(`Reittier „${id}“ fehlt neben ${basename(specPfad)} und in den Nachbar-Gruppen`);
   return join(treffer, name);

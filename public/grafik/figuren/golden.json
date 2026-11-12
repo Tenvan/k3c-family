@@ -1,6 +1,6 @@
 {
   "monarch": {
-    "renderKey": "276f3fd9100b0bd939f33a6b6eb1c12d01241181e356fbbab8a2f5eddfaf729e",
+    "renderKey": "3b24b12468445650b79d7b1fce06deda85014650c8989f981a4bd632659343d2",
     "dateien": {
       "death.png": "9fecc67d2b09977b1da598151b6ce9db7b12ae98f6eaef2f2ecb33e335cbc9d4",
       "death@spieler1.png": "9fecc67d2b09977b1da598151b6ce9db7b12ae98f6eaef2f2ecb33e335cbc9d4",
@@ -52,11 +52,11 @@
       "galopp-weisser-wolf@spieler2.png": "7074615bdc4beffadfb5417e272a79cc2219e9eeaad6a0d608fabc1f41fc475f",
       "galopp-weisser-wolf@spieler3.png": "cb55ab9f24b1c2885998967cc5cc539275a8d7282fae79ca2ade859339b78bb2",
       "galopp-weisser-wolf@spieler4.png": "c5476624685c0a0de3c54f202a45965e93e2296b27662c0ed636e4f3177b60d8",
-      "galopp-wolf.png": "9dbbe0c2f96d7587923da0b7a2b41fe9a0367256da8f1e83933494e9ab0db43b",
-      "galopp-wolf@spieler1.png": "9dbbe0c2f96d7587923da0b7a2b41fe9a0367256da8f1e83933494e9ab0db43b",
-      "galopp-wolf@spieler2.png": "9ffd97c190f8a6f88f9564cd466ba8c58b0704393f6a75e5fe961fe26fd088e8",
-      "galopp-wolf@spieler3.png": "d1e8f8bf62bdf75e821e553537682c2bf25eccb9f76f61b7b30f8bfb995a2fee",
-      "galopp-wolf@spieler4.png": "214f40ff381fbc6ac9830c0c3f6020df9a49ef7cbc80791213d464c6013b0a15",
+      "galopp-wolf.png": "652b0b0034a7a5e30435143dbe9cb94fbe90e4b88e312227b175b9e5e8f998ed",
+      "galopp-wolf@spieler1.png": "652b0b0034a7a5e30435143dbe9cb94fbe90e4b88e312227b175b9e5e8f998ed",
+      "galopp-wolf@spieler2.png": "dec93758f1564ca34d1025734bf9833c30bd2f2d35dbc0459c29ffd5792c950d",
+      "galopp-wolf@spieler3.png": "a56ed1694127d2a4e5c19b464ac7e955a4b945f506af4d1cdfe157d4543ff7c1",
+      "galopp-wolf@spieler4.png": "8ee05b4664170374be2c593e1c63347c57ce3a7e7e9e4f7f2fac1127e9958f3a",
       "give.png": "1e28f8ef117a9b71dc8ebf90e9bbd6ab524de6d57bddd37bddd0f05f202c2ade",
       "give@spieler1.png": "1e28f8ef117a9b71dc8ebf90e9bbd6ab524de6d57bddd37bddd0f05f202c2ade",
       "give@spieler2.png": "a3b5f1cfcb3eea1f79fc77443a1ffe06895e5cf3fa39342802c054ff644fc3f5",
@@ -152,11 +152,11 @@
       "schritt-weisser-wolf@spieler2.png": "f53bb257b741e1a430db2b0a72bd0cbeca0cd588523a6adb1e548c10fba8a738",
       "schritt-weisser-wolf@spieler3.png": "6d20bf39561cde3672f772dbda1cd45c5eb9bff4139ef5800383c6965de5a835",
       "schritt-weisser-wolf@spieler4.png": "aa90432f6f483bc2381aacc0fa21d844c02046c39727c04b8191623f8de8c829",
-      "schritt-wolf.png": "e92ccd7f6a153de9325a2d7eedff9e6b1990772973c73806d80d35bb12e42507",
-      "schritt-wolf@spieler1.png": "e92ccd7f6a153de9325a2d7eedff9e6b1990772973c73806d80d35bb12e42507",
-      "schritt-wolf@spieler2.png": "9ccc05ac59d60256bdfd851734237ad48d551486536fb8271dc9ea3d4b3b3504",
-      "schritt-wolf@spieler3.png": "a915e97efd57c58179e3052852ac09656e0103385522d8ad2083621867d0323d",
-      "schritt-wolf@spieler4.png": "c861967c3045c9b7cc48a709ddf98b6649103bb7951ba36d2e7ee617beabb075",
+      "schritt-wolf.png": "cf98e524e8c431193cfa04279c4e79456238262fd8d505fc38a2112a868d7171",
+      "schritt-wolf@spieler1.png": "cf98e524e8c431193cfa04279c4e79456238262fd8d505fc38a2112a868d7171",
+      "schritt-wolf@spieler2.png": "e7e5d5448f274a30eb79208f2ec0f7174ab02a28fbd28df2ae02b4e8ad009084",
+      "schritt-wolf@spieler3.png": "98a0b8baf1ed954d55801fb2ba658ca0a3399081165d4fb7142afb1a9b2c2ffe",
+      "schritt-wolf@spieler4.png": "8c54c1ebc54aecfca44cc3b7c3ec66f331e3dce7d7bf2072a9662da50736e869",
       "trab.png": "9e52de4f7bdbcbb35a12ac5f61012491f08986979f5565b43cad54df592f20d0",
       "trab@spieler1.png": "9e52de4f7bdbcbb35a12ac5f61012491f08986979f5565b43cad54df592f20d0",
       "trab@spieler2.png": "b1c3cdf4bb47410581eae9564291cb8c121f38325f21e3576eb9be52715294f9",
@@ -207,11 +207,11 @@
       "trab-weisser-wolf@spieler2.png": "3f59991c14226b67b1c685b782b4014e756fbd2347efe8da426fc0a14ae91b76",
       "trab-weisser-wolf@spieler3.png": "7f4531435e424d701706dfe8c6b6a9ba3f7a5e703ff0422ee71cb690f1272d21",
       "trab-weisser-wolf@spieler4.png": "7a72815bedbdd3ae8d33c3b77f3ce886b8e68a1c5d7c7e570f5d091c5e1ed7a1",
-      "trab-wolf.png": "50bcc920f6d983fef4da28e1075ebdd44d797f2c480ef053f32defd9e6b6d56a",
-      "trab-wolf@spieler1.png": "50bcc920f6d983fef4da28e1075ebdd44d797f2c480ef053f32defd9e6b6d56a",
-      "trab-wolf@spieler2.png": "4e69efb205bc8c796578bc034b112f390f45d528ad946753f6edbb4b55951e67",
-      "trab-wolf@spieler3.png": "32166e5a3fd592ed11856d0488e76ec29e385918ae2c4ad3806f25ff530b0d6e",
-      "trab-wolf@spieler4.png": "534ba1207cf4d29f0bd7231175f366ff7ac8b18cf69bf9e21820f9bbb43201b3"
+      "trab-wolf.png": "1438aa9a93a80ee48a4fd7cb782425ed3e79caa6cf578f0a746c24282a2f4ced",
+      "trab-wolf@spieler1.png": "1438aa9a93a80ee48a4fd7cb782425ed3e79caa6cf578f0a746c24282a2f4ced",
+      "trab-wolf@spieler2.png": "2c24f9575e0fa83ff9e3b56b27cfe502f73293e832781bb446e325d3f38d37c7",
+      "trab-wolf@spieler3.png": "e1baaa733b8a958e8abdb344df9f3b90932c832f5378faa91623c279094b0b78",
+      "trab-wolf@spieler4.png": "6cbc271b96562f636bc69a834ce4eecb9debd682819ddc78c5272a747f692545"
     }
   }
 }

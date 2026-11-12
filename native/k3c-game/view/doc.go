@@ -5,6 +5,11 @@
 // Additiv ergänzt in NG14 (B-810, B-816): Settings.River und Settings.Stats (F3 und F2, ohne Optionen-Menü),
 // RiverShader und RiverTiles, Settings.NextRiver, StatsRectLines und StatsTextSizeLines (zweite Zeile der
 // Leistungsanzeige: Update und Draw in ms, nach unten über StatsRect hinaus; Drawer halten weiter nur StatsRect frei).
+// Additiv ergänzt in NG13 (B-807, B-809): KeyRow, KeyTable und KeyActions (Tastenbelegung: game baut sie aus input und
+// hud, menu zeigt sie; menu.New bekommt die KeyTable), Settings.FlashesOff, Settings.GuideOff und Settings.GuideSeen
+// (Null-Wert = Standard; hud meldet neu gesehene Hinweise über Session.SetSettings), MenuPages kennt "keys" und
+// "licenses". Seit NG13 zeichnet game beide Zeilen der Anzeige mit der Schrift des Spiels innerhalb von StatsRect;
+// über StatsRect hinaus (StatsRectLines) reicht nur noch die Debug-Schrift ohne Schriftdatei.
 //
 // Rollen:
 //   - game (Schleife) besitzt Fenster, Zellen, Kameras, Menü-Stapel, Geräte-Zuordnung, Grafik der Level und die

@@ -1,5 +1,6 @@
-// Package menu baut die Menü-Bildschirme des nativen Spiels (Sprint NG7, B-800): Hauptmenü, Lobby für 1–2 Spieler,
-// Spielstände, Optionen und Pause; Spielende führt ins Hauptmenü. Vorbild sind die Menüs des Browsers
+// Package menu baut die Menü-Bildschirme des nativen Spiels (Sprint NG7, B-800; NG13): Hauptmenü mit Version, Lobby
+// für 1–2 Spieler, Spielstände, Optionen, Lizenzen, Pause und Tastenbelegung auf dem Papier-Hintergrund; Spielende
+// führt ins Hauptmenü. Vorbild sind die Menüs des Browsers
 // (src/scenes/pauseHub.ts, lobbyOptions.ts, saveMenu.ts, optionsLogic.ts); Online-Räume, Raum-Code, Werkzeug-Seiten und
 // Dev-Optionen gibt es nativ nicht.
 //
@@ -18,9 +19,11 @@ import (
 	"k3c/native/k3c-game/view"
 )
 
-// menus hält, was die Bildschirme teilen: Zeichner, Plätze des laufenden Spiels, Meldung fürs Hauptmenü.
+// menus hält, was die Bildschirme teilen: Zeichner, Tastenbelegung, Plätze des laufenden Spiels, Meldung fürs
+// Hauptmenü.
 type menus struct {
 	paint  painter
+	keys   view.KeyTable              // Tastenbelegung (game baut sie aus input und hud); nil = Seite ohne Zeilen
 	seats  [view.MaxPlayers]view.Seat // Plätze aus Session.Seats beim letzten Update des Pause-Menüs
 	nSeats int
 	notice note // zeigt das nächste Hauptmenü (Fehler beim Verlassen)
@@ -31,13 +34,14 @@ var (
 	_ view.MenuPages = (*menus)(nil)
 )
 
-// New liefert die Einstiege des Menüs; lib (Grafik) darf nil sein, dann zeichnet die Debug-Schrift.
-func New(lib *art.Library) view.Menus {
+// New liefert die Einstiege des Menüs; lib (Grafik) darf nil sein, dann zeichnet die Debug-Schrift. keys liefert die
+// Zeilen der Seite Tasten im Pause-Menü (B-807).
+func New(lib *art.Library, keys view.KeyTable) view.Menus {
 	font := &art.Font{Fallback: true}
 	if lib != nil && lib.Font != nil {
 		font = lib.Font
 	}
-	return &menus{paint: painter{font: font}}
+	return &menus{paint: painter{font: font}, keys: keys}
 }
 
 // Main liefert das Hauptmenü; eine vorgemerkte Meldung (Fehler beim Verlassen) erscheint darin.
@@ -50,8 +54,8 @@ func (m *menus) Main() view.Screen {
 // Pause liefert das Pause-Menü.
 func (m *menus) Pause() view.Screen { return newPause(m) }
 
-// Page liefert ein Untermenü für den Aufnahme-Modus (view.MenuPages): "saves", "options" (inGame: über der Pause)
-// oder "lobby" (geführt von by); nil für andere Namen.
+// Page liefert ein Untermenü für den Aufnahme-Modus (view.MenuPages): "saves", "options" (inGame: über der Pause),
+// "lobby" (geführt von by), "keys" (Tastenbelegung) oder "licenses"; nil für andere Namen.
 func (m *menus) Page(name string, inGame bool, by view.DeviceID) view.Screen {
 	switch name {
 	case "saves":
@@ -60,6 +64,10 @@ func (m *menus) Page(name string, inGame bool, by view.DeviceID) view.Screen {
 		return newOptions(m, inGame)
 	case "lobby":
 		return newLobby(m, by)
+	case "keys":
+		return newKeys(m)
+	case "licenses":
+		return newLicenses(m)
 	}
 	return nil
 }

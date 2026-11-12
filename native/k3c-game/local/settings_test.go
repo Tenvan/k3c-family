@@ -52,3 +52,23 @@ func TestSettingsOldFileAndBadRiver(t *testing.T) {
 		t.Errorf("alte Datei: %+v", got)
 	}
 }
+
+// Blitze, Anleitung und „Anleitung gesehen“ (B-809, AC-07, AC-09) überleben Speichern und einen Neustart der Session;
+// eine alte Datei ohne die Felder lässt Blitze und Anleitung an und nichts gesehen.
+func TestSettingsGuideFlashesPersist(t *testing.T) {
+	dir := t.TempDir()
+	want := view.DefaultSettings()
+	want.FlashesOff, want.GuideOff, want.GuideSeen = true, true, 0b110
+	if err := Open(Config{Dir: dir}).SetSettings(want); err != nil {
+		t.Fatal(err)
+	}
+	if got := Open(Config{Dir: dir}).Settings(); got != want {
+		t.Errorf("nach Neustart %+v, erwartet %+v", got, want)
+	}
+	if err := os.WriteFile(filepath.Join(dir, SettingsFile), []byte(`{"music":0.5}`), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if got := Open(Config{Dir: dir}).Settings(); got.FlashesOff || got.GuideOff || got.GuideSeen != 0 {
+		t.Errorf("alte Datei: %+v", got)
+	}
+}

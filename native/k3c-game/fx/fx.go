@@ -24,6 +24,7 @@ type stageFx struct {
 	spots     map[string]float64
 	marks     []mark
 	lastFlash float64
+	noFlash   bool // Optionen › Blitze aus (Settings.FlashesOff, B-809): keine Blitz-Effekte
 	auras     auraCache
 }
 
@@ -62,6 +63,7 @@ func (d *drawer) Listen(f *view.Frame) {
 		}
 		s := d.stageFor(st.Index)
 		s.expire(f.Clock)
+		s.noFlash = f.Settings.FlashesOff
 		for e := range f.EventsOf(st.Index) {
 			s.event(lang, e, st.World, f.Clock)
 		}
@@ -153,8 +155,8 @@ func castFor(d sim.Event) (effect, bool) {
 	return effect{kind: kindSkill, x: x, y: ringPx, look: l, by: -1}, true
 }
 
-// spawn hängt einen Effekt an: höchstens maxLivePieces Teile, Blitze höchstens 3 je Sekunde, derselbe Text an
-// derselben Stelle nur einmal (ein gehaltener Skill meldet castFailed je Takt).
+// spawn hängt einen Effekt an: höchstens maxLivePieces Teile, Blitze höchstens 3 je Sekunde (abgeschaltet keine),
+// derselbe Text an derselben Stelle nur einmal (ein gehaltener Skill meldet castFailed je Takt).
 func (s *stageFx) spawn(e effect, now float64) {
 	if s.pieces+e.pieces() > maxLivePieces {
 		return
@@ -167,7 +169,7 @@ func (s *stageFx) spawn(e effect, now float64) {
 		}
 	}
 	if config[e.kind].flash {
-		if !flashAllowed(now, s.lastFlash) {
+		if s.noFlash || !flashAllowed(now, s.lastFlash) {
 			return
 		}
 		s.lastFlash = now

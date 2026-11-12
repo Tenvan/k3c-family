@@ -43,7 +43,7 @@ func (g *Game) openMenu() error {
 	return nil
 }
 
-// openPage legt für saves, options und lobby das Untermenü auf (main und pause haben keins).
+// openPage legt für saves, options, lobby, keys und licenses das Untermenü auf (main und pause haben keins).
 func (g *Game) openPage(sc Scene) error {
 	if sc.Menu == "main" || sc.Menu == "pause" {
 		return nil

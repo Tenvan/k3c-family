@@ -20,7 +20,7 @@ type page struct {
 	note       string
 	bad        bool
 	hint       string
-	dim        bool // halbdunkel über dem stehenden Spiel statt Nachtblau
+	dim        bool // Hintergrund abgedunkelt (Optionen aus der Pause: ruhiger Grund)
 	ask        string
 	askRows    [2]string
 	askSel     int
@@ -64,6 +64,7 @@ func (p *page) add(r row) {
 type painter struct {
 	font    *art.Font
 	pixel   *ebiten.Image
+	round   *ebiten.Image // Scheibe (Mond des Hintergrunds)
 	scratch *ebiten.Image
 	op      ebiten.DrawImageOptions
 }
@@ -133,11 +134,10 @@ func (p *painter) centered(dst *ebiten.Image, s string, cx, y, size float64, clr
 func (p *painter) page(dst *ebiten.Image, c view.Cell, pg *page) {
 	g := geomOf(c.Rect)
 	r := c.Rect
-	bg := colNight
+	p.backdrop(dst, g)
 	if pg.dim {
-		bg = colDim
+		p.rect(dst, float64(r.Min.X), float64(r.Min.Y), float64(r.Dx()), float64(r.Dy()), colDim)
 	}
-	p.rect(dst, float64(r.Min.X), float64(r.Min.Y), float64(r.Dx()), float64(r.Dy()), bg)
 	cx := float64(r.Min.X) + float64(r.Dx())/2
 	p.centered(dst, pg.title, cx, g.titleY, g.titlePx, colTitle)
 	p.centered(dst, pg.sub, cx, g.subY, g.smallPx, colText)
@@ -160,12 +160,10 @@ func (p *painter) card(dst *ebiten.Image, g geom, i int, rw *row, selected bool)
 	x, y, w, h := g.rowRect(i)
 	p.paper(dst, g, x, y, w, h, rw.mat, rw.off, selected)
 	in := g.stripInset()
-	strip := matLinen.basis
 	if selected {
-		strip = colPicked
 		p.text(dst, ">", x-4*in-p.charW(g.rowPx), y+(h-g.rowPx)/2, g.rowPx, colTitle)
 	}
-	p.rect(dst, x+in, y+in, w-2*in, h-2*in, strip)
+	p.rect(dst, x+in, y+in, w-2*in, h-2*in, styleOf(rw.mat, rw.off, selected).strip)
 	clr := colLine
 	if rw.off {
 		clr = colLineOff
@@ -177,25 +175,44 @@ func (p *painter) card(dst *ebiten.Image, g geom, i int, rw *row, selected bool)
 	p.text(dst, rw.value, x+w-3*in-vw, ty, g.rowPx, clr)
 }
 
+// cardStyle ist das Aussehen einer Karte (wie paperCard.ts): Papierton, Kante unten, Leinen-Schild und ob der goldene
+// Auswahl-Rahmen sie umgibt.
+type cardStyle struct {
+	fill, edge, strip color.RGBA
+	frame             bool
+}
+
+// styleOf liefert das Aussehen einer Karte aus Material m: ausgegraut aus Stoff, gewählt heller mit Rahmen und
+// goldhellem Schild (rein, getestet).
+func styleOf(m material, off, selected bool) cardStyle {
+	if off {
+		m = matCloth
+	}
+	st := cardStyle{fill: m.basis, edge: m.schatten, strip: matLinen.basis}
+	if selected {
+		st.fill, st.strip, st.frame = m.licht, colPicked, true
+	}
+	return st
+}
+
 // paper zeichnet ein Papier-Rechteck mit Schlagschatten; ausgewählt heller mit goldenem Rahmen.
 func (p *painter) paper(dst *ebiten.Image, g geom, x, y, w, h float64, m material, off, selected bool) {
 	for _, s := range shadowLayers {
 		d := s.d * g.k
-		p.rect(dst, x+d, y+d, w, h, fade(color.RGBA{26, 15, 20, 255}, s.alpha))
+		p.rect(dst, x+d, y+d, w, h, fade(colShadow, s.alpha))
 	}
-	if off {
-		m = matCloth
-	}
-	fill := m.basis
-	if selected {
-		b := 0.9 * g.rowGap
+	st := styleOf(m, off, selected)
+	if st.frame {
+		b := frameWidth(g)
 		p.rect(dst, x-b, y-b, w+2*b, h+2*b, matGold.licht)
 		p.rect(dst, x-b/2, y-b/2, w+b, h+b, colLine)
-		fill = m.licht
 	}
-	p.rect(dst, x, y, w, h, fill)
-	p.rect(dst, x, y+h-3*g.k, w, 3*g.k, m.schatten)
+	p.rect(dst, x, y, w, h, st.fill)
+	p.rect(dst, x, y+h-3*g.k, w, 3*g.k, st.edge)
 }
+
+// frameWidth ist die Breite des Auswahl-Rahmens um eine Karte (kleiner als der Zeilenabstand: berührt keine Nachbarin).
+func frameWidth(g geom) float64 { return 0.9 * g.rowGap }
 
 // askBox zeichnet die Rückfrage: Kasten mit Frage und zwei Knöpfen nebeneinander.
 func (p *painter) askBox(dst *ebiten.Image, g geom, pg *page) {

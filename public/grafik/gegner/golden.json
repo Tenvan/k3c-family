@@ -1,10 +1,10 @@
 {
   "alphawolf": {
-    "renderKey": "2864e801a8ad5543df8d7177d8ee8386777251a6a1c8a67585fa19c224998b51",
+    "renderKey": "b69de925d7abdce49ea408821086893b0f5cdcf155c22cf56ef4696ffecf830b",
     "dateien": {
-      "angriff.png": "1b3f1c1dcb05576f9b3edb78395cedd88eae14e67766fb8ec38f293a7bbb5484",
-      "idle.png": "1a449f8109d793d0caf0d5126a5a4a733d89d0f4f06fe1b0d1a348bd7960a5ae",
-      "lauf.png": "9b47d9afed963fe37e2f82fac38c543af806bbc8e4532f53c8afcfab1780ddc2"
+      "angriff.png": "44f2d1a4ee44a4b836de6d709ac47196bd5599860a4e71c1bb388debd5143d2f",
+      "idle.png": "cec37316fc4825af8c9516b90a6c0929f57981352b014b55fdd8398f3cbc5724",
+      "lauf.png": "140a1462b353737a7a01ec6f59b0753b16a83f9ccabe4bbb68a4360171572941"
     }
   },
   "eisenkaefer": {

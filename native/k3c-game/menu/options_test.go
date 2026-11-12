@@ -108,10 +108,44 @@ func TestOptionsNavigation(t *testing.T) {
 
 func TestOptionValueTexts(t *testing.T) {
 	s := view.Settings{Music: 0.7, Effects: 0, Fullscreen: true, Language: "en"}
-	want := []string{"< 70 % >", "< 0 % >", "an", "< English >", ""}
+	want := []string{"< 70 % >", "< 0 % >", "an", "< English >", "an", "an", ""}
 	for i, w := range want {
 		if got := optionValue(view.DefaultLanguage, s, i); got != w {
 			t.Errorf("Zeile %d: %q, erwartet %q", i, got, w)
 		}
+	}
+}
+
+// Blitze und Anleitung (B-809 AC-07): A legt die Schalter um, die Session bekommt den neuen Stand; Anleitung wieder an
+// setzt „Anleitung gesehen“ zurück.
+func TestOptionsFlashesAndGuide(t *testing.T) {
+	s := &fakeSession{cur: view.Settings{Music: 1, Effects: 1, GuideSeen: 0b101}}
+	sc := newOptions(newMenus(), false)
+	sc.sel = optFlashes
+	sc.Update(press(pad1, view.ActionConfirm), s)
+	if !s.cur.FlashesOff || optionValue("de", s.cur, optFlashes) != "aus" {
+		t.Errorf("Blitze aus: %+v", s.cur)
+	}
+	sc.sel = optGuide
+	sc.Update(press(pad1, view.ActionConfirm), s)
+	if !s.cur.GuideOff || s.cur.GuideSeen != 0b101 {
+		t.Errorf("Anleitung aus, gesehen bleibt: %+v", s.cur)
+	}
+	sc.Update(press(pad1, view.ActionRight), s)
+	if s.cur.GuideOff || s.cur.GuideSeen != 0 || !s.cur.FlashesOff {
+		t.Errorf("Anleitung wieder an: alle Hinweise erneut, Blitze bleiben aus: %+v", s.cur)
+	}
+}
+
+// F2/F3 bei offenen Optionen (Befund Welle 4a): Ändert sich Settings.Stats oder River in der Session, nachdem das Menü
+// geöffnet ist, schreibt der nächste Optionswechsel nicht den alten Stand zurück.
+func TestOptionsKeepStatsAndRiver(t *testing.T) {
+	s := &fakeSession{cur: view.DefaultSettings()}
+	sc := newOptions(newMenus(), true)
+	sc.Update(view.Input{}, s)
+	s.cur.Stats, s.cur.River = true, view.RiverTiles
+	sc.Update(press(pad1, view.ActionLeft), s)
+	if got := s.settings[len(s.settings)-1]; !got.Stats || got.River != view.RiverTiles || got.Music != 0.9 {
+		t.Errorf("F2/F3 verloren: %+v", got)
 	}
 }

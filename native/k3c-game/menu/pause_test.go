@@ -77,7 +77,8 @@ func TestPauseRemovePlayer(t *testing.T) {
 			m := newMenus()
 			sc := newPause(m)
 			s := &fakeSession{active: true, leaveErr: c.err, seats: c.frame.Seats}
-			st := stepThrough(sc, s, press(c.dev, view.ActionDown), press(c.dev, view.ActionDown), press(c.dev, view.ActionConfirm))
+			st := stepThrough(sc, s, press(c.dev, view.ActionDown), press(c.dev, view.ActionDown), press(c.dev, view.ActionDown),
+				press(c.dev, view.ActionConfirm))
 			if sc.sel != pauseRemove || st.Kind != c.kind || !hasCue(st, c.cue) || len(s.left) != len(c.left) {
 				t.Errorf("Auswahl %d, Schritt %+v, abgemeldet %v", sc.sel, st, s.left)
 			}
@@ -88,7 +89,7 @@ func TestPauseRemovePlayer(t *testing.T) {
 func TestPauseRemoveDisabledWithOnePlayer(t *testing.T) {
 	sc := newPause(newMenus())
 	s := &fakeSession{active: true, seats: []view.Seat{{Player: 0, Device: pad1}}}
-	stepThrough(sc, s, press(pad1, view.ActionDown), press(pad1, view.ActionDown))
+	stepThrough(sc, s, press(pad1, view.ActionDown), press(pad1, view.ActionDown), press(pad1, view.ActionDown))
 	if sc.sel != pauseLeave {
 		t.Errorf("Auswahl %d, Abmelden nicht übersprungen", sc.sel)
 	}
@@ -127,7 +128,7 @@ func TestMainShowsOutcomeOfFrame(t *testing.T) {
 
 // menus ist kein Overlay mehr (Spielende liegt in game) und liefert die Untermenüs des Aufnahme-Modus.
 func TestMenusPagesAndFallbackFont(t *testing.T) {
-	ms := New(nil)
+	ms := New(nil, nil)
 	if _, ok := ms.(view.Overlay); ok {
 		t.Error("menus ist ein Overlay")
 	}

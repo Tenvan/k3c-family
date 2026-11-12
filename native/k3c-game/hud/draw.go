@@ -5,6 +5,7 @@ package hud
 
 import (
 	"image"
+	"image/color"
 	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -80,8 +81,14 @@ func boxSize(w, h, k float64) (float64, float64) {
 func (h *hud) drawItems(dst *ebiten.Image, st *seatState, c view.Cell, k float64) {
 	f, p := h.font(), c.Player
 	var in items
-	for _, t := range textItems {
-		w, ht := h.paint.measureText(f, p, t.slot, t.get(st), fontPx(t.role, h.cells)*k)
+	var px [len(textItems)]float64
+	for i, t := range textItems {
+		px[i] = fontPx(t.role, h.cells) * k
+		w, ht := h.paint.measureText(f, p, t.slot, t.get(st), px[i])
+		if t.id == itemBanner {
+			px[i] = fitPx(px[i], w+2*boxPadX*k, float64(c.Rect.Dx())-2*gap*k)
+			w, ht = h.paint.measureText(f, p, t.slot, t.get(st), px[i])
+		}
 		in[t.id].W, in[t.id].H = boxSize(w, ht, k)
 	}
 	if c.Index == h.cells-1 {
@@ -94,13 +101,13 @@ func (h *hud) drawItems(dst *ebiten.Image, st *seatState, c view.Cell, k float64
 		in[itemRadar].W, in[itemRadar].H = radarSize(float64(c.Rect.Dx()), k)
 	}
 	pl := h.layoutFor(c, &in, k)
-	for _, t := range textItems {
+	for i, t := range textItems {
 		if pl.ok[t.id] {
-			h.textBox(dst, f, pl.at[t.id], t.get(st), t.role, k)
+			h.textBox(dst, f, pl.at[t.id], t.get(st), px[i], t.role.clr, k)
 		}
 	}
 	if pl.ok[itemJoin] {
-		h.textBox(dst, f, pl.at[itemJoin], h.joinS, roleJoin, k)
+		h.textBox(dst, f, pl.at[itemJoin], h.joinS, fontPx(roleJoin, h.cells)*k, roleJoin.clr, k)
 	}
 	if pl.ok[itemPlayer] {
 		h.drawCard(dst, st, f, p, pl.at[itemPlayer], k)
@@ -133,10 +140,20 @@ func (h *hud) layoutFor(c view.Cell, in *items, k float64) placed {
 	return lc.out
 }
 
-// textBox zeichnet einen Text auf seiner Fläche, bündig links.
-func (h *hud) textBox(dst *ebiten.Image, f *art.Font, r rect, s string, role fontRole, k float64) {
+// textBox zeichnet einen Text der Größe size auf seiner Fläche, bündig links.
+func (h *hud) textBox(dst *ebiten.Image, f *art.Font, r rect, s string, size float64, clr color.RGBA, k float64) {
 	h.paint.fill(dst, r, rgb(0, boxAlpha))
-	h.paint.text(dst, f, s, r.X+boxPadX*k, r.Y+boxPadY*k, fontPx(role, h.cells)*k, role.clr)
+	h.paint.text(dst, f, s, r.X+boxPadX*k, r.Y+boxPadY*k, size, clr)
+}
+
+// fitPx verkleinert die Schriftgröße px im Verhältnis, wenn ein Text der Breite w nicht in maxW passt (Meldung über
+// die Breite der Zelle, B-813); sonst bleibt sie.
+func fitPx(px, w, maxW float64) float64 {
+	if w <= maxW || w <= 0 || maxW <= 0 {
+		return px
+	}
+	// Stufen von 2 px wie menuSize: jede Größe ist ein eigenes Face samt Glyph-Bildern (art.Font.faces).
+	return max(2, math.Floor(px*maxW/w/2)*2)
 }
 
 // spaceW ist die Breite eines Leerzeichens in der Größe size (Abstand der Teile der Spielerkarte).

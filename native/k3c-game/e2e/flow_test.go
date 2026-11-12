@@ -35,7 +35,7 @@ const flowScript = "0@2=a:confirm,1@4=a:confirm," + // Neues Spiel, Spieler 2 tr
 	"0@10=a:down,0@12=a:down,0@14=a:down,0@16=a:down,0@18=a:down,0@20=a:confirm," + // Starten
 	"0@21=R,1@21=RS,0@298=P,1@380=-,0@700=-," + // laufen; Spieler 1 zahlt an der Mauer, Spieler 2 holt den Skill-Punkt
 	"1@400=a:skillmenu,1@405=a:confirm,1@410=a:skillmenu," + // Skill-Menü auf, ersten Skill lernen, zu
-	"0@15900=a:menu,0@15903=a:down,0@15906=a:down,0@15909=a:down,0@15912=a:confirm," + // Pause › Spiel verlassen
+	"0@15900=a:menu,0@15902=a:down,0@15904=a:down,0@15906=a:down,0@15908=a:down,0@15912=a:confirm," + // Pause › Spiel verlassen
 	"0@15916=a:confirm,1@15920=a:confirm" // Weiter, Spieler 2 tritt wieder bei
 
 const (

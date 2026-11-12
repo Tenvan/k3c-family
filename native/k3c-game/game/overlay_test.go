@@ -1,9 +1,11 @@
 package game
 
 import (
+	"image"
 	"strings"
 	"testing"
 
+	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/view"
 )
 
@@ -73,5 +75,32 @@ func TestNoClockWhenStatsOff(t *testing.T) {
 	g.advanceTimed()
 	if calls != 2 || o.upd.n != 1 {
 		t.Errorf("Anzeige an: %d Zeitnahmen, %d Werte", calls, o.upd.n)
+	}
+}
+
+// Takt- und Leistungsanzeige mit der Schrift des Spiels (NG13): eine und zwei Zeilen (F2) liegen samt Fläche ganz in
+// view.StatsRect, die das HUD frei hält; der Text steht rechtsbündig.
+func TestStatsBoxInStatsRect(t *testing.T) {
+	font, err := art.LoadFont("../../../public/schrift/k3c.ttf", true)
+	if err != nil {
+		t.Skipf("Schrift fehlt: %v", err)
+	}
+	texts := [][2]string{{"T 9999999", "U --- D ---"}, {"9999 FPS", "U99.9 D99.9"}}
+	for _, win := range []image.Rectangle{image.Rect(0, 0, 1280, 720), image.Rect(0, 0, 1920, 1080), image.Rect(0, 0, 800, 600)} {
+		sr := view.StatsRect(win)
+		r := rectF{float64(sr.Min.X), float64(sr.Min.Y), float64(sr.Dx()), float64(sr.Dy())}
+		px := statsPx(r)
+		for _, tx := range texts {
+			var tw [2]float64
+			var th float64
+			tw[0], th = font.Measure(tx[0], px)
+			tw[1], _ = font.Measure(tx[1], px)
+			for lines := 1; lines <= 2; lines++ {
+				b := statsBox(r, tw, th, lines, px)
+				if b.x < r.x || b.y < r.y || b.x+b.w > r.x+r.w+1e-9 || b.y+b.h > r.y+r.h+1e-9 {
+					t.Errorf("%v %q, %d Zeilen: Fläche %+v nicht in StatsRect %+v", win, tx, lines, b, r)
+				}
+			}
+		}
 	}
 }

@@ -9,22 +9,23 @@ import (
 	"k3c/native/k3c-game/view"
 )
 
-// Pause-Menü (Vorbild src/scenes/pauseHub.ts ohne Tastenbelegung): Fortsetzen, Optionen, Spieler abmelden, Spiel
-// verlassen. B und Menu setzen das Spiel fort (game hebt die Pause auf, sobald der Stapel leer ist). „Spieler
+// Pause-Menü (Vorbild src/scenes/pauseHub.ts) auf dem Papier-Hintergrund: Fortsetzen, Optionen, Tasten (Belegung,
+// B-807), Spieler abmelden, Spiel verlassen. B und Menu setzen das Spiel fort (game hebt die Pause auf, sobald der Stapel leer ist). „Spieler
 // abmelden“ meldet den Spieler des bedienenden Geräts ab und ist ausgegraut, solange nur einer spielt (der letzte
 // Spieler bleibt, Session.Leave). „Spiel verlassen“ speichert und beendet (Session.Close) und führt ins Hauptmenü.
 
 const (
 	pauseResume = iota
 	pauseOptions
+	pauseKeys
 	pauseRemove
 	pauseLeave
 	pauseRows
 )
 
 var (
-	pauseLabels = [pauseRows]textKey{txtResume, txtOptions, txtRemove, txtLeave}
-	pauseMats   = [pauseRows]material{matGold, matPurple, matBlue, matCoral}
+	pauseLabels = [pauseRows]textKey{txtResume, txtOptions, txtKeys, txtRemove, txtLeave}
+	pauseMats   = [pauseRows]material{matGold, matPurple, matGreen, matBlue, matCoral}
 )
 
 // pauseScreen ist das Pause-Menü über dem stehenden Spiel.
@@ -82,6 +83,9 @@ func (sc *pauseScreen) confirm(d view.DeviceID, s view.Session) (view.StepKind, 
 	case pauseOptions:
 		sc.cue(view.CueConfirm, -1, "")
 		return view.StepPush, newOptions(sc.m, true)
+	case pauseKeys:
+		sc.cue(view.CueConfirm, -1, "")
+		return view.StepPush, newKeys(sc.m)
 	case pauseRemove:
 		return sc.remove(d, s)
 	}
@@ -104,8 +108,8 @@ func (sc *pauseScreen) remove(d view.DeviceID, s view.Session) (view.StepKind, v
 	return view.StepPop, nil
 }
 
-// leave speichert und beendet das Spiel und ersetzt die Pause durch das Hauptmenü. Ein Fehler beim Speichern
-// erscheint dort; das Spiel ist trotzdem beendet (Session.Close).
+// leave speichert und beendet das Spiel und ersetzt die Pause durch das Hauptmenü mit schon gelesener Spielstand-Liste.
+// Ein Fehler beim Speichern erscheint dort; das Spiel ist trotzdem beendet (Session.Close).
 func (sc *pauseScreen) leave(s view.Session) (view.StepKind, view.Screen) {
 	if err := s.Close(); err != nil {
 		slog.Warn("💥 Spiel beim Verlassen nicht sauber beendet", "err", err)
@@ -113,7 +117,11 @@ func (sc *pauseScreen) leave(s view.Session) (view.StepKind, view.Screen) {
 	}
 	slog.Info("🛑 Spiel aus dem Pause-Menü verlassen")
 	sc.cue(view.CueConfirm, -1, "")
-	return view.StepReplace, sc.m.Main()
+	next := sc.m.Main()
+	if ms, ok := next.(*mainScreen); ok {
+		ms.refresh(s) // das erste Bild zeigt schon den Spielstand (B-813)
+	}
+	return view.StepReplace, next
 }
 
 func (sc *pauseScreen) Draw(dst *ebiten.Image, f *view.Frame, c view.Cell) {
@@ -134,7 +142,6 @@ func (sc *pauseScreen) fill(lang string) {
 		p.rows[pauseRemove].value = tr1(lang, txtPlayer, strconv.Itoa(pl+1)) + " · " + deviceName(lang, sc.by)
 	}
 	p.sel = sc.sel
-	p.dim = true
 	p.note, p.bad = sc.note.text(lang), sc.note.bad
 	p.hint = byHint(lang, txtPauseHint, &sc.base)
 }

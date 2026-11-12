@@ -2,7 +2,6 @@ package audio
 
 import (
 	"bytes"
-	"fmt"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -27,26 +26,39 @@ func (silent) apply(*Mix) {}
 type voice struct {
 	slot string
 	gain float64
-	p    *audio.Player
+	p    player
 }
 
 type track struct {
 	slot string
 	f    *os.File
-	p    *audio.Player
+	p    player
+}
+
+// stop beendet ein Stück: PauseAndStopReading wartet auf einen laufenden Lesevorgang des oto-Threads, erst danach
+// ist das Schließen der Datei sicher.
+func (t track) stop() {
+	t.p.PauseAndStopReading()
+	_ = t.f.Close()
 }
 
 type loopVoice struct {
 	key int
-	p   *audio.Player
+	p   player
 }
 
-// device ist die dünne Schicht über Ebitengine: ein Kontext, erst beim ersten hörbaren Mix angelegt; der Ton lädt
-// danach im Hintergrund (bis dahin klingen nur Musikstücke). Fehler machen stumm, nie einen Absturz.
+// device ist die dünne Schicht über oto (sink.go): ein Kontext, erst beim ersten hörbaren Mix angelegt; der Ton lädt
+// danach im Hintergrund (bis dahin klingen nur Musikstücke). oto mischt die Stimmen, jede mit der Lautstärke aus dem
+// Mix (Pegel mal Bus). Fehler machen stumm, nie einen Absturz (B-805).
+//
+// Threads: Alle Felder gehören dem Spiel-Thread (Listen). Der Lader übergibt die Bank einmal über loading; danach
+// wird sie nur gelesen. oto liest die Quellen der Player in seinem Thread; jede Quelle gehört nach Play allein oto,
+// die Datei eines Stücks schließt erst stop. Treiberfehler liest Err unter oto-eigenem Mutex. Kein eigener Mutex nötig.
 type device struct {
 	dir     string
 	reg     *Register
-	ctx     *audio.Context
+	open    func() (sink, error) // openOto, in Tests ein Fake
+	ctx     sink
 	off     bool
 	loading chan *bank
 	bank    *bank
@@ -58,7 +70,7 @@ type device struct {
 }
 
 func newDevice(dir string, reg *Register) *device {
-	return &device{dir: dir, reg: reg, warned: map[string]bool{}, bus: -1}
+	return &device{dir: dir, reg: reg, open: openOto, warned: map[string]bool{}, bus: -1}
 }
 
 // apply setzt den Mix um: Effekte starten, Musik und Schleifen auf Stand bringen, fertige Stimmen freigeben.
@@ -67,6 +79,10 @@ func (d *device) apply(m *Mix) {
 		return
 	}
 	if d.ctx == nil && !d.start() {
+		return
+	}
+	if err := d.ctx.Err(); err != nil {
+		d.fail(err)
 		return
 	}
 	d.poll()
@@ -84,22 +100,37 @@ func audible(m *Mix) bool {
 	return music || (m.EffectBus > 0 && (len(m.Effects) > 0 || len(m.Loops) > 0))
 }
 
-// start legt den Kontext an (oder übernimmt einen vorhandenen) und lädt den Ton im Hintergrund.
-func (d *device) start() (ok bool) {
-	defer func() {
-		if r := recover(); r != nil {
-			slog.Warn("❌ Ton-Kontext nicht startbar, Spiel läuft stumm", "err", fmt.Sprint(r))
-			d.off, ok = true, false
-		}
-	}()
-	d.ctx = audio.CurrentContext()
-	if d.ctx == nil {
-		d.ctx = audio.NewContext(sampleRate)
+// start legt den Kontext an und lädt den Ton im Hintergrund; ohne Kontext bleibt der Ton aus.
+func (d *device) start() bool {
+	ctx, err := d.open()
+	if err != nil {
+		slog.Warn("❌ Ton-Gerät nicht startbar, Spiel läuft stumm", "err", err)
+		d.off = true
+		return false
 	}
-	d.loading = make(chan *bank, 1)
-	go func(rate int) { d.loading <- loadBank(d.dir, d.reg, rate) }(d.ctx.SampleRate())
-	slog.Info("🚀 Ton-Kontext angelegt", "rate", d.ctx.SampleRate())
+	d.ctx = ctx
+	ch := make(chan *bank, 1) // gepuffert: der Lader endet auch, wenn niemand mehr abholt (Ton aus)
+	d.loading = ch
+	go func(dir string, reg *Register) { ch <- loadBank(dir, reg, sampleRate) }(d.dir, d.reg)
+	slog.Info("🚀 Ton-Gerät angelegt (oto)", "rate", sampleRate)
 	return true
+}
+
+// fail schaltet den Ton nach einem Treiberfehler ab (B-805): eine Log-Zeile, alle Stimmen enden, danach bleibt der
+// Ton aus bis zum Neustart (kein Wiederverbinden). Der Fehler geht nicht nach außen, Listen und das Spiel laufen weiter.
+func (d *device) fail(err error) {
+	slog.Warn("💥 Ton-Gerät ausgefallen, Spiel läuft stumm bis zum Neustart", "err", err)
+	for _, v := range d.voices {
+		v.p.PauseAndStopReading()
+	}
+	for _, l := range d.loops {
+		l.p.PauseAndStopReading()
+	}
+	for _, t := range d.tracks {
+		t.stop()
+	}
+	d.voices, d.loops, d.tracks = nil, nil, nil
+	d.off = true
 }
 
 // poll übernimmt den geladenen Ton, sobald er fertig ist (ohne zu warten).
@@ -139,11 +170,7 @@ func (d *device) play(r Request, m *Mix) {
 	if vol <= 0 || len(pcm) == 0 || d.count(r.Slot) >= maxVoices {
 		return
 	}
-	p, err := d.ctx.NewPlayer(bytes.NewReader(pcm))
-	if err != nil {
-		d.warnOnce(r.Slot, err)
-		return
-	}
+	p := d.ctx.NewPlayer(bytes.NewReader(pcm))
 	p.SetVolume(vol)
 	p.Play()
 	d.voices = append(d.voices, voice{slot: r.Slot, gain: r.Gain, p: p})
@@ -159,16 +186,18 @@ func (d *device) count(slot string) int {
 	return n
 }
 
-// syncMusic hält genau die Stücke des Mix offen und stellt ihre Lautstärke; andere enden.
+// syncMusic hält genau die Stücke des Mix offen und stellt ihre Lautstärke; andere enden, ein Stück mit Lesefehler
+// auch (Slot danach stumm).
 func (d *device) syncMusic(m *Mix) {
 	keep := d.tracks[:0]
 	for _, t := range d.tracks {
-		if t.slot == m.Music[0].Slot || t.slot == m.Music[1].Slot {
+		if err := t.p.Err(); err != nil {
+			d.warnOnce(t.slot, err)
+		} else if t.slot == m.Music[0].Slot || t.slot == m.Music[1].Slot {
 			keep = append(keep, t)
 			continue
 		}
-		t.p.PauseAndStopReading()
-		_ = t.f.Close()
+		t.stop()
 	}
 	clear(d.tracks[len(keep):])
 	d.tracks = keep
@@ -199,16 +228,14 @@ func (d *device) track(slot string) *track {
 		d.warnOnce(slot, err)
 		return nil
 	}
-	s, err := decodeStream(path, f, d.ctx.SampleRate())
-	var p *audio.Player
-	if err == nil {
-		p, err = d.ctx.NewPlayer(audio.NewInfiniteLoop(s, s.Length()))
-	}
+	s, err := decodeStream(path, f, sampleRate)
 	if err != nil {
 		_ = f.Close()
 		d.warnOnce(slot, err)
 		return nil
 	}
+	// audio.NewInfiniteLoop ist ein reiner Strom (Schleife mit Überblendung an der Naht), kein Ebitengine-Kontext
+	p := d.ctx.NewPlayer(audio.NewInfiniteLoop(s, s.Length()))
 	p.SetVolume(0)
 	p.Play()
 	d.tracks = append(d.tracks, track{slot: slot, f: f, p: p})
@@ -237,11 +264,7 @@ func (d *device) syncLoops(m *Mix) {
 		if d.hasLoop(w.Key) {
 			continue
 		}
-		p, err := d.ctx.NewPlayer(audio.NewInfiniteLoop(bytes.NewReader(pcm), int64(len(pcm))))
-		if err != nil {
-			d.warnOnce(slotRide, err)
-			return
-		}
+		p := d.ctx.NewPlayer(audio.NewInfiniteLoop(bytes.NewReader(pcm), int64(len(pcm))))
 		p.SetVolume(m.EffectVolume(w.Gain))
 		p.Play()
 		d.loops = append(d.loops, loopVoice{key: w.Key, p: p})

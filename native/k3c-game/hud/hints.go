@@ -2,7 +2,7 @@ package hud
 
 // Hinweise über der Welt (Spiegel von src/scenes/hints/actionHints.ts, B-319, W11.4, und guideHints.ts, S6.3, B-148):
 // je Spieler höchstens ein Aktions-Hinweis über seinem Monarchen (Ausbilden, Tauschen, Bau des Endbosses; Tasten-
-// Aktionen stehen im Menü › Tastenbelegung, B-741) und der nächste ungesehene Hinweis der geführten ersten Nacht.
+// Aktionen stehen im Pause-Menü › Tasten, B-741, B-807) und der nächste ungesehene Hinweis der geführten ersten Nacht.
 
 import (
 	"math"
@@ -115,6 +115,29 @@ var guideOrder = [...]guideID{guideCoin, guideDusk, guideRecruit}
 
 // guideKeys sind die Text-Schlüssel der Hinweise.
 var guideKeys = [...]string{guideCoin: "guide.coin", guideDusk: "guide.dusk", guideRecruit: "guide.recruit"}
+
+// guideIcon ist das Bild vor dem Hinweistext (guideHints.ts › guideImage, B-811): Münze, Mond oder keins. hud zeichnet
+// beide aus eigenen Formen (Scheibe, Sichel), ohne Asset.
+type guideIcon int
+
+const (
+	iconNone guideIcon = iota
+	iconCoin
+	iconMoon
+)
+
+// guideImage ist das Bild eines Hinweises; ready false (keine Vorlagen zum Zeichnen) = keins, der Text steht allein.
+func guideImage(id guideID, ready bool) guideIcon {
+	switch {
+	case !ready:
+		return iconNone
+	case id == guideCoin:
+		return iconCoin
+	case id == guideDusk:
+		return iconMoon
+	}
+	return iconNone
+}
 
 // guideHint ist ein gezeigter Hinweis: Ort in Units und das Objekt, an dem die Handlung erkannt wird (-1 = keins).
 type guideHint struct {

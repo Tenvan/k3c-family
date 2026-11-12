@@ -7,7 +7,7 @@ import (
 )
 
 // Spieltexte der Menüs in Deutsch und Englisch (wie src/core/texts.de.ts und texts.en.ts). Die Debug-Schrift kennt nur
-// Latin-1: statt ◀ ▶ stehen < >. Fehler der Session sind deutsch (view.Session) und erscheinen unübersetzt.
+// Latin-1: statt Pfeilen stehen < >. Fehler der Session sind deutsch (view.Session) und erscheinen unübersetzt.
 
 type textKey int
 
@@ -16,6 +16,7 @@ const (
 	txtContinue
 	txtContinueSub
 	txtContinueNone
+	txtContinueLoading
 	txtNew
 	txtNewSub
 	txtLoad
@@ -81,6 +82,33 @@ const (
 	txtDefeatStage
 	txtDefeatLost
 	txtLangName
+	txtFlashes
+	txtGuide
+	txtKeys
+	txtKeysHint
+	txtKeyAction
+	txtPadColumn
+	txtKeyMove
+	txtKeySprint
+	txtKeyPay
+	txtKeyAttack
+	txtKeySkill
+	txtKeySkillMenu
+	txtKeyPause
+	txtKeyFullscreen
+	txtLicenses
+	txtLicensesSub
+	txtLicensesHint
+	txtLicPart
+	txtLicWork
+	txtLicHolder
+	txtLicLicense
+	txtLicEngine
+	txtLicFont
+	txtLicGraphics
+	txtLicAudio
+	txtVersion
+	txtVersionUnknown
 	textCount
 )
 
@@ -90,6 +118,7 @@ var texts = [textCount][2]string{
 	txtContinue:        {"Weiter", "Continue"},
 	txtContinueSub:     {"Spielstand {}", "Save {}"},
 	txtContinueNone:    {"Kein Spielstand vorhanden", "No save yet"},
+	txtContinueLoading: {"lädt ...", "loading ..."},
 	txtNew:             {"Neues Spiel", "New game"},
 	txtNewSub:          {"Grad, Ziel und Welt wählen", "Pick grade, goal and world"},
 	txtLoad:            {"Laden", "Load"},
@@ -155,6 +184,33 @@ var texts = [textCount][2]string{
 	txtDefeatStage:     {"Stufenverlust", "Lose level"},
 	txtDefeatLost:      {"Komplett verloren", "Game over"},
 	txtLangName:        {"Deutsch", "English"},
+	txtFlashes:         {"Blitze", "Flashes"},
+	txtGuide:           {"Anleitung", "Guide"},
+	txtKeys:            {"Tasten", "Keys"},
+	txtKeysHint:        {"B / Esc zurück", "B / Esc back"},
+	txtKeyAction:       {"Aktion", "Action"},
+	txtPadColumn:       {"Gamepad", "Gamepad"},
+	txtKeyMove:         {"Laufen", "Walk"},
+	txtKeySprint:       {"Galopp", "Gallop"},
+	txtKeyPay:          {"Zahlen, bestätigen", "Pay, confirm"},
+	txtKeyAttack:       {"Schlag", "Attack"},
+	txtKeySkill:        {"Skill {}", "Skill {}"},
+	txtKeySkillMenu:    {"Skill-Menü", "Skill menu"},
+	txtKeyPause:        {"Pause", "Pause"},
+	txtKeyFullscreen:   {"Vollbild", "Fullscreen"},
+	txtLicenses:        {"Lizenzen", "Licenses"},
+	txtLicensesSub:     {"Engine, Schrift, Audio", "Engine, font, audio"},
+	txtLicensesHint:    {"Lizenzdatei: LIZENZEN.txt im Paket · B zurück", "License file: LIZENZEN.txt in the package · B back"},
+	txtLicPart:         {"Teil", "Part"},
+	txtLicWork:         {"Werk", "Work"},
+	txtLicHolder:       {"Urheber", "Author"},
+	txtLicLicense:      {"Lizenz", "License"},
+	txtLicEngine:       {"Engine", "Engine"},
+	txtLicFont:         {"Schrift", "Font"},
+	txtLicGraphics:     {"Grafik", "Graphics"},
+	txtLicAudio:        {"Audio", "Audio"},
+	txtVersion:         {"Version {}", "Version {}"},
+	txtVersionUnknown:  {"unbekannt", "unknown"},
 }
 
 // langIndex liefert den Index der Sprache in texts (unbekannt = Deutsch, wie view.Settings.Normalized).

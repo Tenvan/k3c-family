@@ -38,7 +38,7 @@ func skillName(id string) string {
 func entryText(lang string, e menuEntry, selected bool, key string) string {
 	mark := "   "
 	if selected {
-		mark = "▶ "
+		mark = "► "
 	}
 	if e.id == respecID {
 		return mark + tr(lang, "skill.respec")

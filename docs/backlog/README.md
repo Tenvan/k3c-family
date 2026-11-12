@@ -175,14 +175,11 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-802](B-802-native-zusammenfuehrung-abnahme.md) | CLI | Idee | hoch | eingeplant | NG9 | Das native Spiel läuft von Start bis Spielstand durch, ist gemessen und am PC abgenommen |
 | [B-804](B-804-paper-reittier-suche-und-wolf-pfote.md) | PAP | Problem | mittel | eingeplant | NG17 | tools/paper findet für das Reittier Wolf das Reittier statt des Gegners, Gegner-Wölfe haben Pfoten |
 | [B-805](B-805-native-ton-geraetefehler-abfangen.md) | CLI | Problem | mittel | eingeplant | NG15 | Ein Fehler des Ton-Geräts beendet das native Spiel nicht mehr |
-| [B-807](B-807-native-tastenbelegung-pausemenue.md) | CLI | Problem | mittel | eingeplant | NG13 | Das Pause-Menü des nativen Spiels zeigt die Tastenbelegung |
-| [B-808](B-808-native-info-lizenzen-version.md) | CLI | Schuld | mittel | eingeplant | NG13 | Das native Spiel zeigt Lizenzen und Version und liefert die Lizenzdatei im Paket mit |
-| [B-809](B-809-native-optionen-blitze-anleitung.md) | CLI | Idee | niedrig | eingeplant | NG13 | Die Optionen des nativen Spiels bieten Blitze und Anleitung an und merken sich „Anleitung gesehen“ |
 | [B-810](B-810-native-lade-und-fehleranzeige.md) | CLI | Problem | mittel | eingeplant | NG14 | Das native Spiel meldet Startfehler und fehlende Grafik im Fenster und zeigt beim Stufenwechsel eine Ladeanzeige |
-| [B-811](B-811-native-darstellungs-kleinteile.md) | CLI | Problem | niedrig | eingeplant | NG12 | Plantagen-Bäume, gegnerische Geschosse und die Anleitung sehen im nativen Spiel aus wie im Browser-Client |
-| [B-812](B-812-native-menue-papierschnitt.md) | CLI | Idee | niedrig | eingeplant | NG13 | Das Menü des nativen Spiels erscheint im Papierschnitt-Stil mit Illustrationen |
-| [B-813](B-813-native-hud-menue-befunde-ng9.md) | CLI | Problem | mittel | eingeplant | NG13 | Burgfall-Banner, Skill-Menü, Hauptmenü nach dem Verlassen und Siegmeldung zeigen im nativen Spiel das Richtige |
 | [B-818](B-818-native-menue-kachel-illustrationen.md) | CLI | Idee | niedrig | offen | – | Hauptmenü und Pause-Menü des nativen Spiels zeigen Kacheln mit Illustrationen |
+| [B-819](B-819-assets-tools-doppelte-ids.md) | DEV | Problem | mittel | offen | – | Die assets_*-Tools erreichen auch Assets, deren ID in zwei Gruppen vorkommt |
+| [B-820](B-820-native-menue-backdrop-batching.md) | CLI | Schuld | niedrig | offen | – | Menü-Hintergrund wechselt den Filter je Scheibe und bricht das Batching |
+| [B-821](B-821-native-lizenzen-version-worktree.md) | CLI | Schuld | niedrig | offen | – | Version in LIZENZEN.txt und EXE können im Worktree auseinanderlaufen |
 
 ## Archiv
 
@@ -779,3 +776,9 @@ Zeile in diesen Abschnitt.
 | [B-806](archiv/B-806-native-figuren-anzeigen.md) | CLI | Problem | mittel | erledigt | NG12 | Das native Spiel zeigt Lebensbalken, Beute-Gold, Monarchen-Punkt und Last wie der Browser-Client |
 | [B-815](archiv/B-815-native-schrift-ofl.md) | PAP | Schuld | hoch | erledigt | NG18 | Das native Spiel zeichnet mit einer freien OFL-Schrift statt der Debug-Schrift |
 | [B-816](archiv/B-816-native-shader-umschalter-leistungsanzeige.md) | CLI | Idee | niedrig | erledigt | NG14 | Fluss-Shader und Kacheln lassen sich im Spiel umschalten, Bildrate und Rechenzeit sind im Bild sichtbar |
+| [B-807](archiv/B-807-native-tastenbelegung-pausemenue.md) | CLI | Problem | mittel | erledigt | NG13 | Das Pause-Menü des nativen Spiels zeigt die Tastenbelegung |
+| [B-808](archiv/B-808-native-info-lizenzen-version.md) | CLI | Schuld | mittel | erledigt | NG13 | Das native Spiel zeigt Lizenzen und Version und liefert die Lizenzdatei im Paket mit |
+| [B-809](archiv/B-809-native-optionen-blitze-anleitung.md) | CLI | Idee | niedrig | erledigt | NG13 | Die Optionen des nativen Spiels bieten Blitze und Anleitung an und merken sich „Anleitung gesehen“ |
+| [B-811](archiv/B-811-native-darstellungs-kleinteile.md) | CLI | Problem | niedrig | erledigt | NG12 | Plantagen-Bäume, gegnerische Geschosse und die Anleitung sehen im nativen Spiel aus wie im Browser-Client |
+| [B-812](archiv/B-812-native-menue-papierschnitt.md) | CLI | Idee | niedrig | erledigt | NG13 | Das Menü des nativen Spiels erscheint im Papierschnitt-Stil mit Illustrationen |
+| [B-813](archiv/B-813-native-hud-menue-befunde-ng9.md) | CLI | Problem | mittel | erledigt | NG13 | Burgfall-Banner, Skill-Menü, Hauptmenü nach dem Verlassen und Siegmeldung zeigen im nativen Spiel das Richtige |

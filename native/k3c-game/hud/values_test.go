@@ -111,7 +111,7 @@ func TestKampfReiseOrt(t *testing.T) {
 		{"Welle", waveText(waveKey{"de", 2, 7}), "Welle 2: 7 Gegner"},
 		{"keine Gegner", waveText(waveKey{"de", 2, 0}), ""},
 		{"Reise", travelText(newTravelKey("de", &sim.Travel{ToDepth: 1, Via: "stairsDown", Progress: 0.31})),
-			"Abstieg in Tiefe 1  ▮▮▮▮▯▯▯▯▯▯"},
+			"Abstieg in Tiefe 1  ■■■■□□□□□□"},
 		{"keine Reise", travelText(newTravelKey("de", nil)), ""},
 		{"Ort", placeText(placeKey{"de", "forest", "Wald", 0}), "P1 · Oberwelt (Wald)"},
 		{"Ort unbekanntes Biom", placeText(placeKey{"en", "neu", "Neuland", 1}), "P2 · Neuland"},

@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** NG13
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11

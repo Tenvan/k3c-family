@@ -308,7 +308,7 @@ func travelText(k travelKey) string {
 		return ""
 	}
 	s := tf(k.lang, pick(k.up, "hud.travelUp", "hud.travelDown"), "depth", k.depth)
-	return s + "  " + strings.Repeat("▮", k.tenth) + strings.Repeat("▯", 10-k.tenth)
+	return s + "  " + strings.Repeat("■", k.tenth) + strings.Repeat("□", 10-k.tenth)
 }
 
 // placeKey: Spieler und Biom der Stufe.

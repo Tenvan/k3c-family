@@ -121,10 +121,10 @@ func TestSkillTexte(t *testing.T) {
 	checkTexts(t, []textCase{
 		{"Name", skillName("shieldBash"), "Shield Bash"},
 		{"Zeile", entryText("de", e, false, ""), "   Zauberer I · Fireball  ·  lernen"},
-		{"Zeile mit Taste", entryText("de", e, true, "Q"), "▶ [Q] Zauberer I · Fireball  ·  lernen"},
+		{"Zeile mit Taste", entryText("de", e, true, "Q"), "► [Q] Zauberer I · Fireball  ·  lernen"},
 		{"passiv gelernt", entryText("de", menuEntry{id: "thickSkin", line: "tank", tier: 2, passive: true, learned: true}, false, ""),
 			"   Tank II · Thick Skin (passiv)  ·  gelernt"},
-		{"Respec", entryText("en", menuEntry{id: respecID}, true, ""), "▶ Reset all skills (respec)"},
+		{"Respec", entryText("en", menuEntry{id: respecID}, true, ""), "► Reset all skills (respec)"},
 		{"Leiste", slotBar(newBarKey("de", slotViews([]string{"fireball", "taunt"}, []float64{0, 4.2}))),
 			"Fireball bereit  ·  Taunt 5 s  ·  –  ·  –"},
 	})
@@ -139,7 +139,7 @@ func TestMenuText(t *testing.T) {
 		t.Errorf("Titel und Fenster: %q %d", kb.title, kb.n)
 	}
 	sel := slices.IndexFunc(kb.rows[:], func(r menuRow) bool { return r.selected })
-	if sel < 0 || !strings.HasPrefix(kb.rows[sel].text, "▶ [Q] ") || kb.rows[sel].glyph.key != "" {
+	if sel < 0 || !strings.HasPrefix(kb.rows[sel].text, "► [Q] ") || kb.rows[sel].glyph.key != "" {
 		t.Errorf("Tastatur: Taste als Text vor dem Skill: %+v", kb.rows[sel])
 	}
 	if kb.footer != "A / D wählen · Leertaste bestätigen · K schließen" {
@@ -149,7 +149,7 @@ func TestMenuText(t *testing.T) {
 	if r := gp.rows[sel]; r.glyph.key != "pad:LB" || strings.Contains(r.text, "[") {
 		t.Errorf("Pad: Xbox-Glyph statt Text: %+v", r)
 	}
-	if gp.footer != "◀ ▶ wählen · A bestätigen · B schließen" {
+	if gp.footer != "◄ ► wählen · A bestätigen · B schließen" {
 		t.Errorf("Hinweis Pad: %q", gp.footer)
 	}
 	last := buildMenu(newMenuKey("de", pad, len(es)-1, 1, es, slots), es)

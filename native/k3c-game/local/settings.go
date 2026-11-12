@@ -22,6 +22,9 @@ type settingsJSON struct {
 	Language   *string  `json:"language"`
 	River      *string  `json:"river,omitempty"` // fehlt: Startwert (K3C_RIVER), B-816
 	Stats      *bool    `json:"stats"`
+	Flashes    *bool    `json:"flashes"`   // Blitze an (B-809); fehlt: an
+	Guide      *bool    `json:"guide"`     // Anleitung an (B-809); fehlt: an
+	GuideSeen  *int     `json:"guideSeen"` // erledigte Hinweise der ersten Nacht (Bitmaske, view.Settings.GuideSeen)
 }
 
 // loadSettings liest die Einstellungen aus path. Fehlt die Datei oder ist sie kaputt, gelten die Standardwerte (eine
@@ -57,12 +60,28 @@ func loadSettings(path string) (view.Settings, error) {
 	if j.Stats != nil {
 		s.Stats = *j.Stats
 	}
+	applyGuide(&s, j)
 	return s.Normalized(), nil
+}
+
+// applyGuide übernimmt Blitze, Anleitung und „Anleitung gesehen“ aus der Datei (B-809); fehlende Felder bleiben Standard.
+func applyGuide(s *view.Settings, j settingsJSON) {
+	if j.Flashes != nil {
+		s.FlashesOff = !*j.Flashes
+	}
+	if j.Guide != nil {
+		s.GuideOff = !*j.Guide
+	}
+	if j.GuideSeen != nil {
+		s.GuideSeen = *j.GuideSeen
+	}
 }
 
 // saveSettings schreibt die Einstellungen nach path (erst in eine Temp-Datei, dann umbenennen: nie halb geschrieben).
 func saveSettings(path string, s view.Settings) error {
-	j := settingsJSON{Music: &s.Music, Effects: &s.Effects, Fullscreen: &s.Fullscreen, Language: &s.Language, Stats: &s.Stats}
+	flashes, guide := !s.FlashesOff, !s.GuideOff
+	j := settingsJSON{Music: &s.Music, Effects: &s.Effects, Fullscreen: &s.Fullscreen, Language: &s.Language, Stats: &s.Stats,
+		Flashes: &flashes, Guide: &guide, GuideSeen: &s.GuideSeen}
 	if s.River != "" {
 		j.River = &s.River
 	}

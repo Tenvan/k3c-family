@@ -50,7 +50,7 @@ func Packages(lib *art.Library) []Part {
 		{Name: "fx", Drawers: []view.Drawer{fx.New(lib)}},
 		{Name: "hud", Drawers: []view.Drawer{hud.New(lib)}},
 		{Name: "input", Source: input.New(lib)},
-		{Name: "menu", Menus: menu.New(lib)},
+		{Name: "menu", Menus: menu.New(lib, KeyRows)},
 		{Name: "audio", Listener: audio.New(lib)},
 	}
 }

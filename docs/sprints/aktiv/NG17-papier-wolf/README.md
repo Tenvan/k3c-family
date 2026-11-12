@@ -1,6 +1,6 @@
 # NG17 · PAP · Papier: Reittier Wolf und Pfoten der Gegner-Wölfe
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** PAP
 - **Reife:** bereit
@@ -62,8 +62,9 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NG17.1 | `NG17.1-reittier-wolf-pfoten.md` | Umsetzung | autonom | offen |
-| NG17.2 | `NG17.2-review.md` | Review | autonom | offen |
+| NG17.1 | `NG17.1-reittier-wolf-pfoten.md` | Umsetzung | autonom | fertig |
+| NG17.2 | `NG17.2-review.md` | Review | autonom | fertig |
+| NG17.3 | `NG17.3-gegner-wolf-pfote.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

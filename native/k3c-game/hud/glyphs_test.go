@@ -114,7 +114,7 @@ func TestMenuFooterPerDevice(t *testing.T) {
 	}{
 		{view.DeviceID{Kind: view.DeviceKeyboard}, "A / D wählen · Leertaste bestätigen · K schließen"},
 		{view.DeviceID{Kind: view.DeviceKeyboard, Index: 1}, "Pfeil links / Pfeil rechts wählen · Enter bestätigen · Num 5 schließen"},
-		{view.DeviceID{Kind: view.DeviceGamepad}, "◀ ▶ wählen · A bestätigen · B schließen"},
+		{view.DeviceID{Kind: view.DeviceGamepad}, "◄ ► wählen · A bestätigen · B schließen"},
 	}
 	for _, c := range cases {
 		label := slotLabels("de", c.dev)[5]

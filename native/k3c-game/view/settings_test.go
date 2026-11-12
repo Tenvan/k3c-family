@@ -11,6 +11,8 @@ func TestSettingsNormalized(t *testing.T) {
 		{DefaultSettings(), DefaultSettings()},
 		{Settings{Music: 1.5, Effects: -0.2, Fullscreen: true, Language: "en"}, Settings{Music: 1, Effects: 0, Fullscreen: true, Language: "en"}},
 		{Settings{Music: math.NaN(), Effects: 0.4, Language: "fr"}, Settings{Music: 1, Effects: 0.4, Language: "de"}},
+		{Settings{FlashesOff: true, GuideOff: true, GuideSeen: -3}, Settings{FlashesOff: true, GuideOff: true, Language: "de"}},
+		{Settings{GuideSeen: 5}, Settings{GuideSeen: 5, Language: "de"}},
 	}
 	for _, c := range cases {
 		if got := c.in.Normalized(); got != c.want {
