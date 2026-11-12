@@ -18,18 +18,10 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
 | CU1 | PAP, CLI, DEV, INF | PAP | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | – | `aktiv/CU1-alte-grafik-aufraeumen/` |
 | WZ40 | INF | WZG | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel | – | `aktiv/WZ40-check-diff-schneller/` |
-| BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
-| BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | `aktiv/BD10-schreibende-endpunkte-schutz/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
-| PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | `aktiv/PM1-leistung-messen/` |
-| LG1 | SRV, DEV, CLI | LST | Remote-Logs vom Pi und Xbox mit WebGL 1 und 130 MiB | – | `aktiv/LG1-remote-logs-webgl-budget/` |
 | KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | `aktiv/KB4-dev-aktionen-boss-event/` |
 | KB5 | SRV, CLI, DEV | KMP | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | fireball am Gegner, Betäubung, Schild und Sturm als Zeichnung | `aktiv/KB5-skills-wirkort-status/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | `aktiv/PB1-itch-io/` |
-| RG1 | REG | BAL | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | Beschlüsse in `docs/rules/`, geänderte Werte in `data/`, `task balance` grün | `aktiv/RG1-werte-burg-hub-adern/` |
-| BR2 | REG | BAL | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | `aktiv/BR2-balancing-kampf/` |
-| HW1 | PLAT, SRV, INF, CLI | ABN | Zurückgestellte Controller-Prüfungen nachholen | – | `aktiv/HW1-controller-pruefungen/` |
-| PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | `aktiv/PF1-splitscreen-leistung/` |
 
 ## Offen am Gerät
 
@@ -39,16 +31,21 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| NG19 | CLI | NAT | Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket | – | Entwurf | `geplant/NG19-native-menue-kacheln-batching-version/` |
+| WZ41 | INF | WZG | CI und Release grün, check:diff-Protokoll belegt | – | bereit | `geplant/WZ41-ci-release-gruen/` |
+| WZ42 | DEV | WZG | Workbench-Tests schnell und stabil | – | bereit | `geplant/WZ42-workbench-tests-schnell-stabil/` |
+| WZ43 | DEV | WZG | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | – | bereit | `geplant/WZ43-asset-tools-review/` |
+| WZ44 | DEV, INF | WZG | Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug | – | bereit | `geplant/WZ44-planung-wellen-werkzeuge/` |
+| WZ47 | DEV | WZG | Ticket-Relationen, schlanker Index und Sprint-Zusammenfassungen | – | bereit | `geplant/WZ47-ticket-relationen-index/` |
+| WZ45 | DEV | WZG | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | – | Entwurf | `geplant/WZ45-asset-seiten-prompts-filter/` |
+| WZ46 | DEV | WZG | Workbench-Tests ohne Engine-Spielserver | – | Entwurf | `geplant/WZ46-workbench-tests-ohne-spielserver/` |
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | Entwurf | `geplant/MG10-papier-bosse-neu/` |
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
-| US3 | CLI | PAP | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | – | Entwurf | `geplant/US3-spielbefunde-papierschnitt/` |
-| W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
-| RX1 | CLI, PAP, SRV | LST | Xbox hält den WebGL-Kontext: Render-Log, Kontextverlust abfangen, Texturen auf 2048 px | – | Entwurf | `geplant/RX1-xbox-webgl-stabil/` |
+| PT1 | PAP | PAP | gen:paper schneller: Cache je Asset, paralleles Rastern, Fortschritt belegt | – | bereit | `geplant/PT1-gen-paper-schneller/` |
+| PT2 | PAP | PAP | Paper-CLI: Fehlerpfade, Reittier-Boxen, Stil-Option und Ersatz-Materialien | – | bereit | `geplant/PT2-paper-cli-und-stil/` |
 | LG1 | SRV, DEV, CLI | LST | Remote-Logs vom Pi und Xbox mit WebGL 1 und 130 MiB | – | Entwurf | `geplant/LG1-remote-logs-webgl-budget/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 | P1 | REG | BAL | Spieleabend 1 | Protokoll und Folge-Tickets | bereit | `geplant/P1-spieleabend-1/` |
-| BR1 | REG | BAL | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
-| GRJ2 | DEV | GRJ | Grafik-Zielmaß und Ausschnitt-Rahmen abnehmen | – | Entwurf | `geplant/GRJ2-zielmass-ausschnitt-abnehmen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
@@ -327,3 +324,16 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | NG13 | Natives Spiel: Menüs und HUD nachziehen | `erledigt/NG13-native-menues-hud/` |
 | NG17 | Papier: Reittier Wolf und Pfoten der Gegner-Wölfe | `erledigt/NG17-papier-wolf/` |
 | CU2 | Altlasten: Testseiten des Browser-Clients und Pixel-Reste entfernen | `erledigt/CU2-altlasten-testseiten-pixel/` |
+| RX1 | Xbox hält den WebGL-Kontext: Render-Log, Kontextverlust abfangen, Texturen auf 2048 px | `erledigt/RX1-xbox-webgl-stabil/` |
+| PF1 | Split-Screen flüssig auf der Xbox | `erledigt/PF1-splitscreen-leistung/` |
+| LG1 | Remote-Logs vom Pi und Xbox mit WebGL 1 und 130 MiB | `erledigt/LG1-remote-logs-webgl-budget/` |
+| PM1 | Leistung messen: Diagnose-Zeile und Performance-Modus | `erledigt/PM1-leistung-messen/` |
+| BD9 | Welt-Anzeige größer und je Spielstand, offene Räume schließen | `erledigt/BD9-welt-anzeige-raum-schliessen/` |
+| BD10 | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | `erledigt/BD10-schreibende-endpunkte-schutz/` |
+| W6 | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | `erledigt/W6-anzeige-wirtschaft/` |
+| HW1 | Zurückgestellte Controller-Prüfungen nachholen | `erledigt/HW1-controller-pruefungen/` |
+| RG1 | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | `erledigt/RG1-werte-burg-hub-adern/` |
+| BR1 | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | `erledigt/BR1-balancing-wirtschaft/` |
+| BR2 | Balancing-Runde Kampf und Bosse und Spieleabend 3 | `erledigt/BR2-balancing-kampf/` |
+| GRJ2 | Grafik-Zielmaß und Ausschnitt-Rahmen abnehmen | `erledigt/GRJ2-zielmass-ausschnitt-abnehmen/` |
+| US3 | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | `erledigt/US3-spielbefunde-papierschnitt/` |

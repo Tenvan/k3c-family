@@ -101,6 +101,8 @@ func registerPlanRead(s *Server) {
 		Description: "Sprints mit Sessions und Tickets als je eine Zeile, filterbar nach kind, status, domain, sprint, projekt; " +
 			"archive mit erledigten Tickets. Sprints mit Projekt nach Rang und Platz im Projekt, ohne Projekt dahinter. " +
 			"kind projekt: Projekte nach Rang mit Sprints und Fortschritt. " +
+			"Tickets beginnen mit der Zeile `Tickets: <gezeigt> von <alle nicht archivierten> · <n> offen · <n> eingeplant · <n> ungeplant` " +
+			"(offen/eingeplant = Status, ungeplant = ohne Sprint); sprint `ungeplant` (oder –) zeigt nur Tickets ohne Sprint. " +
 			"Nutze es bei: Überblick über Sprints, Sessions und Tickets. Statt: docs/sprints und docs/backlog durchsuchen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in planning.Filter) (string, error) {

@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ42
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-02
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -29,7 +29,10 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- `TestLaufIDNachNeustartHinterHoechstemOrdner` (`internal/simrun`) räumt sein TempDir unter Windows sicher auf (Schreiber beendet bzw. abgewartet).
+- Der Frontend-Test „bricht einen wartenden Lauf ab“ (`frontend/src/balancing/BalancingPage.test.tsx`) stellt den Zustand „wartet“ deterministisch her.
+- Punkt 3 (Studio `ChunkCount`) entfällt: das Asset-Studio ist entfernt (Entscheidung 005, WB1).
+- Kein Sleep als Behebung.
 
 ## Nicht-Ziele
 
@@ -37,7 +40,13 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Domäne DEV, Klasse A (Problem). Nur Tests und Test-Hilfen; Sim-Läufe bleiben gesperrt.
+
+- **Bereich:** `tools/k3c-workbench/internal/simrun/**`, `tools/k3c-workbench/frontend/src/balancing/**`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 

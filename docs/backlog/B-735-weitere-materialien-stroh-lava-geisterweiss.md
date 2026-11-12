@@ -4,13 +4,13 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** PT2
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -34,7 +34,13 @@ Formänderungen; B-712 (schon erledigt).
 
 ## Regeln und Einschränkungen
 
-Nach RD2.2; vor MG9/MG10 (Gegner, Bosse).
+Nach RD2.2; vor MG10 (Bosse). Specs nur über `assets_*` (Entscheidung 005); Golden nach `docs/arbeitsweise.md` › Golden aktualisieren, Gen am Feature (B-742). Klasse A (Schuld, PAP).
+
+- **Bereich:** `public/grafik/stil.paper.json`, `public/grafik/*/*.paper.json`, `tools/paper/schema/**`, `tools/paper/golden/**`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** M
+- **Sperre:** golden
 
 ## Beispiele
 

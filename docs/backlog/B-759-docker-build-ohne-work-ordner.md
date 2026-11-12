@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
-- **Projekt:** REL
+- **Status:** eingeplant
+- **Sprint:** WZ41
+- **Projekt:** WZG
 - **Erstellt:** 2026-11-08
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -34,7 +34,13 @@ Kein Umbau des Rendererprozesses (kein Kopieren statt Umbenennen).
 
 ## Regeln und Einschränkungen
 
-Release-Checkliste Pi-Image.
+Release-Checkliste Pi-Image. Umgesetzt mit #529, Beleg in WZ41.1; ohne Release-Tag gilt ein Workflow-Lauf ohne Veröffentlichung oder ein lokaler `docker build` als Nachweis.
+
+- **Bereich:** `Dockerfile`, `.dockerignore`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 

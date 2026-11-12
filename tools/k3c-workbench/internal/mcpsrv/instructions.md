@@ -36,8 +36,13 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 
 ## 1. Planung
 
-- Tickets, Sprints und Sessions (`docs/backlog/`, `docs/sprints/`) **nur** über diese Tools ändern, nicht von Hand: sie
-  halten Vorlage, Nummer, Index, Session-Tabelle, Fahrplan und Ablage (`archiv/`, `geplant/` → `aktiv/` → `erledigt/`) gleich.
+- Tickets, Sprints, Sessions und Projekte (`docs/backlog/`, `docs/sprints/`, `docs/projekte/`) **nur** über diese Tools
+  ändern, nie von Hand: sie halten Vorlage, Nummer, Index, Session-Tabelle, Fahrplan und Ablage (`archiv/`, `geplant/` →
+  `aktiv/` → `erledigt/`) gleich. **Läuft die Workbench, lehnt der Hook `tools/hooks/planGuard.ts` jede andere Änderung
+  ab** (Edit, Write, schreibende Shell-Befehle wie `sed -i`, `rm`, Umleitung, Skripte); Lesen per Shell bleibt erlaubt,
+  ist aber zweite Wahl: Überblick und Zählung immer über `plan_list` (wie die Planungsseite der Workbench).
+- Begriffe wie auf der Planungsseite: **offen** = Status offen, **eingeplant** = Status eingeplant, **ungeplant** = ohne
+  Sprint (`plan_list {kind: "ticket", sprint: "ungeplant"}`).
 - `plan_list {kind?, status?, domain?, sprint?, archive?}` für den Überblick, `plan_get {id}` für ein Dokument
   (`B-210`, `M8`, `M8.1`).
 - `plan_next {domain?}` zu Beginn einer autonomen Session: die nächste Session nach `docs/arbeitsweise.md` › Autonomer

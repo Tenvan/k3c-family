@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** PT1
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-08
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -36,7 +36,13 @@ Kein Fortschrittsbalken, keine Parallelisierung.
 
 ## Regeln und Einschränkungen
 
-Emoji-Log-Konvention; Datei ≤ 400 Zeilen; Ausgabe-Format des Programms nicht brechen (`tools/paper/cli/gen.test.ts`).
+Emoji-Log-Konvention; Datei ≤ 400 Zeilen; Ausgabe-Format des Programms nicht brechen (`tools/paper/cli/gen.test.ts`). Umgesetzt mit #518, Beleg in PT1.1.
+
+- **Bereich:** `tools/paper/cli/gen*.ts`, `tools/paper/cli/fortschritt*.ts`, `tools/paper/bin/gen.ts`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 

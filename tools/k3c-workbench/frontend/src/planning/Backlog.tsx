@@ -5,7 +5,7 @@ import { errorText } from '@webkit/lib/errors';
 import { loadText, savePref } from '../lib/prefs';
 import { FoldButton, useFold } from './fold';
 import { Pill, prioTone, type PillTone } from './Pill';
-import { groupTickets, linkedTickets } from './planning';
+import { groupTickets, linkedTickets, ticketCounts } from './planning';
 import { CopyPrompt, FieldMenu } from './PromptParts';
 import { backlogPrompt, NEW_SPRINT, type SprintTarget } from './prompts';
 import { WtPills } from './WorktreePills';
@@ -53,12 +53,13 @@ export function BacklogView({ data, tickets, sel, onPick, target, goal, choose }
     return n;
   });
   const picked = data.tickets.filter((t) => checked.has(t.nr));
+  const counts = ticketCounts(data.tickets);
   const row = { data, sel, linked: linkedTickets(data, sel), target, goal, onPick };
   return (
     <div className="pl-backlog">
       <div className="pl-bl-bar">
         <Text className="pl-heading">Backlog</Text>
-        <Text size="1" color="gray">{tickets.length} von {data.tickets.length} offenen Tickets</Text>
+        <Text size="1" color="gray">{tickets.length} von {data.tickets.length} Tickets · {counts.offen} offen · {counts.eingeplant} eingeplant · {counts.ungeplant} ungeplant</Text>
         <span className="pl-spacer" />
         <Text size="1">Ziel:</Text>
         <SelectField size="1" aria-label="Ziel der Backlog-Prompts" value={goal} onChange={choose}
@@ -73,7 +74,7 @@ export function BacklogView({ data, tickets, sel, onPick, target, goal, choose }
       )}
       <div className="pl-bl-list">
         {groupTickets(tickets).map(([dom, ts]) => <DomainSection key={dom} dom={dom} tickets={ts} checked={checked} onCheck={setMany} row={row} />)}
-        {tickets.length === 0 && <Text color="gray" size="2">{data.tickets.length ? 'Kein Ticket passt zum Filter.' : 'Keine offenen Tickets.'}</Text>}
+        {tickets.length === 0 && <Text color="gray" size="2">{data.tickets.length ? 'Kein Ticket passt zum Filter.' : 'Keine Tickets.'}</Text>}
       </div>
     </div>
   );

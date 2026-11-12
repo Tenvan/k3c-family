@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ43
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -37,7 +37,13 @@ Beim Ansehen eines Assets sofort sehen, ob es im Spiel die richtige Größe hat.
 
 ## Regeln und Einschränkungen
 
-Domäne DEV. UI nur über `@webkit`, Datei ≤ 400, Funktion ≤ 60 Zeilen. Größen aus den Daten (Spec, `data/paper.json`), nicht im Code geraten.
+Domäne DEV. UI nur über `@webkit`, Datei ≤ 400, Funktion ≤ 60 Zeilen. Größen aus den Daten (Spec, `data/paper.json`), nicht im Code geraten. Umgesetzt mit #514, Beleg in WZ43.3.
+
+- **Bereich:** `tools/k3c-workbench/frontend/src/assets/**`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
@@ -55,7 +61,7 @@ Asset ohne Bodenbezug (Hintergrund, Requisite ohne Pivot): Hinweis statt Verglei
 
 ## Offene Fragen
 
-Woher kommt die Spielgröße je Asset (Spec-Skalierung oder `data/paper.json`)? Review: nebeneinander oder umschaltbar? Entscheidet 🧑.
+Spielgröße je Asset und Darstellung im Review: Default (Claude, 2026-11-12, Meldung im Nachgang) wie mit #514 umgesetzt; 🧑 ändert bei Bedarf.
 
 ## Notizen
 

@@ -50,9 +50,11 @@ Vorläufig, erst nach den Offenen Fragen verbindlich:
 
 Große Architektur-Entscheidung (Klasse B, ändert `package.json` und ggf. Protokoll und Server): Freigabe nur durch 🧑, vorher eine Entscheidung unter `docs/decisions/` (Nachfolger von 001 und 008). Ticket wird vor der Freigabe in Teil-Tickets zerlegt.
 
+Stand 2026-11-12: Die inhaltliche Entscheidung 🧑 ist gefallen (Dialog, siehe Offene Fragen). Noch ausstehend vor der Umsetzung: Entscheidungsdokument unter `docs/decisions/` und Zerlegung in Teil-Tickets (nach NG9).
+
 - **Bereich:** `src/**`, `index.html`, `game.html`, `monitor.html`, `lizenzen.html`, `vite*.ts`, `package.json`, `Taskfile.yml`, `Dockerfile`, `.github/workflows/**`, `cmd/k3c-server/**`, `tools/k3c-workbench/internal/studioview/**`, `site/**`
 - **Abhängig von:** B-822, NG9
-- **Braucht 🧑:** Entscheidung
+- **Braucht 🧑:** – (Entscheidung 2026-11-12 gefallen)
 - **Größe:** L
 - **Sperre:** deps
 

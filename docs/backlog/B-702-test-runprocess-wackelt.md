@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
-- **Projekt:** PAP
+- **Status:** eingeplant
+- **Sprint:** WZ42
+- **Projekt:** WZG
 - **Erstellt:** 2026-11-06
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -26,7 +26,7 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- `runProcess` meldet ein fehlendes Programm immer als Fehler, unabhängig vom Zeitlimit; der Test prüft das ohne Wanduhr-Abhängigkeit.
 
 ## Nicht-Ziele
 
@@ -34,7 +34,13 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Domäne DEV, Klasse A (Problem). Kein Sleep als Behebung.
+
+- **Bereich:** `tools/k3c-workbench/internal/mcpsrv/check_run*.go`, `tools/k3c-workbench/internal/mcpsrv/check_test.go`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
@@ -50,7 +56,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine
 
 ## Notizen
 

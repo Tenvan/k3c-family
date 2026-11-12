@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ43
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -40,7 +40,13 @@ Automatisches Neuladen bei Dateiänderungen unter `public/grafik/` (bräuchte ei
 
 ## Regeln und Einschränkungen
 
-Domäne DEV. Oberfläche nur über `@webkit` (Atomic Design, `tests/atomicDesign.test.ts`). Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Vertrag `docs/standards/paper-mcp.md` › Oberfläche wird um die zwei Methoden ergänzt.
+Domäne DEV. Oberfläche nur über `@webkit` (Atomic Design, `tests/atomicDesign.test.ts`). Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Vertrag `docs/standards/paper-mcp.md` › Oberfläche wird um die zwei Methoden ergänzt. Umgesetzt mit #514, Beleg in WZ43.3 (Tests) und WZ43.4 (Sichtprüfung 🧑).
+
+- **Bereich:** `tools/k3c-workbench/frontend/src/assets/**`, `tools/k3c-workbench/internal/assetsui/**`, `docs/standards/paper-mcp.md`
+- **Abhängig von:** –
+- **Braucht 🧑:** Abnahme
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 

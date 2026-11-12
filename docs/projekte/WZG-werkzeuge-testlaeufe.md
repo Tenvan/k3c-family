@@ -60,6 +60,13 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ38 | Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff | erledigt |
 | WZ39 | Studio-Nachträge: Downloads, Overrides-Editor, Inspektor, Testlücken, Quellen | erledigt |
 | WZ40 | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel | aktiv |
+| WZ41 | CI und Release grün, check:diff-Protokoll belegt | geplant |
+| WZ42 | Workbench-Tests schnell und stabil | geplant |
+| WZ43 | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | geplant |
+| WZ44 | Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug | geplant |
+| WZ47 | Ticket-Relationen, schlanker Index und Sprint-Zusammenfassungen | geplant |
+| WZ45 | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | geplant |
+| WZ46 | Workbench-Tests ohne Engine-Spielserver | geplant |
 
 ## Nicht-Ziele
 

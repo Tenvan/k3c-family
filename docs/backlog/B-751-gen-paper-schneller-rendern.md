@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** PT1
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-08
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -36,7 +36,13 @@ Kein Wechsel der Sprache oder des Rasterisierers.
 
 ## Regeln und Einschränkungen
 
-Emoji-Log-Konvention; stdout bleibt das JSON.
+Emoji-Log-Konvention; stdout bleibt das JSON. Keine neue Abhängigkeit (Worker über Bun/Node-Bordmittel); Ergebnisse bitgleich, Grafik-Golden nur lesen.
+
+- **Bereich:** `tools/paper/cli/gen*.ts`, `tools/paper/cli/work*.ts`, `tools/paper/cli/pool*.ts`, `tools/paper/bin/gen.ts`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** M
+- **Sperre:** –
 
 ## Beispiele
 
@@ -53,7 +59,7 @@ nicht relevant: Fehler wie bisher.
 
 ## Offene Fragen
 
-Wie viele Kerne soll der Lauf nutzen (🧑)?
+Wie viele Kerne soll der Lauf nutzen? Default (Claude, 2026-11-12, Meldung im Nachgang): verfügbare Kerne minus 1, höchstens 8, übersteuerbar mit `K3C_PAPER_JOBS`.
 
 ## Notizen
 

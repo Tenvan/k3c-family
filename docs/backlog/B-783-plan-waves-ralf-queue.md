@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ44
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -40,9 +40,9 @@ Sessions starten oder Worktrees anlegen; Feldprüfung (B-784).
 
 Domäne DEV; nur lesende Tools; Tool-Beschreibungen enden mit „Nutze es bei: … Statt: …“.
 
-- **Bereich:** `tools/k3c-workbench/internal/planning/**`, `tools/k3c-workbench/internal/mcpsrv/**`
+- **Bereich:** `tools/k3c-workbench/internal/planning/**`, `tools/k3c-workbench/internal/mcpsrv/tools_planning*.go`, `tools/k3c-workbench/internal/mcpsrv/instructions.md`, `docs/arbeitsweise.md`
 - **Abhängig von:** B-782
-- **Braucht 🧑:** Freigabe
+- **Braucht 🧑:** –
 - **Größe:** M
 - **Sperre:** exe
 
@@ -63,7 +63,7 @@ Ticket ohne `Bereich` → nicht in einer Welle, mit Grund „Bereich fehlt“.
 
 ## Offene Fragen
 
-Woher kommt die Geräteklasse einer Mensch-Session (Titel, neue Zeile `Gerät:` im Kontext)? Default: Zeile `Gerät:` im Abschnitt Kontext, sonst „unbekannt“. Entscheidet 🧑.
+Woher kommt die Geräteklasse einer Mensch-Session? Default (Claude, 2026-11-12, Meldung im Nachgang): Zeile `Gerät:` im Abschnitt Kontext, sonst „unbekannt“.
 
 ## Notizen
 

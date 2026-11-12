@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ43
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -36,7 +36,13 @@ Teile ändern oder speichern (nur Ansehen, Entscheidung 005).
 
 ## Regeln und Einschränkungen
 
-Domäne DEV (CLI-Änderung in `tools/paper`, Vertrag `docs/standards/paper-mcp.md`). UI nur über `@webkit`.
+Domäne DEV (CLI-Änderung in `tools/paper`, Vertrag `docs/standards/paper-mcp.md`). UI nur über `@webkit`. Umgesetzt mit #514, Beleg in WZ43.3 (Tests) und WZ43.4 (Sichtprüfung 🧑).
+
+- **Bereich:** `tools/k3c-workbench/frontend/src/assets/**`, `tools/paper/cli/frame*.ts`
+- **Abhängig von:** –
+- **Braucht 🧑:** Abnahme
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 

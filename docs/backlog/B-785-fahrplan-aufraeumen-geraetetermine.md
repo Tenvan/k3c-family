@@ -4,13 +4,13 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ44
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -62,7 +62,7 @@ Sprint mit offenem PR: erst nach dem Merge verschieben.
 
 ## Offene Fragen
 
-Gerät von BD10.3, W15.3 und KB5.6 ist aus dem Titel nicht eindeutig; Default: Session-Datei lesen, sonst 🧑 fragen.
+Gerät von BD10.3, W15.3 und KB5.6 ist aus dem Titel nicht eindeutig; Default (Claude, 2026-11-12): Session-Datei lesen, sonst 🧑 fragen. Teile der Anforderungen (W6, P1, BR1) sind mit der Bereinigung nach Entscheidung 009 am 2026-11-12 erledigt oder entfallen; WZ44.4 belegt den Rest.
 
 ## Notizen
 

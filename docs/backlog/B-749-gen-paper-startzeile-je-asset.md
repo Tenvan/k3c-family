@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** PT1
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-08
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -34,7 +34,13 @@ Kein Fortschritt innerhalb eines Assets, kein schnelleres Rendern.
 
 ## Regeln und Einschränkungen
 
-Emoji-Log-Konvention; stdout bleibt das JSON.
+Emoji-Log-Konvention; stdout bleibt das JSON. Umgesetzt mit #521, Beleg in PT1.1.
+
+- **Bereich:** `tools/paper/cli/gen*.ts`, `tools/paper/cli/work*.ts`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 

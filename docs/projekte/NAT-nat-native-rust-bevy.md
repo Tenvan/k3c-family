@@ -36,6 +36,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | NG17 | Papier: Reittier Wolf und Pfoten der Gegner-Wölfe | erledigt |
 | NG18 | Natives Spiel: freie Schrift statt Debug-Schrift | erledigt |
 | CU2 | Altlasten: Testseiten des Browser-Clients und Pixel-Reste entfernen | erledigt |
+| NG19 | Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket | geplant |
 
 ## Nicht-Ziele
 

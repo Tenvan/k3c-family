@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ41
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-08
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -35,7 +35,13 @@ Kein gemeinsamer Render-Job mit Artefakt (zusätzliche Action-Versionen), kein C
 
 ## Regeln und Einschränkungen
 
-Tasks nur über `task`; Release-Checkliste (Golden amd64/arm64 grün).
+Tasks nur über `task`; Release-Checkliste (Golden amd64/arm64 grün). Umgesetzt mit #526, Beleg in WZ41.1.
+
+- **Bereich:** `.github/workflows/ci.yml`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** taskfile
 
 ## Beispiele
 

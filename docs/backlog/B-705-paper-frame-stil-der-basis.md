@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
-- **Projekt:** PAP
+- **Status:** eingeplant
+- **Sprint:** WZ43
+- **Projekt:** WZG
 - **Erstellt:** 2026-11-06
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -26,7 +26,8 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- `paper frame` und `paper render` nehmen `--stil <datei>`; ohne Option gilt `public/grafik/stil.paper.json` (CLI-Teil, PT2.1).
+- Das Review übergibt beim Vorher-Bild die Stil-Datei des Schnappschusses der Basis (Workbench-Teil, WZ43.2).
 
 ## Nicht-Ziele
 
@@ -34,7 +35,13 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-Vertrag: `docs/standards/paper-spec.md` › 8 (CLI) bekommt `--stil <datei>` für `frame` und `render`; Änderung nur über dieses Ticket (Projekt PAP). Der Schnappschuss-Baum der Basis liegt unter `.cache/paper/<renderKey>/basis/public/grafik/` und enthält schon `stil.paper.json` sowie die Reittier-Specs (`internal/review/cache.go`, `Quelle.schnappschuss`); das Review muss nur den Pfad übergeben (`Renderer.Frame` um den Stil erweitern, Attrappen in `review/cli_test.go` und `assetsui/helpers_test.go` nachziehen). Der Cache-Schlüssel enthält den `stilHash` der Basis bereits.
+Vertrag: `docs/standards/paper-spec.md` › 8 (CLI) bekommt `--stil <datei>` für `frame` und `render`; Änderung nur über dieses Ticket (Projekt PAP). Der Schnappschuss-Baum der Basis liegt unter `.cache/paper/<renderKey>/basis/public/grafik/` und enthält schon `stil.paper.json` sowie die Reittier-Specs (`internal/review/cache.go`, `Quelle.schnappschuss`); das Review muss nur den Pfad übergeben (`Renderer.Frame` um den Stil erweitern, Attrappen in `review/cli_test.go` und `assetsui/helpers_test.go` nachziehen). Der Cache-Schlüssel enthält den `stilHash` der Basis bereits. Klasse A (Problem, DEV). CLI-Teil in PT2.1, Workbench-Teil in WZ43.2.
+
+- **Bereich:** `tools/paper/cli/frame*.ts`, `tools/paper/bin/paper.ts`, `tools/paper/render/stil*.ts`, `docs/standards/paper-spec.md`, `tools/k3c-workbench/internal/review/**`, `tools/k3c-workbench/internal/assetsui/**`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
@@ -53,7 +60,7 @@ Test-Repo (`tools/paper/fixtures/review-repo/erzeuge.ts`), Basis `HEAD~1`: Commi
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine
 
 ## Notizen
 

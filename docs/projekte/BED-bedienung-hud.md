@@ -1,7 +1,7 @@
 # BED · Bedienung & HUD
 
-- **Status:** aktiv
-- **Rang:** 4
+- **Status:** erledigt
+- **Rang:** –
 - **Ziel-Tickets:** –
 
 ## Ziel
@@ -31,8 +31,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | BD6 | Autonome Entscheidungen zu BED prüfen und festschreiben | erledigt |
 | BD7 | Pause-Client, Skill-Reset beim Tod, Schutz wartender Monarchen | erledigt |
 | BD8 | Lobby bietet beim Anlegen eines Spielstands eine Welt-Auswahl | erledigt |
-| BD9 | Welt-Anzeige größer und je Spielstand, offene Räume schließen | aktiv |
-| BD10 | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | aktiv |
+| BD9 | Welt-Anzeige größer und je Spielstand, offene Räume schließen | erledigt |
+| BD10 | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | erledigt |
 | BD11 | Eine Startseite, Navigation im Pausenmenü, Vollbild halten | erledigt |
 
 ## Nicht-Ziele
@@ -41,4 +41,4 @@ Was zu einem anderen Projekt gehört, mit Kürzel.
 
 ## Notizen
 
-Entscheidungen, Zurückstellungen (Grund und Datum bei `ruht`). Darf leer bleiben (`–`).
+Verworfen 2026-11-12 (Entscheidung Ralf): abgelöst durch B-823 (nur noch natives Spiel am PC, Entscheidung 009). Offene Tickets und Sessions verworfen, Sprints BD9 und BD10 abgeschlossen. Bedienung und HUD des nativen Spiels plant Projekt NAT. Status `erledigt`, weil das Werkzeug für Projekte keinen Status `verworfen` kennt.

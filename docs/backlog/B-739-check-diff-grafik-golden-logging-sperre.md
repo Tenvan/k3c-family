@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ41
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-07
 - **Spec:** freigegeben
@@ -37,7 +37,13 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Regeln aus `CLAUDE.md`, Domäne INF; Tasks nur über `task`. Umgesetzt mit #517, Beleg in WZ41.1.
+
+- **Bereich:** `Taskfile.yml`, `tools/checkdiff/**`, `tools/k3c-workbench/internal/mcpsrv/check_steps*.go`, `tools/paper/golden/public.test.ts`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** taskfile
 
 ## Beispiele
 
