@@ -1,11 +1,11 @@
 # CU2 · INF · Altlasten: Testseiten des Browser-Clients und Pixel-Reste entfernen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** INF
 - **Reife:** bereit
 - **Tickets:** B-822, B-824
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 027e96337
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** Klasse A, Claude, 2026-11-12

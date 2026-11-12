@@ -35,7 +35,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | NG16 | Raum: Absturzbehandlung nach außen, Position nach dem Laden | erledigt |
 | NG17 | Papier: Reittier Wolf und Pfoten der Gegner-Wölfe | erledigt |
 | NG18 | Natives Spiel: freie Schrift statt Debug-Schrift | erledigt |
-| CU2 | Altlasten: Testseiten des Browser-Clients und Pixel-Reste entfernen | geplant |
+| CU2 | Altlasten: Testseiten des Browser-Clients und Pixel-Reste entfernen | aktiv |
 
 ## Nicht-Ziele
 
