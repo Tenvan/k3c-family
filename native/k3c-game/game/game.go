@@ -63,6 +63,7 @@ func New(p Parts, s Sim, a Args) (*Game, error) {
 		g.src = newScripted(a.Scene)
 	}
 	g.stats = newOverlay(a.Shots == "")
+	g.stats.measuring = a.Measure.Seconds > 0
 	g.pressed = inpututil.IsKeyJustPressed
 	g.applyDevArgs()
 	if a.Shots != "" {

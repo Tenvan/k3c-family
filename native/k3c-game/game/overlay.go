@@ -40,13 +40,14 @@ func (a *avg) take() float64 {
 }
 
 type overlay struct {
-	imgs  [2]*ebiten.Image // Textbild mit einer und mit zwei Zeilen
-	fps   bool             // true: FPS, false: Takt (Aufnahme-Modus)
-	next  float64
-	tick  uint64
-	lines int // Zeilen des aktuellen Texts (0: noch keiner)
-	op    ebiten.DrawImageOptions
-	w     int // Fensterbreite, für die op gilt
+	imgs      [2]*ebiten.Image // Textbild mit einer und mit zwei Zeilen
+	fps       bool             // true: FPS, false: Takt (Aufnahme-Modus)
+	next      float64
+	tick      uint64
+	lines     int // Zeilen des aktuellen Texts (0: noch keiner)
+	op        ebiten.DrawImageOptions
+	w         int  // Fensterbreite, für die op gilt
+	measuring bool // Messmodus: keine eigene Zeitmessung, sonst verfälscht die Leistungsanzeige die Messung
 
 	now      func() float64 // Wanduhr in Sekunden, nur für die Leistungsanzeige (clock)
 	upd, drw avg            // Rechenzeit von Update und Draw seit dem letzten Text
@@ -60,7 +61,7 @@ func newOverlay(fps bool) *overlay {
 
 // timing meldet, ob Update und Draw gemessen werden: nur mit Leistungsanzeige und nicht im Aufnahme-Modus (dort hängt
 // das Bild nicht von der Wanduhr ab).
-func (o *overlay) timing(f *view.Frame) bool { return f.Settings.Stats && !f.Recording }
+func (o *overlay) timing(f *view.Frame) bool { return f.Settings.Stats && !f.Recording && !o.measuring }
 
 // statsText liefert die Zeilen der Anzeige: FPS bzw. Takt (recording), mit on dazu Update und Draw in ms (im
 // Aufnahme-Modus Striche); l2 ist sonst leer.

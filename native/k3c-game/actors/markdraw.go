@@ -35,6 +35,7 @@ func newInk() *ink {
 	k.disc = ebiten.NewImage(stencilPx, stencilPx)
 	vector.FillCircle(k.disc, r, r, r, color.White, true)
 	k.op.Filter = ebiten.FilterLinear
+	k.op.DisableMipmaps = true // wie Figuren und Sheets: keine Mipmap-Stufen nachträglich anlegen
 	return k
 }
 

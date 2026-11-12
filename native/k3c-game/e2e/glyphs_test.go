@@ -24,6 +24,10 @@ const fontFile = "../../../public/schrift/k3c.ttf"
 const knownGaps = "▮▯▶◀"
 
 // literalRunes sammelt die Zeichen aller String-Literale der Nicht-Test-Dateien in dir.
+
+// logEmoji: Emojis der Log-Liste aus CLAUDE.md unterhalb von U+1F000; sie stehen nur in Log-Meldungen, nie im Bild.
+var logEmoji = map[rune]bool{'✅': true, '❌': true, '⏳': true, '⏩': true, '⚠': true}
+
 func literalRunes(t *testing.T, dir string, into map[rune]string) {
 	t.Helper()
 	files, err := filepath.Glob(filepath.Join(dir, "*.go"))
@@ -49,7 +53,7 @@ func literalRunes(t *testing.T, dir string, into map[rune]string) {
 				return true
 			}
 			for _, r := range s {
-				if r >= ' ' && r != 0x7f && r < 0x1F000 { // Emojis stehen nur in Log-Meldungen
+				if r >= ' ' && r != 0x7f && r < 0x1F000 && !logEmoji[r] { // Emojis stehen nur in Log-Meldungen
 					into[r] = filepath.Base(name)
 				}
 			}

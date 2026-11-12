@@ -51,6 +51,11 @@ func (s *Session) Step() view.Frame {
 // (room.SafeTick, B-803: eine begonnene Speicherung läuft zu Ende, danach keine mehr); der letzte Spielstand bleibt. Im
 // Aufnahme-Modus wartet es auf die in diesem Takt begonnenen Speicherungen.
 func (s *Session) tick() {
+	defer func() { // Panic außerhalb des Raum-Takts (Vorbereitung, Ausgang): melden statt das Programm zu beenden
+		if p := recover(); p != nil {
+			s.crash(fmt.Sprintf("Fehler im Takt: %v", p))
+		}
+	}()
 	s.p.begin()
 	base := s.store.count()
 	s.inTick, s.encodes = true, 0
