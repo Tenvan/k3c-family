@@ -70,7 +70,7 @@ keine (entschieden autonom, Claude, 2026-11-12: Tasten F3/F2, Werte in den Einst
 | NG14.1 | `NG14.1-fehleranzeige.md` | Umsetzung | autonom | offen |
 | NG14.2 | `NG14.2-ladeanzeige.md` | Umsetzung | autonom | offen |
 | NG14.3 | `NG14.3-shader-umschalter.md` | Umsetzung | autonom | offen |
-| NG14.4 | `NG14.4-review.md` | Review | autonom | offen |
+| NG14.4 | `NG14.4-review.md` | Review | autonom | fertig |
 | NG14.5 | `NG14.5-abnahme-pc.md` | Review | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -79,6 +79,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-12 Review (Claude, `k3c-reviewer`): Kriterien laut Ergebnis der Sessions, Befunde behoben oder weitergegeben (siehe Review-Session). Version: keine vorgeschlagen. Sprint bleibt aktiv bis NG14.5 (Abnahme am PC, 🧑).

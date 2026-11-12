@@ -1,6 +1,6 @@
 # NG16 · SIM, SRV · Raum: Absturzbehandlung nach außen, Position nach dem Laden
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** SIM, SRV
 - **Reife:** bereit
@@ -66,7 +66,7 @@ keine (entschieden autonom, Claude, 2026-11-12: Default „gewollt“ bei fehlen
 |---|---|---|---|---|
 | NG16.1 | `NG16.1-position-nach-laden.md` | Umsetzung | autonom | fertig |
 | NG16.2 | `NG16.2-absturz-skill-grund.md` | Umsetzung | autonom | fertig |
-| NG16.3 | `NG16.3-review.md` | Review | autonom | offen |
+| NG16.3 | `NG16.3-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -74,6 +74,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-12 Review (Claude, `k3c-reviewer`): Kriterien laut Ergebnis der Sessions, Befunde behoben oder weitergegeben (siehe Review-Session). Version: keine vorgeschlagen.

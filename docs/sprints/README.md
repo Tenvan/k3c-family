@@ -11,10 +11,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 |---|---|---|---|---|---|
 | NG9 | CLI | NAT | Natives Spiel: Zusammenführung, Messung und Abnahme | – | `aktiv/NG9-native-zusammenfuehrung-abnahme/` |
 | NG11 | CLI | NAT | Natives Spiel: Fluss mit Shader | – | `aktiv/NG11-native-fluss-shader/` |
-| NG12 | CLI | NAT | Natives Spiel: Anzeigen an Figuren, Bäume und Geschosse | – | `aktiv/NG12-native-figuren-darstellung/` |
 | NG14 | CLI | NAT | Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter | – | `aktiv/NG14-native-fehleranzeige-shader-umschalter/` |
-| NG16 | SIM, SRV | NAT | Raum: Absturzbehandlung nach außen, Position nach dem Laden | – | `aktiv/NG16-raum-laden-absturz/` |
-| NG18 | PAP | NAT | Natives Spiel: freie Schrift statt Debug-Schrift | – | `aktiv/NG18-native-schrift/` |
 | RD1 | PAP | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | `aktiv/RD1-papierschnitt-renderer/` |
 | MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
 | RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
@@ -326,3 +323,6 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | NG10 | Rust und Bevy entfernen | `erledigt/NG10-rust-bevy-entfernen/` |
 | RS1 | Messen, Go-Fixes, Rust-Spike für den Simulationskern | `erledigt/RS1-messen-go-fixes-rust-spike/` |
 | RS2 | Etappe 2 vorbereiten: Workbench entkoppeln, Zustand ohne JSON-Roundtrip, Inventar | `erledigt/RS2-vorarbeit-inventar/` |
+| NG12 | Natives Spiel: Anzeigen an Figuren, Bäume und Geschosse | `erledigt/NG12-native-figuren-darstellung/` |
+| NG16 | Raum: Absturzbehandlung nach außen, Position nach dem Laden | `erledigt/NG16-raum-laden-absturz/` |
+| NG18 | Natives Spiel: freie Schrift statt Debug-Schrift | `erledigt/NG18-native-schrift/` |

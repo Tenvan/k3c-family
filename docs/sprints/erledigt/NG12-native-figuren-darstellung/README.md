@@ -1,6 +1,6 @@
 # NG12 · CLI · Natives Spiel: Anzeigen an Figuren, Bäume und Geschosse
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -69,7 +69,7 @@ keine (entschieden autonom, Claude, 2026-11-12: Sichtprüfung läuft bei der nä
 | NG12.1 | `NG12.1-balken-punkt-gold.md` | Umsetzung | autonom | offen |
 | NG12.2 | `NG12.2-last-bildvergleich.md` | Umsetzung | autonom | offen |
 | NG12.3 | `NG12.3-baum-geschoss.md` | Umsetzung | autonom | offen |
-| NG12.4 | `NG12.4-review.md` | Review | autonom | offen |
+| NG12.4 | `NG12.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -77,6 +77,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-12 Review (Claude, `k3c-reviewer`): Kriterien laut Ergebnis der Sessions, Befunde behoben oder weitergegeben (siehe Review-Session). Version: keine vorgeschlagen.
