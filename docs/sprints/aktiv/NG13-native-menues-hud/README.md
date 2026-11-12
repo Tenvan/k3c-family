@@ -1,6 +1,6 @@
 # NG13 · CLI · Natives Spiel: Menüs und HUD nachziehen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit

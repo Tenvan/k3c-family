@@ -1,6 +1,6 @@
 # NG17 · PAP · Papier: Reittier Wolf und Pfoten der Gegner-Wölfe
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** PAP
 - **Reife:** bereit

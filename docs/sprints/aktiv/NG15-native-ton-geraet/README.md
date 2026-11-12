@@ -1,6 +1,6 @@
 # NG15 · CLI · Natives Spiel: Ton-Gerät ohne Absturz
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
