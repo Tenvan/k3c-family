@@ -67,9 +67,9 @@ keine (entschieden autonom, Claude, 2026-11-12: Tasten F3/F2, Werte in den Einst
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NG14.1 | `NG14.1-fehleranzeige.md` | Umsetzung | autonom | offen |
-| NG14.2 | `NG14.2-ladeanzeige.md` | Umsetzung | autonom | offen |
-| NG14.3 | `NG14.3-shader-umschalter.md` | Umsetzung | autonom | offen |
+| NG14.1 | `NG14.1-fehleranzeige.md` | Umsetzung | autonom | fertig |
+| NG14.2 | `NG14.2-ladeanzeige.md` | Umsetzung | autonom | fertig |
+| NG14.3 | `NG14.3-shader-umschalter.md` | Umsetzung | autonom | fertig |
 | NG14.4 | `NG14.4-review.md` | Review | autonom | fertig |
 | NG14.5 | `NG14.5-abnahme-pc.md` | Review | Mensch | offen |
 

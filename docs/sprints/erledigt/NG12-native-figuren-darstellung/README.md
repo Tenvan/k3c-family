@@ -66,9 +66,9 @@ keine (entschieden autonom, Claude, 2026-11-12: Sichtprüfung läuft bei der nä
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NG12.1 | `NG12.1-balken-punkt-gold.md` | Umsetzung | autonom | offen |
-| NG12.2 | `NG12.2-last-bildvergleich.md` | Umsetzung | autonom | offen |
-| NG12.3 | `NG12.3-baum-geschoss.md` | Umsetzung | autonom | offen |
+| NG12.1 | `NG12.1-balken-punkt-gold.md` | Umsetzung | autonom | fertig |
+| NG12.2 | `NG12.2-last-bildvergleich.md` | Umsetzung | autonom | fertig |
+| NG12.3 | `NG12.3-baum-geschoss.md` | Umsetzung | autonom | fertig |
 | NG12.4 | `NG12.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
