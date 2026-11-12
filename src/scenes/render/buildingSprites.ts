@@ -10,7 +10,7 @@ import { SCAFFOLD_CLASSES, scaffoldKey } from './scaffoldView';
  * Reine Auswahl ohne Phaser: `null` = keine Grafik, dann zeichnet der Platzhalter. Lücken stehen hier nicht drin.
  */
 
-/** Hub-Gebäude (GEB9): Bauplatz → Grafik-Id aus `tools/buildings`; ohne eigene `levels` in `data/buildings.json` wechseln sie mit der Hub-Stufe (`World.hubLevel`), mit `levels` folgen sie der Gebäudestufe (`Site.level`, B-569) */
+/** Hub-Gebäude (GEB9): Bauplatz → Grafik-Id der Papier-Gebäude (`data/paper.json`); ohne eigene `levels` in `data/buildings.json` wechseln sie mit der Hub-Stufe (`World.hubLevel`), mit `levels` folgen sie der Gebäudestufe (`Site.level`, B-569) */
 const HUB_BUILDINGS: Partial<Record<SiteKind, string>> = {
   workshop: 'werkstatt', tavern: 'taverne', healer: 'heilplatz', smithy: 'schmiede',
   armory: 'ruestkammer', storage: 'lager', nursery: 'farm', barracks: 'kaserne',
@@ -64,7 +64,7 @@ export const BUILDING_TEXTURES: Record<string, string> = {
   'grafik:stairsDown': file('treppe-runter'),
 };
 
-/** Burg, Mauer, Turm, Tor und Hub-Gebäude in den Stufen 1–5 aus `tools/buildings` (GEB3, GEB4, GEB9): `grafik:<kind>-<n>` → `gebaeude/<id>-<n>-32.png` */
+/** Burg, Mauer, Turm, Tor und Hub-Gebäude in den Stufen 1–5 als Papierschnitt (GEB3, GEB4, GEB9): `grafik:<kind>-<n>` → `gebaeude-paper/<id>/stand[.s<n>].png` */
 function stufen(kind: string, id: string): Record<string, string> {
   return Object.fromEntries([1, 2, 3, 4, 5].map((n) => [`grafik:${kind}-${n}`, file(id, n)]));
 }

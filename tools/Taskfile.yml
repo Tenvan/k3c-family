@@ -66,7 +66,7 @@ tasks:
         msg: ffmpeg fehlt (requirements.md)
     sources:
       - tools/soundatlas/*.go
-      - data/assets.json
+      - data/sounds.json
     generates:
       - public/audio/atlas.json
     cmds:

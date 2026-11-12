@@ -2,7 +2,7 @@ Required Notice: Copyright (c) 2026 Ralf Stich (Family Three Crowns, K3C)
 
 Dieses Projekt ist source-available, aber NICHT Open Source im Sinne der OSI: Die Nutzung ist
 nur nicht-kommerziell erlaubt. Fremdmaterial (Grafiken, Bibliotheken) behält seine eigene Lizenz,
-siehe public/sprites/CREDITS.md und die Seite "Lizenzen & Danksagung" (lizenzen.html).
+siehe public/audio/README.md (Sounds), public/schrift/LICENSE (Schrift Go Regular, BSD-3) und die Seite "Lizenzen & Danksagung" (lizenzen.html).
 Eigene Grafiken und Sounds: siehe LICENSE-ASSETS.
 
 ----------------------------------------------------------------------
