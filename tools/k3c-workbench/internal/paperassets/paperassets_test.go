@@ -25,9 +25,19 @@ func repoWurzel(t *testing.T) string {
 	return abs
 }
 
+// langsam überspringt mit -short Tests, die bun oder ein echtes Git-Repo starten: unter Windows kostet jeder Start
+// Sekunden, die Tests liefen mit -short 5–40 s (B-619, B-787). check:dev, Review und CI fahren sie ohne -short.
+func langsam(t *testing.T) {
+	t.Helper()
+	if testing.Short() {
+		t.Skip("startet bun bzw. git, läuft ohne -short (B-619, B-787)")
+	}
+}
+
 // stubSkript ist der absolute Pfad der CLI-Attrappe (PV1.4).
 func stubSkript(t *testing.T) string {
 	t.Helper()
+	langsam(t)
 	if _, err := exec.LookPath("bun"); err != nil {
 		t.Fatal("bun fehlt im PATH (requirements.md); die Asset-Tests rufen die CLI-Attrappe mit bun")
 	}
@@ -69,6 +79,7 @@ func git(t *testing.T, root string, args ...string) {
 // testRepo ist ein Git-Repo mit Stil-Datei und den Fixture-Specs monarch, pferd, mauer (ein Commit).
 func testRepo(t *testing.T) (string, CLI) {
 	t.Helper()
+	langsam(t)
 	root := t.TempDir()
 	kopiere(t, root, "public/grafik/stil.paper.json", "public/grafik/stil.paper.json")
 	kopiere(t, root, "tools/paper/schema/stil.schema.json", "tools/paper/schema/stil.schema.json")

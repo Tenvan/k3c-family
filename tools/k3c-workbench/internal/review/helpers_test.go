@@ -18,9 +18,20 @@ var repoRoot = func() string {
 	return p
 }()
 
-// bun führt bun in der Repo-Wurzel aus; ohne bun scheitert der Test (requirements.md), er wird nie übersprungen.
+// langsam überspringt mit -short Tests, die bun, die CLI von tools/paper oder ein echtes Git-Repo starten: unter
+// Windows kostet jeder Start Sekunden, die Tests liefen mit -short 3–20 s (B-619, B-787). check:dev, Review und CI
+// fahren sie ohne -short.
+func langsam(t *testing.T) {
+	t.Helper()
+	if testing.Short() {
+		t.Skip("startet bun bzw. git, läuft ohne -short (B-619, B-787)")
+	}
+}
+
+// bun führt bun in der Repo-Wurzel aus; ohne bun scheitert der Test (requirements.md), mit -short wird er übersprungen.
 func bun(t *testing.T, args ...string) string {
 	t.Helper()
+	langsam(t)
 	if _, err := exec.LookPath("bun"); err != nil {
 		t.Fatalf("bun fehlt (requirements.md): %v", err)
 	}
@@ -54,6 +65,7 @@ func TestMain(m *testing.M) {
 // wird es nur einmal je Testlauf, weil git unter Windows langsam startet.
 func testRepo(t *testing.T) string {
 	t.Helper()
+	langsam(t)
 	vorlageOnce.Do(func() {
 		dir, err := os.MkdirTemp("", "rv1-")
 		if err != nil {

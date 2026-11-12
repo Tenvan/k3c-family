@@ -25,6 +25,7 @@ func TestBildAnimationMitVariante(t *testing.T) {
 
 // TestBildParallel: gleichzeitige Aufrufe für denselben Frame scheitern nicht an einer gemeinsamen Temp-Datei (Befund 2).
 func TestBildParallel(t *testing.T) {
+	langsam(t)
 	t.Parallel()
 	repo := testRepo(t)
 	q, ok, err := QuelleArbeitsstand(repo, "public/grafik/figuren/monarch.paper.json")
@@ -46,6 +47,7 @@ func TestBildParallel(t *testing.T) {
 
 // TestBildAusSchnappschuss: die CLI rendert die gehashten Bytes, nicht die spätere Datei auf der Platte (Befund 3).
 func TestBildAusSchnappschuss(t *testing.T) {
+	langsam(t)
 	t.Parallel()
 	repo := testRepo(t)
 	q, _, err := QuelleArbeitsstand(repo, "public/grafik/figuren/monarch.paper.json")
@@ -86,6 +88,7 @@ func TestReviewKaputteSpec(t *testing.T) {
 
 // TestShowGitFehler: ein kaputter Commit ist ein Fehler, nicht „fehlt in der Basis“ (Befund 5).
 func TestShowGitFehler(t *testing.T) {
+	langsam(t)
 	t.Parallel()
 	repo := testRepo(t)
 	if _, ok, err := Show(context.Background(), repo, "HEAD", "public/grafik/fehlt.paper.json"); ok || err != nil {
@@ -124,6 +127,7 @@ func TestCacheKennung(t *testing.T) {
 // TestSchnappschussMitReittier: der Schnappschuss enthält das Reittier der Spec, damit die echte CLI (RD1, Regel
 // reittier-unbekannt) es neben der Spec findet; im Arbeitsstand aus dem Checkout, in der Basis aus dem Commit.
 func TestSchnappschussMitReittier(t *testing.T) {
+	langsam(t)
 	t.Parallel()
 	repo := testRepo(t)
 	q, _, err := QuelleArbeitsstand(repo, "public/grafik/figuren/monarch.paper.json")

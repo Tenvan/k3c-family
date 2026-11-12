@@ -38,6 +38,10 @@ func TestMain(m *testing.M) {
 // testRepo liefert eine Kopie des Review-Test-Repos (tools/paper/fixtures/review-repo/erzeuge.ts), einmal erzeugt.
 func testRepo(t *testing.T) string {
 	t.Helper()
+	// Test-Repo und CLI-Aufrufe darauf starten bun und git; mit -short liefen diese Tests 5–15 s (B-619, B-787).
+	if testing.Short() {
+		t.Skip("startet bun bzw. git, läuft ohne -short (B-619, B-787)")
+	}
 	vorlageOnce.Do(func() {
 		dir, err := os.MkdirTemp("", "rv1-ui-")
 		if err != nil {
