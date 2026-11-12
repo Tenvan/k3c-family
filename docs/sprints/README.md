@@ -39,6 +39,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| CU2 | INF | NAT | Altlasten: Testseiten des Browser-Clients und Pixel-Reste entfernen | – | bereit | `geplant/CU2-altlasten-testseiten-pixel/` |
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | Entwurf | `geplant/MG10-papier-bosse-neu/` |
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
 | US3 | CLI | PAP | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | – | Entwurf | `geplant/US3-spielbefunde-papierschnitt/` |
