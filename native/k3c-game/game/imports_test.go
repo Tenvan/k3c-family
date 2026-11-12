@@ -43,6 +43,9 @@ func allowed(pkg, path string, test bool) bool {
 	if pkg == "view" {
 		return false
 	}
+	if pkg == "audio" && path == "github.com/ebitengine/oto/v3" { // B-805: Ton direkt über oto, damit Gerätefehler das Spiel nicht beenden
+		return true
+	}
 	switch path {
 	case module + "/view", module + "/art", "k3c/data":
 		return true

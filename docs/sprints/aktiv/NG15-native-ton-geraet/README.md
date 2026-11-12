@@ -62,7 +62,7 @@ keine (entschieden autonom, Claude, 2026-11-12: oto direkt, siehe `B-805 › Off
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NG15.1 | `NG15.1-ton-oto.md` | Umsetzung | autonom | offen |
+| NG15.1 | `NG15.1-ton-oto.md` | Umsetzung | autonom | fertig |
 | NG15.2 | `NG15.2-review.md` | Review | autonom | offen |
 | NG15.3 | `NG15.3-abnahme-pc.md` | Review | Mensch | offen |
 

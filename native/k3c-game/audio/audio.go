@@ -1,7 +1,8 @@
 // Package audio spielt Klang-Effekte, Menü-Klänge und Musik zu Ereignissen, Cues und Lage des Frames wie der
 // Browser-Client (src/audio/, B-801). Zwei Schichten: planner (mix.go) entscheidet als reine, getestete Logik, welcher
-// Klang wann und wie laut klingt und welche Musik läuft; device (output.go) setzt das über Ebitengine um. Ohne
-// Ton-Gerät, ohne Ton-Dateien, in Tests und im Aufnahme-Modus bleibt das Spiel stumm, nie ein Absturz.
+// Klang wann und wie laut klingt und welche Musik läuft; device (output.go) setzt das über oto um (sink.go, B-805).
+// Ohne Ton-Gerät, bei einem Treiberfehler, ohne Ton-Dateien, in Tests und im Aufnahme-Modus bleibt das Spiel stumm,
+// nie ein Absturz.
 package audio
 
 import (
