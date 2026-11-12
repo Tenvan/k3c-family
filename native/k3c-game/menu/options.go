@@ -10,16 +10,20 @@ import (
 	"k3c/native/k3c-game/view"
 )
 
-// Optionen (Entscheidung 🧑 2026-11-11, B-800; Vorbild src/scenes/optionsLogic.ts): Lautstärke Musik und Effekte in
-// Schritten von 10 %, Vollbild, Sprache. Links/Rechts ändert, A legt Schalter und Sprache um, Hoch/Runter springt am
-// Ende zum Anfang. Jede Änderung geht sofort über Session.SetSettings (local speichert sie); ein Fehler betrifft nur
-// das Speichern und erscheint als Meldung.
+// Optionen (Entscheidung 🧑 2026-11-11, B-800, dazu Blitze und Anleitung, B-809; Vorbild src/scenes/optionsLogic.ts):
+// Lautstärke Musik und Effekte in Schritten von 10 %, Vollbild, Sprache, Blitze, Anleitung. Links/Rechts ändert, A legt
+// Schalter und Sprache um, Hoch/Runter springt am Ende zum Anfang. Jede Änderung geht sofort über Session.SetSettings
+// (local speichert sie); ein Fehler betrifft nur das Speichern und erscheint als Meldung. Grundlage jeder Änderung
+// ist der aktuelle Stand der Session, nicht der beim Öffnen: F2/F3 (Settings.Stats, River) gehen nicht verloren.
+// Anleitung wieder an setzt „Anleitung gesehen“ zurück (alle Hinweise erneut, wie OptionsScene.ts).
 
 const (
 	optMusic = iota
 	optEffects
 	optFullscreen
 	optLanguage
+	optFlashes
+	optGuide
 	optBack
 	optRows
 )
@@ -27,7 +31,7 @@ const (
 // volumeStep ist der Schritt der Lautstärke-Regler (0 … 1).
 const volumeStep = 0.1
 
-var optLabels = [optRows]textKey{txtMusic, txtEffects, txtFullscreen, txtLanguage, txtBack}
+var optLabels = [optRows]textKey{txtMusic, txtEffects, txtFullscreen, txtLanguage, txtFlashes, txtGuide, txtBack}
 
 // optionsScreen bearbeitet die Einstellungen. cur ist der Stand, den das Menü kennt und schreibt.
 type optionsScreen struct {
@@ -68,6 +72,7 @@ func (sc *optionsScreen) handle(_ view.DeviceID, k key, s view.Session) (view.St
 			sc.cue(view.CueBack, -1, "")
 			return view.StepPop, nil
 		}
+		sc.cur = s.Settings().Normalized()
 		sc.apply(s, applyOption(sc.cur, sc.sel, k))
 	case keyBack, keyHome:
 		sc.cue(view.CueBack, -1, "")
@@ -96,6 +101,13 @@ func applyOption(s view.Settings, opt int, k key) view.Settings {
 		s.Fullscreen = !s.Fullscreen
 	case optLanguage:
 		s.Language = otherLanguage(s.Language)
+	case optFlashes:
+		s.FlashesOff = !s.FlashesOff
+	case optGuide:
+		s.GuideOff = !s.GuideOff
+		if !s.GuideOff {
+			s.GuideSeen = 0
+		}
 	}
 	return s
 }
@@ -170,6 +182,10 @@ func optionValue(lang string, s view.Settings, opt int) string {
 		return onOff(s.Fullscreen)
 	case optLanguage:
 		return "< " + tr(s.Language, txtLangName) + " >"
+	case optFlashes:
+		return onOff(!s.FlashesOff)
+	case optGuide:
+		return onOff(!s.GuideOff)
 	}
 	return ""
 }

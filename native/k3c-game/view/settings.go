@@ -27,6 +27,13 @@ type Settings struct {
 	River string
 	// Stats zeigt Bildrate und Rechenzeit (Update/Draw in ms) in StatsRectLines (F2, B-816).
 	Stats bool
+	// FlashesOff schaltet die Bildschirmblitze ab (Optionen › Blitze, B-809; fx). Der Null-Wert ist der Standard „an“.
+	FlashesOff bool
+	// GuideOff schaltet die Hinweise der geführten ersten Nacht ab (Optionen › Anleitung, B-809; hud); Null-Wert = an.
+	GuideOff bool
+	// GuideSeen sind die erledigten Hinweise der geführten ersten Nacht als Bitmaske (hud vergibt die Bits und meldet
+	// neue über Session.SetSettings); 0 = nichts gesehen. Das Optionen-Menü setzt sie beim Einschalten der Anleitung zurück.
+	GuideSeen int
 }
 
 // DefaultSettings sind die Werte ohne gespeicherte Einstellungen (wie der Browser: volle Lautstärke, Deutsch, Fenster).
@@ -35,7 +42,8 @@ func DefaultSettings() Settings {
 }
 
 // Normalized begrenzt die Lautstärken auf 0 … 1 (NaN = Standard), setzt eine unbekannte Sprache auf
-// DefaultLanguage und eine unbekannte Fluss-Fassung auf "". SetSettings und das Laden wenden es an.
+// DefaultLanguage, eine unbekannte Fluss-Fassung auf "" und negative GuideSeen auf 0. SetSettings und das Laden wenden
+// es an.
 func (s Settings) Normalized() Settings {
 	d := DefaultSettings()
 	s.Music, s.Effects = volume(s.Music, d.Music), volume(s.Effects, d.Effects)
@@ -45,6 +53,7 @@ func (s Settings) Normalized() Settings {
 	if s.River != RiverShader && s.River != RiverTiles {
 		s.River = ""
 	}
+	s.GuideSeen = max(0, s.GuideSeen)
 	return s
 }
 

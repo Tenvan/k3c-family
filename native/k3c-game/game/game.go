@@ -8,6 +8,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 
+	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/view"
 )
 
@@ -46,11 +47,11 @@ type Game struct {
 	loading, shown bool
 	loadMsg        *notice
 	pressed        func(ebiten.Key) bool // Taste frisch gedrückt (devkeys.go); nil: keine Entwickler-Tasten
-	subs   subImages
-	stats  *overlay
-	shots  *shooter
-	meter  *meter // Messmodus (--measure), sonst nil
-	endIn  int    // Takte im Spiel seit Frame.Outcome (Spielende nach view.EndDelay)
+	subs           subImages
+	stats          *overlay
+	shots          *shooter
+	meter          *meter // Messmodus (--measure), sonst nil
+	endIn          int    // Takte im Spiel seit Frame.Outcome (Spielende nach view.EndDelay)
 }
 
 // New baut die Schleife. Mit Szene (Seed oder Spielstand) startet das Spiel sofort, sonst liegt das Hauptmenü oben.
@@ -62,7 +63,11 @@ func New(p Parts, s Sim, a Args) (*Game, error) {
 	if a.Script {
 		g.src = newScripted(a.Scene)
 	}
-	g.stats = newOverlay(a.Shots == "")
+	var font *art.Font
+	if lib, ok := p.Art.(*art.Library); ok && lib != nil {
+		font = lib.Font
+	}
+	g.stats = newOverlay(a.Shots == "", font)
 	g.stats.measuring = a.Measure.Seconds > 0
 	g.pressed = inpututil.IsKeyJustPressed
 	g.applyDevArgs()

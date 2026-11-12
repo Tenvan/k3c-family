@@ -198,12 +198,13 @@ func (r *Room) Tick() bool {
 	if r.beforeStep != nil {
 		r.beforeStep()
 	}
-	before, day := r.depths(), r.isl.Stages[0].Cycle.Day
+	before, day, won := r.depths(), r.isl.Stages[0].Cycle.Day, r.isl.Won
 	for range r.steps() { // Zeitraffer: scale() Schritte mit denselben Eingaben, ein Tick; Dev- und Couch-Pause: keiner
 		sim.StepIsland(r.isl, commands, 1.0/TickHz)
 		r.met.observe(r.isl)
 	}
 	r.resetScaleOnPhase()
+	r.wonNow = !won && r.isl.Won
 	r.tick++
 	dawn := r.isl.Stages[0].Cycle.Day > day // der Tag zählt bei Tagesanbruch weiter (world_cycle.go)
 	travelled := r.pushStatesSaved()

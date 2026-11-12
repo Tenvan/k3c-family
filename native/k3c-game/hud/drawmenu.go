@@ -36,7 +36,58 @@ func menuSize(base, w, h, maxW, maxH, minPx float64) float64 {
 	return max(minPx, math.Floor(px/2)*2)
 }
 
-// drawMenu misst das Menü bei Grundgröße, wählt die Größe und zeichnet Titel, Zeilen (Cursor hell) und Hinweis.
+// Abstände im Skill-Menü je px Schriftgröße: unter der Kopfzeile, zwischen zwei Zeilen und vor dem Hinweis. Ohne sie
+// berühren sich die Konturen der Texte (art.Outline8) und die Unterlängen von Go Regular (B-813).
+const (
+	menuHeadGap = 0.35
+	menuRowGap  = 0.15
+)
+
+// menuBox ist die Lage des Skill-Menüs: Kasten, Kopfzeile, Zeilen und Hinweis untereinander, dazu Schriftgröße size
+// und der Maßstab s der bei Grundgröße gemessenen Maße.
+type menuBox struct {
+	box, title, footer rect
+	rows               [menuWindow]rect
+	size, s            float64
+}
+
+// menuSizes sind Breite und Höhe von Kopfzeile (Index 0), n Zeilen (1 … n) und Hinweis (n+1) bei Grundgröße.
+type menuSizes struct {
+	w, h [menuWindow + 2]float64
+	n    int
+}
+
+// layoutMenu legt das Menü mittig und etwas hoch in die Zelle cell (rein): Größe wie menuSize, mit der Debug-Schrift
+// (fixed) fest; Kopfzeile, Zeilen und Hinweis überlappen nicht.
+func layoutMenu(cell rect, k, base float64, m *menuSizes, fixed bool) menuBox {
+	w, ht := 0.0, 0.0
+	for i := range m.n + 2 {
+		w, ht = max(w, m.w[i]), ht+m.h[i]
+	}
+	ht += (2*menuHeadGap + float64(max(0, m.n-1))*menuRowGap) * base
+	out := menuBox{size: base, s: 1}
+	if !fixed {
+		out.size = menuSize(base, w+2*menuPadX*k, ht+2*menuPadY*k, cell.W*0.96, cell.H*0.9, menuPxMin*k)
+		out.s = out.size / base
+	}
+	s := out.s
+	out.box = rect{W: w*s + 2*menuPadX*k, H: ht*s + 2*menuPadY*k}
+	out.box.X, out.box.Y = cell.X+(cell.W-out.box.W)/2, max(cell.Y, cell.Y+(cell.H-out.box.H)/2-40*k)
+	x, y := out.box.X+menuPadX*k, out.box.Y+menuPadY*k
+	out.title = rect{x, y, m.w[0] * s, m.h[0] * s}
+	y += out.title.H + menuHeadGap*base*s
+	for i := range m.n {
+		out.rows[i] = rect{x, y, m.w[i+1] * s, m.h[i+1] * s}
+		y += out.rows[i].H + menuRowGap*base*s
+	}
+	if m.n > 0 {
+		y += (menuHeadGap - menuRowGap) * base * s
+	}
+	out.footer = rect{x, y, m.w[m.n+1] * s, m.h[m.n+1] * s}
+	return out
+}
+
+// drawMenu misst das Menü bei Grundgröße, legt es ab (layoutMenu) und zeichnet Titel, Zeilen (Cursor hell) und Hinweis.
 func (h *hud) drawMenu(dst *ebiten.Image, st *seatState, c view.Cell, k float64) {
 	f, v, p := h.font(), &st.menuV, c.Player
 	if f == nil {
@@ -46,41 +97,24 @@ func (h *hud) drawMenu(dst *ebiten.Image, st *seatState, c view.Cell, k float64)
 	if float64(c.Rect.Dx())/k >= 1400 {
 		base = menuPxFull * k
 	}
-	var ws [menuWindow + 2]float64
-	var hs [menuWindow + 2]float64
-	ws[0], hs[0] = h.paint.measureText(f, p, slotMenuTitle, v.title, base)
+	m := menuSizes{n: v.n}
+	m.w[0], m.h[0] = h.paint.measureText(f, p, slotMenuTitle, v.title, base)
 	for i := range v.n {
-		ws[i+1], hs[i+1] = h.paint.measureText(f, p, slotMenuRow+textSlot(i), v.rows[i].text, base)
+		m.w[i+1], m.h[i+1] = h.paint.measureText(f, p, slotMenuRow+textSlot(i), v.rows[i].text, base)
 		if v.rows[i].glyph.key != "" {
-			ws[i+1] += glyphPx(base) + 8*k
-			hs[i+1] = max(hs[i+1], glyphPx(base))
+			m.w[i+1] += glyphPx(base) + 8*k
+			m.h[i+1] = max(m.h[i+1], glyphPx(base))
 		}
 	}
-	ws[v.n+1], hs[v.n+1] = h.paint.measureText(f, p, slotMenuFooter, v.footer, base)
-	w, ht := 0.0, 0.0
-	for i := range v.n + 2 {
-		w, ht = max(w, ws[i]), ht+hs[i]
-	}
-	cell := rectOf(c.Rect)
-	size := menuSize(base, w+2*menuPadX*k, ht+2*menuPadY*k, cell.W*0.96, cell.H*0.9, menuPxMin*k)
-	if f.Fallback {
-		size = base
-	}
-	s := size / base
-	if f.Fallback {
-		s = 1
-	}
-	box := rect{W: w*s + 2*menuPadX*k, H: ht*s + 2*menuPadY*k}
-	box.X, box.Y = cell.X+(cell.W-box.W)/2, max(cell.Y, cell.Y+(cell.H-box.H)/2-40*k)
-	h.paint.fill(dst, box, rgb(menuBack, 0.8))
-	x, y := box.X+menuPadX*k, box.Y+menuPadY*k
-	h.paint.text(dst, f, v.title, x, y, size, roleBoss.clr)
-	y += hs[0] * s
+	m.w[v.n+1], m.h[v.n+1] = h.paint.measureText(f, p, slotMenuFooter, v.footer, base)
+	b := layoutMenu(rectOf(c.Rect), k, base, &m, f.Fallback)
+	h.paint.fill(dst, b.box, rgb(menuBack, 0.8))
+	h.paint.text(dst, f, v.title, b.title.X, b.title.Y, b.size, roleBoss.clr)
 	for i := range v.n {
-		h.menuRowAt(dst, f, p, i, x, y, hs[i+1]*s, size, k)
-		y += hs[i+1] * s
+		r := b.rows[i]
+		h.menuRowAt(dst, f, p, i, r.X, r.Y, r.H, b.size, k)
 	}
-	h.paint.text(dst, f, v.footer, x, y, size*0.8, white)
+	h.paint.text(dst, f, v.footer, b.footer.X, b.footer.Y, b.size*0.8, white)
 }
 
 // menuRowAt zeichnet Zeile i: Glyph (wenn belegt) und Text; die Zeile unter dem Cursor gelb.

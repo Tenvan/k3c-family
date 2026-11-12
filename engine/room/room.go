@@ -105,6 +105,7 @@ type Room struct {
 	mu         sync.Mutex
 	m          *Manager
 	isl        *sim.Island
+	wonNow     bool // im letzten Tick gewonnen (Island.Won wurde wahr, Victory)
 	Opts       Options // angeforderte Raum-Optionen (gelten nur für neue Stände)
 	start      int     // Startstufe: dort treten neue Geräte ohne Spieler ein
 	monarchs   []*monarch

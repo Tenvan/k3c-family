@@ -77,6 +77,14 @@ func (r *Room) run(ctx context.Context) {
 // schließt den Raum wie im Server ohne Speichern (crash, steht danach in Manager.Status). false: Raum ist geschlossen.
 func (r *Room) SafeTick() bool { return r.guard(r.Tick) }
 
+// Victory meldet, ob die Insel im letzten Tick gewonnen wurde (Island.Won wurde wahr). Das Ereignis `victory` liegt in
+// Stufe 0 und erreicht ein Gerät ohne Spieler dort nicht; Zeitraffer rechnet mehrere Schritte je Tick (B-813).
+func (r *Room) Victory() bool {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	return r.wonNow
+}
+
 // safeTick rechnet einen Tick mit Messung (Manager.Run) und fängt einen Panic. false: Raum ist geschlossen.
 func (r *Room) safeTick() bool { return r.guard(r.timedTick) }
 

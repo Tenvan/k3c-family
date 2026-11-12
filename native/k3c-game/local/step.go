@@ -105,6 +105,9 @@ func (s *Session) judge() {
 			break
 		}
 	}
+	if s.ended == view.OutcomeNone && s.r != nil && s.r.Victory() { // victory liegt in Stufe 0, auch ohne lokalen Spieler dort
+		s.ended = view.OutcomeWon
+	}
 	if s.ended == view.OutcomeNone && stalled {
 		s.ended = view.OutcomeLost
 	}

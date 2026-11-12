@@ -71,6 +71,7 @@ func (h *hud) Listen(f *view.Frame) {
 	h.lang = view.Settings{Language: f.Settings.Language}.Normalized().Language
 	h.cells = min(len(f.Seats), view.MaxPlayers) // Pause zeigt das Pause-Menü (menu), kein eigenes Band
 	h.joinS = h.mJoin.get(newJoinKey(h.lang, f.Unseated), joinFromKey)
+	h.guide, h.seen = !f.Settings.GuideOff, guideSeen(f.Settings.GuideSeen)|h.pending
 	h.cues(f)
 	var seen [view.MaxPlayers]bool
 	for _, s := range f.Seats {
@@ -88,6 +89,7 @@ func (h *hud) Listen(f *view.Frame) {
 	for p := range h.seats {
 		h.seats[p].banner.step(f.Clock)
 	}
+	h.pending = h.seen &^ guideSeen(f.Settings.GuideSeen)
 }
 
 // cues: gespeichert setzt „gesichert“, Fehler und Ablehnungen kommen als Meldung (Spieler -1: an alle).
@@ -122,7 +124,7 @@ func (st *seatState) update(h *hud, f *view.Frame, s view.Seat) {
 	st.card(lang, e, m, f.Clock)
 	st.world(lang, w, e, f.Clock)
 	st.events(lang, f, stage)
-	st.hints(lang, w, m, &h.seen)
+	st.hints(lang, w, m, h.guide, &h.seen)
 	st.radar = radarMarkers(st.radar, w, m.Index)
 	st.widthUnits = w.WidthUnits
 	st.citizenLabels(lang, w)
@@ -162,19 +164,32 @@ func (st *seatState) world(lang string, w *sim.World, e sim.Economy, now float64
 	st.bossS = st.mBoss.get(st.boss, bossTitle)
 }
 
-// events: Meldungen aus den Ereignissen der Stufe des Spielers.
+// events: Meldungen aus den Ereignissen der Stufe des Spielers. Fällt die Burg im Niederlage-Modus „lost“, meldet die
+// Simulation im selben Takt gameOver (sim.gameOver); dann nennt die Meldung die Verluste dieses Modus (B-813).
 func (st *seatState) events(lang string, f *view.Frame, stage *view.Stage) {
+	over := false
 	for e := range f.EventsOf(stage.Index) {
-		if t := eventText(lang, e, stage.World.Biome.ID); t != "" {
+		over = over || e.Type() == "gameOver"
+	}
+	for e := range f.EventsOf(stage.Index) {
+		t := eventText(lang, e, stage.World.Biome.ID)
+		if over && e.Type() == "castleFallen" {
+			t = tr(lang, "ev.castleFallenLost")
+		}
+		if t != "" {
 			st.banner.add(t)
 		}
 	}
 }
 
-// hints: Aktions-Hinweis über dem Monarchen und Hinweis der geführten ersten Nacht.
-func (st *seatState) hints(lang string, w *sim.World, m *sim.Player, seen *guideSeen) {
+// hints: Aktions-Hinweis über dem Monarchen und Hinweis der geführten ersten Nacht (nur mit Anleitung an, B-809).
+func (st *seatState) hints(lang string, w *sim.World, m *sim.Player, guide bool, seen *guideSeen) {
 	st.hintS = st.mHint.get(actionHint(lang, w, m), hintText)
-	st.guide = stepGuide(st.guide, w, m.X, m.RespawnIn > 0, seen)
+	if guide {
+		st.guide = stepGuide(st.guide, w, m.X, m.RespawnIn > 0, seen)
+	} else {
+		st.guide = guideHint{}
+	}
 	st.guideS = ""
 	if st.guide.id != guideNone {
 		st.guideS = tr(lang, guideKeys[st.guide.id])

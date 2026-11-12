@@ -68,8 +68,60 @@ func (h *hud) drawWorldTexts(dst *ebiten.Image, st *seatState, c view.Cell, k fl
 	}
 	if st.guideS != "" {
 		if x, y, ok := screenAt(c, st.guide.x, guideHeight(st.guide), k); ok {
-			h.centered(dst, f, c.Player, slotGuide, st.guideS, x, y, rolePlayer.px*k, rolePlayer.clr, k)
+			h.drawGuide(dst, f, c.Player, st, x, y, k)
 		}
+	}
+}
+
+// Farben der Bilder der Anleitung: Münze (Gold wie das Münzbild) und Papiermond auf Nachtblau (paperBackdrop.ts).
+const (
+	coinFill  = 0xffd23c
+	coinRim   = 0xc48a1e
+	moonLight = 0xf3ead4
+	moonNight = 0x0b1026
+)
+
+// guideLayout legt Bild und Text eines Hinweises der Breite tw und Höhe th mittig über (x, y) (Unterkante): mit Bild
+// steht links ein Quadrat der Texthöhe, dann ein Abstand, dann der Text; ohne Bild nur der Text (rein, getestet).
+func guideLayout(x, y, tw, th float64, icon bool, k float64) (img rect, tx, ty float64) {
+	ty = y - th
+	if !icon {
+		return rect{}, x - tw/2, ty
+	}
+	s, gapX := th, 8*k
+	left := x - (s+gapX+tw)/2
+	return rect{left, ty, s, s}, left + s + gapX, ty
+}
+
+// drawGuide zeichnet den Hinweis der ersten Nacht: Bild (Münze, Mond) und Text, mit der Debug-Schrift auf dunkler Fläche.
+func (h *hud) drawGuide(dst *ebiten.Image, f *art.Font, p int, st *seatState, x, y, k float64) {
+	size := rolePlayer.px * k
+	tw, th := h.paint.measureText(f, p, slotGuide, st.guideS, size)
+	if tw == 0 {
+		return
+	}
+	icon := guideImage(st.guide.id, h.paint.disc != nil)
+	img, tx, ty := guideLayout(x, y, tw, th, icon != iconNone, k)
+	if f.Fallback {
+		h.paint.fill(dst, rect{tx - boxPadX*k, ty - boxPadY*k, tw + 2*boxPadX*k, th + 2*boxPadY*k}, rgb(0, boxAlpha))
+	}
+	h.drawIcon(dst, icon, img)
+	h.paint.text(dst, f, st.guideS, tx, ty, size, rolePlayer.clr)
+}
+
+// drawIcon zeichnet das Bild der Anleitung in r: Münze mit Rand und Glanz, Mond als Sichel auf einer Nachtscheibe.
+func (h *hud) drawIcon(dst *ebiten.Image, icon guideIcon, r rect) {
+	pt := &h.paint
+	cx, cy, rad := r.X+r.W/2, r.Y+r.H/2, r.W/2
+	switch icon {
+	case iconCoin:
+		pt.circle(dst, cx, cy, rad, rgb(coinRim, 1))
+		pt.circle(dst, cx, cy, rad*0.78, rgb(coinFill, 1))
+		pt.circle(dst, cx-rad*0.25, cy-rad*0.25, rad*0.22, rgb(0xffffff, 0.6))
+	case iconMoon:
+		pt.circle(dst, cx, cy, rad, rgb(moonNight, 0.9))
+		pt.circle(dst, cx, cy, rad*0.72, rgb(moonLight, 1))
+		pt.circle(dst, cx-rad*0.3, cy-rad*0.18, rad*0.62, rgb(moonNight, 1))
 	}
 }
 

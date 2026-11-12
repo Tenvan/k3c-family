@@ -9,22 +9,24 @@ import (
 	"k3c/native/k3c-game/view"
 )
 
-// Einträge des Hauptmenüs von oben nach unten (B-800: Weiter, Neues Spiel, Laden, Optionen, Beenden).
+// Einträge des Hauptmenüs von oben nach unten (B-800: Weiter, Neues Spiel, Laden, Optionen, Beenden; B-808: Lizenzen).
 const (
 	mainContinue = iota
 	mainNew
 	mainLoad
 	mainOptions
+	mainLicenses
 	mainQuit
 	mainCount
 )
 
-var mainLabels = [mainCount]textKey{txtContinue, txtNew, txtLoad, txtOptions, txtQuit}
-var mainSubs = [mainCount]textKey{txtContinueSub, txtNewSub, txtLoadSub, txtOptionsSub, txtQuitSub}
-var mainMats = [mainCount]material{matGold, matGreen, matBlue, matPurple, matCoral}
+var mainLabels = [mainCount]textKey{txtContinue, txtNew, txtLoad, txtOptions, txtLicenses, txtQuit}
+var mainSubs = [mainCount]textKey{txtContinueSub, txtNewSub, txtLoadSub, txtOptionsSub, txtLicensesSub, txtQuitSub}
+var mainMats = [mainCount]material{matGold, matGreen, matBlue, matPurple, matRed, matCoral}
 
 // mainScreen ist das Hauptmenü. „Weiter“ ist ausgegraut, solange es keinen ladbaren Spielstand gibt; die Liste liest
-// es beim ersten Update und nach jeder Rückkehr aus einem Untermenü (Laden kann löschen).
+// es beim ersten Update und nach jeder Rückkehr aus einem Untermenü (Laden kann löschen). Bis dahin zeigt „Weiter“
+// „lädt ...“, nie „Kein Spielstand vorhanden“ (Draw vor dem ersten Update, B-813). Unter dem Titel steht die Version.
 type mainScreen struct {
 	base
 	m      *menus
@@ -64,8 +66,8 @@ func (sc *mainScreen) refresh(s view.Session) {
 	sc.ver++
 }
 
-// off meldet ausgegraute Einträge.
-func (sc *mainScreen) off(i int) bool { return i == mainContinue && sc.latest.Name == "" }
+// off meldet ausgegraute Einträge (Weiter ohne Spielstand; vor dem Lesen der Liste noch nicht).
+func (sc *mainScreen) off(i int) bool { return i == mainContinue && sc.listed && sc.latest.Name == "" }
 
 func (sc *mainScreen) handle(d view.DeviceID, k key, s view.Session) (view.StepKind, view.Screen) {
 	switch k {
@@ -111,6 +113,9 @@ func (sc *mainScreen) confirm(d view.DeviceID, s view.Session) (view.StepKind, v
 	case mainOptions:
 		sc.cue(view.CueConfirm, -1, "")
 		return view.StepPush, newOptions(sc.m, false)
+	case mainLicenses:
+		sc.cue(view.CueConfirm, -1, "")
+		return view.StepPush, newLicenses(sc.m)
 	}
 	slog.Info("🛑 Beenden aus dem Hauptmenü")
 	sc.cue(view.CueConfirm, -1, "")
@@ -130,10 +135,14 @@ func (sc *mainScreen) Draw(dst *ebiten.Image, f *view.Frame, c view.Cell) {
 func (sc *mainScreen) fill(lang string) {
 	p := &sc.pg
 	p.reset(tr(lang, txtTitle))
+	p.sub = versionText(lang)
 	for i := range mainCount {
 		r := row{label: tr(lang, mainLabels[i]), value: tr(lang, mainSubs[i]), mat: mainMats[i], off: sc.off(i)}
 		if i == mainContinue {
 			r.value = tr(lang, txtContinueNone)
+			if !sc.listed {
+				r.value = tr(lang, txtContinueLoading)
+			}
 			if sc.latest.Name != "" {
 				r.value = tr1(lang, txtContinueSub, sc.latest.Name) + " · " + tr1(lang, txtSavesLine, strconv.Itoa(sc.latest.Day))
 			}

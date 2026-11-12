@@ -45,12 +45,13 @@ type Scene struct {
 	Cams    []float64 // Kamera-x je Zelle in Units, NaN = folgt dem Monarchen
 	Tick    int       // Takte, die die Simulation vor dem ersten Bild vorläuft
 	Script  []Hold    // feste Eingabe-Folge; gesetzt: ersetzt Tastatur und Gamepads
-	Menu    string    // Aufnahme eines Menüs nach dem Vorlauf: "", main, saves, options, lobby, pause (menus)
+	Menu    string    // Aufnahme eines Menüs nach dem Vorlauf: "", main, saves, options, lobby, pause, keys, licenses (menus)
 }
 
-// menus sind die Werte von --menu: main, saves und lobby ohne Spiel (ein Spiel der Szene endet nach dem Vorlauf mit
-// Speichern), options über dem Hauptmenü bzw. mit Szene über der Pause, pause über dem stehenden Spiel.
-var menus = []string{"main", "saves", "options", "lobby", "pause"}
+// menus sind die Werte von --menu: main, saves, lobby und licenses ohne Spiel (ein Spiel der Szene endet nach dem
+// Vorlauf mit Speichern), options und keys über dem Hauptmenü bzw. mit Szene über der Pause, pause über dem
+// stehenden Spiel.
+var menus = []string{"main", "saves", "options", "lobby", "pause", "keys", "licenses"}
 
 // Args sind die Schalter des Programms.
 type Args struct {
@@ -76,7 +77,7 @@ type Args struct {
 
 // InGame meldet, ob das Menü der Szene über dem laufenden (pausierten) Spiel liegt.
 func (s Scene) InGame() bool {
-	return s.Menu == "pause" || (s.Menu == "options" && s.Direct())
+	return s.Menu == "pause" || ((s.Menu == "options" || s.Menu == "keys") && s.Direct())
 }
 
 // Direct meldet, ob das Spiel ohne Menü startet.
@@ -93,7 +94,7 @@ func (s Scene) Devices() []view.DeviceID {
 
 // Usage nennt die Schalter.
 const Usage = "k3c-game [--saves <ordner>] [--seed <s> | --load <name> | --flow] [--depth <n>] [--players 1|2] [--cam <x>[,<x>]] " +
-	"[--tick <n>] [--input <p@t=LRSPA1234-|a:aktion,…>] [--menu main|saves|options|lobby|pause] [--size <B>x<H>] " +
+	"[--tick <n>] [--input <p@t=LRSPA1234-|a:aktion,…>] [--menu main|saves|options|lobby|pause|keys|licenses] [--size <B>x<H>] " +
 	"[--shots <ordner> [--count <n>] [--every <takte>] [--at <t>,…]] " +
 	"[--measure <s> [--warmup <s>] [--report <datei>] [--novsync]] [--assets] " +
 	"[--grafik <ordner>] [--river shader|tiles] [--stats] [--stall]"

@@ -15,7 +15,7 @@ func TestFitBanner(t *testing.T) {
 	if got := fitBanner("Nacht", bannerMaxChars); got != "Nacht" {
 		t.Errorf("kurz bleibt: %q", got)
 	}
-	long := fitBanner("Die Nacht bricht an und die Gegner kommen aus allen Portalen gleichzeitig über die Mauer", bannerMaxChars)
+	long := fitBanner("Die Nacht bricht an und die Gegner kommen aus allen Portalen gleichzeitig über die Mauer und durch das offene Tor", bannerMaxChars)
 	if utf8.RuneCountInString(long) > bannerMaxChars || !strings.HasSuffix(long, "…") {
 		t.Errorf("lang wird mit … gekürzt: %q", long)
 	}

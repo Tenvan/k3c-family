@@ -17,17 +17,19 @@ import (
 
 // hud ist der Beitrag des Pakets: Drawer (LayerHUD), Listener und Overlay (Skill-Menü).
 type hud struct {
-	lib    *art.Library
-	seats  [view.MaxPlayers]seatState
-	seen   guideSeen
-	lang   string
-	cells  int
-	joinS  string
-	mJoin  memo[joinKey]
-	cueBuf []view.Cue
-	paint  painter
-	lay    [view.MaxPlayers]layoutCache
-	spots  []labelSpot // Puffer der sichtbaren Welt-Labels in Draw
+	lib     *art.Library
+	seats   [view.MaxPlayers]seatState
+	seen    guideSeen // gesehene Hinweise der ersten Nacht: Settings.GuideSeen und pending
+	guide   bool      // Anleitung an (nicht Settings.GuideOff)
+	pending guideSeen // neu gesehen, noch nicht in Settings.GuideSeen (Overlay.Update speichert sie)
+	lang    string
+	cells   int
+	joinS   string
+	mJoin   memo[joinKey]
+	cueBuf  []view.Cue
+	paint   painter
+	lay     [view.MaxPlayers]layoutCache
+	spots   []labelSpot // Puffer der sichtbaren Welt-Labels in Draw
 }
 
 // New liefert den Drawer des HUD; lib (Grafik) darf nil sein, dann zeichnet es nur Flächen ohne Text.

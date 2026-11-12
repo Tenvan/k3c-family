@@ -2,7 +2,6 @@ package game
 
 import (
 	"slices"
-	"strings"
 	"testing"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -11,20 +10,6 @@ import (
 	"k3c/native/k3c-game/input"
 	"k3c/native/k3c-game/view"
 )
-
-// hudKeyName ist der Name einer Ebitengine-Taste in der Schreibweise des HUD (hud.KeyName).
-func hudKeyName(k ebiten.Key) string {
-	n := strings.ToUpper(k.String())
-	switch {
-	case n == "ESCAPE":
-		return "ESC"
-	case strings.HasPrefix(n, "ARROW"):
-		return n[len("ARROW"):]
-	case strings.HasPrefix(n, "NUMPAD") && len(n) == len("NUMPAD")+1:
-		return "NUM" + n[len("NUMPAD"):]
-	}
-	return n
-}
 
 // keysOf liefert die Tasten der Hälfte half für eine Aktion des HUD (Menü-Aktion oder gehaltener Befehl).
 func keysOf(half int, action string) []ebiten.Key {
@@ -55,5 +40,36 @@ func TestHudKeyNamesMatchInput(t *testing.T) {
 				t.Errorf("Hälfte %d, %s: HUD %q, input %v", half, a, name, names)
 			}
 		}
+	}
+}
+
+// Tastenbelegung für das Pause-Menü (B-807): eine Zeile je view.KeyActions, Tastatur aus input mit den Beschriftungen
+// des HUD, Gamepad mit der Standardbelegung; nicht belegt (Vollbild rechts) bleibt leer.
+func TestKeyRows(t *testing.T) {
+	rows := KeyRows("de")
+	if len(rows) != len(view.KeyActions) {
+		t.Fatalf("%d Zeilen, erwartet %d", len(rows), len(view.KeyActions))
+	}
+	want := map[string]view.KeyRow{
+		view.KeyMove:       {Left: "A / D", Right: "Pfeil links / Pfeil rechts", Pad: "Stick / Steuerkreuz"},
+		view.KeySprint:     {Left: "Shift links", Right: "Strg rechts", Pad: "RT"},
+		view.KeyPay:        {Left: "Leertaste", Right: "Enter", Pad: "A"},
+		view.KeySkill4:     {Left: "Z", Right: "Num 4", Pad: "D-Pad ↑"},
+		view.KeyPause:      {Left: "Esc", Right: "Backspace", Pad: "Menu"},
+		view.KeyFullscreen: {Left: "F", Right: "", Pad: "RS"},
+	}
+	for i, r := range rows {
+		if r.Action != view.KeyActions[i] || r.Left == "" || r.Pad == "" {
+			t.Errorf("Zeile %d: %+v", i, r)
+		}
+		if (r.Right == "") != (len(keysFor(1, r.Action)) == 0) {
+			t.Errorf("%s rechts: %q gegen input %v", r.Action, r.Right, keysFor(1, r.Action))
+		}
+		if w, ok := want[r.Action]; ok && (r.Left != w.Left || r.Right != w.Right || r.Pad != w.Pad) {
+			t.Errorf("%s: %+v, erwartet %+v", r.Action, r, w)
+		}
+	}
+	if en := KeyRows("en"); en[2].Left != "Space" {
+		t.Errorf("englisch: %+v", en[2])
 	}
 }

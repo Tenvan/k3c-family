@@ -189,3 +189,35 @@ func TestGeschossFarbeNachSeite(t *testing.T) {
 		t.Errorf("eigene Geschosse unverändert: %#x", got)
 	}
 }
+
+// Optionen › Blitze aus (Settings.FlashesOff, B-809): Treffer-Blitze entfallen, andere Effekte bleiben.
+func TestBlitzeAus(t *testing.T) {
+	isl, err := sim.CreateIsland("wald", []int{0}, 1, sim.CreateOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	count := func(off bool) (flashes, others int) {
+		d := New(nil).(*drawer)
+		f := &view.Frame{Stages: []view.Stage{{Index: 0, World: isl.Stages[0]}}, Seats: []view.Seat{{Player: 0}}}
+		f.Settings.FlashesOff = off
+		f.Events = []view.Event{
+			{Stage: 0, Data: sim.Event{"type": "hit", "x": 3.0, "target": "enemy", "damage": 2.0}},
+			{Stage: 0, Data: sim.Event{"type": "built", "x": 5.0, "kind": "wall"}},
+		}
+		d.Listen(f)
+		for _, e := range d.stage(0).effects {
+			if config[e.kind].flash {
+				flashes++
+			} else {
+				others++
+			}
+		}
+		return flashes, others
+	}
+	if on, _ := count(false); on == 0 {
+		t.Fatal("ohne Schalter: Treffer-Blitz erwartet")
+	}
+	if off, rest := count(true); off != 0 || rest == 0 {
+		t.Errorf("Blitze aus: %d Blitze, %d andere Effekte", off, rest)
+	}
+}

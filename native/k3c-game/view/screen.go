@@ -37,7 +37,7 @@ type Menus interface {
 }
 
 // MenuPages ist eine optionale Rolle von Menus für den Aufnahme-Modus (--menu): Page liefert das Untermenü name
-// ("saves", "options", "lobby"; sonst nil), inGame = über dem Pause-Menü, by = bedienendes Gerät. game legt es über
+// ("saves", "options", "lobby", "keys", "licenses"; sonst nil), inGame = über dem Pause-Menü, by = bedienendes Gerät. game legt es über
 // Main bzw. Pause auf; im Spiel führt der Weg dorthin über die Menü-Einträge.
 type MenuPages interface {
 	Page(name string, inGame bool, by DeviceID) Screen

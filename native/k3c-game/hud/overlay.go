@@ -29,8 +29,23 @@ func (h *hud) Update(in view.Input, f *view.Frame, s view.Session) view.OverlayS
 			h.seats[p].menu = menuState{}
 		}
 	}
+	h.saveGuide(s)
 	out.Cues = h.cueBuf
 	return out
+}
+
+// saveGuide schreibt neu gesehene Hinweise der ersten Nacht in die Einstellungen (Settings.GuideSeen, B-809), damit
+// „Anleitung gesehen“ einen Neustart überlebt; ein Fehler betrifft nur das Speichern (Log).
+func (h *hud) saveGuide(s view.Session) {
+	if h.pending == 0 {
+		return
+	}
+	cur := s.Settings()
+	cur.GuideSeen |= int(h.pending)
+	h.pending = 0
+	if err := s.SetSettings(cur); err != nil {
+		slog.Warn("💥 Anleitung gesehen nicht gespeichert", "err", err)
+	}
 }
 
 // updateSeat bedient das Menü eines Spielers; Rückgabe: Eingabe verbraucht (Menü offen oder eben geschlossen).

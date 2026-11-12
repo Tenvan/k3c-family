@@ -16,8 +16,9 @@ import (
 // Dauer einer Meldung in Sekunden; bei mehr als zwei wartenden die Hälfte.
 const bannerSeconds = 2.8
 
-// bannerMaxChars: längste Meldung in Zeichen; längerer Text wird mit „…“ gekürzt.
-const bannerMaxChars = 56
+// bannerMaxChars: längste Meldung in Zeichen; längerer Text wird mit „…“ gekürzt. Die längste Meldung der Texte
+// (Burgfall, 81 Zeichen) passt ganz (B-813); was nicht in die Zelle passt, zeichnet draw kleiner (fitPx).
+const bannerMaxChars = 90
 
 // fitBanner macht eine Meldung einzeilig (Umbrüche und Leerraum zu einem Leerzeichen) und kürzt sie auf max Zeichen.
 func fitBanner(text string, maxChars int) string {

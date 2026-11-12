@@ -135,7 +135,7 @@ func save(name string, day int, ok bool) view.SaveInfo {
 	return e
 }
 
-func newMenus() *menus { return New(nil).(*menus) }
+func newMenus() *menus { return New(nil, nil).(*menus) }
 
 func TestFakeSessionFulfilsContract(t *testing.T) {
 	var _ view.Session = (*fakeSession)(nil)

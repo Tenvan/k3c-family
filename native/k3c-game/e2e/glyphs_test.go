@@ -19,9 +19,9 @@ import (
 
 const fontFile = "../../../public/schrift/k3c.ttf"
 
-// knownGaps: Zeichen, die Go-Regular nicht hat; der HUD-Sprint (NG13) entscheidet den Ersatz (Balken, Pfeile).
+// knownGaps: Zeichen, die Go-Regular nicht hat (leer seit NG13: Balken ■ □, Pfeile ► ◄ statt ▮ ▯ ▶ ◀).
 // Jedes weitere fehlende Zeichen macht den Test rot.
-const knownGaps = "▮▯▶◀"
+const knownGaps = ""
 
 // literalRunes sammelt die Zeichen aller String-Literale der Nicht-Test-Dateien in dir.
 
@@ -72,7 +72,7 @@ func TestFontCoversTexts(t *testing.T) {
 		t.Fatal(err)
 	}
 	runes := map[rune]string{}
-	for _, r := range "–→←▮·äöüÄÖÜß" {
+	for _, r := range "–→←■□►◄·äöüÄÖÜß" {
 		runes[r] = "Pflichtliste"
 	}
 	literalRunes(t, "../hud", runes)
