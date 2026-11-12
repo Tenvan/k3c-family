@@ -41,7 +41,9 @@ export function workbenchUp(port = Number(process.env.K3C_DEV_PORT ?? 5180), tim
 }
 
 async function main(): Promise<void> {
-  const raw = await new Response(Bun.stdin.stream()).text();
+  const chunks: Buffer[] = [];
+  for await (const c of process.stdin) chunks.push(c as Buffer);
+  const raw = Buffer.concat(chunks).toString('utf8');
   let input: HookInput = {};
   try { input = JSON.parse(raw) as HookInput; } catch { return; }
   const what = planWrite(input);
@@ -51,4 +53,5 @@ async function main(): Promise<void> {
   process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: 'PreToolUse', permissionDecision: 'deny', permissionDecisionReason: reason } }));
 }
 
-if (import.meta.main) await main();
+// Nur als Hook-Skript ausführen, nicht beim Import im Test (node-Typen, kein Bun-Global: tests/tsconfig.json).
+if (/planGuard\.ts$/.test(process.argv[1] ?? '')) await main();
