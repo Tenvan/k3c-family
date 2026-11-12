@@ -4,13 +4,13 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ44
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -36,13 +36,13 @@ Claude und andere Agenten, 🧑 Ralf (hebt die Sperre auf).
 
 ## Regeln und Einschränkungen
 
-`docs/arbeitsweise.md` › Tempo im Lauf und › Sim, Balance und Gen. Neubau der Workbench-EXE nötig.
+`docs/arbeitsweise.md` › Tempo im Lauf und › Sim, Balance und Gen. Neubau der Workbench-EXE nötig. Klasse A (Schuld, DEV).
 
 Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen):
 
-- **Bereich:** `tools/k3c-workbench/internal/mcpsrv/**`
+- **Bereich:** `tools/k3c-workbench/internal/mcpsrv/check_targets*.go`, `tools/k3c-workbench/internal/mcpsrv/simtest*.go`, `tools/k3c-workbench/internal/mcpsrv/tools_sim*.go`, `tools/k3c-workbench/internal/mcpsrv/instructions.md`
 - **Abhängig von:** –
-- **Braucht 🧑:** Freigabe
+- **Braucht 🧑:** –
 - **Größe:** S
 - **Sperre:** exe
 
@@ -61,7 +61,7 @@ Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität
 
 ## Offene Fragen
 
-Form des Schalters für die Sperre (Datei in `data/`, Umgebung, Einstellung der Workbench)? Entscheidet 🧑 bei der Freigabe.
+Form des Schalters für die Sperre: Default (Claude, 2026-11-12, Meldung im Nachgang) Umgebungsvariable `K3C_SIM_ENTSPERRT=1` der Workbench; 🧑 ändert bei Bedarf.
 
 ## Notizen
 

@@ -4,13 +4,13 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
-- **Projekt:** PAP
+- **Status:** eingeplant
+- **Sprint:** WZ43
+- **Projekt:** WZG
 - **Erstellt:** 2026-11-06
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -26,7 +26,8 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- `assets/review/` nutzt `backend.assets*`, die Typen aus `api/typesAssets.ts` und `fillPrompt` aus `assets/prompts/fill.ts`.
+- `assets/review/api.ts`, `types.ts` und die Füllfunktion in `prompt.ts` entfallen; `zustandVon`/`reviewWerte` bleiben.
 
 ## Nicht-Ziele
 
@@ -34,7 +35,13 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Domäne DEV, Klasse A (Schuld). Oberfläche nur über `@webkit`; Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen.
+
+- **Bereich:** `tools/k3c-workbench/frontend/src/assets/**`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
@@ -52,7 +59,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine
 
 ## Notizen
 

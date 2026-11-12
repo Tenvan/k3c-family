@@ -4,7 +4,7 @@
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
-- **Tickets:** B-802, B-786
+- **Tickets:** B-802, B-786, B-775
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** freigegeben
 - **Revision:** 1

@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ47
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-05
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -92,8 +92,16 @@ Drei aufeinander aufbauende Teile; Reihenfolge A, dann B, dann C.
 - Planung nur über k3c-workbench (`CLAUDE.md`, B-210); Vorlagen sind Pflicht, `tests/planning.test.ts` prüft sie.
 - Go-Code in `tools/k3c-workbench` und `tools/assetkit`: Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen, Namen englisch (Komplexitäts-Budget laut `docs/arbeitsweise.md`); Logging mit Emoji.
 - Domäne DEV: Review vor dem Commit nur bei Risiko (ab etwa 150 Code-Zeilen oder Pfad-/Eingabe-Code); `task check:diff` einmal vor dem Commit.
-- Schreibzugriffe laufen über den `changeSet` (atomar, CRLF der Vorlage bleibt erhalten); Workbench und Studio teilen den Ticket-Kern (`assetkit/ticket`, eigenes Go-Modul).
+- Schreibzugriffe laufen über den `changeSet` (atomar, CRLF der Vorlage bleibt erhalten); Workbench teilt den Ticket-Kern (`assetkit/ticket`, eigenes Go-Modul). Das Asset-Studio ist entfallen (Entscheidung 005, WB1).
 - Kein globaler Zustand, deterministisch, auf Windows lauffähig.
+
+- **Bereich:** `tools/k3c-workbench/internal/planning/**`, `tools/k3c-workbench/internal/mcpsrv/tools_planning*.go`, `tools/k3c-workbench/app_ticket*.go`, `tools/assetkit/ticket/**`, `tests/planning.test.ts`, `tests/planningDocs.ts`, `docs/vorlagen/ticket.md`, `docs/backlog/archiv/README.md`, `docs/arbeitsweise.md`, `CLAUDE.md`
+- **Abhängig von:** B-783
+- **Braucht 🧑:** –
+- **Größe:** L
+- **Sperre:** exe
+
+Defaults zu den Offenen Fragen (Claude, 2026-11-12, Meldung im Nachgang): 1 drei Sessions A → B → C in Sprint WZ47; 2 keine nachträgliche Verknüpfung; 3 Stoppwörter weg, Mindestlänge 4, Schwelle 0,4, höchstens fünf Treffer; 4 Felder optional am Ende des Kopfs; 5 nicht Teil des Tickets. Größe L ist in WZ47 in drei Sessions je Teil zerlegt.
 
 ## Beispiele
 

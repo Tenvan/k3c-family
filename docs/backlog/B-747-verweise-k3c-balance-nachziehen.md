@@ -4,13 +4,13 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ42
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-08
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -35,7 +35,13 @@ Verhaltensänderung am Balancing.
 
 ## Regeln und Einschränkungen
 
-Glossar zuerst; Prozess nur in `docs/arbeitsweise.md`.
+Glossar zuerst; Prozess nur in `docs/arbeitsweise.md`. Domäne DEV, Klasse A (Schuld). Default (Claude, 2026-11-12): der optionale Umzug des Namensraums `balance` entfällt, solange Sim und Balancing gesperrt sind. `docs/rules/zielkorridore.md` nur Pfadverweis, keine Regeländerung.
+
+- **Bereich:** `cmd/k3c-sim/**`, `codemap.md`, `engine/codemap.md`, `engine/level/codemap.md`, `engine/sim/codemap.md`, `docs/messung/rst-baseline.md`, `docs/rules/zielkorridore.md`, `tools/k3c-workbench/internal/simrun/spec_baseline_test.go`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 

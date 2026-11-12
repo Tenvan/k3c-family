@@ -4,13 +4,13 @@
 - **Typ:** Schuld
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
-- **Projekt:** REL
+- **Status:** eingeplant
+- **Sprint:** WZ41
+- **Projekt:** WZG
 - **Erstellt:** 2026-11-08
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -36,7 +36,13 @@ Kein neues Release.
 
 ## Regeln und Einschränkungen
 
-Release-Checkliste in `docs/arbeitsweise.md` › Release.
+Release-Checkliste in `docs/arbeitsweise.md` › Release. Default (Claude, 2026-11-12): AC-03 prüft den aktuellen Stand von `develop` statt des Tags v0.22.0.
+
+- **Bereich:** `.github/workflows/release.yml`
+- **Abhängig von:** B-756, B-757
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** taskfile
 
 ## Beispiele
 

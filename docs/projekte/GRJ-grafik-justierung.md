@@ -15,7 +15,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | Sprint | Thema | Status |
 |---|---|---|
 | GRJ1 | Alte Biom-Hintergründe mit Lizenz im Archiv | erledigt |
-| GRJ2 | Grafik-Zielmaß und Ausschnitt-Rahmen abnehmen | geplant |
+| GRJ2 | Grafik-Zielmaß und Ausschnitt-Rahmen abnehmen | erledigt |
 
 ## Nicht-Ziele
 

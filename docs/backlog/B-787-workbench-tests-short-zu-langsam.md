@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ42
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -35,13 +35,13 @@ Neue Funktionen der Workbench; die gesperrten Sim- und Balance-Läufe (Beschluss
 
 ## Regeln und Einschränkungen
 
-`docs/arbeitsweise.md` › Tempo im Lauf (Lange Tests, B-619), B-704 (lastabhängige Tests).
+`docs/arbeitsweise.md` › Tempo im Lauf (Lange Tests, B-619), B-704 (lastabhängige Tests). Klasse A (Problem, DEV).
 
 Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen):
 
-- **Bereich:** `tools/k3c-workbench/internal/**`
+- **Bereich:** `tools/k3c-workbench/internal/assetsui/**`, `tools/k3c-workbench/internal/paperassets/**`, `tools/k3c-workbench/internal/review/**`, `tools/k3c-workbench/internal/simrun/**`, `tools/k3c-workbench/internal/botdev/**`
 - **Abhängig von:** –
-- **Braucht 🧑:** Freigabe
+- **Braucht 🧑:** –
 - **Größe:** M
 - **Sperre:** –
 
@@ -61,7 +61,7 @@ Ein Test braucht die echte CLI oder ein echtes Git-Repo → er läuft nur ohne `
 
 ## Offene Fragen
 
-Warum brauchen einzelne Tests in `assetsui` und `paperassets` 40 bis 57 s (vermutet: jeder Test startet die CLI von `tools/paper` oder kopiert ein Test-Repo; ungeprüft)? Klärt die Umsetzung.
+Warum brauchen einzelne Tests in `assetsui` und `paperassets` 40 bis 57 s (vermutet: jeder Test startet die CLI von `tools/paper` oder kopiert ein Test-Repo; ungeprüft)? Klärt die Umsetzung (WZ42.2), nicht blockierend.
 
 ## Notizen
 

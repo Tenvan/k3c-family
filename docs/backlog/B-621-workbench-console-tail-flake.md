@@ -5,12 +5,12 @@
 - **Prio:** niedrig
 - **Umgebung:** ?
 - **Status:** eingeplant
-- **Sprint:** WZ34
+- **Sprint:** WZ42
 - **Projekt:** WZG
 - **Erstellt:** 2026-10-25
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -34,7 +34,13 @@ Agent DEV.
 
 ## Regeln und Einschränkungen
 
-Kein Sleep als Behebung.
+Kein Sleep als Behebung. Domäne DEV, Klasse A (Problem).
+
+- **Bereich:** `tools/k3c-workbench/app_logs*.go`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 

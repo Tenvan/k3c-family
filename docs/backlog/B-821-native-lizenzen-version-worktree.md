@@ -4,8 +4,8 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** NG19
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-12
 - **Spec:** freigegeben

@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ41
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-08
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -35,7 +35,13 @@ Kein schnelleres Balancing.
 
 ## Regeln und Einschränkungen
 
-Entscheidung B-742 (Sim, Balance, Gen nur am Feature); Tasks nur über `task`.
+Entscheidung B-742 (Sim, Balance, Gen nur am Feature); Tasks nur über `task`. Umgesetzt mit #527, Beleg in WZ41.1.
+
+- **Bereich:** `engine/Taskfile.yml`, `tools/k3c-workbench/internal/datadoc/**`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** taskfile
 
 ## Beispiele
 

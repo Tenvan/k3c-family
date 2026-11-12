@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** PT1
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-08
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -37,7 +37,13 @@ Kein schnelleres Rendern, keine Änderung an gen.ts.
 
 ## Regeln und Einschränkungen
 
-Tasks nur über `task`; Eintrag `status:` in `tools/Taskfile.yml`.
+Tasks nur über `task`; Eintrag `status:` in `tools/Taskfile.yml`. Umgesetzt mit #520, Beleg in PT1.1.
+
+- **Bereich:** `tools/Taskfile.yml`, `tools/paper/bin/gen.ts`, `tools/paper/cli/gen*.ts`, `tools/paper/cli/work*.ts`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 

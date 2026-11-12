@@ -1,7 +1,7 @@
 # GEB · Gebäude-Grafik
 
 - **Status:** aktiv
-- **Rang:** 5
+- **Rang:** 4
 - **Ziel-Tickets:** B-435
 
 ## Ziel

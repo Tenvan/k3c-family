@@ -4,13 +4,13 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
-- **Projekt:** PAP
+- **Status:** eingeplant
+- **Sprint:** WZ43
+- **Projekt:** WZG
 - **Erstellt:** 2026-11-06
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -39,7 +39,13 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Domäne DEV, Klasse A (Schuld). Vertrag `docs/standards/paper-mcp.md` nur zusammen mit Code; Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen.
+
+- **Bereich:** `tools/k3c-workbench/internal/paperassets/**`, `tools/k3c-workbench/internal/review/**`, `tools/k3c-workbench/internal/mcpsrv/tools_assets*.go`, `tools/k3c-workbench/internal/mcpsrv/testdata/**`, `docs/standards/paper-mcp.md`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** M
+- **Sperre:** exe
 
 ## Beispiele
 
@@ -55,7 +61,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+Umfang von `assets_style_set`: Default (Claude, 2026-11-12, Meldung im Nachgang) nur die betroffenen Assets neu rendern, Vertragstext folgt.
 
 ## Notizen
 

@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ44
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -38,9 +38,9 @@ Angaben als Kopffelder (später, wenn die Konvention sich bewährt hat).
 
 Domäne DEV, Test in INF-Datei `tests/planning*.ts`.
 
-- **Bereich:** `tools/k3c-workbench/internal/planning/**`, `tools/k3c-workbench/internal/mcpsrv/**`, `tests/planning.test.ts`, `tests/planningDocs.ts`
+- **Bereich:** `tools/k3c-workbench/internal/planning/**`, `tools/k3c-workbench/internal/mcpsrv/tools_planning*.go`, `tests/planning.test.ts`, `tests/planningDocs.ts`
 - **Abhängig von:** B-783
-- **Braucht 🧑:** Freigabe
+- **Braucht 🧑:** –
 - **Größe:** S
 - **Sperre:** exe
 
@@ -59,7 +59,7 @@ Archivierte Tickets werden nicht geprüft.
 
 ## Offene Fragen
 
-Stichtag für den Regel-Test: Default Datum des Merges von B-783. Entscheidet 🧑.
+Stichtag für den Regel-Test: Default (Claude, 2026-11-12, Meldung im Nachgang) Datum des Merges von B-783 (Sprint WZ44).
 
 ## Notizen
 

@@ -10,172 +10,94 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 |---|---|---|---|---|---|---|
 | [B-677](archiv/B-677-studio-assets-seite.md) | DEV | Idee | mittel | erledigt | WZ33 | Grafik, Sound und Quellen sind im Studio eine Seite Assets mit Fokus-Chips, Inspektor und einer Abspielleiste |
 | [B-008](B-008-spieleabend.md) | REG | Frage | niedrig | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
-| [B-015](B-015-gebaeude-werte.md) | REG | Problem | niedrig | eingeplant | BR1 | Gebäude-HP und -Kosten sind gebalanced |
 | [B-023](B-023-itch-io.md) | INF | Idee | niedrig | eingeplant | PB1 | Spiel ist auf itch.io veröffentlicht |
 | [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | eingeplant | RG2 | Tiefe 3 und 4 sind beschrieben |
 | [B-041](B-041-wails-starter.md) | DEV | Idee | niedrig | eingeplant | BT1 | Wails-Starter für Windows existiert |
-| [B-042](B-042-pi-leistungsziel.md) | SRV | Frage | hoch | eingeplant | HW1 | Pi-Modell und Leistungsziel sind festgelegt |
-| [B-090](B-090-radar.md) | CLI | Idee | mittel | eingeplant | HW1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
-| [B-099](B-099-balancing-tester.md) | SIM | Idee | mittel | eingeplant | BAL6 | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
-| [B-117](B-117-anzeige-bau-lager.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Wartezeit, Lagerstand, Hub-Stufe, Adern und Plantage |
-| [B-126](B-126-buerger-ui.md) | CLI | Idee | mittel | eingeplant | W6 | Der Client zeigt Berufe, Ausbildung, Händler, Truppen-Limit und Heilung |
-| [B-132](B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | eingeplant | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
 | [B-151](B-151-spieleabend-fragebogen.md) | REG | Idee | niedrig | eingeplant | P1 | Der Spieleabend hat einen kindgerechten Fragebogen und eine Playtest-Vorlage |
-| [B-155](B-155-balancing-runde-wirtschaft.md) | REG | Idee | niedrig | eingeplant | BR1 | Die Wirtschaft ist in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
-| [B-156](B-156-balancing-runde-kampf-bosse.md) | REG | Idee | niedrig | eingeplant | BR2 | Kampf, Gegner und Bosse sind in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
-| [B-160](B-160-abgleich-spielmetrik-simulator.md) | REG | Idee | mittel | eingeplant | BAL4 | Spielmetrik echter Abende und Simulatorwerte sind abgeglichen |
 | [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | eingeplant | RG2 | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
-| [B-186](B-186-autospeichern-takt.md) | SRV | Idee | mittel | eingeplant | ST1 | Der Server speichert alle 60 s und bei Tagesanbruch, das HUD zeigt „gesichert“ |
-| [B-191](B-191-debug-overlay-links-unten.md) | CLI | Problem | mittel | eingeplant | U5 | Debug-Overlay und Aktionsliste verdecken das HUD nicht |
-| [B-194](B-194-splitscreen-ruckelt-xbox.md) | CLI | Problem | hoch | eingeplant | PF1 | Der Split-Screen läuft auf der Xbox flüssig |
-| [B-195](B-195-debug-overlay-xbox.md) | PLAT | Problem | mittel | eingeplant | PL1 | Das Debug-Overlay lässt sich auf der Xbox öffnen |
 | [B-157](archiv/B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | erledigt | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
 | [B-159](archiv/B-159-replay-repro-format.md) | SIM | Idee | mittel | erledigt | BAL1 | Ein Lauf ist als Datei aus Seed und Eingaben wiederholbar |
 | [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | eingeplant | RG2 | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
-| [B-207](B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | eingeplant | W11 | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
-| [B-230](B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | eingeplant | RG1 | Burg hält Nacht 1–5 nur in 47 % der Seeds, Ziel 75–90 % |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | eingeplant | RG2 | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
-| [B-287](B-287-hub-ausbau-beutel-maximum.md) | REG | Problem | mittel | eingeplant | RG1 | Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar |
-| [B-289](B-289-aggressionspool-mit-adern.md) | REG | Problem | mittel | eingeplant | RG1 | Der Aggressionspool steigt mit Adern nicht zu schnell |
-| [B-294](B-294-hinweis-glyph-muenze-nacht.md) | CLI | Frage | mittel | eingeplant | S8 | Münze und „Nacht naht“ zeigen in der geführten ersten Nacht keine Glyph |
 | [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | eingeplant | RG2 | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
-| [B-314](B-314-controller-pruefungen-zurueckgestellt.md) | PLAT | Schuld | niedrig | eingeplant | HW1 | Alle Controller-Prüfungen sind gesammelt nachgeholt |
 | [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | eingeplant | SV1 | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
-| [B-317](B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | eingeplant | U5 | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
-| [B-334](B-334-performance-modus.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
-| [B-335](B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | eingeplant | HW1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
-| [B-346](B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | eingeplant | RG1 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
-| [B-351](B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | eingeplant | PM1 | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
 | [B-363](B-363-planung-flags-bearbeiten.md) | DEV | Idee | mittel | eingeplant | WZ2 | Die Planungsseite ändert Prio, Umgebung, Agent und Projekt direkt im Detail |
-| [B-369](B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | eingeplant | GL1 | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
-| [B-394](B-394-xbox-overlay-gesten-abnahme.md) | PLAT | Frage | niedrig | eingeplant | HW1 | Overlay-Gesten (RB, LB + RB) sind an der Xbox abgenommen (B-195/AC-02) |
 | [B-400](B-400-planung-splitter-merken.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Die Planungsseite trennt Backlog und Details mit einem Splitter, dessen Stellung gemerkt wird |
 | [B-401](B-401-planung-filter-getrennt.md) | DEV | Idee | niedrig | eingeplant | WZ2 | Der Backlog-Filter wirkt nur auf den Backlog, der Projekt-Filter nur auf die Projekte |
 | [B-402](B-402-planung-session-titel.md) | DEV | Idee | mittel | eingeplant | WZ2 | Die Planungsseite zeigt in den Session-Zeilen den Titel der Session |
-| [B-408](B-408-bauplaetze-aller-stufen-sichtbar.md) | CLI | Problem | mittel | eingeplant | W11 | Bauplätze aller Stufen werden schon im Hub einer niedrigen Stufe angezeigt |
 | [B-409](B-409-bauplaetze-abstand-zu-eng.md) | REG | Problem | mittel | eingeplant | W11 | Bauplätze im Hub stehen zu eng, besonders die Treppen |
 | [B-410](B-410-aktion-ausbilden-tauschen-protokoll.md) | SRV | Problem | mittel | eingeplant | W11 | Aktionen-Overlay zeigt Ausbilden und Tauschen nicht, der Server liefert sie nicht in actions |
-| [B-411](B-411-spieler-abmelden.md) | CLI | Problem | hoch | eingeplant | BD4 | Lokale Spieler können beitreten, aber nicht einzeln austreten |
-| [B-412](B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | eingeplant | W11 | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
-| [B-413](B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | eingeplant | BD4 | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
-| [B-422](B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | eingeplant | W11 | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
-| [B-435](B-435-gebaeude-grafik-per-prompt.md) | DEV | Idee | mittel | eingeplant | GEB1 | Gebäude und Strukturen entstehen im Asset-Manager aus Beschreibung und Prompt |
 | [B-454](B-454-baeume-hoeher-dichter-hoehle-wurzeln.md) | DEV | Problem | hoch | eingeplant | GEB10 | Bäume höher und dichter, Höhle mit eigener Unterwelt-Flora (Wurzeln) |
-| [B-456](B-456-fahne-spielerfarbe-wimpel.md) | CLI | Idee | mittel | eingeplant | GEB10 | Markierungsfahne als Wimpel in Spielerfarbe |
-| [B-457](B-457-geb6-abnahme-splitscreen-ausgang-geschmack.md) | CLI | Frage | mittel | eingeplant | GEB10 | GEB6: Split-Screen, Ausgang-Beschriftung und Geschmacksfragen später prüfen |
 | [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | eingeplant | GEB11 | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
-| [B-462](B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | eingeplant | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
-| [B-506](B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | eingeplant | BD5 | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
-| [B-570](B-570-camp-stufen-look.md) | DEV | Idee | mittel | eingeplant | GEB13 | Das Camp bekommt einen Stufen-Look statt der Grundform |
-| [B-571](B-571-heilplatz-stufen-deutlicher.md) | DEV | Idee | mittel | eingeplant | GEB13 | Heilplatz-Stufen sind deutlicher sichtbar (Zelt, Brunnen) |
-| [B-581](B-581-offenen-raum-schliessen.md) | CLI | Idee | mittel | eingeplant | BD9 | Ein offener Raum lässt sich in der Lobby über Entfernen schließen |
 | [B-603](B-603-dev-aktionen-boss-event.md) | SRV | Idee | hoch | eingeplant | KB4 | Dev-Aktionen lösen Boss, Phasenwechsel und Events (Vollmond, Blutmond, Händler) sofort aus |
-| [B-604](B-604-welt-anzeige-pausenmenue-lobby.md) | CLI | Problem | mittel | eingeplant | BD9 | Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby |
-| [B-617](B-617-studio-levelview-test-golden.md) | DEV | Problem | hoch | eingeplant | WZ34 | Der Studio-Test levelView passt wieder zur Golden-Datei level-forest.json |
-| [B-629](B-629-buildall-web-exe.md) | INF | Problem | hoch | eingeplant | WZ34 | task buildall baut die Web-EXEs von Studio und Workbench nicht mit |
-| [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | eingeplant | WZ34 | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
+| [B-621](B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | eingeplant | WZ42 | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
 | [B-622](B-622-fackeln-als-spielobjekt.md) | SIM | Idee | niedrig | eingeplant | W15 | Fackeln gibt es als Spielobjekt mit Licht in der Nacht |
 | [B-635](B-635-muenzskala-2-bis-30.md) | REG | Idee | hoch | eingeplant | BS2 | Münzpreise liegen auf einer kleinen Skala von 2 bis 30 Gold |
 | [B-636](B-636-farm-heisst-baumschule.md) | SIM | Idee | hoch | eingeplant | BS4 | Die Farm heißt Baumschule und steht auf gerodeten Waldbauplätzen |
 | [B-637](B-637-hafen-chunk-boot.md) | SIM | Idee | hoch | eingeplant | BS5 | Ein Hafen-Chunk auf Inselstufe 1 baut das Boot zum Verlassen der Insel |
-| [B-638](B-638-boot-ressourcen-balancing.md) | DEV | Idee | hoch | eingeplant | BS3 | Das Balancing misst die Ressourcen für das Boot |
-| [B-640](B-640-balancing-delta-runden.md) | DEV | Idee | hoch | eingeplant | BS7 | Balancing nach Mechanik-Änderungen läuft als Delta-Runde gegen eine Baseline |
-| [B-641](B-641-grafik-hafen-schiff.md) | DEV | Idee | hoch | eingeplant | BS10 | Hafen und Schiff haben eigene Grafiken je Bauabschnitt |
 | [B-650](B-650-boss-hp-je-spieler-eigenes-feld.md) | SIM | Idee | hoch | eingeplant | BS3 | Boss-HP je Zusatzspieler bekommt ein eigenes Feld, getrennt von der Wellengröße |
 | [B-652](B-652-mauern-tuerme-verteilt-tor-ist-aeusserste-mauer.md) | SIM | Idee | hoch | eingeplant | BS12 | Mauern und Türme stehen verteilt in jedem Chunk, das Tor ist die äußerste gebaute Mauer |
-| [B-653](B-653-baustellen-schilder-bauoptionen-holzzaun.md) | CLI | Problem | hoch | eingeplant | BS13 | Bauschilder an Bäumen und Felsen nur nach Markierung, keine Bauoptionen für gesperrte Gebäude, Holzmauer als Zaun |
-| [B-658](B-658-balancing-umbruch-container-query.md) | DEV | Problem | hoch | eingeplant | WZ32 | Die Balancing-Seite stellt Konfiguration und Berichte unter 1.100 px untereinander |
-| [B-659](B-659-balancing-seite-feste-flaeche.md) | DEV | Idee | mittel | eingeplant | WZ32 | Die Balancing-Seite füllt die Fläche, nur Liste und Detail scrollen |
-| [B-660](B-660-balancing-liste-und-detail.md) | DEV | Idee | hoch | eingeplant | WZ32 | Läufe und Berichte stehen in einer Liste mit Filter und Mehrfachauswahl, der Bericht in Reitern |
-| [B-661](B-661-balancing-lauf-editor-varianten.md) | DEV | Idee | hoch | eingeplant | WZ32 | Der Lauf-Editor setzt Varianten als Tabelle mit Basiswert und Daten-Browser |
 | [B-674](B-674-skill-effekt-am-wirkort.md) | SRV | Problem | mittel | eingeplant | KB5 | Flächenzauber erscheinen dort, wo die Simulation sie wirkt, nicht am Monarchen |
-| [B-675](B-675-status-effekte-sichtbar.md) | CLI | Idee | mittel | eingeplant | KB5 | DoTs, Buffs und Kontrolleffekte der Skills sind im Spiel sichtbar |
-| [B-676](B-676-studio-skills-ziel-und-status.md) | DEV | Idee | mittel | eingeplant | KB5 | Das Studio zeigt Skills am Wirkort und DoTs und Buffs an Gegnern und Monarchen |
 | [B-680](B-680-welt-werte-ueberschreiben.md) | REG | Idee | hoch | eingeplant | BAL8 | Eine Welt-Datei erbt die Basis-Werte und übersteuert nur, was sie ändern will |
 | [B-681](B-681-sim-werte-je-raum.md) | SIM | Idee | hoch | eingeplant | BAL8 | Die Simulation rechnet mit den Werten ihrer Welt statt mit globalen Datei-Variablen |
-| [B-684](B-684-studio-ausschnitt-rahmen-und-einpassen.md) | DEV | Idee | mittel | eingeplant | GRJ2 | Die Ausschnitt-Bearbeitung zeigt wahlweise einen Rahmen und passt die Grafik in die Kachel ein |
-| [B-685](B-685-zielmass-grafiken-skalieren.md) | CLI | Idee | hoch | eingeplant | GRJ2 | Grafiken bekommen ein Zielmaß in der Ausgabe und werden dort passend skaliert |
-| [B-695](B-695-flaky-simrun-tempdir-balancing-abbruch.md) | DEV | Problem | niedrig | offen | – | Zwei Tests flackern: simrun-TempDir-Cleanup und Abbruch eines wartenden Laufs |
-| [B-696](B-696-ticket-relationen-und-index-verdichtung.md) | DEV | Idee | mittel | offen | – | Tickets verweisen auf Duplikate und Ersatz, der Index und die Archive bleiben klein |
-| [B-698](B-698-balancing-tests-vorlaeufig-mit-cheats.md) | REG | Schuld | niedrig | offen | – | Balancing-Tests und Simulationen laufen vorläufig mit Cheats und bestehen spätestens im dritten Lauf |
-| [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | – | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
+| [B-695](B-695-flaky-simrun-tempdir-balancing-abbruch.md) | DEV | Problem | niedrig | eingeplant | WZ42 | Zwei Tests flackern: simrun-TempDir-Cleanup und Abbruch eines wartenden Laufs |
+| [B-696](B-696-ticket-relationen-und-index-verdichtung.md) | DEV | Idee | mittel | eingeplant | WZ47 | Tickets verweisen auf Duplikate und Ersatz, der Index und die Archive bleiben klein |
+| [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | MG11 | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
 | [B-700](B-700-alte-pixel-grafik-aufraeumen.md) | CLI | Schuld | mittel | eingeplant | CU1 | Alte Pixel-Grafiken, Register und Gebäude-Renderer werden nach der Papierschnitt-Umstellung entfernt |
-| [B-704](B-704-go-tests-unter-last-flaky.md) | DEV | Problem | mittel | offen | – | Lastabhängige Go-Tests scheitern bei parallelen Agenten |
-| [B-703](B-703-review-auf-wb1-backend.md) | DEV | Schuld | mittel | offen | – | Die Review-Seite nutzt backend.assets* und fillPrompt aus WB1 statt eigener Kopien |
-| [B-705](B-705-paper-frame-stil-der-basis.md) | DEV | Problem | mittel | offen | – | Das Vorher-Bild im Review rendert mit dem Stil der Basis |
-| [B-702](B-702-test-runprocess-wackelt.md) | DEV | Problem | mittel | offen | – | TestRunProcessExitUndAusgabe wackelt: fehlendes Programm ohne Fehler |
-| [B-706](B-706-asset-tools-nachzug-review-mc1.md) | DEV | Schuld | mittel | offen | – | Asset-MCP-Tools: Restbefunde aus dem Review MC1 nachziehen |
-| [B-708](B-708-paper-fehlerfeld-reittier.md) | PAP | Problem | niedrig | offen | – | Ablehnung reittier-unbekannt nennt das Feld ohne Animationsnamen |
-| [B-709](B-709-assets-preview-reittier-boxen.md) | PAP | Idee | niedrig | offen | – | assets_preview nennt bei Reit-Animationen keine Teil-Boxen des Reittiers |
-| [B-710](B-710-assets-set-teil-patch.md) | PAP | Problem | mittel | offen | – | assets_set kann einzelne Teile nicht ändern, ohne die ganze Teile-Liste zu senden |
+| [B-704](B-704-go-tests-unter-last-flaky.md) | DEV | Problem | mittel | eingeplant | WZ42 | Lastabhängige Go-Tests scheitern bei parallelen Agenten |
+| [B-703](B-703-review-auf-wb1-backend.md) | DEV | Schuld | mittel | eingeplant | WZ43 | Die Review-Seite nutzt backend.assets* und fillPrompt aus WB1 statt eigener Kopien |
+| [B-705](B-705-paper-frame-stil-der-basis.md) | DEV | Problem | mittel | eingeplant | WZ43 | Das Vorher-Bild im Review rendert mit dem Stil der Basis |
+| [B-702](B-702-test-runprocess-wackelt.md) | DEV | Problem | mittel | eingeplant | WZ42 | TestRunProcessExitUndAusgabe wackelt: fehlendes Programm ohne Fehler |
+| [B-706](B-706-asset-tools-nachzug-review-mc1.md) | DEV | Schuld | mittel | eingeplant | WZ43 | Asset-MCP-Tools: Restbefunde aus dem Review MC1 nachziehen |
+| [B-708](B-708-paper-fehlerfeld-reittier.md) | PAP | Problem | niedrig | eingeplant | PT2 | Ablehnung reittier-unbekannt nennt das Feld ohne Animationsnamen |
+| [B-709](B-709-assets-preview-reittier-boxen.md) | PAP | Idee | niedrig | eingeplant | WZ43 | assets_preview nennt bei Reit-Animationen keine Teil-Boxen des Reittiers |
+| [B-710](B-710-assets-set-teil-patch.md) | PAP | Problem | mittel | eingeplant | WZ43 | assets_set kann einzelne Teile nicht ändern, ohne die ganze Teile-Liste zu senden |
 | [B-711](B-711-reiter-variante-reittier.md) | PAP | Frage | mittel | eingeplant | MG9 | Variante des Reiters tauscht die Materialien des Reittiers nicht |
 | [B-720](B-720-bosse-neu.md) | PAP | Problem | hoch | eingeplant | MG10 | Bosse sind neu gestaltet, jeder mit eigener Silhouette |
 | [B-721](B-721-gebaeude-stufen-form.md) | PAP | Problem | mittel | eingeplant | MG11 | Gebäude steigern sich in Form und Material, Kristall leuchtet, nichts wird abgeschnitten |
 | [B-722](B-722-hintergruende-neu-ohne-baeume.md) | PAP | Problem | hoch | eingeplant | MG11 | Hintergründe sind neu gestaltet, mit Tiefe und ohne Bäume |
 | [B-723](B-723-natur-icons-muenze.md) | PAP | Problem | mittel | eingeplant | MG11 | Natur hat Spielhöhe und mehrere Formen, Icons sind bei 32 px lesbar, die Münze dreht sich |
-| [B-724](B-724-spielbefunde-ps1.md) | CLI | Problem | hoch | eingeplant | US3 | Im Spiel stehen Bogenschützen auf der Plattform, Reiten passt zum Tempo, Bäume und Tor haben die richtige Größe |
 | [B-730](B-730-check-diff-schneller.md) | INF | Problem | hoch | offen | WZ40 | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel |
-| [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | offen | – | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
-| [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | offen | – | Die Sound-Seite hat Filter und Prompt-Buttons |
-| [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | offen | – | Die Quellen-Seite hat Filter und Prompt-Buttons |
-| [B-726](B-726-workbench-sim-per-task.md) | DEV | Schuld | mittel | eingeplant | RS2 | Workbench ruft Sim und Balancing als Task auf statt engine/sim zu importieren |
-| [B-731](B-731-zustand-ohne-json-roundtrip.md) | SRV | Idee | hoch | eingeplant | RS2 | Zustands-Snapshot ohne JSON-Roundtrip (stateOf) – 98 % der Raum-Tick-Zeit |
-| [B-732](B-732-assets-katalog-schneller.md) | DEV | Idee | mittel | offen | – | Der Assets-Katalog zeigt Einträge sofort, cacht sie und hat eine größere Vorschau |
-| [B-733](B-733-assets-groessenvergleich.md) | DEV | Idee | mittel | offen | – | Katalog und Review zeigen ein Asset im Größenvergleich mit dem Monarch vor einem Biom |
-| [B-734](B-734-katalog-teil-ausblenden.md) | DEV | Idee | mittel | offen | – | Im Katalog lässt sich das gewählte Teil in der Vorschau aus- und einblenden |
-| [B-735](B-735-weitere-materialien-stroh-lava-geisterweiss.md) | PAP | Schuld | niedrig | offen | – | Weitere Ersatz-Materialien (stroh, lava, geisterweiss, fell-grau) in der Stil-Datei |
-| [B-738](B-738-workbench-go-tests-rot-style-vorlage-review.md) | DEV | Problem | mittel | offen | – | Workbench-Go-Tests rot: Style-Fixture, Rig-Vorlage vierbeiner ohne Gangarten, Review-Tests mit festen Commit-Hashes |
-| [B-739](B-739-check-diff-grafik-golden-logging-sperre.md) | INF | Problem | hoch | offen | – | check:diff: Grafik-Golden je Gruppe, Schritt-Logging und Sperre gegen parallele Läufe |
-| [B-746](B-746-workbench-tests-ohne-engine-server.md) | DEV | Schuld | niedrig | offen | – | Workbench-Tests laufen gegen einen Fake-Spielserver statt engine/net und engine/room |
-| [B-747](B-747-verweise-k3c-balance-nachziehen.md) | DEV | Schuld | niedrig | offen | – | Verweise auf bin/k3c-balance und internal/enginetools außerhalb der Workbench nachziehen |
-| [B-743](B-743-simexe-bot-pool-robust.md) | DEV | Problem | mittel | offen | – | Online-Bots über k3c-sim bot erholen sich nicht von einem toten Bot-Prozess |
-| [B-744](B-744-k3c-sim-eingaben-absichern.md) | DEV | Schuld | niedrig | offen | – | k3c-sim: Replay-Dateinamen aus Seeds absichern und Segment-Kopie der Workbench per Test halten |
+| [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | eingeplant | WZ45 | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
+| [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | eingeplant | WZ45 | Die Sound-Seite hat Filter und Prompt-Buttons |
+| [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | eingeplant | WZ45 | Die Quellen-Seite hat Filter und Prompt-Buttons |
+| [B-732](B-732-assets-katalog-schneller.md) | DEV | Idee | mittel | eingeplant | WZ43 | Der Assets-Katalog zeigt Einträge sofort, cacht sie und hat eine größere Vorschau |
+| [B-733](B-733-assets-groessenvergleich.md) | DEV | Idee | mittel | eingeplant | WZ43 | Katalog und Review zeigen ein Asset im Größenvergleich mit dem Monarch vor einem Biom |
+| [B-734](B-734-katalog-teil-ausblenden.md) | DEV | Idee | mittel | eingeplant | WZ43 | Im Katalog lässt sich das gewählte Teil in der Vorschau aus- und einblenden |
+| [B-735](B-735-weitere-materialien-stroh-lava-geisterweiss.md) | PAP | Schuld | niedrig | eingeplant | PT2 | Weitere Ersatz-Materialien (stroh, lava, geisterweiss, fell-grau) in der Stil-Datei |
+| [B-738](B-738-workbench-go-tests-rot-style-vorlage-review.md) | DEV | Problem | mittel | eingeplant | WZ42 | Workbench-Go-Tests rot: Style-Fixture, Rig-Vorlage vierbeiner ohne Gangarten, Review-Tests mit festen Commit-Hashes |
+| [B-739](B-739-check-diff-grafik-golden-logging-sperre.md) | INF | Problem | hoch | eingeplant | WZ41 | check:diff: Grafik-Golden je Gruppe, Schritt-Logging und Sperre gegen parallele Läufe |
+| [B-746](B-746-workbench-tests-ohne-engine-server.md) | DEV | Schuld | niedrig | eingeplant | WZ46 | Workbench-Tests laufen gegen einen Fake-Spielserver statt engine/net und engine/room |
+| [B-747](B-747-verweise-k3c-balance-nachziehen.md) | DEV | Schuld | niedrig | eingeplant | WZ42 | Verweise auf bin/k3c-balance und internal/enginetools außerhalb der Workbench nachziehen |
 ||||||| 8d74a196
-| [B-740](B-740-gen-paper-fortschritt.md) | PAP | Idee | mittel | offen | – | gen:paper zeigt Fortschritt je Schritt in Konsole und Log |
-| [B-741](B-741-hud-ohne-tastenhinweise-tastenbelegung-menue.md) | CLI | Idee | mittel | offen | – | HUD ohne Tastenhinweise, Tastenbelegung im Menü |
-| [B-748](B-748-gen-paper-fehlende-grafik-erkennen.md) | PAP | Problem | hoch | offen | – | gen:paper rendert, wenn Grafiken fehlen, obwohl Specs unverändert sind |
-| [B-749](B-749-gen-paper-startzeile-je-asset.md) | PAP | Problem | mittel | offen | – | gen:paper meldet den Start jedes Assets, lange Assets wirken sonst wie ein Stillstand |
-| [B-750](B-750-gen-paper-schritte-im-asset.md) | PAP | Problem | mittel | offen | – | gen:paper meldet die Ausgaben innerhalb großer Assets |
-| [B-751](B-751-gen-paper-schneller-rendern.md) | PAP | Idee | mittel | offen | – | gen:paper schneller: Cache je Asset und parallel rastern |
-| [B-752](B-752-monarch-aus-teilen-zusammensetzen.md) | PAP | Idee | mittel | eingeplant | – | Monarch und Reittier getrennt rendern und im Client zusammensetzen |
-| [B-755](B-755-skill-leiste-ohne-tasten-menue-groesser.md) | CLI | Idee | mittel | offen | – | Skill-Leiste ohne Tastentexte, Skillmenü zeigt die Taste vor dem Skill und ist größer |
-| [B-756](B-756-ci-rendert-papier-grafik-vor-go-tests.md) | INF | Problem | hoch | offen | – | CI rendert die Papierschnitt-Grafik vor den Go-Tests, die sie lesen |
-| [B-757](B-757-ci-race-balance-timeout-datadoc-test.md) | INF | Problem | hoch | offen | – | CI: Race-Lauf ohne engine/balance, datadoc-Test kennt Balance-Berichtsdateien |
-| [B-758](B-758-release-workflow-tests-wieder-einschalten.md) | INF | Schuld | hoch | offen | – | Release-Workflow: Typecheck und Tests vor dem Bauen wieder einschalten |
-| [B-759](B-759-docker-build-ohne-work-ordner.md) | INF | Problem | hoch | offen | – | Docker-Build im Release scheitert an .work (EXDEV beim gen:paper) |
-| [B-760](B-760-assetkit-grafik-slots-katalog-entfernen.md) | DEV | Schuld | niedrig | offen | – | assetkit: Grafik-Slots, Katalog und Pixel-Credits aus Register und Recherche entfernen |
-| [B-761](B-761-render-info-anzeige-xbox.md) | CLI | Idee | hoch | eingeplant | RX1 | Renderer-Info (WebGL/Canvas, FPS, Texturen) im Spiel anzeigen, WebGL erzwingbar |
-| [B-762](B-762-render-info-ins-client-log.md) | CLI | Idee | hoch | eingeplant | RX1 | Renderer-, Textur- und Leistungswerte im Client-Log (Start, Laden, Verlauf, Kontextverlust) |
-| [B-763](B-763-webgl-kontextverlust-abfangen.md) | CLI | Problem | hoch | eingeplant | RX1 | Bei WebGL-Kontextverlust Renderer neu aufbauen statt abschalten |
-| [B-764](B-764-grosse-texturen-xbox.md) | CLI | Problem | hoch | eingeplant | RX1 | Texturen auf die Xbox als Zielplattform auslegen (höchstens 2048 px, bei Bedarf laden) |
-| [B-765](B-765-stress-szene-live-grafik.md) | CLI | Idee | hoch | eingeplant | RX1 | Stress-Szene Live-Grafik: Dichte-Test mit Szenario-Datei, Rampe und Presets (1 und 2 Spieler) |
-| [B-766](B-766-stresstest-echter-client.md) | CLI | Idee | hoch | eingeplant | RX1 | Stresstest des echten Clients: Dev-Aktion spawn und Lauf mit Rampe in der GameScene |
-| [B-767](B-767-nachbesserungen-erster-xbox-test.md) | CLI | Problem | hoch | eingeplant | RX1 | Nachbesserungen aus dem ersten Xbox-Test: frischer Client, Pad auf allen Seiten, Lobby-Löschen, Stress ohne Dev-Mode |
-| [B-769](B-769-xbox-webgl-diagnose-pi-auslesen.md) | CLI | Problem | hoch | offen | RX1 | Xbox-WebGL-Diagnose in der Textur-Testseite und Lese-Endpunkte für den Pi |
-| [B-770](B-770-remote-logs-alle-im-dev-endpunkt.md) | SRV | Idee | hoch | offen | LG1 | Alle Logs eines Servers sind über den Dev-Endpunkt abrufbar |
-| [B-771](B-771-mcp-log-tools-fuer-remote-server.md) | DEV | Idee | hoch | offen | LG1 | Die Log-Tools des MCP-Servers lesen auch entfernte Server (Pi) |
-| [B-772](B-772-xbox-webgl1-und-speichergrenze-130-mib.md) | CLI | Problem | hoch | offen | LG1 | Auf der Xbox läuft WebGL 1 mit einem Texturspeicher von höchstens 130 MiB |
-| [B-773](B-773-texturtest-seite-responsive-ein-screen.md) | CLI | Problem | mittel | offen | LG1 | Die Textur-Testseite passt responsiv auf einen Screen |
-| [B-774](B-774-abnahme-laeufe-lg1.md) | CLI | Schuld | mittel | offen | LG1 | Abnahme-Läufe LG1 |
-| [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | offen | – | K3C läuft nativ in Go und Ebitengine auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
+| [B-740](B-740-gen-paper-fortschritt.md) | PAP | Idee | mittel | eingeplant | PT1 | gen:paper zeigt Fortschritt je Schritt in Konsole und Log |
+| [B-748](B-748-gen-paper-fehlende-grafik-erkennen.md) | PAP | Problem | hoch | eingeplant | PT1 | gen:paper rendert, wenn Grafiken fehlen, obwohl Specs unverändert sind |
+| [B-749](B-749-gen-paper-startzeile-je-asset.md) | PAP | Problem | mittel | eingeplant | PT1 | gen:paper meldet den Start jedes Assets, lange Assets wirken sonst wie ein Stillstand |
+| [B-750](B-750-gen-paper-schritte-im-asset.md) | PAP | Problem | mittel | eingeplant | PT1 | gen:paper meldet die Ausgaben innerhalb großer Assets |
+| [B-751](B-751-gen-paper-schneller-rendern.md) | PAP | Idee | mittel | eingeplant | PT1 | gen:paper schneller: Cache je Asset und parallel rastern |
+| [B-756](B-756-ci-rendert-papier-grafik-vor-go-tests.md) | INF | Problem | hoch | eingeplant | WZ41 | CI rendert die Papierschnitt-Grafik vor den Go-Tests, die sie lesen |
+| [B-757](B-757-ci-race-balance-timeout-datadoc-test.md) | INF | Problem | hoch | eingeplant | WZ41 | CI: Race-Lauf ohne engine/balance, datadoc-Test kennt Balance-Berichtsdateien |
+| [B-758](B-758-release-workflow-tests-wieder-einschalten.md) | INF | Schuld | hoch | eingeplant | WZ41 | Release-Workflow: Typecheck und Tests vor dem Bauen wieder einschalten |
+| [B-759](B-759-docker-build-ohne-work-ordner.md) | INF | Problem | hoch | eingeplant | WZ41 | Docker-Build im Release scheitert an .work (EXDEV beim gen:paper) |
+| [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | eingeplant | NG9 | K3C läuft nativ in Go und Ebitengine auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
 | [B-776](B-776-bevy-prototyp-papier-sheets-zwei-pads.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Bevy-Prototyp zeigt ein Level mit echten Papier-Sheets, zwei Gamepads steuern je einen Monarchen, FPS und Grafikspeicher sind gemessen |
 | [B-777](B-777-ebitengine-prototyp-vergleich.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Ebitengine-Prototyp zeigt dasselbe Level wie der Bevy-Prototyp und liefert vergleichbare Messwerte |
 | [B-778](B-778-rig-prototyp-monarch-aus-teilen.md) | CLI | Frage | hoch | eingeplant | NV2 | Ein dritter Prototyp setzt den Monarchen in Ebitengine zur Laufzeit aus Rig-Teilen zusammen |
 | [B-780](B-780-rig-fuer-alle-figuren-gegnerzahl.md) | CLI | Frage | mittel | eingeplant | NG3 | Prototypen zeigen, wie viele Gegner, Truppen und Bosse gleichzeitig als Rig-Modelle laufen |
-| [B-782](B-782-plan-next-branch-praefix.md) | DEV | Problem | hoch | offen | – | plan_next nennt den Sprint-Branch richtig, auch wenn das Feld Branch schon mit sprint/ beginnt |
-| [B-783](B-783-plan-waves-ralf-queue.md) | DEV | Idee | hoch | offen | – | plan_waves berechnet Wellen aus Abhängigkeit, Bereich und Sperre, plan_queue zeigt die Ralf-Queue |
-| [B-784](B-784-planungsangaben-pruefen.md) | DEV | Idee | mittel | offen | – | Planungsangaben für Wellen werden geprüft: plan_check und Regel-Test für freigegebene Tickets |
-| [B-785](B-785-fahrplan-aufraeumen-geraetetermine.md) | INF | Schuld | mittel | offen | – | Fahrplan ist aufgeräumt: fertige Sprints erledigt, Abnahmen als Gerätetermine, alte bereite Sprints geprüft |
+| [B-782](B-782-plan-next-branch-praefix.md) | DEV | Problem | hoch | eingeplant | WZ44 | plan_next nennt den Sprint-Branch richtig, auch wenn das Feld Branch schon mit sprint/ beginnt |
+| [B-783](B-783-plan-waves-ralf-queue.md) | DEV | Idee | hoch | eingeplant | WZ44 | plan_waves berechnet Wellen aus Abhängigkeit, Bereich und Sperre, plan_queue zeigt die Ralf-Queue |
+| [B-784](B-784-planungsangaben-pruefen.md) | DEV | Idee | mittel | eingeplant | WZ44 | Planungsangaben für Wellen werden geprüft: plan_check und Regel-Test für freigegebene Tickets |
+| [B-785](B-785-fahrplan-aufraeumen-geraetetermine.md) | INF | Schuld | mittel | eingeplant | WZ44 | Fahrplan ist aufgeräumt: fertige Sprints erledigt, Abnahmen als Gerätetermine, alte bereite Sprints geprüft |
 | [B-786](B-786-rig-monarch-sichtpruefung-mini-pc.md) | CLI | Frage | niedrig | eingeplant | NG9 | Rig-Monarch wird am Mini-PC geprüft und gemessen, sobald das Spiel am PC fertig ist |
-| [B-787](B-787-workbench-tests-short-zu-langsam.md) | DEV | Problem | hoch | offen | – | Workbench-Tests bleiben mit -short unter 3 s je Test, der volle Lauf ist grün |
-| [B-788](B-788-check-run-teilaufgaben-sim-sperre.md) | DEV | Schuld | mittel | offen | – | check_run kennt die Teilaufgaben von check:diff, sim_test und sim_run lehnen während der Sperre ab |
+| [B-787](B-787-workbench-tests-short-zu-langsam.md) | DEV | Problem | hoch | eingeplant | WZ42 | Workbench-Tests bleiben mit -short unter 3 s je Test, der volle Lauf ist grün |
+| [B-788](B-788-check-run-teilaufgaben-sim-sperre.md) | DEV | Schuld | mittel | eingeplant | WZ44 | check_run kennt die Teilaufgaben von check:diff, sim_test und sim_run lehnen während der Sperre ab |
 | [B-790](B-790-prototyp-shader-wasser.md) | CLI | Frage | mittel | eingeplant | NG11 | Ein vierter Prototyp zeigt, was Shader in Ebitengine für Wasser und Papier-Effekte bringen |
 | [B-802](B-802-native-zusammenfuehrung-abnahme.md) | CLI | Idee | hoch | eingeplant | NG9 | Das native Spiel läuft von Start bis Spielstand durch, ist gemessen und am PC abgenommen |
 | [B-805](B-805-native-ton-geraetefehler-abfangen.md) | CLI | Problem | mittel | eingeplant | NG15 | Ein Fehler des Ton-Geräts beendet das native Spiel nicht mehr |
 | [B-810](B-810-native-lade-und-fehleranzeige.md) | CLI | Problem | mittel | eingeplant | NG14 | Das native Spiel meldet Startfehler und fehlende Grafik im Fenster und zeigt beim Stufenwechsel eine Ladeanzeige |
-| [B-818](B-818-native-menue-kachel-illustrationen.md) | CLI | Idee | niedrig | offen | – | Hauptmenü und Pause-Menü des nativen Spiels zeigen Kacheln mit Illustrationen |
-| [B-820](B-820-native-menue-backdrop-batching.md) | CLI | Schuld | niedrig | offen | – | Menü-Hintergrund wechselt den Filter je Scheibe und bricht das Batching |
-| [B-821](B-821-native-lizenzen-version-worktree.md) | CLI | Schuld | niedrig | offen | – | Version in LIZENZEN.txt und EXE können im Worktree auseinanderlaufen |
+| [B-818](B-818-native-menue-kachel-illustrationen.md) | CLI | Idee | niedrig | eingeplant | NG19 | Hauptmenü und Pause-Menü des nativen Spiels zeigen Kacheln mit Illustrationen |
+| [B-820](B-820-native-menue-backdrop-batching.md) | CLI | Schuld | niedrig | eingeplant | NG19 | Menü-Hintergrund wechselt den Filter je Scheibe und bricht das Batching |
+| [B-821](B-821-native-lizenzen-version-worktree.md) | CLI | Schuld | niedrig | eingeplant | NG19 | Version in LIZENZEN.txt und EXE können im Worktree auseinanderlaufen |
 | [B-823](B-823-browser-client-abloesen.md) | INF | Schuld | niedrig | offen | – | Der Browser-Client ist durch das native Spiel abgelöst und aus dem Repo entfernt |
 
 ## Archiv
@@ -785,3 +707,81 @@ Zeile in diesen Abschnitt.
 | [B-754](archiv/B-754-tick-p99-online-ueber-rs2-3.md) | SRV | Problem | mittel | verworfen | – | Tick p99 online bei 4 Geräten liegt über dem RS2.3-Wert |
 | [B-822](archiv/B-822-testseiten-browser-client-entfernen.md) | INF | Schuld | mittel | erledigt | CU2 | Die Testseiten des Browser-Clients sind samt Code, Kacheln und Tests entfernt |
 | [B-824](archiv/B-824-pixel-reste-nach-papierschnitt.md) | INF | Schuld | mittel | erledigt | CU2 | Nach dem Papierschnitt verweist kein Code, Test und keine Doku mehr auf alte Pixel-Grafik |
+| [B-698](archiv/B-698-balancing-tests-vorlaeufig-mit-cheats.md) | REG | Schuld | niedrig | verworfen | – | Balancing-Tests und Simulationen laufen vorläufig mit Cheats und bestehen spätestens im dritten Lauf |
+| [B-743](archiv/B-743-simexe-bot-pool-robust.md) | DEV | Problem | mittel | verworfen | – | Online-Bots über k3c-sim bot erholen sich nicht von einem toten Bot-Prozess |
+| [B-744](archiv/B-744-k3c-sim-eingaben-absichern.md) | DEV | Schuld | niedrig | verworfen | – | k3c-sim: Replay-Dateinamen aus Seeds absichern und Segment-Kopie der Workbench per Test halten |
+| [B-760](archiv/B-760-assetkit-grafik-slots-katalog-entfernen.md) | DEV | Schuld | niedrig | verworfen | – | assetkit: Grafik-Slots, Katalog und Pixel-Credits aus Register und Recherche entfernen |
+| [B-741](archiv/B-741-hud-ohne-tastenhinweise-tastenbelegung-menue.md) | CLI | Idee | mittel | verworfen | – | HUD ohne Tastenhinweise, Tastenbelegung im Menü |
+| [B-755](archiv/B-755-skill-leiste-ohne-tasten-menue-groesser.md) | CLI | Idee | mittel | verworfen | – | Skill-Leiste ohne Tastentexte, Skillmenü zeigt die Taste vor dem Skill und ist größer |
+| [B-752](archiv/B-752-monarch-aus-teilen-zusammensetzen.md) | PAP | Idee | mittel | verworfen | – | Monarch und Reittier getrennt rendern und im Client zusammensetzen |
+| [B-090](archiv/B-090-radar.md) | CLI | Idee | mittel | verworfen | HW1 | Ein Radar im HUD zeigt Burg, Portale, Ausgang, Mitspieler und Gegner |
+| [B-042](archiv/B-042-pi-leistungsziel.md) | SRV | Frage | hoch | verworfen | HW1 | Pi-Modell und Leistungsziel sind festgelegt |
+| [B-314](archiv/B-314-controller-pruefungen-zurueckgestellt.md) | PLAT | Schuld | niedrig | verworfen | HW1 | Alle Controller-Prüfungen sind gesammelt nachgeholt |
+| [B-335](archiv/B-335-landingpage-spieler-entwicklung.md) | PLAT | Idee | hoch | verworfen | HW1 | Die Landingpage zeigt nur Spieler-Kacheln, Entwicklungs-, Performance- und Balancing-Aufrufe liegen auf einer eigenen Entwicklerseite |
+| [B-394](archiv/B-394-xbox-overlay-gesten-abnahme.md) | PLAT | Frage | niedrig | verworfen | HW1 | Overlay-Gesten (RB, LB + RB) sind an der Xbox abgenommen (B-195/AC-02) |
+| [B-117](archiv/B-117-anzeige-bau-lager.md) | CLI | Idee | mittel | verworfen | W6 | Der Client zeigt Wartezeit, Lagerstand, Hub-Stufe, Adern und Plantage |
+| [B-126](archiv/B-126-buerger-ui.md) | CLI | Idee | mittel | verworfen | W6 | Der Client zeigt Berufe, Ausbildung, Händler, Truppen-Limit und Heilung |
+| [B-132](archiv/B-132-anzeige-bosse-events.md) | CLI | Idee | mittel | verworfen | K5 | Der Client zeigt Gegner-Fähigkeiten, Bosse, Phasen und Events |
+| [B-191](archiv/B-191-debug-overlay-links-unten.md) | CLI | Problem | mittel | verworfen | U5 | Debug-Overlay und Aktionsliste verdecken das HUD nicht |
+| [B-317](archiv/B-317-cheat-dialog-fokus-tastatur.md) | CLI | Problem | hoch | verworfen | U5 | Der Cheat-Dialog zeigt den Fokus und lässt sich mit Pfeiltasten, Leertaste und Controller bedienen |
+| [B-195](archiv/B-195-debug-overlay-xbox.md) | PLAT | Problem | mittel | verworfen | PL1 | Das Debug-Overlay lässt sich auf der Xbox öffnen |
+| [B-294](archiv/B-294-hinweis-glyph-muenze-nacht.md) | CLI | Frage | mittel | verworfen | S8 | Münze und „Nacht naht“ zeigen in der geführten ersten Nacht keine Glyph |
+| [B-369](archiv/B-369-texte-landingpage.md) | PLAT | Schuld | niedrig | verworfen | GL1 | Die Landingpage zeigt ihre Texte in der gewählten Sprache |
+| [B-411](archiv/B-411-spieler-abmelden.md) | CLI | Problem | hoch | verworfen | BD4 | Lokale Spieler können beitreten, aber nicht einzeln austreten |
+| [B-413](archiv/B-413-hud-leiste-oben-fluss.md) | CLI | Idee | mittel | verworfen | BD4 | Gemeinsame HUD-Leiste oben für alle Spieler, Kompass oben, Fluss mit Spiegelung unten |
+| [B-506](archiv/B-506-spielmenue-welten-und-spielstaende.md) | CLI | Problem | hoch | verworfen | BD5 | Spielmenü zeigt keine Welt und erlaubt kein Anlegen oder Löschen von Spielständen |
+| [B-581](archiv/B-581-offenen-raum-schliessen.md) | CLI | Idee | mittel | verworfen | BD9 | Ein offener Raum lässt sich in der Lobby über Entfernen schließen |
+| [B-604](archiv/B-604-welt-anzeige-pausenmenue-lobby.md) | CLI | Problem | mittel | verworfen | BD9 | Die Welt steht groß im Pausenmenü und bei jedem Spielstand in der Lobby |
+| [B-194](archiv/B-194-splitscreen-ruckelt-xbox.md) | CLI | Problem | hoch | verworfen | PF1 | Der Split-Screen läuft auf der Xbox flüssig |
+| [B-334](archiv/B-334-performance-modus.md) | CLI | Idee | hoch | verworfen | PM1 | Der Client misst Leistung in einem Performance-Modus automatisch und überträgt die Werte an den Server |
+| [B-351](archiv/B-351-client-diagnose-zeile.md) | CLI | Idee | hoch | verworfen | PM1 | Der Client schreibt FPS, Latenz und Puffer regelmäßig als Diagnose-Zeile ins Client-Log |
+| [B-186](archiv/B-186-autospeichern-takt.md) | SRV | Idee | mittel | verworfen | ST1 | Der Server speichert alle 60 s und bei Tagesanbruch, das HUD zeigt „gesichert“ |
+| [B-731](archiv/B-731-zustand-ohne-json-roundtrip.md) | SRV | Idee | hoch | verworfen | RS2 | Zustands-Snapshot ohne JSON-Roundtrip (stateOf) – 98 % der Raum-Tick-Zeit |
+| [B-761](archiv/B-761-render-info-anzeige-xbox.md) | CLI | Idee | hoch | verworfen | RX1 | Renderer-Info (WebGL/Canvas, FPS, Texturen) im Spiel anzeigen, WebGL erzwingbar |
+| [B-762](archiv/B-762-render-info-ins-client-log.md) | CLI | Idee | hoch | verworfen | RX1 | Renderer-, Textur- und Leistungswerte im Client-Log (Start, Laden, Verlauf, Kontextverlust) |
+| [B-763](archiv/B-763-webgl-kontextverlust-abfangen.md) | CLI | Problem | hoch | verworfen | RX1 | Bei WebGL-Kontextverlust Renderer neu aufbauen statt abschalten |
+| [B-764](archiv/B-764-grosse-texturen-xbox.md) | CLI | Problem | hoch | verworfen | RX1 | Texturen auf die Xbox als Zielplattform auslegen (höchstens 2048 px, bei Bedarf laden) |
+| [B-765](archiv/B-765-stress-szene-live-grafik.md) | CLI | Idee | hoch | verworfen | RX1 | Stress-Szene Live-Grafik: Dichte-Test mit Szenario-Datei, Rampe und Presets (1 und 2 Spieler) |
+| [B-766](archiv/B-766-stresstest-echter-client.md) | CLI | Idee | hoch | verworfen | RX1 | Stresstest des echten Clients: Dev-Aktion spawn und Lauf mit Rampe in der GameScene |
+| [B-767](archiv/B-767-nachbesserungen-erster-xbox-test.md) | CLI | Problem | hoch | verworfen | RX1 | Nachbesserungen aus dem ersten Xbox-Test: frischer Client, Pad auf allen Seiten, Lobby-Löschen, Stress ohne Dev-Mode |
+| [B-769](archiv/B-769-xbox-webgl-diagnose-pi-auslesen.md) | CLI | Problem | hoch | verworfen | RX1 | Xbox-WebGL-Diagnose in der Textur-Testseite und Lese-Endpunkte für den Pi |
+| [B-770](archiv/B-770-remote-logs-alle-im-dev-endpunkt.md) | SRV | Idee | hoch | verworfen | LG1 | Alle Logs eines Servers sind über den Dev-Endpunkt abrufbar |
+| [B-771](archiv/B-771-mcp-log-tools-fuer-remote-server.md) | DEV | Idee | hoch | verworfen | LG1 | Die Log-Tools des MCP-Servers lesen auch entfernte Server (Pi) |
+| [B-772](archiv/B-772-xbox-webgl1-und-speichergrenze-130-mib.md) | CLI | Problem | hoch | verworfen | LG1 | Auf der Xbox läuft WebGL 1 mit einem Texturspeicher von höchstens 130 MiB |
+| [B-773](archiv/B-773-texturtest-seite-responsive-ein-screen.md) | CLI | Problem | mittel | verworfen | LG1 | Die Textur-Testseite passt responsiv auf einen Screen |
+| [B-774](archiv/B-774-abnahme-laeufe-lg1.md) | CLI | Schuld | mittel | verworfen | LG1 | Abnahme-Läufe LG1 |
+| [B-207](archiv/B-207-bauplaetze-anzeige.md) | CLI | Idee | mittel | verworfen | W11 | Der Client zeigt freie und gesperrte Bauplätze mit Grund (ab Hub-Stufe n, Linie fehlt) |
+| [B-408](archiv/B-408-bauplaetze-aller-stufen-sichtbar.md) | CLI | Problem | mittel | verworfen | W11 | Bauplätze aller Stufen werden schon im Hub einer niedrigen Stufe angezeigt |
+| [B-412](archiv/B-412-figuren-adern-plantage-lager.md) | CLI | Idee | niedrig | verworfen | W11 | Adern, Plantage und Lager haben keine Anzeige als Figuren im Client |
+| [B-422](archiv/B-422-w11-b207-nachtragen.md) | CLI | Schuld | mittel | verworfen | W11 | Die Spec von W11 nennt B-207 (gesperrte Plätze mit Grund) noch nicht |
+| [B-456](archiv/B-456-fahne-spielerfarbe-wimpel.md) | CLI | Idee | mittel | verworfen | GEB10 | Markierungsfahne als Wimpel in Spielerfarbe |
+| [B-457](archiv/B-457-geb6-abnahme-splitscreen-ausgang-geschmack.md) | CLI | Frage | mittel | verworfen | GEB10 | GEB6: Split-Screen, Ausgang-Beschriftung und Geschmacksfragen später prüfen |
+| [B-653](archiv/B-653-baustellen-schilder-bauoptionen-holzzaun.md) | CLI | Problem | hoch | verworfen | BS13 | Bauschilder an Bäumen und Felsen nur nach Markierung, keine Bauoptionen für gesperrte Gebäude, Holzmauer als Zaun |
+| [B-675](archiv/B-675-status-effekte-sichtbar.md) | CLI | Idee | mittel | verworfen | KB5 | DoTs, Buffs und Kontrolleffekte der Skills sind im Spiel sichtbar |
+| [B-685](archiv/B-685-zielmass-grafiken-skalieren.md) | CLI | Idee | hoch | verworfen | GRJ2 | Grafiken bekommen ein Zielmaß in der Ausgabe und werden dort passend skaliert |
+| [B-724](archiv/B-724-spielbefunde-ps1.md) | CLI | Problem | hoch | verworfen | US3 | Im Spiel stehen Bogenschützen auf der Plattform, Reiten passt zum Tempo, Bäume und Tor haben die richtige Größe |
+| [B-015](archiv/B-015-gebaeude-werte.md) | REG | Problem | niedrig | verworfen | BR1 | Gebäude-HP und -Kosten sind gebalanced |
+| [B-099](archiv/B-099-balancing-tester.md) | SIM | Idee | mittel | verworfen | BAL6 | Ein automatischer Balancing-Tester prüft Regeln und Werte gegen messbare Ziele |
+| [B-155](archiv/B-155-balancing-runde-wirtschaft.md) | REG | Idee | niedrig | verworfen | BR1 | Die Wirtschaft ist in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
+| [B-156](archiv/B-156-balancing-runde-kampf-bosse.md) | REG | Idee | niedrig | verworfen | BR2 | Kampf, Gegner und Bosse sind in einer Balancing-Runde gegen die Zielkorridore abgestimmt |
+| [B-160](archiv/B-160-abgleich-spielmetrik-simulator.md) | REG | Idee | mittel | verworfen | BAL4 | Spielmetrik echter Abende und Simulatorwerte sind abgeglichen |
+| [B-230](archiv/B-230-burg-haelt-nur-47-prozent.md) | REG | Problem | mittel | verworfen | RG1 | Burg hält Nacht 1–5 nur in 47 % der Seeds, Ziel 75–90 % |
+| [B-287](archiv/B-287-hub-ausbau-beutel-maximum.md) | REG | Problem | mittel | verworfen | RG1 | Hub-Stufe 4 und 5 sind mit dem Beutel-Maximum bezahlbar |
+| [B-289](archiv/B-289-aggressionspool-mit-adern.md) | REG | Problem | mittel | verworfen | RG1 | Der Aggressionspool steigt mit Adern nicht zu schnell |
+| [B-346](archiv/B-346-miniboss-wald-kippt-nacht-5.md) | REG | Problem | hoch | verworfen | RG1 | Der Miniboss Wald kippt Nacht 5 in fast jedem Seed |
+| [B-638](archiv/B-638-boot-ressourcen-balancing.md) | DEV | Idee | hoch | verworfen | BS3 | Das Balancing misst die Ressourcen für das Boot |
+| [B-640](archiv/B-640-balancing-delta-runden.md) | DEV | Idee | hoch | verworfen | BS7 | Balancing nach Mechanik-Änderungen läuft als Delta-Runde gegen eine Baseline |
+| [B-726](archiv/B-726-workbench-sim-per-task.md) | DEV | Schuld | mittel | verworfen | RS2 | Workbench ruft Sim und Balancing als Task auf statt engine/sim zu importieren |
+| [B-658](archiv/B-658-balancing-umbruch-container-query.md) | DEV | Problem | hoch | verworfen | WZ32 | Die Balancing-Seite stellt Konfiguration und Berichte unter 1.100 px untereinander |
+| [B-659](archiv/B-659-balancing-seite-feste-flaeche.md) | DEV | Idee | mittel | verworfen | WZ32 | Die Balancing-Seite füllt die Fläche, nur Liste und Detail scrollen |
+| [B-660](archiv/B-660-balancing-liste-und-detail.md) | DEV | Idee | hoch | verworfen | WZ32 | Läufe und Berichte stehen in einer Liste mit Filter und Mehrfachauswahl, der Bericht in Reitern |
+| [B-661](archiv/B-661-balancing-lauf-editor-varianten.md) | DEV | Idee | hoch | verworfen | WZ32 | Der Lauf-Editor setzt Varianten als Tabelle mit Basiswert und Daten-Browser |
+| [B-435](archiv/B-435-gebaeude-grafik-per-prompt.md) | DEV | Idee | mittel | verworfen | GEB1 | Gebäude und Strukturen entstehen im Asset-Manager aus Beschreibung und Prompt |
+| [B-462](archiv/B-462-gebaeude-planer-hub-stufen.md) | DEV | Idee | mittel | verworfen | WZ9 | Ein Gebäude-Planer bearbeitet, welches Gebäude ab welcher Hub-Stufe verfügbar ist |
+| [B-570](archiv/B-570-camp-stufen-look.md) | DEV | Idee | mittel | verworfen | GEB13 | Das Camp bekommt einen Stufen-Look statt der Grundform |
+| [B-571](archiv/B-571-heilplatz-stufen-deutlicher.md) | DEV | Idee | mittel | verworfen | GEB13 | Heilplatz-Stufen sind deutlicher sichtbar (Zelt, Brunnen) |
+| [B-641](archiv/B-641-grafik-hafen-schiff.md) | DEV | Idee | hoch | verworfen | BS10 | Hafen und Schiff haben eigene Grafiken je Bauabschnitt |
+| [B-617](archiv/B-617-studio-levelview-test-golden.md) | DEV | Problem | hoch | verworfen | WZ34 | Der Studio-Test levelView passt wieder zur Golden-Datei level-forest.json |
+| [B-629](archiv/B-629-buildall-web-exe.md) | INF | Problem | hoch | verworfen | WZ34 | task buildall baut die Web-EXEs von Studio und Workbench nicht mit |
+| [B-684](archiv/B-684-studio-ausschnitt-rahmen-und-einpassen.md) | DEV | Idee | mittel | verworfen | GRJ2 | Die Ausschnitt-Bearbeitung zeigt wahlweise einen Rahmen und passt die Grafik in die Kachel ein |
+| [B-676](archiv/B-676-studio-skills-ziel-und-status.md) | DEV | Idee | mittel | verworfen | KB5 | Das Studio zeigt Skills am Wirkort und DoTs und Buffs an Gegnern und Monarchen |
