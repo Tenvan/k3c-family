@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-// buttonNames sind die Tasten der Standard-Belegung je Index, wie auf der Gamepad-Testseite (src/tools/gamepadTest.ts).
+// buttonNames sind die Tasten der Standard-Belegung je Index, wie früher auf der Gamepad-Testseite (entfernt, B-822).
 var buttonNames = strings.Fields("A B X Y LB RB LT RT View Menu LS RS ↑ ↓ ← → Xbox")
 
 // fileName ist ein Name ohne Ordner und ohne führenden Punkt, mit Endung .json.

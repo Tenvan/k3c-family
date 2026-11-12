@@ -176,9 +176,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-818](B-818-native-menue-kachel-illustrationen.md) | CLI | Idee | niedrig | offen | – | Hauptmenü und Pause-Menü des nativen Spiels zeigen Kacheln mit Illustrationen |
 | [B-820](B-820-native-menue-backdrop-batching.md) | CLI | Schuld | niedrig | offen | – | Menü-Hintergrund wechselt den Filter je Scheibe und bricht das Batching |
 | [B-821](B-821-native-lizenzen-version-worktree.md) | CLI | Schuld | niedrig | offen | – | Version in LIZENZEN.txt und EXE können im Worktree auseinanderlaufen |
-| [B-822](B-822-testseiten-browser-client-entfernen.md) | INF | Schuld | mittel | eingeplant | CU2 | Die Testseiten des Browser-Clients sind samt Code, Kacheln und Tests entfernt |
 | [B-823](B-823-browser-client-abloesen.md) | INF | Schuld | niedrig | offen | – | Der Browser-Client ist durch das native Spiel abgelöst und aus dem Repo entfernt |
-| [B-824](B-824-pixel-reste-nach-papierschnitt.md) | INF | Schuld | mittel | eingeplant | CU2 | Nach dem Papierschnitt verweist kein Code, Test und keine Doku mehr auf alte Pixel-Grafik |
 
 ## Archiv
 
@@ -785,3 +783,5 @@ Zeile in diesen Abschnitt.
 | [B-804](archiv/B-804-paper-reittier-suche-und-wolf-pfote.md) | PAP | Problem | mittel | erledigt | NG17 | tools/paper findet für das Reittier Wolf das Reittier statt des Gegners, Gegner-Wölfe haben Pfoten |
 | [B-753](archiv/B-753-meilenstein-volllauf-zeitlimit.md) | SRV | Problem | hoch | verworfen | – | Meilenstein-Volllauf über k3c-sim überschreitet das 60-min-Limit |
 | [B-754](archiv/B-754-tick-p99-online-ueber-rs2-3.md) | SRV | Problem | mittel | verworfen | – | Tick p99 online bei 4 Geräten liegt über dem RS2.3-Wert |
+| [B-822](archiv/B-822-testseiten-browser-client-entfernen.md) | INF | Schuld | mittel | erledigt | CU2 | Die Testseiten des Browser-Clients sind samt Code, Kacheln und Tests entfernt |
+| [B-824](archiv/B-824-pixel-reste-nach-papierschnitt.md) | INF | Schuld | mittel | erledigt | CU2 | Nach dem Papierschnitt verweist kein Code, Test und keine Doku mehr auf alte Pixel-Grafik |

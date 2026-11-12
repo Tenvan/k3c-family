@@ -23,5 +23,5 @@ Audio-Subsystem des Clients (Presentation Layer): erzeugt Ton aus Spiel-Ereignis
 
 ## Integration
 
-- Konsumenten: `src/scenes/GameScene.ts` (`audioCore`, `Listener`, `musicDirector`), `src/scenes/LobbyScene.ts` (`musicDirector`), `src/tools/soundtest.ts`.
+- Konsumenten: `src/scenes/GameScene.ts` (`audioCore`, `Listener`, `musicDirector`), `src/scenes/LobbyScene.ts` (`musicDirector`).
 - Abhängigkeiten: `src/model/types` (`GameEvent`), `src/core/clientLog`, `src/core/settings` (`loadSettings`, `saveSettings`, `clampVolume`), Web Audio API, Assets `public/audio/`.

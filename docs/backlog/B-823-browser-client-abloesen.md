@@ -8,9 +8,9 @@
 - **Sprint:** –
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-12
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Ralf, 2026-11-12 (Dialog)
 
 ## Ausgangslage
 
@@ -70,15 +70,15 @@ nicht relevant bis zur Entscheidung.
 
 ## Offene Fragen
 
-Entscheidung 🧑, je mit Vorschlag von Claude:
+Alle entschieden 🧑 2026-11-12 (Dialog, „nur noch nativ (PC)“; Vorschläge 3–7 bestätigt):
 
-1. **Zielplattform:** Xbox/Edge war Zielplattform; das native Spiel läuft auf Windows (Mini-PC), nicht auf einer Xbox im Handelsmodus. Gibt 🧑 Xbox/Edge als Plattform auf? Vorschlag: ja, Mini-PC am TV ersetzt die Xbox.
-2. **Online-Spiel:** Der Browser ist heute der einzige Client des Go-Servers (`/ws`). Entfällt das Spiel über mehrere Geräte? Vorschlag: ja; `k3c-server`, `engine/net`, `k3c-load`, `k3c-tui` werden in einem eigenen Ticket geprüft (bleiben für Werkzeuge oder fallen).
-3. **Auslieferung von `dist/`:** Was liefert `k3c-server` ohne Browser-Client aus (nichts, nur API, oder Server entfällt)? Vorschlag: abhängig von Frage 2.
-4. **GitHub Pages `site/`:** bleibt die Präsentationsseite (statisch, unabhängig vom Client) und bekommt Papier-Bilder? Vorschlag: bleibt, Bilder aus Papier-Assets in einem PLAT-Ticket.
-5. **Workbench „Im Spiel ansehen“:** Umstellen auf das native Spiel (Start mit Asset und Spielstand) oder entfernen? Vorschlag: auf das native Spiel umstellen, eigenes DEV-Ticket.
-6. **Zeitpunkt:** Erst nach der Abnahme des nativen Spiels am Mini-PC (NG9) oder schon vorher? Vorschlag: nach NG9.
-7. **Offene Browser-Planung** (RX1, LG1.6, HW1, PF1, Projekte BED/LST mit CLI/PLAT-Tickets): gesammelt verwerfen? Vorschlag: ja, mit Verweis auf dieses Ticket, nach Frage 1.
+1. Xbox/Edge entfällt, PC (später Mini-PC am TV) ist die Plattform.
+2. Online-Spiel über `/ws` entfällt; `k3c-server`, `engine/net`, `k3c-load`, `k3c-tui` prüft ein eigenes Ticket.
+3. Der Server liefert keinen Client mehr aus.
+4. `site/` bleibt, Papier-Bilder in einem PLAT-Ticket.
+5. Workbench „Im Spiel ansehen“ wird auf das native Spiel umgestellt (eigenes DEV-Ticket).
+6. Umsetzung nach der Abnahme des nativen Spiels (NG9).
+7. Offene Browser-Planung (RX1, LG1.6, HW1, PF1, Projekte BED/LST) wird gesammelt verworfen.
 
 ## Notizen
 

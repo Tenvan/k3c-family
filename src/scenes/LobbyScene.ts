@@ -287,11 +287,10 @@ export class LobbyScene extends Phaser.Scene {
     }
   }
 
-  /** Seite öffnen, Szenario starten (ohne Neuladen) oder das eigene Fenster des Dungeon Masters öffnen */
+  /** Seite öffnen oder Szenario starten (ohne Neuladen) */
   private runEntry(entry: MenuEntry): void {
     const target = entry.target;
     if (target.kind === 'page') openPanel(target.href, entry.title);
-    else if (target.kind === 'external') window.open(target.href, '_blank', 'noopener');
     else startRun(this, this.client, uniqueRun(target.params));
   }
 

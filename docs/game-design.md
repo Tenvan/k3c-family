@@ -184,7 +184,7 @@ was aus der Welt schon entfernt wurde (gefällte Bäume, geöffnete Truhen), son
 
 - Figuren (Monarchen, Bürger, Gegner): Seitenansicht-Sprites von **LuizMelo (CC0)** für unsere Seite und
   **Gothicvania von ansimuz (CC0)** für die Gegner (Wolf, Skelett, Zombie, Geist, Fledermaus, Höhlentroll). Zuordnung in
-  `data/sprites.json`, Bilder und Credits in `public/sprites/`. Referenz: das Asset-Studio (Seiten Grafik, Monarch und Gegner).
+  Papierschnitt-Specs unter `public/grafik/<gruppe>/*.paper.json` (Zuordnung `data/paper.json`, Entscheidung 005); Review im Bereich Assets der k3c-workbench.
 - Reittiere: 13 Tiere (LPC-Pferde, Einhorn, Pegasus, Elefant, Hirsch, Wölfe, Gothicvania-Tiere) in `sprites.json` → `mounts`.
   Der Reiter ist der Oberkörper des Monarchen, auf den Sattelpunkt gesetzt. LPC-Tiere sind CC-BY 3.0 (Credits Pflicht). Gebäude, Ressourcen und Hintergrund sind noch
   **Platzhalter-Formen**. Ziel: 2D-Pixel-Art mit Parallax-Ebenen.

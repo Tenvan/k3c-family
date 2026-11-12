@@ -1,11 +1,11 @@
 # CU2 · INF · Altlasten: Testseiten des Browser-Clients und Pixel-Reste entfernen
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** INF
 - **Reife:** bereit
 - **Tickets:** B-822, B-824
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 027e96337
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** Klasse A, Claude, 2026-11-12
@@ -70,14 +70,12 @@ keine blockierenden. Defaults (Claude, 2026-11-12, Meldung im Nachgang) stehen i
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| CU2.1 | `CU2.1-testseiten-entfernen.md` | Umsetzung | autonom | offen |
-| CU2.2 | `CU2.2-pixel-reste.md` | Umsetzung | autonom | offen |
-| CU2.3 | `CU2.3-review.md` | Review | autonom | offen |
+| CU2.1 | `CU2.1-testseiten-entfernen.md` | Umsetzung | autonom | fertig |
+| CU2.2 | `CU2.2-pixel-reste.md` | Umsetzung | autonom | fertig |
+| CU2.3 | `CU2.3-review.md` | Review | autonom | fertig |
 
 Keine eigenen Sim- oder Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-12: Kriterien in CU2.1 (B-822) und CU2.2 (B-824) belegt; Review CU2.3 (k3c-reviewer), Befunde behoben. Ralf-Queue: Einträge, die entfernte Seiten bzw. alte Werkzeuge planen (Liste in CU2.1 und CU2.2), mit B-823 klären. Kein Abnahme-Ticket: kein Sim/Balance (gesperrt), kein Gen-Feature.

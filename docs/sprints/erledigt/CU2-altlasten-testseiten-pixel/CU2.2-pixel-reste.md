@@ -1,6 +1,6 @@
 # CU2.2 · Pixel-Reste in Code, Tests und Doku nachziehen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -86,4 +86,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-01 ✅ `tools/k3c-workbench/internal/balance/report_html.go` mit den Papier-Pfaden aus `engine/balance`; `TestHTMLEigenstaendig` grün (`go test -short ./internal/balance/`, Grafik lokal vorhanden).
+- AC-02 ✅ `hubGrowth.test.ts`, `buildingSprites.test.ts` ohne 32-px-Pfade (21 Tests grün), Kommentare in `src/scenes/render/` auf Papier-Quelle.
+- AC-03 ✅ `soundatlas`-Quelle `data/sounds.json`.
+- AC-04 ✅ LICENSE, LICENSE-ASSETS (inkl. Schrift BSD-3 und CC-BY 4.0), README, Release-Texte, Fach-Doku, Glossar und CLAUDE.md ohne `public/sprites/`, `data/sprites.json`, `data/assets.json`, MG8-Satz; verbleibende Treffer sind Hinweise „entfiel mit CU1“.
+- AC-05 Ralf-Queue: B-435, B-462, B-570, B-571, B-641, B-685 und Sprint GRJ2 planen noch `tools/buildings` bzw. `data/assets.json`; aktive CU1/MC1 enthalten Altverweise. Vorschlag neues Ticket: beide balance-Pakete zusammenführen.

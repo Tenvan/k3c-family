@@ -29,10 +29,6 @@
       "rules": { "complexity": ["error", { "max": 23 }] }
     },
     {
-      "files": ["src/tools/gamepadTest.ts"],
-      "rules": { "complexity": ["error", { "max": 20 }] }
-    },
-    {
       "files": ["src/scenes/HudScene.ts"],
       "rules": { "complexity": ["error", { "max": 17 }] }
     }

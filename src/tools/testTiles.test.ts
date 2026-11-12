@@ -1,9 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { SCENARIOS } from './testScenarios';
 import { nextFocus } from './testTiles';
 
-describe('nextFocus: Steuerkreuz über alle Szenarien-Kacheln der Seite', () => {
-  const count = SCENARIOS.length;
+describe('nextFocus: Steuerkreuz über die Kacheln der Seite', () => {
+  const count = 4;
 
   it('„weiter“ und „zurück“ wandern um eine Kachel', () => {
     expect(nextFocus(count, 0, 'next')).toBe(1);

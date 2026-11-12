@@ -3,8 +3,8 @@ import { paperBuildingFile, paperObjectFile, paperObjectLook, paperObjectOf } fr
 import type { ObjectSprite, WorldFile } from './worldSprites';
 
 /**
- * Natur und Objekte aus `tools/buildings` (GEB6, GEB10): Bäume, Höhlen-Flora, Busch, Fels, Erzbrocken, Adern, Truhe,
- * Portal, Ausgang und Rekrutierungslager, alle 32 px je Kachel (Maßstab 1). Reine Auswahl ohne Phaser und ohne Zufall:
+ * Natur und Objekte als Papierschnitt (`objekte/`, `data/paper.json`; GEB6, GEB10): Bäume, Höhlen-Flora, Busch, Fels, Erzbrocken, Adern, Truhe,
+ * Portal, Ausgang und Rekrutierungslager, Maßstab 1. Reine Auswahl ohne Phaser und ohne Zufall:
  * Form aus der Position, Look aus dem Biom.
  */
 

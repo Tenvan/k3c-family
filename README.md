@@ -160,7 +160,7 @@ Prüfen: `task check:dev`. Plan für Statistik, Dienste und Oberfläche: Sprints
 ## CI/CD (GitHub Actions)
 
 - **CI** (jeder Push/PR): Lint, Typecheck, Tests, Build; Go-Job mit Tests (auch Heimnetz-Server per `httptest`), `golangci-lint` und Cross-Build für Windows und Raspberry Pi; Windows-Job für `tools/k3c-workbench`. Der Build liegt als Artefakt `k3c-dist` am Lauf.
-- **GitHub Pages** (Push auf `main`): nur was ohne Server geht. Die Testseiten laufen; die Spiel-Kacheln sind deaktiviert
+- **GitHub Pages** (Push auf `main`): nur was ohne Server geht. Die Spiel-Kacheln sind deaktiviert
   („Braucht den Heimnetz-Server“), `game.html` zeigt denselben Hinweis.
   Einmalig aktivieren: *Settings → Pages → Source: GitHub Actions*.
 - **Release** (Tag `v*`, z.B. `git tag v0.2.0 && git push --tags`): Zip mit `dist/` und `k3c-server` für Windows, Linux amd64 und arm64.
@@ -170,6 +170,6 @@ Prüfen: `task check:dev`. Plan für Statistik, Dienste und Oberfläche: Sprints
 
 Quelltext: [PolyForm Noncommercial 1.0.0](LICENSE). Eigene Grafiken und Sounds: [CC BY-NC 4.0](LICENSE-ASSETS).
 Das Projekt ist *source-available*, aber **nicht** für kommerzielle Nutzung frei (kein Open Source im Sinne der OSI).
-Fremdmaterial behält seine Lizenz: [Figuren-Credits](public/sprites/CREDITS.md), im Spiel die Seite „Lizenzen & Danksagung“ (`lizenzen.html`).
+Fremdmaterial behält seine Lizenz: [Sound-Credits](public/audio/README.md), im Spiel die Seite „Lizenzen & Danksagung“ (`lizenzen.html`).
 
 Mehr: [Game Design](docs/game-design.md) · [Roadmap](docs/roadmap.md) · [Arbeitsweise](docs/arbeitsweise.md) · [Sprints](docs/sprints/README.md) · [Backlog](docs/backlog/README.md)

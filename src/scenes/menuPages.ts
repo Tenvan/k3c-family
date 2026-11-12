@@ -1,7 +1,6 @@
 /**
  * Ebenen „Seiten“ des Spielmenüs (B-768, BD11.4): vier Kategorien, darunter eine Kachel je Seite oder Szenario. Die Einträge kommen aus
- * den Daten der Werkzeugseite (`src/tools/devTiles.ts`), nicht aus einer zweiten Liste: jede bisherige Seite und jedes Stress-Szenario
- * hat genau eine Kachel. Reine Daten und Logik ohne Phaser; `LobbyScene` zeichnet und führt aus.
+ * den Daten der Werkzeugseite (`src/tools/devTiles.ts`), nicht aus einer zweiten Liste: jede Seite hat genau eine Kachel. Reine Daten und Logik ohne Phaser; `LobbyScene` zeichnet und führt aus.
  */
 import { t } from '../core/texts';
 import { runParamsOf, type RunParams } from '../core/runConfig';
@@ -17,9 +16,7 @@ export type EntryTarget =
   /** Seite des Projekts öffnen (bis BD11.5 über die Shell, danach als Panel im Menü) */
   | { kind: 'page'; href: string }
   /** Spiel mit dieser Konfiguration starten, ohne Neuladen (`startRun`) */
-  | { kind: 'run'; params: RunParams }
-  /** Eigenes Fenster (Dungeon Master: gedacht für ein zweites Gerät) */
-  | { kind: 'external'; href: string };
+  | { kind: 'run'; params: RunParams };
 
 export interface MenuEntry {
   /** Ziel aus den Daten (`href`), eindeutig */
@@ -53,9 +50,8 @@ export function uniqueRun(params: RunParams, now: number = Date.now()): RunParam
   return { ...params, save: `${save.slice(0, 24)}-${now.toString(36)}`.slice(0, 32) };
 }
 
-/** Ziel einer Kachel der Werkzeugseite: eigenes Fenster, Spiel-Szenario oder Seite */
-export function targetOf(tile: Pick<DevTile, 'href' | 'external'>): EntryTarget {
-  if (tile.external) return { kind: 'external', href: tile.href };
+/** Ziel einer Kachel der Werkzeugseite: Spiel-Szenario oder Seite */
+export function targetOf(tile: Pick<DevTile, 'href'>): EntryTarget {
   const params = runParamsOf(tile.href);
   return params ? { kind: 'run', params } : { kind: 'page', href: tile.href };
 }
@@ -82,18 +78,14 @@ const licenses: MenuEntry = {
   target: { kind: 'page', href: 'lizenzen.html' },
 };
 
-/** Der Gamepad-Test gehört zu Info und Hilfe, nicht zur Entwicklung */
-const INFO_HREFS = ['gamepad-test.html'];
-
 /** Alle Kategorien in Anzeigereihenfolge; ohne `dev` nur Info und Hilfe */
 export function menuCategories(dev: boolean = devMenuVisible()): readonly MenuCategory[] {
   const tiles = (id: 'dev' | 'perf' | 'balance') => DEV_SECTIONS.find((s) => s.id === id)?.tiles ?? [];
-  const infoTiles = DEV_SECTIONS.flatMap((s) => s.tiles).filter((tile) => INFO_HREFS.includes(tile.href));
-  const info: MenuCategory = { id: 'info', entries: [licenses, ...infoTiles.map(entryOf)] };
+  const info: MenuCategory = { id: 'info', entries: [licenses] };
   if (!dev) return [info];
   return [
     info,
-    { id: 'dev', entries: tiles('dev').filter((tile) => !INFO_HREFS.includes(tile.href)).map(entryOf) },
+    { id: 'dev', entries: tiles('dev').map(entryOf) },
     { id: 'perf', entries: tiles('perf').map(entryOf) },
     { id: 'balance', entries: tiles('balance').map(entryOf) },
   ];

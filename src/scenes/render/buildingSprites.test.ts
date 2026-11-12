@@ -22,7 +22,7 @@ describe('Gebäude-Grafik (GR3.1)', () => {
     for (const state of ['unpaid', 'waitingMaterial', 'waitingWorker'] as const) expect(siteTexture('workshop', state)).toBeNull();
   });
 
-  it('Gebäude aus tools/buildings: eigene 32-px-Grafik in Maßstab 1 (GEB2 AC-02, GEB5 AC-05)', () => {
+  it('Gebäude: eigene Papier-Grafik je Art (GEB2 AC-02, GEB5 AC-05)', () => {
     const neu = { workshop: 'werkstatt', tavern: 'taverne', healer: 'heilplatz', smithy: 'schmiede', armory: 'ruestkammer', storage: 'lager', barracks: 'kaserne', nursery: 'farm', stairsUp: 'treppe-hoch', stairsDown: 'treppe-runter' } as const;
     for (const [kind, id] of Object.entries(neu)) {
       const key = siteTexture(kind as keyof typeof neu, 'built');

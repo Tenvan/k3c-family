@@ -1,5 +1,5 @@
 {
-  "_comment": "Sound-Slots (CU1.2, vorher in data/assets.json): id, art (sound), kategorie (sfx|musik|ambient), beschreibung, bus (sfx|music|ambient), wahl: Dateien unter public/ (erste = aktive Wahl). Katalog docs/assets/sounds.md; liest src/audio und tools/soundatlas. data/assets.json bleibt bis CU1.5 daneben liegen.",
+  "_comment": "Sound-Slots (CU1.2, vorher in data/assets.json): id, art (sound), kategorie (sfx|musik|ambient), beschreibung, bus (sfx|music|ambient), wahl: Dateien unter public/ (erste = aktive Wahl). Katalog docs/assets/sounds.md; liest src/audio und tools/soundatlas.",
   "slots": [
     {
       "id": "music:tag",
