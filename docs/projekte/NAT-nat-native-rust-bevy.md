@@ -33,7 +33,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | NG14 | Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter | aktiv |
 | NG15 | Natives Spiel: Ton-Gerät ohne Absturz | aktiv |
 | NG16 | Raum: Absturzbehandlung nach außen, Position nach dem Laden | erledigt |
-| NG17 | Papier: Reittier Wolf und Pfoten der Gegner-Wölfe | aktiv |
+| NG17 | Papier: Reittier Wolf und Pfoten der Gegner-Wölfe | erledigt |
 | NG18 | Natives Spiel: freie Schrift statt Debug-Schrift | erledigt |
 
 ## Nicht-Ziele
