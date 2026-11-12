@@ -19,7 +19,10 @@ func TestPlanWavesUndQueueUeberMCP(t *testing.T) {
 	if text, isErr := callText(t, cs, "plan_waves", map[string]any{"slots": 9}); !isErr || !strings.Contains(text, "1 bis 4") {
 		t.Errorf("slots 9: %q", text)
 	}
-	for _, s := range []string{"`plan_waves", "`plan_queue"} {
+	if text, isErr := callText(t, cs, "plan_check", map[string]any{"id": "B-404"}); !isErr || !strings.Contains(text, "nicht gefunden") {
+		t.Errorf("plan_check B-404: %q", text)
+	}
+	for _, s := range []string{"`plan_waves", "`plan_queue", "`plan_check"} {
 		if !strings.Contains(instructions, s) {
 			t.Errorf("Instruktionen nennen %s nicht", s)
 		}

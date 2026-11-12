@@ -8,7 +8,7 @@ import (
 	"k3c/tools/k3c-workbench/internal/planning"
 )
 
-// registerPlanWaves sind die lesenden Wellen-Tools (B-783): plan_waves und plan_queue.
+// registerPlanWaves sind die lesenden Wellen-Tools: plan_waves und plan_queue (B-783), plan_check (B-784).
 func registerPlanWaves(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "plan_waves",
@@ -33,5 +33,16 @@ func registerPlanWaves(s *Server) {
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in planning.QueueFilter) (string, error) {
 		return planning.Queue(s.ws(ctx).root, in)
+	})
+	add(s, &mcp.Tool{
+		Name: "plan_check",
+		Description: "Prüft die Planungsangaben eines Tickets oder Sprints für Arbeitswellen (docs/arbeitsweise.md › Planungsangaben) " +
+			"und nennt die Mängel: Planungsangaben oder einzelne Zeilen fehlen, Bereich leer, Umgebung: ? (beim Sprint je offener " +
+			"Session), Größe: L, unbekannte ID oder Freitext in „Abhängig von“, Bereich überlappt mit einem anderen offenen Ticket. " +
+			"Archivierte Tickets prüft es nicht; es ändert nichts. " +
+			"Nutze es bei: vor der Freigabe einer Spec und vor plan_waves. Statt: Regeln und Einschränkungen von Hand prüfen.",
+		Annotations: readOnly(),
+	}, func(ctx context.Context, in planning.CheckIn) (string, error) {
+		return planning.Check(s.ws(ctx).root, in)
 	})
 }

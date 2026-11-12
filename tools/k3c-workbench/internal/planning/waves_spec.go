@@ -12,14 +12,17 @@ import (
 // PlanSpec sind die Planungsangaben eines Tickets oder einer Sprint-README.
 type PlanSpec struct {
 	Area     []string // Pfad-Globs aus „Bereich“ ohne Sammeldateien
-	HasArea  bool     // Zeile „Bereich“ steht da (auch wenn leer)
 	Deps     []string // IDs aus „Abhängig von“
 	BadDeps  []string // Einträge aus „Abhängig von“, die keine ID sind
 	Needs    string   // „Braucht 🧑“; leer, wenn die Zeile fehlt
 	Size     string   // „Größe“: S, M, L
-	Locks    []string // „Sperre“ ohne `–`
-	HasLines bool     // mindestens eine der Zeilen steht da
+	Locks    []string        // „Sperre“ ohne `–`
+	HasLines bool            // mindestens eine der Zeilen steht da
+	Seen     map[string]bool // Namen der Zeilen, die dastehen
 }
+
+// planLines sind die Planungsangaben in der Reihenfolge der Vorlage.
+var planLines = []string{"Bereich", "Abhängig von", "Braucht 🧑", "Größe", "Sperre"}
 
 const sectionRules = "## Regeln und Einschränkungen"
 
@@ -33,17 +36,17 @@ var (
 
 // parsePlanSpec liest die Planungsangaben aus dem Abschnitt „Regeln und Einschränkungen“.
 func parsePlanSpec(text string) PlanSpec {
-	var p PlanSpec
+	p := PlanSpec{Seen: map[string]bool{}}
 	for _, l := range sectionLines(text, sectionRules) {
 		m := rePlanLine.FindStringSubmatch(strings.TrimRight(l, " "))
 		if m == nil {
 			continue
 		}
-		p.HasLines = true
+		p.HasLines, p.Seen[m[1]] = true, true
 		v := strings.TrimSpace(m[2])
 		switch m[1] {
 		case "Bereich":
-			p.HasArea, p.Area = true, parseGlobs(v)
+			p.Area = parseGlobs(v)
 		case "Abhängig von":
 			p.Deps, p.BadDeps = parseIDs(v)
 		case "Braucht 🧑":
