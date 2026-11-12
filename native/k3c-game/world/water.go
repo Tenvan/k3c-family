@@ -3,14 +3,15 @@ package world
 // Fluss mit Kage-Shader (B-790, NG11.1): ein DrawRectShader je Zelle über den Fluss unter dem Uferstreifen. Lage,
 // Kachelbreite und Fließen der Reihen rechnet riverLayout wie für die Kacheln; der Shader (water/river.kage) bekommt
 // sie mit den Phasen der Animation als Uniforms, die Phasen folgen nur aus Frame.Clock. Die Fassung wählt die
-// Umgebungsvariable K3C_RIVER (tiles oder shader, Standard shader); übersetzt der Shader nicht, bleibt der Fluss bei
-// den Kacheln.
+// Umgebungsvariable K3C_RIVER (tiles oder shader, Standard shader) als Startwert; im Spiel schaltet F3 um
+// (view.Settings.River, B-816). Übersetzt der Shader nicht, bleibt der Fluss bei den Kacheln.
 
 import (
 	_ "embed"
 	"image/color"
 	"log/slog"
 	"math"
+	"os"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -59,6 +60,21 @@ func riverModeOf(v string) riverMode {
 	return riverShader
 }
 
+// RiverStart ist der Startwert der Fluss-Fassung aus K3C_RIVER als view.RiverShader oder view.RiverTiles (game schaltet
+// mit view.Settings.NextRiver von diesem Wert aus um, solange keine Fassung gewählt ist).
+func RiverStart() string { return riverModeOf(os.Getenv(riverEnv)).String() }
+
+// riverModeFor ist die Fassung nach den Einstellungen: "" (nichts gewählt) gilt der Startwert start.
+func riverModeFor(setting string, start riverMode) riverMode {
+	switch setting {
+	case view.RiverTiles:
+		return riverTiles
+	case view.RiverShader:
+		return riverShader
+	}
+	return start
+}
+
 // waterParams sind die Uniforms einer Zelle zur Zeit t: Rechteck (Fenster-px), Reihen und Phasen (0 … 2π).
 type waterParams struct {
 	x, top, w, h int
@@ -88,6 +104,8 @@ func waterLayout(c view.Cell, t float64) waterParams {
 // riverWater hält Shader, Optionen und Uniform-Puffer; die Map zeigt einmal angelegt auf die Arrays, je Zelle werden
 // nur deren Werte überschrieben (keine Allokation je Bild). Nicht kopieren.
 type riverWater struct {
+	src    []byte         // Shader-Quelle; übersetzt wird beim ersten Bedarf (F3 zur Laufzeit)
+	tried  bool           // Übersetzen versucht (gelungen oder nicht)
 	shader *ebiten.Shader // nil: Kachel-Fassung
 	op     ebiten.DrawRectShaderOptions
 	origin [2]float32
@@ -95,17 +113,24 @@ type riverWater struct {
 	phase  [3]float32
 }
 
-// init wählt die Fassung; bei der Shader-Fassung übersetzt es src und legt die Uniforms an.
+// init merkt die Quelle und übersetzt sie sofort, wenn die Shader-Fassung gewählt ist; sonst erst ready beim ersten
+// Umschalten.
 func (r *riverWater) init(mode riverMode, src []byte) {
+	r.src = src
 	if mode == riverShader {
-		r.shader = compileRiver(src)
+		r.build()
 	}
 	used := riverTiles
 	if r.shader != nil {
 		used = riverShader
 	}
 	slog.Info("🚦 Fluss-Fassung", "gewählt", mode.String(), "aktiv", used.String())
-	if r.shader == nil {
+}
+
+// build übersetzt die Quelle (einmal) und legt bei Erfolg die Uniforms an.
+func (r *riverWater) build() {
+	r.tried = true
+	if r.shader = compileRiver(r.src); r.shader == nil {
 		return
 	}
 	r.op.Uniforms = map[string]any{
@@ -117,6 +142,15 @@ func (r *riverWater) init(mode riverMode, src []byte) {
 		"Shade":  rgb(riverShade),
 		"Glint":  rgb(riverGlint),
 	}
+}
+
+// ready meldet, ob die Shader-Fassung zur Verfügung steht; übersetzt beim ersten Aufruf, falls noch nicht geschehen
+// (eine kaputte Quelle meldet compileRiver im Log, der Fluss bleibt bei den Kacheln).
+func (r *riverWater) ready() bool {
+	if !r.tried {
+		r.build()
+	}
+	return r.shader != nil
 }
 
 // compileRiver übersetzt die Shader-Quelle; bei einem Fehler meldet es ihn im Log und liefert nil (Kachel-Fassung).

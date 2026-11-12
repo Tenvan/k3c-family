@@ -2,6 +2,9 @@
 // eingefroren: Braucht ein Fachpaket mehr, gibt es ein Ticket an die NG1-Nachfolge, keinen Eingriff aus NG2–NG8.
 // Additiv ergänzt bei der Zusammenführung der Welle 2b: Session.Settings und Session.Seats, Frame.Outcome mit
 // EndDelay, Frame.Cells, Frame.Recording, StatsRect und die Rolle MenuPages.
+// Additiv ergänzt in NG14 (B-810, B-816): Settings.River und Settings.Stats (F3 und F2, ohne Optionen-Menü),
+// RiverShader und RiverTiles, Settings.NextRiver, StatsRectLines und StatsTextSizeLines (zweite Zeile der
+// Leistungsanzeige: Update und Draw in ms, nach unten über StatsRect hinaus; Drawer halten weiter nur StatsRect frei).
 //
 // Rollen:
 //   - game (Schleife) besitzt Fenster, Zellen, Kameras, Menü-Stapel, Geräte-Zuordnung, Grafik der Level und die
@@ -26,7 +29,9 @@
 //     Takten einen Ausgang (Frame.Outcome), schließt game das Spiel (Session.Close), legt das Hauptmenü auf und tut in
 //     diesem Update sonst nichts.
 //  3. local taktet und baut den Frame; game ergänzt Unseated, Seat.Lost und die Cues, lädt bei geänderten Leveln die
-//     Grafik (AssetSource → art.Library.SetLevels; fehlende Grafik beendet das Programm mit Pfad), setzt je Zelle
+//     Grafik (AssetSource → art.Library.SetLevels; im Fenster setzt der erste Update eines Stufenwechsels „lädt“, game
+//     zeigt die Ladeanzeige und lädt im folgenden Update; fehlende Grafik zeigt game als Meldung mit Pfad im Fenster
+//     und beendet erst auf Enter, Esc oder A, danach mit stderr und Exit 1), setzt je Zelle
 //     die Kamera (CameraRule, danach --cam), trägt Frame.Cells und Frame.Recording ein, wendet Vollbild aus
 //     Frame.Settings an und ruft Listener.Listen genau einmal je Frame (Ereignisse und Cues erscheinen in genau einem
 //     Frame).
@@ -39,7 +44,8 @@
 // Draw je Bild: für jede Zelle die Drawer der Zellen-Ebenen (LayerFar … LayerHUD) in Ebenen-Reihenfolge, danach einmal
 // die Overlay-Drawer für das ganze Fenster, zuletzt der oberste Screen. Draw kann denselben Frame mehrmals zeichnen
 // und ändert keinen Zustand (Kameras rechnet nur das Update). Zustand über Bilder hinweg (Animation, Umhang der
-// Rig-Figuren in actors) schreibt ein Listener im Takt fort, nie Draw; das Bild hängt nicht davon ab, wie oft Draw
+// Rig-Figuren in actors) schreibt ein Listener im Takt fort, nie Draw (einzige Ausnahme: game merkt sich, dass die
+// Ladeanzeige gezeichnet wurde, und lädt erst danach); das Bild hängt nicht davon ab, wie oft Draw
 // läuft, in welcher Reihenfolge die Zellen kommen oder was vorher sichtbar war. Erlaubt sind in Draw nur Puffer und
 // Zwischenspeicher, die das Bild nicht ändern (Messwerte von Texten, Zeichenlisten je Zelle, Konturtexte über
 // art.OutlineCache, das ein Listener je Takt mit Sweep aufräumt).

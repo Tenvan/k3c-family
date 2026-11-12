@@ -107,12 +107,13 @@ func mix(a, b color.RGBA, t float64) color.RGBA {
 	return color.RGBA{f(a.R, b.R), f(a.G, b.G), f(a.B, b.B), 255}
 }
 
-// drawRiver zeichnet die Wellen-Reihen der Zelle zur Zeit Frame.Clock: mit dem Shader, sonst als Kacheln.
+// drawRiver zeichnet die Wellen-Reihen der Zelle zur Zeit Frame.Clock: mit dem Shader, sonst als Kacheln. Die Fassung
+// folgt Frame.Settings.River (F3), solange nichts gewählt ist dem Startwert aus K3C_RIVER.
 func (w *World) drawRiver(dst *ebiten.Image, f *view.Frame, c view.Cell) {
 	if stageOf(f, c) == nil {
 		return
 	}
-	if w.water.shader != nil {
+	if riverModeFor(f.Settings.River, w.start) == riverShader && w.water.ready() {
 		w.water.draw(dst, c, f.Clock)
 		return
 	}

@@ -63,27 +63,49 @@ func removeTemp(dir string) {
 	}
 }
 
-// run baut Grafik, Pakete, Simulation und Schleife und läuft bis zum Ende.
+// run baut Grafik, Pakete, Simulation und Schleife und läuft bis zum Ende. Ein Fehler vor dem Spiel und ein Fehler,
+// den die Schleife im Fenster gemeldet hat (fehlende Grafik), erscheinen als Meldung im Fenster (B-810) und danach als
+// Rückgabe, also auf stderr und mit Exit-Code 1; Aufnahme und Messung zeigen kein Fenster für Fehler.
 func run(args game.Args) error {
-	lib, err := art.New(art.DefaultConfig())
+	g, err := build(args)
 	if err != nil {
+		if args.Shots == "" && args.Measure.Seconds == 0 {
+			showFault(args, err)
+		}
 		return err
+	}
+	setupWindow(args)
+	if err := ebiten.RunGame(g); err != nil && !errors.Is(err, ebiten.Termination) {
+		return fmt.Errorf("abgebrochen: %w", err)
+	}
+	return g.Fault()
+}
+
+// build baut Grafik, Pakete, Simulation und die Schleife.
+func build(args game.Args) (*game.Game, error) {
+	cfg := art.DefaultConfig()
+	if args.Grafik != "" {
+		cfg.GrafikDir = args.Grafik
+	}
+	lib, err := art.New(cfg)
+	if err != nil {
+		return nil, err
 	}
 	parts, err := game.Assemble(game.Packages(lib))
 	if err != nil {
-		return err
+		return nil, err
 	}
 	parts.Art = lib
 	slog.Info("🚀 K3C natives Spiel", "pakete", parts.Names, "drawer", len(parts.Drawers), "spielstaende", args.Saves, "aufnahme", args.Shots)
-	cfg := local.Config{Dir: args.Saves, Log: slog.Default()}
+	lcfg := local.Config{Dir: args.Saves, Log: slog.Default()}
 	if args.Shots != "" { // Aufnahme: Speichern im Takt, feste Uhr (Zeitstempel in der Spielstand-Liste, Insel-ID)
-		cfg.Recording, cfg.Now = true, func() time.Time { return shotTime }
+		lcfg.Recording, lcfg.Now = true, func() time.Time { return shotTime }
 	}
-	sim := local.Open(cfg)
-	g, err := game.New(parts, sim, args)
-	if err != nil {
-		return err
-	}
+	return game.New(parts, local.Open(lcfg), args)
+}
+
+// setupWindow stellt Größe, Titel, Takt und Schalter des Fensters ein.
+func setupWindow(args game.Args) {
 	ebiten.SetWindowSize(args.W, args.H)
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 	ebiten.SetWindowTitle("K3C")
@@ -92,10 +114,16 @@ func run(args game.Args) error {
 	if args.Measure.NoVsync {
 		ebiten.SetVsyncEnabled(false)
 	}
-	if err := ebiten.RunGame(g); err != nil && !errors.Is(err, ebiten.Termination) {
-		return fmt.Errorf("abgebrochen: %w", err)
+}
+
+// showFault zeigt den Fehler vor dem Spiel in einem Fenster, bis Enter, Esc oder A gedrückt wird. Öffnet sich das Fenster
+// nicht, bleibt der Fehler auf stderr (run gibt ihn zurück).
+func showFault(args game.Args, cause error) {
+	setupWindow(args)
+	slog.Error("💥 Fehler vor dem Spiel, Meldung im Fenster", "err", cause)
+	if err := ebiten.RunGame(game.NewFault(cause)); err != nil && !errors.Is(err, ebiten.Termination) {
+		slog.Error("💥 Fenster für die Fehlermeldung öffnet nicht", "err", err)
 	}
-	return nil
 }
 
 // printAssets gibt die Grafik-Ordner aller Level aus (--assets, je Zeile `gruppe/id` unter public/grafik); ohne Fenster

@@ -6,6 +6,7 @@ import (
 	"log/slog"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 
 	"k3c/native/k3c-game/view"
 )
@@ -39,7 +40,12 @@ type Game struct {
 	devs   devices
 	levels []string // Level, deren Grafik geladen ist (sortiert)
 	full   bool     // Vollbild ist angewendet
-	err    error    // beendet das Programm (fehlende Grafik)
+	err    error    // beendet das Programm (nur im Messmodus; sonst fail)
+	fault  *Fault   // Fehler im Fenster (fehlende Grafik, B-810); gesetzt: die Schleife zeigt nur die Meldung
+	// Ladeanzeige (loading.go): loading = Stufenwechsel wartet auf das Laden, shown = Draw hat die Anzeige gezeichnet.
+	loading, shown bool
+	loadMsg        *notice
+	pressed        func(ebiten.Key) bool // Taste frisch gedrückt (devkeys.go); nil: keine Entwickler-Tasten
 	subs   subImages
 	stats  *overlay
 	shots  *shooter
@@ -57,6 +63,8 @@ func New(p Parts, s Sim, a Args) (*Game, error) {
 		g.src = newScripted(a.Scene)
 	}
 	g.stats = newOverlay(a.Shots == "")
+	g.pressed = inpututil.IsKeyJustPressed
+	g.applyDevArgs()
 	if a.Shots != "" {
 		sh, err := newShooter(a)
 		if err != nil {
@@ -111,17 +119,14 @@ func (g *Game) Update() error {
 	if g.shots != nil {
 		return g.shots.update(g)
 	}
+	if g.fault != nil {
+		return g.faultUpdate()
+	}
 	if g.meter.done() {
 		g.mode = ModeQuit
 		return g.sim.Close()
 	}
-	if g.meter == nil {
-		g.advance()
-	} else {
-		t0 := clock() // Wanduhr nur im Messmodus: clock() ist unter Windows ein Syscall mit Heap-Allokation
-		g.advance()
-		g.meter.tick(clock() - t0)
-	}
+	g.advanceTimed()
 	if g.err != nil {
 		return g.err
 	}
@@ -129,6 +134,23 @@ func (g *Game) Update() error {
 		return g.sim.Close()
 	}
 	return nil
+}
+
+// advanceTimed rechnet einen Takt; die Wanduhr läuft nur im Messmodus bzw. mit Leistungsanzeige (clock() ist unter
+// Windows ein Syscall mit Heap-Allokation).
+func (g *Game) advanceTimed() {
+	switch {
+	case g.meter != nil:
+		t0 := clock()
+		g.advance()
+		g.meter.tick(clock() - t0)
+	case g.stats.timing(&g.frame):
+		t0 := g.stats.now()
+		g.advance()
+		g.stats.upd.add(g.stats.now() - t0)
+	default:
+		g.advance()
+	}
 }
 
 // Frame liefert den Frame des letzten Updates (nur lesen, gilt bis zum nächsten Update; Ende-zu-Ende-Test).
@@ -140,9 +162,13 @@ func (g *Game) Screen() view.Screen { return g.stack.Top() }
 // advance liest die Eingabe, schaltet bei ActionFullscreen das Vollbild um, bedient Menü bzw. Spiel, taktet die Simulation einmal und bereitet den Frame vor:
 // Geräte, Grafik der Level, Kameras, Vollbild, dann die Listener.
 func (g *Game) advance() {
+	if g.fault != nil { // Fehler im Fenster: nichts mehr rechnen (der Aufnahme-Modus ruft advance weiter)
+		return
+	}
 	in := g.src.Poll()
 	g.cues = g.devs.observe(in, g.frame.Seats, g.cues)
 	g.toggleFullscreen(in)
+	g.devKeys()
 	if top := g.stack.Top(); top != nil {
 		g.step(top.Update(in, g.sim))
 	} else {
@@ -154,7 +180,7 @@ func (g *Game) advance() {
 		g.frame.Cues = append(g.frame.Cues, g.cues...)
 		g.cues = g.cues[:0]
 	}
-	g.loadLevels()
+	g.syncLevels()
 	g.cells = Cells(g.cells, g.win, &g.frame)
 	g.cams.Follow(g.cells, &g.frame)
 	g.frame.Cells, g.frame.Recording = g.cells, g.args.Shots != ""
@@ -201,11 +227,31 @@ func (g *Game) step(st view.Step) {
 	}
 }
 
-// Draw zeichnet je Zelle die Zellen-Ebenen, dann das Overlay, den obersten Screen und zuletzt die Anzeige oben.
+// Draw zeichnet den Fehler bzw. die Ladeanzeige, sonst das Spiel (drawGame).
 func (g *Game) Draw(screen *ebiten.Image) {
-	var t0 float64
+	switch {
+	case g.fault != nil:
+		g.fault.Draw(screen)
+	case g.loading:
+		g.drawLoading(screen)
+	default:
+		g.drawGame(screen)
+		return
+	}
+	if g.shots != nil {
+		g.shots.capture(g, screen)
+	}
+}
+
+// drawGame zeichnet je Zelle die Zellen-Ebenen, dann das Overlay, den obersten Screen und zuletzt die Anzeige oben.
+func (g *Game) drawGame(screen *ebiten.Image) {
+	var t0, s0 float64
 	if g.meter != nil {
 		t0 = clock()
+	}
+	timed := g.stats.timing(&g.frame)
+	if timed {
+		s0 = g.stats.now()
 	}
 	screen.Fill(clearColor)
 	win := screen.Bounds()
@@ -226,6 +272,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 	if top := g.stack.Top(); top != nil {
 		top.Draw(screen, &g.frame, wc)
+	}
+	if timed {
+		g.stats.drw.add(g.stats.now() - s0)
 	}
 	g.stats.draw(screen, &g.frame)
 	if g.shots != nil {

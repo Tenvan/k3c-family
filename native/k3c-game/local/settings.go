@@ -20,6 +20,8 @@ type settingsJSON struct {
 	Effects    *float64 `json:"effects"`
 	Fullscreen *bool    `json:"fullscreen"`
 	Language   *string  `json:"language"`
+	River      *string  `json:"river,omitempty"` // fehlt: Startwert (K3C_RIVER), B-816
+	Stats      *bool    `json:"stats"`
 }
 
 // loadSettings liest die Einstellungen aus path. Fehlt die Datei oder ist sie kaputt, gelten die Standardwerte (eine
@@ -49,12 +51,22 @@ func loadSettings(path string) (view.Settings, error) {
 	if j.Language != nil {
 		s.Language = *j.Language
 	}
+	if j.River != nil {
+		s.River = *j.River
+	}
+	if j.Stats != nil {
+		s.Stats = *j.Stats
+	}
 	return s.Normalized(), nil
 }
 
 // saveSettings schreibt die Einstellungen nach path (erst in eine Temp-Datei, dann umbenennen: nie halb geschrieben).
 func saveSettings(path string, s view.Settings) error {
-	raw, err := json.MarshalIndent(settingsJSON{&s.Music, &s.Effects, &s.Fullscreen, &s.Language}, "", "  ")
+	j := settingsJSON{Music: &s.Music, Effects: &s.Effects, Fullscreen: &s.Fullscreen, Language: &s.Language, Stats: &s.Stats}
+	if s.River != "" {
+		j.River = &s.River
+	}
+	raw, err := json.MarshalIndent(j, "", "  ")
 	if err != nil {
 		return err
 	}

@@ -70,3 +70,19 @@ func TestWindowCell(t *testing.T) {
 		t.Errorf("WindowCell = %+v", c)
 	}
 }
+
+// Die Leistungsanzeige hat zwei Zeilen: gleiche Oberkante und Breite, weiter unten zu Ende; eine Zeile ist StatsRect.
+func TestStatsRectLines(t *testing.T) {
+	win := image.Rect(0, 0, 1280, 720)
+	one, two := StatsRectLines(win, 1), StatsRectLines(win, 2)
+	if one != StatsRect(win) || StatsRectLines(win, 0) != one {
+		t.Errorf("eine Zeile: %v", one)
+	}
+	if two.Min != one.Min || two.Dx() != one.Dx() || two.Dy() <= one.Dy() {
+		t.Errorf("zwei Zeilen: %v gegen %v", two, one)
+	}
+	w, h, k := StatsTextSizeLines(2)
+	if r := StatsRectLines(win, 2); w*k != r.Dx() || h*k != r.Dy() {
+		t.Errorf("Textbild %dx%d·%d passt nicht zu %v", w, h, k, r)
+	}
+}

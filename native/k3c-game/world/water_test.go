@@ -3,6 +3,8 @@ package world
 import (
 	"math"
 	"testing"
+
+	"k3c/native/k3c-game/view"
 )
 
 // Schalter K3C_RIVER: nur "tiles" wählt die Kacheln, alles andere (auch leer) den Shader.
@@ -103,5 +105,48 @@ func TestWaterUniformsNoAlloc(t *testing.T) {
 	p := waterLayout(c, 3)
 	if !ok || len(rows) != 4*riverRows || rows[4*5+1] != float32(p.rows[5].h) || rows[3] != float32(p.rows[0].x0) {
 		t.Errorf("Rows-Uniform %v", rows)
+	}
+}
+
+// F3 (B-816): Die Einstellung bestimmt die Fassung, "" gilt der Startwert; zwei Umschaltungen führen zurück, und die
+// Shader-Fassung entsteht beim ersten Bedarf auch, wenn der Start bei den Kacheln lag.
+func TestRiverModeFor(t *testing.T) {
+	cases := []struct {
+		setting string
+		start   riverMode
+		want    riverMode
+	}{
+		{"", riverShader, riverShader}, {"", riverTiles, riverTiles},
+		{view.RiverTiles, riverShader, riverTiles}, {view.RiverShader, riverTiles, riverShader},
+	}
+	for _, c := range cases {
+		if got := riverModeFor(c.setting, c.start); got != c.want {
+			t.Errorf("riverModeFor(%q, %v) = %v, erwartet %v", c.setting, c.start, got, c.want)
+		}
+	}
+	s := view.Settings{}
+	start := riverModeOf(RiverStart())
+	s.River = s.NextRiver(RiverStart())
+	if riverModeFor(s.River, start) == start {
+		t.Errorf("Umschalten ändert die Fassung nicht: %q", s.River)
+	}
+	if s.River = s.NextRiver(RiverStart()); s.River != RiverStart() {
+		t.Errorf("zweimal umschalten: %q, Start %q", s.River, RiverStart())
+	}
+}
+
+func TestRiverShaderLazy(t *testing.T) {
+	var r riverWater
+	r.init(riverTiles, riverKage)
+	if r.shader != nil || r.tried {
+		t.Fatal("Kachel-Start übersetzt schon")
+	}
+	if !r.ready() || r.op.Uniforms == nil {
+		t.Error("Shader nach dem Umschalten nicht bereit")
+	}
+	var broken riverWater
+	broken.init(riverTiles, []byte("package main\nfunc Fragment() { nope }\n"))
+	if broken.ready() || !broken.tried || broken.ready() {
+		t.Error("kaputte Quelle: Rückfall auf Kacheln, nur ein Versuch")
 	}
 }
