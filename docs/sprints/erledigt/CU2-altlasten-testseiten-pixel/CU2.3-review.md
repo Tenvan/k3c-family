@@ -1,6 +1,6 @@
 # CU2.3 · Review CU2
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** INF
@@ -56,4 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Review k3c-reviewer 2026-11-12: Spiel, Panel und CI brechen nicht. Behoben: `testScenarios.ts` samt verwaister `test.*`-/`tool.httpError`-Texte entfernt, tote oxlint-Regel und Kommentar in `gamedata/reports.go`, README (Testseiten), Lizenztexte um Schrift und CC-BY 4.0 ergänzt, `public/audio/README.md` (Probe-Stücke ungenutzt). B-823-Änderung als eigener Commit getrennt. `task check:diff` grün.

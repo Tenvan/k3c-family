@@ -1,7 +1,7 @@
 # itch.io-Seitentext (B-023, PB1)
 
 Vorlage zum Einfügen auf der itch.io-Seite. Veröffentlicht nur Ralf (Session PB1.2). Nur Aussagen, die im Repo belegt sind
-(`README.md`, `docs/game-design.md`, `LICENSE`, `LICENSE-ASSETS`, `public/sprites/CREDITS.md`).
+(`README.md`, `docs/game-design.md`, `LICENSE`, `LICENSE-ASSETS`, `public/audio/README.md`).
 
 ## Titel
 
@@ -62,5 +62,5 @@ drei bis fünf auswählen, 630 x 500 px Cover separat zuschneiden.
 
 - Code: `LICENSE` (PolyForm Noncommercial 1.0.0, nur nicht-kommerzielle Nutzung, source-available, nicht Open Source)
 - Eigene Grafiken, Sounds, Musik: `LICENSE-ASSETS` (Namensnennung: „Ralf Stich, Family Three Crowns (K3C)“)
-- Fremdmaterial behält seine Lizenz (CC0 bzw. CC-BY 3.0, u. a. LuizMelo, ansimuz Gothicvania, LPC-Tiere): `public/sprites/CREDITS.md` und Seite `lizenzen.html`
+- Fremdmaterial behält seine Lizenz (Sounds, siehe `public/audio/README.md`); Grafik ist eigener Papierschnitt; Seite `lizenzen.html`
 - Offene Frage aus B-023 (🧑): Erlauben alle Asset-Lizenzen die Weitergabe im Paket? Vor dem Veröffentlichen prüfen, besonders CC-BY-Credits und Sound-Quellen.

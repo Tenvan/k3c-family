@@ -49,4 +49,4 @@ schliessen.
 Lizenzen
 --------
 LICENSE (Code, nicht-kommerziell) und LICENSE-ASSETS liegen bei.
-Fremde Grafiken und Sounds behalten ihre Lizenz, Details: public/sprites/CREDITS.md
+Fremde Grafiken und Sounds behalten ihre Lizenz, Details: public/audio/README.md (Sounds) und lizenzen.html

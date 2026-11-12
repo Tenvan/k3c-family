@@ -81,7 +81,7 @@ Der Go-Server beobachtet `data/` und `public/` immer (auch produktiv, `engine/wa
 über seinen Supervisor neu (Kindprozess mit `K3C_CHILD=1`, Exit-Code 75 = Neustart, Daten von der Platte aus
 `K3C_DATA_DIR`, Standard `data/`; ohne Ordner eingebettet). Ein ungültiger Stand lässt den alten Stand laufen. Der Watch ignoriert `*.paper.json`; neu gestartet wird erst bei geänderten PNGs.
 
-Die Gamepad-Testseite (`gamepad-test.html`) schickt Berichte von der Xbox nach `reports/*.json`. Dort die Ergebnisse nachlesen.
+Berichte unter `reports/*.json` (`POST /api/report`) liest `reports_list`/`report_read`; die Gamepad-Testseite ist entfernt (B-822).
 
 **k3c-workbench zuerst:** Sind die MCP-Tools `mcp__k3c-workbench__*` verbunden, gehen Prüfungen über `check_run` (statt `task check`,
 `task test`, `go test` …), Dienste über `svc_start`/`svc_stop` (nie `task dev`/`task start` in der Shell), Logs über
@@ -119,7 +119,7 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   CLIs: `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`), `tools/checkdiff` (`task check:diff`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
 - Papierschnitt-Grafik (Entscheidung 005): Der Client lädt Figuren, Monarch mit Reittier, Gebäude und Hintergründe über die
   Gruppen-Indizes `public/grafik/<gruppe>/index.paper.json` (je Asset `manifest.json` + PNG-Sheets); die Zuordnung steht in
-  `data/paper.json`. Atlas und alte Packs lädt das Spiel nicht mehr (Entfernung in CU1). **PNG und `manifest.json` sind nicht eingecheckt** (B-737): `task gen:paper` rendert nach `.work/grafik/` und kopiert nur Geändertes nach `public/grafik/<gruppe>/<asset>/` (ignoriert); `task build`, `test` und `dev` rufen es vorher auf, `check:diff` nicht (B-742). Eingecheckt bleiben Specs, `index.paper.json` und `golden.json`. Natur, Objekte und Gerüste bleiben bis MG8 Pixel-Grafik.
+  `data/paper.json`. Atlas und alte Packs lädt das Spiel nicht mehr (Entfernung in CU1). **PNG und `manifest.json` sind nicht eingecheckt** (B-737): `task gen:paper` rendert nach `.work/grafik/` und kopiert nur Geändertes nach `public/grafik/<gruppe>/<asset>/` (ignoriert); `task build`, `test` und `dev` rufen es vorher auf, `check:diff` nicht (B-742). Eingecheckt bleiben Specs, `index.paper.json` und `golden.json`. Natur, Objekte, Icons und Gerüste sind seit MG8/CU1 ebenfalls Papierschnitt.
 - `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.
 - `src/online/` – Client des Go-Servers (`clientConnection.ts`, Version in `clientProtocol.ts`): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
 - `src/input/` – `PlayerInput`-Abstraktion (Tastatur, Gamepad, Touch-Overlay `touchInput.ts`, per `?touch=1` erzwingbar). Spiel-Code fragt Aktionen ab, nie konkrete Tasten.

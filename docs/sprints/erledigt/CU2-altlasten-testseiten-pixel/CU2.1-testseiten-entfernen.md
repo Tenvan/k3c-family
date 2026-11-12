@@ -1,6 +1,6 @@
 # CU2.1 · Testseiten des Browser-Clients entfernen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -95,4 +95,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-01 ✅ Testseiten dm, stress, texturetest, testing, soundtest, gamepad-test samt `src/stress`, `data/stress.json`, `public/audio-test`, 11 Werkzeug-Modulen in `src/tools` (inkl. `testScenarios.ts`), Texten und Kacheln entfernt; Suche aus B-822 nur noch mit Treffern in Nicht-Zielen (`engine/net`, `docs/protocol.md`, `tools/assetkit`) und Historie.
+- AC-02 ✅ `bunx vitest run src tests` (131 Dateien, 2930 Tests), `task lint`, `task typecheck` grün; `projectRules` ohne dm-Ausnahme.
+- AC-03 ✅ CI-Smoke-Test prüft `/` und `/game.html`; Vite-Probebuild nur mit index, game, lizenzen, monitor.
+- AC-04 ✅ Codemaps, CLAUDE.md (Berichte über `reports_list`), roadmap, SND nachgezogen.
+- AC-05 Ralf-Queue: HW1.9, HW1.10/B-394, RX1.5/RX1.8, PF1.4, LG1.6, B-194, B-195, B-317, B-765, B-766, B-769, B-773 nennen entfernte Seiten; Entscheidung mit B-823 (Browser-Planung verwerfen).
+- Bereichsabweichung: `src/main.ts`, `LobbyScene.ts`, `runConfigRule.test.ts`, `.oxlintrc.json` mussten mit (Wegfall Release-Pfad und `external`).
