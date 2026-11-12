@@ -72,10 +72,10 @@ describe('gen', { timeout: 60_000 }, () => {
     expect([dauer(80), dauer(2300), dauer(252_000)]).toEqual(['80 ms', '2,3 s', '4 min 12 s']);
   });
 
-  it('fehlende Grafik in public wird ohne Neu-Rendern aus .work kopiert (B-748)', () => {
+  it('fehlende Grafik in public wird ohne Neu-Rendern aus .work kopiert (B-748)', async () => {
     const w = wurzel(), work = join(mkdtempSync(join(tmpdir(), 'paper-work-')), 'grafik');
     expect(ohneManifest(w).sort()).toEqual(['bauten/mauer', 'reittiere/pferd']);
-    genMitWork(w, work);
+    await genMitWork(w, work);
     expect(ohneManifest(w)).toEqual([]);
     rmSync(join(w, 'bauten/mauer'), { recursive: true });
     expect(ohneManifest(w)).toEqual(['bauten/mauer']);

@@ -16,9 +16,9 @@ function aufbau() {
 }
 
 describe('genMitWork', { timeout: 60_000 }, () => {
-  it('rendert im Arbeitsordner und legt Bilder, Manifest, Index und golden.json in der Wurzel ab; die Spec bleibt unverändert', () => {
+  it('rendert im Arbeitsordner und legt Bilder, Manifest, Index und golden.json in der Wurzel ab; die Spec bleibt unverändert', async () => {
     const { wurzel, work } = aufbau(), spec = readFileSync(join(wurzel, 'bauten', 'mauer.paper.json'));
-    const r = genMitWork(wurzel, work);
+    const r = await genMitWork(wurzel, work);
     expect(r.gruppen).toEqual(['bauten']);
     expect(r.geschrieben).toBeGreaterThan(0);
     for (const f of ['bauten/mauer/manifest.json', 'bauten/mauer/stand.png', 'bauten/index.paper.json', 'bauten/golden.json']) {
@@ -28,22 +28,22 @@ describe('genMitWork', { timeout: 60_000 }, () => {
     expect(readFileSync(join(wurzel, 'bauten', 'mauer.paper.json')).equals(spec)).toBe(true);
   });
 
-  it('zweiter Lauf schreibt nichts mehr (nur geänderte Dateien)', () => {
+  it('zweiter Lauf schreibt nichts mehr (nur geänderte Dateien)', async () => {
     const { wurzel, work } = aufbau();
-    genMitWork(wurzel, work);
+    await genMitWork(wurzel, work);
     const m = statSync(join(wurzel, 'bauten/mauer/stand.png')).mtimeMs;
-    const r = genMitWork(wurzel, work);
+    const r = await genMitWork(wurzel, work);
     expect(r).toMatchObject({ geschrieben: 0, entfernt: 0 });
     expect(statSync(join(wurzel, 'bauten/mauer/stand.png')).mtimeMs).toBe(m);
   });
 
-  it('veraltete Dateien im Asset-Ordner der Wurzel werden entfernt, fremde Ordner ohne Spec bleiben', () => {
+  it('veraltete Dateien im Asset-Ordner der Wurzel werden entfernt, fremde Ordner ohne Spec bleiben', async () => {
     const { wurzel, work } = aufbau();
-    genMitWork(wurzel, work);
+    await genMitWork(wurzel, work);
     writeFileSync(join(wurzel, 'bauten/mauer/alt.png'), 'x');
     mkdirSync(join(wurzel, 'bauten/fremd'));
     writeFileSync(join(wurzel, 'bauten/fremd/a.txt'), 'x');
-    const r = genMitWork(wurzel, work);
+    const r = await genMitWork(wurzel, work);
     expect(r.entfernt).toBe(1);
     expect(existsSync(join(wurzel, 'bauten/mauer/alt.png'))).toBe(false);
     expect(existsSync(join(wurzel, 'bauten/fremd/a.txt'))).toBe(true);

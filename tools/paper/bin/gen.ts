@@ -2,8 +2,8 @@
 // Antwort wie die Render-CLI: ein JSON-Objekt; Exit 0 ok, 1 abgelehnt ({ok: false, fehler}), 2 Aufruf-/Systemfehler.
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { gen } from '../cli/gen';
 import { konsoleUndLog } from '../cli/fortschritt';
+import { genParallel } from '../cli/genParallel';
 import { genMitWork, nurKopieren, ohneManifest, WORK } from '../cli/work';
 import { Abgelehnt } from '../render/fehler';
 import { ROOT } from '../render/stil';
@@ -22,8 +22,10 @@ try {
   if (!existsSync(wurzel)) throw new Error(`Wurzel fehlt: ${wurzel}`);
   // Ohne Argument im Arbeitsordner `.work/grafik` rendern und Geändertes nach public/grafik kopieren (B-737); mit Wurzel direkt dort.
   // Fortschritt je Schritt auf stderr und in .work/grafik/gen.log (B-740); stdout bleibt das eine JSON-Objekt.
+  // Rendern parallel auf `K3C_PAPER_JOBS` Workern (Standard: Kerne minus 1, höchstens 8), im Arbeitsordner mit Cache je Asset (B-751).
   const melde = konsoleUndLog(join(WORK, 'gen.log'));
-  process.stdout.write(JSON.stringify({ ok: true, ...(kopieren ? nurKopieren(wurzel, WORK, melde) : eigeneWurzel ? gen(wurzel, { melde }) : genMitWork(wurzel, WORK, melde)) }) + '\n');
+  const ergebnis = kopieren ? nurKopieren(wurzel, WORK, melde) : eigeneWurzel ? await genParallel(wurzel, { melde }) : await genMitWork(wurzel, WORK, melde);
+  process.stdout.write(JSON.stringify({ ok: true, ...ergebnis }) + '\n');
 } catch (e) {
   if (e instanceof Abgelehnt) {
     process.stdout.write(JSON.stringify({ ok: false, fehler: e.fehler }) + '\n');
