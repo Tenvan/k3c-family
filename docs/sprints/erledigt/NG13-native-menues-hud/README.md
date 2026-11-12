@@ -1,6 +1,6 @@
 # NG13 · CLI · Natives Spiel: Menüs und HUD nachziehen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -77,12 +77,12 @@ keine (entschieden autonom, Claude, 2026-11-12: B-807 über `view`, B-809 Schalt
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NG13.1 | `NG13.1-tastenbelegung.md` | Umsetzung | autonom | offen |
-| NG13.2 | `NG13.2-lizenzen-version.md` | Umsetzung | autonom | offen |
-| NG13.3 | `NG13.3-optionen-blitze-anleitung.md` | Umsetzung | autonom | offen |
-| NG13.4 | `NG13.4-papier-karten.md` | Umsetzung | autonom | offen |
-| NG13.5 | `NG13.5-hud-befunde-anleitung.md` | Umsetzung | autonom | offen |
-| NG13.6 | `NG13.6-review.md` | Review | autonom | offen |
+| NG13.1 | `NG13.1-tastenbelegung.md` | Umsetzung | autonom | fertig |
+| NG13.2 | `NG13.2-lizenzen-version.md` | Umsetzung | autonom | fertig |
+| NG13.3 | `NG13.3-optionen-blitze-anleitung.md` | Umsetzung | autonom | fertig |
+| NG13.4 | `NG13.4-papier-karten.md` | Umsetzung | autonom | fertig |
+| NG13.5 | `NG13.5-hud-befunde-anleitung.md` | Umsetzung | autonom | fertig |
+| NG13.6 | `NG13.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -90,6 +90,7 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-12 Review (Claude, `k3c-reviewer`, NG13.6): AC-01 bis AC-17 belegt in den Ergebnissen von NG13.1 bis NG13.5; AC-16 mit additiver Änderung in `engine/room` und `local/step.go` (begründet in NG13.5).
+Behoben: stufenlose Bannergröße (`fitPx` in 2-px-Stufen), Lizenz-Volltexte in `LIZENZEN.txt`, `game:build`-sources um `engine/**`.
+Neue Tickets: B-820 (Batching-Bruch im Menü-Hintergrund), B-821 (Version `LIZENZEN.txt`/EXE im Worktree).
+Abnahme-Ticket für Sim, Balance und Gen: keins nötig (kein Gen-Feature; Sim gesperrt laut Beschluss 2026-11-11). Sichtprüfung durch 🧑 Ralf bei der nächsten PC-Abnahme, nicht blockierend.

@@ -29,7 +29,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | NG10 | Rust und Bevy entfernen | erledigt |
 | NG11 | Natives Spiel: Fluss mit Shader | aktiv |
 | NG12 | Natives Spiel: Anzeigen an Figuren, Bäume und Geschosse | erledigt |
-| NG13 | Natives Spiel: Menüs und HUD nachziehen | aktiv |
+| NG13 | Natives Spiel: Menüs und HUD nachziehen | erledigt |
 | NG14 | Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter | aktiv |
 | NG15 | Natives Spiel: Ton-Gerät ohne Absturz | aktiv |
 | NG16 | Raum: Absturzbehandlung nach außen, Position nach dem Laden | erledigt |

@@ -11,7 +11,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 |---|---|---|---|---|---|
 | NG9 | CLI | NAT | Natives Spiel: Zusammenführung, Messung und Abnahme | – | `aktiv/NG9-native-zusammenfuehrung-abnahme/` |
 | NG11 | CLI | NAT | Natives Spiel: Fluss mit Shader | – | `aktiv/NG11-native-fluss-shader/` |
-| NG13 | CLI | NAT | Natives Spiel: Menüs und HUD nachziehen | – | `aktiv/NG13-native-menues-hud/` |
 | NG14 | CLI | NAT | Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter | – | `aktiv/NG14-native-fehleranzeige-shader-umschalter/` |
 | NG15 | CLI | NAT | Natives Spiel: Ton-Gerät ohne Absturz | – | `aktiv/NG15-native-ton-geraet/` |
 | NG17 | PAP | NAT | Papier: Reittier Wolf und Pfoten der Gegner-Wölfe | – | `aktiv/NG17-papier-wolf/` |
@@ -326,3 +325,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | NG12 | Natives Spiel: Anzeigen an Figuren, Bäume und Geschosse | `erledigt/NG12-native-figuren-darstellung/` |
 | NG16 | Raum: Absturzbehandlung nach außen, Position nach dem Laden | `erledigt/NG16-raum-laden-absturz/` |
 | NG18 | Natives Spiel: freie Schrift statt Debug-Schrift | `erledigt/NG18-native-schrift/` |
+| NG13 | Natives Spiel: Menüs und HUD nachziehen | `erledigt/NG13-native-menues-hud/` |
