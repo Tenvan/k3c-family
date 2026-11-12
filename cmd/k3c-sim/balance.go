@@ -14,7 +14,7 @@ import (
 	"k3c/engine/balance"
 )
 
-// Unterbefehl balance: dieselben Flags und Berichte wie bin/k3c-balance (tools/k3c-workbench/internal/balance/cmd),
+// Unterbefehl balance: dieselben Flags und Berichte wie bis RS2.2 bin/k3c-balance (tools/k3c-workbench/internal/balance/cmd),
 // Fortschritt und Ergebnis als JSON-Zeilen (main.go).
 
 func cmdBalance(args []string, v env) error {
@@ -158,7 +158,7 @@ func isSet(fs *flag.FlagSet, name string) bool {
 	return set
 }
 
-// write schreibt nach out (Bytes wie bin/k3c-balance) oder, ohne Datei, als JSON-Zeile {"event":"result","report":…}.
+// write schreibt nach out (Bytes wie bis RS2.2 bin/k3c-balance) oder, ohne Datei, als JSON-Zeile {"event":"result","report":…}.
 func write(out string, b []byte, v env) error {
 	if out != "" {
 		return os.WriteFile(out, b, 0o644)

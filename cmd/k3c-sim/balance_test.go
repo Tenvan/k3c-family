@@ -10,7 +10,7 @@ import (
 	"k3c/engine/balance"
 )
 
-// Übernommen aus tools/k3c-workbench/internal/balance/cmd (bin/k3c-balance), Fortschritt jetzt als JSON-Zeile.
+// Bis RS2.2 in tools/k3c-workbench/internal/balance/cmd (bin/k3c-balance), Fortschritt jetzt als JSON-Zeile.
 
 // Verletzte Ziele sind kein Fehler (Exit 0, BAL2.3): Der Bericht entsteht.
 func TestVerletztesZielIstKeinFehler(t *testing.T) {

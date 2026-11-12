@@ -68,9 +68,7 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 | `tools/k3c-workbench/internal/botdev/` | Bot-Gerät: belegt per WebSocket einen Slot und sendet Balancing-Bot-Eingaben | [View Map](tools/k3c-workbench/internal/botdev/codemap.md) |
 | `tools/k3c-workbench/internal/botfeed/` | Loopback-WebSocket-Feed je Testlauf-Client für Bot-Kommandos | [View Map](tools/k3c-workbench/internal/botfeed/codemap.md) |
 | `tools/k3c-workbench/internal/browser/` | Findet Edge/Chrome und startet ihn headless mit eigenem Profil | [View Map](tools/k3c-workbench/internal/browser/codemap.md) |
-| `tools/k3c-workbench/internal/enginetools/` | In-process-Facade auf `engine/level` und `engine/sim` (`level_generate`, `sim_run`) | [View Map](tools/k3c-workbench/internal/enginetools/codemap.md) |
 | `tools/k3c-workbench/internal/balance/` | Balancing-Tester: Bot-Szenario-Matrix, Zielkorridor, Baseline, Sensitivität, Kurven, Replays | [View Map](tools/k3c-workbench/internal/balance/codemap.md) |
-| `tools/k3c-workbench/internal/balance/cmd/` | CLI `k3c-balance` für Matrix-Läufe und Replays | [View Map](tools/k3c-workbench/internal/balance/cmd/codemap.md) |
 | `tools/k3c-workbench/internal/gamedata/` | Read-only-Zusammenfassungen von `reports/` und `saves/` | [View Map](tools/k3c-workbench/internal/gamedata/codemap.md) |
 | `tools/k3c-workbench/internal/github/` | `gh`-CLI-Client mit TTL-Cache für PR- und CI-Stand | [View Map](tools/k3c-workbench/internal/github/codemap.md) |
 | `tools/k3c-workbench/internal/usage/` | Statistik der MCP-Aufrufe mit JSON-Persistenz | [View Map](tools/k3c-workbench/internal/usage/codemap.md) |

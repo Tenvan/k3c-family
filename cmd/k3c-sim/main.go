@@ -5,7 +5,7 @@
 //
 //	k3c-sim run     [--input DATEI|-]          JSON {"biome","seed","ticks","inputs":[Segment…]} wie sim_run
 //	k3c-sim level   [--input DATEI|-]          JSON {"biome","seed"} wie level_generate
-//	k3c-sim balance [--input DATEI|-] [Flags]  Flags wie bin/k3c-balance (--targets, --report-dir, --seed-list …)
+//	k3c-sim balance [--input DATEI|-] [Flags]  Flags wie bis RS2.2 bin/k3c-balance (--targets, --report-dir, --seed-list …)
 //	k3c-sim bot     --bot NAME                  je Zeile auf stdin ein Zustand, je Zeile eine Antwort (bot.go, RS2.2)
 //
 // Eingabe: JSON aus der Datei hinter --input, bei run und level ohne --input von stdin („-“ = stdin). Bei balance ist
@@ -22,7 +22,7 @@
 //	{"event":"error","message":"…"}                   vor Exit 1 oder 2
 //	{"event":"aborted"}                               vor Exit 130
 //
-// Berichte schreibt balance nach --report-dir (Workbench: reports/simtest-<id>/), Dateien und Inhalt wie bin/k3c-balance.
+// Berichte schreibt balance nach --report-dir (Workbench: reports/simtest-<id>/), Dateien und Inhalt wie bis RS2.2 bin/k3c-balance.
 // Meldungen für Menschen gehen nach stderr. Exit-Codes: 0 geschafft, 1 Lauf gescheitert, 2 Aufruf falsch (Unterbefehl,
 // Flags, JSON), 130 abgebrochen (Strg+C, CTRL_BREAK, SIGTERM). Abbruch heißt Prozess-Ende: Die Workbench beendet den
 // Prozess (Job-Objekt wie engine/devrun); k3c-sim hat keine Kindprozesse. Berichtsdateien entstehen erst nach der
