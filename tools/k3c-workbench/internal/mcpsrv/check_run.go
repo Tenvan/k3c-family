@@ -105,13 +105,15 @@ func runProcess(ctx context.Context, spec runSpec) runResult {
 	stdout.Flush()
 	stderr.Flush()
 	res := runResult{dur: time.Since(start), at: start}
+	// Ein Startfehler (Programm fehlt) gilt vor dem Zeitlimit: Unter Last kann schon die Pfadsuche das Limit
+	// überschreiten, dann ginge der Fehler sonst als Zeitüberschreitung verloren (B-702).
 	switch {
+	case cmd.ProcessState == nil && err != nil:
+		res.err = err
 	case errors.Is(ctx.Err(), context.DeadlineExceeded):
 		res.timedOut, res.exit = true, -1
 	case cmd.ProcessState != nil:
 		res.exit = cmd.ProcessState.ExitCode()
-	case err != nil:
-		res.err = err
 	}
 	return res
 }

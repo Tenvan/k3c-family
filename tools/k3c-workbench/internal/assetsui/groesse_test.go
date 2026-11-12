@@ -2,6 +2,8 @@ package assetsui
 
 import (
 	"math"
+	"os"
+	"path/filepath"
 	"slices"
 	"strings"
 	"testing"
@@ -43,14 +45,26 @@ func TestAssetsGroesse(t *testing.T) {
 }
 
 // TestAssetsHintergrund: Biome aus den Ordnernamen; ein fremder Name wird abgelehnt, ohne eine Datei zu lesen.
+// Die Ordner baut der Test selbst: die gerenderten PNG sind nicht eingecheckt (B-737), ein frischer Checkout hat sie
+// erst nach gen:paper (B-738).
 func TestAssetsHintergrund(t *testing.T) {
 	t.Parallel()
-	d := dienst(root, false)
+	repo := t.TempDir()
+	for _, ordner := range []string{"hg-wald-fern-v1", "hg-wald-mitte-v1", "hg-wald-nah-v1", "hg-wald-nah-v2", "hg-hoehle-fern-v1"} {
+		dir := filepath.Join(repo, filepath.FromSlash(hintergrundOrdner), ordner)
+		if err := os.MkdirAll(dir, 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(dir, "stand.png"), []byte("\x89PNG"), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	d := dienst(repo, false)
 	teile, err := d.AssetsHintergruende()
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !slices.Contains(teile, "wald") {
+	if !slices.Equal(teile, []string{"wald"}) {
 		t.Fatalf("teile = %v", teile)
 	}
 	h, err := d.AssetsHintergrund("wald")

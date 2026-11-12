@@ -49,7 +49,29 @@ func startServer(t *testing.T, token string) *httptest.Server {
 	return srv
 }
 
+// skipOnline: Online-Tests starten Räume im echten Handler; sie entfallen mit dem Online-Spiel (Entscheidung 009,
+// B-823) und laufen bis dahin nur ohne -short (B-619, B-704).
+func skipOnline(t *testing.T) {
+	t.Helper()
+	if testing.Short() {
+		t.Skip("Online-Test mit Spielserver, läuft ohne -short (B-619, B-704)")
+	}
+}
+
+// waitUntil wartet, bis ok gilt: Fortschritt kommt im Takt des Servers, unter Last langsamer als die Wanduhr (B-704).
+func waitUntil(t *testing.T, what string, ok func() bool) {
+	t.Helper()
+	deadline := time.Now().Add(30 * time.Second)
+	for !ok() {
+		if time.Now().After(deadline) {
+			t.Fatalf("nicht erreicht: %s", what)
+		}
+		time.Sleep(20 * time.Millisecond)
+	}
+}
+
 func TestBotGeraeteSteuernMonarchen(t *testing.T) {
+	skipOnline(t)
 	srv := startServer(t, "geheim")
 	bot := &stepRight{}
 	ctx := context.Background()
@@ -68,7 +90,12 @@ func TestBotGeraeteSteuernMonarchen(t *testing.T) {
 	if err := b.Join(ctx, code); err != nil {
 		t.Fatal(err)
 	}
-	time.Sleep(3 * time.Second)
+	for _, d := range []*Device{a, b} {
+		waitUntil(t, d.name+" bewegt seinen Monarchen", func() bool {
+			st := d.Stats()
+			return st.States > 0 && st.Inputs > 0 && st.Moved
+		})
+	}
 	a.Stop()
 	b.Stop()
 	for _, d := range []*Device{a, b} {
@@ -97,6 +124,7 @@ func TestDeltaListen(t *testing.T) {
 // TR4.2, B-352: Der Beobachter legt den Raum ohne Platz an, liest den Zustand mit dem Monarchen des Spielers und
 // schickt keine Eingabe.
 func TestBeobachterOhnePlatz(t *testing.T) {
+	skipOnline(t)
 	srv := startServer(t, "geheim")
 	bot := &stepRight{}
 	ctx := context.Background()
@@ -115,7 +143,10 @@ func TestBeobachterOhnePlatz(t *testing.T) {
 	if err := p.Join(ctx, code); err != nil {
 		t.Fatal(err)
 	}
-	time.Sleep(time.Second)
+	waitUntil(t, "Beobachter sieht den Spieler", func() bool {
+		w, _ := o.World()
+		return o.Stats().States > 0 && w != nil && len(w.Players) == 1
+	})
 	w, own := o.World()
 	p.Stop()
 	o.Stop()
