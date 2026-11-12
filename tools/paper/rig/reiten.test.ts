@@ -30,6 +30,14 @@ describe('Reiten', { timeout: 60_000 }, () => {
     expect(() => findeReittier(join(wurzel, 'figuren/monarch.paper.json'), 'esel')).toThrow(Abgelehnt);
   });
 
+  it('Reittier-Suche bevorzugt die Gruppe reittiere vor alphabetisch früheren (gegner/wolf, B-804)', () => {
+    const wurzel = tmp();
+    for (const g of ['figuren', 'gegner', 'reittiere']) mkdirSync(join(wurzel, g));
+    copyFileSync(join(SPECS, 'pferd.paper.json'), join(wurzel, 'gegner/wolf.paper.json'));
+    copyFileSync(join(SPECS, 'pferd.paper.json'), join(wurzel, 'reittiere/wolf.paper.json'));
+    expect(findeReittier(join(wurzel, 'figuren/monarch.paper.json'), 'wolf')).toBe(join(wurzel, 'reittiere/wolf.paper.json'));
+  });
+
   it('reittier ohne rig vierbeiner → Exit 1, Regel reittier-unbekannt', () => {
     const dir = tmp();
     const m = structuredClone(monarch);

@@ -62,7 +62,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NG17.1 | `NG17.1-reittier-wolf-pfoten.md` | Umsetzung | autonom | offen |
+| NG17.1 | `NG17.1-reittier-wolf-pfoten.md` | Umsetzung | autonom | fertig |
 | NG17.2 | `NG17.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

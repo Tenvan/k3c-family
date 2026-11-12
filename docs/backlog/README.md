@@ -183,6 +183,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-812](B-812-native-menue-papierschnitt.md) | CLI | Idee | niedrig | eingeplant | NG13 | Das Menü des nativen Spiels erscheint im Papierschnitt-Stil mit Illustrationen |
 | [B-813](B-813-native-hud-menue-befunde-ng9.md) | CLI | Problem | mittel | eingeplant | NG13 | Burgfall-Banner, Skill-Menü, Hauptmenü nach dem Verlassen und Siegmeldung zeigen im nativen Spiel das Richtige |
 | [B-818](B-818-native-menue-kachel-illustrationen.md) | CLI | Idee | niedrig | offen | – | Hauptmenü und Pause-Menü des nativen Spiels zeigen Kacheln mit Illustrationen |
+| [B-819](B-819-assets-tools-doppelte-ids.md) | DEV | Problem | mittel | offen | – | Die assets_*-Tools erreichen auch Assets, deren ID in zwei Gruppen vorkommt |
 
 ## Archiv
 

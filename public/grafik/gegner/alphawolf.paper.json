@@ -383,5 +383,8 @@
       "frames": 8,
       "gangart": "trab"
     }
+  },
+  "proportionen": {
+    "fuss": "pfote"
   }
 }
