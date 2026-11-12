@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** NG13
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -36,11 +36,11 @@ Umbelegen von Tasten, Tastenhinweise im HUD (B-741, B-755).
 
 ## Regeln und Einschränkungen
 
-Importregeln der Pakete: `menu` darf `input` und `hud` nicht direkt importieren; Vorschlag: Belegung kommt über den Vertrag `view`. Datei ≤ 400 Zeilen.
+Importregeln der Pakete: `menu` darf `input` und `hud` nicht direkt importieren; die Belegung kommt über den Vertrag `view` (entschieden, siehe Offene Fragen). Datei ≤ 400 Zeilen.
 
 Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen):
 
-- **Bereich:** `native/k3c-game/menu/**`
+- **Bereich:** `native/k3c-game/menu/**`, `native/k3c-game/view/**`, `native/k3c-game/game/**`
 - **Abhängig von:** –
 - **Braucht 🧑:** Freigabe
 - **Größe:** M
@@ -62,7 +62,7 @@ Kein Gamepad angeschlossen → Tastaturspalten bleiben, Gamepad-Spalte zeigt die
 
 ## Offene Fragen
 
-Wie kommt `menu` an die Belegung: über den Vertrag `view` (Vorschlag) oder anders? Entscheidet Ralf bei der Freigabe.
+Entschieden autonom, Claude, 2026-11-12: Über den Vertrag `view`, nur additiv: `view` bekommt einen Typ für die Zeilen der Tastenbelegung (Aktion, Tastatur links, Tastatur rechts, Gamepad), `game` (kennt alle Pakete) baut die Zeilen aus `input/bindings.go` und den Beschriftungen aus `hud` und reicht sie an `menu` weiter. Begründung: hält die Importregel (`game/imports_test.go`) ein, eine Quelle für die Belegung, kein Eingriff in `input` und `hud`.
 
 ## Notizen
 

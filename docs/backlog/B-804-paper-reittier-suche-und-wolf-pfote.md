@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** NG17
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -36,15 +36,17 @@ Keine neue Reittier-Grafik, keine Änderung anderer Gegner-Specs, kein Umbau der
 
 ## Regeln und Einschränkungen
 
-Specs nur über `assets_*` (Entscheidung 005). Sperre `golden`, weil sich Grafik-Golden ändern können; Golden nach Regel aktualisieren (`docs/arbeitsweise.md` › Sim, Balance und Gen).
+Specs nur über `assets_*` (Entscheidung 005). Sperre `golden`, weil sich Grafik-Golden ändern können; Golden nach Regel aktualisieren (`docs/arbeitsweise.md` › Golden aktualisieren).
 
 Planungsangaben für die Arbeitswellen:
 
-- **Bereich:** `tools/paper/rig/**`, `public/grafik/gegner/**`
+- **Bereich:** `tools/paper/rig/**`, `tools/paper/golden/**`, `public/grafik/gegner/**`
 - **Abhängig von:** –
 - **Braucht 🧑:** Freigabe
 - **Größe:** S
 - **Sperre:** golden
+
+Revision 2 (2026-11-12): Bereich um `tools/paper/golden/**` ergänzt (Grafik-Golden).
 
 ## Beispiele
 

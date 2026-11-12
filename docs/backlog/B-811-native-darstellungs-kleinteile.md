@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** NG12
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -36,7 +36,9 @@ Figuren-Anzeigen (B-806), Menü-Optik (B-812).
 
 ## Regeln und Einschränkungen
 
-Entscheidung 008, keine neuen Assets ohne `assets_*`.
+Entscheidung 008, keine neuen Assets ohne `assets_*`. Münze und Mond der Anleitung zeichnet `hud` mit vorhandenen Mitteln (Glyphen oder einfache Formen in `hud`), ohne neues Asset (entschieden, siehe Offene Fragen).
+
+Aufteilung (2026-11-12): AC-01 und AC-02 (`props`, `fx`) laufen in NG12, AC-03 (`hud`) in NG13, damit `hud` nur ein Sprint ändert.
 
 Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen):
 
@@ -62,7 +64,7 @@ Bild für Münze oder Mond fehlt → Text ohne Bild, kein Absturz.
 
 ## Offene Fragen
 
-keine
+Entschieden autonom, Claude, 2026-11-12: Münze und Mond der Anleitung entstehen ohne neues Asset aus Mitteln von `hud` (Glyphen, Kreis, Sichel), angelehnt an `hints/guideHints.ts:22-26`. Begründung: kein Asset-Lauf (`assets_*`) für zwei kleine Symbole; ein späteres Bild ersetzt sie ohne Spec-Änderung.
 
 ## Notizen
 

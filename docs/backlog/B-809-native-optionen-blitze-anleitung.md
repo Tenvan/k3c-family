@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** NG13
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-11-12
 
 ## Ausgangslage
 
@@ -18,7 +18,7 @@ Der Browser-Client bietet in den Optionen die Schalter „Blitze“ und „Anlei
 
 ## Ziel
 
-Die Optionen des nativen Spiels bieten zusätzlich Blitze und Anleitung an, und „Anleitung gesehen“ bleibt dauerhaft gespeichert, falls Ralf das will.
+Die Optionen des nativen Spiels bieten zusätzlich Blitze und Anleitung an, und „Anleitung gesehen“ bleibt dauerhaft in den Einstellungen gespeichert.
 
 ## Beteiligte und Zielgruppen
 
@@ -36,13 +36,13 @@ Weitere Optionen über B-800 hinaus.
 
 ## Regeln und Einschränkungen
 
-Entscheidung von Ralf zu B-800 (Optionen: Lautstärke, Vollbild, Sprache) darf nur mit seinem Ja erweitert werden.
+Die Optionen aus B-800 (Lautstärke, Vollbild, Sprache) werden um genau diese zwei Schalter erweitert (entschieden, siehe Offene Fragen). Einstellungen nur additiv in `view.Settings` und im Dateiformat `_settings.json` (`local/settings.go`); fehlende Felder behalten den Standard (Blitze an, Anleitung an, nicht gesehen).
 
 Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen):
 
-- **Bereich:** `native/k3c-game/menu/**`, `native/k3c-game/settings/**`
+- **Bereich:** `native/k3c-game/menu/**`, `native/k3c-game/view/settings.go`, `native/k3c-game/view/settings_test.go`, `native/k3c-game/local/settings.go`, `native/k3c-game/local/settings_test.go`, `native/k3c-game/fx/**`, `native/k3c-game/hud/**`
 - **Abhängig von:** –
-- **Braucht 🧑:** Entscheidung
+- **Braucht 🧑:** Freigabe
 - **Größe:** S
 - **Sperre:** –
 
@@ -62,8 +62,8 @@ Einstellungsdatei fehlt oder ist defekt → Standardwerte, Log-Zeile.
 
 ## Offene Fragen
 
-Sollen „Blitze“ und „Anleitung“ zu den am 2026-11-11 festgelegten Optionen (B-800) dazukommen? Entscheidet Ralf. Ohne Ja wird das Ticket verworfen.
+Entschieden autonom, Claude, 2026-11-12: Ja, die Schalter „Blitze“ und „Anleitung an/aus“ kommen zu den Optionen aus B-800 dazu; „Anleitung gesehen“ wird dauerhaft in den Einstellungen (`_settings.json`) gespeichert. Begründung: Gleichstand mit dem Browser-Client, Blitze sind eine Frage der Verträglichkeit. Der Pfad `settings/**` aus Revision 1 gab es nicht; Einstellungen liegen in `view/settings.go` und `local/settings.go`, die Wirkung in `fx` (Blitze) und `hud` (Anleitung).
 
 ## Notizen
 
-Gefunden im Funktionsabgleich NG9.1 (2026-11-11). Der Pfad `native/k3c-game/settings/**` ist ungeprüft; Bereich bei der Freigabe an den tatsächlichen Ort der Einstellungen anpassen.
+Gefunden im Funktionsabgleich NG9.1 (2026-11-11). Bereich in Revision 2 an den tatsächlichen Ort der Einstellungen angepasst.
