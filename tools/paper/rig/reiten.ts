@@ -19,7 +19,7 @@ import { type Bein, GANGARTEN, type GangPose, gangPose } from './gangarten';
 import { beinAus, reittierGeometrie } from './reitBoxen';
 import { umhangSvg } from './umhang';
 import { rideMatrix, rideText, vierbeinerMatrizen } from './vierbeiner';
-import { gangartVon, pferdTeile, pruefeVierbeiner } from './vierbeinerBild';
+import { gangartVon, pferdTeile, pruefeVierbeiner, type VierbeinerKontext } from './vierbeinerBild';
 
 /** Ordner? Nicht lesbare Einträge (fremde Rechte) zählen nicht. */
 const istOrdner = (p: string) => {
@@ -202,14 +202,14 @@ export function ladeReiter(specPfad: string | undefined, id: string, stil: Stil,
 }
 
 /** Reittier-Ebene `hinten` oder `vorn` (vorn samt Zügeln des Standard-Reiters); der Tausch der Spielerfarbe gilt hier nicht */
-export function reittierEbeneBild(spec: Spec, a: Ausgabe, k: Kontext): Bild {
+export function reittierEbeneBild(spec: Spec, a: Ausgabe, k: VierbeinerKontext): Bild {
   pruefeVierbeiner(spec);
   const s = ausgabeSpec(spec, a), anim = animationVon(s, a.animation), g = gangartVon(anim, a.animation);
   const reiter = ladeReiter(k.specPfad, anim.reiter!, k.stil, reitFeld(a.animation, 'reiter')), vorn = anim.ebene === 'vorn';
   const nur = new Set<Segment>(vorn ? ['reittier-vorn', 'zuegel'] : ['reittier-hinten']);
   const frames = Array.from({ length: anim.frames }, (_, n) => {
     const p = gangPose(s, g, n / anim.frames);
-    const inhalt = reitSegmente(reiter, s, { pose: p }, k.stil, nur).map((x) => x.svg).join('');
+    const inhalt = reitSegmente(reiter, s, { pose: p }, k.stil, nur, new Set(k.beinOhne ?? [])).map((x) => x.svg).join('');
     return { svg: `<g filter="url(#paper)"><g transform="${rideText(p.ride.dy, p.ride.pitch)}">${inhalt}</g></g>`, geometrie: geometrie(s.teile, vierbeinerMatrizen(s, p)) };
   });
   const m = s.ausgabe.massstab ?? 1;

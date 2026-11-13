@@ -1,6 +1,6 @@
 # PT4.1 · frame --ohne mit Beinpfad von Vierbeinern, mit Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -56,5 +56,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `rig/vierbeiner.test.ts` › „B-851/AC-01“ grün (`--ohne oberbein-vn`/`unterbein-vn` entfernt den Beinpfad vn aus dem SVG, hf bleibt); `bin/paper.test.ts` › „B-851/AC-01“ grün (Exit 0, Boxen gleich, PNG anders, Ober- und Unterbein gleichwertig).
+- Umsetzung: `VierbeinerKontext.beinOhne` (`vierbeinerBild.ts`), `frame.ts` reicht `w.ohne`; `vierbeinerBild` und `reittierEbeneBild` (über `reitSegmente`) nutzen `beinAus` aus `reitBoxen.ts`. Vertrag `paper-spec.md` › 8 nachgezogen. Render ohne `--ohne` unverändert.
+- `bun test tools/paper` 351 grün, 1 rot: `golden/public.test.ts` (fehlendes `galopp.png` im Worktree, B-737, bekannt). `task:check:diff` grün (59 s). Kein Gen, kein Golden.
+- Neue Tickets: keine.

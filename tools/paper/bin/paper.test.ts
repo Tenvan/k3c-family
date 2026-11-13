@@ -146,6 +146,25 @@ describe('frame --ohne mit Teilen des Reittiers (B-845/AC-01)', { timeout: 60_00
   });
 });
 
+describe('frame --ohne blendet den Beinpfad von Vierbeinern aus (B-851/AC-01)', { timeout: 60_000 }, () => {
+  const pferd = join(SPECS, 'pferd.paper.json');
+  const frame = (...ohne: string[]) => {
+    const out = join(mkdtempSync(join(tmpdir(), 'paper-bein-')), 'f.png');
+    const r = antwort(['frame', pferd, '--animation', 'galopp', '--frame', '2', ...(ohne.length ? ['--ohne', ohne.join(',')] : []), '--out', out]);
+    return { r, png: readFileSync(out) };
+  };
+
+  it('oberbein-vn und unterbein-vn ändern das Bild, Boxen der übrigen Teile bleiben', () => {
+    const voll = frame(), ober = frame('oberbein-vn'), unter = frame('unterbein-vn');
+    for (const x of [ober, unter]) {
+      expect(x.r.code).toBe(0);
+      expect(x.r.json.teile).toEqual(voll.r.json.teile);
+      expect(x.png.equals(voll.png)).toBe(false);
+    }
+    expect(ober.png.equals(unter.png)).toBe(true);
+  });
+});
+
 describe('--stil <datei> für frame und render (B-705/AC-01)', { timeout: 60_000 }, () => {
   const mauer = () => {
     const dir = mkdtempSync(join(tmpdir(), 'paper-stil-'));

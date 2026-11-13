@@ -201,6 +201,8 @@ JSON-Objekt auf stdout. Exit 0 = ok, 1 = fachlich abgelehnt (`{"ok": false, "feh
   die des Reiters. Ober- oder Unterbein nimmt den ganzen Beinpfad des Beins (ein Papierstück), beide Bein-Boxen fehlen.
   Ein unbekanntes `reittier:`-Teil lehnt mit `teil-unbekannt` und der Liste der Reittier-Teile ab, ebenso
   `reittier:<teil>` bei einer Animation ohne Reittier.
+- `frame --ohne` bei Vierbeinern (B-851): `oberbein-<b>` oder `unterbein-<b>` nimmt auch hier den ganzen Beinpfad des Beins
+  (Animationen eines Vierbeiners und seine Reittier-Ebenen); die anderen Beine und Teile bleiben.
 - Fehler zu Reit-Angaben nennen den vollen Pfad: `animationen.<name>.reittier` bzw. `animationen.<name>.reiter` (B-708).
 
 ## 9. Fixtures (`tools/paper/fixtures/`)

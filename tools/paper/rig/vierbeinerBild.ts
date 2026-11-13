@@ -9,6 +9,7 @@ import { type FrameGroesse, frameGroesse } from '../render/raster';
 import { type Ausgabe, ausgabeSpec } from '../render/stufen';
 import { kette, teileSvg } from '../render/svg';
 import { beinpfad } from './beinpfad';
+import { beinAus } from './reitBoxen';
 import { type Bein, type Gangart, GANGARTEN, type GangPose, gangPose } from './gangarten';
 import { pruefeGangarten } from './proportionen';
 import { rideText, vierbeinerMatrizen } from './vierbeiner';
@@ -48,13 +49,18 @@ export function pferdTeile(spec: Spec, p: GangPose, stil: Stil, nur: (id: string
   return `<g transform="scale(${num(p.massstab)})">${teileSvg(spec, stil, p.winkel, { einschub, ausblenden: aus })}</g>`;
 }
 
-export function vierbeinerBild(spec: Spec, a: Ausgabe, k: Kontext): Bild {
+/** Kontext des Vierbeiner-Bilds: `beinOhne` = Teile des Vierbeiners, die `frame --ohne` ausblendet; ein Bein ist ohne
+ *  Beinpfad, wenn Ober- oder Unterbein darin steht (B-851). */
+export type VierbeinerKontext = Kontext & { beinOhne?: readonly string[] };
+
+export function vierbeinerBild(spec: Spec, a: Ausgabe, k: VierbeinerKontext): Bild {
   pruefeVierbeiner(spec);
   const s = ausgabeSpec(spec, a), anim = animationVon(s, a.animation), g = gangartVon(anim, a.animation);
   const frames = Array.from({ length: anim.frames }, (_, n) => {
     const p = gangPose(s, g, n / anim.frames);
+    const ohne = new Set(k.beinOhne ?? []);
     return {
-      svg: `<g filter="url(#paper)"><g transform="${rideText(p.ride.dy, p.ride.pitch)}">${pferdTeile(s, p, k.stil, () => true)}</g></g>`,
+      svg: `<g filter="url(#paper)"><g transform="${rideText(p.ride.dy, p.ride.pitch)}">${pferdTeile(s, p, k.stil, (id) => !(id.startsWith('oberbein-') && beinAus(id.slice(9) as Bein, ohne)))}</g></g>`,
       geometrie: geometrie(s.teile, vierbeinerMatrizen(s, p)),
     };
   });

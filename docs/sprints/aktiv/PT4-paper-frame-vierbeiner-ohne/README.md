@@ -59,7 +59,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| PT4.1 | `PT4.1-frame-ohne-vierbeiner.md` | Umsetzung | autonom | offen |
+| PT4.1 | `PT4.1-frame-ohne-vierbeiner.md` | Umsetzung | autonom | fertig |
 | PT4.2 | `PT4.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

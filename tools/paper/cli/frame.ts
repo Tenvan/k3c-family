@@ -10,6 +10,7 @@ import { type FrameGroesse, rastere, streifenSvg } from '../render/raster';
 import type { Ausgabe } from '../render/stufen';
 import { defs } from '../render/svg';
 import { REITTIER_PRAEFIX } from '../rig/reitBoxen';
+import type { VierbeinerKontext } from '../rig/vierbeinerBild';
 import { ladeReittier, type ReitKontext, reitFeld } from '../rig/reiten';
 
 /** `ohne`: Teile, die ohne Lagen gerendert werden (B-734: Teil in der Vorschau ausblenden); Gelenke bleiben. */
@@ -70,7 +71,7 @@ export function frameRendern(spec: Spec, w: FrameWahl, stil: Stil, specPfad: str
   pruefeWahl(spec, w, stil, specPfad);
   if (w.ohne?.length) spec = { ...spec, teile: spec.teile.map((t) => (w.ohne!.includes(t.id) ? { ...t, lagen: [] } : t)) };
   const a: Ausgabe = { schluessel: w.animation, animation: w.animation, stufe: w.stufe, ...(w.variante ? { variante: w.variante } : {}) };
-  const k: ReitKontext = { stil, specPfad, reittierOhne: reittierTeile(w.ohne ?? []) };
+  const k: ReitKontext & VierbeinerKontext = { stil, specPfad, reittierOhne: reittierTeile(w.ohne ?? []), beinOhne: w.ohne ?? [] };
   const bild = bildVon(spec, a, k), f = bild.frames[w.frame];
   writeFileSync(out, rastere(streifenSvg([f.svg], bild.groesse, defs(stil, spec.id, bild.groesse.frameH / bild.groesse.rahmen[3]))).png);
   return teilBoxen(f.geometrie, bild.groesse);
