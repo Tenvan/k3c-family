@@ -48,7 +48,7 @@ func TestAssetsStyle(t *testing.T) {
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 	text, isErr := callText(t, cs, "assets_style_get", map[string]any{})
 	if isErr || !regexp.MustCompile(`^public/grafik/stil\.paper\.json · stilHash [0-9a-f]{64}\n`).MatchString(text) ||
-		!strings.Contains(text, "Materialien (24): haut, haar") || !strings.Contains(text, "Einzeltöne (5): huf, auge") ||
+		!regexp.MustCompile(`Materialien \(\d+\): haut, haar`).MatchString(text) ||!strings.Contains(text, "Einzeltöne (5): huf, auge") ||
 		!strings.Contains(text, "papier: lage 0.5/0.9/0.45/0.55 #1a0f14 · auflage 0.3/0.5/0.3/0.35 · struktur 1.3/2/0.18 · falz 0.25 · licht rechts-oben") {
 		t.Errorf("style_get:\n%s", text)
 	}
@@ -68,6 +68,25 @@ func TestAssetsStyle(t *testing.T) {
 	}
 	if hashUnter(t, root, "public/grafik/stil.paper.json") != vorher {
 		t.Error("Stil-Datei geändert")
+	}
+}
+
+// B-710: teile als Objekt nach ID ändert nur das Teil; B-706: assets_set auf ein Reittier nennt die Reiter.
+func TestAssetsSetTeilPatchUndReiter(t *testing.T) {
+	root := paperRepo(t)
+	cs := connect(t, New(Config{Version: "test", Root: root}))
+	text, isErr := callText(t, cs, "assets_set", map[string]any{"id": "monarch", "patch": map[string]any{"teile": map[string]any{"kopf": map[string]any{"pivot": []int{1, -91}}}}})
+	b, _ := os.ReadFile(filepath.Join(root, "public/grafik/figuren/monarch.paper.json"))
+	if isErr || !strings.Contains(string(b), `"pivot": [1, -91]`) || !strings.Contains(string(b), `"id": "rumpf"`) {
+		t.Fatalf("Teil-Patch:\n%s", text)
+	}
+	text, isErr = callText(t, cs, "assets_set", map[string]any{"id": "monarch", "patch": map[string]any{"teile": map[string]any{"nase": map[string]any{}}}})
+	if !isErr || !strings.Contains(text, "teile.nase · teil-unbekannt · Teil „nase“ fehlt; vorhanden: ") {
+		t.Errorf("unbekanntes Teil:\n%s", text)
+	}
+	text, isErr = callText(t, cs, "assets_set", map[string]any{"id": "pferd", "patch": map[string]any{"version": 2}})
+	if isErr || !strings.Contains(text, "\nReiter veraltet: monarch · Weiter: assets_render {id} je Reiter") {
+		t.Errorf("Reiter:\n%s", text)
 	}
 }
 

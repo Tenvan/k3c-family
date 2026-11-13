@@ -1,22 +1,19 @@
 // Package paperassets ist die Asset-Schicht der MCP-Tools (Vertrag docs/standards/paper-mcp.md, paper-spec.md):
-// Aufruf der Render-CLI, JSON-Merge-Patch, atomares Schreiben einer Spec, Git-Basis und Render-Jobs. Bis RD1 die
-// echte CLI liefert, zeigt K3C_PAPER_CLI auf die Attrappe tools/paper/fixtures/cli-stub.ts.
+// Aufruf der Render-CLI (gemeinsam mit internal/review über review.Aufruf), JSON-Merge-Patch, atomares Schreiben
+// einer Spec, Git-Basis und Render-Jobs. K3C_PAPER_CLI zeigt in Tests auf die Attrappe tools/paper/fixtures/cli-stub.ts.
 package paperassets
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
-	"time"
 
 	"k3c/tools/k3c-workbench/internal/assetsui"
-	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/k3c-workbench/internal/review"
 )
 
 // Fehler ist eine verletzte Regel {feld, regel, text} (paper-spec.md › Regeln).
@@ -43,55 +40,21 @@ func AlsAbgelehnt(err error) (*Abgelehnt, bool) {
 // CLI ruft `bun <Skript> <befehl> …` im Checkout Root.
 type CLI struct{ Root, Skript string }
 
-// NewCLI nimmt das Skript aus K3C_PAPER_CLI, sonst tools/paper/bin/paper.ts im Checkout.
-func NewCLI(root string) CLI {
-	if s := os.Getenv("K3C_PAPER_CLI"); s != "" {
-		return CLI{Root: root, Skript: s}
-	}
-	return CLI{Root: root, Skript: filepath.Join(root, "tools", "paper", "bin", "paper.ts")}
-}
+// NewCLI nimmt das Skript wie review.Skript: K3C_PAPER_CLI, sonst tools/paper/bin/paper.ts, sonst die Attrappe.
+func NewCLI(root string) CLI { return CLI{Root: root, Skript: review.Skript(root)} }
 
-// cliZeit begrenzt jeden Aufruf (wie review.CLI): eine hängende CLI hielte sonst die Asset-Sperre für immer.
-var cliZeit = 2 * time.Minute
+// cliZeit begrenzt jeden Aufruf (review.Zeitlimit); Tests verkürzen es.
+var cliZeit = review.Zeitlimit
 
-// run führt einen Befehl aus: Exit 0 → stdout, Exit 1 → *Abgelehnt, sonst Fehler mit stderr.
-func (c CLI) run(eltern context.Context, args ...string) (json.RawMessage, error) {
-	ctx, cancel := context.WithTimeout(eltern, cliZeit)
-	defer cancel()
-	cmd := proc.Command(ctx, append([]string{"bun", c.Skript}, args...))
-	cmd.Dir = c.Root
-	var out, errOut bytes.Buffer
-	cmd.Stdout, cmd.Stderr = &out, &errOut
-	err := cmd.Run()
-	if eltern.Err() != nil {
-		return nil, eltern.Err()
+// run führt einen Befehl über die gemeinsame Anbindung review.Aufruf aus (B-706): Exit 0 → stdout, Exit 1 →
+// *Abgelehnt, sonst Fehler mit stderr.
+func (c CLI) run(ctx context.Context, args ...string) (json.RawMessage, error) {
+	out, err := review.Aufruf(ctx, c.Root, c.Skript, cliZeit, args...)
+	var ab *review.Abgelehnt
+	if errors.As(err, &ab) {
+		return nil, &Abgelehnt{Fehler: ab.Fehler}
 	}
-	if ctx.Err() != nil {
-		return nil, fmt.Errorf("Render-CLI %s: Zeitlimit %s überschritten", args[0], cliZeit) //nolint:staticcheck // Satz für die Antwort
-	}
-	code := 0
-	if err != nil {
-		code = -1
-		if cmd.ProcessState != nil {
-			code = cmd.ProcessState.ExitCode()
-		}
-	}
-	if code == 1 {
-		var ab struct {
-			Fehler []Fehler `json:"fehler"`
-		}
-		if json.Unmarshal(out.Bytes(), &ab) == nil && len(ab.Fehler) > 0 {
-			return nil, &Abgelehnt{Fehler: ab.Fehler}
-		}
-	}
-	if code != 0 {
-		text := strings.TrimSpace(errOut.String())
-		if text == "" && err != nil {
-			text = err.Error()
-		}
-		return nil, fmt.Errorf("Render-CLI %s (Exit %d): %s", args[0], code, text) //nolint:staticcheck // Satz für die Antwort
-	}
-	return out.Bytes(), nil
+	return out, err
 }
 
 // rel macht einen Pfad im Checkout relativ mit /; außerhalb bleibt er (mit /) unverändert.

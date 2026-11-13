@@ -32,6 +32,7 @@ type SetErgebnis struct {
 	PNGs        int
 	Dateien     []string
 	Pixel       []Pixel
+	Reiter      []string // Assets, die dieses Asset als Reittier nutzen (Render veraltet, B-706)
 }
 
 // Set wendet einen Merge-Patch atomar auf die Spec an: Patch → validate → render in einen Temp-Ordner → Spec per
@@ -46,6 +47,10 @@ func Set(ctx context.Context, cli CLI, id string, patch json.RawMessage) (SetErg
 	if err != nil {
 		return SetErgebnis{}, err
 	}
+	patch, err = teilePatch(alt, patch)
+	if err != nil {
+		return SetErgebnis{}, err
+	}
 	neu, err := MergePatch(alt, patch)
 	if err != nil {
 		return SetErgebnis{}, err
@@ -54,7 +59,11 @@ func Set(ctx context.Context, cli CLI, id string, patch json.RawMessage) (SetErg
 	if err != nil {
 		return SetErgebnis{}, err
 	}
-	return schreibeSpec(ctx, cli, a, alt, text)
+	r, err := schreibeSpec(ctx, cli, a, alt, text)
+	if err == nil {
+		r.Reiter = ReiterVon(cli.Root, a.ID)
+	}
+	return r, err
 }
 
 // name ist eine erlaubte Asset-ID oder Gruppe (Schema-Muster name).
@@ -203,11 +212,12 @@ func ersetze(src, ziel string) error {
 	return nil
 }
 
-// ersetzeOrdner benennt src nach ziel um; ein vorhandenes ziel wird erst beiseitegelegt und danach gelöscht.
+// ersetzeOrdner benennt src (<tmp>/<gruppe>/<id>) nach ziel um; ein vorhandenes ziel wird erst nach <tmp>/.beiseite
+// gelegt (unter .cache/, nicht neben die Ausgabe, die der Server beobachtet; B-706) und danach gelöscht.
 func ersetzeOrdner(src, ziel string) error {
 	beiseite := ""
 	if _, err := os.Stat(ziel); err == nil {
-		beiseite = ziel + ".alt-" + filepath.Base(filepath.Dir(filepath.Dir(src)))
+		beiseite = filepath.Join(filepath.Dir(filepath.Dir(src)), ".beiseite")
 		if err := ordnerUmbenennen(ziel, beiseite); err != nil {
 			return err
 		}
@@ -239,6 +249,10 @@ func animationen(spec []byte) []string {
 	return out
 }
 
+// SetOverlay ist der Dateiname des Overlays von assets_set unter .cache/paper/mcp/: Präfix set-, damit er das
+// Overlay von assets_review (<id>-<animation>-0-diff.png) nicht überschreibt (B-706).
+func SetOverlay(id, anim string) string { return fmt.Sprintf("set-%s-%s-0-diff.png", id, anim) }
+
 // pixelJeAnimation rendert Frame 0 jeder Animation alt und neu (parallel) und vergleicht die Pixel.
 func pixelJeAnimation(ctx context.Context, cli CLI, a Asset, altSpec, spec string, anims []string) []Pixel {
 	out := make([]Pixel, len(anims))
@@ -247,7 +261,7 @@ func pixelJeAnimation(ctx context.Context, cli CLI, a Asset, altSpec, spec strin
 	var wg sync.WaitGroup
 	for i, anim := range anims {
 		wg.Go(func() {
-			out[i] = pixel(ctx, cli, altSpec, spec, anim, filepath.Join(cache, fmt.Sprintf("%s-%s-0-diff.png", a.ID, anim)))
+			out[i] = pixel(ctx, cli, altSpec, spec, anim, filepath.Join(cache, SetOverlay(a.ID, anim)))
 		})
 	}
 	wg.Wait()

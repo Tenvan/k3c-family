@@ -1,4 +1,4 @@
 monarch geändert: 1 Feld · umhang.material koenigsrot → purpur
-Render: 3 PNGs (idle, lauf, reiten) · Pixel-Anteil reiten 1,53 % (Box 56,56 48×32)
-Vorschau: tools/paper/fixtures/render/monarch/monarch-galopp-0-purpur.png · Overlay: tools/paper/fixtures/render/monarch/pixeldiff-umhang.png
+Render: 3 PNGs (idle, lauf, reiten) · Pixel-Anteil idle 0,00 %, lauf 0,00 %, reiten 1,53 % (Box reiten 56,56 48×32)
+Vorschau: public/grafik/figuren/monarch/idle.png · Overlay: .cache/paper/mcp/set-monarch-reiten-0-diff.png
 Checkout: Worktree pv1 (C:\WORKSPACE\k3c\.claude\worktrees\pv1)

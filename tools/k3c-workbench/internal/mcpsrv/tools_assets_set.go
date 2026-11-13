@@ -16,7 +16,7 @@ import (
 
 type assetsSetIn struct {
 	ID    string         `json:"id" jsonschema:"Asset-ID, z. B. monarch"`
-	Patch map[string]any `json:"patch" jsonschema:"JSON-Merge-Patch (RFC 7396) auf die Spec: null löscht, Objekte werden gemischt, Listen ersetzt"`
+	Patch map[string]any `json:"patch" jsonschema:"JSON-Merge-Patch (RFC 7396) auf die Spec: null löscht, Objekte werden gemischt, Listen ersetzt; teile auch als Objekt nach Teil-ID ({teile: {kopf: {...}}}): ändert nur die genannten Teile"`
 }
 
 type assetsStyleSetIn struct {
@@ -125,6 +125,9 @@ func assetsSetText(ctx context.Context, root string, in assetsSetIn) (string, er
 	}
 	if len(vorschau) > 0 {
 		b.WriteString("\n" + strings.Join(vorschau, " · "))
+	}
+	if len(r.Reiter) > 0 {
+		fmt.Fprintf(&b, "\nReiter veraltet: %s · Weiter: assets_render {id} je Reiter", strings.Join(r.Reiter, ", "))
 	}
 	return b.String(), nil
 }

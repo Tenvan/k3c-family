@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 )
 
@@ -132,5 +133,31 @@ func TestAnlegenSchreibtIndex(t *testing.T) {
 	b, _ = os.ReadFile(filepath.Join(root, "public/grafik/figuren/index.paper.json"))
 	if !strings.Contains(string(b), `"id": "monarch"`) {
 		t.Errorf("Index nach Set: %s", b)
+	}
+}
+
+// B-706: zwei parallele Anlagen derselben ID in verschiedenen Gruppen – genau eine gelingt.
+func TestAnlegenParallelEineID(t *testing.T) {
+	t.Parallel()
+	for runde := range 10 {
+		root := t.TempDir()
+		schreibe(t, root, "public/grafik/stil.paper.json", "{}")
+		fehler := make([]error, 2)
+		var wg sync.WaitGroup
+		for i, g := range []string{"figuren", "requisiten"} {
+			wg.Go(func() {
+				a := Asset{ID: "fass", Gruppe: g, Pfad: Grafik + "/" + g + "/fass" + endung}
+				fehler[i] = legeAn(root, a, []byte(`{"id":"fass"}`))
+			})
+		}
+		wg.Wait()
+		if (fehler[0] == nil) == (fehler[1] == nil) {
+			t.Fatalf("Runde %d: genau eine Anlage soll gelingen: %v", runde, fehler)
+		}
+		for _, err := range fehler {
+			if err != nil && !strings.Contains(err.Error(), "fass gibt es schon") {
+				t.Errorf("Meldung: %v", err)
+			}
+		}
 	}
 }

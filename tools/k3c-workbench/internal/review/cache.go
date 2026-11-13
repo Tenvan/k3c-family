@@ -63,7 +63,9 @@ func neueQuelle(pfad string, spec, stil []byte, basis bool, specs []string, lies
 	return q, err
 }
 
-// reittiere liefert die Reittier-IDs aus animationen[*].reittier.
+// Reittiere liefert die Reittier-IDs aus animationen[*].reittier (sortiert, ohne Doppelte).
+func Reittiere(spec []byte) []string { return reittiere(spec) }
+
 func reittiere(spec []byte) []string {
 	var s struct {
 		Animationen map[string]struct{ Reittier string } `json:"animationen"`

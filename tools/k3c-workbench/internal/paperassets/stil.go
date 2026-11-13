@@ -16,6 +16,7 @@ import (
 	"github.com/google/jsonschema-go/jsonschema"
 
 	"k3c/tools/k3c-workbench/internal/assetsui"
+	"k3c/tools/k3c-workbench/internal/review"
 )
 
 // stilSchema ist das JSON-Schema der Stil-Datei relativ zum Checkout (PV1.3).
@@ -303,5 +304,29 @@ func betroffen(root string, felder []assetsui.FeldAenderung, assets []Asset) []A
 			}
 		}
 	}
-	return out
+	return mitReitern(root, out, assets)
+}
+
+// mitReitern ergänzt die Reiter der betroffenen Reittiere: ihr Render zeigt das Reittier mit (B-706).
+func mitReitern(root string, betroffen, assets []Asset) []Asset {
+	drin := map[string]bool{}
+	for _, a := range betroffen {
+		drin[a.ID] = true
+	}
+	for _, a := range assets {
+		if drin[a.ID] {
+			continue
+		}
+		b, err := os.ReadFile(a.Abs(root))
+		if err != nil {
+			continue
+		}
+		for _, r := range review.Reittiere(b) {
+			if drin[r] {
+				betroffen = append(betroffen, a)
+				break
+			}
+		}
+	}
+	return betroffen
 }

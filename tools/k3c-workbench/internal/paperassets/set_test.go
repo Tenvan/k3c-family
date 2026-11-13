@@ -24,6 +24,12 @@ func TestSetAendertMaterial(t *testing.T) {
 	if r.PNGs == 0 || strings.Join(r.Animationen, ",") != "idle,lauf,reiten" || len(r.Pixel) != 3 {
 		t.Errorf("Render: %+v", r)
 	}
+	// B-706: Overlays von assets_set heißen anders als die von assets_review (<id>-<anim>-0-diff.png).
+	for _, p := range r.Pixel {
+		if p.Overlay != "" && p.Overlay != ".cache/paper/mcp/set-monarch-"+p.Animation+"-0-diff.png" {
+			t.Errorf("Overlay %s: %s", p.Animation, p.Overlay)
+		}
+	}
 	b, _ := os.ReadFile(filepath.Join(root, monarchPfad))
 	if !strings.Contains(string(b), `"material": "purpur"`) || !strings.HasSuffix(string(b), "}\n") {
 		t.Errorf("Spec nicht geschrieben:\n%.300s", b)
@@ -138,6 +144,30 @@ process.exit(r.code);
 	}
 	if hashBaum(t, root, monarchPfad, "public/grafik/figuren/monarch") != vorher {
 		t.Error("Spec oder Ausgabe geändert")
+	}
+}
+
+// B-706: die alte Ausgabe wird unter dem Temp-Ordner (.cache/) beiseitegelegt, nicht neben der Ausgabe.
+func TestErsetzeOrdnerBeiseiteImCache(t *testing.T) {
+	root := t.TempDir()
+	tmp := filepath.Join(root, ".cache", "paper", "tmp", "abc")
+	schreibe(t, tmp, "figuren/monarch/idle.png", "neu")
+	schreibe(t, root, "public/grafik/figuren/monarch/idle.png", "alt")
+	var ziele []string
+	ordnerUmbenennen = func(a, b string) error { ziele = append(ziele, b); return os.Rename(a, b) }
+	t.Cleanup(func() { ordnerUmbenennen = os.Rename })
+	ziel := filepath.Join(root, "public", "grafik", "figuren", "monarch")
+	if err := ersetzeOrdner(filepath.Join(tmp, "figuren", "monarch"), ziel); err != nil {
+		t.Fatal(err)
+	}
+	if len(ziele) != 2 || ziele[0] != filepath.Join(tmp, ".beiseite") {
+		t.Errorf("beiseite: %v", ziele)
+	}
+	if b, _ := os.ReadFile(filepath.Join(ziel, "idle.png")); string(b) != "neu" {
+		t.Errorf("Ausgabe: %q", b)
+	}
+	if e, _ := os.ReadDir(filepath.Dir(ziel)); len(e) != 1 {
+		t.Errorf("neben der Ausgabe: %v", e)
 	}
 }
 

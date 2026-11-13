@@ -27,23 +27,27 @@ Assets werden **nur** über diese Tools geändert; die Oberfläche editiert nich
 | `assets_guide` | `{rig?, checkout?}` | Text: Stil-Regeln, Papier-Materialien und Einzeltöne aus der Stil-Datei, Pflicht-Teile und Pivots des Rig-Typs (ohne `rig`: alle), Proportion, Lagen-Arten, Beispiel-Spec, Ablauf. Einstieg jeder Asset-Arbeit |
 | `assets_list` | `{rig?, gruppe?, geaendert?, checkout?}` | Kopfzeile mit Anzahl, dann je Asset `id · rig · pfad · gültig\|ungültig[ · geändert]`; `geaendert: true` filtert auf Assets mit Änderung gegen `HEAD` |
 | `assets_get` | `{id, felder?, checkout?}` | Pfad, dann die Spec als JSON; `felder` (Liste oberster Schlüssel) kürzt |
-| `assets_create` | `{id, rig, beschreibung, gruppe, checkout?}` | legt `public/grafik/<gruppe>/<id>.paper.json` aus der Rig-Vorlage an (Pflicht-Teile mit leeren Lagen bzw. einem Platzhalter-Teil), Ergebnis von `validate`, Render-Ergebnis; Ablehnung bei vorhandener `id` |
-| `assets_set` | `{id, patch, checkout?}` | JSON-Merge-Patch (RFC 7396) auf die Spec; Ablauf atomar: Patch anwenden → `validate` → `render` in einen Temp-Ordner → Spec per Temp-Datei und Umbenennen ersetzen → Ausgaben umbenennen. Antwort: geänderte Felder (`pfad alt → neu`), Anzahl PNGs, Pixel-Anteil je Animation; Ablehnung: `feld · regel · text`, nichts geändert |
+| `assets_create` | `{id, rig, beschreibung, gruppe, checkout?}` | legt `public/grafik/<gruppe>/<id>.paper.json` aus der Rig-Vorlage an (Pflicht-Teile mit leeren Lagen bzw. einem Platzhalter-Teil), Ergebnis von `validate`, Render-Ergebnis; Ablehnung bei vorhandener `id` (auch in einer anderen Gruppe und bei zwei gleichzeitigen Aufrufen) |
+| `assets_set` | `{id, patch, checkout?}` | JSON-Merge-Patch (RFC 7396) auf die Spec; `teile` auch als Objekt nach Teil-ID (`{teile: {kopf: {…}}}`): Merge-Patch nur auf die genannten Teile, `null` entfernt ein Teil, Reihenfolge und übrige Teile bleiben, unbekannte ID → `teile.<id> · teil-unbekannt` mit den vorhandenen IDs (eine Liste ersetzt weiter alles). Ablauf atomar: Patch anwenden → `validate` → `render` in einen Temp-Ordner → Spec per Temp-Datei und Umbenennen ersetzen → Ausgaben umbenennen. Antwort: geänderte Felder (`pfad alt → neu`), Anzahl PNGs, Pixel-Anteil je Animation, Overlay `.cache/paper/mcp/set-<id>-<animation>-0-diff.png`; ist das Asset ein Reittier, `Reiter veraltet: <ids>` (neu rendern mit `assets_render`); Ablehnung: `feld · regel · text`, nichts geändert |
 | `assets_style_get` | `{checkout?}` | Pfad, `stilHash`, Materialien, Einzeltöne, Papier-Werte (verdichtet) |
-| `assets_style_set` | `{patch, checkout?}` | Merge-Patch auf die Stil-Datei, nur Sessions mit `Lane: stil`; prüft wie `assets_set`, startet den Render aller Assets als Job und antwortet mit Änderungen, betroffenen Assets und `{job}` |
+| `assets_style_set` | `{patch, checkout?}` | Merge-Patch auf die Stil-Datei, nur Sessions mit `Lane: stil`; prüft wie `assets_set`, startet den Render der betroffenen Assets als Job (nur Material- oder Einzelton-Änderung: die Assets, die sie nutzen, samt deren Reitern; sonst alle) und antwortet mit Änderungen, betroffenen Assets und `{job}` |
 | `assets_render` | `{id, checkout?}` | rendert ein Asset synchron: Anzahl PNGs, Manifest, `renderKey` |
 | `assets_render` | `{alle: true, checkout?}` | startet sofort einen Job: `Job <id> gestartet: n Assets` |
 | `assets_render` | `{job, wait?, checkout?}` | `Job <id> läuft n/m (<asset>)`; mit `wait: true` blockierend bis zum Ende: je Asset Ergebnis, ungültige übersprungen |
 | `assets_delete` | `{id, confirm, checkout?}` | ohne `confirm: true` nur Hinweis; sonst löscht Spec, Ausgabe-Ordner und zieht den Gruppen-Index nach |
 | `assets_preview` | `{id, animation?, frame?, variante?, basis?, checkout?}` | MCP-ImageContent `image/png` (ein Frame) plus Text: Asset, Animation, Frame, Basis, Größe, Teil-Boxen `x,y,b,h` in Pixeln; mit `basis` der alte Stand |
-| `assets_review` | `{basis?, checkout?}` | Kopfzeile `Review gegen <basis> (<sha>, Basis-Stand aktuell\|lokal): n Assets`, dann je Asset `status · id · Felder · Pixel-Anteil · Bilder`; Stiländerungen melden jedes betroffene Asset mit `stil: true` |
+| `assets_review` | `{basis?, checkout?}` | Kopfzeile `Review gegen <basis> (<sha>, Basis-Stand aktuell\|lokal): n Assets`, dann je Asset `status · id · Felder · Pixel-Anteil · Bilder`; Stiländerungen melden jedes betroffene Asset mit `stil: true`; Overlays `.cache/paper/mcp/<id>-<animation>-0-diff.png` |
 
 - Standardwerte: `animation` = erste Animation der Spec, `frame` = 0, `variante` = keine.
 - Ersetzt werden die alten Register-Tools `assets_list`, `assets_get`, `assets_set`, `assets_catalog` (Register
   `data/assets.json` ab MC1 eingefroren, Entfernung B-700). **Bleiben:** `assets_research`, `assets_hits`,
   `assets_hit_add`, `assets_hit_drop`, `assets_import`.
-- Die MCP-Tools rufen die Render-CLI (`paper-spec.md` › CLI-Vertrag); Tests in-process gegen die Attrappe
-  `tools/paper/fixtures/cli-stub.ts` (`run(args)`).
+- Die MCP-Tools rufen die Render-CLI (`paper-spec.md` › CLI-Vertrag) über eine gemeinsame Anbindung mit dem Review
+  (`internal/review` › `Aufruf`): Skript aus `K3C_PAPER_CLI`, sonst `tools/paper/bin/paper.ts`, sonst die Attrappe
+  `tools/paper/fixtures/cli-stub.ts`; Zeitlimit 2 min je Aufruf; fehlt `bun`, nennt der Fehler `requirements.md`.
+  Tests in-process gegen die Attrappe (`run(args)`).
+- `assets_list` cacht `validate` je Spec, solange Spec, Stil-Datei und die Specs ihrer Reittiere unverändert sind.
+- Temp-Ordner und beiseitegelegte Ausgaben liegen unter `.cache/paper/tmp/`, nie neben der Ausgabe.
 
 ### MCP-Prompts
 
