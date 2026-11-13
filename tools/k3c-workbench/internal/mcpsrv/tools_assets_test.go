@@ -13,6 +13,7 @@ var vertragTools = []string{"assets_guide", "assets_list", "assets_get", "assets
 
 // MC1/AC-01 · paper-mcp.md › 1: jedes Asset-Tool nimmt checkout; schreibende nennen den Checkout.
 func TestAssetsToolsNehmenCheckout(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	root := paperRepo(t)
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 	schemas := toolSchemas(t, cs)
@@ -34,6 +35,7 @@ func TestAssetsToolsNehmenCheckout(t *testing.T) {
 }
 
 func TestAssetsGuide(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	cs := connect(t, New(Config{Version: "test", Root: paperRepo(t)}))
 	text, isErr := callText(t, cs, "assets_guide", map[string]any{"rig": "figur"})
 	for _, want := range []string{"Papierschnitt · Rig figur · Standard docs/standards/paper-spec.md",
@@ -59,6 +61,7 @@ func TestAssetsGuide(t *testing.T) {
 }
 
 func TestAssetsListPaper(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	root := paperRepo(t)
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 	text, isErr := callText(t, cs, "assets_list", map[string]any{})
@@ -82,6 +85,7 @@ func TestAssetsListPaper(t *testing.T) {
 }
 
 func TestAssetsGetFelder(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	cs := connect(t, New(Config{Version: "test", Root: paperRepo(t)}))
 	text, isErr := callText(t, cs, "assets_get", map[string]any{"id": "monarch", "felder": []string{"umhang", "ausgabe"}})
 	if isErr || !strings.HasPrefix(text, "public/grafik/figuren/monarch.paper.json · Felder umhang, ausgabe\n{\n  \"umhang\": {") ||
@@ -101,6 +105,7 @@ func TestAssetsGetFelder(t *testing.T) {
 }
 
 func TestAssetsCreate(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	root := paperRepo(t)
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 	args := map[string]any{"id": "fass", "rig": "requisite", "beschreibung": "Ein Fass", "gruppe": "requisiten"}

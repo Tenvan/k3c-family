@@ -27,6 +27,7 @@ func writeFile(t *testing.T, path, text string) {
 }
 
 func TestFindRoot(t *testing.T) {
+	t.Parallel()
 	root := t.TempDir()
 	sub := filepath.Join(root, "tools", "k3c-workbench")
 	writeFile(t, filepath.Join(root, "go.mod"), "module k3c\n\ngo 1.27.0\n")
@@ -82,6 +83,7 @@ func connectWithHeader(t *testing.T, s *Server, dir string) *mcp.ClientSession {
 }
 
 func TestWorkspaceAusHeader(t *testing.T) {
+	t.Parallel()
 	main, wt, foreign := repoWithWorktree(t)
 	s := New(Config{Root: main, Version: "test"})
 	if text, _ := callText(t, connectWithHeader(t, s, filepath.Join(wt, "tools", "k3c-workbench")), "workbench_status", nil); !strings.Contains(text, "Worktree wt1") {
@@ -103,6 +105,7 @@ func TestWorkspaceAusHeader(t *testing.T) {
 }
 
 func TestWorktreeTrenntKonsoleUndDateien(t *testing.T) {
+	t.Parallel()
 	main, wt, _ := repoWithWorktree(t)
 	writeFile(t, filepath.Join(wt, "logs", "nur-im-worktree.jsonl"), "")
 	s := New(Config{Root: main, Version: "test"})
@@ -147,6 +150,7 @@ func TestWorktreeDiensteMitEigenenPorts(t *testing.T) {
 
 // B-444: Ein Worktree mit alter Basis (Vite 5173) bekommt nicht den Vite-Port der Wurzel (5183), auch wenn er frei ist.
 func TestWorktreeAlteBasisMeidetWurzelPorts(t *testing.T) {
+	t.Parallel()
 	main, wt, _ := repoWithWorktree(t)
 	writeFile(t, filepath.Join(wt, "tools", "k3c-workbench", "services.json"),
 		`[{"name":"Vite","command":["x"],"port":5173,"health":"http","portEnv":"K3C_VITE_PORT"}]`)
@@ -186,6 +190,7 @@ func (l *lockedLog) lines(tool string) []string {
 // B-275/AC-03: Ein schreibendes Tool ohne Header schreibt in die Wurzel und nennt sie; mit Header auf einen Worktree
 // unter .claude/worktrees/ schreibt es nur dort. Das Log vermerkt je Aufruf, ob der Header da war.
 func TestSchreibendesToolNenntCheckout(t *testing.T) {
+	t.Parallel()
 	main, wt, _ := repoWithWorktree(t)
 	ticket := filepath.Join("docs", "backlog", "B-001-x.md")
 	for _, dir := range []string{main, wt} {

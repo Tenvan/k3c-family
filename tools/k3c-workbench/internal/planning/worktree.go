@@ -11,6 +11,9 @@ import (
 
 // Worktrees liefert die Branches aller Worktrees des Repos (`git worktree list`); ohne git oder Repo keine.
 func Worktrees(root string) []string {
+	if !inRepo(root) {
+		return nil
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 	out, err := proc.Command(ctx, []string{"git", "-C", root, "worktree", "list", "--porcelain"}).Output()

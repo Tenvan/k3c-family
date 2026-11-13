@@ -9,6 +9,10 @@ import (
 )
 
 func TestAssetsSetMaterial(t *testing.T) {
+	if testing.Short() {
+		t.Skip("ruft die Render-CLI (bun) gut zehnmal auf, je 0,3 s; läuft ohne -short (B-619, B-830)")
+	}
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	root := paperRepo(t)
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 	text, isErr := callText(t, cs, "assets_set", map[string]any{"id": "monarch", "patch": map[string]any{"umhang": map[string]any{"material": "purpur"}}})
@@ -29,6 +33,7 @@ func TestAssetsSetMaterial(t *testing.T) {
 
 // MC1/AC-02 · 005/AC-06: abgelehnter Patch ändert weder Spec noch Ausgabe.
 func TestAssetsSetAbgelehnt(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	root := paperRepo(t)
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 	vorher := hashUnter(t, root, "public/grafik/figuren")
@@ -44,6 +49,7 @@ func TestAssetsSetAbgelehnt(t *testing.T) {
 }
 
 func TestAssetsStyle(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	root := paperRepo(t)
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 	text, isErr := callText(t, cs, "assets_style_get", map[string]any{})
@@ -91,6 +97,7 @@ func TestAssetsSetTeilPatchUndReiter(t *testing.T) {
 }
 
 func TestAssetsDelete(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	root := paperRepo(t)
 	schreibeDatei(t, root, "public/grafik/gebaeude/mauer/stand.png", "x")
 	schreibeDatei(t, root, "public/grafik/gebaeude/index.paper.json", `[{"id": "mauer", "rig": "gebaeude", "manifest": "mauer/manifest.json"}]`)

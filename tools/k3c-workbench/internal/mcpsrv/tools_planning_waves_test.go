@@ -7,6 +7,7 @@ import (
 
 // B-783/AC-04: plan_waves und plan_queue sind über MCP erreichbar und stehen in den Instruktionen.
 func TestPlanWavesUndQueueUeberMCP(t *testing.T) {
+	t.Parallel()
 	cs := connect(t, New(Config{Version: "test", Root: planRepo(t)}))
 	for tool, want := range map[string]string{
 		"plan_waves": "Arbeitswellen: 0 in Arbeit, 0 eingeplant in 1 Wellen, 0 in keiner Welle · 4 Plätze",

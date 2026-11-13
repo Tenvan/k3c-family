@@ -110,15 +110,21 @@ func TestDateiAenderungStartetNeu(t *testing.T) {
 	}
 	first := f.last()
 
-	touch(t, root, "engine/a.go", "package a // 1")
-	touch(t, root, "engine/b.go", "package b")
-	waitFor(t, "Neustart", func() bool { return f.count() == 2 && c.Statuses()[0].State == Running })
+	// Eine Sammeländerung: Der Watcher sieht beide Dateien zugleich, nie einen Zwischenstand (B-829; ohne die Sperre lagen
+	// die zwei Schreibvorgänge unter Last mal in zwei Entprell-Fenstern, dann gab es drei Starts).
+	func() {
+		filesBatch.Lock()
+		defer filesBatch.Unlock() // auch bei t.Fatal in touch, sonst hinge jeder snapshot
+		touch(t, root, "engine/a.go", "package a // 1")
+		touch(t, root, "engine/b.go", "package b")
+	}()
+	waitFor(t, "Neustart", func() bool { return f.count() >= 2 && c.Statuses()[0].State == Running })
 	if !first.killed.Load() {
 		t.Error("der alte Prozess wurde nicht beendet")
 	}
 	time.Sleep(80 * time.Millisecond)
 	if f.count() != 2 {
-		t.Errorf("mehrere Änderungen auf einmal: %d Starts, erwartet 2", f.count())
+		t.Errorf("mehrere Änderungen auf einmal: %d Starts, erwartet 2; Konsole: %s", f.count(), restartLines(store))
 	}
 	if !consoleHas(store, "Neustart wegen Änderung an engine/a.go") {
 		t.Error("Konsole nennt den Neustart nicht")
@@ -175,6 +181,18 @@ func TestDienstOhneWatchWirdNichtBeobachtet(t *testing.T) {
 	if f.count() != 1 {
 		t.Errorf("Dienst ohne watch startete neu: %d", f.count())
 	}
+}
+
+// restartLines nennt die Neustart-Zeilen der Konsole (Diagnose, falls wieder ein Start zu viel kommt).
+func restartLines(store *console.Store) string {
+	lines, _ := store.Tail("Server", 50)
+	var out []string
+	for _, l := range lines {
+		if strings.Contains(l.Text, "Neustart") {
+			out = append(out, l.Text)
+		}
+	}
+	return strings.Join(out, " | ")
 }
 
 func consoleHas(store *console.Store, part string) bool {

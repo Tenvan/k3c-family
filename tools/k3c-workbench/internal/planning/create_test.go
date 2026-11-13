@@ -46,6 +46,7 @@ func checkTicketTemplate(t *testing.T, root, text string) {
 // B-595/AC-02: Ein Ticket aus dem Kern (Studio-Weg) erfüllt die Regeln von tests/planning.test.ts und den
 // Schreibweg von planning (Set zieht dieselbe Index-Zeile nach).
 func TestKernTicketBestehtPlanungsRegeln(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	newProject(t, root, "WZG", "werkzeuge")
 	got, err := ticketkit.Create(root, ticketkit.Input{Titel: "Knopf fehlt", Beschreibung: "Text", Typ: "Idee",

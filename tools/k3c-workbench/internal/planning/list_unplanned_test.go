@@ -33,6 +33,7 @@ func setSprintRaw(t *testing.T, root, nr, sprint string) {
 // plan_list mit Sprint „–“ oder „ungeplant“ liefert wie der Schnellfilter Ungeplant der Workbench alle Tickets ohne
 // Sprint, auch mit leerem Feld, und keine Sprints.
 func TestListUngeplant(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	for range 3 {
 		newTicket(t, root)
@@ -53,6 +54,7 @@ func TestListUngeplant(t *testing.T) {
 
 // Kind ticket beginnt mit der Kennzahl-Zeile; „ungeplant“ zählt unabhängig vom Status und vom Filter.
 func TestListKennzahlen(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	for range 3 {
 		newTicket(t, root)

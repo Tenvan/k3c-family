@@ -9,6 +9,7 @@ import (
 
 // B-788/AC-01: check_run nimmt die Teilaufgaben von check:diff und meldet Exit-Code und Dauer.
 func TestCheckRunTeilaufgabenCheckDiff(t *testing.T) {
+	t.Parallel()
 	cases := []struct {
 		target, cmd string
 		exit        int

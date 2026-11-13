@@ -39,6 +39,7 @@ func roadmapRepo(t *testing.T) string {
 
 // B-366/AC-01: neue Zeilen tragen das Projekt und stehen nach Projekt-Rang und Sprint-Reihenfolge des Projekts.
 func TestFahrplanZeileNachProjektRang(t *testing.T) {
+	t.Parallel()
 	root := roadmapRepo(t)
 	newSprint(t, root, "SND1", map[string]string{"Projekt": "SND"})
 	newSprint(t, root, "GRA1", map[string]string{"Projekt": "GRA"})
@@ -53,6 +54,7 @@ func TestFahrplanZeileNachProjektRang(t *testing.T) {
 
 // B-366/AC-02: Aktivieren verschiebt die Zeile nach „Aktiv“ an die Rang-Stelle.
 func TestFahrplanAktivNachRang(t *testing.T) {
+	t.Parallel()
 	root := roadmapRepo(t)
 	newSprint(t, root, "SND1", map[string]string{"Projekt": "SND"})
 	newSprint(t, root, "GRA1", map[string]string{"Projekt": "GRA"})
@@ -68,6 +70,7 @@ func TestFahrplanAktivNachRang(t *testing.T) {
 
 // B-366: Sprint ohne Projekt landet am Tabellenende, die Antwort nennt den Grund.
 func TestFahrplanOhneProjektAmEnde(t *testing.T) {
+	t.Parallel()
 	root := roadmapRepo(t)
 	newSprint(t, root, "GRA1", map[string]string{"Projekt": "GRA"})
 	out := must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X1", Slug: "x", Title: "X", Fields: map[string]string{"Domäne": "SRV"}}))
@@ -78,6 +81,7 @@ func TestFahrplanOhneProjektAmEnde(t *testing.T) {
 
 // B-403/N4: ein Sprint ohne Projekt behält seinen Platz, wenn sich nur der Status ändert (Projekt bleibt „–“).
 func TestFahrplanOhneProjektBehaeltPlatz(t *testing.T) {
+	t.Parallel()
 	root := roadmapRepo(t)
 	newSprint(t, root, "X1", nil)
 	newSprint(t, root, "X2", nil)
@@ -109,6 +113,7 @@ func roadmapProject(t *testing.T, root, id string) string {
 
 // B-404: die Fahrplan-Zeile trägt das Projekt aus dem Kopffeld, auch nach Reife, Sessions, Freigabe und Aktivieren.
 func TestFahrplanAktivierterSprintTraegtProjekt(t *testing.T) {
+	t.Parallel()
 	root := roadmapRepo(t)
 	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "GRA1", Slug: "s", Title: "Sprint GRA1",
 		Fields: map[string]string{"Domäne": "DEV", "Projekt": "GRA", "Reife": "bereit", "Tickets": "B-001"}}))

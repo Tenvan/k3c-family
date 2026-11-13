@@ -13,6 +13,7 @@ func newSession(t *testing.T, root, id, domain string) {
 
 // TestSprintDomaeneFolgtSessions: Domänen in Reihenfolge des ersten Auftretens in Feld, Überschrift und Fahrplan (AC-04).
 func TestSprintDomaeneFolgtSessions(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	newSprint(t, root, "X5", nil)
 	newSession(t, root, "X5.1", "SIM")
@@ -43,6 +44,7 @@ func TestSprintDomaeneFolgtSessions(t *testing.T) {
 
 // TestSessionDomaeneUndVerworfen: Domäne Pflicht und geprüft, Sprint-Domäne nicht direkt setzbar, verworfen erlaubt (AC-04, AC-05).
 func TestSessionDomaeneUndVerworfen(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	newSprint(t, root, "X6", nil)
 	newSession(t, root, "X6.1", "SRV")
@@ -90,6 +92,7 @@ func TestSessionDomaeneUndVerworfen(t *testing.T) {
 // TestProjektSprintVorSprintOhneProjekt: Sprints mit Projekt stehen vor einem ohne Projekt, egal welche Prio seine
 // Tickets haben; innerhalb des Projekts zählt der Platz in der Sprint-Tabelle (AC-04, DV1 B-361).
 func TestProjektSprintVorSprintOhneProjekt(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	must(t)(Create(root, NewDoc{Kind: "ticket", Slug: "h", Title: "Hoch", Fields: map[string]string{"Domäne": "SRV", "Typ": "Idee", "Prio": "hoch"}}))
 	newProject(t, root, "GRA", "grafik")

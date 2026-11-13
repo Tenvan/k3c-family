@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ48
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-13
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-13
 
 ## Ausgangslage
 
@@ -60,4 +60,6 @@ keine
 
 ## Notizen
 
-Gefunden in WZ42.1 (im vollen `k3c-workbench:gotest` rot). Review WZ42.4: nicht reproduziert, `-count=30` allein und `-count=30` neben parallelem `go test -short -count=1 ./...` grün, in `check:dev` Lauf 1 grün; Prio deshalb niedrig. Bei nächstem Auftreten Ausgabe (Zahl der Starts) hier notieren.
+Gefunden in WZ42.1 (im vollen `k3c-workbench:gotest` rot). Review WZ42.4: nicht reproduziert, `-count=30` allein und `-count=30` neben parallelem `go test -short -count=1 ./...` grün, in `check:dev` Lauf 1 grün; Prio deshalb niedrig.
+
+WZ48.2 (2026-11-13): reproduziert mit `-count=150 -cpu 1,2` neben zwei parallelen `go test -short -p 16` der übrigen Workbench-Pakete: 1 von 300 rot (3 Starts, keiner wegen `a.go`). Ursachen belegt: (1) der Ausgangsstand entstand erst in der Goroutine, unter Last nach dem ersten `touch`; (2) die zwei Schreibvorgänge lagen in zwei Entprell-Fenstern bzw. ein Snapshot sah eine halb geschriebene Datei. Fix: Ausgangsstand synchron in `watchFiles`, Test schreibt die Sammeländerung unter der Sperre `filesBatch`. Danach 300 von 300 grün unter derselben Last.

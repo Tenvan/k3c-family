@@ -72,6 +72,7 @@ func doc(t *testing.T, root, rel string) string {
 }
 
 func TestTicketAnlegenAendernArchivieren(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	out := must(t)(Create(root, NewDoc{Kind: "ticket", Slug: "neu", Title: "Neues Ticket",
 		Fields: map[string]string{"Domäne": "SRV", "Typ": "Idee", "Prio": "hoch"}}))
@@ -101,6 +102,7 @@ func TestTicketAnlegenAendernArchivieren(t *testing.T) {
 }
 
 func TestSprintUndSessionLebenslauf(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X1", Slug: "test", Title: "Test-Sprint", Fields: map[string]string{"Domäne": "SRV"}}))
 	must(t)(Create(root, NewDoc{Kind: "session", ID: "X1.1", Slug: "eins", Title: "Erste", Fields: map[string]string{"Domäne": "SRV"}}))
@@ -132,6 +134,7 @@ func TestSprintUndSessionLebenslauf(t *testing.T) {
 }
 
 func TestEntwurfLoeschen(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X2", Slug: "weg", Title: "Weg", Fields: map[string]string{"Domäne": "SIM"}}))
 	must(t)(Create(root, NewDoc{Kind: "session", ID: "X2.1", Slug: "a", Title: "A", Fields: map[string]string{"Domäne": "SRV"}}))
@@ -154,6 +157,7 @@ func TestEntwurfLoeschen(t *testing.T) {
 
 // TestUngueltigeEingabeAendertNichts: Pfade, IDs und Werte von außen (AC-03).
 func TestUngueltigeEingabeAendertNichts(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X3", Slug: "s", Title: "S", Fields: map[string]string{"Domäne": "SRV"}}))
 	before := snapshot(t, root)
@@ -257,6 +261,7 @@ func checkConsistent(t *testing.T, root string) {
 // TestDomaeneDEV: Ein Ticket in DEV lässt sich anlegen und per Set umstellen; eine unbekannte Domäne wird mit der Liste
 // der gültigen abgelehnt (DV1 AC-03).
 func TestDomaeneDEV(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	must(t)(Create(root, NewDoc{Kind: "ticket", Slug: "werkzeug", Title: "Werkzeug", Fields: map[string]string{"Domäne": "DEV", "Typ": "Idee", "Prio": "hoch"}}))
 	must(t)(Create(root, NewDoc{Kind: "ticket", Slug: "server", Title: "Server", Fields: map[string]string{"Domäne": "SRV", "Typ": "Idee", "Prio": "hoch"}}))
@@ -277,6 +282,7 @@ func TestDomaeneDEV(t *testing.T) {
 // TestSprintOhnePrioUndEinschiebbar: plan_create und plan_set schreiben an Sprints weder Prio noch Einschiebbar, ein
 // Prio am Sprint wird abgelehnt (DV1 AC-04).
 func TestSprintOhnePrioUndEinschiebbar(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	must(t)(Create(root, NewDoc{Kind: "ticket", Slug: "neu", Title: "Neu", Fields: map[string]string{"Domäne": "SRV", "Typ": "Idee", "Prio": "hoch"}}))
 	must(t)(Create(root, NewDoc{Kind: "sprint", ID: "X3", Slug: "p", Title: "P", Fields: map[string]string{"Domäne": "SRV", "Tickets": "B-001, B-002 teils"}}))

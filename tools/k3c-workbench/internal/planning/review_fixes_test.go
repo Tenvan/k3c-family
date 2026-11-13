@@ -7,6 +7,7 @@ import (
 
 // Review WZ2.8 (B-360/AC-01): Die Ablehnung nennt Feldname und Datei.
 func TestFehlendesFeldNenntFeldUndDatei(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	_, err := Set(root, "B-001", map[string]string{"Prio": "hoch"})
 	if err == nil || !strings.Contains(err.Error(), "Prio") || !strings.Contains(err.Error(), "B-001-alt.md") {
@@ -16,6 +17,7 @@ func TestFehlendesFeldNenntFeldUndDatei(t *testing.T) {
 
 // Review WZ2.8 (B-363/AC-01): Prio, Umgebung und Projekt eines Tickets über Set; danach stimmen Datei und Index.
 func TestTicketFlagsAendernZiehtIndexNach(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	newProject(t, root, "GRA", "grafik")
 	must(t)(Create(root, NewDoc{Kind: "ticket", Slug: "neu", Title: "Neues Ticket",

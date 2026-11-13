@@ -6,6 +6,7 @@ import "testing"
 // nicht, und C1.2 (DEV, disjunkte Erlaubte Dateien) ist parallel möglich; B1.1 (Sperre exe) und C1.1 (Bereich unter
 // tools/a/**) nicht.
 func TestNextParallelGleicheDomaeneDisjunkteDateien(t *testing.T) {
+	t.Parallel()
 	out := must(t)(Next(wavesRepo(t), NextFilter{}))
 	checkText(t, out, []string{"Nächste Session: A1.1 · Titel A1.1", "── Parallel möglich ──\n- DEV · C1.2 · Titel C1.2 (Sprint C1, offline)"},
 		[]string{"- DEV · B1.1", "- DEV · C1.1", "gesperrt"})
@@ -13,6 +14,7 @@ func TestNextParallelGleicheDomaeneDisjunkteDateien(t *testing.T) {
 
 // Ohne Dateimengen bleibt die alte Sperre nach Domäne; mit Dateimengen nennt der Grund die Kollision.
 func TestNextGrundBeiKollision(t *testing.T) {
+	t.Parallel()
 	out := must(t)(Next(wavesRepo(t), NextFilter{Domain: "DEV"}))
 	checkText(t, out, []string{"Nächste Session: A1.1"}, nil)
 	running := []scoped{{session: Session{Nr: "R1.1", Domain: "DEV"}, area: []string{"tools/a/**"}}}

@@ -19,6 +19,7 @@ func jsonRoh(s string) json.RawMessage { return json.RawMessage(s) }
 
 // MC1.5: ohne Testquelle antwortet assets_review über assetsui.Dienst (RV1) aus dem Checkout.
 func TestAssetsReviewNutztDienst(t *testing.T) {
+	t.Parallel()
 	if _, ok := newAssetReview("x").(assetsui.Dienst); !ok {
 		t.Errorf("newAssetReview: %T", newAssetReview("x"))
 	}
@@ -52,6 +53,7 @@ func TestAssetsReview(t *testing.T) {
 
 // Kopfzeile bei Basis-Stand lokal wie fixtures/mcp/assets_review-lokal.txt.
 func TestAssetsReviewKopfLokal(t *testing.T) {
+	t.Parallel()
 	got := reviewKopf("origin/develop", "32eb7a7", "lokal", 5)
 	want := "Review gegen origin/develop (32eb7a7) · Basis-Stand: lokal (ohne vorheriges Fetch; origin/develop kann veraltet sein): 5 Assets"
 	if got != want {
@@ -86,6 +88,7 @@ func vorlagenAusDatei(t *testing.T, root string) map[string][]string {
 
 // MC1/AC-04: jede Vorlage ist als Prompt asset-<id> mit ihren Platzhaltern abrufbar.
 func TestAssetsPromptsAlle(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	root := paperRepo(t)
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 	res, err := cs.ListPrompts(context.Background(), nil)
@@ -120,6 +123,7 @@ func TestAssetsPromptsAlle(t *testing.T) {
 }
 
 func TestAssetsPromptEinsetzen(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	cs := connect(t, New(Config{Version: "test", Root: paperRepo(t)}))
 	ctx := context.Background()
 	res, err := cs.GetPrompt(ctx, &mcp.GetPromptParams{Name: "asset-material-aendern", Arguments: map[string]string{
@@ -149,6 +153,7 @@ func TestAssetsPromptEinsetzen(t *testing.T) {
 
 // Jedes registrierte assets_*-Tool steht in instructions.md.
 func TestInstructionsNennenAssetTools(t *testing.T) {
+	t.Parallel()
 	cs := connect(t, New(Config{Version: "test"}))
 	for name := range toolSchemas(t, cs) {
 		if strings.HasPrefix(name, "assets_") && !strings.Contains(Instructions(), "`"+name) {
@@ -159,6 +164,7 @@ func TestInstructionsNennenAssetTools(t *testing.T) {
 
 // Review MC1.3: Cache-Dateinamen aus Spec- oder Review-Daten bleiben in .cache/paper/mcp/.
 func TestCacheNameBleibtImOrdner(t *testing.T) {
+	t.Parallel()
 	for _, teile := range [][]string{{"monarch", "idle"}, {"..", "..", "x"}, {`a\b`, "c/d"}} {
 		name := cacheName(teile...)
 		if strings.ContainsAny(name, `/\`) || strings.Contains(name, "..") || name == "" {

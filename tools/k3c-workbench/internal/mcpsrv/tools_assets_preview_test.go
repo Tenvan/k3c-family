@@ -66,6 +66,7 @@ func callResult(t *testing.T, cs *mcp.ClientSession, name string, args any) *mcp
 
 // MC1/AC-03: assets_preview liefert ein Bild image/png plus Text mit Teil-Boxen.
 func TestAssetsPreviewBild(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	cs := connect(t, New(Config{Version: "test", Root: paperRepo(t)}))
 	for anim, fixture := range map[string]string{"": "monarch-idle-0.png", "reiten": "monarch-galopp-0.png"} {
 		args := map[string]any{"id": "monarch"}
@@ -91,6 +92,7 @@ func TestAssetsPreviewBild(t *testing.T) {
 }
 
 func TestAssetsPreviewFehler(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	cs := connect(t, New(Config{Version: "test", Root: paperRepo(t)}))
 	for args, want := range map[string]string{
 		`{"id":"monarch","animation":"flug"}`: "idle, lauf, reiten",

@@ -9,6 +9,7 @@ import (
 
 // B-644/AC-01: sim_test start mit wait wartet bis zum Ende und liefert den Endstatus; mit progressToken kommen Lebenszeichen.
 func TestSimTestWartetBisZumEnde(t *testing.T) {
+	t.Parallel()
 	release := make(chan struct{})
 	base := fakeBalance(t, 1)
 	s, _ := fakeServer(t, func(spec runSpec) runResult {
@@ -36,6 +37,7 @@ func TestSimTestWartetBisZumEnde(t *testing.T) {
 
 // B-644/AC-01: Ohne progressToken endet das Warten nach checkWait mit der ID; wait {id} wartet weiter.
 func TestSimTestWartenOhneFortschrittNenntId(t *testing.T) {
+	t.Parallel()
 	release := make(chan struct{})
 	base := fakeBalance(t, 1)
 	s, _ := fakeServer(t, func(spec runSpec) runResult {

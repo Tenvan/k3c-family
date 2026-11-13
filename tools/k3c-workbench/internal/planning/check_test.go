@@ -8,6 +8,7 @@ import (
 // B-784/AC-01: plan_check meldet Bereich leer (B-003) und an B-020 Umgebung ?, Größe L, unbekannte ID und die
 // Überlappung mit dem offenen Ticket B-001 (tools/d/**).
 func TestCheckMeldetMaengel(t *testing.T) {
+	t.Parallel()
 	root := wavesRepo(t)
 	w := waveWriter(t, root)
 	w("backlog/B-020-t.md", "# B-020 · Ticket B-020\n\n- **Domäne:** DEV\n- **Typ:** Idee\n- **Prio:** mittel\n"+
@@ -28,6 +29,7 @@ func TestCheckMeldetMaengel(t *testing.T) {
 
 // Fehlende Zeilen, archivierte Tickets und falsche IDs.
 func TestCheckZeilenArchivUndFehler(t *testing.T) {
+	t.Parallel()
 	root := wavesRepo(t)
 	w := waveWriter(t, root)
 	w("backlog/B-021-t.md", "# B-021 · Ohne Angaben\n\n- **Umgebung:** offline\n- **Status:** offen\n\n## Ziel\n\nZiel.\n")

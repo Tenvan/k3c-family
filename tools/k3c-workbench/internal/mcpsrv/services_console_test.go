@@ -17,6 +17,7 @@ func (p *stubProc) Wait() error { <-p.done; return nil }
 func (p *stubProc) Kill() error { close(p.done); return nil }
 
 func TestDienstAusgabeInLogsSources(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	store := console.New(0, nil)
 	s := New(Config{Version: "test", Root: t.TempDir(), Console: store})
 	ctl := services.New([]services.Service{{Name: "Vite", Command: []string{"x"}, Port: 1, Health: "tcp"}}, services.Options{

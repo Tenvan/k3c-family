@@ -155,6 +155,7 @@ func TestEngineToolsLaufenOhneServer(t *testing.T) {
 
 // RS2.2: Fehlt bin/k3c-sim, nennt der Fehler den Bau-Befehl.
 func TestEngineToolsOhneEXE(t *testing.T) {
+	t.Parallel()
 	cs := connect(t, New(Config{Version: "test", Root: t.TempDir()}))
 	for tool, args := range map[string]map[string]any{"level_generate": {"seed": "0"}, "sim_run": {"seed": "0", "ticks": 1}} {
 		text, isErr := callText(t, cs, tool, args)

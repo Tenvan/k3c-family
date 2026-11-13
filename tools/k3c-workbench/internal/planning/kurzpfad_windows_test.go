@@ -39,6 +39,7 @@ func formen(t *testing.T, p string) (short, long string) {
 }
 
 func TestSamePathKurzpfad(t *testing.T) {
+	t.Parallel()
 	dir := filepath.Join(t.TempDir(), "ein-langer-ordnername")
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		t.Fatal(err)
@@ -57,12 +58,14 @@ func TestSamePathKurzpfad(t *testing.T) {
 }
 
 func TestSamePathNichtLesbarVergleichtText(t *testing.T) {
+	t.Parallel()
 	if !samePath(`C:\gibt\es\nicht`, `c:/gibt/es/nicht`) || samePath(`C:\gibt\es\nicht`, `C:\gibt\es\anders`) {
 		t.Error("nicht lesbare Pfade: Textvergleich wie bisher")
 	}
 }
 
 func TestWurzelInKurzformCheckWorktrees(t *testing.T) {
+	t.Parallel()
 	root := gitRepo(t)
 	short, _ := formen(t, root)
 	wt := filepath.Join(t.TempDir(), "wt")
@@ -82,6 +85,7 @@ func TestWurzelInKurzformCheckWorktrees(t *testing.T) {
 }
 
 func TestWurzelInKurzformIstRepoWurzel(t *testing.T) {
+	t.Parallel()
 	if testing.Short() {
 		t.Skip("langer Test, läuft ohne -short (B-619)")
 	}

@@ -146,6 +146,9 @@ func clientsServer(t *testing.T) (*Server, *fakeClients) {
 }
 
 func TestSimTestClientsFakeClient(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test (Lauf von 3 s gegen den Spielserver), läuft ohne -short (B-619, B-830)")
+	}
 	s, f := clientsServer(t)
 	oldSample, oldTick := onlineSample, clientTick
 	onlineSample, clientTick = 300*time.Millisecond, 50*time.Millisecond

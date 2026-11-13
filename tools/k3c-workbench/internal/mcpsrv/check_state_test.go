@@ -10,6 +10,7 @@ import (
 
 // Jeder Lauf meldet Beginn und Ende, auch bei gescheitertem Start und Zeitlimit; Checks() kennt danach alle Ziele.
 func TestCheckRunMeldetBeginnUndEnde(t *testing.T) {
+	t.Parallel()
 	results := []runResult{ // in der Reihenfolge der Läufe unten
 		{exit: 1, dur: 12 * time.Millisecond},
 		{err: errors.New("task fehlt")},
@@ -46,6 +47,7 @@ func TestCheckRunMeldetBeginnUndEnde(t *testing.T) {
 
 // Ein Wiederholungslauf meldet in Checks() seinen eigenen Beginn, nicht den des vorigen Laufs.
 func TestChecksZeigtBeginnDesLaufendenLaufs(t *testing.T) {
+	t.Parallel()
 	release := make(chan struct{})
 	n := 0
 	s, started := fakeServer(t, func(runSpec) runResult {

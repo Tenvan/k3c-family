@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ48
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-13
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-13
 
 ## Ausgangslage
 
@@ -62,3 +62,5 @@ keine
 ## Notizen
 
 Messwerte aus WZ42.2 (B-787): `-short ./...` 97 → 9 Tests ≥ 3 s, 123 → 60 s Wanduhr.
+
+WZ48.2 (2026-11-13, `go test -short -count=1 -json`, Entwickler-PC, 22 Kerne): `planning` 40,9 → 5,8–7,9 s, 0 Tests ≥ 3 s (größter 2,8 s); `mcpsrv` 41,3 → 9,8–10,3 s (drei Läufe), 0 Tests ≥ 3 s. Kosten je Prozess: git rund 130 ms, Render-Attrappe (bun) 230–400 ms. Maßnahmen: t.Parallel mit Obergrenze (planning 4, mcpsrv 6), kein git in Ordnern ohne `.git` (`planning/gitrepo.go`), Vorlage für `paperRepo`, Hardlink für das falsche k3c-sim, `K3C_PAPER_CLI` einmal in TestMain, `testing.Short()`-Skip für Tests mit echten Worktrees (`gitRepo`), Render-lastige Asset-Tests (12 bun-Aufrufe) und zwei Läufe von 3 s; voller Lauf in `check:dev`.

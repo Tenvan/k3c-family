@@ -56,6 +56,7 @@ func TestAssetsResearchTools(t *testing.T) {
 
 // B-298/AC-05 über MCP: lokale Datei zu einem Treffer importieren; Ablage und Credit stimmen.
 func TestAssetsImportTool(t *testing.T) {
+	t.Parallel()
 	root := assetRepo(t)
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 	if text, isErr := callText(t, cs, "assets_hit_add", map[string]any{"id": "farm", "titel": "Farm Haus", "link": "https://x.itch.io/farm"}); isErr {

@@ -50,6 +50,7 @@ func laneRepo(t *testing.T, ss ...laneSession) string {
 
 // TestNextLanesParallel: zwei offene DEV-Sessions mit verschiedenen Lanes laufen parallel.
 func TestNextLanesParallel(t *testing.T) {
+	t.Parallel()
 	root := laneRepo(t, laneSession{"L1.1", "offen", "DEV", "mcp", ""}, laneSession{"L2.1", "offen", "DEV", "ui", ""})
 	out := must(t)(Next(root, NextFilter{}))
 	if !strings.HasPrefix(out, "Nächste Session: L1.1 ·") {
@@ -60,6 +61,7 @@ func TestNextLanesParallel(t *testing.T) {
 
 // TestNextSameLaneLocked: DEV/mcp in Arbeit sperrt eine offene DEV/mcp, nicht DEV/ui.
 func TestNextSameLaneLocked(t *testing.T) {
+	t.Parallel()
 	root := laneRepo(t, laneSession{"L1.1", "in Arbeit", "DEV", "mcp", ""}, laneSession{"L2.1", "offen", "DEV", "mcp", ""},
 		laneSession{"L3.1", "offen", "DEV", "ui", ""})
 	out := must(t)(Next(root, NextFilter{}))
@@ -72,6 +74,7 @@ func TestNextSameLaneLocked(t *testing.T) {
 
 // TestNextNoLaneLocksDomain: eine Session ohne Lane sperrt die Domäne und wird von jeder Lane gesperrt.
 func TestNextNoLaneLocksDomain(t *testing.T) {
+	t.Parallel()
 	out := must(t)(Next(laneRepo(t, laneSession{"L1.1", "in Arbeit", "DEV", "", ""}, laneSession{"L2.1", "offen", "DEV", "ui", ""}), NextFilter{}))
 	checkText(t, out, []string{"L2.1 Domäne DEV gesperrt (L1.1 in Arbeit)"}, []string{"Nächste Session"})
 	out = must(t)(Next(laneRepo(t, laneSession{"L1.1", "in Arbeit", "DEV", "ui", ""}, laneSession{"L2.1", "offen", "DEV", "–", ""}), NextFilter{}))
@@ -83,6 +86,7 @@ func TestNextNoLaneLocksDomain(t *testing.T) {
 
 // TestNextShowsModel: Modell aus dem Feld, ohne Feld „sonnet (Standard)“, auch in der Parallel-Liste.
 func TestNextShowsModel(t *testing.T) {
+	t.Parallel()
 	out := must(t)(Next(laneRepo(t, laneSession{"L1.1", "offen", "PAP", "renderer", "opus"}, laneSession{"L2.1", "offen", "DEV", "", ""}), NextFilter{}))
 	checkText(t, out, []string{"Domäne: PAP · Lane: renderer · Umgebung: offline · Modell: opus",
 		"- DEV · L2.1 · Titel L2.1 (Sprint L2, offline) · Modell: sonnet (Standard)"}, nil)
@@ -92,6 +96,7 @@ func TestNextShowsModel(t *testing.T) {
 
 // TestNextMaxFourParallel: fünf freie Lanes → neben der Auswahl höchstens drei weitere.
 func TestNextMaxFourParallel(t *testing.T) {
+	t.Parallel()
 	var ss []laneSession
 	for i, lane := range []string{"a", "b", "c", "d", "e"} {
 		ss = append(ss, laneSession{"L" + string(rune('1'+i)) + ".1", "offen", "PAP", lane, ""})
@@ -107,6 +112,7 @@ func TestNextMaxFourParallel(t *testing.T) {
 // TestDomainPAPValid: Domäne PAP beim Anlegen, Lane und Modell setzen (auch in Dateien ohne die Felder), ungültige
 // Werte mit Wertebereich abgelehnt.
 func TestDomainPAPValid(t *testing.T) {
+	t.Parallel()
 	root := laneRepo(t, laneSession{"L1.1", "offen", "DEV", "", ""})
 	tpl := "# SP00.1 · Titel\n\n- **Status:** offen\n- **Typ:** Umsetzung\n- **Agent:** autonom\n- **Domäne:** REG | DEV | PAP\n" +
 		"- **Lane:** – (oder Kurzname)\n- **Modell:** – | haiku | sonnet | opus | fable (Empfehlung)\n- **Umgebung:** offline | live | ?\n" +
