@@ -87,6 +87,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-848](B-848-browser-client-code-entfernen.md) | INF | Schuld | niedrig | offen | – | src/, Phaser, die Spielseiten und die Web-Tasks des Browser-Clients sind entfernt, CI, Docker und Release bauen ohne dist |
 | [B-849](B-849-site-papier-bilder.md) | PLAT | Schuld | niedrig | offen | – | Die Präsentationsseite site/ zeigt Papierschnitt-Bilder statt Pixel-Grafik |
 | [B-850](B-850-server-net-load-tui-zukunft.md) | SRV | Frage | niedrig | offen | – | Es ist entschieden, ob k3c-server, engine/net, k3c-load und k3c-tui ohne Online-Spiel bleiben oder entfallen |
+| [B-851](B-851-paper-frame-ohne-vierbeiner-beinpfad.md) | PAP | Problem | niedrig | eingeplant | PT4 | paper frame --ohne oberbein-<b> blendet bei Vierbeiner-Animationen den Beinpfad aus |
 
 ## Archiv
 
@@ -810,3 +811,4 @@ Zeile in diesen Abschnitt.
 | [B-820](archiv/B-820-native-menue-backdrop-batching.md) | CLI | Schuld | niedrig | erledigt | NG19 | Menü-Hintergrund wechselt den Filter je Scheibe und bricht das Batching |
 | [B-821](archiv/B-821-native-lizenzen-version-worktree.md) | CLI | Schuld | niedrig | erledigt | NG19 | Version in LIZENZEN.txt und EXE können im Worktree auseinanderlaufen |
 | [B-823](archiv/B-823-browser-client-abloesen.md) | INF | Schuld | niedrig | erledigt | – | Der Browser-Client ist durch das native Spiel abgelöst und aus dem Repo entfernt |
+| [B-845](archiv/B-845-paper-frame-ohne-reittier-teile.md) | PAP | Problem | niedrig | erledigt | PT3 | paper frame --ohne kennt die Teile des Reittiers nicht |

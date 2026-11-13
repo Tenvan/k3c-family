@@ -40,6 +40,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | PT1 | gen:paper schneller: Cache je Asset, paralleles Rastern, Fortschritt belegt | erledigt |
 | PT2 | Paper-CLI: Fehlerpfade, Reittier-Boxen, Stil-Option und Ersatz-Materialien | erledigt |
 | PT3 | Paper-CLI: --ohne mit Reittier-Teilen, Bein-Box mit Wulst | erledigt |
+| PT4 | Paper-CLI: --ohne blendet Beinpfade von Vierbeinern aus | aktiv |
 
 ## Nicht-Ziele
 

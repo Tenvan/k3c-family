@@ -21,6 +21,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
 | RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
 | PT2 | PAP | PAP | Paper-CLI: Fehlerpfade, Reittier-Boxen, Stil-Option und Ersatz-Materialien | – | `aktiv/PT2-paper-cli-und-stil/` |
+| PT4 | PAP | PAP | Paper-CLI: --ohne blendet Beinpfade von Vierbeinern aus | – | `aktiv/PT4-paper-frame-vierbeiner-ohne/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | `aktiv/KB4-dev-aktionen-boss-event/` |
 | KB5 | SRV, CLI, DEV | KMP | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | fireball am Gegner, Betäubung, Schild und Sturm als Zeichnung | `aktiv/KB5-skills-wirkort-status/` |
