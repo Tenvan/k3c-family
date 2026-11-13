@@ -74,9 +74,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-749](B-749-gen-paper-startzeile-je-asset.md) | PAP | Problem | mittel | eingeplant | PT1 | gen:paper meldet den Start jedes Assets, lange Assets wirken sonst wie ein Stillstand |
 | [B-750](B-750-gen-paper-schritte-im-asset.md) | PAP | Problem | mittel | eingeplant | PT1 | gen:paper meldet die Ausgaben innerhalb großer Assets |
 | [B-751](B-751-gen-paper-schneller-rendern.md) | PAP | Idee | mittel | eingeplant | PT1 | gen:paper schneller: Cache je Asset und parallel rastern |
-| [B-756](B-756-ci-rendert-papier-grafik-vor-go-tests.md) | INF | Problem | hoch | eingeplant | WZ41 | CI rendert die Papierschnitt-Grafik vor den Go-Tests, die sie lesen |
-| [B-757](B-757-ci-race-balance-timeout-datadoc-test.md) | INF | Problem | hoch | eingeplant | WZ41 | CI: Race-Lauf ohne engine/balance, datadoc-Test kennt Balance-Berichtsdateien |
-| [B-758](B-758-release-workflow-tests-wieder-einschalten.md) | INF | Schuld | hoch | eingeplant | WZ41 | Release-Workflow: Typecheck und Tests vor dem Bauen wieder einschalten |
 | [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | eingeplant | NG9 | K3C läuft nativ in Go und Ebitengine auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
 | [B-776](B-776-bevy-prototyp-papier-sheets-zwei-pads.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Bevy-Prototyp zeigt ein Level mit echten Papier-Sheets, zwei Gamepads steuern je einen Monarchen, FPS und Grafikspeicher sind gemessen |
 | [B-777](B-777-ebitengine-prototyp-vergleich.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Ebitengine-Prototyp zeigt dasselbe Level wie der Bevy-Prototyp und liefert vergleichbare Messwerte |
@@ -97,6 +94,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-820](B-820-native-menue-backdrop-batching.md) | CLI | Schuld | niedrig | eingeplant | NG19 | Menü-Hintergrund wechselt den Filter je Scheibe und bricht das Batching |
 | [B-821](B-821-native-lizenzen-version-worktree.md) | CLI | Schuld | niedrig | eingeplant | NG19 | Version in LIZENZEN.txt und EXE können im Worktree auseinanderlaufen |
 | [B-823](B-823-browser-client-abloesen.md) | INF | Schuld | niedrig | offen | – | Der Browser-Client ist durch das native Spiel abgelöst und aus dem Repo entfernt |
+| [B-832](B-832-check-go-ohne-sim-pakete.md) | INF | Problem | mittel | offen | – | task check:go führt trotz Sperre die Balance- und Lasttests aus |
+| [B-833](B-833-wz41-abnahme-ci-develop-check-all.md) | INF | Schuld | hoch | offen | – | Abnahme WZ41: CI auf develop mit Tests grün, check:all nachgeholt |
 
 ## Archiv
 
@@ -786,3 +785,6 @@ Zeile in diesen Abschnitt.
 | [B-739](archiv/B-739-check-diff-grafik-golden-logging-sperre.md) | INF | Problem | hoch | erledigt | WZ41 | check:diff: Grafik-Golden je Gruppe, Schritt-Logging und Sperre gegen parallele Läufe |
 | [B-759](archiv/B-759-docker-build-ohne-work-ordner.md) | INF | Problem | hoch | erledigt | WZ41 | Docker-Build im Release scheitert an .work (EXDEV beim gen:paper) |
 | [B-825](archiv/B-825-ci-tests-wieder-einschalten.md) | INF | Schuld | hoch | erledigt | WZ41 | Die CI führt die Tests wieder aus (seit #531 abgeschaltet) |
+| [B-756](archiv/B-756-ci-rendert-papier-grafik-vor-go-tests.md) | INF | Problem | hoch | erledigt | WZ41 | CI rendert die Papierschnitt-Grafik vor den Go-Tests, die sie lesen |
+| [B-757](archiv/B-757-ci-race-balance-timeout-datadoc-test.md) | INF | Problem | hoch | erledigt | WZ41 | CI: Race-Lauf ohne engine/balance, datadoc-Test kennt Balance-Berichtsdateien |
+| [B-758](archiv/B-758-release-workflow-tests-wieder-einschalten.md) | INF | Schuld | hoch | erledigt | WZ41 | Release-Workflow: Typecheck und Tests vor dem Bauen wieder einschalten |

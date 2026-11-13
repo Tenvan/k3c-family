@@ -1,6 +1,6 @@
 # WZ41 · INF · CI und Release grün, check:diff-Protokoll belegt
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** INF
 - **Reife:** bereit
@@ -68,13 +68,13 @@ keine blockierenden. Default (Claude, 2026-11-12): B-758/AC-03 prüft den aktuel
 |---|---|---|---|---|
 | WZ41.1 | `WZ41.1-ci-belegen.md` | Umsetzung | autonom | fertig |
 | WZ41.2 | `WZ41.2-release-pruefungen.md` | Umsetzung | autonom | fertig |
-| WZ41.3 | `WZ41.3-review.md` | Review | autonom | offen |
+| WZ41.3 | `WZ41.3-review.md` | Review | autonom | fertig |
 | WZ41.4 | `WZ41.4-ci-tests-einschalten.md` | Umsetzung | autonom | fertig |
 
 Keine eigenen Sim- oder Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-13, Claude (WZ41.3, autonom). Kriterien: AC-04 belegt, AC-01 bis AC-03, AC-05, AC-06 lokal bzw. in der Konfiguration belegt (Ergebnisse WZ41.1, WZ41.2, WZ41.4, WZ41.3); der CI-Lauf auf `develop` mit Tests und `check:all` folgen nach dem Merge.
+Befunde: keine schweren; `task check:go` testet gesperrte Sim-Pakete → B-832.
+Abnahme-Ticket: B-833 (CI develop mit Tests grün, Laufzeiten, check:all); kein Gen-Feature geändert, Sim und Balancing gesperrt.

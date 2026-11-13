@@ -13,7 +13,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | NG11 | CLI | NAT | Natives Spiel: Fluss mit Shader | – | `aktiv/NG11-native-fluss-shader/` |
 | NG14 | CLI | NAT | Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter | – | `aktiv/NG14-native-fehleranzeige-shader-umschalter/` |
 | NG15 | CLI | NAT | Natives Spiel: Ton-Gerät ohne Absturz | – | `aktiv/NG15-native-ton-geraet/` |
-| WZ41 | INF | WZG | CI und Release grün, check:diff-Protokoll belegt | – | `aktiv/WZ41-ci-release-gruen/` |
 | WZ42 | DEV | WZG | Workbench-Tests schnell und stabil | – | `aktiv/WZ42-workbench-tests-schnell-stabil/` |
 | WZ44 | DEV, INF | WZG | Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug | – | `aktiv/WZ44-planung-wellen-werkzeuge/` |
 | RD1 | PAP | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | `aktiv/RD1-papierschnitt-renderer/` |
@@ -337,3 +336,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GRJ2 | Grafik-Zielmaß und Ausschnitt-Rahmen abnehmen | `erledigt/GRJ2-zielmass-ausschnitt-abnehmen/` |
 | US3 | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | `erledigt/US3-spielbefunde-papierschnitt/` |
 | WZ40 | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel | `erledigt/WZ40-check-diff-schneller/` |
+| WZ41 | CI und Release grün, check:diff-Protokoll belegt | `erledigt/WZ41-ci-release-gruen/` |
