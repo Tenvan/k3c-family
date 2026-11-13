@@ -196,7 +196,11 @@ JSON-Objekt auf stdout. Exit 0 = ok, 1 = fachlich abgelehnt (`{"ok": false, "feh
 - `frame` bei Reit-Animationen (B-709): Teile des Reittiers stehen mit Präfix `reittier:` (`reittier:hals`), die des
   Reiters ohne Präfix. Auch Ober- und Unterbeine (vom Beinpfad gezeichnet, Box aus seinen Stützpunkten samt Breite) und
   Teile hinter dem Reiter haben eine Box; die verdeckte Bein-Kette des Reiters (`oberschenkel-h` …) wird nicht
-  gezeichnet und hat keine Box.
+  gezeichnet und hat keine Box. Die Bein-Box der Vorderbeine umfasst den Wulst (B-845).
+- `frame --ohne` bei Reit-Animationen (B-845): `reittier:<teil>` blendet ein Teil des Reittiers aus, ids ohne Präfix
+  die des Reiters. Ober- oder Unterbein nimmt den ganzen Beinpfad des Beins (ein Papierstück), beide Bein-Boxen fehlen.
+  Ein unbekanntes `reittier:`-Teil lehnt mit `teil-unbekannt` und der Liste der Reittier-Teile ab, ebenso
+  `reittier:<teil>` bei einer Animation ohne Reittier.
 - Fehler zu Reit-Angaben nennen den vollen Pfad: `animationen.<name>.reittier` bzw. `animationen.<name>.reiter` (B-708).
 
 ## 9. Fixtures (`tools/paper/fixtures/`)

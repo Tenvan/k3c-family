@@ -15,8 +15,8 @@ import type { FrameGroesse } from '../render/raster';
 import { type Ausgabe, ausgabeSpec } from '../render/stufen';
 import { lageSvg, mitNachkommen, teileSvg } from '../render/svg';
 import { frameSchritte, umhangLauf } from './animation';
-import { GANGARTEN, type GangPose, gangPose } from './gangarten';
-import { reittierGeometrie } from './reitBoxen';
+import { type Bein, GANGARTEN, type GangPose, gangPose } from './gangarten';
+import { beinAus, reittierGeometrie } from './reitBoxen';
 import { umhangSvg } from './umhang';
 import { rideMatrix, rideText, vierbeinerMatrizen } from './vierbeiner';
 import { gangartVon, pferdTeile, pruefeVierbeiner } from './vierbeinerBild';
@@ -115,35 +115,43 @@ const vornVon = (reittier: Spec): Set<string> => {
   return new Set(reittier.teile.slice(ab < 0 ? reittier.teile.length : ab).map((t) => t.id));
 };
 
-/** SVG der gewünschten Segmente (`nur`, sonst alle) in Zeichenreihenfolge; nicht gewünschte werden nicht gerechnet. */
-export function reitSegmente(reiter: Spec, reittier: Spec, f: ReitFrame, stil: Stil, nur?: ReadonlySet<Segment>): { name: Segment; svg: string }[] {
-  const p = f.pose, vorn = vornVon(reittier);
+/** Teil des Reittiers sichtbar? Nicht in `ohne`; ein Beinpfad entfällt mit Ober- oder Unterbein (B-845). */
+const sichtbar = (ohne?: ReadonlySet<string>) => (id: string) =>
+  !ohne?.has(id) && !(id.startsWith('oberbein-') && beinAus(id.slice(9) as Bein, ohne));
+
+/** SVG der gewünschten Segmente (`nur`, sonst alle) in Zeichenreihenfolge; nicht gewünschte werden nicht gerechnet.
+ *  `ohne`: Teile des Reittiers, die nicht gezeichnet werden (`frame --ohne reittier:<teil>`, B-845). */
+export function reitSegmente(reiter: Spec, reittier: Spec, f: ReitFrame, stil: Stil, nur?: ReadonlySet<Segment>, ohne?: ReadonlySet<string>): { name: Segment; svg: string }[] {
+  const p = f.pose, vorn = vornVon(reittier), zeigen = sichtbar(ohne);
   const [vx, vy] = p.reiter.versatz;
   const svg: Record<Segment, () => string> = {
-    'reittier-hinten': () => pferdTeile(reittier, p, stil, (id) => !vorn.has(id)),
+    'reittier-hinten': () => pferdTeile(reittier, p, stil, (id) => !vorn.has(id) && zeigen(id)),
     umhang: () => (f.umhang && reiter.umhang ? umhangSvg(f.umhang, reiter.umhang, stil) : ''),
     reiter: () => `<g transform="translate(${num(vx)} ${num(vy)}) rotate(${num(p.reiter.drehung)} 0 -50)">` +
       `${teileSvg(reiter, stil, p.reiter.winkel, { ausblenden: mitNachkommen(reiter.teile, 'oberschenkel-h') })}</g>`,
-    'reittier-vorn': () => pferdTeile(reittier, p, stil, (id) => vorn.has(id)),
+    'reittier-vorn': () => pferdTeile(reittier, p, stil, (id) => vorn.has(id) && zeigen(id)),
     zuegel: () => zuegel(reiter, reittier, p, stil),
   };
   return EBENEN.filter((n) => !nur || nur.has(n)).map((name) => ({ name, svg: svg[name]() }));
 }
 
-export function reitBild(spec: Spec, a: Ausgabe, k: Kontext): Bild {
+/** Kontext des Reit-Bilds: `reittierOhne` = Teile des Reittiers (ohne Präfix), die `frame --ohne` ausblendet (B-845). */
+export type ReitKontext = Kontext & { reittierOhne?: readonly string[] };
+
+export function reitBild(spec: Spec, a: Ausgabe, k: ReitKontext): Bild {
   if (animationVon(spec, a.animation).ebene === 'reiter') return reiterEbeneBild(spec, a, k);
   const reiter = ausgabeSpec(spec, a), id = animationVon(spec, a.animation).reittier!;
   // Varianten färben auch die Satteldecke des Reittiers (B-717/AC-03, B-711): der Tausch der Variante gilt für beide.
   const geladen = ladeReittier(k.specPfad, id, k.stil, reitFeld(a.animation));
   const reittier = a.variante ? tausche(geladen, spec.varianten![a.variante].tausch) : geladen;
-  const ohne = mitNachkommen(reiter.teile, 'oberschenkel-h');
+  const ohne = mitNachkommen(reiter.teile, 'oberschenkel-h'), reittierOhne = new Set(k.reittierOhne ?? []);
   const frames = reitZustand(reiter, reittier, a, k).map((f) => {
     const p = f.pose, R0 = rideMatrix(p.ride.dy, p.ride.pitch, 1);
-    const inhalt = reitSegmente(reiter, reittier, f, k.stil).map((s) => s.svg).join('');
+    const inhalt = reitSegmente(reiter, reittier, f, k.stil, undefined, reittierOhne).map((s) => s.svg).join('');
     return {
       svg: `<g filter="url(#paper)"><g transform="${rideText(p.ride.dy, p.ride.pitch)}">${inhalt}</g></g>`,
       // Reittier-Teile mit Präfix `reittier:` (B-709), sonst überschriebe der Reiter gleichnamige Boxen (rumpf, kopf)
-      geometrie: [...reittierGeometrie(reittier, p),
+      geometrie: [...reittierGeometrie(reittier, p, reittierOhne),
         ...geometrie(reiter.teile, weltMatrizen(reiter, p.reiter.winkel, mul(R0, reiterBasis(p))), ohne)],
     };
   });

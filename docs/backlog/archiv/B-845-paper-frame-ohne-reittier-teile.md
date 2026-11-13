@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** PT3
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-13
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-13
 
 ## Ausgangslage
 
@@ -26,8 +26,10 @@ Agenten, die über `assets_preview` Teile ausblenden; 🧑 im Bereich Assets.
 
 ## Anforderungen
 
-- `frame --ohne reittier:<teil>` rendert das Teil des Reittiers ohne Lagen (Beinteile: ohne Beinpfad).
-- Bein-Box mit Wulst.
+- `frame --ohne reittier:<teil>` rendert bei Reit-Animationen (`reittier` an der Animation) das Teil des Reittiers ohne Lagen; seine Box fehlt, alle anderen Boxen bleiben. Präfixlose ids gelten weiter für den Reiter.
+- Ober- oder Unterbein (`reittier:oberbein-<b>`, `reittier:unterbein-<b>`): der Beinpfad dieses Beins wird nicht gezeichnet (er ist ein Papierstück), beide Bein-Boxen des Beins fehlen.
+- Bein-Box der Vorderbeine umfasst den Wulst (+1,6 Einheiten an Stützpunkt 2, `rig/beinpfad.ts`); der Wert steht einmal in `beinpfad.ts`.
+- Vertrag `docs/standards/paper-spec.md` › 8 nennt `--ohne reittier:<teil>`.
 
 ## Nicht-Ziele
 
@@ -49,7 +51,9 @@ Domäne PAP, Klasse A (Problem). Vertrag `docs/standards/paper-spec.md` › 8 na
 
 ## Ausnahme- und Fehlerfälle
 
-Unbekanntes `reittier:`-Teil → Exit 1 `teil-unbekannt` mit Liste der Reittier-Teile.
+- Unbekanntes `reittier:`-Teil → Exit 1 `teil-unbekannt` mit Liste der Reittier-Teile (mit Präfix).
+- `reittier:<teil>` bei einer Animation ohne Reittier → Exit 1 `teil-unbekannt` (Liste der Teile der Spec).
+- Fehlt das Reittier selbst → wie bisher `reittier-unbekannt` mit `feld` `animationen.<name>.reittier`.
 
 ## Akzeptanzkriterien
 

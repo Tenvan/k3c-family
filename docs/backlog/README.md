@@ -81,7 +81,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-839](B-839-wellen-restbefunde-review-wz44.md) | DEV | Problem | mittel | eingeplant | WZ49 | plan_next und plan_waves zählen Plätze, Ordner-Pfade und laufende Sessions ohne Domäne richtig |
 | [B-841](B-841-abnahme-laeufe-wz44.md) | INF | Schuld | mittel | offen | WZ44 | Abnahme-Läufe WZ44 |
 | [B-844](B-844-abnahme-laeufe-pt2.md) | PAP | Schuld | mittel | offen | PT2 | Abnahme-Läufe PT2 |
-| [B-845](B-845-paper-frame-ohne-reittier-teile.md) | PAP | Problem | niedrig | eingeplant | PT3 | paper frame --ohne kennt die Teile des Reittiers nicht |
 | [B-827](B-827-native-build-nach-dist.md) | CLI | Problem | mittel | offen | – | task native:game:build legt das komplette Spiel nach dist/k3c-game und kopiert geänderte Grafik neu |
 | [B-846](B-846-server-ohne-client-auslieferung.md) | SRV | Schuld | niedrig | offen | – | Der Spielserver startet und läuft ohne dist/ und liefert keinen Browser-Client mehr aus |
 | [B-847](B-847-workbench-im-spiel-ansehen-nativ.md) | DEV | Schuld | niedrig | eingeplant | WZ49 | „Im Spiel ansehen“ der Workbench startet das native Spiel statt game.html |

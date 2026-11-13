@@ -59,7 +59,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| PT3.1 | `PT3.1-frame-ohne-reittier.md` | Umsetzung | autonom | offen |
+| PT3.1 | `PT3.1-frame-ohne-reittier.md` | Umsetzung | autonom | fertig |
 | PT3.2 | `PT3.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

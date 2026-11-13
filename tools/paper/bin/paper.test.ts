@@ -108,6 +108,44 @@ describe('frame bei Reit-Animationen: Boxen des Reittiers (B-709/AC-01)', { time
   });
 });
 
+describe('frame --ohne mit Teilen des Reittiers (B-845/AC-01)', { timeout: 60_000 }, () => {
+  const monarch = join(ROOT, 'public/grafik/figuren/monarch.paper.json');
+  const frame = (ohne: string, animation = 'galopp') => {
+    const out = join(mkdtempSync(join(tmpdir(), 'paper-ohne-')), 'f.png');
+    return { out, r: antwort(['frame', monarch, '--animation', animation, '--frame', '2', '--ohne', ohne, '--out', out]) };
+  };
+
+  it('--ohne reittier:hals bei galopp: Exit 0, Box fehlt, andere Boxen bleiben, Bild anders', () => {
+    const vollPng = join(mkdtempSync(join(tmpdir(), 'paper-ohne-')), 'v.png');
+    const voll = antwort(['frame', monarch, '--animation', 'galopp', '--frame', '2', '--out', vollPng]);
+    const { out, r } = frame('reittier:hals');
+    expect(r.code).toBe(0);
+    const erwartet = Object.keys(voll.json.teile).filter((id) => id !== 'reittier:hals');
+    expect(Object.keys(r.json.teile).sort()).toEqual(erwartet.sort());
+    for (const id of erwartet) expect(r.json.teile[id], id).toEqual(voll.json.teile[id]);
+    expect(readFileSync(out).equals(readFileSync(vollPng))).toBe(false);
+  });
+
+  it('--ohne reittier:oberbein-vn nimmt den Beinpfad: beide Bein-Boxen fehlen', () => {
+    const { r } = frame('reittier:oberbein-vn,kopf');
+    expect(r.code).toBe(0);
+    for (const id of ['reittier:oberbein-vn', 'reittier:unterbein-vn', 'kopf']) expect(r.json.teile, id).not.toHaveProperty(id);
+    expect(r.json.teile).toHaveProperty(['reittier:oberbein-vf']);
+  });
+
+  it('unbekanntes reittier:-Teil → Exit 1 teil-unbekannt mit Liste der Reittier-Teile', () => {
+    const { r } = frame('reittier:fluegel');
+    expect(r.code).toBe(1);
+    expect(r.json.fehler[0]).toMatchObject({ regel: 'teil-unbekannt' });
+    expect(r.json.fehler[0].text).toContain('reittier:fluegel');
+    expect(r.json.fehler[0].text).toContain('reittier:hals');
+  });
+
+  it('reittier:-Teil bei einer Animation ohne Reittier → Exit 1 teil-unbekannt', () => {
+    expect(frame('reittier:hals', 'idle').r).toMatchObject({ code: 1, json: { fehler: [{ regel: 'teil-unbekannt' }] } });
+  });
+});
+
 describe('--stil <datei> für frame und render (B-705/AC-01)', { timeout: 60_000 }, () => {
   const mauer = () => {
     const dir = mkdtempSync(join(tmpdir(), 'paper-stil-'));

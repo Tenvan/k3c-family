@@ -1,6 +1,6 @@
 # PT3.1 · frame --ohne mit Reittier-Teilen, Bein-Box mit Wulst
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -58,5 +58,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Spec B-845 vervollständigt (Anforderungen, Fehlerfälle), freigegeben „Klasse A, Claude, 2026-11-13“.
+- AC-01 geprüft: `bin/paper.test.ts` › „B-845/AC-01“ grün: `--ohne reittier:hals` bei `galopp` → Exit 0, Box fehlt, alle anderen Boxen gleich, PNG anders; `reittier:oberbein-vn` nimmt den Beinpfad samt beiden Bein-Boxen; unbekanntes `reittier:`-Teil und `reittier:` ohne Reittier → Exit 1 `teil-unbekannt` (Liste mit Präfix).
+- AC-02 geprüft: `rig/reitBoxen.test.ts` › „B-845/AC-02“ grün: Oberbein-Box umfasst beide Kanten des Beinpfads (`beinKanten`, neu in `beinpfad.ts`, Wulst als `WULST`) in vier Galopp-Phasen.
+- Umsetzung: `frame.ts` prüft und reicht `reittierOhne` über `ReitKontext` (`rig/reiten.ts`, Erweiterung von `Kontext` ohne Änderung an `render/`); `reitSegmente` und `reittierGeometrie` nehmen `ohne`. Vertrag `paper-spec.md` › 8 nachgezogen.
+- `bun test tools/paper` 349 grün, 1 rot: `golden/public.test.ts` › „monarch hat idle …“ (fehlendes `galopp.png`, im Worktree nicht gerendert, B-737; unabhängig). Golden-Render gleich (Render ohne `--ohne` unverändert).
+- `task check:diff` grün (check_run, Worktree). Kein Gen, kein Golden.
+- Neue Tickets: keine.
