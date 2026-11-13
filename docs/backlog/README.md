@@ -79,9 +79,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-852](B-852-abnahme-laeufe-wz43.md) | DEV | Schuld | mittel | offen | WZ43 | Abnahme-Läufe WZ43 |
 | [B-853](B-853-review-groessenvergleich-vorher-bild.md) | DEV | Idee | niedrig | offen | – | Das Review zeigt den Größenvergleich auch für das Vorher-Bild |
 | [B-854](B-854-abnahme-laeufe-wz48.md) | INF | Schuld | mittel | offen | WZ48 | Abnahme-Läufe WZ48 |
-| [B-855](B-855-check-run-konsole-je-checkout.md) | DEV | Problem | mittel | offen | – | console_tail und check_run trennen die Konsolenpuffer je Checkout |
+| [B-855](B-855-check-run-konsole-je-checkout.md) | DEV | Problem | mittel | eingeplant | WZ49 | console_tail und check_run trennen die Konsolenpuffer je Checkout |
 | [B-856](B-856-paper-cli-sammelaufruf.md) | DEV | Schuld | niedrig | offen | – | assets_set ruft die Paper-CLI gesammelt auf statt zwölfmal je Änderung |
-| [B-857](B-857-check-dev-ohne-sim-pakete.md) | DEV | Problem | mittel | offen | – | check:dev testet die Sim-Pakete der Workbench nicht, solange die Sim-Sperre gilt |
+| [B-857](B-857-check-dev-ohne-sim-pakete.md) | DEV | Problem | mittel | eingeplant | WZ51 | check:dev testet die Sim-Pakete der Workbench nicht, solange die Sim-Sperre gilt |
 
 ## Archiv
 

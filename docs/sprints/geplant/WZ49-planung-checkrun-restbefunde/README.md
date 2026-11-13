@@ -4,7 +4,7 @@
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
-- **Tickets:** B-831, B-839, B-842, B-847
+- **Tickets:** B-831, B-839, B-842, B-847, B-855
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -53,6 +53,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 - **AC-02** `B-839` Kriterien grün.
 - **AC-03** `B-842` Kriterien grün.
 - **AC-04** `B-847` Kriterien grün.
+- **AC-05** `B-855` Kriterien grün (Konsolenpuffer je Checkout).
 
 ## Offene Fragen
 
