@@ -1,6 +1,6 @@
 # WZ42 · DEV · Workbench-Tests schnell und stabil
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -67,12 +67,13 @@ keine blockierenden. Defaults (Claude, 2026-11-12): Online- und Lasttests (`cmd/
 | WZ42.1 | `WZ42.1-rote-und-wackelnde-tests.md` | Umsetzung | autonom | fertig |
 | WZ42.2 | `WZ42.2-short-unter-drei-sekunden.md` | Umsetzung | autonom | fertig |
 | WZ42.3 | `WZ42.3-verweise-balance.md` | Umsetzung | autonom | fertig |
-| WZ42.4 | `WZ42.4-review.md` | Review | autonom | offen |
+| WZ42.4 | `WZ42.4-review.md` | Review | autonom | fertig |
 
 Keine eigenen Sim- oder Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-13, Review WZ42.4 (Claude): `task check` und `task check:go` grün, `task check:dev` Lauf 1 und 4 grün, 2 und 3 rot nur in Katalog-Vitests außerhalb des Bereichs (B-837).
+Kriterien: AC-01, AC-02, AC-04 geprüft (WZ42.1, WZ42.3 › Ergebnis); AC-03 teilweise, Rest `mcpsrv`/`planning` verschoben → B-830, „zweimal grün“ → B-837 (WZ42.2, WZ42.4 › Ergebnis).
+Behoben: falscher CI-Hinweis in `internal/balance/hints_test.go`. Neue Tickets: B-828 (CI ohne Workbench-Go-Tests), B-829 (Flake `TestDateiAenderungStartetNeu`, nicht reproduziert), B-830, B-831 (`check_run dev:test`), B-837.
+Kein Abnahme-Ticket: kein Gen-Feature, Sim gesperrt (Sprint-README › Sessions). Version: keine vorgeschlagen (nur Werkzeug-Tests).

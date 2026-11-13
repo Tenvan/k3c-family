@@ -49,7 +49,8 @@ func TestRichtwerteFehler(t *testing.T) {
 // B-632/AC-04: Der HTML-Bericht ist eine Datei ohne externe Ressourcen, mit eingebetteten Spielgrafiken und den Daten.
 func TestHTMLEigenstaendig(t *testing.T) {
 	// Die Papier-PNG sind nicht eingecheckt (B-737); ohne gen:paper fehlen sie auf einem frischen Checkout (B-738).
-	// CI und Abnahme rendern vorher, dort läuft der Test.
+	// task test, dev und build rendern vorher (gen:paper), dort läuft der Test; die CI fährt die Workbench-Go-Tests
+	// noch nicht (Ticket aus WZ42.4).
 	if _, err := os.Stat(filepath.Join(repoRoot(t), "public", "grafik", "gebaeude-paper", "burg", "stand.png")); err != nil {
 		t.Skip("Papier-Grafik nicht gerendert (task gen:paper), Test läuft nach gen:paper (B-737, B-738)")
 	}

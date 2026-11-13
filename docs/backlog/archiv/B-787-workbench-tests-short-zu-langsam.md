@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ42
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-11
@@ -68,3 +68,7 @@ Warum brauchen einzelne Tests in `assetsui` und `paperassets` 40 bis 57 s (vermu
 Zum Vergleich Wurzel-Modul (`-short -count=1`): 57 s Wanduhr; `engine/net` 29 s (TestStateGleichOrakelAlleBiome 17,8 s), `engine/balance` 27 s, `engine/level` TestRustWieGo 4,2 s (fällt mit B-779 weg). `tools/assetkit` 10 s. Gemessen von Claude beim Umbau von `check:diff` (`tools/checkdiff`).
 
 2026-11-11, Abnahme-Ticket B-817 (`task check:all`, 462 s): einziger roter Test `TestHTMLEigenstaendig` (`internal/balance`). Ursache belegt: `report_html.go` bettet Pixel-Grafik aus Pfaden ein, die mit CU1 entfernt wurden (`grafik/gebaeude/burg-1-32.png`, `mauer-1-32.png`, `turm-1-32.png`, `grafik/16x16-small-and-medium-coin-animation/…`, `sprites/skeleton/idle.png`); auch nach `gen:paper` fehlen sie. Vorschlag: auf Papier-Assets aus `public/grafik` umstellen oder fehlende Bilder auslassen. Die drei übrigen roten Tests der ersten Messung (`simexe`, `botdev`, `mcpsrv`) waren in diesem Lauf grün (vermutet: lastabhängig, B-704).
+
+Messwerte vorher/nachher (WZ42.2, `go test -short -count=1 ./...` in `tools/k3c-workbench`): Tests ≥ 3 s 97 → 9, Wanduhr 123 → 60 s, Bereichspakete (`assetsui`, `paperassets`, `review`) allein ≤ 3,2 s, `check:diff` 162 → 32 s. Rest außerhalb des Sprint-Bereichs: 5 Tests `mcpsrv`, 4 Tests `planning`, Pakete 58 s und 40 s allein → B-830.
+
+Voller Lauf (WZ42.4, `task check:dev` auf frischem Worktree nach `task install` und `gen:paper`): Lauf 1 grün in 665 s (`mcpsrv` 52 s, `planning` 145 s, `services` 4 s), Lauf 2 rot nur in zwei Katalog-Vitests unter Last (→ B-837), Lauf 3 und 4 siehe WZ42.4 › Ergebnis.
