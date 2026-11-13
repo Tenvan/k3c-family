@@ -515,19 +515,19 @@
         {
           "art": "flaeche",
           "form": "M2.79 -56.56L7.93 -50.44L5.64 -48.51L0.49 -54.64Z",
-          "material": "stein"
+          "material": "eisen"
         },
         {
           "art": "flaeche",
           "form": "M4.08 -55.03L6.65 -51.97L19.79 -64.3L21.45 -67L18.51 -65.84Z",
-          "material": "stein",
+          "material": "eisen",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M4.08 -55.03L5.36 -53.5L21.45 -67L18.51 -65.84Z",
-          "material": "stein",
+          "material": "eisen",
           "ton": "schatten"
         }
       ],

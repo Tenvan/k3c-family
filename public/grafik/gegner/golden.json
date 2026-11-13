@@ -1,30 +1,30 @@
 {
   "alphawolf": {
-    "renderKey": "b69de925d7abdce49ea408821086893b0f5cdcf155c22cf56ef4696ffecf830b",
+    "renderKey": "a093f99e21ad96ba0a638e43a116e4e635da9c319eb9cb8c3e7d6368b7b2f48a",
     "dateien": {
-      "angriff.png": "44f2d1a4ee44a4b836de6d709ac47196bd5599860a4e71c1bb388debd5143d2f",
-      "idle.png": "cec37316fc4825af8c9516b90a6c0929f57981352b014b55fdd8398f3cbc5724",
-      "lauf.png": "140a1462b353737a7a01ec6f59b0753b16a83f9ccabe4bbb68a4360171572941"
+      "angriff.png": "aeadf680d76eca5121f0108b92a10388f38cfefc5ace29038358b1e106b74464",
+      "idle.png": "ee5d428a43543908205c304d419d020c907dc08a3a2e1e6fef3fe946c8feb4ff",
+      "lauf.png": "61669583948dafffb501ce317701a9ab8ad7eec826c82870c03317a420f6096b"
     }
   },
   "eisenkaefer": {
-    "renderKey": "504edbb99bd26182314e39b983ef1df1c3ae3adbde63c1ef07d89fbffd9f88dc",
+    "renderKey": "3e3718819dd6a157b9ad53abb59c88342489ac69127d10a078b5ed63c26aef45",
     "dateien": {
-      "angriff.png": "3a4a0e5c777867258b8bf3d7ae97444c20f35758592282e6856130767715c40c",
-      "idle.png": "467737c0c781d6b062240105e5bca7fae35a906f82561d63075ddc61bcc1b2fc",
-      "lauf.png": "621592b35a58b618adc31f8d89f28610495a38c90055f577f95d0e79d0bf2be0"
+      "angriff.png": "8df70d747fc88fe70966e22f77f505e2883c6e8c18baf7a9e3d861b5f39fbaab",
+      "idle.png": "ff879c66adfbdf24f2e2cd70d6d67706a75bfa04a335cdb7ba35f689010195fe",
+      "lauf.png": "016aad9601e4d0f4852ee1c4b26a9d3f122d4f2acc36b226be2ab0edf8034fad"
     }
   },
   "feuergeist": {
-    "renderKey": "fa00a185e20cdd3602cde98166002d6301209560765f79f3ac38da71e2ea4c2b",
+    "renderKey": "7cb849de3f841aa24bb49f6e56ef79fb1adeaa9a2858cd11ea070073aa30c6a0",
     "dateien": {
-      "angriff.png": "b2d3f23ad30f35bdc3d13eaac809de86997a3d4fffeb031ba8e632c52f90d41d",
-      "idle.png": "5a4d351a571251ed450727c114caa8147b62bc81e84632595591a276f754bf88",
-      "lauf.png": "feeaa6b90fb260b89d866a210e46523884016736e701b06631ba1df740698f6c"
+      "angriff.png": "11cd7cdbd3cdb3e06e99f4edab961f272e4b17895c447184e89ad2dd5173ceb1",
+      "idle.png": "d3762c23ec35ef5e697e1a90e787f8fbf1bc12b845f07fa88ab20da90d4e0ad9",
+      "lauf.png": "668c34d88de1b342947cd1054cf36f3397487e6e9f0d4142daae69d2fb9ef9e5"
     }
   },
   "fledermaus": {
-    "renderKey": "86b2d4ef5fda045cbaac2d185d2cfc1e7ffb706e4310b6dfc81def5ac8181b2d",
+    "renderKey": "9c95cbc5c16aba4426cea4ecccb979de0cfbe501a44324f72a1c86f3afc5314c",
     "dateien": {
       "angriff.png": "00252a323d8def7b68b078ac0d6f41f66dad512894dde6a156527b60f18836dd",
       "idle.png": "cf7255c2ceec011beb0b2479f702733e25e9559b90d965a777244296fe072352",
@@ -32,7 +32,7 @@
     }
   },
   "gier": {
-    "renderKey": "d4d74e343f09812afb863c495e935ae23a91b0add6b75147b54a8a27d1b1705a",
+    "renderKey": "d1bc9846b4c05cf8cb2599b4799345b08c21f45b1fcba21735eca40ea0790914",
     "dateien": {
       "angriff.png": "ab3c09dc9d32412c8efb5f71cead8824001e77b83f6498de5b4f94900d51fb75",
       "idle.png": "008bc0590a299c9dafb19e57d66f7b4df720b46876a7be931a939370c19f032b",
@@ -40,63 +40,63 @@
     }
   },
   "goblin-bogenschuetze": {
-    "renderKey": "bad8e3d02600d13d54872d841db96a19660b0d1848224f95fa18e72d6c47520b",
+    "renderKey": "6c0a08312684c20d6b5b84cc32475286f6c43a955b1d7647e4615c34a03551f7",
     "dateien": {
-      "angriff.png": "cf78651858e8e0770fc8cb2254790e0603119446211dd1638393cfa1a6f6bd56",
+      "angriff.png": "0779d745189360af61321c012b9e5bbbb71a28e17f9c0723f135fe3b9237fb59",
       "idle.png": "e8bebc3ce26bc92ad7247af35681f87b02e7952b075e7b1f29893a1892f2a8ce",
       "lauf.png": "ee66efba0668c4389fa215830997956da70ab3a00508057fb548d4a75070b61b"
     }
   },
   "goblin": {
-    "renderKey": "f5f3251209f2eca437dda3d23db16dd664be6ac3b1a7ced3b73bd8e083819c38",
+    "renderKey": "ad0f1f899caf36474f040c0490160daedf206e54f1cd9ce2c8f5c622d0ecfb30",
     "dateien": {
-      "angriff.png": "1137833aa25162d020cb17814d57973c196ee17b6091b4b805325606fe2385fc",
-      "idle.png": "9b288b7c3728e5db9b70e0b4870447f3343698965cd43ad3caaf7973437e16e1",
-      "lauf.png": "9f7182b63c626835437fc226ef153e8cd084185c3fc06f69aa32c2f883770ab6"
+      "angriff.png": "013fbcfc0cd113371f95cdbbe99b48e79d8fcec78ae1e2f85c2b5959bf916e47",
+      "idle.png": "ffb02889d50b381b030c609f18414fbb382829eb0301f5b32cf7761e0074426c",
+      "lauf.png": "76344cccd45bf1981c95574b2c95223ab68d598a15b39bc7db951ccedd424e94"
     }
   },
   "grubengeist": {
-    "renderKey": "6663250f8768da9c4d8c52a366fd9d52a4dfad4e2035eb564440be5f25ed4873",
+    "renderKey": "1f49f69d5abe02c2ae9c6e3414f6481d59802bd2c95527c6651ad8a72eedb88f",
     "dateien": {
-      "angriff.png": "afcb30700f895beaf38746fedd01d3a0b961eeffa9c2c737fde89eb5c4d60dba",
-      "idle.png": "9809fbf152f00ab86b715677046cd1d77960d6adadb9fc38510648171acbbcf6",
-      "lauf.png": "d4a7501a1b7ff06871c15080b7f1714fdc7356f88d7a22c0db49ea4a44e761da"
+      "angriff.png": "8a32e905058d46b2fe8016982e284999e35c3169c24ec80b9d7d8960293f2b8d",
+      "idle.png": "4dc0e2a4eab4a87d4eb61abee9098fe7c6f6541eb988b4ecc1482145c81955e5",
+      "lauf.png": "813970ef0bb10fdd98887c774578c0c29a16ed124585c6cd042f312f287c139e"
     }
   },
   "hoehlentroll": {
-    "renderKey": "7ded02bdd68e8c53a61d14e57a340ce710306e510e99228352b4cf2e960b5b97",
+    "renderKey": "9cecf6814e13246c41213057517ec0b1dc79ab78acad9aae8b62bdd4e2a2ec6e",
     "dateien": {
-      "angriff.png": "8ce548d6bfffa7059c37fb5d05ae47b6e1bc08236635a5e3ff17a8329995f2bc",
-      "idle.png": "a1d44fddc82f87a557c2deea9457f0a98c4d26ed1a56fe18db1ebad2557de556",
-      "lauf.png": "8d74f49587fe956029696afcd9d883a854dd5c47b1f16b4a6387d402bcdf6347"
+      "angriff.png": "58a96633200cc9626d1944d229464c5d3ccfd42cd9b8b2f9ddb9bee6a2197861",
+      "idle.png": "3570cfbb27e3f1d683831be97a8d49873bd73ad8032ae6c8b1bd38ad75f0269f",
+      "lauf.png": "1f3ac3ef2837db4e86f1ebee0ab4a1bace515691030e20672c48176d266136a9"
     }
   },
   "kristallspinne": {
-    "renderKey": "038b494294ef96eb4efe5f7e1e32c7ddda0770f3b2e328264d808cae3597f494",
+    "renderKey": "7cbaab2e548ba0c4ec824dbf68f0b6a260ad12b8c9087861689633fb7f27db80",
     "dateien": {
-      "angriff.png": "bd1a5f57524c3c16dd8560be1560e39bd4f44d6b471e94b238014eb8930a4e0b",
-      "idle.png": "ba297fc16e5cab577aa59dd3a4b70469ad6b8f325443ee0fc3a08c2d47f5198f",
-      "lauf.png": "0832899ff05585b5f616f85cd50031a033bb28997e6d0cc49a3d5454b5941c18"
+      "angriff.png": "d6d15230427d1d050dd15d2451216481ff2124e04eaa2e2f0820b6c0cf38e58e",
+      "idle.png": "c30d77b71ab63e1e2fdd96b3122e6ae3bb125e3b76b1982becf9784645f5d91c",
+      "lauf.png": "3e44b9d816601b523ac52bbd6d17dcfdfffe3c57b2e4122a8715a58847a46bcd"
     }
   },
   "kristallwaechter": {
-    "renderKey": "ab39d2832edf06993d9490e5cf0ba39e172132a0adecccf27a18f7680232f354",
+    "renderKey": "79a895fcb3254f8ff62480161c9588709d38fbb685aaa7c437097a6bf8de2548",
     "dateien": {
-      "angriff.png": "6cb7564cc1ba14de44b5de170b97e4a00f5f9235e47f0adadc23611af12d987a",
-      "idle.png": "1ecc1219f596d6a078781c0998f06d2a18059a4be080e506a67ad51cdc513936",
-      "lauf.png": "0bad584e3f74a0f8e9cdbfa792b37145e33641feb1a4917369e94be3af407fe6"
+      "angriff.png": "a5211c99f5f615191939326b4fe6352a866e51abfe2a630103623b9485aa83f8",
+      "idle.png": "ea9385be97715e1d50d7458e98ab77b942aabbacc5d3fb0088bfb5964d5c02fc",
+      "lauf.png": "617c74ab256b4be3e6257275dbe3622068a515c05f0719493b32f743ebe3ee68"
     }
   },
   "lavaschleim": {
-    "renderKey": "8c83908556672a2991102a5528a8d6812bc1d8b999d716c6aacde3d81b5c9069",
+    "renderKey": "d3c231a49bda0fde88cfdbbe2c67b56f08b74eb2853487418b1c4dc221be551d",
     "dateien": {
-      "angriff.png": "6a907bf29ba56d1fe9bcc774c573f3ae0ea6a42247a4f7978dac1c71ad03dda3",
-      "idle.png": "0a99862ea8aa5c6dccf71fce17d7017b92bd5f35a1644c7f4bbf19539f4b6f92",
-      "lauf.png": "8c77231c48841ceec5495ceaf7ebc94d138c21ad1280b6b07ad34bd235b9abb4"
+      "angriff.png": "0826783f7c3e54eae26d2db410401b6e5720ecc64adc0a12292401cdf7b76791",
+      "idle.png": "83b05936234e6fc29b590cf88187b765d0e27e410c14325941a77dd7f43abca6",
+      "lauf.png": "36fcaf88afc6c034e0ef60c5abe7f7a9859c293061d0b72a12996317713e4b8a"
     }
   },
   "rattenschwarm": {
-    "renderKey": "1ca2e60052d150a66f89dd593f5009f99c85a746830ee317d601499d22ac79e6",
+    "renderKey": "35c665c14598a67ab462b31d9acd5003cb3c95c208c6b6fb47475e23aa1e2027",
     "dateien": {
       "angriff.png": "8e2c54a0fff45eb0324f9d9ef69ff66bb56aa054ac99e8f8be11db2f14e5e48c",
       "idle.png": "9abf8a8789cc5dce9e0c898f3a3ba23e8ce442e3fe3c48fa053bc1603092a482",
@@ -104,31 +104,31 @@
     }
   },
   "skelett": {
-    "renderKey": "e402882ebec6ea8d703643e43278344a74435608e7241cc95b526db3bc8934d5",
+    "renderKey": "580bf0bea926232c00ae7ccd081479336e54baaf7a6c6c8dfa031aff959c0e1b",
     "dateien": {
-      "angriff.png": "20ed0348895e9cc5cc12962bdbfabd75b82117b857a450f1d385ef2f84d92dc6",
-      "idle.png": "2097e5c651f54421bb0dae7ad7b0858e5ac9d7efa960c8ffdd1cd0f545698d4c",
-      "lauf.png": "27c620cf3722c60fe30cd5f093d8e5f437443a3df4a730c99715ee4a6303e557"
+      "angriff.png": "876fb0262e66087fb1da40b884d91cda7f10765b71e852e29159ed65316d3368",
+      "idle.png": "5ffd3ce2f0591ca5f0ff82664723d2b6c42a56bf57aa2954293190771a9b781b",
+      "lauf.png": "111cd99c7ed201e1953a2720de1eee0bbb34152d096b2e8e201aba2e2b451056"
     }
   },
   "splitterling": {
-    "renderKey": "64d205ab5ca3f6bac888ae827b15f1be50f3cc071386f67b0b6831e334956f72",
+    "renderKey": "11d24d3042c0b9e313c8bfc08836438877883875cf7c90482f53dd9e42caf219",
     "dateien": {
-      "angriff.png": "188f9b028d9d8dcdf4980a374413ba764cdbc2975611286a98b8e3a239ffe31b",
-      "idle.png": "440140a52a565b6e2c75507ab313c25a3916755058a968359d138dae883929a1",
-      "lauf.png": "ad6a96c643871dfb7b627f2d34f76df5c481c0eded0653adfa8c4476ea863414"
+      "angriff.png": "a525f7611eb5a59cf4c41995dcb4b7a6107e95d1ae99e1d922a4ce92ff00a286",
+      "idle.png": "1d263cd433e4d00896e6809250121e629ac1188f183c1b7173d0cfaaa3bbebc0",
+      "lauf.png": "6d0d389f277cbfdddad45cf709f156d78e4ae086d9c2a8e516a1a9a2a4165fad"
     }
   },
   "wolf": {
-    "renderKey": "0d81ceb0eb1ac08f96f4b88fe881a48d43d030521196c5539bf473554eae122a",
+    "renderKey": "4886da41814c91b3b4cb25e4ac92ac019bfad3290d377a657289f66fac23fa48",
     "dateien": {
-      "angriff.png": "bbaa053698c040b5274f9c7b57da0fdfe5da8f4929312ec3be130fdf88540a23",
-      "idle.png": "0262b628f1a20cf16df2074572846b1685f8ae6608c2b3596c0cfa87a85aa514",
-      "lauf.png": "dc434a941801e7d7c63bc49b70269164296e23d9f0b4e9dd38784601a4fce6b7"
+      "angriff.png": "ede6fe8c5709641789d0ec36f2995c9a84d69be5ccb2674818cf390517ed2770",
+      "idle.png": "eade2c3983685b30fb7d1517478edab2863e921c59ec5c3061347c453bbad70f",
+      "lauf.png": "928d4fcb0037e91476657318b9f4798ffb9b6ed5dd1d43b93f4dca57f1fc9687"
     }
   },
   "zombie": {
-    "renderKey": "bbf057984d28e827ed9c70fc06ceacae2d557d98a32750000227aba682f44aa5",
+    "renderKey": "6d66a064b9255b4dde27538d8faeacfc647e61f24792f7eb3add91001016ee43",
     "dateien": {
       "angriff.png": "0bab703c3ab5da2e3e278ec515988ac796c70a2c22a02a4e002b0f6f7ec1f12a",
       "idle.png": "cdfce224482cdee48b5f44b7f8ad20db7b68be44ce7a97f665f2fef079f2a927",

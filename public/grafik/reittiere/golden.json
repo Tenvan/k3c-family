@@ -1,6 +1,6 @@
 {
   "albtraum": {
-    "renderKey": "e759b83b85501e836f2df8475bd524c048d73a8d90daa73ba6161841b6b40c29",
+    "renderKey": "7577bfa88185b4e801ea4aa7ada4d8083b06c118ebb602ccacf59bb1540f04a6",
     "dateien": {
       "galopp.png": "7f106bb597d73d23ed314d0925ec9345b67ad06172118a595217613283859791",
       "hinten-galopp.png": "e57a836bcca1b904072e8975f8a2fe8ce257c6761c15586cdf0361413042c235",
@@ -14,7 +14,7 @@
     }
   },
   "einhorn": {
-    "renderKey": "4521b63255c25814a0400619657ac5565673f16bcaea0a99bf56229ad62bc7a2",
+    "renderKey": "c5c1a3815a2aaf0cad012e78afe959fc7dd2ec6485f35c30104dc671d511b36b",
     "dateien": {
       "galopp.png": "6db9b6beb23f6b2ed20523dbfa25b9ced9fc8451584260892688f3ab176b9961",
       "hinten-galopp.png": "d464c9f21bc40ce31fff4c8680371a9c31f3f8412d69ff181869bb5cb09cb846",
@@ -28,7 +28,7 @@
     }
   },
   "elefant": {
-    "renderKey": "4cca588261df8390840f4b7b13ef0e234d6276ecf9bb9232e2fb819e7524cd89",
+    "renderKey": "464ff8309a01f1f650780115736ab399ef624b6441b16b9d6108289d2c4f6b43",
     "dateien": {
       "hinten-schritt.png": "086c9d6b5028b52941712d8c515f6530f8c5da825c7eb6c96cb2d0fe6d732bc8",
       "hinten-trab.png": "f24063f947ba61bd2968f5d8bdf7f633ac41083e761da56ca1ce4dd8b2bf5553",
@@ -39,7 +39,7 @@
     }
   },
   "hirsch": {
-    "renderKey": "af3b06c959cf113b492c98001eb72602bcbdb3a54bfe642f5e95896c993c0219",
+    "renderKey": "718bd644ea6ea6dfb7d44a92db0bf5e36a8973fdd9b43ab51c9a2c7718625c99",
     "dateien": {
       "galopp.png": "e7a0caeb91a54a105323ead4e9b51cf8ab2f844c5ea482f0b219920dfff2137f",
       "hinten-galopp.png": "ce8ced8f067bff187656ab95abacc380eaf7873558e24c854db868006bc69bfc",
@@ -53,7 +53,7 @@
     }
   },
   "hoellenhund": {
-    "renderKey": "4064b0cdf059b22a42ec88f23bf0bd72bda44ab1820989c66c4e10f145a7b093",
+    "renderKey": "62315a74e53353c64d3c92b405b10c01e914ef08878ed46efa83af0b3dfc3c34",
     "dateien": {
       "galopp.png": "a845bc5bf6c5a46eb98204c7939bdde9e27471229f1703b41221eaee44a3d834",
       "hinten-galopp.png": "9ab17e64fd4396aaaa55585b0703e450144d421e51125cc5b091a48dd6b5d05b",
@@ -67,7 +67,7 @@
     }
   },
   "pegasus": {
-    "renderKey": "b9707f695fc946eb1e178a7250fa16e658c2927641e043f3de33c8c1b834e60f",
+    "renderKey": "ae1448417a280bf210aae8c88a059168c765e547368abeb92a36be4b0c1753ea",
     "dateien": {
       "galopp.png": "948306a5411bb34183106c9014a96d8ed5334200eda59fcd582211a2a9888c94",
       "hinten-galopp.png": "c8eaaf638bd4512a24e6b8e45ea88b38e778dab94bde431442d6c0a56b3aa737",
@@ -81,7 +81,7 @@
     }
   },
   "pferd": {
-    "renderKey": "2c885f1baa0cfd4cba603fefdf5b5d881c9aaebaa444e1896502904f697161bc",
+    "renderKey": "5889bc6031eb938ff98808486c8dfbcf07e0a6e39ebc53191bc7111e0f62e84b",
     "dateien": {
       "galopp.png": "93738a0240cf7121339f0f6f7cec09175aa137382b25a6941f9561fb41a31f25",
       "hinten-galopp.png": "5819a2c4e2cedde54b35ddb025e3d6b46729a67310094bbea9e448fb836571f5",
@@ -95,7 +95,7 @@
     }
   },
   "rappe": {
-    "renderKey": "45f51c63c86baddc984355f4b7fdba78b0f5026f8f85333db897f726c4342815",
+    "renderKey": "f97b735078c0fb9e3d97671fc9cf1d7ec23b64f7834f03215f914b5209def69b",
     "dateien": {
       "galopp.png": "229b2f340336c0fcbb87b01b64c9deba2fd6fa2add522df58769d286183e10c4",
       "hinten-galopp.png": "4cd4536234e10877731dabad8e4fb723481b45e05a184cbe1a1040836a9f841e",
@@ -109,7 +109,7 @@
     }
   },
   "schimmel": {
-    "renderKey": "8143ef747b653697011e7d62bbb02a860669bb5ad123ca40ccd10f16cc39a850",
+    "renderKey": "5e0c4adfb0d374186ef5ff0b8960682fd046b3257de732257b7209454d2d3c5c",
     "dateien": {
       "galopp.png": "7c45e80d3e9dc19a26ad1b627d102a9bb80db3beef548db2a36128f7eb404523",
       "hinten-galopp.png": "a6e6413127973cffc2ee3269df40ef16f6332f11a1a08221f8a9d2fefa49ecf4",
@@ -123,7 +123,7 @@
     }
   },
   "weisser-wolf": {
-    "renderKey": "15de92d734a494e240483039510d7ab7b3596921db40648979d57d1b6991b7a4",
+    "renderKey": "35a8e8385d8a7e626eb9e7486589b03b63b892323006dc0fcfee753f0b5a6c8b",
     "dateien": {
       "galopp.png": "99610668b52683a9daf2b31ab7b6bb2802c13403e19a98155f56d8a25576692c",
       "hinten-galopp.png": "860f1fc4bf88b3b0872bbd4ac97d1cf1ddbccff487add0457a659436ad974175",
@@ -137,17 +137,17 @@
     }
   },
   "wolf": {
-    "renderKey": "c6e4aa78db39d9ce1f9372c5d5423e4e10f9e9c9d648b1d0025bf96c5774777e",
+    "renderKey": "1005b5840f8132b7383f843c0f060eba0213494be72bd2bcb8177bd936f294b4",
     "dateien": {
-      "galopp.png": "783609c02b2f68e7b03df6dd9b0197a7bd2d4bc4a13955ac1f6c8b7926774afe",
-      "hinten-galopp.png": "9367dd15fcd56ba6c57a30309c38d024cc9111927a1b09114a969825775d12af",
-      "hinten-schritt.png": "d299f115588620dbf0cbea7a61470e42e5c561ab821bd2f29bf651147090fff0",
-      "hinten-trab.png": "856552943882fff4d211ba8353b2d33c9cc4cae76b81f358b76e1ed4f1088813",
-      "schritt.png": "76dab9ca939dc3170e3a4d1ab84ff32e757a715d5f8d6698f261ce7d10253a32",
-      "trab.png": "ec7201cf0874f5b50ab555cf04652895407b1d7aa31e016a5d7d62748fb34697",
-      "vorn-galopp.png": "13f12747e6c02d8c3588ee48870b8c682668529ec8454cfe5cc5cfc4b6de6674",
-      "vorn-schritt.png": "52f9906b678311cd4657eadd026ac0564bd27452da12c95e8b3118a7257619ce",
-      "vorn-trab.png": "984dc41b5befdc20a7b804a3c0cd084c5e54696380f456c15464073162e88762"
+      "galopp.png": "90fd2e34660e5545c4bf4c96b25a1c04509625fd883b426eb699f9b4a5a738f3",
+      "hinten-galopp.png": "e265b0b909c31fc71d206b51a726a7992c56bf37996822c17ab74a889a2dc282",
+      "hinten-schritt.png": "fb918bf91f6f029952c5976f91decc7573530c2513e236a7f4b36be09de21a32",
+      "hinten-trab.png": "4f315cdc02c474a6a80627412b4ff26e08db712ae74f1460a95af57e3af67dd7",
+      "schritt.png": "805d823933e510c4d8ba8420f23e3877498273283f97268e442ddc9cb753074f",
+      "trab.png": "08cf4a0a09c394e262de4fb620223fe2b7ab78db581338e539ba8c051e5e84ac",
+      "vorn-galopp.png": "ad43037dad49d61f9871a8becc4dd0ab6ea9c34fcceee3dee9ce6e2f897d7726",
+      "vorn-schritt.png": "905ea540c74fbc3cd25c456ae31c03e58cfc6466c989c698fd96aaf25f0ad63d",
+      "vorn-trab.png": "fd49262d87709f9bb89c3dbb9cb6d44bbcef3c1a21c408b567cff56f2985020e"
     }
   }
 }

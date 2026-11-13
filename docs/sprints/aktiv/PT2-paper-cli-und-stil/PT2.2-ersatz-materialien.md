@@ -1,6 +1,6 @@
 # PT2.2 · Ersatz-Materialien anlegen und Assets umstellen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -58,5 +58,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04 geprüft: `stroh`, `lava`, `geisterweiss`, `fell-grau` per `assets_style_set` angelegt; `tools/paper/golden/ersatz.test.ts` › „Stil-Datei (B-735/AC-01)“ samt `checkStil` grün, `tools/paper/schema` grün.
+- AC-05 geprüft: 19 Assets per `assets_set` umgestellt (Bauer-Hut → stroh; Lava-Golem, Lavaschleim, Feuergeist → lava; Grubengeist, Alphawolf → geisterweiss; Alphawolf-Latz, Wolf (Gegner) und Wolf (Reittier, vorher `stoff`) → fell-grau; Eisen für Eisenkäfer-Panzer, Skelett-Schwert/-Schild, Goblin-Dolch, Pfeilspitze, Keulen-Beschlag, Goblin-Anführer, Troll-König-Schild, Ratten-Königin-Armschienen; Kristall statt `edelstein`/`koenigsblau` bei Kristallspinne, Splitterwicht, Kristallwächter). `ersatz.test.ts` › „B-735/AC-02“ grün. `gen:paper` (`bun tools/paper/bin/gen.ts`) gelaufen: `golden.json` und `index.paper.json` aller Gruppen neu (neuer `stilHash` → neuer `renderKey`); Fixture-Golden `fixtures.golden.json` neu, nur `renderKey`, PNG-Hashes gleich. Grafik-Golden `tools/paper/golden` (alle Gruppen, `public.test.ts`) und `tests/paperAssets.test.ts` grün.
+- `task check:diff` grün.
+- Abweichung: Die Specs wurden über das MCP-Tool `assets_set` geändert, aber per Skript über die HTTP-Schnittstelle der Workbench aufgerufen (Merge-Patch auf `teile` je Asset); ein Teil-Patch fehlt noch (B-710).
+- Hinweis für 🧑 (nicht blockierend): Sichtprüfung der 19 Assets im Bereich Assets; deutlich anders sehen Feuergeist, Lavaschleim, Grubengeist, Alphawolf und die Wölfe aus. Mehr umgestellt als genannt: Bosse-Waffen (Goblin-Anführer, Troll-König, Ratten-Königin) und Höhlentroll-Keule (Eisen bei Bossen und Gegnern).
+- Neue Tickets: keine.

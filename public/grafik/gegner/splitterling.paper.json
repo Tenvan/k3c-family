@@ -45,20 +45,20 @@
         {
           "art": "flaeche",
           "form": "M-7 -8L-9 -18L-4 -30L1 -24L5 -32L8 -20L7 -8Z",
-          "material": "edelstein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-7 -8L-9 -18L-4 -30L-2 -18L0 -8Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M1 -24L5 -32L6 -22L2 -18Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
@@ -105,7 +105,7 @@
         {
           "art": "flaeche",
           "form": "M5.5 -12L12 -15L11 -8L7 -8.5Z",
-          "material": "edelstein"
+          "material": "kristall"
         }
       ],
       "pivot": [3, -16]
