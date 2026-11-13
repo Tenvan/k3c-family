@@ -1,6 +1,6 @@
 # NG14 · CLI · Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -71,7 +71,7 @@ keine (entschieden autonom, Claude, 2026-11-12: Tasten F3/F2, Werte in den Einst
 | NG14.2 | `NG14.2-ladeanzeige.md` | Umsetzung | autonom | fertig |
 | NG14.3 | `NG14.3-shader-umschalter.md` | Umsetzung | autonom | fertig |
 | NG14.4 | `NG14.4-review.md` | Review | autonom | fertig |
-| NG14.5 | `NG14.5-abnahme-pc.md` | Review | Mensch | offen |
+| NG14.5 | `NG14.5-abnahme-pc.md` | Review | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

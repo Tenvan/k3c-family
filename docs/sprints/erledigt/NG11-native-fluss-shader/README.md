@@ -1,6 +1,6 @@
 # NG11 · CLI · Natives Spiel: Fluss mit Shader
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -66,7 +66,7 @@ Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität
 | NG11.1 | `NG11.1-fluss-shader.md` | Umsetzung | autonom | fertig |
 | NG11.2 | `NG11.2-messung.md` | Umsetzung | autonom | fertig |
 | NG11.3 | `NG11.3-review.md` | Review | autonom | fertig |
-| NG11.4 | `NG11.4-sichtpruefung.md` | Review | Mensch | offen |
+| NG11.4 | `NG11.4-sichtpruefung.md` | Review | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

@@ -27,10 +27,10 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | NG8 | Natives Spiel: Klänge und Musik | erledigt |
 | NG9 | Natives Spiel: Zusammenführung, Messung und Abnahme | erledigt |
 | NG10 | Rust und Bevy entfernen | erledigt |
-| NG11 | Natives Spiel: Fluss mit Shader | aktiv |
+| NG11 | Natives Spiel: Fluss mit Shader | erledigt |
 | NG12 | Natives Spiel: Anzeigen an Figuren, Bäume und Geschosse | erledigt |
 | NG13 | Natives Spiel: Menüs und HUD nachziehen | erledigt |
-| NG14 | Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter | aktiv |
+| NG14 | Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter | erledigt |
 | NG15 | Natives Spiel: Ton-Gerät ohne Absturz | erledigt |
 | NG16 | Raum: Absturzbehandlung nach außen, Position nach dem Laden | erledigt |
 | NG17 | Papier: Reittier Wolf und Pfoten der Gegner-Wölfe | erledigt |

@@ -23,8 +23,8 @@ const module = "k3c/native/k3c-game"
 var fachpakete = []string{"actors", "audio", "fx", "hud", "input", "menu", "props", "world"}
 
 // notFach sind die Ordner mit eigener Regel bzw. ohne Go-Paket; e2e ist der Ende-zu-Ende-Test (nur Tests, darf alles
-// wie game).
-var notFach = []string{"game", "local", "art", "view", "bin", "e2e"}
+// wie game); cmd hält Werkzeuge für Taskfile-Aufgaben (cmd/sync, nur Standardbibliothek, B-827).
+var notFach = []string{"game", "local", "art", "view", "bin", "e2e", "cmd"}
 
 func isStd(path string) bool {
 	first, _, _ := strings.Cut(path, "/")
