@@ -29,7 +29,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | MG8 | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | erledigt |
 | US1 | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | erledigt |
 | PS1 | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | erledigt |
-| CU1 | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | aktiv |
+| CU1 | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | erledigt |
 | US2 | Spiel lädt Natur, Objekte, Münzen, Icons und Reittiere als Papierschnitt | erledigt |
 | WB2 | Review und Katalog: feste Schieber, getrennte Scrollbereiche, Lade-Anzeige | erledigt |
 | RD2 | Renderer und Stil nach der Sichtprüfung: Schatten, Materialien, Sichtbarkeit, Rig-Proportionen | erledigt |

@@ -1,6 +1,6 @@
 # CU1 · PAP, CLI, DEV, INF · Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP, CLI, DEV, INF
 - **Reife:** bereit
@@ -88,7 +88,7 @@ Autonom mit Default entschieden (D-Zeilen D-CU1-01 … in B-701 beim Abarbeiten)
 | CU1.3 | `CU1.3-werkzeugseiten-ohne-register.md` | Umsetzung | autonom | fertig |
 | CU1.4 | `CU1.4-workbench-ohne-register.md` | Umsetzung | autonom | fertig |
 | CU1.5 | `CU1.5-altbestand-loeschen.md` | Umsetzung | autonom | fertig |
-| CU1.6 | `CU1.6-review.md` | Review | autonom | offen |
+| CU1.6 | `CU1.6-review.md` | Review | autonom | fertig |
 
 - CU1.1 PAP · Sonnet · Lane `mg`: Papier-Assets Gerüste und Plantage (AC-04), nach PS1
 - CU1.2 CLI · Sonnet: Spiel lädt nur Papier, `data/sprites.json` → `data/paper.json`, Sound-Slots → `data/sounds.json` (AC-04, AC-05)
@@ -99,5 +99,7 @@ Autonom mit Default entschieden (D-Zeilen D-CU1-01 … in B-701 beim Abarbeiten)
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-13, CU1.6 (Claude, autonom): AC-01, AC-03–AC-05 siehe CU1.1–CU1.6 (Rest `catalog.go` → B-760, Browser-Client-Reste durch 009 überholt); AC-02 verschoben → B-836; `task check`, `task check:go` grün.
+Behoben: Zeile `atlas/` in `tools/codemap.md`; Review ohne schwere Befunde.
+Neue Tickets: B-835 (eingecheckte `k3c-server.exe`), Abnahme-Ticket B-836 (Gen, Race, `check:all`, `buildall`).
+Offen für Ralf: Sichtprüfung Gerüste, Plantage und Sound im nativen Spiel. Version: keine vorgeschlagen.

@@ -43,7 +43,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-695](B-695-flaky-simrun-tempdir-balancing-abbruch.md) | DEV | Problem | niedrig | eingeplant | WZ42 | Zwei Tests flackern: simrun-TempDir-Cleanup und Abbruch eines wartenden Laufs |
 | [B-696](B-696-ticket-relationen-und-index-verdichtung.md) | DEV | Idee | mittel | eingeplant | WZ47 | Tickets verweisen auf Duplikate und Ersatz, der Index und die Archive bleiben klein |
 | [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | MG11 | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
-| [B-700](B-700-alte-pixel-grafik-aufraeumen.md) | CLI | Schuld | mittel | eingeplant | CU1 | Alte Pixel-Grafiken, Register und Gebäude-Renderer werden nach der Papierschnitt-Umstellung entfernt |
 | [B-704](B-704-go-tests-unter-last-flaky.md) | DEV | Problem | mittel | eingeplant | WZ42 | Lastabhängige Go-Tests scheitern bei parallelen Agenten |
 | [B-703](B-703-review-auf-wb1-backend.md) | DEV | Schuld | mittel | eingeplant | WZ43 | Die Review-Seite nutzt backend.assets* und fillPrompt aus WB1 statt eigener Kopien |
 | [B-705](B-705-paper-frame-stil-der-basis.md) | DEV | Problem | mittel | eingeplant | WZ43 | Das Vorher-Bild im Review rendert mit dem Stil der Basis |
