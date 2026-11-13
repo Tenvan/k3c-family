@@ -1,6 +1,6 @@
 // Prüft die Planungs-Dateien gegen die Pflicht-Vorlagen in docs/vorlagen/ (siehe docs/arbeitsweise.md).
 // Projekte, Rang und Domänen-Sperre: planningProjects.test.ts; gemeinsame Hilfen: planningDocs.ts.
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
@@ -43,11 +43,21 @@ describe('Backlog', () => {
     checkSpec(text, fields, file);
   });
 
+  // B-696 Teil B: offen und eingeplant in backlog/README.md, erledigt und verworfen in backlog/archiv/README.md (Links
+  // dort relativ zu archiv/); die Archiv-Datei darf vor der Umstellung fehlen.
   it('Index listet jedes Ticket genau einmal mit gleichem Status und Pfad', () => {
-    const rows = [...read('backlog/README.md').matchAll(/^\| \[(B-\d{3})\]\((.+?)\) \|.*\| (\S+) \| \S+ \| .* \|$/gm)];
-    expect(rows.map((r) => r[2]).sort()).toEqual(tickets.map((t) => t.rel).sort());
-    for (const [, id, file, status] of rows) {
+    const row = /^\| \[(B-\d{3})\]\((.+?)\) \|.*\| (\S+) \| \S+ \| .* \|$/gm;
+    const split = existsSync(join(DOCS, 'backlog/archiv/README.md'));
+    const rows = [
+      ...[...read('backlog/README.md').matchAll(row)].map(([, id, file, status]) => ({ id, file, status, archive: false })),
+      ...(split
+        ? [...read('backlog/archiv/README.md').matchAll(row)].map(([, id, file, status]) => ({ id, file: 'archiv/' + file, status, archive: true }))
+        : []),
+    ];
+    expect(rows.map((r) => r.file).sort()).toEqual(tickets.map((t) => t.rel).sort());
+    for (const { id, file, status, archive } of rows) {
       expect(status, `${id}: Status im Index`).toBe(meta(read('backlog/' + file)).Status);
+      if (split) expect(archive ? ['erledigt', 'verworfen'] : ['offen', 'eingeplant'], `${id}: richtige Index-Datei`).toContain(status);
     }
   });
 });

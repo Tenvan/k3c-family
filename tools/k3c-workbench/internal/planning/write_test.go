@@ -94,8 +94,9 @@ func TestTicketAnlegenAendernArchivieren(t *testing.T) {
 	if _, err := os.Stat(docsPath(root, "backlog/archiv/B-002-neu.md")); err != nil {
 		t.Fatal("nicht archiviert:", err)
 	}
-	index := doc(t, root, "backlog/README.md")
-	if !strings.HasSuffix(strings.TrimSpace(index), "| [B-002](archiv/B-002-neu.md) | SRV | Idee | hoch | erledigt | – | Neues Ticket |") {
+	index := doc(t, root, archiveIndex)
+	if !strings.HasSuffix(strings.TrimSpace(index), "| [B-002](B-002-neu.md) | SRV | Idee | hoch | erledigt | – | Neues Ticket |") ||
+		strings.Contains(doc(t, root, mainIndex), "[B-002]") {
 		t.Fatalf("Index:\n%s", index)
 	}
 	checkConsistent(t, root)

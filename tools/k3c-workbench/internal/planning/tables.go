@@ -89,23 +89,44 @@ func joinLines(l []string) string  { return strings.Join(l, "\n") }
 // archiveIndex ist der Index der erledigten und verworfenen Tickets (B-696 Teil B), Links relativ zu backlog/archiv/.
 const archiveIndex = "backlog/archiv/README.md"
 
-// syncIndex trägt das Ticket in docs/backlog/README.md ein: Abschnitt „Offen“ oder „Archiv“ je nach Ordner.
+// syncIndex trägt das Ticket in seinen Index ein (B-696 Teil B): offen und eingeplant in docs/backlog/README.md
+// unter „Offen“, erledigt und verworfen in docs/backlog/archiv/README.md (Link ohne `archiv/`); aus dem anderen Index
+// verschwindet die Zeile. Fehlt der Archiv-Index, entsteht er mit dem Kopf von RebuildIndex.
 func syncIndex(c *changeSet, t Ticket, rel string) error {
-	text, err := c.read("backlog/README.md")
-	if err != nil {
+	if _, err := c.read(mainIndex); err != nil { // liest auch die Zeilenenden für einen neuen Archiv-Index
 		return err
 	}
+	prefix := "| [" + t.Nr + "]("
 	link := strings.TrimPrefix(rel, "backlog/")
-	section := "## Offen"
-	if strings.HasPrefix(link, "archiv/") {
-		section = "## Archiv"
+	target, other, section := mainIndex, archiveIndex, "## Offen"
+	if after, ok := strings.CutPrefix(link, "archiv/"); ok {
+		target, other, section, link = archiveIndex, mainIndex, "## Archiv", after
+	}
+	if text, err := c.read(other); err == nil {
+		if lines := splitLines(text); findRow(lines, prefix) >= 0 {
+			c.write(other, joinLines(removeRow(lines, prefix)))
+		}
+	} else if other == archiveIndex && exists(c.root, other) {
+		return fmt.Errorf("%s: %w", other, err)
+	}
+	var text string
+	var err error
+	if target == archiveIndex {
+		if text, err = c.read(archiveIndex); err != nil {
+			if exists(c.root, archiveIndex) {
+				return fmt.Errorf("%s: %w", archiveIndex, err)
+			}
+			text, c.crlf[archiveIndex] = archiveHead+"\n## Archiv\n\n"+tableHead, c.crlf[mainIndex]
+		}
+	} else if text, err = c.read(mainIndex); err != nil {
+		return err
 	}
 	row := ticketkit.IndexRow(ticketkit.Row{Nr: t.Nr, Link: link, Domain: t.Domain, Typ: t.Typ, Prio: t.Prio, Status: t.Status, Sprint: t.Sprint, Title: t.Title})
-	lines, err := placeRow(splitLines(text), "| ["+t.Nr+"](", heading(section), row)
+	lines, err := placeRow(splitLines(text), prefix, heading(section), row)
 	if err != nil {
-		return fmt.Errorf("backlog/README.md: %w", err)
+		return fmt.Errorf("%s: %w", target, err)
 	}
-	c.write("backlog/README.md", joinLines(lines))
+	c.write(target, joinLines(lines))
 	return nil
 }
 

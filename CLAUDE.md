@@ -14,7 +14,7 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
   Planen lesen, `docs/sprints/erledigt/` nur auf Nachfrage. Übersicht: `docs/sprints/README.md`.
   Parallel laufen Sessions, die sich weder über Abhängigkeit noch Bereich noch Sperre berühren (Arbeitswellen, `docs/arbeitsweise.md` › Parallelität und Wellen); der Rang ordnet nur bei Kollision.
 - **Tickets:** `docs/backlog/` (Index `README.md`, ein Ticket pro Datei). Neue Ideen/Probleme sofort als Ticket anlegen,
-  nicht nebenbei umsetzen. Erledigte/verworfene liegen in `docs/backlog/archiv/` (nur auf Nachfrage lesen).
+  nicht nebenbei umsetzen. Erledigte/verworfene liegen samt Index `archiv/README.md` in `docs/backlog/archiv/` (nur auf Nachfrage lesen); der Index `docs/backlog/README.md` führt nur offene und eingeplante. Duplikate und Ersatz über die Felder `Duplikat von:`/`Ersetzt:` (B-696).
 - **Vorlagen sind Pflicht:** Tickets, Sprints und Sessions nur als Kopie von `docs/vorlagen/*.md`; `tests/planning.test.ts` prüft das.
 - **Planung nur über MCP:** Tickets, Sprints und Sessions anlegen und ändern ausschließlich mit `plan_create`, `plan_set`,
   `plan_sections` (mehrere Abschnitte in einem Aufruf), `plan_section`, `plan_delete` (lesen: `plan_list`, `plan_get`,

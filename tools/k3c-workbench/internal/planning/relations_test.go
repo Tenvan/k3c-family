@@ -10,6 +10,10 @@ import (
 func relRepo(t *testing.T) string {
 	t.Helper()
 	root := tempRepo(t)
+	old := "# B-001 · Altes Ticket\n\n- **Domäne:** SRV\n- **Typ:** Idee\n- **Prio:** mittel\n- **Status:** offen\n- **Sprint:** –\n"
+	if err := os.WriteFile(docsPath(root, "backlog/B-001-alt.md"), []byte(old), 0o644); err != nil {
+		t.Fatal(err)
+	}
 	for _, title := range []string{"Zweites Ticket", "Drittes Ticket", "Viertes Ticket"} {
 		must(t)(Create(root, NewDoc{Kind: "ticket", Slug: "t", Title: title,
 			Fields: map[string]string{"Domäne": "DEV", "Typ": "Idee", "Prio": "mittel"}}))

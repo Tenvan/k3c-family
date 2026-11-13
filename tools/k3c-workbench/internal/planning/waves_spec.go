@@ -31,7 +31,7 @@ var (
 	rePlanID   = regexp.MustCompile(`^(B-\d+|[A-Z]+\d+(?:\.\d+[a-z]?)?)$`)
 	reBacktick = regexp.MustCompile("`([^`]+)`")
 	// collectFiles berührt fast jede Session; sie zählen nicht zum Bereich (arbeitsweise.md › Sammeldateien).
-	collectFiles = []string{"docs/backlog/README.md", "docs/sprints/README.md", "docs/projekte/README.md", "docs/glossar.md"}
+	collectFiles = []string{"docs/backlog/README.md", "docs/backlog/archiv/README.md", "docs/sprints/README.md", "docs/projekte/README.md", "docs/glossar.md"}
 )
 
 // parsePlanSpec liest die Planungsangaben aus dem Abschnitt „Regeln und Einschränkungen“.

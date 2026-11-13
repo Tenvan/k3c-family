@@ -20,7 +20,7 @@ const (
 )
 
 // indexFiles sind die Index-Dateien des Backlogs: offen und eingeplant, erledigt und verworfen (B-696 Teil B).
-var indexFiles = []string{"backlog/README.md", archiveIndex}
+var indexFiles = []string{mainIndex, archiveIndex}
 
 var (
 	reIndexRow = regexp.MustCompile(`^\| \[(B-\d{3})\]\([^)]*\) \|[^|]*\|[^|]*\|[^|]*\| (\S+) \|[^|]*\| (.*) \|$`)
