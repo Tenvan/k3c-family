@@ -51,7 +51,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | eingeplant | WZ45 | Die Sound-Seite hat Filter und Prompt-Buttons |
 | [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | eingeplant | WZ45 | Die Quellen-Seite hat Filter und Prompt-Buttons |
 | [B-732](B-732-assets-katalog-schneller.md) | DEV | Idee | mittel | eingeplant | WZ43 | Der Assets-Katalog zeigt Einträge sofort, cacht sie und hat eine größere Vorschau |
-| [B-733](B-733-assets-groessenvergleich.md) | DEV | Idee | mittel | eingeplant | WZ43 | Katalog und Review zeigen ein Asset im Größenvergleich mit dem Monarch vor einem Biom |
 | [B-734](B-734-katalog-teil-ausblenden.md) | DEV | Idee | mittel | eingeplant | WZ43 | Im Katalog lässt sich das gewählte Teil in der Vorschau aus- und einblenden |
 | [B-746](B-746-workbench-tests-ohne-engine-server.md) | DEV | Schuld | niedrig | eingeplant | WZ46 | Workbench-Tests laufen gegen einen Fake-Spielserver statt engine/net und engine/room |
 ||||||| 8d74a196

@@ -69,7 +69,7 @@ keine blockierenden. Defaults (Claude, 2026-11-12, Meldung im Nachgang): `assets
 |---|---|---|---|---|
 | WZ43.1 | `WZ43.1-asset-tools-restbefunde.md` | Umsetzung | autonom | fertig |
 | WZ43.2 | `WZ43.2-review-backend-stil.md` | Umsetzung | autonom | fertig |
-| WZ43.3 | `WZ43.3-katalog-belegen.md` | Umsetzung | autonom | offen |
+| WZ43.3 | `WZ43.3-katalog-belegen.md` | Umsetzung | autonom | fertig |
 | WZ43.4 | `WZ43.4-sichtpruefung-pc.md` | Workshop | Mensch | offen |
 | WZ43.5 | `WZ43.5-review.md` | Review | autonom | offen |
 
