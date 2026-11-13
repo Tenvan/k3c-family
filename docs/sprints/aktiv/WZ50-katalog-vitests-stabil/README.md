@@ -1,11 +1,11 @@
 # WZ50 · DEV · Katalog-Vitests der Workbench bleiben unter Last grün
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-837
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 28bdaab79
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** Klasse A, Claude, 2026-11-13 (Ralf: autonome Tickets abarbeiten)

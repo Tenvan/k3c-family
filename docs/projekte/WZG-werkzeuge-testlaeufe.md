@@ -69,7 +69,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ46 | Workbench-Tests ohne Engine-Spielserver | geplant |
 | WZ48 | Tests und CI: check:go ohne Sim, Workbench-Go-Tests in der CI, stabile und schnelle Tests | aktiv |
 | WZ49 | Planungs-Werkzeuge und check_run: Restbefunde, Fahrplan aus Dateien, Im Spiel ansehen nativ | geplant |
-| WZ50 | Katalog-Vitests der Workbench bleiben unter Last grün | geplant |
+| WZ50 | Katalog-Vitests der Workbench bleiben unter Last grün | aktiv |
 
 ## Nicht-Ziele
 
