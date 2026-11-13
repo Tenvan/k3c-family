@@ -81,6 +81,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-848](B-848-browser-client-code-entfernen.md) | INF | Schuld | niedrig | offen | – | src/, Phaser, die Spielseiten und die Web-Tasks des Browser-Clients sind entfernt, CI, Docker und Release bauen ohne dist |
 | [B-849](B-849-site-papier-bilder.md) | PLAT | Schuld | niedrig | offen | – | Die Präsentationsseite site/ zeigt Papierschnitt-Bilder statt Pixel-Grafik |
 | [B-850](B-850-server-net-load-tui-zukunft.md) | SRV | Frage | niedrig | offen | – | Es ist entschieden, ob k3c-server, engine/net, k3c-load und k3c-tui ohne Online-Spiel bleiben oder entfallen |
+| [B-852](B-852-abnahme-laeufe-wz43.md) | DEV | Schuld | mittel | offen | WZ43 | Abnahme-Läufe WZ43 |
+| [B-853](B-853-review-groessenvergleich-vorher-bild.md) | DEV | Idee | niedrig | offen | – | Das Review zeigt den Größenvergleich auch für das Vorher-Bild |
 
 ## Archiv
 
@@ -806,3 +808,9 @@ Zeile in diesen Abschnitt.
 | [B-823](archiv/B-823-browser-client-abloesen.md) | INF | Schuld | niedrig | erledigt | – | Der Browser-Client ist durch das native Spiel abgelöst und aus dem Repo entfernt |
 | [B-845](archiv/B-845-paper-frame-ohne-reittier-teile.md) | PAP | Problem | niedrig | erledigt | PT3 | paper frame --ohne kennt die Teile des Reittiers nicht |
 | [B-851](archiv/B-851-paper-frame-ohne-vierbeiner-beinpfad.md) | PAP | Problem | niedrig | erledigt | PT4 | paper frame --ohne oberbein-<b> blendet bei Vierbeiner-Animationen den Beinpfad aus |
+| [B-703](archiv/B-703-review-auf-wb1-backend.md) | DEV | Schuld | mittel | erledigt | WZ43 | Die Review-Seite nutzt backend.assets* und fillPrompt aus WB1 statt eigener Kopien |
+| [B-705](archiv/B-705-paper-frame-stil-der-basis.md) | DEV | Problem | mittel | erledigt | WZ43 | Das Vorher-Bild im Review rendert mit dem Stil der Basis |
+| [B-706](archiv/B-706-asset-tools-nachzug-review-mc1.md) | DEV | Schuld | mittel | erledigt | WZ43 | Asset-MCP-Tools: Restbefunde aus dem Review MC1 nachziehen |
+| [B-709](archiv/B-709-assets-preview-reittier-boxen.md) | PAP | Idee | niedrig | erledigt | WZ43 | assets_preview nennt bei Reit-Animationen keine Teil-Boxen des Reittiers |
+| [B-710](archiv/B-710-assets-set-teil-patch.md) | PAP | Problem | mittel | erledigt | WZ43 | assets_set kann einzelne Teile nicht ändern, ohne die ganze Teile-Liste zu senden |
+| [B-733](archiv/B-733-assets-groessenvergleich.md) | DEV | Idee | mittel | erledigt | WZ43 | Katalog und Review zeigen ein Asset im Größenvergleich mit dem Monarch vor einem Biom |
