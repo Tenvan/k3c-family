@@ -3,9 +3,9 @@
 - **Domäne:** DEV
 - **Typ:** Problem
 - **Prio:** niedrig
-- **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Umgebung:** offline
+- **Status:** eingeplant
+- **Sprint:** WZ48
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-13
 - **Spec:** Entwurf

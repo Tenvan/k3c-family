@@ -4,8 +4,8 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ48
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-13
 - **Spec:** Entwurf

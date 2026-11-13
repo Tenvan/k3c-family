@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** PT3
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-13
 - **Spec:** Entwurf
