@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-13
@@ -67,4 +67,4 @@ keine
 
 ## Notizen
 
-Befund aus WZ44.4 (B-785/AC-02, AC-03 teilweise verschoben). Die Sessions tragen seit WZ44.4 eine Zeile `Gerät:` im Kontext (NG9.5 Mini-PC; NG11.4, NG14.5, NG15.3, KB4.4, KB5.6, W15.3 PC; PB1.2 Veröffentlichung).
+Umnummeriert nach B-842 (2026-11-13): Die Nummer B-826 trägt auf `sprint/ng19` der Fenstermodus des nativen Spiels. Diese Datei wird beim Zusammenführen entfernt.

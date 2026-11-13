@@ -68,7 +68,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-778](B-778-rig-prototyp-monarch-aus-teilen.md) | CLI | Frage | hoch | eingeplant | NV2 | Ein dritter Prototyp setzt den Monarchen in Ebitengine zur Laufzeit aus Rig-Teilen zusammen |
 | [B-780](B-780-rig-fuer-alle-figuren-gegnerzahl.md) | CLI | Frage | mittel | eingeplant | NG3 | Prototypen zeigen, wie viele Gegner, Truppen und Bosse gleichzeitig als Rig-Modelle laufen |
 | [B-786](B-786-rig-monarch-sichtpruefung-mini-pc.md) | CLI | Frage | niedrig | eingeplant | NG9 | Rig-Monarch wird am Mini-PC geprüft und gemessen, sobald das Spiel am PC fertig ist |
-| [B-788](B-788-check-run-teilaufgaben-sim-sperre.md) | DEV | Schuld | mittel | eingeplant | WZ44 | check_run kennt die Teilaufgaben von check:diff, sim_test und sim_run lehnen während der Sperre ab |
 | [B-790](B-790-prototyp-shader-wasser.md) | CLI | Frage | mittel | eingeplant | NG11 | Ein vierter Prototyp zeigt, was Shader in Ebitengine für Wasser und Papier-Effekte bringen |
 | [B-802](B-802-native-zusammenfuehrung-abnahme.md) | CLI | Idee | hoch | eingeplant | NG9 | Das native Spiel läuft von Start bis Spielstand durch, ist gemessen und am PC abgenommen |
 | [B-805](B-805-native-ton-geraetefehler-abfangen.md) | CLI | Problem | mittel | eingeplant | NG15 | Ein Fehler des Ton-Geräts beendet das native Spiel nicht mehr |
@@ -87,6 +86,11 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-830](B-830-mcpsrv-planning-short-langsam.md) | DEV | Problem | mittel | offen | – | mcpsrv und planning bleiben mit -short unter 3 s je Test und 10 s je Paket |
 | [B-831](B-831-check-run-dev-test-frontend-limit.md) | DEV | Problem | mittel | offen | – | check_run dev:test baut das Frontend vorher und reicht für die volle Workbench-Suite |
 | [B-837](B-837-katalog-vitest-unter-last.md) | DEV | Problem | niedrig | offen | – | Katalog-Vitests der Workbench bleiben unter Last grün |
+| [B-842](B-842-fahrplan-freie-abschnitte-werkzeug.md) | DEV | Problem | mittel | offen | – | Fahrplan-Abschnitt „Offen am Gerät“ und verwaiste Zeilen pflegt das Werkzeug |
+| [B-843](B-843-browser-abnahmen-nach-009-entscheiden.md) | INF | Frage | mittel | offen | – | Offene Browser-Abnahmen KB4.4, KB5.6, W15.3 und PB1.2 sind nach Entscheidung 009 entschieden |
+| [B-838](B-838-wellen-sessions-eines-sprints.md) | DEV | Frage | mittel | offen | – | Regel für Sessions desselben Sprints in einer Welle ist entschieden und in Code und Doku gleich |
+| [B-839](B-839-wellen-restbefunde-review-wz44.md) | DEV | Problem | mittel | offen | – | plan_next und plan_waves zählen Plätze, Ordner-Pfade und laufende Sessions ohne Domäne richtig |
+| [B-841](B-841-abnahme-laeufe-wz44.md) | INF | Schuld | mittel | offen | WZ44 | Abnahme-Läufe WZ44 |
 
 ## Archiv
 
@@ -792,3 +796,11 @@ Zeile in diesen Abschnitt.
 | [B-738](archiv/B-738-workbench-go-tests-rot-style-vorlage-review.md) | DEV | Problem | mittel | erledigt | WZ42 | Workbench-Go-Tests rot: Style-Fixture, Rig-Vorlage vierbeiner ohne Gangarten, Review-Tests mit festen Commit-Hashes |
 | [B-747](archiv/B-747-verweise-k3c-balance-nachziehen.md) | DEV | Schuld | niedrig | erledigt | WZ42 | Verweise auf bin/k3c-balance und internal/enginetools außerhalb der Workbench nachziehen |
 | [B-787](archiv/B-787-workbench-tests-short-zu-langsam.md) | DEV | Problem | hoch | erledigt | WZ42 | Workbench-Tests bleiben mit -short unter 3 s je Test, der volle Lauf ist grün |
+| [B-826](archiv/B-826-fahrplan-freie-abschnitte-werkzeug.md) | DEV | Problem | mittel | verworfen | – | Fahrplan-Abschnitt „Offen am Gerät“ und verwaiste Zeilen pflegt das Werkzeug |
+| [B-827](archiv/B-827-browser-abnahmen-nach-009-entscheiden.md) | INF | Frage | mittel | verworfen | – | Offene Browser-Abnahmen KB4.4, KB5.6, W15.3 und PB1.2 sind nach Entscheidung 009 entschieden |
+| [B-782](archiv/B-782-plan-next-branch-praefix.md) | DEV | Problem | hoch | erledigt | WZ44 | plan_next nennt den Sprint-Branch richtig, auch wenn das Feld Branch schon mit sprint/ beginnt |
+| [B-783](archiv/B-783-plan-waves-ralf-queue.md) | DEV | Idee | hoch | erledigt | WZ44 | plan_waves berechnet Wellen aus Abhängigkeit, Bereich und Sperre, plan_queue zeigt die Ralf-Queue |
+| [B-784](archiv/B-784-planungsangaben-pruefen.md) | DEV | Idee | mittel | erledigt | WZ44 | Planungsangaben für Wellen werden geprüft: plan_check und Regel-Test für freigegebene Tickets |
+| [B-785](archiv/B-785-fahrplan-aufraeumen-geraetetermine.md) | INF | Schuld | mittel | erledigt | WZ44 | Fahrplan ist aufgeräumt: fertige Sprints erledigt, Abnahmen als Gerätetermine, alte bereite Sprints geprüft |
+| [B-788](archiv/B-788-check-run-teilaufgaben-sim-sperre.md) | DEV | Schuld | mittel | erledigt | WZ44 | check_run kennt die Teilaufgaben von check:diff, sim_test und sim_run lehnen während der Sperre ab |
+| [B-840](archiv/B-840-dev-test-im-worktree-ohne-frontend.md) | DEV | Problem | mittel | verworfen | – | check_run dev:test läuft im Worktree ohne gebautes frontend/dist |

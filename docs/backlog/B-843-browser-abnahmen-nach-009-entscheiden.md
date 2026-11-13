@@ -1,4 +1,4 @@
-# B-827 · Offene Browser-Abnahmen KB4.4, KB5.6, W15.3 und PB1.2 sind nach Entscheidung 009 entschieden
+# B-843 · Offene Browser-Abnahmen KB4.4, KB5.6, W15.3 und PB1.2 sind nach Entscheidung 009 entschieden
 
 - **Domäne:** INF
 - **Typ:** Frage
@@ -61,4 +61,4 @@ Vorschlag Claude: alle vier verwerfen, PB1 als natives Paket neu planen.
 
 ## Notizen
 
-Befund aus WZ44.4 (B-785).
+Befund aus WZ44.4 (B-785). Umnummeriert 2026-11-13 von B-827 (Kollision mit `sprint/ng19`).

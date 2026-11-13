@@ -338,3 +338,7 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | PT1 | gen:paper schneller: Cache je Asset, paralleles Rastern, Fortschritt belegt | `erledigt/PT1-gen-paper-schneller/` |
 | CU1 | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | `erledigt/CU1-alte-grafik-aufraeumen/` |
 | WZ42 | Workbench-Tests schnell und stabil | `erledigt/WZ42-workbench-tests-schnell-stabil/` |
+| RD1 | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | `erledigt/RD1-papierschnitt-renderer/` |
+| MC1 | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | `erledigt/MC1-asset-mcp-tools/` |
+| RV1 | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | `erledigt/RV1-asset-review/` |
+| WZ44 | Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug | `erledigt/WZ44-planung-wellen-werkzeuge/` |

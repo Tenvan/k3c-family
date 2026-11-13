@@ -75,7 +75,7 @@ Keine eigenen Sim- oder Balance-Sessions vor der Abnahme: Sim, Balance, Gen und 
 
 ## Abnahme
 
-2026-11-13 (WZ44.5, Claude): AC-01–AC-04 erfüllt (Ergebnisse WZ44.1–WZ44.3), AC-05 teilweise (WZ44.4; „Offen am Gerät“, KB6-Thema und LG1-Zeile verschoben nach B-826). `task check`, `task check:go` grün; `dev:test` im Worktree ohne Frontend-Build nicht lauffähig (B-831), Planungs-Tests per `go test` grün.
+2026-11-13 (WZ44.5, Claude): AC-01–AC-04 erfüllt (Ergebnisse WZ44.1–WZ44.3), AC-05 teilweise (WZ44.4; „Offen am Gerät“, KB6-Thema und LG1-Zeile verschoben nach B-842). `task check`, `task check:go` grün; `dev:test` im Worktree ohne Frontend-Build nicht lauffähig (B-831), Planungs-Tests per `go test` grün.
 Behoben im Review: `allowedFiles` liest alle Pfade je Zeile (Kollisionen in `plan_waves`/`plan_next` wurden übersehen).
-Neue Tickets: B-826, B-827, B-838 (Regel Sessions eines Sprints, Entscheidung 🧑), B-839; Abnahme-Ticket B-841.
+Neue Tickets: B-842, B-843, B-838 (Regel Sessions eines Sprints, Entscheidung 🧑), B-839; Abnahme-Ticket B-841 (B-842/B-843 umnummeriert von B-826/B-827, Kollision mit `sprint/ng19`).
 Version: keine vorgeschlagen (nur Entwickler-Werkzeug). Nach Merge: Workbench-EXE neu bauen (Sperre `exe`).
