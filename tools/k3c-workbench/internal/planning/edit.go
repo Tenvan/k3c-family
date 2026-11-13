@@ -75,6 +75,9 @@ func checkValue(kind, name, value string, known map[string]string) error {
 	if name == "Revision" && !reRevision.MatchString(value) {
 		return fmt.Errorf("die Revision muss eine Zahl sein")
 	}
+	if kind == "ticket" && (name == fieldDup || name == fieldReplace) {
+		return checkRelFormat(name, value)
+	}
 	return nil
 }
 
@@ -159,6 +162,11 @@ func Set(root, id string, values map[string]string) (string, error) {
 	text, err := c.read(r.rel)
 	if err != nil {
 		return "", err
+	}
+	if r.kind == "ticket" {
+		if values, err = ticketRelations(c, r, text, values); err != nil {
+			return "", err
+		}
 	}
 	if text, err = setFields(root, r.kind, text, values); err != nil {
 		return "", fmt.Errorf("%s: %w", r.rel, err)

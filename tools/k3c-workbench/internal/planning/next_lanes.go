@@ -138,7 +138,10 @@ func checkLane(value string) error {
 }
 
 // optionalAfter: Felder, die in älteren Dateien fehlen dürfen, und die Felder, hinter die sie beim Setzen kommen.
-var optionalAfter = map[string]map[string][]string{"session": {"Lane": {"Domäne"}, "Modell": {"Lane", "Domäne"}}}
+var optionalAfter = map[string]map[string][]string{
+	"session": {"Lane": {"Domäne"}, "Modell": {"Lane", "Domäne"}},
+	"ticket":  {fieldDup: {"Freigabe", "Status"}, fieldReplace: {fieldDup, "Freigabe", "Status"}},
+}
 
 // insertField fügt ein fehlendes optionales Feld hinter dem ersten vorhandenen Vorgänger ein.
 func insertField(kind, text, name, value string) (string, bool) {

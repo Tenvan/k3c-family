@@ -54,6 +54,9 @@ type Ticket struct {
 	Sprint  string `json:"sprint"`
 	Project string `json:"project"` // Feld „Projekt“: Kürzel oder –
 	Spec    string `json:"spec"`
+	// Relationen (B-696), leer bei `–` oder fehlendem Feld.
+	Duplicate string   `json:"duplicate,omitempty"`
+	Replaces  []string `json:"replaces,omitempty"`
 }
 
 // Data ist der Stand für die Oberfläche; die Listen sind nie nil.
@@ -250,5 +253,9 @@ func ParseTicket(text string) Ticket {
 	if h := header(lines); len(h) >= 2 {
 		t.Nr, t.Title = h[0], strings.Join(h[1:], " · ")
 	}
+	if d := relIDs(f[fieldDup]); len(d) > 0 {
+		t.Duplicate = d[0]
+	}
+	t.Replaces = relIDs(f[fieldReplace])
 	return t
 }

@@ -72,6 +72,13 @@ func createTicket(c *changeSet, in NewDoc, tpl string) error {
 	if text, err = setFields(c.root, "ticket", text, in.Fields); err != nil {
 		return err
 	}
+	if len(relIDs(in.Fields[fieldDup])) > 0 {
+		return fmt.Errorf("ein neues Ticket ist kein Duplikat: das vorhandene Ticket nutzen oder danach plan_set")
+	}
+	if _, err := checkRelations(c.root, nr, headFields(text), in.Fields); err != nil {
+		return err
+	}
+	similar := similarNotes(c, in.Title)
 	t := ParseTicket(text)
 	if t.Status != "offen" && t.Status != "eingeplant" {
 		return fmt.Errorf("ein neues Ticket ist offen oder eingeplant")
@@ -94,6 +101,7 @@ func createTicket(c *changeSet, in NewDoc, tpl string) error {
 	c.write("backlog/README.md", index)
 	c.notes = append(c.notes, nr+" angelegt: docs/"+rel+" (Index ergänzt)")
 	c.notes = append(c.notes, numberNotes...)
+	c.notes = append(c.notes, similar...)
 	return nil
 }
 
@@ -215,12 +223,16 @@ func Delete(root, id string) (string, error) {
 	return r.id + " gelöscht: docs/" + r.rel, c.apply()
 }
 
-// Get liefert ein Dokument als Markdown mit Pfad in der ersten Zeile.
+// Get liefert ein Dokument als Markdown mit Pfad in der ersten Zeile; ein Ticket bekommt hinter dem Kopf die
+// berechnete Gegenrichtung seiner Relationen (B-696), die Datei bleibt unverändert.
 func Get(root, id string) (string, error) {
 	r, err := resolve(root, id)
 	if err != nil {
 		return "", err
 	}
 	text, _, err := readText(root, r.rel)
+	if err == nil && r.kind == "ticket" {
+		text = withReverse(text, reverseLines(root, r.id))
+	}
 	return "docs/" + r.rel + "\n\n" + text, err
 }

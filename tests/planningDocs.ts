@@ -36,8 +36,12 @@ const ALLOWED = {
 } as const;
 type Kind = keyof typeof ALLOWED;
 
-/** Felder, die in einer Datei fehlen dürfen (ältere Sessions ohne Lane und Modell, PV1.1); die Reihenfolge bleibt die der Vorlage. */
-const OPTIONAL: Partial<Record<Kind, readonly string[]>> = { session: ['Lane', 'Modell'] };
+/** Felder, die in einer Datei fehlen dürfen (ältere Sessions ohne Lane und Modell, PV1.1; Tickets ohne Relationen,
+ *  B-696); die Reihenfolge bleibt die der Vorlage. */
+const OPTIONAL: Partial<Record<Kind, readonly string[]>> = { session: ['Lane', 'Modell'], ticket: ['Duplikat von', 'Ersetzt'] };
+/** Relationsfeld eines Tickets: `–` oder IDs (bei „Duplikat von“ genau eine). */
+export const relationOk = (name: string, value: string) =>
+  value === '–' || (name === 'Duplikat von' ? /^B-\d{3}$/ : /^B-\d{3}(, B-\d{3})*$/).test(value);
 /** Lane einer Session: `–` oder Kurzname aus a-z, 0-9 und `-`. */
 export const laneOk = (value: string) => value === '–' || /^[a-z0-9-]+$/.test(value);
 
@@ -54,6 +58,9 @@ export function checkTemplate(kind: Kind, text: string, where: string): Record<s
     expect(values as readonly string[], `${where}: ${field} = "${fields[field]}"`).toContain(fields[field]);
   }
   if ('Lane' in fields && optional.includes('Lane')) expect(laneOk(fields.Lane), `${where}: Lane = "${fields.Lane}"`).toBe(true);
+  for (const name of ['Duplikat von', 'Ersetzt']) {
+    if (kind === 'ticket' && name in fields) expect(relationOk(name, fields[name]), `${where}: ${name} = "${fields[name]}"`).toBe(true);
+  }
   return fields;
 }
 

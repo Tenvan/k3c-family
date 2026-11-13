@@ -68,10 +68,14 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 - `plan_create {kind, slug, title, id?, fields}`: Ticket (Felder `Domäne`, `Typ`, `Prio`), Sprint (`id`, `Domäne`) oder
   Session (`id` wie `M8.5`) als Kopie der Vorlage; danach die Abschnitte mit `plan_sections {id, sections}` füllen
   (`sections`: Abschnitt → Text). Mehrere Abschnitte immer mit `plan_sections`; ein unbekannter Abschnitt bricht ab,
-  ohne etwas zu schreiben. Einen einzelnen Abschnitt ersetzt auch `plan_section {id, section, text}`.
+  ohne etwas zu schreiben. Einen einzelnen Abschnitt ersetzt auch `plan_section {id, section, text}`. Beim Ticket nennt
+  die Antwort bis zu fünf Tickets mit ähnlichem Titel (offen und Archiv, nur Hinweis, B-696).
 - `plan_set {id, fields}` setzt Kopf-Felder, z. B. `{"Status": "fertig"}`; Ticket `erledigt`/`verworfen` wandert ins
   Archiv, Sprint-`Status` verschiebt den Ordner. `Spec: freigegeben` nur mit `Freigabe` (Datum, Quelle) und nur nach
   Zustimmung von 🧑.
+- Relationen (B-696): `plan_set B-741 {"Duplikat von": "B-823"}` verwirft und archiviert B-741; `{"Ersetzt": "B-210, B-211"}`
+  im neueren Ticket. Unbekannte ID, Selbstverweis und Zyklus lehnt das Tool ab, ältere Tickets bekommen das Feld
+  eingefügt. `plan_get` zeigt die Gegenrichtung (`Ersetzt durch`, `Duplikate`) berechnet unter dem Kopf.
 - `plan_delete {id}` nur für Sprint-Entwürfe in `geplant/` und ihre Sessions; Tickets werden `verworfen`.
 - Commits macht das Tool nicht. Danach `check_run task:test` mit `pattern: planning`.
 - `gh_status {force?}` statt `gh pr list`/`gh run list` in der Shell: je Sprint PR, CI und Merge-Konflikt, dazu der letzte

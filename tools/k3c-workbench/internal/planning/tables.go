@@ -86,6 +86,9 @@ func removeRow(lines []string, prefix string) []string {
 func splitLines(s string) []string { return strings.Split(s, "\n") }
 func joinLines(l []string) string  { return strings.Join(l, "\n") }
 
+// archiveIndex ist der Index der erledigten und verworfenen Tickets (B-696 Teil B), Links relativ zu backlog/archiv/.
+const archiveIndex = "backlog/archiv/README.md"
+
 // syncIndex trägt das Ticket in docs/backlog/README.md ein: Abschnitt „Offen“ oder „Archiv“ je nach Ordner.
 func syncIndex(c *changeSet, t Ticket, rel string) error {
 	text, err := c.read("backlog/README.md")

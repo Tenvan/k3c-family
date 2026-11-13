@@ -17,6 +17,10 @@ func Defaults(today time.Time) map[string]string {
 		"Erstellt": today.Format("2006-01-02"), "Spec": "Entwurf", "Revision": "1", "Freigabe": "–"}
 }
 
+// Optional sind die Relationsfelder (B-696) mit ihrem Standard; Draft setzt sie nur, wenn die Vorlage sie kennt, damit
+// ein Checkout mit älterer Vorlage weiter Tickets anlegen kann.
+var Optional = map[string]string{"Duplikat von": "–", "Ersetzt": "–"}
+
 // Draft ersetzt in der Vorlage die Überschrift durch `# <nr> · <title>` und setzt die Kopf-Felder; ein Feld, das die
 // Vorlage nicht kennt, ist ein Fehler. Die Werte prüft der Aufrufer.
 func Draft(tpl, nr, title string, values map[string]string) (string, error) {
@@ -30,6 +34,8 @@ func Draft(tpl, nr, title string, values map[string]string) (string, error) {
 		if m := reField.FindStringSubmatch(lines[i]); m != nil {
 			if v, ok := values[m[1]]; ok {
 				lines[i], seen[m[1]] = "- **"+m[1]+":** "+v, true
+			} else if v, ok := Optional[m[1]]; ok {
+				lines[i] = "- **" + m[1] + ":** " + v
 			}
 		}
 	}

@@ -38,6 +38,8 @@ describe('Backlog', () => {
     const fields = checkTemplate('ticket', text, file);
     const archived = ['erledigt', 'verworfen'].includes(fields.Status);
     expect(folder === 'archiv', `${path}: Ordner passt zum Status ${fields.Status}`).toBe(archived);
+    for (const id of ids(`${fields['Duplikat von'] ?? ''} ${fields.Ersetzt ?? ''}`)) expect(ticketIds, `${file}: Relation ${id}`).toContain(id);
+    if (!none(fields['Duplikat von'])) expect(fields.Status, `${file}: Duplikat ist verworfen`).toBe('verworfen');
     checkSpec(text, fields, file);
   });
 

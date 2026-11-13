@@ -98,13 +98,25 @@ func ticketList(d Data, f Filter, all []Ticket, always bool) []string {
 	var out []string
 	for _, t := range d.Tickets {
 		if match(f.Status, t.Status) && match(f.Domain, t.Domain) && matchSprint(f.Sprint, t.Sprint) && match(f.Projekt, t.Project) {
-			out = append(out, fmt.Sprintf("%s %s %s %s %s %s %s · %s", t.Nr, t.Domain, t.Typ, t.Prio, t.Env, t.Status, t.Sprint, t.Title))
+			out = append(out, fmt.Sprintf("%s %s %s %s %s %s %s · %s%s", t.Nr, t.Domain, t.Typ, t.Prio, t.Env, t.Status, t.Sprint, t.Title, relSuffix(t)))
 		}
 	}
 	if len(out) > 0 || always {
 		out = append([]string{countsLine(len(out), all)}, out...)
 	}
 	return out
+}
+
+// relSuffix nennt gesetzte Relationen hinter dem Titel: „→ B-1“ bei Duplikaten, „ersetzt B-2, B-3“.
+func relSuffix(t Ticket) string {
+	s := ""
+	if t.Duplicate != "" {
+		s += " → " + t.Duplicate
+	}
+	if len(t.Replaces) > 0 {
+		s += " · ersetzt " + strings.Join(t.Replaces, ", ")
+	}
+	return s
 }
 
 // projectLines: je Projekt `Rang Kürzel Status Sprints erledigt/gesamt · Titel` und die Sprints in Reihenfolge.

@@ -11,6 +11,8 @@
 - **Spec:** Entwurf | freigegeben | rückwirkend
 - **Revision:** 1
 - **Freigabe:** – (bei `freigegeben`: Datum und Quelle, z. B. „2026-10-02 🧑 PR #20“)
+- **Duplikat von:** – (optional: genau eine ID B-000; `plan_set` setzt dann Status verworfen)
+- **Ersetzt:** – (optional: IDs B-000, B-001 der Tickets, die dieses ersetzt)
 
 ## Ausgangslage
 
