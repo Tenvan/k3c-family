@@ -20,7 +20,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
 | RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
 | CU1 | PAP, CLI, DEV, INF | PAP | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | – | `aktiv/CU1-alte-grafik-aufraeumen/` |
-| WZ40 | INF | WZG | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel | – | `aktiv/WZ40-check-diff-schneller/` |
 | PT1 | PAP | PAP | gen:paper schneller: Cache je Asset, paralleles Rastern, Fortschritt belegt | – | `aktiv/PT1-gen-paper-schneller/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | `aktiv/KB4-dev-aktionen-boss-event/` |
@@ -337,3 +336,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BR2 | Balancing-Runde Kampf und Bosse und Spieleabend 3 | `erledigt/BR2-balancing-kampf/` |
 | GRJ2 | Grafik-Zielmaß und Ausschnitt-Rahmen abnehmen | `erledigt/GRJ2-zielmass-ausschnitt-abnehmen/` |
 | US3 | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | `erledigt/US3-spielbefunde-papierschnitt/` |
+| WZ40 | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel | `erledigt/WZ40-check-diff-schneller/` |

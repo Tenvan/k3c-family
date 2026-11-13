@@ -1,6 +1,6 @@
 # WZ40 · INF · check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** INF
 - **Reife:** bereit

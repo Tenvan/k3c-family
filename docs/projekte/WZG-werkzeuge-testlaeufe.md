@@ -59,7 +59,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ37 | Welt-Overrides im Welten-Editor und im Studio-Chat | erledigt |
 | WZ38 | Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff | erledigt |
 | WZ39 | Studio-Nachträge: Downloads, Overrides-Editor, Inspektor, Testlücken, Quellen | erledigt |
-| WZ40 | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel | aktiv |
+| WZ40 | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel | erledigt |
 | WZ41 | CI und Release grün, check:diff-Protokoll belegt | aktiv |
 | WZ42 | Workbench-Tests schnell und stabil | aktiv |
 | WZ43 | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | geplant |
