@@ -1,6 +1,6 @@
 # MC1 · DEV · Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** DEV
 - **Reife:** bereit

@@ -1,6 +1,6 @@
 # RD1 · PAP · Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit

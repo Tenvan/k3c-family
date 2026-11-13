@@ -1,6 +1,6 @@
 # RV1 · DEV · Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** DEV
 - **Reife:** bereit

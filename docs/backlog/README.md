@@ -70,7 +70,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-782](B-782-plan-next-branch-praefix.md) | DEV | Problem | hoch | eingeplant | WZ44 | plan_next nennt den Sprint-Branch richtig, auch wenn das Feld Branch schon mit sprint/ beginnt |
 | [B-783](B-783-plan-waves-ralf-queue.md) | DEV | Idee | hoch | eingeplant | WZ44 | plan_waves berechnet Wellen aus Abhängigkeit, Bereich und Sperre, plan_queue zeigt die Ralf-Queue |
 | [B-784](B-784-planungsangaben-pruefen.md) | DEV | Idee | mittel | eingeplant | WZ44 | Planungsangaben für Wellen werden geprüft: plan_check und Regel-Test für freigegebene Tickets |
-| [B-785](B-785-fahrplan-aufraeumen-geraetetermine.md) | INF | Schuld | mittel | eingeplant | WZ44 | Fahrplan ist aufgeräumt: fertige Sprints erledigt, Abnahmen als Gerätetermine, alte bereite Sprints geprüft |
 | [B-786](B-786-rig-monarch-sichtpruefung-mini-pc.md) | CLI | Frage | niedrig | eingeplant | NG9 | Rig-Monarch wird am Mini-PC geprüft und gemessen, sobald das Spiel am PC fertig ist |
 | [B-788](B-788-check-run-teilaufgaben-sim-sperre.md) | DEV | Schuld | mittel | eingeplant | WZ44 | check_run kennt die Teilaufgaben von check:diff, sim_test und sim_run lehnen während der Sperre ab |
 | [B-790](B-790-prototyp-shader-wasser.md) | CLI | Frage | mittel | eingeplant | NG11 | Ein vierter Prototyp zeigt, was Shader in Ebitengine für Wasser und Papier-Effekte bringen |

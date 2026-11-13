@@ -41,7 +41,7 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
 | LG1 | SRV, DEV, CLI | LST | Remote-Logs vom Pi und Xbox mit WebGL 1 und 130 MiB | – | Entwurf | `geplant/LG1-remote-logs-webgl-budget/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
-| P1 | REG | BAL | Spieleabend 1 | Protokoll und Folge-Tickets | bereit | `geplant/P1-spieleabend-1/` |
+| P1 | REG | BAL | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
@@ -49,7 +49,7 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 
 | Sprint | Thema | Ordner |
 |---|---|---|
-| KB6 | SIM, REG | KMP | Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz | – | `erledigt/KB6-kampf-nachtraege-wellen-schutz/` |
+| KB6 | SIM, REG | `erledigt/KB6-kampf-nachtraege-wellen-schutz/` |
 | ALT | Vorgeschichte vor der Sprint-Einteilung | `erledigt/ALT-vorgeschichte/` |
 | SP00 | Arbeitsweise einführen | `erledigt/SP00-arbeitsweise/` |
 | SP01 | Leitplanken + Go-Gerüst | `erledigt/SP01-leitplanken/` |

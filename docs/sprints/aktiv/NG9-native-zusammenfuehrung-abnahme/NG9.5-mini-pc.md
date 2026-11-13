@@ -18,6 +18,8 @@ Das native Spiel und der Rig-Monarch sind am Mini-PC geprüft und gemessen; Ents
 
 ## Kontext
 
+Gerät: Mini-PC
+
 Spec: B-786 (ersetzt B-778/AC-06), Mini-PC-Teil von B-780/AC-01. Paket aus NG9.2 unter `.work/native-game/` mit `messen.cmd`. Wartet auf den Mini-PC (🧑 beschafft ihn, wenn das Spiel am PC fertig ist). Vergleichswerte Entwicklungs-PC: NG9.2 und NG3.4 unter `reports/`.
 
 ## Erlaubte Dateien

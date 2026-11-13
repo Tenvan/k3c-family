@@ -16,7 +16,9 @@
 
 ## Kontext
 
-Tickets B-674, B-675, B-676. Spiel über `task serve` bzw. den Server, Studio über `task k3c-studio`.
+Gerät: PC
+
+Tickets B-674, B-675, B-676. Spiel über `task serve` bzw. den Server, Studio über `task k3c-studio`. Das Studio ist entfallen (Entscheidung 005), der Browser-Client wird abgelöst (Entscheidung 009); 🧑 entscheidet, ob die Abnahme noch stattfindet oder verworfen wird.
 
 ## Erlaubte Dateien
 
