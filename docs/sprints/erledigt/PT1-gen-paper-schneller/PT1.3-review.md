@@ -1,6 +1,6 @@
 # PT1.3 · Review PT1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -55,5 +55,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 bis AC-03 geprüft:** Nachweise in PT1.1 (`fortschritt.test.ts`, Läufe `gen:paper-sync --status`, `--fehlt`, 210 ↳-Zeilen beim Monarch).
+- **AC-04 geprüft:** Nachweis in PT1.2 (zweiter Lauf 0 Assets, kalt 5 min 19 s → 54 s mit 8 Workern, `golden.json` unverändert, Bitgleichheit per `genParallel.test.ts`).
+- **Prüfläufe:** `task check` grün (6 min 28 s), `task check:go` grün (3 min 43 s), `check:diff` grün vor dem Commit.
+- **Review (k3c-reviewer, Diff `ebbf1d9fd..9b2ef1dcb` in `tools/paper`, `tools/Taskfile.yml`):** keine schweren Befunde; belegt: Reihenfolge der Ausgaben deterministisch, stdout bleibt ein JSON (Worker nur `postMessage`), keine neue Abhängigkeit, Worker-Absturz → Exit 2 mit Asset-Name, Grenzen 400/60 eingehalten. Behoben (niedrig): `cli/pool.ts` fehlte im Cache-Hash `codeStand` (`genCache.ts`, 1 Zeile).
+- **Abweichung:** Kein PR und kein Auto-Merge aus dieser Session; der Koordinator der Welle 5b führt den Branch zusammen. Kein Push.
+- **Neu:** B-834 Abnahme-Läufe PT1 (Gen nach dem Hash-Fix). Offen niedrig aus PT1.2: kein Timeout für hängendes resvg (nicht als Ticket, kein Befund nach Review-Regel).

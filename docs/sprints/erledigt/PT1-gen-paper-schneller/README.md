@@ -1,6 +1,6 @@
 # PT1 · PAP · gen:paper schneller: Cache je Asset, paralleles Rastern, Fortschritt belegt
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
@@ -66,12 +66,13 @@ keine blockierenden. Default (Claude, 2026-11-12) zu `B-751 › Offene Fragen`: 
 |---|---|---|---|---|
 | PT1.1 | `PT1.1-fortschritt-belegen.md` | Umsetzung | autonom | fertig |
 | PT1.2 | `PT1.2-cache-parallel.md` | Umsetzung | autonom | fertig |
-| PT1.3 | `PT1.3-review.md` | Review | autonom | offen |
+| PT1.3 | `PT1.3-review.md` | Review | autonom | fertig |
 
 Keine eigenen Sim- oder Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-13, PT1.3 (Claude, autonom): AC-01–AC-03 siehe PT1.1, AC-04 siehe PT1.2; `task check`, `task check:go` grün.
+Behoben: `cli/pool.ts` im Cache-Hash `codeStand` ergänzt (Review k3c-reviewer, niedrig); sonst keine Befunde.
+Neue Tickets: keine außer dem Abnahme-Ticket B-834 (Gen nach B-742).
+Version: keine vorgeschlagen (Werkzeug-Sprint, keine Spieländerung).

@@ -1,10 +1,10 @@
-# B-749 · gen:paper meldet den Start jedes Assets, lange Assets wirken sonst wie ein Stillstand
+# B-750 · gen:paper meldet die Ausgaben innerhalb großer Assets
 
 - **Domäne:** PAP
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** PT1
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-08
@@ -14,11 +14,11 @@
 
 ## Ausgangslage
 
-`gen:paper` meldet ein Asset erst, wenn es fertig ist (B-740). `figuren/monarch` braucht über zwei Minuten; in der Zeit erscheint nichts, der Lauf wirkt nach den Bossen wie abgebrochen.
+`figuren/monarch` hat 195 Ausgaben und braucht gut zwei Minuten; auch mit Startzeile (B-749) bleibt die Konsole in der Zeit stumm.
 
 ## Ziel
 
-Man sieht jederzeit, welches Asset gerade gerendert wird.
+Auch bei großen Assets sieht man den Fortschritt.
 
 ## Beteiligte und Zielgruppen
 
@@ -26,7 +26,7 @@ Entwickler (🧑).
 
 ## Anforderungen
 
-- Vor jedem Asset eine Zeile `⏳ [i/n] gruppe/id rendert …`; nach dem Asset wie bisher `🔨 … gerendert ✅ Dauer`.
+- Assets mit mehr als 4 Ausgaben melden jede Ausgabe als eine Zeile `   ↳ n/N gruppe/id: schlüssel Dauer`; kleine Assets nur sich selbst.
 
 ## Nicht-Ziele
 
@@ -34,7 +34,7 @@ Kein Fortschritt innerhalb eines Assets, kein schnelleres Rendern.
 
 ## Regeln und Einschränkungen
 
-Emoji-Log-Konvention; stdout bleibt das JSON. Umgesetzt mit #521, Beleg in PT1.1.
+Emoji-Log-Konvention; stdout bleibt das JSON. Umgesetzt mit #522, Beleg in PT1.1.
 
 - **Bereich:** `tools/paper/cli/gen*.ts`, `tools/paper/cli/work*.ts`
 - **Abhängig von:** –
@@ -52,7 +52,7 @@ nicht relevant: Fehler wie bisher.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Test in `tools/paper/cli/gen.test.ts`: je Asset eine ⏳-Zeile vor der 🔨-Zeile.
+- **AC-01** `task gen:paper` zeigt für `figuren/monarch` 195 Zeilen `↳ n/195 …` während des Renderns.
 
 ## Offene Fragen
 
@@ -60,4 +60,4 @@ keine
 
 ## Notizen
 
-Gefunden beim Test der Workbench (Lauf schien bei den Bossen zu enden).
+Messung (20 Ausgaben, 160 Frames, 3,5 MB SVG): TypeScript 0,23 s, resvg 14,3 s. Folge-Idee B-751.
