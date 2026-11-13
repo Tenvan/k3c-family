@@ -1,6 +1,6 @@
 # PT2 · PAP · Paper-CLI: Fehlerpfade, Reittier-Boxen, Stil-Option und Ersatz-Materialien
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
@@ -67,12 +67,12 @@ keine
 |---|---|---|---|---|
 | PT2.1 | `PT2.1-cli-vertraege.md` | Umsetzung | autonom | fertig |
 | PT2.2 | `PT2.2-ersatz-materialien.md` | Umsetzung | autonom | fertig |
-| PT2.3 | `PT2.3-review.md` | Review | autonom | offen |
+| PT2.3 | `PT2.3-review.md` | Review | autonom | fertig |
 
 Keine eigenen Sim- oder Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-13, autonom (Claude, Klasse A). Kriterien: AC-01 bis AC-03 in PT2.1, AC-04 und AC-05 in PT2.2; `task check` und `task check:go` grün (PT2.3).
+Review-Befunde behoben: Nachweis für drei umgestellte Assets ergänzt, PT2.2-Ergebnis korrigiert. Neue Tickets: B-839 (`--ohne` mit Reittier-Teilen, Wulst der Bein-Box).
+Abnahme-Ticket für Sim, Balance und Gen: B-838. Sichtprüfung der 19 umgestellten Assets im Bereich Assets durch 🧑 (nicht blockierend).
