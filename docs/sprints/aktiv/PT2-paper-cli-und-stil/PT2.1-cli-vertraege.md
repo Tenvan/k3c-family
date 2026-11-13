@@ -1,6 +1,6 @@
 # PT2.1 · Paper-CLI: Fehlerpfad, Reittier-Boxen, Option --stil
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -61,5 +61,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `bin/paper.test.ts` › „B-708/AC-01“ grün; `feld` ist `animationen.schritt.reittier` (auch `animationen.<name>.reiter` bei Reittier-Ebenen, auch beim renderKey-Hash).
+- AC-02 geprüft: `bin/paper.test.ts` › „B-709/AC-01“ grün; `paper frame monarch --animation galopp` liefert `reittier:<teil>` je Reittier-Teil, auch Ober-/Unterbeine (Box aus den Stützpunkten des Beinpfads, `rig/reitBoxen.ts`) und Teile hinter dem Reiter. Die verdeckte Bein-Kette des Reiters (`oberschenkel-h`) wird nicht gezeichnet und bekommt keine Box (Abweichung, im Vertrag festgehalten).
+- AC-03 geprüft: `bin/paper.test.ts` › „--stil“ grün (frame und render, Standard unverändert, fehlende Datei Exit 2 mit Pfad, ungültiger Stil Exit 1); Vertrag `paper-spec.md` › 8 nennt `--stil` und `reittier:`.
+- `task check:diff` grün (check_run, Worktree). Kein Golden, kein Gen (Render unverändert, nur Boxen und Fehlerfelder).
+- Neue Tickets: keine.

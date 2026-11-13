@@ -44,7 +44,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-703](B-703-review-auf-wb1-backend.md) | DEV | Schuld | mittel | eingeplant | WZ43 | Die Review-Seite nutzt backend.assets* und fillPrompt aus WB1 statt eigener Kopien |
 | [B-705](B-705-paper-frame-stil-der-basis.md) | DEV | Problem | mittel | eingeplant | WZ43 | Das Vorher-Bild im Review rendert mit dem Stil der Basis |
 | [B-706](B-706-asset-tools-nachzug-review-mc1.md) | DEV | Schuld | mittel | eingeplant | WZ43 | Asset-MCP-Tools: Restbefunde aus dem Review MC1 nachziehen |
-| [B-708](B-708-paper-fehlerfeld-reittier.md) | PAP | Problem | niedrig | eingeplant | PT2 | Ablehnung reittier-unbekannt nennt das Feld ohne Animationsnamen |
 | [B-709](B-709-assets-preview-reittier-boxen.md) | PAP | Idee | niedrig | eingeplant | WZ43 | assets_preview nennt bei Reit-Animationen keine Teil-Boxen des Reittiers |
 | [B-710](B-710-assets-set-teil-patch.md) | PAP | Problem | mittel | eingeplant | WZ43 | assets_set kann einzelne Teile nicht ändern, ohne die ganze Teile-Liste zu senden |
 | [B-711](B-711-reiter-variante-reittier.md) | PAP | Frage | mittel | eingeplant | MG9 | Variante des Reiters tauscht die Materialien des Reittiers nicht |

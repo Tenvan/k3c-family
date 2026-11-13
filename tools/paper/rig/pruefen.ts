@@ -3,7 +3,7 @@
 import type { Spec, Stil } from '../schema/types';
 import { Abgelehnt, type CliFehler } from '../render/fehler';
 import { figurPose } from './figur';
-import { ladeReittier } from './reiten';
+import { ladeReittier, reitFeld } from './reiten';
 import { gangartVon, pruefeVierbeiner } from './vierbeinerBild';
 
 const sammle = (out: CliFehler[], f: () => void) => {
@@ -23,6 +23,6 @@ export function pruefeRenderRegeln(spec: Spec, specPfad: string, stil: Stil): Cl
     for (const [name, a] of anims) sammle(out, () => gangartVon(a, name));
   }
   if (spec.rig === 'figur')
-    for (const [name, a] of anims) sammle(out, () => (a.reittier ? ladeReittier(specPfad, a.reittier, stil) : figurPose(spec, name, 0)));
+    for (const [name, a] of anims) sammle(out, () => (a.reittier ? ladeReittier(specPfad, a.reittier, stil, reitFeld(name)) : figurPose(spec, name, 0)));
   return out;
 }

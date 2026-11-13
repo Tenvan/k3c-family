@@ -3,6 +3,7 @@ import { copyFileSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, writeF
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { ROOT, STIL_PFAD } from '../render/stil';
 import { run } from './paper';
 
 const SPECS = join(import.meta.dirname, '../fixtures/specs');
@@ -73,6 +74,12 @@ describe('validate prüft auch die Render-Regeln (Sprint-Review RD1.5)', { timeo
     expect(regeln(r)).toEqual(['reittier-unbekannt']);
   });
 
+  it('B-708/AC-01: Reittier fehlt → feld nennt die Animation (animationen.schritt.reittier)', () => {
+    const r = mit('monarch', (s) => { s.animationen.schritt = { frames: 8, reittier: 'esel', gangart: 'schritt' }; }, ['pferd']);
+    expect(r.code).toBe(1);
+    expect(r.json.fehler[0]).toMatchObject({ feld: 'animationen.schritt.reittier', regel: 'reittier-unbekannt' });
+  });
+
   it('vierbeiner ohne gangart oder ohne bein: Exit 1', () => {
     expect(regeln(mit('pferd', (s) => { s.animationen.stand = { frames: 1 }; }))).toEqual(['animation-unbekannt']);
     expect(regeln(mit('pferd', (s) => { delete s.bein; }))).toEqual(['pflicht-teil-fehlt']);
@@ -81,5 +88,69 @@ describe('validate prüft auch die Render-Regeln (Sprint-Review RD1.5)', { timeo
   it('gültige Specs bleiben gültig', () => {
     expect(mit('monarch', () => {}, ['pferd']).code).toBe(0);
     expect(mit('mauer', () => {}).code).toBe(0);
+  });
+});
+
+describe('frame bei Reit-Animationen: Boxen des Reittiers (B-709/AC-01)', { timeout: 60_000 }, () => {
+  it('paper frame monarch --animation galopp liefert Boxen reittier:<teil>, auch Beine und verdeckte Teile', () => {
+    const out = join(mkdtempSync(join(tmpdir(), 'paper-reit-')), 'f.png');
+    const r = antwort(['frame', join(ROOT, 'public/grafik/figuren/monarch.paper.json'), '--animation', 'galopp', '--frame', '2', '--out', out]);
+    expect(r.code).toBe(0);
+    const ids = Object.keys(r.json.teile), reittier = ids.filter((id) => id.startsWith('reittier:'));
+    for (const t of ['rumpf-vorn', 'hals', 'oberbein-hf', 'unterbein-hf', 'huf-hf', 'oberbein-vn', 'unterbein-vn'])
+      expect(reittier, t).toContain(`reittier:${t}`);
+    // Reiter-Teile bleiben ohne Präfix und werden nicht von gleichnamigen Reittier-Teilen überschrieben
+    expect(ids).toContain('rumpf');
+    for (const id of reittier) {
+      const [, , b, h] = r.json.teile[id];
+      expect(b > 0 && h > 0, id).toBe(true);
+    }
+  });
+});
+
+describe('--stil <datei> für frame und render (B-705/AC-01)', { timeout: 60_000 }, () => {
+  const mauer = () => {
+    const dir = mkdtempSync(join(tmpdir(), 'paper-stil-'));
+    copyFileSync(join(SPECS, 'mauer.paper.json'), join(dir, 'mauer.paper.json'));
+    return dir;
+  };
+  /** Kopie des Standard-Stils, alle Materialien rot */
+  const roterStil = (dir: string) => {
+    const stil = JSON.parse(readFileSync(STIL_PFAD, 'utf8'));
+    for (const m of Object.values(stil.materialien) as Record<string, string>[]) for (const t of Object.keys(m)) m[t] = '#cc2222';
+    writeFileSync(join(dir, 'rot.json'), JSON.stringify(stil));
+    return join(dir, 'rot.json');
+  };
+  const frame = (dir: string, out: string, extra: string[] = []) =>
+    antwort(['frame', join(dir, 'mauer.paper.json'), '--animation', 'stand', '--frame', '0', '--out', join(dir, out), ...extra]);
+
+  it('frame: ohne Option wie --stil public/grafik/stil.paper.json, mit eigenem Stil anderes Bild', () => {
+    const dir = mauer();
+    expect(frame(dir, 'a.png').code).toBe(0);
+    expect(frame(dir, 'b.png', ['--stil', STIL_PFAD]).code).toBe(0);
+    expect(frame(dir, 'c.png', ['--stil', roterStil(dir)]).code).toBe(0);
+    const [a, b, c] = ['a', 'b', 'c'].map((n) => readFileSync(join(dir, `${n}.png`)));
+    expect(a.equals(b)).toBe(true);
+    expect(a.equals(c)).toBe(false);
+  });
+
+  it('render: --stil wirkt auf Bild und stilHash im Manifest', () => {
+    const dir = mauer(), manifest = () => JSON.parse(readFileSync(join(dir, 'mauer/manifest.json'), 'utf8'));
+    expect(antwort(['render', join(dir, 'mauer.paper.json')]).code).toBe(0);
+    const standard = manifest().stilHash, png = readFileSync(join(dir, 'mauer/stand.png'));
+    expect(antwort(['render', join(dir, 'mauer.paper.json'), '--stil', roterStil(dir)]).code).toBe(0);
+    expect(manifest().stilHash).not.toBe(standard);
+    expect(readFileSync(join(dir, 'mauer/stand.png')).equals(png)).toBe(false);
+  });
+
+  it('fehlende Datei → Exit 2 mit Pfad; ungültiger Stil → Exit 1 mit Dateinamen im Feld', () => {
+    const dir = mauer(), fehlt = join(dir, 'gibts-nicht.json');
+    const r = frame(dir, 'a.png', ['--stil', fehlt]);
+    expect(r).toMatchObject({ code: 2, stdout: '' });
+    expect(r.stderr).toContain(fehlt);
+    writeFileSync(join(dir, 'kaputt.json'), JSON.stringify({ materialien: {} }));
+    const k = antwort(['render', join(dir, 'mauer.paper.json'), '--stil', join(dir, 'kaputt.json')]);
+    expect(k.code).toBe(1);
+    expect(k.json.fehler[0].feld).toMatch(/^kaputt\.json:/);
   });
 });

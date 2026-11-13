@@ -2,7 +2,8 @@
 // Exit 0 ok, 1 fachlich abgelehnt ({ok: false, fehler}), 2 Aufruf- oder Systemfehler (Text auf stderr).
 // In-Process: run(args, {stil?}) → {code, stdout, stderr}; Shell: bun tools/paper/bin/paper.ts <befehl> …
 import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs';
-import { checkSpecFile, readJson } from '../schema/check';
+import { basename } from 'node:path';
+import { checkSpecFile, checkStil, readJson } from '../schema/check';
 import { stilHash } from '../schema/hash';
 import type { Spec, Stil } from '../schema/types';
 import { diffSpecs } from '../cli/diff';
@@ -35,6 +36,17 @@ export function datei(p: string | undefined, was: string): string {
   return p;
 }
 
+/** `--stil <datei>` (B-705, nur frame und render): fehlt → Exit 2, kein JSON oder Schema verletzt → Exit 1 mit Dateinamen im Feld. */
+export function stilAus(pfad: string): Stil {
+  const { wert, fehler } = readJson(datei(pfad, 'Stil'));
+  const alle = fehler.length ? fehler : checkStil(wert);
+  if (alle.length) throw new Abgelehnt(alle.map((f) => ({ ...f, feld: `${basename(pfad)}:${f.feld}` })));
+  return wert as Stil;
+}
+
+/** Stil des Aufrufs: `--stil` vor dem In-Process-Stil vor `public/grafik/stil.paper.json`. */
+const stilFuer = (opt: Record<string, string>, o: Optionen): Stil => (opt.stil ? stilAus(opt.stil) : o.stil ?? ladeStil());
+
 /** Schema- und Fachregeln (check.ts), danach die Render-Regeln der Rigs als Trockenprüfung. */
 const validate: Befehl = (pos, _opt, o) => {
   const pfad = datei(pos[0], 'Spec'), stil = o.stil ?? ladeStil(), fehler = checkSpecFile(pfad, stil);
@@ -44,9 +56,9 @@ const validate: Befehl = (pos, _opt, o) => {
   return { fehler: [] };
 };
 
-const render: Befehl = (pos, _opt, o) => {
-  const ziel = datei(pos[0], 'Spec oder Ordner');
-  return statSync(ziel).isDirectory() ? renderOrdner(ziel, o) : renderSpec(ziel, o);
+const render: Befehl = (pos, opt, o) => {
+  const ziel = datei(pos[0], 'Spec oder Ordner'), mit = { ...o, stil: stilFuer(opt, o) };
+  return statSync(ziel).isDirectory() ? renderOrdner(ziel, mit) : renderSpec(ziel, mit);
 };
 
 /** Optionswert als ganze Zahl ≥ 0, sonst Aufruffehler (der Bereich wird fachlich geprüft). */
@@ -58,7 +70,7 @@ function ganzzahl(wert: string, name: string): number {
 const frame: Befehl = (pos, opt, o) => {
   const pfad = datei(pos[0], 'Spec');
   if (!opt.animation || opt.frame === undefined || !opt.out) throw new Aufruf('frame braucht --animation, --frame und --out');
-  const stil = o.stil ?? ladeStil(), fehler = checkSpecFile(pfad, stil);
+  const stil = stilFuer(opt, o), fehler = checkSpecFile(pfad, stil);
   if (fehler.length) throw new Abgelehnt(fehler);
   const spec = JSON.parse(readFileSync(pfad, 'utf8')) as Spec;
   const ohne = opt.ohne ? opt.ohne.split(',').filter(Boolean) : undefined;
