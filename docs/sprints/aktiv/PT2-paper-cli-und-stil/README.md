@@ -1,11 +1,11 @@
 # PT2 · PAP · Paper-CLI: Fehlerpfade, Reittier-Boxen, Stil-Option und Ersatz-Materialien
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
 - **Tickets:** B-708, B-735
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** a96eee64c
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** Klasse A, Claude, 2026-11-12
