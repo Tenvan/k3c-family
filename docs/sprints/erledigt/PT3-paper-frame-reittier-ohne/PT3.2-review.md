@@ -1,6 +1,6 @@
 # PT3.2 · Review PT3
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -53,5 +53,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 (Sprint) geprüft: `B-845/AC-01` und `B-845/AC-02` grün (PT3.1, Commit f9bf699a3).
+- `task check` grün (6 min 47 s), `go:test` grün (2 min 47 s), beide über check_run im Worktree.
+- k3c-reviewer: keine Befunde; Render ohne `--ohne` unverändert, kein Golden berührt, Randfälle (Variante, Ebenen, Figur ohne Reittier) belegt.
+- Abnahme-Ticket für Gen: keins nötig (Grafik nicht betroffen, nur Boxen und Ausblenden in `frame`).
+- Neue Tickets (anzulegen): „paper frame --ohne oberbein-<b> blendet bei Vierbeiner-Animationen den Beinpfad nicht aus“ (PAP, Problem, niedrig): Bei `vierbeinerBild` und den Reittier-Ebenen fragt `einschub` nur `nur(id)`, das dort immer true ist, so bleibt der Beinpfad sichtbar. Nur nötig, wenn die Vorschau Beine des Pferds einzeln ausblenden soll.

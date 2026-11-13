@@ -21,7 +21,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
 | RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
 | PT2 | PAP | PAP | Paper-CLI: Fehlerpfade, Reittier-Boxen, Stil-Option und Ersatz-Materialien | – | `aktiv/PT2-paper-cli-und-stil/` |
-| PT3 | PAP | PAP | Paper-CLI: --ohne mit Reittier-Teilen, Bein-Box mit Wulst | – | `aktiv/PT3-paper-frame-reittier-ohne/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | `aktiv/KB4-dev-aktionen-boss-event/` |
 | KB5 | SRV, CLI, DEV | KMP | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | fireball am Gegner, Betäubung, Schild und Sturm als Zeichnung | `aktiv/KB5-skills-wirkort-status/` |
@@ -351,3 +350,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | NG14 | Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter | `erledigt/NG14-native-fehleranzeige-shader-umschalter/` |
 | NG15 | Natives Spiel: Ton-Gerät ohne Absturz | `erledigt/NG15-native-ton-geraet/` |
 | NG19 | Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket | `erledigt/NG19-native-menue-kacheln-batching-version/` |
+| PT3 | Paper-CLI: --ohne mit Reittier-Teilen, Bein-Box mit Wulst | `erledigt/PT3-paper-frame-reittier-ohne/` |

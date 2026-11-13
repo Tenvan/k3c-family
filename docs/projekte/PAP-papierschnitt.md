@@ -39,7 +39,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | US3 | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | erledigt |
 | PT1 | gen:paper schneller: Cache je Asset, paralleles Rastern, Fortschritt belegt | erledigt |
 | PT2 | Paper-CLI: Fehlerpfade, Reittier-Boxen, Stil-Option und Ersatz-Materialien | erledigt |
-| PT3 | Paper-CLI: --ohne mit Reittier-Teilen, Bein-Box mit Wulst | aktiv |
+| PT3 | Paper-CLI: --ohne mit Reittier-Teilen, Bein-Box mit Wulst | erledigt |
 
 ## Nicht-Ziele
 

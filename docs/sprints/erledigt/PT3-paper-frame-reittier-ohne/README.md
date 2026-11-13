@@ -1,6 +1,6 @@
 # PT3 · PAP · Paper-CLI: --ohne mit Reittier-Teilen, Bein-Box mit Wulst
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
@@ -60,7 +60,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | PT3.1 | `PT3.1-frame-ohne-reittier.md` | Umsetzung | autonom | fertig |
-| PT3.2 | `PT3.2-review.md` | Review | autonom | offen |
+| PT3.2 | `PT3.2-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -68,6 +68,7 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+- 2026-11-13, Claude (autonom, Klasse A): AC-01 erfüllt (PT3.1 › Ergebnis: `B-845/AC-01`, `B-845/AC-02` grün).
+- `task check` und `go:test` grün; k3c-reviewer ohne Befunde, keine Fixes nötig.
+- Neue Tickets: eins vorgeschlagen (PT3.2 › Ergebnis, `--ohne oberbein-<b>` bei Vierbeiner-Animationen), noch anzulegen.
+- Abnahme-Ticket Sim, Balance, Gen: keins (Grafik und Golden unverändert).
