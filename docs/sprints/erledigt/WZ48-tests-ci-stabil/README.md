@@ -1,6 +1,6 @@
 # WZ48 · INF, DEV · Tests und CI: check:go ohne Sim, Workbench-Go-Tests in der CI, stabile und schnelle Tests
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** INF, DEV
 - **Reife:** bereit
@@ -66,7 +66,7 @@ keine
 | WZ48.1 | `WZ48.1-check-go-ci-workbench.md` | Umsetzung | autonom | fertig |
 | WZ48.2 | `WZ48.2-workbench-tests-stabil-schnell.md` | Umsetzung | autonom | fertig |
 | WZ48.3 | `WZ48.3-server-exe-aus-repo.md` | Umsetzung | autonom | fertig |
-| WZ48.4 | `WZ48.4-review.md` | Review | autonom | offen |
+| WZ48.4 | `WZ48.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -74,6 +74,8 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-14, Review WZ48.4 (Claude, autonom, Klasse A): AC-01 bis AC-05 laut Ergebnissen WZ48.1–WZ48.3 geprüft; AC-02 auf `develop` steht aus, AC-04 `mcpsrv` knapp (9,8–10,3 s).
+Behoben im Review: `check:go` lief im Runner der Workbench nicht (`tr` fehlt), jetzt Paketliste über `checkdiff -gopkgs`; `task check` und `task check:go` grün.
+Neue Tickets (anzulegen, Nummern im Hauptcheckout): CI-Nachweis WZ48 auf `develop`; Konsolenpuffer von `check_run` je Checkout trennen.
+Abnahme-Ticket (anzulegen): „Abnahme-Läufe WZ48“, AC-01 Sim und AC-02 Balance verschoben (Sperre 2026-11-11), AC-03 Gen `check_run task:test`, AC-04 Race `check:race`.
+Version: keine vorgeschlagen (nur Werkzeuge und Tests).

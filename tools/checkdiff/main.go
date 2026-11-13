@@ -4,6 +4,7 @@
 // Gen- und Race-Läufe. Regeln: docs/arbeitsweise.md › Tempo im Lauf.
 //
 //	checkdiff [-base <ref>] [-plan] [-only js|go]
+//	checkdiff -gopkgs   (Paketliste für task check:go ohne Sim-Pakete, B-832)
 //
 // -base: Vergleichsbasis statt HEAD (z. B. origin/develop für den ganzen Sprint; auch Umgebung CHECK_BASE).
 // -plan: nur zeigen, was laufen würde. -only: nur eine Bahn (nach einem roten Lauf den betroffenen Teil wiederholen).
@@ -18,8 +19,8 @@ import (
 )
 
 type options struct {
-	base, only string
-	plan, sim  bool
+	base, only        string
+	plan, sim, gopkgs bool
 }
 
 func parse() options {
@@ -27,6 +28,7 @@ func parse() options {
 	flag.StringVar(&o.base, "base", o.base, "Vergleichsbasis statt HEAD")
 	flag.StringVar(&o.only, "only", "", "nur eine Bahn: js oder go")
 	flag.BoolVar(&o.plan, "plan", false, "nur zeigen, was laufen würde")
+	flag.BoolVar(&o.gopkgs, "gopkgs", false, "nur die Pakete für task check:go ausgeben (ohne Sim-Pakete, außer CHECK_SIM=1)")
 	flag.Parse()
 	return o
 }
@@ -77,6 +79,14 @@ func skippedSim(p plan, sim bool) []string {
 
 func main() {
 	o := parse()
+	if o.gopkgs {
+		pkgs, err := goPkgs(o.sim)
+		if err != nil {
+			fatal("Paketliste für check:go: %v", err)
+		}
+		fmt.Println(pkgs)
+		return
+	}
 	start := time.Now()
 	base, steps, skipped := build(o)
 	fmt.Printf("🚦 check:diff Basis %s · %d Schritte\n", base, len(steps))
