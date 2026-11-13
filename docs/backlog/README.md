@@ -64,7 +64,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-834](B-834-abnahme-laeufe-pt1.md) | PAP | Schuld | mittel | offen | PT1 | Abnahme-Läufe PT1 |
 | [B-835](B-835-k3c-server-exe-eingecheckt.md) | INF | Schuld | niedrig | eingeplant | WZ48 | cmd/k3c-server/k3c-server.exe liegt als 14-MB-Binary im Repo |
 | [B-836](B-836-abnahme-laeufe-cu1.md) | INF | Schuld | mittel | offen | CU1 | Abnahme-Läufe CU1 |
-| [B-828](B-828-ci-workbench-go-tests.md) | INF | Problem | mittel | eingeplant | WZ48 | Der CI-Job k3c-workbench fährt die Go-Tests der Workbench |
 | [B-829](B-829-filewatch-neustart-flake.md) | DEV | Problem | niedrig | eingeplant | WZ48 | TestDateiAenderungStartetNeu bleibt unter Last stabil |
 | [B-830](B-830-mcpsrv-planning-short-langsam.md) | DEV | Problem | mittel | eingeplant | WZ48 | mcpsrv und planning bleiben mit -short unter 3 s je Test und 10 s je Paket |
 | [B-831](B-831-check-run-dev-test-frontend-limit.md) | DEV | Problem | mittel | eingeplant | WZ49 | check_run dev:test baut das Frontend vorher und reicht für die volle Workbench-Suite |

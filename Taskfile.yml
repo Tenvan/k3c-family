@@ -31,6 +31,10 @@ version: '3'
 # leitet Schreibzugriffe dorthin um, Git und Go sähen verschiedene Pfade. Ohne USERPROFILE (CI) `.work/tmp`.
 vars:
   K3C_TMP: '{{if .USERPROFILE}}{{toSlash .USERPROFILE}}/.k3c/tmp{{else}}{{.ROOT_DIR}}/.work/tmp{{end}}'
+  # Sim-, Balance- und Lasttest-Pakete des Wurzel-Moduls: Ihre Tests sind gesperrt (Beschluss Ralf 2026-11-11), check:go lässt
+  # sie aus (CHECK_SIM=1 hebt das auf). Gleiche Liste wie .github/workflows/ci.yml › GO_SIM_PKGS und tools/checkdiff › simDirs;
+  # tools/checkdiff/simlist_test.go prüft das (B-832).
+  GO_SIM_PKGS: '/(engine/balance|cmd/k3c-sim|cmd/k3c-load)$'
 
 env:
   GOTMPDIR: '{{.K3C_TMP}}'
@@ -158,9 +162,14 @@ tasks:
     deps: [lint, typecheck, test]
 
   check:go:
-    desc: Go-Tests und golangci-lint (nacheinander wegen Wanduhr-Tests, B-284; Race-Detector getrennt in check:race, B-518)
+    desc: Go-Tests ohne Sim-, Balance- und Lasttest-Pakete (Sperre, CHECK_SIM=1 nimmt sie mit, B-832) und golangci-lint (nacheinander wegen Wanduhr-Tests, B-284; Race-Detector getrennt in check:race, B-518)
+    vars:
+      CHECK_GO_PKGS:
+        sh: '{{if eq (.CHECK_SIM | default "") "1"}}echo ./...{{else}}go list ./... | grep -Ev "{{.GO_SIM_PKGS}}" | tr "\n" " "{{end}}'
     cmds:
       - task: go:test
+        vars:
+          GO_PKGS: '{{.CHECK_GO_PKGS}}'
       - task: go:lint
 
   check:race:

@@ -15,7 +15,8 @@ permissions:
   contents: read
 
 # Go-Tests ohne Sim-, Balance- und Lasttest-Pakete: Ihre Tests sind gesperrt (Beschluss Ralf 2026-11-11) und laufen nur im
-# Abnahme-Ticket; vet und Lint prüfen sie weiter. Gleiche Liste wie tools/checkdiff › simDirs (B-825). Alle Go-Tests mit -short.
+# Abnahme-Ticket; vet und Lint prüfen sie weiter. Gleiche Liste wie tools/checkdiff › simDirs (B-825) und Taskfile.yml › GO_SIM_PKGS (check:go);
+# tools/checkdiff/simlist_test.go prüft das (B-832). Alle Go-Tests mit -short.
 env:
   GO_SIM_PKGS: '/(engine/balance|cmd/k3c-sim|cmd/k3c-load)$'
   WB_SIM_PKGS: '/internal/(balance|simrun|simexe|botdev)$'

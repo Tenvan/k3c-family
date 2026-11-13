@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ48
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-13
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-13
 
 ## Ausgangslage
 
@@ -49,7 +49,7 @@ Ein Commit macht `internal/balance` rot → der CI-Job `k3c-workbench` auf `deve
 
 ## Ausnahme- und Fehlerfälle
 
-Ein Test braucht lokale Umgebung (bun, Git-Historie) → läuft mit `-short`-Skip wie in `check:diff`; die Entscheidung `-short` ja/nein steht im Ticket-Ergebnis.
+Ein Test braucht lokale Umgebung (bun, Git-Historie) → läuft mit `-short`-Skip wie in `check:diff`. Entscheidung: die CI fährt `-short` und ohne Sim-Pakete (`WB_SIM_PKGS`), gleiche Liste wie `tools/checkdiff` › `simDirs`.
 
 ## Akzeptanzkriterien
 
