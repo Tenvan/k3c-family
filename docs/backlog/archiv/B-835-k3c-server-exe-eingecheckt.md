@@ -4,13 +4,13 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ48
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-13
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-13
 
 ## Ausgangslage
 
@@ -22,7 +22,7 @@ Kein Binary unter `cmd/` im Repo.
 
 ## Beteiligte und Zielgruppen
 
-Claude.
+Claude (Umsetzung); 🧑 liest das Ergebnis.
 
 ## Anforderungen
 
@@ -34,9 +34,9 @@ Git-Historie umschreiben.
 
 ## Regeln und Einschränkungen
 
-Klasse A.
+Klasse A (Schuld, Domäne INF, ohne Spielregeln, Protokoll, Spielstand, neue Abhängigkeit).
 
-- **Bereich:** `cmd/k3c-server/k3c-server.exe`
+- **Bereich:** `cmd/k3c-server/k3c-server.exe`, `tools/k3c-starter/k3c-starter.exe`, `.gitignore`
 - **Abhängig von:** –
 - **Braucht 🧑:** –
 - **Größe:** S
@@ -60,4 +60,4 @@ keine
 
 ## Notizen
 
-–
+WZ48.3 (2026-11-13): `git ls-files '*.exe'` fand zwei Dateien, neben `cmd/k3c-server/k3c-server.exe` auch `tools/k3c-starter/k3c-starter.exe`; beide entfernt (AC-01 verlangt eine leere Liste). Kein Task, Workflow, Dockerfile oder Code erwartet sie an diesem Pfad (Builds legen nach `bin/`). `.gitignore` schließt `*.exe` schon aus (`git check-ignore` greift für beide Pfade); hinein kamen sie vermutlich per `git add -f` (ungeprüft).

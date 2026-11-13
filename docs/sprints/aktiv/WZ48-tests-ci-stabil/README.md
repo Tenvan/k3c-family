@@ -65,7 +65,7 @@ keine
 |---|---|---|---|---|
 | WZ48.1 | `WZ48.1-check-go-ci-workbench.md` | Umsetzung | autonom | fertig |
 | WZ48.2 | `WZ48.2-workbench-tests-stabil-schnell.md` | Umsetzung | autonom | fertig |
-| WZ48.3 | `WZ48.3-server-exe-aus-repo.md` | Umsetzung | autonom | offen |
+| WZ48.3 | `WZ48.3-server-exe-aus-repo.md` | Umsetzung | autonom | fertig |
 | WZ48.4 | `WZ48.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

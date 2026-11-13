@@ -62,7 +62,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-832](B-832-check-go-ohne-sim-pakete.md) | INF | Problem | mittel | eingeplant | WZ48 | task check:go führt trotz Sperre die Balance- und Lasttests aus |
 | [B-833](B-833-wz41-abnahme-ci-develop-check-all.md) | INF | Schuld | hoch | offen | – | Abnahme WZ41: CI auf develop mit Tests grün, check:all nachgeholt |
 | [B-834](B-834-abnahme-laeufe-pt1.md) | PAP | Schuld | mittel | offen | PT1 | Abnahme-Läufe PT1 |
-| [B-835](B-835-k3c-server-exe-eingecheckt.md) | INF | Schuld | niedrig | eingeplant | WZ48 | cmd/k3c-server/k3c-server.exe liegt als 14-MB-Binary im Repo |
 | [B-836](B-836-abnahme-laeufe-cu1.md) | INF | Schuld | mittel | offen | CU1 | Abnahme-Läufe CU1 |
 | [B-829](B-829-filewatch-neustart-flake.md) | DEV | Problem | niedrig | eingeplant | WZ48 | TestDateiAenderungStartetNeu bleibt unter Last stabil |
 | [B-830](B-830-mcpsrv-planning-short-langsam.md) | DEV | Problem | mittel | eingeplant | WZ48 | mcpsrv und planning bleiben mit -short unter 3 s je Test und 10 s je Paket |
