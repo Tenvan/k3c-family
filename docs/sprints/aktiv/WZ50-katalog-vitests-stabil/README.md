@@ -59,7 +59,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ50.1 | `WZ50.1-katalog-vitests.md` | Umsetzung | autonom | offen |
+| WZ50.1 | `WZ50.1-katalog-vitests.md` | Umsetzung | autonom | fertig |
 | WZ50.2 | `WZ50.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

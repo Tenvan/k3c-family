@@ -2,8 +2,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act } from 'react';
 import { backend } from '../../api';
-import { buttons, click, flush, mount, unmount } from '../testing';
-import { CatalogPage } from './CatalogPage';
+import { buttons, click, flush, unmount } from '../testing';
+import { mountCatalog, select, until } from './catalogTesting';
 
 // WB1.3/AC-03: Prompt-Buttons am Asset und am angeklickten Teil kopieren den gefüllten Prompt aus AssetsPrompts.
 
@@ -23,9 +23,12 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+/** Katalog mit gewähltem monarch; wartet, bis Bild und Prompt-Vorlagen da sind (B-837). */
 async function monarch() {
-  const host = await mount(<CatalogPage />);
-  await click(host.querySelector('[data-asset="monarch"]')!);
+  const host = await mountCatalog();
+  await select(host, 'monarch');
+  const erste = (await backend.assetsPrompts()).find((p) => p.ort === 'asset')!;
+  await until('Prompt-Buttons', () => buttons(host, erste.titel).length > 0);
   return host;
 }
 

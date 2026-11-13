@@ -3,14 +3,14 @@
 - **Domäne:** DEV
 - **Typ:** Problem
 - **Prio:** niedrig
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** WZ50
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-13
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-14
 
 ## Ausgangslage
 
@@ -26,7 +26,9 @@ Claude (Umsetzung); alle parallel arbeitenden Agenten.
 
 ## Anforderungen
 
-- Warten auf Bedingung statt fester Zeit; Aussage der Tests bleibt (Filter „nur geänderte“, feste Breiten, ein Laden je Frame).
+- Warten auf Bedingung statt fester Zeit oder fester Runden (`flush()`); Aussage der Tests bleibt (Filter „nur geänderte“, feste Breiten, ein Laden je Frame, defekter Frame nur einmal).
+- Gilt für alle Katalog-Tests im Bereich (`Catalog`, `CatalogCache`, `CatalogPrompts`, `CatalogRuhig`, `TeilSicht`), weil alle dieselbe Ursache haben.
+- Kurze feste Zeiten nur noch für Gegenproben („nach dem Anhalten kommt nichts mehr“, höchstens 400 ms).
 
 ## Nicht-Ziele
 
@@ -34,9 +36,9 @@ Umbau des Katalogs (WZ43).
 
 ## Regeln und Einschränkungen
 
-Domäne DEV, Klasse A.
+Domäne DEV, Klasse A (Problem, nur Tests und Test-Konfiguration, keine Spielregeln, kein Protokoll, keine neue Abhängigkeit).
 
-- **Bereich:** `tools/k3c-workbench/frontend/src/assets/catalog/*.test.tsx`
+- **Bereich:** `tools/k3c-workbench/frontend/src/assets/catalog/**`, `tools/k3c-workbench/frontend/vitest*.ts`
 - **Abhängig von:** –
 - **Braucht 🧑:** –
 - **Größe:** S

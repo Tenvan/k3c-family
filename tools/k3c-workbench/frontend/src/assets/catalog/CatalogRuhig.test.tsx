@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../../api';
 import type { AssetEintrag, Frame, Spec } from '../api';
 import { buttons, click, flush, mount, unmount, wait } from '../testing';
+import { mountCatalog, playFrames, select, until } from './catalogTesting';
 import { CatalogPage } from './CatalogPage';
 
 // WB2/AC-03 bis AC-05: Lade-Anzeige (über der Grafik, ohne Layoutsprung), getrennte Scrollbereiche, fester Frame-Player.
@@ -41,26 +42,24 @@ describe('Katalog: Lade-Anzeige (WB2/AC-03)', () => {
     const host = await mount(<CatalogPage />);
     expect(loading(host, 'list')?.textContent).toContain('Lädt Assets');
     list.resolve(await real());
-    await flush();
+    await until('Liste geladen', () => entry(host, 'monarch'));
     expect(loading(host, 'list')).toBeNull();
-    expect(entry(host, 'monarch')).toBeTruthy();
   });
 
   it('bei der Wahl eines Assets, bis die Spec da ist', async () => {
     const spec = deferred<Spec>();
     const real = backend.assetsGet.bind(backend);
-    const host = await mount(<CatalogPage />);
+    const host = await mountCatalog();
     vi.spyOn(backend, 'assetsGet').mockReturnValue(spec.promise);
     await click(entry(host, 'monarch'));
     expect(loading(host, 'asset')?.textContent).toContain('Lädt monarch');
     spec.resolve(await real('monarch'));
-    await flush();
-    expect(loading(host, 'asset')).toBeNull();
+    await until('Spec da', () => !loading(host, 'asset'));
   });
 
   it('beim Frame-Laden: altes Bild bleibt, Spinner liegt über der Grafik', async () => {
-    const host = await mount(<CatalogPage />);
-    await click(entry(host, 'monarch'));
+    const host = await mountCatalog();
+    await select(host, 'monarch');
     const real = backend.assetsFrame.bind(backend);
     const second = deferred<Frame>();
     vi.spyOn(backend, 'assetsFrame').mockImplementation((id, a, f, v, b) => (f === 1 ? second.promise : real(id, a, f, v, b)));
@@ -69,16 +68,15 @@ describe('Katalog: Lade-Anzeige (WB2/AC-03)', () => {
     expect(stage.querySelector('img[alt="monarch idle Frame 1"]')).toBeTruthy();
     expect(stage.querySelector('[data-loading="frame"]')).toBeTruthy();
     second.resolve(await real('monarch', 'idle', 1, '', ''));
-    await flush();
+    await until('Frame 2 gezeigt', () => stage.querySelector('img[alt="monarch idle Frame 2"]'));
     expect(stage.querySelector('[data-loading="frame"]')).toBeNull();
-    expect(stage.querySelector('img[alt="monarch idle Frame 2"]')).toBeTruthy();
   });
 });
 
 describe('Katalog: ruhige Ansicht (WB2/AC-04, AC-05)', () => {
   it('Liste und Vorschau je eigener Scrollbereich', async () => {
-    const host = await mount(<CatalogPage />);
-    await click(entry(host, 'monarch'));
+    const host = await mountCatalog();
+    await select(host, 'monarch');
     const list = host.querySelector('[data-scroll="list"]')!;
     const detail = host.querySelector('[data-scroll="detail"]')!;
     expect(list.contains(entry(host, 'monarch'))).toBe(true);
@@ -88,14 +86,13 @@ describe('Katalog: ruhige Ansicht (WB2/AC-04, AC-05)', () => {
 
   it('Frame-Player mit festen Breiten; jeder Frame wird nur einmal geladen', async () => {
     const frame = vi.spyOn(backend, 'assetsFrame');
-    const host = await mount(<CatalogPage />);
-    await click(entry(host, 'monarch'));
+    const host = await mountCatalog();
+    await select(host, 'monarch');
     const widths = () => ['play', 'slider', 'count'].map((p) => host.querySelector<HTMLElement>(`[data-part="${p}"]`)?.style.width);
     const before = widths();
     expect(before.every(Boolean)).toBe(true);
-    await click(buttons(host, 'Abspielen')[0]);
-    await wait(1200);
-    await click(buttons(host, 'Anhalten')[0]);
+    // eine volle Runde und einen Frame weiter: ein zweites Laden fiele als doppelter Schlüssel auf
+    await playFrames(host, 9);
     expect(widths()).toEqual(before);
     const keys = frame.mock.calls.map((c) => c.slice(0, 3).join('|'));
     expect(new Set(keys).size).toBe(keys.length);
@@ -104,7 +101,7 @@ describe('Katalog: ruhige Ansicht (WB2/AC-04, AC-05)', () => {
 
 describe('Review-Befunde WB2.3', () => {
   it('Befund 1: Filter klebt in einer deckenden Hülle, das Feld behält seinen Rahmen', async () => {
-    const host = await mount(<CatalogPage />);
+    const host = await mountCatalog();
     const wrap = host.querySelector('.as-list-filter')!;
     expect(wrap.querySelector('input[aria-label="Filter"]')).toBeTruthy();
     expect(wrap.tagName).not.toBe('INPUT');
@@ -116,8 +113,8 @@ describe('Review-Befunde WB2.3', () => {
   });
 
   it('Befund 2: Vorabladen nacheinander (höchstens zwei offen), Abbruch bei Asset-Wechsel', async () => {
-    const host = await mount(<CatalogPage />);
-    await click(entry(host, 'monarch'));
+    const host = await mountCatalog();
+    await select(host, 'monarch');
     const real = backend.assetsFrame.bind(backend);
     const offen: { resolve: () => void }[] = [];
     const frame = vi.spyOn(backend, 'assetsFrame').mockImplementation((id, a, f, v, b) => new Promise<Frame>((r) => offen.push({ resolve: () => r(real(id, a, f, v, b)) })));
@@ -133,17 +130,16 @@ describe('Review-Befunde WB2.3', () => {
   });
 
   it('Befund 4: defekter Frame lässt das letzte Bild stehen und wird nicht jede Runde neu geladen', async () => {
-    const host = await mount(<CatalogPage />);
-    await click(entry(host, 'monarch'));
+    const host = await mountCatalog();
+    await select(host, 'monarch');
     const real = backend.assetsFrame.bind(backend);
     const frame = vi.spyOn(backend, 'assetsFrame').mockImplementation((id, a, f, v, b) => (f === 1 ? Promise.reject(new Error('Frame kaputt')) : real(id, a, f, v, b)));
     await pressRight(host);
     const stage = host.querySelector('.as-stage')!;
-    expect(stage.textContent).toContain('Frame kaputt');
+    await until('Fehler am Frame', () => stage.textContent?.includes('Frame kaputt'));
     expect(stage.querySelector('img')).toBeTruthy();
-    await click(buttons(host, 'Abspielen')[0]);
-    await wait(2200);
-    await click(buttons(host, 'Anhalten')[0]);
+    // eine volle Runde und einen Frame weiter: der defekte Frame 2 kommt ein zweites Mal dran
+    await playFrames(host, 9);
     expect(frame.mock.calls.filter((c) => c[2] === 1)).toHaveLength(1);
   });
 });
