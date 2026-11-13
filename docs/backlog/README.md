@@ -59,12 +59,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-777](B-777-ebitengine-prototyp-vergleich.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Ebitengine-Prototyp zeigt dasselbe Level wie der Bevy-Prototyp und liefert vergleichbare Messwerte |
 | [B-778](B-778-rig-prototyp-monarch-aus-teilen.md) | CLI | Frage | hoch | eingeplant | NV2 | Ein dritter Prototyp setzt den Monarchen in Ebitengine zur Laufzeit aus Rig-Teilen zusammen |
 | [B-780](B-780-rig-fuer-alle-figuren-gegnerzahl.md) | CLI | Frage | mittel | eingeplant | NG3 | Prototypen zeigen, wie viele Gegner, Truppen und Bosse gleichzeitig als Rig-Modelle laufen |
-| [B-832](B-832-check-go-ohne-sim-pakete.md) | INF | Problem | mittel | eingeplant | WZ48 | task check:go führt trotz Sperre die Balance- und Lasttests aus |
 | [B-833](B-833-wz41-abnahme-ci-develop-check-all.md) | INF | Schuld | hoch | offen | – | Abnahme WZ41: CI auf develop mit Tests grün, check:all nachgeholt |
 | [B-834](B-834-abnahme-laeufe-pt1.md) | PAP | Schuld | mittel | offen | PT1 | Abnahme-Läufe PT1 |
 | [B-836](B-836-abnahme-laeufe-cu1.md) | INF | Schuld | mittel | offen | CU1 | Abnahme-Läufe CU1 |
-| [B-829](B-829-filewatch-neustart-flake.md) | DEV | Problem | niedrig | eingeplant | WZ48 | TestDateiAenderungStartetNeu bleibt unter Last stabil |
-| [B-830](B-830-mcpsrv-planning-short-langsam.md) | DEV | Problem | mittel | eingeplant | WZ48 | mcpsrv und planning bleiben mit -short unter 3 s je Test und 10 s je Paket |
 | [B-831](B-831-check-run-dev-test-frontend-limit.md) | DEV | Problem | mittel | eingeplant | WZ49 | check_run dev:test baut das Frontend vorher und reicht für die volle Workbench-Suite |
 | [B-837](B-837-katalog-vitest-unter-last.md) | DEV | Problem | niedrig | eingeplant | WZ50 | Katalog-Vitests der Workbench bleiben unter Last grün |
 | [B-842](B-842-fahrplan-freie-abschnitte-werkzeug.md) | DEV | Problem | mittel | eingeplant | WZ49 | Fahrplan-Abschnitt „Offen am Gerät“ und verwaiste Zeilen pflegt das Werkzeug |
@@ -81,6 +78,10 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-850](B-850-server-net-load-tui-zukunft.md) | SRV | Frage | niedrig | offen | – | Es ist entschieden, ob k3c-server, engine/net, k3c-load und k3c-tui ohne Online-Spiel bleiben oder entfallen |
 | [B-852](B-852-abnahme-laeufe-wz43.md) | DEV | Schuld | mittel | offen | WZ43 | Abnahme-Läufe WZ43 |
 | [B-853](B-853-review-groessenvergleich-vorher-bild.md) | DEV | Idee | niedrig | offen | – | Das Review zeigt den Größenvergleich auch für das Vorher-Bild |
+| [B-854](B-854-abnahme-laeufe-wz48.md) | INF | Schuld | mittel | offen | WZ48 | Abnahme-Läufe WZ48 |
+| [B-855](B-855-check-run-konsole-je-checkout.md) | DEV | Problem | mittel | offen | – | console_tail und check_run trennen die Konsolenpuffer je Checkout |
+| [B-856](B-856-paper-cli-sammelaufruf.md) | DEV | Schuld | niedrig | offen | – | assets_set ruft die Paper-CLI gesammelt auf statt zwölfmal je Änderung |
+| [B-857](B-857-check-dev-ohne-sim-pakete.md) | DEV | Problem | mittel | offen | – | check:dev testet die Sim-Pakete der Workbench nicht, solange die Sim-Sperre gilt |
 
 ## Archiv
 
@@ -812,3 +813,8 @@ Zeile in diesen Abschnitt.
 | [B-709](archiv/B-709-assets-preview-reittier-boxen.md) | PAP | Idee | niedrig | erledigt | WZ43 | assets_preview nennt bei Reit-Animationen keine Teil-Boxen des Reittiers |
 | [B-710](archiv/B-710-assets-set-teil-patch.md) | PAP | Problem | mittel | erledigt | WZ43 | assets_set kann einzelne Teile nicht ändern, ohne die ganze Teile-Liste zu senden |
 | [B-733](archiv/B-733-assets-groessenvergleich.md) | DEV | Idee | mittel | erledigt | WZ43 | Katalog und Review zeigen ein Asset im Größenvergleich mit dem Monarch vor einem Biom |
+| [B-828](archiv/B-828-ci-workbench-go-tests.md) | INF | Problem | mittel | erledigt | WZ48 | Der CI-Job k3c-workbench fährt die Go-Tests der Workbench |
+| [B-829](archiv/B-829-filewatch-neustart-flake.md) | DEV | Problem | niedrig | erledigt | WZ48 | TestDateiAenderungStartetNeu bleibt unter Last stabil |
+| [B-830](archiv/B-830-mcpsrv-planning-short-langsam.md) | DEV | Problem | mittel | erledigt | WZ48 | mcpsrv und planning bleiben mit -short unter 3 s je Test und 10 s je Paket |
+| [B-832](archiv/B-832-check-go-ohne-sim-pakete.md) | INF | Problem | mittel | erledigt | WZ48 | task check:go führt trotz Sperre die Balance- und Lasttests aus |
+| [B-835](archiv/B-835-k3c-server-exe-eingecheckt.md) | INF | Schuld | niedrig | erledigt | WZ48 | cmd/k3c-server/k3c-server.exe liegt als 14-MB-Binary im Repo |

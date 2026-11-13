@@ -64,4 +64,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Abnahme-Ticket von WZ41 (WZ41.3, 2026-11-13); Sim und Balancing gesperrt, kein gen:paper-Golden nötig (kein Gen-Feature geändert).
+2026-11-14: Der CI-Nachweis für WZ48 (B-828, Short-Skips und `-test.parallel` auf Windows-Runnern) läuft in B-854 mit.

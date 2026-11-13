@@ -352,3 +352,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | NG19 | Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket | `erledigt/NG19-native-menue-kacheln-batching-version/` |
 | PT3 | Paper-CLI: --ohne mit Reittier-Teilen, Bein-Box mit Wulst | `erledigt/PT3-paper-frame-reittier-ohne/` |
 | PT4 | Paper-CLI: --ohne blendet Beinpfade von Vierbeinern aus | `erledigt/PT4-paper-frame-vierbeiner-ohne/` |
+| WZ48 | Tests und CI: check:go ohne Sim, Workbench-Go-Tests in der CI, stabile und schnelle Tests | `erledigt/WZ48-tests-ci-stabil/` |
