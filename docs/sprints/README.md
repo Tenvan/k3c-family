@@ -13,6 +13,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | NG11 | CLI | NAT | Natives Spiel: Fluss mit Shader | – | `aktiv/NG11-native-fluss-shader/` |
 | NG14 | CLI | NAT | Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter | – | `aktiv/NG14-native-fehleranzeige-shader-umschalter/` |
 | NG15 | CLI | NAT | Natives Spiel: Ton-Gerät ohne Absturz | – | `aktiv/NG15-native-ton-geraet/` |
+| NG19 | CLI | NAT | Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket | – | `aktiv/NG19-native-menue-kacheln-batching-version/` |
 | WZ41 | INF | WZG | CI und Release grün, check:diff-Protokoll belegt | – | `aktiv/WZ41-ci-release-gruen/` |
 | WZ42 | DEV | WZG | Workbench-Tests schnell und stabil | – | `aktiv/WZ42-workbench-tests-schnell-stabil/` |
 | WZ44 | DEV, INF | WZG | Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug | – | `aktiv/WZ44-planung-wellen-werkzeuge/` |
@@ -35,7 +36,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| NG19 | CLI | NAT | Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket | – | Entwurf | `geplant/NG19-native-menue-kacheln-batching-version/` |
 | WZ43 | DEV | WZG | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | – | bereit | `geplant/WZ43-asset-tools-review/` |
 | WZ47 | DEV | WZG | Ticket-Relationen, schlanker Index und Sprint-Zusammenfassungen | – | bereit | `geplant/WZ47-ticket-relationen-index/` |
 | WZ45 | DEV | WZG | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | – | Entwurf | `geplant/WZ45-asset-seiten-prompts-filter/` |

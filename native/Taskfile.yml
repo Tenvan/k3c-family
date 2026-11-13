@@ -20,10 +20,21 @@ vars:
     sh: git describe --tags --always --dirty 2>/dev/null || true
 
 tasks:
+  # Version als Datei (B-821): schreibt bin/version.txt nur, wenn sich GAME_VERSION ändert; game:build beobachtet die
+  # Datei. So baut ein neuer Commit auch im Worktree neu (dort ist .git eine Datei), ohne Änderung bleibt es „up to date“.
+  game:version:
+    internal: true
+    dir: '{{.GAME}}'
+    status:
+      # Datei muss existieren: ohne Git ist die Version leer, bin/version.txt entsteht trotzdem (leer = „unbekannt“)
+      - test -f bin/version.txt && test "$(cat bin/version.txt)" = "{{.GAME_VERSION}}"
+    cmds:
+      - mkdir -p bin && printf '%s' "{{.GAME_VERSION}}" > bin/version.txt
+
   game:build:
     desc: "Natives Spiel bauen (Go, ohne cgo) nach native/k3c-game/bin/"
     dir: '{{.GAME}}'
-    deps: [':tmp']
+    deps: [':tmp', game:version]
     env:
       CGO_ENABLED: '0'
     sources:
@@ -34,8 +45,8 @@ tasks:
       - ../../go.mod
       - ../../engine/**/*.go
       - ../../data/**/*
-      # Version: jeder neue Commit baut neu (git describe); im Worktree fehlt die Datei, dort hilft --force
-      - ../../.git/logs/HEAD
+      # Version: neue Angabe von git describe baut neu (game:version), im Hauptcheckout wie im Worktree
+      - bin/version.txt
     generates:
       - bin/k3c-game.exe
     cmds:

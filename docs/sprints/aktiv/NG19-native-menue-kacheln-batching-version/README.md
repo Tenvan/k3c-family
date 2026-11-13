@@ -1,14 +1,14 @@
 # NG19 · CLI · Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-818, B-820, B-821
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Start-Commit:** 9b2ef1dcb
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Ralf, 2026-11-13 (Dialog „NG19 vorziehen“; NG19.2 erst nach Freigabe B-818)
 
 ## Ausgangslage
 
@@ -57,16 +57,22 @@ Illustration fehlt → Text-Karte (B-818/AC-01).
 
 ## Offene Fragen
 
-Ablageort der Illustrationen (Gruppe `menue` angenommen, ungeprüft) und Freigabe von B-818: entscheidet 🧑.
+Ablageort der Illustrationen (Gruppe `menue` angenommen, ungeprüft) und Freigabe von B-818: entscheidet 🧑, vor NG19.2.
+
+Vorgezogen am 2026-11-13 (Dialog Ralf „NG19 vorziehen“): Die Abhängigkeit von NG9 und die Sperre `taskfile` gelten nicht gegen NG9.5 (reine Hardware-Prüfung am Mini-PC).
 
 ## Sessions
 
-Entwurf (Stichpunkte, Session-Dateien vor dem Aktivieren):
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| NG19.1 | `NG19.1-batching-version.md` | Umsetzung | autonom | fertig |
+| NG19.2 | `NG19.2-menue-kacheln.md` | Umsetzung | autonom | offen |
+| NG19.3 | `NG19.3-review.md` | Review | autonom | offen |
+| NG19.4 | `NG19.4-sichtpruefung-pc.md` | Review | Mensch | offen |
 
-- NG19.1 Hintergrund-Batching und Version im Paket (AC-02, AC-03)
-- NG19.2 Menü-Kacheln mit Illustrationen (AC-01)
-- NG19.3 Sichtprüfung am PC durch 🧑 (`B-818/AC-03`)
-- NG19.4 Review (alle)
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
+Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
 
 ## Abnahme
 
