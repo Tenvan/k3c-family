@@ -1,6 +1,6 @@
 # NG15 · CLI · Natives Spiel: Ton-Gerät ohne Absturz
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -64,7 +64,7 @@ keine (entschieden autonom, Claude, 2026-11-12: oto direkt, siehe `B-805 › Off
 |---|---|---|---|---|
 | NG15.1 | `NG15.1-ton-oto.md` | Umsetzung | autonom | fertig |
 | NG15.2 | `NG15.2-review.md` | Review | autonom | fertig |
-| NG15.3 | `NG15.3-abnahme-pc.md` | Review | Mensch | offen |
+| NG15.3 | `NG15.3-abnahme-pc.md` | Review | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

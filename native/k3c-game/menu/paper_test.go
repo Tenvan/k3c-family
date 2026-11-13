@@ -7,6 +7,8 @@ import (
 	"os"
 	"strconv"
 	"testing"
+
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 // stilFile ist die Stil-Datei des Papierschnitts (Entscheidung 005).
@@ -116,5 +118,27 @@ func TestBackdropInWindow(t *testing.T) {
 		if b.moonX+b.moonR > float64(win.Dx()) || b.moonY-b.moonR < 0 || b.moonX < float64(win.Dx())/2 {
 			t.Errorf("%v: Mond bei %v/%v r %v", win, b.moonX, b.moonY, b.moonR)
 		}
+	}
+}
+
+// B-820 AC-01: Der Hintergrund wechselt den Filter je Bild höchstens einmal (erst alle Rechtecke, dann alle Scheiben),
+// damit Ebitengine seine Draw-Aufrufe bündeln kann; Mond, Schatten und Ausschnitt bleiben Scheiben.
+func TestBackdropSwitchesFilterAtMostOnce(t *testing.T) {
+	var s [backdropShapes]shape
+	backdropOf(geomOf(image.Rect(0, 0, 1920, 1080))).shapes(&s)
+	switches, discs := 0, 0
+	for i := range s {
+		if s[i].disc {
+			discs++
+		}
+		if i > 0 && s[i].filter() != s[i-1].filter() {
+			switches++
+		}
+	}
+	if switches > 1 {
+		t.Errorf("Filter wechselt %d-mal je Bild, erlaubt ist höchstens einmal", switches)
+	}
+	if want := len(shadowLayers) + 2; discs != want || s[0].filter() != ebiten.FilterNearest {
+		t.Errorf("Scheiben %d (erwartet %d), erste Form mit Filter %v", discs, want, s[0].filter())
 	}
 }

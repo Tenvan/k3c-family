@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** niedrig
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** verworfen
 - **Sprint:** NG9
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
@@ -63,4 +63,4 @@ Welcher Mini-PC (CPU, GPU, Windows), welche Auflösung (TV oder Monitor), welche
 
 ## Notizen
 
-Checkliste für den Termin: Chat der Session k3c-05 vom 2026-11-11 (Paket, Sichtprüfung, Messung). Vergleichswert Entwicklungs-PC (Core Ultra 7 165H, Intel Arc integriert): 200 Reiter Rig 126 FPS, Sheet 981 FPS (B-778 › Notizen).
+Verworfen 2026-11-13 (Dialog Ralf „NG9.5 entfällt“): Keine Sichtprüfung und Messung am Mini-PC; NG9.5 verworfen.

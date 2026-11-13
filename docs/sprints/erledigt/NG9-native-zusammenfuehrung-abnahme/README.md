@@ -1,6 +1,6 @@
 # NG9 · CLI · Natives Spiel: Zusammenführung, Messung und Abnahme
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -69,7 +69,7 @@ Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität
 | NG9.2 | `NG9.2-messung-paket.md` | Umsetzung | autonom | fertig |
 | NG9.3 | `NG9.3-review.md` | Review | autonom | fertig |
 | NG9.4 | `NG9.4-abnahme-pc.md` | Review | Mensch | fertig |
-| NG9.5 | `NG9.5-mini-pc.md` | Review | Mensch | offen |
+| NG9.5 | `NG9.5-mini-pc.md` | Review | Mensch | verworfen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -77,4 +77,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-2026-11-11 Review (Claude, `k3c-reviewer`): AC laut Ergebnis der Sessions; Hardware entkoppelt, Sprint bleibt aktiv bis NG9.4/NG9.5 (🧑). Neue Tickets: B-806, B-807, B-808, B-809, B-810, B-811, B-812, B-813, B-814, B-815, B-816. Abnahme-Ticket des Projekts: B-817. Version: keine vorgeschlagen (Abnahme am PC steht aus).
+2026-11-11 Review (Claude, `k3c-reviewer`): AC laut Ergebnis der Sessions; Hardware entkoppelt. Neue Tickets: B-806 bis B-816. Abnahme-Ticket des Projekts: B-817.
+2026-11-12 NG9.4 Abnahme am PC zu zweit bestanden (🧑). 2026-11-13 NG9.5 (Mini-PC) entfällt (Dialog Ralf), B-786 verworfen; Sprint erledigt.

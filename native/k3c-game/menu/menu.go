@@ -41,7 +41,7 @@ func New(lib *art.Library, keys view.KeyTable) view.Menus {
 	if lib != nil && lib.Font != nil {
 		font = lib.Font
 	}
-	return &menus{paint: painter{font: font}, keys: keys}
+	return &menus{paint: painter{font: font, lib: lib}, keys: keys}
 }
 
 // Main liefert das Hauptmenü; eine vorgemerkte Meldung (Fehler beim Verlassen) erscheint darin.

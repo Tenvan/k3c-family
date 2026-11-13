@@ -32,7 +32,6 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| NG19 | CLI | NAT | Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket | – | Entwurf | `geplant/NG19-native-menue-kacheln-batching-version/` |
 | WZ43 | DEV | WZG | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | – | bereit | `geplant/WZ43-asset-tools-review/` |
 | WZ47 | DEV | WZG | Ticket-Relationen, schlanker Index und Sprint-Zusammenfassungen | – | bereit | `geplant/WZ47-ticket-relationen-index/` |
 | WZ45 | DEV | WZG | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | – | Entwurf | `geplant/WZ45-asset-seiten-prompts-filter/` |
